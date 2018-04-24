@@ -2,7 +2,7 @@
 @model DevilDaggersWebsite.Pages.LeaderboardModel
 @{
 	ViewData["Title"] = "Devil Daggers - Leaderboard";
-	double accuracyGlobal = Model.ShotsFiredGlobal == 0 ? 0 : (double)Model.ShotsHitGlobal / (double)Model.ShotsFiredGlobal * 100;
+	double accuracyGlobal = Model.Leaderboard.ShotsFiredGlobal == 0 ? 0 : (double)Model.Leaderboard.ShotsHitGlobal / (double)Model.Leaderboard.ShotsFiredGlobal * 100;
 }
 @using DevilDaggersWebsite.Helpers
 @using DevilDaggersWebsite.Models
@@ -22,10 +22,10 @@
 				<th class="centre">Global accuracy</th>
 			</tr>
 			<tr>
-				<td class="centre" style="color: red;">@string.Format("{0:0.0000}", ((double)Model.TimeGlobal / 10000.0))</td>
-				<td class="centre" style="color: red;">@Model.KillsGlobal</td>
-				<td class="centre" style="color: red;">@Model.GemsGlobal</td>
-				<td class="centre" style="color: red;">@Model.DeathsGlobal</td>
+				<td class="centre" style="color: red;">@string.Format("{0:0.0000}", ((double)Model.Leaderboard.TimeGlobal / 10000.0))</td>
+				<td class="centre" style="color: red;">@Model.Leaderboard.KillsGlobal</td>
+				<td class="centre" style="color: red;">@Model.Leaderboard.GemsGlobal</td>
+				<td class="centre" style="color: red;">@Model.Leaderboard.DeathsGlobal</td>
 				<td class="centre" style="color: red;">@string.Format("{0:0.0000}%", accuracyGlobal)</td>
 			</tr>
 		</table>
@@ -35,7 +35,7 @@
 				<th class="centre">Total players</th>
 			</tr>
 			<tr>
-				<td class="centre" style="color: red;">@Model.Players</td>
+				<td class="centre" style="color: red;">@Model.Leaderboard.Players</td>
 			</tr>
 		</table>
 	</div>
@@ -43,19 +43,19 @@
 		<table class="centre-table">
 			<tr>
 				<th>Global time</th>
-				<td class="num" style="color: red;">@string.Format("{0:0.0000}", ((double)Model.TimeGlobal / 10000.0))</td>
+				<td class="num" style="color: red;">@string.Format("{0:0.0000}", ((double)Model.Leaderboard.TimeGlobal / 10000.0))</td>
 			</tr>
 			<tr>
 				<th>Global kills</th>
-				<td class="num" style="color: red;">@Model.KillsGlobal</td>
+				<td class="num" style="color: red;">@Model.Leaderboard.KillsGlobal</td>
 			</tr>
 			<tr>
 				<th>Global gems</th>
-				<td class="num" style="color: red;">@Model.GemsGlobal</td>
+				<td class="num" style="color: red;">@Model.Leaderboard.GemsGlobal</td>
 			</tr>
 			<tr>
 				<th>Global deaths</th>
-				<td class="num" style="color: red;">@Model.DeathsGlobal</td>
+				<td class="num" style="color: red;">@Model.Leaderboard.DeathsGlobal</td>
 			</tr>
 			<tr>
 				<th>Global accuracy</th>
@@ -66,7 +66,7 @@
 		<table class="centre-table">
 			<tr>
 				<th>Total players</th>
-				<td class="num" style="color: red;">@Model.Players</td>
+				<td class="num" style="color: red;">@Model.Leaderboard.Players</td>
 			</tr>
 		</table>
 	</div>
@@ -76,8 +76,8 @@
 		{
 			@Html.AntiForgeryToken()
 			<fieldset>
-				@Html.TextBoxFor(m => m.Offset, new { @class = "input" })
-				@Html.Hidden("OffsetPrevious", Model.OffsetPrevious)
+				@Html.TextBoxFor(m => m.Leaderboard.Offset, new { @class = "input" })
+				@Html.Hidden("OffsetPrevious", Model.Leaderboard.OffsetPrevious)
 				<br />
 				<input class="button" style="width: 64px; margin-left: 6px;" type="submit" name="submitAction" value="Show" />
 				<br />
@@ -87,7 +87,7 @@
 		}
 		<br />
 		<p class="centre">
-			Showing rank @(Model.Offset) - @(Model.Offset + 99)<br /><br />
+			Showing rank @(Model.Leaderboard.Offset) - @(Model.Leaderboard.Offset + 99)<br /><br />
 			Click the table headers to sort the leaderboard.<br />
 		</p>
 		<br />
@@ -110,7 +110,7 @@
 			</tr>
 		</thead>
 		<tbody>
-			@foreach (Entry entry in Model.Entries)
+			@foreach (Entry entry in Model.Leaderboard.Entries)
 			{
 				Dagger dagger = Helper.Default;
 				foreach (Dagger d in Helper.Daggers)

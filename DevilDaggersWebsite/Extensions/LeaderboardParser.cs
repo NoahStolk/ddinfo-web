@@ -12,14 +12,14 @@ namespace DevilDaggersWebsite.Helpers
 	{
 		private static string serverURL = "http://dd.hasmodai.com/backend15/get_scores.php";
 
-		public static async Task<LeaderboardModel> LoadLeaderboard(LeaderboardModel leaderboard)
+		public static async Task<Leaderboard> LoadLeaderboard(Leaderboard leaderboard)
 		{
 			byte[] leaderboardData = await GetLeaderboardData(leaderboard);
 
 			return ParseLeaderboardData(leaderboard, leaderboardData);
 		}
 
-		private static async Task<byte[]> GetLeaderboardData(LeaderboardModel leaderboard)
+		private static async Task<byte[]> GetLeaderboardData(Leaderboard leaderboard)
 		{
 			Dictionary<string, string> postValues = new Dictionary<string, string>
 			{
@@ -34,7 +34,7 @@ namespace DevilDaggersWebsite.Helpers
 			return await resp.Content.ReadAsByteArrayAsync();
 		}
 
-		private static LeaderboardModel ParseLeaderboardData(LeaderboardModel leaderboard, byte[] leaderboardData)
+		private static Leaderboard ParseLeaderboardData(Leaderboard leaderboard, byte[] leaderboardData)
 		{
 			leaderboard.DeathsGlobal = BitConverter.ToUInt64(leaderboardData, 11);
 			leaderboard.KillsGlobal = BitConverter.ToUInt64(leaderboardData, 19);

@@ -3,55 +3,46 @@ using DevilDaggersWebsite.Models;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.AspNetCore.Mvc.RazorPages;
 using System;
-using System.Collections.Generic;
 using System.Threading.Tasks;
 
 namespace DevilDaggersWebsite.Pages
 {
 	public class LeaderboardModel : PageModel
 	{
-		public int Offset { get; set; } = 1;
-		public int OffsetPrevious { get; set; } = 1;
-
-		public List<Entry> Entries { get; set; } = new List<Entry>();
-
-		public int Players { get; set; }
-		public UInt64 TimeGlobal { get; set; }
-		public UInt64 KillsGlobal { get; set; }
-		public UInt64 GemsGlobal { get; set; }
-		public UInt64 DeathsGlobal { get; set; }
-		public UInt64 ShotsHitGlobal { get; set; }
-		public UInt64 ShotsFiredGlobal { get; set; }
+		[BindProperty]
+		public Leaderboard Leaderboard { get; set; } = new Leaderboard();
 
 		public async Task OnGetAsync()
 		{
-			await LeaderboardParser.LoadLeaderboard(this);
+			await LeaderboardParser.LoadLeaderboard(Leaderboard);
 		}
 
-		public async Task OnPostAsync(string submitAction)
+		public async Task<IActionResult> OnPostAsync(string submitAction)
 		{
 			//ModelState.Remove("OffsetPrevious");
 
 			switch (submitAction)
 			{
 				case ">":
-					Offset = OffsetPrevious + 100;
+					Leaderboard.Offset = Leaderboard.OffsetPrevious + 100;
 					break;
 				case "<":
-					Offset = OffsetPrevious - 100;
+					Leaderboard.Offset = Leaderboard.OffsetPrevious - 100;
 					break;
 			}
 
-			Offset = Math.Max(1, Offset);
-			await LeaderboardParser.LoadLeaderboard(this);
+			Leaderboard.Offset = Math.Max(1, Leaderboard.Offset);
+			await LeaderboardParser.LoadLeaderboard(Leaderboard);
 
-			if (Offset > Players - 99)
+			if (Leaderboard.Offset > Leaderboard.Players - 99)
 			{
-				Offset = Players - 99;
-				Entries.Clear();
-				await LeaderboardParser.LoadLeaderboard(this);
+				Leaderboard.Offset = Leaderboard.Players - 99;
+				Leaderboard.Entries.Clear();
+				await LeaderboardParser.LoadLeaderboard(Leaderboard);
 			}
-			OffsetPrevious = Offset;
+			Leaderboard.OffsetPrevious = Leaderboard.Offset;
+
+			return RedirectToPage();
 		}
 	}
 }
