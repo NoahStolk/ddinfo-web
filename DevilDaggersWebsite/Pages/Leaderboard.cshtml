@@ -1,0 +1,156 @@
+﻿@page
+@model DevilDaggersWebsite.Pages.LeaderboardModel
+@{
+	ViewData["Title"] = "Devil Daggers - Leaderboard";
+	double accuracyGlobal = Model.ShotsFiredGlobal == 0 ? 0 : (double)Model.ShotsHitGlobal / (double)Model.ShotsFiredGlobal * 100;
+}
+@using DevilDaggersWebsite.Helpers
+@using DevilDaggersWebsite.Models
+
+<header>
+	<h1>Leaderboard</h1>
+</header>
+
+<main role="main">
+	<div class="hide-mobile">
+		<table class="centre-table">
+			<tr>
+				<th class="centre">Global time</th>
+				<th class="centre">Global kills</th>
+				<th class="centre">Global gems</th>
+				<th class="centre">Global deaths</th>
+				<th class="centre">Global accuracy</th>
+			</tr>
+			<tr>
+				<td class="centre" style="color: red;">@string.Format("{0:0.0000}", ((double)Model.TimeGlobal / 10000.0))</td>
+				<td class="centre" style="color: red;">@Model.KillsGlobal</td>
+				<td class="centre" style="color: red;">@Model.GemsGlobal</td>
+				<td class="centre" style="color: red;">@Model.DeathsGlobal</td>
+				<td class="centre" style="color: red;">@string.Format("{0:0.0000}%", accuracyGlobal)</td>
+			</tr>
+		</table>
+		<br />
+		<table class="centre-table">
+			<tr>
+				<th class="centre">Total players</th>
+			</tr>
+			<tr>
+				<td class="centre" style="color: red;">@Model.Players</td>
+			</tr>
+		</table>
+	</div>
+	<div class="show-mobile">
+		<table class="centre-table">
+			<tr>
+				<th>Global time</th>
+				<td class="num" style="color: red;">@string.Format("{0:0.0000}", ((double)Model.TimeGlobal / 10000.0))</td>
+			</tr>
+			<tr>
+				<th>Global kills</th>
+				<td class="num" style="color: red;">@Model.KillsGlobal</td>
+			</tr>
+			<tr>
+				<th>Global gems</th>
+				<td class="num" style="color: red;">@Model.GemsGlobal</td>
+			</tr>
+			<tr>
+				<th>Global deaths</th>
+				<td class="num" style="color: red;">@Model.DeathsGlobal</td>
+			</tr>
+			<tr>
+				<th>Global accuracy</th>
+				<td class="num" style="color: red;">@string.Format("{0:0.0000}%", accuracyGlobal)</td>
+			</tr>
+		</table>
+		<br />
+		<table class="centre-table">
+			<tr>
+				<th>Total players</th>
+				<td class="num" style="color: red;">@Model.Players</td>
+			</tr>
+		</table>
+	</div>
+	<br />
+	<div class="centre">
+		@using (Html.BeginForm("Leaderboard", "Home", FormMethod.Post))
+		{
+			@Html.AntiForgeryToken()
+			<fieldset>
+				@Html.TextBoxFor(m => m.Offset, new { @class = "input" })
+				@Html.Hidden("OffsetPrevious", Model.OffsetPrevious)
+				<br />
+				<input class="button" style="width: 64px; margin-left: 6px;" type="submit" name="submitAction" value="Show" />
+				<br />
+				<input class="button" style="width: 32px;" type="submit" name="submitAction" value="<" />
+				<input class="button" style="width: 32px;" type="submit" name="submitAction" value=">" />
+			</fieldset>
+		}
+		<br />
+		<p class="centre">
+			Showing rank @(Model.Offset) - @(Model.Offset + 99)<br /><br />
+			Click the table headers to sort the leaderboard.<br />
+		</p>
+		<br />
+	</div>
+	<table class="sortable centre-table">
+		<thead>
+			<tr>
+				<th onclick="highlight(event)" style="text-decoration: underline;">#</th>
+				<th onclick="highlight(event)">Username</th>
+				<th onclick="highlight(event)">Time</th>
+				<th class="hide-mobile" onclick="highlight(event)">Kills</th>
+				<th class="hide-mobile" onclick="highlight(event)">Gems</th>
+				<th class="hide-mobile" onclick="highlight(event)">Death type</th>
+				<th class="hide-mobile" onclick="highlight(event)">Accuracy</th>
+				<th class="hide-tablet" onclick="highlight(event)">Total time</th>
+				<th class="hide-tablet" onclick="highlight(event)">Total kills</th>
+				<th class="hide-tablet" onclick="highlight(event)">Total gems</th>
+				<th class="hide-tablet" onclick="highlight(event)">Total deaths</th>
+				<th class="hide-mobile" onclick="highlight(event)">Total accuracy</th>
+			</tr>
+		</thead>
+		<tbody>
+			@foreach (Entry entry in Model.Entries)
+			{
+				Dagger dagger = Helper.Default;
+				foreach (Dagger d in Helper.Daggers)
+				{
+					if (entry.Time >= d.UnlockSecond * 10000)
+					{
+						dagger = d;
+					}
+				}
+
+				Death death = Helper.Fallen;
+				foreach (Death d in Helper.Deaths)
+				{
+					if (entry.DeathType == d.Type)
+					{
+						death = d;
+					}
+				}
+
+				bool admin = (UserHelper.adminID == entry.ID);
+				bool donator = (UserHelper.donatorIDs.Contains(entry.ID));
+				bool ban = (UserHelper.banIDs.Contains(entry.ID));
+				double accuracy = entry.ShotsFired == 0 ? 0 : (double)entry.ShotsHit / (double)entry.ShotsFired * 100;
+				double accuracyTotal = entry.ShotsFiredTotal == 0 ? 0 : (double)entry.ShotsHitTotal / (double)entry.ShotsFiredTotal * 100;
+
+				<tr class="@(admin ? "admin" : ban ? "ban" : donator ? "donator" : "")">
+					<td class="num">@entry.Rank</td>
+					<td class="@(ban ? Helper.BanColorCode : dagger.Name.ToLower())"><div class="leaderboard-username">@entry.Username</div></td>
+					<td class="@(ban ? Helper.BanColorCode : dagger.Name.ToLower()) num">@string.Format("{0:0.0000}", (double)entry.Time / 10000)</td>
+					<td class="hide-mobile num">@entry.Kills</td>
+					<td class="hide-mobile num">@entry.Gems</td>
+					<td style="color: #@(ban ? Helper.BanColorCode : death.ColorCode); text-align: center;" class="hide-mobile">@death.Name</td>
+					<td class="hide-mobile num">@string.Format("{0:0.0000}%", accuracy)</td>
+					<td class="hide-tablet num">@string.Format("{0:0.0000}", (double)entry.TimeTotal / 10000)</td>
+					<td class="hide-tablet num">@entry.KillsTotal</td>
+					<td class="hide-tablet num">@entry.GemsTotal</td>
+					<td class="hide-tablet num">@entry.DeathsTotal</td>
+					<td class="hide-mobile num">@string.Format("{0:0.0000}%", accuracyTotal)</td>
+				</tr>
+			}
+		</tbody>
+	</table>
+</main>
