@@ -9,31 +9,9 @@
 		]
 	},
 	{
-		"outputFileName": "wwwroot/css/site.dev.css",
-		"inputFiles": [
-			"wwwroot/css-src/*.css",
-			"wwwroot/css-site/*.css"
-		],
-		"minify": {
-			"enabled": false,
-			"renameLocals": false
-		}
-	},
-	{
 		"outputFileName": "wwwroot/js/site.min.js",
 		"inputFiles": [
 			"wwwroot/js-src/*.js"
 		]
-	},
-	{
-		"outputFileName": "wwwroot/js/site.dev.js",
-		"inputFiles": [
-			"wwwroot/js-src/*.js"
-		],
-		"minify": {
-			"enabled": false,
-			"renameLocals": false
-		},
-		"sourceMap": false
 	}
 ]
