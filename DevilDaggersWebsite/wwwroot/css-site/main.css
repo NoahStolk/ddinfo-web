@@ -1,0 +1,31 @@
+﻿@font-face {
+	font-family: 'default';
+	src: local('Goethe Bold'), url('../Fonts/goethebold.ttf') format('truetype');
+}
+
+html {
+	overflow-y: scroll;
+}
+
+::selection {
+	background: #770000;
+}
+
+::-moz-selection {
+	background: #770000;
+}
+
+body {
+	color: #DDDDDD;
+	background-color: black;
+	font-family: 'default', sans-serif;
+	font-size: 20px;
+}
+
+.align-right {
+	text-align: right;
+}
+
+.align-center {
+	text-align: center;
+}

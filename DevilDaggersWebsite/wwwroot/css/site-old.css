@@ -1,12 +1,5 @@
 ﻿/*BEGIN MAIN*/
-@font-face {
-	font-family: 'default';
-	src: local('Goethe Bold'), url('../Fonts/goethebold.ttf') format('truetype');
-}
 
-html {
-	overflow-y: scroll;
-}
 
 p, li {
 	font-size: 22px;
@@ -17,21 +10,6 @@ p, li {
 	p, li {
 		font-size: 20px;
 	}
-}
-
-::selection {
-	background: #770000;
-}
-
-::-moz-selection {
-	background: #770000;
-}
-
-body {
-	color: #DDDDDD;
-	background-color: black;
-	font-family: 'default', sans-serif;
-	font-size: 20px;
 }
 
 @media (max-width: 767px) {
@@ -71,14 +49,6 @@ a {
 		text-decoration: underline;
 		color: red;
 	}
-
-.num {
-	text-align: right;
-}
-
-.centre {
-	text-align: center;
-}
 
 .break-all {
 	word-break: break-all;
@@ -185,94 +155,6 @@ th, td {
 }
 /*END MAIN*/
 
-/*BEGIN Navbar*/
-.navbar-toggle {
-	border: none;
-}
-
-.navbar-toggle {
-	border: none;
-	background: transparent !important;
-}
-
-	.navbar-toggle:hover {
-		background: transparent !important;
-	}
-
-.icon-bar {
-	width: 22px;
-	transition: all 0.2s;
-}
-
-.top-bar {
-	transform: rotate(45deg);
-	transform-origin: 10% 10%;
-}
-
-.middle-bar {
-	opacity: 0;
-}
-
-.bottom-bar {
-	transform: rotate(-45deg);
-	transform-origin: 10% 90%;
-}
-
-.navbar-toggle.collapsed > .top-bar {
-	transform: rotate(0);
-}
-
-.navbar-toggle.collapsed > .middle-bar {
-	opacity: 1;
-}
-
-.navbar-toggle.collapsed > .bottom-bar {
-	transform: rotate(0);
-}
-
-.navbar-nav.navbar-center > li {
-	font-size: 20px;
-}
-
-.navbar-nav.navbar-center {
-	position: absolute;
-	left: 50%;
-	transform: translatex(-50%);
-}
-
-@media (max-width: 1710px) {
-	.navbar-nav.navbar-center {
-		position: absolute;
-		left: 0%;
-		transform: translatex(0%);
-	}
-}
-
-@media (max-width: 880px) {
-	.navbar-nav.navbar-center > li {
-		font-size: 16.5px;
-	}
-}
-
-@media (max-width: 767px) {
-	.navbar-nav.navbar-center {
-		position: relative;
-	}
-}
-
-@media (min-width: 768px) {
-	.navbar .navbar-nav {
-		display: inline-block;
-		float: none;
-		vertical-align: top;
-	}
-
-	.navbar .navbar-collapse {
-		text-align: center;
-	}
-}
-/*END Navbar*/
-
 /*BEGIN LEADERBOARD*/
 .leaderboard-username {
 	overflow: hidden;
@@ -284,91 +166,6 @@ th, td {
 	.leaderboard-username {
 		max-width: 192px;
 	}
-}
-
-.ban,
-.ban > td {
-	text-decoration: line-through;
-	color: #666666;
-}
-
-.admin > td:nth-child(2),
-.admin > td:nth-child(3) {
-	background: url('../Images/Fonts/fontadmin.png');
-	background-repeat: repeat-x;
-	background-position: 0 7px;
-	-webkit-font-smoothing: antialiased;
-	-webkit-background-clip: text;
-	-moz-background-clip: text;
-	background-clip: text;
-	-webkit-text-fill-color: transparent;
-}
-
-.donator > td:nth-child(2),
-.donator > td:nth-child(3) {
-	background: url('../Images/Fonts/fontdonator.png');
-	background-repeat: repeat-x;
-	background-position: 0 7px;
-	-webkit-font-smoothing: antialiased;
-	-webkit-background-clip: text;
-	-moz-background-clip: text;
-	background-clip: text;
-	-webkit-text-fill-color: transparent;
-}
-
-.devil {
-	background: url('../Images/Fonts/fontdevil.png');
-	background-repeat: repeat-x;
-	background-position: 0 7px;
-	-webkit-font-smoothing: antialiased;
-	-webkit-background-clip: text;
-	-moz-background-clip: text;
-	background-clip: text;
-	-webkit-text-fill-color: transparent;
-}
-
-.golden {
-	background: url('../Images/Fonts/fontgold.png');
-	background-repeat: repeat-x;
-	background-position: 0 7px;
-	-webkit-font-smoothing: antialiased;
-	-webkit-background-clip: text;
-	-moz-background-clip: text;
-	background-clip: text;
-	-webkit-text-fill-color: transparent;
-}
-
-.silver {
-	background: url('../Images/Fonts/fontsilver.png');
-	background-repeat: repeat-x;
-	background-position: 0 7px;
-	-webkit-font-smoothing: antialiased;
-	-webkit-background-clip: text;
-	-moz-background-clip: text;
-	background-clip: text;
-	-webkit-text-fill-color: transparent;
-}
-
-.bronze {
-	background: url('../Images/Fonts/fontbronze.png');
-	background-repeat: repeat-x;
-	background-position: 0 7px;
-	-webkit-font-smoothing: antialiased;
-	-webkit-background-clip: text;
-	-moz-background-clip: text;
-	background-clip: text;
-	-webkit-text-fill-color: transparent;
-}
-
-.default {
-	background: url('../Images/Fonts/fontpleb.png');
-	background-repeat: repeat-x;
-	background-position: 0 7px;
-	-webkit-font-smoothing: antialiased;
-	-webkit-background-clip: text;
-	-moz-background-clip: text;
-	background-clip: text;
-	-webkit-text-fill-color: transparent;
 }
 /*END LEADERBOARD*/
 

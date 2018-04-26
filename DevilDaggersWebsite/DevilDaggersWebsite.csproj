@@ -7,7 +7,6 @@
   </ItemGroup>
   <ItemGroup>
     <Folder Include="Extensions\" />
-    <Folder Include="wwwroot\css\" />
     <Folder Include="wwwroot\js-site\" />
     <Folder Include="wwwroot\js\" />
   </ItemGroup>
