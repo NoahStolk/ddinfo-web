@@ -5,6 +5,8 @@
 
 	double timeGlobal = ((double)Model.Leaderboard.TimeGlobal / 10000.0);
 	double accuracyGlobal = Model.Leaderboard.ShotsFiredGlobal == 0 ? 0 : (double)Model.Leaderboard.ShotsHitGlobal / (double)Model.Leaderboard.ShotsFiredGlobal * 100;
+
+	int[] widths = new int[12] { 32, 256, 128, 64, 64, 192, 128, 192, 128, 128, 128, 128 };
 }
 @using DevilDaggersWebsite.Helpers
 @using DevilDaggersWebsite.Models
@@ -15,139 +17,130 @@
 
 <main role="main">
 	<div class="hide-mobile">
-		<table class="centre-table">
-			<tr>
-				<th class="centre">Global time</th>
-				<th class="centre">Global kills</th>
-				<th class="centre">Global gems</th>
-				<th class="centre">Global deaths</th>
-				<th class="centre">Global accuracy</th>
-			</tr>
-			<tr>
-				<td class="centre devil">@string.Format("{0:0.0000}", timeGlobal)</td>
-				<td class="centre devil">@Model.Leaderboard.KillsGlobal</td>
-				<td class="centre devil">@Model.Leaderboard.GemsGlobal</td>
-				<td class="centre devil">@Model.Leaderboard.DeathsGlobal</td>
-				<td class="centre devil">@string.Format("{0:0.0000}%", accuracyGlobal)</td>
-			</tr>
-		</table>
-		<table class="centre-table">
-			<tr>
-				<th class="centre">Total players</th>
-			</tr>
-			<tr>
-				<td class="centre devil">@Model.Leaderboard.Players</td>
-			</tr>
-		</table>
+		<div class="flex-container flex-center flex-space-evenly">
+			<div>
+				<div class="halign-center">Total players</div>
+				<div class="halign-center devil">@Model.Leaderboard.Players</div>
+			</div>
+		</div>
+		<div class="flex-container flex-center flex-space-evenly">
+			<div>
+				<div class="halign-center">Global time</div>
+				<div class="halign-center devil">@string.Format("{0:0.0000}", timeGlobal)</div>
+			</div>
+			<div>
+				<div class="halign-center">Global kills</div>
+				<div class="halign-center devil">@Model.Leaderboard.KillsGlobal</div>
+			</div>
+			<div>
+				<div class="halign-center">Global gems</div>
+				<div class="halign-center devil">@Model.Leaderboard.GemsGlobal</div>
+			</div>
+			<div>
+				<div class="halign-center">Global deaths</div>
+				<div class="halign-center devil">@Model.Leaderboard.DeathsGlobal</div>
+			</div>
+			<div>
+				<div class="halign-center">Global accuracy</div>
+				<div class="halign-center devil">@string.Format("{0:0.0000}%", accuracyGlobal)</div>
+			</div>
+		</div>
 	</div>
 	<div class="show-mobile">
-		<table class="centre-table">
-			<tr>
-				<th>Global time</th>
-				<td class="align-right devil">@string.Format("{0:0.0000}", timeGlobal)</td>
-			</tr>
-			<tr>
-				<th>Global kills</th>
-				<td class="align-right devil">@Model.Leaderboard.KillsGlobal</td>
-			</tr>
-			<tr>
-				<th>Global gems</th>
-				<td class="align-right devil">@Model.Leaderboard.GemsGlobal</td>
-			</tr>
-			<tr>
-				<th>Global deaths</th>
-				<td class="align-right devil">@Model.Leaderboard.DeathsGlobal</td>
-			</tr>
-			<tr>
-				<th>Global accuracy</th>
-				<td class="align-right devil">@string.Format("{0:0.0000}%", accuracyGlobal)</td>
-			</tr>
-		</table>
-		<table class="centre-table">
-			<tr>
-				<th>Total players</th>
-				<td class="align-right devil">@Model.Leaderboard.Players</td>
-			</tr>
-		</table>
+		<div class="flex-container flex-center">
+			<div>
+				<div class="halign-center">Total players</div>
+				<div class="halign-center">Global time</div>
+				<div class="halign-center">Global kills</div>
+				<div class="halign-center">Global gems</div>
+				<div class="halign-center">Global deaths</div>
+				<div class="halign-center">Global accuracy</div>
+			</div>
+			<div>
+				<div class="halign-center devil">@Model.Leaderboard.Players</div>
+				<div class="halign-center devil">@string.Format("{0:0.0000}", timeGlobal)</div>
+				<div class="halign-center devil">@Model.Leaderboard.KillsGlobal</div>
+				<div class="halign-center devil">@Model.Leaderboard.GemsGlobal</div>
+				<div class="halign-center devil">@Model.Leaderboard.DeathsGlobal</div>
+				<div class="halign-center devil">@string.Format("{0:0.0000}%", accuracyGlobal)</div>
+			</div>
+		</div>
 	</div>
-	<div class="centre">
+	<div>
 		@using (Html.BeginForm("Leaderboard", "Home", FormMethod.Post))
 		{
 			@Html.AntiForgeryToken()
 			<fieldset>
 				@Html.TextBoxFor(m => m.Leaderboard.Offset, new { @class = "input" })
 				@Html.Hidden("OffsetPrevious", Model.Leaderboard.OffsetPrevious)
-				<br />
 				<input class="button" type="submit" name="submitAction" value="Show" />
-				<br />
 				<input class="button" type="submit" name="submitAction" value="<" />
 				<input class="button" type="submit" name="submitAction" value=">" />
 			</fieldset>
 		}
-		<p class="centre">
-			Showing rank @(Model.Leaderboard.Offset) - @(Model.Leaderboard.Offset + 99)<br /><br />
-			Click the table headers to sort the leaderboard.<br />
+		<p class="halign-center">
+			Showing rank @(Model.Leaderboard.Offset) - @(Model.Leaderboard.Offset + 99)
+		</p>
+		<p class="halign-center">
+			Click the table headers to sort the leaderboard.
 		</p>
 	</div>
-	<table class="sortable centre-table">
-		<thead>
-			<tr>
-				<th>#</th>
-				<th>Username</th>
-				<th>Time</th>
-				<th>Kills</th>
-				<th>Gems</th>
-				<th>Death type</th>
-				<th>Accuracy</th>
-				<th>Total time</th>
-				<th>Total kills</th>
-				<th>Total gems</th>
-				<th>Total deaths</th>
-				<th>Total accuracy</th>
-			</tr>
-		</thead>
-		<tbody>
-			@foreach (Entry entry in Model.Leaderboard.Entries)
+	<div class="flex-container flex-center flex-column">
+		<div class="flex-container">
+			<div style="width: @(widths[0])px;">#</div>
+			<div style="width: @(widths[1])px;">Username</div>
+			<div style="width: @(widths[2])px;">Time</div>
+			<div style="width: @(widths[3])px;">Kills</div>
+			<div style="width: @(widths[4])px;">Gems</div>
+			<div style="width: @(widths[5])px;">Death type</div>
+			<div style="width: @(widths[6])px;">Accuracy</div>
+			<div style="width: @(widths[7])px;">Total time</div>
+			<div style="width: @(widths[8])px;">Total kills</div>
+			<div style="width: @(widths[9])px;">Total gems</div>
+			<div style="width: @(widths[10])px;">Total deaths</div>
+			<div style="width: @(widths[11])px;">Total accuracy</div>
+		</div>
+		@foreach (Entry entry in Model.Leaderboard.Entries)
+		{
+			Dagger dagger = Helper.Default;
+			foreach (Dagger d in Helper.Daggers)
 			{
-				Dagger dagger = Helper.Default;
-				foreach (Dagger d in Helper.Daggers)
+				if (entry.Time >= d.UnlockSecond * 10000)
 				{
-					if (entry.Time >= d.UnlockSecond * 10000)
-					{
-						dagger = d;
-					}
+					dagger = d;
 				}
-
-				Death death = Helper.Fallen;
-				foreach (Death d in Helper.Deaths)
-				{
-					if (entry.DeathType == d.Type)
-					{
-						death = d;
-					}
-				}
-
-				bool admin = (UserHelper.adminID == entry.ID);
-				bool donator = (UserHelper.donatorIDs.Contains(entry.ID));
-				bool ban = (UserHelper.banIDs.Contains(entry.ID));
-				double accuracy = entry.ShotsFired == 0 ? 0 : (double)entry.ShotsHit / (double)entry.ShotsFired * 100;
-				double accuracyTotal = entry.ShotsFiredTotal == 0 ? 0 : (double)entry.ShotsHitTotal / (double)entry.ShotsFiredTotal * 100;
-
-				<tr class="@(admin ? "admin" : ban ? "ban" : donator ? "donator" : "")">
-					<td class="align-right">@entry.Rank</td>
-					<td class="@(ban ? Helper.BanColorCode : dagger.Name.ToLower())"><div class="leaderboard-username">@entry.Username</div></td>
-					<td class="align-right @(ban ? Helper.BanColorCode : dagger.Name.ToLower())">@string.Format("{0:0.0000}", (double)entry.Time / 10000)</td>
-					<td class="align-right">@entry.Kills</td>
-					<td class="align-right">@entry.Gems</td>
-					<td class="align-center @(ban ? Helper.BanColorCode : death.Name.ToLower())">@death.Name</td>
-					<td class="align-right">@string.Format("{0:0.0000}%", accuracy)</td>
-					<td class="align-right">@string.Format("{0:0.0000}", (double)entry.TimeTotal / 10000)</td>
-					<td class="align-right">@entry.KillsTotal</td>
-					<td class="align-right">@entry.GemsTotal</td>
-					<td class="align-right">@entry.DeathsTotal</td>
-					<td class="align-right">@string.Format("{0:0.0000}%", accuracyTotal)</td>
-				</tr>
 			}
-		</tbody>
-	</table>
+
+			Death death = Helper.Fallen;
+			foreach (Death d in Helper.Deaths)
+			{
+				if (entry.DeathType == d.Type)
+				{
+					death = d;
+				}
+			}
+
+			bool admin = (UserHelper.adminID == entry.ID);
+			bool donator = (UserHelper.donatorIDs.Contains(entry.ID));
+			bool ban = (UserHelper.banIDs.Contains(entry.ID));
+			double accuracy = entry.ShotsFired == 0 ? 0 : (double)entry.ShotsHit / (double)entry.ShotsFired * 100;
+			double accuracyTotal = entry.ShotsFiredTotal == 0 ? 0 : (double)entry.ShotsHitTotal / (double)entry.ShotsFiredTotal * 100;
+
+			string role = (admin ? "admin" : ban ? "ban" : donator ? "donator" : "");
+			<div class="flex-container">
+				<div style="width: @(widths[0])px;" class="halign-right @(ban ? "ban" : "")">@entry.Rank</div>
+				<div style="width: @(widths[1])px; white-space: nowrap;" class="@(!string.IsNullOrEmpty(role) ? role : dagger.Name.ToLower())">@entry.Username</div>
+				<div style="width: @(widths[2])px;" class="halign-right @(!string.IsNullOrEmpty(role) ? role : dagger.Name.ToLower())">@string.Format("{0:0.0000}", (double)entry.Time / 10000)</div>
+				<div style="width: @(widths[3])px;" class="halign-right @(ban ? "ban" : "")">@entry.Kills</div>
+				<div style="width: @(widths[4])px;" class="halign-right @(ban ? "ban" : "")">@entry.Gems</div>
+				<div style="width: @(widths[5])px;" class="halign-center @(ban ? "ban" : death.Name.ToLower())">@death.Name</div>
+				<div style="width: @(widths[6])px;" class="halign-right @(ban ? "ban" : "")">@string.Format("{0:0.0000}%", accuracy)</div>
+				<div style="width: @(widths[7])px;" class="halign-right @(ban ? "ban" : "")">@string.Format("{0:0.0000}", (double)entry.TimeTotal / 10000)</div>
+				<div style="width: @(widths[8])px;" class="halign-right @(ban ? "ban" : "")">@entry.KillsTotal</div>
+				<div style="width: @(widths[9])px;" class="halign-right @(ban ? "ban" : "")">@entry.GemsTotal</div>
+				<div style="width: @(widths[10])px;" class="halign-right @(ban ? "ban" : "")">@entry.DeathsTotal</div>
+				<div style="width: @(widths[11])px;" class="halign-right @(ban ? "ban" : "")">@string.Format("{0:0.0000}%", accuracyTotal)</div>
+			</div>
+		}
+	</div>
 </main>

@@ -4,8 +4,7 @@
 	color: #666666;
 }
 
-.admin > td:nth-child(2),
-.admin > td:nth-child(3) {
+.admin {
 	background: url('../Images/Fonts/fontadmin.png');
 	background-repeat: repeat-x;
 	background-position: 0 7px;
@@ -16,8 +15,7 @@
 	-webkit-text-fill-color: transparent;
 }
 
-.donator > td:nth-child(2),
-.donator > td:nth-child(3) {
+.donator {
 	background: url('../Images/Fonts/fontdonator.png');
 	background-repeat: repeat-x;
 	background-position: 0 7px;
