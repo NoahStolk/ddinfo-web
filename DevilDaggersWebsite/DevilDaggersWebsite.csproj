@@ -8,6 +8,7 @@
   <ItemGroup>
     <Folder Include="wwwroot\js-site\" />
     <Folder Include="wwwroot\js\" />
+    <Folder Include="wwwroot\spawnsets\" />
   </ItemGroup>
   <ItemGroup>
     <PackageReference Include="BuildBundlerMinifier" Version="2.6.375" />
