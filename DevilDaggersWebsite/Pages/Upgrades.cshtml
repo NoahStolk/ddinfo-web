@@ -1,0 +1,52 @@
+﻿@page
+@model DevilDaggersWebsite.Pages.UpgradesModel
+@{
+	ViewData["Title"] = "Upgrades";
+}
+
+@using DevilDaggersWebsite.Models.Game
+@using DevilDaggersWebsite.Extensions
+
+<header>
+	<h1>Upgrades</h1>
+</header>
+
+<main role="main">
+	<div class="flex-container">
+		@foreach (Upgrade upgrade in GameHelper.Upgrades)
+		{
+			<table>
+				<tbody>
+					<tr>
+						<td>Name</td>
+						<td style='color: #@upgrade.ColorCode;'>Level @upgrade.Level</td>
+					</tr>
+					<tr>
+						<td>Image</td>
+						<td><img class="img-responsive" src='~/images/Upgrades/Level @(upgrade.Level).jpg' /></td>
+					</tr>
+					<tr>
+						<td>Unlocks at</td>
+						<td>@upgrade.UnlocksAt</td>
+					</tr>
+					<tr>
+						<td>Default spray</td>
+						<td>@upgrade.DefaultSpray daggers per second</td>
+					</tr>
+					<tr>
+						<td>Default shot</td>
+						<td>@upgrade.DefaultShot daggers per shot</td>
+					</tr>
+					<tr>
+						<td>Homing spray</td>
+						<td>@((upgrade.HomingSpray == null) ? "N/A" : upgrade.HomingSpray + " daggers per second")</td>
+					</tr>
+					<tr>
+						<td>Homing shot</td>
+						<td>@((upgrade.HomingShot == null) ? "N/A" : upgrade.HomingShot + " daggers per shot")</td>
+					</tr>
+				</tbody>
+			</table>
+		}
+	</div>
+</main>
