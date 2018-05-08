@@ -1,5 +1,4 @@
-﻿using DevilDaggersWebsite.Helpers;
-using DevilDaggersWebsite.Models.Game;
+﻿using DevilDaggersWebsite.Models.Game;
 
 namespace DevilDaggersWebsite.Extensions
 {
