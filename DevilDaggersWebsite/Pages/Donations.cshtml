@@ -1,0 +1,67 @@
+﻿@page
+@model DevilDaggersWebsite.Pages.DonationsModel
+@{
+	ViewData["Title"] = "Donations";
+
+	int[] widths = new int[3] { 32, 256, 128 };
+}
+@using DevilDaggersWebsite.Helpers
+@using DevilDaggersWebsite.Models
+@using DevilDaggersWebsite.Models.Game
+
+<header>
+	<h1>Donations</h1>
+</header>
+
+<main role="main">
+	<p>
+		I've built this website entirely in my free time, as well as figuring stuff out in the game, creating editors and spawnsets, etc... This would not have been possible without help from the community. I'd like to thank everyone who helped me.
+	</p>
+	<p>
+		However, hosting a website costs money. If this website is useful to you, you can consider donating. All donations will be used to cover the costs of the website (hosting, domain, etc).
+	</p>
+
+	<p>
+		If you want to donate, you can do so <a href="http://paypal.me/NoahStolk">here</a>. Please let me know who you are in the PayPal message (your username) so I can add you to the list below.
+	</p>
+
+	<p>
+		Thanks to everyone who donated!
+	</p>
+
+	<p class="centre">
+		@foreach (Dagger dagger in GameHelper.Daggers)
+		{
+			<img src="~/Images/Daggers/@(dagger.Name)Small.png" />
+		}
+	</p>
+
+	<div class="flex-container flex-center flex-column">
+		<div class="flex-container flex-center">
+			<div style="width: @(widths[0])px;">#</div>
+			<div style="width: @(widths[1])px;">Username</div>
+			<div style="width: @(widths[2])px;">Amount</div>
+		</div>
+		@{
+			int rank = 0;
+			foreach (Donator donator in UserHelper.Donators)
+			{
+				rank++;
+				Dagger dagger = GameHelper.Default;
+				foreach (Dagger d in GameHelper.Daggers)
+				{
+					if (donator.Amount >= d.UnlockSecond)
+					{
+						dagger = d;
+					}
+				}
+
+				<div class="flex-container flex-center">
+					<div style="width: @(widths[0])px;" class="halign-right">@rank</div>
+					<div style="width: @(widths[1])px; white-space: nowrap;" class="@(dagger.Name.ToLower())">@donator.Username</div>
+					<div style="width: @(widths[2])px;" class="halign-right @(dagger.Name.ToLower())">@string.Format("{0:0.00}", (double)donator.Amount / 100) @donator.CurrencySymbol</div>
+				</div>
+			}
+		}
+	</div>
+</main>
