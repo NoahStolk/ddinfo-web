@@ -1,4 +1,10 @@
-﻿.ban,
+﻿.flex-container > div {
+	margin: 0 10px 0 10px;
+	overflow: hidden;
+	overflow-y: hidden;
+}
+
+.ban,
 .ban > td {
 	text-decoration: line-through;
 	color: #666666;
