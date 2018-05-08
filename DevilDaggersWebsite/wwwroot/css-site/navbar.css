@@ -1,3 +1,34 @@
 ﻿#navbar-collapse {
 	max-height: 540px;
 }
+
+.navbar, .navbar-header, .navbar-nav, .navbar-nav > li, .navbar-brand, .navbar-collapse, ul.navbar-nav {
+	background-color: #111;
+}
+
+.navbar {
+	-webkit-box-shadow: 0 -4px 8px 6px #660000;
+	-moz-box-shadow: 0 -4px 8px 6px #660000;
+	box-shadow: 0 -4px 8px 6px #660000;
+}
+
+.navbar-nav > li > a:hover,
+.navbar-nav > li > a:focus {
+	background-color: #333;
+}
+
+.icon-bar {
+	background-color: #ff0000;
+}
+
+@media (min-width: 768px) {
+	.navbar .navbar-nav {
+		display: inline-block;
+		float: none;
+		vertical-align: top;
+	}
+
+	.navbar .navbar-collapse {
+		text-align: center;
+	}
+}

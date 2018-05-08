@@ -26,15 +26,25 @@
 				</button>
 			</div>
 			<div id="navbar-collapse" class="navbar-collapse collapse">
-				<ul class="nav navbar-nav navbar-right">
+				<ul class="nav navbar-nav">
 					<li><a asp-page="/Index">Home</a></li>
-					<li><a asp-page="/Leaderboard">Leaderboard</a></li>
-					<li><a asp-page="/Spawns">Spawns</a></li>
-					<li><a asp-page="/Upgrades">Upgrades</a></li>
-					<li><a asp-page="/Enemies">Enemies</a></li>
-					<li><a asp-page="/Daggers">Daggers</a></li>
-					<li><a asp-page="/Spawnsets">Spawnsets</a></li>
-					<li><a asp-page="/Donations">Donations</a></li>
+					<li class="dropdown">
+						<a href="#" class="dropdown-toggle" data-toggle="dropdown" role="button" aria-haspopup="true" aria-expanded="false">Community <span class="caret"></span></a>
+						<ul class="dropdown-menu">
+							<li><a asp-page="/Leaderboard">Leaderboard</a></li>
+							<li><a asp-page="/Spawnsets">Spawnsets</a></li>
+							<li><a asp-page="/Donations">Donations</a></li>
+						</ul>
+					</li>
+					<li class="dropdown">
+						<a href="#" class="dropdown-toggle" data-toggle="dropdown" role="button" aria-haspopup="true" aria-expanded="false">Wiki <span class="caret"></span></a>
+						<ul class="dropdown-menu">
+							<li><a asp-page="/Spawns">Spawns</a></li>
+							<li><a asp-page="/Upgrades">Upgrades</a></li>
+							<li><a asp-page="/Enemies">Enemies</a></li>
+							<li><a asp-page="/Daggers">Daggers</a></li>
+						</ul>
+					</li>
 				</ul>
 			</div>
 		</div>

@@ -1,0 +1,24 @@
+﻿.dropdown-menu > li > a,
+.dropdown-menu > li > a:focus,
+.dropdown-toggle,
+.dropdown-toggle:focus,
+.dropdown-toggle:active,
+.dropdown-toggle:visited,
+.nav .open > a,
+.nav .open > a:active,
+.nav .open > a:visited,
+.nav .open > a:focus {
+	color: #ff0000;
+	background-color: #111;
+}
+
+	.dropdown-menu > li > a:hover,
+	.dropdown-toggle:hover,
+	.nav .open > a:hover {
+		color: #ff0000;
+		background-color: #333;
+	}
+
+.dropdown-menu {
+	font-size: 20px;
+}
