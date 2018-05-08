@@ -4,11 +4,11 @@ Here are the most important changes:
 
 NEW
 
-Added accuracy stats to the leaderboard.
-Removed smooth scroll.
-Added gradient to the leaderboard.
-Users are now permanently given a "banned", "donator", or "admin :Kappa:" flag. No more automatic bans. (Thanks VHS.)
+- Added accuracy stats to the leaderboard.
+- Removed smooth scroll.
+- Added gradient to the leaderboard.
+- Leaderboard entries are now permanently given a "banned", "donator", or "admin :Kappa:" flag. No more automatic bans. (Thanks VHS.)
 
 OLD NOT NEW
 
-Combined Spawnsets and Spawnsets Info pages.
+- Combined Spawnsets and Spawnsets Info pages.
