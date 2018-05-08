@@ -6,7 +6,7 @@ namespace DevilDaggersWebsite.Pages
 {
 	public class SpawnsModel : PageModel
     {
-		public string V3File { get; set; }
+		public string V3Path { get; set; }
 
 		private readonly IHostingEnvironment _env;
 
@@ -19,7 +19,7 @@ namespace DevilDaggersWebsite.Pages
         {
 			string webRoot = _env.WebRootPath;
 
-			V3File = Path.Combine(webRoot, string.Format(@"spawnsets/V3_Sorath"));
+			V3Path = Path.Combine(webRoot, string.Format(@"spawnsets/V3_Sorath"));
 		}
     }
 }

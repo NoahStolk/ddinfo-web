@@ -14,7 +14,9 @@
 
 <main role="main">
 	<p>
-		These are the official spawn times for Devil Daggers V3.<br>
+		These are the official spawn times for Devil Daggers V3.
+	</p>
+	<p>
 		@Html.Raw(RazorExtensions.GetLayout("Note that Centipedes, Gigapedes, Ghostpedes, and Thorns emerge around 3 seconds later than their actual spawn time."))
 	</p>
 
@@ -26,7 +28,7 @@
 			<div style="width: @(widths[3])px;">Total gems</div>
 		</div>
 		@{
-			string path = Model.V3File;
+			string path = Model.V3Path;
 			Spawnset v3 = SpawnsetParser.ParseFile(path);
 
 			double seconds = 0;
