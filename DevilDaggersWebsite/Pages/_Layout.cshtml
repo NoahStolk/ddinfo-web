@@ -12,7 +12,7 @@
 	<link href="~/Images/Logos/dd.png" rel="shortcut icon" />
 	<title>@ViewData["Title"] - DevilDaggers.Info</title>
 
-	@await Html.PartialAsync("Partials/_CSSBundlePartial")
+	@await Html.PartialAsync("SharedPartials/_CSSBundlePartial")
 </head>
 <body>
 	<nav class="navbar navbar-fixed-top">
@@ -63,7 +63,7 @@
 		</div>
 	</div>
 
-	@await Html.PartialAsync("Partials/_JSBundlePartial")
+	@await Html.PartialAsync("SharedPartials/_JSBundlePartial")
 
 	@RenderSection("Scripts", required: false)
 </body>
