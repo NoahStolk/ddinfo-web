@@ -1,0 +1,33 @@
+BACKEND
+Add redirects (/Home/Spawnsets --> /Spawnsets)
+Add error handling
+Add 404 page
+
+FRONTEND
+
+=== new stuff
+Fix old php redirect (spawnsetsinfo)
+
+Make useful tools section/page
+	FINISH DDSEWPF
+	Add ddsewpf
+		host .exe
+			note windows warning
+		link to source bitbucket
+	Add bowsr/sojk/vhs tools
+
+Rewrite flexboxes (leaderboard, spawns, donators... probably more pages)
+
+Add expandable leaderboard entries on mobile/tablet
+	rewrite table sort using jquery
+
+Fix enemies ugly line hack
+
+=== fix
+Fix enemy/hand id scroll to wrong position (navbar)
+
+=== not that important
+Improve home dagger GIF
+Add consistent hand upgrade images (no rotated views, blood on floor, etc) (maybe use GIFs?)
+Fix odd text blur (?)
+Fix CSS being applied later than the page causing jumping in some tables and other elements during page load (?????)
