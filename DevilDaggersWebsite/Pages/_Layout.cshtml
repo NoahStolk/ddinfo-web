@@ -1,7 +1,4 @@
-﻿@using CoreBase.Extensions
-@using DevilDaggersWebsite.Helpers
-
-<!DOCTYPE html>
+﻿<!DOCTYPE html>
 <html>
 <head>
 	<meta charset="utf-8" />
@@ -10,7 +7,7 @@
 	<meta name="author" content="Noah Stolk">
 	<meta name="viewport" content="width=device-width, initial-scale=1.0">
 	<link href="~/Images/Logos/dd.png" rel="shortcut icon" />
-	<title>@ViewData["Title"] - DevilDaggers.Info</title>
+	<title>@ViewData["Title"] - Devil Daggers Info</title>
 
 	@await Html.PartialAsync("SharedPartials/_CSSBundlePartial")
 </head>
@@ -34,6 +31,7 @@
 							<li><a asp-page="/Leaderboard">Leaderboard</a></li>
 							<li><a asp-page="/Spawnsets">Spawnsets</a></li>
 							<li><a asp-page="/Donations">Donations</a></li>
+							<li><a href="https://discord.gg/NF32j8S" target="_blank">Discord server</a></li>
 						</ul>
 					</li>
 					<li class="dropdown">
@@ -49,28 +47,27 @@
 			</div>
 		</div>
 	</nav>
-	<div class="container-fluid body-content">
-		<div class="inner-container">
-			@RenderBody()
-			<footer>
-				<div class="row">
-					<div class="col-lg-4 col-lg-offset-2">
-						<p class="align-center">
-							&copy; @(RazorExtensions.GetFooterYearString(2017))<br />
-							Website created by Noah Stolk<br />
-							<a href="https://noahstolk.com/">www.noahstolk.com</a>
-						</p>
-					</div>
-					<div class="col-lg-4">
-						<p class="align-center">
-							Contact<br />
-							<a href="mailto:@(Helper.Email)">@(Helper.Email)</a><br />
-							<a href="https://discord.gg/NF32j8S">Discord server</a>
-						</p>
-					</div>
+	<div class="body-content">
+		@RenderBody()
+		<div class="spacer"></div>
+		<footer>
+			<div class="row">
+				<div class="col-lg-4 col-lg-offset-2">
+					<p class="align-center">
+						&copy; @(CoreBase.Extensions.RazorExtensions.GetFooterYearString(2017))<br />
+						Website created by Noah Stolk<br />
+						<a href="https://noahstolk.com/">www.noahstolk.com</a>
+					</p>
 				</div>
-			</footer>
-		</div>
+				<div class="col-lg-4">
+					<p class="align-center">
+						Contact<br />
+						<a href="mailto:@(DevilDaggersWebsite.Extensions.RazorExtensions.Email)">@(DevilDaggersWebsite.Extensions.RazorExtensions.Email)</a><br />
+						<a href="https://discord.gg/NF32j8S">Discord server</a>
+					</p>
+				</div>
+			</div>
+		</footer>
 	</div>
 
 	@await Html.PartialAsync("SharedPartials/_JSBundlePartial")
