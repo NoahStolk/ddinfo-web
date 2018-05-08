@@ -1,5 +1,5 @@
 ﻿using DevilDaggersWebsite.Helpers;
-using DevilDaggersWebsite.Models;
+using DevilDaggersWebsite.Models.Leaderboard;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.AspNetCore.Mvc.RazorPages;
 using System;

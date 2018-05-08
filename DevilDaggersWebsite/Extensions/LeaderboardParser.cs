@@ -1,5 +1,4 @@
-﻿using DevilDaggersWebsite.Models;
-using DevilDaggersWebsite.Pages;
+﻿using DevilDaggersWebsite.Models.Leaderboard;
 using System;
 using System.Collections.Generic;
 using System.Net.Http;

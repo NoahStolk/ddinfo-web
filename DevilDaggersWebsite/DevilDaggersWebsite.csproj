@@ -6,7 +6,6 @@
     <DotNetCliToolReference Include="Microsoft.VisualStudio.Web.CodeGeneration.Tools" Version="2.0.2" />
   </ItemGroup>
   <ItemGroup>
-    <Folder Include="Extensions\" />
     <Folder Include="wwwroot\js-site\" />
     <Folder Include="wwwroot\js\" />
   </ItemGroup>

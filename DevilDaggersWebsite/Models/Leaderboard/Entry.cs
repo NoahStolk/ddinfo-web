@@ -1,6 +1,6 @@
 ﻿using System;
 
-namespace DevilDaggersWebsite.Models
+namespace DevilDaggersWebsite.Models.Leaderboard
 {
 	public class Entry
 	{

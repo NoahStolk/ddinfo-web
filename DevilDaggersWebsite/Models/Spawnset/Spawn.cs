@@ -1,4 +1,6 @@
-﻿namespace DevilDaggersWebsite.Models
+﻿using DevilDaggersWebsite.Models.Game;
+
+namespace DevilDaggersWebsite.Models.Spawnset
 {
 	public class Spawn
 	{

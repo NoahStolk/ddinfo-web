@@ -1,4 +1,4 @@
-﻿namespace DevilDaggersWebsite.Models
+﻿namespace DevilDaggersWebsite.Models.Game
 {
 	public class Upgrade
 	{

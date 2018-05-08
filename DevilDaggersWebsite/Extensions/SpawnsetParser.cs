@@ -1,4 +1,5 @@
-﻿using DevilDaggersWebsite.Models;
+﻿using DevilDaggersWebsite.Models.Game;
+using DevilDaggersWebsite.Models.Spawnset;
 using System;
 using System.Collections.Generic;
 using System.IO;
@@ -65,16 +66,16 @@ namespace DevilDaggersWebsite.Helpers
 				Enemy enemy = null;
 				switch (enemyType)
 				{
-					case 0: enemy = Helper.Squid1; break;
-					case 1: enemy = Helper.Squid2; break;
-					case 2: enemy = Helper.Centipede; break;
-					case 3: enemy = Helper.Spider1; break;
-					case 4: enemy = Helper.Leviathan; break;
-					case 5: enemy = Helper.Gigapede; break;
-					case 6: enemy = Helper.Squid3; break;
-					case 7: enemy = Helper.Thorn; break;
-					case 8: enemy = Helper.Spider2; break;
-					case 9: enemy = Helper.Ghostpede; break;
+					case 0: enemy = GameHelper.Squid1; break;
+					case 1: enemy = GameHelper.Squid2; break;
+					case 2: enemy = GameHelper.Centipede; break;
+					case 3: enemy = GameHelper.Spider1; break;
+					case 4: enemy = GameHelper.Leviathan; break;
+					case 5: enemy = GameHelper.Gigapede; break;
+					case 6: enemy = GameHelper.Squid3; break;
+					case 7: enemy = GameHelper.Thorn; break;
+					case 8: enemy = GameHelper.Spider2; break;
+					case 9: enemy = GameHelper.Ghostpede; break;
 				}
 
 				spawns.Add(new Spawn(enemy, delay));

@@ -1,13 +1,9 @@
-﻿using DevilDaggersWebsite.Models;
+﻿using DevilDaggersWebsite.Models.Game;
 
 namespace DevilDaggersWebsite.Helpers
 {
-	public static class Helper
+	public static class GameHelper
 	{
-		public static string Email = "contact@devildaggers.info";
-
-		public static string BanColorCode = "666666";
-
 		public static Death Fallen = new Death("FALLEN", "DDDDDD", 0);
 		public static Death Swarmed = new Death("SWARMED", "2E1C00", 1);
 		public static Death Impaled = new Death("IMPALED", "4E3000", 2);
@@ -64,59 +60,8 @@ namespace DevilDaggersWebsite.Helpers
 		public static Dagger Devil = new Dagger("Devil", "FF0000", 500);
 
 		public static Enemy[] Enemies = { Squid1, Squid2, Squid3, Centipede, Gigapede, Ghostpede, Leviathan, Thorn, Spider1, Spider2, Skull1, Skull2, Skull3, Skull4, TransmutedSkull1, TransmutedSkull2, TransmutedSkull3, TransmutedSkull4, SpiderEgg1, SpiderEgg2, Spiderling, TheOrb };
-		public static Upgrade[] Hands = { Level1, Level2, Level3, Level4 };
+		public static Upgrade[] Upgrades = { Level1, Level2, Level3, Level4 };
 		public static Dagger[] Daggers = { Default, Bronze, Silver, Golden, Devil };
 		public static Death[] Deaths = { Fallen, Swarmed, Impaled, Gored, Infested, Opened, Purged, Desecrated, Sacrificed, Eviscerated, Annihilated, Intoxicated, Envenmonated, Incarnated, Discarnated, Barbed };
-
-		public static string GetEnemyLayoutAnchor(Enemy enemy, bool plural = false)
-		{
-			return string.Format("<a style='color: #{0};' href='/Home/Enemies/#{1}'>{2}{3}</a>", enemy.ColorCode, enemy.Name.Replace(" ", string.Empty), enemy.Name, (plural ? "s" : ""));
-		}
-
-		public static string GetHandLayoutAnchor(Upgrade hand, bool hideMobile = false)
-		{
-			if (hideMobile)
-				return string.Format("<a style='color: #{0};' href='/Home/Hands/#{1}'>{2}</a>", hand.ColorCode, string.Format("Level{0}", hand.Level), string.Format("<span class='hide-mobile'>Level </span>{0}", hand.Level));
-
-			return string.Format("<a style='color: #{0};' href='/Home/Hands/#{1}'>{2}</a>", hand.ColorCode, string.Format("Level{0}", hand.Level), string.Format("Level {0}", hand.Level));
-		}
-
-		public static string GetLayout(string str)
-		{
-			char[] beginSeparators = new char[] { '>', ' ', ',', '.' };
-			char[] endSeparators = new char[] { ' ', ',', '.', 's' };
-
-			foreach (Enemy enemy in Enemies)
-			{
-				foreach (char begin in beginSeparators)
-				{
-					foreach (char end in endSeparators)
-					{
-						string enemyString = string.Format("{0}{1}{2}", begin, enemy.Name, end);
-						if (str.Contains(enemyString))
-						{
-							// Enemy string should not be inside an <a> element
-							if (str.Substring(str.IndexOf(enemyString) + enemyString.Length, "</a>".Length) != "</a>")
-								str = str.Replace(enemyString, string.Format("{0}{1}{2}", begin, GetEnemyLayoutAnchor(enemy, (end == 's')), (end == 's') ? "" : end.ToString()));
-						}
-					}
-				}
-			}
-
-			foreach (Upgrade hand in Hands)
-			{
-				foreach (char begin in beginSeparators)
-				{
-					foreach (char end in endSeparators)
-					{
-						string handString = string.Format("{0}Level {1}{2}", begin, hand.Level, end);
-						if (str.Contains(handString))
-							str = str.Replace(handString, string.Format("{0}{1}{2}", begin, GetHandLayoutAnchor(hand), end));
-					}
-				}
-			}
-
-			return str;
-		}
 	}
 }

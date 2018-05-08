@@ -1,6 +1,6 @@
 ﻿using System.Collections.Generic;
 
-namespace DevilDaggersWebsite.Models
+namespace DevilDaggersWebsite.Models.Spawnset
 {
 	public class Spawnset
 	{

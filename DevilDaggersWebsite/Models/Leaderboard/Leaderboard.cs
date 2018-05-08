@@ -1,7 +1,7 @@
 ﻿using System;
 using System.Collections.Generic;
 
-namespace DevilDaggersWebsite.Models
+namespace DevilDaggersWebsite.Models.Leaderboard
 {
 	public class Leaderboard
 	{

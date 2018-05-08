@@ -1,6 +1,6 @@
 ﻿using System.Collections.Generic;
 
-namespace DevilDaggersWebsite.Models
+namespace DevilDaggersWebsite.Models.Game
 {
 	public class Enemy
 	{

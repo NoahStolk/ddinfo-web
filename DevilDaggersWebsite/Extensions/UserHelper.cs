@@ -1,12 +1,13 @@
-﻿using System.Collections.Generic;
+﻿using DevilDaggersWebsite.Models;
+using System.Collections.Generic;
 
 namespace DevilDaggersWebsite.Helpers
 {
 	public static class UserHelper
 	{
-		public static int adminID = 21854;
+		public static int AdminID { get; set; } = 21854;
 
-		public static List<int> banIDs = new List<int>
+		public static List<int> BanIDs { get; set; } = new List<int>
 		{
 			117558,
 			11356,
@@ -33,7 +34,7 @@ namespace DevilDaggersWebsite.Helpers
 			140942
 		};
 
-		public static List<int> donatorIDs = new List<int>
+		public static List<int> DonatorIDs { get; set; } = new List<int>
 		{
 			142939,
 			105315,
@@ -42,6 +43,17 @@ namespace DevilDaggersWebsite.Helpers
 			137044,
 			118832,
 			94857
+		};
+
+		public static List<Donator> Donators { get; set; } = new List<Donator>
+		{
+			new Donator("LocoCaesar_IV", 1200, '€'),
+			new Donator("LukeNukem", 1001, '€'),
+			new Donator("Zirtonic", 500, '$'),
+			new Donator("Satan", 500, '$'),
+			new Donator("DJDoomz", 100, '€'),
+			new Donator("Chupacabra", 100, '€'),
+			new Donator(".curry", 77, '€')
 		};
 	}
 }

@@ -9,14 +9,15 @@
 	int[] widths = new int[12] { 32, 256, 128, 64, 64, 192, 128, 192, 128, 128, 128, 128 };
 }
 @using DevilDaggersWebsite.Helpers
-@using DevilDaggersWebsite.Models
+@using DevilDaggersWebsite.Models.Game
+@using DevilDaggersWebsite.Models.Leaderboard
 
 <header>
 	<h1>Leaderboard</h1>
 </header>
 
 <main role="main">
-	<div class="hide-mobile">
+	<div class="hidden-xs">
 		<div class="flex-container flex-center flex-space-evenly">
 			<div>
 				<div class="halign-center">Total players</div>
@@ -46,7 +47,7 @@
 			</div>
 		</div>
 	</div>
-	<div class="show-mobile">
+	<div class="visible-xs">
 		<div class="flex-container flex-center">
 			<div>
 				<div class="halign-center">Total players</div>
@@ -102,8 +103,8 @@
 		</div>
 		@foreach (Entry entry in Model.Leaderboard.Entries)
 		{
-			Dagger dagger = Helper.Default;
-			foreach (Dagger d in Helper.Daggers)
+			Dagger dagger = GameHelper.Default;
+			foreach (Dagger d in GameHelper.Daggers)
 			{
 				if (entry.Time >= d.UnlockSecond * 10000)
 				{
@@ -111,8 +112,8 @@
 				}
 			}
 
-			Death death = Helper.Fallen;
-			foreach (Death d in Helper.Deaths)
+			Death death = GameHelper.Fallen;
+			foreach (Death d in GameHelper.Deaths)
 			{
 				if (entry.DeathType == d.Type)
 				{
@@ -120,9 +121,9 @@
 				}
 			}
 
-			bool admin = (UserHelper.adminID == entry.ID);
-			bool donator = (UserHelper.donatorIDs.Contains(entry.ID));
-			bool ban = (UserHelper.banIDs.Contains(entry.ID));
+			bool admin = (UserHelper.AdminID == entry.ID);
+			bool donator = (UserHelper.DonatorIDs.Contains(entry.ID));
+			bool ban = (UserHelper.BanIDs.Contains(entry.ID));
 			double accuracy = entry.ShotsFired == 0 ? 0 : (double)entry.ShotsHit / (double)entry.ShotsFired * 100;
 			double accuracyTotal = entry.ShotsFiredTotal == 0 ? 0 : (double)entry.ShotsHitTotal / (double)entry.ShotsFiredTotal * 100;
 
