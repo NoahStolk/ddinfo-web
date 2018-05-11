@@ -1,0 +1,36 @@
+﻿@page
+@model DevilDaggersWebsite.Pages.DaggersModel
+@{
+	ViewData["Title"] = "Daggers";
+}
+
+@using DevilDaggersWebsite.Extensions
+@using DevilDaggersWebsite.Models.Game
+
+<header>
+	<h1>Daggers</h1>
+</header>
+
+<main role="main">
+	<p>
+		There are five different types of daggers in Devil Daggers. These daggers do not change anything in-game, they're more like extras that you unlock as you progress. You pick them up in the dagger lobby, and then the game starts. Each dagger makes a different sound.
+	</p>
+
+	<div>
+		@foreach (Dagger dagger in GameHelper.Daggers)
+		{
+			<div>
+				<div>
+					<div colspan="2" style='color: #@dagger.ColorCode;'>@dagger.Name Dagger</div>
+				</div>
+				<div>
+					<div colspan="2"><img class="img-responsive img-dagger" src='~/Images/Daggers/@(dagger.Name).png' /></div>
+				</div>
+				<div>
+					<div>Unlocks at</div>
+					<div>@(dagger.UnlockSecond == null ? "N/A" : dagger.UnlockSecond + " seconds")</div>
+				</div>
+			</div>
+		}
+	</div>
+</main>

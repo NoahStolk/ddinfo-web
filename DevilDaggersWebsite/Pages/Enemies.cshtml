@@ -1,0 +1,420 @@
+﻿@page
+@model DevilDaggersWebsite.Pages.EnemiesModel
+@{
+	ViewData["Title"] = "Enemies";
+	GameHelper.Squid1.Info = new List<string>
+{
+"Spawns at the edge of the arena",
+"Moves slowly and rotates clockwise",
+"Spawns 10 Skull Is and 1 Skull II every 20 seconds (starting 3 seconds after its initial appearance)"
+};
+	GameHelper.Squid2.Info = new List<string>
+{
+"Spawns at the edge of the arena",
+"Moves slowly and rotates clockwise",
+"Spawns 10 Skull Is and 1 Skull III every 20 seconds (starting 3 seconds after its initial appearance)"
+};
+	GameHelper.Squid3.Info = new List<string>
+{
+"Spawns at the edge of the arena",
+"Moves slowly and rotates clockwise",
+"Spawns 15 Skull Is and 1 Skull IV every 20 seconds (starting 3 seconds after its initial appearance)"
+};
+	GameHelper.Centipede.Info = new List<string>
+{
+"Emerges and flies idly for a while, then starts chasing the player",
+"Regularly dives down and moves underground for a while"
+};
+	GameHelper.Gigapede.Info = new List<string>
+{
+"Emerges and starts chasing the player immediately"
+};
+	GameHelper.Ghostpede.Info = new List<string>
+{
+"Emerges and starts flying in circles high above the arena",
+"Attracts and consumes all homing daggers, making them useless"
+};
+	GameHelper.Leviathan.Info = new List<string>
+{
+"Attracts and transmutes all skulls every 20 seconds",
+"Rotates counter-clockwise",
+"Drops The Orb after dying"
+};
+	GameHelper.Thorn.Info = new List<string>
+{
+"Takes up space"
+};
+	GameHelper.Spider1.Info = new List<string>
+{
+"Spawns at the edge of the arena and starts lifting its head, then faces the player",
+"Attracts and consumes gems when facing the player, ejecting them as Spider Egg I one at a time",
+"Hides its head when shot and left unharmed for 1 second",
+"Begins moving randomly in an unpredictable jittery fashion after initially raising its head"
+};
+	GameHelper.Spider2.Info = new List<string>
+{
+"Spawns at the edge of the arena and starts lifting its head (though much slower than Spider I), then faces the player",
+"Attracts and consumes gems when facing the player, ejecting them as Spider Egg II one at a time",
+"Hides its head when shot and left unharmed for 1 second",
+"Begins moving randomly in an unpredictable jittery fashion after initially raising its head (though barely noticeable due to its size)"
+};
+	GameHelper.Skull1.Info = new List<string>
+{
+"Slowly chases the player"
+};
+	GameHelper.Skull2.Info = new List<string>
+{
+"Moves randomly"
+};
+	GameHelper.Skull3.Info = new List<string>
+{
+"Chases the player fast"
+};
+	GameHelper.Skull4.Info = new List<string>
+{
+"Chases the player fast"
+};
+	GameHelper.TransmutedSkull1.Info = new List<string>
+{
+"Slowly chases the player"
+};
+	GameHelper.TransmutedSkull2.Info = new List<string>
+{
+"Moves randomly"
+};
+	GameHelper.TransmutedSkull3.Info = new List<string>
+{
+"Chases the player fast"
+};
+	GameHelper.TransmutedSkull4.Info = new List<string>
+{
+"Chases the player fast"
+};
+	GameHelper.SpiderEgg1.Info = new List<string>
+{
+"Hatches into 5 Spiderlings after 10 seconds"
+};
+	GameHelper.SpiderEgg2.Info = new List<string>
+{
+"Hatches into 5 Spiderlings after 10 seconds"
+};
+	GameHelper.Spiderling.Info = new List<string>
+{
+"Darts towards the player in bursts with random offsets"
+};
+	GameHelper.TheOrb.Info = new List<string>
+{
+"Behaves like an eyeball, will look at the player, then attract and transmute all skulls every 2.5 seconds",
+"Becomes stunned under constant fire, cannot look or attract skulls while stunned"
+};
+}
+
+@using DevilDaggersWebsite.Extensions
+@using DevilDaggersWebsite.Models.Game
+
+<header>
+	<h1>Enemies</h1>
+</header>
+
+<main role="main">
+	<h2>Summary</h2>
+	<div class="flex-container">
+		<div>
+			<div>Name</div>
+			<div>HP</div>
+			<div>Gems</div>
+			<div class="hidden-xs">Death type</div>
+			<div class="hidden-xs">Spawned by</div>
+		</div>
+		<div>
+			@foreach (Enemy enemy in GameHelper.Enemies)
+			{
+				<div>@Html.Raw(RazorExtensions.GetEnemyLayoutAnchor(enemy))</div>
+				<div class='text-right'>@enemy.HP</div>
+				<div class='text-right'>@enemy.Gems</div>
+				<div class="hidden-xs" style='color: #@enemy.Death.ColorCode'>@enemy.Death.Name</div>
+				<div class="hidden-xs">
+					@if (enemy.SpawnedBy.Length == 0)
+					{
+						<span style='color: #DDDDDD;'>Game</span>
+					}
+					else
+					{
+						foreach (Enemy e in enemy.SpawnedBy)
+						{
+							<span>@Html.Raw(RazorExtensions.GetEnemyLayoutAnchor(e))</span>
+						}
+					}
+				</div>
+			}
+		</div>
+	</div>
+
+	<div class="hidden-xs">
+		<h2>Damage Stats</h2>
+		<p>All of this information assumes 100% shot accuracy, and may not be relevant in some cases.</p>
+
+		<div class="flex-container">
+			<div>
+				<div colspan='2'>Enemy</div>
+				<div colspan='4'>Stream (seconds)</div>
+				<div colspan='4'>Shots</div>
+				<div colspan='2'>Homing daggers</div>
+			</div>
+			<div>Name</div>
+			<div>HP</div>
+			@{
+				for (int i = 0; i < 3; i++)
+				{
+					foreach (Upgrade upgrade in GameHelper.Upgrades)
+					{
+						if (i != 2 || (i == 2 && upgrade.HomingShot != null))
+						{
+							<div><span style='color: #@upgrade.ColorCode;'>@Html.Raw(RazorExtensions.GetUpgradeLayoutAnchor(upgrade))</span></div>
+						}
+					}
+				}
+			}
+		</div>
+		<div>
+			@foreach (Enemy enemy in GameHelper.Enemies)
+			{
+				<div>@Html.Raw(RazorExtensions.GetEnemyLayoutAnchor(enemy))</div>
+				<div class='text-right'>@enemy.HP</div>
+				@for (int i = 0; i < 3; i++)
+				{
+					foreach (Upgrade upgrade in GameHelper.Upgrades)
+					{
+						switch (i)
+						{
+							case 0:
+								<div class='text-right'>@string.Format("{0:0.0000}", enemy.HP / upgrade.DefaultSpray)</div>
+								break;
+							case 1:
+								<div class='text-right'>@Math.Ceiling(enemy.HP / upgrade.DefaultShot)</div>
+								break;
+							case 2:
+								if (upgrade.Level == 3)
+								{
+									<div class='text-right'>@(enemy.Homing3 == null ? "N/A" : enemy.Homing3.ToString())</div>
+								}
+								else if (upgrade.Level == 4)
+								{
+									<div class='text-right'>@(enemy.Homing4 == null ? "N/A" : enemy.Homing4.ToString())</div>
+								}
+								break;
+						}
+					}
+				}
+
+				if (enemy.HitPartCount != 1)
+				{
+					<div><a href="#@enemy.Name.Replace(" ", string.Empty)" style="color: #@enemy.ColorCode">@enemy.Name (Gem)</a></div>
+					<div class='text-right'>@(enemy.HP / enemy.HitPartCount)</div>
+					@for (int i = 0; i < 3; i++)
+					{
+						foreach (Upgrade upgrade in GameHelper.Upgrades)
+						{
+							switch (i)
+							{
+								case 0:
+									<div class='text-right'>@string.Format("{0:0.0000}", enemy.HP / upgrade.DefaultSpray / enemy.HitPartCount)</div>
+									break;
+								case 1:
+									<div class='text-right'>@Math.Ceiling(enemy.HP / upgrade.DefaultShot / enemy.HitPartCount)</div>
+									break;
+								case 2:
+									if (upgrade.Level == 3)
+									{
+										<div class='text-right'>@(enemy.Homing3 == null ? "N/A" : (enemy.Homing3 / enemy.HitPartCount).ToString())</div>
+									}
+									else if (upgrade.Level == 4)
+									{
+										<div class='text-right'>@(enemy.Homing4 == null ? "N/A" : (enemy.Homing4 / enemy.HitPartCount).ToString())</div>
+									}
+									break;
+							}
+						}
+					}
+				}
+			}
+		</div>
+	</div>
+
+	<div class="visible-xs">
+		<h2>Damage Stats</h2>
+		<p>All of this information assumes 100% shot accuracy, and may not be relevant in some cases.</p>
+
+		<div>
+			<div>
+				<div colspan='2'>Enemy</div>
+				<div colspan='4'>Stream (seconds)</div>
+				<div colspan='4'>Shots</div>
+				<div colspan='2'>Homing daggers</div>
+			</div>
+			<div>
+				<div>Name</div>
+				<div>HP</div>
+				@{
+					for (int i = 0; i < 3; i++)
+					{
+						foreach (Upgrade upgrade in GameHelper.Upgrades)
+						{
+							if (i != 2 || (i == 2 && upgrade.HomingShot != null))
+							{
+								<div class="text-right"><span style='color: #@upgrade.ColorCode;'>@Html.Raw(RazorExtensions.GetUpgradeLayoutAnchor(upgrade, true))</span></div>
+							}
+						}
+					}
+				}
+			</div>
+			<div>
+				@foreach (Enemy enemy in GameHelper.Enemies)
+				{
+					<div>@Html.Raw(RazorExtensions.GetEnemyLayoutAnchor(enemy))</div>
+					<div class='text-right'>@enemy.HP</div>
+					@for (int i = 0; i < 3; i++)
+					{
+						foreach (Upgrade upgrade in GameHelper.Upgrades)
+						{
+							switch (i)
+							{
+								case 0:
+									<div class='text-right'>@string.Format("{0:0.0}", enemy.HP / upgrade.DefaultSpray)</div>
+									break;
+								case 1:
+									<div class='text-right'>@Math.Ceiling(enemy.HP / upgrade.DefaultShot)</div>
+									break;
+								case 2:
+									if (upgrade.Level == 3)
+									{
+										<div class='text-right'>@(enemy.Homing3 == null ? "N/A" : enemy.Homing3.ToString())</div>
+									}
+									else if (upgrade.Level == 4)
+									{
+										<div class='text-right'>@(enemy.Homing4 == null ? "N/A" : enemy.Homing4.ToString())</div>
+									}
+									break;
+							}
+						}
+					}
+
+					if (enemy.HitPartCount != 1)
+					{
+						<div><a href="#@enemy.Name.Replace(" ", string.Empty)" style="color: #@enemy.ColorCode">@enemy.Name (Gem)</a></div>
+						<div class='text-right'>@(enemy.HP / enemy.HitPartCount)</div>
+						@for (int i = 0; i < 3; i++)
+						{
+							foreach (Upgrade upgrade in GameHelper.Upgrades)
+							{
+								switch (i)
+								{
+									case 0:
+										<div class='text-right'>@string.Format("{0:0.0}", enemy.HP / upgrade.DefaultSpray / enemy.HitPartCount)</div>
+										break;
+									case 1:
+										<div class='text-right'>@Math.Ceiling(enemy.HP / upgrade.DefaultShot / enemy.HitPartCount)</div>
+										break;
+									case 2:
+										if (upgrade.Level == 3)
+										{
+											<div class='text-right'>@(enemy.Homing3 == null ? "N/A" : (enemy.Homing3 / enemy.HitPartCount).ToString())</div>
+										}
+										else if (upgrade.Level == 4)
+										{
+											<div class='text-right'>@(enemy.Homing4 == null ? "N/A" : (enemy.Homing4 / enemy.HitPartCount).ToString())</div>
+										}
+										break;
+								}
+							}
+						}
+					}
+				}
+			</div>
+		</div>
+	</div>
+
+	<h2>Details</h2>
+
+	<div>
+		@foreach (Enemy enemy in GameHelper.Enemies)
+		{
+			<div id="@enemy.Name.Replace(" ", string.Empty)">
+				<div>
+					<div>Name</div>
+					<div style='color: #@enemy.ColorCode'>@enemy.Name</div>
+				</div>
+				<div>
+					<div>Image</div>
+					<div><img class="img-responsive" src='~/Images/Enemies/@(enemy.Name).jpg' /></div>
+				</div>
+				<div>
+					<div>HP</div>
+					<div>@enemy.HP @((enemy.HitPartCount != 1) ? "(" + enemy.HP / enemy.HitPartCount + " x " + enemy.HitPartCount + ")" : "")</div>
+				</div>
+				<div>
+					<div>Gems</div>
+					<div>@enemy.Gems</div>
+				</div>
+				<div>
+					<div>Death type</div>
+					<div style='color: #@enemy.Death.ColorCode'>@enemy.Death.Name</div>
+				</div>
+				<div>
+					<div>Spawned by</div>
+					<div>
+						@if (enemy.SpawnedBy.Length == 0)
+						{
+							<span style='color: #DDDDDD;'>Game</span>
+						}
+						else
+						{
+							foreach (Enemy e in enemy.SpawnedBy)
+							{
+								<span>@Html.Raw(RazorExtensions.GetEnemyLayoutAnchor(e))</span>
+							}
+						}
+					</div>
+				</div>
+				<div>
+					<div>Behaviour</div>
+					<div>
+						<ul>
+							@{
+								// Ugly hack
+								int lines = 0;
+								switch (enemy.Name)
+								{
+									case "Centipede": lines = 2; break;
+									case "Gigapede": lines = 5; break;
+									case "Thorn": lines = 7; break;
+									case "Spider I": lines = 6; break;
+									case "Skull II": lines = 2; break;
+									case "Transmuted Skull II": lines = 2; break;
+									case "Spiderling": lines = 9; break;
+								}
+
+								for (int i = 0; i < enemy.Info.Count; i++)
+								{
+									<li>
+										@Html.Raw(RazorExtensions.GetLayout(enemy.Info[i]))
+
+										@{
+											if (i == enemy.Info.Count - 1)
+											{
+												for (int j = 0; j < lines; j++)
+												{
+													<br class="hide-mobile" />
+												}
+											}
+										}
+									</li>
+								}
+							}
+						</ul>
+					</div>
+				</div>
+			</div>
+		}
+	</div>
+</main>
