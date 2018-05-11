@@ -8,18 +8,17 @@ namespace DevilDaggersWebsite.Extensions
 
 		public static string BanColorCode = "666666";
 
-
 		public static string GetEnemyLayoutAnchor(Enemy enemy, bool plural = false)
 		{
-			return string.Format("<a style='color: #{0};' href='/Home/Enemies/#{1}'>{2}{3}</a>", enemy.ColorCode, enemy.Name.Replace(" ", string.Empty), enemy.Name, (plural ? "s" : ""));
+			return string.Format("<a style='color: #{0};' href='/Enemies/#{1}'>{2}{3}</a>", enemy.ColorCode, enemy.Name.Replace(" ", string.Empty), enemy.Name, (plural ? "s" : ""));
 		}
 
-		public static string GetHandLayoutAnchor(Upgrade hand, bool hideMobile = false)
+		public static string GetUpgradeLayoutAnchor(Upgrade upgrade, bool hideMobile = false)
 		{
 			if (hideMobile)
-				return string.Format("<a style='color: #{0};' href='/Home/Hands/#{1}'>{2}</a>", hand.ColorCode, string.Format("Level{0}", hand.Level), string.Format("<span class='hide-mobile'>Level </span>{0}", hand.Level));
+				return string.Format("<a style='color: #{0};' href='/Upgrades/#{1}'>{2}</a>", upgrade.ColorCode, string.Format("Level{0}", upgrade.Level), string.Format("<span class='hidden-xs'>Level </span>{0}", upgrade.Level));
 
-			return string.Format("<a style='color: #{0};' href='/Home/Hands/#{1}'>{2}</a>", hand.ColorCode, string.Format("Level{0}", hand.Level), string.Format("Level {0}", hand.Level));
+			return string.Format("<a style='color: #{0};' href='/Upgrades/#{1}'>{2}</a>", upgrade.ColorCode, string.Format("Level{0}", upgrade.Level), string.Format("Level {0}", upgrade.Level));
 		}
 
 		public static string GetLayout(string str)
@@ -52,7 +51,7 @@ namespace DevilDaggersWebsite.Extensions
 					{
 						string handString = string.Format("{0}Level {1}{2}", begin, upgrade.Level, end);
 						if (str.Contains(handString))
-							str = str.Replace(handString, string.Format("{0}{1}{2}", begin, GetHandLayoutAnchor(upgrade), end));
+							str = str.Replace(handString, string.Format("{0}{1}{2}", begin, GetUpgradeLayoutAnchor(upgrade), end));
 					}
 				}
 			}
