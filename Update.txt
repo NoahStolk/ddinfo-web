@@ -8,7 +8,10 @@ NEW
 - Removed smooth scroll.
 - Added gradient to the leaderboard.
 - Leaderboard entries are now permanently given a "banned", "donator", or "admin :Kappa:" flag. No more automatic bans. (Thanks VHS.)
-
-OLD NOT NEW
-
 - Combined Spawnsets and Spawnsets Info pages.
+
+If you haven't noticed, we have a bot now as well: @LeaderboardBot created by VHS
+	.stats [rank]
+	.top10
+	.register [id]
+	.me
