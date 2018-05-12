@@ -1,0 +1,197 @@
+﻿@page
+@model DevilDaggersWebsite.Pages.SpawnsetModel
+@{
+	ViewData["Title"] = "Spawnset";
+
+	string fileName = HttpContext.Request.Query["spawnset"];
+	string name = fileName.Substring(0, fileName.IndexOf('_'));
+	string author = fileName.Substring(fileName.IndexOf('_') + 1);
+	ViewBag.Title = string.Format("{0} by {1}", name, author);
+}
+
+@using DevilDaggersWebsite.Extensions
+@using DevilDaggersWebsite.Models.Spawnset
+@using System.IO
+
+<header>
+	<h1 class="break-all">@name by @author</h1>
+</header>
+
+<main role="main">
+	<a asp-route-spawnset="@string.Format("{0}_{1}", name, author)" asp-action="Download">Download</a>
+
+	@{
+		string description = string.Empty;
+		foreach (string descriptionPath in Directory.GetFiles(System.IO.Path.Combine(Model.Env.WebRootPath, "spawnsets/Descriptions/")))
+		{
+			if (System.IO.Path.GetFileName(descriptionPath) == name)
+			{
+				description = System.IO.File.ReadAllText(descriptionPath);
+			}
+		}
+
+		if (!string.IsNullOrEmpty(description))
+		{
+			<h3>A note from @author</h3>
+
+			<div>@Html.Raw(RazorExtensions.GetLayout(description))</div>
+		}
+
+		Spawnset spawnset = SpawnsetParser.ParseFile(System.IO.Path.Combine(Model.Env.WebRootPath, string.Format("spawnsets/{0}_{1}", name, author)));
+	}
+
+	<div>
+		<div>
+			<div>Arena radius (start)</div>
+			<div>Arena radius (end)</div>
+			<div>Arena shrinking rate</div>
+			<div>Brightness</div>
+		</div>
+		<div>
+			<div>@spawnset.ShrinkStart</div>
+			<div>@spawnset.ShrinkEnd</div>
+			<div>@spawnset.ShrinkRate</div>
+			<div>@spawnset.Brightness</div>
+		</div>
+	</div>
+
+	<div>
+		<div style="border-collapse: collapse; border: 2px solid white;">
+			@{
+				for (int i = 0; i < spawnset.ArenaTiles.GetLength(0); i++)
+				{
+
+					@for (int j = 0; j < spawnset.ArenaTiles.GetLength(1); j++)
+					{
+						float height = (float)Math.Round(spawnset.ArenaTiles[i, j] * 32 + 64);
+						<div class="arena-tile" style="background-color: rgb(@height, @Math.Round(height/2), 0);"></div>
+					}
+				}
+			}
+		</div>
+	</div>
+
+	<div>
+		<div>
+			<div>Seconds</div>
+			<div>Spawns</div>
+			<div>Gems (no farm)</div>
+			<div>Total gems</div>
+		</div>
+		<div>
+			@{
+				double seconds = 0;
+				int totalGems = 0;
+				List<Spawn> endLoop = new List<Spawn>();
+
+				foreach (Spawn spawn in spawnset.Spawns)
+				{
+					endLoop.Add(spawn);
+					if (spawn.Enemy == null)
+					{
+						foreach (Spawn s in endLoop)
+						{
+							seconds += s.Delay;
+							if (s.Enemy != null)
+							{
+								int gems = s.Enemy.Gems;
+
+								// Add no farm gems
+								if (s.Enemy == GameHelper.Squid1)
+								{
+									gems += GameHelper.Skull2.Gems;
+								}
+								if (s.Enemy == GameHelper.Squid2)
+								{
+									gems += GameHelper.Skull3.Gems;
+								}
+
+								totalGems += gems;
+
+								<div>@string.Format("{0:0.0000}", seconds)</div>
+								<div><span style='color: #@s.Enemy.ColorCode'>@s.Enemy.Name</span></div>
+								<div>@gems</div>
+								<div>@totalGems</div>
+							}
+						}
+						seconds -= spawn.Delay;
+						endLoop.Clear();
+						endLoop.Add(spawn);
+					}
+				}
+
+				if (endLoop.Count != 1)
+				{
+					int maxWaves = 250;
+					int maxSeconds = 1250;
+
+					double waveMod = 0;
+					double endGameSecond = seconds;
+					for (int i = 0; i < maxWaves; i++)
+					{
+						double enemyTimer = 0;
+						double delay = 0;
+						foreach (Spawn spawn in endLoop)
+						{
+							delay += spawn.Delay;
+							while (enemyTimer < delay)
+							{
+								endGameSecond += (1f / 60f);
+								enemyTimer += (1f / 60f) + waveMod;
+							}
+
+							if (spawn.Enemy != null)
+							{
+								// Change the third Gigapede into a Ghostpede
+								if (spawn.Enemy == GameHelper.Gigapede && i % 3 == 2)
+								{
+									spawn.Enemy = GameHelper.Ghostpede;
+								}
+								else if (spawn.Enemy == GameHelper.Ghostpede && i % 3 != 2)
+								{
+									spawn.Enemy = GameHelper.Gigapede;
+								}
+
+								int gems = spawn.Enemy.Gems;
+
+								// Add no farm gems
+								if (spawn.Enemy == GameHelper.Squid1)
+								{
+									gems += GameHelper.Skull2.Gems;
+								}
+								if (spawn.Enemy == GameHelper.Squid2)
+								{
+									gems += GameHelper.Skull3.Gems;
+								}
+
+								totalGems += gems;
+
+								<div>@string.Format("{0:0.0000}", endGameSecond)</div>
+								<div><span style='color: #@spawn.Enemy.ColorCode'>@spawn.Enemy.Name</span></div>
+								<div>@gems</div>
+								<div>@totalGems</div>
+							}
+						}
+						waveMod += 0.00208333;
+
+						if (endGameSecond > maxSeconds)
+						{
+							break;
+						}
+					}
+				}
+			}
+		</div>
+	</div>
+
+	@{
+		if (endLoop.Count != 1)
+		{
+			<div style="color: red; font-size: 24px;">Goes on eternally...</div>
+		}
+		else
+		{
+			<div style="color: red; font-size: 24px;">End of spawnset</div>
+		}
+	}
+</main>
