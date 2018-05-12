@@ -21,14 +21,13 @@
 		{
 			<div>
 				<div>
-					<div colspan="2" style='color: #@dagger.ColorCode;'>@dagger.Name Dagger</div>
+					<div style='color: #@dagger.ColorCode;'>@dagger.Name Dagger</div>
 				</div>
 				<div>
-					<div colspan="2"><img class="img-responsive img-dagger" src='~/Images/Daggers/@(dagger.Name).png' /></div>
+					<div><img class="img-responsive" src='~/Images/Daggers/@(dagger.Name).png' /></div>
 				</div>
 				<div>
-					<div>Unlocks at</div>
-					<div>@(dagger.UnlockSecond == null ? "N/A" : dagger.UnlockSecond + " seconds")</div>
+					<div>Unlocks at @(dagger.UnlockSecond == null ? "N/A" : dagger.UnlockSecond + " seconds")</div>
 				</div>
 			</div>
 		}
