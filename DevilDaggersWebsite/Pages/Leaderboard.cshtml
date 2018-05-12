@@ -1,7 +1,7 @@
 ﻿@page
 @model DevilDaggersWebsite.Pages.LeaderboardModel
 @{
-	ViewData["Title"] = "Devil Daggers - Leaderboard";
+	ViewData["Title"] = "Leaderboard";
 
 	double timeGlobal = ((double)Model.Leaderboard.TimeGlobal / 10000.0);
 	double accuracyGlobal = Model.Leaderboard.ShotsFiredGlobal == 0 ? 0 : (double)Model.Leaderboard.ShotsHitGlobal / (double)Model.Leaderboard.ShotsFiredGlobal * 100;
