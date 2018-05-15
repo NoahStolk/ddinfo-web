@@ -1,13 +1,14 @@
 BACKEND
 Spawnset download doesn't work
+Leaderboard switching between pages doesn't work
 Add redirects (/Home/Spawnsets --> /Spawnsets)
 Add error handling
 Add 404 page
+Fix old php redirect (spawnsetsinfo.php --> /Spawnsets)
 
 FRONTEND
 
 === new stuff
-Fix old php redirect (spawnsetsinfo)
 
 Make useful tools section/page
 	FINISH DDSEWPF
