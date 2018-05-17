@@ -20,7 +20,7 @@ namespace DevilDaggersWebsite.Pages
 
 		public void OnGet()
 		{
-			XmlResult = SitemapExtensions.GetSitemap(_httpContextAccessor, _env);
+			XmlResult = SitemapUtils.GetSitemap(_httpContextAccessor, _env);
 		}
 	}
 }
