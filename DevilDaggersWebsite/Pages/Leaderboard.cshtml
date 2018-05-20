@@ -18,13 +18,13 @@
 
 <main role="main">
 	<div class="hidden-xs">
-		<div class="flex-container flex-center flex-space-evenly">
+		<div class="flex-container leaderboard-flex flex-center flex-space-evenly">
 			<div>
 				<div class="text-center">Total players</div>
 				<div class="text-center devil">@Model.Leaderboard.Players</div>
 			</div>
 		</div>
-		<div class="flex-container flex-center flex-space-evenly">
+		<div class="flex-container leaderboard-flex flex-center flex-space-evenly">
 			<div>
 				<div class="text-center">Global time</div>
 				<div class="text-center devil">@string.Format("{0:0.0000}", timeGlobal)</div>
@@ -48,7 +48,7 @@
 		</div>
 	</div>
 	<div class="visible-xs">
-		<div class="flex-container flex-center">
+		<div class="flex-container leaderboard-flex flex-center">
 			<div>
 				<div class="text-center">Total players</div>
 				<div class="text-center">Global time</div>
@@ -86,8 +86,8 @@
 			Click the table headers to sort the leaderboard.
 		</p>
 	</div>
-	<div class="flex-container flex-center flex-column">
-		<div class="flex-container">
+	<div class="flex-container leaderboard-flex flex-center flex-column">
+		<div class="flex-container leaderboard-flex">
 			<div style="width: @(widths[0])px;">#</div>
 			<div style="width: @(widths[1])px;">Username</div>
 			<div style="width: @(widths[2])px;">Time</div>
@@ -128,7 +128,7 @@
 			double accuracyTotal = entry.ShotsFiredTotal == 0 ? 0 : (double)entry.ShotsHitTotal / (double)entry.ShotsFiredTotal * 100;
 
 			string role = (admin ? "admin" : ban ? "ban" : donator ? "donator" : "");
-			<div class="flex-container">
+			<div class="flex-container leaderboard-flex">
 				<div style="width: @(widths[0])px;" class="text-right @(ban ? "ban" : "")">@entry.Rank</div>
 				<div style="width: @(widths[1])px; white-space: nowrap;" class="@(!string.IsNullOrEmpty(role) ? role : dagger.Name.ToLower()) text-left">@entry.Username</div>
 				<div style="width: @(widths[2])px;" class="text-right @(!string.IsNullOrEmpty(role) ? role : dagger.Name.ToLower())">@string.Format("{0:0.0000}", (double)entry.Time / 10000)</div>

@@ -2,6 +2,8 @@
 @model SpawnsetsModel
 @{
 	ViewBag.Title = "Spawnsets";
+
+	int[] widths = new int[2] { 0, 0 };
 }
 
 @using DevilDaggersWebsite.Extensions
@@ -16,12 +18,12 @@
 		These are custom spawnsets created by the community. They can be played in the real game. Click on a spawnset to view and download it.
 	</p>
 
-	<div>
-		<div>
-			<div>Name</div>
-			<div>Author</div>
+	<div class="text-left">
+		<div class="flex-container flex-space-evenly">
+			<div style="width: @(widths[0])px;">Name</div>
+			<div style="width: @(widths[1])px;">Author</div>
 		</div>
-		<div>
+		<div class="flex-container flex-column">
 			@{
 				foreach (string spawnsetPath in Directory.GetFiles(System.IO.Path.Combine(Model.Env.WebRootPath, "spawnsets/")))
 				{
@@ -29,8 +31,10 @@
 					string name = spawnset.Substring(0, spawnset.LastIndexOf('_'));
 					string author = spawnset.Substring(spawnset.LastIndexOf('_') + 1);
 
-					<div><a asp-page="Spawnset" asp-route-spawnset="@string.Format("{0}_{1}", name, author)">@name</a></div>
-					<div>@author</div>
+					<div class="flex-container flex-space-evenly">
+						<div style="width: @(widths[0])px;"><a asp-page="Spawnset" asp-route-spawnset="@string.Format("{0}_{1}", name, author)">@name</a></div>
+						<div style="width: @(widths[1])px;">@author</div>
+					</div>
 				}
 			}
 		</div>
@@ -51,6 +55,11 @@
 		<li>NOTE: You can replace the "survival" file while Devil Daggers is running. Just make sure to go back to the main menu before playing again, otherwise it won't change. The game reloads the file every time you grab the dagger in the lobby.</li>
 	</ul>
 
+	<h2>How to make spawnsets</h2>
+	<p>
+		I've made my own tool for editing the "survival" file, called DevilDaggersSurvivalEditor, it can be downloaded <a href="https://bitbucket.org/NoahStolk/devildaggersspawnseteditorwpf/src">here</a>.
+	</p>
+
 	<h2>FAQ</h2>
 	<div class="spawnsets-question">Can I get banned for using custom spawnsets?</div>
 	<div class="spawnsets-answer">No, you can only get banned manually by the developer.</div>
@@ -58,24 +67,6 @@
 	<div class="spawnsets-answer">No, the game only uploads scores done with the original V3 spawnset.</div>
 	<div class="spawnsets-question">The game doesn't submit my scores anymore even though I put the original survival file back in the dd folder. Why?</div>
 	<div class="spawnsets-answer">It's always the safest to just reinstall the game completely whenever you want to play the real game again, as it might still not upload your scores even if you placed the original V3 spawnset back in the folder.<br />NOTE: This might be outdated. Just keep an eye out for the "score not submitted (error)" message. If you keep getting it even with the original file, reinstall the game.</div>
-	<div class="spawnsets-question">How can I make my own custom spawnsets?</div>
-	<div class="spawnsets-answer">Take a look at the useful tools below.</div>
 	<div class="spawnsets-question">I've made my own custom spawnsets that I want to share with the community. Can I get them listed on here?</div>
 	<div class="spawnsets-answer">Yes, certainly. Send the files to <a href="mailto:@RazorExtensions.Email">@RazorExtensions.Email</a>, as well as the name of the spawnset and your name (author). Or just join the <a href="https://discord.gg/NF32j8S">Discord server</a> and send them there.</div>
-	
-	<h2>Useful tools</h2>
-	<ul>
-		<li>
-			DDSEWPF
-		</li>
-		<li>
-			<a href="https://github.com/bowsr/DDSE/releases/">DevilDaggersSpawnsetEditor</a> by bowsr
-		</li>
-		<li>
-			<a href="https://github.com/sojk/DevilDaggersSpawnsetCreator">DevilDaggersSpawnsetCreator</a> by Sojk
-		</li>
-		<li>
-			<a href="https://github.com/alexwilkerson/ddss">DevilDaggersSpawnsetSelector</a> by VHS
-		</li>
-	</ul>
 </main>
