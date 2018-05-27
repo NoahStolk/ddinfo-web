@@ -8,6 +8,10 @@ Fix old php redirect (spawnsetsinfo.php --> /Spawnsets)
 
 FRONTEND
 
+Spawnsets FAQ: Verify integrity of game files
+
+Spawnset Page --> If spawns list is empty don't show "Goes on eternally" or "End of spawnset"
+
 === new stuff
 
 Make useful tools section/page
