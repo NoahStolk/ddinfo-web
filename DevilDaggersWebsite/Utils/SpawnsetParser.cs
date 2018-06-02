@@ -4,7 +4,7 @@ using System;
 using System.Collections.Generic;
 using System.IO;
 
-namespace DevilDaggersWebsite.Extensions
+namespace DevilDaggersWebsite.Utils
 {
 	public static class SpawnsetParser
 	{

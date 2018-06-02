@@ -1,12 +1,9 @@
 ﻿@page
 @model DevilDaggersWebsite.Pages.SpawnsModel
+@using DevilDaggersWebsite.Utils
 @{
 	ViewData["Title"] = "Spawns";
-	int[] widths = new int[4] { 256, 256, 256, 256 };
 }
-
-@using DevilDaggersWebsite.Extensions
-@using DevilDaggersWebsite.Models.Spawnset
 
 <header>
 	<h1>Spawns</h1>
@@ -17,135 +14,8 @@
 		These are the official spawn times for Devil Daggers V3.
 	</p>
 	<p>
-		@Html.Raw(RazorExtensions.GetLayout("Note that Centipedes, Gigapedes, Ghostpedes, and Thorns emerge around 3 seconds later than their actual spawn time."))
+		@Html.Raw(RazorUtils.GetLayout("Note that Centipedes, Gigapedes, Ghostpedes, and Thorns emerge around 3 seconds later than their actual spawn time."))
 	</p>
 
-	<div class="flex-container flex-center flex-column">
-		<div class="flex-container flex-center">
-			<div style="width: @(widths[0])px;">Seconds</div>
-			<div style="width: @(widths[1])px;">Spawns</div>
-			<div style="width: @(widths[2])px;">Gems (no farm)</div>
-			<div style="width: @(widths[3])px;">Total gems</div>
-		</div>
-		@{
-			string path = Model.V3Path;
-			Spawnset v3 = SpawnsetParser.ParseFile(path);
-
-			double seconds = 0;
-			int totalGems = 0;
-			List<Spawn> endLoop = new List<Spawn>();
-
-			foreach (Spawn spawn in v3.Spawns)
-			{
-				endLoop.Add(spawn);
-				if (spawn.Enemy == null)
-				{
-					foreach (Spawn s in endLoop)
-					{
-						seconds += s.Delay;
-						if (s.Enemy != null)
-						{
-							int gems = s.Enemy.Gems;
-
-							// Add no farm gems
-							if (s.Enemy == GameHelper.Squid1)
-							{
-								gems += GameHelper.Skull2.Gems;
-							}
-							if (s.Enemy == GameHelper.Squid2)
-							{
-								gems += GameHelper.Skull3.Gems;
-							}
-
-							totalGems += gems;
-
-							<div class="flex-container flex-center">
-								<div style="width: @(widths[0])px;" class='num'>@string.Format("{0:0.0000}", seconds)</div>
-								<div style="width: @(widths[1])px;"><span style='color: #@s.Enemy.ColorCode'>@s.Enemy.Name</span></div>
-								<div style="width: @(widths[2])px;" class='num'>@gems</div>
-								<div style="width: @(widths[3])px;" class='num'>@totalGems</div>
-							</div>
-						}
-					}
-					seconds -= spawn.Delay;
-					endLoop.Clear();
-					endLoop.Add(spawn);
-				}
-			}
-
-			if (endLoop.Count != 1)
-			{
-				int maxWaves = 250;
-				int maxSeconds = 1250;
-
-				double waveMod = 0;
-				double endGameSecond = seconds;
-				for (int i = 0; i < maxWaves; i++)
-				{
-					double enemyTimer = 0;
-					double delay = 0;
-					foreach (Spawn spawn in endLoop)
-					{
-						delay += spawn.Delay;
-						while (enemyTimer < delay)
-						{
-							endGameSecond += (1f / 60f);
-							enemyTimer += (1f / 60f) + waveMod;
-						}
-
-						if (spawn.Enemy != null)
-						{
-							// Change the third Gigapede into a Ghostpede
-							if (spawn.Enemy == GameHelper.Gigapede && i % 3 == 2)
-							{
-								spawn.Enemy = GameHelper.Ghostpede;
-							}
-							else if (spawn.Enemy == GameHelper.Ghostpede && i % 3 != 2)
-							{
-								spawn.Enemy = GameHelper.Gigapede;
-							}
-
-							int gems = spawn.Enemy.Gems;
-
-							// Add no farm gems
-							if (spawn.Enemy == GameHelper.Squid1)
-							{
-								gems += GameHelper.Skull2.Gems;
-							}
-							if (spawn.Enemy == GameHelper.Squid2)
-							{
-								gems += GameHelper.Skull3.Gems;
-							}
-
-							totalGems += gems;
-
-							<div class="flex-container flex-center">
-								<div style="width: @(widths[0])px;" class='num'>@string.Format("{0:0.0000}", endGameSecond)</div>
-								<div style="width: @(widths[1])px;"><span style='color: #@spawn.Enemy.ColorCode'>@spawn.Enemy.Name</span></div>
-								<div style="width: @(widths[2])px;" class='num'>@gems</div>
-								<div style="width: @(widths[3])px;" class='num'>@totalGems</div>
-							</div>
-						}
-					}
-					waveMod += 0.00208333;
-
-					if (endGameSecond > maxSeconds)
-					{
-						break;
-					}
-				}
-			}
-		}
-	</div>
-
-	@{
-		if (endLoop.Count != 1)
-		{
-			<div style="color: red; font-size: 24px;">Goes on eternally...</div>
-		}
-		else
-		{
-			<div style="color: red; font-size: 24px;">End of spawnset</div>
-		}
-	}
+	@Html.Partial("_SpawnsPartial", Model.V3Path)
 </main>

@@ -1,7 +1,7 @@
 ﻿using DevilDaggersWebsite.Models;
 using System.Collections.Generic;
 
-namespace DevilDaggersWebsite.Extensions
+namespace DevilDaggersWebsite.Utils
 {
 	public static class UserHelper
 	{

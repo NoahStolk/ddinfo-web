@@ -1,6 +1,6 @@
 ﻿using DevilDaggersWebsite.Models.Game;
 
-namespace DevilDaggersWebsite.Extensions
+namespace DevilDaggersWebsite.Utils
 {
 	public static class GameHelper
 	{

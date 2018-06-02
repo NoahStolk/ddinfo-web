@@ -1,8 +1,8 @@
 ﻿using DevilDaggersWebsite.Models.Game;
 
-namespace DevilDaggersWebsite.Extensions
+namespace DevilDaggersWebsite.Utils
 {
-	public static class RazorExtensions
+	public static class RazorUtils
 	{
 		public static string Email = "contact@devildaggers.info";
 

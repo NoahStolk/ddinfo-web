@@ -1,4 +1,4 @@
-﻿using DevilDaggersWebsite.Extensions;
+﻿using DevilDaggersWebsite.Utils;
 using DevilDaggersWebsite.Models.Leaderboard;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.AspNetCore.Mvc.RazorPages;
