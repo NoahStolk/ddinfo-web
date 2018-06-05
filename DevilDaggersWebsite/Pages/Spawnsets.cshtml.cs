@@ -1,15 +1,12 @@
-﻿using Microsoft.AspNetCore.Hosting;
-using Microsoft.AspNetCore.Mvc.RazorPages;
+﻿using Microsoft.AspNetCore.Mvc.RazorPages;
 
 namespace DevilDaggersWebsite.Pages
 {
 	public class SpawnsetsModel : PageModel
 	{
-		public IHostingEnvironment Env { get; private set; }
-
-		public SpawnsetsModel(IHostingEnvironment env)
+		public SpawnsetsModel()
 		{
-			Env = env;
+
 		}
     }
 }

@@ -109,11 +109,11 @@
 };
 }
 
-@using DevilDaggersWebsite.Extensions
+@using DevilDaggersWebsite.Utils
 @using DevilDaggersWebsite.Models.Game
 
 <header>
-	<h1>Enemies</h1>
+	<h1>@ViewData["Title"]</h1>
 </header>
 
 <main role="main">
@@ -129,7 +129,7 @@
 		<div>
 			@foreach (Enemy enemy in GameHelper.Enemies)
 			{
-				<div>@Html.Raw(RazorExtensions.GetEnemyLayoutAnchor(enemy))</div>
+				<div>@Html.Raw(RazorUtils.GetEnemyLayoutAnchor(enemy))</div>
 				<div class='text-right'>@enemy.HP</div>
 				<div class='text-right'>@enemy.Gems</div>
 				<div class="hidden-xs" style='color: #@enemy.Death.ColorCode'>@enemy.Death.Name</div>
@@ -142,7 +142,7 @@
 					{
 						foreach (Enemy e in enemy.SpawnedBy)
 						{
-							<span>@Html.Raw(RazorExtensions.GetEnemyLayoutAnchor(e))</span>
+							<span>@Html.Raw(RazorUtils.GetEnemyLayoutAnchor(e))</span>
 						}
 					}
 				</div>
@@ -170,7 +170,7 @@
 					{
 						if (i != 2 || (i == 2 && upgrade.HomingShot != null))
 						{
-							<div><span style='color: #@upgrade.ColorCode;'>@Html.Raw(RazorExtensions.GetUpgradeLayoutAnchor(upgrade))</span></div>
+							<div><span style='color: #@upgrade.ColorCode;'>@Html.Raw(RazorUtils.GetUpgradeLayoutAnchor(upgrade))</span></div>
 						}
 					}
 				}
@@ -179,7 +179,7 @@
 		<div>
 			@foreach (Enemy enemy in GameHelper.Enemies)
 			{
-				<div>@Html.Raw(RazorExtensions.GetEnemyLayoutAnchor(enemy))</div>
+				<div>@Html.Raw(RazorUtils.GetEnemyLayoutAnchor(enemy))</div>
 				<div class='text-right'>@enemy.HP</div>
 				@for (int i = 0; i < 3; i++)
 				{
@@ -262,7 +262,7 @@
 						{
 							if (i != 2 || (i == 2 && upgrade.HomingShot != null))
 							{
-								<div class="text-right"><span style='color: #@upgrade.ColorCode;'>@Html.Raw(RazorExtensions.GetUpgradeLayoutAnchor(upgrade, true))</span></div>
+								<div class="text-right"><span style='color: #@upgrade.ColorCode;'>@Html.Raw(RazorUtils.GetUpgradeLayoutAnchor(upgrade, true))</span></div>
 							}
 						}
 					}
@@ -271,7 +271,7 @@
 			<div>
 				@foreach (Enemy enemy in GameHelper.Enemies)
 				{
-					<div>@Html.Raw(RazorExtensions.GetEnemyLayoutAnchor(enemy))</div>
+					<div>@Html.Raw(RazorUtils.GetEnemyLayoutAnchor(enemy))</div>
 					<div class='text-right'>@enemy.HP</div>
 					@for (int i = 0; i < 3; i++)
 					{
@@ -371,7 +371,7 @@
 						{
 							foreach (Enemy e in enemy.SpawnedBy)
 							{
-								<span>@Html.Raw(RazorExtensions.GetEnemyLayoutAnchor(e))</span>
+								<span>@Html.Raw(RazorUtils.GetEnemyLayoutAnchor(e))</span>
 							}
 						}
 					</div>
@@ -397,7 +397,7 @@
 								for (int i = 0; i < enemy.Info.Count; i++)
 								{
 									<li>
-										@Html.Raw(RazorExtensions.GetLayout(enemy.Info[i]))
+										@Html.Raw(RazorUtils.GetLayout(enemy.Info[i]))
 
 										@{
 											if (i == enemy.Info.Count - 1)

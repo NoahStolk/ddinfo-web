@@ -1,4 +1,5 @@
 ﻿@page
+@inject Microsoft.AspNetCore.Hosting.IHostingEnvironment env
 @model SpawnsetsModel
 @{
 	ViewBag.Title = "Spawnsets";
@@ -10,7 +11,7 @@
 @using System.IO
 
 <header>
-	<h1>Spawnsets</h1>
+	<h1>@ViewData["Title"]</h1>
 </header>
 
 <main role="main">
@@ -25,7 +26,7 @@
 		</div>
 		<div class="flex-container flex-column">
 			@{
-				foreach (string spawnsetPath in Directory.GetFiles(System.IO.Path.Combine(Model.Env.WebRootPath, "spawnsets/")))
+				foreach (string spawnsetPath in Directory.GetFiles(System.IO.Path.Combine(env.WebRootPath, "spawnsets/")))
 				{
 					string spawnset = System.IO.Path.GetFileName(spawnsetPath);
 					string name = spawnset.Substring(0, spawnset.LastIndexOf('_'));
@@ -57,7 +58,7 @@
 
 	<h2>How to make spawnsets</h2>
 	<p>
-		I've made my own tool for editing the "survival" file, called DevilDaggersSurvivalEditor, it can be downloaded <a href="https://bitbucket.org/NoahStolk/devildaggersspawnseteditorwpf/src">here</a>.
+		I've made my own tool for editing the "survival" file, called DevilDaggersSurvivalEditor, it can be downloaded <a href="https://bitbucket.org/NoahStolk/devildaggerssurvivaleditor/src">here</a>.
 	</p>
 
 	<h2>FAQ</h2>
@@ -66,7 +67,16 @@
 	<div class="spawnsets-question">Can I override my real score using a custom spawnset?</div>
 	<div class="spawnsets-answer">No, the game only uploads scores done with the original V3 spawnset.</div>
 	<div class="spawnsets-question">The game doesn't submit my scores anymore even though I put the original survival file back in the dd folder. Why?</div>
-	<div class="spawnsets-answer">It's always the safest to just reinstall the game completely whenever you want to play the real game again, as it might still not upload your scores even if you placed the original V3 spawnset back in the folder.<br />NOTE: This might be outdated. Just keep an eye out for the "score not submitted (error)" message. If you keep getting it even with the original file, reinstall the game.</div>
+	<div class="spawnsets-answer">
+		For some reason the game might still not upload your scores even if you placed the original V3 spawnset back in the folder. To fix this:<br />
+		<ol>
+			<li>Go to your Steam library.</li>
+			<li>Right click on Devil Daggers.</li>
+			<li>Select the tab "Local files".</li>
+			<li>Click "Verify integrity of game files".</li>
+		</ol>
+		NOTE: This might be outdated. Just keep an eye out for the "score not submitted (error)" message. If you keep getting it even with the original file, do the steps above.
+	</div>
 	<div class="spawnsets-question">I've made my own custom spawnsets that I want to share with the community. Can I get them listed on here?</div>
 	<div class="spawnsets-answer">Yes, certainly. Send the files to <a href="mailto:@RazorUtils.Email">@RazorUtils.Email</a>, as well as the name of the spawnset and your name (author). Or just join the <a href="https://discord.gg/NF32j8S">Discord server</a> and send them there.</div>
 </main>

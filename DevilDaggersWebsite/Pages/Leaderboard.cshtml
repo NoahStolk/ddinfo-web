@@ -6,14 +6,20 @@
 	double timeGlobal = ((double)Model.Leaderboard.TimeGlobal / 10000.0);
 	double accuracyGlobal = Model.Leaderboard.ShotsFiredGlobal == 0 ? 0 : (double)Model.Leaderboard.ShotsHitGlobal / (double)Model.Leaderboard.ShotsFiredGlobal * 100;
 
-	int[] widths = new int[12] { 32, 128, 128, 64, 64, 128, 96, 160, 96, 96, 112, 128 };
+	double[] widths = new double[12] { 32, 128, 128, 64, 64, 128, 96, 160, 96, 96, 112, 128 };
+	int c = 0;
+	foreach (int i in widths)
+	{
+		widths[c] = i * 0.8;
+		c++;
+	}
 }
-@using DevilDaggersWebsite.Extensions
+@using DevilDaggersWebsite.Utils
 @using DevilDaggersWebsite.Models.Game
 @using DevilDaggersWebsite.Models.Leaderboard
 
 <header>
-	<h1>Leaderboard</h1>
+	<h1>@ViewData["Title"]</h1>
 </header>
 
 <main role="main">

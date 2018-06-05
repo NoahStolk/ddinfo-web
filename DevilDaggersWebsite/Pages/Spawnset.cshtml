@@ -13,6 +13,9 @@
 @using DevilDaggersWebsite.Utils
 @using DevilDaggersWebsite.Models.Spawnset
 @using System.IO
+@{
+	int[] widths = new int[4] { 256, 256, 256, 256 };
+}
 
 <header>
 	<h1 class="break-all">@name by @author</h1>
@@ -43,35 +46,34 @@
 	}
 
 	<div>
-		<div>
-			<div>Arena radius (start)</div>
-			<div>Arena radius (end)</div>
-			<div>Arena shrinking rate</div>
-			<div>Brightness</div>
+		<div class="flex-container flex-center flex-space-evenly">
+			<div style="width: @(widths[0])px;">Arena radius (start)</div>
+			<div style="width: @(widths[0])px;">Arena radius (end)</div>
+			<div style="width: @(widths[0])px;">Arena shrinking rate</div>
+			<div style="width: @(widths[0])px;">Brightness</div>
 		</div>
-		<div>
-			<div>@spawnset.ShrinkStart</div>
-			<div>@spawnset.ShrinkEnd</div>
-			<div>@spawnset.ShrinkRate</div>
-			<div>@spawnset.Brightness</div>
+		<div class="flex-container flex-center flex-space-evenly">
+			<div style="width: @(widths[0])px;">@spawnset.ShrinkStart</div>
+			<div style="width: @(widths[0])px;">@spawnset.ShrinkEnd</div>
+			<div style="width: @(widths[0])px;">@spawnset.ShrinkRate</div>
+			<div style="width: @(widths[0])px;">@spawnset.Brightness</div>
 		</div>
 	</div>
 
-	<div>
-		<div style="border-collapse: collapse; border: 2px solid white;">
-			@{
-				for (int i = 0; i < spawnset.ArenaTiles.GetLength(0); i++)
-				{
-
+	<table class="tile-table">
+		@{
+			for (int i = 0; i < spawnset.ArenaTiles.GetLength(0); i++)
+			{
+				<tr>
 					@for (int j = 0; j < spawnset.ArenaTiles.GetLength(1); j++)
 					{
 						float height = (float)Math.Round(spawnset.ArenaTiles[i, j] * 32 + 64);
-						<div class="arena-tile" style="background-color: rgb(@height, @Math.Round(height/2), 0);"></div>
+						<td class="arena-tile" style="background-color: rgb(@height, @Math.Round(height/2), 0);"></td>
 					}
-				}
+				</tr>
 			}
-		</div>
-	</div>
+		}
+	</table>
 
 	@Html.Partial("_SpawnsPartial", path)
 </main>
