@@ -10,17 +10,12 @@ Use backend16
 
 FRONTEND
 
-Spawnsets FAQ: Verify integrity of game files
-
-Spawnset Page --> If spawns list is empty don't show "Goes on eternally" or "End of spawnset"
-
 === new stuff
 
 Make useful tools section/page
-	FINISH DDSEWPF
-	Add ddsewpf
+	FINISH DDSE
+	Add ddse
 		host .exe
-			note windows warning
 		link to source bitbucket
 	Add bowsr/sojk/vhs tools
 
