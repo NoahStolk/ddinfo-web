@@ -12,11 +12,10 @@ FRONTEND
 
 === new stuff
 
-Make useful tools section/page
+Make useful tools page
 	FINISH DDSE
 	Add ddse
-		host .exe
-		link to source bitbucket
+		host .zip
 	Add bowsr/sojk/vhs tools
 
 Rewrite flexboxes (leaderboard, spawns, donators... probably more pages)
