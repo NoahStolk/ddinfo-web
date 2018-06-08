@@ -2,51 +2,63 @@
 @inject Microsoft.AspNetCore.Hosting.IHostingEnvironment env
 @model SpawnsetsModel
 @{
-	ViewBag.Title = "Spawnsets";
-
-	int[] widths = new int[2] { 0, 0 };
+	ViewData["Title"] = "Spawnsets";
 }
 
 @using DevilDaggersWebsite.Utils
-@using System.IO
+@using DevilDaggersWebsite.Models.Spawnset
 
 <header>
 	<h1>@ViewData["Title"]</h1>
 </header>
 
-<main role="main">
+<main role="main" class="text-left">
 	<p>
 		These are custom spawnsets created by the community. They can be played in the real game. Click on a spawnset to view and download it.
 	</p>
 
-	<div class="text-left">
-		<div class="flex-container flex-space-evenly">
-			<div style="width: @(widths[0])px;">Name</div>
-			<div style="width: @(widths[1])px;">Author</div>
-		</div>
-		<div class="flex-container flex-column">
+	<table>
+		<thead>
+			<tr>
+				<th><a asp-page="./Spawnsets" asp-route-sortOrder="@Model.NameSort" asp-route-pageIndex="@Model.PageIndex">Sort by name</a></th>
+				<th><a asp-page="./Spawnsets" asp-route-sortOrder="@Model.AuthorSort" asp-route-pageIndex="@Model.PageIndex">Sort by author</a></th>
+			</tr>
+			<tr>
+				<td>
+					<a asp-page="./Spawnsets" asp-route-pageIndex="@(Model.SpawnsetFiles.PageIndex - 1)" class="btn btn-default @(!Model.SpawnsetFiles.HasPreviousPage ? "disabled" : "")">
+						Previous
+					</a>
+				</td>
+				<td>
+					<a asp-page="./Spawnsets" asp-route-pageIndex="@(Model.SpawnsetFiles.PageIndex + 1)" class="btn btn-default @(!Model.SpawnsetFiles.HasNextPage ? "disabled" : "")">
+						Next
+					</a>
+				</td>
+			</tr>
+			<tr>
+				<th width="360">Name</th>
+				<th width="360">Author</th>
+			</tr>
+		</thead>
+		<tbody>
 			@{
-				foreach (string spawnsetPath in Directory.GetFiles(System.IO.Path.Combine(env.WebRootPath, "spawnsets/")))
+				foreach (SpawnsetFile spawnsetFile in Model.SpawnsetFiles)
 				{
-					string spawnset = System.IO.Path.GetFileName(spawnsetPath);
-					string name = spawnset.Substring(0, spawnset.LastIndexOf('_'));
-					string author = spawnset.Substring(spawnset.LastIndexOf('_') + 1);
-
-					<div class="flex-container flex-space-evenly">
-						<div style="width: @(widths[0])px;"><a asp-page="Spawnset" asp-route-spawnset="@string.Format("{0}_{1}", name, author)">@name</a></div>
-						<div style="width: @(widths[1])px;">@author</div>
-					</div>
+					<tr>
+						<td><a asp-page="Spawnset" asp-route-spawnset="@string.Format("{0}_{1}", spawnsetFile.Name, spawnsetFile.Author)">@spawnsetFile.Name</a></td>
+						<td>@spawnsetFile.Author</td>
+					</tr>
 				}
 			}
-		</div>
-	</div>
+		</tbody>
+	</table>
 
 	<h2>How to use spawnsets</h2>
 	<ol>
 		<li>Select the spawnset you want to use and click the download button.</li>
 		<li>Rename the file to "survival" (no quotes), the file should not have a file extension.</li>
 		<li>
-			Navigate to the directory where Devil Daggers is installed and open the folder named "dd".<br>
+			Navigate to the directory where Devil Daggers is installed and open the folder named "dd".<br />
 			By default, this is <span class="break-all" style="color: red;">C:\Program Files (x86)\Steam\steamapps\common\devildaggers\dd</span> on Windows.
 		</li>
 		<li>Replace the file called "survival" with the file you just downloaded.</li>
@@ -58,7 +70,7 @@
 
 	<h2>How to make spawnsets</h2>
 	<p>
-		I've made my own tool for editing the "survival" file, called DevilDaggersSurvivalEditor, it can be downloaded <a href="https://bitbucket.org/NoahStolk/devildaggerssurvivaleditor/src">here</a>.
+		I've made my own tool for editing the "survival" file, called DevilDaggersSurvivalEditor, which can be downloaded <a href="https://bitbucket.org/NoahStolk/devildaggerssurvivaleditor/src">here</a>.
 	</p>
 
 	<h2>FAQ</h2>
@@ -68,7 +80,8 @@
 	<div class="spawnsets-answer">No, the game only uploads scores done with the original V3 spawnset.</div>
 	<div class="spawnsets-question">The game doesn't submit my scores anymore even though I put the original survival file back in the dd folder. Why?</div>
 	<div class="spawnsets-answer">
-		For some reason the game might still not upload your scores even if you placed the original V3 spawnset back in the folder. To fix this:<br />
+		For some reason the game might still not upload your scores even if you placed the original V3 spawnset back in the folder.<br />
+		In order to fix this:<br />
 		<ol>
 			<li>Go to your Steam library.</li>
 			<li>Right click on Devil Daggers.</li>

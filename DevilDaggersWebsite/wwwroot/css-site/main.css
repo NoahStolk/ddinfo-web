@@ -61,3 +61,17 @@ a:hover {
 	a:hover {
 		text-decoration: underline;
 	}
+
+.btn {
+	margin: 8px 0;
+	border: 2px solid;
+	border-color: #DDDDDD;
+	text-align: center;
+	padding: 6px 12px;
+	font-size: 22px;
+}
+
+	.btn:hover {
+		cursor: pointer;
+		color: red;
+	}
