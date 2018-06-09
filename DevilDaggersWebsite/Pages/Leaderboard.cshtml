@@ -80,9 +80,9 @@
 			<fieldset>
 				@Html.TextBoxFor(m => m.Leaderboard.Offset, new { @class = "input" })
 				@Html.Hidden("OffsetPrevious", Model.Leaderboard.OffsetPrevious)
-				<input class="button" type="submit" name="submitAction" value="Show" />
-				<input class="button" type="submit" name="submitAction" value="<" />
-				<input class="button" type="submit" name="submitAction" value=">" />
+				<input class="btn btn-default" type="submit" name="submitAction" value="Show" />
+				<input class="btn btn-default" type="submit" name="submitAction" value="<" />
+				<input class="btn btn-default" type="submit" name="submitAction" value=">" />
 			</fieldset>
 		}
 		<p class="text-center">
