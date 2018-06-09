@@ -48,17 +48,17 @@ namespace DevilDaggersWebsite.Pages
 			switch (sortOrder)
 			{
 				default:
-				case "Author_asc":
-					spawnsetFiles = spawnsetFiles.OrderBy(s => s.Author).ThenByDescending(s => s.Name).ToList();
-					break;
-				case "Author":
-					spawnsetFiles = spawnsetFiles.OrderByDescending(s => s.Author).ThenBy(s => s.Name).ToList();
-					break;
 				case "Name_asc":
 					spawnsetFiles = spawnsetFiles.OrderBy(s => s.Name).ThenByDescending(s => s.Author).ToList();
 					break;
 				case "Name":
 					spawnsetFiles = spawnsetFiles.OrderByDescending(s => s.Name).ThenBy(s => s.Author).ToList();
+					break;
+				case "Author_asc":
+					spawnsetFiles = spawnsetFiles.OrderBy(s => s.Author).ThenByDescending(s => s.Name).ToList();
+					break;
+				case "Author":
+					spawnsetFiles = spawnsetFiles.OrderByDescending(s => s.Author).ThenBy(s => s.Name).ToList();
 					break;
 			}
 

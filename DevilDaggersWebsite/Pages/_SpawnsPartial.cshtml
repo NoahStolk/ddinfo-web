@@ -3,10 +3,8 @@
 @using DevilDaggersWebsite.Utils
 @{
 	int[] widths = new int[4] { 256, 256, 256, 256 };
-}
-@{
-	string path = Model;
-	Spawnset spawnset = SpawnsetParser.ParseFile(path);
+
+	Spawnset spawnset = SpawnsetParser.ParseFile(Model);
 
 	bool empty = true;
 	foreach (Spawn spawn in spawnset.Spawns)
@@ -135,14 +133,7 @@
 				}
 			}
 
-			if (endLoop.Count != 1)
-			{
-				<div style="color: red; font-size: 24px;">Goes on eternally...</div>
-			}
-			else
-			{
-				<div style="color: red; font-size: 24px;">End of spawnset</div>
-			}
+			<div class="text-center" style="color: red; font-size: 24px;">@(endLoop.Count != 1 ? "Goes on eternally..." : "End of spawnset")</div>
 		}
 	</div>
 }

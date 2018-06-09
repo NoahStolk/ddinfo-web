@@ -20,6 +20,9 @@
 	<table>
 		<thead>
 			<tr>
+				<th>Page @Model.PageIndex / @Model.SpawnsetFiles.TotalPages</th>
+			</tr>
+			<tr>
 				<th><a asp-page="./Spawnsets" asp-route-sortOrder="@Model.NameSort" asp-route-pageIndex="@Model.PageIndex">Sort by name</a></th>
 				<th><a asp-page="./Spawnsets" asp-route-sortOrder="@Model.AuthorSort" asp-route-pageIndex="@Model.PageIndex">Sort by author</a></th>
 			</tr>
