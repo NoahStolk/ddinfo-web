@@ -19,15 +19,13 @@
 	<div class="flex-container flex-center" style="flex-direction: row; flex-wrap: wrap;">
 		@foreach (Dagger dagger in GameHelper.Daggers)
 		{
-			<div style="width: 260px;">
+			<div style="width: 260px; font-size: 20px; padding-bottom: 32px;">
 				<div>
 					<div class="@dagger.Name.ToLower()">@dagger.Name Dagger</div>
+					Unlocks at <span style="background-position-y: 3px;" class="@dagger.Name.ToLower()">@(dagger.UnlockSecond == null ? "N/A" : dagger.UnlockSecond.ToString())</span> @(dagger != GameHelper.Default ? " seconds" : "")
 				</div>
 				<div>
 					<div><img class="img-responsive" src='~/Images/Daggers/@(dagger.Name).png' /></div>
-				</div>
-				<div>
-					<div>Unlocks at @(dagger.UnlockSecond == null ? "N/A" : dagger.UnlockSecond + " seconds")</div>
 				</div>
 			</div>
 		}
