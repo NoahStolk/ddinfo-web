@@ -71,7 +71,7 @@
 			@Html.AntiForgeryToken()
 			<fieldset>
 				@Html.TextBoxFor(m => m.Leaderboard.Offset, new { @class = "input" })
-				@Html.Hidden("OffsetPrevious", Model.Leaderboard.OffsetPrevious)
+				<input type="hidden" name="offsetPrevious" value="@Model.Leaderboard.OffsetPrevious" />
 				<br />
 				<input class="btn btn-default" type="submit" name="submitAction" value="Show" />
 				<br />

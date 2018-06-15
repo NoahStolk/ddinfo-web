@@ -17,17 +17,15 @@ namespace DevilDaggersWebsite.Pages
 			await LeaderboardParser.LoadLeaderboard(Leaderboard);
 		}
 
-		public async Task OnPostAsync(string submitAction)
+		public async Task OnPostAsync(string submitAction, int offsetPrevious)
 		{
-			//ModelState.Remove("OffsetPrevious");
-
 			switch (submitAction)
 			{
 				case ">":
-					Leaderboard.Offset = Leaderboard.OffsetPrevious + 100;
+					Leaderboard.Offset = offsetPrevious + 100;
 					break;
 				case "<":
-					Leaderboard.Offset = Leaderboard.OffsetPrevious - 100;
+					Leaderboard.Offset = offsetPrevious - 100;
 					break;
 			}
 
