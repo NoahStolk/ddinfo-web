@@ -1,6 +1,6 @@
 BACKEND
 Leaderboard search
-Add redirects (/Home/Spawnsets --> /Spawnsets)
+Fix redirect regex (Spawnset & Spawnsets go to Spawns...)
 Add error handling
 Add 404 page
 Fix old php redirect (spawnsetsinfo.php --> /Spawnsets)
@@ -20,6 +20,8 @@ Make useful tools page
 	ddstats.com
 
 Fix leaderboard table jumping
+Fix leaderboard ascending sort
+Fix leaderboard name too long
 Enemies layout
 	Fix enemies ugly line hack
 	Fix enemy id scroll to wrong position (navbar)
