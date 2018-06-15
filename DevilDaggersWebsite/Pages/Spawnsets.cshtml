@@ -28,14 +28,10 @@
 			</tr>
 			<tr>
 				<td>
-					<a asp-page="./Spawnsets" asp-route-pageIndex="@(Model.SpawnsetFiles.PageIndex - 1)" class="btn btn-default @(!Model.SpawnsetFiles.HasPreviousPage ? "disabled" : "")">
-						Previous
-					</a>
+					<a asp-page="./Spawnsets" asp-route-sortOrder="@Model.SortOrder" asp-route-pageIndex="@(Model.SpawnsetFiles.PageIndex - 1)" class="btn btn-default @(!Model.SpawnsetFiles.HasPreviousPage ? "disabled" : "")">Previous</a>
 				</td>
 				<td>
-					<a asp-page="./Spawnsets" asp-route-pageIndex="@(Model.SpawnsetFiles.PageIndex + 1)" class="btn btn-default @(!Model.SpawnsetFiles.HasNextPage ? "disabled" : "")">
-						Next
-					</a>
+					<a asp-page="./Spawnsets" asp-route-sortOrder="@Model.SortOrder" asp-route-pageIndex="@(Model.SpawnsetFiles.PageIndex + 1)" class="btn btn-default @(!Model.SpawnsetFiles.HasNextPage ? "disabled" : "")">Next</a>
 				</td>
 			</tr>
 			<tr>
@@ -59,7 +55,7 @@
 	<h2>How to use spawnsets</h2>
 	<ol>
 		<li>Select the spawnset you want to use and click the download button.</li>
-		<li>Rename the file to "survival" (no quotes), the file should not have a file extension.</li>
+		<li>Rename the file to "survival" (no quotes). The file should not have a file extension.</li>
 		<li>
 			Navigate to the directory where Devil Daggers is installed and open the folder named "dd".<br />
 			By default, this is <span class="break-all" style="color: red;">C:\Program Files (x86)\Steam\steamapps\common\devildaggers\dd</span> on Windows.
