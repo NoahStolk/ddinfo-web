@@ -41,8 +41,6 @@ namespace DevilDaggersWebsite.Pages
 				await LeaderboardParser.LoadLeaderboard(Leaderboard);
 			}
 			Leaderboard.OffsetPrevious = Leaderboard.Offset;
-
-			await LeaderboardParser.LoadLeaderboard(Leaderboard);
 		}
 	}
 }
