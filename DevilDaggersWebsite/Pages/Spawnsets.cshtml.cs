@@ -2,6 +2,7 @@
 using CoreBase.Services;
 using DevilDaggersWebsite.Models.Spawnset;
 using Microsoft.AspNetCore.Mvc.RazorPages;
+using System;
 using System.Collections.Generic;
 using System.IO;
 using System.Linq;
@@ -28,7 +29,6 @@ namespace DevilDaggersWebsite.Pages
 		public void OnGet(string sortOrder, int? pageIndex)
 		{
 			SortOrder = sortOrder;
-			PageIndex = pageIndex ?? 1;
 
 			NameSort = sortOrder == "Name" ? "Name_asc" : "Name";
 			AuthorSort = sortOrder == "Author_asc" ? "Author" : "Author_asc";
@@ -61,6 +61,10 @@ namespace DevilDaggersWebsite.Pages
 					spawnsetFiles = spawnsetFiles.OrderByDescending(s => s.Author).ThenBy(s => s.Name).ToList();
 					break;
 			}
+
+			PageIndex = pageIndex ?? 1;
+			PageIndex = Math.Max(PageIndex, 1);
+			PageIndex = Math.Min(PageIndex, (int)Math.Ceiling(spawnsetFiles.Count / (double)PageSize));
 
 			SpawnsetFiles = PaginatedList<SpawnsetFile>.Create(spawnsetFiles, PageIndex, PageSize);
 		}
