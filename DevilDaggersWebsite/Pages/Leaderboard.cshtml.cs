@@ -17,7 +17,7 @@ namespace DevilDaggersWebsite.Pages
 			await LeaderboardParser.LoadLeaderboard(Leaderboard);
 		}
 
-		public async Task<IActionResult> OnPostAsync(string submitAction)
+		public async Task OnPostAsync(string submitAction)
 		{
 			//ModelState.Remove("OffsetPrevious");
 
@@ -42,7 +42,7 @@ namespace DevilDaggersWebsite.Pages
 			}
 			Leaderboard.OffsetPrevious = Leaderboard.Offset;
 
-			return RedirectToPage();
+			await LeaderboardParser.LoadLeaderboard(Leaderboard);
 		}
 	}
 }

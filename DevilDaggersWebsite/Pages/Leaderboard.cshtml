@@ -46,8 +46,8 @@
 		</div>
 	</div>
 	<div class="visible-xs">
-		<div class="flex-container leaderboard-flex flex-center">
-			<div>
+		<div class="flex-container flex-center">
+			<div class="mobile-left">
 				<div>Total players</div>
 				<div>Global time</div>
 				<div>Global kills</div>
@@ -55,13 +55,13 @@
 				<div>Global deaths</div>
 				<div>Global accuracy</div>
 			</div>
-			<div>
-				<div class="text-center devil">@Model.Leaderboard.Players</div>
-				<div class="text-center devil">@string.Format("{0:0.0000}", timeGlobal)</div>
-				<div class="text-center devil">@Model.Leaderboard.KillsGlobal</div>
-				<div class="text-center devil">@Model.Leaderboard.GemsGlobal</div>
-				<div class="text-center devil">@Model.Leaderboard.DeathsGlobal</div>
-				<div class="text-center devil">@string.Format("{0:0.0000}%", accuracyGlobal)</div>
+			<div class="mobile-right">
+				<div class="devil">@Model.Leaderboard.Players</div>
+				<div class="devil">@string.Format("{0:0.0000}", timeGlobal)</div>
+				<div class="devil">@Model.Leaderboard.KillsGlobal</div>
+				<div class="devil">@Model.Leaderboard.GemsGlobal</div>
+				<div class="devil">@Model.Leaderboard.DeathsGlobal</div>
+				<div class="devil">@string.Format("{0:0.0000}%", accuracyGlobal)</div>
 			</div>
 		</div>
 	</div>
@@ -81,9 +81,6 @@
 		}
 		<p>
 			Showing rank @(Model.Leaderboard.Offset) - @(Model.Leaderboard.Offset + 99)
-		</p>
-		<p>
-			Click the table headers to sort the leaderboard.
 		</p>
 	</div>
 
@@ -139,7 +136,7 @@
 					<td data-sort-value="@entry.Kills" class="text-right @(ban ? "ban" : "")">@entry.Kills</td>
 					<td data-sort-value="@entry.Gems" class="text-right @(ban ? "ban" : "")">@entry.Gems</td>
 					<td data-sort-value="@accuracy" class="text-right @(ban ? "ban" : "")">@string.Format("{0:0.0000}%", accuracy)</td>
-					<td data-sort-value="@death.Name" style="color: #@death.ColorCode;" class="text-center @(ban ? "ban" : "" @*death.Name.ToLower()*@)">@death.Name</td>
+					<td data-sort-value="@death.Name" style="color: #@death.ColorCode;" class="leaderboard-death @(ban ? "ban" : "" @*death.Name.ToLower()*@)">@death.Name</td>
 					<td data-sort-value="@entry.TimeTotal" class="text-right @(ban ? "ban" : "")">@string.Format("{0:0.0000}", (double)entry.TimeTotal / 10000)</td>
 					<td data-sort-value="@entry.KillsTotal" class="text-right @(ban ? "ban" : "")">@entry.KillsTotal</td>
 					<td data-sort-value="@entry.GemsTotal" class="text-right @(ban ? "ban" : "")">@entry.GemsTotal</td>

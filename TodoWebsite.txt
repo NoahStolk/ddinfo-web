@@ -22,9 +22,7 @@ Make useful tools page
 Enemies layout
 	Fix enemies ugly line hack
 Upgrades layout
-Leaderboard responsive
-	Add expandable leaderboard entries on mobile/tablet
-		Rewrite table sort using jquery
+Spawnset Previous and Next buttons remove sorting
 
 === fix
 Fix enemy/hand id scroll to wrong position (navbar)

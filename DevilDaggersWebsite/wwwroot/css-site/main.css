@@ -69,3 +69,13 @@ a:hover {
 		cursor: pointer;
 		color: red;
 	}
+
+@media (max-width: 767px) {
+	.mobile-left {
+		text-align: left;
+	}
+
+	.mobile-right {
+		text-align: right;
+	}
+}
