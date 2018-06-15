@@ -66,7 +66,7 @@
 		</div>
 	</div>
 	<div>
-		@using (Html.BeginForm("Leaderboard", "Home", FormMethod.Post))
+		@using (Html.BeginForm(FormMethod.Post))
 		{
 			@Html.AntiForgeryToken()
 			<fieldset>
@@ -130,6 +130,7 @@
 
 				string role = (admin ? "admin" : ban ? "ban" : donator ? "donator" : "");
 				<tr>
+					@*<td data-sort-value="@entry.ID" class="text-right @(ban ? "ban" : "")">@entry.ID</td>*@
 					<td data-sort-value="@entry.Rank" class="text-right @(ban ? "ban" : "")">@entry.Rank</td>
 					<td data-sort-value="@entry.Username" class="@(!string.IsNullOrEmpty(role) ? role : dagger.Name.ToLower()) text-left leaderboard-username">@entry.Username</td>
 					<td data-sort-value="@entry.Time" class="text-right @(!string.IsNullOrEmpty(role) ? role : dagger.Name.ToLower())">@string.Format("{0:0.0000}", (double)entry.Time / 10000)</td>

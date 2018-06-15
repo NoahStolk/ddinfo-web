@@ -3,7 +3,7 @@
 @{
 	ViewData["Title"] = "Donations";
 
-	int[] widths = new int[3] { 32, 256, 128 };
+	int[] widths = new int[2] { 256, 128 };
 }
 @using DevilDaggersWebsite.Utils
 @using DevilDaggersWebsite.Models
@@ -38,9 +38,8 @@
 
 	<div class="flex-container flex-center flex-column">
 		<div class="flex-container flex-center">
-			<div style="width: @(widths[0])px;">#</div>
-			<div style="width: @(widths[1])px;">Username</div>
-			<div style="width: @(widths[2])px;">Amount</div>
+			<div style="width: @(widths[0])px;" class="text-left">Username</div>
+			<div style="width: @(widths[1])px;" class="text-right">Amount</div>
 		</div>
 		@{
 			int rank = 0;
@@ -57,9 +56,8 @@
 				}
 
 				<div class="flex-container flex-center">
-					<div style="width: @(widths[0])px;" class="halign-right">@rank</div>
-					<div style="width: @(widths[1])px; white-space: nowrap;" class="@(dagger.Name.ToLower())">@donator.Username</div>
-					<div style="width: @(widths[2])px;" class="halign-right @(dagger.Name.ToLower())">@string.Format("{0:0.00}", (double)donator.Amount / 100) @donator.CurrencySymbol</div>
+					<div style="width: @(widths[0])px; white-space: nowrap;" class="text-left @(dagger.Name.ToLower())">@donator.Username</div>
+					<div style="width: @(widths[1])px;" class="text-right @(dagger.Name.ToLower())">@string.Format("{0:0.00}", (double)donator.Amount / 100) @donator.CurrencySymbol</div>
 				</div>
 			}
 		}
