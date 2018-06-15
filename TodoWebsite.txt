@@ -1,6 +1,5 @@
 BACKEND
 Spawnset download doesn't work
-Leaderboard switching between pages doesn't work
 Add redirects (/Home/Spawnsets --> /Spawnsets)
 Add error handling
 Add 404 page
