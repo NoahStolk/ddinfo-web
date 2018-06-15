@@ -17,7 +17,6 @@ namespace DevilDaggersWebsite.Utils
 			101345,
 			129990,
 			155788,
-			161276,
 			117147,
 			144104,
 			157043,
