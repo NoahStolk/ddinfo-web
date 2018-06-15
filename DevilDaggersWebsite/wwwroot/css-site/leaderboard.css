@@ -1,8 +1,13 @@
-﻿.leaderboard-flex > div {
-	margin: 0 10px 0 10px;
+﻿.leaderboard-table td,
+.leaderboard-table th {
+	padding: 0 10px 0 10px;
 	overflow: hidden;
+}
+
+.leaderboard-username {
+	max-height: 1em;
 	overflow-y: hidden;
-	font-size: 20px;
+	max-width: 224px;
 }
 
 .ban,

@@ -8,13 +8,7 @@ html {
 }
 
 .body-content {
-	padding: 0 12.5%;
-}
-
-@media screen and (max-width: 767px) {
-	.body-content {
-		padding: 0 2.5%;
-	}
+	padding: 0 2.5%;
 }
 
 ::selection {

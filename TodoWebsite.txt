@@ -17,13 +17,14 @@ Make useful tools page
 	Add ddse
 		host .zip
 	Add bowsr/sojk/vhs tools
+	ddstats.com
 
-Rewrite flexboxes (leaderboard, spawns, donators... probably more pages)
-
-Add expandable leaderboard entries on mobile/tablet
-	rewrite table sort using jquery
-
-Fix enemies ugly line hack
+Enemies layout
+	Fix enemies ugly line hack
+Upgrades layout
+Leaderboard responsive
+	Add expandable leaderboard entries on mobile/tablet
+		Rewrite table sort using jquery
 
 === fix
 Fix enemy/hand id scroll to wrong position (navbar)

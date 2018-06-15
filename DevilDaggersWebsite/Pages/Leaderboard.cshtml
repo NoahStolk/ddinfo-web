@@ -5,14 +5,6 @@
 
 	double timeGlobal = ((double)Model.Leaderboard.TimeGlobal / 10000.0);
 	double accuracyGlobal = Model.Leaderboard.ShotsFiredGlobal == 0 ? 0 : (double)Model.Leaderboard.ShotsHitGlobal / (double)Model.Leaderboard.ShotsFiredGlobal * 100;
-
-	double[] widths = new double[12] { 32, 128, 128, 64, 64, 96, 128, 160, 96, 96, 128, 112 };
-	int c = 0;
-	foreach (int i in widths)
-	{
-		widths[c] = i * 0.9;
-		c++;
-	}
 }
 @using DevilDaggersWebsite.Utils
 @using DevilDaggersWebsite.Models.Game
@@ -94,62 +86,67 @@
 			Click the table headers to sort the leaderboard.
 		</p>
 	</div>
-	<div class="flex-container leaderboard-flex flex-center flex-column">
-		<div class="flex-container leaderboard-flex" style="flex-wrap: wrap;">
-			<div style="width: @(widths[0])px;">#</div>
-			<div style="width: @(widths[1])px; flex-shrink: 1;">Username</div>
-			<div style="width: @(widths[2])px;">Time</div>
-			<div style="width: @(widths[3])px;">Kills</div>
-			<div style="width: @(widths[4])px;">Gems</div>
-			<div style="width: @(widths[5])px;">Accuracy</div>
-			<div style="width: @(widths[6])px;">Death type</div>
-			<div style="width: @(widths[7])px;">Total time</div>
-			<div style="width: @(widths[8])px;">Total kills</div>
-			<div style="width: @(widths[9])px;">Total gems</div>
-			<div style="width: @(widths[10])px;">Total accuracy</div>
-			<div style="width: @(widths[11])px;">Total deaths</div>
-		</div>
-		@foreach (Entry entry in Model.Leaderboard.Entries)
-		{
-			Dagger dagger = GameHelper.Default;
-			foreach (Dagger d in GameHelper.Daggers)
+
+	<table class="leaderboard-table" data-show-toggle="false" data-expand-first="false" data-sorting="true">
+		<thead>
+			<tr>
+				<th>#</th>
+				<th>Username</th>
+				<th>Time</th>
+				<th data-breakpoints="xs">Kills</th>
+				<th data-breakpoints="xs">Gems</th>
+				<th data-breakpoints="xs">Accuracy</th>
+				<th data-breakpoints="xs sm">Death type</th>
+				<th data-breakpoints="xs sm md">Total time</th>
+				<th data-breakpoints="xs sm md">Total kills</th>
+				<th data-breakpoints="xs sm md">Total gems</th>
+				<th data-breakpoints="xs sm md">Total accuracy</th>
+				<th data-breakpoints="xs sm md">Total deaths</th>
+			</tr>
+		</thead>
+		<tbody>
+			@foreach (Entry entry in Model.Leaderboard.Entries)
 			{
-				if (entry.Time >= d.UnlockSecond * 10000)
+				Dagger dagger = GameHelper.Default;
+				foreach (Dagger d in GameHelper.Daggers)
 				{
-					dagger = d;
+					if (entry.Time >= d.UnlockSecond * 10000)
+					{
+						dagger = d;
+					}
 				}
-			}
 
-			Death death = GameHelper.Fallen;
-			foreach (Death d in GameHelper.Deaths)
-			{
-				if (entry.DeathType == d.Type)
+				Death death = GameHelper.Fallen;
+				foreach (Death d in GameHelper.Deaths)
 				{
-					death = d;
+					if (entry.DeathType == d.Type)
+					{
+						death = d;
+					}
 				}
+
+				bool admin = (UserHelper.AdminID == entry.ID);
+				bool donator = (UserHelper.DonatorIDs.Contains(entry.ID));
+				bool ban = (UserHelper.BanIDs.Contains(entry.ID));
+				double accuracy = entry.ShotsFired == 0 ? 0 : (double)entry.ShotsHit / (double)entry.ShotsFired * 100;
+				double accuracyTotal = entry.ShotsFiredTotal == 0 ? 0 : (double)entry.ShotsHitTotal / (double)entry.ShotsFiredTotal * 100;
+
+				string role = (admin ? "admin" : ban ? "ban" : donator ? "donator" : "");
+				<tr>
+					<td data-sort-value="@entry.Rank" class="text-right @(ban ? "ban" : "")">@entry.Rank</td>
+					<td data-sort-value="@entry.Username" class="@(!string.IsNullOrEmpty(role) ? role : dagger.Name.ToLower()) text-left leaderboard-username">@entry.Username</td>
+					<td data-sort-value="@entry.Time" class="text-right @(!string.IsNullOrEmpty(role) ? role : dagger.Name.ToLower())">@string.Format("{0:0.0000}", (double)entry.Time / 10000)</td>
+					<td data-sort-value="@entry.Kills" class="text-right @(ban ? "ban" : "")">@entry.Kills</td>
+					<td data-sort-value="@entry.Gems" class="text-right @(ban ? "ban" : "")">@entry.Gems</td>
+					<td data-sort-value="@accuracy" class="text-right @(ban ? "ban" : "")">@string.Format("{0:0.0000}%", accuracy)</td>
+					<td data-sort-value="@death.Name" style="color: #@death.ColorCode;" class="text-center @(ban ? "ban" : "" @*death.Name.ToLower()*@)">@death.Name</td>
+					<td data-sort-value="@entry.TimeTotal" class="text-right @(ban ? "ban" : "")">@string.Format("{0:0.0000}", (double)entry.TimeTotal / 10000)</td>
+					<td data-sort-value="@entry.KillsTotal" class="text-right @(ban ? "ban" : "")">@entry.KillsTotal</td>
+					<td data-sort-value="@entry.GemsTotal" class="text-right @(ban ? "ban" : "")">@entry.GemsTotal</td>
+					<td data-sort-value="@accuracyTotal" class="text-right @(ban ? "ban" : "")">@string.Format("{0:0.0000}%", accuracyTotal)</td>
+					<td data-sort-value="@entry.DeathsTotal" class="text-right @(ban ? "ban" : "")">@entry.DeathsTotal</td>
+				</tr>
 			}
-
-			bool admin = (UserHelper.AdminID == entry.ID);
-			bool donator = (UserHelper.DonatorIDs.Contains(entry.ID));
-			bool ban = (UserHelper.BanIDs.Contains(entry.ID));
-			double accuracy = entry.ShotsFired == 0 ? 0 : (double)entry.ShotsHit / (double)entry.ShotsFired * 100;
-			double accuracyTotal = entry.ShotsFiredTotal == 0 ? 0 : (double)entry.ShotsHitTotal / (double)entry.ShotsFiredTotal * 100;
-
-			string role = (admin ? "admin" : ban ? "ban" : donator ? "donator" : "");
-			<div class="flex-container leaderboard-flex" style="flex-wrap: wrap;">
-				<div style="width: @(widths[0])px;" class="text-right @(ban ? "ban" : "")">@entry.Rank</div>
-				<div style="width: @(widths[1])px; white-space: nowrap; flex-shrink: 1;" class="@(!string.IsNullOrEmpty(role) ? role : dagger.Name.ToLower()) text-left">@entry.Username</div>
-				<div style="width: @(widths[2])px;" class="text-right @(!string.IsNullOrEmpty(role) ? role : dagger.Name.ToLower())">@string.Format("{0:0.0000}", (double)entry.Time / 10000)</div>
-				<div style="width: @(widths[3])px;" class="text-right @(ban ? "ban" : "")">@entry.Kills</div>
-				<div style="width: @(widths[4])px;" class="text-right @(ban ? "ban" : "")">@entry.Gems</div>
-				<div style="width: @(widths[5])px;" class="text-right @(ban ? "ban" : "")">@string.Format("{0:0.0000}%", accuracy)</div>
-				<div style="width: @(widths[6])px; color: #@death.ColorCode;" class="text-center @(ban ? "ban" : "" @*death.Name.ToLower()*@)">@death.Name</div>
-				<div style="width: @(widths[7])px;" class="text-right @(ban ? "ban" : "")">@string.Format("{0:0.0000}", (double)entry.TimeTotal / 10000)</div>
-				<div style="width: @(widths[8])px;" class="text-right @(ban ? "ban" : "")">@entry.KillsTotal</div>
-				<div style="width: @(widths[9])px;" class="text-right @(ban ? "ban" : "")">@entry.GemsTotal</div>
-				<div style="width: @(widths[10])px;" class="text-right @(ban ? "ban" : "")">@string.Format("{0:0.0000}%", accuracyTotal)</div>
-				<div style="width: @(widths[11])px;" class="text-right @(ban ? "ban" : "")">@entry.DeathsTotal</div>
-			</div>
-		}
-	</div>
+		</tbody>
+	</table>
 </main>

@@ -1,0 +1,3 @@
+﻿$(function () {
+	$('.leaderboard-table').footable();
+});
