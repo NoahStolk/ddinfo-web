@@ -1,5 +1,4 @@
 BACKEND
-Spawnset download doesn't work
 Leaderboard search
 Add redirects (/Home/Spawnsets --> /Spawnsets)
 Add error handling

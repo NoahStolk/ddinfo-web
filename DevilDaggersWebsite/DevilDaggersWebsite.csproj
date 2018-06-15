@@ -3,11 +3,234 @@
     <TargetFramework>netcoreapp2.0</TargetFramework>
   </PropertyGroup>
   <ItemGroup>
+    <Content Remove="wwwroot\spawnsets\00312_xvlv" />
+    <Content Remove="wwwroot\spawnsets\116110_xvlv" />
+    <Content Remove="wwwroot\spawnsets\175Gems3GigapedesPractice_Bintr" />
+    <Content Remove="wwwroot\spawnsets\275GemsLeviPractice_Bintr" />
+    <Content Remove="wwwroot\spawnsets\75Gems3SpidersPractice_Bintr" />
+    <Content Remove="wwwroot\spawnsets\AllGems_xvlv" />
+    <Content Remove="wwwroot\spawnsets\AttackAttackAttack_xvlv" />
+    <Content Remove="wwwroot\spawnsets\Cage_xvlv" />
+    <Content Remove="wwwroot\spawnsets\Calm_ThePassiveDada" />
+    <Content Remove="wwwroot\spawnsets\ChaosFarmRequired_xvlv" />
+    <Content Remove="wwwroot\spawnsets\DaggerJumpPracticeMap_Cookie" />
+    <Content Remove="wwwroot\spawnsets\DaggerLobby_Sorath" />
+    <Content Remove="wwwroot\spawnsets\Darkness_xvlv" />
+    <Content Remove="wwwroot\spawnsets\DeepestFears_LolVeR" />
+    <Content Remove="wwwroot\spawnsets\Donut_xvlv" />
+    <Content Remove="wwwroot\spawnsets\Empty_xvlv" />
+    <Content Remove="wwwroot\spawnsets\Gigapedes_xvlv" />
+    <Content Remove="wwwroot\spawnsets\HellOnSteroids_xvlv" />
+    <Content Remove="wwwroot\spawnsets\HowFastCanYouGo_Cookie" />
+    <Content Remove="wwwroot\spawnsets\Invasions_xvlv" />
+    <Content Remove="wwwroot\spawnsets\KingdomOfSpiders_LolVeR" />
+    <Content Remove="wwwroot\spawnsets\Level3_xvlv" />
+    <Content Remove="wwwroot\spawnsets\Levels_xvlv" />
+    <Content Remove="wwwroot\spawnsets\Levi_xvlv" />
+    <Content Remove="wwwroot\spawnsets\Limit_Stephanstein" />
+    <Content Remove="wwwroot\spawnsets\NoGems_xvlv" />
+    <Content Remove="wwwroot\spawnsets\NoSpaceInHell_LolVeR" />
+    <Content Remove="wwwroot\spawnsets\NoWay_LolVeR" />
+    <Content Remove="wwwroot\spawnsets\Skull4Square_xvlv" />
+    <Content Remove="wwwroot\spawnsets\Speedcore_Stephanstein" />
+    <Content Remove="wwwroot\spawnsets\SquidFortress_xvlv" />
+    <Content Remove="wwwroot\spawnsets\SquidOverdose_ThePassiveDada" />
+    <Content Remove="wwwroot\spawnsets\Stretch_ThePassiveDada" />
+    <Content Remove="wwwroot\spawnsets\Survival456Start_Bintr" />
+    <Content Remove="wwwroot\spawnsets\Sushi_ThePassiveDada" />
+    <Content Remove="wwwroot\spawnsets\TheOrb_LolVeR" />
+    <Content Remove="wwwroot\spawnsets\Transmuted1_xvlv" />
+    <Content Remove="wwwroot\spawnsets\Transmuted2_xvlv" />
+    <Content Remove="wwwroot\spawnsets\Transmuted3_xvlv" />
+    <Content Remove="wwwroot\spawnsets\TransmutedLaughingSkulls_xvlv" />
+    <Content Remove="wwwroot\spawnsets\Ultradonut_xvlv" />
+    <Content Remove="wwwroot\spawnsets\V1_Sorath" />
+    <Content Remove="wwwroot\spawnsets\V2_Sorath" />
+    <Content Remove="wwwroot\spawnsets\V3-1_ThePassiveDada" />
+    <Content Remove="wwwroot\spawnsets\V3Dark_LolVeR" />
+    <Content Remove="wwwroot\spawnsets\V3Half_Stephanstein" />
+    <Content Remove="wwwroot\spawnsets\V3NoShrink_xvlv" />
+    <Content Remove="wwwroot\spawnsets\V3NoThorns_xvlv" />
+    <Content Remove="wwwroot\spawnsets\V3Start397_xvlv" />
+    <Content Remove="wwwroot\spawnsets\V3_Sorath" />
+    <Content Remove="wwwroot\spawnsets\V4Kappa_xvlv" />
+    <Content Remove="wwwroot\spawnsets\Waves_xvlv" />
+    <Content Remove="wwwroot\spawnsets\WhatIf500WasHarder_xvlv" />
+    <Content Remove="wwwroot\spawnsets\WhatIf500WasHard_xvlv" />
+    <Content Remove="wwwroot\spawnsets\Yes_xvlv" />
+  </ItemGroup>
+  <ItemGroup>
     <DotNetCliToolReference Include="Microsoft.VisualStudio.Web.CodeGeneration.Tools" Version="2.0.2" />
   </ItemGroup>
   <ItemGroup>
+    <EmbeddedResource Include="wwwroot\spawnsets\00312_xvlv">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </EmbeddedResource>
+    <EmbeddedResource Include="wwwroot\spawnsets\116110_xvlv">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </EmbeddedResource>
+    <EmbeddedResource Include="wwwroot\spawnsets\175Gems3GigapedesPractice_Bintr">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </EmbeddedResource>
+    <EmbeddedResource Include="wwwroot\spawnsets\275GemsLeviPractice_Bintr">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </EmbeddedResource>
+    <EmbeddedResource Include="wwwroot\spawnsets\75Gems3SpidersPractice_Bintr">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </EmbeddedResource>
+    <EmbeddedResource Include="wwwroot\spawnsets\AllGems_xvlv">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </EmbeddedResource>
+    <EmbeddedResource Include="wwwroot\spawnsets\AttackAttackAttack_xvlv">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </EmbeddedResource>
+    <EmbeddedResource Include="wwwroot\spawnsets\Cage_xvlv">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </EmbeddedResource>
+    <EmbeddedResource Include="wwwroot\spawnsets\Calm_ThePassiveDada">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </EmbeddedResource>
+    <EmbeddedResource Include="wwwroot\spawnsets\ChaosFarmRequired_xvlv">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </EmbeddedResource>
+    <EmbeddedResource Include="wwwroot\spawnsets\DaggerJumpPracticeMap_Cookie">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </EmbeddedResource>
+    <EmbeddedResource Include="wwwroot\spawnsets\DaggerLobby_Sorath">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </EmbeddedResource>
+    <EmbeddedResource Include="wwwroot\spawnsets\Darkness_xvlv">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </EmbeddedResource>
+    <EmbeddedResource Include="wwwroot\spawnsets\DeepestFears_LolVeR">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </EmbeddedResource>
+    <EmbeddedResource Include="wwwroot\spawnsets\Donut_xvlv">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </EmbeddedResource>
+    <EmbeddedResource Include="wwwroot\spawnsets\Empty_xvlv">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </EmbeddedResource>
+    <EmbeddedResource Include="wwwroot\spawnsets\Gigapedes_xvlv">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </EmbeddedResource>
+    <EmbeddedResource Include="wwwroot\spawnsets\HellOnSteroids_xvlv">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </EmbeddedResource>
+    <EmbeddedResource Include="wwwroot\spawnsets\HowFastCanYouGo_Cookie">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </EmbeddedResource>
+    <EmbeddedResource Include="wwwroot\spawnsets\Invasions_xvlv">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </EmbeddedResource>
+    <EmbeddedResource Include="wwwroot\spawnsets\KingdomOfSpiders_LolVeR">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </EmbeddedResource>
+    <EmbeddedResource Include="wwwroot\spawnsets\Level3_xvlv">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </EmbeddedResource>
+    <EmbeddedResource Include="wwwroot\spawnsets\Levels_xvlv">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </EmbeddedResource>
+    <EmbeddedResource Include="wwwroot\spawnsets\Levi_xvlv">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </EmbeddedResource>
+    <EmbeddedResource Include="wwwroot\spawnsets\Limit_Stephanstein">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </EmbeddedResource>
+    <EmbeddedResource Include="wwwroot\spawnsets\NoGems_xvlv">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </EmbeddedResource>
+    <EmbeddedResource Include="wwwroot\spawnsets\NoSpaceInHell_LolVeR">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </EmbeddedResource>
+    <EmbeddedResource Include="wwwroot\spawnsets\NoWay_LolVeR">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </EmbeddedResource>
+    <EmbeddedResource Include="wwwroot\spawnsets\Skull4Square_xvlv">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </EmbeddedResource>
+    <EmbeddedResource Include="wwwroot\spawnsets\Speedcore_Stephanstein">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </EmbeddedResource>
+    <EmbeddedResource Include="wwwroot\spawnsets\SquidFortress_xvlv">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </EmbeddedResource>
+    <EmbeddedResource Include="wwwroot\spawnsets\SquidOverdose_ThePassiveDada">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </EmbeddedResource>
+    <EmbeddedResource Include="wwwroot\spawnsets\Stretch_ThePassiveDada">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </EmbeddedResource>
+    <EmbeddedResource Include="wwwroot\spawnsets\Survival456Start_Bintr">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </EmbeddedResource>
+    <EmbeddedResource Include="wwwroot\spawnsets\Sushi_ThePassiveDada">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </EmbeddedResource>
+    <EmbeddedResource Include="wwwroot\spawnsets\TheOrb_LolVeR">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </EmbeddedResource>
+    <EmbeddedResource Include="wwwroot\spawnsets\Transmuted1_xvlv">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </EmbeddedResource>
+    <EmbeddedResource Include="wwwroot\spawnsets\Transmuted2_xvlv">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </EmbeddedResource>
+    <EmbeddedResource Include="wwwroot\spawnsets\Transmuted3_xvlv">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </EmbeddedResource>
+    <EmbeddedResource Include="wwwroot\spawnsets\TransmutedLaughingSkulls_xvlv">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </EmbeddedResource>
+    <EmbeddedResource Include="wwwroot\spawnsets\Ultradonut_xvlv">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </EmbeddedResource>
+    <EmbeddedResource Include="wwwroot\spawnsets\V1_Sorath">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </EmbeddedResource>
+    <EmbeddedResource Include="wwwroot\spawnsets\V2_Sorath">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </EmbeddedResource>
+    <EmbeddedResource Include="wwwroot\spawnsets\V3-1_ThePassiveDada">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </EmbeddedResource>
+    <EmbeddedResource Include="wwwroot\spawnsets\V3Dark_LolVeR">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </EmbeddedResource>
+    <EmbeddedResource Include="wwwroot\spawnsets\V3Half_Stephanstein">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </EmbeddedResource>
+    <EmbeddedResource Include="wwwroot\spawnsets\V3NoShrink_xvlv">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </EmbeddedResource>
+    <EmbeddedResource Include="wwwroot\spawnsets\V3NoThorns_xvlv">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </EmbeddedResource>
+    <EmbeddedResource Include="wwwroot\spawnsets\V3Start397_xvlv">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </EmbeddedResource>
+    <EmbeddedResource Include="wwwroot\spawnsets\V3_Sorath">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </EmbeddedResource>
+    <EmbeddedResource Include="wwwroot\spawnsets\V4Kappa_xvlv">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </EmbeddedResource>
+    <EmbeddedResource Include="wwwroot\spawnsets\Waves_xvlv">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </EmbeddedResource>
+    <EmbeddedResource Include="wwwroot\spawnsets\WhatIf500WasHarder_xvlv">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </EmbeddedResource>
+    <EmbeddedResource Include="wwwroot\spawnsets\WhatIf500WasHard_xvlv">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </EmbeddedResource>
+    <EmbeddedResource Include="wwwroot\spawnsets\Yes_xvlv">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </EmbeddedResource>
+  </ItemGroup>
+  <ItemGroup>
     <Folder Include="wwwroot\js\" />
-    <Folder Include="wwwroot\spawnsets\" />
   </ItemGroup>
   <ItemGroup>
     <PackageReference Include="BuildBundlerMinifier" Version="2.6.375" />

@@ -1,4 +1,5 @@
 ﻿using System.IO;
+using System.Net.Mime;
 using Microsoft.AspNetCore.Hosting;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.AspNetCore.Mvc.RazorPages;
@@ -16,7 +17,7 @@ namespace DevilDaggersWebsite.Pages
 
 		public ActionResult OnGet(string file)
 		{
-			return File(Path.Combine(_env.WebRootPath, "spawnsets", file), System.Net.Mime.MediaTypeNames.Application.Octet, file);
+			return File(Path.Combine("spawnsets", file), MediaTypeNames.Application.Octet, file);
 		}
 	}
 }
