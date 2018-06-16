@@ -58,7 +58,7 @@
 
 							<div class="flex-container flex-center">
 								<div style="width: @(widths[0])px;" class="text-right">@string.Format("{0:0.0000}", seconds)</div>
-								<div style="width: @(widths[1])px;"><span style='color: #@s.Enemy.ColorCode'>@s.Enemy.Name</span></div>
+								<div style="width: @(widths[1])px;"><span style='color: #@s.Enemy.ColorCode'>@Html.Raw(RazorUtils.GetEnemyLayoutAnchor(s.Enemy))</span></div>
 								<div style="width: @(widths[2])px;" class="text-right">@gems</div>
 								<div style="width: @(widths[3])px;" class="text-right">@totalGems</div>
 							</div>
@@ -118,7 +118,7 @@
 
 							<div class="flex-container flex-center">
 								<div style="width: @(widths[0])px;" class="text-right">@((Math.Floor(endGameSecond * 60) / 60).ToString("0.0000"))</div>
-								<div style="width: @(widths[1])px;"><span style='color: #@spawn.Enemy.ColorCode'>@spawn.Enemy.Name</span></div>
+								<div style="width: @(widths[1])px;"><span style='color: #@spawn.Enemy.ColorCode'>@Html.Raw(RazorUtils.GetEnemyLayoutAnchor(spawn.Enemy))</span></div>
 								<div style="width: @(widths[2])px;" class="text-right">@gems</div>
 								<div style="width: @(widths[3])px;" class="text-right">@totalGems</div>
 							</div>
