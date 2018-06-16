@@ -46,23 +46,21 @@
 				@t.Description
 				<img class="img-responsive" width="512" src="~/images/@(t.Name).png" />
 			</p>
-			<p>
-				@{
-					string path = System.IO.Path.Combine(env.WebRootPath, "tools", t.Name + ".zip");
-					FileInfo fileInfo = new FileInfo(path);
-					if (fileInfo.Exists)
-					{
-						@:Direct download (version 1.0): <a href="/tools/@System.IO.Path.GetFileName(path)">@System.IO.Path.GetFileName(path)</a> (@(Math.Round(fileInfo.Length / 1024f).ToString()) KB)
-					}
-				}
-			</p>
+			string path = System.IO.Path.Combine(env.WebRootPath, "tools", t.Name + ".zip");
+			FileInfo fileInfo = new FileInfo(path);
+			if (fileInfo.Exists)
+			{
+				<p>
+					Direct download (version 1.0): <a href="/tools/@System.IO.Path.GetFileName(path)">@System.IO.Path.GetFileName(path)</a> (@(Math.Round(fileInfo.Length / 1024f).ToString()) KB)
+				</p>
+			}
 			<p>
 				<a href="@t.Link">@t.LinkText</a>
 			</p>
 		}
 	}
 
-	
+
 	https://github.com/bowsr/DDSE/
 	https://github.com/sojk/DevilDaggersSpawnsetCreator
 	https://github.com/sojk/DevilDaggersAssetEditor
