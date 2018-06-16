@@ -8,7 +8,13 @@ html {
 }
 
 .body-content {
-	padding: 0 2.5%;
+	padding: 0 7.5%;
+}
+
+@media (max-width: 767px) {
+	.body-content {
+		padding: 0 2.5%;
+	}
 }
 
 ::selection {
@@ -23,7 +29,7 @@ body {
 	color: #DDDDDD;
 	background-color: black;
 	font-family: 'default', sans-serif;
-	font-size: 22px;
+	font-size: 20px;
 }
 
 h1, h2, h3, h4, h5, h6 {

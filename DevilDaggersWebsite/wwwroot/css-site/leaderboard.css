@@ -14,10 +14,19 @@
 	text-align: center;
 }
 
-@media (max-width: 767px) {
-	.leaderboard-death {
-		text-align: right;
-	}
+.footable-details td {
+	text-align: right;
+	padding-right: 0;
+}
+
+.footable-details th {
+	text-align: left;
+	padding-left: 64px;
+}
+
+.footable-details td,
+.footable-details th {
+	font-size: 18px;
 }
 
 .input {
@@ -34,7 +43,7 @@
 .admin {
 	background: url('../Images/Fonts/fontadmin.png');
 	background-repeat: repeat-x;
-	background-position: 0 8px;
+	background-position: 0 7px;
 	-webkit-font-smoothing: antialiased;
 	-webkit-background-clip: text;
 	-moz-background-clip: text;
@@ -45,7 +54,7 @@
 .donator {
 	background: url('../Images/Fonts/fontdonator.png');
 	background-repeat: repeat-x;
-	background-position: 0 8px;
+	background-position: 0 7px;
 	-webkit-font-smoothing: antialiased;
 	-webkit-background-clip: text;
 	-moz-background-clip: text;
@@ -56,7 +65,7 @@
 .devil {
 	background: url('../Images/Fonts/fontdevil.png');
 	background-repeat: repeat-x;
-	background-position: 0 8px;
+	background-position: 0 7px;
 	-webkit-font-smoothing: antialiased;
 	-webkit-background-clip: text;
 	-moz-background-clip: text;
@@ -67,7 +76,7 @@
 .golden {
 	background: url('../Images/Fonts/fontgold.png');
 	background-repeat: repeat-x;
-	background-position: 0 8px;
+	background-position: 0 7px;
 	-webkit-font-smoothing: antialiased;
 	-webkit-background-clip: text;
 	-moz-background-clip: text;
@@ -78,7 +87,7 @@
 .silver {
 	background: url('../Images/Fonts/fontsilver.png');
 	background-repeat: repeat-x;
-	background-position: 0 8px;
+	background-position: 0 7px;
 	-webkit-font-smoothing: antialiased;
 	-webkit-background-clip: text;
 	-moz-background-clip: text;
@@ -89,7 +98,7 @@
 .bronze {
 	background: url('../Images/Fonts/fontbronze.png');
 	background-repeat: repeat-x;
-	background-position: 0 8px;
+	background-position: 0 7px;
 	-webkit-font-smoothing: antialiased;
 	-webkit-background-clip: text;
 	-moz-background-clip: text;
@@ -100,7 +109,7 @@
 .default {
 	background: url('../Images/Fonts/fontdefault.png');
 	background-repeat: repeat-x;
-	background-position: 0 8px;
+	background-position: 0 7px;
 	-webkit-font-smoothing: antialiased;
 	-webkit-background-clip: text;
 	-moz-background-clip: text;
@@ -111,7 +120,7 @@
 .annihilated {
 	background: url('../Images/Fonts/fontannihilated.png');
 	background-repeat: repeat-x;
-	background-position: 0 8px;
+	background-position: 0 7px;
 	-webkit-font-smoothing: antialiased;
 	-webkit-background-clip: text;
 	-moz-background-clip: text;
@@ -122,7 +131,7 @@
 .barbed {
 	background: url('../Images/Fonts/fontbarbed.png');
 	background-repeat: repeat-x;
-	background-position: 0 8px;
+	background-position: 0 7px;
 	-webkit-font-smoothing: antialiased;
 	-webkit-background-clip: text;
 	-moz-background-clip: text;
@@ -133,7 +142,7 @@
 .discarnated {
 	background: url('../Images/Fonts/fontdiscarnated.png');
 	background-repeat: repeat-x;
-	background-position: 0 8px;
+	background-position: 0 7px;
 	-webkit-font-smoothing: antialiased;
 	-webkit-background-clip: text;
 	-moz-background-clip: text;
@@ -144,7 +153,7 @@
 .envenmonated {
 	background: url('../Images/Fonts/fontenvenmonated.png');
 	background-repeat: repeat-x;
-	background-position: 0 8px;
+	background-position: 0 7px;
 	-webkit-font-smoothing: antialiased;
 	-webkit-background-clip: text;
 	-moz-background-clip: text;
@@ -155,7 +164,7 @@
 .eviscerated {
 	background: url('../Images/Fonts/fonteviscerated.png');
 	background-repeat: repeat-x;
-	background-position: 0 8px;
+	background-position: 0 7px;
 	-webkit-font-smoothing: antialiased;
 	-webkit-background-clip: text;
 	-moz-background-clip: text;
@@ -166,7 +175,7 @@
 .fallen {
 	background: url('../Images/Fonts/fontfallen.png');
 	background-repeat: repeat-x;
-	background-position: 0 8px;
+	background-position: 0 7px;
 	-webkit-font-smoothing: antialiased;
 	-webkit-background-clip: text;
 	-moz-background-clip: text;
@@ -177,7 +186,7 @@
 .gored, .desecrated {
 	background: url('../Images/Fonts/fontgored.png');
 	background-repeat: repeat-x;
-	background-position: 0 8px;
+	background-position: 0 7px;
 	-webkit-font-smoothing: antialiased;
 	-webkit-background-clip: text;
 	-moz-background-clip: text;
@@ -188,7 +197,7 @@
 .impaled, .purged {
 	background: url('../Images/Fonts/fontimpaled.png');
 	background-repeat: repeat-x;
-	background-position: 0 8px;
+	background-position: 0 7px;
 	-webkit-font-smoothing: antialiased;
 	-webkit-background-clip: text;
 	-moz-background-clip: text;
@@ -199,7 +208,7 @@
 .incarnated {
 	background: url('../Images/Fonts/fontincarnated.png');
 	background-repeat: repeat-x;
-	background-position: 0 8px;
+	background-position: 0 7px;
 	-webkit-font-smoothing: antialiased;
 	-webkit-background-clip: text;
 	-moz-background-clip: text;
@@ -210,7 +219,7 @@
 .infested {
 	background: url('../Images/Fonts/fontinfested.png');
 	background-repeat: repeat-x;
-	background-position: 0 8px;
+	background-position: 0 7px;
 	-webkit-font-smoothing: antialiased;
 	-webkit-background-clip: text;
 	-moz-background-clip: text;
@@ -221,7 +230,7 @@
 .intoxicated {
 	background: url('../Images/Fonts/fontintoxicated.png');
 	background-repeat: repeat-x;
-	background-position: 0 8px;
+	background-position: 0 7px;
 	-webkit-font-smoothing: antialiased;
 	-webkit-background-clip: text;
 	-moz-background-clip: text;
@@ -232,7 +241,7 @@
 .opened, .sacrificed {
 	background: url('../Images/Fonts/fontopened.png');
 	background-repeat: repeat-x;
-	background-position: 0 8px;
+	background-position: 0 7px;
 	-webkit-font-smoothing: antialiased;
 	-webkit-background-clip: text;
 	-moz-background-clip: text;
@@ -243,7 +252,7 @@
 .swarmed {
 	background: url('../Images/Fonts/fontswarmed.png');
 	background-repeat: repeat-x;
-	background-position: 0 8px;
+	background-position: 0 7px;
 	-webkit-font-smoothing: antialiased;
 	-webkit-background-clip: text;
 	-moz-background-clip: text;
