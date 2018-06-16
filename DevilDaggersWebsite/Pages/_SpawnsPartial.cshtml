@@ -2,7 +2,7 @@
 @using DevilDaggersWebsite.Models.Spawnset
 @using DevilDaggersWebsite.Utils
 @{
-	int[] widths = new int[4] { 256, 256, 256, 256 };
+	int[] widths = new int[4] { 160, 128, 192, 128 };
 
 	Spawnset spawnset = SpawnsetParser.ParseFile(Model);
 
@@ -18,7 +18,7 @@
 
 	bool showSpawns = (spawnset.Spawns.Count > 0 && !empty);
 
-	<div class="flex-container flex-center flex-column">
+	<div class="flex-container flex-center flex-column text-center">
 		@if (showSpawns)
 		{
 			<div class="flex-container flex-center">
@@ -57,10 +57,10 @@
 							totalGems += gems;
 
 							<div class="flex-container flex-center">
-								<div style="width: @(widths[0])px;" class='num'>@string.Format("{0:0.0000}", seconds)</div>
+								<div style="width: @(widths[0])px;" class="text-right">@string.Format("{0:0.0000}", seconds)</div>
 								<div style="width: @(widths[1])px;"><span style='color: #@s.Enemy.ColorCode'>@s.Enemy.Name</span></div>
-								<div style="width: @(widths[2])px;" class='num'>@gems</div>
-								<div style="width: @(widths[3])px;" class='num'>@totalGems</div>
+								<div style="width: @(widths[2])px;" class="text-right">@gems</div>
+								<div style="width: @(widths[3])px;" class="text-right">@totalGems</div>
 							</div>
 						}
 					}
@@ -117,10 +117,10 @@
 							totalGems += gems;
 
 							<div class="flex-container flex-center">
-								<div style="width: @(widths[0])px;" class='num'>@((Math.Floor(endGameSecond * 60) / 60).ToString("0.0000"))</div>
+								<div style="width: @(widths[0])px;" class="text-right">@((Math.Floor(endGameSecond * 60) / 60).ToString("0.0000"))</div>
 								<div style="width: @(widths[1])px;"><span style='color: #@spawn.Enemy.ColorCode'>@spawn.Enemy.Name</span></div>
-								<div style="width: @(widths[2])px;" class='num'>@gems</div>
-								<div style="width: @(widths[3])px;" class='num'>@totalGems</div>
+								<div style="width: @(widths[2])px;" class="text-right">@gems</div>
+								<div style="width: @(widths[3])px;" class="text-right">@totalGems</div>
 							</div>
 						}
 					}
@@ -133,7 +133,7 @@
 				}
 			}
 
-			<div class="text-center" style="color: red; font-size: 24px;">@(endLoop.Count != 1 ? "Goes on eternally..." : "End of spawnset")</div>
+			<div style="color: red; font-size: 24px;">@(endLoop.Count != 1 ? "Goes on eternally..." : "End of spawnset")</div>
 		}
 	</div>
 }

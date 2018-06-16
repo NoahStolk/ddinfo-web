@@ -14,7 +14,7 @@
 @using DevilDaggersWebsite.Models.Spawnset
 @using System.IO
 @{
-	int[] widths = new int[4] { 256, 256, 256, 256 };
+	int[] widths = new int[4] { 160, 128, 192, 128 };
 }
 
 <header>
@@ -47,18 +47,18 @@
 		Spawnset spawnset = SpawnsetParser.ParseFile(path);
 	}
 
-	<div>
-		<div class="flex-container flex-center flex-space-evenly">
-			<div style="width: @(widths[0])px;">Arena radius (start)</div>
-			<div style="width: @(widths[0])px;">Arena radius (end)</div>
-			<div style="width: @(widths[0])px;">Arena shrinking rate</div>
-			<div style="width: @(widths[0])px;">Brightness</div>
+	<div class="text-center">
+		<div class="flex-container flex-center">
+			<div style="width: @(widths[0])px;">Start radius</div>
+			<div style="width: @(widths[1])px;">End radius</div>
+			<div style="width: @(widths[2])px;">Shrinking rate</div>
+			<div style="width: @(widths[3])px;">Brightness</div>
 		</div>
-		<div class="flex-container flex-center flex-space-evenly">
+		<div class="flex-container flex-center">
 			<div style="width: @(widths[0])px;">@spawnset.ShrinkStart</div>
-			<div style="width: @(widths[0])px;">@spawnset.ShrinkEnd</div>
-			<div style="width: @(widths[0])px;">@spawnset.ShrinkRate</div>
-			<div style="width: @(widths[0])px;">@spawnset.Brightness</div>
+			<div style="width: @(widths[1])px;">@spawnset.ShrinkEnd</div>
+			<div style="width: @(widths[2])px;">@spawnset.ShrinkRate</div>
+			<div style="width: @(widths[3])px;">@spawnset.Brightness</div>
 		</div>
 	</div>
 
