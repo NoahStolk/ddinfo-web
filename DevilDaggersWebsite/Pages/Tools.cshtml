@@ -1,5 +1,8 @@
 ﻿@page
 @inject Microsoft.AspNetCore.Hosting.IHostingEnvironment env
+@using System.IO
+@using DevilDaggersWebsite.Models
+@using Microsoft.AspNetCore.Html
 @model DevilDaggersWebsite.Pages.ToolsModel
 @{
 	ViewData["Title"] = "Tools";
@@ -14,19 +17,56 @@
 		A lot of cool tools for Devil Daggers have been made.
 	</p>
 
-	<h2>Devil Daggers Survival Editor</h2>
+	@{
+		List<Tool> tools = new List<Tool>
+		{
+			new Tool
+			{
+				Name = "DevilDaggersSurvivalEditor",
+				DisplayName = "Devil Daggers Survival Editor",
+				Description = new HtmlString("Devil Daggers Survival Editor is a tool that lets you create, view, and edit 'survival' files (also known as spawnsets) for the game Devil Daggers."),
+				Link = "https://bitbucket.org/NoahStolk/devildaggerssurvivaleditor/src",
+				LinkText = "View source code and manual"
+			},
+			new Tool
+			{
+				Name = "ddstats",
+				DisplayName = "ddstats",
+				Description = new HtmlString("ddstats is a website and program developed by VHS. It tracks your stats in the game and uploads it to the site. You can download the program <a href='https://ddstats.com/releases'>here</a>."),
+				Link = "https://ddstats.com/",
+				LinkText = "Visit site"
+			}
+		};
+
+		foreach (Tool t in tools)
+		{
+			<h2 id="@t.Name">@t.DisplayName</h2>
+
+			<p>
+				@t.Description
+				<img class="img-responsive" width="512" src="~/images/@(t.Name).png" />
+			</p>
+			<p>
+				@{
+					string path = System.IO.Path.Combine(env.WebRootPath, "tools", t.Name + ".zip");
+					FileInfo fileInfo = new FileInfo(path);
+					if (fileInfo.Exists)
+					{
+						@:Direct download (version 1.0): <a href="/tools/@System.IO.Path.GetFileName(path)">@System.IO.Path.GetFileName(path)</a> (@(Math.Round(fileInfo.Length / 1024f).ToString()) KB)
+					}
+				}
+			</p>
+			<p>
+				<a href="@t.Link">@t.LinkText</a>
+			</p>
+		}
+	}
+
 	
-	<p>
-		Devil Daggers Survival Editor is a tool that lets you create, view, edit, and switch 'survival' files (also known as spawnsets) for the game Devil Daggers.
-		<img class="img-responsive" width="512" src="~/images/DevilDaggersSurvivalEditor.png" />
-	</p>
-	<p>
-		<a href="https://bitbucket.org/NoahStolk/devildaggerssurvivaleditor/src">Source code and download</a>
-	</p>
-	vhs dd stats
-	bowsr ddse
-	sojk ddse
-	vhs spawnset selector
+	https://github.com/bowsr/DDSE/
+	https://github.com/sojk/DevilDaggersSpawnsetCreator
+	https://github.com/sojk/DevilDaggersAssetEditor
+	https://github.com/alexwilkerson/ddss
 
 	<p>
 		If you've made something yourself and would like to get it listed here, please contact me.
