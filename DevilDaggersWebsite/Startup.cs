@@ -26,20 +26,24 @@ namespace DevilDaggersWebsite
 		// This method gets called by the runtime. Use this method to configure the HTTP request pipeline.
 		public void Configure(IApplicationBuilder app, IHostingEnvironment env)
 		{
-			// TODO: Fix regex
-			RewriteOptions rewrite = new RewriteOptions()
-				.AddRedirect("Home", "Index")
-				.AddRedirect("Home/Index", "Index")
-				.AddRedirect("Home/Leaderboard", "Leaderboard")
-				.AddRedirect("Home/Spawns", "Spawns")
-				.AddRedirect("Home/Hands", "Upgrades")
-				.AddRedirect("Home/Enemies", "Enemies")
-				.AddRedirect("Home/Daggers", "Daggers")
-				.AddRedirect("Home/Spawnsets", "Spawnsets")
-				.AddRedirect("Home/SpawnsetsInfo", "Spawnsets")
-				.AddRedirect("Home/Donations", "Donations");
+			if (!env.IsDevelopment())
+			{
+				// TODO: Fix regex
+				RewriteOptions options = new RewriteOptions()
+					.AddRedirectToHttpsPermanent()
+					.AddRedirect("Home", "Index")
+					.AddRedirect("Home/Index", "Index")
+					.AddRedirect("Home/Leaderboard", "Leaderboard")
+					.AddRedirect("Home/Spawns", "Spawns")
+					.AddRedirect("Home/Hands", "Upgrades")
+					.AddRedirect("Home/Enemies", "Enemies")
+					.AddRedirect("Home/Daggers", "Daggers")
+					.AddRedirect("Home/Spawnsets", "Spawnsets")
+					.AddRedirect("Home/SpawnsetsInfo", "Spawnsets")
+					.AddRedirect("Home/Donations", "Donations");
 
-			app.UseRewriter(rewrite);
+				app.UseRewriter(options);
+			}
 
 			base.ConfigureErrorPageAndSSL(app, env);
 
