@@ -1,0 +1,5 @@
+﻿.damage-stats-table td,
+.damage-stats-table th {
+	padding: 0 10px 0 10px;
+	overflow: hidden;
+}
