@@ -29,7 +29,7 @@ body {
 	color: #DDDDDD;
 	background-color: black;
 	font-family: 'default', sans-serif;
-	font-size: 20px;
+	font-size: 19.9px; /*blur fix???*/
 }
 
 h1, h2, h3, h4, h5, h6 {

@@ -2,6 +2,7 @@
 @model DevilDaggersWebsite.Pages.DaggersModel
 @{
 	ViewData["Title"] = "Daggers";
+	string boxShadow = "0 0px 2px 2px";
 }
 
 @using DevilDaggersWebsite.Utils
@@ -16,10 +17,10 @@
 		There are five different types of daggers in Devil Daggers. These daggers do not change anything in-game, they're more like extras that you unlock as you progress. You pick them up in the dagger lobby, and then the game starts. Each dagger makes a different sound.
 	</p>
 
-	<div class="flex-container flex-center" style="flex-direction: row; flex-wrap: wrap;">
+	<div class="flex-container flex-center dagger-container">
 		@foreach (Dagger dagger in GameHelper.Daggers)
 		{
-			<div style="width: 260px; font-size: 20px; padding-bottom: 32px;">
+			<div class="dagger" style="-webkit-box-shadow: @boxShadow #@(dagger.ColorCode); -moz-box-shadow: @boxShadow #@(dagger.ColorCode); box-shadow: @boxShadow #@(dagger.ColorCode);">
 				<div>
 					<div class="@dagger.Name.ToLower()">@dagger.Name Dagger</div>
 					Unlocks at <span style="background-position-y: 3px;" class="@dagger.Name.ToLower()">@(dagger.UnlockSecond == null ? "N/A" : dagger.UnlockSecond.ToString())</span> @(dagger != GameHelper.Default ? " seconds" : "")

@@ -1,0 +1,11 @@
+﻿.dagger-container {
+	flex-direction: row;
+	flex-wrap: wrap;
+}
+
+.dagger {
+	width: 260px;
+	padding: 8px;
+	margin: 8px;
+	border-radius: 2px;
+}

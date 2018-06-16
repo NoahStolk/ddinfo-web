@@ -1,0 +1,20 @@
+﻿.upgrade-container {
+	flex-direction: row;
+	flex-wrap: wrap;
+}
+
+.upgrade {
+	width: 380px;
+	padding: 8px;
+	margin: 8px;
+	border-radius: 2px;
+}
+
+.upgrade-row {
+	flex-direction: row;
+	justify-content: space-between;
+}
+
+	.upgrade-row > div {
+		flex-grow: 1;
+	}
