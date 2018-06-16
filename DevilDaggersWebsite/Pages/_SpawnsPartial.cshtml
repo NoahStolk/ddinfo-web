@@ -117,14 +117,14 @@
 							totalGems += gems;
 
 							<div class="flex-container flex-center">
-								<div style="width: @(widths[0])px;" class='num'>@string.Format("{0:0.0000}", endGameSecond)</div>
+								<div style="width: @(widths[0])px;" class='num'>@((Math.Floor(endGameSecond * 60) / 60).ToString("0.0000"))</div>
 								<div style="width: @(widths[1])px;"><span style='color: #@spawn.Enemy.ColorCode'>@spawn.Enemy.Name</span></div>
 								<div style="width: @(widths[2])px;" class='num'>@gems</div>
 								<div style="width: @(widths[3])px;" class='num'>@totalGems</div>
 							</div>
 						}
 					}
-					waveMod += 0.00208333;
+					waveMod += 1f / 60f / 8f;
 
 					if (endGameSecond > maxSeconds)
 					{
