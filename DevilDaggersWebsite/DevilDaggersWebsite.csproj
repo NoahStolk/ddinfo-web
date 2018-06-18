@@ -230,7 +230,6 @@
     </EmbeddedResource>
   </ItemGroup>
   <ItemGroup>
-    <Folder Include="Pages\Error\" />
     <Folder Include="wwwroot\js\" />
   </ItemGroup>
   <ItemGroup>
