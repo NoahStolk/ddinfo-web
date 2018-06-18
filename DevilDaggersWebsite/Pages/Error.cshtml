@@ -1,7 +1,6 @@
 ﻿@page
-@model ErrorModel
 @{
-	ViewData["Title"] = "Error";
+	ViewData["Title"] = "Error 500 - Internal server error";
 }
 
 <header>
@@ -9,9 +8,10 @@
 </header>
 
 <div role="main" class="text-center">
-	<h2>An error occurred while processing your request.</h2>
-
 	<p>
-		@(Model.CommonObjects.HttpContextAccessor.HttpContext.Response.StatusCode)
+		An error occurred while processing your request.
+	</p>
+	<p>
+		Return to the <a asp-page="/Index">Home page</a>.
 	</p>
 </div>
