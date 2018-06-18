@@ -41,11 +41,13 @@ namespace DevilDaggersWebsite
 
 			app.UseRewriter(options);
 
-			base.ConfigureErrorPageAndSSL(app, env);
+			ConfigureErrorPageAndSSL(app, env);
 
 			app.UseStaticFiles();
 
 			app.UseMvc();
+
+			app.UseStatusCodePagesWithRedirects("/Error/{0}");
 		}
 	}
 }
