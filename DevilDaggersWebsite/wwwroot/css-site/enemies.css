@@ -1,5 +1,9 @@
-﻿.damage-stats-table td,
-.damage-stats-table th {
+﻿.enemies-table td,
+.enemies-table th {
 	padding: 0 10px 0 10px;
 	overflow: hidden;
+}
+
+.enemies-table.footable-details th {
+	padding-left: 0;
 }

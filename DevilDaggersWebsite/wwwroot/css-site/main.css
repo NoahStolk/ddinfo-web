@@ -76,6 +76,10 @@ a:hover {
 		color: red;
 	}
 
+.btn-default {
+	color: red;
+}
+
 @media (max-width: 767px) {
 	.mobile-left {
 		text-align: left;

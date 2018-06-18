@@ -123,8 +123,8 @@
 			<div>Name</div>
 			<div>HP</div>
 			<div>Gems</div>
-			<div class="hidden-xs">Death type</div>
-			<div class="hidden-xs">Spawned by</div>
+			<div>Death type</div>
+			<div>Spawned by</div>
 		</div>
 		<div>
 			@foreach (Enemy enemy in GameHelper.Enemies)
@@ -132,8 +132,8 @@
 				<div>@Html.Raw(RazorUtils.GetEnemyLayoutAnchor(enemy))</div>
 				<div class='text-right'>@enemy.HP</div>
 				<div class='text-right'>@enemy.Gems</div>
-				<div class="hidden-xs" style='color: #@enemy.Death.ColorCode'>@enemy.Death.Name</div>
-				<div class="hidden-xs">
+				<div style='color: #@enemy.Death.ColorCode'>@enemy.Death.Name</div>
+				<div>
 					@if (enemy.SpawnedBy.Length == 0)
 					{
 						<span style='color: #DDDDDD;'>Game</span>
@@ -152,13 +152,13 @@
 
 	<h2>Damage Stats</h2>
 	<p>All of this information assumes 100% shot accuracy, and may not be relevant in some cases.</p>
-	<table class="damage-stats-table">
+	<table class="enemies-table" data-show-toggle="false" data-expand-first="false">
 		<thead>
 			<tr>
 				<th colspan='2'>Enemy</th>
-				<th data-breakpoints="xs" colspan='4'>Stream (seconds)</th>
-				<th data-breakpoints="xs" colspan='4'>Shots</th>
-				<th data-breakpoints="xs" colspan='2'>Homing daggers</th>
+				<th class="hidden-xs" colspan='4'>Stream (seconds)</th>
+				<th class="hidden-xs" colspan='4'>Shots</th>
+				<th class="hidden-xs" colspan='2'>Homing daggers</th>
 			</tr>
 			<tr>
 				<th>Name</th>

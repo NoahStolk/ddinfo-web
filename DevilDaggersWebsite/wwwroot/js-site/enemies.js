@@ -1,3 +1,3 @@
 ﻿$(function () {
-	$('.damage-stats-table').footable();
+	$('.enemies-table').footable();
 });

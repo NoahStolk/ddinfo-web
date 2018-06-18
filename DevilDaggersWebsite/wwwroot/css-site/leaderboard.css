@@ -21,7 +21,10 @@
 
 .footable-details th {
 	text-align: left;
-	padding-left: 64px;
+}
+
+.leaderboard-table.footable-details th {
+	padding-left: 64px; /*todo*/
 }
 
 .footable-details td,
