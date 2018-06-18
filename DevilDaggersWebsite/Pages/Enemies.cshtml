@@ -118,37 +118,41 @@
 
 <main role="main">
 	<h2>Summary</h2>
-	<div class="flex-container">
-		<div>
-			<div>Name</div>
-			<div>HP</div>
-			<div>Gems</div>
-			<div>Death type</div>
-			<div>Spawned by</div>
-		</div>
-		<div>
+	<table class="enemies-table" data-show-toggle="false" data-expand-first="false">
+		<thead>
+			<tr>
+				<th>Name</th>
+				<th>HP</th>
+				<th>Gems</th>
+				<th data-breakpoints="xs">Death type</th>
+				<th data-breakpoints="xs">Spawned by</th>
+			</tr>
+		</thead>
+		<tbody>
 			@foreach (Enemy enemy in GameHelper.Enemies)
 			{
-				<div>@Html.Raw(RazorUtils.GetEnemyLayoutAnchor(enemy))</div>
-				<div class='text-right'>@enemy.HP</div>
-				<div class='text-right'>@enemy.Gems</div>
-				<div style='color: #@enemy.Death.ColorCode'>@enemy.Death.Name</div>
-				<div>
-					@if (enemy.SpawnedBy.Length == 0)
-					{
-						<span style='color: #DDDDDD;'>Game</span>
-					}
-					else
-					{
-						foreach (Enemy e in enemy.SpawnedBy)
+				<tr>
+					<td>@Html.Raw(RazorUtils.GetEnemyLayoutAnchor(enemy))</td>
+					<td class='text-right'>@enemy.HP</td>
+					<td class='text-right'>@enemy.Gems</td>
+					<td style='color: #@enemy.Death.ColorCode'>@enemy.Death.Name</td>
+					<td>
+						@if (enemy.SpawnedBy.Length == 0)
 						{
-							<span>@Html.Raw(RazorUtils.GetEnemyLayoutAnchor(e))</span>
+							@:Game
 						}
-					}
-				</div>
+						else
+						{
+							foreach (Enemy e in enemy.SpawnedBy)
+							{
+								@Html.Raw(RazorUtils.GetEnemyLayoutAnchor(e) + " ")
+							}
+						}
+					</td>
+				</tr>
 			}
-		</div>
-	</div>
+		</tbody>
+	</table>
 
 	<h2>Damage Stats</h2>
 	<p>All of this information assumes 100% shot accuracy, and may not be relevant in some cases.</p>
@@ -159,6 +163,9 @@
 				<th class="hidden-xs" colspan='4'>Stream (seconds)</th>
 				<th class="hidden-xs" colspan='4'>Shots</th>
 				<th class="hidden-xs" colspan='2'>Homing daggers</th>
+				<th class="visible-xs">Stream (seconds)</th>
+				<th class="visible-xs">Shots</th>
+				<th class="visible-xs">Homing daggers</th>
 			</tr>
 			<tr>
 				<th>Name</th>
@@ -170,7 +177,7 @@
 						{
 							if (i != 2 || (i == 2 && upgrade.HomingShot != null))
 							{
-								<th data-breakpoints="xs"><span style='color: #@upgrade.ColorCode;'>@Html.Raw(RazorUtils.GetUpgradeLayoutAnchor(upgrade))</span></th>
+								<th @((upgrade!=GameHelper.Level4)?"data-breakpoints=xs":"")><span style='color: #@upgrade.ColorCode;'>@Html.Raw(RazorUtils.GetUpgradeLayoutAnchor(upgrade))</span></th>
 							}
 						}
 					}
@@ -290,36 +297,11 @@
 					<div>Behaviour</div>
 					<div>
 						<ul>
-							@{
-								// Ugly hack
-								int lines = 0;
-								switch (enemy.Name)
-								{
-									case "Centipede": lines = 2; break;
-									case "Gigapede": lines = 5; break;
-									case "Thorn": lines = 7; break;
-									case "Spider I": lines = 6; break;
-									case "Skull II": lines = 2; break;
-									case "Transmuted Skull II": lines = 2; break;
-									case "Spiderling": lines = 9; break;
-								}
-
-								for (int i = 0; i < enemy.Info.Count; i++)
-								{
-									<li>
-										@Html.Raw(RazorUtils.GetLayout(enemy.Info[i]))
-
-										@{
-											if (i == enemy.Info.Count - 1)
-											{
-												for (int j = 0; j < lines; j++)
-												{
-													<br class="hide-mobile" />
-												}
-											}
-										}
-									</li>
-								}
+							@for (int i = 0; i < enemy.Info.Count; i++)
+							{
+								<li>
+									@Html.Raw(RazorUtils.GetLayout(enemy.Info[i]))
+								</li>
 							}
 						</ul>
 					</div>
