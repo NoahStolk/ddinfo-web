@@ -10,21 +10,21 @@ namespace DevilDaggersWebsite.Utils
 
 		public static string GetEnemyLayoutAnchor(Enemy enemy, bool plural = false)
 		{
-			return string.Format("<a style='color: #{0};' href='/Enemies/#{1}'>{2}{3}</a>", enemy.ColorCode, enemy.Name.Replace(" ", string.Empty), enemy.Name, (plural ? "s" : ""));
+			return string.Format("<a style='color: #{0};' href='/Enemies#{1}'>{2}{3}</a>", enemy.ColorCode, enemy.Name.Replace(" ", string.Empty), enemy.Name, (plural ? "s" : ""));
 		}
 
 		public static string GetUpgradeLayoutAnchor(Upgrade upgrade, bool hideMobile = false)
 		{
 			if (hideMobile)
-				return string.Format("<a style='color: #{0};' href='/Upgrades/#{1}'>{2}</a>", upgrade.ColorCode, string.Format("Level{0}", upgrade.Level), string.Format("<span class='hidden-xs'>Level </span>{0}", upgrade.Level));
+				return string.Format("<a style='color: #{0};' href='/Upgrades#{1}'>{2}</a>", upgrade.ColorCode, string.Format("Level{0}", upgrade.Level), string.Format("<span class='hidden-xs'>Level </span>{0}", upgrade.Level));
 
-			return string.Format("<a style='color: #{0};' href='/Upgrades/#{1}'>{2}</a>", upgrade.ColorCode, string.Format("Level{0}", upgrade.Level), string.Format("Level {0}", upgrade.Level));
+			return string.Format("<a style='color: #{0};' href='/Upgrades#{1}'>{2}</a>", upgrade.ColorCode, string.Format("Level{0}", upgrade.Level), string.Format("Level {0}", upgrade.Level));
 		}
 
 		public static string GetLayout(string str)
 		{
-			char[] beginSeparators = new char[] { '>', ' ', ',', '.' };
-			char[] endSeparators = new char[] { ' ', ',', '.', 's' };
+			char[] beginSeparators = new char[] { '>', ' ', ',', '.', '(' };
+			char[] endSeparators = new char[] { ' ', ',', '.', 's', ')' };
 
 			foreach (Enemy enemy in GameHelper.Enemies)
 			{
