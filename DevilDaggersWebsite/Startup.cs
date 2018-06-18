@@ -28,16 +28,16 @@ namespace DevilDaggersWebsite
 		{
 			// TODO: Fix regex
 			RewriteOptions options = new RewriteOptions()
-				.AddRedirect("Home", "Index")
 				.AddRedirect("Home/Index", "Index")
 				.AddRedirect("Home/Leaderboard", "Leaderboard")
+				.AddRedirect("Home/Spawnsets", "Spawnsets")
+				.AddRedirect("Home/SpawnsetsInfo", "Spawnsets")
 				.AddRedirect("Home/Spawns", "Spawns")
 				.AddRedirect("Home/Hands", "Upgrades")
 				.AddRedirect("Home/Enemies", "Enemies")
 				.AddRedirect("Home/Daggers", "Daggers")
-				.AddRedirect("Home/Spawnsets", "Spawnsets")
-				.AddRedirect("Home/SpawnsetsInfo", "Spawnsets")
-				.AddRedirect("Home/Donations", "Donations");
+				.AddRedirect("Home/Donations", "Donations")
+				.AddRedirect("Home", "Index");
 
 			app.UseRewriter(options);
 
