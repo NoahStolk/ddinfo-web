@@ -1,6 +1,9 @@
 ﻿@page
 @model DevilDaggersWebsite.Pages.EnemiesModel
+@using DevilDaggersWebsite.Utils
+@using DevilDaggersWebsite.Models.Game
 @{
+	string boxShadow = "0 0px 2px 2px";
 	ViewData["Title"] = "Enemies";
 	GameHelper.Squid1.Info = new List<string>
 {
@@ -109,15 +112,12 @@
 };
 }
 
-@using DevilDaggersWebsite.Utils
-@using DevilDaggersWebsite.Models.Game
-
 <header>
 	<h1>@ViewData["Title"]</h1>
 </header>
 
 <main role="main">
-	<h2>Summary</h2>
+	<h2 class="text-center">Summary</h2>
 	<table class="enemies-table" data-show-toggle="false" data-expand-first="false">
 		<thead>
 			<tr>
@@ -154,8 +154,8 @@
 		</tbody>
 	</table>
 
-	<h2>Damage Stats</h2>
-	<p>All of this information assumes 100% shot accuracy, and may not be relevant in some cases.</p>
+	<h2 class="text-center">Damage Stats</h2>
+	<p class="text-center">All of this information assumes 100% shot accuracy, and may not be relevant in some cases.</p>
 	<table class="enemies-table" data-show-toggle="false" data-expand-first="false">
 		<thead>
 			<tr>
@@ -177,7 +177,7 @@
 						{
 							if (i != 2 || (i == 2 && upgrade.HomingShot != null))
 							{
-								<th @((upgrade!=GameHelper.Level4)?"data-breakpoints=xs":"")><span style='color: #@upgrade.ColorCode;'>@Html.Raw(RazorUtils.GetUpgradeLayoutAnchor(upgrade))</span></th>
+								<th @((upgrade != GameHelper.Level4) ? "data-breakpoints=xs" : "")><span style='color: #@upgrade.ColorCode;'>@Html.Raw(RazorUtils.GetUpgradeLayoutAnchor(upgrade))</span></th>
 							}
 						}
 					}
@@ -252,34 +252,34 @@
 		</tbody>
 	</table>
 
-	<h2>Details</h2>
-	<div>
+	<h2 class="text-center">Details</h2>
+	<div class="flex-container flex-center upgrade-container">
 		@foreach (Enemy enemy in GameHelper.Enemies)
 		{
-			<div id="@enemy.Name.Replace(" ", string.Empty)">
-				<div>
+			<div class="upgrade" id="@enemy.Name.Replace(" ", string.Empty)" style="-webkit-box-shadow: @boxShadow #@(enemy.ColorCode); -moz-box-shadow: @boxShadow #@(enemy.ColorCode); box-shadow: @boxShadow #@(enemy.ColorCode);">
+				<div class="upgrade-row flex-container">
 					<div>Name</div>
-					<div style='color: #@enemy.ColorCode'>@enemy.Name</div>
+					<div class="text-right" style='color: #@enemy.ColorCode'>@enemy.Name</div>
 				</div>
-				<div>
+				<div class="upgrade-row flex-container">
 					<div>Image</div>
-					<div><img class="img-responsive" src='~/Images/Enemies/@(enemy.Name).jpg' /></div>
+					<div><img class="img-responsive pull-right" src='~/Images/Enemies/@(enemy.Name).jpg' /></div>
 				</div>
-				<div>
+				<div class="upgrade-row flex-container">
 					<div>HP</div>
-					<div>@enemy.HP @((enemy.HitPartCount != 1) ? "(" + enemy.HP / enemy.HitPartCount + " x " + enemy.HitPartCount + ")" : "")</div>
+					<div class="text-right">@enemy.HP @((enemy.HitPartCount != 1) ? "(" + enemy.HP / enemy.HitPartCount + " x " + enemy.HitPartCount + ")" : "")</div>
 				</div>
-				<div>
+				<div class="upgrade-row flex-container">
 					<div>Gems</div>
-					<div>@enemy.Gems</div>
+					<div class="text-right">@enemy.Gems</div>
 				</div>
-				<div>
+				<div class="upgrade-row flex-container">
 					<div>Death type</div>
-					<div style='color: #@enemy.Death.ColorCode'>@enemy.Death.Name</div>
+					<div class="text-right" style='color: #@enemy.Death.ColorCode'>@enemy.Death.Name</div>
 				</div>
-				<div>
+				<div class="upgrade-row flex-container">
 					<div>Spawned by</div>
-					<div>
+					<div class="text-right">
 						@if (enemy.SpawnedBy.Length == 0)
 						{
 							<span style='color: #DDDDDD;'>Game</span>
@@ -293,7 +293,7 @@
 						}
 					</div>
 				</div>
-				<div>
+				<div class="upgrade-row flex-container">
 					<div>Behaviour</div>
 					<div>
 						<ul>

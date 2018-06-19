@@ -9,7 +9,7 @@ namespace DevilDaggersWebsite.Utils
 {
 	public class LeaderboardParser
 	{
-		private static string serverURL = "http://dd.hasmodai.com/backend15/get_scores.php";
+		private static readonly string serverURL = "http://dd.hasmodai.com/backend15/get_scores.php";
 
 		public static async Task<Leaderboard> LoadLeaderboard(Leaderboard leaderboard)
 		{
