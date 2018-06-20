@@ -6,7 +6,6 @@
 
 .leaderboard-username {
 	max-height: 1em;
-	overflow-y: hidden;
 	max-width: 224px;
 }
 
@@ -21,10 +20,6 @@
 
 .footable-details th {
 	text-align: left;
-}
-
-.leaderboard-table.footable-details th {
-	padding-left: 64px; /*todo*/
 }
 
 .input {

@@ -132,8 +132,10 @@
 				<tr>
 					@*<td data-sort-value="@entry.ID" class="text-right @(ban ? "ban" : "")">@entry.ID</td>*@
 					<td data-sort-value="@entry.Rank" class="text-right @(ban ? "ban" : "")">@entry.Rank</td>
-					<td data-sort-value="@entry.Username" class="@(!string.IsNullOrEmpty(role) ? role : dagger.Name.ToLower()) text-left leaderboard-username">@entry.Username</td>
-					<td data-sort-value="@entry.Time" class="text-right @(!string.IsNullOrEmpty(role) ? role : dagger.Name.ToLower())">@string.Format("{0:0.0000}", (double)entry.Time / 10000)</td>
+					@*<td data-sort-value="@entry.Username" class="@(!string.IsNullOrEmpty(role) ? role : dagger.Name.ToLower()) text-left leaderboard-username">@entry.Username</td>*@
+					@*<td data-sort-value="@entry.Time" class="text-right @(!string.IsNullOrEmpty(role) ? role : dagger.Name.ToLower())">@string.Format("{0:0.0000}", (double)entry.Time / 10000)</td>*@
+					<td data-sort-value="@entry.Username" class="@(ban ? "ban" : dagger.Name.ToLower()) text-left leaderboard-username"><div style="overflow-y: hidden; max-height: 1.5em;">@entry.Username</div></td>
+					<td data-sort-value="@entry.Time" class="text-right @(ban ? "ban" : dagger.Name.ToLower())">@string.Format("{0:0.0000}", (double)entry.Time / 10000)</td>
 					<td data-sort-value="@entry.Kills" class="text-right @(ban ? "ban" : "")">@entry.Kills</td>
 					<td data-sort-value="@entry.Gems" class="text-right @(ban ? "ban" : "")">@entry.Gems</td>
 					<td data-sort-value="@accuracy" class="text-right @(ban ? "ban" : "")">@string.Format("{0:0.0000}%", accuracy)</td>
