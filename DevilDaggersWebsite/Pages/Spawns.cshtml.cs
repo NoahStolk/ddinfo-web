@@ -17,9 +17,7 @@ namespace DevilDaggersWebsite.Pages
 
 		public void OnGet()
         {
-			string webRoot = _env.WebRootPath;
-
-			V3Path = Path.Combine(webRoot, string.Format(@"spawnsets/V3_Sorath"));
+			V3Path = Path.Combine(_env.WebRootPath, string.Format(@"spawnsets/V3_Sorath"));
 		}
     }
 }
