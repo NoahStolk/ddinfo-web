@@ -12,17 +12,12 @@ namespace DevilDaggersWebsite.Utils
 	public class LeaderboardParser
 	{
 		private static readonly string serverURL = "http://dd.hasmodai.com/backend15/get_scores.php";
-		private static readonly string jsonURL = "http://ddstats.com/api/get_scores";
 
 		public static async Task<Leaderboard> LoadLeaderboard(Leaderboard leaderboard)
 		{
-			//byte[] leaderboardData = await GetLeaderboardData(leaderboard);
+			byte[] leaderboardData = await GetLeaderboardData(leaderboard);
 
-			//return ParseLeaderboardData(leaderboard, leaderboardData);
-
-			string leaderboardDataJson = await GetLeaderboardDataJson(leaderboard);
-
-			return ParseLeaderboardDataJson(leaderboard, leaderboardDataJson);
+			return ParseLeaderboardData(leaderboard, leaderboardData);
 		}
 
 		private static async Task<byte[]> GetLeaderboardData(Leaderboard leaderboard)
@@ -91,27 +86,26 @@ namespace DevilDaggersWebsite.Utils
 			return leaderboard;
 		}
 
-		private static async Task<string> GetLeaderboardDataJson(Leaderboard leaderboard)
+		private static readonly string serverURLJson = "http://ddstats.com/api/get_scores";
+
+		private static Leaderboard LoadLeaderboardJson(Leaderboard leaderboard)
 		{
-			//Dictionary<string, string> postValues = new Dictionary<string, string>
-			//{
-			//	{ "offset", (leaderboard.Offset-1).ToString() }
-			//};
+			string leaderboardDataJson = GetLeaderboardDataJson(leaderboard);
 
-			//FormUrlEncodedContent content = new FormUrlEncodedContent(postValues);
-			//HttpClient client = new HttpClient();
-			//HttpResponseMessage resp = await client.PostAsync(serverURL, content);
-			//return await resp.Content.ReadAsStringAsync();
+			return ParseLeaderboardDataJson(leaderboard, leaderboardDataJson);
+		}
 
+		private static string GetLeaderboardDataJson(Leaderboard leaderboard)
+		{
 			using (WebClient wc = new WebClient())
 			{
-				return wc.DownloadString($"{jsonURL}?offset={(leaderboard.Offset - 1)}");
+				return wc.DownloadString($"{serverURLJson}?offset={(leaderboard.Offset - 1)}");
 			}
 		}
 
-		private static Leaderboard ParseLeaderboardDataJson(Leaderboard leaderboard, string json)
+		private static Leaderboard ParseLeaderboardDataJson(Leaderboard leaderboard, string leaderboardDataJson)
 		{
-			dynamic dynamic = JsonConvert.DeserializeObject(json);
+			dynamic dynamic = JsonConvert.DeserializeObject(leaderboardDataJson);
 
 			leaderboard.Players = dynamic.global_player_count;
 			leaderboard.TimeGlobal = dynamic.global_time * 10000;
