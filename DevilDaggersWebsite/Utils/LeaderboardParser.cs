@@ -1,6 +1,8 @@
 ﻿using DevilDaggersWebsite.Models.Leaderboard;
+using Newtonsoft.Json;
 using System;
 using System.Collections.Generic;
+using System.Net;
 using System.Net.Http;
 using System.Text;
 using System.Threading.Tasks;
@@ -10,12 +12,17 @@ namespace DevilDaggersWebsite.Utils
 	public class LeaderboardParser
 	{
 		private static readonly string serverURL = "http://dd.hasmodai.com/backend15/get_scores.php";
+		private static readonly string jsonURL = "http://ddstats.com/api/get_scores";
 
 		public static async Task<Leaderboard> LoadLeaderboard(Leaderboard leaderboard)
 		{
-			byte[] leaderboardData = await GetLeaderboardData(leaderboard);
+			//byte[] leaderboardData = await GetLeaderboardData(leaderboard);
 
-			return ParseLeaderboardData(leaderboard, leaderboardData);
+			//return ParseLeaderboardData(leaderboard, leaderboardData);
+
+			string leaderboardDataJson = await GetLeaderboardDataJson(leaderboard);
+
+			return ParseLeaderboardDataJson(leaderboard, leaderboardDataJson);
 		}
 
 		private static async Task<byte[]> GetLeaderboardData(Leaderboard leaderboard)
@@ -79,6 +86,63 @@ namespace DevilDaggersWebsite.Utils
 				leaderboard.Entries.Add(entry);
 
 				rankIterator++;
+			}
+
+			return leaderboard;
+		}
+
+		private static async Task<string> GetLeaderboardDataJson(Leaderboard leaderboard)
+		{
+			//Dictionary<string, string> postValues = new Dictionary<string, string>
+			//{
+			//	{ "offset", (leaderboard.Offset-1).ToString() }
+			//};
+
+			//FormUrlEncodedContent content = new FormUrlEncodedContent(postValues);
+			//HttpClient client = new HttpClient();
+			//HttpResponseMessage resp = await client.PostAsync(serverURL, content);
+			//return await resp.Content.ReadAsStringAsync();
+
+			using (WebClient wc = new WebClient())
+			{
+				return wc.DownloadString($"{jsonURL}?offset={(leaderboard.Offset - 1)}");
+			}
+		}
+
+		private static Leaderboard ParseLeaderboardDataJson(Leaderboard leaderboard, string json)
+		{
+			dynamic dynamic = JsonConvert.DeserializeObject(json);
+
+			leaderboard.Players = dynamic.global_player_count;
+			leaderboard.TimeGlobal = dynamic.global_time * 10000;
+			leaderboard.GemsGlobal = dynamic.global_gems;
+			leaderboard.ShotsHitGlobal = dynamic.global_daggers_hit;
+			leaderboard.ShotsFiredGlobal = dynamic.global_daggers_fired;
+			leaderboard.KillsGlobal = dynamic.global_enemies_killed;
+			leaderboard.DeathsGlobal = dynamic.global_deaths;
+
+			foreach (dynamic d in dynamic.entry_list)
+			{
+				Entry entry = new Entry
+				{
+					Username = d.player_name,
+					ID = d.player_id,
+					Rank = d.rank,
+					Time = d.game_time * 10000,
+					Gems = d.gems,
+					ShotsHit = d.daggers_hit,
+					ShotsFired = d.daggers_fired,
+					Kills = d.enemies_killed,
+					DeathType = ((string)d.death_type).ToDeathType(),
+					TimeTotal = d.total_game_time * 10000,
+					GemsTotal = d.total_gems,
+					ShotsHitTotal = d.total_daggers_hit,
+					ShotsFiredTotal = d.total_daggers_fired,
+					KillsTotal = d.total_enemies_killed,
+					DeathsTotal = d.total_deaths
+				};
+
+				leaderboard.Entries.Add(entry);
 			}
 
 			return leaderboard;

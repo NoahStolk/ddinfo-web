@@ -63,5 +63,16 @@ namespace DevilDaggersWebsite.Utils
 		public static Upgrade[] Upgrades = { Level1, Level2, Level3, Level4 };
 		public static Dagger[] Daggers = { Default, Bronze, Silver, Golden, Devil };
 		public static Death[] Deaths = { Fallen, Swarmed, Impaled, Gored, Infested, Opened, Purged, Desecrated, Sacrificed, Eviscerated, Annihilated, Intoxicated, Envenmonated, Incarnated, Discarnated, Barbed };
+
+		public static int ToDeathType(this string deathName)
+		{
+			foreach (Death death in Deaths)
+			{
+				if (death.Name == deathName)
+					return death.Type;
+			}
+
+			throw new System.Exception($"Could not parse death type \"{deathName}\" to a valid death type.");
+		}
 	}
 }
