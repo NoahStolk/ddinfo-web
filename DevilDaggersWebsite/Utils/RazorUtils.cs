@@ -26,8 +26,9 @@ namespace DevilDaggersWebsite.Utils
 			char[] beginSeparators = new char[] { '>', ' ', ',', '.', '(' };
 			char[] endSeparators = new char[] { ' ', ',', '.', 's', ')' };
 
-			foreach (Enemy enemy in GameHelper.Enemies)
+			for (int i = GameHelper.Enemies.Length - 1; i >= 0; i--) // Reverse iteration because transmuted skulls are after normal skulls in the list
 			{
+				Enemy enemy = GameHelper.Enemies[i];
 				foreach (char begin in beginSeparators)
 				{
 					foreach (char end in endSeparators)

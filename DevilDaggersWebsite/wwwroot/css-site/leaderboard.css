@@ -27,11 +27,6 @@
 	padding-left: 64px; /*todo*/
 }
 
-.footable-details td,
-.footable-details th {
-	font-size: 18px;
-}
-
 .input {
 	text-align: center;
 	color: red;
