@@ -118,12 +118,12 @@
 
 <main role="main">
 	<h2 class="text-center">Summary</h2>
-	<table class="enemies-table" data-show-toggle="false" data-expand-first="false">
+	<table class="enemies-table" data-show-toggle="false" data-expand-all="true">
 		<thead>
 			<tr>
-				<th>Name</th>
-				<th>HP</th>
-				<th>Gems</th>
+				<th class="hidden-xs">Enemy</th>
+				<th data-breakpoints="xs">HP</th>
+				<th data-breakpoints="xs">Gems</th>
 				<th data-breakpoints="xs">Death type</th>
 				<th data-breakpoints="xs">Spawned by</th>
 			</tr>
@@ -156,20 +156,11 @@
 
 	<h2 class="text-center">Damage Stats</h2>
 	<p class="text-center">All of this information assumes 100% shot accuracy, and may not be relevant in some cases.</p>
-	<table class="enemies-table" data-show-toggle="false" data-expand-first="false">
+	<table class="enemies-table" data-show-toggle="false" data-expand-all="true">
 		<thead>
 			<tr>
-				<th colspan='2'>Enemy</th>
-				<th class="hidden-xs" colspan='4'>Stream (seconds)</th>
-				<th class="hidden-xs" colspan='4'>Shots</th>
-				<th class="hidden-xs" colspan='2'>Homing daggers</th>
-				<th class="visible-xs">Stream (seconds)</th>
-				<th class="visible-xs">Shots</th>
-				<th class="visible-xs">Homing daggers</th>
-			</tr>
-			<tr>
-				<th>Name</th>
-				<th>HP</th>
+				<th class="hidden-xs">Enemy</th>
+				<th data-breakpoints="xs">HP</th>
 				@{
 					for (int i = 0; i < 3; i++)
 					{
@@ -177,7 +168,9 @@
 						{
 							if (i != 2 || (i == 2 && upgrade.HomingShot != null))
 							{
-								<th @((upgrade != GameHelper.Level4) ? "data-breakpoints=xs" : "")><span style='color: #@upgrade.ColorCode;'>@Html.Raw(RazorUtils.GetUpgradeLayoutAnchor(upgrade))</span></th>
+								<th data-breakpoints="xs">
+									@Html.Raw(RazorUtils.GetUpgradeLayoutAnchor(upgrade))
+								</th>
 							}
 						}
 					}
@@ -197,19 +190,19 @@
 							switch (i)
 							{
 								case 0:
-									<td class='text-right'>@string.Format("{0:0.0000}", enemy.HP / upgrade.DefaultSpray)</td>
+									<td class='text-right'>@string.Format("{0:0.0000}", enemy.HP / upgrade.DefaultSpray) seconds</td>
 									break;
 								case 1:
-									<td class='text-right'>@Math.Ceiling(enemy.HP / upgrade.DefaultShot)</td>
+									<td class='text-right'>@Math.Ceiling(enemy.HP / upgrade.DefaultShot) shots</td>
 									break;
 								case 2:
 									if (upgrade.Level == 3)
 									{
-										<td class='text-right'>@(enemy.Homing3 == null ? "N/A" : enemy.Homing3.ToString())</td>
+										<td class='text-right'>@(enemy.Homing3 == null ? "N/A" : enemy.Homing3.ToString() + " homing daggers")</td>
 									}
 									else if (upgrade.Level == 4)
 									{
-										<td class='text-right'>@(enemy.Homing4 == null ? "N/A" : enemy.Homing4.ToString())</td>
+										<td class='text-right'>@(enemy.Homing4 == null ? "N/A" : enemy.Homing4.ToString() + " homing daggers")</td>
 									}
 									break;
 							}
@@ -228,19 +221,19 @@
 								switch (i)
 								{
 									case 0:
-										<td class='text-right'>@string.Format("{0:0.0000}", enemy.HP / upgrade.DefaultSpray / enemy.HitPartCount)</td>
+										<td class='text-right'>@string.Format("{0:0.0000}", enemy.HP / upgrade.DefaultSpray / enemy.HitPartCount) seconds</td>
 										break;
 									case 1:
-										<td class='text-right'>@Math.Ceiling(enemy.HP / upgrade.DefaultShot / enemy.HitPartCount)</td>
+										<td class='text-right'>@Math.Ceiling(enemy.HP / upgrade.DefaultShot / enemy.HitPartCount) shots</td>
 										break;
 									case 2:
 										if (upgrade.Level == 3)
 										{
-											<td class='text-right'>@(enemy.Homing3 == null ? "N/A" : (enemy.Homing3 / enemy.HitPartCount).ToString())</td>
+											<td class='text-right'>@(enemy.Homing3 == null ? "N/A" : (enemy.Homing3 / enemy.HitPartCount).ToString() + " homing daggers")</td>
 										}
 										else if (upgrade.Level == 4)
 										{
-											<td class='text-right'>@(enemy.Homing4 == null ? "N/A" : (enemy.Homing4 / enemy.HitPartCount).ToString())</td>
+											<td class='text-right'>@(enemy.Homing4 == null ? "N/A" : (enemy.Homing4 / enemy.HitPartCount).ToString() + " homing daggers")</td>
 										}
 										break;
 								}
@@ -252,13 +245,26 @@
 		</tbody>
 	</table>
 
+	<h2 class="text-center">Homing daggers</h2>
+	<ul>
+		@Html.Raw(RazorUtils.GetLayout(@"
+		<li>All homing daggers deal 10 damage in most cases.</li>
+		<li>Level 4 homing daggers have splash damage. This means that when they're destroyed, they create a little explosion that can cause damage (most likely 10) to near enemies. For example, you only need one Level 4 homing dagger to kill a Squid II, as the explosion will destroy the other gem.</li>
+		<li>I'm not sure why you need 3 Level 4 homing daggers to kill a Squid III gem, but only 1 Level 3 homing dagger... Seems like a bug.</li>
+		<li>Also not sure why you need 10 Level 4 homing daggers to kill a single Transmuted Skull I, while one single Level 3 homing dagger can kill 4 of them... Probably another bug.</li>
+		<li>Spider Egg I, Spider Egg II, and The Orb are the only enemies that are not targeted by any homing daggers.</li>
+		<li>Leviathan, The Orb, Spider Egg I, Spider Egg II have some sort of defense against homing daggers, so all homing daggers only deal 1 damage to them instead of 10 (they also get destroyed instantly when touching these enemies).</li>
+		<li>Spider I and Spider II seem to have more defense (not just to homing, but to normal daggers as well) when they're hiding, though I'm not sure.</li>
+		<li>Various parts of an enemy can destroy a homing dagger instantly. For example; parts of Spider I, a Gigapede segment with no gem on it, parts of Leviathan, etc. Interestingly, when any homing dagger flies into Squid I, Squid II, or Squid III, it simply bounces off (though sometimes it still gets destroyed for some reason).</li>"))
+	</ul>
+
 	<h2 class="text-center">Details</h2>
 	<div class="flex-container flex-center upgrade-container">
 		@foreach (Enemy enemy in GameHelper.Enemies)
 		{
 			<div class="upgrade" id="@enemy.Name.Replace(" ", string.Empty)" style="-webkit-box-shadow: @boxShadow #@(enemy.ColorCode); -moz-box-shadow: @boxShadow #@(enemy.ColorCode); box-shadow: @boxShadow #@(enemy.ColorCode);">
 				<div class="upgrade-row flex-container">
-					<div>Name</div>
+					<div>Enemy</div>
 					<div class="text-right" style='color: #@enemy.ColorCode'>@enemy.Name</div>
 				</div>
 				<div class="upgrade-row flex-container">
