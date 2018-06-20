@@ -5,9 +5,13 @@
 }
 
 .leaderboard-username {
-	max-height: 1em;
 	max-width: 224px;
 }
+
+	.leaderboard-username > div {
+		overflow-y: hidden;
+		max-height: 1.42857143em;
+	}
 
 .leaderboard-death {
 	text-align: center;
