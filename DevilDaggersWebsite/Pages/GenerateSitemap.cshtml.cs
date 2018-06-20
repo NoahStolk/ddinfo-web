@@ -21,6 +21,7 @@ namespace DevilDaggersWebsite.Pages
 		public void OnGet()
 		{
 			SitemapUtils.ExcludePage("DownloadSpawnset");
+			SitemapUtils.ExcludePage("Spawnset");
 			XmlResult = SitemapUtils.GetSitemap(_httpContextAccessor, _env);
 		}
 	}
