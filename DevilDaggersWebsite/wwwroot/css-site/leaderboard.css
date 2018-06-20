@@ -8,10 +8,12 @@
 	max-width: 224px;
 }
 
-	.leaderboard-username > div {
+	/*.leaderboard-username > span {
 		overflow-y: hidden;
 		max-height: 1.42857143em;
-	}
+		white-space: pre;
+		float: right;
+	}*/
 
 .leaderboard-death {
 	text-align: center;
