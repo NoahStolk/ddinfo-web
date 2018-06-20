@@ -1,28 +1,25 @@
 ﻿using CoreBase.Extensions;
-using Microsoft.AspNetCore.Hosting;
-using Microsoft.AspNetCore.Http;
+using CoreBase.Services;
 using Microsoft.AspNetCore.Mvc.RazorPages;
 
 namespace DevilDaggersWebsite.Pages
 {
 	public class GenerateSitemapModel : PageModel
     {
-		private IHostingEnvironment _env;
-		private IHttpContextAccessor _httpContextAccessor;
+		private readonly ICommonObjects _commonObjects;
 
 		public string XmlResult { get; set; }
 
-		public GenerateSitemapModel(IHostingEnvironment env, IHttpContextAccessor httpContextAccessor)
+		public GenerateSitemapModel(ICommonObjects commonObjects)
 		{
-			_env = env;
-			_httpContextAccessor = httpContextAccessor;
+			_commonObjects = commonObjects;
 		}
 
 		public void OnGet()
 		{
 			SitemapUtils.ExcludePage("DownloadSpawnset");
 			SitemapUtils.ExcludePage("Spawnset");
-			XmlResult = SitemapUtils.GetSitemap(_httpContextAccessor, _env);
+			XmlResult = SitemapUtils.GetSitemap(_commonObjects);
 		}
 	}
 }
