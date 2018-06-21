@@ -19,8 +19,8 @@
 
 @media (min-width: 1200px) {
 	.enemies-summary-row > div {
-		width: 30%;
-		max-width: 30%;
+		width: 35%;
+		max-width: 35%;
 	}
 
 		.enemies-summary-row > div:nth-child(1),
@@ -31,8 +31,8 @@
 
 		.enemies-summary-row > div:nth-child(2),
 		.enemies-summary-row > div:nth-child(3) {
-			width: 10%;
-			max-width: 10%;
+			width: 7.5%;
+			max-width: 7.5%;
 		}
 
 	.damage-stats-row > div {
