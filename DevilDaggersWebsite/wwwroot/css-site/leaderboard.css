@@ -129,7 +129,15 @@
 
 .leaderboard-expand {
 	flex-direction: column;
+	max-height: 0;
+	transition: max-height 0.35s ease-out;
+	overflow: hidden;
 }
+
+	.leaderboard-expand.expand {
+		max-height: 500px;
+		transition: max-height 0.45s ease-in;
+	}
 
 	.leaderboard-expand > div {
 		padding-right: 8px;

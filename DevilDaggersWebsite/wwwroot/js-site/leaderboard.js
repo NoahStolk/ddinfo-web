@@ -1,10 +1,8 @@
 ﻿$(document).ready(function () {
 	$(document).on("click", ".leaderboard-row", function () {
 		var id = $(this).attr('id').split('-')[0];
+		$("#" + id + "-expand").toggleClass('expand');
 
-		if ($("#" + id + "-expand").css('visibility') != 'visible')
-			$("#" + id + "-expand").css('visibility', 'visible');
-		else
-			$("#" + id + "-expand").css('visibility', 'collapse');
+		$(".leaderboard-expand").not("#" + id + "-expand").removeClass('expand');
 	});
 });
