@@ -7,14 +7,42 @@
 		width: 20%;
 	}
 
-.damage-stats-row {
+.damage-stats-row,
+.damage-stats-row-top {
 	flex-direction: row;
 }
 
-	.damage-stats-row > div {
+	.damage-stats-row > div,
+	.damage-stats-row-top > div {
 		padding-right: 8px;
-		width: 20%;
 	}
+
+@media (min-width: 1200px) {
+	.damage-stats-row > div {
+		width: 7.54%;
+	}
+
+		.damage-stats-row > div:nth-child(1) {
+			min-width: 17%;
+			width: 17%;
+		}
+
+	.damage-stats-row-top > div:nth-child(1) {
+		min-width: 24.54%;
+		width: 24.54%;
+	}
+
+	.damage-stats-row-top > div:nth-child(2),
+	.damage-stats-row-top > div:nth-child(3) {
+		min-width: 30.15%;
+		width: 30.15%;
+	}
+
+	.damage-stats-row-top > div:nth-child(4) {
+		min-width: 15.16%;
+		width: 15.16%;
+	}
+}
 
 .enemy-container {
 	flex-direction: row;
