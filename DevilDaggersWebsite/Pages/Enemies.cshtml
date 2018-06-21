@@ -117,34 +117,94 @@
 </header>
 
 <main role="main">
-	<h2 class="text-center">Summary</h2>
-	<div class="flex-container flex-center" style="flex-direction: column;">
-		<div class="enemies-summary-row flex-container">
-			<div>Enemy</div>
-			<div>HP</div>
-			<div>Gems</div>
-			<div>Death type</div>
-			<div>Spawned by</div>
+	<h2 class="text-center hidden-xs">Summary</h2>
+	<div class="">
+		<div class="flex-container flex-center hidden-xs" style="flex-direction: column; max-width: 960px; margin-left:auto; margin-right:auto;">
+			<div class="enemies-summary-row-top flex-container">
+				<div>Enemy</div>
+				<div>HP</div>
+				<div>Gems</div>
+				<div>Death type</div>
+				<div>Spawned by</div>
+			</div>
+			@foreach (Enemy enemy in GameHelper.Enemies)
+			{
+				<div class="enemies-summary-row-top flex-container">
+					<div>@Html.Raw(RazorUtils.GetEnemyLayoutAnchor(enemy))</div>
+					<div class='text-right'>@enemy.HP</div>
+					<div class='text-right'>@enemy.Gems</div>
+					<div style='color: #@enemy.Death.ColorCode'>@enemy.Death.Name</div>
+					<div>
+						@if (enemy.SpawnedBy.Length == 0)
+						{
+							@:Game
+						}
+						else
+						{
+							foreach (Enemy e in enemy.SpawnedBy)
+							{
+								@Html.Raw(RazorUtils.GetEnemyLayoutAnchor(e) + " ")
+							}
+						}
+					</div>
+				</div>
+			}
 		</div>
+	</div>
+
+	<h2 class="text-center">Details</h2>
+	<div class="flex-container flex-center enemy-container">
 		@foreach (Enemy enemy in GameHelper.Enemies)
 		{
-			<div class="enemies-summary-row flex-container">
-				<div>@Html.Raw(RazorUtils.GetEnemyLayoutAnchor(enemy))</div>
-				<div class='text-right'>@enemy.HP</div>
-				<div class='text-right'>@enemy.Gems</div>
-				<div style='color: #@enemy.Death.ColorCode'>@enemy.Death.Name</div>
-				<div>
-					@if (enemy.SpawnedBy.Length == 0)
-					{
-						@:Game
-					}
-					else
-					{
-						foreach (Enemy e in enemy.SpawnedBy)
+			<div class="enemy" id="@(enemy.Name.Replace(" ", string.Empty))" style="-webkit-box-shadow: @boxShadow #@(enemy.ColorCode); -moz-box-shadow: @boxShadow #@(enemy.ColorCode); box-shadow: @boxShadow #@(enemy.ColorCode);">
+				<div class="enemy-row flex-container">
+					<div>Enemy</div>
+					<div class="text-right" style='color: #@enemy.ColorCode'>@enemy.Name</div>
+				</div>
+				<div class="enemy-row flex-container">
+					<div>Image</div>
+					<div><img class="img-responsive pull-right" src='~/Images/Enemies/@(enemy.Name).jpg' /></div>
+				</div>
+				<div class="enemy-row flex-container">
+					<div>HP</div>
+					<div class="text-right">@enemy.HP @((enemy.HitPartCount != 1) ? "(" + enemy.HP / enemy.HitPartCount + " x " + enemy.HitPartCount + ")" : "")</div>
+				</div>
+				<div class="enemy-row flex-container">
+					<div>Gems</div>
+					<div class="text-right">@enemy.Gems</div>
+				</div>
+				<div class="enemy-row flex-container">
+					<div>Death type</div>
+					<div class="text-right" style='color: #@enemy.Death.ColorCode'>@enemy.Death.Name</div>
+				</div>
+				<div class="enemy-row flex-container">
+					<div>Spawned by</div>
+					<div class="text-right">
+						@if (enemy.SpawnedBy.Length == 0)
 						{
-							@Html.Raw(RazorUtils.GetEnemyLayoutAnchor(e) + " ")
+							<span style='color: #DDDDDD;'>Game</span>
 						}
-					}
+						else
+						{
+							foreach (Enemy e in enemy.SpawnedBy)
+							{
+								<span>@Html.Raw(RazorUtils.GetEnemyLayoutAnchor(e))</span>
+							}
+						}
+					</div>
+				</div>
+				<div class="enemy-row flex-container">
+					<div>Behaviour</div>
+					<div>
+						<ul>
+							@for (int i = 0; i < enemy.Info.Count; i++)
+							{
+								<li>
+									@Html.Raw(RazorUtils.GetLayout(enemy.Info[i]))
+								</li>
+							}
+						</ul>
+					</div>
 				</div>
 			</div>
 		}
@@ -155,7 +215,7 @@
 	<div class="flex-container flex-center" style="flex-direction: column;">
 		<div class="damage-stats-row-top flex-container">
 			<div>Enemy</div>
-			<div>Stream (seconds)</div>
+			<div>Spray (seconds)</div>
 			<div>Shots</div>
 			<div>Homing daggers</div>
 		</div>
@@ -234,7 +294,7 @@
 						{
 							case 0:
 								<div class="damage-stats-row flex-container">
-									<div>@Html.Raw(RazorUtils.GetUpgradeLayoutAnchor(upgrade)) stream (seconds)</div>
+									<div>@Html.Raw(RazorUtils.GetUpgradeLayoutAnchor(upgrade)) spray (seconds)</div>
 									<div class="text-right">@string.Format("{0:0.0000}", enemy.HP / upgrade.DefaultSpray)</div>
 								</div>
 								break;
@@ -266,7 +326,7 @@
 			@for (int i = 0; i < 3; i++)
 			{
 				<div class="damage-stats-row flex-container hidden-xs hidden-lg">
-					<div>@(i == 0 ? "Stream (seconds)" : i == 1 ? "Shots" : "Homing daggers")</div>
+					<div>@(i == 0 ? "Spray (seconds)" : i == 1 ? "Shots" : "Homing daggers")</div>
 					<div></div>
 					@foreach (Upgrade upgrade in GameHelper.Upgrades)
 					{
@@ -335,7 +395,7 @@
 						</div>
 					}
 				</div>
-				
+
 				<div class="visible-xs">
 					<div class="damage-stats-row damage-stats-row-main flex-container">
 						<div>Name</div>
@@ -354,7 +414,7 @@
 							{
 								case 0:
 									<div class="damage-stats-row flex-container">
-										<div>@Html.Raw(RazorUtils.GetUpgradeLayoutAnchor(upgrade)) stream (seconds)</div>
+										<div>@Html.Raw(RazorUtils.GetUpgradeLayoutAnchor(upgrade)) spray (seconds)</div>
 										<div class="text-right">@string.Format("{0:0.0000}", enemy.HP / upgrade.DefaultSpray / enemy.HitPartCount)</div>
 									</div>
 									break;
@@ -386,7 +446,7 @@
 				@for (int i = 0; i < 3; i++)
 				{
 					<div class="damage-stats-row flex-container hidden-xs hidden-lg">
-						<div>@(i == 0 ? "Stream (seconds)" : i == 1 ? "Shots" : "Homing daggers")</div>
+						<div>@(i == 0 ? "Spray (seconds)" : i == 1 ? "Shots" : "Homing daggers")</div>
 						<div></div>
 						@foreach (Upgrade upgrade in GameHelper.Upgrades)
 						{
@@ -423,71 +483,11 @@
 	<h2 class="text-center">Homing daggers</h2>
 	<ul>
 		@Html.Raw(RazorUtils.GetLayout(@"
-		<li>All homing daggers deal 10 damage in most cases.</li>
-		<li>Level 4 homing daggers have splash damage. This means that when they're destroyed, they create a little explosion that can cause damage (most likely 10) to near enemies. For example, you only need one Level 4 homing dagger to kill a Squid II, as the explosion will destroy the other gem.</li>
-		<li>I'm not sure why you need 3 Level 4 homing daggers to kill a Squid III gem, but only 1 Level 3 homing dagger... Seems like a bug.</li>
-		<li>Also not sure why you need 10 Level 4 homing daggers to kill a single Transmuted Skull I, while one single Level 3 homing dagger can kill 4 of them... Probably another bug.</li>
-		<li>Spider Egg I, Spider Egg II, and The Orb are the only enemies that are not targeted by any homing daggers.</li>
-		<li>Leviathan, The Orb, Spider Egg I, Spider Egg II have some sort of defense against homing daggers, so all homing daggers only deal 1 damage to them instead of 10 (they also get destroyed instantly when touching these enemies).</li>
-		<li>Spider I and Spider II seem to have more defense (not just to homing, but to normal daggers as well) when they're hiding, though I'm not sure.</li>
-		<li>Various parts of an enemy can destroy a homing dagger instantly. For example; parts of Spider I, a Gigapede segment with no gem on it, parts of Leviathan, etc. Interestingly, when any homing dagger flies into Squid I, Squid II, or Squid III, it simply bounces off (though sometimes it still gets destroyed for some reason).</li>"))
+		<li>All homing daggers cause 10 damage to most enemies.</li>
+		<li>Leviathan, The Orb, Spider Egg I, and Spider Egg II only take 1 damage from homing daggers.</li>
+		<li>The Orb, Spider Egg I, and Spider Egg II are the only enemies that are not targeted by any homing daggers.</li>
+		<li>Level 4 homing daggers cause splash damage. This means that when they're destroyed, they create a little explosion that can cause damage (most likely 10) to near enemies. For example, you only need one Level 4 homing dagger to kill a Squid II, as the explosion will destroy the other gem.</li>
+		<li>Not sure why you need 3 Level 4 homing daggers to kill a Squid III gem, but only 1 Level 3 homing dagger... Seems like a bug.</li>
+		<li>Also not sure why you need 10 Level 4 homing daggers to kill a single Transmuted Skull I, while one single Level 3 homing dagger can kill 4 of them... Probably another bug.</li>"))
 	</ul>
-
-	<h2 class="text-center">Details</h2>
-	<div class="flex-container flex-center enemy-container">
-		@foreach (Enemy enemy in GameHelper.Enemies)
-		{
-			<div class="enemy" id="@(enemy.Name.Replace(" ", string.Empty))" style="-webkit-box-shadow: @boxShadow #@(enemy.ColorCode); -moz-box-shadow: @boxShadow #@(enemy.ColorCode); box-shadow: @boxShadow #@(enemy.ColorCode);">
-				<div class="enemy-row flex-container">
-					<div>Enemy</div>
-					<div class="text-right" style='color: #@enemy.ColorCode'>@enemy.Name</div>
-				</div>
-				<div class="enemy-row flex-container">
-					<div>Image</div>
-					<div><img class="img-responsive pull-right" src='~/Images/Enemies/@(enemy.Name).jpg' /></div>
-				</div>
-				<div class="enemy-row flex-container">
-					<div>HP</div>
-					<div class="text-right">@enemy.HP @((enemy.HitPartCount != 1) ? "(" + enemy.HP / enemy.HitPartCount + " x " + enemy.HitPartCount + ")" : "")</div>
-				</div>
-				<div class="enemy-row flex-container">
-					<div>Gems</div>
-					<div class="text-right">@enemy.Gems</div>
-				</div>
-				<div class="enemy-row flex-container">
-					<div>Death type</div>
-					<div class="text-right" style='color: #@enemy.Death.ColorCode'>@enemy.Death.Name</div>
-				</div>
-				<div class="enemy-row flex-container">
-					<div>Spawned by</div>
-					<div class="text-right">
-						@if (enemy.SpawnedBy.Length == 0)
-						{
-							<span style='color: #DDDDDD;'>Game</span>
-						}
-						else
-						{
-							foreach (Enemy e in enemy.SpawnedBy)
-							{
-								<span>@Html.Raw(RazorUtils.GetEnemyLayoutAnchor(e))</span>
-							}
-						}
-					</div>
-				</div>
-				<div class="enemy-row flex-container">
-					<div>Behaviour</div>
-					<div>
-						<ul>
-							@for (int i = 0; i < enemy.Info.Count; i++)
-							{
-								<li>
-									@Html.Raw(RazorUtils.GetLayout(enemy.Info[i]))
-								</li>
-							}
-						</ul>
-					</div>
-				</div>
-			</div>
-		}
-	</div>
 </main>

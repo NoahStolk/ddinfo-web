@@ -1,9 +1,10 @@
-﻿.enemies-summary-row {
+﻿.enemies-summary-row,
+.enemies-summary-row-top {
 	flex-direction: row;
-	max-width: 960px;
 }
 
-	.enemies-summary-row > div {
+	.enemies-summary-row > div,
+	.enemies-summary-row-top > div {
 		padding-right: 8px;
 	}
 
@@ -18,19 +19,19 @@
 	}
 
 @media (min-width: 1200px) {
-	.enemies-summary-row > div {
+	.enemies-summary-row-top > div {
 		width: 35%;
 		max-width: 35%;
 	}
 
-		.enemies-summary-row > div:nth-child(1),
-		.enemies-summary-row > div:nth-child(4) {
+		.enemies-summary-row-top > div:nth-child(1),
+		.enemies-summary-row-top > div:nth-child(4) {
 			width: 25%;
 			max-width: 25%;
 		}
 
-		.enemies-summary-row > div:nth-child(2),
-		.enemies-summary-row > div:nth-child(3) {
+		.enemies-summary-row-top > div:nth-child(2),
+		.enemies-summary-row-top > div:nth-child(3) {
 			width: 7.5%;
 			max-width: 7.5%;
 		}
@@ -62,27 +63,27 @@
 }
 
 @media (min-width: 768px) and (max-width: 1199px) {
-	.enemies-summary-row > div:nth-child(1) {
+	.enemies-summary-row-top > div:nth-child(1) {
 		width: 26.5%;
 		max-width: 26.5%;
 	}
 
-	.enemies-summary-row > div:nth-child(2) {
+	.enemies-summary-row-top > div:nth-child(2) {
 		width: 7%;
 		max-width: 7%;
 	}
 
-	.enemies-summary-row > div:nth-child(3) {
+	.enemies-summary-row-top > div:nth-child(3) {
 		width: 8%;
 		max-width: 8%;
 	}
 
-	.enemies-summary-row > div:nth-child(4) {
+	.enemies-summary-row-top > div:nth-child(4) {
 		width: 22%;
 		max-width: 22%;
 	}
 
-	.enemies-summary-row > div:nth-child(5) {
+	.enemies-summary-row-top > div:nth-child(5) {
 		width: 36.5%;
 		max-width: 36.5%;
 	}
@@ -109,6 +110,27 @@
 }
 
 @media (max-width: 767px) {
+	.enemies-summary-row-top > div:nth-child(1) {
+		width: 65%;
+		max-width: 65%;
+	}
+
+	.enemies-summary-row-top > div:nth-child(2),
+	.enemies-summary-row-top > div:nth-child(3) {
+		width: 17.5%;
+		max-width: 17.5%;
+	}
+
+	.enemies-summary-row-top {
+		padding-top: 1em;
+	}
+
+		.enemies-summary-row > div:nth-child(1),
+		.enemies-summary-row > div:nth-child(2) {
+			width: 50%;
+			max-width: 50%;
+		}
+
 	.damage-stats-row > div:nth-child(1) {
 		width: 65%;
 	}
