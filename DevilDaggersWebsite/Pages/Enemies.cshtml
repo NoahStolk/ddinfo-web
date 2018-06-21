@@ -159,7 +159,7 @@
 			<div>Shots</div>
 			<div>Homing daggers</div>
 		</div>
-		<div class="damage-stats-row flex-container">
+		<div class="damage-stats-row flex-container hidden-xs">
 			<div>Name</div>
 			<div>HP</div>
 			@{
@@ -169,7 +169,7 @@
 					{
 						if (i != 2 || (i == 2 && upgrade.HomingShot != null))
 						{
-							<div>
+							<div class="hidden-sm hidden-md">
 								@Html.Raw(RazorUtils.GetUpgradeLayoutAnchor(upgrade))
 							</div>
 						}
@@ -179,9 +179,9 @@
 		</div>
 		@foreach (Enemy enemy in GameHelper.Enemies)
 		{
-			<div class="damage-stats-row flex-container">
+			<div class="damage-stats-row damage-stats-row-main flex-container hidden-xs">
 				<div>@Html.Raw(RazorUtils.GetEnemyLayoutAnchor(enemy))</div>
-				<div class='text-right'>@enemy.HP</div>
+				<div class="text-right">@enemy.HP</div>
 				@for (int i = 0; i < 3; i++)
 				{
 					foreach (Upgrade upgrade in GameHelper.Upgrades)
@@ -189,30 +189,119 @@
 						switch (i)
 						{
 							case 0:
-								<div class='text-right'>@string.Format("{0:0.0000}", enemy.HP / upgrade.DefaultSpray)</div>
+								<div class="hidden-sm hidden-md text-right">@string.Format("{0:0.0000}", enemy.HP / upgrade.DefaultSpray)</div>
 								break;
 							case 1:
-								<div class='text-right'>@Math.Ceiling(enemy.HP / upgrade.DefaultShot)</div>
+								<div class="hidden-sm hidden-md text-right">@Math.Ceiling(enemy.HP / upgrade.DefaultShot)</div>
 								break;
 							case 2:
 								if (upgrade.Level == 3)
 								{
-									<div class='text-right'>@(enemy.Homing3 == null ? "N/A" : enemy.Homing3.ToString())</div>
+									<div class="hidden-sm hidden-md text-right">@(enemy.Homing3 == null ? "N/A" : enemy.Homing3.ToString())</div>
 								}
 								else if (upgrade.Level == 4)
 								{
-									<div class='text-right'>@(enemy.Homing4 == null ? "N/A" : enemy.Homing4.ToString())</div>
+									<div class="hidden-sm hidden-md text-right">@(enemy.Homing4 == null ? "N/A" : enemy.Homing4.ToString())</div>
 								}
 								break;
 						}
 					}
 				}
+
+				@foreach (Upgrade upgrade in GameHelper.Upgrades)
+				{
+					<div class="hidden-lg text-right">
+						@Html.Raw(RazorUtils.GetUpgradeLayoutAnchor(upgrade))
+					</div>
+				}
 			</div>
+
+			<div class="visible-xs">
+				<div class="damage-stats-row damage-stats-row-main flex-container">
+					<div>Name</div>
+					<div class="text-right">@Html.Raw(RazorUtils.GetEnemyLayoutAnchor(enemy))</div>
+				</div>
+				<div class="damage-stats-row flex-container">
+					<div>HP</div>
+					<div class="text-right">@enemy.HP</div>
+				</div>
+
+				@for (int i = 0; i < 3; i++)
+				{
+					foreach (Upgrade upgrade in GameHelper.Upgrades)
+					{
+						switch (i)
+						{
+							case 0:
+								<div class="damage-stats-row flex-container">
+									<div>@Html.Raw(RazorUtils.GetUpgradeLayoutAnchor(upgrade)) stream (seconds)</div>
+									<div class="text-right">@string.Format("{0:0.0000}", enemy.HP / upgrade.DefaultSpray)</div>
+								</div>
+								break;
+							case 1:
+								<div class="damage-stats-row flex-container">
+									<div>@Html.Raw(RazorUtils.GetUpgradeLayoutAnchor(upgrade)) shots</div>
+									<div class="text-right">@Math.Ceiling(enemy.HP / upgrade.DefaultShot)</div>
+								</div>
+								break;
+							case 2:
+								<div class="damage-stats-row flex-container">
+									@if (upgrade.Level == 3)
+									{
+										<div>@Html.Raw(RazorUtils.GetUpgradeLayoutAnchor(upgrade)) homing daggers</div>
+										<div class="text-right">@(enemy.Homing3 == null ? "N/A" : enemy.Homing3.ToString())</div>
+									}
+									else if (upgrade.Level == 4)
+									{
+										<div>@Html.Raw(RazorUtils.GetUpgradeLayoutAnchor(upgrade)) homing daggers</div>
+										<div class="text-right">@(enemy.Homing4 == null ? "N/A" : enemy.Homing4.ToString())</div>
+									}
+								</div>
+								break;
+						}
+					}
+				}
+			</div>
+
+			@for (int i = 0; i < 3; i++)
+			{
+				<div class="damage-stats-row flex-container hidden-xs hidden-lg">
+					<div>@(i == 0 ? "Stream (seconds)" : i == 1 ? "Shots" : "Homing daggers")</div>
+					<div></div>
+					@foreach (Upgrade upgrade in GameHelper.Upgrades)
+					{
+						switch (i)
+						{
+							case 0:
+								<div class="text-right">@string.Format("{0:0.0000}", enemy.HP / upgrade.DefaultSpray)</div>
+								break;
+							case 1:
+								<div class="text-right">@Math.Ceiling(enemy.HP / upgrade.DefaultShot)</div>
+								break;
+							case 2:
+								if (upgrade.Level == 3)
+								{
+									<div class="text-right">@(enemy.Homing3 == null ? "N/A" : enemy.Homing3.ToString())</div>
+								}
+								else if (upgrade.Level == 4)
+								{
+									<div class="text-right">@(enemy.Homing4 == null ? "N/A" : enemy.Homing4.ToString())</div>
+								}
+								else
+								{
+									<div class="text-right">N/A</div>
+								}
+								break;
+						}
+					}
+				</div>
+			}
+
 			if (enemy.HitPartCount != 1)
 			{
-				<div class="damage-stats-row flex-container">
-					<div><a href="#@(enemy.Name.Replace(" ", string.Empty))" style="color: #@enemy.ColorCode">@enemy.Name (Gem)</a></div>
-					<div class='text-right'>@(enemy.HP / enemy.HitPartCount)</div>
+				<div class="damage-stats-row damage-stats-row-main flex-container hidden-xs">
+					<div>@Html.Raw(RazorUtils.GetEnemyLayoutAnchor(enemy)) (Gem)</div>
+					<div class="text-right">@(enemy.HP / enemy.HitPartCount)</div>
 					@for (int i = 0; i < 3; i++)
 					{
 						foreach (Upgrade upgrade in GameHelper.Upgrades)
@@ -220,25 +309,113 @@
 							switch (i)
 							{
 								case 0:
-									<div class='text-right'>@string.Format("{0:0.0000}", enemy.HP / upgrade.DefaultSpray / enemy.HitPartCount)</div>
+									<div class="hidden-sm hidden-md text-right">@string.Format("{0:0.0000}", enemy.HP / upgrade.DefaultSpray / enemy.HitPartCount)</div>
 									break;
 								case 1:
-									<div class='text-right'>@Math.Ceiling(enemy.HP / upgrade.DefaultShot / enemy.HitPartCount)</div>
+									<div class="hidden-sm hidden-md text-right">@Math.Ceiling(enemy.HP / upgrade.DefaultShot / enemy.HitPartCount)</div>
 									break;
 								case 2:
 									if (upgrade.Level == 3)
 									{
-										<div class='text-right'>@(enemy.Homing3 == null ? "N/A" : (enemy.Homing3 / enemy.HitPartCount).ToString())</div>
+										<div class="hidden-sm hidden-md text-right">@(enemy.Homing3 == null ? "N/A" : (enemy.Homing3 / enemy.HitPartCount).ToString())</div>
 									}
 									else if (upgrade.Level == 4)
 									{
-										<div class='text-right'>@(enemy.Homing4 == null ? "N/A" : (enemy.Homing4 / enemy.HitPartCount).ToString())</div>
+										<div class="hidden-sm hidden-md text-right">@(enemy.Homing4 == null ? "N/A" : (enemy.Homing4 / enemy.HitPartCount).ToString())</div>
 									}
 									break;
 							}
 						}
 					}
+
+					@foreach (Upgrade upgrade in GameHelper.Upgrades)
+					{
+						<div class="hidden-lg text-right">
+							@Html.Raw(RazorUtils.GetUpgradeLayoutAnchor(upgrade))
+						</div>
+					}
 				</div>
+				
+				<div class="visible-xs">
+					<div class="damage-stats-row damage-stats-row-main flex-container">
+						<div>Name</div>
+						<div class="text-right">@Html.Raw(RazorUtils.GetEnemyLayoutAnchor(enemy)) (Gem)</div>
+					</div>
+					<div class="damage-stats-row flex-container">
+						<div>HP</div>
+						<div class="text-right">@(enemy.HP / enemy.HitPartCount)</div>
+					</div>
+
+					@for (int i = 0; i < 3; i++)
+					{
+						foreach (Upgrade upgrade in GameHelper.Upgrades)
+						{
+							switch (i)
+							{
+								case 0:
+									<div class="damage-stats-row flex-container">
+										<div>@Html.Raw(RazorUtils.GetUpgradeLayoutAnchor(upgrade)) stream (seconds)</div>
+										<div class="text-right">@string.Format("{0:0.0000}", enemy.HP / upgrade.DefaultSpray / enemy.HitPartCount)</div>
+									</div>
+									break;
+								case 1:
+									<div class="damage-stats-row flex-container">
+										<div>@Html.Raw(RazorUtils.GetUpgradeLayoutAnchor(upgrade)) shots</div>
+										<div class="text-right">@Math.Ceiling(enemy.HP / upgrade.DefaultShot / enemy.HitPartCount)</div>
+									</div>
+									break;
+								case 2:
+									<div class="damage-stats-row flex-container">
+										@if (upgrade.Level == 3)
+										{
+											<div>@Html.Raw(RazorUtils.GetUpgradeLayoutAnchor(upgrade)) homing daggers</div>
+											<div class="text-right">@(enemy.Homing3 == null ? "N/A" : (enemy.Homing3 / enemy.HitPartCount).ToString())</div>
+										}
+										else if (upgrade.Level == 4)
+										{
+											<div>@Html.Raw(RazorUtils.GetUpgradeLayoutAnchor(upgrade)) homing daggers</div>
+											<div class="text-right">@(enemy.Homing4 == null ? "N/A" : (enemy.Homing4 / enemy.HitPartCount).ToString())</div>
+										}
+									</div>
+									break;
+							}
+						}
+					}
+				</div>
+
+				@for (int i = 0; i < 3; i++)
+				{
+					<div class="damage-stats-row flex-container hidden-xs hidden-lg">
+						<div>@(i == 0 ? "Stream (seconds)" : i == 1 ? "Shots" : "Homing daggers")</div>
+						<div></div>
+						@foreach (Upgrade upgrade in GameHelper.Upgrades)
+						{
+							switch (i)
+							{
+								case 0:
+									<div class="text-right">@string.Format("{0:0.0000}", enemy.HP / upgrade.DefaultSpray / enemy.HitPartCount)</div>
+									break;
+								case 1:
+									<div class="text-right">@Math.Ceiling(enemy.HP / upgrade.DefaultShot / enemy.HitPartCount)</div>
+									break;
+								case 2:
+									if (upgrade.Level == 3)
+									{
+										<div class="text-right">@(enemy.Homing3 == null ? "N/A" : (enemy.Homing3 / enemy.HitPartCount).ToString())</div>
+									}
+									else if (upgrade.Level == 4)
+									{
+										<div class="text-right">@(enemy.Homing4 == null ? "N/A" : (enemy.Homing4 / enemy.HitPartCount).ToString())</div>
+									}
+									else
+									{
+										<div class="text-right">N/A</div>
+									}
+									break;
+							}
+						}
+					</div>
+				}
 			}
 		}
 	</div>
