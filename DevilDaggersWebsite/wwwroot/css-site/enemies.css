@@ -1,9 +1,38 @@
-﻿.enemies-table td,
-.enemies-table th {
-	padding: 0 10px 0 10px;
-	overflow: hidden;
+﻿.enemies-summary-row {
+	flex-direction: row;
 }
 
-.enemies-table.footable-details th {
-	padding-left: 0;
+	.enemies-summary-row > div {
+		padding-right: 8px;
+		width: 20%;
+	}
+
+.damage-stats-row {
+	flex-direction: row;
 }
+
+	.damage-stats-row > div {
+		padding-right: 8px;
+		width: 20%;
+	}
+
+.enemy-container {
+	flex-direction: row;
+	flex-wrap: wrap;
+}
+
+.enemy {
+	width: 380px;
+	padding: 8px;
+	margin: 8px;
+	border-radius: 2px;
+}
+
+.enemy-row {
+	flex-direction: row;
+	justify-content: space-between;
+}
+
+	.enemy-row > div {
+		flex-grow: 1;
+	}

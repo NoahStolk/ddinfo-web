@@ -1,10 +1,4 @@
-﻿.leaderboard-table td,
-.leaderboard-table th {
-	padding: 0 10px 0 10px;
-	overflow: hidden;
-}
-
-.leaderboard-username {
+﻿.leaderboard-username {
 	max-width: 224px;
 	max-height: 1.42857143em;
 	overflow: hidden;
