@@ -1,24 +1,7 @@
-﻿.leaderboard-table td,
-.leaderboard-table th {
-	padding: 0 10px 0 10px;
-	overflow: hidden;
-}
-
-.leaderboard-username {
+﻿.leaderboard-username {
 	max-width: 224px;
-}
-
-.leaderboard-death {
-	text-align: center;
-}
-
-.footable-details td {
-	text-align: right;
-	padding-right: 0;
-}
-
-.footable-details th {
-	text-align: left;
+	max-height: 1.42857143em;
+	overflow: hidden;
 }
 
 .input {
@@ -31,6 +14,131 @@
 	text-decoration: line-through;
 	color: #666666;
 }
+
+.leaderboard-row,
+.leaderboard-title-row {
+	flex-direction: row;
+}
+
+	.leaderboard-row > div,
+	.leaderboard-title-row > div {
+		padding-right: 8px;
+	}
+
+@media (min-width: 1600px) {
+	.leaderboard-row > div,
+	.leaderboard-title-row > div {
+		width: 9.09%;
+	}
+
+		.leaderboard-row > div:nth-child(1),
+		.leaderboard-title-row > div:nth-child(1),
+		.leaderboard-row > div:nth-child(4),
+		.leaderboard-title-row > div:nth-child(4),
+		.leaderboard-row > div:nth-child(5),
+		.leaderboard-title-row > div:nth-child(5) {
+			min-width: 6%;
+			width: 6%;
+		}
+
+		.leaderboard-row > div:nth-child(6),
+		.leaderboard-title-row > div:nth-child(6) {
+			min-width: 8%;
+			width: 8%;
+		}
+
+	.leaderboard-expand {
+		padding-left: 6%;
+	}
+}
+
+@media (min-width: 1200px) and (max-width: 1599px) {
+	.leaderboard-row > div,
+	.leaderboard-title-row > div {
+		width: 10%;
+	}
+
+		.leaderboard-row > div:nth-child(1),
+		.leaderboard-title-row > div:nth-child(1),
+		.leaderboard-row > div:nth-child(4),
+		.leaderboard-title-row > div:nth-child(4),
+		.leaderboard-row > div:nth-child(5),
+		.leaderboard-title-row > div:nth-child(5),
+		.leaderboard-row > div:nth-child(12),
+		.leaderboard-title-row > div:nth-child(12) {
+			min-width: 6%;
+			width: 6%;
+		}
+
+		.leaderboard-row > div:nth-child(2),
+		.leaderboard-title-row > div:nth-child(2),
+		.leaderboard-row > div:nth-child(6),
+		.leaderboard-title-row > div:nth-child(6),
+		.leaderboard-row > div:nth-child(11),
+		.leaderboard-title-row > div:nth-child(11) {
+			min-width: 8%;
+			width: 8%;
+		}
+
+		.leaderboard-row > div:nth-child(7),
+		.leaderboard-title-row > div:nth-child(7),
+		.leaderboard-row > div:nth-child(8),
+		.leaderboard-title-row > div:nth-child(8) {
+			min-width: 12%;
+			width: 12%;
+		}
+
+	.leaderboard-expand {
+		padding-left: 6%;
+	}
+}
+
+@media (min-width: 768px) and (max-width: 1199px) {
+	.leaderboard-row > div,
+	.leaderboard-title-row > div {
+		width: 20%;
+	}
+
+		.leaderboard-row > div:nth-child(1),
+		.leaderboard-title-row > div:nth-child(1) {
+			min-width: 9%;
+			width: 9%;
+		}
+
+	.leaderboard-expand {
+		padding-left: 9%;
+	}
+}
+
+@media (max-width: 767px) {
+	.leaderboard-row > div,
+	.leaderboard-title-row > div {
+		width: 50%;
+	}
+
+		.leaderboard-row > div:nth-child(1),
+		.leaderboard-title-row > div:nth-child(1) {
+			min-width: 18%;
+			width: 18%;
+		}
+
+	.leaderboard-expand {
+		padding-left: 18%;
+	}
+}
+
+.leaderboard-expand {
+	flex-direction: column;
+}
+
+	.leaderboard-expand > div {
+		padding-right: 8px;
+	}
+
+		.leaderboard-expand > div > div {
+			width: 50%;
+			float: left;
+		}
 
 .admin {
 	background: url('../Images/Fonts/fontadmin.png');
