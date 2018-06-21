@@ -5,6 +5,20 @@
 
 	.enemies-summary-row > div {
 		padding-right: 8px;
+	}
+
+.damage-stats-row,
+.damage-stats-row-top {
+	flex-direction: row;
+}
+
+	.damage-stats-row > div,
+	.damage-stats-row-top > div {
+		padding-right: 8px;
+	}
+
+@media (min-width: 1200px) {
+	.enemies-summary-row > div {
 		width: 30%;
 		max-width: 30%;
 	}
@@ -21,17 +35,6 @@
 			max-width: 10%;
 		}
 
-.damage-stats-row,
-.damage-stats-row-top {
-	flex-direction: row;
-}
-
-	.damage-stats-row > div,
-	.damage-stats-row-top > div {
-		padding-right: 8px;
-	}
-
-@media (min-width: 1200px) {
 	.damage-stats-row > div {
 		width: 7.54%;
 	}
@@ -59,6 +62,31 @@
 }
 
 @media (min-width: 768px) and (max-width: 1199px) {
+	.enemies-summary-row > div:nth-child(1) {
+		width: 26.5%;
+		max-width: 26.5%;
+	}
+
+	.enemies-summary-row > div:nth-child(2) {
+		width: 7%;
+		max-width: 7%;
+	}
+
+	.enemies-summary-row > div:nth-child(3) {
+		width: 8%;
+		max-width: 8%;
+	}
+
+	.enemies-summary-row > div:nth-child(4) {
+		width: 22%;
+		max-width: 22%;
+	}
+
+	.enemies-summary-row > div:nth-child(5) {
+		width: 36.5%;
+		max-width: 36.5%;
+	}
+
 	.damage-stats-row > div {
 		width: 15%;
 	}
@@ -66,6 +94,7 @@
 		.damage-stats-row > div:nth-child(1) {
 			width: 35%;
 		}
+
 		.damage-stats-row > div:nth-child(2) {
 			width: 5%;
 		}
