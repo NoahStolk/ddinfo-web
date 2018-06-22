@@ -84,7 +84,7 @@
 		</p>
 	</div>
 
-	<div class="flex-container flex-center" style="flex-direction: column;">
+	<div class="leaderboard-container flex-container flex-center">
 		<div class="leaderboard-title-row flex-container">
 			<div class="text-center">#</div>
 			<div class="text-center">Username</div>
@@ -126,7 +126,7 @@
 			double accuracyTotal = entry.ShotsFiredTotal == 0 ? 0 : (double)entry.ShotsHitTotal / (double)entry.ShotsFiredTotal * 100;
 
 			string role = (admin ? "admin" : ban ? "ban" : donator ? "donator" : "");
-			string username = entry.Username;//.Substring(0, Math.Min(entry.Username.Length, 16)).Replace("#", "") + (entry.Username.Length > 16 ? "..." : "");
+			string username = entry.Username;
 			<div class="leaderboard-row flex-container" id="@(entry.Rank)-row">
 				<div class="text-right @(ban ? "ban" : "")">@entry.Rank</div>
 				<div class="text-left @(ban ? "ban" : dagger.Name.ToLower()) leaderboard-username">@username</div>

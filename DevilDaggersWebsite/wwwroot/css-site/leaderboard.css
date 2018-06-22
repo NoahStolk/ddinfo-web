@@ -1,4 +1,8 @@
-﻿.leaderboard-username {
+﻿.leaderboard-container {
+	flex-direction: column;
+}
+
+.leaderboard-username {
 	max-width: 224px;
 	max-height: 1.42857143em;
 	overflow: hidden;
