@@ -105,35 +105,35 @@ namespace DevilDaggersWebsite.Utils
 
 		private static Leaderboard ParseLeaderboardDataJson(Leaderboard leaderboard, string leaderboardDataJson)
 		{
-			dynamic dynamic = JsonConvert.DeserializeObject(leaderboardDataJson);
+			dynamic jsonLeaderboard = JsonConvert.DeserializeObject(leaderboardDataJson);
 
-			leaderboard.Players = dynamic.global_player_count;
-			leaderboard.TimeGlobal = dynamic.global_time * 10000;
-			leaderboard.GemsGlobal = dynamic.global_gems;
-			leaderboard.ShotsHitGlobal = dynamic.global_daggers_hit;
-			leaderboard.ShotsFiredGlobal = dynamic.global_daggers_fired;
-			leaderboard.KillsGlobal = dynamic.global_enemies_killed;
-			leaderboard.DeathsGlobal = dynamic.global_deaths;
+			leaderboard.Players = jsonLeaderboard.global_player_count;
+			leaderboard.TimeGlobal = jsonLeaderboard.global_time * 10000;
+			leaderboard.GemsGlobal = jsonLeaderboard.global_gems;
+			leaderboard.ShotsHitGlobal = jsonLeaderboard.global_daggers_hit;
+			leaderboard.ShotsFiredGlobal = jsonLeaderboard.global_daggers_fired;
+			leaderboard.KillsGlobal = jsonLeaderboard.global_enemies_killed;
+			leaderboard.DeathsGlobal = jsonLeaderboard.global_deaths;
 
-			foreach (dynamic d in dynamic.entry_list)
+			foreach (dynamic jsonEntry in jsonLeaderboard.entry_list)
 			{
 				Entry entry = new Entry
 				{
-					Username = d.player_name,
-					ID = d.player_id,
-					Rank = d.rank,
-					Time = d.game_time * 10000,
-					Gems = d.gems,
-					ShotsHit = d.daggers_hit,
-					ShotsFired = d.daggers_fired,
-					Kills = d.enemies_killed,
-					DeathType = ((string)d.death_type).ToDeathType(),
-					TimeTotal = d.total_game_time * 10000,
-					GemsTotal = d.total_gems,
-					ShotsHitTotal = d.total_daggers_hit,
-					ShotsFiredTotal = d.total_daggers_fired,
-					KillsTotal = d.total_enemies_killed,
-					DeathsTotal = d.total_deaths
+					Username = jsonEntry.player_name,
+					ID = jsonEntry.player_id,
+					Rank = jsonEntry.rank,
+					Time = jsonEntry.game_time * 10000,
+					Gems = jsonEntry.gems,
+					ShotsHit = jsonEntry.daggers_hit,
+					ShotsFired = jsonEntry.daggers_fired,
+					Kills = jsonEntry.enemies_killed,
+					DeathType = ((string)jsonEntry.death_type).ToDeathType(),
+					TimeTotal = jsonEntry.total_game_time * 10000,
+					GemsTotal = jsonEntry.total_gems,
+					ShotsHitTotal = jsonEntry.total_daggers_hit,
+					ShotsFiredTotal = jsonEntry.total_daggers_fired,
+					KillsTotal = jsonEntry.total_enemies_killed,
+					DeathsTotal = jsonEntry.total_deaths
 				};
 
 				leaderboard.Entries.Add(entry);

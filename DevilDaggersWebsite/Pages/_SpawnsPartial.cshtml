@@ -1,6 +1,9 @@
 ﻿@model string
+@inject Microsoft.AspNetCore.Hosting.IHostingEnvironment env
 @using DevilDaggersWebsite.Models.Spawnset
 @using DevilDaggersWebsite.Utils
+@using Newtonsoft.Json;
+@using System.IO
 @{
 	int[] widths = new int[4] { 160, 160, 144, 128 };
 
@@ -18,6 +21,25 @@
 
 	bool showSpawns = (spawnset.Spawns.Count > 0 && !empty);
 
+	int maxWaves = RazorUtils.DEFAULT_MAX_WAVES;
+	string fileName = Model.Substring(Model.LastIndexOf('/') + 1, Model.LastIndexOf('_') - Model.LastIndexOf('/') - 1);
+	foreach (string settingsPath in Directory.GetFiles(System.IO.Path.Combine(env.WebRootPath, "spawnsets/Settings/")))
+	{
+		if (System.IO.Path.GetFileName(settingsPath.Substring(0, settingsPath.LastIndexOf('.'))) == fileName)
+		{
+			string jsonString = System.IO.File.ReadAllText(settingsPath);
+			dynamic json = JsonConvert.DeserializeObject(jsonString);
+
+			if (!int.TryParse((string)json.MaxWaves, out maxWaves))
+			{
+				// JSON parse failed but we don't really care
+				maxWaves = RazorUtils.DEFAULT_MAX_WAVES;
+			}
+
+			break;
+		}
+	}
+
 	<div class="flex-container flex-center flex-column text-center">
 		@if (showSpawns)
 		{
@@ -30,7 +52,7 @@
 
 			double seconds = 0;
 			int totalGems = 0;
-			List<Spawn>	endLoop = new List<Spawn>();
+			List<Spawn> endLoop = new List<Spawn>();
 
 			foreach (Spawn spawn in spawnset.Spawns)
 			{
@@ -72,9 +94,6 @@
 
 			if (endLoop.Count != 1)
 			{
-				int maxWaves = 250;
-				int maxSeconds = 1250;
-
 				double waveMod = 0;
 				double endGameSecond = seconds;
 				for (int i = 0; i < maxWaves; i++)
@@ -129,11 +148,6 @@
 						}
 					}
 					waveMod += 1f / 60f / 8f;
-
-					if (endGameSecond > maxSeconds)
-					{
-						break;
-					}
 				}
 			}
 

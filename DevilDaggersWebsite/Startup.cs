@@ -31,6 +31,7 @@ namespace DevilDaggersWebsite
 				.AddRedirect("Home/Leaderboard", "Leaderboard")
 				.AddRedirect("Home/Spawnsets", "Spawnsets")
 				.AddRedirect("Home/SpawnsetsInfo", "Spawnsets")
+				.AddRedirect("Home/Spawnset", "Spawnset")
 				.AddRedirect("Home/Spawns", "Spawns")
 				.AddRedirect("Home/Hands", "Upgrades")
 				.AddRedirect("Home/Enemies", "Enemies")

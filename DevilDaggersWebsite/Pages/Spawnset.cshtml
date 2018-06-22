@@ -12,6 +12,7 @@
 
 @using DevilDaggersWebsite.Utils
 @using DevilDaggersWebsite.Models.Spawnset
+@using Newtonsoft.Json;
 @using System.IO
 @{
 	int[] widths = new int[4] { 160, 128, 192, 128 };
@@ -28,11 +29,16 @@
 
 	@{
 		string description = string.Empty;
-		foreach (string descriptionPath in Directory.GetFiles(System.IO.Path.Combine(env.WebRootPath, "spawnsets/Descriptions/")))
+		foreach (string settingsPath in Directory.GetFiles(System.IO.Path.Combine(env.WebRootPath, "spawnsets/Settings/")))
 		{
-			if (System.IO.Path.GetFileName(descriptionPath) == name)
+			if (System.IO.Path.GetFileName(settingsPath.Substring(0, settingsPath.LastIndexOf('.'))) == name)
 			{
-				description = System.IO.File.ReadAllText(descriptionPath);
+				string jsonString = System.IO.File.ReadAllText(settingsPath);
+				dynamic json = JsonConvert.DeserializeObject(jsonString);
+
+				description = json.Description;
+
+				break;
 			}
 		}
 

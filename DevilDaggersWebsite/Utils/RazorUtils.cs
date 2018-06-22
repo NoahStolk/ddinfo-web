@@ -8,6 +8,8 @@ namespace DevilDaggersWebsite.Utils
 
 		public static string BanColorCode = "666666";
 
+		public const int DEFAULT_MAX_WAVES = 25;
+
 		public static string GetEnemyLayoutAnchor(Enemy enemy, bool plural = false)
 		{
 			return string.Format("<a style='color: #{0};' href='/Enemies#{1}'>{2}{3}</a>", enemy.ColorCode, enemy.Name.Replace(" ", string.Empty), enemy.Name, (plural ? "s" : ""));

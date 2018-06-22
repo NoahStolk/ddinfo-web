@@ -1,0 +1,3 @@
+﻿{
+	"Description": "This file is for practice. It gives you 75 gems (3 Centipedes), then puts you in the 3 Spider I / Centipede section of the game, which is then looped until 500 seconds, the arena size is locked (doesn't shrink) for efficient practice. The goal is to clear this section without using any homing daggers, however you will get the Level 4 hand around 200 seconds. Shoot homing during the break between waves for best practice.<br><br>Made with <a href='https://github.com/bowsr/DDSE'>bowsr's spawnset editor</a>"
+}
