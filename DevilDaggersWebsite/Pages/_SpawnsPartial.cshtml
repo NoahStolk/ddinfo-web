@@ -1,5 +1,5 @@
 ﻿@model string
-@inject Microsoft.AspNetCore.Hosting.IHostingEnvironment env
+@inject CoreBase.Services.ICommonObjects commonObjects
 @using DevilDaggersWebsite.Models.Spawnset
 @using DevilDaggersWebsite.Utils
 @using Newtonsoft.Json;
@@ -23,7 +23,7 @@
 
 	int maxWaves = RazorUtils.DEFAULT_MAX_WAVES;
 	string fileName = Model.Substring(Model.LastIndexOf('/') + 1, Model.LastIndexOf('_') - Model.LastIndexOf('/') - 1);
-	foreach (string settingsPath in Directory.GetFiles(System.IO.Path.Combine(env.WebRootPath, "spawnsets/Settings/")))
+	foreach (string settingsPath in Directory.GetFiles(System.IO.Path.Combine(commonObjects.Env.WebRootPath, "spawnsets/Settings/")))
 	{
 		if (System.IO.Path.GetFileName(settingsPath.Substring(0, settingsPath.LastIndexOf('.'))) == fileName)
 		{
@@ -37,6 +37,15 @@
 			}
 
 			break;
+		}
+	}
+
+	string wavesQuery = commonObjects.HttpContextAccessor.HttpContext.Request.Query["waves"];
+	if (int.TryParse(wavesQuery, out int t))
+	{
+		if (t > 0)
+		{
+			maxWaves = t;
 		}
 	}
 
@@ -54,8 +63,11 @@
 			int totalGems = 0;
 			List<Spawn> endLoop = new List<Spawn>();
 
+			int spawns = 0;
 			foreach (Spawn spawn in spawnset.Spawns)
 			{
+				spawns++;
+
 				endLoop.Add(spawn);
 				if (spawn.Enemy == null)
 				{
@@ -98,6 +110,11 @@
 				double endGameSecond = seconds;
 				for (int i = 0; i < maxWaves; i++)
 				{
+					if (spawns > RazorUtils.MAX_SPAWNS)
+					{
+						break;
+					}
+
 					<div class="text-left end-wave-separator">
 						<div style="background-color: red; height: 2px; width: auto;"></div>
 						<div class="hidden-xs">End wave @(i + 1)</div>
@@ -106,6 +123,8 @@
 					double delay = 0;
 					foreach (Spawn spawn in endLoop)
 					{
+						spawns++;
+
 						delay += spawn.Delay;
 						while (enemyTimer < delay)
 						{
