@@ -5,8 +5,8 @@
 	ViewData["Title"] = "Spawnset";
 
 	string fileName = HttpContext.Request.Query["spawnset"];
-	string name = fileName.Substring(0, fileName.IndexOf('_'));
-	string author = fileName.Substring(fileName.IndexOf('_') + 1);
+	string name = fileName.Substring(0, fileName.LastIndexOf('_'));
+	string author = fileName.Substring(fileName.LastIndexOf('_') + 1);
 	ViewBag.Title = string.Format("{0} by {1}", name, author);
 }
 
