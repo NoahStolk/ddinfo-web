@@ -66,7 +66,10 @@
 			int spawns = 0;
 			foreach (Spawn spawn in spawnset.Spawns)
 			{
-				spawns++;
+				if (spawn.Enemy != null)
+				{
+					spawns++;
+				}
 
 				endLoop.Add(spawn);
 				if (spawn.Enemy == null)
@@ -123,7 +126,10 @@
 					double delay = 0;
 					foreach (Spawn spawn in endLoop)
 					{
-						spawns++;
+						if (spawn.Enemy != null)
+						{
+							spawns++;
+						}
 
 						delay += spawn.Delay;
 						while (enemyTimer < delay)
