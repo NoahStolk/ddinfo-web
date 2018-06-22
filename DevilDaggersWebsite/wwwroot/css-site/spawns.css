@@ -1,0 +1,16 @@
+﻿.end-wave-separator {
+	height: 0;
+	min-width: 680px;
+	padding-right: 40px;
+	margin-left: auto;
+	margin-right: auto;
+}
+
+
+@media (max-width: 767px) {
+	.end-wave-separator {
+		min-width: unset;
+		width: 100%;
+		padding-right: 0;
+	}
+}

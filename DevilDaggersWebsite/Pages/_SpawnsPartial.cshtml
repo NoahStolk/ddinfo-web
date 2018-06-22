@@ -79,6 +79,10 @@
 				double endGameSecond = seconds;
 				for (int i = 0; i < maxWaves; i++)
 				{
+					<div class="text-left end-wave-separator">
+						<div style="background-color: red; height: 2px; width: auto;"></div>
+						<div class="hidden-xs">End wave @(i + 1)</div>
+					</div>
 					double enemyTimer = 0;
 					double delay = 0;
 					foreach (Spawn spawn in endLoop)
