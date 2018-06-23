@@ -1,4 +1,6 @@
-﻿namespace DevilDaggersWebsite.Models.Leaderboard
+﻿using DevilDaggersWebsite.Utils;
+
+namespace DevilDaggersWebsite.Models.Leaderboard
 {
 	public class Entry
 	{
@@ -30,7 +32,7 @@
 				kills='{Kills}'
 				gems='{Gems}'
 				accuracy='{Accuracy}'
-				death-type='{DeathType}'
+				death-type='{GameHelper.Deaths[DeathType].Name}'
 				total-time='{TimeTotal}'
 				total-kills='{KillsTotal}'
 				total-gems='{GemsTotal}'
