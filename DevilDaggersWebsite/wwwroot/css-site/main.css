@@ -69,15 +69,21 @@ a:hover {
 	text-align: center;
 	padding: 6px 12px;
 	font-size: 22px;
+	background-color: black;
 }
 
 	.btn:hover {
 		cursor: pointer;
 		color: red;
+		background-color: #111;
 	}
 
 .btn-default {
 	color: red;
+}
+
+input {
+	background-color: black;
 }
 
 @media (max-width: 767px) {
