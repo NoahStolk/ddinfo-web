@@ -155,7 +155,7 @@
 						</div>
 						<div class="visible-xs @(ban ? "ban" : "")">
 							<div class="text-left">Accuracy</div>
-							<div class="text-right">@string.Format("{0:0.00}%", entry.Accuracy)</div>
+							<div class="text-right">@string.Format(RazorUtils.DEFAULT_CULTURE, "{0:0.00}%", entry.Accuracy)</div>
 						</div>
 						<div class="visible-xs visible-sm visible-md @(ban ? "ban" : "")">
 							<div class="text-left">Death type</div>
@@ -163,7 +163,7 @@
 						</div>
 						<div class="visible-xs visible-sm visible-md @(ban ? "ban" : "")">
 							<div class="text-left">Total time</div>
-							<div class="text-right">@string.Format("{0:0.0000}", (double)entry.TimeTotal / 10000)</div>
+							<div class="text-right">@string.Format(RazorUtils.DEFAULT_CULTURE, "{0:0.0000}", (double)entry.TimeTotal / 10000)</div>
 						</div>
 						<div class="visible-xs visible-sm visible-md @(ban ? "ban" : "")">
 							<div class="text-left">Total kills</div>
@@ -175,7 +175,7 @@
 						</div>
 						<div class="visible-xs visible-sm visible-md @(ban ? "ban" : "")">
 							<div class="text-left">Total accuracy</div>
-							<div class="text-right">@string.Format("{0:0.00}%", entry.AccuracyTotal)</div>
+							<div class="text-right">@string.Format(RazorUtils.DEFAULT_CULTURE, "{0:0.00}%", entry.AccuracyTotal)</div>
 						</div>
 						<div class="visible-xs visible-sm visible-md @(ban ? "ban" : "")">
 							<div class="text-left">Total deaths</div>
