@@ -31,7 +31,7 @@
 				</div>
 				<div class="upgrade-row flex-container">
 					<div>Default spray</div>
-					<div class="text-right">@string.Format(RazorUtils.DEFAULT_CULTURE, $"{upgrade.DefaultSpray}") daggers per second</div>
+					<div class="text-right">@string.Format(RazorUtils.DEFAULT_CULTURE, "{0:0.##}", (double)upgrade.DefaultSpray) daggers per second</div>
 				</div>
 				<div class="upgrade-row flex-container">
 					<div>Default shot</div>
