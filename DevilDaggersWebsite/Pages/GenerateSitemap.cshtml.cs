@@ -5,7 +5,7 @@ using Microsoft.AspNetCore.Mvc.RazorPages;
 namespace DevilDaggersWebsite.Pages
 {
 	public class GenerateSitemapModel : PageModel
-    {
+	{
 		private readonly ICommonObjects _commonObjects;
 
 		public string XmlResult { get; set; }

@@ -3,10 +3,10 @@
 namespace DevilDaggersWebsite.Pages
 {
 	public class DonationsModel : PageModel
-    {
-        public void OnGet()
-        {
+	{
+		public void OnGet()
+		{
 
-        }
-    }
+		}
+	}
 }

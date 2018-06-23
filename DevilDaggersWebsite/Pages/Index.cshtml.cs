@@ -3,10 +3,10 @@
 namespace DevilDaggersWebsite.Pages
 {
 	public class IndexModel : PageModel
-    {
-        public void OnGet()
-        {
+	{
+		public void OnGet()
+		{
 
-        }
-    }
+		}
+	}
 }

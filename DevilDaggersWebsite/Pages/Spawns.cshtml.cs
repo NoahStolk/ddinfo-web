@@ -5,7 +5,7 @@ using System.IO;
 namespace DevilDaggersWebsite.Pages
 {
 	public class SpawnsModel : PageModel
-    {
+	{
 		public string V3Path { get; set; }
 
 		private readonly IHostingEnvironment _env;
@@ -16,8 +16,8 @@ namespace DevilDaggersWebsite.Pages
 		}
 
 		public void OnGet()
-        {
+		{
 			V3Path = Path.Combine(_env.WebRootPath, string.Format(@"spawnsets/V3_Sorath"));
 		}
-    }
+	}
 }

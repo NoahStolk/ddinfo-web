@@ -15,16 +15,16 @@
 <main role="main">
 	@{
 		List<Tool> tools = new List<Tool>
+	{
+		new Tool
 		{
-			new Tool
-			{
-				Name = "DevilDaggersSurvivalEditor",
-				DisplayName = "Devil Daggers Survival Editor",
-				Description = new HtmlString("Devil Daggers Survival Editor is a tool that lets you create, view, and edit 'survival' files (also known as spawnsets) for the game Devil Daggers."),
-				Link = "https://bitbucket.org/NoahStolk/devildaggerssurvivaleditor/src",
-				LinkText = "View source code and manual"
-			}
-		};
+			Name = "DevilDaggersSurvivalEditor",
+			DisplayName = "Devil Daggers Survival Editor",
+			Description = new HtmlString("Devil Daggers Survival Editor is a tool that lets you create, view, and edit 'survival' files (also known as spawnsets) for the game Devil Daggers."),
+			Link = "https://bitbucket.org/NoahStolk/devildaggerssurvivaleditor/src",
+			LinkText = "View source code and manual"
+		}
+	};
 
 		foreach (Tool t in tools)
 		{
