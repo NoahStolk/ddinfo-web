@@ -1,9 +1,12 @@
 ﻿using DevilDaggersWebsite.Models.Game;
+using System.Globalization;
 
 namespace DevilDaggersWebsite.Utils
 {
 	public static class RazorUtils
 	{
+		public static CultureInfo DEFAULT_CULTURE = CultureInfo.CreateSpecificCulture("en-US");
+
 		public static string Email = "contact@devildaggers.info";
 
 		public static string BanColorCode = "666666";
