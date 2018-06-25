@@ -29,7 +29,7 @@ namespace DevilDaggersWebsite
 			RewriteOptions options = new RewriteOptions()
 				.AddRedirect("Home/Index", "Index")
 				.AddRedirect("Home/Leaderboard", "Leaderboard")
-				.AddRedirect("Home/Spawnset/'.*", "Spawnsets")
+				.AddRedirect("Home/Spawnset/(.*)", "Spawnset?spawnset=$1")
 				.AddRedirect("Home/Spawnsets", "Spawnsets")
 				.AddRedirect("Home/SpawnsetsInfo", "Spawnsets")
 				.AddRedirect("Home/Spawnset", "Spawnset")
