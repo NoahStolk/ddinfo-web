@@ -3,54 +3,31 @@
 @model DevilDaggersWebsite.Pages.SpawnsetModel
 @{
 	ViewData["Title"] = "Spawnset";
-
-	string fileName = HttpContext.Request.Query["spawnset"];
-	string name = fileName.Substring(0, fileName.LastIndexOf('_'));
-	string author = fileName.Substring(fileName.LastIndexOf('_') + 1);
-	ViewBag.Title = string.Format("{0} by {1}", name, author);
+	ViewBag.Title = string.Format("{0} by {1}", Model.Name, Model.Author);
 }
 
 @using DevilDaggersWebsite.Utils
-@using DevilDaggersWebsite.Models.Spawnset
-@using Newtonsoft.Json;
-@using System.IO
 @{
 	int[] widths = new int[4] { 160, 128, 192, 128 };
 }
 
 <header>
-	<h1 class="dont-break-out">@name by @author</h1>
+	<h1 class="dont-break-out">@Model.Name by @Model.Author</h1>
 </header>
 
 <main role="main">
 	<div class="text-center">
-		<a class="btn btn-default" asp-page="DownloadSpawnset" asp-route-file="@fileName">Download</a>
+		<a class="btn btn-default" asp-page="DownloadSpawnset" asp-route-file="@Model.FileName">Download</a>
 	</div>
 
 	@{
-		string description = string.Empty;
-		foreach (string settingsPath in Directory.GetFiles(System.IO.Path.Combine(env.WebRootPath, "spawnsets/Settings/")))
+
+		if (!string.IsNullOrEmpty(Model.Description))
 		{
-			if (System.IO.Path.GetFileName(settingsPath.Substring(0, settingsPath.LastIndexOf('.'))) == name)
-			{
-				string jsonString = System.IO.File.ReadAllText(settingsPath);
-				dynamic json = JsonConvert.DeserializeObject(jsonString);
+			<h3>A note from @Model.Author</h3>
 
-				description = json.Description;
-
-				break;
-			}
+			<div>@Html.Raw(RazorUtils.GetLayout(Model.Description))</div>
 		}
-
-		if (!string.IsNullOrEmpty(description))
-		{
-			<h3>A note from @author</h3>
-
-			<div>@Html.Raw(RazorUtils.GetLayout(description))</div>
-		}
-
-		string path = System.IO.Path.Combine(env.WebRootPath, string.Format("spawnsets/{0}_{1}", name, author));
-		Spawnset spawnset = SpawnsetParser.ParseFile(path);
 	}
 
 	<div class="text-center">
@@ -61,21 +38,21 @@
 			<div style="width: @(widths[3])px;">Brightness</div>
 		</div>
 		<div class="flex-container flex-center">
-			<div style="width: @(widths[0])px;">@string.Format(RazorUtils.DEFAULT_CULTURE, "{0:0.#}", (double)spawnset.ShrinkStart)</div>
-			<div style="width: @(widths[1])px;">@string.Format(RazorUtils.DEFAULT_CULTURE, "{0:0.#}", (double)spawnset.ShrinkEnd)</div>
-			<div style="width: @(widths[2])px;">@string.Format(RazorUtils.DEFAULT_CULTURE, "{0:0.####}", (double)spawnset.ShrinkRate)</div>
-			<div style="width: @(widths[3])px;">@string.Format(RazorUtils.DEFAULT_CULTURE, "{0:0.#}", (double)spawnset.Brightness)</div>
+			<div style="width: @(widths[0])px;">@string.Format(RazorUtils.DEFAULT_CULTURE, "{0:0.#}", (double)Model.Spawnset.ShrinkStart)</div>
+			<div style="width: @(widths[1])px;">@string.Format(RazorUtils.DEFAULT_CULTURE, "{0:0.#}", (double)Model.Spawnset.ShrinkEnd)</div>
+			<div style="width: @(widths[2])px;">@string.Format(RazorUtils.DEFAULT_CULTURE, "{0:0.####}", (double)Model.Spawnset.ShrinkRate)</div>
+			<div style="width: @(widths[3])px;">@string.Format(RazorUtils.DEFAULT_CULTURE, "{0:0.#}", (double)Model.Spawnset.Brightness)</div>
 		</div>
 	</div>
 
 	<table class="tile-table">
 		@{
-			for (int i = 0; i < spawnset.ArenaTiles.GetLength(0); i++)
+			for (int i = 0; i < Model.Spawnset.ArenaTiles.GetLength(0); i++)
 			{
 				<tr>
-					@for (int j = 0; j < spawnset.ArenaTiles.GetLength(1); j++)
+					@for (int j = 0; j < Model.Spawnset.ArenaTiles.GetLength(1); j++)
 					{
-						float height = (float)Math.Round(spawnset.ArenaTiles[i, j] * 32 + 64);
+						float height = (float)Math.Round(Model.Spawnset.ArenaTiles[i, j] * 32 + 64);
 						<td class="arena-tile" style="background-color: rgb(@height, @Math.Round(height/2), 0);"></td>
 					}
 				</tr>
@@ -83,5 +60,5 @@
 		}
 	</table>
 
-	@Html.Partial("_SpawnsPartial", path)
+	@Html.Partial("_SpawnsPartial", Model.Path)
 </main>
