@@ -15,16 +15,17 @@
 <main role="main">
 	@{
 		List<Tool> tools = new List<Tool>
-	{
-		new Tool
 		{
-			Name = "DevilDaggersSurvivalEditor",
-			DisplayName = "Devil Daggers Survival Editor",
-			Description = new HtmlString("Devil Daggers Survival Editor is a tool that lets you create, view, and edit 'survival' files (also known as spawnsets) for the game Devil Daggers."),
-			Link = "https://bitbucket.org/NoahStolk/devildaggerssurvivaleditor/src",
-			LinkText = "View source code and manual"
-		}
-	};
+			new Tool
+			{
+				Name = "DevilDaggersSurvivalEditor",
+				DisplayName = "Devil Daggers Survival Editor",
+				Description = new HtmlString("Devil Daggers Survival Editor is a tool that lets you create, view, and edit 'survival' files (also known as spawnsets) for the game Devil Daggers."),
+				Link = "https://bitbucket.org/NoahStolk/devildaggerssurvivaleditor/src",
+				LinkText = "View source code and manual",
+				VersionNumber = "1.0.0.1"
+			}
+		};
 
 		foreach (Tool t in tools)
 		{
@@ -39,7 +40,7 @@
 			if (fileInfo.Exists)
 			{
 				<p>
-					Direct download (version 1.0): <a href="/tools/@System.IO.Path.GetFileName(path)">@System.IO.Path.GetFileName(path)</a> (@(Math.Round(fileInfo.Length / 1024f).ToString()) KB)
+					Direct download (version @(t.VersionNumber)): <a href="/tools/@System.IO.Path.GetFileName(path)">@System.IO.Path.GetFileName(path)</a> (@(Math.Round(fileInfo.Length / 1024f).ToString()) KB)
 				</p>
 			}
 			<p>
