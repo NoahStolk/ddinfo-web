@@ -77,13 +77,13 @@
 				<input class="btn btn-default" type="submit" name="submitAction" value=">" />
 			</fieldset>
 		}
-		@if (!CommonObjects.HttpContextAccessor.HttpContext.Request.IsHttps)
+		@*@if (!CommonObjects.HttpContextAccessor.HttpContext.Request.IsHttps)
 		{
 			<div class="alert alert-dismissible" style="color: red; font-size: 16px; max-width: 480px; margin: auto; border: 1px solid #333;">
 				<a href='#' class='close' data-dismiss='alert' aria-label='close'>&times;</a>
 				If you get a "400 Bad Request" error or a blank page while trying to submit. Please make sure you are using <a style="text-decoration: underline; color: white;" href="https://devildaggers.info/Leaderboard">HTTPS</a> and not HTTP.<br />HTTPS will be enforced soon, sorry for the inconvenience.
 			</div>
-		}
+		}*@
 		<p>
 			Showing rank @(Model.Leaderboard.Offset) - @(Model.Leaderboard.Offset + 99)
 		</p>
