@@ -24,9 +24,11 @@
 
 		if (!string.IsNullOrEmpty(Model.Description))
 		{
-			<h3>A note from @Model.Author</h3>
+			<div class="note">
+				<h3>A note from @Model.Author</h3>
 
-			<div>@Html.Raw(RazorUtils.GetLayout(Model.Description))</div>
+				<div>@Html.Raw(RazorUtils.GetLayout(Model.Description))</div>
+			</div>
 		}
 	}
 

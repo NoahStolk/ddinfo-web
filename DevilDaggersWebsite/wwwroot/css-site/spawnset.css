@@ -12,6 +12,12 @@
 	border: solid 1px black;
 }
 
+.note {
+	max-width: 700px;
+	padding-bottom: 24px;
+	margin: auto;
+}
+
 @media (max-width: 767px) {
 	.arena-tile {
 		width: 6px;

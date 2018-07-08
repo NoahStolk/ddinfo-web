@@ -18,7 +18,7 @@ namespace DevilDaggersWebsite.Pages
 		public string NameSort { get; set; }
 		public string AuthorSort { get; set; }
 		public string SortOrder { get; set; }
-		public int PageSize { get; set; } = 10;
+		public int PageSize { get; set; } = 15;
 		public int PageIndex { get; private set; }
 
 		public SpawnsetsModel(ICommonObjects commonObjects)

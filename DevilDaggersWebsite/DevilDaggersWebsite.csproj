@@ -26,16 +26,34 @@
     <Content Update="wwwroot\spawnsets\175Gems3GigapedesPractice_Bintr">
       <CopyToOutputDirectory>Always</CopyToOutputDirectory>
     </Content>
+    <Content Update="wwwroot\spawnsets\229s loop till 500s_Stop">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </Content>
     <Content Update="wwwroot\spawnsets\275GemsLeviPractice_Bintr">
       <CopyToOutputDirectory>Always</CopyToOutputDirectory>
     </Content>
     <Content Update="wwwroot\spawnsets\75Gems3SpidersPractice_Bintr">
       <CopyToOutputDirectory>Always</CopyToOutputDirectory>
     </Content>
+    <Content Update="wwwroot\spawnsets\Absolutely Ridiculous Marathon_Stop">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </Content>
+    <Content Update="wwwroot\spawnsets\AllGems2_xvlv">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </Content>
+    <Content Update="wwwroot\spawnsets\AllGems3_xvlv">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </Content>
     <Content Update="wwwroot\spawnsets\AllGems_xvlv">
       <CopyToOutputDirectory>Always</CopyToOutputDirectory>
     </Content>
     <Content Update="wwwroot\spawnsets\AttackAttackAttack_xvlv">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </Content>
+    <Content Update="wwwroot\spawnsets\bintrs cool spawnset_Bintr">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </Content>
+    <Content Update="wwwroot\spawnsets\Bosswave after wave_Stop">
       <CopyToOutputDirectory>Always</CopyToOutputDirectory>
     </Content>
     <Content Update="wwwroot\spawnsets\Cage_xvlv">
@@ -68,13 +86,28 @@
     <Content Update="wwwroot\spawnsets\Empty_xvlv">
       <CopyToOutputDirectory>Always</CopyToOutputDirectory>
     </Content>
+    <Content Update="wwwroot\spawnsets\Fallen_Stop">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </Content>
+    <Content Update="wwwroot\spawnsets\FreakinImpossible_Cookie">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </Content>
+    <Content Update="wwwroot\spawnsets\Ghostpede Sesh_Stop">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </Content>
     <Content Update="wwwroot\spawnsets\Gigapedes_xvlv">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </Content>
+    <Content Update="wwwroot\spawnsets\HeckingImpossible_Cookie">
       <CopyToOutputDirectory>Always</CopyToOutputDirectory>
     </Content>
     <Content Update="wwwroot\spawnsets\HellOnSteroids_xvlv">
       <CopyToOutputDirectory>Always</CopyToOutputDirectory>
     </Content>
     <Content Update="wwwroot\spawnsets\HowFastCanYouGo_Cookie">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </Content>
+    <Content Update="wwwroot\spawnsets\ImpossibleSquids_Cookie">
       <CopyToOutputDirectory>Always</CopyToOutputDirectory>
     </Content>
     <Content Update="wwwroot\spawnsets\Invasions_xvlv">
@@ -107,10 +140,16 @@
     <Content Update="wwwroot\spawnsets\NUMERAL_FIELD_sjorsbw">
       <CopyToOutputDirectory>Always</CopyToOutputDirectory>
     </Content>
+    <Content Update="wwwroot\spawnsets\Platforms %27n%27 Ring_Stop">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </Content>
     <Content Update="wwwroot\spawnsets\Skull4Square_xvlv">
       <CopyToOutputDirectory>Always</CopyToOutputDirectory>
     </Content>
     <Content Update="wwwroot\spawnsets\Speedcore_Stephanstein">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </Content>
+    <Content Update="wwwroot\spawnsets\Spiral Platforms_Stop">
       <CopyToOutputDirectory>Always</CopyToOutputDirectory>
     </Content>
     <Content Update="wwwroot\spawnsets\SquidFortress_xvlv">
@@ -126,6 +165,9 @@
       <CopyToOutputDirectory>Always</CopyToOutputDirectory>
     </Content>
     <Content Update="wwwroot\spawnsets\Sushi_ThePassiveDada">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </Content>
+    <Content Update="wwwroot\spawnsets\The Marathon_Stop">
       <CopyToOutputDirectory>Always</CopyToOutputDirectory>
     </Content>
     <Content Update="wwwroot\spawnsets\TheOrb_LolVeR">
@@ -173,6 +215,9 @@
     <Content Update="wwwroot\spawnsets\V3_Sorath">
       <CopyToOutputDirectory>Always</CopyToOutputDirectory>
     </Content>
+    <Content Update="wwwroot\spawnsets\V4HahaYes_Cookie">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </Content>
     <Content Update="wwwroot\spawnsets\V4HahaYes_Cookle">
       <CopyToOutputDirectory>Always</CopyToOutputDirectory>
     </Content>
@@ -180,6 +225,12 @@
       <CopyToOutputDirectory>Always</CopyToOutputDirectory>
     </Content>
     <Content Update="wwwroot\spawnsets\Waves_xvlv">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </Content>
+    <Content Update="wwwroot\spawnsets\What a nightmare_Stop">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </Content>
+    <Content Update="wwwroot\spawnsets\What do you mean, %27easy%27_Stop">
       <CopyToOutputDirectory>Always</CopyToOutputDirectory>
     </Content>
     <Content Update="wwwroot\spawnsets\WhatIf500WasHarder_xvlv">
