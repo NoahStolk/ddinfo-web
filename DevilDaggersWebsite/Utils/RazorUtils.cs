@@ -43,7 +43,7 @@ namespace DevilDaggersWebsite.Utils
 						if (str.Contains(enemyString))
 						{
 							// Enemy string should not be inside an <a> element
-							if (str.Substring(str.IndexOf(enemyString) + enemyString.Length, "</a>".Length) != "</a>")
+							if (str.Length < str.IndexOf(enemyString) + enemyString.Length + "</a>".Length || str.Substring(str.IndexOf(enemyString) + enemyString.Length, "</a>".Length) != "</a>")
 								str = str.Replace(enemyString, string.Format("{0}{1}{2}", begin, GetEnemyLayoutAnchor(enemy, (end == 's')), (end == 's') ? "" : end.ToString()));
 						}
 					}

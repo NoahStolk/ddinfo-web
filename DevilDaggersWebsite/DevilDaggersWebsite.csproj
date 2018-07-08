@@ -62,6 +62,9 @@
     <Content Update="wwwroot\spawnsets\Calm_ThePassiveDada">
       <CopyToOutputDirectory>Always</CopyToOutputDirectory>
     </Content>
+    <Content Update="wwwroot\spawnsets\Centipedes Gon%27 KILL U_Stop">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </Content>
     <Content Update="wwwroot\spawnsets\ChaosFarmRequired_xvlv">
       <CopyToOutputDirectory>Always</CopyToOutputDirectory>
     </Content>
@@ -84,6 +87,9 @@
       <CopyToOutputDirectory>Always</CopyToOutputDirectory>
     </Content>
     <Content Update="wwwroot\spawnsets\Empty_xvlv">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </Content>
+    <Content Update="wwwroot\spawnsets\Endgame Loop_Stop">
       <CopyToOutputDirectory>Always</CopyToOutputDirectory>
     </Content>
     <Content Update="wwwroot\spawnsets\Fallen_Stop">
