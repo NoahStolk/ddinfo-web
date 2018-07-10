@@ -26,10 +26,9 @@
 		var sortValue = sorter.attr('sort');
 
 		var sort = $('.sort').sort(function (a, b) {
-			var contentA, contextB;
 			if (sortValue == 'username' || sortValue == 'death-type') {
-				contentA = $(a).attr(sortValue);
-				contentB = $(b).attr(sortValue);
+				contentA = $(a).attr(sortValue).toLowerCase();
+				contentB = $(b).attr(sortValue).toLowerCase();
 			}
 			else {
 				contentA = parseInt($(a).attr(sortValue));
