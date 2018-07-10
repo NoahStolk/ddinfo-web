@@ -13,6 +13,10 @@
 	color: red;
 }
 
+.sorter:hover {
+	cursor: pointer;
+}
+
 .ban,
 .ban > td {
 	text-decoration: line-through;
