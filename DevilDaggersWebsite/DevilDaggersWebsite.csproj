@@ -134,9 +134,6 @@
     <Content Update="wwwroot\spawnsets\Limit_Stephanstein">
       <CopyToOutputDirectory>Always</CopyToOutputDirectory>
     </Content>
-    <Content Update="wwwroot\spawnsets\NoGems_xvlv">
-      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
-    </Content>
     <Content Update="wwwroot\spawnsets\NoSpaceInHell_LolVeR">
       <CopyToOutputDirectory>Always</CopyToOutputDirectory>
     </Content>
