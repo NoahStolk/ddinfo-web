@@ -137,12 +137,12 @@
 
 .leaderboard-expand {
 	flex-direction: column;
+	overflow: hidden;
 	max-height: 0;
 	transition: max-height 0.35s ease-out;
 	-moz-transition: max-height 0.35s ease-out;
 	-webkit-transition: max-height 0.35s ease-out;
 	-o-transition: max-height 0.35s ease-out;
-	overflow: hidden;
 }
 
 	.leaderboard-expand.expand {
