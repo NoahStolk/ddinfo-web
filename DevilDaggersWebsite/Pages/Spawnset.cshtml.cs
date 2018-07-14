@@ -11,7 +11,7 @@ namespace DevilDaggersWebsite.Pages
 {
 	public class SpawnsetModel : PageModel
 	{
-		public string FileName { get; set; }
+		public string Query { get; set; }
 
 		public string Name { get; set; }
 		public string Author { get; set; }
@@ -32,16 +32,16 @@ namespace DevilDaggersWebsite.Pages
 		{
 			try
 			{
-				FileName = HttpContext.Request.Query["spawnset"];
+				Query = HttpContext.Request.Query["spawnset"];
 
-				Name = FileName.Substring(0, FileName.LastIndexOf('_'));
-				Author = FileName.Substring(FileName.LastIndexOf('_') + 1);
+				Name = Query.Substring(0, Query.LastIndexOf('_'));
+				Author = Query.Substring(Query.LastIndexOf('_') + 1);
 
-				Path = System.IO.Path.Combine(CommonObjects.Env.WebRootPath, string.Format("spawnsets/{0}_{1}", Name, Author));
+				Path = System.IO.Path.Combine(CommonObjects.Env.WebRootPath, "spawnsets", $"{Name}_{Author}");
 				Spawnset = SpawnsetParser.ParseFile(Path);
 
 				Description = string.Empty;
-				foreach (string settingsPath in Directory.GetFiles(System.IO.Path.Combine(CommonObjects.Env.WebRootPath, "spawnsets/Settings/")))
+				foreach (string settingsPath in Directory.GetFiles(System.IO.Path.Combine(CommonObjects.Env.WebRootPath, "spawnsets", "Settings")))
 				{
 					if (System.IO.Path.GetFileName(settingsPath.Substring(0, settingsPath.LastIndexOf('.'))) == Name)
 					{

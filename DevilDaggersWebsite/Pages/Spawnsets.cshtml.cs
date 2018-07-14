@@ -40,9 +40,7 @@ namespace DevilDaggersWebsite.Pages
 			{
 				string fileName = Path.GetFileName(spawnsetPath);
 
-				string name = fileName.Substring(0, fileName.LastIndexOf('_'));
-				string author = fileName.Substring(fileName.LastIndexOf('_') + 1);
-				spawnsetFiles.Add(new SpawnsetFile(name, author, fileName));
+				spawnsetFiles.Add(new SpawnsetFile(fileName));
 			}
 
 			switch (sortOrder)
