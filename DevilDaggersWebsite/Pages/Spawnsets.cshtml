@@ -23,10 +23,6 @@
 				<th>Page @Model.PageIndex / @Model.SpawnsetFiles.TotalPages</th>
 			</tr>
 			<tr>
-				<th><a asp-page="./Spawnsets" asp-route-sortOrder="@Model.NameSort" asp-route-pageIndex="@Model.PageIndex">Sort by name</a></th>
-				<th><a asp-page="./Spawnsets" asp-route-sortOrder="@Model.AuthorSort" asp-route-pageIndex="@Model.PageIndex">Sort by author</a></th>
-			</tr>
-			<tr>
 				<td>
 					<a asp-page="./Spawnsets" asp-route-sortOrder="@Model.SortOrder" asp-route-pageIndex="@(Model.SpawnsetFiles.PageIndex - 1)" class="btn btn-default @(!Model.SpawnsetFiles.HasPreviousPage ? "disabled" : "")">Previous</a>
 				</td>
@@ -35,8 +31,8 @@
 				</td>
 			</tr>
 			<tr>
-				<th width="360">Name</th>
-				<th width="360">Author</th>
+				<th width="360">Name <a asp-page="./Spawnsets" asp-route-sortOrder="@Model.NameSort" asp-route-pageIndex="@Model.PageIndex">(sort)</a></th>
+				<th width="360">Author <a asp-page="./Spawnsets" asp-route-sortOrder="@Model.AuthorSort" asp-route-pageIndex="@Model.PageIndex">(sort)</a></th>
 			</tr>
 		</thead>
 		<tbody>
@@ -44,7 +40,7 @@
 				foreach (SpawnsetFile spawnsetFile in Model.SpawnsetFiles)
 				{
 					<tr>
-						<td><a asp-page="Spawnset" asp-route-spawnset="@string.Format("{0}_{1}", spawnsetFile.Name, spawnsetFile.Author)">@spawnsetFile.Name</a></td>
+						<td><a asp-page="Spawnset" asp-route-spawnset="@($"{spawnsetFile.Name}_{spawnsetFile.Author}")">@spawnsetFile.Name</a></td>
 						<td>@spawnsetFile.Author</td>
 					</tr>
 				}
