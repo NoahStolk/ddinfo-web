@@ -17,5 +17,5 @@
 		@Html.Raw(RazorUtils.GetLayout("Note that Centipedes, Gigapedes, Ghostpedes, and Thorns emerge around 3 seconds later than their actual spawn time."))
 	</p>
 
-	@Html.Partial("_SpawnsPartial", Model.V3Path)
+	@await Html.PartialAsync("_SpawnsPartial", Model.V3Path)
 </main>
