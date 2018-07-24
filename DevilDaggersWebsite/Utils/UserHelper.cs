@@ -34,7 +34,14 @@ namespace DevilDaggersWebsite.Utils
 			76010,
 			9666,
 			72195,
-			154532
+			154532,
+			75575,
+			42534,
+			106692,
+			164240,
+			21541,
+			171883,
+			170176
 		};
 
 		public static List<int> DonatorIDs { get; set; } = new List<int>
