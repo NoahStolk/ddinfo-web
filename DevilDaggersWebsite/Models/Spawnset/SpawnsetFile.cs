@@ -1,13 +1,19 @@
 ﻿using DevilDaggersWebsite.Utils;
+using Newtonsoft.Json;
 
 namespace DevilDaggersWebsite.Models.Spawnset
 {
+	[JsonObject(MemberSerialization.OptIn)]
 	public class SpawnsetFile
     {
 		public string Path { get; set; }
 
-		public string Name { get { return Path.Substring(0, Path.LastIndexOf('_')); } }
-		public string Author { get { return Path.Substring(Path.LastIndexOf('_') + 1); } }
+		public string FileName { get { return System.IO.Path.GetFileName(Path); } }
+
+		[JsonProperty]
+		public string Name { get { return FileName.Substring(0, FileName.LastIndexOf('_')); } }
+		[JsonProperty]
+		public string Author { get { return FileName.Substring(FileName.LastIndexOf('_') + 1); } }
 
 		public Spawnset Spawnset { get { return SpawnsetParser.ParseFile(Path); } }
 

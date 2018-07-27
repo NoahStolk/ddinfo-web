@@ -19,6 +19,7 @@ namespace DevilDaggersWebsite.Pages
 		{
 			SitemapUtils.ExcludePage("DownloadSpawnset");
 			SitemapUtils.ExcludePage("Spawnset");
+			SitemapUtils.ExcludePage("GetSpawnsets");
 			XmlResult = SitemapUtils.GetSitemap(_commonObjects);
 		}
 	}
