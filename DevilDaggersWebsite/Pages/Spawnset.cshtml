@@ -4,7 +4,7 @@
 @{
 	ViewData["Title"] = "Spawnset";
 	ViewBag.Title = string.Format("{0} by {1}", Model.SpawnsetFile.Name, Model.SpawnsetFile.Author);
-	Spawnset spawnset = Model.SpawnsetFile.Spawnset;
+	Spawnset spawnset = SpawnsetParser.ParseFile(Model.SpawnsetFile.Path);
 	int[] widths = new int[4] { 160, 128, 192, 128 };
 }
 @using DevilDaggersWebsite.Utils
