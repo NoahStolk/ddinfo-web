@@ -1,15 +1,15 @@
 ﻿using CoreBase.Services;
+using DevilDaggersWebsite.Models.Spawnset;
 using Microsoft.AspNetCore.Mvc.RazorPages;
+using Newtonsoft.Json;
 using System.Collections.Generic;
 using System.IO;
 using System.Linq;
-using Newtonsoft.Json;
-using DevilDaggersWebsite.Models.Spawnset;
 
 namespace DevilDaggersWebsite.Pages
 {
 	public class GetSpawnsetsModel : PageModel
-    {
+	{
 		private readonly ICommonObjects _commonObjects;
 
 		public string JsonResult { get; set; }

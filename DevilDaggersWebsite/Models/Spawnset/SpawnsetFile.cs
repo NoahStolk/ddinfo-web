@@ -4,7 +4,7 @@ namespace DevilDaggersWebsite.Models.Spawnset
 {
 	[JsonObject(MemberSerialization.OptIn)]
 	public class SpawnsetFile
-    {
+	{
 		public string Path { get; set; }
 
 		public string FileName { get { return System.IO.Path.GetFileName(Path); } }
@@ -18,5 +18,5 @@ namespace DevilDaggersWebsite.Models.Spawnset
 		{
 			Path = path;
 		}
-    }
+	}
 }
