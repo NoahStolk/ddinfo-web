@@ -16,15 +16,12 @@ namespace DevilDaggersWebsite.Utils
 
 		public static string GetEnemyLayoutAnchor(Enemy enemy, bool plural = false)
 		{
-			return string.Format("<a style='color: #{0};' href='/Enemies#{1}'>{2}{3}</a>", enemy.ColorCode, enemy.Name.Replace(" ", string.Empty), enemy.Name, (plural ? "s" : ""));
+			return $"<a style='color: #{enemy.ColorCode};' href='/Enemies#{enemy.Name.Replace(" ", string.Empty)}'>{enemy.Name}{(plural ? "s" : "")}</a>";
 		}
 
-		public static string GetUpgradeLayoutAnchor(Upgrade upgrade, bool hideMobile = false)
+		public static string GetUpgradeLayoutAnchor(Upgrade upgrade)
 		{
-			if (hideMobile)
-				return string.Format("<a style='color: #{0};' href='/Upgrades#{1}'>{2}</a>", upgrade.ColorCode, string.Format("Level{0}", upgrade.Level), string.Format("<span class='hidden-xs'>Level </span>{0}", upgrade.Level));
-
-			return string.Format("<a style='color: #{0};' href='/Upgrades#{1}'>{2}</a>", upgrade.ColorCode, string.Format("Level{0}", upgrade.Level), string.Format("Level {0}", upgrade.Level));
+			return $"<a style='color: #{upgrade.ColorCode};' href='/Upgrades#Level{upgrade.Level}'>Level {upgrade.Level}</a>";
 		}
 
 		public static string GetLayout(string str)
@@ -39,12 +36,12 @@ namespace DevilDaggersWebsite.Utils
 				{
 					foreach (char end in endSeparators)
 					{
-						string enemyString = string.Format("{0}{1}{2}", begin, enemy.Name, end);
+						string enemyString = $"{begin}{enemy.Name}{end}";
 						if (str.Contains(enemyString))
 						{
 							// Enemy string should not be inside an <a> element
 							if (str.Length < str.IndexOf(enemyString) + enemyString.Length + "</a>".Length || str.Substring(str.IndexOf(enemyString) + enemyString.Length, "</a>".Length) != "</a>")
-								str = str.Replace(enemyString, string.Format("{0}{1}{2}", begin, GetEnemyLayoutAnchor(enemy, (end == 's')), (end == 's') ? "" : end.ToString()));
+								str = str.Replace(enemyString, $"{begin}{GetEnemyLayoutAnchor(enemy, (end == 's'))}{((end == 's') ? "" : end.ToString())}");
 						}
 					}
 				}
@@ -56,9 +53,9 @@ namespace DevilDaggersWebsite.Utils
 				{
 					foreach (char end in endSeparators)
 					{
-						string handString = string.Format("{0}Level {1}{2}", begin, upgrade.Level, end);
-						if (str.Contains(handString))
-							str = str.Replace(handString, string.Format("{0}{1}{2}", begin, GetUpgradeLayoutAnchor(upgrade), end));
+						string upgradeString = $"{begin}Level {upgrade.Level}{end}";
+						if (str.Contains(upgradeString))
+							str = str.Replace(upgradeString, $"{begin}{GetUpgradeLayoutAnchor(upgrade)}{end}");
 					}
 				}
 			}

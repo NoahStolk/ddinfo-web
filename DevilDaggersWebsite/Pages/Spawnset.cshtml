@@ -3,7 +3,7 @@
 @model DevilDaggersWebsite.Pages.SpawnsetModel
 @{
 	ViewData["Title"] = "Spawnset";
-	ViewBag.Title = string.Format("{0} by {1}", Model.SpawnsetFile.Name, Model.SpawnsetFile.Author);
+	ViewBag.Title = $"{Model.SpawnsetFile.Name} by {Model.SpawnsetFile.Author}";
 	int[] widths = new int[4] { 160, 128, 192, 128 };
 }
 @using DevilDaggersWebsite.Utils
