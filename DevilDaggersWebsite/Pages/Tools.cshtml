@@ -2,7 +2,6 @@
 @inject Microsoft.AspNetCore.Hosting.IHostingEnvironment env
 @using System.IO
 @using DevilDaggersWebsite.Models
-@using Microsoft.AspNetCore.Html
 @model DevilDaggersWebsite.Pages.ToolsModel
 @{
 	ViewData["Title"] = "Tools";
@@ -14,20 +13,7 @@
 
 <main role="main">
 	@{
-		List<Tool> tools = new List<Tool>
-	{
-		new Tool
-		{
-			Name = "DevilDaggersSurvivalEditor",
-			DisplayName = "Devil Daggers Survival Editor",
-			Description = new HtmlString("Devil Daggers Survival Editor is a tool that lets you create, view, and edit spawnsets."),
-			Link = "https://bitbucket.org/NoahStolk/devildaggerssurvivaleditor/src",
-			LinkText = "View source code and documentation",
-			VersionNumber = "1.1.4.0"
-		}
-	};
-
-		foreach (Tool t in tools)
+		foreach (Tool t in Model.Tools)
 		{
 			<h2 id="@t.Name">@t.DisplayName</h2>
 
