@@ -4,11 +4,9 @@
 @{
 	ViewData["Title"] = "Spawnset";
 	ViewBag.Title = string.Format("{0} by {1}", Model.SpawnsetFile.Name, Model.SpawnsetFile.Author);
-	Spawnset spawnset = SpawnsetParser.ParseFile(Model.SpawnsetFile.Path);
 	int[] widths = new int[4] { 160, 128, 192, 128 };
 }
 @using DevilDaggersWebsite.Utils
-@using DevilDaggersWebsite.Models.Spawnset
 
 <header>
 	<h1 class="dont-break-out">@Model.SpawnsetFile.Name by @Model.SpawnsetFile.Author</h1>
@@ -38,21 +36,21 @@
 			<div style="width: @(widths[3])px;">Brightness</div>
 		</div>
 		<div class="flex-container flex-center">
-			<div style="width: @(widths[0])px;">@string.Format(RazorUtils.DEFAULT_CULTURE, "{0:0.#}", (double)spawnset.ShrinkStart)</div>
-			<div style="width: @(widths[1])px;">@string.Format(RazorUtils.DEFAULT_CULTURE, "{0:0.#}", (double)spawnset.ShrinkEnd)</div>
-			<div style="width: @(widths[2])px;">@string.Format(RazorUtils.DEFAULT_CULTURE, "{0:0.####}", (double)spawnset.ShrinkRate)</div>
-			<div style="width: @(widths[3])px;">@string.Format(RazorUtils.DEFAULT_CULTURE, "{0:0.#}", (double)spawnset.Brightness)</div>
+			<div style="width: @(widths[0])px;">@string.Format(RazorUtils.DEFAULT_CULTURE, "{0:0.#}", (double)Model.Spawnset.ShrinkStart)</div>
+			<div style="width: @(widths[1])px;">@string.Format(RazorUtils.DEFAULT_CULTURE, "{0:0.#}", (double)Model.Spawnset.ShrinkEnd)</div>
+			<div style="width: @(widths[2])px;">@string.Format(RazorUtils.DEFAULT_CULTURE, "{0:0.####}", (double)Model.Spawnset.ShrinkRate)</div>
+			<div style="width: @(widths[3])px;">@string.Format(RazorUtils.DEFAULT_CULTURE, "{0:0.#}", (double)Model.Spawnset.Brightness)</div>
 		</div>
 	</div>
 
 	<table class="tile-table">
 		@{
-			for (int i = 0; i < spawnset.ArenaTiles.GetLength(0); i++)
+			for (int i = 0; i < Model.Spawnset.ArenaTiles.GetLength(0); i++)
 			{
 				<tr>
-					@for (int j = 0; j < spawnset.ArenaTiles.GetLength(1); j++)
+					@for (int j = 0; j < Model.Spawnset.ArenaTiles.GetLength(1); j++)
 					{
-						float height = (float)Math.Round(spawnset.ArenaTiles[i, j] * 32 + 64);
+						float height = (float)Math.Round(Model.Spawnset.ArenaTiles[i, j] * 32 + 64);
 						<td class="arena-tile" style="background-color: rgb(@height, @Math.Round(height/2), 0);"></td>
 					}
 				</tr>
