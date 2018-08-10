@@ -29,9 +29,9 @@ namespace DevilDaggersWebsite.Utils
 			char[] beginSeparators = new char[] { '>', ' ', ',', '.', '(' };
 			char[] endSeparators = new char[] { ' ', ',', '.', 's', ')' };
 
-			for (int i = GameHelper.Enemies.Length - 1; i >= 0; i--) // Reverse iteration because transmuted skulls are after normal skulls in the list
+			for (int i = GameUtils.Enemies.Length - 1; i >= 0; i--) // Reverse iteration because transmuted skulls are after normal skulls in the list
 			{
-				Enemy enemy = GameHelper.Enemies[i];
+				Enemy enemy = GameUtils.Enemies[i];
 				foreach (char begin in beginSeparators)
 				{
 					foreach (char end in endSeparators)
@@ -47,7 +47,7 @@ namespace DevilDaggersWebsite.Utils
 				}
 			}
 
-			foreach (Upgrade upgrade in GameHelper.Upgrades)
+			foreach (Upgrade upgrade in GameUtils.Upgrades)
 			{
 				foreach (char begin in beginSeparators)
 				{

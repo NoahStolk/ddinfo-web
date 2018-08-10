@@ -14,7 +14,7 @@ namespace DevilDaggersWebsite.Pages
 
 		public async Task OnGetAsync()
 		{
-			await LeaderboardParser.LoadLeaderboard(Leaderboard);
+			await LeaderboardUtils.LoadLeaderboard(Leaderboard);
 		}
 
 		public async Task OnPostAsync(string submitAction, int offsetPrevious)
@@ -30,13 +30,13 @@ namespace DevilDaggersWebsite.Pages
 			}
 
 			Leaderboard.Offset = Math.Max(1, Leaderboard.Offset);
-			await LeaderboardParser.LoadLeaderboard(Leaderboard);
+			await LeaderboardUtils.LoadLeaderboard(Leaderboard);
 
 			if (Leaderboard.Offset > Leaderboard.Players - 99)
 			{
 				Leaderboard.Offset = Leaderboard.Players - 99;
 				Leaderboard.Entries.Clear();
-				await LeaderboardParser.LoadLeaderboard(Leaderboard);
+				await LeaderboardUtils.LoadLeaderboard(Leaderboard);
 			}
 			Leaderboard.OffsetPrevious = Leaderboard.Offset;
 		}

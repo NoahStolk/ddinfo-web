@@ -2,7 +2,7 @@
 
 namespace DevilDaggersWebsite.Utils
 {
-	public static class GameHelper
+	public static class GameUtils
 	{
 		public static Death Fallen = new Death("FALLEN", "DDDDDD", 0);
 		public static Death Swarmed = new Death("SWARMED", "2E1C00", 1);

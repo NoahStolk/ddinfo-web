@@ -29,7 +29,7 @@ namespace DevilDaggersWebsite.Pages
 			{
 				Query = HttpContext.Request.Query["spawnset"];
 				SpawnsetFile = new SpawnsetFile(Path.Combine(CommonObjects.Env.WebRootPath, "spawnsets", Query));
-				Spawnset = SpawnsetParser.ParseFile(SpawnsetFile.Path);
+				Spawnset = SpawnsetUtils.ParseFile(SpawnsetFile.Path);
 				Description = string.Empty;
 				foreach (string settingsPath in Directory.GetFiles(Path.Combine(CommonObjects.Env.WebRootPath, "spawnsets", "Settings")))
 				{

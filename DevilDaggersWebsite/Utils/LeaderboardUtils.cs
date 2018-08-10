@@ -9,7 +9,7 @@ using System.Threading.Tasks;
 
 namespace DevilDaggersWebsite.Utils
 {
-	public class LeaderboardParser
+	public static class LeaderboardUtils
 	{
 		private static readonly string serverURL = "http://dd.hasmodai.com/backend15/get_scores.php";
 

@@ -32,7 +32,7 @@ namespace DevilDaggersWebsite.Models.Leaderboard
 				kills='{Kills}'
 				gems='{Gems}'
 				accuracy='{(Accuracy * 100).ToString("0")}'
-				death-type='{GameHelper.Deaths[DeathType].Name}'
+				death-type='{GameUtils.Deaths[DeathType].Name}'
 				total-time='{TimeTotal}'
 				total-kills='{KillsTotal}'
 				total-gems='{GemsTotal}'
