@@ -103,8 +103,8 @@
 		<div class="leaderboard-body">
 			@foreach (Entry entry in Model.Leaderboard.Entries)
 			{
-				Dagger dagger = GameHelper.Default;
-				foreach (Dagger d in GameHelper.Daggers)
+				Dagger dagger = GameUtils.Default;
+				foreach (Dagger d in GameUtils.Daggers)
 				{
 					if (entry.Time >= d.UnlockSecond * 10000)
 					{
@@ -112,8 +112,8 @@
 					}
 				}
 
-				Death death = GameHelper.Fallen;
-				foreach (Death d in GameHelper.Deaths)
+				Death death = GameUtils.Fallen;
+				foreach (Death d in GameUtils.Deaths)
 				{
 					if (entry.DeathType == d.Type)
 					{

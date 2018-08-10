@@ -30,7 +30,7 @@
 	</p>
 
 	<p class="centre">
-		@foreach (Dagger dagger in GameHelper.Daggers)
+		@foreach (Dagger dagger in GameUtils.Daggers)
 		{
 			<img src="~/Images/Daggers/@(dagger.Name)Small.png" />
 		}
@@ -46,8 +46,8 @@
 			foreach (Donator donator in UserHelper.Donators)
 			{
 				rank++;
-				Dagger dagger = GameHelper.Default;
-				foreach (Dagger d in GameHelper.Daggers)
+				Dagger dagger = GameUtils.Default;
+				foreach (Dagger d in GameUtils.Daggers)
 				{
 					if (donator.Amount >= d.UnlockSecond)
 					{

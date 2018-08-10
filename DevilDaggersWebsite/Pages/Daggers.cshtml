@@ -18,12 +18,12 @@
 	</p>
 
 	<div class="flex-container flex-center dagger-container">
-		@foreach (Dagger dagger in GameHelper.Daggers)
+		@foreach (Dagger dagger in GameUtils.Daggers)
 		{
 			<div class="dagger" style="-webkit-box-shadow: @boxShadow #@(dagger.ColorCode); -moz-box-shadow: @boxShadow #@(dagger.ColorCode); box-shadow: @boxShadow #@(dagger.ColorCode);">
 				<div>
 					<div class="@dagger.Name.ToLower()">@dagger.Name Dagger</div>
-					Unlocks at <span style="background-position-y: 3px;" class="@dagger.Name.ToLower()">@(dagger.UnlockSecond == null ? "N/A" : dagger.UnlockSecond.ToString())</span> @(dagger != GameHelper.Default ? " seconds" : "")
+					Unlocks at <span style="background-position-y: 3px;" class="@dagger.Name.ToLower()">@(dagger.UnlockSecond == null ? "N/A" : dagger.UnlockSecond.ToString())</span> @(dagger != GameUtils.Default ? " seconds" : "")
 				</div>
 				<div>
 					<div><img class="img-responsive" src='~/Images/Daggers/@(dagger.Name).png' /></div>

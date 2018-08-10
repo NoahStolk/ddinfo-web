@@ -14,7 +14,7 @@
 
 <main role="main">
 	<div class="flex-container flex-center upgrade-container">
-		@foreach (Upgrade upgrade in GameHelper.Upgrades)
+		@foreach (Upgrade upgrade in GameUtils.Upgrades)
 		{
 			<div class="upgrade" id="Level@(upgrade.Level)" style="-webkit-box-shadow: @boxShadow #@(upgrade.ColorCode); -moz-box-shadow: @boxShadow #@(upgrade.ColorCode); box-shadow: @boxShadow #@(upgrade.ColorCode);">
 				<div class="upgrade-row flex-container">

@@ -7,7 +7,7 @@
 @{
 	int[] widths = new int[4] { 160, 160, 144, 128 };
 
-	Spawnset spawnset = SpawnsetParser.ParseFile(Model);
+	Spawnset spawnset = SpawnsetUtils.ParseFile(Model);
 
 	bool empty = true;
 	foreach (Spawn spawn in spawnset.Spawns)
@@ -82,13 +82,13 @@
 							int gems = s.Enemy.Gems;
 
 							// Add no farm gems
-							if (s.Enemy == GameHelper.Squid1)
+							if (s.Enemy == GameUtils.Squid1)
 							{
-								gems += GameHelper.Skull2.Gems;
+								gems += GameUtils.Skull2.Gems;
 							}
-							if (s.Enemy == GameHelper.Squid2)
+							if (s.Enemy == GameUtils.Squid2)
 							{
-								gems += GameHelper.Skull3.Gems;
+								gems += GameUtils.Skull3.Gems;
 							}
 
 							totalGems += gems;
@@ -141,25 +141,25 @@
 						if (spawn.Enemy != null)
 						{
 							// Change the third Gigapede into a Ghostpede
-							if (spawn.Enemy == GameHelper.Gigapede && i % 3 == 2)
+							if (spawn.Enemy == GameUtils.Gigapede && i % 3 == 2)
 							{
-								spawn.Enemy = GameHelper.Ghostpede;
+								spawn.Enemy = GameUtils.Ghostpede;
 							}
-							else if (spawn.Enemy == GameHelper.Ghostpede && i % 3 != 2)
+							else if (spawn.Enemy == GameUtils.Ghostpede && i % 3 != 2)
 							{
-								spawn.Enemy = GameHelper.Gigapede;
+								spawn.Enemy = GameUtils.Gigapede;
 							}
 
 							int gems = spawn.Enemy.Gems;
 
 							// Add no farm gems
-							if (spawn.Enemy == GameHelper.Squid1)
+							if (spawn.Enemy == GameUtils.Squid1)
 							{
-								gems += GameHelper.Skull2.Gems;
+								gems += GameUtils.Skull2.Gems;
 							}
-							if (spawn.Enemy == GameHelper.Squid2)
+							if (spawn.Enemy == GameUtils.Squid2)
 							{
-								gems += GameHelper.Skull3.Gems;
+								gems += GameUtils.Skull3.Gems;
 							}
 
 							totalGems += gems;
