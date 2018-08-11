@@ -18,6 +18,7 @@ namespace DevilDaggersWebsite.Pages
 		public string NameSort { get; set; }
 		public string AuthorSort { get; set; }
 		public string SortOrder { get; set; }
+
 		public int PageSize { get; set; } = 15;
 		public int PageIndex { get; private set; }
 
@@ -37,11 +38,7 @@ namespace DevilDaggersWebsite.Pages
 
 			List<SpawnsetFile> spawnsetFiles = new List<SpawnsetFile>();
 			foreach (string spawnsetPath in spawnsetPaths)
-			{
-				string fileName = Path.GetFileName(spawnsetPath);
-
-				spawnsetFiles.Add(new SpawnsetFile(fileName));
-			}
+				spawnsetFiles.Add(new SpawnsetFile(spawnsetPath));
 
 			switch (sortOrder)
 			{
