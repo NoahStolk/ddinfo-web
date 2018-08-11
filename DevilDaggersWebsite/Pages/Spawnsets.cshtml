@@ -53,7 +53,7 @@
 						<td><a asp-page="Spawnset" asp-route-spawnset="@($"{spawnsetFile.Name}_{spawnsetFile.Author}")">@spawnsetFile.Name</a></td>
 						<td>@spawnsetFile.Author</td>
 						<td class="hidden-xs">
-							@(spawnsetFile.LastUpdated.ToString("dd MMM yyyy"))
+							@(spawnsetFile.LastUpdated.ToString("dd MMM yyyy", RazorUtils.DEFAULT_CULTURE))
 						</td>
 						<td class="hidden-xs hidden-sm">
 							@(spawnsetFile.SpawnData.NonLoopSpawns == 0 ? RazorUtils.NAString : Html.Raw(string.Format(RazorUtils.DEFAULT_CULTURE, "{0:0.0000}", spawnsetFile.SpawnData.NonLoopSeconds)))
