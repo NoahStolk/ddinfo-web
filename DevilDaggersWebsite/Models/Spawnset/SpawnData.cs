@@ -7,5 +7,7 @@
 
 		public float NonLoopSeconds { get; set; }
 		public float LoopSeconds { get; set; }
+
+		public float LoopStart { get { return LoopSpawns == 0 ? 0 : NonLoopSeconds; } }
 	}
 }

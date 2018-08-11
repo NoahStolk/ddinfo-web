@@ -7,3 +7,8 @@
 .spawnsets-answer {
 	margin-bottom: 1em;
 }
+
+.spawnsets-sort > th > a {
+	color: #ddd;
+	text-decoration: none;
+}

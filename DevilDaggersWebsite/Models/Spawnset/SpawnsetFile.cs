@@ -1,5 +1,7 @@
 ﻿using DevilDaggersWebsite.Utils;
 using Newtonsoft.Json;
+using System;
+using System.IO;
 
 namespace DevilDaggersWebsite.Models.Spawnset
 {
@@ -9,7 +11,7 @@ namespace DevilDaggersWebsite.Models.Spawnset
 		public string Path { get; set; }
 
 		public string FileName { get { return System.IO.Path.GetFileName(Path); } }
-
+		public DateTime LastUpdated { get { return new FileInfo(Path).LastWriteTime; } }
 		public SpawnData SpawnData { get { return SpawnsetUtils.GetSpawnData(Path); } }
 
 		[JsonProperty]

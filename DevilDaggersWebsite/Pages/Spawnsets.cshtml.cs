@@ -17,6 +17,7 @@ namespace DevilDaggersWebsite.Pages
 
 		public string NameSort { get; set; }
 		public string AuthorSort { get; set; }
+		public string LastUpdated { get; set; }
 		public string NonLoopLength { get; set; }
 		public string NonLoopSpawns { get; set; }
 		public string LoopLength { get; set; }
@@ -38,6 +39,7 @@ namespace DevilDaggersWebsite.Pages
 
 			NameSort = sortOrder == "Name" ? "Name_asc" : "Name";
 			AuthorSort = sortOrder == "Author_asc" ? "Author" : "Author_asc";
+			LastUpdated = sortOrder == "LastUpdated" ? "LastUpdated_asc" : "LastUpdated";
 			NonLoopLength = sortOrder == "NonLoopLength_asc" ? "NonLoopLength" : "NonLoopLength_asc";
 			NonLoopSpawns = sortOrder == "NonLoopSpawns_asc" ? "NonLoopSpawns" : "NonLoopSpawns_asc";
 			LoopLength = sortOrder == "LoopLength_asc" ? "LoopLength" : "LoopLength_asc";
@@ -64,6 +66,12 @@ namespace DevilDaggersWebsite.Pages
 				case "Author":
 					spawnsetFiles = spawnsetFiles.OrderByDescending(s => s.Author).ThenBy(s => s.Name).ToList();
 					break;
+				case "LastUpdated_asc":
+					spawnsetFiles = spawnsetFiles.OrderBy(s => s.LastUpdated).ThenByDescending(s => s.Name).ToList();
+					break;
+				case "LastUpdated":
+					spawnsetFiles = spawnsetFiles.OrderByDescending(s => s.LastUpdated).ThenBy(s => s.Name).ToList();
+					break;
 				case "NonLoopLength_asc":
 					spawnsetFiles = spawnsetFiles.OrderBy(s => s.SpawnData.NonLoopSeconds).ThenBy(s => s.SpawnData.NonLoopSpawns).ToList();
 					break;
@@ -77,10 +85,10 @@ namespace DevilDaggersWebsite.Pages
 					spawnsetFiles = spawnsetFiles.OrderByDescending(s => s.SpawnData.NonLoopSpawns).ToList();
 					break;
 				case "LoopLength_asc":
-					spawnsetFiles = spawnsetFiles.OrderBy(s => s.SpawnData.LoopSeconds).ThenBy(s => s.SpawnData.LoopSpawns).ToList();
+					spawnsetFiles = spawnsetFiles.OrderBy(s => s.SpawnData.LoopStart).ThenBy(s => s.SpawnData.LoopSpawns).ToList();
 					break;
 				case "LoopLength":
-					spawnsetFiles = spawnsetFiles.OrderByDescending(s => s.SpawnData.LoopSeconds).ThenByDescending(s => s.SpawnData.LoopSpawns).ToList();
+					spawnsetFiles = spawnsetFiles.OrderByDescending(s => s.SpawnData.LoopStart).ThenByDescending(s => s.SpawnData.LoopSpawns).ToList();
 					break;
 				case "LoopSpawns_asc":
 					spawnsetFiles = spawnsetFiles.OrderBy(s => s.SpawnData.LoopSpawns).ToList();

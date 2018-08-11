@@ -31,17 +31,18 @@
 				</td>
 			</tr>
 			<tr>
-				<th class="hidden-xs" colspan="2"></th>
+				<th class="hidden-xs" colspan="3"></th>
 				<th class="hidden-xs" colspan="2">Non-loop</th>
 				<th class="hidden-xs" colspan="2">Loop</th>
 			</tr>
-			<tr>
-				<th width="360">Name <a asp-page="./Spawnsets" asp-route-sortOrder="@Model.NameSort" asp-route-pageIndex="@Model.PageIndex">(sort)</a></th>
-				<th width="360">Author <a asp-page="./Spawnsets" asp-route-sortOrder="@Model.AuthorSort" asp-route-pageIndex="@Model.PageIndex">(sort)</a></th>
-				<th class="hidden-xs" width="240">Length <a asp-page="./Spawnsets" asp-route-sortOrder="@Model.NonLoopLength" asp-route-pageIndex="@Model.PageIndex">(sort)</a></th>
-				<th class="hidden-xs" width="240">Spawns <a asp-page="./Spawnsets" asp-route-sortOrder="@Model.NonLoopSpawns" asp-route-pageIndex="@Model.PageIndex">(sort)</a></th>
-				<th class="hidden-xs" width="240">Wave length (1st) <a asp-page="./Spawnsets" asp-route-sortOrder="@Model.LoopLength" asp-route-pageIndex="@Model.PageIndex">(sort)</a></th>
-				<th class="hidden-xs" width="240">Spawns <a asp-page="./Spawnsets" asp-route-sortOrder="@Model.LoopSpawns" asp-route-pageIndex="@Model.PageIndex">(sort)</a></th>
+			<tr class="spawnsets-sort">
+				<th width="360"><a asp-page="./Spawnsets" asp-route-sortOrder="@Model.NameSort" asp-route-pageIndex="@Model.PageIndex">Name</a></th>
+				<th width="360"><a asp-page="./Spawnsets" asp-route-sortOrder="@Model.AuthorSort" asp-route-pageIndex="@Model.PageIndex">Author</a></th>
+				<th class="hidden-xs" width="160"><a asp-page="./Spawnsets" asp-route-sortOrder="@Model.LastUpdated" asp-route-pageIndex="@Model.PageIndex">Last updated</a></th>
+				<th class="hidden-xs hidden-sm" width="160"><a asp-page="./Spawnsets" asp-route-sortOrder="@Model.NonLoopLength" asp-route-pageIndex="@Model.PageIndex">Length</a></th>
+				<th class="hidden-xs hidden-sm" width="160"><a asp-page="./Spawnsets" asp-route-sortOrder="@Model.NonLoopSpawns" asp-route-pageIndex="@Model.PageIndex">Spawns</a></th>
+				<th class="hidden-xs hidden-sm" width="160"><a asp-page="./Spawnsets" asp-route-sortOrder="@Model.LoopLength" asp-route-pageIndex="@Model.PageIndex">Start</a></th>
+				<th class="hidden-xs hidden-sm" width="160"><a asp-page="./Spawnsets" asp-route-sortOrder="@Model.LoopSpawns" asp-route-pageIndex="@Model.PageIndex">Spawns</a></th>
 			</tr>
 		</thead>
 		<tbody>
@@ -52,15 +53,18 @@
 						<td><a asp-page="Spawnset" asp-route-spawnset="@($"{spawnsetFile.Name}_{spawnsetFile.Author}")">@spawnsetFile.Name</a></td>
 						<td>@spawnsetFile.Author</td>
 						<td class="hidden-xs">
+							@(spawnsetFile.LastUpdated.ToString("dd MMM yyyy"))
+						</td>
+						<td class="hidden-xs hidden-sm">
 							@(spawnsetFile.SpawnData.NonLoopSpawns == 0 ? RazorUtils.NAString : Html.Raw(string.Format(RazorUtils.DEFAULT_CULTURE, "{0:0.0000}", spawnsetFile.SpawnData.NonLoopSeconds)))
 						</td>
-						<td class="hidden-xs">
+						<td class="hidden-xs hidden-sm">
 							@(spawnsetFile.SpawnData.NonLoopSpawns == 0 ? RazorUtils.NAString : Html.Raw(spawnsetFile.SpawnData.NonLoopSpawns))
 						</td>
-						<td class="hidden-xs">
-							@(spawnsetFile.SpawnData.LoopSpawns == 0 ? RazorUtils.NAString : Html.Raw(string.Format(RazorUtils.DEFAULT_CULTURE, "{0:0.0000}", spawnsetFile.SpawnData.LoopSeconds)))
+						<td class="hidden-xs hidden-sm">
+							@(spawnsetFile.SpawnData.LoopSpawns == 0 ? RazorUtils.NAString : Html.Raw(string.Format(RazorUtils.DEFAULT_CULTURE, "{0:0.0000}", spawnsetFile.SpawnData.LoopStart)))
 						</td>
-						<td class="hidden-xs">
+						<td class="hidden-xs hidden-sm">
 							@(spawnsetFile.SpawnData.LoopSpawns == 0 ? RazorUtils.NAString : Html.Raw(spawnsetFile.SpawnData.LoopSpawns))
 						</td>
 					</tr>
