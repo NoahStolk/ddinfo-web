@@ -10,6 +10,8 @@ namespace DevilDaggersWebsite.Utils
 	{
 		private const int HEADER_BUFFER_SIZE = 36;
 		private const int ARENA_BUFFER_SIZE = 10404;
+		private const int SPAWNS_OFFSET_BUFFER_SIZE = 40; // The amount of bytes between the arena and the spawns, no idea what they are used for.
+		private const int SPAWN_LENGTH = 28; // The amount of bytes of a spawn.
 
 		private const int ARENA_WIDTH = 51;
 		private const int ARENA_HEIGHT = 51;
@@ -55,7 +57,7 @@ namespace DevilDaggersWebsite.Utils
 
 			// Set the spawn values
 			List<Spawn> spawns = new List<Spawn>();
-			int i = 40;
+			int i = SPAWNS_OFFSET_BUFFER_SIZE;
 			while (i < spawnBufferSize)
 			{
 				int enemyType = BitConverter.ToInt32(spawnBuffer, i);
@@ -82,6 +84,55 @@ namespace DevilDaggersWebsite.Utils
 			}
 
 			return new Spawnset(spawns, arenaTiles, shrinkStart, shrinkEnd, shrinkRate, brightness);
+		}
+
+		public static SpawnData GetSpawnData(string path)
+		{
+			SpawnData spawnData = new SpawnData();
+
+			FileStream fs = new FileStream(path, FileMode.Open);
+			int spawnBufferSize = (int)fs.Length - (HEADER_BUFFER_SIZE + ARENA_BUFFER_SIZE + SPAWNS_OFFSET_BUFFER_SIZE);
+			byte[] spawnBuffer = new byte[spawnBufferSize];
+
+			fs.Position += HEADER_BUFFER_SIZE + ARENA_BUFFER_SIZE + SPAWNS_OFFSET_BUFFER_SIZE;
+			fs.Read(spawnBuffer, 0, spawnBufferSize);
+			fs.Close();
+
+			int loopBegin = 0;
+			for (int i = spawnBuffer.Length - SPAWN_LENGTH; i > 0; i -= SPAWN_LENGTH)
+			{
+				if (BitConverter.ToInt32(spawnBuffer, i) == -1)
+				{
+					loopBegin = i / SPAWN_LENGTH;
+					break;
+				}
+			}
+
+			int nonLoopSpawns = 0;
+			int loopSpawns = 0;
+			float nonLoopSeconds = 0;
+			float loopSeconds = 0;
+			for (int j = 0; j < spawnBuffer.Length; j += SPAWN_LENGTH)
+			{
+				if (j < loopBegin * SPAWN_LENGTH)
+					nonLoopSeconds += BitConverter.ToSingle(spawnBuffer, j + 4);
+				else
+					loopSeconds += BitConverter.ToSingle(spawnBuffer, j + 4);
+
+				if (BitConverter.ToInt32(spawnBuffer, j) != -1)
+				{
+					if (j < loopBegin * SPAWN_LENGTH)
+						nonLoopSpawns++;
+					else
+						loopSpawns++;
+				}
+			}
+			spawnData.NonLoopSpawns = nonLoopSpawns;
+			spawnData.LoopSpawns = loopSpawns;
+			spawnData.NonLoopSeconds = nonLoopSeconds;
+			spawnData.LoopSeconds = loopSeconds;
+
+			return spawnData;
 		}
 	}
 }
