@@ -38,32 +38,30 @@
 			<tr>
 				<th width="360">Name <a asp-page="./Spawnsets" asp-route-sortOrder="@Model.NameSort" asp-route-pageIndex="@Model.PageIndex">(sort)</a></th>
 				<th width="360">Author <a asp-page="./Spawnsets" asp-route-sortOrder="@Model.AuthorSort" asp-route-pageIndex="@Model.PageIndex">(sort)</a></th>
-				<th class="hidden-xs" width="240">Length <a asp-page="./Spawnsets" asp-route-sortOrder="@Model.AuthorSort" asp-route-pageIndex="@Model.PageIndex">(sort)</a></th>
-				<th class="hidden-xs" width="240">Spawns <a asp-page="./Spawnsets" asp-route-sortOrder="@Model.AuthorSort" asp-route-pageIndex="@Model.PageIndex">(sort)</a></th>
-				<th class="hidden-xs" width="240">Wave length (1st) <a asp-page="./Spawnsets" asp-route-sortOrder="@Model.AuthorSort" asp-route-pageIndex="@Model.PageIndex">(sort)</a></th>
-				<th class="hidden-xs" width="240">Spawns <a asp-page="./Spawnsets" asp-route-sortOrder="@Model.AuthorSort" asp-route-pageIndex="@Model.PageIndex">(sort)</a></th>
+				<th class="hidden-xs" width="240">Length <a asp-page="./Spawnsets" asp-route-sortOrder="@Model.NonLoopLength" asp-route-pageIndex="@Model.PageIndex">(sort)</a></th>
+				<th class="hidden-xs" width="240">Spawns <a asp-page="./Spawnsets" asp-route-sortOrder="@Model.NonLoopSpawns" asp-route-pageIndex="@Model.PageIndex">(sort)</a></th>
+				<th class="hidden-xs" width="240">Wave length (1st) <a asp-page="./Spawnsets" asp-route-sortOrder="@Model.LoopLength" asp-route-pageIndex="@Model.PageIndex">(sort)</a></th>
+				<th class="hidden-xs" width="240">Spawns <a asp-page="./Spawnsets" asp-route-sortOrder="@Model.LoopSpawns" asp-route-pageIndex="@Model.PageIndex">(sort)</a></th>
 			</tr>
 		</thead>
 		<tbody>
 			@{
 				foreach (SpawnsetFile spawnsetFile in Model.SpawnsetFiles)
 				{
-					string path = System.IO.Path.Combine(CommonObjects.Env.WebRootPath, "spawnsets", $"{spawnsetFile.Name}_{spawnsetFile.Author}");
-					SpawnData spawnData = SpawnsetUtils.GetSpawnData(path);
 					<tr>
 						<td><a asp-page="Spawnset" asp-route-spawnset="@($"{spawnsetFile.Name}_{spawnsetFile.Author}")">@spawnsetFile.Name</a></td>
 						<td>@spawnsetFile.Author</td>
 						<td class="hidden-xs">
-							@(spawnData.NonLoopSpawns == 0 ? RazorUtils.NAString : Html.Raw($"{string.Format(RazorUtils.DEFAULT_CULTURE, "{0:0.####}", spawnData.NonLoopSeconds)}"))
+							@(spawnsetFile.SpawnData.NonLoopSpawns == 0 ? RazorUtils.NAString : Html.Raw(string.Format(RazorUtils.DEFAULT_CULTURE, "{0:0.0000}", spawnsetFile.SpawnData.NonLoopSeconds)))
 						</td>
 						<td class="hidden-xs">
-							@(spawnData.NonLoopSpawns == 0 ? RazorUtils.NAString : Html.Raw($"{spawnData.NonLoopSpawns}"))
+							@(spawnsetFile.SpawnData.NonLoopSpawns == 0 ? RazorUtils.NAString : Html.Raw(spawnsetFile.SpawnData.NonLoopSpawns))
 						</td>
 						<td class="hidden-xs">
-							@(spawnData.LoopSpawns == 0 ? RazorUtils.NAString : Html.Raw($"{string.Format(RazorUtils.DEFAULT_CULTURE, "{0:0.####}", spawnData.LoopSeconds)}"))
+							@(spawnsetFile.SpawnData.LoopSpawns == 0 ? RazorUtils.NAString : Html.Raw(string.Format(RazorUtils.DEFAULT_CULTURE, "{0:0.0000}", spawnsetFile.SpawnData.LoopSeconds)))
 						</td>
 						<td class="hidden-xs">
-							@(spawnData.LoopSpawns == 0 ? RazorUtils.NAString : Html.Raw($"{spawnData.LoopSpawns}"))
+							@(spawnsetFile.SpawnData.LoopSpawns == 0 ? RazorUtils.NAString : Html.Raw(spawnsetFile.SpawnData.LoopSpawns))
 						</td>
 					</tr>
 				}

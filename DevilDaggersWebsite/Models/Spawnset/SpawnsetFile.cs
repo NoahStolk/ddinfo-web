@@ -1,4 +1,5 @@
-﻿using Newtonsoft.Json;
+﻿using DevilDaggersWebsite.Utils;
+using Newtonsoft.Json;
 
 namespace DevilDaggersWebsite.Models.Spawnset
 {
@@ -8,6 +9,8 @@ namespace DevilDaggersWebsite.Models.Spawnset
 		public string Path { get; set; }
 
 		public string FileName { get { return System.IO.Path.GetFileName(Path); } }
+
+		public SpawnData SpawnData { get { return SpawnsetUtils.GetSpawnData(Path); } }
 
 		[JsonProperty]
 		public string Name { get { return FileName.Substring(0, FileName.LastIndexOf('_')); } }

@@ -129,8 +129,8 @@ namespace DevilDaggersWebsite.Utils
 			}
 			spawnData.NonLoopSpawns = nonLoopSpawns;
 			spawnData.LoopSpawns = loopSpawns;
-			spawnData.NonLoopSeconds = nonLoopSeconds;
-			spawnData.LoopSeconds = loopSeconds;
+			spawnData.NonLoopSeconds = nonLoopSpawns == 0 ? 0 : nonLoopSeconds;
+			spawnData.LoopSeconds = loopSpawns == 0 ? 0 : loopSeconds;
 
 			return spawnData;
 		}
