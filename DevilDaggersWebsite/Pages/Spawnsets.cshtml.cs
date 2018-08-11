@@ -39,7 +39,7 @@ namespace DevilDaggersWebsite.Pages
 
 			NameSort = sortOrder == "Name" ? "Name_asc" : "Name";
 			AuthorSort = sortOrder == "Author_asc" ? "Author" : "Author_asc";
-			LastUpdated = sortOrder == "LastUpdated" ? "LastUpdated_asc" : "LastUpdated";
+			LastUpdated = sortOrder == "LastUpdated_asc" ? "LastUpdated" : "LastUpdated_asc";
 			NonLoopLength = sortOrder == "NonLoopLength_asc" ? "NonLoopLength" : "NonLoopLength_asc";
 			NonLoopSpawns = sortOrder == "NonLoopSpawns_asc" ? "NonLoopSpawns" : "NonLoopSpawns_asc";
 			LoopLength = sortOrder == "LoopLength_asc" ? "LoopLength" : "LoopLength_asc";
@@ -53,7 +53,6 @@ namespace DevilDaggersWebsite.Pages
 
 			switch (sortOrder)
 			{
-				default:
 				case "Name_asc":
 					spawnsetFiles = spawnsetFiles.OrderBy(s => s.Name).ThenByDescending(s => s.Author).ToList();
 					break;
@@ -69,6 +68,7 @@ namespace DevilDaggersWebsite.Pages
 				case "LastUpdated_asc":
 					spawnsetFiles = spawnsetFiles.OrderBy(s => s.LastUpdated).ThenByDescending(s => s.Name).ToList();
 					break;
+				default:
 				case "LastUpdated":
 					spawnsetFiles = spawnsetFiles.OrderByDescending(s => s.LastUpdated).ThenBy(s => s.Name).ToList();
 					break;
