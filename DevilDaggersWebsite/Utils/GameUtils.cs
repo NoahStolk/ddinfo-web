@@ -48,7 +48,7 @@ namespace DevilDaggersWebsite.Utils
 		public static Enemy SpiderEgg2 = new Enemy("Spider Egg II", "657A00", 3, 0, 1, Envenmonated, 3, 3, Spider2);
 		public static Enemy Spiderling = new Enemy("Spiderling", "DCCB00", 3, 0, 1, Infested, 1, 1, SpiderEgg1, SpiderEgg2);
 
-		public static Upgrade Level1 = new Upgrade(1, 20, 10, null, null, "BB5500", "N/A");
+		public static Upgrade Level1 = new Upgrade(1, 20, 10, null, null, "BB5500", RazorUtils.NAString);
 		public static Upgrade Level2 = new Upgrade(2, 40, 20, null, null, "FFAA00", "10 gems");
 		public static Upgrade Level3 = new Upgrade(3, 80, 40, 40, 20, "00FFFF", "70 gems");
 		public static Upgrade Level4 = new Upgrade(4, 106f + 2f / 3f, 60, 40, 30, "FF0099", "150 stored homing daggers");

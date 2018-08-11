@@ -1,5 +1,6 @@
 ﻿using DevilDaggersWebsite.Models.Game;
 using System.Globalization;
+using Microsoft.AspNetCore.Html;
 
 namespace DevilDaggersWebsite.Utils
 {
@@ -7,9 +8,11 @@ namespace DevilDaggersWebsite.Utils
 	{
 		public static CultureInfo DEFAULT_CULTURE = CultureInfo.CreateSpecificCulture("en-US");
 
+		public static HtmlString NAString = new HtmlString($"<span style='color: #444;'>N/A</span>");
+
 		public static string Email = "contact@devildaggers.info";
 
-		public static string BanColorCode = "666666";
+		public static string BanColorCode = "666";
 
 		public const int DEFAULT_MAX_WAVES = 25;
 		public const int MAX_SPAWNS = 10000;
