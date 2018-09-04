@@ -30,7 +30,7 @@ namespace DevilDaggersWebsite.Utils
 		public static string GetLayout(string str)
 		{
 			char[] beginSeparators = new char[] { '>', ' ', ',', '.', '(' };
-			char[] endSeparators = new char[] { ' ', ',', '.', 's', ')' };
+			char[] endSeparators = new char[] { ' ', ',', '.', 's', ')', '\'' };
 
 			for (int i = GameUtils.Enemies.Length - 1; i >= 0; i--) // Reverse iteration because transmuted skulls are after normal skulls in the list
 			{
