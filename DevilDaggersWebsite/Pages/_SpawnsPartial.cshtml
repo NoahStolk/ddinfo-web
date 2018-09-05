@@ -107,7 +107,7 @@
 				}
 			}
 
-			if (endLoop.Count != 1)
+			if (endLoop.Count != 1 || (endLoop.Count == 1 && endLoop[0].Enemy != null))
 			{
 				double waveMod = 0;
 				double endGameSecond = seconds;
