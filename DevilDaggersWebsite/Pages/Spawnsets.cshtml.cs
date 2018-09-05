@@ -45,7 +45,7 @@ namespace DevilDaggersWebsite.Pages
 			LoopLength = sortOrder == "LoopLength_asc" ? "LoopLength" : "LoopLength_asc";
 			LoopSpawns = sortOrder == "LoopSpawns_asc" ? "LoopSpawns" : "LoopSpawns_asc";
 
-			List<string> spawnsetPaths = Directory.GetFiles(Path.Combine(_commonObjects.Env.WebRootPath, "spawnsets/")).ToList();
+			List<string> spawnsetPaths = Directory.GetFiles(Path.Combine(_commonObjects.Env.WebRootPath, "spawnsets")).ToList();
 
 			List<SpawnsetFile> spawnsetFiles = new List<SpawnsetFile>();
 			foreach (string spawnsetPath in spawnsetPaths)

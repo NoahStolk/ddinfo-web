@@ -28,7 +28,7 @@ namespace DevilDaggersWebsite.Pages
 		{
 			List<SpawnsetFile> spawnsets = new List<SpawnsetFile>();
 
-			foreach (string spawnsetPath in Directory.GetFiles(Path.Combine(_commonObjects.Env.WebRootPath, "spawnsets/")).ToList())
+			foreach (string spawnsetPath in Directory.GetFiles(Path.Combine(_commonObjects.Env.WebRootPath, "spawnsets")).ToList())
 				spawnsets.Add(new SpawnsetFile(spawnsetPath));
 
 			return JsonConvert.SerializeObject(spawnsets, Formatting.Indented);

@@ -23,7 +23,7 @@
 
 	int maxWaves = RazorUtils.DEFAULT_MAX_WAVES;
 	string fileName = Model.Substring(Model.LastIndexOf('/') + 1, Model.LastIndexOf('_') - Model.LastIndexOf('/') - 1);
-	foreach (string settingsPath in Directory.GetFiles(System.IO.Path.Combine(commonObjects.Env.WebRootPath, "spawnsets/Settings/")))
+	foreach (string settingsPath in Directory.GetFiles(System.IO.Path.Combine(commonObjects.Env.WebRootPath, "spawnsets", "Settings")))
 	{
 		if (System.IO.Path.GetFileName(settingsPath.Substring(0, settingsPath.LastIndexOf('.'))) == fileName)
 		{
