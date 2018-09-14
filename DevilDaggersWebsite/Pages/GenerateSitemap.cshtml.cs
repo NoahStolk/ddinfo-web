@@ -1,5 +1,5 @@
-﻿using CoreBase.Extensions;
-using CoreBase.Services;
+﻿using CoreBase.Services;
+using CoreBase.Sitemap;
 using Microsoft.AspNetCore.Mvc.RazorPages;
 
 namespace DevilDaggersWebsite.Pages
