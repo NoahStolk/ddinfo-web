@@ -9,6 +9,8 @@ Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "CoreBase", "..\CoreBase\Cor
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "NetBase", "..\NetBase\NetBase\NetBase.csproj", "{25F631B5-133B-4136-A995-040072FC405F}"
 EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "SpawnsetSettingsHelper", "SpawnsetSettingsHelper\SpawnsetSettingsHelper.csproj", "{E71B2949-6119-44A2-90B9-FE80B16427C8}"
+EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
 		Debug|Any CPU = Debug|Any CPU
@@ -27,6 +29,10 @@ Global
 		{25F631B5-133B-4136-A995-040072FC405F}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{25F631B5-133B-4136-A995-040072FC405F}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{25F631B5-133B-4136-A995-040072FC405F}.Release|Any CPU.Build.0 = Release|Any CPU
+		{E71B2949-6119-44A2-90B9-FE80B16427C8}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{E71B2949-6119-44A2-90B9-FE80B16427C8}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{E71B2949-6119-44A2-90B9-FE80B16427C8}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{E71B2949-6119-44A2-90B9-FE80B16427C8}.Release|Any CPU.Build.0 = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE
