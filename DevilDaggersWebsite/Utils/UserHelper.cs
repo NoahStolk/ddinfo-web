@@ -61,6 +61,7 @@ namespace DevilDaggersWebsite.Utils
 			new Donator("LukeNukem", 1001, '€'),
 			new Donator("Zirtonic", 1000, '$'),
 			new Donator("Stop.", 751, '€'),
+			new Donator("Pritster", 500, '£'),
 			new Donator("Dillon", 500, '$'),
 			new Donator("Tileä", 500, '$'),
 			new Donator("Chupacabra", 250, '€'),
