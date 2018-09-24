@@ -1,0 +1,3 @@
+{
+	"Description": "Initially fend off 12 Squid I's and 6 Squid II's being provided 72 seconds to clear the map. <br />Once 3 minutes have elapsed a shorter but otherwise identical loop begins but with a notably much reduced time to clear the map of the initial squid spawns (now allowing 47s or less in subsequent waves). <br />This seemingly large alteration was needed to remove the waiting times that were occurring otherwise.<br />By the time the first Gigapede spawns you should be Level 3 or very close to it - by the time the second Gigapede spawns you should be Level 4 or very close to it (assuming you're stacking your homing daggers)."
+}
