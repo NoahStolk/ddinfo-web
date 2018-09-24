@@ -27,6 +27,7 @@ namespace DevilDaggersWebsite.Pages
 
 		public int PageSize { get; set; } = 15;
 		public int PageIndex { get; private set; }
+		public int TotalResults { get; private set; }
 
 		public SpawnsetsModel(ICommonObjects commonObjects)
 		{
@@ -102,6 +103,7 @@ namespace DevilDaggersWebsite.Pages
 			PageIndex = Math.Max(PageIndex, 1);
 			PageIndex = Math.Min(PageIndex, (int)Math.Ceiling(spawnsetFiles.Count / (double)PageSize));
 
+			TotalResults = spawnsetFiles.Count;
 			SpawnsetFiles = PaginatedList<SpawnsetFile>.Create(spawnsetFiles, PageIndex, PageSize);
 		}
 	}

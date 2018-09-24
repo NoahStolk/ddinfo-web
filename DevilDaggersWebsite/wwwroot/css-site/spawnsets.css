@@ -12,3 +12,8 @@
 	color: #ddd;
 	text-decoration: none;
 }
+
+.spawnset-page-nav {
+	padding: 0;
+	margin-bottom: 10px;
+}

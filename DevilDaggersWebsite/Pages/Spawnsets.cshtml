@@ -17,32 +17,48 @@
 		Here's a list of custom spawnsets created by the community. They can be played in the real game. Read below for more information.
 	</p>
 
+	@{
+		int first = 1;
+		int last = Model.TotalResults / Model.PageSize + 1;
+	}
+
+	<div class="row">
+		<div class="col-xs-12 col-sm-6 col-lg-4 spawnset-page-nav">
+			<div class="flex-container" style="justify-content: space-evenly;">
+				@for (int i = first; i <= last; i++)
+				{
+					<div>
+						<a asp-page="./Spawnsets"
+						   asp-route-sortOrder="@Model.SortOrder"
+						   asp-route-pageIndex="@i"
+						   class="btn btn-default @(i == Model.PageIndex ? "disabled" : "")">
+							@i
+						</a>
+					</div>
+				}
+			</div>
+		</div>
+	</div>
+
+	<p>
+		Showing @((Model.PageIndex - 1) * Model.PageSize + 1) - @(Math.Min(Model.TotalResults, Model.PageIndex * Model.PageSize)) of @Model.TotalResults results
+	</p>
+
 	<table>
 		<thead>
 			<tr>
-				<th>Page @Model.PageIndex / @Model.SpawnsetFiles.TotalPages</th>
-			</tr>
-			<tr>
-				<td>
-					<a asp-page="./Spawnsets" asp-route-sortOrder="@Model.SortOrder" asp-route-pageIndex="@(Model.SpawnsetFiles.PageIndex - 1)" class="btn btn-default @(!Model.SpawnsetFiles.HasPreviousPage ? "disabled" : "")">Previous</a>
-				</td>
-				<td>
-					<a asp-page="./Spawnsets" asp-route-sortOrder="@Model.SortOrder" asp-route-pageIndex="@(Model.SpawnsetFiles.PageIndex + 1)" class="btn btn-default @(!Model.SpawnsetFiles.HasNextPage ? "disabled" : "")">Next</a>
-				</td>
-			</tr>
-			<tr>
 				<th class="hidden-xs" colspan="3"></th>
-				<th class="hidden-xs hidden-sm" colspan="2">Non-loop</th>
-				<th class="hidden-xs hidden-sm" colspan="2">Loop</th>
+				<th class="hidden-xs hidden-sm hidden-md" colspan="2">Non-loop</th>
+				<th class="hidden-xs hidden-sm hidden-md" colspan="2">Loop</th>
 			</tr>
 			<tr class="spawnsets-sort">
-				<th width="360"><a asp-page="./Spawnsets" asp-route-sortOrder="@Model.NameSort" asp-route-pageIndex="@Model.PageIndex">Name</a></th>
-				<th width="360"><a asp-page="./Spawnsets" asp-route-sortOrder="@Model.AuthorSort" asp-route-pageIndex="@Model.PageIndex">Author</a></th>
+				<th width="500"><a asp-page="./Spawnsets" asp-route-sortOrder="@Model.NameSort" asp-route-pageIndex="@Model.PageIndex">Name</a></th>
+				<th width="220"><a asp-page="./Spawnsets" asp-route-sortOrder="@Model.AuthorSort" asp-route-pageIndex="@Model.PageIndex">Author</a></th>
 				<th class="hidden-xs" width="160"><a asp-page="./Spawnsets" asp-route-sortOrder="@Model.LastUpdated" asp-route-pageIndex="@Model.PageIndex">Last updated</a></th>
-				<th class="hidden-xs hidden-sm" width="160"><a asp-page="./Spawnsets" asp-route-sortOrder="@Model.NonLoopLength" asp-route-pageIndex="@Model.PageIndex">Length</a></th>
-				<th class="hidden-xs hidden-sm" width="160"><a asp-page="./Spawnsets" asp-route-sortOrder="@Model.NonLoopSpawns" asp-route-pageIndex="@Model.PageIndex">Spawns</a></th>
-				<th class="hidden-xs hidden-sm" width="160"><a asp-page="./Spawnsets" asp-route-sortOrder="@Model.LoopLength" asp-route-pageIndex="@Model.PageIndex">Start</a></th>
-				<th class="hidden-xs hidden-sm" width="160"><a asp-page="./Spawnsets" asp-route-sortOrder="@Model.LoopSpawns" asp-route-pageIndex="@Model.PageIndex">Spawns</a></th>
+				<th class="hidden-xs hidden-sm hidden-md" width="160"><a asp-page="./Spawnsets" asp-route-sortOrder="@Model.NonLoopLength" asp-route-pageIndex="@Model.PageIndex">Length</a></th>
+				<th class="hidden-xs hidden-sm hidden-md" width="160"><a asp-page="./Spawnsets" asp-route-sortOrder="@Model.NonLoopSpawns" asp-route-pageIndex="@Model.PageIndex">Spawns</a></th>
+				<th class="hidden-xs hidden-sm hidden-md" width="160"><a asp-page="./Spawnsets" asp-route-sortOrder="@Model.LoopLength" asp-route-pageIndex="@Model.PageIndex">Start</a></th>
+				<th class="hidden-xs hidden-sm hidden-md" width="160"><a asp-page="./Spawnsets" asp-route-sortOrder="@Model.LoopSpawns" asp-route-pageIndex="@Model.PageIndex">Spawns</a></th>
 			</tr>
 		</thead>
 		<tbody>
@@ -55,16 +71,16 @@
 						<td class="hidden-xs">
 							@(spawnsetFile.LastUpdated.ToString("dd MMM yyyy", RazorUtils.DEFAULT_CULTURE))
 						</td>
-						<td class="hidden-xs hidden-sm">
+						<td class="hidden-xs hidden-sm hidden-md">
 							@(spawnsetFile.SpawnData.NonLoopSpawns == 0 ? RazorUtils.NAString : Html.Raw(string.Format(RazorUtils.DEFAULT_CULTURE, "{0:0.0000}", spawnsetFile.SpawnData.NonLoopSeconds)))
 						</td>
-						<td class="hidden-xs hidden-sm">
+						<td class="hidden-xs hidden-sm hidden-md">
 							@(spawnsetFile.SpawnData.NonLoopSpawns == 0 ? RazorUtils.NAString : Html.Raw(spawnsetFile.SpawnData.NonLoopSpawns))
 						</td>
-						<td class="hidden-xs hidden-sm">
+						<td class="hidden-xs hidden-sm hidden-md">
 							@(spawnsetFile.SpawnData.LoopSpawns == 0 ? RazorUtils.NAString : Html.Raw(string.Format(RazorUtils.DEFAULT_CULTURE, "{0:0.0000}", spawnsetFile.SpawnData.LoopStart)))
 						</td>
-						<td class="hidden-xs hidden-sm">
+						<td class="hidden-xs hidden-sm hidden-md">
 							@(spawnsetFile.SpawnData.LoopSpawns == 0 ? RazorUtils.NAString : Html.Raw(spawnsetFile.SpawnData.LoopSpawns))
 						</td>
 					</tr>
