@@ -198,6 +198,17 @@
 			float: left;
 		}
 
+.macro {
+	background: url('../Images/Fonts/fontmacro.png');
+	background-repeat: repeat-x;
+	background-position: 0 7px;
+	-webkit-font-smoothing: antialiased;
+	-webkit-background-clip: text;
+	-moz-background-clip: text;
+	background-clip: text;
+	-webkit-text-fill-color: transparent;
+}
+
 .admin {
 	background: url('../Images/Fonts/fontadmin.png');
 	background-repeat: repeat-x;

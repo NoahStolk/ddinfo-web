@@ -121,17 +121,18 @@
 					}
 				}
 
-				bool admin = (UserHelper.AdminID == entry.ID);
-				bool donator = (UserHelper.DonatorIDs.Contains(entry.ID));
-				bool ban = (UserHelper.BanIDs.Contains(entry.ID));
+				bool admin = UserHelper.AdminID == entry.ID;
+				bool donator = UserHelper.DonatorIDs.Contains(entry.ID);
+				bool ban = UserHelper.BanIDs.Contains(entry.ID);
 
 				string role = (admin ? "admin" : ban ? "ban" : donator ? "donator" : "");
 				string username = entry.Username;
+				string color = (entry.ID == 159605 ? "macro" : dagger.Name.ToLower());
 				<div class="sort" @Html.Raw(entry.ToHTMLData())>
 					<div class="leaderboard-row flex-container" id="@(entry.Rank)-row">
 						<div class="text-right @(ban ? "ban" : "")">@entry.Rank</div>
-						<div class="text-left @(ban ? "ban" : dagger.Name.ToLower()) leaderboard-username">@username</div>
-						<div class="text-right @(ban ? "ban" : dagger.Name.ToLower())">@string.Format(RazorUtils.DEFAULT_CULTURE, "{0:0.0000}", (double)entry.Time / 10000)</div>
+						<div class="text-left @(ban ? "ban" : color) leaderboard-username">@username</div>
+						<div class="text-right @(ban ? "ban" : color)">@string.Format(RazorUtils.DEFAULT_CULTURE, "{0:0.0000}", (double)entry.Time / 10000)</div>
 						<div class="hidden-xs text-right @(ban ? "ban" : "")">@entry.Kills</div>
 						<div class="hidden-xs text-right @(ban ? "ban" : "")">@entry.Gems</div>
 						<div class="hidden-xs text-right @(ban ? "ban" : "")">@string.Format(RazorUtils.DEFAULT_CULTURE, "{0:0.00}%", entry.Accuracy)</div>
