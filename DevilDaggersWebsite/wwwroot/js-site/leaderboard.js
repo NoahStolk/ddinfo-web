@@ -21,7 +21,8 @@
 
 		$(".leaderboard-expand").not("#" + id + "-expand").removeClass('expand');
 	});
-	
+
+	$('.sorter').css('cursor', 'pointer');
 	$(document).on("click", ".sorter", function () {
 		var sorter = $(this);
 		var sortValue = sorter.attr('sort');
