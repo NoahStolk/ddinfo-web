@@ -14,6 +14,7 @@
 		"total-deaths": -1
 	};
 
+	$('.leaderboard-row').css('cursor', 'pointer');
 	$(document).on("click", ".leaderboard-row", function () {
 		var id = $(this).attr('id').split('-')[0];
 		$("#" + id + "-expand").toggleClass('expand');
