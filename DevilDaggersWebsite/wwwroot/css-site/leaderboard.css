@@ -17,6 +17,12 @@
 	cursor: pointer;
 }
 
+@media (max-width: 1199px) {
+	.leaderboard-row {
+		cursor: pointer;
+	}
+}
+
 .ban,
 .ban > td {
 	text-decoration: line-through;
