@@ -11,7 +11,7 @@
 		"total-kills": -1,
 		"total-gems": -1,
 		"total-accuracy": -1,
-		"total-deaths": -1,
+		"total-deaths": -1
 	};
 
 	$(document).on("click", ".leaderboard-row", function () {
@@ -26,7 +26,7 @@
 		var sortValue = sorter.attr('sort');
 
 		var sort = $('.sort').sort(function (a, b) {
-			if (sortValue == 'username' || sortValue == 'death-type') {
+			if (sortValue === 'username' || sortValue === 'death-type') {
 				contentA = $(a).attr(sortValue).toLowerCase();
 				contentB = $(b).attr(sortValue).toLowerCase();
 			}
@@ -35,7 +35,7 @@
 				contentB = parseInt($(b).attr(sortValue));
 			}
 
-			return ((contentA < contentB) ? -1 : (contentA > contentB) ? 1 : 0) * directions[sortValue];
+			return (contentA < contentB ? -1 : contentA > contentB ? 1 : 0) * directions[sortValue];
 		});
 
 		directions[sortValue] *= -1;
