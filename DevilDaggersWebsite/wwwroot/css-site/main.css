@@ -86,6 +86,18 @@ input {
 	background-color: black;
 }
 
+.select {
+	color: red;
+	background-color: black;
+	max-width: 256px;
+	margin: 12px auto;
+}
+
+option {
+	color: red;
+	background-color: black;
+}
+
 @media (max-width: 767px) {
 	.mobile-left {
 		text-align: left;

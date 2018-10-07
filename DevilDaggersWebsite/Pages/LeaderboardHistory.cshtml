@@ -1,8 +1,8 @@
 ﻿@page
 @inject CoreBase.Services.ICommonObjects CommonObjects
-@model DevilDaggersWebsite.Pages.LeaderboardModel
+@model DevilDaggersWebsite.Pages.LeaderboardHistoryModel
 @{
-	ViewData["Title"] = "Leaderboard";
+	ViewData["Title"] = $"Top 100 History ({Model.Leaderboard.DateTime.ToString("yyyy-MM-dd HH:mm")} UTC)";
 }
 @using DevilDaggersWebsite.Utils
 @using DevilDaggersWebsite.Models.Game
@@ -13,10 +13,6 @@
 </header>
 
 <main role="main" class="text-center">
-	<p>
-		<a asp-page="/LeaderboardHistory">Top 100 history</a>
-	</p>
-
 	<div class="hidden-xs">
 		<div class="flex-container leaderboard-flex flex-center flex-space-evenly">
 			<div>
@@ -68,22 +64,9 @@
 		</div>
 	</div>
 	<div>
-		@using (Html.BeginForm(FormMethod.Post))
-		{
-			@Html.AntiForgeryToken()
-			<fieldset>
-				@Html.TextBoxFor(m => m.Leaderboard.Offset, new { @class = "input" })
-				<input type="hidden" name="offsetPrevious" value="@Model.Leaderboard.OffsetPrevious" />
-				<br />
-				<input class="btn btn-default" type="submit" name="submitAction" value="Show" />
-				<br />
-				<input class="btn btn-default" type="submit" name="submitAction" value="<" />
-				<input class="btn btn-default" type="submit" name="submitAction" value=">" />
-			</fieldset>
-		}
-		<p>
-			Showing rank @(Model.Leaderboard.Offset) - @(Model.Leaderboard.Offset + 99)
-		</p>
+		<form method="get">
+			<select class="select form-control" asp-for="From" asp-items="Model.JsonFiles" onchange="this.form.submit()"></select>
+		</form>
 		<p class="visible-xs visible-sm visible-md">
 			On mobile devices; tap on an entry to expand it.
 		</p>
