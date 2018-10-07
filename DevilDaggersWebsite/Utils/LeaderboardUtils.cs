@@ -88,7 +88,7 @@ namespace DevilDaggersWebsite.Utils
 
 		private static readonly string serverURLJson = "http://ddstats.com/api/get_scores";
 
-		private static Leaderboard LoadLeaderboardJson(Leaderboard leaderboard)
+		public static Leaderboard LoadLeaderboardJson(Leaderboard leaderboard)
 		{
 			string leaderboardDataJson = GetLeaderboardDataJson(leaderboard);
 
@@ -99,7 +99,7 @@ namespace DevilDaggersWebsite.Utils
 		{
 			using (WebClient wc = new WebClient())
 			{
-				return wc.DownloadString($"{serverURLJson}?offset={(leaderboard.Offset - 1)}");
+				return wc.DownloadString($"{serverURLJson}?offset={leaderboard.Offset - 1}");
 			}
 		}
 
