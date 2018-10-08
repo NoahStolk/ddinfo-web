@@ -76,6 +76,22 @@
 		</p>
 	</div>
 
+	<div>
+		Missing or inaccurate information
+	</div>
+	<div class="missing-information-container">
+		<div class="flex-container leaderboard-flex flex-center flex-space-evenly">
+			<div>
+				<div>Global</div>
+				<div class="missing-information">@Html.Raw(Model.Leaderboard.GetMissingGlobalInformation().Replace("\n", "<br />"))</div>
+			</div>
+			<div>
+				<div>User</div>
+				<div class="missing-information">@Html.Raw(Model.Leaderboard.GetMissingUserInformation().Replace("\n", "<br />"))</div>
+			</div>
+		</div>
+	</div>
+
 	<div class="leaderboard-container flex-container flex-center">
 		<div class="leaderboard-title-row flex-container">
 			<div class="sorter text-center" sort="rank">#</div>

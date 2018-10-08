@@ -17,6 +17,16 @@
 	cursor: pointer;
 }
 
+.missing-information-container {
+	max-width: 540px;
+	margin: auto;
+}
+
+.missing-information {
+	font-size: 17px;
+	color: #666;
+}
+
 @media (max-width: 1199px) {
 	.leaderboard-row {
 		cursor: pointer;

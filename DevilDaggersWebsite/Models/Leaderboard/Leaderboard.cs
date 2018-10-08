@@ -1,6 +1,9 @@
-﻿using Newtonsoft.Json;
+﻿using DevilDaggersWebsite.Utils;
+using Newtonsoft.Json;
 using System;
 using System.Collections.Generic;
+using System.Reflection;
+using System.Text;
 
 namespace DevilDaggersWebsite.Models.Leaderboard
 {
@@ -32,5 +35,54 @@ namespace DevilDaggersWebsite.Models.Leaderboard
 		public List<Entry> Entries { get; set; } = new List<Entry>();
 
 		public double AccuracyGlobal => ShotsFiredGlobal == 0 ? 0 : ShotsHitGlobal / (double)ShotsFiredGlobal * 100;
+
+		public string GetMissingGlobalInformation()
+		{
+			StringBuilder global = new StringBuilder();
+			GetMissingProperties(this, global);
+
+			return global.ToString();
+		}
+
+		public string GetMissingUserInformation()
+		{
+			StringBuilder user = new StringBuilder();
+			GetMissingProperties(Entries[0], user);
+
+			return user.ToString();
+		}
+
+		private static void GetMissingProperties(object p, StringBuilder sb)
+		{
+			Type t = p.GetType();
+			foreach (PropertyInfo info in t.GetProperties())
+			{
+				object value = info.GetValue(p);
+				Type type = value.GetType();
+
+				try
+				{
+					if (value.ToString() == GetDefaultValue(type).ToString())
+						sb.AppendLine($"{info.Name} (Missing) {(info.Name == "ID" ? "(No bans)" : "")}");
+					else if (info.Name.ToLower().Contains("shotsfired") && value.ToString() == "10000")
+						sb.AppendLine($"Shots{info.Name.Substring(10)} (Inaccurate)");
+				}
+				catch (Exception)
+				{
+					// nobody cares
+				}
+			}
+
+			if (string.IsNullOrEmpty(sb.ToString()))
+				sb.AppendLine(RazorUtils.NAString.ToString());
+		}
+
+		private static object GetDefaultValue(Type t)
+		{
+			if (t.IsValueType)
+				return Activator.CreateInstance(t);
+
+			return null;
+		}
 	}
 }
