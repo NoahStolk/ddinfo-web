@@ -24,7 +24,7 @@ namespace DevilDaggersWebsite.Pages
 			JsonResult = JsonConvert.SerializeObject(Leaderboard);
 			DateTime = Leaderboard.DateTime;
 
-			return File(Encoding.UTF8.GetBytes(JsonResult), MediaTypeNames.Application.Json, $"{DateTime.ToString("yyyy-MM-dd HH.mm")}.json");
+			return File(Encoding.UTF8.GetBytes(JsonResult), MediaTypeNames.Application.Json, $"{DateTime.ToString("yyyyMMddHHmm")}.json");
 		}
 	}
 }
