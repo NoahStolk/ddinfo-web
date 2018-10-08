@@ -10,7 +10,7 @@
 
 .input {
 	text-align: center;
-	color: red;
+	color: var(--col-red);
 }
 
 .sorter:hover {
@@ -24,7 +24,7 @@
 
 .missing-information {
 	font-size: 17px;
-	color: #666;
+	color: var(--col-gray);
 }
 
 @media (max-width: 1199px) {
@@ -36,7 +36,7 @@
 .ban,
 .ban > td {
 	text-decoration: line-through;
-	color: #666666;
+	color: var(--col-ban);
 }
 
 .leaderboard-row,

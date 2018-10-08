@@ -3,22 +3,22 @@
 }
 
 .navbar, .navbar-header, .navbar-nav, .navbar-nav > li, .navbar-brand, .navbar-collapse, ul.navbar-nav {
-	background-color: #111;
+	background-color: var(--col-nav-background);
 }
 
 .navbar {
-	-webkit-box-shadow: 0 -4px 8px 6px #660000;
-	-moz-box-shadow: 0 -4px 8px 6px #660000;
-	box-shadow: 0 -4px 8px 6px #660000;
+	-webkit-box-shadow: 0 -4px 8px 6px var(--col-dark-red);
+	-moz-box-shadow: 0 -4px 8px 6px var(--col-dark-red);
+	box-shadow: 0 -4px 8px 6px var(--col-dark-red);
 }
 
 .navbar-nav > li > a:hover,
 .navbar-nav > li > a:focus {
-	background-color: #333;
+	background-color: var(--col-nav-background-hover);
 }
 
 .icon-bar {
-	background-color: #ff0000;
+	background-color: var(--col-red);
 }
 
 @media (min-width: 768px) {

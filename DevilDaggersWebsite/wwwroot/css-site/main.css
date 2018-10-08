@@ -18,22 +18,22 @@ html {
 }
 
 ::selection {
-	background: #770000;
+	background: var(--col-selection-text);
 }
 
 ::-moz-selection {
-	background: #770000;
+	background: var(--col-selection-text);
 }
 
 body {
-	color: #DDDDDD;
-	background-color: black;
+	color: var(--col-default-text);
+	background-color: var(--col-black);
 	font-family: 'default', sans-serif;
 	font-size: 19.9px; /*blur fix???*/
 }
 
 h1, h2, h3, h4, h5, h6 {
-	color: #FF0000;
+	color: var(--col-red);
 	margin-left: 0px;
 	padding-left: 0px;
 }
@@ -55,7 +55,7 @@ a:active,
 a:visited,
 a:focus,
 a:hover {
-	color: #FF0000;
+	color: var(--col-red);
 }
 
 	a:hover {
@@ -65,37 +65,37 @@ a:hover {
 .btn {
 	margin: 8px 0;
 	border: 2px solid;
-	border-color: #DDDDDD;
+	color: var(--col-default-text);
 	text-align: center;
 	padding: 6px 12px;
 	font-size: 22px;
-	background-color: black;
+	background-color: var(--col-black);
 }
 
 	.btn:hover {
 		cursor: pointer;
-		color: red;
-		background-color: #111;
+		color: var(--col-red);
+		background-color: var(--col-nav-background);
 	}
 
 .btn-default {
-	color: red;
+	color: var(--col-red);
 }
 
 input {
-	background-color: black;
+	background-color: var(--col-black);
 }
 
 .select {
-	color: red;
-	background-color: black;
+	color: var(--col-red);
+	background-color: var(--col-black);
 	max-width: 256px;
 	margin: 12px auto;
 }
 
 option {
-	color: red;
-	background-color: black;
+	color: var(--col-red);
+	background-color: var(--col-black);
 }
 
 @media (max-width: 767px) {

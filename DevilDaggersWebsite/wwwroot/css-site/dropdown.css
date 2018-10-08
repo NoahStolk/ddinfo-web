@@ -8,15 +8,15 @@
 .nav .open > a:active,
 .nav .open > a:visited,
 .nav .open > a:focus {
-	color: #ff0000;
-	background-color: #111;
+	color: var(--col-red);
+	background-color: var(--col-nav-background);
 }
 
 	.dropdown-menu > li > a:hover,
 	.dropdown-toggle:hover,
 	.nav .open > a:hover {
-		color: #ff0000;
-		background-color: #333;
+		color: var(--col-red);
+		background-color: var(--col-nav-background-hover);
 	}
 
 .dropdown-menu {

@@ -1,6 +1,6 @@
 ﻿.spawnsets-question {
 	font-style: italic;
-	color: #FF0000;
+	color: var(--col-red);
 	font-size: 24px;
 }
 

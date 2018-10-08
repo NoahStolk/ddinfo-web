@@ -1,0 +1,11 @@
+﻿:root {
+	--col-red: #f00;
+	--col-dark-red: #600;
+	--col-gray: #666;
+	--col-black: #000;
+	--col-default-text: #ddd;
+	--col-nav-background: #111;
+	--col-nav-background-hover: #333;
+	--col-ban: #666;
+	--col-selection-text: #700;
+}
