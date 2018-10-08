@@ -1,4 +1,5 @@
 ﻿using DevilDaggersWebsite.Models.Game;
+using System;
 
 namespace DevilDaggersWebsite.Utils
 {
@@ -72,7 +73,7 @@ namespace DevilDaggersWebsite.Utils
 					return death.Type;
 			}
 
-			throw new System.Exception($"Could not parse death type \"{deathName}\" to a valid death type.");
+			throw new Exception($"Could not parse death type \"{deathName}\" to a valid death type.");
 		}
 	}
 }
