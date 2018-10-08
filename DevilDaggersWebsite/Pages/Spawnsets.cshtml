@@ -31,7 +31,7 @@
 						<a asp-page="./Spawnsets"
 						   asp-route-sortOrder="@Model.SortOrder"
 						   asp-route-pageIndex="@i"
-						   class="btn btn-default @(i == Model.PageIndex ? "disabled" : "")">
+						   class="btn @(i == Model.PageIndex ? "disabled" : "")">
 							@i
 						</a>
 					</div>

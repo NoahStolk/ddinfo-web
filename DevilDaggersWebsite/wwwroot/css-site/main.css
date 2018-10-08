@@ -65,7 +65,8 @@ a:hover {
 .btn {
 	margin: 8px 0;
 	border: 2px solid;
-	color: var(--col-default-text);
+	border-color: var(--col-default-text);
+	color: var(--col-red);
 	text-align: center;
 	padding: 6px 12px;
 	font-size: 22px;
@@ -73,14 +74,11 @@ a:hover {
 }
 
 	.btn:hover {
+		border-color: var(--col-default-text);
 		cursor: pointer;
 		color: var(--col-red);
 		background-color: var(--col-nav-background);
 	}
-
-.btn-default {
-	color: var(--col-red);
-}
 
 input {
 	background-color: var(--col-black);
