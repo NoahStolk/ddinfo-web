@@ -28,7 +28,7 @@ namespace DevilDaggersWebsite.Pages
 			CommonObjects = commonObjects;
 
 			foreach (string s in Directory.GetFiles(Path.Combine(CommonObjects.Env.WebRootPath, "leaderboard-history")))
-				JsonFiles.Add(new SelectListItem($"{LeaderboardHistoryUtils.HistoryJsonFileNameToDate(Path.GetFileNameWithoutExtension(s))} UTC", Path.GetFileName(s)));
+				JsonFiles.Add(new SelectListItem($"{LeaderboardHistoryUtils.HistoryJsonFileNameToDateString(Path.GetFileNameWithoutExtension(s))} UTC", Path.GetFileName(s)));
 			JsonFiles.Reverse();
 		}
 

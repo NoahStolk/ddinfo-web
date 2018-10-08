@@ -2,7 +2,6 @@
 using DevilDaggersWebsite.Utils;
 using NetBase.Utils;
 using Newtonsoft.Json;
-using System;
 using System.IO;
 
 namespace LeaderboardHistoryHelper
@@ -11,15 +10,16 @@ namespace LeaderboardHistoryHelper
 	{
 		public static void Main(string[] args)
 		{
-			FileUtils.CreateText("201809020735.json", JsonConvert.SerializeObject(GetLeaderboardFromHTML()));
+			string dateString = "20180902073511";
+			FileUtils.CreateText($"{dateString.Substring(0, 12)}.json", JsonConvert.SerializeObject(GetLeaderboardFromHTML(dateString)));
 		}
 
-		public static Leaderboard GetLeaderboardFromHTML()
+		public static Leaderboard GetLeaderboardFromHTML(string dateString)
 		{
 			Leaderboard lb = new Leaderboard
 			{
+				DateTime = LeaderboardHistoryUtils.HistoryJsonFileNameToDateTime(dateString),
 				// TODO
-				DateTime = new DateTime(2018, 09, 02, 07, 35, 11),
 				Players = 171352,
 				TimeGlobal = 10053064700403,
 				KillsGlobal = 2599153686,
@@ -29,7 +29,7 @@ namespace LeaderboardHistoryHelper
 				ShotsFiredGlobal = 10000
 			};
 
-			string[] lines = FileUtils.GetContents(Path.Combine("Content", "20180902073511.html")).Split('\n');
+			string[] lines = FileUtils.GetContents(Path.Combine("Content", $"{dateString}.html")).Split('\n');
 
 			for (int i = 0; i < lines.Length; i++)
 			{
