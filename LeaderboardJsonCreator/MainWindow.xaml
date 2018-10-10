@@ -1,0 +1,69 @@
+﻿<Window x:Class="LeaderboardJsonCreator.MainWindow"
+        xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+        xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+        xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
+        xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
+        mc:Ignorable="d"
+        Title="LeaderboardJsonCreator" Height="550" Width="300">
+    <Grid>
+		<Grid.ColumnDefinitions>
+			<ColumnDefinition/>
+			<ColumnDefinition/>
+		</Grid.ColumnDefinitions>
+		<StackPanel Grid.Column="0">
+			<TextBlock Margin="0,0,0,2">DateTime</TextBlock>
+			<TextBlock Margin="0,0,0,2">Players</TextBlock>
+			<TextBlock Margin="0,0,0,2">TimeGlobal</TextBlock>
+			<TextBlock Margin="0,0,0,2">KillsGlobal</TextBlock>
+			<TextBlock Margin="0,0,0,2">GemsGlobal</TextBlock>
+			<TextBlock Margin="0,0,0,2">DeathsGlobal</TextBlock>
+			<TextBlock Margin="0,0,0,2">ShotsHitGlobal</TextBlock>
+			<TextBlock Margin="0,0,0,2">ShotsFiredGlobal</TextBlock>
+			<Separator></Separator>
+			<TextBlock Margin="0,0,0,2">Rank</TextBlock>
+			<TextBlock Margin="0,0,0,2">ID</TextBlock>
+			<TextBlock Margin="0,0,0,2">Username</TextBlock>
+			<TextBlock Margin="0,0,0,2">Time</TextBlock>
+			<TextBlock Margin="0,0,0,2">Kills</TextBlock>
+			<TextBlock Margin="0,0,0,2">Gems</TextBlock>
+			<TextBlock Margin="0,0,0,2">DeathType</TextBlock>
+			<TextBlock Margin="0,0,0,2">ShotsHit</TextBlock>
+			<TextBlock Margin="0,0,0,2">ShotsFired</TextBlock>
+			<TextBlock Margin="0,0,0,2">TimeTotal</TextBlock>
+			<TextBlock Margin="0,0,0,2">KillsTotal</TextBlock>
+			<TextBlock Margin="0,0,0,2">GemsTotal</TextBlock>
+			<TextBlock Margin="0,0,0,2">DeathsTotal</TextBlock>
+			<TextBlock Margin="0,0,0,2">ShotsHitTotal</TextBlock>
+			<TextBlock Margin="0,0,0,2">ShotsFiredTotal</TextBlock>
+		</StackPanel>
+		<StackPanel Grid.Column="1">
+			<TextBox Name="DateTime"></TextBox>
+			<TextBox Name="Players"></TextBox>
+			<TextBox Name="TimeGlobal"></TextBox>
+			<TextBox Name="KillsGlobal"></TextBox>
+			<TextBox Name="GemsGlobal"></TextBox>
+			<TextBox Name="DeathsGlobal"></TextBox>
+			<TextBox Name="ShotsHitGlobal"></TextBox>
+			<TextBox Name="ShotsFiredGlobal"></TextBox>
+			<Separator></Separator>
+			<TextBox Name="Rank"></TextBox>
+			<TextBox Name="ID"></TextBox>
+			<TextBox Name="Username"></TextBox>
+			<TextBox Name="Time"></TextBox>
+			<TextBox Name="Kills"></TextBox>
+			<TextBox Name="Gems"></TextBox>
+			<TextBox Name="DeathType"></TextBox>
+			<TextBox Name="ShotsHit"></TextBox>
+			<TextBox Name="ShotsFired"></TextBox>
+			<TextBox Name="TimeTotal"></TextBox>
+			<TextBox Name="KillsTotal"></TextBox>
+			<TextBox Name="GemsTotal"></TextBox>
+			<TextBox Name="DeathsTotal"></TextBox>
+			<TextBox Name="ShotsHitTotal"></TextBox>
+			<TextBox Name="ShotsFiredTotal"></TextBox>
+			<TextBlock Name="Entries"></TextBlock>
+			<Button Click="AddEntry_Click">Add entry</Button>
+			<Button Click="Save_Click">Save as JSON</Button>
+		</StackPanel>
+	</Grid>
+</Window>
