@@ -62,7 +62,7 @@
 			<TextBox Name="ShotsHitTotal"></TextBox>
 			<TextBox Name="ShotsFiredTotal"></TextBox>
 			<TextBlock Name="Entries"></TextBlock>
-			<Button Click="AddEntry_Click">Add entry</Button>
+			<Button Click="AddEntry_Click" IsDefault="True">Add entry</Button>
 			<Button Click="Save_Click">Save as JSON</Button>
 		</StackPanel>
 	</Grid>
