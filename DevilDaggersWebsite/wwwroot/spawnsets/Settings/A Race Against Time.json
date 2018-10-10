@@ -1,0 +1,3 @@
+{
+	"Description": "A custom challenge spawnset with spawns that end at 1200s - 20 minutes. <br />No loop. Definitely possible.<br />Difficulty generally increases with time survived. <br />4 difficulty tiers are unlocked through time survived: <br />{ 0-287s  ~  288-665s  ~  666-999s  ~  1000-1200s }<br />At 0, 287, 666 and 1076s Leviathans will spawn - 4 in total but all are arguably slightly easier (just different to) V3."
+}
