@@ -5,6 +5,8 @@ namespace DevilDaggersWebsite.Utils
 {
 	public static class GameUtils
 	{
+		public static Death Unknown = new Death("?", "DDDDDD", -1);
+
 		public static Death Fallen = new Death("FALLEN", "DDDDDD", 0);
 		public static Death Swarmed = new Death("SWARMED", "2E1C00", 1);
 		public static Death Impaled = new Death("IMPALED", "4E3000", 2);
@@ -21,6 +23,8 @@ namespace DevilDaggersWebsite.Utils
 		public static Death Incarnated = new Death("INCARNATED", "FF0000", 13);
 		public static Death Discarnated = new Death("DISCARNATED", "FF3131", 14);
 		public static Death Barbed = new Death("BARBED", "771D00", 15);
+
+		public static Death Macroed = new Death("MACROED", "FF6EDA", 16);
 
 		public static Enemy Squid1 = new Enemy("Squid I", "4E3000", 10, 1, 1, Purged, 1, 1);
 		public static Enemy Squid2 = new Enemy("Squid II", "804E00", 20, 2, 2, Desecrated, 2, 1);
