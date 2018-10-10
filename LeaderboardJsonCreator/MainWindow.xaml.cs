@@ -27,7 +27,8 @@ namespace LeaderboardJsonCreator
 			int.TryParse(Time.Text, out entry.Time);
 			int.TryParse(Kills.Text, out entry.Kills);
 			int.TryParse(Gems.Text, out entry.Gems);
-			int.TryParse(DeathType.Text, out entry.DeathType);
+			if (!string.IsNullOrEmpty(DeathType.Text))
+				int.TryParse(DeathType.Text, out entry.DeathType);
 			int.TryParse(ShotsHit.Text, out entry.ShotsHit);
 			int.TryParse(ShotsFired.Text, out entry.ShotsFired);
 			ulong.TryParse(TimeTotal.Text, out entry.TimeTotal);
@@ -40,6 +41,8 @@ namespace LeaderboardJsonCreator
 			leaderboard.Entries.Add(entry);
 
 			Entries.Text = leaderboard.Entries.Count.ToString();
+
+			Rank.Text = (leaderboard.Entries.Count + 1).ToString();
 		}
 
 		private void Save_Click(object sender, RoutedEventArgs e)

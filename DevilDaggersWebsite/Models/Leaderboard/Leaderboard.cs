@@ -62,7 +62,8 @@ namespace DevilDaggersWebsite.Models.Leaderboard
 
 				try
 				{
-					if (value.ToString() == GetDefaultValue(type).ToString())
+					if ((info.Name.ToLower().Contains("deathtype") && value.ToString() == "-1") ||
+						(!info.Name.ToLower().Contains("deathtype") && value.ToString() == GetDefaultValue(type).ToString()))
 						sb.AppendLine($"{info.Name} (Missing) {(info.Name == "ID" ? "(No bans)" : "")}");
 					else if (info.Name.ToLower().Contains("shotsfired") && value.ToString() == "10000")
 						sb.AppendLine($"Shots{info.Name.Substring(10)} (Inaccurate)");
