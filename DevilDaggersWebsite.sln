@@ -11,7 +11,7 @@ Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "NetBase", "..\NetBase\NetBa
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "SpawnsetSettingsHelper", "SpawnsetSettingsHelper\SpawnsetSettingsHelper.csproj", "{E71B2949-6119-44A2-90B9-FE80B16427C8}"
 EndProject
-Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "LeaderboardHistoryHelper", "LeaderboardHistoryHelper\LeaderboardHistoryHelper.csproj", "{44698DA4-CE6A-4ADB-BAE4-FDCF727C2572}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "LeaderboardHTMLToJSON", "LeaderboardHTMLToJSON\LeaderboardHTMLToJSON.csproj", "{44698DA4-CE6A-4ADB-BAE4-FDCF727C2572}"
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "LeaderboardJsonCreator", "LeaderboardJsonCreator\LeaderboardJsonCreator.csproj", "{7FF030A0-D588-4BCD-A01B-7CF847BD7DE4}"
 EndProject

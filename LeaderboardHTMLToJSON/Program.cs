@@ -4,7 +4,7 @@ using NetBase.Utils;
 using Newtonsoft.Json;
 using System.IO;
 
-namespace LeaderboardHistoryHelper
+namespace LeaderboardHTMLToJSON
 {
 	public class Program
 	{
