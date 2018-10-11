@@ -1,6 +1,8 @@
 ﻿using NetBase.Utils;
 using Newtonsoft.Json;
 using System;
+using System.Collections.Generic;
+using System.Linq;
 using System.Windows;
 
 namespace LeaderboardJsonCreator
@@ -45,6 +47,43 @@ namespace LeaderboardJsonCreator
 			Rank.Text = (leaderboard.Entries.Count + 1).ToString();
 		}
 
+		private void EntryList_Click(object sender, RoutedEventArgs e)
+		{
+			string[] entries = EntryList.Text.Split('\n');
+			int i = leaderboard.Entries.Count;
+			foreach (string line in entries)
+			{
+				i++;
+				Entry entry = new Entry
+				{
+					Rank = i,
+					DeathType = -1
+				};
+
+				List<string> values = line.Split(' ').ToList();
+				if (values.Count < 9)
+					continue;
+				while (values.Count > 9) // no accuracy
+				{
+					values[0] += $" {values[1]}";
+					values.Remove(values[1]);
+				}
+
+				entry.Username = values[0];
+				int.TryParse(values[1].Trim(',', '.'), out entry.Time);
+				int.TryParse(values[2], out entry.Kills);
+				int.TryParse(values[3], out entry.Gems);
+				entry.DeathType = values[4].ToDeathType();
+
+				ulong.TryParse(values[5].Trim(',', '.'), out entry.TimeTotal);
+				ulong.TryParse(values[6], out entry.KillsTotal);
+				ulong.TryParse(values[7], out entry.GemsTotal);
+				ulong.TryParse(values[8], out entry.DeathsTotal);
+
+				leaderboard.Entries.Add(entry);
+			}
+		}
+
 		private void Save_Click(object sender, RoutedEventArgs e)
 		{
 			try
@@ -58,7 +97,8 @@ namespace LeaderboardJsonCreator
 				ulong.TryParse(ShotsHitGlobal.Text, out leaderboard.ShotsHitGlobal);
 				ulong.TryParse(ShotsFiredGlobal.Text, out leaderboard.ShotsFiredGlobal);
 
-				FileUtils.CreateText($"{DateTime.Text}.json", JsonConvert.SerializeObject(leaderboard));
+				FileUtils.CreateText($@"C:\Users\NOAH\source\repos\DevilDaggersWebsite\DevilDaggersWebsite\wwwroot\leaderboard-history\{DateTime.Text}.json", JsonConvert.SerializeObject(leaderboard));
+				MessageBox.Show("Save successful");
 			}
 			catch (Exception ex)
 			{

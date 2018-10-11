@@ -4,8 +4,8 @@
         xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
         xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
         mc:Ignorable="d"
-        Title="LeaderboardJsonCreator" Height="550" Width="300">
-    <Grid>
+        Title="LeaderboardJsonCreator" Height="1400" Width="1600">
+	<Grid>
 		<Grid.ColumnDefinitions>
 			<ColumnDefinition/>
 			<ColumnDefinition/>
@@ -20,6 +20,7 @@
 			<TextBlock Margin="0,0,0,2">ShotsHitGlobal</TextBlock>
 			<TextBlock Margin="0,0,0,2">ShotsFiredGlobal</TextBlock>
 			<Separator></Separator>
+			<TextBlock Margin="0,0,0,2" FontWeight="Bold">Entries</TextBlock>
 			<TextBlock Margin="0,0,0,2">Rank</TextBlock>
 			<TextBlock Margin="0,0,0,2">ID</TextBlock>
 			<TextBlock Margin="0,0,0,2">Username</TextBlock>
@@ -46,6 +47,7 @@
 			<TextBox Name="ShotsHitGlobal"></TextBox>
 			<TextBox Name="ShotsFiredGlobal"></TextBox>
 			<Separator></Separator>
+			<TextBlock Margin="0,0,0,2" Name="Entries"></TextBlock>
 			<TextBox Name="Rank"></TextBox>
 			<TextBox Name="ID"></TextBox>
 			<TextBox Name="Username"></TextBox>
@@ -61,8 +63,10 @@
 			<TextBox Name="DeathsTotal"></TextBox>
 			<TextBox Name="ShotsHitTotal"></TextBox>
 			<TextBox Name="ShotsFiredTotal"></TextBox>
-			<TextBlock Name="Entries"></TextBlock>
 			<Button Click="AddEntry_Click" IsDefault="True">Add entry</Button>
+			<TextBox Name="EntryList" Height="850" AcceptsReturn="True"></TextBox>
+			<Button Click="EntryList_Click">Add entry list</Button>
+			<Separator/>
 			<Button Click="Save_Click">Save as JSON</Button>
 		</StackPanel>
 	</Grid>

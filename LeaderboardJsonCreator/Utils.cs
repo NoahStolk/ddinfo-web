@@ -20,5 +20,20 @@ namespace LeaderboardJsonCreator
 
 			return new DateTime(year, month, day, hour, minute, 0);
 		}
+
+		public static string[] deaths = { "FALLEN", "SWARMED", "IMPALED", "GORED", "INFESTED", "OPENED", "PURGED", "DESECRATED", "SACRIFICED", "EVISCERATED", "ANNIHILATED", "INTOXICATED", "ENVENMONATED", "INCARNATED", "DISCARNATED", "BARBED" };
+
+		public static int ToDeathType(this string deathName)
+		{
+			int i = 0;
+			foreach (string death in deaths)
+			{
+				if (death == deathName)
+					return i;
+				i++;
+			}
+
+			return -1;
+		}
 	}
 }
