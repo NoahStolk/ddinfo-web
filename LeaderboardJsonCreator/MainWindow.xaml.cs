@@ -29,8 +29,7 @@ namespace LeaderboardJsonCreator
 			int.TryParse(Time.Text, out entry.Time);
 			int.TryParse(Kills.Text, out entry.Kills);
 			int.TryParse(Gems.Text, out entry.Gems);
-			if (!string.IsNullOrEmpty(DeathType.Text))
-				int.TryParse(DeathType.Text, out entry.DeathType);
+			int.TryParse(DeathType.Text, out entry.DeathType);
 			int.TryParse(ShotsHit.Text, out entry.ShotsHit);
 			int.TryParse(ShotsFired.Text, out entry.ShotsFired);
 			ulong.TryParse(TimeTotal.Text, out entry.TimeTotal);
