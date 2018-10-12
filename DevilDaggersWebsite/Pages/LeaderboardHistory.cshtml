@@ -80,14 +80,14 @@
 		Missing or inaccurate information
 	</div>
 	<div class="missing-information-container">
-		<div class="flex-container leaderboard-flex flex-center flex-space-evenly">
+		<div class="flex-container leaderboard-flex flex-center flex-space-evenly text-left">
 			<div>
 				<div>Global</div>
-				<div class="missing-information">@Html.Raw(Model.Leaderboard.GetMissingGlobalInformation().Replace("\n", "<br />"))</div>
+				<div class="missing-information">@Html.Raw(RazorUtils.GetLeaderboardInformationHTMLString(Model.Leaderboard.GetMissingGlobalInformation()))</div>
 			</div>
 			<div>
 				<div>User</div>
-				<div class="missing-information">@Html.Raw(Model.Leaderboard.GetMissingUserInformation().Replace("\n", "<br />"))</div>
+				<div class="missing-information">@Html.Raw(RazorUtils.GetLeaderboardInformationHTMLString(Model.Leaderboard.GetMissingUserInformation()))</div>
 			</div>
 		</div>
 	</div>
