@@ -52,6 +52,37 @@ namespace DevilDaggersWebsite.Models.Leaderboard
 			return user.ToString();
 		}
 
+		public float GetCompletionRate(object p)
+		{
+			int total = 0;
+			int missing = 0;
+			int inaccurate = 0;
+
+			Type t = p.GetType();
+			foreach (PropertyInfo info in t.GetProperties())
+			{
+				object value = info.GetValue(p);
+				Type type = value.GetType();
+
+				try
+				{
+					total++;
+
+					if ((info.Name.ToLower().Contains("deathtype") && value.ToString() == "-1") ||
+						(!info.Name.ToLower().Contains("deathtype") && value.ToString() == GetDefaultValue(type).ToString()))
+						missing++;
+					else if (info.Name.ToLower().Contains("shotsfired") && value.ToString() == "10000")
+						inaccurate++;
+				}
+				catch (Exception)
+				{
+					// nobody cares
+				}
+			}
+
+			return (1f - missing / (float)total - inaccurate / 2f / total) * Entries.Count;
+		}
+
 		private static void GetMissingProperties(object p, StringBuilder sb)
 		{
 			Type t = p.GetType();
