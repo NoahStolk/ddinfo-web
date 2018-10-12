@@ -62,22 +62,22 @@ namespace DevilDaggersWebsite.Models.Leaderboard
 			foreach (PropertyInfo info in t.GetProperties())
 			{
 				object value = info.GetValue(p);
+				string valueString = value.ToString();
+				if (string.IsNullOrEmpty(valueString))
+					continue;
+
 				Type type = value.GetType();
+				string name = info.Name.ToLower();
+				if (name.Contains("accuracy") || name.Contains("entries"))
+					continue;
 
-				try
-				{
-					total++;
+				total++;
 
-					if ((info.Name.ToLower().Contains("deathtype") && value.ToString() == "-1") ||
-						(!info.Name.ToLower().Contains("deathtype") && value.ToString() == GetDefaultValue(type).ToString()))
-						missing++;
-					else if (info.Name.ToLower().Contains("shotsfired") && value.ToString() == "10000")
-						inaccurate++;
-				}
-				catch (Exception)
-				{
-					// nobody cares
-				}
+				if ((name.Contains("deathtype") && valueString == "-1") ||
+					(!name.Contains("deathtype") && valueString == GetDefaultValue(type).ToString()))
+					missing++;
+				else if (name.Contains("shotsfired") && valueString == "10000")
+					inaccurate++;
 			}
 
 			return (1f - missing / (float)total - inaccurate / 2f / total) * Entries.Count;
@@ -89,30 +89,44 @@ namespace DevilDaggersWebsite.Models.Leaderboard
 			foreach (PropertyInfo info in t.GetProperties())
 			{
 				object value = info.GetValue(p);
-				Type type = value.GetType();
+				string valueString = value.ToString();
+				if (string.IsNullOrEmpty(valueString))
+					continue;
 
-				try
-				{
-					if ((info.Name.ToLower().Contains("deathtype") && value.ToString() == "-1") ||
-						(!info.Name.ToLower().Contains("deathtype") && value.ToString() == GetDefaultValue(type).ToString()))
-						sb.AppendLine($"{info.Name} (Missing) {(info.Name == "ID" ? "(No bans)" : "")}");
-					else if (info.Name.ToLower().Contains("shotsfired") && value.ToString() == "10000")
-						sb.AppendLine($"Shots{info.Name.Substring(10)} (Inaccurate)");
-				}
-				catch (Exception)
-				{
-					// nobody cares
-				}
+				Type type = value.GetType();
+				string name = info.Name.ToLower();
+				if (name.Contains("accuracy") || name.Contains("entries"))
+					continue;
+
+				if ((name.Contains("deathtype") && valueString == "-1") ||
+					(!name.Contains("deathtype") && valueString == GetDefaultValue(type).ToString()))
+					sb.AppendLine($"{info.Name} (Missing) {(info.Name == "ID" ? "(No bans)" : "")}");
+				else if (name.Contains("shotsfired") && valueString == "10000")
+					sb.AppendLine($"Shots{info.Name.Substring(10)} (Inaccurate)");
 			}
 
 			if (string.IsNullOrEmpty(sb.ToString()))
 				sb.AppendLine(RazorUtils.NAString.ToString());
 		}
 
-		private static object GetDefaultValue(Type t)
+		private static object GetDefaultValue(Type type)
 		{
-			if (t.IsValueType)
-				return Activator.CreateInstance(t);
+			if (type.IsValueType)
+				return Activator.CreateInstance(type);
+
+			if (type == typeof(string))
+				return string.Empty;
+
+			return null;
+		}
+
+		private static object GetDefaultValue<T>()
+		{
+			if (typeof(T).IsValueType)
+				return Activator.CreateInstance<T>();
+
+			if (typeof(T) == typeof(string))
+				return (T)(object)string.Empty;
 
 			return null;
 		}
