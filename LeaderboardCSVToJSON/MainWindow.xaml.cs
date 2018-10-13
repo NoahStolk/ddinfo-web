@@ -43,7 +43,7 @@ namespace LeaderboardCSVToJSON
 						if (i == 1)
 							int.TryParse(values[1], out leaderboard.Players);
 						else if (i == 2)
-							ulong.TryParse(values[1], out leaderboard.TimeGlobal);
+							ulong.TryParse(values[1].Replace(".", ""), out leaderboard.TimeGlobal);
 						else if (i == 3)
 							ulong.TryParse(values[1], out leaderboard.KillsGlobal);
 						else if (i == 4)
@@ -57,7 +57,7 @@ namespace LeaderboardCSVToJSON
 								leaderboard.ShotsFiredGlobal = 10000;
 						}
 
-						if (i >= 9)
+						if (i >= 9 && i < 109)
 						{
 							Entry entry = new Entry
 							{
