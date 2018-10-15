@@ -1,0 +1,52 @@
+﻿@using DevilDaggersWebsite.Utils
+
+<div class="hidden-xs">
+	<div class="flex-container leaderboard-flex flex-center flex-space-evenly">
+		<div>
+			<div>Total players</div>
+			<div class="text-center devil">@Model.Leaderboard.Players</div>
+		</div>
+	</div>
+	<div class="flex-container leaderboard-flex flex-center flex-space-evenly">
+		<div>
+			<div>Global time</div>
+			<div class="text-center devil">@string.Format(RazorUtils.DEFAULT_CULTURE, "{0:0.0000}", (double)Model.Leaderboard.TimeGlobal / 10000.0)</div>
+		</div>
+		<div>
+			<div>Global kills</div>
+			<div class="text-center devil">@Model.Leaderboard.KillsGlobal</div>
+		</div>
+		<div>
+			<div>Global gems</div>
+			<div class="text-center devil">@Model.Leaderboard.GemsGlobal</div>
+		</div>
+		<div>
+			<div>Global deaths</div>
+			<div class="text-center devil">@Model.Leaderboard.DeathsGlobal</div>
+		</div>
+		<div>
+			<div>Global accuracy</div>
+			<div class="text-center devil">@string.Format(RazorUtils.DEFAULT_CULTURE, "{0:0.00}%", Model.Leaderboard.AccuracyGlobal)</div>
+		</div>
+	</div>
+</div>
+<div class="visible-xs">
+	<div class="flex-container flex-center">
+		<div class="mobile-left">
+			<div>Total players</div>
+			<div>Global time</div>
+			<div>Global kills</div>
+			<div>Global gems</div>
+			<div>Global deaths</div>
+			<div>Global accuracy</div>
+		</div>
+		<div class="mobile-right">
+			<div class="devil">@Model.Leaderboard.Players</div>
+			<div class="devil">@string.Format(RazorUtils.DEFAULT_CULTURE, "{0:0.0000}", (double)Model.Leaderboard.TimeGlobal / 10000.0)</div>
+			<div class="devil">@Model.Leaderboard.KillsGlobal</div>
+			<div class="devil">@Model.Leaderboard.GemsGlobal</div>
+			<div class="devil">@Model.Leaderboard.DeathsGlobal</div>
+			<div class="devil">@string.Format(RazorUtils.DEFAULT_CULTURE, "{0:0.00}%", Model.Leaderboard.AccuracyGlobal)</div>
+		</div>
+	</div>
+</div>
