@@ -48,13 +48,18 @@ namespace DevilDaggersWebsite.Utils
 
 		public static List<int> DonatorIDs { get; set; } = new List<int>
 		{
-			142939,
+			137044,
 			105315,
+			94857,
+			142939,
+			118832,
 			113530,
 			148518,
-			137044,
-			118832,
-			94857
+			148951,
+			172395,
+			115431,
+			6760,
+			134802
 		};
 
 		public static List<Donator> Donators { get; set; } = new List<Donator>
