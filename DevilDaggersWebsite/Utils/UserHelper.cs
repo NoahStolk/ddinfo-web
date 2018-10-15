@@ -59,17 +59,18 @@ namespace DevilDaggersWebsite.Utils
 
 		public static List<Donator> Donators { get; set; } = new List<Donator>
 		{
-			new Donator("LocoCaesar_IV", 1200, '€'),
-			new Donator("LukeNukem", 1001, '€'),
-			new Donator("TSTAB", 1000, '€'),
-			new Donator("Zirtonic", 1000, '$'),
-			new Donator("Stop.", 751, '€'),
-			new Donator("Pritster", 500, '£'),
-			new Donator("Dillon", 500, '$'),
-			new Donator("Tileä", 500, '$'),
-			new Donator("Chupacabra", 250, '€'),
 			new Donator("DJDoomz", 100, '€'),
-			new Donator(".curry", 77, '€')
+			new Donator("LukeNukem", 1001, '€'),
+			new Donator(".curry", 77, '€'),
+			new Donator("LocoCaesar_IV", 1200, '€'),
+			new Donator("Chupacabra", 250, '€'),
+			new Donator("Zirtonic", 1000, '$'),
+			new Donator("Dillon", 500, '$'),
+			new Donator("Stop.", 751, '€'),
+			new Donator("Tileä", 500, '$'),
+			new Donator("Pritster", 500, '£'),
+			new Donator("TSTAB", 1000, '€'),
+			new Donator("gLad", 500, '€')
 		};
 	}
 }

@@ -3,7 +3,7 @@
 @{
 	ViewData["Title"] = "Donations";
 
-	int[] widths = new int[2] { 256, 128 };
+	int[] widths = new int[3] { 256, 128, 20 };
 }
 @using DevilDaggersWebsite.Utils
 @using DevilDaggersWebsite.Models
@@ -39,11 +39,17 @@
 	<div class="flex-container flex-center flex-column">
 		<div class="flex-container flex-center">
 			<div style="width: @(widths[0])px;" class="text-left">Username</div>
-			<div style="width: @(widths[1])px;" class="text-right">Amount</div>
+			<div style="width: @(widths[1] + widths[2])px;" class="text-right">Amount</div>
 		</div>
 		@{
+			List<Donator> donators = UserHelper.Donators
+				.OrderByDescending(d => d.Amount)
+				.ThenBy(d => d.CurrencySymbol)
+				.ThenBy(d => d.Username)
+				.ToList();
+
 			int rank = 0;
-			foreach (Donator donator in UserHelper.Donators)
+			foreach (Donator donator in donators)
 			{
 				rank++;
 				Dagger dagger = GameUtils.Default;
@@ -54,10 +60,12 @@
 						dagger = d;
 					}
 				}
+				string daggerName = dagger.Name.ToLower();
 
 				<div class="flex-container flex-center">
-					<div style="width: @(widths[0])px; white-space: nowrap;" class="text-left @(dagger.Name.ToLower())">@donator.Username</div>
-					<div style="width: @(widths[1])px;" class="text-right @(dagger.Name.ToLower())">@string.Format(RazorUtils.DEFAULT_CULTURE, "{0:0.00}", (double)donator.Amount / 100) @donator.CurrencySymbol</div>
+					<div style="width: @(widths[0])px; white-space: nowrap;" class="text-left @daggerName">@donator.Username</div>
+					<div style="width: @(widths[1])px;" class="text-right @daggerName">@string.Format(RazorUtils.DEFAULT_CULTURE, "{0:0.00}", (double)donator.Amount / 100)</div>
+					<div style="width: @(widths[2])px;" class="text-right @daggerName">@donator.CurrencySymbol</div>
 				</div>
 			}
 		}
