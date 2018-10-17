@@ -19,7 +19,7 @@
 
 	@{
 		int first = 1;
-		int last = Model.TotalResults / Model.PageSize + 1;
+		int last = (int)Math.Ceiling(Model.TotalResults / (float)Model.PageSize);
 	}
 
 	<div class="row">
