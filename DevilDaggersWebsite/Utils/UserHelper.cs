@@ -68,14 +68,15 @@ namespace DevilDaggersWebsite.Utils
 			new Donator("LukeNukem", 1001, '€'),
 			new Donator(".curry", 77, '€'),
 			new Donator("LocoCaesar_IV", 1200, '€'),
-			new Donator("Chupacabra", 250, '€'),
+			new Donator("Chupacabra", 500, '€'),
 			new Donator("Zirtonic", 1000, '$'),
 			new Donator("Dillon", 500, '$'),
 			new Donator("Stop.", 1500, '€'),
 			new Donator("Tileä", 500, '$'),
 			new Donator("Pritster", 500, '£'),
 			new Donator("TSTAB", 1000, '€'),
-			new Donator("gLad", 500, '€')
+			new Donator("gLad", 500, '€'),
+			new Donator("pagedMov", 2500, '€')
 		};
 	}
 }
