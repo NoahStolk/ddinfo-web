@@ -29,22 +29,7 @@
 				}
 			}
 
-			Death death = GameUtils.Unknown;
-			int knar = 159605;
-			if (entry.ID == knar)
-			{
-				death = GameUtils.Macroed;
-			}
-			else
-			{
-				foreach (Death d in GameUtils.Deaths)
-				{
-					if (entry.DeathType == d.Type)
-					{
-						death = d;
-					}
-				}
-			}
+			Death death = entry.GetDeathType();
 
 			bool admin = UserHelper.AdminID == entry.ID;
 			bool donator = UserHelper.DonatorIDs.Contains(entry.ID);
@@ -52,7 +37,7 @@
 
 			string role = (admin ? "admin" : ban ? "ban" : donator ? "donator" : "");
 			string username = entry.Username;
-			string color = (entry.ID == knar ? "macro" : dagger.Name.ToLower());
+			string color = (entry.ID == 159605 ? "macro" : dagger.Name.ToLower());
 			<div class="sort" @Html.Raw(entry.ToHTMLData())>
 				<div class="leaderboard-row flex-container" id="@(entry.Rank)-row">
 					<div class="text-right @(ban ? "ban" : "")">@entry.Rank</div>
