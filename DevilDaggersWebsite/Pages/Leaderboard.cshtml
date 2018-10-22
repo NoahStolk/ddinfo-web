@@ -3,6 +3,8 @@
 @model DevilDaggersWebsite.Pages.LeaderboardModel
 @{
 	ViewData["Title"] = "Leaderboard";
+
+	int[] widths = new int[2] { 160, 160 };
 }
 
 <header>
@@ -20,17 +22,44 @@
 		{
 			@Html.AntiForgeryToken()
 			<fieldset>
-				@Html.TextBoxFor(m => m.Leaderboard.Offset, new { @class = "input" })
+				<div class="flex-container flex-center flex-column">
+					<div class="flex-container flex-center">
+						<div class="input-label text-left" style="width: @(widths[0])px;">Rank:</div>
+						<div style="width: @(widths[1])px;">@Html.TextBoxFor(m => m.Leaderboard.Offset, new { @class = "input" })</div>
+					</div>
+					<div class="flex-container flex-center">
+						<div class="input-label text-left" style="width: @(widths[0])px;">User search:</div>
+						<div style="width: @(widths[1])px;">@Html.TextBoxFor(m => m.Leaderboard.Search, new { @class = "input" })</div>
+					</div>
+				</div>
 				<input type="hidden" name="offsetPrevious" value="@Model.Leaderboard.OffsetPrevious" />
-				<br />
 				<input class="btn" type="submit" name="submitAction" value="Show" />
 				<br />
-				<input class="btn" type="submit" name="submitAction" value="<" />
-				<input class="btn" type="submit" name="submitAction" value=">" />
+				@{
+					if (Model.Leaderboard.IsUserSearch)
+					{
+						<button class="btn btn-disabled">&lt;</button>
+						<button class="btn btn-disabled">&gt;</button>
+					}
+					else
+					{
+						<input class="btn" type="submit" name="submitAction" value="<" />
+						<input class="btn" type="submit" name="submitAction" value=">" />
+					}
+				}
 			</fieldset>
 		}
 		<p>
-			Showing rank @(Model.Leaderboard.Offset) - @(Model.Leaderboard.Offset + 99)
+			@{
+				if (Model.Leaderboard.IsUserSearch)
+				{
+					@:Showing results for "@(Model.Leaderboard.Search)"
+				}
+				else
+				{
+					@:Showing rank @(Model.Leaderboard.Offset) - @(Model.Leaderboard.Offset + 99)
+				}
+			}
 		</p>
 		<p class="visible-xs visible-sm visible-md">
 			On mobile devices; tap on an entry to expand it.

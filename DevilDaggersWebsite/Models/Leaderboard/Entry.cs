@@ -61,7 +61,7 @@ namespace DevilDaggersWebsite.Models.Leaderboard
 
 		public Death GetDeathType()
 		{
-			if (DeathType == -1)
+			if (DeathType < 0 || DeathType >= 16)
 				return GameUtils.Unknown;
 			if (ID == 159605)
 				return GameUtils.Macroed;

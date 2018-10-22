@@ -63,7 +63,7 @@ a:hover {
 	}
 
 .btn {
-	margin: 8px 0;
+	margin: 4px 0 0 0;
 	border: 2px solid;
 	border-color: var(--col-default-text);
 	color: var(--col-red);
@@ -79,6 +79,13 @@ a:hover {
 		color: var(--col-red);
 		background-color: var(--col-nav-background);
 	}
+
+.btn-disabled, .btn-disabled:hover {
+	border-color: var(--col-gray);
+	cursor: default;
+	color: var(--col-gray);
+	background-color: var(--col-black);
+}
 
 input {
 	background-color: var(--col-black);

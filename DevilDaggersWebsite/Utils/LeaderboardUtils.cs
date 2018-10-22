@@ -86,6 +86,71 @@ namespace DevilDaggersWebsite.Utils
 			return leaderboard;
 		}
 
+		private static readonly string serverSearchURL = "http://dd.hasmodai.com/backend16/get_user_search_public.php";
+
+		public static async Task<Leaderboard> LoadLeaderboardSearch(Leaderboard leaderboard)
+		{
+			byte[] leaderboardData = await GetLeaderboardSearchData(leaderboard);
+
+			return ParseLeaderboardSearchData(leaderboard, leaderboardData);
+		}
+
+		private static async Task<byte[]> GetLeaderboardSearchData(Leaderboard leaderboard)
+		{
+			Dictionary<string, string> postValues = new Dictionary<string, string>
+			{
+				{ "search", leaderboard.Search }
+			};
+
+			FormUrlEncodedContent content = new FormUrlEncodedContent(postValues);
+			HttpClient client = new HttpClient();
+			HttpResponseMessage resp = await client.PostAsync(serverSearchURL, content);
+			return await resp.Content.ReadAsByteArrayAsync();
+		}
+
+		private static Leaderboard ParseLeaderboardSearchData(Leaderboard leaderboard, byte[] leaderboardData)
+		{
+			int entryCount = BitConverter.ToInt16(leaderboardData, 11);
+			int rankIterator = 0;
+			int bytePos = 19;
+			while (rankIterator < entryCount)
+			{
+				Entry entry = new Entry();
+
+				short usernameLength = BitConverter.ToInt16(leaderboardData, bytePos);
+				bytePos += 2;
+
+				byte[] usernameBytes = new byte[usernameLength];
+				for (int i = bytePos; i < (bytePos + usernameLength); i++)
+					usernameBytes[i - bytePos] = leaderboardData[i];
+				entry.Username = Encoding.UTF8.GetString(usernameBytes);
+				bytePos += usernameLength;
+
+				entry.Rank = BitConverter.ToInt32(leaderboardData, bytePos);
+				entry.ID = BitConverter.ToInt32(leaderboardData, bytePos + 4);
+				entry.Time = BitConverter.ToInt32(leaderboardData, bytePos + 12);
+				entry.Kills = BitConverter.ToInt32(leaderboardData, bytePos + 16);
+				entry.Gems = BitConverter.ToInt32(leaderboardData, bytePos + 28);
+				entry.ShotsHit = BitConverter.ToInt32(leaderboardData, bytePos + 24);
+				entry.ShotsFired = BitConverter.ToInt32(leaderboardData, bytePos + 20);
+				entry.DeathType = BitConverter.ToInt16(leaderboardData, bytePos + 32);
+				entry.TimeTotal = BitConverter.ToUInt64(leaderboardData, bytePos + 60);
+				entry.KillsTotal = BitConverter.ToUInt64(leaderboardData, bytePos + 44);
+				entry.GemsTotal = BitConverter.ToUInt64(leaderboardData, bytePos + 68);
+				entry.DeathsTotal = BitConverter.ToUInt64(leaderboardData, bytePos + 36);
+				entry.ShotsHitTotal = BitConverter.ToUInt64(leaderboardData, bytePos + 76);
+				entry.ShotsFiredTotal = BitConverter.ToUInt64(leaderboardData, bytePos + 52);
+
+				bytePos += 88;
+
+				leaderboard.Entries.Add(entry);
+
+				rankIterator++;
+			}
+
+			return leaderboard;
+		}
+
 		private static readonly string serverURLJson = "http://ddstats.com/api/get_scores";
 
 		public static Leaderboard LoadLeaderboardJson(Leaderboard leaderboard)

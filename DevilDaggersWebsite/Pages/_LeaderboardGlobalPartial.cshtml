@@ -1,5 +1,10 @@
 ﻿@using DevilDaggersWebsite.Utils
 
+@if (Model.Leaderboard.IsUserSearch)
+{
+	return;
+}
+
 <div class="hidden-xs">
 	<div class="flex-container leaderboard-flex flex-center flex-space-evenly">
 		<div>

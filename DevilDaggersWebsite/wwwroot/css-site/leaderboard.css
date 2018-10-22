@@ -11,6 +11,12 @@
 .input {
 	text-align: center;
 	color: var(--col-red);
+	margin-top: 5px;
+	max-width: 160px;
+}
+
+.input-label {
+	margin-top: 5px;
 }
 
 .sorter:hover {

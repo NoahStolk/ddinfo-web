@@ -14,31 +14,41 @@ namespace DevilDaggersWebsite.Pages
 
 		public async Task OnGetAsync()
 		{
-			await LeaderboardUtils.LoadLeaderboard(Leaderboard);
+			if (Leaderboard.IsUserSearch)
+				await LeaderboardUtils.LoadLeaderboardSearch(Leaderboard);
+			else
+				await LeaderboardUtils.LoadLeaderboard(Leaderboard);
 		}
 
 		public async Task OnPostAsync(string submitAction, int offsetPrevious)
 		{
-			switch (submitAction)
+			if (Leaderboard.IsUserSearch)
 			{
-				case ">":
-					Leaderboard.Offset = offsetPrevious + 100;
-					break;
-				case "<":
-					Leaderboard.Offset = offsetPrevious - 100;
-					break;
+				await LeaderboardUtils.LoadLeaderboardSearch(Leaderboard);
 			}
-
-			Leaderboard.Offset = Math.Max(1, Leaderboard.Offset);
-			await LeaderboardUtils.LoadLeaderboard(Leaderboard);
-
-			if (Leaderboard.Offset > Leaderboard.Players - 99)
+			else
 			{
-				Leaderboard.Offset = Leaderboard.Players - 99;
-				Leaderboard.Entries.Clear();
+				switch (submitAction)
+				{
+					case ">":
+						Leaderboard.Offset = offsetPrevious + 100;
+						break;
+					case "<":
+						Leaderboard.Offset = offsetPrevious - 100;
+						break;
+				}
+
+				Leaderboard.Offset = Math.Max(1, Leaderboard.Offset);
 				await LeaderboardUtils.LoadLeaderboard(Leaderboard);
+
+				if (Leaderboard.Offset > Leaderboard.Players - 99)
+				{
+					Leaderboard.Offset = Leaderboard.Players - 99;
+					Leaderboard.Entries.Clear();
+					await LeaderboardUtils.LoadLeaderboard(Leaderboard);
+				}
+				Leaderboard.OffsetPrevious = Leaderboard.Offset;
 			}
-			Leaderboard.OffsetPrevious = Leaderboard.Offset;
 		}
 	}
 }

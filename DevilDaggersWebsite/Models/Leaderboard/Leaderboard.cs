@@ -15,6 +15,9 @@ namespace DevilDaggersWebsite.Models.Leaderboard
 
 		public int Offset { get; set; } = 1;
 		public int OffsetPrevious { get; set; } = 1;
+		public string Search { get; set; } = string.Empty;
+
+		public bool IsUserSearch => !string.IsNullOrEmpty(Search) && Search.Length >= 3;
 
 		[JsonProperty]
 		public int Players { get; set; }
