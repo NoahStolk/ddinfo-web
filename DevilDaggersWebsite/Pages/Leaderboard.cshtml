@@ -33,20 +33,26 @@
 					</div>
 				</div>
 				<input type="hidden" name="offsetPrevious" value="@Model.Leaderboard.OffsetPrevious" />
-				<input class="btn" type="submit" name="submitAction" value="Show" />
-				<br />
-				@{
-					if (Model.Leaderboard.IsUserSearch)
-					{
-						<button class="btn btn-disabled">&lt;</button>
-						<button class="btn btn-disabled">&gt;</button>
-					}
-					else
-					{
-						<input class="btn" type="submit" name="submitAction" value="<" />
-						<input class="btn" type="submit" name="submitAction" value=">" />
-					}
-				}
+
+				<div class="flex-container flex-center flex-column">
+					<div class="flex-container flex-center">
+						<input class="btn" type="submit" name="submitAction" value="Show" />
+					</div>
+					<div class="flex-container flex-center leaderboard-nav-buttons">
+						@{
+							if (Model.Leaderboard.IsUserSearch)
+							{
+								<button class="btn btn-disabled">&lt;</button>
+								<button class="btn btn-disabled">&gt;</button>
+							}
+							else
+							{
+								<input class="btn" type="submit" name="submitAction" value="<" />
+								<input class="btn" type="submit" name="submitAction" value=">" />
+							}
+						}
+					</div>
+				</div>
 			</fieldset>
 		}
 		<p>
