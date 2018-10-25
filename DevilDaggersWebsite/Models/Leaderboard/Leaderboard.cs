@@ -98,7 +98,7 @@ namespace DevilDaggersWebsite.Models.Leaderboard
 
 				Type type = value.GetType();
 				string name = info.Name.ToLower();
-				if (name.Contains("accuracy") || name.Contains("entries"))
+				if (name.Contains("accuracy") || name.Contains("entries") || name.Contains("search"))
 					continue;
 
 				if ((name.Contains("deathtype") && valueString == "-1") ||
