@@ -33,11 +33,12 @@
 
 			bool admin = UserHelper.AdminID == entry.ID;
 			bool donator = UserHelper.DonatorIDs.Contains(entry.ID);
+			bool macro = UserHelper.MacroIDs.Contains(entry.ID);
 			bool ban = UserHelper.BanIDs.Contains(entry.ID);
 
 			string role = (admin ? "admin" : ban ? "ban" : donator ? "donator" : "");
 			string username = entry.Username;
-			string color = (entry.ID == 159605 ? "macro" : dagger.Name.ToLower());
+			string color = (macro ? "macro" : dagger.Name.ToLower());
 			<div class="sort" @Html.Raw(entry.ToHTMLData())>
 				<div class="leaderboard-row flex-container" id="@(entry.Rank)-row">
 					<div class="text-right @(ban ? "ban" : "")">@entry.Rank</div>

@@ -63,7 +63,7 @@ namespace DevilDaggersWebsite.Models.Leaderboard
 		{
 			if (DeathType < 0 || DeathType >= 16)
 				return GameUtils.Unknown;
-			if (ID == 159605)
+			if (UserHelper.MacroIDs.Contains(ID))
 				return GameUtils.Macroed;
 			return GameUtils.Deaths[DeathType];
 		}
