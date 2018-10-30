@@ -48,8 +48,8 @@ namespace DevilDaggersWebsite.Utils
 
 		public static List<int> MacroIDs { get; set; } = new List<int>
 		{
-			159605,
-			88424
+			//159605,
+			//88424
 		};
 
 		public static List<int> DonatorIDs { get; set; } = new List<int>
