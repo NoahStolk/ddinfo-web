@@ -66,7 +66,8 @@ namespace DevilDaggersWebsite.Utils
 			115431,
 			6760,
 			134802,
-			65617
+			65617,
+			// xamide
 		};
 
 		public static List<Donator> Donators { get; set; } = new List<Donator>
@@ -83,7 +84,8 @@ namespace DevilDaggersWebsite.Utils
 			new Donator("Pritster", 500, '£'),
 			new Donator("TSTAB", 1000, '€'),
 			new Donator("gLad", 500, '€'),
-			new Donator("pagedMov", 2500, '€')
+			new Donator("pagedMov", 2500, '€'),
+			new Donator("xamide", 500, '€')
 		};
 	}
 }
