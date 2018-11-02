@@ -14,7 +14,7 @@ namespace DevilDaggersWebsite.Pages
 		{
 			Donators = UserHelper.Donators
 				.OrderByDescending(d => d.Amount)
-				.ThenBy(d => d.CurrencySymbol)
+				.ThenBy(d => d.CurrencySymbol, new CurrencyComparer())
 				.ThenBy(d => d.Username)
 				.ToList();
 		}
