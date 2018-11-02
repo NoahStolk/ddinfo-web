@@ -241,28 +241,6 @@
 	-webkit-text-fill-color: transparent;
 }
 
-.admin {
-	background: url('../Images/Fonts/fontadmin.png');
-	background-repeat: repeat-x;
-	background-position: 0 7px;
-	-webkit-font-smoothing: antialiased;
-	-webkit-background-clip: text;
-	-moz-background-clip: text;
-	background-clip: text;
-	-webkit-text-fill-color: transparent;
-}
-
-.donator {
-	background: url('../Images/Fonts/fontdonator.png');
-	background-repeat: repeat-x;
-	background-position: 0 7px;
-	-webkit-font-smoothing: antialiased;
-	-webkit-background-clip: text;
-	-moz-background-clip: text;
-	background-clip: text;
-	-webkit-text-fill-color: transparent;
-}
-
 .devil {
 	background: url('../Images/Fonts/fontdevil.png');
 	background-repeat: repeat-x;
