@@ -19,7 +19,7 @@
 
 			<p>
 				@t.Description
-				<img class="img-responsive" width="512" src="~/images/@(t.Name).png" />
+				<img class="img-responsive" width="512" src="~/images/Tools/@(t.Name).png" />
 			</p>
 			string path = System.IO.Path.Combine(env.WebRootPath, "tools", $"{t.Name}{t.VersionNumber}.zip");
 			FileInfo fileInfo = new FileInfo(path);
