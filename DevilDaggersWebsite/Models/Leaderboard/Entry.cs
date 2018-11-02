@@ -1,5 +1,6 @@
 ﻿using DevilDaggersWebsite.Models.Game;
 using DevilDaggersWebsite.Utils;
+using Microsoft.AspNetCore.Html;
 using Newtonsoft.Json;
 
 namespace DevilDaggersWebsite.Models.Leaderboard
@@ -41,9 +42,9 @@ namespace DevilDaggersWebsite.Models.Leaderboard
 		public double Accuracy => ShotsFired == 0 ? 0 : ShotsHit / (double)ShotsFired * 100;
 		public double AccuracyTotal => ShotsFiredTotal == 0 ? 0 : ShotsHitTotal / (double)ShotsFiredTotal * 100;
 
-		public string ToHTMLData()
+		public HtmlString ToHTMLData()
 		{
-			return $@"
+			return new HtmlString($@"
 				rank='{Rank}'
 				username='{Username}'
 				time='{Time}'
@@ -56,7 +57,7 @@ namespace DevilDaggersWebsite.Models.Leaderboard
 				total-gems='{GemsTotal}'
 				total-accuracy='{(AccuracyTotal * 100).ToString("0")}'
 				total-deaths='{DeathsTotal}'
-			";
+			");
 		}
 
 		public Death GetDeathFromDeathType()

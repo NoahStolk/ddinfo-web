@@ -69,15 +69,20 @@ namespace DevilDaggersWebsite.Utils
 		public static Dagger[] Daggers = { Default, Bronze, Silver, Golden, Devil };
 		public static Death[] Deaths = { Fallen, Swarmed, Impaled, Gored, Infested, Opened, Purged, Desecrated, Sacrificed, Eviscerated, Annihilated, Intoxicated, Envenmonated, Incarnated, Discarnated, Barbed };
 
-		public static int ToDeathType(this string deathName)
+		public static int GetDeathTypeFromDeathName(string deathName)
 		{
 			foreach (Death death in Deaths)
-			{
 				if (death.Name == deathName)
 					return death.Type;
-			}
-
 			throw new Exception($"Could not parse death type \"{deathName}\" to a valid death type.");
+		}
+
+		public static Dagger GetDaggerFromTime(int time)
+		{
+			for (int i = Daggers.Length - 1; i >= 0; i--)
+				if (time >= Daggers[i].UnlockSecond * 10000)
+					return Daggers[i];
+			return Default;
 		}
 	}
 }

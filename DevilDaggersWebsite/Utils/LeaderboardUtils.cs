@@ -192,7 +192,7 @@ namespace DevilDaggersWebsite.Utils
 					ShotsHit = jsonEntry.daggers_hit,
 					ShotsFired = jsonEntry.daggers_fired,
 					Kills = jsonEntry.enemies_killed,
-					DeathType = ((string)jsonEntry.death_type).ToDeathType(),
+					DeathType = GameUtils.GetDeathTypeFromDeathName((string)jsonEntry.death_type),
 					TimeTotal = jsonEntry.total_game_time * 10000,
 					GemsTotal = jsonEntry.total_gems,
 					ShotsHitTotal = jsonEntry.total_daggers_hit,

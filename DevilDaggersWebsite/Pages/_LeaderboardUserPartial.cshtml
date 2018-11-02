@@ -20,22 +20,14 @@
 	<div class="leaderboard-body">
 		@foreach (Entry entry in Model.Leaderboard.Entries)
 		{
-			Dagger dagger = GameUtils.Default;
-			foreach (Dagger d in GameUtils.Daggers)
-			{
-				if (entry.Time >= d.UnlockSecond * 10000)
-				{
-					dagger = d;
-				}
-			}
-
+			Dagger dagger = GameUtils.GetDaggerFromTime(entry.Time);
 			Death death = entry.GetDeathFromDeathType();
 			bool ban = UserHelper.BanIDs.Contains(entry.ID);
 			string banString = ban ? "ban" : string.Empty;
 			string daggerColor = ban ? "ban" : death == GameUtils.Macroed ? "macro" : dagger.Name.ToLower();
 			string deathStyle = ban ? "" : $"color: #{death.ColorCode};";
 
-			<div class="sort @banString" @Html.Raw(entry.ToHTMLData())>
+			<div class="sort @banString" @entry.ToHTMLData()>
 				<div class="leaderboard-row flex-container" id="@(entry.Rank)-row">
 					<div class="text-right">@entry.Rank</div>
 					<div class="text-left @daggerColor leaderboard-username">@entry.Username</div>
