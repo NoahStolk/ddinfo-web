@@ -50,7 +50,7 @@ namespace DevilDaggersWebsite.Models.Leaderboard
 				kills='{Kills}'
 				gems='{Gems}'
 				accuracy='{(Accuracy * 100).ToString("0")}'
-				death-type='{GetDeathType().Name}'
+				death-type='{GetDeathFromDeathType().Name}'
 				total-time='{TimeTotal}'
 				total-kills='{KillsTotal}'
 				total-gems='{GemsTotal}'
@@ -59,7 +59,7 @@ namespace DevilDaggersWebsite.Models.Leaderboard
 			";
 		}
 
-		public Death GetDeathType()
+		public Death GetDeathFromDeathType()
 		{
 			if (DeathType < 0 || DeathType >= 16)
 				return GameUtils.Unknown;
