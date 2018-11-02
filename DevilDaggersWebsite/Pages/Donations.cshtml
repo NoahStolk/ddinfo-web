@@ -15,7 +15,7 @@
 
 <main role="main" class="text-center">
 	<p>
-		I've built this website entirely in my free time, as well as figuring stuff out in the game, creating an editor and spawnsets, etc... This would not have been possible without help from the community. I'd like to thank everyone who helped me.
+		I've built this website entirely in my free time, as well as figuring stuff out in the game, creating an editor, etc... This would not have been possible without help from the community. I'd like to thank everyone who helped me.
 	</p>
 	<p>
 		However, hosting a website costs money. If this website is useful to you, you can consider donating. All donations will be used to cover the costs of the website (hosting, domain, etc).
@@ -42,24 +42,11 @@
 			<div style="width: @(widths[1] + widths[2])px;" class="text-right">Amount</div>
 		</div>
 		@{
-			List<Donator> donators = UserHelper.Donators
-				.OrderByDescending(d => d.Amount)
-				.ThenBy(d => d.CurrencySymbol)
-				.ThenBy(d => d.Username)
-				.ToList();
-
 			int rank = 0;
-			foreach (Donator donator in donators)
+			foreach (Donator donator in Model.Donators)
 			{
 				rank++;
-				Dagger dagger = GameUtils.Default;
-				foreach (Dagger d in GameUtils.Daggers)
-				{
-					if (donator.Amount >= d.UnlockSecond)
-					{
-						dagger = d;
-					}
-				}
+				Dagger dagger = GameUtils.GetDaggerFromTime(donator.Amount * 10000);
 				string daggerName = dagger.Name.ToLower();
 
 				<div class="flex-container flex-center">
