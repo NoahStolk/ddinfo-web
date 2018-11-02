@@ -5,8 +5,6 @@ namespace DevilDaggersWebsite.Utils
 {
 	public static class UserHelper
 	{
-		public static int AdminID { get; set; } = 21854;
-
 		public static List<int> BanIDs { get; set; } = new List<int>
 		{
 			117558,
@@ -50,24 +48,6 @@ namespace DevilDaggersWebsite.Utils
 		{
 			//159605,
 			//88424
-		};
-
-		public static List<int> DonatorIDs { get; set; } = new List<int>
-		{
-			137044,
-			105315,
-			94857,
-			142939,
-			118832,
-			113530,
-			148518,
-			148951,
-			172395,
-			115431,
-			6760,
-			134802,
-			65617,
-			// xamide
 		};
 
 		public static List<Donator> Donators { get; set; } = new List<Donator>
