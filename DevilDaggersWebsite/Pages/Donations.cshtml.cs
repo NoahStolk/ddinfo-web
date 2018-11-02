@@ -16,7 +16,7 @@ namespace DevilDaggersWebsite.Pages
 				.OrderByDescending(d => d.Amount)
 				.ThenBy(d => d.CurrencySymbol)
 				.ThenBy(d => d.Username)
-				.ToList(); ;
+				.ToList();
 		}
 	}
 }
