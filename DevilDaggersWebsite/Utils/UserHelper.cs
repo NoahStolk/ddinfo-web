@@ -41,7 +41,9 @@ namespace DevilDaggersWebsite.Utils
 			171883,
 			170176,
 			54358,
-			176591
+			176591,
+			176744,
+			121293
 		};
 
 		public static List<int> MacroIDs { get; set; } = new List<int>
