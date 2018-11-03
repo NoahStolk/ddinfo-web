@@ -2,6 +2,7 @@
 @inject Microsoft.AspNetCore.Hosting.IHostingEnvironment env
 @using System.IO
 @using DevilDaggersWebsite.Models
+@using DevilDaggersWebsite.Utils
 @model DevilDaggersWebsite.Pages.ToolsModel
 @{
 	ViewData["Title"] = "Tools";
@@ -13,24 +14,25 @@
 
 <main role="main">
 	@{
-		foreach (Tool t in Model.Tools)
+		foreach (Tool tool in ToolUtils.Tools)
 		{
-			<h2 id="@t.Name">@t.DisplayName</h2>
+			<h2 id="@tool.Name">@tool.DisplayName</h2>
 
 			<p>
-				@t.Description
-				<img class="img-responsive" width="512" src="~/images/Tools/@(t.Name).png" />
+				@tool.Description
+				<img class="img-responsive" width="512" src="~/images/Tools/@(tool.Name).png" />
 			</p>
-			string path = System.IO.Path.Combine(env.WebRootPath, "tools", $"{t.Name}{t.VersionNumber}.zip");
+			string path = System.IO.Path.Combine(env.WebRootPath, "tools", tool.Name, $"{tool.Name}{tool.VersionNumber}.zip");
 			FileInfo fileInfo = new FileInfo(path);
 			if (fileInfo.Exists)
 			{
+				string fileName = System.IO.Path.GetFileName(path);
 				<p>
-					Direct download (version @(t.VersionNumber)): <a href="/tools/@System.IO.Path.GetFileName(path)">@System.IO.Path.GetFileName(path)</a> (@(Math.Round(fileInfo.Length / 1024f).ToString()) KB)
+					Direct download (version @(tool.VersionNumber)): <a href="/tools/@tool.Name/@fileName">@fileName</a> (@(Math.Round(fileInfo.Length / 1024f).ToString()) KB)
 				</p>
 			}
 			<p>
-				<a target="_blank" href="@t.Link">@t.LinkText</a>
+				<a target="_blank" href="@tool.Link">@tool.LinkText</a>
 			</p>
 		}
 	}
