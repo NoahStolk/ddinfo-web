@@ -25,7 +25,7 @@ namespace DevilDaggersWebsite.Utils
 				</ul>"),
 				Link = "https://bitbucket.org/NoahStolk/devildaggerssurvivaleditor/src",
 				LinkText = "View source code and documentation",
-				VersionNumber = "1.1.4.0"
+				VersionNumber = "1.1.5.0"
 			}
 		};
 
