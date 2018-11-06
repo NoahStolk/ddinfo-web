@@ -36,10 +36,10 @@
 			<div style="width: @(widths[3])px;">Brightness</div>
 		</div>
 		<div class="flex-container flex-center">
-			<div style="width: @(widths[0])px;">@string.Format(RazorUtils.DEFAULT_CULTURE, "{0:0.#}", (double)Model.Spawnset.ShrinkStart)</div>
-			<div style="width: @(widths[1])px;">@string.Format(RazorUtils.DEFAULT_CULTURE, "{0:0.#}", (double)Model.Spawnset.ShrinkEnd)</div>
-			<div style="width: @(widths[2])px;">@string.Format(RazorUtils.DEFAULT_CULTURE, "{0:0.####}", (double)Model.Spawnset.ShrinkRate)</div>
-			<div style="width: @(widths[3])px;">@string.Format(RazorUtils.DEFAULT_CULTURE, "{0:0.#}", (double)Model.Spawnset.Brightness)</div>
+			<div style="width: @(widths[0])px;">@Model.Spawnset.ShrinkStart.ToString("0.#")</div>
+			<div style="width: @(widths[1])px;">@Model.Spawnset.ShrinkEnd.ToString("0.#")</div>
+			<div style="width: @(widths[2])px;">@Model.Spawnset.ShrinkRate.ToString("0.####")</div>
+			<div style="width: @(widths[3])px;">@Model.Spawnset.Brightness.ToString("0.#")</div>
 		</div>
 	</div>
 

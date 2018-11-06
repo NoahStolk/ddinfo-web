@@ -39,8 +39,8 @@ namespace DevilDaggersWebsite.Models.Leaderboard
 		[JsonProperty]
 		public ulong ShotsFiredTotal { get; set; }
 
-		public double Accuracy => ShotsFired == 0 ? 0 : ShotsHit / (double)ShotsFired * 100;
-		public double AccuracyTotal => ShotsFiredTotal == 0 ? 0 : ShotsHitTotal / (double)ShotsFiredTotal * 100;
+		public double Accuracy => ShotsFired == 0 ? 0 : ShotsHit / (double)ShotsFired;
+		public double AccuracyTotal => ShotsFiredTotal == 0 ? 0 : ShotsHitTotal / (double)ShotsFiredTotal;
 
 		public HtmlString ToHTMLData()
 		{
@@ -50,12 +50,12 @@ namespace DevilDaggersWebsite.Models.Leaderboard
 				time='{Time}'
 				kills='{Kills}'
 				gems='{Gems}'
-				accuracy='{(Accuracy * 100).ToString("0")}'
+				accuracy='{(Accuracy * 10000).ToString("0")}'
 				death-type='{GetDeathFromDeathType().Name}'
 				total-time='{TimeTotal}'
 				total-kills='{KillsTotal}'
 				total-gems='{GemsTotal}'
-				total-accuracy='{(AccuracyTotal * 100).ToString("0")}'
+				total-accuracy='{(AccuracyTotal * 10000).ToString("0")}'
 				total-deaths='{DeathsTotal}'
 			");
 		}

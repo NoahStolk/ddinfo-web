@@ -249,7 +249,7 @@
 						switch (i)
 						{
 							case 0:
-								<div class="hidden-sm hidden-md text-right">@string.Format(RazorUtils.DEFAULT_CULTURE, "{0:0.0000}", enemy.HP / upgrade.DefaultSpray)</div>
+								<div class="hidden-sm hidden-md text-right">@((enemy.HP / upgrade.DefaultSpray).ToString("0.0000"))</div>
 								break;
 							case 1:
 								<div class="hidden-sm hidden-md text-right">@Math.Ceiling(enemy.HP / upgrade.DefaultShot)</div>
@@ -257,11 +257,11 @@
 							case 2:
 								if (upgrade.Level == 3)
 								{
-									<div class="hidden-sm hidden-md text-right">@(enemy.Homing3 == null ? RazorUtils.NAString : Html.Raw(string.Format(RazorUtils.DEFAULT_CULTURE, "{0:0.##}", (double)enemy.Homing3)))</div>
+									<div class="hidden-sm hidden-md text-right">@(enemy.Homing3 == null ? RazorUtils.NAString : Html.Raw(enemy.Homing3.Value.ToString("0.##")))</div>
 								}
 								else if (upgrade.Level == 4)
 								{
-									<div class="hidden-sm hidden-md text-right">@(enemy.Homing4 == null ? RazorUtils.NAString : Html.Raw(string.Format(RazorUtils.DEFAULT_CULTURE, "{0:0.##}", (double)enemy.Homing4)))</div>
+									<div class="hidden-sm hidden-md text-right">@(enemy.Homing4 == null ? RazorUtils.NAString : Html.Raw(enemy.Homing4.Value.ToString("0.##")))</div>
 								}
 								break;
 						}
@@ -295,7 +295,7 @@
 							case 0:
 								<div class="damage-stats-row flex-container">
 									<div>@Html.Raw(RazorUtils.GetUpgradeLayoutAnchor(upgrade)) spray (seconds)</div>
-									<div class="text-right">@string.Format(RazorUtils.DEFAULT_CULTURE, "{0:0.0000}", enemy.HP / upgrade.DefaultSpray)</div>
+									<div class="text-right">@((enemy.HP / upgrade.DefaultSpray).ToString("0.0000"))</div>
 								</div>
 								break;
 							case 1:
@@ -309,12 +309,12 @@
 									@if (upgrade.Level == 3)
 									{
 										<div>@Html.Raw(RazorUtils.GetUpgradeLayoutAnchor(upgrade)) homing daggers</div>
-										<div class="text-right">@(enemy.Homing3 == null ? RazorUtils.NAString : Html.Raw(string.Format(RazorUtils.DEFAULT_CULTURE, "{0:0.##}", (double)enemy.Homing3)))</div>
+										<div class="text-right">@(enemy.Homing3 == null ? RazorUtils.NAString : Html.Raw(enemy.Homing3.Value.ToString("0.##")))</div>
 									}
 									else if (upgrade.Level == 4)
 									{
 										<div>@Html.Raw(RazorUtils.GetUpgradeLayoutAnchor(upgrade)) homing daggers</div>
-										<div class="text-right">@(enemy.Homing4 == null ? RazorUtils.NAString : Html.Raw(string.Format(RazorUtils.DEFAULT_CULTURE, "{0:0.##}", (double)enemy.Homing4)))</div>
+										<div class="text-right">@(enemy.Homing4 == null ? RazorUtils.NAString : Html.Raw(enemy.Homing4.Value.ToString("0.##")))</div>
 									}
 								</div>
 								break;
@@ -333,7 +333,7 @@
 						switch (i)
 						{
 							case 0:
-								<div class="text-right">@string.Format(RazorUtils.DEFAULT_CULTURE, "{0:0.0000}", enemy.HP / upgrade.DefaultSpray)</div>
+								<div class="text-right">@((enemy.HP / upgrade.DefaultSpray).ToString("0.0000"))</div>
 								break;
 							case 1:
 								<div class="text-right">@Math.Ceiling(enemy.HP / upgrade.DefaultShot)</div>
@@ -341,11 +341,11 @@
 							case 2:
 								if (upgrade.Level == 3)
 								{
-									<div class="text-right">@(enemy.Homing3 == null ? RazorUtils.NAString : Html.Raw(string.Format(RazorUtils.DEFAULT_CULTURE, "{0:0.##}", (double)enemy.Homing3)))</div>
+									<div class="text-right">@(enemy.Homing3 == null ? RazorUtils.NAString : Html.Raw(enemy.Homing3.Value.ToString("0.##")))</div>
 								}
 								else if (upgrade.Level == 4)
 								{
-									<div class="text-right">@(enemy.Homing4 == null ? RazorUtils.NAString : Html.Raw(string.Format(RazorUtils.DEFAULT_CULTURE, "{0:0.##}", (double)enemy.Homing4)))</div>
+									<div class="text-right">@(enemy.Homing4 == null ? RazorUtils.NAString : Html.Raw(enemy.Homing4.Value.ToString("0.##")))</div>
 								}
 								else
 								{
@@ -369,7 +369,7 @@
 							switch (i)
 							{
 								case 0:
-									<div class="hidden-sm hidden-md text-right">@string.Format(RazorUtils.DEFAULT_CULTURE, "{0:0.0000}", enemy.HP / upgrade.DefaultSpray / enemy.HitPartCount)</div>
+									<div class="hidden-sm hidden-md text-right">@((enemy.HP / upgrade.DefaultSpray / enemy.HitPartCount).ToString("0.0000"))</div>
 									break;
 								case 1:
 									<div class="hidden-sm hidden-md text-right">@Math.Ceiling(enemy.HP / upgrade.DefaultShot / enemy.HitPartCount)</div>
@@ -377,11 +377,11 @@
 								case 2:
 									if (upgrade.Level == 3)
 									{
-										<div class="hidden-sm hidden-md text-right">@(enemy.Homing3 == null ? RazorUtils.NAString : Html.Raw(string.Format(RazorUtils.DEFAULT_CULTURE, "{0:0.##}", (double)enemy.Homing3 / enemy.HitPartCount)))</div>
+										<div class="hidden-sm hidden-md text-right">@(enemy.Homing3 == null ? RazorUtils.NAString : Html.Raw((enemy.Homing3 / enemy.HitPartCount).Value.ToString("0.##")))</div>
 									}
 									else if (upgrade.Level == 4)
 									{
-										<div class="hidden-sm hidden-md text-right">@(enemy.Homing4 == null ? RazorUtils.NAString : Html.Raw(string.Format(RazorUtils.DEFAULT_CULTURE, "{0:0.##}", (double)enemy.Homing4 / enemy.HitPartCount)))</div>
+										<div class="hidden-sm hidden-md text-right">@(enemy.Homing4 == null ? RazorUtils.NAString : Html.Raw((enemy.Homing4 / enemy.HitPartCount).Value.ToString("0.##")))</div>
 									}
 									break;
 							}
@@ -415,7 +415,7 @@
 								case 0:
 									<div class="damage-stats-row flex-container">
 										<div>@Html.Raw(RazorUtils.GetUpgradeLayoutAnchor(upgrade)) spray (seconds)</div>
-										<div class="text-right">@string.Format(RazorUtils.DEFAULT_CULTURE, "{0:0.0000}", enemy.HP / upgrade.DefaultSpray / enemy.HitPartCount)</div>
+										<div class="text-right">@((enemy.HP / upgrade.DefaultSpray / enemy.HitPartCount).ToString("0.0000"))</div>
 									</div>
 									break;
 								case 1:
@@ -429,12 +429,12 @@
 										@if (upgrade.Level == 3)
 										{
 											<div>@Html.Raw(RazorUtils.GetUpgradeLayoutAnchor(upgrade)) homing daggers</div>
-											<div class="text-right">@(enemy.Homing3 == null ? RazorUtils.NAString : Html.Raw(string.Format(RazorUtils.DEFAULT_CULTURE, "{0:0.##}", (double)enemy.Homing3 / enemy.HitPartCount)))</div>
+											<div class="text-right">@(enemy.Homing3 == null ? RazorUtils.NAString : Html.Raw((enemy.Homing3 / enemy.HitPartCount).Value.ToString("0.##")))</div>
 										}
 										else if (upgrade.Level == 4)
 										{
 											<div>@Html.Raw(RazorUtils.GetUpgradeLayoutAnchor(upgrade)) homing daggers</div>
-											<div class="text-right">@(enemy.Homing4 == null ? RazorUtils.NAString : Html.Raw(string.Format(RazorUtils.DEFAULT_CULTURE, "{0:0.##}", (double)enemy.Homing4 / enemy.HitPartCount)))</div>
+											<div class="text-right">@(enemy.Homing4 == null ? RazorUtils.NAString : Html.Raw((enemy.Homing4 / enemy.HitPartCount).Value.ToString("0.##")))</div>
 										}
 									</div>
 									break;
@@ -453,7 +453,7 @@
 							switch (i)
 							{
 								case 0:
-									<div class="text-right">@string.Format(RazorUtils.DEFAULT_CULTURE, "{0:0.0000}", enemy.HP / upgrade.DefaultSpray / enemy.HitPartCount)</div>
+									<div class="text-right">@((enemy.HP / upgrade.DefaultSpray / enemy.HitPartCount).ToString("0.0000"))</div>
 									break;
 								case 1:
 									<div class="text-right">@Math.Ceiling(enemy.HP / upgrade.DefaultShot / enemy.HitPartCount)</div>
@@ -461,11 +461,11 @@
 								case 2:
 									if (upgrade.Level == 3)
 									{
-										<div class="text-right">@(enemy.Homing3 == null ? RazorUtils.NAString : Html.Raw(string.Format(RazorUtils.DEFAULT_CULTURE, "{0:0.##}", (double)enemy.Homing3 / enemy.HitPartCount)))</div>
+										<div class="text-right">@(enemy.Homing3 == null ? RazorUtils.NAString : Html.Raw((enemy.Homing3 / enemy.HitPartCount).Value.ToString("0.##")))</div>
 									}
 									else if (upgrade.Level == 4)
 									{
-										<div class="text-right">@(enemy.Homing4 == null ? RazorUtils.NAString : Html.Raw(string.Format(RazorUtils.DEFAULT_CULTURE, "{0:0.##}", (double)enemy.Homing4 / enemy.HitPartCount)))</div>
+										<div class="text-right">@(enemy.Homing4 == null ? RazorUtils.NAString : Html.Raw((enemy.Homing4 / enemy.HitPartCount).Value.ToString("0.##"))))</div>
 									}
 									else
 									{

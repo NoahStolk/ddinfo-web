@@ -69,16 +69,16 @@
 						<td><a asp-page="Spawnset" asp-route-spawnset="@($"{spawnsetFile.Name}_{spawnsetFile.Author}")">@spawnsetFile.Name</a></td>
 						<td>@spawnsetFile.Author</td>
 						<td class="hidden-xs">
-							@(spawnsetFile.LastUpdated.ToString("dd MMM yyyy", RazorUtils.DEFAULT_CULTURE))
+							@(spawnsetFile.LastUpdated.ToString("dd MMM yyyy"))
 						</td>
 						<td class="hidden-xs hidden-sm hidden-md">
-							@(spawnsetFile.SpawnData.NonLoopSpawns == 0 ? RazorUtils.NAString : Html.Raw(string.Format(RazorUtils.DEFAULT_CULTURE, "{0:0.0000}", spawnsetFile.SpawnData.NonLoopSeconds)))
+							@(spawnsetFile.SpawnData.NonLoopSpawns == 0 ? RazorUtils.NAString : Html.Raw(spawnsetFile.SpawnData.NonLoopSeconds.ToString("0.0000")))
 						</td>
 						<td class="hidden-xs hidden-sm hidden-md">
 							@(spawnsetFile.SpawnData.NonLoopSpawns == 0 ? RazorUtils.NAString : Html.Raw(spawnsetFile.SpawnData.NonLoopSpawns))
 						</td>
 						<td class="hidden-xs hidden-sm hidden-md">
-							@(spawnsetFile.SpawnData.LoopSpawns == 0 ? RazorUtils.NAString : Html.Raw(string.Format(RazorUtils.DEFAULT_CULTURE, "{0:0.0000}", spawnsetFile.SpawnData.LoopStart)))
+							@(spawnsetFile.SpawnData.LoopSpawns == 0 ? RazorUtils.NAString : Html.Raw(spawnsetFile.SpawnData.LoopStart.ToString("0.0000")))
 						</td>
 						<td class="hidden-xs hidden-sm hidden-md">
 							@(spawnsetFile.SpawnData.LoopSpawns == 0 ? RazorUtils.NAString : Html.Raw(spawnsetFile.SpawnData.LoopSpawns))

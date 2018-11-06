@@ -37,7 +37,7 @@ namespace DevilDaggersWebsite.Models.Leaderboard
 		[JsonProperty]
 		public List<Entry> Entries { get; set; } = new List<Entry>();
 
-		public double AccuracyGlobal => ShotsFiredGlobal == 0 ? 0 : ShotsHitGlobal / (double)ShotsFiredGlobal * 100;
+		public double AccuracyGlobal => ShotsFiredGlobal == 0 ? 0 : ShotsHitGlobal / (double)ShotsFiredGlobal;
 
 		public string GetMissingGlobalInformation()
 		{

@@ -48,7 +48,7 @@
 
 				<div class="flex-container flex-center">
 					<div style="width: @(widths[0])px; white-space: nowrap;" class="text-left @daggerName">@donator.Username</div>
-					<div style="width: @(widths[1])px;" class="text-right @daggerName">@string.Format(RazorUtils.DEFAULT_CULTURE, "{0:0.00}", (double)donator.Amount / 100)</div>
+					<div style="width: @(widths[1])px;" class="text-right @daggerName">@((donator.Amount / 100.0).ToString("0.00"))</div>
 					<div style="width: @(widths[2])px;" class="text-right @daggerName">@donator.CurrencySymbol</div>
 				</div>
 			}

@@ -1,13 +1,10 @@
 ﻿using DevilDaggersWebsite.Models.Game;
-using System.Globalization;
 using Microsoft.AspNetCore.Html;
 
 namespace DevilDaggersWebsite.Utils
 {
 	public static class RazorUtils
 	{
-		public static CultureInfo DEFAULT_CULTURE = CultureInfo.CreateSpecificCulture("en-US");
-
 		public static HtmlString NAString = new HtmlString($"<span style='color: #444;'>N/A</span>");
 
 		public static string Email = "contact@devildaggers.info";
