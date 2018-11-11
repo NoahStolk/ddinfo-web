@@ -14,8 +14,6 @@ namespace DevilDaggersWebsite.Models.Game
 		public float? Homing4 { get; set; }
 		public Enemy[] SpawnedBy { get; set; }
 
-		public List<string> Info { get; set; }
-
 		public Enemy(string name, string colorCode, int hp, int gems, int hitPartCount, Death death, float? homing3, float? homing4, params Enemy[] spawnedBy)
 		{
 			Name = name;

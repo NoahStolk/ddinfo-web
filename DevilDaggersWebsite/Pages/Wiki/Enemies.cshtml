@@ -5,111 +5,6 @@
 @{
 	string boxShadow = "0 0px 2px 2px";
 	ViewData["Title"] = "Enemies";
-	GameUtils.Squid1.Info = new List<string>
-{
-"Spawns at the edge of the arena",
-"Moves slowly and rotates clockwise",
-"Spawns 10 Skull Is and 1 Skull II every 20 seconds (starting 3 seconds after its initial appearance)"
-};
-	GameUtils.Squid2.Info = new List<string>
-{
-"Spawns at the edge of the arena",
-"Moves slowly and rotates clockwise",
-"Spawns 10 Skull Is and 1 Skull III every 20 seconds (starting 3 seconds after its initial appearance)"
-};
-	GameUtils.Squid3.Info = new List<string>
-{
-"Spawns at the edge of the arena",
-"Moves slowly and rotates clockwise",
-"Spawns 15 Skull Is and 1 Skull IV every 20 seconds (starting 3 seconds after its initial appearance)"
-};
-	GameUtils.Centipede.Info = new List<string>
-{
-"Emerges and flies idly for a while, then starts chasing the player",
-"Regularly dives down and moves underground for a while"
-};
-	GameUtils.Gigapede.Info = new List<string>
-{
-"Emerges and starts chasing the player immediately"
-};
-	GameUtils.Ghostpede.Info = new List<string>
-{
-"Emerges and starts flying in circles high above the arena",
-"Attracts and consumes all homing daggers, making them useless"
-};
-	GameUtils.Leviathan.Info = new List<string>
-{
-"Attracts and transmutes all skulls every 20 seconds",
-"Rotates counter-clockwise",
-"Drops The Orb after dying"
-};
-	GameUtils.Thorn.Info = new List<string>
-{
-"Takes up space"
-};
-	GameUtils.Spider1.Info = new List<string>
-{
-"Spawns at the edge of the arena and starts lifting its head, then faces the player",
-"Attracts and consumes gems when facing the player, ejecting them as Spider Egg I one at a time",
-"Hides its head when shot and left unharmed for 1 second",
-"Begins moving randomly in an unpredictable jittery fashion after initially raising its head"
-};
-	GameUtils.Spider2.Info = new List<string>
-{
-"Spawns at the edge of the arena and starts lifting its head (though much slower than Spider I), then faces the player",
-"Attracts and consumes gems when facing the player, ejecting them as Spider Egg II one at a time",
-"Hides its head when shot and left unharmed for 1 second",
-"Begins moving randomly in an unpredictable jittery fashion after initially raising its head (though barely noticeable due to its size)"
-};
-	GameUtils.Skull1.Info = new List<string>
-{
-"Slowly chases the player"
-};
-	GameUtils.Skull2.Info = new List<string>
-{
-"Moves randomly"
-};
-	GameUtils.Skull3.Info = new List<string>
-{
-"Chases the player fast"
-};
-	GameUtils.Skull4.Info = new List<string>
-{
-"Chases the player fast"
-};
-	GameUtils.TransmutedSkull1.Info = new List<string>
-{
-"Slowly chases the player"
-};
-	GameUtils.TransmutedSkull2.Info = new List<string>
-{
-"Moves randomly"
-};
-	GameUtils.TransmutedSkull3.Info = new List<string>
-{
-"Chases the player fast"
-};
-	GameUtils.TransmutedSkull4.Info = new List<string>
-{
-"Chases the player fast"
-};
-	GameUtils.SpiderEgg1.Info = new List<string>
-{
-"Hatches into 5 Spiderlings after 10 seconds"
-};
-	GameUtils.SpiderEgg2.Info = new List<string>
-{
-"Hatches into 5 Spiderlings after 10 seconds"
-};
-	GameUtils.Spiderling.Info = new List<string>
-{
-"Darts towards the player in bursts with random offsets"
-};
-	GameUtils.TheOrb.Info = new List<string>
-{
-"Behaves like an eyeball, will look at the player, then attract and transmute all skulls every 2.5 seconds",
-"Becomes stunned under constant fire, cannot look or attract skulls while stunned"
-};
 }
 
 <header>
@@ -197,11 +92,12 @@
 					<div>Behaviour</div>
 					<div>
 						<ul>
-							@for (int i = 0; i < enemy.Info.Count; i++)
-							{
-								<li>
-									@Html.Raw(RazorUtils.GetLayout(enemy.Info[i]))
-								</li>
+							@{
+								string[] strings = GameUtils.EnemyInfo[enemy.Name].Split('\n');
+								foreach (string s in strings)
+								{
+									<li>@Html.Raw(RazorUtils.GetLayout(s))</li>
+								}
 							}
 						</ul>
 					</div>

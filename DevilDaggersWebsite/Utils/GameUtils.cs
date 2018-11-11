@@ -1,5 +1,6 @@
 ﻿using DevilDaggersWebsite.Models.Game;
 using System;
+using System.Collections.Generic;
 
 namespace DevilDaggersWebsite.Utils
 {
@@ -68,6 +69,32 @@ namespace DevilDaggersWebsite.Utils
 		public static Upgrade[] Upgrades = { Level1, Level2, Level3, Level4 };
 		public static Dagger[] Daggers = { Default, Bronze, Silver, Golden, Devil };
 		public static Death[] Deaths = { Fallen, Swarmed, Impaled, Gored, Infested, Opened, Purged, Desecrated, Sacrificed, Eviscerated, Annihilated, Intoxicated, Envenmonated, Incarnated, Discarnated, Barbed };
+
+		public static Dictionary<string, string> EnemyInfo { get; set; } = new Dictionary<string, string>
+		{
+			{ "Squid I", "Spawns at the edge of the arena\nMoves slowly and rotates clockwise\nSpawns 10 Skull Is and 1 Skull II every 20 seconds (starting 3 seconds after its initial appearance)" },
+			{ "Squid II", "Spawns at the edge of the arena\nMoves slowly and rotates clockwise\nSpawns 10 Skull Is and 1 Skull III every 20 seconds (starting 3 seconds after its initial appearance)" },
+			{ "Squid III", "Spawns at the edge of the arena\nMoves slowly and rotates clockwise\nSpawns 15 Skull Is and 1 Skull IV every 20 seconds (starting 3 seconds after its initial appearance)" },
+			{ "Centipede", "Emerges and flies idly for a while, then starts chasing the player\nRegularly dives down and moves underground for a while" },
+			{ "Gigapede", "Emerges and starts chasing the player immediately" },
+			{ "Ghostpede", "Emerges and starts flying in circles high above the arena\nAttracts and consumes all homing daggers, making them useless" },
+			{ "Leviathan", "Attracts and transmutes all skulls every 20 seconds\nRotates counter-clockwise\nDrops The Orb after dying" },
+			{ "Thorn", "Takes up space" },
+			{ "Spider I", "Spawns at the edge of the arena and starts lifting its head, then faces the player\nAttracts and consumes gems when facing the player, ejecting them as Spider Egg I one at a time\nHides its head when shot and left unharmed for 1 second\nBegins moving randomly in an unpredictable jittery fashion after initially raising its head" },
+			{ "Spider II", "Spawns at the edge of the arena and starts lifting its head (though much slower than Spider I), then faces the player\nAttracts and consumes gems when facing the player, ejecting them as Spider Egg II one at a time\nHides its head when shot and left unharmed for 1 second\nBegins moving randomly in an unpredictable jittery fashion after initially raising its head (though barely noticeable due to its size)" },
+			{ "Skull I", "Slowly chases the player" },
+			{ "Skull II", "Moves randomly" },
+			{ "Skull III", "Chases the player fast" },
+			{ "Skull IV", "Chases the player fast" },
+			{ "Transmuted Skull I", "Slowly chases the player" },
+			{ "Transmuted Skull II", "Moves randomly" },
+			{ "Transmuted Skull III", "Chases the player fast" },
+			{ "Transmuted Skull IV", "Chases the player fast" },
+			{ "Spider Egg I", "Hatches into 5 Spiderlings after 10 seconds" },
+			{ "Spider Egg II", "Hatches into 5 Spiderlings after 10 seconds" },
+			{ "Spiderling", "Darts towards the player in bursts with random offsets" },
+			{ "The Orb", "Behaves like an eyeball, will look at the player, then attract and transmute all skulls every 2.5 seconds\nBecomes stunned under constant fire, cannot look or attract skulls while stunned" }
+		};
 
 		public static int GetDeathTypeFromDeathName(string deathName)
 		{
