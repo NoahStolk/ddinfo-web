@@ -16,12 +16,12 @@ namespace DevilDaggersWebsite.Utils
 
 		public static string GetEnemyLayoutAnchor(Enemy enemy, bool plural = false)
 		{
-			return $"<a style='color: #{enemy.ColorCode};' href='/Enemies#{enemy.Name.Replace(" ", "")}'>{enemy.Name}{(plural ? "s" : "")}</a>";
+			return $"<a style='color: #{enemy.ColorCode};' href='/Wiki/Enemies#{enemy.Name.Replace(" ", "")}'>{enemy.Name}{(plural ? "s" : "")}</a>";
 		}
 
 		public static string GetUpgradeLayoutAnchor(Upgrade upgrade)
 		{
-			return $"<a style='color: #{upgrade.ColorCode};' href='/Upgrades#Level{upgrade.Level}'>Level {upgrade.Level}</a>";
+			return $"<a style='color: #{upgrade.ColorCode};' href='/Wiki/Upgrades#Level{upgrade.Level}'>Level {upgrade.Level}</a>";
 		}
 
 		public static string GetLayout(string str)

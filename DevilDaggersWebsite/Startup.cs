@@ -38,12 +38,19 @@ namespace DevilDaggersWebsite
 				.AddRedirect("Home/Spawnsets", "Spawnsets")
 				.AddRedirect("Home/SpawnsetsInfo", "Spawnsets")
 				.AddRedirect("Home/Spawnset", "Spawnset")
-				.AddRedirect("Home/Spawns", "Spawns")
-				.AddRedirect("Home/Hands", "Upgrades")
-				.AddRedirect("Home/Enemies", "Enemies")
-				.AddRedirect("Home/Daggers", "Daggers")
+				.AddRedirect("Home/Spawns", "Wiki/Spawns")
+				.AddRedirect("Home/Hands", "Wiki/Upgrades")
+				.AddRedirect("Home/Enemies", "Wiki/Enemies")
+				.AddRedirect("Home/Daggers", "Wiki/Daggers")
 				.AddRedirect("Home/Donations", "Donations")
-				.AddRedirect("Home", "Index");
+				.AddRedirect("Home", "Index")
+				.AddRedirect("^Spawns$", "Wiki/Spawns")
+				.AddRedirect("^Upgrades$", "Wiki/Upgrades")
+				.AddRedirect("^Enemies$", "Wiki/Enemies")
+				.AddRedirect("^Daggers$", "Wiki/Daggers")
+				.AddRedirect("^GetSpawnsets$", "API/GetSpawnsets")
+				.AddRedirect("^GetToolVersions$", "API/GetToolVersions")
+				.AddRedirect("^LeaderboardJson$", "API/LeaderboardJson");
 
 			app.UseRewriter(options);
 
