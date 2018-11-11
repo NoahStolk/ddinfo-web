@@ -63,12 +63,12 @@ namespace DevilDaggersWebsite.Utils
 			return str;
 		}
 
-		public static string GetLeaderboardInformationHTMLString(string info)
+		public static HtmlString GetLeaderboardInformationHTMLString(string info)
 		{
-			return info
+			return new HtmlString(info
 				.Replace("\n", "<br />")
 				.Replace("(Missing)", "<span style='color: #f00'>(Missing)</span>")
-				.Replace("(Inaccurate)", "<span style='color: #ff0'>(Inaccurate)</span>");
+				.Replace("(Inaccurate)", "<span style='color: #ff0'>(Inaccurate)</span>"));
 		}
 	}
 }

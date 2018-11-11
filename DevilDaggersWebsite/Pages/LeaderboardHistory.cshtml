@@ -32,11 +32,11 @@
 		<div class="flex-container leaderboard-flex flex-center flex-space-evenly text-left">
 			<div>
 				<div>Global</div>
-				<div class="missing-information">@Html.Raw(RazorUtils.GetLeaderboardInformationHTMLString(Model.Leaderboard.GetMissingGlobalInformation()))</div>
+				<div class="missing-information">@RazorUtils.GetLeaderboardInformationHTMLString(Model.Leaderboard.GetMissingGlobalInformation())</div>
 			</div>
 			<div>
 				<div>User</div>
-				<div class="missing-information">@Html.Raw(RazorUtils.GetLeaderboardInformationHTMLString(Model.Leaderboard.GetMissingUserInformation()))</div>
+				<div class="missing-information">@RazorUtils.GetLeaderboardInformationHTMLString(Model.Leaderboard.GetMissingUserInformation())</div>
 			</div>
 		</div>
 	</div>
