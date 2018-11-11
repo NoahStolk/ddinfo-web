@@ -1,4 +1,4 @@
-﻿using DevilDaggersWebsite.Models;
+﻿using DevilDaggersWebsite.Models.Tool;
 using Microsoft.AspNetCore.Html;
 using System.Collections.Generic;
 
