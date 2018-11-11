@@ -12,7 +12,7 @@ namespace DevilDaggersWebsite.Pages
 
 		public void OnGet()
 		{
-			Donators = UserHelper.Donators
+			Donators = UserUtils.Donators
 				.OrderByDescending(d => d.Amount)
 				.ThenBy(d => d.CurrencySymbol, new CurrencyComparer())
 				.ThenBy(d => d.Username)

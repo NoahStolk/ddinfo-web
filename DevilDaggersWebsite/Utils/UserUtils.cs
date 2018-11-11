@@ -1,9 +1,9 @@
-﻿using DevilDaggersWebsite.Models;
+﻿using DevilDaggersWebsite.Models.User;
 using System.Collections.Generic;
 
 namespace DevilDaggersWebsite.Utils
 {
-	public static class UserHelper
+	public static class UserUtils
 	{
 		public static List<int> BanIDs { get; set; } = new List<int>
 		{

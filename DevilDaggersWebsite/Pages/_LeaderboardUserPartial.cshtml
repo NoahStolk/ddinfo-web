@@ -22,7 +22,7 @@
 		{
 			Dagger dagger = GameUtils.GetDaggerFromTime(entry.Time);
 			Death death = entry.GetDeathFromDeathType();
-			bool ban = UserHelper.BanIDs.Contains(entry.ID);
+			bool ban = UserUtils.BanIDs.Contains(entry.ID);
 			string banString = ban ? "ban" : string.Empty;
 			string daggerColor = ban ? "ban" : death == GameUtils.Macroed ? "macro" : dagger.Name.ToLower();
 			string deathStyle = ban ? "" : $"color: #{death.ColorCode};";
