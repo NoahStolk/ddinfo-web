@@ -16,7 +16,7 @@ namespace DevilDaggersWebsite.Utils
 
 		public static string GetEnemyLayoutAnchor(Enemy enemy, bool plural = false)
 		{
-			return $"<a style='color: #{enemy.ColorCode};' href='/Enemies#{enemy.Name.Replace(" ", string.Empty)}'>{enemy.Name}{(plural ? "s" : "")}</a>";
+			return $"<a style='color: #{enemy.ColorCode};' href='/Enemies#{enemy.Name.Replace(" ", "")}'>{enemy.Name}{(plural ? "s" : "")}</a>";
 		}
 
 		public static string GetUpgradeLayoutAnchor(Upgrade upgrade)
@@ -29,7 +29,7 @@ namespace DevilDaggersWebsite.Utils
 			char[] beginSeparators = new char[] { '>', ' ', ',', '.', '(' };
 			char[] endSeparators = new char[] { ' ', ',', '.', 's', ')', '\'' };
 
-			for (int i = GameUtils.Enemies.Length - 1; i >= 0; i--) // Reverse iteration because transmuted skulls are after normal skulls in the list
+			for (int i = GameUtils.Enemies.Length - 1; i >= 0; i--) // Reverse iteration because transmuted skulls come after normal skulls in the list
 			{
 				Enemy enemy = GameUtils.Enemies[i];
 				foreach (char begin in beginSeparators)
@@ -41,7 +41,7 @@ namespace DevilDaggersWebsite.Utils
 						{
 							// Enemy string should not be inside an <a> element
 							if (str.Length < str.IndexOf(enemyString) + enemyString.Length + "</a>".Length || str.Substring(str.IndexOf(enemyString) + enemyString.Length, "</a>".Length) != "</a>")
-								str = str.Replace(enemyString, $"{begin}{GetEnemyLayoutAnchor(enemy, (end == 's'))}{((end == 's') ? "" : end.ToString())}");
+								str = str.Replace(enemyString, $"{begin}{GetEnemyLayoutAnchor(enemy, end == 's')}{((end == 's') ? "" : end.ToString())}");
 						}
 					}
 				}
