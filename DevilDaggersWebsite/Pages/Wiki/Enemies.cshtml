@@ -25,7 +25,7 @@
 			@foreach (Enemy enemy in GameUtils.Enemies)
 			{
 				<div class="enemies-summary-row-top flex-container">
-					<div>@Html.Raw(RazorUtils.GetEnemyLayoutAnchor(enemy))</div>
+					<div>@RazorUtils.GetEnemyLayoutAnchor(enemy)</div>
 					<div class='text-right'>@enemy.HP</div>
 					<div class='text-right'>@enemy.Gems</div>
 					<div style='color: #@enemy.Death.ColorCode'>@enemy.Death.Name</div>
@@ -38,7 +38,7 @@
 						{
 							foreach (Enemy e in enemy.SpawnedBy)
 							{
-								@Html.Raw(RazorUtils.GetEnemyLayoutAnchor(e) + " ")
+								<span>@RazorUtils.GetEnemyLayoutAnchor(e)</span>
 							}
 						}
 					</div>
@@ -83,7 +83,7 @@
 						{
 							foreach (Enemy e in enemy.SpawnedBy)
 							{
-								<span>@Html.Raw(RazorUtils.GetEnemyLayoutAnchor(e))</span>
+								<span>@RazorUtils.GetEnemyLayoutAnchor(e)</span>
 							}
 						}
 					</div>
@@ -96,7 +96,7 @@
 								string[] strings = GameUtils.EnemyInfo[enemy].Split('\n');
 								foreach (string s in strings)
 								{
-									<li>@Html.Raw(RazorUtils.GetLayout(s))</li>
+									<li>@RazorUtils.GetLayout(s)</li>
 								}
 							}
 						</ul>
@@ -126,7 +126,7 @@
 						if (i != 2 || (i == 2 && upgrade.HomingShot != null))
 						{
 							<div class="hidden-sm hidden-md">
-								@Html.Raw(RazorUtils.GetUpgradeLayoutAnchor(upgrade))
+								@RazorUtils.GetUpgradeLayoutAnchor(upgrade)
 							</div>
 						}
 					}
@@ -136,7 +136,7 @@
 		@foreach (Enemy enemy in GameUtils.Enemies)
 		{
 			<div class="damage-stats-row damage-stats-row-main flex-container hidden-xs">
-				<div>@Html.Raw(RazorUtils.GetEnemyLayoutAnchor(enemy))</div>
+				<div>@RazorUtils.GetEnemyLayoutAnchor(enemy)</div>
 				<div class="text-right">@enemy.HP</div>
 				@for (int i = 0; i < 3; i++)
 				{
@@ -167,7 +167,7 @@
 				@foreach (Upgrade upgrade in GameUtils.Upgrades)
 				{
 					<div class="hidden-lg text-right">
-						@Html.Raw(RazorUtils.GetUpgradeLayoutAnchor(upgrade))
+						@RazorUtils.GetUpgradeLayoutAnchor(upgrade)
 					</div>
 				}
 			</div>
@@ -175,7 +175,7 @@
 			<div class="visible-xs">
 				<div class="damage-stats-row damage-stats-row-main flex-container">
 					<div>Name</div>
-					<div class="text-right">@Html.Raw(RazorUtils.GetEnemyLayoutAnchor(enemy))</div>
+					<div class="text-right">@RazorUtils.GetEnemyLayoutAnchor(enemy)</div>
 				</div>
 				<div class="damage-stats-row flex-container">
 					<div>HP</div>
@@ -190,13 +190,13 @@
 						{
 							case 0:
 								<div class="damage-stats-row flex-container">
-									<div>@Html.Raw(RazorUtils.GetUpgradeLayoutAnchor(upgrade)) spray (seconds)</div>
+									<div>@RazorUtils.GetUpgradeLayoutAnchor(upgrade) spray (seconds)</div>
 									<div class="text-right">@((enemy.HP / upgrade.DefaultSpray).ToString("0.0000"))</div>
 								</div>
 								break;
 							case 1:
 								<div class="damage-stats-row flex-container">
-									<div>@Html.Raw(RazorUtils.GetUpgradeLayoutAnchor(upgrade)) shots</div>
+									<div>@RazorUtils.GetUpgradeLayoutAnchor(upgrade) shots</div>
 									<div class="text-right">@Math.Ceiling(enemy.HP / upgrade.DefaultShot)</div>
 								</div>
 								break;
@@ -204,12 +204,12 @@
 								<div class="damage-stats-row flex-container">
 									@if (upgrade.Level == 3)
 									{
-										<div>@Html.Raw(RazorUtils.GetUpgradeLayoutAnchor(upgrade)) homing daggers</div>
+										<div>@RazorUtils.GetUpgradeLayoutAnchor(upgrade) homing daggers</div>
 										<div class="text-right">@(enemy.Homing3 == null ? RazorUtils.NAString : Html.Raw(enemy.Homing3.Value.ToString("0.##")))</div>
 									}
 									else if (upgrade.Level == 4)
 									{
-										<div>@Html.Raw(RazorUtils.GetUpgradeLayoutAnchor(upgrade)) homing daggers</div>
+										<div>@RazorUtils.GetUpgradeLayoutAnchor(upgrade) homing daggers</div>
 										<div class="text-right">@(enemy.Homing4 == null ? RazorUtils.NAString : Html.Raw(enemy.Homing4.Value.ToString("0.##")))</div>
 									}
 								</div>
@@ -256,7 +256,7 @@
 			if (enemy.HitPartCount != 1)
 			{
 				<div class="damage-stats-row damage-stats-row-main flex-container hidden-xs">
-					<div>@Html.Raw(RazorUtils.GetEnemyLayoutAnchor(enemy)) (Gem)</div>
+					<div>@RazorUtils.GetEnemyLayoutAnchor(enemy) (Gem)</div>
 					<div class="text-right">@(enemy.HP / enemy.HitPartCount)</div>
 					@for (int i = 0; i < 3; i++)
 					{
@@ -287,7 +287,7 @@
 					@foreach (Upgrade upgrade in GameUtils.Upgrades)
 					{
 						<div class="hidden-lg text-right">
-							@Html.Raw(RazorUtils.GetUpgradeLayoutAnchor(upgrade))
+							@RazorUtils.GetUpgradeLayoutAnchor(upgrade)
 						</div>
 					}
 				</div>
@@ -295,7 +295,7 @@
 				<div class="visible-xs">
 					<div class="damage-stats-row damage-stats-row-main flex-container">
 						<div>Name</div>
-						<div class="text-right">@Html.Raw(RazorUtils.GetEnemyLayoutAnchor(enemy)) (Gem)</div>
+						<div class="text-right">@RazorUtils.GetEnemyLayoutAnchor(enemy) (Gem)</div>
 					</div>
 					<div class="damage-stats-row flex-container">
 						<div>HP</div>
@@ -310,13 +310,13 @@
 							{
 								case 0:
 									<div class="damage-stats-row flex-container">
-										<div>@Html.Raw(RazorUtils.GetUpgradeLayoutAnchor(upgrade)) spray (seconds)</div>
+										<div>@RazorUtils.GetUpgradeLayoutAnchor(upgrade) spray (seconds)</div>
 										<div class="text-right">@((enemy.HP / upgrade.DefaultSpray / enemy.HitPartCount).ToString("0.0000"))</div>
 									</div>
 									break;
 								case 1:
 									<div class="damage-stats-row flex-container">
-										<div>@Html.Raw(RazorUtils.GetUpgradeLayoutAnchor(upgrade)) shots</div>
+										<div>@RazorUtils.GetUpgradeLayoutAnchor(upgrade) shots</div>
 										<div class="text-right">@Math.Ceiling(enemy.HP / upgrade.DefaultShot / enemy.HitPartCount)</div>
 									</div>
 									break;
@@ -324,12 +324,12 @@
 									<div class="damage-stats-row flex-container">
 										@if (upgrade.Level == 3)
 										{
-											<div>@Html.Raw(RazorUtils.GetUpgradeLayoutAnchor(upgrade)) homing daggers</div>
+											<div>@RazorUtils.GetUpgradeLayoutAnchor(upgrade) homing daggers</div>
 											<div class="text-right">@(enemy.Homing3 == null ? RazorUtils.NAString : Html.Raw((enemy.Homing3 / enemy.HitPartCount).Value.ToString("0.##")))</div>
 										}
 										else if (upgrade.Level == 4)
 										{
-											<div>@Html.Raw(RazorUtils.GetUpgradeLayoutAnchor(upgrade)) homing daggers</div>
+											<div>@RazorUtils.GetUpgradeLayoutAnchor(upgrade) homing daggers</div>
 											<div class="text-right">@(enemy.Homing4 == null ? RazorUtils.NAString : Html.Raw((enemy.Homing4 / enemy.HitPartCount).Value.ToString("0.##")))</div>
 										}
 									</div>
@@ -378,12 +378,12 @@
 
 	<h2 class="text-center">Homing daggers</h2>
 	<ul>
-		@Html.Raw(RazorUtils.GetLayout(@"
+		@RazorUtils.GetLayout(@"
 		<li>All homing daggers cause 10 damage to most enemies.</li>
 		<li>Leviathan, The Orb, Spider Egg I, and Spider Egg II only take 1 damage from homing daggers.</li>
 		<li>The Orb, Spider Egg I, and Spider Egg II are the only enemies that are not targeted by any homing daggers.</li>
 		<li>Level 4 homing daggers cause splash damage. This means that when they're destroyed, they create a little explosion that can cause damage (most likely 10) to near enemies. For example, you only need one Level 4 homing dagger to kill a Squid II, as the explosion will destroy the other gem.</li>
 		<li>Not sure why you need 3 Level 4 homing daggers to kill a Squid III gem, but only 1 Level 3 homing dagger... Seems like a bug.</li>
-		<li>Also not sure why you need 10 Level 4 homing daggers to kill a single Transmuted Skull I, while one single Level 3 homing dagger can kill 4 of them... Probably another bug.</li>"))
+		<li>Also not sure why you need 10 Level 4 homing daggers to kill a single Transmuted Skull I, while one single Level 3 homing dagger can kill 4 of them... Probably another bug.</li>")
 	</ul>
 </main>

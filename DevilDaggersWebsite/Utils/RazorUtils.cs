@@ -14,17 +14,17 @@ namespace DevilDaggersWebsite.Utils
 		public const int DEFAULT_MAX_WAVES = 25;
 		public const int MAX_SPAWNS = 10000;
 
-		public static string GetEnemyLayoutAnchor(Enemy enemy, bool plural = false)
+		public static HtmlString GetEnemyLayoutAnchor(Enemy enemy, bool plural = false)
 		{
-			return $"<a style='color: #{enemy.ColorCode};' href='/Wiki/Enemies#{enemy.Name.Replace(" ", "")}'>{enemy.Name}{(plural ? "s" : "")}</a>";
+			return new HtmlString($"<a style='color: #{enemy.ColorCode};' href='/Wiki/Enemies#{enemy.Name.Replace(" ", "")}'>{enemy.Name}{(plural ? "s" : "")}</a>");
 		}
 
-		public static string GetUpgradeLayoutAnchor(Upgrade upgrade)
+		public static HtmlString GetUpgradeLayoutAnchor(Upgrade upgrade)
 		{
-			return $"<a style='color: #{upgrade.ColorCode};' href='/Wiki/Upgrades#Level{upgrade.Level}'>Level {upgrade.Level}</a>";
+			return new HtmlString($"<a style='color: #{upgrade.ColorCode};' href='/Wiki/Upgrades#Level{upgrade.Level}'>Level {upgrade.Level}</a>");
 		}
 
-		public static string GetLayout(string str)
+		public static HtmlString GetLayout(string str)
 		{
 			char[] beginSeparators = new char[] { '>', ' ', ',', '.', '(' };
 			char[] endSeparators = new char[] { ' ', ',', '.', 's', ')', '\'' };
@@ -60,7 +60,7 @@ namespace DevilDaggersWebsite.Utils
 				}
 			}
 
-			return str;
+			return new HtmlString(str);
 		}
 
 		public static HtmlString GetLeaderboardInformationHTMLString(string info)

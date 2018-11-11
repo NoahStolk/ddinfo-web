@@ -14,7 +14,7 @@
 		These are the official spawn times for Devil Daggers V3.
 	</p>
 	<p>
-		@Html.Raw(RazorUtils.GetLayout("Note that Centipedes, Gigapedes, Ghostpedes, and Thorns emerge around 3 seconds later than their actual spawn time."))
+		@RazorUtils.GetLayout("Note that Centipedes, Gigapedes, Ghostpedes, and Thorns emerge around 3 seconds later than their actual spawn time.")
 	</p>
 
 	@await Html.PartialAsync("_SpawnsPartial", Model.V3Path)
