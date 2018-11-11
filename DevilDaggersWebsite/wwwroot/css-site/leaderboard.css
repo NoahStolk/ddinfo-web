@@ -230,19 +230,8 @@
 			float: left;
 		}
 
-.macro {
-	background: url('../Images/Fonts/fontmacro.png');
-	background-repeat: repeat-x;
-	background-position: 0 7px;
-	-webkit-font-smoothing: antialiased;
-	-webkit-background-clip: text;
-	-moz-background-clip: text;
-	background-clip: text;
-	-webkit-text-fill-color: transparent;
-}
-
 .devil {
-	background: url('../Images/Fonts/fontdevil.png');
+	background: url('../Images/Fonts/Devil.png');
 	background-repeat: repeat-x;
 	background-position: 0 7px;
 	-webkit-font-smoothing: antialiased;
@@ -253,7 +242,7 @@
 }
 
 .golden {
-	background: url('../Images/Fonts/fontgold.png');
+	background: url('../Images/Fonts/Golden.png');
 	background-repeat: repeat-x;
 	background-position: 0 7px;
 	-webkit-font-smoothing: antialiased;
@@ -264,7 +253,7 @@
 }
 
 .silver {
-	background: url('../Images/Fonts/fontsilver.png');
+	background: url('../Images/Fonts/Silver.png');
 	background-repeat: repeat-x;
 	background-position: 0 7px;
 	-webkit-font-smoothing: antialiased;
@@ -275,7 +264,7 @@
 }
 
 .bronze {
-	background: url('../Images/Fonts/fontbronze.png');
+	background: url('../Images/Fonts/Bronze.png');
 	background-repeat: repeat-x;
 	background-position: 0 7px;
 	-webkit-font-smoothing: antialiased;
@@ -286,7 +275,18 @@
 }
 
 .default {
-	background: url('../Images/Fonts/fontdefault.png');
+	background: url('../Images/Fonts/Default.png');
+	background-repeat: repeat-x;
+	background-position: 0 7px;
+	-webkit-font-smoothing: antialiased;
+	-webkit-background-clip: text;
+	-moz-background-clip: text;
+	background-clip: text;
+	-webkit-text-fill-color: transparent;
+}
+
+.macro {
+	background: url('../Images/Fonts/Macro.png');
 	background-repeat: repeat-x;
 	background-position: 0 7px;
 	-webkit-font-smoothing: antialiased;
