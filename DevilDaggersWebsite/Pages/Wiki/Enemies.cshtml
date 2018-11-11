@@ -93,7 +93,7 @@
 					<div>
 						<ul>
 							@{
-								string[] strings = GameUtils.EnemyInfo[enemy.Name].Split('\n');
+								string[] strings = GameUtils.EnemyInfo[enemy].Split('\n');
 								foreach (string s in strings)
 								{
 									<li>@Html.Raw(RazorUtils.GetLayout(s))</li>
