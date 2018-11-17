@@ -31,26 +31,27 @@ namespace DevilDaggersWebsite
 			CultureInfo.DefaultThreadCurrentCulture = cultureInfo;
 			CultureInfo.DefaultThreadCurrentUICulture = cultureInfo;
 
+			// Do not change order of redirects
 			RewriteOptions options = new RewriteOptions()
-				.AddRedirect("Home/Index", "Index")
-				.AddRedirect("Home/Leaderboard", "Leaderboard")
-				.AddRedirect("Home/Spawnset/(.*)", "Spawnset?spawnset=$1")
-				.AddRedirect("Home/Spawnsets", "Spawnsets")
-				.AddRedirect("Home/SpawnsetsInfo", "Spawnsets")
-				.AddRedirect("Home/Spawnset", "Spawnset")
-				.AddRedirect("Home/Spawns", "Wiki/Spawns")
-				.AddRedirect("Home/Hands", "Wiki/Upgrades")
-				.AddRedirect("Home/Enemies", "Wiki/Enemies")
-				.AddRedirect("Home/Daggers", "Wiki/Daggers")
-				.AddRedirect("Home/Donations", "Donations")
-				.AddRedirect("Home", "Index")
-				.AddRedirect("^Spawns$", "Wiki/Spawns")
+				.AddRedirect("^Home/Index$", "Index")
+				.AddRedirect("^Home/Leaderboard$", "Leaderboard")
+				.AddRedirect("^Home/Spawnset/(.*)$", "Spawnset?spawnset=$1")
+				.AddRedirect("^Home/Spawnsets$", "Spawnsets")
+				.AddRedirect("^Home/SpawnsetsInfo$", "Spawnsets")
+				.AddRedirect("^Home/Spawnset$", "Spawnset")
+				.AddRedirect("^Home/Hands$", "Wiki/Upgrades")
+				.AddRedirect("^Home/Enemies$", "Wiki/Enemies")
+				.AddRedirect("^Home/Daggers$", "Wiki/Daggers")
+				.AddRedirect("^Home/Donations$", "Donations")
+				.AddRedirect("^Home$", "Index")
 				.AddRedirect("^Upgrades$", "Wiki/Upgrades")
 				.AddRedirect("^Enemies$", "Wiki/Enemies")
 				.AddRedirect("^Daggers$", "Wiki/Daggers")
 				.AddRedirect("^GetSpawnsets$", "API/GetSpawnsets")
 				.AddRedirect("^GetToolVersions$", "API/GetToolVersions")
-				.AddRedirect("^LeaderboardJson$", "API/LeaderboardJson");
+				.AddRedirect("^LeaderboardJson$", "API/LeaderboardJson")
+				.AddRedirect("^Spawns$", "Wiki/Spawns")
+				.AddRedirect("^Home/Spawns$", "Wiki/Spawns");
 
 			app.UseRewriter(options);
 
