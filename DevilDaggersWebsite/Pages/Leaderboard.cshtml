@@ -16,7 +16,7 @@
 		<a asp-page="/LeaderboardHistory">Top 100 history</a>
 	</p>
 
-	@await Html.PartialAsync("_LeaderboardGlobalPartial")
+	@await Html.PartialAsync("Partials/_LeaderboardGlobalPartial")
 	<div>
 		@using (Html.BeginForm(FormMethod.Post))
 		{
@@ -71,5 +71,5 @@
 			On mobile devices; tap on an entry to expand it.
 		</p>
 	</div>
-	@await Html.PartialAsync("_LeaderboardUserPartial")
+	@await Html.PartialAsync("Partials/_LeaderboardUserPartial")
 </main>

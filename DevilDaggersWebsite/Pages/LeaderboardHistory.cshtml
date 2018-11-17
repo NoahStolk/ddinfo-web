@@ -15,7 +15,7 @@
 		<a asp-page="/Leaderboard">Return to the present</a>
 	</p>
 
-	@await Html.PartialAsync("_LeaderboardGlobalPartial")
+	@await Html.PartialAsync("Partials/_LeaderboardGlobalPartial")
 	<div>
 		<form method="get">
 			<select class="select form-control" asp-for="From" asp-items="Model.JsonFiles" onchange="this.form.submit()"></select>
@@ -41,5 +41,5 @@
 		</div>
 	</div>
 
-	@await Html.PartialAsync("_LeaderboardUserPartial")
+	@await Html.PartialAsync("Partials/_LeaderboardUserPartial")
 </main>
