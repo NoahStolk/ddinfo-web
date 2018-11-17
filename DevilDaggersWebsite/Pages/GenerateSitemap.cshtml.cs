@@ -17,12 +17,14 @@ namespace DevilDaggersWebsite.Pages
 
 		public void OnGet()
 		{
+			SitemapUtils.ExcludePage("API_GetSpawnsets");
+			SitemapUtils.ExcludePage("API_GetToolVersions");
+			SitemapUtils.ExcludePage("API_LeaderboardJson");
+			SitemapUtils.ExcludePage("Error_404");
 			SitemapUtils.ExcludePage("DownloadSpawnset");
-			SitemapUtils.ExcludePage("GetSpawnsets");
-			SitemapUtils.ExcludePage("GetToolVersions");
-			SitemapUtils.ExcludePage("LeaderboardJson");
+			SitemapUtils.ExcludePage("LeaderboardHistory");
 			SitemapUtils.ExcludePage("Spawnset");
-			XmlResult = SitemapUtils.GetSitemap(_commonObjects);
+			XmlResult = SitemapUtils.GetSitemap(_commonObjects, true);
 		}
 	}
 }
