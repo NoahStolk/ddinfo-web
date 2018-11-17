@@ -1,5 +1,7 @@
 ﻿@page
 @inject CoreBase.Services.ICommonObjects CommonObjects
+@using CoreBase.Code
+@using DevilDaggersWebsite.Code
 @model SpawnsetsModel
 @{
 	ViewData["Title"] = "Spawnsets";
@@ -13,36 +15,24 @@
 </header>
 
 <main role="main" class="text-left">
-	<p>
+	<p class="text-center">
 		Here's a list of custom spawnsets created by the community. They can be played in the real game. Read below for more information.
 	</p>
 
 	@{
-		int first = 1;
 		int last = (int)Math.Ceiling(Model.TotalResults / (float)Model.PageSize);
+		int curr = Model.PageIndex;
 	}
 
-	<div class="row">
-		<div class="col-xs-12 col-sm-6 col-lg-4 spawnset-page-nav">
-			<div class="flex-container" style="justify-content: space-evenly;">
-				@for (int i = first; i <= last; i++)
-				{
-					<div>
-						<a asp-page="./Spawnsets"
-						   asp-route-sortOrder="@Model.SortOrder"
-						   asp-route-pageIndex="@i"
-						   class="btn @(i == Model.PageIndex ? "disabled" : "")">
-							@i
-						</a>
-					</div>
-				}
-			</div>
-		</div>
-	</div>
-
-	<p>
-		Showing @((Model.PageIndex - 1) * Model.PageSize + 1) - @(Math.Min(Model.TotalResults, Model.PageIndex * Model.PageSize)) of @Model.TotalResults results
+	<p class="text-center">
+		Page @curr of @last
 	</p>
+	<p class="text-center">
+		Showing @((curr - 1) * Model.PageSize + 1) - @(Math.Min(Model.TotalResults, curr * Model.PageSize)) of @Model.TotalResults results
+	</p>
+
+	@await Html.PartialAsync("_SpawnsetNavigationPartial", new SpawnsetNavigationSettings(Model, 20, ScreenWidthVisibility.Lg | ScreenWidthVisibility.Md | ScreenWidthVisibility.Sm))
+	@await Html.PartialAsync("_SpawnsetNavigationPartial", new SpawnsetNavigationSettings(Model, 1, ScreenWidthVisibility.Xs))
 
 	<table>
 		<thead>

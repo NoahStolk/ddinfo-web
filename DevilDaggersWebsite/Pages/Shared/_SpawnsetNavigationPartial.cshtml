@@ -1,0 +1,85 @@
+﻿@model SpawnsetNavigationSettings
+@using CoreBase.Code
+@using DevilDaggersWebsite.Code
+@using DevilDaggersWebsite.Pages
+@using System.Text
+@{
+	SpawnsetsModel mod = Model.Model;
+	int maxAround = Model.MaxAround;
+	ScreenWidthVisibility visibility = Model.Visibility;
+
+	string firstDisabled = !mod.SpawnsetFiles.HasPreviousPage ? "disabled btn-info" : "";
+	string lastDisabled = !mod.SpawnsetFiles.HasNextPage ? "disabled btn-info" : "";
+
+	int first = 1;
+	int last = (int)Math.Ceiling(mod.TotalResults / (float)mod.PageSize);
+	int curr = mod.PageIndex;
+
+	int start = Math.Max(first + 1, curr - maxAround);
+	int end = Math.Min(last, curr + maxAround + 1);
+
+	bool multi = last > maxAround * 2 + 1;
+
+	int startExtras = multi ? maxAround - Math.Min(last - 1 - curr, maxAround) : 1;
+	int endExtras = multi ? maxAround - Math.Min(curr - first - 1, maxAround) : 1;
+
+	StringBuilder sb = new StringBuilder();
+	foreach (ScreenWidthVisibility v in (ScreenWidthVisibility[])Enum.GetValues(typeof(ScreenWidthVisibility)))
+	{
+		sb.Append(visibility.HasFlag(v) ? "visible" : "hidden");
+		sb.Append($"-{v.ToString().ToLower()} ");
+	}
+}
+<div class="row spawnsets-page-nav @sb.ToString()">
+	<div class="col-xs-12 col-sm-6 col-sm-offset-3 col-lg-4 col-lg-offset-4">
+		<div class="flex-container" style="justify-content: space-evenly;">
+			@{
+				if (multi)
+				{
+					<div>
+						<a asp-page="./Spawnsets"
+						   asp-route-sortOrder="@mod.SortOrder"
+						   asp-route-pageIndex="@first"
+						   class="btn btn-default btn-page @firstDisabled">
+							@first
+						</a>
+					</div>
+					<div class="page-separator">
+						@if (start > first + 1)
+						{
+							@:...
+						}
+					</div>
+				}
+				for (int i = start - startExtras; i < end + endExtras; i++)
+				{
+					<div>
+						<a asp-page="./Spawnsets"
+						   asp-route-sortOrder="@mod.SortOrder"
+						   asp-route-pageIndex="@i"
+						   class="btn btn-default btn-page @(curr == i ? "disabled btn-info" : "")">
+							@i
+						</a>
+					</div>
+				}
+				if (multi)
+				{
+					<div class="page-separator">
+						@if (end < last - 1)
+						{
+							@:...
+						}
+					</div>
+					<div>
+						<a asp-page="./Spawnsets"
+						   asp-route-sortOrder="@mod.SortOrder"
+						   asp-route-pageIndex="@last"
+						   class="btn btn-default btn-page @lastDisabled">
+							@last
+						</a>
+					</div>
+				}
+			}
+		</div>
+	</div>
+</div>
