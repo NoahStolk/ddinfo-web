@@ -18,37 +18,34 @@
 
 	@await Html.PartialAsync("Partials/_LeaderboardGlobalPartial")
 	<div>
-		@using (Html.BeginForm(FormMethod.Post))
+		@using (Html.BeginForm(FormMethod.Get))
 		{
-			@Html.AntiForgeryToken()
 			<fieldset>
 				<div class="flex-container flex-center flex-column">
 					<div class="flex-container flex-center">
 						<div class="input-label text-left" style="width: @(widths[0])px;">Rank:</div>
-						<div style="width: @(widths[1])px;">@Html.TextBoxFor(m => m.Leaderboard.Offset, new { @class = "input" })</div>
+						<div style="width: @(widths[1])px;">@Html.TextBoxFor(m => m.Rank, new { @class = "input" })</div>
 					</div>
 					<div class="flex-container flex-center">
 						<div class="input-label text-left" style="width: @(widths[0])px;">User search:</div>
-						<div style="width: @(widths[1])px;">@Html.TextBoxFor(m => m.Leaderboard.Search, new { @class = "input" })</div>
+						<div style="width: @(widths[1])px;">@Html.TextBoxFor(m => m.Search, new { @class = "input" })</div>
 					</div>
 				</div>
-				<input type="hidden" name="offsetPrevious" value="@Model.Leaderboard.OffsetPrevious" />
-
 				<div class="flex-container flex-center flex-column">
 					<div class="flex-container flex-center">
-						<input class="btn" type="submit" name="submitAction" value="Show" />
+						<input class="btn" type="submit" value="Show" />
 					</div>
 					<div class="flex-container flex-center leaderboard-nav-buttons">
 						@{
-							if (Model.Leaderboard.IsUserSearch)
+							if (Model.IsUserSearch)
 							{
 								<button class="btn btn-disabled">&lt;</button>
 								<button class="btn btn-disabled">&gt;</button>
 							}
 							else
 							{
-								<input class="btn" type="submit" name="submitAction" value="<" />
-								<input class="btn" type="submit" name="submitAction" value=">" />
+								<a class="btn" asp-page="./Leaderboard" asp-route-rank="@(Math.Max(1, Model.Rank - 100))" asp-route-search="@Model.Search">&lt;</a>
+								<a class="btn" asp-page="./Leaderboard" asp-route-rank="@(Math.Min(Model.Leaderboard.Players - 100, Model.Rank + 100))" asp-route-search="@Model.Search">&gt;</a>
 							}
 						}
 					</div>
@@ -57,13 +54,13 @@
 		}
 		<p>
 			@{
-				if (Model.Leaderboard.IsUserSearch)
+				if (Model.IsUserSearch)
 				{
-					@:Showing results for "@(Model.Leaderboard.Search)"
+					@:Showing results for "@(Model.Search)"
 				}
 				else
 				{
-					@:Showing rank @(Model.Leaderboard.Offset) - @(Model.Leaderboard.Offset + 99)
+					@:Showing rank @(Model.Rank) - @(Model.Rank + 99)
 				}
 			}
 		</p>

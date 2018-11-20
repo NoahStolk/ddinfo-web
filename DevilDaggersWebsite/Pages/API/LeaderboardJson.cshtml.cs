@@ -20,7 +20,7 @@ namespace DevilDaggersWebsite.Pages
 		public async Task<ActionResult> OnGetAsync()
 		{
 			// Top 100 only now
-			Leaderboard = await LeaderboardUtils.LoadLeaderboard(Leaderboard);
+			Leaderboard = await LeaderboardUtils.LoadLeaderboard(Leaderboard, 1);
 			JsonResult = JsonConvert.SerializeObject(Leaderboard);
 			DateTime = Leaderboard.DateTime;
 

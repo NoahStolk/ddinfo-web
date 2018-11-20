@@ -12,42 +12,29 @@ namespace DevilDaggersWebsite.Pages
 		[BindProperty]
 		public Leaderboard Leaderboard { get; set; } = new Leaderboard();
 
-		public async Task OnGetAsync()
-		{
-			if (Leaderboard.IsUserSearch)
-				await LeaderboardUtils.LoadLeaderboardSearch(Leaderboard);
-			else
-				await LeaderboardUtils.LoadLeaderboard(Leaderboard);
-		}
+		public int Rank { get; set; }
+		public string Search { get; set; }
+		public bool IsUserSearch => !string.IsNullOrEmpty(Search) && Search.Length >= 3;
 
-		public async Task OnPostAsync(string submitAction, int offsetPrevious)
+		public async Task OnGetAsync(int rank, string search)
 		{
-			if (Leaderboard.IsUserSearch)
+			Rank = Math.Max(rank, 1);
+			Search = search;
+
+			if (IsUserSearch)
 			{
-				await LeaderboardUtils.LoadLeaderboardSearch(Leaderboard);
+				await LeaderboardUtils.LoadLeaderboardSearch(Leaderboard, Search);
 			}
 			else
 			{
-				switch (submitAction)
-				{
-					case ">":
-						Leaderboard.Offset = offsetPrevious + 100;
-						break;
-					case "<":
-						Leaderboard.Offset = offsetPrevious - 100;
-						break;
-				}
+				await LeaderboardUtils.LoadLeaderboard(Leaderboard, Rank);
 
-				Leaderboard.Offset = Math.Max(1, Leaderboard.Offset);
-				await LeaderboardUtils.LoadLeaderboard(Leaderboard);
-
-				if (Leaderboard.Offset > Leaderboard.Players - 99)
+				if (Rank > Leaderboard.Players - 99)
 				{
-					Leaderboard.Offset = Leaderboard.Players - 99;
+					Rank = Leaderboard.Players - 99;
 					Leaderboard.Entries.Clear();
-					await LeaderboardUtils.LoadLeaderboard(Leaderboard);
+					await LeaderboardUtils.LoadLeaderboard(Leaderboard, Rank);
 				}
-				Leaderboard.OffsetPrevious = Leaderboard.Offset;
 			}
 		}
 	}

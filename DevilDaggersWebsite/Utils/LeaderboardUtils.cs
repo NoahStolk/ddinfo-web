@@ -13,20 +13,20 @@ namespace DevilDaggersWebsite.Utils
 	{
 		private static readonly string serverURL = "http://dd.hasmodai.com/backend15/get_scores.php";
 
-		public static async Task<Leaderboard> LoadLeaderboard(Leaderboard leaderboard)
+		public static async Task<Leaderboard> LoadLeaderboard(Leaderboard leaderboard, int rank)
 		{
-			byte[] leaderboardData = await GetLeaderboardData(leaderboard);
+			byte[] leaderboardData = await GetLeaderboardData(leaderboard, rank);
 
 			return ParseLeaderboardData(leaderboard, leaderboardData);
 		}
 
-		private static async Task<byte[]> GetLeaderboardData(Leaderboard leaderboard)
+		private static async Task<byte[]> GetLeaderboardData(Leaderboard leaderboard, int rank)
 		{
 			Dictionary<string, string> postValues = new Dictionary<string, string>
 			{
 				{ "user", "0" },
 				{ "level", "survival" },
-				{ "offset", (leaderboard.Offset-1).ToString() }
+				{ "offset", (rank-1).ToString() }
 			};
 
 			FormUrlEncodedContent content = new FormUrlEncodedContent(postValues);
@@ -88,18 +88,18 @@ namespace DevilDaggersWebsite.Utils
 
 		private static readonly string serverSearchURL = "http://dd.hasmodai.com/backend16/get_user_search_public.php";
 
-		public static async Task<Leaderboard> LoadLeaderboardSearch(Leaderboard leaderboard)
+		public static async Task<Leaderboard> LoadLeaderboardSearch(Leaderboard leaderboard, string search)
 		{
-			byte[] leaderboardData = await GetLeaderboardSearchData(leaderboard);
+			byte[] leaderboardData = await GetLeaderboardSearchData(leaderboard, search);
 
 			return ParseLeaderboardSearchData(leaderboard, leaderboardData);
 		}
 
-		private static async Task<byte[]> GetLeaderboardSearchData(Leaderboard leaderboard)
+		private static async Task<byte[]> GetLeaderboardSearchData(Leaderboard leaderboard, string search)
 		{
 			Dictionary<string, string> postValues = new Dictionary<string, string>
 			{
-				{ "search", leaderboard.Search }
+				{ "search", search }
 			};
 
 			FormUrlEncodedContent content = new FormUrlEncodedContent(postValues);
@@ -153,18 +153,18 @@ namespace DevilDaggersWebsite.Utils
 
 		private static readonly string serverURLJson = "http://ddstats.com/api/get_scores";
 
-		public static Leaderboard LoadLeaderboardJson(Leaderboard leaderboard)
+		public static Leaderboard LoadLeaderboardJson(Leaderboard leaderboard, int rank)
 		{
-			string leaderboardDataJson = GetLeaderboardDataJson(leaderboard);
+			string leaderboardDataJson = GetLeaderboardDataJson(leaderboard, rank);
 
 			return ParseLeaderboardDataJson(leaderboard, leaderboardDataJson);
 		}
 
-		private static string GetLeaderboardDataJson(Leaderboard leaderboard)
+		private static string GetLeaderboardDataJson(Leaderboard leaderboard, int rank)
 		{
 			using (WebClient wc = new WebClient())
 			{
-				return wc.DownloadString($"{serverURLJson}?offset={leaderboard.Offset - 1}");
+				return wc.DownloadString($"{serverURLJson}?offset={rank - 1}");
 			}
 		}
 
