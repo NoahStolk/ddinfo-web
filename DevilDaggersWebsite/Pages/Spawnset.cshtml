@@ -51,7 +51,20 @@
 					@for (int j = 0; j < Model.Spawnset.ArenaTiles.GetLength(1); j++)
 					{
 						float height = (float)Math.Round(Model.Spawnset.ArenaTiles[i, j] * 32 + 64);
-						<td class="arena-tile" style="background-color: rgb(@height, @Math.Round(height/2), 0);"></td>
+						if (Model.SpawnsetFile.Name == "DaggerLobby" &&
+							(i == 25 && j == 25) ||
+							(i == 2 && j == 24) ||
+							(i == 42 && j == 25) ||
+							(i == 42 && j == 23) ||
+							(i == 42 && j == 27)
+						)
+						{
+							<td class="arena-tile secret-tile"></td>
+						}
+						else
+						{
+							<td class="arena-tile" style="background-color: rgb(@height, @Math.Round(height/2), 0);"></td>
+						}
 					}
 				</tr>
 			}
