@@ -2,10 +2,12 @@
 using CoreBase.Services;
 using DevilDaggersWebsite.Models.Spawnset;
 using Microsoft.AspNetCore.Mvc.RazorPages;
+using Newtonsoft.Json;
 using System;
 using System.Collections.Generic;
 using System.IO;
 using System.Linq;
+using System.Threading.Tasks;
 
 namespace DevilDaggersWebsite.Pages
 {
@@ -14,6 +16,9 @@ namespace DevilDaggersWebsite.Pages
 		private readonly ICommonObjects _commonObjects;
 
 		public PaginatedList<SpawnsetFile> SpawnsetFiles;
+
+		public string SearchAuthor { get; set; }
+		public string SearchName { get; set; }
 
 		public string NameSort { get; set; }
 		public string AuthorSort { get; set; }
@@ -36,6 +41,15 @@ namespace DevilDaggersWebsite.Pages
 
 		public void OnGet(string sortOrder, int? pageIndex)
 		{
+			List<SpawnsetFile> spawnsetFiles = new List<SpawnsetFile>();
+
+			string str = new GetSpawnsetsModel(_commonObjects).GetSpawnsets(SearchAuthor, SearchName);
+			dynamic json = JsonConvert.DeserializeObject(str);
+			foreach (dynamic spawnset in json)
+			{
+				spawnsetFiles.Add(new SpawnsetFile(Path.Combine(_commonObjects.Env.WebRootPath, "spawnsets", $"{spawnset.Name}_{spawnset.Author}")));
+			}
+
 			SortOrder = sortOrder;
 
 			NameSort = sortOrder == "Name" ? "Name_asc" : "Name";
@@ -45,12 +59,6 @@ namespace DevilDaggersWebsite.Pages
 			NonLoopSpawns = sortOrder == "NonLoopSpawns_asc" ? "NonLoopSpawns" : "NonLoopSpawns_asc";
 			LoopLength = sortOrder == "LoopLength_asc" ? "LoopLength" : "LoopLength_asc";
 			LoopSpawns = sortOrder == "LoopSpawns_asc" ? "LoopSpawns" : "LoopSpawns_asc";
-
-			List<string> spawnsetPaths = Directory.GetFiles(Path.Combine(_commonObjects.Env.WebRootPath, "spawnsets")).ToList();
-
-			List<SpawnsetFile> spawnsetFiles = new List<SpawnsetFile>();
-			foreach (string spawnsetPath in spawnsetPaths)
-				spawnsetFiles.Add(new SpawnsetFile(spawnsetPath));
 
 			switch (sortOrder)
 			{
@@ -104,7 +112,18 @@ namespace DevilDaggersWebsite.Pages
 			PageIndex = Math.Min(PageIndex, (int)Math.Ceiling(spawnsetFiles.Count / (double)PageSize));
 
 			TotalResults = spawnsetFiles.Count;
+			if (TotalResults == 0)
+				return;
+
 			SpawnsetFiles = PaginatedList<SpawnsetFile>.Create(spawnsetFiles, PageIndex, PageSize);
+		}
+
+		public void OnPostAsync(string searchAuthor, string searchName)
+		{
+			SearchAuthor = searchAuthor;
+			SearchName = searchName;
+
+			OnGet(SortOrder, PageIndex);
 		}
 	}
 }

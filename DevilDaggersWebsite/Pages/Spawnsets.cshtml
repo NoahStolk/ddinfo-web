@@ -5,6 +5,8 @@
 @model SpawnsetsModel
 @{
 	ViewData["Title"] = "Spawnsets";
+
+	int[] widths = new int[2] { 160, 160 };
 }
 
 @using DevilDaggersWebsite.Utils
@@ -20,64 +22,92 @@
 	</p>
 
 	@{
-		int last = (int)Math.Ceiling(Model.TotalResults / (float)Model.PageSize);
-		int curr = Model.PageIndex;
-	}
+		using (Html.BeginForm(FormMethod.Post))
+		{
+			@Html.AntiForgeryToken()
+			<fieldset>
+				<div class="flex-container flex-center flex-column">
+					<div class="flex-container flex-center">
+						<div class="input-label text-left" style="width: @(widths[0])px;">Author search:</div>
+						<div style="width: @(widths[1])px;">@Html.TextBoxFor(m => m.SearchAuthor, new { @class = "input" })</div>
+					</div>
+					<div class="flex-container flex-center">
+						<div class="input-label text-left" style="width: @(widths[0])px;">Spawnset search:</div>
+						<div style="width: @(widths[1])px;">@Html.TextBoxFor(m => m.SearchName, new { @class = "input" })</div>
+					</div>
+				</div>
 
-	<p class="text-center">
-		Page @curr of @last
-	</p>
-	<p class="text-center">
-		Showing @((curr - 1) * Model.PageSize + 1) - @(Math.Min(Model.TotalResults, curr * Model.PageSize)) of @Model.TotalResults results
-	</p>
+				<div class="flex-container flex-center flex-column">
+					<div class="flex-container flex-center">
+						<input class="btn" type="submit" name="submitAction" value="Show" />
+					</div>
+				</div>
+			</fieldset>
+		}
 
-	@await Html.PartialAsync("Partials/_SpawnsetNavigationPartial", new SpawnsetNavigationSettings(Model, 20, ScreenWidthVisibility.Lg | ScreenWidthVisibility.Md | ScreenWidthVisibility.Sm))
-	@await Html.PartialAsync("Partials/_SpawnsetNavigationPartial", new SpawnsetNavigationSettings(Model, 1, ScreenWidthVisibility.Xs))
+		if (Model.SpawnsetFiles != null)
+		{
+			int last = (int)Math.Ceiling(Model.TotalResults / (float)Model.PageSize);
+			int curr = Model.PageIndex;
 
-	<table>
-		<thead>
-			<tr>
-				<th class="hidden-xs" colspan="3"></th>
-				<th class="hidden-xs hidden-sm hidden-md" colspan="2">Non-loop</th>
-				<th class="hidden-xs hidden-sm hidden-md" colspan="2">Loop</th>
-			</tr>
-			<tr class="spawnsets-sort">
-				<th width="500"><a asp-page="./Spawnsets" asp-route-sortOrder="@Model.NameSort" asp-route-pageIndex="@Model.PageIndex">Name</a></th>
-				<th width="220"><a asp-page="./Spawnsets" asp-route-sortOrder="@Model.AuthorSort" asp-route-pageIndex="@Model.PageIndex">Author</a></th>
-				<th class="hidden-xs" width="160"><a asp-page="./Spawnsets" asp-route-sortOrder="@Model.LastUpdated" asp-route-pageIndex="@Model.PageIndex">Last updated</a></th>
-				<th class="hidden-xs hidden-sm hidden-md" width="160"><a asp-page="./Spawnsets" asp-route-sortOrder="@Model.NonLoopLength" asp-route-pageIndex="@Model.PageIndex">Length</a></th>
-				<th class="hidden-xs hidden-sm hidden-md" width="160"><a asp-page="./Spawnsets" asp-route-sortOrder="@Model.NonLoopSpawns" asp-route-pageIndex="@Model.PageIndex">Spawns</a></th>
-				<th class="hidden-xs hidden-sm hidden-md" width="160"><a asp-page="./Spawnsets" asp-route-sortOrder="@Model.LoopLength" asp-route-pageIndex="@Model.PageIndex">Start</a></th>
-				<th class="hidden-xs hidden-sm hidden-md" width="160"><a asp-page="./Spawnsets" asp-route-sortOrder="@Model.LoopSpawns" asp-route-pageIndex="@Model.PageIndex">Spawns</a></th>
-			</tr>
-		</thead>
-		<tbody>
-			@{
-				foreach (SpawnsetFile spawnsetFile in Model.SpawnsetFiles)
-				{
+			<p class="text-center">
+				Page @curr of @last
+			</p>
+			<p class="text-center">
+				Showing @((curr - 1) * Model.PageSize + 1) - @(Math.Min(Model.TotalResults, curr * Model.PageSize)) of @Model.TotalResults results
+			</p>
+
+			@await Html.PartialAsync("Partials/_SpawnsetNavigationPartial", new SpawnsetNavigationSettings(Model, 20, ScreenWidthVisibility.Lg | ScreenWidthVisibility.Md | ScreenWidthVisibility.Sm))
+			@await Html.PartialAsync("Partials/_SpawnsetNavigationPartial", new SpawnsetNavigationSettings(Model, 1, ScreenWidthVisibility.Xs))
+
+			<table>
+				<thead>
 					<tr>
-						<td><a asp-page="Spawnset" asp-route-spawnset="@($"{spawnsetFile.Name}_{spawnsetFile.Author}")">@spawnsetFile.Name</a></td>
-						<td>@spawnsetFile.Author</td>
-						<td class="hidden-xs">
-							@(spawnsetFile.LastUpdated.ToString("dd MMM yyyy"))
-						</td>
-						<td class="hidden-xs hidden-sm hidden-md">
-							@(spawnsetFile.SpawnData.NonLoopSpawns == 0 ? RazorUtils.NAString : Html.Raw(spawnsetFile.SpawnData.NonLoopSeconds.ToString("0.0000")))
-						</td>
-						<td class="hidden-xs hidden-sm hidden-md">
-							@(spawnsetFile.SpawnData.NonLoopSpawns == 0 ? RazorUtils.NAString : Html.Raw(spawnsetFile.SpawnData.NonLoopSpawns))
-						</td>
-						<td class="hidden-xs hidden-sm hidden-md">
-							@(spawnsetFile.SpawnData.LoopSpawns == 0 ? RazorUtils.NAString : Html.Raw(spawnsetFile.SpawnData.LoopStart.ToString("0.0000")))
-						</td>
-						<td class="hidden-xs hidden-sm hidden-md">
-							@(spawnsetFile.SpawnData.LoopSpawns == 0 ? RazorUtils.NAString : Html.Raw(spawnsetFile.SpawnData.LoopSpawns))
-						</td>
+						<th class="hidden-xs" colspan="3"></th>
+						<th class="hidden-xs hidden-sm hidden-md" colspan="2">Non-loop</th>
+						<th class="hidden-xs hidden-sm hidden-md" colspan="2">Loop</th>
 					</tr>
-				}
-			}
-		</tbody>
-	</table>
+					<tr class="spawnsets-sort">
+						<th width="500"><a asp-page="./Spawnsets" asp-route-sortOrder="@Model.NameSort" asp-route-pageIndex="@Model.PageIndex">Name</a></th>
+						<th width="220"><a asp-page="./Spawnsets" asp-route-sortOrder="@Model.AuthorSort" asp-route-pageIndex="@Model.PageIndex">Author</a></th>
+						<th class="hidden-xs" width="160"><a asp-page="./Spawnsets" asp-route-sortOrder="@Model.LastUpdated" asp-route-pageIndex="@Model.PageIndex">Last updated</a></th>
+						<th class="hidden-xs hidden-sm hidden-md" width="160"><a asp-page="./Spawnsets" asp-route-sortOrder="@Model.NonLoopLength" asp-route-pageIndex="@Model.PageIndex">Length</a></th>
+						<th class="hidden-xs hidden-sm hidden-md" width="160"><a asp-page="./Spawnsets" asp-route-sortOrder="@Model.NonLoopSpawns" asp-route-pageIndex="@Model.PageIndex">Spawns</a></th>
+						<th class="hidden-xs hidden-sm hidden-md" width="160"><a asp-page="./Spawnsets" asp-route-sortOrder="@Model.LoopLength" asp-route-pageIndex="@Model.PageIndex">Start</a></th>
+						<th class="hidden-xs hidden-sm hidden-md" width="160"><a asp-page="./Spawnsets" asp-route-sortOrder="@Model.LoopSpawns" asp-route-pageIndex="@Model.PageIndex">Spawns</a></th>
+					</tr>
+				</thead>
+				<tbody>
+					@foreach (SpawnsetFile spawnsetFile in Model.SpawnsetFiles)
+					{
+						<tr>
+							<td><a asp-page="Spawnset" asp-route-spawnset="@($"{spawnsetFile.Name}_{spawnsetFile.Author}")">@spawnsetFile.Name</a></td>
+							<td>@spawnsetFile.Author</td>
+							<td class="hidden-xs">
+								@(spawnsetFile.LastUpdated.ToString("dd MMM yyyy"))
+							</td>
+							<td class="hidden-xs hidden-sm hidden-md">
+								@(spawnsetFile.SpawnData.NonLoopSpawns == 0 ? RazorUtils.NAString : Html.Raw(spawnsetFile.SpawnData.NonLoopSeconds.ToString("0.0000")))
+							</td>
+							<td class="hidden-xs hidden-sm hidden-md">
+								@(spawnsetFile.SpawnData.NonLoopSpawns == 0 ? RazorUtils.NAString : Html.Raw(spawnsetFile.SpawnData.NonLoopSpawns))
+							</td>
+							<td class="hidden-xs hidden-sm hidden-md">
+								@(spawnsetFile.SpawnData.LoopSpawns == 0 ? RazorUtils.NAString : Html.Raw(spawnsetFile.SpawnData.LoopStart.ToString("0.0000")))
+							</td>
+							<td class="hidden-xs hidden-sm hidden-md">
+								@(spawnsetFile.SpawnData.LoopSpawns == 0 ? RazorUtils.NAString : Html.Raw(spawnsetFile.SpawnData.LoopSpawns))
+							</td>
+						</tr>
+					}
+				</tbody>
+			</table>
+		}
+		else
+		{
+			<p class="text-center">Search returned no results</p>
+		}
+	}
 
 	<h2>How to play spawnsets</h2>
 	<h3>The easy way</h3>
