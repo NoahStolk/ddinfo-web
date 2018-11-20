@@ -1,4 +1,4 @@
-﻿@if (Model.Leaderboard.IsUserSearch)
+﻿@if (Model.GetType() == typeof(LeaderboardModel) && Model.IsUserSearch)
 {
 	return;
 }
