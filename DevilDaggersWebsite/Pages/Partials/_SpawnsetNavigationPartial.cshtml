@@ -38,6 +38,8 @@
 				{
 					<div>
 						<a asp-page="./Spawnsets"
+						   asp-route-searchAuthor="@mod.SearchAuthor"
+						   asp-route-searchName="@mod.SearchName"
 						   asp-route-sortOrder="@mod.SortOrder"
 						   asp-route-pageIndex="@first"
 						   class="btn btn-default btn-page @firstDisabled">
@@ -55,6 +57,8 @@
 				{
 					<div>
 						<a asp-page="./Spawnsets"
+						   asp-route-searchAuthor="@mod.SearchAuthor"
+						   asp-route-searchName="@mod.SearchName"
 						   asp-route-sortOrder="@mod.SortOrder"
 						   asp-route-pageIndex="@i"
 						   class="btn btn-default btn-page @(curr == i ? "disabled btn-info" : "")">
@@ -72,6 +76,8 @@
 					</div>
 					<div>
 						<a asp-page="./Spawnsets"
+						   asp-route-searchAuthor="@mod.SearchAuthor"
+						   asp-route-searchName="@mod.SearchName"
 						   asp-route-sortOrder="@mod.SortOrder"
 						   asp-route-pageIndex="@last"
 						   class="btn btn-default btn-page @lastDisabled">

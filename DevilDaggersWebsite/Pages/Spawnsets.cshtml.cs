@@ -7,7 +7,6 @@ using System;
 using System.Collections.Generic;
 using System.IO;
 using System.Linq;
-using System.Threading.Tasks;
 
 namespace DevilDaggersWebsite.Pages
 {
@@ -39,18 +38,19 @@ namespace DevilDaggersWebsite.Pages
 			_commonObjects = commonObjects;
 		}
 
-		public void OnGet(string sortOrder, int? pageIndex)
+		public void OnGet(string searchAuthor, string searchName, string sortOrder, int? pageIndex)
 		{
+			SearchAuthor = searchAuthor;
+			SearchName = searchName;
+			SortOrder = sortOrder;
+			PageIndex = pageIndex ?? 1;
+
 			List<SpawnsetFile> spawnsetFiles = new List<SpawnsetFile>();
 
 			string str = new GetSpawnsetsModel(_commonObjects).GetSpawnsets(SearchAuthor, SearchName);
 			dynamic json = JsonConvert.DeserializeObject(str);
 			foreach (dynamic spawnset in json)
-			{
 				spawnsetFiles.Add(new SpawnsetFile(Path.Combine(_commonObjects.Env.WebRootPath, "spawnsets", $"{spawnset.Name}_{spawnset.Author}")));
-			}
-
-			SortOrder = sortOrder;
 
 			NameSort = sortOrder == "Name" ? "Name_asc" : "Name";
 			AuthorSort = sortOrder == "Author_asc" ? "Author" : "Author_asc";
@@ -107,23 +107,12 @@ namespace DevilDaggersWebsite.Pages
 					break;
 			}
 
-			PageIndex = pageIndex ?? 1;
-			PageIndex = Math.Max(PageIndex, 1);
-			PageIndex = Math.Min(PageIndex, (int)Math.Ceiling(spawnsetFiles.Count / (double)PageSize));
-
 			TotalResults = spawnsetFiles.Count;
 			if (TotalResults == 0)
 				return;
 
+			PageIndex = Math.Min(Math.Max(PageIndex, 1), (int)Math.Ceiling(TotalResults / (double)PageSize));
 			SpawnsetFiles = PaginatedList<SpawnsetFile>.Create(spawnsetFiles, PageIndex, PageSize);
-		}
-
-		public void OnPostAsync(string searchAuthor, string searchName)
-		{
-			SearchAuthor = searchAuthor;
-			SearchName = searchName;
-
-			OnGet(SortOrder, PageIndex);
 		}
 	}
 }
