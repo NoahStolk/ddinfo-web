@@ -2,6 +2,7 @@
 using CoreBase.Services;
 using DevilDaggersWebsite.Models.Spawnset;
 using Microsoft.AspNetCore.Mvc.RazorPages;
+using NetBase.Utils;
 using Newtonsoft.Json;
 using System;
 using System.Collections.Generic;
@@ -111,7 +112,7 @@ namespace DevilDaggersWebsite.Pages
 			if (TotalResults == 0)
 				return;
 
-			PageIndex = Math.Min(Math.Max(PageIndex, 1), (int)Math.Ceiling(TotalResults / (double)PageSize));
+			PageIndex = IntegerUtils.Clamp(PageIndex, 1, (int)Math.Ceiling(TotalResults / (double)PageSize));
 			SpawnsetFiles = PaginatedList<SpawnsetFile>.Create(spawnsetFiles, PageIndex, PageSize);
 		}
 	}
