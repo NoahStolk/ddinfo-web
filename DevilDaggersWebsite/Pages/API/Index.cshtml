@@ -12,7 +12,7 @@
 		foreach (ApiPage api in Model.ApiPages)
 		{
 			<li>
-				@api.Name
+				<a asp-page=@api.Name>@api.Name</a>
 				@if (api.Parameters.Length != 0)
 				{
 					<ul>
