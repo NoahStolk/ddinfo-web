@@ -8,7 +8,7 @@ using System.Net.Mime;
 using System.Text;
 using System.Threading.Tasks;
 
-namespace DevilDaggersWebsite.Pages
+namespace DevilDaggersWebsite.Pages.API
 {
 	public class LeaderboardJsonModel : PageModel
 	{

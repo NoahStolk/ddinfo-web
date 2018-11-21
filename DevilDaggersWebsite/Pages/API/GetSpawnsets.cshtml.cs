@@ -6,7 +6,7 @@ using System.Collections.Generic;
 using System.IO;
 using System.Linq;
 
-namespace DevilDaggersWebsite.Pages
+namespace DevilDaggersWebsite.Pages.API
 {
 	public class GetSpawnsetsModel : PageModel
 	{

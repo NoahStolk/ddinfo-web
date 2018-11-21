@@ -3,7 +3,7 @@ using DevilDaggersWebsite.Utils;
 using Microsoft.AspNetCore.Mvc.RazorPages;
 using Newtonsoft.Json;
 
-namespace DevilDaggersWebsite.Pages
+namespace DevilDaggersWebsite.Pages.API
 {
 	public class GetToolVersionsModel : PageModel
 	{

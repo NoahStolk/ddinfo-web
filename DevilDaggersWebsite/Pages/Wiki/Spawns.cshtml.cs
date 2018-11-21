@@ -2,7 +2,7 @@
 using Microsoft.AspNetCore.Mvc.RazorPages;
 using System.IO;
 
-namespace DevilDaggersWebsite.Pages
+namespace DevilDaggersWebsite.Pages.Wiki
 {
 	public class SpawnsModel : PageModel
 	{

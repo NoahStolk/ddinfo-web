@@ -1,6 +1,6 @@
 ﻿using Microsoft.AspNetCore.Mvc.RazorPages;
 
-namespace DevilDaggersWebsite.Pages
+namespace DevilDaggersWebsite.Pages.Wiki
 {
 	public class EnemiesModel : PageModel
 	{
