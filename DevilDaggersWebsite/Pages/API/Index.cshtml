@@ -1,0 +1,28 @@
+﻿@page
+@model DevilDaggersWebsite.Pages.API.IndexModel
+@using DevilDaggersWebsite.Code
+@{
+	ViewData["Title"] = "API Overview";
+}
+
+<h1>@ViewData["Title"]</h1>
+
+<ul>
+	@{
+		foreach (ApiPage api in Model.ApiPages)
+		{
+			<li>
+				@api.Name
+				@if (api.Parameters.Length != 0)
+				{
+					<ul>
+						@foreach (string parameter in api.Parameters)
+						{
+							<li>@parameter</li>
+						}
+					</ul>
+				}
+			</li>
+		}
+	}
+</ul>
