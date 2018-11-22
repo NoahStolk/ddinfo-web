@@ -164,7 +164,7 @@
 
 							<div class="flex-container flex-center">
 								<div style="width: @(widths[0])px;" class="text-right">@((Math.Floor(endGameSecond * 60) / 60).ToString("0.0000"))</div>
-								<div style="width: @(widths[1])px;">@RazorUtils.GetEnemyLayoutAnchor(finalEnemy)</div>
+								<div style="width: @(widths[1])px;">@RazorUtils.GetEnemyLayoutAnchor(finalEnemy, false, Model.Contains("V3_Sorath") && spawns > 525 ? Math.Min((spawns - 525) / 10f, 100) : 0)</div>
 								<div style="width: @(widths[2])px;" class="text-right">@gems</div>
 								<div style="width: @(widths[3])px;" class="text-right">@totalGems</div>
 							</div>
