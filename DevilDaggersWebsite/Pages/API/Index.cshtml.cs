@@ -1,4 +1,4 @@
-﻿using DevilDaggersWebsite.Code;
+﻿using DevilDaggersWebsite.Models.API;
 using Microsoft.AspNetCore.Mvc.RazorPages;
 using System;
 using System.Collections.Generic;

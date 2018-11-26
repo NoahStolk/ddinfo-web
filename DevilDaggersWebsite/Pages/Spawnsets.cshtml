@@ -1,16 +1,14 @@
 ﻿@page
 @inject CoreBase.Services.ICommonObjects CommonObjects
 @using CoreBase.Code
-@using DevilDaggersWebsite.Code
+@using DevilDaggersWebsite.Utils
+@using DevilDaggersWebsite.Models.Spawnset
 @model SpawnsetsModel
 @{
 	ViewData["Title"] = "Spawnsets";
 
 	int[] widths = new int[2] { 160, 160 };
 }
-
-@using DevilDaggersWebsite.Utils
-@using DevilDaggersWebsite.Models.Spawnset
 
 <header>
 	<h1>@ViewData["Title"]</h1>
