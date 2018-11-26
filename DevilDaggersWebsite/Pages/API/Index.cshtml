@@ -7,12 +7,17 @@
 
 <h1>@ViewData["Title"]</h1>
 
+<p>
+	List of API functions.
+</p>
+
 <ul>
 	@{
-		foreach (ApiPage api in Model.ApiPages)
+		@*TODO: Use nice table*@
+		foreach (ApiFunction api in Model.ApiFunction)
 		{
 			<li>
-				<a asp-page=@api.Name>@api.Name</a>
+				<a asp-page=@api.Name>@api.Name</a><br />Returns @api.ReturnType
 				@if (api.Parameters.Length != 0)
 				{
 					<ul>

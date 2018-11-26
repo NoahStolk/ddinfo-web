@@ -9,7 +9,7 @@ namespace DevilDaggersWebsite.Pages.API
 {
 	public class IndexModel : PageModel
 	{
-		public List<ApiPage> ApiPages = new List<ApiPage>();
+		public List<ApiFunction> ApiFunction = new List<ApiFunction>();
 
 		public void OnGet()
 		{
@@ -23,19 +23,25 @@ namespace DevilDaggersWebsite.Pages.API
 				{
 					string name = type.Name.Replace("Model", "");
 
-					MethodInfo onGet = type.GetMethod("OnGet");
-					if (onGet != null)
+					MethodInfo[] onGets = type.GetMethods().Where(t => t.Name == "OnGet").ToArray();
+					foreach (MethodInfo onGet in onGets)
 					{
-						ParameterInfo[] parameterInfos = onGet.GetParameters();
+						if (onGet != null)
+						{
+							// TODO: Use attributes in OnGet methods
+							string returnType = onGet.ReturnType == typeof(void) ? "JSON" : onGet.ReturnType.Name;
 
-						string[] parameters = new string[parameterInfos.Length];
-						for (int i = 0; i < parameterInfos.Length; i++)
-							parameters[i] = parameterInfos[i].Name;
-						ApiPages.Add(new ApiPage(name, parameters.ToArray()));
-					}
-					else
-					{
-						ApiPages.Add(new ApiPage(name));
+							ParameterInfo[] parameterInfos = onGet.GetParameters();
+							string[] parameters = new string[parameterInfos.Length];
+							for (int i = 0; i < parameterInfos.Length; i++)
+								parameters[i] = parameterInfos[i].Name;
+
+							ApiFunction.Add(new ApiFunction(name, returnType, parameters.ToArray()));
+						}
+						else
+						{
+							ApiFunction.Add(new ApiFunction(name, "None"));
+						}
 					}
 				}
 			}
