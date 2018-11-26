@@ -2,6 +2,7 @@
 using DevilDaggersWebsite.Utils;
 using Microsoft.AspNetCore.Html;
 using Newtonsoft.Json;
+using System.Web;
 
 namespace DevilDaggersWebsite.Models.Leaderboard
 {
@@ -46,7 +47,7 @@ namespace DevilDaggersWebsite.Models.Leaderboard
 		{
 			return new HtmlString($@"
 				rank='{Rank}'
-				username='{Username}'
+				username='{HttpUtility.HtmlEncode(Username)}'
 				time='{Time}'
 				kills='{Kills}'
 				gems='{Gems}'
