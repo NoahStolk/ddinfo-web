@@ -1,27 +1,31 @@
 ﻿using CoreBase.Services;
+using DevilDaggersWebsite.Models.API;
 using DevilDaggersWebsite.Models.Spawnset;
+using Microsoft.AspNetCore.Mvc;
 using Microsoft.AspNetCore.Mvc.RazorPages;
 using Newtonsoft.Json;
 using System.Collections.Generic;
 using System.IO;
 using System.Linq;
+using System.Net.Mime;
+using System.Text;
 
 namespace DevilDaggersWebsite.Pages.API
 {
+	[Api(ApiReturnType = MediaTypeNames.Application.Json)]
 	public class GetSpawnsetsModel : PageModel
 	{
 		private readonly ICommonObjects _commonObjects;
-
-		public string JsonResult { get; set; }
 
 		public GetSpawnsetsModel(ICommonObjects commonObjects)
 		{
 			_commonObjects = commonObjects;
 		}
 
-		public void OnGet(string searchAuthor, string searchName)
+		public FileResult OnGet(string searchAuthor = null, string searchName = null)
 		{
-			JsonResult = GetSpawnsets(searchAuthor, searchName);
+			string jsonResult = GetSpawnsets(searchAuthor, searchName);
+			return File(Encoding.UTF8.GetBytes(jsonResult), MediaTypeNames.Application.Json, $"{GetType().Name.Replace("Model", "")}.json");
 		}
 
 		public string GetSpawnsets(string searchAuthor, string searchName)

@@ -1,4 +1,5 @@
-﻿using DevilDaggersWebsite.Models.Leaderboard;
+﻿using DevilDaggersWebsite.Models.API;
+using DevilDaggersWebsite.Models.Leaderboard;
 using DevilDaggersWebsite.Utils;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.AspNetCore.Mvc.RazorPages;
@@ -10,21 +11,16 @@ using System.Threading.Tasks;
 
 namespace DevilDaggersWebsite.Pages.API
 {
+	[Api(ApiReturnType = MediaTypeNames.Application.Json)]
 	public class LeaderboardJsonModel : PageModel
 	{
-		[BindProperty]
-		public Leaderboard Leaderboard { get; set; } = new Leaderboard();
-		public string JsonResult { get; set; }
-		public DateTime DateTime { get; set; }
-
-		public async Task<ActionResult> OnGetAsync()
+		public async Task<FileResult> OnGetAsync()
 		{
-			// Top 100 only now
-			Leaderboard = await LeaderboardUtils.LoadLeaderboard(Leaderboard, 1);
-			JsonResult = JsonConvert.SerializeObject(Leaderboard);
-			DateTime = Leaderboard.DateTime;
+			Leaderboard leaderboard = await LeaderboardUtils.LoadLeaderboard(1); // Top 100 only now
 
-			return File(Encoding.UTF8.GetBytes(JsonResult), MediaTypeNames.Application.Json, $"{DateTime.ToString("yyyyMMddHHmm")}.json");
+			string jsonResult = JsonConvert.SerializeObject(leaderboard);
+			DateTime dateTime = leaderboard.DateTime;
+			return File(Encoding.UTF8.GetBytes(jsonResult), MediaTypeNames.Application.Json, $"{dateTime.ToString("yyyyMMddHHmm")}.json");
 		}
 	}
 }

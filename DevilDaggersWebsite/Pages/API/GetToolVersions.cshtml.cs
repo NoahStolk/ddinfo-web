@@ -1,24 +1,28 @@
 ﻿using CoreBase.Services;
+using DevilDaggersWebsite.Models.API;
 using DevilDaggersWebsite.Utils;
+using Microsoft.AspNetCore.Mvc;
 using Microsoft.AspNetCore.Mvc.RazorPages;
 using Newtonsoft.Json;
+using System.Net.Mime;
+using System.Text;
 
 namespace DevilDaggersWebsite.Pages.API
 {
+	[Api(ApiReturnType = MediaTypeNames.Application.Json)]
 	public class GetToolVersionsModel : PageModel
 	{
 		private readonly ICommonObjects _commonObjects;
-
-		public string JsonResult { get; set; }
 
 		public GetToolVersionsModel(ICommonObjects commonObjects)
 		{
 			_commonObjects = commonObjects;
 		}
 
-		public void OnGet()
+		public FileResult OnGet()
 		{
-			JsonResult = JsonConvert.SerializeObject(ToolUtils.Tools, Formatting.Indented);
+			string jsonResult = JsonConvert.SerializeObject(ToolUtils.Tools, Formatting.Indented);
+			return File(Encoding.UTF8.GetBytes(jsonResult), MediaTypeNames.Application.Json, $"{GetType().Name.Replace("Model", "")}.json");
 		}
 	}
 }
