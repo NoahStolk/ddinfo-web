@@ -9,11 +9,11 @@ namespace DevilDaggersWebsite.Pages.API
 	[Api(ApiReturnType = MediaTypeNames.Application.Octet)]
 	public class DownloadSpawnsetModel : PageModel
 	{
-		public ActionResult OnGet(string fileName)
+		public ActionResult OnGet(string file)
 		{
 			try
 			{
-				return File(Path.Combine("spawnsets", fileName), MediaTypeNames.Application.Octet, fileName);
+				return File(Path.Combine("spawnsets", file), MediaTypeNames.Application.Octet, file);
 			}
 			catch
 			{

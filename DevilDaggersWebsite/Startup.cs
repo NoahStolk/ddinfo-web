@@ -53,7 +53,7 @@ namespace DevilDaggersWebsite
 				.AddRedirect("^Spawns$", "Wiki/Spawns")
 				.AddRedirect("^Home/Spawns$", "Wiki/Spawns")
 				.AddRedirect("^DownloadSpawnset", "API/DownloadSpawnset")
-				.AddRedirect("^DownloadSpawnset?file=(.*)", "API/DownloadSpawnset?fileName=$1");
+				.AddRedirect("^DownloadSpawnset?file=(.*)", "API/DownloadSpawnset?file=$1");
 
 			app.UseRewriter(options);
 
