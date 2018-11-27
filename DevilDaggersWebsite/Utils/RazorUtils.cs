@@ -68,6 +68,9 @@ namespace DevilDaggersWebsite.Utils
 
 		public static HtmlString GetLeaderboardInformationHTMLString(string info)
 		{
+			if (string.IsNullOrEmpty(info))
+				return NAString;
+
 			return new HtmlString(info
 				.Replace("\n", "<br />")
 				.Replace("(Missing)", "<span style='color: #f00'>(Missing)</span>")
