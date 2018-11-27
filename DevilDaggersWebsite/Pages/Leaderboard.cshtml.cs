@@ -23,17 +23,17 @@ namespace DevilDaggersWebsite.Pages
 
 			if (IsUserSearch)
 			{
-				await LeaderboardUtils.LoadLeaderboardSearch(Leaderboard, Search);
+				Leaderboard = await LeaderboardUtils.LoadLeaderboardSearch(Search);
 			}
 			else
 			{
-				await LeaderboardUtils.LoadLeaderboard(Leaderboard, Rank);
+				Leaderboard = await LeaderboardUtils.LoadLeaderboard(Rank);
 
 				if (Rank > Leaderboard.Players - 99)
 				{
 					Rank = Leaderboard.Players - 99;
 					Leaderboard.Entries.Clear();
-					await LeaderboardUtils.LoadLeaderboard(Leaderboard, Rank);
+					Leaderboard = await LeaderboardUtils.LoadLeaderboard(Rank);
 				}
 			}
 		}

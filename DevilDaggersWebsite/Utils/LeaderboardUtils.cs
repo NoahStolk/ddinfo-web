@@ -13,14 +13,13 @@ namespace DevilDaggersWebsite.Utils
 	{
 		private static readonly string serverURL = "http://dd.hasmodai.com/backend15/get_scores.php";
 
-		public static async Task<Leaderboard> LoadLeaderboard(Leaderboard leaderboard, int rank)
+		public static async Task<Leaderboard> LoadLeaderboard(int rank)
 		{
-			byte[] leaderboardData = await GetLeaderboardData(leaderboard, rank);
-
-			return ParseLeaderboardData(leaderboard, leaderboardData);
+			byte[] leaderboardData = await GetLeaderboardData(rank);
+			return ParseLeaderboardData(leaderboardData);
 		}
 
-		private static async Task<byte[]> GetLeaderboardData(Leaderboard leaderboard, int rank)
+		private static async Task<byte[]> GetLeaderboardData(int rank)
 		{
 			Dictionary<string, string> postValues = new Dictionary<string, string>
 			{
@@ -35,15 +34,18 @@ namespace DevilDaggersWebsite.Utils
 			return await resp.Content.ReadAsByteArrayAsync();
 		}
 
-		private static Leaderboard ParseLeaderboardData(Leaderboard leaderboard, byte[] leaderboardData)
+		private static Leaderboard ParseLeaderboardData(byte[] leaderboardData)
 		{
-			leaderboard.DeathsGlobal = BitConverter.ToUInt64(leaderboardData, 11);
-			leaderboard.KillsGlobal = BitConverter.ToUInt64(leaderboardData, 19);
-			leaderboard.TimeGlobal = BitConverter.ToUInt64(leaderboardData, 35);
-			leaderboard.GemsGlobal = BitConverter.ToUInt64(leaderboardData, 43);
-			leaderboard.Players = BitConverter.ToInt32(leaderboardData, 75);
-			leaderboard.ShotsHitGlobal = BitConverter.ToUInt64(leaderboardData, 51);
-			leaderboard.ShotsFiredGlobal = BitConverter.ToUInt64(leaderboardData, 27);
+			Leaderboard leaderboard = new Leaderboard
+			{
+				DeathsGlobal = BitConverter.ToUInt64(leaderboardData, 11),
+				KillsGlobal = BitConverter.ToUInt64(leaderboardData, 19),
+				TimeGlobal = BitConverter.ToUInt64(leaderboardData, 35),
+				GemsGlobal = BitConverter.ToUInt64(leaderboardData, 43),
+				Players = BitConverter.ToInt32(leaderboardData, 75),
+				ShotsHitGlobal = BitConverter.ToUInt64(leaderboardData, 51),
+				ShotsFiredGlobal = BitConverter.ToUInt64(leaderboardData, 27)
+			};
 
 			int entryCount = BitConverter.ToInt16(leaderboardData, 59);
 			int rankIterator = 0;
@@ -88,14 +90,14 @@ namespace DevilDaggersWebsite.Utils
 
 		private static readonly string serverSearchURL = "http://dd.hasmodai.com/backend16/get_user_search_public.php";
 
-		public static async Task<Leaderboard> LoadLeaderboardSearch(Leaderboard leaderboard, string search)
+		public static async Task<Leaderboard> LoadLeaderboardSearch(string search)
 		{
-			byte[] leaderboardData = await GetLeaderboardSearchData(leaderboard, search);
+			byte[] leaderboardData = await GetLeaderboardSearchData(search);
 
-			return ParseLeaderboardSearchData(leaderboard, leaderboardData);
+			return ParseLeaderboardSearchData(leaderboardData);
 		}
 
-		private static async Task<byte[]> GetLeaderboardSearchData(Leaderboard leaderboard, string search)
+		private static async Task<byte[]> GetLeaderboardSearchData(string search)
 		{
 			Dictionary<string, string> postValues = new Dictionary<string, string>
 			{
@@ -108,8 +110,10 @@ namespace DevilDaggersWebsite.Utils
 			return await resp.Content.ReadAsByteArrayAsync();
 		}
 
-		private static Leaderboard ParseLeaderboardSearchData(Leaderboard leaderboard, byte[] leaderboardData)
+		private static Leaderboard ParseLeaderboardSearchData(byte[] leaderboardData)
 		{
+			Leaderboard leaderboard = new Leaderboard();
+
 			int entryCount = BitConverter.ToInt16(leaderboardData, 11);
 			int rankIterator = 0;
 			int bytePos = 19;
@@ -153,14 +157,14 @@ namespace DevilDaggersWebsite.Utils
 
 		private static readonly string serverURLJson = "http://ddstats.com/api/get_scores";
 
-		public static Leaderboard LoadLeaderboardJson(Leaderboard leaderboard, int rank)
+		public static Leaderboard LoadLeaderboardJson(int rank)
 		{
-			string leaderboardDataJson = GetLeaderboardDataJson(leaderboard, rank);
+			string leaderboardDataJson = GetLeaderboardDataJson(rank);
 
-			return ParseLeaderboardDataJson(leaderboard, leaderboardDataJson);
+			return ParseLeaderboardDataJson(leaderboardDataJson);
 		}
 
-		private static string GetLeaderboardDataJson(Leaderboard leaderboard, int rank)
+		private static string GetLeaderboardDataJson(int rank)
 		{
 			using (WebClient wc = new WebClient())
 			{
@@ -168,8 +172,10 @@ namespace DevilDaggersWebsite.Utils
 			}
 		}
 
-		private static Leaderboard ParseLeaderboardDataJson(Leaderboard leaderboard, string leaderboardDataJson)
+		private static Leaderboard ParseLeaderboardDataJson(string leaderboardDataJson)
 		{
+			Leaderboard leaderboard = new Leaderboard();
+
 			dynamic jsonLeaderboard = JsonConvert.DeserializeObject(leaderboardDataJson);
 
 			leaderboard.Players = jsonLeaderboard.global_player_count;
