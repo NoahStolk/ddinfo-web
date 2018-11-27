@@ -1,7 +1,6 @@
 ﻿using CoreBase.Services;
 using DevilDaggersWebsite.Models.Leaderboard;
 using DevilDaggersWebsite.Utils;
-using Microsoft.AspNetCore.Mvc;
 using Microsoft.AspNetCore.Mvc.RazorPages;
 using Microsoft.AspNetCore.Mvc.Rendering;
 using NetBase.Utils;
@@ -15,9 +14,8 @@ namespace DevilDaggersWebsite.Pages
 {
 	public class LeaderboardHistoryModel : PageModel
 	{
-		ICommonObjects CommonObjects;
+		private ICommonObjects _commonObjects;
 
-		[BindProperty]
 		public Leaderboard Leaderboard { get; set; } = new Leaderboard();
 
 		public List<SelectListItem> JsonFiles { get; set; } = new List<SelectListItem>();
@@ -25,13 +23,12 @@ namespace DevilDaggersWebsite.Pages
 
 		public LeaderboardHistoryModel(ICommonObjects commonObjects)
 		{
-			CommonObjects = commonObjects;
+			_commonObjects = commonObjects;
 
-			foreach (string s in Directory.GetFiles(Path.Combine(CommonObjects.Env.WebRootPath, "leaderboard-history")))
+			foreach (string leaderboardHistoryPath in Directory.GetFiles(Path.Combine(_commonObjects.Env.WebRootPath, "leaderboard-history")))
 			{
-				Leaderboard lb = JsonConvert.DeserializeObject<Leaderboard>(FileUtils.GetContents(s));
-				float completionRate = lb.GetCompletionRate(lb);
-				JsonFiles.Add(new SelectListItem($"{LeaderboardHistoryUtils.HistoryJsonFileNameToDateString(Path.GetFileNameWithoutExtension(s))} UTC ({completionRate.ToString("###")}% complete)", Path.GetFileName(s)));
+				Leaderboard leaderboard = JsonConvert.DeserializeObject<Leaderboard>(FileUtils.GetContents(leaderboardHistoryPath));
+				JsonFiles.Add(new SelectListItem($"{LeaderboardHistoryUtils.HistoryJsonFileNameToDateString(Path.GetFileNameWithoutExtension(leaderboardHistoryPath))} UTC ({leaderboard.GetCompletionRate().ToString("##0")}% complete)", Path.GetFileName(leaderboardHistoryPath)));
 			}
 
 			JsonFiles.Reverse();
@@ -46,12 +43,12 @@ namespace DevilDaggersWebsite.Pages
 			string jsonString = null;
 			try
 			{
-				jsonString = FileUtils.GetContents(Path.Combine(CommonObjects.Env.WebRootPath, "leaderboard-history", From), Encoding.UTF8);
+				jsonString = FileUtils.GetContents(Path.Combine(_commonObjects.Env.WebRootPath, "leaderboard-history", From), Encoding.UTF8);
 			}
 			catch (Exception)
 			{
 				From = JsonFiles[0].Value;
-				jsonString = FileUtils.GetContents(Path.Combine(CommonObjects.Env.WebRootPath, "leaderboard-history", From), Encoding.UTF8);
+				jsonString = FileUtils.GetContents(Path.Combine(_commonObjects.Env.WebRootPath, "leaderboard-history", From), Encoding.UTF8);
 			}
 			Leaderboard = JsonConvert.DeserializeObject<Leaderboard>(jsonString);
 		}
