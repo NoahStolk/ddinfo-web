@@ -36,7 +36,7 @@ namespace DevilDaggersWebsite.Models.Leaderboard
 		public string GetMissingGlobalInformation()
 		{
 			StringBuilder global = new StringBuilder();
-			GetMissingProperties(this, global);
+			global.Append(GetMissingProperties());
 
 			return global.ToString();
 		}
@@ -44,88 +44,68 @@ namespace DevilDaggersWebsite.Models.Leaderboard
 		public string GetMissingUserInformation()
 		{
 			StringBuilder user = new StringBuilder();
-			GetMissingProperties(Entries[0], user);
+			user.Append(Entries[0].GetMissingProperties());
 
 			return user.ToString();
 		}
 
-		public float GetCompletionRate(object p)
+		public float GetCompletionRate()
 		{
 			int total = 0;
 			int missing = 0;
 			int inaccurate = 0;
 
-			Type t = p.GetType();
+			Type t = GetType();
 			foreach (PropertyInfo info in t.GetProperties())
 			{
-				object value = info.GetValue(p);
+				object value = info.GetValue(this);
 				string valueString = value.ToString();
 				if (string.IsNullOrEmpty(valueString))
 					continue;
 
 				Type type = value.GetType();
 				string name = info.Name.ToLower();
-				if (name.Contains("accuracy") || name.Contains("entries") || name.Contains("search"))
+				if (name.Contains("accuracy") || name.Contains("entries") || name.Contains("datetime"))
 					continue;
 
 				total++;
 
-				if ((name.Contains("deathtype") && valueString == "-1") ||
-					(!name.Contains("deathtype") && valueString == GetDefaultValue(type).ToString()))
+				if (valueString == ReflectionUtils.GetDefaultValue(type).ToString())
 					missing++;
 				else if (name.Contains("shotsfired") && valueString == "10000")
 					inaccurate++;
 			}
 
-			return (1f - missing / (float)total - inaccurate / 2f / total) * Entries.Count;
+			return Entries[0].GetCompletionRate() * Entries.Count * 0.5f + (1f - missing / (float)total - inaccurate / 2f / total) * 50f;
 		}
 
-		private static void GetMissingProperties(object p, StringBuilder sb)
+		public string GetMissingProperties()
 		{
-			Type t = p.GetType();
+			StringBuilder sb = new StringBuilder();
+
+			Type t = GetType();
 			foreach (PropertyInfo info in t.GetProperties())
 			{
-				object value = info.GetValue(p);
+				object value = info.GetValue(this);
 				string valueString = value.ToString();
 				if (string.IsNullOrEmpty(valueString))
 					continue;
 
 				Type type = value.GetType();
 				string name = info.Name.ToLower();
-				if (name.Contains("accuracy") || name.Contains("entries") || name.Contains("search"))
+				if (name.Contains("accuracy") || name.Contains("entries") || name.Contains("datetime"))
 					continue;
 
-				if ((name.Contains("deathtype") && valueString == "-1") ||
-					(!name.Contains("deathtype") && valueString == GetDefaultValue(type).ToString()))
+				if (valueString == ReflectionUtils.GetDefaultValue(type).ToString())
 					sb.AppendLine($"{info.Name} (Missing) {(info.Name == "ID" ? "(No bans)" : "")}");
 				else if (name.Contains("shotsfired") && valueString == "10000")
 					sb.AppendLine($"Shots{info.Name.Substring(10)} (Inaccurate)");
 			}
 
-			if (string.IsNullOrEmpty(sb.ToString()))
-				sb.AppendLine(RazorUtils.NAString.ToString());
-		}
+			if (Entries.Count != 100)
+				sb.AppendLine($"{100 - Entries.Count} users (Missing)");
 
-		private static object GetDefaultValue(Type type)
-		{
-			if (type.IsValueType)
-				return Activator.CreateInstance(type);
-
-			if (type == typeof(string))
-				return string.Empty;
-
-			return null;
-		}
-
-		private static object GetDefaultValue<T>()
-		{
-			if (typeof(T).IsValueType)
-				return Activator.CreateInstance<T>();
-
-			if (typeof(T) == typeof(string))
-				return (T)(object)string.Empty;
-
-			return null;
+			return sb.ToString();
 		}
 	}
 }
