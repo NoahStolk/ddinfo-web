@@ -17,6 +17,7 @@ namespace DevilDaggersWebsite.Pages
 
 		public void OnGet()
 		{
+			SitemapUtils.ExcludePage("API_Index");
 			SitemapUtils.ExcludePage("API_GetSpawnsets");
 			SitemapUtils.ExcludePage("API_GetToolVersions");
 			SitemapUtils.ExcludePage("API_LeaderboardJson");
