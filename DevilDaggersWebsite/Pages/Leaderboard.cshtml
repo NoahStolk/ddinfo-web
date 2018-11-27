@@ -45,7 +45,7 @@
 							else
 							{
 								<a class="btn" asp-page="./Leaderboard" asp-route-rank="@(Math.Max(1, Model.Rank - 100))" asp-route-search="@Model.Search">&lt;</a>
-								<a class="btn" asp-page="./Leaderboard" asp-route-rank="@(Math.Min(Model.Leaderboard.Players - 100, Model.Rank + 100))" asp-route-search="@Model.Search">&gt;</a>
+								<a class="btn" asp-page="./Leaderboard" asp-route-rank="@(Math.Min(Model.Leaderboard.Players - 99, Model.Rank + 100))" asp-route-search="@Model.Search">&gt;</a>
 							}
 						}
 					</div>
