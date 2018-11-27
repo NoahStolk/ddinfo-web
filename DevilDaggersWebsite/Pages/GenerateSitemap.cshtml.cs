@@ -20,8 +20,8 @@ namespace DevilDaggersWebsite.Pages
 			SitemapUtils.ExcludePage("API_GetSpawnsets");
 			SitemapUtils.ExcludePage("API_GetToolVersions");
 			SitemapUtils.ExcludePage("API_LeaderboardJson");
+			SitemapUtils.ExcludePage("API_DownloadSpawnset");
 			SitemapUtils.ExcludePage("Error_404");
-			SitemapUtils.ExcludePage("DownloadSpawnset");
 			SitemapUtils.ExcludePage("LeaderboardHistory");
 			SitemapUtils.ExcludePage("Spawnset");
 			XmlResult = SitemapUtils.GetSitemap(_commonObjects, true);
