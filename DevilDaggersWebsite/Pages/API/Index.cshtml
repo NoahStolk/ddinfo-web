@@ -1,33 +1,43 @@
 ﻿@page
 @model DevilDaggersWebsite.Pages.API.IndexModel
 @using DevilDaggersWebsite.Models.API
+@using DevilDaggersWebsite.Utils
+@using NetBase.Extensions
+@using System.Reflection
 @{
 	ViewData["Title"] = "API Overview";
 }
 
 <h1>@ViewData["Title"]</h1>
 
-<p>
-	List of API functions.
-</p>
+<div class="row text-bold">
+	<div class="col-xs-3">Name</div>
+	<div class="col-xs-3">Return type</div>
+	<div class="col-xs-3">Parameters</div>
+	<div class="col-xs-3">Optional parameters</div>
+</div>
 
-<ul>
-	@{
-		@*TODO: Use nice table*@
-		foreach (ApiFunction api in Model.ApiFunction)
+@{
+	foreach (ApiFunction api in Model.ApiFunction)
+	{
+		List<string> parameters = new List<string>();
+		List<string> optionalParameters = new List<string>();
+		foreach (ParameterInfo pInfo in api.Parameters)
 		{
-			<li>
-				<a asp-page=@api.Name>@api.Name</a><br />Returns @api.ReturnType
-				@if (api.Parameters.Length != 0)
-				{
-					<ul>
-						@foreach (string parameter in api.Parameters)
-						{
-							<li>@parameter</li>
-						}
-					</ul>
-				}
-			</li>
+			if (pInfo.IsOptional)
+			{
+				optionalParameters.Add(pInfo.Name);
+			}
+			else
+			{
+				parameters.Add(pInfo.Name);
+			}
 		}
+		<div class="row">
+			<div class="col-xs-3"><a asp-page=@api.Name>@api.Name</a></div>
+			<div class="col-xs-3">@api.ReturnType</div>
+			<div class="col-xs-3">@(parameters.Count != 0 ? Html.Raw(parameters.ItemsAppended<string>(", ")) : RazorUtils.NAString)</div>
+			<div class="col-xs-3">@(optionalParameters.Count != 0 ? Html.Raw(optionalParameters.ItemsAppended<string>(", ")) : RazorUtils.NAString)</div>
+		</div>
 	}
-</ul>
+}

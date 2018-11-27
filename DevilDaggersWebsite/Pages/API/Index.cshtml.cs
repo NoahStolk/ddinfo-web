@@ -23,24 +23,14 @@ namespace DevilDaggersWebsite.Pages.API
 				{
 					string name = type.Name.Replace("Model", "");
 
-					MethodInfo[] onGets = type.GetMethods().Where(t => t.Name == "OnGet").ToArray();
+					MethodInfo[] onGets = type.GetMethods().Where(t => t.Name == "OnGet" || t.Name == "OnGetAsync").ToArray();
 					foreach (MethodInfo onGet in onGets)
 					{
 						if (onGet != null)
 						{
-							// TODO: Use attributes in OnGet methods
-							string returnType = onGet.ReturnType == typeof(void) ? "JSON" : onGet.ReturnType.Name;
+							ApiAttribute apiAttribute = (ApiAttribute)type.GetCustomAttributes(typeof(ApiAttribute), true).FirstOrDefault();
 
-							ParameterInfo[] parameterInfos = onGet.GetParameters();
-							string[] parameters = new string[parameterInfos.Length];
-							for (int i = 0; i < parameterInfos.Length; i++)
-								parameters[i] = parameterInfos[i].Name;
-
-							ApiFunction.Add(new ApiFunction(name, returnType, parameters.ToArray()));
-						}
-						else
-						{
-							ApiFunction.Add(new ApiFunction(name, "None"));
+							ApiFunction.Add(new ApiFunction(name, apiAttribute.ApiReturnType, onGet.GetParameters()));
 						}
 					}
 				}

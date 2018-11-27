@@ -134,3 +134,7 @@ option {
 	-webkit-hyphens: auto;
 	hyphens: auto;
 }
+
+.text-bold {
+	font-weight: bold;
+}
