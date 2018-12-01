@@ -12,10 +12,6 @@
 </header>
 
 <main role="main" class="text-center">
-	<p>
-		<a asp-page="/Leaderboard/History">Top 100 history</a>
-	</p>
-
 	@await Html.PartialAsync("Partials/_LeaderboardGlobalPartial")
 	<div>
 		@using (Html.BeginForm(FormMethod.Get))

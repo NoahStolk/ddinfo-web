@@ -1,0 +1,19 @@
+﻿@page
+@using DevilDaggersWebsite.Models.Leaderboard
+@model DevilDaggersWebsite.Pages.Leaderboard.WorldRecordProgressionModel
+@{
+	ViewData["Title"] = "World Record Progression";
+}
+
+<header>
+	<h1>@ViewData["Title"]</h1>
+</header>
+
+<main role="main" class="text-center">
+	@{
+		foreach (KeyValuePair<DateTime, Entry> kvp in Model.Data)
+		{
+			<div>@kvp.Key.ToShortDateString(), @((kvp.Value.Time / 10000.0).ToString("0.0000")), @kvp.Value.Username</div>
+		}
+	}
+</main>
