@@ -12,7 +12,7 @@ using System.Text;
 
 namespace DevilDaggersWebsite.Pages.API
 {
-	[Api(ApiReturnType = MediaTypeNames.Application.Json)]
+	[ApiFunction(Description = "Returns the list of available spawnsets on the site, optional filtering can be done using the two search parameters.", ReturnType = MediaTypeNames.Application.Json)]
 	public class GetSpawnsetsModel : PageModel
 	{
 		private readonly ICommonObjects _commonObjects;

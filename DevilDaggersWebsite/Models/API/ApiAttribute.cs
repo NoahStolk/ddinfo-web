@@ -2,8 +2,9 @@
 
 namespace DevilDaggersWebsite.Models.API
 {
-	public class ApiAttribute : Attribute
+	public class ApiFunctionAttribute : Attribute
 	{
-		public string ApiReturnType { get; set; }
+		public string Description { get; set; }
+		public string ReturnType { get; set; }
 	}
 }

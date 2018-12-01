@@ -10,7 +10,7 @@ using System.Threading.Tasks;
 
 namespace DevilDaggersWebsite.Pages.API
 {
-	[Api(ApiReturnType = MediaTypeNames.Application.Json)]
+	[ApiFunction(Description = "Returns a JSON copy of the current leaderboard.", ReturnType = MediaTypeNames.Application.Json)]
 	public class LeaderboardJsonModel : PageModel
 	{
 		public async Task<FileResult> OnGetAsync()

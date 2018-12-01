@@ -9,7 +9,7 @@ namespace DevilDaggersWebsite.Pages.API
 {
 	public class IndexModel : PageModel
 	{
-		public List<ApiFunction> ApiFunction = new List<ApiFunction>();
+		public List<ApiFunction> ApiFunctions = new List<ApiFunction>();
 
 		public void OnGet()
 		{
@@ -28,9 +28,9 @@ namespace DevilDaggersWebsite.Pages.API
 					{
 						if (onGet != null)
 						{
-							ApiAttribute apiAttribute = (ApiAttribute)type.GetCustomAttributes(typeof(ApiAttribute), true).FirstOrDefault();
+							ApiFunctionAttribute apiAttribute = (ApiFunctionAttribute)type.GetCustomAttributes(typeof(ApiFunctionAttribute), true).FirstOrDefault();
 
-							ApiFunction.Add(new ApiFunction(name, apiAttribute.ApiReturnType, onGet.GetParameters()));
+							ApiFunctions.Add(new ApiFunction(name, apiAttribute.Description, apiAttribute.ReturnType, onGet.GetParameters()));
 						}
 					}
 				}

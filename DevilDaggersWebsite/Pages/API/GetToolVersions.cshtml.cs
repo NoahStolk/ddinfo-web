@@ -9,7 +9,7 @@ using System.Text;
 
 namespace DevilDaggersWebsite.Pages.API
 {
-	[Api(ApiReturnType = MediaTypeNames.Application.Json)]
+	[ApiFunction(Description = "Returns the list of tools including their version number.", ReturnType = MediaTypeNames.Application.Json)]
 	public class GetToolVersionsModel : PageModel
 	{
 		private readonly ICommonObjects _commonObjects;

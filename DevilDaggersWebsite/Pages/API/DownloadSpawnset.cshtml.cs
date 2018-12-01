@@ -6,7 +6,7 @@ using System.Net.Mime;
 
 namespace DevilDaggersWebsite.Pages.API
 {
-	[Api(ApiReturnType = MediaTypeNames.Application.Octet)]
+	[ApiFunction(Description = "Returns the spawnset file corresponding to the given file parameter (file name).", ReturnType = MediaTypeNames.Application.Octet)]
 	public class DownloadSpawnsetModel : PageModel
 	{
 		public ActionResult OnGet(string file)
