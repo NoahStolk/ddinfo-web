@@ -1,5 +1,4 @@
 ﻿using DevilDaggersWebsite.Models.API;
-using DevilDaggersWebsite.Models.Leaderboard;
 using DevilDaggersWebsite.Utils;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.AspNetCore.Mvc.RazorPages;
@@ -16,7 +15,7 @@ namespace DevilDaggersWebsite.Pages.API
 	{
 		public async Task<FileResult> OnGetAsync()
 		{
-			Leaderboard leaderboard = await LeaderboardUtils.LoadLeaderboard(1); // Top 100 only now
+			Models.Leaderboard.Leaderboard leaderboard = await LeaderboardUtils.LoadLeaderboard(1); // Top 100 only now
 
 			string jsonResult = JsonConvert.SerializeObject(leaderboard);
 			DateTime dateTime = leaderboard.DateTime;

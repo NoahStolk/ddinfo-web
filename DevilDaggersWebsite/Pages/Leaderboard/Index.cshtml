@@ -1,6 +1,6 @@
 ﻿@page
 @inject CoreBase.Services.ICommonObjects CommonObjects
-@model DevilDaggersWebsite.Pages.LeaderboardModel
+@model DevilDaggersWebsite.Pages.Leaderboard.IndexModel
 @{
 	ViewData["Title"] = "Leaderboard";
 
@@ -13,7 +13,7 @@
 
 <main role="main" class="text-center">
 	<p>
-		<a asp-page="/LeaderboardHistory">Top 100 history</a>
+		<a asp-page="/Leaderboard/History">Top 100 history</a>
 	</p>
 
 	@await Html.PartialAsync("Partials/_LeaderboardGlobalPartial")
@@ -44,8 +44,8 @@
 							}
 							else
 							{
-								<a class="btn" asp-page="./Leaderboard" asp-route-rank="@(Math.Max(1, Model.Rank - 100))" asp-route-search="@Model.Search">&lt;</a>
-								<a class="btn" asp-page="./Leaderboard" asp-route-rank="@(Math.Min(Model.Leaderboard.Players - 99, Model.Rank + 100))" asp-route-search="@Model.Search">&gt;</a>
+								<a class="btn" asp-page="/Leaderboard/Index" asp-route-rank="@(Math.Max(1, Model.Rank - 100))" asp-route-search="@Model.Search">&lt;</a>
+								<a class="btn" asp-page="/Leaderboard/Index" asp-route-rank="@(Math.Min(Model.Leaderboard.Players - 99, Model.Rank + 100))" asp-route-search="@Model.Search">&gt;</a>
 							}
 						}
 					</div>

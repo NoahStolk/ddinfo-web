@@ -1,6 +1,6 @@
 ﻿@page
 @inject CoreBase.Services.ICommonObjects CommonObjects
-@model DevilDaggersWebsite.Pages.LeaderboardHistoryModel
+@model DevilDaggersWebsite.Pages.Leaderboard.HistoryModel
 @{
 	ViewData["Title"] = $"Top 100 History ({Model.Leaderboard.DateTime.ToString("yyyy-MM-dd HH:mm")} UTC)";
 }
@@ -12,7 +12,7 @@
 
 <main role="main" class="text-center">
 	<p>
-		<a asp-page="/Leaderboard">Return to the present</a>
+		<a asp-page="/Leaderboard/Index">Return to the present</a>
 	</p>
 
 	@await Html.PartialAsync("Partials/_LeaderboardGlobalPartial")

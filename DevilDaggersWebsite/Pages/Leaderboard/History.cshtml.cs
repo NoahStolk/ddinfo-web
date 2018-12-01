@@ -1,5 +1,4 @@
 ﻿using CoreBase.Services;
-using DevilDaggersWebsite.Models.Leaderboard;
 using DevilDaggersWebsite.Utils;
 using Microsoft.AspNetCore.Mvc.RazorPages;
 using Microsoft.AspNetCore.Mvc.Rendering;
@@ -10,24 +9,24 @@ using System.Collections.Generic;
 using System.IO;
 using System.Text;
 
-namespace DevilDaggersWebsite.Pages
+namespace DevilDaggersWebsite.Pages.Leaderboard
 {
-	public class LeaderboardHistoryModel : PageModel
+	public class HistoryModel : PageModel
 	{
 		private ICommonObjects _commonObjects;
 
-		public Leaderboard Leaderboard { get; set; } = new Leaderboard();
+		public Models.Leaderboard.Leaderboard Leaderboard { get; set; } = new Models.Leaderboard.Leaderboard();
 
 		public List<SelectListItem> JsonFiles { get; set; } = new List<SelectListItem>();
 		public string From { get; set; }
 
-		public LeaderboardHistoryModel(ICommonObjects commonObjects)
+		public HistoryModel(ICommonObjects commonObjects)
 		{
 			_commonObjects = commonObjects;
 
 			foreach (string leaderboardHistoryPath in Directory.GetFiles(Path.Combine(_commonObjects.Env.WebRootPath, "leaderboard-history")))
 			{
-				Leaderboard leaderboard = JsonConvert.DeserializeObject<Leaderboard>(FileUtils.GetContents(leaderboardHistoryPath));
+				Models.Leaderboard.Leaderboard leaderboard = JsonConvert.DeserializeObject<Models.Leaderboard.Leaderboard>(FileUtils.GetContents(leaderboardHistoryPath));
 				JsonFiles.Add(new SelectListItem($"{LeaderboardHistoryUtils.HistoryJsonFileNameToDateString(Path.GetFileNameWithoutExtension(leaderboardHistoryPath))} UTC ({leaderboard.GetCompletionRate().ToString("##0")}% complete)", Path.GetFileName(leaderboardHistoryPath)));
 			}
 
@@ -50,7 +49,7 @@ namespace DevilDaggersWebsite.Pages
 				From = JsonFiles[0].Value;
 				jsonString = FileUtils.GetContents(Path.Combine(_commonObjects.Env.WebRootPath, "leaderboard-history", From), Encoding.UTF8);
 			}
-			Leaderboard = JsonConvert.DeserializeObject<Leaderboard>(jsonString);
+			Leaderboard = JsonConvert.DeserializeObject<Models.Leaderboard.Leaderboard>(jsonString);
 		}
 	}
 }

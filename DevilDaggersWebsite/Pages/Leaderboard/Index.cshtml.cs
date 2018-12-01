@@ -1,16 +1,15 @@
-﻿using DevilDaggersWebsite.Models.Leaderboard;
-using DevilDaggersWebsite.Utils;
+﻿using DevilDaggersWebsite.Utils;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.AspNetCore.Mvc.RazorPages;
 using System;
 using System.Threading.Tasks;
 
-namespace DevilDaggersWebsite.Pages
+namespace DevilDaggersWebsite.Pages.Leaderboard
 {
-	public class LeaderboardModel : PageModel
+	public class IndexModel : PageModel
 	{
 		[BindProperty]
-		public Leaderboard Leaderboard { get; set; } = new Leaderboard();
+		public Models.Leaderboard.Leaderboard Leaderboard { get; set; } = new Models.Leaderboard.Leaderboard();
 
 		public int Rank { get; set; }
 		public string Search { get; set; }
