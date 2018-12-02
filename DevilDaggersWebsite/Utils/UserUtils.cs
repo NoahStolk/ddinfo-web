@@ -46,12 +46,6 @@ namespace DevilDaggersWebsite.Utils
 			121293
 		};
 
-		public static List<int> MacroIDs { get; set; } = new List<int>
-		{
-			//159605,
-			//88424
-		};
-
 		public static List<Donator> Donators { get; set; } = new List<Donator>
 		{
 			new Donator("DJDoomz", 100, '€'),

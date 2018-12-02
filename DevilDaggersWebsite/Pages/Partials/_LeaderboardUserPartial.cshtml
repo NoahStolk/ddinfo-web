@@ -24,7 +24,7 @@
 			Death death = entry.GetDeathFromDeathType();
 			bool ban = UserUtils.BanIDs.Contains(entry.ID);
 			string banString = ban ? "ban" : string.Empty;
-			string daggerColor = ban ? "ban" : death == GameUtils.Macroed ? "macro" : dagger.Name.ToLower();
+			string daggerColor = ban ? "ban" : dagger.Name.ToLower();
 			string deathStyle = ban ? "" : $"color: #{death.ColorCode};";
 
 			<div class="sort @banString" @entry.ToHTMLData()>
