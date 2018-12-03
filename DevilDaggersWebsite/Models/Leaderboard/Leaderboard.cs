@@ -76,11 +76,11 @@ namespace DevilDaggersWebsite.Models.Leaderboard
 					inaccurate++;
 			}
 
-			float globalCompletionRate = (1f - missing / (float)total - inaccurate / 2f / total);
+			float globalCompletionRate = 1f - missing / (float)total - inaccurate / 2f / total;
 			float userCompletionRate = 0;
 			foreach (Entry entry in Entries)
 				userCompletionRate += entry.GetCompletionRate() * 0.01f;
-			return userCompletionRate * 0.9f + globalCompletionRate * 0.1f;
+			return userCompletionRate * 0.99f + globalCompletionRate * 0.01f;
 		}
 
 		public string GetMissingProperties()
