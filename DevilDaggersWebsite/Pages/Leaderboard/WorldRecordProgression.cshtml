@@ -1,5 +1,7 @@
 ﻿@page
 @using DevilDaggersWebsite.Models.Leaderboard
+@using DevilDaggersWebsite.Utils
+@using System.Text
 @model DevilDaggersWebsite.Pages.Leaderboard.WorldRecordProgressionModel
 @{
 	ViewData["Title"] = "World Record Progression";
@@ -11,9 +13,41 @@
 
 <main role="main" class="text-center">
 	@{
+		StringBuilder sb = new StringBuilder();
 		foreach (KeyValuePair<DateTime, Entry> kvp in Model.Data)
 		{
-			<div>@kvp.Key.ToShortDateString(), @((kvp.Value.Time / 10000.0).ToString("0.0000")), @kvp.Value.Username</div>
+			sb.Append($"[{kvp.Key.Year},{kvp.Value.Time}],");
+		}
+		string data = sb.ToString().TrimEnd(',');
+	}
+
+	<div class="flex-container hidden-sm hidden-xs">
+		<div class="flex-container" style="flex-grow: 1;">
+			@{
+				int startYear = GameUtils.GameVersions.Min(v => v.ReleaseDate).Year;
+
+				DateTime timelineStart = new DateTime(startYear, 1, 1);
+				DateTime timelineEnd = new DateTime(DateTime.Now.Year + 1, 12, 31);
+				DateTime prev = timelineStart;
+				for (int i = startYear; i <= timelineEnd.Year; i++)
+				{
+					double pos = ((double)(new DateTime(i, 1, 1) - prev).Ticks / (double)(timelineEnd - timelineStart).Ticks) * 100;
+					prev = new DateTime(i, 1, 1);
+					<div style="width: calc(@pos.ToString().Replace(',', '.')%@(i == startYear ? "" : " - 36px"));"></div>
+					<div style="width: 36px;">
+						<span style="width: 1px; height: @((Model.Data.Count + 1) * 20)px; background-color: #fff; position: absolute;"></span>
+						@i
+					</div>
+				}
+			}
+		</div>
+	</div>
+
+	@{
+		foreach (KeyValuePair<DateTime, Entry> kvp in Model.Data)
+		{
+			double date = ((double)(kvp.Key - timelineStart).Ticks / (double)(timelineEnd - timelineStart).Ticks) * 85;
+			<span style="position: absolute; width: 0; left: calc(@date.ToString().Replace(',', '.')% + 142.717px); top: @(1100 - kvp.Value.Time / 10000 + 200)px; height: 20px;" data-toggle="tooltip" data-placement="top" data-trigger="hover" data-html="true" title="@kvp.Value.Username, @kvp.Value.Time">|</span>
 		}
 	}
 </main>
