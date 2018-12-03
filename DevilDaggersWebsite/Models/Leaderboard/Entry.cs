@@ -92,7 +92,8 @@ namespace DevilDaggersWebsite.Models.Leaderboard
 
 				total++;
 
-				if (valueString == ReflectionUtils.GetDefaultValue(type).ToString())
+				if ((name.Contains("deathtype") && valueString == "-1") ||
+					(!name.Contains("deathtype") && valueString == ReflectionUtils.GetDefaultValue(type).ToString()))
 					missing++;
 				else if (name.Contains("shotsfired") && valueString == "10000")
 					inaccurate++;
