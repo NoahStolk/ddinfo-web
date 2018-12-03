@@ -1,6 +1,4 @@
-﻿using System.Collections.Generic;
-
-namespace DevilDaggersWebsite.Models.Game
+﻿namespace DevilDaggersWebsite.Models.Game
 {
 	public class Enemy
 	{
@@ -12,9 +10,10 @@ namespace DevilDaggersWebsite.Models.Game
 		public Death Death { get; set; }
 		public float? Homing3 { get; set; }
 		public float? Homing4 { get; set; }
+		public GameVersion FirstAppearance { get; set; }
 		public Enemy[] SpawnedBy { get; set; }
 
-		public Enemy(string name, string colorCode, int hp, int gems, int hitPartCount, Death death, float? homing3, float? homing4, params Enemy[] spawnedBy)
+		public Enemy(string name, string colorCode, int hp, int gems, int hitPartCount, Death death, float? homing3, float? homing4, GameVersion firstAppearance, params Enemy[] spawnedBy)
 		{
 			Name = name;
 			ColorCode = colorCode;
@@ -24,6 +23,7 @@ namespace DevilDaggersWebsite.Models.Game
 			Death = death;
 			Homing3 = homing3;
 			Homing4 = homing4;
+			FirstAppearance = firstAppearance;
 			SpawnedBy = spawnedBy;
 		}
 	}

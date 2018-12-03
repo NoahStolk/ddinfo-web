@@ -20,6 +20,7 @@
 				<div>HP</div>
 				<div>Gems</div>
 				<div>Death type</div>
+				<div class="hidden-sm hidden-md">First appearance</div>
 				<div>Spawned by</div>
 			</div>
 			@foreach (Enemy enemy in GameUtils.Enemies)
@@ -29,6 +30,7 @@
 					<div class='text-right'>@enemy.HP</div>
 					<div class='text-right'>@enemy.Gems</div>
 					<div style='color: #@enemy.Death.ColorCode'>@enemy.Death.Name</div>
+					<div class="hidden-sm hidden-md">@enemy.FirstAppearance.Name</div>
 					<div>
 						@if (enemy.SpawnedBy.Length == 0)
 						{
@@ -71,6 +73,10 @@
 				<div class="enemy-row flex-container">
 					<div>Death type</div>
 					<div class="text-right" style='color: #@enemy.Death.ColorCode'>@enemy.Death.Name</div>
+				</div>
+				<div class="enemy-row flex-container">
+					<div>First appearance</div>
+					<div class="text-right">@enemy.FirstAppearance.Name</div>
 				</div>
 				<div class="enemy-row flex-container">
 					<div>Spawned by</div>
