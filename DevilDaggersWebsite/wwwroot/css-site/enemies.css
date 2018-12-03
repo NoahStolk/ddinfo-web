@@ -109,27 +109,6 @@
 }
 
 @media (max-width: 767px) {
-	.enemies-summary-row-top > div:nth-child(1) {
-		width: 65%;
-		max-width: 65%;
-	}
-
-	.enemies-summary-row-top > div:nth-child(2),
-	.enemies-summary-row-top > div:nth-child(3) {
-		width: 17.5%;
-		max-width: 17.5%;
-	}
-
-	.enemies-summary-row-top {
-		padding-top: 1em;
-	}
-
-		.enemies-summary-row > div:nth-child(1),
-		.enemies-summary-row > div:nth-child(2) {
-			width: 50%;
-			max-width: 50%;
-		}
-
 	.damage-stats-row > div:nth-child(1) {
 		width: 65%;
 	}
