@@ -10,14 +10,14 @@ namespace DevilDaggersWebsite.Utils
 		public static GameVersion V2 = new GameVersion("V2", new DateTime(2016, 7, 5));
 		public static GameVersion V3 = new GameVersion("V3", new DateTime(2016, 9, 19));
 
-		public static Death Unknown = new Death("?", "DDDDDD", -1);
+		public static Death Unknown = new Death("N/A", "444444", -1);
 
 		public static Death Fallen = new Death("FALLEN", "DDDDDD", 0);
-		public static Death Swarmed = new Death("SWARMED", "2E1C00", 1);
-		public static Death Impaled = new Death("IMPALED", "4E3000", 2);
-		public static Death Gored = new Death("GORED", "804E00", 3);
+		public static Death Swarmed = new Death("SWARMED", "352710", 1);
+		public static Death Impaled = new Death("IMPALED", "433114", 2);
+		public static Death Gored = new Death("GORED", "6E5021", 3);
 		public static Death Infested = new Death("INFESTED", "DCCB00", 4);
-		public static Death Opened = new Death("OPENED", "AF6B00", 5);
+		public static Death Opened = new Death("OPENED", "976E2E", 5);
 		public static Death Purged = new Death("PURGED", "4E3000", 6);
 		public static Death Desecrated = new Death("DESECRATED", "804E00", 7);
 		public static Death Sacrificed = new Death("SACRIFICED", "AF6B00", 8);
@@ -40,17 +40,17 @@ namespace DevilDaggersWebsite.Utils
 		public static Enemy Centipede = new Enemy("Centipede", "837E75", 75, 25, 25, Eviscerated, 25, 25, V1);
 		public static Enemy Gigapede = new Enemy("Gigapede", "478B41", 250, 50, 50, Annihilated /*Eviscerated in V1*/, 50, 50, V1);
 		public static Enemy Ghostpede = new Enemy("Ghostpede", "C8A2C8", 500, 10, 10, Intoxicated, null, null, V3);
-		public static Enemy Leviathan = new Enemy("Leviathan", "FF0000", 1500, 6, 6, Incarnated /*Devastated in V1 and V2*/, 1500, 1500, V1);
+		public static Enemy Leviathan = new Enemy("Leviathan", "FF0000", 1500 /*A lot less in V1*/, 6, 6, Incarnated /*Devastated in V1 and V2*/, 1500, 1500, V1);
 		public static Enemy Thorn = new Enemy("Thorn", "771D00", 120, 0, 1, Barbed, 12, 12, V3);
 		public static Enemy Spider1 = new Enemy("Spider I", "097A00", 25, 1, 1, Intoxicated /*Infested in V1 and V2*/, 3, 3, V1);
 		public static Enemy Spider2 = new Enemy("Spider II", "13FF00", 200, 1, 1, Envenmonated, 20, 20, V2);
 
 		public static Enemy TheOrb = new Enemy("The Orb", "FF3131", 2400, 0, 1, Discarnated /*Disintegrated in V3 Beta?*/, 2400, 2400, V3, Leviathan);
 
-		public static Enemy Skull1 = new Enemy("Skull I", "2E1C00", 1, 0, 1, Swarmed, 0.25f, 0.25f, V1, Squid1, Squid2, Squid3);
-		public static Enemy Skull2 = new Enemy("Skull II", "4E3000", 5, 1, 1, Impaled, 1, 1, V1, Squid1);
-		public static Enemy Skull3 = new Enemy("Skull III", "804E00", 10, 1, 1, Gored /*Dismembered in V1*/, 1, 1, V1, Squid2);
-		public static Enemy Skull4 = new Enemy("Skull IV", "AF6B00", 100, 0, 1, Opened, 10, 10, V2, Squid3);
+		public static Enemy Skull1 = new Enemy("Skull I", "352710", 1, 0, 1, Swarmed, 0.25f, 0.25f, V1, Squid1, Squid2, Squid3);
+		public static Enemy Skull2 = new Enemy("Skull II", "433114", 5, 1, 1, Impaled, 1, 1, V1, Squid1);
+		public static Enemy Skull3 = new Enemy("Skull III", "6E5021", 10, 1, 1, Gored /*Dismembered in V1*/, 1, 1, V1, Squid2);
+		public static Enemy Skull4 = new Enemy("Skull IV", "976E2E", 100, 0, 1, Opened, 10, 10, V2, Squid3);
 
 		/*In V1, Leviathan turns Skull I into Transmuted Skull II, Skull II into Transmuted Skull III, Skull III into Transmuted Skull IV*/
 		public static Enemy TransmutedSkull1 = new Enemy("Transmuted Skull I", "7F0000", 10, 0, 1, Swarmed, 0.25f, 10, V2, Leviathan, TheOrb);
@@ -105,7 +105,7 @@ namespace DevilDaggersWebsite.Utils
 			{ SpiderEgg2, "Hatches into 5 Spiderlings after 10 seconds" },
 			{ Spiderling, "Darts towards the player in bursts with random offsets" },
 			{ TheOrb, "Behaves like an eyeball, will look at the player, then attract and transmute all skulls every 2.5 seconds\nBecomes stunned under constant fire, cannot look or attract skulls while stunned" },
-			{ Andras, "Unfinished enemy that was never added to the game\nOnly appears in V2, can only be spawned using an edited spawnset\nHas its own sounds\nUses the model for Skull III, but is smaller in size\nDoes nothing but attract homing daggers like Ghostpede \nOnly takes damage when shot from above, so the player will need to daggerjump\nYou don't die when touching it" }
+			{ Andras, "Unfinished enemy that was never added to the game\nOnly appears in V2, can only be spawned using an edited spawnset\nHas its own sounds\nUses the model for Skull III, but is smaller in size\nDoes nothing but attract and consume all homing daggers like Ghostpede \nOnly takes damage when shot from above, so the player will need to daggerjump\nYou don't die when touching it" }
 		};
 
 		public static int GetDeathTypeFromDeathName(string deathName)
