@@ -39,7 +39,7 @@ namespace DevilDaggersWebsite.Utils
 		public static Enemy Squid3 = new Enemy("Squid III", "AF6B00", 90, 3, 3, Sacrificed, 3, 9, V2);
 		public static Enemy Centipede = new Enemy("Centipede", "837E75", 75, 25, 25, Eviscerated, 25, 25, V1);
 		public static Enemy Gigapede = new Enemy("Gigapede", "478B41", 250, 50, 50, Annihilated /*Eviscerated in V1*/, 50, 50, V1);
-		public static Enemy Ghostpede = new Enemy("Ghostpede", "FFFFFF", 500, 10, 10, Intoxicated, null, null, V3);
+		public static Enemy Ghostpede = new Enemy("Ghostpede", "C8A2C8", 500, 10, 10, Intoxicated, null, null, V3);
 		public static Enemy Leviathan = new Enemy("Leviathan", "FF0000", 1500, 6, 6, Incarnated /*Devastated in V1 and V2*/, 1500, 1500, V1);
 		public static Enemy Thorn = new Enemy("Thorn", "771D00", 120, 0, 1, Barbed, 12, 12, V3);
 		public static Enemy Spider1 = new Enemy("Spider I", "097A00", 25, 1, 1, Intoxicated /*Infested in V1 and V2*/, 3, 3, V1);
