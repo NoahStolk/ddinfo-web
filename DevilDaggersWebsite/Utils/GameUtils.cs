@@ -52,7 +52,7 @@ namespace DevilDaggersWebsite.Utils
 		public static Enemy Skull3 = new Enemy("Skull III", "804E00", 10, 1, 1, Gored /*Dismembered in V1*/, 1, 1, V1, Squid2);
 		public static Enemy Skull4 = new Enemy("Skull IV", "AF6B00", 100, 0, 1, Opened, 10, 10, V2, Squid3);
 
-		/*In V1 (V2???) Leviathan turns Skull I into Transmuted Skull II, Skull II into Transmuted Skull III, Skull III into Transmuted Skull IV*/
+		/*In V1, Leviathan turns Skull I into Transmuted Skull II, Skull II into Transmuted Skull III, Skull III into Transmuted Skull IV*/
 		public static Enemy TransmutedSkull1 = new Enemy("Transmuted Skull I", "7F0000", 10, 0, 1, Swarmed, 0.25f, 10, V2, Leviathan, TheOrb);
 		public static Enemy TransmutedSkull2 = new Enemy("Transmuted Skull II", "9B0000", 20, 1, 1, Impaled, 2, 2, V1, Leviathan, TheOrb);
 		public static Enemy TransmutedSkull3 = new Enemy("Transmuted Skull III", "B80000", 100, 1, 1, Gored /*Dismembered in V1*/, 10, 10, V1, Leviathan, TheOrb);
@@ -61,6 +61,8 @@ namespace DevilDaggersWebsite.Utils
 		public static Enemy SpiderEgg1 = new Enemy("Spider Egg I", "99A100", 3, 0, 1, Intoxicated /*Infested in V1 and V2*/, 3, 3, V1, Spider1);
 		public static Enemy SpiderEgg2 = new Enemy("Spider Egg II", "657A00", 3, 0, 1, Envenmonated, 3, 3, V2, Spider2);
 		public static Enemy Spiderling = new Enemy("Spiderling", "DCCB00", 3, 0, 1, Infested /*Stricken in V1 and V2*/, 1, 1, V1, SpiderEgg1, SpiderEgg2);
+
+		public static Enemy Andras = new Enemy("Andras", "666666", 25, 1, 1, Unknown, null, null, V2);
 
 		public static Upgrade Level1 = new Upgrade(1, 20, 10, null, null, "BB5500", RazorUtils.NAString);
 		public static Upgrade Level2 = new Upgrade(2, 40, 20, null, null, "FFAA00", "10 gems");
@@ -75,7 +77,7 @@ namespace DevilDaggersWebsite.Utils
 
 		public static GameVersion[] GameVersions = { V1, V2, V3 };
 		public static Death[] Deaths = { Fallen, Swarmed, Impaled, Gored, Infested, Opened, Purged, Desecrated, Sacrificed, Eviscerated, Annihilated, Intoxicated, Envenmonated, Incarnated, Discarnated, Barbed, Stricken, Devastated, Dismembered };
-		public static Enemy[] Enemies = { Squid1, Squid2, Squid3, Centipede, Gigapede, Ghostpede, Leviathan, Thorn, Spider1, Spider2, Skull1, Skull2, Skull3, Skull4, TransmutedSkull1, TransmutedSkull2, TransmutedSkull3, TransmutedSkull4, SpiderEgg1, SpiderEgg2, Spiderling, TheOrb };
+		public static Enemy[] Enemies = { Squid1, Squid2, Squid3, Centipede, Gigapede, Ghostpede, Leviathan, Thorn, Spider1, Spider2, Skull1, Skull2, Skull3, Skull4, TransmutedSkull1, TransmutedSkull2, TransmutedSkull3, TransmutedSkull4, SpiderEgg1, SpiderEgg2, Spiderling, TheOrb, Andras };
 		public static Upgrade[] Upgrades = { Level1, Level2, Level3, Level4 };
 		public static Dagger[] Daggers = { Default, Bronze, Silver, Golden, Devil };
 
@@ -102,7 +104,8 @@ namespace DevilDaggersWebsite.Utils
 			{ SpiderEgg1, "Hatches into 5 Spiderlings after 10 seconds" },
 			{ SpiderEgg2, "Hatches into 5 Spiderlings after 10 seconds" },
 			{ Spiderling, "Darts towards the player in bursts with random offsets" },
-			{ TheOrb, "Behaves like an eyeball, will look at the player, then attract and transmute all skulls every 2.5 seconds\nBecomes stunned under constant fire, cannot look or attract skulls while stunned" }
+			{ TheOrb, "Behaves like an eyeball, will look at the player, then attract and transmute all skulls every 2.5 seconds\nBecomes stunned under constant fire, cannot look or attract skulls while stunned" },
+			{ Andras, "Unfinished enemy that was never added to the game\nOnly appears in V2, can only be spawned using an edited spawnset\nHas its own sounds\nUses the model for Skull III, but is smaller in size\nDoes nothing but attract homing daggers like Ghostpede \nOnly takes damage when shot from above, so the player will need to daggerjump\nYou don't die when touching it" }
 		};
 
 		public static int GetDeathTypeFromDeathName(string deathName)
