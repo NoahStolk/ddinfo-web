@@ -64,7 +64,7 @@
 			<TextBox Name="ShotsHitTotal"></TextBox>
 			<TextBox Name="ShotsFiredTotal"></TextBox>
 			<Button Click="AddEntry_Click" IsDefault="True">Add entry</Button>
-			<TextBox Name="EntryList" Height="850" AcceptsReturn="True"></TextBox>
+			<TextBox Name="EntryList" Height="150" AcceptsReturn="True"></TextBox>
 			<Button Click="EntryList_Click">Add entry list</Button>
 			<Separator/>
 			<Button Click="Save_Click">Save as JSON</Button>
