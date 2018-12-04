@@ -27,7 +27,7 @@
 				int startYear = GameUtils.GameVersions.Min(v => v.ReleaseDate).Year;
 
 				DateTime timelineStart = new DateTime(startYear, 1, 1);
-				DateTime timelineEnd = new DateTime(DateTime.Now.Year + 1, 12, 31);
+				DateTime timelineEnd = DateTime.Now;
 				DateTime prev = timelineStart;
 				for (int i = startYear; i <= timelineEnd.Year; i++)
 				{
@@ -43,11 +43,13 @@
 		</div>
 	</div>
 
-	@{
-		foreach (KeyValuePair<DateTime, Entry> kvp in Model.Data)
-		{
-			double date = ((double)(kvp.Key - timelineStart).Ticks / (double)(timelineEnd - timelineStart).Ticks) * 85;
-			<span style="position: absolute; width: 0; left: calc(@date.ToString().Replace(',', '.')% + 142.717px); top: @(1100 - kvp.Value.Time / 10000 + 200)px; height: 20px;" data-toggle="tooltip" data-placement="top" data-trigger="hover" data-html="true" title="@kvp.Value.Username, @kvp.Value.Time">|</span>
+	<div style="position: relative;">
+		@{
+			foreach (KeyValuePair<DateTime, Entry> kvp in Model.Data)
+			{
+				double date = ((double)(kvp.Key - timelineStart).Ticks / (double)(timelineEnd - timelineStart).Ticks) * 85;
+				<span style="position: absolute; width: 10px; height: 10px; left: calc(@date.ToString().Replace(',', '.')%); top: @(1100 - kvp.Value.Time / 10000)px; background-color: #f00; border-radius: 50%;" data-toggle="tooltip" data-placement="top" data-trigger="hover" data-html="true" title="@kvp.Value.Username, @kvp.Value.Time"></span>
+			}
 		}
-	}
+	</div>
 </main>

@@ -27,7 +27,7 @@ namespace DevilDaggersWebsite.Pages.Leaderboard
 			foreach (string leaderboardHistoryPath in Directory.GetFiles(Path.Combine(_commonObjects.Env.WebRootPath, "leaderboard-history")))
 			{
 				Models.Leaderboard.Leaderboard leaderboard = JsonConvert.DeserializeObject<Models.Leaderboard.Leaderboard>(FileUtils.GetContents(leaderboardHistoryPath));
-				if (leaderboard.Entries[0].Time > worldRecord)
+				if (leaderboard.Entries[0].Time != worldRecord)
 				{
 					worldRecord = leaderboard.Entries[0].Time;
 					Data.Add(leaderboard.DateTime, leaderboard.Entries[0]);
