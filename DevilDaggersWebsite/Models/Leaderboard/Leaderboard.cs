@@ -78,8 +78,9 @@ namespace DevilDaggersWebsite.Models.Leaderboard
 
 			float globalCompletionRate = 1f - missing / (float)total - inaccurate / 2f / total;
 			float userCompletionRate = 0;
+			int totalEntries = Players == 0 ? 100 : Math.Min(Players, 100);
 			foreach (Entry entry in Entries)
-				userCompletionRate += entry.GetCompletionRate() * 0.01f;
+				userCompletionRate += entry.GetCompletionRate() * (1f / totalEntries);
 			return userCompletionRate * 0.99f + globalCompletionRate * 0.01f;
 		}
 
