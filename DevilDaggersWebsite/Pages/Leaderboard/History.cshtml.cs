@@ -19,6 +19,8 @@ namespace DevilDaggersWebsite.Pages.Leaderboard
 
 		public List<SelectListItem> JsonFiles { get; set; } = new List<SelectListItem>();
 		public string From { get; set; }
+		public string FromPrevious { get; set; }
+		public string FromNext { get; set; }
 
 		public HistoryModel(ICommonObjects commonObjects)
 		{
@@ -38,6 +40,17 @@ namespace DevilDaggersWebsite.Pages.Leaderboard
 			From = from;
 			if (string.IsNullOrEmpty(From))
 				From = JsonFiles[0].Value;
+
+			for (int i = 0; i < JsonFiles.Count; i++)
+			{
+				if (From == JsonFiles[i].Value)
+				{
+					if (i != 0)
+						FromPrevious = JsonFiles[i - 1].Value;
+					if (i != JsonFiles.Count - 1)
+						FromNext = JsonFiles[i + 1].Value;
+				}
+			}
 
 			string jsonString = null;
 			try

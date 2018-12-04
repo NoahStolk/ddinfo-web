@@ -32,18 +32,6 @@
 	cursor: pointer;
 }
 
-.missing-information-container {
-	max-width: 460px;
-	margin: auto;
-	border: solid 1px;
-	border-color: var(--col-dark-red);
-	padding: 8px;
-}
-
-.missing-information {
-	font-size: 17px;
-}
-
 @media (max-width: 1199px) {
 	.leaderboard-row {
 		cursor: pointer;
@@ -276,17 +264,6 @@
 
 .default {
 	background: url('../Images/Fonts/Default.png');
-	background-repeat: repeat-x;
-	background-position: 0 7px;
-	-webkit-font-smoothing: antialiased;
-	-webkit-background-clip: text;
-	-moz-background-clip: text;
-	background-clip: text;
-	-webkit-text-fill-color: transparent;
-}
-
-.macro {
-	background: url('../Images/Fonts/Macro.png');
 	background-repeat: repeat-x;
 	background-position: 0 7px;
 	-webkit-font-smoothing: antialiased;
