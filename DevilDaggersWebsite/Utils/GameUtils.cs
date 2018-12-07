@@ -12,6 +12,7 @@ namespace DevilDaggersWebsite.Utils
 
 		public static Death Unknown = new Death("N/A", "444444", -1);
 
+		// From the leaderboard
 		public static Death Fallen = new Death("FALLEN", "DDDDDD", 0);
 		public static Death Swarmed = new Death("SWARMED", "352710", 1);
 		public static Death Impaled = new Death("IMPALED", "433114", 2);

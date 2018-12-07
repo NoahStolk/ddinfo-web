@@ -6,6 +6,9 @@ using System.IO;
 
 namespace DevilDaggersWebsite.Utils
 {
+	/// <summary>
+	/// OBSOLETE
+	/// </summary>
 	public static class SpawnsetUtils
 	{
 		private const int HEADER_BUFFER_SIZE = 36;
@@ -17,6 +20,7 @@ namespace DevilDaggersWebsite.Utils
 		private const int ARENA_HEIGHT = 51;
 
 		/// <summary>
+		/// OBSOLETE
 		/// Parses the contents of a spawnset file into a Spawnset instance.
 		/// This only works for V3 spawnsets.
 		/// </summary>
@@ -86,6 +90,11 @@ namespace DevilDaggersWebsite.Utils
 			return new Spawnset(spawns, arenaTiles, shrinkStart, shrinkEnd, shrinkRate, brightness);
 		}
 
+		/// <summary>
+		/// TODO: Port to DevilDaggersCore
+		/// </summary>
+		/// <param name="path"></param>
+		/// <returns></returns>
 		public static SpawnData GetSpawnData(string path)
 		{
 			SpawnData spawnData = new SpawnData();
