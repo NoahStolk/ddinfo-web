@@ -94,7 +94,7 @@ input {
 .select {
 	color: var(--col-red);
 	background-color: var(--col-black);
-	max-width: 256px;
+	max-width: 280px;
 	margin: 12px auto;
 }
 
