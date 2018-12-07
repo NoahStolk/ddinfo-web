@@ -20,7 +20,7 @@
 	<link href="~/Images/Logos/dd.png" rel="shortcut icon" />
 	<title>@ViewData["Title"] - Devil Daggers Info</title>
 
-	@await Html.PartialAsync("SharedPartials/_CSSBundlePartial")
+	@await Html.PartialAsync("SharedPartials/_CSSBundlePartial", new List<string> { "~/lib/jqPlot/jquery.jqplot.min.css" })
 </head>
 <body>
 	<nav class="navbar navbar-fixed-top">
@@ -83,7 +83,7 @@
 		</footer>
 	</div>
 
-	@await Html.PartialAsync("SharedPartials/_JSBundlePartial")
+	@await Html.PartialAsync("SharedPartials/_JSBundlePartial", new List<string> { "~/plugins/jqPlot/jquery.jqplot.min.js", "~/plugins/jqPlot/jqplot.dateAxisRenderer.js" })
 
 	@RenderSection("Scripts", required: false)
 </body>
