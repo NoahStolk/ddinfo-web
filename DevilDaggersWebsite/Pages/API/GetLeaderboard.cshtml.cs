@@ -11,11 +11,11 @@ using System.Threading.Tasks;
 namespace DevilDaggersWebsite.Pages.API
 {
 	[ApiFunction(Description = "Returns a JSON copy of the current leaderboard.", ReturnType = MediaTypeNames.Application.Json)]
-	public class LeaderboardJsonModel : PageModel
+	public class GetLeaderboardModel : PageModel
 	{
 		public async Task<FileResult> OnGetAsync()
 		{
-			Models.Leaderboard.Leaderboard leaderboard = await LeaderboardUtils.LoadLeaderboard(1); // Top 100 only now
+			Models.Leaderboard.Leaderboard leaderboard = await LeaderboardUtils.LoadLeaderboard(1); // Top 100 only now, TODO: Get parameter for rank offset
 
 			string jsonResult = JsonConvert.SerializeObject(leaderboard);
 			DateTime dateTime = leaderboard.DateTime;
