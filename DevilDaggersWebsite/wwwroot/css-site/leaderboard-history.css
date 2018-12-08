@@ -1,8 +1,4 @@
-﻿.missing-information-expander {
-	cursor: pointer;
-}
-
-.missing-information {
+﻿.missing-information {
 	font-size: 17px;
 }
 
@@ -12,18 +8,4 @@
 	border: solid 1px;
 	border-color: var(--col-dark-red);
 	padding: 8px;
-	overflow: hidden;
-	max-height: 40px;
-	transition: max-height 0.35s ease-out;
-	-moz-transition: max-height 0.35s ease-out;
-	-webkit-transition: max-height 0.35s ease-out;
-	-o-transition: max-height 0.35s ease-out;
 }
-
-	.missing-information-container.expand {
-		max-height: 500px;
-		transition: max-height 0.45s ease-in;
-		-moz-transition: max-height 0.45s ease-in;
-		-webkit-transition: max-height 0.45s ease-in;
-		-o-transition: max-height 0.45s ease-in;
-	}
