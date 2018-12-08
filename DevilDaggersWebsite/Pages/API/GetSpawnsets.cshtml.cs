@@ -2,6 +2,7 @@
 using DevilDaggersWebsite.Models.API;
 using DevilDaggersWebsite.Models.Spawnset;
 using Microsoft.AspNetCore.Mvc;
+using Newtonsoft.Json;
 using System.Collections.Generic;
 using System.IO;
 using System.Linq;
@@ -19,9 +20,9 @@ namespace DevilDaggersWebsite.Pages.API
 			_commonObjects = commonObjects;
 		}
 
-		public FileResult OnGet(string searchAuthor = null, string searchName = null)
+		public FileResult OnGet(string searchAuthor = null, string searchName = null, bool formatted = false)
 		{
-			return JsonFile(GetSpawnsets(searchAuthor, searchName));
+			return JsonFile(GetSpawnsets(searchAuthor, searchName), formatted ? Formatting.Indented : Formatting.None);
 		}
 
 		public List<SpawnsetFile> GetSpawnsets(string searchAuthor = null, string searchName = null)

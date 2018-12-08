@@ -2,6 +2,7 @@
 using DevilDaggersWebsite.Models.API;
 using DevilDaggersWebsite.Utils;
 using Microsoft.AspNetCore.Mvc;
+using Newtonsoft.Json;
 using System.Net.Mime;
 
 namespace DevilDaggersWebsite.Pages.API
@@ -16,9 +17,9 @@ namespace DevilDaggersWebsite.Pages.API
 			_commonObjects = commonObjects;
 		}
 
-		public FileResult OnGet()
+		public FileResult OnGet(bool formatted = false)
 		{
-			return JsonFile(ToolUtils.Tools);
+			return JsonFile(ToolUtils.Tools, formatted ? Formatting.Indented : Formatting.None);
 		}
 	}
 }

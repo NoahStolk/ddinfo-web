@@ -21,7 +21,7 @@ namespace DevilDaggersWebsite.Pages.API
 			_commonObjects = commonObjects;
 		}
 
-		public FileResult OnGet()
+		public FileResult OnGet(bool formatted = false)
 		{
 			Dictionary<DateTime, Entry> data = new Dictionary<DateTime, Entry>();
 			int worldRecord = 0;
@@ -36,7 +36,7 @@ namespace DevilDaggersWebsite.Pages.API
 				}
 			}
 
-			return JsonFile(data);
+			return JsonFile(data, formatted ? Formatting.Indented : Formatting.None);
 		}
 	}
 }
