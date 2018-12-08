@@ -1,4 +1,5 @@
 ﻿using DevilDaggersWebsite.Models.Game;
+using DevilDaggersWebsite.Models.Leaderboard;
 using Microsoft.AspNetCore.Html;
 using System;
 using System.Drawing;
@@ -68,13 +69,13 @@ namespace DevilDaggersWebsite.Utils
 
 		public static HtmlString GetLeaderboardInformationHTMLString(string info)
 		{
-			if (string.IsNullOrEmpty(info))
+			if (string.IsNullOrEmpty(info) || string.IsNullOrWhiteSpace(info))
 				return NAString;
 
 			return new HtmlString(info
 				.Replace("\n", "<br />")
-				.Replace("(Missing)", "<span style='color: #f00'>(Missing)</span>")
-				.Replace("(Inaccurate)", "<span style='color: #ff0'>(Inaccurate)</span>"));
+				.Replace(CompletionEntryCombined.PartiallyMissing.ToString(), "<span style='color: #f80'>(Partially missing)</span>")
+				.Replace(CompletionEntryCombined.Missing.ToString(), "<span style='color: #f00'>(Missing)</span>"));
 		}
 
 		public static string InterpolateHexColor(string c1, string c2, float percentage)

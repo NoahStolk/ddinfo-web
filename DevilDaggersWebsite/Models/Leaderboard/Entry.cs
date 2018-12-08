@@ -71,11 +71,14 @@ namespace DevilDaggersWebsite.Models.Leaderboard
 			return GameUtils.Deaths[DeathType];
 		}
 
+		/// <summary>
+		/// TODO: Get from Completion object
+		/// </summary>
+		/// <returns></returns>
 		public float GetCompletionRate()
 		{
 			int total = 0;
 			int missing = 0;
-			int inaccurate = 0;
 
 			Type t = GetType();
 			foreach (PropertyInfo info in t.GetProperties())
@@ -95,16 +98,14 @@ namespace DevilDaggersWebsite.Models.Leaderboard
 				if ((name.Contains("deathtype") && valueString == "-1") ||
 					(!name.Contains("deathtype") && valueString == ReflectionUtils.GetDefaultValue(type).ToString()))
 					missing++;
-				else if (name.Contains("shotsfired") && valueString == "10000")
-					inaccurate++;
 			}
 
-			return 1f - missing / (float)total - inaccurate / 2f / total;
+			return 1f - missing / (float)total;
 		}
 
-		public string GetMissingProperties()
+		public Completion GetMissingProperties()
 		{
-			StringBuilder sb = new StringBuilder();
+			Completion completion = new Completion();
 
 			Type t = GetType();
 			foreach (PropertyInfo info in t.GetProperties())
@@ -119,14 +120,14 @@ namespace DevilDaggersWebsite.Models.Leaderboard
 				if (name.Contains("accuracy"))
 					continue;
 
+				completion.CompletionEntries[info.Name] = CompletionEntry.Complete;
+
 				if ((name.Contains("deathtype") && valueString == "-1") ||
 					(!name.Contains("deathtype") && valueString == ReflectionUtils.GetDefaultValue(type).ToString()))
-					sb.AppendLine($"{info.Name} (Missing) {(info.Name == "ID" ? "(No bans)" : "")}");
-				else if (name.Contains("shotsfired") && valueString == "10000")
-					sb.AppendLine($"Shots{info.Name.Substring(10)} (Inaccurate)");
+					completion.CompletionEntries[info.Name] = CompletionEntry.Missing;
 			}
 
-			return sb.ToString();
+			return completion;
 		}
 	}
 }

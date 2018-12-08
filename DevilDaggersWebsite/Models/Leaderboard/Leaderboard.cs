@@ -35,25 +35,54 @@ namespace DevilDaggersWebsite.Models.Leaderboard
 
 		public string GetMissingGlobalInformation()
 		{
+			Completion completion = GetMissingProperties();
+
 			StringBuilder global = new StringBuilder();
-			global.Append(GetMissingProperties());
+			global.AppendLine(completion.ToString());
 
 			return global.ToString();
 		}
 
 		public string GetMissingUserInformation()
 		{
+			List<Completion> completions = new List<Completion>();
+			foreach (Entry entry in Entries)
+				completions.Add(entry.GetMissingProperties());
+
 			StringBuilder user = new StringBuilder();
-			user.Append(Entries[0].GetMissingProperties());
+			foreach (KeyValuePair<string, CompletionEntry> kvp in completions[0].CompletionEntries)
+			{
+				int missing = 0;
+				foreach (Completion completion in completions)
+				{
+					CompletionEntry ce = completion.CompletionEntries[kvp.Key];
+					if (ce == CompletionEntry.Missing)
+						missing++;
+				}
+
+				CompletionEntryCombined completionEntryCombined;
+				if (missing == 0)
+					completionEntryCombined = CompletionEntryCombined.Complete;
+				else if (missing == completions.Count)
+					completionEntryCombined = CompletionEntryCombined.Missing;
+				else
+					completionEntryCombined = CompletionEntryCombined.PartiallyMissing;
+
+				if (completionEntryCombined != CompletionEntryCombined.Complete)
+					user.AppendLine($"{kvp.Key} {completionEntryCombined}");
+			}
 
 			return user.ToString();
 		}
 
+		/// <summary>
+		/// TODO: Get from Completion object
+		/// </summary>
+		/// <returns></returns>
 		public float GetCompletionRate()
 		{
 			int total = 0;
 			int missing = 0;
-			int inaccurate = 0;
 
 			Type t = GetType();
 			foreach (PropertyInfo info in t.GetProperties())
@@ -72,11 +101,9 @@ namespace DevilDaggersWebsite.Models.Leaderboard
 
 				if (valueString == ReflectionUtils.GetDefaultValue(type).ToString())
 					missing++;
-				else if (name.Contains("shotsfired") && valueString == "10000")
-					inaccurate++;
 			}
 
-			float globalCompletionRate = 1f - missing / (float)total - inaccurate / 2f / total;
+			float globalCompletionRate = 1f - missing / (float)total;
 			float userCompletionRate = 0;
 			int totalEntries = Players == 0 ? 100 : Math.Min(Players, 100);
 			foreach (Entry entry in Entries)
@@ -84,9 +111,9 @@ namespace DevilDaggersWebsite.Models.Leaderboard
 			return userCompletionRate * 0.99f + globalCompletionRate * 0.01f;
 		}
 
-		public string GetMissingProperties()
+		public Completion GetMissingProperties()
 		{
-			StringBuilder sb = new StringBuilder();
+			Completion completion = new Completion();
 
 			Type t = GetType();
 			foreach (PropertyInfo info in t.GetProperties())
@@ -101,16 +128,17 @@ namespace DevilDaggersWebsite.Models.Leaderboard
 				if (name.Contains("accuracy") || name.Contains("entries") || name.Contains("datetime"))
 					continue;
 
+				completion.CompletionEntries[info.Name] = CompletionEntry.Complete;
+
 				if (valueString == ReflectionUtils.GetDefaultValue(type).ToString())
-					sb.AppendLine($"{info.Name} (Missing) {(info.Name == "ID" ? "(No bans)" : "")}");
-				else if (name.Contains("shotsfired") && valueString == "10000")
-					sb.AppendLine($"Shots{info.Name.Substring(10)} (Inaccurate)");
+					completion.CompletionEntries[info.Name] = CompletionEntry.Missing;
 			}
 
-			if (Entries.Count != 100)
-				sb.AppendLine($"{100 - Entries.Count} users (Missing)");
+			int players = Players == 0 ? 100 : Math.Min(Players, 100);
+			if (Entries.Count != players)
+				completion.CompletionEntries[$"{players - Entries.Count} users"] = CompletionEntry.Missing;
 
-			return sb.ToString();
+			return completion;
 		}
 	}
 }
