@@ -18,7 +18,7 @@ $.getJSON("/API/GetWorldRecords", function (data) {
 		axes: {
 			xaxis: {
 				renderer: $.jqplot.DateAxisRenderer,
-				min: new Date("2016-01-01T00:00:00Z"),
+				min: new Date("2016-02-01T00:00:00Z"),
 				max: Date.now() + 604800000, // Amount of milliseconds in a week
 				tickOptions: {
 					formatString: "%b %#d '%y"
@@ -59,6 +59,53 @@ $.getJSON("/API/GetWorldRecords", function (data) {
 		},
 		grid: {
 			backgroundColor: '#000000'
-		}
+		},
+		canvasOverlay: {
+			show: true,
+			objects: [
+				{
+					rectangle: {
+						xmin: new Date("2016-02-18"),
+						xmax: new Date("2016-07-05"),
+						xminOffset: "0px",
+						xmaxOffset: "0px",
+						yminOffset: "0px",
+						ymaxOffset: "0px",
+						color: "rgba(0, 200, 200, 0.1)",
+						showTooltip: true,
+						tooltipFormatString: "V1",
+						tooltipLocation: 'sw'
+					}
+				},
+				{
+					rectangle: {
+						xmin: new Date("2016-07-05"),
+						xmax: new Date("2016-09-19"),
+						xminOffset: "0px",
+						xmaxOffset: "0px",
+						yminOffset: "0px",
+						ymaxOffset: "0px",
+						color: "rgba(200, 200, 0, 0.1)",
+						showTooltip: true,
+						tooltipFormatString: "V2",
+						tooltipLocation: 'sw'
+					}
+				},
+				{
+					rectangle: {
+						xmin: new Date("2016-09-19"),
+						xmax: Date.now(),
+						xminOffset: "0px",
+						xmaxOffset: "0px",
+						yminOffset: "0px",
+						ymaxOffset: "0px",
+						color: "rgba(200, 0, 200, 0.1)",
+						showTooltip: true,
+						tooltipFormatString: "V3",
+						tooltipLocation: 'sw'
+					}
+				}
+			]
+		} 
 	});
 });
