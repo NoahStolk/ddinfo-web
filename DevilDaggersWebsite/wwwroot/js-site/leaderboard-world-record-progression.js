@@ -19,7 +19,7 @@ $.getJSON("/API/GetWorldRecords", function (data) {
 			xaxis: {
 				renderer: $.jqplot.DateAxisRenderer,
 				min: new Date("2016-02-01T00:00:00Z"),
-				max: Date.now() + 604800000, // Amount of milliseconds in a week
+				max: Date.now() + 86400000 * 18, // Amount of milliseconds in a day * amount of days
 				tickOptions: {
 					formatString: "%b %#d '%y"
 				}
