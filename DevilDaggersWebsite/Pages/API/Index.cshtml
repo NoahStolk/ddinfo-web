@@ -12,9 +12,9 @@
 
 <div class="row text-bold">
 	<div class="col-xs-2">Name</div>
-	<div class="col-xs-4">Description</div>
+	<div class="col-xs-5">Description</div>
 	<div class="col-xs-2">Return type</div>
-	<div class="col-xs-2">Parameters</div>
+	<div class="col-xs-1">Parameters</div>
 	<div class="col-xs-2">Optional parameters</div>
 </div>
 
@@ -36,10 +36,10 @@
 		}
 		<div class="row">
 			<div class="col-xs-2"><a asp-page=@api.Name>@api.Name</a></div>
-			<div class="col-xs-4">@api.Description</div>
-			<div class="col-xs-2">@api.ReturnType</div>
-			<div class="col-xs-2">@(parameters.Count != 0 ? Html.Raw(parameters.ItemsAppended<string>(", ")) : RazorUtils.NAString)</div>
-			<div class="col-xs-2">@(optionalParameters.Count != 0 ? Html.Raw(optionalParameters.ItemsAppended<string>(", ")) : RazorUtils.NAString)</div>
+			<div class="col-xs-5">@api.FormattedDescription</div>
+			<div class="col-xs-2">@api.Attribute.ReturnType</div>
+			<div class="col-xs-1" style="color: #ff0000;">@(parameters.Count != 0 ? Html.Raw(parameters.ItemsAppended<string>(", ")) : RazorUtils.NAString)</div>
+			<div class="col-xs-2" style="color: #ffff00;">@(optionalParameters.Count != 0 ? Html.Raw(optionalParameters.ItemsAppended<string>(", ")) : RazorUtils.NAString)</div>
 		</div>
 	}
 }

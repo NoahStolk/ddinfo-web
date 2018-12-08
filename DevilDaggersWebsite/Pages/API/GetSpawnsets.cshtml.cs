@@ -9,7 +9,7 @@ using System.Net.Mime;
 
 namespace DevilDaggersWebsite.Pages.API
 {
-	[ApiFunction(Description = "Returns the list of available spawnsets on the site, optional filtering can be done using the two search parameters.", ReturnType = MediaTypeNames.Application.Json)]
+	[ApiFunction(Description = "Returns the list of available spawnsets on the site. Optional filtering can be done using the searchAuthor and searchName parameters.", ReturnType = MediaTypeNames.Application.Json)]
 	public class GetSpawnsetsModel : ApiPageModel
 	{
 		private readonly ICommonObjects _commonObjects;

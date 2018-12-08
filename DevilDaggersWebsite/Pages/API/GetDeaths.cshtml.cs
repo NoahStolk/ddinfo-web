@@ -7,7 +7,7 @@ using System.Net.Mime;
 
 namespace DevilDaggersWebsite.Pages.API
 {
-	[ApiFunction(Description = "Returns the Death object for the given Death Type. Returns all Death objects if no Death Type parameter was specified.", ReturnType = MediaTypeNames.Application.Json)]
+	[ApiFunction(Description = "Returns the Death object for the given deathType. Returns all Death objects if no deathType parameter was specified.", ReturnType = MediaTypeNames.Application.Json)]
 	public class GetDeathsModel : ApiPageModel
 	{
 		public FileResult OnGet(string deathType = null)

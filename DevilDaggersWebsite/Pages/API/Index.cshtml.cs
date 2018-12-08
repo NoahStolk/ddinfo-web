@@ -29,8 +29,7 @@ namespace DevilDaggersWebsite.Pages.API
 						if (onGet != null)
 						{
 							ApiFunctionAttribute apiAttribute = (ApiFunctionAttribute)type.GetCustomAttributes(typeof(ApiFunctionAttribute), true).FirstOrDefault();
-
-							ApiFunctions.Add(new ApiFunction(name, apiAttribute.Description, apiAttribute.ReturnType, onGet.GetParameters()));
+							ApiFunctions.Add(new ApiFunction(apiAttribute, name, onGet.GetParameters()));
 						}
 					}
 				}
