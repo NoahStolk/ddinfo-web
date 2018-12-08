@@ -27,6 +27,7 @@ $.getJSON("/API/GetWorldRecords", function (data) {
 			yaxis: {
 				min: 400,
 				max: 1150,
+				numberTicks: 16,
 				tickOptions: {
 					formatString: '%.4f'
 				}
