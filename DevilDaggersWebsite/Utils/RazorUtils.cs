@@ -14,7 +14,7 @@ namespace DevilDaggersWebsite.Utils
 
 		public static string BanColorCode = "666";
 
-		public const int DEFAULT_MAX_WAVES = 25;
+		public const int DEFAULT_MAX_WAVES = 28;
 		public const int MAX_SPAWNS = 10000;
 
 		public static HtmlString GetEnemyLayoutAnchor(Enemy enemy, bool plural = false, float zalgo = 0)
