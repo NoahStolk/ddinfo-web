@@ -26,11 +26,11 @@ namespace DevilDaggersWebsite.Models.API
 						{
 							string parameter = $"{begin}{pInfo.Name}{end}";
 							if (formattedDescription.Contains(parameter))
-								formattedDescription = formattedDescription.Replace(parameter, $"<span style='color: {(pInfo.IsOptional ? "#ffff00" : "#ff0000")};'>{parameter}</span>");
+								formattedDescription = formattedDescription.Replace(parameter, $"<span class='{(pInfo.IsOptional ? "api-parameter-optional" : "api-parameter")}'>{parameter}</span>");
 						}
 					}
 				}
-				return new HtmlString($"{(Attribute.IsDeprecated ? $"<span style='color: #ff8800;'>[DEPRECATED: {Attribute.DeprecationMessage}]</span> " : "")}{formattedDescription}");
+				return new HtmlString($"{(Attribute.IsDeprecated ? $"<span class='api-function-deprecated'>[DEPRECATED: {Attribute.DeprecationMessage}]</span> " : "")}{formattedDescription}");
 			}
 		}
 

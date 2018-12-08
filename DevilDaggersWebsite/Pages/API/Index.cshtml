@@ -38,8 +38,8 @@
 			<div class="col-xs-2"><a asp-page=@api.Name>@api.Name</a></div>
 			<div class="col-xs-5">@api.FormattedDescription</div>
 			<div class="col-xs-2">@api.Attribute.ReturnType</div>
-			<div class="col-xs-1" style="color: #ff0000;">@(parameters.Count != 0 ? Html.Raw(parameters.ItemsAppended<string>(", ")) : RazorUtils.NAString)</div>
-			<div class="col-xs-2" style="color: #ffff00;">@(optionalParameters.Count != 0 ? Html.Raw(optionalParameters.ItemsAppended<string>(", ")) : RazorUtils.NAString)</div>
+			<div class="col-xs-1 api-parameter">@(parameters.Count != 0 ? Html.Raw(parameters.ItemsAppended<string>(", ")) : RazorUtils.NAString)</div>
+			<div class="col-xs-2 api-parameter-optional">@(optionalParameters.Count != 0 ? Html.Raw(optionalParameters.ItemsAppended<string>(", ")) : RazorUtils.NAString)</div>
 		</div>
 	}
 }

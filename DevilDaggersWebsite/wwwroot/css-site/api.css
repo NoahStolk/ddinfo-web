@@ -1,0 +1,11 @@
+﻿.api-function-deprecated {
+	color: #ff8800;
+}
+
+.api-parameter-optional {
+	color: #ffff00;
+}
+
+.api-parameter {
+	color: #ff0000;
+}
