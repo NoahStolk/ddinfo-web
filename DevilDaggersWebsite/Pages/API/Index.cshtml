@@ -12,40 +12,76 @@
 
 <main role="main">
 	<p class="text-center">
-		These are all API functions available. They are currently used in the client-side section of the website and also in <a href="Tools#DevilDaggersSurvivalEditor">DevilDaggersSurvivalEditor</a>, but feel free to use them for any tool or application you've made yourself. This table is automatically generated, so it will always be up to date.
+		These are all API functions available. Only GET parameters are supported for now. The functions are currently used in the client-side section of the website and also in <a href="Tools#DevilDaggersSurvivalEditor">DevilDaggersSurvivalEditor</a>, but feel free to use them for any tool or application you've made yourself. This table is automatically generated, so it will always be up to date.
 	</p>
-</main>
 
-<div class="row text-bold">
-	<div class="col-xs-2">Name</div>
-	<div class="col-xs-5">Description</div>
-	<div class="col-xs-2">Return type</div>
-	<div class="col-xs-1">Parameters</div>
-	<div class="col-xs-2">Optional parameters</div>
-</div>
+	<h2>List of functions</h2>
+	<div class="row text-bold">
+		<div class="col-xs-2">Name</div>
+		<div class="col-xs-5">Description</div>
+		<div class="col-xs-2">Return type</div>
+		<div class="col-xs-1">Parameters</div>
+		<div class="col-xs-2">Optional parameters</div>
+	</div>
 
-@{
-	foreach (ApiFunction api in Model.ApiFunctions)
-	{
-		List<string> parameters = new List<string>();
-		List<string> optionalParameters = new List<string>();
-		foreach (ParameterInfo pInfo in api.Parameters)
+	@{
+		List<ApiFunction> allFunctions = Model.ApiFunctions.Concat(Model.ApiFunctionsDeprecated).ToList();
+		foreach (ApiFunction api in allFunctions)
 		{
-			if (pInfo.IsOptional)
+			List<string> parameters = new List<string>();
+			List<string> optionalParameters = new List<string>();
+			foreach (ParameterInfo pInfo in api.Parameters)
 			{
-				optionalParameters.Add(pInfo.Name);
+				if (pInfo.IsOptional)
+				{
+					optionalParameters.Add(pInfo.Name);
+				}
+				else
+				{
+					parameters.Add(pInfo.Name);
+				}
 			}
-			else
-			{
-				parameters.Add(pInfo.Name);
-			}
+			<div class="row">
+				<div class="col-xs-2"><a asp-page=@api.Name>@api.Name</a></div>
+				<div class="col-xs-5">@api.FormattedDescription</div>
+				<div class="col-xs-2">@api.Attribute.ReturnType</div>
+				<div class="col-xs-1 api-parameter">@(parameters.Count != 0 ? Html.Raw(parameters.ItemsAppended<string>(", ")) : RazorUtils.NAString)</div>
+				<div class="col-xs-2 api-parameter-optional">@(optionalParameters.Count != 0 ? Html.Raw(optionalParameters.ItemsAppended<string>(", ")) : RazorUtils.NAString)</div>
+			</div>
 		}
-		<div class="row">
-			<div class="col-xs-2"><a asp-page=@api.Name>@api.Name</a></div>
-			<div class="col-xs-5">@api.FormattedDescription</div>
-			<div class="col-xs-2">@api.Attribute.ReturnType</div>
-			<div class="col-xs-1 api-parameter">@(parameters.Count != 0 ? Html.Raw(parameters.ItemsAppended<string>(", ")) : RazorUtils.NAString)</div>
-			<div class="col-xs-2 api-parameter-optional">@(optionalParameters.Count != 0 ? Html.Raw(optionalParameters.ItemsAppended<string>(", ")) : RazorUtils.NAString)</div>
-		</div>
 	}
-}
+
+	<h2>Examples</h2>
+	<div class="row text-bold">
+		<div class="col-xs-4">
+			Example
+		</div>
+		<div class="col-xs-8">
+			Result
+		</div>
+	</div>
+	<div class="row">
+		<div class="col-xs-4">
+			<a asp-page="GetSpawnsets" asp-route-searchAuthor="Sorath" asp-route-searchName="V">API/GetSpawnsets?searchAuthor=Sorath&searchName=V</a>
+		</div>
+		<div class="col-xs-8">
+			Returns the result(s) for every spawnset that contains "Sorath" in the spawnset's author and "V" in the spawnset's name.
+		</div>
+	</div>
+	<div class="row">
+		<div class="col-xs-4">
+			<a asp-page="GetDeaths" asp-route-deathType="10" asp-route-formatted="true">API/GetDeaths?deathType=10&formatted=true</a>
+		</div>
+		<div class="col-xs-8">
+			Returns the Death object for the deathType 10 which is <span style='color: #@GameUtils.Annihilated.ColorCode'>@GameUtils.Annihilated.Name</span>, and also formats the JSON.
+		</div>
+	</div>
+	<div class="row">
+		<div class="col-xs-4">
+			<a asp-page="GetSpawnset" asp-route-fileName="V3_Sorath">API/GetSpawnset?fileName=V3_Sorath</a>
+		</div>
+		<div class="col-xs-8">
+			Returns the spawnset with the name "V3_Sorath".
+		</div>
+	</div>
+</main>

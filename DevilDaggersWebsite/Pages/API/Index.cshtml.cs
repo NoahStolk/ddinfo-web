@@ -10,6 +10,7 @@ namespace DevilDaggersWebsite.Pages.API
 	public class IndexModel : PageModel
 	{
 		public List<ApiFunction> ApiFunctions = new List<ApiFunction>();
+		public List<ApiFunction> ApiFunctionsDeprecated = new List<ApiFunction>();
 
 		public void OnGet()
 		{
@@ -29,7 +30,10 @@ namespace DevilDaggersWebsite.Pages.API
 						if (onGet != null)
 						{
 							ApiFunctionAttribute apiAttribute = (ApiFunctionAttribute)type.GetCustomAttributes(typeof(ApiFunctionAttribute), true).FirstOrDefault();
-							ApiFunctions.Add(new ApiFunction(apiAttribute, name, onGet.GetParameters()));
+							if (apiAttribute.IsDeprecated)
+								ApiFunctionsDeprecated.Add(new ApiFunction(apiAttribute, name, onGet.GetParameters()));
+							else
+								ApiFunctions.Add(new ApiFunction(apiAttribute, name, onGet.GetParameters()));
 						}
 					}
 				}
