@@ -4,7 +4,6 @@ $.getJSON("/API/GetDeaths", function (data) {
 });
 
 $.getJSON("/API/GetWorldRecords", function (data) {
-
 	var wrs = [];
 	$.each(data, function (key, val) {
 		var accuracy = val.ShotsHit / val.ShotsFired * 100;
@@ -12,7 +11,7 @@ $.getJSON("/API/GetWorldRecords", function (data) {
 			accuracy = 0;
 		var death = deathTypes[val.DeathType + 1];
 
-		wrs.push([new Date(key), val.Time / 10000, val.Username, val.Gems === 0 ? "?" : val.Gems, val.Kills === 0 ? "?" : val.Kills, accuracy === 0 ? "?" : accuracy, death.ColorCode, death.Name]);
+		wrs.push([new Date(key), val.Time / 10000, val.Username, val.Gems === 0 ? "?" : val.Gems.toFixed(0), val.Kills === 0 ? "?" : val.Kills.toFixed(0), accuracy === 0 ? "?" : accuracy.toFixed(2) + "%", death.ColorCode, death.Name]);
 	});
 
 	$.jqplot("world-record-progression-chart", [wrs], {
@@ -47,13 +46,13 @@ $.getJSON("/API/GetWorldRecords", function (data) {
 			tooltipAxes: 'xy',
 			yvalues: 7,
 			formatString: '<table class="jqplot-highlighter"> \
-          <tr><td>Date:</td><td>%s</td></tr> \
-          <tr><td>Time:</td><td>%s</td></tr> \
-          <tr><td>Username:</td><td>%s</td></tr> \
-          <tr><td>Gems:</td><td>%s</td></tr> \
-          <tr><td>Kills:</td><td>%s</td></tr> \
-          <tr><td>Accuracy:</td><td>%s</td></tr> \
-          <tr><td>Death type:</td><td style="color: #%s">%s</td></tr></table>'
+			<tr><td>Date:</td><td>%s</td></tr> \
+			<tr><td>Time:</td><td>%s</td></tr> \
+			<tr><td>Username:</td><td>%s</td></tr> \
+			<tr><td>Gems:</td><td>%s</td></tr> \
+			<tr><td>Kills:</td><td>%s</td></tr> \
+			<tr><td>Accuracy:</td><td>%s</td></tr> \
+			<tr><td>Death type:</td><td style="color: #%s">%s</td></tr></table>'
 		},
 		cursor: {
 			show: false

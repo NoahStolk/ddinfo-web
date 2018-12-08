@@ -83,7 +83,12 @@
 		</footer>
 	</div>
 
-	@await Html.PartialAsync("SharedPartials/_JSBundlePartial", new List<string> { "~/plugins/jqPlot/jquery.jqplot.min.js", "~/plugins/jqPlot/jqplot.dateAxisRenderer.js", "~/plugins/jqPlot/jqplot.highlighter.js" })
+	@await Html.PartialAsync("SharedPartials/_JSBundlePartial", new List<string>
+	{
+		"~/plugins/jqPlot/jquery.jqplot.min.js",
+		"~/plugins/jqPlot/jqplot.dateAxisRenderer.js",
+		"~/plugins/jqPlot/jqplot.highlighter.js"
+	})
 
 	@RenderSection("Scripts", required: false)
 </body>
