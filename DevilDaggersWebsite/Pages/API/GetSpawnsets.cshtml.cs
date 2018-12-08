@@ -2,18 +2,15 @@
 using DevilDaggersWebsite.Models.API;
 using DevilDaggersWebsite.Models.Spawnset;
 using Microsoft.AspNetCore.Mvc;
-using Microsoft.AspNetCore.Mvc.RazorPages;
-using Newtonsoft.Json;
 using System.Collections.Generic;
 using System.IO;
 using System.Linq;
 using System.Net.Mime;
-using System.Text;
 
 namespace DevilDaggersWebsite.Pages.API
 {
 	[ApiFunction(Description = "Returns the list of available spawnsets on the site, optional filtering can be done using the two search parameters.", ReturnType = MediaTypeNames.Application.Json)]
-	public class GetSpawnsetsModel : PageModel
+	public class GetSpawnsetsModel : ApiPageModel
 	{
 		private readonly ICommonObjects _commonObjects;
 
@@ -24,11 +21,10 @@ namespace DevilDaggersWebsite.Pages.API
 
 		public FileResult OnGet(string searchAuthor = null, string searchName = null)
 		{
-			string jsonResult = GetSpawnsets(searchAuthor, searchName);
-			return File(Encoding.UTF8.GetBytes(jsonResult), MediaTypeNames.Application.Json, $"{GetType().Name.Replace("Model", "")}.json");
+			return JsonFile(GetSpawnsets(searchAuthor, searchName));
 		}
 
-		public string GetSpawnsets(string searchAuthor, string searchName)
+		public List<SpawnsetFile> GetSpawnsets(string searchAuthor = null, string searchName = null)
 		{
 			List<SpawnsetFile> spawnsets = new List<SpawnsetFile>();
 
@@ -41,7 +37,7 @@ namespace DevilDaggersWebsite.Pages.API
 				spawnsets.Add(sf);
 			}
 
-			return JsonConvert.SerializeObject(spawnsets, Formatting.Indented);
+			return spawnsets;
 		}
 	}
 }

@@ -2,19 +2,17 @@
 using DevilDaggersWebsite.Models.API;
 using DevilDaggersWebsite.Models.Leaderboard;
 using Microsoft.AspNetCore.Mvc;
-using Microsoft.AspNetCore.Mvc.RazorPages;
 using NetBase.Utils;
 using Newtonsoft.Json;
 using System;
 using System.Collections.Generic;
 using System.IO;
 using System.Net.Mime;
-using System.Text;
 
 namespace DevilDaggersWebsite.Pages.API
 {
 	[ApiFunction(Description = "Returns all the world records found in the leaderboard history section of the site.", ReturnType = MediaTypeNames.Application.Json)]
-	public class GetWorldRecordsModel : PageModel
+	public class GetWorldRecordsModel : ApiPageModel
 	{
 		private readonly ICommonObjects _commonObjects;
 
@@ -38,8 +36,7 @@ namespace DevilDaggersWebsite.Pages.API
 				}
 			}
 
-			string jsonResult = JsonConvert.SerializeObject(data);
-			return File(Encoding.UTF8.GetBytes(jsonResult), MediaTypeNames.Application.Json, $"{GetType().Name.Replace("Model", "")}.json");
+			return JsonFile(data);
 		}
 	}
 }

@@ -49,7 +49,7 @@ namespace DevilDaggersWebsite.Pages
 
 			List<SpawnsetFile> spawnsetFiles = new List<SpawnsetFile>();
 
-			string str = new GetSpawnsetsModel(_commonObjects).GetSpawnsets(SearchAuthor, SearchName);
+			string str = JsonConvert.SerializeObject(new GetSpawnsetsModel(_commonObjects).GetSpawnsets(SearchAuthor, SearchName));
 			dynamic json = JsonConvert.DeserializeObject(str);
 			foreach (dynamic spawnset in json)
 				spawnsetFiles.Add(new SpawnsetFile(Path.Combine(_commonObjects.Env.WebRootPath, "spawnsets", $"{spawnset.Name}_{spawnset.Author}")));

@@ -19,7 +19,7 @@ namespace DevilDaggersWebsite.Pages.API
 
 			foreach (Type type in asm.GetTypes())
 			{
-				if (type.BaseType == typeof(PageModel) && type.Namespace.Contains("API") && !type.Name.Contains("Index"))
+				if (type.BaseType == typeof(ApiPageModel) && type.Namespace.Contains("API") && !type.Name.Contains("Index"))
 				{
 					string name = type.Name.Replace("Model", "");
 

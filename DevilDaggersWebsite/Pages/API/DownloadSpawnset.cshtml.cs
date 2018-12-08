@@ -1,13 +1,12 @@
 ﻿using DevilDaggersWebsite.Models.API;
 using Microsoft.AspNetCore.Mvc;
-using Microsoft.AspNetCore.Mvc.RazorPages;
 using System.IO;
 using System.Net.Mime;
 
 namespace DevilDaggersWebsite.Pages.API
 {
 	[ApiFunction(Description = "Returns the spawnset file corresponding to the given file parameter (file name).", ReturnType = MediaTypeNames.Application.Octet)]
-	public class DownloadSpawnsetModel : PageModel
+	public class DownloadSpawnsetModel : ApiPageModel
 	{
 		public ActionResult OnGet(string file)
 		{
