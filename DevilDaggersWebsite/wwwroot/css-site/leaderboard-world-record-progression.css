@@ -1,15 +1,11 @@
 ﻿.jqplot-highlighter {
-	background-color: rgba(255,255,255,0.3);
+	background-color: rgba(0,0,0,0.8);
+	color: var(--col-default-text);
+	width: 256px;
+	padding: 8px;
+	text-align: right;
 }
 
-	.jqplot-highlighter > tr {
-		width: 128px;
+	.jqplot-highlighter > tbody > tr > td:nth-child(1) {
+		text-align: left;
 	}
-
-		.jqplot-highlighter > tr > td:nth-child(1) {
-			text-align: left;
-		}
-
-		.jqplot-highlighter > tr > td:nth-child(2) {
-			text-align: right;
-		}
