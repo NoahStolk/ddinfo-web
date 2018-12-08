@@ -55,9 +55,14 @@ namespace DevilDaggersWebsite.Models.Leaderboard
 				int missing = 0;
 				foreach (Completion completion in completions)
 				{
-					CompletionEntry ce = completion.CompletionEntries[kvp.Key];
-					if (ce == CompletionEntry.Missing)
-						missing++;
+					// TODO TryGetValue...
+					try
+					{
+						CompletionEntry ce = completion.CompletionEntries[kvp.Key];
+						if (ce == CompletionEntry.Missing)
+							missing++;
+					}
+					catch { }
 				}
 
 				CompletionEntryCombined completionEntryCombined;

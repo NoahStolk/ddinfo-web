@@ -73,6 +73,7 @@ namespace DevilDaggersWebsite.Utils
 				return NAString;
 
 			return new HtmlString(info
+				.TrimEnd('\n')
 				.Replace("\n", "<br />")
 				.Replace(CompletionEntryCombined.PartiallyMissing.ToString(), "<span style='color: #f80'>(Partially missing)</span>")
 				.Replace(CompletionEntryCombined.Missing.ToString(), "<span style='color: #f00'>(Missing)</span>"));
