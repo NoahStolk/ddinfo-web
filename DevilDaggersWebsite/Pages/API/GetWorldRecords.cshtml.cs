@@ -23,9 +23,14 @@ namespace DevilDaggersWebsite.Pages.API
 
 		public FileResult OnGet(bool formatted = false)
 		{
-			Dictionary<DateTime, Entry> data = new Dictionary<DateTime, Entry>();
-			int worldRecord = 0;
+			return JsonFile(GetWorldRecords(), formatted ? Formatting.Indented : Formatting.None);
+		}
+		
+		public SortedDictionary<DateTime, Entry> GetWorldRecords()
+		{
+			SortedDictionary<DateTime, Entry> data = new SortedDictionary<DateTime, Entry>();
 
+			int worldRecord = 0;
 			foreach (string leaderboardHistoryPath in Directory.GetFiles(Path.Combine(_commonObjects.Env.WebRootPath, "leaderboard-history")))
 			{
 				Models.Leaderboard.Leaderboard leaderboard = JsonConvert.DeserializeObject<Models.Leaderboard.Leaderboard>(FileUtils.GetContents(leaderboardHistoryPath));
@@ -36,7 +41,7 @@ namespace DevilDaggersWebsite.Pages.API
 				}
 			}
 
-			return JsonFile(data, formatted ? Formatting.Indented : Formatting.None);
+			return data;
 		}
 	}
 }

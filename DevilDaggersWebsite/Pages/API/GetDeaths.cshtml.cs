@@ -16,12 +16,17 @@ namespace DevilDaggersWebsite.Pages.API
 			if (!string.IsNullOrEmpty(deathType) && int.TryParse(deathType, out int type))
 				return JsonFile(GetDeathFromDeathType(type));
 
+			return JsonFile(GetAllDeaths(), formatted ? Formatting.Indented : Formatting.None);
+		}
+		
+		public static List<Death> GetAllDeaths()
+		{
 			List<Death> deaths = new List<Death> { GameUtils.Unknown };
 			deaths.AddRange(GameUtils.Deaths);
-			return JsonFile(deaths, formatted ? Formatting.Indented : Formatting.None);
+			return deaths;
 		}
 
-		public Death GetDeathFromDeathType(int deathType)
+		public static Death GetDeathFromDeathType(int deathType)
 		{
 			try
 			{
