@@ -40,7 +40,9 @@ $.getJSON("/API/GetWorldRecords", function (data) {
 		],
 		seriesDefaults: {
 			step: true,
-			markerOptions: { show: false }
+			markerOptions: {
+				show: false
+			}
 		},
 		highlighter: {
 			show: true,
@@ -54,9 +56,6 @@ $.getJSON("/API/GetWorldRecords", function (data) {
 			<tr><td>Kills:</td><td>%s</td></tr> \
 			<tr><td>Accuracy:</td><td>%s</td></tr> \
 			<tr><td>Death type:</td><td style="color: #%s">%s</td></tr></table>'
-		},
-		cursor: {
-			show: false
 		},
 		grid: {
 			backgroundColor: '#000000'
