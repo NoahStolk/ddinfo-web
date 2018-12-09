@@ -1,4 +1,8 @@
-﻿.api-function-deprecated {
+﻿.api-function-list {
+	border: solid 2px #111;
+}
+
+.api-function-deprecated {
 	color: #ff8800;
 }
 
