@@ -2,6 +2,7 @@
 using Newtonsoft.Json;
 using System;
 using System.Collections.Generic;
+using System.Linq;
 using System.Reflection;
 using System.Text;
 
@@ -35,6 +36,8 @@ namespace DevilDaggersWebsite.Models.Leaderboard
 
 		private Completion completion = new Completion();
 
+		public bool HasBlankName { get { return Entries.Any(e => string.IsNullOrEmpty(e.Username)); } }
+
 		public Completion GetCompletion()
 		{
 			if (completion.Initialised)
@@ -53,7 +56,7 @@ namespace DevilDaggersWebsite.Models.Leaderboard
 
 				Type type = value.GetType();
 				string name = info.Name.ToLower();
-				if (name.Contains("accuracy") || name.Contains("entries") || name.Contains("datetime") || name.Contains("completion"))
+				if (name.Contains("accuracy") || name.Contains("entries") || name.Contains("datetime") || name.Contains("completion") || name.Contains("hasblankname"))
 					continue;
 
 				completion.CompletionEntries[info.Name] = CompletionEntry.Complete;
@@ -87,15 +90,13 @@ namespace DevilDaggersWebsite.Models.Leaderboard
 			StringBuilder user = new StringBuilder();
 			foreach (KeyValuePair<string, CompletionEntry> kvp in completions[0].CompletionEntries)
 			{
-				int total = completions.Count;
+				int total = HasBlankName ? completions.Count - 1 : completions.Count;
 				int missing = 0;
 				for (int i = 0; i < completions.Count; i++)
 				{
 					if (string.IsNullOrEmpty(Entries[i].Username))
-					{
-						total--;
 						continue; // Skip the blank name
-					}
+
 					if (completions[i].CompletionEntries.TryGetValue(kvp.Key, out CompletionEntry ce) && ce == CompletionEntry.Missing)
 						missing++;
 				}
@@ -117,11 +118,14 @@ namespace DevilDaggersWebsite.Models.Leaderboard
 
 		public float GetCompletionRate()
 		{
+			int total = HasBlankName ? 99 : 100;
+
 			float globalCompletionRate = GetCompletion().GetCompletionRate();
 			float userCompletionRate = 0;
-			int totalEntries = Players == 0 ? 100 : Math.Min(Players, 100);
+			int totalEntries = Players == 0 ? total : Math.Min(Players, total);
 			foreach (Entry entry in Entries)
-				userCompletionRate += entry.GetCompletion().GetCompletionRate() * (1f / totalEntries);
+				if (!string.IsNullOrEmpty(entry.Username)) // Skip the blank name
+					userCompletionRate += entry.GetCompletion().GetCompletionRate() * (1f / totalEntries);
 			return userCompletionRate * 0.99f + globalCompletionRate * 0.01f;
 		}
 	}
