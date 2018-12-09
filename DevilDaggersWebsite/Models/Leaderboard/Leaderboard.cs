@@ -33,104 +33,27 @@ namespace DevilDaggersWebsite.Models.Leaderboard
 
 		public double AccuracyGlobal => ShotsFiredGlobal == 0 ? 0 : ShotsHitGlobal / (double)ShotsFiredGlobal;
 
-		public string GetMissingGlobalInformation()
+		private Completion completion = new Completion();
+
+		public Completion GetCompletion()
 		{
-			Completion completion = GetMissingProperties();
-
-			StringBuilder global = new StringBuilder();
-			global.AppendLine(completion.ToString());
-
-			return global.ToString();
-		}
-
-		public string GetMissingUserInformation()
-		{
-			List<Completion> completions = new List<Completion>();
-			foreach (Entry entry in Entries)
-				completions.Add(entry.GetMissingProperties());
-
-			StringBuilder user = new StringBuilder();
-			foreach (KeyValuePair<string, CompletionEntry> kvp in completions[0].CompletionEntries)
-			{
-				int missing = 0;
-				foreach (Completion completion in completions)
-				{
-					// TODO TryGetValue...
-					try
-					{
-						CompletionEntry ce = completion.CompletionEntries[kvp.Key];
-						if (ce == CompletionEntry.Missing)
-							missing++;
-					}
-					catch { }
-				}
-
-				CompletionEntryCombined completionEntryCombined;
-				if (missing == 0)
-					completionEntryCombined = CompletionEntryCombined.Complete;
-				else if (missing == completions.Count)
-					completionEntryCombined = CompletionEntryCombined.Missing;
-				else
-					completionEntryCombined = CompletionEntryCombined.PartiallyMissing;
-
-				if (completionEntryCombined != CompletionEntryCombined.Complete)
-					user.AppendLine($"{kvp.Key} {completionEntryCombined}");
-			}
-
-			return user.ToString();
-		}
-
-		/// <summary>
-		/// TODO: Get from Completion object
-		/// </summary>
-		/// <returns></returns>
-		public float GetCompletionRate()
-		{
-			int total = 0;
-			int missing = 0;
+			if (completion.Initialised)
+				return completion;
 
 			Type t = GetType();
 			foreach (PropertyInfo info in t.GetProperties())
 			{
 				object value = info.GetValue(this);
+				if (value == null)
+					continue;
+
 				string valueString = value.ToString();
 				if (string.IsNullOrEmpty(valueString))
 					continue;
 
 				Type type = value.GetType();
 				string name = info.Name.ToLower();
-				if (name.Contains("accuracy") || name.Contains("entries") || name.Contains("datetime"))
-					continue;
-
-				total++;
-
-				if (valueString == ReflectionUtils.GetDefaultValue(type).ToString())
-					missing++;
-			}
-
-			float globalCompletionRate = 1f - missing / (float)total;
-			float userCompletionRate = 0;
-			int totalEntries = Players == 0 ? 100 : Math.Min(Players, 100);
-			foreach (Entry entry in Entries)
-				userCompletionRate += entry.GetCompletionRate() * (1f / totalEntries);
-			return userCompletionRate * 0.99f + globalCompletionRate * 0.01f;
-		}
-
-		public Completion GetMissingProperties()
-		{
-			Completion completion = new Completion();
-
-			Type t = GetType();
-			foreach (PropertyInfo info in t.GetProperties())
-			{
-				object value = info.GetValue(this);
-				string valueString = value.ToString();
-				if (string.IsNullOrEmpty(valueString))
-					continue;
-
-				Type type = value.GetType();
-				string name = info.Name.ToLower();
-				if (name.Contains("accuracy") || name.Contains("entries") || name.Contains("datetime"))
+				if (name.Contains("accuracy") || name.Contains("entries") || name.Contains("datetime") || name.Contains("completion"))
 					continue;
 
 				completion.CompletionEntries[info.Name] = CompletionEntry.Complete;
@@ -143,7 +66,63 @@ namespace DevilDaggersWebsite.Models.Leaderboard
 			if (Entries.Count != players)
 				completion.CompletionEntries[$"{players - Entries.Count} users"] = CompletionEntry.Missing;
 
+			completion.Initialised = true;
 			return completion;
+		}
+
+		public string GetMissingGlobalInformation()
+		{
+			StringBuilder global = new StringBuilder();
+			global.AppendLine(GetCompletion().ToString());
+
+			return global.ToString();
+		}
+
+		public string GetMissingUserInformation()
+		{
+			List<Completion> completions = new List<Completion>();
+			foreach (Entry entry in Entries)
+				completions.Add(entry.GetCompletion());
+
+			StringBuilder user = new StringBuilder();
+			foreach (KeyValuePair<string, CompletionEntry> kvp in completions[0].CompletionEntries)
+			{
+				int total = completions.Count;
+				int missing = 0;
+				for (int i = 0; i < completions.Count; i++)
+				{
+					if (string.IsNullOrEmpty(Entries[i].Username))
+					{
+						total--;
+						continue; // Skip the blank name
+					}
+					if (completions[i].CompletionEntries.TryGetValue(kvp.Key, out CompletionEntry ce) && ce == CompletionEntry.Missing)
+						missing++;
+				}
+
+				CompletionEntryCombined completionEntryCombined;
+				if (missing == 0)
+					completionEntryCombined = CompletionEntryCombined.Complete;
+				else if (missing == total)
+					completionEntryCombined = CompletionEntryCombined.Missing;
+				else
+					completionEntryCombined = CompletionEntryCombined.PartiallyMissing;
+
+				if (completionEntryCombined != CompletionEntryCombined.Complete)
+					user.AppendLine($"{kvp.Key} {completionEntryCombined}");
+			}
+
+			return user.ToString();
+		}
+
+		public float GetCompletionRate()
+		{
+			float globalCompletionRate = GetCompletion().GetCompletionRate();
+			float userCompletionRate = 0;
+			int totalEntries = Players == 0 ? 100 : Math.Min(Players, 100);
+			foreach (Entry entry in Entries)
+				userCompletionRate += entry.GetCompletion().GetCompletionRate() * (1f / totalEntries);
+			return userCompletionRate * 0.99f + globalCompletionRate * 0.01f;
 		}
 	}
 }

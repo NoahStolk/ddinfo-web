@@ -4,7 +4,6 @@ using Microsoft.AspNetCore.Html;
 using Newtonsoft.Json;
 using System;
 using System.Reflection;
-using System.Text;
 using System.Web;
 
 namespace DevilDaggersWebsite.Models.Leaderboard
@@ -46,6 +45,40 @@ namespace DevilDaggersWebsite.Models.Leaderboard
 		public double Accuracy => ShotsFired == 0 ? 0 : ShotsHit / (double)ShotsFired;
 		public double AccuracyTotal => ShotsFiredTotal == 0 ? 0 : ShotsHitTotal / (double)ShotsFiredTotal;
 
+		private Completion completion = new Completion();
+
+		public Completion GetCompletion()
+		{
+			if (completion.Initialised)
+				return completion;
+
+			Type t = GetType();
+			foreach (PropertyInfo info in t.GetProperties())
+			{
+				object value = info.GetValue(this);
+				if (value == null)
+					continue;
+
+				string valueString = value.ToString();
+				if (string.IsNullOrEmpty(valueString))
+					continue;
+
+				Type type = value.GetType();
+				string name = info.Name.ToLower();
+				if (name.Contains("accuracy") || name.Contains("completion"))
+					continue;
+
+				completion.CompletionEntries[info.Name] = CompletionEntry.Complete;
+
+				if ((name.Contains("deathtype") && valueString == "-1") ||
+					(!name.Contains("deathtype") && valueString == ReflectionUtils.GetDefaultValue(type).ToString()))
+					completion.CompletionEntries[info.Name] = CompletionEntry.Missing;
+			}
+
+			completion.Initialised = true;
+			return completion;
+		}
+
 		public HtmlString ToHTMLData()
 		{
 			return new HtmlString($@"
@@ -69,65 +102,6 @@ namespace DevilDaggersWebsite.Models.Leaderboard
 			if (DeathType < 0 || DeathType > 18)
 				return GameUtils.Unknown;
 			return GameUtils.Deaths[DeathType];
-		}
-
-		/// <summary>
-		/// TODO: Get from Completion object
-		/// </summary>
-		/// <returns></returns>
-		public float GetCompletionRate()
-		{
-			int total = 0;
-			int missing = 0;
-
-			Type t = GetType();
-			foreach (PropertyInfo info in t.GetProperties())
-			{
-				object value = info.GetValue(this);
-				string valueString = value.ToString();
-				if (string.IsNullOrEmpty(valueString))
-					continue;
-
-				Type type = value.GetType();
-				string name = info.Name.ToLower();
-				if (name.Contains("accuracy"))
-					continue;
-
-				total++;
-
-				if ((name.Contains("deathtype") && valueString == "-1") ||
-					(!name.Contains("deathtype") && valueString == ReflectionUtils.GetDefaultValue(type).ToString()))
-					missing++;
-			}
-
-			return 1f - missing / (float)total;
-		}
-
-		public Completion GetMissingProperties()
-		{
-			Completion completion = new Completion();
-
-			Type t = GetType();
-			foreach (PropertyInfo info in t.GetProperties())
-			{
-				object value = info.GetValue(this);
-				string valueString = value.ToString();
-				if (string.IsNullOrEmpty(valueString))
-					continue;
-
-				Type type = value.GetType();
-				string name = info.Name.ToLower();
-				if (name.Contains("accuracy"))
-					continue;
-
-				completion.CompletionEntries[info.Name] = CompletionEntry.Complete;
-
-				if ((name.Contains("deathtype") && valueString == "-1") ||
-					(!name.Contains("deathtype") && valueString == ReflectionUtils.GetDefaultValue(type).ToString()))
-					completion.CompletionEntries[info.Name] = CompletionEntry.Missing;
-			}
-
-			return completion;
 		}
 	}
 }
