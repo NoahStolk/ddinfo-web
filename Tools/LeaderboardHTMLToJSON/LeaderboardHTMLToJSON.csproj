@@ -6,9 +6,8 @@
   </PropertyGroup>
 
   <ItemGroup>
-    <ProjectReference Include="..\..\CoreBase\CoreBase\CoreBase.csproj" />
-    <ProjectReference Include="..\..\NetBase\NetBase\NetBase.csproj" />
-    <ProjectReference Include="..\DevilDaggersWebsite\DevilDaggersWebsite.csproj" />
+    <ProjectReference Include="..\..\..\CoreBase\CoreBase\CoreBase.csproj" />
+    <ProjectReference Include="..\..\..\DevilDaggersCore\DevilDaggersCore\DevilDaggersCore.csproj" />
   </ItemGroup>
 
   <ItemGroup>

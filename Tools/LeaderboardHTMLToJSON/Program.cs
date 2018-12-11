@@ -1,5 +1,6 @@
-﻿using DevilDaggersWebsite.Models.Leaderboard;
-using DevilDaggersWebsite.Utils;
+﻿using DevilDaggersCore.Game;
+using DevilDaggersCore.Leaderboard;
+using DevilDaggersCore.SiteUtils;
 using NetBase.Utils;
 using Newtonsoft.Json;
 using System.IO;
@@ -36,7 +37,7 @@ namespace LeaderboardHTMLToJSON
 				lines[i] = lines[i].TrimStart('\t');
 				if (lines[i].StartsWith("<div class=\"sort\""))
 				{
-					lb.Entries.Add(new Entry
+					lb.Entries.Add(new LeaderboardEntry
 					{
 						Rank = int.Parse(GetValue(lines[i], "rank")),
 						Username = GetValue(lines[i], "username"),
@@ -45,7 +46,7 @@ namespace LeaderboardHTMLToJSON
 						Gems = int.Parse(GetValue(lines[i], "gems")),
 						ShotsFired = 10000,
 						ShotsHit = int.Parse(GetValue(lines[i], "accuracy")),
-						DeathType = GameUtils.GetDeathTypeFromDeathName(GetValue(lines[i], "death-type")),
+						DeathType = Game.GetDeathFromDeathName(GetValue(lines[i], "death-type")).LeaderboardType,
 						TimeTotal = ulong.Parse(GetValue(lines[i], "total-time")),
 						KillsTotal = ulong.Parse(GetValue(lines[i], "total-kills")),
 						GemsTotal = ulong.Parse(GetValue(lines[i], "total-gems")),

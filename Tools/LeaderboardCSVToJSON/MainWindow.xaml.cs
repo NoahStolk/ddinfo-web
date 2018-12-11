@@ -1,8 +1,11 @@
-﻿using LeaderboardJsonCreator;
+﻿using DevilDaggersCore.Game;
+using DevilDaggersCore.Leaderboard;
+using DevilDaggersCore.SiteUtils;
 using Microsoft.Win32;
 using NetBase.Utils;
 using Newtonsoft.Json;
 using System.IO;
+using System.Linq;
 using System.Windows;
 
 namespace LeaderboardCSVToJSON
@@ -27,7 +30,7 @@ namespace LeaderboardCSVToJSON
 			{
 				Leaderboard leaderboard = new Leaderboard
 				{
-					DateTime = Utils.HistoryJsonFileNameToDateTime(Path.GetFileNameWithoutExtension(dlg.FileName))
+					DateTime = LeaderboardHistoryUtils.HistoryJsonFileNameToDateTime(Path.GetFileNameWithoutExtension(dlg.FileName))
 				};
 
 				using (StreamReader reader = new StreamReader(dlg.FileName))
@@ -59,7 +62,7 @@ namespace LeaderboardCSVToJSON
 
 						if (i >= 9 && i < 109)
 						{
-							Entry entry = new Entry
+							LeaderboardEntry entry = new LeaderboardEntry
 							{
 								DeathType = -1
 							};
@@ -72,7 +75,7 @@ namespace LeaderboardCSVToJSON
 							entry.ShotsHit = (int)GetAccuracy(values[5]);
 							if (entry.ShotsHit != 0)
 								entry.ShotsFired = 10000;
-							entry.DeathType = values[6].ToDeathType();
+							entry.DeathType = Game.GetDeathFromDeathName(values[6]).LeaderboardType;
 							ulong.TryParse(values[7].Replace(".", ""), out entry.TimeTotal);
 							ulong.TryParse(values[8], out entry.KillsTotal);
 							ulong.TryParse(values[9], out entry.GemsTotal);

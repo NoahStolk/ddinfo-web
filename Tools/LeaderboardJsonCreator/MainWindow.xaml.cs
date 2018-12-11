@@ -1,4 +1,7 @@
-﻿using NetBase.Utils;
+﻿using DevilDaggersCore.Game;
+using DevilDaggersCore.Leaderboard;
+using DevilDaggersCore.SiteUtils;
+using NetBase.Utils;
 using Newtonsoft.Json;
 using System;
 using System.Collections.Generic;
@@ -18,7 +21,7 @@ namespace LeaderboardJsonCreator
 
 		private void AddEntry_Click(object sender, RoutedEventArgs e)
 		{
-			Entry entry = new Entry
+			LeaderboardEntry entry = new LeaderboardEntry
 			{
 				DeathType = -1
 			};
@@ -53,7 +56,7 @@ namespace LeaderboardJsonCreator
 			foreach (string line in entries)
 			{
 				i++;
-				Entry entry = new Entry
+				LeaderboardEntry entry = new LeaderboardEntry
 				{
 					Rank = i,
 					DeathType = -1
@@ -72,7 +75,7 @@ namespace LeaderboardJsonCreator
 				int.TryParse(values[1].Trim(',', '.'), out entry.Time);
 				int.TryParse(values[2], out entry.Kills);
 				int.TryParse(values[3], out entry.Gems);
-				entry.DeathType = values[4].ToDeathType();
+				entry.DeathType = Game.GetDeathFromDeathName(values[4]).LeaderboardType;
 
 				ulong.TryParse(values[5].Trim(',', '.'), out entry.TimeTotal);
 				ulong.TryParse(values[6], out entry.KillsTotal);
@@ -88,7 +91,7 @@ namespace LeaderboardJsonCreator
 			try
 			{
 				int.TryParse(Players.Text, out leaderboard.Players);
-				leaderboard.DateTime = Utils.HistoryJsonFileNameToDateTime(DateTime.Text);
+				leaderboard.DateTime = LeaderboardHistoryUtils.HistoryJsonFileNameToDateTime(DateTime.Text);
 				ulong.TryParse(TimeGlobal.Text, out leaderboard.TimeGlobal);
 				ulong.TryParse(KillsGlobal.Text, out leaderboard.KillsGlobal);
 				ulong.TryParse(GemsGlobal.Text, out leaderboard.GemsGlobal);
