@@ -4,10 +4,10 @@
   <PropertyGroup>
     <Configuration Condition=" '$(Configuration)' == '' ">Debug</Configuration>
     <Platform Condition=" '$(Platform)' == '' ">AnyCPU</Platform>
-    <ProjectGuid>{70088682-9AB0-4040-8E20-5F8A38DD7799}</ProjectGuid>
+    <ProjectGuid>{E71B2949-6119-44A2-90B9-FE80B16427C8}</ProjectGuid>
     <OutputType>WinExe</OutputType>
-    <RootNamespace>LeaderboardCSVToJson</RootNamespace>
-    <AssemblyName>LeaderboardCSVToJson</AssemblyName>
+    <RootNamespace>DescriptionHelper</RootNamespace>
+    <AssemblyName>DescriptionHelper</AssemblyName>
     <TargetFrameworkVersion>v4.6.1</TargetFrameworkVersion>
     <FileAlignment>512</FileAlignment>
     <ProjectTypeGuids>{60dc8134-eba5-43b8-bcc9-bb4bc16c2548};{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}</ProjectTypeGuids>
@@ -35,9 +35,6 @@
     <WarningLevel>4</WarningLevel>
   </PropertyGroup>
   <ItemGroup>
-    <Reference Include="Newtonsoft.Json, Version=11.0.0.0, Culture=neutral, PublicKeyToken=30ad4fe6b2a6aeed, processorArchitecture=MSIL">
-      <HintPath>..\packages\Newtonsoft.Json.11.0.2\lib\net45\Newtonsoft.Json.dll</HintPath>
-    </Reference>
     <Reference Include="System" />
     <Reference Include="System.Data" />
     <Reference Include="System.Xml" />
@@ -89,7 +86,6 @@
       <Generator>ResXFileCodeGenerator</Generator>
       <LastGenOutput>Resources.Designer.cs</LastGenOutput>
     </EmbeddedResource>
-    <None Include="packages.config" />
     <None Include="Properties\Settings.settings">
       <Generator>SettingsSingleFileGenerator</Generator>
       <LastGenOutput>Settings.Designer.cs</LastGenOutput>
@@ -99,13 +95,9 @@
     <None Include="App.config" />
   </ItemGroup>
   <ItemGroup>
-    <ProjectReference Include="..\..\NetBase\NetBase\NetBase.csproj">
-      <Project>{25F631B5-133B-4136-A995-040072FC405F}</Project>
+    <ProjectReference Include="..\..\..\NetBase\NetBase\NetBase.csproj">
+      <Project>{25f631b5-133b-4136-a995-040072fc405f}</Project>
       <Name>NetBase</Name>
-    </ProjectReference>
-    <ProjectReference Include="..\LeaderboardJsonCreator\LeaderboardJsonCreator.csproj">
-      <Project>{7ff030a0-d588-4bcd-a01b-7cf847bd7de4}</Project>
-      <Name>LeaderboardJsonCreator</Name>
     </ProjectReference>
   </ItemGroup>
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
