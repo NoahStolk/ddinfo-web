@@ -11,6 +11,8 @@ namespace DevilDaggersWebsite.Utils
 	{
 		public static HtmlString NAString = new HtmlString($"<span style='color: #444;'>N/A</span>");
 
+		public static string DiscordLink = "https://discord.gg/NF32j8S";
+
 		public static string Email = "contact@devildaggers.info";
 
 		public static string BanColorCode = "666";
