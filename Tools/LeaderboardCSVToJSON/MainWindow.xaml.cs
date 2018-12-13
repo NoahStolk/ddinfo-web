@@ -75,7 +75,7 @@ namespace LeaderboardCSVToJSON
 							entry.ShotsHit = (int)GetAccuracy(values[5]);
 							if (entry.ShotsHit != 0)
 								entry.ShotsFired = 10000;
-							entry.DeathType = Game.GetDeathFromDeathName(values[6]).LeaderboardType;
+							entry.DeathType = Game.GetDeathFromDeathName(values[6]).DeathType;
 							ulong.TryParse(values[7].Replace(".", ""), out entry.TimeTotal);
 							ulong.TryParse(values[8], out entry.KillsTotal);
 							ulong.TryParse(values[9], out entry.GemsTotal);

@@ -75,7 +75,7 @@ namespace LeaderboardJsonCreator
 				int.TryParse(values[1].Trim(',', '.'), out entry.Time);
 				int.TryParse(values[2], out entry.Kills);
 				int.TryParse(values[3], out entry.Gems);
-				entry.DeathType = Game.GetDeathFromDeathName(values[4]).LeaderboardType;
+				entry.DeathType = Game.GetDeathFromDeathName(values[4]).DeathType;
 
 				ulong.TryParse(values[5].Trim(',', '.'), out entry.TimeTotal);
 				ulong.TryParse(values[6], out entry.KillsTotal);
