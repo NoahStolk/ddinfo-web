@@ -1,10 +1,7 @@
 ﻿using DevilDaggersCore.Game;
 using DevilDaggersWebsite.Models.Leaderboard;
 using Microsoft.AspNetCore.Html;
-using System;
 using System.Collections.Generic;
-using System.Drawing;
-using System.Text;
 
 namespace DevilDaggersWebsite.Utils
 {
@@ -23,7 +20,8 @@ namespace DevilDaggersWebsite.Utils
 
 		public static HtmlString GetEnemyLayoutAnchor(Enemy enemy, bool plural = false, float zalgo = 0)
 		{
-			return new HtmlString($"<a style='color: #{(zalgo == 0 ? enemy.ColorCode : InterpolateHexColor($"#FF{enemy.ColorCode}", "#FFFF0000", zalgo / 100f))};' href='/Wiki/Enemies#{enemy.Name.Replace(" ", "")}'>{enemy.Name.ToZalgo(zalgo / 20f)}{(plural ? "s" : "")}</a>");
+			string color = (zalgo == 0 ? enemy.ColorCode : ZalgoUtils.InterpolateHexColor($"#FF{enemy.ColorCode}", "#FFFF0000", zalgo / 100f));
+			return new HtmlString($"<a style='color: #{color};' href='/Wiki/Enemies#{enemy.Name.Replace(" ", "")}'>{enemy.Name.ToZalgo(zalgo / 20f)}{(plural ? "s" : "")}</a>");
 		}
 
 		public static HtmlString GetUpgradeLayoutAnchor(Upgrade upgrade)
@@ -31,6 +29,7 @@ namespace DevilDaggersWebsite.Utils
 			return new HtmlString($"<a style='color: #{upgrade.ColorCode};' href='/Wiki/Upgrades#{upgrade.Name}'>{upgrade.Name}</a>");
 		}
 
+		// TODO: Rewrite
 		public static HtmlString GetLayout(string str)
 		{
 			char[] beginSeparators = new char[] { '>', ' ', ',', '.', '(' };
@@ -81,60 +80,6 @@ namespace DevilDaggersWebsite.Utils
 				.Replace("\n", "<br />")
 				.Replace(CompletionEntryCombined.PartiallyMissing.ToString(), "<span style='color: #f80'>(Partially missing)</span>")
 				.Replace(CompletionEntryCombined.Missing.ToString(), "<span style='color: #f00'>(Missing)</span>"));
-		}
-
-		public static string InterpolateHexColor(string c1, string c2, float percentage)
-		{
-			ColorConverter converter = new ColorConverter();
-
-			Color color1 = (Color)converter.ConvertFromString(c1);
-			Color color2 = (Color)converter.ConvertFromString(c2);
-
-			byte r = (byte)Lerp(color1.R, color2.R, percentage);
-			byte g = (byte)Lerp(color1.G, color2.G, percentage);
-			byte b = (byte)Lerp(color1.B, color2.B, percentage);
-
-			return string.Format("{0:x2}{1:x2}{2:x2}", r, g, b);
-		}
-
-		private readonly static string[] zalgoAll = new string[]
-		{
-			"̍", "̎", "̄", "̅", "̿", "̑", "̆", "̐", "͒", "͗", "͑", "̇", "̈", "̊", "͂", "̓", "̈́", "͊", "͋", "͌", "̃", "̂", "̌", "͐", "̀", "́", "̋", "̏", "̒", "̓", "̔", "̽", "̉", "ͣ", "ͤ", "ͥ", "ͦ", "ͧ", "ͨ", "ͩ", "ͪ", "ͫ", "ͬ", "ͭ", "ͮ", "ͯ", "̾", "͛", "͆", "̚", "̕", "̛", "̀", "́", "͘", "̡", "̢", "̧", "̨", "̴", "̵", "̶", "͏", "͜", "͝", "͞", "͟", "͠", "͢", "̸", "̷", "͡", "҉", "̖", "̗", "̘", "̙", "̜", "̝", "̞", "̟", "̠", "̤", "̥", "̦", "̩", "̪", "̫", "̬", "̭", "̮", "̯", "̰", "̱", "̲", "̳", "̹", "̺", "̻", "̼", "ͅ", "͇", "͈", "͉", "͍", "͎", "͓", "͔", "͕", "͖", "͙"
-		};
-
-		private readonly static Random random = new Random();
-
-		public static string ToZalgo(this string str, float amount)
-		{
-			if (amount == 0)
-				return str;
-
-			StringBuilder sb = new StringBuilder();
-
-			for (int i = 0; i < str.Length; i++)
-			{
-				sb.Append(str[i]);
-				for (int j = 0; j < amount; j++)
-				{
-					if (j == Math.Floor(amount))
-					{
-						float chance = amount % 1;
-						if (random.NextDouble() < chance)
-							sb.Append(zalgoAll[random.Next(zalgoAll.Length)]);
-					}
-					else
-					{
-						sb.Append(zalgoAll[random.Next(zalgoAll.Length)]);
-					}
-				}
-			}
-
-			return sb.ToString();
-		}
-
-		public static float Lerp(int x, int y, float percentage)
-		{
-			return (y - x) * percentage + x;
 		}
 	}
 }
