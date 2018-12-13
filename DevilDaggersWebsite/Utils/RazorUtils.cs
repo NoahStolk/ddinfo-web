@@ -20,7 +20,7 @@ namespace DevilDaggersWebsite.Utils
 
 		public static HtmlString GetEnemyLayoutAnchor(Enemy enemy, bool plural = false, float zalgo = 0)
 		{
-			string color = (zalgo == 0 ? enemy.ColorCode : ZalgoUtils.InterpolateHexColor($"#FF{enemy.ColorCode}", "#FFFF0000", zalgo / 100f));
+			string color = zalgo == 0 ? enemy.ColorCode : ZalgoUtils.InterpolateHexColor($"#FF{enemy.ColorCode}", "#FFFF0000", zalgo / 100f);
 			return new HtmlString($"<a style='color: #{color};' href='/Wiki/Enemies#{enemy.Name.Replace(" ", "")}'>{enemy.Name.ToZalgo(zalgo / 20f)}{(plural ? "s" : "")}</a>");
 		}
 

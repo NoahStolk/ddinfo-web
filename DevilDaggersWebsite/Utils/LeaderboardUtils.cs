@@ -12,7 +12,7 @@ namespace DevilDaggersWebsite.Utils
 {
 	public static class LeaderboardUtils
 	{
-		private static readonly string serverURL = "http://dd.hasmodai.com/backend15/get_scores.php";
+		private static readonly string serverUrl = "http://dd.hasmodai.com/backend15/get_scores.php";
 
 		public static async Task<Leaderboard> LoadLeaderboard(int rank)
 		{
@@ -31,7 +31,7 @@ namespace DevilDaggersWebsite.Utils
 
 			FormUrlEncodedContent content = new FormUrlEncodedContent(postValues);
 			HttpClient client = new HttpClient();
-			HttpResponseMessage resp = await client.PostAsync(serverURL, content);
+			HttpResponseMessage resp = await client.PostAsync(serverUrl, content);
 			return await resp.Content.ReadAsByteArrayAsync();
 		}
 
@@ -89,7 +89,7 @@ namespace DevilDaggersWebsite.Utils
 			return leaderboard;
 		}
 
-		private static readonly string serverSearchURL = "http://dd.hasmodai.com/backend16/get_user_search_public.php";
+		private static readonly string serverSearchUrl = "http://dd.hasmodai.com/backend16/get_user_search_public.php";
 
 		public static async Task<Leaderboard> LoadLeaderboardSearch(string search)
 		{
@@ -107,7 +107,7 @@ namespace DevilDaggersWebsite.Utils
 
 			FormUrlEncodedContent content = new FormUrlEncodedContent(postValues);
 			HttpClient client = new HttpClient();
-			HttpResponseMessage resp = await client.PostAsync(serverSearchURL, content);
+			HttpResponseMessage resp = await client.PostAsync(serverSearchUrl, content);
 			return await resp.Content.ReadAsByteArrayAsync();
 		}
 
@@ -156,7 +156,7 @@ namespace DevilDaggersWebsite.Utils
 			return leaderboard;
 		}
 
-		private static readonly string serverURLJson = "http://ddstats.com/api/get_scores";
+		private static readonly string serverUrlJson = "http://ddstats.com/api/get_scores";
 
 		public static Leaderboard LoadLeaderboardJson(int rank)
 		{
@@ -169,7 +169,7 @@ namespace DevilDaggersWebsite.Utils
 		{
 			using (WebClient wc = new WebClient())
 			{
-				return wc.DownloadString($"{serverURLJson}?offset={rank - 1}");
+				return wc.DownloadString($"{serverUrlJson}?offset={rank - 1}");
 			}
 		}
 
