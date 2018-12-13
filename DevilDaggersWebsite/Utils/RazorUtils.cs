@@ -106,6 +106,9 @@ namespace DevilDaggersWebsite.Utils
 
 		public static string ToZalgo(this string str, float amount)
 		{
+			if (amount == 0)
+				return str;
+
 			StringBuilder sb = new StringBuilder();
 
 			for (int i = 0; i < str.Length; i++)
