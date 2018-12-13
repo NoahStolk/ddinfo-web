@@ -1,6 +1,5 @@
 ﻿@model SpawnsetNavigationSettings
 @using CoreBase.Code
-@using DevilDaggersWebsite.Models.Spawnset
 @using DevilDaggersWebsite.Pages
 @using System.Text
 @{
@@ -8,8 +7,8 @@
 	int maxAround = Model.MaxAround;
 	ScreenWidthVisibility visibility = Model.Visibility;
 
-	string firstDisabled = !mod.SpawnsetFiles.HasPreviousPage ? "disabled btn-info" : "";
-	string lastDisabled = !mod.SpawnsetFiles.HasNextPage ? "disabled btn-info" : "";
+	string firstDisabled = !mod.PaginatedSpawnsetFiles.HasPreviousPage ? "disabled btn-info" : "";
+	string lastDisabled = !mod.PaginatedSpawnsetFiles.HasNextPage ? "disabled btn-info" : "";
 
 	int first = 1;
 	int last = (int)Math.Ceiling(mod.TotalResults / (float)mod.PageSize);

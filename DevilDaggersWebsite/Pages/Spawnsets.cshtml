@@ -42,7 +42,7 @@
 			</fieldset>
 		}
 
-		if (Model.SpawnsetFiles != null)
+		if (Model.PaginatedSpawnsetFiles != null)
 		{
 			int last = (int)Math.Ceiling(Model.TotalResults / (float)Model.PageSize);
 			int curr = Model.PageIndex;
@@ -117,7 +117,7 @@
 					</tr>
 				</thead>
 				<tbody>
-					@foreach (SpawnsetFile spawnsetFile in Model.SpawnsetFiles)
+					@foreach (SpawnsetFile spawnsetFile in Model.PaginatedSpawnsetFiles)
 					{
 						<tr>
 							<td><a asp-page="Spawnset" asp-route-spawnset="@($"{spawnsetFile.Name}_{spawnsetFile.Author}")">@spawnsetFile.Name</a></td>

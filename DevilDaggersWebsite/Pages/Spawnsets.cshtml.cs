@@ -1,4 +1,5 @@
 ﻿using CoreBase;
+using CoreBase.Code;
 using CoreBase.Services;
 using DevilDaggersWebsite.Models.Spawnset;
 using DevilDaggersWebsite.Pages.API;
@@ -16,7 +17,7 @@ namespace DevilDaggersWebsite.Pages
 	{
 		private readonly ICommonObjects _commonObjects;
 
-		public PaginatedList<SpawnsetFile> SpawnsetFiles;
+		public PaginatedList<SpawnsetFile> PaginatedSpawnsetFiles;
 
 		public string SearchAuthor { get; set; }
 		public string SearchName { get; set; }
@@ -114,7 +115,21 @@ namespace DevilDaggersWebsite.Pages
 				return;
 
 			PageIndex = IntegerUtils.Clamp(PageIndex, 1, (int)Math.Ceiling(TotalResults / (double)PageSize));
-			SpawnsetFiles = PaginatedList<SpawnsetFile>.Create(spawnsetFiles, PageIndex, PageSize);
+			PaginatedSpawnsetFiles = PaginatedList<SpawnsetFile>.Create(spawnsetFiles, PageIndex, PageSize);
+		}
+	}
+
+	public class SpawnsetNavigationSettings
+	{
+		public SpawnsetsModel Model { get; set; }
+		public int MaxAround { get; set; }
+		public ScreenWidthVisibility Visibility { get; set; }
+
+		public SpawnsetNavigationSettings(SpawnsetsModel model, int maxAround, ScreenWidthVisibility visibility)
+		{
+			Model = model;
+			MaxAround = maxAround;
+			Visibility = visibility;
 		}
 	}
 }
