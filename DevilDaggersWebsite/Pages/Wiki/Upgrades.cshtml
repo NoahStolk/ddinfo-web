@@ -5,7 +5,7 @@
 	string boxShadow = "0 0px 2px 2px";
 }
 
-@using DevilDaggersWebsite.Models.Game
+@using DevilDaggersCore.Game
 @using DevilDaggersWebsite.Utils
 
 <header>
@@ -14,7 +14,7 @@
 
 <main role="main">
 	<div class="flex-container flex-center upgrade-container">
-		@foreach (Upgrade upgrade in GameUtils.Upgrades)
+		@foreach (Upgrade upgrade in Game.GetEntities<Upgrade>())
 		{
 			<div class="upgrade" id="Level@(upgrade.Level)" style="-webkit-box-shadow: @boxShadow #@(upgrade.ColorCode); -moz-box-shadow: @boxShadow #@(upgrade.ColorCode); box-shadow: @boxShadow #@(upgrade.ColorCode);">
 				<div class="upgrade-row flex-container">
@@ -31,7 +31,7 @@
 				</div>
 				<div class="upgrade-row flex-container">
 					<div>Default spray</div>
-					<div class="text-right">@upgrade.DefaultSpray.ToString("0.##") daggers per second</div>
+					<div class="text-right">@upgrade.DefaultSprayPerSecond.ToString("0.##") daggers per second</div>
 				</div>
 				<div class="upgrade-row flex-container">
 					<div>Default shot</div>
@@ -39,7 +39,7 @@
 				</div>
 				<div class="upgrade-row flex-container">
 					<div>Homing spray</div>
-					<div class="text-right">@((upgrade.HomingSpray == null) ? RazorUtils.NAString : Html.Raw(upgrade.HomingSpray + " daggers per second"))</div>
+					<div class="text-right">@((upgrade.HomingSprayPerSecond == null) ? RazorUtils.NAString : Html.Raw(upgrade.HomingSprayPerSecond + " daggers per second"))</div>
 				</div>
 				<div class="upgrade-row flex-container">
 					<div>Homing shot</div>

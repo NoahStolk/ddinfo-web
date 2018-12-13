@@ -1,5 +1,5 @@
 ﻿using CoreBase.Services;
-using DevilDaggersWebsite.Utils;
+using DevilDaggersCore.SiteUtils;
 using Microsoft.AspNetCore.Mvc.RazorPages;
 using Microsoft.AspNetCore.Mvc.Rendering;
 using NetBase.Utils;

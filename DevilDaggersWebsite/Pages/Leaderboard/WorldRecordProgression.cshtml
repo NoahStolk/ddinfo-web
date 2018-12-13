@@ -1,4 +1,5 @@
 ﻿@page
+@using DevilDaggersCore.Game
 @using DevilDaggersWebsite.Utils
 @model DevilDaggersWebsite.Pages.Leaderboard.WorldRecordProgressionModel
 @{
@@ -19,7 +20,7 @@
 	<h2>World record holders</h2>
 
 	@{
-		TimeSpan total = DateTime.Now - GameUtils.V1.ReleaseDate;
+		TimeSpan total = DateTime.Now - Game.GameVersions["V1"].ReleaseDate;
 		foreach (KeyValuePair<string, TimeSpan> kvp in Model.TopUsers)
 		{
 			<div class="row">

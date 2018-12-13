@@ -1,5 +1,4 @@
-﻿using DevilDaggersWebsite.Models.Game;
-using DevilDaggersWebsite.Utils;
+﻿using DevilDaggersWebsite.Utils;
 using Microsoft.AspNetCore.Html;
 using Newtonsoft.Json;
 using System;
@@ -88,20 +87,13 @@ namespace DevilDaggersWebsite.Models.Leaderboard
 				kills='{Kills}'
 				gems='{Gems}'
 				accuracy='{(Accuracy * 10000).ToString("0")}'
-				death-type='{GetDeathFromDeathType().Name}'
+				death-type='{DevilDaggersCore.Game.Game.GetDeathFromDeathType(DeathType).Name}'
 				total-time='{TimeTotal}'
 				total-kills='{KillsTotal}'
 				total-gems='{GemsTotal}'
 				total-accuracy='{(AccuracyTotal * 10000).ToString("0")}'
 				total-deaths='{DeathsTotal}'
 			");
-		}
-
-		public Death GetDeathFromDeathType()
-		{
-			if (DeathType < 0 || DeathType > 18)
-				return GameUtils.Unknown;
-			return GameUtils.Deaths[DeathType];
 		}
 	}
 }

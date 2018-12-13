@@ -1,5 +1,5 @@
-﻿@using DevilDaggersWebsite.Utils
-@using DevilDaggersWebsite.Models.Game
+﻿@using DevilDaggersCore.Game
+@using DevilDaggersWebsite.Utils
 @using DevilDaggersWebsite.Models.Leaderboard
 
 <div class="leaderboard-container flex-container flex-center">
@@ -20,8 +20,8 @@
 	<div class="leaderboard-body">
 		@foreach (Entry entry in Model.Leaderboard.Entries)
 		{
-			Dagger dagger = GameUtils.GetDaggerFromTime(entry.Time);
-			Death death = entry.GetDeathFromDeathType();
+			Dagger dagger = Game.GetDaggerFromTime(entry.Time);
+			Death death = Game.GetDeathFromDeathType(entry.DeathType, Game.GetGameVersionFromDate(Model.Leaderboard.DateTime));
 			bool ban = UserUtils.BanIDs.Contains(entry.ID);
 			string banString = ban ? "ban" : string.Empty;
 			string daggerColor = ban ? "ban" : dagger.Name.ToLower();

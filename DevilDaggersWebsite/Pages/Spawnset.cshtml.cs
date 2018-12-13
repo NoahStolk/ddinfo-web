@@ -1,10 +1,9 @@
 ﻿using CoreBase.Services;
+using DevilDaggersCore.Spawnset;
 using DevilDaggersWebsite.Models.Spawnset;
-using DevilDaggersWebsite.Utils;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.AspNetCore.Mvc.RazorPages;
 using Newtonsoft.Json;
-using System;
 using System.IO;
 
 namespace DevilDaggersWebsite.Pages
@@ -13,8 +12,9 @@ namespace DevilDaggersWebsite.Pages
 	{
 		public string Query { get; private set; }
 		public SpawnsetFile SpawnsetFile { get; private set; }
-		public Spawnset Spawnset { get; private set; }
 		public string Description { get; private set; }
+
+		public Spawnset spawnset;
 
 		public ICommonObjects CommonObjects { get; }
 
@@ -29,7 +29,13 @@ namespace DevilDaggersWebsite.Pages
 			{
 				Query = HttpContext.Request.Query["spawnset"];
 				SpawnsetFile = new SpawnsetFile(Path.Combine(CommonObjects.Env.WebRootPath, "spawnsets", Query));
-				Spawnset = SpawnsetUtils.ParseFile(SpawnsetFile.Path);
+
+				using (FileStream fs = new FileStream(SpawnsetFile.Path, FileMode.Open, FileAccess.Read))
+				{
+					if (!Spawnset.TryParse(fs, out spawnset))
+						return RedirectToPage("Spawnsets");
+				}
+
 				Description = string.Empty;
 				foreach (string settingsPath in Directory.GetFiles(Path.Combine(CommonObjects.Env.WebRootPath, "spawnsets", "Settings")))
 				{
@@ -43,13 +49,13 @@ namespace DevilDaggersWebsite.Pages
 						break;
 					}
 				}
+
+				return null;
 			}
-			catch (Exception)
+			catch
 			{
 				return RedirectToPage("Spawnsets");
 			}
-
-			return null;
 		}
 	}
 }

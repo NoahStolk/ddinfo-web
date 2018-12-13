@@ -1,7 +1,8 @@
-﻿using DevilDaggersWebsite.Models.Game;
+﻿using DevilDaggersCore.Game;
 using DevilDaggersWebsite.Models.Leaderboard;
 using Microsoft.AspNetCore.Html;
 using System;
+using System.Collections.Generic;
 using System.Drawing;
 using System.Text;
 
@@ -27,7 +28,7 @@ namespace DevilDaggersWebsite.Utils
 
 		public static HtmlString GetUpgradeLayoutAnchor(Upgrade upgrade)
 		{
-			return new HtmlString($"<a style='color: #{upgrade.ColorCode};' href='/Wiki/Upgrades#Level{upgrade.Level}'>Level {upgrade.Level}</a>");
+			return new HtmlString($"<a style='color: #{upgrade.ColorCode};' href='/Wiki/Upgrades#{upgrade.Name}'>{upgrade.Name}</a>");
 		}
 
 		public static HtmlString GetLayout(string str)
@@ -35,9 +36,10 @@ namespace DevilDaggersWebsite.Utils
 			char[] beginSeparators = new char[] { '>', ' ', ',', '.', '(' };
 			char[] endSeparators = new char[] { ' ', ',', '.', 's', ')', '\'' };
 
-			for (int i = GameUtils.Enemies.Length - 1; i >= 0; i--) // Reverse iteration because transmuted skulls come after normal skulls in the list
+			List<Enemy> enemies = Game.GetEntities<Enemy>();
+			for (int i = enemies.Count - 1; i >= 0; i--) // Reverse iteration because transmuted skulls come after normal skulls in the list
 			{
-				Enemy enemy = GameUtils.Enemies[i];
+				Enemy enemy = enemies[i];
 				foreach (char begin in beginSeparators)
 				{
 					foreach (char end in endSeparators)
@@ -53,13 +55,13 @@ namespace DevilDaggersWebsite.Utils
 				}
 			}
 
-			foreach (Upgrade upgrade in GameUtils.Upgrades)
+			foreach (Upgrade upgrade in Game.GetEntities<Upgrade>())
 			{
 				foreach (char begin in beginSeparators)
 				{
 					foreach (char end in endSeparators)
 					{
-						string upgradeString = $"{begin}Level {upgrade.Level}{end}";
+						string upgradeString = $"{begin}{upgrade.Name}{end}";
 						if (str.Contains(upgradeString))
 							str = str.Replace(upgradeString, $"{begin}{GetUpgradeLayoutAnchor(upgrade)}{end}");
 					}

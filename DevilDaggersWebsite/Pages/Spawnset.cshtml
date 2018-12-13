@@ -36,21 +36,21 @@
 			<div style="width: @(widths[3])px;">Brightness</div>
 		</div>
 		<div class="flex-container flex-center">
-			<div style="width: @(widths[0])px;">@Model.Spawnset.ShrinkStart.ToString("0.#")</div>
-			<div style="width: @(widths[1])px;">@Model.Spawnset.ShrinkEnd.ToString("0.#")</div>
-			<div style="width: @(widths[2])px;">@Model.Spawnset.ShrinkRate.ToString("0.####")</div>
-			<div style="width: @(widths[3])px;">@Model.Spawnset.Brightness.ToString("0.#")</div>
+			<div style="width: @(widths[0])px;">@Model.spawnset.ShrinkStart.ToString("0.#")</div>
+			<div style="width: @(widths[1])px;">@Model.spawnset.ShrinkEnd.ToString("0.#")</div>
+			<div style="width: @(widths[2])px;">@Model.spawnset.ShrinkRate.ToString("0.####")</div>
+			<div style="width: @(widths[3])px;">@Model.spawnset.Brightness.ToString("0.#")</div>
 		</div>
 	</div>
 
 	<table class="tile-table">
 		@{
-			for (int i = 0; i < Model.Spawnset.ArenaTiles.GetLength(0); i++)
+			for (int i = 0; i < Model.spawnset.ArenaTiles.GetLength(0); i++)
 			{
 		<tr>
-			@for (int j = 0; j < Model.Spawnset.ArenaTiles.GetLength(1); j++)
+			@for (int j = 0; j < Model.spawnset.ArenaTiles.GetLength(1); j++)
 			{
-				float height = (float)Math.Round(Model.Spawnset.ArenaTiles[i, j] * 32 + 64);
+				float height = (float)Math.Round(Model.spawnset.ArenaTiles[i, j] * 32 + 64);
 				@*if (Model.SpawnsetFile.Name == "DaggerLobby" && Model.SpawnsetFile.Author == "Sorath" && (
 				(i == 2 && j == 24) ||
 				(i == 42 && j == 25) ||

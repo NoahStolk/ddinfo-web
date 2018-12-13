@@ -1,4 +1,5 @@
-﻿using DevilDaggersWebsite.Models.Leaderboard;
+﻿using DevilDaggersCore.Game;
+using DevilDaggersWebsite.Models.Leaderboard;
 using Newtonsoft.Json;
 using System;
 using System.Collections.Generic;
@@ -198,7 +199,7 @@ namespace DevilDaggersWebsite.Utils
 					ShotsHit = jsonEntry.daggers_hit,
 					ShotsFired = jsonEntry.daggers_fired,
 					Kills = jsonEntry.enemies_killed,
-					DeathType = GameUtils.GetDeathTypeFromDeathName((string)jsonEntry.death_type),
+					DeathType = Game.GetDeathFromDeathName((string)jsonEntry.death_type).DeathType,
 					TimeTotal = jsonEntry.total_game_time * 10000,
 					GemsTotal = jsonEntry.total_gems,
 					ShotsHitTotal = jsonEntry.total_daggers_hit,

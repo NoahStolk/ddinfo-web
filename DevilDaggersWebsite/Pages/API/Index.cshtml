@@ -2,6 +2,7 @@
 @model DevilDaggersWebsite.Pages.API.IndexModel
 @using DevilDaggersWebsite.Models.API
 @using DevilDaggersWebsite.Utils
+@using DevilDaggersCore.Game
 @using NetBase.Extensions
 @using System.Reflection
 @{
@@ -77,7 +78,7 @@
 			<a asp-page="GetDeaths" asp-route-deathType="10" asp-route-formatted="true">API/GetDeaths?deathType=10&formatted=true</a>
 		</div>
 		<div class="col-xs-8">
-			Returns the Death object for the deathType 10 which is <span style='color: #@GameUtils.Annihilated.ColorCode'>@GameUtils.Annihilated.Name</span>, and also formats the JSON.
+			Returns the Death object for the deathType 10 which is <span style='color: #@Game.V3.Annihilated.ColorCode'>@Game.V3.Annihilated.Name</span>, and also formats the JSON.
 		</div>
 	</div>
 	<div class="row">

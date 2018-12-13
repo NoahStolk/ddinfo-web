@@ -1,19 +1,26 @@
 ﻿@model string
 @inject CoreBase.Services.ICommonObjects commonObjects
-@using DevilDaggersWebsite.Models.Spawnset
-@using DevilDaggersWebsite.Models.Game
+@using DevilDaggersCore.Game
+@using DevilDaggersCore.Spawnset
 @using DevilDaggersWebsite.Utils
 @using Newtonsoft.Json
 @using System.IO
 @{
 	int[] widths = new int[4] { 160, 160, 144, 128 };
 
-	Spawnset spawnset = SpawnsetUtils.ParseFile(Model);
+	Spawnset spawnset;
+	using (FileStream fs = new FileStream(Model, FileMode.Open, FileAccess.Read))
+	{
+		if (!Spawnset.TryParse(fs, out spawnset))
+		{
+			return;
+		}
+	}
 
 	bool empty = true;
-	foreach (Spawn spawn in spawnset.Spawns)
+	foreach (Spawn spawn in spawnset.Spawns.Values)
 	{
-		if (spawn.Enemy != null)
+		if (spawn.Enemy != Spawnset.Enemies[-1])
 		{
 			empty = false;
 			break;
@@ -65,38 +72,38 @@
 			List<Spawn> endLoop = new List<Spawn>();
 
 			int spawns = 0;
-			foreach (Spawn spawn in spawnset.Spawns)
+			foreach (Spawn spawn in spawnset.Spawns.Values)
 			{
-				if (spawn.Enemy != null)
+				if (spawn.Enemy != Spawnset.Enemies[-1])
 				{
 					spawns++;
 				}
 
 				endLoop.Add(spawn);
-				if (spawn.Enemy == null)
+				if (spawn.Enemy == Spawnset.Enemies[-1])
 				{
 					foreach (Spawn s in endLoop)
 					{
 						seconds += s.Delay;
-						if (s.Enemy != null)
+						if (s.Enemy != Spawnset.Enemies[-1])
 						{
 							int gems = s.Enemy.Gems;
 
 							// Add no farm gems
-							if (s.Enemy == GameUtils.Squid1)
+							if (s.Enemy == Spawnset.GetEnemyByName("Squid I"))
 							{
-								gems += GameUtils.Skull2.Gems;
+								gems += Game.V3.Skull2.Gems;
 							}
-							if (s.Enemy == GameUtils.Squid2)
+							if (s.Enemy == Spawnset.GetEnemyByName("Squid II"))
 							{
-								gems += GameUtils.Skull3.Gems;
+								gems += Game.V3.Skull3.Gems;
 							}
 
 							totalGems += gems;
 
 							<div class="flex-container flex-center">
 								<div style="width: @(widths[0])px;" class="text-right">@seconds.ToString("0.0000")</div>
-								<div style="width: @(widths[1])px;">@RazorUtils.GetEnemyLayoutAnchor(s.Enemy)</div>
+								<div style="width: @(widths[1])px;">@RazorUtils.GetEnemyLayoutAnchor(s.Enemy.Enemy)</div>
 								<div style="width: @(widths[2])px;" class="text-right">@gems</div>
 								<div style="width: @(widths[3])px;" class="text-right">@totalGems</div>
 							</div>
@@ -108,7 +115,7 @@
 				}
 			}
 
-			if (endLoop.Count != 1 || (endLoop.Count == 1 && endLoop[0].Enemy != null))
+			if (endLoop.Count != 1 || (endLoop.Count == 1 && endLoop[0].Enemy != Spawnset.Enemies[-1]))
 			{
 				double waveMod = 0;
 				double endGameSecond = seconds;
@@ -127,7 +134,7 @@
 					double delay = 0;
 					foreach (Spawn spawn in endLoop)
 					{
-						if (spawn.Enemy != null)
+						if (spawn.Enemy != Spawnset.Enemies[-1])
 						{
 							spawns++;
 						}
@@ -139,32 +146,32 @@
 							enemyTimer += (1f / 60f) + waveMod;
 						}
 
-						if (spawn.Enemy != null)
+						if (spawn.Enemy != Spawnset.Enemies[-1])
 						{
-							Enemy finalEnemy = spawn.Enemy;
+							SpawnsetEnemy finalEnemy = spawn.Enemy;
 							// Change the third Gigapede into a Ghostpede
-							if (finalEnemy == GameUtils.Gigapede && i % 3 == 2)
+							if (finalEnemy == Spawnset.GetEnemyByName("Gigapede") && i % 3 == 2)
 							{
-								finalEnemy = GameUtils.Ghostpede;
+								finalEnemy = Spawnset.GetEnemyByName("Ghostpede");
 							}
 
 							int gems = finalEnemy.Gems;
 
 							// Add no farm gems
-							if (finalEnemy == GameUtils.Squid1)
+							if (finalEnemy == Spawnset.GetEnemyByName("Squid I"))
 							{
-								gems += GameUtils.Skull2.Gems;
+								gems += Game.V3.Skull2.Gems;
 							}
-							if (finalEnemy == GameUtils.Squid2)
+							if (finalEnemy == Spawnset.GetEnemyByName("Squid II"))
 							{
-								gems += GameUtils.Skull3.Gems;
+								gems += Game.V3.Skull3.Gems;
 							}
 
 							totalGems += gems;
 
 							<div class="flex-container flex-center">
 								<div style="width: @(widths[0])px;" class="text-right">@((Math.Floor(endGameSecond * 60) / 60).ToString("0.0000"))</div>
-								<div style="width: @(widths[1])px;">@RazorUtils.GetEnemyLayoutAnchor(finalEnemy, false, Model.Contains("V3_Sorath") && spawns > 525 ? Math.Min((spawns - 525) / 10f, 100) : 0)</div>
+								<div style="width: @(widths[1])px;">@RazorUtils.GetEnemyLayoutAnchor(finalEnemy.Enemy, false, Model.Contains("V3_Sorath") && spawns > 525 ? Math.Min((spawns - 525) / 10f, 100) : 0)</div>
 								<div style="width: @(widths[2])px;" class="text-right">@gems</div>
 								<div style="width: @(widths[3])px;" class="text-right">@totalGems</div>
 							</div>
@@ -174,7 +181,7 @@
 				}
 			}
 
-			<div style="color: red; font-size: 24px;">@(endLoop.Count != 1 || (endLoop.Count == 1 && endLoop[0].Enemy != null) ? "Goes on eternally..." : "End of spawnset")</div>
+			<div style="color: red; font-size: 24px;">@(endLoop.Count != 1 || (endLoop.Count == 1 && endLoop[0].Enemy != Spawnset.Enemies[-1]) ? "Goes on eternally..." : "End of spawnset")</div>
 		}
 	</div>
 }

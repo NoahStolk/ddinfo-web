@@ -12,6 +12,7 @@
   </ItemGroup>
   <ItemGroup>
 	<ProjectReference Include="..\..\CoreBase\CoreBase\CoreBase.csproj" />
+	<ProjectReference Include="..\..\DevilDaggersCore\DevilDaggersCore\DevilDaggersCore.csproj" />
   </ItemGroup>
   <ItemGroup>
     <Content Update="log4net.config">

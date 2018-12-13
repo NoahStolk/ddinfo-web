@@ -1,17 +1,44 @@
-﻿var deathTypes;
-$.getJSON("/API/GetDeaths", function (data) {
-	deathTypes = data;
+﻿var deathTypes = [];
+$.getJSON("/API/GetDeaths?gameVersion=V1", function (data) {
+	deathTypes[0] = data;
+});
+$.getJSON("/API/GetDeaths?gameVersion=V2", function (data) {
+	deathTypes[1] = data;
+});
+$.getJSON("/API/GetDeaths?gameVersion=V3", function (data) {
+	deathTypes[2] = data;
+});
+
+var gameVersions = [];
+$.getJSON("/API/GetGameVersions", function (data) {
+	gameVersions = data;
 });
 
 $.getJSON("/API/GetWorldRecords", function (data) {
 	var wrs = [];
 	$.each(data, function (key, val) {
+		var date = new Date(key);
+
+		var version = 0;
+		for (var i = 3; i > 0; i--) {
+			if (date >= new Date(gameVersions["V" + i].ReleaseDate)) {
+				version = i - 1;
+				break;
+			}
+		}
+		var death;
+		for (var j = 0; j < deathTypes[version].length; j++) {
+			if (deathTypes[version][j].DeathType === val.DeathType) {
+				death = deathTypes[version][j];
+				break;
+			}
+		}
+
 		var accuracy = val.ShotsHit / val.ShotsFired * 100;
 		if (isNaN(accuracy))
 			accuracy = 0;
-		var death = deathTypes[val.DeathType + 1];
 
-		wrs.push([new Date(key), val.Time / 10000, val.Username, val.Gems === 0 ? "?" : val.Gems.toFixed(0), val.Kills === 0 ? "?" : val.Kills.toFixed(0), accuracy === 0 ? "?" : accuracy.toFixed(2) + "%", death.ColorCode, death.Name]);
+		wrs.push([date, val.Time / 10000, val.Username, val.Gems === 0 ? "?" : val.Gems.toFixed(0), val.Kills === 0 ? "?" : val.Kills.toFixed(0), accuracy === 0 ? "?" : accuracy.toFixed(2) + "%", death.ColorCode, death.Name]);
 	});
 
 	$.jqplot("world-record-progression-chart", [wrs], {
