@@ -1,41 +1,23 @@
-﻿using DevilDaggersWebsite.Models.API;
-using DevilDaggersWebsite.Models.Game;
-using DevilDaggersWebsite.Utils;
+﻿using DevilDaggersCore.Game;
+using DevilDaggersWebsite.Models.API;
 using Microsoft.AspNetCore.Mvc;
 using Newtonsoft.Json;
-using System.Collections.Generic;
 using System.Net.Mime;
 
 namespace DevilDaggersWebsite.Pages.API
 {
-	[ApiFunction(Description = "Returns the Death object for the given deathType. Returns all Death objects if no deathType parameter was specified.", ReturnType = MediaTypeNames.Application.Json)]
+	[ApiFunction(Description = "Returns the Death object for the given deathType and gameVersion. Returns all Death objects if no deathType parameter was specified. Returns the unknown (N/A) Death object if an invalid deathType was specified. Returns the Death object found in V3 if no gameVersion parameter was specified or if the parameter was incorrect.", ReturnType = MediaTypeNames.Application.Json)]
 	public class GetDeathsModel : ApiPageModel
 	{
-		public FileResult OnGet(string deathType = null, bool formatted = false)
+		public FileResult OnGet(string deathType = null, string gameVersion = Game.DEFAULT_GAME_VERSION, bool formatted = false)
 		{
+			if (!Game.GameVersions.TryGetValue(gameVersion, out GameVersion version))
+				version = Game.GameVersions[Game.DEFAULT_GAME_VERSION];
+
 			if (!string.IsNullOrEmpty(deathType) && int.TryParse(deathType, out int type))
-				return JsonFile(GetDeathFromDeathType(type));
+				return JsonFile(Game.GetDeathFromDeathType(type, version));
 
-			return JsonFile(GetAllDeaths(), formatted ? Formatting.Indented : Formatting.None);
-		}
-		
-		public static List<Death> GetAllDeaths()
-		{
-			List<Death> deaths = new List<Death> { GameUtils.Unknown };
-			deaths.AddRange(GameUtils.Deaths);
-			return deaths;
-		}
-
-		public static Death GetDeathFromDeathType(int deathType)
-		{
-			try
-			{
-				return GameUtils.Deaths[deathType];
-			}
-			catch
-			{
-				return GameUtils.Unknown;
-			}
+			return JsonFile(Game.GetEntities<Death>(version), formatted ? Formatting.Indented : Formatting.None);
 		}
 	}
 }
