@@ -35,7 +35,7 @@ namespace DevilDaggersWebsite.Pages.Leaderboard
 			JsonFiles.Reverse();
 		}
 
-		public void OnGetAsync(string from)
+		public void OnGet(string from)
 		{
 			From = from;
 			if (string.IsNullOrEmpty(From))
