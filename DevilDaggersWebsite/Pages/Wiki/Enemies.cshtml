@@ -5,8 +5,10 @@
 @{
 	string boxShadow = "0 0px 2px 2px";
 	ViewData["Title"] = "Enemies";
-	List<Enemy> enemies = Game.GetEntities<Enemy>(Game.GameVersions[Game.DEFAULT_GAME_VERSION]);
-	List<Upgrade> upgrades = Game.GetEntities<Upgrade>(Game.GameVersions[Game.DEFAULT_GAME_VERSION]);
+
+	Game.TryGetGameVersionFromString(HttpContext.Request.Query["gameVersion"], out GameVersion gameVersion);
+	List<Enemy> enemies = Game.GetEntities<Enemy>(gameVersion);
+	List<Upgrade> upgrades = Game.GetEntities<Upgrade>(gameVersion);
 }
 
 <header>
@@ -384,14 +386,19 @@
 		}
 	</div>
 
-	<h2 class="text-center">Homing daggers</h2>
-	<ul>
-		@RazorUtils.GetLayout(@"
-		<li>All homing daggers cause 10 damage to most enemies.</li>
-		<li>Leviathan, The Orb, Spider Egg I, and Spider Egg II only take 1 damage from homing daggers.</li>
-		<li>The Orb, Spider Egg I, and Spider Egg II are the only enemies that are not targeted by any homing daggers.</li>
-		<li>Level 4 homing daggers cause splash damage. This means that when they're destroyed, they create a little explosion that can cause damage (most likely 10) to near enemies. For example, you only need one Level 4 homing dagger to kill a Squid II, as the explosion will destroy the other gem.</li>
-		<li>Not sure why you need 3 Level 4 homing daggers to kill a Squid III gem, but only 1 Level 3 homing dagger... Seems like a bug.</li>
-		<li>Also not sure why you need 10 Level 4 homing daggers to kill a single Transmuted Skull I, while one single Level 3 homing dagger can kill 4 of them... Probably another bug.</li>")
-	</ul>
+	@{
+		if (gameVersion == Game.GameVersions["V3"])
+		{
+			<h2 class="text-center">Homing daggers</h2>
+			<ul>
+				@RazorUtils.GetLayout(@"
+				<li>All homing daggers cause 10 damage to most enemies.</li>
+				<li>Leviathan, The Orb, Spider Egg I, and Spider Egg II only take 1 damage from homing daggers.</li>
+				<li>The Orb, Spider Egg I, and Spider Egg II are the only enemies that are not targeted by any homing daggers.</li>
+				<li>Level 4 homing daggers cause splash damage. This means that when they're destroyed, they create a little explosion that can cause damage (most likely 10) to near enemies. For example, you only need one Level 4 homing dagger to kill a Squid II, as the explosion will destroy the other gem.</li>
+				<li>Not sure why you need 3 Level 4 homing daggers to kill a Squid III gem, but only 1 Level 3 homing dagger... Seems like a bug.</li>
+				<li>Also not sure why you need 10 Level 4 homing daggers to kill a single Transmuted Skull I, while one single Level 3 homing dagger can kill 4 of them... Probably another bug.</li>")
+			</ul>
+		}
+	}
 </main>

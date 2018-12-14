@@ -48,6 +48,16 @@
 		}
 	}
 
+	GameVersion gameVersion = Game.GameVersions[Game.DEFAULT_GAME_VERSION];
+	if (Model.Contains("V1_Sorath"))
+	{
+		gameVersion = Game.GameVersions["V1"];
+	}
+	else if (Model.Contains("V2_Sorath"))
+	{
+		gameVersion = Game.GameVersions["V2"];
+	}
+
 	string wavesQuery = commonObjects.HttpContextAccessor.HttpContext.Request.Query["waves"];
 	if (int.TryParse(wavesQuery, out int t))
 	{
@@ -87,23 +97,12 @@
 						seconds += s.Delay;
 						if (s.Enemy != Spawnset.Enemies[-1])
 						{
-							int gems = s.Enemy.Gems;
-
-							// Add no farm gems
-							if (s.Enemy == Spawnset.GetEnemyByName("Squid I"))
-							{
-								gems += Game.V3.Skull2.Gems;
-							}
-							if (s.Enemy == Spawnset.GetEnemyByName("Squid II"))
-							{
-								gems += Game.V3.Skull3.Gems;
-							}
-
+							int gems = s.Enemy.NoFarmGems;
 							totalGems += gems;
 
 							<div class="flex-container flex-center">
 								<div style="width: @(widths[0])px;" class="text-right">@seconds.ToString("0.0000")</div>
-								<div style="width: @(widths[1])px;">@RazorUtils.GetEnemyLayoutAnchor(s.Enemy.Enemy)</div>
+								<div style="width: @(widths[1])px;">@RazorUtils.GetEnemyLayoutAnchor(s.Enemy.ToEnemy(gameVersion))</div>
 								<div style="width: @(widths[2])px;" class="text-right">@gems</div>
 								<div style="width: @(widths[3])px;" class="text-right">@totalGems</div>
 							</div>
@@ -150,28 +149,17 @@
 						{
 							SpawnsetEnemy finalEnemy = spawn.Enemy;
 							// Change the third Gigapede into a Ghostpede
-							if (finalEnemy == Spawnset.GetEnemyByName("Gigapede") && i % 3 == 2)
+							if (finalEnemy == Spawnset.GetEnemyByName("Gigapede") && i % 3 == 2 && gameVersion == Game.GameVersions["V3"])
 							{
 								finalEnemy = Spawnset.GetEnemyByName("Ghostpede");
 							}
 
-							int gems = finalEnemy.Gems;
-
-							// Add no farm gems
-							if (finalEnemy == Spawnset.GetEnemyByName("Squid I"))
-							{
-								gems += Game.V3.Skull2.Gems;
-							}
-							if (finalEnemy == Spawnset.GetEnemyByName("Squid II"))
-							{
-								gems += Game.V3.Skull3.Gems;
-							}
-
+							int gems = finalEnemy.NoFarmGems;
 							totalGems += gems;
 
 							<div class="flex-container flex-center">
 								<div style="width: @(widths[0])px;" class="text-right">@((Math.Floor(endGameSecond * 60) / 60).ToString("0.0000"))</div>
-								<div style="width: @(widths[1])px;">@RazorUtils.GetEnemyLayoutAnchor(finalEnemy.Enemy, false, Model.Contains("V3_Sorath") && spawns > 525 ? Math.Min((spawns - 525) / 10f, 100) : 0)</div>
+								<div style="width: @(widths[1])px;">@RazorUtils.GetEnemyLayoutAnchor(finalEnemy.ToEnemy(gameVersion), false, Model.Contains("V3_Sorath") && spawns > 525 ? Math.Min((spawns - 525) / 10f, 100) : 0)</div>
 								<div style="width: @(widths[2])px;" class="text-right">@gems</div>
 								<div style="width: @(widths[3])px;" class="text-right">@totalGems</div>
 							</div>

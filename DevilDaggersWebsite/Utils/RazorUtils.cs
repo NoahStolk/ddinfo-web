@@ -30,12 +30,12 @@ namespace DevilDaggersWebsite.Utils
 		}
 
 		// TODO: Rewrite
-		public static HtmlString GetLayout(string str)
+		public static HtmlString GetLayout(string str, params GameVersion[] gameVersions)
 		{
 			char[] beginSeparators = new char[] { '>', ' ', ',', '.', '(' };
 			char[] endSeparators = new char[] { ' ', ',', '.', 's', ')', '\'' };
 
-			List<Enemy> enemies = Game.GetEntities<Enemy>();
+			List<Enemy> enemies = Game.GetEntities<Enemy>(gameVersions);
 			for (int i = enemies.Count - 1; i >= 0; i--) // Reverse iteration because transmuted skulls come after normal skulls in the list
 			{
 				Enemy enemy = enemies[i];
@@ -54,7 +54,7 @@ namespace DevilDaggersWebsite.Utils
 				}
 			}
 
-			foreach (Upgrade upgrade in Game.GetEntities<Upgrade>())
+			foreach (Upgrade upgrade in Game.GetEntities<Upgrade>(gameVersions))
 			{
 				foreach (char begin in beginSeparators)
 				{
