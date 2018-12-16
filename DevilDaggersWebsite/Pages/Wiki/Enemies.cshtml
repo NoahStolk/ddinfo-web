@@ -5,6 +5,8 @@
 @{
 	string boxShadow = "0 0px 2px 2px";
 	ViewData["Title"] = "Enemies";
+
+	int index = 0;
 }
 
 <header>
@@ -16,7 +18,15 @@
 </form>
 
 <main role="main">
-	<h2 class="text-center hidden-xs">Summary</h2>
+	<h2 class="text-center">Table of contents</h2>
+	<ul class="text-center table-of-contents">
+		@for (int i = 0; i < Model.TableOfContents.Count; i++)
+		{
+			<li><a href="#@Model.TableOfContents[i].ToIDString()">@Model.TableOfContents[i]</a></li>
+		}
+	</ul>
+
+	<h2 id="@Model.TableOfContents[index].ToIDString()" class="text-center hidden-xs">@Model.TableOfContents[index++]</h2>
 	<div class="enemies-summary flex-container flex-center hidden-xs">
 		<div class="flex-container">
 			<div>Enemy</div>
@@ -29,7 +39,7 @@
 		@foreach (Enemy enemy in Model.enemies)
 		{
 			<div class="flex-container">
-				<div>@RazorUtils.GetEnemyLayoutAnchor(enemy)</div>
+				<div>@RazorUtils.GetLayoutAnchor(enemy)</div>
 				<div class='text-right'>@enemy.HP</div>
 				<div class='text-right'>@enemy.Gems</div>
 				<div style='color: #@enemy.Death.ColorCode'>@enemy.Death.Name</div>
@@ -43,7 +53,7 @@
 					{
 						foreach (Enemy e in enemy.SpawnedBy)
 						{
-							<span>@RazorUtils.GetEnemyLayoutAnchor(e)</span>
+							<span>@RazorUtils.GetLayoutAnchor(e)</span>
 						}
 					}
 				</div>
@@ -51,7 +61,7 @@
 		}
 	</div>
 
-	<h2 class="text-center">Details</h2>
+	<h2 id="@Model.TableOfContents[index].ToIDString()" class="text-center">@Model.TableOfContents[index++]</h2>
 	<div class="flex-container flex-center enemy-container">
 		@foreach (Enemy enemy in Model.enemies)
 		{
@@ -66,7 +76,7 @@
 				</div>
 				<div class="enemy-row flex-container">
 					<div>HP</div>
-					<div class="text-right">@enemy.HP @((enemy.Gems > 1) ? "(" + enemy.GetGemHP() + " x " + enemy.Gems + ")" : "")</div>
+					<div class="text-right">@enemy.HP @((enemy.Gems > 1) ? enemy.GetGemHPString() : "")</div>
 				</div>
 				<div class="enemy-row flex-container">
 					<div>Gems</div>
@@ -91,7 +101,7 @@
 						{
 							foreach (Enemy e in enemy.SpawnedBy)
 							{
-								<span>@RazorUtils.GetEnemyLayoutAnchor(e)</span>
+								<span>@RazorUtils.GetLayoutAnchor(e)</span>
 							}
 						}
 					</div>
@@ -104,7 +114,7 @@
 								string[] strings = Game.GetEnemyInfo(enemy).Split('\n');
 								foreach (string s in strings)
 								{
-									<li>@RazorUtils.GetLayout(s)</li>
+									<li>@RazorUtils.GetLayout(s.TransmuteString())</li>
 								}
 							}
 						</ul>
@@ -114,280 +124,246 @@
 		}
 	</div>
 
-	<h2 class="text-center">Damage stats</h2>
+	<h2 id="@Model.TableOfContents[index].ToIDString()" class="text-center">@Model.TableOfContents[index++]</h2>
 	<p class="text-center">All of this information assumes 100% shot accuracy, and may not be relevant in some cases.</p>
-	<div class="flex-container flex-center" style="flex-direction: column;">
-		<div class="damage-stats-row-top flex-container">
-			<div>Enemy</div>
-			<div>Spray (seconds)</div>
-			<div>Shots</div>
-			<div>Homing daggers</div>
-		</div>
-		<div class="damage-stats-row flex-container hidden-xs">
-			<div>Name</div>
-			<div>HP</div>
-			@{
-				for (int i = 0; i < 3; i++)
-				{
-					foreach (Upgrade upgrade in Model.upgrades)
-					{
-						if (i != 2 || (i == 2 && upgrade.HomingShot != null))
-						{
-							<div class="hidden-sm hidden-md">
-								@RazorUtils.GetUpgradeLayoutAnchor(upgrade)
-							</div>
-						}
-					}
-				}
-			}
-		</div>
-		@foreach (Enemy enemy in Model.enemies)
+
+	@{
+		// Add "gem" enemies to make regenerating the table easier
+		Dictionary<Enemy, bool> enemies = new Dictionary<Enemy, bool>();
+		foreach (Enemy enemy in Model.enemies)
 		{
-			<div class="damage-stats-row damage-stats-row-main flex-container hidden-xs">
-				<div>@RazorUtils.GetEnemyLayoutAnchor(enemy)</div>
-				<div class="text-right">@enemy.HP</div>
-				@for (int i = 0; i < 3; i++)
-				{
-					foreach (Upgrade upgrade in Model.upgrades)
-					{
-						switch (i)
-						{
-							case 0:
-								<div class="hidden-sm hidden-md text-right">@((enemy.HP / upgrade.DefaultSprayPerSecond).ToString("0.0000"))</div>
-								break;
-							case 1:
-								<div class="hidden-sm hidden-md text-right">@Math.Ceiling(enemy.HP / (double)upgrade.DefaultShot)</div>
-								break;
-							case 2:
-								if (upgrade.Level == 3)
-								{
-									<div class="hidden-sm hidden-md text-right">@(enemy.Homing3 == null ? RazorUtils.NAString : Html.Raw(enemy.Homing3.Value.ToString("0.##")))</div>
-								}
-								else if (upgrade.Level == 4)
-								{
-									<div class="hidden-sm hidden-md text-right">@(enemy.Homing4 == null ? RazorUtils.NAString : Html.Raw(enemy.Homing4.Value.ToString("0.##")))</div>
-								}
-								break;
-						}
-					}
-				}
-
-				@foreach (Upgrade upgrade in Model.upgrades)
-				{
-					<div class="hidden-lg text-right">
-						@RazorUtils.GetUpgradeLayoutAnchor(upgrade)
-					</div>
-				}
-			</div>
-
-			<div class="visible-xs">
-				<div class="damage-stats-row damage-stats-row-main flex-container">
-					<div>Name</div>
-					<div class="text-right">@RazorUtils.GetEnemyLayoutAnchor(enemy)</div>
-				</div>
-				<div class="damage-stats-row flex-container">
-					<div>HP</div>
-					<div class="text-right">@enemy.HP</div>
-				</div>
-
-				@for (int i = 0; i < 3; i++)
-				{
-					foreach (Upgrade upgrade in Model.upgrades)
-					{
-						switch (i)
-						{
-							case 0:
-								<div class="damage-stats-row flex-container">
-									<div>@RazorUtils.GetUpgradeLayoutAnchor(upgrade) spray (seconds)</div>
-									<div class="text-right">@((enemy.HP / upgrade.DefaultSprayPerSecond).ToString("0.0000"))</div>
-								</div>
-								break;
-							case 1:
-								<div class="damage-stats-row flex-container">
-									<div>@RazorUtils.GetUpgradeLayoutAnchor(upgrade) shots</div>
-									<div class="text-right">@Math.Ceiling(enemy.HP / (double)upgrade.DefaultShot)</div>
-								</div>
-								break;
-							case 2:
-								<div class="damage-stats-row flex-container">
-									@if (upgrade.Level == 3)
-									{
-										<div>@RazorUtils.GetUpgradeLayoutAnchor(upgrade) homing daggers</div>
-										<div class="text-right">@(enemy.Homing3 == null ? RazorUtils.NAString : Html.Raw(enemy.Homing3.Value.ToString("0.##")))</div>
-									}
-									else if (upgrade.Level == 4)
-									{
-										<div>@RazorUtils.GetUpgradeLayoutAnchor(upgrade) homing daggers</div>
-										<div class="text-right">@(enemy.Homing4 == null ? RazorUtils.NAString : Html.Raw(enemy.Homing4.Value.ToString("0.##")))</div>
-									}
-								</div>
-								break;
-						}
-					}
-				}
-			</div>
-
-			@for (int i = 0; i < 3; i++)
-			{
-				<div class="damage-stats-row flex-container hidden-xs hidden-lg">
-					<div>@(i == 0 ? "Spray (seconds)" : i == 1 ? "Shots" : "Homing daggers")</div>
-					<div></div>
-					@foreach (Upgrade upgrade in Model.upgrades)
-					{
-						switch (i)
-						{
-							case 0:
-								<div class="text-right">@((enemy.HP / upgrade.DefaultSprayPerSecond).ToString("0.0000"))</div>
-								break;
-							case 1:
-								<div class="text-right">@Math.Ceiling(enemy.HP / (double)upgrade.DefaultShot)</div>
-								break;
-							case 2:
-								if (upgrade.Level == 3)
-								{
-									<div class="text-right">@(enemy.Homing3 == null ? RazorUtils.NAString : Html.Raw(enemy.Homing3.Value.ToString("0.##")))</div>
-								}
-								else if (upgrade.Level == 4)
-								{
-									<div class="text-right">@(enemy.Homing4 == null ? RazorUtils.NAString : Html.Raw(enemy.Homing4.Value.ToString("0.##")))</div>
-								}
-								else
-								{
-									<div class="text-right">@RazorUtils.NAString</div>
-								}
-								break;
-						}
-					}
-				</div>
-			}
-
+			enemies.Add(enemy, false);
 			if (enemy.Gems > 1)
 			{
-				<div class="damage-stats-row damage-stats-row-main flex-container hidden-xs">
-					<div>@RazorUtils.GetEnemyLayoutAnchor(enemy) (Gem)</div>
-					<div class="text-right">@(enemy.GetGemHP())</div>
-					@for (int i = 0; i < 3; i++)
+				Enemy enemyGem = enemy.Copy();
+				enemyGem.HP = enemy.GetGemHP();
+				enemies.Add(enemyGem, true);
+			}
+		}
+	}
+
+	<table class="damage-stats-table visible-lg">
+		<thead>
+			<tr>
+				<td>Name</td>
+				<td class="text-right">HP</td>
+				<td class="text-right" colspan="@Model.upgrades.Count">Spray (seconds)</td>
+				<td class="text-right" colspan="@Model.upgrades.Count">Shots</td>
+				<td class="text-right" colspan="@(Model.upgrades.Count - 2)">Homing daggers</td>
+			</tr>
+			<tr>
+				<td></td>
+				<td></td>
+				@for (int i = 0; i < 3; i++)
+				{
+					foreach (Upgrade upgrade in Model.upgrades)
 					{
-						foreach (Upgrade upgrade in Model.upgrades)
+						if (i == 2 && upgrade.Level < 3)
 						{
-							switch (i)
-							{
-								case 0:
-									<div class="hidden-sm hidden-md text-right">@((enemy.GetGemHP() / upgrade.DefaultSprayPerSecond).ToString("0.0000"))</div>
-									break;
-								case 1:
-									<div class="hidden-sm hidden-md text-right">@Math.Ceiling(enemy.GetGemHP() / (double)upgrade.DefaultShot)</div>
-									break;
-								case 2:
-									if (upgrade.Level == 3)
-									{
-										<div class="hidden-sm hidden-md text-right">@(enemy.Homing3 == null ? RazorUtils.NAString : Html.Raw((enemy.Homing3 / enemy.Gems).Value.ToString("0.##")))</div>
-									}
-									else if (upgrade.Level == 4)
-									{
-										<div class="hidden-sm hidden-md text-right">@(enemy.Homing4 == null ? RazorUtils.NAString : Html.Raw((enemy.Homing4 / enemy.Gems).Value.ToString("0.##")))</div>
-									}
-									break;
-							}
+							continue;
 						}
+						<td class="text-right">@upgrade.GetLayoutAnchor()</td>
 					}
-
-					@foreach (Upgrade upgrade in Model.upgrades)
-					{
-						<div class="hidden-lg text-right">
-							@RazorUtils.GetUpgradeLayoutAnchor(upgrade)
-						</div>
-					}
-				</div>
-
-				<div class="visible-xs">
-					<div class="damage-stats-row damage-stats-row-main flex-container">
-						<div>Name</div>
-						<div class="text-right">@RazorUtils.GetEnemyLayoutAnchor(enemy) (Gem)</div>
-					</div>
-					<div class="damage-stats-row flex-container">
-						<div>HP</div>
-						<div class="text-right">@(enemy.GetGemHP())</div>
-					</div>
-
-					@for (int i = 0; i < 3; i++)
-					{
-						foreach (Upgrade upgrade in Model.upgrades)
+				}
+			</tr>
+		</thead>
+		<tbody>
+			@{
+				foreach (KeyValuePair<Enemy, bool> kvp in enemies)
+				{
+					<tr>
+						<td>@kvp.Key.GetLayoutAnchor() @(kvp.Value ? "(Gem)" : "")</td>
+						<td class="text-right">@kvp.Key.HP</td>
+						@for (int i = 0; i < 3; i++)
 						{
-							switch (i)
+							foreach (Upgrade upgrade in Model.upgrades)
 							{
-								case 0:
-									<div class="damage-stats-row flex-container">
-										<div>@RazorUtils.GetUpgradeLayoutAnchor(upgrade) spray (seconds)</div>
-										<div class="text-right">@((enemy.GetGemHP() / upgrade.DefaultSprayPerSecond).ToString("0.0000"))</div>
-									</div>
-									break;
-								case 1:
-									<div class="damage-stats-row flex-container">
-										<div>@RazorUtils.GetUpgradeLayoutAnchor(upgrade) shots</div>
-										<div class="text-right">@Math.Ceiling(enemy.GetGemHP() / (double)upgrade.DefaultShot)</div>
-									</div>
-									break;
-								case 2:
-									<div class="damage-stats-row flex-container">
-										@if (upgrade.Level == 3)
+								switch (i)
+								{
+									case 0:
+										<td class="text-right">@((kvp.Key.HP / upgrade.DefaultSprayPerSecond).ToString("0.000"))</td>
+										break;
+									case 1:
+										<td class="text-right">@Math.Ceiling(kvp.Key.HP / (double)upgrade.DefaultShot)</td>
+										break;
+									case 2:
+										if (upgrade.Level == 3)
 										{
-											<div>@RazorUtils.GetUpgradeLayoutAnchor(upgrade) homing daggers</div>
-											<div class="text-right">@(enemy.Homing3 == null ? RazorUtils.NAString : Html.Raw((enemy.Homing3 / enemy.Gems).Value.ToString("0.##")))</div>
+											<td class="text-right">@(kvp.Key.Homing3 == null ? RazorUtils.NAString : Html.Raw(kvp.Key.Homing3.Value.ToString("0.##")))</td>
 										}
 										else if (upgrade.Level == 4)
 										{
-											<div>@RazorUtils.GetUpgradeLayoutAnchor(upgrade) homing daggers</div>
-											<div class="text-right">@(enemy.Homing4 == null ? RazorUtils.NAString : Html.Raw((enemy.Homing4 / enemy.Gems).Value.ToString("0.##")))</div>
+											<td class="text-right">@(kvp.Key.Homing4 == null ? RazorUtils.NAString : Html.Raw(kvp.Key.Homing4.Value.ToString("0.##")))</td>
 										}
-									</div>
-									break;
+										break;
+								}
 							}
 						}
-					}
-				</div>
-
-				@for (int i = 0; i < 3; i++)
-				{
-					<div class="damage-stats-row flex-container hidden-xs hidden-lg">
-						<div>@(i == 0 ? "Spray (seconds)" : i == 1 ? "Shots" : "Homing daggers")</div>
-						<div></div>
-						@foreach (Upgrade upgrade in Model.upgrades)
-						{
-							switch (i)
-							{
-								case 0:
-									<div class="text-right">@((enemy.GetGemHP() / upgrade.DefaultSprayPerSecond).ToString("0.0000"))</div>
-									break;
-								case 1:
-									<div class="text-right">@Math.Ceiling(enemy.GetGemHP() / (double)upgrade.DefaultShot)</div>
-									break;
-								case 2:
-									if (upgrade.Level == 3)
-									{
-										<div class="text-right">@(enemy.Homing3 == null ? RazorUtils.NAString : Html.Raw((enemy.Homing3 / enemy.Gems).Value.ToString("0.##")))</div>
-									}
-									else if (upgrade.Level == 4)
-									{
-										<div class="text-right">@(enemy.Homing4 == null ? RazorUtils.NAString : Html.Raw((enemy.Homing4 / enemy.Gems).Value.ToString("0.##"))))</div>
-									}
-									else
-									{
-										<div class="text-right">@RazorUtils.NAString</div>
-									}
-									break;
-							}
-						}
-					</div>
+					</tr>
 				}
 			}
+		</tbody>
+	</table>
+
+	<table class="damage-stats-table visible-md visible-sm">
+		<thead>
+			<tr>
+				<td>Name</td>
+				<td class="text-right">HP</td>
+			</tr>
+		</thead>
+		<tbody>
+			@{
+				foreach (KeyValuePair<Enemy, bool> kvp in enemies)
+				{
+					@for (int i = 0; i < 4; i++)
+					{
+						<tr>
+							@switch (i)
+							{
+								case 0:
+									<td>@kvp.Key.GetLayoutAnchor() @(kvp.Value ? "(Gem)" : "")</td>
+									<td class="text-right">@kvp.Key.HP</td>
+									foreach (Upgrade upgrade in Model.upgrades)
+									{
+										<td class="text-right">@upgrade.GetLayoutAnchor()</td>
+									}
+									break;
+								case 1:
+									<td>Spray (seconds)</td>
+									<td></td>
+									foreach (Upgrade upgrade in Model.upgrades)
+									{
+										<td class="text-right">@((kvp.Key.HP / upgrade.DefaultSprayPerSecond).ToString("0.000"))</td>
+									}
+									break;
+								case 2:
+									<td>Shots</td>
+									<td></td>
+									foreach (Upgrade upgrade in Model.upgrades)
+									{
+										<td class="text-right">@Math.Ceiling(kvp.Key.HP / (double)upgrade.DefaultShot)</td>
+									}
+									break;
+								case 3:
+									<td>Homing daggers</td>
+									<td></td>
+									foreach (Upgrade upgrade in Model.upgrades)
+									{
+										if (upgrade.Level == 3)
+										{
+											<td class="text-right">@(kvp.Key.Homing3 == null ? RazorUtils.NAString : Html.Raw(kvp.Key.Homing3.Value.ToString("0.##")))</td>
+										}
+										else if (upgrade.Level == 4)
+										{
+											<td class="text-right">@(kvp.Key.Homing4 == null ? RazorUtils.NAString : Html.Raw(kvp.Key.Homing4.Value.ToString("0.##")))</td>
+										}
+										else
+										{
+											<td class="text-right">@RazorUtils.NAString</td>
+										}
+									}
+									break;
+							}
+						</tr>
+					}
+				}
+			}
+		</tbody>
+	</table>
+
+	<table class="damage-stats-table visible-xs">
+		@{
+			foreach (KeyValuePair<Enemy, bool> kvp in enemies)
+			{
+				string id = $"{kvp.Key.Name.Replace(" ", "")}{(kvp.Value ? "Gem" : "")}";
+
+				<tbody>
+					<tr class="enemy-row-xs-header flex-container">
+						<td><span class="enemy-expander" id="@id">+</span> @kvp.Key.GetLayoutAnchor() @(kvp.Value ? "(Gem)" : "")</td>
+						<td class="text-right">@kvp.Key.HP HP</td>
+					</tr>
+				</tbody>
+
+				<tbody class="enemy-expand flex-container" id="@id-expand">
+					@for (int i = 0; i < 3; i++)
+					{
+						switch (i)
+						{
+							case 0:
+								foreach (Upgrade upgrade in Model.upgrades)
+								{
+									<tr>
+										<td>@upgrade.GetLayoutAnchor() spray (seconds)</td>
+										<td class="text-right">@((kvp.Key.HP / upgrade.DefaultSprayPerSecond).ToString("0.000"))</td>
+									</tr>
+								}
+								break;
+							case 1:
+								foreach (Upgrade upgrade in Model.upgrades)
+								{
+									<tr>
+										<td>@upgrade.GetLayoutAnchor() shots</td>
+										<td class="text-right">@Math.Ceiling(kvp.Key.HP / (double)upgrade.DefaultShot)</td>
+									</tr>
+								}
+								break;
+							case 2:
+								foreach (Upgrade upgrade in Model.upgrades)
+								{
+									if (upgrade.Level < 3)
+									{
+										continue;
+									}
+
+									<tr>
+										<td>@upgrade.GetLayoutAnchor() homing daggers</td>
+										@if (upgrade.Level == 3)
+										{
+											<td class="text-right">@(kvp.Key.Homing3 == null ? RazorUtils.NAString : Html.Raw(kvp.Key.Homing3.Value.ToString("0.##")))</td>
+										}
+										else if (upgrade.Level == 4)
+										{
+											<td class="text-right">@(kvp.Key.Homing4 == null ? RazorUtils.NAString : Html.Raw(kvp.Key.Homing4.Value.ToString("0.##")))</td>
+										}
+									</tr>
+								}
+								break;
+						}
+					}
+				</tbody>
+			}
 		}
-	</div>
+	</table>
+
+	<h2 id="@Model.TableOfContents[index].ToIDString()" class="text-center">@Model.TableOfContents[index++]</h2>
+	<ul>
+		@{
+			string transmuters = Model.gameVersion == "V3" ? "Leviathan or The Orb beckon, they" : "Leviathan beckons, it";
+
+			string transmutedSkullList = (Model.gameVersion == "V1")
+				? @"
+			<li>Skull I is turned into Transmuted Skull II.</li>
+			<li>Skull II is turned into Transmuted Skull III.</li>
+			<li>Skull III is turned into Transmuted Skull IV.</li>"
+				: @"
+			<li>Skull I is turned into Transmuted Skull I.</li>
+			<li>Skull II is turned into Transmuted Skull II.</li>
+			<li>Skull III is turned into Transmuted Skull III.</li>
+			<li>Skull IV is turned into Transmuted Skull IV.</li>";
+
+			@RazorUtils.GetLayout($@"
+			<li>When {transmuters} will attract and transmute all skulls in the arena that touch the beckon ring.</li>
+			<li>When the skulls are sucked up and thrown back into the arena, they are 'transmuted', which means they have a different appearance and more HP.</li>
+			<li>Damaging a skull that is about to be transmuted is useless if it is not killed; the HP will reset to the transmuted skull's full HP.</li>
+			<li>Here is the list of which skull turns into which transmuted skull (this differs between game versions):<ul>{transmutedSkullList}</ul></li>", Model.gameVersionObject)
+		}
+	</ul>
 
 	@{
-		if (Model.gameVersionObject == Game.GameVersions["V3"])
+		if (Model.gameVersion == "V3")
 		{
-			<h2 class="text-center">Homing daggers</h2>
+			<h2 id="@Model.TableOfContents[index].ToIDString()" class="text-center">@Model.TableOfContents[index++]</h2>
 			<ul>
 				@RazorUtils.GetLayout(@"
 				<li>All homing daggers cause 10 damage to most enemies.</li>

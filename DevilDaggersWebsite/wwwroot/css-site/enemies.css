@@ -5,23 +5,13 @@
 	margin-right: auto;
 }
 
-.enemies-summary > div {
-	flex-direction: row;
-}
-
-	.enemies-summary > div > div {
-		padding-right: 8px;
+	.enemies-summary > div {
+		flex-direction: row;
 	}
 
-.damage-stats-row,
-.damage-stats-row-top {
-	flex-direction: row;
-}
-
-	.damage-stats-row > div,
-	.damage-stats-row-top > div {
-		padding-right: 8px;
-	}
+		.enemies-summary > div > div {
+			padding-right: 8px;
+		}
 
 @media (min-width: 1200px) {
 	.enemies-summary > div > div {
@@ -34,31 +24,6 @@
 			width: 10%;
 			max-width: 10%;
 		}
-
-	.damage-stats-row > div {
-		width: 7.54%;
-	}
-
-		.damage-stats-row > div:nth-child(1) {
-			min-width: 17%;
-			width: 17%;
-		}
-
-	.damage-stats-row-top > div:nth-child(1) {
-		min-width: 24.54%;
-		width: 24.54%;
-	}
-
-	.damage-stats-row-top > div:nth-child(2),
-	.damage-stats-row-top > div:nth-child(3) {
-		min-width: 30.15%;
-		width: 30.15%;
-	}
-
-	.damage-stats-row-top > div:nth-child(4) {
-		min-width: 15.16%;
-		width: 15.16%;
-	}
 }
 
 @media (min-width: 768px) and (max-width: 1199px) {
@@ -85,44 +50,6 @@
 	.enemies-summary > div > div:nth-child(5) {
 		width: 36.5%;
 		max-width: 36.5%;
-	}
-
-	.damage-stats-row > div {
-		width: 15%;
-	}
-
-		.damage-stats-row > div:nth-child(1) {
-			width: 35%;
-		}
-
-		.damage-stats-row > div:nth-child(2) {
-			width: 5%;
-		}
-
-	.damage-stats-row-top {
-		visibility: collapse;
-	}
-
-	.damage-stats-row-main {
-		padding-top: 1em;
-	}
-}
-
-@media (max-width: 767px) {
-	.damage-stats-row > div:nth-child(1) {
-		width: 65%;
-	}
-
-	.damage-stats-row > div:nth-child(2) {
-		width: 35%;
-	}
-
-	.damage-stats-row-top {
-		visibility: collapse;
-	}
-
-	.damage-stats-row-main {
-		padding-top: 1em;
 	}
 }
 
