@@ -1,8 +1,8 @@
-﻿using Microsoft.AspNetCore.Mvc.RazorPages;
+﻿using DevilDaggersWebsite.Models.PageModels;
 
 namespace DevilDaggersWebsite.Pages.Wiki
 {
-	public class DaggersModel : PageModel
+	public class DaggersModel : WikiPageModel
 	{
 		public void OnGet()
 		{
