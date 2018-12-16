@@ -18,13 +18,13 @@ namespace DevilDaggersWebsite.Utils
 		public const int DEFAULT_MAX_WAVES = 28;
 		public const int MAX_SPAWNS = 10000;
 
-		public static HtmlString GetEnemyLayoutAnchor(Enemy enemy, bool plural = false, float zalgo = 0)
+		public static HtmlString GetLayoutAnchor(this Enemy enemy, bool plural = false, float zalgo = 0)
 		{
 			string color = zalgo == 0 ? enemy.ColorCode : ZalgoUtils.InterpolateHexColor($"#FF{enemy.ColorCode}", "#FFFF0000", zalgo / 100f);
 			return new HtmlString($"<a style='color: #{color};' href='/Wiki/Enemies#{enemy.Name.Replace(" ", "")}'>{enemy.Name.ToZalgo(zalgo / 20f)}{(plural ? "s" : "")}</a>");
 		}
 
-		public static HtmlString GetUpgradeLayoutAnchor(Upgrade upgrade)
+		public static HtmlString GetLayoutAnchor(this Upgrade upgrade)
 		{
 			return new HtmlString($"<a style='color: #{upgrade.ColorCode};' href='/Wiki/Upgrades#{upgrade.Name}'>{upgrade.Name}</a>");
 		}
@@ -48,7 +48,7 @@ namespace DevilDaggersWebsite.Utils
 						{
 							// Enemy string should not be inside an <a> element
 							if (str.Length < str.IndexOf(enemyString) + enemyString.Length + "</a>".Length || str.Substring(str.IndexOf(enemyString) + enemyString.Length, "</a>".Length) != "</a>")
-								str = str.Replace(enemyString, $"{begin}{GetEnemyLayoutAnchor(enemy, end == 's')}{((end == 's') ? "" : end.ToString())}");
+								str = str.Replace(enemyString, $"{begin}{GetLayoutAnchor(enemy, end == 's')}{((end == 's') ? "" : end.ToString())}");
 						}
 					}
 				}
@@ -62,7 +62,7 @@ namespace DevilDaggersWebsite.Utils
 					{
 						string upgradeString = $"{begin}{upgrade.Name}{end}";
 						if (str.Contains(upgradeString))
-							str = str.Replace(upgradeString, $"{begin}{GetUpgradeLayoutAnchor(upgrade)}{end}");
+							str = str.Replace(upgradeString, $"{begin}{GetLayoutAnchor(upgrade)}{end}");
 					}
 				}
 			}
