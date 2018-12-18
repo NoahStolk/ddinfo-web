@@ -42,7 +42,8 @@ $('a[href*="#"]')
 	});
 
 $(window).scroll(function () {
-	if ($(this).scrollTop() > 0) {
+	if ($(this).scrollTop() > 256) {
+		$('.back-to-top').removeClass('transparent-on-start');
 		$('.back-to-top').fadeIn();
 	}
 	else {

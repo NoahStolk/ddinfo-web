@@ -103,6 +103,10 @@ option {
 	background-color: var(--col-black);
 }
 
+.transparent-on-start {
+	opacity: 0;
+}
+
 .back-to-top {
 	position: fixed;
 	bottom: 0;
