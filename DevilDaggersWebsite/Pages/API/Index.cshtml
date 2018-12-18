@@ -17,13 +17,13 @@
 	</p>
 
 	<h2>List of functions</h2>
-	<div class="api-function-list">
+	<div class="api-list">
 		<div class="row text-bold">
-			<div class="col-xs-2">Name</div>
-			<div class="col-xs-5">Description</div>
-			<div class="col-xs-2">Return type</div>
-			<div class="col-xs-1">Parameters</div>
-			<div class="col-xs-2">Optional parameters</div>
+			<div class="col-lg-2 col-md-2 col-sm-3 col-xs-3">Name</div>
+			<div class="col-lg-4 col-md-6 col-sm-9 col-xs-9">Description</div>
+			<div class="col-lg-2 col-md-2 hidden-sm hidden-xs">Return type</div>
+			<div class="col-lg-2 col-md-2 hidden-sm hidden-xs">Parameters</div>
+			<div class="col-lg-2 hidden-md hidden-sm hidden-xs">Optional parameters</div>
 		</div>
 
 		@{
@@ -45,11 +45,11 @@
 					}
 				}
 				<div class="row" style="@(i % 2 == 0 ? "background-color: #111;" : "")">
-					<div class="col-xs-2"><a asp-page=@api.Name>@api.Name</a></div>
-					<div class="col-xs-5">@api.FormattedDescription</div>
-					<div class="col-xs-2">@api.Attribute.ReturnType</div>
-					<div class="col-xs-1 api-parameter">@(parameters.Count != 0 ? Html.Raw(parameters.ItemsAppended<string>(", ")) : RazorUtils.NAString)</div>
-					<div class="col-xs-2 api-parameter-optional">@(optionalParameters.Count != 0 ? Html.Raw(optionalParameters.ItemsAppended<string>(", ")) : RazorUtils.NAString)</div>
+					<div class="col-lg-2 col-md-2 col-sm-3 col-xs-3"><a asp-page=@api.Name class="dont-break-out">@api.Name</a></div>
+					<div class="col-lg-4 col-md-6 col-sm-9 col-xs-9">@api.FormattedDescription</div>
+					<div class="col-lg-2 col-md-2 hidden-sm hidden-xs">@api.Attribute.ReturnType</div>
+					<div class="col-lg-2 col-md-2 hidden-sm hidden-xs api-parameter">@(parameters.Count != 0 ? Html.Raw(parameters.ItemsAppended<string>(", ")) : RazorUtils.NAString)</div>
+					<div class="col-lg-2 hidden-md hidden-sm hidden-xs api-parameter-optional">@(optionalParameters.Count != 0 ? Html.Raw(optionalParameters.ItemsAppended<string>(", ")) : RazorUtils.NAString)</div>
 				</div>
 				i++;
 			}
@@ -57,36 +57,38 @@
 	</div>
 
 	<h2>Examples</h2>
-	<div class="row text-bold">
-		<div class="col-xs-4">
-			Example
+	<div class="api-list">
+		<div class="row text-bold">
+			<div class="col-xs-4">
+				Example
+			</div>
+			<div class="col-xs-8">
+				Result
+			</div>
 		</div>
-		<div class="col-xs-8">
-			Result
+		<div class="row" style="background-color: #111;">
+			<div class="col-xs-4">
+				<a asp-page="GetSpawnsets" asp-route-searchAuthor="Sorath" asp-route-searchName="V" class="dont-break-out">API/GetSpawnsets?searchAuthor=Sorath&searchName=V</a>
+			</div>
+			<div class="col-xs-8">
+				Returns the result(s) for every spawnset that contains "Sorath" in the spawnset's author and "V" in the spawnset's name.
+			</div>
 		</div>
-	</div>
-	<div class="row">
-		<div class="col-xs-4">
-			<a asp-page="GetSpawnsets" asp-route-searchAuthor="Sorath" asp-route-searchName="V">API/GetSpawnsets?searchAuthor=Sorath&searchName=V</a>
+		<div class="row">
+			<div class="col-xs-4">
+				<a asp-page="GetDeaths" asp-route-deathType="10" asp-route-formatted="true" class="dont-break-out">API/GetDeaths?deathType=10&formatted=true</a>
+			</div>
+			<div class="col-xs-8">
+				Returns the Death object for the deathType 10 which is <span style='color: #@Game.V3.Annihilated.ColorCode'>@Game.V3.Annihilated.Name</span>, and also formats the JSON.
+			</div>
 		</div>
-		<div class="col-xs-8">
-			Returns the result(s) for every spawnset that contains "Sorath" in the spawnset's author and "V" in the spawnset's name.
-		</div>
-	</div>
-	<div class="row">
-		<div class="col-xs-4">
-			<a asp-page="GetDeaths" asp-route-deathType="10" asp-route-formatted="true">API/GetDeaths?deathType=10&formatted=true</a>
-		</div>
-		<div class="col-xs-8">
-			Returns the Death object for the deathType 10 which is <span style='color: #@Game.V3.Annihilated.ColorCode'>@Game.V3.Annihilated.Name</span>, and also formats the JSON.
-		</div>
-	</div>
-	<div class="row">
-		<div class="col-xs-4">
-			<a asp-page="GetSpawnset" asp-route-fileName="V3_Sorath">API/GetSpawnset?fileName=V3_Sorath</a>
-		</div>
-		<div class="col-xs-8">
-			Returns the spawnset with the name "V3_Sorath".
+		<div class="row" style="background-color: #111;">
+			<div class="col-xs-4">
+				<a asp-page="GetSpawnset" asp-route-fileName="V3_Sorath" class="dont-break-out">API/GetSpawnset?fileName=V3_Sorath</a>
+			</div>
+			<div class="col-xs-8">
+				Returns the spawnset with the name "V3_Sorath".
+			</div>
 		</div>
 	</div>
 </main>
