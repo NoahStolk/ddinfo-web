@@ -72,7 +72,7 @@
 				</div>
 				<div class="enemy-row flex-container">
 					<div>Image</div>
-					<div><img class="img-responsive pull-right" src='~/Images/Enemies/@(enemy.Name).jpg' /></div>
+					<div><img class="img-responsive pull-right" src='~/Images/Enemies/@(enemy.Name == "Gigapede" && Model.gameVersion == "V3" ? "GigapedeV3" : enemy.Name).png' /></div>
 				</div>
 				<div class="enemy-row flex-container">
 					<div>HP</div>
@@ -354,7 +354,7 @@
 
 			@RazorUtils.GetLayout($@"
 			<li>When {transmuters} will attract and transmute all skulls in the arena that touch the beckon ring.</li>
-			<li>When the skulls are sucked up and thrown back into the arena, they are 'transmuted', which means they have a different appearance and more HP.</li>
+			<li>When the skulls are sucked up and thrown back into the arena, they are 'transmuted', which means they have a different appearance and more HP. Transmuted Skull III also seems to turn faster.</li>
 			<li>Damaging a skull that is about to be transmuted is useless if it is not killed; the HP will reset to the transmuted skull's full HP.</li>
 			<li>Here is the list of which skull turns into which transmuted skull (this differs between game versions):<ul>{transmutedSkullList}</ul></li>", Model.gameVersionObject)
 		}
