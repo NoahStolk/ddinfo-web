@@ -35,8 +35,17 @@ $('a[href*="#"]')
 					} else {
 						$target.attr('tabindex', '-1'); // Adding tabindex for elements not focusable
 						$target.focus(); // Set focus again
-					};
+					}
 				});
 			}
 		//}
 	});
+
+$(window).scroll(function () {
+	if ($(this).scrollTop() > 0) {
+		$('.back-to-top').fadeIn();
+	}
+	else {
+		$('.back-to-top').fadeOut();
+	}
+});

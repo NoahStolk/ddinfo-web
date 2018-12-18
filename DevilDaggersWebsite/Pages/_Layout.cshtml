@@ -22,7 +22,7 @@
 
 	@await Html.PartialAsync("SharedPartials/_CSSBundlePartial", new List<string> { "~/lib/jqPlot/jquery.jqplot.min.css" })
 </head>
-<body>
+<body id="top">
 	<nav class="navbar navbar-fixed-top">
 		<div class="container">
 			<div class="navbar-header">
@@ -63,6 +63,10 @@
 	</nav>
 	<div class="body-content">
 		@RenderBody()
+		<a href="#top" class="back-to-top">
+			<img class="back-to-top-img" src="~/images/Logos/back-to-top-small.gif" />
+			Back to top
+		</a>
 		<div class="spacer"></div>
 		<footer>
 			<div class="row">
