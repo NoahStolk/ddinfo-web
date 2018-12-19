@@ -63,7 +63,8 @@ namespace DevilDaggersWebsite.Utils
 			new Donator("TSTAB", 1000, '€'),
 			new Donator("gLad", 500, '€'),
 			new Donator("pagedMov", 2500, '€'),
-			new Donator("xamide", 500, '€')
+			new Donator("xamide", 500, '€'),
+			new Donator("Green", 100, '$')
 		};
 	}
 }
