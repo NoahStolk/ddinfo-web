@@ -66,5 +66,34 @@ namespace DevilDaggersWebsite.Utils
 			new Donator(121891, "xamide", 500, '€'),
 			new Donator(58491, "Green", 100, '$')
 		};
+
+		public static Dictionary<int, string> FlagTable { get; set; } = new Dictionary<int, string>
+		{
+			{ 148788, "US" },
+			{ 229, "SE" },
+			{ 116704, "DE" },
+			{ 118832, "IQ" },
+			{ 1135, "US" },
+			{ 88424, "US" },
+			{ 1677, "BE" },
+			{ 93991, "PL" },
+			{ 1545, "GB" },
+			{ 134802, "GB" },
+			{ 10210, "NL" },
+			{ 21854, "NL" },
+			{ 438, "US" },
+			{ 106181, "GB" },
+			{ 148518, "US" },
+			{ 105874, "CZ" },
+			{ 105641, "AU" },
+			{ 86805, "AU" },
+			{ 2316, "AU" },
+			{ 157181, "US" },
+			{ 19658, "AU" },
+			{ 58491, "US" },
+			{ 65617, "US" },
+			{ 153452, "CL" },
+			{ 5757, "GB" },
+		};
 	}
 }
