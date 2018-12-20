@@ -50,21 +50,21 @@ namespace DevilDaggersWebsite.Utils
 
 		public static List<Donator> Donators { get; set; } = new List<Donator>
 		{
-			new Donator("DJDoomz", 100, '€'),
-			new Donator("LukeNukem", 1001, '€'),
-			new Donator(".curry", 77, '€'),
-			new Donator("LocoCaesar_IV", 1200, '€'),
-			new Donator("Chupacabra", 501, '€'),
-			new Donator("Zirtonic", 1500, '$'),
-			new Donator("Dillon", 500, '$'),
-			new Donator("Stop.", 1500, '€'),
-			new Donator("Tileä", 500, '$'),
-			new Donator("Pritster", 500, '£'),
-			new Donator("TSTAB", 1000, '€'),
-			new Donator("gLad", 500, '€'),
-			new Donator("pagedMov", 2500, '€'),
-			new Donator("xamide", 500, '€'),
-			new Donator("Green", 100, '$')
+			new Donator(137044, "DJDoomz", 100, '€'),
+			new Donator(105315, "LukeNukem", 1001, '€'),
+			new Donator(94857, ".curry", 77, '€'),
+			new Donator(142939, "LocoCaesar_IV", 1200, '€'),
+			new Donator(118832, "Chupacabra", 501, '€'),
+			new Donator(113530, "Zirtonic", 1500, '$'),
+			new Donator(148518, "Dillon", 500, '$'),
+			new Donator(148951, "Stop.", 1500, '€'),
+			new Donator(172395, "Tileä", 500, '$'),
+			new Donator(115431, "Pritster", 500, '£'),
+			new Donator(6760, "TSTAB", 1000, '€'),
+			new Donator(134802, "gLad", 500, '€'),
+			new Donator(65617, "pagedMov", 2500, '€'),
+			new Donator(121891, "xamide", 500, '€'),
+			new Donator(58491, "Green", 100, '$')
 		};
 	}
 }
