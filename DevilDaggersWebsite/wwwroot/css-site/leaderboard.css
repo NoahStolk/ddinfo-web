@@ -43,6 +43,10 @@
 	color: var(--col-ban);
 }
 
+.player-id-tooltip {
+	cursor: pointer;
+}
+
 .leaderboard-row,
 .leaderboard-title-row {
 	flex-direction: row;

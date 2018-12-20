@@ -30,6 +30,7 @@
 			<div class="sort @banString" @entry.ToHTMLData()>
 				<div class="leaderboard-row flex-container" id="@(entry.Rank)-row">
 					<div class="text-right">
+						<span data-toggle="tooltip" title="@entry.ID" class="player-id-tooltip">@entry.Rank</span>
 						<span>@(UserUtils.FlagTable.ContainsKey(entry.ID) ? Html.Raw($"<img src='/Images/Flags/24x24/{UserUtils.FlagTable[entry.ID]}.png' />") : Html.Raw(""))</span>
 					</div>
 					<div class="text-left @daggerColor leaderboard-username">@entry.Username</div>
