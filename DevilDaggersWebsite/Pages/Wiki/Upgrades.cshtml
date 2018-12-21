@@ -20,14 +20,14 @@
 	<div class="flex-container flex-center upgrade-container">
 		@foreach (Upgrade upgrade in Model.upgrades)
 		{
-			<div class="upgrade" id="Level@(upgrade.Level)" style="-webkit-box-shadow: @boxShadow #@(upgrade.ColorCode); -moz-box-shadow: @boxShadow #@(upgrade.ColorCode); box-shadow: @boxShadow #@(upgrade.ColorCode);">
+			<div class="upgrade" id="@upgrade.Name" style="-webkit-box-shadow: @boxShadow #@(upgrade.ColorCode); -moz-box-shadow: @boxShadow #@(upgrade.ColorCode); box-shadow: @boxShadow #@(upgrade.ColorCode);">
 				<div class="upgrade-row flex-container">
 					<div>Name</div>
-					<div class="text-right" style="color: #@upgrade.ColorCode;">Level @upgrade.Level</div>
+					<div class="text-right" style="color: #@upgrade.ColorCode;">@upgrade.Name</div>
 				</div>
 				<div class="upgrade-row flex-container">
 					<div>Image</div>
-					<div class="text-right"><img class="pull-right img-responsive" src="~/images/Upgrades/Level @(upgrade.Level).png" /></div>
+					<div class="text-right"><img class="pull-right img-responsive" src="~/images/Upgrades/@(upgrade.Name).png" /></div>
 				</div>
 				<div class="upgrade-row flex-container">
 					<div>Unlocks at</div>

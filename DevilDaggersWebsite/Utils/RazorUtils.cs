@@ -7,16 +7,15 @@ namespace DevilDaggersWebsite.Utils
 {
 	public static class RazorUtils
 	{
-		public static HtmlString NAString = new HtmlString($"<span style='color: #444;'>N/A</span>");
-
-		public static string DiscordLink = "https://discord.gg/NF32j8S";
-
-		public static string Email = "contact@devildaggers.info";
-
-		public static string BanColorCode = "666";
-
 		public const int DEFAULT_MAX_WAVES = 28;
-		public const int MAX_SPAWNS = 10000;
+		public const int MAX_SPAWNS = 2500;
+
+		public static string DiscordLink { get; set; } = "https://discord.gg/NF32j8S";
+		public static string Email { get; set; } = "contact@devildaggers.info";
+
+		public static string BanColorCode { get; set; } = "666";
+
+		public static HtmlString NAString { get; set; } = new HtmlString($"<span style='color: #444;'>N/A</span>");
 
 		public static HtmlString GetLayoutAnchor(this Enemy enemy, bool plural = false, float zalgo = 0)
 		{

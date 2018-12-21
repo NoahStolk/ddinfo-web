@@ -20,7 +20,7 @@ $.getJSON("/API/GetWorldRecords", function (data) {
 		var date = new Date(key);
 
 		var version = 0;
-		for (var i = 3; i > 0; i--) {
+		for (var i = Object.keys(gameVersions).length; i > 0; i--) {
 			if (date >= new Date(gameVersions["V" + i].ReleaseDate)) {
 				version = i - 1;
 				break;
