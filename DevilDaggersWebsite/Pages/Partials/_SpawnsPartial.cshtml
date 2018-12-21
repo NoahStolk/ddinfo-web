@@ -169,7 +169,7 @@
 				}
 			}
 
-			<div style="color: red; font-size: 24px;">@(endLoop.Count != 1 || (endLoop.Count == 1 && endLoop[0].Enemy != Spawnset.Enemies[-1]) ? "Goes on eternally..." : "End of spawnset")</div>
+			<div style="color: var(--col-red); font-size: 24px;">@(endLoop.Count != 1 || (endLoop.Count == 1 && endLoop[0].Enemy != Spawnset.Enemies[-1]) ? "Goes on eternally..." : "End of spawnset")</div>
 		}
 	</div>
 }
