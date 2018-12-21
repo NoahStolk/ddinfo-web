@@ -62,7 +62,7 @@
 					<tr>
 						<th class="hidden-xs" colspan="3"></th>
 						<th class="hidden-xs hidden-sm hidden-md" colspan="2">Non-loop</th>
-						<th class="hidden-xs hidden-sm hidden-md" colspan="2">Loop</th>
+						<th class="hidden-xs hidden-sm hidden-md" colspan="3">Loop</th>
 					</tr>
 					<tr class="spawnsets-sort">
 						<th width="500">
@@ -104,8 +104,15 @@
 							<a asp-page="./Spawnsets"
 							   asp-route-searchAuthor="@Model.SearchAuthor"
 							   asp-route-searchName="@Model.SearchName"
-							   asp-route-sortOrder="@Model.LoopLength"
+							   asp-route-sortOrder="@Model.LoopStart"
 							   asp-route-pageIndex="@Model.PageIndex">Start</a>
+						</th>
+						<th class="hidden-xs hidden-sm hidden-md" width="160">
+							<a asp-page="./Spawnsets"
+							   asp-route-searchAuthor="@Model.SearchAuthor"
+							   asp-route-searchName="@Model.SearchName"
+							   asp-route-sortOrder="@Model.LoopLength"
+							   asp-route-pageIndex="@Model.PageIndex">Length (wave 1)</a>
 						</th>
 						<th class="hidden-xs hidden-sm hidden-md" width="160">
 							<a asp-page="./Spawnsets"
@@ -126,13 +133,16 @@
 								@(spawnsetFile.LastUpdated.ToString("dd MMM yyyy"))
 							</td>
 							<td class="hidden-xs hidden-sm hidden-md">
-								@(spawnsetFile.SpawnData.NonLoopSpawns == 0 ? RazorUtils.NAString : Html.Raw(spawnsetFile.SpawnData.NonLoopSeconds.ToString("0.0000")))
+								@(spawnsetFile.SpawnData.NonLoopSpawns == 0 ? RazorUtils.NAString : Html.Raw(spawnsetFile.SpawnData.NonLoopLength.ToString("0.0000")))
 							</td>
 							<td class="hidden-xs hidden-sm hidden-md">
 								@(spawnsetFile.SpawnData.NonLoopSpawns == 0 ? RazorUtils.NAString : Html.Raw(spawnsetFile.SpawnData.NonLoopSpawns))
 							</td>
 							<td class="hidden-xs hidden-sm hidden-md">
 								@(spawnsetFile.SpawnData.LoopSpawns == 0 ? RazorUtils.NAString : Html.Raw(spawnsetFile.SpawnData.LoopStart.ToString("0.0000")))
+							</td>
+							<td class="hidden-xs hidden-sm hidden-md">
+								@(spawnsetFile.SpawnData.LoopLength == 0 ? RazorUtils.NAString : Html.Raw(spawnsetFile.SpawnData.LoopLength.ToString("0.0000")))
 							</td>
 							<td class="hidden-xs hidden-sm hidden-md">
 								@(spawnsetFile.SpawnData.LoopSpawns == 0 ? RazorUtils.NAString : Html.Raw(spawnsetFile.SpawnData.LoopSpawns))
