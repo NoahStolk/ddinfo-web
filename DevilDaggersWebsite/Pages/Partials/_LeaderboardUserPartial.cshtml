@@ -1,6 +1,8 @@
 ﻿@using DevilDaggersCore.Game
 @using DevilDaggersWebsite.Utils
 @using DevilDaggersWebsite.Models.Leaderboard
+@using DevilDaggersWebsite.Models.User
+@inject CoreBase.Services.ICommonObjects CommonObjects
 
 <div class="leaderboard-container flex-container flex-center">
 	<div class="leaderboard-title-row flex-container">
@@ -22,7 +24,7 @@
 		{
 			Dagger dagger = Game.GetDaggerFromTime(entry.Time);
 			Death death = Game.GetDeathFromDeathType(entry.DeathType, Game.GetGameVersionFromDate(Model.Leaderboard.DateTime));
-			bool ban = UserUtils.BanIDs.Contains(entry.ID);
+			bool ban = UserUtils.GetBans(CommonObjects).Contains(entry.ID);
 			string banString = ban ? "ban" : string.Empty;
 			string daggerColor = ban ? "ban" : dagger.Name.ToLower();
 			string deathStyle = ban ? "" : $"color: #{death.ColorCode};";
@@ -31,7 +33,15 @@
 				<div class="leaderboard-row flex-container" id="@(entry.Rank)-row">
 					<div class="text-right">
 						<span data-toggle="tooltip" title="@entry.ID" class="player-id-tooltip">@entry.Rank</span>
-						<span>@(UserUtils.FlagTable.ContainsKey(entry.ID) ? Html.Raw($"<img src='/Images/Flags/24x24/{UserUtils.FlagTable[entry.ID]}.png' />") : Html.Raw(""))</span>
+						<span>
+							@{
+								Flag flag = UserUtils.GetFlags(CommonObjects).Where(f => f.ID == entry.ID).FirstOrDefault();
+								if (flag != null)
+								{
+									<img src='/Images/Flags/24x24/@(flag.CountryCode).png' />
+								}
+							}
+						</span>
 					</div>
 					<div class="text-left @daggerColor leaderboard-username">@entry.Username</div>
 					<div class="text-right @daggerColor">@((entry.Time / 10000.0).ToString("0.0000"))</div>

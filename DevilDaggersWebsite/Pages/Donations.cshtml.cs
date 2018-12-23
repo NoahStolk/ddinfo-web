@@ -1,4 +1,5 @@
-﻿using DevilDaggersWebsite.Models.User;
+﻿using CoreBase.Services;
+using DevilDaggersWebsite.Models.User;
 using DevilDaggersWebsite.Utils;
 using Microsoft.AspNetCore.Mvc.RazorPages;
 using System.Collections.Generic;
@@ -8,11 +9,18 @@ namespace DevilDaggersWebsite.Pages
 {
 	public class DonationsModel : PageModel
 	{
+		private ICommonObjects _commonObjects;
+
 		public List<Donator> Donators { get; set; }
+
+		public DonationsModel(ICommonObjects commonObjects)
+		{
+			_commonObjects = commonObjects;
+		}
 
 		public void OnGet()
 		{
-			Donators = UserUtils.Donators
+			Donators = UserUtils.GetDonators(_commonObjects)
 				.OrderByDescending(d => d.Amount)
 				.ThenBy(d => d.CurrencySymbol, new CurrencyComparer())
 				.ThenBy(d => d.Username)

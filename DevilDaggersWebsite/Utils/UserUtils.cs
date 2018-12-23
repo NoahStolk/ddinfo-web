@@ -1,99 +1,45 @@
-﻿using DevilDaggersWebsite.Models.User;
+﻿using CoreBase.Services;
+using DevilDaggersWebsite.Models.User;
+using NetBase.Utils;
 using System.Collections.Generic;
+using System.IO;
 
 namespace DevilDaggersWebsite.Utils
 {
 	public static class UserUtils
 	{
-		public static List<int> BanIDs { get; set; } = new List<int>
+		public static IEnumerable<int> GetBans(ICommonObjects commonObjects)
 		{
-			117558,
-			11356,
-			87056,
-			10217,
-			80584,
-			101345,
-			129990,
-			155788,
-			117147,
-			144104,
-			157043,
-			68182,
-			160371,
-			999999,
-			10635,
-			110997,
-			90515,
-			157181,
-			161160,
-			153152,
-			150850,
-			140942,
-			76010,
-			9666,
-			72195,
-			154532,
-			75575,
-			42534,
-			106692,
-			164240,
-			21541,
-			171883,
-			170176,
-			54358,
-			176591,
-			176744,
-			121293,
-			93520,
-			108947
-		};
+			foreach (string ban in FileUtils.GetContents(Path.Combine(commonObjects.Env.WebRootPath, "user", "bans")).Split('\n'))
+				yield return int.Parse(ban.TrimEnd('\r', '\n'));
+		}
 
-		public static List<Donator> Donators { get; set; } = new List<Donator>
+		public static IEnumerable<Donator> GetDonators(ICommonObjects commonObjects)
 		{
-			new Donator(137044, "DJDoomz", 100, '€'),
-			new Donator(105315, "LukeNukem", 1001, '€'),
-			new Donator(94857, ".curry", 77, '€'),
-			new Donator(142939, "LocoCaesar_IV", 1200, '€'),
-			new Donator(118832, "Chupacabra", 501, '€'),
-			new Donator(113530, "Zirtonic", 1500, '$'),
-			new Donator(148518, "Dillon", 500, '$'),
-			new Donator(148951, "Stop.", 1500, '€'),
-			new Donator(172395, "Tileä", 500, '$'),
-			new Donator(115431, "Pritster", 500, '£'),
-			new Donator(6760, "TSTAB", 1000, '€'),
-			new Donator(134802, "gLad", 500, '€'),
-			new Donator(65617, "pagedMov", 2500, '€'),
-			new Donator(121891, "xamide", 500, '€'),
-			new Donator(58491, "Green", 100, '$')
-		};
+			foreach (string d in FileUtils.GetContents(Path.Combine(commonObjects.Env.WebRootPath, "user", "donators")).Split('\n'))
+			{
+				string donator = d.TrimEnd('\r', '\n');
 
-		public static Dictionary<int, string> FlagTable { get; set; } = new Dictionary<int, string>
+				while (donator.Contains("\t\t"))
+					donator = donator.Replace("\t\t", "\t");
+				string[] props = donator.Split('\t');
+
+				yield return new Donator(int.Parse(props[0]), props[1], int.Parse(props[2]), char.Parse(props[3]));
+			}
+		}
+
+		public static IEnumerable<Flag> GetFlags(ICommonObjects commonObjects)
 		{
-			{ 148788, "US" },
-			{ 229, "SE" },
-			{ 116704, "DE" },
-			{ 118832, "IQ" },
-			{ 1135, "US" },
-			{ 88424, "US" },
-			{ 1677, "BE" },
-			{ 93991, "PL" },
-			{ 1545, "GB" },
-			{ 134802, "GB" },
-			{ 10210, "NL" },
-			{ 21854, "NL" },
-			{ 438, "US" },
-			{ 106181, "GB" },
-			{ 148518, "US" },
-			{ 105874, "CZ" },
-			{ 105641, "AU" },
-			{ 86805, "AU" },
-			{ 2316, "AU" },
-			{ 157181, "US" },
-			{ 19658, "AU" },
-			{ 58491, "US" },
-			{ 65617, "US" },
-			{ 153452, "CL" },
-			{ 5757, "GB" },
-		};
+			foreach (string f in FileUtils.GetContents(Path.Combine(commonObjects.Env.WebRootPath, "user", "flags")).Split('\n'))
+			{
+				string flag = f.TrimEnd('\r', '\n');
+
+				while (flag.Contains("\t\t"))
+					flag = flag.Replace("\t\t", "\t");
+				string[] props = flag.Split('\t');
+
+				yield return new Flag(int.Parse(props[0]), props[1]);
+			}
+		}
 	}
 }
