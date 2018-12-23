@@ -1,4 +1,5 @@
 ﻿using System;
+using System.Collections.Generic;
 using System.Drawing;
 using System.Text;
 
@@ -6,12 +7,21 @@ namespace DevilDaggersWebsite.Utils
 {
 	public static class ZalgoUtils
 	{
-		private readonly static Random random = new Random();
-
-		private readonly static string[] zalgoAll = new string[]
+		static ZalgoUtils()
 		{
-			"̍", "̎", "̄", "̅", "̿", "̑", "̆", "̐", "͒", "͗", "͑", "̇", "̈", "̊", "͂", "̓", "̈́", "͊", "͋", "͌", "̃", "̂", "̌", "͐", "̀", "́", "̋", "̏", "̒", "̓", "̔", "̽", "̉", "ͣ", "ͤ", "ͥ", "ͦ", "ͧ", "ͨ", "ͩ", "ͪ", "ͫ", "ͬ", "ͭ", "ͮ", "ͯ", "̾", "͛", "͆", "̚", "̕", "̛", "̀", "́", "͘", "̡", "̢", "̧", "̨", "̴", "̵", "̶", "͏", "͜", "͝", "͞", "͟", "͠", "͢", "̸", "̷", "͡", "҉", "̖", "̗", "̘", "̙", "̜", "̝", "̞", "̟", "̠", "̤", "̥", "̦", "̩", "̪", "̫", "̬", "̭", "̮", "̯", "̰", "̱", "̲", "̳", "̹", "̺", "̻", "̼", "ͅ", "͇", "͈", "͉", "͍", "͎", "͓", "͔", "͕", "͖", "͙"
-		};
+			for (int i = 300; i < 340; i++)
+			{
+				int num = i;
+				string codePoint = $"0{num}";
+				int code = int.Parse(codePoint, System.Globalization.NumberStyles.HexNumber);
+				string unicodeString = char.ConvertFromUtf32(code);
+				zalgoAll.Add(unicodeString);
+			}
+		}
+
+		private readonly static List<string> zalgoAll = new List<string>();
+
+		private readonly static Random random = new Random();
 
 		public static string InterpolateHexColor(string c1, string c2, float percentage)
 		{
@@ -43,11 +53,11 @@ namespace DevilDaggersWebsite.Utils
 					{
 						float chance = amount % 1;
 						if (random.NextDouble() < chance)
-							sb.Append(zalgoAll[random.Next(zalgoAll.Length)]);
+							sb.Append(zalgoAll[random.Next(zalgoAll.Count)]);
 					}
 					else
 					{
-						sb.Append(zalgoAll[random.Next(zalgoAll.Length)]);
+						sb.Append(zalgoAll[random.Next(zalgoAll.Count)]);
 					}
 				}
 			}
