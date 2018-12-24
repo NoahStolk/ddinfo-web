@@ -25,6 +25,7 @@ namespace DevilDaggersWebsite.Pages
 			SitemapUtils.ExcludePage("Error_404");
 			SitemapUtils.ExcludePage("LeaderboardHistory");
 			SitemapUtils.ExcludePage("Spawnset");
+			SitemapUtils.ExcludePage("Admin");
 			XmlResult = SitemapUtils.GetSitemap(_commonObjects, true);
 		}
 	}
