@@ -1,0 +1,34 @@
+﻿@page
+@model DevilDaggersWebsite.Pages.Admin.IndexModel
+@inject CoreBase.Services.ICommonObjects CommonObjects
+@{
+	ViewData["Title"] = "Admin";
+}
+
+<header>
+	<h1>@ViewData["Title"]</h1>
+</header>
+
+<main role="main" class="text-center">
+	<span id="pass" class="hidden">@Model.Pass</span>
+	<div class="row">
+		<div class="col-lg-4 col-xs-12">
+			<h2>Bans</h2>
+			<p>ID</p>
+			<textarea id="textarea-bans">@Model.BansFileContents</textarea>
+		</div>
+		<div class="col-lg-4 col-xs-12">
+			<h2>Donators</h2>
+			<p>ID, Username, Amount, Currency</p>
+			<textarea id="textarea-donators">@Model.DonatorsFileContents</textarea>
+		</div>
+		<div class="col-lg-4 col-xs-12">
+			<h2>Flags</h2>
+			<p>ID, CountryCode</p>
+			<textarea id="textarea-flags">@Model.FlagsFileContents</textarea>
+		</div>
+	</div>
+	<p>
+		<button id="save" class="btn btn-default">Save</button>
+	</p>
+</main>

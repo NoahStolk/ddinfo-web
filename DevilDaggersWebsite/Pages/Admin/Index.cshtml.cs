@@ -1,30 +1,31 @@
 ﻿using CoreBase.Services;
+using DevilDaggersWebsite.Models.PageModels;
 using Microsoft.AspNetCore.Mvc;
-using Microsoft.AspNetCore.Mvc.RazorPages;
 using NetBase.Utils;
-using System;
 
-namespace DevilDaggersWebsite.Pages
+namespace DevilDaggersWebsite.Pages.Admin
 {
-	public class AdminModel : PageModel
+	public class IndexModel : AdminPageModel
 	{
 		private ICommonObjects _commonObjects;
+
+		public string Pass { get; private set; }
 
 		public string BansFileContents { get; set; }
 		public string DonatorsFileContents { get; set; }
 		public string FlagsFileContents { get; set; }
 
-		public AdminModel(ICommonObjects commonObjects)
+		public IndexModel(ICommonObjects commonObjects)
 		{
 			_commonObjects = commonObjects;
 		}
 
 		public ActionResult OnGet(string pass)
 		{
-			string password = $"plol{DateTime.Now.Day + DateTime.Now.Month}";
+			if (!Authenticate(pass))
+				return RedirectToPage("/Error/404");
 
-			if (pass != password)
-				return RedirectToPage("Error/404");
+			Pass = pass;
 
 			BansFileContents = FileUtils.GetContents(System.IO.Path.Combine(_commonObjects.Env.WebRootPath, "user", "bans"));
 			DonatorsFileContents = FileUtils.GetContents(System.IO.Path.Combine(_commonObjects.Env.WebRootPath, "user", "donators"));
