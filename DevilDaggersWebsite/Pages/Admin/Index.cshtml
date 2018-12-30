@@ -10,25 +10,30 @@
 </header>
 
 <main role="main" class="text-center">
-	<span id="pass" class="hidden">@Model.Pass</span>
-	<div class="row">
-		<div class="col-lg-4 col-xs-12">
-			<h2>Bans</h2>
-			<p>ID</p>
-			<textarea id="textarea-bans">@Model.BansFileContents</textarea>
-		</div>
-		<div class="col-lg-4 col-xs-12">
-			<h2>Donators</h2>
-			<p>ID, Username, Amount, Currency</p>
-			<textarea id="textarea-donators">@Model.DonatorsFileContents</textarea>
-		</div>
-		<div class="col-lg-4 col-xs-12">
-			<h2>Flags</h2>
-			<p>ID, CountryCode</p>
-			<textarea id="textarea-flags">@Model.FlagsFileContents</textarea>
-		</div>
-	</div>
-	<p>
-		<button id="save" class="btn btn-default">Save</button>
-	</p>
+	@using (Html.BeginForm(FormMethod.Post))
+	{
+		<fieldset>
+			<div class="row">
+				<div class="col-lg-4 col-xs-12">
+					<h2>Bans</h2>
+					<p>ID</p>
+					<textarea asp-for="BansFileContents">@Model.BansFileContents</textarea>
+				</div>
+				<div class="col-lg-4 col-xs-12">
+					<h2>Donators</h2>
+					<p>ID, Username, Amount, Currency</p>
+					<textarea asp-for="DonatorsFileContents">@Model.DonatorsFileContents</textarea>
+				</div>
+				<div class="col-lg-4 col-xs-12">
+					<h2>Flags</h2>
+					<p>ID, CountryCode</p>
+					<textarea asp-for="FlagsFileContents">@Model.FlagsFileContents</textarea>
+				</div>
+			</div>
+			<div class="row">
+				<input asp-for="Password" type="hidden" value="@Model.Password" />
+				<input type="submit" id="save" class="btn btn-default" value="Save" />
+			</div>
+		</fieldset>
+	}
 </main>
