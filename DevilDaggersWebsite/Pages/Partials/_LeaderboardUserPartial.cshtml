@@ -36,10 +36,10 @@
 						<span>
 							@{
 								Flag flag = UserUtils.GetFlags(CommonObjects).Where(f => f.ID == entry.ID).FirstOrDefault();
-								if (flag != null)
-								{
-									<img src='/Images/Flags/24x24/@(flag.CountryCode).png' />
-								}
+
+								//string[] flagFiles = System.IO.Directory.GetFiles(System.IO.Path.Combine(CommonObjects.Env.WebRootPath, "images", "Flags", "24x24"));
+								//Flag flag = new Flag(entry.ID, System.IO.Path.GetFileNameWithoutExtension(flagFiles[CoreBase.Extensions.RazorExtensions.Random.Next(flagFiles.Length)]));
+								<img src='/Images/Flags/24x24/@(flag == null ? "00" : flag.CountryCode).png' />
 							}
 						</span>
 					</div>
