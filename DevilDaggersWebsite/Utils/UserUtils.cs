@@ -32,6 +32,9 @@ namespace DevilDaggersWebsite.Utils
 		{
 			foreach (string f in FileUtils.GetContents(Path.Combine(commonObjects.Env.WebRootPath, "user", "flags")).Split('\n'))
 			{
+				if (f.StartsWith("?"))
+					continue;
+
 				string flag = f.TrimEnd('\r', '\n');
 
 				while (flag.Contains("\t\t"))
