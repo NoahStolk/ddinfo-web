@@ -33,15 +33,18 @@
 				<div class="leaderboard-row flex-container" id="@(entry.Rank)-row">
 					<div class="text-right">
 						<span data-toggle="tooltip" title="@entry.ID" class="player-id-tooltip">@entry.Rank</span>
-						<span>
-							@{
-								Flag flag = UserUtils.GetFlags(CommonObjects).Where(f => f.ID == entry.ID).FirstOrDefault();
+						@if (UserUtils.GetFlags(CommonObjects).Count() > 25)
+						{
+							<span>
+								@{
+									Flag flag = UserUtils.GetFlags(CommonObjects).Where(f => f.ID == entry.ID).FirstOrDefault();
 
-								//string[] flagFiles = System.IO.Directory.GetFiles(System.IO.Path.Combine(CommonObjects.Env.WebRootPath, "images", "Flags", "24x24"));
-								//Flag flag = new Flag(entry.ID, System.IO.Path.GetFileNameWithoutExtension(flagFiles[CoreBase.Extensions.RazorExtensions.Random.Next(flagFiles.Length)]));
-								<img src='/Images/Flags/24x24/@(flag == null ? "00" : flag.CountryCode).png' />
-							}
-						</span>
+									//string[] flagFiles = System.IO.Directory.GetFiles(System.IO.Path.Combine(CommonObjects.Env.WebRootPath, "images", "Flags", "24x24"));
+									//Flag flag = new Flag(entry.ID, System.IO.Path.GetFileNameWithoutExtension(flagFiles[CoreBase.Extensions.RazorExtensions.Random.Next(flagFiles.Length)]));
+									<img src='/Images/Flags/24x24/@(flag == null ? "00" : flag.CountryCode).png' />
+								}
+							</span>
+						}
 					</div>
 					<div class="text-left @daggerColor leaderboard-username">@entry.Username</div>
 					<div class="text-right @daggerColor">@((entry.Time / 10000.0).ToString("0.0000"))</div>

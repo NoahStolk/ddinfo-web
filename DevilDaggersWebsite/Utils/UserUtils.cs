@@ -11,13 +11,17 @@ namespace DevilDaggersWebsite.Utils
 		public static IEnumerable<int> GetBans(ICommonObjects commonObjects)
 		{
 			foreach (string ban in FileUtils.GetContents(Path.Combine(commonObjects.Env.WebRootPath, "user", "bans")).Split('\n'))
-				yield return int.Parse(ban.TrimEnd('\r', '\n'));
+				if (!string.IsNullOrWhiteSpace(ban))
+					yield return int.Parse(ban.TrimEnd('\r', '\n'));
 		}
 
 		public static IEnumerable<Donator> GetDonators(ICommonObjects commonObjects)
 		{
 			foreach (string d in FileUtils.GetContents(Path.Combine(commonObjects.Env.WebRootPath, "user", "donators")).Split('\n'))
 			{
+				if (string.IsNullOrWhiteSpace(d))
+					continue;
+
 				string donator = d.TrimEnd('\r', '\n');
 
 				while (donator.Contains("\t\t"))
@@ -32,10 +36,13 @@ namespace DevilDaggersWebsite.Utils
 		{
 			foreach (string f in FileUtils.GetContents(Path.Combine(commonObjects.Env.WebRootPath, "user", "flags")).Split('\n'))
 			{
-				if (f.StartsWith("?"))
+				if (string.IsNullOrWhiteSpace(f))
 					continue;
 
 				string flag = f.TrimEnd('\r', '\n');
+
+				if (flag.EndsWith("?"))
+					continue;
 
 				while (flag.Contains("\t\t"))
 					flag = flag.Replace("\t\t", "\t");
