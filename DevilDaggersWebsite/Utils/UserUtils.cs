@@ -23,10 +23,7 @@ namespace DevilDaggersWebsite.Utils
 					continue;
 
 				string donator = d.TrimEnd('\r', '\n');
-
-				while (donator.Contains("\t\t"))
-					donator = donator.Replace("\t\t", "\t");
-				string[] props = donator.Split('\t');
+				string[] props = GetProps(donator);
 
 				yield return new Donator(int.Parse(props[0]), props[1], int.Parse(props[2]), char.Parse(props[3]));
 			}
@@ -44,12 +41,19 @@ namespace DevilDaggersWebsite.Utils
 				if (flag.EndsWith("?"))
 					continue;
 
-				while (flag.Contains("\t\t"))
-					flag = flag.Replace("\t\t", "\t");
-				string[] props = flag.Split('\t');
+				string[] props = GetProps(flag);
 
 				yield return new Flag(int.Parse(props[0]), props[1]);
 			}
+		}
+
+		private static string[] GetProps(string line)
+		{
+			while (line.Contains("\t"))
+				line = line.Replace("\t", " ");
+			while (line.Contains("  "))
+				line = line.Replace("  ", " ");
+			return line.Split(' ');
 		}
 	}
 }
