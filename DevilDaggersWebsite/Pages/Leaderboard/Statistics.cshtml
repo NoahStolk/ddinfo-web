@@ -1,0 +1,26 @@
+﻿@page
+@model DevilDaggersWebsite.Pages.Leaderboard.StatisticsModel
+@using DevilDaggersCore.Game
+@{
+	ViewData["Title"] = "Statistics";
+}
+
+<header>
+	<h1>@ViewData["Title"]</h1>
+</header>
+
+<main>
+	<ul>
+		@{
+			Dictionary<Dagger, int> daggerStats = await Model.GetDaggerStats();
+			int exclude = 0;
+			foreach (KeyValuePair<Dagger, int> stat in daggerStats)
+			{
+				<li>
+					<img src="~/images/Daggers/@(stat.Key.Name)Small.png" />There are @(stat.Value - exclude) players with the @(stat.Key.Name) dagger.
+				</li>
+				exclude = stat.Value;
+			}
+		}
+	</ul>
+</main>
