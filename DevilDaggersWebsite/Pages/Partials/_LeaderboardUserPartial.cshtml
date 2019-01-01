@@ -7,6 +7,7 @@
 <div class="leaderboard-container flex-container flex-center">
 	<div class="leaderboard-title-row flex-container">
 		<div class="sorter text-center" sort="rank">#</div>
+		<div class="sorter text-center" sort="flag">Flag</div>
 		<div class="sorter text-center" sort="username">Username</div>
 		<div class="sorter text-center" sort="time">Time</div>
 		<div class="sorter hidden-xs text-center" sort="kills">Kills</div>
@@ -22,30 +23,20 @@
 	<div class="leaderboard-body">
 		@foreach (Entry entry in Model.Leaderboard.Entries)
 		{
+			Flag flag = UserUtils.GetFlags(CommonObjects).Where(f => f.ID == entry.ID).FirstOrDefault();
 			Dagger dagger = Game.GetDaggerFromTime(entry.Time);
 			Death death = Game.GetDeathFromDeathType(entry.DeathType, Game.GetGameVersionFromDate(Model.Leaderboard.DateTime));
 			bool ban = UserUtils.GetBans(CommonObjects).Contains(entry.ID);
-			string banString = ban ? "ban" : string.Empty;
+
+			string flagCode = flag == null ? "00" : flag.CountryCode;
 			string daggerColor = ban ? "ban" : dagger.Name.ToLower();
 			string deathStyle = ban ? "" : $"color: #{death.ColorCode};";
+			string banString = ban ? "ban" : string.Empty;
 
-			<div class="sort @banString" @entry.ToHTMLData()>
+			<div class="sort @banString" @entry.ToHTMLData(flagCode)>
 				<div class="leaderboard-row flex-container" id="@(entry.Rank)-row">
-					<div class="text-right">
-						<span data-toggle="tooltip" title="@entry.ID" class="player-id-tooltip">@entry.Rank</span>
-						@if (UserUtils.GetFlags(CommonObjects).Count() > 25)
-						{
-							<span>
-								@{
-									Flag flag = UserUtils.GetFlags(CommonObjects).Where(f => f.ID == entry.ID).FirstOrDefault();
-
-									//string[] flagFiles = System.IO.Directory.GetFiles(System.IO.Path.Combine(CommonObjects.Env.WebRootPath, "images", "Flags", "24x24"));
-									//Flag flag = new Flag(entry.ID, System.IO.Path.GetFileNameWithoutExtension(flagFiles[CoreBase.Extensions.RazorExtensions.Random.Next(flagFiles.Length)]));
-									<img src='/Images/Flags/24x24/@(flag == null ? "00" : flag.CountryCode).png' />
-								}
-							</span>
-						}
-					</div>
+					<div class="text-right"><span data-toggle="tooltip" title="@entry.ID" class="player-id-tooltip">@entry.Rank</span></div>
+					<div><span><img src='/Images/Flags/24x24/@(flagCode).png' /></span></div>
 					<div class="text-left @daggerColor leaderboard-username">@entry.Username</div>
 					<div class="text-right @daggerColor">@((entry.Time / 10000.0).ToString("0.0000"))</div>
 					<div class="hidden-xs text-right">@entry.Kills</div>

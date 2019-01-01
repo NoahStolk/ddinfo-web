@@ -8,7 +8,7 @@ html {
 }
 
 .body-content {
-	padding: 0 7.5%;
+	padding: 0 6%;
 }
 
 @media (max-width: 767px) {
@@ -34,8 +34,8 @@ body {
 
 h1, h2, h3, h4, h5, h6 {
 	color: var(--col-red);
-	margin-left: 0px;
-	padding-left: 0px;
+	margin-left: 0;
+	padding-left: 0;
 }
 
 h1 {
@@ -147,23 +147,21 @@ option {
 	font-size: 17px;
 }
 
+.text-bold {
+	font-weight: bold;
+}
+
 /* https://css-tricks.com/snippets/css/prevent-long-urls-from-breaking-out-of-container/ */
 .dont-break-out {
-	/* These are technically the same, but use both */
 	overflow-wrap: break-word;
 	word-wrap: break-word;
 	-ms-word-break: break-all;
-	/* This is the dangerous one in WebKit, as it breaks things wherever */
+	-epub-word-break: break-all;
 	word-break: break-all;
-	/* Instead use this non-standard one: */
 	word-break: break-word;
-	/* Adds a hyphen where the word breaks, if supported (No Blink) */
 	-ms-hyphens: auto;
 	-moz-hyphens: auto;
+	-epub-hyphens: auto;
 	-webkit-hyphens: auto;
 	hyphens: auto;
-}
-
-.text-bold {
-	font-weight: bold;
 }

@@ -78,10 +78,11 @@ namespace DevilDaggersWebsite.Models.Leaderboard
 			return completion;
 		}
 
-		public HtmlString ToHTMLData()
+		public HtmlString ToHTMLData(string flagCode)
 		{
 			return new HtmlString($@"
 				rank='{Rank}'
+				flag='{flagCode}'
 				username='{HttpUtility.HtmlEncode(Username)}'
 				time='{Time}'
 				kills='{Kills}'

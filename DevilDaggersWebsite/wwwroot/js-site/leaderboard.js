@@ -1,6 +1,7 @@
 ﻿$(document).ready(function () {
 	var directions = {
 		"rank": -1,
+		"flag": -1,
 		"username": 1,
 		"time": -1,
 		"kills": -1,
@@ -26,7 +27,7 @@
 		var sortValue = sorter.attr('sort');
 
 		var sort = $('.sort').sort(function (a, b) {
-			if (sortValue === 'username' || sortValue === 'death-type') {
+			if (sortValue === 'username' || sortValue === 'death-type' || sortValue === 'flag') {
 				contentA = $(a).attr(sortValue).toLowerCase();
 				contentB = $(b).attr(sortValue).toLowerCase();
 			}
