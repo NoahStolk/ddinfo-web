@@ -12,7 +12,10 @@ namespace DevilDaggersWebsite.Utils
 		{
 			foreach (string ban in FileUtils.GetContents(Path.Combine(commonObjects.Env.WebRootPath, "user", "bans")).Split('\n'))
 				if (!string.IsNullOrWhiteSpace(ban))
-					yield return int.Parse(ban.TrimEnd('\r', '\n'));
+					if (ban.Contains(' '))
+						yield return int.Parse(ban.Substring(0, ban.IndexOf(' ')));
+					else
+						yield return int.Parse(ban.TrimEnd('\r', '\n'));
 		}
 
 		public static IEnumerable<Donator> GetDonators(ICommonObjects commonObjects)
