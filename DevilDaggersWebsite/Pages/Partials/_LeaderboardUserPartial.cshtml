@@ -35,8 +35,17 @@
 
 			<div class="sort @banString" @entry.ToHTMLData(flagCode)>
 				<div class="leaderboard-row flex-container" id="@(entry.Rank)-row">
-					<div class="text-right"><span data-toggle="tooltip" title="@entry.ID" class="player-id-tooltip">@entry.Rank</span></div>
-					<div><span><img src='/Images/Flags/24x24/@(flagCode).png' /></span></div>
+					<div class="text-right"><span data-toggle="tooltip" title="@entry.ID" class="leaderboard-tooltip">@entry.Rank</span></div>
+					<div>
+						@if (flag == null)
+						{
+							<span><img src="/Images/Flags/24x24/@(flagCode).png" /></span>
+						}
+						else
+						{
+							<span class="leaderboard-tooltip" data-toggle="tooltip" title="@(UserUtils.CountryNames[flagCode])"><img src="/Images/Flags/24x24/@(flagCode).png" /></span>
+						}
+					</div>
 					<div class="text-left @daggerColor leaderboard-username">@entry.Username</div>
 					<div class="text-right @daggerColor">@((entry.Time / 10000.0).ToString("0.0000"))</div>
 					<div class="hidden-xs text-right">@entry.Kills</div>
