@@ -26,7 +26,7 @@ namespace DevilDaggersWebsite.Utils
 					continue;
 
 				string donator = d.TrimEnd('\r', '\n');
-				string[] props = GetProps(donator);
+				string[] props = GetPropsNoSpaces(donator);
 
 				yield return new Donator(int.Parse(props[0]), props[1], int.Parse(props[2]), char.Parse(props[3]));
 			}
@@ -57,6 +57,13 @@ namespace DevilDaggersWebsite.Utils
 			while (line.Contains("  "))
 				line = line.Replace("  ", " ");
 			return line.Split(' ');
+		}
+
+		private static string[] GetPropsNoSpaces(string line)
+		{
+			while (line.Contains("\t\t"))
+				line = line.Replace("\t\t", "\t");
+			return line.Split('\t');
 		}
 	}
 }
