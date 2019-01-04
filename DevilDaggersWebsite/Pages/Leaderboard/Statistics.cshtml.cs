@@ -1,6 +1,7 @@
 ﻿using DevilDaggersCore.Game;
 using DevilDaggersWebsite.Models.Leaderboard;
 using DevilDaggersWebsite.Utils;
+using Microsoft.AspNetCore.Mvc;
 using Microsoft.AspNetCore.Mvc.RazorPages;
 using System.Collections.Generic;
 using System.Threading.Tasks;
@@ -9,6 +10,11 @@ namespace DevilDaggersWebsite.Pages.Leaderboard
 {
 	public class StatisticsModel : PageModel
 	{
+		public ActionResult OnGet()
+		{
+			return RedirectToPage("/Error/404");
+		}
+
 		public async Task<Dictionary<Dagger, int>> GetDaggerStats()
 		{
 			List<int> offsets = new List<int>
