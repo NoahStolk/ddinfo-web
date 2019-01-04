@@ -10,17 +10,31 @@
 </header>
 
 <main>
+	<h2>Daggers</h2>
 	<ul>
-		@{
-			Dictionary<Dagger, int> daggerStats = await Model.GetDaggerStats();
-			int exclude = 0;
-			foreach (KeyValuePair<Dagger, int> stat in daggerStats)
-			{
-				<li>
-					<img src="~/images/Daggers/@(stat.Key.Name)Small.png" />There are @(stat.Value - exclude) players with the @(stat.Key.Name) dagger.
-				</li>
-				exclude = stat.Value;
-			}
-		}
+		@*@{
+				Dictionary<Dagger, int> daggerStats = await Model.GetDaggerStats();
+				int exclude = 0;
+				foreach (KeyValuePair<Dagger, int> stat in daggerStats)
+				{
+					<li>
+						<img src="~/images/Daggers/@(stat.Key.Name)Small.png" />There are @(stat.Value - exclude) players with the <span class="@(stat.Key.Name.ToLower())">@(stat.Key.Name)</span> dagger.
+					</li>
+					exclude = stat.Value;
+				}
+			}*@
 	</ul>
+
+	<h2>Deaths</h2>
+
+	@{
+		Dictionary<Death, int> deathStats = await Model.GetDeathStats(1, 2, 3);
+		foreach (KeyValuePair<Death, int> stat in deathStats)
+		{
+			<div class="row">
+				<div class="col-md-2 col-sm-4 col-xs-6">@stat.Key.Name</div>
+				<div class="col-md-10 col-sm-8 col-xs-6">@stat.Value</div>
+			</div>
+		}
+	}
 </main>

@@ -49,5 +49,26 @@ namespace DevilDaggersWebsite.Pages.Leaderboard
 
 			return daggerStats;
 		}
+
+		public async Task<Dictionary<Death, int>> GetDeathStats(params int[] pages)
+		{
+			Dictionary<Death, int> deathStats = new Dictionary<Death, int>();
+
+			foreach (int page in pages)
+			{
+				Models.Leaderboard.Leaderboard lb = await LeaderboardUtils.LoadLeaderboard(page * 100 + 1);
+
+				foreach (Entry entry in lb.Entries)
+				{
+					Death death = Game.GetDeathFromDeathType(entry.DeathType);
+					if (deathStats.ContainsKey(death))
+						deathStats[death]++;
+					else
+						deathStats.Add(death, 1);
+				}
+			}
+
+			return deathStats;
+		}
 	}
 }
