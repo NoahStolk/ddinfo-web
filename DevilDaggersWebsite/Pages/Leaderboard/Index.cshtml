@@ -1,6 +1,7 @@
 ﻿@page
 @inject CoreBase.Services.ICommonObjects CommonObjects
 @model DevilDaggersWebsite.Pages.Leaderboard.IndexModel
+@using DevilDaggersWebsite.Utils
 @{
 	ViewData["Title"] = "Leaderboard";
 
@@ -62,6 +63,9 @@
 		</p>
 		<p class="visible-xs visible-sm visible-md">
 			On mobile devices; tap on an entry to expand it.
+		</p>
+		<p>
+			If you'd like to add your nationality (flag) to this leaderboard, let one of the <img src="~/images/Icons/eye3.png" /> <a href="@RazorUtils.DISCORD_URL">Discord</a> mods know.
 		</p>
 	</div>
 	@await Html.PartialAsync("Partials/_LeaderboardUserPartial")
