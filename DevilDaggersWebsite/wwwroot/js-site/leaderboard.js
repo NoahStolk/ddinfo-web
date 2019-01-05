@@ -41,5 +41,7 @@
 
 		directions[sortValue] *= -1;
 		$(".leaderboard-body").html(sort);
+
+		$('[data-toggle="tooltip"]').tooltip();
 	});
 });
