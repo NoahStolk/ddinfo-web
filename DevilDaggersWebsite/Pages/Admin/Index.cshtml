@@ -29,6 +29,11 @@
 					<p>ID, CountryCode</p>
 					<textarea asp-for="FlagsFileContents">@Model.FlagsFileContents</textarea>
 				</div>
+				<div class="col-lg-4 col-xs-12">
+					<h2>User titles</h2>
+					<p>ID, Titles (separated by commas)</p>
+					<textarea asp-for="TitlesFileContents">@Model.TitlesFileContents</textarea>
+				</div>
 			</div>
 			<div class="row">
 				<input asp-for="Password" type="hidden" value="@Model.Password" />

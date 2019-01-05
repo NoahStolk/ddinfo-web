@@ -50,6 +50,22 @@ namespace DevilDaggersWebsite.Utils
 			}
 		}
 
+		public static IEnumerable<UserTitleCollection> GetTitleCollections(ICommonObjects commonObjects)
+		{
+			foreach (string t in FileUtils.GetContents(Path.Combine(commonObjects.Env.WebRootPath, "user", "titles")).Split('\n'))
+			{
+				if (string.IsNullOrWhiteSpace(t))
+					continue;
+
+				string line = t.TrimEnd('\r', '\n');
+				string[] props = GetPropsNoSpaces(line);
+
+				string[] titles = props[1].Split(',');
+
+				yield return new UserTitleCollection(int.Parse(props[0]), titles);
+			}
+		}
+
 		private static string[] GetProps(string line)
 		{
 			while (line.Contains("\t"))
@@ -65,6 +81,14 @@ namespace DevilDaggersWebsite.Utils
 				line = line.Replace("\t\t", "\t");
 			return line.Split('\t');
 		}
+
+		public static Dictionary<string, string> TitleImages { get; set; } = new Dictionary<string, string>
+		{
+			{ "Site admin", "dagger" },
+			{ "Discord admin", "eye2" },
+			{ "Discord mod", "eye3" },
+			{ "Donator", "gem" },
+		};
 
 		public static Dictionary<string, string> CountryNames { get; set; } = new Dictionary<string, string>
 		{

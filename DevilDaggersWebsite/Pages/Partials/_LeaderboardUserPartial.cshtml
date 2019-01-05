@@ -21,82 +21,107 @@
 		<div class="sorter hidden-xs hidden-sm hidden-md text-center" sort="total-deaths">Total deaths</div>
 	</div>
 	<div class="leaderboard-body">
-		@foreach (Entry entry in Model.Leaderboard.Entries)
-		{
-			Flag flag = UserUtils.GetFlags(CommonObjects).Where(f => f.ID == entry.ID).FirstOrDefault();
-			Dagger dagger = Game.GetDaggerFromTime(entry.Time);
-			Death death = Game.GetDeathFromDeathType(entry.DeathType, Game.GetGameVersionFromDate(Model.Leaderboard.DateTime));
-			bool ban = UserUtils.GetBans(CommonObjects).Contains(entry.ID);
+		@{
+			IEnumerable<int> bans = UserUtils.GetBans(CommonObjects);
+			IEnumerable<Donator> donators = UserUtils.GetDonators(CommonObjects);
+			IEnumerable<Flag> flags = UserUtils.GetFlags(CommonObjects);
+			IEnumerable<UserTitleCollection> titleCollections = UserUtils.GetTitleCollections(CommonObjects);
+			foreach (Entry entry in Model.Leaderboard.Entries)
+			{
+				bool ban = bans.Contains(entry.ID);
+				Donator donator = donators.Where(d => d.ID == entry.ID).FirstOrDefault();
+				Flag flag = flags.Where(f => f.ID == entry.ID).FirstOrDefault();
+				UserTitleCollection titles = titleCollections.Where(t => t.ID == entry.ID).FirstOrDefault();
 
-			string flagCode = flag == null ? "00" : flag.CountryCode;
-			string daggerColor = ban ? "ban" : dagger.Name.ToLower();
-			string deathStyle = ban ? "" : $"color: #{death.ColorCode};";
-			string banString = ban ? "ban" : string.Empty;
+				Dagger dagger = Game.GetDaggerFromTime(entry.Time);
+				Death death = Game.GetDeathFromDeathType(entry.DeathType, Game.GetGameVersionFromDate(Model.Leaderboard.DateTime));
 
-			<div class="sort @banString" @entry.ToHTMLData(flagCode)>
-				<div class="leaderboard-row flex-container" id="@(entry.Rank)-row">
-					<div class="text-right"><span data-toggle="tooltip" title="@entry.ID" class="leaderboard-tooltip">@entry.Rank</span></div>
-					<div>
-						@if (flag == null)
-						{
-							<span><img src="/Images/Flags/24x24/@(flagCode).png" /></span>
-						}
-						else
-						{
-							<span class="leaderboard-tooltip" data-toggle="tooltip" title="@(UserUtils.CountryNames[flagCode])"><img src="/Images/Flags/24x24/@(flagCode).png" /></span>
-						}
+				string flagCode = flag == null || ban ? "00" : flag.CountryCode;
+				string daggerColor = ban ? "ban" : dagger.Name.ToLower();
+				string deathStyle = ban ? "" : $"color: #{death.ColorCode};";
+				string banString = ban ? "ban" : string.Empty;
+
+				<div class="sort @banString" @entry.ToHTMLData(flagCode)>
+					<div class="leaderboard-row flex-container" id="@(entry.Rank)-row">
+						<div class="text-right"><span data-toggle="tooltip" title="@entry.ID" class="leaderboard-tooltip">@entry.Rank</span></div>
+						<div>
+							@if (flagCode == "00")
+							{
+								<span><img src="/Images/Flags/24x24/@(flagCode).png" /></span>
+							}
+							else
+							{
+								<span class="leaderboard-tooltip" data-toggle="tooltip" title="@UserUtils.CountryNames[flagCode]"><img src="/Images/Flags/24x24/@(flagCode).png" /></span>
+							}
+						</div>
+						<div class="text-left leaderboard-username">
+							<span class="@daggerColor" style="background-position-y: 3px;">@entry.Username</span>
+							@{
+								if (titles != null)
+								{
+									foreach (string title in titles.Titles)
+									{
+										<span class="leaderboard-tooltip" data-toggle="tooltip" title="@title"><img src="/Images/Icons/@(UserUtils.TitleImages[title]).png" /></span>
+									}
+								}
+								if (donator != null)
+								{
+									string title = "Donator";
+									<span class="leaderboard-tooltip" data-toggle="tooltip" title="@title"><img src="/Images/Icons/@(UserUtils.TitleImages[title]).png" /></span>
+								}
+							}
+						</div>
+						<div class="text-right @daggerColor">@((entry.Time / 10000.0).ToString("0.0000"))</div>
+						<div class="hidden-xs text-right">@entry.Kills</div>
+						<div class="hidden-xs text-right">@entry.Gems</div>
+						<div class="hidden-xs text-right">@(entry.Accuracy.ToString("0.00%"))</div>
+						<div class="hidden-xs hidden-sm hidden-md text-center" style="@deathStyle">@death.Name</div>
+						<div class="hidden-xs hidden-sm hidden-md text-right">@((entry.TimeTotal / 10000.0).ToString("0.0000"))</div>
+						<div class="hidden-xs hidden-sm hidden-md text-right">@entry.KillsTotal</div>
+						<div class="hidden-xs hidden-sm hidden-md text-right">@entry.GemsTotal</div>
+						<div class="hidden-xs hidden-sm hidden-md text-right">@(entry.AccuracyTotal.ToString("0.00%"))</div>
+						<div class="hidden-xs hidden-sm hidden-md text-right">@entry.DeathsTotal</div>
 					</div>
-					<div class="text-left @daggerColor leaderboard-username">@entry.Username</div>
-					<div class="text-right @daggerColor">@((entry.Time / 10000.0).ToString("0.0000"))</div>
-					<div class="hidden-xs text-right">@entry.Kills</div>
-					<div class="hidden-xs text-right">@entry.Gems</div>
-					<div class="hidden-xs text-right">@(entry.Accuracy.ToString("0.00%"))</div>
-					<div class="hidden-xs hidden-sm hidden-md text-center" style="@deathStyle">@death.Name</div>
-					<div class="hidden-xs hidden-sm hidden-md text-right">@((entry.TimeTotal / 10000.0).ToString("0.0000"))</div>
-					<div class="hidden-xs hidden-sm hidden-md text-right">@entry.KillsTotal</div>
-					<div class="hidden-xs hidden-sm hidden-md text-right">@entry.GemsTotal</div>
-					<div class="hidden-xs hidden-sm hidden-md text-right">@(entry.AccuracyTotal.ToString("0.00%"))</div>
-					<div class="hidden-xs hidden-sm hidden-md text-right">@entry.DeathsTotal</div>
+					<div class="leaderboard-expand flex-container" id="@(entry.Rank)-expand">
+						<div class="visible-xs">
+							<div class="text-left">Kills</div>
+							<div class="text-right">@entry.Kills</div>
+						</div>
+						<div class="visible-xs">
+							<div class="text-left">Gems</div>
+							<div class="text-right">@entry.Gems</div>
+						</div>
+						<div class="visible-xs">
+							<div class="text-left">Accuracy</div>
+							<div class="text-right">@(entry.Accuracy.ToString("0.00%"))</div>
+						</div>
+						<div class="visible-xs visible-sm visible-md">
+							<div class="text-left">Death type</div>
+							<div class="text-right" style="@deathStyle">@death.Name</div>
+						</div>
+						<div class="visible-xs visible-sm visible-md">
+							<div class="text-left">Total time</div>
+							<div class="text-right">@((entry.TimeTotal / 10000.0).ToString("0.0000"))</div>
+						</div>
+						<div class="visible-xs visible-sm visible-md">
+							<div class="text-left">Total kills</div>
+							<div class="text-right">@entry.KillsTotal</div>
+						</div>
+						<div class="visible-xs visible-sm visible-md">
+							<div class="text-left">Total gems</div>
+							<div class="text-right">@entry.GemsTotal</div>
+						</div>
+						<div class="visible-xs visible-sm visible-md">
+							<div class="text-left">Total accuracy</div>
+							<div class="text-right">@(entry.AccuracyTotal.ToString("0.00%"))</div>
+						</div>
+						<div class="visible-xs visible-sm visible-md">
+							<div class="text-left">Total deaths</div>
+							<div class="text-right">@entry.DeathsTotal</div>
+						</div>
+					</div>
 				</div>
-				<div class="leaderboard-expand flex-container" id="@(entry.Rank)-expand">
-					<div class="visible-xs">
-						<div class="text-left">Kills</div>
-						<div class="text-right">@entry.Kills</div>
-					</div>
-					<div class="visible-xs">
-						<div class="text-left">Gems</div>
-						<div class="text-right">@entry.Gems</div>
-					</div>
-					<div class="visible-xs">
-						<div class="text-left">Accuracy</div>
-						<div class="text-right">@(entry.Accuracy.ToString("0.00%"))</div>
-					</div>
-					<div class="visible-xs visible-sm visible-md">
-						<div class="text-left">Death type</div>
-						<div class="text-right" style="@deathStyle">@death.Name</div>
-					</div>
-					<div class="visible-xs visible-sm visible-md">
-						<div class="text-left">Total time</div>
-						<div class="text-right">@((entry.TimeTotal / 10000.0).ToString("0.0000"))</div>
-					</div>
-					<div class="visible-xs visible-sm visible-md">
-						<div class="text-left">Total kills</div>
-						<div class="text-right">@entry.KillsTotal</div>
-					</div>
-					<div class="visible-xs visible-sm visible-md">
-						<div class="text-left">Total gems</div>
-						<div class="text-right">@entry.GemsTotal</div>
-					</div>
-					<div class="visible-xs visible-sm visible-md">
-						<div class="text-left">Total accuracy</div>
-						<div class="text-right">@(entry.AccuracyTotal.ToString("0.00%"))</div>
-					</div>
-					<div class="visible-xs visible-sm visible-md">
-						<div class="text-left">Total deaths</div>
-						<div class="text-right">@entry.DeathsTotal</div>
-					</div>
-				</div>
-			</div>
+			}
 		}
 	</div>
 </div>
