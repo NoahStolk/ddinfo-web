@@ -88,6 +88,8 @@ namespace DevilDaggersWebsite.Utils
 			{ "Discord admin", "eye2" },
 			{ "Discord mod", "eye3" },
 			{ "Donator", "gem" },
+			{ "Dingle", "skull" },
+			{ "Ringle", "skull" },
 		};
 
 		public static Dictionary<string, string> CountryNames { get; set; } = new Dictionary<string, string>
