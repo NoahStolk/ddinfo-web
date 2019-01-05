@@ -12,17 +12,17 @@
 <main>
 	<h2>Daggers</h2>
 	<ul>
-		@*@{
-				Dictionary<Dagger, int> daggerStats = await Model.GetDaggerStats();
-				int exclude = 0;
-				foreach (KeyValuePair<Dagger, int> stat in daggerStats)
-				{
-					<li>
-						<img src="~/images/Daggers/@(stat.Key.Name)Small.png" />There are @(stat.Value - exclude) players with the <span class="@(stat.Key.Name.ToLower())">@(stat.Key.Name)</span> dagger.
-					</li>
-					exclude = stat.Value;
-				}
-			}*@
+		@{
+			Dictionary<Dagger, int> daggerStats = await Model.GetDaggerStats();
+			int exclude = 0;
+			foreach (KeyValuePair<Dagger, int> stat in daggerStats)
+			{
+				<li>
+					<img src="~/images/Daggers/@(stat.Key.Name)Small.png" />There are @(stat.Value - exclude) players with the <span class="@(stat.Key.Name.ToLower())">@(stat.Key.Name)</span> dagger.
+				</li>
+				exclude = stat.Value;
+			}
+		}
 	</ul>
 
 	<h2>Deaths</h2>
