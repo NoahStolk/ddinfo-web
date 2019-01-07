@@ -84,10 +84,11 @@ namespace DevilDaggersWebsite.Utils
 
 		public static Dictionary<string, string> TitleImages { get; set; } = new Dictionary<string, string>
 		{
-			{ "Site admin", "dagger" },
-			{ "Discord admin", "eye2" },
+			{ "Admin", "eye2" },
 			{ "Discord mod", "eye3" },
 			{ "Donator", "gem" },
+			{ "Settings", "crosshair" },
+			{ "ddstats", "dagger" },
 			{ "Dingle", "skull" },
 			{ "Ringle", "skull" },
 		};
