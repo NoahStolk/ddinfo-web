@@ -50,7 +50,3 @@ $(window).scroll(function () {
 		$('.back-to-top').fadeOut();
 	}
 });
-
-$(document).ready(function () {
-	$('[data-toggle="tooltip"]').tooltip();
-});
