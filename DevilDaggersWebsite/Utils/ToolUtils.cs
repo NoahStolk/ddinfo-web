@@ -37,24 +37,24 @@ namespace DevilDaggersWebsite.Utils
 				Author = "VHS",
 				Link = "https://ddstats.com/"
 			},
-			new ExternalTool
-			{
-				Name = "Devil Daggers Asset Editor",
-				Author = "Sojk",
-				Link = "https://github.com/sojk/DevilDaggersAssetEditor"
-			},
+			//new ExternalTool
+			//{
+			//	Name = "Devil Daggers Asset Editor",
+			//	Author = "Sojk",
+			//	Link = "https://github.com/sojk/DevilDaggersAssetEditor"
+			//},
 			new ExternalTool
 			{
 				Name = "Devil Daggers Extractor",
 				Author = "pmcc",
 				Link = "https://github.com/pmcc/devil-daggers-extractor"
 			},
-			new ExternalTool
-			{
-				Name = "Devil Daggers Spawnset Creator",
-				Author = "Sojk",
-				Link = "https://github.com/sojk/DevilDaggersSpawnsetCreator"
-			},
+			//new ExternalTool
+			//{
+			//	Name = "Devil Daggers Spawnset Creator",
+			//	Author = "Sojk",
+			//	Link = "https://github.com/sojk/DevilDaggersSpawnsetCreator"
+			//},
 			new ExternalTool
 			{
 				Name = "Devil Daggers Spawnset Editor",
