@@ -46,28 +46,33 @@
 		@{
 			for (int i = 0; i < Model.spawnset.ArenaTiles.GetLength(0); i++)
 			{
-		<tr>
-			@for (int j = 0; j < Model.spawnset.ArenaTiles.GetLength(1); j++)
-			{
-				float height = (float)Math.Round(Model.spawnset.ArenaTiles[i, j] * 32 + 64);
-				@*if (Model.SpawnsetFile.Name == "DaggerLobby" && Model.SpawnsetFile.Author == "Sorath" && (
-				(i == 2 && j == 24) ||
-				(i == 42 && j == 25) ||
-				(i == 42 && j == 23) ||
-				(i == 42 && j == 27))
-			)
-			{
-				<td class="arena-tile secret-tile" tile-height="@height" id="@j"></td>
-			}
-			else
-			{*@
-				<td class="arena-tile" style="background-color: rgb(@height, @Math.Round(height / 2), 0);"></td>
-				@*}*@
-			}
-		</tr>
+				<tr>
+					@for (int j = 0; j < Model.spawnset.ArenaTiles.GetLength(1); j++)
+					{
+						float height = (float)Math.Round(Model.spawnset.ArenaTiles[i, j] * 32 + 64);
+						@*if (Model.SpawnsetFile.Name == "DaggerLobby" && Model.SpawnsetFile.Author == "Sorath" && (
+								(i == 2 && j == 24) ||
+								(i == 42 && j == 25) ||
+								(i == 42 && j == 23) ||
+								(i == 42 && j == 27))
+							)
+							{
+								<td class="arena-tile secret-tile" tile-height="@height" id="@j"></td>
+							}
+							else
+							{*@
+						<td class="arena-tile" style="background-color: rgb(@height, @Math.Round(height / 2), 0);"></td>
+						@*}*@
+					}
+				</tr>
 			}
 		}
 	</table>
 
 	@await Html.PartialAsync("Partials/_SpawnsPartial", Model.SpawnsetFile.Path)
 </main>
+
+@section Styles {
+	<link rel='stylesheet' href='~/styles/spawns.css' />
+	<link rel='stylesheet' href='~/styles/spawnset.css' />
+}

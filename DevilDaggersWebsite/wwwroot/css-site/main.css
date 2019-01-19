@@ -103,6 +103,17 @@ option {
 	background-color: var(--col-black);
 }
 
+.input {
+	text-align: center;
+	color: var(--col-red);
+	margin-top: 5px;
+	max-width: 160px;
+}
+
+.input-label {
+	margin-top: 5px;
+}
+
 .transparent-on-start {
 	opacity: 0;
 }
@@ -164,4 +175,59 @@ option {
 	-epub-hyphens: auto;
 	-webkit-hyphens: auto;
 	hyphens: auto;
+}
+
+.devil {
+	background: url('../Images/Fonts/Devil.png');
+	background-repeat: repeat-x;
+	background-position-y: 7px;
+	-webkit-font-smoothing: antialiased;
+	-webkit-background-clip: text;
+	-moz-background-clip: text;
+	background-clip: text;
+	-webkit-text-fill-color: transparent;
+}
+
+.golden {
+	background: url('../Images/Fonts/Golden.png');
+	background-repeat: repeat-x;
+	background-position-y: 7px;
+	-webkit-font-smoothing: antialiased;
+	-webkit-background-clip: text;
+	-moz-background-clip: text;
+	background-clip: text;
+	-webkit-text-fill-color: transparent;
+}
+
+.silver {
+	background: url('../Images/Fonts/Silver.png');
+	background-repeat: repeat-x;
+	background-position-y: 7px;
+	-webkit-font-smoothing: antialiased;
+	-webkit-background-clip: text;
+	-moz-background-clip: text;
+	background-clip: text;
+	-webkit-text-fill-color: transparent;
+}
+
+.bronze {
+	background: url('../Images/Fonts/Bronze.png');
+	background-repeat: repeat-x;
+	background-position-y: 7px;
+	-webkit-font-smoothing: antialiased;
+	-webkit-background-clip: text;
+	-moz-background-clip: text;
+	background-clip: text;
+	-webkit-text-fill-color: transparent;
+}
+
+.default {
+	background: url('../Images/Fonts/Default.png');
+	background-repeat: repeat-x;
+	background-position-y: 7px;
+	-webkit-font-smoothing: antialiased;
+	-webkit-background-clip: text;
+	-moz-background-clip: text;
+	background-clip: text;
+	-webkit-text-fill-color: transparent;
 }
