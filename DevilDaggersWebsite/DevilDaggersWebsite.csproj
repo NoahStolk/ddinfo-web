@@ -21,5 +21,8 @@
     <Content Update="Pages\API\GetSpawnset.cshtml">
       <Pack>$(IncludeRazorContentInPack)</Pack>
     </Content>
+    <Content Update="Pages\Partials\_LeaderboardUserSettingsPartial.cshtml">
+      <Pack>$(IncludeRazorContentInPack)</Pack>
+    </Content>
   </ItemGroup>
 </Project>

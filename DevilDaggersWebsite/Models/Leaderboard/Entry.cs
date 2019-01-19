@@ -1,4 +1,5 @@
-﻿using Microsoft.AspNetCore.Html;
+﻿using DevilDaggersWebsite.Models.User;
+using Microsoft.AspNetCore.Html;
 using NetBase.Utils;
 using Newtonsoft.Json;
 using System;
@@ -94,6 +95,22 @@ namespace DevilDaggersWebsite.Models.Leaderboard
 				total-gems='{GemsTotal}'
 				total-accuracy='{(AccuracyTotal * 10000).ToString("0")}'
 				total-deaths='{DeathsTotal}'
+			");
+		}
+
+		public HtmlString ToHTMLData(string flagCode, PlayerSetting playerSetting)
+		{
+			return new HtmlString($@"
+				rank='{Rank}'
+				flag='{flagCode}'
+				username='{HttpUtility.HtmlEncode(Username)}'
+				time='{Time}'
+				e-dpi='{playerSetting.EDPI * 1000 ?? 0}'
+				dpi='{playerSetting.DPI ?? 0}'
+				in-game-sens='{playerSetting.InGameSens * 1000 ?? 0}'
+				fov='{playerSetting.FOV ?? 0}'
+				hand='{(!playerSetting.RightHanded.HasValue ? -1 : playerSetting.RightHanded.Value ? 1 : 0)}'
+				flash='{(!playerSetting.FlashEnabled.HasValue ? -1 : playerSetting.FlashEnabled.Value ? 1 : 0)}'
 			");
 		}
 	}

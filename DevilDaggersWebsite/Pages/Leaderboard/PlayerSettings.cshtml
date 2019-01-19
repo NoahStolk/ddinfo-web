@@ -1,0 +1,25 @@
+﻿@page
+@inject CoreBase.Services.ICommonObjects CommonObjects
+@model DevilDaggersWebsite.Pages.Leaderboard.PlayerSettingsModel
+@{
+	ViewData["Title"] = $"Player Settings";
+}
+
+<header>
+	<h1>@ViewData["Title"]</h1>
+</header>
+
+<main role="main" class="text-center">
+	@await Html.PartialAsync("Partials/_LeaderboardGlobalPartial")
+	<div>
+		<p class="visible-xs visible-sm visible-md">
+			On mobile devices; tap on an entry to expand it.
+		</p>
+	</div>
+
+	@await Html.PartialAsync("Partials/_LeaderboardUserSettingsPartial")
+</main>
+
+@section Scripts {
+	<script defer src='~/scripts/leaderboard-user-settings.js' asp-append-version='true'></script>
+}

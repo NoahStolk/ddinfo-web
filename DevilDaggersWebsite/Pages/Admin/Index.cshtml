@@ -30,6 +30,11 @@
 					<textarea asp-for="FlagsFileContents">@Model.FlagsFileContents</textarea>
 				</div>
 				<div class="col-lg-4 col-xs-12">
+					<h2>Player settings</h2>
+					<p>ID, DPI, Sens, FOV, RightHanded, FlashEnabled</p>
+					<textarea asp-for="SettingsFileContents">@Model.SettingsFileContents</textarea>
+				</div>
+				<div class="col-lg-4 col-xs-12">
 					<h2>User titles</h2>
 					<p>ID, Titles (separated by commas)</p>
 					<textarea asp-for="TitlesFileContents">@Model.TitlesFileContents</textarea>
