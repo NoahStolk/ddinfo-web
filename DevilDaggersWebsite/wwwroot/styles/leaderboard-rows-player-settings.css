@@ -63,7 +63,7 @@
 @media (min-width: 768px) and (max-width: 1199px) {
 	.leaderboard-row > div,
 	.leaderboard-title-row > div {
-		width: 14%;
+		width: 15.375%;
 	}
 
 		.leaderboard-row > div:nth-child(1),
@@ -80,8 +80,8 @@
 
 		.leaderboard-row > div:nth-child(3),
 		.leaderboard-title-row > div:nth-child(3) {
-			min-width: 35%;
-			width: 35%;
+			min-width: 25%;
+			width: 25%;
 		}
 
 	.leaderboard-expand {
