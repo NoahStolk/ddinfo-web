@@ -1,11 +1,10 @@
 ﻿using DevilDaggersCore.Game;
-using DevilDaggersCore.Leaderboard;
-using DevilDaggersCore.SiteUtils;
+using DevilDaggersUtilities.Tools;
+using DevilDaggersUtilities.Website;
 using Microsoft.Win32;
 using NetBase.Utils;
 using Newtonsoft.Json;
 using System.IO;
-using System.Linq;
 using System.Windows;
 
 namespace LeaderboardCSVToJSON

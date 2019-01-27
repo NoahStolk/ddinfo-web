@@ -7,7 +7,7 @@ Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "DevilDaggersWebsite", "Devi
 EndProject
 Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "CoreBase", "..\CoreBase\CoreBase\CoreBase.csproj", "{92C750DA-84D0-4199-A009-235A3E572004}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "NetBase", "..\NetBase\NetBase\NetBase.csproj", "{25F631B5-133B-4136-A995-040072FC405F}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "NetBase", "..\NetBase\NetBase\NetBase.csproj", "{25F631B5-133B-4136-A995-040072FC405F}"
 EndProject
 Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "Tools", "Tools", "{5632F4FF-82A2-4DDD-B7D9-0F83D53E362C}"
 EndProject
@@ -22,6 +22,8 @@ EndProject
 Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "Core", "Core", "{496E881B-2660-4D10-86D8-12ED3EE284C0}"
 EndProject
 Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "DevilDaggersCore", "..\DevilDaggersCore\DevilDaggersCore\DevilDaggersCore.csproj", "{F264DAF3-C6F2-49E1-9219-1EC5A9E6B6D2}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "DevilDaggersUtilities", "DevilDaggersUtilities\DevilDaggersUtilities.csproj", "{30E1323E-A096-450C-8DD3-665982D399E0}"
 EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
@@ -61,6 +63,10 @@ Global
 		{F264DAF3-C6F2-49E1-9219-1EC5A9E6B6D2}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{F264DAF3-C6F2-49E1-9219-1EC5A9E6B6D2}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{F264DAF3-C6F2-49E1-9219-1EC5A9E6B6D2}.Release|Any CPU.Build.0 = Release|Any CPU
+		{30E1323E-A096-450C-8DD3-665982D399E0}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{30E1323E-A096-450C-8DD3-665982D399E0}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{30E1323E-A096-450C-8DD3-665982D399E0}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{30E1323E-A096-450C-8DD3-665982D399E0}.Release|Any CPU.Build.0 = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE

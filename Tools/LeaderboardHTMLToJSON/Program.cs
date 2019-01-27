@@ -1,6 +1,6 @@
 ﻿using DevilDaggersCore.Game;
-using DevilDaggersCore.Leaderboard;
-using DevilDaggersCore.SiteUtils;
+using DevilDaggersUtilities.Tools;
+using DevilDaggersUtilities.Website;
 using NetBase.Utils;
 using Newtonsoft.Json;
 using System.IO;
