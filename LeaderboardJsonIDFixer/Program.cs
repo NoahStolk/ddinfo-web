@@ -14,10 +14,10 @@ namespace LeaderboardJsonIDFixer
 			{ "bowsr", 1135 },
 			{ "Sojk", 229 },
 			{ "Bintr", 148788 },
-			{ "DraQu", 82891 },
-			{ "twitch.tv/draqu_", 82891 },
+			{ "DraQu", 82891 }, // Probably wrong
+			{ "twitch.tv/draqu_", 82891 }, // Probably wrong
 			{ "weaksauce13", 112 },
-			{ "b0necarver", -1 },
+			{ "b0necarver", -1 }, // No idea
 			{ "m4ttbush", 1 }
 		};
 
