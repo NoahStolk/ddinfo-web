@@ -12,13 +12,13 @@ namespace DevilDaggersWebsite.Models.Spawnset
 
 		public string FileName { get { return System.IO.Path.GetFileName(Path); } }
 		public DateTime LastUpdated { get { return new FileInfo(Path).LastWriteTime; } }
-		public SpawnData SpawnData
+		public SpawnsetData SpawnData
 		{
 			get
 			{
 				using (FileStream fs = new FileStream(Path, FileMode.Open, FileAccess.Read))
 				{
-					if (DevilDaggersCore.Spawnset.Spawnset.TryGetSpawnData(fs, out SpawnData spawnData))
+					if (DevilDaggersCore.Spawnset.Spawnset.TryGetSpawnData(fs, out SpawnsetData spawnData))
 						return spawnData;
 
 					throw new Exception($"Could not retrieve spawn data for spawnset: {FileName}");
