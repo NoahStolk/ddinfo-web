@@ -1,6 +1,7 @@
 ﻿@page
 @using DevilDaggersCore.Game
 @using DevilDaggersWebsite.Utils
+@using DevilDaggersWebsite.Models.Leaderboard
 @model DevilDaggersWebsite.Pages.Leaderboard.WorldRecordProgressionModel
 @{
 	ViewData["Title"] = "World Record Progression";
@@ -21,11 +22,11 @@
 
 	@{
 		TimeSpan total = DateTime.Now - Game.GameVersions["V1"].ReleaseDate;
-		foreach (KeyValuePair<string, TimeSpan> kvp in Model.TopUsers)
+		foreach (WorldRecordHolder wrh in Model.WorldRecordHolders)
 		{
 			<div class="row">
-				<div class="col-md-2 col-sm-4 col-xs-6">@kvp.Key</div>
-				<div class="col-md-10 col-sm-8 col-xs-6">@((kvp.Value / total).ToString("00.000%"))</div>
+				<div class="col-md-2 col-sm-4 col-xs-6">@wrh.Username</div>
+				<div class="col-md-10 col-sm-8 col-xs-6">@((wrh.TimeHeld / total).ToString("00.000%"))</div>
 			</div>
 		}
 	}
