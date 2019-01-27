@@ -25,6 +25,8 @@ Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "DevilDaggersCore", "..\Devi
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "DevilDaggersUtilities", "DevilDaggersUtilities\DevilDaggersUtilities.csproj", "{30E1323E-A096-450C-8DD3-665982D399E0}"
 EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "LeaderboardJsonIDFixer", "LeaderboardJsonIDFixer\LeaderboardJsonIDFixer.csproj", "{50389A94-7721-44AE-9708-BC1E024591F5}"
+EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
 		Debug|Any CPU = Debug|Any CPU
@@ -67,6 +69,10 @@ Global
 		{30E1323E-A096-450C-8DD3-665982D399E0}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{30E1323E-A096-450C-8DD3-665982D399E0}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{30E1323E-A096-450C-8DD3-665982D399E0}.Release|Any CPU.Build.0 = Release|Any CPU
+		{50389A94-7721-44AE-9708-BC1E024591F5}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{50389A94-7721-44AE-9708-BC1E024591F5}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{50389A94-7721-44AE-9708-BC1E024591F5}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{50389A94-7721-44AE-9708-BC1E024591F5}.Release|Any CPU.Build.0 = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE
@@ -78,6 +84,7 @@ Global
 		{BFFF3C7B-F4B7-404E-B8C7-5C540D4344CB} = {5632F4FF-82A2-4DDD-B7D9-0F83D53E362C}
 		{7FF030A0-D588-4BCD-A01B-7CF847BD7DE4} = {5632F4FF-82A2-4DDD-B7D9-0F83D53E362C}
 		{E71B2949-6119-44A2-90B9-FE80B16427C8} = {5632F4FF-82A2-4DDD-B7D9-0F83D53E362C}
+		{50389A94-7721-44AE-9708-BC1E024591F5} = {5632F4FF-82A2-4DDD-B7D9-0F83D53E362C}
 	EndGlobalSection
 	GlobalSection(ExtensibilityGlobals) = postSolution
 		SolutionGuid = {E27EC676-81BF-4099-BFC9-20E860CE83A5}
