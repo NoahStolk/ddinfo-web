@@ -19,14 +19,25 @@
 	<div id="world-record-progression-chart" style="height: 65vh;"></div>
 
 	<h2>World record holders</h2>
-
+	<div class="row">
+		<div class="text-bold col-lg-3 col-md-4 col-sm-4 col-xs-4">Username</div>
+		<div class="text-bold col-lg-3 col-md-4 col-sm-4 col-xs-4">Total time held</div>
+		<div class="text-bold col-lg-3 col-md-4 col-sm-4 col-xs-4">Last held</div>
+	</div>
 	@{
 		TimeSpan total = DateTime.Now - Game.GameVersions["V1"].ReleaseDate;
 		foreach (WorldRecordHolder wrh in Model.WorldRecordHolders)
 		{
+			int days = (int)Math.Round(wrh.TimeHeld.TotalDays);
+			int daysAgo = (int)Math.Round((DateTime.Now - wrh.LastHeld).TotalDays);
+
+			string timeHeld = $"{days} day{(days == 1 ? "" : "s")} ({(wrh.TimeHeld / total).ToString("00.000%")})";
+			string lastHeld = daysAgo == 0 ? "Current holder" : $"{wrh.LastHeld.ToString("yyyy MMM dd")} ({daysAgo} day{(daysAgo == 1 ? "" : "s")} ago)";
+
 			<div class="row">
-				<div class="col-md-2 col-sm-4 col-xs-6">@wrh.Username</div>
-				<div class="col-md-10 col-sm-8 col-xs-6">@((wrh.TimeHeld / total).ToString("00.000%"))</div>
+				<div class="col-lg-3 col-md-4 col-sm-4 col-xs-4">@wrh.Username</div>
+				<div class="col-lg-3 col-md-4 col-sm-4 col-xs-4">@timeHeld</div>
+				<div class="col-lg-3 col-md-4 col-sm-4 col-xs-4">@lastHeld</div>
 			</div>
 		}
 	}
