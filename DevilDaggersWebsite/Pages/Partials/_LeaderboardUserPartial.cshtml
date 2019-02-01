@@ -43,7 +43,16 @@
 
 				<div class="sort @banString" @entry.ToHTMLData(flagCode)>
 					<div class="leaderboard-row flex-container" id="@(entry.Rank)-row">
-						<div class="text-right"><span data-toggle="tooltip" title="@entry.ID" class="leaderboard-tooltip">@entry.Rank</span></div>
+						<div class="text-right">
+							@if (entry.ID != 0)
+							{
+								<span data-toggle="tooltip" title="@entry.ID" class="leaderboard-tooltip">@entry.Rank</span>
+							}
+							else
+							{
+								@entry.Rank
+							}
+						</div>
 						<div>
 							@if (flagCode == "00")
 							{

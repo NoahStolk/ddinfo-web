@@ -149,7 +149,7 @@
 						{
 							SpawnsetEnemy finalEnemy = spawn.Enemy;
 							// Change the third Gigapede into a Ghostpede
-							if (finalEnemy == Spawnset.GetEnemyByName("Gigapede") && i % 3 == 2 && gameVersion == Game.GameVersions["V3"])
+							if (i % 3 == 2 && gameVersion == Game.GameVersions["V3"] && finalEnemy == Spawnset.GetEnemyByName("Gigapede"))
 							{
 								finalEnemy = Spawnset.GetEnemyByName("Ghostpede");
 							}

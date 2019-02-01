@@ -11,13 +11,15 @@
 </header>
 
 <main role="main" class="text-center">
-	@await Html.PartialAsync("Partials/_LeaderboardGlobalPartial")
 	<div>
 		<p class="visible-xs visible-sm visible-md">
 			On mobile devices; tap on an entry to expand it.
 		</p>
 		<p>
-			If you'd like to add or change your settings, let one of the <img src="~/images/Icons/eye3.png" /> <a href="@RazorUtils.DISCORD_URL">Discord</a> mods know.
+			If you'd like to add or change your settings, let one of the <img src="~/images/Icons/eye3.png" /> <a href="@RazorUtils.DISCORD_URL">Discord</a> mods know. (Only top 100 at the moment.)
+		</p>
+		<p>
+			You can sort the leaderboard by clicking the headers.
 		</p>
 	</div>
 

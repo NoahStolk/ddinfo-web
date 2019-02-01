@@ -13,7 +13,7 @@ namespace DevilDaggersWebsite.Pages.Leaderboard
 	{
 		private readonly ICommonObjects _commonObjects;
 
-		public Dictionary<string, TimeSpan> TopUsers { get; set; } = new Dictionary<string, TimeSpan>();
+		public List<WorldRecordHolder> WorldRecordHolders { get; set; } = new List<WorldRecordHolder>();
 
 		public WorldRecordProgressionModel(ICommonObjects commonObjects)
 		{
@@ -22,39 +22,57 @@ namespace DevilDaggersWebsite.Pages.Leaderboard
 
 		public void OnGet()
 		{
-			SortedDictionary<DateTime, Entry> data = new GetWorldRecordsModel(_commonObjects).GetWorldRecords();
+			SortedDictionary<DateTime, Entry> worldRecords = new GetWorldRecordsModel(_commonObjects).GetWorldRecords();
 
-			List<Tuple<int, DateTime, Entry>> data1 = new List<Tuple<int, DateTime, Entry>>();
+			List<Tuple<int, DateTime, Entry>> worldRecordsFiltered = new List<Tuple<int, DateTime, Entry>>();
 
 			int i = 0;
-			foreach (KeyValuePair<DateTime, Entry> kvp in data)
+			foreach (KeyValuePair<DateTime, Entry> kvp in worldRecords)
 			{
 				if (kvp.Key < Game.GameVersions["V1"].ReleaseDate)
 					continue;
 
-				data1.Add(Tuple.Create(i, kvp.Key, kvp.Value));
+				worldRecordsFiltered.Add(Tuple.Create(i, kvp.Key, kvp.Value));
 				i++;
 			}
 
 			i = 0;
-			foreach (Tuple<int, DateTime, Entry> tuple in data1)
+			foreach (Tuple<int, DateTime, Entry> tuple in worldRecordsFiltered)
 			{
 				TimeSpan diff;
-				if (i == data1.Count - 1)
+				DateTime lastHeld;
+				if (i == worldRecordsFiltered.Count - 1)
+				{
 					diff = DateTime.Now - tuple.Item2;
+					lastHeld = DateTime.Now;
+				}
 				else
-					diff = data1.Where(t => t.Item1 == i + 1).FirstOrDefault().Item2 - tuple.Item2;
+				{
+					diff = worldRecordsFiltered.Where(t => t.Item1 == i + 1).FirstOrDefault().Item2 - tuple.Item2;
+					lastHeld = worldRecordsFiltered.Where(t => t.Item1 == i + 1).FirstOrDefault().Item2;
+				}
 				i++;
 
-				if (!TopUsers.ContainsKey(tuple.Item3.Username))
-					TopUsers[tuple.Item3.Username] = diff;
-				else
-					TopUsers[tuple.Item3.Username] += diff;
+				bool added = false;
+				foreach (WorldRecordHolder w in WorldRecordHolders)
+				{
+					if (w.ID == tuple.Item3.ID)
+					{
+						w.Username = tuple.Item3.Username;
+						w.TimeHeld += diff;
+						w.LastHeld = lastHeld;
+						added = true;
+						break;
+					}
+				}
+
+				if (!added)
+				{
+					WorldRecordHolders.Add(new WorldRecordHolder(tuple.Item3.ID, tuple.Item3.Username, diff, lastHeld));
+				}
 			}
 
-			TopUsers = TopUsers.OrderByDescending(kvp => kvp.Value).ToDictionary(
-				mc => mc.Key,
-				mc => mc.Value);
+			WorldRecordHolders = WorldRecordHolders.OrderByDescending(wrh => wrh.TimeHeld).ToList();
 		}
 	}
 }

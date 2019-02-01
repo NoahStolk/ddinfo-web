@@ -36,13 +36,10 @@
 				}
 			</div>
 		</div>
-		<p class="visible-xs visible-sm visible-md">
-			On mobile devices; tap on an entry to expand it.
-		</p>
 	</div>
 
 	<div>
-		Missing or inaccurate information
+		Missing information
 	</div>
 	<div class="missing-information-container">
 		<div class="flex-container leaderboard-flex flex-center flex-space-evenly text-left">
@@ -56,6 +53,13 @@
 			</div>
 		</div>
 	</div>
+
+	<p class="visible-xs visible-sm visible-md">
+		On mobile devices; tap on an entry to expand it.
+	</p>
+	<p>
+		You can sort the leaderboard by clicking the headers.
+	</p>
 
 	@await Html.PartialAsync("Partials/_LeaderboardUserPartial")
 </main>
