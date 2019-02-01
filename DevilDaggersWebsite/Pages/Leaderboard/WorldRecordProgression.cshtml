@@ -32,7 +32,7 @@
 			int daysAgo = (int)Math.Round((DateTime.Now - wrh.LastHeld).TotalDays);
 
 			string timeHeld = $"{days} day{(days == 1 ? "" : "s")} ({(wrh.TimeHeld / total).ToString("00.000%")})";
-			string lastHeld = daysAgo == 0 ? "Current holder" : $"{wrh.LastHeld.ToString("yyyy MMM dd")} ({daysAgo} day{(daysAgo == 1 ? "" : "s")} ago)";
+			string lastHeld = daysAgo == 0 ? "Current holder" : $"{wrh.LastHeld.ToString("MMM dd")} '{wrh.LastHeld.ToString("yy")} ({daysAgo} day{(daysAgo == 1 ? "" : "s")} ago)";
 
 			<div class="row">
 				<div class="col-lg-3 col-md-4 col-sm-4 col-xs-4">@wrh.Username</div>
