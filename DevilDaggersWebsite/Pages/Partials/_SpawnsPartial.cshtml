@@ -20,7 +20,7 @@
 	bool empty = true;
 	foreach (Spawn spawn in spawnset.Spawns.Values)
 	{
-		if (spawn.Enemy != Spawnset.Enemies[-1])
+		if (spawn.SpawnsetEnemy != Spawnset.Enemies[-1])
 		{
 			empty = false;
 			break;
@@ -71,8 +71,8 @@
 		@if (showSpawns)
 		{
 			<div class="flex-container flex-center">
-				<div style="width: @(widths[0])px;">Seconds</div>
-				<div style="width: @(widths[1])px;">Spawns</div>
+				<div style="width: @(widths[0])px;">Time</div>
+				<div style="width: @(widths[1])px;">Enemy</div>
 				<div style="width: @(widths[2])px;">Gems (no farm)</div>
 				<div style="width: @(widths[3])px;">Total gems</div>
 			</div>
@@ -84,25 +84,25 @@
 			int spawns = 0;
 			foreach (Spawn spawn in spawnset.Spawns.Values)
 			{
-				if (spawn.Enemy != Spawnset.Enemies[-1])
+				if (spawn.SpawnsetEnemy != Spawnset.Enemies[-1])
 				{
 					spawns++;
 				}
 
 				endLoop.Add(spawn);
-				if (spawn.Enemy == Spawnset.Enemies[-1])
+				if (spawn.SpawnsetEnemy == Spawnset.Enemies[-1])
 				{
 					foreach (Spawn s in endLoop)
 					{
 						seconds += s.Delay;
-						if (s.Enemy != Spawnset.Enemies[-1])
+						if (s.SpawnsetEnemy != Spawnset.Enemies[-1])
 						{
-							int gems = s.Enemy.NoFarmGems;
+							int gems = s.SpawnsetEnemy.NoFarmGems;
 							totalGems += gems;
 
 							<div class="flex-container flex-center">
 								<div style="width: @(widths[0])px;" class="text-right">@seconds.ToString("0.0000")</div>
-								<div style="width: @(widths[1])px;">@(s.Enemy.ToEnemy(gameVersion).GetLayoutAnchor())</div>
+								<div style="width: @(widths[1])px;">@(s.SpawnsetEnemy.ToEnemy(gameVersion).GetLayoutAnchor())</div>
 								<div style="width: @(widths[2])px;" class="text-right">@gems</div>
 								<div style="width: @(widths[3])px;" class="text-right">@totalGems</div>
 							</div>
@@ -114,7 +114,7 @@
 				}
 			}
 
-			if (endLoop.Count != 1 || (endLoop.Count == 1 && endLoop[0].Enemy != Spawnset.Enemies[-1]))
+			if (endLoop.Count != 1 || (endLoop.Count == 1 && endLoop[0].SpawnsetEnemy != Spawnset.Enemies[-1]))
 			{
 				double waveMod = 0;
 				double endGameSecond = seconds;
@@ -133,7 +133,7 @@
 					double delay = 0;
 					foreach (Spawn spawn in endLoop)
 					{
-						if (spawn.Enemy != Spawnset.Enemies[-1])
+						if (spawn.SpawnsetEnemy != Spawnset.Enemies[-1])
 						{
 							spawns++;
 						}
@@ -145,9 +145,9 @@
 							enemyTimer += (1f / 60f) + waveMod;
 						}
 
-						if (spawn.Enemy != Spawnset.Enemies[-1])
+						if (spawn.SpawnsetEnemy != Spawnset.Enemies[-1])
 						{
-							SpawnsetEnemy finalEnemy = spawn.Enemy;
+							SpawnsetEnemy finalEnemy = spawn.SpawnsetEnemy;
 							// Change the third Gigapede into a Ghostpede
 							if (i % 3 == 2 && gameVersion == Game.GameVersions["V3"] && finalEnemy == Spawnset.GetEnemyByName("Gigapede"))
 							{
@@ -169,7 +169,7 @@
 				}
 			}
 
-			<div style="color: var(--col-red); font-size: 24px;">@(endLoop.Count != 1 || (endLoop.Count == 1 && endLoop[0].Enemy != Spawnset.Enemies[-1]) ? "Goes on eternally..." : "End of spawnset")</div>
+			<div style="color: var(--col-red); font-size: 24px;">@(endLoop.Count != 1 || (endLoop.Count == 1 && endLoop[0].SpawnsetEnemy != Spawnset.Enemies[-1]) ? "Goes on eternally..." : "End of spawnset")</div>
 		}
 	</div>
 }
