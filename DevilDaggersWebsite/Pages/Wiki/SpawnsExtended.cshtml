@@ -1,0 +1,26 @@
+﻿@page
+@model DevilDaggersWebsite.Pages.Wiki.SpawnsExtendedModel
+@using DevilDaggersWebsite.Utils
+@{
+	ViewData["Title"] = "Spawns Extended";
+}
+
+<header>
+	<h1>@ViewData["Title"]</h1>
+</header>
+
+<form method="get">
+	<select class="select form-control" asp-for="gameVersion" asp-items="Model.GameVersions" onchange="this.form.submit()"></select>
+</form>
+
+<main role="main" class="text-center">
+	<p>
+		Extended spawns list for @Model.gameVersion.
+	</p>
+
+	@await Html.PartialAsync("Partials/_SpawnEventsPartial", Model.SpawnsetPath)
+</main>
+
+@section Styles {
+	<link rel='stylesheet' href='~/styles/spawns.css' />
+}

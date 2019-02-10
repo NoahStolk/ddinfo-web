@@ -28,5 +28,8 @@
     <Content Update="Pages\Partials\_SpawnEventsPartial.cshtml">
       <Pack>$(IncludeRazorContentInPack)</Pack>
     </Content>
+    <Content Update="Pages\Wiki\SpawnsExtended.cshtml">
+      <Pack>$(IncludeRazorContentInPack)</Pack>
+    </Content>
   </ItemGroup>
 </Project>
