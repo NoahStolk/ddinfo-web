@@ -1,24 +1,44 @@
 ﻿@page
 @model DevilDaggersWebsite.Pages.Wiki.SpawnsExtendedModel
-@using DevilDaggersWebsite.Utils
 @{
 	ViewData["Title"] = "Spawns Extended";
+
+	int[] widths = new int[2] { 320, 320 };
 }
 
 <header>
 	<h1>@ViewData["Title"]</h1>
 </header>
-
-<form method="get">
-	<select class="select form-control" asp-for="gameVersion" asp-items="Model.GameVersions" onchange="this.form.submit()"></select>
+<form method="get" class="text-center">
+	<fieldset>
+		<div class="flex-container flex-center flex-column">
+			<select class="select form-control" asp-for="gameVersion" asp-items="Model.GameVersionListItems" onchange="this.form.submit()"></select>
+			<div class="flex-container flex-center">
+				<div class="input-label text-left" style="width: @(widths[0])px;">Leviathan beckon count (max 25):</div>
+				<div style="width: @(widths[1])px;">@Html.TextBoxFor(m => m.leviathanBeckonCount, new { @class = "input" })</div>
+			</div>
+			<div class="flex-container flex-center">
+				<div class="input-label text-left" style="width: @(widths[0])px;">Squid gush count (max 25):</div>
+				<div style="width: @(widths[1])px;">@Html.TextBoxFor(m => m.squidGushCount, new { @class = "input" })</div>
+			</div>
+			<div class="flex-container flex-center flex-column">
+				<div class="flex-container flex-center">
+					<input class="btn" type="submit" value="Show" />
+				</div>
+			</div>
+		</div>
+	</fieldset>
 </form>
 
 <main role="main" class="text-center">
 	<p>
 		Extended spawns list for @Model.gameVersion.
 	</p>
+	<p>
+		This page is still a work in progress. End waves are not yet supported.
+	</p>
 
-	@await Html.PartialAsync("Partials/_SpawnEventsPartial", Model.SpawnsetPath)
+	@await Html.PartialAsync("Partials/_SpawnEventsPartial", Model.SpawnEventSettings)
 </main>
 
 @section Styles {
