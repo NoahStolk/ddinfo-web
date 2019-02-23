@@ -136,7 +136,7 @@
 			if (enemy.Gems > 1)
 			{
 				Enemy enemyGem = enemy.Copy();
-				enemyGem.HP = enemy.GetGemHP();
+				enemyGem.HP = enemy.GemHP;
 				enemyGem.Homing3 = enemy.Homing3 / enemy.Gems;
 				enemyGem.Homing4 = enemy.Homing4 / enemy.Gems;
 				enemies.Add(enemyGem, true);
