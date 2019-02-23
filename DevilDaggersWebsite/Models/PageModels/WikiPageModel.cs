@@ -13,13 +13,10 @@ namespace DevilDaggersWebsite.Models.PageModels
 
 		protected void GetGameVersion(string gameVersion)
 		{
-			if (Game.TryGetGameVersionFromString(gameVersion, out gameVersionObject))
-				this.gameVersion = gameVersion;
-			else
-				this.gameVersion = Game.DEFAULT_GAME_VERSION;
+			this.gameVersion = Game.TryGetGameVersionFromString(gameVersion, out gameVersionObject) ? gameVersion : Game.DEFAULT_GAME_VERSION;
 
 			GameVersions = new List<SelectListItem>();
-			for (int i = 0; i < 3; i++)
+			for (int i = 0; i < Game.GameVersions.Count; i++)
 			{
 				string gameVersionString = $"V{i + 1}";
 				GameVersions.Add(new SelectListItem(gameVersionString, gameVersionString));

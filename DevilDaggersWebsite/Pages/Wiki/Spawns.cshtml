@@ -20,6 +20,9 @@
 	<p>
 		@RazorUtils.GetLayout($"Note that {Model.EmergeEnemies} emerge around 3 seconds later than their actual spawn time.", Model.gameVersionObject)
 	</p>
+	<p>
+		Visit <a asp-page="/Wiki/SpawnsExtended">this page</a> for extended spawns information.
+	</p>
 
 	@await Html.PartialAsync("Partials/_SpawnsPartial", Model.SpawnsetPath)
 </main>
