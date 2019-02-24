@@ -1,7 +1,7 @@
 ﻿using DevilDaggersWebsite.Models.PageModels;
 using DevilDaggersWebsite.Models.Spawnset;
 using Microsoft.AspNetCore.Hosting;
-using System;
+using NetBase.Utils;
 using System.IO;
 
 namespace DevilDaggersWebsite.Pages.Wiki
@@ -23,8 +23,8 @@ namespace DevilDaggersWebsite.Pages.Wiki
 		public void OnGet(string gameVersion, int squidGushCount, int leviathanBeckonCount)
 		{
 			SetGameVersion(gameVersion);
-			this.squidGushCount = Math.Min(squidGushCount, 25);
-			this.leviathanBeckonCount = Math.Min(leviathanBeckonCount, 25);
+			this.squidGushCount = MathUtils.Clamp(squidGushCount, 1, 25);
+			this.leviathanBeckonCount = MathUtils.Clamp(leviathanBeckonCount, 0, 25);
 
 			SpawnEventSettings = new SpawnEventSettings
 			{
