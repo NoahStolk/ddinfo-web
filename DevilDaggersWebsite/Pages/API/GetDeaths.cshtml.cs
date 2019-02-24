@@ -3,6 +3,7 @@ using DevilDaggersWebsite.Models.API;
 using DevilDaggersWebsite.PageModels;
 using Microsoft.AspNetCore.Mvc;
 using Newtonsoft.Json;
+using System.Collections.Generic;
 using System.Net.Mime;
 
 namespace DevilDaggersWebsite.Pages.API
@@ -15,10 +16,7 @@ namespace DevilDaggersWebsite.Pages.API
 			if (!Game.GameVersions.TryGetValue(gameVersion, out GameVersion version))
 				version = Game.GameVersions[Game.DEFAULT_GAME_VERSION];
 
-			if (!string.IsNullOrEmpty(deathType) && int.TryParse(deathType, out int type))
-				return JsonFile(Game.GetDeathFromDeathType(type, version));
-
-			return JsonFile(Game.GetEntities<Death>(version), formatted ? Formatting.Indented : Formatting.None);
+			return JsonFile(!string.IsNullOrEmpty(deathType) && int.TryParse(deathType, out int type) ? new List<Death> { Game.GetDeathFromDeathType(type, version) } : Game.GetEntities<Death>(version), formatted ? Formatting.Indented : Formatting.None);
 		}
 	}
 }

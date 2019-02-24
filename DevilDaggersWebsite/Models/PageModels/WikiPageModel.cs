@@ -9,20 +9,17 @@ namespace DevilDaggersWebsite.Models.PageModels
 	{
 		public string gameVersion;
 		public GameVersion gameVersionObject;
-		public List<SelectListItem> GameVersions { get; set; }
+		public List<SelectListItem> GameVersionListItems { get; set; }
 
-		protected void GetGameVersion(string gameVersion)
+		protected void SetGameVersion(string gameVersion)
 		{
-			if (Game.TryGetGameVersionFromString(gameVersion, out gameVersionObject))
-				this.gameVersion = gameVersion;
-			else
-				this.gameVersion = Game.DEFAULT_GAME_VERSION;
+			this.gameVersion = Game.TryGetGameVersionFromString(gameVersion, out gameVersionObject) ? gameVersion : Game.DEFAULT_GAME_VERSION;
 
-			GameVersions = new List<SelectListItem>();
-			for (int i = 0; i < 3; i++)
+			GameVersionListItems = new List<SelectListItem>();
+			for (int i = 0; i < Game.GameVersions.Count; i++)
 			{
 				string gameVersionString = $"V{i + 1}";
-				GameVersions.Add(new SelectListItem(gameVersionString, gameVersionString));
+				GameVersionListItems.Add(new SelectListItem(gameVersionString, gameVersionString));
 			}
 		}
 	}

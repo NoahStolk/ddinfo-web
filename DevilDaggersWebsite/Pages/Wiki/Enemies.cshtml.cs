@@ -19,7 +19,7 @@ namespace DevilDaggersWebsite.Pages.Wiki
 
 		public void OnGet(string gameVersion)
 		{
-			GetGameVersion(gameVersion);
+			SetGameVersion(gameVersion);
 
 			enemies = Game.GetEntities<Enemy>(gameVersionObject);
 			upgrades = Game.GetEntities<Upgrade>(gameVersionObject);

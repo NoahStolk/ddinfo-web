@@ -122,7 +122,7 @@ namespace DevilDaggersWebsite.Pages
 			if (TotalResults == 0)
 				return;
 
-			PageIndex = IntegerUtils.Clamp(PageIndex, 1, (int)Math.Ceiling(TotalResults / (double)PageSize));
+			PageIndex = MathUtils.Clamp(PageIndex, 1, (int)Math.Ceiling(TotalResults / (double)PageSize));
 			PaginatedSpawnsetFiles = PaginatedList<SpawnsetFile>.Create(spawnsetFiles, PageIndex, PageSize);
 		}
 	}
