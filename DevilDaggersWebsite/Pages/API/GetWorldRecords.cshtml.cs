@@ -1,4 +1,6 @@
 ﻿using CoreBase.Services;
+using DevilDaggersCore.Game;
+using DevilDaggersUtilities.Website;
 using DevilDaggersWebsite.Models.API;
 using DevilDaggersWebsite.Models.Leaderboard;
 using DevilDaggersWebsite.PageModels;
@@ -12,7 +14,7 @@ using System.Net.Mime;
 
 namespace DevilDaggersWebsite.Pages.API
 {
-	[ApiFunction(Description = "Returns all the world records found in the leaderboard history section of the site.", ReturnType = MediaTypeNames.Application.Json)]
+	[ApiFunction(Description = "Returns the world record found in the leaderboard history section of the site at the time of the given date parameter (format: yyyy-MM-dd). Returns all the world records if no date parameter was specified or if the parameter was incorrect.", ReturnType = MediaTypeNames.Application.Json)]
 	public class GetWorldRecordsModel : ApiPageModel
 	{
 		private readonly ICommonObjects _commonObjects;
@@ -22,13 +24,15 @@ namespace DevilDaggersWebsite.Pages.API
 			_commonObjects = commonObjects;
 		}
 
-		public FileResult OnGet(bool formatted = false)
+		public FileResult OnGet(DateTime? date = null, bool formatted = false)
 		{
-			return JsonFile(GetWorldRecords(), formatted ? Formatting.Indented : Formatting.None);
+			return JsonFile(GetWorldRecords(date), formatted ? Formatting.Indented : Formatting.None);
 		}
 		
-		public SortedDictionary<DateTime, Entry> GetWorldRecords()
+		public SortedDictionary<DateTime, Entry> GetWorldRecords(DateTime? date = null)
 		{
+			bool dateValid = date != null && date > Game.GameVersions["V1"].ReleaseDate && date <= DateTime.Now;
+
 			SortedDictionary<DateTime, Entry> data = new SortedDictionary<DateTime, Entry>();
 
 			int worldRecord = 0;
@@ -38,7 +42,18 @@ namespace DevilDaggersWebsite.Pages.API
 				if (leaderboard.Entries[0].Time != worldRecord)
 				{
 					worldRecord = leaderboard.Entries[0].Time;
-					data[leaderboard.DateTime] = leaderboard.Entries[0];
+					if (dateValid)
+					{
+						// Ugly and could be optimised but whatever
+						if (LeaderboardHistoryUtils.HistoryJsonFileNameToDateTime(Path.GetFileNameWithoutExtension(leaderboardHistoryPath)) > date)
+							break;
+						data.Clear();
+						data[leaderboard.DateTime] = leaderboard.Entries[0];
+					}
+					else
+					{
+						data[leaderboard.DateTime] = leaderboard.Entries[0];
+					}
 				}
 			}
 
