@@ -43,11 +43,11 @@
 				</div>
 				<div class="upgrade-row flex-container">
 					<div>Homing spray</div>
-					<div class="text-right">@((upgrade.HomingSprayPerSecond == null) ? RazorUtils.NAString : Html.Raw(upgrade.HomingSprayPerSecond + " daggers per second"))</div>
+					<div class="text-right">@((upgrade.HomingSprayPerSecond.HasValue) ? Html.Raw(upgrade.HomingSprayPerSecond.Value.ToString("0.##") + " daggers per second") : RazorUtils.NAString)</div>
 				</div>
 				<div class="upgrade-row flex-container">
 					<div>Homing shot</div>
-					<div class="text-right">@((upgrade.HomingShot == null) ? RazorUtils.NAString : Html.Raw(upgrade.HomingShot + " daggers per shot"))</div>
+					<div class="text-right">@((upgrade.HomingShot.HasValue) ? Html.Raw(upgrade.HomingShot.Value + " daggers per shot") : RazorUtils.NAString)</div>
 				</div>
 			</div>
 		}

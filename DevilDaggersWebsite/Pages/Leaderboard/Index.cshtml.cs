@@ -9,7 +9,7 @@ namespace DevilDaggersWebsite.Pages.Leaderboard
 	public class IndexModel : PageModel
 	{
 		[BindProperty]
-		public Models.Leaderboard.Leaderboard Leaderboard { get; set; } = new Models.Leaderboard.Leaderboard();
+		public DevilDaggersCore.Leaderboard.Leaderboard Leaderboard { get; set; } = new DevilDaggersCore.Leaderboard.Leaderboard();
 
 		public int Rank { get; set; }
 		public string Search { get; set; }

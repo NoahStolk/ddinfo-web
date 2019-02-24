@@ -21,16 +21,16 @@ namespace LeaderboardJsonIDFixer
 			{ "m4ttbush", 1 }
 		};
 
-		public static Leaderboard leaderboard;
+		public static LeaderboardSimplified leaderboard;
 
 		static void Main(string[] args)
 		{
 			foreach (string path in Directory.GetFiles(@"C:\Users\NOAH\source\repos\DevilDaggersWebsite\DevilDaggersWebsite\wwwroot\leaderboard-history"))
 			{
 				string jsonString = FileUtils.GetContents(path, Encoding.UTF8);
-				leaderboard = JsonConvert.DeserializeObject<Leaderboard>(jsonString);
+				leaderboard = JsonConvert.DeserializeObject<LeaderboardSimplified>(jsonString);
 
-				foreach (LeaderboardEntry entry in leaderboard.Entries)
+				foreach (LeaderboardEntrySimplified entry in leaderboard.Entries)
 				{
 					if (table.ContainsKey(entry.Username))
 					{

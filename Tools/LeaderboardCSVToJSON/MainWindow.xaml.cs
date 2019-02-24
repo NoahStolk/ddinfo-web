@@ -27,7 +27,7 @@ namespace LeaderboardCSVToJSON
 			bool? result = dlg.ShowDialog();
 			if (result.HasValue && result.Value)
 			{
-				Leaderboard leaderboard = new Leaderboard
+				LeaderboardSimplified leaderboard = new LeaderboardSimplified
 				{
 					DateTime = LeaderboardHistoryUtils.HistoryJsonFileNameToDateTime(Path.GetFileNameWithoutExtension(dlg.FileName))
 				};
@@ -61,7 +61,7 @@ namespace LeaderboardCSVToJSON
 
 						if (i >= 9 && i < 109)
 						{
-							LeaderboardEntry entry = new LeaderboardEntry
+							LeaderboardEntrySimplified entry = new LeaderboardEntrySimplified
 							{
 								DeathType = -1
 							};

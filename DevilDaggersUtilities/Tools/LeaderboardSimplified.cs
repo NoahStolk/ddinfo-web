@@ -3,7 +3,7 @@ using System.Collections.Generic;
 
 namespace DevilDaggersUtilities.Tools
 {
-	public class Leaderboard
+	public class LeaderboardSimplified
 	{
 		public DateTime DateTime = DateTime.UtcNow;
 
@@ -15,6 +15,6 @@ namespace DevilDaggersUtilities.Tools
 		public ulong ShotsHitGlobal;
 		public ulong ShotsFiredGlobal;
 
-		public List<LeaderboardEntry> Entries = new List<LeaderboardEntry>();
+		public List<LeaderboardEntrySimplified> Entries = new List<LeaderboardEntrySimplified>();
 	}
 }

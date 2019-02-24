@@ -1,6 +1,6 @@
 ﻿namespace DevilDaggersUtilities.Tools
 {
-	public class LeaderboardEntry
+	public class LeaderboardEntrySimplified
 	{
 		public int Rank;
 		public int ID;

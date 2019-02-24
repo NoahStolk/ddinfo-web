@@ -16,7 +16,7 @@ namespace DevilDaggersWebsite.Pages.API
 		{
 			rank = Math.Max(1, rank);
 
-			Models.Leaderboard.Leaderboard leaderboard = await LeaderboardUtils.LoadLeaderboard(rank);
+			DevilDaggersCore.Leaderboard.Leaderboard leaderboard = await LeaderboardUtils.LoadLeaderboard(rank);
 
 			return JsonFile(leaderboard, leaderboard.DateTime.ToString("yyyyMMddHHmm"), formatted ? Formatting.Indented : Formatting.None);
 		}
