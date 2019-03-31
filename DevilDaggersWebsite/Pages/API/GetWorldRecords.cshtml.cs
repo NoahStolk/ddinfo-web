@@ -36,7 +36,7 @@ namespace DevilDaggersWebsite.Pages.API
 			SortedDictionary<DateTime, Entry> data = new SortedDictionary<DateTime, Entry>();
 
 			int worldRecord = 0;
-			foreach (string leaderboardHistoryPath in Directory.GetFiles(Path.Combine(_commonObjects.Env.WebRootPath, "leaderboard-history")))
+			foreach (string leaderboardHistoryPath in Directory.GetFiles(Path.Combine(_commonObjects.Env.WebRootPath, "leaderboard-history"), "*.json"))
 			{
 				DevilDaggersCore.Leaderboard.Leaderboard leaderboard = JsonConvert.DeserializeObject<DevilDaggersCore.Leaderboard.Leaderboard>(FileUtils.GetContents(leaderboardHistoryPath));
 				if (leaderboard.Entries[0].Time != worldRecord)
