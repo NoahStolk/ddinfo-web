@@ -1,6 +1,6 @@
 ﻿using DevilDaggersWebsite.Models.API;
 using DevilDaggersWebsite.PageModels;
-using DevilDaggersWebsite.Utils;
+using DevilDaggersWebsite.Utils.Web;
 using Microsoft.AspNetCore.Mvc;
 using Newtonsoft.Json;
 using System;
@@ -16,7 +16,7 @@ namespace DevilDaggersWebsite.Pages.API
 		{
 			rank = Math.Max(1, rank);
 
-			DevilDaggersCore.Leaderboard.Leaderboard leaderboard = await LeaderboardUtils.LoadLeaderboard(rank);
+			DevilDaggersCore.Leaderboard.Leaderboard leaderboard = await Hasmodai.GetScores(rank);
 
 			return JsonFile(leaderboard, leaderboard.DateTime.ToString("yyyyMMddHHmm"), formatted ? Formatting.Indented : Formatting.None);
 		}

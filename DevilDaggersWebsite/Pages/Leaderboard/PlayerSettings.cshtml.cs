@@ -1,4 +1,4 @@
-﻿using DevilDaggersWebsite.Utils;
+﻿using DevilDaggersWebsite.Utils.Web;
 using Microsoft.AspNetCore.Mvc.RazorPages;
 using System.Threading.Tasks;
 
@@ -10,7 +10,7 @@ namespace DevilDaggersWebsite.Pages.Leaderboard
 
 		public async Task OnGetAsync()
 		{
-			Leaderboard = await LeaderboardUtils.LoadLeaderboard(1);
+			Leaderboard = await Hasmodai.GetScores(1);
 		}
 	}
 }

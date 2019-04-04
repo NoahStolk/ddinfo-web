@@ -1,4 +1,4 @@
-﻿using DevilDaggersWebsite.Utils;
+﻿using DevilDaggersWebsite.Utils.Web;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.AspNetCore.Mvc.RazorPages;
 using System;
@@ -22,17 +22,17 @@ namespace DevilDaggersWebsite.Pages.Leaderboard
 
 			if (IsUserSearch)
 			{
-				Leaderboard = await LeaderboardUtils.LoadLeaderboardSearch(Search);
+				Leaderboard = await Hasmodai.GetUserSearch(Search);
 			}
 			else
 			{
-				Leaderboard = await LeaderboardUtils.LoadLeaderboard(Rank);
+				Leaderboard = await Hasmodai.GetScores(Rank);
 
 				if (Rank > Leaderboard.Players - 99)
 				{
 					Rank = Leaderboard.Players - 99;
 					Leaderboard.Entries.Clear();
-					Leaderboard = await LeaderboardUtils.LoadLeaderboard(Rank);
+					Leaderboard = await Hasmodai.GetScores(Rank);
 				}
 			}
 		}
