@@ -9,7 +9,7 @@ namespace DevilDaggersWebsite.Pages.Admin
 {
 	public class IndexModel : AdminPageModel
 	{
-		private ICommonObjects _commonObjects;
+		private readonly ICommonObjects _commonObjects;
 
 		public string Password { get; set; }
 

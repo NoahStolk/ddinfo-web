@@ -100,11 +100,7 @@ namespace DevilDaggersWebsite.Utils
 		{
 			{ "Admin", "eye2" },
 			{ "Discord mod", "eye3" },
-			{ "Donator", "gem" },
-			{ "Settings", "crosshair" },
-			{ "ddstats", "dagger" },
-			{ "Dingle", "skull" },
-			{ "Ringle", "skull" },
+			{ "Donator", "gem" }
 		};
 
 		public static Dictionary<string, string> CountryNames { get; set; } = new Dictionary<string, string>
