@@ -22,13 +22,14 @@
 	</div>
 	<div class="leaderboard-body">
 		@{
-			IEnumerable<int> bans = UserUtils.GetBans(CommonObjects);
+			IEnumerable<Ban> bans = UserUtils.GetBans(CommonObjects);
 			IEnumerable<Donator> donators = UserUtils.GetDonators(CommonObjects);
 			IEnumerable<Flag> flags = UserUtils.GetFlags(CommonObjects);
 			IEnumerable<UserTitleCollection> titleCollections = UserUtils.GetTitleCollections(CommonObjects);
 			foreach (Entry entry in Model.Leaderboard.Entries)
 			{
-				bool ban = bans.Contains(entry.ID);
+				Ban ban = bans.Where(b => b.ID == entry.ID).FirstOrDefault();
+				bool banned = ban != null;
 				Donator donator = donators.Where(d => d.ID == entry.ID).FirstOrDefault();
 				Flag flag = flags.Where(f => f.ID == entry.ID).FirstOrDefault();
 				UserTitleCollection titles = titleCollections.Where(t => t.ID == entry.ID).FirstOrDefault();
@@ -36,10 +37,10 @@
 				Dagger dagger = Game.GetDaggerFromTime(entry.Time);
 				Death death = Game.GetDeathFromDeathType(entry.DeathType, Game.GetGameVersionFromDate(Model.Leaderboard.DateTime));
 
-				string flagCode = flag == null || ban ? "00" : flag.CountryCode;
-				string daggerColor = ban ? "ban" : dagger.Name.ToLower();
-				string deathStyle = ban ? "" : $"color: #{death.ColorCode};";
-				string banString = ban ? "ban" : string.Empty;
+				string flagCode = flag == null || banned ? "00" : flag.CountryCode;
+				string daggerColor = banned ? "ban" : dagger.Name.ToLower();
+				string deathStyle = banned ? "" : $"color: #{death.ColorCode};";
+				string banString = banned ? "ban" : string.Empty;
 
 				<div class="sort @banString" @entry.ToHTMLData(flagCode)>
 					<div class="leaderboard-row flex-container" id="@(entry.Rank)-row">
@@ -64,8 +65,17 @@
 							}
 						</div>
 						<div class="text-left leaderboard-username">
-							<span class="@daggerColor" style="background-position-y: 3px;">@entry.Username</span>
 							@{
+								@*if (banned)
+								{
+									<span data-toggle="tooltip" title="@ban.Description" class="@daggerColor" style="background-position-y: 3px;">@entry.Username</span>
+								}
+								else
+								{
+									<span class="@daggerColor" style="background-position-y: 3px;">@entry.Username</span>
+								}*@
+								<span class="@daggerColor" style="background-position-y: 3px;">@entry.Username</span>
+
 								if (titles != null)
 								{
 									foreach (string title in titles.Titles)
