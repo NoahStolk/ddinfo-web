@@ -1,0 +1,46 @@
+﻿@page
+@model DevilDaggersWebsite.Pages.Admin.BanInfoModel
+@using DevilDaggersWebsite.Models.User
+@inject CoreBase.Services.ICommonObjects CommonObjects
+@{
+	ViewData["Title"] = "Admin - Ban Info";
+}
+
+<header>
+	<h1>@ViewData["Title"]</h1>
+</header>
+
+<main role="main" class="text-center">
+	<table class="text-left">
+		<thead>
+			<tr>
+				<th>Ban description</th>
+				<th colspan="2">Banned account</th>
+				<th colspan="2">Responsible account (if any)</th>
+			</tr>
+			<tr>
+				<th></th>
+				<th>ID</th>
+				<th>Username</th>
+				<th>ID</th>
+				<th>Username</th>
+			</tr>
+		</thead>
+		<tbody>
+			@foreach (Tuple<Ban, string, string> tuple in Model.BanInfo)
+			{
+				<tr>
+					<td>@tuple.Item1.Description</td>
+					<td>@tuple.Item1.ID</td>
+					<td>@tuple.Item2</td>
+					<td>@tuple.Item1.IDResponsible</td>
+					<td>@tuple.Item3</td>
+				</tr>
+			}
+		</tbody>
+	</table>
+</main>
+
+@section Styles {
+	<link rel='stylesheet' href='~/styles/admin.css' />
+}

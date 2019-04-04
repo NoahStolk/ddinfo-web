@@ -13,3 +13,12 @@
 	border: 1px solid #0f0;
 	box-shadow: 0 0 10px #0f0;
 }
+
+table {
+	table-layout: fixed;
+	width: 100%;
+}
+
+table td {
+	width: 20%;
+}
