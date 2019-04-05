@@ -47,11 +47,11 @@
 						<div class="text-right">
 							@if (entry.ID != 0)
 							{
-								<span data-toggle="tooltip" title="@entry.ID" class="leaderboard-tooltip">@entry.Rank</span>
+								<span data-toggle="tooltip" title="ID: @entry.ID" class="leaderboard-tooltip">@entry.Rank</span>
 							}
 							else
 							{
-								@entry.Rank
+								<span style="color: #ff0;" data-toggle="tooltip" title="ID: ???" class="leaderboard-tooltip">@entry.Rank</span>
 							}
 						</div>
 						<div>
