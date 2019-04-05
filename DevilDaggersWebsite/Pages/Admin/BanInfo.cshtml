@@ -31,9 +31,9 @@
 			{
 				<tr>
 					<td>@tuple.Item1.Description</td>
-					<td>@tuple.Item1.ID</td>
+					<td><a asp-page="/Leaderboard/IDSearch" asp-route-id="@tuple.Item1.ID" target="_blank">@tuple.Item1.ID</a></td>
 					<td>@tuple.Item2</td>
-					<td>@tuple.Item1.IDResponsible</td>
+					<td><a asp-page="/Leaderboard/IDSearch" asp-route-id="@tuple.Item1.IDResponsible" target="_blank">@tuple.Item1.IDResponsible</a></td>
 					<td>@tuple.Item3</td>
 				</tr>
 			}
