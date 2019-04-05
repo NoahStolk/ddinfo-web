@@ -217,6 +217,7 @@ namespace LeaderboardJsonIDFixer
 			{ "Jyff", 157108 },
 			{ "HooFoot", 120114 },
 			{ "fushikawa", 120114 },
+			{ "miZt-", 58491 },
 		};
 
 		public static void Main(string[] args)
