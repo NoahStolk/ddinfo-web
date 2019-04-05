@@ -56,7 +56,7 @@ $.getJSON("/API/GetUserProgression?userID=" + getUrlParameter("userID"), functio
 		pbs.push([date, val.Time / 10000, val.Rank.toFixed(0), val.Username, val.Gems === 0 ? "?" : val.Gems.toFixed(0), val.Kills === 0 ? "?" : val.Kills.toFixed(0), accuracy === 0 ? "?" : accuracy.toFixed(2) + "%", death.ColorCode, death.Name]);
 	});
 
-	// TODO: This is just to prevent the graph from crashing
+	// TODO: This is just to prevent the graph from crashing. Something else should be displayed instead.
 	if (pbs.length === 0)
 		pbs.push([Date.now(), 0, 0, "", 0, 0, "0%", "FFFFFF", "FALLEN"]);
 
