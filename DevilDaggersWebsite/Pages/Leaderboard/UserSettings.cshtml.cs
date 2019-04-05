@@ -4,7 +4,7 @@ using System.Threading.Tasks;
 
 namespace DevilDaggersWebsite.Pages.Leaderboard
 {
-	public class PlayerSettingsModel : PageModel
+	public class UserSettingsModel : PageModel
 	{
 		public DevilDaggersCore.Leaderboard.Leaderboard Leaderboard { get; set; } = new DevilDaggersCore.Leaderboard.Leaderboard();
 
