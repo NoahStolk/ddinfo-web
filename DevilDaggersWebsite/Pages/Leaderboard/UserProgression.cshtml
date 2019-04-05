@@ -1,0 +1,31 @@
+﻿@page
+@model DevilDaggersWebsite.Pages.Leaderboard.UserProgressionModel
+@{
+	ViewData["Title"] = "User Progression";
+}
+
+<header>
+	<h1>@ViewData["Title"]</h1>
+</header>
+
+<main role="main" class="text-center">
+	<p>
+		This graph shows the top 100 progression for @Model.Username based on the <a asp-page="/Leaderboard/History">Leaderboard History</a>.
+	</p>
+
+	<h2>@Model.Username</h2>
+	<div id="user-progression-chart" style="height: 65vh;"></div>
+</main>
+
+@section Scripts {
+	<script defer src='~/plugins/jqPlot/jquery.jqplot.min.js' asp-append-version='true'></script>
+	<script defer src='~/plugins/jqPlot/jqplot.dateAxisRenderer.js' asp-append-version='true'></script>
+	<script defer src='~/plugins/jqPlot/jqplot.highlighter.js' asp-append-version='true'></script>
+	<script defer src='~/plugins/jqPlot/jqplot.canvasOverlay.js' asp-append-version='true'></script>
+	<script defer src='~/scripts/leaderboard-user-progression.js' asp-append-version='true'></script>
+}
+
+@section Styles {
+	<link rel='stylesheet' href='~/lib/jqPlot/jquery.jqplot.min.css' />
+	<link rel='stylesheet' href='~/styles/jqplot.css' />
+}

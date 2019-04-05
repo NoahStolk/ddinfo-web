@@ -22,6 +22,12 @@
     <Content Update="Pages\API\GetSpawnset.cshtml">
       <Pack>$(IncludeRazorContentInPack)</Pack>
     </Content>
+    <Content Update="Pages\API\GetUserProgression.cshtml">
+      <Pack>$(IncludeRazorContentInPack)</Pack>
+    </Content>
+    <Content Update="Pages\Leaderboard\UserProgression.cshtml">
+      <Pack>$(IncludeRazorContentInPack)</Pack>
+    </Content>
     <Content Update="Pages\Partials\_LeaderboardUserSettingsPartial.cshtml">
       <Pack>$(IncludeRazorContentInPack)</Pack>
     </Content>
