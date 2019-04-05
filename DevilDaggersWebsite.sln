@@ -25,7 +25,7 @@ Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "DevilDaggersCore", "..\Devi
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "DevilDaggersUtilities", "DevilDaggersUtilities\DevilDaggersUtilities.csproj", "{30E1323E-A096-450C-8DD3-665982D399E0}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "LeaderboardJsonIDFixer", "LeaderboardJsonIDFixer\LeaderboardJsonIDFixer.csproj", "{50389A94-7721-44AE-9708-BC1E024591F5}"
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "LeaderboardJsonIDFixer", "Tools\LeaderboardJsonIDFixer\LeaderboardJsonIDFixer.csproj", "{50389A94-7721-44AE-9708-BC1E024591F5}"
 EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution

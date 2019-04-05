@@ -7,7 +7,7 @@ using System.Text;
 
 namespace LeaderboardJsonIDFixer
 {
-	class Program
+	public static class Program
 	{
 		public static Dictionary<string, int> table = new Dictionary<string, int>
 		{
