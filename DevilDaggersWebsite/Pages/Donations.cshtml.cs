@@ -9,7 +9,7 @@ namespace DevilDaggersWebsite.Pages
 {
 	public class DonationsModel : PageModel
 	{
-		private ICommonObjects _commonObjects;
+		private readonly ICommonObjects _commonObjects;
 
 		public List<Donator> Donators { get; set; }
 
@@ -18,6 +18,7 @@ namespace DevilDaggersWebsite.Pages
 			_commonObjects = commonObjects;
 		}
 
+		//public async Task OnGetAsync()
 		public void OnGet()
 		{
 			Donators = UserUtils.GetDonators(_commonObjects)
@@ -25,6 +26,12 @@ namespace DevilDaggersWebsite.Pages
 				.ThenBy(d => d.CurrencySymbol, new CurrencyComparer())
 				.ThenBy(d => d.Username)
 				.ToList();
+
+			//foreach (Donator donator in Donators)
+			//{
+			//	Entry entry = await Hasmodai.GetUserByID(donator.ID);
+			//	donator.Username = entry.Username;
+			//}
 		}
 	}
 }
