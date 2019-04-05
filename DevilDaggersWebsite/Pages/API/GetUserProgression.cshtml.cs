@@ -32,13 +32,16 @@ namespace DevilDaggersWebsite.Pages.API
 		{
 			SortedDictionary<DateTime, Entry> data = new SortedDictionary<DateTime, Entry>();
 
-			foreach (string leaderboardHistoryPath in Directory.GetFiles(Path.Combine(_commonObjects.Env.WebRootPath, "leaderboard-history"), "*.json"))
+			if (userID != 0)
 			{
-				DevilDaggersCore.Leaderboard.Leaderboard leaderboard = JsonConvert.DeserializeObject<DevilDaggersCore.Leaderboard.Leaderboard>(FileUtils.GetContents(leaderboardHistoryPath));
-				Entry entry = leaderboard.Entries.Where(e => e.ID == userID).FirstOrDefault();
+				foreach (string leaderboardHistoryPath in Directory.GetFiles(Path.Combine(_commonObjects.Env.WebRootPath, "leaderboard-history"), "*.json"))
+				{
+					DevilDaggersCore.Leaderboard.Leaderboard leaderboard = JsonConvert.DeserializeObject<DevilDaggersCore.Leaderboard.Leaderboard>(FileUtils.GetContents(leaderboardHistoryPath));
+					Entry entry = leaderboard.Entries.Where(e => e.ID == userID).FirstOrDefault();
 
-				if (entry != null && !data.Values.Any(e => e.Time == entry.Time || e.Time == entry.Time + 1 || e.Time == entry.Time - 1)) // Off-by-one errors in the history
-					data[leaderboard.DateTime] = entry;
+					if (entry != null && !data.Values.Any(e => e.Time == entry.Time || e.Time == entry.Time + 1 || e.Time == entry.Time - 1)) // Off-by-one errors in the history
+						data[leaderboard.DateTime] = entry;
+				}
 			}
 
 			return data;
