@@ -9,12 +9,21 @@
 </header>
 
 <main role="main" class="text-center">
-	<p>
-		This graph shows the top 100 progression for @Model.Username based on the <a asp-page="/Leaderboard/History">Leaderboard History</a>.
-	</p>
+	@{
+		if (Model.IsValid)
+		{
+			<p>
+				This graph shows the top 100 progression for @Model.Username. It is based on the <a asp-page="/Leaderboard/History">Leaderboard History</a>, so it might be incomplete.
+			</p>
 
-	<h2>@Model.Username</h2>
-	<div id="user-progression-chart" style="height: 65vh;"></div>
+			<h2>@Model.Username</h2>
+			<div id="user-progression-chart" style="height: 65vh;"></div>
+		}
+		else
+		{
+			<p>Search</p>
+		}
+	}
 </main>
 
 @section Scripts {

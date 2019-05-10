@@ -10,7 +10,9 @@ namespace DevilDaggersWebsite.Pages.Leaderboard
 	{
 		private readonly ICommonObjects _commonObjects;
 
+		public int UserID { get; set; }
 		public string Username { get; set; }
+		public bool IsValid { get; set; }
 
 		public UserProgressionModel(ICommonObjects commonObjects)
 		{
@@ -19,8 +21,15 @@ namespace DevilDaggersWebsite.Pages.Leaderboard
 
 		public async Task OnGetAsync(int userID)
 		{
-			Entry entry = await Hasmodai.GetUserByID(userID);
-			Username = entry.Username;
+			UserID = userID;
+			Username = string.Empty;
+
+			IsValid = UserID > 0;
+			if (IsValid)
+			{
+				Entry entry = await Hasmodai.GetUserByID(userID);
+				Username = entry.Username;
+			}
 		}
 	}
 }
