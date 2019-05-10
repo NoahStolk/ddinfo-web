@@ -29,7 +29,7 @@ var getUrlParameter = function getUrlParameter(sParam) {
 	}
 };
 
-$.getJSON("/API/GetUserProgression?userID=" + getUrlParameter("userID"), function (data) {
+$.getJSON("/API/GetUserProgression?UserID=" + getUrlParameter("UserID"), function (data) {
 	var pbs = [];
 	$.each(data, function (key, val) {
 		var date = new Date(key);
@@ -57,8 +57,8 @@ $.getJSON("/API/GetUserProgression?userID=" + getUrlParameter("userID"), functio
 	});
 
 	// TODO: This is just to prevent the graph from crashing. Something else should be displayed instead.
-	//if (pbs.length === 0)
-	//	pbs.push([Date.now(), 0, 0, "", 0, 0, "0%", "FFFFFF", "FALLEN"]);
+	if (pbs.length === 0)
+		return;
 
 	var lowestTime = 10000;
 	var highestTime = 0;
