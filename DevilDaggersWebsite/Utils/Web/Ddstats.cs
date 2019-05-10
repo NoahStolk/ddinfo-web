@@ -5,7 +5,7 @@ using DevilDaggersCore.Game;
 
 namespace DevilDaggersWebsite.Utils.Web
 {
-	public class Ddstats
+	public static class Ddstats
 	{
 		private static readonly string getScoresUrl = "http://ddstats.com/api/get_scores";
 
