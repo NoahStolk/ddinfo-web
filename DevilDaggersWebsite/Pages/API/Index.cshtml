@@ -48,8 +48,8 @@
 					<div class="col-lg-2 col-md-2 col-sm-3 col-xs-3"><a asp-page=@api.Name class="dont-break-out">@api.Name</a></div>
 					<div class="col-lg-4 col-md-6 col-sm-9 col-xs-9">@api.FormattedDescription</div>
 					<div class="col-lg-2 col-md-2 hidden-sm hidden-xs">@api.Attribute.ReturnType</div>
-					<div class="col-lg-2 col-md-2 hidden-sm hidden-xs api-parameter">@(parameters.Count != 0 ? Html.Raw(parameters.ItemsAppended<string>(", ")) : RazorUtils.NAString)</div>
-					<div class="col-lg-2 hidden-md hidden-sm hidden-xs api-parameter-optional">@(optionalParameters.Count != 0 ? Html.Raw(optionalParameters.ItemsAppended<string>(", ")) : RazorUtils.NAString)</div>
+					<div class="col-lg-2 col-md-2 hidden-sm hidden-xs api-parameter">@(parameters.Count != 0 ? Html.Raw(string.Join(", ", parameters)) : RazorUtils.NAString)</div>
+					<div class="col-lg-2 hidden-md hidden-sm hidden-xs api-parameter-optional">@(optionalParameters.Count != 0 ? Html.Raw(string.Join(", ", optionalParameters)) : RazorUtils.NAString)</div>
 				</div>
 				i++;
 			}
