@@ -18,6 +18,7 @@ namespace DevilDaggersWebsite.Pages
 		public void OnGet()
 		{
 			SitemapUtils.ExcludePage("Admin_Index");
+			SitemapUtils.ExcludePage("Admin_BanInfo");
 			SitemapUtils.ExcludePage("API_DownloadSpawnset");
 			SitemapUtils.ExcludePage("API_GetDeaths");
 			SitemapUtils.ExcludePage("API_GetGameVersions");
@@ -26,6 +27,9 @@ namespace DevilDaggersWebsite.Pages
 			SitemapUtils.ExcludePage("API_GetSpawnsets");
 			SitemapUtils.ExcludePage("API_GetToolVersions");
 			SitemapUtils.ExcludePage("API_GetWorldRecords");
+			SitemapUtils.ExcludePage("API_GetEnemies");
+			SitemapUtils.ExcludePage("API_GetUserProgression");
+			SitemapUtils.ExcludePage("Leaderboard_IDSearch");
 			SitemapUtils.ExcludePage("API_Index");
 			SitemapUtils.ExcludePage("Error_404");
 			SitemapUtils.ExcludePage("Leaderboard_Statistics");
