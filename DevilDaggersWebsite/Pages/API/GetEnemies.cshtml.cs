@@ -16,7 +16,7 @@ namespace DevilDaggersWebsite.Pages.API
 		{
 			if (!Game.GameVersions.TryGetValue(gameVersion, out GameVersion version))
 				version = Game.GameVersions[Game.DEFAULT_GAME_VERSION];
-			
+
 			return JsonFile(!string.IsNullOrEmpty(enemyName) ? new List<Enemy> { Game.GetEntities<Enemy>(version).Where(e => e.Name == enemyName).FirstOrDefault() } : Game.GetEntities<Enemy>(version), formatted ? Formatting.Indented : Formatting.None);
 		}
 	}

@@ -11,6 +11,6 @@
 		padding: 0px 6px;
 	}
 
-	.jqplot-highlighter > tbody > tr > td:nth-child(1) {
-		text-align: left;
-	}
+		.jqplot-highlighter > tbody > tr > td:nth-child(1) {
+			text-align: left;
+		}

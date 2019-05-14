@@ -19,9 +19,9 @@ namespace DevilDaggersWebsite.Utils
 			}
 		}
 
-		private readonly static List<string> zalgoAll = new List<string>();
+		private static readonly List<string> zalgoAll = new List<string>();
 
-		private readonly static Random random = new Random();
+		private static readonly Random random = new Random();
 
 		public static string InterpolateHexColor(string c1, string c2, float percentage)
 		{

@@ -1,13 +1,13 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Threading.Tasks;
-using CoreBase.Services;
+﻿using CoreBase.Services;
 using DevilDaggersCore.Leaderboard;
 using DevilDaggersWebsite.Models.PageModels;
 using DevilDaggersWebsite.Models.User;
 using DevilDaggersWebsite.Utils;
 using DevilDaggersWebsite.Utils.Web;
 using Microsoft.AspNetCore.Mvc;
+using System;
+using System.Collections.Generic;
+using System.Threading.Tasks;
 
 namespace DevilDaggersWebsite.Pages.Admin
 {

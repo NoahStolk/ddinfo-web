@@ -10,8 +10,8 @@ namespace DevilDaggersWebsite.Models.Spawnset
 	{
 		public string Path { get; set; }
 
-		public string FileName { get { return System.IO.Path.GetFileName(Path); } }
-		public DateTime LastUpdated { get { return new FileInfo(Path).LastWriteTime; } }
+		public string FileName => System.IO.Path.GetFileName(Path);
+		public DateTime LastUpdated => new FileInfo(Path).LastWriteTime;
 		public SpawnsetData SpawnData
 		{
 			get
@@ -27,9 +27,9 @@ namespace DevilDaggersWebsite.Models.Spawnset
 		}
 
 		[JsonProperty]
-		public string Name { get { return FileName.Substring(0, FileName.LastIndexOf('_')); } }
+		public string Name => FileName.Substring(0, FileName.LastIndexOf('_'));
 		[JsonProperty]
-		public string Author { get { return FileName.Substring(FileName.LastIndexOf('_') + 1); } }
+		public string Author => FileName.Substring(FileName.LastIndexOf('_') + 1);
 
 		public SpawnsetFile(string path)
 		{

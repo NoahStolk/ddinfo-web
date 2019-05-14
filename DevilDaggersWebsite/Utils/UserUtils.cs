@@ -14,7 +14,7 @@ namespace DevilDaggersWebsite.Utils
 			{
 				if (string.IsNullOrWhiteSpace(b))
 					continue;
-				
+
 				string ban = b.TrimEnd('\r', '\n');
 				string[] props = GetPropsNoSpaces(ban);
 				if (props.Length > 2 && int.TryParse(props[2], out int idResponsible))

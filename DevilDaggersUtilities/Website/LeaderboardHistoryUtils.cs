@@ -25,7 +25,7 @@ namespace DevilDaggersUtilities.Website
 
 			if (dateString.Length == 14)
 			{
-				int	second = int.Parse(dateString.Substring(12, 2));
+				int second = int.Parse(dateString.Substring(12, 2));
 				return new DateTime(year, month, day, hour, minute, second);
 			}
 
