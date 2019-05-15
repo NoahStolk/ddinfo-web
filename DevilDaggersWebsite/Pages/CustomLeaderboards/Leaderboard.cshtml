@@ -1,0 +1,30 @@
+﻿@page
+@model DevilDaggersWebsite.Pages.CustomLeaderboards.LeaderboardModel
+@{
+	ViewData["Title"] = $"Leaderboard for {Model.Leaderboard.SpawnsetFileName}";
+}
+
+<header>
+	<h1>@ViewData["Title"]</h1>
+</header>
+
+<main role="main" class="text-center">
+	<div>
+		<p class="visible-xs visible-sm visible-md">
+			On mobile devices; tap on an entry to expand it.
+		</p>
+		<p>
+			You can sort the leaderboard by clicking the headers.
+		</p>
+	</div>
+	@await Html.PartialAsync("Partials/_LeaderboardCustomPartial")
+</main>
+
+@section Scripts {
+	<script defer src='~/scripts/leaderboard-user.js' asp-append-version='true'></script>
+}
+
+@section Styles {
+	<link rel='stylesheet' href='~/styles/leaderboard.css' />
+	<link rel='stylesheet' href='~/styles/leaderboard-rows-custom.css' />
+}
