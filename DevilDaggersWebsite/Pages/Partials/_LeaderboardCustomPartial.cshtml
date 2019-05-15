@@ -42,7 +42,7 @@
 				<div class="sort" @entry.ToHTMLData(flagCode)>
 					<div class="leaderboard-row flex-container" id="@(entry.Rank)-row">
 						<div class="text-right">
-							<span data-toggle="tooltip" title="ID: @entry.PlayerID" class="leaderboard-tooltip">@entry.Rank</span>
+							<span data-toggle="tooltip" title="ID: @entry.PlayerID" class="leaderboard-tooltip">@*@entry.Rank*@</span>
 						</div>
 						<div>
 							@if (flagCode == "00")
