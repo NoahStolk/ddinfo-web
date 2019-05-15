@@ -30,6 +30,8 @@ namespace DevilDaggersWebsite.Pages
 			SitemapUtils.ExcludePage("API_GetUserProgression");
 			SitemapUtils.ExcludePage("API_GetWorldRecords");
 			SitemapUtils.ExcludePage("API_Index");
+			SitemapUtils.ExcludePage("CustomLeaderboards_Leaderboard");
+			SitemapUtils.ExcludePage("CustomLeaderboards_Upload");
 			SitemapUtils.ExcludePage("Error_404");
 			SitemapUtils.ExcludePage("Leaderboard_IDSearch");
 			SitemapUtils.ExcludePage("Leaderboard_Statistics");

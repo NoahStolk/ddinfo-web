@@ -45,7 +45,7 @@ namespace DevilDaggersWebsite.Pages.CustomLeaderboards
 
 		public UploadResult TryUpload(string spawnsetHash, int playerID, string username, float time, int gems, int kills, int deathType, int shotsHit, int shotsFired, int enemiesAlive, int homing, float levelUpTime2, float levelUpTime3, float levelUpTime4)
 		{
-			if (playerID == 0)
+			if (playerID <= 0)
 				return new UploadResult(false, "Invalid submission.");
 
 			CustomLeaderboard leaderboard = _context.CustomLeaderboards.Where(l => l.SpawnsetHash == spawnsetHash).FirstOrDefault();
@@ -58,8 +58,8 @@ namespace DevilDaggersWebsite.Pages.CustomLeaderboards
 			{
 				// New user on this leaderboard
 				_context.CustomEntries.Add(new CustomEntry(playerID, username, time, gems, kills, deathType, shotsHit, shotsFired, enemiesAlive, homing, levelUpTime2, levelUpTime3, levelUpTime4, DateTime.Now) { CustomLeaderboard = leaderboard });
-				_context.SaveChanges();
 
+				_context.SaveChanges();
 				return new UploadResult(true, $"Welcome to the leaderboard for the {leaderboard.SpawnsetFileName} spawnset. Your score is {time}.");
 			}
 			else
@@ -69,7 +69,10 @@ namespace DevilDaggersWebsite.Pages.CustomLeaderboards
 
 				// Users already on the leaderboard, check for higher score
 				if (entry.Time >= time)
+				{
+					_context.SaveChanges();
 					return new UploadResult(true, "No new highscore.");
+				}
 
 				float timeImproved = time - entry.Time;
 
@@ -87,7 +90,6 @@ namespace DevilDaggersWebsite.Pages.CustomLeaderboards
 				entry.SubmitDate = DateTime.Now;
 
 				_context.SaveChanges();
-
 				return new UploadResult(true, $"New highscore: {time} (+{timeImproved})");
 			}
 		}
