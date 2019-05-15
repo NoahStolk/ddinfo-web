@@ -3,9 +3,9 @@
 	<TargetFramework>netcoreapp2.1</TargetFramework>
   </PropertyGroup>
   <ItemGroup>
-	<PackageReference Include="BuildBundlerMinifier" Version="2.8.391" />
+	<PackageReference Include="BuildBundlerMinifier" Version="2.9.406" />
 	<PackageReference Include="Microsoft.AspNetCore.App" />
-	<PackageReference Include="Newtonsoft.Json" Version="11.0.2" />
+	<PackageReference Include="Newtonsoft.Json" Version="12.0.2" />
   </ItemGroup>
   <ItemGroup>
 	<DotNetCliToolReference Include="Microsoft.VisualStudio.Web.CodeGeneration.Tools" Version="2.0.2" />
