@@ -28,9 +28,9 @@
 			IEnumerable<UserTitleCollection> titleCollections = UserUtils.GetTitleCollections(CommonObjects);
 			foreach (CustomEntry entry in Model.Entries)
 			{
-				Donator donator = donators.Where(d => d.ID == entry.ID).FirstOrDefault();
-				Flag flag = flags.Where(f => f.ID == entry.ID).FirstOrDefault();
-				UserTitleCollection titles = titleCollections.Where(t => t.ID == entry.ID).FirstOrDefault();
+				Donator donator = donators.Where(d => d.ID == entry.PlayerID).FirstOrDefault();
+				Flag flag = flags.Where(f => f.ID == entry.PlayerID).FirstOrDefault();
+				UserTitleCollection titles = titleCollections.Where(t => t.ID == entry.PlayerID).FirstOrDefault();
 
 				Dagger dagger = Model.Leaderboard.GetDagger(entry.Time);
 				Death death = Game.GetDeathFromDeathType(entry.DeathType, Game.GameVersions["V3"]);
