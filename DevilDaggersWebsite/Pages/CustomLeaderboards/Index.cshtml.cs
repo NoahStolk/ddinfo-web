@@ -1,17 +1,25 @@
-﻿using System;
+﻿using DevilDaggersWebsite.Models.Database;
+using DevilDaggersWebsite.Models.Database.CustomLeaderboards;
+using Microsoft.AspNetCore.Mvc.RazorPages;
 using System.Collections.Generic;
 using System.Linq;
-using System.Threading.Tasks;
-using Microsoft.AspNetCore.Mvc;
-using Microsoft.AspNetCore.Mvc.RazorPages;
 
 namespace DevilDaggersWebsite.Pages.CustomLeaderboards
 {
-    public class IndexModel : PageModel
-    {
-        public void OnGet()
-        {
+	public class IndexModel : PageModel
+	{
+		public List<CustomLeaderboard> Leaderboards { get; set; }
 
-        }
-    }
+		private readonly ApplicationDbContext _context;
+
+		public IndexModel(ApplicationDbContext context)
+		{
+			_context = context;
+		}
+
+		public void OnGet()
+		{
+			Leaderboards = _context.CustomLeaderboards.ToList();
+		}
+	}
 }

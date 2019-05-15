@@ -1,8 +1,23 @@
 ﻿@page
+@using DevilDaggersWebsite.Models.Database.CustomLeaderboards
 @model DevilDaggersWebsite.Pages.CustomLeaderboards.IndexModel
 @{
-    ViewData["Title"] = "Index";
+	ViewData["Title"] = "Custom Leaderboards";
 }
 
-<h2>Index</h2>
+<header>
+	<h1>@ViewData["Title"]</h1>
+</header>
 
+<main role="main" class="text-center">
+	<p>
+		Custom leaderboards are still in development.
+	</p>
+
+	@{
+		foreach (CustomLeaderboard lb in Model.Leaderboards)
+		{
+			<div><a asp-page="/CustomLeaderboards/Leaderboard" asp-route-spawnset="@lb.SpawnsetFileName">@lb.SpawnsetFileName</a></div>
+		}
+	}
+</main>
