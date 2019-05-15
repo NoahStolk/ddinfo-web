@@ -39,7 +39,7 @@ namespace DevilDaggersWebsite.Pages.CustomLeaderboards
 			}
 			catch (Exception ex)
 			{
-				JsonResult = JsonConvert.SerializeObject(new UploadResult(false, $"Error uploading score\n\nDetails{ex}"));
+				JsonResult = JsonConvert.SerializeObject(new UploadResult(false, $"Error uploading score\n\nDetails:\n\n{ex}"));
 			}
 		}
 
