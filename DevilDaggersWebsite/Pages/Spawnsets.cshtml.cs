@@ -54,7 +54,7 @@ namespace DevilDaggersWebsite.Pages
 			string str = JsonConvert.SerializeObject(new GetSpawnsetsModel(_commonObjects).GetSpawnsets(SearchAuthor, SearchName));
 			dynamic json = JsonConvert.DeserializeObject(str);
 			foreach (dynamic spawnset in json)
-				spawnsetFiles.Add(new SpawnsetFile(Path.Combine(_commonObjects.Env.WebRootPath, "spawnsets", $"{spawnset.Name}_{spawnset.Author}")));
+				spawnsetFiles.Add(new SpawnsetFile(_commonObjects, Path.Combine(_commonObjects.Env.WebRootPath, "spawnsets", $"{spawnset.Name}_{spawnset.Author}")));
 
 			NameSort = sortOrder == "Name" ? "Name_asc" : "Name";
 			AuthorSort = sortOrder == "Author_asc" ? "Author" : "Author_asc";
@@ -80,11 +80,11 @@ namespace DevilDaggersWebsite.Pages
 					spawnsetFiles = spawnsetFiles.OrderByDescending(s => s.Author).ThenBy(s => s.Name).ToList();
 					break;
 				case "LastUpdated_asc":
-					spawnsetFiles = spawnsetFiles.OrderBy(s => s.LastUpdated).ThenByDescending(s => s.Name).ToList();
+					spawnsetFiles = spawnsetFiles.OrderBy(s => s.Settings.LastUpdated).ThenByDescending(s => s.Name).ToList();
 					break;
 				default:
 				case "LastUpdated":
-					spawnsetFiles = spawnsetFiles.OrderByDescending(s => s.LastUpdated).ThenBy(s => s.Name).ToList();
+					spawnsetFiles = spawnsetFiles.OrderByDescending(s => s.Settings.LastUpdated).ThenBy(s => s.Name).ToList();
 					break;
 				case "NonLoopLength_asc":
 					spawnsetFiles = spawnsetFiles.OrderBy(s => s.SpawnData.NonLoopLength).ThenBy(s => s.SpawnData.NonLoopSpawns).ToList();

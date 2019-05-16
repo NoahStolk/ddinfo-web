@@ -1,4 +1,6 @@
-﻿using DevilDaggersCore.Spawnset;
+﻿using CoreBase.Services;
+using DevilDaggersCore.Spawnset;
+using DevilDaggersWebsite.Utils;
 using Newtonsoft.Json;
 using System;
 using System.IO;
@@ -11,7 +13,9 @@ namespace DevilDaggersWebsite.Models.Spawnset
 		public string Path { get; set; }
 
 		public string FileName => System.IO.Path.GetFileName(Path);
-		public DateTime LastUpdated => new FileInfo(Path).LastWriteTime;
+
+		public SpawnsetSettings Settings { get; set; }
+
 		public SpawnsetData SpawnData
 		{
 			get
@@ -31,9 +35,16 @@ namespace DevilDaggersWebsite.Models.Spawnset
 		[JsonProperty]
 		public string Author => GetAuthor(FileName);
 
-		public SpawnsetFile(string path)
+		public SpawnsetFile(ICommonObjects commonObjects, string path)
 		{
 			Path = path;
+
+			string settingsPath = System.IO.Path.Combine(commonObjects.Env.WebRootPath, "spawnsets", "Settings", $"{Name}.json");
+			if (File.Exists(settingsPath))
+				using (StreamReader sr = new StreamReader(System.IO.Path.Combine(commonObjects.Env.WebRootPath, "spawnsets", "Settings", $"{Name}.json")))
+					Settings = JsonConvert.DeserializeObject<SpawnsetSettings>(sr.ReadToEnd());
+			else
+				Settings = new SpawnsetSettings();
 		}
 
 		public static string GetName(string fileNameOrPath)

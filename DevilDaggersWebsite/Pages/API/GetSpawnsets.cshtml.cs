@@ -32,7 +32,7 @@ namespace DevilDaggersWebsite.Pages.API
 
 			foreach (string spawnsetPath in Directory.GetFiles(Path.Combine(_commonObjects.Env.WebRootPath, "spawnsets")).ToList())
 			{
-				SpawnsetFile sf = new SpawnsetFile(spawnsetPath);
+				SpawnsetFile sf = new SpawnsetFile(_commonObjects, spawnsetPath);
 				if (!string.IsNullOrEmpty(searchAuthor) && !sf.Author.ToLower().Contains(searchAuthor.ToLower()) ||
 					!string.IsNullOrEmpty(searchName) && !sf.Name.ToLower().Contains(searchName.ToLower()))
 					continue;

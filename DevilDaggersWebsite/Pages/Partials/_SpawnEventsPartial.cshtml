@@ -5,17 +5,40 @@
 @using DevilDaggersCore.Spawnset.Events
 @using DevilDaggersWebsite.Models.Spawnset
 @using DevilDaggersWebsite.Utils
-@using Newtonsoft.Json
 @using System.IO
 @{
 	int[] widths = new int[6] { 160, 512, 144, 128, 144, 128 };
-
+	
+	SpawnsetFile sf = new SpawnsetFile(commonObjects, Model.SpawnsetPath);
 	Spawnset spawnset;
 	using (FileStream fs = new FileStream(Model.SpawnsetPath, FileMode.Open, FileAccess.Read))
 	{
 		if (!Spawnset.TryParse(fs, out spawnset))
 		{
 			return;
+		}
+	}
+
+	GameVersion gameVersion = Game.GameVersions[Game.DEFAULT_GAME_VERSION];
+	if (sf.Author == "Sorath")
+	{
+		if (sf.Name == "V1")
+		{
+			gameVersion = Game.GameVersions["V1"];
+		}
+		else if (sf.Name == "V2")
+		{
+			gameVersion = Game.GameVersions["V2"];
+		}
+	}
+
+	int maxWaves = sf.Settings.MaxWaves;
+	string wavesQuery = commonObjects.HttpContextAccessor.HttpContext.Request.Query["waves"];
+	if (int.TryParse(wavesQuery, out int t))
+	{
+		if (t > 0)
+		{
+			maxWaves = t;
 		}
 	}
 
@@ -29,48 +52,8 @@
 		}
 	}
 
-	bool showSpawns = (spawnset.Spawns.Count > 0 && !empty);
-
-	int maxWaves = RazorUtils.DEFAULT_MAX_WAVES;
-	string fileName = Model.SpawnsetPath.Substring(Model.SpawnsetPath.LastIndexOf('/') + 1, Model.SpawnsetPath.LastIndexOf('_') - Model.SpawnsetPath.LastIndexOf('/') - 1);
-	foreach (string settingsPath in Directory.GetFiles(System.IO.Path.Combine(commonObjects.Env.WebRootPath, "spawnsets", "Settings")))
-	{
-		if (System.IO.Path.GetFileName(settingsPath.Substring(0, settingsPath.LastIndexOf('.'))) == fileName)
-		{
-			string jsonString = System.IO.File.ReadAllText(settingsPath);
-			dynamic json = JsonConvert.DeserializeObject(jsonString);
-
-			if (!int.TryParse((string)json.MaxWaves, out maxWaves))
-			{
-				// JSON parse failed but we don't really care
-				maxWaves = RazorUtils.DEFAULT_MAX_WAVES;
-			}
-
-			break;
-		}
-	}
-
-	GameVersion gameVersion = Game.GameVersions[Game.DEFAULT_GAME_VERSION];
-	if (Model.SpawnsetPath.Contains("V1_Sorath"))
-	{
-		gameVersion = Game.GameVersions["V1"];
-	}
-	else if (Model.SpawnsetPath.Contains("V2_Sorath"))
-	{
-		gameVersion = Game.GameVersions["V2"];
-	}
-
-	string wavesQuery = commonObjects.HttpContextAccessor.HttpContext.Request.Query["waves"];
-	if (int.TryParse(wavesQuery, out int t))
-	{
-		if (t > 0)
-		{
-			maxWaves = t;
-		}
-	}
-
 	<div class="flex-container flex-center flex-column text-center">
-		@if (showSpawns)
+		@if (spawnset.Spawns.Count > 0 && !empty)
 		{
 			<div class="flex-container flex-center">
 				<div style="width: @(widths[0])px;">Time</div>
