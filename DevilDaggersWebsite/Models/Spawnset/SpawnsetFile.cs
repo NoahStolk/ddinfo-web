@@ -2,6 +2,7 @@
 using DevilDaggersCore.Spawnset;
 using Newtonsoft.Json;
 using System;
+using System.Collections.Generic;
 using System.IO;
 
 namespace DevilDaggersWebsite.Models.Spawnset
@@ -13,7 +14,7 @@ namespace DevilDaggersWebsite.Models.Spawnset
 
 		public string FileName => System.IO.Path.GetFileName(Path);
 
-		public SpawnsetFileSettings Settings { get; private set; }
+		public SpawnsetFileSettings Settings;
 
 		[JsonProperty]
 		public string Name => GetName(FileName);
@@ -24,12 +25,13 @@ namespace DevilDaggersWebsite.Models.Spawnset
 		{
 			Path = path;
 
-			string settingsPath = System.IO.Path.Combine(commonObjects.Env.WebRootPath, "spawnsets", "Settings", $"{Name}.json");
-			if (File.Exists(settingsPath))
-				using (StreamReader sr = new StreamReader(System.IO.Path.Combine(commonObjects.Env.WebRootPath, "spawnsets", "Settings", $"{Name}.json")))
-					Settings = JsonConvert.DeserializeObject<SpawnsetFileSettings>(sr.ReadToEnd());
-			else
-				Settings = new SpawnsetFileSettings();
+			using (StreamReader sr = new StreamReader(System.IO.Path.Combine(commonObjects.Env.WebRootPath, "spawnsets", "Settings", "Settings.json")))
+			{
+				Dictionary<string, SpawnsetFileSettings> dict = JsonConvert.DeserializeObject<Dictionary<string, SpawnsetFileSettings>>(sr.ReadToEnd());
+
+				if (!dict.TryGetValue(FileName, out Settings))
+					Settings = new SpawnsetFileSettings();
+			}
 		}
 
 		public SpawnsetData GetSpawnsetData()

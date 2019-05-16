@@ -43,6 +43,24 @@ namespace DevilDaggersWebsite.Pages
 
 		public void OnGet(string searchAuthor, string searchName, string sortOrder, int? pageIndex)
 		{
+			//Dictionary<string, SpawnsetFileSettings> dict = new Dictionary<string, SpawnsetFileSettings>();
+			//foreach (string path in Directory.GetFiles(Path.Combine(_commonObjects.Env.WebRootPath, "spawnsets"), "*_*", SearchOption.TopDirectoryOnly))
+			//{
+			//	string fileName = Path.GetFileName(path);
+			//	SpawnsetFile sf = new SpawnsetFile(_commonObjects, path);
+			//	sf.Settings.LastUpdated = System.IO.File.GetLastWriteTime(path);
+
+			//	dict[fileName] = sf.Settings;
+			//}
+
+			//JsonSerializer serializer = JsonSerializer.Create(new JsonSerializerSettings()
+			//{
+			//	DefaultValueHandling = DefaultValueHandling.IgnoreAndPopulate
+			//});
+			//using (StreamWriter sw = new StreamWriter(System.IO.File.Create(@"C:\Users\NOAH\source\repos\DevilDaggersWebsite\DevilDaggersWebsite\wwwroot\spawnsets\Settings/Settings.json")))
+			//using (JsonTextWriter jtw = new JsonTextWriter(sw) { Formatting = Formatting.Indented, IndentChar = '\t', Indentation = 1 })
+			//	serializer.Serialize(jtw, dict);
+
 			SearchAuthor = searchAuthor;
 			SearchName = searchName;
 			SortOrder = sortOrder;
