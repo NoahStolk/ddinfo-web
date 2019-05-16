@@ -5,7 +5,7 @@ using System;
 namespace DevilDaggersWebsite.Models.Spawnset
 {
 	[JsonObject(MemberSerialization.OptIn)]
-	public class SpawnsetSettings
+	public class SpawnsetFileSettings
 	{
 		[JsonProperty]
 		public int MaxWaves { get; set; } = RazorUtils.DEFAULT_MAX_WAVES;
@@ -14,14 +14,14 @@ namespace DevilDaggersWebsite.Models.Spawnset
 		[JsonProperty]
 		public DateTime LastUpdated { get; set; }
 
-		public SpawnsetSettings(int maxWaves, string description, DateTime lastUpdated)
+		public SpawnsetFileSettings(int maxWaves, string description, DateTime lastUpdated)
 		{
 			MaxWaves = maxWaves;
 			Description = description;
 			LastUpdated = lastUpdated;
 		}
 
-		public SpawnsetSettings()
+		public SpawnsetFileSettings()
 		{
 		}
 	}

@@ -13,7 +13,7 @@ namespace DevilDaggersWebsite.Models.Spawnset
 
 		public string FileName => System.IO.Path.GetFileName(Path);
 
-		public SpawnsetSettings Settings { get; set; }
+		public SpawnsetFileSettings Settings { get; set; }
 
 		public SpawnsetData SpawnData
 		{
@@ -41,9 +41,9 @@ namespace DevilDaggersWebsite.Models.Spawnset
 			string settingsPath = System.IO.Path.Combine(commonObjects.Env.WebRootPath, "spawnsets", "Settings", $"{Name}.json");
 			if (File.Exists(settingsPath))
 				using (StreamReader sr = new StreamReader(System.IO.Path.Combine(commonObjects.Env.WebRootPath, "spawnsets", "Settings", $"{Name}.json")))
-					Settings = JsonConvert.DeserializeObject<SpawnsetSettings>(sr.ReadToEnd());
+					Settings = JsonConvert.DeserializeObject<SpawnsetFileSettings>(sr.ReadToEnd());
 			else
-				Settings = new SpawnsetSettings();
+				Settings = new SpawnsetFileSettings();
 		}
 
 		public static string GetName(string fileNameOrPath)
