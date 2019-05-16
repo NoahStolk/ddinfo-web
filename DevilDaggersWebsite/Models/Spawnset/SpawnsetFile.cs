@@ -27,13 +27,23 @@ namespace DevilDaggersWebsite.Models.Spawnset
 		}
 
 		[JsonProperty]
-		public string Name => FileName.Substring(0, FileName.LastIndexOf('_'));
+		public string Name => GetName(FileName);
 		[JsonProperty]
-		public string Author => FileName.Substring(FileName.LastIndexOf('_') + 1);
+		public string Author => GetAuthor(FileName);
 
 		public SpawnsetFile(string path)
 		{
 			Path = path;
+		}
+
+		public static string GetName(string fileNameOrPath)
+		{
+			return fileNameOrPath.Substring(0, fileNameOrPath.LastIndexOf('_'));
+		}
+
+		public static string GetAuthor(string fileNameOrPath)
+		{
+			return fileNameOrPath.Substring(fileNameOrPath.LastIndexOf('_') + 1);
 		}
 	}
 }

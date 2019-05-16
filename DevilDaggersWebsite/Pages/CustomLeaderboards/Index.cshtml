@@ -1,5 +1,6 @@
 ﻿@page
 @using DevilDaggersWebsite.Models.Database.CustomLeaderboards
+@using DevilDaggersWebsite.Models.Spawnset
 @using System.Linq
 @model DevilDaggersWebsite.Pages.CustomLeaderboards.IndexModel
 @{
@@ -17,14 +18,14 @@
 	
 	<table>
 		<thead>
-			<tr class="leaderboards-sort">
-				<th width="500">
+			<tr>
+				<th width="300">
 					Spawnset name
 				</th>
-				<th width="220">
+				<th width="300">
 					Spawnset author
 				</th>
-				<th width="160">
+				<th width="100">
 					Players
 				</th>
 			</tr>
@@ -33,14 +34,17 @@
 			@{
 				foreach (CustomLeaderboard lb in Model.Leaderboards)
 				{
+					string fileName = @lb.SpawnsetFileName;
+					string name = @SpawnsetFile.GetName(fileName);
+					string author = @SpawnsetFile.GetAuthor(fileName);
 					<tr>
-						<td>
-							<a asp-page="/CustomLeaderboards/Leaderboard" asp-route-spawnset="@lb.SpawnsetFileName">@lb.SpawnsetFileName</a>
+						<td class="text-left">
+							<a asp-page="/CustomLeaderboards/Leaderboard" asp-route-spawnset="@fileName">@name</a>
 						</td>
-						<td>
-							
+						<td class="text-left">
+							<a asp-page="/Spawnsets" asp-route-SearchAuthor="@author">@author</a>
 						</td>
-						<td>
+						<td class="text-right">
 							@Model.Entries.Where(e => e.CustomLeaderboardID == lb.ID).Count()
 						</td>
 					</tr>
