@@ -27,7 +27,7 @@ Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "DevilDaggersUtilities", "De
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "LeaderboardJsonIDFixer", "Tools\LeaderboardJsonIDFixer\LeaderboardJsonIDFixer.csproj", "{50389A94-7721-44AE-9708-BC1E024591F5}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "SpawnsetHashes", "SpawnsetHashes\SpawnsetHashes.csproj", "{ECD2B92B-F21E-49A4-900F-797C9243BCAC}"
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "SpawnsetHashes", "Tools\SpawnsetHashes\SpawnsetHashes.csproj", "{ECD2B92B-F21E-49A4-900F-797C9243BCAC}"
 EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
