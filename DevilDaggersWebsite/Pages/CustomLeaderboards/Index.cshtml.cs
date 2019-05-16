@@ -9,6 +9,7 @@ namespace DevilDaggersWebsite.Pages.CustomLeaderboards
 	public class IndexModel : PageModel
 	{
 		public List<CustomLeaderboard> Leaderboards { get; set; }
+		public List<CustomEntry> Entries { get; set; }
 
 		private readonly ApplicationDbContext _context;
 
@@ -20,6 +21,7 @@ namespace DevilDaggersWebsite.Pages.CustomLeaderboards
 		public void OnGet()
 		{
 			Leaderboards = _context.CustomLeaderboards.ToList();
+			Entries = _context.CustomEntries.ToList();
 		}
 	}
 }

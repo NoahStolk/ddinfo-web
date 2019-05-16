@@ -1,5 +1,6 @@
 ﻿@page
 @using DevilDaggersWebsite.Models.Database.CustomLeaderboards
+@using System.Linq
 @model DevilDaggersWebsite.Pages.CustomLeaderboards.IndexModel
 @{
 	ViewData["Title"] = "Custom Leaderboards";
@@ -13,11 +14,38 @@
 	<p>
 		Custom leaderboards are still in development.
 	</p>
-
-	@{
-		foreach (CustomLeaderboard lb in Model.Leaderboards)
-		{
-			<div><a asp-page="/CustomLeaderboards/Leaderboard" asp-route-spawnset="@lb.SpawnsetFileName">@lb.SpawnsetFileName</a></div>
-		}
-	}
+	
+	<table>
+		<thead>
+			<tr class="leaderboards-sort">
+				<th width="500">
+					Spawnset name
+				</th>
+				<th width="220">
+					Spawnset author
+				</th>
+				<th width="160">
+					Players
+				</th>
+			</tr>
+		</thead>
+		<tbody>
+			@{
+				foreach (CustomLeaderboard lb in Model.Leaderboards)
+				{
+					<tr>
+						<td>
+							<a asp-page="/CustomLeaderboards/Leaderboard" asp-route-spawnset="@lb.SpawnsetFileName">@lb.SpawnsetFileName</a>
+						</td>
+						<td>
+							
+						</td>
+						<td>
+							@Model.Entries.Where(e => e.CustomLeaderboardID == lb.ID).Count()
+						</td>
+					</tr>
+				}
+			}
+		</tbody>
+	</table>
 </main>
