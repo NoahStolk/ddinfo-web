@@ -1,5 +1,4 @@
 ﻿using CoreBase;
-using CoreBase.Code;
 using CoreBase.Services;
 using DevilDaggersWebsite.Models.Spawnset;
 using DevilDaggersWebsite.Pages.API;
@@ -124,20 +123,6 @@ namespace DevilDaggersWebsite.Pages
 
 			PageIndex = MathUtils.Clamp(PageIndex, 1, (int)Math.Ceiling(TotalResults / (double)PageSize));
 			PaginatedSpawnsetFiles = PaginatedList<SpawnsetFile>.Create(spawnsetFiles, PageIndex, PageSize);
-		}
-	}
-
-	public class SpawnsetNavigationSettings
-	{
-		public SpawnsetsModel Model { get; set; }
-		public int MaxAround { get; set; }
-		public ScreenWidthVisibility Visibility { get; set; }
-
-		public SpawnsetNavigationSettings(SpawnsetsModel model, int maxAround, ScreenWidthVisibility visibility)
-		{
-			Model = model;
-			MaxAround = maxAround;
-			Visibility = visibility;
 		}
 	}
 }
