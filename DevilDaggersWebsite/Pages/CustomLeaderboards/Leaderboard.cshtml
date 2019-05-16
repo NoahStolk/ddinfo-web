@@ -1,4 +1,5 @@
 ﻿@page
+@using DevilDaggersCore.Game
 @model DevilDaggersWebsite.Pages.CustomLeaderboards.LeaderboardModel
 @{
 	ViewData["Title"] = $"Leaderboard for {Model.Leaderboard.SpawnsetFileName}";
@@ -19,6 +20,37 @@
 		<p>
 			You can sort the leaderboard by clicking the headers.
 		</p>
+
+		<div style="flex-direction: column; width: 200px; margin: auto;">
+			@{
+				@foreach (Dagger dagger in Game.GetEntities<Dagger>())
+				{
+					float seconds = 0;
+					switch (dagger.Name)
+					{
+						case "Bronze":
+							seconds = Model.Leaderboard.Bronze;
+							break;
+						case "Silver":
+							seconds = Model.Leaderboard.Silver;
+							break;
+						case "Golden":
+							seconds = Model.Leaderboard.Golden;
+							break;
+						case "Devil":
+							seconds = Model.Leaderboard.Devil;
+							break;
+						default:
+							continue;
+					}
+
+					<div class="flex-container" style="padding-bottom: 4px;">
+						<div><img src="~/Images/Daggers/@(dagger.Name)Small.png" /></div>
+						<div class="@dagger.Name.ToLower() text-right" style="width: 100%;">@seconds.ToString("0.0000")</div>
+					</div>
+				}
+			}
+		</div>
 	</div>
 	@await Html.PartialAsync("Partials/_LeaderboardCustomPartial")
 </main>

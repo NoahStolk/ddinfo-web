@@ -28,6 +28,18 @@
 				<th width="100">
 					Players
 				</th>
+				<th width="100">
+					Bronze
+				</th>
+				<th width="100">
+					Silver
+				</th>
+				<th width="100">
+					Golden
+				</th>
+				<th width="100">
+					Devil
+				</th>
 			</tr>
 		</thead>
 		<tbody>
@@ -46,6 +58,18 @@
 						</td>
 						<td class="text-right">
 							@Model.Entries.Where(e => e.CustomLeaderboardID == lb.ID).Count()
+						</td>
+						<td class="text-right bronze">
+							@lb.Bronze.ToString("0.0000")
+						</td>
+						<td class="text-right silver">
+							@lb.Silver.ToString("0.0000")
+						</td>
+						<td class="text-right golden">
+							@lb.Golden.ToString("0.0000")
+						</td>
+						<td class="text-right devil">
+							@lb.Devil.ToString("0.0000")
 						</td>
 					</tr>
 				}
