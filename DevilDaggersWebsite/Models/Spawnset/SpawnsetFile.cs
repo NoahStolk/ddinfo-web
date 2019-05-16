@@ -14,7 +14,7 @@ namespace DevilDaggersWebsite.Models.Spawnset
 
 		public string FileName => System.IO.Path.GetFileName(Path);
 
-		public SpawnsetFileSettings Settings;
+		public SpawnsetFileSettings settings;
 
 		[JsonProperty]
 		public string Name => GetName(FileName);
@@ -29,8 +29,8 @@ namespace DevilDaggersWebsite.Models.Spawnset
 			{
 				Dictionary<string, SpawnsetFileSettings> dict = JsonConvert.DeserializeObject<Dictionary<string, SpawnsetFileSettings>>(sr.ReadToEnd());
 
-				if (!dict.TryGetValue(FileName, out Settings))
-					Settings = new SpawnsetFileSettings();
+				if (!dict.TryGetValue(FileName, out settings))
+					settings = new SpawnsetFileSettings();
 			}
 		}
 

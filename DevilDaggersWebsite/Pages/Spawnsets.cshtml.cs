@@ -97,11 +97,11 @@ namespace DevilDaggersWebsite.Pages
 					spawnsetFiles = spawnsetFiles.OrderByDescending(s => s.Author).ThenBy(s => s.Name).ToList();
 					break;
 				case "LastUpdated_asc":
-					spawnsetFiles = spawnsetFiles.OrderBy(s => s.Settings.LastUpdated).ThenByDescending(s => s.Name).ToList();
+					spawnsetFiles = spawnsetFiles.OrderBy(s => s.settings.LastUpdated).ThenByDescending(s => s.Name).ToList();
 					break;
 				default:
 				case "LastUpdated":
-					spawnsetFiles = spawnsetFiles.OrderByDescending(s => s.Settings.LastUpdated).ThenBy(s => s.Name).ToList();
+					spawnsetFiles = spawnsetFiles.OrderByDescending(s => s.settings.LastUpdated).ThenBy(s => s.Name).ToList();
 					break;
 				case "NonLoopLength_asc":
 					spawnsetFiles = spawnsetFiles.OrderBy(s => s.GetSpawnsetData().NonLoopLength).ThenBy(s => s.GetSpawnsetData().NonLoopSpawns).ToList();
