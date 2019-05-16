@@ -131,7 +131,7 @@
 
 						<tr>
 							<td><a asp-page="Spawnset" asp-route-spawnset="@($"{spawnsetFile.Name}_{spawnsetFile.Author}")">@spawnsetFile.Name</a></td>
-							<td>@spawnsetFile.Author</td>
+							<td><a asp-page="/Spawnsets" asp-route-SearchAuthor="@spawnsetFile.Author">@spawnsetFile.Author</a></td>
 							<td class="hidden-xs">
 								@(spawnsetFile.Settings.LastUpdated.ToString("dd MMM yyyy"))
 							</td>
