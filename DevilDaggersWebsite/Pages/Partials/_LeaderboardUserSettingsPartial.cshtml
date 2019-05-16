@@ -1,7 +1,7 @@
 ﻿@using DevilDaggersCore.Game
-@using DevilDaggersWebsite.Utils
-@using DevilDaggersWebsite.Models.Leaderboard
+@using DevilDaggersCore.Leaderboard
 @using DevilDaggersWebsite.Models.User
+@using DevilDaggersWebsite.Utils
 @inject CoreBase.Services.ICommonObjects CommonObjects
 
 <div class="leaderboard-container flex-container flex-center">
@@ -20,14 +20,12 @@
 	</div>
 	<div class="leaderboard-body">
 		@{
-			IEnumerable<int> bans = UserUtils.GetBans(CommonObjects);
 			IEnumerable<Donator> donators = UserUtils.GetDonators(CommonObjects);
 			IEnumerable<Flag> flags = UserUtils.GetFlags(CommonObjects);
 			IEnumerable<UserTitleCollection> titleCollections = UserUtils.GetTitleCollections(CommonObjects);
 			IEnumerable<PlayerSetting> settings = UserUtils.GetPlayerSettings(CommonObjects);
 			foreach (Entry entry in Model.Leaderboard.Entries)
 			{
-				bool ban = bans.Contains(entry.ID);
 				Donator donator = donators.Where(d => d.ID == entry.ID).FirstOrDefault();
 				Flag flag = flags.Where(f => f.ID == entry.ID).FirstOrDefault();
 				UserTitleCollection titles = titleCollections.Where(t => t.ID == entry.ID).FirstOrDefault();
@@ -40,12 +38,11 @@
 				Dagger dagger = Game.GetDaggerFromTime(entry.Time);
 				Death death = Game.GetDeathFromDeathType(entry.DeathType, Game.GetGameVersionFromDate(Model.Leaderboard.DateTime));
 
-				string flagCode = flag == null || ban ? "00" : flag.CountryCode;
-				string daggerColor = ban ? "ban" : dagger.Name.ToLower();
-				string deathStyle = ban ? "" : $"color: #{death.ColorCode};";
-				string banString = ban ? "ban" : string.Empty;
+				string flagCode = flag == null ? "00" : flag.CountryCode;
+				string daggerColor = dagger.Name.ToLower();
+				string deathStyle = $"color: #{death.ColorCode};";
 
-				<div class="sort @banString" @entry.ToHTMLData(flagCode, playerSetting)>
+				<div class="sort" @entry.ToHTMLData(flagCode, playerSetting)>
 					<div class="leaderboard-row flex-container" id="@(entry.Rank)-row">
 						<div class="text-right"><span data-toggle="tooltip" title="@entry.ID" class="leaderboard-tooltip">@entry.Rank</span></div>
 						<div>

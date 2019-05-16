@@ -1,5 +1,5 @@
 ﻿using DevilDaggersCore.Game;
-using DevilDaggersWebsite.Models.Leaderboard;
+using DevilDaggersCore.Leaderboard;
 using Microsoft.AspNetCore.Html;
 using System.Collections.Generic;
 

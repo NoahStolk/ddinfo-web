@@ -1,3 +1,0 @@
-{
-	"Description": "30 waves of the endgame loop but made so that no Ghostpedes are able to spawn, occurs at the same speed as normal up to wave 25.<br>Forwards forecasting was used to estimate the enemy spawn times between waves 25 and 30 <i>(waves 1-30 occur over 726s; waves 20-30 span 137s, 2.76x faster than waves 1-10).</i><br>Unfortunately, this mod properly starts <u>very</u> late at 186s.<br>This is due to needing to acquire 300 homing daggers by the start of the Endgame loop which seems to be more or less the maximum equivalent an exceptionally good run can provide (allowing for, at max, around 1073s in a V3 run)."
-}

@@ -13,7 +13,7 @@ namespace DescriptionHelper
 
 		private void SaveButton_Click(object sender, RoutedEventArgs e)
 		{
-			string description = $"{{\n\t\"Description\": \"{HTMLUtils.ConvertToHTML(Description.Text)}\"\n}}";
+			string description = $"{{\n\t\"Description\": \"{ConvertToHTML(Description.Text)}\"\n}}";
 
 			SaveFileDialog dialog = new SaveFileDialog
 			{
@@ -26,6 +26,11 @@ namespace DescriptionHelper
 			{
 				FileUtils.CreateText(dialog.FileName, description);
 			}
+		}
+
+		private static string ConvertToHTML(string text)
+		{
+			return text.Replace("\r\n", "<br />");
 		}
 	}
 }

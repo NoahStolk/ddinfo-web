@@ -1,6 +1,6 @@
 ﻿using DevilDaggersCore.Game;
-using DevilDaggersWebsite.Models.Leaderboard;
-using DevilDaggersWebsite.Utils;
+using DevilDaggersCore.Leaderboard;
+using DevilDaggersWebsite.Utils.Web;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.AspNetCore.Mvc.RazorPages;
 using System.Collections.Generic;
@@ -34,7 +34,7 @@ namespace DevilDaggersWebsite.Pages.Leaderboard
 				int off = offset;
 				while (entry == null)
 				{
-					Models.Leaderboard.Leaderboard lb = await LeaderboardUtils.LoadLeaderboard(off);
+					DevilDaggersCore.Leaderboard.Leaderboard lb = await Hasmodai.GetScores(off);
 					players = lb.Players;
 
 					for (int i = 0; i < 99; i++)
@@ -47,7 +47,7 @@ namespace DevilDaggersWebsite.Pages.Leaderboard
 					}
 					off += 100;
 				}
-				Done:
+			Done:
 
 				daggerStats.Add(Game.GetDaggerFromTime(entry.Time), entry.Rank + 1);
 			}
@@ -62,7 +62,7 @@ namespace DevilDaggersWebsite.Pages.Leaderboard
 
 			foreach (int page in pages)
 			{
-				Models.Leaderboard.Leaderboard lb = await LeaderboardUtils.LoadLeaderboard(page * 100 + 1);
+				DevilDaggersCore.Leaderboard.Leaderboard lb = await Hasmodai.GetScores(page * 100 + 1);
 
 				foreach (Entry entry in lb.Entries)
 				{

@@ -1,0 +1,56 @@
+﻿@page
+@model DevilDaggersWebsite.Pages.Leaderboard.UserProgressionModel
+@{
+	ViewData["Title"] = "Top 100 User Progression";
+
+	int[] widths = new int[2] { 160, 160 };
+}
+
+<header>
+	<h1>@ViewData["Title"]</h1>
+</header>
+
+<main role="main" class="text-center">
+	<div>
+		@using (Html.BeginForm(FormMethod.Get))
+		{
+			<fieldset>
+				<div class="flex-container flex-center flex-column">
+					<div class="flex-container flex-center">
+						<div class="input-label text-left" style="width: @(widths[0])px;">User ID:</div>
+						<div style="width: @(widths[1])px;">@Html.TextBoxFor(m => m.UserID, new { @class = "input" })</div>
+					</div>
+				</div>
+				<div class="flex-container flex-center flex-column">
+					<div class="flex-container flex-center">
+						<input class="btn" type="submit" value="Show" />
+					</div>
+				</div>
+			</fieldset>
+		}
+	</div>
+	@{
+		if (Model.IsValid)
+		{
+			<p>
+				This graph shows the top 100 progression for @Model.Username. It is based on the <a asp-page="/Leaderboard/History">Leaderboard History</a>, so it might be incomplete.
+			</p>
+
+			<h2>@Model.Username</h2>
+			<div id="user-progression-chart" style="height: 65vh;"></div>
+		}
+	}
+</main>
+
+@section Scripts {
+	<script defer src='~/plugins/jqPlot/jquery.jqplot.min.js' asp-append-version='true'></script>
+	<script defer src='~/plugins/jqPlot/jqplot.dateAxisRenderer.js' asp-append-version='true'></script>
+	<script defer src='~/plugins/jqPlot/jqplot.highlighter.js' asp-append-version='true'></script>
+	<script defer src='~/plugins/jqPlot/jqplot.canvasOverlay.js' asp-append-version='true'></script>
+	<script defer src='~/scripts/leaderboard-user-progression.js' asp-append-version='true'></script>
+}
+
+@section Styles {
+	<link rel='stylesheet' href='~/lib/jqPlot/jquery.jqplot.min.css' />
+	<link rel='stylesheet' href='~/styles/jqplot.css' />
+}

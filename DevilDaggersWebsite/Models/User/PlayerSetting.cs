@@ -9,9 +9,9 @@
 		public bool? RightHanded { get; set; }
 		public bool? FlashEnabled { get; set; }
 
-		public float? EDPI { get { return DPI * InGameSens; } }
-		public string RightHandedString { get { return !RightHanded.HasValue ? string.Empty : RightHanded.Value ? "Right" : "Left"; } }
-		public string FlashEnabledString { get { return !FlashEnabled.HasValue ? string.Empty : FlashEnabled.Value ? "On" : "Off"; } }
+		public float? EDPI => DPI * InGameSens;
+		public string RightHandedString => !RightHanded.HasValue ? string.Empty : RightHanded.Value ? "Right" : "Left";
+		public string FlashEnabledString => !FlashEnabled.HasValue ? string.Empty : FlashEnabled.Value ? "On" : "Off";
 
 		public PlayerSetting(int id, int? dpi, float? inGameSens, int? fov, bool? rightHanded, bool? flashEnabled)
 		{

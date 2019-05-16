@@ -1,4 +1,5 @@
 using CoreBase;
+using DevilDaggersWebsite.Models.Database;
 using Microsoft.AspNetCore.Builder;
 using Microsoft.AspNetCore.Hosting;
 using Microsoft.AspNetCore.Rewrite;
@@ -20,6 +21,8 @@ namespace DevilDaggersWebsite
 		public void ConfigureServices(IServiceCollection services)
 		{
 			services.AddMvc();
+
+			ConfigureDbServices<ApplicationDbContext>(services);
 
 			AddCommonCoreBaseServices(services);
 		}

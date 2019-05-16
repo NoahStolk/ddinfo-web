@@ -1,6 +1,6 @@
 ﻿using CoreBase.Services;
 using DevilDaggersCore.Game;
-using DevilDaggersWebsite.Models.Leaderboard;
+using DevilDaggersCore.Leaderboard;
 using DevilDaggersWebsite.Pages.API;
 using Microsoft.AspNetCore.Mvc.RazorPages;
 using System;

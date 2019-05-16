@@ -1,0 +1,52 @@
+﻿@page
+@model DevilDaggersWebsite.Pages.Admin.BanInfoModel
+@using DevilDaggersWebsite.Models.User
+@inject CoreBase.Services.ICommonObjects CommonObjects
+@{
+	ViewData["Title"] = "Admin - Ban Info";
+}
+
+<header>
+	<h1>@ViewData["Title"]</h1>
+</header>
+
+<main role="main" class="text-center">
+	<div class="ban-container flex-container flex-center text-left">
+		<div class="flex-container">
+			<div class="sorter" sort="description">Description</div>
+			<div class="sorter" sort="banned-account">Banned account</div>
+			<div class="sorter" sort="responsible-account">Responsible account</div>
+		</div>
+		<div class="ban-info-body">
+			@{
+				for (int i = 0; i < Model.BanInfo.Count; i++)
+				{
+					Tuple<Ban, string, string> tuple = Model.BanInfo[i];
+
+					<div class="sort" description="@tuple.Item1.Description" banned-account="@tuple.Item2" responsible-account="@tuple.Item3">
+						<div class="ban-row flex-container" id="@i-row">
+							<div>@tuple.Item1.Description</div>
+							<div>@tuple.Item2 (<a asp-page="/Leaderboard/IDSearch" asp-route-id="@tuple.Item1.ID" target="_blank">@tuple.Item1.ID</a>)</div>
+							@if (string.IsNullOrEmpty(tuple.Item3))
+							{
+								<div></div>
+							}
+							else
+							{
+								<div>@tuple.Item3 (<a asp-page="/Leaderboard/IDSearch" asp-route-id="@tuple.Item1.IDResponsible" target="_blank">@tuple.Item1.IDResponsible</a>)</div>
+							}
+						</div>
+					</div>
+				}
+			}
+		</div>
+	</div>
+</main>
+
+@section Scripts {
+	<script defer src='~/scripts/admin-ban-info.js' asp-append-version='true'></script>
+}
+
+@section Styles {
+	<link rel='stylesheet' href='~/styles/admin-ban-info.css' />
+}

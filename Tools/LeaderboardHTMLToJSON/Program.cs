@@ -15,9 +15,9 @@ namespace LeaderboardHTMLToJSON
 			FileUtils.CreateText($"{dateString.Substring(0, 12)}.json", JsonConvert.SerializeObject(GetLeaderboardFromHTML(dateString)));
 		}
 
-		public static Leaderboard GetLeaderboardFromHTML(string dateString)
+		public static LeaderboardSimplified GetLeaderboardFromHTML(string dateString)
 		{
-			Leaderboard lb = new Leaderboard
+			LeaderboardSimplified lb = new LeaderboardSimplified
 			{
 				DateTime = LeaderboardHistoryUtils.HistoryJsonFileNameToDateTime(dateString),
 				// TODO
@@ -37,7 +37,7 @@ namespace LeaderboardHTMLToJSON
 				lines[i] = lines[i].TrimStart('\t');
 				if (lines[i].StartsWith("<div class=\"sort\""))
 				{
-					lb.Entries.Add(new LeaderboardEntry
+					lb.Entries.Add(new LeaderboardEntrySimplified
 					{
 						Rank = int.Parse(GetValue(lines[i], "rank")),
 						Username = GetValue(lines[i], "username"),

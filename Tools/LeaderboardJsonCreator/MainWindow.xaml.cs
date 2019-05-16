@@ -12,7 +12,7 @@ namespace LeaderboardJsonCreator
 {
 	public partial class MainWindow : Window
 	{
-		public Leaderboard leaderboard = new Leaderboard();
+		public LeaderboardSimplified leaderboard = new LeaderboardSimplified();
 
 		public MainWindow()
 		{
@@ -21,7 +21,7 @@ namespace LeaderboardJsonCreator
 
 		private void AddEntry_Click(object sender, RoutedEventArgs e)
 		{
-			LeaderboardEntry entry = new LeaderboardEntry
+			LeaderboardEntrySimplified entry = new LeaderboardEntrySimplified
 			{
 				DeathType = -1
 			};
@@ -56,7 +56,7 @@ namespace LeaderboardJsonCreator
 			foreach (string line in entries)
 			{
 				i++;
-				LeaderboardEntry entry = new LeaderboardEntry
+				LeaderboardEntrySimplified entry = new LeaderboardEntrySimplified
 				{
 					Rank = i,
 					DeathType = -1

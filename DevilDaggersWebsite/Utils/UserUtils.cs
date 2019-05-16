@@ -8,14 +8,20 @@ namespace DevilDaggersWebsite.Utils
 {
 	public static class UserUtils
 	{
-		public static IEnumerable<int> GetBans(ICommonObjects commonObjects)
+		public static IEnumerable<Ban> GetBans(ICommonObjects commonObjects)
 		{
-			foreach (string ban in FileUtils.GetContents(Path.Combine(commonObjects.Env.WebRootPath, "user", "bans")).Split('\n'))
-				if (!string.IsNullOrWhiteSpace(ban))
-					if (ban.Contains(' '))
-						yield return int.Parse(ban.Substring(0, ban.IndexOf(' ')));
-					else
-						yield return int.Parse(ban.TrimEnd('\r', '\n'));
+			foreach (string b in FileUtils.GetContents(Path.Combine(commonObjects.Env.WebRootPath, "user", "bans")).Split('\n'))
+			{
+				if (string.IsNullOrWhiteSpace(b))
+					continue;
+
+				string ban = b.TrimEnd('\r', '\n');
+				string[] props = GetPropsNoSpaces(ban);
+				if (props.Length > 2 && int.TryParse(props[2], out int idResponsible))
+					yield return new Ban(int.Parse(props[0]), props[1], idResponsible);
+				else
+					yield return new Ban(int.Parse(props[0]), props[1], null);
+			}
 		}
 
 		public static IEnumerable<Donator> GetDonators(ICommonObjects commonObjects)
@@ -100,11 +106,7 @@ namespace DevilDaggersWebsite.Utils
 		{
 			{ "Admin", "eye2" },
 			{ "Discord mod", "eye3" },
-			{ "Donator", "gem" },
-			{ "Settings", "crosshair" },
-			{ "ddstats", "dagger" },
-			{ "Dingle", "skull" },
-			{ "Ringle", "skull" },
+			{ "Donator", "gem" }
 		};
 
 		public static Dictionary<string, string> CountryNames { get; set; } = new Dictionary<string, string>

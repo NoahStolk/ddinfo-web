@@ -6,6 +6,7 @@
 	int[] widths = new int[4] { 160, 128, 192, 128 };
 }
 @using DevilDaggersWebsite.Utils
+@using DevilDaggersCore.Game
 
 <header>
 	<h1 class="dont-break-out">@Model.SpawnsetFile.Name by @Model.SpawnsetFile.Author</h1>
@@ -17,12 +18,12 @@
 	</div>
 
 	@{
-		if (!string.IsNullOrEmpty(Model.Description))
+		if (!string.IsNullOrEmpty(Model.SpawnsetFile.settings.Description))
 		{
 			<div class="note">
 				<h3>A note from @Model.SpawnsetFile.Author</h3>
 
-				<div>@RazorUtils.GetLayout(Model.Description)</div>
+				<div>@RazorUtils.GetLayout(Model.SpawnsetFile.settings.Description, Game.GameVersions[Game.DEFAULT_GAME_VERSION])</div>
 			</div>
 		}
 	}

@@ -1,0 +1,79 @@
+﻿@page
+@using DevilDaggersWebsite.Models.Database.CustomLeaderboards
+@using DevilDaggersWebsite.Models.Spawnset
+@using System.Linq
+@model DevilDaggersWebsite.Pages.CustomLeaderboards.IndexModel
+@{
+	ViewData["Title"] = "Custom Leaderboards";
+}
+
+<header>
+	<h1>@ViewData["Title"]</h1>
+</header>
+
+<main role="main" class="text-center">
+	<p>
+		Custom leaderboards are still in development.
+	</p>
+	
+	<table>
+		<thead>
+			<tr>
+				<th width="300">
+					Spawnset name
+				</th>
+				<th width="300">
+					Spawnset author
+				</th>
+				<th width="100">
+					Players
+				</th>
+				<th width="100">
+					Bronze
+				</th>
+				<th width="100">
+					Silver
+				</th>
+				<th width="100">
+					Golden
+				</th>
+				<th width="100">
+					Devil
+				</th>
+			</tr>
+		</thead>
+		<tbody>
+			@{
+				foreach (CustomLeaderboard lb in Model.Leaderboards)
+				{
+					string fileName = lb.SpawnsetFileName;
+					string name = SpawnsetFile.GetName(fileName);
+					string author = SpawnsetFile.GetAuthor(fileName);
+					<tr>
+						<td class="text-left">
+							<a asp-page="/CustomLeaderboards/Leaderboard" asp-route-spawnset="@fileName">@name</a>
+						</td>
+						<td class="text-left">
+							<a asp-page="/Spawnsets" asp-route-SearchAuthor="@author">@author</a>
+						</td>
+						<td class="text-right">
+							@Model.Entries.Where(e => e.CustomLeaderboardID == lb.ID).Count()
+						</td>
+						<td class="text-right bronze">
+							@lb.Bronze.ToString("0.0000")
+						</td>
+						<td class="text-right silver">
+							@lb.Silver.ToString("0.0000")
+						</td>
+						<td class="text-right golden">
+							@lb.Golden.ToString("0.0000")
+						</td>
+						<td class="text-right devil">
+							@lb.Devil.ToString("0.0000")
+						</td>
+					</tr>
+				}
+			}
+		</tbody>
+	</table>
+</main>

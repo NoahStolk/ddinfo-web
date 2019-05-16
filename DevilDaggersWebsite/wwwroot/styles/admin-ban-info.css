@@ -1,0 +1,12 @@
+﻿.ban-container {
+	flex-direction: column;
+}
+
+.sorter,
+.ban-row > div {
+	width: 33%;
+}
+
+	.sorter:hover {
+		cursor: pointer;
+	}

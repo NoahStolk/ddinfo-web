@@ -6,7 +6,7 @@ using System.Net.Mime;
 
 namespace DevilDaggersWebsite.Pages.API
 {
-	[ApiFunction(Description = "Returns the spawnset corresponding to the given file parameter.", ReturnType = MediaTypeNames.Application.Octet, IsDeprecated = true, DeprecationMessage = "Use the GetSpawnset function instead.")]
+	[ApiFunction(Description = "Returns the spawnset corresponding to the given file parameter. Returns to this page if the spawnset could not be found.", ReturnType = MediaTypeNames.Application.Octet, IsDeprecated = true, DeprecationMessage = "Use the GetSpawnset function instead.")]
 	public class DownloadSpawnsetModel : ApiPageModel
 	{
 		public ActionResult OnGet(string file)

@@ -3,9 +3,11 @@
 	<TargetFramework>netcoreapp2.1</TargetFramework>
   </PropertyGroup>
   <ItemGroup>
-	<PackageReference Include="BuildBundlerMinifier" Version="2.8.391" />
+	<PackageReference Include="BuildBundlerMinifier" Version="2.9.406" />
 	<PackageReference Include="Microsoft.AspNetCore.App" />
-	<PackageReference Include="Newtonsoft.Json" Version="11.0.2" />
+	<PackageReference Include="Microsoft.VisualStudio.Web.CodeGeneration.Design" Version="2.1.9" />
+	<PackageReference Include="MySql.Data" Version="8.0.16" />
+	<PackageReference Include="Newtonsoft.Json" Version="12.0.2" />
   </ItemGroup>
   <ItemGroup>
 	<DotNetCliToolReference Include="Microsoft.VisualStudio.Web.CodeGeneration.Tools" Version="2.0.2" />
@@ -20,6 +22,15 @@
       <CopyToOutputDirectory>Always</CopyToOutputDirectory>
     </Content>
     <Content Update="Pages\API\GetSpawnset.cshtml">
+      <Pack>$(IncludeRazorContentInPack)</Pack>
+    </Content>
+    <Content Update="Pages\API\GetUserProgression.cshtml">
+      <Pack>$(IncludeRazorContentInPack)</Pack>
+    </Content>
+    <Content Update="Pages\Leaderboard\UserProgression.cshtml">
+      <Pack>$(IncludeRazorContentInPack)</Pack>
+    </Content>
+    <Content Update="Pages\Partials\_LeaderboardCustomPartial.cshtml">
       <Pack>$(IncludeRazorContentInPack)</Pack>
     </Content>
     <Content Update="Pages\Partials\_LeaderboardUserSettingsPartial.cshtml">

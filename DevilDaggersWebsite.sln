@@ -23,9 +23,11 @@ Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "Core", "Core", "{496E881B-2
 EndProject
 Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "DevilDaggersCore", "..\DevilDaggersCore\DevilDaggersCore\DevilDaggersCore.csproj", "{F264DAF3-C6F2-49E1-9219-1EC5A9E6B6D2}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "DevilDaggersUtilities", "DevilDaggersUtilities\DevilDaggersUtilities.csproj", "{30E1323E-A096-450C-8DD3-665982D399E0}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "DevilDaggersUtilities", "DevilDaggersUtilities\DevilDaggersUtilities.csproj", "{30E1323E-A096-450C-8DD3-665982D399E0}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "LeaderboardJsonIDFixer", "LeaderboardJsonIDFixer\LeaderboardJsonIDFixer.csproj", "{50389A94-7721-44AE-9708-BC1E024591F5}"
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "LeaderboardJsonIDFixer", "Tools\LeaderboardJsonIDFixer\LeaderboardJsonIDFixer.csproj", "{50389A94-7721-44AE-9708-BC1E024591F5}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "SpawnsetHashes", "Tools\SpawnsetHashes\SpawnsetHashes.csproj", "{ECD2B92B-F21E-49A4-900F-797C9243BCAC}"
 EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
@@ -73,6 +75,10 @@ Global
 		{50389A94-7721-44AE-9708-BC1E024591F5}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{50389A94-7721-44AE-9708-BC1E024591F5}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{50389A94-7721-44AE-9708-BC1E024591F5}.Release|Any CPU.Build.0 = Release|Any CPU
+		{ECD2B92B-F21E-49A4-900F-797C9243BCAC}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{ECD2B92B-F21E-49A4-900F-797C9243BCAC}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{ECD2B92B-F21E-49A4-900F-797C9243BCAC}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{ECD2B92B-F21E-49A4-900F-797C9243BCAC}.Release|Any CPU.Build.0 = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE
@@ -85,6 +91,7 @@ Global
 		{7FF030A0-D588-4BCD-A01B-7CF847BD7DE4} = {5632F4FF-82A2-4DDD-B7D9-0F83D53E362C}
 		{E71B2949-6119-44A2-90B9-FE80B16427C8} = {5632F4FF-82A2-4DDD-B7D9-0F83D53E362C}
 		{50389A94-7721-44AE-9708-BC1E024591F5} = {5632F4FF-82A2-4DDD-B7D9-0F83D53E362C}
+		{ECD2B92B-F21E-49A4-900F-797C9243BCAC} = {5632F4FF-82A2-4DDD-B7D9-0F83D53E362C}
 	EndGlobalSection
 	GlobalSection(ExtensibilityGlobals) = postSolution
 		SolutionGuid = {E27EC676-81BF-4099-BFC9-20E860CE83A5}
