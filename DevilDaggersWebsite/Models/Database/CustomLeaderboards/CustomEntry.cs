@@ -30,7 +30,6 @@ namespace DevilDaggersWebsite.Models.Database.CustomLeaderboards
 		public CustomLeaderboard CustomLeaderboard { get; set; }
 
 		public double Accuracy => ShotsFired == 0 ? 0 : ShotsHit / (double)ShotsFired;
-		public int Rank => 1; //TODO
 
 		public CustomEntry(int playerID, string username, float time, int gems, int kills, int deathType, int shotsHit, int shotsFired, int enemiesAlive, int homing, float levelUpTime2, float levelUpTime3, float levelUpTime4, DateTime submitDate)
 		{
@@ -54,10 +53,10 @@ namespace DevilDaggersWebsite.Models.Database.CustomLeaderboards
 		{
 		}
 
-		public HtmlString ToHTMLData(string flagCode)
+		public HtmlString ToHTMLData(int rank, string flagCode)
 		{
 			return new HtmlString($@"
-				rank='{Rank}'
+				rank='{rank}'
 				flag='{flagCode}'
 				username='{HttpUtility.HtmlEncode(Username)}'
 				time='{Time}'
@@ -67,10 +66,10 @@ namespace DevilDaggersWebsite.Models.Database.CustomLeaderboards
 				death-type='{Game.GetDeathFromDeathType(DeathType).Name}'
 				enemies-alive='{EnemiesAlive}'
 				homing='{Homing}'
-				level-2='{LevelUpTime2}'
-				level-3='{LevelUpTime3}'
-				level-4='{LevelUpTime4}'
-				submit-date='{SubmitDate}'
+				level-2='{(LevelUpTime2 == 0 ? 99999 : LevelUpTime2)}'
+				level-3='{(LevelUpTime3 == 0 ? 99999 : LevelUpTime3)}'
+				level-4='{(LevelUpTime4 == 0 ? 99999 : LevelUpTime4)}'
+				submit-date='{SubmitDate.ToString("yyyyMMddHHmm")}'
 			");
 		}
 	}

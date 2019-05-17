@@ -2,6 +2,7 @@
 @using DevilDaggersWebsite.Models.User
 @using DevilDaggersWebsite.Models.Database.CustomLeaderboards
 @using DevilDaggersWebsite.Utils
+@using Microsoft.AspNetCore.Html
 @inject CoreBase.Services.ICommonObjects CommonObjects
 
 <div class="leaderboard-container flex-container flex-center">
@@ -26,8 +27,10 @@
 			IEnumerable<Donator> donators = UserUtils.GetDonators(CommonObjects);
 			IEnumerable<Flag> flags = UserUtils.GetFlags(CommonObjects);
 			IEnumerable<UserTitleCollection> titleCollections = UserUtils.GetTitleCollections(CommonObjects);
+			int rank = 0;
 			foreach (CustomEntry entry in Model.Entries)
 			{
+				rank++;
 				Donator donator = donators.Where(d => d.ID == entry.PlayerID).FirstOrDefault();
 				Flag flag = flags.Where(f => f.ID == entry.PlayerID).FirstOrDefault();
 				UserTitleCollection titles = titleCollections.Where(t => t.ID == entry.PlayerID).FirstOrDefault();
@@ -38,11 +41,14 @@
 				string flagCode = flag == null ? "00" : flag.CountryCode;
 				string daggerColor = dagger.Name.ToLower();
 				string deathStyle = $"color: #{death.ColorCode};";
+				HtmlString level2 = entry.LevelUpTime2 == 0 ? RazorUtils.NAString : new HtmlString(entry.LevelUpTime2.ToString());
+				HtmlString level3 = entry.LevelUpTime3 == 0 ? RazorUtils.NAString : new HtmlString(entry.LevelUpTime3.ToString());
+				HtmlString level4 = entry.LevelUpTime4 == 0 ? RazorUtils.NAString : new HtmlString(entry.LevelUpTime4.ToString());
 
-				<div class="sort" @entry.ToHTMLData(flagCode)>
-					<div class="leaderboard-row flex-container" id="@(entry.Rank)-row">
+				<div class="sort" @entry.ToHTMLData(rank, flagCode)>
+					<div class="leaderboard-row flex-container" id="@(rank)-row">
 						<div class="text-right">
-							<span data-toggle="tooltip" title="ID: @entry.PlayerID" class="leaderboard-tooltip">@*@entry.Rank*@</span>
+							<span data-toggle="tooltip" title="ID: @entry.PlayerID" class="leaderboard-tooltip">@rank</span>
 						</div>
 						<div>
 							@if (flagCode == "00")
@@ -79,12 +85,12 @@
 						<div class="hidden-xs text-center" style="@deathStyle">@death.Name</div>
 						<div class="hidden-xs hidden-sm hidden-md text-right">@entry.EnemiesAlive</div>
 						<div class="hidden-xs hidden-sm hidden-md text-right">@entry.Homing</div>
-						<div class="hidden-xs hidden-sm hidden-md text-right">@entry.LevelUpTime2</div>
-						<div class="hidden-xs hidden-sm hidden-md text-right">@entry.LevelUpTime3</div>
-						<div class="hidden-xs hidden-sm hidden-md text-right">@entry.LevelUpTime4</div>
+						<div class="hidden-xs hidden-sm hidden-md text-right">@level2</div>
+						<div class="hidden-xs hidden-sm hidden-md text-right">@level3</div>
+						<div class="hidden-xs hidden-sm hidden-md text-right">@level4</div>
 						<div class="hidden-xs hidden-sm hidden-md text-right">@entry.SubmitDate.ToString("dd MMM yyyy, HH:mm")</div>
 					</div>
-					<div class="leaderboard-expand flex-container" id="@(entry.Rank)-expand">
+					<div class="leaderboard-expand flex-container" id="@(rank)-expand">
 						<div class="visible-xs">
 							<div class="text-left">Kills</div>
 							<div class="text-right">@entry.Kills</div>

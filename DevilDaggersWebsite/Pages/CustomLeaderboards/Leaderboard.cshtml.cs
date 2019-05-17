@@ -29,7 +29,7 @@ namespace DevilDaggersWebsite.Pages.CustomLeaderboards
 			if (Leaderboard == null)
 				return RedirectToPage("Index");
 
-			Entries = _context.CustomEntries.Where(e => e.CustomLeaderboard == Leaderboard).ToList();
+			Entries = _context.CustomEntries.Where(e => e.CustomLeaderboard == Leaderboard).OrderByDescending(e => e.Time).ToList();
 
 			return null;
 		}
