@@ -206,7 +206,7 @@
 		"Description": "Gets hectic in a hurry.",
 		"LastUpdated": "2018-09-04T13:21:18.7545289+02:00"
 	},
-	"etherealuprising_ravenholmzombies": {
+	"etherealuprising_lsaille": {
 		"LastUpdated": "2018-11-01T20:40:07.1510424+01:00"
 	},
 	"evolv3loop_Pritster": {
@@ -688,5 +688,11 @@
 	"You Must Be Joking_Stop": {
 		"Description": "Starts at V3s minimum map size and ends at half that after 5 minutes.",
 		"LastUpdated": "2018-11-17T17:51:43.8744645+01:00"
+	},
+	"TheFourLeviathanOfTheApocalypse_lsaille": {
+		"LastUpdated": "2019-05-18"
+	},
+	"Aim_Training_Cookie": {
+		"LastUpdated": "2019-05-18"
 	}
 }
