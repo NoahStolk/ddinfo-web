@@ -60,7 +60,7 @@ namespace DevilDaggersWebsite.Pages.CustomLeaderboards
 				_context.CustomEntries.Add(new CustomEntry(playerID, username, time, gems, kills, deathType, shotsHit, shotsFired, enemiesAlive, homing, levelUpTime2, levelUpTime3, levelUpTime4, DateTime.Now) { CustomLeaderboard = leaderboard });
 
 				_context.SaveChanges();
-				return new UploadResult(true, $"Welcome to the leaderboard for the {leaderboard.SpawnsetFileName} spawnset. Your score is {time}.");
+				return new UploadResult(true, $"Welcome to the leaderboard for the {leaderboard.SpawnsetFileName} spawnset. Your score is {time.ToString("0.0000")}.");
 			}
 			else
 			{
@@ -90,7 +90,7 @@ namespace DevilDaggersWebsite.Pages.CustomLeaderboards
 				entry.SubmitDate = DateTime.Now;
 
 				_context.SaveChanges();
-				return new UploadResult(true, $"New highscore: {time} (+{timeImproved})");
+				return new UploadResult(true, $"New highscore: {time.ToString("0.0000")} (+{timeImproved.ToString("0.0000")})");
 			}
 		}
 	}
