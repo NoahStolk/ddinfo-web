@@ -1,7 +1,7 @@
 ﻿using CoreBase.Services;
 using DevilDaggersCore.Leaderboard;
 using DevilDaggersWebsite.Code.API;
-using DevilDaggersWebsite.PageModels;
+using DevilDaggersWebsite.Code.PageModels;
 using Microsoft.AspNetCore.Mvc;
 using NetBase.Utils;
 using Newtonsoft.Json;

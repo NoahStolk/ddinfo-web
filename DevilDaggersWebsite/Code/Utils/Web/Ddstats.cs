@@ -3,7 +3,7 @@ using DevilDaggersCore.Leaderboard;
 using Newtonsoft.Json;
 using System.Net;
 
-namespace DevilDaggersWebsite.Utils.Web
+namespace DevilDaggersWebsite.Code.Utils.Web
 {
 	public static class Ddstats
 	{

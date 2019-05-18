@@ -1,6 +1,6 @@
 ﻿using DevilDaggersWebsite.Code.API;
-using DevilDaggersWebsite.PageModels;
-using DevilDaggersWebsite.Utils.Web;
+using DevilDaggersWebsite.Code.PageModels;
+using DevilDaggersWebsite.Code.Utils.Web;
 using Microsoft.AspNetCore.Mvc;
 using Newtonsoft.Json;
 using System;

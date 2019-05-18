@@ -3,7 +3,7 @@ using DevilDaggersCore.Leaderboard;
 using Microsoft.AspNetCore.Html;
 using System.Collections.Generic;
 
-namespace DevilDaggersWebsite.Utils
+namespace DevilDaggersWebsite.Code.Utils
 {
 	public static class RazorUtils
 	{

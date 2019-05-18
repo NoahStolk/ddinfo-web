@@ -4,7 +4,7 @@ using Newtonsoft.Json;
 using System.Net.Mime;
 using System.Text;
 
-namespace DevilDaggersWebsite.PageModels
+namespace DevilDaggersWebsite.Code.PageModels
 {
 	public abstract class ApiPageModel : PageModel
 	{

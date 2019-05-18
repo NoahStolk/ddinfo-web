@@ -3,7 +3,7 @@ using System.Collections.Generic;
 using System.Drawing;
 using System.Text;
 
-namespace DevilDaggersWebsite.Utils
+namespace DevilDaggersWebsite.Code.Utils
 {
 	public static class ZalgoUtils
 	{

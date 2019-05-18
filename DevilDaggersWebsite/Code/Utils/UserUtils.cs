@@ -4,7 +4,7 @@ using NetBase.Utils;
 using System.Collections.Generic;
 using System.IO;
 
-namespace DevilDaggersWebsite.Utils
+namespace DevilDaggersWebsite.Code.Utils
 {
 	public static class UserUtils
 	{

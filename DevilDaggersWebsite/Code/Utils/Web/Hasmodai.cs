@@ -5,7 +5,7 @@ using System.Net.Http;
 using System.Text;
 using System.Threading.Tasks;
 
-namespace DevilDaggersWebsite.Utils.Web
+namespace DevilDaggersWebsite.Code.Utils.Web
 {
 	public static class Hasmodai
 	{

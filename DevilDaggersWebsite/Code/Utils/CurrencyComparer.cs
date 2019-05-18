@@ -1,6 +1,6 @@
 ﻿using System.Collections.Generic;
 
-namespace DevilDaggersWebsite.Utils
+namespace DevilDaggersWebsite.Code.Utils
 {
 	public class CurrencyComparer : Comparer<char>
 	{

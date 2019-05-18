@@ -4,7 +4,7 @@ using DevilDaggersWebsite.Code.Users;
 using Microsoft.AspNetCore.Html;
 using System.Web;
 
-namespace DevilDaggersWebsite.Utils
+namespace DevilDaggersWebsite.Code.Utils
 {
 	public static class DevilDaggersCoreExtensions
 	{

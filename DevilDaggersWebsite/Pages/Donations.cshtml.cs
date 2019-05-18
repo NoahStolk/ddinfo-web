@@ -1,6 +1,6 @@
 ﻿using CoreBase.Services;
 using DevilDaggersWebsite.Code.Users;
-using DevilDaggersWebsite.Utils;
+using DevilDaggersWebsite.Code.Utils;
 using Microsoft.AspNetCore.Mvc.RazorPages;
 using System.Collections.Generic;
 using System.Linq;

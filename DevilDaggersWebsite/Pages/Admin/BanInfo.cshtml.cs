@@ -2,8 +2,8 @@
 using DevilDaggersCore.Leaderboard;
 using DevilDaggersWebsite.Code.PageModels;
 using DevilDaggersWebsite.Code.Users;
-using DevilDaggersWebsite.Utils;
-using DevilDaggersWebsite.Utils.Web;
+using DevilDaggersWebsite.Code.Utils;
+using DevilDaggersWebsite.Code.Utils.Web;
 using Microsoft.AspNetCore.Mvc;
 using System;
 using System.Collections.Generic;

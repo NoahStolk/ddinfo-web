@@ -1,5 +1,5 @@
 ﻿using DevilDaggersWebsite.Code.API;
-using DevilDaggersWebsite.PageModels;
+using DevilDaggersWebsite.Code.PageModels;
 using Microsoft.AspNetCore.Mvc;
 using System.IO;
 using System.Net.Mime;
