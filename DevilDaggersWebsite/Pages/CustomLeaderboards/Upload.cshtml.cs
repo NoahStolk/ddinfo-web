@@ -1,5 +1,6 @@
 ﻿using DevilDaggersWebsite.Code.Database;
 using DevilDaggersWebsite.Code.Database.CustomLeaderboards;
+using DevilDaggersWebsite.Code.Spawnsets;
 using Microsoft.AspNetCore.Mvc.RazorPages;
 using Newtonsoft.Json;
 using System;
@@ -60,7 +61,7 @@ namespace DevilDaggersWebsite.Pages.CustomLeaderboards
 				_context.CustomEntries.Add(new CustomEntry(playerID, username, time, gems, kills, deathType, shotsHit, shotsFired, enemiesAlive, homing, levelUpTime2, levelUpTime3, levelUpTime4, DateTime.Now) { CustomLeaderboard = leaderboard });
 
 				_context.SaveChanges();
-				return new UploadResult(true, $"Welcome to the leaderboard for the {leaderboard.SpawnsetFileName} spawnset. Your score is {time.ToString("0.0000")}.");
+				return new UploadResult(true, $"Welcome to the leaderboard for the {SpawnsetFile.GetName(leaderboard.SpawnsetFileName)} spawnset. Your score is {time.ToString("0.0000")}.");
 			}
 			else
 			{
