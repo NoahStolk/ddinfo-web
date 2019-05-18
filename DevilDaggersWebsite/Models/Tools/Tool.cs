@@ -1,7 +1,7 @@
 ﻿using Microsoft.AspNetCore.Html;
 using Newtonsoft.Json;
 
-namespace DevilDaggersWebsite.Models.Tool
+namespace DevilDaggersWebsite.Models.Tools
 {
 	[JsonObject(MemberSerialization.OptIn)]
 	public class Tool

@@ -1,7 +1,7 @@
 ﻿using CoreBase.Code;
 using DevilDaggersWebsite.Pages;
 
-namespace DevilDaggersWebsite.Models.Spawnset
+namespace DevilDaggersWebsite.Models.Spawnsets
 {
 	public class SpawnsetNavigationSettings
 	{

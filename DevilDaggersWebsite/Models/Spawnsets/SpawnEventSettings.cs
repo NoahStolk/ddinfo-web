@@ -1,4 +1,4 @@
-﻿namespace DevilDaggersWebsite.Models.Spawnset
+﻿namespace DevilDaggersWebsite.Models.Spawnsets
 {
 	public class SpawnEventSettings
 	{

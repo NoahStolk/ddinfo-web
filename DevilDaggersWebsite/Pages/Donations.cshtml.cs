@@ -1,5 +1,5 @@
 ﻿using CoreBase.Services;
-using DevilDaggersWebsite.Models.User;
+using DevilDaggersWebsite.Models.Users;
 using DevilDaggersWebsite.Utils;
 using Microsoft.AspNetCore.Mvc.RazorPages;
 using System.Collections.Generic;

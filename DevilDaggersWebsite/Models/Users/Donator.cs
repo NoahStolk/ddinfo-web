@@ -1,4 +1,4 @@
-﻿namespace DevilDaggersWebsite.Models.User
+﻿namespace DevilDaggersWebsite.Models.Users
 {
 	public class Donator
 	{

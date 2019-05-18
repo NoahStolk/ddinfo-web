@@ -1,6 +1,6 @@
 ﻿using DevilDaggersCore.Game;
 using DevilDaggersCore.Leaderboard;
-using DevilDaggersWebsite.Models.User;
+using DevilDaggersWebsite.Models.Users;
 using Microsoft.AspNetCore.Html;
 using System.Web;
 

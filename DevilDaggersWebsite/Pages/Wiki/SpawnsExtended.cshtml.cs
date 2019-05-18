@@ -1,5 +1,5 @@
 ﻿using DevilDaggersWebsite.Models.PageModels;
-using DevilDaggersWebsite.Models.Spawnset;
+using DevilDaggersWebsite.Models.Spawnsets;
 using Microsoft.AspNetCore.Hosting;
 using NetBase.Utils;
 using System.IO;
