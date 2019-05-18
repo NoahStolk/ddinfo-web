@@ -22,6 +22,8 @@ namespace DevilDaggersWebsite.Pages.CustomLeaderboards
 			}
 		}
 
+		private static readonly Version DDCLMinimalVersion = new Version("0.2.1.0"); // Update this whenever an old version allows cheating or similar
+
 		public string JsonResult { get; set; }
 
 		private readonly ApplicationDbContext _context;
@@ -31,11 +33,11 @@ namespace DevilDaggersWebsite.Pages.CustomLeaderboards
 			_context = context;
 		}
 
-		public void OnGet(string spawnsetHash, int playerID, string username, float time, int gems, int kills, int deathType, int shotsHit, int shotsFired, int enemiesAlive, int homing, float levelUpTime2, float levelUpTime3, float levelUpTime4)
+		public void OnGet(string spawnsetHash, int playerID, string username, float time, int gems, int kills, int deathType, int shotsHit, int shotsFired, int enemiesAlive, int homing, float levelUpTime2, float levelUpTime3, float levelUpTime4, string ddclClientVersion)
 		{
 			try
 			{
-				UploadResult result = TryUpload(spawnsetHash, playerID, username, time, gems, kills, deathType, shotsHit, shotsFired, enemiesAlive, homing, levelUpTime2, levelUpTime3, levelUpTime4);
+				UploadResult result = TryUpload(spawnsetHash, playerID, username, time, gems, kills, deathType, shotsHit, shotsFired, enemiesAlive, homing, levelUpTime2, levelUpTime3, levelUpTime4, ddclClientVersion);
 				JsonResult = JsonConvert.SerializeObject(result);
 			}
 			catch (Exception ex)
@@ -44,8 +46,11 @@ namespace DevilDaggersWebsite.Pages.CustomLeaderboards
 			}
 		}
 
-		public UploadResult TryUpload(string spawnsetHash, int playerID, string username, float time, int gems, int kills, int deathType, int shotsHit, int shotsFired, int enemiesAlive, int homing, float levelUpTime2, float levelUpTime3, float levelUpTime4)
+		public UploadResult TryUpload(string spawnsetHash, int playerID, string username, float time, int gems, int kills, int deathType, int shotsHit, int shotsFired, int enemiesAlive, int homing, float levelUpTime2, float levelUpTime3, float levelUpTime4, string ddclClientVersion)
 		{
+			if (Version.Parse(ddclClientVersion) < DDCLMinimalVersion)
+				return new UploadResult(false, "You are using an unsupported and outdated version of DDCL. Please update the program.");
+
 			if (playerID <= 0)
 				return new UploadResult(false, "Invalid submission.");
 
