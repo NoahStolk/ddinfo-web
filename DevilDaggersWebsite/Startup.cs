@@ -1,5 +1,5 @@
 using CoreBase;
-using DevilDaggersWebsite.Models.Database;
+using DevilDaggersWebsite.Code.Database;
 using Microsoft.AspNetCore.Builder;
 using Microsoft.AspNetCore.Hosting;
 using Microsoft.AspNetCore.Rewrite;

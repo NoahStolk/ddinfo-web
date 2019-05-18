@@ -5,7 +5,7 @@ using System;
 using System.Collections.Generic;
 using System.IO;
 
-namespace DevilDaggersWebsite.Models.Spawnsets
+namespace DevilDaggersWebsite.Code.Spawnsets
 {
 	[JsonObject(MemberSerialization.OptIn)]
 	public class SpawnsetFile

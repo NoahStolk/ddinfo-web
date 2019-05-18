@@ -1,7 +1,7 @@
 ﻿using CoreBase.Services;
 using DevilDaggersCore.Leaderboard;
-using DevilDaggersWebsite.Models.PageModels;
-using DevilDaggersWebsite.Models.Users;
+using DevilDaggersWebsite.Code.PageModels;
+using DevilDaggersWebsite.Code.Users;
 using DevilDaggersWebsite.Utils;
 using DevilDaggersWebsite.Utils.Web;
 using Microsoft.AspNetCore.Mvc;

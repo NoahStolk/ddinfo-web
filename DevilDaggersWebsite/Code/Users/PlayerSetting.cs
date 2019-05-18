@@ -1,4 +1,4 @@
-﻿namespace DevilDaggersWebsite.Models.Users
+﻿namespace DevilDaggersWebsite.Code.Users
 {
 	public class PlayerSetting
 	{

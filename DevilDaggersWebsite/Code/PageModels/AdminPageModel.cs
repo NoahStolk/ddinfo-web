@@ -1,7 +1,7 @@
 ﻿using Microsoft.AspNetCore.Mvc.RazorPages;
 using System;
 
-namespace DevilDaggersWebsite.Models.PageModels
+namespace DevilDaggersWebsite.Code.PageModels
 {
 	public abstract class AdminPageModel : PageModel
 	{

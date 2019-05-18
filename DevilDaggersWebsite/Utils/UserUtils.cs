@@ -1,5 +1,5 @@
 ﻿using CoreBase.Services;
-using DevilDaggersWebsite.Models.Users;
+using DevilDaggersWebsite.Code.Users;
 using NetBase.Utils;
 using System.Collections.Generic;
 using System.IO;

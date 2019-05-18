@@ -3,7 +3,7 @@ using Microsoft.AspNetCore.Mvc.RazorPages;
 using Microsoft.AspNetCore.Mvc.Rendering;
 using System.Collections.Generic;
 
-namespace DevilDaggersWebsite.Models.PageModels
+namespace DevilDaggersWebsite.Code.PageModels
 {
 	public abstract class WikiPageModel : PageModel
 	{

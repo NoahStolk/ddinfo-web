@@ -4,7 +4,7 @@ using System;
 using System.ComponentModel.DataAnnotations.Schema;
 using System.Web;
 
-namespace DevilDaggersWebsite.Models.Database.CustomLeaderboards
+namespace DevilDaggersWebsite.Code.Database.CustomLeaderboards
 {
 	public class CustomEntry
 	{

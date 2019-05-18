@@ -1,7 +1,7 @@
-﻿using DevilDaggersWebsite.Models.Database.CustomLeaderboards;
+﻿using DevilDaggersWebsite.Code.Database.CustomLeaderboards;
 using Microsoft.EntityFrameworkCore;
 
-namespace DevilDaggersWebsite.Models.Database
+namespace DevilDaggersWebsite.Code.Database
 {
 	public class ApplicationDbContext : DbContext
 	{

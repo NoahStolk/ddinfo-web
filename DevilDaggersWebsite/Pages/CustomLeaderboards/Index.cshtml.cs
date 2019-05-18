@@ -1,5 +1,5 @@
-﻿using DevilDaggersWebsite.Models.Database;
-using DevilDaggersWebsite.Models.Database.CustomLeaderboards;
+﻿using DevilDaggersWebsite.Code.Database;
+using DevilDaggersWebsite.Code.Database.CustomLeaderboards;
 using Microsoft.AspNetCore.Mvc.RazorPages;
 using System.Collections.Generic;
 using System.Linq;

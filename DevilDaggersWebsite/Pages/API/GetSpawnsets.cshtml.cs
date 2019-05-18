@@ -1,6 +1,6 @@
 ﻿using CoreBase.Services;
-using DevilDaggersWebsite.Models.API;
-using DevilDaggersWebsite.Models.Spawnsets;
+using DevilDaggersWebsite.Code.API;
+using DevilDaggersWebsite.Code.Spawnsets;
 using DevilDaggersWebsite.PageModels;
 using Microsoft.AspNetCore.Mvc;
 using Newtonsoft.Json;

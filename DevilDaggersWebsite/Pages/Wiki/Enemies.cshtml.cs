@@ -1,5 +1,5 @@
 ﻿using DevilDaggersCore.Game;
-using DevilDaggersWebsite.Models.PageModels;
+using DevilDaggersWebsite.Code.PageModels;
 using System.Collections.Generic;
 
 namespace DevilDaggersWebsite.Pages.Wiki

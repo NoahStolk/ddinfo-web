@@ -1,4 +1,4 @@
-﻿using DevilDaggersWebsite.Models.API;
+﻿using DevilDaggersWebsite.Code.API;
 using DevilDaggersWebsite.PageModels;
 using Microsoft.AspNetCore.Mvc.RazorPages;
 using System;

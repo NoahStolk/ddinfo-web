@@ -2,7 +2,7 @@
 using DevilDaggersCore.Game;
 using DevilDaggersCore.Leaderboard;
 using DevilDaggersUtilities.Website;
-using DevilDaggersWebsite.Models.API;
+using DevilDaggersWebsite.Code.API;
 using DevilDaggersWebsite.PageModels;
 using Microsoft.AspNetCore.Mvc;
 using NetBase.Utils;

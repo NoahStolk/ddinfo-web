@@ -1,7 +1,7 @@
 ﻿using Microsoft.AspNetCore.Html;
 using System.Reflection;
 
-namespace DevilDaggersWebsite.Models.API
+namespace DevilDaggersWebsite.Code.API
 {
 	public class ApiFunction
 	{

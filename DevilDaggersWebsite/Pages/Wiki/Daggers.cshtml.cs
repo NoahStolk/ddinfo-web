@@ -1,4 +1,4 @@
-﻿using DevilDaggersWebsite.Models.PageModels;
+﻿using DevilDaggersWebsite.Code.PageModels;
 
 namespace DevilDaggersWebsite.Pages.Wiki
 {

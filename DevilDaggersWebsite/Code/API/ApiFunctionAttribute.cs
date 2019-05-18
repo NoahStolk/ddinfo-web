@@ -1,6 +1,6 @@
 ﻿using System;
 
-namespace DevilDaggersWebsite.Models.API
+namespace DevilDaggersWebsite.Code.API
 {
 	public class ApiFunctionAttribute : Attribute
 	{

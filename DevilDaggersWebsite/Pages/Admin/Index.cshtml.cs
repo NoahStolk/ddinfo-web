@@ -1,5 +1,5 @@
 ﻿using CoreBase.Services;
-using DevilDaggersWebsite.Models.PageModels;
+using DevilDaggersWebsite.Code.PageModels;
 using Microsoft.AspNetCore.Mvc;
 using NetBase.Utils;
 using System.IO;

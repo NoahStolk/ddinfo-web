@@ -1,4 +1,4 @@
-﻿namespace DevilDaggersWebsite.Models.Tools
+﻿namespace DevilDaggersWebsite.Code.Tools
 {
 	public class ExternalTool
 	{

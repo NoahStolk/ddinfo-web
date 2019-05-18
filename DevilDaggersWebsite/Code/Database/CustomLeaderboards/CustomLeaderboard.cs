@@ -1,6 +1,6 @@
 ﻿using DevilDaggersCore.Game;
 
-namespace DevilDaggersWebsite.Models.Database.CustomLeaderboards
+namespace DevilDaggersWebsite.Code.Database.CustomLeaderboards
 {
 	public class CustomLeaderboard
 	{
