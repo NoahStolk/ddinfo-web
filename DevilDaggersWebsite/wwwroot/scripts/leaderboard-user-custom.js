@@ -12,9 +12,9 @@
 		"death-type": 1,
 		"enemies-alive": -1,
 		"homing": -1,
-		"level-2": -1,
-		"level-3": -1,
-		"level-4": -1,
+		"level-2": 1,
+		"level-3": 1,
+		"level-4": 1,
 		"submit-date": -1
 	};
 	
