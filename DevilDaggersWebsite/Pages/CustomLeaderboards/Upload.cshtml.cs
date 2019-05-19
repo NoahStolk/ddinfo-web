@@ -42,7 +42,7 @@ namespace DevilDaggersWebsite.Pages.CustomLeaderboards
 			}
 			catch (Exception ex)
 			{
-				JsonResult = JsonConvert.SerializeObject(new UploadResult(false, $"Error uploading score\n\nDetails:\n\n{ex}"));
+				JsonResult = JsonConvert.SerializeObject(new UploadResult(false, $"The server returned an error trying to upload score.\n\nDetails:\n\n{ex}"));
 			}
 		}
 
@@ -50,9 +50,6 @@ namespace DevilDaggersWebsite.Pages.CustomLeaderboards
 		{
 			if (Version.Parse(ddclClientVersion) < DDCLMinimalVersion)
 				return new UploadResult(false, "You are using an unsupported and outdated version of DDCL. Please update the program.");
-
-			if (playerID <= 0)
-				return new UploadResult(false, "Invalid submission.");
 
 			CustomLeaderboard leaderboard = _context.CustomLeaderboards.Where(l => l.SpawnsetHash == spawnsetHash).FirstOrDefault();
 
