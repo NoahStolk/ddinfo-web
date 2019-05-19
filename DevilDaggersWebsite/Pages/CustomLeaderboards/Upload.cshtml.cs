@@ -14,11 +14,13 @@ namespace DevilDaggersWebsite.Pages.CustomLeaderboards
 		{
 			public bool success;
 			public string message;
+			public int tryCount;
 
-			public UploadResult(bool success, string message)
+			public UploadResult(bool success, string message, int tryCount = 0)
 			{
 				this.success = success;
 				this.message = message;
+				this.tryCount = tryCount;
 			}
 		}
 
@@ -42,7 +44,7 @@ namespace DevilDaggersWebsite.Pages.CustomLeaderboards
 			}
 			catch (Exception ex)
 			{
-				JsonResult = JsonConvert.SerializeObject(new UploadResult(false, $"The server returned an error trying to upload score.\n\nDetails:\n\n{ex}"));
+				JsonResult = JsonConvert.SerializeObject(new UploadResult(false, $"The server returned an error trying to upload score.\n\nDetails:\n\n{ex}", 10));
 			}
 		}
 
