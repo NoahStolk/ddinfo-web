@@ -1,5 +1,4 @@
-﻿using Microsoft.AspNetCore.Html;
-using Newtonsoft.Json;
+﻿using Newtonsoft.Json;
 
 namespace DevilDaggersWebsite.Code.Tools
 {
@@ -8,11 +7,9 @@ namespace DevilDaggersWebsite.Code.Tools
 	{
 		[JsonProperty]
 		public string Name { get; set; }
-		public string DisplayName { get; set; }
-		public HtmlString Description { get; set; }
-		public string Link { get; set; }
-		public string LinkText { get; set; }
 		[JsonProperty]
 		public string VersionNumber { get; set; }
+		[JsonProperty]
+		public string VersionNumberRequired { get; set; }
 	}
 }

@@ -48,12 +48,15 @@
 							<li><a asp-page="/Leaderboard/WorldRecordProgression">World Record Progression</a></li>
 							<li><a asp-page="/Leaderboard/UserProgression">Top 100 User Progression</a></li>
 							<li><a asp-page="/Leaderboard/UserSettings">User Settings</a></li>
-							@*
-							<li><a asp-page="/Leaderboard/Statistics">Statistics</a></li>*@
 						</ul>
 					</li>
 					<li><a asp-page="/Spawnsets">Spawnsets</a></li>
-					<li><a asp-page="/Tools">Tools</a></li>
+					<li class="dropdown">
+						<a href="#" class="dropdown-toggle" data-toggle="dropdown" role="button" aria-haspopup="true" aria-expanded="false">Tools <span class="caret"></span></a>
+						<ul class="dropdown-menu">
+							<li><a asp-page="/Tools/DevilDaggersSurvivalEditor">DevilDaggersSurvivalEditor</a></li>
+						</ul>
+					</li>
 					<li><a asp-page="/Donations">Donations</a></li>
 					<li class="dropdown">
 						<a href="#" class="dropdown-toggle" data-toggle="dropdown" role="button" aria-haspopup="true" aria-expanded="false">Wiki <span class="caret"></span></a>

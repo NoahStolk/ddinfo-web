@@ -1,0 +1,44 @@
+﻿@page
+@inject Microsoft.AspNetCore.Hosting.IHostingEnvironment env
+@using DevilDaggersWebsite.Code.Tools
+@using DevilDaggersWebsite.Code.Utils
+@using System.IO
+@{
+	ViewData["Title"] = "Devil Daggers Survival Editor";
+	string name = "DevilDaggersSurvivalEditor";
+	Tool tool = ToolUtils.Tools.Where(t => t.Name == name).FirstOrDefault();
+}
+
+<header>
+	<h1>@ViewData["Title"]</h1>
+</header>
+
+<main role="main">
+	@{
+		<p>
+			Devil Daggers Survival Editor is a tool that lets you create, view, and edit spawnsets.<br /><br />
+
+			Main features:<br />
+			<ul>
+				<li>Spawnset editor</li>
+				<li>Arena editor with the ability to change tile heights</li>
+				<li>Arena presets</li>
+				<li>Shrink preview that shows a rough approximation of what the arena will be like at what time during the spawnset</li>
+				<li>Easily replacing the currently active spawnset in the game</li>
+				<li>Downloading and importing spawnsets directly from the website</li>
+			</ul>
+			<img class="img-responsive" width="512" src="~/images/Tools/@(name).png" />
+		</p>
+		string fileName = $"DevilDaggersSurvivalEditor{tool.VersionNumber}.zip";
+		FileInfo fileInfo = new FileInfo(System.IO.Path.Combine(env.WebRootPath, "tools", name, fileName));
+		if (fileInfo.Exists)
+		{
+			<p>
+				Direct download (version @(tool.VersionNumber)): <a href="/tools/@name/@fileName">@fileName</a> (@(Math.Round(fileInfo.Length / 1024f).ToString()) KB)
+			</p>
+		}
+		<p>
+			<a target="_blank" href="https://bitbucket.org/NoahStolk/devildaggerssurvivaleditor/src">View source code and documentation</a>
+		</p>
+	}
+</main>
