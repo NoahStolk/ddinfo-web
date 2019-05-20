@@ -7,13 +7,8 @@ namespace DevilDaggersWebsite.Code.Utils
 {
 	public static class RazorUtils
 	{
-		public const int DEFAULT_MAX_WAVES = 28;
-		public const int MAX_SPAWNS = 2500;
-
-		public const string DISCORD_URL = "https://discord.gg/NF32j8S";
-		public const string EMAIL = "contact@devildaggers.info";
-
-		public const string BAN_COLOR_CODE = "666";
+		public const string DiscordUrl = "https://discord.gg/NF32j8S";
+		public const string ContactEmail = "contact@devildaggers.info";
 
 		public static HtmlString NAString { get; set; } = new HtmlString($"<span style='color: #444;'>N/A</span>");
 

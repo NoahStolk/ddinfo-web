@@ -31,7 +31,7 @@
 		}
 	}
 
-	int maxWaves = sf.settings.MaxWaves ?? RazorUtils.DEFAULT_MAX_WAVES;
+	int maxWaves = sf.settings.MaxWaves ?? SpawnsetUtils.DefaultMaxWaves;
 	string wavesQuery = commonObjects.HttpContextAccessor.HttpContext.Request.Query["waves"];
 	if (int.TryParse(wavesQuery, out int t))
 	{
@@ -104,7 +104,7 @@
 				double endGameSecond = seconds;
 				for (int i = 0; i < maxWaves; i++)
 				{
-					if (spawns > RazorUtils.MAX_SPAWNS)
+					if (spawns > SpawnsetUtils.MaxSpawns)
 					{
 						break;
 					}

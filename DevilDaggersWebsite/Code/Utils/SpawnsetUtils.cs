@@ -8,6 +8,9 @@ namespace DevilDaggersWebsite.Code.Utils
 {
 	public static class SpawnsetUtils
 	{
+		public const int DefaultMaxWaves = 28;
+		public const int MaxSpawns = 2500;
+
 		public static void SaveSpawnsetSettingsJsonFile(ICommonObjects commonObjects)
 		{
 			Dictionary<string, SpawnsetFileSettings> dict = new Dictionary<string, SpawnsetFileSettings>();
