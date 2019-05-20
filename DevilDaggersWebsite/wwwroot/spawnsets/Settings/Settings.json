@@ -689,10 +689,19 @@
 		"Description": "Starts at V3s minimum map size and ends at half that after 5 minutes.",
 		"LastUpdated": "2018-11-17T17:51:43.8744645+01:00"
 	},
-	"TheFourLeviathanOfTheApocalypse_lsaille": {
-		"LastUpdated": "2019-05-18"
+	"TheFourLevisOfTheApocalypse_lsaille": {
+		"LastUpdated": "2019-05-19"
 	},
 	"Aim_Training_Cookie": {
 		"LastUpdated": "2019-05-18"
+	},
+	"FourDigitSkullSplitter_Pritster": {
+		"LastUpdated": "2019-05-19"
+	},
+	"coil_lsaille": {
+		"LastUpdated": "2019-05-19"
+	},
+	"TwoDigitSkullSplitter_Pritster": {
+		"LastUpdated": "2019-05-19T19:09"
 	}
 }
