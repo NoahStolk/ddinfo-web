@@ -1,6 +1,7 @@
 ﻿using DevilDaggersWebsite.Code.Database;
 using DevilDaggersWebsite.Code.Database.CustomLeaderboards;
 using DevilDaggersWebsite.Code.Spawnsets;
+using DevilDaggersWebsite.Code.Utils;
 using Microsoft.AspNetCore.Mvc.RazorPages;
 using Newtonsoft.Json;
 using System;
@@ -24,8 +25,6 @@ namespace DevilDaggersWebsite.Pages.CustomLeaderboards
 				this.tryCount = tryCount;
 			}
 		}
-
-		private static readonly Version DDCLMinimalVersion = new Version("0.2.1.0"); // Update this whenever an old version allows cheating or similar
 
 		public string JsonResult { get; set; }
 
@@ -51,7 +50,7 @@ namespace DevilDaggersWebsite.Pages.CustomLeaderboards
 
 		public UploadResult TryUpload(string spawnsetHash, int playerID, string username, float time, int gems, int kills, int deathType, int shotsHit, int shotsFired, int enemiesAlive, int homing, float levelUpTime2, float levelUpTime3, float levelUpTime4, string ddclClientVersion)
 		{
-			if (Version.Parse(ddclClientVersion) < DDCLMinimalVersion)
+			if (Version.Parse(ddclClientVersion) < Version.Parse(ToolUtils.Tools.Where(t => t.Name == "DDCL").FirstOrDefault().VersionNumberRequired))
 				return new UploadResult(false, "You are using an unsupported and outdated version of DDCL. Please update the program.");
 
 			CustomLeaderboard leaderboard = _context.CustomLeaderboards.Where(l => l.SpawnsetHash == spawnsetHash).FirstOrDefault();
