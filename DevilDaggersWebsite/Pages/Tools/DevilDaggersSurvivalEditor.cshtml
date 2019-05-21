@@ -7,6 +7,8 @@
 	ViewData["Title"] = "Devil Daggers Survival Editor";
 	string name = "DevilDaggersSurvivalEditor";
 	Tool tool = ToolUtils.Tools.Where(t => t.Name == name).FirstOrDefault();
+	string downloadFileName = $"DevilDaggersSurvivalEditor{tool.VersionNumber}.zip";
+	FileInfo downloadFileInfo = new FileInfo(System.IO.Path.Combine(env.WebRootPath, "tools", name, downloadFileName));
 }
 
 <header>
@@ -17,9 +19,10 @@
 	<p>
 		Devil Daggers Survival Editor is a tool that lets you create, view, and edit spawnsets.
 	</p>
+	<img class="img-responsive image-narrow" src="~/images/Tools/@(name).png" />
 
-	<h2>Main features</h2>
-	<ul class="text-left tool-feature-list">
+	<h2 class="text-left">Main features</h2>
+	<ul class="text-left">
 		<li>Spawnset editor</li>
 		<li>Arena editor with the ability to change tile heights</li>
 		<li>Arena presets</li>
@@ -27,19 +30,20 @@
 		<li>Easily replacing the currently active spawnset in the game</li>
 		<li>Downloading and importing spawnsets directly from the website</li>
 	</ul>
-	<img class="img-responsive tool-image" src="~/images/Tools/@(name).png" />
-	@{
-		string fileName = $"DevilDaggersSurvivalEditor{tool.VersionNumber}.zip";
-		FileInfo fileInfo = new FileInfo(System.IO.Path.Combine(env.WebRootPath, "tools", name, fileName));
-		if (fileInfo.Exists)
-		{
-			<p>
-				Direct download (version @(tool.VersionNumber)): <a href="/tools/@name/@fileName">@fileName</a> (@(Math.Round(fileInfo.Length / 1024f).ToString()) KB)
-			</p>
-		}
-	}
-	<p>
-		<a target="_blank" href="https://bitbucket.org/NoahStolk/devildaggerssurvivaleditor/src">View source code and documentation</a>
+	<h2 class="text-left">Download</h2>
+	<p class="text-left">
+		Direct download (version @(tool.VersionNumber))<br />
+		<a class="dont-break-out" href="/tools/@name/@downloadFileName">@downloadFileName</a> (@(Math.Round(downloadFileInfo.Length / 1024f).ToString()) KB)
+	</p>
+	<h2 class="text-left">Installation</h2>
+	<ol class="text-left">
+		<li>Download the zip file.</li>
+		<li>Unzip its contents.</li>
+		<li>Run <span class="dont-break-out">DevilDaggersSurvivalEditor.exe</span> inside the folder.</li>
+	</ol>
+	<h2 class="text-left">Documentation</h2>
+	<p class="text-left">
+		The source code and documentation can be found on <a target="_blank" href="https://bitbucket.org/NoahStolk/devildaggerssurvivaleditor/src">Bitbucket</a>.
 	</p>
 </main>
 

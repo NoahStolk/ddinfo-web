@@ -1,5 +1,4 @@
-﻿.tool-image, .tool-feature-list {
+﻿.image-narrow {
+	width: 512px;
 	margin: auto;
-	max-width: 512px;
-	margin-bottom: 1em;
 }
