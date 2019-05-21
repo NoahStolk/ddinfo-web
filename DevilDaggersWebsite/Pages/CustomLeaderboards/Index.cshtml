@@ -11,11 +11,11 @@
 	<h1>@ViewData["Title"]</h1>
 </header>
 
-<main role="main" class="text-center">
-	<p>
-		Custom leaderboards are still in development.
+<main role="main">
+	<p class="text-center">
+		Custom leaderboards are leaderboards for <a asp-page="/Spawnsets">custom spawnsets</a> hosted by DevilDaggers.info. They are still in development.
 	</p>
-	
+
 	<table>
 		<thead>
 			<tr>
@@ -76,4 +76,14 @@
 			}
 		</tbody>
 	</table>
+
+	<h2>FAQ</h2>
+	<div class="faq-question">How do I participate?</div>
+	<div class="faq-answer">
+		<ol>
+			<li>Download the program <a asp-page="/Tools/DevilDaggersCustomLeaderboards">DDCL</a>.</li>
+			<li>Unzip the zipped file and run DDCL.exe. Make sure you are using Windows and the Steam version of Devil Daggers.</li>
+			<li>Play a <a asp-page="/Spawnsets">custom spawnset</a> that has a leaderboard.</li>
+		</ol>
+	</div>
 </main>

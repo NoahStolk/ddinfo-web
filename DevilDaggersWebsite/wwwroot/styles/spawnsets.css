@@ -1,14 +1,4 @@
-﻿.spawnsets-question {
-	font-style: italic;
-	color: var(--col-red);
-	font-size: 24px;
-}
-
-.spawnsets-answer {
-	margin-bottom: 1em;
-}
-
-.spawnsets-sort > th > a {
+﻿.spawnsets-sort > th > a {
 	color: #ddd;
 	text-decoration: none;
 }

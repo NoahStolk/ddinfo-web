@@ -162,6 +162,16 @@ option {
 	font-weight: bold;
 }
 
+.faq-question {
+	font-style: italic;
+	color: var(--col-red);
+	font-size: 24px;
+}
+
+.faq-answer {
+	margin-bottom: 1em;
+}
+
 /* https://css-tricks.com/snippets/css/prevent-long-urls-from-breaking-out-of-container/ */
 .dont-break-out {
 	overflow-wrap: break-word;
