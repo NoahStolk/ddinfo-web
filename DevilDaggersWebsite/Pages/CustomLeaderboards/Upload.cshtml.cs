@@ -78,7 +78,7 @@ namespace DevilDaggersWebsite.Pages.CustomLeaderboards
 			else
 			{
 				// Update the username
-				foreach (CustomEntry en in _context.CustomEntries.Where(e => e.ID == entry.ID))
+				foreach (CustomEntry en in _context.CustomEntries.Where(e => e.PlayerID == entry.PlayerID))
 					en.Username = username;
 
 				// Users already on the leaderboard, check for higher score
