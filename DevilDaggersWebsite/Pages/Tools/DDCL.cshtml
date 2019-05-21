@@ -1,0 +1,28 @@
+﻿@page
+@inject Microsoft.AspNetCore.Hosting.IHostingEnvironment env
+@using DevilDaggersWebsite.Code.Tools
+@using DevilDaggersWebsite.Code.Utils
+@{
+	ViewData["Title"] = "DDCL";
+	string name = "DDCL";
+	Tool tool = ToolUtils.Tools.Where(t => t.Name == name).FirstOrDefault();
+}
+
+<header>
+	<h1>@ViewData["Title"]</h1>
+</header>
+
+<main role="main" class="text-center">
+	<p>
+		Devil Daggers Custom Leaderboards, also known as DDCL, is an upcoming program that records data from custom spawnset runs, and uploads it to a <a asp-page="/CustomLeaderboards/Index">custom leaderboard</a>.
+	</p>
+	<p>
+		The program is not publicly available for download yet, but if you want to test, let me know on <a href="@RazorUtils.DiscordUrl">Discord</a>.
+	</p>
+	<p>
+		It will only work for the Steam version of Devil Daggers on Windows 7, 8, and 10.
+	</p>
+	@*<p>
+		DDCL's source code will not be available because it would allow people to cheat the custom leaderboards.
+	</p>*@
+</main>
