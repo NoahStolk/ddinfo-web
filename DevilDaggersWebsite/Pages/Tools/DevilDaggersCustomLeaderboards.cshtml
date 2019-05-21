@@ -12,17 +12,25 @@
 	<h1>@ViewData["Title"]</h1>
 </header>
 
-<main role="main" class="text-center">
+<main role="main">
 	<p>
 		Devil Daggers Custom Leaderboards, also known as DDCL, is an upcoming program that records data from custom spawnset runs, and uploads it to a <a asp-page="/CustomLeaderboards/Index">custom leaderboard</a>.
 	</p>
 	<p>
-		The program is not publicly available for download yet, but if you want to test, let me know on <a href="@RazorUtils.DiscordUrl">Discord</a>.
+		The program is not publicly available for download yet, but if you'd like to test, let me know on <a href="@RazorUtils.DiscordUrl">Discord</a>. Testing is much appreciated, as it helps me a lot making the program more stable.
 	</p>
-	<p>
-		It will only work for the Steam version of Devil Daggers on Windows 7, 8, and 10.
-	</p>
-	<p>
-		DDCL's source code will not be available because it would allow people to cheat the custom leaderboards.
-	</p>
+
+	<h2>System requirements</h2>
+	<ul>
+		<li>Microsoft Windows</li>
+		<li>.NET Framework 4.6.1</li>
+		<li>The Steam version of Devil Daggers</li>
+	</ul>
+	
+	@*<h2>Installation</h2>
+	<ol>
+		<li>Download the zip file.</li>
+		<li>Unzip its contents.</li>
+		<li>Run DDCL.exe inside the folder.</li>
+	</ol>*@
 </main>

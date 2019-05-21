@@ -15,14 +15,14 @@
 	<h1>@ViewData["Title"]</h1>
 </header>
 
-<main role="main" class="text-center">
-	<p>
+<main role="main">
+	<p class="text-center">
 		Devil Daggers Survival Editor is a tool that lets you create, view, and edit spawnsets.
 	</p>
 	<img class="img-responsive image-narrow" src="~/images/Tools/@(name).png" />
 
-	<h2 class="text-left">Main features</h2>
-	<ul class="text-left">
+	<h2>Main features</h2>
+	<ul>
 		<li>Spawnset editor</li>
 		<li>Arena editor with the ability to change tile heights</li>
 		<li>Arena presets</li>
@@ -30,19 +30,28 @@
 		<li>Easily replacing the currently active spawnset in the game</li>
 		<li>Downloading and importing spawnsets directly from the website</li>
 	</ul>
-	<h2 class="text-left">Download</h2>
-	<p class="text-left">
+
+	<h2>System requirements</h2>
+	<ul>
+		<li>Microsoft Windows</li>
+		<li>.NET Framework 4.6.1</li>
+	</ul>
+
+	<h2>Download</h2>
+	<p>
 		Direct download (version @(tool.VersionNumber))<br />
 		<a class="dont-break-out" href="/tools/@name/@downloadFileName">@downloadFileName</a> (@(Math.Round(downloadFileInfo.Length / 1024f).ToString()) KB)
 	</p>
-	<h2 class="text-left">Installation</h2>
-	<ol class="text-left">
+
+	<h2>Installation</h2>
+	<ol>
 		<li>Download the zip file.</li>
 		<li>Unzip its contents.</li>
 		<li>Run <span class="dont-break-out">DevilDaggersSurvivalEditor.exe</span> inside the folder.</li>
 	</ol>
-	<h2 class="text-left">Documentation</h2>
-	<p class="text-left">
+
+	<h2>Documentation</h2>
+	<p>
 		The source code and documentation can be found on <a target="_blank" href="https://bitbucket.org/NoahStolk/devildaggerssurvivaleditor/src">Bitbucket</a>.
 	</p>
 </main>
