@@ -177,6 +177,17 @@ option {
 	hyphens: auto;
 }
 
+.homing {
+	background: url('../Images/Fonts/Homing.png');
+	background-repeat: repeat-x;
+	background-position-y: 7px;
+	-webkit-font-smoothing: antialiased;
+	-webkit-background-clip: text;
+	-moz-background-clip: text;
+	background-clip: text;
+	-webkit-text-fill-color: transparent;
+}
+
 .devil {
 	background: url('../Images/Fonts/Devil.png');
 	background-repeat: repeat-x;

@@ -1,6 +1,4 @@
-﻿using DevilDaggersCore.Game;
-
-namespace DevilDaggersWebsite.Code.Database.CustomLeaderboards
+﻿namespace DevilDaggersWebsite.Code.Database.CustomLeaderboards
 {
 	public class CustomLeaderboard
 	{
@@ -11,18 +9,21 @@ namespace DevilDaggersWebsite.Code.Database.CustomLeaderboards
 		public float Silver { get; set; }
 		public float Golden { get; set; }
 		public float Devil { get; set; }
+		public float Homing { get; set; }
 
-		public Dagger GetDagger(float time)
+		public string GetDagger(float time)
 		{
-			if (time > Devil)
-				return Game.V3.Devil;
-			if (time > Golden)
-				return Game.V3.Golden;
-			if (time > Silver)
-				return Game.V3.Silver;
-			if (time > Bronze)
-				return Game.V3.Bronze;
-			return Game.V3.Default;
+			if (time >= Homing && Homing > 0)
+				return "homing";
+			if (time >= Devil && Devil > 0)
+				return "devil";
+			if (time >= Golden && Golden > 0)
+				return "golden";
+			if (time >= Silver && Silver > 0)
+				return "silver";
+			if (time >= Bronze && Bronze > 0)
+				return "bronze";
+			return "default";
 		}
 	}
 }
