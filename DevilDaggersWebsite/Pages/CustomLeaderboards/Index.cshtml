@@ -57,7 +57,11 @@
 					string name = SpawnsetFile.GetName(fileName);
 					string author = SpawnsetFile.GetAuthor(fileName);
 					List<CustomEntry> entries = Model.Entries.Where(e => e.CustomLeaderboard == lb).OrderByDescending(e => e.Time).ToList();
-					string wrDagger = lb.GetDagger(entries[0].Time);
+					string wrDagger = "";
+					if (entries.Count > 0)
+					{
+						wrDagger = lb.GetDagger(entries[0].Time);
+					}
 					<tr>
 						<td>
 							<a asp-page="/CustomLeaderboards/Leaderboard" asp-route-spawnset="@fileName">@name</a>
@@ -101,16 +105,16 @@
 							}
 						</td>
 						<td class="text-right hidden-xs hidden-sm hidden-md bronze">
-							@((entries.Where(e => e.Time >= lb.Bronze).Count() / (float)entries.Count).ToString("0.00%"))
+							@(entries.Count == 0 ? "0.00%" : (entries.Where(e => e.Time >= lb.Bronze).Count() / (float)entries.Count).ToString("0.00%"))
 						</td>
 						<td class="text-right hidden-xs hidden-sm hidden-md silver">
-							@((entries.Where(e => e.Time >= lb.Silver).Count() / (float)entries.Count).ToString("0.00%"))
+							@(entries.Count == 0 ? "0.00%" : (entries.Where(e => e.Time >= lb.Silver).Count() / (float)entries.Count).ToString("0.00%"))
 						</td>
 						<td class="text-right hidden-xs hidden-sm hidden-md golden">
-							@((entries.Where(e => e.Time >= lb.Golden).Count() / (float)entries.Count).ToString("0.00%"))
+							@(entries.Count == 0 ? "0.00%" : (entries.Where(e => e.Time >= lb.Golden).Count() / (float)entries.Count).ToString("0.00%"))
 						</td>
 						<td class="text-right hidden-xs hidden-sm hidden-md devil">
-							@((entries.Where(e => e.Time >= lb.Devil).Count() / (float)entries.Count).ToString("0.00%"))
+							@(entries.Count == 0 ? "0.00%" : (entries.Where(e => e.Time >= lb.Devil).Count() / (float)entries.Count).ToString("0.00%"))
 						</td>
 					</tr>
 				}
