@@ -6,7 +6,6 @@ using Microsoft.AspNetCore.Mvc;
 using Newtonsoft.Json;
 using System.Collections.Generic;
 using System.IO;
-using System.Linq;
 using System.Net.Mime;
 
 namespace DevilDaggersWebsite.Pages.API
@@ -31,7 +30,7 @@ namespace DevilDaggersWebsite.Pages.API
 			// TODO: Use LINQ?
 			List<SpawnsetFile> spawnsets = new List<SpawnsetFile>();
 
-			foreach (string spawnsetPath in Directory.GetFiles(Path.Combine(_commonObjects.Env.WebRootPath, "spawnsets")).ToList())
+			foreach (string spawnsetPath in Directory.GetFiles(Path.Combine(_commonObjects.Env.WebRootPath, "spawnsets")))
 			{
 				SpawnsetFile sf = new SpawnsetFile(_commonObjects, spawnsetPath);
 				if (!string.IsNullOrEmpty(searchAuthor) && !sf.Author.ToLower().Contains(searchAuthor.ToLower()) ||
