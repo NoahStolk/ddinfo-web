@@ -29,7 +29,9 @@
 		</div>
 		<div>
 			<div>Global accuracy</div>
-			<div class="text-center devil">@(Model.Leaderboard.AccuracyGlobal.ToString("0.00%"))</div>
+			<div class="text-center devil">
+				<span data-toggle="tooltip" title="@Model.Leaderboard.ShotsHitGlobal / @Model.Leaderboard.ShotsFiredGlobal" class="leaderboard-tooltip">@(Model.Leaderboard.AccuracyGlobal.ToString("0.00%"))</span>
+			</div>
 		</div>
 	</div>
 </div>
@@ -49,7 +51,9 @@
 			<div class="devil">@Model.Leaderboard.KillsGlobal</div>
 			<div class="devil">@Model.Leaderboard.GemsGlobal</div>
 			<div class="devil">@Model.Leaderboard.DeathsGlobal</div>
-			<div class="devil">@(Model.Leaderboard.AccuracyGlobal.ToString("0.00%"))</div>
+			<div class="devil">
+				<span data-toggle="tooltip" title="@Model.Leaderboard.ShotsHitGlobal / @Model.Leaderboard.ShotsFiredGlobal" class="leaderboard-tooltip">@(Model.Leaderboard.AccuracyGlobal.ToString("0.00%"))</span>
+			</div>
 		</div>
 	</div>
 </div>

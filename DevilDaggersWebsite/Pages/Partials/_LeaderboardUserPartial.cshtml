@@ -93,12 +93,16 @@
 						<div class="text-right @daggerColor">@((entry.Time / 10000.0).ToString("0.0000"))</div>
 						<div class="hidden-xs text-right">@entry.Kills</div>
 						<div class="hidden-xs text-right">@entry.Gems</div>
-						<div class="hidden-xs text-right">@(entry.Accuracy.ToString("0.00%"))</div>
+						<div class="hidden-xs text-right">
+							<span data-toggle="tooltip" title="@entry.ShotsHit / @entry.ShotsFired" class="leaderboard-tooltip">@(entry.Accuracy.ToString("0.00%"))</span>
+						</div>
 						<div class="hidden-xs hidden-sm hidden-md text-center" style="@deathStyle">@death.Name</div>
 						<div class="hidden-xs hidden-sm hidden-md text-right">@((entry.TimeTotal / 10000.0).ToString("0.0000"))</div>
 						<div class="hidden-xs hidden-sm hidden-md text-right">@entry.KillsTotal</div>
 						<div class="hidden-xs hidden-sm hidden-md text-right">@entry.GemsTotal</div>
-						<div class="hidden-xs hidden-sm hidden-md text-right">@(entry.AccuracyTotal.ToString("0.00%"))</div>
+						<div class="hidden-xs hidden-sm hidden-md text-right">
+							<span data-toggle="tooltip" title="@entry.ShotsHitTotal / @entry.ShotsFiredTotal" class="leaderboard-tooltip">@(entry.AccuracyTotal.ToString("0.00%"))</span>
+						</div>
 						<div class="hidden-xs hidden-sm hidden-md text-right">@entry.DeathsTotal</div>
 					</div>
 					<div class="leaderboard-expand flex-container" id="@(entry.Rank)-expand">
@@ -112,7 +116,9 @@
 						</div>
 						<div class="visible-xs">
 							<div class="text-left">Accuracy</div>
-							<div class="text-right">@(entry.Accuracy.ToString("0.00%"))</div>
+							<div class="text-right">
+								<span data-toggle="tooltip" title="@entry.ShotsHit / @entry.ShotsFired" class="leaderboard-tooltip">@(entry.Accuracy.ToString("0.00%"))</span>
+							</div>
 						</div>
 						<div class="visible-xs visible-sm visible-md">
 							<div class="text-left">Death type</div>
@@ -132,7 +138,9 @@
 						</div>
 						<div class="visible-xs visible-sm visible-md">
 							<div class="text-left">Total accuracy</div>
-							<div class="text-right">@(entry.AccuracyTotal.ToString("0.00%"))</div>
+							<div class="text-right">
+								<span data-toggle="tooltip" title="@entry.ShotsHitTotal / @entry.ShotsFiredTotal" class="leaderboard-tooltip">@(entry.AccuracyTotal.ToString("0.00%"))</span>
+							</div>
 						</div>
 						<div class="visible-xs visible-sm visible-md">
 							<div class="text-left">Total deaths</div>
