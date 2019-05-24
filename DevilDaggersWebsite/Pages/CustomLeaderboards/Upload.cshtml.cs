@@ -1,4 +1,6 @@
-﻿using DevilDaggersWebsite.Code.Database;
+﻿using CoreBase.Services;
+using DevilDaggersCore.Spawnset;
+using DevilDaggersWebsite.Code.Database;
 using DevilDaggersWebsite.Code.Database.CustomLeaderboards;
 using DevilDaggersWebsite.Code.Spawnsets;
 using DevilDaggersWebsite.Code.Utils;
@@ -6,6 +8,7 @@ using Microsoft.AspNetCore.Mvc.RazorPages;
 using Newtonsoft.Json;
 using System;
 using System.Collections.Generic;
+using System.IO;
 using System.Linq;
 
 namespace DevilDaggersWebsite.Pages.CustomLeaderboards
@@ -29,10 +32,12 @@ namespace DevilDaggersWebsite.Pages.CustomLeaderboards
 		public string JsonResult { get; set; }
 
 		private readonly ApplicationDbContext _context;
+		private readonly ICommonObjects _commonObjects;
 
-		public UploadModel(ApplicationDbContext context)
+		public UploadModel(ApplicationDbContext context, ICommonObjects commonObjects)
 		{
 			_context = context;
+			_commonObjects = commonObjects;
 		}
 
 		public void OnGet(string spawnsetHash, int playerID, string username, float time, int gems, int kills, int deathType, int shotsHit, int shotsFired, int enemiesAlive, int homing, float levelUpTime2, float levelUpTime3, float levelUpTime4, string ddclClientVersion)
@@ -53,7 +58,27 @@ namespace DevilDaggersWebsite.Pages.CustomLeaderboards
 			if (Version.Parse(ddclClientVersion) < Version.Parse(ToolUtils.Tools.Where(t => t.Name == "DDCL").FirstOrDefault().VersionNumberRequired))
 				return new UploadResult(false, "You are using an unsupported and outdated version of DDCL. Please update the program.");
 
-			CustomLeaderboard leaderboard = _context.CustomLeaderboards.Where(l => l.SpawnsetHash == spawnsetHash).FirstOrDefault();
+			string spawnsetName = string.Empty;
+			foreach (string spawnsetPath in Directory.GetFiles(Path.Combine(_commonObjects.Env.WebRootPath, "spawnsets")))
+			{
+				string hash = string.Empty;
+				SpawnsetFile spawnsetFile = new SpawnsetFile(_commonObjects, spawnsetPath);
+
+				using (FileStream fs = new FileStream(spawnsetFile.Path, FileMode.Open, FileAccess.Read))
+					if (Spawnset.TryParse(fs, out Spawnset spawnsetObject))
+						hash = spawnsetObject.GetHashString();
+
+				if (hash == spawnsetHash)
+				{
+					spawnsetName = Path.GetFileName(spawnsetPath);
+					break;
+				}
+			}
+
+			if (string.IsNullOrEmpty(spawnsetName))
+				return new UploadResult(false, "This spawnset does not exist on DevilDaggers.info.");
+
+			CustomLeaderboard leaderboard = _context.CustomLeaderboards.Where(l => l.SpawnsetFileName == spawnsetName).FirstOrDefault();
 
 			if (leaderboard == null)
 				return new UploadResult(false, "This spawnset doesn't have a leaderboard.");
@@ -70,7 +95,7 @@ namespace DevilDaggersWebsite.Pages.CustomLeaderboards
 				_context.CustomEntries.Add(new CustomEntry(playerID, username, time, gems, kills, deathType, shotsHit, shotsFired, enemiesAlive, homing, levelUpTime2, levelUpTime3, levelUpTime4, DateTime.Now, ddclClientVersion) { CustomLeaderboard = leaderboard });
 
 				_context.SaveChanges();
-				return new UploadResult(true, $@"Welcome to the leaderboard for the {SpawnsetFile.GetName(leaderboard.SpawnsetFileName)} spawnset.
+				return new UploadResult(true, $@"Welcome to the leaderboard for {SpawnsetFile.GetName(leaderboard.SpawnsetFileName)}.
 
 {$"Rank".PadRight(20)}{rank} / {++totalPlayers}
 {$"Score".PadRight(20)}{time.ToString("0.0000")}");
@@ -85,7 +110,7 @@ namespace DevilDaggersWebsite.Pages.CustomLeaderboards
 				if (entry.Time >= time)
 				{
 					_context.SaveChanges();
-					return new UploadResult(true, "No new highscore.");
+					return new UploadResult(true, $"No new highscore for {SpawnsetFile.GetName(leaderboard.SpawnsetFileName)}.");
 				}
 
 				// Calculate the old rank

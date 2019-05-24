@@ -4,7 +4,6 @@
 	{
 		public int ID { get; set; }
 		public string SpawnsetFileName { get; set; }
-		public string SpawnsetHash { get; set; }
 		public float Bronze { get; set; }
 		public float Silver { get; set; }
 		public float Golden { get; set; }
