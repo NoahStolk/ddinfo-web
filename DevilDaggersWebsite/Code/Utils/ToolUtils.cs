@@ -15,8 +15,8 @@ namespace DevilDaggersWebsite.Code.Utils
 			new Tool
 			{
 				Name = "DDCL",
-				VersionNumber = "0.3.3.0",
-				VersionNumberRequired = "0.3.3.0"
+				VersionNumber = "0.4.0.0",
+				VersionNumberRequired = "0.4.0.0"
 			}
 		};
 	}

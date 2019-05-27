@@ -1,5 +1,6 @@
 ﻿using CoreBase.Services;
 using DevilDaggersCore.Spawnset;
+﻿using AESBaseStandard;
 using DevilDaggersWebsite.Code.Database;
 using DevilDaggersWebsite.Code.Database.CustomLeaderboards;
 using DevilDaggersWebsite.Code.Spawnsets;
@@ -10,6 +11,7 @@ using System;
 using System.Collections.Generic;
 using System.IO;
 using System.Linq;
+using System.Web;
 
 namespace DevilDaggersWebsite.Pages.CustomLeaderboards
 {
@@ -40,11 +42,11 @@ namespace DevilDaggersWebsite.Pages.CustomLeaderboards
 			_commonObjects = commonObjects;
 		}
 
-		public void OnGet(string spawnsetHash, int playerID, string username, float time, int gems, int kills, int deathType, int shotsHit, int shotsFired, int enemiesAlive, int homing, float levelUpTime2, float levelUpTime3, float levelUpTime4, string ddclClientVersion)
+		public void OnGet(string spawnsetHash, int playerID, string username, float time, int gems, int kills, int deathType, int shotsHit, int shotsFired, int enemiesAlive, int homing, float levelUpTime2, float levelUpTime3, float levelUpTime4, string ddclClientVersion, string v)
 		{
 			try
 			{
-				UploadResult result = TryUpload(spawnsetHash, playerID, username, time, gems, kills, deathType, shotsHit, shotsFired, enemiesAlive, homing, levelUpTime2, levelUpTime3, levelUpTime4, ddclClientVersion);
+				UploadResult result = TryUpload(spawnsetHash, playerID, username, time, gems, kills, deathType, shotsHit, shotsFired, enemiesAlive, homing, levelUpTime2, levelUpTime3, levelUpTime4, ddclClientVersion, v);
 				JsonResult = JsonConvert.SerializeObject(result);
 			}
 			catch (Exception ex)
@@ -53,7 +55,7 @@ namespace DevilDaggersWebsite.Pages.CustomLeaderboards
 			}
 		}
 
-		public UploadResult TryUpload(string spawnsetHash, int playerID, string username, float time, int gems, int kills, int deathType, int shotsHit, int shotsFired, int enemiesAlive, int homing, float levelUpTime2, float levelUpTime3, float levelUpTime4, string ddclClientVersion)
+		public UploadResult TryUpload(string spawnsetHash, int playerID, string username, float time, int gems, int kills, int deathType, int shotsHit, int shotsFired, int enemiesAlive, int homing, float levelUpTime2, float levelUpTime3, float levelUpTime4, string ddclClientVersion, string validation)
 		{
 			if (Version.Parse(ddclClientVersion) < Version.Parse(ToolUtils.Tools.Where(t => t.Name == "DDCL").FirstOrDefault().VersionNumberRequired))
 				return new UploadResult(false, "You are using an unsupported and outdated version of DDCL. Please update the program.");
@@ -79,6 +81,22 @@ namespace DevilDaggersWebsite.Pages.CustomLeaderboards
 				return new UploadResult(false, "This spawnset does not exist on DevilDaggers.info.");
 
 			CustomLeaderboard leaderboard = _context.CustomLeaderboards.Where(l => l.SpawnsetFileName == spawnsetName).FirstOrDefault();
+			string decrypted = DecryptValidation(validation);
+
+			string check = string.Join(";",
+				playerID,
+				username,
+				time,
+				gems,
+				kills,
+				deathType,
+				shotsHit,
+				shotsFired,
+				enemiesAlive,
+				homing,
+				string.Join(",", new float[3] { levelUpTime2, levelUpTime3, levelUpTime4 }));
+			if (decrypted != check)
+				return new UploadResult(false, "Invalid submission.");
 
 			if (leaderboard == null)
 				return new UploadResult(false, "This spawnset doesn't have a leaderboard.");
@@ -158,6 +176,20 @@ namespace DevilDaggersWebsite.Pages.CustomLeaderboards
 {$"Level 2".ToString().PadRight(width)}{levelUpTime2.ToString("0.0000").PadRight(width)}({(levelUpTime2Diff < 0 ? "" : "+")}{levelUpTime2Diff.ToString("0.0000")})
 {$"Level 3".ToString().PadRight(width)}{levelUpTime3.ToString("0.0000").PadRight(width)}({(levelUpTime3Diff < 0 ? "" : "+")}{levelUpTime3Diff.ToString("0.0000")})
 {$"Level 4".ToString().PadRight(width)}{levelUpTime4.ToString("0.0000").PadRight(width)}({(levelUpTime4Diff < 0 ? "" : "+")}{levelUpTime4Diff.ToString("0.0000")})");
+			}
+		}
+
+		private static string DecryptValidation(string validation)
+		{
+			try
+			{
+				AesBase32Wrapper aes = new AesBase32Wrapper("4GDdtUpDelr2wIae", "xx7SXitvxQh4tJzn", "K0sfsKXLZKmKs929");
+				string decrypted = aes.DecodeAndDecrypt(HttpUtility.HtmlDecode(validation));
+				return decrypted;
+			}
+			catch (Exception ex)
+			{
+				throw new Exception($"Could not decrypt {validation}", ex);
 			}
 		}
 	}
