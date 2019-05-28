@@ -13,7 +13,6 @@
 	<DotNetCliToolReference Include="Microsoft.VisualStudio.Web.CodeGeneration.Tools" Version="2.0.2" />
   </ItemGroup>
   <ItemGroup>
-	<ProjectReference Include="..\..\AESBaseStandard\AESBaseStandard\AESBaseStandard.csproj" />
 	<ProjectReference Include="..\..\CoreBase\CoreBase\CoreBase.csproj" />
 	<ProjectReference Include="..\..\DevilDaggersCore\DevilDaggersCore\DevilDaggersCore.csproj" />
 	<ProjectReference Include="..\DevilDaggersUtilities\DevilDaggersUtilities.csproj" />

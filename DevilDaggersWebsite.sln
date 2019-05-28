@@ -29,8 +29,6 @@ Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "LeaderboardJsonIDFixer", "T
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "SpawnsetHashes", "Tools\SpawnsetHashes\SpawnsetHashes.csproj", "{ECD2B92B-F21E-49A4-900F-797C9243BCAC}"
 EndProject
-Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "AESBaseStandard", "..\AESBaseStandard\AESBaseStandard\AESBaseStandard.csproj", "{F5D626F5-2933-4361-9370-3839C401FD2D}"
-EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
 		Debug|Any CPU = Debug|Any CPU
@@ -81,10 +79,6 @@ Global
 		{ECD2B92B-F21E-49A4-900F-797C9243BCAC}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{ECD2B92B-F21E-49A4-900F-797C9243BCAC}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{ECD2B92B-F21E-49A4-900F-797C9243BCAC}.Release|Any CPU.Build.0 = Release|Any CPU
-		{F5D626F5-2933-4361-9370-3839C401FD2D}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
-		{F5D626F5-2933-4361-9370-3839C401FD2D}.Debug|Any CPU.Build.0 = Debug|Any CPU
-		{F5D626F5-2933-4361-9370-3839C401FD2D}.Release|Any CPU.ActiveCfg = Release|Any CPU
-		{F5D626F5-2933-4361-9370-3839C401FD2D}.Release|Any CPU.Build.0 = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE
@@ -98,7 +92,6 @@ Global
 		{E71B2949-6119-44A2-90B9-FE80B16427C8} = {5632F4FF-82A2-4DDD-B7D9-0F83D53E362C}
 		{50389A94-7721-44AE-9708-BC1E024591F5} = {5632F4FF-82A2-4DDD-B7D9-0F83D53E362C}
 		{ECD2B92B-F21E-49A4-900F-797C9243BCAC} = {5632F4FF-82A2-4DDD-B7D9-0F83D53E362C}
-		{F5D626F5-2933-4361-9370-3839C401FD2D} = {496E881B-2660-4D10-86D8-12ED3EE284C0}
 	EndGlobalSection
 	GlobalSection(ExtensibilityGlobals) = postSolution
 		SolutionGuid = {E27EC676-81BF-4099-BFC9-20E860CE83A5}
