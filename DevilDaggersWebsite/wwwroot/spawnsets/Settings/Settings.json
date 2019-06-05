@@ -718,5 +718,9 @@
 	},
 	"InnerDescent_Pritster": {
 		"LastUpdated": "2019-05-28T22:58"
+	},
+	"Kill_Stop": {
+		"Description": "Beware the Ghostpede at 303s. Use homing to help clear the map shortly beforehand and you may get a chance to kill it.",
+		"LastUpdated": "2019-06-03"
 	}
 }
