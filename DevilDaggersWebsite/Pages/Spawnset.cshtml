@@ -50,7 +50,8 @@
 				<tr>
 					@for (int j = 0; j < Model.spawnset.ArenaTiles.GetLength(1); j++)
 					{
-						float height = (float)Math.Round(Model.spawnset.ArenaTiles[i, j] * 32 + 64);
+						float height = (float)Math.Round(Model.spawnset.ArenaTiles[j, i] * 32 + 64); // Reverse coordinates because <tr> elements cannot be vertical
+
 						@*if (Model.SpawnsetFile.Name == "DaggerLobby" && Model.SpawnsetFile.Author == "Sorath" && (
 								(i == 2 && j == 24) ||
 								(i == 42 && j == 25) ||
