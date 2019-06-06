@@ -80,9 +80,6 @@ namespace DevilDaggersWebsite.Pages.CustomLeaderboards
 			if (string.IsNullOrEmpty(spawnsetName))
 				return new UploadResult(false, "This spawnset does not exist on DevilDaggers.info.");
 
-			CustomLeaderboard leaderboard = _context.CustomLeaderboards.Where(l => l.SpawnsetFileName == spawnsetName).FirstOrDefault();
-			string decrypted = DecryptValidation(validation);
-
 			string check = string.Join(";",
 				playerID,
 				username,
@@ -95,9 +92,10 @@ namespace DevilDaggersWebsite.Pages.CustomLeaderboards
 				enemiesAlive,
 				homing,
 				string.Join(",", new float[3] { levelUpTime2, levelUpTime3, levelUpTime4 }));
-			if (decrypted != check)
+			if (DecryptValidation(validation) != check)
 				return new UploadResult(false, "Invalid submission.");
 
+			CustomLeaderboard leaderboard = _context.CustomLeaderboards.Where(l => l.SpawnsetFileName == spawnsetName).FirstOrDefault();
 			if (leaderboard == null)
 				return new UploadResult(false, "This spawnset doesn't have a leaderboard.");
 
@@ -179,13 +177,12 @@ namespace DevilDaggersWebsite.Pages.CustomLeaderboards
 			}
 		}
 
-		private static string DecryptValidation(string validation)
+		private string DecryptValidation(string validation)
 		{
 			try
 			{
 				AesBase32Wrapper aes = new AesBase32Wrapper("4GDdtUpDelr2wIae", "xx7SXitvxQh4tJzn", "K0sfsKXLZKmKs929");
-				string decrypted = aes.DecodeAndDecrypt(HttpUtility.HtmlDecode(validation));
-				return decrypted;
+				return aes.DecodeAndDecrypt(HttpUtility.HtmlDecode(validation));
 			}
 			catch (Exception ex)
 			{
