@@ -38,10 +38,10 @@ namespace DevilDaggersWebsite.Code.Spawnsets
 		{
 			using (FileStream fs = new FileStream(Path, FileMode.Open, FileAccess.Read))
 			{
-				if (DevilDaggersCore.Spawnset.Spawnset.TryGetSpawnData(fs, out SpawnsetData spawnsetData))
+				if (Spawnset.TryGetSpawnData(fs, out SpawnsetData spawnsetData))
 					return spawnsetData;
 
-				throw new Exception($"Could not retrieve spawnset data for spawnset: {FileName}");
+				throw new Exception($"Could not retrieve spawnset data for spawnset '{FileName}'.");
 			}
 		}
 
