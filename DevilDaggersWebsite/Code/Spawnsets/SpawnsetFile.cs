@@ -14,12 +14,14 @@ namespace DevilDaggersWebsite.Code.Spawnsets
 
 		public string FileName => System.IO.Path.GetFileName(Path);
 
-		public SpawnsetFileSettings settings;
-
 		[JsonProperty]
 		public string Name => GetName(FileName);
 		[JsonProperty]
 		public string Author => GetAuthor(FileName);
+		[JsonProperty]
+		public SpawnsetFileSettings settings;
+		[JsonProperty]
+		public SpawnsetData spawnsetData;
 
 		public SpawnsetFile(ICommonObjects commonObjects, string path)
 		{
@@ -32,16 +34,11 @@ namespace DevilDaggersWebsite.Code.Spawnsets
 				if (!dict.TryGetValue(FileName, out settings))
 					settings = new SpawnsetFileSettings();
 			}
-		}
 
-		public SpawnsetData GetSpawnsetData()
-		{
 			using (FileStream fs = new FileStream(Path, FileMode.Open, FileAccess.Read))
 			{
-				if (Spawnset.TryGetSpawnData(fs, out SpawnsetData spawnsetData))
-					return spawnsetData;
-
-				throw new Exception($"Could not retrieve spawnset data for spawnset '{FileName}'.");
+				if (!Spawnset.TryGetSpawnData(fs, out spawnsetData))
+					throw new Exception($"Could not retrieve spawnset data for spawnset '{FileName}'.");
 			}
 		}
 
