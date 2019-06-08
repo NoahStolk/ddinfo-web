@@ -1,6 +1,7 @@
 ﻿using CoreBase;
 using CoreBase.Services;
-using DevilDaggersWebsite.Code.Spawnsets;
+using DevilDaggersCore.Spawnset.Web;
+using DevilDaggersWebsite.Code.Utils;
 using DevilDaggersWebsite.Pages.API;
 using Microsoft.AspNetCore.Mvc.RazorPages;
 using NetBase.Utils;
@@ -53,7 +54,7 @@ namespace DevilDaggersWebsite.Pages
 			string str = JsonConvert.SerializeObject(new GetSpawnsetsModel(_commonObjects).GetSpawnsets(SearchAuthor, SearchName));
 			dynamic json = JsonConvert.DeserializeObject(str);
 			foreach (dynamic spawnset in json)
-				spawnsetFiles.Add(new SpawnsetFile(_commonObjects, Path.Combine(_commonObjects.Env.WebRootPath, "spawnsets", $"{spawnset.Name}_{spawnset.Author}")));
+				spawnsetFiles.Add(SpawnsetUtils.CreateSpawnsetFileFromSettingsFile(_commonObjects, Path.Combine(_commonObjects.Env.WebRootPath, "spawnsets", $"{spawnset.Name}_{spawnset.Author}")));
 
 			NameSort = sortOrder == "Name" ? "Name_asc" : "Name";
 			AuthorSort = sortOrder == "Author_asc" ? "Author" : "Author_asc";

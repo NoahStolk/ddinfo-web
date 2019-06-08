@@ -2,13 +2,13 @@
 @inject CoreBase.Services.ICommonObjects commonObjects
 @using DevilDaggersCore.Game
 @using DevilDaggersCore.Spawnset
-@using DevilDaggersWebsite.Code.Spawnsets
+@using DevilDaggersCore.Spawnset.Web
 @using DevilDaggersWebsite.Code.Utils
 @using System.IO
 @{
 	int[] widths = new int[4] { 160, 160, 144, 128 };
-	
-	SpawnsetFile sf = new SpawnsetFile(commonObjects, Model);
+
+	SpawnsetFile sf = SpawnsetUtils.CreateSpawnsetFileFromSettingsFile(commonObjects, Model);
 	Spawnset spawnset;
 	using (FileStream fs = new FileStream(Model, FileMode.Open, FileAccess.Read))
 	{

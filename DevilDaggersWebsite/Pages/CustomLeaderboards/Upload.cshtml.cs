@@ -1,5 +1,6 @@
 ﻿using CoreBase.Services;
 using DevilDaggersCore.Spawnset;
+using DevilDaggersCore.Spawnset.Web;
 using DevilDaggersWebsite.Code.Database;
 using DevilDaggersWebsite.Code.Database.CustomLeaderboards;
 using DevilDaggersWebsite.Code.Spawnsets;
@@ -64,7 +65,7 @@ namespace DevilDaggersWebsite.Pages.CustomLeaderboards
 			foreach (string spawnsetPath in Directory.GetFiles(Path.Combine(_commonObjects.Env.WebRootPath, "spawnsets")))
 			{
 				string hash = string.Empty;
-				SpawnsetFile spawnsetFile = new SpawnsetFile(_commonObjects, spawnsetPath);
+				SpawnsetFile spawnsetFile = SpawnsetUtils.CreateSpawnsetFileFromSettingsFile(_commonObjects, spawnsetPath);
 
 				using (FileStream fs = new FileStream(spawnsetFile.Path, FileMode.Open, FileAccess.Read))
 					if (Spawnset.TryParse(fs, out Spawnset spawnsetObject))

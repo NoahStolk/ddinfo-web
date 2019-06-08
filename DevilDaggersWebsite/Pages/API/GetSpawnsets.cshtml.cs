@@ -1,12 +1,13 @@
 ﻿using CoreBase.Services;
 using DevilDaggersWebsite.Code.API;
-using DevilDaggersWebsite.Code.Spawnsets;
 using DevilDaggersWebsite.Code.PageModels;
 using Microsoft.AspNetCore.Mvc;
 using Newtonsoft.Json;
 using System.Collections.Generic;
 using System.IO;
 using System.Net.Mime;
+using DevilDaggersCore.Spawnset.Web;
+using DevilDaggersWebsite.Code.Utils;
 
 namespace DevilDaggersWebsite.Pages.API
 {
@@ -32,7 +33,7 @@ namespace DevilDaggersWebsite.Pages.API
 
 			foreach (string spawnsetPath in Directory.GetFiles(Path.Combine(_commonObjects.Env.WebRootPath, "spawnsets")))
 			{
-				SpawnsetFile sf = new SpawnsetFile(_commonObjects, spawnsetPath);
+				SpawnsetFile sf = SpawnsetUtils.CreateSpawnsetFileFromSettingsFile(_commonObjects, spawnsetPath);
 				if (!string.IsNullOrEmpty(searchAuthor) && !sf.Author.ToLower().Contains(searchAuthor.ToLower()) ||
 					!string.IsNullOrEmpty(searchName) && !sf.Name.ToLower().Contains(searchName.ToLower()))
 					continue;

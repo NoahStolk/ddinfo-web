@@ -3,13 +3,14 @@
 @using DevilDaggersCore.Game
 @using DevilDaggersCore.Spawnset
 @using DevilDaggersCore.Spawnset.Events
+@using DevilDaggersCore.Spawnset.Web
 @using DevilDaggersWebsite.Code.Spawnsets
 @using DevilDaggersWebsite.Code.Utils
 @using System.IO
 @{
 	int[] widths = new int[6] { 160, 512, 144, 128, 144, 128 };
-	
-	SpawnsetFile sf = new SpawnsetFile(commonObjects, Model.SpawnsetPath);
+
+	SpawnsetFile sf = SpawnsetUtils.CreateSpawnsetFileFromSettingsFile(commonObjects, Model.SpawnsetPath);
 	Spawnset spawnset;
 	using (FileStream fs = new FileStream(Model.SpawnsetPath, FileMode.Open, FileAccess.Read))
 	{
