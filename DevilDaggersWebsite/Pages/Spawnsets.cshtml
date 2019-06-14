@@ -134,13 +134,13 @@
 								@(spawnsetFile.settings.LastUpdated.ToString("dd MMM yyyy"))
 							</td>
 							<td class="hidden-xs hidden-sm hidden-md">
-								@(spawnsetFile.spawnsetData.NonLoopSpawns == 0 ? RazorUtils.NAString : Html.Raw(spawnsetFile.spawnsetData.NonLoopLength.ToString("0.0000")))
+								@(spawnsetFile.spawnsetData.NonLoopLength == 0 ? RazorUtils.NAString : Html.Raw(spawnsetFile.spawnsetData.NonLoopLength.ToString("0.0000")))
 							</td>
 							<td class="hidden-xs hidden-sm hidden-md">
 								@(spawnsetFile.spawnsetData.NonLoopSpawns == 0 ? RazorUtils.NAString : Html.Raw(spawnsetFile.spawnsetData.NonLoopSpawns))
 							</td>
 							<td class="hidden-xs hidden-sm hidden-md">
-								@(spawnsetFile.spawnsetData.LoopSpawns == 0 ? RazorUtils.NAString : Html.Raw(spawnsetFile.spawnsetData.LoopStart.ToString("0.0000")))
+								@(Html.Raw(spawnsetFile.spawnsetData.LoopStart.ToString("0.0000")))
 							</td>
 							<td class="hidden-xs hidden-sm hidden-md">
 								@(spawnsetFile.spawnsetData.LoopLength == 0 ? RazorUtils.NAString : Html.Raw(spawnsetFile.spawnsetData.LoopLength.ToString("0.0000")))

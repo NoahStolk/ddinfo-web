@@ -32,6 +32,8 @@
 			int daysAgo = (int)Math.Round((DateTime.Now - wrh.LastHeld).TotalDays);
 
 			string timeHeld = $"{days} day{(days == 1 ? "" : "s")} ({(wrh.TimeHeld / total).ToString("00.000%")})";
+
+			// TODO: Fix bug where if the WR was set at the current date, two "Current holders" will be displayed because daysAgo is 0 for both.
 			string lastHeld = daysAgo == 0 ? "Current holder" : $"{wrh.LastHeld.ToString("MMM dd")} '{wrh.LastHeld.ToString("yy")} ({daysAgo} day{(daysAgo == 1 ? "" : "s")} ago)";
 
 			<div class="row">
