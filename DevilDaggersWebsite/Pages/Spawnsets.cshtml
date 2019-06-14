@@ -140,7 +140,7 @@
 								@(spawnsetFile.spawnsetData.NonLoopSpawns == 0 ? RazorUtils.NAString : Html.Raw(spawnsetFile.spawnsetData.NonLoopSpawns))
 							</td>
 							<td class="hidden-xs hidden-sm hidden-md">
-								@(Html.Raw(spawnsetFile.spawnsetData.LoopStart.ToString("0.0000")))
+								@(spawnsetFile.spawnsetData.LoopSpawns == 0 ? RazorUtils.NAString : Html.Raw(spawnsetFile.spawnsetData.LoopStart.ToString("0.0000")))
 							</td>
 							<td class="hidden-xs hidden-sm hidden-md">
 								@(spawnsetFile.spawnsetData.LoopLength == 0 ? RazorUtils.NAString : Html.Raw(spawnsetFile.spawnsetData.LoopLength.ToString("0.0000")))
