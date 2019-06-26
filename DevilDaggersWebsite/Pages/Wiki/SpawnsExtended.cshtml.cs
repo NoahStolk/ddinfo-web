@@ -1,6 +1,7 @@
 ﻿using DevilDaggersWebsite.Code.PageModels;
 using DevilDaggersWebsite.Code.Spawnsets;
 using Microsoft.AspNetCore.Hosting;
+using Microsoft.AspNetCore.Mvc;
 using NetBase.Utils;
 using System.IO;
 
@@ -20,8 +21,10 @@ namespace DevilDaggersWebsite.Pages.Wiki
 			_env = env;
 		}
 
-		public void OnGet(string gameVersion, int squidGushCount, int leviathanBeckonCount)
+		public ActionResult OnGet(string gameVersion, int squidGushCount, int leviathanBeckonCount)
 		{
+			return RedirectToPage("/Wiki/Spawns");
+
 			SetGameVersion(gameVersion);
 			this.squidGushCount = MathUtils.Clamp(squidGushCount, 1, 25);
 			this.leviathanBeckonCount = MathUtils.Clamp(leviathanBeckonCount, 0, 25);
