@@ -19,7 +19,16 @@
 	<p class="text-center">
 		Devil Daggers Survival Editor is a tool that lets you create, view, and edit spawnsets.
 	</p>
-	<img class="img-responsive image-narrow" src="~/images/Tools/@(name).png" />
+
+	<p>
+		<img class="img-responsive image-narrow" src="~/images/Tools/@(name).png" />
+	</p>
+	
+	<p class="text-center">
+		Current version: @(tool.VersionNumber)<br />
+		File size: @(Math.Round(downloadFileInfo.Length / 1024f).ToString()) KB<br />
+		<a class="btn dont-break-out" href="/tools/@name/@downloadFileName">Download</a>
+	</p>
 
 	<h2>Main features</h2>
 	<ul>
@@ -36,12 +45,6 @@
 		<li>Microsoft Windows</li>
 		<li>.NET Framework 4.6.1</li>
 	</ul>
-
-	<h2>Download</h2>
-	<p>
-		Direct download (version @(tool.VersionNumber))<br />
-		<a class="dont-break-out" href="/tools/@name/@downloadFileName">@downloadFileName</a> (@(Math.Round(downloadFileInfo.Length / 1024f).ToString()) KB)
-	</p>
 
 	<h2>Installation</h2>
 	<ol>
