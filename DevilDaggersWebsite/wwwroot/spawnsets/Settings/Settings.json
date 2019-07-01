@@ -722,5 +722,8 @@
 	"Kill_Stop": {
 		"Description": "Beware the Ghostpede at 303s. Use homing to help clear the map shortly beforehand and you may get a chance to kill it.",
 		"LastUpdated": "2019-06-03"
+	},
+	"crimson_gauntlet_Pritster": {
+		"LastUpdated": "2019-07-01T00:30"
 	}
 }
