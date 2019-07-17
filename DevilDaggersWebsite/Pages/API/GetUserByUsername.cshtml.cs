@@ -10,11 +10,14 @@ using System.Threading.Tasks;
 
 namespace DevilDaggersWebsite.Pages.API
 {
-	[ApiFunction(Description = "Returns the user data for the users containing the username search parameter.", ReturnType = MediaTypeNames.Application.Json)]
+	[ApiFunction(Description = "Returns the user data for the users containing the username search parameter. The username parameter must have a minimal length of 3 characters.", ReturnType = MediaTypeNames.Application.Json)]
 	public class GetUserByUsernameModel : ApiPageModel
 	{
-		public async Task<FileResult> OnGetAsync(string username, bool formatted = false)
+		public async Task<ActionResult> OnGetAsync(string username, bool formatted = false)
 		{
+			if (username.Length < 3)
+				return RedirectToPage("/API/Index");
+
 			List<Entry> leaderboard = await GetUserSearch(username);
 			return JsonFile(leaderboard, formatted ? Formatting.Indented : Formatting.None);
 		}
