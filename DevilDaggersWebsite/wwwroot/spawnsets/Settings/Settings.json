@@ -732,5 +732,9 @@
 	"PrettyHard_xvlv": {
 		"Description": " Level 3 homing > Level 4 ",
 		"LastUpdated": "2019-07-05T22:37"
+	},
+	"Skip first 3 minutes_Brain": {
+		"Description": "Basic survival but start 3 minutes in. Final upgrade if you clear everything and farm 3 gems and don't miss gems you get just before Leviathan.",
+		"LastUpdated": "2019-07-16T05:11"
 	}
 }
