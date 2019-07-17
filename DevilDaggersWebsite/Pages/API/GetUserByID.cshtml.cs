@@ -14,11 +14,11 @@ namespace DevilDaggersWebsite.Pages.API
 	{
 		public async Task<FileResult> OnGetAsync(int userID, bool formatted = false)
 		{
-			Entry entry = await GetUser(userID);
+			Entry entry = await GetUserByID(userID);
 			return JsonFile(entry, formatted ? Formatting.Indented : Formatting.None);
 		}
 
-		public async Task<Entry> GetUser(int userID)
+		public async Task<Entry> GetUserByID(int userID)
 		{
 			return await Hasmodai.GetUserByID(userID);
 		}
