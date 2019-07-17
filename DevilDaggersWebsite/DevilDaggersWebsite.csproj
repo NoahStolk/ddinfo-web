@@ -24,6 +24,9 @@
     <Content Update="Pages\API\GetSpawnset.cshtml">
       <Pack>$(IncludeRazorContentInPack)</Pack>
     </Content>
+    <Content Update="Pages\API\GetUserByID.cshtml">
+      <Pack>$(IncludeRazorContentInPack)</Pack>
+    </Content>
     <Content Update="Pages\API\GetUserProgressionByID.cshtml">
       <Pack>$(IncludeRazorContentInPack)</Pack>
     </Content>
