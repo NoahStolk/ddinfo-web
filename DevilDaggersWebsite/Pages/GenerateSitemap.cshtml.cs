@@ -28,6 +28,7 @@ namespace DevilDaggersWebsite.Pages
 			SitemapUtils.ExcludePage("API_GetSpawnsets");
 			SitemapUtils.ExcludePage("API_GetToolVersions");
 			SitemapUtils.ExcludePage("API_GetUserByID");
+			SitemapUtils.ExcludePage("API_GetUserByUsername");
 			SitemapUtils.ExcludePage("API_GetUserProgressionByID");
 			SitemapUtils.ExcludePage("API_GetWorldRecords");
 			SitemapUtils.ExcludePage("API_Index");
@@ -37,6 +38,7 @@ namespace DevilDaggersWebsite.Pages
 			SitemapUtils.ExcludePage("Leaderboard_IDSearch");
 			SitemapUtils.ExcludePage("Leaderboard_Statistics");
 			SitemapUtils.ExcludePage("Spawnset");
+			SitemapUtils.ExcludePage("Wiki_SpawnsExtended");
 			XmlResult = SitemapUtils.GetSitemap(_commonObjects, true);
 		}
 	}
