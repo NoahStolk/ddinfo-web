@@ -29,7 +29,7 @@ var getUrlParameter = function getUrlParameter(sParam) {
 	}
 };
 
-$.getJSON("/API/GetUserProgression?UserID=" + getUrlParameter("UserID"), function (data) {
+$.getJSON("/API/GetUserProgressionByID?UserID=" + getUrlParameter("UserID"), function (data) {
 	var pbs = [];
 	$.each(data, function (key, val) {
 		var date = new Date(key);

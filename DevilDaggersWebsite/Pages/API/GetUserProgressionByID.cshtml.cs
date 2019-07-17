@@ -14,11 +14,11 @@ using System.Net.Mime;
 namespace DevilDaggersWebsite.Pages.API
 {
 	[ApiFunction(Description = "Returns the user progression found in the leaderboard history section of the site corresponding to the given userID parameter.", ReturnType = MediaTypeNames.Application.Json)]
-	public class GetUserProgressionModel : ApiPageModel
+	public class GetUserProgressionByIDModel : ApiPageModel
 	{
 		private readonly ICommonObjects _commonObjects;
 
-		public GetUserProgressionModel(ICommonObjects commonObjects)
+		public GetUserProgressionByIDModel(ICommonObjects commonObjects)
 		{
 			_commonObjects = commonObjects;
 		}
@@ -39,8 +39,13 @@ namespace DevilDaggersWebsite.Pages.API
 					DevilDaggersCore.Leaderboard.Leaderboard leaderboard = JsonConvert.DeserializeObject<DevilDaggersCore.Leaderboard.Leaderboard>(FileUtils.GetContents(leaderboardHistoryPath));
 					Entry entry = leaderboard.Entries.Where(e => e.ID == userID).FirstOrDefault();
 
-					if (entry != null && !data.Values.Any(e => e.Time == entry.Time || e.Time == entry.Time + 1 || e.Time == entry.Time - 1)) // Off-by-one errors in the history
+					if (entry != null && !data.Values.Any(e =>
+						e.Time == entry.Time ||
+						e.Time == entry.Time + 1 ||
+						e.Time == entry.Time - 1)) // Off-by-one errors in the history
+					{
 						data[leaderboard.DateTime] = entry;
+					}
 				}
 			}
 
