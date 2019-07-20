@@ -736,5 +736,8 @@
 	"Skip first 3 minutes_Brain": {
 		"Description": "Basic survival but start 3 minutes in. Final upgrade if you clear everything and farm 3 gems and don't miss gems you get just before Leviathan.",
 		"LastUpdated": "2019-07-16T05:11"
+	},
+	"Delirium_Stop": {
+		"LastUpdated": "2019-07-20T18:14"
 	}
 }
