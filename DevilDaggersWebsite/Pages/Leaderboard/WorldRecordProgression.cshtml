@@ -1,7 +1,9 @@
 ﻿@page
 @using DevilDaggersCore.Game
 @using DevilDaggersWebsite.Code.Utils
+@using DevilDaggersWebsite.Pages.API
 @using DevilDaggersCore.Leaderboard
+@inject CoreBase.Services.ICommonObjects CommonObjects
 @model DevilDaggersWebsite.Pages.Leaderboard.WorldRecordProgressionModel
 @{
 	ViewData["Title"] = "World Record Progression";
@@ -26,6 +28,7 @@
 	</div>
 	@{
 		TimeSpan total = DateTime.Now - Game.GameVersions["V1"].ReleaseDate;
+		Entry wr = new GetWorldRecordsModel(CommonObjects).GetWorldRecords(DateTime.Now).FirstOrDefault().Value;
 		foreach (WorldRecordHolder wrh in Model.WorldRecordHolders)
 		{
 			int days = (int)Math.Round(wrh.TimeHeld.TotalDays);
@@ -33,8 +36,8 @@
 
 			string timeHeld = $"{days} day{(days == 1 ? "" : "s")} ({(wrh.TimeHeld / total).ToString("00.000%")})";
 
-			// TODO: Fix bug where if the WR was set at the current date, two "Current holders" will be displayed because daysAgo is 0 for both.
-			string lastHeld = daysAgo == 0 ? "Current holder" : $"{wrh.LastHeld.ToString("MMM dd")} '{wrh.LastHeld.ToString("yy")} ({daysAgo} day{(daysAgo == 1 ? "" : "s")} ago)";
+			Entry current = await new GetUserByIDModel().GetUserByID(wrh.ID);
+			string lastHeld = wr.Time == current.Time ? "Current holder" : $"{wrh.LastHeld.ToString("MMM dd")} '{wrh.LastHeld.ToString("yy")} ({daysAgo} day{(daysAgo == 1 ? "" : "s")} ago)";
 
 			<div class="row">
 				<div class="col-lg-3 col-md-4 col-sm-4 col-xs-4">@wrh.Username</div>
