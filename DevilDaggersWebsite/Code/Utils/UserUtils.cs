@@ -58,12 +58,12 @@ namespace DevilDaggersWebsite.Code.Utils
 
 		public static IEnumerable<PlayerSetting> GetPlayerSettings(ICommonObjects commonObjects)
 		{
-			foreach (string t in FileUtils.GetContents(Path.Combine(commonObjects.Env.WebRootPath, "user", "settings")).Split('\n'))
+			foreach (string s in FileUtils.GetContents(Path.Combine(commonObjects.Env.WebRootPath, "user", "settings")).Split('\n'))
 			{
-				if (string.IsNullOrWhiteSpace(t))
+				if (string.IsNullOrWhiteSpace(s))
 					continue;
 
-				string line = t.TrimEnd('\r', '\n');
+				string line = s.TrimEnd('\r', '\n');
 				string[] props = GetProps(line);
 
 				yield return new PlayerSetting(int.Parse(props[0]), int.Parse(props[1]), float.Parse(props[2]), int.Parse(props[3]), bool.Parse(props[4]), bool.Parse(props[5]));

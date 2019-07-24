@@ -10,7 +10,7 @@ using System.Threading.Tasks;
 
 namespace DevilDaggersWebsite.Pages.API
 {
-	[ApiFunction(Description = "Returns the user data for the users containing the username search parameter. The username parameter must have a minimal length of 3 characters.", ReturnType = MediaTypeNames.Application.Json)]
+	[ApiFunction(Description = "Returns the user data for all users with a username that contains the username search parameter. Returns to this page if the username parameter has less than 3 characters.", ReturnType = MediaTypeNames.Application.Json)]
 	public class GetUserByUsernameModel : ApiPageModel
 	{
 		public async Task<ActionResult> OnGetAsync(string username, bool formatted = false)
