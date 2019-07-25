@@ -33,26 +33,13 @@
 
 	int maxWaves = sf.settings.MaxWaves ?? SpawnsetUtils.DefaultMaxWaves;
 	string wavesQuery = commonObjects.HttpContextAccessor.HttpContext.Request.Query["waves"];
-	if (int.TryParse(wavesQuery, out int t))
+	if (int.TryParse(wavesQuery, out int parsed) && parsed > 0)
 	{
-		if (t > 0)
-		{
-			maxWaves = t;
-		}
-	}
-
-	bool empty = true;
-	foreach (Spawn spawn in spawnset.Spawns.Values)
-	{
-		if (spawn.SpawnsetEnemy != Spawnset.Enemies[-1])
-		{
-			empty = false;
-			break;
-		}
+		maxWaves = parsed;
 	}
 
 	<div class="flex-container flex-center flex-column text-center">
-		@if (spawnset.Spawns.Count > 0 && !empty)
+		@if (!spawnset.IsEmpty())
 		{
 			<div class="flex-container flex-center">
 				<div style="width: @(widths[0])px;">Time</div>
@@ -61,47 +48,41 @@
 				<div style="width: @(widths[3])px;">Total gems</div>
 			</div>
 
-			double seconds = 0;
+			double totalSeconds = 0;
 			int totalGems = 0;
 			List<Spawn> endLoop = new List<Spawn>();
 
-			int spawns = 0;
 			foreach (Spawn spawn in spawnset.Spawns.Values)
 			{
-				if (spawn.SpawnsetEnemy != Spawnset.Enemies[-1])
-				{
-					spawns++;
-				}
-
 				endLoop.Add(spawn);
 				if (spawn.SpawnsetEnemy == Spawnset.Enemies[-1])
 				{
 					foreach (Spawn s in endLoop)
 					{
-						seconds += s.Delay;
+						totalSeconds += s.Delay;
 						if (s.SpawnsetEnemy != Spawnset.Enemies[-1])
 						{
-							int gems = s.SpawnsetEnemy.NoFarmGems;
-							totalGems += gems;
+							totalGems += s.SpawnsetEnemy.NoFarmGems;
 
 							<div class="flex-container flex-center">
-								<div style="width: @(widths[0])px;" class="text-right">@seconds.ToString("0.0000")</div>
+								<div style="width: @(widths[0])px;" class="text-right">@totalSeconds.ToString("0.0000")</div>
 								<div style="width: @(widths[1])px;">@(s.SpawnsetEnemy.ToEnemy(gameVersion).GetLayoutAnchor())</div>
-								<div style="width: @(widths[2])px;" class="text-right">@gems</div>
+								<div style="width: @(widths[2])px;" class="text-right">@s.SpawnsetEnemy.NoFarmGems</div>
 								<div style="width: @(widths[3])px;" class="text-right">@totalGems</div>
 							</div>
 						}
 					}
-					seconds -= spawn.Delay;
+					totalSeconds -= spawn.Delay;
 					endLoop.Clear();
 					endLoop.Add(spawn);
 				}
 			}
 
+			int spawns = spawnset.SpawnCount;
 			if (endLoop.Count != 1 || (endLoop.Count == 1 && endLoop[0].SpawnsetEnemy != Spawnset.Enemies[-1]))
 			{
 				double waveMod = 0;
-				double endGameSecond = seconds;
+				double endGameSecond = totalSeconds;
 				for (int i = 0; i < maxWaves; i++)
 				{
 					if (spawns > SpawnsetUtils.MaxSpawns)
