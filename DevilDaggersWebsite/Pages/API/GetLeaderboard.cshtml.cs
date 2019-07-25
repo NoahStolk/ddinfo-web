@@ -9,7 +9,7 @@ using System.Threading.Tasks;
 
 namespace DevilDaggersWebsite.Pages.API
 {
-	[ApiFunction(Description = "Returns 100 leaderboard entries from the current leaderboard starting at the rank parameter. The default is rank 1.", ReturnType = MediaTypeNames.Application.Json)]
+	[ApiFunction(Description = "Returns 100 leaderboard entries from the current leaderboard starting at the rank parameter. The default value for the rank parameter is 1.", ReturnType = MediaTypeNames.Application.Json)]
 	public class GetLeaderboardModel : ApiPageModel
 	{
 		public async Task<FileResult> OnGetAsync(int rank = 1, bool formatted = false)
