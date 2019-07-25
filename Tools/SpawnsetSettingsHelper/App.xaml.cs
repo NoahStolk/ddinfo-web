@@ -1,6 +1,6 @@
 ﻿using System.Windows;
 
-namespace DescriptionHelper
+namespace SpawnsetSettingsHelper
 {
 	/// <summary>
 	/// Interaction logic for App.xaml

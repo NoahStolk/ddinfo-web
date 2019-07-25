@@ -52,7 +52,7 @@ namespace DevilDaggersWebsite.Code.Utils
 			using (FileStream fs = new FileStream(spawnsetFile.Path, FileMode.Open, FileAccess.Read))
 			{
 				if (!Spawnset.TryGetSpawnData(fs, out spawnsetFile.spawnsetData))
-					throw new Exception($"Could not retrieve spawnset data for spawnset '{spawnsetFile.FileName}'.");
+					throw new Exception($"Could not retrieve {nameof(SpawnsetData)} for spawnset '{spawnsetFile.FileName}'.");
 			}
 
 			return spawnsetFile;

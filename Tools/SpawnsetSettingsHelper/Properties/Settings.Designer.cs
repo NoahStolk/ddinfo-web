@@ -8,7 +8,7 @@
 // </auto-generated>
 //------------------------------------------------------------------------------
 
-namespace DescriptionHelper.Properties
+namespace SpawnsetSettingsHelper.Properties
 {
 
 
