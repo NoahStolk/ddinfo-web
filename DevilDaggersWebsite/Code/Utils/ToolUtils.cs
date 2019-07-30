@@ -10,7 +10,7 @@ namespace DevilDaggersWebsite.Code.Utils
 			new Tool
 			{
 				Name = "DevilDaggersSurvivalEditor",
-				VersionNumber = "2.3.0.0"
+				VersionNumber = "2.3.1.0"
 			},
 			new Tool
 			{
