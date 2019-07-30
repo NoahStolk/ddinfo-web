@@ -739,5 +739,9 @@
 	},
 	"Delirium_Stop": {
 		"LastUpdated": "2019-07-20T18:14:00"
+	},
+	"Rush_Stop": {
+		"Description": "It's called 'Rush' for a reason. Once the Ghostpede is down, use homing shotgun as rapidly as you can, switching to stream homing once things get too close. It is extremely difficult to beat the death wave. You'll need to quickly swap between shooting in front and behind to stand a chance. Keep an eye out for when homing daggers run out and use normal stream to finish off whatever is alive; likely a few Spiderlings. Then replenish 100 homing daggers before the Endloop commences. Possible.",
+		"LastUpdated": "2019-07-26T19:32:00"
 	}
 }
