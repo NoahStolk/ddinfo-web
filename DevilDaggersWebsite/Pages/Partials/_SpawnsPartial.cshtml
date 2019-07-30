@@ -1,8 +1,8 @@
 ﻿@model string
 @inject CoreBase.Services.ICommonObjects commonObjects
 @using DevilDaggersCore.Game
-@using DevilDaggersCore.Spawnset
-@using DevilDaggersCore.Spawnset.Web
+@using DevilDaggersCore.Spawnsets
+@using DevilDaggersCore.Spawnsets.Web
 @using DevilDaggersWebsite.Code.Utils
 @using System.IO
 @{
@@ -18,16 +18,16 @@
 		}
 	}
 
-	GameVersion gameVersion = Game.GameVersions[Game.DEFAULT_GAME_VERSION];
+	GameVersion gameVersion = GameInfo.GameVersions[GameInfo.DEFAULT_GAME_VERSION];
 	if (sf.Author == "Sorath")
 	{
 		if (sf.Name == "V1")
 		{
-			gameVersion = Game.GameVersions["V1"];
+			gameVersion = GameInfo.GameVersions["V1"];
 		}
 		else if (sf.Name == "V2")
 		{
-			gameVersion = Game.GameVersions["V2"];
+			gameVersion = GameInfo.GameVersions["V2"];
 		}
 	}
 
@@ -114,7 +114,7 @@
 						{
 							SpawnsetEnemy finalEnemy = spawn.SpawnsetEnemy;
 							// Change the third Gigapede into a Ghostpede
-							if (i % 3 == 2 && gameVersion == Game.GameVersions["V3"] && finalEnemy == Spawnset.GetEnemyByName("Gigapede"))
+							if (i % 3 == 2 && gameVersion == GameInfo.GameVersions["V3"] && finalEnemy == Spawnset.GetEnemyByName("Gigapede"))
 							{
 								finalEnemy = Spawnset.GetEnemyByName("Ghostpede");
 							}

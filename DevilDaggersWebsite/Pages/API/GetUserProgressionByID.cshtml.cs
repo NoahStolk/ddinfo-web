@@ -1,5 +1,5 @@
 ﻿using CoreBase.Services;
-using DevilDaggersCore.Leaderboard;
+using DevilDaggersCore.Leaderboards;
 using DevilDaggersWebsite.Code.API;
 using DevilDaggersWebsite.Code.PageModels;
 using Microsoft.AspNetCore.Mvc;
@@ -36,7 +36,7 @@ namespace DevilDaggersWebsite.Pages.API
 			{
 				foreach (string leaderboardHistoryPath in Directory.GetFiles(Path.Combine(_commonObjects.Env.WebRootPath, "leaderboard-history"), "*.json"))
 				{
-					DevilDaggersCore.Leaderboard.Leaderboard leaderboard = JsonConvert.DeserializeObject<DevilDaggersCore.Leaderboard.Leaderboard>(FileUtils.GetContents(leaderboardHistoryPath));
+					DevilDaggersCore.Leaderboards.Leaderboard leaderboard = JsonConvert.DeserializeObject<DevilDaggersCore.Leaderboards.Leaderboard>(FileUtils.GetContents(leaderboardHistoryPath));
 					Entry entry = leaderboard.Entries.Where(e => e.ID == userID).FirstOrDefault();
 
 					if (entry != null && !data.Values.Any(e =>

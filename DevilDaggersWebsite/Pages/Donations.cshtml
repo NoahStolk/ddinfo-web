@@ -26,7 +26,7 @@
 		Thanks to all donators!
 	</p>
 	<p>
-		@foreach (Dagger dagger in Game.GetEntities<Dagger>())
+		@foreach (Dagger dagger in GameInfo.GetEntities<Dagger>())
 		{
 			<img src="~/Images/Daggers/@(dagger.Name)Small.png" />
 		}
@@ -38,7 +38,7 @@
 			foreach (Donator donator in Model.Donators)
 			{
 				rank++;
-				Dagger dagger = Game.V3.Devil;// GetDaggerFromTime(donator.Amount * 10000);
+				Dagger dagger = GameInfo.V3.Devil;// GetDaggerFromTime(donator.Amount * 10000);
 				string daggerName = dagger.Name.ToLower();
 
 				<div class="flex-container flex-center">

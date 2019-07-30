@@ -1,6 +1,6 @@
 ﻿using CoreBase.Services;
-using DevilDaggersCore.Spawnset;
-using DevilDaggersCore.Spawnset.Web;
+using DevilDaggersCore.Spawnsets;
+using DevilDaggersCore.Spawnsets.Web;
 using DevilDaggersWebsite.Code.Utils;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.AspNetCore.Mvc.RazorPages;

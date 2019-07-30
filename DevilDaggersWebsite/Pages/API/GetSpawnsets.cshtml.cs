@@ -6,7 +6,7 @@ using Newtonsoft.Json;
 using System.Collections.Generic;
 using System.IO;
 using System.Net.Mime;
-using DevilDaggersCore.Spawnset.Web;
+using DevilDaggersCore.Spawnsets.Web;
 using DevilDaggersWebsite.Code.Utils;
 
 namespace DevilDaggersWebsite.Pages.API

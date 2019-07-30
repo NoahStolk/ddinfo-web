@@ -1,5 +1,5 @@
 ﻿@using DevilDaggersCore.Game
-@using DevilDaggersCore.Leaderboard
+@using DevilDaggersCore.Leaderboards
 @using DevilDaggersWebsite.Code.Users
 @using DevilDaggersWebsite.Code.Utils
 @inject CoreBase.Services.ICommonObjects CommonObjects
@@ -35,8 +35,8 @@
 					continue;
 				}
 
-				Dagger dagger = Game.GetDaggerFromTime(entry.Time);
-				Death death = Game.GetDeathFromDeathType(entry.DeathType, Game.GetGameVersionFromDate(Model.Leaderboard.DateTime));
+				Dagger dagger = GameInfo.GetDaggerFromTime(entry.Time);
+				Death death = GameInfo.GetDeathFromDeathType(entry.DeathType, GameInfo.GetGameVersionFromDate(Model.Leaderboard.DateTime));
 
 				string flagCode = flag == null ? "00" : flag.CountryCode;
 				string daggerColor = dagger.Name.ToLower();

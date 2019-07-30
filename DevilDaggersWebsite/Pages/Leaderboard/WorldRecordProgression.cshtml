@@ -2,7 +2,7 @@
 @using DevilDaggersCore.Game
 @using DevilDaggersWebsite.Code.Utils
 @using DevilDaggersWebsite.Pages.API
-@using DevilDaggersCore.Leaderboard
+@using DevilDaggersCore.Leaderboards
 @inject CoreBase.Services.ICommonObjects CommonObjects
 @model DevilDaggersWebsite.Pages.Leaderboard.WorldRecordProgressionModel
 @{
@@ -27,7 +27,7 @@
 		<div class="text-bold col-lg-3 col-md-4 col-sm-4 col-xs-4">Last held</div>
 	</div>
 	@{
-		TimeSpan total = DateTime.Now - Game.GameVersions["V1"].ReleaseDate;
+		TimeSpan total = DateTime.Now - GameInfo.GameVersions["V1"].ReleaseDate;
 		Entry wr = new GetWorldRecordsModel(CommonObjects).GetWorldRecords(DateTime.Now).FirstOrDefault().Value;
 		foreach (WorldRecordHolder wrh in Model.WorldRecordHolders)
 		{

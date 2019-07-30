@@ -1,5 +1,5 @@
 ﻿using CoreBase.Services;
-using DevilDaggersCore.Leaderboard;
+using DevilDaggersCore.Leaderboards;
 using DevilDaggersWebsite.Code.PageModels;
 using DevilDaggersWebsite.Code.Users;
 using DevilDaggersWebsite.Code.Utils;

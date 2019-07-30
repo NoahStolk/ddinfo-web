@@ -1,4 +1,4 @@
-﻿using DevilDaggersCore.Leaderboard;
+﻿using DevilDaggersCore.Leaderboards;
 using DevilDaggersWebsite.Code.API;
 using DevilDaggersWebsite.Code.PageModels;
 using DevilDaggersWebsite.Code.Utils.Web;
@@ -24,7 +24,7 @@ namespace DevilDaggersWebsite.Pages.API
 
 		public async Task<List<Entry>> GetUserSearch(string username)
 		{
-			DevilDaggersCore.Leaderboard.Leaderboard leaderboard = await Hasmodai.GetUserSearch(username);
+			DevilDaggersCore.Leaderboards.Leaderboard leaderboard = await Hasmodai.GetUserSearch(username);
 			return leaderboard.Entries;
 		}
 	}

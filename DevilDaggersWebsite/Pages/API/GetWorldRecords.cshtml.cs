@@ -1,6 +1,6 @@
 ﻿using CoreBase.Services;
 using DevilDaggersCore.Game;
-using DevilDaggersCore.Leaderboard;
+using DevilDaggersCore.Leaderboards;
 using DevilDaggersUtilities.Website;
 using DevilDaggersWebsite.Code.API;
 using DevilDaggersWebsite.Code.PageModels;
@@ -31,14 +31,14 @@ namespace DevilDaggersWebsite.Pages.API
 
 		public SortedDictionary<DateTime, Entry> GetWorldRecords(DateTime? date = null)
 		{
-			bool dateValid = date != null && date > Game.GameVersions["V1"].ReleaseDate && date <= DateTime.Now;
+			bool dateValid = date != null && date > GameInfo.GameVersions["V1"].ReleaseDate && date <= DateTime.Now;
 
 			SortedDictionary<DateTime, Entry> data = new SortedDictionary<DateTime, Entry>();
 
 			int worldRecord = 0;
 			foreach (string leaderboardHistoryPath in Directory.GetFiles(Path.Combine(_commonObjects.Env.WebRootPath, "leaderboard-history"), "*.json"))
 			{
-				DevilDaggersCore.Leaderboard.Leaderboard leaderboard = JsonConvert.DeserializeObject<DevilDaggersCore.Leaderboard.Leaderboard>(FileUtils.GetContents(leaderboardHistoryPath));
+				DevilDaggersCore.Leaderboards.Leaderboard leaderboard = JsonConvert.DeserializeObject<DevilDaggersCore.Leaderboards.Leaderboard>(FileUtils.GetContents(leaderboardHistoryPath));
 				if (leaderboard.Entries[0].Time != worldRecord)
 				{
 					worldRecord = leaderboard.Entries[0].Time;

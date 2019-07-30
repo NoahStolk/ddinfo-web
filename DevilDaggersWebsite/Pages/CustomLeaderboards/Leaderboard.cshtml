@@ -1,6 +1,6 @@
 ﻿@page
 @using DevilDaggersCore.Game
-@using DevilDaggersCore.Spawnset.Web
+@using DevilDaggersCore.Spawnsets.Web
 @model DevilDaggersWebsite.Pages.CustomLeaderboards.LeaderboardModel
 @{
 	string name = SpawnsetFile.GetName(Model.Leaderboard.SpawnsetFileName);
@@ -22,7 +22,7 @@
 
 		<div style="flex-direction: column; width: 200px; margin: auto;">
 			@{
-				@foreach (Dagger dagger in Game.GetEntities<Dagger>())
+				@foreach (Dagger dagger in GameInfo.GetEntities<Dagger>())
 				{
 					float seconds = 0;
 					switch (dagger.Name)

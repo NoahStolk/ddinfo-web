@@ -1,5 +1,5 @@
 ﻿using DevilDaggersCore.Game;
-using DevilDaggersCore.Leaderboard;
+using DevilDaggersCore.Leaderboards;
 using DevilDaggersWebsite.Code.Utils.Web;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.AspNetCore.Mvc.RazorPages;
@@ -34,12 +34,12 @@ namespace DevilDaggersWebsite.Pages.Leaderboard
 				int off = offset;
 				while (entry == null)
 				{
-					DevilDaggersCore.Leaderboard.Leaderboard lb = await Hasmodai.GetScores(off);
+					DevilDaggersCore.Leaderboards.Leaderboard lb = await Hasmodai.GetScores(off);
 					players = lb.Players;
 
 					for (int i = 0; i < 99; i++)
 					{
-						if (Game.GetDaggerFromTime(lb.Entries[i].Time) != Game.GetDaggerFromTime(lb.Entries[i + 1].Time))
+						if (GameInfo.GetDaggerFromTime(lb.Entries[i].Time) != GameInfo.GetDaggerFromTime(lb.Entries[i + 1].Time))
 						{
 							entry = lb.Entries[i - 1];
 							goto Done;
@@ -49,9 +49,9 @@ namespace DevilDaggersWebsite.Pages.Leaderboard
 				}
 			Done:
 
-				daggerStats.Add(Game.GetDaggerFromTime(entry.Time), entry.Rank + 1);
+				daggerStats.Add(GameInfo.GetDaggerFromTime(entry.Time), entry.Rank + 1);
 			}
-			daggerStats.Add(Game.V3.Default, players);
+			daggerStats.Add(GameInfo.V3.Default, players);
 
 			return daggerStats;
 		}
@@ -62,11 +62,11 @@ namespace DevilDaggersWebsite.Pages.Leaderboard
 
 			foreach (int page in pages)
 			{
-				DevilDaggersCore.Leaderboard.Leaderboard lb = await Hasmodai.GetScores(page * 100 + 1);
+				DevilDaggersCore.Leaderboards.Leaderboard lb = await Hasmodai.GetScores(page * 100 + 1);
 
 				foreach (Entry entry in lb.Entries)
 				{
-					Death death = Game.GetDeathFromDeathType(entry.DeathType);
+					Death death = GameInfo.GetDeathFromDeathType(entry.DeathType);
 					if (deathStats.ContainsKey(death))
 						deathStats[death]++;
 					else

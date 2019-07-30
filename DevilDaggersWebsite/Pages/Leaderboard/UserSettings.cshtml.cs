@@ -6,7 +6,7 @@ namespace DevilDaggersWebsite.Pages.Leaderboard
 {
 	public class UserSettingsModel : PageModel
 	{
-		public DevilDaggersCore.Leaderboard.Leaderboard Leaderboard { get; set; } = new DevilDaggersCore.Leaderboard.Leaderboard();
+		public DevilDaggersCore.Leaderboards.Leaderboard Leaderboard { get; set; } = new DevilDaggersCore.Leaderboards.Leaderboard();
 
 		public async Task OnGetAsync()
 		{

@@ -16,7 +16,7 @@
 	</p>
 
 	<div class="flex-container flex-center dagger-container">
-		@foreach (Dagger dagger in Game.GetEntities<Dagger>())
+		@foreach (Dagger dagger in GameInfo.GetEntities<Dagger>())
 		{
 			<div class="dagger" style="-webkit-box-shadow: @boxShadow #@(dagger.ColorCode); -moz-box-shadow: @boxShadow #@(dagger.ColorCode); box-shadow: @boxShadow #@(dagger.ColorCode);">
 				<div>

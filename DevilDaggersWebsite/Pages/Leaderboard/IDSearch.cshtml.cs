@@ -1,4 +1,4 @@
-﻿using DevilDaggersCore.Leaderboard;
+﻿using DevilDaggersCore.Leaderboards;
 using DevilDaggersWebsite.Code.Utils.Web;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.AspNetCore.Mvc.RazorPages;
@@ -10,14 +10,14 @@ namespace DevilDaggersWebsite.Pages.Leaderboard
 	public class IDSearchModel : PageModel
 	{
 		[BindProperty]
-		public DevilDaggersCore.Leaderboard.Leaderboard Leaderboard { get; set; } = new DevilDaggersCore.Leaderboard.Leaderboard();
+		public DevilDaggersCore.Leaderboards.Leaderboard Leaderboard { get; set; } = new DevilDaggersCore.Leaderboards.Leaderboard();
 
 		public int ID { get; set; }
 
 		public async Task OnGetAsync(int id)
 		{
 			Entry entry = await Hasmodai.GetUserByID(id);
-			Leaderboard = new DevilDaggersCore.Leaderboard.Leaderboard()
+			Leaderboard = new DevilDaggersCore.Leaderboards.Leaderboard()
 			{
 				Entries = new List<Entry> { entry }
 			};

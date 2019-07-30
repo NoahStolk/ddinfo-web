@@ -1,4 +1,4 @@
-﻿using DevilDaggersCore.Leaderboard;
+﻿using DevilDaggersCore.Leaderboards;
 using System;
 using System.Collections.Generic;
 using System.Net.Http;

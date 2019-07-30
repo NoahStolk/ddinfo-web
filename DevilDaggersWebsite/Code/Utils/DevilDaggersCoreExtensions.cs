@@ -1,5 +1,5 @@
 ﻿using DevilDaggersCore.Game;
-using DevilDaggersCore.Leaderboard;
+using DevilDaggersCore.Leaderboards;
 using DevilDaggersWebsite.Code.Users;
 using Microsoft.AspNetCore.Html;
 using System.Web;
@@ -18,7 +18,7 @@ namespace DevilDaggersWebsite.Code.Utils
 				kills='{entry.Kills}'
 				gems='{entry.Gems}'
 				accuracy='{(entry.Accuracy * 10000).ToString("0")}'
-				death-type='{Game.GetDeathFromDeathType(entry.DeathType).Name}'
+				death-type='{GameInfo.GetDeathFromDeathType(entry.DeathType).Name}'
 				total-time='{entry.TimeTotal}'
 				total-kills='{entry.KillsTotal}'
 				total-gems='{entry.GemsTotal}'

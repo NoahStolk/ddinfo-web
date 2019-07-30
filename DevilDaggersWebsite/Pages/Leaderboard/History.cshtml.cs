@@ -15,7 +15,7 @@ namespace DevilDaggersWebsite.Pages.Leaderboard
 	{
 		private ICommonObjects _commonObjects;
 
-		public DevilDaggersCore.Leaderboard.Leaderboard Leaderboard { get; set; } = new DevilDaggersCore.Leaderboard.Leaderboard();
+		public DevilDaggersCore.Leaderboards.Leaderboard Leaderboard { get; set; } = new DevilDaggersCore.Leaderboards.Leaderboard();
 
 		public List<SelectListItem> JsonFiles { get; set; } = new List<SelectListItem>();
 		public string From { get; set; }
@@ -28,7 +28,7 @@ namespace DevilDaggersWebsite.Pages.Leaderboard
 
 			foreach (string leaderboardHistoryPath in Directory.GetFiles(Path.Combine(_commonObjects.Env.WebRootPath, "leaderboard-history"), "*.json"))
 			{
-				DevilDaggersCore.Leaderboard.Leaderboard leaderboard = JsonConvert.DeserializeObject<DevilDaggersCore.Leaderboard.Leaderboard>(FileUtils.GetContents(leaderboardHistoryPath));
+				DevilDaggersCore.Leaderboards.Leaderboard leaderboard = JsonConvert.DeserializeObject<DevilDaggersCore.Leaderboards.Leaderboard>(FileUtils.GetContents(leaderboardHistoryPath));
 				JsonFiles.Add(new SelectListItem($"{LeaderboardHistoryUtils.HistoryJsonFileNameToDateString(Path.GetFileNameWithoutExtension(leaderboardHistoryPath))} UTC ({leaderboard.GetCompletionRate().ToString("0.0%")} complete)", Path.GetFileName(leaderboardHistoryPath)));
 			}
 
@@ -52,7 +52,7 @@ namespace DevilDaggersWebsite.Pages.Leaderboard
 				}
 			}
 
-			string jsonString = null;
+			string jsonString;
 			try
 			{
 				jsonString = FileUtils.GetContents(Path.Combine(_commonObjects.Env.WebRootPath, "leaderboard-history", From), Encoding.UTF8);
@@ -62,7 +62,7 @@ namespace DevilDaggersWebsite.Pages.Leaderboard
 				From = JsonFiles[0].Value;
 				jsonString = FileUtils.GetContents(Path.Combine(_commonObjects.Env.WebRootPath, "leaderboard-history", From), Encoding.UTF8);
 			}
-			Leaderboard = JsonConvert.DeserializeObject<DevilDaggersCore.Leaderboard.Leaderboard>(jsonString);
+			Leaderboard = JsonConvert.DeserializeObject<DevilDaggersCore.Leaderboards.Leaderboard>(jsonString);
 		}
 	}
 }

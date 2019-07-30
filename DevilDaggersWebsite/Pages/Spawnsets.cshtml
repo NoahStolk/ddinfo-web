@@ -2,7 +2,7 @@
 @inject CoreBase.Services.ICommonObjects CommonObjects
 @using CoreBase.Code
 @using DevilDaggersCore.Game
-@using DevilDaggersCore.Spawnset.Web
+@using DevilDaggersCore.Spawnsets.Web
 @using DevilDaggersWebsite.Code.Utils
 @using DevilDaggersWebsite.Code.Spawnsets
 @model SpawnsetsModel
@@ -219,13 +219,13 @@
 	<h2>How spawnsets work</h2>
 	<h3>Spawns</h3>
 	<ul>
-		<li>@RazorUtils.GetLayout("10 enemies can be spawned in the game. These are Squid I, Squid II, Centipede, Spider I, Leviathan, Gigapede, Squid III, Thorn, Spider II, and Ghostpede (respectively). The order is defined by the survival file structure. All enemies have a one-digit ID.", Game.GameVersions[Game.DEFAULT_GAME_VERSION])</li>
+		<li>@RazorUtils.GetLayout("10 enemies can be spawned in the game. These are Squid I, Squid II, Centipede, Spider I, Leviathan, Gigapede, Squid III, Thorn, Spider II, and Ghostpede (respectively). The order is defined by the survival file structure. All enemies have a one-digit ID.", GameInfo.GameVersions[GameInfo.DEFAULT_GAME_VERSION])</li>
 		<li>Additionally, there is an EMPTY spawn with ID -1. This has no purpose except that the end loop starts after the last EMPTY spawn.</li>
 		<li>Every enemy type has a fixed amount of gems that it drops, this is why the application keeps track of gems so you can have a rough idea of when you will get upgrades (unless farming is done). It is recommended that you understand how <a asp-page="/Wiki/Upgrades">Hand Upgrades</a> work.</li>
 		<li>Every spawn contains an enemy ID and a delay value. The enemy ID (-1 to 9) represents which enemy will be spawned. The delay value represents the amount of seconds between the current spawn and the previous spawn.</li>
 		<li>The delay value supports decimal values, even though the original spawnset in the game doesn't use this. This means you can spawn an enemy, for example at 4.5 seconds.</li>
 		<li>The end loop is the same set of spawns over and over again, faster every time. After every wave, each enemy spawns an added 12.5% faster.</li>
-		<li>@RazorUtils.GetLayout("Every third wave of the end loop, all Gigapedes are changed into Ghostpedes. This is hardcoded within the game and cannot be changed.", Game.GameVersions[Game.DEFAULT_GAME_VERSION])</li>
+		<li>@RazorUtils.GetLayout("Every third wave of the end loop, all Gigapedes are changed into Ghostpedes. This is hardcoded within the game and cannot be changed.", GameInfo.GameVersions[GameInfo.DEFAULT_GAME_VERSION])</li>
 	</ul>
 	<h3>Arena</h3>
 	<p>

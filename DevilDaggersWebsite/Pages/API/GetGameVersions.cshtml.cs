@@ -12,7 +12,7 @@ namespace DevilDaggersWebsite.Pages.API
 	{
 		public FileResult OnGet(bool formatted = false)
 		{
-			return JsonFile(Game.GameVersions, formatted ? Formatting.Indented : Formatting.None);
+			return JsonFile(GameInfo.GameVersions, formatted ? Formatting.Indented : Formatting.None);
 		}
 	}
 }

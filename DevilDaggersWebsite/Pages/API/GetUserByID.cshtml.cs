@@ -1,4 +1,4 @@
-﻿using DevilDaggersCore.Leaderboard;
+﻿using DevilDaggersCore.Leaderboards;
 using DevilDaggersWebsite.Code.API;
 using DevilDaggersWebsite.Code.PageModels;
 using DevilDaggersWebsite.Code.Utils.Web;

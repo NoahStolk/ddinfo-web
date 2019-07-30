@@ -1,6 +1,6 @@
 ﻿using CoreBase.Services;
 using DevilDaggersCore.Game;
-using DevilDaggersCore.Leaderboard;
+using DevilDaggersCore.Leaderboards;
 using DevilDaggersWebsite.Pages.API;
 using Microsoft.AspNetCore.Mvc.RazorPages;
 using System;
@@ -29,7 +29,7 @@ namespace DevilDaggersWebsite.Pages.Leaderboard
 			int i = 0;
 			foreach (KeyValuePair<DateTime, Entry> kvp in worldRecords)
 			{
-				if (kvp.Key < Game.GameVersions["V1"].ReleaseDate)
+				if (kvp.Key < GameInfo.GameVersions["V1"].ReleaseDate)
 					continue;
 
 				worldRecordsFiltered.Add(Tuple.Create(i, kvp.Key, kvp.Value));

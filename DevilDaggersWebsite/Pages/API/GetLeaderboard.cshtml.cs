@@ -16,7 +16,7 @@ namespace DevilDaggersWebsite.Pages.API
 		{
 			rank = Math.Max(1, rank);
 
-			DevilDaggersCore.Leaderboard.Leaderboard leaderboard = await Hasmodai.GetScores(rank);
+			DevilDaggersCore.Leaderboards.Leaderboard leaderboard = await Hasmodai.GetScores(rank);
 
 			return JsonFile(leaderboard, leaderboard.DateTime.ToString("yyyyMMddHHmm"), formatted ? Formatting.Indented : Formatting.None);
 		}

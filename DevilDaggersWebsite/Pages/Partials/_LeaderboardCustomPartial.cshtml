@@ -36,7 +36,7 @@
 				UserTitleCollection titles = titleCollections.Where(t => t.ID == entry.PlayerID).FirstOrDefault();
 
 				string dagger = Model.Leaderboard.GetDagger(entry.Time);
-				Death death = Game.GetDeathFromDeathType(entry.DeathType, Game.GameVersions["V3"]);
+				Death death = GameInfo.GetDeathFromDeathType(entry.DeathType, GameInfo.GameVersions["V3"]);
 
 				string flagCode = flag == null ? "00" : flag.CountryCode;
 				string deathStyle = $"color: #{death.ColorCode};";

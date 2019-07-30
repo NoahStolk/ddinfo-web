@@ -1,9 +1,9 @@
 ﻿@model SpawnEventSettings
 @inject CoreBase.Services.ICommonObjects commonObjects
 @using DevilDaggersCore.Game
-@using DevilDaggersCore.Spawnset
-@using DevilDaggersCore.Spawnset.Events
-@using DevilDaggersCore.Spawnset.Web
+@using DevilDaggersCore.Spawnsets
+@using DevilDaggersCore.Spawnsets.Events
+@using DevilDaggersCore.Spawnsets.Web
 @using DevilDaggersWebsite.Code.Spawnsets
 @using DevilDaggersWebsite.Code.Utils
 @using System.IO
@@ -20,16 +20,16 @@
 		}
 	}
 
-	GameVersion gameVersion = Game.GameVersions[Game.DEFAULT_GAME_VERSION];
+	GameVersion gameVersion = GameInfo.GameVersions[GameInfo.DEFAULT_GAME_VERSION];
 	if (sf.Author == "Sorath")
 	{
 		if (sf.Name == "V1")
 		{
-			gameVersion = Game.GameVersions["V1"];
+			gameVersion = GameInfo.GameVersions["V1"];
 		}
 		else if (sf.Name == "V2")
 		{
-			gameVersion = Game.GameVersions["V2"];
+			gameVersion = GameInfo.GameVersions["V2"];
 		}
 	}
 

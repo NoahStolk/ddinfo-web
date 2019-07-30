@@ -65,7 +65,7 @@ namespace DevilDaggersWebsite.Code.Database.CustomLeaderboards
 				kills='{Kills}'
 				gems='{Gems}'
 				accuracy='{(Accuracy * 10000).ToString("0")}'
-				death-type='{Game.GetDeathFromDeathType(DeathType).Name}'
+				death-type='{GameInfo.GetDeathFromDeathType(DeathType).Name}'
 				enemies-alive='{EnemiesAlive}'
 				homing='{Homing}'
 				level-2='{(LevelUpTime2 == 0 ? 99999 : LevelUpTime2)}'
