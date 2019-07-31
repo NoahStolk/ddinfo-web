@@ -1,4 +1,4 @@
-﻿using DevilDaggersCore.Spawnset.Web;
+﻿using DevilDaggersCore.Spawnsets.Web;
 using Newtonsoft.Json;
 using System.Collections.Generic;
 using System.Globalization;

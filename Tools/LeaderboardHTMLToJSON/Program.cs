@@ -46,7 +46,7 @@ namespace LeaderboardHTMLToJSON
 						Gems = int.Parse(GetValue(lines[i], "gems")),
 						ShotsFired = 10000,
 						ShotsHit = int.Parse(GetValue(lines[i], "accuracy")),
-						DeathType = Game.GetDeathFromDeathName(GetValue(lines[i], "death-type")).DeathType,
+						DeathType = GameInfo.GetDeathFromDeathName(GetValue(lines[i], "death-type")).DeathType,
 						TimeTotal = ulong.Parse(GetValue(lines[i], "total-time")),
 						KillsTotal = ulong.Parse(GetValue(lines[i], "total-kills")),
 						GemsTotal = ulong.Parse(GetValue(lines[i], "total-gems")),

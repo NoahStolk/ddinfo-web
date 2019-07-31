@@ -1,4 +1,4 @@
-﻿using DevilDaggersCore.Spawnset.Web;
+﻿using DevilDaggersCore.Spawnsets.Web;
 using System.Collections.Generic;
 using System.Windows.Controls;
 
