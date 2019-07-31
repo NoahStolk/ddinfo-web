@@ -1,10 +1,12 @@
 ﻿using CoreBase.Services;
 using DevilDaggersCore.Spawnsets;
 using DevilDaggersCore.Spawnsets.Web;
+using DevilDaggersWebsite.Code.Database;
 using Newtonsoft.Json;
 using System;
 using System.Collections.Generic;
 using System.IO;
+using System.Linq;
 
 namespace DevilDaggersWebsite.Code.Utils
 {
@@ -13,13 +15,13 @@ namespace DevilDaggersWebsite.Code.Utils
 		public const int DefaultMaxWaves = 28;
 		public const int MaxSpawns = 2500;
 
-		public static void SaveSpawnsetSettingsJsonFile(ICommonObjects commonObjects)
+		public static void SaveSpawnsetSettingsJsonFile(ApplicationDbContext context, ICommonObjects commonObjects)
 		{
 			Dictionary<string, SpawnsetFileSettings> dict = new Dictionary<string, SpawnsetFileSettings>();
 			foreach (string path in Directory.GetFiles(Path.Combine(commonObjects.Env.WebRootPath, "spawnsets"), "*_*", SearchOption.TopDirectoryOnly))
 			{
 				string fileName = Path.GetFileName(path);
-				SpawnsetFile sf = CreateSpawnsetFileFromSettingsFile(commonObjects, path);
+				SpawnsetFile sf = CreateSpawnsetFileFromSettingsFile(context, commonObjects, path);
 				sf.settings.LastUpdated = File.GetLastWriteTime(path);
 
 				dict[fileName] = sf.settings;
@@ -34,11 +36,12 @@ namespace DevilDaggersWebsite.Code.Utils
 				serializer.Serialize(jtw, dict);
 		}
 
-		public static SpawnsetFile CreateSpawnsetFileFromSettingsFile(ICommonObjects commonObjects, string path)
+		public static SpawnsetFile CreateSpawnsetFileFromSettingsFile(ApplicationDbContext context, ICommonObjects commonObjects, string path)
 		{
 			SpawnsetFile spawnsetFile = new SpawnsetFile
 			{
-				Path = path
+				Path = path,
+				HasLeaderboard = context.CustomLeaderboards.Any(l => l.SpawnsetFileName == Path.GetFileName(path))
 			};
 
 			using (StreamReader sr = new StreamReader(Path.Combine(commonObjects.Env.WebRootPath, "spawnsets", "Settings", "Settings.json")))

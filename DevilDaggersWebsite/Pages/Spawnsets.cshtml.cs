@@ -1,6 +1,7 @@
 ﻿using CoreBase;
 using CoreBase.Services;
 using DevilDaggersCore.Spawnsets.Web;
+using DevilDaggersWebsite.Code.Database;
 using DevilDaggersWebsite.Code.Utils;
 using DevilDaggersWebsite.Pages.API;
 using Microsoft.AspNetCore.Mvc.RazorPages;
@@ -15,6 +16,7 @@ namespace DevilDaggersWebsite.Pages
 {
 	public class SpawnsetsModel : PageModel
 	{
+		private readonly ApplicationDbContext _context;
 		private readonly ICommonObjects _commonObjects;
 
 		public PaginatedList<SpawnsetFile> PaginatedSpawnsetFiles;
@@ -37,8 +39,9 @@ namespace DevilDaggersWebsite.Pages
 		public int PageIndex { get; private set; }
 		public int TotalResults { get; private set; }
 
-		public SpawnsetsModel(ICommonObjects commonObjects)
+		public SpawnsetsModel(ApplicationDbContext context, ICommonObjects commonObjects)
 		{
+			_context = context;
 			_commonObjects = commonObjects;
 		}
 
@@ -51,10 +54,10 @@ namespace DevilDaggersWebsite.Pages
 
 			List<SpawnsetFile> spawnsetFiles = new List<SpawnsetFile>();
 
-			string str = JsonConvert.SerializeObject(new GetSpawnsetsModel(_commonObjects).GetSpawnsets(SearchAuthor, SearchName));
+			string str = JsonConvert.SerializeObject(new GetSpawnsetsModel(_context, _commonObjects).GetSpawnsets(SearchAuthor, SearchName));
 			dynamic json = JsonConvert.DeserializeObject(str);
 			foreach (dynamic spawnset in json)
-				spawnsetFiles.Add(SpawnsetUtils.CreateSpawnsetFileFromSettingsFile(_commonObjects, Path.Combine(_commonObjects.Env.WebRootPath, "spawnsets", $"{spawnset.Name}_{spawnset.Author}")));
+				spawnsetFiles.Add(SpawnsetUtils.CreateSpawnsetFileFromSettingsFile(_context, _commonObjects, Path.Combine(_commonObjects.Env.WebRootPath, "spawnsets", $"{spawnset.Name}_{spawnset.Author}")));
 
 			NameSort = sortOrder == "Name" ? "Name_asc" : "Name";
 			AuthorSort = sortOrder == "Author_asc" ? "Author" : "Author_asc";

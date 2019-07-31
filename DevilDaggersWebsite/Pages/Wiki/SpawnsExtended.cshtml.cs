@@ -25,16 +25,16 @@ namespace DevilDaggersWebsite.Pages.Wiki
 		{
 			return RedirectToPage("/Wiki/Spawns");
 
-			SetGameVersion(gameVersion);
-			this.squidGushCount = MathUtils.Clamp(squidGushCount, 1, 25);
-			this.leviathanBeckonCount = MathUtils.Clamp(leviathanBeckonCount, 0, 25);
+			//SetGameVersion(gameVersion);
+			//this.squidGushCount = MathUtils.Clamp(squidGushCount, 1, 25);
+			//this.leviathanBeckonCount = MathUtils.Clamp(leviathanBeckonCount, 0, 25);
 
-			SpawnEventSettings = new SpawnEventSettings
-			{
-				SpawnsetPath = Path.Combine(_env.WebRootPath, "spawnsets", $"{this.gameVersion}_Sorath"),
-				SquidGushCount = this.squidGushCount,
-				LeviathanBeckonCount = this.leviathanBeckonCount
-			};
+			//SpawnEventSettings = new SpawnEventSettings
+			//{
+			//	SpawnsetPath = Path.Combine(_env.WebRootPath, "spawnsets", $"{this.gameVersion}_Sorath"),
+			//	SquidGushCount = this.squidGushCount,
+			//	LeviathanBeckonCount = this.leviathanBeckonCount
+			//};
 		}
 	}
 }

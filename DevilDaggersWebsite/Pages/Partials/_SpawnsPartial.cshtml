@@ -1,4 +1,5 @@
 ﻿@model string
+@inject DevilDaggersWebsite.Code.Database.ApplicationDbContext context
 @inject CoreBase.Services.ICommonObjects commonObjects
 @using DevilDaggersCore.Game
 @using DevilDaggersCore.Spawnsets
@@ -8,7 +9,7 @@
 @{
 	int[] widths = new int[4] { 160, 160, 144, 128 };
 
-	SpawnsetFile sf = SpawnsetUtils.CreateSpawnsetFileFromSettingsFile(commonObjects, Model);
+	SpawnsetFile sf = SpawnsetUtils.CreateSpawnsetFileFromSettingsFile(context, commonObjects, Model);
 	Spawnset spawnset;
 	using (FileStream fs = new FileStream(Model, FileMode.Open, FileAccess.Read))
 	{

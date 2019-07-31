@@ -1,6 +1,7 @@
 ﻿using CoreBase.Services;
 using DevilDaggersCore.Spawnsets;
 using DevilDaggersCore.Spawnsets.Web;
+using DevilDaggersWebsite.Code.Database;
 using DevilDaggersWebsite.Code.Utils;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.AspNetCore.Mvc.RazorPages;
@@ -15,10 +16,12 @@ namespace DevilDaggersWebsite.Pages
 
 		public Spawnset spawnset;
 
+		private readonly ApplicationDbContext _context;
 		public ICommonObjects CommonObjects { get; }
 
-		public SpawnsetModel(ICommonObjects commonObjects)
+		public SpawnsetModel(ApplicationDbContext context, ICommonObjects commonObjects)
 		{
+			_context = context;
 			CommonObjects = commonObjects;
 		}
 
@@ -27,7 +30,7 @@ namespace DevilDaggersWebsite.Pages
 			try
 			{
 				Query = HttpContext.Request.Query["spawnset"];
-				SpawnsetFile = SpawnsetUtils.CreateSpawnsetFileFromSettingsFile(CommonObjects, Path.Combine(CommonObjects.Env.WebRootPath, "spawnsets", Query));
+				SpawnsetFile = SpawnsetUtils.CreateSpawnsetFileFromSettingsFile(_context, CommonObjects, Path.Combine(CommonObjects.Env.WebRootPath, "spawnsets", Query));
 
 				using (FileStream fs = new FileStream(SpawnsetFile.Path, FileMode.Open, FileAccess.Read))
 					if (!Spawnset.TryParse(fs, out spawnset))
