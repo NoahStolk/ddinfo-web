@@ -8,19 +8,16 @@ using System.IO;
 using System.Net.Mime;
 using DevilDaggersCore.Spawnsets.Web;
 using DevilDaggersWebsite.Code.Utils;
-using DevilDaggersWebsite.Code.Database;
 
 namespace DevilDaggersWebsite.Pages.API
 {
 	[ApiFunction(Description = "Returns the list of available spawnsets on the site. Optional filtering can be done using the searchAuthor and searchName parameters.", ReturnType = MediaTypeNames.Application.Json)]
 	public class GetSpawnsetsModel : ApiPageModel
 	{
-		private readonly ApplicationDbContext _context;
 		private readonly ICommonObjects _commonObjects;
 
-		public GetSpawnsetsModel(ApplicationDbContext context, ICommonObjects commonObjects)
+		public GetSpawnsetsModel(ICommonObjects commonObjects)
 		{
-			_context = context;
 			_commonObjects = commonObjects;
 		}
 
@@ -36,7 +33,7 @@ namespace DevilDaggersWebsite.Pages.API
 
 			foreach (string spawnsetPath in Directory.GetFiles(Path.Combine(_commonObjects.Env.WebRootPath, "spawnsets")))
 			{
-				SpawnsetFile sf = SpawnsetUtils.CreateSpawnsetFileFromSettingsFile(_context, _commonObjects, spawnsetPath);
+				SpawnsetFile sf = SpawnsetUtils.CreateSpawnsetFileFromSettingsFile(_commonObjects, spawnsetPath);
 				if (!string.IsNullOrEmpty(searchAuthor) && !sf.Author.ToLower().Contains(searchAuthor.ToLower()) ||
 					!string.IsNullOrEmpty(searchName) && !sf.Name.ToLower().Contains(searchName.ToLower()))
 					continue;

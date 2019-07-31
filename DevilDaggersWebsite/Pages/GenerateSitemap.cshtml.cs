@@ -19,7 +19,7 @@ namespace DevilDaggersWebsite.Pages
 		{
 			SitemapUtils.ExcludePage("Admin_BanInfo");
 			SitemapUtils.ExcludePage("Admin_Index");
-			SitemapUtils.ExcludePage("API_DownloadSpawnset");
+			SitemapUtils.ExcludePage("API_GetCustomLeaderboards");
 			SitemapUtils.ExcludePage("API_GetDeaths");
 			SitemapUtils.ExcludePage("API_GetEnemies");
 			SitemapUtils.ExcludePage("API_GetGameVersions");

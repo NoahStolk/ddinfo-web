@@ -6,7 +6,6 @@ using DevilDaggersWebsite.Code.Utils;
 using DevilDaggersWebsite.Pages.API;
 using Microsoft.AspNetCore.Mvc.RazorPages;
 using NetBase.Utils;
-using Newtonsoft.Json;
 using System;
 using System.Collections.Generic;
 using System.IO;
@@ -16,7 +15,6 @@ namespace DevilDaggersWebsite.Pages
 {
 	public class SpawnsetsModel : PageModel
 	{
-		private readonly ApplicationDbContext _context;
 		private readonly ICommonObjects _commonObjects;
 
 		public PaginatedList<SpawnsetFile> PaginatedSpawnsetFiles;
@@ -39,9 +37,8 @@ namespace DevilDaggersWebsite.Pages
 		public int PageIndex { get; private set; }
 		public int TotalResults { get; private set; }
 
-		public SpawnsetsModel(ApplicationDbContext context, ICommonObjects commonObjects)
+		public SpawnsetsModel(ICommonObjects commonObjects)
 		{
-			_context = context;
 			_commonObjects = commonObjects;
 		}
 
@@ -54,8 +51,8 @@ namespace DevilDaggersWebsite.Pages
 
 			List<SpawnsetFile> spawnsetFiles = new List<SpawnsetFile>();
 
-			foreach (SpawnsetFile spawnset in new GetSpawnsetsModel(_context, _commonObjects).GetSpawnsets(SearchAuthor, SearchName))
-				spawnsetFiles.Add(SpawnsetUtils.CreateSpawnsetFileFromSettingsFile(_context, _commonObjects, Path.Combine(_commonObjects.Env.WebRootPath, "spawnsets", $"{spawnset.Name}_{spawnset.Author}")));
+			foreach (SpawnsetFile spawnset in new GetSpawnsetsModel(_commonObjects).GetSpawnsets(SearchAuthor, SearchName))
+				spawnsetFiles.Add(SpawnsetUtils.CreateSpawnsetFileFromSettingsFile(_commonObjects, Path.Combine(_commonObjects.Env.WebRootPath, "spawnsets", $"{spawnset.Name}_{spawnset.Author}")));
 
 			NameSort = sortOrder == "Name" ? "Name_asc" : "Name";
 			AuthorSort = sortOrder == "Author_asc" ? "Author" : "Author_asc";
