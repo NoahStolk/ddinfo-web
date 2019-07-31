@@ -50,38 +50,30 @@
 
 			double totalSeconds = 0;
 			int totalGems = 0;
-			List<Spawn> endLoop = new List<Spawn>();
+			int endLoopIndex = spawnset.GetEndLoopStartIndex();
 
-			foreach (Spawn spawn in spawnset.Spawns.Values)
+			foreach (Spawn spawn in spawnset.Spawns.Values.SkipLast(spawnset.Spawns.Count() - endLoopIndex))
 			{
-				endLoop.Add(spawn);
-				if (spawn.SpawnsetEnemy == Spawnset.Enemies[-1])
+				totalSeconds += spawn.Delay;
+				if (spawn.SpawnsetEnemy != Spawnset.Enemies[-1])
 				{
-					foreach (Spawn s in endLoop)
-					{
-						totalSeconds += s.Delay;
-						if (s.SpawnsetEnemy != Spawnset.Enemies[-1])
-						{
-							totalGems += s.SpawnsetEnemy.NoFarmGems;
+					totalGems += spawn.SpawnsetEnemy.NoFarmGems;
 
-							<div class="flex-container flex-center">
-								<div style="width: @(widths[0])px;" class="text-right">@totalSeconds.ToString("0.0000")</div>
-								<div style="width: @(widths[1])px;">@(s.SpawnsetEnemy.ToEnemy(gameVersion).GetLayoutAnchor())</div>
-								<div style="width: @(widths[2])px;" class="text-right">@s.SpawnsetEnemy.NoFarmGems</div>
-								<div style="width: @(widths[3])px;" class="text-right">@totalGems</div>
-							</div>
-						}
-					}
-					totalSeconds -= spawn.Delay;
-					endLoop.Clear();
-					endLoop.Add(spawn);
+					<div class="flex-container flex-center">
+						<div style="width: @(widths[0])px;" class="text-right">@totalSeconds.ToString("0.0000")</div>
+						<div style="width: @(widths[1])px;">@(spawn.SpawnsetEnemy.ToEnemy(gameVersion).GetLayoutAnchor())</div>
+						<div style="width: @(widths[2])px;" class="text-right">@spawn.SpawnsetEnemy.NoFarmGems</div>
+						<div style="width: @(widths[3])px;" class="text-right">@totalGems</div>
+					</div>
 				}
 			}
 
-			int spawns = spawnset.SpawnCount;
-			if (endLoop.Count != 1 || (endLoop.Count == 1 && endLoop[0].SpawnsetEnemy != Spawnset.Enemies[-1]))
+			List<Spawn> endLoop = spawnset.Spawns.Values.Skip(endLoopIndex).ToList();
+
+			if (endLoop.Where(s => s.SpawnsetEnemy != Spawnset.Enemies[-1]).Count() != 0)
 			{
-				double waveMod = 0;
+				int spawns = spawnset.Spawns.Where(s => s.Value.SpawnsetEnemy != Spawnset.Enemies[-1]).Count();
+
 				double endGameSecond = totalSeconds;
 				for (int i = 0; i < maxWaves; i++)
 				{
@@ -107,7 +99,7 @@
 						while (enemyTimer < delay)
 						{
 							endGameSecond += 1f / 60f;
-							enemyTimer += (1f / 60f) + waveMod;
+							enemyTimer += (1f / 60f) + (1f / 60f / 8f * i);
 						}
 
 						if (spawn.SpawnsetEnemy != Spawnset.Enemies[-1])
@@ -130,7 +122,6 @@
 							</div>
 						}
 					}
-					waveMod += 1f / 60f / 8f;
 				}
 			}
 
