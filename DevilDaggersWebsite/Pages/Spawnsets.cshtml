@@ -186,13 +186,12 @@
 
 	<h2>FAQ</h2>
 	<div class="faq-question">Can I get banned for using custom spawnsets?</div>
-	<div class="faq-answer">No, you can only get banned manually by the developer.</div>
+	<div class="faq-answer">No, you can only get banned manually by the developer for submitting illegitimate runs to the official leaderboard.</div>
 	<div class="faq-question">Can I override my real score using a custom spawnset?</div>
 	<div class="faq-answer">No, the game only uploads scores done with the original V3 spawnset.</div>
 	<div class="faq-question">The game doesn't submit my scores anymore even though I put the original survival file back in the dd folder. Why?</div>
 	<div class="faq-answer">
-		For some reason the game might still not upload your scores even if you placed the original V3 spawnset back in the folder.<br />
-		In order to fix this:<br />
+		In order to be absolutely certain that the survival file is verified, follow these steps:<br />
 		<ol>
 			<li>Go to your Steam library.</li>
 			<li>Right click on Devil Daggers.</li>
@@ -200,7 +199,7 @@
 			<li>Select the tab "Local files".</li>
 			<li>Click "Verify integrity of game files".</li>
 		</ol>
-		NOTE: This might be outdated. Just keep an eye out for the "score not submitted (error)" message. If you keep getting it even with the original file, do the steps above.
+		NOTE: Keep an eye out for the "Score not submitted (error)" message. This indicates that your currently active survival file is not accepted by the official leaderboard servers.
 	</div>
 	<div class="faq-question">How do I make my own spawnsets?</div>
 	<div class="faq-answer">Download <a asp-page="/Tools/DevilDaggersSurvivalEditor">DevilDaggersSurvivalEditor</a>.</div>
@@ -221,7 +220,7 @@
 	<ul>
 		<li>@RazorUtils.GetLayout("10 enemies can be spawned in the game. These are Squid I, Squid II, Centipede, Spider I, Leviathan, Gigapede, Squid III, Thorn, Spider II, and Ghostpede (respectively). The order is defined by the survival file structure. All enemies have a one-digit ID.", GameInfo.GameVersions[GameInfo.DEFAULT_GAME_VERSION])</li>
 		<li>Additionally, there is an EMPTY spawn with ID -1. This has no purpose except that the end loop starts after the last EMPTY spawn.</li>
-		<li>Every enemy type has a fixed amount of gems that it drops, this is why the application keeps track of gems so you can have a rough idea of when you will get upgrades (unless farming is done). It is recommended that you understand how <a asp-page="/Wiki/Upgrades">Hand Upgrades</a> work.</li>
+		<li>Every enemy type has a fixed amount of gems that it drops, this is why <a asp-page="/Tools/DevilDaggersSurvivalEditor">DDSE</a> keeps track of gems so you can have a rough idea of when you will get upgrades (unless farming is done). It is recommended that you understand how <a asp-page="/Wiki/Upgrades">Hand Upgrades</a> work.</li>
 		<li>Every spawn contains an enemy ID and a delay value. The enemy ID (-1 to 9) represents which enemy will be spawned. The delay value represents the amount of seconds between the current spawn and the previous spawn.</li>
 		<li>The delay value supports decimal values, even though the original spawnset in the game doesn't use this. This means you can spawn an enemy, for example at 4.5 seconds.</li>
 		<li>The end loop is the same set of spawns over and over again, faster every time. After every wave, each enemy spawns an added 12.5% faster.</li>
