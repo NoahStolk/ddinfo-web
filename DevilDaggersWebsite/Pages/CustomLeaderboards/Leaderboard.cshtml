@@ -1,5 +1,4 @@
 ﻿@page
-@using DevilDaggersCore.Game
 @using DevilDaggersCore.Spawnsets.Web
 @model DevilDaggersWebsite.Pages.CustomLeaderboards.LeaderboardModel
 @{
@@ -21,33 +20,40 @@
 		</p>
 
 		<div style="flex-direction: column; width: 200px; margin: auto;">
-			@{
-				@foreach (Dagger dagger in GameInfo.GetEntities<Dagger>())
+			@for (int i = 0; i < (Model.Leaderboard.Homing == 0 ? 4 : 5); i++)
+			{
+				string daggerName = "";
+				string seconds = "";
+				switch (i)
 				{
-					float seconds = 0;
-					switch (dagger.Name)
-					{
-						case "Bronze":
-							seconds = Model.Leaderboard.Bronze;
-							break;
-						case "Silver":
-							seconds = Model.Leaderboard.Silver;
-							break;
-						case "Golden":
-							seconds = Model.Leaderboard.Golden;
-							break;
-						case "Devil":
-							seconds = Model.Leaderboard.Devil;
-							break;
-						default:
-							continue;
-					}
-
-					<div class="flex-container" style="padding-bottom: 4px;">
-						<div><img src="~/Images/Daggers/@(dagger.Name)Small.png" /></div>
-						<div class="@dagger.Name.ToLower() text-right" style="width: 100%;">@seconds.ToString("0.0000")</div>
-					</div>
+					case 0:
+						daggerName = "Bronze";
+						seconds = Model.Leaderboard.Bronze.ToString("0.0000");
+						break;
+					case 1:
+						daggerName = "Silver";
+						seconds = Model.Leaderboard.Silver.ToString("0.0000");
+						break;
+					case 2:
+						daggerName = "Golden";
+						seconds = Model.Leaderboard.Golden.ToString("0.0000");
+						break;
+					case 3:
+						daggerName = "Devil";
+						seconds = Model.Leaderboard.Devil.ToString("0.0000");
+						break;
+					case 4:
+						daggerName = "Homing";
+						seconds = Model.Entries.Any(e => e.Time > Model.Leaderboard.Homing) ? Model.Leaderboard.Homing.ToString("0.0000") : "???";
+						break;
+					default:
+						continue;
 				}
+
+				<div class="flex-container" style="padding-bottom: 4px;">
+					<div><img src="~/Images/Daggers/@(daggerName)Small.png" /></div>
+					<div class="@daggerName.ToLower() text-right" style="width: 100%;">@seconds</div>
+				</div>
 			}
 		</div>
 

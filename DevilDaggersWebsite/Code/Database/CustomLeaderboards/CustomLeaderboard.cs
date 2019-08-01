@@ -10,6 +10,11 @@
 		public float Devil { get; set; }
 		public float Homing { get; set; }
 
+		/// <summary>
+		/// Returns the CSS class name corresponding to the time in seconds.
+		/// </summary>
+		/// <param name="time">The time in seconds.</param>
+		/// <returns>The CSS class name for the dagger.</returns>
 		public string GetDagger(float time)
 		{
 			if (time >= Homing && Homing > 0)
