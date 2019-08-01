@@ -157,7 +157,7 @@ namespace DevilDaggersWebsite.Pages.CustomLeaderboards
 				entry.LevelUpTime3 = levelUpTime3;
 				entry.LevelUpTime4 = levelUpTime4;
 				entry.SubmitDate = DateTime.Now;
-				entry.DDCLClientVersion = ddclClientVersion;
+				entry.ClientVersion = ddclClientVersion;
 
 				_context.SaveChanges();
 

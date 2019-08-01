@@ -23,7 +23,7 @@ namespace DevilDaggersWebsite.Code.Database.CustomLeaderboards
 		public float LevelUpTime3 { get; set; }
 		public float LevelUpTime4 { get; set; }
 		public DateTime SubmitDate { get; set; }
-		public string DDCLClientVersion { get; set; }
+		public string ClientVersion { get; set; }
 
 		public int CustomLeaderboardID { get; set; }
 
@@ -32,7 +32,7 @@ namespace DevilDaggersWebsite.Code.Database.CustomLeaderboards
 
 		public double Accuracy => ShotsFired == 0 ? 0 : ShotsHit / (double)ShotsFired;
 
-		public CustomEntry(int playerID, string username, float time, int gems, int kills, int deathType, int shotsHit, int shotsFired, int enemiesAlive, int homing, float levelUpTime2, float levelUpTime3, float levelUpTime4, DateTime submitDate, string ddclClientVersion)
+		public CustomEntry(int playerID, string username, float time, int gems, int kills, int deathType, int shotsHit, int shotsFired, int enemiesAlive, int homing, float levelUpTime2, float levelUpTime3, float levelUpTime4, DateTime submitDate, string clientVersion)
 		{
 			PlayerID = playerID;
 			Username = username;
@@ -48,7 +48,7 @@ namespace DevilDaggersWebsite.Code.Database.CustomLeaderboards
 			LevelUpTime3 = levelUpTime3;
 			LevelUpTime4 = levelUpTime4;
 			SubmitDate = submitDate;
-			DDCLClientVersion = ddclClientVersion;
+			ClientVersion = clientVersion;
 		}
 
 		public CustomEntry()
