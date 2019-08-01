@@ -7,7 +7,7 @@ using System.Net.Mime;
 
 namespace DevilDaggersWebsite.Pages.API
 {
-	[ApiFunction(Description = "Returns the list of all available custom leaderboards.", ReturnType = MediaTypeNames.Application.Json)]
+	[ApiFunction(Description = "Returns the list of all available custom leaderboards on the site.", ReturnType = MediaTypeNames.Application.Json)]
 	public class GetCustomLeaderboardsModel : ApiPageModel
 	{
 		private readonly ApplicationDbContext _context;

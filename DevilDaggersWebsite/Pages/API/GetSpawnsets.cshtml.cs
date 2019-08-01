@@ -28,7 +28,6 @@ namespace DevilDaggersWebsite.Pages.API
 
 		public List<SpawnsetFile> GetSpawnsets(string searchAuthor = null, string searchName = null)
 		{
-			// TODO: Use LINQ?
 			List<SpawnsetFile> spawnsets = new List<SpawnsetFile>();
 
 			foreach (string spawnsetPath in Directory.GetFiles(Path.Combine(_commonObjects.Env.WebRootPath, "spawnsets")))

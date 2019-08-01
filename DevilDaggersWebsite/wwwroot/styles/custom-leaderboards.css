@@ -1,3 +1,10 @@
 ﻿th, td {
 	padding-left: 8px;
 }
+
+.leaderboard-username {
+	max-width: 84px;
+	max-height: 1.42857143em;
+	overflow: hidden;
+	white-space: nowrap;
+}

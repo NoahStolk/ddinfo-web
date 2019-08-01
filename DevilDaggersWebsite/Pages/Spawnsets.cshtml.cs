@@ -1,7 +1,6 @@
 ﻿using CoreBase;
 using CoreBase.Services;
 using DevilDaggersCore.Spawnsets.Web;
-using DevilDaggersWebsite.Code.Database;
 using DevilDaggersWebsite.Code.Utils;
 using DevilDaggersWebsite.Pages.API;
 using Microsoft.AspNetCore.Mvc.RazorPages;
@@ -17,7 +16,7 @@ namespace DevilDaggersWebsite.Pages
 	{
 		private readonly ICommonObjects _commonObjects;
 
-		public PaginatedList<SpawnsetFile> PaginatedSpawnsetFiles;
+		public PaginatedList<SpawnsetFile> PaginatedSpawnsetFiles { get; set; }
 
 		public string SearchAuthor { get; set; }
 		public string SearchName { get; set; }
