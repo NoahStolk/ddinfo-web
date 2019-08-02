@@ -43,21 +43,23 @@
 				List<string> optionalParameters = new List<string>();
 				foreach (ParameterInfo pInfo in api.Parameters)
 				{
+					Type underlyingType = Nullable.GetUnderlyingType(pInfo.ParameterType);
+					string type = underlyingType != null ? $"Nullable&lt;{underlyingType.Name}&gt;" : pInfo.ParameterType.Name;
 					if (pInfo.IsOptional)
 					{
-						optionalParameters.Add(pInfo.Name);
+						optionalParameters.Add($"<span class='api-parameter-optional'>{pInfo.Name}</span> (<span class='api-parameter-type'>{type}</span>)");
 					}
 					else
 					{
-						parameters.Add(pInfo.Name);
+						parameters.Add($"<span class='api-parameter'>{pInfo.Name}</span> (<span class='api-parameter-type'>{type}</span>)");
 					}
 				}
 				<div class="row" style="@(i % 2 == 0 ? "background-color: #111;" : "")">
 					<div class="col-lg-2 col-md-2 col-sm-3 col-xs-3"><a asp-page=@api.Name class="dont-break-out">@api.Name</a></div>
 					<div class="col-lg-4 col-md-6 col-sm-9 col-xs-9">@api.FormattedDescription</div>
 					<div class="col-lg-2 col-md-2 hidden-sm hidden-xs">@api.Attribute.ReturnType</div>
-					<div class="col-lg-2 col-md-2 hidden-sm hidden-xs api-parameter">@(parameters.Count != 0 ? Html.Raw(string.Join(", ", parameters)) : RazorUtils.NAString)</div>
-					<div class="col-lg-2 hidden-md hidden-sm hidden-xs api-parameter-optional">@(optionalParameters.Count != 0 ? Html.Raw(string.Join(", ", optionalParameters)) : RazorUtils.NAString)</div>
+					<div class="col-lg-2 col-md-2 hidden-sm hidden-xs">@(parameters.Count != 0 ? Html.Raw(string.Join(", ", parameters)) : RazorUtils.NAString)</div>
+					<div class="col-lg-2 hidden-md hidden-sm hidden-xs">@(optionalParameters.Count != 0 ? Html.Raw(string.Join(", ", optionalParameters)) : RazorUtils.NAString)</div>
 				</div>
 				i++;
 			}
@@ -96,6 +98,14 @@
 			</div>
 			<div class="col-xs-8">
 				Returns the spawnset with the name "V3_Sorath".
+			</div>
+		</div>
+		<div class="row">
+			<div class="col-xs-4">
+				<a asp-page="GetEnemies" asp-route-gameVersion="V2" class="dont-break-out">API/GetEnemies?gameVersion=V2</a>
+			</div>
+			<div class="col-xs-8">
+				Returns all Enemy objects found in V2.
 			</div>
 		</div>
 	</div>
