@@ -1,8 +1,12 @@
-﻿using DevilDaggersWebsite.Code.API;
+﻿using DevilDaggersCore.CustomLeaderboards;
+using DevilDaggersWebsite.Code.API;
 using DevilDaggersWebsite.Code.Database;
+using DevilDaggersWebsite.Code.Database.CustomLeaderboards;
 using DevilDaggersWebsite.Code.PageModels;
 using Microsoft.AspNetCore.Mvc;
 using Newtonsoft.Json;
+using System.Collections.Generic;
+using System.Linq;
 using System.Net.Mime;
 
 namespace DevilDaggersWebsite.Pages.API
@@ -19,7 +23,20 @@ namespace DevilDaggersWebsite.Pages.API
 
 		public FileResult OnGet(bool formatted = false)
         {
-			return JsonFile(_context.CustomLeaderboards, formatted ? Formatting.Indented : Formatting.None);
+			List<CustomLeaderboardBase> leaderboards = new List<CustomLeaderboardBase>();
+			foreach (CustomLeaderboard leaderboard in _context.CustomLeaderboards)
+				leaderboards.Add(new CustomLeaderboardBase(
+					leaderboard.SpawnsetFileName,
+					leaderboard.Bronze,
+					leaderboard.Silver,
+					leaderboard.Golden,
+					leaderboard.Devil,
+					leaderboard.Homing == 0 ? 0 :
+					_context.CustomEntries
+						.Where(e => e.CustomLeaderboard == leaderboard)
+						.Any(e => e.Time > leaderboard.Homing) ? leaderboard.Homing : -1));
+
+			return JsonFile(leaderboards, formatted ? Formatting.Indented : Formatting.None);
         }
     }
 }
