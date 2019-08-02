@@ -28,7 +28,7 @@
 	</div>
 	@{
 		TimeSpan total = DateTime.Now - GameInfo.GameVersions["V1"].ReleaseDate;
-		Entry wr = new GetWorldRecordsModel(CommonObjects).GetWorldRecords(DateTime.Now).FirstOrDefault().Value;
+		Entry wr = new GetWorldRecordsModel(CommonObjects).GetWorldRecords(DateTime.Now).FirstOrDefault().Entry;
 		foreach (WorldRecordHolder wrh in Model.WorldRecordHolders)
 		{
 			int days = (int)Math.Round(wrh.TimeHeld.TotalDays);

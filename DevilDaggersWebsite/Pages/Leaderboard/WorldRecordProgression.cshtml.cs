@@ -22,43 +22,31 @@ namespace DevilDaggersWebsite.Pages.Leaderboard
 
 		public void OnGet()
 		{
-			SortedDictionary<DateTime, Entry> worldRecords = new GetWorldRecordsModel(_commonObjects).GetWorldRecords();
-
-			List<Tuple<int, DateTime, Entry>> worldRecordsFiltered = new List<Tuple<int, DateTime, Entry>>();
+			List<WorldRecord> worldRecords = new GetWorldRecordsModel(_commonObjects).GetWorldRecords().Where(w => w.DateTime >= GameInfo.GameVersions["V1"].ReleaseDate).ToList();
 
 			int i = 0;
-			foreach (KeyValuePair<DateTime, Entry> kvp in worldRecords)
-			{
-				if (kvp.Key < GameInfo.GameVersions["V1"].ReleaseDate)
-					continue;
-
-				worldRecordsFiltered.Add(Tuple.Create(i, kvp.Key, kvp.Value));
-				i++;
-			}
-
-			i = 0;
-			foreach (Tuple<int, DateTime, Entry> tuple in worldRecordsFiltered)
+			foreach (WorldRecord wr in worldRecords)
 			{
 				TimeSpan diff;
 				DateTime lastHeld;
-				if (i == worldRecordsFiltered.Count - 1)
+				if (i == worldRecords.Count - 1)
 				{
-					diff = DateTime.Now - tuple.Item2;
+					diff = DateTime.Now - wr.DateTime;
 					lastHeld = DateTime.Now;
 				}
 				else
 				{
-					diff = worldRecordsFiltered.Where(t => t.Item1 == i + 1).FirstOrDefault().Item2 - tuple.Item2;
-					lastHeld = worldRecordsFiltered.Where(t => t.Item1 == i + 1).FirstOrDefault().Item2;
+					diff = worldRecords[i + 1].DateTime - wr.DateTime;
+					lastHeld = worldRecords[i + 1].DateTime;
 				}
 				i++;
 
 				bool added = false;
 				foreach (WorldRecordHolder w in WorldRecordHolders)
 				{
-					if (w.ID == tuple.Item3.ID)
+					if (w.ID == wr.Entry.ID)
 					{
-						w.Username = tuple.Item3.Username;
+						w.Username = wr.Entry.Username;
 						w.TimeHeld += diff;
 						w.LastHeld = lastHeld;
 						added = true;
@@ -67,9 +55,7 @@ namespace DevilDaggersWebsite.Pages.Leaderboard
 				}
 
 				if (!added)
-				{
-					WorldRecordHolders.Add(new WorldRecordHolder(tuple.Item3.ID, tuple.Item3.Username, diff, lastHeld));
-				}
+					WorldRecordHolders.Add(new WorldRecordHolder(wr.Entry.ID, wr.Entry.Username, diff, lastHeld));
 			}
 
 			WorldRecordHolders = WorldRecordHolders.OrderByDescending(wrh => wrh.TimeHeld).ToList();

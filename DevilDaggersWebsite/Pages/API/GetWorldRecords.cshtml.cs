@@ -29,11 +29,11 @@ namespace DevilDaggersWebsite.Pages.API
 			return JsonFile(GetWorldRecords(date), formatted ? Formatting.Indented : Formatting.None);
 		}
 
-		public SortedDictionary<DateTime, Entry> GetWorldRecords(DateTime? date = null)
+		public List<WorldRecord> GetWorldRecords(DateTime? date = null)
 		{
 			bool dateValid = date != null && date > GameInfo.GameVersions["V1"].ReleaseDate && date <= DateTime.Now;
 
-			SortedDictionary<DateTime, Entry> data = new SortedDictionary<DateTime, Entry>();
+			List<WorldRecord> data = new List<WorldRecord>();
 
 			int worldRecord = 0;
 			foreach (string leaderboardHistoryPath in Directory.GetFiles(Path.Combine(_commonObjects.Env.WebRootPath, "leaderboard-history"), "*.json"))
@@ -44,16 +44,12 @@ namespace DevilDaggersWebsite.Pages.API
 					worldRecord = leaderboard.Entries[0].Time;
 					if (dateValid)
 					{
-						// Ugly and could be optimised but whatever
 						if (LeaderboardHistoryUtils.HistoryJsonFileNameToDateTime(Path.GetFileNameWithoutExtension(leaderboardHistoryPath)) > date)
 							break;
 						data.Clear();
-						data[leaderboard.DateTime] = leaderboard.Entries[0];
 					}
-					else
-					{
-						data[leaderboard.DateTime] = leaderboard.Entries[0];
-					}
+
+					data.Add(new WorldRecord(leaderboard.DateTime, leaderboard.Entries[0]));
 				}
 			}
 

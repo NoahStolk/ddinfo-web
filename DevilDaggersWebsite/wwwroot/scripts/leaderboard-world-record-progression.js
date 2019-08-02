@@ -16,8 +16,8 @@ $.getJSON("/API/GetGameVersions", function (data) {
 
 $.getJSON("/API/GetWorldRecords", function (data) {
 	var wrs = [];
-	$.each(data, function (key, val) {
-		var date = new Date(key);
+	$.each(data, function (key, worldRecord) {
+		var date = new Date(worldRecord.DateTime);
 
 		var version = 0;
 		for (var i = Object.keys(gameVersions).length; i > 0; i--) {
@@ -28,17 +28,17 @@ $.getJSON("/API/GetWorldRecords", function (data) {
 		}
 		var death;
 		for (var j = 0; j < deathTypes[version].length; j++) {
-			if (deathTypes[version][j].DeathType === val.DeathType) {
+			if (deathTypes[version][j].DeathType === worldRecord.Entry.DeathType) {
 				death = deathTypes[version][j];
 				break;
 			}
 		}
 
-		var accuracy = val.ShotsHit / val.ShotsFired * 100;
+		var accuracy = worldRecord.Entry.ShotsHit / worldRecord.Entry.ShotsFired * 100;
 		if (isNaN(accuracy))
 			accuracy = 0;
 
-		wrs.push([date, val.Time / 10000, val.Username, val.Gems === 0 ? "?" : val.Gems.toFixed(0), val.Kills === 0 ? "?" : val.Kills.toFixed(0), accuracy === 0 ? "?" : accuracy.toFixed(2) + "%", death.ColorCode, death.Name]);
+		wrs.push([date, worldRecord.Entry.Time / 10000, worldRecord.Entry.Username, worldRecord.Entry.Gems === 0 ? "?" : worldRecord.Entry.Gems.toFixed(0), worldRecord.Entry.Kills === 0 ? "?" : worldRecord.Entry.Kills.toFixed(0), accuracy === 0 ? "?" : accuracy.toFixed(2) + "%", death.ColorCode, death.Name]);
 	});
 
 	$.jqplot("world-record-progression-chart", [wrs], {
