@@ -1,4 +1,5 @@
-﻿using DevilDaggersCore.Game;
+﻿using DevilDaggersCore.CustomLeaderboards;
+using DevilDaggersCore.Game;
 using Microsoft.AspNetCore.Html;
 using System;
 using System.ComponentModel.DataAnnotations.Schema;
@@ -6,52 +7,17 @@ using System.Web;
 
 namespace DevilDaggersWebsite.Code.Database.CustomLeaderboards
 {
-	public class CustomEntry
+	public class CustomEntry : CustomEntryBase
 	{
 		public int ID { get; set; }
-		public int PlayerID { get; set; }
-		public string Username { get; set; }
-		public float Time { get; set; }
-		public int Gems { get; set; }
-		public int Kills { get; set; }
-		public int DeathType { get; set; }
-		public int ShotsHit { get; set; }
-		public int ShotsFired { get; set; }
-		public int EnemiesAlive { get; set; }
-		public int Homing { get; set; }
-		public float LevelUpTime2 { get; set; }
-		public float LevelUpTime3 { get; set; }
-		public float LevelUpTime4 { get; set; }
-		public DateTime SubmitDate { get; set; }
-		public string ClientVersion { get; set; }
 
 		public int CustomLeaderboardID { get; set; }
 
 		[ForeignKey("CustomLeaderboardID")]
 		public CustomLeaderboard CustomLeaderboard { get; set; }
 
-		public double Accuracy => ShotsFired == 0 ? 0 : ShotsHit / (double)ShotsFired;
-
 		public CustomEntry(int playerID, string username, float time, int gems, int kills, int deathType, int shotsHit, int shotsFired, int enemiesAlive, int homing, float levelUpTime2, float levelUpTime3, float levelUpTime4, DateTime submitDate, string clientVersion)
-		{
-			PlayerID = playerID;
-			Username = username;
-			Time = time;
-			Gems = gems;
-			Kills = kills;
-			DeathType = deathType;
-			ShotsHit = shotsHit;
-			ShotsFired = shotsFired;
-			EnemiesAlive = enemiesAlive;
-			Homing = homing;
-			LevelUpTime2 = levelUpTime2;
-			LevelUpTime3 = levelUpTime3;
-			LevelUpTime4 = levelUpTime4;
-			SubmitDate = submitDate;
-			ClientVersion = clientVersion;
-		}
-
-		public CustomEntry()
+			: base(playerID, username, time, gems, kills, deathType, shotsHit, shotsFired, enemiesAlive, homing, levelUpTime2, levelUpTime3, levelUpTime4, submitDate, clientVersion)
 		{
 		}
 

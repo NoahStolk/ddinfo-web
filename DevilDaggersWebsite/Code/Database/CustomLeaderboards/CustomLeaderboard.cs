@@ -1,14 +1,15 @@
-﻿namespace DevilDaggersWebsite.Code.Database.CustomLeaderboards
+﻿using DevilDaggersCore.CustomLeaderboards;
+
+namespace DevilDaggersWebsite.Code.Database.CustomLeaderboards
 {
-	public class CustomLeaderboard
+	public class CustomLeaderboard : CustomLeaderboardBase
 	{
 		public int ID { get; set; }
-		public string SpawnsetFileName { get; set; }
-		public float Bronze { get; set; }
-		public float Silver { get; set; }
-		public float Golden { get; set; }
-		public float Devil { get; set; }
-		public float Homing { get; set; }
+
+		public CustomLeaderboard(string spawnsetFileName, float bronze, float silver, float golden, float devil, float homing)
+			: base(spawnsetFileName, bronze, silver, golden, devil, homing)
+		{
+		}
 
 		/// <summary>
 		/// Returns the CSS class name corresponding to the time in seconds.
