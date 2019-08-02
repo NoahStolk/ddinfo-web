@@ -46,6 +46,24 @@
 			</div>
 		}
 	}
+
+	<h2>World records by time lasted</h2>
+	<div class="row">
+		<div class="text-bold col-lg-3 col-md-4 col-sm-4 col-xs-4">Username</div>
+		<div class="text-bold col-lg-3 col-md-4 col-sm-4 col-xs-4">Time</div>
+		<div class="text-bold col-lg-3 col-md-4 col-sm-4 col-xs-4">Lasted</div>
+	</div>
+	@{
+		foreach (KeyValuePair<WorldRecord, TimeSpan> kvp in Model.WorldRecords.OrderByDescending(w => w.Value))
+		{
+			int days = (int)Math.Round(kvp.Value.TotalDays);
+			<div class="row">
+				<div class="col-lg-3 col-md-4 col-sm-4 col-xs-4">@Model.WorldRecordHolders.Where(w => w.ID == kvp.Key.Entry.ID).FirstOrDefault().Username</div>
+				<div class="col-lg-3 col-md-4 col-sm-4 col-xs-4">@((kvp.Key.Entry.Time / 10000f).ToString("0.0000"))</div>
+				<div class="col-lg-3 col-md-4 col-sm-4 col-xs-4">@(days) @($"day{(days == 1 ? "" : "s")}")</div>
+			</div>
+		}
+	}
 </main>
 
 @section Scripts {
