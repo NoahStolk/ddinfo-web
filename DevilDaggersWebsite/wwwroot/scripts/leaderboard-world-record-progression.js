@@ -41,7 +41,7 @@ $.getJSON("/API/GetWorldRecords", function (data) {
 		wrs.push([date, worldRecord.Entry.Time / 10000, worldRecord.Entry.Username, worldRecord.Entry.Gems === 0 ? "?" : worldRecord.Entry.Gems.toFixed(0), worldRecord.Entry.Kills === 0 ? "?" : worldRecord.Entry.Kills.toFixed(0), accuracy === 0 ? "?" : accuracy.toFixed(2) + "%", death.ColorCode, death.Name]);
 	});
 
-	$.jqplot("world-record-progression-chart", [wrs], {
+	var chart = $.jqplot("world-record-progression-chart", [wrs], {
 		axes: {
 			xaxis: {
 				renderer: $.jqplot.DateAxisRenderer,
@@ -133,6 +133,10 @@ $.getJSON("/API/GetWorldRecords", function (data) {
 					}
 				}
 			]
-		} 
+		}
+	});
+
+	$(window).resize(function () {
+		chart.replot();
 	});
 });
