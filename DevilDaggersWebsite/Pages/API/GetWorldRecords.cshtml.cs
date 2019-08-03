@@ -31,7 +31,7 @@ namespace DevilDaggersWebsite.Pages.API
 
 		public List<WorldRecord> GetWorldRecords(DateTime? date = null)
 		{
-			bool isDateParameterValid = date != null && date > GameInfo.GameVersions["V1"].ReleaseDate && date <= DateTime.Now;
+			bool isDateParameterValid = date != null && date >= GameInfo.GameVersions["V1"].ReleaseDate && date <= DateTime.Now;
 
 			List<WorldRecord> data = new List<WorldRecord>();
 
@@ -49,7 +49,8 @@ namespace DevilDaggersWebsite.Pages.API
 						data.Clear();
 					}
 
-					data.Add(new WorldRecord(leaderboard.DateTime, leaderboard.Entries[0]));
+					if (leaderboard.DateTime >= GameInfo.GameVersions["V1"].ReleaseDate)
+						data.Add(new WorldRecord(leaderboard.DateTime, leaderboard.Entries[0]));
 				}
 			}
 

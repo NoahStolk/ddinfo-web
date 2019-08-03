@@ -10,8 +10,8 @@ namespace DevilDaggersWebsite.Pages.API
 {
 	public class IndexModel : PageModel
 	{
-		public List<ApiFunction> ApiFunctions = new List<ApiFunction>();
-		public List<ApiFunction> ApiFunctionsDeprecated = new List<ApiFunction>();
+		public List<ApiFunction> ApiFunctions { get; private set; } = new List<ApiFunction>();
+		public List<ApiFunction> ApiFunctionsDeprecated { get; private set; } = new List<ApiFunction>();
 
 		public void OnGet()
 		{
