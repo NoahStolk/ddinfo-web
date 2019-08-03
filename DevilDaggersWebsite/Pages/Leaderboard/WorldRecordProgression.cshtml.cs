@@ -26,9 +26,11 @@ namespace DevilDaggersWebsite.Pages.Leaderboard
 		{
 			List<WorldRecord> worldRecords = new GetWorldRecordsModel(_commonObjects).GetWorldRecords().Where(w => w.DateTime >= GameInfo.GameVersions["V1"].ReleaseDate).ToList();
 
+			TimeSpan heldConsecutively = new TimeSpan();
 			for (int i = 0; i < worldRecords.Count; i++)
 			{
 				WorldRecord wr = worldRecords[i];
+
 				TimeSpan difference;
 				DateTime lastHeld;
 				if (i == worldRecords.Count - 1)
@@ -42,6 +44,11 @@ namespace DevilDaggersWebsite.Pages.Leaderboard
 					lastHeld = worldRecords[i + 1].DateTime;
 				}
 
+				if (i != 0 && wr.Entry.ID != worldRecords[i - 1].Entry.ID)
+					heldConsecutively = new TimeSpan();
+
+				heldConsecutively += difference;
+
 				WorldRecords[wr] = difference;
 
 				bool added = false;
@@ -50,7 +57,10 @@ namespace DevilDaggersWebsite.Pages.Leaderboard
 					if (wrh.ID == wr.Entry.ID)
 					{
 						wrh.Username = wr.Entry.Username;
-						wrh.TimeHeld += difference;
+						wrh.TotalTimeHeld += difference;
+						if (heldConsecutively > wrh.LongestTimeHeldConsecutively)
+							wrh.LongestTimeHeldConsecutively = heldConsecutively;
+						wrh.WorldRecordCount++;
 						wrh.LastHeld = lastHeld;
 						added = true;
 						break;
@@ -58,10 +68,10 @@ namespace DevilDaggersWebsite.Pages.Leaderboard
 				}
 
 				if (!added)
-					WorldRecordHolders.Add(new WorldRecordHolder(wr.Entry.ID, wr.Entry.Username, difference, lastHeld));
+					WorldRecordHolders.Add(new WorldRecordHolder(wr.Entry.ID, wr.Entry.Username, difference, heldConsecutively, 1, lastHeld));
 			}
 
-			WorldRecordHolders = WorldRecordHolders.OrderByDescending(wrh => wrh.TimeHeld).ToList();
+			WorldRecordHolders = WorldRecordHolders.OrderByDescending(wrh => wrh.TotalTimeHeld).ToList();
 		}
 	}
 }

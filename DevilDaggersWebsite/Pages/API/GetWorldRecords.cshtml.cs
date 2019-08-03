@@ -14,7 +14,7 @@ using System.Net.Mime;
 
 namespace DevilDaggersWebsite.Pages.API
 {
-	[ApiFunction(Description = "Returns the world record found in the leaderboard history section of the site at the time of the given date parameter (format: yyyy-MM-dd). Returns all the world records if no date parameter was specified or if the parameter was incorrect.", ReturnType = MediaTypeNames.Application.Json)]
+	[ApiFunction(Description = "Returns the world record found in the leaderboard history section of the site at the time of the given date parameter. Returns all the world records if no date parameter was specified or if the parameter was incorrect.", ReturnType = MediaTypeNames.Application.Json)]
 	public class GetWorldRecordsModel : ApiPageModel
 	{
 		private readonly ICommonObjects _commonObjects;
@@ -31,7 +31,7 @@ namespace DevilDaggersWebsite.Pages.API
 
 		public List<WorldRecord> GetWorldRecords(DateTime? date = null)
 		{
-			bool dateValid = date != null && date > GameInfo.GameVersions["V1"].ReleaseDate && date <= DateTime.Now;
+			bool isDateParameterValid = date != null && date > GameInfo.GameVersions["V1"].ReleaseDate && date <= DateTime.Now;
 
 			List<WorldRecord> data = new List<WorldRecord>();
 
@@ -42,7 +42,7 @@ namespace DevilDaggersWebsite.Pages.API
 				if (leaderboard.Entries[0].Time != worldRecord)
 				{
 					worldRecord = leaderboard.Entries[0].Time;
-					if (dateValid)
+					if (isDateParameterValid)
 					{
 						if (LeaderboardHistoryUtils.HistoryJsonFileNameToDateTime(Path.GetFileNameWithoutExtension(leaderboardHistoryPath)) > date)
 							break;

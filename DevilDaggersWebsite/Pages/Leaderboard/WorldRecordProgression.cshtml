@@ -22,27 +22,33 @@
 
 	<h2>World record holders</h2>
 	<div class="row">
-		<div class="text-bold col-lg-3 col-md-4 col-sm-4 col-xs-4">Username</div>
-		<div class="text-bold col-lg-3 col-md-4 col-sm-4 col-xs-4">Total time held</div>
-		<div class="text-bold col-lg-3 col-md-4 col-sm-4 col-xs-4">Last held</div>
+		<div class="text-bold col-lg-2 col-md-2 col-sm-2 col-xs-2">Username</div>
+		<div class="text-bold col-lg-2 col-md-2 col-sm-2 col-xs-2">Total time held</div>
+		<div class="text-bold col-lg-2 col-md-2 col-sm-2 col-xs-2">Longest time held consecutively</div>
+		<div class="text-bold col-lg-2 col-md-2 col-sm-2 col-xs-2">Count</div>
+		<div class="text-bold col-lg-2 col-md-2 col-sm-2 col-xs-2">Last held</div>
 	</div>
 	@{
 		TimeSpan total = DateTime.Now - GameInfo.GameVersions["V1"].ReleaseDate;
 		Entry wr = new GetWorldRecordsModel(CommonObjects).GetWorldRecords(DateTime.Now).FirstOrDefault().Entry;
 		foreach (WorldRecordHolder wrh in Model.WorldRecordHolders)
 		{
-			int days = (int)Math.Round(wrh.TimeHeld.TotalDays);
+			int days = (int)Math.Round(wrh.TotalTimeHeld.TotalDays);
 			int daysAgo = (int)Math.Round((DateTime.Now - wrh.LastHeld).TotalDays);
+			int daysConsecutively = (int)Math.Round(wrh.LongestTimeHeldConsecutively.TotalDays);
 
-			string timeHeld = $"{days} day{(days == 1 ? "" : "s")} ({(wrh.TimeHeld / total).ToString("00.000%")})";
+			string timeHeld = $"{days} day{(days == 1 ? "" : "s")} ({(wrh.TotalTimeHeld / total).ToString("00.00%")})";
 
 			Entry current = await new GetUserByIDModel().GetUserByID(wrh.ID);
 			string lastHeld = wr.Time == current.Time ? "Current holder" : $"{wrh.LastHeld.ToString("MMM dd")} '{wrh.LastHeld.ToString("yy")} ({daysAgo} day{(daysAgo == 1 ? "" : "s")} ago)";
+			string heldConsecutively = $"{daysConsecutively} day{(daysConsecutively == 1 ? "" : "s")}";
 
 			<div class="row">
-				<div class="col-lg-3 col-md-4 col-sm-4 col-xs-4">@wrh.Username</div>
-				<div class="col-lg-3 col-md-4 col-sm-4 col-xs-4">@timeHeld</div>
-				<div class="col-lg-3 col-md-4 col-sm-4 col-xs-4">@lastHeld</div>
+				<div class="col-lg-2 col-md-2 col-sm-2 col-xs-2">@wrh.Username</div>
+				<div class="col-lg-2 col-md-2 col-sm-2 col-xs-2">@timeHeld</div>
+				<div class="col-lg-2 col-md-2 col-sm-2 col-xs-2">@heldConsecutively</div>
+				<div class="col-lg-2 col-md-2 col-sm-2 col-xs-2">@wrh.WorldRecordCount</div>
+				<div class="col-lg-2 col-md-2 col-sm-2 col-xs-2">@lastHeld</div>
 			</div>
 		}
 	}
@@ -57,10 +63,11 @@
 		foreach (KeyValuePair<WorldRecord, TimeSpan> kvp in Model.WorldRecords.OrderByDescending(w => w.Value))
 		{
 			int days = (int)Math.Round(kvp.Value.TotalDays);
+			string daysString = days == 0 ? "Less than 1 day" : days == 1 ? "1 day" : $"{days} days";
 			<div class="row">
 				<div class="col-lg-3 col-md-4 col-sm-4 col-xs-4">@Model.WorldRecordHolders.Where(w => w.ID == kvp.Key.Entry.ID).FirstOrDefault().Username</div>
-				<div class="col-lg-3 col-md-4 col-sm-4 col-xs-4">@((kvp.Key.Entry.Time / 10000f).ToString("0.0000"))</div>
-				<div class="col-lg-3 col-md-4 col-sm-4 col-xs-4">@(days) @($"day{(days == 1 ? "" : "s")}")</div>
+				<div class="col-lg-3 col-md-4 col-sm-4 col-xs-4">@((kvp.Key.Entry.Time / 10000.0).ToString("0.0000"))</div>
+				<div class="col-lg-3 col-md-4 col-sm-4 col-xs-4">@daysString</div>
 			</div>
 		}
 	}

@@ -11,16 +11,16 @@
 <h1>@ViewData["Title"]</h1>
 
 <main role="main">
-	<p class="text-center">
+	<p>
 		This is the main page for the API for DevilDaggers.info.
 		All API functions currently available can be found here.
 	</p>
-	<p class="text-center">
+	<p>
 		I mainly set this up so I could easily communicate with the website through external environments, such as within <a asp-page="/Tools/DevilDaggersSurvivalEditor">DevilDaggersSurvivalEditor</a>.
 		However, this is a public API; feel free to use it for any tool or application you've made yourself.
 		I'd also be happy to implement more functions should anyone need it, so let me know if you have any requests.
 	</p>
-	<p class="text-center">
+	<p>
 		This table is automatically generated and will always be up to date.
 	</p>
 
@@ -44,7 +44,7 @@
 				foreach (ParameterInfo pInfo in api.Parameters)
 				{
 					Type underlyingType = Nullable.GetUnderlyingType(pInfo.ParameterType);
-					string type = underlyingType != null ? $"Nullable&lt;{underlyingType.Name}&gt;" : pInfo.ParameterType.Name;
+					string type = underlyingType != null ? underlyingType.Name : pInfo.ParameterType.Name;
 					if (pInfo.IsOptional)
 					{
 						optionalParameters.Add($"<span class='api-parameter-optional'>{pInfo.Name}</span> (<span class='api-parameter-type'>{type}</span>)");
@@ -54,7 +54,7 @@
 						parameters.Add($"<span class='api-parameter'>{pInfo.Name}</span> (<span class='api-parameter-type'>{type}</span>)");
 					}
 				}
-				<div class="row" style="@(i % 2 == 0 ? "background-color: #111;" : "")">
+				<div class="row">
 					<div class="col-lg-2 col-md-2 col-sm-3 col-xs-3"><a asp-page=@api.Name class="dont-break-out">@api.Name</a></div>
 					<div class="col-lg-4 col-md-6 col-sm-9 col-xs-9">@api.FormattedDescription</div>
 					<div class="col-lg-2 col-md-2 hidden-sm hidden-xs">@api.Attribute.ReturnType</div>
@@ -64,6 +64,68 @@
 				i++;
 			}
 		}
+	</div>
+
+	<h2>Datatypes</h2>
+	<p>
+		This website is written in ASP.NET Core, so all datatypes used in the API are correspondent to the System types from .NET (C#).
+	</p>
+	<div class="api-list">
+		<div class="row text-bold">
+			<div class="col-xs-4">
+				Datatype
+			</div>
+			<div class="col-xs-6">
+				Explanation
+			</div>
+			<div class="col-xs-2">
+				Case-sensitive
+			</div>
+		</div>
+		<div class="row">
+			<div class="col-xs-4 api-parameter-type">
+				String
+			</div>
+			<div class="col-xs-6">
+				Represents text as a sequence of UTF-16 code units.
+			</div>
+			<div class="col-xs-2">
+				Yes
+			</div>
+		</div>
+		<div class="row">
+			<div class="col-xs-4 api-parameter-type">
+				Int32
+			</div>
+			<div class="col-xs-6">
+				Represents a 32-bit signed integer.
+			</div>
+			<div class="col-xs-2">
+				@RazorUtils.NAString
+			</div>
+		</div>
+		<div class="row">
+			<div class="col-xs-4 api-parameter-type">
+				Boolean
+			</div>
+			<div class="col-xs-6">
+				Represents a boolean (true or false).
+			</div>
+			<div class="col-xs-2">
+				No
+			</div>
+		</div>
+		<div class="row">
+			<div class="col-xs-4 api-parameter-type">
+				DateTime
+			</div>
+			<div class="col-xs-6">
+				Represents a date in the format yyyy-MM-dd.
+			</div>
+			<div class="col-xs-2">
+				@RazorUtils.NAString
+			</div>
+		</div>
 	</div>
 
 	<h2>Examples</h2>
@@ -76,7 +138,7 @@
 				Result
 			</div>
 		</div>
-		<div class="row" style="background-color: #111;">
+		<div class="row">
 			<div class="col-xs-4">
 				<a asp-page="GetSpawnsets" asp-route-searchAuthor="Sorath" asp-route-searchName="V" class="dont-break-out">API/GetSpawnsets?searchAuthor=Sorath&searchName=V</a>
 			</div>
@@ -92,7 +154,7 @@
 				Returns the Death object for the deathType 10 which is <span style='color: #@GameInfo.V3.Annihilated.ColorCode'>@GameInfo.V3.Annihilated.Name</span>, and also formats the JSON.
 			</div>
 		</div>
-		<div class="row" style="background-color: #111;">
+		<div class="row">
 			<div class="col-xs-4">
 				<a asp-page="GetSpawnset" asp-route-fileName="V3_Sorath" class="dont-break-out">API/GetSpawnset?fileName=V3_Sorath</a>
 			</div>
