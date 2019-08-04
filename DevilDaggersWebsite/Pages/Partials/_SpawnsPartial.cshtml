@@ -105,10 +105,10 @@
 						if (spawn.SpawnsetEnemy != Spawnset.Enemies[-1])
 						{
 							SpawnsetEnemy finalEnemy = spawn.SpawnsetEnemy;
-							// Change the third Gigapede into a Ghostpede
-							if (i % 3 == 2 && gameVersion == GameInfo.GameVersions["V3"] && finalEnemy == Spawnset.GetEnemyByName("Gigapede"))
+							// Change the third Gigapede into a Ghostpede.
+							if (i % 3 == 2 && gameVersion == GameInfo.GameVersions["V3"] && finalEnemy == Spawnset.Enemies[5])
 							{
-								finalEnemy = Spawnset.GetEnemyByName("Ghostpede");
+								finalEnemy = Spawnset.Enemies[9];
 							}
 
 							int gems = finalEnemy.NoFarmGems;
