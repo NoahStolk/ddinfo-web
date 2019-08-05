@@ -6,7 +6,7 @@
 		"LastUpdated": "2018-03-10T18:09:56.5958081+01:00"
 	},
 	"175Gems3GigapedesPractice_Bintr": {
-		"Description": "This file is for practice. It gives you 175 gems (3 Centipedes, 2 Gigapedes), then puts you in the 3 Gigapede section of the game with accurate arena size. 175 gems is a reasonable amount to expect with a decent farm and good collection (e.g. where you start killing squids at ~80 seconds)<br><br>Checking the timer during this section can be very helpful, custom spawnsets won't accurately reflect that though.<br>In this spawnset:<ul><li>Gigapedes emerge at 80 seconds (normally 260)</li><li>Stop shooting to collect gems at 95 (normally 275)</li><li>Stop shooting to collect gems at 110 (normally 290)</li><li>Leviathan will spawn at 170 (normally 350)</li><li>Try to clear everything by then!</li></ul><br>Made with <a href='https://github.com/bowsr/DDSE'>bowsr's spawnset editor</a><br>I made a Leviathan practice file too: <a href='/Spawnset?spawnset=275GemsLeviPractice_Bintr'>275GemsLeviPractice</a>",
+		"Description": "This file is for practice. It gives you 175 gems (3 Centipedes, 2 Gigapedes), then puts you in the 3 Gigapede section of the game with accurate arena size. 175 gems is a reasonable amount to expect with a decent farm and good collection (e.g. where you start killing squids at ~80 seconds)<br /><br />Checking the timer during this section can be very helpful, custom spawnsets won't accurately reflect that though. <br />In this spawnset:<ul><li>Gigapedes emerge at 80 seconds (normally 260)</li><li>Stop shooting to collect gems at 95 (normally 275)</li><li>Stop shooting to collect gems at 110 (normally 290)</li><li>Leviathan will spawn at 170 (normally 350)</li><li>Try to clear everything by then!</li></ul><br />Made with <a href='https://github.com/bowsr/DDSE'>bowsr's spawnset editor</a><br />I made a Leviathan practice file too: <a href='/Spawnset?spawnset=275GemsLeviPractice_Bintr'>275GemsLeviPractice</a>",
 		"LastUpdated": "2018-03-04T11:18:06.0010931+01:00"
 	},
 	"229s loop till 500s_Stop": {
@@ -14,11 +14,11 @@
 		"LastUpdated": "2018-07-08T00:31:32.0158404+02:00"
 	},
 	"275GemsLeviPractice_Bintr": {
-		"Description": "This file is for practice. It gives you 275 gems (3 Centipedes, 4 Gigapedes), then puts you in the Leviathan section of the game with accurate arena size. 275 gems gives you the Level 4 hand (220 gems) and 55 spare homing. Normally, you can expect to have 120+ gems at Leviathan, but this section is perfectly doable with 55 and adding more Gigapedes to the beginning would get tedious.<br><br>If you're struggling with the Gigapedes in this file...<br>Try one of these spawnsets instead:<br><a href='/Spawnset?spawnset=Gigapedes_xvlv'>Gigapedes</a><br><a href='/Spawnset?spawnset=175Gems3GigapedesPractice_Bintr'>175Gems3GigapedesPractice</a><br>or watch my <a href='https://www.youtube.com/watch?v=vbR-O1xYgHk'>reference video</a><br><br>Made with <a href='https://github.com/bowsr/DDSE'>bowsr's spawnset editor</a>",
+		"Description": "This file is for practice. It gives you 275 gems (3 Centipedes, 4 Gigapedes), then puts you in the Leviathan section of the game with accurate arena size. 275 gems gives you the Level 4 hand (220 gems) and 55 spare homing. Normally, you can expect to have 120+ gems at Leviathan, but this section is perfectly doable with 55 and adding more Gigapedes to the beginning would get tedious. <br /><br />If you're struggling with the Gigapedes in this file... <br />Try one of these spawnsets instead:<br /><a href='/Spawnset?spawnset=Gigapedes_xvlv'>Gigapedes</a><br /><a href='/Spawnset?spawnset=175Gems3GigapedesPractice_Bintr'>175Gems3GigapedesPractice</a><br />or watch my <a href='https://www.youtube.com/watch?v=vbR-O1xYgHk'>reference video</a><br /><br />Made with <a href='https://github.com/bowsr/DDSE'>bowsr's spawnset editor</a>",
 		"LastUpdated": "2018-02-19T18:09:58.4472321+01:00"
 	},
 	"75Gems3SpidersPractice_Bintr": {
-		"Description": "This file is for practice. It gives you 75 gems (3 Centipedes), then puts you in the 3 Spider I / Centipede section of the game, which is then looped until 500 seconds, the arena size is locked (doesn't shrink) for efficient practice. The goal is to clear this section without using any homing daggers, however you will get the Level 4 hand around 200 seconds. Shoot homing during the break between waves for best practice.<br><br>Made with <a href='https://github.com/bowsr/DDSE'>bowsr's spawnset editor</a>",
+		"Description": "This file is for practice. It gives you 75 gems (3 Centipedes), then puts you in the 3 Spider I / Centipede section of the game, which is then looped until 500 seconds, the arena size is locked (doesn't shrink) for efficient practice. The goal is to clear this section without using any homing daggers, however you will get the Level 4 hand around 200 seconds. Shoot homing during the break between waves for best practice. <br /><br />Made with <a href='https://github.com/bowsr/DDSE'>bowsr's spawnset editor</a>",
 		"LastUpdated": "2018-03-14T11:44:28.6262478+01:00"
 	},
 	"A little bit of hell_Stop": {
@@ -26,19 +26,19 @@
 		"LastUpdated": "2018-07-26T09:47:55.1137616+02:00"
 	},
 	"A Predicament_Stop": {
-		"Description": "Fast shrink. Leviathan Spawns at 60s.<br />Gets really difficult beyond the 3-minute mark - defeat Leviathan and The Orb before then.<br />You're not really expected to be able to survive more than 3 minutes but if you do there are 3 minutes of very difficult non-loop spawns after that, before the spawnset ends.<br />Not beaten it myself.",
+		"Description": "Fast shrink. Leviathan Spawns at 60s. <br />Gets really difficult beyond the 3-minute mark - defeat Leviathan and The Orb before then. <br />You're not really expected to be able to survive more than 3 minutes but if you do there are 3 minutes of very difficult non-loop spawns after that, before the spawnset ends. <br />Not beaten it myself.",
 		"LastUpdated": "2018-11-17T17:51:26.2245598+01:00"
 	},
 	"A Race Against Time_Stop": {
-		"Description": "A custom challenge spawnset with spawns that end at 1200s - 20 minutes. <br />No loop. Definitely possible.<br />Difficulty generally increases with time survived. <br />4 difficulty tiers are unlocked through time survived: <br />{ 0-287s  ~  288-665s  ~  666-999s  ~  1000-1200s }<br />At 0, 287, 666 and 1076s Leviathans will spawn - 4 in total but all are arguably slightly easier (just different to) V3.",
+		"Description": "A custom challenge spawnset with spawns that end at 1200s - 20 minutes. <br />No loop. Definitely possible. <br />Difficulty generally increases with time survived. <br />4 difficulty tiers are unlocked through time survived: <br />{ 0-287s  ~  288-665s  ~  666-999s  ~  1000-1200s }<br />At 0, 287, 666 and 1076s Leviathans will spawn - 4 in total but all are arguably slightly easier (just different to) V3.",
 		"LastUpdated": "2018-10-10T13:45:30.0267808+02:00"
 	},
 	"Abominable Assault_Stop": {
-		"Description": "Mainly squids. Initially a lot more Squid IIs and Squid IIIs but with period Squid Is. Getting to both Level 3 and Level 4 isn't easy. Lasts up to around 10 minutes if you achieve Level 4. <br />Surviving over 10 minutes is the goal.<br />Not tried to see if staying at Level 3 and using homing daggers can get you further. Also has a rapid shrink that ends after 5 minutes, as the end loop starts. ",
+		"Description": "Mainly squids. Initially a lot more Squid IIs and Squid IIIs but with period Squid Is. Getting to both Level 3 and Level 4 isn't easy. Lasts up to around 10 minutes if you achieve Level 4. <br />Surviving over 10 minutes is the goal. <br />Not tried to see if staying at Level 3 and using homing daggers can get you further. Also has a rapid shrink that ends after 5 minutes, as the end loop starts. ",
 		"LastUpdated": "2018-11-17T17:51:29.3476764+01:00"
 	},
 	"Absolutely Ridiculous Marathon_Stop": {
-		"Description": "Might not even be physically possible. No loop. Lasts an hour.<br />Smaller map and over double the enemies to '<a href='/Spawnset?spawnset=The Marathon_Stop'>The Marathon</a>' - initially similar to '<a href='/Spawnset?spawnset=The Marathon_Stop'>The Marathon</a>'; drastically different towards the end. There are significantly less homing daggers available than for '<a href='/Spawnset?spawnset=The Marathon_Stop'>The Marathon</a>'.<br /><b><u>NB: Replays crash the game beyond 2447s.</u></b>",
+		"Description": "Might not even be physically possible. No loop. Lasts an hour. <br />Smaller map and over double the enemies to '<a href='/Spawnset?spawnset=The Marathon_Stop'>The Marathon</a>' - initially similar to '<a href='/Spawnset?spawnset=The Marathon_Stop'>The Marathon</a>'; drastically different towards the end. There are significantly less homing daggers available than for '<a href='/Spawnset?spawnset=The Marathon_Stop'>The Marathon</a>'. <br /><b><u>NB: Replays crash the game beyond 2447s.</u></b>",
 		"LastUpdated": "2018-09-13T23:44:40.7553516+02:00"
 	},
 	"AimPracticeMap_Cookie": {
@@ -81,7 +81,7 @@
 		"LastUpdated": "2019-03-01T21:52:01.0280225+01:00"
 	},
 	"Bloody Hell_Stop": {
-		"Description": "1 initial Ghostpede, none in the end loop.<br />The End loop is relatively long but very difficult. <br />The whole thing is difficult.",
+		"Description": "1 initial Ghostpede, none in the end loop. <br />The End loop is relatively long but very difficult. <br />The whole thing is difficult.",
 		"LastUpdated": "2018-11-19T21:57:43.3458364+01:00"
 	},
 	"Bosswave after wave_Stop": {
@@ -119,7 +119,7 @@
 		"LastUpdated": "2018-01-14T14:11:55.0363936+01:00"
 	},
 	"Chasms_Stop": {
-		"Description": "Ends shortly after 5 minutes and a lot of swearing.<br />No shrink; provides moderate frustration nonetheless.",
+		"Description": "Ends shortly after 5 minutes and a lot of swearing. <br />No shrink; provides moderate frustration nonetheless.",
 		"LastUpdated": "2018-12-09T15:43:14.5692533+01:00"
 	},
 	"Chrysanthemum_Stop": {
@@ -127,7 +127,7 @@
 		"LastUpdated": "2019-02-24T01:42:59.6466994+01:00"
 	},
 	"Clock of Death_Stop": {
-		"Description": "Annoyingly hard. Main cause of death is missing a jump onto single tiles. You can't really about move much and when you do you can't really bunny hop.<br />Getting to the end loop is possible but very hard to do.<br />Getting to Level 4 is probably not possible.",
+		"Description": "Annoyingly hard. Main cause of death is missing a jump onto single tiles. You can't really about move much and when you do you can't really bunny hop. <br />Getting to the end loop is possible but very hard to do. <br />Getting to Level 4 is probably not possible.",
 		"LastUpdated": "2018-11-17T17:51:33.0189429+01:00"
 	},
 	"Clutch_Stop": {
@@ -138,7 +138,7 @@
 		"LastUpdated": "2019-02-28T21:59:04.2106376+01:00"
 	},
 	"Crescendo_Stop": {
-		"Description": "Builds up to exactly that - a crescendo.<br />Within 180s all hell breaks loose.<br />The challenge is to survive for 3 minutes.<br />Should you somehow manage this, only an even more intense loop awaits you.",
+		"Description": "Builds up to exactly that - a crescendo. <br />Within 180s all hell breaks loose. <br />The challenge is to survive for 3 minutes. <br />Should you somehow manage this, only an even more intense loop awaits you.",
 		"LastUpdated": "2018-09-15T16:57:35.1645845+02:00"
 	},
 	"Crystalise_Stop": {
@@ -179,19 +179,19 @@
 		"LastUpdated": "2018-07-08T00:32:04.5341591+02:00"
 	},
 	"Endloop (Ghostpedeless) +300Homing_Stop": {
-		"Description": "30 waves of the endgame loop but made so that no Ghostpedes are able to spawn, occurs at the same speed as normal up to wave 25.<br>Forwards forecasting was used to estimate the enemy spawn times between waves 25 and 30 <i>(waves 1-30 occur over 726s; waves 20-30 span 137s, 2.76x faster than waves 1-10).</i><br>Unfortunately, this mod properly starts <u>very</u> late at 186s.<br>This is due to needing to acquire 300 homing daggers by the start of the Endgame loop which seems to be more or less the maximum equivalent an exceptionally good run can provide (allowing for, at max, around 1073s in a V3 run).",
+		"Description": "30 waves of the endgame loop but made so that no Ghostpedes are able to spawn, occurs at the same speed as normal up to wave 25. <br />Forwards forecasting was used to estimate the enemy spawn times between waves 25 and 30 <i>(waves 1-30 occur over 726s; waves 20-30 span 137s, 2.76x faster than waves 1-10).</i><br />Unfortunately, this mod properly starts <u>very</u> late at 186s. <br />This is due to needing to acquire 300 homing daggers by the start of the Endgame loop which seems to be more or less the maximum equivalent an exceptionally good run can provide (allowing for, at max, around 1073s in a V3 run).",
 		"LastUpdated": "2018-09-04T13:21:12.2057986+02:00"
 	},
 	"Endloop (Ghostpedeless) - 10 waves_Stop": {
-		"Description": "10 waves of the endgame loop but made so that no Ghostpedes are able to spawn, all spawns occur at the same speed as normal V3.<br>You are given 100 homing daggers to tackle this challenge via 2 Gigapedes after reaching Level 4.<br>Ends after 10 waves at 480s <i>(waves 1-10 span 378s).</i>",
+		"Description": "10 waves of the endgame loop but made so that no Ghostpedes are able to spawn, all spawns occur at the same speed as normal V3. <br />You are given 100 homing daggers to tackle this challenge via 2 Gigapedes after reaching Level 4. <br />Ends after 10 waves at 480s <i>(waves 1-10 span 378s).</i>",
 		"LastUpdated": "2018-09-05T13:35:08.9200403+02:00"
 	},
 	"Endloop (Ghostpedeless) - 20 waves_Stop": {
-		"Description": "20 waves of the endgame loop but made so that no Ghostpedes are able to spawn, all spawns occur at the same speed as normal V3.<br>You are given 200 homing daggers to tackle this challenge via 4 Gigapedes.<br>Ends after 20 waves at 718s <i>(waves 1-20 occur over 584s; waves 10-20 span 206s, 1.844x faster than waves 1-10).</i>",
+		"Description": "20 waves of the endgame loop but made so that no Ghostpedes are able to spawn, all spawns occur at the same speed as normal V3. <br />You are given 200 homing daggers to tackle this challenge via 4 Gigapedes. <br />Ends after 20 waves at 718s <i>(waves 1-20 occur over 584s; waves 10-20 span 206s, 1.844x faster than waves 1-10).</i>",
 		"LastUpdated": "2018-09-05T13:35:12.0789162+02:00"
 	},
 	"Endloop (Ghostpedeless) - 30 waves_Stop": {
-		"Description": "30 waves of the endgame loop but made so that no Ghostpedes are able to spawn, all spawns occur at the same speed as normal V3.<br>Forwards forecasting was used to estimate the enemy spawn times between waves 25 and 30. This is the no handicaps, get me in ASAP type. Ends after 30 waves at 796s, though NO homing daggers are provided for this run so the run starts <u>much</u> earlier at 70s <i>(waves 1-30 occur over 726s; waves 20-30 span 137s, 2.76x faster than waves 1-10).</i>",
+		"Description": "30 waves of the endgame loop but made so that no Ghostpedes are able to spawn, all spawns occur at the same speed as normal V3. <br />Forwards forecasting was used to estimate the enemy spawn times between waves 25 and 30. This is the no handicaps, get me in ASAP type. Ends after 30 waves at 796s, though NO homing daggers are provided for this run so the run starts <u>much</u> earlier at 70s <i>(waves 1-30 occur over 726s; waves 20-30 span 137s, 2.76x faster than waves 1-10).</i>",
 		"LastUpdated": "2018-09-04T13:21:15.3772307+02:00"
 	},
 	"Endloopception_Stop": {
@@ -259,7 +259,7 @@
 		"LastUpdated": "2018-06-08T21:34:24.9846244+02:00"
 	},
 	"HowFastCanYouGo_Cookie": {
-		"Description": "This spawnset is mainly made for fun and for all skill level of players. You meet all spawnset waves by 126 seconds into the game.<br>After 126 seconds have passed the spawnset enters into the loop consisting of 3 spawns.<br>A Squid I, Squid II, and Squid I again. Sounds simple until you realise that the waves speed up with every passing wave.<br><br>Sequels will be made, v2 and v3 will happen, eventually.<br><br>Made with <a href='https://github.com/bowsr/DDSE'>bowsr's spawnset editor</a>",
+		"Description": "This spawnset is mainly made for fun and for all skill level of players. You meet all spawnset waves by 126 seconds into the game. <br />After 126 seconds have passed the spawnset enters into the loop consisting of 3 spawns. <br />A Squid I, Squid II, and Squid I again. Sounds simple until you realise that the waves speed up with every passing wave. <br /><br />Sequels will be made, v2 and v3 will happen, eventually. <br /><br />Made with <a href='https://github.com/bowsr/DDSE'>bowsr's spawnset editor</a>",
 		"LastUpdated": "2018-01-15T22:29:10.5689448+01:00"
 	},
 	"immortal_hole_Pritster": {
@@ -318,7 +318,7 @@
 		"LastUpdated": "2019-04-18T19:19:39.9631313+02:00"
 	},
 	"Merciful Marathon_Stop": {
-		"Description": "No loop. Lasts an hour.<br />The easiest version of 'The Marathon' in its 60minute form.<br />Definitely possible.<br /><br />Goes out with a bang but you should have more than enough homing daggers to survive the biggest wave at the 60-minute mark.<br />Compared with the 'Absolutely Ridiculous Marathon' (that was never intended to be possible) it's 64% as difficult, 'Ridiculous Marathon' is 72%; based on file size anyway. <br />Many minor alterations have been made from the 400s mark.<br /><br />Side note: This time the replay crashed around 2800s - it seems to vary.",
+		"Description": "No loop. Lasts an hour. <br />The easiest version of 'The Marathon' in its 60minute form. <br />Definitely possible. <br /><br />Goes out with a bang but you should have more than enough homing daggers to survive the biggest wave at the 60-minute mark. <br />Compared with the 'Absolutely Ridiculous Marathon' (that was never intended to be possible) it's 64% as difficult, 'Ridiculous Marathon' is 72%; based on file size anyway. <br />Many minor alterations have been made from the 400s mark. <br /><br />Side note: This time the replay crashed around 2800s - it seems to vary.",
 		"LastUpdated": "2018-09-30T20:44:30.1161349+02:00"
 	},
 	"microspawn_Pritster": {
@@ -328,15 +328,15 @@
 		"LastUpdated": "2018-12-31T01:51:14.0349562+01:00"
 	},
 	"Minutely Massacres (exceedingly easier)_Stop": {
-		"Description": "Made solely for the purpose of being difficult.<br />Spawns do not vary between difficulties - only the beginning differs.  <br />You might die around 350-650s in a good run.",
+		"Description": "Made solely for the purpose of being difficult. <br />Spawns do not vary between difficulties - only the beginning differs. <br />You might die around 350-650s in a good run.",
 		"LastUpdated": "2018-09-20T01:26:28.5626517+02:00"
 	},
 	"Minutely Massacres [decent difficulty]_Stop": {
-		"Description": "Made solely for the purpose of being very difficult.<br />Spawns do not vary between difficulties - only the beginning differs.  <br />You might die around 225-450s in a good run.",
+		"Description": "Made solely for the purpose of being very difficult. <br />Spawns do not vary between difficulties - only the beginning differs. <br />You might die around 225-450s in a good run.",
 		"LastUpdated": "2018-09-20T01:26:23.7836675+02:00"
 	},
 	"Minutely Massacres {harrowingly hard}_Stop": {
-		"Description": "Made solely for the purpose of being extremely difficult.<br />Spawns do not vary between difficulties - only the beginning differs.<br />You might die around 150-300s in a good run.",
+		"Description": "Made solely for the purpose of being extremely difficult. <br />Spawns do not vary between difficulties - only the beginning differs. <br />You might die around 150-300s in a good run.",
 		"LastUpdated": "2018-09-20T01:26:20.7197587+02:00"
 	},
 	"MySweetThorns_LoIVeR": {
@@ -356,7 +356,7 @@
 		"LastUpdated": "2019-03-04T11:40:39.5448596+01:00"
 	},
 	"NUMERAL_FIELD_sjorsbw": {
-		"Description": "Farm until you have the Level 3 upgrade. After that, clear up your farm as fast as possible. Try to reach 500 seconds.<br><br>Good luck.",
+		"Description": "Farm until you have the Level 3 upgrade. After that, clear up your farm as fast as possible. Try to reach 500 seconds. <br /><br />Good luck.",
 		"LastUpdated": "2018-06-25T22:35:24.2495887+02:00"
 	},
 	"Obstacle Course (long)_Stop": {
@@ -367,11 +367,11 @@
 		"LastUpdated": "2018-12-31T01:51:14.0479588+01:00"
 	},
 	"oh NO_Stop": {
-		"Description": "Initially fend off 12 Squid I's and 6 Squid II's being provided 72 seconds to clear the map. <br />Once 3 minutes have elapsed a shorter but otherwise identical loop begins but with a notably much reduced time to clear the map of the initial squid spawns (now allowing 47s or less in subsequent waves). <br />This seemingly large alteration was needed to remove the waiting times that were occurring otherwise.<br />By the time the first Gigapede spawns you should be Level 3 or very close to it - by the time the second Gigapede spawns you should be Level 4 or very close to it (assuming you're stacking your homing daggers).",
+		"Description": "Initially fend off 12 Squid I's and 6 Squid II's being provided 72 seconds to clear the map. <br />Once 3 minutes have elapsed a shorter but otherwise identical loop begins but with a notably much reduced time to clear the map of the initial squid spawns (now allowing 47s or less in subsequent waves). <br />This seemingly large alteration was needed to remove the waiting times that were occurring otherwise. <br />By the time the first Gigapede spawns you should be Level 3 or very close to it - by the time the second Gigapede spawns you should be Level 4 or very close to it (assuming you're stacking your homing daggers).",
 		"LastUpdated": "2018-09-24T22:44:01.1923522+02:00"
 	},
 	"Overkill_Stop": {
-		"Description": "Rapidly becomes the stuff of nightmares.<br />Nothing but Squids. Standard map size and shrink rate.",
+		"Description": "Rapidly becomes the stuff of nightmares. <br />Nothing but Squids. Standard map size and shrink rate.",
 		"LastUpdated": "2018-12-09T15:43:17.9652816+01:00"
 	},
 	"Panic Stations_Stop": {
@@ -387,14 +387,14 @@
 		"LastUpdated": "2019-03-08T20:55:11.2487432+01:00"
 	},
 	"Peril_Stop": {
-		"Description": "Fast shrink that ends after 5 minutes. The map will already nearly be V3's ending size by the time you have to start dealing with 3 Gigapedes but they do spawn slowly.<br />Ends with an incredibly small map and enough Squid IIIs to instill dread into anybody. ",
+		"Description": "Fast shrink that ends after 5 minutes. The map will already nearly be V3's ending size by the time you have to start dealing with 3 Gigapedes but they do spawn slowly. <br />Ends with an incredibly small map and enough Squid IIIs to instill dread into anybody. ",
 		"LastUpdated": "2018-11-17T17:51:47.2716806+01:00"
 	},
 	"Platforms 'n' Ring_Stop": {
 		"LastUpdated": "2018-07-08T10:47:40.4552257+02:00"
 	},
 	"Plunging_Stop": {
-		"Description": "Use double dagger jumps to cross 5 large gaps and reach the finishing platform. Missing landings means entering the abyss.<br />NB: While climbing back up, there are always 9 blocks to jump onto from the 3 available to land on. Only dagger jumps let you climb.<br />May cause audio issues that require restarting the game.<br /><br />Tip: Double dagger/shotgun jumps require you to only shoot a shotgun for the second jump: you cannot press space at the same time or it will not work. Easy to forget. If you want to practice in the light just walk forward and land on the first arrow to check your timing is right.",
+		"Description": "Use double dagger jumps to cross 5 large gaps and reach the finishing platform. Missing landings means entering the abyss. <br />NB: While climbing back up, there are always 9 blocks to jump onto from the 3 available to land on. Only dagger jumps let you climb. <br />May cause audio issues that require restarting the game. <br /><br />Tip: Double dagger/shotgun jumps require you to only shoot a shotgun for the second jump: you cannot press space at the same time or it will not work. Easy to forget. If you want to practice in the light just walk forward and land on the first arrow to check your timing is right.",
 		"LastUpdated": "2018-09-15T16:57:32.0415195+02:00"
 	},
 	"pond_Pritster": {
@@ -414,14 +414,14 @@
 		"LastUpdated": "2019-03-01T15:06:13.1782767+01:00"
 	},
 	"Ridiculous Marathon_Stop": {
-		"Description": "No Loop. An hour-long Spawnset closely based on the '<a href='/Spawnset?spawnset=Absolutely Ridiculous Marathon_Stop'>Absolutely Ridiculous Marathon</a>' of the same map but fewer enemies making it 0.715x the difficulty of its predecessor; number based on file size & gem number ratios.<br><b><u>NB: Playing a replay beyond 2447s crashes the game.</u></b><br>Streaming should work because it's not watching the replay.",
+		"Description": "No Loop. An hour-long Spawnset closely based on the '<a href='/Spawnset?spawnset=Absolutely Ridiculous Marathon_Stop'>Absolutely Ridiculous Marathon</a>' of the same map but fewer enemies making it 0.715x the difficulty of its predecessor; number based on file size & gem number ratios. <br /><b><u>NB: Playing a replay beyond 2447s crashes the game.</u></b><br />Streaming should work because it's not watching the replay.",
 		"LastUpdated": "2018-09-13T21:51:28.2154613+02:00"
 	},
 	"rings_of_power_Pritster": {
 		"LastUpdated": "2018-11-17T17:53:32.5504808+01:00"
 	},
 	"Rings_Stop": {
-		"Description": "3 concentric rings and only squids coming to get you after a centipede helps you get to Level 2 and then some.<br />Composed nearly entirely of a loop. Post-90s the next loop begins. <br />After 1 loop you should shortly acquire the Level 3 upgrade. ",
+		"Description": "3 concentric rings and only squids coming to get you after a centipede helps you get to Level 2 and then some. <br />Composed nearly entirely of a loop. Post-90s the next loop begins. <br />After 1 loop you should shortly acquire the Level 3 upgrade. ",
 		"LastUpdated": "2018-09-15T16:57:38.8147753+02:00"
 	},
 	"Screaming a bit less_Stop": {
@@ -433,7 +433,7 @@
 		"LastUpdated": "2018-09-09T12:01:11.7827888+02:00"
 	},
 	"Screaming intensifies_Stop": {
-		"Description": "Imagine if Ghostpedes spawned at an initial rate of 1 per 2s, but that just sped up. The most difficult of the '<a href='/Spawnset?spawnset=Screaming_Stop'>Screaming</a>' spawnsets.<br>It's basically made so that you always die before your graphics card can combust.<br>But hey if you survive long enough to experience game-crushing lag you should probably hit 'r' before something weird happens.",
+		"Description": "Imagine if Ghostpedes spawned at an initial rate of 1 per 2s, but that just sped up. The most difficult of the '<a href='/Spawnset?spawnset=Screaming_Stop'>Screaming</a>' spawnsets. <br />It's basically made so that you always die before your graphics card can combust. <br />But hey if you survive long enough to experience game-crushing lag you should probably hit 'r' before something weird happens.",
 		"LastUpdated": "2018-09-04T13:21:42.0617235+02:00"
 	},
 	"Screaming_Stop": {
@@ -482,11 +482,11 @@
 		"LastUpdated": "2016-11-03T00:00:00"
 	},
 	"Stockpile (Evil Endloop)_Stop": {
-		"Description": "Gives <i>significantly</i> less time between each Endloop wave. Much more intense.<br />This way, you have no chance of taking a breather between waves and the waves will instantly merge into one. <br />Gem collection during the Endloop is much more dangerous on this map. All spawns are otherwise unaltered.<br />2000s worth of killing demons while trying to balance homing dagger use to stockpile as many homing as possible, followed by a vicious loop where you can only spray and pray with your homing daggers should you have survived that long. <br />Many sections are pretty much for homing dagger gathering but are broken up by other waves in between. Getting to the Endloop is possible. Though the homing daggers needed to survive multiple Endloop waves might be obtained by that point, using them properly to survive even the first Endloop wave is critical.<br />As time progresses, the requirement to use homing daggers generally increases. The end is made to be a pretty much endless wave of madness that requires at least near-constant homing dagger use to survive. A successful run's death is signaled when your homing daggers run out though because Hell will quickly turn otherworldly and mercilessly kill you.",
+		"Description": "Gives <i>significantly</i> less time between each Endloop wave. Much more intense. <br />This way, you have no chance of taking a breather between waves and the waves will instantly merge into one. <br />Gem collection during the Endloop is much more dangerous on this map. All spawns are otherwise unaltered. <br />2000s worth of killing demons while trying to balance homing dagger use to stockpile as many homing as possible, followed by a vicious loop where you can only spray and pray with your homing daggers should you have survived that long. <br />Many sections are pretty much for homing dagger gathering but are broken up by other waves in between. Getting to the Endloop is possible. Though the homing daggers needed to survive multiple Endloop waves might be obtained by that point, using them properly to survive even the first Endloop wave is critical. <br />As time progresses, the requirement to use homing daggers generally increases. The end is made to be a pretty much endless wave of madness that requires at least near-constant homing dagger use to survive. A successful run's death is signaled when your homing daggers run out though because Hell will quickly turn otherworldly and mercilessly kill you.",
 		"LastUpdated": "2019-04-18T19:17:39.2447176+02:00"
 	},
 	"Stockpile_Stop": {
-		"Description": "2000s worth of killing demons while trying to balance homing dagger use to stockpile as many homing as possible, followed by a vicious loop where you can only spray and pray with your homing daggers should you have survived that long. <br />Many sections are pretty much for homing dagger gathering but are broken up by other waves in between. Getting to the Endloop is possible. Though the homing daggers needed to survive multiple Endloop waves might be obtained by that point, using them properly to survive even the first Endloop wave is critical.<br />As time progresses, the requirement to use homing daggers generally increases. The end is made to be a pretty much endless wave of madness that requires at least near-constant homing dagger use to survive. A successful run's death is signaled when your homing daggers run out though because Hell will quickly turn otherworldly and mercilessly kill you.",
+		"Description": "2000s worth of killing demons while trying to balance homing dagger use to stockpile as many homing as possible, followed by a vicious loop where you can only spray and pray with your homing daggers should you have survived that long. <br />Many sections are pretty much for homing dagger gathering but are broken up by other waves in between. Getting to the Endloop is possible. Though the homing daggers needed to survive multiple Endloop waves might be obtained by that point, using them properly to survive even the first Endloop wave is critical. <br />As time progresses, the requirement to use homing daggers generally increases. The end is made to be a pretty much endless wave of madness that requires at least near-constant homing dagger use to survive. A successful run's death is signaled when your homing daggers run out though because Hell will quickly turn otherworldly and mercilessly kill you.",
 		"LastUpdated": "2019-04-14T07:55:06.2865281+02:00"
 	},
 	"Stretch_ThePassiveDada": {
@@ -507,7 +507,7 @@
 		"LastUpdated": "2016-11-03T00:00:00"
 	},
 	"Synchronous Simultaneous Summons_Stop": {
-		"Description": "Ends shortly after 10 minutes.<br />Relatively difficult throughout; very difficult near the end.<br /><br />A map that only starts to noticeably shrink once you're getting near Leviathan. Seems to shrink rapidly and obviously after that point.<br />Enemy spawns come in droves of all at once of the same enemy.<br />Once Squid I and Squid II are out of the way, a single one of each spawns in all subsequent waves until the boss.<br /><br />A few things to remember: <br /><ul><li>The thorn stage has many more enemies than usual.</li><li>Leviathan is easier. Squid I's remain unchanged occurring 5 seconds after tangible spawning. The gap between Squid I's and Squid II's is doubled. The gap between Squid II's and the squid III is 2.5x longer than usual. After this, no spawns match those made by Sorath - The Orb is easier too.</li><li>Also, if you want level 3 before the centipedes you'll have to collect every gem you can get and balance killing squids and skulls - focusing on squids does not allow you to gain this upgrade so early.</li></ul>",
+		"Description": "Ends shortly after 10 minutes. <br />Relatively difficult throughout; very difficult near the end. <br /><br />A map that only starts to noticeably shrink once you're getting near Leviathan. Seems to shrink rapidly and obviously after that point. <br />Enemy spawns come in droves of all at once of the same enemy. <br />Once Squid I and Squid II are out of the way, a single one of each spawns in all subsequent waves until the boss. <br /><br />A few things to remember: <br /><ul><li>The thorn stage has many more enemies than usual.</li><li>Leviathan is easier. Squid I's remain unchanged occurring 5 seconds after tangible spawning. The gap between Squid I's and Squid II's is doubled. The gap between Squid II's and the squid III is 2.5x longer than usual. After this, no spawns match those made by Sorath - The Orb is easier too.</li><li>Also, if you want level 3 before the centipedes you'll have to collect every gem you can get and balance killing squids and skulls - focusing on squids does not allow you to gain this upgrade so early.</li></ul>",
 		"LastUpdated": "2018-09-15T16:57:41.9958789+02:00"
 	},
 	"The Dark Lord's Demons_Stop": {
@@ -518,7 +518,7 @@
 		"LastUpdated": "2018-07-26T09:48:23.5768991+02:00"
 	},
 	"The Marathon_Stop": {
-		"Description": "Generally progressively higher difficulty with time. No loop. Lasts up to 40mins.<br />There are more than enough homing daggers available; just try to survive. Definitely possible.",
+		"Description": "Generally progressively higher difficulty with time. No loop. Lasts up to 40mins. <br />There are more than enough homing daggers available; just try to survive. Definitely possible.",
 		"LastUpdated": "2018-09-13T21:51:24.609908+02:00"
 	},
 	"The Playground_Stop": {
@@ -580,15 +580,15 @@
 		"LastUpdated": "2018-07-26T09:48:27.0413659+02:00"
 	},
 	"V3 but Levi is at the start_Stop": {
-		"Description": "It's exactly that - Leviathan's spawn-time has been moved to 0s, though absolutely no other changes have been made to spawns to try and make it easier.<br>So expect to almost always die shortly beyond 229s... unless you somehow tear away and pull off something otherworldly. Getting to Level 3 is intense. Not even nearly managed Level 4.<br>Harder than '<a href='/Spawnset?spawnset=V3 but it really isn&#39;t_Stop'>V3 but it really isn't</a>'. Also the reason I stretched out times in '<a href='/Spawnset?spawnset=V3 but it really isn&#39;t_Stop'>V3 but it really isn't</a>' - beating Leviathan is practically impossible otherwise.",
+		"Description": "It's exactly that - Leviathan's spawn-time has been moved to 0s, though absolutely no other changes have been made to spawns to try and make it easier. <br />So expect to almost always die shortly beyond 229s... unless you somehow tear away and pull off something otherworldly. Getting to Level 3 is intense. Not even nearly managed Level 4. <br />Harder than '<a href='/Spawnset?spawnset=V3 but it really isn&#39;t_Stop'>V3 but it really isn't</a>'. Also the reason I stretched out times in '<a href='/Spawnset?spawnset=V3 but it really isn&#39;t_Stop'>V3 but it really isn't</a>' - beating Leviathan is practically impossible otherwise.",
 		"LastUpdated": "2018-09-04T13:21:38.8064383+02:00"
 	},
 	"V3 but somewhat different_Stop": {
-		"Description": "A custom challenge spawnset.<br>Has Leviathan at the beginning, though only after getting you most of the way to Level 4, then has Leviathan again in 2 different additional waves.",
+		"Description": "A custom challenge spawnset. <br />Has Leviathan at the beginning, though only after getting you most of the way to Level 4, then has Leviathan again in 2 different additional waves.",
 		"LastUpdated": "2018-07-26T09:48:31.1582602+02:00"
 	},
 	"V3 for Lunatics_Stop": {
-		"Description": "Good luck getting anywhere near your V3 high score.<br />Timings and original spawns are unaltered. All enemies assigned a time to spawn have at least 1 additional enemy spawning with them. The only exceptions to this are the 3x Squid III wave and the Endloop.",
+		"Description": "Good luck getting anywhere near your V3 high score. <br />Timings and original spawns are unaltered. All enemies assigned a time to spawn have at least 1 additional enemy spawning with them. The only exceptions to this are the 3x Squid III wave and the Endloop.",
 		"LastUpdated": "2019-04-01T16:06:43.2422648+02:00"
 	},
 	"V3 no Levi_Stop": {
