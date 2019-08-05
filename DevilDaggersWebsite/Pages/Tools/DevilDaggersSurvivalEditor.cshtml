@@ -1,6 +1,6 @@
 ﻿@page
 @inject Microsoft.AspNetCore.Hosting.IHostingEnvironment env
-@using DevilDaggersWebsite.Code.Tools
+@using DevilDaggersCore.Tools
 @using DevilDaggersWebsite.Code.Utils
 @using System.IO
 @{
@@ -23,7 +23,7 @@
 	<p>
 		<img class="img-responsive image-narrow" src="~/images/Tools/@(name).png" />
 	</p>
-	
+
 	<p class="text-center">
 		Current version: @(tool.VersionNumber)<br />
 		File size: @(Math.Round(downloadFileInfo.Length / 1024f).ToString()) KB<br />

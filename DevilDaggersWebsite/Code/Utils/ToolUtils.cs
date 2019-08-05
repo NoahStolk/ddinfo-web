@@ -1,4 +1,4 @@
-﻿using DevilDaggersWebsite.Code.Tools;
+﻿using DevilDaggersCore.Tools;
 using System.Collections.Generic;
 
 namespace DevilDaggersWebsite.Code.Utils

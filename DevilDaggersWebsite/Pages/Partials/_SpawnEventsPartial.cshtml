@@ -68,7 +68,7 @@
 			int totalGems = 0;
 			int totalKills = 0;
 
-			foreach (AbstractEvent evt in spawnset.GenerateSpawnsetEventList(Model.SquidGushCount, Model.LeviathanBeckonCount))
+			foreach (AbstractEvent evt in spawnset.GenerateSpawnsetEventList(Model.SquidGushCount, Model.LeviathanBeckonCount, 25, GameInfo.GameVersions["V3"]))
 			{
 				int gems = 0;
 				int kills = 0;
