@@ -26,7 +26,6 @@ namespace DevilDaggersWebsite.Pages
 		public string LastUpdated { get; set; }
 		public string NonLoopLength { get; set; }
 		public string NonLoopSpawns { get; set; }
-		public string LoopStart { get; set; }
 		public string LoopLength { get; set; }
 		public string LoopSpawns { get; set; }
 
@@ -58,7 +57,6 @@ namespace DevilDaggersWebsite.Pages
 			LastUpdated = sortOrder == "LastUpdated_asc" ? "LastUpdated" : "LastUpdated_asc";
 			NonLoopLength = sortOrder == "NonLoopLength_asc" ? "NonLoopLength" : "NonLoopLength_asc";
 			NonLoopSpawns = sortOrder == "NonLoopSpawns_asc" ? "NonLoopSpawns" : "NonLoopSpawns_asc";
-			LoopStart = sortOrder == "LoopStart_asc" ? "LoopStart" : "LoopStart_asc";
 			LoopLength = sortOrder == "LoopLength_asc" ? "LoopLength" : "LoopLength_asc";
 			LoopSpawns = sortOrder == "LoopSpawns_asc" ? "LoopSpawns" : "LoopSpawns_asc";
 
@@ -94,12 +92,6 @@ namespace DevilDaggersWebsite.Pages
 					break;
 				case "NonLoopSpawns":
 					spawnsetFiles = spawnsetFiles.OrderByDescending(s => s.spawnsetData.NonLoopSpawns).ToList();
-					break;
-				case "LoopStart_asc":
-					spawnsetFiles = spawnsetFiles.OrderBy(s => s.spawnsetData.LoopStart).ThenBy(s => s.spawnsetData.LoopSpawns).ToList();
-					break;
-				case "LoopStart":
-					spawnsetFiles = spawnsetFiles.OrderByDescending(s => s.spawnsetData.LoopStart).ThenByDescending(s => s.spawnsetData.LoopSpawns).ToList();
 					break;
 				case "LoopLength_asc":
 					spawnsetFiles = spawnsetFiles.OrderBy(s => s.spawnsetData.LoopLength).ThenBy(s => s.spawnsetData.LoopSpawns).ToList();

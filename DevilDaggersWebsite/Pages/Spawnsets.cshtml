@@ -106,13 +106,6 @@
 							<a asp-page="./Spawnsets"
 							   asp-route-searchAuthor="@Model.SearchAuthor"
 							   asp-route-searchName="@Model.SearchName"
-							   asp-route-sortOrder="@Model.LoopStart"
-							   asp-route-pageIndex="@Model.PageIndex">Start</a>
-						</th>
-						<th class="hidden-xs hidden-sm hidden-md" width="160">
-							<a asp-page="./Spawnsets"
-							   asp-route-searchAuthor="@Model.SearchAuthor"
-							   asp-route-searchName="@Model.SearchName"
 							   asp-route-sortOrder="@Model.LoopLength"
 							   asp-route-pageIndex="@Model.PageIndex">Length (wave 1)</a>
 						</th>
@@ -135,16 +128,13 @@
 								@(spawnsetFile.settings.LastUpdated.ToString("dd MMM yyyy"))
 							</td>
 							<td class="hidden-xs hidden-sm hidden-md">
-								@(spawnsetFile.spawnsetData.NonLoopLength == 0 ? RazorUtils.NAString : Html.Raw(spawnsetFile.spawnsetData.NonLoopLength.ToString("0.0000")))
+								@(!spawnsetFile.spawnsetData.NonLoopLength.HasValue ? RazorUtils.NAString : Html.Raw(spawnsetFile.spawnsetData.NonLoopLength.Value.ToString("0.0000")))
 							</td>
 							<td class="hidden-xs hidden-sm hidden-md">
 								@(spawnsetFile.spawnsetData.NonLoopSpawns == 0 ? RazorUtils.NAString : Html.Raw(spawnsetFile.spawnsetData.NonLoopSpawns))
 							</td>
 							<td class="hidden-xs hidden-sm hidden-md">
-								@(spawnsetFile.spawnsetData.LoopSpawns == 0 ? RazorUtils.NAString : Html.Raw(spawnsetFile.spawnsetData.LoopStart.ToString("0.0000")))
-							</td>
-							<td class="hidden-xs hidden-sm hidden-md">
-								@(spawnsetFile.spawnsetData.LoopLength == 0 ? RazorUtils.NAString : Html.Raw(spawnsetFile.spawnsetData.LoopLength.ToString("0.0000")))
+								@(!spawnsetFile.spawnsetData.LoopLength.HasValue ? RazorUtils.NAString : Html.Raw(spawnsetFile.spawnsetData.LoopLength.Value.ToString("0.0000")))
 							</td>
 							<td class="hidden-xs hidden-sm hidden-md">
 								@(spawnsetFile.spawnsetData.LoopSpawns == 0 ? RazorUtils.NAString : Html.Raw(spawnsetFile.spawnsetData.LoopSpawns))
@@ -165,7 +155,7 @@
 	<ol>
 		<li>Download <a asp-page="/Tools/DevilDaggersSurvivalEditor">DevilDaggersSurvivalEditor</a>.</li>
 		<li>Go to "File", then "Open from DevilDaggers.info".</li>
-		<li>Select the spawnset you want to play.</li>
+		<li>Click on the spawnset you want to play and click "Yes" when it asks you if you want it to replace the current survival file.</li>
 	</ol>
 	<h3>The original way</h3>
 	<ol>
