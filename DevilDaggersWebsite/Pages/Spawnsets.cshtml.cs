@@ -82,10 +82,10 @@ namespace DevilDaggersWebsite.Pages
 					spawnsetFiles = spawnsetFiles.OrderByDescending(s => s.settings.LastUpdated).ThenBy(s => s.Name).ToList();
 					break;
 				case "NonLoopLength_asc":
-					spawnsetFiles = spawnsetFiles.OrderBy(s => s.spawnsetData.NonLoopLength).ThenBy(s => s.spawnsetData.NonLoopSpawns).ToList();
+					spawnsetFiles = spawnsetFiles.OrderBy(s => s.spawnsetData.NonLoopLengthNullable).ThenBy(s => s.spawnsetData.NonLoopSpawns).ToList();
 					break;
 				case "NonLoopLength":
-					spawnsetFiles = spawnsetFiles.OrderByDescending(s => s.spawnsetData.NonLoopLength).ThenByDescending(s => s.spawnsetData.NonLoopSpawns).ToList();
+					spawnsetFiles = spawnsetFiles.OrderByDescending(s => s.spawnsetData.NonLoopLengthNullable).ThenByDescending(s => s.spawnsetData.NonLoopSpawns).ToList();
 					break;
 				case "NonLoopSpawns_asc":
 					spawnsetFiles = spawnsetFiles.OrderBy(s => s.spawnsetData.NonLoopSpawns).ToList();
@@ -94,10 +94,10 @@ namespace DevilDaggersWebsite.Pages
 					spawnsetFiles = spawnsetFiles.OrderByDescending(s => s.spawnsetData.NonLoopSpawns).ToList();
 					break;
 				case "LoopLength_asc":
-					spawnsetFiles = spawnsetFiles.OrderBy(s => s.spawnsetData.LoopLength).ThenBy(s => s.spawnsetData.LoopSpawns).ToList();
+					spawnsetFiles = spawnsetFiles.OrderBy(s => s.spawnsetData.LoopLengthNullable).ThenBy(s => s.spawnsetData.LoopSpawns).ToList();
 					break;
 				case "LoopLength":
-					spawnsetFiles = spawnsetFiles.OrderByDescending(s => s.spawnsetData.LoopLength).ThenByDescending(s => s.spawnsetData.LoopSpawns).ToList();
+					spawnsetFiles = spawnsetFiles.OrderByDescending(s => s.spawnsetData.LoopLengthNullable).ThenByDescending(s => s.spawnsetData.LoopSpawns).ToList();
 					break;
 				case "LoopSpawns_asc":
 					spawnsetFiles = spawnsetFiles.OrderBy(s => s.spawnsetData.LoopSpawns).ToList();
