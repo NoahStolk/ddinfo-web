@@ -1,4 +1,5 @@
-﻿using DevilDaggersWebsite.Code.Database;
+﻿using DevilDaggersCore.CustomLeaderboards;
+using DevilDaggersWebsite.Code.Database;
 using DevilDaggersWebsite.Code.Database.CustomLeaderboards;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.AspNetCore.Mvc.RazorPages;
@@ -15,6 +16,8 @@ namespace DevilDaggersWebsite.Pages.CustomLeaderboards
 		[BindProperty]
 		public List<CustomEntry> Entries { get; set; }
 
+		public string PartialName { get; set; }
+
 		private readonly ApplicationDbContext _context;
 
 		public LeaderboardModel(ApplicationDbContext context)
@@ -28,6 +31,12 @@ namespace DevilDaggersWebsite.Pages.CustomLeaderboards
 
 			if (Leaderboard == null)
 				return RedirectToPage("Index");
+
+			if (Leaderboard.Category == CustomLeaderboardCategory.Archive
+			 || Leaderboard.Category == CustomLeaderboardCategory.Reverse)
+				PartialName = "Default";
+			else
+				PartialName = Leaderboard.Category.ToString();
 
 			Entries = _context.CustomEntries.Where(e => e.CustomLeaderboard == Leaderboard).OrderByDescending(e => e.Time).ToList();
 

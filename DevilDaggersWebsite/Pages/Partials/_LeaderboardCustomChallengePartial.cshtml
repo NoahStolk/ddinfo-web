@@ -1,0 +1,130 @@
+﻿@using DevilDaggersCore.Game
+@using DevilDaggersWebsite.Code.Users
+@using DevilDaggersWebsite.Code.Database.CustomLeaderboards
+@using DevilDaggersWebsite.Code.Utils
+@using Microsoft.AspNetCore.Html
+@inject CoreBase.Services.ICommonObjects CommonObjects
+
+<div class="leaderboard-container flex-container flex-center">
+	<div class="leaderboard-title-row flex-container">
+		<div class="sorter text-center" sort="rank">#</div>
+		<div class="sorter text-center" sort="flag">Flag</div>
+		<div class="sorter text-center" sort="username">Username</div>
+		<div class="sorter text-center" sort="time">Time cleared</div>
+		<div class="sorter hidden-xs text-center" sort="kills">Kills</div>
+		<div class="sorter hidden-xs text-center" sort="gems">Gems</div>
+		<div class="sorter hidden-xs text-center" sort="accuracy">Accuracy</div>
+		<div class="sorter hidden-xs hidden-sm hidden-md text-center" sort="homing">Homing</div>
+		<div class="sorter hidden-xs hidden-sm hidden-md text-center" sort="level-2">Level 2</div>
+		<div class="sorter hidden-xs hidden-sm hidden-md text-center" sort="level-3">Level 3</div>
+		<div class="sorter hidden-xs hidden-sm hidden-md text-center" sort="level-4">Level 4</div>
+		<div class="sorter hidden-xs hidden-sm hidden-md text-center submit-date" sort="submit-date">Submit date</div>
+	</div>
+	<div class="leaderboard-body">
+		@{
+			IEnumerable<Donator> donators = UserUtils.GetDonators(CommonObjects);
+			IEnumerable<Flag> flags = UserUtils.GetFlags(CommonObjects);
+			IEnumerable<UserTitleCollection> titleCollections = UserUtils.GetTitleCollections(CommonObjects);
+			int rank = 0;
+			foreach (CustomEntry entry in Model.Entries)
+			{
+				rank++;
+				Donator donator = donators.Where(d => d.ID == entry.PlayerID).FirstOrDefault();
+				Flag flag = flags.Where(f => f.ID == entry.PlayerID).FirstOrDefault();
+				UserTitleCollection titles = titleCollections.Where(t => t.ID == entry.PlayerID).FirstOrDefault();
+
+				string dagger = Model.Leaderboard.GetDagger(entry.Time);
+				Death death = GameInfo.GetDeathFromDeathType(entry.DeathType, GameInfo.GameVersions["V3"]);
+
+				string flagCode = flag == null ? "00" : flag.CountryCode;
+				HtmlString level2 = entry.LevelUpTime2 == 0 ? RazorUtils.NAString : new HtmlString(entry.LevelUpTime2.ToString("0.0000"));
+				HtmlString level3 = entry.LevelUpTime3 == 0 ? RazorUtils.NAString : new HtmlString(entry.LevelUpTime3.ToString("0.0000"));
+				HtmlString level4 = entry.LevelUpTime4 == 0 ? RazorUtils.NAString : new HtmlString(entry.LevelUpTime4.ToString("0.0000"));
+				string submitDate = entry.SubmitDate.ToString("dd MMM yyyy, HH:mm");
+
+				<div class="sort" @entry.ToHTMLData(rank, flagCode)>
+					<div class="leaderboard-row flex-container" id="@(rank)-row">
+						<div class="text-right">
+							<span data-toggle="tooltip" title="ID: @entry.PlayerID" class="leaderboard-tooltip">@rank</span>
+						</div>
+						<div>
+							@if (flagCode == "00")
+							{
+								<span><img src="/Images/Flags/24x24/@(flagCode).png" /></span>
+							}
+							else
+							{
+								<span class="leaderboard-tooltip" data-toggle="tooltip" title="@UserUtils.CountryNames[flagCode]"><img src="/Images/Flags/24x24/@(flagCode).png" /></span>
+							}
+						</div>
+						<div class="text-left leaderboard-username">
+							@{
+								<span class="@dagger" style="background-position-y: 3px;">@entry.Username</span>
+
+								if (titles != null)
+								{
+									foreach (string title in titles.Titles)
+									{
+										<span class="leaderboard-tooltip" data-toggle="tooltip" title="@title"><img src="/Images/Icons/@(UserUtils.TitleImages[title]).png" /></span>
+									}
+								}
+								if (donator != null)
+								{
+									string title = "Donator";
+									<span class="leaderboard-tooltip" data-toggle="tooltip" title="@title"><img src="/Images/Icons/@(UserUtils.TitleImages[title]).png" /></span>
+								}
+							}
+						</div>
+						<div class="text-right @dagger">@((entry.Time).ToString("0.0000"))</div>
+						<div class="hidden-xs text-right">@entry.Kills</div>
+						<div class="hidden-xs text-right">@entry.Gems</div>
+						<div class="hidden-xs text-right">
+							<span data-toggle="tooltip" title="@entry.ShotsHit / @entry.ShotsFired" class="leaderboard-tooltip">@(entry.Accuracy.ToString("0.00%"))</span>
+						</div>
+						<div class="hidden-xs hidden-sm hidden-md text-right">@entry.Homing</div>
+						<div class="hidden-xs hidden-sm hidden-md text-right">@level2</div>
+						<div class="hidden-xs hidden-sm hidden-md text-right">@level3</div>
+						<div class="hidden-xs hidden-sm hidden-md text-right">@level4</div>
+						<div class="hidden-xs hidden-sm hidden-md text-right submit-date">@submitDate</div>
+					</div>
+					<div class="leaderboard-expand flex-container" id="@(rank)-expand">
+						<div class="visible-xs">
+							<div class="text-left">Kills</div>
+							<div class="text-right">@entry.Kills</div>
+						</div>
+						<div class="visible-xs">
+							<div class="text-left">Gems</div>
+							<div class="text-right">@entry.Gems</div>
+						</div>
+						<div class="visible-xs">
+							<div class="text-left">Accuracy</div>
+							<div class="text-right">
+								<span data-toggle="tooltip" title="@entry.ShotsHit / @entry.ShotsFired" class="leaderboard-tooltip">@(entry.Accuracy.ToString("0.00%"))</span>
+							</div>
+						</div>
+						<div class="visible-xs visible-sm visible-md">
+							<div class="text-left">Homing</div>
+							<div class="text-right">@entry.Homing</div>
+						</div>
+						<div class="visible-xs visible-sm visible-md">
+							<div class="text-left">Level 2</div>
+							<div class="text-right">@level2</div>
+						</div>
+						<div class="visible-xs visible-sm visible-md">
+							<div class="text-left">Level 3</div>
+							<div class="text-right">@level3</div>
+						</div>
+						<div class="visible-xs visible-sm visible-md">
+							<div class="text-left">Level 4</div>
+							<div class="text-right">@level4</div>
+						</div>
+						<div class="visible-xs visible-sm visible-md submit-date">
+							<div class="text-left">Submit date</div>
+							<div class="text-right">@submitDate</div>
+						</div>
+					</div>
+				</div>
+			}
+		}
+	</div>
+</div>

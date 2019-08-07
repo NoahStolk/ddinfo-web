@@ -18,20 +18,6 @@ namespace DevilDaggersWebsite.Pages.CustomLeaderboards
 {
 	public class UploadModel : PageModel
 	{
-		public class UploadResult
-		{
-			public bool success;
-			public string message;
-			public int tryCount;
-
-			public UploadResult(bool success, string message, int tryCount = 0)
-			{
-				this.success = success;
-				this.message = message;
-				this.tryCount = tryCount;
-			}
-		}
-
 		public string JsonResult { get; set; }
 
 		private readonly ApplicationDbContext _context;
@@ -56,9 +42,9 @@ namespace DevilDaggersWebsite.Pages.CustomLeaderboards
 			}
 		}
 
-		public UploadResult TryUpload(string spawnsetHash, int playerID, string username, float time, int gems, int kills, int deathType, int shotsHit, int shotsFired, int enemiesAlive, int homing, float levelUpTime2, float levelUpTime3, float levelUpTime4, string ddclClientVersion, string validation)
+		private UploadResult TryUpload(string spawnsetHash, int playerID, string username, float time, int gems, int kills, int deathType, int shotsHit, int shotsFired, int enemiesAlive, int homing, float levelUpTime2, float levelUpTime3, float levelUpTime4, string clientVersion, string validation)
 		{
-			Version clientVersionParsed = Version.Parse(ddclClientVersion);
+			Version clientVersionParsed = Version.Parse(clientVersion);
 			if (clientVersionParsed < Version.Parse(ToolUtils.Tools.Where(t => t.Name == "DDCL").FirstOrDefault().VersionNumberRequired))
 				return new UploadResult(false, "You are using an unsupported and outdated version of DDCL. Please update the program.");
 
@@ -118,7 +104,7 @@ namespace DevilDaggersWebsite.Pages.CustomLeaderboards
 			if (entry == null)
 			{
 				// Add new user to this leaderboard.
-				_context.CustomEntries.Add(new CustomEntry(playerID, username, time, gems, kills, deathType, shotsHit, shotsFired, enemiesAlive, homing, levelUpTime2, levelUpTime3, levelUpTime4, DateTime.Now, ddclClientVersion) { CustomLeaderboard = leaderboard });
+				_context.CustomEntries.Add(new CustomEntry(playerID, username, time, gems, kills, deathType, shotsHit, shotsFired, enemiesAlive, homing, levelUpTime2, levelUpTime3, levelUpTime4, DateTime.Now, clientVersion) { CustomLeaderboard = leaderboard });
 
 				_context.SaveChanges();
 				return new UploadResult(true, $@"Welcome to the leaderboard for {SpawnsetFile.GetName(leaderboard.SpawnsetFileName)}.
@@ -167,7 +153,7 @@ namespace DevilDaggersWebsite.Pages.CustomLeaderboards
 				entry.LevelUpTime3 = levelUpTime3;
 				entry.LevelUpTime4 = levelUpTime4;
 				entry.SubmitDate = DateTime.Now;
-				entry.ClientVersion = ddclClientVersion;
+				entry.ClientVersion = clientVersion;
 
 				_context.SaveChanges();
 
