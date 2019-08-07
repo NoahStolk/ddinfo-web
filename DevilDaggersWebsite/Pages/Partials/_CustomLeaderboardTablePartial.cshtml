@@ -75,10 +75,10 @@
 						@DbContext.CustomEntries.Where(e => e.CustomLeaderboardID == lb.ID).Count()
 					</td>
 					<td class="text-right hidden-xs">
-						@(lb.DateLastPlayed.HasValue ? Html.Raw(lb.DateLastPlayed.Value.ToString("yyyy-MM-dd")) : RazorUtils.NAString)
+						@(lb.DateLastPlayed.HasValue ? Html.Raw(lb.DateLastPlayed.Value.ToString("dd MMM yyyy")) : RazorUtils.NAString)
 					</td>
 					<td class="text-right hidden-xs">
-						@(lb.DateCreated.HasValue ? Html.Raw(lb.DateCreated.Value.ToString("yyyy-MM-dd")) : RazorUtils.NAString)
+						@(lb.DateCreated.HasValue ? Html.Raw(lb.DateCreated.Value.ToString("dd MMM yyyy")) : RazorUtils.NAString)
 					</td>
 					<td class="text-right hidden-xs hidden-sm hidden-md bronze">
 						@lb.Bronze.ToString("0.0000")
