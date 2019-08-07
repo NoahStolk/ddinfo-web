@@ -1,9 +1,6 @@
 ﻿@page
-@using DevilDaggersCore.Spawnsets.Web
-@using DevilDaggersWebsite.Code.Database.CustomLeaderboards
-@using DevilDaggersWebsite.Code.Utils
-@using System.Linq
 @model DevilDaggersWebsite.Pages.CustomLeaderboards.IndexModel
+@using DevilDaggersWebsite.Code.Utils
 @{
 	ViewData["Title"] = "Custom Leaderboards";
 }
@@ -17,110 +14,12 @@
 		Custom leaderboards are leaderboards for <a asp-page="/Spawnsets">custom spawnsets</a> hosted by DevilDaggers.info. They are still in development.
 	</p>
 
-	<table>
-		<thead>
-			<tr>
-				<th width="300">
-					Spawnset name
-				</th>
-				<th width="300">
-					Spawnset author
-				</th>
-				<th class="hidden-xs" width="100">
-					Players
-				</th>
-				<th class="hidden-xs hidden-sm hidden-md" width="100">
-					Bronze
-				</th>
-				<th class="hidden-xs hidden-sm hidden-md" width="100">
-					Silver
-				</th>
-				<th class="hidden-xs hidden-sm hidden-md" width="100">
-					Golden
-				</th>
-				<th class="hidden-xs hidden-sm hidden-md" width="100">
-					Devil
-				</th>
-				<th class="hidden-xs hidden-sm hidden-md" width="200" colspan="2">
-					World record
-				</th>
-				<th class="hidden-xs hidden-sm hidden-md" width="400" colspan="4">
-					Completion rate
-				</th>
-			</tr>
-		</thead>
-		<tbody>
-			@{
-				foreach (CustomLeaderboard lb in Model.Leaderboards)
-				{
-					string fileName = lb.SpawnsetFileName;
-					string name = SpawnsetFile.GetName(fileName);
-					string author = SpawnsetFile.GetAuthor(fileName);
-					List<CustomEntry> entries = Model.Entries.Where(e => e.CustomLeaderboard == lb).OrderByDescending(e => e.Time).ToList();
-					string wrDagger = "";
-					if (entries.Count > 0)
-					{
-						wrDagger = lb.GetDagger(entries[0].Time);
-					}
-					<tr>
-						<td>
-							<a asp-page="/CustomLeaderboards/Leaderboard" asp-route-spawnset="@fileName">@name</a>
-						</td>
-						<td>
-							<a asp-page="/Spawnsets" asp-route-SearchAuthor="@author">@author</a>
-						</td>
-						<td class="text-right hidden-xs">
-							@Model.Entries.Where(e => e.CustomLeaderboardID == lb.ID).Count()
-						</td>
-						<td class="text-right hidden-xs hidden-sm hidden-md bronze">
-							@lb.Bronze.ToString("0.0000")
-						</td>
-						<td class="text-right hidden-xs hidden-sm hidden-md silver">
-							@lb.Silver.ToString("0.0000")
-						</td>
-						<td class="text-right hidden-xs hidden-sm hidden-md golden">
-							@lb.Golden.ToString("0.0000")
-						</td>
-						<td class="text-right hidden-xs hidden-sm hidden-md devil">
-							@lb.Devil.ToString("0.0000")
-						</td>
-						<td class="@wrDagger hidden-xs hidden-sm hidden-md leaderboard-username">
-							@{
-								if (entries.Count == 0)
-								{
-									@:@RazorUtils.NAString
-								}
-								else
-								{
-									@entries[0].Username
-								}
-							}
-						</td>
-						<td class="text-right hidden-xs hidden-sm hidden-md @wrDagger">
-							@{
-								if (entries.Count > 0)
-								{
-									@entries[0].Time.ToString("0.0000")
-								}
-							}
-						</td>
-						<td class="text-right hidden-xs hidden-sm hidden-md bronze">
-							@(entries.Count == 0 ? "0.00%" : (entries.Where(e => e.Time >= lb.Bronze).Count() / (float)entries.Count).ToString("0.00%"))
-						</td>
-						<td class="text-right hidden-xs hidden-sm hidden-md silver">
-							@(entries.Count == 0 ? "0.00%" : (entries.Where(e => e.Time >= lb.Silver).Count() / (float)entries.Count).ToString("0.00%"))
-						</td>
-						<td class="text-right hidden-xs hidden-sm hidden-md golden">
-							@(entries.Count == 0 ? "0.00%" : (entries.Where(e => e.Time >= lb.Golden).Count() / (float)entries.Count).ToString("0.00%"))
-						</td>
-						<td class="text-right hidden-xs hidden-sm hidden-md devil">
-							@(entries.Count == 0 ? "0.00%" : (entries.Where(e => e.Time >= lb.Devil).Count() / (float)entries.Count).ToString("0.00%"))
-						</td>
-					</tr>
-				}
-			}
-		</tbody>
-	</table>
+	<form method="get">
+		<select class="select form-control" asp-for="Category" asp-items="Model.CategoryListItems" onchange="this.form.submit()"></select>
+	</form>
+
+	<h2>@Model.Category category</h2>
+	@await Html.PartialAsync("Partials/_CustomLeaderboardTablePartial", Model.Leaderboards)
 
 	<h2>FAQ</h2>
 	<div class="faq-question">How do I participate?</div>

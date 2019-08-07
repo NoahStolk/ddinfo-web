@@ -34,7 +34,10 @@ namespace DevilDaggersWebsite.Pages.API
 					leaderboard.Homing == 0 ? 0 :
 					_context.CustomEntries
 						.Where(e => e.CustomLeaderboard == leaderboard)
-						.Any(e => e.Time > leaderboard.Homing) ? leaderboard.Homing : -1));
+						.Any(e => e.Time > leaderboard.Homing) ? leaderboard.Homing : -1,
+					leaderboard.Category,
+					leaderboard.DateLastPlayed,
+					leaderboard.DateCreated));
 
 			return JsonFile(leaderboards, formatted ? Formatting.Indented : Formatting.None);
         }

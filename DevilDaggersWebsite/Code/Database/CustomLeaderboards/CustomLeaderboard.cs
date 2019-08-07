@@ -1,4 +1,5 @@
 ﻿using DevilDaggersCore.CustomLeaderboards;
+using System;
 
 namespace DevilDaggersWebsite.Code.Database.CustomLeaderboards
 {
@@ -6,8 +7,8 @@ namespace DevilDaggersWebsite.Code.Database.CustomLeaderboards
 	{
 		public int ID { get; set; }
 
-		public CustomLeaderboard(string spawnsetFileName, float bronze, float silver, float golden, float devil, float homing)
-			: base(spawnsetFileName, bronze, silver, golden, devil, homing)
+		public CustomLeaderboard(string spawnsetFileName, float bronze, float silver, float golden, float devil, float homing, CustomLeaderboardCategory category, DateTime? dateLastPlayed, DateTime? dateCreated)
+			: base(spawnsetFileName, bronze, silver, golden, devil, homing, category, dateLastPlayed, dateCreated)
 		{
 		}
 

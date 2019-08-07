@@ -1,11 +1,12 @@
 ﻿using CoreBase.Services;
+using DevilDaggersCore.CustomLeaderboards;
 using DevilDaggersCore.Spawnsets;
 using DevilDaggersCore.Spawnsets.Web;
 using DevilDaggersWebsite.Code.Database;
 using DevilDaggersWebsite.Code.Database.CustomLeaderboards;
 using DevilDaggersWebsite.Code.Utils;
 using Microsoft.AspNetCore.Mvc.RazorPages;
-﻿using NetBase.Encryption;
+using NetBase.Encryption;
 using Newtonsoft.Json;
 using System;
 using System.Collections.Generic;
@@ -57,7 +58,8 @@ namespace DevilDaggersWebsite.Pages.CustomLeaderboards
 
 		public UploadResult TryUpload(string spawnsetHash, int playerID, string username, float time, int gems, int kills, int deathType, int shotsHit, int shotsFired, int enemiesAlive, int homing, float levelUpTime2, float levelUpTime3, float levelUpTime4, string ddclClientVersion, string validation)
 		{
-			if (Version.Parse(ddclClientVersion) < Version.Parse(ToolUtils.Tools.Where(t => t.Name == "DDCL").FirstOrDefault().VersionNumberRequired))
+			Version clientVersionParsed = Version.Parse(ddclClientVersion);
+			if (clientVersionParsed < Version.Parse(ToolUtils.Tools.Where(t => t.Name == "DDCL").FirstOrDefault().VersionNumberRequired))
 				return new UploadResult(false, "You are using an unsupported and outdated version of DDCL. Please update the program.");
 
 			string spawnsetName = string.Empty;
@@ -99,7 +101,15 @@ namespace DevilDaggersWebsite.Pages.CustomLeaderboards
 			if (leaderboard == null)
 				return new UploadResult(false, "This spawnset doesn't have a leaderboard.");
 
-			// Calculate the new rank
+			if (leaderboard.Category != CustomLeaderboardCategory.Default && clientVersionParsed <= new Version(0, 4, 0, 1))
+				return new UploadResult(false, $"This version of DDCL does not support custom leaderboards of the category '{leaderboard.Category}'.");
+
+			// Submission is accepted.
+
+			// Update the date this leaderboard was submitted to.
+			leaderboard.DateLastPlayed = DateTime.Now;
+
+			// Calculate the new rank.
 			List<CustomEntry> entries = _context.CustomEntries.Where(e => e.CustomLeaderboard == leaderboard).OrderByDescending(e => e.Time).ToList();
 			int rank = entries.Where(e => e.Time > time).Count() + 1;
 			int totalPlayers = entries.Count();
@@ -107,7 +117,7 @@ namespace DevilDaggersWebsite.Pages.CustomLeaderboards
 			CustomEntry entry = _context.CustomEntries.Where(e => e.PlayerID == playerID && e.CustomLeaderboardID == leaderboard.ID).FirstOrDefault();
 			if (entry == null)
 			{
-				// New user on this leaderboard
+				// Add new user to this leaderboard.
 				_context.CustomEntries.Add(new CustomEntry(playerID, username, time, gems, kills, deathType, shotsHit, shotsFired, enemiesAlive, homing, levelUpTime2, levelUpTime3, levelUpTime4, DateTime.Now, ddclClientVersion) { CustomLeaderboard = leaderboard });
 
 				_context.SaveChanges();
@@ -118,18 +128,18 @@ namespace DevilDaggersWebsite.Pages.CustomLeaderboards
 			}
 			else
 			{
-				// Update the username
+				// Update the username.
 				foreach (CustomEntry en in _context.CustomEntries.Where(e => e.PlayerID == entry.PlayerID))
 					en.Username = username;
 
-				// Users already on the leaderboard, check for higher score
+				// Users already on the leaderboard, check for higher score.
 				if (entry.Time >= time)
 				{
 					_context.SaveChanges();
 					return new UploadResult(true, $"No new highscore for {SpawnsetFile.GetName(leaderboard.SpawnsetFileName)}.");
 				}
 
-				// Calculate the old rank
+				// Calculate the old rank.
 				int oldRank = entries.Where(e => e.Time > entry.Time).Count() + 1;
 
 				double accuracy = shotsFired == 0 ? 0 : shotsHit / (double)shotsFired;
