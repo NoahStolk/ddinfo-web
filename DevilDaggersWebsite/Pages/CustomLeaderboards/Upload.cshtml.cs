@@ -6,6 +6,7 @@ using DevilDaggersWebsite.Code.Database;
 using DevilDaggersWebsite.Code.Database.CustomLeaderboards;
 using DevilDaggersWebsite.Code.Utils;
 using Microsoft.AspNetCore.Mvc.RazorPages;
+using Microsoft.EntityFrameworkCore;
 using NetBase.Encryption;
 using Newtonsoft.Json;
 using System;
@@ -83,7 +84,7 @@ namespace DevilDaggersWebsite.Pages.CustomLeaderboards
 			if (DecryptValidation(validation) != check)
 				return new UploadResult(false, "Invalid submission.");
 
-			CustomLeaderboard leaderboard = _context.CustomLeaderboards.Where(l => l.SpawnsetFileName == spawnsetName).FirstOrDefault();
+			CustomLeaderboard leaderboard = _context.CustomLeaderboards.Include(l => l.Category).Where(l => l.SpawnsetFileName == spawnsetName).FirstOrDefault();
 			if (leaderboard == null)
 				return new UploadResult(false, "This spawnset doesn't have a leaderboard.");
 
@@ -117,9 +118,10 @@ namespace DevilDaggersWebsite.Pages.CustomLeaderboards
 				// Update the username.
 				foreach (CustomEntry en in _context.CustomEntries.Where(e => e.PlayerID == entry.PlayerID))
 					en.Username = username;
-
-				// User is already on the leaderboard, check for higher score.
-				if (entry.Time >= time)
+					
+				// User is already on the leaderboard, check for better score.
+				if ((leaderboard.Category.Ascending && entry.Time <= time) // TODO: Use reflection to use Category.SortingPropertyName.
+				 || (!leaderboard.Category.Ascending && entry.Time >= time))
 				{
 					_context.SaveChanges();
 					return new UploadResult(true, $"No new highscore for {SpawnsetFile.GetName(leaderboard.SpawnsetFileName)}.");
