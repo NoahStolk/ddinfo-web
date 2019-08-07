@@ -87,8 +87,8 @@ namespace DevilDaggersWebsite.Pages.CustomLeaderboards
 			if (leaderboard == null)
 				return new UploadResult(false, "This spawnset doesn't have a leaderboard.");
 
-			if (leaderboard.Category != CustomLeaderboardCategory.Default && clientVersionParsed <= new Version(0, 4, 0, 1))
-				return new UploadResult(false, $"This version of DDCL does not support custom leaderboards of the category '{leaderboard.Category}'.");
+			if ((leaderboard.Category.Ascending || leaderboard.Category.SortingPropertyName != "Time") && clientVersionParsed <= new Version(0, 4, 0, 1))
+				return new UploadResult(false, $"This version of DDCL does not support custom leaderboards of the category '{leaderboard.Category.Name}'.");
 
 			// Submission is accepted.
 
@@ -118,7 +118,7 @@ namespace DevilDaggersWebsite.Pages.CustomLeaderboards
 				foreach (CustomEntry en in _context.CustomEntries.Where(e => e.PlayerID == entry.PlayerID))
 					en.Username = username;
 
-				// Users already on the leaderboard, check for higher score.
+				// User is already on the leaderboard, check for higher score.
 				if (entry.Time >= time)
 				{
 					_context.SaveChanges();

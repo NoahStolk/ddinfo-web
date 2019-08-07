@@ -1,8 +1,9 @@
-﻿using DevilDaggersCore.CustomLeaderboards;
-using DevilDaggersWebsite.Code.Database;
+﻿using DevilDaggersWebsite.Code.Database;
 using DevilDaggersWebsite.Code.Database.CustomLeaderboards;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.AspNetCore.Mvc.RazorPages;
+using Microsoft.EntityFrameworkCore;
+using NetBase.Extensions;
 using System.Collections.Generic;
 using System.Linq;
 
@@ -16,8 +17,6 @@ namespace DevilDaggersWebsite.Pages.CustomLeaderboards
 		[BindProperty]
 		public List<CustomEntry> Entries { get; set; }
 
-		public string PartialName { get; set; }
-
 		private readonly ApplicationDbContext _context;
 
 		public LeaderboardModel(ApplicationDbContext context)
@@ -27,18 +26,18 @@ namespace DevilDaggersWebsite.Pages.CustomLeaderboards
 
 		public ActionResult OnGet(string spawnset)
 		{
-			Leaderboard = _context.CustomLeaderboards.Where(l => l.SpawnsetFileName == spawnset).FirstOrDefault();
+			Leaderboard = _context.CustomLeaderboards
+				.Include(l => l.Category)
+				.Where(l => l.SpawnsetFileName == spawnset)
+				.FirstOrDefault();
 
 			if (Leaderboard == null)
 				return RedirectToPage("Index");
 
-			if (Leaderboard.Category == CustomLeaderboardCategory.Archive
-			 || Leaderboard.Category == CustomLeaderboardCategory.Reverse)
-				PartialName = "Default";
-			else
-				PartialName = Leaderboard.Category.ToString();
-
-			Entries = _context.CustomEntries.Where(e => e.CustomLeaderboard == Leaderboard).OrderByDescending(e => e.Time).ToList();
+			Entries = _context.CustomEntries
+				.Where(e => e.CustomLeaderboard == Leaderboard)
+				.OrderByField(Leaderboard.Category.SortingPropertyName, Leaderboard.Category.Ascending)
+				.ToList();
 
 			return null;
 		}

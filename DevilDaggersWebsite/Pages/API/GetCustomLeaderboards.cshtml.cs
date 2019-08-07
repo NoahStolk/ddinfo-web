@@ -35,7 +35,6 @@ namespace DevilDaggersWebsite.Pages.API
 					_context.CustomEntries
 						.Where(e => e.CustomLeaderboard == leaderboard)
 						.Any(e => e.Time > leaderboard.Homing) ? leaderboard.Homing : -1,
-					leaderboard.Category,
 					leaderboard.DateLastPlayed,
 					leaderboard.DateCreated));
 

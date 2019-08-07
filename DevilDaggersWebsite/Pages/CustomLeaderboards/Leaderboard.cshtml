@@ -21,50 +21,40 @@
 
 		<div style="flex-direction: column; width: 200px; margin: auto;">
 			@{
-				switch (Model.Leaderboard.Category)
+				for (int i = 0; i < (Model.Leaderboard.Homing == 0 ? 4 : 5); i++)
 				{
-					case DevilDaggersCore.CustomLeaderboards.CustomLeaderboardCategory.Challenge:
-						<p>Spawnset ends at ...</p>
-						break;
-					case DevilDaggersCore.CustomLeaderboards.CustomLeaderboardCategory.Reverse:
-						break;
-					default:
-						for (int i = 0; i < (Model.Leaderboard.Homing == 0 ? 4 : 5); i++)
-						{
-							string daggerName = "";
-							string seconds = "";
-							switch (i)
-							{
-								case 0:
-									daggerName = "Bronze";
-									seconds = Model.Leaderboard.Bronze.ToString("0.0000");
-									break;
-								case 1:
-									daggerName = "Silver";
-									seconds = Model.Leaderboard.Silver.ToString("0.0000");
-									break;
-								case 2:
-									daggerName = "Golden";
-									seconds = Model.Leaderboard.Golden.ToString("0.0000");
-									break;
-								case 3:
-									daggerName = "Devil";
-									seconds = Model.Leaderboard.Devil.ToString("0.0000");
-									break;
-								case 4:
-									daggerName = "Homing";
-									seconds = Model.Entries.Any(e => e.Time > Model.Leaderboard.Homing) ? Model.Leaderboard.Homing.ToString("0.0000") : "???";
-									break;
-								default:
-									continue;
-							}
+					string daggerName = "";
+					string seconds = "";
+					switch (i)
+					{
+						case 0:
+							daggerName = "Bronze";
+							seconds = Model.Leaderboard.Bronze.ToString("0.0000");
+							break;
+						case 1:
+							daggerName = "Silver";
+							seconds = Model.Leaderboard.Silver.ToString("0.0000");
+							break;
+						case 2:
+							daggerName = "Golden";
+							seconds = Model.Leaderboard.Golden.ToString("0.0000");
+							break;
+						case 3:
+							daggerName = "Devil";
+							seconds = Model.Leaderboard.Devil.ToString("0.0000");
+							break;
+						case 4:
+							daggerName = "Homing";
+							seconds = Model.Entries.Any(e => e.Time > Model.Leaderboard.Homing) ? Model.Leaderboard.Homing.ToString("0.0000") : "???";
+							break;
+						default:
+							continue;
+					}
 
-							<div class="flex-container" style="padding-bottom: 4px;">
-								<div><img src="~/Images/Daggers/@(daggerName)Small.png" /></div>
-								<div class="@daggerName.ToLower() text-right" style="width: 100%;">@seconds</div>
-							</div>
-						}
-						break;
+					<div class="flex-container" style="padding-bottom: 4px;">
+						<div><img src="~/Images/Daggers/@(daggerName)Small.png" /></div>
+						<div class="@daggerName.ToLower() text-right" style="width: 100%;">@seconds</div>
+					</div>
 				}
 			}
 		</div>
@@ -76,7 +66,7 @@
 			You can sort the leaderboard by clicking the headers.
 		</p>
 	</div>
-	@await Html.PartialAsync($"Partials/_LeaderboardCustom{Model.PartialName}Partial")
+	@await Html.PartialAsync($"Partials/_LeaderboardCustom{Model.Leaderboard.Category.LayoutPartialName}Partial")
 </main>
 
 @section Scripts {
@@ -85,5 +75,5 @@
 
 @section Styles {
 	<link rel='stylesheet' href='~/styles/leaderboard.css' />
-	<link rel='stylesheet' href='~/styles/leaderboard-rows-custom-@(Model.PartialName.ToLower()).css' />
+	<link rel='stylesheet' href='~/styles/leaderboard-rows-custom-@(Model.Leaderboard.Category.LayoutPartialName.ToLower()).css' />
 }

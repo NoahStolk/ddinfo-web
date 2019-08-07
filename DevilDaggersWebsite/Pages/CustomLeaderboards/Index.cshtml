@@ -18,7 +18,7 @@
 		<select class="select form-control" asp-for="Category" asp-items="Model.CategoryListItems" onchange="this.form.submit()"></select>
 	</form>
 
-	<h2>@Model.Category category</h2>
+	<h2>@Model.Category.Name category</h2>
 	@await Html.PartialAsync("Partials/_CustomLeaderboardTablePartial", Model.Leaderboards)
 
 	<h2>FAQ</h2>

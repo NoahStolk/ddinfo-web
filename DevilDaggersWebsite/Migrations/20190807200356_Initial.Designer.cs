@@ -9,8 +9,8 @@ using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 namespace DevilDaggersWebsite.Migrations
 {
     [DbContext(typeof(ApplicationDbContext))]
-    [Migration("20190807121847_V8")]
-    partial class V8
+    [Migration("20190807200356_Initial")]
+    partial class Initial
     {
         protected override void BuildTargetModel(ModelBuilder modelBuilder)
         {
@@ -18,6 +18,24 @@ namespace DevilDaggersWebsite.Migrations
             modelBuilder
                 .HasAnnotation("ProductVersion", "2.1.11-servicing-32099")
                 .HasAnnotation("Relational:MaxIdentifierLength", 64);
+
+            modelBuilder.Entity("DevilDaggersWebsite.Code.Database.CustomLeaderboards.Category", b =>
+                {
+                    b.Property<int>("ID")
+                        .ValueGeneratedOnAdd();
+
+                    b.Property<bool>("Ascending");
+
+                    b.Property<string>("LayoutPartialName");
+
+                    b.Property<string>("Name");
+
+                    b.Property<string>("SortingPropertyName");
+
+                    b.HasKey("ID");
+
+                    b.ToTable("CustomLeaderboardCategories");
+                });
 
             modelBuilder.Entity("DevilDaggersWebsite.Code.Database.CustomLeaderboards.CustomEntry", b =>
                 {
@@ -70,7 +88,11 @@ namespace DevilDaggersWebsite.Migrations
 
                     b.Property<float>("Bronze");
 
-                    b.Property<int>("Category");
+                    b.Property<int>("CategoryID");
+
+                    b.Property<DateTime?>("DateCreated");
+
+                    b.Property<DateTime?>("DateLastPlayed");
 
                     b.Property<float>("Devil");
 
@@ -84,6 +106,8 @@ namespace DevilDaggersWebsite.Migrations
 
                     b.HasKey("ID");
 
+                    b.HasIndex("CategoryID");
+
                     b.ToTable("CustomLeaderboards");
                 });
 
@@ -92,6 +116,14 @@ namespace DevilDaggersWebsite.Migrations
                     b.HasOne("DevilDaggersWebsite.Code.Database.CustomLeaderboards.CustomLeaderboard", "CustomLeaderboard")
                         .WithMany()
                         .HasForeignKey("CustomLeaderboardID")
+                        .OnDelete(DeleteBehavior.Cascade);
+                });
+
+            modelBuilder.Entity("DevilDaggersWebsite.Code.Database.CustomLeaderboards.CustomLeaderboard", b =>
+                {
+                    b.HasOne("DevilDaggersWebsite.Code.Database.CustomLeaderboards.Category", "Category")
+                        .WithMany()
+                        .HasForeignKey("CategoryID")
                         .OnDelete(DeleteBehavior.Cascade);
                 });
 #pragma warning restore 612, 618
