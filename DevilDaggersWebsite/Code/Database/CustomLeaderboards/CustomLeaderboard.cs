@@ -25,6 +25,21 @@ namespace DevilDaggersWebsite.Code.Database.CustomLeaderboards
 		/// <returns>The CSS class name for the dagger.</returns>
 		public string GetDagger(float time)
 		{
+			if (Category.Ascending)
+			{
+				if (time <= Homing && Homing > 0)
+					return "homing";
+				if (time <= Devil && Devil > 0)
+					return "devil";
+				if (time <= Golden && Golden > 0)
+					return "golden";
+				if (time <= Silver && Silver > 0)
+					return "silver";
+				if (time <= Bronze && Bronze > 0)
+					return "bronze";
+				return "default";
+			}
+
 			if (time >= Homing && Homing > 0)
 				return "homing";
 			if (time >= Devil && Devil > 0)

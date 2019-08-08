@@ -41,5 +41,44 @@ namespace DevilDaggersWebsite.Pages.CustomLeaderboards
 
 			return null;
 		}
+
+		public void GetDaggerInfo(int i, ref string daggerName, ref string seconds)
+		{
+			daggerName = "";
+			seconds = "";
+			switch (i)
+			{
+				case 0:
+					daggerName = "Bronze";
+					seconds = Leaderboard.Bronze.ToString("0.0000");
+					break;
+				case 1:
+					daggerName = "Silver";
+					seconds = Leaderboard.Silver.ToString("0.0000");
+					break;
+				case 2:
+					daggerName = "Golden";
+					seconds = Leaderboard.Golden.ToString("0.0000");
+					break;
+				case 3:
+					daggerName = "Devil";
+					seconds = Leaderboard.Devil.ToString("0.0000");
+					break;
+				case 4:
+					daggerName = "Homing";
+					seconds =
+						Leaderboard.Category.Ascending ?
+							Entries.Any(e => e.Time <= Leaderboard.Homing) ?
+								Leaderboard.Homing.ToString("0.0000")
+							:
+								"???"
+						:
+							Entries.Any(e => e.Time >= Leaderboard.Homing) ?
+								Leaderboard.Homing.ToString("0.0000")
+							:
+								"???";
+					break;
+			}
+		}
 	}
 }
