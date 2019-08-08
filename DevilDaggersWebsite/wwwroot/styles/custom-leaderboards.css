@@ -8,3 +8,10 @@
 	overflow: hidden;
 	white-space: nowrap;
 }
+
+.leaderboard-spawnset-name {
+	max-width: 300px;
+	max-height: 1.42857143em;
+	overflow: hidden;
+	white-space: nowrap;
+}

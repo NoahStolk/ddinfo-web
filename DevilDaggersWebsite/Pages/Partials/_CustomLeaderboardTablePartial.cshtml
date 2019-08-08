@@ -2,6 +2,7 @@
 @using DevilDaggersCore.Spawnsets.Web
 @using DevilDaggersWebsite.Code.Database.CustomLeaderboards
 @using DevilDaggersWebsite.Code.Utils
+@using NetBase.Extensions
 @using System.Linq
 @inject DevilDaggersWebsite.Code.Database.ApplicationDbContext DbContext
 
@@ -58,14 +59,14 @@
 				string fileName = lb.SpawnsetFileName;
 				string name = SpawnsetFile.GetName(fileName);
 				string author = SpawnsetFile.GetAuthor(fileName);
-				List<CustomEntry> entries = DbContext.CustomEntries.Where(e => e.CustomLeaderboard == lb).OrderByDescending(e => e.Time).ToList();
+				List<CustomEntry> entries = DbContext.CustomEntries.Where(e => e.CustomLeaderboard == lb).OrderByMember(lb.Category.SortingPropertyName, lb.Category.Ascending).ToList();
 				string wrDagger = "";
 				if (entries.Count > 0)
 				{
 					wrDagger = lb.GetDagger(entries[0].Time);
 				}
 				<tr>
-					<td>
+					<td class="leaderboard-spawnset-name">
 						<a asp-page="/CustomLeaderboards/Leaderboard" asp-route-spawnset="@fileName">@name</a>
 					</td>
 					<td>
