@@ -92,7 +92,7 @@ namespace DevilDaggersWebsite.Pages.CustomLeaderboards
 			if ((leaderboard.Category.Ascending || leaderboard.Category.SortingPropertyName != "Time") && clientVersionParsed <= new Version(0, 4, 0, 1))
 				return new UploadResult(false, $"This version of DDCL does not support custom leaderboards of the category '{leaderboard.Category.Name}'.");
 
-			if (leaderboard.Category.Name == "Challenge" && clientVersionParsed <= new Version(0, 4, 2, 0))
+			if (leaderboard.Category.Name == "Challenge" && clientVersionParsed <= new Version(0, 4, 3, 0))
 				return new UploadResult(false, $"This version of DDCL does not support custom leaderboards of the category '{leaderboard.Category.Name}'.");
 
 			// Submission is accepted.
