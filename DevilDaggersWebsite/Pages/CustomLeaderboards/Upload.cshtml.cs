@@ -92,6 +92,9 @@ namespace DevilDaggersWebsite.Pages.CustomLeaderboards
 			if ((leaderboard.Category.Ascending || leaderboard.Category.SortingPropertyName != "Time") && clientVersionParsed <= new Version(0, 4, 0, 1))
 				return new UploadResult(false, $"This version of DDCL does not support custom leaderboards of the category '{leaderboard.Category.Name}'.");
 
+			if (leaderboard.Category.Name == "Challenge" && clientVersionParsed <= new Version(0, 4, 2, 0))
+				return new UploadResult(false, $"This version of DDCL does not support custom leaderboards of the category '{leaderboard.Category.Name}'.");
+
 			// Submission is accepted.
 
 			// Update the date this leaderboard was submitted to.
@@ -164,7 +167,7 @@ namespace DevilDaggersWebsite.Pages.CustomLeaderboards
 				return new UploadResult(true, $@"NEW HIGHSCORE for {SpawnsetFile.GetName(leaderboard.SpawnsetFileName)}!
 				
 {$"Rank".ToString().PadRight(width)}{$"{rank} / {totalPlayers}".PadRight(width)}({rankDiff.ToString("+0;-#")})
-{$"Time".ToString().PadRight(width)}{time.ToString("0.0000").PadRight(width)}(+{timeDiff.ToString("0.0000")})
+{$"Time".ToString().PadRight(width)}{time.ToString("0.0000").PadRight(width)}({(timeDiff < 0 ? "" : "+")}{timeDiff.ToString("0.0000")})
 {$"Kills".ToString().PadRight(width)}{kills.ToString().PadRight(width)}({killsDiff.ToString("+0;-#")})
 {$"Gems".ToString().PadRight(width)}{gems.ToString().PadRight(width)}({gemsDiff.ToString("+0;-#")})
 {$"Accuracy".ToString().PadRight(width)}{accuracy.ToString("0.00%").PadRight(width)}({(accuracyDiff < 0 ? "" : "+")}{accuracyDiff.ToString("0.00%")})
