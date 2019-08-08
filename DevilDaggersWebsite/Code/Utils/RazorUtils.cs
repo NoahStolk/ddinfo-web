@@ -26,8 +26,8 @@ namespace DevilDaggersWebsite.Code.Utils
 		// TODO: Rewrite
 		public static HtmlString GetLayout(string str, params GameVersion[] gameVersions)
 		{
-			char[] beginSeparators = new char[] { '>', ' ', ',', '.', '(' };
-			char[] endSeparators = new char[] { ' ', ',', '.', 's', ')', '\'' };
+			char[] beginSeparators = new char[] { '>', ' ', ',', '.', '(', '-' };
+			char[] endSeparators = new char[] { ' ', ',', '.', 's', ')', '\'', ';' };
 
 			List<Enemy> enemies = GameInfo.GetEntities<Enemy>(gameVersions);
 			for (int i = enemies.Count - 1; i >= 0; i--) // Reverse iteration because transmuted skulls come after normal skulls in the list
