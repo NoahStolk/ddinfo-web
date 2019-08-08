@@ -36,7 +36,7 @@ namespace DevilDaggersWebsite.Pages.CustomLeaderboards
 
 			Entries = _context.CustomEntries
 				.Where(e => e.CustomLeaderboard == Leaderboard)
-				.OrderByField(Leaderboard.Category.SortingPropertyName, Leaderboard.Category.Ascending)
+				.OrderByMember(Leaderboard.Category.SortingPropertyName, Leaderboard.Category.Ascending)
 				.ToList();
 
 			return null;

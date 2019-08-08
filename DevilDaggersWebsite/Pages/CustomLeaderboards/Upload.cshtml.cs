@@ -8,6 +8,7 @@ using DevilDaggersWebsite.Code.Utils;
 using Microsoft.AspNetCore.Mvc.RazorPages;
 using Microsoft.EntityFrameworkCore;
 using NetBase.Encryption;
+using NetBase.Extensions;
 using Newtonsoft.Json;
 using System;
 using System.Collections.Generic;
@@ -97,8 +98,8 @@ namespace DevilDaggersWebsite.Pages.CustomLeaderboards
 			leaderboard.DateLastPlayed = DateTime.Now;
 
 			// Calculate the new rank.
-			List<CustomEntry> entries = _context.CustomEntries.Where(e => e.CustomLeaderboard == leaderboard).OrderByDescending(e => e.Time).ToList();
-			int rank = entries.Where(e => e.Time > time).Count() + 1;
+			List<CustomEntry> entries = _context.CustomEntries.Where(e => e.CustomLeaderboard == leaderboard).OrderByMember(leaderboard.Category.SortingPropertyName, leaderboard.Category.Ascending).ToList();
+			int rank = leaderboard.Category.Ascending ? entries.Where(e => e.Time < time).Count() + 1 : entries.Where(e => e.Time > time).Count() + 1; // TODO: Use reflection to use Category.SortingPropertyName.
 			int totalPlayers = entries.Count();
 
 			CustomEntry entry = _context.CustomEntries.Where(e => e.PlayerID == playerID && e.CustomLeaderboardID == leaderboard.ID).FirstOrDefault();
@@ -128,7 +129,7 @@ namespace DevilDaggersWebsite.Pages.CustomLeaderboards
 				}
 
 				// Calculate the old rank.
-				int oldRank = entries.Where(e => e.Time > entry.Time).Count() + 1;
+				int oldRank = leaderboard.Category.Ascending ? entries.Where(e => e.Time < time).Count() + 1 : entries.Where(e => e.Time > time).Count() + 1;
 
 				double accuracy = shotsFired == 0 ? 0 : shotsHit / (double)shotsFired;
 
