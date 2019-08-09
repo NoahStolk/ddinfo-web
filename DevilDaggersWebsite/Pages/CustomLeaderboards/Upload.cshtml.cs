@@ -54,9 +54,8 @@ namespace DevilDaggersWebsite.Pages.CustomLeaderboards
 			foreach (string spawnsetPath in Directory.GetFiles(Path.Combine(_commonObjects.Env.WebRootPath, "spawnsets")))
 			{
 				string hash = string.Empty;
-				SpawnsetFile spawnsetFile = SpawnsetUtils.CreateSpawnsetFileFromSettingsFile(_commonObjects, spawnsetPath);
-
-				using (FileStream fs = new FileStream(spawnsetFile.Path, FileMode.Open, FileAccess.Read))
+				
+				using (FileStream fs = new FileStream(spawnsetPath, FileMode.Open, FileAccess.Read))
 					if (Spawnset.TryParse(fs, out Spawnset spawnsetObject))
 						hash = spawnsetObject.GetHashString();
 
