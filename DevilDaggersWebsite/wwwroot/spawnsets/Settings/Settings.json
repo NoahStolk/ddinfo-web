@@ -751,7 +751,8 @@
 		"LastUpdated": "2019-08-06T01:40:00"
 	},
 	"Braniac (You Suck At Dagger Jumps)_cake": {
-		"LastUpdated": "2019-08-08T15:19:00"
+		"LastUpdated": "2019-08-08T15:19:00",
+		"Description": "don't dagger jump into the abyss at the end or game will crash"
 	},
 	"succ_cake": {
 		"LastUpdated": "2019-08-08T17:12:00"
@@ -765,5 +766,9 @@
 	},
 	"pileup_Pritster": {
 		"LastUpdated": "2019-08-09T02:29:00"
+	},
+	"AttackAttackAttack2_xvlv": {
+		"LastUpdated": "2019-08-09T18:06:00",
+		"Description": "Non-broken and polished version of the infamous precursor <a href='/Spawnset?spawnset=AttackAttackAttack_xvlv'>AttackAttackAttack</a>."
 	}
 }
