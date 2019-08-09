@@ -1,16 +1,22 @@
-﻿using DevilDaggersWebsite.Code.Database;
+﻿using CoreBase.Services;
+using DevilDaggersCore.Spawnsets.Web;
+using DevilDaggersWebsite.Code.Database;
 using DevilDaggersWebsite.Code.Database.CustomLeaderboards;
+using DevilDaggersWebsite.Code.Utils;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.AspNetCore.Mvc.RazorPages;
 using Microsoft.EntityFrameworkCore;
 using NetBase.Extensions;
 using System.Collections.Generic;
+using System.IO;
 using System.Linq;
 
 namespace DevilDaggersWebsite.Pages.CustomLeaderboards
 {
 	public class LeaderboardModel : PageModel
 	{
+		public SpawnsetFile SpawnsetFile { get; private set; }
+
 		[BindProperty]
 		public CustomLeaderboard Leaderboard { get; set; }
 
@@ -19,13 +25,18 @@ namespace DevilDaggersWebsite.Pages.CustomLeaderboards
 
 		private readonly ApplicationDbContext _context;
 
-		public LeaderboardModel(ApplicationDbContext context)
+		public ICommonObjects CommonObjects { get; }
+
+		public LeaderboardModel(ApplicationDbContext context, ICommonObjects commonObjects)
 		{
 			_context = context;
+			CommonObjects = commonObjects;
 		}
 
 		public ActionResult OnGet(string spawnset)
 		{
+			SpawnsetFile = SpawnsetUtils.CreateSpawnsetFileFromSettingsFile(CommonObjects, Path.Combine(CommonObjects.Env.WebRootPath, "spawnsets", spawnset));
+
 			Leaderboard = _context.CustomLeaderboards
 				.Include(l => l.Category)
 				.Where(l => l.SpawnsetFileName == spawnset)

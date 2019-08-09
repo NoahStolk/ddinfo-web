@@ -1,5 +1,7 @@
 ﻿@page
 @using DevilDaggersCore.Spawnsets.Web
+@using DevilDaggersWebsite.Code.Utils
+@using DevilDaggersCore.Game
 @model DevilDaggersWebsite.Pages.CustomLeaderboards.LeaderboardModel
 @{
 	string name = SpawnsetFile.GetName(Model.Leaderboard.SpawnsetFileName);
@@ -18,6 +20,15 @@
 		<p>
 			<a asp-page="/Spawnset" asp-route-spawnset="@Model.Leaderboard.SpawnsetFileName">Spawnset page for @name</a>
 		</p>
+
+		@{
+			if (!string.IsNullOrEmpty(Model.SpawnsetFile.settings.Description))
+			{
+				<div class="description">
+					@RazorUtils.GetLayout(Model.SpawnsetFile.settings.Description, GameInfo.GameVersions[GameInfo.DEFAULT_GAME_VERSION])
+				</div>
+			}
+		}
 
 		<div style="flex-direction: column; width: 200px; margin: auto;">
 			@{

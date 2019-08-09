@@ -84,7 +84,7 @@ namespace DevilDaggersWebsite.Pages.CustomLeaderboards
 			if (DecryptValidation(validation) != check)
 				return new UploadResult(false, "Invalid submission.");
 
-			CustomLeaderboard leaderboard = _context.CustomLeaderboards.Include(l => l.Category).Where(l => l.SpawnsetFileName == spawnsetName).FirstOrDefault();
+			CustomLeaderboard leaderboard = _context.CustomLeaderboards.Include(l => l.Category).Where(l => l.SpawnsetFileName == spawnsetName).FirstOrDefault(); // TODO: Multiple leaderboards
 			if (leaderboard == null)
 				return new UploadResult(false, "This spawnset doesn't have a leaderboard.");
 
@@ -95,6 +95,9 @@ namespace DevilDaggersWebsite.Pages.CustomLeaderboards
 				return new UploadResult(false, $"This version of DDCL does not support custom leaderboards of the category '{leaderboard.Category.Name}'.");
 
 			// Submission is accepted.
+
+			// Fix any broken values.
+			homing = Math.Max(0, homing);
 
 			// Update the date this leaderboard was submitted to.
 			leaderboard.DateLastPlayed = DateTime.Now;
