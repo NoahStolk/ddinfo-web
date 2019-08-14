@@ -29,23 +29,29 @@ namespace DevilDaggersWebsite.Pages.Leaderboard
 
 		public async Task OnGetAsync(int rank, string search)
 		{
-			Rank = Math.Max(rank, 1);
-			Search = search;
-
-			if (IsUserSearch)
+			try
 			{
-				Leaderboard = await Hasmodai.GetUserSearch(Search);
-			}
-			else
-			{
-				Leaderboard = await Hasmodai.GetScores(Rank);
+				Rank = Math.Max(rank, 1);
+				Search = search;
 
-				if (Rank > Leaderboard.Players - 99)
+				if (IsUserSearch)
 				{
-					Rank = Leaderboard.Players - 99;
-					Leaderboard.Entries.Clear();
-					Leaderboard = await Hasmodai.GetScores(Rank);
+					Leaderboard = await Hasmodai.GetUserSearch(Search);
 				}
+				else
+				{
+					Leaderboard = await Hasmodai.GetScores(Rank);
+
+					if (Rank > Leaderboard.Players - 99)
+					{
+						Rank = Leaderboard.Players - 99;
+						Leaderboard.Entries.Clear();
+						Leaderboard = await Hasmodai.GetScores(Rank);
+					}
+				}
+			}
+			catch
+			{
 			}
 		}
 	}
