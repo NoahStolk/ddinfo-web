@@ -770,5 +770,9 @@
 	"AttackAttackAttack2_xvlv": {
 		"LastUpdated": "2019-08-09T18:06:00",
 		"Description": "Non-broken and polished version of the infamous precursor <a href='/Spawnset?spawnset=AttackAttackAttack_xvlv'>AttackAttackAttack</a>."
+	},
+	"Sixtreme_Braden": {
+		"LastUpdated": "2019-08-18T18:03:00",
+		"Description": "This spawnset is all sixes (except for the Leviathan and part of the end loop). Everything spawns in sets of six. Usually at the same time, but there are cases like the Gigapedes and end loop where I delay them by six seconds each because otherwise you're likely to get clowned from underground and/or they tangle unavoidably. When Leviathan spawns, 18 (6x3) Thorns and 6 Squid II also spawn, and you have 100 seconds until the end loop starts. Good luck!"
 	}
 }
