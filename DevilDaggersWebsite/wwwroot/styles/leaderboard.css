@@ -28,6 +28,7 @@
 	}
 }
 
+.ban,
 .ban * {
 	text-decoration: line-through;
 	color: var(--col-ban);

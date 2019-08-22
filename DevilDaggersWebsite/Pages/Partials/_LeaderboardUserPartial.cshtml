@@ -22,6 +22,11 @@
 	</div>
 	<div class="leaderboard-body">
 		@{
+#if EXCLUDE_BANS
+			bool firstPage = Model.Leaderboard.Entries[0].Rank == 1;
+			int banCount = 0;
+#endif
+
 			IEnumerable<Ban> bans = UserUtils.GetBans(CommonObjects);
 			IEnumerable<Donator> donators = UserUtils.GetDonators(CommonObjects);
 			IEnumerable<Flag> flags = UserUtils.GetFlags(CommonObjects);
@@ -30,6 +35,16 @@
 			{
 				Ban ban = bans.Where(b => b.ID == entry.ID).FirstOrDefault();
 				bool banned = ban != null;
+#if EXCLUDE_BANS
+				if (banned && firstPage)
+				{
+					banCount++;
+				}
+				string rankString = banned ? "--" : (entry.Rank - banCount).ToString();
+#else
+				string rankString = entry.Rank.ToString();
+#endif
+
 				Donator donator = donators.Where(d => d.ID == entry.ID).FirstOrDefault();
 				Flag flag = flags.Where(f => f.ID == entry.ID).FirstOrDefault();
 				UserTitleCollection titles = titleCollections.Where(t => t.ID == entry.ID).FirstOrDefault();
@@ -47,11 +62,11 @@
 						<div class="text-right">
 							@if (entry.ID != 0)
 							{
-								<span data-toggle="tooltip" title="ID: @entry.ID" class="leaderboard-tooltip">@entry.Rank</span>
+								<span data-toggle="tooltip" title="ID: @entry.ID" class="leaderboard-tooltip">@rankString</span>
 							}
 							else
 							{
-								<span style="color: #ff0;" data-toggle="tooltip" title="ID: ???" class="leaderboard-tooltip">@entry.Rank</span>
+								<span style="color: #ff0;" data-toggle="tooltip" title="ID: ???" class="leaderboard-tooltip">@rankString</span>
 							}
 						</div>
 						<div>
