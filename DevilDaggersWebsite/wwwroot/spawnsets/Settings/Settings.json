@@ -774,5 +774,13 @@
 	"Sixtreme_Braden": {
 		"LastUpdated": "2019-08-18T18:03:00",
 		"Description": "This spawnset is all sixes (except for the Leviathan and part of the end loop). Everything spawns in sets of six. Usually at the same time, but there are cases like the Gigapedes and end loop where I delay them by six seconds each because otherwise you're likely to get clowned from underground and/or they tangle unavoidably. When Leviathan spawns, 18 (6x3) Thorns and 6 Squid II also spawn, and you have 100 seconds until the end loop starts. Good luck!"
+	},
+	"150Gems3GigapedesTighter_Braden": {
+		"LastUpdated": "2019-08-28T05:15:00",
+		"Description": "For impatient players. Just like <a href='/Spawnset?spawnset=150Gems3GigapedesPractice_Braden'>150Gems3GigapedesPractice</a>, except the intervals between Centipedes/Gigapedes is a LOT tighter. So much so that the Gigapede trio spawns at 59 seconds, which lines it up with the base game's 259 second Gigapede spawn. This is totally manageable if you're good at scraping Centipedes and can 1 or 2 cycle a single Gigapede."
+	},
+	"YouMustFearTheDark_Braden": {
+		"LastUpdated": "2019-08-28T05:15:00",
+		"Description": "This spawnset plays with the idea of darkness. The stage immediately starts shrinking, and only the center of the stage (the part that won't shink away) is visible. Enemies constantly spawn outside of the sphere of light, culminating in an end loop consisting of a Gigapede and a Spider II with four Thorns, which as it turns out, is pretty freaking hard to deal with when you can't see. There's also a Ghostpede that spawns early on making it so you can't use homing daggers."
 	}
 }

@@ -23,11 +23,11 @@ namespace DevilDaggersWebsite.Code.Utils
 			return new HtmlString($"<a style='color: #{upgrade.ColorCode};' href='/Wiki/Upgrades#{upgrade.Name}'>{upgrade.Name}</a>");
 		}
 
-		// TODO: Rewrite
+		// TODO: Rewrite whole method. It's messy and not very performant.
 		public static HtmlString GetLayout(string str, params GameVersion[] gameVersions)
 		{
-			char[] beginSeparators = new char[] { '>', ' ', ',', '.', '(', '-' };
-			char[] endSeparators = new char[] { ' ', ',', '.', 's', ')', '\'', ';' };
+			char[] beginSeparators = new char[] { '>', ' ', ',', '.', '(', '-', '/' };
+			char[] endSeparators = new char[] { ' ', ',', '.', 's', ')', '\'', ';', '/' };
 
 			List<Enemy> enemies = GameInfo.GetEntities<Enemy>(gameVersions);
 			for (int i = enemies.Count - 1; i >= 0; i--) // Reverse iteration because transmuted skulls come after normal skulls in the list
