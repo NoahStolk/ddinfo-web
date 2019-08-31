@@ -15,10 +15,20 @@
 
 <main role="main">
 	<p class="text-center">
-		This is the world record progression for Devil Daggers based on the <a asp-page="/Leaderboard/History">Leaderboard History</a> section of the website. While keeping track of any records after October 2018 has been fully automated, some older information is still missing. Most of the older information is based on screenshots and YouTube videos. If you find any information that's still missing, feel free to let us know in the <a href="@RazorUtils.DiscordUrl">Discord server</a>.
+		This is the world record progression for Devil Daggers based on the <a asp-page="/Leaderboard/History">Leaderboard History</a> section of the website. While keeping track of any records since October 2018 has been fully automated, some older information is still missing. Most of the older information is based on screenshots and YouTube videos. If you find any information that's still missing, feel free to let us know in the <a href="@RazorUtils.DiscordUrl">Discord server</a>.
 	</p>
 
-	<div id="world-record-progression-chart" style="height: 65vh;"></div>
+	<div id="world-record-progression-chart">
+		<table id="highlighter">
+			<tr><td>Date:</td><td id="h-date"></td></tr>
+			<tr><td>Time:</td><td id="h-time"></td></tr>
+			<tr><td>Username:</td><td id="h-username"></td></tr>
+			<tr><td>Gems:</td><td id="h-gems"></td></tr>
+			<tr><td>Kills:</td><td id="h-kills"></td></tr>
+			<tr><td>Accuracy:</td><td id="h-accuracy"></td></tr>
+			<tr><td>Death type:</td><td id="h-death-type"></td></tr>
+		</table>
+	</div>
 
 	<h2>World record holders</h2>
 	<div class="row">
@@ -83,5 +93,5 @@
 
 @section Styles {
 	<link rel='stylesheet' href='~/lib/jqPlot/jquery.jqplot.min.css' />
-	<link rel='stylesheet' href='~/styles/jqplot.css' />
+	<link rel='stylesheet' href='~/styles/leaderboard-world-record-progression.css' />
 }

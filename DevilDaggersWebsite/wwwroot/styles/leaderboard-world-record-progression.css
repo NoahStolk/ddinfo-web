@@ -1,16 +1,22 @@
-﻿.jqplot-highlighter {
+﻿#highlighter {
 	background-color: rgba(0,0,0,0.8);
 	color: var(--col-default-text);
 	width: 224px;
 	text-align: right;
 	border: solid 1px;
 	border-color: #999;
+	z-index: 1;
+	display: none;
 }
 
-	.jqplot-highlighter > tbody > tr > td {
+	#highlighter > tbody > tr > td {
 		padding: 0px 6px;
 	}
 
-		.jqplot-highlighter > tbody > tr > td:nth-child(1) {
+		#highlighter > tbody > tr > td:nth-child(1) {
 			text-align: left;
 		}
+
+#world-record-progression-chart {
+	height: 65vh;
+}
