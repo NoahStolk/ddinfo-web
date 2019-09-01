@@ -49,7 +49,7 @@ $.getJSON("/API/GetWorldRecords", function (data) {
 		wrs.push([date, worldRecord.Entry.Time / 10000, worldRecord.Entry.Username, worldRecord.Entry.Gems === 0 ? "?" : worldRecord.Entry.Gems.toFixed(0), worldRecord.Entry.Kills === 0 ? "?" : worldRecord.Entry.Kills.toFixed(0), accuracy === 0 ? "?" : accuracy.toFixed(2) + "%", death.ColorCode, death.Name]);
 
 		if (++wrIndex === data.length) {
-			wrs.push([maxDate + 1000000000 /*Ugly way to make sure no dot is visible*/, worldRecord.Entry.Time / 10000, worldRecord.Entry.Username, worldRecord.Entry.Gems === 0 ? "?" : worldRecord.Entry.Gems.toFixed(0), worldRecord.Entry.Kills === 0 ? "?" : worldRecord.Entry.Kills.toFixed(0), accuracy === 0 ? "?" : accuracy.toFixed(2) + "%", death.ColorCode, death.Name]);
+			wrs.push([maxDate + 10000000000 /*Ugly way to make sure no dot is visible*/, worldRecord.Entry.Time / 10000, worldRecord.Entry.Username, worldRecord.Entry.Gems === 0 ? "?" : worldRecord.Entry.Gems.toFixed(0), worldRecord.Entry.Kills === 0 ? "?" : worldRecord.Entry.Kills.toFixed(0), accuracy === 0 ? "?" : accuracy.toFixed(2) + "%", death.ColorCode, death.Name]);
 		}
 	});
 
@@ -197,6 +197,16 @@ $.getJSON("/API/GetWorldRecords", function (data) {
 
 	$(window).resize(function () {
 		chart.replot();
+
+		$('#world-record-progression-chart').append('<table id="highlighter">');
+		$('#highlighter').append('<tr><td>Date:</td><td id="h-date"></td></tr>');
+		$('#highlighter').append('<tr><td>Time:</td><td id="h-time"></td></tr>');
+		$('#highlighter').append('<tr><td>Username:</td><td id="h-username"></td></tr>');
+		$('#highlighter').append('<tr><td>Gems:</td><td id="h-gems"></td></tr>');
+		$('#highlighter').append('<tr><td>Kills:</td><td id="h-kills"></td></tr>');
+		$('#highlighter').append('<tr><td>Accuracy:</td><td id="h-accuracy"></td></tr>');
+		$('#highlighter').append('<tr><td>Death type:</td><td id="h-death-type"></td></tr>');
+		$('#world-record-progression-chart').append('</table>');
 	});
 
 	function setHighlighter(data, xy) {
