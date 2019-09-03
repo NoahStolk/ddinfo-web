@@ -11,7 +11,6 @@ namespace DevilDaggersWebsite.Pages.API
 	public class IndexModel : PageModel
 	{
 		public List<ApiFunction> ApiFunctions { get; private set; } = new List<ApiFunction>();
-		public List<ApiFunction> ApiFunctionsDeprecated { get; private set; } = new List<ApiFunction>();
 
 		public void OnGet()
 		{
@@ -20,25 +19,13 @@ namespace DevilDaggersWebsite.Pages.API
 				.FirstOrDefault();
 
 			foreach (Type type in asm.GetTypes())
-			{
 				if (type.BaseType == typeof(ApiPageModel) && type.Namespace.Contains("API") && !type.Name.Contains("Index"))
-				{
-					string name = type.Name.Replace("Model", "");
-
-					MethodInfo[] onGets = type.GetMethods().Where(t => t.Name == "OnGet" || t.Name == "OnGetAsync").ToArray();
-					foreach (MethodInfo onGet in onGets)
-					{
+					foreach (MethodInfo onGet in type.GetMethods().Where(t => t.Name == "OnGet" || t.Name == "OnGetAsync").ToArray())
 						if (onGet != null)
-						{
-							ApiFunctionAttribute apiAttribute = (ApiFunctionAttribute)type.GetCustomAttributes(typeof(ApiFunctionAttribute), true).FirstOrDefault();
-							if (apiAttribute.IsDeprecated)
-								ApiFunctionsDeprecated.Add(new ApiFunction(apiAttribute, name, onGet.GetParameters()));
-							else
-								ApiFunctions.Add(new ApiFunction(apiAttribute, name, onGet.GetParameters()));
-						}
-					}
-				}
-			}
+							ApiFunctions.Add(new ApiFunction(
+								(ApiFunctionAttribute)type.GetCustomAttributes(typeof(ApiFunctionAttribute), true).FirstOrDefault(),
+								type.Name.Replace("Model", ""),
+								onGet.GetParameters().Select(p => new ApiFunctionParameter(p)).ToArray()));
 		}
 	}
 }

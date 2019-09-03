@@ -1,5 +1,5 @@
-﻿.api-list {
-	border: solid 2px #111;
+﻿.api-list > div {
+	border: solid 1px #222;
 }
 
 .api-function-deprecated {
@@ -18,6 +18,22 @@
 	color: #44ff00;
 }
 
+.api-nullable {
+	color: #228800;
+}
+
+.api-parameter-default-value {
+	color: #ff0088;
+}
+
+.api-null {
+	color: #880044;
+}
+
 .api-list > div:nth-child(2n+1) {
 	background-color: #111;
+}
+
+.api-list > div:nth-child(1) {
+	background-color: #300;
 }

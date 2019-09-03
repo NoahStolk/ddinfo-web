@@ -23,7 +23,7 @@ namespace DevilDaggersWebsite.Pages.API
 			_commonObjects = commonObjects;
 		}
 
-		public FileResult OnGet(int userID, bool formatted = false)
+		public FileResult OnGet(int userID = default, bool formatted = false)
 		{
 			return JsonFile(GetUserProgression(userID), formatted ? Formatting.Indented : Formatting.None);
 		}

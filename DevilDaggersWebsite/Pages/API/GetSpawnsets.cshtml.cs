@@ -21,12 +21,12 @@ namespace DevilDaggersWebsite.Pages.API
 			_commonObjects = commonObjects;
 		}
 
-		public FileResult OnGet(string searchAuthor = null, string searchName = null, bool formatted = false)
+		public FileResult OnGet(string searchAuthor = "", string searchName = "", bool formatted = false)
 		{
 			return JsonFile(GetSpawnsets(searchAuthor, searchName), formatted ? Formatting.Indented : Formatting.None);
 		}
 
-		public List<SpawnsetFile> GetSpawnsets(string searchAuthor = null, string searchName = null)
+		public List<SpawnsetFile> GetSpawnsets(string searchAuthor = "", string searchName = "")
 		{
 			List<SpawnsetFile> spawnsets = new List<SpawnsetFile>();
 

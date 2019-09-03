@@ -7,7 +7,7 @@ using System.Net.Mime;
 
 namespace DevilDaggersWebsite.Pages.API
 {
-	[ApiFunction(Description = "Returns the list of tools including their version number.", ReturnType = MediaTypeNames.Application.Json)]
+	[ApiFunction(Description = "Returns the list of avaiable tools on the website including their version number.", ReturnType = MediaTypeNames.Application.Json)]
 	public class GetToolVersionsModel : ApiPageModel
 	{
 		public FileResult OnGet(bool formatted = false)
