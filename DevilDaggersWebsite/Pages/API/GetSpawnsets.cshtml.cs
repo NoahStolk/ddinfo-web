@@ -36,7 +36,8 @@ namespace DevilDaggersWebsite.Pages.API
 				if (!string.IsNullOrEmpty(searchAuthor) && !sf.Author.ToLower().Contains(searchAuthor.ToLower()) ||
 					!string.IsNullOrEmpty(searchName) && !sf.Name.ToLower().Contains(searchName.ToLower()))
 					continue;
-				spawnsets.Add(sf);
+				if (sf != null)
+					spawnsets.Add(sf);
 			}
 
 			return spawnsets;

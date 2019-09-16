@@ -37,6 +37,9 @@ namespace DevilDaggersWebsite.Pages.CustomLeaderboards
 		{
 			SpawnsetFile = SpawnsetUtils.CreateSpawnsetFileFromSettingsFile(CommonObjects, Path.Combine(CommonObjects.Env.WebRootPath, "spawnsets", spawnset));
 
+			if (SpawnsetFile == null)
+				return RedirectToPage("Index");
+
 			Leaderboard = _context.CustomLeaderboards
 				.Include(l => l.Category)
 				.Where(l => l.SpawnsetFileName == spawnset)
