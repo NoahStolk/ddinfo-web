@@ -17,6 +17,11 @@ namespace DevilDaggersWebsite.Code.Utils
 				Name = "DDCL",
 				VersionNumber = "0.4.3.0",
 				VersionNumberRequired = "0.4.0.1"
+			},
+			new Tool
+			{
+				Name = "DevilDaggersAssetEditor",
+				VersionNumber = "0.1.0.0",
 			}
 		};
 	}
