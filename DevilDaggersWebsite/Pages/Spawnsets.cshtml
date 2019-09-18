@@ -205,10 +205,11 @@
 		</ul>
 	</div>
 
-	<h2>How spawnsets work</h2>
+	<h2>Advanced information</h2>
+
 	<h3>Spawns</h3>
 	<ul>
-		<li>@RazorUtils.GetLayout("10 enemies can be spawned in the game. These are Squid I, Squid II, Centipede, Spider I, Leviathan, Gigapede, Squid III, Thorn, Spider II, and Ghostpede (respectively). The order is defined by the survival file structure. All enemies have a one-digit ID.", GameInfo.GameVersions[GameInfo.DEFAULT_GAME_VERSION])</li>
+		<li>@RazorUtils.GetLayout("10 enemies can be spawned using these files. These are Squid I, Squid II, Centipede, Spider I, Leviathan, Gigapede, Squid III, Thorn, Spider II, and Ghostpede (respectively). The order is defined by the file structure. All enemies have a one-digit ID.", GameInfo.GameVersions[GameInfo.DEFAULT_GAME_VERSION])</li>
 		<li>Additionally, there is an EMPTY spawn with ID -1. This has no purpose except that the end loop starts after the last EMPTY spawn.</li>
 		<li>Every enemy type has a fixed amount of gems that it drops, this is why <a asp-page="/Tools/DevilDaggersSurvivalEditor">DDSE</a> keeps track of gems so you can have a rough idea of when you will get upgrades (unless farming is done). It is recommended that you understand how <a asp-page="/Wiki/Upgrades">Hand Upgrades</a> work.</li>
 		<li>Every spawn contains an enemy ID and a delay value. The enemy ID (-1 to 9) represents which enemy will be spawned. The delay value represents the amount of seconds between the current spawn and the previous spawn.</li>
@@ -217,9 +218,7 @@
 		<li>@RazorUtils.GetLayout("Every third wave of the end loop, all Gigapedes are changed into Ghostpedes. This is hardcoded within the game and cannot be changed.", GameInfo.GameVersions[GameInfo.DEFAULT_GAME_VERSION])</li>
 	</ul>
 	<h3>Arena</h3>
-	<p>
-		Note that you don't necessarily need to understand how the arena works, as the default arena works fine.
-	</p>
+	<p>Note that you don't necessarily need to understand how the arena works, as the default arena works fine.</p>
 	<ul>
 		<li>The maximum arena size is 51 by 51.</li>
 		<li>The player always spawns at coordinate {25, 25}.</li>
@@ -235,45 +234,60 @@
 		<li>There is one particular tile which causes Devil Daggers to glitch (audio glitches, hand disappearing, crashes) whenever its height is put to a value greater than 0.4973333. This tile is always at coordinate {25, 27} (just below the player spawn).</li>
 		<li>The game crashes when you get too near the edge of a full arena (outside of the regular 51 by 51 range, and I think at or around coordinate {0, 0} but I am not sure).</li>
 		<li>The tiles have infinitely long hitboxes, but the texture only covers the top of it.</li>
-		<li>1 tile height is equivalent to 1/4 of a tile (let's say it is a cube). So if you could stack tiles on top of each other, the first tile would be at height 0, the second at height 4, the third at height 8, and so on.</li>
+		<li>1 tile height is equivalent to 1/4 of a tile, assuming it is a cube. So if you could stack tiles on top of each other, the first tile would be at tile height 0, the second at tile height 4, the third at tile height 8, and so on.</li>
 		<li>The player's jump height is equivalent to 1 tile height (1/4 of a tile).</li>
 		<li>The player's maximum single dagger jump height is around 5.2 tile heights.</li>
 		<li>The player's maximum double dagger jump height is around 8.4 tile heights.</li>
 	</ul>
 
-	@*
-		using System;
+	@*<h3>End loop timing calculation</h3>
+		<pre>
+			using System;
 
-		namespace DevilDaggersEndLoop
-		{
-		public static class Program
-		{
-		public static void Main()
-		{
-		const float physicsTick = 1 / 60f;
+			namespace DevilDaggersEndLoop
+			{
+				public static class Program
+				{
+					public static void Main()
+					{
+						const float physicsTick = 1 / 60f;
 
-		int[] loopSeconds = new int[] { 5, 8, 11, 16, 21, 22, 23, 33, 34, 35, 40, 41, 46, 51, 56 };
+						int[] loopSeconds = new int[] { 5, 8, 11, 16, 21, 22, 23, 33, 34, 35, 40, 41, 46, 51, 56 };
 
-		double waveModifier = 0.0;
-		double seconds = 451.0; // loop start
+						double waveModifier = 0.0;
+						double seconds = 451.0; // loop start
 
-		for (int i = 0; i < 20; i++) // wave index
-		{
-		double enemyTimer = 0.0;
-		for (int j = 0; j < loopSeconds.Length; j++)
-		{
-		while (enemyTimer < loopSeconds[j])
-		{
-		seconds += physicsTick;
-		enemyTimer += physicsTick + waveModifier;
-		}
-		Console.WriteLine((Math.Floor(seconds * 60) / 60).ToString("0.0000"));
-		}
-		waveModifier += physicsTick / 8.0; // After every end wave, each enemy spawns an added 12.5% (100% / 8) faster.
-		}
-		}
-		}
-		}*@
+						for (int i = 0; i < 20; i++) // wave index
+						{
+							double enemyTimer = 0.0;
+							for (int j = 0; j < loopSeconds.Length; j++)
+							{
+								while (enemyTimer < loopSeconds[j])
+								{
+									seconds += physicsTick;
+									enemyTimer += physicsTick + waveModifier;
+								}
+								Console.WriteLine((Math.Floor(seconds * 60) / 60).ToString("0.0000"));
+							}
+							waveModifier += physicsTick / 8.0; // After every end wave, each enemy spawns an added 12.5% (100% / 8) faster.
+						}
+					}
+				}
+			}
+			</pre>*@
+
+	<h3>Internal structure</h3>
+
+	<p>The internal structure of the spawnset files (which are "survival", "dagger", and "menu", although only "survival" makes use of all the features) consists of 4 parts.</p>
+
+	<ul>
+		<li>Header: Fixed-length buffer of 36 bytes. Contains shrinking control and brightness values as well as presumably a version number and some unknown miscellaneous values that usually cause the game to crash or behave oddly when modified.</li>
+		<li>Arena: Fixed-length one-dimensional array of 2601 (51x51 = 2601 tiles) 32-bit floating point numbers (2601*32/8 = 10404 bytes) representing the height of each tile in the arena.</li>
+		<li>Spawns header: Fixed-length buffer of 40 bytes. Contains the amount of spawns as well as some other unknown values.</li>
+		<li>Spawns: The only part of the file with a variable length. Represents a list of spawns. Each spawn buffer consists of 28 bytes that include the enemy type as a 32-bit integer and the delay value as a 32-bit floating point number. The other bytes in each of the spawn buffers seem to be the same and have no meaning.</li>
+	</ul>
+
+	<p>This is all there is to the spawnset files, no further modifications can be made to the game using this file.</p>
 </main>
 
 @section Styles {
