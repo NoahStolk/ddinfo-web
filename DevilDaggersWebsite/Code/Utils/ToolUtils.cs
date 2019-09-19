@@ -21,7 +21,7 @@ namespace DevilDaggersWebsite.Code.Utils
 			new Tool
 			{
 				Name = "DevilDaggersAssetEditor",
-				VersionNumber = "0.1.0.0",
+				VersionNumber = "0.2.0.0",
 			}
 		};
 	}
