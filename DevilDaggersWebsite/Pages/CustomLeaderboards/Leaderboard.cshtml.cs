@@ -35,6 +35,9 @@ namespace DevilDaggersWebsite.Pages.CustomLeaderboards
 
 		public ActionResult OnGet(string spawnset)
 		{
+			if (spawnset == null)
+				return RedirectToPage("Index");
+
 			SpawnsetFile = SpawnsetUtils.CreateSpawnsetFileFromSettingsFile(CommonObjects, Path.Combine(CommonObjects.Env.WebRootPath, "spawnsets", spawnset));
 
 			if (SpawnsetFile == null)
