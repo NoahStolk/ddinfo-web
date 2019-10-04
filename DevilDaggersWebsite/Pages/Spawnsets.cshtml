@@ -1,7 +1,6 @@
 ﻿@page
 @inject CoreBase.Services.ICommonObjects CommonObjects
 @using CoreBase.Code
-@using DevilDaggersCore.Game
 @using DevilDaggersCore.Spawnsets.Web
 @using DevilDaggersWebsite.Code.Utils
 @using DevilDaggersWebsite.Code.Spawnsets
@@ -192,7 +191,12 @@
 		NOTE: Keep an eye out for the "Score not submitted (error)" message. This indicates that your currently active survival file is not accepted by the official leaderboard servers.
 	</div>
 	<div class="faq-question">How do I make my own spawnsets?</div>
-	<div class="faq-answer">Download <a asp-page="/Tools/DevilDaggersSurvivalEditor">DevilDaggersSurvivalEditor</a>.</div>
+	<div class="faq-answer">
+		<ol>
+			<li>Download <a asp-page="/Tools/DevilDaggersSurvivalEditor">DevilDaggersSurvivalEditor</a>.</li>
+			<li>Check out the <a asp-page="/Wiki/SpawnsetGuide">Spawnset Guide</a>.</li>
+		</ol>
+	</div>
 	<div class="faq-question">I've made my own custom spawnsets that I want to share with the community. Can I get them listed on here?</div>
 	<div class="faq-answer">
 		Yes, certainly. Send the file to <a href="mailto:@RazorUtils.ContactEmail">@RazorUtils.ContactEmail</a>, or just join the <a href="@RazorUtils.DiscordUrl">Discord server</a> and send it there.<br />
@@ -204,77 +208,6 @@
 			<li>If you have an end loop, you can specify how many end waves should be shown. The default is @SpawnsetUtils.DefaultMaxWaves.</li>
 		</ul>
 	</div>
-
-	<h2>Advanced information</h2>
-
-	<h3>Spawns</h3>
-	<ul>
-		<li>@RazorUtils.GetLayout("10 enemies can be spawned using these files. These are Squid I, Squid II, Centipede, Spider I, Leviathan, Gigapede, Squid III, Thorn, Spider II, and Ghostpede (respectively). The order is defined by the file structure. All enemies have a one-digit ID.", GameInfo.GameVersions[GameInfo.DEFAULT_GAME_VERSION])</li>
-		<li>Additionally, there is an EMPTY spawn with ID -1. This has no purpose except that the end loop starts after the last EMPTY spawn.</li>
-		<li>Every enemy type has a fixed amount of gems that it drops, this is why <a asp-page="/Tools/DevilDaggersSurvivalEditor">DDSE</a> keeps track of gems so you can have a rough idea of when you will get upgrades (unless farming is done). It is recommended that you understand how <a asp-page="/Wiki/Upgrades">Hand Upgrades</a> work.</li>
-		<li>Every spawn contains an enemy ID and a delay value. The enemy ID (-1 to 9) represents which enemy will be spawned. The delay value represents the amount of seconds between the current spawn and the previous spawn.</li>
-		<li>The delay value supports decimal values, even though the original spawnset in the game doesn't use this. This means you can spawn an enemy, for example at 4.5 seconds.</li>
-		<li>The end loop is the same set of spawns over and over again, faster every time. After every wave, each enemy spawns an added 12.5% faster.</li>
-		<li>@RazorUtils.GetLayout("Every third wave of the end loop, all Gigapedes are changed into Ghostpedes. This is hardcoded within the game and cannot be changed.", GameInfo.GameVersions[GameInfo.DEFAULT_GAME_VERSION])</li>
-	</ul>
-	<h3>Arena</h3>
-	<p>Note that you don't necessarily need to understand how the arena works, as the default arena works fine.</p>
-	<ul>
-		<li>The maximum arena size is 51 by 51.</li>
-		<li>The player always spawns at coordinate {25, 25}.</li>
-		<li>You can only have 1 tile per coordinate.</li>
-		<li>The default arena size is 23 by 23 tiles at the start. This is equivalent to shrink radius 50 (technically the arena would be 25 by 25 but, because of shrinking controls, the outer tiles are already shrunk at the very beginning).</li>
-		<li>The arena shrinks in size as time goes on. The default shrink start radius is 50 and the default shrink end radius is 20. The default shrink rate is 0.025. This means the default arena reaches the end radius at 1200 seconds, since (50-20)/0.025 = 1200. (Although not exactly because the shrinking radius will not hit the next tiles exactly at 1200, I haven't bothered with the math behind this, but the last tiles shrink around 1187 seconds. The shrinking technically continues for about 13 seconds but no tiles are affected by it.)</li>
-		<li>The original spawnset doesn't use different tile heights, all the tiles are around height 0. (Though there are some tiny differences that are barely noticable, but for convenience we could say that all the tiles are at height 0 and that 0 is the default height.)</li>
-		<li>The player can stand on tiles with height -1, but anything lower than that will result in the tile falling down immediately. All tiles below -1 are essentially the same for this reason, so <a asp-page="/Tools/DevilDaggersSurvivalEditor">DDSE</a> considers any tile with a height below -1 to be "void".</li>
-		<li>The tile at coordinate {1, 0} is always invisible for some reason, but you can still walk on it.</li>
-		<li>The player can be spawned on different tile heights.</li>
-		<li>@RazorUtils.GetLayout("Enemies and gems do not react to different tile heights, only the player, the daggers, and some effects do (like Thorn spawn smokes, meat chunks, etc).")</li>
-		<li>The maximum tile height within <a asp-page="/Tools/DevilDaggersSurvivalEditor">DDSE</a> is set to 54, because anything higher than that seems unnecessary and the main light in the game doesn't reach that far so everything is completely black.</li>
-		<li>There is one particular tile which causes Devil Daggers to glitch (audio glitches, hand disappearing, crashes) whenever its height is put to a value greater than 0.4973333. This tile is always at coordinate {25, 27} (just below the player spawn).</li>
-		<li>The game crashes when you get too near the edge of a full arena (outside of the regular 51 by 51 range, and I think at or around coordinate {0, 0} but I am not sure).</li>
-		<li>The tiles have infinitely long hitboxes, but the texture only covers the top of it.</li>
-		<li>1 tile height is equivalent to 1/4 of a tile, assuming it is a cube. So if you could stack tiles on top of each other, the first tile would be at tile height 0, the second at tile height 4, the third at tile height 8, and so on.</li>
-		<li>The player's jump height is equivalent to 1 tile height (1/4 of a tile).</li>
-		<li>The player's maximum single dagger jump height is around 5.2 tile heights.</li>
-		<li>The player's maximum double dagger jump height is around 8.4 tile heights.</li>
-	</ul>
-
-	@*<h3>End loop timing calculation</h3>
-		<pre>
-			using System;
-
-			namespace DevilDaggersEndLoop
-			{
-				public static class Program
-				{
-					public static void Main()
-					{
-						const float physicsTick = 1 / 60f;
-
-						int[] loopSeconds = new int[] { 5, 8, 11, 16, 21, 22, 23, 33, 34, 35, 40, 41, 46, 51, 56 };
-
-						double waveModifier = 0.0;
-						double seconds = 451.0; // loop start
-
-						for (int i = 0; i < 20; i++) // wave index
-						{
-							double enemyTimer = 0.0;
-							for (int j = 0; j < loopSeconds.Length; j++)
-							{
-								while (enemyTimer < loopSeconds[j])
-								{
-									seconds += physicsTick;
-									enemyTimer += physicsTick + waveModifier;
-								}
-								Console.WriteLine((Math.Floor(seconds * 60) / 60).ToString("0.0000"));
-							}
-							waveModifier += physicsTick / 8.0; // After every end wave, each enemy spawns an added 12.5% (100% / 8) faster.
-						}
-					}
-				}
-			}
-			</pre>*@
 </main>
 
 @section Styles {
