@@ -3,6 +3,7 @@ using DevilDaggersWebsite.Code.Users;
 using NetBase.Utils;
 using System.Collections.Generic;
 using System.IO;
+using System.Text;
 
 namespace DevilDaggersWebsite.Code.Utils
 {
@@ -10,7 +11,7 @@ namespace DevilDaggersWebsite.Code.Utils
 	{
 		public static IEnumerable<Ban> GetBans(ICommonObjects commonObjects)
 		{
-			foreach (string b in FileUtils.GetContents(Path.Combine(commonObjects.Env.WebRootPath, "user", "bans")).Split('\n'))
+			foreach (string b in FileUtils.GetContents(Path.Combine(commonObjects.Env.WebRootPath, "user", "bans"), Encoding.Default).Split('\n'))
 			{
 				if (string.IsNullOrWhiteSpace(b))
 					continue;
@@ -26,7 +27,7 @@ namespace DevilDaggersWebsite.Code.Utils
 
 		public static IEnumerable<Donator> GetDonators(ICommonObjects commonObjects)
 		{
-			foreach (string d in FileUtils.GetContents(Path.Combine(commonObjects.Env.WebRootPath, "user", "donators")).Split('\n'))
+			foreach (string d in FileUtils.GetContents(Path.Combine(commonObjects.Env.WebRootPath, "user", "donators"), Encoding.Default).Split('\n'))
 			{
 				if (string.IsNullOrWhiteSpace(d))
 					continue;
@@ -40,7 +41,7 @@ namespace DevilDaggersWebsite.Code.Utils
 
 		public static IEnumerable<Flag> GetFlags(ICommonObjects commonObjects)
 		{
-			foreach (string f in FileUtils.GetContents(Path.Combine(commonObjects.Env.WebRootPath, "user", "flags")).Split('\n'))
+			foreach (string f in FileUtils.GetContents(Path.Combine(commonObjects.Env.WebRootPath, "user", "flags"), Encoding.Default).Split('\n'))
 			{
 				if (string.IsNullOrWhiteSpace(f))
 					continue;
@@ -58,7 +59,7 @@ namespace DevilDaggersWebsite.Code.Utils
 
 		public static IEnumerable<PlayerSetting> GetPlayerSettings(ICommonObjects commonObjects)
 		{
-			foreach (string s in FileUtils.GetContents(Path.Combine(commonObjects.Env.WebRootPath, "user", "settings")).Split('\n'))
+			foreach (string s in FileUtils.GetContents(Path.Combine(commonObjects.Env.WebRootPath, "user", "settings"), Encoding.Default).Split('\n'))
 			{
 				if (string.IsNullOrWhiteSpace(s))
 					continue;
@@ -72,7 +73,7 @@ namespace DevilDaggersWebsite.Code.Utils
 
 		public static IEnumerable<UserTitleCollection> GetTitleCollections(ICommonObjects commonObjects)
 		{
-			foreach (string t in FileUtils.GetContents(Path.Combine(commonObjects.Env.WebRootPath, "user", "titles")).Split('\n'))
+			foreach (string t in FileUtils.GetContents(Path.Combine(commonObjects.Env.WebRootPath, "user", "titles"), Encoding.Default).Split('\n'))
 			{
 				if (string.IsNullOrWhiteSpace(t))
 					continue;

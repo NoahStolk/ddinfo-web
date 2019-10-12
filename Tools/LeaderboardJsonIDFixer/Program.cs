@@ -225,7 +225,10 @@ namespace LeaderboardJsonIDFixer
 
 		public static void Main()
 		{
-			SwapIDs(new DateTime(1, 1, 1), new DateTime(2019, 10, 11), 86805, 187974);
+			// Raven fix
+			//SwapIDs(new DateTime(1, 1, 1), new DateTime(2019, 10, 11), 86805, 187974);
+
+			//ApplyNameTable();
 		}
 
 		/// <summary>

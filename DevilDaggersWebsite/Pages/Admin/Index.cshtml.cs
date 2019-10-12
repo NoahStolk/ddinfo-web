@@ -31,11 +31,11 @@ namespace DevilDaggersWebsite.Pages.Admin
 
 			Password = password;
 
-			BansFileContents = FileUtils.GetContents(Path.Combine(_commonObjects.Env.WebRootPath, "user", "bans"));
-			DonatorsFileContents = FileUtils.GetContents(Path.Combine(_commonObjects.Env.WebRootPath, "user", "donators"));
-			FlagsFileContents = FileUtils.GetContents(Path.Combine(_commonObjects.Env.WebRootPath, "user", "flags"));
-			SettingsFileContents = FileUtils.GetContents(Path.Combine(_commonObjects.Env.WebRootPath, "user", "settings"));
-			TitlesFileContents = FileUtils.GetContents(Path.Combine(_commonObjects.Env.WebRootPath, "user", "titles"));
+			BansFileContents = FileUtils.GetContents(Path.Combine(_commonObjects.Env.WebRootPath, "user", "bans"), Encoding.Default);
+			DonatorsFileContents = FileUtils.GetContents(Path.Combine(_commonObjects.Env.WebRootPath, "user", "donators"), Encoding.Default);
+			FlagsFileContents = FileUtils.GetContents(Path.Combine(_commonObjects.Env.WebRootPath, "user", "flags"), Encoding.Default);
+			SettingsFileContents = FileUtils.GetContents(Path.Combine(_commonObjects.Env.WebRootPath, "user", "settings"), Encoding.Default);
+			TitlesFileContents = FileUtils.GetContents(Path.Combine(_commonObjects.Env.WebRootPath, "user", "titles"), Encoding.Default);
 
 			return null;
 		}
