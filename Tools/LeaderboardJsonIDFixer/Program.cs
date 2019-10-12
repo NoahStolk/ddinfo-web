@@ -1,13 +1,10 @@
-﻿using DevilDaggersCore.Leaderboards;
-using DevilDaggersUtilities.Tools;
+﻿using DevilDaggersUtilities.Tools;
 using DevilDaggersUtilities.Website;
-using NetBase.Console;
 using NetBase.Utils;
 using Newtonsoft.Json;
 using System;
 using System.Collections.Generic;
 using System.IO;
-using System.Linq;
 using System.Text;
 
 namespace LeaderboardJsonIDFixer
@@ -223,41 +220,7 @@ namespace LeaderboardJsonIDFixer
 			{ "miZt-", 58491 },
 		};
 
-		public static void Main()
-		{
-			SwapIDs(new DateTime(1, 1, 1), new DateTime(2019, 10, 11), 86805, 187974);
-		}
-
-		/// <summary>
-		/// Swaps IDs for players with 2 accounts in the leaderboard history files.
-		/// </summary>
-		/// <param name="dateStart">The date on which the player's alt overtook their main account.</param>
-		/// <param name="dateEnd">The date on which the player's main overtook their alt account.</param>
-		/// <param name="id1">The first ID to swap.</param>
-		/// <param name="id2">The second ID to swap.</param>
-		public static void SwapIDs(DateTime dateStart, DateTime dateEnd, int id1, int id2)
-		{
-			foreach (string leaderboardHistoryPath in Directory.GetFiles(@"C:\Users\NOAH\source\repos\DevilDaggersWebsite\DevilDaggersWebsite\wwwroot\leaderboard-history", "*.json"))
-			{
-				string fileName = Path.GetFileNameWithoutExtension(leaderboardHistoryPath);
-				Leaderboard leaderboard = JsonConvert.DeserializeObject<Leaderboard>(FileUtils.GetContents(leaderboardHistoryPath));
-				if (leaderboard.DateTime < dateStart || leaderboard.DateTime > dateEnd)
-					continue;
-
-				Entry entry1 = leaderboard.Entries.Where(e => e.ID == id1).FirstOrDefault();
-				Entry entry2 = leaderboard.Entries.Where(e => e.ID == id2).FirstOrDefault();
-
-				if (entry1 != null)
-					entry1.ID = id2;
-				if (entry2 != null)
-					entry2.ID = id1;
-
-				File.WriteAllText(leaderboardHistoryPath, JsonConvert.SerializeObject(leaderboard));
-				ConsoleUtils.WriteLineColor($"Wrote {fileName}.", ConsoleColor.Green);
-			}
-		}
-
-		private static void ApplyNameTable()
+		public static void Main(string[] args)
 		{
 			foreach (string path in Directory.GetFiles(@"C:\Users\NOAH\source\repos\DevilDaggersWebsite\DevilDaggersWebsite\wwwroot\leaderboard-history", "*.json"))
 			{
