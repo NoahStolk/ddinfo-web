@@ -31,7 +31,7 @@ namespace DevilDaggersWebsite.Pages
 
 		public string SortOrder { get; set; }
 
-		public int PageSize { get; set; } = 15;
+		public int PageSize { get; set; } = 18;
 		public int PageIndex { get; private set; }
 		public int TotalResults { get; private set; }
 

@@ -26,7 +26,7 @@
 
 	<p class="text-center">
 		Current version: @(tool.VersionNumber)<br />
-		Latest supported version: @(tool.VersionNumberRequired)<br />
+		Oldest supported version: @(tool.VersionNumberRequired)<br />
 		File size: @(Math.Round(downloadFileInfo.Length / 1024f).ToString()) KB<br />
 		<a class="btn dont-break-out" href="/tools/@name/@downloadFileName">Download</a>
 	</p>
