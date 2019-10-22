@@ -57,7 +57,7 @@
 				string deathStyle = banned ? "" : $"color: #{death.ColorCode};";
 				string banString = banned ? "ban" : string.Empty;
 
-				<div class="sort @banString" @entry.ToHTMLData(flagCode)>
+				<div class="sort @banString" @entry.ToHtmlData(flagCode)>
 					<div class="leaderboard-row flex-container" id="@(entry.Rank)-row">
 						<div class="text-right">
 							@if (entry.ID != 0)

@@ -42,7 +42,7 @@
 				string daggerColor = dagger.Name.ToLower();
 				string deathStyle = $"color: #{death.ColorCode};";
 
-				<div class="sort" @entry.ToHTMLData(flagCode, playerSetting)>
+				<div class="sort" @entry.ToHtmlData(flagCode, playerSetting)>
 					<div class="leaderboard-row flex-container" id="@(entry.Rank)-row">
 						<div class="text-right"><span data-toggle="tooltip" title="@entry.ID" class="leaderboard-tooltip">@entry.Rank</span></div>
 						<div>

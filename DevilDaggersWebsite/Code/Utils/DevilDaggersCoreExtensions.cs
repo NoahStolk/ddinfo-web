@@ -8,7 +8,7 @@ namespace DevilDaggersWebsite.Code.Utils
 {
 	public static class DevilDaggersCoreExtensions
 	{
-		public static HtmlString ToHTMLData(this Entry entry, string flagCode)
+		public static HtmlString ToHtmlData(this Entry entry, string flagCode)
 		{
 			return new HtmlString($@"
 				rank='{entry.Rank}'
@@ -27,7 +27,7 @@ namespace DevilDaggersWebsite.Code.Utils
 			");
 		}
 
-		public static HtmlString ToHTMLData(this Entry entry, string flagCode, PlayerSetting playerSetting)
+		public static HtmlString ToHtmlData(this Entry entry, string flagCode, PlayerSetting playerSetting)
 		{
 			return new HtmlString($@"
 				rank='{entry.Rank}'
