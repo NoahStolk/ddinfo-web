@@ -7,8 +7,8 @@ using System.Net.Mime;
 
 namespace DevilDaggersWebsite.Pages.API
 {
-	[ApiFunction(Description = "Returns the list of available tools on the website.", ReturnType = MediaTypeNames.Application.Json, DeprecationMessage = "Use GetTools instead.")]
-	public class GetToolVersionsModel : ApiPageModel
+	[ApiFunction(Description = "Returns the list of available tools on the website.", ReturnType = MediaTypeNames.Application.Json)]
+	public class GetToolsModel : ApiPageModel
 	{
 		public FileResult OnGet(bool formatted = false)
 		{
