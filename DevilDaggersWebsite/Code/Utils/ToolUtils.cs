@@ -11,12 +11,21 @@ namespace DevilDaggersWebsite.Code.Utils
 			new Tool
 			{
 				Name = "DevilDaggersSurvivalEditor",
-				VersionNumber = "2.4.4.0",
+				VersionNumber = "2.4.10.0",
 				VersionNumberRequired = "2.4.4.0",
 				ChangeLog = new List<ChangeLogEntry>
 				{
-					// Fixed the Update Recommended window not closing after clicking the download button.
-					// Small changes related to maintenance of the website, as well as code refactoring and improvements.
+					new ChangeLogEntry
+					{
+						VersionNumber = "2.4.10.0",
+						Date = new DateTime(2019, 10, 22),
+						Changes = new List<Change>
+						{
+							new Change("Added Changelog window."),
+							new Change("Fixed the Update Recommended window not closing after clicking the download button."),
+							new Change("Small changes related to maintenance of the website, as well as code refactoring and improvements.")
+						}
+					},
 					new ChangeLogEntry
 					{
 						VersionNumber = "2.4.4.0",
@@ -276,7 +285,7 @@ namespace DevilDaggersWebsite.Code.Utils
 						Date = new DateTime(2018, 7, 27),
 						Changes = new List<Change>
 						{
-							new Change("Added functionality to download spawnsets directly from <a href=\"https://devildaggers.info/Spawnsets\">DevilDaggers.info/Spawnsets</a> within the menu.")
+							new Change("Added functionality to download spawnsets directly from DevilDaggers.info within the menu.")
 						}
 					},
 					new ChangeLogEntry
