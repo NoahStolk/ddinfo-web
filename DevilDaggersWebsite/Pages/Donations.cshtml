@@ -14,16 +14,10 @@
 
 <main role="main" class="text-center">
 	<p>
-		I've built this website and the tools that come with it entirely in my free time. This is one of my favourite hobby projects and I'd like to thank everyone who helped and supported me.
+		I've built this website and the tools that come with it entirely in my free time. If you appreciate the work I've done, or want to support hosting and domain costs for the website, you can consider <a href="http://paypal.me/NoahStolk">donating via PayPal</a>. Please be sure to include your username so I can add you to the list of donators below.
 	</p>
 	<p>
-		However, hosting a website costs money. If this website is useful to you, you can consider donating. All donations will be used to cover the costs of the website (hosting, domain, etc).
-	</p>
-	<p>
-		You can donate via PayPal <a href="http://paypal.me/NoahStolk">here</a>. If you want to be added to the list below, let me know who you are in the PayPal message (your username) so I can add you to it.
-	</p>
-	<p>
-		Thanks to all donators!
+		Thanks to everyone who donated.
 	</p>
 	<p>
 		@foreach (Dagger dagger in GameInfo.GetEntities<Dagger>())
@@ -34,17 +28,12 @@
 
 	<div class="flex-container flex-center flex-column">
 		@{
-			int rank = 0;
 			foreach (Donator donator in Model.Donators)
 			{
-				rank++;
-				Dagger dagger = GameInfo.V3.Devil;// GetDaggerFromTime(donator.Amount * 10000);
-				string daggerName = dagger.Name.ToLower();
-
 				<div class="flex-container flex-center">
-					<div style="width: @(widths[0])px; white-space: nowrap;" class="text-left @daggerName">@donator.Username</div>
-					<div style="width: @(widths[1])px;" class="text-right @daggerName">@((donator.Amount / 100.0).ToString("0.00"))</div>
-					<div style="width: @(widths[2])px;" class="text-right @daggerName">@donator.CurrencySymbol</div>
+					<div style="width: @(widths[0])px; white-space: nowrap;" class="text-left devil">@donator.Username</div>
+					<div style="width: @(widths[1])px;" class="text-right devil">@((donator.Amount / 100.0).ToString("0.00"))</div>
+					<div style="width: @(widths[2])px;" class="text-right devil">@donator.CurrencySymbol</div>
 				</div>
 			}
 		}
