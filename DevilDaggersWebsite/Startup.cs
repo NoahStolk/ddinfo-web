@@ -34,7 +34,7 @@ namespace DevilDaggersWebsite
 			CultureInfo.DefaultThreadCurrentCulture = cultureInfo;
 			CultureInfo.DefaultThreadCurrentUICulture = cultureInfo;
 
-			// Do not change order of redirects
+			// Do not change order of redirects.
 			RewriteOptions options = new RewriteOptions()
 				.AddRedirect("^Home/Index$", "Index")
 				.AddRedirect("^Home/Leaderboard$", "Leaderboard")
