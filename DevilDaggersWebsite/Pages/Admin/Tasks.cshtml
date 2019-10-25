@@ -1,0 +1,14 @@
+﻿@page
+@using DevilDaggersWebsite.Code.Tasks
+@model DevilDaggersWebsite.Pages.Admin.TasksModel
+@{
+	ViewData["Title"] = "Admin - Tasks";
+}
+
+<header>
+	<h1>@ViewData["Title"]</h1>
+</header>
+
+<main role="main">
+	@LeaderboardHistoryTask.LastUpdated
+</main>

@@ -1,11 +1,14 @@
 using CoreBase;
 using DevilDaggersWebsite.Code.Database;
+using DevilDaggersWebsite.Code.Tasks;
+using DevilDaggersWebsite.Code.Tasks.Scheduling;
 using Microsoft.AspNetCore.Builder;
 using Microsoft.AspNetCore.Hosting;
 using Microsoft.AspNetCore.Rewrite;
 using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Extensions.Logging;
+using System;
 using System.Globalization;
 
 namespace DevilDaggersWebsite
@@ -25,6 +28,13 @@ namespace DevilDaggersWebsite
 			ConfigureDbServices<ApplicationDbContext>(services);
 
 			AddCommonCoreBaseServices(services);
+
+			services.AddSingleton<IScheduledTask, LeaderboardHistoryTask>();
+			services.AddScheduler((sender, args) =>
+			{
+				Console.Write(args.Exception.Message);
+				args.SetObserved();
+			});
 		}
 
 		// This method gets called by the runtime. Use this method to configure the HTTP request pipeline.

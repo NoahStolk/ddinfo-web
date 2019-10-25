@@ -19,6 +19,7 @@ namespace DevilDaggersWebsite.Pages
 		{
 			SitemapUtils.ExcludePage("Admin_BanInfo");
 			SitemapUtils.ExcludePage("Admin_Index");
+			SitemapUtils.ExcludePage("Admin_Tasks");
 			SitemapUtils.ExcludePage("Admin_TestException");
 			SitemapUtils.ExcludePage("API_GetCustomLeaderboards");
 			SitemapUtils.ExcludePage("API_GetDeaths");
@@ -27,6 +28,8 @@ namespace DevilDaggersWebsite.Pages
 			SitemapUtils.ExcludePage("API_GetLeaderboard");
 			SitemapUtils.ExcludePage("API_GetSpawnset");
 			SitemapUtils.ExcludePage("API_GetSpawnsets");
+			SitemapUtils.ExcludePage("API_GetTool");
+			SitemapUtils.ExcludePage("API_GetTools");
 			SitemapUtils.ExcludePage("API_GetToolVersions");
 			SitemapUtils.ExcludePage("API_GetUserByID");
 			SitemapUtils.ExcludePage("API_GetUserByUsername");
