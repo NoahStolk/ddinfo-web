@@ -330,13 +330,129 @@ namespace DevilDaggersWebsite.Code.Utils
 			{
 				Name = "DDCL",
 				VersionNumber = "0.4.3.0",
-				VersionNumberRequired = "0.4.0.1"
-				// TODO: Get changelog from Discord.
+				VersionNumberRequired = "0.4.0.1",
+				ChangeLog = new List<ChangeLogEntry>
+				{
+					new ChangeLogEntry
+					{
+						VersionNumber = "0.4.3.0",
+						Date = new DateTime(2019, 8, 8),
+						Changes = new List<Change>
+						{
+							new Change("Improved way of detecting survival file cheats; there is no need to record the entire run anymore."),
+							new Change("Fixed log file not being written to."),
+							new Change("Implemented \"Reverse\" category leaderboards.")
+						}
+					},
+					new ChangeLogEntry
+					{
+						VersionNumber = "0.4.0.1",
+						Date = new DateTime(2019, 6, 5),
+						Changes = new List<Change>
+						{
+							new Change("Compatibility update due to some internal bug fixes which aren't related to DDCL directly.")
+						}
+					},
+					new ChangeLogEntry
+					{
+						VersionNumber = "0.4.0.0",
+						Date = new DateTime(2019, 5, 27),
+						Changes = new List<Change>
+						{
+							new Change("Leaderboards are now secured with the Advanced Encryption Standard (AES).")
+						}
+					},
+					new ChangeLogEntry
+					{
+						VersionNumber = "0.3.3.0",
+						Date = new DateTime(2019, 5, 24),
+						Changes = new List<Change>
+						{
+							new Change("Fixed inconsistent spawnset hashing. The hashing system is no longer dependent on files. This fixes the problem where some spawnsets wouldn't work if they were downloaded directly from the website rather than imported via the editor.")
+						}
+					},
+					new ChangeLogEntry
+					{
+						VersionNumber = "0.3.0.0",
+						Date = new DateTime(2019, 5, 20),
+						Changes = new List<Change>
+						{
+							new Change("The program now tells you when there is an update available and warns you when the current version is no longer accepted by the server.")
+						}
+					},
+					new ChangeLogEntry
+					{
+						VersionNumber = "0.2.5.0",
+						Date = new DateTime(2019, 5, 19),
+						Changes = new List<Change>
+						{
+							new Change("Added logging."),
+							new Change("Some improvements in the layout and better feedback for when runs don't upload."),
+							new Change("Crash fixes and internal clean up. The \"out of bounds\" error shouldn't occur anymore when starting DDCL before starting Devil Daggers."),
+							new Change("Console is no longer resizable so it doesn't mess with the layout."),
+							new Change("Added a retry count for when the upload fails. Usually it retries 3 times and stops after that, waiting for you to restart a run.")
+						}
+					},
+					new ChangeLogEntry
+					{
+						VersionNumber = "0.2.1.0",
+						Date = new DateTime(2019, 5, 18),
+						Changes = new List<Change>
+						{
+							new Change("Lots of internal clean up, improvements, and fixes."),
+							new Change("Program now outputs what values it submits to the server."),
+							new Change("Program only retrieves the spawnset hash during the first second of the run so people cannot cheat by changing the survival file during the run. If you start the program later than 1 second after the run starts, the hash will not be calculated and your submission will be marked as invalid and not upload."),
+							new Change("The server now has a minimal version it will accept submissions from.")
+						}
+					},
+					new ChangeLogEntry
+					{
+						VersionNumber = "0.1.10.0",
+						Date = new DateTime(2019, 5, 18),
+						Changes = new List<Change>
+						{
+							new Change("Small fixes.")
+						}
+					},
+					new ChangeLogEntry
+					{
+						VersionNumber = "0.1.9.0",
+						Date = new DateTime(2019, 5, 18),
+						Changes = new List<Change>
+						{
+							new Change("Application now uses .NET Framework 4.6.1 rather than 4.7.2."),
+							new Change("Fixed bug where level up values don't reset when you restart a run."),
+							new Change("Prevented replays from uploading so people won't submit runs to the wrong leaderboard by intentionally replacing the survival file during the replay.")
+						}
+					},
+					new ChangeLogEntry
+					{
+						VersionNumber = "0.1.5.0",
+						Date = new DateTime(2019, 5, 17),
+						Changes = new List<Change>
+						{
+							new Change("Made application Windows-only because scanning memory for other operating systems will work differently anyway."),
+							new Change("Enforced en-US culture to fix broken submissions on PCs that use commas as decimal separators."),
+							new Change("Fixed usernames being limited to 4 characters."),
+							new Change("Prevented submissions with 0.0000 time from uploading by setting a time constraint of a minimum of 2.5 seconds.")
+						}
+					},
+					new ChangeLogEntry
+					{
+						VersionNumber = "0.1.0.0",
+						Date = new DateTime(2019, 5, 15),
+						Changes = new List<Change>
+						{
+							new Change("Initial release.")
+						}
+					}
+				}
 			},
 			new Tool
 			{
 				Name = "DevilDaggersAssetEditor",
 				VersionNumber = "0.3.3.0",
+				VersionNumberRequired = "0.1.0.0",
 				ChangeLog = new List<ChangeLogEntry>
 				{
 					// Implemented shader, model, and texture compression. Features such as compressing and using mod files for "dd" and "core" are now available and functional.
@@ -389,7 +505,7 @@ namespace DevilDaggersWebsite.Code.Utils
 						Date = new DateTime(2019, 9, 11),
 						Changes = new List<Change>
 						{
-							new Change("Initial beta release.")
+							new Change("Initial release.")
 						}
 					}
 				}

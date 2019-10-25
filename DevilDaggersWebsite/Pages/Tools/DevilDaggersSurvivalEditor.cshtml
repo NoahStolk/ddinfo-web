@@ -7,7 +7,7 @@
 	ViewData["Title"] = "Devil Daggers Survival Editor";
 	string name = "DevilDaggersSurvivalEditor";
 	Tool tool = ToolUtils.Tools.Where(t => t.Name == name).FirstOrDefault();
-	string downloadFileName = $"DevilDaggersSurvivalEditor{tool.VersionNumber}.zip";
+	string downloadFileName = $"{name}{tool.VersionNumber}.zip";
 	FileInfo downloadFileInfo = new FileInfo(System.IO.Path.Combine(env.WebRootPath, "tools", name, downloadFileName));
 }
 

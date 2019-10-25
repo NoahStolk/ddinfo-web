@@ -2,10 +2,13 @@
 @inject Microsoft.AspNetCore.Hosting.IHostingEnvironment env
 @using DevilDaggersCore.Tools
 @using DevilDaggersWebsite.Code.Utils
+@using System.IO
 @{
 	ViewData["Title"] = "Devil Daggers Custom Leaderboards";
 	string name = "DDCL";
 	Tool tool = ToolUtils.Tools.Where(t => t.Name == name).FirstOrDefault();
+	string downloadFileName = $"{name}{tool.VersionNumber}.zip";
+	FileInfo downloadFileInfo = new FileInfo(System.IO.Path.Combine(env.WebRootPath, "tools", name, downloadFileName));
 }
 
 <header>
@@ -13,11 +16,19 @@
 </header>
 
 <main role="main">
-	<p>
+	<p class="text-center">
 		Devil Daggers Custom Leaderboards, also known as DDCL, is a program that records data from custom spawnset runs, and uploads it to a <a asp-page="/CustomLeaderboards/Index">custom leaderboard</a>.
 	</p>
-	<p>
-		The program is not publicly available for download, but if you'd like to try it out, visit the <a href="@RazorUtils.DiscordUrl">Discord</a> server.
+
+	@*<p>
+			<img class="img-responsive image-narrow" src="~/images/Tools/@(name).png" />
+		</p>*@
+
+	<p class="text-center">
+		Current version: @(tool.VersionNumber)<br />
+		Oldest supported version: @(tool.VersionNumberRequired)<br />
+		File size: @(Math.Round(downloadFileInfo.Length / 1024f).ToString()) KB<br />
+		<a class="btn dont-break-out" href="/tools/@name/@downloadFileName">Download</a>
 	</p>
 
 	<h2>System requirements</h2>
@@ -26,11 +37,23 @@
 		<li>.NET Framework 4.6.1</li>
 		<li>The Steam version of Devil Daggers</li>
 	</ul>
-	
-	@*<h2>Installation</h2>
+
+	<h2>Installation</h2>
 	<ol>
 		<li>Download the zip file.</li>
 		<li>Unzip its contents.</li>
 		<li>Run DDCL.exe inside the folder.</li>
-	</ol>*@
+	</ol>
+
+	<h2>Source code</h2>
+	<p>
+		Unfortunately I cannot share the source code since it would allow people to cheat the leaderboards.
+	</p>
+
+	<h2>Change log</h2>
+	@tool.ToChangeLogHtmlString()
 </main>
+
+@section Styles {
+	<link rel='stylesheet' href='~/styles/tools.css' />
+}

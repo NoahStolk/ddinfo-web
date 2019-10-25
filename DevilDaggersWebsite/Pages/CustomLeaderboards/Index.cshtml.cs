@@ -1,5 +1,4 @@
-﻿using DevilDaggersCore.CustomLeaderboards;
-using DevilDaggersWebsite.Code.Database;
+﻿using DevilDaggersWebsite.Code.Database;
 using DevilDaggersWebsite.Code.Database.CustomLeaderboards;
 using Microsoft.AspNetCore.Mvc.RazorPages;
 using Microsoft.AspNetCore.Mvc.Rendering;
@@ -25,7 +24,8 @@ namespace DevilDaggersWebsite.Pages.CustomLeaderboards
 		public void OnGet(string category)
 		{
 			foreach (CustomLeaderboardCategory clc in _context.CustomLeaderboardCategories)
-				CategoryListItems.Add(new SelectListItem($"Category: {clc.Name}", clc.Name));
+				if (clc.Name != "Challenge" && clc.Name != "Archive")
+					CategoryListItems.Add(new SelectListItem($"Category: {clc.Name}", clc.Name));
 
 			Category = _context.CustomLeaderboardCategories.Where(clc => clc.Name == category).FirstOrDefault();
 			if (Category == null)

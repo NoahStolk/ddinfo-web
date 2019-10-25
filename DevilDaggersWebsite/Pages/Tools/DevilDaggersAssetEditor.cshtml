@@ -7,7 +7,7 @@
 	ViewData["Title"] = "Devil Daggers Asset Editor";
 	string name = "DevilDaggersAssetEditor";
 	Tool tool = ToolUtils.Tools.Where(t => t.Name == name).FirstOrDefault();
-	string downloadFileName = $"DevilDaggersAssetEditor{tool.VersionNumber}.zip";
+	string downloadFileName = $"{name}{tool.VersionNumber}.zip";
 	FileInfo downloadFileInfo = new FileInfo(System.IO.Path.Combine(env.WebRootPath, "tools", name, downloadFileName));
 }
 
@@ -20,12 +20,13 @@
 		Devil Daggers Asset Editor is a tool that can be used to extract assets from the Devil Daggers resource files, as well as compressing them back to create mods.
 	</p>
 
+	@*<p>
+			<img class="img-responsive image-narrow" src="~/images/Tools/@(name).png" />
+		</p>*@
+
 	<p class="text-center">
 		Current version: @(tool.VersionNumber)<br />
-		@if (!string.IsNullOrEmpty(tool.VersionNumberRequired))
-		{
-			@:Oldest supported version: @(tool.VersionNumberRequired)<br />
-		}
+		Oldest supported version: @(tool.VersionNumberRequired)<br />
 		File size: @(Math.Round(downloadFileInfo.Length / 1024f).ToString()) KB<br />
 		<a class="btn dont-break-out" href="/tools/@name/@downloadFileName">Download</a>
 	</p>
@@ -43,10 +44,10 @@
 		<li>Run <span class="dont-break-out">DevilDaggersAssetEditor.exe</span> inside the folder.</li>
 	</ol>
 
-	@*<h2>Source code</h2>
-		<p>
-			The source code can be found on <a target="_blank" href="https://bitbucket.org/NoahStolk/devildaggersasseteditor/src">Bitbucket</a>.
-		</p>*@
+	<h2>Source code</h2>
+	<p>
+		The source code will be available again after the next update.@*can be found on <a target="_blank" href="https://bitbucket.org/NoahStolk/devildaggersasseteditor/src">Bitbucket</a>.*@
+	</p>
 
 	<h2>Change log</h2>
 	@tool.ToChangeLogHtmlString()
