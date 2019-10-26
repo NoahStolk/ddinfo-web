@@ -1,11 +1,18 @@
-﻿.missing-information {
+﻿.info-text {
 	font-size: 17px;
 }
 
-.missing-information-container {
+.info-container {
 	max-width: 460px;
 	margin: auto;
 	border: solid 1px;
-	border-color: var(--col-dark-red);
 	padding: 8px;
+}
+
+.info-red {
+	border-color: var(--col-dark-red);
+}
+
+.info-orange {
+	border-color: var(--col-dark-orange);
 }

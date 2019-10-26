@@ -38,21 +38,49 @@
 		</div>
 	</div>
 
-	<div>
-		Missing information
-	</div>
-	<div class="missing-information-container">
-		<div class="flex-container leaderboard-flex flex-center flex-space-evenly text-left">
+	@{
+		if (!string.IsNullOrWhiteSpace(Model.Leaderboard.GetMissingGlobalInformation()) || !string.IsNullOrWhiteSpace(Model.Leaderboard.GetMissingUserInformation()))
+		{
 			<div>
-				<div>Global</div>
-				<div class="missing-information">@RazorUtils.GetLeaderboardInformationHTMLString(Model.Leaderboard.GetMissingGlobalInformation())</div>
+				Missing information
 			</div>
+			<div class="info-container info-red">
+				<div class="flex-container leaderboard-flex flex-center flex-space-evenly text-left">
+					<div>
+						<div>Global</div>
+						<div class="info-text">@RazorUtils.GetLeaderboardInformationHTMLString(Model.Leaderboard.GetMissingGlobalInformation())</div>
+					</div>
+					<div>
+						<div>User</div>
+						<div class="info-text">@RazorUtils.GetLeaderboardInformationHTMLString(Model.Leaderboard.GetMissingUserInformation())</div>
+					</div>
+				</div>
+			</div>
+		}
+		
+		string changesGlobal = Model.ChangesGlobal.ToString();
+		string changesTop100 = Model.ChangesTop100.ToString();
+		TimeSpan diff = Model.Leaderboard.DateTime - Model.LeaderboardPrevious.DateTime;
+		if (!string.IsNullOrWhiteSpace(changesGlobal) || !string.IsNullOrWhiteSpace(changesTop100))
+		{
 			<div>
-				<div>User</div>
-				<div class="missing-information">@RazorUtils.GetLeaderboardInformationHTMLString(Model.Leaderboard.GetMissingUserInformation())</div>
+				Changes since @Model.LeaderboardPrevious.DateTime.ToString("yyyy-MM-dd HH:mm") UTC<br />
+				@diff.Days day@(diff.Days.S()), @diff.Hours hour@(diff.Hours.S()), @diff.Minutes minute@(diff.Minutes.S()) before
 			</div>
-		</div>
-	</div>
+			<div class="info-container info-orange">
+				<div class="flex-container leaderboard-flex flex-center flex-space-evenly text-left">
+					<div>
+						<div>Global</div>
+						<div class="info-text">@RazorUtils.GetLeaderboardInformationHTMLString(Model.ChangesGlobal.ToString())</div>
+					</div>
+					<div>
+						<div>Top 100</div>
+						<div class="info-text">@RazorUtils.GetLeaderboardInformationHTMLString(Model.ChangesTop100.ToString())</div>
+					</div>
+				</div>
+			</div>
+		}
+	}
 
 	<p class="visible-xs visible-sm visible-md">
 		On mobile devices; tap on an entry to expand it.
