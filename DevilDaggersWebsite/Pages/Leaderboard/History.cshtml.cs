@@ -6,7 +6,6 @@ using Microsoft.AspNetCore.Mvc.RazorPages;
 using Microsoft.AspNetCore.Mvc.Rendering;
 using NetBase.Utils;
 using Newtonsoft.Json;
-using System;
 using System.Collections.Generic;
 using System.IO;
 using System.Linq;
@@ -19,9 +18,9 @@ namespace DevilDaggersWebsite.Pages.Leaderboard
 		private readonly ICommonObjects _commonObjects;
 
 		public DevilDaggersCore.Leaderboards.Leaderboard Leaderboard { get; set; } = new DevilDaggersCore.Leaderboards.Leaderboard();
-		public DevilDaggersCore.Leaderboards.Leaderboard LeaderboardPrevious { get; set; }
-		public StringBuilder ChangesGlobal { get; private set; }
-		public StringBuilder ChangesTop100 { get; private set; }
+		public DevilDaggersCore.Leaderboards.Leaderboard LeaderboardPrevious { get; set; } = new DevilDaggersCore.Leaderboards.Leaderboard();
+		public List<string> ChangesGlobal { get; private set; } = new List<string>();
+		public Dictionary<string, string> ChangesTop100 { get; private set; } = new Dictionary<string, string>();
 
 		public List<SelectListItem> JsonFiles { get; set; } = new List<SelectListItem>();
 		public string From { get; set; }
@@ -44,7 +43,7 @@ namespace DevilDaggersWebsite.Pages.Leaderboard
 		public void OnGet(string from)
 		{
 			From = from;
-			if (string.IsNullOrEmpty(From))
+			if (string.IsNullOrEmpty(From) || !System.IO.File.Exists(Path.Combine(_commonObjects.Env.WebRootPath, "leaderboard-history", From)))
 				From = JsonFiles[0].Value;
 
 			for (int i = 0; i < JsonFiles.Count; i++)
@@ -58,32 +57,19 @@ namespace DevilDaggersWebsite.Pages.Leaderboard
 				}
 			}
 
-			string jsonString;
-			try
-			{
-				jsonString = FileUtils.GetContents(Path.Combine(_commonObjects.Env.WebRootPath, "leaderboard-history", From), Encoding.UTF8);
-			}
-			catch (Exception)
-			{
-				From = JsonFiles[0].Value;
-				jsonString = FileUtils.GetContents(Path.Combine(_commonObjects.Env.WebRootPath, "leaderboard-history", From), Encoding.UTF8);
-			}
-			Leaderboard = JsonConvert.DeserializeObject<DevilDaggersCore.Leaderboards.Leaderboard>(jsonString);
+			Leaderboard = JsonConvert.DeserializeObject<DevilDaggersCore.Leaderboards.Leaderboard>(FileUtils.GetContents(Path.Combine(_commonObjects.Env.WebRootPath, "leaderboard-history", From), Encoding.UTF8));
 
-			ChangesGlobal = new StringBuilder();
-			ChangesTop100 = new StringBuilder();
 			if (FromNext != null)
 			{
-				jsonString = FileUtils.GetContents(Path.Combine(_commonObjects.Env.WebRootPath, "leaderboard-history", FromNext), Encoding.UTF8);
-				LeaderboardPrevious = JsonConvert.DeserializeObject<DevilDaggersCore.Leaderboards.Leaderboard>(jsonString);
+				LeaderboardPrevious = JsonConvert.DeserializeObject<DevilDaggersCore.Leaderboards.Leaderboard>(FileUtils.GetContents(Path.Combine(_commonObjects.Env.WebRootPath, "leaderboard-history", FromNext), Encoding.UTF8));
 
 				if (LeaderboardPrevious.GetCompletionRate() > 0.999f && Leaderboard.GetCompletionRate() > 0.999f)
 				{
 					if (LeaderboardPrevious.Players != Leaderboard.Players)
-						ChangesGlobal.AppendLine($"Total players +{Leaderboard.Players - LeaderboardPrevious.Players}");
+						ChangesGlobal.Add($"Total players +{Leaderboard.Players - LeaderboardPrevious.Players}");
 
 					if (LeaderboardPrevious.DeathsGlobal != Leaderboard.DeathsGlobal)
-						ChangesGlobal.AppendLine($"Global deaths +{Leaderboard.DeathsGlobal - LeaderboardPrevious.DeathsGlobal}\n");
+						ChangesGlobal.Add($"Global deaths +{Leaderboard.DeathsGlobal - LeaderboardPrevious.DeathsGlobal}\n");
 
 					List<Entry> top100joins = new List<Entry>();
 					List<Entry> highscores = new List<Entry>();
@@ -107,17 +93,11 @@ namespace DevilDaggersWebsite.Pages.Leaderboard
 					}
 
 					if (top100joins.Count != 0)
-						ChangesTop100.AppendLine($"{top100joins.Count} player{top100joins.Count.S()} joined top 100");
+						ChangesTop100[$"{top100joins.Count} player{top100joins.Count.S()} joined top 100"] = string.Join(", ", top100joins.Select(e => e.Username));
 					if (highscores.Count != 0)
-						ChangesTop100.AppendLine($"{highscores.Count} player{highscores.Count.S()} set a new highscore");
+						ChangesTop100[$"{highscores.Count} player{highscores.Count.S()} set a new highscore"] = string.Join(", ", highscores.Select(e => e.Username));
 					if (plays.Count != 0)
-						ChangesTop100.AppendLine($"{plays.Count} player{plays.Count.S()} played");
-					//if (top100s.Count != 0)
-					//	Changes.AppendLine($"{top100s.Count} player{(top100s.Count == 1 ? "" : "s")} joined top 100:\n{string.Join(", ", top100s.Select(e => e.Username))}\n");
-					//if (highscores.Count != 0)
-					//	Changes.AppendLine($"{highscores.Count} player{(top100s.Count == 1 ? "" : "s")} set a new highscore:\n{string.Join(", ", highscores.Select(e => e.Username))}\n");
-					//if (plays.Count != 0)
-					//	Changes.AppendLine($"{plays.Count} player{(top100s.Count == 1 ? "" : "s")} played:\n{string.Join(", ", plays.Select(e => e.Username))}\n");
+						ChangesTop100[$"{plays.Count} player{plays.Count.S()} played"] = string.Join(", ", plays.Select(e => e.Username));
 				}
 			}
 		}

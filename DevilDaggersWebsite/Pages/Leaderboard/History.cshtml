@@ -4,6 +4,7 @@
 @{
 	ViewData["Title"] = $"Top 100 History ({Model.Leaderboard.DateTime.ToString("yyyy-MM-dd HH:mm")} UTC)";
 }
+@using DevilDaggersCore.Leaderboards
 @using DevilDaggersWebsite.Code.Utils
 
 <header>
@@ -39,7 +40,11 @@
 	</div>
 
 	@{
-		if (!string.IsNullOrWhiteSpace(Model.Leaderboard.GetMissingGlobalInformation()) || !string.IsNullOrWhiteSpace(Model.Leaderboard.GetMissingUserInformation()))
+		Completion completion = Model.Leaderboard.GetCompletion();
+		CompletionCombined userCompletion = Model.Leaderboard.GetUserCompletion();
+		bool isCompletionEmpty = completion.CompletionEntries.Where(c => c.Value == CompletionEntry.Missing).Count() == 0;
+		bool isUserCompletionEmpty = userCompletion.CompletionEntries.Where(c => c.Value == CompletionEntryCombined.Missing).Count() == 0;
+		if (!isCompletionEmpty || !isUserCompletionEmpty)
 		{
 			<div>
 				Missing information
@@ -48,20 +53,54 @@
 				<div class="flex-container leaderboard-flex flex-center flex-space-evenly text-left">
 					<div>
 						<div>Global</div>
-						<div class="info-text">@RazorUtils.GetLeaderboardInformationHTMLString(Model.Leaderboard.GetMissingGlobalInformation())</div>
+						<div class="info-text">
+							@{
+								if (isCompletionEmpty)
+								{
+									@RazorUtils.NAString
+								}
+								else
+								{
+									foreach (KeyValuePair<string, CompletionEntry> kvp in completion.CompletionEntries)
+									{
+										if (kvp.Value != CompletionEntry.Complete)
+										{
+											@:@kvp.Key @Html.Raw(kvp.Value.ToHtmlString())<br />
+										}
+									}
+								}
+							}
+						</div>
 					</div>
 					<div>
 						<div>User</div>
-						<div class="info-text">@RazorUtils.GetLeaderboardInformationHTMLString(Model.Leaderboard.GetMissingUserInformation())</div>
+						<div class="info-text">
+							@{
+								if (isUserCompletionEmpty)
+								{
+									@RazorUtils.NAString
+								}
+								else
+								{
+									foreach (KeyValuePair<string, CompletionEntryCombined> kvp in userCompletion.CompletionEntries)
+									{
+										if (kvp.Value != CompletionEntryCombined.Complete)
+										{
+											@:@kvp.Key @Html.Raw(kvp.Value.ToHtmlString())<br />
+										}
+									}
+								}
+							}
+						</div>
 					</div>
 				</div>
 			</div>
 		}
-		
-		string changesGlobal = Model.ChangesGlobal.ToString();
-		string changesTop100 = Model.ChangesTop100.ToString();
+
+		List<string> changesGlobal = Model.ChangesGlobal;
+		Dictionary<string, string> changesTop100 = Model.ChangesTop100;
 		TimeSpan diff = Model.Leaderboard.DateTime - Model.LeaderboardPrevious.DateTime;
-		if (!string.IsNullOrWhiteSpace(changesGlobal) || !string.IsNullOrWhiteSpace(changesTop100))
+		if (changesGlobal.Count != 0 || changesTop100.Count != 0)
 		{
 			<div>
 				Changes since @Model.LeaderboardPrevious.DateTime.ToString("yyyy-MM-dd HH:mm") UTC<br />
@@ -71,11 +110,39 @@
 				<div class="flex-container leaderboard-flex flex-center flex-space-evenly text-left">
 					<div>
 						<div>Global</div>
-						<div class="info-text">@RazorUtils.GetLeaderboardInformationHTMLString(Model.ChangesGlobal.ToString())</div>
+						<div class="info-text">
+							@{
+								if (changesGlobal.Count == 0)
+								{
+									@RazorUtils.NAString
+								}
+								else
+								{
+									foreach (string change in changesGlobal)
+									{
+										@:@change<br />
+									}
+								}
+							}
+						</div>
 					</div>
 					<div>
 						<div>Top 100</div>
-						<div class="info-text">@RazorUtils.GetLeaderboardInformationHTMLString(Model.ChangesTop100.ToString())</div>
+						<div class="info-text">
+							@{
+								if (changesGlobal.Count == 0)
+								{
+									@RazorUtils.NAString
+								}
+								else
+								{
+									foreach (KeyValuePair<string, string> change in changesTop100)
+									{
+										<span data-toggle="tooltip" title="@change.Value" class="leaderboard-tooltip">@change.Key</span><br />
+									}
+								}
+							}
+						</div>
 					</div>
 				</div>
 			</div>

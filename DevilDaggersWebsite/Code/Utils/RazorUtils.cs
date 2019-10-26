@@ -73,18 +73,6 @@ namespace DevilDaggersWebsite.Code.Utils
 			return str;
 		}
 
-		public static HtmlString GetLeaderboardInformationHTMLString(string info)
-		{
-			if (string.IsNullOrWhiteSpace(info))
-				return NAString;
-
-			return new HtmlString(info
-				.TrimEnd('\n')
-				.Replace("\n", "<br />")
-				.Replace(CompletionEntryCombined.PartiallyMissing.ToString(), "<span style='color: #f80'>(Partially missing)</span>")
-				.Replace(CompletionEntryCombined.Missing.ToString(), "<span style='color: #f00'>(Missing)</span>"));
-		}
-
 		public static string ToIDString(this string str)
 		{
 			return $"{str.ToLower().Replace(" ", "-")}";
