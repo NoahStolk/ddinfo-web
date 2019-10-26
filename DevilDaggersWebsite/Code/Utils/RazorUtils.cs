@@ -66,15 +66,16 @@ namespace DevilDaggersWebsite.Code.Utils
 
 		public static string TransmuteString(this string str)
 		{
-			str = str.Replace(" transmute ", " <a style='color: var(--col-red);' href='/Wiki/Enemies#transmuted-skulls'>transmute</a> ");
-			str = str.Replace(" transmutes ", " <a style='color: var(--col-red);' href='/Wiki/Enemies#transmuted-skulls'>transmutes</a> ");
+			str = str
+				.Replace(" transmute ", " <a style='color: var(--col-red);' href='/Wiki/Enemies#transmuted-skulls'>transmute</a> ")
+				.Replace(" transmutes ", " <a style='color: var(--col-red);' href='/Wiki/Enemies#transmuted-skulls'>transmutes</a> ");
 
 			return str;
 		}
 
 		public static HtmlString GetLeaderboardInformationHTMLString(string info)
 		{
-			if (string.IsNullOrEmpty(info) || string.IsNullOrWhiteSpace(info))
+			if (string.IsNullOrWhiteSpace(info))
 				return NAString;
 
 			return new HtmlString(info
@@ -87,6 +88,11 @@ namespace DevilDaggersWebsite.Code.Utils
 		public static string ToIDString(this string str)
 		{
 			return $"{str.ToLower().Replace(" ", "-")}";
+		}
+
+		public static string S(this int value)
+		{
+			return value == 1 ? "" : "s";
 		}
 	}
 }

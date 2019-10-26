@@ -1,7 +1,8 @@
 ﻿@page
 @using DevilDaggersCore.Game
-@using DevilDaggersWebsite.Pages.API
 @using DevilDaggersCore.Leaderboards
+@using DevilDaggersWebsite.Code.Utils
+@using DevilDaggersWebsite.Pages.API
 @inject CoreBase.Services.ICommonObjects CommonObjects
 @model DevilDaggersWebsite.Pages.Leaderboard.WorldRecordProgressionModel
 @{
@@ -46,11 +47,11 @@
 			int daysAgo = (int)Math.Round((DateTime.Now - wrh.LastHeld).TotalDays);
 			int daysConsecutively = (int)Math.Round(wrh.LongestTimeHeldConsecutively.TotalDays);
 
-			string timeHeld = $"{days} day{(days == 1 ? "" : "s")} ({(wrh.TotalTimeHeld / total).ToString("00.00%")})";
+			string timeHeld = $"{days} day{days.S()} ({(wrh.TotalTimeHeld / total).ToString("00.00%")})";
 
 			Entry current = await new GetUserByIDModel().GetUserByID(wrh.ID);
-			string lastHeld = wr.Time == current.Time ? "Current holder" : $"{wrh.LastHeld.ToString("MMM dd")} '{wrh.LastHeld.ToString("yy")} ({daysAgo} day{(daysAgo == 1 ? "" : "s")} ago)";
-			string heldConsecutively = $"{daysConsecutively} day{(daysConsecutively == 1 ? "" : "s")}";
+			string lastHeld = wr.Time == current.Time ? "Current holder" : $"{wrh.LastHeld.ToString("MMM dd")} '{wrh.LastHeld.ToString("yy")} ({daysAgo} day{daysAgo.S()} ago)";
+			string heldConsecutively = $"{daysConsecutively} day{daysConsecutively.S()}";
 
 			<div class="row">
 				<div class="col-lg-2 col-md-2 col-sm-4 col-xs-6">@wrh.Username</div>
