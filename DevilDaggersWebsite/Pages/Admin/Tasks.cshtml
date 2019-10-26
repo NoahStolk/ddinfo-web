@@ -1,5 +1,4 @@
 ﻿@page
-@using DevilDaggersWebsite.Code.Tasks
 @model DevilDaggersWebsite.Pages.Admin.TasksModel
 @{
 	ViewData["Title"] = "Admin - Tasks";
@@ -10,5 +9,10 @@
 </header>
 
 <main role="main">
-	@LeaderboardHistoryTask.LastUpdated
+	<ul>
+		@foreach (KeyValuePair<string, DateTime> kvp in Model.LastUpdatedDictionary)
+		{
+			<li>@kvp.Key was last updated on @kvp.Value.ToUniversalTime().ToString("yyyy-MM-dd HH:mm:ss.fff") UTC.</li>
+		}
+	</ul>
 </main>
