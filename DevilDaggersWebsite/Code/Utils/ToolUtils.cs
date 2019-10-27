@@ -341,7 +341,7 @@ namespace DevilDaggersWebsite.Code.Utils
 						{
 							new Change("Improved way of detecting survival file cheats; there is no need to record the entire run anymore."),
 							new Change("Fixed log file not being written to."),
-							new Change("Implemented \"Reverse\" category leaderboards.")
+							new Change("Implemented \"Speedrun\" category leaderboards.")
 						}
 					},
 					new ChangeLogEntry
@@ -368,7 +368,7 @@ namespace DevilDaggersWebsite.Code.Utils
 						Date = new DateTime(2019, 5, 24),
 						Changes = new List<Change>
 						{
-							new Change("Fixed inconsistent spawnset hashing. The hashing system is no longer dependent on files. This fixes the problem where some spawnsets wouldn't work if they were downloaded directly from the website rather than imported via the editor.")
+							new Change("Fixed inconsistent spawnset hashing. The hashing system is no longer dependent on files. This fixes the problem where some spawnsets wouldn't work if they were downloaded directly from the website rather than imported via DDSE.")
 						}
 					},
 					new ChangeLogEntry
