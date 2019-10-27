@@ -22,7 +22,7 @@
 	</div>
 	<div class="leaderboard-body">
 		@{
-			bool firstPage = Model.Leaderboard.Entries[0].Rank == 1;
+			bool firstPage = Model.Leaderboard.Entries.Count > 0 && Model.Leaderboard.Entries[0].Rank == 1;
 #if EXCLUDE_BANS
 			int banCount = 0;
 #endif
