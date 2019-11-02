@@ -1,6 +1,9 @@
 ﻿<Project Sdk="Microsoft.NET.Sdk.Web">
   <PropertyGroup>
 	<TargetFramework>netcoreapp2.1</TargetFramework>
+	<Company />
+	<Authors>Noah Stolk</Authors>
+	<Copyright>Copyright © Noah Stolk 2017 - 2019</Copyright>
   </PropertyGroup>
   <ItemGroup>
 	<PackageReference Include="BuildBundlerMinifier" Version="2.9.406" />
