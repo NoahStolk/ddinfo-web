@@ -24,9 +24,9 @@ namespace DevilDaggersWebsite.Code.Utils
 			DisplayName = "Devil Daggers Survival Editor",
 			VersionNumber = new Version(2, 4, 10, 0),
 			VersionNumberRequired = new Version(2, 4, 4, 0),
-			ChangeLog = new List<ChangeLogEntry>
+			Changelog = new List<ChangelogEntry>
 			{
-				new ChangeLogEntry
+				new ChangelogEntry
 				{
 					VersionNumber = new Version(2, 4, 10, 0),
 					Date = new DateTime(2019, 10, 22),
@@ -37,7 +37,7 @@ namespace DevilDaggersWebsite.Code.Utils
 						new Change("Small changes related to maintenance of the website, as well as code refactoring and improvements.")
 					}
 				},
-				new ChangeLogEntry
+				new ChangelogEntry
 				{
 					VersionNumber = new Version(2, 4, 4, 0),
 					Date = new DateTime(2019, 9, 1),
@@ -52,7 +52,7 @@ namespace DevilDaggersWebsite.Code.Utils
 						new Change("Internal changes such as importing DDCL-specific code for memory scanning base functionality as preparation for possible custom leaderboard integration (DDCL probably won't be getting updates anymore), as well as general code refactoring and improvements.")
 					}
 				},
-				new ChangeLogEntry
+				new ChangelogEntry
 				{
 					VersionNumber = new Version(2, 4, 0, 0),
 					Date = new DateTime(2019, 8, 5),
@@ -71,7 +71,7 @@ namespace DevilDaggersWebsite.Code.Utils
 						new Change("Other small layout changes, bug fixes, and improvements.")
 					}
 				},
-				new ChangeLogEntry
+				new ChangelogEntry
 				{
 					VersionNumber = new Version(2, 3, 1, 0),
 					Date = new DateTime(2019, 7, 30),
@@ -80,7 +80,7 @@ namespace DevilDaggersWebsite.Code.Utils
 						new Change("Fixed crash when deleting multiple spawns.")
 					}
 				},
-				new ChangeLogEntry
+				new ChangelogEntry
 				{
 					VersionNumber = new Version(2, 3, 0, 0),
 					Date = new DateTime(2019, 7, 30),
@@ -94,7 +94,7 @@ namespace DevilDaggersWebsite.Code.Utils
 						new Change("Layout improvements for the Download Spawnset window.")
 					}
 				},
-				new ChangeLogEntry
+				new ChangelogEntry
 				{
 					VersionNumber = new Version(2, 2, 0, 0),
 					Date = new DateTime(2019, 7, 7),
@@ -123,7 +123,7 @@ namespace DevilDaggersWebsite.Code.Utils
 						new Change("Performance optimisations, layout improvements, and other bug fixes.")
 					}
 				},
-				new ChangeLogEntry
+				new ChangelogEntry
 				{
 					VersionNumber = new Version(2, 1, 1, 0),
 					Date = new DateTime(2019, 7, 5),
@@ -132,7 +132,7 @@ namespace DevilDaggersWebsite.Code.Utils
 						new Change("Hotfix for restoring the default survival file.")
 					}
 				},
-				new ChangeLogEntry
+				new ChangelogEntry
 				{
 					VersionNumber = new Version(2, 1, 0, 0),
 					Date = new DateTime(2019, 7, 5),
@@ -149,7 +149,7 @@ namespace DevilDaggersWebsite.Code.Utils
 						new Change("Optimisations and layout improvements.")
 					}
 				},
-				new ChangeLogEntry
+				new ChangelogEntry
 				{
 					VersionNumber = new Version(2, 0, 0, 0),
 					Date = new DateTime(2019, 6, 29),
@@ -270,7 +270,7 @@ namespace DevilDaggersWebsite.Code.Utils
 						},
 					}
 				},
-				new ChangeLogEntry
+				new ChangelogEntry
 				{
 					VersionNumber = new Version(1, 1, 5, 0),
 					Date = new DateTime(2018, 11, 4),
@@ -279,7 +279,7 @@ namespace DevilDaggersWebsite.Code.Utils
 						new Change("Added functionality to automatically check for new versions of the program.")
 					}
 				},
-				new ChangeLogEntry
+				new ChangelogEntry
 				{
 					VersionNumber = new Version(1, 1, 4, 0),
 					Date = new DateTime(2018, 8, 5),
@@ -290,7 +290,7 @@ namespace DevilDaggersWebsite.Code.Utils
 						new Change("Various fixes and small improvements.")
 					}
 				},
-				new ChangeLogEntry
+				new ChangelogEntry
 				{
 					VersionNumber = new Version(1, 1, 2, 0),
 					Date = new DateTime(2018, 7, 27),
@@ -299,7 +299,7 @@ namespace DevilDaggersWebsite.Code.Utils
 						new Change("Added functionality to download spawnsets directly from DevilDaggers.info within the menu.")
 					}
 				},
-				new ChangeLogEntry
+				new ChangelogEntry
 				{
 					VersionNumber = new Version(1, 0, 2, 0),
 					Date = new DateTime(2018, 7, 26),
@@ -308,7 +308,7 @@ namespace DevilDaggersWebsite.Code.Utils
 						new Change("Enforced en-US globalisation.")
 					}
 				},
-				new ChangeLogEntry
+				new ChangelogEntry
 				{
 					VersionNumber = new Version(1, 0, 1, 0),
 					Date = new DateTime(2018, 6, 25),
@@ -317,7 +317,7 @@ namespace DevilDaggersWebsite.Code.Utils
 						new Change("Fixed not being able to read some spawnsets made using a hex editor when reading an undefined enemy type.")
 					}
 				},
-				new ChangeLogEntry
+				new ChangelogEntry
 				{
 					VersionNumber = new Version(1, 0, 0, 0),
 					Date = new DateTime(2018, 6, 16),
@@ -326,7 +326,7 @@ namespace DevilDaggersWebsite.Code.Utils
 						new Change("Initial release.")
 					}
 				},
-				new ChangeLogEntry
+				new ChangelogEntry
 				{
 					VersionNumber = new Version(0, 9, 0, 0),
 					Date = new DateTime(2018, 5, 14),
@@ -344,9 +344,9 @@ namespace DevilDaggersWebsite.Code.Utils
 			DisplayName = "Devil Daggers Custom Leaderboards",
 			VersionNumber = new Version(0, 4, 3, 0),
 			VersionNumberRequired = new Version(0, 4, 0, 1),
-			ChangeLog = new List<ChangeLogEntry>
+			Changelog = new List<ChangelogEntry>
 			{
-				new ChangeLogEntry
+				new ChangelogEntry
 				{
 					VersionNumber = new Version(0, 4, 3, 0),
 					Date = new DateTime(2019, 8, 8),
@@ -357,7 +357,7 @@ namespace DevilDaggersWebsite.Code.Utils
 						new Change("Implemented \"Speedrun\" category leaderboards.")
 					}
 				},
-				new ChangeLogEntry
+				new ChangelogEntry
 				{
 					VersionNumber = new Version(0, 4, 0, 1),
 					Date = new DateTime(2019, 6, 5),
@@ -366,7 +366,7 @@ namespace DevilDaggersWebsite.Code.Utils
 						new Change("Compatibility update due to some internal bug fixes which aren't related to DDCL directly.")
 					}
 				},
-				new ChangeLogEntry
+				new ChangelogEntry
 				{
 					VersionNumber = new Version(0, 4, 0, 0),
 					Date = new DateTime(2019, 5, 27),
@@ -375,7 +375,7 @@ namespace DevilDaggersWebsite.Code.Utils
 						new Change("Leaderboards are now secured with the Advanced Encryption Standard (AES).")
 					}
 				},
-				new ChangeLogEntry
+				new ChangelogEntry
 				{
 					VersionNumber = new Version(0, 3, 3, 0),
 					Date = new DateTime(2019, 5, 24),
@@ -384,7 +384,7 @@ namespace DevilDaggersWebsite.Code.Utils
 						new Change("Fixed inconsistent spawnset hashing. The hashing system is no longer dependent on files. This fixes the problem where some spawnsets wouldn't work if they were downloaded directly from the website rather than imported via DDSE.")
 					}
 				},
-				new ChangeLogEntry
+				new ChangelogEntry
 				{
 					VersionNumber = new Version(0, 3, 0, 0),
 					Date = new DateTime(2019, 5, 20),
@@ -393,7 +393,7 @@ namespace DevilDaggersWebsite.Code.Utils
 						new Change("The program now tells you when there is an update available and warns you when the current version is no longer accepted by the server.")
 					}
 				},
-				new ChangeLogEntry
+				new ChangelogEntry
 				{
 					VersionNumber = new Version(0, 2, 5, 0),
 					Date = new DateTime(2019, 5, 19),
@@ -406,7 +406,7 @@ namespace DevilDaggersWebsite.Code.Utils
 						new Change("Added a retry count for when the upload fails. Usually it retries 3 times and stops after that, waiting for you to restart a run.")
 					}
 				},
-				new ChangeLogEntry
+				new ChangelogEntry
 				{
 					VersionNumber = new Version(0, 2, 1, 0),
 					Date = new DateTime(2019, 5, 18),
@@ -418,7 +418,7 @@ namespace DevilDaggersWebsite.Code.Utils
 						new Change("The server now has a minimal version it will accept submissions from.")
 					}
 				},
-				new ChangeLogEntry
+				new ChangelogEntry
 				{
 					VersionNumber = new Version(0, 1, 10, 0),
 					Date = new DateTime(2019, 5, 18),
@@ -427,7 +427,7 @@ namespace DevilDaggersWebsite.Code.Utils
 						new Change("Small fixes.")
 					}
 				},
-				new ChangeLogEntry
+				new ChangelogEntry
 				{
 					VersionNumber = new Version(0, 1, 9, 0),
 					Date = new DateTime(2019, 5, 18),
@@ -438,7 +438,7 @@ namespace DevilDaggersWebsite.Code.Utils
 						new Change("Prevented replays from uploading so people won't submit runs to the wrong leaderboard by intentionally replacing the survival file during the replay.")
 					}
 				},
-				new ChangeLogEntry
+				new ChangelogEntry
 				{
 					VersionNumber = new Version(0, 1, 5, 0),
 					Date = new DateTime(2019, 5, 17),
@@ -450,7 +450,7 @@ namespace DevilDaggersWebsite.Code.Utils
 						new Change("Prevented submissions with 0.0000 time from uploading by setting a time constraint of a minimum of 2.5 seconds.")
 					}
 				},
-				new ChangeLogEntry
+				new ChangelogEntry
 				{
 					VersionNumber = new Version(0, 1, 0, 0),
 					Date = new DateTime(2019, 5, 15),
@@ -468,10 +468,10 @@ namespace DevilDaggersWebsite.Code.Utils
 			DisplayName = "Devil Daggers Asset Editor",
 			VersionNumber = new Version(0, 3, 3, 0),
 			VersionNumberRequired = new Version(0, 1, 0, 0),
-			ChangeLog = new List<ChangeLogEntry>
+			Changelog = new List<ChangelogEntry>
 			{
 				// Implemented shader, model, and texture compression. Features such as compressing and using mod files for "dd" and "core" are now available and functional.
-				new ChangeLogEntry
+				new ChangelogEntry
 				{
 					VersionNumber = new Version(0, 3, 3, 0),
 					Date = new DateTime(2019, 9, 23),
@@ -482,7 +482,7 @@ namespace DevilDaggersWebsite.Code.Utils
 						new Change("Improved audio descriptions.")
 					}
 				},
-				new ChangeLogEntry
+				new ChangelogEntry
 				{
 					VersionNumber = new Version(0, 3, 0, 0),
 					Date = new DateTime(2019, 9, 21),
@@ -496,7 +496,7 @@ namespace DevilDaggersWebsite.Code.Utils
 						new Change("The mod file format has been changed, and mod files created using version 0.2.0.0 will no longer open. You'll need to convert these by navigating to Compatibility > Convert 0.2.0.0 mod file format and select your mod file.")
 					}
 				},
-				new ChangeLogEntry
+				new ChangelogEntry
 				{
 					VersionNumber = new Version(0, 2, 0, 0),
 					Date = new DateTime(2019, 9, 19),
@@ -514,7 +514,7 @@ namespace DevilDaggersWebsite.Code.Utils
 						new Change("Many GUI and code improvements.")
 					}
 				},
-				new ChangeLogEntry
+				new ChangelogEntry
 				{
 					VersionNumber = new Version(0, 1, 0, 0),
 					Date = new DateTime(2019, 9, 11),

@@ -45,10 +45,10 @@ namespace DevilDaggersWebsite.Code.Utils
 			");
 		}
 
-		public static HtmlString ToChangeLogHtmlString(this Tool tool)
+		public static HtmlString ToChangelogHtmlString(this Tool tool)
 		{
 			StringBuilder sb = new StringBuilder();
-			foreach (ChangeLogEntry entry in tool.ChangeLog)
+			foreach (ChangelogEntry entry in tool.Changelog)
 			{
 				sb.Append($"<h3>{entry.VersionNumber} - {entry.Date.ToString("MMMM dd, yyyy")}</h3><ul>");
 				foreach (Change change in entry.Changes)
