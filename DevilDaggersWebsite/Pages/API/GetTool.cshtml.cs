@@ -1,4 +1,4 @@
-﻿using DevilDaggersCore.Tools;
+﻿using DevilDaggersCore.Website.Models;
 using DevilDaggersWebsite.Code.API;
 using DevilDaggersWebsite.Code.PageModels;
 using DevilDaggersWebsite.Code.Utils;
@@ -14,7 +14,7 @@ namespace DevilDaggersWebsite.Pages.API
 	{
         public ActionResult OnGet(string toolName)
 		{
-			Tool tool = ToolUtils.Tools.Where(t => t.Name == toolName).FirstOrDefault();
+			Tool tool = ToolList.Tools.Where(t => t.Name == toolName).FirstOrDefault();
 			if (tool == null)
 				return RedirectToPage("/API/Index");
 

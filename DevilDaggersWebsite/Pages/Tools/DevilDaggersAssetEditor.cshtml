@@ -1,14 +1,13 @@
 ﻿@page
 @inject Microsoft.AspNetCore.Hosting.IHostingEnvironment env
-@using DevilDaggersCore.Tools
+@using DevilDaggersCore.Website.Models
 @using DevilDaggersWebsite.Code.Utils
 @using System.IO
 @{
-	ViewData["Title"] = "Devil Daggers Asset Editor";
-	string name = "DevilDaggersAssetEditor";
-	Tool tool = ToolUtils.Tools.Where(t => t.Name == name).FirstOrDefault();
-	string downloadFileName = $"{name}{tool.VersionNumber}.zip";
-	FileInfo downloadFileInfo = new FileInfo(System.IO.Path.Combine(env.WebRootPath, "tools", name, downloadFileName));
+	Tool tool = ToolList.DevilDaggersAssetEditor;
+	ViewData["Title"] = tool.DisplayName;
+	string downloadFileName = $"{tool.Name}{tool.VersionNumber}.zip";
+	FileInfo downloadFileInfo = new FileInfo(System.IO.Path.Combine(env.WebRootPath, "tools", tool.Name, downloadFileName));
 }
 
 <header>
@@ -28,7 +27,7 @@
 		Current version: @(tool.VersionNumber)<br />
 		Oldest supported version: @(tool.VersionNumberRequired)<br />
 		File size: @(Math.Round(downloadFileInfo.Length / 1024f).ToString()) KB<br />
-		<a class="btn dont-break-out" href="/tools/@name/@downloadFileName">Download</a>
+		<a class="btn dont-break-out" href="/tools/@tool.Name/@downloadFileName">Download</a>
 	</p>
 
 	<h2>System requirements</h2>
@@ -41,7 +40,7 @@
 	<ol>
 		<li>Download the zip file.</li>
 		<li>Unzip its contents.</li>
-		<li>Run <span class="dont-break-out">@(name).exe</span> inside the folder.</li>
+		<li>Run <span class="dont-break-out">@(tool.Name).exe</span> inside the folder.</li>
 	</ol>
 
 	<h2>Source code</h2>

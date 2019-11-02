@@ -47,7 +47,7 @@ namespace DevilDaggersWebsite.Pages.CustomLeaderboards
 		private UploadResult TryUpload(string spawnsetHash, int playerID, string username, float time, int gems, int kills, int deathType, int shotsHit, int shotsFired, int enemiesAlive, int homing, float levelUpTime2, float levelUpTime3, float levelUpTime4, string clientVersion, string validation)
 		{
 			Version clientVersionParsed = Version.Parse(clientVersion);
-			if (clientVersionParsed < Version.Parse(ToolUtils.Tools.Where(t => t.Name == "DDCL").FirstOrDefault().VersionNumberRequired))
+			if (clientVersionParsed < ToolList.DevilDaggersCustomLeaderboards.VersionNumberRequired)
 				return new UploadResult(false, "You are using an unsupported and outdated version of DDCL. Please update the program.");
 
 			string spawnsetName = string.Empty;
