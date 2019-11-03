@@ -22,10 +22,21 @@ namespace DevilDaggersWebsite.Code.Utils
 		{
 			Name = "DevilDaggersSurvivalEditor",
 			DisplayName = "Devil Daggers Survival Editor",
-			VersionNumber = new Version(2, 4, 10, 0),
-			VersionNumberRequired = new Version(2, 4, 4, 0),
+			VersionNumber = new Version(2, 4, 13, 0),
+			VersionNumberRequired = new Version(2, 4, 13, 0),
 			Changelog = new List<ChangelogEntry>
 			{
+				new ChangelogEntry
+				{
+					VersionNumber = new Version(2, 4, 13, 0),
+					Date = new DateTime(2019, 11, 3),
+					Changes = new List<Change>
+					{
+						new Change("Changelog now indicates the currently running version."),
+						new Change("Small changes related to maintenance of the website, as well as code refactoring and improvements."),
+						new Change("Improved layout for Error window.")
+					}
+				},
 				new ChangelogEntry
 				{
 					VersionNumber = new Version(2, 4, 10, 0),
@@ -34,7 +45,8 @@ namespace DevilDaggersWebsite.Code.Utils
 					{
 						new Change("Added Changelog window."),
 						new Change("Fixed the Update Recommended window not closing after clicking the download button."),
-						new Change("Small changes related to maintenance of the website, as well as code refactoring and improvements.")
+						new Change("Small changes related to maintenance of the website, as well as code refactoring and improvements."),
+						new Change("Memory scanning code has been moved to DevilDaggersCore because I decided to drop the idea of merging DDSE and DDCL.")
 					}
 				},
 				new ChangelogEntry
@@ -49,7 +61,7 @@ namespace DevilDaggersWebsite.Code.Utils
 						new Change("Fixed spawn enemy text colour not always updating correctly."),
 						new Change("Small layout improvements."),
 						new Change("Improved logging."),
-						new Change("Internal changes such as importing DDCL-specific code for memory scanning base functionality as preparation for possible custom leaderboard integration (DDCL probably won't be getting updates anymore), as well as general code refactoring and improvements.")
+						new Change("Internal changes such as importing DDCL-specific code for memory scanning base functionality as preparation for possible custom leaderboard integration, as well as general code refactoring and improvements.")
 					}
 				},
 				new ChangelogEntry
@@ -342,10 +354,19 @@ namespace DevilDaggersWebsite.Code.Utils
 		{
 			Name = "DevilDaggersCustomLeaderboards",
 			DisplayName = "Devil Daggers Custom Leaderboards",
-			VersionNumber = new Version(0, 4, 3, 0),
-			VersionNumberRequired = new Version(0, 4, 0, 1),
+			VersionNumber = new Version(0, 4, 4, 0),
+			VersionNumberRequired = new Version(0, 4, 4, 0),
 			Changelog = new List<ChangelogEntry>
 			{
+				new ChangelogEntry
+				{
+					VersionNumber = new Version(0, 4, 4, 0),
+					Date = new DateTime(2019, 11, 3),
+					Changes = new List<Change>
+					{
+						new Change("Compatibility and maintenance updates related to the website.")
+					}
+				},
 				new ChangelogEntry
 				{
 					VersionNumber = new Version(0, 4, 3, 0),
@@ -466,11 +487,26 @@ namespace DevilDaggersWebsite.Code.Utils
 		{
 			Name = "DevilDaggersAssetEditor",
 			DisplayName = "Devil Daggers Asset Editor",
-			VersionNumber = new Version(0, 3, 3, 0),
-			VersionNumberRequired = new Version(0, 1, 0, 0),
+			VersionNumber = new Version(0, 7, 5, 0),
+			VersionNumberRequired = new Version(0, 7, 5, 0),
 			Changelog = new List<ChangelogEntry>
 			{
-				// Implemented shader, model, and texture compression. Features such as compressing and using mod files for "dd" and "core" are now available and functional.
+				new ChangelogEntry
+				{
+					VersionNumber = new Version(0, 7, 5, 0),
+					Date = new DateTime(2019, 11, 3),
+					Changes = new List<Change>
+					{
+						new Change("Implemented shader, model (limited), and texture compression. Features such as compressing and using mod files for \"dd\" and \"core\" are now available and functional. Note that the editor path for shaders can be misleading. For instance when it says the path is \"..boid.glsl\", it actually points to the files \"..boid_fragment.glsl\" and \"..boid_vertex.glsl\". Also note that .obj parsing (model format) is still limited and might not work depending on what kind of .obj file you're trying to compress. Compressing the original models, or files in an identical .obj format, works, thus you can successfully swap the original models."),
+						new Change("Implemented audio player with the ability to pitch shift audio real-time."),
+						new Change("Implemented texture, shader, model binding, and particle previewers. A model previewer has not yet been implemented."),
+						new Change("Added Changelog window."),
+						new Change("Fixed the Update Recommended window not closing after clicking the download button."),
+						new Change("Small changes related to maintenance of the website, as well as code refactoring and improvements."),
+						new Change("Removed functionality for compatibility with version 0.2.0.0."),
+						new Change("Many bug fixes, layout improvements, and stability improvements.")
+					}
+				},
 				new ChangelogEntry
 				{
 					VersionNumber = new Version(0, 3, 3, 0),
