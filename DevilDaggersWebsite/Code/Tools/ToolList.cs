@@ -364,7 +364,8 @@ namespace DevilDaggersWebsite.Code.Utils
 					Date = new DateTime(2019, 11, 3),
 					Changes = new List<Change>
 					{
-						new Change("Compatibility and maintenance updates related to the website.")
+						new Change("Compatibility and maintenance updates related to the website."),
+						new Change("The application is renamed to DevilDaggersCustomLeaderboards again for consistency with the other tool names.")
 					}
 				},
 				new ChangelogEntry
