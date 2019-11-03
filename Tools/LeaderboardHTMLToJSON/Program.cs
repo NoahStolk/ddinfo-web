@@ -4,6 +4,7 @@ using DevilDaggersUtilities.Website;
 using NetBase.Utils;
 using Newtonsoft.Json;
 using System.IO;
+using System.Text;
 
 namespace LeaderboardHTMLToJSON
 {
@@ -12,7 +13,7 @@ namespace LeaderboardHTMLToJSON
 		public static void Main(string[] args)
 		{
 			string dateString = "20180902073511";
-			FileUtils.CreateText($"{dateString.Substring(0, 12)}.json", JsonConvert.SerializeObject(GetLeaderboardFromHTML(dateString)));
+			FileUtils.CreateText($"{dateString.Substring(0, 12)}.json", JsonConvert.SerializeObject(GetLeaderboardFromHTML(dateString)), Encoding.UTF8);
 		}
 
 		public static LeaderboardSimplified GetLeaderboardFromHTML(string dateString)
@@ -30,7 +31,7 @@ namespace LeaderboardHTMLToJSON
 				ShotsFiredGlobal = 10000
 			};
 
-			string[] lines = FileUtils.GetContents(Path.Combine("Content", $"{dateString}.html")).Split('\n');
+			string[] lines = FileUtils.GetContents(Path.Combine("Content", $"{dateString}.html"), Encoding.UTF8).Split('\n');
 
 			for (int i = 0; i < lines.Length; i++)
 			{

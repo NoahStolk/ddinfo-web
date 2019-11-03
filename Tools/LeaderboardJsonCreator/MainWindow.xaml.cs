@@ -6,6 +6,7 @@ using Newtonsoft.Json;
 using System;
 using System.Collections.Generic;
 using System.Linq;
+using System.Text;
 using System.Windows;
 
 namespace LeaderboardJsonCreator
@@ -99,7 +100,7 @@ namespace LeaderboardJsonCreator
 				ulong.TryParse(ShotsHitGlobal.Text, out leaderboard.ShotsHitGlobal);
 				ulong.TryParse(ShotsFiredGlobal.Text, out leaderboard.ShotsFiredGlobal);
 
-				FileUtils.CreateText($@"C:\Users\NOAH\source\repos\DevilDaggersWebsite\DevilDaggersWebsite\wwwroot\leaderboard-history\{DateTime.Text}.json", JsonConvert.SerializeObject(leaderboard));
+				FileUtils.CreateText($@"C:\Users\NOAH\source\repos\DevilDaggersWebsite\DevilDaggersWebsite\wwwroot\leaderboard-history\{DateTime.Text}.json", JsonConvert.SerializeObject(leaderboard), Encoding.UTF8);
 				MessageBox.Show("Save successful");
 			}
 			catch (Exception ex)

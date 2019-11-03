@@ -1,4 +1,4 @@
-﻿using DevilDaggersCore.Website.Models;
+﻿using DevilDaggersCore.Tools.Website;
 using DevilDaggersWebsite.Code.API;
 using DevilDaggersWebsite.Code.PageModels;
 using DevilDaggersWebsite.Code.Utils;

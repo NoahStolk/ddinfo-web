@@ -5,6 +5,7 @@ using Microsoft.Win32;
 using NetBase.Utils;
 using Newtonsoft.Json;
 using System.IO;
+using System.Text;
 using System.Windows;
 
 namespace LeaderboardCSVToJSON
@@ -90,7 +91,7 @@ namespace LeaderboardCSVToJSON
 
 				string json = JsonConvert.SerializeObject(leaderboard);
 
-				FileUtils.CreateText($@"C:\Users\NOAH\source\repos\DevilDaggersWebsite\DevilDaggersWebsite\wwwroot\leaderboard-history\{Path.GetFileNameWithoutExtension(dlg.FileName)}.json", json);
+				FileUtils.CreateText($@"C:\Users\NOAH\source\repos\DevilDaggersWebsite\DevilDaggersWebsite\wwwroot\leaderboard-history\{Path.GetFileNameWithoutExtension(dlg.FileName)}.json", json, Encoding.UTF8);
 			}
 		}
 
