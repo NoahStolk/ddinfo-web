@@ -78,3 +78,8 @@
 			width: 50%;
 			float: left;
 		}
+
+.leaderboard-body > :nth-child(2n+1)
+{
+	background-color: #111;
+}
