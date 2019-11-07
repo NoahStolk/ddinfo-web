@@ -44,6 +44,8 @@
 				HtmlString level3 = entry.LevelUpTime3 == 0 ? RazorUtils.NAString : new HtmlString(entry.LevelUpTime3.ToString("0.0000"));
 				HtmlString level4 = entry.LevelUpTime4 == 0 ? RazorUtils.NAString : new HtmlString(entry.LevelUpTime4.ToString("0.0000"));
 				string submitDate = entry.SubmitDate.ToString("dd MMM yyyy, HH:mm");
+				string shots = RazorUtils.FormatShots(entry.ShotsHit, entry.ShotsFired);
+				string accuracy = entry.Accuracy.ToString("0.00%");
 
 				<div class="sort" @entry.ToHTMLData(rank, flagCode)>
 					<div class="leaderboard-row flex-container" id="@(rank)-row">
@@ -82,7 +84,7 @@
 						<div class="hidden-xs text-right">@entry.Kills</div>
 						<div class="hidden-xs text-right">@entry.Gems</div>
 						<div class="hidden-xs text-right">
-							<span data-toggle="tooltip" title="@entry.ShotsHit / @entry.ShotsFired" class="leaderboard-tooltip">@(entry.Accuracy.ToString("0.00%"))</span>
+							<span data-toggle="tooltip" title="@shots" class="leaderboard-tooltip">@accuracy</span>
 						</div>
 						<div class="hidden-xs hidden-sm hidden-md text-center" style="@deathStyle">@death.Name</div>
 						<div class="hidden-xs hidden-sm hidden-md text-right">@entry.EnemiesAlive</div>
@@ -104,7 +106,7 @@
 						<div class="visible-xs">
 							<div class="text-left">Accuracy</div>
 							<div class="text-right">
-								<span data-toggle="tooltip" title="@entry.ShotsHit / @entry.ShotsFired" class="leaderboard-tooltip">@(entry.Accuracy.ToString("0.00%"))</span>
+								<span data-toggle="tooltip" title="@shots" class="leaderboard-tooltip">@accuracy</span>
 							</div>
 						</div>
 						<div class="visible-xs visible-sm visible-md">

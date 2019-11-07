@@ -1,5 +1,4 @@
 ﻿using DevilDaggersCore.Game;
-using DevilDaggersCore.Leaderboards;
 using Microsoft.AspNetCore.Html;
 using System.Collections.Generic;
 
@@ -81,6 +80,16 @@ namespace DevilDaggersWebsite.Code.Utils
 		public static string S(this int value)
 		{
 			return value == 1 ? "" : "s";
+		}
+
+		public static string FormatShots(int hit, int fired)
+		{
+			return $"{hit.ToString("N0")} / {fired.ToString("N0")}";
+		}
+
+		public static string FormatShots(ulong hit, ulong fired)
+		{
+			return $"{hit.ToString("N0")} / {fired.ToString("N0")}";
 		}
 	}
 }

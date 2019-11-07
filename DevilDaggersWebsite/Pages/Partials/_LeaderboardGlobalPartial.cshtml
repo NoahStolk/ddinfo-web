@@ -1,8 +1,14 @@
-﻿@if (Model.GetType() == typeof(Leaderboard.IndexModel) && Model.IsUserSearch)
-{
-	return;
-}
+﻿@using DevilDaggersWebsite.Code.Utils
+@{
+	if (Model.GetType() == typeof(Leaderboard.IndexModel) && Model.IsUserSearch)
+	{
+		return;
+	}
 
+	string time = (Model.Leaderboard.TimeGlobal / 10000.0).ToString("0.0000");
+	string shots = RazorUtils.FormatShots(Model.Leaderboard.ShotsHitGlobal, Model.Leaderboard.ShotsFiredGlobal);
+	string accuracy = Model.Leaderboard.AccuracyGlobal.ToString("0.00%");
+}
 <div class="hidden-xs">
 	<div class="flex-container leaderboard-flex flex-center flex-space-evenly">
 		<div>
@@ -13,7 +19,7 @@
 	<div class="flex-container leaderboard-flex flex-center flex-space-evenly">
 		<div>
 			<div>Global time</div>
-			<div class="text-center devil">@((Model.Leaderboard.TimeGlobal / 10000.0).ToString("0.0000"))</div>
+			<div class="text-center devil">@time</div>
 		</div>
 		<div>
 			<div>Global kills</div>
@@ -32,11 +38,11 @@
 			@{
 				if (Model.Leaderboard.ShotsFiredGlobal == 10000 || Model.Leaderboard.ShotsFiredGlobal == 0)
 				{
-					<span style="background-position-y: 3px;" class="text-center devil">@(Model.Leaderboard.AccuracyGlobal.ToString("0.00%"))</span>
+					<span style="background-position-y: 3px;" class="text-center devil">@accuracy</span>
 				}
 				else
 				{
-					<span data-toggle="tooltip" title="@Model.Leaderboard.ShotsHitGlobal / @Model.Leaderboard.ShotsFiredGlobal" class="leaderboard-tooltip"><span style="background-position-y: 3px;" class="text-center devil">@(Model.Leaderboard.AccuracyGlobal.ToString("0.00%"))</span></span>
+					<span data-toggle="tooltip" title="@shots" class="leaderboard-tooltip"><span style="background-position-y: 3px;" class="text-center devil">@accuracy</span></span>
 				}
 			}
 		</div>
@@ -54,18 +60,18 @@
 		</div>
 		<div class="mobile-right">
 			<div class="devil">@Model.Leaderboard.Players</div>
-			<div class="devil">@((Model.Leaderboard.TimeGlobal / 10000.0).ToString("0.0000"))</div>
+			<div class="devil">@time</div>
 			<div class="devil">@Model.Leaderboard.KillsGlobal</div>
 			<div class="devil">@Model.Leaderboard.GemsGlobal</div>
 			<div class="devil">@Model.Leaderboard.DeathsGlobal</div>
 			@{
 				if (Model.Leaderboard.ShotsFiredGlobal == 10000 || Model.Leaderboard.ShotsFiredGlobal == 0)
 				{
-					<span style="background-position-y: 3px;" class="devil">@(Model.Leaderboard.AccuracyGlobal.ToString("0.00%"))</span>
+					<span style="background-position-y: 3px;" class="devil">@accuracy</span>
 				}
 				else
 				{
-					<span data-toggle="tooltip" title="@Model.Leaderboard.ShotsHitGlobal / @Model.Leaderboard.ShotsFiredGlobal" class="leaderboard-tooltip"><span style="background-position-y: 3px;" class="devil">@(Model.Leaderboard.AccuracyGlobal.ToString("0.00%"))</span></span>
+					<span data-toggle="tooltip" title="@shots" class="leaderboard-tooltip"><span style="background-position-y: 3px;" class="devil">@accuracy</span></span>
 				}
 			}
 		</div>

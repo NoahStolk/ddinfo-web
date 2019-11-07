@@ -56,6 +56,11 @@
 				string daggerColor = banned ? "ban" : dagger.Name.ToLower();
 				string deathStyle = banned ? "" : $"color: #{death.ColorCode};";
 				string banString = banned ? "ban" : string.Empty;
+				
+				string shots = RazorUtils.FormatShots(entry.ShotsHit, entry.ShotsFired);
+				string accuracy = entry.Accuracy.ToString("0.00%");
+				string shotsTotal = RazorUtils.FormatShots(entry.ShotsHitTotal, entry.ShotsFiredTotal);
+				string accuracyTotal = entry.AccuracyTotal.ToString("0.00%");
 
 				<div class="sort @banString" @entry.ToHtmlData(flagCode)>
 					<div class="leaderboard-row flex-container" id="@(entry.Rank)-row">
@@ -116,7 +121,7 @@
 								}
 								else
 								{
-									<span data-toggle="tooltip" title="@entry.ShotsHit / @entry.ShotsFired" class="leaderboard-tooltip">@(entry.Accuracy.ToString("0.00%"))</span>
+									<span data-toggle="tooltip" title="@shots" class="leaderboard-tooltip">@accuracy</span>
 								}
 							}
 						</div>
@@ -132,7 +137,7 @@
 								}
 								else
 								{
-									<span data-toggle="tooltip" title="@entry.ShotsHitTotal / @entry.ShotsFiredTotal" class="leaderboard-tooltip">@(entry.AccuracyTotal.ToString("0.00%"))</span>
+									<span data-toggle="tooltip" title="@shotsTotal" class="leaderboard-tooltip">@accuracyTotal</span>
 								}
 							}
 						</div>
@@ -157,7 +162,7 @@
 									}
 									else
 									{
-										<span data-toggle="tooltip" title="@entry.ShotsHit / @entry.ShotsFired" class="leaderboard-tooltip">@(entry.Accuracy.ToString("0.00%"))</span>
+										<span data-toggle="tooltip" title="@shots" class="leaderboard-tooltip">@accuracy</span>
 									}
 								}
 							</div>
@@ -188,7 +193,7 @@
 									}
 									else
 									{
-										<span data-toggle="tooltip" title="@entry.ShotsHitTotal / @entry.ShotsFiredTotal" class="leaderboard-tooltip">@(entry.AccuracyTotal.ToString("0.00%"))</span>
+										<span data-toggle="tooltip" title="@shotsTotal" class="leaderboard-tooltip">@accuracyTotal</span>
 									}
 								}
 							</div>
