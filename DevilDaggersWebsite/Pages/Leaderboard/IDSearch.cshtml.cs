@@ -16,6 +16,9 @@ namespace DevilDaggersWebsite.Pages.Leaderboard
 
 		public async Task OnGetAsync(int id)
 		{
+			if (id < 1)
+				id = 1;
+
 			Entry entry = await Hasmodai.GetUserByID(id);
 			Leaderboard = new DevilDaggersCore.Leaderboards.Leaderboard()
 			{

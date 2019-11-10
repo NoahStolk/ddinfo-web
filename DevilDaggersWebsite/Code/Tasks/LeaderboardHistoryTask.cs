@@ -1,4 +1,5 @@
-﻿using DevilDaggersWebsite.Code.Tasks.Scheduling;
+﻿using DevilDaggersCore.Leaderboards.History;
+using DevilDaggersWebsite.Code.Tasks.Scheduling;
 using DevilDaggersWebsite.Pages.API;
 using Microsoft.AspNetCore.Hosting;
 using Microsoft.AspNetCore.Mvc;
@@ -26,8 +27,23 @@ namespace DevilDaggersWebsite.Code.Tasks
 		{
 			LastUpdated = DateTime.Now;
 
-			FileResult file = await new GetLeaderboardModel().OnGetAsync();
-			File.WriteAllBytes(Path.Combine(_env.WebRootPath, "leaderboard-history", file.FileDownloadName), ((FileContentResult)file).FileContents);
+			if (!AlreadyDoneToday())
+			{
+				FileResult file = await new GetLeaderboardModel().OnGetAsync();
+				File.WriteAllBytes(Path.Combine(_env.WebRootPath, "leaderboard-history", file.FileDownloadName), ((FileContentResult)file).FileContents);
+			}
+		}
+
+		private bool AlreadyDoneToday()
+		{
+			foreach (string path in Directory.GetFiles(Path.Combine(_env.WebRootPath, "leaderboard-history"), "*.json"))
+			{
+				string fileName = Path.GetFileNameWithoutExtension(path);
+				if (HistoryUtils.HistoryJsonFileNameToDateTime(fileName).Date == DateTime.Now.Date)
+					return true;
+			}
+
+			return false;
 		}
 	}
 }
