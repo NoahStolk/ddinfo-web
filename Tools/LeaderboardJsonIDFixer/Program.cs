@@ -1,6 +1,5 @@
 ﻿using DevilDaggersCore.Leaderboards;
-using DevilDaggersUtilities.Tools;
-using DevilDaggersUtilities.Website;
+using DevilDaggersCore.Leaderboards.History;
 using NetBase.Console;
 using NetBase.Utils;
 using Newtonsoft.Json;
@@ -265,10 +264,10 @@ namespace LeaderboardJsonIDFixer
 			foreach (string path in Directory.GetFiles(@"C:\Users\NOAH\source\repos\DevilDaggersWebsite\DevilDaggersWebsite\wwwroot\leaderboard-history", "*.json"))
 			{
 				string jsonString = FileUtils.GetContents(path, Encoding.UTF8);
-				LeaderboardSimplified leaderboard = JsonConvert.DeserializeObject<LeaderboardSimplified>(jsonString);
+				Leaderboard leaderboard = JsonConvert.DeserializeObject<Leaderboard>(jsonString);
 
-				List<LeaderboardEntrySimplified> changes = new List<LeaderboardEntrySimplified>();
-				foreach (LeaderboardEntrySimplified entry in leaderboard.Entries)
+				List<Entry> changes = new List<Entry>();
+				foreach (Entry entry in leaderboard.Entries)
 				{
 					if (entry.ID == 0 && nameTable.ContainsKey(entry.Username))
 					{
@@ -279,8 +278,8 @@ namespace LeaderboardJsonIDFixer
 
 				if (changes.Count != 0)
 				{
-					ConsoleUtils.WriteLineColor(LeaderboardHistoryUtils.HistoryJsonFileNameToDateString(Path.GetFileNameWithoutExtension(path)), ConsoleColor.Yellow);
-					foreach (LeaderboardEntrySimplified entry in changes)
+					ConsoleUtils.WriteLineColor(HistoryUtils.HistoryJsonFileNameToDateString(Path.GetFileNameWithoutExtension(path)), ConsoleColor.Yellow);
+					foreach (Entry entry in changes)
 						Console.WriteLine($"Set ID to {entry.ID.ToString("D6")} for rank {entry.Rank.ToString("D3")} with name {entry.Username} and score {entry.Time / 10000f}");
 					Console.WriteLine();
 				}

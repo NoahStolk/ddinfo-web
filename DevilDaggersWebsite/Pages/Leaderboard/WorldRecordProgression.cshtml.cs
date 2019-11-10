@@ -1,5 +1,5 @@
 ﻿using CoreBase.Services;
-using DevilDaggersCore.Leaderboards;
+using DevilDaggersCore.Leaderboards.History;
 using DevilDaggersWebsite.Pages.API;
 using Microsoft.AspNetCore.Mvc.RazorPages;
 using System;

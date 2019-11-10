@@ -1,6 +1,6 @@
 ﻿using DevilDaggersCore.Game;
-using DevilDaggersUtilities.Tools;
-using DevilDaggersUtilities.Website;
+using DevilDaggersCore.Leaderboards;
+using DevilDaggersCore.Leaderboards.History;
 using Microsoft.Win32;
 using NetBase.Utils;
 using Newtonsoft.Json;
@@ -28,9 +28,9 @@ namespace LeaderboardCSVToJSON
 			bool? result = dlg.ShowDialog();
 			if (result.HasValue && result.Value)
 			{
-				LeaderboardSimplified leaderboard = new LeaderboardSimplified
+				Leaderboard leaderboard = new Leaderboard
 				{
-					DateTime = LeaderboardHistoryUtils.HistoryJsonFileNameToDateTime(Path.GetFileNameWithoutExtension(dlg.FileName))
+					DateTime = HistoryUtils.HistoryJsonFileNameToDateTime(Path.GetFileNameWithoutExtension(dlg.FileName))
 				};
 
 				using (StreamReader reader = new StreamReader(dlg.FileName))
@@ -43,46 +43,73 @@ namespace LeaderboardCSVToJSON
 						string line = reader.ReadLine();
 						string[] values = line.Split(',');
 
-						if (i == 1)
-							int.TryParse(values[1], out leaderboard.Players);
-						else if (i == 2)
-							ulong.TryParse(values[1].Replace(".", ""), out leaderboard.TimeGlobal);
-						else if (i == 3)
-							ulong.TryParse(values[1], out leaderboard.KillsGlobal);
-						else if (i == 4)
-							ulong.TryParse(values[1], out leaderboard.GemsGlobal);
-						else if (i == 5)
-							ulong.TryParse(values[1], out leaderboard.DeathsGlobal);
-						else if (i == 6)
+						switch (i)
 						{
-							leaderboard.ShotsHitGlobal = (ulong)GetAccuracy(values[1]);
-							if (leaderboard.ShotsHitGlobal != 0)
-								leaderboard.ShotsFiredGlobal = 10000;
+							case 1:
+								if (int.TryParse(values[1], out int players))
+									leaderboard.Players = players;
+								break;
+							case 2:
+								if (ulong.TryParse(values[1].Replace(".", ""), out ulong timeTotal))
+									leaderboard.TimeGlobal = timeTotal;
+								break;
+							case 3:
+								if (ulong.TryParse(values[1], out ulong killsGlobal))
+									leaderboard.KillsGlobal = killsGlobal;
+								break;
+							case 4:
+								if (ulong.TryParse(values[1], out ulong gemsGlobal))
+									leaderboard.GemsGlobal = gemsGlobal;
+								break;
+							case 5:
+								if (ulong.TryParse(values[1], out ulong deathsGlobal))
+									leaderboard.DeathsGlobal = deathsGlobal;
+								break;
+							case 6:
+								leaderboard.ShotsHitGlobal = (ulong)GetAccuracyFromPercentageString(values[1]);
+								if (leaderboard.ShotsHitGlobal != 0)
+									leaderboard.ShotsFiredGlobal = 10000;
+								break;
 						}
 
 						if (i >= 9 && i < 109)
 						{
-							LeaderboardEntrySimplified entry = new LeaderboardEntrySimplified
+							Entry entry = new Entry
 							{
 								DeathType = -1
 							};
 
-							int.TryParse(values[0], out entry.Rank);
+							if (int.TryParse(values[0], out int rank))
+								entry.Rank = rank;
+
 							entry.Username = values[1];
-							int.TryParse(values[2].Replace(".", ""), out entry.Time);
-							int.TryParse(values[3], out entry.Kills);
-							int.TryParse(values[4], out entry.Gems);
-							entry.ShotsHit = (int)GetAccuracy(values[5]);
+
+							if (int.TryParse(values[2].Replace(".", ""), out int time))
+								entry.Time = time;
+							if (int.TryParse(values[3], out int kills))
+								entry.Kills = kills;
+							if (int.TryParse(values[4], out int gems))
+								entry.Gems = gems;
+
+							entry.ShotsHit = (int)GetAccuracyFromPercentageString(values[5]);
 							if (entry.ShotsHit != 0)
 								entry.ShotsFired = 10000;
+							
 							entry.DeathType = GameInfo.GetDeathFromDeathName(values[6]).DeathType;
-							ulong.TryParse(values[7].Replace(".", ""), out entry.TimeTotal);
-							ulong.TryParse(values[8], out entry.KillsTotal);
-							ulong.TryParse(values[9], out entry.GemsTotal);
-							entry.ShotsHitTotal = (ulong)GetAccuracy(values[10]);
+
+							if (ulong.TryParse(values[7].Replace(".", ""), out ulong timeTotal))
+								entry.TimeTotal = timeTotal;
+							if (ulong.TryParse(values[8], out ulong killsTotal))
+								entry.KillsTotal = killsTotal;
+							if (ulong.TryParse(values[9], out ulong gemsTotal))
+								entry.GemsTotal = gemsTotal;
+
+							entry.ShotsHitTotal = (ulong)GetAccuracyFromPercentageString(values[10]);
 							if (entry.ShotsHitTotal != 0)
 								entry.ShotsFiredTotal = 10000;
-							ulong.TryParse(values[11], out entry.DeathsTotal);
+
+							if (ulong.TryParse(values[11], out ulong deathsTotal))
+								entry.DeathsTotal = deathsTotal;
 
 							leaderboard.Entries.Add(entry);
 						}
@@ -95,7 +122,7 @@ namespace LeaderboardCSVToJSON
 			}
 		}
 
-		private static float GetAccuracy(string accuracyString)
+		private static float GetAccuracyFromPercentageString(string accuracyString)
 		{
 			float.TryParse(accuracyString.Replace("%", ""), out float percentage);
 			return percentage * 100;

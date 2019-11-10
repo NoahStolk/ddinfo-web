@@ -1,7 +1,6 @@
 ﻿using CoreBase.Services;
 using DevilDaggersCore.Game;
-using DevilDaggersCore.Leaderboards;
-using DevilDaggersUtilities.Website;
+using DevilDaggersCore.Leaderboards.History;
 using DevilDaggersWebsite.Code.API;
 using DevilDaggersWebsite.Code.PageModels;
 using Microsoft.AspNetCore.Mvc;
@@ -45,7 +44,7 @@ namespace DevilDaggersWebsite.Pages.API
 					worldRecord = leaderboard.Entries[0].Time;
 					if (isDateParameterValid)
 					{
-						if (LeaderboardHistoryUtils.HistoryJsonFileNameToDateTime(Path.GetFileNameWithoutExtension(leaderboardHistoryPath)) > date)
+						if (HistoryUtils.HistoryJsonFileNameToDateTime(Path.GetFileNameWithoutExtension(leaderboardHistoryPath)) > date)
 							break;
 						data.Clear();
 					}

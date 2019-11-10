@@ -1,6 +1,6 @@
 ﻿using DevilDaggersCore.Game;
-using DevilDaggersUtilities.Tools;
-using DevilDaggersUtilities.Website;
+using DevilDaggersCore.Leaderboards;
+using DevilDaggersCore.Leaderboards.History;
 using NetBase.Utils;
 using Newtonsoft.Json;
 using System.IO;
@@ -10,17 +10,17 @@ namespace LeaderboardHTMLToJSON
 {
 	public class Program
 	{
-		public static void Main(string[] args)
+		public static void Main()
 		{
 			string dateString = "20180902073511";
 			FileUtils.CreateText($"{dateString.Substring(0, 12)}.json", JsonConvert.SerializeObject(GetLeaderboardFromHTML(dateString)), Encoding.UTF8);
 		}
 
-		public static LeaderboardSimplified GetLeaderboardFromHTML(string dateString)
+		public static Leaderboard GetLeaderboardFromHTML(string dateString)
 		{
-			LeaderboardSimplified lb = new LeaderboardSimplified
+			Leaderboard lb = new Leaderboard
 			{
-				DateTime = LeaderboardHistoryUtils.HistoryJsonFileNameToDateTime(dateString),
+				DateTime = HistoryUtils.HistoryJsonFileNameToDateTime(dateString),
 				// TODO
 				Players = 171352,
 				TimeGlobal = 10053064700403,
@@ -38,7 +38,7 @@ namespace LeaderboardHTMLToJSON
 				lines[i] = lines[i].TrimStart('\t');
 				if (lines[i].StartsWith("<div class=\"sort\""))
 				{
-					lb.Entries.Add(new LeaderboardEntrySimplified
+					lb.Entries.Add(new Entry
 					{
 						Rank = int.Parse(GetValue(lines[i], "rank")),
 						Username = GetValue(lines[i], "username"),

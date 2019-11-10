@@ -1,6 +1,6 @@
 ﻿using DevilDaggersCore.Game;
-using DevilDaggersUtilities.Tools;
-using DevilDaggersUtilities.Website;
+using DevilDaggersCore.Leaderboards;
+using DevilDaggersCore.Leaderboards.History;
 using NetBase.Utils;
 using Newtonsoft.Json;
 using System;
@@ -13,7 +13,7 @@ namespace LeaderboardJsonCreator
 {
 	public partial class MainWindow : Window
 	{
-		public LeaderboardSimplified leaderboard = new LeaderboardSimplified();
+		public Leaderboard leaderboard = new Leaderboard();
 
 		public MainWindow()
 		{
@@ -22,26 +22,42 @@ namespace LeaderboardJsonCreator
 
 		private void AddEntry_Click(object sender, RoutedEventArgs e)
 		{
-			LeaderboardEntrySimplified entry = new LeaderboardEntrySimplified
+			Entry entry = new Entry
 			{
 				DeathType = -1
 			};
 
-			int.TryParse(Rank.Text, out entry.Rank);
-			int.TryParse(ID.Text, out entry.ID);
+			if (int.TryParse(Rank.Text, out int rank))
+				entry.Rank = rank;
+			if (int.TryParse(ID.Text, out int id))
+				entry.ID = id;
+
 			entry.Username = Username.Text;
-			int.TryParse(Time.Text, out entry.Time);
-			int.TryParse(Kills.Text, out entry.Kills);
-			int.TryParse(Gems.Text, out entry.Gems);
-			int.TryParse(DeathType.Text, out entry.DeathType);
-			int.TryParse(ShotsHit.Text, out entry.ShotsHit);
-			int.TryParse(ShotsFired.Text, out entry.ShotsFired);
-			ulong.TryParse(TimeTotal.Text, out entry.TimeTotal);
-			ulong.TryParse(KillsTotal.Text, out entry.KillsTotal);
-			ulong.TryParse(GemsTotal.Text, out entry.GemsTotal);
-			ulong.TryParse(DeathsTotal.Text, out entry.DeathsTotal);
-			ulong.TryParse(ShotsHitTotal.Text, out entry.ShotsHitTotal);
-			ulong.TryParse(ShotsFiredTotal.Text, out entry.ShotsFiredTotal);
+
+			if (int.TryParse(Time.Text, out int time))
+				entry.Time = time;
+			if (int.TryParse(Kills.Text, out int kills))
+				entry.Kills = kills;
+			if (int.TryParse(Gems.Text, out int gems))
+				entry.Gems = gems;
+			if (int.TryParse(DeathType.Text, out int deathType))
+				entry.DeathType = deathType;
+			if (int.TryParse(ShotsHit.Text, out int shotsHit))
+				entry.ShotsHit = shotsHit;
+			if (int.TryParse(ShotsFired.Text, out int shotsFired))
+				entry.ShotsFired = shotsFired;
+			if (ulong.TryParse(TimeTotal.Text, out ulong timeTotal))
+				entry.TimeTotal = timeTotal;
+			if (ulong.TryParse(KillsTotal.Text, out ulong killsTotal))
+				entry.KillsTotal = killsTotal;
+			if (ulong.TryParse(GemsTotal.Text, out ulong gemsTotal))
+				entry.GemsTotal = gemsTotal;
+			if (ulong.TryParse(DeathsTotal.Text, out ulong deathsTotal))
+				entry.DeathsTotal = deathsTotal;
+			if (ulong.TryParse(ShotsHitTotal.Text, out ulong shotsHitTotal))
+				entry.ShotsHitTotal = shotsHitTotal;
+			if (ulong.TryParse(ShotsFiredTotal.Text, out ulong shotsFiredTotal))
+				entry.ShotsFiredTotal = shotsFiredTotal;
 
 			leaderboard.Entries.Add(entry);
 
@@ -57,7 +73,7 @@ namespace LeaderboardJsonCreator
 			foreach (string line in entries)
 			{
 				i++;
-				LeaderboardEntrySimplified entry = new LeaderboardEntrySimplified
+				Entry entry = new Entry
 				{
 					Rank = i,
 					DeathType = -1
@@ -73,15 +89,24 @@ namespace LeaderboardJsonCreator
 				}
 
 				entry.Username = values[0];
-				int.TryParse(values[1].Trim(',', '.'), out entry.Time);
-				int.TryParse(values[2], out entry.Kills);
-				int.TryParse(values[3], out entry.Gems);
+
+				if (int.TryParse(values[1].Trim(',', '.'), out int time))
+					entry.Time = time;
+				if (int.TryParse(values[2], out int kills))
+					entry.Kills = kills;
+				if (int.TryParse(values[3], out int gems))
+					entry.Gems = gems;
+
 				entry.DeathType = GameInfo.GetDeathFromDeathName(values[4]).DeathType;
 
-				ulong.TryParse(values[5].Trim(',', '.'), out entry.TimeTotal);
-				ulong.TryParse(values[6], out entry.KillsTotal);
-				ulong.TryParse(values[7], out entry.GemsTotal);
-				ulong.TryParse(values[8], out entry.DeathsTotal);
+				if (ulong.TryParse(values[5].Trim(',', '.'), out ulong timeTotal))
+					entry.TimeTotal = timeTotal;
+				if (ulong.TryParse(values[6], out ulong killsTotal))
+					entry.KillsTotal = killsTotal;
+				if (ulong.TryParse(values[7], out ulong gemsTotal))
+					entry.GemsTotal = gemsTotal;
+				if (ulong.TryParse(values[8], out ulong deathsTotal))
+					entry.DeathsTotal = deathsTotal;
 
 				leaderboard.Entries.Add(entry);
 			}
@@ -91,14 +116,23 @@ namespace LeaderboardJsonCreator
 		{
 			try
 			{
-				int.TryParse(Players.Text, out leaderboard.Players);
-				leaderboard.DateTime = LeaderboardHistoryUtils.HistoryJsonFileNameToDateTime(DateTime.Text);
-				ulong.TryParse(TimeGlobal.Text, out leaderboard.TimeGlobal);
-				ulong.TryParse(KillsGlobal.Text, out leaderboard.KillsGlobal);
-				ulong.TryParse(GemsGlobal.Text, out leaderboard.GemsGlobal);
-				ulong.TryParse(DeathsGlobal.Text, out leaderboard.DeathsGlobal);
-				ulong.TryParse(ShotsHitGlobal.Text, out leaderboard.ShotsHitGlobal);
-				ulong.TryParse(ShotsFiredGlobal.Text, out leaderboard.ShotsFiredGlobal);
+				if (int.TryParse(Players.Text, out int players))
+					leaderboard.Players = players;
+
+				leaderboard.DateTime = HistoryUtils.HistoryJsonFileNameToDateTime(DateTime.Text);
+
+				if (ulong.TryParse(TimeGlobal.Text, out ulong timeGlobal))
+					leaderboard.TimeGlobal = timeGlobal;
+				if (ulong.TryParse(KillsGlobal.Text, out ulong killsGlobal))
+					leaderboard.KillsGlobal = killsGlobal;
+				if (ulong.TryParse(GemsGlobal.Text, out ulong gemsGlobal))
+					leaderboard.GemsGlobal = gemsGlobal;
+				if (ulong.TryParse(DeathsGlobal.Text, out ulong deathsGlobal))
+					leaderboard.DeathsGlobal = deathsGlobal;
+				if (ulong.TryParse(ShotsHitGlobal.Text, out ulong shotsHitGlobal))
+					leaderboard.ShotsHitGlobal = shotsHitGlobal;
+				if (ulong.TryParse(ShotsFiredGlobal.Text, out ulong shotsFiredGlobal))
+					leaderboard.ShotsFiredGlobal = shotsFiredGlobal;
 
 				FileUtils.CreateText($@"C:\Users\NOAH\source\repos\DevilDaggersWebsite\DevilDaggersWebsite\wwwroot\leaderboard-history\{DateTime.Text}.json", JsonConvert.SerializeObject(leaderboard), Encoding.UTF8);
 				MessageBox.Show("Save successful");
