@@ -824,5 +824,8 @@
 	"bossfight_beflos": {
 		"LastUpdated": "2019-11-02T02:46:00",
 		"Description": "you are meant to kill the spiders also dont try to collect the gems :)"
+	},
+	"Void_Stop": {
+		"LastUpdated": "2019-11-08T22:20:00"
 	}
 }
