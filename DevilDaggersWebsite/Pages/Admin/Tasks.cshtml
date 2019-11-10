@@ -1,4 +1,6 @@
 ﻿@page
+@using DevilDaggersWebsite.Code.Tasks;
+@using DevilDaggersWebsite.Code.Utils;
 @model DevilDaggersWebsite.Pages.Admin.TasksModel
 @{
 	ViewData["Title"] = "Admin - Tasks";
@@ -10,9 +12,9 @@
 
 <main role="main">
 	<ul>
-		@foreach (KeyValuePair<string, DateTime> kvp in Model.LastUpdatedDictionary)
+		@foreach (KeyValuePair<Type, AbstractTask> kvp in TaskInstanceKeeper.Instances)
 		{
-			<li>@kvp.Key was last updated on @kvp.Value.ToUniversalTime().ToString("yyyy-MM-dd HH:mm:ss.fff") UTC.</li>
+			<li>@kvp.Key.Name was last triggered on @kvp.Value.LastTriggered.ToUTC(), last finished on @kvp.Value.LastFinished.ToUTC() (execution time took @kvp.Value.ExecutionTime).</li>
 		}
 	</ul>
 </main>

@@ -29,7 +29,10 @@ namespace DevilDaggersWebsite
 
 			AddCommonCoreBaseServices(services);
 
-			services.AddSingleton<IScheduledTask, LeaderboardHistoryTask>();
+			// TODO: Add all tasks using reflection?
+			services.AddSingleton<IScheduledTask, CreateLeaderboardHistoryFileTask>();
+			services.AddSingleton<IScheduledTask, RetrieveEntireLeaderboardTask>();
+
 			services.AddScheduler((sender, args) =>
 			{
 				Console.Write(args.Exception.Message);

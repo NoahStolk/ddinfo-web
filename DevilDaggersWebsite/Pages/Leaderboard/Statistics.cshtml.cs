@@ -1,77 +1,42 @@
 ﻿using DevilDaggersCore.Game;
 using DevilDaggersCore.Leaderboards;
-using DevilDaggersWebsite.Code.Utils.Web;
-using Microsoft.AspNetCore.Mvc;
+using DevilDaggersWebsite.Code.Tasks;
 using Microsoft.AspNetCore.Mvc.RazorPages;
 using System.Collections.Generic;
-using System.Threading.Tasks;
 
 namespace DevilDaggersWebsite.Pages.Leaderboard
 {
 	public class StatisticsModel : PageModel
 	{
-		public ActionResult OnGet()
-		{
-			return RedirectToPage("/Error/404");
-		}
+		public RetrieveEntireLeaderboardTask Task => ((RetrieveEntireLeaderboardTask)TaskInstanceKeeper.Instances[typeof(RetrieveEntireLeaderboardTask)]);
 
-		public async Task<Dictionary<Dagger, int>> GetDaggerStats()
+		public Dictionary<Dagger, int> GetDaggerStats()
 		{
-			List<int> offsets = new List<int>
-			{
-				101,
-				6201,
-				43701,
-				113001
-			};
-
 			Dictionary<Dagger, int> daggerStats = new Dictionary<Dagger, int>();
 
-			int players = 0;
-			foreach (int offset in offsets)
+			foreach (Entry entry in Task.Leaderboard.Entries)
 			{
-				Entry entry = null;
-				int off = offset;
-				while (entry == null)
-				{
-					DevilDaggersCore.Leaderboards.Leaderboard lb = await Hasmodai.GetScores(off);
-					players = lb.Players;
-
-					for (int i = 0; i < 99; i++)
-					{
-						if (GameInfo.GetDaggerFromTime(lb.Entries[i].Time) != GameInfo.GetDaggerFromTime(lb.Entries[i + 1].Time))
-						{
-							entry = lb.Entries[i - 1];
-							goto Done;
-						}
-					}
-					off += 100;
-				}
-			Done:
-
-				daggerStats.Add(GameInfo.GetDaggerFromTime(entry.Time), entry.Rank + 1);
+				Dagger dagger = GameInfo.GetDaggerFromTime(entry.Time);
+				if (daggerStats.ContainsKey(dagger))
+					daggerStats[dagger]++;
+				else
+					daggerStats.Add(dagger, 1);
 			}
-			daggerStats.Add(GameInfo.V3.Default, players);
 
 			return daggerStats;
 		}
 
-		public async Task<Dictionary<Death, int>> GetDeathStats(params int[] pages)
+		public Dictionary<Death, int> GetDeathStats()
 		{
 			Dictionary<Death, int> deathStats = new Dictionary<Death, int>();
 
-			foreach (int page in pages)
+			foreach (Entry entry in Task.Leaderboard.Entries)
 			{
-				DevilDaggersCore.Leaderboards.Leaderboard lb = await Hasmodai.GetScores(page * 100 + 1);
-
-				foreach (Entry entry in lb.Entries)
-				{
-					Death death = GameInfo.GetDeathFromDeathType(entry.DeathType);
-					if (deathStats.ContainsKey(death))
-						deathStats[death]++;
-					else
-						deathStats.Add(death, 1);
-				}
+				Death death = GameInfo.GetDeathFromDeathType(entry.DeathType);
+				if (deathStats.ContainsKey(death))
+					deathStats[death]++;
+				else
+					deathStats.Add(death, 1);
 			}
 
 			return deathStats;

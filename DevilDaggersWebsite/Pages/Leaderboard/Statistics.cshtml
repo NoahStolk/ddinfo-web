@@ -1,4 +1,5 @@
 ﻿@page
+@using DevilDaggersWebsite.Code.Utils;
 @model DevilDaggersWebsite.Pages.Leaderboard.StatisticsModel
 @using DevilDaggersCore.Game
 @{
@@ -10,15 +11,22 @@
 </header>
 
 <main>
+	<h2>Measurements</h2>
+	<p>
+		Task triggered at: @Model.Task.LastTriggered.ToUTC()<br />
+		Task finished at: @Model.Task.LastFinished.ToUTC()<br />
+		Execution time: @Model.Task.ExecutionTime<br />
+	</p>
+
 	<h2>Daggers</h2>
 	<ul>
 		@{
-			Dictionary<Dagger, int> daggerStats = await Model.GetDaggerStats();
+			Dictionary<Dagger, int> daggerStats = Model.GetDaggerStats();
 			int exclude = 0;
 			foreach (KeyValuePair<Dagger, int> stat in daggerStats)
 			{
 				<li>
-					<img src="~/images/Daggers/@(stat.Key.Name)Small.png" />There are @(stat.Value - exclude) players with the <span class="@(stat.Key.Name.ToLower())">@(stat.Key.Name)</span> dagger.
+					<img src="~/images/Daggers/@(stat.Key.Name)Small.png" />There are @(stat.Value - exclude) players with the <span style="background-position-y: 3px;" class="@(stat.Key.Name.ToLower())">@(stat.Key.Name)</span> dagger.
 				</li>
 				exclude = stat.Value;
 			}
@@ -28,11 +36,11 @@
 	<h2>Deaths</h2>
 
 	@{
-		Dictionary<Death, int> deathStats = await Model.GetDeathStats(1, 2, 3);
+		Dictionary<Death, int> deathStats = Model.GetDeathStats();
 		foreach (KeyValuePair<Death, int> stat in deathStats)
 		{
 			<div class="row">
-				<div class="col-md-2 col-sm-4 col-xs-6">@stat.Key.Name</div>
+				<div class="col-md-2 col-sm-4 col-xs-6" style="color: #@stat.Key.ColorCode;">@stat.Key.Name</div>
 				<div class="col-md-10 col-sm-8 col-xs-6">@stat.Value</div>
 			</div>
 		}

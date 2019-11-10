@@ -1,5 +1,6 @@
 ﻿using DevilDaggersCore.Game;
 using Microsoft.AspNetCore.Html;
+using System;
 using System.Collections.Generic;
 
 namespace DevilDaggersWebsite.Code.Utils
@@ -90,6 +91,11 @@ namespace DevilDaggersWebsite.Code.Utils
 		public static string FormatShots(ulong hit, ulong fired)
 		{
 			return $"{hit.ToString("N0")} / {fired.ToString("N0")}";
+		}
+
+		public static string ToUTC(this DateTime dateTime)
+		{
+			return $"{dateTime.ToUniversalTime().ToString("yyyy-MM-dd HH:mm:ss.fff")} UTC";
 		}
 	}
 }
