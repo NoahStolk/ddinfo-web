@@ -15,7 +15,22 @@
 	<p>
 		Task triggered at: @Model.Task.LastTriggered.ToUTC()<br />
 		Task finished at: @Model.Task.LastFinished.ToUTC()<br />
-		Execution time: @Model.Task.ExecutionTime<br />
+		Execution time:
+		@{
+			if (Model.Task.LastFinished < Model.Task.LastTriggered)
+			{
+				float perc = Model.Task.Leaderboard.Entries.Count / 2500f;// (float)Model.Task.Leaderboard.Players;
+				TimeSpan timeRunning = DateTime.Now - Model.Task.LastTriggered;
+				TimeSpan timeLeft = timeRunning / perc * (1 - perc);
+				<div class="devil">CURRENTLY EXECUTING (@(perc.ToString("0.00%"))). STATS ARE INCOMPLETE. ESTIMATED TIME LEFT: @timeLeft</div>
+			}
+			else
+			{
+				<span>@Model.Task.ExecutionTime</span>
+			}
+		}
+		<br />
+		Entries: @Model.Task.Leaderboard.Entries.Count
 	</p>
 
 	<h2>Daggers</h2>
@@ -34,14 +49,37 @@
 	</ul>
 
 	<h2>Deaths</h2>
-
 	@{
+		<div class="row">
+			<div class="col-md-2 col-sm-4 col-xs-4">Death type</div>
+			<div class="col-md-2 col-sm-4 col-xs-4 text-right">Amount</div>
+			<div class="col-md-2 col-sm-4 col-xs-4 text-right">Percentage</div>
+		</div>
 		Dictionary<Death, int> deathStats = Model.GetDeathStats();
 		foreach (KeyValuePair<Death, int> stat in deathStats)
 		{
 			<div class="row">
-				<div class="col-md-2 col-sm-4 col-xs-6" style="color: #@stat.Key.ColorCode;">@stat.Key.Name</div>
-				<div class="col-md-10 col-sm-8 col-xs-6">@stat.Value</div>
+				<div class="col-md-2 col-sm-4 col-xs-4" style="color: #@stat.Key.ColorCode;">@stat.Key.Name</div>
+				<div class="col-md-2 col-sm-4 col-xs-4 text-right">@stat.Value</div>
+				<div class="col-md-2 col-sm-4 col-xs-4 text-right">@((stat.Value / (float)Model.Task.Leaderboard.Entries.Count).ToString("0.00%"))</div>
+			</div>
+		}
+	}
+
+	<h2>Time</h2>
+	@{
+		<div class="row">
+			<div class="col-md-2 col-sm-4 col-xs-4">Time</div>
+			<div class="col-md-2 col-sm-4 col-xs-4 text-right">Amount</div>
+			<div class="col-md-2 col-sm-4 col-xs-4 text-right">Percentage</div>
+		</div>
+		Dictionary<int, int> timeStats = Model.GetTimeStats();
+		foreach (KeyValuePair<int, int> stat in timeStats)
+		{
+			<div class="row">
+				<div class="col-md-2 col-sm-4 col-xs-4">@stat.Key</div>
+				<div class="col-md-2 col-sm-4 col-xs-4 text-right">@stat.Value</div>
+				<div class="col-md-2 col-sm-4 col-xs-4 text-right">@((stat.Value / (float)Model.Task.Leaderboard.Entries.Count).ToString("0.00%"))</div>
 			</div>
 		}
 	}

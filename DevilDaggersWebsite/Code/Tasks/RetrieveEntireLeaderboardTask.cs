@@ -8,7 +8,7 @@ namespace DevilDaggersWebsite.Code.Tasks
 	{
 		public override string Schedule => "0 0 * * *";
 
-		public Leaderboard Leaderboard { get; private set; }
+		public Leaderboard Leaderboard { get; private set; } = new Leaderboard();
 
 		protected override async Task Execute()
 		{

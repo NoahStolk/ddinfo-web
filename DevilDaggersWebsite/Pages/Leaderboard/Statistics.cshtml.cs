@@ -8,38 +8,56 @@ namespace DevilDaggersWebsite.Pages.Leaderboard
 {
 	public class StatisticsModel : PageModel
 	{
-		public RetrieveEntireLeaderboardTask Task => ((RetrieveEntireLeaderboardTask)TaskInstanceKeeper.Instances[typeof(RetrieveEntireLeaderboardTask)]);
+		public RetrieveEntireLeaderboardTask Task => (RetrieveEntireLeaderboardTask)TaskInstanceKeeper.Instances[typeof(RetrieveEntireLeaderboardTask)];
+
+		public readonly int timeStep = 100000;
 
 		public Dictionary<Dagger, int> GetDaggerStats()
 		{
-			Dictionary<Dagger, int> daggerStats = new Dictionary<Dagger, int>();
+			Dictionary<Dagger, int> stats = new Dictionary<Dagger, int>();
 
 			foreach (Entry entry in Task.Leaderboard.Entries)
 			{
 				Dagger dagger = GameInfo.GetDaggerFromTime(entry.Time);
-				if (daggerStats.ContainsKey(dagger))
-					daggerStats[dagger]++;
+				if (stats.ContainsKey(dagger))
+					stats[dagger]++;
 				else
-					daggerStats.Add(dagger, 1);
+					stats.Add(dagger, 1);
 			}
 
-			return daggerStats;
+			return stats;
 		}
 
 		public Dictionary<Death, int> GetDeathStats()
 		{
-			Dictionary<Death, int> deathStats = new Dictionary<Death, int>();
+			Dictionary<Death, int> stats = new Dictionary<Death, int>();
 
 			foreach (Entry entry in Task.Leaderboard.Entries)
 			{
-				Death death = GameInfo.GetDeathFromDeathType(entry.DeathType);
-				if (deathStats.ContainsKey(death))
-					deathStats[death]++;
+				Death death = GameInfo.GetDeathFromDeathType(entry.DeathType, GameInfo.GameVersions[GameInfo.DEFAULT_GAME_VERSION]);
+				if (stats.ContainsKey(death))
+					stats[death]++;
 				else
-					deathStats.Add(death, 1);
+					stats.Add(death, 1);
 			}
 
-			return deathStats;
+			return stats;
+		}
+
+		public Dictionary<int, int> GetTimeStats()
+		{
+			Dictionary<int, int> stats = new Dictionary<int, int>();
+
+			foreach (Entry entry in Task.Leaderboard.Entries)
+			{
+				int step = entry.Time / timeStep * 10;
+				if (stats.ContainsKey(step))
+					stats[step]++;
+				else
+					stats.Add(step, 1);
+			}
+
+			return stats;
 		}
 	}
 }
