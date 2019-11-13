@@ -1,6 +1,5 @@
 ﻿using DevilDaggersWebsite.Code.API;
 using DevilDaggersWebsite.Code.PageModels;
-using DevilDaggersWebsite.Code.Utils;
 using Microsoft.AspNetCore.Mvc;
 using Newtonsoft.Json;
 using System.Net.Mime;
@@ -12,7 +11,7 @@ namespace DevilDaggersWebsite.Pages.API
 	{
 		public FileResult OnGet(bool formatted = false)
 		{
-			return JsonFile(ToolList.Tools, formatted ? Formatting.Indented : Formatting.None);
+			return JsonFile(ApiFunctions.GetTools(), formatted ? Formatting.Indented : Formatting.None);
 		}
 	}
 }

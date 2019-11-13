@@ -2,7 +2,6 @@
 using DevilDaggersWebsite.Code.API;
 using DevilDaggersWebsite.Code.PageModels;
 using Microsoft.AspNetCore.Mvc;
-using System.IO;
 using System.Net.Mime;
 
 namespace DevilDaggersWebsite.Pages.API
@@ -19,10 +18,10 @@ namespace DevilDaggersWebsite.Pages.API
 
 		public ActionResult OnGet(string fileName)
 		{
-			if (string.IsNullOrEmpty(fileName) || !System.IO.File.Exists(Path.Combine(_commonObjects.Env.WebRootPath, "spawnsets", fileName)))
-				return RedirectToPage("/API/Index");
-				
-			return File(Path.Combine("spawnsets", fileName), MediaTypeNames.Application.Octet, fileName);
+			if (ApiFunctions.TryGetSpawnsetPath(_commonObjects, fileName, out string path))
+				return File(path, MediaTypeNames.Application.Octet, fileName);
+
+			return RedirectToPage("/API/Index");
 		}
 	}
 }

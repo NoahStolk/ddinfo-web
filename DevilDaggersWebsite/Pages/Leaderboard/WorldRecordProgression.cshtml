@@ -3,7 +3,7 @@
 @using DevilDaggersCore.Leaderboards
 @using DevilDaggersCore.Leaderboards.History
 @using DevilDaggersWebsite.Code.Utils
-@using DevilDaggersWebsite.Pages.API
+@using DevilDaggersWebsite.Code.API
 @inject CoreBase.Services.ICommonObjects CommonObjects
 @model DevilDaggersWebsite.Pages.Leaderboard.WorldRecordProgressionModel
 @{
@@ -41,7 +41,7 @@
 	</div>
 	@{
 		TimeSpan total = DateTime.Now - GameInfo.GameVersions["V1"].ReleaseDate;
-		Entry wr = new GetWorldRecordsModel(CommonObjects).GetWorldRecords(DateTime.Now).FirstOrDefault().Entry;
+		Entry wr = Model.WorldRecords.Last().Key.Entry;
 		foreach (WorldRecordHolder wrh in Model.WorldRecordHolders)
 		{
 			int days = (int)Math.Round(wrh.TotalTimeHeld.TotalDays);
@@ -50,7 +50,7 @@
 
 			string timeHeld = $"{days} day{days.S()} ({(wrh.TotalTimeHeld / total).ToString("00.00%")})";
 
-			Entry current = await new GetUserByIDModel().GetUserByID(wrh.ID);
+			Entry current = await ApiFunctions.GetUserByID(wrh.ID);
 			string lastHeld = wr.Time == current.Time ? "Current holder" : $"{wrh.LastHeld.ToString("MMM dd")} '{wrh.LastHeld.ToString("yy")} ({daysAgo} day{daysAgo.S()} ago)";
 			string heldConsecutively = $"{daysConsecutively} day{daysConsecutively.S()}";
 

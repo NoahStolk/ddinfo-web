@@ -1,16 +1,9 @@
 ﻿using CoreBase.Services;
-using DevilDaggersCore.Leaderboards;
 using DevilDaggersWebsite.Code.API;
 using DevilDaggersWebsite.Code.PageModels;
 using Microsoft.AspNetCore.Mvc;
-using NetBase.Utils;
 using Newtonsoft.Json;
-using System;
-using System.Collections.Generic;
-using System.IO;
-using System.Linq;
 using System.Net.Mime;
-using System.Text;
 
 namespace DevilDaggersWebsite.Pages.API
 {
@@ -24,33 +17,6 @@ namespace DevilDaggersWebsite.Pages.API
 			_commonObjects = commonObjects;
 		}
 
-		public FileResult OnGet(int userID = default, bool formatted = false)
-		{
-			return JsonFile(GetUserProgression(userID), formatted ? Formatting.Indented : Formatting.None);
-		}
-
-		public SortedDictionary<DateTime, Entry> GetUserProgression(int userID)
-		{
-			SortedDictionary<DateTime, Entry> data = new SortedDictionary<DateTime, Entry>();
-
-			if (userID != 0)
-			{
-				foreach (string leaderboardHistoryPath in Directory.GetFiles(Path.Combine(_commonObjects.Env.WebRootPath, "leaderboard-history"), "*.json"))
-				{
-					DevilDaggersCore.Leaderboards.Leaderboard leaderboard = JsonConvert.DeserializeObject<DevilDaggersCore.Leaderboards.Leaderboard>(FileUtils.GetContents(leaderboardHistoryPath, Encoding.UTF8));
-					Entry entry = leaderboard.Entries.Where(e => e.ID == userID).FirstOrDefault();
-
-					if (entry != null && !data.Values.Any(e =>
-						e.Time == entry.Time ||
-						e.Time == entry.Time + 1 ||
-						e.Time == entry.Time - 1)) // Off-by-one errors in the history
-					{
-						data[leaderboard.DateTime] = entry;
-					}
-				}
-			}
-
-			return data;
-		}
+		public FileResult OnGet(int userID = default, bool formatted = false) => JsonFile(ApiFunctions.GetUserProgression(_commonObjects, userID), formatted ? Formatting.Indented : Formatting.None);
 	}
 }

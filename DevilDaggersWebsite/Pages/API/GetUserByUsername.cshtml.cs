@@ -1,6 +1,5 @@
 ﻿using DevilDaggersWebsite.Code.API;
 using DevilDaggersWebsite.Code.PageModels;
-using DevilDaggersWebsite.Code.Utils.Web;
 using Microsoft.AspNetCore.Mvc;
 using Newtonsoft.Json;
 using System.Net.Mime;
@@ -16,8 +15,7 @@ namespace DevilDaggersWebsite.Pages.API
 			if (string.IsNullOrEmpty(username) || username.Length < 3)
 				return RedirectToPage("/API/Index");
 
-			DevilDaggersCore.Leaderboards.Leaderboard leaderboard = await Hasmodai.GetUserSearch(username);
-			return JsonFile(leaderboard.Entries, formatted ? Formatting.Indented : Formatting.None);
+			return JsonFile(await ApiFunctions.GetUserByUsername(username), formatted ? Formatting.Indented : Formatting.None);
 		}
 	}
 }

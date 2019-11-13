@@ -1,6 +1,7 @@
 ﻿using CoreBase;
 using CoreBase.Services;
 using DevilDaggersCore.Spawnsets.Web;
+using DevilDaggersWebsite.Code.API;
 using DevilDaggersWebsite.Code.Utils;
 using DevilDaggersWebsite.Pages.API;
 using Microsoft.AspNetCore.Mvc.RazorPages;
@@ -49,7 +50,7 @@ namespace DevilDaggersWebsite.Pages
 
 			List<SpawnsetFile> spawnsetFiles = new List<SpawnsetFile>();
 
-			foreach (SpawnsetFile spawnset in new GetSpawnsetsModel(_commonObjects).GetSpawnsets(SearchAuthor, SearchName))
+			foreach (SpawnsetFile spawnset in ApiFunctions.GetSpawnsets(_commonObjects, SearchAuthor, SearchName))
 				spawnsetFiles.Add(SpawnsetUtils.CreateSpawnsetFileFromSettingsFile(_commonObjects, Path.Combine(_commonObjects.Env.WebRootPath, "spawnsets", $"{spawnset.Name}_{spawnset.Author}")));
 
 			NameSort = sortOrder == "Name" ? "Name_asc" : "Name";

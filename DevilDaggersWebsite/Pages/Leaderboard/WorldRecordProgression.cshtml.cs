@@ -1,6 +1,6 @@
 ﻿using CoreBase.Services;
 using DevilDaggersCore.Leaderboards.History;
-using DevilDaggersWebsite.Pages.API;
+using DevilDaggersWebsite.Code.API;
 using Microsoft.AspNetCore.Mvc.RazorPages;
 using System;
 using System.Collections.Generic;
@@ -23,7 +23,7 @@ namespace DevilDaggersWebsite.Pages.Leaderboard
 
 		public void OnGet()
 		{
-			List<WorldRecord> worldRecords = new GetWorldRecordsModel(_commonObjects).GetWorldRecords();
+			List<WorldRecord> worldRecords = ApiFunctions.GetWorldRecords(_commonObjects, null);
 
 			TimeSpan heldConsecutively = new TimeSpan();
 			for (int i = 0; i < worldRecords.Count; i++)

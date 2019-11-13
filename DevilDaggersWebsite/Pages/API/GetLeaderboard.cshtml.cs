@@ -1,9 +1,7 @@
 ﻿using DevilDaggersWebsite.Code.API;
 using DevilDaggersWebsite.Code.PageModels;
-using DevilDaggersWebsite.Code.Utils.Web;
 using Microsoft.AspNetCore.Mvc;
 using Newtonsoft.Json;
-using System;
 using System.Net.Mime;
 using System.Threading.Tasks;
 
@@ -14,9 +12,7 @@ namespace DevilDaggersWebsite.Pages.API
 	{
 		public async Task<FileResult> OnGetAsync(int rank = 1, bool formatted = false)
 		{
-			rank = Math.Max(1, rank);
-
-			DevilDaggersCore.Leaderboards.Leaderboard leaderboard = await Hasmodai.GetScores(rank);
+			DevilDaggersCore.Leaderboards.Leaderboard leaderboard = await ApiFunctions.GetLeaderboard(rank);
 
 			return JsonFile(leaderboard, leaderboard.DateTime.ToString("yyyyMMddHHmm"), formatted ? Formatting.Indented : Formatting.None);
 		}
