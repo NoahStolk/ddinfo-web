@@ -19,7 +19,7 @@ var monthShortNames = ["Jan", "Feb", "Mar", "Apr", "May", "Jun", "Jul", "Aug", "
 var minDate = new Date("2016-02-18T00:00:00Z");
 var maxDate = Date.now();
 var minTime = 450;
-var maxTime = 1150;
+var maxTime = 1150; // Determine with current WR (ceil(wr / 50) * 50)
 
 $.getJSON("/API/GetWorldRecords", function (data) {
 	var wrs = [];

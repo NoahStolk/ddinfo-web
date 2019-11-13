@@ -1,7 +1,7 @@
 ﻿@page
+@using DevilDaggersCore.Game;
 @using DevilDaggersWebsite.Code.Utils;
 @model DevilDaggersWebsite.Pages.Leaderboard.StatisticsModel
-@using DevilDaggersCore.Game
 @{
 	ViewData["Title"] = "Statistics";
 }
@@ -11,39 +11,93 @@
 </header>
 
 <main>
-	<h2>Measurements</h2>
+	<p class="text-center">
+		These are the current statistics for the entire leaderboard. It is only updated once a day, because retrieving all of this information takes quite some time.
+	</p>
+
+	<h2>Current state and measurements</h2>
 	<p>
-		Task triggered at: @Model.Task.LastTriggered.ToUTC()<br />
-		Task finished at: @Model.Task.LastFinished.ToUTC()<br />
-		Execution time:
 		@{
-			if (Model.Task.LastFinished < Model.Task.LastTriggered)
+			int totalPlayers = /*Model.Task.MaxPages * 100;// */Model.Task.Leaderboard.Players;
+
+			if (Model.Task.Leaderboard.Entries.Count < totalPlayers)
 			{
-				float perc = Model.Task.Leaderboard.Entries.Count / 2500f;// (float)Model.Task.Leaderboard.Players;
-				TimeSpan timeRunning = DateTime.Now - Model.Task.LastTriggered;
-				TimeSpan timeLeft = timeRunning / perc * (1 - perc);
-				<div class="devil">CURRENTLY EXECUTING (@(perc.ToString("0.00%"))). STATS ARE INCOMPLETE. ESTIMATED TIME LEFT: @timeLeft</div>
+				<h3>Stats are incomplete due to a republish or restart of the website.</h3>
 			}
-			else
-			{
-				<span>@Model.Task.ExecutionTime</span>
-			}
+
+			<div class="row">
+				<div class="col-md-2 col-sm-4 hidden-xs">
+					Task triggered at
+				</div>
+				<div class="col-md-2 col-sm-4 col-xs-6">
+					Task finished at
+				</div>
+				<div class="col-md-2 hidden-sm hidden-xs">
+					Execution time
+				</div>
+				<div class="col-md-2 hidden-sm hidden-xs">
+					ETA
+				</div>
+				<div class="col-md-2 col-sm-4 col-xs-6">
+					Entries fetched
+				</div>
+			</div>
+
+			<div class="row">
+				<div class="col-md-2 col-sm-4 hidden-xs">
+					@Model.Task.LastTriggered.ToUTC()
+				</div>
+				<div class="col-md-2 col-sm-4 col-xs-6">
+					@Model.Task.LastFinished.ToUTC()
+				</div>
+				@if (Model.Task.LastFinished < Model.Task.LastTriggered)
+				{
+					float perc = Model.Task.Leaderboard.Entries.Count / (float)totalPlayers;
+					TimeSpan timeRunning = DateTime.Now - Model.Task.LastTriggered;
+					TimeSpan? timeLeft = null;
+					try
+					{
+						timeLeft = timeRunning / perc * (1 - perc);
+					}
+					catch { }
+					<div class="col-md-2 hidden-sm hidden-xs">
+						<span class="devil">CURRENTLY FETCHING</span> (@(perc.ToString("0.00%")))
+					</div>
+					<div class="col-md-2 hidden-sm hidden-xs">
+						@if (timeLeft.HasValue)
+						{
+							<span>@timeLeft.Value.ToString()</span>
+						}
+						else
+						{
+							<span class="devil">Error</span>
+						}
+					</div>
+				}
+				else
+				{
+					<div class="col-md-2 hidden-sm hidden-xs">
+						<span>@Model.Task.ExecutionTime</span>
+					</div>
+					<div class="col-md-2 hidden-sm hidden-xs">
+						@RazorUtils.NAString
+					</div>
+				}
+				<div class="col-md-2 col-sm-4 col-xs-6">
+					@Model.Task.Leaderboard.Entries.Count / @totalPlayers
+				</div>
+			</div>
 		}
-		<br />
-		Entries: @Model.Task.Leaderboard.Entries.Count
 	</p>
 
 	<h2>Daggers</h2>
 	<ul>
 		@{
-			Dictionary<Dagger, int> daggerStats = Model.GetDaggerStats();
-			int exclude = 0;
-			foreach (KeyValuePair<Dagger, int> stat in daggerStats)
+			foreach (KeyValuePair<Dagger, int> stat in Model.GetDaggerStats())
 			{
 				<li>
-					<img src="~/images/Daggers/@(stat.Key.Name)Small.png" />There are @(stat.Value - exclude) players with the <span style="background-position-y: 3px;" class="@(stat.Key.Name.ToLower())">@(stat.Key.Name)</span> dagger.
+					<img src="~/images/Daggers/@(stat.Key.Name)Small.png" />There are @stat.Value players with the <span class="@(stat.Key.Name.ToLower())">@(stat.Key.Name)</span> dagger.
 				</li>
-				exclude = stat.Value;
 			}
 		}
 	</ul>
@@ -55,8 +109,7 @@
 			<div class="col-md-2 col-sm-4 col-xs-4 text-right">Amount</div>
 			<div class="col-md-2 col-sm-4 col-xs-4 text-right">Percentage</div>
 		</div>
-		Dictionary<Death, int> deathStats = Model.GetDeathStats();
-		foreach (KeyValuePair<Death, int> stat in deathStats)
+		foreach (KeyValuePair<Death, int> stat in Model.GetDeathStats())
 		{
 			<div class="row">
 				<div class="col-md-2 col-sm-4 col-xs-4" style="color: #@stat.Key.ColorCode;">@stat.Key.Name</div>
@@ -73,8 +126,7 @@
 			<div class="col-md-2 col-sm-4 col-xs-4 text-right">Amount</div>
 			<div class="col-md-2 col-sm-4 col-xs-4 text-right">Percentage</div>
 		</div>
-		Dictionary<int, int> timeStats = Model.GetTimeStats();
-		foreach (KeyValuePair<int, int> stat in timeStats)
+		foreach (KeyValuePair<int, int> stat in Model.GetTimeStats())
 		{
 			<div class="row">
 				<div class="col-md-2 col-sm-4 col-xs-4">@stat.Key</div>
