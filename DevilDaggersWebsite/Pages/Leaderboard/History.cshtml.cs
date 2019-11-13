@@ -76,7 +76,7 @@ namespace DevilDaggersWebsite.Pages.Leaderboard
 					List<Entry> plays = new List<Entry>();
 					foreach (Entry entry in Leaderboard.Entries)
 					{
-						Entry entryPrevious = LeaderboardPrevious.Entries.Where(e => e.ID == entry.ID).FirstOrDefault();
+						Entry entryPrevious = LeaderboardPrevious.Entries.FirstOrDefault(e => e.ID == entry.ID);
 						if (entryPrevious == null)
 						{
 							top100joins.Add(entry);

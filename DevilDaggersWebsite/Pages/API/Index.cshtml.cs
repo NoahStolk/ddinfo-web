@@ -15,8 +15,7 @@ namespace DevilDaggersWebsite.Pages.API
 		public void OnGet()
 		{
 			Assembly asm = AppDomain.CurrentDomain.GetAssemblies()
-				.Where(a => a.FullName.Contains("DevilDaggersWebsite"))
-				.FirstOrDefault();
+				.FirstOrDefault(a => a.FullName.Contains("DevilDaggersWebsite"));
 
 			foreach (Type type in asm.GetTypes())
 				if (type.BaseType == typeof(ApiPageModel) && type.Namespace.Contains("API") && !type.Name.Contains("Index"))

@@ -84,7 +84,7 @@ namespace DevilDaggersWebsite.Pages.CustomLeaderboards
 			if (DecryptValidation(validation) != check)
 				return new UploadResult(false, "Invalid submission.");
 
-			CustomLeaderboard leaderboard = _context.CustomLeaderboards.Include(l => l.Category).Where(l => l.SpawnsetFileName == spawnsetName).FirstOrDefault(); // TODO: Multiple leaderboards
+			CustomLeaderboard leaderboard = _context.CustomLeaderboards.Include(l => l.Category).FirstOrDefault(l => l.SpawnsetFileName == spawnsetName); // TODO: Multiple leaderboards
 			if (leaderboard == null)
 				return new UploadResult(false, "This spawnset doesn't have a leaderboard.");
 
@@ -107,7 +107,7 @@ namespace DevilDaggersWebsite.Pages.CustomLeaderboards
 			int rank = leaderboard.Category.Ascending ? entries.Where(e => e.Time < time).Count() + 1 : entries.Where(e => e.Time > time).Count() + 1; // TODO: Use reflection to use Category.SortingPropertyName.
 			int totalPlayers = entries.Count();
 
-			CustomEntry entry = _context.CustomEntries.Where(e => e.PlayerID == playerID && e.CustomLeaderboardID == leaderboard.ID).FirstOrDefault();
+			CustomEntry entry = _context.CustomEntries.FirstOrDefault(e => e.PlayerID == playerID && e.CustomLeaderboardID == leaderboard.ID);
 			if (entry == null)
 			{
 				// Add new user to this leaderboard.

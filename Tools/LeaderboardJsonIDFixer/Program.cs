@@ -246,8 +246,8 @@ namespace LeaderboardJsonIDFixer
 				if (leaderboard.DateTime < dateStart || leaderboard.DateTime > dateEnd)
 					continue;
 
-				Entry entry1 = leaderboard.Entries.Where(e => e.ID == id1).FirstOrDefault();
-				Entry entry2 = leaderboard.Entries.Where(e => e.ID == id2).FirstOrDefault();
+				Entry entry1 = leaderboard.Entries.FirstOrDefault(e => e.ID == id1);
+				Entry entry2 = leaderboard.Entries.FirstOrDefault(e => e.ID == id2);
 
 				if (entry1 != null)
 					entry1.ID = id2;

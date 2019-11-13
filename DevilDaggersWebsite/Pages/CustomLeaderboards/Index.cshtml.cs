@@ -27,9 +27,9 @@ namespace DevilDaggersWebsite.Pages.CustomLeaderboards
 				if (clc.Name != "Challenge" && clc.Name != "Archive")
 					CategoryListItems.Add(new SelectListItem($"Category: {clc.Name}", clc.Name));
 
-			Category = _context.CustomLeaderboardCategories.Where(clc => clc.Name == category).FirstOrDefault();
+			Category = _context.CustomLeaderboardCategories.FirstOrDefault(clc => clc.Name == category);
 			if (Category == null)
-				Category = _context.CustomLeaderboardCategories.Where(clc => clc.Name == "Default").FirstOrDefault();
+				Category = _context.CustomLeaderboardCategories.FirstOrDefault(clc => clc.Name == "Default");
 
 			Leaderboards = _context.CustomLeaderboards.Where(l => l.Category == Category).ToList();
 		}

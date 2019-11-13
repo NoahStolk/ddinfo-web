@@ -45,8 +45,7 @@ namespace DevilDaggersWebsite.Pages.CustomLeaderboards
 
 			Leaderboard = _context.CustomLeaderboards
 				.Include(l => l.Category)
-				.Where(l => l.SpawnsetFileName == spawnset)
-				.FirstOrDefault();
+				.FirstOrDefault(l => l.SpawnsetFileName == spawnset);
 
 			if (Leaderboard == null)
 				return RedirectToPage("Index");
