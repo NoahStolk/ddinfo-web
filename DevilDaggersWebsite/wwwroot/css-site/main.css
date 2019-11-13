@@ -263,3 +263,12 @@ pre {
 	background-clip: text;
 	-webkit-text-fill-color: transparent;
 }
+
+span.homing,
+span.devil,
+span.golden,
+span.silver,
+span.bronze,
+span.default {
+	background-position-y: 3px;
+}
