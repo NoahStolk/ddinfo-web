@@ -10,7 +10,7 @@
 	<PackageReference Include="Microsoft.AspNetCore.App" />
 	<PackageReference Include="Microsoft.VisualStudio.Web.CodeGeneration.Design" Version="2.1.10" />
 	<PackageReference Include="MySql.Data" Version="8.0.16" />
-	<PackageReference Include="Newtonsoft.Json" Version="12.0.2" />
+	<PackageReference Include="Newtonsoft.Json" Version="12.0.3" />
   </ItemGroup>
   <ItemGroup>
 	<DotNetCliToolReference Include="Microsoft.VisualStudio.Web.CodeGeneration.Tools" Version="2.0.2" />
