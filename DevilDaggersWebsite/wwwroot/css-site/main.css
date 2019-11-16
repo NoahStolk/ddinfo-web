@@ -198,6 +198,21 @@ pre {
 	hyphens: auto;
 }
 
+.path {
+	overflow-wrap: break-word;
+	word-wrap: break-word;
+	-ms-word-break: break-all;
+	-epub-word-break: break-all;
+	word-break: break-all;
+	word-break: break-word;
+	-ms-hyphens: auto;
+	-moz-hyphens: auto;
+	-epub-hyphens: auto;
+	-webkit-hyphens: auto;
+	hyphens: auto;
+	color: var(--col-red);
+}
+
 .homing {
 	background: url('../Images/Fonts/Homing.png');
 	background-repeat: repeat-x;

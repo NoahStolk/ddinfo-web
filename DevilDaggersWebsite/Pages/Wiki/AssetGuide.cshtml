@@ -1,0 +1,140 @@
+﻿@page
+@model DevilDaggersWebsite.Pages.Wiki.AssetGuideModel
+@{
+	ViewData["Title"] = "Asset Guide";
+}
+
+<header>
+	<h1>@ViewData["Title"]</h1>
+</header>
+
+<main role="main">
+	<p class="text-center">This page is unfinished.</p>
+
+	<h2>Basic information</h2>
+
+	<p>The following files contain assets:</p>
+
+	<div class="row">
+		<div class="col-xs-4">
+			File name
+		</div>
+		<div class="col-xs-4">
+			Location
+		</div>
+		<div class="col-xs-4">
+			Contains
+		</div>
+	</div>
+	<div class="row">
+		<div class="col-xs-4">
+			audio
+		</div>
+		<div class="col-xs-4">
+			<span class="path">{DEVIL DAGGERS INSTALL FOLDER}\res\audio</span>
+		</div>
+		<div class="col-xs-4">
+			All audio (sound effects and music)
+		</div>
+	</div>
+	<div class="row">
+		<div class="col-xs-4">
+			dd
+		</div>
+		<div class="col-xs-4">
+			<span class="path">{DEVIL DAGGERS INSTALL FOLDER}\res\dd</span>
+		</div>
+		<div class="col-xs-4">
+			All textures, all models, most shaders
+		</div>
+	</div>
+	<div class="row">
+		<div class="col-xs-4">
+			core
+		</div>
+		<div class="col-xs-4">
+			<span class="path">{DEVIL DAGGERS INSTALL FOLDER}\core\core</span>
+		</div>
+		<div class="col-xs-4">
+			Some shaders
+		</div>
+	</div>
+	<div class="row">
+		<div class="col-xs-4">
+			particles
+		</div>
+		<div class="col-xs-4">
+			<span class="path">{DEVIL DAGGERS INSTALL FOLDER}\dd\particle</span>
+		</div>
+		<div class="col-xs-4">
+			All particles
+		</div>
+	</div>
+
+	<p>The default location for <span class="path">{DEVIL DAGGERS INSTALL FOLDER}</span> is <span class="path">C:\Program Files (x86)\Steam\steamapps\common\devildaggers</span>.</p>
+
+	<h2>How to play a mod</h2>
+
+	<p>In order to play mods, replace one of the files with a modded file. In constrast to spawnsets, all four asset files are only reloaded when Devil Daggers starts up.</p>
+
+	<h2>How to make a mod</h2>
+
+	<p>Modding assets in Devil Daggers can be done using a tool called <a asp-page="/Tools/DevilDaggersAssetEditor">Devil Daggers Asset Editor</a> which is available for download on this website.</p>
+
+	<h3>Installation</h3>
+
+	<p>Download <a asp-page="/Tools/DevilDaggersAssetEditor">DDAE</a> and follow the installation instructions.</p>
+
+	<h3>Creating a default modding file</h3>
+
+	<p>Before diving into the program, it is recommended to set up default modding files. Since raw asset files are huge, DDAE works with modding files, which basically just contain the list of custom asset paths. By creating a default asset path, you will always have the original asset "mod" ready, which will make things a lot easier in the future. In this example we will set up a default audio mod. Let's go through it step by step:</p>
+
+	<h4>Step 1: Extracting the original audio</h4>
+	<ul>
+		<li>Go to File > audio > Extract 'audio' file.</li>
+		<li>In the open file dialog, choose the file called "audio" located in <span class="path">{DEVIL DAGGERS INSTALL FOLDER}\res</span> (which is <span class="path">C:\Program Files (x86)\Steam\steamapps\common\devildaggers\res\audio</span> by default).</li>
+		<li>In the folder dialog, choose a folder to extract the original audio files into. The program will now put all the original audio files into that folder as .wav files.</li>
+	</ul>
+
+	<h4>Step 2: Creating the default modding file</h4>
+
+	<ul>
+		<li>Go to File > audio > Import Audio paths from folder.</li>
+		<li>In the folder dialog, choose the folder that contains the original audio files you extracted in Step 1. In the audio/Audio tab, you will now see the editor paths have changed from &lt;NONE SPECIFIED&gt; to the selected folder location containing their corresponding assets.</li>
+		<li>Go to File > audio > Save .audio mod file.</li>
+		<li>In the save file dialog, preferably name the file "original.audio". You can open this file at any time by going to File > audio > Open .audio mod file.</li>
+	</ul>
+
+	<p>It is recommended to create a default modding file for all four asset files. This is a one-time setup; if done right, you won't have to do the previous steps ever again. Saves a lot of work whenever you want to make a new mod. Note that if you change the locations of assets, it will break the modding file. You can either use the relative path setting when creating a modding file, or you can open it in a text edidor and globally replace the old base path with the new path.</p>
+
+	<h3>Making your own mod</h3>
+
+	<h4>Step 1: Modifying assets</h4>
+
+	<ul>
+		<li>Open the default audio modding file by going to File > audio > Open .audio mod file and selecting it in the open file dialog.</li>
+		<li>In the "audio/Audio" tab, you will see the location for every audio file. Change one or more audio paths by clicking the "Browse" button on the right.</li>
+		<li>In the open file dialog, select a <a href="#audio-compatibility">compatible</a> .wav file.</li>
+	</ul>
+
+	<p>Note: You can preview your new asset using the preview controls located above the asset list.</p>
+
+	<h4>Step 2: Saving your mod</h4>
+
+	<ul>
+		<li>Go to File > audio > Save .audio mod file.</li>
+		<li>In the save file dialog, select a folder that will contain your modding files.</li>
+		<li>Give your audio modding file a name.</li>
+	</ul>
+
+	<p>Note: You can set a default path for mods in Options > Settings. This is purely optional and is just convenient for when you're opening your mods.</p>
+
+	<h4>Step 3: Compressing the mods into a binary file Devil Daggers can read from</h4>
+
+	<ul>
+		<li>To play your audio mod, open it by going to File > audio > Open .audio mod file.</li>
+		<li>Go to File > audio > Compress 'audio' file.</li>
+		<li>In the save file dialog, choose the file called audio located in {DEVIL_DAGGERS_LOCATION}\res (which is C:\Program Files (x86)\Steam\steamapps\common\devildaggers\res by default), and overwrite it.</li>
+		<li>Launch Devil Daggers to see if it's working. If it crashes, there's <a href="#audio-compatibility">something wrong</a> with one of your custom .wav files.</li>
+	</ul>
+</main>

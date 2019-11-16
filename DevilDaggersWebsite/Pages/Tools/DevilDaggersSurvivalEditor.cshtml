@@ -1,5 +1,6 @@
 ﻿@page
 @inject Microsoft.AspNetCore.Hosting.IHostingEnvironment env
+@using DevilDaggersCore.Tools
 @using DevilDaggersCore.Tools.Website
 @using DevilDaggersWebsite.Code.Utils
 @using System.IO
@@ -55,7 +56,7 @@
 
 	<h2>Source code</h2>
 	<p>
-		The source code can be found on <a target="_blank" href="https://bitbucket.org/NoahStolk/devildaggerssurvivaleditor/src">Bitbucket</a>.
+		The source code can be found on <a target="_blank" href="@UrlUtils.SourceCodeUrl(tool.Name)">GitHub</a>.
 	</p>
 
 	<h2>Changelog</h2>
