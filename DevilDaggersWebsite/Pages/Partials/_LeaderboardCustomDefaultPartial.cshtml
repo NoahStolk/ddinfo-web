@@ -44,7 +44,7 @@
 				HtmlString level3 = entry.LevelUpTime3 == 0 ? RazorUtils.NAString : new HtmlString(entry.LevelUpTime3.ToString("0.0000"));
 				HtmlString level4 = entry.LevelUpTime4 == 0 ? RazorUtils.NAString : new HtmlString(entry.LevelUpTime4.ToString("0.0000"));
 				string submitDate = entry.SubmitDate.ToString("dd MMM yyyy, HH:mm");
-				string shots = RazorUtils.FormatShots(entry.ShotsHit, entry.ShotsFired);
+				string shots = entry.FormatShots();
 				string accuracy = entry.Accuracy.ToString("0.00%");
 
 				<div class="sort" @entry.ToHTMLData(rank, flagCode)>

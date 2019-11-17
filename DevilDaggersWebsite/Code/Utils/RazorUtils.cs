@@ -83,16 +83,6 @@ namespace DevilDaggersWebsite.Code.Utils
 			return value == 1 ? "" : "s";
 		}
 
-		public static string FormatShots(int hit, int fired)
-		{
-			return $"{hit.ToString("N0")} / {fired.ToString("N0")}";
-		}
-
-		public static string FormatShots(ulong hit, ulong fired)
-		{
-			return $"{hit.ToString("N0")} / {fired.ToString("N0")}";
-		}
-
 		public static string ToUTC(this DateTime dateTime)
 		{
 			return $"{dateTime.ToUniversalTime().ToString("yyyy-MM-dd HH:mm:ss.fff")} UTC";

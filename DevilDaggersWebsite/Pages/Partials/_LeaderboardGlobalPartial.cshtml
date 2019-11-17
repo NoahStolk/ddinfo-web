@@ -1,12 +1,14 @@
-﻿@using DevilDaggersWebsite.Code.Utils
+﻿@using DevilDaggersWebsite.Pages.Leaderboard
 @{
-	if (Model.GetType() == typeof(Leaderboard.IndexModel) && Model.IsUserSearch)
+	if (Model.GetType() == typeof(IndexModel) && Model.IsUserSearch)
 	{
 		return;
 	}
 
+	bool isHistory = Model.GetType() == typeof(HistoryModel);
+
 	string time = (Model.Leaderboard.TimeGlobal / 10000.0).ToString("0.0000");
-	string shots = RazorUtils.FormatShots(Model.Leaderboard.ShotsHitGlobal, Model.Leaderboard.ShotsFiredGlobal);
+	string shots = Model.Leaderboard.FormatShotsGlobal(isHistory);
 	string accuracy = Model.Leaderboard.AccuracyGlobal.ToString("0.00%");
 }
 <div class="hidden-xs">
@@ -36,14 +38,7 @@
 		<div>
 			<div>Global accuracy</div>
 			@{
-				if (Model.Leaderboard.ShotsFiredGlobal == 10000 || Model.Leaderboard.ShotsFiredGlobal == 0)
-				{
-					<span class="text-center devil">@accuracy</span>
-				}
-				else
-				{
-					<span data-toggle="tooltip" title="@shots" class="leaderboard-tooltip"><span class="text-center devil">@accuracy</span></span>
-				}
+				<span data-toggle="tooltip" data-placement="bottom" title="@shots" class="leaderboard-tooltip"><span class="text-center devil">@accuracy</span></span>
 			}
 		</div>
 	</div>

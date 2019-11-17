@@ -2,6 +2,7 @@
 @using DevilDaggersCore.Leaderboards
 @using DevilDaggersWebsite.Code.Users
 @using DevilDaggersWebsite.Code.Utils
+@using DevilDaggersWebsite.Pages.Leaderboard
 @inject CoreBase.Services.ICommonObjects CommonObjects
 
 <div class="leaderboard-container flex-container flex-center">
@@ -22,8 +23,10 @@
 	</div>
 	<div class="leaderboard-body">
 		@{
-			bool firstPage = Model.Leaderboard.Entries.Count > 0 && Model.Leaderboard.Entries[0].Rank == 1;
+			bool isHistory = Model.GetType() == typeof(HistoryModel);
+
 #if EXCLUDE_BANS
+			bool firstPage = Model.Leaderboard.Entries.Count > 0 && Model.Leaderboard.Entries[0].Rank == 1;
 			int banCount = 0;
 #endif
 
@@ -56,10 +59,10 @@
 				string daggerColor = banned ? "ban" : dagger.Name.ToLower();
 				string deathStyle = banned ? "" : $"color: #{death.ColorCode};";
 				string banString = banned ? "ban" : string.Empty;
-				
-				string shots = RazorUtils.FormatShots(entry.ShotsHit, entry.ShotsFired);
+
+				string shots = entry.FormatShots(isHistory);
 				string accuracy = entry.Accuracy.ToString("0.00%");
-				string shotsTotal = RazorUtils.FormatShots(entry.ShotsHitTotal, entry.ShotsFiredTotal);
+				string shotsTotal = entry.FormatShotsTotal(isHistory);
 				string accuracyTotal = entry.AccuracyTotal.ToString("0.00%");
 
 				<div class="sort @banString" @entry.ToHtmlData(flagCode)>
@@ -86,15 +89,14 @@
 						</div>
 						<div class="text-left leaderboard-username">
 							@{
-								@*if (banned)
-									{
-										<span data-toggle="tooltip" title="@ban.Description" class="@daggerColor">@entry.Username</span>
-									}
-									else
-									{
-										<span class="@daggerColor">@entry.Username</span>
-									}*@
-								<span class="@daggerColor">@entry.Username</span>
+								if (banned)
+								{
+									<span data-toggle="tooltip" title="@ban.Description" class="leaderboard-tooltip @daggerColor">@entry.Username</span>
+								}
+								else
+								{
+									<span class="@daggerColor">@entry.Username</span>
+								}
 
 								if (titles != null)
 								{
@@ -114,32 +116,14 @@
 						<div class="hidden-xs text-right">@entry.Kills</div>
 						<div class="hidden-xs text-right">@entry.Gems</div>
 						<div class="hidden-xs text-right">
-							@{
-								if (firstPage && (entry.ShotsFired == 10000 || entry.ShotsFired == 0))
-								{
-									@:@entry.Accuracy.ToString("0.00%")
-								}
-								else
-								{
-									<span data-toggle="tooltip" title="@shots" class="leaderboard-tooltip">@accuracy</span>
-								}
-							}
+							<span data-toggle="tooltip" title="@shots" class="leaderboard-tooltip">@accuracy</span>
 						</div>
 						<div class="hidden-xs hidden-sm hidden-md text-center" style="@deathStyle">@death.Name</div>
 						<div class="hidden-xs hidden-sm hidden-md text-right">@((entry.TimeTotal / 10000.0).ToString("0.0000"))</div>
 						<div class="hidden-xs hidden-sm hidden-md text-right">@entry.KillsTotal</div>
 						<div class="hidden-xs hidden-sm hidden-md text-right">@entry.GemsTotal</div>
 						<div class="hidden-xs hidden-sm hidden-md text-right">
-							@{
-								if (firstPage && (entry.ShotsFiredTotal == 10000 || entry.ShotsFiredTotal == 0))
-								{
-									@:@entry.AccuracyTotal.ToString("0.00%")
-								}
-								else
-								{
-									<span data-toggle="tooltip" title="@shotsTotal" class="leaderboard-tooltip">@accuracyTotal</span>
-								}
-							}
+							<span data-toggle="tooltip" title="@shotsTotal" class="leaderboard-tooltip">@accuracyTotal</span>
 						</div>
 						<div class="hidden-xs hidden-sm hidden-md text-right">@entry.DeathsTotal</div>
 					</div>
@@ -155,16 +139,7 @@
 						<div class="visible-xs">
 							<div class="text-left">Accuracy</div>
 							<div class="text-right">
-								@{
-									if (firstPage && (entry.ShotsFired == 10000 || entry.ShotsFired == 0))
-									{
-										@:@entry.Accuracy.ToString("0.00%")
-									}
-									else
-									{
-										<span data-toggle="tooltip" title="@shots" class="leaderboard-tooltip">@accuracy</span>
-									}
-								}
+								<span data-toggle="tooltip" title="@shots" class="leaderboard-tooltip">@accuracy</span>
 							</div>
 						</div>
 						<div class="visible-xs visible-sm visible-md">
@@ -186,16 +161,7 @@
 						<div class="visible-xs visible-sm visible-md">
 							<div class="text-left">Total accuracy</div>
 							<div class="text-right">
-								@{
-									if (firstPage && (entry.ShotsFiredTotal == 10000 || entry.ShotsFiredTotal == 0))
-									{
-										@:@entry.AccuracyTotal.ToString("0.00%")
-									}
-									else
-									{
-										<span data-toggle="tooltip" title="@shotsTotal" class="leaderboard-tooltip">@accuracyTotal</span>
-									}
-								}
+								<span data-toggle="tooltip" title="@shotsTotal" class="leaderboard-tooltip">@accuracyTotal</span>
 							</div>
 						</div>
 						<div class="visible-xs visible-sm visible-md">
