@@ -1,6 +1,7 @@
 ﻿using DevilDaggersCore.Game;
 using DevilDaggersCore.Leaderboards;
 using DevilDaggersWebsite.Code.Tasks;
+using Microsoft.AspNetCore.Mvc;
 using Microsoft.AspNetCore.Mvc.RazorPages;
 using System.Collections.Generic;
 
@@ -11,6 +12,11 @@ namespace DevilDaggersWebsite.Pages.Leaderboard
 		public RetrieveEntireLeaderboardTask Task => (RetrieveEntireLeaderboardTask)TaskInstanceKeeper.Instances[typeof(RetrieveEntireLeaderboardTask)];
 
 		public readonly int timeStep = 100000;
+
+		public ActionResult OnGet()
+		{
+			return RedirectToPage("/Error/404");
+		}
 
 		public Dictionary<Dagger, int> GetDaggerStats()
 		{
