@@ -38,6 +38,8 @@ namespace DevilDaggersWebsite
 				Console.Write(args.Exception.Message);
 				args.SetObserved();
 			});
+
+			services.AddHostedService<BotService>();
 		}
 
 		// This method gets called by the runtime. Use this method to configure the HTTP request pipeline.
