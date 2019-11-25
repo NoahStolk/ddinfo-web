@@ -33,7 +33,7 @@
 
 	<h2>World record holders</h2>
 	<div class="row">
-		<div class="text-bold col-lg-2 col-md-2 col-sm-4 col-xs-6">Username</div>
+		<div class="text-bold col-lg-2 col-md-2 col-sm-4 col-xs-6">Username (and aliases)</div>
 		<div class="text-bold col-lg-2 col-md-2 col-sm-4 col-xs-6">Total time held</div>
 		<div class="text-bold col-lg-3 col-md-3 hidden-sm hidden-xs">Longest time held consecutively</div>
 		<div class="text-bold col-lg-2 col-md-2 hidden-sm hidden-xs">World records</div>
@@ -53,9 +53,10 @@
 			Entry current = await ApiFunctions.GetUserByID(wrh.ID);
 			string lastHeld = wr.Time == current.Time ? "Current holder" : $"{wrh.LastHeld.ToString("MMM dd")} '{wrh.LastHeld.ToString("yy")} ({daysAgo} day{daysAgo.S()} ago)";
 			string heldConsecutively = $"{daysConsecutively} day{daysConsecutively.S()}";
+			IEnumerable<string> aliases = wrh.Usernames.Where(s => s != wrh.MostRecentUsername);
 
 			<div class="row">
-				<div class="col-lg-2 col-md-2 col-sm-4 col-xs-6">@wrh.Username</div>
+				<div class="col-lg-2 col-md-2 col-sm-4 col-xs-6">@wrh.MostRecentUsername @(aliases.Count() != 0 ? $"({string.Join(", ", aliases)})" : "")</div>
 				<div class="col-lg-2 col-md-2 col-sm-4 col-xs-6">@timeHeld</div>
 				<div class="col-lg-3 col-md-3 hidden-sm hidden-xs">@heldConsecutively</div>
 				<div class="col-lg-2 col-md-2 hidden-sm hidden-xs">@wrh.WorldRecordCount</div>
@@ -76,7 +77,7 @@
 			int days = (int)Math.Round(kvp.Value.TotalDays);
 			string daysString = days == 0 ? "Less than 1 day" : days == 1 ? "1 day" : $"{days} days";
 			<div class="row">
-				<div class="col-lg-2 col-md-3 col-sm-4 col-xs-4">@Model.WorldRecordHolders.Where(w => w.ID == kvp.Key.Entry.ID).FirstOrDefault().Username</div>
+				<div class="col-lg-2 col-md-3 col-sm-4 col-xs-4">@kvp.Key.Entry.Username</div>
 				<div class="col-lg-2 col-md-3 col-sm-4 col-xs-4">@((kvp.Key.Entry.Time / 10000.0).ToString("0.0000"))</div>
 				<div class="col-lg-2 col-md-3 col-sm-4 col-xs-4">@daysString</div>
 			</div>

@@ -55,10 +55,14 @@ namespace DevilDaggersWebsite.Pages.Leaderboard
 				{
 					if (wrh.ID == wr.Entry.ID)
 					{
-						wrh.Username = wr.Entry.Username;
-						wrh.TotalTimeHeld += difference;
+						wrh.MostRecentUsername = wr.Entry.Username;
+						if (!wrh.Usernames.Contains(wr.Entry.Username))
+							wrh.Usernames.Add(wr.Entry.Username);
+
 						if (heldConsecutively > wrh.LongestTimeHeldConsecutively)
 							wrh.LongestTimeHeldConsecutively = heldConsecutively;
+
+						wrh.TotalTimeHeld += difference;
 						wrh.WorldRecordCount++;
 						wrh.LastHeld = lastHeld;
 						added = true;
