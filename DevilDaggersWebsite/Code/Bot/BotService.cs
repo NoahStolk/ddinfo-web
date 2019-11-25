@@ -2,7 +2,7 @@
 using System.Threading;
 using System.Threading.Tasks;
 
-namespace DevilDaggersWebsite
+namespace DevilDaggersWebsite.Code.Bot
 {
 	public class BotService : IHostedService
 	{

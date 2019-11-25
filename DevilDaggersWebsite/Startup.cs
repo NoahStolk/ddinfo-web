@@ -1,4 +1,5 @@
 using CoreBase;
+using DevilDaggersWebsite.Code.Bot;
 using DevilDaggersWebsite.Code.Database;
 using DevilDaggersWebsite.Code.Tasks;
 using DevilDaggersWebsite.Code.Tasks.Scheduling;
