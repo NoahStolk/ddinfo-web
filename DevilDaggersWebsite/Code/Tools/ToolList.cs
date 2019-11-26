@@ -497,10 +497,21 @@ namespace DevilDaggersWebsite.Code.Utils
 		{
 			Name = "DevilDaggersAssetEditor",
 			DisplayName = "Devil Daggers Asset Editor",
-			VersionNumber = new Version(0, 7, 5, 1),
+			VersionNumber = new Version(0, 7, 8, 0),
 			VersionNumberRequired = new Version(0, 7, 5, 0),
 			Changelog = new List<ChangelogEntry>
 			{
+				new ChangelogEntry
+				{
+					VersionNumber = new Version(0, 7, 8, 0),
+					Date = new DateTime(2019, 11, 26),
+					Changes = new List<Change>
+					{
+						new Change("Improved model parsing so .obj files exported from 3D modeling tools such as Blender are supported."),
+						new Change("Fixed audio description for daggerseek."),
+						new Change("Added tooltips for audio preview buttons.")
+					}
+				},
 				new ChangelogEntry
 				{
 					VersionNumber = new Version(0, 7, 5, 1),
