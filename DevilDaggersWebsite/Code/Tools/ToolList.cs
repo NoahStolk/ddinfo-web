@@ -497,17 +497,28 @@ namespace DevilDaggersWebsite.Code.Utils
 		{
 			Name = "DevilDaggersAssetEditor",
 			DisplayName = "Devil Daggers Asset Editor",
-			VersionNumber = new Version(0, 7, 8, 0),
+			VersionNumber = new Version(0, 7, 12, 0),
 			VersionNumberRequired = new Version(0, 7, 5, 0),
 			Changelog = new List<ChangelogEntry>
 			{
+				new ChangelogEntry
+				{
+					VersionNumber = new Version(0, 7, 12, 0),
+					Date = new DateTime(2019, 11, 30),
+					Changes = new List<Change>
+					{
+						new Change("Improved model extraction to be more compatible with 3D modelling software."),
+						new Change("Fixed model compression crash when compressing a model with more texture coordinates or more vertex normals than geometric vertices."),
+						new Change("Saving mod files now produces indented JSON.")
+					}
+				},
 				new ChangelogEntry
 				{
 					VersionNumber = new Version(0, 7, 8, 0),
 					Date = new DateTime(2019, 11, 26),
 					Changes = new List<Change>
 					{
-						new Change("Improved model parsing so .obj files exported from 3D modeling tools such as Blender are supported."),
+						new Change("Improved model parsing so compressing .obj files exported from 3D modelling software is supported."),
 						new Change("Fixed audio description for daggerseek."),
 						new Change("Added tooltips for audio preview buttons.")
 					}
@@ -518,7 +529,7 @@ namespace DevilDaggersWebsite.Code.Utils
 					Date = new DateTime(2019, 11, 18),
 					Changes = new List<Change>
 					{
-						new Change("Update source code URL.")
+						new Change("Updated source code URL.")
 					}
 				},
 				new ChangelogEntry
