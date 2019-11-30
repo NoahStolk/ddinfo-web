@@ -98,7 +98,7 @@ namespace DevilDaggersWebsite.Code.Utils
 					Date = new DateTime(2019, 7, 30),
 					Changes = new List<Change>
 					{
-						new Change("Fixed crash when deleting multiple spawns.")
+						new Change("Fixed crash that occurred when deleting multiple spawns.")
 					}
 				},
 				new ChangelogEntry
@@ -508,7 +508,7 @@ namespace DevilDaggersWebsite.Code.Utils
 					Changes = new List<Change>
 					{
 						new Change("Improved model extraction to be more compatible with 3D modelling software."),
-						new Change("Fixed model compression crash when compressing a model with more texture coordinates or more vertex normals than geometric vertices."),
+						new Change("Fixed model compression crash that occurred when compressing a model with more texture coordinates or more vertex normals than geometric vertices."),
 						new Change("Saving mod files now produces indented JSON.")
 					}
 				},
