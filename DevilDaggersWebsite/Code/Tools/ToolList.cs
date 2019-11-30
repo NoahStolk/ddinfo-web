@@ -55,7 +55,7 @@ namespace DevilDaggersWebsite.Code.Utils
 						new Change("Added Changelog window."),
 						new Change("Fixed the Update Recommended window not closing after clicking the download button."),
 						new Change("Small changes related to maintenance of the website, as well as code refactoring and improvements."),
-						new Change("Memory scanning code has been moved to DevilDaggersCore because I decided to drop the idea of merging DDSE and DDCL.")
+						new Change("Memory scanning code has been moved to Devil Daggers Core because the idea of merging Devil Daggers Survival Editor and Devil Daggers Custom Leaderboards was cancelled.")
 					}
 				},
 				new ChangelogEntry
@@ -70,7 +70,7 @@ namespace DevilDaggersWebsite.Code.Utils
 						new Change("Fixed spawn enemy text colour not always updating correctly."),
 						new Change("Small layout improvements."),
 						new Change("Improved logging."),
-						new Change("Internal changes such as importing DDCL-specific code for memory scanning base functionality as preparation for possible custom leaderboard integration, as well as general code refactoring and improvements.")
+						new Change("Internal changes such as importing Devil Daggers Custom Leaderboards specific code for memory scanning base functionality as preparation for possible custom leaderboard integration, as well as general code refactoring and improvements.")
 					}
 				},
 				new ChangelogEntry
@@ -286,7 +286,7 @@ namespace DevilDaggersWebsite.Code.Utils
 									}
 								},
 								new Change("The application now uses logging, so whenever it crashes you can open the log to see what went wrong."),
-								new Change("The application is now dependent on DevilDaggersCore, which is a .NET Standard class library used to share code between various Devil Daggers related applications.")
+								new Change("The application is now dependent on Devil Daggers Core, which is a .NET Standard class library used to share code between various Devil Daggers related applications.")
 							}
 						},
 					}
@@ -374,7 +374,7 @@ namespace DevilDaggersWebsite.Code.Utils
 					Changes = new List<Change>
 					{
 						new Change("Compatibility and maintenance updates related to the website."),
-						new Change("The application is renamed to DevilDaggersCustomLeaderboards again for consistency with the other tool names.")
+						new Change("The application is renamed to Devil Daggers Custom Leaderboards again for consistency with the other tool names.")
 					}
 				},
 				new ChangelogEntry
@@ -394,7 +394,7 @@ namespace DevilDaggersWebsite.Code.Utils
 					Date = new DateTime(2019, 6, 5),
 					Changes = new List<Change>
 					{
-						new Change("Compatibility update due to some internal bug fixes which aren't related to DDCL directly.")
+						new Change("Compatibility update due to some internal bug fixes which aren't related to the application directly.")
 					}
 				},
 				new ChangelogEntry
@@ -412,7 +412,7 @@ namespace DevilDaggersWebsite.Code.Utils
 					Date = new DateTime(2019, 5, 24),
 					Changes = new List<Change>
 					{
-						new Change("Fixed inconsistent spawnset hashing. The hashing system is no longer dependent on files. This fixes the problem where some spawnsets wouldn't work if they were downloaded directly from the website rather than imported via DDSE.")
+						new Change("Fixed inconsistent spawnset hashing. The hashing system is no longer dependent on files. This fixes the problem where some spawnsets wouldn't work if they were downloaded directly from the website rather than imported via Devil Daggers Survival Editor.")
 					}
 				},
 				new ChangelogEntry
@@ -432,7 +432,7 @@ namespace DevilDaggersWebsite.Code.Utils
 					{
 						new Change("Added logging."),
 						new Change("Some improvements in the layout and better feedback for when runs don't upload."),
-						new Change("Crash fixes and internal clean up. The \"out of bounds\" error shouldn't occur anymore when starting DDCL before starting Devil Daggers."),
+						new Change("Crash fixes and internal clean up. The \"out of bounds\" error shouldn't occur anymore when starting the application before starting Devil Daggers."),
 						new Change("Console is no longer resizable so it doesn't mess with the layout."),
 						new Change("Added a retry count for when the upload fails. Usually it retries 3 times and stops after that, waiting for you to restart a run.")
 					}
