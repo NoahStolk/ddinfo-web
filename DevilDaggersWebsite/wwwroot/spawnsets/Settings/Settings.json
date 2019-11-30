@@ -827,5 +827,14 @@
 	},
 	"Void_Stop": {
 		"LastUpdated": "2019-11-08T22:20:00"
+	},
+	"Regretti_Stop": {
+		"LastUpdated": "2019-11-28T23:21:00"
+	},
+	"Terror_Stop": {
+		"LastUpdated": "2019-11-28T23:21:00"
+	},
+	"Struggle_Stop": {
+		"LastUpdated": "2019-11-28T23:21:00"
 	}
 }
