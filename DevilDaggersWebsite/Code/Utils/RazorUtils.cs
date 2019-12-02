@@ -82,10 +82,5 @@ namespace DevilDaggersWebsite.Code.Utils
 		{
 			return value == 1 ? "" : "s";
 		}
-
-		public static string ToUTC(this DateTime dateTime)
-		{
-			return $"{dateTime.ToUniversalTime().ToString("yyyy-MM-dd HH:mm:ss.fff")} UTC";
-		}
 	}
 }
