@@ -5,8 +5,10 @@ using DevilDaggersCore.Leaderboards;
 using DevilDaggersCore.Leaderboards.History;
 using DevilDaggersCore.Spawnsets.Web;
 using DevilDaggersCore.Tools.Website;
+using DevilDaggersCore.Website;
 using DevilDaggersWebsite.Code.Database;
 using DevilDaggersWebsite.Code.Database.CustomLeaderboards;
+using DevilDaggersWebsite.Code.Tasks;
 using DevilDaggersWebsite.Code.Utils;
 using DevilDaggersWebsite.Code.Utils.Web;
 using NetBase.Utils;
@@ -15,6 +17,7 @@ using System;
 using System.Collections.Generic;
 using System.IO;
 using System.Linq;
+using System.Reflection;
 using System.Text;
 using System.Threading.Tasks;
 
@@ -189,6 +192,35 @@ namespace DevilDaggersWebsite.Code.API
 			}
 
 			return data;
+		}
+
+		// TODO
+		public static (DateTime, DateTime) GetLatestDatePlayed(ICommonObjects commonObjects, int userID)
+		{
+			List<(DateTime dateTime, Entry entry)> entries = new List<(DateTime, Entry)>();
+			foreach (string leaderboardHistoryPath in Directory.GetFiles(Path.Combine(commonObjects.Env.WebRootPath, "leaderboard-history"), "*.json"))
+			{
+				Leaderboard lb = JsonConvert.DeserializeObject<Leaderboard>(FileUtils.GetContents(leaderboardHistoryPath, Encoding.UTF8));
+				Entry entry = lb.Entries.Where(e => e.ID == userID).FirstOrDefault();
+				if (entry != null)
+					entries.Add((lb.DateTime, entry));
+			}
+
+			entries = entries.OrderByDescending(l => l.dateTime).ToList();
+			ulong deaths = entries[0].entry.DeathsTotal;
+			for (int i = 1; i < entries.Count; i++)
+				if (entries[i].entry.DeathsTotal < deaths)
+					return (entries[i].dateTime, entries[i - 1].dateTime);
+
+			return (DateTime.Now, DateTime.Now);
+		}
+
+		public static WebStatsResult GetWebStats()
+		{
+			List<TaskResult> taskResults = new List<TaskResult>();
+			foreach (KeyValuePair<Type, AbstractTask> kvp in TaskInstanceKeeper.Instances)
+				taskResults.Add(new TaskResult(kvp.Key.Name, kvp.Value.LastTriggered, kvp.Value.LastFinished, kvp.Value.ExecutionTime, kvp.Value.Schedule));
+			return new WebStatsResult(File.GetLastWriteTime(Assembly.GetExecutingAssembly().Location), taskResults);
 		}
 	}
 }
