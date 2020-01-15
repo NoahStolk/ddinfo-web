@@ -1,6 +1,5 @@
 ﻿using DevilDaggersCore.Leaderboards;
 using DevilDaggersCore.Leaderboards.History;
-using NetBase.Console;
 using NetBase.Utils;
 using Newtonsoft.Json;
 using System;
@@ -227,6 +226,9 @@ namespace LeaderboardJsonIDFixer
 			// Raven fix
 			//SwapIDs(new DateTime(1, 1, 1), new DateTime(2019, 10, 11), 86805, 187974);
 
+			// pocket fix
+			SwapIDs(new DateTime(1, 1, 1), new DateTime(2020, 1, 14), 116704, 106722);
+
 			//ApplyNameTable();
 		}
 
@@ -255,7 +257,7 @@ namespace LeaderboardJsonIDFixer
 					entry2.ID = id1;
 
 				File.WriteAllText(leaderboardHistoryPath, JsonConvert.SerializeObject(leaderboard));
-				ConsoleUtils.WriteLineColor($"Wrote {fileName}.", ConsoleColor.Green);
+				Console.WriteLine($"Wrote {fileName}.", ConsoleColor.Green);
 			}
 		}
 
@@ -278,7 +280,7 @@ namespace LeaderboardJsonIDFixer
 
 				if (changes.Count != 0)
 				{
-					ConsoleUtils.WriteLineColor(HistoryUtils.HistoryJsonFileNameToDateString(Path.GetFileNameWithoutExtension(path)), ConsoleColor.Yellow);
+					Console.WriteLine(HistoryUtils.HistoryJsonFileNameToDateString(Path.GetFileNameWithoutExtension(path)), ConsoleColor.Yellow);
 					foreach (Entry entry in changes)
 						Console.WriteLine($"Set ID to {entry.ID.ToString("D6")} for rank {entry.Rank.ToString("D3")} with name {entry.Username} and score {entry.Time / 10000f}");
 					Console.WriteLine();
