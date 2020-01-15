@@ -32,7 +32,7 @@ namespace DevilDaggersWebsite
 
 			// TODO: Add all tasks using reflection?
 			services.AddSingleton<IScheduledTask, CreateLeaderboardHistoryFileTask>();
-			services.AddSingleton<IScheduledTask, RetrieveEntireLeaderboardTask>();
+			//services.AddSingleton<IScheduledTask, RetrieveEntireLeaderboardTask>();
 
 			services.AddScheduler((sender, args) =>
 			{
