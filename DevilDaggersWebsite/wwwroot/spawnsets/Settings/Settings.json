@@ -842,5 +842,13 @@
 	},
 	"0_0_Stop": {
 		"LastUpdated": "2020-01-18T21:20:00"
+	},
+	"Help_Stop": {
+		"LastUpdated": "2020-01-25T17:21:00"
+	},
+	"Onslaught_Stop": {
+		"LastUpdated": "2020-01-25T17:21:00",
+		"Description": "Goal: 400s",
+		"MaxWaves": 150
 	}
 }
