@@ -1,0 +1,45 @@
+﻿@page
+@inject CoreBase.Services.ICommonObjects CommonObjects
+@using DevilDaggersWebsite.Code.Users
+@using DevilDaggersWebsite.Code.Utils
+@model DevilDaggersWebsite.ModsModel
+@{
+	ViewData["Title"] = "Mods";
+}
+
+<header>
+	<h1>@ViewData["Title"]</h1>
+</header>
+
+<main role="main">
+	<p class="text-center">
+		Here's a list of custom asset mods created by the community using <a asp-page="/Tools/DevilDaggersAssetEditor">Devil Daggers Asset Editor</a>. Read <a asp-page="/Wiki/AssetGuide">here</a> for more information.
+	</p>
+	@{
+		<table>
+			<thead>
+				<tr>
+					<th width="256">Name</th>
+					<th width="256">Author</th>
+					<th width="256" class="hidden-xs">Type</th>
+				</tr>
+			</thead>
+			<tbody>
+				@foreach (AssetMod mod in UserUtils.GetAssetMods(CommonObjects))
+				{
+					<tr>
+						<td>
+							<a href="@mod.Url" target="_blank">@mod.Name</a>
+						</td>
+						<td>
+							@mod.Author
+						</td>
+						<td class="hidden-xs">
+							@mod.DisplayType()
+						</td>
+					</tr>
+				}
+			</tbody>
+		</table>
+	}
+</main>
