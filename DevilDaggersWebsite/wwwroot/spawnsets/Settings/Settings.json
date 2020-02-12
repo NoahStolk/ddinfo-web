@@ -850,5 +850,8 @@
 		"LastUpdated": "2020-01-25T17:21:00",
 		"Description": "Goal: 400s",
 		"MaxWaves": 150
+	},
+	"nanospawn_Nullifier": {
+		"LastUpdated": "2020-02-02T19:12:00"
 	}
 }
