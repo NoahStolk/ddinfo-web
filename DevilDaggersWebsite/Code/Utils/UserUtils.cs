@@ -16,8 +16,8 @@ namespace DevilDaggersWebsite.Code.Utils
 				if (string.IsNullOrWhiteSpace(b))
 					continue;
 
-				string ban = b.TrimEnd('\r', '\n');
-				string[] props = GetPropsNoSpaces(ban);
+				string ban = b.Trim();
+				string[] props = GetPropsByTab(ban);
 				if (props.Length > 2 && int.TryParse(props[2], out int idResponsible))
 					yield return new Ban(int.Parse(props[0]), props[1], idResponsible);
 				else
@@ -32,8 +32,8 @@ namespace DevilDaggersWebsite.Code.Utils
 				if (string.IsNullOrWhiteSpace(d))
 					continue;
 
-				string donator = d.TrimEnd('\r', '\n');
-				string[] props = GetPropsNoSpaces(donator);
+				string donator = d.Trim();
+				string[] props = GetPropsByTab(donator);
 
 				yield return new Donator(int.Parse(props[0]), props[1], int.Parse(props[2]), char.Parse(props[3]));
 			}
@@ -46,12 +46,12 @@ namespace DevilDaggersWebsite.Code.Utils
 				if (string.IsNullOrWhiteSpace(f))
 					continue;
 
-				string flag = f.TrimEnd('\r', '\n');
+				string flag = f.Trim();
 
 				if (flag.EndsWith("?"))
 					continue;
 
-				string[] props = GetProps(flag);
+				string[] props = GetPropsBySpace(flag);
 
 				yield return new Flag(int.Parse(props[0]), props[1]);
 			}
@@ -64,8 +64,8 @@ namespace DevilDaggersWebsite.Code.Utils
 				if (string.IsNullOrWhiteSpace(s))
 					continue;
 
-				string line = s.TrimEnd('\r', '\n');
-				string[] props = GetProps(line);
+				string line = s.Trim();
+				string[] props = GetPropsBySpace(line);
 
 				yield return new PlayerSetting(int.Parse(props[0]), int.Parse(props[1]), float.Parse(props[2]), int.Parse(props[3]), bool.Parse(props[4]), bool.Parse(props[5]));
 			}
@@ -78,8 +78,8 @@ namespace DevilDaggersWebsite.Code.Utils
 				if (string.IsNullOrWhiteSpace(t))
 					continue;
 
-				string line = t.TrimEnd('\r', '\n');
-				string[] props = GetPropsNoSpaces(line);
+				string line = t.Trim();
+				string[] props = GetPropsByTab(line);
 
 				string[] titles = props[1].Split(',');
 
@@ -87,7 +87,7 @@ namespace DevilDaggersWebsite.Code.Utils
 			}
 		}
 
-		private static string[] GetProps(string line)
+		private static string[] GetPropsBySpace(string line)
 		{
 			while (line.Contains("\t"))
 				line = line.Replace("\t", " ");
@@ -96,7 +96,7 @@ namespace DevilDaggersWebsite.Code.Utils
 			return line.Split(' ');
 		}
 
-		private static string[] GetPropsNoSpaces(string line)
+		private static string[] GetPropsByTab(string line)
 		{
 			while (line.Contains("\t\t"))
 				line = line.Replace("\t\t", "\t");
