@@ -9,38 +9,58 @@
 	<h1>@ViewData["Title"]</h1>
 </header>
 
-<main role="main" class="text-center">
+<main role="main" class="text-left">
 	@using (Html.BeginForm(FormMethod.Post))
 	{
 		<fieldset>
 			<div class="row">
 				<div class="col-lg-4 col-xs-12">
 					<h2>Bans</h2>
-					<p>ID, Description, IDResponsible (<a asp-page="/Admin/BanInfo" asp-route-password="@Model.Password">Ban Info page</a> (takes a while to load))</p>
+					<p style="height: 96px;">ID, Description, IDResponsible (<a asp-page="/Admin/BanInfo" asp-route-password="@Model.Password">Ban Info page</a> (slow))</p>
 					<textarea asp-for="BansFileContents">@Model.BansFileContents</textarea>
 				</div>
 				<div class="col-lg-4 col-xs-12">
 					<h2>Donators</h2>
-					<p>ID, Username, Amount, Currency</p>
+					<p style="height: 96px;">ID, Username, Amount, Currency</p>
 					<textarea asp-for="DonatorsFileContents">@Model.DonatorsFileContents</textarea>
 				</div>
 				<div class="col-lg-4 col-xs-12">
 					<h2>Flags</h2>
-					<p>ID, CountryCode</p>
+					<p style="height: 96px;">ID, CountryCode</p>
 					<textarea asp-for="FlagsFileContents">@Model.FlagsFileContents</textarea>
 				</div>
 				<div class="col-lg-4 col-xs-12">
 					<h2>Player settings</h2>
-					<p>ID, DPI, Sens, FOV, RightHanded, FlashEnabled</p>
+					<p style="height: 192px;">ID, DPI, Sens, FOV, RightHanded, FlashEnabled</p>
 					<textarea asp-for="SettingsFileContents">@Model.SettingsFileContents</textarea>
 				</div>
-				<div class="col-lg-4 col-xs-12">
+				<div class="col-lg-8 col-xs-12">
 					<h2>User titles</h2>
-					<p>ID, Titles (multiple titles are separated by commas, e.g. Site admin,Discord mod)</p>
+					<p style="height: 192px;">
+						ID, Title(s)*<br />
+						Titles:<br />
+						- Site admin<br />
+						- Discord mod<br />
+						Multiple titles are supported and should be separated by commas, for instance; Site admin,Discord mod
+					</p>
 					<textarea asp-for="TitlesFileContents">@Model.TitlesFileContents</textarea>
 				</div>
+				<div class="col-lg-12 col-xs-12">
+					<h2>Asset mods</h2>
+					<p>
+						Asset type(s)*, Mod name, Mod author, Download URL<br />
+						Flags:<br />
+						Audio = 1<br />
+						Texture = 2<br />
+						Model = 4<br />
+						Shader = 8<br />
+						Particle = 16<br />
+						Multiple types are supported using bit fields; a mod that changes audio and textures would get the value 3 (1 + 2), a mod that changes audio, models, and particles would get the value 21 (1 + 4 + 16), and so forth.
+					</p>
+					<textarea asp-for="AssetModsFileContents">@Model.AssetModsFileContents</textarea>
+				</div>
 			</div>
-			<div class="row">
+			<div class="row text-center" style="padding: 16px;">
 				<input asp-for="Password" type="hidden" value="@Model.Password" />
 				<input type="submit" id="save" class="btn btn-default" value="Save" />
 			</div>

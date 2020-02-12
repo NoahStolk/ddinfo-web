@@ -87,6 +87,20 @@ namespace DevilDaggersWebsite.Code.Utils
 			}
 		}
 
+		public static IEnumerable<AssetMod> GetAssetMods(ICommonObjects commonObjects)
+		{
+			foreach (string m in FileUtils.GetContents(Path.Combine(commonObjects.Env.WebRootPath, "user", "mods"), Encoding.Default).Split('\n'))
+			{
+				if (string.IsNullOrWhiteSpace(m))
+					continue;
+
+				string mod = m.Trim();
+				string[] props = GetPropsByTab(mod);
+
+				yield return new AssetMod((AssetModType)int.Parse(props[0]), props[1], props[2], props[3]);
+			}
+		}
+
 		private static string[] GetPropsBySpace(string line)
 		{
 			while (line.Contains("\t"))
