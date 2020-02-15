@@ -36,10 +36,10 @@
 							@mod.Author
 						</td>
 						<td class="hidden-xs">
-							@(EnumUtils.DisplayEnumFlags(mod.AssetModType))
+							@(string.Join(", ", EnumUtils.DisplayEnumFlags(mod.AssetModType)))
 						</td>
 						<td class="hidden-xs">
-							@(EnumUtils.DisplayEnumFlags(mod.AssetModFileContents))
+							@(string.Join(", ", EnumUtils.DisplayEnumFlags(mod.AssetModFileContents)))
 						</td>
 					</tr>
 				}
