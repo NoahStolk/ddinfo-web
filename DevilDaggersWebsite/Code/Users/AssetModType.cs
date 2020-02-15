@@ -10,6 +10,7 @@ namespace DevilDaggersWebsite.Code.Users
 		Texture = 2,
 		Model = 4,
 		Shader = 8,
-		Particle = 16
+		Particle = 16,
+		Spawnset = 32
 	}
 }

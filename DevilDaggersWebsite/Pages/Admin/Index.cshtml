@@ -1,5 +1,7 @@
 ﻿@page
 @model DevilDaggersWebsite.Pages.Admin.IndexModel
+@using NetBase.Utils
+@using DevilDaggersWebsite.Code.Users
 @inject CoreBase.Services.ICommonObjects CommonObjects
 @{
 	ViewData["Title"] = "Admin";
@@ -47,16 +49,30 @@
 				</div>
 				<div class="col-lg-12 col-xs-12">
 					<h2>Asset mods</h2>
-					<p>
-						Asset type(s)*, Mod name, Mod author, Download URL<br />
-						Flags:<br />
-						Audio = 1<br />
-						Texture = 2<br />
-						Model = 4<br />
-						Shader = 8<br />
-						Particle = 16<br />
-						Multiple types are supported using bit fields; a mod that changes audio and textures would get the value 3 (1 + 2), a mod that changes audio, models, and particles would get the value 21 (1 + 4 + 16), and so forth.
-					</p>
+					<p>Mod type(s), File kind(s) included in download, Mod name, Mod author, Download URL</p>
+
+					<div class="row">
+						<div class="col-xs-6">
+							Mod type<br />
+							<ul>
+								@foreach (string s in EnumUtils.DisplayEnumValues<AssetModType>())
+								{
+									<li>@s</li>
+								}
+							</ul>
+						</div>
+						<div class="col-xs-6">
+							File kind<br />
+							<ul>
+								@foreach (string s in EnumUtils.DisplayEnumValues<AssetModFileContents>())
+								{
+									<li>@s</li>
+								}
+							</ul>
+						</div>
+					</div>
+
+					<p>Multiple types are supported using bit fields; a mod that changes audio and textures would get the mod type value 3 (1 + 2), a mod that changes audio, models, and particles would get the mod type value 21 (1 + 4 + 16), and so forth.</p>
 					<textarea asp-for="AssetModsFileContents">@Model.AssetModsFileContents</textarea>
 				</div>
 			</div>

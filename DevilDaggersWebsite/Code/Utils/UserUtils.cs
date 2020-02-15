@@ -97,7 +97,7 @@ namespace DevilDaggersWebsite.Code.Utils
 				string mod = m.Trim();
 				string[] props = GetPropsByTab(mod);
 
-				yield return new AssetMod((AssetModType)int.Parse(props[0]), props[1], props[2], props[3]);
+				yield return new AssetMod((AssetModType)int.Parse(props[0]), (AssetModFileContents)int.Parse(props[1]), props[2], props[3], props[4]);
 			}
 		}
 

@@ -2,7 +2,7 @@
 @inject CoreBase.Services.ICommonObjects CommonObjects
 @using DevilDaggersWebsite.Code.Users
 @using DevilDaggersWebsite.Code.Utils
-@model DevilDaggersWebsite.ModsModel
+@using NetBase.Utils
 @{
 	ViewData["Title"] = "Mods";
 }
@@ -22,6 +22,7 @@
 					<th width="256">Name</th>
 					<th width="256">Author</th>
 					<th width="256" class="hidden-xs">Type</th>
+					<th width="256" class="hidden-xs">Contents</th>
 				</tr>
 			</thead>
 			<tbody>
@@ -35,7 +36,10 @@
 							@mod.Author
 						</td>
 						<td class="hidden-xs">
-							@mod.DisplayType()
+							@(EnumUtils.DisplayEnumFlags(mod.AssetModType))
+						</td>
+						<td class="hidden-xs">
+							@(EnumUtils.DisplayEnumFlags(mod.AssetModFileContents))
 						</td>
 					</tr>
 				}
@@ -43,3 +47,7 @@
 		</table>
 	}
 </main>
+
+@section Styles {
+	<link rel='stylesheet' href='~/styles/mods.css' />
+}
