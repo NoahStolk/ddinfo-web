@@ -497,10 +497,19 @@ namespace DevilDaggersWebsite.Code.Utils
 		{
 			Name = "DevilDaggersAssetEditor",
 			DisplayName = "Devil Daggers Asset Editor",
-			VersionNumber = new Version(0, 7, 12, 0),
+			VersionNumber = new Version(0, 7, 13, 0),
 			VersionNumberRequired = new Version(0, 7, 5, 0),
 			Changelog = new List<ChangelogEntry>
 			{
+				new ChangelogEntry
+				{
+					VersionNumber = new Version(0, 7, 13, 0),
+					Date = new DateTime(2020, 2, 15),
+					Changes = new List<Change>
+					{
+						new Change("Added almost all texture descriptions.")
+					}
+				},
 				new ChangelogEntry
 				{
 					VersionNumber = new Version(0, 7, 12, 0),
