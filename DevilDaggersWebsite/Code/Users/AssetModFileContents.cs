@@ -6,7 +6,7 @@ namespace DevilDaggersWebsite.Code.Users
 	public enum AssetModFileContents
 	{
 		None = 0,
-		Assets = 1,
-		Packed = 2
+		RawAssets = 1,
+		Mod = 2
 	}
 }
