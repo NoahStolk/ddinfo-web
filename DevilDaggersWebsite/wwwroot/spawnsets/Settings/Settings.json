@@ -853,5 +853,12 @@
 	},
 	"nanospawn_Nullifier": {
 		"LastUpdated": "2020-02-02T19:12:00"
+	},
+	"Frenzy_Stop": {
+		"LastUpdated": "2020-02-28T02:24:00",
+		"Description": "Juggle surviving 5 minutes of spawns with an emphasis on gem-collecting where little time is provided to take down any Ghostpedes looming overhead before a sudden difficult wave while Leviathan spawns and the Endloop begins."
+	},
+	"Potent_Stop": {
+		"LastUpdated": "2020-02-28T02:24:00"
 	}
 }
