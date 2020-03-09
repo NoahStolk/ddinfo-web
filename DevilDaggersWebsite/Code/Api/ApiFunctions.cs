@@ -151,7 +151,7 @@ namespace DevilDaggersWebsite.Code.Api
 				foreach (string leaderboardHistoryPath in Directory.GetFiles(Path.Combine(commonObjects.Env.WebRootPath, "leaderboard-history"), "*.json"))
 				{
 					Leaderboard leaderboard = JsonConvert.DeserializeObject<Leaderboard>(FileUtils.GetContents(leaderboardHistoryPath, Encoding.UTF8));
-					Entry entry = leaderboard.Entries.FirstOrDefault(e => e.ID == userId);
+					Entry entry = leaderboard.Entries.FirstOrDefault(e => e.Id == userId);
 
 					if (entry != null && !data.Values.Any(e =>
 						e.Time == entry.Time ||
@@ -195,13 +195,13 @@ namespace DevilDaggersWebsite.Code.Api
 		}
 
 		// TODO
-		public static (DateTime, DateTime) GetLatestDatePlayed(ICommonObjects commonObjects, int userID)
+		public static (DateTime, DateTime) GetLatestDatePlayed(ICommonObjects commonObjects, int userId)
 		{
 			List<(DateTime dateTime, Entry entry)> entries = new List<(DateTime, Entry)>();
 			foreach (string leaderboardHistoryPath in Directory.GetFiles(Path.Combine(commonObjects.Env.WebRootPath, "leaderboard-history"), "*.json"))
 			{
 				Leaderboard lb = JsonConvert.DeserializeObject<Leaderboard>(FileUtils.GetContents(leaderboardHistoryPath, Encoding.UTF8));
-				Entry entry = lb.Entries.Where(e => e.ID == userID).FirstOrDefault();
+				Entry entry = lb.Entries.Where(e => e.Id == userId).FirstOrDefault();
 				if (entry != null)
 					entries.Add((lb.DateTime, entry));
 			}

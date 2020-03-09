@@ -43,7 +43,7 @@ namespace DevilDaggersWebsite.Pages.Leaderboard
 					lastHeld = worldRecords[i + 1].DateTime;
 				}
 
-				if (i != 0 && wr.Entry.ID != worldRecords[i - 1].Entry.ID)
+				if (i != 0 && wr.Entry.Id != worldRecords[i - 1].Entry.Id)
 					heldConsecutively = new TimeSpan();
 
 				heldConsecutively += difference;
@@ -53,7 +53,7 @@ namespace DevilDaggersWebsite.Pages.Leaderboard
 				bool added = false;
 				foreach (WorldRecordHolder wrh in WorldRecordHolders)
 				{
-					if (wrh.Id == wr.Entry.ID)
+					if (wrh.Id == wr.Entry.Id)
 					{
 						wrh.MostRecentUsername = wr.Entry.Username;
 						if (!wrh.Usernames.Contains(wr.Entry.Username))
@@ -71,7 +71,7 @@ namespace DevilDaggersWebsite.Pages.Leaderboard
 				}
 
 				if (!added)
-					WorldRecordHolders.Add(new WorldRecordHolder(wr.Entry.ID, wr.Entry.Username, difference, heldConsecutively, 1, lastHeld));
+					WorldRecordHolders.Add(new WorldRecordHolder(wr.Entry.Id, wr.Entry.Username, difference, heldConsecutively, 1, lastHeld));
 			}
 
 			WorldRecordHolders = WorldRecordHolders.OrderByDescending(wrh => wrh.TotalTimeHeld).ToList();

@@ -49,7 +49,7 @@ namespace DevilDaggersWebsite.Code.Utils.Web
 					{
 						Username = GetUsername(data, ref bytePos),
 						Rank = BitConverter.ToInt32(data, bytePos),
-						ID = BitConverter.ToInt32(data, bytePos + 4),
+						Id = BitConverter.ToInt32(data, bytePos + 4),
 						Time = BitConverter.ToInt32(data, bytePos + 8),
 						Kills = BitConverter.ToInt32(data, bytePos + 12),
 						Gems = BitConverter.ToInt32(data, bytePos + 24),
@@ -104,7 +104,7 @@ namespace DevilDaggersWebsite.Code.Utils.Web
 					{
 						Username = GetUsername(data, ref bytePos),
 						Rank = BitConverter.ToInt32(data, bytePos),
-						ID = BitConverter.ToInt32(data, bytePos + 4),
+						Id = BitConverter.ToInt32(data, bytePos + 4),
 						Time = BitConverter.ToInt32(data, bytePos + 12),
 						Kills = BitConverter.ToInt32(data, bytePos + 16),
 						Gems = BitConverter.ToInt32(data, bytePos + 28),
@@ -154,7 +154,7 @@ namespace DevilDaggersWebsite.Code.Utils.Web
 				{
 					Username = GetUsername(data, ref bytePos),
 					Rank = BitConverter.ToInt32(data, bytePos),
-					ID = BitConverter.ToInt32(data, bytePos + 4),
+					Id = BitConverter.ToInt32(data, bytePos + 4),
 					Time = BitConverter.ToInt32(data, bytePos + 12),
 					Kills = BitConverter.ToInt32(data, bytePos + 16),
 					Gems = BitConverter.ToInt32(data, bytePos + 28),

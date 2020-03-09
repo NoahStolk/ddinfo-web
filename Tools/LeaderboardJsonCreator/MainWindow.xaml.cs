@@ -29,8 +29,8 @@ namespace LeaderboardJsonCreator
 
 			if (int.TryParse(Rank.Text, out int rank))
 				entry.Rank = rank;
-			if (int.TryParse(ID.Text, out int id))
-				entry.ID = id;
+			if (int.TryParse(Id.Text, out int id))
+				entry.Id = id;
 
 			entry.Username = Username.Text;
 

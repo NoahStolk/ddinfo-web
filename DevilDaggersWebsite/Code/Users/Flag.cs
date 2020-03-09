@@ -2,12 +2,12 @@
 {
 	public class Flag
 	{
-		public int ID { get; set; }
+		public int Id { get; set; }
 		public string CountryCode { get; set; }
 
 		public Flag(int id, string countryCode)
 		{
-			ID = id;
+			Id = id;
 			CountryCode = countryCode;
 		}
 	}

@@ -38,11 +38,11 @@ namespace DevilDaggersWebsite.Pages.Admin
 			IEnumerable<Ban> bans = UserUtils.GetBans(_commonObjects);
 			foreach (Ban ban in bans)
 			{
-				Entry entry = await Hasmodai.GetUserById(ban.ID);
+				Entry entry = await Hasmodai.GetUserById(ban.Id);
 
-				if (ban.IDResponsible.HasValue)
+				if (ban.IdResponsible.HasValue)
 				{
-					Entry entryResponsible = await Hasmodai.GetUserById(ban.IDResponsible.Value);
+					Entry entryResponsible = await Hasmodai.GetUserById(ban.IdResponsible.Value);
 					list.Add((ban, entry.Username, entryResponsible.Username));
 				}
 				else

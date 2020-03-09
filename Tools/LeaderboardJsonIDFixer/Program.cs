@@ -18,13 +18,13 @@ namespace LeaderboardJsonIDFixer
 			{ "Sojk", 229 },
 			{ "k0k0sMJÖLk [38th]", 229 },
 			{ "Bintr", 148788 },
-			{ "DraQu", 82891 }, // Not sure why his ID is so high
+			{ "DraQu", 82891 }, // Not sure why his Id is so high.
 			{ "twitch.tv/draqu_", 82891 },
 			{ "DraQu^WR", 82891 },
 			{ "weaksauce13", 112 },
 			{ "Weaksauce", 112 },
 			{ "weaksauce", 112 },
-			{ "b0necarver", -1 }, // No idea, but we need this for the world record graph
+			{ "b0necarver", -1 }, // No idea, but we need this for the world record graph.
 			{ "m4ttbush", 1 },
 			{ "A.N.T.4", 1677 },
 			{ "? ANT4", 1677 },
@@ -224,22 +224,22 @@ namespace LeaderboardJsonIDFixer
 		public static void Main()
 		{
 			// Raven fix
-			//SwapIDs(new DateTime(1, 1, 1), new DateTime(2019, 10, 11), 86805, 187974);
+			//SwapIds(new DateTime(1, 1, 1), new DateTime(2019, 10, 11), 86805, 187974);
 
 			// pocket fix
-			SwapIDs(new DateTime(1, 1, 1), new DateTime(2020, 1, 14), 116704, 106722);
+			SwapIds(new DateTime(1, 1, 1), new DateTime(2020, 1, 14), 116704, 106722);
 
 			//ApplyNameTable();
 		}
 
 		/// <summary>
-		/// Swaps IDs for players with 2 accounts in the leaderboard history files.
+		/// Swaps Ids for players with 2 accounts in the leaderboard history files.
 		/// </summary>
 		/// <param name="dateStart">The date on which the player's alt overtook their main account.</param>
 		/// <param name="dateEnd">The date on which the player's main overtook their alt account.</param>
-		/// <param name="id1">The first ID to swap.</param>
-		/// <param name="id2">The second ID to swap.</param>
-		public static void SwapIDs(DateTime dateStart, DateTime dateEnd, int id1, int id2)
+		/// <param name="id1">The first Id to swap.</param>
+		/// <param name="id2">The second Id to swap.</param>
+		public static void SwapIds(DateTime dateStart, DateTime dateEnd, int id1, int id2)
 		{
 			foreach (string leaderboardHistoryPath in Directory.GetFiles(@"C:\Users\NOAH\source\repos\DevilDaggersWebsite\DevilDaggersWebsite\wwwroot\leaderboard-history", "*.json"))
 			{
@@ -248,13 +248,13 @@ namespace LeaderboardJsonIDFixer
 				if (leaderboard.DateTime < dateStart || leaderboard.DateTime > dateEnd)
 					continue;
 
-				Entry entry1 = leaderboard.Entries.FirstOrDefault(e => e.ID == id1);
-				Entry entry2 = leaderboard.Entries.FirstOrDefault(e => e.ID == id2);
+				Entry entry1 = leaderboard.Entries.FirstOrDefault(e => e.Id == id1);
+				Entry entry2 = leaderboard.Entries.FirstOrDefault(e => e.Id == id2);
 
 				if (entry1 != null)
-					entry1.ID = id2;
+					entry1.Id = id2;
 				if (entry2 != null)
-					entry2.ID = id1;
+					entry2.Id = id1;
 
 				File.WriteAllText(leaderboardHistoryPath, JsonConvert.SerializeObject(leaderboard));
 				Console.WriteLine($"Wrote {fileName}.", ConsoleColor.Green);
@@ -271,9 +271,9 @@ namespace LeaderboardJsonIDFixer
 				List<Entry> changes = new List<Entry>();
 				foreach (Entry entry in leaderboard.Entries)
 				{
-					if (entry.ID == 0 && nameTable.ContainsKey(entry.Username))
+					if (entry.Id == 0 && nameTable.ContainsKey(entry.Username))
 					{
-						entry.ID = nameTable[entry.Username];
+						entry.Id = nameTable[entry.Username];
 						changes.Add(entry);
 					}
 				}
@@ -282,7 +282,7 @@ namespace LeaderboardJsonIDFixer
 				{
 					Console.WriteLine(HistoryUtils.HistoryJsonFileNameToDateString(Path.GetFileNameWithoutExtension(path)), ConsoleColor.Yellow);
 					foreach (Entry entry in changes)
-						Console.WriteLine($"Set ID to {entry.ID.ToString("D6")} for rank {entry.Rank.ToString("D3")} with name {entry.Username} and score {entry.Time / 10000f}");
+						Console.WriteLine($"Set Id to {entry.Id.ToString("D6")} for rank {entry.Rank.ToString("D3")} with name {entry.Username} and score {entry.Time / 10000f}");
 					Console.WriteLine();
 				}
 

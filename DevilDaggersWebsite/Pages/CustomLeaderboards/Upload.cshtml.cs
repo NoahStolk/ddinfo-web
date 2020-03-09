@@ -31,11 +31,11 @@ namespace DevilDaggersWebsite.Pages.CustomLeaderboards
 			_commonObjects = commonObjects;
 		}
 
-		public void OnGet(string spawnsetHash, int playerID, string username, float time, int gems, int kills, int deathType, int shotsHit, int shotsFired, int enemiesAlive, int homing, float levelUpTime2, float levelUpTime3, float levelUpTime4, string ddclClientVersion, string v)
+		public void OnGet(string spawnsetHash, int playerId, string username, float time, int gems, int kills, int deathType, int shotsHit, int shotsFired, int enemiesAlive, int homing, float levelUpTime2, float levelUpTime3, float levelUpTime4, string ddclClientVersion, string v)
 		{
 			try
 			{
-				UploadResult result = TryUpload(spawnsetHash, playerID, username, time, gems, kills, deathType, shotsHit, shotsFired, enemiesAlive, homing, levelUpTime2, levelUpTime3, levelUpTime4, ddclClientVersion, v);
+				UploadResult result = TryUpload(spawnsetHash, playerId, username, time, gems, kills, deathType, shotsHit, shotsFired, enemiesAlive, homing, levelUpTime2, levelUpTime3, levelUpTime4, ddclClientVersion, v);
 				JsonResult = JsonConvert.SerializeObject(result);
 			}
 			catch (Exception ex)
@@ -44,7 +44,7 @@ namespace DevilDaggersWebsite.Pages.CustomLeaderboards
 			}
 		}
 
-		private UploadResult TryUpload(string spawnsetHash, int playerID, string username, float time, int gems, int kills, int deathType, int shotsHit, int shotsFired, int enemiesAlive, int homing, float levelUpTime2, float levelUpTime3, float levelUpTime4, string clientVersion, string validation)
+		private UploadResult TryUpload(string spawnsetHash, int playerId, string username, float time, int gems, int kills, int deathType, int shotsHit, int shotsFired, int enemiesAlive, int homing, float levelUpTime2, float levelUpTime3, float levelUpTime4, string clientVersion, string validation)
 		{
 			Version clientVersionParsed = Version.Parse(clientVersion);
 			if (clientVersionParsed < ToolList.DevilDaggersCustomLeaderboards.VersionNumberRequired)
@@ -54,7 +54,7 @@ namespace DevilDaggersWebsite.Pages.CustomLeaderboards
 			foreach (string spawnsetPath in Directory.GetFiles(Path.Combine(_commonObjects.Env.WebRootPath, "spawnsets")))
 			{
 				string hash = string.Empty;
-				
+
 				using (FileStream fs = new FileStream(spawnsetPath, FileMode.Open, FileAccess.Read))
 					if (Spawnset.TryParse(fs, out Spawnset spawnsetObject))
 						hash = spawnsetObject.GetHashString();
@@ -70,7 +70,7 @@ namespace DevilDaggersWebsite.Pages.CustomLeaderboards
 				return new UploadResult(false, "This spawnset does not exist on DevilDaggers.info.");
 
 			string check = string.Join(";",
-				playerID,
+				playerId,
 				username,
 				time,
 				gems,
@@ -107,11 +107,11 @@ namespace DevilDaggersWebsite.Pages.CustomLeaderboards
 			int rank = leaderboard.Category.Ascending ? entries.Where(e => e.Time < time).Count() + 1 : entries.Where(e => e.Time > time).Count() + 1; // TODO: Use reflection to use Category.SortingPropertyName.
 			int totalPlayers = entries.Count();
 
-			CustomEntry entry = _context.CustomEntries.FirstOrDefault(e => e.PlayerID == playerID && e.CustomLeaderboardID == leaderboard.ID);
+			CustomEntry entry = _context.CustomEntries.FirstOrDefault(e => e.PlayerId == playerId && e.CustomLeaderboardId == leaderboard.Id);
 			if (entry == null)
 			{
 				// Add new user to this leaderboard.
-				_context.CustomEntries.Add(new CustomEntry(playerID, username, time, gems, kills, deathType, shotsHit, shotsFired, enemiesAlive, homing, levelUpTime2, levelUpTime3, levelUpTime4, DateTime.Now, clientVersion) { CustomLeaderboard = leaderboard });
+				_context.CustomEntries.Add(new CustomEntry(playerId, username, time, gems, kills, deathType, shotsHit, shotsFired, enemiesAlive, homing, levelUpTime2, levelUpTime3, levelUpTime4, DateTime.Now, clientVersion) { CustomLeaderboard = leaderboard });
 
 				_context.SaveChanges();
 				return new UploadResult(true, $@"Welcome to the leaderboard for {SpawnsetFile.GetName(leaderboard.SpawnsetFileName)}.
@@ -122,9 +122,9 @@ namespace DevilDaggersWebsite.Pages.CustomLeaderboards
 			else
 			{
 				// Update the username.
-				foreach (CustomEntry en in _context.CustomEntries.Where(e => e.PlayerID == entry.PlayerID))
+				foreach (CustomEntry en in _context.CustomEntries.Where(e => e.PlayerId == entry.PlayerId))
 					en.Username = username;
-					
+
 				// User is already on the leaderboard, check for better score.
 				if ((leaderboard.Category.Ascending && entry.Time <= time) // TODO: Use reflection to use Category.SortingPropertyName.
 				 || (!leaderboard.Category.Ascending && entry.Time >= time))

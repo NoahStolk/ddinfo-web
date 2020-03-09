@@ -1,6 +1,5 @@
 ﻿using DevilDaggersCore.Game;
 using Microsoft.AspNetCore.Html;
-using System;
 using System.Collections.Generic;
 
 namespace DevilDaggersWebsite.Code.Utils
@@ -73,14 +72,8 @@ namespace DevilDaggersWebsite.Code.Utils
 			return str;
 		}
 
-		public static string ToIDString(this string str)
-		{
-			return $"{str.ToLower().Replace(" ", "-")}";
-		}
+		public static string ToIdString(this string str) => $"{str.ToLower().Replace(" ", "-")}";
 
-		public static string S(this int value)
-		{
-			return value == 1 ? "" : "s";
-		}
+		public static string S(this int value) => value == 1 ? "" : "s";
 	}
 }

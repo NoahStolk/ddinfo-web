@@ -9,15 +9,15 @@ namespace DevilDaggersWebsite.Code.Database.CustomLeaderboards
 {
 	public class CustomEntry : CustomEntryBase
 	{
-		public int ID { get; set; }
+		public int Id { get; set; }
 
-		public int CustomLeaderboardID { get; set; }
+		public int CustomLeaderboardId { get; set; }
 
-		[ForeignKey("CustomLeaderboardID")]
+		[ForeignKey("CustomLeaderboardId")]
 		public CustomLeaderboard CustomLeaderboard { get; set; }
 
-		public CustomEntry(int playerID, string username, float time, int gems, int kills, int deathType, int shotsHit, int shotsFired, int enemiesAlive, int homing, float levelUpTime2, float levelUpTime3, float levelUpTime4, DateTime submitDate, string clientVersion)
-			: base(playerID, username, time, gems, kills, deathType, shotsHit, shotsFired, enemiesAlive, homing, levelUpTime2, levelUpTime3, levelUpTime4, submitDate, clientVersion)
+		public CustomEntry(int playerId, string username, float time, int gems, int kills, int deathType, int shotsHit, int shotsFired, int enemiesAlive, int homing, float levelUpTime2, float levelUpTime3, float levelUpTime4, DateTime submitDate, string clientVersion)
+			: base(playerId, username, time, gems, kills, deathType, shotsHit, shotsFired, enemiesAlive, homing, levelUpTime2, levelUpTime3, levelUpTime4, submitDate, clientVersion)
 		{
 		}
 

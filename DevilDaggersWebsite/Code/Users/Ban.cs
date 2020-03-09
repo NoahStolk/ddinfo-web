@@ -2,15 +2,15 @@
 {
 	public class Ban
 	{
-		public int ID { get; set; }
+		public int Id { get; set; }
 		public string Description { get; set; }
-		public int? IDResponsible { get; set; }
+		public int? IdResponsible { get; set; }
 
 		public Ban(int id, string description, int? idResponsible)
 		{
-			ID = id;
+			Id = id;
 			Description = description;
-			IDResponsible = idResponsible;
+			IdResponsible = idResponsible;
 		}
 	}
 }

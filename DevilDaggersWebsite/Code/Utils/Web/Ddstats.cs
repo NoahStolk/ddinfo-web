@@ -43,7 +43,7 @@ namespace DevilDaggersWebsite.Code.Utils.Web
 				Entry entry = new Entry
 				{
 					Username = jsonEntry.player_name,
-					ID = jsonEntry.player_id,
+					Id = jsonEntry.player_id,
 					Rank = jsonEntry.rank,
 					Time = jsonEntry.game_time * 10000,
 					Gems = jsonEntry.gems,
