@@ -3,7 +3,7 @@
 		<TargetFramework>netcoreapp2.1</TargetFramework>
 		<Company />
 		<Authors>Noah Stolk</Authors>
-		<Copyright>Copyright © Noah Stolk 2017 - 2019</Copyright>
+		<Copyright>Copyright © Noah Stolk 2017 - 2020</Copyright>
 	</PropertyGroup>
 	<ItemGroup>
 		<PackageReference Include="BuildBundlerMinifier" Version="2.9.406" />
@@ -23,39 +23,6 @@
 	<ItemGroup>
 		<Content Update="log4net.config">
 			<CopyToOutputDirectory>Always</CopyToOutputDirectory>
-		</Content>
-		<Content Update="Pages\API\GetSpawnset.cshtml">
-			<Pack>$(IncludeRazorContentInPack)</Pack>
-		</Content>
-		<Content Update="Pages\API\GetUserByUsername.cshtml">
-			<Pack>$(IncludeRazorContentInPack)</Pack>
-		</Content>
-		<Content Update="Pages\API\GetUserByID.cshtml">
-			<Pack>$(IncludeRazorContentInPack)</Pack>
-		</Content>
-		<Content Update="Pages\API\GetUserProgressionByID.cshtml">
-			<Pack>$(IncludeRazorContentInPack)</Pack>
-		</Content>
-		<Content Update="Pages\Leaderboard\UserProgression.cshtml">
-			<Pack>$(IncludeRazorContentInPack)</Pack>
-		</Content>
-		<Content Update="Pages\Partials\_LeaderboardCustomChallengePartial.cshtml">
-			<Pack>$(IncludeRazorContentInPack)</Pack>
-		</Content>
-		<Content Update="Pages\Partials\_LeaderboardCustomDefaultPartial.cshtml">
-			<Pack>$(IncludeRazorContentInPack)</Pack>
-		</Content>
-		<Content Update="Pages\Partials\_LeaderboardUserSettingsPartial.cshtml">
-			<Pack>$(IncludeRazorContentInPack)</Pack>
-		</Content>
-		<Content Update="Pages\Partials\_SpawnEventsPartial.cshtml">
-			<Pack>$(IncludeRazorContentInPack)</Pack>
-		</Content>
-		<Content Update="Pages\Tools\DevilDaggersAssetEditor.cshtml">
-			<Pack>$(IncludeRazorContentInPack)</Pack>
-		</Content>
-		<Content Update="Pages\Wiki\SpawnsExtended.cshtml">
-			<Pack>$(IncludeRazorContentInPack)</Pack>
 		</Content>
 	</ItemGroup>
 	<ItemGroup>
