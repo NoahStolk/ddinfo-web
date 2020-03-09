@@ -1,8 +1,8 @@
 ﻿@page
 @inject CoreBase.Services.ICommonObjects CommonObjects
-@model DevilDaggersWebsite.Pages.Leaderboard.IDSearchModel
+@model DevilDaggersWebsite.Pages.Leaderboard.IdSearchModel
 @{
-	ViewData["Title"] = "IDSearch";
+	ViewData["Title"] = "IdSearch";
 
 	int[] widths = new int[2] { 160, 160 };
 }
@@ -18,8 +18,8 @@
 			<fieldset>
 				<div class="flex-container flex-center flex-column">
 					<div class="flex-container flex-center">
-						<div class="input-label text-left" style="width: @(widths[0])px;">ID:</div>
-						<div style="width: @(widths[1])px;">@Html.TextBoxFor(m => m.ID, new { @class = "input" })</div>
+						<div class="input-label text-left" style="width: @(widths[0])px;">Id:</div>
+						<div style="width: @(widths[1])px;">@Html.TextBoxFor(m => m.Id, new { @class = "input" })</div>
 					</div>
 				</div>
 				<div class="flex-container flex-center flex-column">

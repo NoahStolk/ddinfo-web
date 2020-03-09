@@ -2,7 +2,7 @@
 using System;
 using System.Reflection;
 
-namespace DevilDaggersWebsite.Code.API
+namespace DevilDaggersWebsite.Code.Api
 {
 	public class ApiFunctionParameter
 	{
@@ -19,7 +19,7 @@ namespace DevilDaggersWebsite.Code.API
 
 			string typeSpan = $"<span class='api-parameter-type'>{ActualType.Name}</span>";
 			typeSpan = IsNullable ? $"<span class='api-nullable'>Nullable&lt;{typeSpan}&gt;</span>" : typeSpan;
-			
+
 			string defaultValueSpan = $"<span class='api-parameter-default-value'>{GetDefaultValueString()}</span>";
 
 			FormattedDescription = new HtmlString($"<span class='api-parameter{(info.IsOptional ? "-optional" : "")}'>{info.Name}</span> ({typeSpan}{(info.IsOptional ? $", {defaultValueSpan}" : "")})");

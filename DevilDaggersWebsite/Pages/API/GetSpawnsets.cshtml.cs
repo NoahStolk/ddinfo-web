@@ -1,11 +1,11 @@
 ﻿using CoreBase.Services;
-using DevilDaggersWebsite.Code.API;
+using DevilDaggersWebsite.Code.Api;
 using DevilDaggersWebsite.Code.PageModels;
 using Microsoft.AspNetCore.Mvc;
 using Newtonsoft.Json;
 using System.Net.Mime;
 
-namespace DevilDaggersWebsite.Pages.API
+namespace DevilDaggersWebsite.Pages.Api
 {
 	[ApiFunction(Description = "Returns the list of available spawnsets on the site. Optional filtering can be done using the searchAuthor and searchName parameters.", ReturnType = MediaTypeNames.Application.Json)]
 	public class GetSpawnsetsModel : ApiPageModel

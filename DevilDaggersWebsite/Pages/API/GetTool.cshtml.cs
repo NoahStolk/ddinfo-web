@@ -1,9 +1,9 @@
-﻿using DevilDaggersWebsite.Code.API;
+﻿using DevilDaggersWebsite.Code.Api;
 using DevilDaggersWebsite.Code.PageModels;
 using Microsoft.AspNetCore.Mvc;
 using System.Net.Mime;
 
-namespace DevilDaggersWebsite.Pages.API
+namespace DevilDaggersWebsite.Pages.Api
 {
 	[ApiFunction(Description = "Returns the latest version of the tool corresponding to the given toolName parameter as a zip file. Returns to this page if the tool could not be found.", ReturnType = MediaTypeNames.Application.Zip)]
 	public class GetToolModel : ApiPageModel
@@ -13,7 +13,7 @@ namespace DevilDaggersWebsite.Pages.API
 			if (ApiFunctions.TryGetToolPath(toolName, out string fileName, out string path))
 				return File(path, MediaTypeNames.Application.Octet, fileName);
 
-			return RedirectToPage("/API/Index");
+			return RedirectToPage("/Api/Index");
 		}
 	}
 }

@@ -1,11 +1,11 @@
 ﻿using DevilDaggersCore.Game;
-using DevilDaggersWebsite.Code.API;
+using DevilDaggersWebsite.Code.Api;
 using DevilDaggersWebsite.Code.PageModels;
 using Microsoft.AspNetCore.Mvc;
 using Newtonsoft.Json;
 using System.Net.Mime;
 
-namespace DevilDaggersWebsite.Pages.API
+namespace DevilDaggersWebsite.Pages.Api
 {
 	[ApiFunction(Description = "Returns the Enemy object for the given enemyName and gameVersion. Returns all Enemy objects if no enemyName parameter was specified. Returns null if the Enemy object could not be found. Returns the Enemy object found in V3 if no gameVersion parameter was specified or if the parameter was incorrect.", ReturnType = MediaTypeNames.Application.Json)]
 	public class GetEnemiesModel : ApiPageModel

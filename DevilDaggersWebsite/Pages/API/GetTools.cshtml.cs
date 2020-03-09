@@ -1,10 +1,10 @@
-﻿using DevilDaggersWebsite.Code.API;
+﻿using DevilDaggersWebsite.Code.Api;
 using DevilDaggersWebsite.Code.PageModels;
 using Microsoft.AspNetCore.Mvc;
 using Newtonsoft.Json;
 using System.Net.Mime;
 
-namespace DevilDaggersWebsite.Pages.API
+namespace DevilDaggersWebsite.Pages.Api
 {
 	[ApiFunction(Description = "Returns the list of available tools on the website.", ReturnType = MediaTypeNames.Application.Json)]
 	public class GetToolsModel : ApiPageModel

@@ -134,13 +134,13 @@ namespace DevilDaggersWebsite.Code.Utils.Web
 			}
 		}
 
-		public static async Task<Entry> GetUserByID(int id)
+		public static async Task<Entry> GetUserById(int userId)
 		{
 			try
 			{
 				Dictionary<string, string> postValues = new Dictionary<string, string>
 				{
-					{ "uid", id.ToString() }
+					{ "uid", userId.ToString() }
 				};
 
 				FormUrlEncodedContent content = new FormUrlEncodedContent(postValues);

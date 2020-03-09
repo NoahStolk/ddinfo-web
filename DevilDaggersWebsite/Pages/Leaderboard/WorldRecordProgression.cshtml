@@ -3,7 +3,7 @@
 @using DevilDaggersCore.Leaderboards
 @using DevilDaggersCore.Leaderboards.History
 @using DevilDaggersWebsite.Code.Utils
-@using DevilDaggersWebsite.Code.API
+@using DevilDaggersWebsite.Code.Api
 @inject CoreBase.Services.ICommonObjects CommonObjects
 @model DevilDaggersWebsite.Pages.Leaderboard.WorldRecordProgressionModel
 @{
@@ -50,7 +50,7 @@
 
 			string timeHeld = $"{days} day{days.S()} ({(wrh.TotalTimeHeld / total).ToString("00.00%")})";
 
-			Entry current = await ApiFunctions.GetUserByID(wrh.ID);
+			Entry current = await ApiFunctions.GetUserById(wrh.Id);
 			string lastHeld = wr.Time == current.Time ? "Current holder" : $"{wrh.LastHeld.ToString("MMM dd")} '{wrh.LastHeld.ToString("yy")} ({daysAgo} day{daysAgo.S()} ago)";
 			string heldConsecutively = $"{daysConsecutively} day{daysConsecutively.S()}";
 			IEnumerable<string> aliases = wrh.Usernames.Where(s => s != wrh.MostRecentUsername);

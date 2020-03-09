@@ -1,11 +1,11 @@
-﻿using DevilDaggersWebsite.Code.API;
+﻿using DevilDaggersWebsite.Code.Api;
 using DevilDaggersWebsite.Code.Database;
 using DevilDaggersWebsite.Code.PageModels;
 using Microsoft.AspNetCore.Mvc;
 using Newtonsoft.Json;
 using System.Net.Mime;
 
-namespace DevilDaggersWebsite.Pages.API
+namespace DevilDaggersWebsite.Pages.Api
 {
 	[ApiFunction(Description = "Returns the list of all available custom leaderboards on the site.", ReturnType = MediaTypeNames.Application.Json)]
 	public class GetCustomLeaderboardsModel : ApiPageModel

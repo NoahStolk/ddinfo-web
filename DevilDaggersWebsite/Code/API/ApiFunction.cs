@@ -4,7 +4,7 @@ using System;
 using System.Collections.Generic;
 using System.Linq;
 
-namespace DevilDaggersWebsite.Code.API
+namespace DevilDaggersWebsite.Code.Api
 {
 	public class ApiFunction
 	{

@@ -1,16 +1,16 @@
 ﻿var deathTypes = [];
-$.getJSON("/API/GetDeaths?gameVersion=V1", function (data) {
+$.getJSON("/Api/GetDeaths?gameVersion=V1", function (data) {
 	deathTypes[0] = data;
 });
-$.getJSON("/API/GetDeaths?gameVersion=V2", function (data) {
+$.getJSON("/Api/GetDeaths?gameVersion=V2", function (data) {
 	deathTypes[1] = data;
 });
-$.getJSON("/API/GetDeaths?gameVersion=V3", function (data) {
+$.getJSON("/Api/GetDeaths?gameVersion=V3", function (data) {
 	deathTypes[2] = data;
 });
 
 var gameVersions = [];
-$.getJSON("/API/GetGameVersions", function (data) {
+$.getJSON("/Api/GetGameVersions", function (data) {
 	gameVersions = data;
 });
 
@@ -29,7 +29,7 @@ var getUrlParameter = function getUrlParameter(sParam) {
 	}
 };
 
-$.getJSON("/API/GetUserProgressionByID?UserID=" + getUrlParameter("UserID"), function (data) {
+$.getJSON("/Api/GetUserProgressionById?UserId=" + getUrlParameter("UserId"), function (data) {
 	var pbs = [];
 	$.each(data, function (key, val) {
 		var date = new Date(key);

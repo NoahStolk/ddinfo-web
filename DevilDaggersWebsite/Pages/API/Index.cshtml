@@ -1,6 +1,6 @@
 ﻿@page
-@model DevilDaggersWebsite.Pages.API.IndexModel
-@using DevilDaggersWebsite.Code.API
+@model DevilDaggersWebsite.Pages.Api.IndexModel
+@using DevilDaggersWebsite.Code.Api
 @using DevilDaggersWebsite.Code.Utils
 @using DevilDaggersCore.Game
 @{
@@ -25,7 +25,7 @@
 
 	<h2>List of functions</h2>
 	<p>
-		Here is the list containing all currently available API functions, including all their parameters. 
+		Here is the list containing all currently available API functions, including all their parameters.
 	</p>
 	<p>
 		The <span class="api-parameter-type">type</span> for each parameter is also shown below, and <span class="api-parameter-optional">optional parameters</span> have their <span class="api-parameter-default-value">default value</span> listed as well.
@@ -130,7 +130,7 @@
 		</div>
 		<div class="row">
 			<div class="col-xs-4">
-				<a asp-page="GetSpawnsets" asp-route-searchAuthor="Sorath" asp-route-searchName="V" class="dont-break-out">API/GetSpawnsets?searchAuthor=Sorath&searchName=V</a>
+				<a asp-page="GetSpawnsets" asp-route-searchAuthor="Sorath" asp-route-searchName="V" class="dont-break-out">Api/GetSpawnsets?searchAuthor=Sorath&searchName=V</a>
 			</div>
 			<div class="col-xs-8">
 				Returns the spawnsets that contain "Sorath" in the spawnset's author and "V" in the spawnset's name.
@@ -138,7 +138,7 @@
 		</div>
 		<div class="row">
 			<div class="col-xs-4">
-				<a asp-page="GetDeaths" asp-route-deathType="10" asp-route-formatted="true" class="dont-break-out">API/GetDeaths?deathType=10&formatted=true</a>
+				<a asp-page="GetDeaths" asp-route-deathType="10" asp-route-formatted="true" class="dont-break-out">Api/GetDeaths?deathType=10&formatted=true</a>
 			</div>
 			<div class="col-xs-8">
 				Returns the Death object for the deathType 10 which is <span style='color: #@GameInfo.V3.Annihilated.ColorCode'>@GameInfo.V3.Annihilated.Name</span>, and also formats the JSON.
@@ -146,7 +146,7 @@
 		</div>
 		<div class="row">
 			<div class="col-xs-4">
-				<a asp-page="GetSpawnset" asp-route-fileName="V3_Sorath" class="dont-break-out">API/GetSpawnset?fileName=V3_Sorath</a>
+				<a asp-page="GetSpawnset" asp-route-fileName="V3_Sorath" class="dont-break-out">Api/GetSpawnset?fileName=V3_Sorath</a>
 			</div>
 			<div class="col-xs-8">
 				Returns the spawnset with the name "V3_Sorath".
@@ -154,7 +154,7 @@
 		</div>
 		<div class="row">
 			<div class="col-xs-4">
-				<a asp-page="GetEnemies" asp-route-gameVersion="V2" class="dont-break-out">API/GetEnemies?gameVersion=V2</a>
+				<a asp-page="GetEnemies" asp-route-gameVersion="V2" class="dont-break-out">Api/GetEnemies?gameVersion=V2</a>
 			</div>
 			<div class="col-xs-8">
 				Returns all Enemy objects found in V2.

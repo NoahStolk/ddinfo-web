@@ -21,7 +21,7 @@ using System.Reflection;
 using System.Text;
 using System.Threading.Tasks;
 
-namespace DevilDaggersWebsite.Code.API
+namespace DevilDaggersWebsite.Code.Api
 {
 	public static class ApiFunctions
 	{
@@ -130,9 +130,9 @@ namespace DevilDaggersWebsite.Code.API
 			return ToolList.Tools;
 		}
 
-		public static async Task<Entry> GetUserByID(int userID)
+		public static async Task<Entry> GetUserById(int userId)
 		{
-			return await Hasmodai.GetUserByID(userID);
+			return await Hasmodai.GetUserById(userId);
 		}
 
 		public static async Task<List<Entry>> GetUserByUsername(string username)
@@ -142,16 +142,16 @@ namespace DevilDaggersWebsite.Code.API
 			return leaderboard.Entries;
 		}
 
-		public static SortedDictionary<DateTime, Entry> GetUserProgression(ICommonObjects commonObjects, int userID)
+		public static SortedDictionary<DateTime, Entry> GetUserProgressionById(ICommonObjects commonObjects, int userId)
 		{
 			SortedDictionary<DateTime, Entry> data = new SortedDictionary<DateTime, Entry>();
 
-			if (userID != 0)
+			if (userId != 0)
 			{
 				foreach (string leaderboardHistoryPath in Directory.GetFiles(Path.Combine(commonObjects.Env.WebRootPath, "leaderboard-history"), "*.json"))
 				{
 					Leaderboard leaderboard = JsonConvert.DeserializeObject<Leaderboard>(FileUtils.GetContents(leaderboardHistoryPath, Encoding.UTF8));
-					Entry entry = leaderboard.Entries.FirstOrDefault(e => e.ID == userID);
+					Entry entry = leaderboard.Entries.FirstOrDefault(e => e.ID == userId);
 
 					if (entry != null && !data.Values.Any(e =>
 						e.Time == entry.Time ||

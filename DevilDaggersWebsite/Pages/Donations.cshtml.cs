@@ -29,7 +29,7 @@ namespace DevilDaggersWebsite.Pages
 
 			//foreach (Donator donator in Donators)
 			//{
-			//	Entry entry = await Hasmodai.GetUserByID(donator.ID);
+			//	Entry entry = await Hasmodai.GetUserById(donator.Id);
 			//	donator.Username = entry.Username;
 			//}
 		}

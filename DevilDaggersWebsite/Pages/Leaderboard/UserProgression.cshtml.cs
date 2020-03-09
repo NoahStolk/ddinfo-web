@@ -11,15 +11,15 @@ namespace DevilDaggersWebsite.Pages.Leaderboard
 		public string Username { get; set; }
 		public bool IsValid { get; set; }
 
-		public async Task OnGetAsync(int userID)
+		public async Task OnGetAsync(int userId)
 		{
-			UserID = userID;
+			UserID = userId;
 			Username = string.Empty;
 
 			IsValid = UserID > 0;
 			if (IsValid)
 			{
-				Entry entry = await Hasmodai.GetUserByID(userID);
+				Entry entry = await Hasmodai.GetUserById(userId);
 				Username = entry.Username;
 			}
 		}

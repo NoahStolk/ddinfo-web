@@ -22,7 +22,7 @@
 	<link href="~/favicon.ico" rel="shortcut icon" />
 	<title>@ViewData["Title"] - Devil Daggers Info</title>
 
-	@await Html.PartialAsync("SharedPartials/_CSSBundlePartial")
+	@await Html.PartialAsync("SharedPartials/_CssBundlePartial")
 
 	@RenderSection("Styles", required: false)
 </head>
@@ -77,7 +77,7 @@
 							<li><a asp-page="/Wiki/AssetGuide">Asset Guide</a></li>
 						</ul>
 					</li>
-					<li><a asp-page="/API/Index">API</a></li>
+					<li><a asp-page="/Api/Index">API</a></li>
 				</ul>
 			</div>
 		</div>
@@ -109,7 +109,7 @@
 		</footer>
 	</div>
 
-	@await Html.PartialAsync("SharedPartials/_JSBundlePartial")
+	@await Html.PartialAsync("SharedPartials/_JsBundlePartial")
 
 	@RenderSection("Scripts", required: false)
 </body>

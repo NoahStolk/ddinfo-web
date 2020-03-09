@@ -66,13 +66,13 @@ namespace DevilDaggersWebsite
 				.AddRedirect("^Upgrades$", "Wiki/Upgrades")
 				.AddRedirect("^Enemies$", "Wiki/Enemies")
 				.AddRedirect("^Daggers$", "Wiki/Daggers")
-				.AddRedirect("^GetSpawnsets$", "API/GetSpawnsets")
-				.AddRedirect("^GetToolVersions$", "API/GetToolVersions")
-				.AddRedirect("^LeaderboardJson$", "API/LeaderboardJson")
+				.AddRedirect("^GetSpawnsets$", "Api/GetSpawnsets")
+				.AddRedirect("^GetToolVersions$", "Api/GetToolVersions")
+				.AddRedirect("^LeaderboardJson$", "Api/LeaderboardJson")
 				.AddRedirect("^Spawns$", "Wiki/Spawns")
 				.AddRedirect("^Home/Spawns$", "Wiki/Spawns")
-				.AddRedirect("^DownloadSpawnset", "API/DownloadSpawnset")
-				.AddRedirect("^DownloadSpawnset?file=(.*)", "API/DownloadSpawnset?file=$1");
+				.AddRedirect("^DownloadSpawnset", "Api/DownloadSpawnset")
+				.AddRedirect("^DownloadSpawnset?file=(.*)", "Api/DownloadSpawnset?file=$1");
 
 			app.UseRewriter(options);
 

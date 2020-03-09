@@ -15,7 +15,7 @@
 
 <main role="main">
 	<p class="text-center">
-		<a class="btn" asp-page="API/GetSpawnset" asp-route-fileName="@Model.Query">Download</a>
+		<a class="btn" asp-page="Api/GetSpawnset" asp-route-fileName="@Model.Query">Download</a>
 	</p>
 	@if (Context.CustomLeaderboards.Any(c => c.SpawnsetFileName == Model.SpawnsetFile.FileName))
 	{

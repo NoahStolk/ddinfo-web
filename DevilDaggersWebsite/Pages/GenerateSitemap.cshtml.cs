@@ -21,7 +21,7 @@ namespace DevilDaggersWebsite.Pages
 		public void OnGet()
 		{
 			Assembly asm = AppDomain.CurrentDomain.GetAssemblies().FirstOrDefault(a => a.FullName.Contains("Views"));
-			foreach (Type type in asm.GetTypes().Where(t => t.Name.Contains("Admin") || t.Name.Contains("API")))
+			foreach (Type type in asm.GetTypes().Where(t => t.Name.Contains("Admin") || t.Name.Contains("Api")))
 				SitemapUtils.ExcludePage(type);
 
 			SitemapUtils.ExcludePage("CustomLeaderboards_Leaderboard");

@@ -1,6 +1,6 @@
 ﻿using CoreBase.Services;
 using DevilDaggersCore.Leaderboards.History;
-using DevilDaggersWebsite.Code.API;
+using DevilDaggersWebsite.Code.Api;
 using Microsoft.AspNetCore.Mvc.RazorPages;
 using System;
 using System.Collections.Generic;
@@ -53,7 +53,7 @@ namespace DevilDaggersWebsite.Pages.Leaderboard
 				bool added = false;
 				foreach (WorldRecordHolder wrh in WorldRecordHolders)
 				{
-					if (wrh.ID == wr.Entry.ID)
+					if (wrh.Id == wr.Entry.ID)
 					{
 						wrh.MostRecentUsername = wr.Entry.Username;
 						if (!wrh.Usernames.Contains(wr.Entry.Username))
