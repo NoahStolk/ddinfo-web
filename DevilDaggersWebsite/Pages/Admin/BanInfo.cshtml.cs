@@ -5,7 +5,6 @@ using DevilDaggersWebsite.Code.Users;
 using DevilDaggersWebsite.Code.Utils;
 using DevilDaggersWebsite.Code.Utils.Web;
 using Microsoft.AspNetCore.Mvc;
-using System;
 using System.Collections.Generic;
 using System.Threading.Tasks;
 
@@ -15,7 +14,7 @@ namespace DevilDaggersWebsite.Pages.Admin
 	{
 		private readonly ICommonObjects _commonObjects;
 
-		public List<Tuple<Ban, string, string>> BanInfo { get; private set; } = new List<Tuple<Ban, string, string>>();
+		public List<(Ban ban, string bannedAccountUsername, string responsibleAccountUsername)> BanInfo { get; private set; } = new List<(Ban, string, string)>();
 
 		public BanInfoModel(ICommonObjects commonObjects)
 		{
@@ -32,9 +31,9 @@ namespace DevilDaggersWebsite.Pages.Admin
 			return null;
 		}
 
-		public async Task<List<Tuple<Ban, string, string>>> GetBanInfo()
+		public async Task<List<(Ban ban, string bannedAccountUsername, string responsibleAccountUsername)>> GetBanInfo()
 		{
-			List<Tuple<Ban, string, string>> list = new List<Tuple<Ban, string, string>>();
+			List<(Ban ban, string bannedAccountUsername, string responsibleAccountUsername)> list = new List<(Ban ban, string bannedAccountUsername, string responsibleAccountUsername)>();
 
 			IEnumerable<Ban> bans = UserUtils.GetBans(_commonObjects);
 			foreach (Ban ban in bans)
@@ -44,11 +43,11 @@ namespace DevilDaggersWebsite.Pages.Admin
 				if (ban.IDResponsible.HasValue)
 				{
 					Entry entryResponsible = await Hasmodai.GetUserByID(ban.IDResponsible.Value);
-					list.Add(Tuple.Create(ban, entry.Username, entryResponsible.Username));
+					list.Add((ban, entry.Username, entryResponsible.Username));
 				}
 				else
 				{
-					list.Add(Tuple.Create(ban, entry.Username, string.Empty));
+					list.Add((ban, entry.Username, string.Empty));
 				}
 			}
 

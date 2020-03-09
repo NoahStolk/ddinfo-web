@@ -21,19 +21,19 @@
 			@{
 				for (int i = 0; i < Model.BanInfo.Count; i++)
 				{
-					Tuple<Ban, string, string> tuple = Model.BanInfo[i];
+					(Ban ban, string bannedAccountUsername, string responsibleAccountUsername) = Model.BanInfo[i];
 
-					<div class="sort" description="@tuple.Item1.Description" banned-account="@tuple.Item2" responsible-account="@tuple.Item3">
+					<div class="sort" description="@ban.Description" banned-account="@bannedAccountUsername" responsible-account="@responsibleAccountUsername">
 						<div class="ban-row flex-container" id="@i-row">
-							<div>@tuple.Item1.Description</div>
-							<div>@tuple.Item2 (<a asp-page="/Leaderboard/IDSearch" asp-route-id="@tuple.Item1.ID" target="_blank">@tuple.Item1.ID</a>)</div>
-							@if (string.IsNullOrEmpty(tuple.Item3))
+							<div>@ban.Description</div>
+							<div>@bannedAccountUsername (<a asp-page="/Leaderboard/IDSearch" asp-route-id="@ban.ID" target="_blank">@ban.ID</a>)</div>
+							@if (string.IsNullOrEmpty(responsibleAccountUsername))
 							{
 								<div></div>
 							}
 							else
 							{
-								<div>@tuple.Item3 (<a asp-page="/Leaderboard/IDSearch" asp-route-id="@tuple.Item1.IDResponsible" target="_blank">@tuple.Item1.IDResponsible</a>)</div>
+								<div>@responsibleAccountUsername (<a asp-page="/Leaderboard/IDSearch" asp-route-id="@ban.IDResponsible" target="_blank">@ban.IDResponsible</a>)</div>
 							}
 						</div>
 					</div>
