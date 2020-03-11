@@ -1,6 +1,6 @@
 ﻿using System.Windows;
 
-namespace LeaderboardCSVToJSON
+namespace LeaderboardCsvToJson
 {
 	/// <summary>
 	/// Interaction logic for App.xaml

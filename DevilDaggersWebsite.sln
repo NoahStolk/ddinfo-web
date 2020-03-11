@@ -11,9 +11,9 @@ Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "NetBase", "..\NetBase\NetBa
 EndProject
 Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "Tools", "Tools", "{5632F4FF-82A2-4DDD-B7D9-0F83D53E362C}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "LeaderboardCSVToJSON", "Tools\LeaderboardCSVToJSON\LeaderboardCSVToJSON.csproj", "{70088682-9AB0-4040-8E20-5F8A38DD7799}"
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "LeaderboardCsvToJson", "Tools\LeaderboardCsvToJson\LeaderboardCsvToJson.csproj", "{70088682-9AB0-4040-8E20-5F8A38DD7799}"
 EndProject
-Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "LeaderboardHTMLToJSON", "Tools\LeaderboardHTMLToJSON\LeaderboardHTMLToJSON.csproj", "{BFFF3C7B-F4B7-404E-B8C7-5C540D4344CB}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "LeaderboardHtmlToJson", "Tools\LeaderboardHtmlToJson\LeaderboardHtmlToJson.csproj", "{BFFF3C7B-F4B7-404E-B8C7-5C540D4344CB}"
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "LeaderboardJsonCreator", "Tools\LeaderboardJsonCreator\LeaderboardJsonCreator.csproj", "{7FF030A0-D588-4BCD-A01B-7CF847BD7DE4}"
 EndProject
@@ -23,7 +23,7 @@ Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "Core", "Core", "{496E881B-2
 EndProject
 Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "DevilDaggersCore", "..\DevilDaggersCore\DevilDaggersCore\DevilDaggersCore.csproj", "{F264DAF3-C6F2-49E1-9219-1EC5A9E6B6D2}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "LeaderboardJsonIDFixer", "Tools\LeaderboardJsonIDFixer\LeaderboardJsonIDFixer.csproj", "{50389A94-7721-44AE-9708-BC1E024591F5}"
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "LeaderboardJsonIdFixer", "Tools\LeaderboardJsonIdFixer\LeaderboardJsonIdFixer.csproj", "{50389A94-7721-44AE-9708-BC1E024591F5}"
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "SpawnsetHashes", "Tools\SpawnsetHashes\SpawnsetHashes.csproj", "{ECD2B92B-F21E-49A4-900F-797C9243BCAC}"
 EndProject

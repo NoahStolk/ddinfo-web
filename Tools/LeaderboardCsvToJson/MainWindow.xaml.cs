@@ -8,7 +8,7 @@ using System.IO;
 using System.Text;
 using System.Windows;
 
-namespace LeaderboardCSVToJSON
+namespace LeaderboardCsvToJson
 {
 	public partial class MainWindow : Window
 	{
@@ -22,7 +22,7 @@ namespace LeaderboardCSVToJSON
 			OpenFileDialog dlg = new OpenFileDialog
 			{
 				DefaultExt = ".csv",
-				InitialDirectory = @"C:\Users\NOAH\source\repos\DevilDaggersWebsite\LeaderboardCSVToJSON\Content"
+				InitialDirectory = @"C:\Users\NOAH\source\repos\DevilDaggersWebsite\LeaderboardCsvToJson\Content"
 			};
 
 			bool? result = dlg.ShowDialog();

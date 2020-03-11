@@ -8,7 +8,7 @@
 // </auto-generated>
 //------------------------------------------------------------------------------
 
-namespace LeaderboardCSVToJSON.Properties
+namespace LeaderboardCsvToJson.Properties
 {
 
 
@@ -44,7 +44,7 @@ namespace LeaderboardCSVToJSON.Properties
 			{
 				if ((resourceMan == null))
 				{
-					global::System.Resources.ResourceManager temp = new global::System.Resources.ResourceManager("LeaderboardCSVToJSON.Properties.Resources", typeof(Resources).Assembly);
+					global::System.Resources.ResourceManager temp = new global::System.Resources.ResourceManager("LeaderboardCsvToJson.Properties.Resources", typeof(Resources).Assembly);
 					resourceMan = temp;
 				}
 				return resourceMan;

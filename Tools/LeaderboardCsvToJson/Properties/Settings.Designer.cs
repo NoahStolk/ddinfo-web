@@ -8,7 +8,7 @@
 // </auto-generated>
 //------------------------------------------------------------------------------
 
-namespace LeaderboardCSVToJSON.Properties
+namespace LeaderboardCsvToJson.Properties
 {
 
 

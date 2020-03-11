@@ -6,7 +6,7 @@ using Newtonsoft.Json;
 using System.IO;
 using System.Text;
 
-namespace LeaderboardHTMLToJSON
+namespace LeaderboardHtmlToJson
 {
 	public class Program
 	{
