@@ -36,10 +36,10 @@ namespace DevilDaggersWebsite.Code.Utils
 				flag='{flagCode}'
 				username='{HttpUtility.HtmlEncode(entry.Username)}'
 				time='{entry.Time}'
-				e-dpi='{playerSetting.EDPI * 1000 ?? 0}'
-				dpi='{playerSetting.DPI ?? 0}'
+				e-dpi='{playerSetting.Edpi * 1000 ?? 0}'
+				dpi='{playerSetting.Dpi ?? 0}'
 				in-game-sens='{playerSetting.InGameSens * 1000 ?? 0}'
-				fov='{playerSetting.FOV ?? 0}'
+				fov='{playerSetting.Fov ?? 0}'
 				hand='{(!playerSetting.RightHanded.HasValue ? -1 : playerSetting.RightHanded.Value ? 1 : 0)}'
 				flash='{(!playerSetting.FlashEnabled.HasValue ? -1 : playerSetting.FlashEnabled.Value ? 1 : 0)}'
 			");

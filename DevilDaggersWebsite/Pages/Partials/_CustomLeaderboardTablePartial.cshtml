@@ -6,7 +6,7 @@
 @using System.Linq
 @inject DevilDaggersWebsite.Code.Database.ApplicationDbContext DbContext
 
-@{ 
+@{
 	if (Model.Count == 0)
 	{
 		<p>No leaderboards yet</p>
@@ -48,8 +48,8 @@
 				World record
 			</th>
 			@*<th class="hidden-xs hidden-sm hidden-md" width="400" colspan="4">
-				Completion rate
-			</th>*@
+					Completion rate
+				</th>*@
 		</tr>
 	</thead>
 	<tbody>
@@ -73,7 +73,7 @@
 						<a asp-page="/Spawnsets" asp-route-SearchAuthor="@author">@author</a>
 					</td>
 					<td class="text-right hidden-xs">
-						@DbContext.CustomEntries.Where(e => e.CustomLeaderboardID == lb.ID).Count()
+						@DbContext.CustomEntries.Where(e => e.CustomLeaderboardId == lb.Id).Count()
 					</td>
 					<td class="text-right hidden-xs">
 						@(lb.DateLastPlayed.HasValue ? Html.Raw(lb.DateLastPlayed.Value.ToString("dd MMM yyyy, HH:mm")) : RazorUtils.NAString)
@@ -114,17 +114,17 @@
 						}
 					</td>
 					@*<td class="text-right hidden-xs hidden-sm hidden-md bronze">
-			@(entries.Count == 0 ? "0.00%" : (entries.Where(e => e.Time >= lb.Bronze).Count() / (float)entries.Count).ToString("0.00%"))
-		</td>
-		<td class="text-right hidden-xs hidden-sm hidden-md silver">
-			@(entries.Count == 0 ? "0.00%" : (entries.Where(e => e.Time >= lb.Silver).Count() / (float)entries.Count).ToString("0.00%"))
-		</td>
-		<td class="text-right hidden-xs hidden-sm hidden-md golden">
-			@(entries.Count == 0 ? "0.00%" : (entries.Where(e => e.Time >= lb.Golden).Count() / (float)entries.Count).ToString("0.00%"))
-		</td>
-		<td class="text-right hidden-xs hidden-sm hidden-md devil">
-			@(entries.Count == 0 ? "0.00%" : (entries.Where(e => e.Time >= lb.Devil).Count() / (float)entries.Count).ToString("0.00%"))
-		</td>*@
+							@(entries.Count == 0 ? "0.00%" : (entries.Where(e => e.Time >= lb.Bronze).Count() / (float)entries.Count).ToString("0.00%"))
+						</td>
+						<td class="text-right hidden-xs hidden-sm hidden-md silver">
+							@(entries.Count == 0 ? "0.00%" : (entries.Where(e => e.Time >= lb.Silver).Count() / (float)entries.Count).ToString("0.00%"))
+						</td>
+						<td class="text-right hidden-xs hidden-sm hidden-md golden">
+							@(entries.Count == 0 ? "0.00%" : (entries.Where(e => e.Time >= lb.Golden).Count() / (float)entries.Count).ToString("0.00%"))
+						</td>
+						<td class="text-right hidden-xs hidden-sm hidden-md devil">
+							@(entries.Count == 0 ? "0.00%" : (entries.Where(e => e.Time >= lb.Devil).Count() / (float)entries.Count).ToString("0.00%"))
+						</td>*@
 				</tr>
 			}
 		}

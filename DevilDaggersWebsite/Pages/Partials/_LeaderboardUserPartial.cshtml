@@ -36,7 +36,7 @@
 			IEnumerable<UserTitleCollection> titleCollections = UserUtils.GetTitleCollections(CommonObjects);
 			foreach (Entry entry in Model.Leaderboard.Entries)
 			{
-				Ban ban = bans.Where(b => b.ID == entry.ID).FirstOrDefault();
+				Ban ban = bans.Where(b => b.Id == entry.Id).FirstOrDefault();
 				bool banned = ban != null;
 #if EXCLUDE_BANS
 				if (banned && firstPage)
@@ -48,9 +48,9 @@
 				string rankString = entry.Rank.ToString();
 #endif
 
-				Donator donator = donators.Where(d => d.ID == entry.ID).FirstOrDefault();
-				Flag flag = flags.Where(f => f.ID == entry.ID).FirstOrDefault();
-				UserTitleCollection titles = titleCollections.Where(t => t.ID == entry.ID).FirstOrDefault();
+				Donator donator = donators.Where(d => d.Id == entry.Id).FirstOrDefault();
+				Flag flag = flags.Where(f => f.Id == entry.Id).FirstOrDefault();
+				UserTitleCollection titles = titleCollections.Where(t => t.Id == entry.Id).FirstOrDefault();
 
 				Dagger dagger = GameInfo.GetDaggerFromTime(entry.Time);
 				Death death = GameInfo.GetDeathFromDeathType(entry.DeathType, GameInfo.GetGameVersionFromDate(Model.Leaderboard.DateTime));
@@ -68,9 +68,9 @@
 				<div class="sort @banString" @entry.ToHtmlData(flagCode)>
 					<div class="leaderboard-row flex-container" id="@(entry.Rank)-row">
 						<div class="text-right">
-							@if (entry.ID != 0)
+							@if (entry.Id != 0)
 							{
-								<span data-toggle="tooltip" title="ID: @entry.ID" class="leaderboard-tooltip">@rankString</span>
+								<span data-toggle="tooltip" title="ID: @entry.Id" class="leaderboard-tooltip">@rankString</span>
 							}
 							else
 							{

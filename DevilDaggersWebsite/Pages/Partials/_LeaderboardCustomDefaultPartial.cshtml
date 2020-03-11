@@ -31,9 +31,9 @@
 			foreach (CustomEntry entry in Model.Entries)
 			{
 				rank++;
-				Donator donator = donators.Where(d => d.ID == entry.PlayerID).FirstOrDefault();
-				Flag flag = flags.Where(f => f.ID == entry.PlayerID).FirstOrDefault();
-				UserTitleCollection titles = titleCollections.Where(t => t.ID == entry.PlayerID).FirstOrDefault();
+				Donator donator = donators.Where(d => d.Id == entry.PlayerId).FirstOrDefault();
+				Flag flag = flags.Where(f => f.Id == entry.PlayerId).FirstOrDefault();
+				UserTitleCollection titles = titleCollections.Where(t => t.Id == entry.PlayerId).FirstOrDefault();
 
 				string dagger = Model.Leaderboard.GetDagger(entry.Time);
 				Death death = GameInfo.GetDeathFromDeathType(entry.DeathType, GameInfo.GameVersions["V3"]);
@@ -50,7 +50,7 @@
 				<div class="sort" @entry.ToHTMLData(rank, flagCode)>
 					<div class="leaderboard-row flex-container" id="@(rank)-row">
 						<div class="text-right">
-							<span data-toggle="tooltip" title="ID: @entry.PlayerID" class="leaderboard-tooltip">@rank</span>
+							<span data-toggle="tooltip" title="ID: @entry.PlayerId" class="leaderboard-tooltip">@rank</span>
 						</div>
 						<div>
 							@if (flagCode == "00")

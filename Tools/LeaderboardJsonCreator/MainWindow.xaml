@@ -49,7 +49,7 @@
 			<Separator></Separator>
 			<TextBlock Margin="0,0,0,2" Name="Entries"></TextBlock>
 			<TextBox Name="Rank"></TextBox>
-			<TextBox Name="ID"></TextBox>
+			<TextBox Name="Id"></TextBox>
 			<TextBox Name="Username"></TextBox>
 			<TextBox Name="Time"></TextBox>
 			<TextBox Name="Kills"></TextBox>

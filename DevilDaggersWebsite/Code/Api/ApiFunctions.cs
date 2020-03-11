@@ -195,7 +195,7 @@ namespace DevilDaggersWebsite.Code.Api
 		}
 
 		// TODO
-		public static (DateTime, DateTime) GetLatestDatePlayed(ICommonObjects commonObjects, int userId)
+		public static (DateTime from, DateTime to) GetLatestDatePlayed(ICommonObjects commonObjects, int userId)
 		{
 			List<(DateTime dateTime, Entry entry)> entries = new List<(DateTime, Entry)>();
 			foreach (string leaderboardHistoryPath in Directory.GetFiles(Path.Combine(commonObjects.Env.WebRootPath, "leaderboard-history"), "*.json"))

@@ -26,10 +26,10 @@
 			IEnumerable<PlayerSetting> settings = UserUtils.GetPlayerSettings(CommonObjects);
 			foreach (Entry entry in Model.Leaderboard.Entries)
 			{
-				Donator donator = donators.Where(d => d.ID == entry.ID).FirstOrDefault();
-				Flag flag = flags.Where(f => f.ID == entry.ID).FirstOrDefault();
-				UserTitleCollection titles = titleCollections.Where(t => t.ID == entry.ID).FirstOrDefault();
-				PlayerSetting playerSetting = settings.Where(s => s.ID == entry.ID).FirstOrDefault();
+				Donator donator = donators.Where(d => d.Id == entry.Id).FirstOrDefault();
+				Flag flag = flags.Where(f => f.Id == entry.Id).FirstOrDefault();
+				UserTitleCollection titles = titleCollections.Where(t => t.Id == entry.Id).FirstOrDefault();
+				PlayerSetting playerSetting = settings.Where(s => s.Id == entry.Id).FirstOrDefault();
 				if (playerSetting == null)
 				{
 					continue;
@@ -44,7 +44,7 @@
 
 				<div class="sort" @entry.ToHtmlData(flagCode, playerSetting)>
 					<div class="leaderboard-row flex-container" id="@(entry.Rank)-row">
-						<div class="text-right"><span data-toggle="tooltip" title="@entry.ID" class="leaderboard-tooltip">@entry.Rank</span></div>
+						<div class="text-right"><span data-toggle="tooltip" title="@entry.Id" class="leaderboard-tooltip">@entry.Rank</span></div>
 						<div>
 							@if (flagCode == "00")
 							{
@@ -73,21 +73,21 @@
 							}
 						</div>
 						<div class="text-right @daggerColor">@((entry.Time / 10000.0).ToString("0.0000"))</div>
-						<div class="hidden-xs text-right">@(playerSetting.EDPI != null ? playerSetting.EDPI.Value.ToString("0.000") : string.Empty)</div>
-						<div class="hidden-xs text-right">@playerSetting.DPI</div>
+						<div class="hidden-xs text-right">@(playerSetting.Edpi != null ? playerSetting.Edpi.Value.ToString("0.000") : string.Empty)</div>
+						<div class="hidden-xs text-right">@playerSetting.Dpi</div>
 						<div class="hidden-xs text-right">@(playerSetting.InGameSens != null ? playerSetting.InGameSens.Value.ToString("0.000") : string.Empty)</div>
-						<div class="hidden-xs text-right">@playerSetting.FOV</div>
+						<div class="hidden-xs text-right">@playerSetting.Fov</div>
 						<div class="hidden-xs hidden-sm hidden-md text-right">@playerSetting.RightHandedString</div>
 						<div class="hidden-xs hidden-sm hidden-md text-right">@playerSetting.FlashEnabledString</div>
 					</div>
 					<div class="leaderboard-expand flex-container" id="@(entry.Rank)-expand">
 						<div class="visible-xs">
 							<div class="text-left">eDPI</div>
-							<div class="text-right">@(playerSetting.EDPI != null ? playerSetting.EDPI.Value.ToString("0.000") : string.Empty)</div>
+							<div class="text-right">@(playerSetting.Edpi != null ? playerSetting.Edpi.Value.ToString("0.000") : string.Empty)</div>
 						</div>
 						<div class="visible-xs">
 							<div class="text-left">DPI</div>
-							<div class="text-right">@playerSetting.DPI</div>
+							<div class="text-right">@playerSetting.Dpi</div>
 						</div>
 						<div class="visible-xs">
 							<div class="text-left">In-game sens</div>
@@ -95,7 +95,7 @@
 						</div>
 						<div class="visible-xs">
 							<div class="text-left">FOV</div>
-							<div class="text-right">@playerSetting.FOV</div>
+							<div class="text-right">@playerSetting.Fov</div>
 						</div>
 						<div class="visible-xs visible-sm visible-md">
 							<div class="text-left">Hand orientation</div>

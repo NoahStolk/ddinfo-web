@@ -22,11 +22,11 @@
 	<ul class="text-center table-of-contents">
 		@for (int i = 0; i < Model.TableOfContents.Count; i++)
 		{
-			<li><a href="#@Model.TableOfContents[i].ToIDString()">@Model.TableOfContents[i]</a></li>
+			<li><a href="#@Model.TableOfContents[i].ToIdString()">@Model.TableOfContents[i]</a></li>
 		}
 	</ul>
 
-	<h2 id="@Model.TableOfContents[index].ToIDString()" class="text-center hidden-xs">@Model.TableOfContents[index++]</h2>
+	<h2 id="@Model.TableOfContents[index].ToIdString()" class="text-center hidden-xs">@Model.TableOfContents[index++]</h2>
 	<div class="enemies-summary flex-container flex-center hidden-xs">
 		<div class="flex-container">
 			<div>Enemy</div>
@@ -61,7 +61,7 @@
 		}
 	</div>
 
-	<h2 id="@Model.TableOfContents[index].ToIDString()" class="text-center">@Model.TableOfContents[index++]</h2>
+	<h2 id="@Model.TableOfContents[index].ToIdString()" class="text-center">@Model.TableOfContents[index++]</h2>
 	<div class="flex-container flex-center enemy-container">
 		@foreach (Enemy enemy in Model.enemies)
 		{
@@ -124,7 +124,7 @@
 		}
 	</div>
 
-	<h2 id="@Model.TableOfContents[index].ToIDString()" class="text-center">@Model.TableOfContents[index++]</h2>
+	<h2 id="@Model.TableOfContents[index].ToIdString()" class="text-center">@Model.TableOfContents[index++]</h2>
 	<p class="text-center">All of this information assumes 100% shot accuracy, and may not be relevant in some cases.</p>
 
 	@{
@@ -338,7 +338,7 @@
 		}
 	</table>
 
-	<h2 id="@Model.TableOfContents[index].ToIDString()" class="text-center">@Model.TableOfContents[index++]</h2>
+	<h2 id="@Model.TableOfContents[index].ToIdString()" class="text-center">@Model.TableOfContents[index++]</h2>
 	<ul>
 		@{
 			string transmuters = Model.gameVersion == "V3" ? "Leviathan or The Orb beckon, they" : "Leviathan beckons, it";
@@ -365,7 +365,7 @@
 	@{
 		if (Model.gameVersion == "V3")
 		{
-			<h2 id="@Model.TableOfContents[index].ToIDString()" class="text-center">@Model.TableOfContents[index++]</h2>
+			<h2 id="@Model.TableOfContents[index].ToIdString()" class="text-center">@Model.TableOfContents[index++]</h2>
 			<ul>
 				@RazorUtils.GetLayout(@"
 				<li>All homing daggers cause 10 damage to most enemies.</li>
