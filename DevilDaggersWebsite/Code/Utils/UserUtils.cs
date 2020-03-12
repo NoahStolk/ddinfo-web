@@ -35,7 +35,7 @@ namespace DevilDaggersWebsite.Code.Utils
 				string donator = d.Trim();
 				string[] props = GetPropsByTab(donator);
 
-				yield return new Donator(int.Parse(props[0]), props[1], int.Parse(props[2]), char.Parse(props[3]));
+				yield return new Donator(int.Parse(props[0]), props[1], int.Parse(props[2]), char.Parse(props[3]), int.Parse(props[4].Replace("?", "")));
 			}
 		}
 

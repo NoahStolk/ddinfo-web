@@ -22,7 +22,7 @@ namespace DevilDaggersWebsite.Pages
 		public void OnGet()
 		{
 			Donators = UserUtils.GetDonators(_commonObjects)
-				.OrderByDescending(d => d.Amount)
+				.OrderByDescending(d => d.ConvertedEuroCentsReceived)
 				.ThenBy(d => d.CurrencySymbol, new CurrencyComparer())
 				.ThenBy(d => d.Username)
 				.ToList();
