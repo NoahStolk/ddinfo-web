@@ -18,7 +18,7 @@
 			<div class="row">
 				<div class="col-lg-4 col-xs-12">
 					<h2>Bans</h2>
-					<p style="height: 96px;">ID, Description, IDResponsible (<a asp-page="/Admin/BanInfo" asp-route-password="@Model.Password">Ban Info page</a> (slow))</p>
+					<p style="height: 96px;">ID, Description, ID responsible (<a asp-page="/Admin/BanInfo" asp-route-password="@Model.Password">Ban Info page</a> (slow))</p>
 					<textarea asp-for="BansFileContents">@Model.BansFileContents</textarea>
 				</div>
 				<div class="col-lg-4 col-xs-12">
@@ -28,12 +28,12 @@
 				</div>
 				<div class="col-lg-4 col-xs-12">
 					<h2>Flags</h2>
-					<p style="height: 96px;">ID, CountryCode</p>
+					<p style="height: 96px;">ID, Country code</p>
 					<textarea asp-for="FlagsFileContents">@Model.FlagsFileContents</textarea>
 				</div>
 				<div class="col-lg-4 col-xs-12">
 					<h2>Player settings</h2>
-					<p style="height: 192px;">ID, DPI, Sens, FOV, RightHanded, FlashEnabled</p>
+					<p style="height: 192px;">ID, DPI, Sens, FOV, Right handed, Flash enabled</p>
 					<textarea asp-for="SettingsFileContents">@Model.SettingsFileContents</textarea>
 				</div>
 				<div class="col-lg-8 col-xs-12">
