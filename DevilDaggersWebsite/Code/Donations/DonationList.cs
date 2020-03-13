@@ -53,9 +53,9 @@ namespace DevilDaggersWebsite.Code.Donations
 			new Donation(146931, 2500, "USD", 2100, new DateTime(2019, 6, 6)), // TODO: Figure out converted amount.
 			new Donation(146931, 2500, "USD", 2100, new DateTime(2019, 9, 11)), // TODO: Figure out converted amount.
 			new Donation(134740, 250, "USD", 217, new DateTime(2019, 8, 12)),
-			new Donation(171188, 1000, "GBP", 1000, new DateTime(2019, 8, 12)),
+			new Donation(171188, 1000, "GBP", 1066, new DateTime(2019, 8, 12)),
 			new Donation(116299, 2000, "EUR", 2000, new DateTime(2019, 10, 14)),
-			new Donation(109193, 1000, "GBP", 1000, new DateTime(2019, 11, 2)),
+			new Donation(109193, 1000, "GBP", 1122, new DateTime(2019, 11, 2)),
 			new Donation(197276, 40, "EUR", 40, new DateTime(2019, 12, 28)),
 			new Donation(531, 1500, "EUR", 1500, new DateTime(2020, 1, 3)),
 			new Donation(0, 666, "GBP", 728, new DateTime(2020, 3, 12)), // TODO: Figure out ID.
