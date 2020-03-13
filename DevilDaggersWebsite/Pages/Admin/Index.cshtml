@@ -18,29 +18,29 @@
 			<div class="row">
 				<div class="col-lg-4 col-xs-12">
 					<h2>Bans</h2>
-					<p style="height: 96px;">ID, Description, ID responsible (<a asp-page="/Admin/BanInfo" asp-route-password="@Model.Password">Ban Info page</a> (slow))</p>
-					<textarea asp-for="BansFileContents">@Model.BansFileContents</textarea>
+					<p style="height: 3em;">ID, Description, ID responsible (<a asp-page="/Admin/BanInfo" asp-route-password="@Model.Password">Ban Info page</a> (slow))</p>
+					<textarea style="height: @(Model.BansFileContents.Split('\n').Length * 1.4f)em;" asp-for="BansFileContents">@Model.BansFileContents</textarea>
 				</div>
 				<div class="col-lg-4 col-xs-12">
 					<h2>Flags</h2>
-					<p style="height: 96px;">ID, Country code</p>
-					<textarea asp-for="FlagsFileContents">@Model.FlagsFileContents</textarea>
+					<p style="height: 3em;">ID, Country code</p>
+					<textarea style="height: @(Model.FlagsFileContents.Split('\n').Length * 1.4f)em;" asp-for="FlagsFileContents">@Model.FlagsFileContents</textarea>
 				</div>
 				<div class="col-lg-4 col-xs-12">
 					<h2>Player settings</h2>
-					<p style="height: 192px;">ID, DPI, Sens, FOV, Right handed, Flash enabled</p>
-					<textarea asp-for="SettingsFileContents">@Model.SettingsFileContents</textarea>
+					<p style="height: 3em;">ID, DPI, Sens, FOV, Right handed, Flash enabled</p>
+					<textarea style="height: @(Model.SettingsFileContents.Split('\n').Length * 1.4f)em;" asp-for="SettingsFileContents">@Model.SettingsFileContents</textarea>
 				</div>
 				<div class="col-lg-12 col-xs-12">
 					<h2>User titles</h2>
-					<p style="height: 192px;">
+					<p>
 						ID, Title(s)*<br />
 						Titles:<br />
 						- Site admin<br />
 						- Discord mod<br />
 						Multiple titles are supported and should be separated by commas, for instance; Site admin,Discord mod
 					</p>
-					<textarea asp-for="TitlesFileContents">@Model.TitlesFileContents</textarea>
+					<textarea style="height: @(Model.TitlesFileContents.Split('\n').Length * 1.4f)em;" asp-for="TitlesFileContents">@Model.TitlesFileContents</textarea>
 				</div>
 				<div class="col-lg-12 col-xs-12">
 					<h2>Asset mods</h2>
