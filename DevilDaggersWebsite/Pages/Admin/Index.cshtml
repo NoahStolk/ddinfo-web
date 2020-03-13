@@ -22,11 +22,6 @@
 					<textarea asp-for="BansFileContents">@Model.BansFileContents</textarea>
 				</div>
 				<div class="col-lg-4 col-xs-12">
-					<h2>Donators</h2>
-					<p style="height: 96px;">ID, Username, Amount (cents), Currency, Converted euro cents received (type 0 if you are not clcl and didn't hack my paypal or email address) ? = not sure, ?? = guess</p>
-					<textarea asp-for="DonatorsFileContents">@Model.DonatorsFileContents</textarea>
-				</div>
-				<div class="col-lg-4 col-xs-12">
 					<h2>Flags</h2>
 					<p style="height: 96px;">ID, Country code</p>
 					<textarea asp-for="FlagsFileContents">@Model.FlagsFileContents</textarea>
@@ -36,7 +31,7 @@
 					<p style="height: 192px;">ID, DPI, Sens, FOV, Right handed, Flash enabled</p>
 					<textarea asp-for="SettingsFileContents">@Model.SettingsFileContents</textarea>
 				</div>
-				<div class="col-lg-8 col-xs-12">
+				<div class="col-lg-12 col-xs-12">
 					<h2>User titles</h2>
 					<p style="height: 192px;">
 						ID, Title(s)*<br />
@@ -72,8 +67,10 @@
 						</div>
 					</div>
 
-					<p>Multiple types are supported using bit fields; a mod that changes audio and textures would get the mod type value 3 (1 + 2), a mod that changes audio, models, and particles would get the mod type value 21 (1 + 4 + 16), and so forth.</p>
-					<textarea asp-for="AssetModsFileContents">@Model.AssetModsFileContents</textarea>
+					<p>
+						Multiple types are supported using bit fields; a mod that changes audio and textures would get the mod type value 3 (1 + 2), a mod that changes audio, models, and particles would get the mod type value 21 (1 + 4 + 16), and so forth.
+					</p>
+					<textarea style="height: @(Model.AssetModsFileContents.Split('\n').Length * 1.4f)em;" asp-for="AssetModsFileContents">@Model.AssetModsFileContents</textarea>
 				</div>
 			</div>
 			<div class="row text-center" style="padding: 16px;">

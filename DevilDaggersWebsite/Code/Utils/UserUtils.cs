@@ -25,20 +25,6 @@ namespace DevilDaggersWebsite.Code.Utils
 			}
 		}
 
-		public static IEnumerable<Donator> GetDonators(ICommonObjects commonObjects)
-		{
-			foreach (string d in FileUtils.GetContents(Path.Combine(commonObjects.Env.WebRootPath, "user", "donators"), Encoding.Default).Split('\n'))
-			{
-				if (string.IsNullOrWhiteSpace(d))
-					continue;
-
-				string donator = d.Trim();
-				string[] props = GetPropsByTab(donator);
-
-				yield return new Donator(int.Parse(props[0]), props[1], int.Parse(props[2]), char.Parse(props[3]), int.Parse(props[4].Replace("?", "")));
-			}
-		}
-
 		public static IEnumerable<Flag> GetFlags(ICommonObjects commonObjects)
 		{
 			foreach (string f in FileUtils.GetContents(Path.Combine(commonObjects.Env.WebRootPath, "user", "flags"), Encoding.Default).Split('\n'))
