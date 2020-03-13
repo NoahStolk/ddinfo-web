@@ -497,10 +497,20 @@ namespace DevilDaggersWebsite.Code.Utils
 		{
 			Name = "DevilDaggersAssetEditor",
 			DisplayName = "Devil Daggers Asset Editor",
-			VersionNumber = new Version(0, 7, 13, 0),
+			VersionNumber = new Version(0, 7, 14, 0),
 			VersionNumberRequired = new Version(0, 7, 5, 0),
 			Changelog = new List<ChangelogEntry>
 			{
+				new ChangelogEntry
+				{
+					VersionNumber = new Version(0, 7, 14, 0),
+					Date = new DateTime(2020, 3, 13),
+					Changes = new List<Change>
+					{
+						new Change("Fixed crash that occurred when compressing textures."),
+						new Change("Fixed textures not being correctly imported from mod files.")
+					}
+				},
 				new ChangelogEntry
 				{
 					VersionNumber = new Version(0, 7, 13, 0),
