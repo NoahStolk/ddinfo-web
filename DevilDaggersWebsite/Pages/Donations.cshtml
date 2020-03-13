@@ -1,12 +1,11 @@
 ﻿@page
-@model DevilDaggersWebsite.Pages.DonationsModel
 @{
 	ViewData["Title"] = "Donations";
 
-	int[] widths = new int[3] { 256, 128, 20 };
+	int[] widths = new int[4] { 256, 128, 20, 52 };
 }
 @using DevilDaggersCore.Game
-@using DevilDaggersWebsite.Code.Users
+@using DevilDaggersWebsite.Code.Donations
 
 <header>
 	<h1>@ViewData["Title"]</h1>
@@ -28,12 +27,22 @@
 
 	<div class="flex-container flex-center flex-column">
 		@{
-			foreach (Donator donator in Model.Donators)
+			foreach (KeyValuePair<int, int> kvp in DonationList.DonatorsWithReceivedEuroAmounts.OrderByDescending(kvp => kvp.Value).ThenBy(kvp => DonationList.Donators.FirstOrDefault(d => d.Id == kvp.Key).UsernameFallback))
 			{
+				Donator donator = DonationList.Donators.FirstOrDefault(d => d.Id == kvp.Key);
+				string username = donator.IsAnonymous ? "(anonymous)" : donator.UsernameFallback;
+				// Entry entry = await Hasmodai.GetUserById(donator.Id);
+
+				string currency = DonationList.Donations.FirstOrDefault(d => d.DonatorId == kvp.Key).Currency;
+				int amount = DonationList.Donations.Where(d => d.DonatorId == kvp.Key).Sum(d => d.Amount);
+
 				<div class="flex-container flex-center">
-					<div style="width: @(widths[0])px; white-space: nowrap;" class="text-left devil">@donator.Username</div>
-					<div style="width: @(widths[1])px;" class="text-right devil">@((donator.Amount / 100.0).ToString("0.00"))</div>
-					<div style="width: @(widths[2])px;" class="text-right devil">@donator.CurrencySymbol</div>
+					<div style="width: @(widths[0])px; white-space: nowrap;" class="text-left devil">@username</div>
+					<div style="width: @(widths[1])px;" class="text-right devil">@((amount / 100.0).ToString("0.00"))</div>
+					<div style="width: @(widths[2])px;" class="text-right devil">@(DonationList.CurrencyChars[currency])</div>
+					@*<div style="width: @(widths[3])px;" class="text-right devil">
+							(@currency)
+						</div>*@
 				</div>
 			}
 		}

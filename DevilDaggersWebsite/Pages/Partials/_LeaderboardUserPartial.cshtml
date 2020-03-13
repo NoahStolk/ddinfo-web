@@ -1,5 +1,6 @@
 ﻿@using DevilDaggersCore.Game
 @using DevilDaggersCore.Leaderboards
+@using DevilDaggersWebsite.Code.Donations
 @using DevilDaggersWebsite.Code.Users
 @using DevilDaggersWebsite.Code.Utils
 @using DevilDaggersWebsite.Pages.Leaderboard
@@ -31,7 +32,6 @@
 #endif
 
 			IEnumerable<Ban> bans = UserUtils.GetBans(CommonObjects);
-			IEnumerable<Donator> donators = UserUtils.GetDonators(CommonObjects);
 			IEnumerable<Flag> flags = UserUtils.GetFlags(CommonObjects);
 			IEnumerable<UserTitleCollection> titleCollections = UserUtils.GetTitleCollections(CommonObjects);
 			foreach (Entry entry in Model.Leaderboard.Entries)
@@ -48,7 +48,7 @@
 				string rankString = entry.Rank.ToString();
 #endif
 
-				Donator donator = donators.Where(d => d.Id == entry.Id).FirstOrDefault();
+				bool isDonator = DonationList.Donations.Any(d => d.DonatorId == entry.Id);
 				Flag flag = flags.Where(f => f.Id == entry.Id).FirstOrDefault();
 				UserTitleCollection titles = titleCollections.Where(t => t.Id == entry.Id).FirstOrDefault();
 
@@ -105,7 +105,7 @@
 										<span class="leaderboard-tooltip" data-toggle="tooltip" title="@title"><img src="/Images/Icons/@(UserUtils.TitleImages[title]).png" /></span>
 									}
 								}
-								if (donator != null)
+								if (isDonator)
 								{
 									string title = "Donator";
 									<span class="leaderboard-tooltip" data-toggle="tooltip" title="@title"><img src="/Images/Icons/@(UserUtils.TitleImages[title]).png" /></span>

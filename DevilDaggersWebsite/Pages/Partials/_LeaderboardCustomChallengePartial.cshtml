@@ -1,6 +1,7 @@
 ﻿@using DevilDaggersCore.Game
-@using DevilDaggersWebsite.Code.Users
 @using DevilDaggersWebsite.Code.Database.CustomLeaderboards
+@using DevilDaggersWebsite.Code.Donations
+@using DevilDaggersWebsite.Code.Users
 @using DevilDaggersWebsite.Code.Utils
 @using Microsoft.AspNetCore.Html
 @inject CoreBase.Services.ICommonObjects CommonObjects
@@ -22,14 +23,13 @@
 	</div>
 	<div class="leaderboard-body">
 		@{
-			IEnumerable<Donator> donators = UserUtils.GetDonators(CommonObjects);
 			IEnumerable<Flag> flags = UserUtils.GetFlags(CommonObjects);
 			IEnumerable<UserTitleCollection> titleCollections = UserUtils.GetTitleCollections(CommonObjects);
 			int rank = 0;
 			foreach (CustomEntry entry in Model.Entries)
 			{
 				rank++;
-				Donator donator = donators.Where(d => d.Id == entry.PlayerId).FirstOrDefault();
+				bool isDonator = DonationList.Donations.Any(d => d.DonatorId == entry.PlayerId);
 				Flag flag = flags.Where(f => f.Id == entry.PlayerId).FirstOrDefault();
 				UserTitleCollection titles = titleCollections.Where(t => t.Id == entry.PlayerId).FirstOrDefault();
 
@@ -70,7 +70,7 @@
 										<span class="leaderboard-tooltip" data-toggle="tooltip" title="@title"><img src="/Images/Icons/@(UserUtils.TitleImages[title]).png" /></span>
 									}
 								}
-								if (donator != null)
+								if (isDonator)
 								{
 									string title = "Donator";
 									<span class="leaderboard-tooltip" data-toggle="tooltip" title="@title"><img src="/Images/Icons/@(UserUtils.TitleImages[title]).png" /></span>
