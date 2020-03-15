@@ -1,4 +1,3 @@
-using CoreBase;
 using DevilDaggersWebsite.Code.Bot;
 using DevilDaggersWebsite.Code.Database;
 using DevilDaggersWebsite.Code.Tasks;
@@ -6,19 +5,25 @@ using DevilDaggersWebsite.Code.Tasks.Scheduling;
 using Microsoft.AspNetCore.Builder;
 using Microsoft.AspNetCore.Hosting;
 using Microsoft.AspNetCore.Rewrite;
+using Microsoft.EntityFrameworkCore;
 using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
-using Microsoft.Extensions.Logging;
+using Microsoft.Extensions.Hosting;
 using System;
 using System.Globalization;
 
 namespace DevilDaggersWebsite
 {
-	public class Startup : StartupAbstract
+	public class Startup// : StartupAbstract
 	{
-		public Startup(IConfiguration configuration, ILoggerFactory loggerFactory, IHostingEnvironment env)
-			: base(configuration, loggerFactory, env)
+		public IConfiguration Configuration { get; }
+
+		public Startup(IConfiguration configuration/*, ILoggerFactory loggerFactory, IWebHostEnvironment env*/)
 		{
+			CultureInfo.DefaultThreadCurrentCulture = CultureInfo.InvariantCulture;
+			CultureInfo.DefaultThreadCurrentUICulture = CultureInfo.InvariantCulture;
+
+			Configuration = configuration;
 		}
 
 		// This method gets called by the runtime. Use this method to add services to the container.
@@ -26,9 +31,10 @@ namespace DevilDaggersWebsite
 		{
 			services.AddMvc();
 
-			ConfigureDbServices<ApplicationDbContext>(services);
+			services.AddDbContext<ApplicationDbContext>(options => options.UseMySql(Configuration.GetConnectionString("DefaultConnection")));
 
-			AddCommonCoreBaseServices(services);
+			//ConfigureDbServices<ApplicationDbContext>(services);
+			//AddCommonCoreBaseServices(services);
 
 			// TODO: Add all tasks using reflection?
 			services.AddSingleton<IScheduledTask, CreateLeaderboardHistoryFileTask>();
@@ -44,12 +50,8 @@ namespace DevilDaggersWebsite
 		}
 
 		// This method gets called by the runtime. Use this method to configure the HTTP request pipeline.
-		public void Configure(IApplicationBuilder app, IHostingEnvironment env)
+		public void Configure(IApplicationBuilder app, IWebHostEnvironment env)
 		{
-			CultureInfo cultureInfo = new CultureInfo("en-US");
-			CultureInfo.DefaultThreadCurrentCulture = cultureInfo;
-			CultureInfo.DefaultThreadCurrentUICulture = cultureInfo;
-
 			// Do not change order of redirects.
 			RewriteOptions options = new RewriteOptions()
 				.AddRedirect("^Home/Index$", "Index")
@@ -73,16 +75,30 @@ namespace DevilDaggersWebsite
 				.AddRedirect("^Home/Spawns$", "Wiki/Spawns")
 				.AddRedirect("^DownloadSpawnset", "Api/DownloadSpawnset")
 				.AddRedirect("^DownloadSpawnset?file=(.*)", "Api/DownloadSpawnset?file=$1");
-
 			app.UseRewriter(options);
 
-			ConfigureErrorPageAndSSL(app, env);
+			if (env.IsDevelopment())
+			{
+				app.UseDeveloperExceptionPage();
+			}
+			else
+			{
+				app.UseExceptionHandler("/Error");
+				app.UseHsts();
+			}
 
+			app.UseStatusCodePagesWithReExecute("/Error/{0}");
+			app.UseHttpsRedirection();
 			app.UseStaticFiles();
 
-			app.UseMvc();
+			app.UseRouting();
 
-			app.UseStatusCodePagesWithRedirects("/Error/{0}");
+			app.UseAuthorization();
+
+			app.UseEndpoints(endpoints =>
+			{
+				endpoints.MapRazorPages();
+			});
 		}
 	}
 }
