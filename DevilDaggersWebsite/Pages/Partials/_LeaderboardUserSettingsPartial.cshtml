@@ -26,7 +26,7 @@
 			IEnumerable<PlayerSetting> settings = UserUtils.GetPlayerSettings(CommonObjects);
 			foreach (Entry entry in Model.Leaderboard.Entries)
 			{
-				bool isDonator = DonationList.Donations.Any(d => d.DonatorId == entry.Id);
+				bool isDonator = DonationList.Donations.Any(d => d.DonatorId == entry.Id && !DonationList.Donators.FirstOrDefault(dd => dd.Id == d.DonatorId).IsAnonymous);
 				Flag flag = flags.Where(f => f.Id == entry.Id).FirstOrDefault();
 				UserTitleCollection titles = titleCollections.Where(t => t.Id == entry.Id).FirstOrDefault();
 				PlayerSetting playerSetting = settings.Where(s => s.Id == entry.Id).FirstOrDefault();

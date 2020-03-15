@@ -31,7 +31,7 @@
 			foreach (CustomEntry entry in Model.Entries)
 			{
 				rank++;
-				bool isDonator = DonationList.Donations.Any(d => d.DonatorId == entry.PlayerId);
+				bool isDonator = DonationList.Donations.Any(d => d.DonatorId == entry.PlayerId && !DonationList.Donators.FirstOrDefault(dd => dd.Id == d.DonatorId).IsAnonymous);
 				Flag flag = flags.Where(f => f.Id == entry.PlayerId).FirstOrDefault();
 				UserTitleCollection titles = titleCollections.Where(t => t.Id == entry.PlayerId).FirstOrDefault();
 
