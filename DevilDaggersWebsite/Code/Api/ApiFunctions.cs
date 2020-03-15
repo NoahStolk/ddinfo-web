@@ -72,15 +72,9 @@ namespace DevilDaggersWebsite.Code.Api
 				yield return enemy;
 		}
 
-		public static Dictionary<string, GameVersion> GetGameVersions()
-		{
-			return GameInfo.GameVersions;
-		}
+		public static Dictionary<string, GameVersion> GetGameVersions() => GameInfo.GameVersions;
 
-		public static async Task<Leaderboard> GetLeaderboard(int rank)
-		{
-			return await Hasmodai.GetScores(Math.Max(1, rank));
-		}
+		public static async Task<Leaderboard> GetLeaderboard(int rank) => await Hasmodai.GetScores(Math.Max(1, rank));
 
 		public static bool TryGetSpawnsetPath(ICommonObjects commonObjects, string fileName, out string path)
 		{
@@ -125,15 +119,9 @@ namespace DevilDaggersWebsite.Code.Api
 			return false;
 		}
 
-		public static List<Tool> GetTools()
-		{
-			return ToolList.Tools;
-		}
+		public static List<Tool> GetTools() => ToolList.Tools;
 
-		public static async Task<Entry> GetUserById(int userId)
-		{
-			return await Hasmodai.GetUserById(userId);
-		}
+		public static async Task<Entry> GetUserById(int userId) => await Hasmodai.GetUserById(userId);
 
 		public static async Task<List<Entry>> GetUserByUsername(string username)
 		{
@@ -194,7 +182,6 @@ namespace DevilDaggersWebsite.Code.Api
 			return data;
 		}
 
-		// TODO
 		public static (DateTime from, DateTime to) GetLatestDatePlayed(ICommonObjects commonObjects, int userId)
 		{
 			List<(DateTime dateTime, Entry entry)> entries = new List<(DateTime, Entry)>();
