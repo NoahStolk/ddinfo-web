@@ -15,11 +15,11 @@ namespace DevilDaggersWebsite.Code.Donations
 
 		public static Donation[] Donations = new Donation[]
 		{
-			new Donation(137044, 100, "EUR", 100, new DateTime()), // TODO: Get date.
-			new Donation(105315, 1000, "EUR", 1000, new DateTime()), // TODO: Get date.
+			new Donation(137044, 100, "EUR", 100, new DateTime(2018, 2, 19)),
+			new Donation(105315, 1000, "EUR", 1000, new DateTime(2018, 2, 19)),
 			new Donation(105315, 1, "EUR", 1, new DateTime(2018, 2, 20)),
-			new Donation(94857, 77, "EUR", 39, new DateTime()), // TODO: Get date.
-			new Donation(142939, 1200, "EUR", 1200, new DateTime()), // TODO: Get date.
+			new Donation(94857, 77, "EUR", 39, new DateTime(2018, 2, 19)),
+			new Donation(142939, 1200, "EUR", 1200, new DateTime(2018, 2, 20)),
 			new Donation(118832, 100, "EUR", 100, new DateTime(2018, 2, 20)),
 			new Donation(118832, 150, "EUR", 150, new DateTime(2018, 9, 5)),
 			new Donation(118832, 250, "EUR", 250, new DateTime(2018, 10, 22)),
