@@ -50,7 +50,7 @@
 						<div class="col-xs-6">
 							Mod type<br />
 							<ul>
-								@foreach (string s in EnumUtils.DisplayEnumValues<AssetModType>())
+								@foreach (string s in EnumUtils.GetEnumNamesWithValues<AssetModType>())
 								{
 									<li>@s</li>
 								}
@@ -59,7 +59,7 @@
 						<div class="col-xs-6">
 							File kind<br />
 							<ul>
-								@foreach (string s in EnumUtils.DisplayEnumValues<AssetModFileContents>())
+								@foreach (string s in EnumUtils.GetEnumNamesWithValues<AssetModFileContents>())
 								{
 									<li>@s</li>
 								}
