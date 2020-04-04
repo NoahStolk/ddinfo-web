@@ -19,6 +19,7 @@
 		<ProjectReference Include="..\..\CoreBase\CoreBase\CoreBase.csproj" />
 		<ProjectReference Include="..\..\DevilDaggersCore\DevilDaggersCore\DevilDaggersCore.csproj" />
 		<ProjectReference Include="..\..\DevilDaggersDiscordBot\DevilDaggersDiscordBot\DevilDaggersDiscordBot.csproj" />
+		<ProjectReference Include="..\..\EncryptionUtils\EncryptionUtils\EncryptionUtils.csproj" />
 	</ItemGroup>
 	<ItemGroup>
 		<Content Update="log4net.config">

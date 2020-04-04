@@ -35,6 +35,8 @@ Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "Bot", "Bot", "{7213D1A2-9EA
 EndProject
 Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "DevilDaggersDiscordBot.Test", "..\DevilDaggersDiscordBot\DevilDaggersDiscordBot.Test\DevilDaggersDiscordBot.Test.csproj", "{4F3A7079-ACB7-4CA5-B629-58BBB1E9C40A}"
 EndProject
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "EncryptionUtils", "..\EncryptionUtils\EncryptionUtils\EncryptionUtils.csproj", "{F7C0A1EB-5A5B-46CC-A98E-1847C9AF7627}"
+EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
 		Debug|Any CPU = Debug|Any CPU
@@ -93,6 +95,10 @@ Global
 		{4F3A7079-ACB7-4CA5-B629-58BBB1E9C40A}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{4F3A7079-ACB7-4CA5-B629-58BBB1E9C40A}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{4F3A7079-ACB7-4CA5-B629-58BBB1E9C40A}.Release|Any CPU.Build.0 = Release|Any CPU
+		{F7C0A1EB-5A5B-46CC-A98E-1847C9AF7627}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{F7C0A1EB-5A5B-46CC-A98E-1847C9AF7627}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{F7C0A1EB-5A5B-46CC-A98E-1847C9AF7627}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{F7C0A1EB-5A5B-46CC-A98E-1847C9AF7627}.Release|Any CPU.Build.0 = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE
@@ -110,6 +116,7 @@ Global
 		{8A33CB41-B221-44B1-924B-640C80BBC924} = {5632F4FF-82A2-4DDD-B7D9-0F83D53E362C}
 		{8E7C50E6-2922-4506-BEF6-0645DA8AAEA1} = {7213D1A2-9EAC-47F2-9EC6-0A1B6858994D}
 		{4F3A7079-ACB7-4CA5-B629-58BBB1E9C40A} = {7213D1A2-9EAC-47F2-9EC6-0A1B6858994D}
+		{F7C0A1EB-5A5B-46CC-A98E-1847C9AF7627} = {496E881B-2660-4D10-86D8-12ED3EE284C0}
 	EndGlobalSection
 	GlobalSection(ExtensibilityGlobals) = postSolution
 		SolutionGuid = {E27EC676-81BF-4099-BFC9-20E860CE83A5}
