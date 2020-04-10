@@ -29,9 +29,9 @@ namespace DevilDaggersWebsite.Code.Utils
 			{
 				DefaultValueHandling = DefaultValueHandling.IgnoreAndPopulate
 			});
-			using (StreamWriter sw = new StreamWriter(File.Create(@"C:\Users\NOAH\source\repos\DevilDaggersWebsite\DevilDaggersWebsite\wwwroot\spawnsets\Settings\Settings.json")))
-			using (JsonTextWriter jtw = new JsonTextWriter(sw) { Formatting = Formatting.Indented, IndentChar = '\t', Indentation = 1 })
-				serializer.Serialize(jtw, dict);
+			using StreamWriter sw = new StreamWriter(File.Create(@"C:\Users\NOAH\source\repos\DevilDaggersWebsite\DevilDaggersWebsite\wwwroot\spawnsets\Settings\Settings.json"));
+			using JsonTextWriter jtw = new JsonTextWriter(sw) { Formatting = Formatting.Indented, IndentChar = '\t', Indentation = 1 };
+			serializer.Serialize(jtw, dict);
 		}
 
 		public static SpawnsetFile CreateSpawnsetFileFromSettingsFile(ICommonObjects commonObjects, string path)

@@ -19,12 +19,12 @@ namespace DevilDaggersWebsite.Code.Utils
 				time='{entry.Time}'
 				kills='{entry.Kills}'
 				gems='{entry.Gems}'
-				accuracy='{(entry.Accuracy * 10000).ToString("0")}'
+				accuracy='{entry.Accuracy * 10000:0}'
 				death-type='{GameInfo.GetDeathFromDeathType(entry.DeathType).Name}'
 				total-time='{entry.TimeTotal}'
 				total-kills='{entry.KillsTotal}'
 				total-gems='{entry.GemsTotal}'
-				total-accuracy='{(entry.AccuracyTotal * 10000).ToString("0")}'
+				total-accuracy='{entry.AccuracyTotal * 10000:0}'
 				total-deaths='{entry.DeathsTotal}'
 			");
 		}
@@ -50,7 +50,7 @@ namespace DevilDaggersWebsite.Code.Utils
 			StringBuilder sb = new StringBuilder();
 			foreach (ChangelogEntry entry in tool.Changelog)
 			{
-				sb.Append($"<h3>{entry.VersionNumber} - {entry.Date.ToString("MMMM dd, yyyy")}</h3><ul>");
+				sb.Append($"<h3>{entry.VersionNumber} - {entry.Date:MMMM dd, yyyy}</h3><ul>");
 				foreach (Change change in entry.Changes)
 					sb.Append(change.ToHtmlString());
 				sb.Append("</ul>");
