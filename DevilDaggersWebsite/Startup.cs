@@ -46,7 +46,7 @@ namespace DevilDaggersWebsite
 		// This method gets called by the runtime. Use this method to configure the HTTP request pipeline.
 		public void Configure(IApplicationBuilder app, IHostingEnvironment env)
 		{
-			CultureInfo cultureInfo = new CultureInfo("en-US");
+			CultureInfo cultureInfo = CultureInfo.InvariantCulture;
 			CultureInfo.DefaultThreadCurrentCulture = cultureInfo;
 			CultureInfo.DefaultThreadCurrentUICulture = cultureInfo;
 
