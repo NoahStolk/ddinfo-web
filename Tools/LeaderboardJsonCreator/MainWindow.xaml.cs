@@ -82,7 +82,7 @@ namespace LeaderboardJsonCreator
 				List<string> values = line.Split(' ').ToList();
 				if (values.Count < 9)
 					continue;
-				while (values.Count > 9) // no accuracy
+				while (values.Count > 9) // No accuracy
 				{
 					values[0] += $" {values[1]}";
 					values.Remove(values[1]);
