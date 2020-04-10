@@ -44,7 +44,7 @@
 				string shots = entry.FormatShots();
 				string accuracy = entry.Accuracy.ToString("0.00%");
 
-				<div class="sort" @entry.ToHTMLData(rank, flagCode)>
+				<div class="sort" @entry.ToHtmlData(rank, flagCode)>
 					<div class="leaderboard-row flex-container" id="@(rank)-row">
 						<div class="text-right">
 							<span data-toggle="tooltip" title="ID: @entry.PlayerId" class="leaderboard-tooltip">@rank</span>
