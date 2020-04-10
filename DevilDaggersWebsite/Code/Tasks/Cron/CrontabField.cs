@@ -11,21 +11,21 @@ namespace DevilDaggersWebsite.Code.Tasks.Cron
 	[Serializable]
 	public sealed class CrontabField
 	{
-		private readonly BitArray _bits;
-		private readonly CrontabFieldImpl _impl;
-		private int _maxValueSet;
-		private int _minValueSet;
+		private readonly BitArray bits;
+		private readonly CrontabFieldImpl impl;
+		private int maxValueSet;
+		private int minValueSet;
 
 		private CrontabField(CrontabFieldImpl impl, string expression)
 		{
-			_impl = impl ?? throw new ArgumentNullException(nameof(impl));
-			_bits = new BitArray(impl.ValueCount);
+			this.impl = impl ?? throw new ArgumentNullException(nameof(impl));
+			bits = new BitArray(impl.ValueCount);
 
-			_bits.SetAll(false);
-			_minValueSet = int.MaxValue;
-			_maxValueSet = -1;
+			bits.SetAll(false);
+			minValueSet = int.MaxValue;
+			maxValueSet = -1;
 
-			_impl.Parse(expression, Accumulate);
+			this.impl.Parse(expression, Accumulate);
 		}
 
 		#region ICrontabField Members
@@ -33,10 +33,7 @@ namespace DevilDaggersWebsite.Code.Tasks.Cron
 		/// <summary>
 		/// Gets the first value of the field or -1.
 		/// </summary>
-		public int GetFirst()
-		{
-			return _minValueSet < int.MaxValue ? _minValueSet : -1;
-		}
+		public int GetFirst() => minValueSet < int.MaxValue ? minValueSet : -1;
 
 		/// <summary>
 		/// Gets the next value of the field that occurs after the given 
@@ -44,15 +41,15 @@ namespace DevilDaggersWebsite.Code.Tasks.Cron
 		/// </summary>
 		public int Next(int start)
 		{
-			if (start < _minValueSet)
-				return _minValueSet;
+			if (start < minValueSet)
+				return minValueSet;
 
 			int startIndex = ValueToIndex(start);
-			int lastIndex = ValueToIndex(_maxValueSet);
+			int lastIndex = ValueToIndex(maxValueSet);
 
 			for (int i = startIndex; i <= lastIndex; i++)
 			{
-				if (_bits[i])
+				if (bits[i])
 					return IndexToValue(i);
 			}
 
@@ -62,70 +59,43 @@ namespace DevilDaggersWebsite.Code.Tasks.Cron
 		/// <summary>
 		/// Determines if the given value occurs in the field.
 		/// </summary>
-		public bool Contains(int value)
-		{
-			return _bits[ValueToIndex(value)];
-		}
+		public bool Contains(int value) => bits[ValueToIndex(value)];
 
 		#endregion
 
 		/// <summary>
 		/// Parses a crontab field expression given its kind.
 		/// </summary>
-		public static CrontabField Parse(CrontabFieldKind kind, string expression)
-		{
-			return new CrontabField(CrontabFieldImpl.FromKind(kind), expression);
-		}
+		public static CrontabField Parse(CrontabFieldKind kind, string expression) => new CrontabField(CrontabFieldImpl.FromKind(kind), expression);
 
 		/// <summary>
 		/// Parses a crontab field expression representing minutes.
 		/// </summary>
-		public static CrontabField Minutes(string expression)
-		{
-			return new CrontabField(CrontabFieldImpl.Minute, expression);
-		}
+		public static CrontabField Minutes(string expression) => new CrontabField(CrontabFieldImpl.Minute, expression);
 
 		/// <summary>
 		/// Parses a crontab field expression representing hours.
 		/// </summary>
-		public static CrontabField Hours(string expression)
-		{
-			return new CrontabField(CrontabFieldImpl.Hour, expression);
-		}
+		public static CrontabField Hours(string expression) => new CrontabField(CrontabFieldImpl.Hour, expression);
 
 		/// <summary>
 		/// Parses a crontab field expression representing days in any given month.
 		/// </summary>
-		public static CrontabField Days(string expression)
-		{
-			return new CrontabField(CrontabFieldImpl.Day, expression);
-		}
+		public static CrontabField Days(string expression) => new CrontabField(CrontabFieldImpl.Day, expression);
 
 		/// <summary>
 		/// Parses a crontab field expression representing months.
 		/// </summary>
-		public static CrontabField Months(string expression)
-		{
-			return new CrontabField(CrontabFieldImpl.Month, expression);
-		}
+		public static CrontabField Months(string expression) => new CrontabField(CrontabFieldImpl.Month, expression);
 
 		/// <summary>
 		/// Parses a crontab field expression representing days of a week.
 		/// </summary>
-		public static CrontabField DaysOfWeek(string expression)
-		{
-			return new CrontabField(CrontabFieldImpl.DayOfWeek, expression);
-		}
+		public static CrontabField DaysOfWeek(string expression) => new CrontabField(CrontabFieldImpl.DayOfWeek, expression);
 
-		private int IndexToValue(int index)
-		{
-			return index + _impl.MinValue;
-		}
+		private int IndexToValue(int index) => index + impl.MinValue;
 
-		private int ValueToIndex(int value)
-		{
-			return value - _impl.MinValue;
-		}
+		private int ValueToIndex(int value) => value - impl.MinValue;
 
 		/// <summary>
 		/// Accumulates the given range (start to end) and interval of values
@@ -138,8 +108,8 @@ namespace DevilDaggersWebsite.Code.Tasks.Cron
 		/// </remarks>
 		private void Accumulate(int start, int end, int interval)
 		{
-			int minValue = _impl.MinValue;
-			int maxValue = _impl.MaxValue;
+			int minValue = impl.MinValue;
+			int maxValue = impl.MaxValue;
 
 			if (start == end)
 			{
@@ -148,9 +118,9 @@ namespace DevilDaggersWebsite.Code.Tasks.Cron
 					// We're setting the entire range of values.
 					if (interval <= 1)
 					{
-						_minValueSet = minValue;
-						_maxValueSet = maxValue;
-						_bits.SetAll(true);
+						minValueSet = minValue;
+						maxValueSet = maxValue;
+						bits.SetAll(true);
 						return;
 					}
 
@@ -164,14 +134,14 @@ namespace DevilDaggersWebsite.Code.Tasks.Cron
 					{
 						throw new FormatException(string.Format(
 							"'{0} is lower than the minimum allowable value for this field. Value must be between {1} and {2} (all inclusive).",
-							start, _impl.MinValue, _impl.MaxValue));
+							start, impl.MinValue, impl.MaxValue));
 					}
 
 					if (start > maxValue)
 					{
 						throw new FormatException(string.Format(
 							"'{0} is higher than the maximum allowable value for this field. Value must be between {1} and {2} (all inclusive).",
-							end, _impl.MinValue, _impl.MaxValue));
+							end, impl.MinValue, impl.MaxValue));
 					}
 				}
 			}
@@ -194,7 +164,7 @@ namespace DevilDaggersWebsite.Code.Tasks.Cron
 				{
 					throw new FormatException(string.Format(
 						"'{0} is lower than the minimum allowable value for this field. Value must be between {1} and {2} (all inclusive).",
-						start, _impl.MinValue, _impl.MaxValue));
+						start, impl.MinValue, impl.MaxValue));
 				}
 
 				if (end < 0)
@@ -205,7 +175,7 @@ namespace DevilDaggersWebsite.Code.Tasks.Cron
 				{
 					throw new FormatException(string.Format(
 						"'{0} is higher than the maximum allowable value for this field. Value must be between {1} and {2} (all inclusive).",
-						end, _impl.MinValue, _impl.MaxValue));
+						end, impl.MinValue, impl.MaxValue));
 				}
 			}
 
@@ -216,45 +186,40 @@ namespace DevilDaggersWebsite.Code.Tasks.Cron
 
 			// Populate the _bits table by setting all the bits corresponding to
 			// the valid field values.
-			for (i = start - minValue; i <= (end - minValue); i += interval)
-				_bits[i] = true;
+			for (i = start - minValue; i <= end - minValue; i += interval)
+				bits[i] = true;
 
 			// Make sure we remember the minimum value set so far Keep track of
 			// the highest and lowest values that have been added to this field
 			// so far.
-			if (_minValueSet > start)
-				_minValueSet = start;
+			if (minValueSet > start)
+				minValueSet = start;
 
-			i += (minValue - interval);
+			i += minValue - interval;
 
-			if (_maxValueSet < i)
-				_maxValueSet = i;
+			if (maxValueSet < i)
+				maxValueSet = i;
 		}
 
-		public override string ToString()
-		{
-			return ToString(null);
-		}
+		public override string ToString() => ToString(null);
 
 		public string ToString(string format)
 		{
-			using (StringWriter writer = new StringWriter(CultureInfo.InvariantCulture))
+			using StringWriter writer = new StringWriter(CultureInfo.InvariantCulture);
+			switch (format)
 			{
-				switch (format)
-				{
-					case "G":
-					case null:
-						Format(writer, true);
-						break;
-					case "N":
-						Format(writer);
-						break;
-					default:
-						throw new FormatException();
-				}
-
-				return writer.ToString();
+				case "G":
+				case null:
+					Format(writer, true);
+					break;
+				case "N":
+					Format(writer);
+					break;
+				default:
+					throw new FormatException();
 			}
+
+			return writer.ToString();
 		}
 
 		public void Format(TextWriter writer)
@@ -264,7 +229,7 @@ namespace DevilDaggersWebsite.Code.Tasks.Cron
 
 		public void Format(TextWriter writer, bool noNames)
 		{
-			_impl.Format(this, writer, noNames);
+			impl.Format(this, writer, noNames);
 		}
 	}
 }

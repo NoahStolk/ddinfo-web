@@ -30,51 +30,40 @@ namespace DevilDaggersWebsite.Code.Tasks.Cron
 				"Saturday"
 			});
 
-		private static readonly CrontabFieldImpl[] FieldByKind = { Minute, Hour, Day, Month, DayOfWeek };
+		private static readonly CrontabFieldImpl[] fieldByKind = { Minute, Hour, Day, Month, DayOfWeek };
 
-		private static readonly CompareInfo Comparer = CultureInfo.InvariantCulture.CompareInfo;
-		private static readonly char[] Comma = { ',' };
-		private readonly string[] _names;
+		private static readonly CompareInfo comparer = CultureInfo.InvariantCulture.CompareInfo;
+		private static readonly char[] comma = { ',' };
+
+		private readonly string[] names;
+
+		public CrontabFieldKind Kind { get; }
+		public int MinValue { get; }
+		public int MaxValue { get; }
+
+		public int ValueCount => MaxValue - MinValue + 1;
 
 		private CrontabFieldImpl(CrontabFieldKind kind, int minValue, int maxValue, string[] names)
 		{
+			Debug.Assert(names == null || names.Length == maxValue - minValue + 1);
 			Debug.Assert(Enum.IsDefined(typeof(CrontabFieldKind), kind));
 			Debug.Assert(minValue >= 0);
 			Debug.Assert(maxValue >= minValue);
-			Debug.Assert(names == null || names.Length == (maxValue - minValue + 1));
 
+			this.names = names;
 			Kind = kind;
 			MinValue = minValue;
 			MaxValue = maxValue;
-			_names = names;
 		}
 
-		public CrontabFieldKind Kind { get; }
-
-		public int MinValue { get; }
-
-		public int MaxValue { get; }
-
-		public int ValueCount
-		{
-			get { return MaxValue - MinValue + 1; }
-		}
-
-		object IObjectReference.GetRealObject(StreamingContext context)
-		{
-			return FromKind(Kind);
-		}
+		object IObjectReference.GetRealObject(StreamingContext context) => FromKind(Kind);
 
 		public static CrontabFieldImpl FromKind(CrontabFieldKind kind)
 		{
 			if (!Enum.IsDefined(typeof(CrontabFieldKind), kind))
-			{
-				throw new ArgumentException(string.Format(
-					"Invalid crontab field kind. Valid values are {0}.",
-					string.Join(", ", Enum.GetNames(typeof(CrontabFieldKind)))), nameof(kind));
-			}
+				throw new ArgumentException($"Invalid crontab field kind. Valid values are {string.Join(", ", Enum.GetNames(typeof(CrontabFieldKind)))}.", nameof(kind));
 
-			return FieldByKind[(int)kind];
+			return fieldByKind[(int)kind];
 		}
 
 		public void Format(CrontabField field, TextWriter writer, bool noNames)
@@ -128,7 +117,7 @@ namespace DevilDaggersWebsite.Code.Tasks.Cron
 		{
 			Debug.Assert(writer != null);
 
-			if (noNames || _names == null)
+			if (noNames || names == null)
 			{
 				if (value >= 0 && value < 100)
 				{
@@ -142,7 +131,7 @@ namespace DevilDaggersWebsite.Code.Tasks.Cron
 			else
 			{
 				int index = value - MinValue;
-				writer.Write(_names[index]);
+				writer.Write(names[index]);
 			}
 		}
 
@@ -153,8 +142,8 @@ namespace DevilDaggersWebsite.Code.Tasks.Cron
 
 			if (value >= 10)
 			{
-				writer.Write((char)('0' + (value / 10)));
-				writer.Write((char)('0' + (value % 10)));
+				writer.Write((char)('0' + value / 10));
+				writer.Write((char)('0' + value % 10));
 			}
 			else
 			{
@@ -185,7 +174,7 @@ namespace DevilDaggersWebsite.Code.Tasks.Cron
 			Debug.Assert(str != null);
 			Debug.Assert(innerException != null);
 
-			throw new FormatException(string.Format("'{0}' is not a valid crontab field expression.", str),
+			throw new FormatException($"'{str}' is not a valid crontab field expression.",
 				innerException);
 		}
 
@@ -202,7 +191,7 @@ namespace DevilDaggersWebsite.Code.Tasks.Cron
 
 			if (commaIndex > 0)
 			{
-				foreach (string token in str.Split(Comma))
+				foreach (string token in str.Split(comma))
 					InternalParse(token, acc);
 			}
 			else
@@ -265,22 +254,18 @@ namespace DevilDaggersWebsite.Code.Tasks.Cron
 			if (firstChar >= '0' && firstChar <= '9')
 				return int.Parse(str, CultureInfo.InvariantCulture);
 
-			if (_names == null)
+			if (names == null)
 			{
-				throw new FormatException(string.Format(
-					"'{0}' is not a valid value for this crontab field. It must be a numeric value between {1} and {2} (all inclusive).",
-					str, MinValue, MaxValue));
+				throw new FormatException($"'{str}' is not a valid value for this crontab field. It must be a numeric value between {MinValue} and {MaxValue} (all inclusive).");
 			}
 
-			for (int i = 0; i < _names.Length; i++)
+			for (int i = 0; i < names.Length; i++)
 			{
-				if (Comparer.IsPrefix(_names[i], str, CompareOptions.IgnoreCase))
+				if (comparer.IsPrefix(names[i], str, CompareOptions.IgnoreCase))
 					return i + MinValue;
 			}
 
-			throw new FormatException(string.Format(
-				"'{0}' is not a known value name. Use one of the following: {1}.",
-				str, string.Join(", ", _names)));
+			throw new FormatException($"'{str}' is not a known value name. Use one of the following: {string.Join(", ", names)}.");
 		}
 	}
 }
