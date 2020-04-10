@@ -21,24 +21,21 @@ namespace DevilDaggersWebsite.Code.Database.CustomLeaderboards
 		{
 		}
 
-		public HtmlString ToHTMLData(int rank, string flagCode)
-		{
-			return new HtmlString($@"
-				rank='{rank}'
-				flag='{flagCode}'
-				username='{HttpUtility.HtmlEncode(Username)}'
-				time='{(Time * 10000).ToString("0")}'
-				kills='{Kills}'
-				gems='{Gems}'
-				accuracy='{(Accuracy * 10000).ToString("0")}'
-				death-type='{GameInfo.GetDeathFromDeathType(DeathType).Name}'
-				enemies-alive='{EnemiesAlive}'
-				homing='{Homing}'
-				level-2='{(LevelUpTime2 == 0 ? "999999999" : (LevelUpTime2 * 10000).ToString("0"))}'
-				level-3='{(LevelUpTime3 == 0 ? "999999999" : (LevelUpTime3 * 10000).ToString("0"))}'
-				level-4='{(LevelUpTime4 == 0 ? "999999999" : (LevelUpTime4 * 10000).ToString("0"))}'
-				submit-date='{SubmitDate.ToString("yyyyMMddHHmm")}'
-			");
-		}
+		public HtmlString ToHtmlData(int rank, string flagCode) => new HtmlString($@"
+			rank='{rank}'
+			flag='{flagCode}'
+			username='{HttpUtility.HtmlEncode(Username)}'
+			time='{Time * 10000:0}'
+			kills='{Kills}'
+			gems='{Gems}'
+			accuracy='{Accuracy * 10000:0}'
+			death-type='{GameInfo.GetDeathFromDeathType(DeathType).Name}'
+			enemies-alive='{EnemiesAlive}'
+			homing='{Homing}'
+			level-2='{(LevelUpTime2 == 0 ? "999999999" : (LevelUpTime2 * 10000).ToString("0"))}'
+			level-3='{(LevelUpTime3 == 0 ? "999999999" : (LevelUpTime3 * 10000).ToString("0"))}'
+			level-4='{(LevelUpTime4 == 0 ? "999999999" : (LevelUpTime4 * 10000).ToString("0"))}'
+			submit-date='{SubmitDate:yyyyMMddHHmm}'
+		");
 	}
 }
