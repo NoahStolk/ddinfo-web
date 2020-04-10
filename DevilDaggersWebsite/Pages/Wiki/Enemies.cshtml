@@ -40,7 +40,7 @@
 		{
 			<div class="flex-container">
 				<div>@RazorUtils.GetLayoutAnchor(enemy)</div>
-				<div class='text-right'>@enemy.HP</div>
+				<div class='text-right'>@enemy.Hp</div>
 				<div class='text-right'>@enemy.Gems</div>
 				<div style='color: #@enemy.Death.ColorCode'>@enemy.Death.Name</div>
 				<div class="hidden-sm hidden-md">@string.Join(", ", enemy.Appearances)</div>
@@ -76,7 +76,7 @@
 				</div>
 				<div class="enemy-row flex-container">
 					<div>HP</div>
-					<div class="text-right">@enemy.HP @(enemy.Gems > 1 ? enemy.GetGemHPString() : "")</div>
+					<div class="text-right">@enemy.Hp @(enemy.Gems > 1 ? enemy.GetGemHpString() : "")</div>
 				</div>
 				<div class="enemy-row flex-container">
 					<div>Gems</div>
@@ -136,7 +136,7 @@
 			if (enemy.Gems > 1)
 			{
 				Enemy enemyGem = enemy.Copy();
-				enemyGem.HP = enemy.GemHP;
+				enemyGem.Hp = enemy.GemHp;
 				enemyGem.Homing3 = enemy.Homing3 / enemy.Gems;
 				enemyGem.Homing4 = enemy.Homing4 / enemy.Gems;
 				enemies.Add(enemyGem, true);
@@ -175,7 +175,7 @@
 				{
 					<tr>
 						<td>@kvp.Key.GetLayoutAnchor() @(kvp.Value ? "(Gem)" : "")</td>
-						<td class="text-right">@kvp.Key.HP</td>
+						<td class="text-right">@kvp.Key.Hp</td>
 						@for (int i = 0; i < 3; i++)
 						{
 							foreach (Upgrade upgrade in Model.upgrades)
@@ -183,10 +183,10 @@
 								switch (i)
 								{
 									case 0:
-										<td class="text-right">@((kvp.Key.HP / upgrade.DefaultSprayPerSecond).ToString("0.000"))</td>
+										<td class="text-right">@((kvp.Key.Hp / upgrade.DefaultSprayPerSecond).ToString("0.000"))</td>
 										break;
 									case 1:
-										<td class="text-right">@Math.Ceiling(kvp.Key.HP / (double)upgrade.DefaultShot)</td>
+										<td class="text-right">@Math.Ceiling(kvp.Key.Hp / (double)upgrade.DefaultShot)</td>
 										break;
 									case 2:
 										if (upgrade.Level == 3)
@@ -225,7 +225,7 @@
 							{
 								case 0:
 									<td>@kvp.Key.GetLayoutAnchor() @(kvp.Value ? "(Gem)" : "")</td>
-									<td class="text-right">@kvp.Key.HP</td>
+									<td class="text-right">@kvp.Key.Hp</td>
 									foreach (Upgrade upgrade in Model.upgrades)
 									{
 										<td class="text-right">@upgrade.GetLayoutAnchor()</td>
@@ -236,7 +236,7 @@
 									<td></td>
 									foreach (Upgrade upgrade in Model.upgrades)
 									{
-										<td class="text-right">@((kvp.Key.HP / upgrade.DefaultSprayPerSecond).ToString("0.000"))</td>
+										<td class="text-right">@((kvp.Key.Hp / upgrade.DefaultSprayPerSecond).ToString("0.000"))</td>
 									}
 									break;
 								case 2:
@@ -244,7 +244,7 @@
 									<td></td>
 									foreach (Upgrade upgrade in Model.upgrades)
 									{
-										<td class="text-right">@Math.Ceiling(kvp.Key.HP / (double)upgrade.DefaultShot)</td>
+										<td class="text-right">@Math.Ceiling(kvp.Key.Hp / (double)upgrade.DefaultShot)</td>
 									}
 									break;
 								case 3:
@@ -283,7 +283,7 @@
 				<tbody>
 					<tr class="enemy-row-xs-header flex-container">
 						<td><span class="enemy-expander" id="@id">+</span> @kvp.Key.GetLayoutAnchor() @(kvp.Value ? "(Gem)" : "")</td>
-						<td class="text-right">@kvp.Key.HP HP</td>
+						<td class="text-right">@kvp.Key.Hp HP</td>
 					</tr>
 				</tbody>
 
@@ -297,7 +297,7 @@
 								{
 									<tr>
 										<td>@upgrade.GetLayoutAnchor() spray (seconds)</td>
-										<td class="text-right">@((kvp.Key.HP / upgrade.DefaultSprayPerSecond).ToString("0.000"))</td>
+										<td class="text-right">@((kvp.Key.Hp / upgrade.DefaultSprayPerSecond).ToString("0.000"))</td>
 									</tr>
 								}
 								break;
@@ -306,7 +306,7 @@
 								{
 									<tr>
 										<td>@upgrade.GetLayoutAnchor() shots</td>
-										<td class="text-right">@Math.Ceiling(kvp.Key.HP / (double)upgrade.DefaultShot)</td>
+										<td class="text-right">@Math.Ceiling(kvp.Key.Hp / (double)upgrade.DefaultShot)</td>
 									</tr>
 								}
 								break;

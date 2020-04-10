@@ -87,7 +87,7 @@ namespace DevilDaggersWebsite.Code.Tasks
 
 			foreach (Entry entry in Leaderboard.Entries)
 			{
-				Death death = GameInfo.GetDeathFromDeathType(entry.DeathType, GameInfo.GameVersions[GameInfo.DEFAULT_GAME_VERSION]);
+				Death death = GameInfo.GetDeathFromDeathType(entry.DeathType, GameInfo.GameVersions[GameInfo.DefaultGameVersion]);
 				if (DeathStats.ContainsKey(death))
 					DeathStats[death]++;
 				else

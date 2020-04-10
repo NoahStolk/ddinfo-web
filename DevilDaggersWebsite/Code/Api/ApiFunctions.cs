@@ -45,7 +45,7 @@ namespace DevilDaggersWebsite.Code.Api
 		public static IEnumerable<Death> GetDeaths(int? deathType, string gameVersion)
 		{
 			if (!GameInfo.GameVersions.TryGetValue(gameVersion, out GameVersion version))
-				version = GameInfo.GameVersions[GameInfo.DEFAULT_GAME_VERSION];
+				version = GameInfo.GameVersions[GameInfo.DefaultGameVersion];
 
 			if (deathType.HasValue)
 			{
@@ -60,7 +60,7 @@ namespace DevilDaggersWebsite.Code.Api
 		public static IEnumerable<Enemy> GetEnemies(string enemyName, string gameVersion)
 		{
 			if (!GameInfo.GameVersions.TryGetValue(gameVersion, out GameVersion version))
-				version = GameInfo.GameVersions[GameInfo.DEFAULT_GAME_VERSION];
+				version = GameInfo.GameVersions[GameInfo.DefaultGameVersion];
 
 			if (!string.IsNullOrEmpty(enemyName))
 			{
