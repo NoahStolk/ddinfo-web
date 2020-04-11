@@ -168,16 +168,16 @@ namespace DevilDaggersWebsite.Pages.CustomLeaderboards
 				const int width = 15;
 				return new UploadResult(true, $@"NEW HIGHSCORE for {SpawnsetFile.GetName(leaderboard.SpawnsetFileName)}!
 				
-{$"Rank",-width}{$"{rank} / {totalPlayers}",width}({rankDiff:+0;-#})
-{$"Time",-width}{time,width:0.0000}({(timeDiff < 0 ? "" : "+")}{timeDiff:0.0000})
-{$"Kills",-width}{kills,width}({killsDiff:+0;-#})
-{$"Gems",-width}{gems,width}({gemsDiff:+0;-#})
-{$"Accuracy",-width}{accuracy,width:0.00%}({(accuracyDiff < 0 ? "" : "+")}{accuracyDiff:0.00%})
-{$"Enemies Alive",-width}{enemiesAlive,width}({enemiesAliveDiff:+0;-#})
-{$"Homing",-width}{homing,width}({homingDiff:+0;-#})
-{$"Level 2",-width}{levelUpTime2,width:0.0000}({(levelUpTime2Diff < 0 ? "" : "+")}{levelUpTime2Diff:0.0000})
-{$"Level 3",-width}{levelUpTime3,width:0.0000}({(levelUpTime3Diff < 0 ? "" : "+")}{levelUpTime3Diff:0.0000})
-{$"Level 4",-width}{levelUpTime4,width:0.0000}({(levelUpTime4Diff < 0 ? "" : "+")}{levelUpTime4Diff:0.0000})");
+{$"Rank",-width}{$"{rank} / {totalPlayers}",width} ({rankDiff:+0;-#})
+{$"Time",-width}{time,width:0.0000} ({(timeDiff < 0 ? "" : "+")}{timeDiff:0.0000})
+{$"Kills",-width}{kills,width} ({killsDiff:+0;-#})
+{$"Gems",-width}{gems,width} ({gemsDiff:+0;-#})
+{$"Accuracy",-width}{accuracy,width:0.00%} ({(accuracyDiff < 0 ? "" : "+")}{accuracyDiff:0.00%})
+{$"Enemies Alive",-width}{enemiesAlive,width} ({enemiesAliveDiff:+0;-#})
+{$"Homing",-width}{homing,width} ({homingDiff:+0;-#})
+{$"Level 2",-width}{levelUpTime2,width:0.0000} ({(levelUpTime2Diff < 0 ? "" : "+")}{levelUpTime2Diff:0.0000})
+{$"Level 3",-width}{levelUpTime3,width:0.0000} ({(levelUpTime3Diff < 0 ? "" : "+")}{levelUpTime3Diff:0.0000})
+{$"Level 4",-width}{levelUpTime4,width:0.0000} ({(levelUpTime4Diff < 0 ? "" : "+")}{levelUpTime4Diff:0.0000})");
 			}
 		}
 
