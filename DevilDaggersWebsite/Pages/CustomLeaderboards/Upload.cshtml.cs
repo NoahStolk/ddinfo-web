@@ -20,6 +20,8 @@ namespace DevilDaggersWebsite.Pages.CustomLeaderboards
 {
 	public class UploadModel : PageModel
 	{
+		private const int textWidth = 25;
+
 		public string JsonResult { get; set; }
 
 		private readonly ApplicationDbContext context;
@@ -114,10 +116,30 @@ namespace DevilDaggersWebsite.Pages.CustomLeaderboards
 				context.CustomEntries.Add(new CustomEntry(playerId, username, time, gems, kills, deathType, shotsHit, shotsFired, enemiesAlive, homing, levelUpTime2, levelUpTime3, levelUpTime4, DateTime.Now, clientVersion) { CustomLeaderboard = leaderboard });
 
 				context.SaveChanges();
-				return new UploadResult(true, $@"Welcome to the leaderboard for {SpawnsetFile.GetName(leaderboard.SpawnsetFileName)}.
 
-{$"Rank",-20}{rank} / {++totalPlayers}
-{$"Score",-20}{time:0.0000}");
+				if (clientVersionParsed <= new Version(0, 4, 4, 0))
+				{
+					return new UploadResult(true, $@"Welcome to the leaderboard for {SpawnsetFile.GetName(leaderboard.SpawnsetFileName)}.
+
+{$"Rank",-textWidth}{rank} / {++totalPlayers}
+{$"Time",-textWidth}{time:0.0000}");
+				}
+
+				return new UploadResult(true, $"Welcome to the leaderboard for {SpawnsetFile.GetName(leaderboard.SpawnsetFileName)}.", 0, new SubmissionInfo
+				{
+					TotalPlayers = totalPlayers,
+					Rank = rank,
+					Time = time,
+					Kills = kills,
+					Gems = gems,
+					ShotsHit = shotsHit,
+					ShotsFired = shotsFired,
+					EnemiesAlive = enemiesAlive,
+					Homing = homing,
+					LevelUpTime2 = levelUpTime2,
+					LevelUpTime3 = levelUpTime3,
+					LevelUpTime4 = levelUpTime4
+				});
 			}
 			else
 			{
@@ -136,13 +158,12 @@ namespace DevilDaggersWebsite.Pages.CustomLeaderboards
 				// Calculate the old rank.
 				int oldRank = leaderboard.Category.Ascending ? entries.Where(e => e.Time < time).Count() + 1 : entries.Where(e => e.Time > time).Count() + 1;
 
-				double accuracy = shotsFired == 0 ? 0 : shotsHit / (double)shotsFired;
-
 				int rankDiff = oldRank - rank;
 				float timeDiff = time - entry.Time;
 				int killsDiff = kills - entry.Kills;
 				int gemsDiff = gems - entry.Gems;
-				double accuracyDiff = accuracy - (entry.ShotsFired == 0 ? 0 : entry.ShotsHit / (double)entry.ShotsFired);
+				int shotsHitDiff = shotsHit - entry.ShotsHit;
+				int shotsFiredDiff = shotsFired - entry.ShotsFired;
 				int enemiesAliveDiff = enemiesAlive - entry.EnemiesAlive;
 				int homingDiff = homing - entry.Homing;
 				float levelUpTime2Diff = levelUpTime2 - entry.LevelUpTime2;
@@ -165,19 +186,51 @@ namespace DevilDaggersWebsite.Pages.CustomLeaderboards
 
 				context.SaveChanges();
 
-				const int width = 15;
-				return new UploadResult(true, $@"NEW HIGHSCORE for {SpawnsetFile.GetName(leaderboard.SpawnsetFileName)}!
-				
-{$"Rank",-width}{$"{rank} / {totalPlayers}",width} ({rankDiff:+0;-#})
-{$"Time",-width}{time,width:0.0000} ({(timeDiff < 0 ? "" : "+")}{timeDiff:0.0000})
-{$"Kills",-width}{kills,width} ({killsDiff:+0;-#})
-{$"Gems",-width}{gems,width} ({gemsDiff:+0;-#})
-{$"Accuracy",-width}{accuracy,width:0.00%} ({(accuracyDiff < 0 ? "" : "+")}{accuracyDiff:0.00%})
-{$"Enemies Alive",-width}{enemiesAlive,width} ({enemiesAliveDiff:+0;-#})
-{$"Homing",-width}{homing,width} ({homingDiff:+0;-#})
-{$"Level 2",-width}{levelUpTime2,width:0.0000} ({(levelUpTime2Diff < 0 ? "" : "+")}{levelUpTime2Diff:0.0000})
-{$"Level 3",-width}{levelUpTime3,width:0.0000} ({(levelUpTime3Diff < 0 ? "" : "+")}{levelUpTime3Diff:0.0000})
-{$"Level 4",-width}{levelUpTime4,width:0.0000} ({(levelUpTime4Diff < 0 ? "" : "+")}{levelUpTime4Diff:0.0000})");
+				if (clientVersionParsed <= new Version(0, 4, 4, 0))
+				{
+					double accuracy = shotsFired == 0 ? 0 : shotsHit / (double)shotsFired;
+					double accuracyDiff = accuracy - (entry.ShotsFired == 0 ? 0 : entry.ShotsHit / (double)entry.ShotsFired);
+
+					return new UploadResult(true, $@"NEW HIGHSCORE for {SpawnsetFile.GetName(leaderboard.SpawnsetFileName)}!
+                
+{$"Rank",-textWidth}{$"{rank} / {totalPlayers}",textWidth} ({rankDiff:+0;-#})
+{$"Time",-textWidth}{time,textWidth:0.0000} ({(timeDiff < 0 ? "" : "+")}{timeDiff:0.0000})
+{$"Kills",-textWidth}{kills,textWidth} ({killsDiff:+0;-#})
+{$"Gems",-textWidth}{gems,textWidth} ({gemsDiff:+0;-#})
+{$"Accuracy",-textWidth}{accuracy,textWidth:0.00%} ({(accuracyDiff < 0 ? "" : "+")}{accuracyDiff:0.00%})
+{$"Enemies Alive",-textWidth}{enemiesAlive,textWidth} ({enemiesAliveDiff:+0;-#})
+{$"Homing",-textWidth}{homing,textWidth} ({homingDiff:+0;-#})
+{$"Level 2",-textWidth}{levelUpTime2,textWidth:0.0000} ({(levelUpTime2Diff < 0 ? "" : "+")}{levelUpTime2Diff:0.0000})
+{$"Level 3",-textWidth}{levelUpTime3,textWidth:0.0000} ({(levelUpTime3Diff < 0 ? "" : "+")}{levelUpTime3Diff:0.0000})
+{$"Level 4",-textWidth}{levelUpTime4,textWidth:0.0000} ({(levelUpTime4Diff < 0 ? "" : "+")}{levelUpTime4Diff:0.0000})");
+				}
+
+				return new UploadResult(true, $"NEW HIGHSCORE for {SpawnsetFile.GetName(leaderboard.SpawnsetFileName)}!", 0, new SubmissionInfo
+				{
+					TotalPlayers = totalPlayers,
+					Rank = rank,
+					RankDiff = rankDiff,
+					Time = time,
+					TimeDiff = timeDiff,
+					Kills = kills,
+					KillsDiff = killsDiff,
+					Gems = gems,
+					GemsDiff = gemsDiff,
+					ShotsHit = shotsHit,
+					ShotsHitDiff = shotsHitDiff,
+					ShotsFired = shotsFired,
+					ShotsFiredDiff = shotsFiredDiff,
+					EnemiesAlive = enemiesAlive,
+					EnemiesAliveDiff = enemiesAliveDiff,
+					Homing = homing,
+					HomingDiff = homingDiff,
+					LevelUpTime2 = levelUpTime2,
+					LevelUpTime2Diff = levelUpTime2Diff,
+					LevelUpTime3 = levelUpTime3,
+					LevelUpTime3Diff = levelUpTime3Diff,
+					LevelUpTime4 = levelUpTime4,
+					LevelUpTime4Diff = levelUpTime4Diff
+				});
 			}
 		}
 
@@ -190,7 +243,7 @@ namespace DevilDaggersWebsite.Pages.CustomLeaderboards
 			}
 			catch (Exception ex)
 			{
-				throw new Exception($"Could not decrypt {validation}", ex);
+				throw new Exception($"Could not decrypt '{validation}'.", ex);
 			}
 		}
 	}
