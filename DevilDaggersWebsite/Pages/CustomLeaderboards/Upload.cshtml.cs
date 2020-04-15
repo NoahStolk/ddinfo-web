@@ -33,7 +33,22 @@ namespace DevilDaggersWebsite.Pages.CustomLeaderboards
 			this.commonObjects = commonObjects;
 		}
 
-		public void OnGet(string spawnsetHash, int playerId, string username, float time, int gems, int kills, int deathType, int shotsHit, int shotsFired, int enemiesAlive, int homing, float levelUpTime2, float levelUpTime3, float levelUpTime4, string ddclClientVersion, string v)
+		public void OnGet(string spawnsetHash,
+			int playerId,
+			string username,
+			float time,
+			int gems,
+			int kills,
+			int deathType,
+			int shotsHit,
+			int shotsFired,
+			int enemiesAlive,
+			int homing,
+			float levelUpTime2,
+			float levelUpTime3,
+			float levelUpTime4,
+			string ddclClientVersion,
+			string v)
 		{
 			try
 			{
@@ -46,7 +61,23 @@ namespace DevilDaggersWebsite.Pages.CustomLeaderboards
 			}
 		}
 
-		private UploadResult TryUpload(string spawnsetHash, int playerId, string username, float time, int gems, int kills, int deathType, int shotsHit, int shotsFired, int enemiesAlive, int homing, float levelUpTime2, float levelUpTime3, float levelUpTime4, string clientVersion, string validation)
+		private UploadResult TryUpload(
+			string spawnsetHash,
+			int playerId,
+			string username,
+			float time,
+			int gems,
+			int kills,
+			int deathType,
+			int shotsHit,
+			int shotsFired,
+			int enemiesAlive,
+			int homing,
+			float levelUpTime2,
+			float levelUpTime3,
+			float levelUpTime4,
+			string clientVersion,
+			string validation)
 		{
 			Version clientVersionParsed = Version.Parse(clientVersion);
 			if (clientVersionParsed < ToolList.DevilDaggersCustomLeaderboards.VersionNumberRequired)
