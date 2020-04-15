@@ -11,7 +11,6 @@ using Microsoft.EntityFrameworkCore;
 using NetBase.Extensions;
 using Newtonsoft.Json;
 using System;
-using System.Collections.Generic;
 using System.IO;
 using System.Linq;
 using System.Web;
@@ -136,9 +135,9 @@ namespace DevilDaggersWebsite.Pages.CustomLeaderboards
 			leaderboard.DateLastPlayed = DateTime.Now;
 
 			// Calculate the new rank.
-			List<CustomEntry> entries = context.CustomEntries.Where(e => e.CustomLeaderboard == leaderboard).OrderByMember(leaderboard.Category.SortingPropertyName, leaderboard.Category.Ascending).ToList();
+			CustomEntry[] entries = context.CustomEntries.Where(e => e.CustomLeaderboard == leaderboard).OrderByMember(leaderboard.Category.SortingPropertyName, leaderboard.Category.Ascending).ToArray();
 			int rank = leaderboard.Category.Ascending ? entries.Where(e => e.Time < time).Count() + 1 : entries.Where(e => e.Time > time).Count() + 1; // TODO: Use reflection to use Category.SortingPropertyName.
-			int totalPlayers = entries.Count();
+			int totalPlayers = entries.Length;
 
 			CustomEntry entry = context.CustomEntries.FirstOrDefault(e => e.PlayerId == playerId && e.CustomLeaderboardId == leaderboard.Id);
 			if (entry == null)
@@ -159,6 +158,8 @@ namespace DevilDaggersWebsite.Pages.CustomLeaderboards
 				return new UploadResult(true, $"Welcome to the leaderboard for {SpawnsetFile.GetName(leaderboard.SpawnsetFileName)}.", 0, new SubmissionInfo
 				{
 					TotalPlayers = totalPlayers,
+					Leaderboard = leaderboard,
+					Entries = entries,
 					Rank = rank,
 					Time = time,
 					Kills = kills,
@@ -183,7 +184,16 @@ namespace DevilDaggersWebsite.Pages.CustomLeaderboards
 				 || !leaderboard.Category.Ascending && entry.Time >= time)
 				{
 					context.SaveChanges();
-					return new UploadResult(true, $"No new highscore for {SpawnsetFile.GetName(leaderboard.SpawnsetFileName)}.");
+
+					if (clientVersionParsed <= new Version(0, 4, 4, 0))
+						return new UploadResult(true, $"No new highscore for {SpawnsetFile.GetName(leaderboard.SpawnsetFileName)}.");
+
+					return new UploadResult(true, $"No new highscore for {SpawnsetFile.GetName(leaderboard.SpawnsetFileName)}.", 0, new SubmissionInfo
+					{
+						TotalPlayers = totalPlayers,
+						Leaderboard = leaderboard,
+						Entries = entries
+					});
 				}
 
 				// Calculate the old rank.
@@ -239,6 +249,8 @@ namespace DevilDaggersWebsite.Pages.CustomLeaderboards
 				return new UploadResult(true, $"NEW HIGHSCORE for {SpawnsetFile.GetName(leaderboard.SpawnsetFileName)}!", 0, new SubmissionInfo
 				{
 					TotalPlayers = totalPlayers,
+					Leaderboard = leaderboard,
+					Entries = entries,
 					Rank = rank,
 					RankDiff = rankDiff,
 					Time = time,
