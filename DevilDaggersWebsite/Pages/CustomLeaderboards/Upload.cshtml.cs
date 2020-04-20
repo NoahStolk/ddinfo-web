@@ -159,7 +159,7 @@ namespace DevilDaggersWebsite.Pages.CustomLeaderboards
 				entries = context.CustomEntries.Where(e => e.CustomLeaderboard == leaderboard).OrderByMember(leaderboard.Category.SortingPropertyName, leaderboard.Category.Ascending).ToArray();
 				return new UploadResult(true, $"Welcome to the leaderboard for {SpawnsetFile.GetName(leaderboard.SpawnsetFileName)}.", 0, new SubmissionInfo
 				{
-					TotalPlayers = totalPlayers,
+					TotalPlayers = ++totalPlayers,
 					Leaderboard = leaderboard,
 					Entries = entries,
 					Rank = rank,
