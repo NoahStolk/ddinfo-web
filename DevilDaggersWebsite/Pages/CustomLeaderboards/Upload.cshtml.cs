@@ -155,6 +155,8 @@ namespace DevilDaggersWebsite.Pages.CustomLeaderboards
 {$"Time",-textWidth}{time:0.0000}");
 				}
 
+				// Fetch the entries again after having added the new user.
+				entries = context.CustomEntries.Where(e => e.CustomLeaderboard == leaderboard).OrderByMember(leaderboard.Category.SortingPropertyName, leaderboard.Category.Ascending).ToArray();
 				return new UploadResult(true, $"Welcome to the leaderboard for {SpawnsetFile.GetName(leaderboard.SpawnsetFileName)}.", 0, new SubmissionInfo
 				{
 					TotalPlayers = totalPlayers,
