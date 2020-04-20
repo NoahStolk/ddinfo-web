@@ -144,22 +144,23 @@ namespace DevilDaggersWebsite.Pages.CustomLeaderboards
 			{
 				// Add new user to this leaderboard.
 				context.CustomEntries.Add(new CustomEntry(playerId, username, time, gems, kills, deathType, shotsHit, shotsFired, enemiesAlive, homing, levelUpTime2, levelUpTime3, levelUpTime4, DateTime.Now, clientVersion) { CustomLeaderboard = leaderboard });
-
 				context.SaveChanges();
+
+				// Fetch the entries again after having modified the leaderboard.
+				entries = context.CustomEntries.Where(e => e.CustomLeaderboard == leaderboard).OrderByMember(leaderboard.Category.SortingPropertyName, leaderboard.Category.Ascending).ToArray();
+				totalPlayers = entries.Length;
 
 				if (clientVersionParsed <= new Version(0, 4, 4, 0))
 				{
 					return new UploadResult(true, $@"Welcome to the leaderboard for {SpawnsetFile.GetName(leaderboard.SpawnsetFileName)}.
 
-{$"Rank",-textWidth}{rank} / {++totalPlayers}
+{$"Rank",-textWidth}{rank} / {totalPlayers}
 {$"Time",-textWidth}{time:0.0000}");
 				}
 
-				// Fetch the entries again after having added the new user.
-				entries = context.CustomEntries.Where(e => e.CustomLeaderboard == leaderboard).OrderByMember(leaderboard.Category.SortingPropertyName, leaderboard.Category.Ascending).ToArray();
 				return new UploadResult(true, $"Welcome to the leaderboard for {SpawnsetFile.GetName(leaderboard.SpawnsetFileName)}.", 0, new SubmissionInfo
 				{
-					TotalPlayers = ++totalPlayers,
+					TotalPlayers = totalPlayers,
 					Leaderboard = leaderboard,
 					Entries = entries,
 					IsNewUserOnThisLeaderboard = true,
@@ -176,67 +177,72 @@ namespace DevilDaggersWebsite.Pages.CustomLeaderboards
 					LevelUpTime4 = levelUpTime4
 				});
 			}
-			else
+
+			// Update the username.
+			foreach (CustomEntry en in context.CustomEntries.Where(e => e.PlayerId == entry.PlayerId))
+				en.Username = username;
+
+			// User is already on the leaderboard, check for better score.
+			if (leaderboard.Category.Ascending && entry.Time <= time // TODO: Use reflection to use Category.SortingPropertyName.
+			 || !leaderboard.Category.Ascending && entry.Time >= time)
 			{
-				// Update the username.
-				foreach (CustomEntry en in context.CustomEntries.Where(e => e.PlayerId == entry.PlayerId))
-					en.Username = username;
-
-				// User is already on the leaderboard, check for better score.
-				if (leaderboard.Category.Ascending && entry.Time <= time // TODO: Use reflection to use Category.SortingPropertyName.
-				 || !leaderboard.Category.Ascending && entry.Time >= time)
-				{
-					context.SaveChanges();
-
-					if (clientVersionParsed <= new Version(0, 4, 4, 0))
-						return new UploadResult(true, $"No new highscore for {SpawnsetFile.GetName(leaderboard.SpawnsetFileName)}.");
-
-					return new UploadResult(true, $"No new highscore for {SpawnsetFile.GetName(leaderboard.SpawnsetFileName)}.", 0, new SubmissionInfo
-					{
-						TotalPlayers = totalPlayers,
-						Leaderboard = leaderboard,
-						Entries = entries,
-						IsNewUserOnThisLeaderboard = false
-					});
-				}
-
-				// Calculate the old rank.
-				int oldRank = leaderboard.Category.Ascending ? entries.Where(e => e.Time < time).Count() + 1 : entries.Where(e => e.Time > time).Count() + 1;
-
-				int rankDiff = oldRank - rank;
-				float timeDiff = time - entry.Time;
-				int killsDiff = kills - entry.Kills;
-				int gemsDiff = gems - entry.Gems;
-				int shotsHitDiff = shotsHit - entry.ShotsHit;
-				int shotsFiredDiff = shotsFired - entry.ShotsFired;
-				int enemiesAliveDiff = enemiesAlive - entry.EnemiesAlive;
-				int homingDiff = homing - entry.Homing;
-				float levelUpTime2Diff = levelUpTime2 - entry.LevelUpTime2;
-				float levelUpTime3Diff = levelUpTime3 - entry.LevelUpTime3;
-				float levelUpTime4Diff = levelUpTime4 - entry.LevelUpTime4;
-
-				entry.Time = time;
-				entry.Kills = kills;
-				entry.Gems = gems;
-				entry.DeathType = deathType;
-				entry.ShotsHit = shotsHit;
-				entry.ShotsFired = shotsFired;
-				entry.EnemiesAlive = enemiesAlive;
-				entry.Homing = homing;
-				entry.LevelUpTime2 = levelUpTime2;
-				entry.LevelUpTime3 = levelUpTime3;
-				entry.LevelUpTime4 = levelUpTime4;
-				entry.SubmitDate = DateTime.Now;
-				entry.ClientVersion = clientVersion;
-
 				context.SaveChanges();
 
-				if (clientVersionParsed <= new Version(0, 4, 4, 0))
-				{
-					double accuracy = shotsFired == 0 ? 0 : shotsHit / (double)shotsFired;
-					double accuracyDiff = accuracy - (entry.ShotsFired == 0 ? 0 : entry.ShotsHit / (double)entry.ShotsFired);
+				// Fetch the entries again after having modified the leaderboard.
+				entries = context.CustomEntries.Where(e => e.CustomLeaderboard == leaderboard).OrderByMember(leaderboard.Category.SortingPropertyName, leaderboard.Category.Ascending).ToArray();
 
-					return new UploadResult(true, $@"NEW HIGHSCORE for {SpawnsetFile.GetName(leaderboard.SpawnsetFileName)}!
+				if (clientVersionParsed <= new Version(0, 4, 4, 0))
+					return new UploadResult(true, $"No new highscore for {SpawnsetFile.GetName(leaderboard.SpawnsetFileName)}.");
+
+				return new UploadResult(true, $"No new highscore for {SpawnsetFile.GetName(leaderboard.SpawnsetFileName)}.", 0, new SubmissionInfo
+				{
+					TotalPlayers = totalPlayers,
+					Leaderboard = leaderboard,
+					Entries = entries,
+					IsNewUserOnThisLeaderboard = false
+				});
+			}
+
+			// Calculate the old rank.
+			int oldRank = leaderboard.Category.Ascending ? entries.Where(e => e.Time < time).Count() + 1 : entries.Where(e => e.Time > time).Count() + 1;
+
+			int rankDiff = oldRank - rank;
+			float timeDiff = time - entry.Time;
+			int killsDiff = kills - entry.Kills;
+			int gemsDiff = gems - entry.Gems;
+			int shotsHitDiff = shotsHit - entry.ShotsHit;
+			int shotsFiredDiff = shotsFired - entry.ShotsFired;
+			int enemiesAliveDiff = enemiesAlive - entry.EnemiesAlive;
+			int homingDiff = homing - entry.Homing;
+			float levelUpTime2Diff = levelUpTime2 - entry.LevelUpTime2;
+			float levelUpTime3Diff = levelUpTime3 - entry.LevelUpTime3;
+			float levelUpTime4Diff = levelUpTime4 - entry.LevelUpTime4;
+
+			entry.Time = time;
+			entry.Kills = kills;
+			entry.Gems = gems;
+			entry.DeathType = deathType;
+			entry.ShotsHit = shotsHit;
+			entry.ShotsFired = shotsFired;
+			entry.EnemiesAlive = enemiesAlive;
+			entry.Homing = homing;
+			entry.LevelUpTime2 = levelUpTime2;
+			entry.LevelUpTime3 = levelUpTime3;
+			entry.LevelUpTime4 = levelUpTime4;
+			entry.SubmitDate = DateTime.Now;
+			entry.ClientVersion = clientVersion;
+
+			context.SaveChanges();
+
+			// Fetch the entries again after having modified the leaderboard.
+			entries = context.CustomEntries.Where(e => e.CustomLeaderboard == leaderboard).OrderByMember(leaderboard.Category.SortingPropertyName, leaderboard.Category.Ascending).ToArray();
+
+			if (clientVersionParsed <= new Version(0, 4, 4, 0))
+			{
+				double accuracy = shotsFired == 0 ? 0 : shotsHit / (double)shotsFired;
+				double accuracyDiff = accuracy - (entry.ShotsFired == 0 ? 0 : entry.ShotsHit / (double)entry.ShotsFired);
+
+				return new UploadResult(true, $@"NEW HIGHSCORE for {SpawnsetFile.GetName(leaderboard.SpawnsetFileName)}!
                 
 {$"Rank",-textWidth}{$"{rank} / {totalPlayers}",textWidth} ({rankDiff:+0;-#})
 {$"Time",-textWidth}{time,textWidth:0.0000} ({(timeDiff < 0 ? "" : "+")}{timeDiff:0.0000})
@@ -248,38 +254,37 @@ namespace DevilDaggersWebsite.Pages.CustomLeaderboards
 {$"Level 2",-textWidth}{levelUpTime2,textWidth:0.0000} ({(levelUpTime2Diff < 0 ? "" : "+")}{levelUpTime2Diff:0.0000})
 {$"Level 3",-textWidth}{levelUpTime3,textWidth:0.0000} ({(levelUpTime3Diff < 0 ? "" : "+")}{levelUpTime3Diff:0.0000})
 {$"Level 4",-textWidth}{levelUpTime4,textWidth:0.0000} ({(levelUpTime4Diff < 0 ? "" : "+")}{levelUpTime4Diff:0.0000})");
-				}
-
-				return new UploadResult(true, $"NEW HIGHSCORE for {SpawnsetFile.GetName(leaderboard.SpawnsetFileName)}!", 0, new SubmissionInfo
-				{
-					TotalPlayers = totalPlayers,
-					Leaderboard = leaderboard,
-					Entries = entries,
-					IsNewUserOnThisLeaderboard = false,
-					Rank = rank,
-					RankDiff = rankDiff,
-					Time = time,
-					TimeDiff = timeDiff,
-					Kills = kills,
-					KillsDiff = killsDiff,
-					Gems = gems,
-					GemsDiff = gemsDiff,
-					ShotsHit = shotsHit,
-					ShotsHitDiff = shotsHitDiff,
-					ShotsFired = shotsFired,
-					ShotsFiredDiff = shotsFiredDiff,
-					EnemiesAlive = enemiesAlive,
-					EnemiesAliveDiff = enemiesAliveDiff,
-					Homing = homing,
-					HomingDiff = homingDiff,
-					LevelUpTime2 = levelUpTime2,
-					LevelUpTime2Diff = levelUpTime2Diff,
-					LevelUpTime3 = levelUpTime3,
-					LevelUpTime3Diff = levelUpTime3Diff,
-					LevelUpTime4 = levelUpTime4,
-					LevelUpTime4Diff = levelUpTime4Diff
-				});
 			}
+
+			return new UploadResult(true, $"NEW HIGHSCORE for {SpawnsetFile.GetName(leaderboard.SpawnsetFileName)}!", 0, new SubmissionInfo
+			{
+				TotalPlayers = totalPlayers,
+				Leaderboard = leaderboard,
+				Entries = entries,
+				IsNewUserOnThisLeaderboard = false,
+				Rank = rank,
+				RankDiff = rankDiff,
+				Time = time,
+				TimeDiff = timeDiff,
+				Kills = kills,
+				KillsDiff = killsDiff,
+				Gems = gems,
+				GemsDiff = gemsDiff,
+				ShotsHit = shotsHit,
+				ShotsHitDiff = shotsHitDiff,
+				ShotsFired = shotsFired,
+				ShotsFiredDiff = shotsFiredDiff,
+				EnemiesAlive = enemiesAlive,
+				EnemiesAliveDiff = enemiesAliveDiff,
+				Homing = homing,
+				HomingDiff = homingDiff,
+				LevelUpTime2 = levelUpTime2,
+				LevelUpTime2Diff = levelUpTime2Diff,
+				LevelUpTime3 = levelUpTime3,
+				LevelUpTime3Diff = levelUpTime3Diff,
+				LevelUpTime4 = levelUpTime4,
+				LevelUpTime4Diff = levelUpTime4Diff
+			});
 		}
 
 		private string DecryptValidation(string validation)
