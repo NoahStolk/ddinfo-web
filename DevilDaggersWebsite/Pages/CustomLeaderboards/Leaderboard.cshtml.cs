@@ -23,13 +23,13 @@ namespace DevilDaggersWebsite.Pages.CustomLeaderboards
 		[BindProperty]
 		public List<CustomEntry> Entries { get; set; }
 
-		private readonly ApplicationDbContext _context;
+		private readonly ApplicationDbContext context;
 
 		public ICommonObjects CommonObjects { get; }
 
 		public LeaderboardModel(ApplicationDbContext context, ICommonObjects commonObjects)
 		{
-			_context = context;
+			this.context = context;
 			CommonObjects = commonObjects;
 		}
 
@@ -43,14 +43,14 @@ namespace DevilDaggersWebsite.Pages.CustomLeaderboards
 			if (SpawnsetFile == null)
 				return RedirectToPage("Index");
 
-			Leaderboard = _context.CustomLeaderboards
+			Leaderboard = context.CustomLeaderboards
 				.Include(l => l.Category)
 				.FirstOrDefault(l => l.SpawnsetFileName == spawnset);
 
 			if (Leaderboard == null)
 				return RedirectToPage("Index");
 
-			Entries = _context.CustomEntries
+			Entries = context.CustomEntries
 				.Where(e => e.CustomLeaderboard == Leaderboard)
 				.OrderByMember(Leaderboard.Category.SortingPropertyName, Leaderboard.Category.Ascending)
 				.ToList();
