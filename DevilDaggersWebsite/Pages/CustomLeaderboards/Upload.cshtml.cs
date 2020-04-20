@@ -176,7 +176,7 @@ namespace DevilDaggersWebsite.Pages.CustomLeaderboards
 			foreach (CustomEntry en in context.CustomEntries.Where(e => e.PlayerId == entry.PlayerId))
 				en.Username = username;
 
-			// User is already on the leaderboard, check for better score.
+			// User is already on the leaderboard, but did not get a better score.
 			if (leaderboard.Category.Ascending && entry.Time <= time // TODO: Use reflection to use Category.SortingPropertyName.
 			 || !leaderboard.Category.Ascending && entry.Time >= time)
 			{
@@ -197,8 +197,10 @@ namespace DevilDaggersWebsite.Pages.CustomLeaderboards
 				});
 			}
 
+			// User got a better score.
+
 			// Calculate the old rank.
-			int oldRank = leaderboard.Category.Ascending ? entries.Where(e => e.Time < time).Count() + 1 : entries.Where(e => e.Time > time).Count() + 1;
+			int oldRank = leaderboard.Category.Ascending ? entries.Where(e => e.Time < entry.Time).Count() + 1 : entries.Where(e => e.Time > entry.Time).Count() + 1;
 
 			int rankDiff = oldRank - rank;
 			float timeDiff = time - entry.Time;
