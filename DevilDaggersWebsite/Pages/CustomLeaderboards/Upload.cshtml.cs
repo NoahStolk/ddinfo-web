@@ -162,6 +162,7 @@ namespace DevilDaggersWebsite.Pages.CustomLeaderboards
 					TotalPlayers = ++totalPlayers,
 					Leaderboard = leaderboard,
 					Entries = entries,
+					IsNewUserOnThisLeaderboard = true,
 					Rank = rank,
 					Time = time,
 					Kills = kills,
@@ -194,7 +195,8 @@ namespace DevilDaggersWebsite.Pages.CustomLeaderboards
 					{
 						TotalPlayers = totalPlayers,
 						Leaderboard = leaderboard,
-						Entries = entries
+						Entries = entries,
+						IsNewUserOnThisLeaderboard = false
 					});
 				}
 
@@ -253,6 +255,7 @@ namespace DevilDaggersWebsite.Pages.CustomLeaderboards
 					TotalPlayers = totalPlayers,
 					Leaderboard = leaderboard,
 					Entries = entries,
+					IsNewUserOnThisLeaderboard = false,
 					Rank = rank,
 					RankDiff = rankDiff,
 					Time = time,
