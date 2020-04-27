@@ -1,5 +1,5 @@
 using CoreBase;
-using DevilDaggersWebsite.Code.Bot;
+using DevilDaggersWebsite.Code.Bots;
 using DevilDaggersWebsite.Code.Database;
 using DevilDaggersWebsite.Code.Tasks;
 using DevilDaggersWebsite.Code.Tasks.Scheduling;
@@ -40,7 +40,8 @@ namespace DevilDaggersWebsite
 				args.SetObserved();
 			});
 
-			services.AddHostedService<BotService>();
+			services.AddHostedService<DevilDaggersDiscordBotService>();
+			services.AddHostedService<FeelsEhDiscordBotService>();
 		}
 
 		// This method gets called by the runtime. Use this method to configure the HTTP request pipeline.

@@ -2,13 +2,13 @@
 using System.Threading;
 using System.Threading.Tasks;
 
-namespace DevilDaggersWebsite.Code.Bot
+namespace DevilDaggersWebsite.Code.Bots
 {
-	public class BotService : IHostedService
+	public class FeelsEhDiscordBotService : IHostedService
 	{
 		public Task StartAsync(CancellationToken cancellationToken)
 		{
-			DevilDaggersDiscordBot.Program.Main();
+			FeelsEhDiscordBot.Program.Main(new string[] { });
 
 			return Task.CompletedTask;
 		}
