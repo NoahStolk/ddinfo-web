@@ -15,16 +15,15 @@ using System.Globalization;
 
 namespace DevilDaggersWebsite
 {
-	public class Startup// : StartupAbstract
+	public class Startup
 	{
 		public IConfiguration Configuration { get; }
 
-		public Startup(IConfiguration configuration/*, ILoggerFactory loggerFactory, IWebHostEnvironment env*/)
+		public Startup(IConfiguration configuration)
 		{
 			Configuration = configuration;
 		}
 
-		// This method gets called by the runtime. Use this method to add services to the container.
 		public void ConfigureServices(IServiceCollection services)
 		{
 			services.AddMvc();
@@ -46,7 +45,6 @@ namespace DevilDaggersWebsite
 			services.AddHostedService<DevilDaggersDiscordBotService>();
 		}
 
-		// This method gets called by the runtime. Use this method to configure the HTTP request pipeline.
 		public void Configure(IApplicationBuilder app, IWebHostEnvironment env)
 		{
 			CultureInfo.DefaultThreadCurrentCulture = CultureInfo.InvariantCulture;
