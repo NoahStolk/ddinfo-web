@@ -864,5 +864,8 @@
 	"TooManySkulls_Braden": {
 		"LastUpdated": "2020-04-17T00:00:00",
 		"Description": "There's too many skulls, man!"
+	},
+	"Feast_Stop": {
+		"LastUpdated": "2020-04-28T21:23:00"
 	}
 }
