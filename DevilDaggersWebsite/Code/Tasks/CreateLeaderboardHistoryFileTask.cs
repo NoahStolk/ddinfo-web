@@ -10,13 +10,13 @@ namespace DevilDaggersWebsite.Code.Tasks
 {
 	public class CreateLeaderboardHistoryFileTask : AbstractTask
 	{
-		private readonly IHostingEnvironment _env;
+		private readonly IHostingEnvironment env;
 
 		public override string Schedule => "0 0 * * *";
 
 		public CreateLeaderboardHistoryFileTask(IHostingEnvironment env)
 		{
-			_env = env;
+			this.env = env;
 		}
 
 		protected override async Task Execute()
@@ -24,13 +24,13 @@ namespace DevilDaggersWebsite.Code.Tasks
 			if (!HistoryFileForThisDateExists(LastTriggered))
 			{
 				FileResult file = await new GetLeaderboardModel().OnGetAsync();
-				File.WriteAllBytes(Path.Combine(_env.WebRootPath, "leaderboard-history", file.FileDownloadName), ((FileContentResult)file).FileContents);
+				File.WriteAllBytes(Path.Combine(env.WebRootPath, "leaderboard-history", file.FileDownloadName), ((FileContentResult)file).FileContents);
 			}
 		}
 
 		private bool HistoryFileForThisDateExists(DateTime dateTime)
 		{
-			foreach (string path in Directory.GetFiles(Path.Combine(_env.WebRootPath, "leaderboard-history"), "*.json"))
+			foreach (string path in Directory.GetFiles(Path.Combine(env.WebRootPath, "leaderboard-history"), "*.json"))
 			{
 				string fileName = Path.GetFileNameWithoutExtension(path);
 				if (HistoryUtils.HistoryJsonFileNameToDateTime(fileName).Date == dateTime.Date)

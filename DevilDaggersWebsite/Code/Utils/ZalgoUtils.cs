@@ -65,9 +65,6 @@ namespace DevilDaggersWebsite.Code.Utils
 			return sb.ToString();
 		}
 
-		private static float Lerp(int x, int y, float percentage)
-		{
-			return (y - x) * percentage + x;
-		}
+		private static float Lerp(int x, int y, float percentage) => (y - x) * percentage + x;
 	}
 }

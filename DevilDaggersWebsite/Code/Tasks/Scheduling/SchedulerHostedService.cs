@@ -11,7 +11,7 @@ namespace DevilDaggersWebsite.Code.Tasks.Scheduling
 	{
 		public event EventHandler<UnobservedTaskExceptionEventArgs> UnobservedTaskException;
 
-		private readonly List<SchedulerTaskWrapper> _scheduledTasks = new List<SchedulerTaskWrapper>();
+		private readonly List<SchedulerTaskWrapper> scheduledTasks = new List<SchedulerTaskWrapper>();
 
 		public SchedulerHostedService(IEnumerable<IScheduledTask> scheduledTasks)
 		{
@@ -19,7 +19,7 @@ namespace DevilDaggersWebsite.Code.Tasks.Scheduling
 
 			foreach (IScheduledTask scheduledTask in scheduledTasks)
 			{
-				_scheduledTasks.Add(new SchedulerTaskWrapper
+				this.scheduledTasks.Add(new SchedulerTaskWrapper
 				{
 					Schedule = CrontabSchedule.Parse(scheduledTask.Schedule),
 					Task = scheduledTask,
@@ -43,7 +43,7 @@ namespace DevilDaggersWebsite.Code.Tasks.Scheduling
 			TaskFactory taskFactory = new TaskFactory(TaskScheduler.Current);
 			DateTime referenceTime = DateTime.UtcNow;
 
-			List<SchedulerTaskWrapper> tasksThatShouldRun = _scheduledTasks.Where(t => t.ShouldRun(referenceTime)).ToList();
+			List<SchedulerTaskWrapper> tasksThatShouldRun = scheduledTasks.Where(t => t.ShouldRun(referenceTime)).ToList();
 
 			foreach (SchedulerTaskWrapper taskThatShouldRun in tasksThatShouldRun)
 			{
@@ -87,10 +87,7 @@ namespace DevilDaggersWebsite.Code.Tasks.Scheduling
 				NextRunTime = Schedule.GetNextOccurrence(NextRunTime);
 			}
 
-			public bool ShouldRun(DateTime currentTime)
-			{
-				return NextRunTime < currentTime && LastRunTime != NextRunTime;
-			}
+			public bool ShouldRun(DateTime currentTime) => NextRunTime < currentTime && LastRunTime != NextRunTime;
 		}
 	}
 }

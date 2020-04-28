@@ -1,4 +1,4 @@
-using DevilDaggersWebsite.Code.Bot;
+using DevilDaggersWebsite.Code.Bots;
 using DevilDaggersWebsite.Code.Database;
 using DevilDaggersWebsite.Code.Tasks;
 using DevilDaggersWebsite.Code.Tasks.Scheduling;
@@ -46,12 +46,16 @@ namespace DevilDaggersWebsite
 				args.SetObserved();
 			});
 
-			services.AddHostedService<BotService>();
+			services.AddHostedService<DevilDaggersDiscordBotService>();
 		}
 
 		// This method gets called by the runtime. Use this method to configure the HTTP request pipeline.
 		public void Configure(IApplicationBuilder app, IWebHostEnvironment env)
 		{
+			CultureInfo cultureInfo = CultureInfo.InvariantCulture;
+			CultureInfo.DefaultThreadCurrentCulture = cultureInfo;
+			CultureInfo.DefaultThreadCurrentUICulture = cultureInfo;
+
 			// Do not change order of redirects.
 			RewriteOptions options = new RewriteOptions()
 				.AddRedirect("^Home/Index$", "Index")

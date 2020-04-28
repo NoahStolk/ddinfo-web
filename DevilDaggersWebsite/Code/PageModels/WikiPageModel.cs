@@ -13,7 +13,7 @@ namespace DevilDaggersWebsite.Code.PageModels
 
 		protected void SetGameVersion(string gameVersion)
 		{
-			this.gameVersion = GameInfo.TryGetGameVersionFromString(gameVersion, out gameVersionObject) ? gameVersion : GameInfo.DEFAULT_GAME_VERSION;
+			this.gameVersion = GameInfo.TryGetGameVersionFromString(gameVersion, out gameVersionObject) ? gameVersion : GameInfo.DefaultGameVersion;
 
 			for (int i = 0; i < GameInfo.GameVersions.Count; i++)
 			{

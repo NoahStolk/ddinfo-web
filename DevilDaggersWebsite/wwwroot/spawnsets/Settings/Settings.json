@@ -860,5 +860,9 @@
 	},
 	"Potent_Stop": {
 		"LastUpdated": "2020-02-28T02:24:00"
+	},
+	"TooManySkulls_Braden": {
+		"LastUpdated": "2020-04-17T00:00:00",
+		"Description": "There's too many skulls, man!"
 	}
 }

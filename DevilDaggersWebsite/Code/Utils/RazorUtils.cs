@@ -29,7 +29,7 @@ namespace DevilDaggersWebsite.Code.Utils
 			char[] endSeparators = new char[] { ' ', ',', '.', 's', ')', '\'', ';', '/' };
 
 			List<Enemy> enemies = GameInfo.GetEntities<Enemy>(gameVersions);
-			for (int i = enemies.Count - 1; i >= 0; i--) // Reverse iteration because transmuted skulls come after normal skulls in the list
+			for (int i = enemies.Count - 1; i >= 0; i--) // Use reverse iteration because transmuted skulls come after normal skulls in the list.
 			{
 				Enemy enemy = enemies[i];
 				foreach (char begin in beginSeparators)
@@ -39,7 +39,7 @@ namespace DevilDaggersWebsite.Code.Utils
 						string enemyString = $"{begin}{enemy.Name}{end}";
 						if (str.Contains(enemyString))
 						{
-							// Enemy string should not be inside an <a> element
+							// Enemy string should not be inside an <a> element.
 							if (str.Length < str.IndexOf(enemyString) + enemyString.Length + "</a>".Length || str.Substring(str.IndexOf(enemyString) + enemyString.Length, "</a>".Length) != "</a>")
 								str = str.Replace(enemyString, $"{begin}{GetLayoutAnchor(enemy, end == 's')}{((end == 's') ? "" : end.ToString())}");
 						}

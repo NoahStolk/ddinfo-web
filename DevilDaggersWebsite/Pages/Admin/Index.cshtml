@@ -36,9 +36,9 @@
 					<p>
 						ID, Title(s)*<br />
 						Titles:<br />
-						- Site admin<br />
+						- Admin<br />
 						- Discord mod<br />
-						Multiple titles are supported and should be separated by commas, for instance; Site admin,Discord mod
+						Multiple titles are supported and should be separated by commas, for instance; Admin,Discord mod
 					</p>
 					<textarea style="height: @(Model.TitlesFileContents.Split('\n').Length * 1.4f)em;" asp-for="TitlesFileContents">@Model.TitlesFileContents</textarea>
 				</div>
@@ -50,7 +50,7 @@
 						<div class="col-xs-6">
 							Mod type<br />
 							<ul>
-								@foreach (string s in EnumUtils.DisplayEnumValues<AssetModType>())
+								@foreach (string s in EnumUtils.GetEnumNamesWithValues<AssetModType>())
 								{
 									<li>@s</li>
 								}
@@ -59,7 +59,7 @@
 						<div class="col-xs-6">
 							File kind<br />
 							<ul>
-								@foreach (string s in EnumUtils.DisplayEnumValues<AssetModFileContents>())
+								@foreach (string s in EnumUtils.GetEnumNamesWithValues<AssetModFileContents>())
 								{
 									<li>@s</li>
 								}

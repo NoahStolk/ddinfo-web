@@ -20,7 +20,7 @@ namespace SpawnsetSettingsHelper
 		{
 			InitializeComponent();
 
-			CultureInfo culture = new CultureInfo("en-GB");
+			CultureInfo culture = new CultureInfo("en-GB"); // TODO: Use InvariantCulture instead.
 			Thread.CurrentThread.CurrentCulture = culture;
 			Thread.CurrentThread.CurrentUICulture = culture;
 			LanguageProperty.OverrideMetadata(typeof(FrameworkElement), new FrameworkPropertyMetadata(XmlLanguage.GetLanguage(CultureInfo.CurrentCulture.IetfLanguageTag)));

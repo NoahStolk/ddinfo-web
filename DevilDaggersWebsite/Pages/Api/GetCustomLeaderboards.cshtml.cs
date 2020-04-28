@@ -10,13 +10,13 @@ namespace DevilDaggersWebsite.Pages.Api
 	[ApiFunction(Description = "Returns the list of all available custom leaderboards on the site.", ReturnType = MediaTypeNames.Application.Json)]
 	public class GetCustomLeaderboardsModel : ApiPageModel
 	{
-		private readonly ApplicationDbContext _context;
+		private readonly ApplicationDbContext context;
 
 		public GetCustomLeaderboardsModel(ApplicationDbContext context)
 		{
-			_context = context;
+			this.context = context;
 		}
 
-		public FileResult OnGet(bool formatted = false) => JsonFile(ApiFunctions.GetCustomLeaderboards(_context), formatted ? Formatting.Indented : Formatting.None);
+		public FileResult OnGet(bool formatted = false) => JsonFile(ApiFunctions.GetCustomLeaderboards(context), formatted ? Formatting.Indented : Formatting.None);
 	}
 }

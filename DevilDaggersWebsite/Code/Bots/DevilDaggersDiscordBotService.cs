@@ -2,9 +2,9 @@
 using System.Threading;
 using System.Threading.Tasks;
 
-namespace DevilDaggersWebsite.Code.Bot
+namespace DevilDaggersWebsite.Code.Bots
 {
-	public class BotService : IHostedService
+	public class DevilDaggersDiscordBotService : IHostedService
 	{
 		public Task StartAsync(CancellationToken cancellationToken)
 		{

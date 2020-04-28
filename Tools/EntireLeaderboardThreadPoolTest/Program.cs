@@ -10,7 +10,7 @@ namespace EntireLeaderboardThreadPoolTest
 {
 	public static class Program
 	{
-		private const int MaxThreads = 64;
+		private const int maxThreads = 64;
 
 		public static Leaderboard Leaderboard { get; private set; }
 
@@ -23,7 +23,7 @@ namespace EntireLeaderboardThreadPoolTest
 			for (int i = 1; i < Leaderboard.Players / 100 + 1;)
 			{
 				SpawnAndWait(CreateActions(i), i);
-				i += MaxThreads;
+				i += maxThreads;
 			}
 			stopwatch.Stop();
 
@@ -33,9 +33,9 @@ namespace EntireLeaderboardThreadPoolTest
 		private static List<Action<int>> CreateActions(int page)
 		{
 			int start = page;
-			int end = page + MaxThreads;
+			int end = page + maxThreads;
 
-			Console.WriteLine($"Creating {MaxThreads} threads ({start} - {end - 1}).");
+			Console.WriteLine($"Creating {maxThreads} threads ({start} - {end - 1}).");
 
 			List<Action<int>> actions = new List<Action<int>>();
 			for (int i = start; i < end; i++)
