@@ -9,18 +9,18 @@ namespace DevilDaggersWebsite.Pages.Wiki
 		public string SpawnsetPath { get; set; }
 		public string EmergeEnemies { get; set; }
 
-		private readonly IHostingEnvironment _env;
+		private readonly IWebHostEnvironment env;
 
-		public SpawnsModel(IHostingEnvironment env)
+		public SpawnsModel(IWebHostEnvironment env)
 		{
-			_env = env;
+			this.env = env;
 		}
 
 		public void OnGet(string gameVersion)
 		{
 			SetGameVersion(gameVersion);
 
-			SpawnsetPath = Path.Combine(_env.WebRootPath, "spawnsets", $"{this.gameVersion}_Sorath");
+			SpawnsetPath = Path.Combine(env.WebRootPath, "spawnsets", $"{this.gameVersion}_Sorath");
 			EmergeEnemies = this.gameVersion == "V3" ? "Centipedes, Gigapedes, Ghostpedes, and Thorns" : "Centipedes and Gigapedes";
 		}
 	}

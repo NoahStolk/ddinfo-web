@@ -1,5 +1,5 @@
-﻿using CoreBase;
-using CoreBase.Services;
+﻿using CoreBase3.Pagination;
+using CoreBase3.Services;
 using DevilDaggersCore.Spawnsets.Web;
 using DevilDaggersWebsite.Code.Api;
 using DevilDaggersWebsite.Code.Utils;
@@ -14,7 +14,7 @@ namespace DevilDaggersWebsite.Pages
 {
 	public class SpawnsetsModel : PageModel
 	{
-		private readonly ICommonObjects _commonObjects;
+		private readonly ICommonObjects commonObjects;
 
 		public PaginatedList<SpawnsetFile> PaginatedSpawnsetFiles { get; set; }
 
@@ -37,7 +37,7 @@ namespace DevilDaggersWebsite.Pages
 
 		public SpawnsetsModel(ICommonObjects commonObjects)
 		{
-			_commonObjects = commonObjects;
+			this.commonObjects = commonObjects;
 		}
 
 		public void OnGet(string searchAuthor, string searchName, string sortOrder, int? pageIndex)
@@ -49,8 +49,8 @@ namespace DevilDaggersWebsite.Pages
 
 			List<SpawnsetFile> spawnsetFiles = new List<SpawnsetFile>();
 
-			foreach (SpawnsetFile spawnset in ApiFunctions.GetSpawnsets(_commonObjects, SearchAuthor, SearchName))
-				spawnsetFiles.Add(SpawnsetUtils.CreateSpawnsetFileFromSettingsFile(_commonObjects, Path.Combine(_commonObjects.Env.WebRootPath, "spawnsets", $"{spawnset.Name}_{spawnset.Author}")));
+			foreach (SpawnsetFile spawnset in ApiFunctions.GetSpawnsets(commonObjects, SearchAuthor, SearchName))
+				spawnsetFiles.Add(SpawnsetUtils.CreateSpawnsetFileFromSettingsFile(commonObjects, Path.Combine(commonObjects.Env.WebRootPath, "spawnsets", $"{spawnset.Name}_{spawnset.Author}")));
 
 			NameSort = sortOrder == "Name" ? "Name_asc" : "Name";
 			AuthorSort = sortOrder == "Author_asc" ? "Author" : "Author_asc";
@@ -60,53 +60,23 @@ namespace DevilDaggersWebsite.Pages
 			LoopLength = sortOrder == "LoopLength_asc" ? "LoopLength" : "LoopLength_asc";
 			LoopSpawns = sortOrder == "LoopSpawns_asc" ? "LoopSpawns" : "LoopSpawns_asc";
 
-			switch (sortOrder)
+			spawnsetFiles = sortOrder switch
 			{
-				case "Name_asc":
-					spawnsetFiles = spawnsetFiles.OrderBy(s => s.Name).ThenByDescending(s => s.Author).ToList();
-					break;
-				case "Name":
-					spawnsetFiles = spawnsetFiles.OrderByDescending(s => s.Name).ThenBy(s => s.Author).ToList();
-					break;
-				case "Author_asc":
-					spawnsetFiles = spawnsetFiles.OrderBy(s => s.Author).ThenByDescending(s => s.Name).ToList();
-					break;
-				case "Author":
-					spawnsetFiles = spawnsetFiles.OrderByDescending(s => s.Author).ThenBy(s => s.Name).ToList();
-					break;
-				case "LastUpdated_asc":
-					spawnsetFiles = spawnsetFiles.OrderBy(s => s.settings.LastUpdated).ThenByDescending(s => s.Name).ToList();
-					break;
-				default:
-				case "LastUpdated":
-					spawnsetFiles = spawnsetFiles.OrderByDescending(s => s.settings.LastUpdated).ThenBy(s => s.Name).ToList();
-					break;
-				case "NonLoopLength_asc":
-					spawnsetFiles = spawnsetFiles.OrderBy(s => s.spawnsetData.NonLoopLengthNullable).ThenBy(s => s.spawnsetData.NonLoopSpawns).ToList();
-					break;
-				case "NonLoopLength":
-					spawnsetFiles = spawnsetFiles.OrderByDescending(s => s.spawnsetData.NonLoopLengthNullable).ThenByDescending(s => s.spawnsetData.NonLoopSpawns).ToList();
-					break;
-				case "NonLoopSpawns_asc":
-					spawnsetFiles = spawnsetFiles.OrderBy(s => s.spawnsetData.NonLoopSpawns).ToList();
-					break;
-				case "NonLoopSpawns":
-					spawnsetFiles = spawnsetFiles.OrderByDescending(s => s.spawnsetData.NonLoopSpawns).ToList();
-					break;
-				case "LoopLength_asc":
-					spawnsetFiles = spawnsetFiles.OrderBy(s => s.spawnsetData.LoopLengthNullable).ThenBy(s => s.spawnsetData.LoopSpawns).ToList();
-					break;
-				case "LoopLength":
-					spawnsetFiles = spawnsetFiles.OrderByDescending(s => s.spawnsetData.LoopLengthNullable).ThenByDescending(s => s.spawnsetData.LoopSpawns).ToList();
-					break;
-				case "LoopSpawns_asc":
-					spawnsetFiles = spawnsetFiles.OrderBy(s => s.spawnsetData.LoopSpawns).ToList();
-					break;
-				case "LoopSpawns":
-					spawnsetFiles = spawnsetFiles.OrderByDescending(s => s.spawnsetData.LoopSpawns).ToList();
-					break;
-			}
-
+				"Name_asc" => spawnsetFiles.OrderBy(s => s.Name).ThenByDescending(s => s.Author).ToList(),
+				"Name" => spawnsetFiles.OrderByDescending(s => s.Name).ThenBy(s => s.Author).ToList(),
+				"Author_asc" => spawnsetFiles.OrderBy(s => s.Author).ThenByDescending(s => s.Name).ToList(),
+				"Author" => spawnsetFiles.OrderByDescending(s => s.Author).ThenBy(s => s.Name).ToList(),
+				"LastUpdated_asc" => spawnsetFiles.OrderBy(s => s.settings.LastUpdated).ThenByDescending(s => s.Name).ToList(),
+				"NonLoopLength_asc" => spawnsetFiles.OrderBy(s => s.spawnsetData.NonLoopLengthNullable).ThenBy(s => s.spawnsetData.NonLoopSpawns).ToList(),
+				"NonLoopLength" => spawnsetFiles.OrderByDescending(s => s.spawnsetData.NonLoopLengthNullable).ThenByDescending(s => s.spawnsetData.NonLoopSpawns).ToList(),
+				"NonLoopSpawns_asc" => spawnsetFiles.OrderBy(s => s.spawnsetData.NonLoopSpawns).ToList(),
+				"NonLoopSpawns" => spawnsetFiles.OrderByDescending(s => s.spawnsetData.NonLoopSpawns).ToList(),
+				"LoopLength_asc" => spawnsetFiles.OrderBy(s => s.spawnsetData.LoopLengthNullable).ThenBy(s => s.spawnsetData.LoopSpawns).ToList(),
+				"LoopLength" => spawnsetFiles.OrderByDescending(s => s.spawnsetData.LoopLengthNullable).ThenByDescending(s => s.spawnsetData.LoopSpawns).ToList(),
+				"LoopSpawns_asc" => spawnsetFiles.OrderBy(s => s.spawnsetData.LoopSpawns).ToList(),
+				"LoopSpawns" => spawnsetFiles.OrderByDescending(s => s.spawnsetData.LoopSpawns).ToList(),
+				_ => spawnsetFiles.OrderByDescending(s => s.settings.LastUpdated).ThenBy(s => s.Name).ToList(),
+			};
 			TotalResults = spawnsetFiles.Count;
 			if (TotalResults == 0)
 				return;

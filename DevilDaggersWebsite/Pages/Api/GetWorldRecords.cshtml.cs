@@ -1,4 +1,4 @@
-﻿using CoreBase.Services;
+﻿using CoreBase3.Services;
 using DevilDaggersWebsite.Code.Api;
 using DevilDaggersWebsite.Code.PageModels;
 using Microsoft.AspNetCore.Mvc;
@@ -11,13 +11,13 @@ namespace DevilDaggersWebsite.Pages.Api
 	[ApiFunction(Description = "Returns the world record found in the leaderboard history section of the site at the time of the given date parameter. Returns all the world records if no date parameter was specified or if the parameter was incorrect.", ReturnType = MediaTypeNames.Application.Json)]
 	public class GetWorldRecordsModel : ApiPageModel
 	{
-		private readonly ICommonObjects _commonObjects;
+		private readonly ICommonObjects commonObjects;
 
 		public GetWorldRecordsModel(ICommonObjects commonObjects)
 		{
-			_commonObjects = commonObjects;
+			this.commonObjects = commonObjects;
 		}
 
-		public FileResult OnGet(DateTime? date = null, bool formatted = false) => JsonFile(ApiFunctions.GetWorldRecords(_commonObjects, date), formatted ? Formatting.Indented : Formatting.None);
+		public FileResult OnGet(DateTime? date = null, bool formatted = false) => JsonFile(ApiFunctions.GetWorldRecords(commonObjects, date), formatted ? Formatting.Indented : Formatting.None);
 	}
 }

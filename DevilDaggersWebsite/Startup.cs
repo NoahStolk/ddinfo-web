@@ -1,4 +1,5 @@
 using DevilDaggersWebsite.Code.Bots;
+using CoreBase3.Startup;
 using DevilDaggersWebsite.Code.Database;
 using DevilDaggersWebsite.Code.Tasks;
 using DevilDaggersWebsite.Code.Tasks.Scheduling;
@@ -20,9 +21,6 @@ namespace DevilDaggersWebsite
 
 		public Startup(IConfiguration configuration/*, ILoggerFactory loggerFactory, IWebHostEnvironment env*/)
 		{
-			CultureInfo.DefaultThreadCurrentCulture = CultureInfo.InvariantCulture;
-			CultureInfo.DefaultThreadCurrentUICulture = CultureInfo.InvariantCulture;
-
 			Configuration = configuration;
 		}
 
@@ -33,8 +31,7 @@ namespace DevilDaggersWebsite
 
 			services.AddDbContext<ApplicationDbContext>(options => options.UseMySql(Configuration.GetConnectionString("DefaultConnection")));
 
-			//ConfigureDbServices<ApplicationDbContext>(services);
-			//AddCommonCoreBaseServices(services);
+			services.AddCoreBaseServices();
 
 			// TODO: Add all tasks using reflection?
 			services.AddSingleton<IScheduledTask, CreateLeaderboardHistoryFileTask>();
@@ -52,9 +49,8 @@ namespace DevilDaggersWebsite
 		// This method gets called by the runtime. Use this method to configure the HTTP request pipeline.
 		public void Configure(IApplicationBuilder app, IWebHostEnvironment env)
 		{
-			CultureInfo cultureInfo = CultureInfo.InvariantCulture;
-			CultureInfo.DefaultThreadCurrentCulture = cultureInfo;
-			CultureInfo.DefaultThreadCurrentUICulture = cultureInfo;
+			CultureInfo.DefaultThreadCurrentCulture = CultureInfo.InvariantCulture;
+			CultureInfo.DefaultThreadCurrentUICulture = CultureInfo.InvariantCulture;
 
 			// Do not change order of redirects.
 			RewriteOptions options = new RewriteOptions()
