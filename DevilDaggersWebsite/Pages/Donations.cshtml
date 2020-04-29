@@ -1,7 +1,6 @@
 ﻿@page
 @using DevilDaggersCore.Game
 @using DevilDaggersWebsite.Code.Donations
-@*using DevilDaggersWebsite.Code.Utils.Web*@
 @{
 	ViewData["Title"] = "Donations";
 
@@ -34,8 +33,7 @@
 			foreach (KeyValuePair<int, int> kvp in DonationList.DonatorsWithReceivedEuroAmounts.OrderByDescending(kvp => kvp.Value).ThenBy(kvp => DonationList.Donators.FirstOrDefault(d => d.Id == kvp.Key).UsernameFallback))
 			{
 				Donator donator = DonationList.Donators.FirstOrDefault(d => d.Id == kvp.Key);
-				string username = donator.IsAnonymous ? "(anonymous)" : donator.UsernameFallback;
-				@*
+#if GET_USERNAME_FROM_LB
 					string username;
 					if (donator.IsAnonymous)
 					{
@@ -47,9 +45,11 @@
 					}
 					else
 					{
-						username = (await Hasmodai.GetUserById(donator.Id)).Username;
+						username = (await DevilDaggersWebsite.Code.Utils.Web.Hasmodai.GetUserById(donator.Id)).Username;
 					}
-				*@
+#else
+				string username = donator.IsAnonymous ? "(anonymous)" : donator.UsernameFallback;
+#endif
 
 				string currency = DonationList.Donations.FirstOrDefault(d => d.DonatorId == kvp.Key).Currency;
 				int amount = DonationList.Donations.Where(d => d.DonatorId == kvp.Key).Sum(d => d.Amount);
