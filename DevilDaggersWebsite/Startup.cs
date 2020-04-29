@@ -1,4 +1,3 @@
-using DevilDaggersWebsite.Code.Bots;
 using CoreBase3.Startup;
 using DevilDaggersWebsite.Code.Database;
 using DevilDaggersWebsite.Code.Tasks;
@@ -41,8 +40,6 @@ namespace DevilDaggersWebsite
 				Console.Write(args.Exception.Message);
 				args.SetObserved();
 			});
-
-			services.AddHostedService<DevilDaggersDiscordBotService>();
 		}
 
 		public void Configure(IApplicationBuilder app, IWebHostEnvironment env)
