@@ -146,6 +146,7 @@ namespace DevilDaggersWebsite.Pages.CustomLeaderboards
 
 				if (clientVersionParsed <= new Version(0, 4, 4, 0))
 				{
+					// TODO: Remove when 0.4.4.0+ is released.
 					return new UploadResult(true, $@"Welcome to the leaderboard for {SpawnsetFile.GetName(leaderboard.SpawnsetFileName)}.
 
 {$"Rank",-textWidth}{rank} / {totalPlayers}
@@ -238,6 +239,7 @@ namespace DevilDaggersWebsite.Pages.CustomLeaderboards
 				double accuracy = shotsFired == 0 ? 0 : shotsHit / (double)shotsFired;
 				double accuracyDiff = accuracy - (entry.ShotsFired == 0 ? 0 : entry.ShotsHit / (double)entry.ShotsFired);
 
+				// TODO: Remove when 0.4.4.0+ is released.
 				return new UploadResult(true, $@"NEW HIGHSCORE for {SpawnsetFile.GetName(leaderboard.SpawnsetFileName)}!
                 
 {$"Rank",-textWidth}{$"{rank} / {totalPlayers}",textWidth} ({rankDiff:+0;-#})
