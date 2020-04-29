@@ -1,4 +1,5 @@
 ﻿@model List<CustomLeaderboard>
+@using DevilDaggersCore
 @using DevilDaggersCore.Spawnsets.Web
 @using DevilDaggersWebsite.Code.Database.CustomLeaderboards
 @using DevilDaggersWebsite.Code.Utils
@@ -82,16 +83,16 @@
 						@(lb.DateCreated.HasValue ? Html.Raw(lb.DateCreated.Value.ToString("dd MMM yyyy")) : RazorUtils.NAString)
 					</td>
 					<td class="text-right hidden-xs hidden-sm hidden-md bronze">
-						@lb.Bronze.ToString("0.0000")
+						@lb.Bronze.ToString(FormatUtils.LeaderboardTimeFormat)
 					</td>
 					<td class="text-right hidden-xs hidden-sm hidden-md silver">
-						@lb.Silver.ToString("0.0000")
+						@lb.Silver.ToString(FormatUtils.LeaderboardTimeFormat)
 					</td>
 					<td class="text-right hidden-xs hidden-sm hidden-md golden">
-						@lb.Golden.ToString("0.0000")
+						@lb.Golden.ToString(FormatUtils.LeaderboardTimeFormat)
 					</td>
 					<td class="text-right hidden-xs hidden-sm hidden-md devil">
-						@lb.Devil.ToString("0.0000")
+						@lb.Devil.ToString(FormatUtils.LeaderboardTimeFormat)
 					</td>
 					<td class="@wrDagger hidden-xs hidden-sm hidden-md leaderboard-username">
 						@{
@@ -109,7 +110,7 @@
 						@{
 							if (entries.Count > 0)
 							{
-								@entries[0].Time.ToString("0.0000")
+								@entries[0].Time.ToString(FormatUtils.LeaderboardTimeFormat)
 							}
 						}
 					</td>

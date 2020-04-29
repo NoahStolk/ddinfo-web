@@ -1,5 +1,6 @@
 ﻿@model string
 @inject CoreBase3.Services.ICommonObjects commonObjects
+@using DevilDaggersCore
 @using DevilDaggersCore.Game
 @using DevilDaggersCore.Spawnsets
 @using DevilDaggersCore.Spawnsets.Web
@@ -60,7 +61,7 @@
 					totalGems += spawn.SpawnsetEnemy.NoFarmGems;
 
 					<div class="flex-container flex-center">
-						<div style="width: @(widths[0])px;" class="text-right">@totalSeconds.ToString("0.0000")</div>
+						<div style="width: @(widths[0])px;" class="text-right">@totalSeconds.ToString(FormatUtils.SpawnTimeFormat)</div>
 						<div style="width: @(widths[1])px;">@(spawn.SpawnsetEnemy.ToEnemy(gameVersion).GetLayoutAnchor())</div>
 						<div style="width: @(widths[2])px;" class="text-right">@spawn.SpawnsetEnemy.NoFarmGems</div>
 						<div style="width: @(widths[3])px;" class="text-right">@totalGems</div>
@@ -115,7 +116,7 @@
 							totalGems += gems;
 
 							<div class="flex-container flex-center">
-								<div style="width: @(widths[0])px;" class="text-right">@((Math.Floor(endGameSecond * 60) / 60).ToString("0.0000"))</div>
+								<div style="width: @(widths[0])px;" class="text-right">@((Math.Floor(endGameSecond * 60) / 60).ToString(FormatUtils.SpawnTimeFormat))</div>
 								<div style="width: @(widths[1])px;">@(finalEnemy.ToEnemy(gameVersion).GetLayoutAnchor(false, Model.Contains("V3_Sorath") && spawns > 525 ? Math.Min((spawns - 525) / 10f, 100) : 0))</div>
 								<div style="width: @(widths[2])px;" class="text-right">@gems</div>
 								<div style="width: @(widths[3])px;" class="text-right">@totalGems</div>

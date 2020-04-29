@@ -1,4 +1,5 @@
-﻿@using DevilDaggersCore.Game
+﻿@using DevilDaggersCore
+@using DevilDaggersCore.Game
 @using DevilDaggersWebsite.Code.Database.CustomLeaderboards
 @using DevilDaggersWebsite.Code.Donations
 @using DevilDaggersWebsite.Code.Users
@@ -37,12 +38,12 @@
 				Death death = GameInfo.GetDeathFromDeathType(entry.DeathType, GameInfo.GameVersions["V3"]);
 
 				string flagCode = flag == null ? "00" : flag.CountryCode;
-				HtmlString level2 = entry.LevelUpTime2 == 0 ? RazorUtils.NAString : new HtmlString(entry.LevelUpTime2.ToString("0.0000"));
-				HtmlString level3 = entry.LevelUpTime3 == 0 ? RazorUtils.NAString : new HtmlString(entry.LevelUpTime3.ToString("0.0000"));
-				HtmlString level4 = entry.LevelUpTime4 == 0 ? RazorUtils.NAString : new HtmlString(entry.LevelUpTime4.ToString("0.0000"));
+				HtmlString level2 = entry.LevelUpTime2 == 0 ? RazorUtils.NAString : new HtmlString(entry.LevelUpTime2.ToString(FormatUtils.LeaderboardTimeFormat));
+				HtmlString level3 = entry.LevelUpTime3 == 0 ? RazorUtils.NAString : new HtmlString(entry.LevelUpTime3.ToString(FormatUtils.LeaderboardTimeFormat));
+				HtmlString level4 = entry.LevelUpTime4 == 0 ? RazorUtils.NAString : new HtmlString(entry.LevelUpTime4.ToString(FormatUtils.LeaderboardTimeFormat));
 				string submitDate = entry.SubmitDate.ToString("dd MMM yyyy, HH:mm");
 				string shots = entry.FormatShots();
-				string accuracy = entry.Accuracy.ToString("0.00%");
+				string accuracy = entry.Accuracy.ToString(FormatUtils.AccuracyFormat);
 
 				<div class="sort" @entry.ToHtmlData(rank, flagCode)>
 					<div class="leaderboard-row flex-container" id="@(rank)-row">
@@ -77,13 +78,13 @@
 								}
 							}
 						</div>
-						<div class="text-right @dagger">@((entry.Time).ToString("0.0000"))</div>
-						<div class="hidden-xs text-right">@entry.Kills</div>
-						<div class="hidden-xs text-right">@entry.Gems</div>
+						<div class="text-right @dagger">@(entry.Time.ToString(FormatUtils.LeaderboardTimeFormat))</div>
+						<div class="hidden-xs text-right">@entry.Kills.ToString(FormatUtils.LeaderboardIntFormat)</div>
+						<div class="hidden-xs text-right">@entry.Gems.ToString(FormatUtils.LeaderboardIntFormat)</div>
 						<div class="hidden-xs text-right">
 							<span data-toggle="tooltip" title="@shots" class="leaderboard-tooltip">@accuracy</span>
 						</div>
-						<div class="hidden-xs hidden-sm hidden-md text-right">@entry.Homing</div>
+						<div class="hidden-xs hidden-sm hidden-md text-right">@entry.Homing.ToString(FormatUtils.LeaderboardIntFormat)</div>
 						<div class="hidden-xs hidden-sm hidden-md text-right">@level2</div>
 						<div class="hidden-xs hidden-sm hidden-md text-right">@level3</div>
 						<div class="hidden-xs hidden-sm hidden-md text-right">@level4</div>
@@ -92,11 +93,11 @@
 					<div class="leaderboard-expand flex-container" id="@(rank)-expand">
 						<div class="visible-xs">
 							<div class="text-left">Kills</div>
-							<div class="text-right">@entry.Kills</div>
+							<div class="text-right">@entry.Kills.ToString(FormatUtils.LeaderboardIntFormat)</div>
 						</div>
 						<div class="visible-xs">
 							<div class="text-left">Gems</div>
-							<div class="text-right">@entry.Gems</div>
+							<div class="text-right">@entry.Gems.ToString(FormatUtils.LeaderboardIntFormat)</div>
 						</div>
 						<div class="visible-xs">
 							<div class="text-left">Accuracy</div>
@@ -106,7 +107,7 @@
 						</div>
 						<div class="visible-xs visible-sm visible-md">
 							<div class="text-left">Homing</div>
-							<div class="text-right">@entry.Homing</div>
+							<div class="text-right">@entry.Homing.ToString(FormatUtils.LeaderboardIntFormat)</div>
 						</div>
 						<div class="visible-xs visible-sm visible-md">
 							<div class="text-left">Level 2</div>

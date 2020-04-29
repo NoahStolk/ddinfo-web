@@ -90,7 +90,7 @@
 								seconds += physicsTick;
 								enemyTimer += physicsTick + waveModifier;
 							}
-							Console.WriteLine((Math.Floor(seconds * 60) / 60).ToString("0.0000"));
+							Console.WriteLine((Math.Floor(seconds * 60) / 60).ToString(FormatUtils.SpawnTimeFormat));
 						}
 						waveModifier += physicsTick / 8.0; // After every end wave, each enemy spawns an added 12.5% (100% / 8) faster.
 					}

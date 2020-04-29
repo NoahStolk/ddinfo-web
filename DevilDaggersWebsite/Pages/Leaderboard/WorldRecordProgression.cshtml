@@ -1,4 +1,5 @@
 ﻿@page
+@using DevilDaggersCore
 @using DevilDaggersCore.Game
 @using DevilDaggersCore.Leaderboards
 @using DevilDaggersCore.Leaderboards.History
@@ -78,7 +79,7 @@
 			string daysString = days == 0 ? "Less than 1 day" : days == 1 ? "1 day" : $"{days} days";
 			<div class="row">
 				<div class="col-lg-2 col-md-3 col-sm-4 col-xs-4">@kvp.Key.Entry.Username</div>
-				<div class="col-lg-2 col-md-3 col-sm-4 col-xs-4">@((kvp.Key.Entry.Time / 10000.0).ToString("0.0000"))</div>
+				<div class="col-lg-2 col-md-3 col-sm-4 col-xs-4">@((kvp.Key.Entry.Time / 10000.0).ToString(FormatUtils.LeaderboardTimeFormat))</div>
 				<div class="col-lg-2 col-md-3 col-sm-4 col-xs-4">@daysString</div>
 			</div>
 		}

@@ -1,5 +1,6 @@
 ﻿@model SpawnEventSettings
 @inject CoreBase3.Services.ICommonObjects commonObjects
+@using DevilDaggersCore
 @using DevilDaggersCore.Game
 @using DevilDaggersCore.Spawnsets
 @using DevilDaggersCore.Spawnsets.Events
@@ -98,7 +99,7 @@
 				totalKills += kills;
 
 				<div class="flex-container flex-center">
-					<div style="width: @(widths[0])px;" class="text-right">@evt.Seconds.ToString("0.0000")</div>
+					<div style="width: @(widths[0])px;" class="text-right">@evt.Seconds.ToString(FormatUtils.SpawnTimeFormat)</div>
 					<div style="width: @(widths[1])px;">@(RazorUtils.GetLayout($" {evt.Name} ", gameVersion))</div>
 					<div style="width: @(widths[2])px;" class="text-right">@gems</div>
 					<div style="width: @(widths[3])px;" class="text-right">@totalGems</div>

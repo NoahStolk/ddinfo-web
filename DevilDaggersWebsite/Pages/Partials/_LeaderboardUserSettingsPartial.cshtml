@@ -1,4 +1,5 @@
-﻿@using DevilDaggersCore.Game
+﻿@using DevilDaggersCore
+@using DevilDaggersCore.Game
 @using DevilDaggersCore.Leaderboards
 @using DevilDaggersWebsite.Code.Donations
 @using DevilDaggersWebsite.Code.Users
@@ -72,10 +73,10 @@
 								}
 							}
 						</div>
-						<div class="text-right @daggerColor">@((entry.Time / 10000.0).ToString("0.0000"))</div>
-						<div class="hidden-xs text-right">@(playerSetting.Edpi != null ? playerSetting.Edpi.Value.ToString("0.000") : string.Empty)</div>
+						<div class="text-right @daggerColor">@((entry.Time / 10000.0).ToString(FormatUtils.LeaderboardTimeFormat))</div>
+						<div class="hidden-xs text-right">@(playerSetting.Edpi != null ? playerSetting.Edpi.Value.ToString(FormatUtils.MouseSensitivityFormat) : string.Empty)</div>
 						<div class="hidden-xs text-right">@playerSetting.Dpi</div>
-						<div class="hidden-xs text-right">@(playerSetting.InGameSens != null ? playerSetting.InGameSens.Value.ToString("0.000") : string.Empty)</div>
+						<div class="hidden-xs text-right">@(playerSetting.InGameSens != null ? playerSetting.InGameSens.Value.ToString(FormatUtils.MouseSensitivityFormat) : string.Empty)</div>
 						<div class="hidden-xs text-right">@playerSetting.Fov</div>
 						<div class="hidden-xs hidden-sm hidden-md text-right">@playerSetting.RightHandedString</div>
 						<div class="hidden-xs hidden-sm hidden-md text-right">@playerSetting.FlashEnabledString</div>
@@ -83,7 +84,7 @@
 					<div class="leaderboard-expand flex-container" id="@(entry.Rank)-expand">
 						<div class="visible-xs">
 							<div class="text-left">eDPI</div>
-							<div class="text-right">@(playerSetting.Edpi != null ? playerSetting.Edpi.Value.ToString("0.000") : string.Empty)</div>
+							<div class="text-right">@(playerSetting.Edpi != null ? playerSetting.Edpi.Value.ToString(FormatUtils.MouseSensitivityFormat) : string.Empty)</div>
 						</div>
 						<div class="visible-xs">
 							<div class="text-left">DPI</div>
@@ -91,7 +92,7 @@
 						</div>
 						<div class="visible-xs">
 							<div class="text-left">In-game sens</div>
-							<div class="text-right">@(playerSetting.InGameSens != null ? playerSetting.InGameSens.Value.ToString("0.000") : string.Empty)</div>
+							<div class="text-right">@(playerSetting.InGameSens != null ? playerSetting.InGameSens.Value.ToString(FormatUtils.MouseSensitivityFormat) : string.Empty)</div>
 						</div>
 						<div class="visible-xs">
 							<div class="text-left">FOV</div>

@@ -1,4 +1,5 @@
 ﻿using CoreBase3.Services;
+using DevilDaggersCore;
 using DevilDaggersCore.Spawnsets.Web;
 using DevilDaggersWebsite.Code.Database;
 using DevilDaggersWebsite.Code.Database.CustomLeaderboards;
@@ -67,31 +68,31 @@ namespace DevilDaggersWebsite.Pages.CustomLeaderboards
 			{
 				case 0:
 					daggerName = "Bronze";
-					seconds = Leaderboard.Bronze.ToString("0.0000");
+					seconds = Leaderboard.Bronze.ToString(FormatUtils.LeaderboardTimeFormat);
 					break;
 				case 1:
 					daggerName = "Silver";
-					seconds = Leaderboard.Silver.ToString("0.0000");
+					seconds = Leaderboard.Silver.ToString(FormatUtils.LeaderboardTimeFormat);
 					break;
 				case 2:
 					daggerName = "Golden";
-					seconds = Leaderboard.Golden.ToString("0.0000");
+					seconds = Leaderboard.Golden.ToString(FormatUtils.LeaderboardTimeFormat);
 					break;
 				case 3:
 					daggerName = "Devil";
-					seconds = Leaderboard.Devil.ToString("0.0000");
+					seconds = Leaderboard.Devil.ToString(FormatUtils.LeaderboardTimeFormat);
 					break;
 				case 4:
 					daggerName = "Homing";
 					seconds =
 						Leaderboard.Category.Ascending ?
 							Entries.Any(e => e.Time <= Leaderboard.Homing) ?
-								Leaderboard.Homing.ToString("0.0000")
+								Leaderboard.Homing.ToString(FormatUtils.LeaderboardTimeFormat)
 							:
 								"???"
 						:
 							Entries.Any(e => e.Time >= Leaderboard.Homing) ?
-								Leaderboard.Homing.ToString("0.0000")
+								Leaderboard.Homing.ToString(FormatUtils.LeaderboardTimeFormat)
 							:
 								"???";
 					break;
