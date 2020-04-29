@@ -1,34 +1,35 @@
-using CoreBase;
-using DevilDaggersWebsite.Code.Bots;
+using CoreBase3.Startup;
 using DevilDaggersWebsite.Code.Database;
 using DevilDaggersWebsite.Code.Tasks;
 using DevilDaggersWebsite.Code.Tasks.Scheduling;
 using Microsoft.AspNetCore.Builder;
 using Microsoft.AspNetCore.Hosting;
 using Microsoft.AspNetCore.Rewrite;
+using Microsoft.EntityFrameworkCore;
 using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
-using Microsoft.Extensions.Logging;
+using Microsoft.Extensions.Hosting;
 using System;
 using System.Globalization;
 
 namespace DevilDaggersWebsite
 {
-	public class Startup : StartupAbstract
+	public class Startup
 	{
-		public Startup(IConfiguration configuration, ILoggerFactory loggerFactory, IHostingEnvironment env)
-			: base(configuration, loggerFactory, env)
+		public IConfiguration Configuration { get; }
+
+		public Startup(IConfiguration configuration)
 		{
+			Configuration = configuration;
 		}
 
-		// This method gets called by the runtime. Use this method to add services to the container.
 		public void ConfigureServices(IServiceCollection services)
 		{
 			services.AddMvc();
 
-			ConfigureDbServices<ApplicationDbContext>(services);
+			services.AddDbContext<ApplicationDbContext>(options => options.UseMySql(Configuration.GetConnectionString("DefaultConnection")));
 
-			AddCommonCoreBaseServices(services);
+			services.AddCoreBaseServices();
 
 			// TODO: Add all tasks using reflection?
 			services.AddSingleton<IScheduledTask, CreateLeaderboardHistoryFileTask>();
@@ -39,16 +40,12 @@ namespace DevilDaggersWebsite
 				Console.Write(args.Exception.Message);
 				args.SetObserved();
 			});
-
-			services.AddHostedService<DevilDaggersDiscordBotService>();
 		}
 
-		// This method gets called by the runtime. Use this method to configure the HTTP request pipeline.
-		public void Configure(IApplicationBuilder app, IHostingEnvironment env)
+		public void Configure(IApplicationBuilder app, IWebHostEnvironment env)
 		{
-			CultureInfo cultureInfo = CultureInfo.InvariantCulture;
-			CultureInfo.DefaultThreadCurrentCulture = cultureInfo;
-			CultureInfo.DefaultThreadCurrentUICulture = cultureInfo;
+			CultureInfo.DefaultThreadCurrentCulture = CultureInfo.InvariantCulture;
+			CultureInfo.DefaultThreadCurrentUICulture = CultureInfo.InvariantCulture;
 
 			// Do not change order of redirects.
 			RewriteOptions options = new RewriteOptions()
@@ -73,16 +70,30 @@ namespace DevilDaggersWebsite
 				.AddRedirect("^Home/Spawns$", "Wiki/Spawns")
 				.AddRedirect("^DownloadSpawnset", "Api/DownloadSpawnset")
 				.AddRedirect("^DownloadSpawnset?file=(.*)", "Api/DownloadSpawnset?file=$1");
-
 			app.UseRewriter(options);
 
-			ConfigureErrorPageAndSSL(app, env);
+			if (env.IsDevelopment())
+			{
+				app.UseDeveloperExceptionPage();
+			}
+			else
+			{
+				app.UseExceptionHandler("/Error");
+				app.UseHsts();
+			}
 
+			app.UseStatusCodePagesWithReExecute("/Error/{0}");
+			app.UseHttpsRedirection();
 			app.UseStaticFiles();
 
-			app.UseMvc();
+			app.UseRouting();
 
-			app.UseStatusCodePagesWithRedirects("/Error/{0}");
+			app.UseAuthorization();
+
+			app.UseEndpoints(endpoints =>
+			{
+				endpoints.MapRazorPages();
+			});
 		}
 	}
 }

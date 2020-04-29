@@ -1,4 +1,4 @@
-﻿using CoreBase.Services;
+﻿using CoreBase3.Services;
 using DevilDaggersCore.Leaderboards.History;
 using DevilDaggersWebsite.Code.Api;
 using Microsoft.AspNetCore.Mvc.RazorPages;
@@ -10,7 +10,7 @@ namespace DevilDaggersWebsite.Pages.Leaderboard
 {
 	public class WorldRecordProgressionModel : PageModel
 	{
-		private readonly ICommonObjects _commonObjects;
+		private readonly ICommonObjects commonObjects;
 
 		public List<WorldRecordHolder> WorldRecordHolders { get; private set; } = new List<WorldRecordHolder>();
 
@@ -18,12 +18,12 @@ namespace DevilDaggersWebsite.Pages.Leaderboard
 
 		public WorldRecordProgressionModel(ICommonObjects commonObjects)
 		{
-			_commonObjects = commonObjects;
+			this.commonObjects = commonObjects;
 		}
 
 		public void OnGet()
 		{
-			List<WorldRecord> worldRecords = ApiFunctions.GetWorldRecords(_commonObjects, null);
+			List<WorldRecord> worldRecords = ApiFunctions.GetWorldRecords(commonObjects, null);
 
 			TimeSpan heldConsecutively = new TimeSpan();
 			for (int i = 0; i < worldRecords.Count; i++)

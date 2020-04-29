@@ -1,4 +1,4 @@
-﻿using CoreBase.Services;
+﻿using CoreBase3.Services;
 using DevilDaggersCore.Leaderboards;
 using DevilDaggersWebsite.Code.PageModels;
 using DevilDaggersWebsite.Code.Users;
@@ -12,13 +12,13 @@ namespace DevilDaggersWebsite.Pages.Admin
 {
 	public class BanInfoModel : AdminPageModel
 	{
-		private readonly ICommonObjects _commonObjects;
+		private readonly ICommonObjects commonObjects;
 
 		public List<(Ban ban, string bannedAccountUsername, string responsibleAccountUsername)> BanInfo { get; private set; } = new List<(Ban, string, string)>();
 
 		public BanInfoModel(ICommonObjects commonObjects)
 		{
-			_commonObjects = commonObjects;
+			this.commonObjects = commonObjects;
 		}
 
 		public async Task<ActionResult> OnGetAsync(string password)
@@ -35,7 +35,7 @@ namespace DevilDaggersWebsite.Pages.Admin
 		{
 			List<(Ban ban, string bannedAccountUsername, string responsibleAccountUsername)> list = new List<(Ban ban, string bannedAccountUsername, string responsibleAccountUsername)>();
 
-			IEnumerable<Ban> bans = UserUtils.GetBans(_commonObjects);
+			IEnumerable<Ban> bans = UserUtils.GetBans(commonObjects);
 			foreach (Ban ban in bans)
 			{
 				Entry entry = await Hasmodai.GetUserById(ban.Id);

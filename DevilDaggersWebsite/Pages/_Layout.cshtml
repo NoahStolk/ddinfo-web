@@ -1,4 +1,5 @@
-﻿@using DevilDaggersWebsite.Code.Utils
+﻿@using CoreBase3.Utils
+@using DevilDaggersWebsite.Code.Utils
 
 <!DOCTYPE html>
 <html>
@@ -22,7 +23,7 @@
 	<link href="~/favicon.ico" rel="shortcut icon" />
 	<title>@ViewData["Title"] - Devil Daggers Info</title>
 
-	@await Html.PartialAsync("SharedPartials/_CssBundlePartial")
+	@await Html.PartialAsync("Partials/Shared/_CssBundlePartial")
 
 	@RenderSection("Styles", required: false)
 </head>
@@ -92,7 +93,7 @@
 		<footer>
 			<div class="row">
 				<div class="col-lg-4 col-lg-offset-2 text-center">
-					&copy; @(CoreBase.Extensions.RazorExtensions.GetFooterYearString(2017))<br />
+					@(CommonUtils.GetCopyrightString("", 2017))<br />
 					Website created by Noah Stolk<br />
 					<a href="//noahstolk.com/">www.noahstolk.com</a>
 				</div>
@@ -105,7 +106,7 @@
 		</footer>
 	</div>
 
-	@await Html.PartialAsync("SharedPartials/_JsBundlePartial")
+	@await Html.PartialAsync("Partials/Shared/_JsBundlePartial")
 
 	@RenderSection("Scripts", required: false)
 </body>

@@ -1,4 +1,4 @@
-﻿using CoreBase.Services;
+﻿using CoreBase3.Services;
 using DevilDaggersWebsite.Code.Api;
 using DevilDaggersWebsite.Code.PageModels;
 using Microsoft.AspNetCore.Mvc;
@@ -9,16 +9,16 @@ namespace DevilDaggersWebsite.Pages.Api
 	[ApiFunction(Description = "Returns the spawnset file corresponding to the given fileName parameter. Returns to this page if the spawnset could not be found.", ReturnType = MediaTypeNames.Application.Octet)]
 	public class GetSpawnsetModel : ApiPageModel
 	{
-		private readonly ICommonObjects _commonObjects;
+		private readonly ICommonObjects commonObjects;
 
 		public GetSpawnsetModel(ICommonObjects commonObjects)
 		{
-			_commonObjects = commonObjects;
+			this.commonObjects = commonObjects;
 		}
 
 		public ActionResult OnGet(string fileName)
 		{
-			if (ApiFunctions.TryGetSpawnsetPath(_commonObjects, fileName, out string path))
+			if (ApiFunctions.TryGetSpawnsetPath(commonObjects, fileName, out string path))
 				return File(path, MediaTypeNames.Application.Octet, fileName);
 
 			return RedirectToPage("/Api/Index");

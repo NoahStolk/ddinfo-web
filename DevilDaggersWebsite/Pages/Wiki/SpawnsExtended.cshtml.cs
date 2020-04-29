@@ -1,9 +1,6 @@
 ﻿using DevilDaggersWebsite.Code.PageModels;
 using DevilDaggersWebsite.Code.Spawnsets;
-using Microsoft.AspNetCore.Hosting;
 using Microsoft.AspNetCore.Mvc;
-using NetBase.Utils;
-using System.IO;
 
 namespace DevilDaggersWebsite.Pages.Wiki
 {
@@ -14,11 +11,11 @@ namespace DevilDaggersWebsite.Pages.Wiki
 
 		public SpawnEventSettings SpawnEventSettings { get; set; }
 
-		private readonly IHostingEnvironment _env;
+		//private readonly IWebHostEnvironment env;
 
-		public SpawnsExtendedModel(IHostingEnvironment env)
+		public SpawnsExtendedModel(/*IWebHostEnvironment env*/)
 		{
-			_env = env;
+			//this.env = env;
 		}
 
 		public ActionResult OnGet(string gameVersion, int squidGushCount, int leviathanBeckonCount)
