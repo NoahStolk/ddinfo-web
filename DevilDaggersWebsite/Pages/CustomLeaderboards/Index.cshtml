@@ -10,11 +10,14 @@
 </header>
 
 <main role="main">
-	<p class="text-center">
+	<p>
 		Custom leaderboards are leaderboards for <a asp-page="/Spawnsets">custom spawnsets</a> hosted by DevilDaggers.info.
 	</p>
+	<p>
+		Select a leaderboard category to view leaderboards:
+	</p>
 
-	<form method="get">
+	<form method="get" class="left">
 		<select class="select form-control" asp-for="Category" asp-items="Model.CategoryListItems" onchange="this.form.submit()"></select>
 	</form>
 

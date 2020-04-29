@@ -4,9 +4,9 @@
 
 .info-container {
 	max-width: 460px;
-	margin: auto auto 12px auto;
 	border: solid 1px;
 	padding: 8px;
+	margin: 8px;
 }
 
 .info-red {

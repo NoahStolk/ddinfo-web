@@ -187,6 +187,10 @@ pre {
 	color: var(--col-default-text)
 }
 
+form.left {
+	width: 192px;
+}
+
 /* https://css-tricks.com/snippets/css/prevent-long-urls-from-breaking-out-of-container/ */
 .dont-break-out {
 	overflow-wrap: break-word;
