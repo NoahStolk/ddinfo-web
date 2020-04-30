@@ -22,7 +22,7 @@ $.getJSON("/Api/GetWorldRecords", function (data) {
 	const chartId = "#" + chartName;
 	const chart = createChart(chartName, wrs, minDate, maxDate, minTime, maxTime, (maxTime - minTime) / 50 + 1);
 
-	$(chartId).bind('jqplotMouseMove', function (event, xy, axesData, neighbor, plot) {
+	$(chartId).bind('jqplotMouseMove', function (_event, xy, _axesData, _neighbor, plot) {
 		const closestData = getClosestDataToMouse(chart, xy, plot, minDate, maxDate, minTime, maxTime);
 
 		if (!closestData)
