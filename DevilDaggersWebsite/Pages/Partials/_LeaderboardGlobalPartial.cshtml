@@ -8,7 +8,7 @@
 
 	bool isHistory = Model.GetType() == typeof(HistoryModel);
 
-	string time = (Model.Leaderboard.TimeGlobal / 10000.0).ToString(FormatUtils.LeaderboardTimeTotalFormat);
+	string time = (Model.Leaderboard.TimeGlobal / 10000.0).ToString(FormatUtils.LeaderboardTimeLargeFormat);
 	string shots = Model.Leaderboard.FormatShotsGlobal(isHistory);
 	string accuracy = Model.Leaderboard.AccuracyGlobal.ToString(FormatUtils.AccuracyFormat);
 }
