@@ -1,21 +1,7 @@
-﻿var deathTypes = [];
-$.getJSON("/Api/GetDeaths?gameVersion=V1", function (data) {
-	deathTypes[0] = data;
-});
-$.getJSON("/Api/GetDeaths?gameVersion=V2", function (data) {
-	deathTypes[1] = data;
-});
-$.getJSON("/Api/GetDeaths?gameVersion=V3", function (data) {
-	deathTypes[2] = data;
-});
+﻿const maxDate = Date.now() + 86400000 * 7;
 
-var gameVersions = [];
-$.getJSON("/Api/GetGameVersions", function (data) {
-	gameVersions = data;
-});
-
-var getUrlParameter = function getUrlParameter(sParam) {
-	var sPageURL = window.location.search.substring(1),
+let getUrlParameter = function getUrlParameter(sParam) {
+	let sPageURL = window.location.search.substring(1),
 		sURLVariables = sPageURL.split('&'),
 		sParameterName,
 		i;
@@ -23,150 +9,89 @@ var getUrlParameter = function getUrlParameter(sParam) {
 	for (i = 0; i < sURLVariables.length; i++) {
 		sParameterName = sURLVariables[i].split('=');
 
-		if (sParameterName[0] === sParam) {
+		if (sParameterName[0] === sParam)
 			return sParameterName[1] === undefined ? true : decodeURIComponent(sParameterName[1]);
-		}
 	}
 };
 
 $.getJSON("/Api/GetUserProgressionById?UserId=" + getUrlParameter("UserId"), function (data) {
-	var pbs = [];
-	$.each(data, function (key, val) {
-		var date = new Date(key);
+	const pbs = [];
+	let pbIndex = 0;
+	$.each(data, function (key, pb) {
+		const date = new Date(key);
+		const deathType = getDeathType(date, pb);
+		const accuracy = pb.ShotsFired === 0 ? 0 : pb.ShotsHit / pb.ShotsFired * 100;
 
-		var version = 0;
-		for (var i = Object.keys(gameVersions).length; i > 0; i--) {
-			if (date >= new Date(gameVersions["V" + i].ReleaseDate)) {
-				version = i - 1;
-				break;
-			}
+		pbs.push([date, pb.Time / 10000, pb.Rank.toFixed(0), pb.Username, pb.Gems === 0 ? "?" : pb.Gems.toFixed(0), pb.Kills === 0 ? "?" : pb.Kills.toFixed(0), accuracy === 0 ? "?" : accuracy.toFixed(2) + "%", deathType.ColorCode, deathType.Name]);
+
+		if (++pbIndex === Object.keys(data).length) {
+			pbs.push([maxDate + 10000000000 /*Ugly way to make sure no dot is visible*/, pb.Time / 10000, pb.Rank.toFixed(0), pb.Username, pb.Gems === 0 ? "?" : pb.Gems.toFixed(0), pb.Kills === 0 ? "?" : pb.Kills.toFixed(0), accuracy === 0 ? "?" : accuracy.toFixed(2) + "%", deathType.ColorCode, deathType.Name]);
 		}
-		var death;
-		for (var j = 0; j < deathTypes[version].length; j++) {
-			if (deathTypes[version][j].DeathType === val.DeathType) {
-				death = deathTypes[version][j];
-				break;
-			}
-		}
-
-		var accuracy = val.ShotsHit / val.ShotsFired * 100;
-		if (isNaN(accuracy))
-			accuracy = 0;
-
-		pbs.push([date, val.Time / 10000, val.Rank.toFixed(0), val.Username, val.Gems === 0 ? "?" : val.Gems.toFixed(0), val.Kills === 0 ? "?" : val.Kills.toFixed(0), accuracy === 0 ? "?" : accuracy.toFixed(2) + "%", death.ColorCode, death.Name]);
 	});
 
 	// TODO: This is just to prevent the graph from crashing. Something else should be displayed instead.
 	if (pbs.length === 0)
 		return;
 
-	var lowestTime = 10000;
-	var highestTime = 0;
-	for (var i = 0; i < pbs.length; i++) {
-		if (pbs[i][1] > highestTime)
-			highestTime = pbs[i][1];
-		if (pbs[i][1] < lowestTime)
-			lowestTime = pbs[i][1];
+	const minDate = pbs[0][0] - 86400000 * 7; // Amount of milliseconds in a day * amount of days
+
+	let minTime = 10000;
+	let maxTime = 0;
+	for (let i = 0; i < pbs.length; i++) {
+		if (pbs[i][1] > maxTime)
+			maxTime = pbs[i][1];
+		if (pbs[i][1] < minTime)
+			minTime = pbs[i][1];
 	}
+	minTime = Math.floor(minTime / 50) * 50;
+	maxTime = Math.ceil(maxTime / 50) * 50 + 50;
 
-	lowestTime = Math.floor(lowestTime / 50) * 50;
-	highestTime = Math.ceil(highestTime / 50) * 50 + 50;
+	const chartName = "user-progression-chart";
+	const chartId = "#" + chartName;
+	const chart = createChart(chartName, pbs, minDate, maxDate, minTime, maxTime, (maxTime - minTime) / 50 + 1);
 
-	var steps = (highestTime - lowestTime) / 50 + 1;
+	$(chartId).bind('jqplotMouseMove', function (event, xy, axesData, neighbor, plot) {
+		const closestData = getClosestDataToMouse(chart, xy, plot, minDate, maxDate, minTime, maxTime);
 
-	$.jqplot("user-progression-chart", [pbs], {
-		axes: {
-			xaxis: {
-				renderer: $.jqplot.DateAxisRenderer,
-				min: pbs[0][0] - 86400000 * 7, // Amount of milliseconds in a day * amount of days
-				max: Date.now() + 86400000 * 7,
-				tickOptions: {
-					formatString: "%b %#d '%y"
-				}
-			},
-			yaxis: {
-				min: lowestTime,
-				max: highestTime,
-				numberTicks: steps,
-				tickOptions: {
-					formatString: '%.4f'
-				}
-			}
-		},
-		series: [
-			{
-				color: '#FF0000'
-			}
-		],
-		seriesDefaults: {
-			step: true,
-			markerOptions: {
-				show: false
-			}
-		},
-		highlighter: {
-			show: true,
-			tooltipAxes: 'xy',
-			yvalues: 8,
-			formatString: '<table class="jqplot-highlighter"> \
-			<tr><td>Date:</td><td>%s</td></tr> \
-			<tr><td>Time:</td><td>%s</td></tr> \
-			<tr><td>Rank:</td><td>%s</td></tr> \
-			<tr><td>Username:</td><td>%s</td></tr> \
-			<tr><td>Gems:</td><td>%s</td></tr> \
-			<tr><td>Kills:</td><td>%s</td></tr> \
-			<tr><td>Accuracy:</td><td>%s</td></tr> \
-			<tr><td>Death type:</td><td style="color: #%s">%s</td></tr></table>'
-		},
-		grid: {
-			backgroundColor: '#000000'
-		},
-		canvasOverlay: {
-			show: true,
-			objects: [
-				{
-					rectangle: {
-						xmin: new Date("2016-02-18"),
-						xmax: new Date("2016-07-05"),
-						xminOffset: "0px",
-						xmaxOffset: "0px",
-						yminOffset: "0px",
-						ymaxOffset: "0px",
-						color: "rgba(0, 200, 200, 0.1)",
-						showTooltip: true,
-						tooltipFormatString: "V1",
-						tooltipLocation: 'sw'
-					}
-				},
-				{
-					rectangle: {
-						xmin: new Date("2016-07-05"),
-						xmax: new Date("2016-09-19"),
-						xminOffset: "0px",
-						xmaxOffset: "0px",
-						yminOffset: "0px",
-						ymaxOffset: "0px",
-						color: "rgba(200, 200, 0, 0.1)",
-						showTooltip: true,
-						tooltipFormatString: "V2",
-						tooltipLocation: 'sw'
-					}
-				},
-				{
-					rectangle: {
-						xmin: new Date("2016-09-19"),
-						xmax: Date.now(),
-						xminOffset: "0px",
-						xmaxOffset: "0px",
-						yminOffset: "0px",
-						ymaxOffset: "0px",
-						color: "rgba(200, 0, 200, 0.1)",
-						showTooltip: true,
-						tooltipFormatString: "V3",
-						tooltipLocation: 'sw'
-					}
-				}
-			]
-		}
+		if (!closestData)
+			$("#highlighter").hide();
+		else
+			setHighlighter(closestData, xy);
 	});
+	$(chartId).bind('jqplotMouseLeave', function () {
+		$("#highlighter").hide();
+	});
+
+	$(window).resize(function () {
+		chart.replot();
+
+		$(chartId).append('<table id="highlighter">');
+		$('#highlighter').append('<tr><td>Date</td><td id="h-date"></td></tr>');
+		$('#highlighter').append('<tr><td>Rank</td><td id="h-rank"></td></tr>');
+		$('#highlighter').append('<tr><td>Time</td><td id="h-time"></td></tr>');
+		$('#highlighter').append('<tr><td>Username</td><td id="h-username"></td></tr>');
+		$('#highlighter').append('<tr><td>Gems</td><td id="h-gems"></td></tr>');
+		$('#highlighter').append('<tr><td>Kills</td><td id="h-kills"></td></tr>');
+		$('#highlighter').append('<tr><td>Accuracy</td><td id="h-accuracy"></td></tr>');
+		$('#highlighter').append('<tr><td>Death type</td><td id="h-death-type"></td></tr>');
+		$(chartId).append('</table>');
+	});
+
+	function setHighlighter(data, xy) {
+		setHighlighterPosition(chart, data, xy, minTime, maxTime);
+
+		// Values
+		const date = new Date(data[0]);
+		const dateString = monthShortNames[date.getMonth()] + " " + ("0" + date.getDate()).slice(-2) + " '" + date.getFullYear().toString().substring(2, 4);
+		$('#h-date').html(dateString);
+		$('#h-rank').html(data[2]);
+		$('#h-time').html(data[1].toFixed(4));
+		$('#h-username').html(data[3]);
+		$('#h-gems').html(data[4]);
+		$('#h-kills').html(data[5]);
+		$('#h-accuracy').html(data[6]);
+		$('#h-death-type').html(data[8]);
+
+		setHighlighterStyle(data[1], data[6]);
+	}
 });

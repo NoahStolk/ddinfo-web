@@ -37,7 +37,18 @@
 			</p>
 
 			<h2>@Model.Username</h2>
-			<div id="user-progression-chart" style="height: 65vh;"></div>
+			<div id="user-progression-chart">
+				<table id="highlighter">
+					<tr><td>Date:</td><td id="h-date"></td></tr>
+					<tr><td>Rank:</td><td id="h-rank"></td></tr>
+					<tr><td>Time:</td><td id="h-time"></td></tr>
+					<tr><td>Username:</td><td id="h-username"></td></tr>
+					<tr><td>Gems:</td><td id="h-gems"></td></tr>
+					<tr><td>Kills:</td><td id="h-kills"></td></tr>
+					<tr><td>Accuracy:</td><td id="h-accuracy"></td></tr>
+					<tr><td>Death type:</td><td id="h-death-type"></td></tr>
+				</table>
+			</div>
 		}
 	}
 </main>
@@ -47,10 +58,11 @@
 	<script defer src='~/plugins/jqPlot/jqplot.dateAxisRenderer.js' asp-append-version='true'></script>
 	<script defer src='~/plugins/jqPlot/jqplot.highlighter.js' asp-append-version='true'></script>
 	<script defer src='~/plugins/jqPlot/jqplot.canvasOverlay.js' asp-append-version='true'></script>
+	<script defer src='~/scripts/leaderboard-progression.js' asp-append-version='true'></script>
 	<script defer src='~/scripts/leaderboard-user-progression.js' asp-append-version='true'></script>
 }
 
 @section Styles {
 	<link rel='stylesheet' href='~/lib/jqPlot/jquery.jqplot.min.css' />
-	<link rel='stylesheet' href='~/styles/jqplot.css' />
+	<link rel='stylesheet' href='~/styles/leaderboard-progression.css' />
 }
