@@ -48,6 +48,7 @@ namespace DevilDaggersWebsite.Pages.Leaderboard
 
 		public bool HasBans { get; private set; }
 		public bool IsValidTop100Graph { get; private set; }
+		public string UsernameAliases { get; private set; }
 
 		public LeaderboardSearchType LeaderboardSearchType => !string.IsNullOrEmpty(Username) && Username.Length >= 3 ? LeaderboardSearchType.Username : UserId != 0 ? LeaderboardSearchType.UserId : LeaderboardSearchType.Rank;
 
@@ -58,38 +59,35 @@ namespace DevilDaggersWebsite.Pages.Leaderboard
 
 		public async Task OnGetAsync(int rank, string username, int userId)
 		{
-			try
-			{
-				Rank = Math.Max(rank, 1);
-				Username = username;
-				UserId = userId;
+			Rank = Math.Max(rank, 1);
+			Username = username;
+			UserId = userId;
 
-				switch (LeaderboardSearchType)
-				{
-					case LeaderboardSearchType.Username:
-						Leaderboard = await Hasmodai.GetUserSearch(Username);
-						break;
-					case LeaderboardSearchType.UserId:
-						Leaderboard = new Lb { Entries = new List<Entry> { await Hasmodai.GetUserById(UserId) } };
-						break;
-					case LeaderboardSearchType.Rank:
-					default:
+			switch (LeaderboardSearchType)
+			{
+				case LeaderboardSearchType.Username:
+					Leaderboard = await Hasmodai.GetUserSearch(Username);
+					break;
+				case LeaderboardSearchType.UserId:
+					Leaderboard = new Lb { Entries = new List<Entry> { await Hasmodai.GetUserById(UserId) } };
+					break;
+				case LeaderboardSearchType.Rank:
+				default:
+					Leaderboard = await Hasmodai.GetScores(Rank);
+					if (Rank > Leaderboard.Players - 99)
+					{
+						Rank = Leaderboard.Players - 99;
+						Leaderboard.Entries.Clear();
 						Leaderboard = await Hasmodai.GetScores(Rank);
-						if (Rank > Leaderboard.Players - 99)
-						{
-							Rank = Leaderboard.Players - 99;
-							Leaderboard.Entries.Clear();
-							Leaderboard = await Hasmodai.GetScores(Rank);
-						}
-						break;
-				}
+					}
+					break;
+			}
 
-				HasBans = UserUtils.GetBans(commonObjects).Any(b => Leaderboard.Entries.Any(e => e.Id == b.Id));
-				IsValidTop100Graph = UserId > 0 && Leaderboard.Entries[0].ExistsInHistory(commonObjects);
-			}
-			catch
-			{
-			}
+			HasBans = UserUtils.GetBans(commonObjects).Any(b => Leaderboard.Entries.Any(e => e.Id == b.Id));
+			Entry entry = Leaderboard.Entries[0];
+			IsValidTop100Graph = UserId > 0 && entry.ExistsInHistory(commonObjects);
+			IEnumerable<string> aliases = entry.GetAllUsernameAliases(commonObjects).Where(s => s != entry.Username);
+			UsernameAliases = aliases.Any() ? $" (also known as: {string.Join(", ", aliases)})" : string.Empty;
 		}
 	}
 }

@@ -55,6 +55,26 @@ namespace DevilDaggersWebsite.Code.Utils
 			return false;
 		}
 
+		public static List<string> GetAllUsernameAliases(this Entry entry, ICommonObjects commonObjects)
+		{
+			Dictionary<string, int> aliases = new Dictionary<string, int>();
+			foreach (string leaderboardHistoryPath in Directory.GetFiles(Path.Combine(commonObjects.Env.WebRootPath, "leaderboard-history"), "*.json"))
+			{
+				Leaderboard leaderboard = JsonConvert.DeserializeObject<Leaderboard>(FileUtils.GetContents(leaderboardHistoryPath, Encoding.UTF8));
+				Entry historyEntry = leaderboard.Entries.FirstOrDefault(e => e.Id == entry.Id);
+				if (historyEntry != null)
+				{
+					if (string.IsNullOrWhiteSpace(historyEntry.Username))
+						continue;
+					if (aliases.ContainsKey(historyEntry.Username))
+						aliases[historyEntry.Username]++;
+					else
+						aliases.Add(historyEntry.Username, 1);
+				}
+			}
+			return aliases.OrderByDescending(kvp => kvp.Value).Select(kvp => kvp.Key).ToList();
+		}
+
 		public static HtmlString ToChangelogHtmlString(this Tool tool)
 		{
 			StringBuilder sb = new StringBuilder();
