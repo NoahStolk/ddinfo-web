@@ -1,7 +1,7 @@
 ﻿#highlighter {
 	background-color: rgba(0,0,0,0.8);
 	color: var(--col-default-text);
-	width: 224px;
+	width: 256px;
 	text-align: right;
 	border: solid 1px;
 	border-color: #999;

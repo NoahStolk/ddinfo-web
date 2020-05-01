@@ -15,90 +15,125 @@
 
 <main role="main">
 	@await Html.PartialAsync("Partials/_LeaderboardGlobalPartial")
-	<div>
-		@using (Html.BeginForm(FormMethod.Get))
-		{
-			<fieldset>
-				<div class="flex-container flex-center flex-column">
-					<div class="flex-container flex-center">
-						<div class="input-label text-left" style="width: @(widths[0])px;">Rank:</div>
-						<div style="width: @(widths[1])px;">@Html.TextBoxFor(m => m.Rank, new { @class = "input" })</div>
-					</div>
-					<div class="flex-container flex-center">
-						<div class="input-label text-left" style="width: @(widths[0])px;">Username:</div>
-						<div style="width: @(widths[1])px;">@Html.TextBoxFor(m => m.Username, new { @class = "input" })</div>
-					</div>
-					<div class="flex-container flex-center">
-						<div class="input-label text-left" style="width: @(widths[0])px;">User ID:</div>
-						<div style="width: @(widths[1])px;">@Html.TextBoxFor(m => m.UserId, new { @class = "input" })</div>
-					</div>
+	@using (Html.BeginForm(FormMethod.Get))
+	{
+		<fieldset>
+			<div class="flex-container flex-center flex-column">
+				<div class="flex-container flex-center">
+					<div class="input-label text-left" style="width: @(widths[0])px;">Rank:</div>
+					<div style="width: @(widths[1])px;">@Html.TextBoxFor(m => m.Rank, new { @class = "input" })</div>
 				</div>
-				<div class="flex-container flex-center flex-column">
-					<div class="flex-container flex-center">
-						<input class="btn" type="submit" value="Show" />
-					</div>
-					<div class="flex-container flex-center leaderboard-nav-buttons">
-						@{
-							if (Model.LeaderboardSearchType == LeaderboardSearchType.Rank)
-							{
-								<a class="btn" asp-page="/Leaderboard/Index" asp-route-rank="@(Math.Max(1, Model.Rank - 100))" asp-route-search="@Model.Username">&lt;</a>
-								<a class="btn" asp-page="/Leaderboard/Index" asp-route-rank="@(Math.Min(Model.Leaderboard.Players - 99, Model.Rank + 100))" asp-route-search="@Model.Username">&gt;</a>
-							}
-							else
-							{
-								<button class="btn btn-disabled">&lt;</button>
-								<button class="btn btn-disabled">&gt;</button>
-							}
+				<div class="flex-container flex-center">
+					<div class="input-label text-left" style="width: @(widths[0])px;">Username:</div>
+					<div style="width: @(widths[1])px;">@Html.TextBoxFor(m => m.Username, new { @class = "input" })</div>
+				</div>
+				<div class="flex-container flex-center">
+					<div class="input-label text-left" style="width: @(widths[0])px;">User ID:</div>
+					<div style="width: @(widths[1])px;">@Html.TextBoxFor(m => m.UserId, new { @class = "input" })</div>
+				</div>
+			</div>
+			<div class="flex-container flex-center flex-column">
+				<div class="flex-container flex-center">
+					<input class="btn" type="submit" value="Show" />
+				</div>
+				<div class="flex-container flex-center leaderboard-nav-buttons">
+					@{
+						if (Model.LeaderboardSearchType == LeaderboardSearchType.Rank)
+						{
+							<a class="btn" asp-page="/Leaderboard/Index" asp-route-rank="@(Math.Max(1, Model.Rank - 100))" asp-route-search="@Model.Username">&lt;</a>
+							<a class="btn" asp-page="/Leaderboard/Index" asp-route-rank="@(Math.Min(Model.Leaderboard.Players - 99, Model.Rank + 100))" asp-route-search="@Model.Username">&gt;</a>
 						}
-					</div>
+						else
+						{
+							<button class="btn btn-disabled">&lt;</button>
+							<button class="btn btn-disabled">&gt;</button>
+						}
+					}
 				</div>
-			</fieldset>
+			</div>
+		</fieldset>
+	}
+	<p>
+		@switch (Model.LeaderboardSearchType)
+		{
+			case LeaderboardSearchType.Username:
+				@:Showing username search results for "@Model.Username"
+				break;
+			case LeaderboardSearchType.UserId:
+				@:Showing user with ID @Model.UserId
+				break;
+			case LeaderboardSearchType.Rank:
+			default:
+				@:Showing rank @Model.Rank - @(Model.Rank + 99)
+				break;
 		}
+	</p>
+	<p class="visible-xs visible-sm visible-md">
+		On mobile devices; tap on an entry to expand it.
+	</p>
+	@if (Model.LeaderboardSearchType == LeaderboardSearchType.Rank)
+	{
 		<p>
-			@switch (Model.LeaderboardSearchType)
-			{
-				case LeaderboardSearchType.Username:
-					@:Showing username search results for "@Model.Username"
-					break;
-				case LeaderboardSearchType.UserId:
-					@:Showing user with ID @Model.UserId
-					break;
-				case LeaderboardSearchType.Rank:
-				default:
-					@:Showing rank @Model.Rank - @(Model.Rank + 99)
-					break;
-			}
+			If you'd like to add your nationality (flag) to this leaderboard, let one of the <img src="~/images/Icons/eye3.png" /> <a href="@RazorUtils.DiscordUrl">Discord</a> mods know.
 		</p>
-		<p class="visible-xs visible-sm visible-md">
-			On mobile devices; tap on an entry to expand it.
+	}
+	@if (Model.LeaderboardSearchType != LeaderboardSearchType.UserId)
+	{
+		<p>
+			You can sort the leaderboard by clicking the headers.
 		</p>
-		@if (Model.LeaderboardSearchType == LeaderboardSearchType.Rank)
-		{
-			<p>
-				If you'd like to add your nationality (flag) to this leaderboard, let one of the <img src="~/images/Icons/eye3.png" /> <a href="@RazorUtils.DiscordUrl">Discord</a> mods know.
-			</p>
-		}
-		@if (Model.LeaderboardSearchType != LeaderboardSearchType.UserId)
-		{
-			<p>
-				You can sort the leaderboard by clicking the headers.
-			</p>
-		}
-		@if (Model.HasBans)
-		{
-			<p>
-				<span class="ban">Crossed out entries</span> are runs that are cheated, boosted, submitted on an alternative account, or otherwise considered invalid.
-			</p>
-		}
-	</div>
+	}
+	@if (Model.HasBans)
+	{
+		<p>
+			<span class="ban">Crossed out entries</span> are runs that are cheated, boosted, submitted on an alternative account, or otherwise considered invalid.
+		</p>
+	}
 	@await Html.PartialAsync("Partials/_LeaderboardUserPartial")
+	@if (Model.LeaderboardSearchType == LeaderboardSearchType.UserId)
+	{
+		if (Model.IsValidTop100Graph)
+		{
+			<h2>Top 100 progression</h2>
+			<p>
+				This graph shows the top 100 progression for @Model.Leaderboard.Entries[0].Username. It is based on the <a asp-page="/Leaderboard/History">Leaderboard History</a>, so it might be incomplete.
+			</p>
+			<p>
+				Note that the graph data is only based on a user's highscores; the rank does not update over time.
+			</p>
+
+			<div id="user-progression-chart">
+				<table id="highlighter">
+					<tr><td>Date:</td><td id="h-date"></td></tr>
+					<tr><td>Rank:</td><td id="h-rank"></td></tr>
+					<tr><td>Time:</td><td id="h-time"></td></tr>
+					<tr><td>Username:</td><td id="h-username"></td></tr>
+					<tr><td>Gems:</td><td id="h-gems"></td></tr>
+					<tr><td>Kills:</td><td id="h-kills"></td></tr>
+					<tr><td>Accuracy:</td><td id="h-accuracy"></td></tr>
+					<tr><td>Death type:</td><td id="h-death-type"></td></tr>
+				</table>
+			</div>
+		}
+	}
+
 </main>
 
 @section Scripts {
 	<script defer src='~/scripts/leaderboard-user.js' asp-append-version='true'></script>
+
+	<script defer src='~/plugins/jqPlot/jquery.jqplot.min.js' asp-append-version='true'></script>
+	<script defer src='~/plugins/jqPlot/jqplot.dateAxisRenderer.js' asp-append-version='true'></script>
+	<script defer src='~/plugins/jqPlot/jqplot.highlighter.js' asp-append-version='true'></script>
+	<script defer src='~/plugins/jqPlot/jqplot.canvasOverlay.js' asp-append-version='true'></script>
+	<script defer src='~/scripts/leaderboard-progression.js' asp-append-version='true'></script>
+	<script defer src='~/scripts/leaderboard-user-progression.js' asp-append-version='true'></script>
 }
 
 @section Styles {
 	<link rel='stylesheet' href='~/styles/leaderboard.css' />
 	<link rel='stylesheet' href='~/styles/leaderboard-rows-general.css' />
+
+	<link rel='stylesheet' href='~/lib/jqPlot/jquery.jqplot.min.css' />
+	<link rel='stylesheet' href='~/styles/leaderboard-progression.css' />
 }

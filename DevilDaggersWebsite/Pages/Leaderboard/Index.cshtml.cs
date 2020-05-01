@@ -47,6 +47,7 @@ namespace DevilDaggersWebsite.Pages.Leaderboard
 		}
 
 		public bool HasBans { get; private set; }
+		public bool IsValidTop100Graph { get; private set; }
 
 		public LeaderboardSearchType LeaderboardSearchType => !string.IsNullOrEmpty(Username) && Username.Length >= 3 ? LeaderboardSearchType.Username : UserId != 0 ? LeaderboardSearchType.UserId : LeaderboardSearchType.Rank;
 
@@ -84,6 +85,7 @@ namespace DevilDaggersWebsite.Pages.Leaderboard
 				}
 
 				HasBans = UserUtils.GetBans(commonObjects).Any(b => Leaderboard.Entries.Any(e => e.Id == b.Id));
+				IsValidTop100Graph = UserId > 0 && Leaderboard.Entries[0].ExistsInHistory(commonObjects);
 			}
 			catch
 			{
