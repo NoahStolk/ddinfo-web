@@ -26,14 +26,14 @@
 					<div class="sort" description="@ban.Description" banned-account="@bannedAccountUsername" responsible-account="@responsibleAccountUsername">
 						<div class="ban-row flex-container" id="@i-row">
 							<div>@ban.Description</div>
-							<div>@bannedAccountUsername (<a asp-page="/Leaderboard/IdSearch" asp-route-id="@ban.Id" target="_blank">@ban.Id</a>)</div>
+							<div>@bannedAccountUsername (<a asp-page="../Leaderboard/Index" asp-route-userId="@ban.Id" target="_blank">@ban.Id</a>)</div>
 							@if (string.IsNullOrEmpty(responsibleAccountUsername))
 							{
 								<div></div>
 							}
 							else
 							{
-								<div>@responsibleAccountUsername (<a asp-page="/Leaderboard/IdSearch" asp-route-id="@ban.IdResponsible" target="_blank">@ban.IdResponsible</a>)</div>
+								<div>@responsibleAccountUsername (<a asp-page="../Leaderboard/Index" asp-route-userId="@ban.IdResponsible" target="_blank">@ban.IdResponsible</a>)</div>
 							}
 						</div>
 					</div>
