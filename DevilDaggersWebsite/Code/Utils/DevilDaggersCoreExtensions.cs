@@ -6,6 +6,7 @@ using DevilDaggersWebsite.Code.Users;
 using Microsoft.AspNetCore.Html;
 using NetBase.Utils;
 using Newtonsoft.Json;
+using System.Collections.Generic;
 using System.IO;
 using System.Linq;
 using System.Text;
