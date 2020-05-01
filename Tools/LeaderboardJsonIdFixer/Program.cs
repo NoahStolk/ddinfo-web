@@ -12,7 +12,7 @@ namespace LeaderboardJsonIdFixer
 {
 	public static class Program
 	{
-		public static Dictionary<string, int> nameTable = new Dictionary<string, int>
+		public static Dictionary<string, int> NameTable = new Dictionary<string, int>
 		{
 			{ "bowsr", 1135 },
 			{ "Sojk", 229 },
@@ -24,8 +24,9 @@ namespace LeaderboardJsonIdFixer
 			{ "weaksauce13", 112 },
 			{ "Weaksauce", 112 },
 			{ "weaksauce", 112 },
-			{ "b0necarver", -1 }, // No idea, but we need this for the world record graph.
+			{ "b0necarver", 6 },
 			{ "m4ttbush", 1 },
+			{ "Boneman", 4 },
 			{ "A.N.T.4", 1677 },
 			{ "? ANT4", 1677 },
 			{ "ANT4", 1677 },
@@ -227,9 +228,9 @@ namespace LeaderboardJsonIdFixer
 			//SwapIds(new DateTime(1, 1, 1), new DateTime(2019, 10, 11), 86805, 187974);
 
 			// pocket fix
-			SwapIds(new DateTime(1, 1, 1), new DateTime(2020, 1, 14), 116704, 106722);
+			//SwapIds(new DateTime(1, 1, 1), new DateTime(2020, 1, 14), 116704, 106722);
 
-			//ApplyNameTable();
+			ApplyNameTable();
 		}
 
 		/// <summary>
@@ -271,9 +272,9 @@ namespace LeaderboardJsonIdFixer
 				List<Entry> changes = new List<Entry>();
 				foreach (Entry entry in leaderboard.Entries)
 				{
-					if (entry.Id == 0 && nameTable.ContainsKey(entry.Username))
+					if ((entry.Id == 0 || entry.Id == -1) && NameTable.ContainsKey(entry.Username))
 					{
-						entry.Id = nameTable[entry.Username];
+						entry.Id = NameTable[entry.Username];
 						changes.Add(entry);
 					}
 				}
