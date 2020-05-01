@@ -40,6 +40,7 @@ function getGameVersion(date) {
 	for (let i = Object.keys(gameVersions).length; i > 0; i--)
 		if (date >= new Date(gameVersions["V" + i].ReleaseDate))
 			return i - 1;
+	return 1;
 }
 
 function getDeathType(date, entry) {
