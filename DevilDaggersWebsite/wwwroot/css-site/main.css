@@ -66,6 +66,16 @@ a:hover {
 		text-decoration: underline;
 	}
 
+	a.unset,
+	a.unset:active,
+	a.unset:visited,
+	a.unset:focus,
+	a.unset:hover {
+		outline: none;
+		color: var(--col-default);
+		text-decoration: none;
+	}
+
 .btn {
 	margin: 4px 0 0 0;
 	border: 2px solid;

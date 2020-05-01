@@ -25,7 +25,7 @@
 						<div style="width: @(widths[1])px;">@Html.TextBoxFor(m => m.Rank, new { @class = "input" })</div>
 					</div>
 					<div class="flex-container flex-center">
-						<div class="input-label text-left" style="width: @(widths[0])px;">User search:</div>
+						<div class="input-label text-left" style="width: @(widths[0])px;">Username:</div>
 						<div style="width: @(widths[1])px;">@Html.TextBoxFor(m => m.Username, new { @class = "input" })</div>
 					</div>
 					<div class="flex-container flex-center">
@@ -58,10 +58,10 @@
 			@switch (Model.LeaderboardSearchType)
 			{
 				case LeaderboardSearchType.Username:
-					@:Showing results for "@Model.Username"
+					@:Showing username search results for "@Model.Username"
 					break;
 				case LeaderboardSearchType.UserId:
-					@:Showing ID @Model.UserId
+					@:Showing user with ID @Model.UserId
 					break;
 				case LeaderboardSearchType.Rank:
 				default:

@@ -74,7 +74,6 @@ namespace DevilDaggersWebsite.Pages.Leaderboard
 					case LeaderboardSearchType.Rank:
 					default:
 						Leaderboard = await Hasmodai.GetScores(Rank);
-
 						if (Rank > Leaderboard.Players - 99)
 						{
 							Rank = Leaderboard.Players - 99;
