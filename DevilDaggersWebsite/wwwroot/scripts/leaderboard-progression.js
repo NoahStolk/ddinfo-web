@@ -59,7 +59,8 @@ function createChart(chartName, data, minDate, maxDate, minTime, maxTime, steps)
 				max: maxDate,
 				tickOptions: {
 					formatString: "%b %#d '%y"
-				}
+				},
+				numberTicks: 20
 			},
 			yaxis: {
 				mark: 'outside',
@@ -80,10 +81,11 @@ function createChart(chartName, data, minDate, maxDate, minTime, maxTime, steps)
 				show: true,
 				size: 6.5
 			},
-			color: '#FF0000'
+			color: '#f00'
 		},
 		grid: {
-			backgroundColor: '#000000'
+			backgroundColor: '#000',
+			gridLineColor: '#666'
 		},
 		canvasOverlay: {
 			show: true,
