@@ -26,6 +26,7 @@ namespace LeaderboardJsonIdFixer
 			{ "weaksauce", 112 },
 			{ "b0necarver", 6 },
 			{ "m4ttbush", 1 },
+			{ "?.", 2 },
 			{ "Boneman", 4 },
 			{ "A.N.T.4", 1677 },
 			{ "? ANT4", 1677 },
