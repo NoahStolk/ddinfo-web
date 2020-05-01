@@ -10,7 +10,6 @@ using System.IO;
 using System.Linq;
 using System.Text;
 using System.Web;
-using Lb = DevilDaggersCore.Leaderboards.Leaderboard;
 
 namespace DevilDaggersWebsite.Code.Utils
 {
@@ -49,7 +48,7 @@ namespace DevilDaggersWebsite.Code.Utils
 		{
 			foreach (string leaderboardHistoryPath in Directory.GetFiles(Path.Combine(commonObjects.Env.WebRootPath, "leaderboard-history"), "*.json"))
 			{
-				Lb leaderboard = JsonConvert.DeserializeObject<Lb>(FileUtils.GetContents(leaderboardHistoryPath, Encoding.UTF8));
+				Leaderboard leaderboard = JsonConvert.DeserializeObject<Leaderboard>(FileUtils.GetContents(leaderboardHistoryPath, Encoding.UTF8));
 				if (leaderboard.Entries.Any(e => e.Id == entry.Id))
 					return true;
 			}

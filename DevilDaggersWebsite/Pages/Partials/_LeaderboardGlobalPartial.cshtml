@@ -1,14 +1,20 @@
 ﻿@using DevilDaggersCore
+@using DevilDaggersWebsite.Code.Leaderboards
 @using DevilDaggersWebsite.Pages.Leaderboard
 @{
-	if (Model.GetType() == typeof(IndexModel) && Model.IsUserSearch)
+	Type modelType = Model.GetType();
+	if (modelType == typeof(IndexModel) && Model.LeaderboardSearchType != LeaderboardSearchType.Rank)
 	{
 		return;
 	}
 
-	bool isHistory = Model.GetType() == typeof(HistoryModel);
+	bool isHistory = modelType == typeof(HistoryModel);
 
+	string players = Model.Leaderboard.Players.ToString(FormatUtils.LeaderboardIntFormat);
 	string time = (Model.Leaderboard.TimeGlobal / 10000.0).ToString(FormatUtils.LeaderboardTimeLargeFormat);
+	string kills = Model.Leaderboard.KillsGlobal.ToString(FormatUtils.LeaderboardIntFormat);
+	string gems = Model.Leaderboard.GemsGlobal.ToString(FormatUtils.LeaderboardIntFormat);
+	string deaths = Model.Leaderboard.DeathsGlobal.ToString(FormatUtils.LeaderboardIntFormat);
 	string shots = Model.Leaderboard.FormatShotsGlobal(isHistory);
 	string accuracy = Model.Leaderboard.AccuracyGlobal.ToString(FormatUtils.AccuracyFormat);
 }
@@ -16,7 +22,7 @@
 	<div class="flex-container leaderboard-flex flex-center flex-space-evenly">
 		<div>
 			<div>Total players</div>
-			<div class="text-center devil">@Model.Leaderboard.Players.ToString(FormatUtils.LeaderboardIntFormat)</div>
+			<div class="text-center devil">@players</div>
 		</div>
 	</div>
 	<div class="flex-container leaderboard-flex flex-center flex-space-evenly">
@@ -26,15 +32,15 @@
 		</div>
 		<div>
 			<div>Global kills</div>
-			<div class="text-center devil">@Model.Leaderboard.KillsGlobal.ToString(FormatUtils.LeaderboardIntFormat)</div>
+			<div class="text-center devil">@kills</div>
 		</div>
 		<div>
 			<div>Global gems</div>
-			<div class="text-center devil">@Model.Leaderboard.GemsGlobal.ToString(FormatUtils.LeaderboardIntFormat)</div>
+			<div class="text-center devil">@gems</div>
 		</div>
 		<div>
 			<div>Global deaths</div>
-			<div class="text-center devil">@Model.Leaderboard.DeathsGlobal.ToString(FormatUtils.LeaderboardIntFormat)</div>
+			<div class="text-center devil">@deaths</div>
 		</div>
 		<div>
 			<div>Global accuracy</div>
@@ -53,13 +59,13 @@
 			<div>Global accuracy</div>
 		</div>
 		<div class="mobile-right">
-			<div class="devil">@Model.Leaderboard.Players.ToString(FormatUtils.LeaderboardIntFormat)</div>
+			<div class="devil">@players</div>
 			<div class="devil">@time</div>
-			<div class="devil">@Model.Leaderboard.KillsGlobal.ToString(FormatUtils.LeaderboardIntFormat)</div>
-			<div class="devil">@Model.Leaderboard.GemsGlobal.ToString(FormatUtils.LeaderboardIntFormat)</div>
-			<div class="devil">@Model.Leaderboard.DeathsGlobal.ToString(FormatUtils.LeaderboardIntFormat)</div>
+			<div class="devil">@kills</div>
+			<div class="devil">@gems</div>
+			<div class="devil">@deaths</div>
 			@{
-				if (Model.Leaderboard.ShotsFiredGlobal == 10000 || Model.Leaderboard.ShotsFiredGlobal == 0)
+				if (isHistory && (Model.Leaderboard.ShotsFiredGlobal == 10000 || Model.Leaderboard.ShotsFiredGlobal == 0))
 				{
 					<span class="devil">@accuracy</span>
 				}
