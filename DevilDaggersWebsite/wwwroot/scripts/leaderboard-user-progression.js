@@ -82,7 +82,7 @@ $.getJSON("/Api/GetUserProgressionById?UserId=" + getUrlParameter("UserId"), fun
 		$('#h-date').html(dateString);
 		$('#h-rank').html(data[2]);
 		$('#h-time').html(data[1].toFixed(4));
-		$('#h-username').html(data[3]);
+		$('#h-username').html(data[3].substring(0, 16));
 		$('#h-gems').html(data[4]);
 		$('#h-kills').html(data[5]);
 		$('#h-accuracy').html(data[6]);

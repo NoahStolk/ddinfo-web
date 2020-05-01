@@ -65,7 +65,7 @@ $.getJSON("/Api/GetWorldRecords", function (data) {
 		const dateString = monthShortNames[date.getMonth()] + " " + ("0" + date.getDate()).slice(-2) + " '" + date.getFullYear().toString().substring(2, 4);
 		$('#h-date').html(dateString);
 		$('#h-time').html(data[1].toFixed(4));
-		$('#h-username').html(data[2]);
+		$('#h-username').html(data[2].substring(0, 16));
 		$('#h-gems').html(data[3]);
 		$('#h-kills').html(data[4]);
 		$('#h-accuracy').html(data[5]);
