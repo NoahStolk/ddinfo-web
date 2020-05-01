@@ -79,7 +79,7 @@
 							@{
 								if (banned)
 								{
-									<span data-toggle="tooltip" title="@ban.Description" class="leaderboard-tooltip @daggerColor">@entry.Username</span>
+									<a class="unset" asp-route-UserId="@entry.Id"><span data-toggle="tooltip" title="@ban.Description" class="leaderboard-tooltip @daggerColor">@entry.Username</span></a>
 								}
 								else
 								{
