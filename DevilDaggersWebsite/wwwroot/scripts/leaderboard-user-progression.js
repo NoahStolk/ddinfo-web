@@ -1,4 +1,4 @@
-﻿const maxDate = Date.now() + 86400000 * 7;
+﻿const maxDate = Date.now();
 
 let getUrlParameter = function getUrlParameter(sParam) {
 	let sPageURL = window.location.search.substring(1),
@@ -33,7 +33,7 @@ $.getJSON("/Api/GetUserProgressionById?UserId=" + getUrlParameter("UserId"), fun
 	if (pbs.length === 0)
 		return;
 
-	const minDate = pbs[0][0] - 86400000 * 7; // Amount of milliseconds in a day * amount of days
+	const minDate = pbs[0][0];
 
 	let minTime = 10000;
 	let maxTime = 0;
@@ -44,7 +44,7 @@ $.getJSON("/Api/GetUserProgressionById?UserId=" + getUrlParameter("UserId"), fun
 			minTime = pbs[i][1];
 	}
 	minTime = Math.floor(minTime / 50) * 50;
-	maxTime = Math.ceil(maxTime / 50) * 50 + 50;
+	maxTime = Math.ceil(maxTime / 50) * 50;
 
 	const chartName = "user-progression-chart";
 	const chartId = "#" + chartName;
@@ -92,6 +92,6 @@ $.getJSON("/Api/GetUserProgressionById?UserId=" + getUrlParameter("UserId"), fun
 		$('#h-accuracy').html(data[6]);
 		$('#h-death-type').html(data[8]);
 
-		setHighlighterStyle(data[1], data[6]);
+		setHighlighterStyle(data[1], data[7]);
 	}
 });
