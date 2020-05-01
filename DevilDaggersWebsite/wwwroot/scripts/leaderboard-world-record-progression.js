@@ -1,7 +1,5 @@
 ﻿const minDate = new Date("2016-02-18T00:00:00Z");
 const maxDate = Date.now();
-const minTime = 450;
-const maxTime = 1150; // Determine with current WR (ceil(wr / 50) * 50)
 
 $.getJSON("/Api/GetWorldRecords", function (data) {
 	const wrs = [];
@@ -17,6 +15,17 @@ $.getJSON("/Api/GetWorldRecords", function (data) {
 			wrs.push([maxDate + 10000000000 /*Ugly way to make sure no dot is visible*/, wr.Entry.Time / 10000, wr.Entry.Username, wr.Entry.Gems === 0 ? "?" : wr.Entry.Gems.toFixed(0), wr.Entry.Kills === 0 ? "?" : wr.Entry.Kills.toFixed(0), accuracy === 0 ? "?" : accuracy.toFixed(2) + "%", deathType.ColorCode, deathType.Name]);
 		}
 	});
+
+	let minTime = 10000;
+	let maxTime = 0;
+	for (let i = 0; i < wrs.length; i++) {
+		if (wrs[i][1] > maxTime)
+			maxTime = wrs[i][1];
+		if (wrs[i][1] < minTime)
+			minTime = wrs[i][1];
+	}
+	minTime = Math.floor(minTime / 50) * 50;
+	maxTime = Math.ceil(maxTime / 50) * 50;
 
 	const chartName = "world-record-progression-chart";
 	const chartId = "#" + chartName;
