@@ -27,11 +27,6 @@
 		@{
 			bool isHistory = Model.GetType() == typeof(HistoryModel);
 
-#if EXCLUDE_BANS
-			bool firstPage = Model.Leaderboard.Entries.Count > 0 && Model.Leaderboard.Entries[0].Rank == 1;
-			int banCount = 0;
-#endif
-
 			IEnumerable<Ban> bans = UserUtils.GetBans(CommonObjects);
 			IEnumerable<Flag> flags = UserUtils.GetFlags(CommonObjects);
 			IEnumerable<UserTitleCollection> titleCollections = UserUtils.GetTitleCollections(CommonObjects);
@@ -39,15 +34,7 @@
 			{
 				Ban ban = bans.Where(b => b.Id == entry.Id).FirstOrDefault();
 				bool banned = ban != null;
-#if EXCLUDE_BANS
-				if (banned && firstPage)
-				{
-					banCount++;
-				}
-				string rankString = banned ? "--" : (entry.Rank - banCount).ToString();
-#else
 				string rankString = entry.Rank.ToString();
-#endif
 
 				bool isDonator = entry.Id != 0 && DonationList.Donations.Any(d => d.DonatorId == entry.Id && !DonationList.Donators.FirstOrDefault(dd => dd.Id == d.DonatorId).IsAnonymous);
 				Flag flag = flags.Where(f => f.Id == entry.Id).FirstOrDefault();
