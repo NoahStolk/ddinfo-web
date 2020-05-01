@@ -30,13 +30,13 @@
 		}
 	</div>
 	@{
+		<h2>@Model.Username</h2>
 		if (Model.IsValid)
 		{
 			<p>
 				This graph shows the top 100 progression for @Model.Username. It is based on the <a asp-page="/Leaderboard/History">Leaderboard History</a>, so it might be incomplete.
 			</p>
 
-			<h2>@Model.Username</h2>
 			<div id="user-progression-chart">
 				<table id="highlighter">
 					<tr><td>Date:</td><td id="h-date"></td></tr>
@@ -49,6 +49,12 @@
 					<tr><td>Death type:</td><td id="h-death-type"></td></tr>
 				</table>
 			</div>
+		}
+		else
+		{
+			<p>
+				No top 100 history found for @Model.Username.
+			</p>
 		}
 	}
 </main>

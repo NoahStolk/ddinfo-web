@@ -1,10 +1,16 @@
-﻿using DevilDaggersCore.Game;
+﻿using CoreBase3.Services;
+using DevilDaggersCore.Game;
 using DevilDaggersCore.Leaderboards;
 using DevilDaggersCore.Tools.Website;
 using DevilDaggersWebsite.Code.Users;
 using Microsoft.AspNetCore.Html;
+using NetBase.Utils;
+using Newtonsoft.Json;
+using System.IO;
+using System.Linq;
 using System.Text;
 using System.Web;
+using Lb = DevilDaggersCore.Leaderboards.Leaderboard;
 
 namespace DevilDaggersWebsite.Code.Utils
 {
@@ -38,6 +44,17 @@ namespace DevilDaggersWebsite.Code.Utils
 			hand='{(!playerSetting.RightHanded.HasValue ? -1 : playerSetting.RightHanded.Value ? 1 : 0)}'
 			flash='{(!playerSetting.FlashEnabled.HasValue ? -1 : playerSetting.FlashEnabled.Value ? 1 : 0)}'
 		");
+
+		public static bool ExistsInHistory(this Entry entry, ICommonObjects commonObjects)
+		{
+			foreach (string leaderboardHistoryPath in Directory.GetFiles(Path.Combine(commonObjects.Env.WebRootPath, "leaderboard-history"), "*.json"))
+			{
+				Lb leaderboard = JsonConvert.DeserializeObject<Lb>(FileUtils.GetContents(leaderboardHistoryPath, Encoding.UTF8));
+				if (leaderboard.Entries.Any(e => e.Id == entry.Id))
+					return true;
+			}
+			return false;
+		}
 
 		public static HtmlString ToChangelogHtmlString(this Tool tool)
 		{

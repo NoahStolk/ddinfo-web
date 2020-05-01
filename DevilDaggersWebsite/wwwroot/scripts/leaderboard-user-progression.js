@@ -29,10 +29,6 @@ $.getJSON("/Api/GetUserProgressionById?UserId=" + getUrlParameter("UserId"), fun
 		}
 	});
 
-	// TODO: This is just to prevent the graph from crashing. Something else should be displayed instead.
-	if (pbs.length === 0)
-		return;
-
 	const minDate = pbs[0][0];
 
 	let minTime = 10000;
