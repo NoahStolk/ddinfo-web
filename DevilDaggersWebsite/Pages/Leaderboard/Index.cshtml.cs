@@ -3,13 +3,14 @@ using Microsoft.AspNetCore.Mvc;
 using Microsoft.AspNetCore.Mvc.RazorPages;
 using System;
 using System.Threading.Tasks;
+using Lb = DevilDaggersCore.Leaderboards.Leaderboard;
 
 namespace DevilDaggersWebsite.Pages.Leaderboard
 {
 	public class IndexModel : PageModel
 	{
 		[BindProperty]
-		public DevilDaggersCore.Leaderboards.Leaderboard Leaderboard { get; set; } = new DevilDaggersCore.Leaderboards.Leaderboard();
+		public Lb Leaderboard { get; set; } = new Lb();
 
 		public int Rank { get; set; }
 

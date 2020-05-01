@@ -1,12 +1,13 @@
 ﻿using DevilDaggersWebsite.Code.Utils.Web;
 using Microsoft.AspNetCore.Mvc.RazorPages;
 using System.Threading.Tasks;
+using Lb = DevilDaggersCore.Leaderboards.Leaderboard;
 
 namespace DevilDaggersWebsite.Pages.Leaderboard
 {
 	public class UserSettingsModel : PageModel
 	{
-		public DevilDaggersCore.Leaderboards.Leaderboard Leaderboard { get; set; } = new DevilDaggersCore.Leaderboards.Leaderboard();
+		public Lb Leaderboard { get; set; } = new Lb();
 
 		public async Task OnGetAsync()
 		{

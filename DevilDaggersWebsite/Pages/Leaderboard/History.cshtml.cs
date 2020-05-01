@@ -10,6 +10,7 @@ using System.Collections.Generic;
 using System.IO;
 using System.Linq;
 using System.Text;
+using Lb = DevilDaggersCore.Leaderboards.Leaderboard;
 
 namespace DevilDaggersWebsite.Pages.Leaderboard
 {
@@ -17,8 +18,8 @@ namespace DevilDaggersWebsite.Pages.Leaderboard
 	{
 		private readonly ICommonObjects commonObjects;
 
-		public DevilDaggersCore.Leaderboards.Leaderboard Leaderboard { get; set; } = new DevilDaggersCore.Leaderboards.Leaderboard();
-		public DevilDaggersCore.Leaderboards.Leaderboard LeaderboardPrevious { get; set; } = new DevilDaggersCore.Leaderboards.Leaderboard();
+		public Lb Leaderboard { get; set; } = new Lb();
+		public Lb LeaderboardPrevious { get; set; } = new Lb();
 		public List<string> ChangesGlobal { get; private set; } = new List<string>();
 		public Dictionary<string, string> ChangesTop100 { get; private set; } = new Dictionary<string, string>();
 
@@ -33,7 +34,7 @@ namespace DevilDaggersWebsite.Pages.Leaderboard
 
 			foreach (string leaderboardHistoryPath in Directory.GetFiles(Path.Combine(this.commonObjects.Env.WebRootPath, "leaderboard-history"), "*.json"))
 			{
-				DevilDaggersCore.Leaderboards.Leaderboard leaderboard = JsonConvert.DeserializeObject<DevilDaggersCore.Leaderboards.Leaderboard>(FileUtils.GetContents(leaderboardHistoryPath, Encoding.UTF8));
+				Lb leaderboard = JsonConvert.DeserializeObject<Lb>(FileUtils.GetContents(leaderboardHistoryPath, Encoding.UTF8));
 				JsonFiles.Add(new SelectListItem($"{HistoryUtils.HistoryJsonFileNameToDateString(Path.GetFileNameWithoutExtension(leaderboardHistoryPath))} UTC ({leaderboard.GetCompletionRate():0.0%} complete)", Path.GetFileName(leaderboardHistoryPath)));
 			}
 
@@ -57,11 +58,11 @@ namespace DevilDaggersWebsite.Pages.Leaderboard
 				}
 			}
 
-			Leaderboard = JsonConvert.DeserializeObject<DevilDaggersCore.Leaderboards.Leaderboard>(FileUtils.GetContents(Path.Combine(commonObjects.Env.WebRootPath, "leaderboard-history", From), Encoding.UTF8));
+			Leaderboard = JsonConvert.DeserializeObject<Lb>(FileUtils.GetContents(Path.Combine(commonObjects.Env.WebRootPath, "leaderboard-history", From), Encoding.UTF8));
 
 			if (FromNext != null)
 			{
-				LeaderboardPrevious = JsonConvert.DeserializeObject<DevilDaggersCore.Leaderboards.Leaderboard>(FileUtils.GetContents(Path.Combine(commonObjects.Env.WebRootPath, "leaderboard-history", FromNext), Encoding.UTF8));
+				LeaderboardPrevious = JsonConvert.DeserializeObject<Lb>(FileUtils.GetContents(Path.Combine(commonObjects.Env.WebRootPath, "leaderboard-history", FromNext), Encoding.UTF8));
 
 				if (LeaderboardPrevious.GetCompletionRate() > 0.999f && Leaderboard.GetCompletionRate() > 0.999f)
 				{

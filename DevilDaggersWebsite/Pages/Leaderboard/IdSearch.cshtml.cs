@@ -4,13 +4,14 @@ using Microsoft.AspNetCore.Mvc;
 using Microsoft.AspNetCore.Mvc.RazorPages;
 using System.Collections.Generic;
 using System.Threading.Tasks;
+using Lb = DevilDaggersCore.Leaderboards.Leaderboard;
 
 namespace DevilDaggersWebsite.Pages.Leaderboard
 {
 	public class IdSearchModel : PageModel
 	{
 		[BindProperty]
-		public DevilDaggersCore.Leaderboards.Leaderboard Leaderboard { get; set; } = new DevilDaggersCore.Leaderboards.Leaderboard();
+		public Lb Leaderboard { get; set; } = new Lb();
 
 		public int Id { get; set; }
 
@@ -20,7 +21,7 @@ namespace DevilDaggersWebsite.Pages.Leaderboard
 				id = 1;
 
 			Entry entry = await Hasmodai.GetUserById(id);
-			Leaderboard = new DevilDaggersCore.Leaderboards.Leaderboard()
+			Leaderboard = new Lb
 			{
 				Entries = new List<Entry> { entry }
 			};
