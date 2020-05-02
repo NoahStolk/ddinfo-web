@@ -6,6 +6,7 @@
 @using DevilDaggersWebsite.Code.Utils
 @using DevilDaggersWebsite.Pages.Leaderboard
 @inject CoreBase3.Services.ICommonObjects CommonObjects
+<!-- TODO: Implement model for the partial-->
 
 <div class="leaderboard-container flex-container flex-center">
 	<div class="leaderboard-title-row flex-container">
@@ -40,24 +41,27 @@
 			IEnumerable<Ban> bans = UserUtils.GetBans(CommonObjects);
 			IEnumerable<Flag> flags = UserUtils.GetFlags(CommonObjects);
 			IEnumerable<UserTitleCollection> titleCollections = UserUtils.GetTitleCollections(CommonObjects);
+			IEnumerable<Donator> unanonymousDonators = DonationList.Donators.Where(d => !d.IsAnonymous);
 			foreach (Entry entry in Model.Leaderboard.Entries)
 			{
-				Ban ban = bans.Where(b => b.Id == entry.Id).FirstOrDefault();
-				bool banned = ban != null;
-				string rankString = entry.Rank.ToString();
+				Ban ban = bans.FirstOrDefault(b => b.Id == entry.Id);
+				bool isBanned = ban != null;
 
-				bool isDonator = entry.Id != 0 && DonationList.Donations.Any(d => d.DonatorId == entry.Id && !DonationList.Donators.FirstOrDefault(dd => dd.Id == d.DonatorId).IsAnonymous);
-				Flag flag = flags.Where(f => f.Id == entry.Id).FirstOrDefault();
-				UserTitleCollection titles = titleCollections.Where(t => t.Id == entry.Id).FirstOrDefault();
+				bool isUnanonymousDonator = entry.Id != 0 && unanonymousDonators.Any(d => d.Id == entry.Id);
+
+				string flagCode = isBanned ? "00" : flags.FirstOrDefault(f => f.Id == entry.Id)?.CountryCode ?? "00";
+
+				UserTitleCollection titles = titleCollections.FirstOrDefault(t => t.Id == entry.Id);
 
 				Dagger dagger = GameInfo.GetDaggerFromTime(entry.Time);
+				string daggerColor = isBanned ? "ban" : dagger.Name.ToLower();
+
 				Death death = GameInfo.GetDeathFromDeathType(entry.DeathType, GameInfo.GetGameVersionFromDate(Model.Leaderboard.DateTime));
+				string deathStyle = isBanned ? string.Empty : $"color: #{death.ColorCode};";
 
-				string flagCode = flag == null || banned ? "00" : flag.CountryCode;
-				string daggerColor = banned ? "ban" : dagger.Name.ToLower();
-				string deathStyle = banned ? string.Empty : $"color: #{death.ColorCode};";
-				string banString = banned ? "ban" : string.Empty;
+				string banString = isBanned ? "ban" : string.Empty;
 
+				string rank = entry.Rank.ToString();
 				string time = (entry.Time / 10000.0).ToString(FormatUtils.LeaderboardTimeFormat);
 				string kills = entry.Kills.ToString(FormatUtils.LeaderboardIntFormat);
 				string gems = entry.Gems.ToString(FormatUtils.LeaderboardIntFormat);
@@ -87,11 +91,11 @@
 						<div class="text-right">
 							@if (entry.Id != 0)
 							{
-								<span data-toggle="tooltip" title="ID: @entry.Id" class="leaderboard-tooltip">@rankString</span>
+								<span data-toggle="tooltip" title="ID: @entry.Id" class="leaderboard-tooltip">@rank</span>
 							}
 							else
 							{
-								<span style="color: #ff0;" data-toggle="tooltip" title="ID: ???" class="leaderboard-tooltip">@rankString</span>
+								<span style="color: #ff0;" data-toggle="tooltip" title="ID: ???" class="leaderboard-tooltip">@rank</span>
 							}
 						</div>
 						<div>
@@ -106,7 +110,7 @@
 						</div>
 						<div class="text-left leaderboard-username">
 							@{
-								if (banned)
+								if (isBanned)
 								{
 									<span data-toggle="tooltip" title="@ban.Description" class="leaderboard-tooltip @daggerColor">@entry.Username</span>
 								}
@@ -122,7 +126,7 @@
 										<span class="leaderboard-tooltip" data-toggle="tooltip" title="@title"><img src="/Images/Icons/@(UserUtils.TitleImages[title]).png" /></span>
 									}
 								}
-								if (isDonator)
+								if (isUnanonymousDonator)
 								{
 									string title = "Donator";
 									<span class="leaderboard-tooltip" data-toggle="tooltip" title="@title"><img src="/Images/Icons/@(UserUtils.TitleImages[title]).png" /></span>
