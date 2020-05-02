@@ -56,6 +56,10 @@
 		min-width: 10%;
 		width: 10%;
 	}
+
+	.leaderboard-expand {
+		padding-left: 6%;
+	}
 }
 
 @media (min-width: 1200px) and (max-width: 1599px) {
@@ -99,6 +103,10 @@
 			min-width: 10.5%;
 			width: 10.5%;
 		}
+
+	.leaderboard-expand {
+		padding-left: 9%;
+	}
 }
 
 @media (min-width: 768px) and (max-width: 1199px) {
