@@ -59,7 +59,8 @@ namespace DevilDaggersWebsite.Code.Donations
 			new Donation(197276, 40, "EUR", 40, new DateTime(2019, 12, 28)),
 			new Donation(531, 1500, "EUR", 1500, new DateTime(2020, 1, 3)),
 			new Donation(0, 666, "GBP", 728, new DateTime(2020, 3, 12)), // TODO: Figure out ID.
-			new Donation(118832, 1634, "EUR", 1634, new DateTime(2020, 5, 1))
+			new Donation(118832, 1634, "EUR", 1634, new DateTime(2020, 5, 1)),
+			new Donation(111007, 1000, "EUR", 1000, new DateTime(2020, 5, 2))
 		};
 
 		public static Donator[] Donators = new Donator[]
