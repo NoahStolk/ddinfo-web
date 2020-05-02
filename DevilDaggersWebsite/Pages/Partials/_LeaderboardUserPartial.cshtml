@@ -236,7 +236,14 @@
 							<div class="text-right">@timeByDeath</div>
 						</div>
 						<div style="padding-top: 1em;">
-							<a asp-route-UserId="@entry.Id">View more info</a>
+							@if (isHistory)
+							{
+								<a asp-page="../Leaderboard/Index" asp-route-UserId="@entry.Id">View more info</a>
+							}
+							else
+							{
+								<a asp-route-UserId="@entry.Id">View more info</a>
+							}
 						</div>
 					</div>
 				</div>
