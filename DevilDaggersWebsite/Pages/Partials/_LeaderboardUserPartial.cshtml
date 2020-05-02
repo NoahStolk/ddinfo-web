@@ -87,7 +87,7 @@
 				string averageGems = (entry.GemsTotal / (float)entry.DeathsTotal).ToString("0.00");
 				string averageDaggersHit = (entry.ShotsHitTotal / (float)entry.DeathsTotal).ToString("0.00");
 				string averageDaggersFired = (entry.ShotsFiredTotal / (float)entry.DeathsTotal).ToString("0.00");
-				string timeByDeath = (entry.Time / (float)entry.DeathsTotal).ToString(FormatUtils.LeaderboardTimeFormat);
+				string timeByDeath = (entry.Time / 10000.0 / (float)entry.DeathsTotal).ToString(FormatUtils.LeaderboardTimeFormat);
 
 				<div class="sort @banString" @entry.ToHtmlData(flagCode)>
 					<div class="leaderboard-row @(Model.ShowMoreStats ? "row-more-stats" : "") flex-container" id="@(entry.Rank)-row">
