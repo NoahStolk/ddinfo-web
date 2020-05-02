@@ -86,10 +86,13 @@ namespace DevilDaggersWebsite.Pages.Leaderboard
 			}
 
 			HasBans = UserUtils.GetBans(commonObjects).Any(b => Leaderboard.Entries.Any(e => e.Id == b.Id));
-			Entry entry = Leaderboard.Entries[0];
-			IsValidTop100Graph = UserId > 0 && entry.ExistsInHistory(commonObjects);
-			IEnumerable<string> aliases = entry.GetAllUsernameAliases(commonObjects).Where(s => s != entry.Username);
-			UsernameAliases = aliases.Any() ? $" (also known as: {string.Join(", ", aliases)})" : string.Empty;
+			if (LeaderboardSearchType == LeaderboardSearchType.UserId)
+			{
+				Entry entry = Leaderboard.Entries[0];
+				IsValidTop100Graph = UserId > 0 && entry.ExistsInHistory(commonObjects);
+				IEnumerable<string> aliases = entry.GetAllUsernameAliases(commonObjects).Where(s => s != entry.Username);
+				UsernameAliases = aliases.Any() ? $" (also known as: {string.Join(", ", aliases)})" : string.Empty;
+			}
 		}
 	}
 }
