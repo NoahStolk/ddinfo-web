@@ -96,10 +96,13 @@
 		{
 			<h2>Top 100 progression</h2>
 			<p>
-				This graph shows the top 100 progression for @Model.Leaderboard.Entries[0].Username<span style="color: #888">@Model.UsernameAliases</span>. It is based on the <a asp-page="/Leaderboard/History">Leaderboard History</a>, so it might be incomplete.
+				This graph shows the top 100 progression for @Model.Leaderboard.Entries[0].Username<span style="color: #888">@Model.UsernameAliases</span>.
 			</p>
 			<p>
-				Note that the graph data is only based on a user's highscores; the rank and username do not update until the next top 100 highscore.
+				Note that the graph data is based on the <a asp-page="/Leaderboard/History">Leaderboard History</a>, and might therefore be incomplete.
+			</p>
+			<p>
+				Also note that the graph data is only based on a user's highscores; the rank and username do not update until the next top 100 highscore.
 			</p>
 
 			<div id="user-progression-chart">
