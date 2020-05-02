@@ -1,4 +1,24 @@
-﻿.leaderboard-container {
+﻿@media (min-width: 3600px) {
+	.hidden-xl {
+		display: none;
+	}
+
+	.visible-xl {
+		display: block;
+	}
+}
+
+@media (max-width: 3599px) {
+	.hidden-xl {
+		display: block;
+	}
+
+	.visible-xl {
+		display: none;
+	}
+}
+
+.leaderboard-container {
 	flex-direction: column;
 }
 

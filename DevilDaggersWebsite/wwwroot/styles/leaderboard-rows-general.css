@@ -1,4 +1,92 @@
-﻿@media (min-width: 1600px) {
+﻿@media (min-width: 3600px) {
+	.leaderboard-row > div:nth-child(1),
+	.leaderboard-title-row > div:nth-child(1),
+	.leaderboard-row > div:nth-child(5),
+	.leaderboard-title-row > div:nth-child(5),
+	.leaderboard-row > div:nth-child(6),
+	.leaderboard-title-row > div:nth-child(6) {
+		min-width: 2%;
+		width: 2%;
+	}
+
+	.leaderboard-row > div:nth-child(2),
+	.leaderboard-title-row > div:nth-child(2) {
+		min-width: 1%;
+		width: 1%;
+	}
+
+	.leaderboard-row > div:nth-child(3),
+	.leaderboard-title-row > div:nth-child(3) {
+		min-width: 7%;
+		width: 7%;
+	}
+
+	.leaderboard-row > div:nth-child(4),
+	.leaderboard-title-row > div:nth-child(4) {
+		min-width: 3.5%;
+		width: 3.5%;
+	}
+
+	.leaderboard-row > div:nth-child(7),
+	.leaderboard-title-row > div:nth-child(7) {
+		min-width: 4%;
+		width: 4%;
+	}
+
+	.leaderboard-row > div:nth-child(8),
+	.leaderboard-title-row > div:nth-child(8) {
+		min-width: 5.5%;
+		width: 5.5%;
+	}
+
+	.leaderboard-row > div:nth-child(9),
+	.leaderboard-title-row > div:nth-child(9),
+	.leaderboard-row > div:nth-child(10),
+	.leaderboard-title-row > div:nth-child(10),
+	.leaderboard-row > div:nth-child(11),
+	.leaderboard-title-row > div:nth-child(11),
+	.leaderboard-row > div:nth-child(13),
+	.leaderboard-title-row > div:nth-child(13) {
+		min-width: 4.5%;
+		width: 4.5%;
+	}
+
+	.leaderboard-row > div:nth-child(12),
+	.leaderboard-title-row > div:nth-child(12) {
+		min-width: 5%;
+		width: 5%;
+	}
+
+	.leaderboard-expand {
+		padding-left: 3%;
+	}
+
+	.leaderboard-row > div:nth-child(14),
+	.leaderboard-title-row > div:nth-child(14),
+	.leaderboard-row > div:nth-child(15),
+	.leaderboard-title-row > div:nth-child(15),
+	.leaderboard-row > div:nth-child(16),
+	.leaderboard-title-row > div:nth-child(16),
+	.leaderboard-row > div:nth-child(17),
+	.leaderboard-title-row > div:nth-child(17),
+	.leaderboard-row > div:nth-child(18),
+	.leaderboard-title-row > div:nth-child(18),
+	.leaderboard-row > div:nth-child(19),
+	.leaderboard-title-row > div:nth-child(19),
+	.leaderboard-row > div:nth-child(20),
+	.leaderboard-title-row > div:nth-child(20),
+	.leaderboard-row > div:nth-child(21),
+	.leaderboard-title-row > div:nth-child(21),
+	.leaderboard-row > div:nth-child(22),
+	.leaderboard-title-row > div:nth-child(22),
+	.leaderboard-row > div:nth-child(23),
+	.leaderboard-title-row > div:nth-child(23) {
+		min-width: 5%;
+		width: 5%;
+	}
+}
+
+@media (min-width: 1600px) and (max-width: 3599px) {
 	.leaderboard-row > div:nth-child(1),
 	.leaderboard-title-row > div:nth-child(1),
 	.leaderboard-row > div:nth-child(5),

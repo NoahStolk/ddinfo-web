@@ -16,21 +16,35 @@ namespace DevilDaggersWebsite.Code.Utils
 {
 	public static class DevilDaggersCoreExtensions
 	{
-		public static HtmlString ToHtmlData(this Entry entry, string flagCode) => new HtmlString($@"
-			rank='{entry.Rank}'
-			flag='{flagCode}'
-			username='{HttpUtility.HtmlEncode(entry.Username)}'
-			time='{entry.Time}'
-			kills='{entry.Kills}'
-			gems='{entry.Gems}'
-			accuracy='{entry.Accuracy * 10000:0}'
-			death-type='{GameInfo.GetDeathFromDeathType(entry.DeathType).Name}'
-			total-time='{entry.TimeTotal}'
-			total-kills='{entry.KillsTotal}'
-			total-gems='{entry.GemsTotal}'
-			total-accuracy='{entry.AccuracyTotal * 10000:0}'
-			total-deaths='{entry.DeathsTotal}'
-		");
+		public static HtmlString ToHtmlData(this Entry entry, string flagCode)
+		{
+			ulong deaths = entry.DeathsTotal == 0 ? 1 : entry.DeathsTotal;
+			return new HtmlString($@"
+                rank='{entry.Rank}'
+                flag='{flagCode}'
+                username='{HttpUtility.HtmlEncode(entry.Username)}'
+                time='{entry.Time}'
+                kills='{entry.Kills}'
+                gems='{entry.Gems}'
+                accuracy='{entry.Accuracy * 10000:0}'
+                death-type='{GameInfo.GetDeathFromDeathType(entry.DeathType).Name}'
+                total-time='{entry.TimeTotal}'
+                total-kills='{entry.KillsTotal}'
+                total-gems='{entry.GemsTotal}'
+                total-accuracy='{entry.AccuracyTotal * 10000:0}'
+                total-deaths='{entry.DeathsTotal}'
+                daggers-hit='{entry.ShotsHit}'
+                daggers-fired='{entry.ShotsFired}'
+                total-daggers-hit='{entry.ShotsHitTotal}'
+                total-daggers-fired='{entry.ShotsFiredTotal}'
+                average-time='{entry.TimeTotal / deaths}'
+                average-kills='{entry.KillsTotal / deaths}'
+                average-gems='{entry.GemsTotal / deaths}'
+                average-daggers-hit='{entry.ShotsHitTotal / deaths}'
+                average-daggers-fired='{entry.ShotsFiredTotal / deaths}'
+                time-by-death='{entry.Time / (int)deaths}'
+            "); // TODO: Use correct format for average fields (float division and * 100 or 10000).
+		}
 
 		public static HtmlString ToHtmlData(this Entry entry, string flagCode, PlayerSetting playerSetting) => new HtmlString($@"
 			rank='{entry.Rank}'
