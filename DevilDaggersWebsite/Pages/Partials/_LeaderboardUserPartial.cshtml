@@ -87,11 +87,11 @@
 							@{
 								if (banned)
 								{
-									<a class="unset" asp-route-UserId="@entry.Id"><span data-toggle="tooltip" title="@ban.Description" class="leaderboard-tooltip @daggerColor">@entry.Username</span></a>
+									<span data-toggle="tooltip" title="@ban.Description" class="leaderboard-tooltip @daggerColor">@entry.Username</span>
 								}
 								else
 								{
-									<a class="unset" asp-route-UserId="@entry.Id"><span class="@daggerColor">@entry.Username</span></a>
+									<span class="@daggerColor">@entry.Username</span>
 								}
 
 								if (titles != null)
@@ -163,6 +163,9 @@
 						<div class="visible-xs visible-sm visible-md">
 							<div class="text-left">Total deaths</div>
 							<div class="text-right">@deathsTotal</div>
+						</div>
+						<div style="padding-top: 1em;">
+							<a asp-route-UserId="@entry.Id">View more info</a>
 						</div>
 					</div>
 				</div>
