@@ -27,6 +27,7 @@ namespace DevilDaggersWebsite.Pages.Leaderboard
 		public string From { get; set; }
 		public string FromPrevious { get; set; }
 		public string FromNext { get; set; }
+		public bool ShowMoreStats { get; private set; }
 
 		public HistoryModel(ICommonObjects commonObjects)
 		{
@@ -41,11 +42,12 @@ namespace DevilDaggersWebsite.Pages.Leaderboard
 			JsonFiles.Reverse();
 		}
 
-		public void OnGet(string from)
+		public void OnGet(string from, bool showMoreStats)
 		{
 			From = from;
 			if (string.IsNullOrEmpty(From) || !System.IO.File.Exists(Path.Combine(commonObjects.Env.WebRootPath, "leaderboard-history", From)))
 				From = JsonFiles[0].Value;
+			ShowMoreStats = showMoreStats;
 
 			for (int i = 0; i < JsonFiles.Count; i++)
 			{
