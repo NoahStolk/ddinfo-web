@@ -44,9 +44,12 @@
 }
 
 .ban {
-	text-decoration: line-through;
 	color: var(--col-ban);
 }
+
+	.ban.leaderboard-username {
+		text-decoration: line-through;
+	}
 
 .leaderboard-tooltip {
 	cursor: pointer;

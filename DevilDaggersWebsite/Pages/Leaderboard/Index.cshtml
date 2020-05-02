@@ -86,7 +86,7 @@
 	@if (Model.HasBans)
 	{
 		<p>
-			<span class="ban">Crossed out entries</span> are runs that are cheated, boosted, submitted on an alternative account, or otherwise considered invalid.
+			<span class="ban leaderboard-username">Crossed out entries</span> are runs that are cheated, boosted, submitted on an alternative account, or otherwise considered invalid.
 		</p>
 	}
 	@await Html.PartialAsync("Partials/_LeaderboardUserPartial")
@@ -99,7 +99,7 @@
 				This graph shows the top 100 progression for @Model.Leaderboard.Entries[0].Username<span style="color: #888">@Model.UsernameAliases</span>. It is based on the <a asp-page="/Leaderboard/History">Leaderboard History</a>, so it might be incomplete.
 			</p>
 			<p>
-				Note that the graph data is only based on a user's highscores; the rank does not update until the next top 100 highscore.
+				Note that the graph data is only based on a user's highscores; the rank and username do not update until the next top 100 highscore.
 			</p>
 
 			<div id="user-progression-chart">
