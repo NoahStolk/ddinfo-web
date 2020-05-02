@@ -43,7 +43,7 @@ namespace DevilDaggersWebsite.Code.Utils
                 average-daggers-hit='{entry.ShotsHitTotal * 100f / deaths:0}'
                 average-daggers-fired='{entry.ShotsFiredTotal * 100f / deaths:0}'
                 time-by-death='{entry.Time * 10000f / deaths:0}'
-            "); // TODO: Use correct format for average fields (float division and * 100 or 10000).
+            ");
 		}
 
 		public static HtmlString ToHtmlData(this Entry entry, string flagCode, PlayerSetting playerSetting) => new HtmlString($@"
