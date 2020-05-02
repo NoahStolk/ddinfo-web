@@ -202,7 +202,18 @@ namespace DevilDaggersWebsite.Code.Api
 			return (DateTime.Now, DateTime.Now);
 		}
 
-		// TODO: GetPlayerActivity...
+		public static Dictionary<DateTime, (ulong deathsTotal, ulong timeTotal)> GetPlayerActivity(ICommonObjects commonObjects, int userId/*, bool relative*/)
+		{
+			Dictionary<DateTime, (ulong deathsTotal, ulong timeTotal)> data = new Dictionary<DateTime, (ulong deathsTotal, ulong timeTotal)>();
+			foreach (string leaderboardHistoryPath in Directory.GetFiles(Path.Combine(commonObjects.Env.WebRootPath, "leaderboard-history"), "*.json"))
+			{
+				Leaderboard lb = JsonConvert.DeserializeObject<Leaderboard>(FileUtils.GetContents(leaderboardHistoryPath, Encoding.UTF8));
+				Entry entry = lb.Entries.FirstOrDefault(e => e.Id == userId);
+				if (entry != null)
+					data.Add(lb.DateTime, (entry.DeathsTotal, entry.TimeTotal));
+			}
+			return data;
+		}
 
 		public static WebStatsResult GetWebStats()
 		{
