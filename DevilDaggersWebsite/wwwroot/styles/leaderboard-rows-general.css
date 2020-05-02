@@ -61,6 +61,7 @@
 		padding-left: 3%;
 	}
 
+	/*Use a more efficient child selector*/
 	.leaderboard-row.row-more-stats > div:nth-child(14),
 	.leaderboard-title-row.row-more-stats > div:nth-child(14),
 	.leaderboard-row.row-more-stats > div:nth-child(15),

@@ -188,7 +188,7 @@ namespace DevilDaggersWebsite.Code.Api
 			foreach (string leaderboardHistoryPath in Directory.GetFiles(Path.Combine(commonObjects.Env.WebRootPath, "leaderboard-history"), "*.json"))
 			{
 				Leaderboard lb = JsonConvert.DeserializeObject<Leaderboard>(FileUtils.GetContents(leaderboardHistoryPath, Encoding.UTF8));
-				Entry entry = lb.Entries.Where(e => e.Id == userId).FirstOrDefault();
+				Entry entry = lb.Entries.FirstOrDefault(e => e.Id == userId);
 				if (entry != null)
 					entries.Add((lb.DateTime, entry));
 			}

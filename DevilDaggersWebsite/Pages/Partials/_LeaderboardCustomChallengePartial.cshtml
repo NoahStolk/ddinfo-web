@@ -26,18 +26,21 @@
 		@{
 			IEnumerable<Flag> flags = UserUtils.GetFlags(CommonObjects);
 			IEnumerable<UserTitleCollection> titleCollections = UserUtils.GetTitleCollections(CommonObjects);
+			IEnumerable<Donator> unanonymousDonators = DonationList.Donators.Where(d => !d.IsAnonymous);
 			int rank = 0;
 			foreach (CustomEntry entry in Model.Entries)
 			{
 				rank++;
-				bool isDonator = DonationList.Donations.Any(d => d.DonatorId == entry.PlayerId && !DonationList.Donators.FirstOrDefault(dd => dd.Id == d.DonatorId).IsAnonymous);
-				Flag flag = flags.Where(f => f.Id == entry.PlayerId).FirstOrDefault();
-				UserTitleCollection titles = titleCollections.Where(t => t.Id == entry.PlayerId).FirstOrDefault();
+
+				bool isUnanonymousDonator = unanonymousDonators.Any(d => d.Id == entry.Id);
+
+				string flagCode = flags.FirstOrDefault(f => f.Id == entry.Id)?.CountryCode ?? "00";
+
+				UserTitleCollection titles = titleCollections.FirstOrDefault(t => t.Id == entry.PlayerId);
 
 				string dagger = Model.Leaderboard.GetDagger(entry.Time);
 				Death death = GameInfo.GetDeathFromDeathType(entry.DeathType, GameInfo.GameVersions["V3"]);
 
-				string flagCode = flag == null ? "00" : flag.CountryCode;
 				HtmlString level2 = entry.LevelUpTime2 == 0 ? RazorUtils.NAString : new HtmlString(entry.LevelUpTime2.ToString(FormatUtils.LeaderboardTimeFormat));
 				HtmlString level3 = entry.LevelUpTime3 == 0 ? RazorUtils.NAString : new HtmlString(entry.LevelUpTime3.ToString(FormatUtils.LeaderboardTimeFormat));
 				HtmlString level4 = entry.LevelUpTime4 == 0 ? RazorUtils.NAString : new HtmlString(entry.LevelUpTime4.ToString(FormatUtils.LeaderboardTimeFormat));
@@ -71,7 +74,7 @@
 										<span class="leaderboard-tooltip" data-toggle="tooltip" title="@title"><img src="/Images/Icons/@(UserUtils.TitleImages[title]).png" /></span>
 									}
 								}
-								if (isDonator)
+								if (isUnanonymousDonator)
 								{
 									string title = "Donator";
 									<span class="leaderboard-tooltip" data-toggle="tooltip" title="@title"><img src="/Images/Icons/@(UserUtils.TitleImages[title]).png" /></span>
