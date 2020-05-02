@@ -37,12 +37,12 @@ namespace DevilDaggersWebsite.Code.Utils
                 daggers-fired='{entry.ShotsFired}'
                 total-daggers-hit='{entry.ShotsHitTotal}'
                 total-daggers-fired='{entry.ShotsFiredTotal}'
-                average-time='{entry.TimeTotal / deaths}'
-                average-kills='{entry.KillsTotal / deaths}'
-                average-gems='{entry.GemsTotal / deaths}'
-                average-daggers-hit='{entry.ShotsHitTotal / deaths}'
-                average-daggers-fired='{entry.ShotsFiredTotal / deaths}'
-                time-by-death='{entry.Time / (int)deaths}'
+                average-time='{entry.TimeTotal * 100f / deaths:0}'
+                average-kills='{entry.KillsTotal * 100f / deaths:0}'
+                average-gems='{entry.GemsTotal * 100f / deaths:0}'
+                average-daggers-hit='{entry.ShotsHitTotal * 100f / deaths:0}'
+                average-daggers-fired='{entry.ShotsFiredTotal * 100f / deaths:0}'
+                time-by-death='{entry.Time * 10000f / deaths:0}'
             "); // TODO: Use correct format for average fields (float division and * 100 or 10000).
 		}
 
