@@ -42,9 +42,9 @@
 	@{
 		Completion completion = Model.Leaderboard.GetCompletion();
 		CompletionCombined userCompletion = Model.Leaderboard.GetUserCompletion();
-		bool isCompletionEmpty = completion.CompletionEntries.Where(c => c.Value == CompletionEntry.Missing).Count() == 0;
-		bool isUserCompletionEmpty = userCompletion.CompletionEntries.Where(c => c.Value == CompletionEntryCombined.Missing).Count() == 0;
-		if (!isCompletionEmpty || !isUserCompletionEmpty)
+		bool isDataMissingInGlobalCompletion = completion.CompletionEntries.Any(c => c.Value == CompletionEntry.Missing);
+		bool isDataMissingInUserCompletion = userCompletion.CompletionEntries.Any(c => c.Value == CompletionEntryCombined.Missing || c.Value == CompletionEntryCombined.PartiallyMissing);
+		if (isDataMissingInGlobalCompletion || isDataMissingInUserCompletion)
 		{
 			<div>
 				Missing information
@@ -55,11 +55,7 @@
 						<div>Global</div>
 						<div class="info-text">
 							@{
-								if (isCompletionEmpty)
-								{
-									@RazorUtils.NAString
-								}
-								else
+								if (isDataMissingInGlobalCompletion)
 								{
 									foreach (KeyValuePair<string, CompletionEntry> kvp in completion.CompletionEntries)
 									{
@@ -69,6 +65,10 @@
 										}
 									}
 								}
+								else
+								{
+									@RazorUtils.NAString
+								}
 							}
 						</div>
 					</div>
@@ -76,11 +76,7 @@
 						<div>User</div>
 						<div class="info-text">
 							@{
-								if (isUserCompletionEmpty)
-								{
-									@RazorUtils.NAString
-								}
-								else
+								if (isDataMissingInUserCompletion)
 								{
 									foreach (KeyValuePair<string, CompletionEntryCombined> kvp in userCompletion.CompletionEntries)
 									{
@@ -89,6 +85,10 @@
 											@:@kvp.Key @Html.Raw(kvp.Value.ToHtmlString())<br />
 										}
 									}
+								}
+								else
+								{
+									@RazorUtils.NAString
 								}
 							}
 						</div>
