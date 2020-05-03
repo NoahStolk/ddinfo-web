@@ -21,6 +21,8 @@ namespace DevilDaggersWebsite.Pages.Leaderboard
 					Leaderboard.Entries.Add(entry);
 			});
 			await Task.WhenAll(tasks);
+
+			Leaderboard.Entries = Leaderboard.Entries.OrderBy(e => e.Rank).ToList();
 		}
 	}
 }
