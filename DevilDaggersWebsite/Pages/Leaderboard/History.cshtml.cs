@@ -36,7 +36,7 @@ namespace DevilDaggersWebsite.Pages.Leaderboard
 			foreach (string leaderboardHistoryPath in Directory.GetFiles(Path.Combine(this.commonObjects.Env.WebRootPath, "leaderboard-history"), "*.json"))
 			{
 				Lb leaderboard = JsonConvert.DeserializeObject<Lb>(FileUtils.GetContents(leaderboardHistoryPath, Encoding.UTF8));
-				JsonFiles.Add(new SelectListItem($"{HistoryUtils.HistoryJsonFileNameToDateString(Path.GetFileNameWithoutExtension(leaderboardHistoryPath))} UTC ({leaderboard.GetCompletionRate():0.0%} complete)", Path.GetFileName(leaderboardHistoryPath)));
+				JsonFiles.Add(new SelectListItem($"{HistoryUtils.HistoryJsonFileNameToDateString(Path.GetFileNameWithoutExtension(leaderboardHistoryPath))} ({leaderboard.GetCompletionRate():0.0%} complete)", Path.GetFileName(leaderboardHistoryPath)));
 			}
 
 			JsonFiles.Reverse();

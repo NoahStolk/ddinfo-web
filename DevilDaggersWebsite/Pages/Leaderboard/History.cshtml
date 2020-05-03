@@ -2,7 +2,7 @@
 @inject CoreBase3.Services.ICommonObjects CommonObjects
 @model DevilDaggersWebsite.Pages.Leaderboard.HistoryModel
 @{
-	ViewData["Title"] = $"Top 100 History ({Model.Leaderboard.DateTime.ToString("yyyy-MM-dd HH:mm")} UTC)";
+	ViewData["Title"] = $"Top 100 History ({Model.Leaderboard.DateTime.ToString("yyyy-MM-dd HH:mm")})";
 }
 @using DevilDaggersCore.Leaderboards.History.Completions
 @using DevilDaggersWebsite.Code.Utils
@@ -103,7 +103,7 @@
 		if (changesGlobal.Count != 0 || changesTop100.Count != 0)
 		{
 			<div>
-				Changes since @Model.LeaderboardPrevious.DateTime.ToString("yyyy-MM-dd HH:mm") UTC<br />
+				Changes since @Model.LeaderboardPrevious.DateTime.ToString("yyyy-MM-dd HH:mm")<br />
 				@diff.Days day@(diff.Days.S()), @diff.Hours hour@(diff.Hours.S()), @diff.Minutes minute@(diff.Minutes.S()) before
 			</div>
 			<div class="info-container info-orange">
