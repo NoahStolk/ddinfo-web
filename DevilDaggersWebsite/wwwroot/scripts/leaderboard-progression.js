@@ -50,7 +50,7 @@ function getDeathType(date, entry) {
 			return deathTypes[gameVersion][i];
 }
 
-function createChart(chartName, data, minDate, maxDate, minTime, maxTime, steps) {
+function createChart(chartName, data, minDate, maxDate, minTime, maxTime, yNumberTicks) {
 	return $.jqplot(chartName, [data], {
 		axes: {
 			xaxis: {
@@ -66,7 +66,7 @@ function createChart(chartName, data, minDate, maxDate, minTime, maxTime, steps)
 				mark: 'outside',
 				min: minTime,
 				max: maxTime,
-				numberTicks: steps
+				numberTicks: yNumberTicks
 			}
 		},
 		seriesDefaults: {
