@@ -18,7 +18,7 @@ namespace LeaderboardJsonIdFixer
 			{ "Sojk", 229 },
 			{ "k0k0sMJÖLk [38th]", 229 },
 			{ "Bintr", 148788 },
-			{ "DraQu", 82891 }, // Not sure why his Id is so high.
+			{ "DraQu", 82891 }, // Not sure why his ID is so high.
 			{ "twitch.tv/draqu_", 82891 },
 			{ "DraQu^WR", 82891 },
 			{ "weaksauce13", 112 },
@@ -27,6 +27,7 @@ namespace LeaderboardJsonIdFixer
 			{ "b0necarver", 4 },
 			{ "m4ttbush", 1 },
 			{ "?.", 2 },
+			{ "lifeformed", 5 },
 			{ "Boneman", 6 },
 			{ "A.N.T.4", 1677 },
 			{ "? ANT4", 1677 },
