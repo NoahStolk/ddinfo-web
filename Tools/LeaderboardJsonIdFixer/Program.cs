@@ -285,9 +285,9 @@ namespace LeaderboardJsonIdFixer
 
 				if (changes.Count != 0)
 				{
-					Console.WriteLine(HistoryUtils.HistoryJsonFileNameToDateString(Path.GetFileNameWithoutExtension(path)), ConsoleColor.Yellow);
+					Console.WriteLine(HistoryUtils.HistoryJsonFileNameToDateString(Path.GetFileNameWithoutExtension(path)));
 					foreach (Entry entry in changes)
-						Console.WriteLine($"Set Id to {entry.Id:D6} for rank {entry.Rank:D3} with name {entry.Username} and score {entry.Time / 10000f}");
+						Console.WriteLine($"\tSet Id to {entry.Id:D6} for rank {entry.Rank:D3} with name {entry.Username} and score {entry.Time / 10000f}");
 					Console.WriteLine();
 				}
 

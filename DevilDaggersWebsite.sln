@@ -37,6 +37,8 @@ Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "EncryptionUtils", "..\Encry
 EndProject
 Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "CoreBase3", "..\CoreBase3\CoreBase3\CoreBase3.csproj", "{C1C398B0-0EF2-41B8-ABD1-AB4E88BF07C0}"
 EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "LeaderboardJsonHighscoreStatsSpreader", "Tools\LeaderboardJsonHighscoreStatsSpreader\LeaderboardJsonHighscoreStatsSpreader.csproj", "{22E269DE-640B-4D1E-BB39-1CB0F20181BB}"
+EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
 		Debug|Any CPU = Debug|Any CPU
@@ -99,6 +101,10 @@ Global
 		{C1C398B0-0EF2-41B8-ABD1-AB4E88BF07C0}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{C1C398B0-0EF2-41B8-ABD1-AB4E88BF07C0}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{C1C398B0-0EF2-41B8-ABD1-AB4E88BF07C0}.Release|Any CPU.Build.0 = Release|Any CPU
+		{22E269DE-640B-4D1E-BB39-1CB0F20181BB}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{22E269DE-640B-4D1E-BB39-1CB0F20181BB}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{22E269DE-640B-4D1E-BB39-1CB0F20181BB}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{22E269DE-640B-4D1E-BB39-1CB0F20181BB}.Release|Any CPU.Build.0 = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE
@@ -117,6 +123,7 @@ Global
 		{4F3A7079-ACB7-4CA5-B629-58BBB1E9C40A} = {7213D1A2-9EAC-47F2-9EC6-0A1B6858994D}
 		{F7C0A1EB-5A5B-46CC-A98E-1847C9AF7627} = {496E881B-2660-4D10-86D8-12ED3EE284C0}
 		{C1C398B0-0EF2-41B8-ABD1-AB4E88BF07C0} = {496E881B-2660-4D10-86D8-12ED3EE284C0}
+		{22E269DE-640B-4D1E-BB39-1CB0F20181BB} = {5632F4FF-82A2-4DDD-B7D9-0F83D53E362C}
 	EndGlobalSection
 	GlobalSection(ExtensibilityGlobals) = postSolution
 		SolutionGuid = {E27EC676-81BF-4099-BFC9-20E860CE83A5}
