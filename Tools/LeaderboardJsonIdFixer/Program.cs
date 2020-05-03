@@ -29,6 +29,8 @@ namespace LeaderboardJsonIdFixer
 			{ "?.", 2 },
 			{ "lifeformed", 5 },
 			{ "Boneman", 6 },
+			{ "phrase", 8 },
+			{ "woods", 8 },
 			{ "A.N.T.4", 1677 },
 			{ "? ANT4", 1677 },
 			{ "ANT4", 1677 },
