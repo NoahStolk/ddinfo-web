@@ -92,6 +92,20 @@ function createChart(chartName, data, minDate, maxDate, minTime, maxTime, yNumbe
 			objects: [
 				{
 					rectangle: {
+						xmin: new Date("2016-01-01"),
+						xmax: new Date("2016-02-18"),
+						xminOffset: "0px",
+						xmaxOffset: "0px",
+						yminOffset: "0px",
+						ymaxOffset: "0px",
+						color: "rgba(200, 0, 0, 0.1)",
+						showTooltip: true,
+						tooltipFormatString: "Pre-release",
+						tooltipLocation: 'se'
+					}
+				},
+				{
+					rectangle: {
 						xmin: new Date("2016-02-18"),
 						xmax: new Date("2016-07-05"),
 						xminOffset: "0px",
