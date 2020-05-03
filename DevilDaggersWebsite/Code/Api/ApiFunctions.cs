@@ -7,7 +7,6 @@ using DevilDaggersCore.Spawnsets.Web;
 using DevilDaggersCore.Tools.Website;
 using DevilDaggersCore.Website;
 using DevilDaggersWebsite.Code.Database;
-using DevilDaggersWebsite.Code.Database.CustomLeaderboards;
 using DevilDaggersWebsite.Code.Tasks;
 using DevilDaggersWebsite.Code.Utils;
 using DevilDaggersWebsite.Code.Utils.Web;
@@ -27,19 +26,15 @@ namespace DevilDaggersWebsite.Code.Api
 	{
 		public static IEnumerable<CustomLeaderboardBase> GetCustomLeaderboards(ApplicationDbContext context)
 		{
-			foreach (CustomLeaderboard leaderboard in context.CustomLeaderboards)
-				yield return new CustomLeaderboardBase(
-					leaderboard.SpawnsetFileName,
-					leaderboard.Bronze,
-					leaderboard.Silver,
-					leaderboard.Golden,
-					leaderboard.Devil,
-					leaderboard.Homing == 0 ? 0 :
-					context.CustomEntries
-						.Where(e => e.CustomLeaderboard == leaderboard)
-						.Any(e => e.Time > leaderboard.Homing) ? leaderboard.Homing : -1,
-					leaderboard.DateLastPlayed,
-					leaderboard.DateCreated);
+			return context.CustomLeaderboards.Select(cl => new CustomLeaderboardBase(
+				cl.SpawnsetFileName,
+				cl.Bronze,
+				cl.Silver,
+				cl.Golden,
+				cl.Devil,
+				cl.Homing == 0 ? 0 : context.CustomEntries.Where(e => e.CustomLeaderboard == cl).Any(e => e.Time > cl.Homing) ? cl.Homing : -1,
+				cl.DateLastPlayed,
+				cl.DateCreated));
 		}
 
 		public static IEnumerable<Death> GetDeaths(int? deathType, string gameVersion)
