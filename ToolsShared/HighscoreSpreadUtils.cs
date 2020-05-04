@@ -2,6 +2,7 @@
 using DevilDaggersCore.Leaderboards;
 using NetBase.Utils;
 using Newtonsoft.Json;
+using System;
 using System.Collections.Generic;
 using System.IO;
 using System.Linq;
@@ -13,7 +14,7 @@ namespace ToolsShared
 	{
 		private static readonly StringBuilder log = new StringBuilder();
 
-		public static void SpreadAllHighscoreStats(bool useLogging)
+		public static void SpreadAllHighscoreStats(bool useLogging, bool useConsole)
 		{
 			Dictionary<string, Leaderboard> leaderboards = GetAllLeaderboards();
 
@@ -27,7 +28,9 @@ namespace ToolsShared
 			}
 
 			if (useLogging)
-				File.WriteAllText("Results.log", useLogging.ToString());
+				File.WriteAllText("Results.log", log.ToString());
+			if (useConsole)
+				Console.WriteLine(log.ToString());
 		}
 
 		public static Dictionary<string, Leaderboard> GetAllLeaderboards()
@@ -47,9 +50,9 @@ namespace ToolsShared
 			List<Entry> changes = new List<Entry>();
 			foreach (Entry entry in leaderboard.Entries)
 			{
-				if (entry.IsEmpty())
+				if (entry.Id != 0 && entry.IsEmpty())
 				{
-					Leaderboard leaderboardWithStats = leaderboards.FirstOrDefault(l => l.Entries.Any(e => e.Id == entry.Id && e.Time >= entry.Time - 1 && e.Time <= entry.Time + 1 && !e.IsEmpty())); // TODO: Get most complete data
+					Leaderboard leaderboardWithStats = leaderboards.FirstOrDefault(l => l.Entries.Any(e => e.Id == entry.Id && e.Time >= entry.Time - 1 && e.Time <= entry.Time + 1 && !e.IsEmpty())); // TODO: Get most complete data.
 					if (leaderboardWithStats == null)
 						continue;
 					Entry entryWithStats = leaderboardWithStats.Entries.FirstOrDefault(e => e.Id == entry.Id);
@@ -83,7 +86,7 @@ namespace ToolsShared
 			if (id == 0 || !entry.IsEmpty())
 				return null;
 
-			Leaderboard leaderboardWithStats = leaderboards.FirstOrDefault(l => l.Entries.Any(e => e.Id == id && e.Time >= time - 1 && e.Time <= time + 1 && !e.IsEmpty())); // TODO: Get most complete data
+			Leaderboard leaderboardWithStats = leaderboards.FirstOrDefault(l => l.Entries.Any(e => e.Id == id && e.Time >= time - 1 && e.Time <= time + 1 && !e.IsEmpty())); // TODO: Get most complete data.
 			if (leaderboardWithStats == null)
 				return null;
 

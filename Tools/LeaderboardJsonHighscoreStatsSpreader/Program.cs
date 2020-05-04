@@ -6,7 +6,7 @@ namespace LeaderboardJsonHighscoreStatsSpreader
 	{
 		public static void Main()
 		{
-			HighscoreSpreadUtils.SpreadAllHighscoreStats(true);
+			HighscoreSpreadUtils.SpreadAllHighscoreStats(false, true);
 		}
 	}
 }
