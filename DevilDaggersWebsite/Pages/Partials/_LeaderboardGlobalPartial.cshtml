@@ -39,12 +39,12 @@
 			<div class="text-center devil">@gems</div>
 		</div>
 		<div>
-			<div>Global deaths</div>
-			<div class="text-center devil">@deaths</div>
-		</div>
-		<div>
 			<div>Global accuracy</div>
 			<span data-toggle="tooltip" data-placement="bottom" title="@shots" class="leaderboard-tooltip"><span class="text-center devil">@accuracy</span></span>
+		</div>
+		<div>
+			<div>Global deaths</div>
+			<div class="text-center devil">@deaths</div>
 		</div>
 	</div>
 </div>
@@ -55,15 +55,14 @@
 			<div>Global time</div>
 			<div>Global kills</div>
 			<div>Global gems</div>
-			<div>Global deaths</div>
 			<div>Global accuracy</div>
+			<div>Global deaths</div>
 		</div>
 		<div class="mobile-right">
 			<div class="devil">@players</div>
 			<div class="devil">@time</div>
 			<div class="devil">@kills</div>
 			<div class="devil">@gems</div>
-			<div class="devil">@deaths</div>
 			@{
 				if (isHistory && (Model.Leaderboard.ShotsFiredGlobal == 10000 || Model.Leaderboard.ShotsFiredGlobal == 0))
 				{
@@ -74,6 +73,7 @@
 					<span data-toggle="tooltip" title="@shots" class="leaderboard-tooltip"><span class="devil">@accuracy</span></span>
 				}
 			}
+			<div class="devil">@deaths</div>
 		</div>
 	</div>
 </div>

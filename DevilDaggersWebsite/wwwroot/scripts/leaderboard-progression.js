@@ -60,7 +60,7 @@ function createChart(chartName, data, minDate, maxDate, minTime, maxTime, yNumbe
 				tickOptions: {
 					formatString: "%b %#d '%y"
 				},
-				numberTicks: 20
+				numberTicks: 15
 			},
 			yaxis: {
 				mark: 'outside',
