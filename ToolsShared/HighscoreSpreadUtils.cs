@@ -49,7 +49,7 @@ namespace ToolsShared
 			{
 				if (entry.IsEmpty())
 				{
-					Leaderboard leaderboardWithStats = leaderboards.FirstOrDefault(l => l.Entries.Any(e => e.Id == entry.Id && e.Time >= entry.Time - 1 && e.Time <= entry.Time + 1 && !e.IsEmpty()));
+					Leaderboard leaderboardWithStats = leaderboards.FirstOrDefault(l => l.Entries.Any(e => e.Id == entry.Id && e.Time >= entry.Time - 1 && e.Time <= entry.Time + 1 && !e.IsEmpty())); // TODO: Get most complete data
 					if (leaderboardWithStats == null)
 						continue;
 					Entry entryWithStats = leaderboardWithStats.Entries.FirstOrDefault(e => e.Id == entry.Id);
@@ -83,7 +83,7 @@ namespace ToolsShared
 			if (id == 0 || !entry.IsEmpty())
 				return null;
 
-			Leaderboard leaderboardWithStats = leaderboards.FirstOrDefault(l => l.Entries.Any(e => e.Id == id && e.Time >= time - 1 && e.Time <= time + 1 && !e.IsEmpty()));
+			Leaderboard leaderboardWithStats = leaderboards.FirstOrDefault(l => l.Entries.Any(e => e.Id == id && e.Time >= time - 1 && e.Time <= time + 1 && !e.IsEmpty())); // TODO: Get most complete data
 			if (leaderboardWithStats == null)
 				return null;
 
