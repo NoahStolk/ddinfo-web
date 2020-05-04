@@ -26,13 +26,13 @@
 		<TextBlock Grid.Column="1" Name="Rank" />
 		<TextBlock Grid.Column="2" Name="Username" />
 		<TextBlock Grid.Column="3" Name="Time" />
-		<TextBlock Grid.Column="4" Name="Gems" />
-		<TextBlock Grid.Column="5" Name="Kills" />
+		<TextBlock Grid.Column="4" Name="Kills" />
+		<TextBlock Grid.Column="5" Name="Gems" />
 		<TextBlock Grid.Column="6" Name="DeathType" />
 		<TextBlock Grid.Column="7" Name="Accuracy" />
 		<TextBlock Grid.Column="8" Name="TimeTotal" />
-		<TextBlock Grid.Column="9" Name="GemsTotal" />
-		<TextBlock Grid.Column="10" Name="KillsTotal" />
+		<TextBlock Grid.Column="9" Name="KillsTotal" />
+		<TextBlock Grid.Column="10" Name="GemsTotal" />
 		<TextBlock Grid.Column="11" Name="DeathsTotal" />
 		<TextBlock Grid.Column="12" Name="AccuracyTotal" />
 		<Button Grid.Column="13" Name="EditButton" Content="Edit" Click="EditButton_Click" />

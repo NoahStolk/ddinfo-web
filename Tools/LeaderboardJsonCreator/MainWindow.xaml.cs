@@ -68,6 +68,21 @@ namespace LeaderboardJsonCreator
 			{
 				leaderboard.DateTime = HistoryUtils.HistoryJsonFileNameToDateTime(LeaderboardDateTime.Text);
 
+				if (int.TryParse(Players.Text, out int players))
+					leaderboard.Players = players;
+				if (ulong.TryParse(TimeGlobal.Text, out ulong timeGlobal))
+					leaderboard.TimeGlobal = timeGlobal;
+				if (ulong.TryParse(KillsGlobal.Text, out ulong killsGlobal))
+					leaderboard.KillsGlobal = killsGlobal;
+				if (ulong.TryParse(GemsGlobal.Text, out ulong gemsGlobal))
+					leaderboard.GemsGlobal = gemsGlobal;
+				if (ulong.TryParse(DeathsGlobal.Text, out ulong deathsGlobal))
+					leaderboard.DeathsGlobal = deathsGlobal;
+				if (ulong.TryParse(ShotsHitGlobal.Text, out ulong shotsHitGlobal))
+					leaderboard.ShotsHitGlobal = shotsHitGlobal;
+				if (ulong.TryParse(ShotsFiredGlobal.Text, out ulong shotsFiredGlobal))
+					leaderboard.ShotsFiredGlobal = shotsFiredGlobal;
+
 				FileUtils.CreateText($@"C:\Users\NOAH\source\repos\DevilDaggersWebsite\DevilDaggersWebsite\wwwroot\leaderboard-history\{LeaderboardDateTime.Text}.json", JsonConvert.SerializeObject(leaderboard), Encoding.UTF8);
 				MessageBox.Show("Save successful");
 			}
