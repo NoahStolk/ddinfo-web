@@ -1,0 +1,52 @@
+﻿<UserControl x:Class="LeaderboardJsonCreator.AddNewEntry"
+			 xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+			 xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
+			 xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+			 xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
+			 mc:Ignorable="d" 
+             d:DesignHeight="450" d:DesignWidth="800">
+	<StackPanel>
+		<TextBlock FontWeight="Bold" FontSize="14">Add new entry</TextBlock>
+		<Grid>
+			<Grid.ColumnDefinitions>
+				<ColumnDefinition/>
+				<ColumnDefinition/>
+			</Grid.ColumnDefinitions>
+			<StackPanel Grid.Column="0">
+				<TextBlock>Rank</TextBlock>
+				<TextBlock>ID</TextBlock>
+				<TextBlock>Username</TextBlock>
+				<TextBlock>Time</TextBlock>
+				<TextBlock>Kills</TextBlock>
+				<TextBlock>Gems</TextBlock>
+				<TextBlock>DeathType</TextBlock>
+				<TextBlock>ShotsHit</TextBlock>
+				<TextBlock>ShotsFired</TextBlock>
+				<TextBlock>TimeTotal</TextBlock>
+				<TextBlock>KillsTotal</TextBlock>
+				<TextBlock>GemsTotal</TextBlock>
+				<TextBlock>DeathsTotal</TextBlock>
+				<TextBlock>ShotsHitTotal</TextBlock>
+				<TextBlock>ShotsFiredTotal</TextBlock>
+			</StackPanel>
+			<StackPanel Grid.Column="1" Name="Data">
+				<TextBox Name="Rank" />
+				<TextBox Name="Id" />
+				<TextBox Name="Username" TextChanged="Username_TextChanged" />
+				<TextBox Name="Time" TextChanged="Time_TextChanged" />
+				<TextBox Name="Kills" />
+				<TextBox Name="Gems" />
+				<TextBox Name="DeathType" />
+				<TextBox Name="ShotsHit" />
+				<TextBox Name="ShotsFired" />
+				<TextBox Name="TimeTotal" />
+				<TextBox Name="KillsTotal" />
+				<TextBox Name="GemsTotal" />
+				<TextBox Name="DeathsTotal" />
+				<TextBox Name="ShotsHitTotal" />
+				<TextBox Name="ShotsFiredTotal" />
+				<Button Click="AddEntry_Click" IsDefault="True">Add entry</Button>
+			</StackPanel>
+		</Grid>
+	</StackPanel>
+</UserControl>

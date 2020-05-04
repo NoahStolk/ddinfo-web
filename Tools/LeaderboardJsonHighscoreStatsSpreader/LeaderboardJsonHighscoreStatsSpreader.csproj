@@ -12,6 +12,7 @@
   <ItemGroup>
     <ProjectReference Include="..\..\..\DevilDaggersCore\DevilDaggersCore\DevilDaggersCore.csproj" />
     <ProjectReference Include="..\..\..\NetBase\NetBase\NetBase.csproj" />
+    <ProjectReference Include="..\..\ToolsShared\ToolsShared.csproj" />
   </ItemGroup>
 
 </Project>
