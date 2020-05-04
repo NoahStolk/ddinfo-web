@@ -5,6 +5,7 @@ using NetBase.Utils;
 using Newtonsoft.Json;
 using System;
 using System.IO;
+using System.Linq;
 using System.Text;
 using System.Windows;
 
@@ -57,6 +58,7 @@ namespace LeaderboardJsonCreator
 			if (result.HasValue && result.Value)
 			{
 				leaderboard = JsonConvert.DeserializeObject<Leaderboard>(File.ReadAllText(dialog.FileName));
+				leaderboard.Entries = leaderboard.Entries.OrderBy(en => en.Rank).ToList();
 				RefreshLeaderboard();
 				RefreshEntryList();
 			}
