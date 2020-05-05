@@ -36,7 +36,7 @@
 
 				bool isUnanonymousDonator = unanonymousDonators.Any(d => d.Id == entry.PlayerId);
 
-				string flagCode = flags.FirstOrDefault(f => f.Id == entry.Id)?.CountryCode ?? "00";
+				string flagCode = flags.FirstOrDefault(f => f.Id == entry.PlayerId)?.CountryCode ?? "00";
 
 				UserTitleCollection titles = titleCollections.FirstOrDefault(t => t.Id == entry.PlayerId);
 
