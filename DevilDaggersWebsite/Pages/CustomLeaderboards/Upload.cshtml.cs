@@ -144,14 +144,12 @@ namespace DevilDaggersWebsite.Pages.CustomLeaderboards
 				entries = context.CustomEntries.Where(e => e.CustomLeaderboard == leaderboard).OrderByMember(leaderboard.Category.SortingPropertyName, leaderboard.Category.Ascending).ToArray();
 				totalPlayers = entries.Length;
 
+				// TODO: Remove when 0.4.4.0+ is released.
 				if (clientVersionParsed <= new Version(0, 4, 4, 0))
-				{
-					// TODO: Remove when 0.4.4.0+ is released.
 					return new UploadResult(true, $@"Welcome to the leaderboard for {SpawnsetFile.GetName(leaderboard.SpawnsetFileName)}.
 
 {$"Rank",-textWidth}{rank} / {totalPlayers}
 {$"Time",-textWidth}{time:0.0000}");
-				}
 
 				return new UploadResult(true, $"Welcome to the leaderboard for {SpawnsetFile.GetName(leaderboard.SpawnsetFileName)}.", 0, new SubmissionInfo
 				{
@@ -234,12 +232,12 @@ namespace DevilDaggersWebsite.Pages.CustomLeaderboards
 			// Fetch the entries again after having modified the leaderboard.
 			entries = context.CustomEntries.Where(e => e.CustomLeaderboard == leaderboard).OrderByMember(leaderboard.Category.SortingPropertyName, leaderboard.Category.Ascending).ToArray();
 
+			// TODO: Remove when 0.4.4.0+ is released.
 			if (clientVersionParsed <= new Version(0, 4, 4, 0))
 			{
 				double accuracy = shotsFired == 0 ? 0 : shotsHit / (double)shotsFired;
 				double accuracyDiff = accuracy - (entry.ShotsFired == 0 ? 0 : entry.ShotsHit / (double)entry.ShotsFired);
 
-				// TODO: Remove when 0.4.4.0+ is released.
 				return new UploadResult(true, $@"NEW HIGHSCORE for {SpawnsetFile.GetName(leaderboard.SpawnsetFileName)}!
                 
 {$"Rank",-textWidth}{$"{rank} / {totalPlayers}",textWidth} ({rankDiff:+0;-#})
