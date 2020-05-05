@@ -104,11 +104,11 @@
 						<div>
 							@if (flagCode == "00")
 							{
-								<span><img src="/Images/Flags/24x24/@(flagCode).png" /></span>
+								<span><img src="/images/Flags/24x24/@(flagCode).png" /></span>
 							}
 							else
 							{
-								<span class="leaderboard-tooltip" data-toggle="tooltip" title="@UserUtils.CountryNames[flagCode]"><img src="/Images/Flags/24x24/@(flagCode).png" /></span>
+								<span class="leaderboard-tooltip" data-toggle="tooltip" title="@UserUtils.CountryNames[flagCode]"><img src="/images/Flags/24x24/@(flagCode).png" /></span>
 							}
 						</div>
 						<div class="text-left leaderboard-username @banString">
@@ -126,13 +126,13 @@
 								{
 									foreach (string title in titles.Titles)
 									{
-										<span class="leaderboard-tooltip" data-toggle="tooltip" title="@title"><img src="/Images/Icons/@(UserUtils.TitleImages[title]).png" /></span>
+										<span class="leaderboard-tooltip" data-toggle="tooltip" title="@title"><img src="/images/Icons/@(UserUtils.TitleImages[title]).png" /></span>
 									}
 								}
 								if (isUnanonymousDonator)
 								{
 									string title = "Donator";
-									<span class="leaderboard-tooltip" data-toggle="tooltip" title="@title"><img src="/Images/Icons/@(UserUtils.TitleImages[title]).png" /></span>
+									<span class="leaderboard-tooltip" data-toggle="tooltip" title="@title"><img src="/images/Icons/@(UserUtils.TitleImages[title]).png" /></span>
 								}
 							}
 						</div>
