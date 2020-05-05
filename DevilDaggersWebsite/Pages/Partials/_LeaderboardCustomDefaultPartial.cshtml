@@ -34,7 +34,7 @@
 			{
 				rank++;
 
-				bool isUnanonymousDonator = unanonymousDonators.Any(d => d.Id == entry.Id);
+				bool isUnanonymousDonator = unanonymousDonators.Any(d => d.Id == entry.PlayerId);
 
 				string flagCode = flags.FirstOrDefault(f => f.Id == entry.Id)?.CountryCode ?? "00";
 
