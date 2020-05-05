@@ -8,6 +8,7 @@ using Microsoft.AspNetCore.Mvc;
 using Microsoft.AspNetCore.Mvc.RazorPages;
 using Microsoft.EntityFrameworkCore;
 using NetBase.Extensions;
+using System;
 using System.Collections.Generic;
 using System.IO;
 using System.Linq;
@@ -60,43 +61,38 @@ namespace DevilDaggersWebsite.Pages.CustomLeaderboards
 			return null;
 		}
 
-		public void GetDaggerInfo(int i, ref string daggerName, ref string seconds)
+		public (string daggerName, string seconds) GetDaggerInfo(int daggerIndex)
 		{
-			daggerName = "";
-			seconds = "";
-			switch (i)
+			if (daggerIndex < 0 || daggerIndex > 4)
+				throw new ArgumentOutOfRangeException(nameof(daggerIndex), $"'{nameof(daggerIndex)}' must be between 0 (bronze) and 4 (homing). '{nameof(daggerIndex)}' was {daggerIndex}.");
+
+			string daggerName = daggerIndex switch
 			{
-				case 0:
-					daggerName = "Bronze";
-					seconds = Leaderboard.Bronze.ToString(FormatUtils.LeaderboardTimeFormat);
-					break;
-				case 1:
-					daggerName = "Silver";
-					seconds = Leaderboard.Silver.ToString(FormatUtils.LeaderboardTimeFormat);
-					break;
-				case 2:
-					daggerName = "Golden";
-					seconds = Leaderboard.Golden.ToString(FormatUtils.LeaderboardTimeFormat);
-					break;
-				case 3:
-					daggerName = "Devil";
-					seconds = Leaderboard.Devil.ToString(FormatUtils.LeaderboardTimeFormat);
-					break;
-				case 4:
-					daggerName = "Homing";
-					seconds =
-						Leaderboard.Category.Ascending ?
-							Entries.Any(e => e.Time <= Leaderboard.Homing) ?
-								Leaderboard.Homing.ToString(FormatUtils.LeaderboardTimeFormat)
-							:
-								"???"
-						:
-							Entries.Any(e => e.Time >= Leaderboard.Homing) ?
-								Leaderboard.Homing.ToString(FormatUtils.LeaderboardTimeFormat)
-							:
-								"???";
-					break;
-			}
+				0 => "Bronze",
+				1 => "Silver",
+				2 => "Golden",
+				3 => "Devil",
+				_ => "Homing"
+			};
+			string seconds = daggerIndex switch
+			{
+				0 => Leaderboard.Bronze.ToString(FormatUtils.LeaderboardTimeFormat),
+				1 => Leaderboard.Silver.ToString(FormatUtils.LeaderboardTimeFormat),
+				2 => Leaderboard.Golden.ToString(FormatUtils.LeaderboardTimeFormat),
+				3 => Leaderboard.Devil.ToString(FormatUtils.LeaderboardTimeFormat),
+				_ => Leaderboard.Category.Ascending ?
+Entries.Any(e => e.Time <= Leaderboard.Homing) ?
+Leaderboard.Homing.ToString(FormatUtils.LeaderboardTimeFormat)
+:
+"???"
+:
+Entries.Any(e => e.Time >= Leaderboard.Homing) ?
+Leaderboard.Homing.ToString(FormatUtils.LeaderboardTimeFormat)
+:
+"???"
+			};
+
+			return (daggerName, seconds);
 		}
 	}
 }
