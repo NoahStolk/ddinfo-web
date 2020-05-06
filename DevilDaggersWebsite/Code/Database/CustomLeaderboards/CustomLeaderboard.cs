@@ -13,7 +13,7 @@ namespace DevilDaggersWebsite.Code.Database.CustomLeaderboards
 		[ForeignKey("CategoryId")]
 		public CustomLeaderboardCategory Category { get; set; }
 
-		public CustomLeaderboard(string spawnsetFileName, float bronze, float silver, float golden, float devil, float homing, DateTime? dateLastPlayed, DateTime? dateCreated)
+		public CustomLeaderboard(string spawnsetFileName, int bronze, int silver, int golden, int devil, int homing, DateTime? dateLastPlayed, DateTime? dateCreated)
 			: base(spawnsetFileName, bronze, silver, golden, devil, homing, dateLastPlayed, dateCreated)
 		{
 		}

@@ -35,7 +35,7 @@ namespace DevilDaggersWebsite.Pages.CustomLeaderboards
 		public void OnGet(string spawnsetHash,
 			int playerId,
 			string username,
-			float time,
+			int time,
 			int gems,
 			int kills,
 			int deathType,
@@ -43,9 +43,9 @@ namespace DevilDaggersWebsite.Pages.CustomLeaderboards
 			int shotsFired,
 			int enemiesAlive,
 			int homing,
-			float levelUpTime2,
-			float levelUpTime3,
-			float levelUpTime4,
+			int levelUpTime2,
+			int levelUpTime3,
+			int levelUpTime4,
 			string ddclClientVersion,
 			string v)
 		{
@@ -64,7 +64,7 @@ namespace DevilDaggersWebsite.Pages.CustomLeaderboards
 			string spawnsetHash,
 			int playerId,
 			string username,
-			float time,
+			int time,
 			int gems,
 			int kills,
 			int deathType,
@@ -72,9 +72,9 @@ namespace DevilDaggersWebsite.Pages.CustomLeaderboards
 			int shotsFired,
 			int enemiesAlive,
 			int homing,
-			float levelUpTime2,
-			float levelUpTime3,
-			float levelUpTime4,
+			int levelUpTime2,
+			int levelUpTime3,
+			int levelUpTime4,
 			string clientVersion,
 			string validation)
 		{
@@ -112,7 +112,7 @@ namespace DevilDaggersWebsite.Pages.CustomLeaderboards
 				shotsFired,
 				enemiesAlive,
 				homing,
-				string.Join(",", new float[3] { levelUpTime2, levelUpTime3, levelUpTime4 }));
+				string.Join(",", new int[3] { levelUpTime2, levelUpTime3, levelUpTime4 }));
 			if (DecryptValidation(validation) != check)
 				return new UploadResult(false, "Invalid submission.");
 
@@ -202,16 +202,16 @@ namespace DevilDaggersWebsite.Pages.CustomLeaderboards
 			int oldRank = leaderboard.Category.Ascending ? entries.Where(e => e.Time < entry.Time).Count() + 1 : entries.Where(e => e.Time > entry.Time).Count() + 1;
 
 			int rankDiff = oldRank - rank;
-			float timeDiff = time - entry.Time;
+			int timeDiff = time - entry.Time;
 			int killsDiff = kills - entry.Kills;
 			int gemsDiff = gems - entry.Gems;
 			int shotsHitDiff = shotsHit - entry.ShotsHit;
 			int shotsFiredDiff = shotsFired - entry.ShotsFired;
 			int enemiesAliveDiff = enemiesAlive - entry.EnemiesAlive;
 			int homingDiff = homing - entry.Homing;
-			float levelUpTime2Diff = levelUpTime2 - entry.LevelUpTime2;
-			float levelUpTime3Diff = levelUpTime3 - entry.LevelUpTime3;
-			float levelUpTime4Diff = levelUpTime4 - entry.LevelUpTime4;
+			int levelUpTime2Diff = levelUpTime2 - entry.LevelUpTime2;
+			int levelUpTime3Diff = levelUpTime3 - entry.LevelUpTime3;
+			int levelUpTime4Diff = levelUpTime4 - entry.LevelUpTime4;
 
 			entry.Time = time;
 			entry.Kills = kills;

@@ -83,16 +83,16 @@
 						@(lb.DateCreated.HasValue ? Html.Raw(lb.DateCreated.Value.ToString("dd MMM yyyy")) : RazorUtils.NAString)
 					</td>
 					<td class="text-right hidden-xs hidden-sm hidden-md bronze">
-						@lb.Bronze.ToString(FormatUtils.LeaderboardTimeFormat)
+						@((lb.Bronze / 10000f).ToString(FormatUtils.LeaderboardTimeFormat))
 					</td>
 					<td class="text-right hidden-xs hidden-sm hidden-md silver">
-						@lb.Silver.ToString(FormatUtils.LeaderboardTimeFormat)
+						@((lb.Silver / 10000f).ToString(FormatUtils.LeaderboardTimeFormat))
 					</td>
 					<td class="text-right hidden-xs hidden-sm hidden-md golden">
-						@lb.Golden.ToString(FormatUtils.LeaderboardTimeFormat)
+						@((lb.Golden / 10000f).ToString(FormatUtils.LeaderboardTimeFormat))
 					</td>
 					<td class="text-right hidden-xs hidden-sm hidden-md devil">
-						@lb.Devil.ToString(FormatUtils.LeaderboardTimeFormat)
+						@((lb.Devil / 10000f).ToString(FormatUtils.LeaderboardTimeFormat))
 					</td>
 					<td class="@wrDagger hidden-xs hidden-sm hidden-md leaderboard-username">
 						@{
@@ -110,7 +110,7 @@
 						@{
 							if (entries.Count > 0)
 							{
-								@entries[0].Time.ToString(FormatUtils.LeaderboardTimeFormat)
+								@((entries[0].Time / 10000f).ToString(FormatUtils.LeaderboardTimeFormat))
 							}
 						}
 					</td>

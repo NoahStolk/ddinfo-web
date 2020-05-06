@@ -76,18 +76,18 @@ namespace DevilDaggersWebsite.Pages.CustomLeaderboards
 			};
 			string seconds = daggerIndex switch
 			{
-				0 => Leaderboard.Bronze.ToString(FormatUtils.LeaderboardTimeFormat),
-				1 => Leaderboard.Silver.ToString(FormatUtils.LeaderboardTimeFormat),
-				2 => Leaderboard.Golden.ToString(FormatUtils.LeaderboardTimeFormat),
-				3 => Leaderboard.Devil.ToString(FormatUtils.LeaderboardTimeFormat),
+				0 => (Leaderboard.Bronze / 10000f).ToString(FormatUtils.LeaderboardTimeFormat),
+				1 => (Leaderboard.Silver / 10000f).ToString(FormatUtils.LeaderboardTimeFormat),
+				2 => (Leaderboard.Golden / 10000f).ToString(FormatUtils.LeaderboardTimeFormat),
+				3 => (Leaderboard.Devil / 10000f).ToString(FormatUtils.LeaderboardTimeFormat),
 				_ => Leaderboard.Category.Ascending ?
 Entries.Any(e => e.Time <= Leaderboard.Homing) ?
-Leaderboard.Homing.ToString(FormatUtils.LeaderboardTimeFormat)
+(Leaderboard.Homing / 10000f).ToString(FormatUtils.LeaderboardTimeFormat)
 :
 "???"
 :
 Entries.Any(e => e.Time >= Leaderboard.Homing) ?
-Leaderboard.Homing.ToString(FormatUtils.LeaderboardTimeFormat)
+(Leaderboard.Homing / 10000f).ToString(FormatUtils.LeaderboardTimeFormat)
 :
 "???"
 			};
