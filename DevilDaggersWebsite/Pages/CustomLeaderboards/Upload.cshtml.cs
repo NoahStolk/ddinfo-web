@@ -18,8 +18,6 @@ namespace DevilDaggersWebsite.Pages.CustomLeaderboards
 {
 	public class UploadModel : PageModel
 	{
-		private const int textWidth = 25;
-
 		public string JsonResult { get; set; }
 
 		private readonly ApplicationDbContext context;
