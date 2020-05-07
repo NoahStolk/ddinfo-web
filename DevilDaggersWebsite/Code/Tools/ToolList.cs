@@ -363,10 +363,22 @@ namespace DevilDaggersWebsite.Code.Utils
 		{
 			Name = "DevilDaggersCustomLeaderboards",
 			DisplayName = "Devil Daggers Custom Leaderboards",
-			VersionNumber = new Version(0, 4, 4, 0),
-			VersionNumberRequired = new Version(0, 4, 4, 0),
+			VersionNumber = new Version(0, 6, 0, 0),
+			VersionNumberRequired = new Version(0, 6, 0, 0),
 			Changelog = new List<ChangelogEntry>
 			{
+				new ChangelogEntry
+				{
+					VersionNumber = new Version(0, 6, 0, 0),
+					Date = new DateTime(2020, 5, 7),
+					Changes = new List<Change>
+					{
+						new Change("Leaderboards and run info are now displayed in the console when the player died."),
+						new Change("Added colors for daggers, deaths, and run info differences."),
+						new Change("Fixed floating point imprecision issues with the leaderboard database."),
+						new Change("The program now shows a warning when homing and level up times are not being detected. This warning will be triggered after collecting the first gem. The problem can be resolved by restarting Devil Daggers. It happens about 1 out of 10 times for me and seems to appear randomly. I'm still investigating what causes it.")
+					}
+				},
 				new ChangelogEntry
 				{
 					VersionNumber = new Version(0, 4, 4, 0),
