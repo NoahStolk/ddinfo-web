@@ -5,7 +5,6 @@ using DevilDaggersCore.Spawnsets.Web;
 using DevilDaggersWebsite.Code.Database;
 using DevilDaggersWebsite.Code.Database.CustomLeaderboards;
 using DevilDaggersWebsite.Code.Utils;
-using EncryptionUtils;
 using Microsoft.AspNetCore.Mvc.RazorPages;
 using Microsoft.EntityFrameworkCore;
 using NetBase.Extensions;
@@ -287,8 +286,7 @@ namespace DevilDaggersWebsite.Pages.CustomLeaderboards
 		{
 			try
 			{
-				AesBase32Wrapper aes = new AesBase32Wrapper("4GDdtUpDelr2wIae", "xx7SXitvxQh4tJzn", "K0sfsKXLZKmKs929");
-				return aes.DecodeAndDecrypt(HttpUtility.HtmlDecode(validation));
+				return Secrets.EncryptionWrapper.DecodeAndDecrypt(HttpUtility.HtmlDecode(validation));
 			}
 			catch (Exception ex)
 			{
