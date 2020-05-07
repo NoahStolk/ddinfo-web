@@ -1,5 +1,6 @@
 ﻿@page
 @inject Microsoft.AspNetCore.Hosting.IWebHostEnvironment env
+@using DevilDaggersCore.Tools
 @using DevilDaggersCore.Tools.Website
 @using DevilDaggersWebsite.Code.Utils
 @using System.IO
@@ -46,7 +47,7 @@
 
 	<h2>Source code</h2>
 	<p>
-		Unfortunately I cannot share the source code since it would allow people to cheat the leaderboards.
+		The source code can be found on <a target="_blank" href="@UrlUtils.SourceCodeUrl(tool.Name)">GitHub</a>.
 	</p>
 
 	<h2>Changelog</h2>
