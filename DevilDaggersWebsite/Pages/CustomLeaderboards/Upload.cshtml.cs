@@ -115,7 +115,7 @@ namespace DevilDaggersWebsite.Pages.CustomLeaderboards
 			if (DecryptValidation(validation) != check)
 				return new UploadResult(false, "Invalid submission.");
 
-			CustomLeaderboard leaderboard = context.CustomLeaderboards.Include(l => l.Category).FirstOrDefault(l => l.SpawnsetFileName == spawnsetName); // TODO: Multiple leaderboards
+			CustomLeaderboard leaderboard = context.CustomLeaderboards.Include(l => l.Category).FirstOrDefault(l => l.SpawnsetFileName == spawnsetName); // TODO: Support multiple leaderboards? Would require significant changes as you would need to pick one, or let DDCL upload to all leaderboards of this spawnset.
 			if (leaderboard == null)
 				return new UploadResult(false, "This spawnset doesn't have a leaderboard.");
 
@@ -142,13 +142,6 @@ namespace DevilDaggersWebsite.Pages.CustomLeaderboards
 				// Fetch the entries again after having modified the leaderboard.
 				entries = context.CustomEntries.Where(e => e.CustomLeaderboard == leaderboard).OrderByMember(leaderboard.Category.SortingPropertyName, leaderboard.Category.Ascending).ToArray();
 				totalPlayers = entries.Length;
-
-				// TODO: Remove when 0.4.4.0+ is released.
-				if (clientVersionParsed <= new Version(0, 4, 4, 0))
-					return new UploadResult(true, $@"Welcome to the leaderboard for {SpawnsetFile.GetName(leaderboard.SpawnsetFileName)}.
-
-{$"Rank",-textWidth}{rank} / {totalPlayers}
-{$"Time",-textWidth}{time:0.0000}");
 
 				return new UploadResult(true, $"Welcome to the leaderboard for {SpawnsetFile.GetName(leaderboard.SpawnsetFileName)}.", 0, new SubmissionInfo
 				{
@@ -182,9 +175,6 @@ namespace DevilDaggersWebsite.Pages.CustomLeaderboards
 
 				// Fetch the entries again after having modified the leaderboard.
 				entries = context.CustomEntries.Where(e => e.CustomLeaderboard == leaderboard).OrderByMember(leaderboard.Category.SortingPropertyName, leaderboard.Category.Ascending).ToArray();
-
-				if (clientVersionParsed <= new Version(0, 4, 4, 0))
-					return new UploadResult(true, $"No new highscore for {SpawnsetFile.GetName(leaderboard.SpawnsetFileName)}.");
 
 				return new UploadResult(true, $"No new highscore for {SpawnsetFile.GetName(leaderboard.SpawnsetFileName)}.", 0, new SubmissionInfo
 				{
@@ -230,26 +220,6 @@ namespace DevilDaggersWebsite.Pages.CustomLeaderboards
 
 			// Fetch the entries again after having modified the leaderboard.
 			entries = context.CustomEntries.Where(e => e.CustomLeaderboard == leaderboard).OrderByMember(leaderboard.Category.SortingPropertyName, leaderboard.Category.Ascending).ToArray();
-
-			// TODO: Remove when 0.4.4.0+ is released.
-			if (clientVersionParsed <= new Version(0, 4, 4, 0))
-			{
-				double accuracy = shotsFired == 0 ? 0 : shotsHit / (double)shotsFired;
-				double accuracyDiff = accuracy - (entry.ShotsFired == 0 ? 0 : entry.ShotsHit / (double)entry.ShotsFired);
-
-				return new UploadResult(true, $@"NEW HIGHSCORE for {SpawnsetFile.GetName(leaderboard.SpawnsetFileName)}!
-                
-{$"Rank",-textWidth}{$"{rank} / {totalPlayers}",textWidth} ({rankDiff:+0;-#})
-{$"Time",-textWidth}{time,textWidth:0.0000} ({(timeDiff < 0 ? "" : "+")}{timeDiff:0.0000})
-{$"Kills",-textWidth}{kills,textWidth} ({killsDiff:+0;-#})
-{$"Gems",-textWidth}{gems,textWidth} ({gemsDiff:+0;-#})
-{$"Accuracy",-textWidth}{accuracy,textWidth:0.00%} ({(accuracyDiff < 0 ? "" : "+")}{accuracyDiff:0.00%})
-{$"Enemies Alive",-textWidth}{enemiesAlive,textWidth} ({enemiesAliveDiff:+0;-#})
-{$"Homing",-textWidth}{homing,textWidth} ({homingDiff:+0;-#})
-{$"Level 2",-textWidth}{levelUpTime2,textWidth:0.0000} ({(levelUpTime2Diff < 0 ? "" : "+")}{levelUpTime2Diff:0.0000})
-{$"Level 3",-textWidth}{levelUpTime3,textWidth:0.0000} ({(levelUpTime3Diff < 0 ? "" : "+")}{levelUpTime3Diff:0.0000})
-{$"Level 4",-textWidth}{levelUpTime4,textWidth:0.0000} ({(levelUpTime4Diff < 0 ? "" : "+")}{levelUpTime4Diff:0.0000})");
-			}
 
 			return new UploadResult(true, $"NEW HIGHSCORE for {SpawnsetFile.GetName(leaderboard.SpawnsetFileName)}!", 0, new SubmissionInfo
 			{
