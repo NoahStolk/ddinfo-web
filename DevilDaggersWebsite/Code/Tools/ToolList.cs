@@ -383,7 +383,7 @@ namespace DevilDaggersWebsite.Code.Utils
 					Changes = new List<Change>
 					{
 						new Change("Leaderboards and run info are now displayed in the console when the player died."),
-						new Change("Added colors for daggers, deaths, and run info differences."),
+						new Change("Added colors for daggers, deaths, and statistic differences."),
 						new Change("Fixed floating point imprecision issues with the leaderboard database."),
 						new Change("The program now shows a warning when homing and level up times are not being detected. This warning will be triggered after collecting the first gem. The problem can be resolved by restarting Devil Daggers. It happens about 1 out of 10 times for me and seems to appear randomly. I'm still investigating what causes it.")
 					}
