@@ -363,10 +363,19 @@ namespace DevilDaggersWebsite.Code.Utils
 		{
 			Name = "DevilDaggersCustomLeaderboards",
 			DisplayName = "Devil Daggers Custom Leaderboards",
-			VersionNumber = new Version(0, 6, 0, 0),
+			VersionNumber = new Version(0, 6, 1, 0),
 			VersionNumberRequired = new Version(0, 6, 0, 0),
 			Changelog = new List<ChangelogEntry>
 			{
+				new ChangelogEntry
+				{
+					VersionNumber = new Version(0, 6, 1, 0),
+					Date = new DateTime(2020, 5, 8),
+					Changes = new List<Change>
+					{
+						new Change("Fixed ascending leaderboards displaying incorrect dagger colors and statistic differences.")
+					}
+				},
 				new ChangelogEntry
 				{
 					VersionNumber = new Version(0, 6, 0, 0),
