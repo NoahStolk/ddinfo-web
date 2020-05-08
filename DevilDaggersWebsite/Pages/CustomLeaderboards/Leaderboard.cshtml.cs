@@ -80,16 +80,7 @@ namespace DevilDaggersWebsite.Pages.CustomLeaderboards
 				1 => (Leaderboard.Silver / 10000f).ToString(FormatUtils.LeaderboardTimeFormat),
 				2 => (Leaderboard.Golden / 10000f).ToString(FormatUtils.LeaderboardTimeFormat),
 				3 => (Leaderboard.Devil / 10000f).ToString(FormatUtils.LeaderboardTimeFormat),
-				_ => Leaderboard.Category.Ascending ?
-Entries.Any(e => e.Time <= Leaderboard.Homing) ?
-(Leaderboard.Homing / 10000f).ToString(FormatUtils.LeaderboardTimeFormat)
-:
-"???"
-:
-Entries.Any(e => e.Time >= Leaderboard.Homing) ?
-(Leaderboard.Homing / 10000f).ToString(FormatUtils.LeaderboardTimeFormat)
-:
-"???"
+				_ => (Leaderboard.Homing / 10000f).ToString(FormatUtils.LeaderboardTimeFormat)
 			};
 
 			return (daggerName, seconds);
