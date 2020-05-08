@@ -145,6 +145,7 @@ namespace DevilDaggersWebsite.Pages.CustomLeaderboards
 				{
 					TotalPlayers = totalPlayers,
 					Leaderboard = leaderboard,
+					Category = leaderboard.Category,
 					Entries = entries,
 					IsNewUserOnThisLeaderboard = true,
 					Rank = rank,
@@ -178,6 +179,7 @@ namespace DevilDaggersWebsite.Pages.CustomLeaderboards
 				{
 					TotalPlayers = totalPlayers,
 					Leaderboard = leaderboard,
+					Category = leaderboard.Category,
 					Entries = entries,
 					IsNewUserOnThisLeaderboard = false
 				});
@@ -223,6 +225,7 @@ namespace DevilDaggersWebsite.Pages.CustomLeaderboards
 			{
 				TotalPlayers = totalPlayers,
 				Leaderboard = leaderboard,
+				Category = leaderboard.Category,
 				Entries = entries,
 				IsNewUserOnThisLeaderboard = false,
 				Rank = rank,
