@@ -45,6 +45,9 @@
 			<th class="hidden-xs hidden-sm hidden-md" width="100">
 				Devil
 			</th>
+			<th class="hidden-xs hidden-sm hidden-md" width="100">
+				Homing
+			</th>
 			<th class="hidden-xs hidden-sm hidden-md" width="200" colspan="2">
 				World record
 			</th>
@@ -94,6 +97,12 @@
 					<td class="text-right hidden-xs hidden-sm hidden-md devil">
 						@((lb.Devil / 10000f).ToString(FormatUtils.LeaderboardTimeFormat))
 					</td>
+					<td class="text-right hidden-xs hidden-sm hidden-md homing">
+						@if (lb.Homing != 0)
+						{
+							@((lb.Homing / 10000f).ToString(FormatUtils.LeaderboardTimeFormat))
+						}
+					</td>
 					<td class="@wrDagger hidden-xs hidden-sm hidden-md leaderboard-username">
 						@{
 							if (entries.Count == 0)
@@ -125,7 +134,13 @@
 						</td>
 						<td class="text-right hidden-xs hidden-sm hidden-md devil">
 							@(entries.Count == 0 ? "0.00%" : (entries.Where(e => e.Time >= lb.Devil).Count() / (float)entries.Count).ToString("0.00%"))
-						</td>*@
+						</td>
+						@if (lb.Homing != 0)
+						{
+							<td class="text-right hidden-xs hidden-sm hidden-md homing">
+								@(entries.Count == 0 ? "0.00%" : (entries.Where(e => e.Time >= lb.Homing).Count() / (float)entries.Count).ToString("0.00%"))
+							</td>
+						}*@
 				</tr>
 			}
 		}
