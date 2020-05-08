@@ -230,6 +230,7 @@ form.left {
 	-moz-background-clip: text;
 	background-clip: text;
 	-webkit-text-fill-color: transparent;
+	vertical-align: text-top;
 }
 
 .devil {
@@ -241,6 +242,7 @@ form.left {
 	-moz-background-clip: text;
 	background-clip: text;
 	-webkit-text-fill-color: transparent;
+	vertical-align: text-top;
 }
 
 .golden {
@@ -252,6 +254,7 @@ form.left {
 	-moz-background-clip: text;
 	background-clip: text;
 	-webkit-text-fill-color: transparent;
+	vertical-align: text-top;
 }
 
 .silver {
@@ -263,6 +266,7 @@ form.left {
 	-moz-background-clip: text;
 	background-clip: text;
 	-webkit-text-fill-color: transparent;
+	vertical-align: text-top;
 }
 
 .bronze {
@@ -274,6 +278,7 @@ form.left {
 	-moz-background-clip: text;
 	background-clip: text;
 	-webkit-text-fill-color: transparent;
+	vertical-align: text-top;
 }
 
 .default {
@@ -285,6 +290,7 @@ form.left {
 	-moz-background-clip: text;
 	background-clip: text;
 	-webkit-text-fill-color: transparent;
+	vertical-align: text-top;
 }
 
 span.homing,

@@ -15,3 +15,7 @@
 	overflow: hidden;
 	white-space: nowrap;
 }
+
+.custom-leaderboard-table > tbody > tr:nth-child(2n+1) {
+	background-color: var(--col-nav-background);
+}

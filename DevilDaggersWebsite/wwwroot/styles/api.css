@@ -31,7 +31,7 @@
 }
 
 .api-list > div:nth-child(2n+1) {
-	background-color: #111;
+	background-color: var(--col-nav-background);
 }
 
 .api-list > div:nth-child(1) {
