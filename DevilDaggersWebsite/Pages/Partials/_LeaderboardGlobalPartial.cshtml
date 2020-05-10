@@ -1,9 +1,11 @@
-﻿@using DevilDaggersCore
+﻿@model IGlobalLeaderboardPage
+@using DevilDaggersCore
 @using DevilDaggersWebsite.Code.Leaderboards
+@using DevilDaggersWebsite.Code.PageModels
 @using DevilDaggersWebsite.Pages.Leaderboard
 @{
 	Type modelType = Model.GetType();
-	if (modelType == typeof(IndexModel) && Model.LeaderboardSearchType != LeaderboardSearchType.Rank)
+	if (Model is IndexModel indexModel && indexModel.LeaderboardSearchType != LeaderboardSearchType.Rank)
 	{
 		return;
 	}

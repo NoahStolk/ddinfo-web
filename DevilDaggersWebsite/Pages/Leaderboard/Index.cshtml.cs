@@ -1,6 +1,7 @@
 ﻿using CoreBase3.Services;
 using DevilDaggersCore.Leaderboards;
 using DevilDaggersWebsite.Code.Leaderboards;
+using DevilDaggersWebsite.Code.PageModels;
 using DevilDaggersWebsite.Code.Utils;
 using DevilDaggersWebsite.Code.Utils.Web;
 using Microsoft.AspNetCore.Mvc;
@@ -13,7 +14,7 @@ using Lb = DevilDaggersCore.Leaderboards.Leaderboard;
 
 namespace DevilDaggersWebsite.Pages.Leaderboard
 {
-	public class IndexModel : PageModel
+	public class IndexModel : PageModel, IGlobalLeaderboardPage
 	{
 		private readonly ICommonObjects commonObjects;
 

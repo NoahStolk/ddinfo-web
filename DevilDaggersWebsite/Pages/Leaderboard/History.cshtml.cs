@@ -1,6 +1,7 @@
 ﻿using CoreBase3.Services;
 using DevilDaggersCore.Leaderboards;
 using DevilDaggersCore.Leaderboards.History;
+using DevilDaggersWebsite.Code.PageModels;
 using DevilDaggersWebsite.Code.Utils;
 using Microsoft.AspNetCore.Mvc.RazorPages;
 using Microsoft.AspNetCore.Mvc.Rendering;
@@ -14,7 +15,7 @@ using Lb = DevilDaggersCore.Leaderboards.Leaderboard;
 
 namespace DevilDaggersWebsite.Pages.Leaderboard
 {
-	public class HistoryModel : PageModel
+	public class HistoryModel : PageModel, IGlobalLeaderboardPage
 	{
 		private readonly ICommonObjects commonObjects;
 
