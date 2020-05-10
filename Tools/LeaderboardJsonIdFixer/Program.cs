@@ -1,4 +1,5 @@
-﻿using DevilDaggersCore.Leaderboards;
+﻿using DevilDaggersCore;
+using DevilDaggersCore.Leaderboards;
 using DevilDaggersCore.Leaderboards.History;
 using NetBase.Utils;
 using Newtonsoft.Json;
@@ -74,7 +75,7 @@ namespace LeaderboardJsonIdFixer
 				{
 					Console.WriteLine(HistoryUtils.HistoryJsonFileNameToDateString(Path.GetFileNameWithoutExtension(path)));
 					foreach (Entry entry in changes)
-						Console.WriteLine($"\tSet Id to {entry.Id:D6} for rank {entry.Rank:D3} with name {entry.Username} and score {entry.Time / 10000f}");
+						Console.WriteLine($"\tSet Id to {entry.Id:D6} for rank {entry.Rank:D3} with name {entry.Username} and score {entry.Time.FormatTimeInteger()}");
 					Console.WriteLine();
 				}
 

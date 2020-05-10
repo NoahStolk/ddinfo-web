@@ -76,11 +76,11 @@ namespace DevilDaggersWebsite.Pages.CustomLeaderboards
 			};
 			string seconds = daggerIndex switch
 			{
-				0 => (Leaderboard.Bronze / 10000f).ToString(FormatUtils.LeaderboardTimeFormat),
-				1 => (Leaderboard.Silver / 10000f).ToString(FormatUtils.LeaderboardTimeFormat),
-				2 => (Leaderboard.Golden / 10000f).ToString(FormatUtils.LeaderboardTimeFormat),
-				3 => (Leaderboard.Devil / 10000f).ToString(FormatUtils.LeaderboardTimeFormat),
-				_ => (Leaderboard.Homing / 10000f).ToString(FormatUtils.LeaderboardTimeFormat)
+				0 => Leaderboard.Bronze.FormatTimeInteger(),
+				1 => Leaderboard.Silver.FormatTimeInteger(),
+				2 => Leaderboard.Golden.FormatTimeInteger(),
+				3 => Leaderboard.Devil.FormatTimeInteger(),
+				_ => Leaderboard.Homing.FormatTimeInteger()
 			};
 
 			return (daggerName, seconds);

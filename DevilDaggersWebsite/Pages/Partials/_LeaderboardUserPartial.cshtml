@@ -65,10 +65,10 @@
 				string banString = isBanned ? "ban" : string.Empty;
 
 				string rank = entry.Rank.ToString();
-				string time = (entry.Time / 10000.0).ToString(FormatUtils.LeaderboardTimeFormat);
+				string time = entry.Time.FormatTimeInteger();
 				string kills = entry.Kills.ToString(FormatUtils.LeaderboardIntFormat);
 				string gems = entry.Gems.ToString(FormatUtils.LeaderboardIntFormat);
-				string timeTotal = (entry.TimeTotal / 10000.0).ToString(FormatUtils.LeaderboardTimeLargeFormat);
+				string timeTotal = entry.TimeTotal.FormatTimeInteger(true);
 				string killsTotal = entry.KillsTotal.ToString(FormatUtils.LeaderboardIntFormat);
 				string gemsTotal = entry.GemsTotal.ToString(FormatUtils.LeaderboardIntFormat);
 				string deathsTotal = entry.DeathsTotal.ToString(FormatUtils.LeaderboardIntFormat);
@@ -82,12 +82,12 @@
 				string daggersFired = entry.ShotsFired.ToString(FormatUtils.LeaderboardIntFormat);
 				string totalDaggersHit = entry.ShotsHitTotal.ToString(FormatUtils.LeaderboardIntFormat);
 				string totalDaggersFired = entry.ShotsFiredTotal.ToString(FormatUtils.LeaderboardIntFormat);
-				string averageTime = (entry.TimeTotal / 10000.0 / entry.DeathsTotal).ToString(FormatUtils.LeaderboardTimeFormat);
-				string averageKills = (entry.KillsTotal / (float)entry.DeathsTotal).ToString("0.00");
-				string averageGems = (entry.GemsTotal / (float)entry.DeathsTotal).ToString("0.00");
-				string averageDaggersHit = (entry.ShotsHitTotal / (float)entry.DeathsTotal).ToString("0.00");
-				string averageDaggersFired = (entry.ShotsFiredTotal / (float)entry.DeathsTotal).ToString("0.00");
-				string timeByDeath = (entry.Time / 10000.0 / (float)entry.DeathsTotal).ToString(FormatUtils.LeaderboardTimeFormat);
+				string averageTime = (entry.TimeTotal / entry.DeathsTotal).FormatTimeInteger();
+				string averageKills = (entry.KillsTotal / (float)entry.DeathsTotal).ToString(FormatUtils.LeaderboardIntAverageFormat);
+				string averageGems = (entry.GemsTotal / (float)entry.DeathsTotal).ToString(FormatUtils.LeaderboardIntAverageFormat);
+				string averageDaggersHit = (entry.ShotsHitTotal / (float)entry.DeathsTotal).ToString(FormatUtils.LeaderboardIntAverageFormat);
+				string averageDaggersFired = (entry.ShotsFiredTotal / (float)entry.DeathsTotal).ToString(FormatUtils.LeaderboardIntAverageFormat);
+				string timeByDeath = (entry.Time / (float)entry.DeathsTotal).ToString(FormatUtils.LeaderboardTimeLargeFormat);
 
 				<div class="sort @banString" @entry.ToHtmlData(flagCode)>
 					<div class="leaderboard-row @(Model.ShowMoreStats ? "row-more-stats" : "") flex-container" id="@(entry.Rank)-row">

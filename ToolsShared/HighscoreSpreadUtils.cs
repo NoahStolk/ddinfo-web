@@ -1,4 +1,5 @@
-﻿using DevilDaggersCore.Game;
+﻿using DevilDaggersCore;
+using DevilDaggersCore.Game;
 using DevilDaggersCore.Leaderboards;
 using NetBase.Utils;
 using Newtonsoft.Json;
@@ -70,7 +71,7 @@ namespace ToolsShared
 				log.AppendLine(leaderboard.DateTime.ToString());
 				foreach (Entry entry in changes)
 				{
-					log.AppendLine($"\tSet missing stats for {entry.Username} {entry.Time / 10000f:0.0000}");
+					log.AppendLine($"\tSet missing stats for {entry.Username} {entry.Time.FormatTimeInteger()}");
 					log.AppendLine($"\t\tGems: {entry.Gems}");
 					log.AppendLine($"\t\tKills: {entry.Kills}");
 					log.AppendLine($"\t\tDeathType: {GameInfo.GetDeathFromDeathType(entry.DeathType).Name}");

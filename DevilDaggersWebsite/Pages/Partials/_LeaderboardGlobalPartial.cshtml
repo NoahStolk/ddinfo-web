@@ -11,7 +11,7 @@
 	bool isHistory = modelType == typeof(HistoryModel);
 
 	string players = Model.Leaderboard.Players.ToString(FormatUtils.LeaderboardIntFormat);
-	string time = (Model.Leaderboard.TimeGlobal / 10000.0).ToString(FormatUtils.LeaderboardTimeLargeFormat);
+	string time = Model.Leaderboard.TimeGlobal.FormatTimeInteger(true);
 	string kills = Model.Leaderboard.KillsGlobal.ToString(FormatUtils.LeaderboardIntFormat);
 	string gems = Model.Leaderboard.GemsGlobal.ToString(FormatUtils.LeaderboardIntFormat);
 	string deaths = Model.Leaderboard.DeathsGlobal.ToString(FormatUtils.LeaderboardIntFormat);
