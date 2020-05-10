@@ -15,7 +15,7 @@ using Lb = DevilDaggersCore.Leaderboards.Leaderboard;
 
 namespace DevilDaggersWebsite.Pages.Leaderboard
 {
-	public class HistoryModel : PageModel, IGlobalLeaderboardPage
+	public class HistoryModel : PageModel, IDefaultLeaderboardPage
 	{
 		private readonly ICommonObjects commonObjects;
 
