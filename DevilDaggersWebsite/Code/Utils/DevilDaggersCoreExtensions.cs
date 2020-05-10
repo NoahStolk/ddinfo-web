@@ -37,7 +37,7 @@ namespace DevilDaggersWebsite.Code.Utils
                 daggers-fired='{entry.ShotsFired}'
                 total-daggers-hit='{entry.ShotsHitTotal}'
                 total-daggers-fired='{entry.ShotsFiredTotal}'
-                average-time='{entry.TimeTotal * 100f / deaths:0}'
+                average-time='{entry.TimeTotal * 10000f / deaths:0}'
                 average-kills='{entry.KillsTotal * 100f / deaths:0}'
                 average-gems='{entry.GemsTotal * 100f / deaths:0}'
                 average-daggers-hit='{entry.ShotsHitTotal * 100f / deaths:0}'
