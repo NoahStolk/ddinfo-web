@@ -7,6 +7,7 @@
 @using DevilDaggersWebsite.Code.Users
 @using DevilDaggersWebsite.Code.Utils
 @using DevilDaggersWebsite.Pages.Leaderboard
+@using Microsoft.AspNetCore.Html; 
 @inject CoreBase3.Services.ICommonObjects CommonObjects
 @{
 	bool isIndex = false;
@@ -90,12 +91,12 @@
 				string daggersFired = entry.ShotsFired.ToString(FormatUtils.LeaderboardIntFormat);
 				string totalDaggersHit = entry.ShotsHitTotal.ToString(FormatUtils.LeaderboardIntFormat);
 				string totalDaggersFired = entry.ShotsFiredTotal.ToString(FormatUtils.LeaderboardIntFormat);
-				string averageTime = (entry.TimeTotal / entry.DeathsTotal).FormatTimeInteger();
-				string averageKills = (entry.KillsTotal / (float)entry.DeathsTotal).ToString(FormatUtils.LeaderboardIntAverageFormat);
-				string averageGems = (entry.GemsTotal / (float)entry.DeathsTotal).ToString(FormatUtils.LeaderboardIntAverageFormat);
-				string averageDaggersHit = (entry.ShotsHitTotal / (float)entry.DeathsTotal).ToString(FormatUtils.LeaderboardIntAverageFormat);
-				string averageDaggersFired = (entry.ShotsFiredTotal / (float)entry.DeathsTotal).ToString(FormatUtils.LeaderboardIntAverageFormat);
-				string timeByDeath = (entry.Time / (float)entry.DeathsTotal).ToString(FormatUtils.LeaderboardTimeLargeFormat);
+				HtmlString averageTime = entry.DeathsTotal == 0 ? RazorUtils.NAString : new HtmlString((entry.TimeTotal / entry.DeathsTotal).FormatTimeInteger());
+				HtmlString averageKills = entry.DeathsTotal == 0 ? RazorUtils.NAString : new HtmlString((entry.KillsTotal / (float)entry.DeathsTotal).ToString(FormatUtils.LeaderboardIntAverageFormat));
+				HtmlString averageGems = entry.DeathsTotal == 0 ? RazorUtils.NAString : new HtmlString((entry.GemsTotal / (float)entry.DeathsTotal).ToString(FormatUtils.LeaderboardIntAverageFormat));
+				HtmlString averageDaggersHit = entry.DeathsTotal == 0 ? RazorUtils.NAString : new HtmlString((entry.ShotsHitTotal / (float)entry.DeathsTotal).ToString(FormatUtils.LeaderboardIntAverageFormat));
+				HtmlString averageDaggersFired = entry.DeathsTotal == 0 ? RazorUtils.NAString : new HtmlString((entry.ShotsFiredTotal / (float)entry.DeathsTotal).ToString(FormatUtils.LeaderboardIntAverageFormat));
+				HtmlString timeByDeath = entry.DeathsTotal == 0 ? RazorUtils.NAString : new HtmlString((entry.Time / (float)entry.DeathsTotal).ToString(FormatUtils.LeaderboardTimeLargeFormat));
 
 				<div class="sort @banString" @entry.ToHtmlData(flagCode)>
 					<div class="leaderboard-row @(showMoreStats ? "row-more-stats" : "") flex-container" id="@(entry.Rank)-row">
