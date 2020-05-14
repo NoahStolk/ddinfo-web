@@ -1,0 +1,26 @@
+﻿@page
+@model DevilDaggersWebsite.Pages.Admin.BansModel
+@inject CoreBase3.Services.ICommonObjects CommonObjects
+@{
+	ViewData["Title"] = "Admin - Bans";
+}
+
+<header>
+	<h1>@ViewData["Title"]</h1>
+</header>
+
+<main role="main" class="text-left">
+	<a asp-page="/Admin/Index" asp-route-password="@Model.Password">Admin home</a>
+	@using (Html.BeginForm(FormMethod.Post))
+	{
+		<fieldset>
+			<p style="height: 3em;">ID, Description, ID responsible (<a asp-page="/Admin/BanInfo">Ban Info page</a>)</p>
+			<textarea style="height: @(Model.FileContents.Split('\n').Length * 1.4f)em;" asp-for="FileContents">@Model.FileContents</textarea>
+			<input type="submit" id="save" class="btn btn-default" value="Save" />
+		</fieldset>
+	}
+</main>
+
+@section Styles {
+	<link rel='stylesheet' href='~/styles/admin.css' />
+}

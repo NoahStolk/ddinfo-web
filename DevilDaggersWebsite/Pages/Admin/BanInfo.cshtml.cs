@@ -13,20 +13,15 @@ namespace DevilDaggersWebsite.Pages.Admin
 {
 	public class BanInfoModel : AdminPageModel
 	{
-		private readonly ICommonObjects commonObjects;
-
 		public List<(Ban ban, string bannedAccountUsername, string responsibleAccountUsername)> BanInfo { get; private set; } = new List<(Ban, string, string)>();
 
 		public BanInfoModel(ICommonObjects commonObjects)
+			: base(commonObjects)
 		{
-			this.commonObjects = commonObjects;
 		}
 
-		public async Task<ActionResult> OnGetAsync(string password)
+		public async Task<ActionResult> OnGetAsync()
 		{
-			if (!Authenticate(password))
-				return RedirectToPage("/Error/404");
-
 			IEnumerable<Ban> bans = UserUtils.GetBans(commonObjects);
 			IEnumerable<int> userIds = bans.SelectMany(b => b.IdResponsible.HasValue ? new[] { b.Id, b.IdResponsible.Value } : new[] { b.Id });
 			Entry[] entries = await Task.WhenAll(userIds.Select(async id => await Hasmodai.GetUserById(id)));

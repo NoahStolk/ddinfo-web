@@ -1,17 +1,13 @@
-﻿using System;
+﻿using CoreBase3.Services;
 using DevilDaggersWebsite.Code.PageModels;
-using Microsoft.AspNetCore.Mvc;
 
 namespace DevilDaggersWebsite.Pages.Admin
 {
-    public class TestExceptionModel : AdminPageModel
-    {
-        public ActionResult OnGet(string password)
+	public class TestExceptionModel : AdminPageModel
+	{
+		public TestExceptionModel(ICommonObjects commonObjects)
+			: base(commonObjects)
 		{
-			if (!Authenticate(password))
-				return RedirectToPage("/Error/404");
-
-			throw new Exception("Test exception");
-        }
-    }
+		}
+	}
 }

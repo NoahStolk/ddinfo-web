@@ -1,0 +1,53 @@
+﻿@page
+@model DevilDaggersWebsite.Pages.Admin.ModsModel
+@using NetBase.Utils
+@using DevilDaggersWebsite.Code.Users
+@inject CoreBase3.Services.ICommonObjects CommonObjects
+@{
+	ViewData["Title"] = "Admin - Mods";
+}
+
+<header>
+	<h1>@ViewData["Title"]</h1>
+</header>
+
+<main role="main" class="text-left">
+	<a asp-page="/Admin/Index" asp-route-password="@Model.Password">Admin home</a>
+	@using (Html.BeginForm(FormMethod.Post))
+	{
+		<fieldset>
+			<p>Mod type(s), File kind(s) included in download, Mod name, Mod author, Download URL</p>
+
+			<div class="row">
+				<div class="col-xs-6">
+					Mod type<br />
+					<ul>
+						@foreach (string s in EnumUtils.GetEnumNamesWithValues<AssetModType>())
+						{
+							<li>@s</li>
+						}
+					</ul>
+				</div>
+				<div class="col-xs-6">
+					File kind<br />
+					<ul>
+						@foreach (string s in EnumUtils.GetEnumNamesWithValues<AssetModFileContents>())
+						{
+							<li>@s</li>
+						}
+					</ul>
+				</div>
+			</div>
+
+			<p>
+				Multiple types are supported using bit fields; a mod that changes audio and textures would get the mod type value 3 (1 + 2), a mod that changes audio, models, and particles would get the mod type value 21 (1 + 4 + 16), and so forth.
+			</p>
+			<textarea style="height: @(Model.FileContents.Split('\n').Length * 1.4f)em;" asp-for="FileContents">@Model.FileContents</textarea>
+			<input type="submit" id="save" class="btn btn-default" value="Save" />
+		</fieldset>
+	}
+</main>
+
+@section Styles {
+	<link rel='stylesheet' href='~/styles/admin.css' />
+}

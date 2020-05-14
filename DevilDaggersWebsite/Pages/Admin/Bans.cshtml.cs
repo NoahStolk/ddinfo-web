@@ -3,10 +3,10 @@ using DevilDaggersWebsite.Code.PageModels;
 
 namespace DevilDaggersWebsite.Pages.Admin
 {
-	public class IndexModel : AdminPageModel
+	public class BansModel : AdminFilePageModel
 	{
-		public IndexModel(ICommonObjects commonObjects)
-			: base(commonObjects)
+		public BansModel(ICommonObjects commonObjects)
+			: base(commonObjects, "bans")
 		{
 		}
 	}
