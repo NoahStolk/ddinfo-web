@@ -518,10 +518,68 @@ namespace DevilDaggersWebsite.Code.Utils
 		{
 			Name = "DevilDaggersAssetEditor",
 			DisplayName = "Devil Daggers Asset Editor",
-			VersionNumber = new Version(0, 7, 14, 0),
+			VersionNumber = new Version(0, 13, 11, 0),
 			VersionNumberRequired = new Version(0, 7, 5, 0),
 			Changelog = new List<ChangelogEntry>
 			{
+				new ChangelogEntry
+				{
+					VersionNumber = new Version(0, 13, 11, 0),
+					Date = new DateTime(2020, 5, 29),
+					Changes = new List<Change>
+					{
+						new Change("The application is now fully compatible with 3D modeling software (e.g. Blender) -- the implementation of model compression is hereby complete.")
+						{
+							SubChanges = new List<Change>
+							{
+								new Change("Model compression supports UV mapping which means textures are properly rendered onto models."),
+								new Change("Model compression supports models consisting of quads.")
+							}
+						},
+						new Change("You can now sort assets."),
+						new Change("Implemented tags for assets."),
+						new Change("You can now filter assets by tags using the new buttons in the column headers."),
+						new Change("Added more settings.")
+						{
+							SubChanges = new List<Change>
+							{
+								new Change("You can now choose whether or not to make use of the 3 standard folders."),
+								new Change("You can now choose to automatically create a mod file when extracting assets from a binary file."),
+								new Change("You can now choose to automatically open the folder after extracting assets."),
+								new Change("There is a new setting that enables automatic downscaling for large textures. This setting is set to 512 by default, since the largest original textures in Devil Daggers are 512x512 pixels. This currently applies to all textures, including post lut filters, icons, and title screens. This means the entire game will look different when you set this setting to 64 for example. All textures will shrink until they fit in a 64x64 pixel space (so a 256x16 texture will be downscaled to 64x4).")
+							}
+						},
+						new Change("Added binary file analyzer tool that can be used to visualize the contents of a Devil Daggers binary file. This can be helpful in case your file happens to be unnecessarily large and you want to know what causes it."),
+						new Change("Implemented user caching. This means the application will remember certain values when it shuts down.")
+						{
+							SubChanges = new List<Change>
+							{
+								new Change("It will remember which mod files were last opened in the previous session."),
+								new Change("It will remember which tab was active in the previous session."),
+								new Change("It will remember the window size from the previous session including whether the application was run in full screen or not."),
+								new Change("It will remember whether or not 'Auto-play' was enabled in the audio previewer.")
+							}
+						},
+						new Change("Added vertex and index counts to model previewer."),
+						new Change("Added more descriptions and asset information."),
+						new Change("Fixes")
+						{
+							SubChanges =new List<Change>
+							{
+								new Change("Fixed inner window not sizing correctly in full screen."),
+								new Change("Fixed text overflowing (still WIP, hoping to improve this in a future update)."),
+								new Change("Fixed misleading editor paths for shaders by displaying editor paths for both files."),
+								new Change("Fixed marking negative loudness values as valid."),
+								new Change("Fixed showing paths for non-existing files."),
+								new Change("Fixed texture previewer locking image files even when they're no longer being displayed."),
+								new Change("Fixed texture previewer locking the currently displayed image file."),
+								new Change("Fixed not clearing previewers when selecting an empty asset."),
+								new Change("Fixed crash that occurred when attempting to preview a non-existing file.")
+							}
+						},
+						new Change("Many layout improvements"),
+					}
+				},
 				new ChangelogEntry
 				{
 					VersionNumber = new Version(0, 7, 14, 0),
