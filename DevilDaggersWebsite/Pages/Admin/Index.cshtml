@@ -10,12 +10,14 @@
 </header>
 
 <main role="main">
-	@*TODO: Use reflection to generate this list.*@
-	<a asp-page="Bans" asp-route-password="@Model.Password">Bans</a>
-	<a asp-page="Flags" asp-route-password="@Model.Password">Flags</a>
-	<a asp-page="Mods" asp-route-password="@Model.Password">Mods</a>
-	<a asp-page="Settings" asp-route-password="@Model.Password">Settings</a>
-	<a asp-page="Titles" asp-route-password="@Model.Password">Titles</a>
+	<ul>
+		@*TODO: Use reflection to generate this list.*@
+		<li><a asp-page="Bans" asp-route-password="@Model.Password">Bans</a></li>
+		<li><a asp-page="Flags" asp-route-password="@Model.Password">Flags</a></li>
+		<li><a asp-page="Mods" asp-route-password="@Model.Password">Mods</a></li>
+		<li><a asp-page="Settings" asp-route-password="@Model.Password">Settings</a></li>
+		<li><a asp-page="Titles" asp-route-password="@Model.Password">Titles</a></li>
+	</ul>
 </main>
 
 @section Styles {
