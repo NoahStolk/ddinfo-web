@@ -528,12 +528,12 @@ namespace DevilDaggersWebsite.Code.Utils
 					Date = new DateTime(2020, 5, 29),
 					Changes = new List<Change>
 					{
-						new Change("The application is now fully compatible with 3D modeling software (e.g. Blender) -- the implementation of model compression is hereby complete.")
+						new Change("The application is now fully compatible with 3D modeling software (e.g. Blender) -- the implementation of turning models into binary data is hereby complete.")
 						{
 							SubChanges = new List<Change>
 							{
-								new Change("Model compression supports UV mapping which means textures are properly rendered onto models."),
-								new Change("Model compression supports models consisting of quads.")
+								new Change("Making a 'dd' binary now supports UV mapping which means textures are properly rendered onto models."),
+								new Change("Making a 'dd' binary now supports models consisting of quads.")
 							}
 						},
 						new Change("You can now sort assets."),
@@ -586,7 +586,7 @@ namespace DevilDaggersWebsite.Code.Utils
 					Date = new DateTime(2020, 3, 13),
 					Changes = new List<Change>
 					{
-						new Change("Fixed crash that occurred when compressing textures."),
+						new Change("Fixed crash that occurred when turning textures into binary data."),
 						new Change("Fixed textures not being correctly imported from mod files.")
 					}
 				},
@@ -605,8 +605,8 @@ namespace DevilDaggersWebsite.Code.Utils
 					Date = new DateTime(2019, 11, 30),
 					Changes = new List<Change>
 					{
-						new Change("Improved model extraction to be more compatible with 3D modelling software."),
-						new Change("Fixed model compression crash that occurred when compressing a model with more texture coordinates or more vertex normals than geometric vertices."),
+						new Change("Improved model extraction to be more compatible with 3D modeling software."),
+						new Change("Fixed crash that occurred when attempting to turn a model with more texture coordinates or more vertex normals than geometric vertices into binary data."),
 						new Change("Saving mod files now produces indented JSON.")
 					}
 				},
@@ -616,7 +616,7 @@ namespace DevilDaggersWebsite.Code.Utils
 					Date = new DateTime(2019, 11, 26),
 					Changes = new List<Change>
 					{
-						new Change("Improved model parsing so compressing .obj files exported from 3D modelling software is supported."),
+						new Change("Improved model parsing so turning .obj files exported from 3D modeling software into binary data is supported."),
 						new Change("Fixed audio description for daggerseek."),
 						new Change("Added tooltips for audio preview buttons.")
 					}
@@ -636,7 +636,7 @@ namespace DevilDaggersWebsite.Code.Utils
 					Date = new DateTime(2019, 11, 3),
 					Changes = new List<Change>
 					{
-						new Change("Implemented shader, model (limited), and texture compression. Features such as compressing and using mod files for \"dd\" and \"core\" are now available and functional. Note that the editor path for shaders can be misleading. For instance when it says the path is \"..boid.glsl\", it actually points to the files \"..boid_fragment.glsl\" and \"..boid_vertex.glsl\". Also note that .obj parsing (model format) is still limited and might not work depending on what kind of .obj file you're trying to compress. Compressing the original models, or files in an identical .obj format, works, thus you can successfully swap the original models."),
+						new Change("Implemented making shader, model (limited), and texture binaries. Features such as making binaries and using mod files for \"dd\" and \"core\" are now available and functional. Note that the editor path for shaders can be misleading. For instance when it says the path is \"..boid.glsl\", it actually points to the files \"..boid_fragment.glsl\" and \"..boid_vertex.glsl\". Also note that .obj parsing (model format) is still limited and might not work depending on what kind of .obj file you're trying to turn into binary data. It does work for the original models, or files in an identical .obj format, so you can successfully swap the original models."),
 						new Change("Implemented audio player with the ability to pitch shift audio real-time."),
 						new Change("Implemented texture, shader, model binding, and particle previewers. A model previewer has not yet been implemented."),
 						new Change("Added Changelog window."),
@@ -652,7 +652,7 @@ namespace DevilDaggersWebsite.Code.Utils
 					Date = new DateTime(2019, 9, 23),
 					Changes = new List<Change>
 					{
-						new Change("Created progress bar for lengthy tasks such as compressing and extracting."),
+						new Change("Created progress bar for lengthy tasks such as making and extracting binaries."),
 						new Change("Many bug fixes."),
 						new Change("Improved audio descriptions.")
 					}
@@ -663,7 +663,7 @@ namespace DevilDaggersWebsite.Code.Utils
 					Date = new DateTime(2019, 9, 21),
 					Changes = new List<Change>
 					{
-						new Change("Implemented particle extraction, compression, and mod files. The particle files are in binary, so there is not much to mod until I figure out what the bytes mean, but you can switch particles and replace them with others."),
+						new Change("Implemented extracting and making particle binaries, as well as mod files for particle mods. The extracted particle files are in binary (.bin), so there is not much to mod until I figure out what the bytes mean, but you can switch particles and replace them with others."),
 						new Change("Implemented functionality to specify whether or not to use relative paths in mod files."),
 						new Change("Added user settings to specify Devil Daggers root folder, mods root folder, and assets root folder."),
 						new Change("Improve initial directories for file and folder dialogs."),
@@ -679,7 +679,7 @@ namespace DevilDaggersWebsite.Code.Utils
 					{
 						new Change("Loudness is now exported as a .ini file rather than a .wav file."),
 						new Change("Added functionality to export the current loudness values."),
-						new Change("Added ability to save and open \"mod\" files (\".audio\" extension for audio mods) which are files containing the asset paths and loudness values. This removes the need to import/export loudness values when closing the application and is way more convenient than having to extract and compress huge files every time as well. Note that the \"mod\" files only contain local paths, so sharing them will not work."),
+						new Change("Added ability to save and open \"mod\" files (\".audio\" extension for audio mods) which are files containing the asset paths and loudness values. This removes the need to import/export loudness values when closing the application and is way more convenient than having to extract and make huge binary files every time as well. Note that the \"mod\" files only contain local paths, so sharing them will not work."),
 						new Change("Fixed not being able to type decimal values in the loudness fields."),
 						new Change("Added support to automatically check for new versions of the program."),
 						new Change("Added icon."),
