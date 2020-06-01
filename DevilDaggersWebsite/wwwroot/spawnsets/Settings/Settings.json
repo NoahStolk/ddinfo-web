@@ -876,5 +876,19 @@
 	},
 	"Zoo_Stop": {
 		"LastUpdated": "2020-05-23T16:43:00"
+	},
+	"8-chamber_Stop": {
+		"LastUpdated": "2020-06-01T20:29:03",
+		"Description": "Goal: 616s<br />
+Mad Lad Goal: 666s"
+	},
+	"Carnage_Stop": {
+		"LastUpdated": "2020-06-01T20:29:02"
+	},
+	"2Spooky4Me_Stop": {
+		"LastUpdated": "2020-06-01T20:29:01"
+	},
+	"OCD_Stop": {
+		"LastUpdated": "2020-06-01T20:29:00"
 	}
 }
