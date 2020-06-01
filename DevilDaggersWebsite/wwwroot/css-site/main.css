@@ -218,7 +218,8 @@ form.left {
 	-epub-hyphens: auto;
 	-webkit-hyphens: auto;
 	hyphens: auto;
-	color: var(--col-red);
+	color: #d77;
+	background-color: #201010;
 }
 
 .homing {
