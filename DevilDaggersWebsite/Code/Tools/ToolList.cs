@@ -518,10 +518,21 @@ namespace DevilDaggersWebsite.Code.Utils
 		{
 			Name = "DevilDaggersAssetEditor",
 			DisplayName = "Devil Daggers Asset Editor",
-			VersionNumber = new Version(0, 13, 11, 0),
+			VersionNumber = new Version(0, 13, 14, 0),
 			VersionNumberRequired = new Version(0, 7, 5, 0),
 			Changelog = new List<ChangelogEntry>
 			{
+				new ChangelogEntry
+				{
+					VersionNumber = new Version(0, 13, 14, 0),
+					Date = new DateTime(2020, 6, 1),
+					Changes = new List<Change>
+					{
+						new Change("Removed the term 'compression' from the UI since it is misleading. What used to be called compressing is now called making a binary."),
+						new Change("Added missing audio assets to the editor."),
+						new Change("Fixed bugs related to the audio loudness file."),
+					}
+				},
 				new ChangelogEntry
 				{
 					VersionNumber = new Version(0, 13, 11, 0),
