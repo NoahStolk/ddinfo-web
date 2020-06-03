@@ -518,10 +518,22 @@ namespace DevilDaggersWebsite.Code.Utils
 		{
 			Name = "DevilDaggersAssetEditor",
 			DisplayName = "Devil Daggers Asset Editor",
-			VersionNumber = new Version(0, 13, 14, 0),
+			VersionNumber = new Version(0, 13, 18, 0),
 			VersionNumberRequired = new Version(0, 7, 5, 0),
 			Changelog = new List<ChangelogEntry>
 			{
+				new ChangelogEntry
+				{
+					VersionNumber = new Version(0, 13, 18, 0),
+					Date = new DateTime(2020, 6, 3),
+					Changes = new List<Change>
+					{
+						new Change("Fixed crash that occurred when attempting to open a non-existing initial directory in an explorer dialog."),
+						new Change("Fixed auto-detect button in settings windows setting the path to an incorrect value."),
+						new Change("Fixed opening mods root folder instead of assets root folder when importing or exporting loudness files."),
+						new Change("Fixed texture dimension limit setting affecting non-model textures. Post lut filters, icons, fonts, and title screens will no longer be downscaled.")
+					}
+				},
 				new ChangelogEntry
 				{
 					VersionNumber = new Version(0, 13, 14, 0),
@@ -530,7 +542,7 @@ namespace DevilDaggersWebsite.Code.Utils
 					{
 						new Change("Removed the term 'compression' from the UI since it is misleading. What used to be called compressing is now called making a binary."),
 						new Change("Added missing audio assets to the editor."),
-						new Change("Fixed bugs related to the audio loudness file."),
+						new Change("Fixed bugs related to the audio loudness file.")
 					}
 				},
 				new ChangelogEntry
@@ -557,7 +569,7 @@ namespace DevilDaggersWebsite.Code.Utils
 								new Change("You can now choose whether or not to make use of the 3 standard folders."),
 								new Change("You can now choose to automatically create a mod file when extracting assets from a binary file."),
 								new Change("You can now choose to automatically open the folder after extracting assets."),
-								new Change("There is a new setting that enables automatic downscaling for large textures. This setting is set to 512 by default, since the largest original textures in Devil Daggers are 512x512 pixels. This currently applies to all textures, including post lut filters, icons, and title screens. This means the entire game will look different when you set this setting to 64 for example. All textures will shrink until they fit in a 64x64 pixel space (so a 256x16 texture will be downscaled to 64x4).")
+								new Change("There is a new setting that enables automatic downscaling for large textures. This setting is set to 512 by default, since the largest original textures in Devil Daggers are 512x512 pixels. This currently applies to all textures, including post lut filters, icons, fonts, and title screens. This means the entire game will look different when you set this setting to 64 for example. All textures will shrink until they fit in a 64x64 pixel space (so a 256x16 texture will be downscaled to 64x4).")
 							}
 						},
 						new Change("Added binary file analyzer tool that can be used to visualize the contents of a Devil Daggers binary file. This can be helpful in case your file happens to be unnecessarily large and you want to know what causes it."),
