@@ -1,5 +1,6 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.Text;
 
 namespace DevilDaggersWebsite.Code.Docs
 {
@@ -15,7 +16,8 @@ namespace DevilDaggersWebsite.Code.Docs
 			{ typeof(byte), new BinaryType("8-bit unsigned integer", (bytes) => bytes[0]) },
 			{ typeof(long), new BinaryType("64-bit signed integer", (bytes) => BitConverter.ToInt64(bytes)) },
 			{ typeof(int), new BinaryType("32-bit signed integer", (bytes) => BitConverter.ToInt32(bytes)) },
-			{ typeof(short), new BinaryType("16-bit signed integer", (bytes) => BitConverter.ToInt16(bytes)) }
+			{ typeof(short), new BinaryType("16-bit signed integer", (bytes) => BitConverter.ToInt16(bytes)) },
+			{ typeof(string), new BinaryType("String", (bytes) => Encoding.Default.GetString(bytes)) }
 		};
 	}
 }
