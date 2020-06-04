@@ -1,6 +1,4 @@
 ﻿$(document).ready(function () {
-	$('[data-toggle="tooltip"]').tooltip();
-
 	var directions = {
 		"rank": -1,
 		"flag": -1,

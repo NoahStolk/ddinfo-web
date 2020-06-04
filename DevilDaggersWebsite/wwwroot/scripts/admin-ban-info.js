@@ -1,12 +1,10 @@
 ﻿$(document).ready(function () {
-	$('[data-toggle="tooltip"]').tooltip();
-
 	var directions = {
 		"description": 1,
 		"banned-account": 1,
 		"responsible-account": 1
 	};
-	
+
 	$(document).on("click", ".sorter", function () {
 		var sorter = $(this);
 		var sortValue = sorter.attr('sort');

@@ -1,6 +1,4 @@
 ﻿$(document).ready(function () {
-	$('[data-toggle="tooltip"]').tooltip();
-
 	var directions = {
 		"rank": -1,
 		"flag": -1,
@@ -13,14 +11,14 @@
 		"hand": -1,
 		"flash": -1
 	};
-	
+
 	$(document).on("click", ".leaderboard-row", function () {
 		var id = $(this).attr('id').split('-')[0];
 		$("#" + id + "-expand").toggleClass('expand');
 
 		$(".leaderboard-expand").not("#" + id + "-expand").removeClass('expand');
 	});
-	
+
 	$(document).on("click", ".sorter", function () {
 		var sorter = $(this);
 		var sortValue = sorter.attr('sort');
