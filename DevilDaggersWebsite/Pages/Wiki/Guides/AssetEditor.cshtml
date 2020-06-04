@@ -1,7 +1,6 @@
 ﻿@page
-@model DevilDaggersWebsite.Pages.Wiki.AssetGuideModel
 @{
-	ViewData["Title"] = "Guide for modding Devil Daggers assets";
+	ViewData["Title"] = "Asset Editor Guide";
 }
 
 <header>
@@ -88,41 +87,6 @@
 		<li>In the save file dialog, choose the file called audio located in <span class="path">devildaggers\res</span> (which is <span class="path">C:\Program Files (x86)\Steam\steamapps\common\devildaggers\res</span> by default), and overwrite it. It is recommended to save a back-up of the original file so you can easily go back to the original.</li>
 		<li>Launch Devil Daggers to see if it's working. If it crashes, there might be something wrong with one of your custom .wav files. Be sure to check if all files are compatible. You will need to restart Devil Daggers after making a new binary, since the binaries are only loaded when the game starts up.</li>
 	</ol>
-
-	@*<h2>Binaries</h2>
-		<h3>audio</h3>
-		<p>
-			This binary consists of audio files (.wav) and a "loudness" file. It is the largest binary and makes up for almost 90% of all data.
-		</p>
-
-		<h4>Loudness</h4>
-		<p>
-			The loudness file is a plain text file that lists all "loudness" values for most audio. These values are numbers and represent which audio files have priority when playing, e.g. a sound with loudness 2 will be prioritized over a sound with loudness 1 by the audio engine; both sounds will still be played, but the one with the higher loudness value will sound more apparent than the other. Loudness does not correspond to volume. In other words; specifying a higher loudness value doesn't necessary make a certain audio asset louder on its own. You could say that audio assets with a higher loudness value effectively make all other audio assets with lower values more quiet.
-		</p>
-		<p>
-			The loudness specifies the volume for 217 audio assets, 5 of these assets do not exist in the current version of the game (collectgib1loop, collectgib2loop, collectgib3loop, eyepacify, ricochetmagic5).
-		</p>
-		<p>
-			51 audio assets have no loudness specified. When no loudness is specified, the game defaults to loudness 1.0 for these assets.
-		</p>
-		<p>
-			Oddly enough, the binary format treats this file exactly the same as the .wav assets. Devil Daggers Asset Editor treats this file as a .ini file however.
-		</p>
-
-		<h3>dd</h3>
-		<p>
-			This binary consists of models, textures, shaders, and model bindings.
-		</p>
-
-		<h3>core</h3>
-		<p>
-			This binary consists of UI-related shaders. It is the smallest binary.
-		</p>
-
-		<h3>particle</h3>
-		<p>
-			This binary consists of particle data. Not much is known about this as of now.
-		</p>*@
 
 	<h2>Compatibility</h2>
 

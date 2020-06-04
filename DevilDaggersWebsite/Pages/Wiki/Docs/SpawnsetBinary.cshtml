@@ -1,0 +1,52 @@
+﻿@page
+@{
+	ViewData["Title"] = "Spawnset Binary";
+}
+
+<header>
+	<h1>@ViewData["Title"]</h1>
+</header>
+
+<main role="main">
+	<h2>Format</h2>
+
+	<p>
+		The internal structure of the spawnset files consists of the following 4 parts.
+	</p>
+
+	<h3>Header</h3>
+	<p>
+		Fixed-length buffer of 36 bytes. Contains shrinking control and brightness values as well as presumably a version number and some unknown miscellaneous values that usually cause the game to crash or behave oddly when modified.
+	</p>
+
+	<h3>Arena</h3>
+	<p>
+		Fixed-length one-dimensional array of 2601 (51x51 = 2601 tiles) 32-bit floating point numbers (2601*32/8 = 10404 bytes) representing the height of each tile in the arena.
+	</p>
+
+	<h3>Spawns header</h3>
+	<p>
+		Fixed-length buffer of 40 bytes. Contains the amount of spawns as well as some other unknown values.
+	</p>
+
+	<h3>Spawns</h3>
+	<p>
+		The only part of the file with a variable length. Represents a list of spawns. Each spawn buffer consists of 28 bytes that include the enemy type as a 32-bit integer and the delay value as a 32-bit floating point number. The other bytes in each of the spawn buffers seem to be the same for all of them and appear to have no meaning.
+	</p>
+
+	<p>
+		This is all there is to the spawnset files, no further modifications can be made to the game using this file.
+	</p>
+
+	<h2>Files</h2>
+
+	<p>
+		There are 3 files in Devil Daggers which use this format. These are "survival", "dagger", and "menu", although only "survival" makes use of all the features.
+	</p>
+
+	<ul>
+		<li class="path">devildaggers/dd/dagger</li>
+		<li class="path">devildaggers/dd/menu</li>
+		<li class="path">devildaggers/dd/survival</li>
+	</ul>
+</main>

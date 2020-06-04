@@ -1,9 +1,8 @@
 ﻿@page
 @using DevilDaggersCore.Game
 @using DevilDaggersWebsite.Code.Utils
-@model DevilDaggersWebsite.Pages.Wiki.SpawnsetGuideModel
 @{
-	ViewData["Title"] = "Spawnset Guide";
+	ViewData["Title"] = "Spawnset Editor Guide";
 }
 
 <header>
@@ -47,19 +46,6 @@
 		<li>The player's maximum double dagger jump height is around 8.4 tile heights.</li>
 	</ul>
 	@*
-			<h2>Advanced information</h2>
-
-			<h3>Spawnset file structure</h3>
-			<p>The internal structure of the spawnset files (which are "survival", "dagger", and "menu", although only "survival" makes use of all the features) consists of the following 4 parts.</p>
-			<h4>Header</h4>
-			<p>Fixed-length buffer of 36 bytes. Contains shrinking control and brightness values as well as presumably a version number and some unknown miscellaneous values that usually cause the game to crash or behave oddly when modified.</p>
-			<h4>Arena</h4>
-			<p>Fixed-length one-dimensional array of 2601 (51x51 = 2601 tiles) 32-bit floating point numbers (2601*32/8 = 10404 bytes) representing the height of each tile in the arena.</p>
-			<h4>Spawns header</h4>
-			<p>Fixed-length buffer of 40 bytes. Contains the amount of spawns as well as some other unknown values.</p>
-			<h4>Spawns</h4>
-			<p>The only part of the file with a variable length. Represents a list of spawns. Each spawn buffer consists of 28 bytes that include the enemy type as a 32-bit integer and the delay value as a 32-bit floating point number. The other bytes in each of the spawn buffers seem to be the same for all of them and appear to have no meaning.</p>
-			<p>This is all there is to the spawnset files, no further modifications can be made to the game using this file.</p>
 
 			<h3>End loop timing calculation (C# sample)</h3>
 			<pre>

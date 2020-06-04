@@ -6,7 +6,6 @@ namespace DevilDaggersWebsite.Pages.Wiki
 	{
 		public void OnGet()
 		{
-
 		}
 	}
 }

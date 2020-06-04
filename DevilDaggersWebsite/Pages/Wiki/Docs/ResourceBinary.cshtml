@@ -1,0 +1,55 @@
+﻿@page
+@{
+	ViewData["Title"] = "Resource Binary";
+}
+
+<header>
+	<h1>@ViewData["Title"]</h1>
+</header>
+
+<main role="main">
+	<h2>Format</h2>
+
+	<p>TODO</p>
+
+	<h2>Files</h2>
+
+	<p>
+		There are 3 files in Devil Daggers which use this format. These are "core", "audio", and "dd".
+	</p>
+
+	<ul>
+		<li class="path">devildaggers/core/core</li>
+		<li class="path">devildaggers/res/audio</li>
+		<li class="path">devildaggers/res/dd</li>
+	</ul>
+
+	<h3>audio</h3>
+	<p>
+		This binary consists of audio files (.wav) and a "loudness" file. It is the largest binary and makes up for almost 90% of all data.
+	</p>
+
+	<h4>Loudness</h4>
+	<p>
+		The loudness file is a plain text file that lists all "loudness" values for most audio. These values are numbers and represent which audio files have priority when playing, e.g. a sound with loudness 2 will be prioritized over a sound with loudness 1 by the audio engine; both sounds will still be played, but the one with the higher loudness value will sound more apparent than the other. Loudness does not correspond to volume. In other words; specifying a higher loudness value doesn't necessary make a certain audio asset louder on its own. You could say that audio assets with a higher loudness value effectively make all other audio assets with lower values more quiet.
+	</p>
+	<p>
+		The loudness specifies the volume for 217 audio assets, 5 of these assets do not exist in the current version of the game (collectgib1loop, collectgib2loop, collectgib3loop, eyepacify, ricochetmagic5).
+	</p>
+	<p>
+		51 audio assets have no loudness specified. When no loudness is specified, the game defaults to loudness 1.0 for these assets.
+	</p>
+	<p>
+		Oddly enough, the binary format treats this file exactly the same as the .wav assets. Devil Daggers Asset Editor treats this file as a .ini file however.
+	</p>
+
+	<h3>dd</h3>
+	<p>
+		This binary consists of models, textures, shaders, and model bindings.
+	</p>
+
+	<h3>core</h3>
+	<p>
+		This binary consists of UI-related shaders. It is the smallest binary. Contains TOC garbage and some more garbage at the end of the file.
+	</p>
+</main>
