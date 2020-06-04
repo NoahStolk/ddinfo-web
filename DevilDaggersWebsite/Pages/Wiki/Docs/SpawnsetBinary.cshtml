@@ -1,4 +1,5 @@
 ﻿@page
+@model DevilDaggersWebsite.Pages.Wiki.Docs.SpawnsetBinaryModel
 @{
 	ViewData["Title"] = "Spawnset Binary";
 }
@@ -11,32 +12,48 @@
 	<h2>Format</h2>
 
 	<p>
-		The internal structure of the spawnset files consists of the following 4 parts.
+		The internal structure of the spawnset files consists of 4 parts:
 	</p>
+	<ul>
+		<li>Header buffer (36 bytes)</li>
+		<li>Arena buffer (10404 bytes)</li>
+		<li>Spawns header buffer (40 bytes)</li>
+		<li>Spawns buffer (28 bytes x the amount of spawns)</li>
+	</ul>
 
-	<h3>Header</h3>
+	<h3>Header buffer</h3>
 	<p>
 		Fixed-length buffer of 36 bytes. Contains shrinking control and brightness values as well as presumably a version number and some unknown miscellaneous values that usually cause the game to crash or behave oddly when modified.
 	</p>
-
-	<h3>Arena</h3>
 	<p>
-		Fixed-length one-dimensional array of 2601 (51x51 = 2601 tiles) 32-bit floating point numbers (2601*32/8 = 10404 bytes) representing the height of each tile in the arena.
+		The header buffer for the default spawnset looks like this:
+	</p>
+	<div>@await Html.PartialAsync("_BinaryFieldCollection", Model.Header)</div>
+
+	<h3>Arena buffer</h3>
+	<p>
+		Fixed-length one-dimensional array of 2601 (51*51 = 2601 tiles) 32-bit floating point numbers (2601*32/8 = 10404 bytes) representing the height of each tile in the arena.
 	</p>
 
-	<h3>Spawns header</h3>
+	<h3>Spawns header buffer</h3>
 	<p>
-		Fixed-length buffer of 40 bytes. Contains the amount of spawns as well as some other unknown values.
+		Fixed-length buffer of 40 bytes. Contains the amount of spawns, but mainly unknown values.
 	</p>
+	<p>
+		The spawns header buffer for the default spawnset looks like this:
+	</p>
+	<div>@await Html.PartialAsync("_BinaryFieldCollection", Model.SpawnsHeader)</div>
 
-	<h3>Spawns</h3>
+	<h3>Spawns buffer</h3>
 	<p>
-		The only part of the file with a variable length. Represents a list of spawns. Each spawn buffer consists of 28 bytes that include the enemy type as a 32-bit integer and the delay value as a 32-bit floating point number. The other bytes in each of the spawn buffers seem to be the same for all of them and appear to have no meaning.
+		This is the only part of the file with a variable length. It represents the list of spawns. Each spawn buffer consists of 28 bytes that include the enemy type as a 32-bit integer and the delay value as a 32-bit floating point number. The other bytes in each of the spawn buffers seem to be the same for all of them and appear to have no meaning.
 	</p>
-
 	<p>
-		This is all there is to the spawnset files, no further modifications can be made to the game using this file.
+		These are the first 3 spawns in the original game:
 	</p>
+	<div>@await Html.PartialAsync("_BinaryFieldCollection", Model.FirstSpawn)</div>
+	<div>@await Html.PartialAsync("_BinaryFieldCollection", Model.SecondSpawn)</div>
+	<div>@await Html.PartialAsync("_BinaryFieldCollection", Model.ThirdSpawn)</div>
 
 	<h2>Files</h2>
 
@@ -45,8 +62,12 @@
 	</p>
 
 	<ul>
-		<li class="path">devildaggers/dd/dagger</li>
-		<li class="path">devildaggers/dd/menu</li>
-		<li class="path">devildaggers/dd/survival</li>
+		<li><span class="path">devildaggers/dd/dagger</span> contains the dagger lobby.</li>
+		<li><span class="path">devildaggers/dd/menu</span> contains the menu.</li>
+		<li><span class="path">devildaggers/dd/survival</span> contains the game.</li>
 	</ul>
 </main>
+
+@section Styles {
+	<link rel='stylesheet' href='~/styles/binary.css' />
+}

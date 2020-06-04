@@ -1,0 +1,22 @@
+﻿@model List<BinaryField>
+@using DevilDaggersWebsite.Code.Docs;
+
+<span class="binary">
+	@{
+		int bytePos = 0;
+		foreach (BinaryField binaryField in Model)
+		{
+			if (binaryField.Meaning == null)
+			{
+				<span>@binaryField.HexRepresentation</span>
+			}
+			else
+			{
+				string toolTipText = binaryField.BinaryType.Description != null ? $"<div class='binary-field-tooltip'>Byte {bytePos} - {bytePos + binaryField.FieldSize - 1}<br>{binaryField.BinaryType.Description}<br>{binaryField.Meaning}<br>{binaryField.GetActualValue()}</div>" : binaryField.Meaning;
+				<span data-toggle="tooltip" title="@toolTipText" class="defined-field" data-html="true">@binaryField.HexRepresentation</span>
+			}
+
+			bytePos += binaryField.FieldSize;
+		}
+	}
+</span>
