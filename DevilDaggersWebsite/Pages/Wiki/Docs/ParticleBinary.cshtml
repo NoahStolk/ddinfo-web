@@ -12,7 +12,7 @@
 	<h2>Format</h2>
 
 	<p>
-		The internal structure of the particle files consists of 2 parts:
+		The internal structure of particle binaries consists of 2 parts:
 	</p>
 	<ul>
 		<li>Header buffer (8 bytes)</li>
@@ -21,7 +21,7 @@
 
 	<h3>Header buffer</h3>
 	<p>
-		Fixed-length buffer of 8 bytes. Contains the number of particles and an unknown value which seems to serve as a version number or an identifier.
+		Fixed-length buffer of 8 bytes. Contains the number of particles and an unknown value which seems to serve as a version number or a format identifier.
 	</p>
 	<p>
 		The header buffer for the default particle file looks like this:

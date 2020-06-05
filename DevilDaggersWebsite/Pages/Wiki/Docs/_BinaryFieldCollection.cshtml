@@ -12,7 +12,8 @@
 			}
 			else
 			{
-				string toolTipText = binaryField.BinaryType.Description != null ? $"<div class='binary-field-tooltip'>Byte {bytePos} - {bytePos + binaryField.FieldSize - 1}<br>{binaryField.BinaryType.Description}<br>{binaryField.Meaning}<br>{binaryField.GetActualValue()}</div>" : binaryField.Meaning;
+				string byteRange = binaryField.FieldSize == 1 ? bytePos.ToString() : $"{bytePos} - {bytePos + binaryField.FieldSize - 1}";
+				string toolTipText = binaryField.BinaryType.Description != null ? $"<div class='binary-field-tooltip'>Byte {byteRange}<br>{binaryField.BinaryType.Description}<br>{binaryField.Meaning}<br>{binaryField.GetActualValue()}</div>" : binaryField.Meaning;
 				<span data-toggle="tooltip" title="@toolTipText" class="defined-field" data-html="true">@binaryField.HexRepresentation</span>
 			}
 

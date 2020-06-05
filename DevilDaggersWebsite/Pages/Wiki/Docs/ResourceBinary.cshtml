@@ -1,4 +1,5 @@
 ﻿@page
+@model DevilDaggersWebsite.Pages.Wiki.Docs.ResourceBinaryModel
 @{
 	ViewData["Title"] = "Resource Binary";
 }
@@ -10,12 +11,54 @@
 <main role="main">
 	<h2>Format</h2>
 
-	<p>TODO</p>
+	<p>
+		The internal structure of resource binaries consists of 3 parts:
+	</p>
+	<ul>
+		<li>Header buffer (12 bytes)</li>
+		<li>Table of contents (TOC) buffer (variable amount of bytes)</li>
+		<li>Chunk data buffer (variable amount of bytes)</li>
+	</ul>
+
+	<h3>Header buffer</h3>
+	<p>
+		Fixed-length buffer of 12 bytes. Contains the length of the TOC buffer, as well as format identifiers.
+	</p>
+	<p>
+		The header buffer for the default spawnset looks like this:
+	</p>
+	<div>@await Html.PartialAsync("_BinaryFieldCollection", Model.Header)</div>
+
+	<h3>TOC buffer</h3>
+	<p>
+		Variable-length buffer that lists all the chunks (assets). Here are the first 3 entries in the TOC buffer for the resource file 'dd':
+	</p>
+	<div>@await Html.PartialAsync("_BinaryFieldCollection", Model.FirstTocEntry)</div>
+	<div>@await Html.PartialAsync("_BinaryFieldCollection", Model.SecondTocEntry)</div>
+	<div>@await Html.PartialAsync("_BinaryFieldCollection", Model.ThirdTocEntry)</div>
+	<p>
+		The first byte represent the chunk type. Here's the list of chunk types:
+	</p>
+	<ul>
+		<li>0x01 - Model</li>
+		<li>0x02 - Texture</li>
+		<li>0x10 - Shader</li>
+		<li>0x11 - Unused/Empty (probably an obsolete way to distinguish vertex shaders from fragment shaders, but they are now in the same chunk)</li>
+		<li>0x20 - Audio</li>
+		<li>0x80 - Model binding</li>
+	</ul>
+	<p>
+		As you can see, the second TOC entry represents an empty chunk. These were probably meant for fragment shader entries in the TOC buffer but now seem to be unused. Shaders are now 1 chunk containing 2 files (a vertex shader and a fragment shader), but it might not have been like this during development.
+	</p>
+
+	<p>
+		The rest of the documentation is still being worked on.
+	</p>
 
 	<h2>Files</h2>
 
 	<p>
-		There are 3 files in Devil Daggers which use this format. These are "core", "audio", and "dd".
+		There are 3 files in Devil Daggers which use this format. These are 'core', 'audio', and 'dd'.
 	</p>
 
 	<ul>
@@ -53,3 +96,7 @@
 		This binary consists of UI-related shaders. It is the smallest binary. Contains TOC garbage and some more garbage at the end of the file.
 	</p>
 </main>
+
+@section Styles {
+	<link rel='stylesheet' href='~/styles/binary.css' />
+}
