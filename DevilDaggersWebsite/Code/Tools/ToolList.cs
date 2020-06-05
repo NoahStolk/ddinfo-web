@@ -528,7 +528,7 @@ namespace DevilDaggersWebsite.Code.Utils
 					Date = new DateTime(2020, 6, 5),
 					Changes = new List<Change>
 					{
-						new Change("Fixed bug when saving a 'dd' mod file after extracting.")
+						new Change("Fixed bug when saving a .dd mod file after extracting.")
 					}
 				},
 				new ChangelogEntry
