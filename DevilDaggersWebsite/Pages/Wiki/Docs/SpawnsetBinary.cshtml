@@ -1,7 +1,11 @@
 ﻿@page
+@using DevilDaggersCore.Game
+@using DevilDaggersWebsite.Code.Docs;
+@using DevilDaggersWebsite.Code.Utils
 @model DevilDaggersWebsite.Pages.Wiki.Docs.SpawnsetBinaryModel
 @{
 	ViewData["Title"] = "Spawnset Binary";
+	GameVersion v3 = GameInfo.GameVersions[GameInfo.DefaultGameVersion];
 }
 
 <header>
@@ -54,6 +58,23 @@
 	<div>@await Html.PartialAsync("_BinaryFieldCollection", Model.FirstSpawn)</div>
 	<div>@await Html.PartialAsync("_BinaryFieldCollection", Model.SecondSpawn)</div>
 	<div>@await Html.PartialAsync("_BinaryFieldCollection", Model.ThirdSpawn)</div>
+
+	<p>
+		Here's the list of enemy types that the survival file defines:
+	</p>
+	<ul>
+		<li>@await Html.PartialAsync("_BinaryFieldCollection", new List<BinaryField> { new BinaryField("00000000", "Squid I", typeof(int)) })</li>
+		<li>@await Html.PartialAsync("_BinaryFieldCollection", new List<BinaryField> { new BinaryField("01000000", "Squid II", typeof(int)) })</li>
+		<li>@await Html.PartialAsync("_BinaryFieldCollection", new List<BinaryField> { new BinaryField("02000000", "Centipede", typeof(int)) })</li>
+		<li>@await Html.PartialAsync("_BinaryFieldCollection", new List<BinaryField> { new BinaryField("03000000", "Spider I", typeof(int)) })</li>
+		<li>@await Html.PartialAsync("_BinaryFieldCollection", new List<BinaryField> { new BinaryField("04000000", "Leviathan", typeof(int)) })</li>
+		<li>@await Html.PartialAsync("_BinaryFieldCollection", new List<BinaryField> { new BinaryField("05000000", "Gigapede", typeof(int)) })</li>
+		<li>@await Html.PartialAsync("_BinaryFieldCollection", new List<BinaryField> { new BinaryField("06000000", "Squid III", typeof(int)) })</li>
+		<li>@await Html.PartialAsync("_BinaryFieldCollection", new List<BinaryField> { new BinaryField("07000000", "Thorn", typeof(int)) })</li>
+		<li>@await Html.PartialAsync("_BinaryFieldCollection", new List<BinaryField> { new BinaryField("08000000", "Spider II", typeof(int)) })</li>
+		<li>@await Html.PartialAsync("_BinaryFieldCollection", new List<BinaryField> { new BinaryField("09000000", "Ghostpede", typeof(int)) })</li>
+		<li>@await Html.PartialAsync("_BinaryFieldCollection", new List<BinaryField> { new BinaryField("FFFFFFFF", "EMPTY", typeof(int)) })</li>
+	</ul>
 
 	<h3>Overview</h3>
 	<div class="binary">

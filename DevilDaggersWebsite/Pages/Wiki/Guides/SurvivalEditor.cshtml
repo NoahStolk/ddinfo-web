@@ -3,6 +3,7 @@
 @using DevilDaggersWebsite.Code.Utils
 @{
 	ViewData["Title"] = "Survival Editor Guide";
+	GameVersion v3 = GameInfo.GameVersions[GameInfo.DefaultGameVersion];
 }
 
 <header>
@@ -14,20 +15,63 @@
 		This page will guide you through the creation of custom spawnsets for Devil Daggers.
 	</p>
 
-	<h2>Spawnset information</h2>
+	<h2>Basic information</h2>
+	<p>
+		The spawnset in Devil Daggers can be modified by editing a file known as the survival file. The survival file is located in <span class="path">devildaggers\dd\survival</span> where <span class="path">devildaggers</span> is the installation folder for Devil Daggers. The default location for this folder is <span class="path">C:\Program Files (x86)\Steam\steamapps\common\devildaggers</span>.
+	</p>
+	<p>
+		The survival file contains 3 main pieces of data; a list of spawns that will appear in the game, the information about the arena (e.g. where tiles are and what their heights are), and some miscellaneous information such as brightness and how fast the arena shrinks. All of this data can be edited using <a asp-page="/Tools/DevilDaggersSurvivalEditor">Devil Daggers Survival Editor</a>.
+	</p>
 
-	<h3>Spawns</h3>
+	<h2>Spawns information</h2>
+
+	<h3>Enemy types</h3>
+	<p>
+		10 enemies can be spawned in the survival file:
+	</p>
+
 	<ul>
-		<li>@RazorUtils.GetLayout("10 enemies can be spawned using these files. These are Squid I, Squid II, Centipede, Spider I, Leviathan, Gigapede, Squid III, Thorn, Spider II, and Ghostpede (respectively). The order is defined by the file structure. All enemies have a one-digit ID.", GameInfo.GameVersions[GameInfo.DefaultGameVersion])</li>
-		<li>Additionally, there is an EMPTY spawn with ID -1. This has no purpose except that the end loop starts after the last EMPTY spawn.</li>
-		<li>Every enemy type has a fixed amount of gems that it drops, this is why <a asp-page="/Tools/DevilDaggersSurvivalEditor">DDSE</a> keeps track of gems so you can have a rough idea of when you will get upgrades (unless farming is done). It is recommended that you understand how <a asp-page="/Wiki/Upgrades">Hand Upgrades</a> work.</li>
-		<li>Every spawn contains an enemy ID and a delay value. The enemy ID (-1 to 9) represents which enemy will be spawned. The delay value represents the amount of seconds between the current spawn and the previous spawn.</li>
-		<li>The delay value supports decimal values, even though the original spawnset in the game doesn't use this. This means you can spawn an enemy, for example at 4.5 seconds.</li>
-		<li>The end loop is the same set of spawns over and over again, faster every time. After every wave, each enemy spawns an added 12.5% faster.</li>
-		<li>@RazorUtils.GetLayout("Every third wave of the end loop, all Gigapedes are changed into Ghostpedes. This is hardcoded within the game and cannot be changed.", GameInfo.GameVersions[GameInfo.DefaultGameVersion])</li>
+		<li>@RazorUtils.GetLayout(" Squid I ", v3)</li>
+		<li>@RazorUtils.GetLayout(" Squid II ", v3)</li>
+		<li>@RazorUtils.GetLayout(" Centipede ", v3)</li>
+		<li>@RazorUtils.GetLayout(" Spider I ", v3)</li>
+		<li>@RazorUtils.GetLayout(" Leviathan ", v3)</li>
+		<li>@RazorUtils.GetLayout(" Gigapede ", v3)</li>
+		<li>@RazorUtils.GetLayout(" Squid III ", v3)</li>
+		<li>@RazorUtils.GetLayout(" Thorn ", v3)</li>
+		<li>@RazorUtils.GetLayout(" Spider II ", v3)</li>
+		<li>@RazorUtils.GetLayout(" Ghostpede ", v3)</li>
+		<li>EMPTY</li>
 	</ul>
 
-	<h3>Arena</h3>
+	<p>
+		Every enemy type has a fixed amount of gems that it drops, this is why the application keeps track of gems so you can have a rough idea of when you will get upgrades (unless farming is done). It is recommended that you understand how <a asp-page="/Wiki/Upgrades">Upgrades</a> work.
+	</p>
+
+	<h3>The end loop</h3>
+	<p>
+		The end loop is the same set of spawns over and over again, faster every time. This appears at the end of the spawnset.
+	</p>
+	<p>
+		You might have noticed how there is an EMPTY enemy type. This enemy type does not spawn an enemy, and its only purpose is to mark the beginning of the end loop. The last EMPTY spawn will always mark the beginning of the end loop. Having an end loop is optional, so if you don't want to include an end loop, simply make sure to put an EMPTY spawn at the end of the spawnset to mark the end of the spawnset (or literally; mark the start of an empty end loop).
+	</p>
+	<p>
+		How the end loop speeds up appears to be hardcoded in the game. After every wave, each enemy spawns an added 12.5% faster. Also note that in @RazorUtils.GetLayout("every third wave of the end loop, all Gigapedes are changed into Ghostpedes.", v3) This also seems to be hardcoded in the game.
+	</p>
+
+	<h3>Spawns</h3>
+	<p>
+		We now know how enemy types work in Devil Daggers. A spawn in the survival file is defined by an enemy type and a delay value. The delay value represents the amount of seconds between the current spawn and the previous spawn. @RazorUtils.GetLayout("So, if you want to spawn a Squid I at 4 seconds, followed by a Squid II at 7 seconds, you would get the following spawns:", v3)
+	</p>
+	<ul>
+		<li>Enemy type: @RazorUtils.GetLayout(" Squid I ", v3) - Delay: 4</li>
+		<li>Enemy type: @RazorUtils.GetLayout(" Squid II ", v3) - Delay: 3</li>
+	</ul>
+	<p>
+		The delay value supports decimal values, even though the original spawnset in the game doesn't use this. This means you can spawn an enemy, for example at 4.5 seconds.
+	</p>
+
+	<h2>Arena information</h2>
 	<p>Note that you don't necessarily need to understand how the arena works, as the default arena works fine.</p>
 	<ul>
 		<li>The maximum arena size is 51 by 51.</li>
@@ -36,11 +80,11 @@
 		<li>The default arena size is 23 by 23 tiles at the start. This is equivalent to shrink radius 50 (technically the arena would be 25 by 25 but, because of shrinking controls, the outer tiles are already shrunk at the very beginning).</li>
 		<li>The arena shrinks in size as time goes on. The default shrink start radius is 50 and the default shrink end radius is 20. The default shrink rate is 0.025. This means the default arena reaches the end radius at 1200 seconds, since (50-20)/0.025 = 1200. (Although not exactly because the shrinking radius will not hit the next tiles exactly at 1200, I haven't bothered with the math behind this, but the last tiles shrink around 1187 seconds. The shrinking technically continues for about 13 seconds but no tiles are affected by it.)</li>
 		<li>The original spawnset doesn't use different tile heights, all the tiles are around height 0. (Though there are some tiny differences that are barely noticable, but for convenience we could say that all the tiles are at height 0 and that 0 is the default height.)</li>
-		<li>The player can stand on tiles with height -1, but anything lower than that will result in the tile falling down immediately. All tiles below -1 are essentially the same for this reason, so <a asp-page="/Tools/DevilDaggersSurvivalEditor">DDSE</a> considers any tile with a height below -1 to be "void".</li>
+		<li>The player can stand on tiles with height -1, but anything lower than that will result in the tile falling down immediately. All tiles below -1 are essentially the same for this reason, so the application considers any tile with a height below -1 to be "void".</li>
 		<li>The tile at coordinate {1, 0} is always invisible for some reason, but you can still walk on it.</li>
 		<li>The player can be spawned on different tile heights.</li>
-		<li>@RazorUtils.GetLayout("Enemies and gems do not react to different tile heights, only the player, the daggers, and some effects do (like Thorn spawn smokes, meat chunks, etc).")</li>
-		<li>The maximum tile height within <a asp-page="/Tools/DevilDaggersSurvivalEditor">DDSE</a> is set to 54, because anything higher than that seems unnecessary and the main light in the game doesn't reach that far so everything is completely black.</li>
+		<li>@RazorUtils.GetLayout("Enemies and gems do not react to different tile heights, only the player, the daggers, and some effects do (like Thorn spawn smokes, meat chunks, etc).", v3)</li>
+		<li>The maximum tile height within the application is set to 54, because anything higher than that seems unnecessary and the main light in the game doesn't reach that far so everything is completely black.</li>
 		<li>There is one particular tile which causes Devil Daggers to glitch (audio glitches, hand disappearing, crashes) whenever its height is put to a value greater than 0.4973333. This tile is always at coordinate {25, 27} (just below the player spawn).</li>
 		<li>The game crashes when you get too near the edge of a full arena (outside of the regular 51 by 51 range, and I think at or around coordinate {0, 0} but I am not sure).</li>
 		<li>The tiles have infinitely long hitboxes, but the texture only covers the top of it.</li>
