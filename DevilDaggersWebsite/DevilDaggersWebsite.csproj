@@ -1,7 +1,6 @@
 ﻿<Project Sdk="Microsoft.NET.Sdk.Web">
 	<PropertyGroup>
 		<TargetFramework>netcoreapp3.1</TargetFramework>
-		<LangVersion>8.0</LangVersion>
 		<Company />
 		<Authors>Noah Stolk</Authors>
 		<Copyright>Copyright © Noah Stolk 2017 - 2020</Copyright>
