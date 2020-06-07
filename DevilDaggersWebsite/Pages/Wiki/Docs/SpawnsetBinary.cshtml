@@ -77,15 +77,48 @@
 	</ul>
 
 	<h3>Overview</h3>
-	<div class="binary">
-		[header]<br />
-		[arena]<br />
-		[spawns header]<br />
-		(for every spawn)<br />
-		- [spawn enemy type]<br />
-		- [spawn delay]<br />
-		- [unknown]
-	</div>
+	<ul>
+		<li>
+			<span class="binary-structure">Header buffer</span>
+			<ul>
+				<li>Unknown</li>
+				<li>Shrinking controls</li>
+				<li>Brightness</li>
+				<li>Unknown</li>
+			</ul>
+		</li>
+		<li>
+			<span class="binary-structure">Arena buffer</span>
+			<ul>
+				<li>
+					For every tile:
+					<ul>
+						<li>Tile height</li>
+					</ul>
+				</li>
+			</ul>
+		</li>
+		<li>
+			<span class="binary-structure">Spawns header buffer</span>
+			<ul>
+				<li>Unknown</li>
+				<li>Spawn count</li>
+			</ul>
+		</li>
+		<li>
+			<span class="binary-structure">Spawns buffer</span>
+			<ul>
+				<li>
+					For every spawn:
+					<ul>
+						<li>Spawn enemy type</li>
+						<li>Spawn delay</li>
+						<li>Unknown
+					</ul>
+				</li>
+			</ul>
+		</li>
+	</ul>
 
 	<h2>Files</h2>
 

@@ -40,12 +40,27 @@
 	<div>@await Html.PartialAsync("_BinaryFieldCollection", Model.FirstParticleData)</div>
 
 	<h3>Overview</h3>
-	<div class="binary">
-		[header]<br />
-		(for every particle)<br />
-		- [particle name]<br />
-		- [particle data]
-	</div>
+	<ul>
+		<li>
+			<span class="binary-structure">Header buffer</span>
+			<ul>
+				<li>Unknown (probably version or identifier)</li>
+				<li>Particle count</li>
+			</ul>
+		</li>
+		<li>
+			<span class="binary-structure">Data buffer</span>
+			<ul>
+				<li>
+					For every particle:
+					<ul>
+						<li>Particle name</li>
+						<li>Particle data</li>
+					</ul>
+				</li>
+			</ul>
+		</li>
+	</ul>
 
 	<h2>Files</h2>
 

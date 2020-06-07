@@ -51,30 +51,208 @@
 		As you can see, the second TOC entry represents an empty chunk. These were probably meant for fragment shader entries in the TOC buffer but now seem to be unused. Shaders are now 1 chunk containing 2 files (a vertex shader and a fragment shader), but it might not have been like this during development.
 	</p>
 
+	<h3>Chunk data buffer</h3>
 	<p>
-		The rest of the documentation is still being worked on.
+		Variable-length buffer that contains all chunk data. This data differs per chunk type.
 	</p>
+
+	<h4>Audio chunks</h4>
+	<p>
+		The chunk data for an audio chunk is the exact same as the contents of a 2-channel .wav file with 44.1kHz sample rate in PCM format.
+	</p>
+
+	<h4>Model binding chunks</h4>
+	<p>
+		The chunk data for a model binding chunk is simply plain text.
+	</p>
+
+	<h4>Model chunks</h4>
+	<p>
+		The chunk data for a model chunk consists of 4 parts:
+		<ul>
+			<li>Model header (10 bytes)</li>
+			<li>Model vertices</li>
+			<li>Model indices</li>
+			<li>Unknown</li>
+		</ul>
+	</p>
+	<p>
+		Here are the model headers for 'dagger', 'hand', and 'hand2':
+		<div>@await Html.PartialAsync("_BinaryFieldCollection", Model.ModelHeaderDagger)</div>
+		<div>@await Html.PartialAsync("_BinaryFieldCollection", Model.ModelHeaderHand)</div>
+		<div>@await Html.PartialAsync("_BinaryFieldCollection", Model.ModelHeaderHand2)</div>
+	</p>
+	<p>
+		The vertices are stored as a list of vertex objects, which are defined as:
+		<ul>
+			<li>Position</li>
+			<li>Texture coordinate</li>
+			<li>Normal</li>
+		</ul>
+		Here is an example:
+		<div>@await Html.PartialAsync("_BinaryFieldCollection", Model.ModelFirstVertexDagger)</div>
+	</p>
+	<p>
+		The indices are stored as a list of 32-bit unsigned integers.
+	</p>
+
+	<h4>Shader chunks</h4>
+	<p>
+		The chunk data for a shader chunk consists of 4 parts:
+		<ul>
+			<li>Shader header (12 bytes)</li>
+			<li>Shader name</li>
+			<li>Vertex shader</li>
+			<li>Fragment shader</li>
+		</ul>
+	</p>
+	<p>
+		Here are the shader headers for 'debug', 'depth', and 'particle':
+		<div>@await Html.PartialAsync("_BinaryFieldCollection", Model.ShaderHeaderDebug)</div>
+		<div>@await Html.PartialAsync("_BinaryFieldCollection", Model.ShaderHeaderDepth)</div>
+		<div>@await Html.PartialAsync("_BinaryFieldCollection", Model.ShaderHeaderParticle)</div>
+	</p>
+	<p>
+		The shader name is listed so the format knows at which point to start reading the vertex and fragment buffers.
+	</p>
+	<p>
+		The vertex and fragment shader buffers are stored as plain text (GLSL code).
+	</p>
+
+	<h4>Texture chunks</h4>
+	<p>
+		The chunk data for a texture chunk consists of 2 parts:
+		<ul>
+			<li>Texture header (11 bytes)</li>
+			<li>Pixel data</li>
+		</ul>
+	</p>
+	<p>
+		Here are the texture headers for 'dagger', 'hand', and 'sorathmask':
+		<div>@await Html.PartialAsync("_BinaryFieldCollection", Model.TextureHeaderDagger)</div>
+		<div>@await Html.PartialAsync("_BinaryFieldCollection", Model.TextureHeaderHand)</div>
+		<div>@await Html.PartialAsync("_BinaryFieldCollection", Model.TextureHeaderSorathMask)</div>
+	</p>
+	<p>
+		Each pixel contains 4 color components in the order: alpha, blue, green, red. All components are 8-bit unsigned integers (bytes). The stride of a texture can be calculated by multiplying the texture width with 4.
+	</p>
+
+	<h3>Overview</h3>
+	<ul>
+		<li>
+			<span class="binary-structure">Header buffer</span>
+			<ul>
+				<li>Format identifiers</li>
+				<li>TOC buffer length</li>
+			</ul>
+		</li>
+		<li>
+			<span class="binary-structure">TOC buffer</span>
+			<ul>
+				<li>
+					For every chunk:
+					<ul>
+						<li>Chunk type</li>
+						<li>Chunk name</li>
+						<li>Chunk data start offset from beginning of file</li>
+						<li>Chunk data length</li>
+						<li>Unknown</li>
+					</ul>
+				</li>
+			</ul>
+		</li>
+		<li>
+			<span class="binary-structure">Chunk data buffer</span>
+			<ul>
+				<li>
+					For every audio chunk:
+					<ul>
+						<li>.wav data</li>
+					</ul>
+				</li>
+				<li>
+					For every model binding chunk:
+					<ul>
+						<li>Contents in plain text</li>
+					</ul>
+				</li>
+				<li>
+					For every model chunk:
+					<ul>
+						<li>
+							Model header
+							<ul>
+								<li>Index count</li>
+								<li>Vertex count</li>
+								<li>Unknown</li>
+							</ul>
+						</li>
+						<li>Model vertices</li>
+						<li>Model indices</li>
+						<li>Unknown</li>
+					</ul>
+				</li>
+				<li>
+					For every shader chunk:
+					<ul>
+						<li>
+							Shader header
+							<ul>
+								<li>Shader name length</li>
+								<li>Vertex shader buffer length</li>
+								<li>Fragment shader buffer length</li>
+							</ul>
+						</li>
+						<li>Shader name</li>
+						<li>Vertex shader</li>
+						<li>Fragment shader</li>
+					</ul>
+				</li>
+				<li>
+					For every texture chunk:
+					<ul>
+						<li>
+							Texture header
+							<ul>
+								<li>Unknown</li>
+								<li>Texture width in pixels</li>
+								<li>Texture height in pixels</li>
+								<li>Texture mipmap count</li>
+							</ul>
+						</li>
+						<li>
+							For every pixel:
+							<ul>
+								<li>Color A</li>
+								<li>Color B</li>
+								<li>Color G</li>
+								<li>Color R</li>
+							</ul>
+						</li>
+					</ul>
+				</li>
+			</ul>
+		</li>
+	</ul>
 
 	<h2>Files</h2>
 
 	<p>
-		There are 3 files in Devil Daggers which use this format. These are 'core', 'audio', and 'dd'.
+		There are 3 files in Devil Daggers which use this format. These are 'audio', 'dd', and 'core'.
 	</p>
 
 	<ul>
-		<li><span class="path">devildaggers/core/core</span> contains UI-related shaders.</li>
 		<li><span class="path">devildaggers/res/audio</span> contains all audio.</li>
 		<li><span class="path">devildaggers/res/dd</span> contains all other assets (models, textures, shaders).</li>
+		<li><span class="path">devildaggers/core/core</span> contains UI-related shaders.</li>
 	</ul>
 
-	<h3>audio</h3>
+	<h3>The 'audio' file</h3>
 	<p>
 		This binary consists of audio files (.wav) and a "loudness" file. It is the largest binary and makes up for almost 90% of all data.
 	</p>
-
-	<h4>Loudness</h4>
 	<p>
-		The loudness file is a plain text file that lists all "loudness" values for most audio. These values are numbers and represent which audio files have priority when playing, e.g. a sound with loudness 2 will be prioritized over a sound with loudness 1 by the audio engine; both sounds will still be played, but the one with the higher loudness value will sound more apparent than the other. Loudness does not correspond to volume. In other words; specifying a higher loudness value doesn't necessary make a certain audio asset louder on its own. You could say that audio assets with a higher loudness value effectively make all other audio assets with lower values more quiet.
+		In addition to audio chunks, the audio file contains a loudness file. The loudness file is a plain text file that lists all "loudness" values for most audio. These values are numbers and represent which audio files have priority when playing, e.g. a sound with loudness 2 will be prioritized over a sound with loudness 1 by the audio engine; both sounds will still be played, but the one with the higher loudness value will sound more apparent than the other. Loudness does not correspond to volume. In other words; specifying a higher loudness value doesn't necessary make a certain audio asset louder on its own. You could say that audio assets with a higher loudness value effectively make all other audio assets with lower values more quiet.
 	</p>
 	<p>
 		The loudness specifies the volume for 217 audio assets, 5 of these assets do not exist in the current version of the game (collectgib1loop, collectgib2loop, collectgib3loop, eyepacify, ricochetmagic5).
@@ -86,14 +264,14 @@
 		Oddly enough, the binary format treats this file exactly the same as the .wav assets. Devil Daggers Asset Editor treats this file as a .ini file however.
 	</p>
 
-	<h3>dd</h3>
+	<h3>The 'dd' file</h3>
 	<p>
-		This binary consists of models, textures, shaders, and model bindings.
+		This binary consists of models, textures, shaders, and model bindings. This file contains some garbage data in the TOC buffer (unused entries with type 0x11).
 	</p>
 
-	<h3>core</h3>
+	<h3>The 'core' core</h3>
 	<p>
-		This binary consists of UI-related shaders. It is the smallest binary. Contains TOC garbage and some more garbage at the end of the file.
+		This binary consists of UI-related shaders. It is the smallest binary. This file contains some garbage data in the TOC buffer as well as some more garbage at the end of the file.
 	</p>
 </main>
 
