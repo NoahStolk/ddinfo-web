@@ -22,10 +22,21 @@ namespace DevilDaggersWebsite.Code.Utils
 		{
 			Name = "DevilDaggersSurvivalEditor",
 			DisplayName = "Devil Daggers Survival Editor",
-			VersionNumber = new Version(2, 4, 13, 1),
+			VersionNumber = new Version(2, 4, 16, 0),
 			VersionNumberRequired = new Version(2, 4, 13, 0),
 			Changelog = new List<ChangelogEntry>
 			{
+				new ChangelogEntry
+				{
+					VersionNumber = new Version(2, 4, 16, 0),
+					Date = new DateTime(2020, 6, 10),
+					Changes = new List<Change>
+					{
+						new Change("Added 'Set' function to Modify Spawn Delay window."),
+						new Change("Fixed clicking 'Clear previous tiles' text not affecting the CheckBox state."),
+						new Change("Maintenance and small performance improvements.")
+					}
+				},
 				new ChangelogEntry
 				{
 					VersionNumber = new Version(2, 4, 13, 1),
@@ -518,10 +529,21 @@ namespace DevilDaggersWebsite.Code.Utils
 		{
 			Name = "DevilDaggersAssetEditor",
 			DisplayName = "Devil Daggers Asset Editor",
-			VersionNumber = new Version(0, 13, 19, 0),
+			VersionNumber = new Version(0, 13, 22, 0),
 			VersionNumberRequired = new Version(0, 7, 5, 0),
 			Changelog = new List<ChangelogEntry>
 			{
+				new ChangelogEntry
+				{
+					VersionNumber = new Version(0, 13, 22, 0),
+					Date = new DateTime(2020, 6, 10),
+					Changes = new List<Change>
+					{
+						new Change("Fixed bug when extracting particles."),
+						new Change("Added Help window."),
+						new Change("Improved particle previewer."),
+					}
+				},
 				new ChangelogEntry
 				{
 					VersionNumber = new Version(0, 13, 19, 0),
