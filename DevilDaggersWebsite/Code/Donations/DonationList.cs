@@ -60,7 +60,8 @@ namespace DevilDaggersWebsite.Code.Donations
 			new Donation(531, 1500, "EUR", 1500, new DateTime(2020, 1, 3)),
 			new Donation(0, 666, "GBP", 728, new DateTime(2020, 3, 12)), // TODO: Figure out ID.
 			new Donation(118832, 1634, "EUR", 1634, new DateTime(2020, 5, 1)),
-			new Donation(111007, 1000, "EUR", 1000, new DateTime(2020, 5, 2))
+			new Donation(111007, 1000, "EUR", 1000, new DateTime(2020, 5, 2)),
+			new Donation(300000, 500, "GBP", 528, new DateTime(2020, 7, 1)) // TODO: Figure out ID.
 		};
 
 		public static Donator[] Donators = new Donator[]
@@ -92,7 +93,8 @@ namespace DevilDaggersWebsite.Code.Donations
 			new Donator(109193, "Eyther"),
 			new Donator(197276, "metalifestorm"),
 			new Donator(531, "GaryBanderas"),
-			new Donator(0, "Chung02")
+			new Donator(0, "Chung02"),
+			new Donator(300000, "james ☆")
 		};
 
 		public static Dictionary<int, int> DonatorsWithReceivedEuroAmounts = new Dictionary<int, int>();
