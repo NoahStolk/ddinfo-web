@@ -1,6 +1,4 @@
 ﻿using System;
-using System.Collections.Generic;
-using System.Linq;
 
 namespace DevilDaggersWebsite.Code.Donations
 {
@@ -89,18 +87,5 @@ namespace DevilDaggersWebsite.Code.Donations
 			new Donator(1000000, "Chung02"),
 			new Donator(1000001, "james ☆")
 		};
-
-		public static Dictionary<int, int> DonatorsWithReceivedEuroAmounts = new Dictionary<int, int>();
-
-		static DonationList()
-		{
-			foreach (Donation donation in Donations.Where(d => !d.IsRefunded))
-			{
-				if (!DonatorsWithReceivedEuroAmounts.ContainsKey(donation.DonatorId))
-					DonatorsWithReceivedEuroAmounts.Add(donation.DonatorId, donation.ConvertedEuroCentsReceived);
-				else
-					DonatorsWithReceivedEuroAmounts[donation.DonatorId] += donation.ConvertedEuroCentsReceived;
-			}
-		}
 	}
 }

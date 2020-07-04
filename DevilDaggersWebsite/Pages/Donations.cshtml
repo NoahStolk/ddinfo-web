@@ -1,6 +1,7 @@
 ﻿@page
 @using DevilDaggersCore.Game
 @using DevilDaggersWebsite.Code.Donations
+@model DonationsModel
 @{
 	ViewData["Title"] = "Donations";
 
@@ -30,7 +31,7 @@
 
 	<div class="flex-container flex-center flex-column">
 		@{
-			foreach (KeyValuePair<int, int> kvp in DonationList.DonatorsWithReceivedEuroAmounts.OrderByDescending(kvp => kvp.Value).ThenBy(kvp => DonationList.Donators.FirstOrDefault(d => d.Id == kvp.Key).UsernameFallback))
+			foreach (KeyValuePair<int, int> kvp in Model.DonatorsWithReceivedEuroAmounts.OrderByDescending(kvp => kvp.Value).ThenBy(kvp => DonationList.Donators.FirstOrDefault(d => d.Id == kvp.Key).UsernameFallback))
 			{
 				Donator donator = DonationList.Donators.FirstOrDefault(d => d.Id == kvp.Key);
 #if GET_USERNAME_FROM_LB
