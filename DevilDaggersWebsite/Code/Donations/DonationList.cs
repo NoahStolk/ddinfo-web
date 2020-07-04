@@ -6,14 +6,6 @@ namespace DevilDaggersWebsite.Code.Donations
 {
 	public static class DonationList
 	{
-		public static Dictionary<Currency, char> CurrencyChars = new Dictionary<Currency, char>
-		{
-			{ Currency.Eur, '€' },
-			{ Currency.Usd, '$' },
-			{ Currency.Aud, '$' },
-			{ Currency.Gbp, '£' }
-		};
-
 		public static Donation[] Donations = new Donation[]
 		{
 			new Donation(137044, 100, Currency.Eur, 100, new DateTime(2018, 2, 19)),
