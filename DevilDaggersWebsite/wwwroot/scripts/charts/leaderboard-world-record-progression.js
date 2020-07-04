@@ -49,6 +49,7 @@ $.getJSON("/Api/GetWorldRecords", function (data) {
 		chart.replot();
 
 		$(chartId).append('<table class="highlighter" id="' + highlighterName + '">');
+		$(highlighterId).append('<tbody>');
 		$(highlighterId).append('<tr><td>Date</td><td id="h-date"></td></tr>');
 		$(highlighterId).append('<tr><td>Time</td><td id="h-time"></td></tr>');
 		$(highlighterId).append('<tr><td>Username</td><td id="h-username"></td></tr>');
@@ -56,6 +57,7 @@ $.getJSON("/Api/GetWorldRecords", function (data) {
 		$(highlighterId).append('<tr><td>Kills</td><td id="h-kills"></td></tr>');
 		$(highlighterId).append('<tr><td>Accuracy</td><td id="h-accuracy"></td></tr>');
 		$(highlighterId).append('<tr><td>Death type</td><td id="h-death-type"></td></tr>');
+		$(highlighterId).append('</tbody>');
 		$(chartId).append('</table>');
 	});
 
