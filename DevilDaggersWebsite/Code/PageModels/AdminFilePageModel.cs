@@ -1,5 +1,6 @@
 ﻿using CoreBase3.Services;
-using System.IO;
+using Newtonsoft.Json;
+using Io = System.IO;
 
 namespace DevilDaggersWebsite.Code.PageModels
 {
@@ -14,14 +15,30 @@ namespace DevilDaggersWebsite.Code.PageModels
 		{
 			this.fileName = fileName;
 
-			FileContents = System.IO.File.ReadAllText(Path.Combine(commonObjects.Env.WebRootPath, "user", $"{this.fileName}.json"));
+			ReadJson();
 		}
 
 		public void OnPost(string fileContents)
 		{
-			System.IO.File.WriteAllText(Path.Combine(commonObjects.Env.WebRootPath, "user", $"{fileName}.json"), fileContents);
+			try
+			{
+				if (JsonConvert.DeserializeObject(fileContents) == null)
+					return;
+			}
+			catch
+			{
+				return;
+			}
 
-			FileContents = fileContents;
+			WriteJson(fileContents);
+
+			ReadJson();
 		}
+
+		private void ReadJson()
+			=> FileContents = Io.File.ReadAllText(Io.Path.Combine(commonObjects.Env.WebRootPath, "user", $"{fileName}.json"));
+
+		private void WriteJson(string fileContents)
+			=> Io.File.WriteAllText(Io.Path.Combine(commonObjects.Env.WebRootPath, "user", $"{fileName}.json"), fileContents);
 	}
 }
