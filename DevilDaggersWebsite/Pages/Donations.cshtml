@@ -34,23 +34,7 @@
 			foreach (KeyValuePair<int, int> kvp in Model.DonatorsWithReceivedEuroAmounts.OrderByDescending(kvp => kvp.Value).ThenBy(kvp => DonationList.Donators.FirstOrDefault(d => d.Id == kvp.Key).UsernameFallback))
 			{
 				Donator donator = DonationList.Donators.FirstOrDefault(d => d.Id == kvp.Key);
-#if GET_USERNAME_FROM_LB
-					string username;
-					if (donator.IsAnonymous)
-					{
-						username = "(anonymous)";
-					}
-					else if (donator.Id == 0)
-					{
-						username = donator.UsernameFallback;
-					}
-					else
-					{
-						username = (await DevilDaggersWebsite.Code.Utils.Web.Hasmodai.GetUserById(donator.Id)).Username;
-					}
-#else
 				string username = donator.IsAnonymous ? "(anonymous)" : donator.UsernameFallback;
-#endif
 
 				Currency currency = DonationList.Donations.FirstOrDefault(d => d.DonatorId == kvp.Key).Currency;
 				int amount = DonationList.Donations.Where(d => !d.IsRefunded && d.DonatorId == kvp.Key).Sum(d => d.Amount);
