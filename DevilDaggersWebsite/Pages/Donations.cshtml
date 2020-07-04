@@ -51,15 +51,15 @@
 				string username = donator.IsAnonymous ? "(anonymous)" : donator.UsernameFallback;
 #endif
 
-				string currency = DonationList.Donations.FirstOrDefault(d => d.DonatorId == kvp.Key).Currency;
-				int amount = DonationList.Donations.Where(d => d.DonatorId == kvp.Key).Sum(d => d.Amount);
+				Currency currency = DonationList.Donations.FirstOrDefault(d => d.DonatorId == kvp.Key).Currency;
+				int amount = DonationList.Donations.Where(d => !d.IsRefunded && d.DonatorId == kvp.Key).Sum(d => d.Amount);
 
 				<div class="flex-container flex-center">
 					<div style="width: @(widths[0])px; white-space: nowrap;" class="text-left devil">@username</div>
 					<div style="width: @(widths[1])px;" class="text-right devil donation-tooltip" data-toggle="tooltip" data-placement="left" title="@((kvp.Value / 100.0).ToString("0.00")) EUR">
 						@((amount / 100.0).ToString("0.00"))
 						<span style="display: inline-block; min-width: 12px;">@(DonationList.CurrencyChars[currency])</span>
-						<span style="display: inline-block; min-width: 48px;">(@currency)</span>
+						<span style="display: inline-block; min-width: 48px;">(@currency.ToString().ToUpper())</span>
 					</div>
 				</div>
 			}
