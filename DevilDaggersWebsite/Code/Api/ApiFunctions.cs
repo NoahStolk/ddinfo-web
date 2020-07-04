@@ -197,15 +197,15 @@ namespace DevilDaggersWebsite.Code.Api
 			return (DateTime.Now, DateTime.Now);
 		}
 
-		public static Dictionary<DateTime, (ulong deathsTotal, ulong timeTotal)> GetPlayerActivity(ICommonObjects commonObjects, int userId/*, bool relative*/)
+		public static Dictionary<DateTime, ulong> GetUserActivity(ICommonObjects commonObjects, int userId)
 		{
-			Dictionary<DateTime, (ulong deathsTotal, ulong timeTotal)> data = new Dictionary<DateTime, (ulong deathsTotal, ulong timeTotal)>();
+			Dictionary<DateTime, ulong> data = new Dictionary<DateTime, ulong>();
 			foreach (string leaderboardHistoryPath in Directory.GetFiles(Path.Combine(commonObjects.Env.WebRootPath, "leaderboard-history"), "*.json"))
 			{
 				Leaderboard lb = JsonConvert.DeserializeObject<Leaderboard>(FileUtils.GetContents(leaderboardHistoryPath, Encoding.UTF8));
 				Entry entry = lb.Entries.FirstOrDefault(e => e.Id == userId);
-				if (entry != null)
-					data.Add(lb.DateTime, (entry.DeathsTotal, entry.TimeTotal));
+				if (entry != null && entry.DeathsTotal > 0)
+					data.Add(lb.DateTime, entry.DeathsTotal);
 			}
 			return data;
 		}
