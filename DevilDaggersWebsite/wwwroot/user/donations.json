@@ -1,0 +1,308 @@
+[
+  {
+    "DonatorId": 137044,
+    "Amount": 100,
+    "ConvertedEuroCentsReceived": 100,
+    "DateReceived": "2018-02-19T00:00:00"
+  },
+  {
+    "DonatorId": 105315,
+    "Amount": 1000,
+    "ConvertedEuroCentsReceived": 1000,
+    "DateReceived": "2018-02-19T00:00:00"
+  },
+  {
+    "DonatorId": 105315,
+    "Amount": 1,
+    "ConvertedEuroCentsReceived": 1,
+    "DateReceived": "2018-02-20T00:00:00"
+  },
+  {
+    "DonatorId": 94857,
+    "Amount": 77,
+    "ConvertedEuroCentsReceived": 39,
+    "DateReceived": "2018-02-19T00:00:00"
+  },
+  {
+    "DonatorId": 142939,
+    "Amount": 1200,
+    "ConvertedEuroCentsReceived": 1200,
+    "DateReceived": "2018-02-20T00:00:00"
+  },
+  {
+    "DonatorId": 118832,
+    "Amount": 100,
+    "ConvertedEuroCentsReceived": 100,
+    "DateReceived": "2018-02-20T00:00:00"
+  },
+  {
+    "DonatorId": 118832,
+    "Amount": 150,
+    "ConvertedEuroCentsReceived": 150,
+    "DateReceived": "2018-09-05T00:00:00"
+  },
+  {
+    "DonatorId": 118832,
+    "Amount": 250,
+    "ConvertedEuroCentsReceived": 250,
+    "DateReceived": "2018-10-22T00:00:00"
+  },
+  {
+    "DonatorId": 118832,
+    "Amount": 1,
+    "Currency": 1,
+    "ConvertedEuroCentsReceived": 1,
+    "DateReceived": "2018-12-09T00:00:00"
+  },
+  {
+    "DonatorId": 118832,
+    "Amount": 9,
+    "DateReceived": "2019-01-27T00:00:00"
+  },
+  {
+    "DonatorId": 118832,
+    "Amount": 2,
+    "DateReceived": "2019-01-27T00:00:00"
+  },
+  {
+    "DonatorId": 118832,
+    "Amount": 154,
+    "ConvertedEuroCentsReceived": 114,
+    "DateReceived": "2019-01-28T00:00:00"
+  },
+  {
+    "DonatorId": 113530,
+    "Amount": 500,
+    "Currency": 1,
+    "ConvertedEuroCentsReceived": 450,
+    "DateReceived": "2018-02-28T00:00:00",
+    "Note": "Guessed converted amount"
+  },
+  {
+    "DonatorId": 113530,
+    "Amount": 500,
+    "Currency": 1,
+    "ConvertedEuroCentsReceived": 450,
+    "DateReceived": "2018-09-04T00:00:00",
+    "Note": "Guessed converted amount"
+  },
+  {
+    "DonatorId": 113530,
+    "Amount": 500,
+    "Currency": 1,
+    "ConvertedEuroCentsReceived": 450,
+    "DateReceived": "2018-12-08T00:00:00",
+    "Note": "Guessed converted amount"
+  },
+  {
+    "DonatorId": 148518,
+    "Amount": 500,
+    "Currency": 1,
+    "ConvertedEuroCentsReceived": 450,
+    "DateReceived": "2018-03-27T00:00:00",
+    "Note": "Guessed converted amount"
+  },
+  {
+    "DonatorId": 148951,
+    "Amount": 750,
+    "ConvertedEuroCentsReceived": 750,
+    "DateReceived": "2018-06-24T00:00:00"
+  },
+  {
+    "DonatorId": 148951,
+    "Amount": 1,
+    "ConvertedEuroCentsReceived": 1,
+    "DateReceived": "2018-06-24T00:00:00"
+  },
+  {
+    "DonatorId": 148951,
+    "Amount": 749,
+    "ConvertedEuroCentsReceived": 749,
+    "DateReceived": "2018-10-15T00:00:00"
+  },
+  {
+    "DonatorId": 172395,
+    "Amount": 500,
+    "Currency": 1,
+    "ConvertedEuroCentsReceived": 450,
+    "DateReceived": "2018-09-21T00:00:00",
+    "Note": "Guessed converted amount"
+  },
+  {
+    "DonatorId": 115431,
+    "Amount": 500,
+    "Currency": 3,
+    "ConvertedEuroCentsReceived": 559,
+    "DateReceived": "2018-09-21T00:00:00"
+  },
+  {
+    "DonatorId": 6760,
+    "Amount": 1000,
+    "ConvertedEuroCentsReceived": 1000,
+    "DateReceived": "2018-09-28T00:00:00"
+  },
+  {
+    "DonatorId": 134802,
+    "Amount": 500,
+    "ConvertedEuroCentsReceived": 500,
+    "DateReceived": "2018-10-15T00:00:00"
+  },
+  {
+    "DonatorId": 65617,
+    "Amount": 2500,
+    "ConvertedEuroCentsReceived": 2500,
+    "DateReceived": "2018-10-22T00:00:00"
+  },
+  {
+    "DonatorId": 121891,
+    "Amount": 500,
+    "ConvertedEuroCentsReceived": 500,
+    "DateReceived": "2018-11-01T00:00:00"
+  },
+  {
+    "DonatorId": 184178,
+    "Amount": 100,
+    "Currency": 1,
+    "ConvertedEuroCentsReceived": 86,
+    "DateReceived": "2018-12-19T00:00:00"
+  },
+  {
+    "DonatorId": 106722,
+    "Amount": 11,
+    "ConvertedEuroCentsReceived": 11,
+    "DateReceived": "2019-01-04T00:00:00",
+    "IsRefunded": true
+  },
+  {
+    "DonatorId": 106722,
+    "Amount": 502,
+    "ConvertedEuroCentsReceived": 502,
+    "DateReceived": "2019-01-04T00:00:00"
+  },
+  {
+    "DonatorId": 106722,
+    "Amount": 9,
+    "ConvertedEuroCentsReceived": 9,
+    "DateReceived": "2019-01-27T00:00:00"
+  },
+  {
+    "DonatorId": 106722,
+    "Amount": 2,
+    "ConvertedEuroCentsReceived": 2,
+    "DateReceived": "2019-01-27T00:00:00"
+  },
+  {
+    "DonatorId": 106722,
+    "Amount": 154,
+    "ConvertedEuroCentsReceived": 154,
+    "DateReceived": "2019-01-29T00:00:00"
+  },
+  {
+    "DonatorId": 180168,
+    "Amount": 1,
+    "Currency": 1,
+    "DateReceived": "2019-01-21T00:00:00"
+  },
+  {
+    "DonatorId": 86805,
+    "Amount": 6666,
+    "Currency": 2,
+    "ConvertedEuroCentsReceived": 4079,
+    "DateReceived": "2019-01-21T00:00:00"
+  },
+  {
+    "DonatorId": 21059,
+    "Amount": 2000,
+    "ConvertedEuroCentsReceived": 2000,
+    "DateReceived": "2019-01-22T00:00:00"
+  },
+  {
+    "DonatorId": 111007,
+    "Amount": 1000,
+    "ConvertedEuroCentsReceived": 1000,
+    "DateReceived": "2019-02-17T00:00:00"
+  },
+  {
+    "DonatorId": 146931,
+    "Amount": 2500,
+    "Currency": 1,
+    "ConvertedEuroCentsReceived": 2100,
+    "DateReceived": "2019-06-06T00:00:00",
+    "Note": "Guessed converted amount"
+  },
+  {
+    "DonatorId": 146931,
+    "Amount": 2500,
+    "Currency": 1,
+    "ConvertedEuroCentsReceived": 2100,
+    "DateReceived": "2019-09-11T00:00:00",
+    "Note": "Guessed converted amount"
+  },
+  {
+    "DonatorId": 134740,
+    "Amount": 250,
+    "Currency": 1,
+    "ConvertedEuroCentsReceived": 217,
+    "DateReceived": "2019-08-12T00:00:00"
+  },
+  {
+    "DonatorId": 171188,
+    "Amount": 1000,
+    "Currency": 3,
+    "ConvertedEuroCentsReceived": 1066,
+    "DateReceived": "2019-08-12T00:00:00"
+  },
+  {
+    "DonatorId": 116299,
+    "Amount": 2000,
+    "ConvertedEuroCentsReceived": 2000,
+    "DateReceived": "2019-10-14T00:00:00"
+  },
+  {
+    "DonatorId": 109193,
+    "Amount": 1000,
+    "Currency": 3,
+    "ConvertedEuroCentsReceived": 1122,
+    "DateReceived": "2019-11-02T00:00:00"
+  },
+  {
+    "DonatorId": 197276,
+    "Amount": 40,
+    "ConvertedEuroCentsReceived": 40,
+    "DateReceived": "2019-12-28T00:00:00"
+  },
+  {
+    "DonatorId": 531,
+    "Amount": 1500,
+    "ConvertedEuroCentsReceived": 1500,
+    "DateReceived": "2020-01-03T00:00:00"
+  },
+  {
+    "DonatorId": 1000000,
+    "Amount": 666,
+    "Currency": 3,
+    "ConvertedEuroCentsReceived": 728,
+    "DateReceived": "2020-03-12T00:00:00",
+    "Note": "Player ID unknown"
+  },
+  {
+    "DonatorId": 118832,
+    "Amount": 1634,
+    "ConvertedEuroCentsReceived": 1634,
+    "DateReceived": "2020-05-01T00:00:00"
+  },
+  {
+    "DonatorId": 111007,
+    "Amount": 1000,
+    "ConvertedEuroCentsReceived": 1000,
+    "DateReceived": "2020-05-02T00:00:00"
+  },
+  {
+    "DonatorId": 1000001,
+    "Amount": 500,
+    "Currency": 3,
+    "ConvertedEuroCentsReceived": 528,
+    "DateReceived": "2020-07-01T00:00:00",
+    "Note": "Player ID unknown"
+  }
+]

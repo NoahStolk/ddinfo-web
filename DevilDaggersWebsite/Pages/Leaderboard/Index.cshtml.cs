@@ -2,6 +2,7 @@
 using DevilDaggersCore.Leaderboards;
 using DevilDaggersWebsite.Code.Leaderboards;
 using DevilDaggersWebsite.Code.PageModels;
+using DevilDaggersWebsite.Code.Users;
 using DevilDaggersWebsite.Code.Utils;
 using DevilDaggersWebsite.Code.Utils.Web;
 using Microsoft.AspNetCore.Mvc;
@@ -86,7 +87,7 @@ namespace DevilDaggersWebsite.Pages.Leaderboard
 					break;
 			}
 
-			HasBans = UserUtils.GetBans(commonObjects).Any(b => Leaderboard.Entries.Any(e => e.Id == b.Id));
+			HasBans = UserUtils.GetUserObjects<Ban>(commonObjects, "bans").Any(b => Leaderboard.Entries.Any(e => e.Id == b.Id));
 			if (LeaderboardSearchType == LeaderboardSearchType.UserId)
 			{
 				Entry entry = Leaderboard.Entries[0];

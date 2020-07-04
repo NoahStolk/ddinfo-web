@@ -1,4 +1,4 @@
-﻿namespace DevilDaggersWebsite.Code.Donations
+﻿namespace DevilDaggersWebsite.Code.Users
 {
 	public class Donator
 	{

@@ -1,7 +1,8 @@
 ﻿@page
 @using DevilDaggersCore.Game
-@using DevilDaggersWebsite.Code.Donations
+@using DevilDaggersWebsite.Code.Users
 @model DonationsModel
+@inject CoreBase3.Services.ICommonObjects CommonObjects
 @{
 	ViewData["Title"] = "Donations";
 
@@ -31,13 +32,13 @@
 
 	<div class="flex-container flex-center flex-column">
 		@{
-			foreach (KeyValuePair<int, int> kvp in Model.DonatorsWithReceivedEuroAmounts.OrderByDescending(kvp => kvp.Value).ThenBy(kvp => DonationList.Donators.FirstOrDefault(d => d.Id == kvp.Key).UsernameFallback))
+			foreach (KeyValuePair<int, int> kvp in Model.DonatorsWithReceivedEuroAmounts.OrderByDescending(kvp => kvp.Value).ThenBy(kvp => Model.Donators.FirstOrDefault(d => d.Id == kvp.Key).UsernameFallback))
 			{
-				Donator donator = DonationList.Donators.FirstOrDefault(d => d.Id == kvp.Key);
+				Donator donator = Model.Donators.FirstOrDefault(d => d.Id == kvp.Key);
 				string username = donator.IsAnonymous ? "(anonymous)" : donator.UsernameFallback;
 
-				Currency currency = DonationList.Donations.FirstOrDefault(d => d.DonatorId == kvp.Key).Currency;
-				int amount = DonationList.Donations.Where(d => !d.IsRefunded && d.DonatorId == kvp.Key).Sum(d => d.Amount);
+				Currency currency = Model.Donations.FirstOrDefault(d => d.DonatorId == kvp.Key).Currency;
+				int amount = Model.Donations.Where(d => !d.IsRefunded && d.DonatorId == kvp.Key).Sum(d => d.Amount);
 
 				<div class="flex-container flex-center">
 					<div style="width: @(widths[0])px; white-space: nowrap;" class="text-left devil">@username</div>

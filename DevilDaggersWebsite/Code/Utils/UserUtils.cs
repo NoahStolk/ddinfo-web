@@ -1,5 +1,4 @@
 ﻿using CoreBase3.Services;
-using DevilDaggersWebsite.Code.Users;
 using Newtonsoft.Json;
 using System.Collections.Generic;
 using System.IO;
@@ -8,20 +7,8 @@ namespace DevilDaggersWebsite.Code.Utils
 {
 	public static class UserUtils
 	{
-		public static List<Ban> GetBans(ICommonObjects commonObjects)
-			=> JsonConvert.DeserializeObject<List<Ban>>(File.ReadAllText(Path.Combine(commonObjects.Env.WebRootPath, "user", "bans.json")));
-
-		public static List<Flag> GetFlags(ICommonObjects commonObjects)
-			=> JsonConvert.DeserializeObject<List<Flag>>(File.ReadAllText(Path.Combine(commonObjects.Env.WebRootPath, "user", "flags.json")));
-
-		public static List<PlayerSetting> GetPlayerSettings(ICommonObjects commonObjects)
-			=> JsonConvert.DeserializeObject<List<PlayerSetting>>(File.ReadAllText(Path.Combine(commonObjects.Env.WebRootPath, "user", "settings.json")));
-
-		public static List<UserTitleCollection> GetTitleCollections(ICommonObjects commonObjects)
-			=> JsonConvert.DeserializeObject<List<UserTitleCollection>>(File.ReadAllText(Path.Combine(commonObjects.Env.WebRootPath, "user", "titles.json")));
-
-		public static List<AssetMod> GetAssetMods(ICommonObjects commonObjects)
-			=> JsonConvert.DeserializeObject<List<AssetMod>>(File.ReadAllText(Path.Combine(commonObjects.Env.WebRootPath, "user", "mods.json")));
+		public static List<T> GetUserObjects<T>(ICommonObjects commonObjects, string fileNameWithoutExtension)
+			=> JsonConvert.DeserializeObject<List<T>>(File.ReadAllText(Path.Combine(commonObjects.Env.WebRootPath, "user", $"{fileNameWithoutExtension}.json")));
 
 		public static Dictionary<string, string> TitleImages { get; set; } = new Dictionary<string, string>
 		{

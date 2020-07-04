@@ -1,0 +1,25 @@
+﻿@page
+@model DevilDaggersWebsite.Pages.Admin.DonationsModel
+@inject CoreBase3.Services.ICommonObjects CommonObjects
+@{
+	ViewData["Title"] = "Admin - Donations";
+}
+
+<header>
+	<h1>@ViewData["Title"]</h1>
+</header>
+
+<main role="main" class="text-left">
+	<a asp-page="/Admin/Index" asp-route-password="@Model.Password">Admin home</a>
+	@using (Html.BeginForm(FormMethod.Post))
+	{
+		<fieldset>
+			<textarea asp-for="FileContents">@Model.FileContents</textarea>
+			<input type="submit" id="save" class="btn btn-default" value="Save" />
+		</fieldset>
+	}
+</main>
+
+@section Styles {
+	<link rel='stylesheet' href='~/styles/admin.css' />
+}

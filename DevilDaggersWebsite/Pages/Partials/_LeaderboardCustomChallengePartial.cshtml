@@ -1,7 +1,6 @@
 ﻿@using DevilDaggersCore
 @using DevilDaggersCore.Game
 @using DevilDaggersWebsite.Code.Database.CustomLeaderboards
-@using DevilDaggersWebsite.Code.Donations
 @using DevilDaggersWebsite.Code.Users
 @using DevilDaggersWebsite.Code.Utils
 @using Microsoft.AspNetCore.Html
@@ -24,9 +23,9 @@
 	</div>
 	<div class="leaderboard-body">
 		@{
-			IEnumerable<Flag> flags = UserUtils.GetFlags(CommonObjects);
-			IEnumerable<UserTitleCollection> titleCollections = UserUtils.GetTitleCollections(CommonObjects);
-			IEnumerable<Donator> unanonymousDonators = DonationList.Donators.Where(d => !d.IsAnonymous);
+			IEnumerable<Flag> flags = UserUtils.GetUserObjects<Flag>(CommonObjects, "flags");
+			IEnumerable<UserTitleCollection> titleCollections = UserUtils.GetUserObjects<UserTitleCollection>(CommonObjects, "titles");
+			IEnumerable<Donator> unanonymousDonators = UserUtils.GetUserObjects<Donator>(CommonObjects, "donators").Where(d => !d.IsAnonymous);
 			int rank = 0;
 			foreach (CustomEntry entry in Model.Entries)
 			{

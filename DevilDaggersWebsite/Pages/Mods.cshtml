@@ -27,7 +27,7 @@
 			</tr>
 		</thead>
 		<tbody>
-			@foreach (AssetMod mod in UserUtils.GetAssetMods(CommonObjects))
+			@foreach (AssetMod mod in UserUtils.GetUserObjects<AssetMod>(CommonObjects, "mods"))
 			{
 				<tr>
 					<td>

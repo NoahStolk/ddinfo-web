@@ -1,7 +1,6 @@
 ﻿@using DevilDaggersCore
 @using DevilDaggersCore.Game
 @using DevilDaggersCore.Leaderboards
-@using DevilDaggersWebsite.Code.Donations
 @using DevilDaggersWebsite.Code.Users
 @using DevilDaggersWebsite.Code.Utils
 @inject CoreBase3.Services.ICommonObjects CommonObjects
@@ -22,10 +21,10 @@
 	</div>
 	<div class="leaderboard-body">
 		@{
-			IEnumerable<Flag> flags = UserUtils.GetFlags(CommonObjects);
-			IEnumerable<UserTitleCollection> titleCollections = UserUtils.GetTitleCollections(CommonObjects);
-			IEnumerable<PlayerSetting> settings = UserUtils.GetPlayerSettings(CommonObjects);
-			IEnumerable<Donator> unanonymousDonators = DonationList.Donators.Where(d => !d.IsAnonymous);
+			IEnumerable<Flag> flags = UserUtils.GetUserObjects<Flag>(CommonObjects, "flags");
+			IEnumerable<UserTitleCollection> titleCollections = UserUtils.GetUserObjects<UserTitleCollection>(CommonObjects, "titles");
+			IEnumerable<PlayerSetting> settings = UserUtils.GetUserObjects<PlayerSetting>(CommonObjects, "settings");
+			IEnumerable<Donator> unanonymousDonators = UserUtils.GetUserObjects<Donator>(CommonObjects, "donators").Where(d => !d.IsAnonymous);
 			foreach (Entry entry in Model.Leaderboard.Entries)
 			{
 				bool isUnanonymousDonator = unanonymousDonators.Any(d => d.Id == entry.Id);

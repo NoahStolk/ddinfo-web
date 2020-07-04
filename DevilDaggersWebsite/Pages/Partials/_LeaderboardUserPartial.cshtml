@@ -2,12 +2,11 @@
 @using DevilDaggersCore
 @using DevilDaggersCore.Game
 @using DevilDaggersCore.Leaderboards
-@using DevilDaggersWebsite.Code.Donations
 @using DevilDaggersWebsite.Code.PageModels
 @using DevilDaggersWebsite.Code.Users
 @using DevilDaggersWebsite.Code.Utils
 @using DevilDaggersWebsite.Pages.Leaderboard
-@using Microsoft.AspNetCore.Html; 
+@using Microsoft.AspNetCore.Html;
 @inject CoreBase3.Services.ICommonObjects CommonObjects
 @{
 	bool isIndex = false;
@@ -50,10 +49,10 @@
 	</div>
 	<div class="leaderboard-body">
 		@{
-			IEnumerable<Ban> bans = UserUtils.GetBans(CommonObjects);
-			IEnumerable<Flag> flags = UserUtils.GetFlags(CommonObjects);
-			IEnumerable<UserTitleCollection> titleCollections = UserUtils.GetTitleCollections(CommonObjects);
-			IEnumerable<Donator> unanonymousDonators = DonationList.Donators.Where(d => !d.IsAnonymous);
+			IEnumerable<Ban> bans = UserUtils.GetUserObjects<Ban>(CommonObjects, "bans");
+			IEnumerable<Flag> flags = UserUtils.GetUserObjects<Flag>(CommonObjects, "flags");
+			IEnumerable<UserTitleCollection> titleCollections = UserUtils.GetUserObjects<UserTitleCollection>(CommonObjects, "titles");
+			IEnumerable<Donator> unanonymousDonators = UserUtils.GetUserObjects<Donator>(CommonObjects, "donators").Where(d => !d.IsAnonymous);
 			foreach (Entry entry in Model.Leaderboard.Entries)
 			{
 				Ban ban = bans.FirstOrDefault(b => b.Id == entry.Id);
