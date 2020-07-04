@@ -14,7 +14,6 @@
 	@using (Html.BeginForm(FormMethod.Post))
 	{
 		<fieldset>
-			<h2>User titles</h2>
 			<textarea asp-for="FileContents">@Model.FileContents</textarea>
 			<input type="submit" id="save" class="btn btn-default" value="Save" />
 		</fieldset>
