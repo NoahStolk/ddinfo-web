@@ -105,8 +105,8 @@
 				Also note that the graph data is only based on a user's highscores; the rank and username do not update until the next top 100 highscore.
 			</p>
 
-			<div id="user-progression-chart">
-				<table id="highlighter">
+			<div class="chart" id="user-progression-chart">
+				<table class="highlighter" id="user-progression-highlighter">
 					<tr><td>Date:</td><td id="h-date"></td></tr>
 					<tr><td>Rank:</td><td id="h-rank"></td></tr>
 					<tr><td>Time:</td><td id="h-time"></td></tr>
@@ -119,7 +119,6 @@
 			</div>
 		}
 	}
-
 </main>
 
 @section Scripts {
@@ -129,8 +128,9 @@
 	<script defer src='~/plugins/jqPlot/jqplot.dateAxisRenderer.js' asp-append-version='true'></script>
 	<script defer src='~/plugins/jqPlot/jqplot.highlighter.js' asp-append-version='true'></script>
 	<script defer src='~/plugins/jqPlot/jqplot.canvasOverlay.js' asp-append-version='true'></script>
-	<script defer src='~/scripts/leaderboard-progression.js' asp-append-version='true'></script>
-	<script defer src='~/scripts/leaderboard-user-progression.js' asp-append-version='true'></script>
+	<script defer src='~/scripts/charts/leaderboard-chart.js' asp-append-version='true'></script>
+	<script defer src='~/scripts/charts/leaderboard-user-progression.js' asp-append-version='true'></script>
+	<script defer src='~/scripts/charts/leaderboard-user-activity.js' asp-append-version='true'></script>
 }
 
 @section Styles {
@@ -138,5 +138,5 @@
 	<link rel='stylesheet' href='~/styles/leaderboard-rows-general.css' />
 
 	<link rel='stylesheet' href='~/lib/jqPlot/jquery.jqplot.min.css' />
-	<link rel='stylesheet' href='~/styles/leaderboard-progression.css' />
+	<link rel='stylesheet' href='~/styles/leaderboard-chart.css' />
 }

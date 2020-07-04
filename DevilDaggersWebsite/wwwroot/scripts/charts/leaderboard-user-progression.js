@@ -1,19 +1,5 @@
 ﻿const maxDate = Date.now();
 
-let getUrlParameter = function getUrlParameter(sParam) {
-	let sPageURL = window.location.search.substring(1),
-		sURLVariables = sPageURL.split('&'),
-		sParameterName,
-		i;
-
-	for (i = 0; i < sURLVariables.length; i++) {
-		sParameterName = sURLVariables[i].split('=');
-
-		if (sParameterName[0] === sParam)
-			return sParameterName[1] === undefined ? true : decodeURIComponent(sParameterName[1]);
-	}
-};
-
 $.getJSON("/Api/GetUserProgressionById?UserId=" + getUrlParameter("UserId"), function (data) {
 	const pbs = [];
 	let pbIndex = 0;
@@ -44,37 +30,39 @@ $.getJSON("/Api/GetUserProgressionById?UserId=" + getUrlParameter("UserId"), fun
 
 	const chartName = "user-progression-chart";
 	const chartId = "#" + chartName;
+	const highlighterName = "user-progression-highlighter";
+	const highlighterId = "#" + highlighterName;
 	const chart = createChart(chartName, pbs, minDate, maxDate, minTime, maxTime, (maxTime - minTime) / 50 + 1);
 
 	$(chartId).bind('jqplotMouseMove', function (_event, xy, _axesData, _neighbor, plot) {
 		const closestData = getClosestDataToMouse(chart, xy, plot, minDate, maxDate, minTime, maxTime);
 
 		if (!closestData)
-			$("#highlighter").hide();
+			$(highlighterId).hide();
 		else
 			setHighlighter(closestData, xy);
 	});
 	$(chartId).bind('jqplotMouseLeave', function () {
-		$("#highlighter").hide();
+		$(highlighterId).hide();
 	});
 
 	$(window).resize(function () {
 		chart.replot();
 
-		$(chartId).append('<table id="highlighter">');
-		$('#highlighter').append('<tr><td>Date</td><td id="h-date"></td></tr>');
-		$('#highlighter').append('<tr><td>Rank</td><td id="h-rank"></td></tr>');
-		$('#highlighter').append('<tr><td>Time</td><td id="h-time"></td></tr>');
-		$('#highlighter').append('<tr><td>Username</td><td id="h-username"></td></tr>');
-		$('#highlighter').append('<tr><td>Gems</td><td id="h-gems"></td></tr>');
-		$('#highlighter').append('<tr><td>Kills</td><td id="h-kills"></td></tr>');
-		$('#highlighter').append('<tr><td>Accuracy</td><td id="h-accuracy"></td></tr>');
-		$('#highlighter').append('<tr><td>Death type</td><td id="h-death-type"></td></tr>');
+		$(chartId).append('<table class="highlighter" id="' + highlighterName + '">');
+		$(highlighterId).append('<tr><td>Date</td><td id="h-date"></td></tr>');
+		$(highlighterId).append('<tr><td>Rank</td><td id="h-rank"></td></tr>');
+		$(highlighterId).append('<tr><td>Time</td><td id="h-time"></td></tr>');
+		$(highlighterId).append('<tr><td>Username</td><td id="h-username"></td></tr>');
+		$(highlighterId).append('<tr><td>Gems</td><td id="h-gems"></td></tr>');
+		$(highlighterId).append('<tr><td>Kills</td><td id="h-kills"></td></tr>');
+		$(highlighterId).append('<tr><td>Accuracy</td><td id="h-accuracy"></td></tr>');
+		$(highlighterId).append('<tr><td>Death type</td><td id="h-death-type"></td></tr>');
 		$(chartId).append('</table>');
 	});
 
 	function setHighlighter(data, xy) {
-		setHighlighterPosition(chart, data, xy, minTime, maxTime);
+		setHighlighterPosition(chart, highlighterId, data, xy, minTime, maxTime);
 
 		// Values
 		const date = new Date(data[0]);
@@ -89,5 +77,8 @@ $.getJSON("/Api/GetUserProgressionById?UserId=" + getUrlParameter("UserId"), fun
 		$('#h-death-type').html(data[8]);
 
 		setHighlighterStyle(data[1], data[7]);
+
+		// Show
+		$(highlighterId).show();
 	}
 });

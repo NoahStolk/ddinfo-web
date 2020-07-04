@@ -29,36 +29,38 @@ $.getJSON("/Api/GetWorldRecords", function (data) {
 
 	const chartName = "world-record-progression-chart";
 	const chartId = "#" + chartName;
+	const highlighterName = "world-record-progression-highlighter";
+	const highlighterId = "#" + highlighterName;
 	const chart = createChart(chartName, wrs, minDate, maxDate, minTime, maxTime, (maxTime - minTime) / 50 + 1);
 
 	$(chartId).bind('jqplotMouseMove', function (_event, xy, _axesData, _neighbor, plot) {
 		const closestData = getClosestDataToMouse(chart, xy, plot, minDate, maxDate, minTime, maxTime);
 
 		if (!closestData)
-			$("#highlighter").hide();
+			$(highlighterId).hide();
 		else
 			setHighlighter(closestData, xy);
 	});
 	$(chartId).bind('jqplotMouseLeave', function () {
-		$("#highlighter").hide();
+		$(highlighterId).hide();
 	});
 
 	$(window).resize(function () {
 		chart.replot();
 
-		$(chartId).append('<table id="highlighter">');
-		$('#highlighter').append('<tr><td>Date</td><td id="h-date"></td></tr>');
-		$('#highlighter').append('<tr><td>Time</td><td id="h-time"></td></tr>');
-		$('#highlighter').append('<tr><td>Username</td><td id="h-username"></td></tr>');
-		$('#highlighter').append('<tr><td>Gems</td><td id="h-gems"></td></tr>');
-		$('#highlighter').append('<tr><td>Kills</td><td id="h-kills"></td></tr>');
-		$('#highlighter').append('<tr><td>Accuracy</td><td id="h-accuracy"></td></tr>');
-		$('#highlighter').append('<tr><td>Death type</td><td id="h-death-type"></td></tr>');
+		$(chartId).append('<table class="highlighter" id="' + highlighterName + '">');
+		$(highlighterId).append('<tr><td>Date</td><td id="h-date"></td></tr>');
+		$(highlighterId).append('<tr><td>Time</td><td id="h-time"></td></tr>');
+		$(highlighterId).append('<tr><td>Username</td><td id="h-username"></td></tr>');
+		$(highlighterId).append('<tr><td>Gems</td><td id="h-gems"></td></tr>');
+		$(highlighterId).append('<tr><td>Kills</td><td id="h-kills"></td></tr>');
+		$(highlighterId).append('<tr><td>Accuracy</td><td id="h-accuracy"></td></tr>');
+		$(highlighterId).append('<tr><td>Death type</td><td id="h-death-type"></td></tr>');
 		$(chartId).append('</table>');
 	});
 
 	function setHighlighter(data, xy) {
-		setHighlighterPosition(chart, data, xy, minTime, maxTime);
+		setHighlighterPosition(chart, highlighterId, data, xy, minTime, maxTime);
 
 		// Values
 		const date = new Date(data[0]);
@@ -72,5 +74,8 @@ $.getJSON("/Api/GetWorldRecords", function (data) {
 		$('#h-death-type').html(data[7]);
 
 		setHighlighterStyle(data[1], data[6]);
+
+		// Show
+		$(highlighterId).show();
 	}
 });

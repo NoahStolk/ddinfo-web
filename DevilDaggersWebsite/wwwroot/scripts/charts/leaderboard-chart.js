@@ -1,5 +1,19 @@
 ﻿let monthShortNames = ["Jan", "Feb", "Mar", "Apr", "May", "Jun", "Jul", "Aug", "Sep", "Oct", "Nov", "Dec"];
 
+let getUrlParameter = function getUrlParameter(sParam) {
+	let sPageURL = window.location.search.substring(1),
+		sURLVariables = sPageURL.split('&'),
+		sParameterName,
+		i;
+
+	for (i = 0; i < sURLVariables.length; i++) {
+		sParameterName = sURLVariables[i].split('=');
+
+		if (sParameterName[0] === sParam)
+			return sParameterName[1] === undefined ? true : decodeURIComponent(sParameterName[1]);
+	}
+};
+
 let gameVersions = [];
 $.ajax({
 	url: "/Api/GetGameVersions",
@@ -194,12 +208,12 @@ function getClosestDataToMouse(chart, xy, plot, minDate, maxDate, minTime, maxTi
 	return null;
 }
 
-function setHighlighterPosition(chart, data, xy, minTime, maxTime) {
+function setHighlighterPosition(chart, highlighterId, data, xy, minTime, maxTime) {
 	const yAxisWidth = chart.grid._width - chart._width;
 	const timePerc = (data[1] - minTime) / (maxTime - minTime);
-	$('#highlighter').css({
+	$(highlighterId).css({
 		position: "absolute",
-		left: xy.x - yAxisWidth - ($('#highlighter').width() / 2 + 6) + "px",
+		left: xy.x - yAxisWidth - ($(highlighterId).width() / 2 + 6) + "px",
 		bottom: timePerc * chart.grid._height + (timePerc < 0.5 ? 112 : -256) + "px"
 	});
 }
@@ -215,7 +229,4 @@ function setHighlighterStyle(time, colorCode) {
 		$('#h-time').addClass('devil');
 	}
 	$('#h-death-type').css({ color: "#" + colorCode });
-
-	// Show
-	$("#highlighter").show();
 }
