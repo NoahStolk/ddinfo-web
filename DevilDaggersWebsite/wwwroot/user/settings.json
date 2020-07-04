@@ -1,0 +1,378 @@
+[
+  {
+    "Id": 40892,
+    "Dpi": 800,
+    "InGameSens": 0.23,
+    "Fov": 102,
+    "RightHanded": true,
+    "FlashEnabled": false
+  },
+  {
+    "Id": 193721,
+    "Dpi": 1600,
+    "InGameSens": 0.609,
+    "Fov": 95,
+    "RightHanded": false,
+    "FlashEnabled": true
+  },
+  {
+    "Id": 203301,
+    "Dpi": 1800,
+    "InGameSens": 0.087,
+    "Fov": 100,
+    "RightHanded": true,
+    "FlashEnabled": true
+  },
+  {
+    "Id": 209475,
+    "Dpi": 400,
+    "InGameSens": 0.193,
+    "Fov": 110,
+    "RightHanded": true,
+    "FlashEnabled": true
+  },
+  {
+    "Id": 146085,
+    "Dpi": 1600,
+    "InGameSens": 0.778,
+    "Fov": 110,
+    "RightHanded": false,
+    "FlashEnabled": false
+  },
+  {
+    "Id": 21854,
+    "Dpi": 800,
+    "InGameSens": 0.175,
+    "Fov": 97,
+    "RightHanded": true,
+    "FlashEnabled": false
+  },
+  {
+    "Id": 93991,
+    "Dpi": 1200,
+    "InGameSens": 0.1,
+    "Fov": 100,
+    "RightHanded": true,
+    "FlashEnabled": true
+  },
+  {
+    "Id": 148788,
+    "Dpi": 1000,
+    "InGameSens": 0.161,
+    "Fov": 99,
+    "RightHanded": false,
+    "FlashEnabled": true
+  },
+  {
+    "Id": 229,
+    "Dpi": 800,
+    "InGameSens": 0.15,
+    "Fov": 95,
+    "RightHanded": true,
+    "FlashEnabled": false
+  },
+  {
+    "Id": 106722,
+    "Dpi": 400,
+    "InGameSens": 0.2,
+    "Fov": 100,
+    "RightHanded": true,
+    "FlashEnabled": true
+  },
+  {
+    "Id": 118832,
+    "Dpi": 800,
+    "InGameSens": 0.168,
+    "Fov": 100,
+    "RightHanded": true,
+    "FlashEnabled": true
+  },
+  {
+    "Id": 1135,
+    "Dpi": 400,
+    "InGameSens": 0.224,
+    "Fov": 95,
+    "RightHanded": true,
+    "FlashEnabled": true
+  },
+  {
+    "Id": 1677,
+    "Dpi": 800,
+    "InGameSens": 0.16,
+    "Fov": 88,
+    "RightHanded": true,
+    "FlashEnabled": false
+  },
+  {
+    "Id": 1545,
+    "Dpi": 600,
+    "InGameSens": 0.129,
+    "Fov": 92,
+    "RightHanded": false,
+    "FlashEnabled": false
+  },
+  {
+    "Id": 134802,
+    "Dpi": 800,
+    "InGameSens": 0.13,
+    "Fov": 95,
+    "RightHanded": true,
+    "FlashEnabled": true
+  },
+  {
+    "Id": 10210,
+    "Dpi": 600,
+    "InGameSens": 1.0,
+    "Fov": 120,
+    "RightHanded": true,
+    "FlashEnabled": false
+  },
+  {
+    "Id": 438,
+    "Dpi": 400,
+    "InGameSens": 0.255,
+    "Fov": 100,
+    "RightHanded": true,
+    "FlashEnabled": true
+  },
+  {
+    "Id": 148518,
+    "Dpi": 400,
+    "InGameSens": 0.366,
+    "Fov": 93,
+    "RightHanded": false,
+    "FlashEnabled": false
+  },
+  {
+    "Id": 105874,
+    "Dpi": 1600,
+    "InGameSens": 0.21,
+    "Fov": 90,
+    "RightHanded": true,
+    "FlashEnabled": true
+  },
+  {
+    "Id": 105641,
+    "Dpi": 1100,
+    "InGameSens": 0.08,
+    "Fov": 90,
+    "RightHanded": true,
+    "FlashEnabled": true
+  },
+  {
+    "Id": 86805,
+    "Dpi": 3200,
+    "InGameSens": 0.175,
+    "Fov": 100,
+    "RightHanded": false,
+    "FlashEnabled": true
+  },
+  {
+    "Id": 184178,
+    "Dpi": 400,
+    "InGameSens": 0.772,
+    "Fov": 102,
+    "RightHanded": true,
+    "FlashEnabled": true
+  },
+  {
+    "Id": 65617,
+    "Dpi": 2100,
+    "InGameSens": 0.097,
+    "Fov": 105,
+    "RightHanded": true,
+    "FlashEnabled": true
+  },
+  {
+    "Id": 105315,
+    "Dpi": 1000,
+    "InGameSens": 0.2,
+    "Fov": 100,
+    "RightHanded": true,
+    "FlashEnabled": true
+  },
+  {
+    "Id": 94857,
+    "Dpi": 800,
+    "InGameSens": 0.178,
+    "Fov": 94,
+    "RightHanded": true,
+    "FlashEnabled": true
+  },
+  {
+    "Id": 6760,
+    "Dpi": 400,
+    "InGameSens": 0.367,
+    "Fov": 95,
+    "RightHanded": false,
+    "FlashEnabled": true
+  },
+  {
+    "Id": 113530,
+    "Dpi": 800,
+    "InGameSens": 0.246,
+    "Fov": 90,
+    "RightHanded": true,
+    "FlashEnabled": true
+  },
+  {
+    "Id": 176615,
+    "Dpi": 800,
+    "InGameSens": 0.666,
+    "Fov": 95,
+    "RightHanded": false,
+    "FlashEnabled": false
+  },
+  {
+    "Id": 180168,
+    "Dpi": 400,
+    "InGameSens": 0.224,
+    "Fov": 95,
+    "RightHanded": true,
+    "FlashEnabled": true
+  },
+  {
+    "Id": 48687,
+    "Dpi": 800,
+    "InGameSens": 0.166,
+    "Fov": 95,
+    "RightHanded": true,
+    "FlashEnabled": false
+  },
+  {
+    "Id": 173419,
+    "Dpi": 800,
+    "InGameSens": 0.15,
+    "Fov": 105,
+    "RightHanded": true,
+    "FlashEnabled": false
+  },
+  {
+    "Id": 118245,
+    "Dpi": 250,
+    "InGameSens": 0.754,
+    "Fov": 105,
+    "RightHanded": true,
+    "FlashEnabled": false
+  },
+  {
+    "Id": 106181,
+    "Dpi": 800,
+    "InGameSens": 0.155,
+    "Fov": 100,
+    "RightHanded": true,
+    "FlashEnabled": true
+  },
+  {
+    "Id": 10782,
+    "Dpi": 3000,
+    "InGameSens": 0.117,
+    "Fov": 114,
+    "RightHanded": true,
+    "FlashEnabled": true
+  },
+  {
+    "Id": 148538,
+    "Dpi": 1500,
+    "InGameSens": 0.11,
+    "Fov": 93,
+    "RightHanded": true,
+    "FlashEnabled": false
+  },
+  {
+    "Id": 115431,
+    "Dpi": 960,
+    "InGameSens": 0.15,
+    "Fov": 90,
+    "RightHanded": true,
+    "FlashEnabled": true
+  },
+  {
+    "Id": 146931,
+    "Dpi": 1400,
+    "InGameSens": 0.35,
+    "Fov": 101,
+    "RightHanded": true,
+    "FlashEnabled": true
+  },
+  {
+    "Id": 188777,
+    "Dpi": 500,
+    "InGameSens": 0.169,
+    "Fov": 100,
+    "RightHanded": false,
+    "FlashEnabled": true
+  },
+  {
+    "Id": 198582,
+    "Dpi": 800,
+    "InGameSens": 0.5,
+    "Fov": 100,
+    "RightHanded": true,
+    "FlashEnabled": false
+  },
+  {
+    "Id": 193671,
+    "Dpi": 1000,
+    "InGameSens": 0.2,
+    "Fov": 100,
+    "RightHanded": true,
+    "FlashEnabled": true
+  },
+  {
+    "Id": 148130,
+    "Dpi": 4150,
+    "InGameSens": 0.772,
+    "Fov": 87,
+    "RightHanded": true,
+    "FlashEnabled": true
+  },
+  {
+    "Id": 197276,
+    "Dpi": 1750,
+    "InGameSens": 0.88,
+    "Fov": 105,
+    "RightHanded": true,
+    "FlashEnabled": true
+  },
+  {
+    "Id": 171188,
+    "Dpi": 800,
+    "InGameSens": 0.175,
+    "Fov": 95,
+    "RightHanded": true,
+    "FlashEnabled": true
+  },
+  {
+    "Id": 111007,
+    "Dpi": 800,
+    "InGameSens": 0.242,
+    "Fov": 94,
+    "RightHanded": true,
+    "FlashEnabled": false
+  },
+  {
+    "Id": 142939,
+    "Dpi": 500,
+    "InGameSens": 0.125,
+    "Fov": 110,
+    "RightHanded": true,
+    "FlashEnabled": true
+  },
+  {
+    "Id": 182924,
+    "Dpi": 800,
+    "InGameSens": 0.125,
+    "Fov": 94,
+    "RightHanded": false,
+    "FlashEnabled": false
+  },
+  {
+    "Id": 116439,
+    "Dpi": 1600,
+    "InGameSens": 0.249,
+    "Fov": 100,
+    "RightHanded": true,
+    "FlashEnabled": false
+  }
+]

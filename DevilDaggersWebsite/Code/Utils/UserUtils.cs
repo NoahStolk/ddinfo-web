@@ -1,107 +1,27 @@
 ﻿using CoreBase3.Services;
 using DevilDaggersWebsite.Code.Users;
-using NetBase.Utils;
+using Newtonsoft.Json;
 using System.Collections.Generic;
 using System.IO;
-using System.Text;
 
 namespace DevilDaggersWebsite.Code.Utils
 {
 	public static class UserUtils
 	{
-		public static IEnumerable<Ban> GetBans(ICommonObjects commonObjects)
-		{
-			foreach (string b in FileUtils.GetContents(Path.Combine(commonObjects.Env.WebRootPath, "user", "bans"), Encoding.Default).Split('\n'))
-			{
-				if (string.IsNullOrWhiteSpace(b))
-					continue;
+		public static List<Ban> GetBans(ICommonObjects commonObjects)
+			=> JsonConvert.DeserializeObject<List<Ban>>(File.ReadAllText(Path.Combine(commonObjects.Env.WebRootPath, "user", "bans.json")));
 
-				string ban = b.Trim();
-				string[] props = GetPropsByTab(ban);
-				if (props.Length > 2 && int.TryParse(props[2], out int idResponsible))
-					yield return new Ban(int.Parse(props[0]), props[1], idResponsible);
-				else
-					yield return new Ban(int.Parse(props[0]), props[1], null);
-			}
-		}
+		public static List<Flag> GetFlags(ICommonObjects commonObjects)
+			=> JsonConvert.DeserializeObject<List<Flag>>(File.ReadAllText(Path.Combine(commonObjects.Env.WebRootPath, "user", "flags.json")));
 
-		public static IEnumerable<Flag> GetFlags(ICommonObjects commonObjects)
-		{
-			foreach (string f in FileUtils.GetContents(Path.Combine(commonObjects.Env.WebRootPath, "user", "flags"), Encoding.Default).Split('\n'))
-			{
-				if (string.IsNullOrWhiteSpace(f))
-					continue;
+		public static List<PlayerSetting> GetPlayerSettings(ICommonObjects commonObjects)
+			=> JsonConvert.DeserializeObject<List<PlayerSetting>>(File.ReadAllText(Path.Combine(commonObjects.Env.WebRootPath, "user", "settings.json")));
 
-				string flag = f.Trim();
+		public static List<UserTitleCollection> GetTitleCollections(ICommonObjects commonObjects)
+			=> JsonConvert.DeserializeObject<List<UserTitleCollection>>(File.ReadAllText(Path.Combine(commonObjects.Env.WebRootPath, "user", "titles.json")));
 
-				if (flag.EndsWith("?"))
-					continue;
-
-				string[] props = GetPropsBySpace(flag);
-
-				yield return new Flag(int.Parse(props[0]), props[1]);
-			}
-		}
-
-		public static IEnumerable<PlayerSetting> GetPlayerSettings(ICommonObjects commonObjects)
-		{
-			foreach (string s in FileUtils.GetContents(Path.Combine(commonObjects.Env.WebRootPath, "user", "settings"), Encoding.Default).Split('\n'))
-			{
-				if (string.IsNullOrWhiteSpace(s))
-					continue;
-
-				string line = s.Trim();
-				string[] props = GetPropsBySpace(line);
-
-				yield return new PlayerSetting(int.Parse(props[0]), int.Parse(props[1]), float.Parse(props[2]), int.Parse(props[3]), bool.Parse(props[4]), bool.Parse(props[5]));
-			}
-		}
-
-		public static IEnumerable<UserTitleCollection> GetTitleCollections(ICommonObjects commonObjects)
-		{
-			foreach (string t in FileUtils.GetContents(Path.Combine(commonObjects.Env.WebRootPath, "user", "titles"), Encoding.Default).Split('\n'))
-			{
-				if (string.IsNullOrWhiteSpace(t))
-					continue;
-
-				string line = t.Trim();
-				string[] props = GetPropsByTab(line);
-
-				string[] titles = props[1].Split(',');
-
-				yield return new UserTitleCollection(int.Parse(props[0]), titles);
-			}
-		}
-
-		public static IEnumerable<AssetMod> GetAssetMods(ICommonObjects commonObjects)
-		{
-			foreach (string m in FileUtils.GetContents(Path.Combine(commonObjects.Env.WebRootPath, "user", "mods"), Encoding.Default).Split('\n'))
-			{
-				if (string.IsNullOrWhiteSpace(m))
-					continue;
-
-				string mod = m.Trim();
-				string[] props = GetPropsByTab(mod);
-
-				yield return new AssetMod((AssetModType)int.Parse(props[0]), (AssetModFileContents)int.Parse(props[1]), props[2], props[3], props[4]);
-			}
-		}
-
-		private static string[] GetPropsBySpace(string line)
-		{
-			while (line.Contains("\t"))
-				line = line.Replace("\t", " ");
-			while (line.Contains("  "))
-				line = line.Replace("  ", " ");
-			return line.Split(' ');
-		}
-
-		private static string[] GetPropsByTab(string line)
-		{
-			while (line.Contains("\t\t"))
-				line = line.Replace("\t\t", "\t");
-			return line.Split('\t');
-		}
+		public static List<AssetMod> GetAssetMods(ICommonObjects commonObjects)
+			=> JsonConvert.DeserializeObject<List<AssetMod>>(File.ReadAllText(Path.Combine(commonObjects.Env.WebRootPath, "user", "mods.json")));
 
 		public static Dictionary<string, string> TitleImages { get; set; } = new Dictionary<string, string>
 		{

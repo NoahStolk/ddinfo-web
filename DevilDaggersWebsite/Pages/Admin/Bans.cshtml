@@ -15,8 +15,7 @@
 	@using (Html.BeginForm(FormMethod.Post))
 	{
 		<fieldset>
-			<p style="height: 3em;">ID, Description, ID responsible</p>
-			<textarea style="height: @(Model.FileContents.Split('\n').Length * 1.4f)em;" asp-for="FileContents">@Model.FileContents</textarea>
+			<textarea asp-for="FileContents">@Model.FileContents</textarea>
 			<input type="submit" id="save" class="btn btn-default" value="Save" />
 		</fieldset>
 	}

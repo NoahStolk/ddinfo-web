@@ -16,11 +16,9 @@
 	@using (Html.BeginForm(FormMethod.Post))
 	{
 		<fieldset>
-			<p>Mod type(s), File kind(s) included in download, Mod name, Mod author, Download URL</p>
-
 			<div class="row">
-				<div class="col-xs-6">
-					Mod type<br />
+				<div class="col-xs-6 col-sm-3 col-md-2">
+					Mod types:<br />
 					<ul>
 						@foreach (string s in EnumUtils.GetEnumNamesWithValues<AssetModType>())
 						{
@@ -28,8 +26,8 @@
 						}
 					</ul>
 				</div>
-				<div class="col-xs-6">
-					File kind<br />
+				<div class="col-xs-6 col-sm-3 col-md-2">
+					File kinds:<br />
 					<ul>
 						@foreach (string s in EnumUtils.GetEnumNamesWithValues<AssetModFileContents>())
 						{
@@ -42,7 +40,7 @@
 			<p>
 				Multiple types are supported using bit fields; a mod that changes audio and textures would get the mod type value 3 (1 + 2), a mod that changes audio, models, and particles would get the mod type value 21 (1 + 4 + 16), and so forth.
 			</p>
-			<textarea style="height: @(Model.FileContents.Split('\n').Length * 1.4f)em;" asp-for="FileContents">@Model.FileContents</textarea>
+			<textarea asp-for="FileContents">@Model.FileContents</textarea>
 			<input type="submit" id="save" class="btn btn-default" value="Save" />
 		</fieldset>
 	}

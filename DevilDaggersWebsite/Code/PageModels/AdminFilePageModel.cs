@@ -1,7 +1,5 @@
 ﻿using CoreBase3.Services;
-using NetBase.Utils;
 using System.IO;
-using System.Text;
 
 namespace DevilDaggersWebsite.Code.PageModels
 {
@@ -16,12 +14,12 @@ namespace DevilDaggersWebsite.Code.PageModels
 		{
 			this.fileName = fileName;
 
-			FileContents = FileUtils.GetContents(Path.Combine(commonObjects.Env.WebRootPath, "user", this.fileName), Encoding.Default);
+			FileContents = System.IO.File.ReadAllText(Path.Combine(commonObjects.Env.WebRootPath, "user", $"{this.fileName}.json"));
 		}
 
 		public void OnPost(string fileContents)
 		{
-			FileUtils.CreateText(Path.Combine(commonObjects.Env.WebRootPath, "user", fileName), fileContents, Encoding.UTF8);
+			System.IO.File.WriteAllText(Path.Combine(commonObjects.Env.WebRootPath, "user", $"{fileName}.json"), fileContents);
 
 			FileContents = fileContents;
 		}

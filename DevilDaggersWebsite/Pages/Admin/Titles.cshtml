@@ -15,14 +15,7 @@
 	{
 		<fieldset>
 			<h2>User titles</h2>
-			<p>
-				ID, Title(s)*<br />
-				Titles:<br />
-				- Admin<br />
-				- Discord mod<br />
-				Multiple titles are supported and should be separated by commas, for instance; Admin,Discord mod
-			</p>
-			<textarea style="height: @(Model.FileContents.Split('\n').Length * 1.4f)em;" asp-for="FileContents">@Model.FileContents</textarea>
+			<textarea asp-for="FileContents">@Model.FileContents</textarea>
 			<input type="submit" id="save" class="btn btn-default" value="Save" />
 		</fieldset>
 	}

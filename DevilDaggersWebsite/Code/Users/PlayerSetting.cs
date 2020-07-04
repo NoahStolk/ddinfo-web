@@ -1,4 +1,6 @@
-﻿namespace DevilDaggersWebsite.Code.Users
+﻿using Newtonsoft.Json;
+
+namespace DevilDaggersWebsite.Code.Users
 {
 	public class PlayerSetting
 	{
@@ -9,8 +11,11 @@
 		public bool? RightHanded { get; set; }
 		public bool? FlashEnabled { get; set; }
 
+		[JsonIgnore]
 		public float? Edpi => Dpi * InGameSens;
+		[JsonIgnore]
 		public string RightHandedString => !RightHanded.HasValue ? string.Empty : RightHanded.Value ? "Right" : "Left";
+		[JsonIgnore]
 		public string FlashEnabledString => !FlashEnabled.HasValue ? string.Empty : FlashEnabled.Value ? "On" : "Off";
 
 		public PlayerSetting(int id, int? dpi, float? inGameSens, int? fov, bool? rightHanded, bool? flashEnabled)
@@ -21,16 +26,6 @@
 			Fov = fov;
 			RightHanded = rightHanded;
 			FlashEnabled = flashEnabled;
-		}
-
-		public PlayerSetting(int id)
-		{
-			Id = id;
-			Dpi = null;
-			InGameSens = null;
-			Fov = null;
-			RightHanded = null;
-			FlashEnabled = null;
 		}
 	}
 }
