@@ -22,7 +22,7 @@ namespace DevilDaggersWebsite.Pages.Admin
 
 		public async Task<ActionResult> OnGetAsync()
 		{
-			IEnumerable<Ban> bans = UserUtils.GetBans(commonObjects);
+			List<Ban> bans = UserUtils.GetBans(commonObjects);
 			IEnumerable<int> userIds = bans.SelectMany(b => b.IdResponsible.HasValue ? new[] { b.Id, b.IdResponsible.Value } : new[] { b.Id });
 			Entry[] entries = await Task.WhenAll(userIds.Select(async id => await Hasmodai.GetUserById(id)));
 
