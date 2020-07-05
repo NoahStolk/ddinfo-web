@@ -21,10 +21,10 @@
 	</div>
 	<div class="leaderboard-body">
 		@{
-			IEnumerable<Flag> flags = UserUtils.GetUserObjects<Flag>(CommonObjects, "flags");
-			IEnumerable<UserTitleCollection> titleCollections = UserUtils.GetUserObjects<UserTitleCollection>(CommonObjects, "titles");
-			IEnumerable<PlayerSetting> settings = UserUtils.GetUserObjects<PlayerSetting>(CommonObjects, "settings");
-			IEnumerable<Donator> unanonymousDonators = UserUtils.GetUserObjects<Donator>(CommonObjects, "donators").Where(d => !d.IsAnonymous);
+			IEnumerable<Flag> flags = UserUtils.GetUserObjects<Flag>(CommonObjects);
+			IEnumerable<UserTitleCollection> titleCollections = UserUtils.GetUserObjects<UserTitleCollection>(CommonObjects);
+			IEnumerable<PlayerSetting> settings = UserUtils.GetUserObjects<PlayerSetting>(CommonObjects);
+			IEnumerable<Donator> unanonymousDonators = UserUtils.GetUserObjects<Donator>(CommonObjects).Where(d => !d.IsAnonymous);
 			foreach (Entry entry in Model.Leaderboard.Entries)
 			{
 				bool isUnanonymousDonator = unanonymousDonators.Any(d => d.Id == entry.Id);

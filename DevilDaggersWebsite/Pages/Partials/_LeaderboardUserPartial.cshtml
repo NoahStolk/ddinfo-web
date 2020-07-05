@@ -49,10 +49,10 @@
 	</div>
 	<div class="leaderboard-body">
 		@{
-			IEnumerable<Ban> bans = UserUtils.GetUserObjects<Ban>(CommonObjects, "bans");
-			IEnumerable<Flag> flags = UserUtils.GetUserObjects<Flag>(CommonObjects, "flags");
-			IEnumerable<UserTitleCollection> titleCollections = UserUtils.GetUserObjects<UserTitleCollection>(CommonObjects, "titles");
-			IEnumerable<Donator> unanonymousDonators = UserUtils.GetUserObjects<Donator>(CommonObjects, "donators").Where(d => !d.IsAnonymous);
+			IEnumerable<Ban> bans = UserUtils.GetUserObjects<Ban>(CommonObjects);
+			IEnumerable<Flag> flags = UserUtils.GetUserObjects<Flag>(CommonObjects);
+			IEnumerable<UserTitleCollection> titleCollections = UserUtils.GetUserObjects<UserTitleCollection>(CommonObjects);
+			IEnumerable<Donator> unanonymousDonators = UserUtils.GetUserObjects<Donator>(CommonObjects).Where(d => !d.IsAnonymous);
 			foreach (Entry entry in Model.Leaderboard.Entries)
 			{
 				Ban ban = bans.FirstOrDefault(b => b.Id == entry.Id);

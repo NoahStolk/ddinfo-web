@@ -11,18 +11,18 @@ using System.Threading.Tasks;
 
 namespace DevilDaggersWebsite.Pages.Admin
 {
-	public class BansModel : AdminFilePageModel
+	public class BansModel : AdminFilePageModel<Ban>
 	{
 		public List<(Ban ban, string bannedAccountUsername, string responsibleAccountUsername)> BanInfo { get; private set; } = new List<(Ban ban, string bannedAccountUsername, string responsibleAccountUsername)>();
 
 		public BansModel(ICommonObjects commonObjects)
-			: base(commonObjects, "bans")
+			: base(commonObjects)
 		{
 		}
 
 		public async Task<ActionResult> OnGetAsync()
 		{
-			List<Ban> bans = UserUtils.GetUserObjects<Ban>(commonObjects, "bans");
+			List<Ban> bans = UserUtils.GetUserObjects<Ban>(commonObjects);
 			IEnumerable<int> userIds = bans.SelectMany(b => b.IdResponsible.HasValue ? new[] { b.Id, b.IdResponsible.Value } : new[] { b.Id });
 			Entry[] entries = await Task.WhenAll(userIds.Select(async id => await Hasmodai.GetUserById(id)));
 

@@ -1,21 +1,28 @@
 ﻿using CoreBase3.Services;
+using DevilDaggersWebsite.Code.Users;
 using Newtonsoft.Json;
+using System.Collections.Generic;
 using Io = System.IO;
 
 namespace DevilDaggersWebsite.Code.PageModels
 {
-	public abstract class AdminFilePageModel : AdminPageModel
+	public abstract class AdminFilePageModel<TData> : AdminPageModel
+		where TData : AbstractUserData, new()
 	{
-		private readonly string fileName;
-
 		public string FileContents { get; set; }
 
-		protected AdminFilePageModel(ICommonObjects commonObjects, string fileName)
+		private readonly string fileName = new TData().FileName;
+
+		private readonly JsonSerializerSettings serializerSettings = new JsonSerializerSettings
+		{
+			DefaultValueHandling = DefaultValueHandling.Ignore,
+			NullValueHandling = NullValueHandling.Ignore
+		};
+
+		protected AdminFilePageModel(ICommonObjects commonObjects)
 			: base(commonObjects)
 		{
-			this.fileName = fileName;
-
-			ReadJson();
+			FileContents = ReadJson();
 		}
 
 		public void OnPost(string fileContents)
@@ -32,13 +39,18 @@ namespace DevilDaggersWebsite.Code.PageModels
 
 			WriteJson(fileContents);
 
-			ReadJson();
+			FileContents = ReadJson();
 		}
 
-		private void ReadJson()
-			=> FileContents = Io.File.ReadAllText(Io.Path.Combine(commonObjects.Env.WebRootPath, "user", $"{fileName}.json"));
+		private string ReadJson()
+			=> Io.File.ReadAllText(Io.Path.Combine(commonObjects.Env.WebRootPath, "user", $"{fileName}.json"));
 
 		private void WriteJson(string fileContents)
-			=> Io.File.WriteAllText(Io.Path.Combine(commonObjects.Env.WebRootPath, "user", $"{fileName}.json"), fileContents);
+		{
+			List<TData> deserialized = JsonConvert.DeserializeObject<List<TData>>(fileContents, serializerSettings);
+			string serialized = JsonConvert.SerializeObject(deserialized, Formatting.Indented, serializerSettings);
+
+			Io.File.WriteAllText(Io.Path.Combine(commonObjects.Env.WebRootPath, "user", $"{fileName}.json"), serialized);
+		}
 	}
 }

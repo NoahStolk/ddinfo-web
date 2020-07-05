@@ -2,8 +2,10 @@
 
 namespace DevilDaggersWebsite.Code.Users
 {
-	public class PlayerSetting
+	public class PlayerSetting : AbstractUserData
 	{
+		public override string FileName => "settings";
+
 		public int Id { get; set; }
 		public int? Dpi { get; set; }
 		public float? InGameSens { get; set; }
@@ -17,6 +19,10 @@ namespace DevilDaggersWebsite.Code.Users
 		public string RightHandedString => !RightHanded.HasValue ? string.Empty : RightHanded.Value ? "Right" : "Left";
 		[JsonIgnore]
 		public string FlashEnabledString => !FlashEnabled.HasValue ? string.Empty : FlashEnabled.Value ? "On" : "Off";
+
+		public PlayerSetting()
+		{
+		}
 
 		public PlayerSetting(int id, int? dpi, float? inGameSens, int? fov, bool? rightHanded, bool? flashEnabled)
 		{

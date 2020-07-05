@@ -25,9 +25,9 @@
 	</div>
 	<div class="leaderboard-body">
 		@{
-			IEnumerable<Flag> flags = UserUtils.GetUserObjects<Flag>(CommonObjects, "flags");
-			IEnumerable<UserTitleCollection> titleCollections = UserUtils.GetUserObjects<UserTitleCollection>(CommonObjects, "titles");
-			IEnumerable<Donator> unanonymousDonators = UserUtils.GetUserObjects<Donator>(CommonObjects, "donators").Where(d => !d.IsAnonymous);
+			IEnumerable<Flag> flags = UserUtils.GetUserObjects<Flag>(CommonObjects);
+			IEnumerable<UserTitleCollection> titleCollections = UserUtils.GetUserObjects<UserTitleCollection>(CommonObjects);
+			IEnumerable<Donator> unanonymousDonators = UserUtils.GetUserObjects<Donator>(CommonObjects).Where(d => !d.IsAnonymous);
 			int rank = 0;
 			foreach (CustomEntry entry in Model.Entries)
 			{

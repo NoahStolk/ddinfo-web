@@ -87,7 +87,7 @@ namespace DevilDaggersWebsite.Pages.Leaderboard
 					break;
 			}
 
-			HasBans = UserUtils.GetUserObjects<Ban>(commonObjects, "bans").Any(b => Leaderboard.Entries.Any(e => e.Id == b.Id));
+			HasBans = UserUtils.GetUserObjects<Ban>(commonObjects).Any(b => Leaderboard.Entries.Any(e => e.Id == b.Id));
 			if (LeaderboardSearchType == LeaderboardSearchType.UserId)
 			{
 				Entry entry = Leaderboard.Entries[0];

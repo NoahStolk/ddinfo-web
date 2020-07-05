@@ -1,4 +1,5 @@
 ﻿using CoreBase3.Services;
+using DevilDaggersWebsite.Code.Users;
 using Newtonsoft.Json;
 using System.Collections.Generic;
 using System.IO;
@@ -7,15 +8,16 @@ namespace DevilDaggersWebsite.Code.Utils
 {
 	public static class UserUtils
 	{
-		public static List<T> GetUserObjects<T>(ICommonObjects commonObjects, string fileNameWithoutExtension)
+		public static List<TData> GetUserObjects<TData>(ICommonObjects commonObjects)
+			where TData : AbstractUserData, new()
 		{
 			try
 			{
-				return JsonConvert.DeserializeObject<List<T>>(File.ReadAllText(Path.Combine(commonObjects.Env.WebRootPath, "user", $"{fileNameWithoutExtension}.json")));
+				return JsonConvert.DeserializeObject<List<TData>>(File.ReadAllText(Path.Combine(commonObjects.Env.WebRootPath, "user", $"{new TData().FileName}.json")));
 			}
 			catch
 			{
-				return new List<T>();
+				return new List<TData>();
 			}
 		}
 

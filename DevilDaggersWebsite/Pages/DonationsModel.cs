@@ -16,8 +16,8 @@ namespace DevilDaggersWebsite.Pages
 
 		public DonationsModel(ICommonObjects commonObjects)
 		{
-			Donators = UserUtils.GetUserObjects<Donator>(commonObjects, "donators");
-			Donations = UserUtils.GetUserObjects<Donation>(commonObjects, "donations");
+			Donators = UserUtils.GetUserObjects<Donator>(commonObjects);
+			Donations = UserUtils.GetUserObjects<Donation>(commonObjects);
 
 			foreach (Donation donation in Donations.Where(d => !d.IsRefunded))
 			{
