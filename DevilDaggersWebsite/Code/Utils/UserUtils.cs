@@ -8,7 +8,16 @@ namespace DevilDaggersWebsite.Code.Utils
 	public static class UserUtils
 	{
 		public static List<T> GetUserObjects<T>(ICommonObjects commonObjects, string fileNameWithoutExtension)
-			=> JsonConvert.DeserializeObject<List<T>>(File.ReadAllText(Path.Combine(commonObjects.Env.WebRootPath, "user", $"{fileNameWithoutExtension}.json")));
+		{
+			try
+			{
+				return JsonConvert.DeserializeObject<List<T>>(File.ReadAllText(Path.Combine(commonObjects.Env.WebRootPath, "user", $"{fileNameWithoutExtension}.json")));
+			}
+			catch
+			{
+				return new List<T>();
+			}
+		}
 
 		public static Dictionary<string, string> TitleImages { get; set; } = new Dictionary<string, string>
 		{
