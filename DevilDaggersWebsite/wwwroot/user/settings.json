@@ -370,8 +370,8 @@
   {
     "Id": 116439,
     "Dpi": 1600,
-    "InGameSens": 0.249,
-    "Fov": 100,
+    "InGameSens": 0.129,
+    "Fov": 110,
     "RightHanded": true,
     "FlashEnabled": false
   }
