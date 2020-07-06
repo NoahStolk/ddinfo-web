@@ -32,7 +32,7 @@ namespace DevilDaggersWebsite.Code.Api
 				cl.Silver,
 				cl.Golden,
 				cl.Devil,
-				cl.Homing == 0 ? 0 : context.CustomEntries.Where(e => e.CustomLeaderboard == cl).Any(e => e.Time > cl.Homing) ? cl.Homing : -1,
+				cl.Homing,
 				cl.DateLastPlayed,
 				cl.DateCreated));
 		}
