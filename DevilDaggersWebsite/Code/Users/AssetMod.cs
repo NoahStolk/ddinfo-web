@@ -4,6 +4,7 @@
 	{
 		public override string FileName => "mods";
 
+		public int? AuthorId { get; set; }
 		public AssetModType AssetModType { get; set; }
 		public AssetModFileContents AssetModFileContents { get; set; }
 		public string Name { get; set; }
