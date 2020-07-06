@@ -79,21 +79,22 @@ namespace DevilDaggersWebsite.Code.Api
 				return true;
 			}
 
-			path = "";
+			path = string.Empty;
 			return false;
 		}
 
 		public static IEnumerable<SpawnsetFile> GetSpawnsets(ICommonObjects commonObjects, string searchAuthor, string searchName)
 		{
-			foreach (string spawnsetPath in Directory.GetFiles(Path.Combine(commonObjects.Env.WebRootPath, "spawnsets")))
-			{
-				SpawnsetFile sf = SpawnsetUtils.CreateSpawnsetFileFromSettingsFile(commonObjects, spawnsetPath);
-				if (!string.IsNullOrEmpty(searchAuthor) && !sf.Author.ToLower().Contains(searchAuthor.ToLower()) ||
-					!string.IsNullOrEmpty(searchName) && !sf.Name.ToLower().Contains(searchName.ToLower()))
-					continue;
-				if (sf != null)
-					yield return sf;
-			}
+			searchAuthor = searchAuthor.ToLower();
+			searchName = searchName.ToLower();
+
+			IEnumerable<SpawnsetFile> spawnsetFiles = Directory.GetFiles(Path.Combine(commonObjects.Env.WebRootPath, "spawnsets")).Select(p => SpawnsetUtils.CreateSpawnsetFileFromSettingsFile(commonObjects, p));
+			if (!string.IsNullOrEmpty(searchAuthor))
+				spawnsetFiles = spawnsetFiles.Where(sf => sf.Author.ToLower().Contains(searchAuthor));
+			if (!string.IsNullOrEmpty(searchName))
+				spawnsetFiles = spawnsetFiles.Where(sf => sf.Name.ToLower().Contains(searchName));
+
+			return spawnsetFiles;
 		}
 
 		public static bool TryGetToolPath(string toolName, out string fileName, out string path)
