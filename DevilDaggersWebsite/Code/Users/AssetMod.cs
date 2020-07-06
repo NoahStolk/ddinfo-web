@@ -9,18 +9,5 @@
 		public string Name { get; set; }
 		public string Author { get; set; }
 		public string Url { get; set; }
-
-		public AssetMod()
-		{
-		}
-
-		public AssetMod(AssetModType assetModType, AssetModFileContents assetModFileContents, string name, string author, string url)
-		{
-			AssetModType = assetModType;
-			AssetModFileContents = assetModFileContents;
-			Name = name;
-			Author = author;
-			Url = url;
-		}
 	}
 }

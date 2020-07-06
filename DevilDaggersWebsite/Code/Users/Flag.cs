@@ -6,15 +6,5 @@
 
 		public int Id { get; set; }
 		public string CountryCode { get; set; }
-
-		public Flag()
-		{
-		}
-
-		public Flag(int id, string countryCode)
-		{
-			Id = id;
-			CountryCode = countryCode;
-		}
 	}
 }

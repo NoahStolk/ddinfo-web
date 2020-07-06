@@ -6,15 +6,5 @@
 
 		public int Id { get; set; }
 		public string[] Titles { get; set; }
-
-		public UserTitleCollection()
-		{
-		}
-
-		public UserTitleCollection(int id, string[] titles)
-		{
-			Id = id;
-			Titles = titles;
-		}
 	}
 }

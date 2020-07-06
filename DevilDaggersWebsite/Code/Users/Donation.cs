@@ -13,20 +13,5 @@ namespace DevilDaggersWebsite.Code.Users
 		public DateTime DateReceived { get; set; }
 		public string Note { get; set; }
 		public bool IsRefunded { get; set; }
-
-		public Donation()
-		{
-		}
-
-		public Donation(int donatorId, int amount, Currency currency, int convertedEuroCentsReceived, DateTime dateReceived, string note, bool isRefunded = false)
-		{
-			DonatorId = donatorId;
-			Amount = amount;
-			Currency = currency;
-			ConvertedEuroCentsReceived = convertedEuroCentsReceived;
-			DateReceived = dateReceived;
-			Note = note;
-			IsRefunded = isRefunded;
-		}
 	}
 }

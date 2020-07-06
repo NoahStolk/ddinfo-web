@@ -19,19 +19,5 @@ namespace DevilDaggersWebsite.Code.Users
 		public string RightHandedString => !RightHanded.HasValue ? string.Empty : RightHanded.Value ? "Right" : "Left";
 		[JsonIgnore]
 		public string FlashEnabledString => !FlashEnabled.HasValue ? string.Empty : FlashEnabled.Value ? "On" : "Off";
-
-		public PlayerSetting()
-		{
-		}
-
-		public PlayerSetting(int id, int? dpi, float? inGameSens, int? fov, bool? rightHanded, bool? flashEnabled)
-		{
-			Id = id;
-			Dpi = dpi;
-			InGameSens = inGameSens;
-			Fov = fov;
-			RightHanded = rightHanded;
-			FlashEnabled = flashEnabled;
-		}
 	}
 }
