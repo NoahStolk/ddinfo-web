@@ -16,8 +16,10 @@
 		<div class="sorter hidden-xs text-center" sort="dpi">DPI</div>
 		<div class="sorter hidden-xs text-center" sort="in-game-sens">In-game sens</div>
 		<div class="sorter hidden-xs text-center" sort="fov">FOV</div>
+
 		<div class="sorter hidden-xs hidden-sm hidden-md text-center" sort="hand">Hand orientation</div>
 		<div class="sorter hidden-xs hidden-sm hidden-md text-center" sort="flash">Hand flash</div>
+		<div class="sorter hidden-xs hidden-sm hidden-md text-center" sort="gamma">Gamma</div>
 	</div>
 	<div class="leaderboard-body">
 		@{
@@ -27,17 +29,15 @@
 			IEnumerable<Donator> unanonymousDonators = UserUtils.GetUserObjects<Donator>(CommonObjects).Where(d => !d.IsAnonymous);
 			foreach (Entry entry in Model.Leaderboard.Entries)
 			{
-				bool isUnanonymousDonator = unanonymousDonators.Any(d => d.Id == entry.Id);
-
-				string flagCode = flags.FirstOrDefault(f => f.Id == entry.Id)?.CountryCode ?? "00";
-
-				UserTitleCollection titles = titleCollections.FirstOrDefault(t => t.Id == entry.Id);
-
 				PlayerSetting playerSetting = settings.FirstOrDefault(s => s.Id == entry.Id);
 				if (playerSetting == null)
 				{
 					continue;
 				}
+
+				bool isUnanonymousDonator = unanonymousDonators.Any(d => d.Id == entry.Id);
+				string flagCode = flags.FirstOrDefault(f => f.Id == entry.Id)?.CountryCode ?? "00";
+				UserTitleCollection titles = titleCollections.FirstOrDefault(t => t.Id == entry.Id);
 
 				Dagger dagger = GameInfo.GetDaggerFromTime(entry.Time);
 				Death death = GameInfo.GetDeathFromDeathType(entry.DeathType, GameInfo.GetGameVersionFromDate(Model.Leaderboard.DateTime));
@@ -82,6 +82,7 @@
 						<div class="hidden-xs text-right">@playerSetting.Fov</div>
 						<div class="hidden-xs hidden-sm hidden-md text-right">@playerSetting.RightHandedString</div>
 						<div class="hidden-xs hidden-sm hidden-md text-right">@playerSetting.FlashEnabledString</div>
+						<div class="hidden-xs hidden-sm hidden-md text-right">@playerSetting.Gamma</div>
 					</div>
 					<div class="leaderboard-expand flex-container" id="@(entry.Rank)-expand">
 						<div class="visible-xs">
@@ -107,6 +108,10 @@
 						<div class="visible-xs visible-sm visible-md">
 							<div class="text-left">Hand flash</div>
 							<div class="text-right">@playerSetting.FlashEnabledString</div>
+						</div>
+						<div class="visible-xs visible-sm visible-md">
+							<div class="text-left">Gamma</div>
+							<div class="text-right">@playerSetting.Gamma</div>
 						</div>
 						<div style="padding-top: 1em;">
 							<a asp-page="../Leaderboard/Index" asp-route-UserId="@entry.Id">View more info</a>

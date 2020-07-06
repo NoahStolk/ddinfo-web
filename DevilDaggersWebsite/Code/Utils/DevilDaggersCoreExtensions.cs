@@ -57,6 +57,7 @@ namespace DevilDaggersWebsite.Code.Utils
 			fov='{playerSetting.Fov ?? 0}'
 			hand='{(!playerSetting.RightHanded.HasValue ? -1 : playerSetting.RightHanded.Value ? 1 : 0)}'
 			flash='{(!playerSetting.FlashEnabled.HasValue ? -1 : playerSetting.FlashEnabled.Value ? 1 : 0)}'
+			gamma='{playerSetting.Gamma}'
 		");
 
 		public static bool ExistsInHistory(this Entry entry, ICommonObjects commonObjects)

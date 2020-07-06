@@ -12,6 +12,7 @@ namespace DevilDaggersWebsite.Code.Users
 		public int? Fov { get; set; }
 		public bool? RightHanded { get; set; }
 		public bool? FlashEnabled { get; set; }
+		public float? Gamma { get; set; }
 
 		[JsonIgnore]
 		public float? Edpi => Dpi * InGameSens;
