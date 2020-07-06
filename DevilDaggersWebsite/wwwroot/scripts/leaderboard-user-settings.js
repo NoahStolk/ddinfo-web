@@ -9,7 +9,8 @@
 		"in-game-sens": -1,
 		"fov": -1,
 		"hand": -1,
-		"flash": -1
+		"flash": -1,
+		"gamma": -1
 	};
 
 	$(document).on("click", ".leaderboard-row", function () {
