@@ -16,8 +16,10 @@
 		<div class="sorter hidden-xs text-center" sort="dpi">DPI</div>
 		<div class="sorter hidden-xs text-center" sort="in-game-sens">In-game sens</div>
 		<div class="sorter hidden-xs text-center" sort="fov">FOV</div>
+
 		<div class="sorter hidden-xs hidden-sm hidden-md text-center" sort="hand">Hand orientation</div>
 		<div class="sorter hidden-xs hidden-sm hidden-md text-center" sort="flash">Hand flash</div>
+		<div class="sorter hidden-xs hidden-sm hidden-md text-center" sort="gamma">Gamma</div>
 	</div>
 	<div class="leaderboard-body">
 		@{
@@ -80,6 +82,7 @@
 						<div class="hidden-xs text-right">@playerSetting.Fov</div>
 						<div class="hidden-xs hidden-sm hidden-md text-right">@playerSetting.RightHandedString</div>
 						<div class="hidden-xs hidden-sm hidden-md text-right">@playerSetting.FlashEnabledString</div>
+						<div class="hidden-xs hidden-sm hidden-md text-right">@playerSetting.Gamma</div>
 					</div>
 					<div class="leaderboard-expand flex-container" id="@(entry.Rank)-expand">
 						<div class="visible-xs">
@@ -105,6 +108,10 @@
 						<div class="visible-xs visible-sm visible-md">
 							<div class="text-left">Hand flash</div>
 							<div class="text-right">@playerSetting.FlashEnabledString</div>
+						</div>
+						<div class="visible-xs visible-sm visible-md">
+							<div class="text-left">Gamma</div>
+							<div class="text-right">@playerSetting.Gamma</div>
 						</div>
 						<div style="padding-top: 1em;">
 							<a asp-page="../Leaderboard/Index" asp-route-UserId="@entry.Id">View more info</a>
