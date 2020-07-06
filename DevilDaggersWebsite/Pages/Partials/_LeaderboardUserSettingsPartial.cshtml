@@ -27,17 +27,15 @@
 			IEnumerable<Donator> unanonymousDonators = UserUtils.GetUserObjects<Donator>(CommonObjects).Where(d => !d.IsAnonymous);
 			foreach (Entry entry in Model.Leaderboard.Entries)
 			{
-				bool isUnanonymousDonator = unanonymousDonators.Any(d => d.Id == entry.Id);
-
-				string flagCode = flags.FirstOrDefault(f => f.Id == entry.Id)?.CountryCode ?? "00";
-
-				UserTitleCollection titles = titleCollections.FirstOrDefault(t => t.Id == entry.Id);
-
 				PlayerSetting playerSetting = settings.FirstOrDefault(s => s.Id == entry.Id);
 				if (playerSetting == null)
 				{
 					continue;
 				}
+
+				bool isUnanonymousDonator = unanonymousDonators.Any(d => d.Id == entry.Id);
+				string flagCode = flags.FirstOrDefault(f => f.Id == entry.Id)?.CountryCode ?? "00";
+				UserTitleCollection titles = titleCollections.FirstOrDefault(t => t.Id == entry.Id);
 
 				Dagger dagger = GameInfo.GetDaggerFromTime(entry.Time);
 				Death death = GameInfo.GetDeathFromDeathType(entry.DeathType, GameInfo.GetGameVersionFromDate(Model.Leaderboard.DateTime));
