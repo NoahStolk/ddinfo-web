@@ -85,14 +85,18 @@ namespace DevilDaggersWebsite.Code.Api
 
 		public static IEnumerable<SpawnsetFile> GetSpawnsets(ICommonObjects commonObjects, string searchAuthor, string searchName)
 		{
-			searchAuthor = searchAuthor.ToLower();
-			searchName = searchName.ToLower();
-
 			IEnumerable<SpawnsetFile> spawnsetFiles = Directory.GetFiles(Path.Combine(commonObjects.Env.WebRootPath, "spawnsets")).Select(p => SpawnsetUtils.CreateSpawnsetFileFromSettingsFile(commonObjects, p));
+
 			if (!string.IsNullOrEmpty(searchAuthor))
+			{
+				searchAuthor = searchAuthor.ToLower();
 				spawnsetFiles = spawnsetFiles.Where(sf => sf.Author.ToLower().Contains(searchAuthor));
+			}
 			if (!string.IsNullOrEmpty(searchName))
+			{
+				searchName = searchName.ToLower();
 				spawnsetFiles = spawnsetFiles.Where(sf => sf.Name.ToLower().Contains(searchName));
+			}
 
 			return spawnsetFiles;
 		}
