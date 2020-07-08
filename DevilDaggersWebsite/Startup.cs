@@ -1,3 +1,4 @@
+//#define TEST_EXCEPTION_HANDLER
 using CoreBase3.Email;
 using CoreBase3.Services;
 using DevilDaggersWebsite.Code.Database;
@@ -34,19 +35,19 @@ namespace DevilDaggersWebsite
 
 			services.AddDbContext<ApplicationDbContext>(options => options.UseMySql(Configuration.GetConnectionString("DefaultConnection")));
 
+			services.AddSingleton<IEmailConfiguration, EmailConfiguration>();
+
 			services.AddSingleton<IHttpContextAccessor, HttpContextAccessor>();
 			services.AddSingleton<IActionContextAccessor, ActionContextAccessor>();
 			services.AddSingleton<ICommonObjects, CommonObjects>();
 			services.AddSingleton<IEmailService, EmailService>();
 			services.AddSingleton<IGlobalExceptionHandler, GlobalExceptionHandler>();
 
-			services.AddScoped<IUrlHelper>(factory => new UrlHelper(factory.GetService<IActionContextAccessor>().ActionContext));
-
-			services.AddSingleton<IEmailConfiguration>(Configuration.GetSection("EmailConfiguration").Get<EmailConfiguration>());
-
 			// TODO: Add all tasks using reflection?
 			services.AddSingleton<IScheduledTask, CreateLeaderboardHistoryFileTask>();
 			//services.AddSingleton<IScheduledTask, RetrieveEntireLeaderboardTask>();
+
+			services.AddScoped<IUrlHelper>(factory => new UrlHelper(factory.GetService<IActionContextAccessor>().ActionContext));
 
 			services.AddScheduler((sender, args) =>
 			{
@@ -89,7 +90,11 @@ namespace DevilDaggersWebsite
 
 			if (env.IsDevelopment())
 			{
+#if TEST_EXCEPTION_HANDLER
+				app.UseExceptionHandler("/Error");
+#else
 				app.UseDeveloperExceptionPage();
+#endif
 			}
 			else
 			{
