@@ -1,9 +1,14 @@
-using CoreBase3.Startup;
+using CoreBase3.Email;
+using CoreBase3.Services;
 using DevilDaggersWebsite.Code.Database;
 using DevilDaggersWebsite.Code.Tasks;
 using DevilDaggersWebsite.Code.Tasks.Scheduling;
 using Microsoft.AspNetCore.Builder;
 using Microsoft.AspNetCore.Hosting;
+using Microsoft.AspNetCore.Http;
+using Microsoft.AspNetCore.Mvc;
+using Microsoft.AspNetCore.Mvc.Infrastructure;
+using Microsoft.AspNetCore.Mvc.Routing;
 using Microsoft.AspNetCore.Rewrite;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.Extensions.Configuration;
@@ -29,7 +34,15 @@ namespace DevilDaggersWebsite
 
 			services.AddDbContext<ApplicationDbContext>(options => options.UseMySql(Configuration.GetConnectionString("DefaultConnection")));
 
-			services.AddCoreBaseServices();
+			services.AddSingleton<IHttpContextAccessor, HttpContextAccessor>();
+			services.AddSingleton<IActionContextAccessor, ActionContextAccessor>();
+			services.AddSingleton<ICommonObjects, CommonObjects>();
+			services.AddSingleton<IEmailService, EmailService>();
+			services.AddSingleton<IGlobalExceptionHandler, GlobalExceptionHandler>();
+
+			services.AddScoped<IUrlHelper>(factory => new UrlHelper(factory.GetService<IActionContextAccessor>().ActionContext));
+
+			services.AddSingleton<IEmailConfiguration>(Configuration.GetSection("EmailConfiguration").Get<EmailConfiguration>());
 
 			// TODO: Add all tasks using reflection?
 			services.AddSingleton<IScheduledTask, CreateLeaderboardHistoryFileTask>();
