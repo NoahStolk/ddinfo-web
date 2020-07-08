@@ -45,7 +45,8 @@
     "InGameSens": 0.175,
     "Fov": 97,
     "RightHanded": true,
-    "FlashEnabled": false
+    "FlashEnabled": false,
+    "Gamma": 1.8
   },
   {
     "Id": 93991,
