@@ -1,17 +1,21 @@
-﻿using Microsoft.AspNetCore.Mvc;
-using Microsoft.AspNetCore.Mvc.RazorPages;
+﻿using CoreBase3.Services;
+using DevilDaggersDiscordBot;
+using DevilDaggersWebsite.Code.PageModels;
 using System.Threading.Tasks;
 using Bot = DevilDaggersDiscordBot.Program;
 
 namespace DevilDaggersWebsite.Pages.Admin
 {
-	public class TestBotModel : PageModel
+	public class TestBotModel : AdminPageModel
 	{
-		public async Task<ActionResult> OnGetAsync()
+		public TestBotModel(ICommonObjects commonObjects)
+			: base(commonObjects)
 		{
-			await Bot.SendMessageAsyncSafe(Bot.DevChannel, "Hello, this is a test message sent from an external environment.");
+		}
 
-			return RedirectToPage("/Admin/Index");
+		public async Task OnGetAsync()
+		{
+			await Bot.DevChannel.SendMessageAsyncSafe("Hello, this is a test message sent from an external environment.");
 		}
 	}
 }
