@@ -22,6 +22,8 @@ namespace DevilDaggersWebsite
 {
 	public class Startup
 	{
+		private const string defaultPolicy = nameof(defaultPolicy);
+
 		public IConfiguration Configuration { get; }
 
 		public Startup(IConfiguration configuration)
@@ -31,6 +33,11 @@ namespace DevilDaggersWebsite
 
 		public void ConfigureServices(IServiceCollection services)
 		{
+			services.AddCors(options =>
+			{
+				options.AddPolicy(defaultPolicy, builder => { builder.AllowAnyOrigin(); });
+			});
+
 			services.AddMvc();
 
 			services.AddDbContext<ApplicationDbContext>(options => options.UseMySql(Configuration.GetConnectionString("DefaultConnection")));
@@ -107,6 +114,8 @@ namespace DevilDaggersWebsite
 			app.UseStaticFiles();
 
 			app.UseRouting();
+
+			app.UseCors(defaultPolicy);
 
 			app.UseAuthorization();
 
