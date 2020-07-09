@@ -123,6 +123,8 @@ namespace DevilDaggersWebsite.Code.Api
 
 		public static async Task<Entry> GetUserById(int userId) => await Hasmodai.GetUserById(userId);
 
+		public static async Task<Entry> GetUserByRank(int rank) => (await Hasmodai.GetScores(rank)).Entries[0];
+
 		public static async Task<List<Entry>> GetUserByUsername(string username)
 		{
 			Leaderboard leaderboard = await Hasmodai.GetUserSearch(username);
