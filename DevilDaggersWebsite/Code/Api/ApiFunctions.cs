@@ -101,7 +101,7 @@ namespace DevilDaggersWebsite.Code.Api
 			return spawnsetFiles;
 		}
 
-		public static bool TryGetToolPath(string toolName, out string fileName, out string path)
+		public static bool TryGetToolPath(ICommonObjects commonObjects, string toolName, out string fileName, out string path)
 		{
 			Tool tool = ToolList.Tools.FirstOrDefault(t => t.Name == toolName);
 			if (tool != null)
@@ -109,7 +109,8 @@ namespace DevilDaggersWebsite.Code.Api
 				fileName = $"{toolName}{tool.VersionNumber}.zip";
 				path = Path.Combine("tools", toolName, fileName);
 
-				// TODO: Add File.Exists in case the .zip file name for the tool is misspelled or something.
+				if (!File.Exists(Path.Combine(commonObjects.Env.WebRootPath, path)))
+					throw new Exception($"Tool file '{path}' does not exist.");
 
 				return true;
 			}
