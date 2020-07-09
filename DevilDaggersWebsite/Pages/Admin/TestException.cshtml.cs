@@ -9,7 +9,7 @@ namespace DevilDaggersWebsite.Pages.Admin
 		public TestExceptionModel(ICommonObjects commonObjects)
 			: base(commonObjects)
 		{
-			throw new Exception("ADMIN TEST EXCEPTION");
+			throw new Exception("Admin test exception", new Exception("Inner exception message", new Exception("Another inner exception message")));
 		}
 	}
 }
