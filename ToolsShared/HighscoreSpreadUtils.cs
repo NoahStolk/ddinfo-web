@@ -1,7 +1,6 @@
-﻿using DevilDaggersCore;
-using DevilDaggersCore.Game;
+﻿using DevilDaggersCore.Game;
 using DevilDaggersCore.Leaderboards;
-using NetBase.Utils;
+using DevilDaggersCore.Utils;
 using Newtonsoft.Json;
 using System;
 using System.Collections.Generic;
@@ -39,7 +38,7 @@ namespace ToolsShared
 			Dictionary<string, Leaderboard> leaderboards = new Dictionary<string, Leaderboard>();
 			foreach (string path in Directory.GetFiles(@"C:\Users\NOAH\source\repos\DevilDaggersWebsite\DevilDaggersWebsite\wwwroot\leaderboard-history", "*.json"))
 			{
-				string jsonString = FileUtils.GetContents(path, Encoding.UTF8);
+				string jsonString = File.ReadAllText(path, Encoding.UTF8);
 				leaderboards.Add(path, JsonConvert.DeserializeObject<Leaderboard>(jsonString));
 			}
 

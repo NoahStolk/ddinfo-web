@@ -111,10 +111,6 @@
       <Project>{F264DAF3-C6F2-49E1-9219-1EC5A9E6B6D2}</Project>
       <Name>DevilDaggersCore</Name>
     </ProjectReference>
-    <ProjectReference Include="..\..\..\NetBase\NetBase\NetBase.csproj">
-      <Project>{25f631b5-133b-4136-a995-040072fc405f}</Project>
-      <Name>NetBase</Name>
-    </ProjectReference>
   </ItemGroup>
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
 </Project>

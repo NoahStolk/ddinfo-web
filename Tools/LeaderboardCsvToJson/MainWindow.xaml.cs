@@ -1,8 +1,7 @@
 ﻿using DevilDaggersCore.Game;
 using DevilDaggersCore.Leaderboards;
-using DevilDaggersCore.Leaderboards.History;
+using DevilDaggersCore.Utils;
 using Microsoft.Win32;
-using NetBase.Utils;
 using Newtonsoft.Json;
 using System.IO;
 using System.Text;
@@ -118,7 +117,7 @@ namespace LeaderboardCsvToJson
 
 				string json = JsonConvert.SerializeObject(leaderboard);
 
-				FileUtils.CreateText($@"C:\Users\NOAH\source\repos\DevilDaggersWebsite\DevilDaggersWebsite\wwwroot\leaderboard-history\{Path.GetFileNameWithoutExtension(dlg.FileName)}.json", json, Encoding.UTF8);
+				File.WriteAllText($@"C:\Users\NOAH\source\repos\DevilDaggersWebsite\DevilDaggersWebsite\wwwroot\leaderboard-history\{Path.GetFileNameWithoutExtension(dlg.FileName)}.json", json, Encoding.UTF8);
 			}
 		}
 

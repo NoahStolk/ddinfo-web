@@ -1,7 +1,5 @@
-﻿using DevilDaggersCore;
-using DevilDaggersCore.Leaderboards;
-using DevilDaggersCore.Leaderboards.History;
-using NetBase.Utils;
+﻿using DevilDaggersCore.Leaderboards;
+using DevilDaggersCore.Utils;
 using Newtonsoft.Json;
 using System;
 using System.Collections.Generic;
@@ -37,7 +35,7 @@ namespace LeaderboardJsonIdFixer
 			foreach (string leaderboardHistoryPath in Directory.GetFiles(@"C:\Users\NOAH\source\repos\DevilDaggersWebsite\DevilDaggersWebsite\wwwroot\leaderboard-history", "*.json"))
 			{
 				string fileName = Path.GetFileNameWithoutExtension(leaderboardHistoryPath);
-				Leaderboard leaderboard = JsonConvert.DeserializeObject<Leaderboard>(FileUtils.GetContents(leaderboardHistoryPath, Encoding.UTF8));
+				Leaderboard leaderboard = JsonConvert.DeserializeObject<Leaderboard>(File.ReadAllText(leaderboardHistoryPath, Encoding.UTF8));
 				if (leaderboard.DateTime < dateStart || leaderboard.DateTime > dateEnd)
 					continue;
 
@@ -58,7 +56,7 @@ namespace LeaderboardJsonIdFixer
 		{
 			foreach (string path in Directory.GetFiles(@"C:\Users\NOAH\source\repos\DevilDaggersWebsite\DevilDaggersWebsite\wwwroot\leaderboard-history", "*.json"))
 			{
-				string jsonString = FileUtils.GetContents(path, Encoding.UTF8);
+				string jsonString = File.ReadAllText(path, Encoding.UTF8);
 				Leaderboard leaderboard = JsonConvert.DeserializeObject<Leaderboard>(jsonString);
 
 				List<Entry> changes = new List<Entry>();

@@ -1,7 +1,6 @@
 ﻿using DevilDaggersCore.Leaderboards;
-using DevilDaggersCore.Leaderboards.History;
+using DevilDaggersCore.Utils;
 using Microsoft.Win32;
-using NetBase.Utils;
 using Newtonsoft.Json;
 using System;
 using System.IO;
@@ -85,7 +84,7 @@ namespace LeaderboardJsonCreator
 				if (ulong.TryParse(ShotsFiredGlobal.Text, out ulong shotsFiredGlobal))
 					leaderboard.ShotsFiredGlobal = shotsFiredGlobal;
 
-				FileUtils.CreateText($@"C:\Users\NOAH\source\repos\DevilDaggersWebsite\DevilDaggersWebsite\wwwroot\leaderboard-history\{LeaderboardDateTime.Text}.json", JsonConvert.SerializeObject(leaderboard), Encoding.UTF8);
+				File.WriteAllText($@"C:\Users\NOAH\source\repos\DevilDaggersWebsite\DevilDaggersWebsite\wwwroot\leaderboard-history\{LeaderboardDateTime.Text}.json", JsonConvert.SerializeObject(leaderboard), Encoding.UTF8);
 				MessageBox.Show("Save successful");
 			}
 			catch (Exception ex)
