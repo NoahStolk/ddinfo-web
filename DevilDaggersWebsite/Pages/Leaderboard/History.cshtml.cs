@@ -1,6 +1,6 @@
 ﻿using CoreBase3.Services;
 using DevilDaggersCore.Leaderboards;
-using DevilDaggersCore.Leaderboards.History;
+using DevilDaggersCore.Utils;
 using DevilDaggersWebsite.Code.PageModels;
 using DevilDaggersWebsite.Code.Utils;
 using Microsoft.AspNetCore.Mvc.RazorPages;

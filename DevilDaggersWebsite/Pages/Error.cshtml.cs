@@ -1,4 +1,4 @@
-using DevilDaggersCore;
+using DevilDaggersCore.Utils;
 using DevilDaggersDiscordBot;
 using DSharpPlus.Entities;
 using Microsoft.AspNetCore.Diagnostics;

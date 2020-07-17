@@ -1,4 +1,4 @@
-﻿using DevilDaggersCore.Leaderboards.History;
+﻿using DevilDaggersCore.Utils;
 using DevilDaggersWebsite.Pages.Api;
 using Microsoft.AspNetCore.Hosting;
 using Microsoft.AspNetCore.Mvc;
