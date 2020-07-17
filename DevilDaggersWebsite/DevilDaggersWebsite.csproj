@@ -18,9 +18,9 @@
 		<DotNetCliToolReference Include="Microsoft.VisualStudio.Web.CodeGeneration.Tools" Version="2.0.2" />
 	</ItemGroup>
 	<ItemGroup>
-		<ProjectReference Include="..\..\CoreBase3\CoreBase3\CoreBase3.csproj" />
 		<ProjectReference Include="..\..\DevilDaggersCore\DevilDaggersCore\DevilDaggersCore.csproj" />
 		<ProjectReference Include="..\..\DevilDaggersDiscordBot\DevilDaggersDiscordBot\DevilDaggersDiscordBot.csproj" />
+		<ProjectReference Include="..\..\SitemapGenerator\SitemapGenerator\SitemapGenerator.csproj" />
 	</ItemGroup>
 	<ItemGroup>
 		<Content Update="log4net.config">

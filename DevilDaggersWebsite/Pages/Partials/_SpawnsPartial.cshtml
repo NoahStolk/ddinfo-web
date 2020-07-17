@@ -1,5 +1,6 @@
 ﻿@model string
-@inject CoreBase3.Services.ICommonObjects commonObjects
+@inject Microsoft.AspNetCore.Hosting.IWebHostEnvironment env
+@inject Microsoft.AspNetCore.Http.IHttpContextAccessor httpContextAccessor
 @using DevilDaggersCore.Game
 @using DevilDaggersCore.Utils
 @using DevilDaggersCore.Spawnsets
@@ -9,7 +10,7 @@
 @{
 	int[] widths = new int[4] { 160, 160, 144, 128 };
 
-	SpawnsetFile sf = SpawnsetUtils.CreateSpawnsetFileFromSettingsFile(commonObjects, Model);
+	SpawnsetFile sf = SpawnsetUtils.CreateSpawnsetFileFromSettingsFile(env, Model);
 	Spawnset spawnset;
 	using (FileStream fs = new FileStream(Model, FileMode.Open, FileAccess.Read))
 	{
@@ -33,7 +34,7 @@
 	}
 
 	int maxWaves = sf.settings.MaxWaves ?? SpawnsetUtils.DefaultMaxWaves;
-	string wavesQuery = commonObjects.HttpContextAccessor.HttpContext.Request.Query["waves"];
+	string wavesQuery = httpContextAccessor.HttpContext.Request.Query["waves"];
 	if (int.TryParse(wavesQuery, out int parsed) && parsed > 0)
 	{
 		maxWaves = parsed;

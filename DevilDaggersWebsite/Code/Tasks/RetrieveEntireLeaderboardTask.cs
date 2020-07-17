@@ -1,8 +1,8 @@
 ﻿using DevilDaggersCore.Leaderboards;
-using DevilDaggersWebsite.Code.Utils.Web;
 using System.Threading.Tasks;
 using DevilDaggersCore.Game;
 using System.Collections.Generic;
+using DevilDaggersWebsite.Code.External;
 
 namespace DevilDaggersWebsite.Code.Tasks
 {

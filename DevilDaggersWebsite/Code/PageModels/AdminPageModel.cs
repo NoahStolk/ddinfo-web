@@ -1,4 +1,5 @@
-﻿using CoreBase3.Services;
+﻿using Microsoft.AspNetCore.Hosting;
+using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc.RazorPages;
 using System;
 
@@ -6,18 +7,19 @@ namespace DevilDaggersWebsite.Code.PageModels
 {
 	public abstract class AdminPageModel : PageModel
 	{
-		protected readonly ICommonObjects commonObjects;
+		protected readonly IHttpContextAccessor httpContextAccessor;
+		protected readonly IWebHostEnvironment env;
 
-		protected AdminPageModel(ICommonObjects commonObjects)
+		protected AdminPageModel(IHttpContextAccessor httpContextAccessor, IWebHostEnvironment env)
 		{
-			this.commonObjects = commonObjects;
+			this.httpContextAccessor = httpContextAccessor;
+			this.env = env;
 
 			if (!IsAuthenticated)
 				throw new Exception("Unauthorized");
-			//return RedirectToPage("/Error/404");
 		}
 
-		public string Password => commonObjects.HttpContextAccessor.HttpContext.Request.Query["password"];
+		public string Password => httpContextAccessor.HttpContext.Request.Query["password"];
 
 		private bool IsAuthenticated => Password == $"1234567890plol{DateTime.Now.Day + DateTime.Now.Month}";
 
@@ -25,7 +27,6 @@ namespace DevilDaggersWebsite.Code.PageModels
 		{
 			if (!IsAuthenticated)
 				throw new Exception("Unauthorized");
-			//return RedirectToPage("/Error/404");
 		}
 	}
 }

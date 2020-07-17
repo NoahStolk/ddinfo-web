@@ -1,9 +1,10 @@
 ﻿@using DevilDaggersCore.Game
 @using DevilDaggersCore.Utils
 @using DevilDaggersCore.Leaderboards
+@using DevilDaggersWebsite.Code.Extensions
 @using DevilDaggersWebsite.Code.Users
 @using DevilDaggersWebsite.Code.Utils
-@inject CoreBase3.Services.ICommonObjects CommonObjects
+@inject Microsoft.AspNetCore.Hosting.IWebHostEnvironment env
 
 <div class="leaderboard-container flex-container flex-center">
 	<div class="leaderboard-title-row flex-container">
@@ -23,10 +24,10 @@
 	</div>
 	<div class="leaderboard-body">
 		@{
-			IEnumerable<Flag> flags = UserUtils.GetUserObjects<Flag>(CommonObjects);
-			IEnumerable<UserTitleCollection> titleCollections = UserUtils.GetUserObjects<UserTitleCollection>(CommonObjects);
-			IEnumerable<PlayerSetting> settings = UserUtils.GetUserObjects<PlayerSetting>(CommonObjects);
-			IEnumerable<Donator> unanonymousDonators = UserUtils.GetUserObjects<Donator>(CommonObjects).Where(d => !d.IsAnonymous);
+			IEnumerable<Flag> flags = UserUtils.GetUserObjects<Flag>(env);
+			IEnumerable<UserTitleCollection> titleCollections = UserUtils.GetUserObjects<UserTitleCollection>(env);
+			IEnumerable<PlayerSetting> settings = UserUtils.GetUserObjects<PlayerSetting>(env);
+			IEnumerable<Donator> unanonymousDonators = UserUtils.GetUserObjects<Donator>(env).Where(d => !d.IsAnonymous);
 			foreach (Entry entry in Model.Leaderboard.Entries)
 			{
 				PlayerSetting playerSetting = settings.FirstOrDefault(s => s.Id == entry.Id);

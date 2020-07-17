@@ -1,13 +1,14 @@
-﻿using CoreBase3.Services;
-using DevilDaggersWebsite.Code.PageModels;
+﻿using DevilDaggersWebsite.Code.PageModels;
 using DevilDaggersWebsite.Code.Users;
+using Microsoft.AspNetCore.Hosting;
+using Microsoft.AspNetCore.Http;
 
 namespace DevilDaggersWebsite.Pages.Admin
 {
 	public class TitlesModel : AdminFilePageModel<UserTitleCollection>
 	{
-		public TitlesModel(ICommonObjects commonObjects)
-			: base(commonObjects)
+		public TitlesModel(IHttpContextAccessor httpContextAccessor, IWebHostEnvironment env)
+			: base(httpContextAccessor, env)
 		{
 		}
 	}

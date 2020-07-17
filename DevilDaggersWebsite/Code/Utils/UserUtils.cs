@@ -1,5 +1,5 @@
-﻿using CoreBase3.Services;
-using DevilDaggersWebsite.Code.Users;
+﻿using DevilDaggersWebsite.Code.Users;
+using Microsoft.AspNetCore.Hosting;
 using Newtonsoft.Json;
 using System.Collections.Generic;
 using System.IO;
@@ -8,12 +8,12 @@ namespace DevilDaggersWebsite.Code.Utils
 {
 	public static class UserUtils
 	{
-		public static List<TData> GetUserObjects<TData>(ICommonObjects commonObjects)
+		public static List<TData> GetUserObjects<TData>(IWebHostEnvironment env)
 			where TData : AbstractUserData, new()
 		{
 			try
 			{
-				return JsonConvert.DeserializeObject<List<TData>>(File.ReadAllText(Path.Combine(commonObjects.Env.WebRootPath, "user", $"{new TData().FileName}.json")));
+				return JsonConvert.DeserializeObject<List<TData>>(File.ReadAllText(Path.Combine(env.WebRootPath, "user", $"{new TData().FileName}.json")));
 			}
 			catch
 			{

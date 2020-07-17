@@ -1,5 +1,6 @@
-﻿using CoreBase3.Services;
-using DevilDaggersWebsite.Code.Users;
+﻿using DevilDaggersWebsite.Code.Users;
+using Microsoft.AspNetCore.Hosting;
+using Microsoft.AspNetCore.Http;
 using Newtonsoft.Json;
 using System.Collections.Generic;
 using Io = System.IO;
@@ -19,8 +20,8 @@ namespace DevilDaggersWebsite.Code.PageModels
 			NullValueHandling = NullValueHandling.Ignore
 		};
 
-		protected AdminFilePageModel(ICommonObjects commonObjects)
-			: base(commonObjects)
+		protected AdminFilePageModel(IHttpContextAccessor httpContextAccessor, IWebHostEnvironment env)
+			: base(httpContextAccessor, env)
 		{
 			FileContents = ReadJson();
 		}
@@ -43,14 +44,14 @@ namespace DevilDaggersWebsite.Code.PageModels
 		}
 
 		private string ReadJson()
-			=> Io.File.ReadAllText(Io.Path.Combine(commonObjects.Env.WebRootPath, "user", $"{fileName}.json"));
+			=> Io.File.ReadAllText(Io.Path.Combine(env.WebRootPath, "user", $"{fileName}.json"));
 
 		private void WriteJson(string fileContents)
 		{
 			List<TData> deserialized = JsonConvert.DeserializeObject<List<TData>>(fileContents, serializerSettings);
 			string serialized = JsonConvert.SerializeObject(deserialized, Formatting.Indented, serializerSettings);
 
-			Io.File.WriteAllText(Io.Path.Combine(commonObjects.Env.WebRootPath, "user", $"{fileName}.json"), serialized);
+			Io.File.WriteAllText(Io.Path.Combine(env.WebRootPath, "user", $"{fileName}.json"), serialized);
 		}
 	}
 }

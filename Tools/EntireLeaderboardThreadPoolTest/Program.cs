@@ -1,5 +1,5 @@
 ﻿using DevilDaggersCore.Leaderboards;
-using DevilDaggersWebsite.Code.Utils.Web;
+using DevilDaggersWebsite.Code.External;
 using System;
 using System.Collections.Generic;
 using System.Diagnostics;

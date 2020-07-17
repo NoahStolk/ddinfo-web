@@ -1,6 +1,6 @@
-﻿using CoreBase3.Services;
-using DevilDaggersCore.Spawnsets;
+﻿using DevilDaggersCore.Spawnsets;
 using DevilDaggersCore.Spawnsets.Web;
+using Microsoft.AspNetCore.Hosting;
 using Newtonsoft.Json;
 using System;
 using System.Collections.Generic;
@@ -13,7 +13,7 @@ namespace DevilDaggersWebsite.Code.Utils
 		public const int DefaultMaxWaves = 28;
 		public const int MaxSpawns = 2500;
 
-		public static SpawnsetFile CreateSpawnsetFileFromSettingsFile(ICommonObjects commonObjects, string path)
+		public static SpawnsetFile CreateSpawnsetFileFromSettingsFile(IWebHostEnvironment env, string path)
 		{
 			if (!File.Exists(path))
 				return null;
@@ -23,7 +23,7 @@ namespace DevilDaggersWebsite.Code.Utils
 				Path = path
 			};
 
-			using (StreamReader sr = new StreamReader(Path.Combine(commonObjects.Env.WebRootPath, "spawnsets", "Settings", "Settings.json")))
+			using (StreamReader sr = new StreamReader(Path.Combine(env.WebRootPath, "spawnsets", "Settings", "Settings.json")))
 			{
 				Dictionary<string, SpawnsetFileSettings> dict = JsonConvert.DeserializeObject<Dictionary<string, SpawnsetFileSettings>>(sr.ReadToEnd());
 

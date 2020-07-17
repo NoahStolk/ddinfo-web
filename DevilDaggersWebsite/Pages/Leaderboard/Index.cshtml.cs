@@ -1,10 +1,11 @@
-﻿using CoreBase3.Services;
-using DevilDaggersCore.Leaderboards;
+﻿using DevilDaggersCore.Leaderboards;
+using DevilDaggersWebsite.Code.Extensions;
+using DevilDaggersWebsite.Code.External;
 using DevilDaggersWebsite.Code.Leaderboards;
 using DevilDaggersWebsite.Code.PageModels;
 using DevilDaggersWebsite.Code.Users;
 using DevilDaggersWebsite.Code.Utils;
-using DevilDaggersWebsite.Code.Utils.Web;
+using Microsoft.AspNetCore.Hosting;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.AspNetCore.Mvc.RazorPages;
 using System;
@@ -17,7 +18,7 @@ namespace DevilDaggersWebsite.Pages.Leaderboard
 {
 	public class IndexModel : PageModel, IDefaultLeaderboardPage
 	{
-		private readonly ICommonObjects commonObjects;
+		private readonly IWebHostEnvironment env;
 
 		[BindProperty]
 		public Lb Leaderboard { get; set; } = new Lb();
@@ -55,9 +56,9 @@ namespace DevilDaggersWebsite.Pages.Leaderboard
 
 		public LeaderboardSearchType LeaderboardSearchType => !string.IsNullOrEmpty(Username) && Username.Length >= 3 ? LeaderboardSearchType.Username : UserId != 0 ? LeaderboardSearchType.UserId : LeaderboardSearchType.Rank;
 
-		public IndexModel(ICommonObjects commonObjects)
+		public IndexModel(IWebHostEnvironment env)
 		{
-			this.commonObjects = commonObjects;
+			this.env = env;
 		}
 
 		public async Task OnGetAsync(int rank, string username, int userId, bool showMoreStats)
@@ -87,12 +88,12 @@ namespace DevilDaggersWebsite.Pages.Leaderboard
 					break;
 			}
 
-			HasBans = UserUtils.GetUserObjects<Ban>(commonObjects).Any(b => Leaderboard.Entries.Any(e => e.Id == b.Id));
+			HasBans = UserUtils.GetUserObjects<Ban>(env).Any(b => Leaderboard.Entries.Any(e => e.Id == b.Id));
 			if (LeaderboardSearchType == LeaderboardSearchType.UserId)
 			{
 				Entry entry = Leaderboard.Entries[0];
-				IsValidTop100Graph = UserId > 0 && entry.ExistsInHistory(commonObjects);
-				IEnumerable<string> aliases = entry.GetAllUsernameAliases(commonObjects).Where(s => s != entry.Username);
+				IsValidTop100Graph = UserId > 0 && entry.ExistsInHistory(env);
+				IEnumerable<string> aliases = entry.GetAllUsernameAliases(env).Where(s => s != entry.Username);
 				UsernameAliases = aliases.Any() ? $" (also known as: {string.Join(", ", aliases)})" : string.Empty;
 			}
 		}

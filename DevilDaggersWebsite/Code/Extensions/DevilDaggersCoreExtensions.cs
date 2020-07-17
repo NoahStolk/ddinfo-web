@@ -1,10 +1,9 @@
-﻿using CoreBase3.Services;
-using DevilDaggersCore.Game;
+﻿using DevilDaggersCore.Game;
 using DevilDaggersCore.Leaderboards;
 using DevilDaggersCore.Tools.Website;
 using DevilDaggersWebsite.Code.Users;
+using Microsoft.AspNetCore.Hosting;
 using Microsoft.AspNetCore.Html;
-using NetBase.Utils;
 using Newtonsoft.Json;
 using System.Collections.Generic;
 using System.IO;
@@ -12,7 +11,7 @@ using System.Linq;
 using System.Text;
 using System.Web;
 
-namespace DevilDaggersWebsite.Code.Utils
+namespace DevilDaggersWebsite.Code.Extensions
 {
 	public static class DevilDaggersCoreExtensions
 	{
@@ -60,23 +59,23 @@ namespace DevilDaggersWebsite.Code.Utils
 			gamma='{playerSetting.Gamma ?? 0}'
 		");
 
-		public static bool ExistsInHistory(this Entry entry, ICommonObjects commonObjects)
+		public static bool ExistsInHistory(this Entry entry, IWebHostEnvironment env)
 		{
-			foreach (string leaderboardHistoryPath in Directory.GetFiles(Path.Combine(commonObjects.Env.WebRootPath, "leaderboard-history"), "*.json"))
+			foreach (string leaderboardHistoryPath in Directory.GetFiles(Path.Combine(env.WebRootPath, "leaderboard-history"), "*.json"))
 			{
-				Leaderboard leaderboard = JsonConvert.DeserializeObject<Leaderboard>(FileUtils.GetContents(leaderboardHistoryPath, Encoding.UTF8));
+				Leaderboard leaderboard = JsonConvert.DeserializeObject<Leaderboard>(File.ReadAllText(leaderboardHistoryPath, Encoding.UTF8));
 				if (leaderboard.Entries.Any(e => e.Id == entry.Id))
 					return true;
 			}
 			return false;
 		}
 
-		public static List<string> GetAllUsernameAliases(this Entry entry, ICommonObjects commonObjects)
+		public static List<string> GetAllUsernameAliases(this Entry entry, IWebHostEnvironment env)
 		{
 			Dictionary<string, int> aliases = new Dictionary<string, int>();
-			foreach (string leaderboardHistoryPath in Directory.GetFiles(Path.Combine(commonObjects.Env.WebRootPath, "leaderboard-history"), "*.json"))
+			foreach (string leaderboardHistoryPath in Directory.GetFiles(Path.Combine(env.WebRootPath, "leaderboard-history"), "*.json"))
 			{
-				Leaderboard leaderboard = JsonConvert.DeserializeObject<Leaderboard>(FileUtils.GetContents(leaderboardHistoryPath, Encoding.UTF8));
+				Leaderboard leaderboard = JsonConvert.DeserializeObject<Leaderboard>(File.ReadAllText(leaderboardHistoryPath, Encoding.UTF8));
 				Entry historyEntry = leaderboard.Entries.FirstOrDefault(e => e.Id == entry.Id);
 				if (historyEntry != null)
 				{

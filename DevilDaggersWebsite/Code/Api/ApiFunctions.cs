@@ -1,5 +1,4 @@
-﻿using CoreBase3.Services;
-using DevilDaggersCore.CustomLeaderboards;
+﻿using DevilDaggersCore.CustomLeaderboards;
 using DevilDaggersCore.Game;
 using DevilDaggersCore.Leaderboards;
 using DevilDaggersCore.Leaderboards.History;
@@ -8,10 +7,10 @@ using DevilDaggersCore.Tools.Website;
 using DevilDaggersCore.Utils;
 using DevilDaggersCore.Website;
 using DevilDaggersWebsite.Code.Database;
+using DevilDaggersWebsite.Code.External;
 using DevilDaggersWebsite.Code.Tasks;
 using DevilDaggersWebsite.Code.Utils;
-using DevilDaggersWebsite.Code.Utils.Web;
-using NetBase.Utils;
+using Microsoft.AspNetCore.Hosting;
 using Newtonsoft.Json;
 using System;
 using System.Collections.Generic;
@@ -72,9 +71,9 @@ namespace DevilDaggersWebsite.Code.Api
 
 		public static async Task<Leaderboard> GetLeaderboard(int rank) => await Hasmodai.GetScores(Math.Max(1, rank));
 
-		public static bool TryGetSpawnsetPath(ICommonObjects commonObjects, string fileName, out string path)
+		public static bool TryGetSpawnsetPath(IWebHostEnvironment env, string fileName, out string path)
 		{
-			if (!string.IsNullOrEmpty(fileName) && File.Exists(Path.Combine(commonObjects.Env.WebRootPath, "spawnsets", fileName)))
+			if (!string.IsNullOrEmpty(fileName) && File.Exists(Path.Combine(env.WebRootPath, "spawnsets", fileName)))
 			{
 				path = Path.Combine("spawnsets", fileName);
 				return true;
@@ -84,9 +83,9 @@ namespace DevilDaggersWebsite.Code.Api
 			return false;
 		}
 
-		public static IEnumerable<SpawnsetFile> GetSpawnsets(ICommonObjects commonObjects, string searchAuthor, string searchName)
+		public static IEnumerable<SpawnsetFile> GetSpawnsets(IWebHostEnvironment env, string searchAuthor, string searchName)
 		{
-			IEnumerable<SpawnsetFile> spawnsetFiles = Directory.GetFiles(Path.Combine(commonObjects.Env.WebRootPath, "spawnsets")).Select(p => SpawnsetUtils.CreateSpawnsetFileFromSettingsFile(commonObjects, p));
+			IEnumerable<SpawnsetFile> spawnsetFiles = Directory.GetFiles(Path.Combine(env.WebRootPath, "spawnsets")).Select(p => SpawnsetUtils.CreateSpawnsetFileFromSettingsFile(env, p));
 
 			if (!string.IsNullOrEmpty(searchAuthor))
 			{
@@ -102,7 +101,7 @@ namespace DevilDaggersWebsite.Code.Api
 			return spawnsetFiles;
 		}
 
-		public static bool TryGetToolPath(ICommonObjects commonObjects, string toolName, out string fileName, out string path)
+		public static bool TryGetToolPath(IWebHostEnvironment env, string toolName, out string fileName, out string path)
 		{
 			Tool tool = ToolList.Tools.FirstOrDefault(t => t.Name == toolName);
 			if (tool != null)
@@ -110,7 +109,7 @@ namespace DevilDaggersWebsite.Code.Api
 				fileName = $"{toolName}{tool.VersionNumber}.zip";
 				path = Path.Combine("tools", toolName, fileName);
 
-				if (!File.Exists(Path.Combine(commonObjects.Env.WebRootPath, path)))
+				if (!File.Exists(Path.Combine(env.WebRootPath, path)))
 					throw new Exception($"Tool file '{path}' does not exist.");
 
 				return true;
@@ -134,15 +133,15 @@ namespace DevilDaggersWebsite.Code.Api
 			return leaderboard.Entries;
 		}
 
-		public static SortedDictionary<DateTime, Entry> GetUserProgressionById(ICommonObjects commonObjects, int userId)
+		public static SortedDictionary<DateTime, Entry> GetUserProgressionById(IWebHostEnvironment env, int userId)
 		{
 			SortedDictionary<DateTime, Entry> data = new SortedDictionary<DateTime, Entry>();
 
 			if (userId != 0)
 			{
-				foreach (string leaderboardHistoryPath in Directory.GetFiles(Path.Combine(commonObjects.Env.WebRootPath, "leaderboard-history"), "*.json"))
+				foreach (string leaderboardHistoryPath in Directory.GetFiles(Path.Combine(env.WebRootPath, "leaderboard-history"), "*.json"))
 				{
-					Leaderboard leaderboard = JsonConvert.DeserializeObject<Leaderboard>(FileUtils.GetContents(leaderboardHistoryPath, Encoding.UTF8));
+					Leaderboard leaderboard = JsonConvert.DeserializeObject<Leaderboard>(File.ReadAllText(leaderboardHistoryPath, Encoding.UTF8));
 					Entry entry = leaderboard.Entries.FirstOrDefault(e => e.Id == userId);
 
 					if (entry != null && !data.Values.Any(e =>
@@ -158,16 +157,16 @@ namespace DevilDaggersWebsite.Code.Api
 			return data;
 		}
 
-		public static List<WorldRecord> GetWorldRecords(ICommonObjects commonObjects, DateTime? date)
+		public static List<WorldRecord> GetWorldRecords(IWebHostEnvironment env, DateTime? date)
 		{
 			bool isDateParameterValid = date.HasValue && date >= GameInfo.GameVersions["V1"].ReleaseDate && date <= DateTime.Now;
 
 			List<WorldRecord> data = new List<WorldRecord>();
 
 			int worldRecord = 0;
-			foreach (string leaderboardHistoryPath in Directory.GetFiles(Path.Combine(commonObjects.Env.WebRootPath, "leaderboard-history"), "*.json"))
+			foreach (string leaderboardHistoryPath in Directory.GetFiles(Path.Combine(env.WebRootPath, "leaderboard-history"), "*.json"))
 			{
-				Leaderboard leaderboard = JsonConvert.DeserializeObject<Leaderboard>(FileUtils.GetContents(leaderboardHistoryPath, Encoding.UTF8));
+				Leaderboard leaderboard = JsonConvert.DeserializeObject<Leaderboard>(File.ReadAllText(leaderboardHistoryPath, Encoding.UTF8));
 				if (leaderboard.Entries[0].Time != worldRecord)
 				{
 					worldRecord = leaderboard.Entries[0].Time;
@@ -186,12 +185,12 @@ namespace DevilDaggersWebsite.Code.Api
 			return data;
 		}
 
-		public static (DateTime from, DateTime to) GetLatestDatePlayed(ICommonObjects commonObjects, int userId)
+		public static (DateTime from, DateTime to) GetLatestDatePlayed(IWebHostEnvironment env, int userId)
 		{
 			List<(DateTime dateTime, Entry entry)> entries = new List<(DateTime, Entry)>();
-			foreach (string leaderboardHistoryPath in Directory.GetFiles(Path.Combine(commonObjects.Env.WebRootPath, "leaderboard-history"), "*.json"))
+			foreach (string leaderboardHistoryPath in Directory.GetFiles(Path.Combine(env.WebRootPath, "leaderboard-history"), "*.json"))
 			{
-				Leaderboard lb = JsonConvert.DeserializeObject<Leaderboard>(FileUtils.GetContents(leaderboardHistoryPath, Encoding.UTF8));
+				Leaderboard lb = JsonConvert.DeserializeObject<Leaderboard>(File.ReadAllText(leaderboardHistoryPath, Encoding.UTF8));
 				Entry entry = lb.Entries.FirstOrDefault(e => e.Id == userId);
 				if (entry != null)
 					entries.Add((lb.DateTime, entry));
@@ -206,12 +205,12 @@ namespace DevilDaggersWebsite.Code.Api
 			return (DateTime.Now, DateTime.Now);
 		}
 
-		public static Dictionary<DateTime, ulong> GetUserActivity(ICommonObjects commonObjects, int userId)
+		public static Dictionary<DateTime, ulong> GetUserActivity(IWebHostEnvironment env, int userId)
 		{
 			Dictionary<DateTime, ulong> data = new Dictionary<DateTime, ulong>();
-			foreach (string leaderboardHistoryPath in Directory.GetFiles(Path.Combine(commonObjects.Env.WebRootPath, "leaderboard-history"), "*.json"))
+			foreach (string leaderboardHistoryPath in Directory.GetFiles(Path.Combine(env.WebRootPath, "leaderboard-history"), "*.json"))
 			{
-				Leaderboard lb = JsonConvert.DeserializeObject<Leaderboard>(FileUtils.GetContents(leaderboardHistoryPath, Encoding.UTF8));
+				Leaderboard lb = JsonConvert.DeserializeObject<Leaderboard>(File.ReadAllText(leaderboardHistoryPath, Encoding.UTF8));
 				Entry entry = lb.Entries.FirstOrDefault(e => e.Id == userId);
 				if (entry != null && entry.DeathsTotal > 0)
 					data.Add(lb.DateTime, entry.DeathsTotal);

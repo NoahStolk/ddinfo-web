@@ -1,6 +1,6 @@
-﻿using CoreBase3.Services;
-using CoreBase3.Sitemap;
+﻿using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc.RazorPages;
+using SitemapGenerator;
 using System;
 using System.Linq;
 using System.Reflection;
@@ -9,13 +9,13 @@ namespace DevilDaggersWebsite.Pages
 {
 	public class GenerateSitemapModel : PageModel
 	{
-		private readonly ICommonObjects commonObjects;
+		private readonly IHttpContextAccessor httpContextAccessor;
 
 		public string XmlResult { get; set; }
 
-		public GenerateSitemapModel(ICommonObjects commonObjects)
+		public GenerateSitemapModel(IHttpContextAccessor httpContextAccessor)
 		{
-			this.commonObjects = commonObjects;
+			this.httpContextAccessor = httpContextAccessor;
 		}
 
 		public void OnGet()
@@ -31,7 +31,7 @@ namespace DevilDaggersWebsite.Pages
 			SitemapUtils.ExcludePage("Spawnset");
 			SitemapUtils.ExcludePage("Wiki_SpawnsExtended");
 
-			XmlResult = SitemapUtils.GetSitemap(commonObjects, true);
+			XmlResult = SitemapUtils.GetSitemap(httpContextAccessor, typeof(Page), true);
 		}
 	}
 }

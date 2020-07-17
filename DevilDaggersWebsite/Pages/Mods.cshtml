@@ -1,8 +1,8 @@
 ﻿@page
-@inject CoreBase3.Services.ICommonObjects CommonObjects
+@inject Microsoft.AspNetCore.Hosting.IWebHostEnvironment env
+@using DevilDaggersCore.Utils
 @using DevilDaggersWebsite.Code.Users
 @using DevilDaggersWebsite.Code.Utils
-@using NetBase.Utils
 @{
 	ViewData["Title"] = "Mods";
 }
@@ -27,7 +27,7 @@
 			</tr>
 		</thead>
 		<tbody>
-			@foreach (AssetMod mod in UserUtils.GetUserObjects<AssetMod>(CommonObjects))
+			@foreach (AssetMod mod in UserUtils.GetUserObjects<AssetMod>(env))
 			{
 				<tr>
 					<td>

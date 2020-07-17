@@ -1,9 +1,10 @@
-﻿@inject CoreBase3.Services.ICommonObjects CommonObjects
+﻿@using DevilDaggersWebsite.Code.Utils
+@inject Microsoft.AspNetCore.Hosting.IWebHostEnvironment env
 <environment include="Development">
 	<script defer src="~/lib/jquery/dist/jquery.js"></script>
 	<script defer src="~/lib/bootstrap/dist/js/bootstrap.js"></script>
-	@CommonObjects.GetJsList("js-site/core")
-	@CommonObjects.GetJsList("js-site")
+	@RazorUtils.GetJsList(env, "js-site/core")
+	@RazorUtils.GetJsList(env, "js-site")
 </environment>
 <environment exclude="Development">
 	<script defer src="https://ajax.aspnetcdn.com/ajax/jquery/jquery-2.2.0.min.js"

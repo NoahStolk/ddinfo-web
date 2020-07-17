@@ -1,13 +1,13 @@
-﻿using CoreBase3.Services;
-using DevilDaggersCore.CustomLeaderboards;
+﻿using DevilDaggersCore.CustomLeaderboards;
+using DevilDaggersCore.Extensions;
 using DevilDaggersCore.Spawnsets;
 using DevilDaggersCore.Spawnsets.Web;
 using DevilDaggersWebsite.Code.Database;
 using DevilDaggersWebsite.Code.Database.CustomLeaderboards;
 using DevilDaggersWebsite.Code.Utils;
+using Microsoft.AspNetCore.Hosting;
 using Microsoft.AspNetCore.Mvc.RazorPages;
 using Microsoft.EntityFrameworkCore;
-using NetBase.Extensions;
 using Newtonsoft.Json;
 using System;
 using System.IO;
@@ -21,12 +21,12 @@ namespace DevilDaggersWebsite.Pages.CustomLeaderboards
 		public string JsonResult { get; set; }
 
 		private readonly ApplicationDbContext context;
-		private readonly ICommonObjects commonObjects;
+		private readonly IWebHostEnvironment env;
 
-		public UploadModel(ApplicationDbContext context, ICommonObjects commonObjects)
+		public UploadModel(ApplicationDbContext context, IWebHostEnvironment env)
 		{
 			this.context = context;
-			this.commonObjects = commonObjects;
+			this.env = env;
 		}
 
 		public void OnGet(string spawnsetHash,
@@ -80,7 +80,7 @@ namespace DevilDaggersWebsite.Pages.CustomLeaderboards
 				return new UploadResult(false, "You are using an unsupported and outdated version of DDCL. Please update the program.");
 
 			string spawnsetName = string.Empty;
-			foreach (string spawnsetPath in Directory.GetFiles(Path.Combine(commonObjects.Env.WebRootPath, "spawnsets")))
+			foreach (string spawnsetPath in Directory.GetFiles(Path.Combine(env.WebRootPath, "spawnsets")))
 			{
 				string hash = string.Empty;
 

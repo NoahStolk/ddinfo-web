@@ -1,6 +1,4 @@
 //#define TEST_EXCEPTION_HANDLER
-using CoreBase3.Email;
-using CoreBase3.Services;
 using DevilDaggersWebsite.Code.Database;
 using DevilDaggersWebsite.Code.Tasks;
 using DevilDaggersWebsite.Code.Tasks.Scheduling;
@@ -42,13 +40,8 @@ namespace DevilDaggersWebsite
 
 			services.AddDbContext<ApplicationDbContext>(options => options.UseMySql(Configuration.GetConnectionString("DefaultConnection")));
 
-			services.AddSingleton<IEmailConfiguration, EmailConfiguration>();
-
 			services.AddSingleton<IHttpContextAccessor, HttpContextAccessor>();
 			services.AddSingleton<IActionContextAccessor, ActionContextAccessor>();
-			services.AddSingleton<ICommonObjects, CommonObjects>();
-			services.AddSingleton<IEmailService, EmailService>();
-			services.AddSingleton<IGlobalExceptionHandler, GlobalExceptionHandler>();
 
 			// TODO: Add all tasks using reflection?
 			services.AddSingleton<IScheduledTask, CreateLeaderboardHistoryFileTask>();

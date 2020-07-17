@@ -1,12 +1,13 @@
-﻿using CoreBase3.Services;
-using DevilDaggersWebsite.Code.PageModels;
+﻿using DevilDaggersWebsite.Code.PageModels;
+using Microsoft.AspNetCore.Hosting;
+using Microsoft.AspNetCore.Http;
 
 namespace DevilDaggersWebsite.Pages.Admin
 {
 	public class IndexModel : AdminPageModel
 	{
-		public IndexModel(ICommonObjects commonObjects)
-			: base(commonObjects)
+		public IndexModel(IHttpContextAccessor httpContextAccessor, IWebHostEnvironment env)
+			: base(httpContextAccessor, env)
 		{
 		}
 	}

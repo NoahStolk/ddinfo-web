@@ -1,13 +1,13 @@
-﻿using CoreBase3.Services;
+﻿using DevilDaggersCore.Extensions;
 using DevilDaggersCore.Spawnsets.Web;
 using DevilDaggersCore.Utils;
 using DevilDaggersWebsite.Code.Database;
 using DevilDaggersWebsite.Code.Database.CustomLeaderboards;
 using DevilDaggersWebsite.Code.Utils;
+using Microsoft.AspNetCore.Hosting;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.AspNetCore.Mvc.RazorPages;
 using Microsoft.EntityFrameworkCore;
-using NetBase.Extensions;
 using System;
 using System.Collections.Generic;
 using System.IO;
@@ -27,12 +27,12 @@ namespace DevilDaggersWebsite.Pages.CustomLeaderboards
 
 		private readonly ApplicationDbContext context;
 
-		public ICommonObjects CommonObjects { get; }
+		public IWebHostEnvironment Env { get; }
 
-		public LeaderboardModel(ApplicationDbContext context, ICommonObjects commonObjects)
+		public LeaderboardModel(ApplicationDbContext context, IWebHostEnvironment env)
 		{
 			this.context = context;
-			CommonObjects = commonObjects;
+			Env = env;
 		}
 
 		public ActionResult OnGet(string spawnset)
@@ -40,7 +40,7 @@ namespace DevilDaggersWebsite.Pages.CustomLeaderboards
 			if (spawnset == null)
 				return RedirectToPage("Index");
 
-			SpawnsetFile = SpawnsetUtils.CreateSpawnsetFileFromSettingsFile(CommonObjects, Path.Combine(CommonObjects.Env.WebRootPath, "spawnsets", spawnset));
+			SpawnsetFile = SpawnsetUtils.CreateSpawnsetFileFromSettingsFile(Env, Path.Combine(Env.WebRootPath, "spawnsets", spawnset));
 
 			if (SpawnsetFile == null)
 				return RedirectToPage("Index");

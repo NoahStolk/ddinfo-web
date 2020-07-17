@@ -1,6 +1,6 @@
-﻿using CoreBase3.Services;
-using DevilDaggersWebsite.Code.Users;
+﻿using DevilDaggersWebsite.Code.Users;
 using DevilDaggersWebsite.Code.Utils;
+using Microsoft.AspNetCore.Hosting;
 using Microsoft.AspNetCore.Mvc.RazorPages;
 using System.Collections.Generic;
 using System.Linq;
@@ -14,10 +14,10 @@ namespace DevilDaggersWebsite.Pages
 
 		public Dictionary<int, int> DonatorsWithReceivedEuroAmounts { get; } = new Dictionary<int, int>();
 
-		public DonationsModel(ICommonObjects commonObjects)
+		public DonationsModel(IWebHostEnvironment env)
 		{
-			Donators = UserUtils.GetUserObjects<Donator>(commonObjects);
-			Donations = UserUtils.GetUserObjects<Donation>(commonObjects);
+			Donators = UserUtils.GetUserObjects<Donator>(env);
+			Donations = UserUtils.GetUserObjects<Donation>(env);
 
 			foreach (Donation donation in Donations.Where(d => !d.IsRefunded))
 			{

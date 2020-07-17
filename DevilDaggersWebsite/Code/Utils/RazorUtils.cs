@@ -1,6 +1,10 @@
 ﻿using DevilDaggersCore.Game;
+using Microsoft.AspNetCore.Hosting;
 using Microsoft.AspNetCore.Html;
+using System;
 using System.Collections.Generic;
+using System.IO;
+using System.Text;
 
 namespace DevilDaggersWebsite.Code.Utils
 {
@@ -10,6 +14,33 @@ namespace DevilDaggersWebsite.Code.Utils
 		public const string ContactEmail = "contact@devildaggers.info";
 
 		public static HtmlString NAString { get; set; } = new HtmlString($"<span style='color: #444;'>N/A</span>");
+
+		public static HtmlString GetCssList(IWebHostEnvironment env, string subdirectory)
+			=> GetList(env, subdirectory, (sb, href) => sb.Append($"<link rel='stylesheet' href='/{href}' />\n"));
+
+		public static HtmlString GetJsList(IWebHostEnvironment env, string subdirectory)
+			=> GetList(env, subdirectory, (sb, href) => sb.Append($"<script defer src='/{href}' asp-append-version='true'></script>\n"));
+
+		private static HtmlString GetList(IWebHostEnvironment env, string subdirectory, Action<StringBuilder, string> appendAction)
+		{
+			string directory = Path.Combine(env.WebRootPath, subdirectory);
+
+			StringBuilder sb = new StringBuilder();
+			foreach (string path in Directory.GetFiles(directory))
+				appendAction(sb, Path.Combine(subdirectory, Path.GetFileName(path)));
+
+			return new HtmlString(sb.ToString());
+		}
+
+		public static HtmlString GetCopyrightString(string name, int startYear)
+			=> GetCopyrightString(name, startYear, DateTime.Now.Year);
+
+		public static HtmlString GetCopyrightString(string name, int startYear, int endYear)
+		{
+			string year = startYear == endYear ? startYear.ToString() : $"{startYear}-{endYear}";
+
+			return new HtmlString($"Copyright &copy; {year} {name}");
+		}
 
 		public static HtmlString GetLayoutAnchor(this Enemy enemy, bool plural = false, float zalgo = 0)
 		{
@@ -72,8 +103,10 @@ namespace DevilDaggersWebsite.Code.Utils
 			return str;
 		}
 
-		public static string ToIdString(this string str) => $"{str.ToLower().Replace(" ", "-")}";
+		public static string ToIdString(this string str)
+			=> $"{str.ToLower().Replace(" ", "-")}";
 
-		public static string S(this int value) => value == 1 ? "" : "s";
+		public static string S(this int value)
+			=> value == 1 ? "" : "s";
 	}
 }

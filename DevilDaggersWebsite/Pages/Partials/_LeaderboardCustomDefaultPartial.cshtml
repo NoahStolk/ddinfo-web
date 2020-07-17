@@ -4,7 +4,7 @@
 @using DevilDaggersWebsite.Code.Users
 @using DevilDaggersWebsite.Code.Utils
 @using Microsoft.AspNetCore.Html
-@inject CoreBase3.Services.ICommonObjects CommonObjects
+@inject Microsoft.AspNetCore.Hosting.IWebHostEnvironment env
 
 <div class="leaderboard-container flex-container flex-center">
 	<div class="leaderboard-title-row flex-container">
@@ -25,9 +25,9 @@
 	</div>
 	<div class="leaderboard-body">
 		@{
-			IEnumerable<Flag> flags = UserUtils.GetUserObjects<Flag>(CommonObjects);
-			IEnumerable<UserTitleCollection> titleCollections = UserUtils.GetUserObjects<UserTitleCollection>(CommonObjects);
-			IEnumerable<Donator> unanonymousDonators = UserUtils.GetUserObjects<Donator>(CommonObjects).Where(d => !d.IsAnonymous);
+			IEnumerable<Flag> flags = UserUtils.GetUserObjects<Flag>(env);
+			IEnumerable<UserTitleCollection> titleCollections = UserUtils.GetUserObjects<UserTitleCollection>(env);
+			IEnumerable<Donator> unanonymousDonators = UserUtils.GetUserObjects<Donator>(env).Where(d => !d.IsAnonymous);
 			int rank = 0;
 			foreach (CustomEntry entry in Model.Entries)
 			{
