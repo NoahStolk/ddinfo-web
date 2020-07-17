@@ -77,10 +77,8 @@ namespace LeaderboardJsonIdFixer
 					Console.WriteLine();
 				}
 
-				using (StreamWriter sw = File.CreateText(path))
-				{
-					sw.Write(JsonConvert.SerializeObject(leaderboard));
-				}
+				using StreamWriter sw = File.CreateText(path);
+				sw.Write(JsonConvert.SerializeObject(leaderboard));
 			}
 		}
 	}
