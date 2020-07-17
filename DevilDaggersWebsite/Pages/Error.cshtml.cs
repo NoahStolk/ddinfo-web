@@ -21,7 +21,7 @@ namespace DevilDaggersWebsite.Pages
 					Color = DiscordColor.Red
 				};
 
-				IExceptionHandlerPathFeature exceptionFeature = HttpContext.Features.Get<IExceptionHandlerPathFeature>();
+				IExceptionHandlerPathFeature exceptionFeature = HttpContext.Features?.Get<IExceptionHandlerPathFeature>();
 				builder.AddFieldObject("Timestamp", DateTime.Now.ToString(FormatUtils.DateTimeFullFormat), true);
 				builder.AddFieldObject("Route", exceptionFeature?.Path, true);
 				builder.AddFieldObject("Request query string", HttpContext.Request?.QueryString, true);
