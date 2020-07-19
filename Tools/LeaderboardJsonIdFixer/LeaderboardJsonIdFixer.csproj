@@ -8,6 +8,6 @@
 	</ItemGroup>
 	<ItemGroup>
 		<ProjectReference Include="..\..\..\DevilDaggersCore\DevilDaggersCore\DevilDaggersCore.csproj" />
-		<ProjectReference Include="..\..\ToolsShared\ToolsShared.csproj" />
+		<ProjectReference Include="..\ToolsShared\ToolsShared.csproj" />
 	</ItemGroup>
 </Project>

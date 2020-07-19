@@ -122,7 +122,7 @@
       <Project>{F264DAF3-C6F2-49E1-9219-1EC5A9E6B6D2}</Project>
       <Name>DevilDaggersCore</Name>
     </ProjectReference>
-    <ProjectReference Include="..\..\ToolsShared\ToolsShared.csproj">
+    <ProjectReference Include="..\ToolsShared\ToolsShared.csproj">
       <Project>{60752989-2CD3-43AB-B19B-CA037304AB37}</Project>
       <Name>ToolsShared</Name>
     </ProjectReference>

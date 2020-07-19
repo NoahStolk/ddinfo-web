@@ -4,6 +4,6 @@
 		<LangVersion>8.0</LangVersion>
 	</PropertyGroup>
 	<ItemGroup>
-		<ProjectReference Include="..\..\DevilDaggersCore\DevilDaggersCore\DevilDaggersCore.csproj" />
+	  <ProjectReference Include="..\..\..\DevilDaggersCore\DevilDaggersCore\DevilDaggersCore.csproj" />
 	</ItemGroup>
 </Project>
