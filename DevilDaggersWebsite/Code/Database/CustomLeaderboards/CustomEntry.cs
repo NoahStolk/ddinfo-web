@@ -13,7 +13,7 @@ namespace DevilDaggersWebsite.Code.Database.CustomLeaderboards
 
 		public int CustomLeaderboardId { get; set; }
 
-		[ForeignKey("CustomLeaderboardId")]
+		[ForeignKey(nameof(CustomLeaderboardId))]
 		public CustomLeaderboard CustomLeaderboard { get; set; }
 
 		public CustomEntry(int playerId, string username, int time, int gems, int kills, int deathType, int shotsHit, int shotsFired, int enemiesAlive, int homing, int levelUpTime2, int levelUpTime3, int levelUpTime4, DateTime submitDate, string clientVersion)
