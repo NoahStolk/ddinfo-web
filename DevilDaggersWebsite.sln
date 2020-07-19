@@ -37,7 +37,7 @@ Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "CoreBase3", "..\CoreBase3\C
 EndProject
 Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "LeaderboardJsonHighscoreStatsSpreader", "Tools\LeaderboardJsonHighscoreStatsSpreader\LeaderboardJsonHighscoreStatsSpreader.csproj", "{22E269DE-640B-4D1E-BB39-1CB0F20181BB}"
 EndProject
-Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "ToolsShared", "ToolsShared\ToolsShared.csproj", "{D83C30BE-C72D-4425-AEA0-1AEC77366B89}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "ToolsShared", "Tools\ToolsShared\ToolsShared.csproj", "{D83C30BE-C72D-4425-AEA0-1AEC77366B89}"
 EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
