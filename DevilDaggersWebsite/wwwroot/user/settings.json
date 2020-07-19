@@ -375,5 +375,13 @@
     "Fov": 110,
     "RightHanded": true,
     "FlashEnabled": false
+  },
+  {
+    "Id": 26051,
+    "Dpi": 650,
+    "InGameSens": 0.068,
+    "Fov": 120,
+    "RightHanded": true,
+    "FlashEnabled": true
   }
 ]
