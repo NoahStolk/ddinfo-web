@@ -1,4 +1,6 @@
-﻿using Microsoft.AspNetCore.Hosting;
+﻿using DevilDaggersWebsite.Code.Bots;
+using Microsoft.AspNetCore.Hosting;
+using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Extensions.Hosting;
 
 namespace DevilDaggersWebsite
@@ -15,6 +17,9 @@ namespace DevilDaggersWebsite
 				.ConfigureWebHostDefaults(webBuilder =>
 				{
 					webBuilder.UseStartup<Startup>();
+				}).ConfigureServices(services =>
+				{
+					services.AddHostedService<DevilDaggersDiscordBotService>();
 				});
 	}
 }
