@@ -282,8 +282,7 @@
     "Amount": 666,
     "Currency": 3,
     "ConvertedEuroCentsReceived": 728,
-    "DateReceived": "2020-03-12T00:00:00",
-    "Note": "Player ID unknown"
+    "DateReceived": "2020-03-12T00:00:00"
   },
   {
     "DonatorId": 118832,
@@ -302,7 +301,13 @@
     "Amount": 500,
     "Currency": 3,
     "ConvertedEuroCentsReceived": 528,
-    "DateReceived": "2020-07-01T00:00:00",
-    "Note": "Player ID unknown"
+    "DateReceived": "2020-07-01T00:00:00"
+  },
+  {
+    "DonatorId": 218192,
+    "Amount": 1500,
+    "Currency": 1,
+    "ConvertedEuroCentsReceived": 1269,
+    "DateReceived": "2020-07-21T00:00:00"
   }
 ]
