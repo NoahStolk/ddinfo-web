@@ -23,32 +23,16 @@ namespace DevilDaggersWebsite.Code.Api
 {
 	public static class ApiFunctions
 	{
-		public static IEnumerable<CustomLeaderboardBase> GetCustomLeaderboards(ApplicationDbContext context)
-		{
-			return context.CustomLeaderboards.Select(cl => new CustomLeaderboardBase(
-				cl.SpawnsetFileName,
-				cl.Bronze,
-				cl.Silver,
-				cl.Golden,
-				cl.Devil,
-				cl.Homing,
-				cl.DateLastPlayed,
-				cl.DateCreated));
-		}
+		public static List<CustomLeaderboardBase> GetCustomLeaderboards(ApplicationDbContext context)
+			=> context.CustomLeaderboards.Select(cl => new CustomLeaderboardBase(cl.SpawnsetFileName, cl.Bronze, cl.Silver, cl.Golden, cl.Devil, cl.Homing, cl.DateLastPlayed, cl.DateCreated)).ToList();
 
-		public static IEnumerable<Death> GetDeaths(int? deathType, string gameVersion)
+		public static List<Death> GetDeaths(string gameVersion)
 		{
+			List<Death> deaths = new List<Death>();
 			if (!GameInfo.GameVersions.TryGetValue(gameVersion, out GameVersion version))
 				version = GameInfo.GameVersions[GameInfo.DefaultGameVersion];
 
-			if (deathType.HasValue)
-			{
-				yield return GameInfo.GetDeathFromDeathType(deathType.Value, version);
-				yield break;
-			}
-
-			foreach (Death death in GameInfo.GetEntities<Death>(version))
-				yield return death;
+			return GameInfo.GetEntities<Death>(version));
 		}
 
 		public static IEnumerable<Enemy> GetEnemies(string enemyName, string gameVersion)
