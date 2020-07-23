@@ -45,7 +45,7 @@
 				<div style='color: #@enemy.Death.ColorCode'>@enemy.Death.Name</div>
 				<div class="hidden-sm hidden-md">@string.Join(", ", enemy.Appearances)</div>
 				<div>
-					@if (enemy.SpawnedBy.Length == 0)
+					@if (enemy.SpawnedBy.Count() == 0)
 					{
 						@:Game
 					}
@@ -93,7 +93,7 @@
 				<div class="enemy-row flex-container">
 					<div>Spawned by</div>
 					<div class="text-right">
-						@if (enemy.SpawnedBy.Length == 0)
+						@if (enemy.SpawnedBy.Count() == 0)
 						{
 							<span style='color: #DDDDDD;'>Game</span>
 						}
