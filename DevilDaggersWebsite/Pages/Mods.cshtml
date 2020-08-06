@@ -5,6 +5,7 @@
 @using DevilDaggersWebsite.Code.Utils
 @{
 	ViewData["Title"] = "Mods";
+	List<User> users = UserUtils.GetUserObjects<User>(env);
 }
 
 <header>
@@ -21,7 +22,7 @@
 		<thead>
 			<tr>
 				<th width="256">Name</th>
-				<th width="256">Author</th>
+				<th width="256">Author(s)</th>
 				<th width="256" class="hidden-xs">Type</th>
 				<th width="256" class="hidden-xs">Contents</th>
 			</tr>
@@ -34,7 +35,7 @@
 						<a href="@mod.Url" target="_blank">@mod.Name</a>
 					</td>
 					<td>
-						@mod.Author
+						@(string.Join(", ", users.Where(u => mod.AuthorIds.Contains(u.Id)).Select(u => u.Username)))
 					</td>
 					<td class="hidden-xs">
 						@(string.Join(", ", EnumUtils.GetEnumFlagValues(mod.AssetModType, true)))
