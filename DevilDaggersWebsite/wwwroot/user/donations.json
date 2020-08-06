@@ -323,5 +323,18 @@
     "Currency": 1,
     "ConvertedEuroCentsReceived": 549,
     "DateReceived": "2020-07-29T00:00:00"
+  },
+  {
+    "DonatorId": 26051,
+    "Amount": 5001,
+    "Currency": 1,
+    "ConvertedEuroCentsReceived": 4075,
+    "DateReceived": "2020-08-06T00:00:00"
+  },
+  {
+    "DonatorId": 26051,
+    "Amount": 200,
+    "ConvertedEuroCentsReceived": 200,
+    "DateReceived": "2020-08-06T00:00:00"
   }
 ]
