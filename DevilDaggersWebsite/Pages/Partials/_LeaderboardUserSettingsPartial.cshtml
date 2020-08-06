@@ -38,7 +38,7 @@
 				}
 
 				bool isUnanonymousDonator = unanonymousDonators.Any(d => d.Id == entry.Id);
-				string flagCode = flags.FirstOrDefault(f => f.Id == entry.Id)?.CountryCode ?? "00";
+				string flagCode = flags.FirstOrDefault(f => f.Id == entry.Id)?.CountryCode ?? string.Empty;
 				string[] titles = users.FirstOrDefault(u => u.Id == entry.Id)?.Titles;
 
 				Dagger dagger = GameInfo.GetDaggerFromTime(entry.Time);
@@ -51,9 +51,9 @@
 					<div class="leaderboard-row flex-container" id="@(entry.Rank)-row">
 						<div class="text-right"><span data-toggle="tooltip" title="@entry.Id" class="leaderboard-tooltip">@entry.Rank</span></div>
 						<div>
-							@if (flagCode == "00")
+							@if (string.IsNullOrEmpty(flagCode))
 							{
-								<span><img src="/images/Flags/24x24/@(flagCode).png" /></span>
+								<span><img src="/images/Flags/24x24/00.png" /></span>
 							}
 							else
 							{

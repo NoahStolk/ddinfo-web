@@ -62,7 +62,7 @@
 
 				bool isUnanonymousDonator = entry.Id != 0 && unanonymousDonators.Any(d => d.Id == entry.Id);
 
-				string flagCode = isBanned ? "00" : flags.FirstOrDefault(f => f.Id == entry.Id)?.CountryCode ?? "00";
+				string flagCode = isBanned ? string.Empty : flags.FirstOrDefault(f => f.Id == entry.Id)?.CountryCode ?? string.Empty;
 				string[] titles = users.FirstOrDefault(u => u.Id == entry.Id)?.Titles;
 
 				Dagger dagger = GameInfo.GetDaggerFromTime(entry.Time);
@@ -111,9 +111,9 @@
 							}
 						</div>
 						<div>
-							@if (flagCode == "00")
+							@if (string.IsNullOrEmpty(flagCode))
 							{
-								<span><img src="/images/Flags/24x24/@(flagCode).png" /></span>
+								<span><img src="/images/Flags/24x24/00.png" /></span>
 							}
 							else
 							{
