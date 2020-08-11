@@ -121,16 +121,19 @@ namespace DevilDaggersWebsite.Code.Api
 
 		public static List<Tool> GetTools() => ToolList.Tools;
 
-		public static async Task<Entry> GetUserById(int userId) => await Hasmodai.GetUserById(userId);
+		public static async Task<Entry> GetUserById(int userId)
+			=> await Hasmodai.GetUserById(userId);
 
-		public static async Task<Entry> GetUserByRank(int rank) => (await Hasmodai.GetScores(rank)).Entries[0];
+		public static async Task<Entry> GetUserByRank(int rank)
+		{
+			List<Entry> entries = (await Hasmodai.GetScores(rank)).Entries;
+			if (entries.Count == 0)
+				return new Entry();
+			return entries[0];
+		}
 
 		public static async Task<List<Entry>> GetUserByUsername(string username)
-		{
-			Leaderboard leaderboard = await Hasmodai.GetUserSearch(username);
-
-			return leaderboard.Entries;
-		}
+			=> (await Hasmodai.GetUserSearch(username)).Entries;
 
 		public static SortedDictionary<DateTime, Entry> GetUserProgressionById(IWebHostEnvironment env, int userId)
 		{
