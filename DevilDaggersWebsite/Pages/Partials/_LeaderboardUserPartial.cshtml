@@ -52,8 +52,9 @@
 		@{
 			IEnumerable<Ban> bans = UserUtils.GetUserObjects<Ban>(env);
 			IEnumerable<Flag> flags = UserUtils.GetUserObjects<Flag>(env);
-			IEnumerable<UserTitleCollection> titleCollections = UserUtils.GetUserObjects<UserTitleCollection>(env);
-			IEnumerable<Donator> unanonymousDonators = UserUtils.GetUserObjects<Donator>(env).Where(d => !d.IsAnonymous);
+			IEnumerable<int> donatorIds = UserUtils.GetUserObjects<Donation>(env).Select(d => d.DonatorId);
+			IEnumerable<User> users = UserUtils.GetUserObjects<User>(env);
+			IEnumerable<User> unanonymousDonators = users.Where(u => !u.IsAnonymous && donatorIds.Contains(u.Id));
 			foreach (Entry entry in Model.Leaderboard.Entries)
 			{
 				Ban ban = bans.FirstOrDefault(b => b.Id == entry.Id);
@@ -61,9 +62,8 @@
 
 				bool isUnanonymousDonator = entry.Id != 0 && unanonymousDonators.Any(d => d.Id == entry.Id);
 
-				string flagCode = isBanned ? "00" : flags.FirstOrDefault(f => f.Id == entry.Id)?.CountryCode ?? "00";
-
-				UserTitleCollection titles = titleCollections.FirstOrDefault(t => t.Id == entry.Id);
+				string flagCode = isBanned ? string.Empty : flags.FirstOrDefault(f => f.Id == entry.Id)?.CountryCode ?? string.Empty;
+				string[] titles = users.FirstOrDefault(u => u.Id == entry.Id)?.Titles;
 
 				Dagger dagger = GameInfo.GetDaggerFromTime(entry.Time);
 				string daggerColor = isBanned ? "ban" : dagger.Name.ToLower();
@@ -111,9 +111,9 @@
 							}
 						</div>
 						<div>
-							@if (flagCode == "00")
+							@if (string.IsNullOrEmpty(flagCode))
 							{
-								<span><img src="/images/Flags/24x24/@(flagCode).png" /></span>
+								<span><img src="/images/Flags/24x24/00.png" /></span>
 							}
 							else
 							{
@@ -133,7 +133,7 @@
 
 								if (titles != null)
 								{
-									foreach (string title in titles.Titles)
+									foreach (string title in titles)
 									{
 										<span class="leaderboard-tooltip" data-toggle="tooltip" title="@title"><img src="/images/Icons/@(UserUtils.TitleImages[title]).png" /></span>
 									}

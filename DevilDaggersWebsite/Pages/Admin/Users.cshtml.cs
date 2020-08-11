@@ -5,9 +5,9 @@ using Microsoft.AspNetCore.Http;
 
 namespace DevilDaggersWebsite.Pages.Admin
 {
-	public class TitlesModel : AdminFilePageModel<UserTitleCollection>
+	public class UsersModel : AdminFilePageModel<User>
 	{
-		public TitlesModel(IHttpContextAccessor httpContextAccessor, IWebHostEnvironment env)
+		public UsersModel(IHttpContextAccessor httpContextAccessor, IWebHostEnvironment env)
 			: base(httpContextAccessor, env)
 		{
 		}

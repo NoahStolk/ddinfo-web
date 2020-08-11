@@ -25,7 +25,7 @@ namespace DevilDaggersWebsite.Code.Utils
 		{
 			{ "Admin", "eye2" },
 			{ "Discord mod", "eye3" },
-			{ "Donator", "gem" }
+			{ "Donator", "gem" },
 		};
 
 		public static Dictionary<string, string> CountryNames { get; set; } = new Dictionary<string, string>

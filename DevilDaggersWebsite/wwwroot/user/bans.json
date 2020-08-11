@@ -1,5 +1,9 @@
 [
   {
+    "Id": 14356,
+    "Description": "Cheater (god mode)"
+  },
+  {
     "Id": 226094,
     "Description": "Cheater (god mode)"
   },
@@ -375,5 +379,9 @@
   {
     "Id": 216892,
     "Description": "Cheater (12 gems)"
+  },
+  {
+    "Id": 217967,
+    "Description": "Alt"
   }
 ]

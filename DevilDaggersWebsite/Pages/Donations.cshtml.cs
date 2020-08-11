@@ -9,14 +9,14 @@ namespace DevilDaggersWebsite.Pages
 {
 	public class DonationsModel : PageModel
 	{
-		public List<Donator> Donators { get; }
+		public List<User> Users { get; }
 		public List<Donation> Donations { get; }
 
 		public Dictionary<int, int> DonatorsWithReceivedEuroAmounts { get; } = new Dictionary<int, int>();
 
 		public DonationsModel(IWebHostEnvironment env)
 		{
-			Donators = UserUtils.GetUserObjects<Donator>(env);
+			Users = UserUtils.GetUserObjects<User>(env);
 			Donations = UserUtils.GetUserObjects<Donation>(env);
 
 			foreach (Donation donation in Donations.Where(d => !d.IsRefunded))

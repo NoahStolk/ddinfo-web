@@ -26,8 +26,9 @@
 	<div class="leaderboard-body">
 		@{
 			IEnumerable<Flag> flags = UserUtils.GetUserObjects<Flag>(env);
-			IEnumerable<UserTitleCollection> titleCollections = UserUtils.GetUserObjects<UserTitleCollection>(env);
-			IEnumerable<Donator> unanonymousDonators = UserUtils.GetUserObjects<Donator>(env).Where(d => !d.IsAnonymous);
+			IEnumerable<int> donatorIds = UserUtils.GetUserObjects<Donation>(env).Select(d => d.DonatorId);
+			IEnumerable<User> users = UserUtils.GetUserObjects<User>(env);
+			IEnumerable<User> unanonymousDonators = users.Where(u => !u.IsAnonymous && donatorIds.Contains(u.Id));
 			int rank = 0;
 			foreach (CustomEntry entry in Model.Entries)
 			{
@@ -35,9 +36,8 @@
 
 				bool isUnanonymousDonator = unanonymousDonators.Any(d => d.Id == entry.PlayerId);
 
-				string flagCode = flags.FirstOrDefault(f => f.Id == entry.PlayerId)?.CountryCode ?? "00";
-
-				UserTitleCollection titles = titleCollections.FirstOrDefault(t => t.Id == entry.PlayerId);
+				string flagCode = flags.FirstOrDefault(f => f.Id == entry.PlayerId)?.CountryCode ?? string.Empty;
+				string[] titles = users.FirstOrDefault(u => u.Id == entry.PlayerId)?.Titles;
 
 				string dagger = Model.Leaderboard.GetDagger(entry.Time);
 				Death death = GameInfo.GetDeathFromDeathType(entry.DeathType, GameInfo.GameVersions["V3"]);
@@ -56,9 +56,9 @@
 							<span data-toggle="tooltip" title="ID: @entry.PlayerId" class="leaderboard-tooltip">@rank</span>
 						</div>
 						<div>
-							@if (flagCode == "00")
+							@if (string.IsNullOrEmpty(flagCode))
 							{
-								<span><img src="/images/Flags/24x24/@(flagCode).png" /></span>
+								<span><img src="/images/Flags/24x24/00.png" /></span>
 							}
 							else
 							{
@@ -71,7 +71,7 @@
 
 								if (titles != null)
 								{
-									foreach (string title in titles.Titles)
+									foreach (string title in titles)
 									{
 										<span class="leaderboard-tooltip" data-toggle="tooltip" title="@title"><img src="/images/Icons/@(UserUtils.TitleImages[title]).png" /></span>
 									}

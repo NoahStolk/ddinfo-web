@@ -5,7 +5,7 @@
 @{
 	ViewData["Title"] = "Donations";
 
-	int[] widths = new int[2] { 256, 128 };
+	int[] widths = new[] { 256, 128 };
 }
 
 <header>
@@ -25,26 +25,26 @@
 			<img src="~/Images/Daggers/@(dagger.Name)Small.png" />
 		}
 	</p>
-	<p>
-		(Sorting might not look accurate due to currency conversions and PayPal fees.)
-	</p>
 
 	<div class="flex-container flex-center flex-column">
 		@{
-			foreach (KeyValuePair<int, int> kvp in Model.DonatorsWithReceivedEuroAmounts.OrderByDescending(kvp => kvp.Value).ThenBy(kvp => Model.Donators.FirstOrDefault(d => d.Id == kvp.Key).UsernameFallback))
+			foreach (KeyValuePair<int, int> kvp in Model.DonatorsWithReceivedEuroAmounts.OrderByDescending(kvp => kvp.Value).ThenBy(kvp => Model.Users.FirstOrDefault(d => d.Id == kvp.Key).Username))
 			{
-				Donator donator = Model.Donators.FirstOrDefault(d => d.Id == kvp.Key);
-				string username = donator.IsAnonymous ? "(anonymous)" : donator.UsernameFallback;
+				User donator = Model.Users.FirstOrDefault(d => d.Id == kvp.Key);
+				string username = donator.IsAnonymous ? "(anonymous)" : donator.Username;
 
-				Currency currency = Model.Donations.FirstOrDefault(d => d.DonatorId == kvp.Key).Currency;
-				int amount = Model.Donations.Where(d => !d.IsRefunded && d.DonatorId == kvp.Key).Sum(d => d.Amount);
+				List<string> donationsGroupedByCurrency = new List<string>();
+				foreach (var donations in Model.Donations.Where(d => !d.IsRefunded && d.DonatorId == kvp.Key).GroupBy(d => d.Currency))
+				{
+					donationsGroupedByCurrency.Add($"{donations.Key.GetChar()} {(donations.Sum(d => d.Amount) / 100.0).ToString("0.00")} {(donations.Key.ToString().ToUpper())}");
+				}
+				string str = string.Join(" + ", donationsGroupedByCurrency);
 
 				<div class="flex-container flex-center">
 					<div style="width: @(widths[0])px; white-space: nowrap;" class="text-left devil">@username</div>
-					<div style="width: @(widths[1])px;" class="text-right devil donation-tooltip" data-toggle="tooltip" data-placement="left" title="@((kvp.Value / 100.0).ToString("0.00")) EUR">
-						@((amount / 100.0).ToString("0.00"))
-						<span style="display: inline-block; min-width: 12px;">@(currency.GetChar())</span>
-						<span style="display: inline-block; min-width: 48px;">(@currency.ToString().ToUpper())</span>
+					<div style="width: @(widths[1])px;" class="text-right devil donation-tooltip" data-toggle="tooltip" data-placement="left" title="@str">
+						@(Currency.Eur.GetChar())
+						@((kvp.Value / 100.0).ToString("0.00"))
 					</div>
 				</div>
 			}
