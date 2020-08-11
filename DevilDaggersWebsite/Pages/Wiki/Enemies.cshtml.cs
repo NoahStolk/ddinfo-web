@@ -17,14 +17,14 @@ namespace DevilDaggersWebsite.Pages.Wiki
 		public List<Enemy> enemies;
 		public List<Upgrade> upgrades;
 
-		public void OnGet(string gameVersion)
+		public void OnGet(GameVersion gameVersion)
 		{
 			SetGameVersion(gameVersion);
 
-			enemies = GameInfo.GetEntities<Enemy>(gameVersionObject);
-			upgrades = GameInfo.GetEntities<Upgrade>(gameVersionObject);
+			enemies = GameInfo.GetEntities<Enemy>(gameVersion);
+			upgrades = GameInfo.GetEntities<Upgrade>(gameVersion);
 
-			if (gameVersionObject == GameVersion.V3)
+			if (gameVersion == GameVersion.V3)
 				TableOfContents.Add("Homing daggers");
 		}
 	}

@@ -1,8 +1,9 @@
-﻿using DevilDaggersCore.Leaderboards;
-using System.Threading.Tasks;
-using DevilDaggersCore.Game;
-using System.Collections.Generic;
+﻿using DevilDaggersCore.Game;
+using DevilDaggersCore.Leaderboards;
 using DevilDaggersWebsite.Code.External;
+using System.Collections.Generic;
+using System.Linq;
+using System.Threading.Tasks;
 
 namespace DevilDaggersWebsite.Code.Tasks
 {
@@ -87,7 +88,7 @@ namespace DevilDaggersWebsite.Code.Tasks
 
 			foreach (Entry entry in Leaderboard.Entries)
 			{
-				Death death = GameInfo.GetDeathFromDeathType(entry.DeathType, GameInfo.GameVersions[GameInfo.DefaultGameVersion]);
+				Death death = GameInfo.GetEntities<Death>().FirstOrDefault(e => e.DeathType == entry.DeathType);
 				if (DeathStats.ContainsKey(death))
 					DeathStats[death]++;
 				else

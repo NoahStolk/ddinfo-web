@@ -39,16 +39,7 @@ namespace DevilDaggersWebsite.Code.Api
 		[HttpGet("dagger/at-time")]
 		[ProducesResponseType(200)]
 		public ActionResult<Dagger> GetDaggerFromTimeInTenthsOfMilliseconds([FromQuery] uint timeInTenthsOfMilliseconds)
-		{
-			List<Dagger> daggers = GameInfo.GetEntities<Dagger>(GameVersion.V3);
-			for (int i = daggers.Count - 1; i >= 0; i--)
-			{
-				if (timeInTenthsOfMilliseconds >= (daggers[i].UnlockSecond ?? 0) * 10000)
-					return daggers[i];
-			}
-
-			throw new Exception($"Could not determine dagger based on time '{timeInTenthsOfMilliseconds}'.");
-		}
+			=> GameInfo.GetDaggerFromTime(timeInTenthsOfMilliseconds);
 
 		[HttpGet("enemies")]
 		[ProducesResponseType(200)]
