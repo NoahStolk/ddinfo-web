@@ -11,7 +11,7 @@ namespace DevilDaggersWebsite.Code.External
 	{
 		private static readonly string getScoresUrl = "http://dd.hasmodai.com/backend15/get_scores.php";
 		private static readonly string getUserSearchUrl = "http://dd.hasmodai.com/backend16/get_user_search_public.php";
-		private static readonly string getUserById = "http://dd.hasmodai.com/backend16/get_user_by_id_public.php";
+		public static readonly string GetUserByIdUrl = "http://dd.hasmodai.com/backend16/get_user_by_id_public.php";
 
 		public static async Task<Leaderboard> GetScores(int rank)
 		{
@@ -134,6 +134,7 @@ namespace DevilDaggersWebsite.Code.External
 			}
 		}
 
+		// TODO: Remove.
 		public static async Task<Entry> GetUserById(int userId)
 		{
 			try
@@ -145,7 +146,7 @@ namespace DevilDaggersWebsite.Code.External
 
 				FormUrlEncodedContent content = new FormUrlEncodedContent(postValues);
 				HttpClient client = new HttpClient();
-				HttpResponseMessage resp = await client.PostAsync(getUserById, content);
+				HttpResponseMessage resp = await client.PostAsync(GetUserByIdUrl, content);
 				byte[] data = await resp.Content.ReadAsByteArrayAsync();
 
 				int bytePos = 19;
@@ -177,7 +178,7 @@ namespace DevilDaggersWebsite.Code.External
 			}
 		}
 
-		private static string GetUsername(byte[] data, ref int bytePos)
+		public static string GetUsername(byte[] data, ref int bytePos)
 		{
 			short usernameLength = BitConverter.ToInt16(data, bytePos);
 			bytePos += 2;
