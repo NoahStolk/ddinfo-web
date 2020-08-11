@@ -18,12 +18,12 @@ namespace DevilDaggersWebsite.Code.Api
 		[HttpGet("death/by-type")]
 		[ProducesResponseType(200)]
 		public ActionResult<Death> GetDeathByType([FromQuery] byte deathType, [FromQuery] GameVersion gameVersion)
-			=> GameInfo.GetEntities<Death>(gameVersion).FirstOrDefault(d => d.DeathType == deathType) ?? V3.Unknown;
+			=> GameInfo.GetEntities<Death>(gameVersion).FirstOrDefault(d => d.DeathType == deathType) ?? GameData.V3Unknown;
 
 		[HttpGet("death/by-name")]
 		[ProducesResponseType(200)]
 		public ActionResult<Death> GetDeathByName([FromQuery] string deathName, [FromQuery] GameVersion gameVersion)
-			=> GameInfo.GetEntities<Death>(gameVersion).FirstOrDefault(d => d.Name.ToLower() == deathName.ToLower()) ?? V3.Unknown;
+			=> GameInfo.GetEntities<Death>(gameVersion).FirstOrDefault(d => d.Name.ToLower() == deathName.ToLower()) ?? GameData.V3Unknown;
 
 		[HttpGet("version/release-date")]
 		[ProducesResponseType(200)]
