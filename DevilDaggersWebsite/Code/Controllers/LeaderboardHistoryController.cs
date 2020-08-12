@@ -10,7 +10,7 @@ using System.Linq;
 using System.Text;
 using Io = System.IO;
 
-namespace DevilDaggersWebsite.Code.Api
+namespace DevilDaggersWebsite.Code.Controllers
 {
 	[Route("api/leaderboard-history")]
 	[ApiController]
@@ -51,12 +51,12 @@ namespace DevilDaggersWebsite.Code.Api
 
 		[HttpGet("world-records")]
 		[ProducesResponseType(200)]
-		public List<WorldRecord> GetWorldRecords(IWebHostEnvironment env, DateTime? date)
+		public List<WorldRecord> GetWorldRecords(DateTime? date)
 			=> LeaderboardHistoryUtils.GetWorldRecords(env, date);
 
 		[HttpGet("latest-date-played")]
 		[ProducesResponseType(200)]
-		public (DateTime from, DateTime to) GetLatestDatePlayed(IWebHostEnvironment env, int userId)
+		public (DateTime from, DateTime to) GetLatestDatePlayed(int userId)
 		{
 			List<(DateTime dateTime, Entry entry)> entries = new List<(DateTime, Entry)>();
 			foreach (string leaderboardHistoryPath in Io.Directory.GetFiles(Io.Path.Combine(env.WebRootPath, "leaderboard-history"), "*.json"))
@@ -78,7 +78,7 @@ namespace DevilDaggersWebsite.Code.Api
 
 		[HttpGet("user-activity")]
 		[ProducesResponseType(200)]
-		public Dictionary<DateTime, ulong> GetUserActivity(IWebHostEnvironment env, int userId)
+		public Dictionary<DateTime, ulong> GetUserActivity(int userId)
 		{
 			Dictionary<DateTime, ulong> data = new Dictionary<DateTime, ulong>();
 			foreach (string leaderboardHistoryPath in Io.Directory.GetFiles(Io.Path.Combine(env.WebRootPath, "leaderboard-history"), "*.json"))

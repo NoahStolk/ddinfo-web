@@ -5,6 +5,7 @@ using Newtonsoft.Json;
 using System;
 using System.Collections.Generic;
 using System.IO;
+using System.Linq;
 
 namespace DevilDaggersWebsite.Code.Utils
 {
@@ -36,6 +37,24 @@ namespace DevilDaggersWebsite.Code.Utils
 					throw new Exception($"Could not retrieve {nameof(SpawnsetData)} for spawnset '{spawnsetFile.FileName}'.");
 
 			return spawnsetFile;
+		}
+
+		public static List<SpawnsetFile> GetSpawnsets(IWebHostEnvironment env, string searchAuthor, string searchName)
+		{
+			IEnumerable<SpawnsetFile> spawnsetFiles = Directory.GetFiles(Path.Combine(env.WebRootPath, "spawnsets")).Select(p => CreateSpawnsetFileFromSettingsFile(env, p));
+
+			if (!string.IsNullOrEmpty(searchAuthor))
+			{
+				searchAuthor = searchAuthor.ToLower();
+				spawnsetFiles = spawnsetFiles.Where(sf => sf.Author.ToLower().Contains(searchAuthor));
+			}
+			if (!string.IsNullOrEmpty(searchName))
+			{
+				searchName = searchName.ToLower();
+				spawnsetFiles = spawnsetFiles.Where(sf => sf.Name.ToLower().Contains(searchName));
+			}
+
+			return spawnsetFiles.ToList();
 		}
 	}
 }

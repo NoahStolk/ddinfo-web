@@ -4,9 +4,9 @@ using System;
 using System.Collections.Generic;
 using System.Linq;
 
-namespace DevilDaggersWebsite.Code.Api
+namespace DevilDaggersWebsite.Code.Controllers
 {
-	[Route("api/[controller]")]
+	[Route("api/games")]
 	[ApiController]
 	public class GamesController : ControllerBase
 	{

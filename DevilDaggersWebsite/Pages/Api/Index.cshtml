@@ -1,8 +1,6 @@
 ﻿@page
 @model DevilDaggersWebsite.Pages.Api.IndexModel
 @using DevilDaggersWebsite.Code.Api
-@using DevilDaggersWebsite.Code.Utils
-@using DevilDaggersCore.Game
 @{
 	ViewData["Title"] = "API Overview";
 }
@@ -32,134 +30,23 @@
 	</p>
 	<div class="api-list">
 		<div class="row text-bold">
-			<div class="col-lg-2 col-md-2 col-sm-3 col-xs-3">Name</div>
-			<div class="col-lg-4 col-md-6 col-sm-9 col-xs-9">Description</div>
-			<div class="col-lg-2 col-md-2 hidden-sm hidden-xs">Return type</div>
-			<div class="col-lg-2 col-md-2 hidden-sm hidden-xs">Required parameters</div>
-			<div class="col-lg-2 hidden-md hidden-sm hidden-xs">Optional parameters</div>
+			<div class="col-lg-3 col-md-3 col-sm-6 col-xs-6">Name</div>
+			<div class="col-lg-3 col-md-3 col-sm-6 col-xs-6">Return type</div>
+			<div class="col-lg-3 col-md-3 hidden-sm hidden-xs">Parameters</div>
+			<div class="col-lg-3 col-md-3 hidden-sm hidden-xs">Status codes</div>
 		</div>
 
 		@{
-			foreach (ApiFunction function in Model.ApiFunctions)
+			foreach (Endpoint endpoint in Model.Endpoints)
 			{
 				<div class="row">
-					<div class="col-lg-2 col-md-2 col-sm-3 col-xs-3"><a asp-page=@function.Name class="dont-break-out">@function.Name</a></div>
-					<div class="col-lg-4 col-md-6 col-sm-9 col-xs-9">@function.FormattedDescription</div>
-					<div class="col-lg-2 col-md-2 hidden-sm hidden-xs">@function.Attribute.ReturnType</div>
-					<div class="col-lg-2 col-md-2 hidden-sm hidden-xs">@(function.GetParameterDescriptions(p => !p.Info.IsOptional))</div>
-					<div class="col-lg-2 hidden-md hidden-sm hidden-xs">@(function.GetParameterDescriptions(p => p.Info.IsOptional))</div>
+					<div class="col-lg-2 col-md-2 col-sm-3 col-xs-3"><a asp-page=@endpoint.Url class="dont-break-out">@endpoint.Url</a></div>
+					<div class="col-lg-2 col-md-2 hidden-sm hidden-xs">@endpoint.ReturnType</div>
+					<div class="col-lg-2 col-md-2 hidden-sm hidden-xs">@string.Join(", ", endpoint.Parameters.Select(p => p.Name))</div>
+					<div class="col-lg-4 col-md-6 col-sm-9 col-xs-9">@string.Join(", ", endpoint.StatusCodes)</div>
 				</div>
 			}
 		}
-	</div>
-
-	<h2>Data types</h2>
-	<p>
-		This website is written in ASP.NET Core, so all data types used in the API are correspondent to the System types from .NET. These are very basic types however, and should be familiar to all languages.
-	</p>
-	<div class="api-list">
-		<div class="row text-bold">
-			<div class="col-xs-4">
-				Data type
-			</div>
-			<div class="col-xs-6">
-				Explanation
-			</div>
-			<div class="col-xs-2">
-				<span class="dont-break-out">Case-sensitive</span>
-			</div>
-		</div>
-		<div class="row">
-			<div class="col-xs-4 api-parameter-type">
-				String
-			</div>
-			<div class="col-xs-6">
-				Represents text as a sequence of UTF-16 code units.
-			</div>
-			<div class="col-xs-2">
-				Yes
-			</div>
-		</div>
-		<div class="row">
-			<div class="col-xs-4 api-parameter-type">
-				Int32
-			</div>
-			<div class="col-xs-6">
-				Represents a 32-bit signed integer.
-			</div>
-			<div class="col-xs-2">
-				@RazorUtils.NAString
-			</div>
-		</div>
-		<div class="row">
-			<div class="col-xs-4 api-parameter-type">
-				Boolean
-			</div>
-			<div class="col-xs-6">
-				Represents a boolean (true or false).
-			</div>
-			<div class="col-xs-2">
-				No
-			</div>
-		</div>
-		<div class="row">
-			<div class="col-xs-4 api-parameter-type">
-				DateTime
-			</div>
-			<div class="col-xs-6">
-				Represents a date in the format yyyy-MM-dd.
-			</div>
-			<div class="col-xs-2">
-				@RazorUtils.NAString
-			</div>
-		</div>
-	</div>
-
-	<h2>Examples</h2>
-	<p>
-		Here are some example calls to the API. You can click the links to test them and see what they return.
-	</p>
-	<div class="api-list">
-		<div class="row text-bold">
-			<div class="col-xs-4">
-				Example
-			</div>
-			<div class="col-xs-8">
-				Result
-			</div>
-		</div>
-		<div class="row">
-			<div class="col-xs-4">
-				<a asp-page="GetSpawnsets" asp-route-searchAuthor="Sorath" asp-route-searchName="V" class="dont-break-out">Api/GetSpawnsets?searchAuthor=Sorath&searchName=V</a>
-			</div>
-			<div class="col-xs-8">
-				Returns the spawnsets that contain "Sorath" in the spawnset's author and "V" in the spawnset's name.
-			</div>
-		</div>
-		<div class="row">
-			<div class="col-xs-4">
-				<a asp-page="GetDeaths" asp-route-deathType="10" asp-route-formatted="true" class="dont-break-out">Api/GetDeaths?deathType=10&formatted=true</a>
-			</div>
-			<div class="col-xs-8">
-				Returns the Death object for the deathType 10 which is <span style='color: #@GameData.V3Annihilated.ColorCode'>@GameData.V3Annihilated.Name</span>, and also formats the JSON.
-			</div>
-		</div>
-		<div class="row">
-			<div class="col-xs-4">
-				<a asp-page="GetSpawnset" asp-route-fileName="V3_Sorath" class="dont-break-out">Api/GetSpawnset?fileName=V3_Sorath</a>
-			</div>
-			<div class="col-xs-8">
-				Returns the spawnset with the name "V3_Sorath".
-			</div>
-		</div>
-		<div class="row">
-			<div class="col-xs-4">
-				<a asp-page="GetEnemies" asp-route-gameVersion="V2" class="dont-break-out">Api/GetEnemies?gameVersion=V2</a>
-			</div>
-			<div class="col-xs-8">
-				Returns all Enemy objects found in V2.
-			</div>
-		</div>
 	</div>
 </main>
 

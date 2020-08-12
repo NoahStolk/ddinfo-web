@@ -6,13 +6,13 @@ using System.Collections.Generic;
 using System.Net.Http;
 using System.Threading.Tasks;
 
-namespace DevilDaggersWebsite.Code.Api
+namespace DevilDaggersWebsite.Code.Controllers
 {
-	[Route("api/[controller]")]
+	[Route("api/leaderboards")]
 	[ApiController]
 	public class LeaderboardsController : ControllerBase
 	{
-		[HttpGet("leaderboard")]
+		[HttpGet]
 		[ProducesResponseType(200)]
 		[ProducesResponseType(400)]
 		public async Task<ActionResult<Leaderboard>> GetLeaderboard(int rankStart)

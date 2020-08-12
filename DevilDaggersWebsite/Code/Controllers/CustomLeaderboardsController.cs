@@ -4,9 +4,9 @@ using Microsoft.AspNetCore.Mvc;
 using System.Collections.Generic;
 using System.Linq;
 
-namespace DevilDaggersWebsite.Code.Api
+namespace DevilDaggersWebsite.Code.Controllers
 {
-	[Route("api/[controller]")]
+	[Route("api/custom-leaderboards")]
 	[ApiController]
 	public class CustomLeaderboardsController : ControllerBase
 	{
@@ -17,7 +17,7 @@ namespace DevilDaggersWebsite.Code.Api
 			this.context = context;
 		}
 
-		[HttpGet("custom-leaderboards")]
+		[HttpGet]
 		[ProducesResponseType(200)]
 		public ActionResult<List<CustomLeaderboardBase>> GetCustomLeaderboards()
 			=> context.CustomLeaderboards.Select(cl => new CustomLeaderboardBase(cl.SpawnsetFileName, cl.Bronze, cl.Silver, cl.Golden, cl.Devil, cl.Homing, cl.DateLastPlayed, cl.DateCreated)).ToList();
