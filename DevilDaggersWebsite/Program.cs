@@ -19,7 +19,7 @@ namespace DevilDaggersWebsite
 					webBuilder.UseStartup<Startup>();
 				}).ConfigureServices(services =>
 				{
-					services.AddHostedService<DevilDaggersDiscordBotService>();
+					services.AddHostedService<DiscordBotDdInfoService>();
 				});
 	}
 }

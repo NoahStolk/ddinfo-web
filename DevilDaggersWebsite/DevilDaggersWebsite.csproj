@@ -19,7 +19,7 @@
 	</ItemGroup>
 	<ItemGroup>
 		<ProjectReference Include="..\..\DevilDaggersCore\DevilDaggersCore\DevilDaggersCore.csproj" />
-		<ProjectReference Include="..\..\DevilDaggersDiscordBot\DevilDaggersDiscordBot\DevilDaggersDiscordBot.csproj" />
+		<ProjectReference Include="..\..\DiscordBotDdInfo\DiscordBotDdInfo\DiscordBotDdInfo.csproj" />
 		<ProjectReference Include="..\..\SitemapGenerator\SitemapGenerator\SitemapGenerator.csproj" />
 	</ItemGroup>
 	<ItemGroup>
