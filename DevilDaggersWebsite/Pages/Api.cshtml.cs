@@ -6,10 +6,11 @@ using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Reflection;
+using System.Threading.Tasks;
 
-namespace DevilDaggersWebsite.Pages.Api
+namespace DevilDaggersWebsite.Pages
 {
-	public class IndexModel : PageModel
+	public class ApiModel : PageModel
 	{
 		public List<Endpoint> Endpoints { get; private set; } = new List<Endpoint>();
 
@@ -29,10 +30,14 @@ namespace DevilDaggersWebsite.Pages.Api
 					if (httpMethodAttribute == null || responseTypeAttributes == null || !responseTypeAttributes.Any())
 						continue;
 
+					Type returnType = endpointMethod.ReturnType;
+					while (returnType.IsGenericType && (returnType.GetGenericTypeDefinition() == typeof(Task<>) || returnType.GetGenericTypeDefinition() == typeof(ActionResult<>)))
+						returnType = returnType.GetGenericArguments()[0];
+
 					Endpoints.Add(new Endpoint(
 						url: $"{controllerUrl}/{httpMethodAttribute.Template ?? ""}",
-						returnType: endpointMethod.ReturnType.GetGenericArguments()[0],
-						parameters: endpointMethod.GetParameters(),
+						returnType: returnType,
+						parameters: endpointMethod.GetParameters().Select(p => new EndpointParameter(p)).ToArray(),
 						statusCodes: responseTypeAttributes.Select(prt => prt.StatusCode).ToArray()));
 				}
 			}

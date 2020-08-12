@@ -4,6 +4,7 @@ using Microsoft.AspNetCore.Hosting;
 using Microsoft.AspNetCore.Mvc;
 using System;
 using System.Collections.Generic;
+using System.ComponentModel.DataAnnotations;
 using System.IO;
 using System.Linq;
 using Io = System.IO;
@@ -26,10 +27,10 @@ namespace DevilDaggersWebsite.Code.Controllers
 		public ActionResult<List<Tool>> GetTools()
 			=> ToolList.Tools;
 
-		[HttpGet("tool-path/by-name")]
+		[HttpGet("{toolName}/path")]
 		[ProducesResponseType(200)]
 		[ProducesResponseType(404)]
-		public ActionResult<string> GetToolPath(string toolName)
+		public ActionResult<string> GetToolPath([Required] string toolName)
 		{
 			Tool tool = ToolList.Tools.FirstOrDefault(t => t.Name == toolName);
 			if (tool == null)

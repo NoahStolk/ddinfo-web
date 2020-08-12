@@ -6,6 +6,7 @@ using Microsoft.AspNetCore.Mvc;
 using Newtonsoft.Json;
 using System;
 using System.Collections.Generic;
+using System.ComponentModel.DataAnnotations;
 using System.Linq;
 using System.Text;
 using Io = System.IO;
@@ -25,7 +26,7 @@ namespace DevilDaggersWebsite.Code.Controllers
 
 		[HttpGet("user-progression")]
 		[ProducesResponseType(200)]
-		public SortedDictionary<DateTime, Entry> GetUserProgressionById(int userId)
+		public SortedDictionary<DateTime, Entry> GetUserProgressionById([Required] int userId)
 		{
 			SortedDictionary<DateTime, Entry> data = new SortedDictionary<DateTime, Entry>();
 
@@ -51,12 +52,12 @@ namespace DevilDaggersWebsite.Code.Controllers
 
 		[HttpGet("world-records")]
 		[ProducesResponseType(200)]
-		public List<WorldRecord> GetWorldRecords(DateTime? date)
+		public List<WorldRecord> GetWorldRecords(DateTime? date = null)
 			=> LeaderboardHistoryUtils.GetWorldRecords(env, date);
 
 		[HttpGet("latest-date-played")]
 		[ProducesResponseType(200)]
-		public (DateTime from, DateTime to) GetLatestDatePlayed(int userId)
+		public (DateTime from, DateTime to) GetLatestDatePlayed([Required] int userId)
 		{
 			List<(DateTime dateTime, Entry entry)> entries = new List<(DateTime, Entry)>();
 			foreach (string leaderboardHistoryPath in Io.Directory.GetFiles(Io.Path.Combine(env.WebRootPath, "leaderboard-history"), "*.json"))
@@ -78,7 +79,7 @@ namespace DevilDaggersWebsite.Code.Controllers
 
 		[HttpGet("user-activity")]
 		[ProducesResponseType(200)]
-		public Dictionary<DateTime, ulong> GetUserActivity(int userId)
+		public Dictionary<DateTime, ulong> GetUserActivity([Required] int userId)
 		{
 			Dictionary<DateTime, ulong> data = new Dictionary<DateTime, ulong>();
 			foreach (string leaderboardHistoryPath in Io.Directory.GetFiles(Io.Path.Combine(env.WebRootPath, "leaderboard-history"), "*.json"))

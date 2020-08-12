@@ -2,16 +2,12 @@
 	border: solid 1px #222;
 }
 
-.api-function-deprecated {
-	color: #ff8800;
-}
-
 .api-parameter-optional {
-	color: #ffff00;
+	color: #ffff88;
 }
 
 .api-parameter {
-	color: #ff0000;
+	color: #ffbb88;
 }
 
 .api-parameter-type {
@@ -20,6 +16,14 @@
 
 .api-nullable {
 	color: #228800;
+}
+
+.api-generic-return-type {
+	color: #228800;
+}
+
+.api-return-type {
+	color: #44ff00;
 }
 
 .api-parameter-default-value {

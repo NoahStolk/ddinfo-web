@@ -4,6 +4,8 @@ using Microsoft.AspNetCore.Html;
 using System;
 using System.Collections.Generic;
 using System.IO;
+using System.Linq;
+using System.Reflection;
 using System.Text;
 
 namespace DevilDaggersWebsite.Code.Utils
@@ -108,5 +110,61 @@ namespace DevilDaggersWebsite.Code.Utils
 
 		public static string S(this int value)
 			=> value == 1 ? "" : "s";
+
+		public static HtmlString GetFormattedReturnType(Type type)
+		{
+			string cssClass = type.IsGenericType ? "api-generic-return-type" : "api-return-type";
+			StringBuilder sb = new StringBuilder($"<span class='{cssClass}'>{GetTypeString(type.Name)}</span>");
+			while (type.IsGenericType)
+			{
+				Type[] genericArguments = type.GetGenericArguments();
+				type = genericArguments[0];
+				cssClass = type.IsGenericType ? "api-generic-return-type" : "api-return-type";
+
+				sb.Append($"&lt;<span class='{cssClass}'>{string.Join(", ", genericArguments.Select(t => GetTypeString(t.Name)))}</span>&gt;");
+			}
+			return new HtmlString(sb.ToString());
+
+			static string GetTypeString(string typeName)
+			{
+				if (typeName.Contains('`'))
+					return typeName.Substring(0, typeName.IndexOf('`'));
+				return typeName;
+			}
+		}
+
+		public static HtmlString GetFormattedParameter(ParameterInfo parameter)
+		{
+			Type underlyingType = Nullable.GetUnderlyingType(parameter.ParameterType);
+			bool isNullable = underlyingType != null;
+			Type actualType = isNullable ? underlyingType : parameter.ParameterType;
+
+			string typeSpan = $"<span class='api-parameter-type'>{actualType.Name}</span>";
+			typeSpan = isNullable ? $"<span class='api-nullable'>Nullable&lt;{typeSpan}&gt;</span>" : typeSpan;
+
+			string defaultValueSpan = $"<span class='api-parameter-default-value'>{GetParameterFormattedDefaultValue(parameter)}</span>";
+
+			return new HtmlString($"{typeSpan} <span class='api-parameter{(parameter.IsOptional ? "-optional" : "")}'>{parameter.Name}</span>{(parameter.IsOptional ? $" = {defaultValueSpan}" : "")}");
+		}
+
+		public static HtmlString GetParameterFormattedDefaultValue(ParameterInfo parameter)
+		{
+			Type underlyingType = Nullable.GetUnderlyingType(parameter.ParameterType);
+			bool isNullable = underlyingType != null;
+			Type actualType = isNullable ? underlyingType : parameter.ParameterType;
+
+			if (actualType.IsValueType)
+			{
+				if (isNullable)
+					return new HtmlString("<span class='api-null'>null</span>");
+				if (parameter.HasDefaultValue)
+					return new HtmlString(parameter.DefaultValue.ToString());
+				return new HtmlString(Activator.CreateInstance(actualType).ToString());
+			}
+
+			if (parameter.HasDefaultValue && !string.IsNullOrEmpty((string)parameter.DefaultValue))
+				return new HtmlString(parameter.DefaultValue.ToString());
+			return new HtmlString("<span class='api-null'>null</span>");
+		}
 	}
 }

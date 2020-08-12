@@ -3,6 +3,7 @@ using DevilDaggersWebsite.Code.External;
 using Microsoft.AspNetCore.Mvc;
 using System;
 using System.Collections.Generic;
+using System.ComponentModel.DataAnnotations;
 using System.Net.Http;
 using System.Threading.Tasks;
 
@@ -15,17 +16,17 @@ namespace DevilDaggersWebsite.Code.Controllers
 		[HttpGet]
 		[ProducesResponseType(200)]
 		[ProducesResponseType(400)]
-		public async Task<ActionResult<Leaderboard>> GetLeaderboard(int rankStart)
+		public async Task<ActionResult<Leaderboard>> GetLeaderboard([Required] int rankStart)
 		{
 			if (rankStart <= 0)
-				return new BadRequestObjectResult(new ProblemDetails { Title = $"Incorrect parameter {nameof(rankStart)} '{rankStart}' specified." });
+				return new BadRequestObjectResult(new ProblemDetails { Title = $"Incorrect parameter {nameof(rankStart)} '{rankStart}' specified. Value should be at least 1." });
 			return await HasmodaiUtils.GetScores(rankStart);
 		}
 
 		[HttpGet("user/by-id")]
 		[ProducesResponseType(200)]
 		[ProducesResponseType(400)]
-		public async Task<ActionResult<Entry>> GetUserById(int userId)
+		public async Task<ActionResult<Entry>> GetUserById([Required] int userId)
 		{
 			try
 			{
@@ -36,28 +37,28 @@ namespace DevilDaggersWebsite.Code.Controllers
 
 				FormUrlEncodedContent content = new FormUrlEncodedContent(postValues);
 				HttpClient client = new HttpClient();
-				HttpResponseMessage resp = await client.PostAsync(HasmodaiUtils.GetUserByIdUrl, content);
-				byte[] data = await resp.Content.ReadAsByteArrayAsync();
+				HttpResponseMessage response = await client.PostAsync(HasmodaiUtils.GetUserByIdUrl, content);
+				byte[] data = await response.Content.ReadAsByteArrayAsync();
 
-				int bytePos = 19;
+				int bytePosition = 19;
 
 				Entry entry = new Entry
 				{
-					Username = HasmodaiUtils.GetUsername(data, ref bytePos),
-					Rank = BitConverter.ToInt32(data, bytePos),
-					Id = BitConverter.ToInt32(data, bytePos + 4),
-					Time = BitConverter.ToInt32(data, bytePos + 12),
-					Kills = BitConverter.ToInt32(data, bytePos + 16),
-					Gems = BitConverter.ToInt32(data, bytePos + 28),
-					ShotsHit = BitConverter.ToInt32(data, bytePos + 24),
-					ShotsFired = BitConverter.ToInt32(data, bytePos + 20),
-					DeathType = BitConverter.ToInt16(data, bytePos + 32),
-					TimeTotal = BitConverter.ToUInt64(data, bytePos + 60),
-					KillsTotal = BitConverter.ToUInt64(data, bytePos + 44),
-					GemsTotal = BitConverter.ToUInt64(data, bytePos + 68),
-					DeathsTotal = BitConverter.ToUInt64(data, bytePos + 36),
-					ShotsHitTotal = BitConverter.ToUInt64(data, bytePos + 76),
-					ShotsFiredTotal = BitConverter.ToUInt64(data, bytePos + 52)
+					Username = HasmodaiUtils.GetUsername(data, ref bytePosition),
+					Rank = BitConverter.ToInt32(data, bytePosition),
+					Id = BitConverter.ToInt32(data, bytePosition + 4),
+					Time = BitConverter.ToInt32(data, bytePosition + 12),
+					Kills = BitConverter.ToInt32(data, bytePosition + 16),
+					Gems = BitConverter.ToInt32(data, bytePosition + 28),
+					ShotsHit = BitConverter.ToInt32(data, bytePosition + 24),
+					ShotsFired = BitConverter.ToInt32(data, bytePosition + 20),
+					DeathType = BitConverter.ToInt16(data, bytePosition + 32),
+					TimeTotal = BitConverter.ToUInt64(data, bytePosition + 60),
+					KillsTotal = BitConverter.ToUInt64(data, bytePosition + 44),
+					GemsTotal = BitConverter.ToUInt64(data, bytePosition + 68),
+					DeathsTotal = BitConverter.ToUInt64(data, bytePosition + 36),
+					ShotsHitTotal = BitConverter.ToUInt64(data, bytePosition + 76),
+					ShotsFiredTotal = BitConverter.ToUInt64(data, bytePosition + 52)
 				};
 
 				return entry;
@@ -70,13 +71,19 @@ namespace DevilDaggersWebsite.Code.Controllers
 
 		[HttpGet("user/by-username")]
 		[ProducesResponseType(200)]
-		public async Task<ActionResult<List<Entry>>> GetUserByUsername(string username)
-			=> (await HasmodaiUtils.GetUserSearch(username)).Entries;
+		[ProducesResponseType(400)]
+		public async Task<ActionResult<List<Entry>>> GetUserByUsername([Required] string username)
+		{
+			if (string.IsNullOrEmpty(username) || username.Length < 3)
+				return new BadRequestObjectResult(new ProblemDetails { Title = $"Incorrect parameter {nameof(username)} '{username}' specified. Value should be at least 3 characters in length." });
+
+			return (await HasmodaiUtils.GetUserSearch(username)).Entries;
+		}
 
 		[HttpGet("user/by-rank")]
 		[ProducesResponseType(200)]
 		[ProducesResponseType(400)]
-		public async Task<ActionResult<Entry>> GetUserByRank(int rank)
+		public async Task<ActionResult<Entry>> GetUserByRank([Required] int rank)
 		{
 			List<Entry> entries = (await HasmodaiUtils.GetScores(rank)).Entries;
 			if (entries.Count == 0)
