@@ -121,7 +121,7 @@ namespace DevilDaggersWebsite.Code.Utils
 				type = genericArguments[0];
 				cssClass = type.IsGenericType ? "api-generic-return-type" : "api-return-type";
 
-				sb.Append($"&lt;<span class='{cssClass}'>{string.Join(", ", genericArguments.Select(t => GetTypeString(t.Name)))}</span>&gt;");
+				sb.Append($"<span class='api-generic-return-type'>&lt;</span><span class='{cssClass}'>{string.Join(", ", genericArguments.Select(t => GetTypeString(t.Name)))}</span><span class='api-generic-return-type'>&gt;</span>");
 			}
 			return new HtmlString(sb.ToString());
 
@@ -142,9 +142,9 @@ namespace DevilDaggersWebsite.Code.Utils
 			string typeSpan = $"<span class='api-parameter-type'>{actualType.Name}</span>";
 			typeSpan = isNullable ? $"<span class='api-nullable'>Nullable&lt;{typeSpan}&gt;</span>" : typeSpan;
 
-			string defaultValueSpan = $"<span class='api-parameter-default-value'>{GetParameterFormattedDefaultValue(parameter)}</span>";
-
-			return new HtmlString($"{typeSpan} <span class='api-parameter{(parameter.IsOptional ? "-optional" : "")}'>{parameter.Name}</span>{(parameter.IsOptional ? $" = {defaultValueSpan}" : "")}");
+			return new HtmlString(@$"{typeSpan}
+<span class='api-parameter{(parameter.IsOptional ? "-optional" : "")}'>{parameter.Name}</span>
+{(parameter.IsOptional ? $"= <span class='api-parameter-default-value'>{GetParameterFormattedDefaultValue(parameter)}</span>" : "")}");
 		}
 
 		public static HtmlString GetParameterFormattedDefaultValue(ParameterInfo parameter)
@@ -155,10 +155,8 @@ namespace DevilDaggersWebsite.Code.Utils
 
 			if (actualType.IsValueType)
 			{
-				if (isNullable)
-					return new HtmlString("<span class='api-null'>null</span>");
 				if (parameter.HasDefaultValue)
-					return new HtmlString(parameter.DefaultValue.ToString());
+					return new HtmlString(parameter.DefaultValue?.ToString() ?? "null");
 				return new HtmlString(Activator.CreateInstance(actualType).ToString());
 			}
 

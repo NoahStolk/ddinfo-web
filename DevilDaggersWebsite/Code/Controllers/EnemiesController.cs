@@ -12,7 +12,7 @@ namespace DevilDaggersWebsite.Code.Controllers
 	{
 		[HttpGet]
 		[ProducesResponseType(200)]
-		public ActionResult<List<Enemy>> GetEnemies([Required] string enemyName, GameVersion gameVersion = GameVersion.V3)
+		public ActionResult<List<Enemy>> GetEnemies([Required] string enemyName, GameVersion? gameVersion = GameVersion.V3)
 		{
 			List<Enemy> query = GameInfo.GetEntities<Enemy>(gameVersion);
 			if (!string.IsNullOrEmpty(enemyName))

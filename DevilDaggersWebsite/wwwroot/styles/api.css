@@ -27,11 +27,7 @@
 }
 
 .api-parameter-default-value {
-	color: #ff0088;
-}
-
-.api-null {
-	color: #880044;
+	color: #ff8888;
 }
 
 .api-list > div:nth-child(2n+1) {

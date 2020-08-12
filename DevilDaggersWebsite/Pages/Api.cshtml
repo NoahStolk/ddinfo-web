@@ -36,8 +36,8 @@
 			{
 				<div class="row">
 					<div class="col-lg-3 col-md-3 col-sm-6 col-xs-6"><a asp-page=@endpoint.Url class="dont-break-out">@endpoint.Url</a></div>
-					<div class="col-lg-3 col-md-3 col-sm-6 col-xs-6 api-return-type">@Html.Raw(RazorUtils.GetFormattedReturnType(endpoint.ReturnType))</div>
-					<div class="col-lg-3 col-md-3 hidden-sm hidden-xs">@Html.Raw(string.Join(", ", endpoint.Parameters.Select(p => p.FormattedDescription)))</div>
+					<div class="col-lg-3 col-md-3 col-sm-6 col-xs-6">@Html.Raw(RazorUtils.GetFormattedReturnType(endpoint.ReturnType))</div>
+					<div class="col-lg-3 col-md-3 hidden-sm hidden-xs">@Html.Raw(string.Join(", ", endpoint.Parameters.Select(p => p.FormattedDescription.ToString().Trim())))</div>
 					<div class="col-lg-3 col-md-3 hidden-sm hidden-xs">@string.Join(", ", endpoint.StatusCodes)</div>
 				</div>
 			}
