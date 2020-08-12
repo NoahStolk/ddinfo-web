@@ -16,7 +16,7 @@ namespace DevilDaggersWebsite.Pages.Leaderboard
 		{
 			IEnumerable<Task> tasks = Enumerable.Range(0, 2).Select(async i =>
 			{
-				Lb nextLeaderboard = await Hasmodai.GetScores(i * 100 + 1);
+				Lb nextLeaderboard = await HasmodaiUtils.GetScores(i * 100 + 1);
 				foreach (Entry entry in nextLeaderboard.Entries)
 					Leaderboard.Entries.Add(entry);
 			});

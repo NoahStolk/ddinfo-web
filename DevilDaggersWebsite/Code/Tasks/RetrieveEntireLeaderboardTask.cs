@@ -42,11 +42,11 @@ namespace DevilDaggersWebsite.Code.Tasks
 
 		private async Task PopulateLeaderboardRealTime()
 		{
-			Leaderboard = await Hasmodai.GetScores(1);
+			Leaderboard = await HasmodaiUtils.GetScores(1);
 
 			for (int i = 1; i < MaxPages; i++)
 			{
-				Leaderboard nextLeaderboard = await Hasmodai.GetScores(i * 100 + 1);
+				Leaderboard nextLeaderboard = await HasmodaiUtils.GetScores(i * 100 + 1);
 
 				foreach (Entry entry in nextLeaderboard.Entries)
 					Leaderboard.Entries.Add(entry);
@@ -55,11 +55,11 @@ namespace DevilDaggersWebsite.Code.Tasks
 
 		private async Task<Leaderboard> PopulateLeaderboard()
 		{
-			Leaderboard leaderboard = await Hasmodai.GetScores(1);
+			Leaderboard leaderboard = await HasmodaiUtils.GetScores(1);
 
 			for (int i = 1; i < MaxPages; i++)
 			{
-				Leaderboard nextLeaderboard = await Hasmodai.GetScores(i * 100 + 1);
+				Leaderboard nextLeaderboard = await HasmodaiUtils.GetScores(i * 100 + 1);
 
 				foreach (Entry entry in nextLeaderboard.Entries)
 					leaderboard.Entries.Add(entry);

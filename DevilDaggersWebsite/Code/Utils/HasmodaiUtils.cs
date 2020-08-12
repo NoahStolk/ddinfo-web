@@ -7,7 +7,7 @@ using System.Threading.Tasks;
 
 namespace DevilDaggersWebsite.Code.External
 {
-	public static class Hasmodai
+	public static class HasmodaiUtils
 	{
 		private static readonly string getScoresUrl = "http://dd.hasmodai.com/backend15/get_scores.php";
 		private static readonly string getUserSearchUrl = "http://dd.hasmodai.com/backend16/get_user_search_public.php";

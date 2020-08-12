@@ -1,7 +1,6 @@
-﻿using DevilDaggersCore.Game;
-using DevilDaggersCore.Leaderboards;
+﻿using DevilDaggersCore.Leaderboards;
 using DevilDaggersCore.Leaderboards.History;
-using DevilDaggersCore.Utils;
+using DevilDaggersWebsite.Code.Utils;
 using Microsoft.AspNetCore.Hosting;
 using Microsoft.AspNetCore.Mvc;
 using Newtonsoft.Json;
@@ -53,34 +52,7 @@ namespace DevilDaggersWebsite.Code.Api
 		[HttpGet("world-records")]
 		[ProducesResponseType(200)]
 		public List<WorldRecord> GetWorldRecords(IWebHostEnvironment env, DateTime? date)
-		{
-			DateTime v1ReleaseDate = GameInfo.GetReleaseDate(GameVersion.V1) ?? throw new Exception("Could not retrieve V1 release date.");
-
-			bool isDateParameterValid = date.HasValue && date >= v1ReleaseDate && date <= DateTime.Now;
-
-			List<WorldRecord> data = new List<WorldRecord>();
-
-			int worldRecord = 0;
-			foreach (string leaderboardHistoryPath in Io.Directory.GetFiles(Io.Path.Combine(env.WebRootPath, "leaderboard-history"), "*.json"))
-			{
-				Leaderboard leaderboard = JsonConvert.DeserializeObject<Leaderboard>(Io.File.ReadAllText(leaderboardHistoryPath, Encoding.UTF8));
-				if (leaderboard.Entries[0].Time != worldRecord)
-				{
-					worldRecord = leaderboard.Entries[0].Time;
-					if (isDateParameterValid)
-					{
-						if (HistoryUtils.HistoryJsonFileNameToDateTime(Io.Path.GetFileNameWithoutExtension(leaderboardHistoryPath)) > date)
-							break;
-						data.Clear();
-					}
-
-					if (leaderboard.DateTime >= v1ReleaseDate)
-						data.Add(new WorldRecord(leaderboard.DateTime, leaderboard.Entries[0]));
-				}
-			}
-
-			return data;
-		}
+			=> LeaderboardHistoryUtils.GetWorldRecords(env, date);
 
 		[HttpGet("latest-date-played")]
 		[ProducesResponseType(200)]

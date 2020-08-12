@@ -54,7 +54,7 @@ namespace DevilDaggersWebsite.Code.Utils
 		}
 
 		// TODO: Rewrite whole method. It's messy and not very performant.
-		public static HtmlString GetLayout(string str, GameVersion gameVersion)
+		public static HtmlString GetLayout(string str, GameVersion? gameVersion = null)
 		{
 			char[] beginSeparators = new char[] { '>', ' ', ',', '.', '(', '-', '/' };
 			char[] endSeparators = new char[] { ' ', ',', '.', 's', ')', '\'', ';', '/' };

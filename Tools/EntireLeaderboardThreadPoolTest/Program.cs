@@ -16,7 +16,7 @@ namespace EntireLeaderboardThreadPoolTest
 
 		public static async Task Main()
 		{
-			Leaderboard = await Hasmodai.GetScores(1);
+			Leaderboard = await HasmodaiUtils.GetScores(1);
 
 			Stopwatch stopwatch = new Stopwatch();
 			stopwatch.Start();
@@ -49,7 +49,7 @@ namespace EntireLeaderboardThreadPoolTest
 			{
 				Console.WriteLine($"Page {page}");
 
-				Leaderboard leaderboardPage = await Hasmodai.GetScores(page * 100 + 1);
+				Leaderboard leaderboardPage = await HasmodaiUtils.GetScores(page * 100 + 1);
 
 				foreach (Entry entry in leaderboardPage.Entries)
 					Leaderboard.Entries.Add(entry);

@@ -19,7 +19,7 @@ namespace DevilDaggersWebsite.Code.Api
 		{
 			if (rankStart <= 0)
 				return new BadRequestObjectResult(new ProblemDetails { Title = $"Incorrect parameter {nameof(rankStart)} '{rankStart}' specified." });
-			return await Hasmodai.GetScores(rankStart);
+			return await HasmodaiUtils.GetScores(rankStart);
 		}
 
 		[HttpGet("user/by-id")]
@@ -36,14 +36,14 @@ namespace DevilDaggersWebsite.Code.Api
 
 				FormUrlEncodedContent content = new FormUrlEncodedContent(postValues);
 				HttpClient client = new HttpClient();
-				HttpResponseMessage resp = await client.PostAsync(Hasmodai.GetUserByIdUrl, content);
+				HttpResponseMessage resp = await client.PostAsync(HasmodaiUtils.GetUserByIdUrl, content);
 				byte[] data = await resp.Content.ReadAsByteArrayAsync();
 
 				int bytePos = 19;
 
 				Entry entry = new Entry
 				{
-					Username = Hasmodai.GetUsername(data, ref bytePos),
+					Username = HasmodaiUtils.GetUsername(data, ref bytePos),
 					Rank = BitConverter.ToInt32(data, bytePos),
 					Id = BitConverter.ToInt32(data, bytePos + 4),
 					Time = BitConverter.ToInt32(data, bytePos + 12),
@@ -71,14 +71,14 @@ namespace DevilDaggersWebsite.Code.Api
 		[HttpGet("user/by-username")]
 		[ProducesResponseType(200)]
 		public async Task<ActionResult<List<Entry>>> GetUserByUsername(string username)
-			=> (await Hasmodai.GetUserSearch(username)).Entries;
+			=> (await HasmodaiUtils.GetUserSearch(username)).Entries;
 
 		[HttpGet("user/by-rank")]
 		[ProducesResponseType(200)]
 		[ProducesResponseType(400)]
 		public async Task<ActionResult<Entry>> GetUserByRank(int rank)
 		{
-			List<Entry> entries = (await Hasmodai.GetScores(rank)).Entries;
+			List<Entry> entries = (await HasmodaiUtils.GetScores(rank)).Entries;
 			if (entries.Count == 0)
 				return new NotFoundObjectResult(new ProblemDetails { Title = $"Entry with {nameof(rank)} '{rank}' was not found." });
 			return entries[0];

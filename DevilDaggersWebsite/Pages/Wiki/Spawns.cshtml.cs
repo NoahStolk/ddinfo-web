@@ -1,4 +1,5 @@
-﻿using DevilDaggersWebsite.Code.PageModels;
+﻿using DevilDaggersCore.Game;
+using DevilDaggersWebsite.Code.PageModels;
 using Microsoft.AspNetCore.Hosting;
 using System.IO;
 
@@ -16,12 +17,12 @@ namespace DevilDaggersWebsite.Pages.Wiki
 			this.env = env;
 		}
 
-		public void OnGet(string gameVersion)
+		public void OnGet(GameVersion gameVersion)
 		{
 			SetGameVersion(gameVersion);
 
-			SpawnsetPath = Path.Combine(env.WebRootPath, "spawnsets", $"{this.gameVersion}_Sorath");
-			EmergeEnemies = this.gameVersion == "V3" ? "Centipedes, Gigapedes, Ghostpedes, and Thorns" : "Centipedes and Gigapedes";
+			SpawnsetPath = Path.Combine(env.WebRootPath, "spawnsets", $"{gameVersion}_Sorath");
+			EmergeEnemies = gameVersion == GameVersion.V3 ? "Centipedes, Gigapedes, Ghostpedes, and Thorns" : "Centipedes and Gigapedes";
 		}
 	}
 }

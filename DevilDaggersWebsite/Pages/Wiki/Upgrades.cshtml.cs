@@ -8,11 +8,11 @@ namespace DevilDaggersWebsite.Pages.Wiki
 	{
 		public List<Upgrade> upgrades;
 
-		public void OnGet(string gameVersion)
+		public void OnGet(GameVersion gameVersion)
 		{
 			SetGameVersion(gameVersion);
 
-			upgrades = GameInfo.GetEntities<Upgrade>(GameVersionObject);
+			upgrades = GameInfo.GetEntities<Upgrade>(gameVersion);
 		}
 	}
 }

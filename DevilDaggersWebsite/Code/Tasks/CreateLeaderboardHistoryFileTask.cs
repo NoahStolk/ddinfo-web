@@ -22,7 +22,7 @@ namespace DevilDaggersWebsite.Code.Tasks
 		protected override async Task Execute()
 		{
 			if (!HistoryFileForThisDateExists(LastTriggered))
-				File.WriteAllText(Path.Combine(env.WebRootPath, "leaderboard-history", $"{DateTime.UtcNow:yyyyMMddHHmm}.json"), JsonConvert.SerializeObject(await Hasmodai.GetScores(1)));
+				File.WriteAllText(Path.Combine(env.WebRootPath, "leaderboard-history", $"{DateTime.UtcNow:yyyyMMddHHmm}.json"), JsonConvert.SerializeObject(await HasmodaiUtils.GetScores(1)));
 		}
 
 		private bool HistoryFileForThisDateExists(DateTime dateTime)

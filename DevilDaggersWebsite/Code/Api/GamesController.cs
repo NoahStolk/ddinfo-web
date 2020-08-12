@@ -38,7 +38,7 @@ namespace DevilDaggersWebsite.Code.Api
 
 		[HttpGet("dagger/at-time")]
 		[ProducesResponseType(200)]
-		public ActionResult<Dagger> GetDaggerFromTimeInTenthsOfMilliseconds([FromQuery] uint timeInTenthsOfMilliseconds)
+		public ActionResult<Dagger> GetDaggerFromTimeInTenthsOfMilliseconds([FromQuery] int timeInTenthsOfMilliseconds)
 			=> GameInfo.GetDaggerFromTime(timeInTenthsOfMilliseconds);
 
 		[HttpGet("enemies")]
