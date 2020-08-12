@@ -1,11 +1,11 @@
 using DevilDaggersCore.Utils;
-using DevilDaggersDiscordBot;
+using DiscordBotDdInfo;
 using DSharpPlus.Entities;
 using Microsoft.AspNetCore.Diagnostics;
 using Microsoft.AspNetCore.Mvc.RazorPages;
 using System;
 using System.Threading.Tasks;
-using Bot = DevilDaggersDiscordBot.Program;
+using Bot = DiscordBotDdInfo.Program;
 
 namespace DevilDaggersWebsite.Pages
 {

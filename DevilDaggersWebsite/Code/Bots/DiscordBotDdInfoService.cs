@@ -4,11 +4,11 @@ using System.Threading.Tasks;
 
 namespace DevilDaggersWebsite.Code.Bots
 {
-	public class DevilDaggersDiscordBotService : IHostedService
+	public class DiscordBotDdInfoService : IHostedService
 	{
 		public Task StartAsync(CancellationToken cancellationToken)
 		{
-			DevilDaggersDiscordBot.Program.Main();
+			DiscordBotDdInfo.Program.Main();
 
 			return Task.CompletedTask;
 		}

@@ -1,9 +1,9 @@
-﻿using DevilDaggersDiscordBot;
-using DevilDaggersWebsite.Code.PageModels;
+﻿using DevilDaggersWebsite.Code.PageModels;
+using DiscordBotDdInfo;
 using Microsoft.AspNetCore.Hosting;
 using Microsoft.AspNetCore.Http;
 using System.Threading.Tasks;
-using Bot = DevilDaggersDiscordBot.Program;
+using Bot = DiscordBotDdInfo.Program;
 
 namespace DevilDaggersWebsite.Pages.Admin
 {
