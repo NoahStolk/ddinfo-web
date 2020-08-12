@@ -868,6 +868,9 @@
 	"Feast_Stop": {
 		"LastUpdated": "2020-04-28T21:23:00"
 	},
+	"permute2_purpleposeidon" {
+		"LastUpdated": "2020-05-03T00:00:00"
+	},
 	"Bloodlust_Stop": {
 		"LastUpdated": "2020-05-04T00:51:00"
 	},
@@ -893,5 +896,14 @@ Mad Lad Goal: 666s"
 	},
 	"dont_die_the_stretch_V2_eidolon": {
 		"LastUpdated": "2020-06-23T01:51:00"
+	},
+	"snakes-and-ladders_purpleposeidon": {
+		"LastUpdated": "2020-06-09T22:30:00"
+	},
+	"abyss_Nullifier": {
+		"LastUpdated": "2020-06-16T23:27:00"
+	},
+	"metathrone_preview1_purpleposeidon": {
+		"LastUpdated": "2020-08-12T20:57:00"
 	}
 }
