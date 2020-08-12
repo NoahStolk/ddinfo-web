@@ -12,7 +12,7 @@ using Io = System.IO;
 
 namespace DevilDaggersWebsite.Code.Api
 {
-	[Route("api/[controller]")]
+	[Route("api/leaderboard-history")]
 	[ApiController]
 	public class LeaderboardHistoryController : ControllerBase
 	{

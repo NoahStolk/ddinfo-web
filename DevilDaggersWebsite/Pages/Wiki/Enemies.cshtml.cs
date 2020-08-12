@@ -17,7 +17,7 @@ namespace DevilDaggersWebsite.Pages.Wiki
 		public List<Enemy> enemies;
 		public List<Upgrade> upgrades;
 
-		public void OnGet(GameVersion gameVersion)
+		public void OnGet(GameVersion gameVersion = GameVersion.V3)
 		{
 			SetGameVersion(gameVersion);
 

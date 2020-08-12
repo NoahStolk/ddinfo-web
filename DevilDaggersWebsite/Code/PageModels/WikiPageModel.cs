@@ -10,9 +10,9 @@ namespace DevilDaggersWebsite.Code.PageModels
 		public GameVersion GameVersion { get; private set; }
 		public List<SelectListItem> GameVersionListItems { get; private set; } = new List<SelectListItem>();
 
-		protected void SetGameVersion(GameVersion gameVersion)
+		protected void SetGameVersion(GameVersion gameVersion = GameVersion.V3)
 		{
-			GameVersion = gameVersion == GameVersion.None ? GameVersion.V3 : gameVersion;
+			GameVersion = gameVersion;
 
 			for (int i = 0; i < 3; i++)
 			{

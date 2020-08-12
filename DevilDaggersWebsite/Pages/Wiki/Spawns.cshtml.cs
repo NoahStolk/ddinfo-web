@@ -17,7 +17,7 @@ namespace DevilDaggersWebsite.Pages.Wiki
 			this.env = env;
 		}
 
-		public void OnGet(GameVersion gameVersion)
+		public void OnGet(GameVersion gameVersion = GameVersion.V3)
 		{
 			SetGameVersion(gameVersion);
 

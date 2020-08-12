@@ -18,7 +18,7 @@ namespace DevilDaggersWebsite.Pages.Wiki
 			//this.env = env;
 		}
 
-		public ActionResult OnGet(string gameVersion, int squidGushCount, int leviathanBeckonCount)
+		public ActionResult OnGet(/*string gameVersion, int squidGushCount, int leviathanBeckonCount*/)
 		{
 			return RedirectToPage("/Wiki/Spawns");
 
