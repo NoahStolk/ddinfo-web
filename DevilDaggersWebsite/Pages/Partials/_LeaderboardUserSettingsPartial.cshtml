@@ -42,7 +42,7 @@
 				string[] titles = users.FirstOrDefault(u => u.Id == entry.Id)?.Titles;
 
 				Dagger dagger = GameInfo.GetDaggerFromTime(entry.Time);
-				Death death = GameInfo.GetDeathFromDeathType(entry.DeathType, GameInfo.GetGameVersionFromDate(Model.Leaderboard.DateTime));
+				Death death = GameInfo.GetDeathByType(entry.DeathType, GameInfo.GetGameVersionFromDate(Model.Leaderboard.DateTime));
 
 				string daggerColor = dagger.Name.ToLower();
 				string deathStyle = $"color: #{death.ColorCode};";

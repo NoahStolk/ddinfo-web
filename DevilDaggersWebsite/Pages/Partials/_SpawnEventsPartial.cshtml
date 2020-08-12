@@ -22,16 +22,16 @@
 		}
 	}
 
-	GameVersion gameVersion = GameInfo.GameVersions[GameInfo.DefaultGameVersion];
+	GameVersion gameVersion = GameVersion.V3;
 	if (sf.Author == "Sorath")
 	{
 		if (sf.Name == "V1")
 		{
-			gameVersion = GameInfo.GameVersions["V1"];
+			gameVersion = GameVersion.V1;
 		}
 		else if (sf.Name == "V2")
 		{
-			gameVersion = GameInfo.GameVersions["V2"];
+			gameVersion = GameVersion.V2;
 		}
 	}
 
@@ -48,7 +48,7 @@
 	bool empty = true;
 	foreach (Spawn spawn in spawnset.Spawns.Values)
 	{
-		if (spawn.SpawnsetEnemy != Spawnset.Enemies[-1])
+		if (spawn.Enemy != null)
 		{
 			empty = false;
 			break;
@@ -70,22 +70,20 @@
 			int totalGems = 0;
 			int totalKills = 0;
 
-			foreach (AbstractEvent evt in spawnset.GenerateSpawnsetEventList(Model.SquidGushCount, Model.LeviathanBeckonCount, 25, GameInfo.GameVersions["V3"]))
+			foreach (AbstractEvent evt in spawnset.GenerateSpawnsetEventList(Model.SquidGushCount, Model.LeviathanBeckonCount, 25))
 			{
 				int gems = 0;
 				int kills = 0;
 
 				if (evt is SpawnEvent spawnEvent)
 				{
-					if (spawnEvent.Enemy == Spawnset.Enemies[-1])
+					if (spawnEvent.Enemy == null)
 					{
 						continue;
 					}
 
-					Enemy enemy = spawnEvent.Enemy.ToEnemy();
-
-					gems = enemy.Gems;
-					kills = enemy.RegisterKill ? 1 : 0;
+					gems = spawnEvent.Enemy.Gems;
+					kills = spawnEvent.Enemy.RegisterKill ? 1 : 0;
 				}
 				else if (evt is GushEvent gushEvent)
 				{

@@ -68,7 +68,7 @@
 				Dagger dagger = GameInfo.GetDaggerFromTime(entry.Time);
 				string daggerColor = isBanned ? "ban" : dagger.Name.ToLower();
 
-				Death death = GameInfo.GetDeathFromDeathType(entry.DeathType, GameInfo.GetGameVersionFromDate(Model.Leaderboard.DateTime));
+				Death death = GameInfo.GetDeathByType(entry.DeathType, GameInfo.GetGameVersionFromDate(Model.Leaderboard.DateTime));
 				string deathStyle = isBanned ? string.Empty : $"color: #{death.ColorCode};";
 
 				string banString = isBanned ? "ban" : string.Empty;

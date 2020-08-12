@@ -25,7 +25,7 @@
 			if (!string.IsNullOrEmpty(Model.SpawnsetFile.settings.Description))
 			{
 				<div class="description">
-					@RazorUtils.GetLayout(Model.SpawnsetFile.settings.Description, GameInfo.GameVersions[GameInfo.DefaultGameVersion])
+					@RazorUtils.GetLayout(Model.SpawnsetFile.settings.Description, GameVersion.V3)
 				</div>
 			}
 		}

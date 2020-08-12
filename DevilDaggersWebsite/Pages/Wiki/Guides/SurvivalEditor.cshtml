@@ -3,7 +3,6 @@
 @using DevilDaggersWebsite.Code.Utils
 @{
 	ViewData["Title"] = "Survival Editor Guide";
-	GameVersion v3 = GameInfo.GameVersions[GameInfo.DefaultGameVersion];
 }
 
 <header>
@@ -31,16 +30,16 @@
 	</p>
 
 	<ul>
-		<li>@RazorUtils.GetLayout(" Squid I ", v3)</li>
-		<li>@RazorUtils.GetLayout(" Squid II ", v3)</li>
-		<li>@RazorUtils.GetLayout(" Centipede ", v3)</li>
-		<li>@RazorUtils.GetLayout(" Spider I ", v3)</li>
-		<li>@RazorUtils.GetLayout(" Leviathan ", v3)</li>
-		<li>@RazorUtils.GetLayout(" Gigapede ", v3)</li>
-		<li>@RazorUtils.GetLayout(" Squid III ", v3)</li>
-		<li>@RazorUtils.GetLayout(" Thorn ", v3)</li>
-		<li>@RazorUtils.GetLayout(" Spider II ", v3)</li>
-		<li>@RazorUtils.GetLayout(" Ghostpede ", v3)</li>
+		<li>@RazorUtils.GetLayout(" Squid I ", GameVersion.V3)</li>
+		<li>@RazorUtils.GetLayout(" Squid II ", GameVersion.V3)</li>
+		<li>@RazorUtils.GetLayout(" Centipede ", GameVersion.V3)</li>
+		<li>@RazorUtils.GetLayout(" Spider I ", GameVersion.V3)</li>
+		<li>@RazorUtils.GetLayout(" Leviathan ", GameVersion.V3)</li>
+		<li>@RazorUtils.GetLayout(" Gigapede ", GameVersion.V3)</li>
+		<li>@RazorUtils.GetLayout(" Squid III ", GameVersion.V3)</li>
+		<li>@RazorUtils.GetLayout(" Thorn ", GameVersion.V3)</li>
+		<li>@RazorUtils.GetLayout(" Spider II ", GameVersion.V3)</li>
+		<li>@RazorUtils.GetLayout(" Ghostpede ", GameVersion.V3)</li>
 		<li>EMPTY</li>
 	</ul>
 
@@ -56,16 +55,16 @@
 		You might have noticed how there is an EMPTY enemy type. This enemy type does not spawn an enemy, and its only purpose is to mark the beginning of the end loop. The last EMPTY spawn will always mark the beginning of the end loop. Having an end loop is optional, so if you don't want to include an end loop, simply make sure to put an EMPTY spawn at the end of the spawnset to mark the end of the spawnset (or literally; mark the start of an empty end loop).
 	</p>
 	<p>
-		How the end loop speeds up appears to be hardcoded in the game. After every wave, each enemy spawns an added 12.5% faster. Also note that in @RazorUtils.GetLayout("every third wave of the end loop, all Gigapedes are changed into Ghostpedes.", v3) This also seems to be hardcoded in the game.
+		How the end loop speeds up appears to be hardcoded in the game. After every wave, each enemy spawns an added 12.5% faster. Also note that in @RazorUtils.GetLayout("every third wave of the end loop, all Gigapedes are changed into Ghostpedes.", GameVersion.V3) This also seems to be hardcoded in the game.
 	</p>
 
 	<h3>Spawns</h3>
 	<p>
-		We now know how enemy types work in Devil Daggers. A spawn in the survival file is defined by an enemy type and a delay value. The delay value represents the amount of seconds between the current spawn and the previous spawn. @RazorUtils.GetLayout("So, if you want to spawn a Squid I at 4 seconds, followed by a Squid II at 7 seconds, you would get the following spawns:", v3)
+		We now know how enemy types work in Devil Daggers. A spawn in the survival file is defined by an enemy type and a delay value. The delay value represents the amount of seconds between the current spawn and the previous spawn. @RazorUtils.GetLayout("So, if you want to spawn a Squid I at 4 seconds, followed by a Squid II at 7 seconds, you would get the following spawns:", GameVersion.V3)
 	</p>
 	<ul>
-		<li>Enemy type: @RazorUtils.GetLayout(" Squid I ", v3) - Delay: 4</li>
-		<li>Enemy type: @RazorUtils.GetLayout(" Squid II ", v3) - Delay: 3</li>
+		<li>Enemy type: @RazorUtils.GetLayout(" Squid I ", GameVersion.V3) - Delay: 4</li>
+		<li>Enemy type: @RazorUtils.GetLayout(" Squid II ", GameVersion.V3) - Delay: 3</li>
 	</ul>
 	<p>
 		The delay value supports decimal values, even though the original spawnset in the game doesn't use this. This means you can spawn an enemy, for example at 4.5 seconds.
@@ -83,7 +82,7 @@
 		<li>The player can stand on tiles with height -1, but anything lower than that will result in the tile falling down immediately. All tiles below -1 are essentially the same for this reason, so the application considers any tile with a height below -1 to be "void".</li>
 		<li>The tile at coordinate {1, 0} is always invisible for some reason, but you can still walk on it.</li>
 		<li>The player can be spawned on different tile heights.</li>
-		<li>@RazorUtils.GetLayout("Enemies and gems do not react to different tile heights, only the player, the daggers, and some effects do (like Thorn spawn smokes, meat chunks, etc).", v3)</li>
+		<li>@RazorUtils.GetLayout("Enemies and gems do not react to different tile heights, only the player, the daggers, and some effects do (like Thorn spawn smokes, meat chunks, etc).", GameVersion.V3)</li>
 		<li>The maximum tile height within the application is set to 54, because anything higher than that seems unnecessary and the main light in the game doesn't reach that far so everything is completely black.</li>
 		<li>There is one particular tile which causes Devil Daggers to glitch (audio glitches, hand disappearing, crashes) whenever its height is put to a value greater than 0.4973333. This tile is always at coordinate {25, 27} (just below the player spawn).</li>
 		<li>The game crashes when you get too near the edge of a full arena (outside of the regular 51 by 51 range, and I think at or around coordinate {0, 0} but I am not sure).</li>

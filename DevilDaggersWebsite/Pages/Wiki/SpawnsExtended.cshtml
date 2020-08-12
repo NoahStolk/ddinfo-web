@@ -12,7 +12,7 @@
 <form method="get" class="text-center">
 	<fieldset>
 		<div class="flex-container flex-center flex-column">
-			<select class="select form-control" asp-for="gameVersion" asp-items="Model.GameVersionListItems" onchange="this.form.submit()"></select>
+			<select class="select form-control" asp-for="GameVersion" asp-items="Model.GameVersionListItems" onchange="this.form.submit()"></select>
 			<div class="flex-container flex-center">
 				<div class="input-label text-left" style="width: @(widths[0])px;">Leviathan beckon count (max 25):</div>
 				<div style="width: @(widths[1])px;">@Html.TextBoxFor(m => m.leviathanBeckonCount, new { @class = "input" })</div>
@@ -32,7 +32,7 @@
 
 <main role="main" class="text-center">
 	<p>
-		Extended spawns list for @Model.gameVersion.
+		Extended spawns list for @Model.GameVersion.
 	</p>
 	<p>
 		This page is still a work in progress. End waves are not yet supported.
