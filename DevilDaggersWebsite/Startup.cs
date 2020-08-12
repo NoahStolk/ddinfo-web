@@ -13,6 +13,7 @@ using Microsoft.EntityFrameworkCore;
 using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Extensions.Hosting;
+using Newtonsoft.Json.Converters;
 using System;
 using System.Globalization;
 
@@ -53,6 +54,11 @@ namespace DevilDaggersWebsite
 			{
 				Console.Write(args.Exception.Message);
 				args.SetObserved();
+			});
+
+			services.AddControllers().AddNewtonsoftJson(options =>
+			{
+				options.SerializerSettings.Converters.Add(new StringEnumConverter());
 			});
 		}
 
