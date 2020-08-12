@@ -12,7 +12,7 @@ namespace DevilDaggersWebsite.Pages.Wiki
 		{
 			SetGameVersion(gameVersion);
 
-			upgrades = GameInfo.GetEntities<Upgrade>(gameVersion);
+			upgrades = GameInfo.GetEntities<Upgrade>(GameVersion);
 		}
 	}
 }

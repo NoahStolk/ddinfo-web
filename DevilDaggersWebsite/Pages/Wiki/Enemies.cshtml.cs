@@ -21,10 +21,10 @@ namespace DevilDaggersWebsite.Pages.Wiki
 		{
 			SetGameVersion(gameVersion);
 
-			enemies = GameInfo.GetEntities<Enemy>(gameVersion);
-			upgrades = GameInfo.GetEntities<Upgrade>(gameVersion);
+			enemies = GameInfo.GetEntities<Enemy>(GameVersion);
+			upgrades = GameInfo.GetEntities<Upgrade>(GameVersion);
 
-			if (gameVersion == GameVersion.V3)
+			if (GameVersion == GameVersion.V3)
 				TableOfContents.Add("Homing daggers");
 		}
 	}

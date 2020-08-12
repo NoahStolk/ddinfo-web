@@ -12,7 +12,7 @@ namespace DevilDaggersWebsite.Code.PageModels
 
 		protected void SetGameVersion(GameVersion gameVersion)
 		{
-			GameVersion = gameVersion;
+			GameVersion = gameVersion == GameVersion.None ? GameVersion.V3 : gameVersion;
 
 			for (int i = 0; i < 3; i++)
 			{
