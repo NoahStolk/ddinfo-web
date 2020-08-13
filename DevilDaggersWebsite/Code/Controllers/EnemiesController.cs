@@ -1,5 +1,4 @@
 ﻿using DevilDaggersCore.Game;
-using DevilDaggersCore.Spawnsets;
 using Microsoft.AspNetCore.Mvc;
 using System.Collections.Generic;
 using System.ComponentModel.DataAnnotations;
@@ -30,12 +29,12 @@ namespace DevilDaggersWebsite.Code.Controllers
 		[HttpGet("by-type")]
 		[ProducesResponseType(200)]
 		[ProducesResponseType(404)]
-		public ActionResult<Enemy> GetEnemyBySpawnsetType([Required] sbyte enemyType, GameVersion? gameVersion = null)
+		public ActionResult<List<Enemy>> GetEnemyBySpawnsetType([Required] byte spawnsetType, GameVersion? gameVersion = null)
 		{
-			Enemy enemy = Spawnset.GetEnemy((SpawnsetEnemy)enemyType);
-			if (enemy == null)
-				return new NotFoundObjectResult(new ProblemDetails { Title = $"Enemy with type '{enemyType}' was not found." });
-			return enemy;
+			IEnumerable<Enemy> enemies = GameInfo.GetEntities<Enemy>(gameVersion).Where(e => e.SpawnsetType == spawnsetType);
+			if (!enemies.Any())
+				return new NotFoundObjectResult(new ProblemDetails { Title = $"Enemy with type '{spawnsetType}' was not found." });
+			return enemies.ToList();
 		}
 	}
 }
