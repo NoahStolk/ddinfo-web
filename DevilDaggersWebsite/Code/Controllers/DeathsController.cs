@@ -12,17 +12,17 @@ namespace DevilDaggersWebsite.Code.Controllers
 	{
 		[HttpGet]
 		[ProducesResponseType(200)]
-		public ActionResult<List<Death>> GetDeaths(GameVersion? gameVersion = GameVersion.V3)
+		public ActionResult<List<Death>> GetDeaths(GameVersion? gameVersion = null)
 			=> GameInfo.GetEntities<Death>(gameVersion);
 
-		[HttpGet("{type}")]
+		[HttpGet("by-type")]
 		[ProducesResponseType(200)]
-		public ActionResult<Death> GetDeathByType([Required] byte type, GameVersion? gameVersion = GameVersion.V3)
+		public ActionResult<Death> GetDeathByType([Required] int type, GameVersion? gameVersion = null)
 			=> GameInfo.GetEntities<Death>(gameVersion).FirstOrDefault(d => d.DeathType == type) ?? GameData.V3Unknown;
 
-		[HttpGet("{name}")]
+		[HttpGet("by-name")]
 		[ProducesResponseType(200)]
-		public ActionResult<Death> GetDeathByName([Required] string name, GameVersion? gameVersion = GameVersion.V3)
+		public ActionResult<Death> GetDeathByName([Required] string name, GameVersion? gameVersion = null)
 			=> GameInfo.GetEntities<Death>(gameVersion).FirstOrDefault(d => d.Name.ToLower() == name.ToLower()) ?? GameData.V3Unknown;
 	}
 }

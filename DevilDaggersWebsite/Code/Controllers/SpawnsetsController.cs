@@ -20,7 +20,7 @@ namespace DevilDaggersWebsite.Code.Controllers
 			this.env = env;
 		}
 
-		[HttpGet("spawnset-path/by-file-name")]
+		[HttpGet("{fileName}/path")]
 		[ProducesResponseType(200)]
 		[ProducesResponseType(404)]
 		public ActionResult<string> GetSpawnsetPath([Required] string fileName)

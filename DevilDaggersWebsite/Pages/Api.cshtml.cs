@@ -4,6 +4,7 @@ using Microsoft.AspNetCore.Mvc.RazorPages;
 using Microsoft.AspNetCore.Mvc.Routing;
 using System;
 using System.Collections.Generic;
+using System.Diagnostics;
 using System.Linq;
 using System.Reflection;
 using System.Threading.Tasks;
@@ -30,6 +31,11 @@ namespace DevilDaggersWebsite.Pages
 					if (httpMethodAttribute == null || responseTypeAttributes == null || !responseTypeAttributes.Any())
 						continue;
 
+					if (httpMethodAttribute?.Template?.Contains("GetCustomLeaderboards") ?? false)
+						Debugger.Break();
+
+					ObsoleteAttribute obsoleteAttribute = endpointMethod.GetCustomAttribute<ObsoleteAttribute>();
+
 					Type returnType = endpointMethod.ReturnType;
 					while (returnType.IsGenericType && (returnType.GetGenericTypeDefinition() == typeof(Task<>) || returnType.GetGenericTypeDefinition() == typeof(ActionResult<>)))
 						returnType = returnType.GetGenericArguments()[0];
@@ -37,6 +43,7 @@ namespace DevilDaggersWebsite.Pages
 					Endpoints.Add(new Endpoint(
 						url: $"{controllerUrl}/{httpMethodAttribute.Template ?? ""}",
 						returnType: returnType,
+						newRouteToUse: obsoleteAttribute?.Message ?? string.Empty,
 						parameters: endpointMethod.GetParameters().Select(p => new EndpointParameter(p)).ToArray(),
 						statusCodes: responseTypeAttributes.Select(prt => prt.StatusCode).ToArray()));
 				}

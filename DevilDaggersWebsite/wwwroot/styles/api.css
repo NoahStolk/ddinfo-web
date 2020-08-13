@@ -30,6 +30,10 @@
 	color: #ff8888;
 }
 
+.api-endpoint-deprecated {
+	color: #ff6a00;
+}
+
 .api-list > div:nth-child(2n+1) {
 	background-color: var(--col-nav-background);
 }

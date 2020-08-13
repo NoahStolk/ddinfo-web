@@ -28,17 +28,43 @@
 			<div class="col-lg-3 col-md-3 col-sm-6 col-xs-6">Name</div>
 			<div class="col-lg-3 col-md-3 col-sm-6 col-xs-6">Return type</div>
 			<div class="col-lg-3 col-md-3 hidden-sm hidden-xs">Parameters</div>
-			<div class="col-lg-3 col-md-3 hidden-sm hidden-xs">Expected tatus codes</div>
+			<div class="col-lg-3 col-md-3 hidden-sm hidden-xs">Expected status codes</div>
 		</div>
 
 		@{
-			foreach (Endpoint endpoint in Model.Endpoints)
+			foreach (Endpoint endpoint in Model.Endpoints.Where(e => string.IsNullOrEmpty(e.NewRouteToUse)))
 			{
 				<div class="row">
-					<div class="col-lg-3 col-md-3 col-sm-6 col-xs-6"><a asp-page=@endpoint.Url class="dont-break-out">@endpoint.Url</a></div>
+					<div class="col-lg-3 col-md-3 col-sm-6 col-xs-6"><a href=@endpoint.Url class="dont-break-out">@endpoint.Url</a></div>
 					<div class="col-lg-3 col-md-3 col-sm-6 col-xs-6">@Html.Raw(RazorUtils.GetFormattedReturnType(endpoint.ReturnType))</div>
-					<div class="col-lg-3 col-md-3 hidden-sm hidden-xs">@Html.Raw(string.Join(", ", endpoint.Parameters.Select(p => p.FormattedDescription.ToString().Trim())))</div>
+					<div class="col-lg-3 col-md-3 hidden-sm hidden-xs">@Html.Raw(endpoint.Parameters.Length == 0 ? RazorUtils.NAString.ToString() : string.Join(", ", endpoint.Parameters.Select(p => p.FormattedDescription.ToString().Trim())))</div>
 					<div class="col-lg-3 col-md-3 hidden-sm hidden-xs">@string.Join(", ", endpoint.StatusCodes)</div>
+				</div>
+			}
+		}
+	</div>
+
+	<h2>Deprecated endpoints</h2>
+	<p>
+		These will be removed in the near future.
+	</p>
+
+	<div class="api-list">
+		<div class="row text-bold">
+			<div class="col-lg-3 col-md-3 col-sm-6 col-xs-6">Name</div>
+			<div class="col-lg-3 col-md-3 col-sm-6 col-xs-6">Deprecation message</div>
+			<div class="col-lg-3 col-md-3 hidden-sm hidden-xs">Return type</div>
+			<div class="col-lg-3 col-md-3 hidden-sm hidden-xs">Parameters</div>
+		</div>
+
+		@{
+			foreach (Endpoint endpoint in Model.Endpoints.Where(e => !string.IsNullOrEmpty(e.NewRouteToUse)))
+			{
+				<div class="row">
+					<div class="col-lg-3 col-md-3 col-sm-6 col-xs-6"><a href=@endpoint.Url class="dont-break-out">@endpoint.Url</a></div>
+					<div class="col-lg-3 col-md-3 col-sm-6 col-xs-6 api-endpoint-deprecated">[DEPRECATED] Use @endpoint.NewRouteToUse instead.</div>
+					<div class="col-lg-3 col-md-3 hidden-sm hidden-xs">@Html.Raw(RazorUtils.GetFormattedReturnType(endpoint.ReturnType))</div>
+					<div class="col-lg-3 col-md-3 hidden-sm hidden-xs">@Html.Raw(endpoint.Parameters.Length == 0 ? RazorUtils.NAString.ToString() : string.Join(", ", endpoint.Parameters.Select(p => p.FormattedDescription.ToString().Trim())))</div>
 				</div>
 			}
 		}
