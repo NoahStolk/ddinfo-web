@@ -20,19 +20,7 @@
 		}
 	}
 
-	GameVersion gameVersion = GameVersion.V3;
-	if (sf.Author == "Sorath")
-	{
-		if (sf.Name == "V1")
-		{
-			gameVersion = GameVersion.V1;
-		}
-		else if (sf.Name == "V2")
-		{
-			gameVersion = GameVersion.V2;
-		}
-	}
-
+	GameVersion gameVersion = sf.Author == "Sorath" ? sf.Name == "V1" ? GameVersion.V1 : sf.Name == "V2" ? GameVersion.V2 : GameVersion.V3 : GameVersion.V3;
 	int maxWaves = sf.settings.MaxWaves ?? SpawnsetUtils.DefaultMaxWaves;
 	string wavesQuery = httpContextAccessor.HttpContext.Request.Query["waves"];
 	if (int.TryParse(wavesQuery, out int parsed) && parsed > 0)
@@ -63,7 +51,7 @@
 
 					<div class="flex-container flex-center">
 						<div style="width: @(widths[0])px;" class="text-right">@totalSeconds.ToString(FormatUtils.SpawnTimeFormat)</div>
-						<div style="width: @(widths[1])px;">@(spawn.Enemy.GetLayoutAnchor())</div>
+						<div style="width: @(widths[1])px;">@(spawn.Enemy.GetLayoutAnchor(false, 0, gameVersion))</div>
 						<div style="width: @(widths[2])px;" class="text-right">@spawn.Enemy.NoFarmGems</div>
 						<div style="width: @(widths[3])px;" class="text-right">@totalGems</div>
 					</div>

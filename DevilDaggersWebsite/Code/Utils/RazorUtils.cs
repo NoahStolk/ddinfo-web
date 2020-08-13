@@ -44,9 +44,13 @@ namespace DevilDaggersWebsite.Code.Utils
 			return new HtmlString($"Copyright &copy; {year} {name}");
 		}
 
-		public static HtmlString GetLayoutAnchor(this Enemy enemy, bool plural = false, float zalgo = 0)
+		public static HtmlString GetLayoutAnchor(this Enemy enemy, bool plural = false, float zalgo = 0, GameVersion? gameVersionOverride = null)
 		{
-			string color = zalgo == 0 ? enemy.ColorCode : ZalgoUtils.InterpolateHexColor($"#FF{enemy.ColorCode}", "#FFFF0000", zalgo / 100f);
+			string colorCode = enemy.ColorCode;
+			if (gameVersionOverride.HasValue)
+				colorCode = GameInfo.GetEntities<Enemy>(gameVersionOverride).FirstOrDefault(e => e.Name == enemy.Name).ColorCode;
+
+			string color = zalgo == 0 ? colorCode : ZalgoUtils.InterpolateHexColor($"#FF{colorCode}", "#FFFF0000", zalgo / 100f);
 			return new HtmlString($"<a style='color: #{color};' href='/Wiki/Enemies#{enemy.Name.Replace(" ", "")}'>{enemy.Name.ToZalgo(zalgo / 20f)}{(plural ? "s" : "")}</a>");
 		}
 
