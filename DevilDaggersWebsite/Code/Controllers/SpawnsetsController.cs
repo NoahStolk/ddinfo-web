@@ -26,18 +26,6 @@ namespace DevilDaggersWebsite.Code.Controllers
 		public List<SpawnsetFile> GetSpawnsets(string searchAuthor = null, string searchName = null)
 			=> SpawnsetUtils.GetSpawnsets(env, searchAuthor, searchName);
 
-		[HttpGet("{fileName}/path")]
-		[ProducesResponseType(200)]
-		[ProducesResponseType(400)]
-		[ProducesResponseType(404)]
-		public ActionResult<string> GetSpawnsetPath([Required] string fileName)
-		{
-			if (!Io.File.Exists(Path.Combine(env.WebRootPath, "spawnsets", fileName)))
-				return new NotFoundObjectResult(new ProblemDetails { Title = $"Spawnset '{fileName}' was not found." });
-
-			return Path.Combine("spawnsets", fileName);
-		}
-
 		[HttpGet("{fileName}")]
 		[ProducesResponseType(200)]
 		[ProducesResponseType(400)]

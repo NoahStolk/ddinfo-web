@@ -28,34 +28,26 @@ namespace DevilDaggersWebsite.Code.Controllers
 		public ActionResult<List<Tool>> GetTools()
 			=> ToolList.Tools;
 
-		[HttpGet("{toolName}/path")]
-		[ProducesResponseType(200)]
-		[ProducesResponseType(400)]
-		[ProducesResponseType(404)]
-		public ActionResult<string> GetToolPath([Required] string toolName)
-		{
-			Tool tool = ToolList.Tools.FirstOrDefault(t => t.Name == toolName);
-			if (tool == null)
-				return new NotFoundObjectResult(new ProblemDetails { Title = $"Tool '{toolName}' was not found." });
-
-			string path = Path.Combine("tools", toolName, $"{toolName}{tool.VersionNumber}.zip");
-
-			if (!Io.File.Exists(Path.Combine(env.WebRootPath, path)))
-				throw new Exception($"Tool file '{path}' does not exist.");
-
-			return path;
-		}
-
 		[HttpGet("{toolName}")]
 		[ProducesResponseType(200)]
 		[ProducesResponseType(400)]
 		[ProducesResponseType(404)]
 		public ActionResult GetTool([Required] string toolName)
 		{
-			if (!Io.File.Exists(Path.Combine(env.WebRootPath, "tools", toolName)))
+			Tool tool = ToolList.Tools.FirstOrDefault(t => t.Name == toolName);
+			if (tool == null)
 				return new NotFoundObjectResult(new ProblemDetails { Title = $"Tool '{toolName}' was not found." });
+			return File(Io.File.ReadAllBytes(Path.Combine(env.WebRootPath, GetToolPath(tool))), MediaTypeNames.Application.Zip, $"{toolName}{tool.VersionNumber}.zip");
+		}
 
-			return File(Io.File.ReadAllBytes(Path.Combine(env.WebRootPath, "tools", toolName)), MediaTypeNames.Application.Zip, $"{toolName}.zip");
+		private string GetToolPath(Tool tool)
+		{
+			string path = Path.Combine("tools", tool.Name, $"{tool.Name}{tool.VersionNumber}.zip");
+
+			if (!Io.File.Exists(Path.Combine(env.WebRootPath, path)))
+				throw new Exception($"Tool file '{path}' does not exist.");
+
+			return path;
 		}
 	}
 }
