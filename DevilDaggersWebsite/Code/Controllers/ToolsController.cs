@@ -50,7 +50,7 @@ namespace DevilDaggersWebsite.Code.Controllers
 		[ProducesResponseType(200)]
 		[ProducesResponseType(400)]
 		[ProducesResponseType(404)]
-		public ActionResult<FileContentResult> GetTool([Required] string toolName)
+		public ActionResult GetTool([Required] string toolName)
 		{
 			if (!Io.File.Exists(Path.Combine(env.WebRootPath, "tools", toolName)))
 				return new NotFoundObjectResult(new ProblemDetails { Title = $"Tool '{toolName}' was not found." });

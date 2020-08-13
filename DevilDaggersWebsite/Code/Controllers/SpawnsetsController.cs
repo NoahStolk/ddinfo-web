@@ -42,7 +42,7 @@ namespace DevilDaggersWebsite.Code.Controllers
 		[ProducesResponseType(200)]
 		[ProducesResponseType(400)]
 		[ProducesResponseType(404)]
-		public ActionResult<FileContentResult> GetSpawnset([Required] string fileName)
+		public ActionResult GetSpawnset([Required] string fileName)
 		{
 			if (!Io.File.Exists(Path.Combine(env.WebRootPath, "spawnsets", fileName)))
 				return new NotFoundObjectResult(new ProblemDetails { Title = $"Spawnset '{fileName}' was not found." });
