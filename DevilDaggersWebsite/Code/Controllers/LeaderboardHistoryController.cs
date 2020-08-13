@@ -73,8 +73,10 @@ namespace DevilDaggersWebsite.Code.Controllers
 			entries = entries.OrderByDescending(l => l.dateTime).ToList();
 			ulong deaths = entries[0].entry.DeathsTotal;
 			for (int i = 1; i < entries.Count; i++)
+			{
 				if (entries[i].entry.DeathsTotal < deaths)
 					return (entries[i].dateTime, entries[i - 1].dateTime);
+			}
 
 			return (DateTime.Now, DateTime.Now);
 		}

@@ -1,5 +1,4 @@
-﻿using DevilDaggersCore.Game;
-using DevilDaggersCore.Leaderboards;
+﻿using DevilDaggersCore.Leaderboards;
 using DevilDaggersCore.Leaderboards.History;
 using DevilDaggersCore.Utils;
 using Microsoft.AspNetCore.Hosting;
@@ -15,9 +14,7 @@ namespace DevilDaggersWebsite.Code.Utils
 	{
 		public static List<WorldRecord> GetWorldRecords(IWebHostEnvironment env, DateTime? date)
 		{
-			DateTime v1ReleaseDate = GameInfo.GetReleaseDate(GameVersion.V1) ?? throw new Exception("Could not retrieve V1 release date.");
-
-			bool isDateParameterValid = date.HasValue && date >= v1ReleaseDate && date <= DateTime.Now;
+			bool isDateParameterValid = date.HasValue && date <= DateTime.Now;
 
 			List<WorldRecord> data = new List<WorldRecord>();
 
@@ -35,8 +32,7 @@ namespace DevilDaggersWebsite.Code.Utils
 						data.Clear();
 					}
 
-					if (leaderboard.DateTime >= v1ReleaseDate)
-						data.Add(new WorldRecord(leaderboard.DateTime, leaderboard.Entries[0]));
+					data.Add(new WorldRecord(leaderboard.DateTime, leaderboard.Entries[0]));
 				}
 			}
 
