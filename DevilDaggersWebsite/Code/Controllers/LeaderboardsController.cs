@@ -16,7 +16,7 @@ namespace DevilDaggersWebsite.Code.Controllers
 		[HttpGet]
 		[ProducesResponseType(200)]
 		[ProducesResponseType(400)]
-		public async Task<ActionResult<Leaderboard>> GetLeaderboard([Required] int rankStart)
+		public async Task<ActionResult<Leaderboard>> GetLeaderboard(int rankStart = 1)
 		{
 			if (rankStart <= 0)
 				return new BadRequestObjectResult(new ProblemDetails { Title = $"Incorrect parameter {nameof(rankStart)} '{rankStart}' specified. Value should be at least 1." });
