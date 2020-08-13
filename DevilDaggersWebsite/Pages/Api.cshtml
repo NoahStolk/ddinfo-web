@@ -39,7 +39,7 @@
 					<div class="col-lg-1 col-md-1 col-sm-2 col-xs-2">@endpoint.HttpMethod</div>
 					<div class="col-lg-3 col-md-3 col-sm-5 col-xs-5"><a href=@endpoint.Url class="dont-break-out">@endpoint.Url</a></div>
 					<div class="col-lg-3 col-md-3 col-sm-5 col-xs-5">@Html.Raw(RazorUtils.GetFormattedReturnType(endpoint.ReturnType))</div>
-					<div class="col-lg-3 col-md-3 hidden-sm hidden-xs">@Html.Raw(endpoint.Parameters.Length == 0 ? RazorUtils.NAString.ToString() : string.Join(", ", endpoint.Parameters.Select(p => p.FormattedDescription.ToString().Trim())))</div>
+					<div class="col-lg-3 col-md-3 hidden-sm hidden-xs">@Html.Raw(endpoint.Parameters.Length == 0 ? RazorUtils.NAString.ToString() : string.Join("<br>", endpoint.Parameters.Select(p => p.FormattedDescription.ToString().Trim())))</div>
 					<div class="col-lg-2 col-md-2 hidden-sm hidden-xs">@string.Join(", ", endpoint.StatusCodes)</div>
 				</div>
 			}
@@ -66,7 +66,7 @@
 					<div class="col-lg-3 col-md-3 col-sm-6 col-xs-6"><a href=@endpoint.Url class="dont-break-out">@endpoint.Url</a></div>
 					<div class="col-lg-3 col-md-3 col-sm-6 col-xs-6 api-endpoint-deprecated">[DEPRECATED] Use @endpoint.NewRouteToUse instead.</div>
 					<div class="col-lg-3 col-md-3 hidden-sm hidden-xs">@Html.Raw(RazorUtils.GetFormattedReturnType(endpoint.ReturnType))</div>
-					<div class="col-lg-3 col-md-3 hidden-sm hidden-xs">@Html.Raw(endpoint.Parameters.Length == 0 ? RazorUtils.NAString.ToString() : string.Join(", ", endpoint.Parameters.Select(p => p.FormattedDescription.ToString().Trim())))</div>
+					<div class="col-lg-3 col-md-3 hidden-sm hidden-xs">@Html.Raw(endpoint.Parameters.Length == 0 ? RazorUtils.NAString.ToString() : string.Join("<br>", endpoint.Parameters.Select(p => p.FormattedDescription.ToString().Trim())))</div>
 				</div>
 			}
 		}

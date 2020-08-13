@@ -39,7 +39,7 @@ namespace DevilDaggersWebsite.Code.Utils
 			return spawnsetFile;
 		}
 
-		public static List<SpawnsetFile> GetSpawnsets(IWebHostEnvironment env, string searchAuthor, string searchName)
+		public static List<SpawnsetFile> GetSpawnsets(IWebHostEnvironment env, string searchAuthor = null, string searchName = null)
 		{
 			IEnumerable<SpawnsetFile> spawnsetFiles = Directory.GetFiles(Path.Combine(env.WebRootPath, "spawnsets")).Select(p => CreateSpawnsetFileFromSettingsFile(env, p));
 

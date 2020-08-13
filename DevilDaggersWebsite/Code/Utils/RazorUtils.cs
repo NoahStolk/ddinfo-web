@@ -51,12 +51,12 @@ namespace DevilDaggersWebsite.Code.Utils
 				colorCode = GameInfo.GetEntities<Enemy>(gameVersionOverride).FirstOrDefault(e => e.Name == enemy.Name).ColorCode;
 
 			string color = zalgo == 0 ? colorCode : ZalgoUtils.InterpolateHexColor($"#FF{colorCode}", "#FFFF0000", zalgo / 100f);
-			return new HtmlString($"<a style='color: #{color};' href='/Wiki/Enemies#{enemy.Name.Replace(" ", "")}'>{enemy.Name.ToZalgo(zalgo / 20f)}{(plural ? "s" : "")}</a>");
+			return new HtmlString($"<a style='color: #{color};' href='/Wiki/Enemies{(gameVersionOverride == null ? "" : $"?GameVersion={gameVersionOverride}")}#{enemy.Name.Replace(" ", "")}'>{enemy.Name.ToZalgo(zalgo / 20f)}{(plural ? "s" : "")}</a>");
 		}
 
 		public static HtmlString GetLayoutAnchor(this Upgrade upgrade)
 		{
-			return new HtmlString($"<a style='color: #{upgrade.ColorCode};' href='/Wiki/Upgrades#{upgrade.Name}'>{upgrade.Name}</a>");
+			return new HtmlString($"<a style='color: #{upgrade.ColorCode};' href='/Wiki/Upgrades?GameVersion={upgrade.GameVersion}#{upgrade.Name}'>{upgrade.Name}</a>");
 		}
 
 		// TODO: Rewrite whole method. It's messy and not very performant.
@@ -148,7 +148,7 @@ namespace DevilDaggersWebsite.Code.Utils
 
 			return new HtmlString(@$"{typeSpan}
 <span class='api-parameter{(parameter.IsOptional ? "-optional" : "")}'>{parameter.Name}</span>
-{(parameter.IsOptional ? $"= <span class='api-parameter-default-value'>{GetParameterFormattedDefaultValue(parameter)}</span>" : "")}");
+{(parameter.IsOptional ? $"(<span class='api-parameter-default-value'>{GetParameterFormattedDefaultValue(parameter)}</span> by default)" : "")}");
 		}
 
 		public static HtmlString GetParameterFormattedDefaultValue(ParameterInfo parameter)
