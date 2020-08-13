@@ -4,9 +4,10 @@ namespace DevilDaggersWebsite.Code.Api
 {
 	public class Endpoint
 	{
-		public Endpoint(string url, Type returnType, string newRouteToUse, EndpointParameter[] parameters, int[] statusCodes)
+		public Endpoint(string url, string httpMethod, Type returnType, string newRouteToUse, EndpointParameter[] parameters, int[] statusCodes)
 		{
 			Url = url;
+			HttpMethod = httpMethod;
 			ReturnType = returnType;
 			NewRouteToUse = newRouteToUse;
 			Parameters = parameters;
@@ -14,6 +15,8 @@ namespace DevilDaggersWebsite.Code.Api
 		}
 
 		public string Url { get; }
+
+		public string HttpMethod { get; }
 
 		public Type ReturnType { get; }
 

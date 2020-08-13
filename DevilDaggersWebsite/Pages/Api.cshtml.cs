@@ -42,6 +42,7 @@ namespace DevilDaggersWebsite.Pages
 
 					Endpoints.Add(new Endpoint(
 						url: $"{controllerUrl}/{httpMethodAttribute.Template ?? ""}",
+						httpMethod: httpMethodAttribute.HttpMethods.FirstOrDefault(),
 						returnType: returnType,
 						newRouteToUse: obsoleteAttribute?.Message ?? string.Empty,
 						parameters: endpointMethod.GetParameters().Select(p => new EndpointParameter(p)).ToArray(),
