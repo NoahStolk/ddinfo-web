@@ -3,7 +3,6 @@ using DevilDaggersCore.Game;
 using Microsoft.AspNetCore.Html;
 using System;
 using System.ComponentModel.DataAnnotations.Schema;
-using System.Linq;
 using System.Web;
 
 namespace DevilDaggersWebsite.Code.Database.CustomLeaderboards
@@ -30,7 +29,7 @@ namespace DevilDaggersWebsite.Code.Database.CustomLeaderboards
 			kills='{Kills}'
 			gems='{Gems}'
 			accuracy='{Accuracy * 10000:0}'
-			death-type='{GameInfo.GetEntities<Death>().FirstOrDefault(e => e.DeathType == DeathType).Name}'
+			death-type='{GameInfo.GetDeathByType(DeathType, GameVersion.V3)}'
 			enemies-alive='{EnemiesAlive}'
 			homing='{Homing}'
 			level-2='{(LevelUpTime2 == 0 ? 999999999 : LevelUpTime2)}'
