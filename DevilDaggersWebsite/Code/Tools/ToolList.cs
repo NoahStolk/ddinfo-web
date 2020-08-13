@@ -8,8 +8,6 @@ namespace DevilDaggersWebsite.Code.Utils
 {
 	public static class ToolList
 	{
-		public static List<Tool> Tools { get; } = new List<Tool>();
-
 		static ToolList()
 		{
 			Type type = typeof(ToolList);
@@ -17,6 +15,8 @@ namespace DevilDaggersWebsite.Code.Utils
 			foreach (PropertyInfo property in properties)
 				Tools.Add((Tool)property.GetValue(type, null));
 		}
+
+		public static List<Tool> Tools { get; } = new List<Tool>();
 
 		public static Tool DevilDaggersSurvivalEditor => new Tool
 		{
@@ -34,8 +34,8 @@ namespace DevilDaggersWebsite.Code.Utils
 					{
 						new Change("Added 'Set' function to Modify Spawn Delay window."),
 						new Change("Fixed clicking 'Clear previous tiles' text not affecting the CheckBox state."),
-						new Change("Maintenance and small performance improvements.")
-					}
+						new Change("Maintenance and small performance improvements."),
+					},
 				},
 				new ChangelogEntry
 				{
@@ -43,8 +43,8 @@ namespace DevilDaggersWebsite.Code.Utils
 					Date = new DateTime(2019, 11, 18),
 					Changes = new List<Change>
 					{
-						new Change("Updated source code URL.")
-					}
+						new Change("Updated source code URL."),
+					},
 				},
 				new ChangelogEntry
 				{
@@ -54,8 +54,8 @@ namespace DevilDaggersWebsite.Code.Utils
 					{
 						new Change("Changelog now indicates the currently running version."),
 						new Change("Small changes related to maintenance of the website, as well as code refactoring and improvements."),
-						new Change("Improved layout for Error window.")
-					}
+						new Change("Improved layout for Error window."),
+					},
 				},
 				new ChangelogEntry
 				{
@@ -66,8 +66,8 @@ namespace DevilDaggersWebsite.Code.Utils
 						new Change("Added Changelog window."),
 						new Change("Fixed the Update Recommended window not closing after clicking the download button."),
 						new Change("Small changes related to maintenance of the website, as well as code refactoring and improvements."),
-						new Change("Memory scanning code has been moved to Devil Daggers Core because the idea of merging Devil Daggers Survival Editor and Devil Daggers Custom Leaderboards was cancelled.")
-					}
+						new Change("Memory scanning code has been moved to Devil Daggers Core because the idea of merging Devil Daggers Survival Editor and Devil Daggers Custom Leaderboards was cancelled."),
+					},
 				},
 				new ChangelogEntry
 				{
@@ -81,8 +81,8 @@ namespace DevilDaggersWebsite.Code.Utils
 						new Change("Fixed spawn enemy text color not always updating correctly."),
 						new Change("Small layout improvements."),
 						new Change("Improved logging."),
-						new Change("Internal changes such as importing Devil Daggers Custom Leaderboards specific code for memory scanning base functionality as preparation for possible custom leaderboard integration, as well as general code refactoring and improvements.")
-					}
+						new Change("Internal changes such as importing Devil Daggers Custom Leaderboards specific code for memory scanning base functionality as preparation for possible custom leaderboard integration, as well as general code refactoring and improvements."),
+					},
 				},
 				new ChangelogEntry
 				{
@@ -100,8 +100,8 @@ namespace DevilDaggersWebsite.Code.Utils
 						new Change("Improved Download Spawnset window layout."),
 						new Change("Added tooltips that display a spawnset's description if it has one."),
 						new Change("Fixed log file not being written to."),
-						new Change("Other small layout changes, bug fixes, and improvements.")
-					}
+						new Change("Other small layout changes, bug fixes, and improvements."),
+					},
 				},
 				new ChangelogEntry
 				{
@@ -109,8 +109,8 @@ namespace DevilDaggersWebsite.Code.Utils
 					Date = new DateTime(2019, 7, 30),
 					Changes = new List<Change>
 					{
-						new Change("Fixed crash that occurred when deleting multiple spawns.")
-					}
+						new Change("Fixed crash that occurred when deleting multiple spawns."),
+					},
 				},
 				new ChangelogEntry
 				{
@@ -123,8 +123,8 @@ namespace DevilDaggersWebsite.Code.Utils
 						new Change("Fixed the application not asking whether you want to save the current spawnset when closing the application."),
 						new Change("Fixed Modify Spawn Delay window being able to change spawn delay values into negative values."),
 						new Change("The application now displays the Update Recommended window on start up when an update is available."),
-						new Change("Layout improvements for the Download Spawnset window.")
-					}
+						new Change("Layout improvements for the Download Spawnset window."),
+					},
 				},
 				new ChangelogEntry
 				{
@@ -142,8 +142,8 @@ namespace DevilDaggersWebsite.Code.Utils
 								new Change("CTRL+S - Save"),
 								new Change("CTRL+C - Copy currently selected spawn(s)"),
 								new Change("CTRL+V - Paste spawn(s) currently on the clipboard"),
-								new Change("Delete - Delete currently selected spawn(s)")
-							}
+								new Change("Delete - Delete currently selected spawn(s)"),
+							},
 						},
 						new Change("The Download Spawnset window now remembers the spawnset sorting after it is closed."),
 						new Change("The application now asks you to confirm to overwrite the existing arena with a preset, as this cannot be undone easily."),
@@ -152,8 +152,8 @@ namespace DevilDaggersWebsite.Code.Utils
 						new Change("Fixed the survival file restore writing the original file bytes on top of the file instead of overwriting it entirely."),
 						new Change("Fixed the application not displaying an \"unsaved changes\" warning message when opening the currently active survival file."),
 						new Change("Fixed the end loop not being displayed correctly when there are no EMPTY spawns in the spawnset."),
-						new Change("Performance optimisations, layout improvements, and other bug fixes.")
-					}
+						new Change("Performance optimisations, layout improvements, and other bug fixes."),
+					},
 				},
 				new ChangelogEntry
 				{
@@ -161,8 +161,8 @@ namespace DevilDaggersWebsite.Code.Utils
 					Date = new DateTime(2019, 7, 5),
 					Changes = new List<Change>
 					{
-						new Change("Hotfix for restoring the default survival file.")
-					}
+						new Change("Hotfix for restoring the default survival file."),
+					},
 				},
 				new ChangelogEntry
 				{
@@ -178,8 +178,8 @@ namespace DevilDaggersWebsite.Code.Utils
 						new Change("The spawns editor scrollbar now scrolls to the end when adding new spawns."),
 						new Change("The Download Spawnset window now remembers the author and spawnset search values after it is closed."),
 						new Change("The default survival file is now embedded into the executable so the actual file is not needed anymore. This removes the issue where the application crashes whenever the file would not be present."),
-						new Change("Optimisations and layout improvements.")
-					}
+						new Change("Optimisations and layout improvements."),
+					},
 				},
 				new ChangelogEntry
 				{
@@ -193,8 +193,8 @@ namespace DevilDaggersWebsite.Code.Utils
 							{
 								new Change("Made the main application window resizable (includes fullscreen)."),
 								new Change("Added loading screen."),
-								new Change("Made user input more lenient, less errors will be thrown and the application will just deal with input values even if they don't make much sense.")
-							}
+								new Change("Made user input more lenient, less errors will be thrown and the application will just deal with input values even if they don't make much sense."),
+							},
 						},
 						new Change("Fixes")
 						{
@@ -203,8 +203,8 @@ namespace DevilDaggersWebsite.Code.Utils
 								new Change("Fixed issue where the arena was always incorrectly rotated and mirrored."),
 								new Change("Fixed issue where restoring the original V3 spawnset would remove the survival file from the application's 'Content' folder and as a result the option no longer works until the file is put back (either by re-downloading the application or by doing it manually)."),
 								new Change("Fixed issue where the application would not start up again after using it (due to the issue above)."),
-								new Change("Fixed issue where you could create spawns with a negative delay value.")
-							}
+								new Change("Fixed issue where you could create spawns with a negative delay value."),
+							},
 						},
 						new Change("Spawns")
 						{
@@ -212,8 +212,8 @@ namespace DevilDaggersWebsite.Code.Utils
 							{
 								new Change("Added ability to modify (add, subtract, multiply, divide) delays for selected spawns. This can be used to easily speed up or slow down parts of a spawnset, or a spawnset in its entirety."),
 								new Change("Added ability to switch enemy types for selected spawns."),
-								new Change("Added ability to add or insert the same spawn multiple times at once using the Amount value.")
-							}
+								new Change("Added ability to add or insert the same spawn multiple times at once using the Amount value."),
+							},
 						},
 						new Change("Arena")
 						{
@@ -231,8 +231,8 @@ namespace DevilDaggersWebsite.Code.Utils
 								new Change("Added ability to rotate and flip the arena."),
 								new Change("Made the tiles brighter for better visibility."),
 								new Change("Optimised the shrink preview slider for better performance."),
-								new Change("Implemented custom pixel shading for the arena editor to take advantage of high-performant GPU rendering to render lighting, selection borders and selection highlighting.")
-							}
+								new Change("Implemented custom pixel shading for the arena editor to take advantage of high-performant GPU rendering to render lighting, selection borders and selection highlighting."),
+							},
 						},
 						new Change("Arena presets")
 						{
@@ -251,30 +251,30 @@ namespace DevilDaggersWebsite.Code.Utils
 										new Change("Pyramid"),
 										new Change("Random Gaps"),
 										new Change("Random Islands"),
-										new Change("Random Pillars")
-									}
+										new Change("Random Pillars"),
+									},
 								},
 								new Change("Removed Default Flat preset, as it can now be created using the new Ellipse preset, or using the Round Heights button on the Default arena."),
 								new Change("Added wall thickness parameter to Cage Rectangular preset."),
 								new Change("Added offset parameters to Qbert preset."),
 								new Change("Added option for arena presets whether to overwrite the previous arena entirely or to generate new tiles on top of it."),
-							}
+							},
 						},
 						new Change("Menu")
 						{
 							SubChanges = new List<Change>
 							{
 								new Change("Replaced the Open From DevilDaggers.info menu item with a new Download Spawnset window which contains the spawnsets list."),
-								new Change("Added menu item to open the current survival file.")
-							}
+								new Change("Added menu item to open the current survival file."),
+							},
 						},
 						new Change("Spawnsets from DevilDaggers.info")
 						{
 							SubChanges = new List<Change>
 							{
 								new Change("Added search and filter options to the spawnsets list."),
-								new Change("The spawnsets list now shows more information (such as when the loop starts) about the spawnsets.")
-							}
+								new Change("The spawnsets list now shows more information (such as when the loop starts) about the spawnsets."),
+							},
 						},
 						new Change("Miscellaneous")
 						{
@@ -285,22 +285,22 @@ namespace DevilDaggersWebsite.Code.Utils
 									SubChanges = new List<Change>
 									{
 										new Change("The application warns you when the spawnset you're creating might cause Devil Daggers to become unstable, for instance when the end loop is very short, or when you're spawning the player in the void. This also includes the new discovery of the {25, 27} tile, which causes Devil Daggers to glitch whenever its height is put to a value greater than 0.4973333."),
-										new Change("The application warns you when the path to the survival file in the user settings is incorrect, or when the file could not be parsed.")
-									}
+										new Change("The application warns you when the path to the survival file in the user settings is incorrect, or when the file could not be parsed."),
+									},
 								},
 								new Change("Added more settings:")
 								{
 									SubChanges = new List<Change>
 									{
 										new Change("Prevent the player from spawning in the void by making sure the spawn tile always has a height."),
-										new Change("Prevent tile {25, 27} from going outside of its safe range.")
-									}
+										new Change("Prevent tile {25, 27} from going outside of its safe range."),
+									},
 								},
 								new Change("The application now uses logging, so whenever it crashes you can open the log to see what went wrong."),
-								new Change("The application is now dependent on Devil Daggers Core, which is a .NET Standard class library used to share code between various Devil Daggers related applications.")
-							}
+								new Change("The application is now dependent on Devil Daggers Core, which is a .NET Standard class library used to share code between various Devil Daggers related applications."),
+							},
 						},
-					}
+					},
 				},
 				new ChangelogEntry
 				{
@@ -308,8 +308,8 @@ namespace DevilDaggersWebsite.Code.Utils
 					Date = new DateTime(2018, 11, 4),
 					Changes = new List<Change>
 					{
-						new Change("Added functionality to automatically check for new versions of the program.")
-					}
+						new Change("Added functionality to automatically check for new versions of the program."),
+					},
 				},
 				new ChangelogEntry
 				{
@@ -319,8 +319,8 @@ namespace DevilDaggersWebsite.Code.Utils
 					{
 						new Change("Downloading spawnsets and retrieving the spawnset list is now done asynchronously so it doesn't block the application."),
 						new Change("Added functionality to reload the spawnset list if there was no internet connection or if the site was unresponsive."),
-						new Change("Various fixes and small improvements.")
-					}
+						new Change("Various fixes and small improvements."),
+					},
 				},
 				new ChangelogEntry
 				{
@@ -328,8 +328,8 @@ namespace DevilDaggersWebsite.Code.Utils
 					Date = new DateTime(2018, 7, 27),
 					Changes = new List<Change>
 					{
-						new Change("Added functionality to download spawnsets directly from DevilDaggers.info within the menu.")
-					}
+						new Change("Added functionality to download spawnsets directly from DevilDaggers.info within the menu."),
+					},
 				},
 				new ChangelogEntry
 				{
@@ -337,8 +337,8 @@ namespace DevilDaggersWebsite.Code.Utils
 					Date = new DateTime(2018, 7, 26),
 					Changes = new List<Change>
 					{
-						new Change("Enforced en-US globalisation.")
-					}
+						new Change("Enforced en-US globalisation."),
+					},
 				},
 				new ChangelogEntry
 				{
@@ -346,8 +346,8 @@ namespace DevilDaggersWebsite.Code.Utils
 					Date = new DateTime(2018, 6, 25),
 					Changes = new List<Change>
 					{
-						new Change("Fixed not being able to read some spawnsets made using a hex editor when reading an undefined enemy type.")
-					}
+						new Change("Fixed not being able to read some spawnsets made using a hex editor when reading an undefined enemy type."),
+					},
 				},
 				new ChangelogEntry
 				{
@@ -355,8 +355,8 @@ namespace DevilDaggersWebsite.Code.Utils
 					Date = new DateTime(2018, 6, 16),
 					Changes = new List<Change>
 					{
-						new Change("Initial release.")
-					}
+						new Change("Initial release."),
+					},
 				},
 				new ChangelogEntry
 				{
@@ -364,10 +364,10 @@ namespace DevilDaggersWebsite.Code.Utils
 					Date = new DateTime(2018, 5, 14),
 					Changes = new List<Change>
 					{
-						new Change("Beta release.")
-					}
-				}
-			}
+						new Change("Beta release."),
+					},
+				},
+			},
 		};
 
 		public static Tool DevilDaggersCustomLeaderboards => new Tool
@@ -384,8 +384,8 @@ namespace DevilDaggersWebsite.Code.Utils
 					Date = new DateTime(2020, 5, 8),
 					Changes = new List<Change>
 					{
-						new Change("Fixed ascending leaderboards displaying incorrect dagger colors and statistic differences.")
-					}
+						new Change("Fixed ascending leaderboards displaying incorrect dagger colors and statistic differences."),
+					},
 				},
 				new ChangelogEntry
 				{
@@ -396,8 +396,8 @@ namespace DevilDaggersWebsite.Code.Utils
 						new Change("Leaderboards and run info are now displayed in the console when the player died."),
 						new Change("Added colors for daggers, deaths, and statistic differences."),
 						new Change("Fixed floating point imprecision issues with the leaderboard database."),
-						new Change("The program now shows a warning when homing and level up times are not being detected. This warning will be triggered after collecting the first gem. The problem can be resolved by restarting Devil Daggers. It happens about 1 out of 10 times for me and seems to appear randomly. I'm still investigating what causes it.")
-					}
+						new Change("The program now shows a warning when homing and level up times are not being detected. This warning will be triggered after collecting the first gem. The problem can be resolved by restarting Devil Daggers. It happens about 1 out of 10 times for me and seems to appear randomly. I'm still investigating what causes it."),
+					},
 				},
 				new ChangelogEntry
 				{
@@ -406,8 +406,8 @@ namespace DevilDaggersWebsite.Code.Utils
 					Changes = new List<Change>
 					{
 						new Change("Compatibility and maintenance updates related to the website."),
-						new Change("The application is renamed to Devil Daggers Custom Leaderboards again for consistency with the other tool names.")
-					}
+						new Change("The application is renamed to Devil Daggers Custom Leaderboards again for consistency with the other tool names."),
+					},
 				},
 				new ChangelogEntry
 				{
@@ -417,8 +417,8 @@ namespace DevilDaggersWebsite.Code.Utils
 					{
 						new Change("Improved way of detecting survival file cheats; there is no need to record the entire run anymore."),
 						new Change("Fixed log file not being written to."),
-						new Change("Implemented \"Speedrun\" category leaderboards.")
-					}
+						new Change("Implemented \"Speedrun\" category leaderboards."),
+					},
 				},
 				new ChangelogEntry
 				{
@@ -426,8 +426,8 @@ namespace DevilDaggersWebsite.Code.Utils
 					Date = new DateTime(2019, 6, 5),
 					Changes = new List<Change>
 					{
-						new Change("Compatibility update due to some internal bug fixes which aren't related to the application directly.")
-					}
+						new Change("Compatibility update due to some internal bug fixes which aren't related to the application directly."),
+					},
 				},
 				new ChangelogEntry
 				{
@@ -435,8 +435,8 @@ namespace DevilDaggersWebsite.Code.Utils
 					Date = new DateTime(2019, 5, 27),
 					Changes = new List<Change>
 					{
-						new Change("Leaderboards are now secured with the Advanced Encryption Standard (AES).")
-					}
+						new Change("Leaderboards are now secured with the Advanced Encryption Standard (AES)."),
+					},
 				},
 				new ChangelogEntry
 				{
@@ -444,8 +444,8 @@ namespace DevilDaggersWebsite.Code.Utils
 					Date = new DateTime(2019, 5, 24),
 					Changes = new List<Change>
 					{
-						new Change("Fixed inconsistent spawnset hashing. The hashing system is no longer dependent on files. This fixes the problem where some spawnsets wouldn't work if they were downloaded directly from the website rather than imported via Devil Daggers Survival Editor.")
-					}
+						new Change("Fixed inconsistent spawnset hashing. The hashing system is no longer dependent on files. This fixes the problem where some spawnsets wouldn't work if they were downloaded directly from the website rather than imported via Devil Daggers Survival Editor."),
+					},
 				},
 				new ChangelogEntry
 				{
@@ -453,8 +453,8 @@ namespace DevilDaggersWebsite.Code.Utils
 					Date = new DateTime(2019, 5, 20),
 					Changes = new List<Change>
 					{
-						new Change("The program now tells you when there is an update available and warns you when the current version is no longer accepted by the server.")
-					}
+						new Change("The program now tells you when there is an update available and warns you when the current version is no longer accepted by the server."),
+					},
 				},
 				new ChangelogEntry
 				{
@@ -466,8 +466,8 @@ namespace DevilDaggersWebsite.Code.Utils
 						new Change("Some improvements in the layout and better feedback for when runs don't upload."),
 						new Change("Crash fixes and internal clean up. The \"out of bounds\" error shouldn't occur anymore when starting the application before starting Devil Daggers."),
 						new Change("Console is no longer resizable so it doesn't mess with the layout."),
-						new Change("Added a retry count for when the upload fails. Usually it retries 3 times and stops after that, waiting for you to restart a run.")
-					}
+						new Change("Added a retry count for when the upload fails. Usually it retries 3 times and stops after that, waiting for you to restart a run."),
+					},
 				},
 				new ChangelogEntry
 				{
@@ -478,8 +478,8 @@ namespace DevilDaggersWebsite.Code.Utils
 						new Change("Lots of internal clean up, improvements, and fixes."),
 						new Change("Program now outputs what values it submits to the server."),
 						new Change("Program only retrieves the spawnset hash during the first second of the run so people cannot cheat by changing the survival file during the run. If you start the program later than 1 second after the run starts, the hash will not be calculated and your submission will be marked as invalid and not upload."),
-						new Change("The server now has a minimal version it will accept submissions from.")
-					}
+						new Change("The server now has a minimal version it will accept submissions from."),
+					},
 				},
 				new ChangelogEntry
 				{
@@ -487,8 +487,8 @@ namespace DevilDaggersWebsite.Code.Utils
 					Date = new DateTime(2019, 5, 18),
 					Changes = new List<Change>
 					{
-						new Change("Small fixes.")
-					}
+						new Change("Small fixes."),
+					},
 				},
 				new ChangelogEntry
 				{
@@ -498,8 +498,8 @@ namespace DevilDaggersWebsite.Code.Utils
 					{
 						new Change("Application now uses .NET Framework 4.6.1 rather than 4.7.2."),
 						new Change("Fixed bug where level up values don't reset when you restart a run."),
-						new Change("Prevented replays from uploading so people won't submit runs to the wrong leaderboard by intentionally replacing the survival file during the replay.")
-					}
+						new Change("Prevented replays from uploading so people won't submit runs to the wrong leaderboard by intentionally replacing the survival file during the replay."),
+					},
 				},
 				new ChangelogEntry
 				{
@@ -510,8 +510,8 @@ namespace DevilDaggersWebsite.Code.Utils
 						new Change("Made application Windows-only because scanning memory for other operating systems will work differently anyway."),
 						new Change("Enforced en-US culture to fix broken submissions on PCs that use commas as decimal separators."),
 						new Change("Fixed usernames being limited to 4 characters."),
-						new Change("Prevented submissions with 0.0000 time from uploading by setting a time constraint of a minimum of 2.5 seconds.")
-					}
+						new Change("Prevented submissions with 0.0000 time from uploading by setting a time constraint of a minimum of 2.5 seconds."),
+					},
 				},
 				new ChangelogEntry
 				{
@@ -519,10 +519,10 @@ namespace DevilDaggersWebsite.Code.Utils
 					Date = new DateTime(2019, 5, 15),
 					Changes = new List<Change>
 					{
-						new Change("Initial release.")
-					}
-				}
-			}
+						new Change("Initial release."),
+					},
+				},
+			},
 		};
 
 		public static Tool DevilDaggersAssetEditor => new Tool
@@ -542,7 +542,7 @@ namespace DevilDaggersWebsite.Code.Utils
 						new Change("Fixed bug when extracting particles."),
 						new Change("Added Help window."),
 						new Change("Improved particle previewer."),
-					}
+					},
 				},
 				new ChangelogEntry
 				{
@@ -550,8 +550,8 @@ namespace DevilDaggersWebsite.Code.Utils
 					Date = new DateTime(2020, 6, 5),
 					Changes = new List<Change>
 					{
-						new Change("Fixed bug when saving a .dd mod file after extracting.")
-					}
+						new Change("Fixed bug when saving a .dd mod file after extracting."),
+					},
 				},
 				new ChangelogEntry
 				{
@@ -562,8 +562,8 @@ namespace DevilDaggersWebsite.Code.Utils
 						new Change("Fixed crash that occurred when attempting to open a non-existing initial directory in an explorer dialog."),
 						new Change("Fixed auto-detect button in settings windows setting the path to an incorrect value."),
 						new Change("Fixed opening mods root folder instead of assets root folder when importing or exporting loudness files."),
-						new Change("Fixed texture dimension limit setting affecting non-model textures. Post lut filters, icons, fonts, and title screens will no longer be downscaled.")
-					}
+						new Change("Fixed texture dimension limit setting affecting non-model textures. Post lut filters, icons, fonts, and title screens will no longer be downscaled."),
+					},
 				},
 				new ChangelogEntry
 				{
@@ -573,8 +573,8 @@ namespace DevilDaggersWebsite.Code.Utils
 					{
 						new Change("Removed the term 'compression' from the UI since it is misleading. What used to be called compressing is now called making a binary."),
 						new Change("Added missing audio assets to the editor."),
-						new Change("Fixed bugs related to the audio loudness file.")
-					}
+						new Change("Fixed bugs related to the audio loudness file."),
+					},
 				},
 				new ChangelogEntry
 				{
@@ -587,8 +587,8 @@ namespace DevilDaggersWebsite.Code.Utils
 							SubChanges = new List<Change>
 							{
 								new Change("Making a 'dd' binary now supports UV mapping which means textures are properly rendered onto models."),
-								new Change("Making a 'dd' binary now supports models consisting of quads.")
-							}
+								new Change("Making a 'dd' binary now supports models consisting of quads."),
+							},
 						},
 						new Change("You can now sort assets."),
 						new Change("Implemented tags for assets."),
@@ -600,8 +600,8 @@ namespace DevilDaggersWebsite.Code.Utils
 								new Change("You can now choose whether or not to make use of the 3 standard folders."),
 								new Change("You can now choose to automatically create a mod file when extracting assets from a binary file."),
 								new Change("You can now choose to automatically open the folder after extracting assets."),
-								new Change("There is a new setting that enables automatic downscaling for large textures. This setting is set to 512 by default, since the largest original textures in Devil Daggers are 512x512 pixels. This currently applies to all textures, including post lut filters, icons, fonts, and title screens. This means the entire game will look different when you set this setting to 64 for example. All textures will shrink until they fit in a 64x64 pixel space (so a 256x16 texture will be downscaled to 64x4).")
-							}
+								new Change("There is a new setting that enables automatic downscaling for large textures. This setting is set to 512 by default, since the largest original textures in Devil Daggers are 512x512 pixels. This currently applies to all textures, including post lut filters, icons, fonts, and title screens. This means the entire game will look different when you set this setting to 64 for example. All textures will shrink until they fit in a 64x64 pixel space (so a 256x16 texture will be downscaled to 64x4)."),
+							},
 						},
 						new Change("Added binary file analyzer tool that can be used to visualize the contents of a Devil Daggers binary file. This can be helpful in case your file happens to be unnecessarily large and you want to know what causes it."),
 						new Change("Implemented user caching. This means the application will remember certain values when it shuts down.")
@@ -611,14 +611,14 @@ namespace DevilDaggersWebsite.Code.Utils
 								new Change("It will remember which mod files were last opened in the previous session."),
 								new Change("It will remember which tab was active in the previous session."),
 								new Change("It will remember the window size from the previous session including whether the application was run in full screen or not."),
-								new Change("It will remember whether or not 'Auto-play' was enabled in the audio previewer.")
-							}
+								new Change("It will remember whether or not 'Auto-play' was enabled in the audio previewer."),
+							},
 						},
 						new Change("Added vertex and index counts to model previewer."),
 						new Change("Added more descriptions and asset information."),
 						new Change("Fixes")
 						{
-							SubChanges =new List<Change>
+							SubChanges = new List<Change>
 							{
 								new Change("Fixed inner window not sizing correctly in full screen."),
 								new Change("Fixed text overflowing (still WIP, hoping to improve this in a future update)."),
@@ -628,11 +628,11 @@ namespace DevilDaggersWebsite.Code.Utils
 								new Change("Fixed texture previewer locking image files even when they're no longer being displayed."),
 								new Change("Fixed texture previewer locking the currently displayed image file."),
 								new Change("Fixed not clearing previewers when selecting an empty asset."),
-								new Change("Fixed crash that occurred when attempting to preview a non-existing file.")
-							}
+								new Change("Fixed crash that occurred when attempting to preview a non-existing file."),
+							},
 						},
 						new Change("Many layout improvements"),
-					}
+					},
 				},
 				new ChangelogEntry
 				{
@@ -641,8 +641,8 @@ namespace DevilDaggersWebsite.Code.Utils
 					Changes = new List<Change>
 					{
 						new Change("Fixed crash that occurred when turning textures into binary data."),
-						new Change("Fixed textures not being correctly imported from mod files.")
-					}
+						new Change("Fixed textures not being correctly imported from mod files."),
+					},
 				},
 				new ChangelogEntry
 				{
@@ -650,8 +650,8 @@ namespace DevilDaggersWebsite.Code.Utils
 					Date = new DateTime(2020, 2, 15),
 					Changes = new List<Change>
 					{
-						new Change("Added almost all texture descriptions.")
-					}
+						new Change("Added almost all texture descriptions."),
+					},
 				},
 				new ChangelogEntry
 				{
@@ -661,8 +661,8 @@ namespace DevilDaggersWebsite.Code.Utils
 					{
 						new Change("Improved model extraction to be more compatible with 3D modeling software."),
 						new Change("Fixed crash that occurred when attempting to turn a model with more texture coordinates or more vertex normals than geometric vertices into binary data."),
-						new Change("Saving mod files now produces indented JSON.")
-					}
+						new Change("Saving mod files now produces indented JSON."),
+					},
 				},
 				new ChangelogEntry
 				{
@@ -672,8 +672,8 @@ namespace DevilDaggersWebsite.Code.Utils
 					{
 						new Change("Improved model parsing so turning .obj files exported from 3D modeling software into binary data is supported."),
 						new Change("Fixed audio description for daggerseek."),
-						new Change("Added tooltips for audio preview buttons.")
-					}
+						new Change("Added tooltips for audio preview buttons."),
+					},
 				},
 				new ChangelogEntry
 				{
@@ -681,8 +681,8 @@ namespace DevilDaggersWebsite.Code.Utils
 					Date = new DateTime(2019, 11, 18),
 					Changes = new List<Change>
 					{
-						new Change("Updated source code URL.")
-					}
+						new Change("Updated source code URL."),
+					},
 				},
 				new ChangelogEntry
 				{
@@ -697,8 +697,8 @@ namespace DevilDaggersWebsite.Code.Utils
 						new Change("Fixed the Update Recommended window not closing after clicking the download button."),
 						new Change("Small changes related to maintenance of the website, as well as code refactoring and improvements."),
 						new Change("Removed functionality for compatibility with version 0.2.0.0."),
-						new Change("Many bug fixes, layout improvements, and stability improvements.")
-					}
+						new Change("Many bug fixes, layout improvements, and stability improvements."),
+					},
 				},
 				new ChangelogEntry
 				{
@@ -708,8 +708,8 @@ namespace DevilDaggersWebsite.Code.Utils
 					{
 						new Change("Created progress bar for lengthy tasks such as making and extracting binaries."),
 						new Change("Many bug fixes."),
-						new Change("Improved audio descriptions.")
-					}
+						new Change("Improved audio descriptions."),
+					},
 				},
 				new ChangelogEntry
 				{
@@ -722,8 +722,8 @@ namespace DevilDaggersWebsite.Code.Utils
 						new Change("Added user settings to specify Devil Daggers root folder, mods root folder, and assets root folder."),
 						new Change("Improve initial directories for file and folder dialogs."),
 						new Change("Small bug and crash fixes."),
-						new Change("The mod file format has been changed, and mod files created using version 0.2.0.0 will no longer open. You'll need to convert these by navigating to Compatibility > Convert 0.2.0.0 mod file format and select your mod file.")
-					}
+						new Change("The mod file format has been changed, and mod files created using version 0.2.0.0 will no longer open. You'll need to convert these by navigating to Compatibility > Convert 0.2.0.0 mod file format and select your mod file."),
+					},
 				},
 				new ChangelogEntry
 				{
@@ -740,8 +740,8 @@ namespace DevilDaggersWebsite.Code.Utils
 						new Change("Added About window and other menu items."),
 						new Change("Added logging."),
 						new Change("Added description for audio assets (WIP)."),
-						new Change("Many GUI and code improvements.")
-					}
+						new Change("Many GUI and code improvements."),
+					},
 				},
 				new ChangelogEntry
 				{
@@ -749,10 +749,10 @@ namespace DevilDaggersWebsite.Code.Utils
 					Date = new DateTime(2019, 9, 11),
 					Changes = new List<Change>
 					{
-						new Change("Initial release.")
-					}
-				}
-			}
+						new Change("Initial release."),
+					},
+				},
+			},
 		};
 	}
 }
