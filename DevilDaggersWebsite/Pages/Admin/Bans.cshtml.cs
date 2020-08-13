@@ -25,7 +25,7 @@ namespace DevilDaggersWebsite.Pages.Admin
 		{
 			List<Ban> bans = UserUtils.GetUserObjects<Ban>(env);
 			IEnumerable<int> userIds = bans.SelectMany(b => b.IdResponsible.HasValue ? new[] { b.Id, b.IdResponsible.Value } : new[] { b.Id });
-			Entry[] entries = await Task.WhenAll(userIds.Select(async id => await Hasmodai.GetUserById(id)));
+			Entry[] entries = await Task.WhenAll(userIds.Select(async id => await HasmodaiUtils.GetUserById(id)));
 
 			foreach (Ban ban in bans)
 			{

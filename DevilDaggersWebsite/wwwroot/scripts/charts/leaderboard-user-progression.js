@@ -1,17 +1,17 @@
 ﻿const maxDate = Date.now();
 
-$.getJSON("/Api/GetUserProgressionById?UserId=" + getUrlParameter("UserId"), function (data) {
+$.getJSON("/api/leaderboard-history/user-progression?userId=" + getUrlParameter("UserId"), function (data) {
 	const pbs = [];
 	let pbIndex = 0;
 	$.each(data, function (key, pb) {
 		const date = new Date(key);
 		const deathType = getDeathType(date, pb);
-		const accuracy = pb.ShotsFired === 0 ? 0 : pb.ShotsHit / pb.ShotsFired * 100;
+		const accuracy = pb.shotsFired === 0 ? 0 : pb.shotsHit / pb.shotsFired * 100;
 
-		pbs.push([date, pb.Time / 10000, pb.Rank.toFixed(0), pb.Username, pb.Gems === 0 ? "?" : pb.Gems.toFixed(0), pb.Kills === 0 ? "?" : pb.Kills.toFixed(0), accuracy === 0 ? "?" : accuracy.toFixed(2) + "%", deathType.ColorCode, deathType.Name]);
+		pbs.push([date, pb.time / 10000, pb.rank.toFixed(0), pb.username, pb.gems === 0 ? "?" : pb.gems.toFixed(0), pb.kills === 0 ? "?" : pb.kills.toFixed(0), accuracy === 0 ? "?" : accuracy.toFixed(2) + "%", deathType.colorCode, deathType.name]);
 
 		if (++pbIndex === Object.keys(data).length) {
-			pbs.push([maxDate + 10000000000 /*Ugly way to make sure no dot is visible*/, pb.Time / 10000, pb.Rank.toFixed(0), pb.Username, pb.Gems === 0 ? "?" : pb.Gems.toFixed(0), pb.Kills === 0 ? "?" : pb.Kills.toFixed(0), accuracy === 0 ? "?" : accuracy.toFixed(2) + "%", deathType.ColorCode, deathType.Name]);
+			pbs.push([maxDate + 10000000000 /*Ugly way to make sure no dot is visible*/, pb.time / 10000, pb.rank.toFixed(0), pb.username, pb.gems === 0 ? "?" : pb.gems.toFixed(0), pb.kills === 0 ? "?" : pb.kills.toFixed(0), accuracy === 0 ? "?" : accuracy.toFixed(2) + "%", deathType.colorCode, deathType.name]);
 		}
 	});
 

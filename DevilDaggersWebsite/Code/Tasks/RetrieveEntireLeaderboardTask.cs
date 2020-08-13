@@ -1,8 +1,8 @@
-﻿using DevilDaggersCore.Leaderboards;
-using System.Threading.Tasks;
-using DevilDaggersCore.Game;
-using System.Collections.Generic;
+﻿using DevilDaggersCore.Game;
+using DevilDaggersCore.Leaderboards;
 using DevilDaggersWebsite.Code.External;
+using System.Collections.Generic;
+using System.Threading.Tasks;
 
 namespace DevilDaggersWebsite.Code.Tasks
 {
@@ -41,11 +41,11 @@ namespace DevilDaggersWebsite.Code.Tasks
 
 		private async Task PopulateLeaderboardRealTime()
 		{
-			Leaderboard = await Hasmodai.GetScores(1);
+			Leaderboard = await HasmodaiUtils.GetScores(1);
 
 			for (int i = 1; i < MaxPages; i++)
 			{
-				Leaderboard nextLeaderboard = await Hasmodai.GetScores(i * 100 + 1);
+				Leaderboard nextLeaderboard = await HasmodaiUtils.GetScores(i * 100 + 1);
 
 				foreach (Entry entry in nextLeaderboard.Entries)
 					Leaderboard.Entries.Add(entry);
@@ -54,11 +54,11 @@ namespace DevilDaggersWebsite.Code.Tasks
 
 		private async Task<Leaderboard> PopulateLeaderboard()
 		{
-			Leaderboard leaderboard = await Hasmodai.GetScores(1);
+			Leaderboard leaderboard = await HasmodaiUtils.GetScores(1);
 
 			for (int i = 1; i < MaxPages; i++)
 			{
-				Leaderboard nextLeaderboard = await Hasmodai.GetScores(i * 100 + 1);
+				Leaderboard nextLeaderboard = await HasmodaiUtils.GetScores(i * 100 + 1);
 
 				foreach (Entry entry in nextLeaderboard.Entries)
 					leaderboard.Entries.Add(entry);
@@ -87,7 +87,7 @@ namespace DevilDaggersWebsite.Code.Tasks
 
 			foreach (Entry entry in Leaderboard.Entries)
 			{
-				Death death = GameInfo.GetDeathFromDeathType(entry.DeathType, GameInfo.GameVersions[GameInfo.DefaultGameVersion]);
+				Death death = GameInfo.GetDeathByType(entry.DeathType, GameVersion.V3);
 				if (DeathStats.ContainsKey(death))
 					DeathStats[death]++;
 				else

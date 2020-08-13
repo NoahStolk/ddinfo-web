@@ -68,8 +68,8 @@
 				Dagger dagger = GameInfo.GetDaggerFromTime(entry.Time);
 				string daggerColor = isBanned ? "ban" : dagger.Name.ToLower();
 
-				Death death = GameInfo.GetDeathFromDeathType(entry.DeathType, GameInfo.GetGameVersionFromDate(Model.Leaderboard.DateTime));
-				string deathStyle = isBanned ? string.Empty : $"color: #{death.ColorCode};";
+				Death? death = GameInfo.GetDeathByType(entry.DeathType, GameInfo.GetGameVersionFromDate(Model.Leaderboard.DateTime));
+				string deathStyle = isBanned ? string.Empty : $"color: #{death?.ColorCode ?? "444"};";
 
 				string banString = isBanned ? "ban" : string.Empty;
 
@@ -151,7 +151,7 @@
 						<div class="hidden-xs text-right">
 							<span data-toggle="tooltip" title="@shots" class="leaderboard-tooltip">@accuracy</span>
 						</div>
-						<div class="hidden-xs hidden-sm hidden-md text-center" style="@deathStyle">@death.Name</div>
+						<div class="hidden-xs hidden-sm hidden-md text-center" style="@deathStyle">@(death?.Name ?? "Unknown")</div>
 						<div class="hidden-xs hidden-sm hidden-md text-right">@timeTotal</div>
 						<div class="hidden-xs hidden-sm hidden-md text-right">@killsTotal</div>
 						<div class="hidden-xs hidden-sm hidden-md text-right">@gemsTotal</div>
@@ -190,7 +190,7 @@
 						</div>
 						<div class="visible-xs visible-sm visible-md">
 							<div class="text-left">Death type</div>
-							<div class="text-right" style="@deathStyle">@death.Name</div>
+							<div class="text-right" style="@deathStyle">@(death?.Name ?? "Unknown")</div>
 						</div>
 						<div class="visible-xs visible-sm visible-md">
 							<div class="text-left">Total time</div>

@@ -26,7 +26,7 @@ namespace DevilDaggersWebsite.Code.Extensions
                 kills='{entry.Kills}'
                 gems='{entry.Gems}'
                 accuracy='{entry.Accuracy * 10000:0}'
-                death-type='{GameInfo.GetDeathFromDeathType(entry.DeathType).Name}'
+                death-type='{GameInfo.GetDeathByType(entry.DeathType)?.Name ?? "Unknown"}'
                 total-time='{entry.TimeTotal}'
                 total-kills='{entry.KillsTotal}'
                 total-gems='{entry.GemsTotal}'

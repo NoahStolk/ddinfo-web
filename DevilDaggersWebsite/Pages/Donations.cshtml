@@ -20,7 +20,7 @@
 		Thanks to everyone who donated.
 	</p>
 	<p>
-		@foreach (Dagger dagger in GameInfo.GetEntities<Dagger>())
+		@foreach (Dagger dagger in GameInfo.GetEntities<Dagger>(GameVersion.V3))
 		{
 			<img src="~/Images/Daggers/@(dagger.Name)Small.png" />
 		}

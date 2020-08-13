@@ -1,7 +1,7 @@
 ﻿using DevilDaggersCore.Utils;
-using DevilDaggersWebsite.Pages.Api;
+using DevilDaggersWebsite.Code.External;
 using Microsoft.AspNetCore.Hosting;
-using Microsoft.AspNetCore.Mvc;
+using Newtonsoft.Json;
 using System;
 using System.IO;
 using System.Threading.Tasks;
@@ -22,10 +22,7 @@ namespace DevilDaggersWebsite.Code.Tasks
 		protected override async Task Execute()
 		{
 			if (!HistoryFileForThisDateExists(LastTriggered))
-			{
-				FileResult file = await new GetLeaderboardModel().OnGetAsync();
-				File.WriteAllBytes(Path.Combine(env.WebRootPath, "leaderboard-history", file.FileDownloadName), ((FileContentResult)file).FileContents);
-			}
+				File.WriteAllText(Path.Combine(env.WebRootPath, "leaderboard-history", $"{DateTime.UtcNow:yyyyMMddHHmm}.json"), JsonConvert.SerializeObject(await HasmodaiUtils.GetScores(1)));
 		}
 
 		private bool HistoryFileForThisDateExists(DateTime dateTime)

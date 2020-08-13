@@ -1,18 +1,18 @@
-﻿const minDate = new Date("2016-02-18T00:00:00Z");
+﻿const minDate = new Date("2016-01-01T00:00:00Z");
 const maxDate = Date.now();
 
-$.getJSON("/Api/GetWorldRecords", function (data) {
+$.getJSON("/api/leaderboard-history/world-records", function (data) {
 	const wrs = [];
 	let wrIndex = 0;
 	$.each(data, function (_key, wr) {
-		const date = new Date(wr.DateTime);
-		const deathType = getDeathType(date, wr.Entry);
-		const accuracy = wr.Entry.ShotsFired === 0 ? 0 : wr.Entry.ShotsHit / wr.Entry.ShotsFired * 100;
+		const date = new Date(wr.dateTime);
+		const deathType = getDeathType(date, wr.entry);
+		const accuracy = wr.entry.shotsFired === 0 ? 0 : wr.entry.shotsHit / wr.entry.shotsFired * 100;
 
-		wrs.push([date, wr.Entry.Time / 10000, wr.Entry.Username, wr.Entry.Gems === 0 ? "?" : wr.Entry.Gems.toFixed(0), wr.Entry.Kills === 0 ? "?" : wr.Entry.Kills.toFixed(0), accuracy === 0 ? "?" : accuracy.toFixed(2) + "%", deathType.ColorCode, deathType.Name]);
+		wrs.push([date, wr.entry.time / 10000, wr.entry.username, wr.entry.gems === 0 ? "?" : wr.entry.gems.toFixed(0), wr.entry.kills === 0 ? "?" : wr.entry.kills.toFixed(0), accuracy === 0 ? "?" : accuracy.toFixed(2) + "%", deathType.colorCode, deathType.name]);
 
 		if (++wrIndex === data.length) {
-			wrs.push([maxDate + 10000000000 /*Ugly way to make sure no dot is visible*/, wr.Entry.Time / 10000, wr.Entry.Username, wr.Entry.Gems === 0 ? "?" : wr.Entry.Gems.toFixed(0), wr.Entry.Kills === 0 ? "?" : wr.Entry.Kills.toFixed(0), accuracy === 0 ? "?" : accuracy.toFixed(2) + "%", deathType.ColorCode, deathType.Name]);
+			wrs.push([maxDate + 10000000000 /*Ugly way to make sure no dot is visible*/, wr.entry.time / 10000, wr.entry.username, wr.entry.gems === 0 ? "?" : wr.entry.gems.toFixed(0), wr.entry.kills === 0 ? "?" : wr.entry.kills.toFixed(0), accuracy === 0 ? "?" : accuracy.toFixed(2) + "%", deathType.colorCode, deathType.name]);
 		}
 	});
 

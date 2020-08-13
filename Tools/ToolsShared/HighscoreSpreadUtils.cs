@@ -73,7 +73,7 @@ namespace ToolsShared
 					log.AppendLine($"\tSet missing stats for {entry.Username} {entry.Time.FormatTimeInteger()}");
 					log.AppendLine($"\t\tGems: {entry.Gems}");
 					log.AppendLine($"\t\tKills: {entry.Kills}");
-					log.AppendLine($"\t\tDeathType: {GameInfo.GetDeathFromDeathType(entry.DeathType).Name}");
+					log.AppendLine($"\t\tDeathType: {GameInfo.GetEntities<Death>(GameVersion.V3).FirstOrDefault(d => d.DeathType == entry.DeathType).Name}");
 					log.AppendLine($"\t\tAccuracy: {entry.ShotsHit / (float)entry.ShotsFired:00.00%}");
 				}
 

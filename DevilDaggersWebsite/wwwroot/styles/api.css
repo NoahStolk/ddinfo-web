@@ -2,16 +2,12 @@
 	border: solid 1px #222;
 }
 
-.api-function-deprecated {
-	color: #ff8800;
-}
-
 .api-parameter-optional {
-	color: #ffff00;
+	color: #ffff88;
 }
 
 .api-parameter {
-	color: #ff0000;
+	color: #ffbb88;
 }
 
 .api-parameter-type {
@@ -22,12 +18,20 @@
 	color: #228800;
 }
 
-.api-parameter-default-value {
-	color: #ff0088;
+.api-generic-return-type {
+	color: #228800;
 }
 
-.api-null {
-	color: #880044;
+.api-return-type {
+	color: #44ff00;
+}
+
+.api-parameter-default-value {
+	color: #ff8888;
+}
+
+.api-endpoint-deprecated {
+	color: #ff6a00;
 }
 
 .api-list > div:nth-child(2n+1) {

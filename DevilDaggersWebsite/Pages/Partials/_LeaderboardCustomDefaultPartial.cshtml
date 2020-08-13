@@ -40,7 +40,7 @@
 				string[] titles = users.FirstOrDefault(u => u.Id == entry.PlayerId)?.Titles;
 
 				string dagger = Model.Leaderboard.GetDagger(entry.Time);
-				Death death = GameInfo.GetDeathFromDeathType(entry.DeathType, GameInfo.GameVersions["V3"]);
+				Death death = GameInfo.GetDeathByType(entry.DeathType, GameVersion.V3);
 
 				string deathStyle = $"color: #{death.ColorCode};";
 				HtmlString level2 = entry.LevelUpTime2 == 0 ? RazorUtils.NAString : new HtmlString(entry.LevelUpTime2.FormatTimeInteger());

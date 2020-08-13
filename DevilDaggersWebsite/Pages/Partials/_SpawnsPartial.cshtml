@@ -20,19 +20,7 @@
 		}
 	}
 
-	GameVersion gameVersion = GameInfo.GameVersions[GameInfo.DefaultGameVersion];
-	if (sf.Author == "Sorath")
-	{
-		if (sf.Name == "V1")
-		{
-			gameVersion = GameInfo.GameVersions["V1"];
-		}
-		else if (sf.Name == "V2")
-		{
-			gameVersion = GameInfo.GameVersions["V2"];
-		}
-	}
-
+	GameVersion gameVersion = sf.Author == "Sorath" ? sf.Name == "V1" ? GameVersion.V1 : sf.Name == "V2" ? GameVersion.V2 : GameVersion.V3 : GameVersion.V3;
 	int maxWaves = sf.settings.MaxWaves ?? SpawnsetUtils.DefaultMaxWaves;
 	string wavesQuery = httpContextAccessor.HttpContext.Request.Query["waves"];
 	if (int.TryParse(wavesQuery, out int parsed) && parsed > 0)
@@ -57,14 +45,14 @@
 			foreach (Spawn spawn in spawnset.Spawns.Values.SkipLast(spawnset.Spawns.Count() - endLoopIndex))
 			{
 				totalSeconds += spawn.Delay;
-				if (spawn.SpawnsetEnemy != Spawnset.Enemies[-1])
+				if (spawn.Enemy != null)
 				{
-					totalGems += spawn.SpawnsetEnemy.NoFarmGems;
+					totalGems += spawn.Enemy.NoFarmGems;
 
 					<div class="flex-container flex-center">
 						<div style="width: @(widths[0])px;" class="text-right">@totalSeconds.ToString(FormatUtils.SpawnTimeFormat)</div>
-						<div style="width: @(widths[1])px;">@(spawn.SpawnsetEnemy.ToEnemy(gameVersion).GetLayoutAnchor())</div>
-						<div style="width: @(widths[2])px;" class="text-right">@spawn.SpawnsetEnemy.NoFarmGems</div>
+						<div style="width: @(widths[1])px;">@(spawn.Enemy.GetLayoutAnchor(false, 0, gameVersion))</div>
+						<div style="width: @(widths[2])px;" class="text-right">@spawn.Enemy.NoFarmGems</div>
 						<div style="width: @(widths[3])px;" class="text-right">@totalGems</div>
 					</div>
 				}
@@ -72,9 +60,9 @@
 
 			List<Spawn> endLoop = spawnset.Spawns.Values.Skip(endLoopIndex).ToList();
 
-			if (endLoop.Where(s => s.SpawnsetEnemy != Spawnset.Enemies[-1]).Count() != 0)
+			if (endLoop.Count(s => s.Enemy != null) != 0)
 			{
-				int spawns = spawnset.Spawns.Where(s => s.Value.SpawnsetEnemy != Spawnset.Enemies[-1]).Count();
+				int spawns = spawnset.Spawns.Where(s => s.Value.Enemy != null).Count();
 
 				double endGameSecond = totalSeconds;
 				for (int i = 0; i < maxWaves; i++)
@@ -92,7 +80,7 @@
 					double delay = 0;
 					foreach (Spawn spawn in endLoop)
 					{
-						if (spawn.SpawnsetEnemy != Spawnset.Enemies[-1])
+						if (spawn.Enemy != null)
 						{
 							spawns++;
 						}
@@ -104,13 +92,13 @@
 							enemyTimer += (1f / 60f) + (1f / 60f / 8f * i);
 						}
 
-						if (spawn.SpawnsetEnemy != Spawnset.Enemies[-1])
+						if (spawn.Enemy != null)
 						{
-							SpawnsetEnemy finalEnemy = spawn.SpawnsetEnemy;
+							Enemy finalEnemy = spawn.Enemy;
 							// Change the third Gigapede into a Ghostpede.
-							if (i % 3 == 2 && gameVersion == GameInfo.GameVersions["V3"] && finalEnemy == Spawnset.Enemies[5])
+							if (i % 3 == 2 && gameVersion == GameVersion.V3 && finalEnemy == GameInfo.V3Gigapede)
 							{
-								finalEnemy = Spawnset.Enemies[9];
+								finalEnemy = GameInfo.V3Ghostpede;
 							}
 
 							int gems = finalEnemy.NoFarmGems;
@@ -118,7 +106,7 @@
 
 							<div class="flex-container flex-center">
 								<div style="width: @(widths[0])px;" class="text-right">@((Math.Floor(endGameSecond * 60) / 60).ToString(FormatUtils.SpawnTimeFormat))</div>
-								<div style="width: @(widths[1])px;">@(finalEnemy.ToEnemy(gameVersion).GetLayoutAnchor(false, Model.Contains("V3_Sorath") && spawns > 525 ? Math.Min((spawns - 525) / 10f, 100) : 0))</div>
+								<div style="width: @(widths[1])px;">@(finalEnemy.GetLayoutAnchor(false, Model.Contains("V3_Sorath") && spawns > 525 ? Math.Min((spawns - 525) / 10f, 100) : 0))</div>
 								<div style="width: @(widths[2])px;" class="text-right">@gems</div>
 								<div style="width: @(widths[3])px;" class="text-right">@totalGems</div>
 							</div>
@@ -127,7 +115,7 @@
 				}
 			}
 
-			<div style="color: var(--col-red); font-size: 24px;">@(endLoop.Count != 1 || (endLoop.Count == 1 && endLoop[0].SpawnsetEnemy != Spawnset.Enemies[-1]) ? "Goes on eternally..." : "End of spawnset")</div>
+			<div style="color: var(--col-red); font-size: 24px;">@(endLoop.Count != 1 || (endLoop.Count == 1 && endLoop[0].Enemy != null) ? "Goes on eternally..." : "End of spawnset")</div>
 		}
 	</div>
 }

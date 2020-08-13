@@ -10,19 +10,16 @@
 </header>
 
 <form method="get">
-	<select class="select form-control" asp-for="gameVersion" asp-items="Model.GameVersionListItems" onchange="this.form.submit()"></select>
+	<select class="select form-control" asp-for="GameVersion" asp-items="Model.GameVersionListItems" onchange="this.form.submit()"></select>
 </form>
 
 <main role="main" class="text-center">
 	<p>
-		These are the official spawn times for Devil Daggers @Model.gameVersion.
+		These are the official spawn times for Devil Daggers @Model.GameVersion.
 	</p>
 	<p>
-		@RazorUtils.GetLayout($"Note that {Model.EmergeEnemies} emerge around 3 seconds later than their actual spawn time.", Model.gameVersionObject)
+		@RazorUtils.GetLayout($"Note that {Model.EmergeEnemies} emerge around 3 seconds later than their actual spawn time.", Model.GameVersion)
 	</p>
-	@*<p>
-			Visit <a asp-page="/Wiki/SpawnsExtended">this page</a> for extended spawns information.
-		</p>*@
 
 	@await Html.PartialAsync("Partials/_SpawnsPartial", Model.SpawnsetPath)
 </main>

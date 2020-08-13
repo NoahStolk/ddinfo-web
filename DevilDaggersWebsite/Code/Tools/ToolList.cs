@@ -78,7 +78,7 @@ namespace DevilDaggersWebsite.Code.Utils
 						new Change("Removed \"Loop start\" column from the online spawnset list."),
 						new Change("The Switch Enemy Type window now only displays enemy types that exist in the current spawn selection."),
 						new Change("Removed minimum window size and added scrollbars that become active when the window size becomes smaller than 1366x768. This applies to the Main window and the Download Spawnset window."),
-						new Change("Fixed spawn enemy text colour not always updating correctly."),
+						new Change("Fixed spawn enemy text color not always updating correctly."),
 						new Change("Small layout improvements."),
 						new Change("Improved logging."),
 						new Change("Internal changes such as importing Devil Daggers Custom Leaderboards specific code for memory scanning base functionality as preparation for possible custom leaderboard integration, as well as general code refactoring and improvements.")
@@ -174,7 +174,7 @@ namespace DevilDaggersWebsite.Code.Utils
 						new Change("Added Select All and Deselect All buttons to the arena editor."),
 						new Change("Added copy/paste functionality to the spawns editor."),
 						new Change("Added timeout for web requests so the application doesn't keep waiting when the website is offline."),
-						new Change("Fixed tile elements not updating colours after rounding or randomising."),
+						new Change("Fixed tile elements not updating colors after rounding or randomising."),
 						new Change("The spawns editor scrollbar now scrolls to the end when adding new spawns."),
 						new Change("The Download Spawnset window now remembers the author and spawnset search values after it is closed."),
 						new Change("The default survival file is now embedded into the executable so the actual file is not needed anymore. This removes the issue where the application crashes whenever the file would not be present."),

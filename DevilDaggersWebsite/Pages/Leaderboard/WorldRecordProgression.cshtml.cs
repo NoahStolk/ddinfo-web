@@ -1,5 +1,5 @@
 ﻿using DevilDaggersCore.Leaderboards.History;
-using DevilDaggersWebsite.Code.Api;
+using DevilDaggersWebsite.Code.Utils;
 using Microsoft.AspNetCore.Hosting;
 using Microsoft.AspNetCore.Mvc.RazorPages;
 using System;
@@ -23,7 +23,7 @@ namespace DevilDaggersWebsite.Pages.Leaderboard
 
 		public void OnGet()
 		{
-			List<WorldRecord> worldRecords = ApiFunctions.GetWorldRecords(env, null);
+			List<WorldRecord> worldRecords = LeaderboardHistoryUtils.GetWorldRecords(env, null);
 
 			TimeSpan heldConsecutively = new TimeSpan();
 			for (int i = 0; i < worldRecords.Count; i++)

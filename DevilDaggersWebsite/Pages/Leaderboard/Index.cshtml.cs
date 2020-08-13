@@ -71,19 +71,19 @@ namespace DevilDaggersWebsite.Pages.Leaderboard
 			switch (LeaderboardSearchType)
 			{
 				case LeaderboardSearchType.Username:
-					Leaderboard = await Hasmodai.GetUserSearch(Username);
+					Leaderboard = await HasmodaiUtils.GetUserSearch(Username);
 					break;
 				case LeaderboardSearchType.UserId:
-					Leaderboard = new Lb { Entries = new List<Entry> { await Hasmodai.GetUserById(UserId) } };
+					Leaderboard = new Lb { Entries = new List<Entry> { await HasmodaiUtils.GetUserById(UserId) } };
 					break;
 				case LeaderboardSearchType.Rank:
 				default:
-					Leaderboard = await Hasmodai.GetScores(Rank);
+					Leaderboard = await HasmodaiUtils.GetScores(Rank);
 					if (Rank > Leaderboard.Players - 99)
 					{
 						Rank = Leaderboard.Players - 99;
 						Leaderboard.Entries.Clear();
-						Leaderboard = await Hasmodai.GetScores(Rank);
+						Leaderboard = await HasmodaiUtils.GetScores(Rank);
 					}
 					break;
 			}

@@ -14,19 +14,9 @@ let getUrlParameter = function getUrlParameter(sParam) {
 	}
 };
 
-let gameVersions = [];
-$.ajax({
-	url: "/Api/GetGameVersions",
-	async: false,
-	dataType: 'json',
-	success: function (json) {
-		gameVersions = json;
-	}
-});
-
 let deathTypes = [];
 $.ajax({
-	url: "/Api/GetDeaths?gameVersion=V1",
+	url: "/api/deaths?gameVersion=V1",
 	async: false,
 	dataType: 'json',
 	success: function (json) {
@@ -34,7 +24,7 @@ $.ajax({
 	}
 });
 $.ajax({
-	url: "/Api/GetDeaths?gameVersion=V2",
+	url: "/api/deaths?gameVersion=V2",
 	async: false,
 	dataType: 'json',
 	success: function (json) {
@@ -42,7 +32,7 @@ $.ajax({
 	}
 });
 $.ajax({
-	url: "/Api/GetDeaths?gameVersion=V3",
+	url: "/api/deaths?gameVersion=V3",
 	async: false,
 	dataType: 'json',
 	success: function (json) {
@@ -50,18 +40,21 @@ $.ajax({
 	}
 });
 
-function getGameVersion(date) {
-	for (let i = Object.keys(gameVersions).length; i > 0; i--)
-		if (date >= new Date(gameVersions["V" + i].ReleaseDate))
-			return i - 1;
-	return 0;
-}
-
 function getDeathType(date, entry) {
-	const gameVersion = getGameVersion(date);
-	for (let i = 0; i < deathTypes[gameVersion].length; i++)
-		if (deathTypes[gameVersion][i].DeathType === entry.DeathType)
-			return deathTypes[gameVersion][i];
+	let gameVersionIndex = 0;
+	if (date > new Date(2016, 6, 5) && date < new Date(2016, 8, 19)) // V2 release = 5 july (yes that's month 6 in javascript help me please)
+		gameVersionIndex = 1; // haha V2 = index 1 i am javascript now
+	else if (date >= new Date(2016, 8, 19)) //also september 19 = V3 let's write grammatically incorrect comments because it's javascript anyway
+		gameVersionIndex = 2;
+
+	for (let i = 0; i < deathTypes[gameVersionIndex].length; i++)
+		if (deathTypes[gameVersionIndex][i].deathType === entry.deathType)
+			return deathTypes[gameVersionIndex][i];
+
+	return {
+		colorCode: '444',
+		name: 'Unknown'
+	};
 }
 
 function createChart(chartName, data, minDate, maxDate, minTime, maxTime, yNumberTicks) {

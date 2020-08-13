@@ -14,7 +14,7 @@
 </header>
 
 <form method="get">
-	<select class="select form-control" asp-for="gameVersion" asp-items="Model.GameVersionListItems" onchange="this.form.submit()"></select>
+	<select class="select form-control" asp-for="GameVersion" asp-items="Model.GameVersionListItems" onchange="this.form.submit()"></select>
 </form>
 
 <main role="main">
@@ -43,7 +43,7 @@
 				<div class='text-right'>@enemy.Hp</div>
 				<div class='text-right'>@enemy.Gems</div>
 				<div style='color: #@enemy.Death.ColorCode'>@enemy.Death.Name</div>
-				<div class="hidden-sm hidden-md">@string.Join(", ", enemy.Appearances)</div>
+				<div class="hidden-sm hidden-md">@string.Join(", ", GameInfo.GetAppearances(enemy.Name))</div>
 				<div>
 					@if (enemy.SpawnedBy.Count() == 0)
 					{
@@ -72,7 +72,7 @@
 				</div>
 				<div class="enemy-row flex-container">
 					<div>Image</div>
-					<div><img class="img-responsive pull-right" src='~/Images/Enemies/@(enemy.Name == "Gigapede" && Model.gameVersion == "V3" ? "GigapedeV3" : enemy.Name).png' /></div>
+					<div><img class="img-responsive pull-right" src='~/Images/Enemies/@(enemy.Name == "Gigapede" && Model.GameVersion == GameVersion.V3 ? "GigapedeV3" : enemy.Name).png' /></div>
 				</div>
 				<div class="enemy-row flex-container">
 					<div>HP</div>
@@ -88,7 +88,7 @@
 				</div>
 				<div class="enemy-row flex-container">
 					<div>First appearance</div>
-					<div class="text-right">@enemy.GetAppearances().FirstOrDefault().Type.Name</div>
+					<div class="text-right">@GameInfo.GetAppearances(enemy.Name).OrderBy(e => e).First()</div>
 				</div>
 				<div class="enemy-row flex-container">
 					<div>Spawned by</div>
@@ -107,15 +107,12 @@
 					</div>
 				</div>
 				<div class="enemy-row flex-container">
-					<div>Behaviour</div>
+					<div>Behavior</div>
 					<div>
 						<ul>
-							@{
-								string[] strings = GameInfo.GetEnemyInfo(enemy).Split('\n');
-								foreach (string s in strings)
-								{
-									<li>@RazorUtils.GetLayout(s.TransmuteString())</li>
-								}
+							@foreach (string s in GameInfo.GetEnemyInfo(enemy))
+							{
+								<li>@RazorUtils.GetLayout(s.TransmuteString())</li>
 							}
 						</ul>
 					</div>
@@ -341,9 +338,9 @@
 	<h2 id="@Model.TableOfContents[index].ToIdString()" class="text-center">@Model.TableOfContents[index++]</h2>
 	<ul>
 		@{
-			string transmuters = Model.gameVersion == "V3" ? "Leviathan or The Orb beckon, they" : "Leviathan beckons, it";
+			string transmuters = Model.GameVersion == GameVersion.V3 ? "Leviathan or The Orb beckon, they" : "Leviathan beckons, it";
 
-			string transmutedSkullList = (Model.gameVersion == "V1")
+			string transmutedSkullList = (Model.GameVersion == GameVersion.V1)
 				? @"
 			<li>Skull I is turned into Transmuted Skull II.</li>
 			<li>Skull II is turned into Transmuted Skull III.</li>
@@ -358,12 +355,12 @@
 			<li>When {transmuters} will attract and transmute all skulls in the arena that touch the beckon ring.</li>
 			<li>When the skulls are sucked up and thrown back into the arena, they are 'transmuted', which means they have a different appearance and more HP. Transmuted Skull III also seems to turn faster.</li>
 			<li>Damaging a skull that is about to be transmuted is useless if it is not killed; the HP will reset to the transmuted skull's full HP.</li>
-			<li>Here is the list of which skull turns into which transmuted skull (this differs between game versions):<ul>{transmutedSkullList}</ul></li>", Model.gameVersionObject)
+			<li>Here is the list of which skull turns into which transmuted skull (this differs between game versions):<ul>{transmutedSkullList}</ul></li>", Model.GameVersion)
 		}
 	</ul>
 
 	@{
-		if (Model.gameVersion == "V3")
+		if (Model.GameVersion == GameVersion.V3)
 		{
 			<h2 id="@Model.TableOfContents[index].ToIdString()" class="text-center">@Model.TableOfContents[index++]</h2>
 			<ul>
