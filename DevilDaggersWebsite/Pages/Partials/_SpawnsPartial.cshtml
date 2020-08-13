@@ -106,18 +106,19 @@
 
 						if (spawn.Enemy != null)
 						{
+							Enemy finalEnemy = spawn.Enemy;
 							// Change the third Gigapede into a Ghostpede.
-							if (i % 3 == 2 && gameVersion == GameVersion.V3 && spawn.Enemy == GameData.V3Gigapede)
+							if (i % 3 == 2 && gameVersion == GameVersion.V3 && finalEnemy == GameData.V3Gigapede)
 							{
-								spawn.Enemy = GameData.V3Ghostpede;
+								finalEnemy = GameData.V3Ghostpede;
 							}
 
-							int gems = spawn.Enemy.NoFarmGems;
+							int gems = finalEnemy.NoFarmGems;
 							totalGems += gems;
 
 							<div class="flex-container flex-center">
 								<div style="width: @(widths[0])px;" class="text-right">@((Math.Floor(endGameSecond * 60) / 60).ToString(FormatUtils.SpawnTimeFormat))</div>
-								<div style="width: @(widths[1])px;">@(spawn.Enemy.GetLayoutAnchor(false, Model.Contains("V3_Sorath") && spawns > 525 ? Math.Min((spawns - 525) / 10f, 100) : 0))</div>
+								<div style="width: @(widths[1])px;">@(finalEnemy.GetLayoutAnchor(false, Model.Contains("V3_Sorath") && spawns > 525 ? Math.Min((spawns - 525) / 10f, 100) : 0))</div>
 								<div style="width: @(widths[2])px;" class="text-right">@gems</div>
 								<div style="width: @(widths[3])px;" class="text-right">@totalGems</div>
 							</div>
