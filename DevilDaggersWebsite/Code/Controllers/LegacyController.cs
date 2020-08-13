@@ -7,8 +7,6 @@ using Microsoft.AspNetCore.Hosting;
 using Microsoft.AspNetCore.Mvc;
 using System;
 using System.Collections.Generic;
-using System.IO;
-using System.Net.Mime;
 using System.Threading.Tasks;
 
 namespace DevilDaggersWebsite.Code.Controllers
@@ -41,11 +39,8 @@ namespace DevilDaggersWebsite.Code.Controllers
 		[Obsolete("api/spawnsets/{fileName}/path")]
 		[HttpGet("GetSpawnset")]
 		[ProducesResponseType(200)]
-		public FileContentResult GetSpawnset(string fileName)
-		{
-			string spawnsetPath = new SpawnsetsController(env).GetSpawnsetPath(fileName).Value;
-			return File(System.IO.File.ReadAllBytes(Path.Combine(env.WebRootPath, spawnsetPath)), MediaTypeNames.Application.Octet, fileName);
-		}
+		public ActionResult GetSpawnset(string fileName)
+			=> new SpawnsetsController(env).GetSpawnset(fileName);
 
 		[Obsolete("api/spawnsets")]
 		[HttpGet("GetSpawnsets")]
@@ -56,11 +51,8 @@ namespace DevilDaggersWebsite.Code.Controllers
 		[Obsolete("api/tools/{toolName}/path")]
 		[HttpGet("GetTool")]
 		[ProducesResponseType(200)]
-		public FileContentResult GetTool(string toolName)
-		{
-			string toolPath = new ToolsController(env).GetToolPath(toolName).Value;
-			return File(System.IO.File.ReadAllBytes(Path.Combine(env.WebRootPath, toolPath)), MediaTypeNames.Application.Zip, $"{toolName}.zip");
-		}
+		public ActionResult GetTool(string toolName)
+			=> new ToolsController(env).GetTool(toolName);
 
 		[Obsolete("api/tools")]
 		[HttpGet("GetTools")]
