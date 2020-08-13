@@ -17,6 +17,7 @@ namespace DevilDaggersWebsite.Code.Controllers
 
 		[HttpGet("by-name")]
 		[ProducesResponseType(200)]
+		[ProducesResponseType(400)]
 		[ProducesResponseType(404)]
 		public ActionResult<List<Enemy>> GetEnemiesByName([Required] string enemyName, GameVersion? gameVersion = null)
 		{
@@ -28,6 +29,7 @@ namespace DevilDaggersWebsite.Code.Controllers
 
 		[HttpGet("by-type")]
 		[ProducesResponseType(200)]
+		[ProducesResponseType(400)]
 		[ProducesResponseType(404)]
 		public ActionResult<List<Enemy>> GetEnemyBySpawnsetType([Required] byte spawnsetType, GameVersion? gameVersion = null)
 		{

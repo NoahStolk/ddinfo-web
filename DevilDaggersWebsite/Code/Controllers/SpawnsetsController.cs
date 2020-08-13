@@ -22,6 +22,7 @@ namespace DevilDaggersWebsite.Code.Controllers
 
 		[HttpGet("{fileName}/path")]
 		[ProducesResponseType(200)]
+		[ProducesResponseType(400)]
 		[ProducesResponseType(404)]
 		public ActionResult<string> GetSpawnsetPath([Required] string fileName)
 		{

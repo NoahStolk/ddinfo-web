@@ -16,6 +16,7 @@ namespace DevilDaggersWebsite.Code.Controllers
 
 		[HttpGet("at-time")]
 		[ProducesResponseType(200)]
+		[ProducesResponseType(400)]
 		public ActionResult<Dagger> GetDaggerAtSeconds([Required] uint seconds)
 			=> GameInfo.GetDaggerFromTime((int)seconds * 10000);
 	}

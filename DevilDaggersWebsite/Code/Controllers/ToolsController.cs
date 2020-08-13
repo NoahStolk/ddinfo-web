@@ -29,6 +29,7 @@ namespace DevilDaggersWebsite.Code.Controllers
 
 		[HttpGet("{toolName}/path")]
 		[ProducesResponseType(200)]
+		[ProducesResponseType(400)]
 		[ProducesResponseType(404)]
 		public ActionResult<string> GetToolPath([Required] string toolName)
 		{

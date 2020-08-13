@@ -26,6 +26,7 @@ namespace DevilDaggersWebsite.Code.Controllers
 
 		[HttpGet("user-progression")]
 		[ProducesResponseType(200)]
+		[ProducesResponseType(400)]
 		public SortedDictionary<DateTime, Entry> GetUserProgressionById([Required] int userId)
 		{
 			SortedDictionary<DateTime, Entry> data = new SortedDictionary<DateTime, Entry>();
@@ -57,6 +58,7 @@ namespace DevilDaggersWebsite.Code.Controllers
 
 		[HttpGet("latest-date-played")]
 		[ProducesResponseType(200)]
+		[ProducesResponseType(400)]
 		public (DateTime from, DateTime to) GetLatestDatePlayed([Required] int userId)
 		{
 			List<(DateTime dateTime, Entry entry)> entries = new List<(DateTime, Entry)>();
@@ -79,6 +81,7 @@ namespace DevilDaggersWebsite.Code.Controllers
 
 		[HttpGet("user-activity")]
 		[ProducesResponseType(200)]
+		[ProducesResponseType(400)]
 		public Dictionary<DateTime, ulong> GetUserActivity([Required] int userId)
 		{
 			Dictionary<DateTime, ulong> data = new Dictionary<DateTime, ulong>();
