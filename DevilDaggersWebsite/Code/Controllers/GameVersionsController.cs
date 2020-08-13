@@ -20,14 +20,14 @@ namespace DevilDaggersWebsite.Code.Controllers
 			return releaseDate;
 		}
 
-		[HttpGet("{atDate}")]
+		[HttpGet("at-date")]
 		[ProducesResponseType(200)]
 		[ProducesResponseType(400)]
-		public ActionResult<GameVersion> GetGameVersionAtDate([Required] DateTime atDate)
+		public ActionResult<GameVersion> GetGameVersionAtDate([Required] DateTime date)
 		{
-			GameVersion? gameVersion = GameInfo.GetGameVersionFromDate(atDate);
+			GameVersion? gameVersion = GameInfo.GetGameVersionFromDate(date);
 			if (gameVersion == null)
-				return new BadRequestObjectResult(new ProblemDetails { Title = $"No game version found at date '{atDate}'." });
+				return new BadRequestObjectResult(new ProblemDetails { Title = $"No game version found at date '{date}'." });
 			return gameVersion;
 		}
 	}
