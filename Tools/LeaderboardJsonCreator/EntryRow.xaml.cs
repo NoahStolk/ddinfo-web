@@ -1,6 +1,5 @@
 ﻿using DevilDaggersCore.Game;
 using DevilDaggersCore.Leaderboards;
-using System.Linq;
 using System.Windows;
 using System.Windows.Controls;
 
@@ -22,7 +21,7 @@ namespace LeaderboardJsonCreator
 			Time.Text = entry.Time.ToString();
 			Kills.Text = entry.Kills.ToString();
 			Gems.Text = entry.Gems.ToString();
-			DeathType.Text = $"{entry.DeathType} ({GameInfo.GetEntities<Death>().FirstOrDefault(d => d.DeathType == entry.DeathType).Name})";
+			DeathType.Text = $"{entry.DeathType} ({GameInfo.GetDeathByType(entry.DeathType).Name})";
 			Accuracy.Text = entry.ShotsFired == 0 ? "" : $"{entry.ShotsHit / (float)entry.ShotsFired:0.00%} ({entry.ShotsHit}/{entry.ShotsFired})";
 			TimeTotal.Text = entry.TimeTotal.ToString();
 			KillsTotal.Text = entry.KillsTotal.ToString();

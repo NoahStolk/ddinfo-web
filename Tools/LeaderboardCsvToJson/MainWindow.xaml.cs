@@ -4,7 +4,6 @@ using DevilDaggersCore.Utils;
 using Microsoft.Win32;
 using Newtonsoft.Json;
 using System.IO;
-using System.Linq;
 using System.Text;
 using System.Windows;
 
@@ -95,7 +94,7 @@ namespace LeaderboardCsvToJson
 							if (entry.ShotsHit != 0)
 								entry.ShotsFired = 10000;
 
-							entry.DeathType = GameInfo.GetEntities<Death>(GameVersion.V3).FirstOrDefault(d => d.Name.ToLower() == values[6].ToLower()).DeathType;
+							entry.DeathType = GameInfo.GetDeathByName(values[6]).DeathType;
 
 							if (ulong.TryParse(values[7].Replace(".", ""), out ulong timeTotal))
 								entry.TimeTotal = timeTotal;

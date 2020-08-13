@@ -3,7 +3,6 @@ using DevilDaggersCore.Leaderboards;
 using DevilDaggersCore.Utils;
 using Newtonsoft.Json;
 using System.IO;
-using System.Linq;
 using System.Text;
 
 namespace LeaderboardHtmlToJson
@@ -47,7 +46,7 @@ namespace LeaderboardHtmlToJson
 						Gems = int.Parse(GetValue(lines[i], "gems")),
 						ShotsFired = 10000,
 						ShotsHit = int.Parse(GetValue(lines[i], "accuracy")),
-						DeathType = GameInfo.GetEntities<Death>().FirstOrDefault(d => d.Name.ToLower() == GetValue(lines[i], "death-type").ToLower()).DeathType,
+						DeathType = GameInfo.GetDeathByName(GetValue(lines[i], "death-type")).DeathType,
 						TimeTotal = ulong.Parse(GetValue(lines[i], "total-time")),
 						KillsTotal = ulong.Parse(GetValue(lines[i], "total-kills")),
 						GemsTotal = ulong.Parse(GetValue(lines[i], "total-gems")),
