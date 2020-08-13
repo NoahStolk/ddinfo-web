@@ -96,9 +96,9 @@
 						{
 							Enemy finalEnemy = spawn.Enemy;
 							// Change the third Gigapede into a Ghostpede.
-							if (i % 3 == 2 && gameVersion == GameVersion.V3 && finalEnemy == GameData.V3Gigapede)
+							if (i % 3 == 2 && gameVersion == GameVersion.V3 && finalEnemy == GameInfo.V3Gigapede)
 							{
-								finalEnemy = GameData.V3Ghostpede;
+								finalEnemy = GameInfo.V3Ghostpede;
 							}
 
 							int gems = finalEnemy.NoFarmGems;

@@ -29,17 +29,17 @@ namespace DevilDaggersWebsite.Tests
 		[TestMethod]
 		public void GetDaggerAtSeconds()
 		{
-			TestDaggerAtSeconds(1100, GameData.V3Devil);
-			TestDaggerAtSeconds(600, GameData.V3Devil);
-			TestDaggerAtSeconds(500, GameData.V3Devil);
-			TestDaggerAtSeconds(400, GameData.V3Golden);
-			TestDaggerAtSeconds(250, GameData.V3Golden);
-			TestDaggerAtSeconds(200, GameData.V3Silver);
-			TestDaggerAtSeconds(120, GameData.V3Silver);
-			TestDaggerAtSeconds(100, GameData.V3Bronze);
-			TestDaggerAtSeconds(60, GameData.V3Bronze);
-			TestDaggerAtSeconds(30, GameData.V3Default);
-			TestDaggerAtSeconds(0, GameData.V3Default);
+			TestDaggerAtSeconds(1100, GameInfo.V3Devil);
+			TestDaggerAtSeconds(600, GameInfo.V3Devil);
+			TestDaggerAtSeconds(500, GameInfo.V3Devil);
+			TestDaggerAtSeconds(400, GameInfo.V3Golden);
+			TestDaggerAtSeconds(250, GameInfo.V3Golden);
+			TestDaggerAtSeconds(200, GameInfo.V3Silver);
+			TestDaggerAtSeconds(120, GameInfo.V3Silver);
+			TestDaggerAtSeconds(100, GameInfo.V3Bronze);
+			TestDaggerAtSeconds(60, GameInfo.V3Bronze);
+			TestDaggerAtSeconds(30, GameInfo.V3Default);
+			TestDaggerAtSeconds(0, GameInfo.V3Default);
 
 			void TestDaggerAtSeconds(uint seconds, Dagger expectedDagger)
 			{
@@ -107,9 +107,9 @@ namespace DevilDaggersWebsite.Tests
 		{
 			List<Death> deathsType1 = deathsController.GetDeathsByType(1).Value;
 			Assert.AreEqual(3, deathsType1.Count);
-			Assert.AreEqual(GameData.V1Swarmed, deathsType1.Single(d => d.GameVersion == GameVersion.V1));
-			Assert.AreEqual(GameData.V2Swarmed, deathsType1.Single(d => d.GameVersion == GameVersion.V2));
-			Assert.AreEqual(GameData.V3Swarmed, deathsType1.Single(d => d.GameVersion == GameVersion.V3));
+			Assert.AreEqual(GameInfo.V1Swarmed, deathsType1.Single(d => d.GameVersion == GameVersion.V1));
+			Assert.AreEqual(GameInfo.V2Swarmed, deathsType1.Single(d => d.GameVersion == GameVersion.V2));
+			Assert.AreEqual(GameInfo.V3Swarmed, deathsType1.Single(d => d.GameVersion == GameVersion.V3));
 		}
 	}
 }
