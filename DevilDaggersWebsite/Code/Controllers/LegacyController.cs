@@ -7,6 +7,7 @@ using Microsoft.AspNetCore.Hosting;
 using Microsoft.AspNetCore.Mvc;
 using System;
 using System.Collections.Generic;
+using System.IO;
 using System.Net.Mime;
 using System.Threading.Tasks;
 
@@ -42,12 +43,8 @@ namespace DevilDaggersWebsite.Code.Controllers
 		[ProducesResponseType(200)]
 		public FileContentResult GetSpawnset(string fileName)
 		{
-			try
-			{
-				string spawnsetPath = new SpawnsetsController(env).GetSpawnsetPath(fileName).Value;
-				return File(System.IO.File.ReadAllBytes(spawnsetPath), MediaTypeNames.Application.Octet);
-			}
-			catch { return File(new byte[0], string.Empty); }
+			string spawnsetPath = new SpawnsetsController(env).GetSpawnsetPath(fileName).Value;
+			return File(System.IO.File.ReadAllBytes(Path.Combine(env.WebRootPath, spawnsetPath)), MediaTypeNames.Application.Octet, fileName);
 		}
 
 		[Obsolete("api/spawnsets")]
@@ -61,12 +58,8 @@ namespace DevilDaggersWebsite.Code.Controllers
 		[ProducesResponseType(200)]
 		public FileContentResult GetTool(string toolName)
 		{
-			try
-			{
-				string toolPath = new ToolsController(env).GetToolPath(toolName).Value;
-				return File(System.IO.File.ReadAllBytes(toolPath), MediaTypeNames.Application.Zip);
-			}
-			catch { return File(new byte[0], string.Empty); }
+			string toolPath = new ToolsController(env).GetToolPath(toolName).Value;
+			return File(System.IO.File.ReadAllBytes(Path.Combine(env.WebRootPath, toolPath)), MediaTypeNames.Application.Zip, $"{toolName}.zip");
 		}
 
 		[Obsolete("api/tools")]

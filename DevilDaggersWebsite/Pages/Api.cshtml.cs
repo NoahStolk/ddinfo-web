@@ -31,9 +31,6 @@ namespace DevilDaggersWebsite.Pages
 					if (httpMethodAttribute == null || responseTypeAttributes == null || !responseTypeAttributes.Any())
 						continue;
 
-					if (httpMethodAttribute?.Template?.Contains("GetCustomLeaderboards") ?? false)
-						Debugger.Break();
-
 					ObsoleteAttribute obsoleteAttribute = endpointMethod.GetCustomAttribute<ObsoleteAttribute>();
 
 					Type returnType = endpointMethod.ReturnType;
