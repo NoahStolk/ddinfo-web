@@ -7,6 +7,7 @@ using System.Collections.Generic;
 using System.ComponentModel.DataAnnotations;
 using System.IO;
 using System.Linq;
+using System.Net.Mime;
 using Io = System.IO;
 
 namespace DevilDaggersWebsite.Code.Controllers
@@ -43,6 +44,18 @@ namespace DevilDaggersWebsite.Code.Controllers
 				throw new Exception($"Tool file '{path}' does not exist.");
 
 			return path;
+		}
+
+		[HttpGet("{toolName}")]
+		[ProducesResponseType(200)]
+		[ProducesResponseType(400)]
+		[ProducesResponseType(404)]
+		public ActionResult<FileContentResult> GetTool([Required] string toolName)
+		{
+			if (!Io.File.Exists(Path.Combine(env.WebRootPath, "tools", toolName)))
+				return new NotFoundObjectResult(new ProblemDetails { Title = $"Tool '{toolName}' was not found." });
+
+			return File(Io.File.ReadAllBytes(Path.Combine(env.WebRootPath, "tools", toolName)), MediaTypeNames.Application.Zip, $"{toolName}.zip");
 		}
 	}
 }

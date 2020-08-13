@@ -5,6 +5,7 @@ using Microsoft.AspNetCore.Mvc;
 using System.Collections.Generic;
 using System.ComponentModel.DataAnnotations;
 using System.IO;
+using System.Net.Mime;
 using Io = System.IO;
 
 namespace DevilDaggersWebsite.Code.Controllers
@@ -20,6 +21,11 @@ namespace DevilDaggersWebsite.Code.Controllers
 			this.env = env;
 		}
 
+		[HttpGet]
+		[ProducesResponseType(200)]
+		public List<SpawnsetFile> GetSpawnsets(string searchAuthor = null, string searchName = null)
+			=> SpawnsetUtils.GetSpawnsets(env, searchAuthor, searchName);
+
 		[HttpGet("{fileName}/path")]
 		[ProducesResponseType(200)]
 		[ProducesResponseType(400)]
@@ -32,9 +38,16 @@ namespace DevilDaggersWebsite.Code.Controllers
 			return Path.Combine("spawnsets", fileName);
 		}
 
-		[HttpGet]
+		[HttpGet("{fileName}")]
 		[ProducesResponseType(200)]
-		public List<SpawnsetFile> GetSpawnsets(string searchAuthor = null, string searchName = null)
-			=> SpawnsetUtils.GetSpawnsets(env, searchAuthor, searchName);
+		[ProducesResponseType(400)]
+		[ProducesResponseType(404)]
+		public ActionResult<FileContentResult> GetSpawnset([Required] string fileName)
+		{
+			if (!Io.File.Exists(Path.Combine(env.WebRootPath, "spawnsets", fileName)))
+				return new NotFoundObjectResult(new ProblemDetails { Title = $"Spawnset '{fileName}' was not found." });
+
+			return File(Io.File.ReadAllBytes(Path.Combine(env.WebRootPath, "spawnsets", fileName)), MediaTypeNames.Application.Octet, fileName);
+		}
 	}
 }
