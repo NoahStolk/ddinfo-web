@@ -42,7 +42,7 @@
 				<div>@RazorUtils.GetLayoutAnchor(enemy)</div>
 				<div class='text-right'>@enemy.Hp</div>
 				<div class='text-right'>@enemy.Gems</div>
-				<div style='color: #@enemy.Death.ColorCode'>@enemy.Death.Name</div>
+				<div style='color: #@(enemy.Death?.ColorCode ?? "444")'>@(enemy.Death?.Name ?? "N/A")</div>
 				<div class="hidden-sm hidden-md">@string.Join(", ", GameInfo.GetAppearances(enemy.Name))</div>
 				<div>
 					@if (enemy.SpawnedBy.Count() == 0)

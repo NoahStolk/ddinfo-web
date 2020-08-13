@@ -30,8 +30,10 @@ namespace DevilDaggersWebsite.Pages
 				SpawnsetFile = SpawnsetUtils.CreateSpawnsetFileFromSettingsFile(Env, Path.Combine(Env.WebRootPath, "spawnsets", Query));
 
 				using (FileStream fs = new FileStream(SpawnsetFile.Path, FileMode.Open, FileAccess.Read))
+				{
 					if (!Spawnset.TryParse(fs, out spawnset))
 						return RedirectToPage("Spawnsets");
+				}
 
 				return null;
 			}
