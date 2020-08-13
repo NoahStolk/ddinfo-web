@@ -2,6 +2,7 @@
 using Microsoft.AspNetCore.Mvc;
 using System.Collections.Generic;
 using System.ComponentModel.DataAnnotations;
+using System.Globalization;
 using System.Linq;
 
 namespace DevilDaggersWebsite.Code.Controllers
@@ -18,13 +19,13 @@ namespace DevilDaggersWebsite.Code.Controllers
 		[HttpGet("by-type")]
 		[ProducesResponseType(200)]
 		[ProducesResponseType(400)]
-		public ActionResult<Death> GetDeathByType([Required] int type, GameVersion? gameVersion = null)
-			=> GameInfo.GetEntities<Death>(gameVersion).FirstOrDefault(d => d.DeathType == type) ?? GameData.V3Unknown;
+		public ActionResult<List<Death>> GetDeathsByType([Required] int type, GameVersion? gameVersion = null)
+			=> GameInfo.GetEntities<Death>(gameVersion).Where(d => d.DeathType == type).ToList();
 
 		[HttpGet("by-name")]
 		[ProducesResponseType(200)]
 		[ProducesResponseType(400)]
-		public ActionResult<Death> GetDeathByName([Required] string name, GameVersion? gameVersion = null)
-			=> GameInfo.GetEntities<Death>(gameVersion).FirstOrDefault(d => d.Name.ToLower() == name.ToLower()) ?? GameData.V3Unknown;
+		public ActionResult<List<Death>> GetDeathsByName([Required] string name, GameVersion? gameVersion = null)
+			=> GameInfo.GetEntities<Death>(gameVersion).Where(d => d.Name.ToLower(CultureInfo.InvariantCulture) == name.ToLower(CultureInfo.InvariantCulture)).ToList();
 	}
 }

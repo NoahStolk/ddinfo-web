@@ -4,6 +4,7 @@
 		<Company />
 		<Authors>Noah Stolk</Authors>
 		<Copyright>Copyright © Noah Stolk 2017 - 2020</Copyright>
+		<GenerateDocumentationFile>true</GenerateDocumentationFile>
 	</PropertyGroup>
 	<ItemGroup>
 		<PackageReference Include="BuildBundlerMinifier" Version="3.2.449" />
