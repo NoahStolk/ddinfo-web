@@ -1,0 +1,109 @@
+﻿@page
+@model DevilDaggersWebsite.Pages.Admin.Players.IndexModel
+
+@{
+	ViewData["Title"] = "Index";
+}
+
+<h2>Index</h2>
+
+<p>
+	<a asp-page="Create">Create New</a>
+</p>
+<table class="table">
+	<thead>
+		<tr>
+			<th>
+				@Html.DisplayNameFor(model => model.Player[0].PlayerId)
+			</th>
+			<th>
+				@Html.DisplayNameFor(model => model.Player[0].Username)
+			</th>
+			<th>
+				@Html.DisplayNameFor(model => model.Player[0].IsAnonymous)
+			</th>
+			<th>
+				@Html.DisplayNameFor(model => model.Player[0].CountryCode)
+			</th>
+			<th>
+				@Html.DisplayNameFor(model => model.Player[0].Dpi)
+			</th>
+			<th>
+				@Html.DisplayNameFor(model => model.Player[0].InGameSens)
+			</th>
+			<th>
+				@Html.DisplayNameFor(model => model.Player[0].Fov)
+			</th>
+			<th>
+				@Html.DisplayNameFor(model => model.Player[0].RightHanded)
+			</th>
+			<th>
+				@Html.DisplayNameFor(model => model.Player[0].FlashEnabled)
+			</th>
+			<th>
+				@Html.DisplayNameFor(model => model.Player[0].Gamma)
+			</th>
+			<th>
+				@Html.DisplayNameFor(model => model.Player[0].IsBanned)
+			</th>
+			<th>
+				@Html.DisplayNameFor(model => model.Player[0].BanDescription)
+			</th>
+			<th>
+				@Html.DisplayNameFor(model => model.Player[0].BanResponsibleId)
+			</th>
+			<th></th>
+		</tr>
+	</thead>
+	<tbody>
+		@foreach (var item in Model.Player)
+		{
+			<tr>
+				<td>
+					@Html.DisplayFor(modelItem => item.PlayerId)
+				</td>
+				<td>
+					@Html.DisplayFor(modelItem => item.Username)
+				</td>
+				<td>
+					@Html.DisplayFor(modelItem => item.IsAnonymous)
+				</td>
+				<td>
+					@Html.DisplayFor(modelItem => item.CountryCode)
+				</td>
+				<td>
+					@Html.DisplayFor(modelItem => item.Dpi)
+				</td>
+				<td>
+					@Html.DisplayFor(modelItem => item.InGameSens)
+				</td>
+				<td>
+					@Html.DisplayFor(modelItem => item.Fov)
+				</td>
+				<td>
+					@Html.DisplayFor(modelItem => item.RightHanded)
+				</td>
+				<td>
+					@Html.DisplayFor(modelItem => item.FlashEnabled)
+				</td>
+				<td>
+					@Html.DisplayFor(modelItem => item.Gamma)
+				</td>
+				<td>
+					@Html.DisplayFor(modelItem => item.IsBanned)
+				</td>
+				<td>
+					@Html.DisplayFor(modelItem => item.BanDescription)
+				</td>
+				<td>
+					@Html.DisplayFor(modelItem => item.BanResponsibleId)
+				</td>
+				<td>
+					<a asp-page="./Edit" asp-route-id="@item.Id">Edit</a> |
+					<a asp-page="./Details" asp-route-id="@item.Id">Details</a> |
+					<a asp-page="./Delete" asp-route-id="@item.Id">Delete</a>
+				</td>
+			</tr>
+		}
+	</tbody>
+</table>

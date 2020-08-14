@@ -1,0 +1,100 @@
+﻿@page
+@model DevilDaggersWebsite.Pages.Admin.Players.DeleteModel
+
+@{
+	ViewData["Title"] = "Delete";
+}
+
+<h2>Delete</h2>
+
+<h3>Are you sure you want to delete this?</h3>
+<div>
+	<h4>Player</h4>
+	<hr />
+	<dl class="dl-horizontal">
+		<dt>
+			@Html.DisplayNameFor(model => model.Player.PlayerId)
+		</dt>
+		<dd>
+			@Html.DisplayFor(model => model.Player.PlayerId)
+		</dd>
+		<dt>
+			@Html.DisplayNameFor(model => model.Player.Username)
+		</dt>
+		<dd>
+			@Html.DisplayFor(model => model.Player.Username)
+		</dd>
+		<dt>
+			@Html.DisplayNameFor(model => model.Player.IsAnonymous)
+		</dt>
+		<dd>
+			@Html.DisplayFor(model => model.Player.IsAnonymous)
+		</dd>
+		<dt>
+			@Html.DisplayNameFor(model => model.Player.CountryCode)
+		</dt>
+		<dd>
+			@Html.DisplayFor(model => model.Player.CountryCode)
+		</dd>
+		<dt>
+			@Html.DisplayNameFor(model => model.Player.Dpi)
+		</dt>
+		<dd>
+			@Html.DisplayFor(model => model.Player.Dpi)
+		</dd>
+		<dt>
+			@Html.DisplayNameFor(model => model.Player.InGameSens)
+		</dt>
+		<dd>
+			@Html.DisplayFor(model => model.Player.InGameSens)
+		</dd>
+		<dt>
+			@Html.DisplayNameFor(model => model.Player.Fov)
+		</dt>
+		<dd>
+			@Html.DisplayFor(model => model.Player.Fov)
+		</dd>
+		<dt>
+			@Html.DisplayNameFor(model => model.Player.RightHanded)
+		</dt>
+		<dd>
+			@Html.DisplayFor(model => model.Player.RightHanded)
+		</dd>
+		<dt>
+			@Html.DisplayNameFor(model => model.Player.FlashEnabled)
+		</dt>
+		<dd>
+			@Html.DisplayFor(model => model.Player.FlashEnabled)
+		</dd>
+		<dt>
+			@Html.DisplayNameFor(model => model.Player.Gamma)
+		</dt>
+		<dd>
+			@Html.DisplayFor(model => model.Player.Gamma)
+		</dd>
+		<dt>
+			@Html.DisplayNameFor(model => model.Player.IsBanned)
+		</dt>
+		<dd>
+			@Html.DisplayFor(model => model.Player.IsBanned)
+		</dd>
+		<dt>
+			@Html.DisplayNameFor(model => model.Player.BanDescription)
+		</dt>
+		<dd>
+			@Html.DisplayFor(model => model.Player.BanDescription)
+		</dd>
+		<dt>
+			@Html.DisplayNameFor(model => model.Player.BanResponsibleId)
+		</dt>
+		<dd>
+			@Html.DisplayFor(model => model.Player.BanResponsibleId)
+		</dd>
+	</dl>
+
+	<form method="post">
+		<input type="hidden" asp-for="Player.Id" />
+		<input type="submit" value="Delete" class="btn btn-default" /> |
+		<a asp-page="./Index">Back to List</a>
+	</form>
+</div>

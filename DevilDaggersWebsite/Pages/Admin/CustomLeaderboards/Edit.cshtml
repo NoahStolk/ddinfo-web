@@ -1,0 +1,75 @@
+﻿@page
+@model DevilDaggersWebsite.Pages.Admin.CustomLeaderboards.EditModel
+
+@{
+    ViewData["Title"] = "Edit";
+}
+
+<h2>Edit</h2>
+
+<h4>CustomLeaderboard</h4>
+<hr />
+<div class="row">
+    <div class="col-md-4">
+        <form method="post">
+            <div asp-validation-summary="ModelOnly" class="text-danger"></div>
+            <input type="hidden" asp-for="CustomLeaderboard.Id" />
+            <div class="form-group">
+                <label asp-for="CustomLeaderboard.CategoryId" class="control-label"></label>
+                <select asp-for="CustomLeaderboard.CategoryId" class="form-control" asp-items="ViewBag.CategoryId"></select>
+                <span asp-validation-for="CustomLeaderboard.CategoryId" class="text-danger"></span>
+            </div>
+            <div class="form-group">
+                <label asp-for="CustomLeaderboard.SpawnsetFileName" class="control-label"></label>
+                <input asp-for="CustomLeaderboard.SpawnsetFileName" class="form-control" />
+                <span asp-validation-for="CustomLeaderboard.SpawnsetFileName" class="text-danger"></span>
+            </div>
+            <div class="form-group">
+                <label asp-for="CustomLeaderboard.Bronze" class="control-label"></label>
+                <input asp-for="CustomLeaderboard.Bronze" class="form-control" />
+                <span asp-validation-for="CustomLeaderboard.Bronze" class="text-danger"></span>
+            </div>
+            <div class="form-group">
+                <label asp-for="CustomLeaderboard.Silver" class="control-label"></label>
+                <input asp-for="CustomLeaderboard.Silver" class="form-control" />
+                <span asp-validation-for="CustomLeaderboard.Silver" class="text-danger"></span>
+            </div>
+            <div class="form-group">
+                <label asp-for="CustomLeaderboard.Golden" class="control-label"></label>
+                <input asp-for="CustomLeaderboard.Golden" class="form-control" />
+                <span asp-validation-for="CustomLeaderboard.Golden" class="text-danger"></span>
+            </div>
+            <div class="form-group">
+                <label asp-for="CustomLeaderboard.Devil" class="control-label"></label>
+                <input asp-for="CustomLeaderboard.Devil" class="form-control" />
+                <span asp-validation-for="CustomLeaderboard.Devil" class="text-danger"></span>
+            </div>
+            <div class="form-group">
+                <label asp-for="CustomLeaderboard.Homing" class="control-label"></label>
+                <input asp-for="CustomLeaderboard.Homing" class="form-control" />
+                <span asp-validation-for="CustomLeaderboard.Homing" class="text-danger"></span>
+            </div>
+            <div class="form-group">
+                <label asp-for="CustomLeaderboard.DateLastPlayed" class="control-label"></label>
+                <input asp-for="CustomLeaderboard.DateLastPlayed" class="form-control" />
+                <span asp-validation-for="CustomLeaderboard.DateLastPlayed" class="text-danger"></span>
+            </div>
+            <div class="form-group">
+                <label asp-for="CustomLeaderboard.DateCreated" class="control-label"></label>
+                <input asp-for="CustomLeaderboard.DateCreated" class="form-control" />
+                <span asp-validation-for="CustomLeaderboard.DateCreated" class="text-danger"></span>
+            </div>
+            <div class="form-group">
+                <input type="submit" value="Save" class="btn btn-default" />
+            </div>
+        </form>
+    </div>
+</div>
+
+<div>
+    <a asp-page="./Index">Back to List</a>
+</div>
+
+@section Scripts {
+    @{await Html.RenderPartialAsync("_ValidationScriptsPartial");}
+}

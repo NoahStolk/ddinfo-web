@@ -1,0 +1,43 @@
+﻿@page
+@model DevilDaggersWebsite.Pages.Admin.CustomLeaderboardCategories.DetailsModel
+
+@{
+	ViewData["Title"] = "Details";
+}
+
+<h2>Details</h2>
+
+<div>
+	<h4>CustomLeaderboardCategory</h4>
+	<hr />
+	<dl class="dl-horizontal">
+		<dt>
+			@Html.DisplayNameFor(model => model.CustomLeaderboardCategory.Name)
+		</dt>
+		<dd>
+			@Html.DisplayFor(model => model.CustomLeaderboardCategory.Name)
+		</dd>
+		<dt>
+			@Html.DisplayNameFor(model => model.CustomLeaderboardCategory.SortingPropertyName)
+		</dt>
+		<dd>
+			@Html.DisplayFor(model => model.CustomLeaderboardCategory.SortingPropertyName)
+		</dd>
+		<dt>
+			@Html.DisplayNameFor(model => model.CustomLeaderboardCategory.Ascending)
+		</dt>
+		<dd>
+			@Html.DisplayFor(model => model.CustomLeaderboardCategory.Ascending)
+		</dd>
+		<dt>
+			@Html.DisplayNameFor(model => model.CustomLeaderboardCategory.LayoutPartialName)
+		</dt>
+		<dd>
+			@Html.DisplayFor(model => model.CustomLeaderboardCategory.LayoutPartialName)
+		</dd>
+	</dl>
+</div>
+<div>
+	<a asp-page="./Edit" asp-route-id="@Model.CustomLeaderboardCategory.Id">Edit</a> |
+	<a asp-page="./Index">Back to List</a>
+</div>
