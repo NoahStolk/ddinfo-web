@@ -9,7 +9,8 @@ namespace DevilDaggersWebsite.Code.Database
 		public int PlayerId { get; set; }
 		public string Username { get; set; }
 		public bool IsAnonymous { get; set; }
-		public List<Title> Titles { get; set; }
+		public List<PlayerAssetMod> PlayerAssetMods { get; set; }
+		public List<PlayerTitle> PlayerTitles { get; set; }
 		public string? CountryCode { get; set; }
 		public int? Dpi { get; set; }
 		public float? InGameSens { get; set; }
