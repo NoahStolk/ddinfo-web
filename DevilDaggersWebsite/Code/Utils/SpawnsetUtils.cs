@@ -4,6 +4,7 @@ using Microsoft.AspNetCore.Hosting;
 using Newtonsoft.Json;
 using System;
 using System.Collections.Generic;
+using System.Globalization;
 using System.IO;
 using System.Linq;
 
@@ -21,7 +22,7 @@ namespace DevilDaggersWebsite.Code.Utils
 
 			SpawnsetFile spawnsetFile = new SpawnsetFile
 			{
-				Path = path
+				Path = path,
 			};
 
 			using (StreamReader sr = new StreamReader(Path.Combine(env.WebRootPath, "spawnsets", "Settings", "Settings.json")))
@@ -33,8 +34,10 @@ namespace DevilDaggersWebsite.Code.Utils
 			}
 
 			using (FileStream fs = new FileStream(spawnsetFile.Path, FileMode.Open, FileAccess.Read))
+			{
 				if (!Spawnset.TryGetSpawnData(fs, out spawnsetFile.spawnsetData))
 					throw new Exception($"Could not retrieve {nameof(SpawnsetData)} for spawnset '{spawnsetFile.FileName}'.");
+			}
 
 			return spawnsetFile;
 		}
@@ -45,13 +48,14 @@ namespace DevilDaggersWebsite.Code.Utils
 
 			if (!string.IsNullOrEmpty(searchAuthor))
 			{
-				searchAuthor = searchAuthor.ToLower();
-				spawnsetFiles = spawnsetFiles.Where(sf => sf.Author.ToLower().Contains(searchAuthor));
+				searchAuthor = searchAuthor.ToLower(CultureInfo.InvariantCulture);
+				spawnsetFiles = spawnsetFiles.Where(sf => sf.Author.ToLower(CultureInfo.InvariantCulture).Contains(searchAuthor, StringComparison.InvariantCulture));
 			}
+
 			if (!string.IsNullOrEmpty(searchName))
 			{
-				searchName = searchName.ToLower();
-				spawnsetFiles = spawnsetFiles.Where(sf => sf.Name.ToLower().Contains(searchName));
+				searchName = searchName.ToLower(CultureInfo.InvariantCulture);
+				spawnsetFiles = spawnsetFiles.Where(sf => sf.Name.ToLower(CultureInfo.InvariantCulture).Contains(searchName, StringComparison.InvariantCulture));
 			}
 
 			return spawnsetFiles.ToList();
