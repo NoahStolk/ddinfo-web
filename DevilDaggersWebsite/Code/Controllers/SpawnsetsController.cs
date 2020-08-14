@@ -23,7 +23,7 @@ namespace DevilDaggersWebsite.Code.Controllers
 
 		[HttpGet]
 		[ProducesResponseType(200)]
-		public List<SpawnsetFile> GetSpawnsets(string searchAuthor = null, string searchName = null)
+		public List<SpawnsetFile> GetSpawnsets(string? searchAuthor = null, string? searchName = null)
 			=> SpawnsetUtils.GetSpawnsets(env, searchAuthor, searchName);
 
 		[HttpGet("{fileName}")]

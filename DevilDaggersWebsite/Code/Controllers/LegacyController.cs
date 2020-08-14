@@ -45,7 +45,7 @@ namespace DevilDaggersWebsite.Code.Controllers
 		[Obsolete("api/spawnsets")]
 		[HttpGet("GetSpawnsets")]
 		[ProducesResponseType(200)]
-		public ActionResult<List<SpawnsetFile>> GetSpawnsets(string searchAuthor = null, string searchName = null)
+		public ActionResult<List<SpawnsetFile>> GetSpawnsets(string? searchAuthor = null, string? searchName = null)
 			=> new SpawnsetsController(env).GetSpawnsets(searchAuthor, searchName);
 
 		[Obsolete("api/tools/{toolName}/path")]

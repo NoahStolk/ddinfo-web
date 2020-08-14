@@ -94,6 +94,7 @@ namespace DevilDaggersWebsite.Code.Controllers
 				if (entry != null && entry.DeathsTotal > 0)
 					data.Add(lb.DateTime, entry.DeathsTotal);
 			}
+
 			return data;
 		}
 	}
