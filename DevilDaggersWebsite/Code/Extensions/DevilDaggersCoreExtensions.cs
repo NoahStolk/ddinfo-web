@@ -108,8 +108,11 @@ namespace DevilDaggersWebsite.Code.Extensions
 			StringBuilder sb = new StringBuilder();
 			sb.Append($"<li>{change.Description}</li>");
 			if (change.SubChanges != null && change.SubChanges.Count != 0)
+			{
 				foreach (Change subChange in change.SubChanges)
 					sb.Append($"<ul>{subChange.ToHtmlString()}</ul>");
+			}
+
 			return new HtmlString(sb.ToString());
 		}
 	}

@@ -5,6 +5,7 @@
 		<Authors>Noah Stolk</Authors>
 		<Copyright>Copyright © Noah Stolk 2017 - 2020</Copyright>
 		<GenerateDocumentationFile>true</GenerateDocumentationFile>
+		<Nullable>enable</Nullable>
 	</PropertyGroup>
 	<ItemGroup>
 		<PackageReference Include="BuildBundlerMinifier" Version="3.2.449" />
@@ -16,8 +17,8 @@
 		</PackageReference>
 		<PackageReference Include="Microsoft.EntityFrameworkCore" Version="3.1.7" />
 		<PackageReference Include="Microsoft.EntityFrameworkCore.Tools" Version="3.1.7">
-		  <PrivateAssets>all</PrivateAssets>
-		  <IncludeAssets>runtime; build; native; contentfiles; analyzers; buildtransitive</IncludeAssets>
+			<PrivateAssets>all</PrivateAssets>
+			<IncludeAssets>runtime; build; native; contentfiles; analyzers; buildtransitive</IncludeAssets>
 		</PackageReference>
 		<PackageReference Include="Microsoft.Extensions.Hosting" Version="3.1.7" />
 		<PackageReference Include="Microsoft.VisualStudio.Web.CodeGeneration.Design" Version="3.1.4" />
