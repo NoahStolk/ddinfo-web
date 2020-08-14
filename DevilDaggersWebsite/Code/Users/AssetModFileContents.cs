@@ -7,6 +7,6 @@ namespace DevilDaggersWebsite.Code.Users
 	{
 		None = 0,
 		RawAssets = 1,
-		Mod = 2
+		Mod = 2,
 	}
 }
