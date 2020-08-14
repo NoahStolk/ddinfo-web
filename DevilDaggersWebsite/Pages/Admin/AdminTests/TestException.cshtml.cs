@@ -3,7 +3,7 @@ using Microsoft.AspNetCore.Hosting;
 using Microsoft.AspNetCore.Http;
 using System;
 
-namespace DevilDaggersWebsite.Pages.Admin
+namespace DevilDaggersWebsite.Pages.Admin.AdminTests
 {
 	public class TestExceptionModel : AdminPageModel
 	{

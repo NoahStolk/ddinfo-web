@@ -1,5 +1,5 @@
 ﻿@page
-@model DevilDaggersWebsite.Pages.Admin.TestBotModel
+@model TestBotModel
 @{
 	ViewData["Title"] = "Admin - TestBox";
 }
@@ -11,7 +11,7 @@
 <main role="main" class="text-left">
 	<a asp-page="/Admin/Index" asp-route-password="@Model.Password">Admin home</a>
 	<p>
-		Bot message should be sent in #dev.
+		Bot message should be sent in dev channel.
 	</p>
 </main>
 

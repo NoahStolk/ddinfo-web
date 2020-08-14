@@ -5,7 +5,7 @@ using Microsoft.AspNetCore.Http;
 using System.Threading.Tasks;
 using Bot = DiscordBotDdInfo.Program;
 
-namespace DevilDaggersWebsite.Pages.Admin
+namespace DevilDaggersWebsite.Pages.Admin.AdminTests
 {
 	public class TestBotModel : AdminPageModel
 	{
