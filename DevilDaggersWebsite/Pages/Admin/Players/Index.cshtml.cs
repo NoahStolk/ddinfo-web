@@ -1,4 +1,5 @@
 ﻿using DevilDaggersWebsite.Code.Database;
+using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc.RazorPages;
 using Microsoft.EntityFrameworkCore;
 using System.Collections.Generic;
@@ -6,6 +7,7 @@ using System.Threading.Tasks;
 
 namespace DevilDaggersWebsite.Pages.Admin.Players
 {
+	[Authorize]
 	public class IndexModel : PageModel
 	{
 		private readonly ApplicationDbContext _context;

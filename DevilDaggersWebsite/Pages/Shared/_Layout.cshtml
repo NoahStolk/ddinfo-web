@@ -22,7 +22,7 @@
 	<link href="~/favicon.ico" rel="shortcut icon" />
 	<title>@ViewData["Title"] - Devil Daggers Info</title>
 
-	@await Html.PartialAsync("Partials/Shared/_CssBundlePartial")
+	@await Html.PartialAsync("_CssBundlePartial")
 
 	@RenderSection("Styles", required: false)
 </head>
@@ -81,6 +81,10 @@
 						</ul>
 					</li>
 					<li><a asp-page="/Api">API</a></li>
+					@if (User.Identity.IsAuthenticated)
+					{
+						<partial name="_LoginPartial" />
+					}
 				</ul>
 			</div>
 		</div>
@@ -108,7 +112,7 @@
 		</footer>
 	</div>
 
-	@await Html.PartialAsync("Partials/Shared/_JsBundlePartial")
+	@await Html.PartialAsync("_JsBundlePartial")
 
 	@RenderSection("Scripts", required: false)
 </body>

@@ -1,10 +1,11 @@
-//#define TEST_EXCEPTION_HANDLER
+// #define TEST_EXCEPTION_HANDLER
 using DevilDaggersWebsite.Code.Database;
 using DevilDaggersWebsite.Code.Tasks;
 using DevilDaggersWebsite.Code.Tasks.Scheduling;
 using Microsoft.AspNetCore.Builder;
 using Microsoft.AspNetCore.Hosting;
 using Microsoft.AspNetCore.Http;
+using Microsoft.AspNetCore.Identity;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.AspNetCore.Mvc.Infrastructure;
 using Microsoft.AspNetCore.Mvc.Routing;
@@ -41,18 +42,20 @@ namespace DevilDaggersWebsite
 
 			services.AddDbContext<ApplicationDbContext>(options => options.UseMySql(Configuration.GetConnectionString("DefaultConnection")));
 
+			services.AddDefaultIdentity<IdentityUser>(options => options.SignIn.RequireConfirmedAccount = true).AddEntityFrameworkStores<ApplicationDbContext>();
+
 			services.AddSingleton<IHttpContextAccessor, HttpContextAccessor>();
 			services.AddSingleton<IActionContextAccessor, ActionContextAccessor>();
 
 			// TODO: Add all tasks using reflection?
+			// services.AddSingleton<IScheduledTask, RetrieveEntireLeaderboardTask>();
 			services.AddSingleton<IScheduledTask, CreateLeaderboardHistoryFileTask>();
-			//services.AddSingleton<IScheduledTask, RetrieveEntireLeaderboardTask>();
 
 			services.AddScoped<IUrlHelper>(factory => new UrlHelper(factory.GetService<IActionContextAccessor>().ActionContext));
 
 			services.AddScheduler((sender, args) =>
 			{
-				Console.Write(args.Exception.Message);
+				Console.Write(args.Exception?.Message);
 				args.SetObserved();
 			});
 
@@ -116,6 +119,7 @@ namespace DevilDaggersWebsite
 
 			app.UseCors(defaultPolicy);
 
+			app.UseAuthentication();
 			app.UseAuthorization();
 
 			app.UseEndpoints(endpoints =>
