@@ -1,5 +1,4 @@
-﻿using DevilDaggersWebsite.Code.Database;
-using DevilDaggersWebsite.Code.Users;
+﻿using DevilDaggersWebsite.Code.Users;
 using DevilDaggersWebsite.Code.Utils;
 using Microsoft.AspNetCore.Hosting;
 using Microsoft.AspNetCore.Mvc.RazorPages;
@@ -13,9 +12,9 @@ namespace DevilDaggersWebsite.Pages
 		public DonationsModel(IWebHostEnvironment env)
 		{
 			Users = UserUtils.GetUserObjects<User>(env);
-			Donations = UserUtils.GetUserObjects<Donation>(env);
+			Donations = UserUtils.GetUserObjects<Code.Users.Donation>(env);
 
-			foreach (Donation donation in Donations.Where(d => !d.IsRefunded))
+			foreach (Code.Users.Donation donation in Donations.Where(d => !d.IsRefunded))
 			{
 				if (!DonatorsWithReceivedEuroAmounts.ContainsKey(donation.DonatorId))
 					DonatorsWithReceivedEuroAmounts.Add(donation.DonatorId, donation.ConvertedEuroCentsReceived);
@@ -25,7 +24,7 @@ namespace DevilDaggersWebsite.Pages
 		}
 
 		public List<User> Users { get; }
-		public List<Donation> Donations { get; }
+		public List<Code.Users.Donation> Donations { get; }
 
 		public Dictionary<int, int> DonatorsWithReceivedEuroAmounts { get; } = new Dictionary<int, int>();
 	}

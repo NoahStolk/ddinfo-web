@@ -54,8 +54,8 @@
 				Showing @((curr - 1) * Model.PageSize + 1) - @(Math.Min(Model.TotalResults, curr * Model.PageSize)) of @Model.TotalResults results
 			</p>
 
-			@await Html.PartialAsync("Partials/_SpawnsetNavigationPartial", new SpawnsetNavigationSettings(Model, 20, ScreenWidthVisibility.Lg | ScreenWidthVisibility.Md | ScreenWidthVisibility.Sm))
-			@await Html.PartialAsync("Partials/_SpawnsetNavigationPartial", new SpawnsetNavigationSettings(Model, 1, ScreenWidthVisibility.Xs))
+			@await Html.PartialAsync("Partials/_SpawnsetNavigationPartial", new SpawnsetNavigationSettings(Model, 20, ScreenWidthVisibilities.Lg | ScreenWidthVisibilities.Md | ScreenWidthVisibilities.Sm))
+			@await Html.PartialAsync("Partials/_SpawnsetNavigationPartial", new SpawnsetNavigationSettings(Model, 1, ScreenWidthVisibilities.Xs))
 
 			<table>
 				<thead>
