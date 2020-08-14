@@ -1,5 +1,4 @@
 ﻿using DevilDaggersWebsite.Code.Database;
-using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.AspNetCore.Mvc.RazorPages;
 using Microsoft.EntityFrameworkCore;
@@ -8,7 +7,6 @@ using System.Threading.Tasks;
 
 namespace DevilDaggersWebsite.Pages.Admin.AssetMods
 {
-	[Authorize]
 	public class EditModel : PageModel
 	{
 		private readonly ApplicationDbContext _context;

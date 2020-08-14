@@ -1,5 +1,4 @@
 ﻿using DevilDaggersWebsite.Code.Database;
-using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.AspNetCore.Mvc.RazorPages;
 using Microsoft.EntityFrameworkCore;
@@ -7,7 +6,6 @@ using System.Threading.Tasks;
 
 namespace DevilDaggersWebsite.Pages.Admin.CustomLeaderboards
 {
-	[Authorize]
 	public class DetailsModel : PageModel
 	{
 		private readonly ApplicationDbContext _context;

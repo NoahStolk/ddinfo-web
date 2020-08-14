@@ -1,5 +1,4 @@
 ﻿using DevilDaggersWebsite.Code.Database;
-using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.AspNetCore.Mvc.RazorPages;
 using Microsoft.AspNetCore.Mvc.Rendering;
@@ -9,7 +8,6 @@ using System.Threading.Tasks;
 
 namespace DevilDaggersWebsite.Pages.Admin.CustomEntries
 {
-	[Authorize]
 	public class EditModel : PageModel
 	{
 		private readonly ApplicationDbContext _context;

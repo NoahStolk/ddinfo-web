@@ -1,12 +1,10 @@
 ﻿using DevilDaggersWebsite.Code.Database;
-using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.AspNetCore.Mvc.RazorPages;
 using System.Threading.Tasks;
 
 namespace DevilDaggersWebsite.Pages.Admin.AssetMods
 {
-	[Authorize]
 	public class CreateModel : PageModel
 	{
 		private readonly ApplicationDbContext _context;

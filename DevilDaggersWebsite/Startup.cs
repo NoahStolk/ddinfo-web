@@ -63,6 +63,11 @@ namespace DevilDaggersWebsite
 			{
 				options.SerializerSettings.Converters.Add(new StringEnumConverter());
 			});
+
+			services.AddRazorPages().AddRazorPagesOptions(options =>
+			{
+				options.Conventions.AuthorizeFolder("/Admin");
+			});
 		}
 
 		public void Configure(IApplicationBuilder app, IWebHostEnvironment env)
