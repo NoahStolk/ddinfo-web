@@ -2,6 +2,7 @@
 
 namespace DevilDaggersWebsite.Code.Users
 {
+	[Obsolete("Moved to database.")]
 	public class Donation : AbstractUserData
 	{
 		public override string FileName => "donations";

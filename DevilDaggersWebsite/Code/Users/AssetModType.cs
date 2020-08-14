@@ -3,6 +3,7 @@
 namespace DevilDaggersWebsite.Code.Users
 {
 	[Flags]
+	[Obsolete("Moved to database.")]
 	public enum AssetModType
 	{
 		None = 0,
