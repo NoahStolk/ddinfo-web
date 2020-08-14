@@ -2,21 +2,21 @@
 using System;
 using System.ComponentModel.DataAnnotations.Schema;
 
-namespace DevilDaggersWebsite.Code.Database.CustomLeaderboards
+namespace DevilDaggersWebsite.Code.Database
 {
 	public class CustomLeaderboard : CustomLeaderboardBase
 	{
+		public CustomLeaderboard(string spawnsetFileName, int bronze, int silver, int golden, int devil, int homing, DateTime? dateLastPlayed, DateTime? dateCreated)
+			: base(spawnsetFileName, bronze, silver, golden, devil, homing, dateLastPlayed, dateCreated)
+		{
+		}
+
 		public int Id { get; set; }
 
 		public int CategoryId { get; set; }
 
 		[ForeignKey("CategoryId")]
 		public CustomLeaderboardCategory Category { get; set; }
-
-		public CustomLeaderboard(string spawnsetFileName, int bronze, int silver, int golden, int devil, int homing, DateTime? dateLastPlayed, DateTime? dateCreated)
-			: base(spawnsetFileName, bronze, silver, golden, devil, homing, dateLastPlayed, dateCreated)
-		{
-		}
 
 		/// <summary>
 		/// Returns the CSS class name corresponding to the time in seconds.

@@ -1,4 +1,5 @@
-﻿using DevilDaggersWebsite.Code.Users;
+﻿using DevilDaggersWebsite.Code.Database;
+using DevilDaggersWebsite.Code.Users;
 using DevilDaggersWebsite.Code.Utils;
 using Microsoft.AspNetCore.Hosting;
 using Microsoft.AspNetCore.Mvc.RazorPages;

@@ -1,4 +1,5 @@
 ﻿using DevilDaggersCore.Leaderboards;
+using DevilDaggersWebsite.Code.Database;
 using DevilDaggersWebsite.Code.External;
 using DevilDaggersWebsite.Code.PageModels;
 using DevilDaggersWebsite.Code.Users;

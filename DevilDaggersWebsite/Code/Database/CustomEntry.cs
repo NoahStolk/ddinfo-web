@@ -5,21 +5,21 @@ using System;
 using System.ComponentModel.DataAnnotations.Schema;
 using System.Web;
 
-namespace DevilDaggersWebsite.Code.Database.CustomLeaderboards
+namespace DevilDaggersWebsite.Code.Database
 {
 	public class CustomEntry : CustomEntryBase
 	{
+		public CustomEntry(int playerId, string username, int time, int gems, int kills, int deathType, int shotsHit, int shotsFired, int enemiesAlive, int homing, int levelUpTime2, int levelUpTime3, int levelUpTime4, DateTime submitDate, string clientVersion)
+			: base(playerId, username, time, gems, kills, deathType, shotsHit, shotsFired, enemiesAlive, homing, levelUpTime2, levelUpTime3, levelUpTime4, submitDate, clientVersion)
+		{
+		}
+
 		public int Id { get; set; }
 
 		public int CustomLeaderboardId { get; set; }
 
 		[ForeignKey(nameof(CustomLeaderboardId))]
 		public CustomLeaderboard CustomLeaderboard { get; set; }
-
-		public CustomEntry(int playerId, string username, int time, int gems, int kills, int deathType, int shotsHit, int shotsFired, int enemiesAlive, int homing, int levelUpTime2, int levelUpTime3, int levelUpTime4, DateTime submitDate, string clientVersion)
-			: base(playerId, username, time, gems, kills, deathType, shotsHit, shotsFired, enemiesAlive, homing, levelUpTime2, levelUpTime3, levelUpTime4, submitDate, clientVersion)
-		{
-		}
 
 		public HtmlString ToHtmlData(int rank, string flagCode) => new HtmlString($@"
 			rank='{rank}'
