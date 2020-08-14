@@ -22,7 +22,22 @@ namespace DevilDaggersWebsite
 {
 	public class Startup
 	{
-		private const string defaultPolicy = nameof(defaultPolicy);
+		private const string defaultCorsPolicy = nameof(defaultCorsPolicy);
+
+		private const string adminTestPolicy = nameof(adminTestPolicy);
+		private const string adminTestRole = nameof(adminTestRole);
+
+		private const string assetModsPolicy = nameof(assetModsPolicy);
+		private const string assetModsRole = nameof(assetModsRole);
+
+		private const string customLeaderboardsPolicy = nameof(customLeaderboardsPolicy);
+		private const string customLeaderboardsRole = nameof(customLeaderboardsRole);
+
+		private const string donationsPolicy = nameof(donationsPolicy);
+		private const string donationsRole = nameof(donationsRole);
+
+		private const string playersPolicy = nameof(playersPolicy);
+		private const string playersRole = nameof(playersRole);
 
 		public Startup(IConfiguration configuration)
 		{
@@ -35,7 +50,7 @@ namespace DevilDaggersWebsite
 		{
 			services.AddCors(options =>
 			{
-				options.AddPolicy(defaultPolicy, builder => { builder.AllowAnyOrigin(); });
+				options.AddPolicy(defaultCorsPolicy, builder => { builder.AllowAnyOrigin(); });
 			});
 
 			services.AddMvc();
@@ -64,9 +79,25 @@ namespace DevilDaggersWebsite
 				options.SerializerSettings.Converters.Add(new StringEnumConverter());
 			});
 
+			services.AddAuthorization(options =>
+			{
+				options.AddPolicy(adminTestPolicy, policy => policy.RequireRole(adminTestRole));
+				options.AddPolicy(assetModsPolicy, policy => policy.RequireRole(assetModsRole));
+				options.AddPolicy(customLeaderboardsPolicy, policy => policy.RequireRole(customLeaderboardsRole));
+				options.AddPolicy(donationsPolicy, policy => policy.RequireRole(donationsRole));
+				options.AddPolicy(playersPolicy, policy => policy.RequireRole(playersRole));
+			});
+
 			services.AddRazorPages().AddRazorPagesOptions(options =>
 			{
-				options.Conventions.AuthorizeFolder("/Admin");
+				options.Conventions.AuthorizeFolder("/Admin/AdminTests", adminTestPolicy);
+				options.Conventions.AuthorizeFolder("/Admin/AssetMods", assetModsPolicy);
+				options.Conventions.AuthorizeFolder("/Admin/CustomEntries", customLeaderboardsPolicy); // Maybe only allow admin here.
+				options.Conventions.AuthorizeFolder("/Admin/CustomLeaderboardCategories", customLeaderboardsPolicy); // Maybe only allow admin here.
+				options.Conventions.AuthorizeFolder("/Admin/CustomLeaderboards", customLeaderboardsPolicy);
+				options.Conventions.AuthorizeFolder("/Admin/Donations", donationsPolicy);
+				options.Conventions.AuthorizeFolder("/Admin/Players", playersPolicy);
+				options.Conventions.AuthorizeFolder("/Admin/Titles", playersPolicy);
 			});
 		}
 
@@ -122,7 +153,7 @@ namespace DevilDaggersWebsite
 
 			app.UseRouting();
 
-			app.UseCors(defaultPolicy);
+			app.UseCors(defaultCorsPolicy);
 
 			app.UseAuthentication();
 			app.UseAuthorization();
