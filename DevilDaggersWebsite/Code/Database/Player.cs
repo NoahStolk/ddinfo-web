@@ -5,9 +5,11 @@ namespace DevilDaggersWebsite.Code.Database
 	public class Player
 	{
 		public int Id { get; set; }
+
+		public int PlayerId { get; set; }
 		public string Username { get; set; }
 		public bool IsAnonymous { get; set; }
-		public IEnumerable<string> Titles { get; set; }
+		public List<Title> Titles { get; set; }
 		public string? CountryCode { get; set; }
 		public int? Dpi { get; set; }
 		public float? InGameSens { get; set; }

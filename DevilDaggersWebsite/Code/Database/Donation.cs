@@ -5,6 +5,8 @@ namespace DevilDaggersWebsite.Code.Database
 	public class Donation
 	{
 		public int Id { get; set; }
+
+		public int? PlayerId { get; set; }
 		public int Amount { get; set; }
 		public Currency Currency { get; set; }
 		public int ConvertedEuroCentsReceived { get; set; }
