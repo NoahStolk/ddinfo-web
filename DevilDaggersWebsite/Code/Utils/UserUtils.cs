@@ -8,27 +8,14 @@ namespace DevilDaggersWebsite.Code.Utils
 {
 	public static class UserUtils
 	{
-		public static List<TData> GetUserObjects<TData>(IWebHostEnvironment env)
-			where TData : AbstractUserData, new()
-		{
-			try
-			{
-				return JsonConvert.DeserializeObject<List<TData>>(File.ReadAllText(Path.Combine(env.WebRootPath, "user", $"{new TData().FileName}.json")));
-			}
-			catch
-			{
-				return new List<TData>();
-			}
-		}
-
-		public static Dictionary<string, string> TitleImages { get; set; } = new Dictionary<string, string>
+		public static Dictionary<string, string> TitleImages { get; } = new Dictionary<string, string>
 		{
 			{ "Admin", "eye2" },
 			{ "Discord mod", "eye3" },
 			{ "Donator", "gem" },
 		};
 
-		public static Dictionary<string, string> CountryNames { get; set; } = new Dictionary<string, string>
+		public static Dictionary<string, string> CountryNames { get; } = new Dictionary<string, string>
 		{
 			{ "AD", "Andorra" },
 			{ "AE", "United Arab Emirates" },
@@ -280,5 +267,18 @@ namespace DevilDaggersWebsite.Code.Utils
 			{ "ZM", "Zambia" },
 			{ "ZW", "Zimbabwe" },
 		};
+
+		public static List<TData> GetUserObjects<TData>(IWebHostEnvironment env)
+			where TData : AbstractUserData, new()
+		{
+			try
+			{
+				return JsonConvert.DeserializeObject<List<TData>>(File.ReadAllText(Path.Combine(env.WebRootPath, "user", $"{new TData().FileName}.json")));
+			}
+			catch
+			{
+				return new List<TData>();
+			}
+		}
 	}
 }

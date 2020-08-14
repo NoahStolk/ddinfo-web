@@ -67,6 +67,7 @@ namespace DevilDaggersWebsite.Code.Extensions
 				if (leaderboard.Entries.Any(e => e.Id == entry.Id))
 					return true;
 			}
+
 			return false;
 		}
 
@@ -81,12 +82,14 @@ namespace DevilDaggersWebsite.Code.Extensions
 				{
 					if (string.IsNullOrWhiteSpace(historyEntry.Username))
 						continue;
+
 					if (aliases.ContainsKey(historyEntry.Username))
 						aliases[historyEntry.Username]++;
 					else
 						aliases.Add(historyEntry.Username, 1);
 				}
 			}
+
 			return aliases.OrderByDescending(kvp => kvp.Value).Select(kvp => kvp.Key).ToList();
 		}
 
@@ -100,6 +103,7 @@ namespace DevilDaggersWebsite.Code.Extensions
 					sb.Append(change.ToHtmlString());
 				sb.Append("</ul>");
 			}
+
 			return new HtmlString(sb.ToString());
 		}
 

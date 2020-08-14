@@ -12,20 +12,20 @@ namespace DevilDaggersWebsite.Pages.Leaderboard
 	{
 		private readonly IWebHostEnvironment env;
 
-		public List<WorldRecordHolder> WorldRecordHolders { get; private set; } = new List<WorldRecordHolder>();
-
-		public Dictionary<WorldRecord, TimeSpan> WorldRecords { get; private set; } = new Dictionary<WorldRecord, TimeSpan>();
-
 		public WorldRecordProgressionModel(IWebHostEnvironment env)
 		{
 			this.env = env;
 		}
 
+		public List<WorldRecordHolder> WorldRecordHolders { get; private set; } = new List<WorldRecordHolder>();
+
+		public Dictionary<WorldRecord, TimeSpan> WorldRecords { get; private set; } = new Dictionary<WorldRecord, TimeSpan>();
+
 		public void OnGet()
 		{
 			List<WorldRecord> worldRecords = LeaderboardHistoryUtils.GetWorldRecords(env, null);
 
-			TimeSpan heldConsecutively = new TimeSpan();
+			TimeSpan heldConsecutively = default;
 			for (int i = 0; i < worldRecords.Count; i++)
 			{
 				WorldRecord wr = worldRecords[i];
@@ -44,7 +44,7 @@ namespace DevilDaggersWebsite.Pages.Leaderboard
 				}
 
 				if (i != 0 && wr.Entry.Id != worldRecords[i - 1].Entry.Id)
-					heldConsecutively = new TimeSpan();
+					heldConsecutively = default;
 
 				heldConsecutively += difference;
 

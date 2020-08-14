@@ -19,17 +19,6 @@ namespace DevilDaggersWebsite.Pages.Leaderboard
 	{
 		private readonly IWebHostEnvironment env;
 
-		public Lb Leaderboard { get; set; } = new Lb();
-		public Lb LeaderboardPrevious { get; set; } = new Lb();
-		public List<string> ChangesGlobal { get; private set; } = new List<string>();
-		public Dictionary<string, string> ChangesTop100 { get; private set; } = new Dictionary<string, string>();
-
-		public List<SelectListItem> JsonFiles { get; set; } = new List<SelectListItem>();
-		public string From { get; set; }
-		public string FromPrevious { get; set; }
-		public string FromNext { get; set; }
-		public bool ShowMoreStats { get; private set; }
-
 		public HistoryModel(IWebHostEnvironment env)
 		{
 			this.env = env;
@@ -42,6 +31,17 @@ namespace DevilDaggersWebsite.Pages.Leaderboard
 
 			JsonFiles.Reverse();
 		}
+
+		public Lb Leaderboard { get; set; } = new Lb();
+		public Lb LeaderboardPrevious { get; set; } = new Lb();
+		public List<string> ChangesGlobal { get; private set; } = new List<string>();
+		public Dictionary<string, string> ChangesTop100 { get; private set; } = new Dictionary<string, string>();
+
+		public List<SelectListItem> JsonFiles { get; set; } = new List<SelectListItem>();
+		public string From { get; set; }
+		public string FromPrevious { get; set; }
+		public string FromNext { get; set; }
+		public bool ShowMoreStats { get; private set; }
 
 		public void OnGet(string from, bool showMoreStats)
 		{

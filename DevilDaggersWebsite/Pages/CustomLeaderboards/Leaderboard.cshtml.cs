@@ -17,6 +17,14 @@ namespace DevilDaggersWebsite.Pages.CustomLeaderboards
 {
 	public class LeaderboardModel : PageModel
 	{
+		private readonly ApplicationDbContext context;
+
+		public LeaderboardModel(ApplicationDbContext context, IWebHostEnvironment env)
+		{
+			this.context = context;
+			Env = env;
+		}
+
 		public SpawnsetFile SpawnsetFile { get; private set; }
 
 		[BindProperty]
@@ -25,15 +33,7 @@ namespace DevilDaggersWebsite.Pages.CustomLeaderboards
 		[BindProperty]
 		public List<CustomEntry> Entries { get; set; }
 
-		private readonly ApplicationDbContext context;
-
 		public IWebHostEnvironment Env { get; }
-
-		public LeaderboardModel(ApplicationDbContext context, IWebHostEnvironment env)
-		{
-			this.context = context;
-			Env = env;
-		}
 
 		public ActionResult OnGet(string spawnset)
 		{

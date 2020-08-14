@@ -18,7 +18,7 @@ namespace DevilDaggersWebsite.Pages
 				DiscordEmbedBuilder builder = new DiscordEmbedBuilder
 				{
 					Title = "INTERNAL SERVER ERROR",
-					Color = DiscordColor.Red
+					Color = DiscordColor.Red,
 				};
 
 				IExceptionHandlerPathFeature exceptionFeature = HttpContext.Features?.Get<IExceptionHandlerPathFeature>();

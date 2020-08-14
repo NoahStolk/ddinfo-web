@@ -5,15 +5,7 @@ namespace DevilDaggersWebsite.Code.Docs
 {
 	public class BinaryField
 	{
-		public string HexRepresentation { get; set; }
-		public string Meaning { get; set; }
-		public Type Type { get; set; }
-
-		public int FieldSize => HexRepresentation.Length / 2;
-
-		public BinaryType BinaryType { get; }
-
-		public BinaryField(string hexRepresentation, string meaning = null, Type type = null)
+		public BinaryField(string hexRepresentation, string? meaning = null, Type? type = null)
 		{
 			HexRepresentation = hexRepresentation;
 			Meaning = meaning;
@@ -22,7 +14,15 @@ namespace DevilDaggersWebsite.Code.Docs
 			BinaryType = type != null ? BinaryTypes.Types[type] : null;
 		}
 
-		public object GetActualValue()
+		public string HexRepresentation { get; set; }
+		public string? Meaning { get; set; }
+		public Type? Type { get; set; }
+
+		public int FieldSize => HexRepresentation.Length / 2;
+
+		public BinaryType? BinaryType { get; }
+
+		public object? GetActualValue()
 		{
 			if (BinaryType == null)
 				return null;

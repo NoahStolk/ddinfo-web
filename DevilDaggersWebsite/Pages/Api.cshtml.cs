@@ -4,7 +4,6 @@ using Microsoft.AspNetCore.Mvc.RazorPages;
 using Microsoft.AspNetCore.Mvc.Routing;
 using System;
 using System.Collections.Generic;
-using System.Diagnostics;
 using System.Linq;
 using System.Reflection;
 using System.Threading.Tasks;
@@ -38,7 +37,7 @@ namespace DevilDaggersWebsite.Pages
 						returnType = returnType.GetGenericArguments()[0];
 
 					Endpoints.Add(new Endpoint(
-						url: $"{controllerUrl}/{httpMethodAttribute.Template ?? ""}",
+						url: $"{controllerUrl}/{httpMethodAttribute.Template ?? string.Empty}",
 						httpMethod: httpMethodAttribute.HttpMethods.FirstOrDefault(),
 						returnType: returnType,
 						newRouteToUse: obsoleteAttribute?.Message ?? string.Empty,

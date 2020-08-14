@@ -9,17 +9,17 @@ namespace DevilDaggersWebsite.Pages.Wiki.Docs
 		public List<BinaryField> Header { get; } = new List<BinaryField>
 		{
 			new BinaryField("04000000"),
-			new BinaryField("6F000000", "Particle amount", typeof(uint))
+			new BinaryField("6F000000", "Particle amount", typeof(uint)),
 		};
 
 		public List<BinaryField> FirstParticleName { get; } = new List<BinaryField>
 		{
-			new BinaryField("626C6F6F64", "Particle name", typeof(string))
+			new BinaryField("626C6F6F64", "Particle name", typeof(string)),
 		};
 
 		public List<BinaryField> SecondParticleName { get; } = new List<BinaryField>
 		{
-			new BinaryField("63656E746970656465627572726F77", "Particle name", typeof(string))
+			new BinaryField("63656E746970656465627572726F77", "Particle name", typeof(string)),
 		};
 
 		public List<BinaryField> FirstParticleData { get; } = new List<BinaryField>
@@ -70,7 +70,7 @@ namespace DevilDaggersWebsite.Pages.Wiki.Docs
 			new BinaryField("00000000"),
 			new BinaryField("00000000"),
 			new BinaryField("00000000"),
-			new BinaryField("0000803F")
+			new BinaryField("0000803F"),
 		};
 	}
 }

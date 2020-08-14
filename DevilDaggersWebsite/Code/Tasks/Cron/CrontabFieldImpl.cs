@@ -13,22 +13,9 @@ namespace DevilDaggersWebsite.Code.Tasks.Cron
 		public static readonly CrontabFieldImpl Hour = new CrontabFieldImpl(CrontabFieldKind.Hour, 0, 23, null);
 		public static readonly CrontabFieldImpl Day = new CrontabFieldImpl(CrontabFieldKind.Day, 1, 31, null);
 
-		public static readonly CrontabFieldImpl Month = new CrontabFieldImpl(CrontabFieldKind.Month, 1, 12,
-			new[]
-			{
-				"January", "February", "March", "April",
-				"May", "June", "July", "August",
-				"September", "October", "November",
-				"December"
-			});
+		public static readonly CrontabFieldImpl Month = new CrontabFieldImpl(CrontabFieldKind.Month, 1, 12, new[] { "January", "February", "March", "April", "May", "June", "July", "August", "September", "October", "November", "December" });
 
-		public static readonly CrontabFieldImpl DayOfWeek = new CrontabFieldImpl(CrontabFieldKind.DayOfWeek, 0, 6,
-			new[]
-			{
-				"Sunday", "Monday", "Tuesday",
-				"Wednesday", "Thursday", "Friday",
-				"Saturday"
-			});
+		public static readonly CrontabFieldImpl DayOfWeek = new CrontabFieldImpl(CrontabFieldKind.DayOfWeek, 0, 6, new[] { "Sunday", "Monday", "Tuesday", "Wednesday", "Thursday", "Friday", "Saturday" });
 
 		private static readonly CrontabFieldImpl[] fieldByKind = { Minute, Hour, Day, Month, DayOfWeek };
 
@@ -36,12 +23,6 @@ namespace DevilDaggersWebsite.Code.Tasks.Cron
 		private static readonly char[] comma = { ',' };
 
 		private readonly string[] names;
-
-		public CrontabFieldKind Kind { get; }
-		public int MinValue { get; }
-		public int MaxValue { get; }
-
-		public int ValueCount => MaxValue - MinValue + 1;
 
 		private CrontabFieldImpl(CrontabFieldKind kind, int minValue, int maxValue, string[] names)
 		{
@@ -55,6 +36,12 @@ namespace DevilDaggersWebsite.Code.Tasks.Cron
 			MinValue = minValue;
 			MaxValue = maxValue;
 		}
+
+		public CrontabFieldKind Kind { get; }
+		public int MinValue { get; }
+		public int MaxValue { get; }
+
+		public int ValueCount => MaxValue - MinValue + 1;
 
 		object IObjectReference.GetRealObject(StreamingContext context) => FromKind(Kind);
 

@@ -11,12 +11,12 @@ namespace DevilDaggersWebsite.Pages
 	{
 		private readonly IHttpContextAccessor httpContextAccessor;
 
-		public string XmlResult { get; set; }
-
 		public GenerateSitemapModel(IHttpContextAccessor httpContextAccessor)
 		{
 			this.httpContextAccessor = httpContextAccessor;
 		}
+
+		public string XmlResult { get; set; }
 
 		public void OnGet()
 		{

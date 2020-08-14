@@ -36,7 +36,7 @@ namespace DevilDaggersWebsite.Code.Tasks.Cron
 		public int GetFirst() => minValueSet < int.MaxValue ? minValueSet : -1;
 
 		/// <summary>
-		/// Gets the next value of the field that occurs after the given 
+		/// Gets the next value of the field that occurs after the given
 		/// start value or -1 if there is no next value available.
 		/// </summary>
 		public int Next(int start)
@@ -61,7 +61,7 @@ namespace DevilDaggersWebsite.Code.Tasks.Cron
 		/// </summary>
 		public bool Contains(int value) => bits[ValueToIndex(value)];
 
-		#endregion
+		#endregion ICrontabField Members
 
 		/// <summary>
 		/// Parses a crontab field expression given its kind.
@@ -132,16 +132,12 @@ namespace DevilDaggersWebsite.Code.Tasks.Cron
 					// We're only setting a single value - check that it is in range.
 					if (start < minValue)
 					{
-						throw new FormatException(string.Format(
-							"'{0} is lower than the minimum allowable value for this field. Value must be between {1} and {2} (all inclusive).",
-							start, impl.MinValue, impl.MaxValue));
+						throw new FormatException($"'{start} is lower than the minimum allowable value for this field. Value must be between {impl.MinValue} and {impl.MaxValue} (all inclusive).");
 					}
 
 					if (start > maxValue)
 					{
-						throw new FormatException(string.Format(
-							"'{0} is higher than the maximum allowable value for this field. Value must be between {1} and {2} (all inclusive).",
-							end, impl.MinValue, impl.MaxValue));
+						throw new FormatException($"'{end} is higher than the maximum allowable value for this field. Value must be between {impl.MinValue} and {impl.MaxValue} (all inclusive).");
 					}
 				}
 			}
@@ -162,9 +158,7 @@ namespace DevilDaggersWebsite.Code.Tasks.Cron
 				}
 				else if (start < minValue)
 				{
-					throw new FormatException(string.Format(
-						"'{0} is lower than the minimum allowable value for this field. Value must be between {1} and {2} (all inclusive).",
-						start, impl.MinValue, impl.MaxValue));
+					throw new FormatException($"'{start} is lower than the minimum allowable value for this field. Value must be between {impl.MinValue} and {impl.MaxValue} (all inclusive).");
 				}
 
 				if (end < 0)
@@ -173,9 +167,7 @@ namespace DevilDaggersWebsite.Code.Tasks.Cron
 				}
 				else if (end > maxValue)
 				{
-					throw new FormatException(string.Format(
-						"'{0} is higher than the maximum allowable value for this field. Value must be between {1} and {2} (all inclusive).",
-						end, impl.MinValue, impl.MaxValue));
+					throw new FormatException($"'{end} is higher than the maximum allowable value for this field. Value must be between {impl.MinValue} and {impl.MaxValue} (all inclusive).");
 				}
 			}
 
@@ -203,7 +195,7 @@ namespace DevilDaggersWebsite.Code.Tasks.Cron
 
 		public override string ToString() => ToString(null);
 
-		public string ToString(string format)
+		public string ToString(string? format)
 		{
 			using StringWriter writer = new StringWriter(CultureInfo.InvariantCulture);
 			switch (format)

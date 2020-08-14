@@ -9,8 +9,6 @@ namespace DevilDaggersWebsite.Code.Tasks.Scheduling
 {
 	public class SchedulerHostedService : HostedService
 	{
-		public event EventHandler<UnobservedTaskExceptionEventArgs> UnobservedTaskException;
-
 		private readonly List<SchedulerTaskWrapper> scheduledTasks = new List<SchedulerTaskWrapper>();
 
 		public SchedulerHostedService(IEnumerable<IScheduledTask> scheduledTasks)
@@ -23,10 +21,12 @@ namespace DevilDaggersWebsite.Code.Tasks.Scheduling
 				{
 					Schedule = CrontabSchedule.Parse(scheduledTask.Schedule),
 					Task = scheduledTask,
-					NextRunTime = referenceTime
+					NextRunTime = referenceTime,
 				});
 			}
 		}
+
+		public event EventHandler<UnobservedTaskExceptionEventArgs> UnobservedTaskException;
 
 		protected override async Task ExecuteAsync(CancellationToken cancellationToken)
 		{

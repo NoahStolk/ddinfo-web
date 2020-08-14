@@ -8,12 +8,6 @@ namespace DevilDaggersWebsite.Code.Pagination
 {
 	public class PaginatedList<T> : List<T>
 	{
-		public int PageIndex { get; private set; }
-		public int TotalPages { get; private set; }
-
-		public bool HasPreviousPage => PageIndex > 1;
-		public bool HasNextPage => PageIndex < TotalPages;
-
 		public PaginatedList(List<T> items, int count, int pageIndex, int pageSize)
 		{
 			PageIndex = pageIndex;
@@ -21,6 +15,12 @@ namespace DevilDaggersWebsite.Code.Pagination
 
 			AddRange(items);
 		}
+
+		public int PageIndex { get; private set; }
+		public int TotalPages { get; private set; }
+
+		public bool HasPreviousPage => PageIndex > 1;
+		public bool HasNextPage => PageIndex < TotalPages;
 
 		public static async Task<PaginatedList<T>> CreateAsync(IQueryable<T> source, int pageIndex, int pageSize)
 		{
@@ -40,12 +40,11 @@ namespace DevilDaggersWebsite.Code.Pagination
 			if (pageIndex < 1)
 				throw new Exception("Page index cannot be 0 or negative.");
 
-			int count = source.Count();
 			List<T> items = source
 				.Skip((pageIndex - 1) * pageSize)
 				.Take(pageSize)
 				.ToList();
-			return new PaginatedList<T>(items, count, pageIndex, pageSize);
+			return new PaginatedList<T>(items, source.Count, pageIndex, pageSize);
 		}
 	}
 }

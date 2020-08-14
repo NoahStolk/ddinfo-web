@@ -12,12 +12,12 @@ namespace DevilDaggersWebsite.Code.Tasks
 	{
 		private readonly IWebHostEnvironment env;
 
-		public override string Schedule => "0 0 * * *";
-
 		public CreateLeaderboardHistoryFileTask(IWebHostEnvironment env)
 		{
 			this.env = env;
 		}
+
+		public override string Schedule => "0 0 * * *";
 
 		protected override async Task Execute()
 		{
