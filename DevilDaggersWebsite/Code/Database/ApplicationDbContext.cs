@@ -15,6 +15,6 @@ namespace DevilDaggersWebsite.Code.Database
 		public DbSet<CustomLeaderboard> CustomLeaderboards { get; set; }
 		public DbSet<CustomLeaderboardCategory> CustomLeaderboardCategories { get; set; }
 		public DbSet<Donation> Donations { get; set; }
-		public DbSet<Player> Player { get; set; }
+		public DbSet<Player> Players { get; set; }
 	}
 }
