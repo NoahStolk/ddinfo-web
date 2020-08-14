@@ -21,12 +21,19 @@ namespace DevilDaggersWebsite.Pages.Leaderboard
 	{
 		private readonly IWebHostEnvironment env;
 
+		private string username = string.Empty;
+		private int userId;
+
+		public IndexModel(IWebHostEnvironment env)
+		{
+			this.env = env;
+		}
+
 		[BindProperty]
 		public Lb Leaderboard { get; set; } = new Lb();
 
 		public int Rank { get; set; }
 
-		private string username = string.Empty;
 		public string Username
 		{
 			get => username;
@@ -38,7 +45,6 @@ namespace DevilDaggersWebsite.Pages.Leaderboard
 			}
 		}
 
-		private int userId = 0;
 		public int UserId
 		{
 			get => userId;
@@ -56,11 +62,6 @@ namespace DevilDaggersWebsite.Pages.Leaderboard
 		public bool ShowMoreStats { get; private set; }
 
 		public LeaderboardSearchType LeaderboardSearchType => !string.IsNullOrEmpty(Username) && Username.Length >= 3 ? LeaderboardSearchType.Username : UserId != 0 ? LeaderboardSearchType.UserId : LeaderboardSearchType.Rank;
-
-		public IndexModel(IWebHostEnvironment env)
-		{
-			this.env = env;
-		}
 
 		public async Task OnGetAsync(int rank, string username, int userId, bool showMoreStats)
 		{

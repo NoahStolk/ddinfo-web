@@ -7,6 +7,10 @@ namespace DevilDaggersWebsite.Code.Utils
 {
 	public static class ZalgoUtils
 	{
+		private static readonly List<string> zalgoAll = new List<string>();
+
+		private static readonly Random random = new Random();
+
 		static ZalgoUtils()
 		{
 			for (int i = 300; i < 340; i++)
@@ -18,10 +22,6 @@ namespace DevilDaggersWebsite.Code.Utils
 				zalgoAll.Add(unicodeString);
 			}
 		}
-
-		private static readonly List<string> zalgoAll = new List<string>();
-
-		private static readonly Random random = new Random();
 
 		public static string InterpolateHexColor(string c1, string c2, float percentage)
 		{

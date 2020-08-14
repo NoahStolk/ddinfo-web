@@ -8,16 +8,16 @@ namespace DevilDaggersWebsite.Code.Tasks
 {
 	public abstract class AbstractTask : IScheduledTask
 	{
+		protected AbstractTask()
+		{
+			TaskInstanceKeeper.Instances[GetType()] = this;
+		}
+
 		public DateTime LastTriggered { get; private set; }
 		public DateTime LastFinished { get; private set; }
 		public TimeSpan ExecutionTime { get; private set; }
 
 		public abstract string Schedule { get; }
-
-		protected AbstractTask()
-		{
-			TaskInstanceKeeper.Instances[GetType()] = this;
-		}
 
 		protected abstract Task Execute();
 

@@ -10,11 +10,6 @@ namespace DevilDaggersWebsite.Pages
 {
 	public class DonationsModel : PageModel
 	{
-		public List<User> Users { get; }
-		public List<Donation> Donations { get; }
-
-		public Dictionary<int, int> DonatorsWithReceivedEuroAmounts { get; } = new Dictionary<int, int>();
-
 		public DonationsModel(IWebHostEnvironment env)
 		{
 			Users = UserUtils.GetUserObjects<User>(env);
@@ -28,5 +23,10 @@ namespace DevilDaggersWebsite.Pages
 					DonatorsWithReceivedEuroAmounts[donation.DonatorId] += donation.ConvertedEuroCentsReceived;
 			}
 		}
+
+		public List<User> Users { get; }
+		public List<Donation> Donations { get; }
+
+		public Dictionary<int, int> DonatorsWithReceivedEuroAmounts { get; } = new Dictionary<int, int>();
 	}
 }

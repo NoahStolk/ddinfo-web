@@ -6,13 +6,13 @@ namespace DevilDaggersWebsite.Code.Api
 {
 	public class EndpointParameter
 	{
-		public ParameterInfo Info { get; }
-		public HtmlString FormattedDescription { get; }
-
 		public EndpointParameter(ParameterInfo info)
 		{
 			Info = info;
 			FormattedDescription = RazorUtils.GetFormattedParameter(info);
 		}
+
+		public ParameterInfo Info { get; }
+		public HtmlString FormattedDescription { get; }
 	}
 }

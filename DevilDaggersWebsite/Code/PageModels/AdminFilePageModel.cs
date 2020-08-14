@@ -10,14 +10,12 @@ namespace DevilDaggersWebsite.Code.PageModels
 	public abstract class AdminFilePageModel<TData> : AdminPageModel
 		where TData : AbstractUserData, new()
 	{
-		public string FileContents { get; set; }
-
 		private readonly string fileName = new TData().FileName;
 
 		private readonly JsonSerializerSettings serializerSettings = new JsonSerializerSettings
 		{
 			DefaultValueHandling = DefaultValueHandling.Ignore,
-			NullValueHandling = NullValueHandling.Ignore
+			NullValueHandling = NullValueHandling.Ignore,
 		};
 
 		protected AdminFilePageModel(IHttpContextAccessor httpContextAccessor, IWebHostEnvironment env)
@@ -25,6 +23,8 @@ namespace DevilDaggersWebsite.Code.PageModels
 		{
 			FileContents = ReadJson();
 		}
+
+		public string FileContents { get; set; }
 
 		public void OnPost(string fileContents)
 		{

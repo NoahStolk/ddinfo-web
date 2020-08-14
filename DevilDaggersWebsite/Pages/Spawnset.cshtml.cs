@@ -10,17 +10,17 @@ namespace DevilDaggersWebsite.Pages
 {
 	public class SpawnsetModel : PageModel
 	{
-		public string Query { get; private set; }
-		public SpawnsetFile SpawnsetFile { get; private set; }
-
 		public Spawnset spawnset;
-
-		public IWebHostEnvironment Env { get; }
 
 		public SpawnsetModel(IWebHostEnvironment env)
 		{
 			Env = env;
 		}
+
+		public string Query { get; private set; }
+		public SpawnsetFile SpawnsetFile { get; private set; }
+
+		public IWebHostEnvironment Env { get; }
 
 		public ActionResult OnGet()
 		{

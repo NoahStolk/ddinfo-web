@@ -16,7 +16,7 @@ namespace DevilDaggersWebsite.Pages.Wiki.Docs
 			new BinaryField("00007042", "Brightness", typeof(float)),
 			new BinaryField("00000000"),
 			new BinaryField("33000000"),
-			new BinaryField("01000000")
+			new BinaryField("01000000"),
 		};
 
 		public List<BinaryField> SpawnsHeader { get; } = new List<BinaryField>
@@ -30,7 +30,7 @@ namespace DevilDaggersWebsite.Pages.Wiki.Docs
 			new BinaryField("78000000"),
 			new BinaryField("3C000000"),
 			new BinaryField("00000000"),
-			new BinaryField("76000000", "Spawn count", typeof(uint))
+			new BinaryField("76000000", "Spawn count", typeof(uint)),
 		};
 
 		public List<BinaryField> FirstSpawn { get; } = new List<BinaryField>
@@ -41,7 +41,7 @@ namespace DevilDaggersWebsite.Pages.Wiki.Docs
 			new BinaryField("03000000"),
 			new BinaryField("00000000"),
 			new BinaryField("0000F041"),
-			new BinaryField("0A000000")
+			new BinaryField("0A000000"),
 		};
 
 		public List<BinaryField> SecondSpawn { get; } = new List<BinaryField>
@@ -52,7 +52,7 @@ namespace DevilDaggersWebsite.Pages.Wiki.Docs
 			new BinaryField("03000000"),
 			new BinaryField("00000000"),
 			new BinaryField("0000F041"),
-			new BinaryField("0A000000")
+			new BinaryField("0A000000"),
 		};
 
 		public List<BinaryField> ThirdSpawn { get; } = new List<BinaryField>
@@ -63,7 +63,7 @@ namespace DevilDaggersWebsite.Pages.Wiki.Docs
 			new BinaryField("03000000"),
 			new BinaryField("00000000"),
 			new BinaryField("0000F041"),
-			new BinaryField("0A000000")
+			new BinaryField("0A000000"),
 		};
 	}
 }

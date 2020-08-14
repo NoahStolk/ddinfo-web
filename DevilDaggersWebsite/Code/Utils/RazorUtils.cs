@@ -51,7 +51,7 @@ namespace DevilDaggersWebsite.Code.Utils
 				colorCode = GameInfo.GetEntities<Enemy>(gameVersionOverride).FirstOrDefault(e => e.Name == enemy.Name).ColorCode;
 
 			string color = zalgo == 0 ? colorCode : ZalgoUtils.InterpolateHexColor($"#FF{colorCode}", "#FFFF0000", zalgo / 100f);
-			return new HtmlString($"<a style='color: #{color};' href='/Wiki/Enemies{(gameVersionOverride == null ? "" : $"?GameVersion={gameVersionOverride}")}#{enemy.Name.Replace(" ", "")}'>{enemy.Name.ToZalgo(zalgo / 20f)}{(plural ? "s" : "")}</a>");
+			return new HtmlString($"<a style='color: #{color};' href='/Wiki/Enemies{(gameVersionOverride == null ? string.Empty : $"?GameVersion={gameVersionOverride}")}#{enemy.Name.Replace(" ", string.Empty)}'>{enemy.Name.ToZalgo(zalgo / 20f)}{(plural ? "s" : string.Empty)}</a>");
 		}
 
 		public static HtmlString GetLayoutAnchor(this Upgrade upgrade)
@@ -78,7 +78,7 @@ namespace DevilDaggersWebsite.Code.Utils
 						{
 							// Enemy string should not be inside an <a> element.
 							if (str.Length < str.IndexOf(enemyString) + enemyString.Length + "</a>".Length || str.Substring(str.IndexOf(enemyString) + enemyString.Length, "</a>".Length) != "</a>")
-								str = str.Replace(enemyString, $"{begin}{GetLayoutAnchor(enemy, end == 's')}{((end == 's') ? "" : end.ToString())}");
+								str = str.Replace(enemyString, $"{begin}{GetLayoutAnchor(enemy, end == 's')}{((end == 's') ? string.Empty : end.ToString())}");
 						}
 					}
 				}
@@ -113,7 +113,7 @@ namespace DevilDaggersWebsite.Code.Utils
 			=> $"{str.ToLower().Replace(" ", "-")}";
 
 		public static string S(this int value)
-			=> value == 1 ? "" : "s";
+			=> value == 1 ? string.Empty : "s";
 
 		public static HtmlString GetFormattedReturnType(Type type)
 		{
@@ -147,8 +147,8 @@ namespace DevilDaggersWebsite.Code.Utils
 			typeSpan = isNullable ? $"<span class='api-nullable'>Nullable&lt;{typeSpan}&gt;</span>" : typeSpan;
 
 			return new HtmlString(@$"{typeSpan}
-<span class='api-parameter{(parameter.IsOptional ? "-optional" : "")}'>{parameter.Name}</span>
-{(parameter.IsOptional ? $"(<span class='api-parameter-default-value'>{GetParameterFormattedDefaultValue(parameter)}</span> by default)" : "")}");
+<span class='api-parameter{(parameter.IsOptional ? "-optional" : string.Empty)}'>{parameter.Name}</span>
+{(parameter.IsOptional ? $"(<span class='api-parameter-default-value'>{GetParameterFormattedDefaultValue(parameter)}</span> by default)" : string.Empty)}");
 		}
 
 		public static HtmlString GetParameterFormattedDefaultValue(ParameterInfo parameter)

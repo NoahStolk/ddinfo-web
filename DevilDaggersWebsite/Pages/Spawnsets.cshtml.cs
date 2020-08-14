@@ -15,6 +15,11 @@ namespace DevilDaggersWebsite.Pages
 	{
 		private readonly IWebHostEnvironment env;
 
+		public SpawnsetsModel(IWebHostEnvironment env)
+		{
+			this.env = env;
+		}
+
 		public PaginatedList<SpawnsetFile> PaginatedSpawnsetFiles { get; set; }
 
 		public string SearchAuthor { get; set; }
@@ -33,11 +38,6 @@ namespace DevilDaggersWebsite.Pages
 		public int PageSize { get; set; } = 18;
 		public int PageIndex { get; private set; }
 		public int TotalResults { get; private set; }
-
-		public SpawnsetsModel(IWebHostEnvironment env)
-		{
-			this.env = env;
-		}
 
 		public void OnGet(string searchAuthor, string searchName, string sortOrder, int? pageIndex)
 		{

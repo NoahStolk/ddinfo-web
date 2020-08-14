@@ -17,8 +17,6 @@ namespace DevilDaggersWebsite.Pages.CustomLeaderboards
 {
 	public class UploadModel : PageModel
 	{
-		public string JsonResult { get; set; }
-
 		private readonly ApplicationDbContext context;
 		private readonly IWebHostEnvironment env;
 
@@ -28,7 +26,10 @@ namespace DevilDaggersWebsite.Pages.CustomLeaderboards
 			this.env = env;
 		}
 
-		public void OnGet(string spawnsetHash,
+		public string JsonResult { get; set; }
+
+		public void OnGet(
+			string spawnsetHash,
 			int playerId,
 			string username,
 			int time,
@@ -84,8 +85,10 @@ namespace DevilDaggersWebsite.Pages.CustomLeaderboards
 				string hash = string.Empty;
 
 				using (FileStream fs = new FileStream(spawnsetPath, FileMode.Open, FileAccess.Read))
+				{
 					if (Spawnset.TryParse(fs, out Spawnset spawnsetObject))
 						hash = spawnsetObject.GetHashString();
+				}
 
 				if (hash == spawnsetHash)
 				{
@@ -97,7 +100,8 @@ namespace DevilDaggersWebsite.Pages.CustomLeaderboards
 			if (string.IsNullOrEmpty(spawnsetName))
 				return new UploadResult(false, "This spawnset does not exist on DevilDaggers.info.");
 
-			string check = string.Join(";",
+			string check = string.Join(
+				";",
 				playerId,
 				username,
 				time,
@@ -157,7 +161,7 @@ namespace DevilDaggersWebsite.Pages.CustomLeaderboards
 					Homing = homing,
 					LevelUpTime2 = levelUpTime2,
 					LevelUpTime3 = levelUpTime3,
-					LevelUpTime4 = levelUpTime4
+					LevelUpTime4 = levelUpTime4,
 				});
 			}
 
@@ -180,7 +184,7 @@ namespace DevilDaggersWebsite.Pages.CustomLeaderboards
 					Leaderboard = leaderboard,
 					Category = leaderboard.Category,
 					Entries = entries,
-					IsNewUserOnThisLeaderboard = false
+					IsNewUserOnThisLeaderboard = false,
 				});
 			}
 
@@ -248,7 +252,7 @@ namespace DevilDaggersWebsite.Pages.CustomLeaderboards
 				LevelUpTime3 = levelUpTime3,
 				LevelUpTime3Diff = levelUpTime3Diff,
 				LevelUpTime4 = levelUpTime4,
-				LevelUpTime4Diff = levelUpTime4Diff
+				LevelUpTime4Diff = levelUpTime4Diff,
 			});
 		}
 
