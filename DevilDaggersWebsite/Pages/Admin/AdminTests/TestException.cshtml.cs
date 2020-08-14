@@ -1,14 +1,11 @@
-﻿using DevilDaggersWebsite.Code.PageModels;
-using Microsoft.AspNetCore.Hosting;
-using Microsoft.AspNetCore.Http;
+﻿using Microsoft.AspNetCore.Mvc.RazorPages;
 using System;
 
 namespace DevilDaggersWebsite.Pages.Admin.AdminTests
 {
-	public class TestExceptionModel : AdminPageModel
+	public class TestExceptionModel : PageModel
 	{
-		public TestExceptionModel(IHttpContextAccessor httpContextAccessor, IWebHostEnvironment env)
-			: base(httpContextAccessor, env)
+		public void OnGet()
 		{
 			throw new Exception("Admin test exception", new Exception("Inner exception message", new Exception("Another inner exception message")));
 		}

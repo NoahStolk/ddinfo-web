@@ -1,14 +1,8 @@
-﻿using DevilDaggersWebsite.Code.PageModels;
-using Microsoft.AspNetCore.Hosting;
-using Microsoft.AspNetCore.Http;
+﻿using Microsoft.AspNetCore.Mvc.RazorPages;
 
 namespace DevilDaggersWebsite.Pages.Admin
 {
-	public class IndexModel : AdminPageModel
+	public class IndexModel : PageModel
 	{
-		public IndexModel(IHttpContextAccessor httpContextAccessor, IWebHostEnvironment env)
-			: base(httpContextAccessor, env)
-		{
-		}
 	}
 }
