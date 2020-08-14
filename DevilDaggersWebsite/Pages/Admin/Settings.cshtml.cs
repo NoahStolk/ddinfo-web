@@ -1,4 +1,5 @@
-﻿using DevilDaggersWebsite.Code.PageModels;
+﻿using DevilDaggersWebsite.Code.Database;
+using DevilDaggersWebsite.Code.PageModels;
 using DevilDaggersWebsite.Code.Users;
 using Microsoft.AspNetCore.Hosting;
 using Microsoft.AspNetCore.Http;

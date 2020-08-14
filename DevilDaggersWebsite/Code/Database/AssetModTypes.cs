@@ -1,10 +1,9 @@
 ﻿using System;
 
-namespace DevilDaggersWebsite.Code.Users
+namespace DevilDaggersWebsite.Code.Database
 {
 	[Flags]
-	[Obsolete("Moved to database.")]
-	public enum AssetModType
+	public enum AssetModTypes
 	{
 		None = 0,
 		Audio = 1,

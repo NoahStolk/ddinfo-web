@@ -1,9 +1,8 @@
 ﻿using System;
 
-namespace DevilDaggersWebsite.Code.Users
+namespace DevilDaggersWebsite.Code.Database
 {
 	[Flags]
-	[Obsolete("Moved to database.")]
 	public enum AssetModFileContents
 	{
 		None = 0,

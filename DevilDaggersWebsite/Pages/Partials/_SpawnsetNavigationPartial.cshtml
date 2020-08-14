@@ -5,7 +5,7 @@
 @{
 	SpawnsetsModel mod = Model.Model;
 	int maxAround = Model.MaxAround;
-	ScreenWidthVisibility visibility = Model.Visibility;
+	ScreenWidthVisibilities visibility = Model.Visibility;
 
 	string firstDisabled = !mod.PaginatedSpawnsetFiles.HasPreviousPage ? "disabled btn-info" : "";
 	string lastDisabled = !mod.PaginatedSpawnsetFiles.HasNextPage ? "disabled btn-info" : "";
@@ -23,7 +23,7 @@
 	int endExtras = multi ? maxAround - Math.Min(curr - first - 1, maxAround) : 1;
 
 	StringBuilder sb = new StringBuilder();
-	foreach (ScreenWidthVisibility v in (ScreenWidthVisibility[])Enum.GetValues(typeof(ScreenWidthVisibility)))
+	foreach (ScreenWidthVisibilities v in (ScreenWidthVisibilities[])Enum.GetValues(typeof(ScreenWidthVisibilities)))
 	{
 		sb.Append(visibility.HasFlag(v) ? "visible" : "hidden");
 		sb.Append($"-{v.ToString().ToLower()} ");

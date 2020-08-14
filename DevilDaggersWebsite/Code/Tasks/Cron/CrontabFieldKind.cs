@@ -9,6 +9,6 @@ namespace DevilDaggersWebsite.Code.Tasks.Cron
 		Hour,
 		Day,
 		Month,
-		DayOfWeek
+		DayOfWeek,
 	}
 }

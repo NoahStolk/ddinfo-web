@@ -3,14 +3,16 @@ using System;
 using DevilDaggersWebsite.Code.Database;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Infrastructure;
+using Microsoft.EntityFrameworkCore.Migrations;
 using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 
 namespace DevilDaggersWebsite.Migrations
 {
     [DbContext(typeof(ApplicationDbContext))]
-    partial class ApplicationDbContextModelSnapshot : ModelSnapshot
+    [Migration("20200814161431_AddUserFilesToDatabase")]
+    partial class AddUserFilesToDatabase
     {
-        protected override void BuildModel(ModelBuilder modelBuilder)
+        protected override void BuildTargetModel(ModelBuilder modelBuilder)
         {
 #pragma warning disable 612, 618
             modelBuilder
@@ -209,6 +211,9 @@ namespace DevilDaggersWebsite.Migrations
                         .ValueGeneratedOnAdd()
                         .HasColumnType("int");
 
+                    b.Property<int?>("AssetModId")
+                        .HasColumnType("int");
+
                     b.Property<string>("BanDescription")
                         .HasColumnType("longtext CHARACTER SET utf8mb4");
 
@@ -251,37 +256,9 @@ namespace DevilDaggersWebsite.Migrations
 
                     b.HasKey("Id");
 
-                    b.ToTable("Players");
-                });
-
-            modelBuilder.Entity("DevilDaggersWebsite.Code.Database.PlayerAssetMod", b =>
-                {
-                    b.Property<int>("PlayerId")
-                        .HasColumnType("int");
-
-                    b.Property<int>("AssetModId")
-                        .HasColumnType("int");
-
-                    b.HasKey("PlayerId", "AssetModId");
-
                     b.HasIndex("AssetModId");
 
-                    b.ToTable("PlayerAssetMod");
-                });
-
-            modelBuilder.Entity("DevilDaggersWebsite.Code.Database.PlayerTitle", b =>
-                {
-                    b.Property<int>("PlayerId")
-                        .HasColumnType("int");
-
-                    b.Property<int>("TitleId")
-                        .HasColumnType("int");
-
-                    b.HasKey("PlayerId", "TitleId");
-
-                    b.HasIndex("TitleId");
-
-                    b.ToTable("PlayerTitle");
+                    b.ToTable("Players");
                 });
 
             modelBuilder.Entity("DevilDaggersWebsite.Code.Database.Title", b =>
@@ -294,7 +271,12 @@ namespace DevilDaggersWebsite.Migrations
                         .IsRequired()
                         .HasColumnType("longtext CHARACTER SET utf8mb4");
 
+                    b.Property<int?>("PlayerId")
+                        .HasColumnType("int");
+
                     b.HasKey("Id");
+
+                    b.HasIndex("PlayerId");
 
                     b.ToTable("Titles");
                 });
@@ -509,34 +491,18 @@ namespace DevilDaggersWebsite.Migrations
                         .IsRequired();
                 });
 
-            modelBuilder.Entity("DevilDaggersWebsite.Code.Database.PlayerAssetMod", b =>
+            modelBuilder.Entity("DevilDaggersWebsite.Code.Database.Player", b =>
                 {
-                    b.HasOne("DevilDaggersWebsite.Code.Database.AssetMod", "AssetMod")
-                        .WithMany("PlayerAssetMods")
-                        .HasForeignKey("AssetModId")
-                        .OnDelete(DeleteBehavior.Cascade)
-                        .IsRequired();
-
-                    b.HasOne("DevilDaggersWebsite.Code.Database.Player", "Player")
-                        .WithMany("PlayerAssetMods")
-                        .HasForeignKey("PlayerId")
-                        .OnDelete(DeleteBehavior.Cascade)
-                        .IsRequired();
+                    b.HasOne("DevilDaggersWebsite.Code.Database.AssetMod", null)
+                        .WithMany("Authors")
+                        .HasForeignKey("AssetModId");
                 });
 
-            modelBuilder.Entity("DevilDaggersWebsite.Code.Database.PlayerTitle", b =>
+            modelBuilder.Entity("DevilDaggersWebsite.Code.Database.Title", b =>
                 {
-                    b.HasOne("DevilDaggersWebsite.Code.Database.Player", "Player")
-                        .WithMany("PlayerTitles")
-                        .HasForeignKey("PlayerId")
-                        .OnDelete(DeleteBehavior.Cascade)
-                        .IsRequired();
-
-                    b.HasOne("DevilDaggersWebsite.Code.Database.Title", "Title")
-                        .WithMany("PlayerTitles")
-                        .HasForeignKey("TitleId")
-                        .OnDelete(DeleteBehavior.Cascade)
-                        .IsRequired();
+                    b.HasOne("DevilDaggersWebsite.Code.Database.Player", null)
+                        .WithMany("Titles")
+                        .HasForeignKey("PlayerId");
                 });
 
             modelBuilder.Entity("Microsoft.AspNetCore.Identity.IdentityRoleClaim<string>", b =>

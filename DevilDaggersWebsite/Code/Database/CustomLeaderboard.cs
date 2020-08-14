@@ -2,7 +2,7 @@
 using System;
 using System.ComponentModel.DataAnnotations.Schema;
 
-namespace DevilDaggersWebsite.Code.Database.CustomLeaderboards
+namespace DevilDaggersWebsite.Code.Database
 {
 	public class CustomLeaderboard : CustomLeaderboardBase
 	{

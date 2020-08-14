@@ -4,7 +4,7 @@ namespace DevilDaggersWebsite.Code.Spawnsets
 {
 	public class SpawnsetNavigationSettings
 	{
-		public SpawnsetNavigationSettings(SpawnsetsModel model, int maxAround, ScreenWidthVisibility visibility)
+		public SpawnsetNavigationSettings(SpawnsetsModel model, int maxAround, ScreenWidthVisibilities visibility)
 		{
 			Model = model;
 			MaxAround = maxAround;
@@ -13,6 +13,6 @@ namespace DevilDaggersWebsite.Code.Spawnsets
 
 		public SpawnsetsModel Model { get; set; }
 		public int MaxAround { get; set; }
-		public ScreenWidthVisibility Visibility { get; set; }
+		public ScreenWidthVisibilities Visibility { get; set; }
 	}
 }

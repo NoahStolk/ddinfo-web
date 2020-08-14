@@ -4,6 +4,6 @@
 	{
 		Rank,
 		Username,
-		UserId
+		UserId,
 	}
 }

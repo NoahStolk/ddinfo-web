@@ -1,5 +1,8 @@
-﻿namespace DevilDaggersWebsite.Code.Users
+﻿using System;
+
+namespace DevilDaggersWebsite.Code.Users
 {
+	[Obsolete("Moved to database.")]
 	public class Flag : AbstractUserData
 	{
 		public override string FileName => "flags";

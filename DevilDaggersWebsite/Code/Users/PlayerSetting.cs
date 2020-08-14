@@ -1,7 +1,9 @@
 ﻿using Newtonsoft.Json;
+using System;
 
 namespace DevilDaggersWebsite.Code.Users
 {
+	[Obsolete("Moved to database.")]
 	public class PlayerSetting : AbstractUserData
 	{
 		public override string FileName => "settings";
