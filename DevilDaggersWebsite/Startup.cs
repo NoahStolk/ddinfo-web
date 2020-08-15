@@ -18,6 +18,7 @@ using Newtonsoft.Json.Converters;
 using System;
 using System.Collections.Generic;
 using System.Globalization;
+using System.Threading.Tasks;
 
 namespace DevilDaggersWebsite
 {
@@ -42,7 +43,11 @@ namespace DevilDaggersWebsite
 			services.AddMvc();
 
 			services.AddDbContext<ApplicationDbContext>(options => options.UseMySql(Configuration.GetConnectionString("DefaultConnection")));
-			services.AddDefaultIdentity<IdentityUser>(options => options.SignIn.RequireConfirmedAccount = true)
+			services.AddDefaultIdentity<IdentityUser>(options =>
+			{
+				options.SignIn.RequireConfirmedAccount = true;
+				options.User.RequireUniqueEmail = true;
+			})
 				.AddRoles<IdentityRole>()
 				.AddEntityFrameworkStores<ApplicationDbContext>();
 
@@ -68,18 +73,18 @@ namespace DevilDaggersWebsite
 
 			services.AddAuthorization(options =>
 			{
-				foreach (KeyValuePair<string, string> kvp in RoleContainer.PolicyToRoleMapper)
+				foreach (KeyValuePair<string, string> kvp in RoleManager.PolicyToRoleMapper)
 					options.AddPolicy(kvp.Key, policy => policy.RequireRole(kvp.Value));
 			});
 
 			services.AddRazorPages().AddRazorPagesOptions(options =>
 			{
-				foreach (KeyValuePair<string, string> kvp in RoleContainer.FolderToPolicyMapper)
+				foreach (KeyValuePair<string, string> kvp in RoleManager.FolderToPolicyMapper)
 					options.Conventions.AuthorizeFolder(kvp.Key, kvp.Value);
 			});
 		}
 
-		public void Configure(IApplicationBuilder app, IWebHostEnvironment env)
+		public void Configure(IApplicationBuilder app, IWebHostEnvironment env, IServiceProvider serviceProvider)
 		{
 			CultureInfo.DefaultThreadCurrentCulture = CultureInfo.InvariantCulture;
 			CultureInfo.DefaultThreadCurrentUICulture = CultureInfo.InvariantCulture;
@@ -141,6 +146,9 @@ namespace DevilDaggersWebsite
 				endpoints.MapRazorPages();
 				endpoints.MapControllers();
 			});
+
+			Task task = serviceProvider.CreateRolesAndAdminUser(Configuration.GetSection("AdminUser")["Email"]);
+			task.Wait();
 		}
 	}
 }

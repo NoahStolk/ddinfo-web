@@ -1,8 +1,13 @@
-﻿using System.Collections.Generic;
+﻿using Microsoft.AspNetCore.Identity;
+using Microsoft.Extensions.DependencyInjection;
+using System;
+using System.Collections.Generic;
+using System.Linq;
+using System.Threading.Tasks;
 
 namespace DevilDaggersWebsite
 {
-	public static class RoleContainer
+	public static class RoleManager
 	{
 		public const string AdminPolicy = nameof(AdminPolicy);
 		public const string AdminRole = nameof(AdminRole);
@@ -39,5 +44,26 @@ namespace DevilDaggersWebsite
 			{ "/Admin/Players", PlayersPolicy },
 			{ "/Admin/Titles", PlayersPolicy },
 		};
+
+		public static async Task CreateRolesAndAdminUser(this IServiceProvider serviceProvider, string adminUserEmail)
+		{
+			RoleManager<IdentityRole>? roleManager = serviceProvider.GetRequiredService<RoleManager<IdentityRole>>();
+			UserManager<IdentityUser>? userManager = serviceProvider.GetRequiredService<UserManager<IdentityUser>>();
+
+			IdentityResult roleResult;
+			foreach (string? roleName in PolicyToRoleMapper.Select(kvp => kvp.Value).ToArray())
+			{
+				bool roleExist = await roleManager.RoleExistsAsync(roleName);
+				if (!roleExist)
+					roleResult = await roleManager.CreateAsync(new IdentityRole(roleName));
+			}
+
+			IdentityUser? admin = await userManager.FindByEmailAsync(adminUserEmail);
+			if (admin != null)
+			{
+				foreach (string role in PolicyToRoleMapper.Values)
+					await userManager.AddToRoleAsync(admin, role);
+			}
+		}
 	}
 }
