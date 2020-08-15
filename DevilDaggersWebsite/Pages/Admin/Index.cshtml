@@ -1,7 +1,4 @@
 ﻿@page
-@using Microsoft.AspNetCore.Identity
-@inject RoleManager<IdentityRole> roleManager
-@inject UserManager<IdentityUser> userManager
 @model DevilDaggersWebsite.Pages.Admin.IndexModel
 @{
 	ViewData["Title"] = "Admin";
@@ -19,11 +16,8 @@
 			string adminRoute = $"./{adminPage}/Index";
 			string role = RoleManager.PolicyToRoleMapper[kvp.Value];
 
-			string? id = userManager.GetUserId(User);
-			IdentityUser user = await userManager.FindByIdAsync(id);
-
 			<ul>
-				@if (await userManager.IsInRoleAsync(user, role))
+				@if (await Model.UserManager.IsInRoleAsync(Model.IdentityUser, role))
 				{
 					<li><a asp-page="@adminRoute">@adminPage</a></li>
 				}
