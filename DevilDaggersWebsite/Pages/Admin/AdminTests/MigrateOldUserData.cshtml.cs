@@ -50,7 +50,7 @@ namespace DevilDaggersWebsite.Pages.Admin.AdminTests
 
 			foreach (Old.User user in UserUtils.GetUserObjects<Old.User>(Env))
 			{
-				Player player = ApplicationDbContext.Players.FirstOrDefault(p => p.PlayerId == user.Id);
+				Player player = ApplicationDbContext.Players.FirstOrDefault(p => p.Id == user.Id);
 
 				List<Title> titles = ApplicationDbContext.Titles.Where(t => user.Titles != null && user.Titles.Contains(t.Name)).ToList();
 				List<PlayerTitle> playerTitles = titles.Select(title => new PlayerTitle { Title = title, TitleId = title.Id, Player = player, PlayerId = player.Id }).ToList();
@@ -62,7 +62,7 @@ namespace DevilDaggersWebsite.Pages.Admin.AdminTests
 			foreach (Old.AssetMod oldMod in UserUtils.GetUserObjects<Old.AssetMod>(Env))
 			{
 				AssetMod newMod = ApplicationDbContext.AssetMods.FirstOrDefault(am => am.Name == oldMod.Name);
-				List<Player> modAuthors = ApplicationDbContext.Players.Where(p => oldMod.AuthorIds.Contains(p.PlayerId)).ToList();
+				List<Player> modAuthors = ApplicationDbContext.Players.Where(p => oldMod.AuthorIds.Contains(p.Id)).ToList();
 
 				List<PlayerAssetMod> playerAssetMods = modAuthors.Select(player => new PlayerAssetMod { Player = player, PlayerId = player.Id, AssetMod = newMod, AssetModId = newMod.Id }).ToList();
 				newMod.PlayerAssetMods = playerAssetMods;
@@ -96,7 +96,7 @@ namespace DevilDaggersWebsite.Pages.Admin.AdminTests
 			{
 				players.Add(new Player
 				{
-					PlayerId = user.Id,
+					Id = user.Id,
 					Username = user.Username,
 					IsAnonymous = user.IsAnonymous,
 				});
@@ -104,13 +104,13 @@ namespace DevilDaggersWebsite.Pages.Admin.AdminTests
 
 			foreach (Old.PlayerSetting setting in UserUtils.GetUserObjects<Old.PlayerSetting>(Env))
 			{
-				Player? player = players.FirstOrDefault(p => p.PlayerId == setting.Id);
+				Player? player = players.FirstOrDefault(p => p.Id == setting.Id);
 				if (player == null)
 				{
 					player = new Player
 					{
 						Username = (await HasmodaiUtils.GetUserById(setting.Id)).Username,
-						PlayerId = setting.Id,
+						Id = setting.Id,
 						Dpi = setting.Dpi,
 						FlashEnabled = setting.FlashEnabled,
 						Fov = setting.Fov,
@@ -122,9 +122,9 @@ namespace DevilDaggersWebsite.Pages.Admin.AdminTests
 				}
 				else
 				{
-					players.Remove(players.FirstOrDefault(p => p.PlayerId == setting.Id));
+					players.Remove(players.FirstOrDefault(p => p.Id == setting.Id));
 
-					player.Username ??= (await HasmodaiUtils.GetUserById(player.PlayerId)).Username;
+					player.Username ??= (await HasmodaiUtils.GetUserById(player.Id)).Username;
 					player.Dpi = setting.Dpi;
 					player.FlashEnabled = setting.FlashEnabled;
 					player.Fov = setting.Fov;
@@ -138,22 +138,22 @@ namespace DevilDaggersWebsite.Pages.Admin.AdminTests
 
 			foreach (Old.Flag flag in UserUtils.GetUserObjects<Old.Flag>(Env))
 			{
-				Player? player = players.FirstOrDefault(p => p.PlayerId == flag.Id);
+				Player? player = players.FirstOrDefault(p => p.Id == flag.Id);
 				if (player == null)
 				{
 					player = new Player
 					{
 						Username = (await HasmodaiUtils.GetUserById(flag.Id)).Username,
-						PlayerId = flag.Id,
+						Id = flag.Id,
 						CountryCode = flag.CountryCode,
 					};
 					players.Add(player);
 				}
 				else
 				{
-					players.Remove(players.FirstOrDefault(p => p.PlayerId == flag.Id));
+					players.Remove(players.FirstOrDefault(p => p.Id == flag.Id));
 
-					player.Username ??= (await HasmodaiUtils.GetUserById(player.PlayerId)).Username;
+					player.Username ??= (await HasmodaiUtils.GetUserById(player.Id)).Username;
 					player.CountryCode = flag.CountryCode;
 
 					players.Add(player);
@@ -162,13 +162,13 @@ namespace DevilDaggersWebsite.Pages.Admin.AdminTests
 
 			foreach (Old.Ban ban in UserUtils.GetUserObjects<Old.Ban>(Env))
 			{
-				Player? player = players.FirstOrDefault(p => p.PlayerId == ban.Id);
+				Player? player = players.FirstOrDefault(p => p.Id == ban.Id);
 				if (player == null)
 				{
 					player = new Player
 					{
 						Username = (await HasmodaiUtils.GetUserById(ban.Id)).Username,
-						PlayerId = ban.Id,
+						Id = ban.Id,
 						IsBanned = true,
 						BanDescription = ban.Description,
 						BanResponsibleId = ban.IdResponsible,
@@ -177,9 +177,9 @@ namespace DevilDaggersWebsite.Pages.Admin.AdminTests
 				}
 				else
 				{
-					players.Remove(players.FirstOrDefault(p => p.PlayerId == ban.Id));
+					players.Remove(players.FirstOrDefault(p => p.Id == ban.Id));
 
-					player.Username ??= (await HasmodaiUtils.GetUserById(player.PlayerId)).Username;
+					player.Username ??= (await HasmodaiUtils.GetUserById(player.Id)).Username;
 					player.IsBanned = true;
 					player.BanDescription = ban.Description;
 					player.BanResponsibleId = ban.IdResponsible;
@@ -199,8 +199,8 @@ namespace DevilDaggersWebsite.Pages.Admin.AdminTests
 			{
 				foreach (int author in assetMod.AuthorIds)
 				{
-					if (!ApplicationDbContext.Players.Any(p => p.PlayerId == author))
-						ApplicationDbContext.Players.Add(new Player { PlayerId = author });
+					if (!ApplicationDbContext.Players.Any(p => p.Id == author))
+						ApplicationDbContext.Players.Add(new Player { Id = author });
 				}
 
 				assetMods.Add(new AssetMod
