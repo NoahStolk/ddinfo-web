@@ -16,12 +16,12 @@ namespace DevilDaggersWebsite.Pages
 			this.httpContextAccessor = httpContextAccessor;
 		}
 
-		public string XmlResult { get; set; }
+		public string? XmlResult { get; set; }
 
 		public void OnGet()
 		{
-			Assembly asm = AppDomain.CurrentDomain.GetAssemblies().FirstOrDefault(a => a.FullName.Contains("Views"));
-			foreach (Type type in asm.GetTypes().Where(t => t.Name.Contains("Admin") || t.Name.Contains("Api")))
+			Assembly asm = AppDomain.CurrentDomain.GetAssemblies().FirstOrDefault(a => a.FullName?.Contains("Views", StringComparison.InvariantCulture) ?? false);
+			foreach (Type type in asm.GetTypes().Where(t => t.Name.Contains("Admin", StringComparison.InvariantCulture) || t.Name.Contains("Identity", StringComparison.InvariantCulture) || t.Name.Contains("Api", StringComparison.InvariantCulture)))
 				SitemapUtils.ExcludePage(type);
 
 			SitemapUtils.ExcludePage("CustomLeaderboards_Leaderboard");
