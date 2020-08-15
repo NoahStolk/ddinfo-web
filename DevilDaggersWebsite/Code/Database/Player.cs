@@ -6,7 +6,6 @@ namespace DevilDaggersWebsite.Code.Database
 	{
 		public int Id { get; set; }
 
-		public int PlayerId { get; set; }
 		public string Username { get; set; }
 		public bool IsAnonymous { get; set; }
 		public List<PlayerAssetMod> PlayerAssetMods { get; set; }
