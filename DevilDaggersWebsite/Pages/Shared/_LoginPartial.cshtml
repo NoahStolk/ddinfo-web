@@ -4,13 +4,21 @@
 
 @if (SignInManager.IsSignedIn(User))
 {
-	<li class="nav-item">
-		<a class="nav-link text-dark" asp-area="Identity" asp-page="/Account/Manage/Index" title="Manage">Hello @User.Identity.Name!</a>
-	</li>
-	<li class="nav-item">
-		<form class="form-inline" asp-area="Identity" asp-page="/Account/Logout" asp-route-returnUrl="@Url.Page("/", new { area = "" })" method="post">
-			<button type="submit" class="nav-link btn btn-link text-dark">Logout</button>
-		</form>
+	<li class="dropdown">
+		<a href="#" class="dropdown-toggle" data-toggle="dropdown" role="button" aria-haspopup="true" aria-expanded="false">Hello @User.Identity.Name! <span class="caret"></span></a>
+		<ul class="dropdown-menu">
+			<li class="nav-item">
+				<a class="nav-link text-dark" asp-page="/Admin/Index">Admin</a>
+			</li>
+			<li class="nav-item">
+				<a class="nav-link text-dark" asp-area="Identity" asp-page="/Account/Manage/Index">Manage account</a>
+			</li>
+			<li class="nav-item">
+				<form style="background: #000f" class="form-inline" asp-area="Identity" asp-page="/Account/Logout" asp-route-returnUrl="@Url.Page("/", new { area = "" })" method="post">
+					<button type="submit" class="nav-link btn btn-link text-dark">Logout</button>
+				</form>
+			</li>
+		</ul>
 	</li>
 }
 else
