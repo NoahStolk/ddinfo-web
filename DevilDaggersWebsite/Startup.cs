@@ -16,6 +16,7 @@ using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Extensions.Hosting;
 using Newtonsoft.Json.Converters;
 using System;
+using System.Collections.Generic;
 using System.Globalization;
 
 namespace DevilDaggersWebsite
@@ -23,21 +24,6 @@ namespace DevilDaggersWebsite
 	public class Startup
 	{
 		private const string defaultCorsPolicy = nameof(defaultCorsPolicy);
-
-		private const string adminTestPolicy = nameof(adminTestPolicy);
-		private const string adminTestRole = nameof(adminTestRole);
-
-		private const string assetModsPolicy = nameof(assetModsPolicy);
-		private const string assetModsRole = nameof(assetModsRole);
-
-		private const string customLeaderboardsPolicy = nameof(customLeaderboardsPolicy);
-		private const string customLeaderboardsRole = nameof(customLeaderboardsRole);
-
-		private const string donationsPolicy = nameof(donationsPolicy);
-		private const string donationsRole = nameof(donationsRole);
-
-		private const string playersPolicy = nameof(playersPolicy);
-		private const string playersRole = nameof(playersRole);
 
 		public Startup(IConfiguration configuration)
 		{
@@ -56,7 +42,6 @@ namespace DevilDaggersWebsite
 			services.AddMvc();
 
 			services.AddDbContext<ApplicationDbContext>(options => options.UseMySql(Configuration.GetConnectionString("DefaultConnection")));
-
 			services.AddDefaultIdentity<IdentityUser>(options => options.SignIn.RequireConfirmedAccount = true).AddEntityFrameworkStores<ApplicationDbContext>();
 
 			services.AddSingleton<IHttpContextAccessor, HttpContextAccessor>();
@@ -81,23 +66,14 @@ namespace DevilDaggersWebsite
 
 			services.AddAuthorization(options =>
 			{
-				options.AddPolicy(adminTestPolicy, policy => policy.RequireRole(adminTestRole));
-				options.AddPolicy(assetModsPolicy, policy => policy.RequireRole(assetModsRole));
-				options.AddPolicy(customLeaderboardsPolicy, policy => policy.RequireRole(customLeaderboardsRole));
-				options.AddPolicy(donationsPolicy, policy => policy.RequireRole(donationsRole));
-				options.AddPolicy(playersPolicy, policy => policy.RequireRole(playersRole));
+				foreach (KeyValuePair<string, string> kvp in RoleContainer.PolicyToRoleMapper)
+					options.AddPolicy(kvp.Key, policy => policy.RequireRole(kvp.Value));
 			});
 
 			services.AddRazorPages().AddRazorPagesOptions(options =>
 			{
-				options.Conventions.AuthorizeFolder("/Admin/AdminTests", adminTestPolicy);
-				options.Conventions.AuthorizeFolder("/Admin/AssetMods", assetModsPolicy);
-				options.Conventions.AuthorizeFolder("/Admin/CustomEntries", customLeaderboardsPolicy); // Maybe only allow admin here.
-				options.Conventions.AuthorizeFolder("/Admin/CustomLeaderboardCategories", customLeaderboardsPolicy); // Maybe only allow admin here.
-				options.Conventions.AuthorizeFolder("/Admin/CustomLeaderboards", customLeaderboardsPolicy);
-				options.Conventions.AuthorizeFolder("/Admin/Donations", donationsPolicy);
-				options.Conventions.AuthorizeFolder("/Admin/Players", playersPolicy);
-				options.Conventions.AuthorizeFolder("/Admin/Titles", playersPolicy);
+				foreach (KeyValuePair<string, string> kvp in RoleContainer.FolderToPolicyMapper)
+					options.Conventions.AuthorizeFolder(kvp.Key, kvp.Value);
 			});
 		}
 

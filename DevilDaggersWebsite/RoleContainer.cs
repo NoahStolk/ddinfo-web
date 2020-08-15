@@ -1,0 +1,43 @@
+﻿using System.Collections.Generic;
+
+namespace DevilDaggersWebsite
+{
+	public static class RoleContainer
+	{
+		public const string AdminPolicy = nameof(AdminPolicy);
+		public const string AdminRole = nameof(AdminRole);
+
+		public const string AssetModsPolicy = nameof(AssetModsPolicy);
+		public const string AssetModsRole = nameof(AssetModsRole);
+
+		public const string CustomLeaderboardsPolicy = nameof(CustomLeaderboardsPolicy);
+		public const string CustomLeaderboardsRole = nameof(CustomLeaderboardsRole);
+
+		public const string DonationsPolicy = nameof(DonationsPolicy);
+		public const string DonationsRole = nameof(DonationsRole);
+
+		public const string PlayersPolicy = nameof(PlayersPolicy);
+		public const string PlayersRole = nameof(PlayersRole);
+
+		public static readonly Dictionary<string, string> PolicyToRoleMapper = new Dictionary<string, string>
+		{
+			{ AdminPolicy, AdminRole },
+			{ AssetModsPolicy, AssetModsRole },
+			{ CustomLeaderboardsPolicy, CustomLeaderboardsRole },
+			{ DonationsPolicy, DonationsRole },
+			{ PlayersPolicy, PlayersRole },
+		};
+
+		public static readonly Dictionary<string, string> FolderToPolicyMapper = new Dictionary<string, string>
+		{
+			{ "/Admin/AdminTests", AdminPolicy },
+			{ "/Admin/AssetMods", AssetModsPolicy },
+			{ "/Admin/CustomEntries", AdminPolicy },
+			{ "/Admin/CustomLeaderboardCategories", AdminPolicy },
+			{ "/Admin/CustomLeaderboards", CustomLeaderboardsPolicy },
+			{ "/Admin/Donations", DonationsPolicy },
+			{ "/Admin/Players", PlayersPolicy },
+			{ "/Admin/Titles", PlayersPolicy },
+		};
+	}
+}
