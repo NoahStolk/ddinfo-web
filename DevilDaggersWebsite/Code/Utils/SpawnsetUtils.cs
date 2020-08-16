@@ -15,7 +15,7 @@ namespace DevilDaggersWebsite.Code.Utils
 		public const int DefaultMaxWaves = 28;
 		public const int MaxSpawns = 2500;
 
-		public static SpawnsetFile CreateSpawnsetFileFromSettingsFile(IWebHostEnvironment env, string path)
+		public static SpawnsetFile? CreateSpawnsetFileFromSettingsFile(IWebHostEnvironment env, string path)
 		{
 			if (!File.Exists(path))
 				return null;
@@ -42,7 +42,7 @@ namespace DevilDaggersWebsite.Code.Utils
 			return spawnsetFile;
 		}
 
-		public static List<SpawnsetFile> GetSpawnsets(IWebHostEnvironment env, string searchAuthor = null, string searchName = null)
+		public static List<SpawnsetFile> GetSpawnsets(IWebHostEnvironment env, string? searchAuthor = null, string? searchName = null)
 		{
 			IEnumerable<SpawnsetFile> spawnsetFiles = Directory.GetFiles(Path.Combine(env.WebRootPath, "spawnsets")).Select(p => CreateSpawnsetFileFromSettingsFile(env, p));
 
