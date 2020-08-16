@@ -1,7 +1,9 @@
-﻿using DevilDaggersWebsite.Code.Database;
+﻿using DevilDaggersCore.Extensions;
+using DevilDaggersWebsite.Code.Database;
 using Microsoft.AspNetCore.Mvc.RazorPages;
 using Microsoft.EntityFrameworkCore;
 using System.Collections.Generic;
+using System.Linq;
 using System.Threading.Tasks;
 
 namespace DevilDaggersWebsite.Pages.Admin.Titles
@@ -15,11 +17,15 @@ namespace DevilDaggersWebsite.Pages.Admin.Titles
 			this.context = context;
 		}
 
-		public IList<Title> Title { get; set; }
+		public IList<Title> Titles { get; private set; }
 
-		public async Task OnGetAsync()
+		public async Task OnGetAsync(string? sortMemberName, bool ascending)
 		{
-			Title = await context.Titles.ToListAsync();
+			IQueryable<Title> query = context.Titles;
+			if (!string.IsNullOrEmpty(sortMemberName))
+				query = query.OrderByMember(sortMemberName, ascending);
+
+			Titles = await query.ToListAsync();
 		}
 	}
 }

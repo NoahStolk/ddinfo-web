@@ -14,31 +14,31 @@
 	<thead>
 		<tr>
 			<th>
-				@Html.DisplayNameFor(model => model.Donation[0].PlayerId)
+				<a asp-route-sortMemberName="PlayerId">@Html.DisplayNameFor(model => model.Donations[0].PlayerId)</a>
 			</th>
 			<th>
-				@Html.DisplayNameFor(model => model.Donation[0].Amount)
+				<a asp-route-sortMemberName="Amount">@Html.DisplayNameFor(model => model.Donations[0].Amount)</a>
 			</th>
 			<th>
-				@Html.DisplayNameFor(model => model.Donation[0].Currency)
+				<a asp-route-sortMemberName="Currency">@Html.DisplayNameFor(model => model.Donations[0].Currency)</a>
 			</th>
 			<th>
-				@Html.DisplayNameFor(model => model.Donation[0].ConvertedEuroCentsReceived)
+				<a asp-route-sortMemberName="ConvertedEuroCentsReceived">@Html.DisplayNameFor(model => model.Donations[0].ConvertedEuroCentsReceived)</a>
 			</th>
 			<th>
-				@Html.DisplayNameFor(model => model.Donation[0].DateReceived)
+				<a asp-route-sortMemberName="DateReceived">@Html.DisplayNameFor(model => model.Donations[0].DateReceived)</a>
 			</th>
 			<th>
-				@Html.DisplayNameFor(model => model.Donation[0].Note)
+				<a asp-route-sortMemberName="Note">@Html.DisplayNameFor(model => model.Donations[0].Note)</a>
 			</th>
 			<th>
-				@Html.DisplayNameFor(model => model.Donation[0].IsRefunded)
+				<a asp-route-sortMemberName="IsRefunded">@Html.DisplayNameFor(model => model.Donations[0].IsRefunded)</a>
 			</th>
 			<th></th>
 		</tr>
 	</thead>
 	<tbody>
-		@foreach (var item in Model.Donation)
+		@foreach (var item in Model.Donations)
 		{
 			<tr>
 				<td>

@@ -14,58 +14,58 @@
 	<thead>
 		<tr>
 			<th>
-				@Html.DisplayNameFor(model => model.CustomEntry[0].CustomLeaderboard)
+				<a asp-route-sortMemberName="CustomLeaderboard">@Html.DisplayNameFor(model => model.CustomEntries[0].CustomLeaderboard)</a>
 			</th>
 			<th>
-				@Html.DisplayNameFor(model => model.CustomEntry[0].PlayerId)
+				<a asp-route-sortMemberName="PlayerId">@Html.DisplayNameFor(model => model.CustomEntries[0].PlayerId)</a>
 			</th>
 			<th>
-				@Html.DisplayNameFor(model => model.CustomEntry[0].Username)
+				<a asp-route-sortMemberName="Username">@Html.DisplayNameFor(model => model.CustomEntries[0].Username)</a>
 			</th>
 			<th>
-				@Html.DisplayNameFor(model => model.CustomEntry[0].Time)
+				<a asp-route-sortMemberName="Time">@Html.DisplayNameFor(model => model.CustomEntries[0].Time)</a>
 			</th>
 			<th>
-				@Html.DisplayNameFor(model => model.CustomEntry[0].Gems)
+				<a asp-route-sortMemberName="Gems">@Html.DisplayNameFor(model => model.CustomEntries[0].Gems)</a>
 			</th>
 			<th>
-				@Html.DisplayNameFor(model => model.CustomEntry[0].Kills)
+				<a asp-route-sortMemberName="Kills">@Html.DisplayNameFor(model => model.CustomEntries[0].Kills)</a>
 			</th>
 			<th>
-				@Html.DisplayNameFor(model => model.CustomEntry[0].DeathType)
+				<a asp-route-sortMemberName="DeathType">@Html.DisplayNameFor(model => model.CustomEntries[0].DeathType)</a>
 			</th>
 			<th>
-				@Html.DisplayNameFor(model => model.CustomEntry[0].ShotsHit)
+				<a asp-route-sortMemberName="ShotsHit">@Html.DisplayNameFor(model => model.CustomEntries[0].ShotsHit)</a>
 			</th>
 			<th>
-				@Html.DisplayNameFor(model => model.CustomEntry[0].ShotsFired)
+				<a asp-route-sortMemberName="ShotsFired">@Html.DisplayNameFor(model => model.CustomEntries[0].ShotsFired)</a>
 			</th>
 			<th>
-				@Html.DisplayNameFor(model => model.CustomEntry[0].EnemiesAlive)
+				<a asp-route-sortMemberName="EnemiesAlive">@Html.DisplayNameFor(model => model.CustomEntries[0].EnemiesAlive)</a>
 			</th>
 			<th>
-				@Html.DisplayNameFor(model => model.CustomEntry[0].Homing)
+				<a asp-route-sortMemberName="Homing">@Html.DisplayNameFor(model => model.CustomEntries[0].Homing)</a>
 			</th>
 			<th>
-				@Html.DisplayNameFor(model => model.CustomEntry[0].LevelUpTime2)
+				<a asp-route-sortMemberName="LevelUpTime2">@Html.DisplayNameFor(model => model.CustomEntries[0].LevelUpTime2)</a>
 			</th>
 			<th>
-				@Html.DisplayNameFor(model => model.CustomEntry[0].LevelUpTime3)
+				<a asp-route-sortMemberName="LevelUpTime3">@Html.DisplayNameFor(model => model.CustomEntries[0].LevelUpTime3)</a>
 			</th>
 			<th>
-				@Html.DisplayNameFor(model => model.CustomEntry[0].LevelUpTime4)
+				<a asp-route-sortMemberName="LevelUpTime4">@Html.DisplayNameFor(model => model.CustomEntries[0].LevelUpTime4)</a>
 			</th>
 			<th>
-				@Html.DisplayNameFor(model => model.CustomEntry[0].SubmitDate)
+				<a asp-route-sortMemberName="SubmitDate">@Html.DisplayNameFor(model => model.CustomEntries[0].SubmitDate)</a>
 			</th>
 			<th>
-				@Html.DisplayNameFor(model => model.CustomEntry[0].ClientVersion)
+				<a asp-route-sortMemberName="ClientVersion">@Html.DisplayNameFor(model => model.CustomEntries[0].ClientVersion)</a>
 			</th>
 			<th></th>
 		</tr>
 	</thead>
 	<tbody>
-		@foreach (var item in Model.CustomEntry)
+		@foreach (var item in Model.CustomEntries)
 		{
 			<tr>
 				<td>

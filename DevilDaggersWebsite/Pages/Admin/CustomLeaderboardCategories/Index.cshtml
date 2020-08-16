@@ -14,22 +14,22 @@
 	<thead>
 		<tr>
 			<th>
-				@Html.DisplayNameFor(model => model.CustomLeaderboardCategory[0].Name)
+				<a asp-route-sortMemberName="Name">@Html.DisplayNameFor(model => model.CustomLeaderboardCategories[0].Name)</a>
 			</th>
 			<th>
-				@Html.DisplayNameFor(model => model.CustomLeaderboardCategory[0].SortingPropertyName)
+				<a asp-route-sortMemberName="SortingPropertyName">@Html.DisplayNameFor(model => model.CustomLeaderboardCategories[0].SortingPropertyName)</a>
 			</th>
 			<th>
-				@Html.DisplayNameFor(model => model.CustomLeaderboardCategory[0].Ascending)
+				<a asp-route-sortMemberName="Ascending">@Html.DisplayNameFor(model => model.CustomLeaderboardCategories[0].Ascending)</a>
 			</th>
 			<th>
-				@Html.DisplayNameFor(model => model.CustomLeaderboardCategory[0].LayoutPartialName)
+				<a asp-route-sortMemberName="LayoutPartialName">@Html.DisplayNameFor(model => model.CustomLeaderboardCategories[0].LayoutPartialName)</a>
 			</th>
 			<th></th>
 		</tr>
 	</thead>
 	<tbody>
-		@foreach (var item in Model.CustomLeaderboardCategory)
+		@foreach (var item in Model.CustomLeaderboardCategories)
 		{
 			<tr>
 				<td>

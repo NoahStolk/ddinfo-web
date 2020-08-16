@@ -14,49 +14,49 @@
 	<thead>
 		<tr>
 			<th>
-				@Html.DisplayNameFor(model => model.Player[0].Id)
+				<a asp-route-sortMemberName="Id">@Html.DisplayNameFor(model => model.Players[0].Id)</a>
 			</th>
 			<th>
-				@Html.DisplayNameFor(model => model.Player[0].Username)
+				<a asp-route-sortMemberName="Username">@Html.DisplayNameFor(model => model.Players[0].Username)</a>
 			</th>
 			<th>
-				@Html.DisplayNameFor(model => model.Player[0].IsAnonymous)
+				<a asp-route-sortMemberName="IsAnonymous">@Html.DisplayNameFor(model => model.Players[0].IsAnonymous)</a>
 			</th>
 			<th>
-				@Html.DisplayNameFor(model => model.Player[0].CountryCode)
+				<a asp-route-sortMemberName="CountryCode">@Html.DisplayNameFor(model => model.Players[0].CountryCode)</a>
 			</th>
 			<th>
-				@Html.DisplayNameFor(model => model.Player[0].Dpi)
+				<a asp-route-sortMemberName="Dpi">@Html.DisplayNameFor(model => model.Players[0].Dpi)</a>
 			</th>
 			<th>
-				@Html.DisplayNameFor(model => model.Player[0].InGameSens)
+				<a asp-route-sortMemberName="InGameSens">@Html.DisplayNameFor(model => model.Players[0].InGameSens)</a>
 			</th>
 			<th>
-				@Html.DisplayNameFor(model => model.Player[0].Fov)
+				<a asp-route-sortMemberName="Fov">@Html.DisplayNameFor(model => model.Players[0].Fov)</a>
 			</th>
 			<th>
-				@Html.DisplayNameFor(model => model.Player[0].RightHanded)
+				<a asp-route-sortMemberName="RightHanded">@Html.DisplayNameFor(model => model.Players[0].RightHanded)</a>
 			</th>
 			<th>
-				@Html.DisplayNameFor(model => model.Player[0].FlashEnabled)
+				<a asp-route-sortMemberName="FlashEnabled">@Html.DisplayNameFor(model => model.Players[0].FlashEnabled)</a>
 			</th>
 			<th>
-				@Html.DisplayNameFor(model => model.Player[0].Gamma)
+				<a asp-route-sortMemberName="Gamma">@Html.DisplayNameFor(model => model.Players[0].Gamma)</a>
 			</th>
 			<th>
-				@Html.DisplayNameFor(model => model.Player[0].IsBanned)
+				<a asp-route-sortMemberName="IsBanned">@Html.DisplayNameFor(model => model.Players[0].IsBanned)</a>
 			</th>
 			<th>
-				@Html.DisplayNameFor(model => model.Player[0].BanDescription)
+				<a asp-route-sortMemberName="BanDescription">@Html.DisplayNameFor(model => model.Players[0].BanDescription)</a>
 			</th>
 			<th>
-				@Html.DisplayNameFor(model => model.Player[0].BanResponsibleId)
+				<a asp-route-sortMemberName="BanResponsibleId">@Html.DisplayNameFor(model => model.Players[0].BanResponsibleId)</a>
 			</th>
 			<th></th>
 		</tr>
 	</thead>
 	<tbody>
-		@foreach (var item in Model.Player)
+		@foreach (var item in Model.Players)
 		{
 			<tr>
 				<td>

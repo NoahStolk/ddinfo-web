@@ -14,37 +14,37 @@
 	<thead>
 		<tr>
 			<th>
-				@Html.DisplayNameFor(model => model.CustomLeaderboard[0].Category)
+				<a asp-route-sortMemberName="Category">@Html.DisplayNameFor(model => model.CustomLeaderboards[0].Category)</a>
 			</th>
 			<th>
-				@Html.DisplayNameFor(model => model.CustomLeaderboard[0].SpawnsetFileName)
+				<a asp-route-sortMemberName="SpawnsetFileName">@Html.DisplayNameFor(model => model.CustomLeaderboards[0].SpawnsetFileName)</a>
 			</th>
 			<th>
-				@Html.DisplayNameFor(model => model.CustomLeaderboard[0].Bronze)
+				<a asp-route-sortMemberName="Bronze">@Html.DisplayNameFor(model => model.CustomLeaderboards[0].Bronze)</a>
 			</th>
 			<th>
-				@Html.DisplayNameFor(model => model.CustomLeaderboard[0].Silver)
+				<a asp-route-sortMemberName="Silver">@Html.DisplayNameFor(model => model.CustomLeaderboards[0].Silver)</a>
 			</th>
 			<th>
-				@Html.DisplayNameFor(model => model.CustomLeaderboard[0].Golden)
+				<a asp-route-sortMemberName="Golden">@Html.DisplayNameFor(model => model.CustomLeaderboards[0].Golden)</a>
 			</th>
 			<th>
-				@Html.DisplayNameFor(model => model.CustomLeaderboard[0].Devil)
+				<a asp-route-sortMemberName="Devil">@Html.DisplayNameFor(model => model.CustomLeaderboards[0].Devil)</a>
 			</th>
 			<th>
-				@Html.DisplayNameFor(model => model.CustomLeaderboard[0].Homing)
+				<a asp-route-sortMemberName="Homing">@Html.DisplayNameFor(model => model.CustomLeaderboards[0].Homing)</a>
 			</th>
 			<th>
-				@Html.DisplayNameFor(model => model.CustomLeaderboard[0].DateLastPlayed)
+				<a asp-route-sortMemberName="DateLastPlayed">@Html.DisplayNameFor(model => model.CustomLeaderboards[0].DateLastPlayed)</a>
 			</th>
 			<th>
-				@Html.DisplayNameFor(model => model.CustomLeaderboard[0].DateCreated)
+				<a asp-route-sortMemberName="DateCreated">@Html.DisplayNameFor(model => model.CustomLeaderboards[0].DateCreated)</a>
 			</th>
 			<th></th>
 		</tr>
 	</thead>
 	<tbody>
-		@foreach (var item in Model.CustomLeaderboard)
+		@foreach (var item in Model.CustomLeaderboards)
 		{
 			<tr>
 				<td>

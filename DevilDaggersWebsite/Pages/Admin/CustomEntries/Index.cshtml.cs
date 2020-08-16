@@ -1,7 +1,9 @@
-﻿using DevilDaggersWebsite.Code.Database;
+﻿using DevilDaggersCore.Extensions;
+using DevilDaggersWebsite.Code.Database;
 using Microsoft.AspNetCore.Mvc.RazorPages;
 using Microsoft.EntityFrameworkCore;
 using System.Collections.Generic;
+using System.Linq;
 using System.Threading.Tasks;
 
 namespace DevilDaggersWebsite.Pages.Admin.CustomEntries
@@ -15,11 +17,15 @@ namespace DevilDaggersWebsite.Pages.Admin.CustomEntries
 			this.context = context;
 		}
 
-		public IList<CustomEntry> CustomEntry { get; set; }
+		public IList<CustomEntry> CustomEntries { get; private set; }
 
-		public async Task OnGetAsync()
+		public async Task OnGetAsync(string? sortMemberName, bool ascending)
 		{
-			CustomEntry = await context.CustomEntries.Include(c => c.CustomLeaderboard).ToListAsync();
+			IQueryable<CustomEntry> query = context.CustomEntries.Include(ce => ce.CustomLeaderboard);
+			if (!string.IsNullOrEmpty(sortMemberName))
+				query = query.OrderByMember(sortMemberName, ascending);
+
+			CustomEntries = await query.ToListAsync();
 		}
 	}
 }

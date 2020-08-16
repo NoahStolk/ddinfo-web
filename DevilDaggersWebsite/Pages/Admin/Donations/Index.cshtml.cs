@@ -1,7 +1,9 @@
-﻿using DevilDaggersWebsite.Code.Database;
+﻿using DevilDaggersCore.Extensions;
+using DevilDaggersWebsite.Code.Database;
 using Microsoft.AspNetCore.Mvc.RazorPages;
 using Microsoft.EntityFrameworkCore;
 using System.Collections.Generic;
+using System.Linq;
 using System.Threading.Tasks;
 
 namespace DevilDaggersWebsite.Pages.Admin.Donations
@@ -15,11 +17,15 @@ namespace DevilDaggersWebsite.Pages.Admin.Donations
 			this.context = context;
 		}
 
-		public IList<Donation> Donation { get; set; }
+		public IList<Donation> Donations { get; private set; }
 
-		public async Task OnGetAsync()
+		public async Task OnGetAsync(string? sortMemberName, bool ascending)
 		{
-			Donation = await context.Donations.ToListAsync();
+			IQueryable<Donation> query = context.Donations;
+			if (!string.IsNullOrEmpty(sortMemberName))
+				query = query.OrderByMember(sortMemberName, ascending);
+
+			Donations = await query.ToListAsync();
 		}
 	}
 }

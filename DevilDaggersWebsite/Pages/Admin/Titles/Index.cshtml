@@ -14,13 +14,13 @@
 	<thead>
 		<tr>
 			<th>
-				@Html.DisplayNameFor(model => model.Title[0].Name)
+				<a asp-route-sortMemberName="Name">@Html.DisplayNameFor(model => model.Titles[0].Name)</a>
 			</th>
 			<th></th>
 		</tr>
 	</thead>
 	<tbody>
-		@foreach (var item in Model.Title)
+		@foreach (var item in Model.Titles)
 		{
 			<tr>
 				<td>

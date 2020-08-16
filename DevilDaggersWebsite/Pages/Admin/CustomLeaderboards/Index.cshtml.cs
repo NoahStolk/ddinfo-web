@@ -1,7 +1,9 @@
-﻿using DevilDaggersWebsite.Code.Database;
+﻿using DevilDaggersCore.Extensions;
+using DevilDaggersWebsite.Code.Database;
 using Microsoft.AspNetCore.Mvc.RazorPages;
 using Microsoft.EntityFrameworkCore;
 using System.Collections.Generic;
+using System.Linq;
 using System.Threading.Tasks;
 
 namespace DevilDaggersWebsite.Pages.Admin.CustomLeaderboards
@@ -15,11 +17,15 @@ namespace DevilDaggersWebsite.Pages.Admin.CustomLeaderboards
 			this.context = context;
 		}
 
-		public IList<CustomLeaderboard> CustomLeaderboard { get; set; }
+		public IList<CustomLeaderboard> CustomLeaderboards { get; private set; }
 
-		public async Task OnGetAsync()
+		public async Task OnGetAsync(string? sortMemberName, bool ascending)
 		{
-			CustomLeaderboard = await context.CustomLeaderboards.Include(c => c.Category).ToListAsync();
+			IQueryable<CustomLeaderboard> query = context.CustomLeaderboards.Include(cl => cl.Category);
+			if (!string.IsNullOrEmpty(sortMemberName))
+				query = query.OrderByMember(sortMemberName, ascending);
+
+			CustomLeaderboards = await query.ToListAsync();
 		}
 	}
 }

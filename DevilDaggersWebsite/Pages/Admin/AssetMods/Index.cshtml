@@ -14,25 +14,25 @@
 	<thead>
 		<tr>
 			<th>
-				@Html.DisplayNameFor(model => model.AssetMod[0].AssetModTypes)
+				<a asp-route-sortMemberName="AssetModTypes">@Html.DisplayNameFor(model => model.AssetMods[0].AssetModTypes)</a>
 			</th>
 			<th>
-				@Html.DisplayNameFor(model => model.AssetMod[0].AssetModFileContents)
+				<a asp-route-sortMemberName="AssetModFileContents">@Html.DisplayNameFor(model => model.AssetMods[0].AssetModFileContents)</a>
 			</th>
 			<th>
-				@Html.DisplayNameFor(model => model.AssetMod[0].Name)
+				<a asp-route-sortMemberName="Name">@Html.DisplayNameFor(model => model.AssetMods[0].Name)</a>
 			</th>
 			<th>
 				Authors
 			</th>
 			<th>
-				@Html.DisplayNameFor(model => model.AssetMod[0].Url)
+				<a asp-route-sortMemberName="Url">@Html.DisplayNameFor(model => model.AssetMods[0].Url)</a>
 			</th>
 			<th></th>
 		</tr>
 	</thead>
 	<tbody>
-		@foreach (var item in Model.AssetMod)
+		@foreach (var item in Model.AssetMods)
 		{
 			<tr>
 				<td>
