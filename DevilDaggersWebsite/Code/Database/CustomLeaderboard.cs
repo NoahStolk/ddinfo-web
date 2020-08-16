@@ -6,6 +6,10 @@ namespace DevilDaggersWebsite.Code.Database
 {
 	public class CustomLeaderboard : CustomLeaderboardBase
 	{
+		public CustomLeaderboard()
+		{
+		}
+
 		public CustomLeaderboard(string spawnsetFileName, int bronze, int silver, int golden, int devil, int homing, DateTime? dateLastPlayed, DateTime? dateCreated)
 			: base(spawnsetFileName, bronze, silver, golden, devil, homing, dateLastPlayed, dateCreated)
 		{
