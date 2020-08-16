@@ -4,8 +4,6 @@ using DevilDaggersWebsite.Code.Extensions;
 using DevilDaggersWebsite.Code.External;
 using DevilDaggersWebsite.Code.Leaderboards;
 using DevilDaggersWebsite.Code.PageModels;
-using DevilDaggersWebsite.Code.Users;
-using DevilDaggersWebsite.Code.Utils;
 using Microsoft.AspNetCore.Hosting;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.AspNetCore.Mvc.RazorPages;
@@ -20,13 +18,15 @@ namespace DevilDaggersWebsite.Pages.Leaderboard
 	public class IndexModel : PageModel, IDefaultLeaderboardPage
 	{
 		private readonly IWebHostEnvironment env;
+		private readonly ApplicationDbContext dbContext;
 
 		private string username = string.Empty;
 		private int userId;
 
-		public IndexModel(IWebHostEnvironment env)
+		public IndexModel(IWebHostEnvironment env, ApplicationDbContext dbContext)
 		{
 			this.env = env;
+			this.dbContext = dbContext;
 		}
 
 		[BindProperty]
@@ -87,10 +87,12 @@ namespace DevilDaggersWebsite.Pages.Leaderboard
 						Leaderboard.Entries.Clear();
 						Leaderboard = await HasmodaiUtils.GetScores(Rank);
 					}
+
 					break;
 			}
 
-			HasBans = UserUtils.GetUserObjects<Ban>(env).Any(b => Leaderboard.Entries.Any(e => e.Id == b.Id));
+			IEnumerable<int> playerIds = Leaderboard.Entries.Select(p => p.Id);
+			HasBans = dbContext.Players.Where(p => playerIds.Contains(p.Id)).Any(p => p.IsBanned);
 			if (LeaderboardSearchType == LeaderboardSearchType.UserId)
 			{
 				Entry entry = Leaderboard.Entries[0];

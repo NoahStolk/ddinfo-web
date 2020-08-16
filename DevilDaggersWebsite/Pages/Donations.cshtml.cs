@@ -1,6 +1,4 @@
-﻿using DevilDaggersWebsite.Code.Users;
-using DevilDaggersWebsite.Code.Utils;
-using Microsoft.AspNetCore.Hosting;
+﻿using DevilDaggersWebsite.Code.Database;
 using Microsoft.AspNetCore.Mvc.RazorPages;
 using System.Collections.Generic;
 using System.Linq;
@@ -9,22 +7,21 @@ namespace DevilDaggersWebsite.Pages
 {
 	public class DonationsModel : PageModel
 	{
-		public DonationsModel(IWebHostEnvironment env)
+		public DonationsModel(ApplicationDbContext dbContext)
 		{
-			Users = UserUtils.GetUserObjects<User>(env);
-			Donations = UserUtils.GetUserObjects<Code.Users.Donation>(env);
+			Donations = dbContext.Donations.ToList();
 
-			foreach (Code.Users.Donation donation in Donations.Where(d => !d.IsRefunded))
+			foreach (Donation donation in Donations.Where(d => !d.IsRefunded))
 			{
-				if (!DonatorsWithReceivedEuroAmounts.ContainsKey(donation.DonatorId))
-					DonatorsWithReceivedEuroAmounts.Add(donation.DonatorId, donation.ConvertedEuroCentsReceived);
+				int playerId = (int)donation.PlayerId; // TODO: Don't make nullable.
+				if (!DonatorsWithReceivedEuroAmounts.ContainsKey(playerId))
+					DonatorsWithReceivedEuroAmounts.Add(playerId, donation.ConvertedEuroCentsReceived);
 				else
-					DonatorsWithReceivedEuroAmounts[donation.DonatorId] += donation.ConvertedEuroCentsReceived;
+					DonatorsWithReceivedEuroAmounts[playerId] += donation.ConvertedEuroCentsReceived;
 			}
 		}
 
-		public List<User> Users { get; }
-		public List<Code.Users.Donation> Donations { get; }
+		public List<Donation> Donations { get; }
 
 		public Dictionary<int, int> DonatorsWithReceivedEuroAmounts { get; } = new Dictionary<int, int>();
 	}

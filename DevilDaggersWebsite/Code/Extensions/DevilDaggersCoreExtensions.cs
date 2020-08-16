@@ -2,7 +2,6 @@
 using DevilDaggersCore.Leaderboards;
 using DevilDaggersCore.Website;
 using DevilDaggersWebsite.Code.Database;
-using DevilDaggersWebsite.Code.Users;
 using Microsoft.AspNetCore.Hosting;
 using Microsoft.AspNetCore.Html;
 using Newtonsoft.Json;
@@ -46,18 +45,18 @@ namespace DevilDaggersWebsite.Code.Extensions
             ");
 		}
 
-		public static HtmlString ToHtmlData(this Entry entry, string flagCode, PlayerSetting playerSetting) => new HtmlString($@"
+		public static HtmlString ToHtmlData(this Entry entry, string flagCode, Player player) => new HtmlString($@"
 			rank='{entry.Rank}'
 			flag='{flagCode}'
 			username='{HttpUtility.HtmlEncode(entry.Username)}'
 			time='{entry.Time}'
-			e-dpi='{playerSetting.Edpi * 1000 ?? 0}'
-			dpi='{playerSetting.Dpi ?? 0}'
-			in-game-sens='{playerSetting.InGameSens * 1000 ?? 0}'
-			fov='{playerSetting.Fov ?? 0}'
-			hand='{(!playerSetting.RightHanded.HasValue ? -1 : playerSetting.RightHanded.Value ? 1 : 0)}'
-			flash='{(!playerSetting.FlashEnabled.HasValue ? -1 : playerSetting.FlashEnabled.Value ? 1 : 0)}'
-			gamma='{playerSetting.Gamma ?? 0}'
+			e-dpi='{player.Edpi * 1000 ?? 0}'
+			dpi='{player.Dpi ?? 0}'
+			in-game-sens='{player.InGameSens * 1000 ?? 0}'
+			fov='{player.Fov ?? 0}'
+			hand='{(!player.RightHanded.HasValue ? -1 : player.RightHanded.Value ? 1 : 0)}'
+			flash='{(!player.FlashEnabled.HasValue ? -1 : player.FlashEnabled.Value ? 1 : 0)}'
+			gamma='{player.Gamma ?? 0}'
 		");
 
 		public static bool ExistsInHistory(this Entry entry, IWebHostEnvironment env)

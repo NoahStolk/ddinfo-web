@@ -1,11 +1,10 @@
 ﻿@page
-@inject Microsoft.AspNetCore.Hosting.IWebHostEnvironment env
+@model ModsModel
 @using DevilDaggersCore.Utils
-@using DevilDaggersWebsite.Code.Users
+@using DevilDaggersWebsite.Code.Database
 @using DevilDaggersWebsite.Code.Utils
 @{
 	ViewData["Title"] = "Mods";
-	List<User> users = UserUtils.GetUserObjects<User>(env);
 }
 
 <header>
@@ -28,20 +27,20 @@
 			</tr>
 		</thead>
 		<tbody>
-			@foreach (AssetMod mod in UserUtils.GetUserObjects<AssetMod>(env))
+			@foreach (AssetMod mod in Model.AssetMods)
 			{
 				<tr>
 					<td>
 						<a href="@mod.Url" target="_blank">@mod.Name</a>
 					</td>
 					<td>
-						@(string.Join(", ", users.Where(u => mod.AuthorIds.Contains(u.Id)).Select(u => u.Username)))
+						@string.Join(", ", mod.PlayerAssetMods.Select(pam => pam.Player?.Username))
 					</td>
 					<td class="hidden-xs">
-						@(string.Join(", ", EnumUtils.GetEnumFlagValues(mod.AssetModType, true)))
+						@string.Join(", ", EnumUtils.GetEnumFlagValues(mod.AssetModTypes, true))
 					</td>
 					<td class="hidden-xs">
-						@(string.Join(", ", EnumUtils.GetEnumFlagValues(mod.AssetModFileContents, true)))
+						@string.Join(", ", EnumUtils.GetEnumFlagValues(mod.AssetModFileContents, true))
 					</td>
 				</tr>
 			}

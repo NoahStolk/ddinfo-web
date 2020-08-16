@@ -1,10 +1,11 @@
 ﻿@using DevilDaggersCore.Game
 @using DevilDaggersCore.Utils
 @using DevilDaggersCore.Leaderboards
+@using DevilDaggersWebsite.Code.Database
 @using DevilDaggersWebsite.Code.Extensions
-@using DevilDaggersWebsite.Code.Users
 @using DevilDaggersWebsite.Code.Utils
-@inject Microsoft.AspNetCore.Hosting.IWebHostEnvironment env
+@using Microsoft.EntityFrameworkCore
+@inject DevilDaggersWebsite.Code.Database.ApplicationDbContext dbContext
 
 <div class="leaderboard-container flex-container flex-center">
 	<div class="leaderboard-title-row flex-container">
@@ -24,22 +25,20 @@
 	</div>
 	<div class="leaderboard-body">
 		@{
-			IEnumerable<Flag> flags = UserUtils.GetUserObjects<Flag>(env);
-			IEnumerable<PlayerSetting> settings = UserUtils.GetUserObjects<PlayerSetting>(env);
-			IEnumerable<int> donatorIds = UserUtils.GetUserObjects<Donation>(env).Select(d => d.DonatorId);
-			IEnumerable<User> users = UserUtils.GetUserObjects<User>(env);
-			IEnumerable<User> unanonymousDonators = users.Where(u => !u.IsAnonymous && donatorIds.Contains(u.Id));
+			IEnumerable<Donation> donations = dbContext.Donations.ToList();
+			IEnumerable<Player> players = dbContext.Players.Include(p => p.PlayerTitles).ThenInclude(pt => pt.Title).ToList();
 			foreach (Entry entry in Model.Leaderboard.Entries)
 			{
-				PlayerSetting playerSetting = settings.FirstOrDefault(s => s.Id == entry.Id);
-				if (playerSetting == null)
+				Player? player = players.FirstOrDefault(p => p.Id == entry.Id);
+				if (player == null)
 				{
 					continue;
 				}
 
-				bool isUnanonymousDonator = unanonymousDonators.Any(d => d.Id == entry.Id);
-				string flagCode = flags.FirstOrDefault(f => f.Id == entry.Id)?.CountryCode ?? string.Empty;
-				string[] titles = users.FirstOrDefault(u => u.Id == entry.Id)?.Titles;
+				bool isUnanonymousDonator = !player.IsAnonymous && donations.Any(d => d.Id == entry.Id);
+
+				string flagCode = player.CountryCode ?? string.Empty;
+				string[] titles = player.PlayerTitles.Select(pt => pt.Title.Name).ToArray();
 
 				Dagger dagger = GameInfo.GetDaggerFromTime(entry.Time);
 				Death death = GameInfo.GetDeathByType(entry.DeathType, GameInfo.GetGameVersionFromDate(Model.Leaderboard.DateTime));
@@ -47,7 +46,7 @@
 				string daggerColor = dagger.Name.ToLower();
 				string deathStyle = $"color: #{death.ColorCode};";
 
-				<div class="sort" @entry.ToHtmlData(flagCode, playerSetting)>
+				<div class="sort" @entry.ToHtmlData(flagCode, player)>
 					<div class="leaderboard-row flex-container" id="@(entry.Rank)-row">
 						<div class="text-right"><span data-toggle="tooltip" title="@entry.Id" class="leaderboard-tooltip">@entry.Rank</span></div>
 						<div>
@@ -78,42 +77,42 @@
 							}
 						</div>
 						<div class="text-right @daggerColor">@(entry.Time.FormatTimeInteger())</div>
-						<div class="hidden-xs text-right">@(playerSetting.Edpi != null ? playerSetting.Edpi.Value.ToString(FormatUtils.MouseSensitivityFormat) : string.Empty)</div>
-						<div class="hidden-xs text-right">@playerSetting.Dpi</div>
-						<div class="hidden-xs text-right">@(playerSetting.InGameSens != null ? playerSetting.InGameSens.Value.ToString(FormatUtils.MouseSensitivityFormat) : string.Empty)</div>
-						<div class="hidden-xs text-right">@playerSetting.Fov</div>
-						<div class="hidden-xs hidden-sm hidden-md text-right">@playerSetting.RightHandedString</div>
-						<div class="hidden-xs hidden-sm hidden-md text-right">@playerSetting.FlashEnabledString</div>
-						<div class="hidden-xs hidden-sm hidden-md text-right">@playerSetting.Gamma</div>
+						<div class="hidden-xs text-right">@(player.Edpi != null ? player.Edpi.Value.ToString(FormatUtils.MouseSensitivityFormat) : string.Empty)</div>
+						<div class="hidden-xs text-right">@player.Dpi</div>
+						<div class="hidden-xs text-right">@(player.InGameSens != null ? player.InGameSens.Value.ToString(FormatUtils.MouseSensitivityFormat) : string.Empty)</div>
+						<div class="hidden-xs text-right">@player.Fov</div>
+						<div class="hidden-xs hidden-sm hidden-md text-right">@player.RightHandedString</div>
+						<div class="hidden-xs hidden-sm hidden-md text-right">@player.FlashEnabledString</div>
+						<div class="hidden-xs hidden-sm hidden-md text-right">@player.Gamma</div>
 					</div>
 					<div class="leaderboard-expand flex-container" id="@(entry.Rank)-expand">
 						<div class="visible-xs">
 							<div class="text-left">eDPI</div>
-							<div class="text-right">@(playerSetting.Edpi != null ? playerSetting.Edpi.Value.ToString(FormatUtils.MouseSensitivityFormat) : string.Empty)</div>
+							<div class="text-right">@(player.Edpi != null ? player.Edpi.Value.ToString(FormatUtils.MouseSensitivityFormat) : string.Empty)</div>
 						</div>
 						<div class="visible-xs">
 							<div class="text-left">DPI</div>
-							<div class="text-right">@playerSetting.Dpi</div>
+							<div class="text-right">@player.Dpi</div>
 						</div>
 						<div class="visible-xs">
 							<div class="text-left">In-game sens</div>
-							<div class="text-right">@(playerSetting.InGameSens != null ? playerSetting.InGameSens.Value.ToString(FormatUtils.MouseSensitivityFormat) : string.Empty)</div>
+							<div class="text-right">@(player.InGameSens != null ? player.InGameSens.Value.ToString(FormatUtils.MouseSensitivityFormat) : string.Empty)</div>
 						</div>
 						<div class="visible-xs">
 							<div class="text-left">FOV</div>
-							<div class="text-right">@playerSetting.Fov</div>
+							<div class="text-right">@player.Fov</div>
 						</div>
 						<div class="visible-xs visible-sm visible-md">
 							<div class="text-left">Hand orientation</div>
-							<div class="text-right">@playerSetting.RightHandedString</div>
+							<div class="text-right">@player.RightHandedString</div>
 						</div>
 						<div class="visible-xs visible-sm visible-md">
 							<div class="text-left">Hand flash</div>
-							<div class="text-right">@playerSetting.FlashEnabledString</div>
+							<div class="text-right">@player.FlashEnabledString</div>
 						</div>
 						<div class="visible-xs visible-sm visible-md">
 							<div class="text-left">Gamma</div>
-							<div class="text-right">@playerSetting.Gamma</div>
+							<div class="text-right">@player.Gamma</div>
 						</div>
 						<div style="padding-top: 1em;">
 							<a asp-page="../Leaderboard/Index" asp-route-UserId="@entry.Id">View more info</a>
