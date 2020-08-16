@@ -35,7 +35,7 @@
 					continue;
 				}
 
-				bool isUnanonymousDonator = !player.IsAnonymous && donations.Any(d => d.Id == entry.Id);
+				bool isUnanonymousDonator = !player.IsAnonymous && donations.Any(d => d.PlayerId == entry.Id);
 
 				string flagCode = player.CountryCode ?? string.Empty;
 				string[] titles = player.PlayerTitles.Select(pt => pt.Title.Name).ToArray();
