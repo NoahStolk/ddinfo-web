@@ -1,6 +1,7 @@
 ﻿using DevilDaggersCore.Leaderboards;
 using System;
 using System.Collections.Generic;
+using System.Globalization;
 using System.Net.Http;
 using System.Text;
 using System.Threading.Tasks;
@@ -21,11 +22,11 @@ namespace DevilDaggersWebsite.Code.External
 				{
 					{ "user", "0" },
 					{ "level", "survival" },
-					{ "offset", (rank - 1).ToString() }
+					{ "offset", (rank - 1).ToString(CultureInfo.InvariantCulture) },
 				};
 
-				FormUrlEncodedContent content = new FormUrlEncodedContent(postValues);
-				HttpClient client = new HttpClient();
+				using FormUrlEncodedContent content = new FormUrlEncodedContent(postValues);
+				using HttpClient client = new HttpClient();
 				HttpResponseMessage resp = await client.PostAsync(getScoresUrl, content);
 				byte[] data = await resp.Content.ReadAsByteArrayAsync();
 
@@ -37,7 +38,7 @@ namespace DevilDaggersWebsite.Code.External
 					GemsGlobal = BitConverter.ToUInt64(data, 43),
 					Players = BitConverter.ToInt32(data, 75),
 					ShotsHitGlobal = BitConverter.ToUInt64(data, 51),
-					ShotsFiredGlobal = BitConverter.ToUInt64(data, 27)
+					ShotsFiredGlobal = BitConverter.ToUInt64(data, 27),
 				};
 
 				int entryCount = BitConverter.ToInt16(data, 59);
@@ -61,7 +62,7 @@ namespace DevilDaggersWebsite.Code.External
 						GemsTotal = BitConverter.ToUInt64(data, bytePos + 64),
 						DeathsTotal = BitConverter.ToUInt64(data, bytePos + 32),
 						ShotsHitTotal = BitConverter.ToUInt64(data, bytePos + 72),
-						ShotsFiredTotal = BitConverter.ToUInt64(data, bytePos + 48)
+						ShotsFiredTotal = BitConverter.ToUInt64(data, bytePos + 48),
 					};
 
 					bytePos += 84;
@@ -85,11 +86,11 @@ namespace DevilDaggersWebsite.Code.External
 			{
 				Dictionary<string, string> postValues = new Dictionary<string, string>
 				{
-					{ "search", search }
+					{ "search", search },
 				};
 
-				FormUrlEncodedContent content = new FormUrlEncodedContent(postValues);
-				HttpClient client = new HttpClient();
+				using FormUrlEncodedContent content = new FormUrlEncodedContent(postValues);
+				using HttpClient client = new HttpClient();
 				HttpResponseMessage resp = await client.PostAsync(getUserSearchUrl, content);
 				byte[] data = await resp.Content.ReadAsByteArrayAsync();
 
@@ -116,7 +117,7 @@ namespace DevilDaggersWebsite.Code.External
 						GemsTotal = BitConverter.ToUInt64(data, bytePos + 68),
 						DeathsTotal = BitConverter.ToUInt64(data, bytePos + 36),
 						ShotsHitTotal = BitConverter.ToUInt64(data, bytePos + 76),
-						ShotsFiredTotal = BitConverter.ToUInt64(data, bytePos + 52)
+						ShotsFiredTotal = BitConverter.ToUInt64(data, bytePos + 52),
 					};
 
 					bytePos += 88;
@@ -141,11 +142,11 @@ namespace DevilDaggersWebsite.Code.External
 			{
 				Dictionary<string, string> postValues = new Dictionary<string, string>
 				{
-					{ "uid", userId.ToString() }
+					{ "uid", userId.ToString() },
 				};
 
-				FormUrlEncodedContent content = new FormUrlEncodedContent(postValues);
-				HttpClient client = new HttpClient();
+				using FormUrlEncodedContent content = new FormUrlEncodedContent(postValues);
+				using HttpClient client = new HttpClient();
 				HttpResponseMessage resp = await client.PostAsync(GetUserByIdUrl, content);
 				byte[] data = await resp.Content.ReadAsByteArrayAsync();
 
@@ -167,7 +168,7 @@ namespace DevilDaggersWebsite.Code.External
 					GemsTotal = BitConverter.ToUInt64(data, bytePos + 68),
 					DeathsTotal = BitConverter.ToUInt64(data, bytePos + 36),
 					ShotsHitTotal = BitConverter.ToUInt64(data, bytePos + 76),
-					ShotsFiredTotal = BitConverter.ToUInt64(data, bytePos + 52)
+					ShotsFiredTotal = BitConverter.ToUInt64(data, bytePos + 52),
 				};
 
 				return entry;
