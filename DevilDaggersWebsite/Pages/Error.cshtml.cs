@@ -1,5 +1,5 @@
 using DevilDaggersCore.Utils;
-using DiscordBotDdInfo;
+using DiscordBotDdInfo.Extensions;
 using DSharpPlus.Entities;
 using Microsoft.AspNetCore.Diagnostics;
 using Microsoft.AspNetCore.Mvc.RazorPages;
@@ -31,11 +31,11 @@ namespace DevilDaggersWebsite.Pages
 				// builder.AddFieldObject("Content length", HttpContext.Request?.ContentLength);
 				builder.AddError(exceptionFeature?.Error);
 
-				await Bot.DevChannel.SendMessageAsyncSafe(null, builder.Build());
+				await Bot.DdInfoDevChannel.SendMessageAsyncSafe(null, builder.Build());
 			}
 			catch (Exception ex)
 			{
-				await Bot.DevChannel.SendMessageAsyncSafe($"Error report failed! {ex.Message}");
+				await Bot.DdInfoDevChannel.SendMessageAsyncSafe($"Error report failed! {ex.Message}");
 			}
 		}
 	}
