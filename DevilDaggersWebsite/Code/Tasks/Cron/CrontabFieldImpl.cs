@@ -22,9 +22,9 @@ namespace DevilDaggersWebsite.Code.Tasks.Cron
 		private static readonly CompareInfo comparer = CultureInfo.InvariantCulture.CompareInfo;
 		private static readonly char[] comma = { ',' };
 
-		private readonly string[] names;
+		private readonly string[]? names;
 
-		private CrontabFieldImpl(CrontabFieldKind kind, int minValue, int maxValue, string[] names)
+		private CrontabFieldImpl(CrontabFieldKind kind, int minValue, int maxValue, string[]? names)
 		{
 			Debug.Assert(names == null || names.Length == maxValue - minValue + 1);
 			Debug.Assert(Enum.IsDefined(typeof(CrontabFieldKind), kind));

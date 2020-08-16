@@ -9,8 +9,8 @@ namespace DevilDaggersWebsite.Code.External
 {
 	public static class HasmodaiUtils
 	{
-		private static readonly string getScoresUrl = "http://dd.hasmodai.com/backend15/get_scores.php";
-		private static readonly string getUserSearchUrl = "http://dd.hasmodai.com/backend16/get_user_search_public.php";
+		private const string getScoresUrl = "http://dd.hasmodai.com/backend15/get_scores.php";
+		private const string getUserSearchUrl = "http://dd.hasmodai.com/backend16/get_user_search_public.php";
 		public static readonly string GetUserByIdUrl = "http://dd.hasmodai.com/backend16/get_user_by_id_public.php";
 
 		public static async Task<Leaderboard> GetScores(int rank)
@@ -21,7 +21,7 @@ namespace DevilDaggersWebsite.Code.External
 				{
 					{ "user", "0" },
 					{ "level", "survival" },
-					{ "offset", (rank-1).ToString() }
+					{ "offset", (rank - 1).ToString() }
 				};
 
 				FormUrlEncodedContent content = new FormUrlEncodedContent(postValues);

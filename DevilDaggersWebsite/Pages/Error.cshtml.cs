@@ -25,10 +25,10 @@ namespace DevilDaggersWebsite.Pages
 				builder.AddFieldObject("Timestamp", DateTime.Now.ToString(FormatUtils.DateTimeFullFormat), true);
 				builder.AddFieldObject("Route", exceptionFeature?.Path, true);
 				builder.AddFieldObject("Request query string", HttpContext.Request?.QueryString, true);
-				//builder.AddFieldObject("Request ID", Activity.Current?.Id ?? HttpContext.TraceIdentifier);
-				//builder.AddFieldObject("Request method", HttpContext.Request?.Method);
-				//builder.AddFieldObject("Content type", HttpContext.Request?.ContentType);
-				//builder.AddFieldObject("Content length", HttpContext.Request?.ContentLength);
+				// builder.AddFieldObject("Request ID", Activity.Current?.Id ?? HttpContext.TraceIdentifier);
+				// builder.AddFieldObject("Request method", HttpContext.Request?.Method);
+				// builder.AddFieldObject("Content type", HttpContext.Request?.ContentType);
+				// builder.AddFieldObject("Content length", HttpContext.Request?.ContentLength);
 				builder.AddError(exceptionFeature?.Error);
 
 				await Bot.DevChannel.SendMessageAsyncSafe(null, builder.Build());
