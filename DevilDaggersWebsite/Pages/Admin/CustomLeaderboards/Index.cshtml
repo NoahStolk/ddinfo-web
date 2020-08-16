@@ -2,83 +2,84 @@
 @model DevilDaggersWebsite.Pages.Admin.CustomLeaderboards.IndexModel
 
 @{
-    ViewData["Title"] = "Index";
+	ViewData["Title"] = "Index";
 }
 
 <h2>Index</h2>
 
 <p>
-    <a asp-page="Create">Create New</a>
+	<a asp-page="Create">Create New</a>
 </p>
 <table class="table">
-    <thead>
-        <tr>
-            <th>
-                @Html.DisplayNameFor(model => model.CustomLeaderboard[0].Category)
-            </th>
-            <th>
-                @Html.DisplayNameFor(model => model.CustomLeaderboard[0].SpawnsetFileName)
-            </th>
-            <th>
-                @Html.DisplayNameFor(model => model.CustomLeaderboard[0].Bronze)
-            </th>
-            <th>
-                @Html.DisplayNameFor(model => model.CustomLeaderboard[0].Silver)
-            </th>
-            <th>
-                @Html.DisplayNameFor(model => model.CustomLeaderboard[0].Golden)
-            </th>
-            <th>
-                @Html.DisplayNameFor(model => model.CustomLeaderboard[0].Devil)
-            </th>
-            <th>
-                @Html.DisplayNameFor(model => model.CustomLeaderboard[0].Homing)
-            </th>
-            <th>
-                @Html.DisplayNameFor(model => model.CustomLeaderboard[0].DateLastPlayed)
-            </th>
-            <th>
-                @Html.DisplayNameFor(model => model.CustomLeaderboard[0].DateCreated)
-            </th>
-            <th></th>
-        </tr>
-    </thead>
-    <tbody>
-@foreach (var item in Model.CustomLeaderboard) {
-        <tr>
-            <td>
-                @Html.DisplayFor(modelItem => item.Category.LayoutPartialName)
-            </td>
-            <td>
-                @Html.DisplayFor(modelItem => item.SpawnsetFileName)
-            </td>
-            <td>
-                @Html.DisplayFor(modelItem => item.Bronze)
-            </td>
-            <td>
-                @Html.DisplayFor(modelItem => item.Silver)
-            </td>
-            <td>
-                @Html.DisplayFor(modelItem => item.Golden)
-            </td>
-            <td>
-                @Html.DisplayFor(modelItem => item.Devil)
-            </td>
-            <td>
-                @Html.DisplayFor(modelItem => item.Homing)
-            </td>
-            <td>
-                @Html.DisplayFor(modelItem => item.DateLastPlayed)
-            </td>
-            <td>
-                @Html.DisplayFor(modelItem => item.DateCreated)
-            </td>
-            <td>
-                <a asp-page="./Edit" asp-route-id="@item.Id">Edit</a> |
-                <a asp-page="./Details" asp-route-id="@item.Id">Details</a> |
-                <a asp-page="./Delete" asp-route-id="@item.Id">Delete</a>
-            </td>
-        </tr>
-}
-    </tbody>
+	<thead>
+		<tr>
+			<th>
+				@Html.DisplayNameFor(model => model.CustomLeaderboard[0].Category)
+			</th>
+			<th>
+				@Html.DisplayNameFor(model => model.CustomLeaderboard[0].SpawnsetFileName)
+			</th>
+			<th>
+				@Html.DisplayNameFor(model => model.CustomLeaderboard[0].Bronze)
+			</th>
+			<th>
+				@Html.DisplayNameFor(model => model.CustomLeaderboard[0].Silver)
+			</th>
+			<th>
+				@Html.DisplayNameFor(model => model.CustomLeaderboard[0].Golden)
+			</th>
+			<th>
+				@Html.DisplayNameFor(model => model.CustomLeaderboard[0].Devil)
+			</th>
+			<th>
+				@Html.DisplayNameFor(model => model.CustomLeaderboard[0].Homing)
+			</th>
+			<th>
+				@Html.DisplayNameFor(model => model.CustomLeaderboard[0].DateLastPlayed)
+			</th>
+			<th>
+				@Html.DisplayNameFor(model => model.CustomLeaderboard[0].DateCreated)
+			</th>
+			<th></th>
+		</tr>
+	</thead>
+	<tbody>
+		@foreach (var item in Model.CustomLeaderboard)
+		{
+			<tr>
+				<td>
+					@Html.DisplayFor(modelItem => item.Category.LayoutPartialName)
+				</td>
+				<td>
+					@Html.DisplayFor(modelItem => item.SpawnsetFileName)
+				</td>
+				<td>
+					@Html.DisplayFor(modelItem => item.Bronze)
+				</td>
+				<td>
+					@Html.DisplayFor(modelItem => item.Silver)
+				</td>
+				<td>
+					@Html.DisplayFor(modelItem => item.Golden)
+				</td>
+				<td>
+					@Html.DisplayFor(modelItem => item.Devil)
+				</td>
+				<td>
+					@Html.DisplayFor(modelItem => item.Homing)
+				</td>
+				<td>
+					@Html.DisplayFor(modelItem => item.DateLastPlayed)
+				</td>
+				<td>
+					@Html.DisplayFor(modelItem => item.DateCreated)
+				</td>
+				<td>
+					<a asp-page="./Edit" asp-route-id="@item.Id">Edit</a> |
+					<a asp-page="./Details" asp-route-id="@item.Id">Details</a> |
+					<a asp-page="./Delete" asp-route-id="@item.Id">Delete</a>
+				</td>
+			</tr>
+		}
+	</tbody>
 </table>

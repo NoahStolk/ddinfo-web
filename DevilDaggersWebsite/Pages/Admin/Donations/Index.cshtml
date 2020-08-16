@@ -2,71 +2,72 @@
 @model DevilDaggersWebsite.Pages.Admin.Donations.IndexModel
 
 @{
-    ViewData["Title"] = "Index";
+	ViewData["Title"] = "Index";
 }
 
 <h2>Index</h2>
 
 <p>
-    <a asp-page="Create">Create New</a>
+	<a asp-page="Create">Create New</a>
 </p>
 <table class="table">
-    <thead>
-        <tr>
-            <th>
-                @Html.DisplayNameFor(model => model.Donation[0].PlayerId)
-            </th>
-            <th>
-                @Html.DisplayNameFor(model => model.Donation[0].Amount)
-            </th>
-            <th>
-                @Html.DisplayNameFor(model => model.Donation[0].Currency)
-            </th>
-            <th>
-                @Html.DisplayNameFor(model => model.Donation[0].ConvertedEuroCentsReceived)
-            </th>
-            <th>
-                @Html.DisplayNameFor(model => model.Donation[0].DateReceived)
-            </th>
-            <th>
-                @Html.DisplayNameFor(model => model.Donation[0].Note)
-            </th>
-            <th>
-                @Html.DisplayNameFor(model => model.Donation[0].IsRefunded)
-            </th>
-            <th></th>
-        </tr>
-    </thead>
-    <tbody>
-@foreach (var item in Model.Donation) {
-        <tr>
-            <td>
-                @Html.DisplayFor(modelItem => item.PlayerId)
-            </td>
-            <td>
-                @Html.DisplayFor(modelItem => item.Amount)
-            </td>
-            <td>
-                @Html.DisplayFor(modelItem => item.Currency)
-            </td>
-            <td>
-                @Html.DisplayFor(modelItem => item.ConvertedEuroCentsReceived)
-            </td>
-            <td>
-                @Html.DisplayFor(modelItem => item.DateReceived)
-            </td>
-            <td>
-                @Html.DisplayFor(modelItem => item.Note)
-            </td>
-            <td>
-                @Html.DisplayFor(modelItem => item.IsRefunded)
-            </td>
-            <td>
-                <a asp-page="./Edit" asp-route-id="@item.Id">Edit</a> |
-                <a asp-page="./Details" asp-route-id="@item.Id">Details</a> |
-                <a asp-page="./Delete" asp-route-id="@item.Id">Delete</a>
-            </td>
-        </tr>
-}
-    </tbody>
+	<thead>
+		<tr>
+			<th>
+				@Html.DisplayNameFor(model => model.Donation[0].PlayerId)
+			</th>
+			<th>
+				@Html.DisplayNameFor(model => model.Donation[0].Amount)
+			</th>
+			<th>
+				@Html.DisplayNameFor(model => model.Donation[0].Currency)
+			</th>
+			<th>
+				@Html.DisplayNameFor(model => model.Donation[0].ConvertedEuroCentsReceived)
+			</th>
+			<th>
+				@Html.DisplayNameFor(model => model.Donation[0].DateReceived)
+			</th>
+			<th>
+				@Html.DisplayNameFor(model => model.Donation[0].Note)
+			</th>
+			<th>
+				@Html.DisplayNameFor(model => model.Donation[0].IsRefunded)
+			</th>
+			<th></th>
+		</tr>
+	</thead>
+	<tbody>
+		@foreach (var item in Model.Donation)
+		{
+			<tr>
+				<td>
+					@Html.DisplayFor(modelItem => item.PlayerId)
+				</td>
+				<td>
+					@Html.DisplayFor(modelItem => item.Amount)
+				</td>
+				<td>
+					@Html.DisplayFor(modelItem => item.Currency)
+				</td>
+				<td>
+					@Html.DisplayFor(modelItem => item.ConvertedEuroCentsReceived)
+				</td>
+				<td>
+					@Html.DisplayFor(modelItem => item.DateReceived)
+				</td>
+				<td>
+					@Html.DisplayFor(modelItem => item.Note)
+				</td>
+				<td>
+					@Html.DisplayFor(modelItem => item.IsRefunded)
+				</td>
+				<td>
+					<a asp-page="./Edit" asp-route-id="@item.Id">Edit</a> |
+					<a asp-page="./Details" asp-route-id="@item.Id">Details</a> |
+					<a asp-page="./Delete" asp-route-id="@item.Id">Delete</a>
+				</td>
+			</tr>
+		}
+	</tbody>
 </table>
