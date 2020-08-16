@@ -34,7 +34,7 @@
 						<a href="@mod.Url" target="_blank">@mod.Name</a>
 					</td>
 					<td>
-						@string.Join(", ", mod.PlayerAssetMods.Select(pam => pam.Player?.Username))
+						@string.Join(", ", mod.PlayerAssetMods.Select(pam => pam.Player?.Username).OrderBy(s => s))
 					</td>
 					<td class="hidden-xs">
 						@string.Join(", ", EnumUtils.GetEnumFlagValues(mod.AssetModTypes, true))

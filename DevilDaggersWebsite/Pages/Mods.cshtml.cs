@@ -19,7 +19,14 @@ namespace DevilDaggersWebsite.Pages
 
 		public void OnGet()
 		{
-			AssetMods = dbContext.AssetMods.Include(am => am.PlayerAssetMods).ThenInclude(pam => pam.Player).ToList();
+			Dictionary<AssetMod, string> sortedMods = new Dictionary<AssetMod, string>();
+			foreach (AssetMod assetMod in dbContext.AssetMods.Include(am => am.PlayerAssetMods).ThenInclude(pam => pam.Player))
+			{
+				string author = assetMod.PlayerAssetMods.Select(pam => pam.Player.Username).OrderBy(s => s).FirstOrDefault();
+				sortedMods.Add(assetMod, author);
+			}
+
+			AssetMods = sortedMods.OrderBy(kvp => kvp.Value).ThenBy(kvp => kvp.Key.Name).Select(kvp => kvp.Key).ToList();
 		}
 	}
 }
