@@ -23,7 +23,7 @@ namespace DevilDaggersWebsite.Pages.Admin.AssetMods
 			if (id == null)
 				return NotFound();
 
-			AssetMod = await context.AssetMods.Include(am => am.PlayerAssetMods).FirstOrDefaultAsync(m => m.Id == id);
+			AssetMod = await context.AssetMods.Include(am => am.PlayerAssetMods).ThenInclude(pam => pam.Player).FirstOrDefaultAsync(m => m.Id == id);
 
 			if (AssetMod == null)
 				return NotFound();

@@ -33,7 +33,7 @@
 			Authors
 		</dt>
 		<dd>
-			@Html.DisplayFor(model => model.AssetMod.PlayerAssetMods)
+			@(string.Join(", ", Model.AssetMod.PlayerAssetMods.Select(pam => pam.Player.Username).OrderBy(s => s)))
 		</dd>
 		<dt>
 			@Html.DisplayNameFor(model => model.AssetMod.Url)
