@@ -10,11 +10,11 @@ namespace DevilDaggersWebsite.Pages.Admin.CustomLeaderboards
 {
 	public class EditModel : PageModel
 	{
-		private readonly ApplicationDbContext _context;
+		private readonly ApplicationDbContext context;
 
 		public EditModel(ApplicationDbContext context)
 		{
-			_context = context;
+			this.context = context;
 		}
 
 		[BindProperty]
@@ -23,52 +23,39 @@ namespace DevilDaggersWebsite.Pages.Admin.CustomLeaderboards
 		public async Task<IActionResult> OnGetAsync(int? id)
 		{
 			if (id == null)
-			{
 				return NotFound();
-			}
 
-			CustomLeaderboard = await _context.CustomLeaderboards
+			CustomLeaderboard = await context.CustomLeaderboards
 				.Include(c => c.Category).FirstOrDefaultAsync(m => m.Id == id);
 
 			if (CustomLeaderboard == null)
-			{
 				return NotFound();
-			}
-			ViewData["CategoryId"] = new SelectList(_context.CustomLeaderboardCategories, "Id", "LayoutPartialName");
+			ViewData["CategoryId"] = new SelectList(context.CustomLeaderboardCategories, "Id", "LayoutPartialName");
 			return Page();
 		}
 
 		public async Task<IActionResult> OnPostAsync()
 		{
 			if (!ModelState.IsValid)
-			{
 				return Page();
-			}
 
-			_context.Attach(CustomLeaderboard).State = EntityState.Modified;
+			context.Attach(CustomLeaderboard).State = EntityState.Modified;
 
 			try
 			{
-				await _context.SaveChangesAsync();
+				await context.SaveChangesAsync();
 			}
 			catch (DbUpdateConcurrencyException)
 			{
 				if (!CustomLeaderboardExists(CustomLeaderboard.Id))
-				{
 					return NotFound();
-				}
 				else
-				{
 					throw;
-				}
 			}
 
 			return RedirectToPage("./Index");
 		}
 
-		private bool CustomLeaderboardExists(int id)
-		{
-			return _context.CustomLeaderboards.Any(e => e.Id == id);
-		}
+		private bool CustomLeaderboardExists(int id) => context.CustomLeaderboards.Any(e => e.Id == id);
 	}
 }

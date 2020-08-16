@@ -8,19 +8,18 @@ namespace DevilDaggersWebsite.Pages.Admin.CustomLeaderboards
 {
 	public class IndexModel : PageModel
 	{
-		private readonly ApplicationDbContext _context;
+		private readonly ApplicationDbContext context;
 
 		public IndexModel(ApplicationDbContext context)
 		{
-			_context = context;
+			this.context = context;
 		}
 
 		public IList<CustomLeaderboard> CustomLeaderboard { get; set; }
 
 		public async Task OnGetAsync()
 		{
-			CustomLeaderboard = await _context.CustomLeaderboards
-				.Include(c => c.Category).ToListAsync();
+			CustomLeaderboard = await context.CustomLeaderboards.Include(c => c.Category).ToListAsync();
 		}
 	}
 }

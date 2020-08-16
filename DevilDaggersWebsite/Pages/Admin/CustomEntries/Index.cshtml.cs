@@ -8,19 +8,18 @@ namespace DevilDaggersWebsite.Pages.Admin.CustomEntries
 {
 	public class IndexModel : PageModel
 	{
-		private readonly ApplicationDbContext _context;
+		private readonly ApplicationDbContext context;
 
 		public IndexModel(ApplicationDbContext context)
 		{
-			_context = context;
+			this.context = context;
 		}
 
 		public IList<CustomEntry> CustomEntry { get; set; }
 
 		public async Task OnGetAsync()
 		{
-			CustomEntry = await _context.CustomEntries
-				.Include(c => c.CustomLeaderboard).ToListAsync();
+			CustomEntry = await context.CustomEntries.Include(c => c.CustomLeaderboard).ToListAsync();
 		}
 	}
 }

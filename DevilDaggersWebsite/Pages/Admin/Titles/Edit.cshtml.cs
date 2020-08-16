@@ -9,11 +9,11 @@ namespace DevilDaggersWebsite.Pages.Admin.Titles
 {
 	public class EditModel : PageModel
 	{
-		private readonly ApplicationDbContext _context;
+		private readonly ApplicationDbContext context;
 
 		public EditModel(ApplicationDbContext context)
 		{
-			_context = context;
+			this.context = context;
 		}
 
 		[BindProperty]
@@ -22,50 +22,37 @@ namespace DevilDaggersWebsite.Pages.Admin.Titles
 		public async Task<IActionResult> OnGetAsync(int? id)
 		{
 			if (id == null)
-			{
 				return NotFound();
-			}
 
-			Title = await _context.Titles.FirstOrDefaultAsync(m => m.Id == id);
+			Title = await context.Titles.FirstOrDefaultAsync(m => m.Id == id);
 
 			if (Title == null)
-			{
 				return NotFound();
-			}
 			return Page();
 		}
 
 		public async Task<IActionResult> OnPostAsync()
 		{
 			if (!ModelState.IsValid)
-			{
 				return Page();
-			}
 
-			_context.Attach(Title).State = EntityState.Modified;
+			context.Attach(Title).State = EntityState.Modified;
 
 			try
 			{
-				await _context.SaveChangesAsync();
+				await context.SaveChangesAsync();
 			}
 			catch (DbUpdateConcurrencyException)
 			{
 				if (!TitleExists(Title.Id))
-				{
 					return NotFound();
-				}
 				else
-				{
 					throw;
-				}
 			}
 
 			return RedirectToPage("./Index");
 		}
 
-		private bool TitleExists(int id)
-		{
-			return _context.Titles.Any(e => e.Id == id);
-		}
+		private bool TitleExists(int id) => context.Titles.Any(e => e.Id == id);
 	}
 }

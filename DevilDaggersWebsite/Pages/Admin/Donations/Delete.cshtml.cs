@@ -8,11 +8,11 @@ namespace DevilDaggersWebsite.Pages.Admin.Donations
 {
 	public class DeleteModel : PageModel
 	{
-		private readonly ApplicationDbContext _context;
+		private readonly ApplicationDbContext context;
 
 		public DeleteModel(ApplicationDbContext context)
 		{
-			_context = context;
+			this.context = context;
 		}
 
 		[BindProperty]
@@ -21,32 +21,26 @@ namespace DevilDaggersWebsite.Pages.Admin.Donations
 		public async Task<IActionResult> OnGetAsync(int? id)
 		{
 			if (id == null)
-			{
 				return NotFound();
-			}
 
-			Donation = await _context.Donations.FirstOrDefaultAsync(m => m.Id == id);
+			Donation = await context.Donations.FirstOrDefaultAsync(m => m.Id == id);
 
 			if (Donation == null)
-			{
 				return NotFound();
-			}
 			return Page();
 		}
 
 		public async Task<IActionResult> OnPostAsync(int? id)
 		{
 			if (id == null)
-			{
 				return NotFound();
-			}
 
-			Donation = await _context.Donations.FindAsync(id);
+			Donation = await context.Donations.FindAsync(id);
 
 			if (Donation != null)
 			{
-				_context.Donations.Remove(Donation);
-				await _context.SaveChangesAsync();
+				context.Donations.Remove(Donation);
+				await context.SaveChangesAsync();
 			}
 
 			return RedirectToPage("./Index");

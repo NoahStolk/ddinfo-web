@@ -10,11 +10,11 @@ namespace DevilDaggersWebsite.Pages.Admin.CustomEntries
 {
 	public class EditModel : PageModel
 	{
-		private readonly ApplicationDbContext _context;
+		private readonly ApplicationDbContext context;
 
 		public EditModel(ApplicationDbContext context)
 		{
-			_context = context;
+			this.context = context;
 		}
 
 		[BindProperty]
@@ -23,52 +23,39 @@ namespace DevilDaggersWebsite.Pages.Admin.CustomEntries
 		public async Task<IActionResult> OnGetAsync(int? id)
 		{
 			if (id == null)
-			{
 				return NotFound();
-			}
 
-			CustomEntry = await _context.CustomEntries
+			CustomEntry = await context.CustomEntries
 				.Include(c => c.CustomLeaderboard).FirstOrDefaultAsync(m => m.Id == id);
 
 			if (CustomEntry == null)
-			{
 				return NotFound();
-			}
-			ViewData["CustomLeaderboardId"] = new SelectList(_context.CustomLeaderboards, "Id", "SpawnsetFileName");
+			ViewData["CustomLeaderboardId"] = new SelectList(context.CustomLeaderboards, "Id", "SpawnsetFileName");
 			return Page();
 		}
 
 		public async Task<IActionResult> OnPostAsync()
 		{
 			if (!ModelState.IsValid)
-			{
 				return Page();
-			}
 
-			_context.Attach(CustomEntry).State = EntityState.Modified;
+			context.Attach(CustomEntry).State = EntityState.Modified;
 
 			try
 			{
-				await _context.SaveChangesAsync();
+				await context.SaveChangesAsync();
 			}
 			catch (DbUpdateConcurrencyException)
 			{
 				if (!CustomEntryExists(CustomEntry.Id))
-				{
 					return NotFound();
-				}
 				else
-				{
 					throw;
-				}
 			}
 
 			return RedirectToPage("./Index");
 		}
 
-		private bool CustomEntryExists(int id)
-		{
-			return _context.CustomEntries.Any(e => e.Id == id);
-		}
+		private bool CustomEntryExists(int id) => context.CustomEntries.Any(e => e.Id == id);
 	}
 }

@@ -8,18 +8,18 @@ namespace DevilDaggersWebsite.Pages.Admin.Titles
 {
 	public class IndexModel : PageModel
 	{
-		private readonly ApplicationDbContext _context;
+		private readonly ApplicationDbContext context;
 
 		public IndexModel(ApplicationDbContext context)
 		{
-			_context = context;
+			this.context = context;
 		}
 
 		public IList<Title> Title { get; set; }
 
 		public async Task OnGetAsync()
 		{
-			Title = await _context.Titles.ToListAsync();
+			Title = await context.Titles.ToListAsync();
 		}
 	}
 }

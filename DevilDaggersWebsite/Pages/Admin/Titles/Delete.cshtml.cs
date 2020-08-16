@@ -8,11 +8,11 @@ namespace DevilDaggersWebsite.Pages.Admin.Titles
 {
 	public class DeleteModel : PageModel
 	{
-		private readonly ApplicationDbContext _context;
+		private readonly ApplicationDbContext context;
 
 		public DeleteModel(ApplicationDbContext context)
 		{
-			_context = context;
+			this.context = context;
 		}
 
 		[BindProperty]
@@ -21,32 +21,26 @@ namespace DevilDaggersWebsite.Pages.Admin.Titles
 		public async Task<IActionResult> OnGetAsync(int? id)
 		{
 			if (id == null)
-			{
 				return NotFound();
-			}
 
-			Title = await _context.Titles.FirstOrDefaultAsync(m => m.Id == id);
+			Title = await context.Titles.FirstOrDefaultAsync(m => m.Id == id);
 
 			if (Title == null)
-			{
 				return NotFound();
-			}
 			return Page();
 		}
 
 		public async Task<IActionResult> OnPostAsync(int? id)
 		{
 			if (id == null)
-			{
 				return NotFound();
-			}
 
-			Title = await _context.Titles.FindAsync(id);
+			Title = await context.Titles.FindAsync(id);
 
 			if (Title != null)
 			{
-				_context.Titles.Remove(Title);
-				await _context.SaveChangesAsync();
+				context.Titles.Remove(Title);
+				await context.SaveChangesAsync();
 			}
 
 			return RedirectToPage("./Index");

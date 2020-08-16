@@ -8,18 +8,18 @@ namespace DevilDaggersWebsite.Pages.Admin.Donations
 {
 	public class IndexModel : PageModel
 	{
-		private readonly ApplicationDbContext _context;
+		private readonly ApplicationDbContext context;
 
 		public IndexModel(ApplicationDbContext context)
 		{
-			_context = context;
+			this.context = context;
 		}
 
 		public IList<Donation> Donation { get; set; }
 
 		public async Task OnGetAsync()
 		{
-			Donation = await _context.Donations.ToListAsync();
+			Donation = await context.Donations.ToListAsync();
 		}
 	}
 }

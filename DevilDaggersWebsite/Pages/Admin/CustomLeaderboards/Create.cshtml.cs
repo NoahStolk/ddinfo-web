@@ -8,33 +8,29 @@ namespace DevilDaggersWebsite.Pages.Admin.CustomLeaderboards
 {
 	public class CreateModel : PageModel
 	{
-		private readonly ApplicationDbContext _context;
+		private readonly ApplicationDbContext context;
 
 		public CreateModel(ApplicationDbContext context)
 		{
-			_context = context;
-		}
-
-		public IActionResult OnGet()
-		{
-			ViewData["CategoryId"] = new SelectList(_context.CustomLeaderboardCategories, "Id", "LayoutPartialName");
-			return Page();
+			this.context = context;
 		}
 
 		[BindProperty]
 		public CustomLeaderboard CustomLeaderboard { get; set; }
 
-		// To protect from overposting attacks, enable the specific properties you want to bind to, for
-		// more details, see https://aka.ms/RazorPagesCRUD.
+		public IActionResult OnGet()
+		{
+			ViewData["CategoryId"] = new SelectList(context.CustomLeaderboardCategories, "Id", "LayoutPartialName");
+			return Page();
+		}
+
 		public async Task<IActionResult> OnPostAsync()
 		{
 			if (!ModelState.IsValid)
-			{
 				return Page();
-			}
 
-			_context.CustomLeaderboards.Add(CustomLeaderboard);
-			await _context.SaveChangesAsync();
+			context.CustomLeaderboards.Add(CustomLeaderboard);
+			await context.SaveChangesAsync();
 
 			return RedirectToPage("./Index");
 		}

@@ -8,11 +8,11 @@ namespace DevilDaggersWebsite.Pages.Admin.CustomLeaderboards
 {
 	public class DeleteModel : PageModel
 	{
-		private readonly ApplicationDbContext _context;
+		private readonly ApplicationDbContext context;
 
 		public DeleteModel(ApplicationDbContext context)
 		{
-			_context = context;
+			this.context = context;
 		}
 
 		[BindProperty]
@@ -21,33 +21,26 @@ namespace DevilDaggersWebsite.Pages.Admin.CustomLeaderboards
 		public async Task<IActionResult> OnGetAsync(int? id)
 		{
 			if (id == null)
-			{
 				return NotFound();
-			}
 
-			CustomLeaderboard = await _context.CustomLeaderboards
-				.Include(c => c.Category).FirstOrDefaultAsync(m => m.Id == id);
+			CustomLeaderboard = await context.CustomLeaderboards.Include(c => c.Category).FirstOrDefaultAsync(m => m.Id == id);
 
 			if (CustomLeaderboard == null)
-			{
 				return NotFound();
-			}
 			return Page();
 		}
 
 		public async Task<IActionResult> OnPostAsync(int? id)
 		{
 			if (id == null)
-			{
 				return NotFound();
-			}
 
-			CustomLeaderboard = await _context.CustomLeaderboards.FindAsync(id);
+			CustomLeaderboard = await context.CustomLeaderboards.FindAsync(id);
 
 			if (CustomLeaderboard != null)
 			{
-				_context.CustomLeaderboards.Remove(CustomLeaderboard);
-				await _context.SaveChangesAsync();
+				context.CustomLeaderboards.Remove(CustomLeaderboard);
+				await context.SaveChangesAsync();
 			}
 
 			return RedirectToPage("./Index");

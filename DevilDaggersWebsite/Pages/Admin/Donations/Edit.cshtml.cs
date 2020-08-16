@@ -9,11 +9,11 @@ namespace DevilDaggersWebsite.Pages.Admin.Donations
 {
 	public class EditModel : PageModel
 	{
-		private readonly ApplicationDbContext _context;
+		private readonly ApplicationDbContext context;
 
 		public EditModel(ApplicationDbContext context)
 		{
-			_context = context;
+			this.context = context;
 		}
 
 		[BindProperty]
@@ -22,50 +22,37 @@ namespace DevilDaggersWebsite.Pages.Admin.Donations
 		public async Task<IActionResult> OnGetAsync(int? id)
 		{
 			if (id == null)
-			{
 				return NotFound();
-			}
 
-			Donation = await _context.Donations.FirstOrDefaultAsync(m => m.Id == id);
+			Donation = await context.Donations.FirstOrDefaultAsync(m => m.Id == id);
 
 			if (Donation == null)
-			{
 				return NotFound();
-			}
 			return Page();
 		}
 
 		public async Task<IActionResult> OnPostAsync()
 		{
 			if (!ModelState.IsValid)
-			{
 				return Page();
-			}
 
-			_context.Attach(Donation).State = EntityState.Modified;
+			context.Attach(Donation).State = EntityState.Modified;
 
 			try
 			{
-				await _context.SaveChangesAsync();
+				await context.SaveChangesAsync();
 			}
 			catch (DbUpdateConcurrencyException)
 			{
 				if (!DonationExists(Donation.Id))
-				{
 					return NotFound();
-				}
 				else
-				{
 					throw;
-				}
 			}
 
 			return RedirectToPage("./Index");
 		}
 
-		private bool DonationExists(int id)
-		{
-			return _context.Donations.Any(e => e.Id == id);
-		}
+		private bool DonationExists(int id) => context.Donations.Any(e => e.Id == id);
 	}
 }

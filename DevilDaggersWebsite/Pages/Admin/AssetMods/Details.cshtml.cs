@@ -8,11 +8,11 @@ namespace DevilDaggersWebsite.Pages.Admin.AssetMods
 {
 	public class DetailsModel : PageModel
 	{
-		private readonly ApplicationDbContext _context;
+		private readonly ApplicationDbContext context;
 
 		public DetailsModel(ApplicationDbContext context)
 		{
-			_context = context;
+			this.context = context;
 		}
 
 		public AssetMod AssetMod { get; set; }
@@ -20,16 +20,12 @@ namespace DevilDaggersWebsite.Pages.Admin.AssetMods
 		public async Task<IActionResult> OnGetAsync(int? id)
 		{
 			if (id == null)
-			{
 				return NotFound();
-			}
 
-			AssetMod = await _context.AssetMods.FirstOrDefaultAsync(m => m.Id == id);
+			AssetMod = await context.AssetMods.FirstOrDefaultAsync(m => m.Id == id);
 
 			if (AssetMod == null)
-			{
 				return NotFound();
-			}
 			return Page();
 		}
 	}

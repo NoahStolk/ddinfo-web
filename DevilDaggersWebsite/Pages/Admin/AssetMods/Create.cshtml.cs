@@ -7,32 +7,25 @@ namespace DevilDaggersWebsite.Pages.Admin.AssetMods
 {
 	public class CreateModel : PageModel
 	{
-		private readonly ApplicationDbContext _context;
+		private readonly ApplicationDbContext context;
 
 		public CreateModel(ApplicationDbContext context)
 		{
-			_context = context;
-		}
-
-		public IActionResult OnGet()
-		{
-			return Page();
+			this.context = context;
 		}
 
 		[BindProperty]
 		public AssetMod AssetMod { get; set; }
 
-		// To protect from overposting attacks, enable the specific properties you want to bind to, for
-		// more details, see https://aka.ms/RazorPagesCRUD.
+		public IActionResult OnGet() => Page();
+
 		public async Task<IActionResult> OnPostAsync()
 		{
 			if (!ModelState.IsValid)
-			{
 				return Page();
-			}
 
-			_context.AssetMods.Add(AssetMod);
-			await _context.SaveChangesAsync();
+			context.AssetMods.Add(AssetMod);
+			await context.SaveChangesAsync();
 
 			return RedirectToPage("./Index");
 		}

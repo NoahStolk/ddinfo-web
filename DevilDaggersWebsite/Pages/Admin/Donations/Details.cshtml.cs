@@ -8,11 +8,11 @@ namespace DevilDaggersWebsite.Pages.Admin.Donations
 {
 	public class DetailsModel : PageModel
 	{
-		private readonly ApplicationDbContext _context;
+		private readonly ApplicationDbContext context;
 
 		public DetailsModel(ApplicationDbContext context)
 		{
-			_context = context;
+			this.context = context;
 		}
 
 		public Donation Donation { get; set; }
@@ -20,16 +20,12 @@ namespace DevilDaggersWebsite.Pages.Admin.Donations
 		public async Task<IActionResult> OnGetAsync(int? id)
 		{
 			if (id == null)
-			{
 				return NotFound();
-			}
 
-			Donation = await _context.Donations.FirstOrDefaultAsync(m => m.Id == id);
+			Donation = await context.Donations.FirstOrDefaultAsync(m => m.Id == id);
 
 			if (Donation == null)
-			{
 				return NotFound();
-			}
 			return Page();
 		}
 	}

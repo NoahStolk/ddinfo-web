@@ -8,11 +8,11 @@ namespace DevilDaggersWebsite.Pages.Admin.Titles
 {
 	public class DetailsModel : PageModel
 	{
-		private readonly ApplicationDbContext _context;
+		private readonly ApplicationDbContext context;
 
 		public DetailsModel(ApplicationDbContext context)
 		{
-			_context = context;
+			this.context = context;
 		}
 
 		public Title Title { get; set; }
@@ -20,16 +20,12 @@ namespace DevilDaggersWebsite.Pages.Admin.Titles
 		public async Task<IActionResult> OnGetAsync(int? id)
 		{
 			if (id == null)
-			{
 				return NotFound();
-			}
 
-			Title = await _context.Titles.FirstOrDefaultAsync(m => m.Id == id);
+			Title = await context.Titles.FirstOrDefaultAsync(m => m.Id == id);
 
 			if (Title == null)
-			{
 				return NotFound();
-			}
 			return Page();
 		}
 	}

@@ -8,11 +8,11 @@ namespace DevilDaggersWebsite.Pages.Admin.Players
 {
 	public class DeleteModel : PageModel
 	{
-		private readonly ApplicationDbContext _context;
+		private readonly ApplicationDbContext context;
 
 		public DeleteModel(ApplicationDbContext context)
 		{
-			_context = context;
+			this.context = context;
 		}
 
 		[BindProperty]
@@ -21,32 +21,26 @@ namespace DevilDaggersWebsite.Pages.Admin.Players
 		public async Task<IActionResult> OnGetAsync(int? id)
 		{
 			if (id == null)
-			{
 				return NotFound();
-			}
 
-			Player = await _context.Players.FirstOrDefaultAsync(m => m.Id == id);
+			Player = await context.Players.FirstOrDefaultAsync(m => m.Id == id);
 
 			if (Player == null)
-			{
 				return NotFound();
-			}
 			return Page();
 		}
 
 		public async Task<IActionResult> OnPostAsync(int? id)
 		{
 			if (id == null)
-			{
 				return NotFound();
-			}
 
-			Player = await _context.Players.FindAsync(id);
+			Player = await context.Players.FindAsync(id);
 
 			if (Player != null)
 			{
-				_context.Players.Remove(Player);
-				await _context.SaveChangesAsync();
+				context.Players.Remove(Player);
+				await context.SaveChangesAsync();
 			}
 
 			return RedirectToPage("./Index");

@@ -9,11 +9,11 @@ namespace DevilDaggersWebsite.Pages.Admin.Players
 {
 	public class EditModel : PageModel
 	{
-		private readonly ApplicationDbContext _context;
+		private readonly ApplicationDbContext context;
 
 		public EditModel(ApplicationDbContext context)
 		{
-			_context = context;
+			this.context = context;
 		}
 
 		[BindProperty]
@@ -22,50 +22,37 @@ namespace DevilDaggersWebsite.Pages.Admin.Players
 		public async Task<IActionResult> OnGetAsync(int? id)
 		{
 			if (id == null)
-			{
 				return NotFound();
-			}
 
-			Player = await _context.Players.FirstOrDefaultAsync(m => m.Id == id);
+			Player = await context.Players.FirstOrDefaultAsync(m => m.Id == id);
 
 			if (Player == null)
-			{
 				return NotFound();
-			}
 			return Page();
 		}
 
 		public async Task<IActionResult> OnPostAsync()
 		{
 			if (!ModelState.IsValid)
-			{
 				return Page();
-			}
 
-			_context.Attach(Player).State = EntityState.Modified;
+			context.Attach(Player).State = EntityState.Modified;
 
 			try
 			{
-				await _context.SaveChangesAsync();
+				await context.SaveChangesAsync();
 			}
 			catch (DbUpdateConcurrencyException)
 			{
 				if (!PlayerExists(Player.Id))
-				{
 					return NotFound();
-				}
 				else
-				{
 					throw;
-				}
 			}
 
 			return RedirectToPage("./Index");
 		}
 
-		private bool PlayerExists(int id)
-		{
-			return _context.Players.Any(e => e.Id == id);
-		}
+		private bool PlayerExists(int id) => context.Players.Any(e => e.Id == id);
 	}
 }

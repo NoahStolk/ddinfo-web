@@ -8,18 +8,18 @@ namespace DevilDaggersWebsite.Pages.Admin.AssetMods
 {
 	public class IndexModel : PageModel
 	{
-		private readonly ApplicationDbContext _context;
+		private readonly ApplicationDbContext context;
 
 		public IndexModel(ApplicationDbContext context)
 		{
-			_context = context;
+			this.context = context;
 		}
 
 		public IList<AssetMod> AssetMod { get; set; }
 
 		public async Task OnGetAsync()
 		{
-			AssetMod = await _context.AssetMods.ToListAsync();
+			AssetMod = await context.AssetMods.ToListAsync();
 		}
 	}
 }

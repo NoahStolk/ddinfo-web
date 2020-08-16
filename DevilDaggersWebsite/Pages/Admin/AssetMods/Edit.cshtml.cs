@@ -9,11 +9,11 @@ namespace DevilDaggersWebsite.Pages.Admin.AssetMods
 {
 	public class EditModel : PageModel
 	{
-		private readonly ApplicationDbContext _context;
+		private readonly ApplicationDbContext context;
 
 		public EditModel(ApplicationDbContext context)
 		{
-			_context = context;
+			this.context = context;
 		}
 
 		[BindProperty]
@@ -22,50 +22,37 @@ namespace DevilDaggersWebsite.Pages.Admin.AssetMods
 		public async Task<IActionResult> OnGetAsync(int? id)
 		{
 			if (id == null)
-			{
 				return NotFound();
-			}
 
-			AssetMod = await _context.AssetMods.FirstOrDefaultAsync(m => m.Id == id);
+			AssetMod = await context.AssetMods.FirstOrDefaultAsync(m => m.Id == id);
 
 			if (AssetMod == null)
-			{
 				return NotFound();
-			}
 			return Page();
 		}
 
 		public async Task<IActionResult> OnPostAsync()
 		{
 			if (!ModelState.IsValid)
-			{
 				return Page();
-			}
 
-			_context.Attach(AssetMod).State = EntityState.Modified;
+			context.Attach(AssetMod).State = EntityState.Modified;
 
 			try
 			{
-				await _context.SaveChangesAsync();
+				await context.SaveChangesAsync();
 			}
 			catch (DbUpdateConcurrencyException)
 			{
 				if (!AssetModExists(AssetMod.Id))
-				{
 					return NotFound();
-				}
 				else
-				{
 					throw;
-				}
 			}
 
 			return RedirectToPage("./Index");
 		}
 
-		private bool AssetModExists(int id)
-		{
-			return _context.AssetMods.Any(e => e.Id == id);
-		}
+		private bool AssetModExists(int id) => context.AssetMods.Any(e => e.Id == id);
 	}
 }

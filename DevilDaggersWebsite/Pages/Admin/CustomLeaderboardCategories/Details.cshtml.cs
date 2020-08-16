@@ -8,11 +8,11 @@ namespace DevilDaggersWebsite.Pages.Admin.CustomLeaderboardCategories
 {
 	public class DetailsModel : PageModel
 	{
-		private readonly ApplicationDbContext _context;
+		private readonly ApplicationDbContext context;
 
 		public DetailsModel(ApplicationDbContext context)
 		{
-			_context = context;
+			this.context = context;
 		}
 
 		public CustomLeaderboardCategory CustomLeaderboardCategory { get; set; }
@@ -20,16 +20,12 @@ namespace DevilDaggersWebsite.Pages.Admin.CustomLeaderboardCategories
 		public async Task<IActionResult> OnGetAsync(int? id)
 		{
 			if (id == null)
-			{
 				return NotFound();
-			}
 
-			CustomLeaderboardCategory = await _context.CustomLeaderboardCategories.FirstOrDefaultAsync(m => m.Id == id);
+			CustomLeaderboardCategory = await context.CustomLeaderboardCategories.FirstOrDefaultAsync(m => m.Id == id);
 
 			if (CustomLeaderboardCategory == null)
-			{
 				return NotFound();
-			}
 			return Page();
 		}
 	}

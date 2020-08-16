@@ -8,11 +8,11 @@ namespace DevilDaggersWebsite.Pages.Admin.CustomEntries
 {
 	public class DetailsModel : PageModel
 	{
-		private readonly ApplicationDbContext _context;
+		private readonly ApplicationDbContext context;
 
 		public DetailsModel(ApplicationDbContext context)
 		{
-			_context = context;
+			this.context = context;
 		}
 
 		public CustomEntry CustomEntry { get; set; }
@@ -20,17 +20,12 @@ namespace DevilDaggersWebsite.Pages.Admin.CustomEntries
 		public async Task<IActionResult> OnGetAsync(int? id)
 		{
 			if (id == null)
-			{
 				return NotFound();
-			}
 
-			CustomEntry = await _context.CustomEntries
-				.Include(c => c.CustomLeaderboard).FirstOrDefaultAsync(m => m.Id == id);
+			CustomEntry = await context.CustomEntries.Include(c => c.CustomLeaderboard).FirstOrDefaultAsync(m => m.Id == id);
 
 			if (CustomEntry == null)
-			{
 				return NotFound();
-			}
 			return Page();
 		}
 	}

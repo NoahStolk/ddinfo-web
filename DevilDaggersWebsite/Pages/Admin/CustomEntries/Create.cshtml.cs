@@ -8,33 +8,31 @@ namespace DevilDaggersWebsite.Pages.Admin.CustomEntries
 {
 	public class CreateModel : PageModel
 	{
-		private readonly ApplicationDbContext _context;
+		private readonly ApplicationDbContext context;
 
 		public CreateModel(ApplicationDbContext context)
 		{
-			_context = context;
-		}
-
-		public IActionResult OnGet()
-		{
-			ViewData["CustomLeaderboardId"] = new SelectList(_context.CustomLeaderboards, "Id", "SpawnsetFileName");
-			return Page();
+			this.context = context;
 		}
 
 		[BindProperty]
 		public CustomEntry CustomEntry { get; set; }
+
+		public IActionResult OnGet()
+		{
+			ViewData["CustomLeaderboardId"] = new SelectList(context.CustomLeaderboards, "Id", "SpawnsetFileName");
+			return Page();
+		}
 
 		// To protect from overposting attacks, enable the specific properties you want to bind to, for
 		// more details, see https://aka.ms/RazorPagesCRUD.
 		public async Task<IActionResult> OnPostAsync()
 		{
 			if (!ModelState.IsValid)
-			{
 				return Page();
-			}
 
-			_context.CustomEntries.Add(CustomEntry);
-			await _context.SaveChangesAsync();
+			context.CustomEntries.Add(CustomEntry);
+			await context.SaveChangesAsync();
 
 			return RedirectToPage("./Index");
 		}

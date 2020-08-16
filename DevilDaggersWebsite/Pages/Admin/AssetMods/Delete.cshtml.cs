@@ -8,11 +8,11 @@ namespace DevilDaggersWebsite.Pages.Admin.AssetMods
 {
 	public class DeleteModel : PageModel
 	{
-		private readonly ApplicationDbContext _context;
+		private readonly ApplicationDbContext context;
 
 		public DeleteModel(ApplicationDbContext context)
 		{
-			_context = context;
+			this.context = context;
 		}
 
 		[BindProperty]
@@ -21,32 +21,26 @@ namespace DevilDaggersWebsite.Pages.Admin.AssetMods
 		public async Task<IActionResult> OnGetAsync(int? id)
 		{
 			if (id == null)
-			{
 				return NotFound();
-			}
 
-			AssetMod = await _context.AssetMods.FirstOrDefaultAsync(m => m.Id == id);
+			AssetMod = await context.AssetMods.FirstOrDefaultAsync(m => m.Id == id);
 
 			if (AssetMod == null)
-			{
 				return NotFound();
-			}
 			return Page();
 		}
 
 		public async Task<IActionResult> OnPostAsync(int? id)
 		{
 			if (id == null)
-			{
 				return NotFound();
-			}
 
-			AssetMod = await _context.AssetMods.FindAsync(id);
+			AssetMod = await context.AssetMods.FindAsync(id);
 
 			if (AssetMod != null)
 			{
-				_context.AssetMods.Remove(AssetMod);
-				await _context.SaveChangesAsync();
+				context.AssetMods.Remove(AssetMod);
+				await context.SaveChangesAsync();
 			}
 
 			return RedirectToPage("./Index");
