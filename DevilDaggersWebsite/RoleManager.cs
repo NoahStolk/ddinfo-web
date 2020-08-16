@@ -42,7 +42,7 @@ namespace DevilDaggersWebsite
 			{ "/Admin/CustomLeaderboards", CustomLeaderboardsPolicy },
 			{ "/Admin/Donations", DonationsPolicy },
 			{ "/Admin/Players", PlayersPolicy },
-			{ "/Admin/Titles", PlayersPolicy },
+			{ "/Admin/Titles", AdminPolicy },
 		};
 
 		public static async Task CreateRolesAndAdminUser(this IServiceProvider serviceProvider, string adminUserEmail)
