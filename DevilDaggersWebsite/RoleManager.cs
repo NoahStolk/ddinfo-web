@@ -50,12 +50,11 @@ namespace DevilDaggersWebsite
 			RoleManager<IdentityRole>? roleManager = serviceProvider.GetRequiredService<RoleManager<IdentityRole>>();
 			UserManager<IdentityUser>? userManager = serviceProvider.GetRequiredService<UserManager<IdentityUser>>();
 
-			IdentityResult roleResult;
 			foreach (string? roleName in PolicyToRoleMapper.Select(kvp => kvp.Value).ToArray())
 			{
 				bool roleExist = await roleManager.RoleExistsAsync(roleName);
 				if (!roleExist)
-					roleResult = await roleManager.CreateAsync(new IdentityRole(roleName));
+					await roleManager.CreateAsync(new IdentityRole(roleName));
 			}
 
 			IdentityUser? admin = await userManager.FindByEmailAsync(adminUserEmail);
