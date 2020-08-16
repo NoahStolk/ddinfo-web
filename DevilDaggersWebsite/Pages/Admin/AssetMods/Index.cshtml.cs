@@ -19,7 +19,7 @@ namespace DevilDaggersWebsite.Pages.Admin.AssetMods
 
 		public async Task OnGetAsync()
 		{
-			AssetMod = await context.AssetMods.ToListAsync();
+			AssetMod = await context.AssetMods.Include(am => am.PlayerAssetMods).ToListAsync();
 		}
 	}
 }

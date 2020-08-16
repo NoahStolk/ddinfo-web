@@ -23,6 +23,9 @@
 				@Html.DisplayNameFor(model => model.AssetMod[0].Name)
 			</th>
 			<th>
+				Authors
+			</th>
+			<th>
 				@Html.DisplayNameFor(model => model.AssetMod[0].Url)
 			</th>
 			<th></th>
@@ -40,6 +43,9 @@
 				</td>
 				<td>
 					@Html.DisplayFor(modelItem => item.Name)
+				</td>
+				<td>
+					@string.Join(", ", item.PlayerAssetMods.Select(pam => pam.PlayerId))
 				</td>
 				<td>
 					@Html.DisplayFor(modelItem => item.Url)
