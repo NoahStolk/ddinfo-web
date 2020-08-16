@@ -1,0 +1,108 @@
+﻿@page
+@model DevilDaggersWebsite.Pages.Admin.CustomEntries.CreateModel
+
+@{
+    ViewData["Title"] = "Create";
+}
+
+<h2>Create</h2>
+
+<h4>CustomEntry</h4>
+<hr />
+<div class="row">
+    <div class="col-md-4">
+        <form method="post">
+            <div asp-validation-summary="ModelOnly" class="text-danger"></div>
+            <div class="form-group">
+                <label asp-for="CustomEntry.CustomLeaderboardId" class="control-label"></label>
+                <select asp-for="CustomEntry.CustomLeaderboardId" class ="form-control" asp-items="ViewBag.CustomLeaderboardId"></select>
+            </div>
+            <div class="form-group">
+                <label asp-for="CustomEntry.PlayerId" class="control-label"></label>
+                <input asp-for="CustomEntry.PlayerId" class="form-control" />
+                <span asp-validation-for="CustomEntry.PlayerId" class="text-danger"></span>
+            </div>
+            <div class="form-group">
+                <label asp-for="CustomEntry.Username" class="control-label"></label>
+                <input asp-for="CustomEntry.Username" class="form-control" />
+                <span asp-validation-for="CustomEntry.Username" class="text-danger"></span>
+            </div>
+            <div class="form-group">
+                <label asp-for="CustomEntry.Time" class="control-label"></label>
+                <input asp-for="CustomEntry.Time" class="form-control" />
+                <span asp-validation-for="CustomEntry.Time" class="text-danger"></span>
+            </div>
+            <div class="form-group">
+                <label asp-for="CustomEntry.Gems" class="control-label"></label>
+                <input asp-for="CustomEntry.Gems" class="form-control" />
+                <span asp-validation-for="CustomEntry.Gems" class="text-danger"></span>
+            </div>
+            <div class="form-group">
+                <label asp-for="CustomEntry.Kills" class="control-label"></label>
+                <input asp-for="CustomEntry.Kills" class="form-control" />
+                <span asp-validation-for="CustomEntry.Kills" class="text-danger"></span>
+            </div>
+            <div class="form-group">
+                <label asp-for="CustomEntry.DeathType" class="control-label"></label>
+                <input asp-for="CustomEntry.DeathType" class="form-control" />
+                <span asp-validation-for="CustomEntry.DeathType" class="text-danger"></span>
+            </div>
+            <div class="form-group">
+                <label asp-for="CustomEntry.ShotsHit" class="control-label"></label>
+                <input asp-for="CustomEntry.ShotsHit" class="form-control" />
+                <span asp-validation-for="CustomEntry.ShotsHit" class="text-danger"></span>
+            </div>
+            <div class="form-group">
+                <label asp-for="CustomEntry.ShotsFired" class="control-label"></label>
+                <input asp-for="CustomEntry.ShotsFired" class="form-control" />
+                <span asp-validation-for="CustomEntry.ShotsFired" class="text-danger"></span>
+            </div>
+            <div class="form-group">
+                <label asp-for="CustomEntry.EnemiesAlive" class="control-label"></label>
+                <input asp-for="CustomEntry.EnemiesAlive" class="form-control" />
+                <span asp-validation-for="CustomEntry.EnemiesAlive" class="text-danger"></span>
+            </div>
+            <div class="form-group">
+                <label asp-for="CustomEntry.Homing" class="control-label"></label>
+                <input asp-for="CustomEntry.Homing" class="form-control" />
+                <span asp-validation-for="CustomEntry.Homing" class="text-danger"></span>
+            </div>
+            <div class="form-group">
+                <label asp-for="CustomEntry.LevelUpTime2" class="control-label"></label>
+                <input asp-for="CustomEntry.LevelUpTime2" class="form-control" />
+                <span asp-validation-for="CustomEntry.LevelUpTime2" class="text-danger"></span>
+            </div>
+            <div class="form-group">
+                <label asp-for="CustomEntry.LevelUpTime3" class="control-label"></label>
+                <input asp-for="CustomEntry.LevelUpTime3" class="form-control" />
+                <span asp-validation-for="CustomEntry.LevelUpTime3" class="text-danger"></span>
+            </div>
+            <div class="form-group">
+                <label asp-for="CustomEntry.LevelUpTime4" class="control-label"></label>
+                <input asp-for="CustomEntry.LevelUpTime4" class="form-control" />
+                <span asp-validation-for="CustomEntry.LevelUpTime4" class="text-danger"></span>
+            </div>
+            <div class="form-group">
+                <label asp-for="CustomEntry.SubmitDate" class="control-label"></label>
+                <input asp-for="CustomEntry.SubmitDate" class="form-control" />
+                <span asp-validation-for="CustomEntry.SubmitDate" class="text-danger"></span>
+            </div>
+            <div class="form-group">
+                <label asp-for="CustomEntry.ClientVersion" class="control-label"></label>
+                <input asp-for="CustomEntry.ClientVersion" class="form-control" />
+                <span asp-validation-for="CustomEntry.ClientVersion" class="text-danger"></span>
+            </div>
+            <div class="form-group">
+                <input type="submit" value="Create" class="btn btn-default" />
+            </div>
+        </form>
+    </div>
+</div>
+
+<div>
+    <a asp-page="Index">Back to List</a>
+</div>
+
+@section Scripts {
+    @{await Html.RenderPartialAsync("_ValidationScriptsPartial");}
+}

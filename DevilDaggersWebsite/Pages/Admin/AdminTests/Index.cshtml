@@ -1,0 +1,15 @@
+﻿@page
+@model DevilDaggersWebsite.Pages.Admin.AdminTests.IndexModel
+@{
+	ViewData["Title"] = "AdminTests";
+}
+
+<header>
+	<h1>@ViewData["Title"]</h1>
+</header>
+
+<main role="main">
+	<a asp-page="TestBot">TestBot</a>
+	<a asp-page="TestException">TestException</a>
+	<a asp-page="MigrateOldUserData">MigrateOldUserData</a>
+</main>

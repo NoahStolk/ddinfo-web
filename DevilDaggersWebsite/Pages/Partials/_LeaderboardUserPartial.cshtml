@@ -2,13 +2,14 @@
 @using DevilDaggersCore.Game
 @using DevilDaggersCore.Utils
 @using DevilDaggersCore.Leaderboards
+@using DevilDaggersWebsite.Code.Database
 @using DevilDaggersWebsite.Code.Extensions
 @using DevilDaggersWebsite.Code.PageModels
-@using DevilDaggersWebsite.Code.Users
 @using DevilDaggersWebsite.Code.Utils
 @using DevilDaggersWebsite.Pages.Leaderboard
-@using Microsoft.AspNetCore.Html;
-@inject Microsoft.AspNetCore.Hosting.IWebHostEnvironment env
+@using Microsoft.AspNetCore.Html
+@using Microsoft.EntityFrameworkCore
+@inject DevilDaggersWebsite.Code.Database.ApplicationDbContext dbContext
 @{
 	bool isIndex = false;
 	bool showMoreStats = false;
@@ -50,28 +51,24 @@
 	</div>
 	<div class="leaderboard-body">
 		@{
-			IEnumerable<Ban> bans = UserUtils.GetUserObjects<Ban>(env);
-			IEnumerable<Flag> flags = UserUtils.GetUserObjects<Flag>(env);
-			IEnumerable<int> donatorIds = UserUtils.GetUserObjects<Donation>(env).Select(d => d.DonatorId);
-			IEnumerable<User> users = UserUtils.GetUserObjects<User>(env);
-			IEnumerable<User> unanonymousDonators = users.Where(u => !u.IsAnonymous && donatorIds.Contains(u.Id));
+			IEnumerable<Donation> donations = dbContext.Donations.ToList();
+			IEnumerable<Player> players = dbContext.Players.Include(p => p.PlayerTitles).ThenInclude(pt => pt.Title).ToList();
 			foreach (Entry entry in Model.Leaderboard.Entries)
 			{
-				Ban ban = bans.FirstOrDefault(b => b.Id == entry.Id);
-				bool isBanned = ban != null;
+				Player? player = players.FirstOrDefault(p => p.Id == entry.Id);
 
-				bool isUnanonymousDonator = entry.Id != 0 && unanonymousDonators.Any(d => d.Id == entry.Id);
+				bool isUnanonymousDonator = donations.Any(d => d.PlayerId == entry.Id) && !(player?.IsAnonymous ?? true);
 
-				string flagCode = isBanned ? string.Empty : flags.FirstOrDefault(f => f.Id == entry.Id)?.CountryCode ?? string.Empty;
-				string[] titles = users.FirstOrDefault(u => u.Id == entry.Id)?.Titles;
+				string flagCode = player?.CountryCode ?? string.Empty;
+				string[] titles = player?.PlayerTitles.Select(pt => pt.Title.Name).ToArray() ?? Array.Empty<string>();
 
 				Dagger dagger = GameInfo.GetDaggerFromTime(entry.Time);
-				string daggerColor = isBanned ? "ban" : dagger.Name.ToLower();
+				string daggerColor = player?.IsBanned ?? false ? "ban" : dagger.Name.ToLower();
 
 				Death? death = GameInfo.GetDeathByType(entry.DeathType, GameInfo.GetGameVersionFromDate(Model.Leaderboard.DateTime));
-				string deathStyle = isBanned ? string.Empty : $"color: #{death?.ColorCode ?? "444"};";
+				string deathStyle = player?.IsBanned ?? false ? string.Empty : $"color: #{death?.ColorCode ?? "444"};";
 
-				string banString = isBanned ? "ban" : string.Empty;
+				string banString = player?.IsBanned ?? false ? "ban" : string.Empty;
 
 				string rank = entry.Rank.ToString();
 				string time = entry.Time.FormatTimeInteger();
@@ -122,9 +119,9 @@
 						</div>
 						<div class="text-left leaderboard-username @banString">
 							@{
-								if (isBanned)
+								if (player?.IsBanned ?? false)
 								{
-									<span data-toggle="tooltip" title="@ban.Description" class="leaderboard-tooltip @daggerColor">@entry.Username</span>
+									<span data-toggle="tooltip" title="@player.BanDescription" class="leaderboard-tooltip @daggerColor">@entry.Username</span>
 								}
 								else
 								{

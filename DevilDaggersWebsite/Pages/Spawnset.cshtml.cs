@@ -17,10 +17,10 @@ namespace DevilDaggersWebsite.Pages
 			Env = env;
 		}
 
+		public IWebHostEnvironment Env { get; }
+
 		public string Query { get; private set; }
 		public SpawnsetFile SpawnsetFile { get; private set; }
-
-		public IWebHostEnvironment Env { get; }
 
 		public ActionResult OnGet()
 		{

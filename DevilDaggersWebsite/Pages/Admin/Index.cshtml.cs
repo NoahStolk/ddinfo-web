@@ -1,14 +1,32 @@
-﻿using DevilDaggersWebsite.Code.PageModels;
-using Microsoft.AspNetCore.Hosting;
-using Microsoft.AspNetCore.Http;
+﻿using Microsoft.AspNetCore.Identity;
+using Microsoft.AspNetCore.Mvc;
+using Microsoft.AspNetCore.Mvc.RazorPages;
+using System.Threading.Tasks;
 
 namespace DevilDaggersWebsite.Pages.Admin
 {
-	public class IndexModel : AdminPageModel
+	public class IndexModel : PageModel
 	{
-		public IndexModel(IHttpContextAccessor httpContextAccessor, IWebHostEnvironment env)
-			: base(httpContextAccessor, env)
+		public IndexModel(RoleManager<IdentityRole> roleManager, UserManager<IdentityUser> userManager)
 		{
+			RoleManager = roleManager;
+			UserManager = userManager;
+		}
+
+		public RoleManager<IdentityRole> RoleManager { get; }
+		public UserManager<IdentityUser> UserManager { get; }
+
+		public IdentityUser? IdentityUser { get; private set; }
+
+		public async Task<ActionResult?> OnGetAsync()
+		{
+			string? id = UserManager.GetUserId(User);
+			IdentityUser = await UserManager.FindByIdAsync(id);
+
+			if (id == null || IdentityUser == null)
+				return RedirectToPage("/Error/404");
+
+			return null;
 		}
 	}
 }

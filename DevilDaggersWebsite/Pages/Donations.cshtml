@@ -1,6 +1,7 @@
 ﻿@page
+@inject ApplicationDbContext dbContext
 @using DevilDaggersCore.Game
-@using DevilDaggersWebsite.Code.Users
+@using DevilDaggersWebsite.Code.Database
 @using DevilDaggersWebsite.Code.Extensions
 @model DonationsModel
 @{
@@ -29,13 +30,13 @@
 
 	<div class="flex-container flex-center flex-column">
 		@{
-			foreach (KeyValuePair<int, int> kvp in Model.DonatorsWithReceivedEuroAmounts.OrderByDescending(kvp => kvp.Value).ThenBy(kvp => Model.Users.FirstOrDefault(d => d.Id == kvp.Key).Username))
+			foreach (KeyValuePair<int, int> kvp in Model.DonatorsWithReceivedEuroAmounts.OrderByDescending(kvp => kvp.Value))
 			{
-				User donator = Model.Users.FirstOrDefault(d => d.Id == kvp.Key);
+				Player donator = dbContext.Players.FirstOrDefault(d => d.Id == kvp.Key);
 				string username = donator.IsAnonymous ? "(anonymous)" : donator.Username;
 
 				List<string> donationsGroupedByCurrency = new List<string>();
-				foreach (var donations in Model.Donations.Where(d => !d.IsRefunded && d.DonatorId == kvp.Key).GroupBy(d => d.Currency))
+				foreach (var donations in Model.Donations.Where(d => !d.IsRefunded && d.PlayerId == kvp.Key).GroupBy(d => d.Currency))
 				{
 					donationsGroupedByCurrency.Add($"{donations.Key.GetChar()} {(donations.Sum(d => d.Amount) / 100.0).ToString("0.00")} {(donations.Key.ToString().ToUpper())}");
 				}
