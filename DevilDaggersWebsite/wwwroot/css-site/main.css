@@ -104,6 +104,13 @@ input {
 	margin: 12px auto;
 }
 
+.admin-select {
+	color: var(--col-red);
+	background-color: var(--col-black);
+	margin: 12px auto;
+	height: 240px;
+}
+
 option {
 	color: var(--col-red);
 	background-color: var(--col-black);
