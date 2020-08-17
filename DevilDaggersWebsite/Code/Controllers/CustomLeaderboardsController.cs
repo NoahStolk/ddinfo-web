@@ -142,7 +142,25 @@ namespace DevilDaggersWebsite.Code.Controllers
 					TotalPlayers = totalPlayers,
 					Leaderboard = leaderboard,
 					Category = leaderboard.Category,
-					Entries = entries,
+					Entries = entries
+						.Select(e => new CustomEntryBase
+						{
+							PlayerId = e.PlayerId,
+							ClientVersion = e.ClientVersion,
+							DeathType = e.DeathType,
+							EnemiesAlive = e.EnemiesAlive,
+							Gems = e.Gems,
+							Homing = e.Homing,
+							Kills = e.Kills,
+							LevelUpTime2 = e.LevelUpTime2,
+							LevelUpTime3 = e.LevelUpTime3,
+							LevelUpTime4 = e.LevelUpTime4,
+							ShotsFired = e.ShotsFired,
+							ShotsHit = e.ShotsHit,
+							SubmitDate = e.SubmitDate,
+							Time = e.Time,
+						})
+						.ToList(),
 					IsNewUserOnThisLeaderboard = true,
 					Rank = rank,
 					Time = uploadRequest.Time,
@@ -189,7 +207,25 @@ namespace DevilDaggersWebsite.Code.Controllers
 					TotalPlayers = totalPlayers,
 					Leaderboard = leaderboard,
 					Category = leaderboard.Category,
-					Entries = entries,
+					Entries = entries
+						.Select(e => new CustomEntryBase
+						{
+							PlayerId = e.PlayerId,
+							ClientVersion = e.ClientVersion,
+							DeathType = e.DeathType,
+							EnemiesAlive = e.EnemiesAlive,
+							Gems = e.Gems,
+							Homing = e.Homing,
+							Kills = e.Kills,
+							LevelUpTime2 = e.LevelUpTime2,
+							LevelUpTime3 = e.LevelUpTime3,
+							LevelUpTime4 = e.LevelUpTime4,
+							ShotsFired = e.ShotsFired,
+							ShotsHit = e.ShotsHit,
+							SubmitDate = e.SubmitDate,
+							Time = e.Time,
+						})
+						.ToList(),
 					IsNewUserOnThisLeaderboard = false,
 				};
 			}
@@ -236,7 +272,25 @@ namespace DevilDaggersWebsite.Code.Controllers
 				TotalPlayers = totalPlayers,
 				Leaderboard = leaderboard,
 				Category = leaderboard.Category,
-				Entries = entries,
+				Entries = entries
+					.Select(e => new CustomEntryBase
+					{
+						PlayerId = e.PlayerId,
+						ClientVersion = e.ClientVersion,
+						DeathType = e.DeathType,
+						EnemiesAlive = e.EnemiesAlive,
+						Gems = e.Gems,
+						Homing = e.Homing,
+						Kills = e.Kills,
+						LevelUpTime2 = e.LevelUpTime2,
+						LevelUpTime3 = e.LevelUpTime3,
+						LevelUpTime4 = e.LevelUpTime4,
+						ShotsFired = e.ShotsFired,
+						ShotsHit = e.ShotsHit,
+						SubmitDate = e.SubmitDate,
+						Time = e.Time,
+					})
+					.ToList(),
 				IsNewUserOnThisLeaderboard = false,
 				Rank = rank,
 				RankDiff = rankDiff,
