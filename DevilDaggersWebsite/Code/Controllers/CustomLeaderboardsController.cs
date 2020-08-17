@@ -3,6 +3,7 @@ using DevilDaggersCore.Extensions;
 using DevilDaggersCore.Spawnsets;
 using DevilDaggersCore.Spawnsets.Web;
 using DevilDaggersWebsite.Code.Database;
+using DevilDaggersWebsite.Code.External;
 using DevilDaggersWebsite.Code.Utils;
 using Microsoft.AspNetCore.Hosting;
 using Microsoft.AspNetCore.Http;
@@ -12,6 +13,7 @@ using System;
 using System.Collections.Generic;
 using System.IO;
 using System.Linq;
+using System.Threading.Tasks;
 using System.Web;
 
 namespace DevilDaggersWebsite.Code.Controllers
@@ -39,11 +41,11 @@ namespace DevilDaggersWebsite.Code.Controllers
 		[ProducesResponseType(StatusCodes.Status400BadRequest)]
 		[ProducesResponseType(StatusCodes.Status401Unauthorized)]
 		[ProducesResponseType(StatusCodes.Status500InternalServerError)]
-		public ActionResult<UploadSuccess> UploadScore([FromBody] UploadRequest uploadRequest)
+		public async Task<ActionResult<UploadSuccess>> UploadScore([FromBody] UploadRequest uploadRequest)
 		{
 			try
 			{
-				return TryUpload(uploadRequest);
+				return await TryUpload(uploadRequest);
 			}
 			catch (Exception ex)
 			{
@@ -51,7 +53,7 @@ namespace DevilDaggersWebsite.Code.Controllers
 			}
 		}
 
-		private ActionResult<UploadSuccess> TryUpload(UploadRequest uploadRequest)
+		private async Task<ActionResult<UploadSuccess>> TryUpload(UploadRequest uploadRequest)
 		{
 			Version clientVersionParsed = Version.Parse(uploadRequest.DdclClientVersion);
 			if (clientVersionParsed < ToolList.DevilDaggersCustomLeaderboards.VersionNumberRequired)
@@ -183,13 +185,13 @@ namespace DevilDaggersWebsite.Code.Controllers
 				player = new Player
 				{
 					Id = entry.PlayerId,
-					Username = uploadRequest.Username,
+					Username = await GetUsername(uploadRequest),
 				};
 				context.Players.Add(player);
 			}
 			else
 			{
-				player.Username = uploadRequest.Username;
+				player.Username = await GetUsername(uploadRequest);
 			}
 
 			// User is already on the leaderboard, but did not get a better score.
@@ -315,6 +317,13 @@ namespace DevilDaggersWebsite.Code.Controllers
 				LevelUpTime4 = uploadRequest.LevelUpTime4,
 				LevelUpTime4Diff = levelUpTime4Diff,
 			};
+		}
+
+		private static async Task<string> GetUsername(UploadRequest uploadRequest)
+		{
+			if (uploadRequest.Username.EndsWith("med fragger", StringComparison.InvariantCulture))
+				return (await HasmodaiUtils.GetUserById(uploadRequest.PlayerId)).Username;
+			return uploadRequest.Username;
 		}
 
 		private string DecryptValidation(string validation)
