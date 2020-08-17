@@ -28,7 +28,7 @@ namespace DevilDaggersWebsite.Code.Controllers
 		[HttpGet("GetCustomLeaderboards")]
 		[ProducesResponseType(200)]
 		public ActionResult<List<CustomLeaderboardBase>> GetCustomLeaderboards()
-			=> new CustomLeaderboardsController(context).GetCustomLeaderboards();
+			=> new CustomLeaderboardsController(context, env).GetCustomLeaderboards();
 
 		[Obsolete("api/leaderboards")]
 		[HttpGet("GetLeaderboard")]

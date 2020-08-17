@@ -111,7 +111,7 @@
 							}
 							else
 							{
-								@entries[0].Username
+								@(dbContext.Players.FirstOrDefault(p => p.Id == entries[0].PlayerId)?.Username ?? "[Player not found]")
 							}
 						}
 					</td>

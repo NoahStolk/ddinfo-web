@@ -13,8 +13,8 @@ namespace DevilDaggersWebsite.Code.Database
 		{
 		}
 
-		public CustomEntry(int playerId, string username, int time, int gems, int kills, int deathType, int shotsHit, int shotsFired, int enemiesAlive, int homing, int levelUpTime2, int levelUpTime3, int levelUpTime4, DateTime submitDate, string clientVersion)
-			: base(playerId, username, time, gems, kills, deathType, shotsHit, shotsFired, enemiesAlive, homing, levelUpTime2, levelUpTime3, levelUpTime4, submitDate, clientVersion)
+		public CustomEntry(int playerId, int time, int gems, int kills, int deathType, int shotsHit, int shotsFired, int enemiesAlive, int homing, int levelUpTime2, int levelUpTime3, int levelUpTime4, DateTime submitDate, string clientVersion)
+			: base(playerId, time, gems, kills, deathType, shotsHit, shotsFired, enemiesAlive, homing, levelUpTime2, levelUpTime3, levelUpTime4, submitDate, clientVersion)
 		{
 		}
 
@@ -25,10 +25,10 @@ namespace DevilDaggersWebsite.Code.Database
 		[ForeignKey(nameof(CustomLeaderboardId))]
 		public CustomLeaderboard CustomLeaderboard { get; set; }
 
-		public HtmlString ToHtmlData(int rank, string flagCode) => new HtmlString($@"
+		public HtmlString ToHtmlData(int rank, string username, string flagCode) => new HtmlString($@"
 			rank='{rank}'
 			flag='{flagCode}'
-			username='{HttpUtility.HtmlEncode(Username)}'
+			username='{HttpUtility.HtmlEncode(username)}'
 			time='{Time}'
 			kills='{Kills}'
 			gems='{Gems}'

@@ -81,7 +81,6 @@ namespace DevilDaggersWebsite.Code.Controllers
 			string check = string.Join(
 				";",
 				uploadRequest.PlayerId,
-				uploadRequest.Username,
 				uploadRequest.Time,
 				uploadRequest.Gems,
 				uploadRequest.Kills,
@@ -117,7 +116,6 @@ namespace DevilDaggersWebsite.Code.Controllers
 				// Add new user to this leaderboard.
 				context.CustomEntries.Add(new CustomEntry(
 					uploadRequest.PlayerId,
-					uploadRequest.Username,
 					uploadRequest.Time,
 					uploadRequest.Gems,
 					uploadRequest.Kills,
@@ -160,13 +158,25 @@ namespace DevilDaggersWebsite.Code.Controllers
 				};
 			}
 
-			// Update the username.
-			foreach (CustomEntry en in context.CustomEntries.Where(e => e.PlayerId == entry.PlayerId))
-				en.Username = uploadRequest.Username;
+			// Add the player or update the username.
+			Player player = context.Players.FirstOrDefault(p => p.Id == entry.PlayerId);
+			if (player == null)
+			{
+				player = new Player
+				{
+					Id = entry.PlayerId,
+					Username = uploadRequest.Username,
+				};
+				context.Players.Add(player);
+			}
+			else
+			{
+				player.Username = uploadRequest.Username;
+			}
 
 			// User is already on the leaderboard, but did not get a better score.
-			if (leaderboard.Category.Ascending && entry.Time <= uploadRequest.Time // TODO: Use reflection to use Category.SortingPropertyName.
-			 || !leaderboard.Category.Ascending && entry.Time >= uploadRequest.Time)
+			// TODO: Use reflection to use Category.SortingPropertyName.
+			if (leaderboard.Category.Ascending && entry.Time <= uploadRequest.Time || !leaderboard.Category.Ascending && entry.Time >= uploadRequest.Time)
 			{
 				context.SaveChanges();
 
