@@ -31,7 +31,7 @@ namespace DevilDaggersWebsite.Code.Controllers
 		}
 
 		[HttpGet]
-		[ProducesResponseType(200)]
+		[ProducesResponseType(StatusCodes.Status200OK)]
 		public ActionResult<List<Dto.CustomLeaderboard>> GetCustomLeaderboards()
 			=> dbContext.CustomLeaderboards.Select(cl => new Dto.CustomLeaderboard
 			{
@@ -104,7 +104,7 @@ namespace DevilDaggersWebsite.Code.Controllers
 			if (DecryptValidation(uploadRequest.Validation) != check)
 				return new UnauthorizedObjectResult("Invalid submission.");
 
-			Database.CustomLeaderboard leaderboard = dbContext.CustomLeaderboards.Include(l => l.Category).FirstOrDefault(l => l.SpawnsetFileName == spawnsetName);
+			CustomLeaderboard leaderboard = dbContext.CustomLeaderboards.Include(l => l.Category).FirstOrDefault(l => l.SpawnsetFileName == spawnsetName);
 			if (leaderboard == null)
 				return new BadRequestObjectResult("This spawnset doesn't have a leaderboard.");
 
@@ -117,11 +117,11 @@ namespace DevilDaggersWebsite.Code.Controllers
 			leaderboard.DateLastPlayed = DateTime.Now;
 
 			// Calculate the new rank.
-			IEnumerable<Database.CustomEntry> entries = dbContext.CustomEntries.Where(e => e.CustomLeaderboard == leaderboard).OrderByMember(leaderboard.Category.SortingPropertyName, leaderboard.Category.Ascending).ToArray();
+			IEnumerable<CustomEntry> entries = dbContext.CustomEntries.Where(e => e.CustomLeaderboard == leaderboard).OrderByMember(leaderboard.Category.SortingPropertyName, leaderboard.Category.Ascending).ToArray();
 			int rank = leaderboard.Category.Ascending ? entries.Where(e => e.Time < uploadRequest.Time).Count() + 1 : entries.Where(e => e.Time > uploadRequest.Time).Count() + 1; // TODO: Use reflection to use Category.SortingPropertyName.
 			int totalPlayers = entries.Count();
 
-			Database.CustomEntry entry = dbContext.CustomEntries.FirstOrDefault(e => e.PlayerId == uploadRequest.PlayerId && e.CustomLeaderboardId == leaderboard.Id);
+			CustomEntry entry = dbContext.CustomEntries.FirstOrDefault(e => e.PlayerId == uploadRequest.PlayerId && e.CustomLeaderboardId == leaderboard.Id);
 			if (entry == null)
 			{
 				// Add new user to this leaderboard.

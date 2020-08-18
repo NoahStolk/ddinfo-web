@@ -1,5 +1,6 @@
 ﻿using DevilDaggersWebsite.Code.DataTransferObjects;
 using DevilDaggersWebsite.Code.External;
+using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
 using System;
 using System.Collections.Generic;
@@ -14,8 +15,8 @@ namespace DevilDaggersWebsite.Code.Controllers
 	public class LeaderboardsController : ControllerBase
 	{
 		[HttpGet]
-		[ProducesResponseType(200)]
-		[ProducesResponseType(400)]
+		[ProducesResponseType(StatusCodes.Status200OK)]
+		[ProducesResponseType(StatusCodes.Status400BadRequest)]
 		public async Task<ActionResult<Leaderboard>> GetLeaderboard(int rankStart = 1)
 		{
 			if (rankStart <= 0)
@@ -24,19 +25,19 @@ namespace DevilDaggersWebsite.Code.Controllers
 		}
 
 		[HttpGet("user/by-id")]
-		[ProducesResponseType(200)]
-		[ProducesResponseType(400)]
+		[ProducesResponseType(StatusCodes.Status200OK)]
+		[ProducesResponseType(StatusCodes.Status400BadRequest)]
 		public async Task<ActionResult<Entry>> GetUserById([Required] int userId)
 		{
 			try
 			{
 				Dictionary<string, string> postValues = new Dictionary<string, string>
 				{
-					{ "uid", userId.ToString() }
+					{ "uid", userId.ToString() },
 				};
 
-				FormUrlEncodedContent content = new FormUrlEncodedContent(postValues);
-				HttpClient client = new HttpClient();
+				using FormUrlEncodedContent content = new FormUrlEncodedContent(postValues);
+				using HttpClient client = new HttpClient();
 				HttpResponseMessage response = await client.PostAsync(HasmodaiUtils.GetUserByIdUrl, content);
 				byte[] data = await response.Content.ReadAsByteArrayAsync();
 
@@ -58,7 +59,7 @@ namespace DevilDaggersWebsite.Code.Controllers
 					GemsTotal = BitConverter.ToUInt64(data, bytePosition + 68),
 					DeathsTotal = BitConverter.ToUInt64(data, bytePosition + 36),
 					DaggersHitTotal = BitConverter.ToUInt64(data, bytePosition + 76),
-					DaggersFiredTotal = BitConverter.ToUInt64(data, bytePosition + 52)
+					DaggersFiredTotal = BitConverter.ToUInt64(data, bytePosition + 52),
 				};
 
 				return entry;
@@ -70,8 +71,8 @@ namespace DevilDaggersWebsite.Code.Controllers
 		}
 
 		[HttpGet("user/by-username")]
-		[ProducesResponseType(200)]
-		[ProducesResponseType(400)]
+		[ProducesResponseType(StatusCodes.Status200OK)]
+		[ProducesResponseType(StatusCodes.Status400BadRequest)]
 		public async Task<ActionResult<List<Entry>>> GetUserByUsername([Required] string username)
 		{
 			if (string.IsNullOrEmpty(username) || username.Length < 3)
@@ -81,8 +82,8 @@ namespace DevilDaggersWebsite.Code.Controllers
 		}
 
 		[HttpGet("user/by-rank")]
-		[ProducesResponseType(200)]
-		[ProducesResponseType(400)]
+		[ProducesResponseType(StatusCodes.Status200OK)]
+		[ProducesResponseType(StatusCodes.Status400BadRequest)]
 		public async Task<ActionResult<Entry>> GetUserByRank([Required] int rank)
 		{
 			List<Entry> entries = (await HasmodaiUtils.GetScores(rank)).Entries;

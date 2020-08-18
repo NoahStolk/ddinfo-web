@@ -1,6 +1,7 @@
 ﻿using DevilDaggersWebsite.Code.DataTransferObjects;
 using DevilDaggersWebsite.Code.Utils;
 using Microsoft.AspNetCore.Hosting;
+using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
 using System;
 using System.Collections.Generic;
@@ -24,7 +25,7 @@ namespace DevilDaggersWebsite.Code.Controllers
 		}
 
 		[HttpGet]
-		[ProducesResponseType(200)]
+		[ProducesResponseType(StatusCodes.Status200OK)]
 		public ActionResult<List<Tool>> GetTools(string? toolNameFilter = null)
 		{
 			IEnumerable<Tool> tools = ToolList.Tools;
@@ -34,9 +35,9 @@ namespace DevilDaggersWebsite.Code.Controllers
 		}
 
 		[HttpGet("{toolName}/file")]
-		[ProducesResponseType(200)]
-		[ProducesResponseType(400)]
-		[ProducesResponseType(404)]
+		[ProducesResponseType(StatusCodes.Status200OK)]
+		[ProducesResponseType(StatusCodes.Status400BadRequest)]
+		[ProducesResponseType(StatusCodes.Status404NotFound)]
 		public ActionResult GetToolFile([Required] string toolName)
 		{
 			Tool tool = ToolList.Tools.FirstOrDefault(t => t.Name == toolName);

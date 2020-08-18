@@ -1,6 +1,7 @@
 ﻿using DevilDaggersWebsite.Code.DataTransferObjects;
 using DevilDaggersWebsite.Code.Utils;
 using Microsoft.AspNetCore.Hosting;
+using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
 using Newtonsoft.Json;
 using System;
@@ -24,8 +25,8 @@ namespace DevilDaggersWebsite.Code.Controllers
 		}
 
 		[HttpGet("user-progression")]
-		[ProducesResponseType(200)]
-		[ProducesResponseType(400)]
+		[ProducesResponseType(StatusCodes.Status200OK)]
+		[ProducesResponseType(StatusCodes.Status400BadRequest)]
 		public SortedDictionary<DateTime, Entry> GetUserProgressionById([Required] int userId)
 		{
 			SortedDictionary<DateTime, Entry> data = new SortedDictionary<DateTime, Entry>();
@@ -51,13 +52,13 @@ namespace DevilDaggersWebsite.Code.Controllers
 		}
 
 		[HttpGet("world-records")]
-		[ProducesResponseType(200)]
+		[ProducesResponseType(StatusCodes.Status200OK)]
 		public List<WorldRecord> GetWorldRecords(DateTime? date = null)
 			=> LeaderboardHistoryUtils.GetWorldRecords(env, date);
 
 		[HttpGet("latest-date-played")]
-		[ProducesResponseType(200)]
-		[ProducesResponseType(400)]
+		[ProducesResponseType(StatusCodes.Status200OK)]
+		[ProducesResponseType(StatusCodes.Status400BadRequest)]
 		public (DateTime from, DateTime to) GetLatestDatePlayed([Required] int userId)
 		{
 			List<(DateTime dateTime, Entry entry)> entries = new List<(DateTime, Entry)>();
@@ -81,8 +82,8 @@ namespace DevilDaggersWebsite.Code.Controllers
 		}
 
 		[HttpGet("user-activity")]
-		[ProducesResponseType(200)]
-		[ProducesResponseType(400)]
+		[ProducesResponseType(StatusCodes.Status200OK)]
+		[ProducesResponseType(StatusCodes.Status400BadRequest)]
 		public Dictionary<DateTime, ulong> GetUserActivity([Required] int userId)
 		{
 			Dictionary<DateTime, ulong> data = new Dictionary<DateTime, ulong>();
