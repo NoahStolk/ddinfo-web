@@ -1,7 +1,6 @@
 ﻿@model IDefaultLeaderboardPage
 @using DevilDaggersCore.Game
 @using DevilDaggersCore.Utils
-@using DevilDaggersCore.Leaderboards
 @using DevilDaggersWebsite.Code.Database
 @using DevilDaggersWebsite.Code.Extensions
 @using DevilDaggersWebsite.Code.PageModels
@@ -53,7 +52,7 @@
 		@{
 			IEnumerable<Donation> donations = dbContext.Donations.ToList();
 			IEnumerable<Player> players = dbContext.Players.Include(p => p.PlayerTitles).ThenInclude(pt => pt.Title).ToList();
-			foreach (Entry entry in Model.Leaderboard.Entries)
+			foreach (Code.DataTransferObjects.Entry entry in Model.Leaderboard.Entries)
 			{
 				Player? player = players.FirstOrDefault(p => p.Id == entry.Id);
 
@@ -79,20 +78,20 @@
 				string gemsTotal = entry.GemsTotal.ToString(FormatUtils.LeaderboardIntFormat);
 				string deathsTotal = entry.DeathsTotal.ToString(FormatUtils.LeaderboardIntFormat);
 
-				string shots = entry.FormatShots(!isIndex);
+				string shots = FormatUtils.FormatDaggers(entry.DaggersHit, entry.DaggersFired, !isIndex);
 				string accuracy = entry.Accuracy.ToString(FormatUtils.AccuracyFormat);
-				string shotsTotal = entry.FormatShotsTotal(!isIndex);
+				string shotsTotal = FormatUtils.FormatDaggers(entry.DaggersHitTotal, entry.DaggersFiredTotal, !isIndex);
 				string accuracyTotal = entry.AccuracyTotal.ToString(FormatUtils.AccuracyFormat);
 
-				string daggersHit = entry.ShotsHit.ToString(FormatUtils.LeaderboardIntFormat);
-				string daggersFired = entry.ShotsFired.ToString(FormatUtils.LeaderboardIntFormat);
-				string totalDaggersHit = entry.ShotsHitTotal.ToString(FormatUtils.LeaderboardIntFormat);
-				string totalDaggersFired = entry.ShotsFiredTotal.ToString(FormatUtils.LeaderboardIntFormat);
+				string daggersHit = entry.DaggersHit.ToString(FormatUtils.LeaderboardIntFormat);
+				string daggersFired = entry.DaggersFired.ToString(FormatUtils.LeaderboardIntFormat);
+				string totalDaggersHit = entry.DaggersHitTotal.ToString(FormatUtils.LeaderboardIntFormat);
+				string totalDaggersFired = entry.DaggersFiredTotal.ToString(FormatUtils.LeaderboardIntFormat);
 				HtmlString averageTime = entry.DeathsTotal == 0 ? RazorUtils.NAString : new HtmlString((entry.TimeTotal / entry.DeathsTotal).FormatTimeInteger());
 				HtmlString averageKills = entry.DeathsTotal == 0 ? RazorUtils.NAString : new HtmlString((entry.KillsTotal / (float)entry.DeathsTotal).ToString(FormatUtils.LeaderboardIntAverageFormat));
 				HtmlString averageGems = entry.DeathsTotal == 0 ? RazorUtils.NAString : new HtmlString((entry.GemsTotal / (float)entry.DeathsTotal).ToString(FormatUtils.LeaderboardIntAverageFormat));
-				HtmlString averageDaggersHit = entry.DeathsTotal == 0 ? RazorUtils.NAString : new HtmlString((entry.ShotsHitTotal / (float)entry.DeathsTotal).ToString(FormatUtils.LeaderboardIntAverageFormat));
-				HtmlString averageDaggersFired = entry.DeathsTotal == 0 ? RazorUtils.NAString : new HtmlString((entry.ShotsFiredTotal / (float)entry.DeathsTotal).ToString(FormatUtils.LeaderboardIntAverageFormat));
+				HtmlString averageDaggersHit = entry.DeathsTotal == 0 ? RazorUtils.NAString : new HtmlString((entry.DaggersHitTotal / (float)entry.DeathsTotal).ToString(FormatUtils.LeaderboardIntAverageFormat));
+				HtmlString averageDaggersFired = entry.DeathsTotal == 0 ? RazorUtils.NAString : new HtmlString((entry.DaggersFiredTotal / (float)entry.DeathsTotal).ToString(FormatUtils.LeaderboardIntAverageFormat));
 				HtmlString timeByDeath = entry.DeathsTotal == 0 ? RazorUtils.NAString : new HtmlString((entry.Time / (float)entry.DeathsTotal).ToString(FormatUtils.LeaderboardTimeLargeFormat));
 
 				<div class="sort @banString" @entry.ToHtmlData(flagCode)>

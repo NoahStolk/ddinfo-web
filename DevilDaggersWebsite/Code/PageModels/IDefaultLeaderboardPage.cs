@@ -1,4 +1,4 @@
-﻿using Lb = DevilDaggersCore.Leaderboards.Leaderboard;
+﻿using Lb = DevilDaggersWebsite.Code.DataTransferObjects.Leaderboard;
 
 namespace DevilDaggersWebsite.Code.PageModels
 {

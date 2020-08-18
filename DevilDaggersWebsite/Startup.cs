@@ -44,10 +44,10 @@ namespace DevilDaggersWebsite
 
 			services.AddDbContext<ApplicationDbContext>(options => options.UseMySql(Configuration.GetConnectionString("DefaultConnection")));
 			services.AddDefaultIdentity<IdentityUser>(options =>
-			{
-				options.SignIn.RequireConfirmedAccount = true;
-				options.User.RequireUniqueEmail = true;
-			})
+				{
+					options.SignIn.RequireConfirmedAccount = true;
+					options.User.RequireUniqueEmail = true;
+				})
 				.AddRoles<IdentityRole>()
 				.AddEntityFrameworkStores<ApplicationDbContext>();
 
@@ -82,6 +82,8 @@ namespace DevilDaggersWebsite
 				foreach (KeyValuePair<string, string> kvp in RoleManager.FolderToPolicyMapper)
 					options.Conventions.AuthorizeFolder(kvp.Key, kvp.Value);
 			});
+
+			services.AddSwaggerDocument();
 		}
 
 		public void Configure(IApplicationBuilder app, IWebHostEnvironment env, IServiceProvider serviceProvider)
@@ -146,6 +148,9 @@ namespace DevilDaggersWebsite
 				endpoints.MapRazorPages();
 				endpoints.MapControllers();
 			});
+
+			app.UseOpenApi();
+			app.UseSwaggerUi3();
 
 			Task task = serviceProvider.CreateRolesAndAdminUser(Configuration.GetSection("AdminUser")["Email"]);
 			task.Wait();

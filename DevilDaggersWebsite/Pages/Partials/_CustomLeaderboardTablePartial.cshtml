@@ -1,6 +1,5 @@
 ﻿@model List<CustomLeaderboard>
 @using DevilDaggersCore.Extensions
-@using DevilDaggersCore.Spawnsets.Web
 @using DevilDaggersCore.Utils
 @using DevilDaggersWebsite.Code.Database
 @using DevilDaggersWebsite.Code.Utils
@@ -61,8 +60,8 @@
 			foreach (CustomLeaderboard lb in Model)
 			{
 				string fileName = lb.SpawnsetFileName;
-				string name = SpawnsetFile.GetName(fileName);
-				string author = SpawnsetFile.GetAuthor(fileName);
+				string name = Code.DataTransferObjects.SpawnsetFile.GetName(fileName);
+				string author = Code.DataTransferObjects.SpawnsetFile.GetAuthor(fileName);
 				List<CustomEntry> entries = dbContext.CustomEntries.Where(e => e.CustomLeaderboard == lb).OrderByMember(lb.Category.SortingPropertyName, lb.Category.Ascending).ToList();
 				string wrDagger = "";
 				if (entries.Count > 0)

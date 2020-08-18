@@ -1,5 +1,5 @@
-﻿using DevilDaggersCore.Spawnsets.Web;
-using DevilDaggersCore.Utils;
+﻿using DevilDaggersCore.Utils;
+using DevilDaggersWebsite.Code.DataTransferObjects;
 using DevilDaggersWebsite.Code.Pagination;
 using DevilDaggersWebsite.Code.Utils;
 using Microsoft.AspNetCore.Hosting;

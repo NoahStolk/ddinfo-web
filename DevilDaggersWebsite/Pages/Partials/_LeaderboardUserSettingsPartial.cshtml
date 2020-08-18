@@ -1,6 +1,5 @@
 ﻿@using DevilDaggersCore.Game
 @using DevilDaggersCore.Utils
-@using DevilDaggersCore.Leaderboards
 @using DevilDaggersWebsite.Code.Database
 @using DevilDaggersWebsite.Code.Extensions
 @using DevilDaggersWebsite.Code.Utils
@@ -27,7 +26,7 @@
 		@{
 			IEnumerable<Donation> donations = dbContext.Donations.ToList();
 			IEnumerable<Player> players = dbContext.Players.Include(p => p.PlayerTitles).ThenInclude(pt => pt.Title).ToList();
-			foreach (Entry entry in Model.Leaderboard.Entries)
+			foreach (Code.DataTransferObjects.Entry entry in Model.Leaderboard.Entries)
 			{
 				Player? player = players.FirstOrDefault(p => p.Id == entry.Id);
 				if (player == null)

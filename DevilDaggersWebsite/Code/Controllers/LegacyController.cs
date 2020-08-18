@@ -1,8 +1,5 @@
-﻿using DevilDaggersCore.CustomLeaderboards;
-using DevilDaggersCore.Leaderboards;
-using DevilDaggersCore.Spawnsets.Web;
-using DevilDaggersCore.Website;
-using DevilDaggersWebsite.Code.Database;
+﻿using DevilDaggersWebsite.Code.Database;
+using DevilDaggersWebsite.Code.DataTransferObjects;
 using Microsoft.AspNetCore.Hosting;
 using Microsoft.AspNetCore.Mvc;
 using System;
@@ -27,7 +24,7 @@ namespace DevilDaggersWebsite.Code.Controllers
 		[Obsolete("api/custom-leaderboards")]
 		[HttpGet("GetCustomLeaderboards")]
 		[ProducesResponseType(200)]
-		public ActionResult<List<CustomLeaderboardBase>> GetCustomLeaderboards()
+		public ActionResult<List<DataTransferObjects.CustomLeaderboard>> GetCustomLeaderboards()
 			=> new CustomLeaderboardsController(context, env).GetCustomLeaderboards();
 
 		[Obsolete("api/leaderboards")]
@@ -40,7 +37,7 @@ namespace DevilDaggersWebsite.Code.Controllers
 		[HttpGet("GetSpawnset")]
 		[ProducesResponseType(200)]
 		public ActionResult GetSpawnset(string fileName)
-			=> new SpawnsetsController(env).GetSpawnset(fileName);
+			=> new SpawnsetsController(env).GetSpawnsetFile(fileName);
 
 		[Obsolete("api/spawnsets")]
 		[HttpGet("GetSpawnsets")]
@@ -52,7 +49,7 @@ namespace DevilDaggersWebsite.Code.Controllers
 		[HttpGet("GetTool")]
 		[ProducesResponseType(200)]
 		public ActionResult GetTool(string toolName)
-			=> new ToolsController(env).GetTool(toolName);
+			=> new ToolsController(env).GetToolFile(toolName);
 
 		[Obsolete("api/tools")]
 		[HttpGet("GetTools")]

@@ -1,5 +1,5 @@
-﻿using DevilDaggersCore.Leaderboards;
-using DevilDaggersWebsite.Code.Database;
+﻿using DevilDaggersWebsite.Code.Database;
+using DevilDaggersWebsite.Code.DataTransferObjects;
 using DevilDaggersWebsite.Code.Extensions;
 using DevilDaggersWebsite.Code.External;
 using DevilDaggersWebsite.Code.Leaderboards;
@@ -11,7 +11,7 @@ using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Threading.Tasks;
-using Lb = DevilDaggersCore.Leaderboards.Leaderboard;
+using Lb = DevilDaggersWebsite.Code.DataTransferObjects.Leaderboard;
 
 namespace DevilDaggersWebsite.Pages.Leaderboard
 {

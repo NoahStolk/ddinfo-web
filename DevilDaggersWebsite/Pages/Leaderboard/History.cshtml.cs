@@ -1,5 +1,5 @@
-﻿using DevilDaggersCore.Leaderboards;
-using DevilDaggersCore.Utils;
+﻿using DevilDaggersCore.Utils;
+using DevilDaggersWebsite.Code.DataTransferObjects;
 using DevilDaggersWebsite.Code.PageModels;
 using DevilDaggersWebsite.Code.Utils;
 using Microsoft.AspNetCore.Hosting;
@@ -11,7 +11,7 @@ using System.IO;
 using System.Linq;
 using System.Text;
 using Io = System.IO;
-using Lb = DevilDaggersCore.Leaderboards.Leaderboard;
+using Lb = DevilDaggersWebsite.Code.DataTransferObjects.Leaderboard;
 
 namespace DevilDaggersWebsite.Pages.Leaderboard
 {

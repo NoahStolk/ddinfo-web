@@ -1,5 +1,4 @@
-﻿using DevilDaggersCore.CustomLeaderboards;
-using DevilDaggersCore.Game;
+﻿using DevilDaggersCore.Game;
 using Microsoft.AspNetCore.Html;
 using System;
 using System.ComponentModel.DataAnnotations.Schema;
@@ -7,23 +6,31 @@ using System.Web;
 
 namespace DevilDaggersWebsite.Code.Database
 {
-	public class CustomEntry : CustomEntryBase
+	public class CustomEntry
 	{
-		public CustomEntry()
-		{
-		}
-
-		public CustomEntry(int playerId, int time, int gems, int kills, int deathType, int shotsHit, int shotsFired, int enemiesAlive, int homing, int levelUpTime2, int levelUpTime3, int levelUpTime4, DateTime submitDate, string clientVersion)
-			: base(playerId, time, gems, kills, deathType, shotsHit, shotsFired, enemiesAlive, homing, levelUpTime2, levelUpTime3, levelUpTime4, submitDate, clientVersion)
-		{
-		}
-
 		public int Id { get; set; }
 
 		public int CustomLeaderboardId { get; set; }
 
 		[ForeignKey(nameof(CustomLeaderboardId))]
 		public CustomLeaderboard CustomLeaderboard { get; set; }
+
+		public int PlayerId { get; set; }
+		public int Time { get; set; }
+		public int Gems { get; set; }
+		public int Kills { get; set; }
+		public int DeathType { get; set; }
+		public int DaggersHit { get; set; }
+		public int DaggersFired { get; set; }
+		public int EnemiesAlive { get; set; }
+		public int Homing { get; set; }
+		public int LevelUpTime2 { get; set; }
+		public int LevelUpTime3 { get; set; }
+		public int LevelUpTime4 { get; set; }
+		public DateTime SubmitDate { get; set; }
+		public string? ClientVersion { get; set; }
+
+		public double Accuracy => DaggersFired == 0 ? 0 : DaggersHit / (double)DaggersFired;
 
 		public HtmlString ToHtmlData(int rank, string username, string flagCode) => new HtmlString($@"
 			rank='{rank}'

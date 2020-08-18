@@ -1,5 +1,5 @@
 ﻿using DevilDaggersCore.Game;
-using DevilDaggersCore.Leaderboards;
+using DevilDaggersWebsite.Code.DataTransferObjects;
 using DevilDaggersWebsite.Code.External;
 using System.Collections.Generic;
 using System.Threading.Tasks;

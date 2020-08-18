@@ -1,4 +1,4 @@
-﻿using DevilDaggersCore.Leaderboards;
+﻿using DevilDaggersWebsite.Code.DataTransferObjects;
 using System;
 using System.Collections.Generic;
 using System.Globalization;
@@ -37,8 +37,8 @@ namespace DevilDaggersWebsite.Code.External
 					TimeGlobal = BitConverter.ToUInt64(data, 35),
 					GemsGlobal = BitConverter.ToUInt64(data, 43),
 					Players = BitConverter.ToInt32(data, 75),
-					ShotsHitGlobal = BitConverter.ToUInt64(data, 51),
-					ShotsFiredGlobal = BitConverter.ToUInt64(data, 27),
+					DaggersHitGlobal = BitConverter.ToUInt64(data, 51),
+					DaggersFiredGlobal = BitConverter.ToUInt64(data, 27),
 				};
 
 				int entryCount = BitConverter.ToInt16(data, 59);
@@ -54,15 +54,15 @@ namespace DevilDaggersWebsite.Code.External
 						Time = BitConverter.ToInt32(data, bytePos + 8),
 						Kills = BitConverter.ToInt32(data, bytePos + 12),
 						Gems = BitConverter.ToInt32(data, bytePos + 24),
-						ShotsHit = BitConverter.ToInt32(data, bytePos + 20),
-						ShotsFired = BitConverter.ToInt32(data, bytePos + 16),
+						DaggersHit = BitConverter.ToInt32(data, bytePos + 20),
+						DaggersFired = BitConverter.ToInt32(data, bytePos + 16),
 						DeathType = BitConverter.ToInt16(data, bytePos + 28),
 						TimeTotal = BitConverter.ToUInt64(data, bytePos + 56),
 						KillsTotal = BitConverter.ToUInt64(data, bytePos + 40),
 						GemsTotal = BitConverter.ToUInt64(data, bytePos + 64),
 						DeathsTotal = BitConverter.ToUInt64(data, bytePos + 32),
-						ShotsHitTotal = BitConverter.ToUInt64(data, bytePos + 72),
-						ShotsFiredTotal = BitConverter.ToUInt64(data, bytePos + 48),
+						DaggersHitTotal = BitConverter.ToUInt64(data, bytePos + 72),
+						DaggersFiredTotal = BitConverter.ToUInt64(data, bytePos + 48),
 					};
 
 					bytePos += 84;
@@ -109,15 +109,15 @@ namespace DevilDaggersWebsite.Code.External
 						Time = BitConverter.ToInt32(data, bytePos + 12),
 						Kills = BitConverter.ToInt32(data, bytePos + 16),
 						Gems = BitConverter.ToInt32(data, bytePos + 28),
-						ShotsHit = BitConverter.ToInt32(data, bytePos + 24),
-						ShotsFired = BitConverter.ToInt32(data, bytePos + 20),
+						DaggersHit = BitConverter.ToInt32(data, bytePos + 24),
+						DaggersFired = BitConverter.ToInt32(data, bytePos + 20),
 						DeathType = BitConverter.ToInt16(data, bytePos + 32),
 						TimeTotal = BitConverter.ToUInt64(data, bytePos + 60),
 						KillsTotal = BitConverter.ToUInt64(data, bytePos + 44),
 						GemsTotal = BitConverter.ToUInt64(data, bytePos + 68),
 						DeathsTotal = BitConverter.ToUInt64(data, bytePos + 36),
-						ShotsHitTotal = BitConverter.ToUInt64(data, bytePos + 76),
-						ShotsFiredTotal = BitConverter.ToUInt64(data, bytePos + 52),
+						DaggersHitTotal = BitConverter.ToUInt64(data, bytePos + 76),
+						DaggersFiredTotal = BitConverter.ToUInt64(data, bytePos + 52),
 					};
 
 					bytePos += 88;
@@ -160,15 +160,15 @@ namespace DevilDaggersWebsite.Code.External
 					Time = BitConverter.ToInt32(data, bytePos + 12),
 					Kills = BitConverter.ToInt32(data, bytePos + 16),
 					Gems = BitConverter.ToInt32(data, bytePos + 28),
-					ShotsHit = BitConverter.ToInt32(data, bytePos + 24),
-					ShotsFired = BitConverter.ToInt32(data, bytePos + 20),
+					DaggersHit = BitConverter.ToInt32(data, bytePos + 24),
+					DaggersFired = BitConverter.ToInt32(data, bytePos + 20),
 					DeathType = BitConverter.ToInt16(data, bytePos + 32),
 					TimeTotal = BitConverter.ToUInt64(data, bytePos + 60),
 					KillsTotal = BitConverter.ToUInt64(data, bytePos + 44),
 					GemsTotal = BitConverter.ToUInt64(data, bytePos + 68),
 					DeathsTotal = BitConverter.ToUInt64(data, bytePos + 36),
-					ShotsHitTotal = BitConverter.ToUInt64(data, bytePos + 76),
-					ShotsFiredTotal = BitConverter.ToUInt64(data, bytePos + 52),
+					DaggersHitTotal = BitConverter.ToUInt64(data, bytePos + 76),
+					DaggersFiredTotal = BitConverter.ToUInt64(data, bytePos + 52),
 				};
 
 				return entry;

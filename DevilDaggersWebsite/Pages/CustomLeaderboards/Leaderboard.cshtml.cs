@@ -1,5 +1,4 @@
 ﻿using DevilDaggersCore.Extensions;
-using DevilDaggersCore.Spawnsets.Web;
 using DevilDaggersCore.Utils;
 using DevilDaggersWebsite.Code.Database;
 using DevilDaggersWebsite.Code.Utils;
@@ -24,7 +23,7 @@ namespace DevilDaggersWebsite.Pages.CustomLeaderboards
 			Env = env;
 		}
 
-		public SpawnsetFile SpawnsetFile { get; private set; }
+		public Code.DataTransferObjects.SpawnsetFile SpawnsetFile { get; private set; }
 
 		[BindProperty]
 		public CustomLeaderboard Leaderboard { get; set; }

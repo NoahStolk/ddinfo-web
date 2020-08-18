@@ -1,5 +1,4 @@
-﻿using DevilDaggersCore.Leaderboards;
-using DevilDaggersCore.Leaderboards.History;
+﻿using DevilDaggersWebsite.Code.DataTransferObjects;
 using DevilDaggersWebsite.Code.Utils;
 using Microsoft.AspNetCore.Hosting;
 using Microsoft.AspNetCore.Mvc;

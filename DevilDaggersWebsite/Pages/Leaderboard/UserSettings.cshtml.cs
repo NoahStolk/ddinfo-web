@@ -1,10 +1,10 @@
-﻿using DevilDaggersCore.Leaderboards;
+﻿using DevilDaggersWebsite.Code.DataTransferObjects;
 using DevilDaggersWebsite.Code.External;
 using Microsoft.AspNetCore.Mvc.RazorPages;
 using System.Collections.Generic;
 using System.Linq;
 using System.Threading.Tasks;
-using Lb = DevilDaggersCore.Leaderboards.Leaderboard;
+using Lb = DevilDaggersWebsite.Code.DataTransferObjects.Leaderboard;
 
 namespace DevilDaggersWebsite.Pages.Leaderboard
 {

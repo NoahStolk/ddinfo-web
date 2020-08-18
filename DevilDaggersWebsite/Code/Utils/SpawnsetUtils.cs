@@ -1,5 +1,5 @@
 ﻿using DevilDaggersCore.Spawnsets;
-using DevilDaggersCore.Spawnsets.Web;
+using DevilDaggersWebsite.Code.DataTransferObjects;
 using Microsoft.AspNetCore.Hosting;
 using Newtonsoft.Json;
 using System;
@@ -42,20 +42,20 @@ namespace DevilDaggersWebsite.Code.Utils
 			return spawnsetFile;
 		}
 
-		public static List<SpawnsetFile> GetSpawnsets(IWebHostEnvironment env, string? searchAuthor = null, string? searchName = null)
+		public static List<SpawnsetFile> GetSpawnsets(IWebHostEnvironment env, string? authorFilter = null, string? nameFilter = null)
 		{
 			IEnumerable<SpawnsetFile> spawnsetFiles = Directory.GetFiles(Path.Combine(env.WebRootPath, "spawnsets")).Select(p => CreateSpawnsetFileFromSettingsFile(env, p));
 
-			if (!string.IsNullOrEmpty(searchAuthor))
+			if (!string.IsNullOrEmpty(authorFilter))
 			{
-				searchAuthor = searchAuthor.ToLower(CultureInfo.InvariantCulture);
-				spawnsetFiles = spawnsetFiles.Where(sf => sf.Author.ToLower(CultureInfo.InvariantCulture).Contains(searchAuthor, StringComparison.InvariantCulture));
+				authorFilter = authorFilter.ToLower(CultureInfo.InvariantCulture);
+				spawnsetFiles = spawnsetFiles.Where(sf => sf.Author.ToLower(CultureInfo.InvariantCulture).Contains(authorFilter, StringComparison.InvariantCulture));
 			}
 
-			if (!string.IsNullOrEmpty(searchName))
+			if (!string.IsNullOrEmpty(nameFilter))
 			{
-				searchName = searchName.ToLower(CultureInfo.InvariantCulture);
-				spawnsetFiles = spawnsetFiles.Where(sf => sf.Name.ToLower(CultureInfo.InvariantCulture).Contains(searchName, StringComparison.InvariantCulture));
+				nameFilter = nameFilter.ToLower(CultureInfo.InvariantCulture);
+				spawnsetFiles = spawnsetFiles.Where(sf => sf.Name.ToLower(CultureInfo.InvariantCulture).Contains(nameFilter, StringComparison.InvariantCulture));
 			}
 
 			return spawnsetFiles.ToList();

@@ -1,4 +1,4 @@
-﻿using DevilDaggersCore.Leaderboards;
+﻿using DevilDaggersWebsite.Code.DataTransferObjects;
 using DevilDaggersWebsite.Code.External;
 using Microsoft.AspNetCore.Mvc;
 using System;
@@ -50,15 +50,15 @@ namespace DevilDaggersWebsite.Code.Controllers
 					Time = BitConverter.ToInt32(data, bytePosition + 12),
 					Kills = BitConverter.ToInt32(data, bytePosition + 16),
 					Gems = BitConverter.ToInt32(data, bytePosition + 28),
-					ShotsHit = BitConverter.ToInt32(data, bytePosition + 24),
-					ShotsFired = BitConverter.ToInt32(data, bytePosition + 20),
+					DaggersHit = BitConverter.ToInt32(data, bytePosition + 24),
+					DaggersFired = BitConverter.ToInt32(data, bytePosition + 20),
 					DeathType = BitConverter.ToInt16(data, bytePosition + 32),
 					TimeTotal = BitConverter.ToUInt64(data, bytePosition + 60),
 					KillsTotal = BitConverter.ToUInt64(data, bytePosition + 44),
 					GemsTotal = BitConverter.ToUInt64(data, bytePosition + 68),
 					DeathsTotal = BitConverter.ToUInt64(data, bytePosition + 36),
-					ShotsHitTotal = BitConverter.ToUInt64(data, bytePosition + 76),
-					ShotsFiredTotal = BitConverter.ToUInt64(data, bytePosition + 52)
+					DaggersHitTotal = BitConverter.ToUInt64(data, bytePosition + 76),
+					DaggersFiredTotal = BitConverter.ToUInt64(data, bytePosition + 52)
 				};
 
 				return entry;

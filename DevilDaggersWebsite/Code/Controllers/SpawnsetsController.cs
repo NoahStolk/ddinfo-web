@@ -1,4 +1,4 @@
-﻿using DevilDaggersCore.Spawnsets.Web;
+﻿using DevilDaggersWebsite.Code.DataTransferObjects;
 using DevilDaggersWebsite.Code.Utils;
 using Microsoft.AspNetCore.Hosting;
 using Microsoft.AspNetCore.Mvc;
@@ -23,14 +23,14 @@ namespace DevilDaggersWebsite.Code.Controllers
 
 		[HttpGet]
 		[ProducesResponseType(200)]
-		public List<SpawnsetFile> GetSpawnsets(string? searchAuthor = null, string? searchName = null)
-			=> SpawnsetUtils.GetSpawnsets(env, searchAuthor, searchName);
+		public List<SpawnsetFile> GetSpawnsets(string? authorFilter = null, string? nameFilter = null)
+			=> SpawnsetUtils.GetSpawnsets(env, authorFilter, nameFilter);
 
-		[HttpGet("{fileName}")]
+		[HttpGet("{fileName}/file")]
 		[ProducesResponseType(200)]
 		[ProducesResponseType(400)]
 		[ProducesResponseType(404)]
-		public ActionResult GetSpawnset([Required] string fileName)
+		public ActionResult GetSpawnsetFile([Required] string fileName)
 		{
 			if (!Io.File.Exists(Path.Combine(env.WebRootPath, "spawnsets", fileName)))
 				return new NotFoundObjectResult(new ProblemDetails { Title = $"Spawnset '{fileName}' was not found." });

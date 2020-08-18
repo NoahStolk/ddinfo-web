@@ -1,6 +1,5 @@
-﻿using DevilDaggersCore.Leaderboards;
-using DevilDaggersCore.Leaderboards.History;
-using DevilDaggersCore.Utils;
+﻿using DevilDaggersCore.Utils;
+using DevilDaggersWebsite.Code.DataTransferObjects;
 using Microsoft.AspNetCore.Hosting;
 using Newtonsoft.Json;
 using System;

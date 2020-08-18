@@ -1,7 +1,6 @@
 ﻿using DevilDaggersCore.Game;
-using DevilDaggersCore.Leaderboards;
-using DevilDaggersCore.Website;
 using DevilDaggersWebsite.Code.Database;
+using DevilDaggersWebsite.Code.DataTransferObjects;
 using Microsoft.AspNetCore.Hosting;
 using Microsoft.AspNetCore.Html;
 using Newtonsoft.Json;
@@ -32,15 +31,15 @@ namespace DevilDaggersWebsite.Code.Extensions
                 total-gems='{entry.GemsTotal}'
                 total-accuracy='{entry.AccuracyTotal * 10000:0}'
                 total-deaths='{entry.DeathsTotal}'
-                daggers-hit='{entry.ShotsHit}'
-                daggers-fired='{entry.ShotsFired}'
-                total-daggers-hit='{entry.ShotsHitTotal}'
-                total-daggers-fired='{entry.ShotsFiredTotal}'
+                daggers-hit='{entry.DaggersHit}'
+                daggers-fired='{entry.DaggersFired}'
+                total-daggers-hit='{entry.DaggersHitTotal}'
+                total-daggers-fired='{entry.DaggersFiredTotal}'
                 average-time='{entry.TimeTotal * 10000f / deaths:0}'
                 average-kills='{entry.KillsTotal * 100f / deaths:0}'
                 average-gems='{entry.GemsTotal * 100f / deaths:0}'
-                average-daggers-hit='{entry.ShotsHitTotal * 100f / deaths:0}'
-                average-daggers-fired='{entry.ShotsFiredTotal * 100f / deaths:0}'
+                average-daggers-hit='{entry.DaggersHitTotal * 100f / deaths:0}'
+                average-daggers-fired='{entry.DaggersFiredTotal * 100f / deaths:0}'
                 time-by-death='{entry.Time * 10000f / deaths:0}'
             ");
 		}
