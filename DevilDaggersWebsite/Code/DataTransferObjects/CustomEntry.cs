@@ -5,6 +5,7 @@ namespace DevilDaggersWebsite.Code.DataTransferObjects
 	public class CustomEntry
 	{
 		public int PlayerId { get; set; }
+		public string Username { get; set; }
 		public int Time { get; set; }
 		public int Gems { get; set; }
 		public int Kills { get; set; }

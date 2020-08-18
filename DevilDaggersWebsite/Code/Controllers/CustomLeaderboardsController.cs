@@ -159,6 +159,7 @@ namespace DevilDaggersWebsite.Code.Controllers
 						.Select(e => new Dto.CustomEntry
 						{
 							PlayerId = e.PlayerId,
+							Username = dbContext.Players.FirstOrDefault(p => p.Id == e.PlayerId)?.Username ?? "[Player not found]",
 							ClientVersion = e.ClientVersion,
 							DeathType = e.DeathType,
 							EnemiesAlive = e.EnemiesAlive,
@@ -224,6 +225,7 @@ namespace DevilDaggersWebsite.Code.Controllers
 						.Select(e => new Dto.CustomEntry
 						{
 							PlayerId = e.PlayerId,
+							Username = dbContext.Players.FirstOrDefault(p => p.Id == e.PlayerId)?.Username ?? "[Player not found]",
 							ClientVersion = e.ClientVersion,
 							DeathType = e.DeathType,
 							EnemiesAlive = e.EnemiesAlive,
@@ -289,6 +291,7 @@ namespace DevilDaggersWebsite.Code.Controllers
 					.Select(e => new Dto.CustomEntry
 					{
 						PlayerId = e.PlayerId,
+						Username = dbContext.Players.FirstOrDefault(p => p.Id == e.PlayerId)?.Username ?? "[Player not found]",
 						ClientVersion = e.ClientVersion,
 						DeathType = e.DeathType,
 						EnemiesAlive = e.EnemiesAlive,
