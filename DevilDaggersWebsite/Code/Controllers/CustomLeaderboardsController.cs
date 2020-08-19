@@ -49,17 +49,9 @@ namespace DevilDaggersWebsite.Code.Controllers
 		[ProducesResponseType(StatusCodes.Status200OK)]
 		[ProducesResponseType(StatusCodes.Status400BadRequest)]
 		[ProducesResponseType(StatusCodes.Status401Unauthorized)]
-		[ProducesResponseType(StatusCodes.Status500InternalServerError)]
 		public async Task<ActionResult<Dto.UploadSuccess>> UploadScore([FromBody] Dto.UploadRequest uploadRequest)
 		{
-			try
-			{
-				return await TryUpload(uploadRequest);
-			}
-			catch (Exception ex)
-			{
-				return new ObjectResult($"The server returned an error trying to upload score.\n\nDetails:\n\n{ex}") { StatusCode = StatusCodes.Status500InternalServerError };
-			}
+			return await TryUpload(uploadRequest);
 		}
 
 		private async Task<ActionResult<Dto.UploadSuccess>> TryUpload(Dto.UploadRequest uploadRequest)
