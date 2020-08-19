@@ -2,6 +2,7 @@
 using DevilDaggersWebsite.Code.Database;
 using DevilDaggersWebsite.Code.Tasks;
 using DevilDaggersWebsite.Code.Tasks.Scheduling;
+using DevilDaggersWebsite.Code.Transients;
 using Microsoft.AspNetCore.Builder;
 using Microsoft.AspNetCore.Hosting;
 using Microsoft.AspNetCore.Http;
@@ -44,10 +45,10 @@ namespace DevilDaggersWebsite
 
 			services.AddDbContext<ApplicationDbContext>(options => options.UseMySql(Configuration.GetConnectionString("DefaultConnection")));
 			services.AddDefaultIdentity<IdentityUser>(options =>
-			{
-				options.SignIn.RequireConfirmedAccount = true;
-				options.User.RequireUniqueEmail = true;
-			})
+				{
+					options.SignIn.RequireConfirmedAccount = true;
+					options.User.RequireUniqueEmail = true;
+				})
 				.AddRoles<IdentityRole>()
 				.AddEntityFrameworkStores<ApplicationDbContext>();
 
@@ -59,6 +60,8 @@ namespace DevilDaggersWebsite
 			services.AddSingleton<IScheduledTask, CreateLeaderboardHistoryFileTask>();
 
 			services.AddScoped<IUrlHelper>(factory => new UrlHelper(factory.GetService<IActionContextAccessor>().ActionContext));
+
+			services.AddTransient<SpawnsetHelper>();
 
 			services.AddScheduler((sender, args) =>
 			{
@@ -81,6 +84,14 @@ namespace DevilDaggersWebsite
 			{
 				foreach (KeyValuePair<string, string> kvp in RoleManager.FolderToPolicyMapper)
 					options.Conventions.AuthorizeFolder(kvp.Key, kvp.Value);
+			});
+
+			services.AddSwaggerDocument(config =>
+			{
+				config.PostProcess = document =>
+				{
+					document.Info.Title = "DevilDaggers.Info API";
+				};
 			});
 		}
 
@@ -146,6 +157,9 @@ namespace DevilDaggersWebsite
 				endpoints.MapRazorPages();
 				endpoints.MapControllers();
 			});
+
+			app.UseOpenApi();
+			app.UseSwaggerUi3();
 
 			Task task = serviceProvider.CreateRolesAndAdminUser(Configuration.GetSection("AdminUser")["Email"]);
 			task.Wait();

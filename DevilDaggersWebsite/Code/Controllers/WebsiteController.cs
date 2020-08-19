@@ -1,5 +1,6 @@
-﻿using DevilDaggersCore.Website;
+﻿using DevilDaggersWebsite.Code.DataTransferObjects;
 using DevilDaggersWebsite.Code.Tasks;
+using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
 using System.Linq;
 using System.Reflection;
@@ -12,7 +13,7 @@ namespace DevilDaggersWebsite.Code.Controllers
 	public class WebsiteController : ControllerBase
 	{
 		[HttpGet("stats")]
-		[ProducesResponseType(200)]
+		[ProducesResponseType(StatusCodes.Status200OK)]
 		public ActionResult<WebStatsResult> GetStats()
 			=> new WebStatsResult(
 				Io.File.GetLastWriteTime(Assembly.GetExecutingAssembly().Location),

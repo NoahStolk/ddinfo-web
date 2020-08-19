@@ -19,7 +19,7 @@
 		I'd also be happy to implement more functions should anyone need it, so let me know if you have any requests.
 	</p>
 	<p>
-		This table is automatically generated and will always be up to date.
+		This table is automatically generated and will always be up to date. Additionally, the Swagger page can be found <a href="/swagger/index.html">here</a>, and the OpenAPI specification can be found <a href="/swagger/v1/swagger.json">here</a>.
 	</p>
 
 	<h2>Endpoints</h2>
@@ -46,31 +46,34 @@
 		}
 	</div>
 
-	<h2>Deprecated endpoints</h2>
-	<p>
-		These will be removed in the near future.
-	</p>
+	@if (Model.Endpoints.Any(e => !string.IsNullOrEmpty(e.NewRouteToUse)))
+	{
+		<h2>Deprecated endpoints</h2>
+		<p>
+			These will be removed in the near future.
+		</p>
 
-	<div class="api-list">
-		<div class="row text-bold">
-			<div class="col-lg-3 col-md-3 col-sm-6 col-xs-6">Url</div>
-			<div class="col-lg-3 col-md-3 col-sm-6 col-xs-6">Deprecation message</div>
-			<div class="col-lg-3 col-md-3 hidden-sm hidden-xs">Return type</div>
-			<div class="col-lg-3 col-md-3 hidden-sm hidden-xs">Parameters</div>
-		</div>
+		<div class="api-list">
+			<div class="row text-bold">
+				<div class="col-lg-3 col-md-3 col-sm-6 col-xs-6">Url</div>
+				<div class="col-lg-3 col-md-3 col-sm-6 col-xs-6">Deprecation message</div>
+				<div class="col-lg-3 col-md-3 hidden-sm hidden-xs">Return type</div>
+				<div class="col-lg-3 col-md-3 hidden-sm hidden-xs">Parameters</div>
+			</div>
 
-		@{
-			foreach (Endpoint endpoint in Model.Endpoints.Where(e => !string.IsNullOrEmpty(e.NewRouteToUse)))
-			{
-				<div class="row">
-					<div class="col-lg-3 col-md-3 col-sm-6 col-xs-6"><a href=@endpoint.Url class="dont-break-out">@endpoint.Url</a></div>
-					<div class="col-lg-3 col-md-3 col-sm-6 col-xs-6 api-endpoint-deprecated">[DEPRECATED] Use @endpoint.NewRouteToUse instead.</div>
-					<div class="col-lg-3 col-md-3 hidden-sm hidden-xs">@Html.Raw(RazorUtils.GetFormattedReturnType(endpoint.ReturnType))</div>
-					<div class="col-lg-3 col-md-3 hidden-sm hidden-xs">@Html.Raw(endpoint.Parameters.Length == 0 ? RazorUtils.NAString.ToString() : string.Join("<br>", endpoint.Parameters.Select(p => p.FormattedDescription.ToString().Trim())))</div>
-				</div>
+			@{
+				foreach (Endpoint endpoint in Model.Endpoints.Where(e => !string.IsNullOrEmpty(e.NewRouteToUse)))
+				{
+					<div class="row">
+						<div class="col-lg-3 col-md-3 col-sm-6 col-xs-6"><a href=@endpoint.Url class="dont-break-out">@endpoint.Url</a></div>
+						<div class="col-lg-3 col-md-3 col-sm-6 col-xs-6 api-endpoint-deprecated">[DEPRECATED] Use @endpoint.NewRouteToUse instead.</div>
+						<div class="col-lg-3 col-md-3 hidden-sm hidden-xs">@Html.Raw(RazorUtils.GetFormattedReturnType(endpoint.ReturnType))</div>
+						<div class="col-lg-3 col-md-3 hidden-sm hidden-xs">@Html.Raw(endpoint.Parameters.Length == 0 ? RazorUtils.NAString.ToString() : string.Join("<br>", endpoint.Parameters.Select(p => p.FormattedDescription.ToString().Trim())))</div>
+					</div>
+				}
 			}
-		}
-	</div>
+		</div>
+	}
 </main>
 
 @section Styles {

@@ -1,26 +1,25 @@
-﻿using DevilDaggersCore.CustomLeaderboards;
-using System;
+﻿using System;
 using System.ComponentModel.DataAnnotations.Schema;
 
 namespace DevilDaggersWebsite.Code.Database
 {
-	public class CustomLeaderboard : CustomLeaderboardBase
+	public class CustomLeaderboard : DataTransferObjects.CustomLeaderboard
 	{
-		public CustomLeaderboard()
-		{
-		}
-
-		public CustomLeaderboard(string spawnsetFileName, int bronze, int silver, int golden, int devil, int homing, DateTime? dateLastPlayed, DateTime? dateCreated)
-			: base(spawnsetFileName, bronze, silver, golden, devil, homing, dateLastPlayed, dateCreated)
-		{
-		}
-
 		public int Id { get; set; }
 
 		public int CategoryId { get; set; }
 
 		[ForeignKey("CategoryId")]
 		public CustomLeaderboardCategory Category { get; set; }
+
+		public string SpawnsetFileName { get; set; }
+		public int Bronze { get; set; }
+		public int Silver { get; set; }
+		public int Golden { get; set; }
+		public int Devil { get; set; }
+		public int Homing { get; set; }
+		public DateTime? DateLastPlayed { get; set; }
+		public DateTime? DateCreated { get; set; }
 
 		/// <summary>
 		/// Returns the CSS class name corresponding to the time in seconds.

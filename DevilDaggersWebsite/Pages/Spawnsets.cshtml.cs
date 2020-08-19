@@ -1,7 +1,7 @@
-﻿using DevilDaggersCore.Spawnsets.Web;
-using DevilDaggersCore.Utils;
+﻿using DevilDaggersCore.Utils;
+using DevilDaggersWebsite.Code.DataTransferObjects;
 using DevilDaggersWebsite.Code.Pagination;
-using DevilDaggersWebsite.Code.Utils;
+using DevilDaggersWebsite.Code.Transients;
 using Microsoft.AspNetCore.Hosting;
 using Microsoft.AspNetCore.Mvc.RazorPages;
 using System;
@@ -14,10 +14,12 @@ namespace DevilDaggersWebsite.Pages
 	public class SpawnsetsModel : PageModel
 	{
 		private readonly IWebHostEnvironment env;
+		private readonly SpawnsetHelper spawnsetHelper;
 
-		public SpawnsetsModel(IWebHostEnvironment env)
+		public SpawnsetsModel(IWebHostEnvironment env, SpawnsetHelper spawnsetHelper)
 		{
 			this.env = env;
+			this.spawnsetHelper = spawnsetHelper;
 		}
 
 		public PaginatedList<SpawnsetFile> PaginatedSpawnsetFiles { get; set; }
@@ -48,8 +50,8 @@ namespace DevilDaggersWebsite.Pages
 
 			List<SpawnsetFile> spawnsetFiles = new List<SpawnsetFile>();
 
-			foreach (SpawnsetFile spawnset in SpawnsetUtils.GetSpawnsets(env, SearchAuthor, SearchName))
-				spawnsetFiles.Add(SpawnsetUtils.CreateSpawnsetFileFromSettingsFile(env, Path.Combine(env.WebRootPath, "spawnsets", $"{spawnset.Name}_{spawnset.Author}")));
+			foreach (SpawnsetFile spawnset in spawnsetHelper.GetSpawnsets(SearchAuthor, SearchName))
+				spawnsetFiles.Add(spawnsetHelper.CreateSpawnsetFileFromSettingsFile(Path.Combine(env.WebRootPath, "spawnsets", $"{spawnset.Name}_{spawnset.Author}")));
 
 			NameSort = sortOrder == "Name" ? "Name_asc" : "Name";
 			AuthorSort = sortOrder == "Author_asc" ? "Author" : "Author_asc";
@@ -66,14 +68,14 @@ namespace DevilDaggersWebsite.Pages
 				"Author_asc" => spawnsetFiles.OrderBy(s => s.Author).ThenByDescending(s => s.Name).ToList(),
 				"Author" => spawnsetFiles.OrderByDescending(s => s.Author).ThenBy(s => s.Name).ToList(),
 				"LastUpdated_asc" => spawnsetFiles.OrderBy(s => s.settings.LastUpdated).ThenByDescending(s => s.Name).ToList(),
-				"NonLoopLength_asc" => spawnsetFiles.OrderBy(s => s.spawnsetData.NonLoopLengthNullable).ThenBy(s => s.spawnsetData.NonLoopSpawns).ToList(),
-				"NonLoopLength" => spawnsetFiles.OrderByDescending(s => s.spawnsetData.NonLoopLengthNullable).ThenByDescending(s => s.spawnsetData.NonLoopSpawns).ToList(),
-				"NonLoopSpawns_asc" => spawnsetFiles.OrderBy(s => s.spawnsetData.NonLoopSpawns).ToList(),
-				"NonLoopSpawns" => spawnsetFiles.OrderByDescending(s => s.spawnsetData.NonLoopSpawns).ToList(),
-				"LoopLength_asc" => spawnsetFiles.OrderBy(s => s.spawnsetData.LoopLengthNullable).ThenBy(s => s.spawnsetData.LoopSpawns).ToList(),
-				"LoopLength" => spawnsetFiles.OrderByDescending(s => s.spawnsetData.LoopLengthNullable).ThenByDescending(s => s.spawnsetData.LoopSpawns).ToList(),
-				"LoopSpawns_asc" => spawnsetFiles.OrderBy(s => s.spawnsetData.LoopSpawns).ToList(),
-				"LoopSpawns" => spawnsetFiles.OrderByDescending(s => s.spawnsetData.LoopSpawns).ToList(),
+				"NonLoopLength_asc" => spawnsetFiles.OrderBy(s => s.spawnsetData.NonLoopLength).ThenBy(s => s.spawnsetData.NonLoopSpawnCount).ToList(),
+				"NonLoopLength" => spawnsetFiles.OrderByDescending(s => s.spawnsetData.NonLoopLength).ThenByDescending(s => s.spawnsetData.NonLoopSpawnCount).ToList(),
+				"NonLoopSpawns_asc" => spawnsetFiles.OrderBy(s => s.spawnsetData.NonLoopSpawnCount).ToList(),
+				"NonLoopSpawns" => spawnsetFiles.OrderByDescending(s => s.spawnsetData.NonLoopSpawnCount).ToList(),
+				"LoopLength_asc" => spawnsetFiles.OrderBy(s => s.spawnsetData.LoopLength).ThenBy(s => s.spawnsetData.LoopSpawnCount).ToList(),
+				"LoopLength" => spawnsetFiles.OrderByDescending(s => s.spawnsetData.LoopLength).ThenByDescending(s => s.spawnsetData.LoopSpawnCount).ToList(),
+				"LoopSpawns_asc" => spawnsetFiles.OrderBy(s => s.spawnsetData.LoopSpawnCount).ToList(),
+				"LoopSpawns" => spawnsetFiles.OrderByDescending(s => s.spawnsetData.LoopSpawnCount).ToList(),
 				_ => spawnsetFiles.OrderByDescending(s => s.settings.LastUpdated).ThenBy(s => s.Name).ToList(),
 			};
 			TotalResults = spawnsetFiles.Count;

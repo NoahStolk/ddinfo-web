@@ -1,23 +1,19 @@
 ﻿@model string
-@inject Microsoft.AspNetCore.Hosting.IWebHostEnvironment env
 @inject Microsoft.AspNetCore.Http.IHttpContextAccessor httpContextAccessor
+@inject DevilDaggersWebsite.Code.Transients.SpawnsetHelper spawnsetHelper
 @using DevilDaggersCore.Game
 @using DevilDaggersCore.Utils
 @using DevilDaggersCore.Spawnsets
-@using DevilDaggersCore.Spawnsets.Web
+@using DevilDaggersWebsite.Code.DataTransferObjects
 @using DevilDaggersWebsite.Code.Utils
 @using System.IO
 @{
 	int[] widths = new int[4] { 160, 160, 144, 128 };
 
-	SpawnsetFile sf = SpawnsetUtils.CreateSpawnsetFileFromSettingsFile(env, Model);
-	Spawnset spawnset;
-	using (FileStream fs = new FileStream(Model, FileMode.Open, FileAccess.Read))
+	SpawnsetFile? sf = spawnsetHelper.CreateSpawnsetFileFromSettingsFile(Model);
+	if (sf == null || !Spawnset.TryParse(File.ReadAllBytes(Model), out Spawnset spawnset))
 	{
-		if (!Spawnset.TryParse(fs, out spawnset))
-		{
-			return;
-		}
+		return;
 	}
 
 	GameVersion gameVersion = sf.Author == "Sorath" ? sf.Name == "V1" ? GameVersion.V1 : sf.Name == "V2" ? GameVersion.V2 : GameVersion.V3 : GameVersion.V3;

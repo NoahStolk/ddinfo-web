@@ -1,4 +1,5 @@
 ﻿using DevilDaggersCore.Game;
+using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
 using System;
 using System.ComponentModel.DataAnnotations;
@@ -10,8 +11,8 @@ namespace DevilDaggersWebsite.Code.Controllers
 	public class GameVersionsController : ControllerBase
 	{
 		[HttpGet("{gameVersion}/release-date")]
-		[ProducesResponseType(200)]
-		[ProducesResponseType(400)]
+		[ProducesResponseType(StatusCodes.Status200OK)]
+		[ProducesResponseType(StatusCodes.Status400BadRequest)]
 		public ActionResult<DateTime> GetGameVersionReleaseDate([Required] GameVersion gameVersion)
 		{
 			DateTime? releaseDate = GameInfo.GetReleaseDate(gameVersion);
@@ -21,8 +22,8 @@ namespace DevilDaggersWebsite.Code.Controllers
 		}
 
 		[HttpGet("at-date")]
-		[ProducesResponseType(200)]
-		[ProducesResponseType(400)]
+		[ProducesResponseType(StatusCodes.Status200OK)]
+		[ProducesResponseType(StatusCodes.Status400BadRequest)]
 		public ActionResult<GameVersion> GetGameVersionAtDate([Required] DateTime date)
 		{
 			GameVersion? gameVersion = GameInfo.GetGameVersionFromDate(date);

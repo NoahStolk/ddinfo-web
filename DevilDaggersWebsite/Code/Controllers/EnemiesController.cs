@@ -1,4 +1,5 @@
 ﻿using DevilDaggersCore.Game;
+using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
 using System.Collections.Generic;
 using System.ComponentModel.DataAnnotations;
@@ -11,14 +12,14 @@ namespace DevilDaggersWebsite.Code.Controllers
 	public class EnemiesController : ControllerBase
 	{
 		[HttpGet]
-		[ProducesResponseType(200)]
+		[ProducesResponseType(StatusCodes.Status200OK)]
 		public ActionResult<List<Enemy>> GetEnemies(GameVersion? gameVersion = null)
 			=> GameInfo.GetEntities<Enemy>(gameVersion);
 
 		[HttpGet("by-name")]
-		[ProducesResponseType(200)]
-		[ProducesResponseType(400)]
-		[ProducesResponseType(404)]
+		[ProducesResponseType(StatusCodes.Status200OK)]
+		[ProducesResponseType(StatusCodes.Status400BadRequest)]
+		[ProducesResponseType(StatusCodes.Status404NotFound)]
 		public ActionResult<List<Enemy>> GetEnemiesByName([Required] string enemyName, GameVersion? gameVersion = null)
 		{
 			IEnumerable<Enemy> enemies = GameInfo.GetEntities<Enemy>(gameVersion).Where(e => e.Name == enemyName);
@@ -28,9 +29,9 @@ namespace DevilDaggersWebsite.Code.Controllers
 		}
 
 		[HttpGet("by-type")]
-		[ProducesResponseType(200)]
-		[ProducesResponseType(400)]
-		[ProducesResponseType(404)]
+		[ProducesResponseType(StatusCodes.Status200OK)]
+		[ProducesResponseType(StatusCodes.Status400BadRequest)]
+		[ProducesResponseType(StatusCodes.Status404NotFound)]
 		public ActionResult<List<Enemy>> GetEnemyBySpawnsetType([Required] byte spawnsetType, GameVersion? gameVersion = null)
 		{
 			IEnumerable<Enemy> enemies = GameInfo.GetEntities<Enemy>(gameVersion).Where(e => e.SpawnsetType == spawnsetType);

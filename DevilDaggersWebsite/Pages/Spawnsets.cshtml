@@ -1,6 +1,6 @@
 ﻿@page
 @using DevilDaggersCore.Utils
-@using DevilDaggersCore.Spawnsets.Web
+@using DevilDaggersWebsite.Code.DataTransferObjects
 @using DevilDaggersWebsite.Code.Utils
 @using DevilDaggersWebsite.Code.Spawnsets
 @model SpawnsetsModel
@@ -126,16 +126,16 @@
 								@(spawnsetFile.settings.LastUpdated.ToString("dd MMM yyyy"))
 							</td>
 							<td class="hidden-xs hidden-sm hidden-md">
-								@(!spawnsetFile.spawnsetData.NonLoopLengthNullable.HasValue ? RazorUtils.NAString : Html.Raw(spawnsetFile.spawnsetData.NonLoopLengthNullable.Value.ToString(FormatUtils.SpawnTimeFormat)))
+								@(!spawnsetFile.spawnsetData.NonLoopLength.HasValue ? RazorUtils.NAString : Html.Raw(spawnsetFile.spawnsetData.NonLoopLength.Value.ToString(FormatUtils.SpawnTimeFormat)))
 							</td>
 							<td class="hidden-xs hidden-sm hidden-md">
-								@(spawnsetFile.spawnsetData.NonLoopSpawns == 0 ? RazorUtils.NAString : Html.Raw(spawnsetFile.spawnsetData.NonLoopSpawns))
+								@(spawnsetFile.spawnsetData.NonLoopSpawnCount == 0 ? RazorUtils.NAString : Html.Raw(spawnsetFile.spawnsetData.NonLoopSpawnCount))
 							</td>
 							<td class="hidden-xs hidden-sm hidden-md">
-								@(!spawnsetFile.spawnsetData.LoopLengthNullable.HasValue ? RazorUtils.NAString : Html.Raw(spawnsetFile.spawnsetData.LoopLengthNullable.Value.ToString(FormatUtils.SpawnTimeFormat)))
+								@(!spawnsetFile.spawnsetData.LoopLength.HasValue ? RazorUtils.NAString : Html.Raw(spawnsetFile.spawnsetData.LoopLength.Value.ToString(FormatUtils.SpawnTimeFormat)))
 							</td>
 							<td class="hidden-xs hidden-sm hidden-md">
-								@(spawnsetFile.spawnsetData.LoopSpawns == 0 ? RazorUtils.NAString : Html.Raw(spawnsetFile.spawnsetData.LoopSpawns))
+								@(spawnsetFile.spawnsetData.LoopSpawnCount == 0 ? RazorUtils.NAString : Html.Raw(spawnsetFile.spawnsetData.LoopSpawnCount))
 							</td>
 						</tr>
 					}

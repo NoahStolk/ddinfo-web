@@ -1,6 +1,7 @@
-﻿using DevilDaggersCore.Website;
+﻿using DevilDaggersWebsite.Code.DataTransferObjects;
 using DevilDaggersWebsite.Code.Utils;
 using Microsoft.AspNetCore.Hosting;
+using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
 using System;
 using System.Collections.Generic;
@@ -24,30 +25,30 @@ namespace DevilDaggersWebsite.Code.Controllers
 		}
 
 		[HttpGet]
-		[ProducesResponseType(200)]
-		public ActionResult<List<Tool>> GetTools()
-			=> ToolList.Tools;
+		[ProducesResponseType(StatusCodes.Status200OK)]
+		public ActionResult<List<Tool>> GetTools(string? toolNameFilter = null)
+		{
+			IEnumerable<Tool> tools = ToolList.Tools;
+			if (!string.IsNullOrEmpty(toolNameFilter))
+				tools = tools.Where(t => t.Name.Contains(toolNameFilter, StringComparison.InvariantCulture));
+			return tools.ToList();
+		}
 
-		[HttpGet("{toolName}")]
-		[ProducesResponseType(200)]
-		[ProducesResponseType(400)]
-		[ProducesResponseType(404)]
-		public ActionResult GetTool([Required] string toolName)
+		[HttpGet("{toolName}/file")]
+		[ProducesResponseType(typeof(FileContentResult), StatusCodes.Status200OK)]
+		[ProducesResponseType(StatusCodes.Status400BadRequest)]
+		[ProducesResponseType(StatusCodes.Status404NotFound)]
+		public ActionResult GetToolFile([Required] string toolName)
 		{
 			Tool tool = ToolList.Tools.FirstOrDefault(t => t.Name == toolName);
 			if (tool == null)
 				return new NotFoundObjectResult(new ProblemDetails { Title = $"Tool '{toolName}' was not found." });
-			return File(Io.File.ReadAllBytes(Path.Combine(env.WebRootPath, GetToolPath(tool))), MediaTypeNames.Application.Zip, $"{toolName}{tool.VersionNumber}.zip");
-		}
 
-		private string GetToolPath(Tool tool)
-		{
 			string path = Path.Combine("tools", tool.Name, $"{tool.Name}{tool.VersionNumber}.zip");
-
 			if (!Io.File.Exists(Path.Combine(env.WebRootPath, path)))
 				throw new Exception($"Tool file '{path}' does not exist.");
 
-			return path;
+			return File(Io.File.ReadAllBytes(Path.Combine(env.WebRootPath, path)), MediaTypeNames.Application.Zip, $"{toolName}{tool.VersionNumber}.zip");
 		}
 	}
 }

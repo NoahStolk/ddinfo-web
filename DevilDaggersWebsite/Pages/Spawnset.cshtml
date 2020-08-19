@@ -1,7 +1,7 @@
 ﻿@page
 @using DevilDaggersWebsite.Code.Utils
 @using DevilDaggersCore.Game
-@inject DevilDaggersWebsite.Code.Database.ApplicationDbContext Context
+@inject DevilDaggersWebsite.Code.Database.ApplicationDbContext dbContext
 @model DevilDaggersWebsite.Pages.SpawnsetModel
 @{
 	ViewData["Title"] = "Spawnset";
@@ -17,7 +17,7 @@
 	<p class="text-center">
 		<a class="btn" href="api/spawnsets/@Model.Query">Download</a>
 	</p>
-	@if (Context.CustomLeaderboards.Any(c => c.SpawnsetFileName == Model.SpawnsetFile.FileName))
+	@if (dbContext.CustomLeaderboards.Any(c => c.SpawnsetFileName == Model.SpawnsetFile.FileName))
 	{
 		<p class="text-center">
 			<a asp-page="/CustomLeaderboards/Leaderboard" asp-route-spawnset="@Model.SpawnsetFile.FileName">Custom leaderboard for @Model.SpawnsetFile.Name</a>

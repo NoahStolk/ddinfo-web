@@ -1,8 +1,7 @@
 ﻿using DevilDaggersCore.Extensions;
-using DevilDaggersCore.Spawnsets.Web;
 using DevilDaggersCore.Utils;
 using DevilDaggersWebsite.Code.Database;
-using DevilDaggersWebsite.Code.Utils;
+using DevilDaggersWebsite.Code.Transients;
 using Microsoft.AspNetCore.Hosting;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.AspNetCore.Mvc.RazorPages;
@@ -17,29 +16,30 @@ namespace DevilDaggersWebsite.Pages.CustomLeaderboards
 	public class LeaderboardModel : PageModel
 	{
 		private readonly ApplicationDbContext context;
+		private readonly IWebHostEnvironment env;
+		private readonly SpawnsetHelper spawnsetHelper;
 
-		public LeaderboardModel(ApplicationDbContext context, IWebHostEnvironment env)
+		public LeaderboardModel(ApplicationDbContext context, IWebHostEnvironment env, SpawnsetHelper spawnsetHelper)
 		{
 			this.context = context;
-			Env = env;
+			this.env = env;
+			this.spawnsetHelper = spawnsetHelper;
 		}
 
-		public SpawnsetFile SpawnsetFile { get; private set; }
+		public Code.DataTransferObjects.SpawnsetFile SpawnsetFile { get; private set; }
 
 		[BindProperty]
 		public CustomLeaderboard Leaderboard { get; set; }
 
 		[BindProperty]
-		public List<CustomEntry> Entries { get; set; }
+		public List<CustomEntry> Entries { get; private set; }
 
-		public IWebHostEnvironment Env { get; }
-
-		public ActionResult OnGet(string spawnset)
+		public ActionResult? OnGet(string spawnset)
 		{
 			if (spawnset == null)
 				return RedirectToPage("Index");
 
-			SpawnsetFile = SpawnsetUtils.CreateSpawnsetFileFromSettingsFile(Env, Path.Combine(Env.WebRootPath, "spawnsets", spawnset));
+			SpawnsetFile = spawnsetHelper.CreateSpawnsetFileFromSettingsFile(Path.Combine(env.WebRootPath, "spawnsets", spawnset));
 
 			if (SpawnsetFile == null)
 				return RedirectToPage("Index");
