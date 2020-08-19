@@ -28,7 +28,7 @@ namespace DevilDaggersWebsite.Code.Controllers
 			=> SpawnsetUtils.GetSpawnsets(env, authorFilter, nameFilter);
 
 		[HttpGet("{fileName}/file")]
-		[ProducesResponseType(StatusCodes.Status200OK)]
+		[ProducesResponseType(typeof(FileContentResult), StatusCodes.Status200OK)]
 		[ProducesResponseType(StatusCodes.Status400BadRequest)]
 		[ProducesResponseType(StatusCodes.Status404NotFound)]
 		public ActionResult GetSpawnsetFile([Required] string fileName)
