@@ -48,7 +48,6 @@ namespace DevilDaggersWebsite.Code.Controllers
 		[HttpPost]
 		[ProducesResponseType(StatusCodes.Status200OK)]
 		[ProducesResponseType(StatusCodes.Status400BadRequest)]
-		[ProducesResponseType(StatusCodes.Status401Unauthorized)]
 		public async Task<ActionResult<Dto.UploadSuccess>> UploadScore([FromBody] Dto.UploadRequest uploadRequest)
 		{
 			Version clientVersionParsed = Version.Parse(uploadRequest.DdclClientVersion);
@@ -86,7 +85,7 @@ namespace DevilDaggersWebsite.Code.Controllers
 				uploadRequest.Homing,
 				string.Join(",", new int[3] { uploadRequest.LevelUpTime2, uploadRequest.LevelUpTime3, uploadRequest.LevelUpTime4 }));
 			if (DecryptValidation(uploadRequest.Validation) != check)
-				return new UnauthorizedObjectResult(new ProblemDetails { Title = "Invalid submission." });
+				return new BadRequestObjectResult(new ProblemDetails { Title = "Invalid submission." });
 
 			CustomLeaderboard leaderboard = dbContext.CustomLeaderboards.Include(l => l.Category).FirstOrDefault(l => l.SpawnsetFileName == spawnsetName);
 			if (leaderboard == null)
