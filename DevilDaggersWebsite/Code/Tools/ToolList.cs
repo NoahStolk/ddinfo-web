@@ -13,7 +13,11 @@ namespace DevilDaggersWebsite.Code.Utils
 			Type type = typeof(ToolList);
 			PropertyInfo[] properties = type.GetProperties(BindingFlags.Public | BindingFlags.Static).Where(p => p.PropertyType == typeof(Tool)).ToArray();
 			foreach (PropertyInfo property in properties)
-				Tools.Add((Tool)property.GetValue(type, null));
+			{
+				Tool? tool = (Tool?)property.GetValue(type, null);
+				if (tool != null)
+					Tools.Add(tool);
+			}
 		}
 
 		public static List<Tool> Tools { get; } = new List<Tool>();
@@ -22,10 +26,28 @@ namespace DevilDaggersWebsite.Code.Utils
 		{
 			Name = "DevilDaggersSurvivalEditor",
 			DisplayName = "Devil Daggers Survival Editor",
-			VersionNumber = new Version(2, 4, 16, 0),
-			VersionNumberRequired = new Version(2, 4, 13, 0),
+			VersionNumber = new Version(2, 7, 6, 0),
+			VersionNumberRequired = new Version(2, 7, 6, 0),
 			Changelog = new List<ChangelogEntry>
 			{
+				new ChangelogEntry
+				{
+					VersionNumber = new Version(2, 7, 6, 0),
+					Date = new DateTime(2020, 8, 19), // TODO
+					Changes = new List<Change>
+					{
+						new Change("Rewrote much of the application."),
+						new Change("Removed dependencies."),
+						new Change("Ported to .NET Core. Application is no longer dependent on .NET Framework and does not require .NET Framework 4.6.1."),
+						new Change("Fixed 'No survival file' warning not going away after restoring V3."),
+						new Change("Fixed clicking settings CheckBoxes text not affecting the CheckBox states."),
+						new Change("Fixed end loop warning seconds not being formatted correctly."),
+						new Change("Fixed not showing end loop warning for a single spawn."),
+						new Change("Fixed crash when attempting to view log file while it was being used by another process."),
+						new Change("Fixed search TextBoxes in DownloadSpawnset window being empty after reopening the window."),
+						new Change("Improve performance by reducing the amount of API calls."),
+					},
+				},
 				new ChangelogEntry
 				{
 					VersionNumber = new Version(2, 4, 16, 0),
@@ -374,10 +396,27 @@ namespace DevilDaggersWebsite.Code.Utils
 		{
 			Name = "DevilDaggersCustomLeaderboards",
 			DisplayName = "Devil Daggers Custom Leaderboards",
-			VersionNumber = new Version(0, 6, 1, 0),
-			VersionNumberRequired = new Version(0, 6, 0, 0),
+			VersionNumber = new Version(0, 9, 6, 0),
+			VersionNumberRequired = new Version(0, 9, 6, 0),
 			Changelog = new List<ChangelogEntry>
 			{
+				new ChangelogEntry
+				{
+					VersionNumber = new Version(0, 9, 6, 0),
+					Date = new DateTime(2020, 8, 19), // TODO
+					Changes = new List<Change>
+					{
+						new Change("Rewrote much of the application."),
+						new Change("Removed dependencies."),
+						new Change("Ported to .NET Core. Application is no longer dependent on .NET Framework and does not require .NET Framework 4.6.1."),
+						new Change("Fixed crash that occurred when setting a very large custom font size."),
+						new Change("Added icon."),
+						new Change("Renamed 'Shots' to 'Daggers'."),
+						new Change("Fixed resetting homing to 0 just before detecting player death."),
+						new Change("Fixed writing level up difference when previous highscore did not achieve that level."),
+						new Change("Fixed not being able to read current upgrade and homing count in some Devil Daggers instances due to malformed pointer chains."),
+					},
+				},
 				new ChangelogEntry
 				{
 					VersionNumber = new Version(0, 6, 1, 0),
@@ -529,10 +568,24 @@ namespace DevilDaggersWebsite.Code.Utils
 		{
 			Name = "DevilDaggersAssetEditor",
 			DisplayName = "Devil Daggers Asset Editor",
-			VersionNumber = new Version(0, 13, 22, 0),
-			VersionNumberRequired = new Version(0, 7, 5, 0),
+			VersionNumber = new Version(0, 16, 2, 0),
+			VersionNumberRequired = new Version(0, 16, 2, 0),
 			Changelog = new List<ChangelogEntry>
 			{
+				new ChangelogEntry
+				{
+					VersionNumber = new Version(0, 16, 2, 0),
+					Date = new DateTime(2020, 8, 19), // TODO
+					Changes = new List<Change>
+					{
+						new Change("Rewrote much of the application."),
+						new Change("Removed dependencies."),
+						new Change("Ported to .NET Core. Application is no longer dependent on .NET Framework and does not require .NET Framework 4.6.1."),
+						new Change("Added loading screen."),
+						new Change("Fixed crash when attempting to view log file while it was being used by another process."),
+						new Change("Improved performance."),
+					},
+				},
 				new ChangelogEntry
 				{
 					VersionNumber = new Version(0, 13, 22, 0),
