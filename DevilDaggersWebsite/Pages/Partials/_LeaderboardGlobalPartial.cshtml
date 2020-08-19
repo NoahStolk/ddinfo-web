@@ -17,7 +17,7 @@
 	string kills = Model.Leaderboard.KillsGlobal.ToString(FormatUtils.LeaderboardIntFormat);
 	string gems = Model.Leaderboard.GemsGlobal.ToString(FormatUtils.LeaderboardIntFormat);
 	string deaths = Model.Leaderboard.DeathsGlobal.ToString(FormatUtils.LeaderboardIntFormat);
-	string shots = FormatUtils.FormatDaggers(Model.Leaderboard.DaggersHitGlobal, Model.Leaderboard.DaggersFiredGlobal, isHistory);
+	string shots = FormatUtils.FormatDaggersUInt64(Model.Leaderboard.DaggersHitGlobal, Model.Leaderboard.DaggersFiredGlobal, isHistory);
 	string accuracy = Model.Leaderboard.AccuracyGlobal.ToString(FormatUtils.AccuracyFormat);
 }
 <div class="hidden-xs text-center">

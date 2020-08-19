@@ -78,9 +78,9 @@
 				string gemsTotal = entry.GemsTotal.ToString(FormatUtils.LeaderboardIntFormat);
 				string deathsTotal = entry.DeathsTotal.ToString(FormatUtils.LeaderboardIntFormat);
 
-				string shots = FormatUtils.FormatDaggers(entry.DaggersHit, entry.DaggersFired, !isIndex);
+				string shots = FormatUtils.FormatDaggersInt32(entry.DaggersHit, entry.DaggersFired, !isIndex);
 				string accuracy = entry.Accuracy.ToString(FormatUtils.AccuracyFormat);
-				string shotsTotal = FormatUtils.FormatDaggers(entry.DaggersHitTotal, entry.DaggersFiredTotal, !isIndex);
+				string shotsTotal = FormatUtils.FormatDaggersUInt64(entry.DaggersHitTotal, entry.DaggersFiredTotal, !isIndex);
 				string accuracyTotal = entry.AccuracyTotal.ToString(FormatUtils.AccuracyFormat);
 
 				string daggersHit = entry.DaggersHit.ToString(FormatUtils.LeaderboardIntFormat);
