@@ -73,11 +73,8 @@ namespace DevilDaggersWebsite.Code.Controllers
 			{
 				string hash = string.Empty;
 
-				using (FileStream fs = new FileStream(spawnsetPath, FileMode.Open, FileAccess.Read))
-				{
-					if (Spawnset.TryParse(fs, out Spawnset spawnsetObject))
-						hash = spawnsetObject.GetHashString();
-				}
+				if (Spawnset.TryParse(System.IO.File.ReadAllBytes(spawnsetPath), out Spawnset spawnsetObject))
+					hash = spawnsetObject.GetHashString();
 
 				if (hash == uploadRequest.SpawnsetHash)
 				{

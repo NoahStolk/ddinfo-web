@@ -20,20 +20,17 @@ namespace DevilDaggersWebsite.Pages
 		public IWebHostEnvironment Env { get; }
 
 		public string Query { get; private set; }
-		public SpawnsetFile SpawnsetFile { get; private set; }
+		public SpawnsetFile? SpawnsetFile { get; private set; }
 
-		public ActionResult OnGet()
+		public ActionResult? OnGet()
 		{
 			try
 			{
 				Query = HttpContext.Request.Query["spawnset"];
 				SpawnsetFile = SpawnsetUtils.CreateSpawnsetFileFromSettingsFile(Env, Path.Combine(Env.WebRootPath, "spawnsets", Query));
 
-				using (FileStream fs = new FileStream(SpawnsetFile.Path, FileMode.Open, FileAccess.Read))
-				{
-					if (!Spawnset.TryParse(fs, out spawnset))
-						return RedirectToPage("Spawnsets");
-				}
+				if (!Spawnset.TryParse(System.IO.File.ReadAllBytes(SpawnsetFile?.Path), out spawnset))
+					return RedirectToPage("Spawnsets");
 
 				return null;
 			}
