@@ -51,14 +51,9 @@ namespace DevilDaggersWebsite.Code.Controllers
 		[ProducesResponseType(StatusCodes.Status401Unauthorized)]
 		public async Task<ActionResult<Dto.UploadSuccess>> UploadScore([FromBody] Dto.UploadRequest uploadRequest)
 		{
-			return await TryUpload(uploadRequest);
-		}
-
-		private async Task<ActionResult<Dto.UploadSuccess>> TryUpload(Dto.UploadRequest uploadRequest)
-		{
 			Version clientVersionParsed = Version.Parse(uploadRequest.DdclClientVersion);
 			if (clientVersionParsed < ToolList.DevilDaggersCustomLeaderboards.VersionNumberRequired)
-				return new BadRequestObjectResult("You are using an unsupported and outdated version of DDCL. Please update the program.");
+				return new BadRequestObjectResult(new ProblemDetails { Title = "You are using an unsupported and outdated version of DDCL. Please update the program." });
 
 			string spawnsetName = string.Empty;
 			foreach (string spawnsetPath in Directory.GetFiles(Path.Combine(env.WebRootPath, "spawnsets")))
@@ -76,7 +71,7 @@ namespace DevilDaggersWebsite.Code.Controllers
 			}
 
 			if (string.IsNullOrEmpty(spawnsetName))
-				return new BadRequestObjectResult("This spawnset does not exist on DevilDaggers.info.");
+				return new BadRequestObjectResult(new ProblemDetails { Title = "This spawnset does not exist on DevilDaggers.info." });
 
 			string check = string.Join(
 				";",
@@ -91,11 +86,11 @@ namespace DevilDaggersWebsite.Code.Controllers
 				uploadRequest.Homing,
 				string.Join(",", new int[3] { uploadRequest.LevelUpTime2, uploadRequest.LevelUpTime3, uploadRequest.LevelUpTime4 }));
 			if (DecryptValidation(uploadRequest.Validation) != check)
-				return new UnauthorizedObjectResult("Invalid submission.");
+				return new UnauthorizedObjectResult(new ProblemDetails { Title = "Invalid submission." });
 
 			CustomLeaderboard leaderboard = dbContext.CustomLeaderboards.Include(l => l.Category).FirstOrDefault(l => l.SpawnsetFileName == spawnsetName);
 			if (leaderboard == null)
-				return new BadRequestObjectResult("This spawnset doesn't have a leaderboard.");
+				return new BadRequestObjectResult(new ProblemDetails { Title = "This spawnset doesn't have a leaderboard." });
 
 			// Submission is accepted.
 
