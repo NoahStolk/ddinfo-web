@@ -22,6 +22,8 @@ namespace DevilDaggersWebsite.Code.DataTransferObjects
 
 		public string Author => GetAuthor(FileName);
 
+		public bool HasCustomLeaderboard { get; set; }
+
 		public static string GetName(string fileName) => fileName.Substring(0, fileName.LastIndexOf('_'));
 
 		public static string GetAuthor(string fileName) => fileName.Substring(fileName.LastIndexOf('_') + 1);

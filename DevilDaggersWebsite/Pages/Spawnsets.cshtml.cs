@@ -1,7 +1,7 @@
 ﻿using DevilDaggersCore.Utils;
 using DevilDaggersWebsite.Code.DataTransferObjects;
 using DevilDaggersWebsite.Code.Pagination;
-using DevilDaggersWebsite.Code.Utils;
+using DevilDaggersWebsite.Code.Transients;
 using Microsoft.AspNetCore.Hosting;
 using Microsoft.AspNetCore.Mvc.RazorPages;
 using System;
@@ -14,10 +14,12 @@ namespace DevilDaggersWebsite.Pages
 	public class SpawnsetsModel : PageModel
 	{
 		private readonly IWebHostEnvironment env;
+		private readonly SpawnsetHelper spawnsetHelper;
 
-		public SpawnsetsModel(IWebHostEnvironment env)
+		public SpawnsetsModel(IWebHostEnvironment env, SpawnsetHelper spawnsetHelper)
 		{
 			this.env = env;
+			this.spawnsetHelper = spawnsetHelper;
 		}
 
 		public PaginatedList<SpawnsetFile> PaginatedSpawnsetFiles { get; set; }
@@ -48,8 +50,8 @@ namespace DevilDaggersWebsite.Pages
 
 			List<SpawnsetFile> spawnsetFiles = new List<SpawnsetFile>();
 
-			foreach (SpawnsetFile spawnset in SpawnsetUtils.GetSpawnsets(env, SearchAuthor, SearchName))
-				spawnsetFiles.Add(SpawnsetUtils.CreateSpawnsetFileFromSettingsFile(env, Path.Combine(env.WebRootPath, "spawnsets", $"{spawnset.Name}_{spawnset.Author}")));
+			foreach (SpawnsetFile spawnset in spawnsetHelper.GetSpawnsets(SearchAuthor, SearchName))
+				spawnsetFiles.Add(spawnsetHelper.CreateSpawnsetFileFromSettingsFile(Path.Combine(env.WebRootPath, "spawnsets", $"{spawnset.Name}_{spawnset.Author}")));
 
 			NameSort = sortOrder == "Name" ? "Name_asc" : "Name";
 			AuthorSort = sortOrder == "Author_asc" ? "Author" : "Author_asc";

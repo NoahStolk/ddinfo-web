@@ -1,5 +1,5 @@
 ﻿using DevilDaggersWebsite.Code.DataTransferObjects;
-using DevilDaggersWebsite.Code.Utils;
+using DevilDaggersWebsite.Code.Transients;
 using Microsoft.AspNetCore.Hosting;
 using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
@@ -15,17 +15,19 @@ namespace DevilDaggersWebsite.Code.Controllers
 	[ApiController]
 	public class SpawnsetsController : ControllerBase
 	{
+		private readonly SpawnsetHelper spawnsetHelper;
 		private readonly IWebHostEnvironment env;
 
-		public SpawnsetsController(IWebHostEnvironment env)
+		public SpawnsetsController(SpawnsetHelper spawnsetHelper, IWebHostEnvironment env)
 		{
+			this.spawnsetHelper = spawnsetHelper;
 			this.env = env;
 		}
 
 		[HttpGet]
 		[ProducesResponseType(StatusCodes.Status200OK)]
 		public List<SpawnsetFile> GetSpawnsets(string? authorFilter = null, string? nameFilter = null)
-			=> SpawnsetUtils.GetSpawnsets(env, authorFilter, nameFilter);
+			=> spawnsetHelper.GetSpawnsets(authorFilter, nameFilter);
 
 		[HttpGet("{fileName}/file")]
 		[ProducesResponseType(typeof(FileContentResult), StatusCodes.Status200OK)]

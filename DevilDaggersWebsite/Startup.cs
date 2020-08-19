@@ -2,6 +2,7 @@
 using DevilDaggersWebsite.Code.Database;
 using DevilDaggersWebsite.Code.Tasks;
 using DevilDaggersWebsite.Code.Tasks.Scheduling;
+using DevilDaggersWebsite.Code.Transients;
 using Microsoft.AspNetCore.Builder;
 using Microsoft.AspNetCore.Hosting;
 using Microsoft.AspNetCore.Http;
@@ -59,6 +60,8 @@ namespace DevilDaggersWebsite
 			services.AddSingleton<IScheduledTask, CreateLeaderboardHistoryFileTask>();
 
 			services.AddScoped<IUrlHelper>(factory => new UrlHelper(factory.GetService<IActionContextAccessor>().ActionContext));
+
+			services.AddTransient<SpawnsetHelper>();
 
 			services.AddScheduler((sender, args) =>
 			{

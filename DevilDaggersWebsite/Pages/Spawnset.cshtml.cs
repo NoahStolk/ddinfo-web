@@ -1,6 +1,6 @@
 ﻿using DevilDaggersCore.Spawnsets;
 using DevilDaggersWebsite.Code.DataTransferObjects;
-using DevilDaggersWebsite.Code.Utils;
+using DevilDaggersWebsite.Code.Transients;
 using Microsoft.AspNetCore.Hosting;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.AspNetCore.Mvc.RazorPages;
@@ -12,14 +12,16 @@ namespace DevilDaggersWebsite.Pages
 	{
 		public Spawnset spawnset;
 
-		public SpawnsetModel(IWebHostEnvironment env)
+		private readonly SpawnsetHelper spawnsetHelper;
+		private readonly IWebHostEnvironment env;
+
+		public SpawnsetModel(SpawnsetHelper spawnsetHelper, IWebHostEnvironment env)
 		{
-			Env = env;
+			this.spawnsetHelper = spawnsetHelper;
+			this.env = env;
 		}
 
-		public IWebHostEnvironment Env { get; }
-
-		public string Query { get; private set; }
+		public string? Query { get; private set; }
 		public SpawnsetFile? SpawnsetFile { get; private set; }
 
 		public ActionResult? OnGet()
@@ -27,7 +29,7 @@ namespace DevilDaggersWebsite.Pages
 			try
 			{
 				Query = HttpContext.Request.Query["spawnset"];
-				SpawnsetFile = SpawnsetUtils.CreateSpawnsetFileFromSettingsFile(Env, Path.Combine(Env.WebRootPath, "spawnsets", Query));
+				SpawnsetFile = spawnsetHelper.CreateSpawnsetFileFromSettingsFile(Path.Combine(env.WebRootPath, "spawnsets", Query));
 
 				if (!Spawnset.TryParse(System.IO.File.ReadAllBytes(SpawnsetFile?.Path), out spawnset))
 					return RedirectToPage("Spawnsets");

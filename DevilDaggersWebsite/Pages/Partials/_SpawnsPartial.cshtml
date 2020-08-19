@@ -1,6 +1,6 @@
 ﻿@model string
-@inject Microsoft.AspNetCore.Hosting.IWebHostEnvironment env
 @inject Microsoft.AspNetCore.Http.IHttpContextAccessor httpContextAccessor
+@inject DevilDaggersWebsite.Code.Transients.SpawnsetHelper spawnsetHelper
 @using DevilDaggersCore.Game
 @using DevilDaggersCore.Utils
 @using DevilDaggersCore.Spawnsets
@@ -10,8 +10,8 @@
 @{
 	int[] widths = new int[4] { 160, 160, 144, 128 };
 
-	SpawnsetFile sf = SpawnsetUtils.CreateSpawnsetFileFromSettingsFile(env, Model);
-	if (!Spawnset.TryParse(File.ReadAllBytes(Model), out Spawnset spawnset))
+	SpawnsetFile? sf = spawnsetHelper.CreateSpawnsetFileFromSettingsFile(Model);
+	if (sf == null || !Spawnset.TryParse(File.ReadAllBytes(Model), out Spawnset spawnset))
 	{
 		return;
 	}
