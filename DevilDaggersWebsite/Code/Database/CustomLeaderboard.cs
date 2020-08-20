@@ -3,22 +3,32 @@ using System.ComponentModel.DataAnnotations.Schema;
 
 namespace DevilDaggersWebsite.Code.Database
 {
-	public class CustomLeaderboard : DataTransferObjects.CustomLeaderboard
+	public class CustomLeaderboard
 	{
 		public int Id { get; set; }
 
 		public int CategoryId { get; set; }
 
-		[ForeignKey("CategoryId")]
+		[ForeignKey(nameof(CategoryId))]
 		public CustomLeaderboardCategory Category { get; set; }
 
-		public string SpawnsetFileName { get; set; }
+		public int SpawnsetFileId { get; set; }
+
+		[ForeignKey(nameof(SpawnsetFileId))]
+		public SpawnsetFile SpawnsetFile { get; set; }
+
 		public int Bronze { get; set; }
+
 		public int Silver { get; set; }
+
 		public int Golden { get; set; }
+
 		public int Devil { get; set; }
+
 		public int Homing { get; set; }
+
 		public DateTime? DateLastPlayed { get; set; }
+
 		public DateTime? DateCreated { get; set; }
 
 		/// <summary>

@@ -1,6 +1,7 @@
 ﻿using DevilDaggersWebsite.Code.Database;
 using Microsoft.AspNetCore.Mvc.RazorPages;
 using Microsoft.AspNetCore.Mvc.Rendering;
+using Microsoft.EntityFrameworkCore;
 using System.Collections.Generic;
 using System.Linq;
 
@@ -32,7 +33,7 @@ namespace DevilDaggersWebsite.Pages.CustomLeaderboards
 			if (Category == null)
 				Category = context.CustomLeaderboardCategories.FirstOrDefault(clc => clc.Name == "Default");
 
-			Leaderboards = context.CustomLeaderboards.Where(l => l.Category == Category).ToList();
+			Leaderboards = context.CustomLeaderboards.Where(cl => cl.Category == Category).Include(cl => cl.SpawnsetFile).ThenInclude(sf => sf.Player).ToList();
 		}
 	}
 }

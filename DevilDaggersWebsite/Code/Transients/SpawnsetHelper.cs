@@ -1,8 +1,7 @@
 ﻿using DevilDaggersCore.Spawnsets;
 using DevilDaggersWebsite.Code.Database;
-using DevilDaggersWebsite.Code.DataTransferObjects;
 using Microsoft.AspNetCore.Hosting;
-using Newtonsoft.Json;
+using Microsoft.EntityFrameworkCore;
 using System;
 using System.Collections.Generic;
 using System.Globalization;
@@ -16,54 +15,50 @@ namespace DevilDaggersWebsite.Code.Transients
 		private readonly IWebHostEnvironment env;
 		private readonly ApplicationDbContext dbContext;
 
+		private readonly List<int> spawnsetsWithCustomLeaderboardIds;
+
 		public SpawnsetHelper(IWebHostEnvironment env, ApplicationDbContext dbContext)
 		{
 			this.env = env;
 			this.dbContext = dbContext;
-		}
 
-		public DataTransferObjects.SpawnsetFile? CreateSpawnsetFileFromSettingsFile(string path)
-		{
-			if (!File.Exists(path))
-				return null;
-
-			DataTransferObjects.SpawnsetFile spawnsetFile = new DataTransferObjects.SpawnsetFile
-			{
-				Path = path,
-			};
-			spawnsetFile.HasCustomLeaderboard = dbContext.CustomLeaderboards.Any(cl => cl.SpawnsetFileName == spawnsetFile.FileName);
-
-			using (StreamReader sr = new StreamReader(Path.Combine(env.WebRootPath, "spawnsets", "Settings", "Settings.json")))
-			{
-				Dictionary<string, SpawnsetFileSettings> dict = JsonConvert.DeserializeObject<Dictionary<string, SpawnsetFileSettings>>(sr.ReadToEnd());
-
-				if (!dict.TryGetValue(spawnsetFile.FileName, out spawnsetFile.settings))
-					spawnsetFile.settings = new SpawnsetFileSettings();
-			}
-
-			if (!Spawnset.TryGetSpawnData(File.ReadAllBytes(spawnsetFile.Path), out spawnsetFile.spawnsetData))
-				throw new Exception($"Could not retrieve {nameof(SpawnsetData)} for spawnset '{spawnsetFile.FileName}'.");
-
-			return spawnsetFile;
+			spawnsetsWithCustomLeaderboardIds = dbContext.CustomLeaderboards.Select(cl => cl.SpawnsetFileId).ToList();
 		}
 
 		public List<DataTransferObjects.SpawnsetFile> GetSpawnsets(string? authorFilter = null, string? nameFilter = null)
 		{
-			IEnumerable<DataTransferObjects.SpawnsetFile> spawnsetFiles = Directory.GetFiles(Path.Combine(env.WebRootPath, "spawnsets")).Select(p => CreateSpawnsetFileFromSettingsFile(p));
+			IEnumerable<SpawnsetFile> query = dbContext.SpawnsetFiles.Include(sf => sf.Player);
 
 			if (!string.IsNullOrEmpty(authorFilter))
 			{
 				authorFilter = authorFilter.ToLower(CultureInfo.InvariantCulture);
-				spawnsetFiles = spawnsetFiles.Where(sf => sf.Author.ToLower(CultureInfo.InvariantCulture).Contains(authorFilter, StringComparison.InvariantCulture));
+				query = query.Where(sf => sf.Player.Username.ToLower(CultureInfo.InvariantCulture).Contains(authorFilter, StringComparison.InvariantCulture));
 			}
 
 			if (!string.IsNullOrEmpty(nameFilter))
 			{
 				nameFilter = nameFilter.ToLower(CultureInfo.InvariantCulture);
-				spawnsetFiles = spawnsetFiles.Where(sf => sf.Name.ToLower(CultureInfo.InvariantCulture).Contains(nameFilter, StringComparison.InvariantCulture));
+				query = query.Where(sf => sf.Name.ToLower(CultureInfo.InvariantCulture).Contains(nameFilter, StringComparison.InvariantCulture));
 			}
 
-			return spawnsetFiles.ToList();
+			return query.Select(sf => Map(sf)).ToList();
+		}
+
+		private DataTransferObjects.SpawnsetFile Map(SpawnsetFile spawnsetFile)
+		{
+			if (!Spawnset.TryGetSpawnData(File.ReadAllBytes(Path.Combine(env.WebRootPath, "spawnsets", spawnsetFile.Name)), out SpawnsetData spawnsetData))
+				throw new Exception($"Failed to get spawn data from spawnset file: '{spawnsetFile.Name}'.");
+
+			return new DataTransferObjects.SpawnsetFile
+			{
+				AuthorName = spawnsetFile.Player.Username,
+				HtmlDescription = spawnsetFile.HtmlDescription,
+				HasCustomLeaderboard = spawnsetsWithCustomLeaderboardIds.Contains(spawnsetFile.Id),
+				LastUpdated = spawnsetFile.LastUpdated,
+				MaxDisplayWaves = spawnsetFile.MaxDisplayWaves,
+				Name = spawnsetFile.Name,
+				SpawnsetData = spawnsetData,
+			};
 		}
 	}
 }

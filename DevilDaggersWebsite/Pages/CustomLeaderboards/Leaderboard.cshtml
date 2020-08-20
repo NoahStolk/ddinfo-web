@@ -1,11 +1,10 @@
 ﻿@page
-@using DevilDaggersWebsite.Code.DataTransferObjects
 @using DevilDaggersWebsite.Code.Utils
 @using DevilDaggersCore.Game
 @model DevilDaggersWebsite.Pages.CustomLeaderboards.LeaderboardModel
 @{
-	string name = SpawnsetFile.GetName(Model.Leaderboard.SpawnsetFileName);
-	ViewData["Title"] = $"Leaderboard for {name} by {SpawnsetFile.GetAuthor(Model.Leaderboard.SpawnsetFileName)}";
+	string name = Model.SpawnsetFile.Name;
+	ViewData["Title"] = $"Leaderboard for {name} by {Model.SpawnsetFile.Player.Username}";
 }
 
 <header>
@@ -18,14 +17,14 @@
 			Custom leaderboards are still in development.
 		</p>
 		<p>
-			<a asp-page="/Spawnset" asp-route-spawnset="@Model.Leaderboard.SpawnsetFileName">Spawnset page for @name</a>
+			<a asp-page="/Spawnset" asp-route-spawnset="@Model.SpawnsetFile.Name">Spawnset page for @name</a>
 		</p>
 
 		@{
-			if (!string.IsNullOrEmpty(Model.SpawnsetFile.settings.Description))
+			if (!string.IsNullOrEmpty(Model.SpawnsetFile.HtmlDescription))
 			{
 				<div class="description">
-					@RazorUtils.GetLayout(Model.SpawnsetFile.settings.Description, GameVersion.V3)
+					@RazorUtils.GetLayout(Model.SpawnsetFile.HtmlDescription, GameVersion.V3)
 				</div>
 			}
 		}

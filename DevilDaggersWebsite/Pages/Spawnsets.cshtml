@@ -120,22 +120,22 @@
 					@foreach (SpawnsetFile spawnsetFile in Model.PaginatedSpawnsetFiles)
 					{
 						<tr>
-							<td><a asp-page="Spawnset" asp-route-spawnset="@($"{spawnsetFile.Name}_{spawnsetFile.Author}")">@spawnsetFile.Name</a></td>
-							<td><a asp-page="/Spawnsets" asp-route-SearchAuthor="@spawnsetFile.Author">@spawnsetFile.Author</a></td>
+							<td><a asp-page="Spawnset" asp-route-spawnset="@spawnsetFile.Name">@spawnsetFile.Name</a></td>
+							<td><a asp-page="/Spawnsets" asp-route-SearchAuthor="@spawnsetFile.AuthorName">@spawnsetFile.AuthorName</a></td>
 							<td class="hidden-xs">
-								@(spawnsetFile.settings.LastUpdated.ToString("dd MMM yyyy"))
+								@(spawnsetFile.LastUpdated.ToString("dd MMM yyyy"))
 							</td>
 							<td class="hidden-xs hidden-sm hidden-md">
-								@(!spawnsetFile.spawnsetData.NonLoopLength.HasValue ? RazorUtils.NAString : Html.Raw(spawnsetFile.spawnsetData.NonLoopLength.Value.ToString(FormatUtils.SpawnTimeFormat)))
+								@(!spawnsetFile.SpawnsetData.NonLoopLength.HasValue ? RazorUtils.NAString : Html.Raw(spawnsetFile.SpawnsetData.NonLoopLength.Value.ToString(FormatUtils.SpawnTimeFormat)))
 							</td>
 							<td class="hidden-xs hidden-sm hidden-md">
-								@(spawnsetFile.spawnsetData.NonLoopSpawnCount == 0 ? RazorUtils.NAString : Html.Raw(spawnsetFile.spawnsetData.NonLoopSpawnCount))
+								@(spawnsetFile.SpawnsetData.NonLoopSpawnCount == 0 ? RazorUtils.NAString : Html.Raw(spawnsetFile.SpawnsetData.NonLoopSpawnCount))
 							</td>
 							<td class="hidden-xs hidden-sm hidden-md">
-								@(!spawnsetFile.spawnsetData.LoopLength.HasValue ? RazorUtils.NAString : Html.Raw(spawnsetFile.spawnsetData.LoopLength.Value.ToString(FormatUtils.SpawnTimeFormat)))
+								@(!spawnsetFile.SpawnsetData.LoopLength.HasValue ? RazorUtils.NAString : Html.Raw(spawnsetFile.SpawnsetData.LoopLength.Value.ToString(FormatUtils.SpawnTimeFormat)))
 							</td>
 							<td class="hidden-xs hidden-sm hidden-md">
-								@(spawnsetFile.spawnsetData.LoopSpawnCount == 0 ? RazorUtils.NAString : Html.Raw(spawnsetFile.spawnsetData.LoopSpawnCount))
+								@(spawnsetFile.SpawnsetData.LoopSpawnCount == 0 ? RazorUtils.NAString : Html.Raw(spawnsetFile.SpawnsetData.LoopSpawnCount))
 							</td>
 						</tr>
 					}

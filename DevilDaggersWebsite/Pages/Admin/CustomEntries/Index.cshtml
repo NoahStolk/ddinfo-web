@@ -14,7 +14,7 @@
 	<thead>
 		<tr>
 			<th>
-				<a asp-route-sortMemberName="CustomLeaderboard">@Html.DisplayNameFor(model => model.CustomEntries[0].CustomLeaderboard)</a>
+				<a asp-route-sortMemberName="CustomLeaderboard">@Html.DisplayNameFor(model => model.CustomEntries[0].CustomLeaderboard.SpawnsetFile.Name)</a>
 			</th>
 			<th>
 				<a asp-route-sortMemberName="PlayerId">@Html.DisplayNameFor(model => model.CustomEntries[0].PlayerId)</a>
@@ -66,7 +66,7 @@
 		{
 			<tr>
 				<td>
-					@Html.DisplayFor(modelItem => item.CustomLeaderboard.SpawnsetFileName)
+					@Html.DisplayFor(modelItem => item.CustomLeaderboard.SpawnsetFile.Name)
 				</td>
 				<td>
 					@Html.DisplayFor(modelItem => item.PlayerId)

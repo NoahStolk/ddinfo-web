@@ -4,7 +4,8 @@ namespace DevilDaggersWebsite.Code.DataTransferObjects
 {
 	public class CustomLeaderboard
 	{
-		public string SpawnsetFileName { get; set; }
+		public string SpawnsetName { get; set; }
+		public string SpawnsetAuthorName { get; set; }
 		public int Bronze { get; set; }
 		public int Silver { get; set; }
 		public int Golden { get; set; }

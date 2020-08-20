@@ -5,30 +5,30 @@
 @model DevilDaggersWebsite.Pages.SpawnsetModel
 @{
 	ViewData["Title"] = "Spawnset";
-	ViewBag.Title = $"{Model.SpawnsetFile.Name} by {Model.SpawnsetFile.Author}";
+	ViewBag.Title = $"{Model.SpawnsetFile.Name} by {Model.SpawnsetFile.Player.Username}";
 	int[] widths = new int[4] { 160, 128, 192, 128 };
 }
 
 <header>
-	<h1 class="dont-break-out">@Model.SpawnsetFile.Name by @Model.SpawnsetFile.Author</h1>
+	<h1 class="dont-break-out">@Model.SpawnsetFile.Name by @Model.SpawnsetFile.Player.Username</h1>
 </header>
 
 <main role="main">
 	<p class="text-center">
 		<a class="btn" href="api/spawnsets/@Model.Query">Download</a>
 	</p>
-	@if (dbContext.CustomLeaderboards.Any(c => c.SpawnsetFileName == Model.SpawnsetFile.FileName))
+	@if (dbContext.CustomLeaderboards.Any(cl => cl.SpawnsetFileId == Model.SpawnsetFile.Id))
 	{
 		<p class="text-center">
-			<a asp-page="/CustomLeaderboards/Leaderboard" asp-route-spawnset="@Model.SpawnsetFile.FileName">Custom leaderboard for @Model.SpawnsetFile.Name</a>
+			<a asp-page="/CustomLeaderboards/Leaderboard" asp-route-spawnsetName="@Model.SpawnsetFile.Name">Custom leaderboard for @Model.SpawnsetFile.Name</a>
 		</p>
 	}
 
 	@{
-		if (!string.IsNullOrEmpty(Model.SpawnsetFile.settings.Description))
+		if (!string.IsNullOrEmpty(Model.SpawnsetFile.HtmlDescription))
 		{
 			<div class="description">
-				@RazorUtils.GetLayout(Model.SpawnsetFile.settings.Description, GameVersion.V3)
+				@RazorUtils.GetLayout(Model.SpawnsetFile.HtmlDescription, GameVersion.V3)
 			</div>
 		}
 	}
@@ -41,21 +41,21 @@
 			<div style="width: @(widths[3])px;">Brightness</div>
 		</div>
 		<div class="flex-container flex-center">
-			<div style="width: @(widths[0])px;">@Model.spawnset.ShrinkStart.ToString("0.#")</div>
-			<div style="width: @(widths[1])px;">@Model.spawnset.ShrinkEnd.ToString("0.#")</div>
-			<div style="width: @(widths[2])px;">@Model.spawnset.ShrinkRate.ToString("0.####")</div>
-			<div style="width: @(widths[3])px;">@Model.spawnset.Brightness.ToString("0.#")</div>
+			<div style="width: @(widths[0])px;">@Model.Spawnset.ShrinkStart.ToString("0.#")</div>
+			<div style="width: @(widths[1])px;">@Model.Spawnset.ShrinkEnd.ToString("0.#")</div>
+			<div style="width: @(widths[2])px;">@Model.Spawnset.ShrinkRate.ToString("0.####")</div>
+			<div style="width: @(widths[3])px;">@Model.Spawnset.Brightness.ToString("0.#")</div>
 		</div>
 	</div>
 
 	<table class="tile-table">
 		@{
-			for (int i = 0; i < Model.spawnset.ArenaTiles.GetLength(0); i++)
+			for (int i = 0; i < Model.Spawnset.ArenaTiles.GetLength(0); i++)
 			{
 				<tr>
-					@for (int j = 0; j < Model.spawnset.ArenaTiles.GetLength(1); j++)
+					@for (int j = 0; j < Model.Spawnset.ArenaTiles.GetLength(1); j++)
 					{
-						float height = (float)Math.Round(Model.spawnset.ArenaTiles[j, i] * 32 + 64); // Swap coordinates because <tr> elements cannot be vertical.
+						float height = (float)Math.Round(Model.Spawnset.ArenaTiles[j, i] * 32 + 64); // Swap coordinates because <tr> elements cannot be vertical.
 
 						<td class="arena-tile" style="background-color: rgb(@height, @Math.Round(height / 2), 0);"></td>
 					}
@@ -64,7 +64,7 @@
 		}
 	</table>
 
-	@await Html.PartialAsync("Partials/_SpawnsPartial", Model.SpawnsetFile.Path)
+	@await Html.PartialAsync("Partials/_SpawnsPartial", Model.SpawnsetFile.Name)
 </main>
 
 @section Styles {

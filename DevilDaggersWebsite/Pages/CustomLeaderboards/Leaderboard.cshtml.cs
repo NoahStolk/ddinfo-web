@@ -1,32 +1,25 @@
 ﻿using DevilDaggersCore.Extensions;
 using DevilDaggersCore.Utils;
 using DevilDaggersWebsite.Code.Database;
-using DevilDaggersWebsite.Code.Transients;
-using Microsoft.AspNetCore.Hosting;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.AspNetCore.Mvc.RazorPages;
 using Microsoft.EntityFrameworkCore;
 using System;
 using System.Collections.Generic;
-using System.IO;
 using System.Linq;
 
 namespace DevilDaggersWebsite.Pages.CustomLeaderboards
 {
 	public class LeaderboardModel : PageModel
 	{
-		private readonly ApplicationDbContext context;
-		private readonly IWebHostEnvironment env;
-		private readonly SpawnsetHelper spawnsetHelper;
+		private readonly ApplicationDbContext dbContext;
 
-		public LeaderboardModel(ApplicationDbContext context, IWebHostEnvironment env, SpawnsetHelper spawnsetHelper)
+		public LeaderboardModel(ApplicationDbContext dbContext)
 		{
-			this.context = context;
-			this.env = env;
-			this.spawnsetHelper = spawnsetHelper;
+			this.dbContext = dbContext;
 		}
 
-		public Code.DataTransferObjects.SpawnsetFile SpawnsetFile { get; private set; }
+		public SpawnsetFile? SpawnsetFile { get; private set; }
 
 		[BindProperty]
 		public CustomLeaderboard Leaderboard { get; set; }
@@ -34,24 +27,22 @@ namespace DevilDaggersWebsite.Pages.CustomLeaderboards
 		[BindProperty]
 		public List<CustomEntry> Entries { get; private set; }
 
-		public ActionResult? OnGet(string spawnset)
+		public ActionResult? OnGet(string spawnsetName)
 		{
-			if (spawnset == null)
+			if (string.IsNullOrEmpty(spawnsetName))
 				return RedirectToPage("Index");
 
-			SpawnsetFile = spawnsetHelper.CreateSpawnsetFileFromSettingsFile(Path.Combine(env.WebRootPath, "spawnsets", spawnset));
-
+			SpawnsetFile = dbContext.SpawnsetFiles.Include(sf => sf.Player).FirstOrDefault(sf => sf.Name == spawnsetName);
 			if (SpawnsetFile == null)
 				return RedirectToPage("Index");
 
-			Leaderboard = context.CustomLeaderboards
+			Leaderboard = dbContext.CustomLeaderboards
 				.Include(l => l.Category)
-				.FirstOrDefault(l => l.SpawnsetFileName == spawnset);
-
+				.FirstOrDefault(l => l.SpawnsetFileId == SpawnsetFile.Id);
 			if (Leaderboard == null)
 				return RedirectToPage("Index");
 
-			Entries = context.CustomEntries
+			Entries = dbContext.CustomEntries
 				.Where(e => e.CustomLeaderboard == Leaderboard)
 				.OrderByMember(Leaderboard.Category.SortingPropertyName, Leaderboard.Category.Ascending)
 				.ThenByMember(nameof(CustomEntry.SubmitDate), true)
