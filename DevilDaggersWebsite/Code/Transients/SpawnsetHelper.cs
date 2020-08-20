@@ -18,8 +18,8 @@ namespace DevilDaggersWebsite.Code.Transients
 
 		public SpawnsetHelper(IWebHostEnvironment env, ApplicationDbContext dbContext)
 		{
-			this.dbContext = dbContext;
 			this.env = env;
+			this.dbContext = dbContext;
 		}
 
 		public DataTransferObjects.SpawnsetFile? CreateSpawnsetFileFromSettingsFile(string path)
