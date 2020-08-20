@@ -2,7 +2,6 @@
 using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
 using System.Collections.Generic;
-using System.ComponentModel.DataAnnotations;
 using System.Globalization;
 using System.Linq;
 
@@ -14,19 +13,16 @@ namespace DevilDaggersWebsite.Code.Controllers
 	{
 		[HttpGet]
 		[ProducesResponseType(StatusCodes.Status200OK)]
-		public ActionResult<List<Death>> GetDeaths(GameVersion? gameVersion = null)
-			=> GameInfo.GetEntities<Death>(gameVersion);
+		public ActionResult<List<Death>> GetDeaths(GameVersion? gameVersion = null, string? name = null, byte? type = null)
+		{
+			IEnumerable<Death> query = GameInfo.GetEntities<Death>(gameVersion);
 
-		[HttpGet("by-type")]
-		[ProducesResponseType(StatusCodes.Status200OK)]
-		[ProducesResponseType(StatusCodes.Status400BadRequest)]
-		public ActionResult<List<Death>> GetDeathsByType([Required] int type, GameVersion? gameVersion = null)
-			=> GameInfo.GetEntities<Death>(gameVersion).Where(d => d.DeathType == type).ToList();
+			if (!string.IsNullOrEmpty(name))
+				query = query.Where(e => e.Name.ToLower(CultureInfo.InvariantCulture) == name.ToLower(CultureInfo.InvariantCulture));
+			if (type != null)
+				query = query.Where(e => e.DeathType == type);
 
-		[HttpGet("by-name")]
-		[ProducesResponseType(StatusCodes.Status200OK)]
-		[ProducesResponseType(StatusCodes.Status400BadRequest)]
-		public ActionResult<List<Death>> GetDeathsByName([Required] string name, GameVersion? gameVersion = null)
-			=> GameInfo.GetEntities<Death>(gameVersion).Where(d => d.Name.ToLower(CultureInfo.InvariantCulture) == name.ToLower(CultureInfo.InvariantCulture)).ToList();
+			return query.ToList();
+		}
 	}
 }

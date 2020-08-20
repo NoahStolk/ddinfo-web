@@ -2,7 +2,7 @@
 using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
 using System.Collections.Generic;
-using System.ComponentModel.DataAnnotations;
+using System.Globalization;
 using System.Linq;
 
 namespace DevilDaggersWebsite.Code.Controllers
@@ -13,31 +13,16 @@ namespace DevilDaggersWebsite.Code.Controllers
 	{
 		[HttpGet]
 		[ProducesResponseType(StatusCodes.Status200OK)]
-		public ActionResult<List<Enemy>> GetEnemies(GameVersion? gameVersion = null)
-			=> GameInfo.GetEntities<Enemy>(gameVersion);
-
-		[HttpGet("by-name")]
-		[ProducesResponseType(StatusCodes.Status200OK)]
-		[ProducesResponseType(StatusCodes.Status400BadRequest)]
-		[ProducesResponseType(StatusCodes.Status404NotFound)]
-		public ActionResult<List<Enemy>> GetEnemiesByName([Required] string enemyName, GameVersion? gameVersion = null)
+		public ActionResult<List<Enemy>> GetEnemies(GameVersion? gameVersion = null, string? name = null, byte? spawnsetType = null)
 		{
-			IEnumerable<Enemy> enemies = GameInfo.GetEntities<Enemy>(gameVersion).Where(e => e.Name == enemyName);
-			if (!enemies.Any())
-				return new NotFoundObjectResult(new ProblemDetails { Title = $"Enemy '{enemyName}' was not found." });
-			return enemies.ToList();
-		}
+			IEnumerable<Enemy> query = GameInfo.GetEntities<Enemy>(gameVersion);
 
-		[HttpGet("by-type")]
-		[ProducesResponseType(StatusCodes.Status200OK)]
-		[ProducesResponseType(StatusCodes.Status400BadRequest)]
-		[ProducesResponseType(StatusCodes.Status404NotFound)]
-		public ActionResult<List<Enemy>> GetEnemyBySpawnsetType([Required] byte spawnsetType, GameVersion? gameVersion = null)
-		{
-			IEnumerable<Enemy> enemies = GameInfo.GetEntities<Enemy>(gameVersion).Where(e => e.SpawnsetType == spawnsetType);
-			if (!enemies.Any())
-				return new NotFoundObjectResult(new ProblemDetails { Title = $"Enemy with type '{spawnsetType}' was not found." });
-			return enemies.ToList();
+			if (!string.IsNullOrEmpty(name))
+				query = query.Where(e => e.Name.ToLower(CultureInfo.InvariantCulture) == name.ToLower(CultureInfo.InvariantCulture));
+			if (spawnsetType != null)
+				query = query.Where(e => e.SpawnsetType == spawnsetType);
+
+			return query.ToList();
 		}
 	}
 }
