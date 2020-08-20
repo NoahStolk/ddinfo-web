@@ -22,12 +22,12 @@ namespace DevilDaggersWebsite.Code.Transients
 			this.env = env;
 		}
 
-		public SpawnsetFile? CreateSpawnsetFileFromSettingsFile(string path)
+		public DataTransferObjects.SpawnsetFile? CreateSpawnsetFileFromSettingsFile(string path)
 		{
 			if (!File.Exists(path))
 				return null;
 
-			SpawnsetFile spawnsetFile = new SpawnsetFile
+			DataTransferObjects.SpawnsetFile spawnsetFile = new DataTransferObjects.SpawnsetFile
 			{
 				Path = path,
 			};
@@ -47,9 +47,9 @@ namespace DevilDaggersWebsite.Code.Transients
 			return spawnsetFile;
 		}
 
-		public List<SpawnsetFile> GetSpawnsets(string? authorFilter = null, string? nameFilter = null)
+		public List<DataTransferObjects.SpawnsetFile> GetSpawnsets(string? authorFilter = null, string? nameFilter = null)
 		{
-			IEnumerable<SpawnsetFile> spawnsetFiles = Directory.GetFiles(Path.Combine(env.WebRootPath, "spawnsets")).Select(p => CreateSpawnsetFileFromSettingsFile(p));
+			IEnumerable<DataTransferObjects.SpawnsetFile> spawnsetFiles = Directory.GetFiles(Path.Combine(env.WebRootPath, "spawnsets")).Select(p => CreateSpawnsetFileFromSettingsFile(p));
 
 			if (!string.IsNullOrEmpty(authorFilter))
 			{
