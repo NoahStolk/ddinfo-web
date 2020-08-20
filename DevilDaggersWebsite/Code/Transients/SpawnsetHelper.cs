@@ -41,11 +41,8 @@ namespace DevilDaggersWebsite.Code.Transients
 					spawnsetFile.settings = new SpawnsetFileSettings();
 			}
 
-			using (FileStream fs = new FileStream(spawnsetFile.Path, FileMode.Open, FileAccess.Read))
-			{
-				if (!Spawnset.TryGetSpawnData(fs, out spawnsetFile.spawnsetData))
-					throw new Exception($"Could not retrieve {nameof(SpawnsetData)} for spawnset '{spawnsetFile.FileName}'.");
-			}
+			if (!Spawnset.TryGetSpawnData(File.ReadAllBytes(spawnsetFile.Path), out spawnsetFile.spawnsetData))
+				throw new Exception($"Could not retrieve {nameof(SpawnsetData)} for spawnset '{spawnsetFile.FileName}'.");
 
 			return spawnsetFile;
 		}
