@@ -59,9 +59,8 @@
 		@{
 			foreach (CustomLeaderboard lb in Model)
 			{
-				string fileName = lb.SpawnsetFileName;
-				string name = Code.DataTransferObjects.SpawnsetFile.GetName(fileName);
-				string author = Code.DataTransferObjects.SpawnsetFile.GetAuthor(fileName);
+				string fileName = lb.SpawnsetFile.Name;
+				string author = lb.SpawnsetFile.Player.Username;
 				List<CustomEntry> entries = dbContext.CustomEntries.Where(e => e.CustomLeaderboard == lb).OrderByMember(lb.Category.SortingPropertyName, lb.Category.Ascending).ToList();
 				string wrDagger = "";
 				if (entries.Count > 0)
@@ -70,7 +69,7 @@
 				}
 				<tr>
 					<td class="leaderboard-spawnset-name">
-						<a asp-page="/CustomLeaderboards/Leaderboard" asp-route-spawnset="@fileName">@name</a>
+						<a asp-page="/CustomLeaderboards/Leaderboard" asp-route-spawnsetName="@fileName">@fileName</a>
 					</td>
 					<td>
 						<a asp-page="/Spawnsets" asp-route-SearchAuthor="@author">@author</a>

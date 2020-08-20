@@ -21,7 +21,7 @@ namespace DevilDaggersWebsite.Pages.Admin.CustomEntries
 
 		public async Task OnGetAsync(string? sortMemberName, bool ascending)
 		{
-			IQueryable<CustomEntry> query = context.CustomEntries.Include(ce => ce.CustomLeaderboard);
+			IQueryable<CustomEntry> query = context.CustomEntries.Include(ce => ce.CustomLeaderboard).ThenInclude(cl => cl.SpawnsetFile);
 			if (!string.IsNullOrEmpty(sortMemberName))
 				query = query.OrderByMember(sortMemberName, ascending);
 

@@ -35,7 +35,8 @@ namespace DevilDaggersWebsite.Code.Controllers
 		public ActionResult<List<Dto.CustomLeaderboard>> GetCustomLeaderboards()
 			=> dbContext.CustomLeaderboards.Select(cl => new Dto.CustomLeaderboard
 			{
-				SpawnsetFileName = cl.SpawnsetFileName,
+				SpawnsetAuthorName = cl.SpawnsetFile.Player.Username,
+				SpawnsetName = cl.SpawnsetFile.Name,
 				Bronze = cl.Bronze,
 				Silver = cl.Silver,
 				Golden = cl.Golden,
@@ -87,7 +88,7 @@ namespace DevilDaggersWebsite.Code.Controllers
 			if (DecryptValidation(uploadRequest.Validation) != check)
 				return new BadRequestObjectResult(new ProblemDetails { Title = "Invalid submission." });
 
-			CustomLeaderboard leaderboard = dbContext.CustomLeaderboards.Include(l => l.Category).FirstOrDefault(l => l.SpawnsetFileName == spawnsetName);
+			CustomLeaderboard leaderboard = dbContext.CustomLeaderboards.Include(cl => cl.Category).Include(cl => cl.SpawnsetFile).ThenInclude(sf => sf.Player).FirstOrDefault(cl => cl.SpawnsetFile.Name == spawnsetName);
 			if (leaderboard == null)
 				return new BadRequestObjectResult(new ProblemDetails { Title = "This spawnset doesn't have a leaderboard." });
 
@@ -134,9 +135,20 @@ namespace DevilDaggersWebsite.Code.Controllers
 
 				return new Dto.UploadSuccess
 				{
-					Message = $"Welcome to the leaderboard for {Dto.SpawnsetFile.GetName(leaderboard.SpawnsetFileName)}.",
+					Message = $"Welcome to the leaderboard for {leaderboard.SpawnsetFile.Name}.",
 					TotalPlayers = totalPlayers,
-					Leaderboard = leaderboard,
+					Leaderboard = new Dto.CustomLeaderboard
+					{
+						SpawnsetName = leaderboard.SpawnsetFile.Name,
+						SpawnsetAuthorName = leaderboard.SpawnsetFile.Player.Username,
+						Bronze = leaderboard.Bronze,
+						Silver = leaderboard.Silver,
+						Golden = leaderboard.Golden,
+						Devil = leaderboard.Devil,
+						Homing = leaderboard.Homing,
+						DateCreated = leaderboard.DateCreated,
+						DateLastPlayed = leaderboard.DateLastPlayed,
+					},
 					Category = leaderboard.Category,
 					Entries = entries
 						.Select(e => new Dto.CustomEntry
@@ -200,9 +212,20 @@ namespace DevilDaggersWebsite.Code.Controllers
 
 				return new Dto.UploadSuccess
 				{
-					Message = $"No new highscore for {Dto.SpawnsetFile.GetName(leaderboard.SpawnsetFileName)}.",
+					Message = $"No new highscore for {leaderboard.SpawnsetFile.Name}.",
 					TotalPlayers = totalPlayers,
-					Leaderboard = leaderboard,
+					Leaderboard = new Dto.CustomLeaderboard
+					{
+						SpawnsetName = leaderboard.SpawnsetFile.Name,
+						SpawnsetAuthorName = leaderboard.SpawnsetFile.Player.Username,
+						Bronze = leaderboard.Bronze,
+						Silver = leaderboard.Silver,
+						Golden = leaderboard.Golden,
+						Devil = leaderboard.Devil,
+						Homing = leaderboard.Homing,
+						DateCreated = leaderboard.DateCreated,
+						DateLastPlayed = leaderboard.DateLastPlayed,
+					},
 					Category = leaderboard.Category,
 					Entries = entries
 						.Select(e => new Dto.CustomEntry
@@ -266,9 +289,20 @@ namespace DevilDaggersWebsite.Code.Controllers
 
 			return new Dto.UploadSuccess
 			{
-				Message = $"NEW HIGHSCORE for {Dto.SpawnsetFile.GetName(leaderboard.SpawnsetFileName)}!",
+				Message = $"NEW HIGHSCORE for {leaderboard.SpawnsetFile.Name}!",
 				TotalPlayers = totalPlayers,
-				Leaderboard = leaderboard,
+				Leaderboard = new Dto.CustomLeaderboard
+				{
+					SpawnsetName = leaderboard.SpawnsetFile.Name,
+					SpawnsetAuthorName = leaderboard.SpawnsetFile.Player.Username,
+					Bronze = leaderboard.Bronze,
+					Silver = leaderboard.Silver,
+					Golden = leaderboard.Golden,
+					Devil = leaderboard.Devil,
+					Homing = leaderboard.Homing,
+					DateCreated = leaderboard.DateCreated,
+					DateLastPlayed = leaderboard.DateLastPlayed,
+				},
 				Category = leaderboard.Category,
 				Entries = entries
 					.Select(e => new Dto.CustomEntry

@@ -1,31 +1,22 @@
 ﻿using DevilDaggersCore.Spawnsets;
+using System;
 
 namespace DevilDaggersWebsite.Code.DataTransferObjects
 {
 	public class SpawnsetFile
 	{
-#pragma warning disable CA1051 // Do not declare visible instance fields
-#pragma warning disable SA1307 // Accessible fields should begin with upper-case letter
-#pragma warning disable SA1401 // Fields should be private
-		public SpawnsetFileSettings settings;
+		public int? MaxDisplayWaves { get; set; }
 
-		public SpawnsetData spawnsetData;
-#pragma warning restore CA1051 // Do not declare visible instance fields
-#pragma warning restore SA1307 // Accessible fields should begin with upper-case letter
-#pragma warning restore SA1401 // Fields should be private
+		public string? HtmlDescription { get; set; }
 
-		public string Path { get; set; }
+		public DateTime LastUpdated { get; set; }
 
-		public string FileName => System.IO.Path.GetFileName(Path);
+		public SpawnsetData SpawnsetData { get; set; }
 
-		public string Name => GetName(FileName);
+		public string Name { get; set; }
 
-		public string Author => GetAuthor(FileName);
+		public string AuthorName { get; set; }
 
 		public bool HasCustomLeaderboard { get; set; }
-
-		public static string GetName(string fileName) => fileName.Substring(0, fileName.LastIndexOf('_'));
-
-		public static string GetAuthor(string fileName) => fileName.Substring(fileName.LastIndexOf('_') + 1);
 	}
 }

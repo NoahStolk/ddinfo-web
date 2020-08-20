@@ -17,7 +17,7 @@
 				<a asp-route-sortMemberName="Category">@Html.DisplayNameFor(model => model.CustomLeaderboards[0].Category)</a>
 			</th>
 			<th>
-				<a asp-route-sortMemberName="SpawnsetFileName">@Html.DisplayNameFor(model => model.CustomLeaderboards[0].SpawnsetFileName)</a>
+				<a asp-route-sortMemberName="SpawnsetFileName">@Html.DisplayNameFor(model => model.CustomLeaderboards[0].SpawnsetFile.Name)</a>
 			</th>
 			<th>
 				<a asp-route-sortMemberName="Bronze">@Html.DisplayNameFor(model => model.CustomLeaderboards[0].Bronze)</a>
@@ -51,7 +51,7 @@
 					@Html.DisplayFor(modelItem => item.Category.LayoutPartialName)
 				</td>
 				<td>
-					@Html.DisplayFor(modelItem => item.SpawnsetFileName)
+					@Html.DisplayFor(modelItem => item.SpawnsetFile.Name)
 				</td>
 				<td>
 					@Html.DisplayFor(modelItem => item.Bronze)

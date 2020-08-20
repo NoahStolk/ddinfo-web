@@ -129,13 +129,14 @@ namespace DevilDaggersWebsite.Migrations
 					b.Property<int>("Silver")
 						.HasColumnType("int");
 
-					b.Property<string>("SpawnsetFileName")
-						.IsRequired()
-						.HasColumnType("longtext CHARACTER SET utf8mb4");
+					b.Property<int>("SpawnsetFileId")
+						.HasColumnType("int");
 
 					b.HasKey("Id");
 
 					b.HasIndex("CategoryId");
+
+					b.HasIndex("SpawnsetFileId");
 
 					b.ToTable("CustomLeaderboards");
 				});
@@ -274,6 +275,35 @@ namespace DevilDaggersWebsite.Migrations
 					b.HasIndex("TitleId");
 
 					b.ToTable("PlayerTitles");
+				});
+
+			modelBuilder.Entity("DevilDaggersWebsite.Code.Database.SpawnsetFile", b =>
+				{
+					b.Property<int>("Id")
+						.ValueGeneratedOnAdd()
+						.HasColumnType("int");
+
+					b.Property<string>("HtmlDescription")
+						.HasColumnType("longtext CHARACTER SET utf8mb4");
+
+					b.Property<DateTime>("LastUpdated")
+						.HasColumnType("datetime(6)");
+
+					b.Property<int?>("MaxDisplayWaves")
+						.HasColumnType("int");
+
+					b.Property<string>("Name")
+						.IsRequired()
+						.HasColumnType("longtext CHARACTER SET utf8mb4");
+
+					b.Property<int>("PlayerId")
+						.HasColumnType("int");
+
+					b.HasKey("Id");
+
+					b.HasIndex("PlayerId");
+
+					b.ToTable("SpawnsetFiles");
 				});
 
 			modelBuilder.Entity("DevilDaggersWebsite.Code.Database.Title", b =>
@@ -503,6 +533,12 @@ namespace DevilDaggersWebsite.Migrations
 						.HasForeignKey("CategoryId")
 						.OnDelete(DeleteBehavior.Cascade)
 						.IsRequired();
+
+					b.HasOne("DevilDaggersWebsite.Code.Database.SpawnsetFile", "SpawnsetFile")
+						.WithMany()
+						.HasForeignKey("SpawnsetFileId")
+						.OnDelete(DeleteBehavior.Cascade)
+						.IsRequired();
 				});
 
 			modelBuilder.Entity("DevilDaggersWebsite.Code.Database.PlayerAssetMod", b =>
@@ -531,6 +567,15 @@ namespace DevilDaggersWebsite.Migrations
 					b.HasOne("DevilDaggersWebsite.Code.Database.Title", "Title")
 						.WithMany("PlayerTitles")
 						.HasForeignKey("TitleId")
+						.OnDelete(DeleteBehavior.Cascade)
+						.IsRequired();
+				});
+
+			modelBuilder.Entity("DevilDaggersWebsite.Code.Database.SpawnsetFile", b =>
+				{
+					b.HasOne("DevilDaggersWebsite.Code.Database.Player", "Player")
+						.WithMany()
+						.HasForeignKey("PlayerId")
 						.OnDelete(DeleteBehavior.Cascade)
 						.IsRequired();
 				});

@@ -1,23 +1,25 @@
 ﻿@model string
 @inject Microsoft.AspNetCore.Http.IHttpContextAccessor httpContextAccessor
+@inject Microsoft.AspNetCore.Hosting.IWebHostEnvironment env
 @inject DevilDaggersWebsite.Code.Transients.SpawnsetHelper spawnsetHelper
+@inject ApplicationDbContext dbContext
 @using DevilDaggersCore.Game
 @using DevilDaggersCore.Utils
 @using DevilDaggersCore.Spawnsets
-@using DevilDaggersWebsite.Code.DataTransferObjects
+@using DevilDaggersWebsite.Code.Database
 @using DevilDaggersWebsite.Code.Utils
 @using System.IO
 @{
 	int[] widths = new int[4] { 160, 160, 144, 128 };
 
-	SpawnsetFile? sf = spawnsetHelper.CreateSpawnsetFileFromSettingsFile(Model);
-	if (sf == null || !Spawnset.TryParse(File.ReadAllBytes(Model), out Spawnset spawnset))
+	SpawnsetFile? sf = dbContext.SpawnsetFiles.FirstOrDefault(sf => sf.Name == Model);
+	if (sf == null || !Spawnset.TryParse(File.ReadAllBytes(System.IO.Path.Combine(env.WebRootPath, "spawnsets", Model)), out Spawnset spawnset))
 	{
 		return;
 	}
 
-	GameVersion gameVersion = sf.Author == "Sorath" ? sf.Name == "V1" ? GameVersion.V1 : sf.Name == "V2" ? GameVersion.V2 : GameVersion.V3 : GameVersion.V3;
-	int maxWaves = sf.settings.MaxWaves ?? SpawnsetUtils.DefaultMaxWaves;
+	GameVersion gameVersion = sf.PlayerId == 1 ? sf.Name == "V1" ? GameVersion.V1 : sf.Name == "V2" ? GameVersion.V2 : GameVersion.V3 : GameVersion.V3;
+	int maxWaves = sf.MaxDisplayWaves ?? SpawnsetUtils.DefaultMaxWaves;
 	string wavesQuery = httpContextAccessor.HttpContext.Request.Query["waves"];
 	if (int.TryParse(wavesQuery, out int parsed) && parsed > 0)
 	{

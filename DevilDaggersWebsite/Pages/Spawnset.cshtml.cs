@@ -1,45 +1,42 @@
 ﻿using DevilDaggersCore.Spawnsets;
-using DevilDaggersWebsite.Code.DataTransferObjects;
-using DevilDaggersWebsite.Code.Transients;
+using DevilDaggersWebsite.Code.Database;
 using Microsoft.AspNetCore.Hosting;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.AspNetCore.Mvc.RazorPages;
+using Microsoft.EntityFrameworkCore;
+using System;
 using System.IO;
+using System.Linq;
 
 namespace DevilDaggersWebsite.Pages
 {
 	public class SpawnsetModel : PageModel
 	{
-		public Spawnset spawnset;
-
-		private readonly SpawnsetHelper spawnsetHelper;
+		private readonly ApplicationDbContext dbContext;
 		private readonly IWebHostEnvironment env;
 
-		public SpawnsetModel(SpawnsetHelper spawnsetHelper, IWebHostEnvironment env)
+		public SpawnsetModel(ApplicationDbContext dbContext, IWebHostEnvironment env)
 		{
-			this.spawnsetHelper = spawnsetHelper;
+			this.dbContext = dbContext;
 			this.env = env;
 		}
 
 		public string? Query { get; private set; }
 		public SpawnsetFile? SpawnsetFile { get; private set; }
+		public Spawnset? Spawnset { get; private set; }
 
 		public ActionResult? OnGet()
 		{
-			try
-			{
-				Query = HttpContext.Request.Query["spawnset"];
-				SpawnsetFile = spawnsetHelper.CreateSpawnsetFileFromSettingsFile(Path.Combine(env.WebRootPath, "spawnsets", Query));
-
-				if (!Spawnset.TryParse(System.IO.File.ReadAllBytes(SpawnsetFile?.Path), out spawnset))
-					return RedirectToPage("Spawnsets");
-
-				return null;
-			}
-			catch
-			{
+			SpawnsetFile = dbContext.SpawnsetFiles.Include(sf => sf.Player).FirstOrDefault(sf => sf.Name == HttpContext.Request.Query["spawnset"].ToString());
+			if (SpawnsetFile == null)
 				return RedirectToPage("Spawnsets");
-			}
+
+			if (!Spawnset.TryParse(System.IO.File.ReadAllBytes(Path.Combine(env.WebRootPath, "spawnsets", SpawnsetFile.Name)), out Spawnset spawnset))
+				throw new Exception($"Could not parse spawnset '{SpawnsetFile.Name}'.");
+
+			Spawnset = spawnset;
+
+			return null;
 		}
 	}
 }
