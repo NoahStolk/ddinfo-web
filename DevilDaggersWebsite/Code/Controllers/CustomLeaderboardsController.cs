@@ -88,7 +88,7 @@ namespace DevilDaggersWebsite.Code.Controllers
 			if (DecryptValidation(uploadRequest.Validation) != check)
 				return new BadRequestObjectResult(new ProblemDetails { Title = "Invalid submission." });
 
-			CustomLeaderboard leaderboard = dbContext.CustomLeaderboards.Include(l => l.Category).FirstOrDefault(cl => cl.SpawnsetFile.Name == spawnsetName);
+			CustomLeaderboard leaderboard = dbContext.CustomLeaderboards.Include(cl => cl.Category).Include(cl => cl.SpawnsetFile).ThenInclude(sf => sf.Player).FirstOrDefault(cl => cl.SpawnsetFile.Name == spawnsetName);
 			if (leaderboard == null)
 				return new BadRequestObjectResult(new ProblemDetails { Title = "This spawnset doesn't have a leaderboard." });
 
