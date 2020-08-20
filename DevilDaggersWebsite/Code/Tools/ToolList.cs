@@ -33,7 +33,7 @@ namespace DevilDaggersWebsite.Code.Utils
 				new ChangelogEntry
 				{
 					VersionNumber = new Version(2, 7, 6, 0),
-					Date = new DateTime(2020, 8, 19), // TODO
+					Date = new DateTime(2020, 8, 20),
 					Changes = new List<Change>
 					{
 						new Change("Rewrote much of the application."),
@@ -403,7 +403,7 @@ namespace DevilDaggersWebsite.Code.Utils
 				new ChangelogEntry
 				{
 					VersionNumber = new Version(0, 9, 6, 0),
-					Date = new DateTime(2020, 8, 19), // TODO
+					Date = new DateTime(2020, 8, 20),
 					Changes = new List<Change>
 					{
 						new Change("Rewrote much of the application."),
@@ -575,7 +575,7 @@ namespace DevilDaggersWebsite.Code.Utils
 				new ChangelogEntry
 				{
 					VersionNumber = new Version(0, 16, 2, 0),
-					Date = new DateTime(2020, 8, 19), // TODO
+					Date = new DateTime(2020, 8, 20),
 					Changes = new List<Change>
 					{
 						new Change("Rewrote much of the application."),
