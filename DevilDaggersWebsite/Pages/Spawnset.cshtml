@@ -15,7 +15,7 @@
 
 <main role="main">
 	<p class="text-center">
-		<a class="btn" href="api/spawnsets/@Model.Query">Download</a>
+		<a class="btn" href="api/spawnsets/@Model.SpawnsetFile.Name/file">Download</a>
 	</p>
 	@if (dbContext.CustomLeaderboards.Any(cl => cl.SpawnsetFileId == Model.SpawnsetFile.Id))
 	{
