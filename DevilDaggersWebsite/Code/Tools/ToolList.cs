@@ -45,7 +45,7 @@ namespace DevilDaggersWebsite.Code.Utils
 						new Change("Fixed not showing end loop warning for a single spawn."),
 						new Change("Fixed crash when attempting to view log file while it was being used by another process."),
 						new Change("Fixed search TextBoxes in DownloadSpawnset window being empty after reopening the window."),
-						new Change("Improve performance by reducing the amount of API calls."),
+						new Change("Improved performance by reducing the amount of API calls."),
 					},
 				},
 				new ChangelogEntry
