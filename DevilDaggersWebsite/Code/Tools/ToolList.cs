@@ -26,10 +26,19 @@ namespace DevilDaggersWebsite.Code.Utils
 		{
 			Name = "DevilDaggersSurvivalEditor",
 			DisplayName = "Devil Daggers Survival Editor",
-			VersionNumber = new Version(2, 7, 6, 0),
-			VersionNumberRequired = new Version(2, 7, 6, 0),
+			VersionNumber = new Version(2, 7, 6, 1),
+			VersionNumberRequired = new Version(2, 7, 6, 1),
 			Changelog = new List<ChangelogEntry>
 			{
+				new ChangelogEntry
+				{
+					VersionNumber = new Version(2, 7, 6, 1),
+					Date = new DateTime(2020, 8, 20),
+					Changes = new List<Change>
+					{
+						new Change("Rebuilt application for API updates."),
+					},
+				},
 				new ChangelogEntry
 				{
 					VersionNumber = new Version(2, 7, 6, 0),
