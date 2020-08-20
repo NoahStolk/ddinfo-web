@@ -54,58 +54,50 @@ namespace DevilDaggersWebsite.Tests
 			List<Death> v1Deaths = deathsController.GetDeaths(GameVersion.V1).Value;
 			Assert.AreEqual(11, v1Deaths.Count);
 			Assert.IsTrue(v1Deaths.All(d => d.GameVersion == GameVersion.V1));
-			Assert.AreEqual(1, v1Deaths.Count(d => d.Name == "STRICKEN"));
-			Assert.AreEqual(1, v1Deaths.Count(d => d.Name == "DEVASTATED"));
-			Assert.AreEqual(1, v1Deaths.Count(d => d.Name == "DISMEMBERED"));
+			Assert.AreEqual(1, v1Deaths.Count(d => d.Name == GameInfo.V1Stricken.Name));
+			Assert.AreEqual(1, v1Deaths.Count(d => d.Name == GameInfo.V1Devastated.Name));
+			Assert.AreEqual(1, v1Deaths.Count(d => d.Name == GameInfo.V1Dismembered.Name));
 
 			List<Death> v2Deaths = deathsController.GetDeaths(GameVersion.V2).Value;
 			Assert.AreEqual(14, v2Deaths.Count);
 			Assert.IsTrue(v2Deaths.All(d => d.GameVersion == GameVersion.V2));
-			Assert.AreEqual(1, v2Deaths.Count(d => d.Name == "ENVENOMATED"));
-			Assert.AreEqual(1, v2Deaths.Count(d => d.Name == "STRICKEN"));
-			Assert.AreEqual(1, v2Deaths.Count(d => d.Name == "DEVASTATED"));
+			Assert.AreEqual(1, v2Deaths.Count(d => d.Name == GameInfo.V2Envenomated.Name));
+			Assert.AreEqual(1, v2Deaths.Count(d => d.Name == GameInfo.V2Stricken.Name));
+			Assert.AreEqual(1, v2Deaths.Count(d => d.Name == GameInfo.V2Devastated.Name));
 
 			List<Death> v3Deaths = deathsController.GetDeaths(GameVersion.V3).Value;
 			Assert.AreEqual(16, v3Deaths.Count);
 			Assert.IsTrue(v3Deaths.All(d => d.GameVersion == GameVersion.V3));
-			Assert.AreEqual(1, v3Deaths.Count(d => d.Name == "ENVENOMATED"));
-			Assert.AreEqual(1, v3Deaths.Count(d => d.Name == "INCARNATED"));
-			Assert.AreEqual(1, v3Deaths.Count(d => d.Name == "DISCARNATED"));
-			Assert.AreEqual(1, v3Deaths.Count(d => d.Name == "BARBED"));
+			Assert.AreEqual(1, v3Deaths.Count(d => d.Name == GameInfo.V3Envenomated.Name));
+			Assert.AreEqual(1, v3Deaths.Count(d => d.Name == GameInfo.V3Incarnated.Name));
+			Assert.AreEqual(1, v3Deaths.Count(d => d.Name == GameInfo.V3Discarnated.Name));
+			Assert.AreEqual(1, v3Deaths.Count(d => d.Name == GameInfo.V3Barbed.Name));
 
 			List<Death> allDeaths = deathsController.GetDeaths().Value;
 			Assert.AreEqual(41, allDeaths.Count);
-		}
 
-		[TestMethod]
-		public void GetDeathsByName()
-		{
-			List<Death> swarmedDeaths = deathsController.GetDeathsByName("swarmed").Value;
+			List<Death> swarmedDeaths = deathsController.GetDeaths(null, "swarmed").Value;
 			Assert.AreEqual(3, swarmedDeaths.Count);
 			Assert.AreEqual(1, swarmedDeaths.Count(d => d.GameVersion == GameVersion.V1));
 			Assert.AreEqual(1, swarmedDeaths.Count(d => d.GameVersion == GameVersion.V2));
 			Assert.AreEqual(1, swarmedDeaths.Count(d => d.GameVersion == GameVersion.V3));
 
-			List<Death> annihilatedDeaths = deathsController.GetDeathsByName("annihilated").Value;
+			List<Death> annihilatedDeaths = deathsController.GetDeaths(null, "annihilated").Value;
 			Assert.AreEqual(3, annihilatedDeaths.Count);
 			Assert.AreEqual(1, annihilatedDeaths.Count(d => d.GameVersion == GameVersion.V1));
 			Assert.AreEqual(1, annihilatedDeaths.Count(d => d.GameVersion == GameVersion.V2));
 			Assert.AreEqual(1, annihilatedDeaths.Count(d => d.GameVersion == GameVersion.V3));
 
-			List<Death> envenomatedDeaths = deathsController.GetDeathsByName("envenomated").Value;
+			List<Death> envenomatedDeaths = deathsController.GetDeaths(null, "envenomated").Value;
 			Assert.AreEqual(2, envenomatedDeaths.Count);
 			Assert.AreEqual(1, envenomatedDeaths.Count(d => d.GameVersion == GameVersion.V2));
 			Assert.AreEqual(1, envenomatedDeaths.Count(d => d.GameVersion == GameVersion.V3));
 
-			List<Death> impaledV1Deaths = deathsController.GetDeathsByName("impaled", GameVersion.V1).Value;
+			List<Death> impaledV1Deaths = deathsController.GetDeaths(GameVersion.V1, "impaled").Value;
 			Assert.AreEqual(1, impaledV1Deaths.Count);
 			Assert.IsTrue(impaledV1Deaths.All(d => d.GameVersion == GameVersion.V1));
-		}
 
-		[TestMethod]
-		public void GetDeathsByType()
-		{
-			List<Death> deathsType1 = deathsController.GetDeathsByType(1).Value;
+			List<Death> deathsType1 = deathsController.GetDeaths(null, null, 1).Value;
 			Assert.AreEqual(3, deathsType1.Count);
 			Assert.AreEqual(GameInfo.V1Swarmed, deathsType1.Single(d => d.GameVersion == GameVersion.V1));
 			Assert.AreEqual(GameInfo.V2Swarmed, deathsType1.Single(d => d.GameVersion == GameVersion.V2));
