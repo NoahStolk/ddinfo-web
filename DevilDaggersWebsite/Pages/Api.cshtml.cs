@@ -16,7 +16,7 @@ namespace DevilDaggersWebsite.Pages
 
 		public void OnGet()
 		{
-			Assembly siteAssembly = AppDomain.CurrentDomain.GetAssemblies().FirstOrDefault(a => a.FullName.Contains("DevilDaggersWebsite"));
+			Assembly siteAssembly = AppDomain.CurrentDomain.GetAssemblies().FirstOrDefault(a => a.FullName.Contains("DevilDaggersWebsite.Core"));
 
 			foreach (Type controllerType in siteAssembly.GetTypes().Where(t => t.BaseType == typeof(ControllerBase)))
 			{
