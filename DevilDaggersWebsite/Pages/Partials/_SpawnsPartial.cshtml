@@ -27,7 +27,7 @@
 	}
 
 	<div class="flex-container flex-center flex-column text-center">
-		@if (!spawnset.IsEmpty())
+		@if (spawnset.HasSpawns())
 		{
 			<div class="flex-container flex-center">
 				<div style="width: @(widths[0])px;">Time</div>
