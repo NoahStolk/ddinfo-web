@@ -19,7 +19,9 @@ Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "DiscordBotDdInfo.Tests", ".
 EndProject
 Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "DevilDaggersWebsite.Tests", "DevilDaggersWebsite.Tests\DevilDaggersWebsite.Tests.csproj", "{303D386A-E3ED-4621-86A3-3696714076D4}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "DevilDaggersWebsite.Core", "DevilDaggersWebsite.Core\DevilDaggersWebsite.Core.csproj", "{D4999618-8C55-488A-8014-CAE7BF3E66E6}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "DevilDaggersWebsite.Core", "DevilDaggersWebsite.Core\DevilDaggersWebsite.Core.csproj", "{D4999618-8C55-488A-8014-CAE7BF3E66E6}"
+EndProject
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "DevilDaggersWebsite.Blazor", "DevilDaggersWebsite.Blazor\DevilDaggersWebsite.Blazor.csproj", "{FB82671C-8032-4942-ABFE-9E63BB3EA4F1}"
 EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
@@ -55,6 +57,10 @@ Global
 		{D4999618-8C55-488A-8014-CAE7BF3E66E6}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{D4999618-8C55-488A-8014-CAE7BF3E66E6}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{D4999618-8C55-488A-8014-CAE7BF3E66E6}.Release|Any CPU.Build.0 = Release|Any CPU
+		{FB82671C-8032-4942-ABFE-9E63BB3EA4F1}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{FB82671C-8032-4942-ABFE-9E63BB3EA4F1}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{FB82671C-8032-4942-ABFE-9E63BB3EA4F1}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{FB82671C-8032-4942-ABFE-9E63BB3EA4F1}.Release|Any CPU.Build.0 = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE
