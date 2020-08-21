@@ -24,10 +24,14 @@ namespace DevilDaggersWebsite.Code.Controllers
 		private readonly ApplicationDbContext dbContext;
 		private readonly IWebHostEnvironment env;
 
+		private readonly Dictionary<int, string> usernames;
+
 		public CustomLeaderboardsController(ApplicationDbContext dbContext, IWebHostEnvironment env)
 		{
 			this.dbContext = dbContext;
 			this.env = env;
+
+			usernames = dbContext.Players.Select(p => new KeyValuePair<int, string>(p.Id, p.Username)).ToDictionary(kvp => kvp.Key, kvp => kvp.Value);
 		}
 
 		[HttpGet]
@@ -135,11 +139,11 @@ namespace DevilDaggersWebsite.Code.Controllers
 
 				return new Dto.UploadSuccess
 				{
-					Message = $"Welcome to the leaderboard for {leaderboard.SpawnsetFile.Name}.",
+					Message = $"Welcome to the leaderboard for {spawnsetName}.",
 					TotalPlayers = totalPlayers,
 					Leaderboard = new Dto.CustomLeaderboard
 					{
-						SpawnsetName = leaderboard.SpawnsetFile.Name,
+						SpawnsetName = spawnsetName,
 						SpawnsetAuthorName = leaderboard.SpawnsetFile.Player.Username,
 						Bronze = leaderboard.Bronze,
 						Silver = leaderboard.Silver,
@@ -154,7 +158,7 @@ namespace DevilDaggersWebsite.Code.Controllers
 						.Select(e => new Dto.CustomEntry
 						{
 							PlayerId = e.PlayerId,
-							Username = dbContext.Players.FirstOrDefault(p => p.Id == e.PlayerId)?.Username ?? "[Player not found]",
+							Username = usernames.FirstOrDefault(u => u.Key == e.PlayerId).Value ?? "[Player not found]",
 							ClientVersion = e.ClientVersion,
 							DeathType = e.DeathType,
 							EnemiesAlive = e.EnemiesAlive,
@@ -231,7 +235,7 @@ namespace DevilDaggersWebsite.Code.Controllers
 						.Select(e => new Dto.CustomEntry
 						{
 							PlayerId = e.PlayerId,
-							Username = dbContext.Players.FirstOrDefault(p => p.Id == e.PlayerId)?.Username ?? "[Player not found]",
+							Username = usernames.FirstOrDefault(u => u.Key == e.PlayerId).Value ?? "[Player not found]",
 							ClientVersion = e.ClientVersion,
 							DeathType = e.DeathType,
 							EnemiesAlive = e.EnemiesAlive,
@@ -308,7 +312,7 @@ namespace DevilDaggersWebsite.Code.Controllers
 					.Select(e => new Dto.CustomEntry
 					{
 						PlayerId = e.PlayerId,
-						Username = dbContext.Players.FirstOrDefault(p => p.Id == e.PlayerId)?.Username ?? "[Player not found]",
+						Username = usernames.FirstOrDefault(u => u.Key == e.PlayerId).Value ?? "[Player not found]",
 						ClientVersion = e.ClientVersion,
 						DeathType = e.DeathType,
 						EnemiesAlive = e.EnemiesAlive,
