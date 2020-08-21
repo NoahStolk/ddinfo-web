@@ -21,7 +21,7 @@ namespace DevilDaggersWebsite.Pages.Wiki
 		{
 			SetGameVersion(gameVersion);
 
-			SpawnsetPath = Path.Combine(env.WebRootPath, "spawnsets", GameVersion.ToString());
+			SpawnsetPath = GameVersion.ToString();
 			EmergeEnemies = GameVersion == GameVersion.V3 ? "Centipedes, Gigapedes, Ghostpedes, and Thorns" : "Centipedes and Gigapedes";
 		}
 	}
