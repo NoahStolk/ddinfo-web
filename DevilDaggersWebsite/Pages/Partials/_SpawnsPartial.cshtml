@@ -18,7 +18,7 @@
 		return;
 	}
 
-	GameVersion gameVersion = sf.PlayerId == 1 ? sf.Name == "V1" ? GameVersion.V1 : sf.Name == "V2" ? GameVersion.V2 : GameVersion.V3 : GameVersion.V3;
+	GameVersion gameVersion = sf.PlayerId == 0 ? Enum.Parse<GameVersion>(sf.Name) : GameVersion.V3;
 	int maxWaves = sf.MaxDisplayWaves ?? SpawnsetUtils.DefaultMaxWaves;
 	string wavesQuery = httpContextAccessor.HttpContext.Request.Query["waves"];
 	if (int.TryParse(wavesQuery, out int parsed) && parsed > 0)
