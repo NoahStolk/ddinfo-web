@@ -62,6 +62,7 @@ namespace DevilDaggersWebsite
 
 			services.AddScoped<IUrlHelper>(factory => new UrlHelper(factory.GetService<IActionContextAccessor>().ActionContext));
 
+			services.AddTransient<LeaderboardHistoryHelper>();
 			services.AddTransient<SpawnsetHelper>();
 
 			services.AddScheduler((sender, args) =>
