@@ -54,7 +54,7 @@ namespace DevilDaggersWebsite.Code.Utils
 						new Change("Fixed not showing end loop warning for a single spawn."),
 						new Change("Fixed crash when attempting to view log file while it was being used by another process."),
 						new Change("Fixed search TextBoxes in DownloadSpawnset window being empty after reopening the window."),
-						new Change("Improved performance by reducing the amount of API calls."),
+						new Change("Improved startup performance by reducing the amount of API calls."),
 					},
 				},
 				new ChangelogEntry
@@ -405,10 +405,19 @@ namespace DevilDaggersWebsite.Code.Utils
 		{
 			Name = "DevilDaggersCustomLeaderboards",
 			DisplayName = "Devil Daggers Custom Leaderboards",
-			VersionNumber = new Version(0, 9, 6, 0),
-			VersionNumberRequired = new Version(0, 9, 6, 0),
+			VersionNumber = new Version(0, 9, 6, 1),
+			VersionNumberRequired = new Version(0, 9, 6, 1),
 			Changelog = new List<ChangelogEntry>
 			{
+				new ChangelogEntry
+				{
+					VersionNumber = new Version(0, 9, 6, 1),
+					Date = new DateTime(2020, 8, 21),
+					Changes = new List<Change>
+					{
+						new Change("Rebuilt application for API updates."),
+					},
+				},
 				new ChangelogEntry
 				{
 					VersionNumber = new Version(0, 9, 6, 0),
