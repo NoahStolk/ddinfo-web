@@ -1,14 +1,14 @@
 ﻿@model IDefaultLeaderboardPage
 @using DevilDaggersCore.Game
 @using DevilDaggersCore.Utils
-@using DevilDaggersWebsite.Code.Database
-@using DevilDaggersWebsite.Code.Extensions
+@using DevilDaggersWebsite.Core.Entities
+@using DevilDaggersWebsite.Core.Extensions
 @using DevilDaggersWebsite.Code.PageModels
 @using DevilDaggersWebsite.Code.Utils
 @using DevilDaggersWebsite.Pages.Leaderboard
 @using Microsoft.AspNetCore.Html
 @using Microsoft.EntityFrameworkCore
-@inject DevilDaggersWebsite.Code.Database.ApplicationDbContext dbContext
+@inject DevilDaggersWebsite.Core.Entities.ApplicationDbContext dbContext
 @{
 	bool isIndex = false;
 	bool showMoreStats = false;
@@ -52,7 +52,7 @@
 		@{
 			IEnumerable<Donation> donations = dbContext.Donations.ToList();
 			IEnumerable<Player> players = dbContext.Players.Include(p => p.PlayerTitles).ThenInclude(pt => pt.Title).ToList();
-			foreach (Code.DataTransferObjects.Entry entry in Model.Leaderboard.Entries)
+			foreach (Core.Dto.Entry entry in Model.Leaderboard.Entries)
 			{
 				Player? player = players.FirstOrDefault(p => p.Id == entry.Id);
 

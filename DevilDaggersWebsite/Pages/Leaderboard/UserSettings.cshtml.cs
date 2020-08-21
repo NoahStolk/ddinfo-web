@@ -1,10 +1,10 @@
-﻿using DevilDaggersWebsite.Code.DataTransferObjects;
-using DevilDaggersWebsite.Code.External;
+﻿using DevilDaggersWebsite.Core.Clients;
+using DevilDaggersWebsite.Core.Dto;
 using Microsoft.AspNetCore.Mvc.RazorPages;
 using System.Collections.Generic;
 using System.Linq;
 using System.Threading.Tasks;
-using Lb = DevilDaggersWebsite.Code.DataTransferObjects.Leaderboard;
+using Lb = DevilDaggersWebsite.Core.Dto.Leaderboard;
 
 namespace DevilDaggersWebsite.Pages.Leaderboard
 {
@@ -16,7 +16,7 @@ namespace DevilDaggersWebsite.Pages.Leaderboard
 		{
 			IEnumerable<Task> tasks = Enumerable.Range(0, 2).Select(async i =>
 			{
-				Lb nextLeaderboard = await HasmodaiUtils.GetScores(i * 100 + 1);
+				Lb nextLeaderboard = await DdHasmodaiClient.GetScores(i * 100 + 1);
 				foreach (Entry entry in nextLeaderboard.Entries)
 					Leaderboard.Entries.Add(entry);
 			});

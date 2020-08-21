@@ -1,5 +1,5 @@
 ﻿using DevilDaggersCore.Extensions;
-using DevilDaggersWebsite.Code.Database;
+using DevilDaggersWebsite.Core.Entities;
 using Microsoft.AspNetCore.Mvc.RazorPages;
 using Microsoft.EntityFrameworkCore;
 using System.Collections.Generic;

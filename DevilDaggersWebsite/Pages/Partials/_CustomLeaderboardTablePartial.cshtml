@@ -1,10 +1,10 @@
 ﻿@model List<CustomLeaderboard>
 @using DevilDaggersCore.Extensions
 @using DevilDaggersCore.Utils
-@using DevilDaggersWebsite.Code.Database
+@using DevilDaggersWebsite.Core.Entities
 @using DevilDaggersWebsite.Code.Utils
 @using System.Linq
-@inject DevilDaggersWebsite.Code.Database.ApplicationDbContext dbContext
+@inject DevilDaggersWebsite.Core.Entities.ApplicationDbContext dbContext
 
 @{
 	if (Model.Count == 0)

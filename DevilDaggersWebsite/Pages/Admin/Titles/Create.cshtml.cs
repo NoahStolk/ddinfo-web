@@ -1,4 +1,4 @@
-﻿using DevilDaggersWebsite.Code.Database;
+﻿using DevilDaggersWebsite.Core.Entities;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.AspNetCore.Mvc.RazorPages;
 using System.Threading.Tasks;

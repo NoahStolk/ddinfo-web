@@ -1,8 +1,8 @@
 // #define TEST_EXCEPTION_HANDLER
-using DevilDaggersWebsite.Code.Database;
-using DevilDaggersWebsite.Code.Tasks;
-using DevilDaggersWebsite.Code.Tasks.Scheduling;
-using DevilDaggersWebsite.Code.Transients;
+using DevilDaggersWebsite.Core.Entities;
+using DevilDaggersWebsite.Core.Tasks;
+using DevilDaggersWebsite.Core.Tasks.Scheduling;
+using DevilDaggersWebsite.Core.Transients;
 using Microsoft.AspNetCore.Builder;
 using Microsoft.AspNetCore.Hosting;
 using Microsoft.AspNetCore.Http;

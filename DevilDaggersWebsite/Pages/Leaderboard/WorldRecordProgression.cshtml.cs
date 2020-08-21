@@ -1,5 +1,5 @@
-﻿using DevilDaggersWebsite.Code.DataTransferObjects;
-using DevilDaggersWebsite.Code.Utils;
+﻿using DevilDaggersWebsite.Core.Dto;
+using DevilDaggersWebsite.Core.Utils;
 using Microsoft.AspNetCore.Hosting;
 using Microsoft.AspNetCore.Mvc.RazorPages;
 using System;

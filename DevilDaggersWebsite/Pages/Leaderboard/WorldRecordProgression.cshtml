@@ -1,10 +1,9 @@
 ﻿@page
 @using DevilDaggersCore.Game
-@using DevilDaggersWebsite.Code.DataTransferObjects
-@using DevilDaggersWebsite.Code.Leaderboards
 @using DevilDaggersCore.Utils
-@using DevilDaggersWebsite.Code.External
 @using DevilDaggersWebsite.Code.Utils
+@using DevilDaggersWebsite.Core.Clients
+@using DevilDaggersWebsite.Core.Dto
 @model DevilDaggersWebsite.Pages.Leaderboard.WorldRecordProgressionModel
 @{
 	ViewData["Title"] = "World Record Progression";
@@ -50,7 +49,7 @@
 
 			string timeHeld = $"{days} day{days.S()} ({(wrh.TotalTimeHeld / total).ToString("00.00%")})";
 
-			Entry current = await HasmodaiUtils.GetUserById(wrh.Id);
+			Entry current = await DdHasmodaiClient.GetUserById(wrh.Id);
 			string lastHeld = wr.Time == current.Time ? "Current holder" : $"{wrh.LastHeld.ToString("MMM dd")} '{wrh.LastHeld.ToString("yy")} ({daysAgo} day{daysAgo.S()} ago)";
 			string heldConsecutively = $"{daysConsecutively} day{daysConsecutively.S()}";
 			IEnumerable<string> aliases = wrh.Usernames.Where(s => s != wrh.MostRecentUsername);

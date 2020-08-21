@@ -1,9 +1,8 @@
-﻿using DevilDaggersWebsite.Code.Database;
-using DevilDaggersWebsite.Code.DataTransferObjects;
-using DevilDaggersWebsite.Code.Extensions;
-using DevilDaggersWebsite.Code.External;
-using DevilDaggersWebsite.Code.Leaderboards;
+﻿using DevilDaggersWebsite.Code.Leaderboards;
 using DevilDaggersWebsite.Code.PageModels;
+using DevilDaggersWebsite.Core.Clients;
+using DevilDaggersWebsite.Core.Dto;
+using DevilDaggersWebsite.Core.Entities;
 using Microsoft.AspNetCore.Hosting;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.AspNetCore.Mvc.RazorPages;
@@ -11,7 +10,7 @@ using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Threading.Tasks;
-using Lb = DevilDaggersWebsite.Code.DataTransferObjects.Leaderboard;
+using Lb = DevilDaggersWebsite.Core.Dto.Leaderboard;
 
 namespace DevilDaggersWebsite.Pages.Leaderboard
 {
@@ -73,19 +72,19 @@ namespace DevilDaggersWebsite.Pages.Leaderboard
 			switch (LeaderboardSearchType)
 			{
 				case LeaderboardSearchType.Username:
-					Leaderboard = await HasmodaiUtils.GetUserSearch(Username);
+					Leaderboard = await DdHasmodaiClient.GetUserSearch(Username);
 					break;
 				case LeaderboardSearchType.UserId:
-					Leaderboard = new Lb { Entries = new List<Entry> { await HasmodaiUtils.GetUserById(UserId) } };
+					Leaderboard = new Lb { Entries = new List<Entry> { await DdHasmodaiClient.GetUserById(UserId) } };
 					break;
 				case LeaderboardSearchType.Rank:
 				default:
-					Leaderboard = await HasmodaiUtils.GetScores(Rank);
+					Leaderboard = await DdHasmodaiClient.GetScores(Rank);
 					if (Rank > Leaderboard.Players - 99)
 					{
 						Rank = Leaderboard.Players - 99;
 						Leaderboard.Entries.Clear();
-						Leaderboard = await HasmodaiUtils.GetScores(Rank);
+						Leaderboard = await DdHasmodaiClient.GetScores(Rank);
 					}
 
 					break;

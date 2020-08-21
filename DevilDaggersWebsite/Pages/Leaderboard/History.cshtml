@@ -3,8 +3,9 @@
 @{
 	ViewData["Title"] = $"Top 100 History ({Model.Leaderboard.DateTime.ToString("yyyy-MM-dd HH:mm")})";
 }
-@using DevilDaggersWebsite.Code.Leaderboards.History
+@using DevilDaggersWebsite.Core.Extensions
 @using DevilDaggersWebsite.Code.Utils
+@using DevilDaggersWebsite.Core.LeaderboardHistory
 
 <header>
 	<h1>@ViewData["Title"]</h1>

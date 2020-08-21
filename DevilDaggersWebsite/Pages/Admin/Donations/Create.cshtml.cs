@@ -1,4 +1,5 @@
-﻿using DevilDaggersWebsite.Code.Database;
+﻿using DevilDaggersWebsite.Core.Entities;
+using DevilDaggersWebsite.Core.Enumerators;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.AspNetCore.Mvc.RazorPages;
 using Microsoft.AspNetCore.Mvc.Rendering;
