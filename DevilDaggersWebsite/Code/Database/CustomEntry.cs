@@ -16,6 +16,10 @@ namespace DevilDaggersWebsite.Code.Database
 		public CustomLeaderboard CustomLeaderboard { get; set; }
 
 		public int PlayerId { get; set; }
+
+		[ForeignKey(nameof(PlayerId))]
+		public Player Player { get; set; }
+
 		public int Time { get; set; }
 		public int Gems { get; set; }
 		public int Kills { get; set; }

@@ -96,6 +96,8 @@ namespace DevilDaggersWebsite.Migrations
 
 					b.HasIndex("CustomLeaderboardId");
 
+					b.HasIndex("PlayerId");
+
 					b.ToTable("CustomEntries");
 				});
 
@@ -522,6 +524,12 @@ namespace DevilDaggersWebsite.Migrations
 					b.HasOne("DevilDaggersWebsite.Code.Database.CustomLeaderboard", "CustomLeaderboard")
 						.WithMany()
 						.HasForeignKey("CustomLeaderboardId")
+						.OnDelete(DeleteBehavior.Cascade)
+						.IsRequired();
+
+					b.HasOne("DevilDaggersWebsite.Code.Database.Player", "Player")
+						.WithMany()
+						.HasForeignKey("PlayerId")
 						.OnDelete(DeleteBehavior.Cascade)
 						.IsRequired();
 				});
