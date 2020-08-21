@@ -1,5 +1,5 @@
 ﻿using DevilDaggersWebsite.Core.Dto;
-using DevilDaggersWebsite.Core.Utils;
+using DevilDaggersWebsite.Core.Transients;
 using Microsoft.AspNetCore.Hosting;
 using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
@@ -17,11 +17,13 @@ namespace DevilDaggersWebsite.Core.Api
 	[ApiController]
 	public class LeaderboardHistoryController : ControllerBase
 	{
-		private readonly IWebHostEnvironment env;
+		private readonly IWebHostEnvironment _env;
+		private readonly LeaderboardHistoryHelper _leaderboardHistoryHelper;
 
-		public LeaderboardHistoryController(IWebHostEnvironment env)
+		public LeaderboardHistoryController(IWebHostEnvironment env, LeaderboardHistoryHelper leaderboardHistoryHelper)
 		{
-			this.env = env;
+			_env = env;
+			_leaderboardHistoryHelper = leaderboardHistoryHelper;
 		}
 
 		[HttpGet("user-progression")]
@@ -33,15 +35,16 @@ namespace DevilDaggersWebsite.Core.Api
 
 			if (userId != 0)
 			{
-				foreach (string leaderboardHistoryPath in Io.Directory.GetFiles(Io.Path.Combine(env.WebRootPath, "leaderboard-history"), "*.json"))
+				foreach (string leaderboardHistoryPath in Io.Directory.GetFiles(Io.Path.Combine(_env.WebRootPath, "leaderboard-history"), "*.json"))
 				{
 					Leaderboard leaderboard = JsonConvert.DeserializeObject<Leaderboard>(Io.File.ReadAllText(leaderboardHistoryPath, Encoding.UTF8));
 					Entry entry = leaderboard.Entries.FirstOrDefault(e => e.Id == userId);
 
+					// + 1 and - 1 are used to fix off-by-one errors in the history based on screenshots and videos. This is due to a rounding error in Devil Daggers itself.
 					if (entry != null && !data.Values.Any(e =>
 						e.Time == entry.Time ||
 						e.Time == entry.Time + 1 ||
-						e.Time == entry.Time - 1)) // Off-by-one errors in the history
+						e.Time == entry.Time - 1))
 					{
 						data[leaderboard.DateTime] = entry;
 					}
@@ -54,7 +57,7 @@ namespace DevilDaggersWebsite.Core.Api
 		[HttpGet("world-records")]
 		[ProducesResponseType(StatusCodes.Status200OK)]
 		public List<WorldRecord> GetWorldRecords(DateTime? date = null)
-			=> LeaderboardHistoryUtils.GetWorldRecords(env, date);
+			=> _leaderboardHistoryHelper.GetWorldRecords(date);
 
 		[HttpGet("latest-date-played")]
 		[ProducesResponseType(StatusCodes.Status200OK)]
@@ -62,7 +65,7 @@ namespace DevilDaggersWebsite.Core.Api
 		public (DateTime from, DateTime to) GetLatestDatePlayed([Required] int userId)
 		{
 			List<(DateTime dateTime, Entry entry)> entries = new List<(DateTime, Entry)>();
-			foreach (string leaderboardHistoryPath in Io.Directory.GetFiles(Io.Path.Combine(env.WebRootPath, "leaderboard-history"), "*.json"))
+			foreach (string leaderboardHistoryPath in Io.Directory.GetFiles(Io.Path.Combine(_env.WebRootPath, "leaderboard-history"), "*.json"))
 			{
 				Leaderboard lb = JsonConvert.DeserializeObject<Leaderboard>(Io.File.ReadAllText(leaderboardHistoryPath, Encoding.UTF8));
 				Entry entry = lb.Entries.FirstOrDefault(e => e.Id == userId);
@@ -87,7 +90,7 @@ namespace DevilDaggersWebsite.Core.Api
 		public Dictionary<DateTime, ulong> GetUserActivity([Required] int userId)
 		{
 			Dictionary<DateTime, ulong> data = new Dictionary<DateTime, ulong>();
-			foreach (string leaderboardHistoryPath in Io.Directory.GetFiles(Io.Path.Combine(env.WebRootPath, "leaderboard-history"), "*.json"))
+			foreach (string leaderboardHistoryPath in Io.Directory.GetFiles(Io.Path.Combine(_env.WebRootPath, "leaderboard-history"), "*.json"))
 			{
 				Leaderboard lb = JsonConvert.DeserializeObject<Leaderboard>(Io.File.ReadAllText(leaderboardHistoryPath, Encoding.UTF8));
 				Entry entry = lb.Entries.FirstOrDefault(e => e.Id == userId);

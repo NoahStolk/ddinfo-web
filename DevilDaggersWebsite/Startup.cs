@@ -1,4 +1,5 @@
 // #define TEST_EXCEPTION_HANDLER
+using DevilDaggersWebsite.Core.Authorization;
 using DevilDaggersWebsite.Core.Entities;
 using DevilDaggersWebsite.Core.Tasks;
 using DevilDaggersWebsite.Core.Tasks.Scheduling;

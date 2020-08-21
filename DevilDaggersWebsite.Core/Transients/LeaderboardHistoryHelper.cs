@@ -7,18 +7,25 @@ using System.Collections.Generic;
 using System.IO;
 using System.Text;
 
-namespace DevilDaggersWebsite.Core.Utils
+namespace DevilDaggersWebsite.Core.Transients
 {
-	public static class LeaderboardHistoryUtils // TODO: Rewrite to transient
+	public class LeaderboardHistoryHelper
 	{
-		public static List<WorldRecord> GetWorldRecords(IWebHostEnvironment env, DateTime? date)
+		private readonly IWebHostEnvironment _env;
+
+		public LeaderboardHistoryHelper(IWebHostEnvironment env)
+		{
+			_env = env;
+		}
+
+		public List<WorldRecord> GetWorldRecords(DateTime? date)
 		{
 			bool isDateParameterValid = date.HasValue && date <= DateTime.Now;
 
 			List<WorldRecord> data = new List<WorldRecord>();
 
 			int worldRecord = 0;
-			foreach (string leaderboardHistoryPath in Directory.GetFiles(Path.Combine(env.WebRootPath, "leaderboard-history"), "*.json"))
+			foreach (string leaderboardHistoryPath in Directory.GetFiles(Path.Combine(_env.WebRootPath, "leaderboard-history"), "*.json"))
 			{
 				Leaderboard leaderboard = JsonConvert.DeserializeObject<Leaderboard>(File.ReadAllText(leaderboardHistoryPath, Encoding.UTF8));
 				if (leaderboard.Entries[0].Time != worldRecord)

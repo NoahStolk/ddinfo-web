@@ -1,6 +1,5 @@
 ﻿using DevilDaggersWebsite.Core.Dto;
-using DevilDaggersWebsite.Core.Utils;
-using Microsoft.AspNetCore.Hosting;
+using DevilDaggersWebsite.Core.Transients;
 using Microsoft.AspNetCore.Mvc.RazorPages;
 using System;
 using System.Collections.Generic;
@@ -10,11 +9,11 @@ namespace DevilDaggersWebsite.Pages.Leaderboard
 {
 	public class WorldRecordProgressionModel : PageModel
 	{
-		private readonly IWebHostEnvironment env;
+		private readonly LeaderboardHistoryHelper _leaderboardHistoryHelper;
 
-		public WorldRecordProgressionModel(IWebHostEnvironment env)
+		public WorldRecordProgressionModel(LeaderboardHistoryHelper leaderboardHistoryHelper)
 		{
-			this.env = env;
+			_leaderboardHistoryHelper = leaderboardHistoryHelper;
 		}
 
 		public List<WorldRecordHolder> WorldRecordHolders { get; private set; } = new List<WorldRecordHolder>();
@@ -23,7 +22,7 @@ namespace DevilDaggersWebsite.Pages.Leaderboard
 
 		public void OnGet()
 		{
-			List<WorldRecord> worldRecords = LeaderboardHistoryUtils.GetWorldRecords(env, null);
+			List<WorldRecord> worldRecords = _leaderboardHistoryHelper.GetWorldRecords(null);
 
 			TimeSpan heldConsecutively = default;
 			for (int i = 0; i < worldRecords.Count; i++)
