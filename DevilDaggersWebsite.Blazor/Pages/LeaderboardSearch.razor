@@ -10,10 +10,10 @@
 @code {
 	private Core.Dto.Leaderboard _leaderboard = new Core.Dto.Leaderboard();
 
-	private string _search;
+	private string _search = string.Empty;
 
 	[Parameter]
-	public List<Player> Players { get; set; }
+	public List<Player> Players { get; set; } = new List<Player>();
 
 	protected override async Task OnInitializedAsync()
 	{

@@ -6,9 +6,9 @@ using System.Globalization;
 
 namespace DevilDaggersWebsite.Blazor.Data
 {
-	public class LeaderboardEntry
+	public class LeaderboardEntryData
 	{
-		public LeaderboardEntry(Entry entry, Player? player, GameVersion gameVersion)
+		public LeaderboardEntryData(Entry entry, Player? player, GameVersion gameVersion)
 		{
 			RowClass = player?.IsBanned == true ? "table-danger" : string.Empty;
 
