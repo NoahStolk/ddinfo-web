@@ -1,0 +1,27 @@
+﻿<p>
+	<input />
+</p>
+<p>
+	Showing results for "@_search"
+</p>
+
+<LeaderboardTable Leaderboard="@_leaderboard" Players="Players" />
+
+@code {
+	private Core.Dto.Leaderboard _leaderboard = new Core.Dto.Leaderboard();
+
+	private string _search;
+
+	[Parameter]
+	public List<Player> Players { get; set; }
+
+	protected override async Task OnInitializedAsync()
+	{
+		await FetchLeaderboard(_search);
+	}
+
+	private async Task FetchLeaderboard(string search)
+	{
+		_leaderboard = await DdHasmodaiClient.GetUserSearch(_search);
+	}
+}

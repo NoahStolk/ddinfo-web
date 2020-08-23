@@ -1,0 +1,78 @@
+﻿<div class="row">
+	<div class="col-xs-6 col-sm-4 col-md-2">
+		<div>Total players</div>
+		<div class="text-devil">@Leaderboard.Players.ToString(FormatUtils.LeaderboardIntFormat)</div>
+	</div>
+	<div class="col-xs-6 col-sm-4 col-md-2">
+		<div>Global time</div>
+		<div class="text-devil">@Leaderboard.TimeGlobal.FormatTimeInteger(true)</div>
+	</div>
+	<div class="col-xs-6 col-sm-4 col-md-2">
+		<div>Global kills</div>
+		<div class="text-devil">@Leaderboard.KillsGlobal.ToString(FormatUtils.LeaderboardIntFormat)</div>
+	</div>
+	<div class="col-xs-6 col-sm-4 col-md-2">
+		<div>Global gems</div>
+		<div class="text-devil">@Leaderboard.GemsGlobal.ToString(FormatUtils.LeaderboardIntFormat)</div>
+	</div>
+	<div class="col-xs-6 col-sm-4 col-md-2">
+		<div>Global accuracy</div>
+		<div class="text-devil">@Leaderboard.AccuracyGlobal.ToString(FormatUtils.AccuracyFormat) (@FormatUtils.FormatDaggersUInt64(Leaderboard.DaggersHitGlobal, Leaderboard.DaggersFiredGlobal, false))</div>
+	</div>
+	<div class="col-xs-6 col-sm-4 col-md-2">
+		<div>Global deaths</div>
+		<div class="text-devil">@Leaderboard.DeathsGlobal.ToString(FormatUtils.LeaderboardIntFormat)</div>
+	</div>
+</div>
+
+<Table TableItem="LeaderboardEntry" Items="Leaderboard.Entries.Select(e => new LeaderboardEntry(e, Players.FirstOrDefault(p => p.Id == e.Id), GameVersion.V3))" TableRowClass="@(le => le.RowClass)" PageSize="100">
+	<Column TableItem="LeaderboardEntry" Title="#" Field="@(le => le.Rank)" Sortable="true" Width="2%" Align="Align.Right" />
+	<Column TableItem="LeaderboardEntry" Title="Flag" Field="@(le => le.FlagCode)" Sortable="true" Width="1%">
+		<Template>
+			@if (!string.IsNullOrEmpty(context.FlagCode))
+			{
+				<img src="/images/flags/@(context.FlagCode).png" />
+			}
+		</Template>
+	</Column>
+	<Column TableItem="LeaderboardEntry" Title="Username" Field="@(le => le.Username)" Sortable="true" Width="8%">
+		<Template>
+			<span class="@context.DaggerCssClass">@context.Username</span>
+		</Template>
+	</Column>
+	<Column TableItem="LeaderboardEntry" Title="Time" Field="@(le => le.Time)" Sortable="true" Width="4%" Align="Align.Right">
+		<Template>
+			<span class="@context.DaggerCssClass">@FormatUtils.FormatTimeInteger(context.Time)</span>
+		</Template>
+	</Column>
+	<Column TableItem="LeaderboardEntry" Title="Kills" Field="@(le => le.Kills)" Sortable="true" Width="4%" Align="Align.Right" />
+	<Column TableItem="LeaderboardEntry" Title="Gems" Field="@(le => le.Gems)" Sortable="true" Width="4%" Align="Align.Right" />
+	<Column TableItem="LeaderboardEntry" Title="Death" Field="@(le => le.DeathName)" Sortable="true" Width="6%">
+		<Template>
+			<span style="color: @context.DeathHexColor;">@context.DeathName</span>
+		</Template>
+	</Column>
+	<Column TableItem="LeaderboardEntry" Title="Total time" Field="@(le => le.TotalTime)" Sortable="true" Width="5%" Align="Align.Right">
+		<Template>
+			@FormatUtils.FormatTimeInteger(context.TotalTime)
+		</Template>
+	</Column>
+	<Column TableItem="LeaderboardEntry" Title="Total kills" Field="@(le => le.TotalKills)" Sortable="true" Width="5%" Align="Align.Right" />
+	<Column TableItem="LeaderboardEntry" Title="Total gems" Field="@(le => le.TotalGems)" Sortable="true" Width="5%" Align="Align.Right" />
+	<Column TableItem="LeaderboardEntry" Title="Total deaths" Field="@(le => le.TotalDeaths)" Sortable="true" Width="5%" Align="Align.Right" />
+	<Column TableItem="LeaderboardEntry" Title="Average time" Field="@(le => le.AverageTime)" Sortable="true" Width="5%" Align="Align.Right">
+		<Template>
+			@FormatUtils.FormatTimeInteger(context.AverageTime)
+		</Template>
+	</Column>
+	<Column TableItem="LeaderboardEntry" Title="Average kills" Field="@(le => le.AverageKills)" Sortable="true" Width="5%" Align="Align.Right" Format="@FormatUtils.LeaderboardIntAverageFormat" />
+	<Column TableItem="LeaderboardEntry" Title="Average gems" Field="@(le => le.AverageGems)" Sortable="true" Width="5%" Align="Align.Right" Format="@FormatUtils.LeaderboardIntAverageFormat" />
+</Table>
+
+@code {
+	[Parameter]
+	public Core.Dto.Leaderboard Leaderboard { get; set; }
+
+	[Parameter]
+	public List<Player> Players { get; set; }
+}

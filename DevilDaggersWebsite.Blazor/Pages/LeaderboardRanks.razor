@@ -1,117 +1,43 @@
 ﻿<p>
-	<button class="btn btn-primary" @onclick="@(e => FetchLeaderboard(Rank = 1))">
+	<button class="btn btn-primary" @onclick="@(e => FetchLeaderboard(_rank = 1))">
 		Top
 	</button>
-	<button class="btn btn-primary" @onclick="@(e => FetchLeaderboard(Rank -= 100))">
+	<button class="btn btn-primary" @onclick="@(e => FetchLeaderboard(_rank -= 100))">
 		Prev
 	</button>
-	<button class="btn btn-primary" @onclick="@(e => FetchLeaderboard(Rank += 100))">
+	<button class="btn btn-primary" @onclick="@(e => FetchLeaderboard(_rank += 100))">
 		Next
 	</button>
 </p>
 <p>
-	Showing rank @Rank - @(Rank + 99)
+	Showing rank @_rank - @(_rank + 99)
 </p>
 
-<div class="row">
-	<div class="col-xs-6 col-sm-4 col-md-2">
-		<div>Total players</div>
-		<div class="text-devil">@_displayTotalPlayers</div>
-	</div>
-	<div class="col-xs-6 col-sm-4 col-md-2">
-		<div>Global time</div>
-		<div class="text-devil">@_displayGlobalTime</div>
-	</div>
-	<div class="col-xs-6 col-sm-4 col-md-2">
-		<div>Global kills</div>
-		<div class="text-devil">@_displayGlobalKills</div>
-	</div>
-	<div class="col-xs-6 col-sm-4 col-md-2">
-		<div>Global gems</div>
-		<div class="text-devil">@_displayGlobalGems</div>
-	</div>
-	<div class="col-xs-6 col-sm-4 col-md-2">
-		<div>Global accuracy</div>
-		<div class="text-devil">@_displayGlobalAccuracy (@_displayGlobalDaggerStatistics)</div>
-	</div>
-	<div class="col-xs-6 col-sm-4 col-md-2">
-		<div>Global deaths</div>
-		<div class="text-devil">@_displayGlobalDeaths</div>
-	</div>
-</div>
-
-<Table TableItem="LeaderboardEntry" Items="_leaderboard.Entries.Select(e => new LeaderboardEntry(e, Players.FirstOrDefault(p => p.Id == e.Id), GameVersion.V3))" TableRowClass="@(le => le.RowClass)" PageSize="100">
-	<Column TableItem="LeaderboardEntry" Title="#" Field="@(le => le.Rank)" Sortable="true" Width="2%" Align="Align.Right" />
-	<Column TableItem="LeaderboardEntry" Title="Flag" Field="@(le => le.FlagCode)" Sortable="true" Width="1%">
-		<Template>
-			@if (!string.IsNullOrEmpty(context.FlagCode))
-			{
-				<img src="/images/flags/@(context.FlagCode).png" />
-			}
-		</Template>
-	</Column>
-	<Column TableItem="LeaderboardEntry" Title="Username" Field="@(le => le.Username)" Sortable="true" Width="8%">
-		<Template>
-			<span class="@context.DaggerCssClass">@context.Username</span>
-		</Template>
-	</Column>
-	<Column TableItem="LeaderboardEntry" Title="Time" Field="@(le => le.Time)" Sortable="true" Width="4%" Align="Align.Right">
-		<Template>
-			<span class="@context.DaggerCssClass">@context.Time</span>
-		</Template>
-	</Column>
-	<Column TableItem="LeaderboardEntry" Title="Kills" Field="@(le => le.Kills)" Sortable="true" Width="4%" Align="Align.Right" />
-	<Column TableItem="LeaderboardEntry" Title="Gems" Field="@(le => le.Gems)" Sortable="true" Width="4%" Align="Align.Right" />
-	<Column TableItem="LeaderboardEntry" Title="Death" Field="@(le => le.DeathName)" Sortable="true" Width="6%">
-		<Template>
-			<span style="color: @context.DeathHexColor;">@context.DeathName</span>
-		</Template>
-	</Column>
-	<Column TableItem="LeaderboardEntry" Title="Total time" Field="@(le => le.TotalTime)" Sortable="true" Width="5%" Align="Align.Right" />
-	<Column TableItem="LeaderboardEntry" Title="Total kills" Field="@(le => le.TotalKills)" Sortable="true" Width="5%" Align="Align.Right" />
-	<Column TableItem="LeaderboardEntry" Title="Total gems" Field="@(le => le.TotalGems)" Sortable="true" Width="5%" Align="Align.Right" />
-	<Column TableItem="LeaderboardEntry" Title="Total deaths" Field="@(le => le.TotalDeaths)" Sortable="true" Width="5%" Align="Align.Right" />
-</Table>
+<LeaderboardTable Leaderboard="@_leaderboard" Players="Players" />
 
 @code {
 	private Core.Dto.Leaderboard _leaderboard = new Core.Dto.Leaderboard();
-	private string _displayTotalPlayers = string.Empty;
-	private string _displayGlobalTime = string.Empty;
-	private string _displayGlobalKills = string.Empty;
-	private string _displayGlobalGems = string.Empty;
-	private string _displayGlobalDeaths = string.Empty;
-	private string _displayGlobalDaggerStatistics = string.Empty;
-	private string _displayGlobalAccuracy = string.Empty;
+
+	private int _rank;
 
 	[Parameter]
 	public List<Player> Players { get; set; }
 
-	[Parameter]
-	public int Rank { get; set; }
-
 	protected override async Task OnInitializedAsync()
 	{
-		await FetchLeaderboard(Rank);
-
-		_displayTotalPlayers = _leaderboard.Players.ToString(FormatUtils.LeaderboardIntFormat);
-		_displayGlobalTime = _leaderboard.TimeGlobal.FormatTimeInteger(true);
-		_displayGlobalKills = _leaderboard.KillsGlobal.ToString(FormatUtils.LeaderboardIntFormat);
-		_displayGlobalGems = _leaderboard.GemsGlobal.ToString(FormatUtils.LeaderboardIntFormat);
-		_displayGlobalDeaths = _leaderboard.DeathsGlobal.ToString(FormatUtils.LeaderboardIntFormat);
-		_displayGlobalDaggerStatistics = FormatUtils.FormatDaggersUInt64(_leaderboard.DaggersHitGlobal, _leaderboard.DaggersFiredGlobal, false);
-		_displayGlobalAccuracy = _leaderboard.AccuracyGlobal.ToString(FormatUtils.AccuracyFormat);
+		await FetchLeaderboard(_rank);
 	}
 
 	private async Task FetchLeaderboard(int rank)
 	{
-		Rank = Math.Max(Rank, 1);
+		_rank = Math.Max(_rank, 1);
 
-		_leaderboard = await DdHasmodaiClient.GetScores(Rank);
-		if (Rank > _leaderboard.Players - 99)
+		_leaderboard = await DdHasmodaiClient.GetScores(_rank);
+		if (_rank > _leaderboard.Players - 99)
 		{
-			Rank = _leaderboard.Players - 99;
+			_rank = _leaderboard.Players - 99;
 			_leaderboard.Entries.Clear();
-			_leaderboard = await DdHasmodaiClient.GetScores(Rank);
+			_leaderboard = await DdHasmodaiClient.GetScores(_rank);
 		}
 	}
 }

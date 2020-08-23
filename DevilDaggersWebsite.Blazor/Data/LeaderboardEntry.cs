@@ -45,7 +45,6 @@ namespace DevilDaggersWebsite.Blazor.Data
 			AverageGems = entry.DeathsTotal == 0 ? 0 : (entry.GemsTotal / (double)entry.DeathsTotal);
 			AverageDaggersHit = entry.DeathsTotal == 0 ? 0 : (entry.DaggersHitTotal / (double)entry.DeathsTotal);
 			AverageDaggersFired = entry.DeathsTotal == 0 ? 0 : (entry.DaggersFiredTotal / (double)entry.DeathsTotal);
-			TimeDividedByDeath = entry.DeathsTotal == 0 ? 0 : (entry.Time / (double)entry.DeathsTotal);
 		}
 
 		public string RowClass { get; }
@@ -81,6 +80,5 @@ namespace DevilDaggersWebsite.Blazor.Data
 		public double AverageGems { get; }
 		public double AverageDaggersHit { get; }
 		public double AverageDaggersFired { get; }
-		public double TimeDividedByDeath { get; }
 	}
 }

@@ -26,9 +26,13 @@
 </p>
 
 @{
-	if (State == 0)
+	if (State == LeaderboardState.Rank)
 	{
 		<LeaderboardRanks Players="_players" />
+	}
+	else if (State == LeaderboardState.Username)
+	{
+		<LeaderboardSearch Players="_players" />
 	}
 }
 
