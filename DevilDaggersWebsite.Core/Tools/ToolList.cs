@@ -586,10 +586,19 @@ namespace DevilDaggersWebsite.Core.Tools
 		{
 			Name = "DevilDaggersAssetEditor",
 			DisplayName = "Devil Daggers Asset Editor",
-			VersionNumber = new Version(0, 16, 2, 0),
+			VersionNumber = new Version(0, 16, 3, 0),
 			VersionNumberRequired = new Version(0, 16, 2, 0),
 			Changelog = new List<ChangelogEntry>
 			{
+				new ChangelogEntry
+				{
+					VersionNumber = new Version(0, 16, 3, 0),
+					Date = new DateTime(2020, 8, 23),
+					Changes = new List<Change>
+					{
+						new Change("Fixed importing folders not working."),
+					},
+				},
 				new ChangelogEntry
 				{
 					VersionNumber = new Version(0, 16, 2, 0),
