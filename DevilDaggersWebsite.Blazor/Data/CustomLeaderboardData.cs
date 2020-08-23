@@ -5,8 +5,9 @@ namespace DevilDaggersWebsite.Blazor.Data
 {
 	public class CustomLeaderboardData
 	{
-		public CustomLeaderboardData(CustomLeaderboard cl)
+		public CustomLeaderboardData(CustomLeaderboard cl, int totalPlayers, CustomEntry worldRecord)
 		{
+			SpawnsetFileId = cl.SpawnsetFileId;
 			SpawnsetName = cl.SpawnsetFile.Name;
 			SpawnsetAuthorName = cl.SpawnsetFile.Player.Username;
 			Category = Enum.Parse<CustomLeaderboardCategory>(cl.Category.Name);
@@ -17,19 +18,29 @@ namespace DevilDaggersWebsite.Blazor.Data
 			Homing = cl.Homing;
 			DateLastPlayed = cl.DateLastPlayed;
 			DateCreated = cl.DateCreated;
+			TotalPlayers = totalPlayers;
+			WorldRecordHolderUsername = worldRecord.Player.Username;
+			WorldRecordTime = worldRecord.Time;
+			WorldRecordDagger = cl.GetDagger(worldRecord.Time);
 		}
 
-		public string SpawnsetName { get; set; }
-		public string SpawnsetAuthorName { get; set; }
-		public CustomLeaderboardCategory Category { get; set; }
-		public int Bronze { get; set; }
-		public int Silver { get; set; }
-		public int Golden { get; set; }
-		public int Devil { get; set; }
-		public int Homing { get; set; }
+		public int SpawnsetFileId { get; }
+		public string SpawnsetName { get; }
+		public string SpawnsetAuthorName { get; }
+		public CustomLeaderboardCategory Category { get; }
+		public int Bronze { get; }
+		public int Silver { get; }
+		public int Golden { get; }
+		public int Devil { get; }
+		public int Homing { get; }
+		public int TotalPlayers { get; }
 
-		public DateTime? DateLastPlayed { get; set; }
-		public DateTime? DateCreated { get; set; }
+		public DateTime? DateLastPlayed { get; }
+		public DateTime? DateCreated { get; }
+
+		public string WorldRecordHolderUsername { get; }
+		public int WorldRecordTime { get; }
+		public string WorldRecordDagger { get; }
 	}
 
 	public enum CustomLeaderboardCategory

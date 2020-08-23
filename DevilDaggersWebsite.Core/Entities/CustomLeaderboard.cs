@@ -34,9 +34,9 @@ namespace DevilDaggersWebsite.Core.Entities
 		/// <summary>
 		/// Returns the CSS class name corresponding to the time in seconds.
 		/// </summary>
-		/// <param name="time">The time in seconds.</param>
+		/// <param name="time">The time in tenths of milliseconds.</param>
 		/// <returns>The CSS class name for the dagger.</returns>
-		public string GetDagger(float time)
+		public string GetDagger(int time)
 		{
 			if (Category.Ascending)
 			{

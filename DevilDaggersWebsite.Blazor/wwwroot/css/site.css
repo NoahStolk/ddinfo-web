@@ -28,6 +28,11 @@ p {
 	padding: 0 25%;
 }
 
+.death {
+	font-family: 'dd', sans-serif;
+	font-size: 20px;
+}
+
 h1 {
 	font-family: 'dd', sans-serif;
 	padding: 0 25%;
