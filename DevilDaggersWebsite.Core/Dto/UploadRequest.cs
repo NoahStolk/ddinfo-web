@@ -1,4 +1,6 @@
-﻿namespace DevilDaggersWebsite.Core.Dto
+﻿using System.Collections.Generic;
+
+namespace DevilDaggersWebsite.Core.Dto
 {
 	public class UploadRequest
 	{
@@ -18,5 +20,6 @@
 		public int LevelUpTime4 { get; set; }
 		public string DdclClientVersion { get; set; }
 		public string Validation { get; set; }
+		public List<GameState> GameStates { get; set; }
 	}
 }
