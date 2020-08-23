@@ -28,7 +28,7 @@
 			foreach (Core.Dto.Entry entry in Model.Leaderboard.Entries)
 			{
 				Player? player = players.FirstOrDefault(p => p.Id == entry.Id);
-				if (player == null)
+				if (player == null || player.Dpi == null) // TODO: Check more values
 				{
 					continue;
 				}
