@@ -7,7 +7,7 @@ $.getJSON("/api/leaderboard-history/world-records", function (data) {
 	$.each(data, function (_key, wr) {
 		const date = new Date(wr.dateTime);
 		const deathType = getDeathType(date, wr.entry);
-		const accuracy = wr.entry.shotsFired === 0 ? 0 : wr.entry.shotsHit / wr.entry.shotsFired * 100;
+		const accuracy = wr.entry.daggersFired === 0 ? 0 : wr.entry.daggersHit / wr.entry.daggersFired * 100;
 
 		wrs.push([date, wr.entry.time / 10000, wr.entry.username, wr.entry.gems === 0 ? "?" : wr.entry.gems.toFixed(0), wr.entry.kills === 0 ? "?" : wr.entry.kills.toFixed(0), accuracy === 0 ? "?" : accuracy.toFixed(2) + "%", deathType.colorCode, deathType.name]);
 

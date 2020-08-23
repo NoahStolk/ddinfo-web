@@ -6,7 +6,7 @@ $.getJSON("/api/leaderboard-history/user-progression?userId=" + getUrlParameter(
 	$.each(data, function (key, pb) {
 		const date = new Date(key);
 		const deathType = getDeathType(date, pb);
-		const accuracy = pb.shotsFired === 0 ? 0 : pb.shotsHit / pb.shotsFired * 100;
+		const accuracy = pb.daggersFired === 0 ? 0 : pb.daggersHit / pb.daggersFired * 100;
 
 		pbs.push([date, pb.time / 10000, pb.rank.toFixed(0), pb.username, pb.gems === 0 ? "?" : pb.gems.toFixed(0), pb.kills === 0 ? "?" : pb.kills.toFixed(0), accuracy === 0 ? "?" : accuracy.toFixed(2) + "%", deathType.colorCode, deathType.name]);
 
