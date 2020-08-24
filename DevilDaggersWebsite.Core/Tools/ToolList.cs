@@ -405,10 +405,23 @@ namespace DevilDaggersWebsite.Core.Tools
 		{
 			Name = "DevilDaggersCustomLeaderboards",
 			DisplayName = "Devil Daggers Custom Leaderboards",
-			VersionNumber = new Version(0, 9, 6, 1),
-			VersionNumberRequired = new Version(0, 9, 6, 1),
+			VersionNumber = new Version(0, 10, 0, 0),
+			VersionNumberRequired = new Version(0, 10, 0, 0),
 			Changelog = new List<ChangelogEntry>
 			{
+				new ChangelogEntry
+				{
+					VersionNumber = new Version(0, 10, 0, 0),
+					Date = new DateTime(2020, 8, 24),
+					Changes = new List<Change>
+					{
+						new Change("Implemented custom improved colors."),
+						new Change("Fixed not resetting homing after death."),
+						new Change("Fixed user highlight being unreadable for 'Default' dagger scores."),
+						new Change("Improved anti-cheat."),
+						new Change("Implemented collecting graph data for custom leaderboards. This is only stored in the database for now and not yet displayed on the website."),
+					},
+				},
 				new ChangelogEntry
 				{
 					VersionNumber = new Version(0, 9, 6, 1),
