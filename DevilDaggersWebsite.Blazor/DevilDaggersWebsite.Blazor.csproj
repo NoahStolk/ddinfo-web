@@ -3,6 +3,7 @@
 		<TargetFramework>netcoreapp3.1</TargetFramework>
 		<UserSecretsId>aspnet-DevilDaggersWebsite.Blazor-AFFD91BC-0311-49AE-8C83-FEC634B95389</UserSecretsId>
 		<Nullable>enable</Nullable>
+		<GenerateDocumentationFile>true</GenerateDocumentationFile>
 	</PropertyGroup>
 	<ItemGroup>
 		<PackageReference Include="BlazorTable" Version="1.12.1" />
@@ -24,6 +25,6 @@
 		</PackageReference>
 	</ItemGroup>
 	<ItemGroup>
-	  <ProjectReference Include="..\DevilDaggersWebsite.Core\DevilDaggersWebsite.Core.csproj" />
+		<ProjectReference Include="..\DevilDaggersWebsite.Core\DevilDaggersWebsite.Core.csproj" />
 	</ItemGroup>
 </Project>
