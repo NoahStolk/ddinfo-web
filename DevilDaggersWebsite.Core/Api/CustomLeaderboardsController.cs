@@ -54,6 +54,7 @@ namespace DevilDaggersWebsite.Core.Api
 		[HttpPost]
 		[ProducesResponseType(StatusCodes.Status200OK)]
 		[ProducesResponseType(StatusCodes.Status400BadRequest)]
+		[ProducesResponseType(StatusCodes.Status404NotFound)]
 		public async Task<ActionResult<Dto.UploadSuccess>> UploadScore([FromBody] Dto.UploadRequest uploadRequest)
 		{
 			Version clientVersionParsed = Version.Parse(uploadRequest.DdclClientVersion);
@@ -110,7 +111,7 @@ namespace DevilDaggersWebsite.Core.Api
 			int rank = leaderboard.Category.Ascending ? entries.Where(e => e.Time < uploadRequest.Time).Count() + 1 : entries.Where(e => e.Time > uploadRequest.Time).Count() + 1; // TODO: Use reflection to use Category.SortingPropertyName.
 			int totalPlayers = entries.Count();
 
-			CustomEntry entry = _dbContext.CustomEntries.FirstOrDefault(e => e.PlayerId == uploadRequest.PlayerId && e.CustomLeaderboardId == leaderboard.Id);
+			CustomEntry? entry = _dbContext.CustomEntries.FirstOrDefault(e => e.PlayerId == uploadRequest.PlayerId && e.CustomLeaderboardId == leaderboard.Id);
 			if (entry == null)
 			{
 				// Add new user to this leaderboard.
