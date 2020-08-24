@@ -45,10 +45,39 @@
 	</Column>
 </Table>
 
+<DxChart Data="@_homingData">
+	<DxChartLineSeries Name="Homing" ArgumentField="@((HomingData hd) => hd.Second)" ValueField="@(hd => hd.Homing)" />
+</DxChart>
+
 @code {
+	private List<HomingData> _homingData = new List<HomingData>();
+
 	[Parameter]
 	public Core.Entities.CustomLeaderboard Leaderboard { get; set; } = new Core.Entities.CustomLeaderboard();
 
 	[Parameter]
 	public List<Core.Entities.CustomEntry> CustomEntries { get; set; } = new List<Core.Entities.CustomEntry>();
+
+	protected override void OnInitialized()
+	{
+		IEnumerable<int>? homings = CustomEntries.FirstOrDefault(ce => !string.IsNullOrEmpty(ce.HomingData)).HomingData?.Split(',').Select(int.Parse);
+		if (homings == null)
+			return;
+
+		int i = 0;
+		foreach (int homing in homings)
+			_homingData.Add(new HomingData(i++, homing));
+	}
+
+	public class HomingData
+	{
+		public HomingData(int second, int homing)
+		{
+			Second = second;
+			Homing = homing;
+		}
+
+		public int Second { get; set; }
+		public int Homing { get; set; }
+	}
 }

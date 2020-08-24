@@ -54,7 +54,6 @@ namespace DevilDaggersWebsite.Core.Api
 		[HttpPost]
 		[ProducesResponseType(StatusCodes.Status200OK)]
 		[ProducesResponseType(StatusCodes.Status400BadRequest)]
-		[ProducesResponseType(StatusCodes.Status404NotFound)]
 		public async Task<ActionResult<Dto.UploadSuccess>> UploadScore([FromBody] Dto.UploadRequest uploadRequest)
 		{
 			Version clientVersionParsed = Version.Parse(uploadRequest.DdclClientVersion);
