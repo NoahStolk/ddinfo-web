@@ -1,0 +1,16 @@
+﻿@page "/WorldRecordProgression"
+@inject LeaderboardHistoryHelper _leaderboardHistoryHelper
+
+<DxChart Data="@_worldRecords">
+	<DxChartCommonSeries NameField="@((WorldRecord wr) => GameInfo.GetGameVersionFromDate(wr.DateTime))" ArgumentField="@(wr => wr.DateTime)" ValueField="@(wr => wr.Entry.Time / (float)10000)" SeriesType="@ChartSeriesType.StepLine" />
+</DxChart>
+
+@code
+{
+	private List<WorldRecord> _worldRecords = new List<WorldRecord>();
+
+	protected override void OnInitialized()
+	{
+		_worldRecords = _leaderboardHistoryHelper.GetWorldRecords(null);
+	}
+}

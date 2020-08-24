@@ -30,17 +30,17 @@
 	<Column TableItem="CustomLeaderboardEntryData" Title="Homing" Field="@(cled => cled.Homing)" Sortable="true" Width="4%" Align="Align.Right" Format="@FormatUtils.LeaderboardIntFormat" />
 	<Column TableItem="CustomLeaderboardEntryData" Title="Level 2" Field="@(cled => cled.LevelUpTime2)" Sortable="true" Width="4%" Align="Align.Right">
 		<Template>
-			@FormatUtils.FormatTimeInteger(context.LevelUpTime2)
+			@(context.LevelUpTime2 == 0 ? "N/A" : FormatUtils.FormatTimeInteger(context.LevelUpTime2))
 		</Template>
 	</Column>
 	<Column TableItem="CustomLeaderboardEntryData" Title="Level 3" Field="@(cled => cled.LevelUpTime3)" Sortable="true" Width="4%" Align="Align.Right">
 		<Template>
-			@FormatUtils.FormatTimeInteger(context.LevelUpTime3)
+			@(context.LevelUpTime3 == 0 ? "N/A" : FormatUtils.FormatTimeInteger(context.LevelUpTime3))
 		</Template>
 	</Column>
 	<Column TableItem="CustomLeaderboardEntryData" Title="Level 4" Field="@(cled => cled.LevelUpTime4)" Sortable="true" Width="4%" Align="Align.Right">
 		<Template>
-			@FormatUtils.FormatTimeInteger(context.LevelUpTime4)
+			@(context.LevelUpTime4 == 0 ? "N/A" : FormatUtils.FormatTimeInteger(context.LevelUpTime4))
 		</Template>
 	</Column>
 </Table>
