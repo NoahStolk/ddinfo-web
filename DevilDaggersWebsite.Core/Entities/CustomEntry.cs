@@ -34,6 +34,13 @@ namespace DevilDaggersWebsite.Core.Entities
 		public DateTime SubmitDate { get; set; }
 		public string? ClientVersion { get; set; }
 
+		public string? GemsData { get; set; }
+		public string? KillsData { get; set; }
+		public string? HomingData { get; set; }
+		public string? EnemiesAliveData { get; set; }
+		public string? DaggersFiredData { get; set; }
+		public string? DaggersHitData { get; set; }
+
 		public double Accuracy => DaggersFired == 0 ? 0 : DaggersHit / (double)DaggersFired;
 
 		public HtmlString ToHtmlData(int rank, string username, string flagCode) => new HtmlString($@"
