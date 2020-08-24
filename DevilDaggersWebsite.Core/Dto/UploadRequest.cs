@@ -20,6 +20,6 @@ namespace DevilDaggersWebsite.Core.Dto
 		public int LevelUpTime4 { get; set; }
 		public string DdclClientVersion { get; set; }
 		public string Validation { get; set; }
-		public List<GameState> GameStates { get; set; }
+		public List<GameState>? GameStates { get; set; }
 	}
 }
