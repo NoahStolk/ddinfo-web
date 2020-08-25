@@ -3,6 +3,7 @@ using DevilDaggersCore.Spawnsets;
 using DevilDaggersWebsite.Core.Clients;
 using DevilDaggersWebsite.Core.Entities;
 using DevilDaggersWebsite.Core.Tools;
+using DiscordBotDdInfo.Extensions;
 using Microsoft.AspNetCore.Hosting;
 using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
@@ -58,7 +59,11 @@ namespace DevilDaggersWebsite.Core.Api
 		{
 			Version clientVersionParsed = Version.Parse(uploadRequest.DdclClientVersion);
 			if (clientVersionParsed < ToolList.DevilDaggersCustomLeaderboards.VersionNumberRequired)
-				return new BadRequestObjectResult(new ProblemDetails { Title = "You are using an unsupported and outdated version of DDCL. Please update the program." });
+			{
+				string errorMessage = "You are using an unsupported and outdated version of DDCL. Please update the program.";
+				await TryLog(uploadRequest, null, errorMessage);
+				return new BadRequestObjectResult(new ProblemDetails { Title = errorMessage });
+			}
 
 			string spawnsetName = string.Empty;
 			foreach (string spawnsetPath in Directory.GetFiles(Path.Combine(_env.WebRootPath, "spawnsets")))
@@ -76,7 +81,11 @@ namespace DevilDaggersWebsite.Core.Api
 			}
 
 			if (string.IsNullOrEmpty(spawnsetName))
-				return new BadRequestObjectResult(new ProblemDetails { Title = "This spawnset does not exist on DevilDaggers.info." });
+			{
+				string errorMessage = "This spawnset does not exist on DevilDaggers.info.";
+				await TryLog(uploadRequest, spawnsetName, errorMessage);
+				return new BadRequestObjectResult(new ProblemDetails { Title = errorMessage });
+			}
 
 			string check = string.Join(
 				";",
@@ -91,11 +100,19 @@ namespace DevilDaggersWebsite.Core.Api
 				uploadRequest.Homing,
 				string.Join(",", new int[3] { uploadRequest.LevelUpTime2, uploadRequest.LevelUpTime3, uploadRequest.LevelUpTime4 }));
 			if (DecryptValidation(uploadRequest.Validation) != check)
-				return new BadRequestObjectResult(new ProblemDetails { Title = "Invalid submission." });
+			{
+				string errorMessage = "Invalid submission.";
+				await TryLog(uploadRequest, spawnsetName, errorMessage);
+				return new BadRequestObjectResult(new ProblemDetails { Title = errorMessage });
+			}
 
 			CustomLeaderboard leaderboard = _dbContext.CustomLeaderboards.Include(cl => cl.Category).Include(cl => cl.SpawnsetFile).ThenInclude(sf => sf.Player).FirstOrDefault(cl => cl.SpawnsetFile.Name == spawnsetName);
 			if (leaderboard == null)
-				return new BadRequestObjectResult(new ProblemDetails { Title = "This spawnset doesn't have a leaderboard." });
+			{
+				string errorMessage = "This spawnset exists on DevilDaggers.info, but doesn't have a leaderboard.";
+				await TryLog(uploadRequest, spawnsetName, errorMessage);
+				return new BadRequestObjectResult(new ProblemDetails { Title = errorMessage });
+			}
 
 			// Submission is accepted.
 
@@ -144,6 +161,7 @@ namespace DevilDaggersWebsite.Core.Api
 				entries = _dbContext.CustomEntries.Where(e => e.CustomLeaderboard == leaderboard).OrderByMember(leaderboard.Category.SortingPropertyName, leaderboard.Category.Ascending);
 				totalPlayers = entries.Count();
 
+				await TryLog(uploadRequest, spawnsetName);
 				return new Dto.UploadSuccess
 				{
 					Message = $"Welcome to the leaderboard for {spawnsetName}.",
@@ -227,6 +245,7 @@ namespace DevilDaggersWebsite.Core.Api
 				// Fetch the entries again after having modified the leaderboard.
 				entries = _dbContext.CustomEntries.Where(e => e.CustomLeaderboard == leaderboard).OrderByMember(leaderboard.Category.SortingPropertyName, leaderboard.Category.Ascending).ToArray();
 
+				await TryLog(uploadRequest, spawnsetName);
 				return new Dto.UploadSuccess
 				{
 					Message = $"No new highscore for {leaderboard.SpawnsetFile.Name}.",
@@ -316,6 +335,7 @@ namespace DevilDaggersWebsite.Core.Api
 			// Fetch the entries again after having modified the leaderboard.
 			entries = _dbContext.CustomEntries.Where(e => e.CustomLeaderboard == leaderboard).OrderByMember(leaderboard.Category.SortingPropertyName, leaderboard.Category.Ascending).ToArray();
 
+			await TryLog(uploadRequest, spawnsetName);
 			return new Dto.UploadSuccess
 			{
 				Message = $"NEW HIGHSCORE for {leaderboard.SpawnsetFile.Name}!",
@@ -383,6 +403,29 @@ namespace DevilDaggersWebsite.Core.Api
 				LevelUpTime4 = uploadRequest.LevelUpTime4,
 				LevelUpTime4Diff = levelUpTime4Diff,
 			};
+		}
+
+		private static async Task TryLog(Dto.UploadRequest uploadRequest, string? spawnsetName, Exception? exception = null)
+			=> await TryLog(uploadRequest, spawnsetName, exception?.Message ?? null);
+
+		private static async Task TryLog(Dto.UploadRequest uploadRequest, string? spawnsetName, string? errorMessage)
+		{
+			try
+			{
+				if (DiscordBotDdInfo.Program.DdInfoDevChannel == null)
+					return;
+
+				if (!string.IsNullOrEmpty(errorMessage))
+					await DiscordBotDdInfo.Program.DdInfoDevChannel.SendMessageAsyncSafe($"Upload failed for user '{uploadRequest.Username}' ({uploadRequest.PlayerId}) for '{GetSpawnsetNameOrHash()}'.\n{errorMessage}");
+				else
+					await DiscordBotDdInfo.Program.DdInfoDevChannel.SendMessageAsyncSafe($"{uploadRequest.Username} just submitted a score of {uploadRequest.Time / 10000f} to '{GetSpawnsetNameOrHash()}'.");
+			}
+			catch
+			{
+			}
+
+			string GetSpawnsetNameOrHash()
+				=> string.IsNullOrEmpty(spawnsetName) ? uploadRequest.SpawnsetHash : spawnsetName;
 		}
 
 		private static async Task<string> GetUsername(Dto.UploadRequest uploadRequest)
