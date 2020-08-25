@@ -1,0 +1,85 @@
+﻿@page "/CustomLeaderboardEntry/{CustomEntryId:int}"
+@inject ApplicationDbContext DbContext
+
+<a href="/CustomLeaderboards">Back</a>
+<div>
+	@_customEntry?.Player?.Username
+</div>
+<div>
+	@_customEntry?.Time
+</div>
+<div class="card-deck mb-lg-3 pb-lg-3">
+	<DxChart Data="@_gemsData">
+		<DxChartLineSeries Name="Gems" ArgumentField="@(((int seconds, int count) data) => data.seconds)" ValueField="@(data => data.count)" />
+	</DxChart>
+	<DxChart Data="@_killsData">
+		<DxChartLineSeries Name="Kills" ArgumentField="@(((int seconds, int count) data) => data.seconds)" ValueField="@(data => data.count)" />
+	</DxChart>
+	<DxChart Data="@_homingData">
+		<DxChartAreaSeries Name="Homing" ArgumentField="@(((int seconds, int count) data) => data.seconds)" ValueField="@(data => data.count)" />
+	</DxChart>
+</div>
+<div class="card-deck mb-lg-3 pb-lg-3">
+	<DxChart Data="@_enemiesAliveData">
+		<DxChartLineSeries Name="Enemies alive" ArgumentField="@(((int seconds, int count) data) => data.seconds)" ValueField="@(data => data.count)" />
+	</DxChart>
+	<DxChart Data="_daggersFiredData">
+		<DxChartLineSeries Data="_daggersFiredData" Name="Daggers fired" ArgumentField="@(((int seconds, int count) data) => data.seconds)" ValueField="@(data => data.count)" />
+		<DxChartLineSeries Data="_daggersHitData" Name="Daggers hit" ArgumentField="@(((int seconds, int count) data) => data.seconds)" ValueField="@(data => data.count)" />
+	</DxChart>
+	<DxChart Data="_accuracyData">
+		<DxChartValueAxis>
+			<DxChartAxisLabel Format="ChartAxisLabelFormat.Decimal"></DxChartAxisLabel>
+			<DxChartAxisTitle Text="Amount"></DxChartAxisTitle>
+		</DxChartValueAxis>
+		<DxChartLineSeries Name="Accuracy" ArgumentField="@(((int seconds, float count) data) => data.seconds)" ValueField="@(data => data.count)" />
+	</DxChart>
+</div>
+
+@code {
+	private List<(int seconds, int count)> _gemsData = new List<(int seconds, int count)> { (0, 0) };
+	private List<(int seconds, int count)> _killsData = new List<(int seconds, int count)> { (0, 0) };
+	private List<(int seconds, int count)> _homingData = new List<(int seconds, int count)> { (0, 0) };
+	private List<(int seconds, int count)> _enemiesAliveData = new List<(int seconds, int count)> { (0, 0) };
+	private List<(int seconds, int count)> _daggersFiredData = new List<(int seconds, int count)> { (0, 0) };
+	private List<(int seconds, int count)> _daggersHitData = new List<(int seconds, int count)> { (0, 0) };
+	private List<(int seconds, float count)> _accuracyData = new List<(int seconds, float count)> { (0, 0) };
+	private Core.Entities.CustomEntry? _customEntry;
+
+	[Parameter]
+	public int CustomEntryId { get; set; }
+
+	protected override void OnInitialized()
+	{
+		_customEntry = DbContext.CustomEntries.Include(ce => ce.Player).FirstOrDefault(ce => ce.Id == CustomEntryId);
+		if (_customEntry == null)
+			return;
+
+		PopulateData(_customEntry.GemsData, _gemsData);
+		PopulateData(_customEntry.KillsData, _killsData);
+		PopulateData(_customEntry.HomingData, _homingData);
+		PopulateData(_customEntry.EnemiesAliveData, _enemiesAliveData);
+		PopulateData(_customEntry.DaggersFiredData, _daggersFiredData);
+		PopulateData(_customEntry.DaggersHitData, _daggersHitData);
+		PopulateAccuracy(_accuracyData);
+	}
+
+	private void PopulateData(string? source, List<(int seconds, int count)> destination)
+	{
+		int i = 0;
+		foreach (int count in source?.Split(',').Select(int.Parse) ?? Array.Empty<int>())
+			destination.Add((i++, count));
+	}
+
+	private void PopulateAccuracy(List<(int seconds, float count)> destination)
+	{
+		for (int i = 0; i < _daggersHitData.Count; i++)
+		{
+			float accuracy = _daggersHitData[i].count / (float)_daggersFiredData[i].count;
+			if (float.IsNaN(accuracy) || float.IsInfinity(accuracy))
+				accuracy = 0;
+
+			destination.Add((i++, accuracy));
+		}
+	}
+}

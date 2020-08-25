@@ -10,7 +10,7 @@
 	</Column>
 	<Column TableItem="CustomLeaderboardEntryData" Title="Username" Field="@(cled => cled.Username)" Sortable="true" Width="8%">
 		<Template>
-			<span class="@context.DaggerCssClass">@context.Username</span>
+			<a href="/CustomLeaderboardEntry/@context.CustomEntryId" class="@context.DaggerCssClass">@context.Username</a>
 		</Template>
 	</Column>
 	<Column TableItem="CustomLeaderboardEntryData" Title="Time" Field="@(cled => cled.Time)" Sortable="true" Width="4%" Align="Align.Right">
@@ -45,12 +45,7 @@
 	</Column>
 </Table>
 
-<DxChart Data="@_homingData">
-	<DxChartLineSeries Name="Homing" ArgumentField="@((HomingData hd) => hd.Second)" ValueField="@(hd => hd.Homing)" />
-</DxChart>
-
 @code {
-	private List<HomingData> _homingData = new List<HomingData>();
 	private List<CustomLeaderboardEntryData> _tableData = new List<CustomLeaderboardEntryData>();
 
 	[Parameter]
@@ -66,25 +61,5 @@
 
 		for (int i = 0; i < CustomEntries.Count; i++)
 			_tableData.Add(new CustomLeaderboardEntryData(i + 1, CustomEntries[i], Leaderboard));
-
-		IEnumerable<int>? homings = CustomEntries.FirstOrDefault(ce => !string.IsNullOrEmpty(ce.HomingData))?.HomingData?.Split(',').Select(int.Parse);
-		if (homings == null)
-			return;
-
-		int j = 0;
-		foreach (int homing in homings)
-			_homingData.Add(new HomingData(j++, homing));
-	}
-
-	public class HomingData
-	{
-		public HomingData(int second, int homing)
-		{
-			Second = second;
-			Homing = homing;
-		}
-
-		public int Second { get; set; }
-		public int Homing { get; set; }
 	}
 }

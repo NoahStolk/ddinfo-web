@@ -318,6 +318,12 @@ span.text-devil,
 span.text-golden,
 span.text-silver,
 span.text-bronze,
-span.text-default {
+span.text-default,
+a.text-homing,
+a.text-devil,
+a.text-golden,
+a.text-silver,
+a.text-bronze,
+a.text-default {
 	background-position-y: 3px;
 }

@@ -14,6 +14,7 @@ namespace DevilDaggersWebsite.Blazor.Data
 			DeathName = death?.Name ?? "Unknown";
 			DeathHexColor = $"#{death?.ColorCode ?? "444"}";
 
+			CustomEntryId = customEntry.Id;
 			Rank = rank;
 			PlayerId = customEntry.PlayerId;
 			FlagCode = customEntry.Player?.CountryCode ?? string.Empty;
@@ -38,6 +39,7 @@ namespace DevilDaggersWebsite.Blazor.Data
 		public string DeathName { get; }
 		public string DeathHexColor { get; }
 
+		public int CustomEntryId { get; set; }
 		public int Rank { get; set; }
 		public int PlayerId { get; set; }
 		public string FlagCode { get; }

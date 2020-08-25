@@ -10,7 +10,7 @@ namespace DevilDaggersWebsite.Blazor.Data
 			SpawnsetFileId = cl.SpawnsetFileId;
 			SpawnsetName = cl.SpawnsetFile.Name;
 			SpawnsetAuthorName = cl.SpawnsetFile.Player.Username;
-			Category = Enum.Parse<CustomLeaderboardCategory>(cl.Category.Name);
+			Category = cl.Category.Name;
 			Bronze = cl.Bronze;
 			Silver = cl.Silver;
 			Golden = cl.Golden;
@@ -28,7 +28,7 @@ namespace DevilDaggersWebsite.Blazor.Data
 		public int SpawnsetFileId { get; }
 		public string SpawnsetName { get; }
 		public string SpawnsetAuthorName { get; }
-		public CustomLeaderboardCategory Category { get; }
+		public string Category { get; }
 		public int Bronze { get; }
 		public int Silver { get; }
 		public int Golden { get; }
@@ -43,11 +43,5 @@ namespace DevilDaggersWebsite.Blazor.Data
 		public string WorldRecordHolderUsername { get; }
 		public int WorldRecordTime { get; }
 		public string WorldRecordDagger { get; }
-	}
-
-	public enum CustomLeaderboardCategory
-	{
-		Default,
-		Speedrun,
 	}
 }
