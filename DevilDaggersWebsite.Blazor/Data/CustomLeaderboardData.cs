@@ -5,7 +5,7 @@ namespace DevilDaggersWebsite.Blazor.Data
 {
 	public class CustomLeaderboardData
 	{
-		public CustomLeaderboardData(CustomLeaderboard cl, int totalPlayers, CustomEntry worldRecord)
+		public CustomLeaderboardData(CustomLeaderboard cl, int totalPlayers, CustomEntry? worldRecord)
 		{
 			SpawnsetFileId = cl.SpawnsetFileId;
 			SpawnsetName = cl.SpawnsetFile.Name;
@@ -19,9 +19,10 @@ namespace DevilDaggersWebsite.Blazor.Data
 			DateLastPlayed = cl.DateLastPlayed;
 			DateCreated = cl.DateCreated;
 			TotalPlayers = totalPlayers;
-			WorldRecordHolderUsername = worldRecord.Player.Username;
-			WorldRecordTime = worldRecord.Time;
-			WorldRecordDagger = cl.GetDagger(worldRecord.Time);
+			TotalRunSubmitted = cl.TotalRunsSubmitted;
+			WorldRecordHolderUsername = worldRecord?.Player.Username ?? "N/A";
+			WorldRecordTime = worldRecord?.Time ?? 0;
+			WorldRecordDagger = cl.GetDagger(worldRecord?.Time ?? 0);
 		}
 
 		public int SpawnsetFileId { get; }
@@ -34,6 +35,7 @@ namespace DevilDaggersWebsite.Blazor.Data
 		public int Devil { get; }
 		public int Homing { get; }
 		public int TotalPlayers { get; }
+		public int TotalRunSubmitted { get; }
 
 		public DateTime? DateLastPlayed { get; }
 		public DateTime? DateCreated { get; }

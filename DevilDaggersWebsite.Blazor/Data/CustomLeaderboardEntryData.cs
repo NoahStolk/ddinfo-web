@@ -6,7 +6,7 @@ namespace DevilDaggersWebsite.Blazor.Data
 {
 	public class CustomLeaderboardEntryData
 	{
-		public CustomLeaderboardEntryData(CustomEntry customEntry, CustomLeaderboard customLeaderboard)
+		public CustomLeaderboardEntryData(int rank, CustomEntry customEntry, CustomLeaderboard customLeaderboard)
 		{
 			DaggerCssClass = $"text-{customLeaderboard.GetDagger(customEntry.Time)}";
 
@@ -14,6 +14,7 @@ namespace DevilDaggersWebsite.Blazor.Data
 			DeathName = death?.Name ?? "Unknown";
 			DeathHexColor = $"#{death?.ColorCode ?? "444"}";
 
+			Rank = rank;
 			PlayerId = customEntry.PlayerId;
 			FlagCode = customEntry.Player?.CountryCode ?? string.Empty;
 			Username = customEntry.Player?.Username ?? "[Unknown player]";
@@ -37,6 +38,7 @@ namespace DevilDaggersWebsite.Blazor.Data
 		public string DeathName { get; }
 		public string DeathHexColor { get; }
 
+		public int Rank { get; set; }
 		public int PlayerId { get; set; }
 		public string FlagCode { get; }
 		public string Username { get; set; }

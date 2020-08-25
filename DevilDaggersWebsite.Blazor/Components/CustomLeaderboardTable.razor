@@ -1,5 +1,5 @@
-﻿<Table TableItem="CustomLeaderboardEntryData" Items="CustomEntries.Select(ce => new CustomLeaderboardEntryData(ce, Leaderboard))" PageSize="100">
-	@*<Column TableItem="CustomLeaderboardEntryData" Title="#" Field="@(cled => cled.Rank)" Sortable="true" Width="2%" Align="Align.Right" Format="@FormatUtils.LeaderboardIntFormat" />*@
+﻿<Table TableItem="CustomLeaderboardEntryData" Items="_tableData" PageSize="100">
+	<Column TableItem="CustomLeaderboardEntryData" Title="#" Field="@(cled => cled.Rank)" Sortable="true" Width="2%" Align="Align.Right" Format="@FormatUtils.LeaderboardIntFormat" />
 	<Column TableItem="CustomLeaderboardEntryData" Title="Flag" Field="@(cled => cled.FlagCode)" Sortable="true" Width="1%">
 		<Template>
 			@if (!string.IsNullOrEmpty(context.FlagCode))
@@ -51,22 +51,29 @@
 
 @code {
 	private List<HomingData> _homingData = new List<HomingData>();
+	private List<CustomLeaderboardEntryData> _tableData = new List<CustomLeaderboardEntryData>();
 
 	[Parameter]
-	public Core.Entities.CustomLeaderboard Leaderboard { get; set; } = new Core.Entities.CustomLeaderboard();
+	public Core.Entities.CustomLeaderboard Leaderboard { get; set; }
 
 	[Parameter]
 	public List<Core.Entities.CustomEntry> CustomEntries { get; set; } = new List<Core.Entities.CustomEntry>();
 
 	protected override void OnInitialized()
 	{
-		IEnumerable<int>? homings = CustomEntries.FirstOrDefault(ce => !string.IsNullOrEmpty(ce.HomingData)).HomingData?.Split(',').Select(int.Parse);
+		if (Leaderboard == null)
+			return;
+
+		for (int i = 0; i < CustomEntries.Count; i++)
+			_tableData.Add(new CustomLeaderboardEntryData(i + 1, CustomEntries[i], Leaderboard));
+
+		IEnumerable<int>? homings = CustomEntries.FirstOrDefault(ce => !string.IsNullOrEmpty(ce.HomingData))?.HomingData?.Split(',').Select(int.Parse);
 		if (homings == null)
 			return;
 
-		int i = 0;
+		int j = 0;
 		foreach (int homing in homings)
-			_homingData.Add(new HomingData(i++, homing));
+			_homingData.Add(new HomingData(j++, homing));
 	}
 
 	public class HomingData

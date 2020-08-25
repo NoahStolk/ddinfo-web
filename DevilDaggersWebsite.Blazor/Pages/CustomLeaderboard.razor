@@ -1,0 +1,32 @@
+﻿@page "/CustomLeaderboard/{Spawnset}"
+@inject ApplicationDbContext DbContext
+
+<a href="/CustomLeaderboards">Back</a>
+<CustomLeaderboardTable CustomEntries="_customEntries" Leaderboard="_customLeaderboard" />
+
+@code {
+	private List<Core.Entities.CustomEntry> _customEntries = new List<Core.Entities.CustomEntry>();
+	private Core.Entities.CustomLeaderboard _customLeaderboard = new Core.Entities.CustomLeaderboard();
+
+	[Parameter]
+	public string? Spawnset { get; set; }
+
+	protected override void OnInitialized()
+	{
+		_customLeaderboard = DbContext.CustomLeaderboards
+			.Include(cl => cl.SpawnsetFile)
+			.Include(cl => cl.Category)
+			.FirstOrDefault(cl => cl.SpawnsetFile.Name == Spawnset);
+
+		if (string.IsNullOrEmpty(Spawnset) || _customLeaderboard == null)
+			return;
+
+		_customEntries = DbContext.CustomEntries
+			.Include(ce => ce.CustomLeaderboard)
+				.ThenInclude(cl => cl.SpawnsetFile)
+			.Include(ce => ce.Player)
+			.Where(ce => ce.CustomLeaderboard.Id == _customLeaderboard.Id)
+			.OrderByMember(_customLeaderboard.Category.SortingPropertyName, _customLeaderboard.Category.Ascending)
+			.ToList();
+	}
+}
