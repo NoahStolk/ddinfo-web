@@ -57,6 +57,19 @@ namespace DevilDaggersWebsite.Core.Api
 		[ProducesResponseType(StatusCodes.Status400BadRequest)]
 		public async Task<ActionResult<Dto.UploadSuccess>> UploadScore([FromBody] Dto.UploadRequest uploadRequest)
 		{
+			try
+			{
+				return await ProcessUploadRequest(uploadRequest);
+			}
+			catch (Exception ex)
+			{
+				await TryLog(uploadRequest, null, ex);
+				throw;
+			}
+		}
+
+		private async Task<ActionResult<Dto.UploadSuccess>> ProcessUploadRequest(Dto.UploadRequest uploadRequest)
+		{
 			Version clientVersionParsed = Version.Parse(uploadRequest.DdclClientVersion);
 			if (clientVersionParsed < ToolList.DevilDaggersCustomLeaderboards.VersionNumberRequired)
 			{
@@ -114,7 +127,7 @@ namespace DevilDaggersWebsite.Core.Api
 				return new BadRequestObjectResult(new ProblemDetails { Title = errorMessage });
 			}
 
-			// Submission is accepted.
+			// At this point, the submission is accepted.
 
 			// Fix any broken values.
 			uploadRequest.Homing = Math.Max(0, uploadRequest.Homing);
