@@ -16,7 +16,7 @@ namespace DevilDaggersWebsite.Blazor.Data
 			Golden = cl.Golden;
 			Devil = cl.Devil;
 			Homing = cl.Homing;
-			DateLastPlayed = cl.DateLastPlayed;
+			DateLastPlayedUtc = cl.DateLastPlayed?.ToUniversalTime() ?? null;
 			DateCreated = cl.DateCreated;
 			TotalPlayers = totalPlayers;
 			TotalRunSubmitted = cl.TotalRunsSubmitted;
@@ -37,7 +37,7 @@ namespace DevilDaggersWebsite.Blazor.Data
 		public int TotalPlayers { get; }
 		public int TotalRunSubmitted { get; }
 
-		public DateTime? DateLastPlayed { get; }
+		public DateTime? DateLastPlayedUtc { get; }
 		public DateTime? DateCreated { get; }
 
 		public string WorldRecordHolderUsername { get; }

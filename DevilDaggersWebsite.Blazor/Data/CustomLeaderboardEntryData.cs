@@ -30,8 +30,8 @@ namespace DevilDaggersWebsite.Blazor.Data
 			LevelUpTime2 = customEntry.LevelUpTime2;
 			LevelUpTime3 = customEntry.LevelUpTime3;
 			LevelUpTime4 = customEntry.LevelUpTime4;
-			SubmitDate = customEntry.SubmitDate;
-			ClientVersion = customEntry.ClientVersion;
+			SubmitDateUtc = customEntry.SubmitDate.ToUniversalTime();
+			ClientVersion = customEntry.ClientVersion ?? "Pre-0.2.5.0";
 		}
 
 		public string DaggerCssClass { get; }
@@ -55,8 +55,8 @@ namespace DevilDaggersWebsite.Blazor.Data
 		public int LevelUpTime2 { get; set; }
 		public int LevelUpTime3 { get; set; }
 		public int LevelUpTime4 { get; set; }
-		public DateTime SubmitDate { get; set; }
-		public string? ClientVersion { get; set; }
+		public DateTime SubmitDateUtc { get; set; }
+		public string ClientVersion { get; set; }
 
 		public double Accuracy => DaggersFired == 0 ? 0 : DaggersHit / (double)DaggersFired;
 	}

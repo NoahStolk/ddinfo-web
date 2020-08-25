@@ -16,7 +16,7 @@
 		<DxChartLineSeries Name="Kills" ArgumentField="@(((int seconds, int count) data) => data.seconds)" ValueField="@(data => data.count)" />
 	</DxChart>
 	<DxChart Data="@_homingData">
-		<DxChartAreaSeries Name="Homing" ArgumentField="@(((int seconds, int count) data) => data.seconds)" ValueField="@(data => data.count)" />
+		<DxChartLineSeries Name="Homing" ArgumentField="@(((int seconds, int count) data) => data.seconds)" ValueField="@(data => data.count)" />
 	</DxChart>
 </div>
 <div class="card-deck mb-lg-3 pb-lg-3">

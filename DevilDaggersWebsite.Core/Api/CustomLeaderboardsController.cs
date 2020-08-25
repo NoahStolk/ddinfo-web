@@ -430,9 +430,9 @@ namespace DevilDaggersWebsite.Core.Api
 					return;
 
 				if (!string.IsNullOrEmpty(errorMessage))
-					await DiscordBotDdInfo.Program.DdInfoDevChannel.SendMessageAsyncSafe($"Upload failed for user '{uploadRequest.Username}' ({uploadRequest.PlayerId}) for '{GetSpawnsetNameOrHash()}'.\n{errorMessage}");
+					await DiscordBotDdInfo.Program.DdInfoDevChannel.SendMessageAsyncSafe($"Upload failed for user `{uploadRequest.Username}` (`{uploadRequest.PlayerId}`) for `{GetSpawnsetNameOrHash()}`.\n{errorMessage}");
 				else
-					await DiscordBotDdInfo.Program.DdInfoDevChannel.SendMessageAsyncSafe($"{uploadRequest.Username} just submitted a score of {uploadRequest.Time / 10000f} to '{GetSpawnsetNameOrHash()}'.");
+					await DiscordBotDdInfo.Program.DdInfoDevChannel.SendMessageAsyncSafe($"`{uploadRequest.Username}` just submitted a score of `{uploadRequest.Time / 10000f}` to `{GetSpawnsetNameOrHash()}`.");
 			}
 			catch
 			{
