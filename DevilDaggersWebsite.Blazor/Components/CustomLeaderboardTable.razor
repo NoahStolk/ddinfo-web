@@ -1,6 +1,6 @@
 ﻿<Table TableItem="CustomLeaderboardEntryData" Items="_tableData" PageSize="100">
 	<Column TableItem="CustomLeaderboardEntryData" Title="#" Field="@(cled => cled.Rank)" Sortable="true" Width="2%" Align="Align.Right" Format="@FormatUtils.LeaderboardIntFormat" />
-	<Column TableItem="CustomLeaderboardEntryData" Title="Flag" Field="@(cled => cled.FlagCode)" Sortable="true" Width="1%">
+	<Column TableItem="CustomLeaderboardEntryData" Title="Flag" Field="@(cled => cled.FlagCode)" Sortable="true" Width="2%">
 		<Template>
 			@if (!string.IsNullOrEmpty(context.FlagCode))
 			{

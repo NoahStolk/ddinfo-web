@@ -135,7 +135,6 @@ namespace DevilDaggersWebsite.Core.Clients
 			}
 		}
 
-		// TODO: Remove.
 		public static async Task<Entry> GetUserById(int userId)
 		{
 			try

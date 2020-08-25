@@ -45,8 +45,8 @@
 			<span class="@context.DaggerCssClass">@FormatUtils.FormatTimeInteger(context.Time)</span>
 		</Template>
 	</Column>
-	<Column TableItem="LeaderboardEntryData" Title="Kills" Field="@(led => led.Kills)" Sortable="true" Width="4%" Align="Align.Right" Format="@FormatUtils.LeaderboardIntFormat" />
-	<Column TableItem="LeaderboardEntryData" Title="Gems" Field="@(led => led.Gems)" Sortable="true" Width="4%" Align="Align.Right" Format="@FormatUtils.LeaderboardIntFormat" />
+	<Column TableItem="LeaderboardEntryData" Title="Kills" Field="@(led => led.Kills)" Sortable="true" Width="2%" Align="Align.Right" Format="@FormatUtils.LeaderboardIntFormat" />
+	<Column TableItem="LeaderboardEntryData" Title="Gems" Field="@(led => led.Gems)" Sortable="true" Width="2%" Align="Align.Right" Format="@FormatUtils.LeaderboardIntFormat" />
 	<Column TableItem="LeaderboardEntryData" Title="Accuracy" Field="@(led => led.Accuracy)" Sortable="true" Width="4%" Align="Align.Right" Format="@FormatUtils.AccuracyFormat" />
 	<Column TableItem="LeaderboardEntryData" Title="Death" Field="@(led => led.DeathName)" Sortable="true" Width="6%">
 		<Template>
@@ -60,7 +60,7 @@
 	</Column>
 	<Column TableItem="LeaderboardEntryData" Title="Total kills" Field="@(led => led.TotalKills)" Sortable="true" Width="5%" Align="Align.Right" Format="@FormatUtils.LeaderboardIntFormat" />
 	<Column TableItem="LeaderboardEntryData" Title="Total gems" Field="@(led => led.TotalGems)" Sortable="true" Width="5%" Align="Align.Right" Format="@FormatUtils.LeaderboardIntFormat" />
-	<Column TableItem="LeaderboardEntryData" Title="Average accuracy" Field="@(led => led.TotalAccuracy)" Sortable="true" Width="4%" Align="Align.Right" Format="@FormatUtils.AccuracyFormat" />
+	<Column TableItem="LeaderboardEntryData" Title="Average accuracy" Field="@(led => led.TotalAccuracy)" Sortable="true" Width="5%" Align="Align.Right" Format="@FormatUtils.AccuracyFormat" />
 	<Column TableItem="LeaderboardEntryData" Title="Total deaths" Field="@(led => led.TotalDeaths)" Sortable="true" Width="5%" Align="Align.Right" Format="@FormatUtils.LeaderboardIntFormat" />
 	<Column TableItem="LeaderboardEntryData" Title="Average time" Field="@(led => led.AverageTime)" Sortable="true" Width="5%" Align="Align.Right">
 		<Template>

@@ -11,6 +11,25 @@ html, body, .login, .table {
 	background-image: url("../images/skulltile.png");
 }
 
+.table-hover tbody tr:hover {
+	color: #fff;
+}
+
+.table-responsive > .table-bordered,
+.table-bordered td, .table-bordered th {
+	border: 0;
+}
+
+.table .thead-light th {
+	background-color: #000;
+	color: #ddd;
+}
+
+.btn-primary {
+	background-color: #d00;
+	border-color: #d00;
+}
+
 .logo {
 	-ms-interpolation-mode: nearest-neighbor;
 	image-rendering: crisp-edges;
