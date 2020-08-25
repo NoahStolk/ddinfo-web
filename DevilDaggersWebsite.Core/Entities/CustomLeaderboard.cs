@@ -31,6 +31,8 @@ namespace DevilDaggersWebsite.Core.Entities
 
 		public DateTime? DateCreated { get; set; }
 
+		public int TotalRunsSubmitted { get; set; }
+
 		/// <summary>
 		/// Returns the CSS class name corresponding to the time in seconds.
 		/// </summary>

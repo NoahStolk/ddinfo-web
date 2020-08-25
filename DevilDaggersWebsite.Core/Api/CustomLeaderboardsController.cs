@@ -134,6 +134,7 @@ namespace DevilDaggersWebsite.Core.Api
 
 			// Update the date this leaderboard was submitted to.
 			leaderboard.DateLastPlayed = DateTime.Now;
+			leaderboard.TotalRunsSubmitted++;
 
 			// Calculate the new rank.
 			IEnumerable<CustomEntry> entries = _dbContext.CustomEntries.Where(e => e.CustomLeaderboard == leaderboard).OrderByMember(leaderboard.Category.SortingPropertyName, leaderboard.Category.Ascending).ToArray();
