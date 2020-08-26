@@ -1,0 +1,33 @@
+﻿@page "/LeaderboardStatistics"
+<ul>
+	@foreach (KeyValuePair<Death, int> death in deathStats)
+	{
+		<li>
+			<span>@death.Key.Name</span>
+			<span>@death.Value</span>
+		</li>
+	}
+</ul>
+
+@code {
+	private readonly Dictionary<Death, int> deathStats = new Dictionary<Death, int>();
+
+	protected override void OnInitialized()
+	{
+		byte[] bytes = System.IO.File.ReadAllBytes(@"C:\Users\NOAH\source\repos\DevilDaggersLeaderboardFetcher\DevilDaggersLeaderboardFetcher\bin\Debug\netcoreapp3.1\lb.bin");
+
+		for (int i = 0; i < bytes.Length / 15; i++)
+		{
+			byte deathType = bytes[14 + i * 15];
+
+			Death? death = GameInfo.GetDeathByType(deathType, GameVersion.V3);
+			if (death == null)
+				continue;
+
+			if (deathStats.ContainsKey(death))
+				deathStats[death]++;
+			else
+				deathStats.Add(death, 1);
+		}
+	}
+}
