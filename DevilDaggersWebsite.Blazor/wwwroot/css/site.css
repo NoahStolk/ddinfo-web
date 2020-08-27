@@ -61,6 +61,19 @@ h1 {
 	-webkit-filter: blur(0.000001px);
 }
 
+.chart-title {
+	font-family: 'dd', sans-serif;
+	padding-left: 32px;
+	color: #ddd;
+	font-size: 40px;
+	text-transform: uppercase;
+	-webkit-filter: blur(0.000001px);
+}
+
+.chart {
+	background-color: #0000;
+}
+
 a, .btn-link {
 	color: #a00;
 }
