@@ -17,7 +17,7 @@ Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "DiscordBotDdInfo", "..\Disc
 EndProject
 Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "DiscordBotDdInfo.Tests", "..\DiscordBotDdInfo\DiscordBotDdInfo.Tests\DiscordBotDdInfo.Tests.csproj", "{B45885C0-87A0-4F8C-938D-9D16D3E287B3}"
 EndProject
-Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "DevilDaggersWebsite.Tests", "DevilDaggersWebsite.Tests\DevilDaggersWebsite.Tests.csproj", "{303D386A-E3ED-4621-86A3-3696714076D4}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "DevilDaggersWebsite.Core.Tests", "DevilDaggersWebsite.Core.Tests\DevilDaggersWebsite.Core.Tests.csproj", "{303D386A-E3ED-4621-86A3-3696714076D4}"
 EndProject
 Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "DevilDaggersWebsite.Core", "DevilDaggersWebsite.Core\DevilDaggersWebsite.Core.csproj", "{D4999618-8C55-488A-8014-CAE7BF3E66E6}"
 EndProject
