@@ -17,12 +17,12 @@ namespace DevilDaggersWebsite.Core.Tasks.Cron
 
 		public static readonly CrontabFieldImpl DayOfWeek = new CrontabFieldImpl(CrontabFieldKind.DayOfWeek, 0, 6, new[] { "Sunday", "Monday", "Tuesday", "Wednesday", "Thursday", "Friday", "Saturday" });
 
-		private static readonly CrontabFieldImpl[] fieldByKind = { Minute, Hour, Day, Month, DayOfWeek };
+		private static readonly CrontabFieldImpl[] _fieldByKind = { Minute, Hour, Day, Month, DayOfWeek };
 
-		private static readonly CompareInfo comparer = CultureInfo.InvariantCulture.CompareInfo;
-		private static readonly char[] comma = { ',' };
+		private static readonly CompareInfo _comparer = CultureInfo.InvariantCulture.CompareInfo;
+		private static readonly char[] _comma = { ',' };
 
-		private readonly string[]? names;
+		private readonly string[]? _names;
 
 		private CrontabFieldImpl(CrontabFieldKind kind, int minValue, int maxValue, string[]? names)
 		{
@@ -31,7 +31,7 @@ namespace DevilDaggersWebsite.Core.Tasks.Cron
 			Debug.Assert(minValue >= 0);
 			Debug.Assert(maxValue >= minValue);
 
-			this.names = names;
+			_names = names;
 			Kind = kind;
 			MinValue = minValue;
 			MaxValue = maxValue;
@@ -50,7 +50,7 @@ namespace DevilDaggersWebsite.Core.Tasks.Cron
 			if (!Enum.IsDefined(typeof(CrontabFieldKind), kind))
 				throw new ArgumentException($"Invalid crontab field kind. Valid values are {string.Join(", ", Enum.GetNames(typeof(CrontabFieldKind)))}.", nameof(kind));
 
-			return fieldByKind[(int)kind];
+			return _fieldByKind[(int)kind];
 		}
 
 		public void Format(CrontabField field, TextWriter writer, bool noNames)
@@ -73,7 +73,8 @@ namespace DevilDaggersWebsite.Core.Tasks.Cron
 				{
 					last = next;
 					next = field.Next(last + 1);
-				} while (next - last == 1);
+				}
+				while (next - last == 1);
 
 				if (count == 0
 					&& first == MinValue && last == MaxValue)
@@ -104,7 +105,7 @@ namespace DevilDaggersWebsite.Core.Tasks.Cron
 		{
 			Debug.Assert(writer != null);
 
-			if (noNames || names == null)
+			if (noNames || _names == null)
 			{
 				if (value >= 0 && value < 100)
 				{
@@ -118,7 +119,7 @@ namespace DevilDaggersWebsite.Core.Tasks.Cron
 			else
 			{
 				int index = value - MinValue;
-				writer.Write(names[index]);
+				writer.Write(_names[index]);
 			}
 		}
 
@@ -178,7 +179,7 @@ namespace DevilDaggersWebsite.Core.Tasks.Cron
 
 			if (commaIndex > 0)
 			{
-				foreach (string token in str.Split(comma))
+				foreach (string token in str.Split(_comma))
 					InternalParse(token, acc);
 			}
 			else
@@ -241,18 +242,18 @@ namespace DevilDaggersWebsite.Core.Tasks.Cron
 			if (firstChar >= '0' && firstChar <= '9')
 				return int.Parse(str, CultureInfo.InvariantCulture);
 
-			if (names == null)
+			if (_names == null)
 			{
 				throw new FormatException($"'{str}' is not a valid value for this crontab field. It must be a numeric value between {MinValue} and {MaxValue} (all inclusive).");
 			}
 
-			for (int i = 0; i < names.Length; i++)
+			for (int i = 0; i < _names.Length; i++)
 			{
-				if (comparer.IsPrefix(names[i], str, CompareOptions.IgnoreCase))
+				if (_comparer.IsPrefix(_names[i], str, CompareOptions.IgnoreCase))
 					return i + MinValue;
 			}
 
-			throw new FormatException($"'{str}' is not a known value name. Use one of the following: {string.Join(", ", names)}.");
+			throw new FormatException($"'{str}' is not a known value name. Use one of the following: {string.Join(", ", _names)}.");
 		}
 	}
 }

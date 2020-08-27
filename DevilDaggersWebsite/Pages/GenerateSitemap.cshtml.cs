@@ -9,11 +9,11 @@ namespace DevilDaggersWebsite.Pages
 {
 	public class GenerateSitemapModel : PageModel
 	{
-		private readonly IHttpContextAccessor httpContextAccessor;
+		private readonly IHttpContextAccessor _httpContextAccessor;
 
 		public GenerateSitemapModel(IHttpContextAccessor httpContextAccessor)
 		{
-			this.httpContextAccessor = httpContextAccessor;
+			_httpContextAccessor = httpContextAccessor;
 		}
 
 		public string? XmlResult { get; set; }
@@ -30,7 +30,7 @@ namespace DevilDaggersWebsite.Pages
 			SitemapUtils.ExcludePage("Spawnset");
 			SitemapUtils.ExcludePage("Wiki_SpawnsExtended");
 
-			XmlResult = SitemapUtils.GetSitemap(httpContextAccessor, typeof(Page), true);
+			XmlResult = SitemapUtils.GetSitemap(_httpContextAccessor, typeof(Page), true);
 		}
 	}
 }
