@@ -27,7 +27,6 @@ namespace DevilDaggersWebsite.Pages
 			SitemapUtils.ExcludePage("CustomLeaderboards_Leaderboard");
 			SitemapUtils.ExcludePage("CustomLeaderboards_Upload");
 			SitemapUtils.ExcludePage("Error_404");
-			SitemapUtils.ExcludePage("Leaderboard_Statistics");
 			SitemapUtils.ExcludePage("Spawnset");
 			SitemapUtils.ExcludePage("Wiki_SpawnsExtended");
 
