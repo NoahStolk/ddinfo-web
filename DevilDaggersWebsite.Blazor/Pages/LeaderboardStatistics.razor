@@ -1,34 +1,91 @@
 ﻿@page "/LeaderboardStatistics"
 @inject Microsoft.AspNetCore.Hosting.IWebHostEnvironment Env
-<ul>
-	@foreach (KeyValuePair<Death, int> death in deathStats)
-	{
-		<li>
-			<span>@death.Key.Name</span>
-			<span>@death.Value</span>
-		</li>
-	}
-</ul>
+@using DevilDaggersWebsite.Core.LeaderboardStatistics
 
+<div class="card-deck mb-lg-3 pb-lg-3">
+	<DxChart Data="@_daggerStats">
+		<DxChartTitle Text="Daggers" />
+		<DxChartTooltip>
+			<div class="p-3">
+				<p class="text-align-center"><b>@context.Point.SeriesName</b></p>
+				<p>Dagger: @context.Point.Argument</p>
+				<p>Players: @context.Point.Value</p>
+			</div>
+		</DxChartTooltip>
+		<DxChartLegend Visible="false" />
+		<DxChartPieSeries ArgumentField="@(kvp => kvp.Key.Name)" ValueField="@((KeyValuePair<Dagger, int> kvp) => kvp.Value)" />
+	</DxChart>
+	<DxChart Data="@_deathStats">
+		<DxChartTitle Text="Deaths" />
+		<DxChartTooltip>
+			<div class="p-3">
+				<p class="text-align-center"><b>@context.Point.SeriesName</b></p>
+				<p>Death: @context.Point.Argument</p>
+				<p>Players: @context.Point.Value</p>
+			</div>
+		</DxChartTooltip>
+		<DxChartLegend Visible="false" />
+		<DxChartPieSeries ArgumentField="@(kvp => kvp.Key.Name)" ValueField="@((KeyValuePair<Death, int> kvp) => kvp.Value)">
+			<DxChartSeriesLabel Visible="true" />
+			<!-- Color="@(System.Drawing.ColorTranslator.FromHtml(context.Key.ColorCode))"-->
+		</DxChartPieSeries>
+	</DxChart>
+	<DxChart Data="@_timeStats">
+		<DxChartTitle Text="Highscores" />
+		<DxChartTooltip>
+			<div class="p-3">
+				<p class="text-align-center"><b>@context.Point.SeriesName</b></p>
+				<p>Time range: @context.Point.Argument - @((int)context.Point.Argument + 10)</p>
+				<p>Players: @context.Point.Value</p>
+			</div>
+		</DxChartTooltip>
+		<DxChartLegend Visible="false" />
+		<DxChartCommonSeries NameField="@((KeyValuePair<int, int> kvp) => kvp.Key)" ArgumentField="@(kvp => kvp.Key)" ValueField="@(kvp => kvp.Value)" AggregationMethod="@Enumerable.Sum" SeriesType="@ChartSeriesType.Bar" />
+	</DxChart>
+</div>
 @code {
-	private readonly Dictionary<Death, int> deathStats = new Dictionary<Death, int>();
+	private readonly int _timeStep = 100000;
+
+	private readonly List<CompressedEntry> _entries = new List<CompressedEntry>();
+
+	private readonly Dictionary<Dagger, int> _daggerStats = new Dictionary<Dagger, int>();
+	private readonly Dictionary<Death, int> _deathStats = new Dictionary<Death, int>();
+	private readonly Dictionary<int, int> _timeStats = new Dictionary<int, int>();
+
+	protected void PreparePointColor(ChartSeriesPointCustomizationSettings pointSettings)
+	{
+		double value = (double)pointSettings.Point.Value;
+		if (value > 75)
+			pointSettings.PointAppearance.Color = System.Drawing.Color.Red;
+		else if (value < 25)
+			pointSettings.PointAppearance.Color = System.Drawing.Color.Blue;
+	}
 
 	protected override void OnInitialized()
 	{
 		byte[] bytes = System.IO.File.ReadAllBytes(System.IO.Path.Combine(Env.WebRootPath, "leaderboard-statistics", "lb.bin"));
-
 		for (int i = 0; i < bytes.Length / 15; i++)
+			_entries.Add(CompressedEntry.FromBytes(bytes[(i * 15)..((i + 1) * 15)]));
+
+		foreach (CompressedEntry entry in _entries)
 		{
-			byte deathType = bytes[14 + i * 15];
-
-			Death? death = GameInfo.GetDeathByType(deathType, GameVersion.V3);
-			if (death == null)
-				continue;
-
-			if (deathStats.ContainsKey(death))
-				deathStats[death]++;
+			Dagger dagger = GameInfo.GetDaggerFromTime((int)entry.Time);
+			if (_daggerStats.ContainsKey(dagger))
+				_daggerStats[dagger]++;
 			else
-				deathStats.Add(death, 1);
+				_daggerStats.Add(dagger, 1);
+
+			Death death = GameInfo.GetDeathByType(entry.DeathType, GameVersion.V3) ?? throw new Exception($"Invalid death type for entry with time {entry.Time}.");
+			if (_deathStats.ContainsKey(death))
+				_deathStats[death]++;
+			else
+				_deathStats.Add(death, 1);
+
+			int step = (int)(entry.Time / _timeStep * 10);
+			if (_timeStats.ContainsKey(step))
+				_timeStats[step]++;
+			else
+				_timeStats.Add(step, 1);
 		}
 	}
 }
