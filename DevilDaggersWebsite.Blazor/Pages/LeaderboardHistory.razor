@@ -1,0 +1,29 @@
+﻿@page "/LeaderboardHistory"
+@inject ApplicationDbContext DbContext
+@inject IWebHostEnvironment Env
+@using Microsoft.AspNetCore.Hosting
+@using Newtonsoft.Json
+@using System.IO
+@using System.Text
+
+<h1>Leaderboard History</h1>
+
+@{
+	<LeaderboardTable Leaderboard="@_leaderboard" Players="_players" />
+}
+
+@code {
+	private List<Player> _players = new List<Player>();
+	private Core.Dto.Leaderboard _leaderboard = new Core.Dto.Leaderboard();
+
+	private DateTime _dateTime;
+
+	protected override void OnInitialized()
+	{
+		_players = DbContext.Players.ToList();
+
+		//string jsonFileName = $"{_dateTime:yyyyMMddHHmm}.json";
+		string jsonFileName = $"201701140000.json";
+		_leaderboard = JsonConvert.DeserializeObject<Core.Dto.Leaderboard>(File.ReadAllText(Path.Combine(Env.WebRootPath, "leaderboard-history", jsonFileName), Encoding.UTF8));
+	}
+}
