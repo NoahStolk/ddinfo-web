@@ -4,8 +4,7 @@
 		<UserSecretsId>aspnet-DevilDaggersWebsite.Blazor-AFFD91BC-0311-49AE-8C83-FEC634B95389</UserSecretsId>
 		<Nullable>enable</Nullable>
 		<GenerateDocumentationFile>true</GenerateDocumentationFile>
-		<Version>4.0.0.0</Version>
-		<VersionSuffix>Alpha</VersionSuffix>
+		<Version>4.0.0.0-alpha</Version>
 	</PropertyGroup>
 	<ItemGroup>
 		<PackageReference Include="BlazorTable" Version="1.12.1" />

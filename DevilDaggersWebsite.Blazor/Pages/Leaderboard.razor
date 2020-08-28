@@ -7,10 +7,10 @@
 		Ranks
 	</button>
 	<button class="btn btn-primary" @onclick="@(e => UpdateState(LeaderboardState.Username))">
-		Search
+		Username Search
 	</button>
 	<button class="btn btn-primary" @onclick="@(e => UpdateState(LeaderboardState.UserId))">
-		UserId
+		UserId Search
 	</button>
 </p>
 
@@ -26,7 +26,7 @@
 }
 
 @code {
-	private List<Player> _players;
+	private List<Player> _players = new List<Player>();
 
 	protected override void OnInitialized()
 	{

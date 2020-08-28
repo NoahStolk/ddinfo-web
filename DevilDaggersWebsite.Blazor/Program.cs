@@ -1,12 +1,20 @@
 using Microsoft.AspNetCore.Hosting;
 using Microsoft.Extensions.Hosting;
+using System.Reflection;
 
 namespace DevilDaggersWebsite.Blazor
 {
 	public static class Program
 	{
+		public static string Version { get; set; } = string.Empty;
+
 		public static void Main(string[] args)
-			=> CreateHostBuilder(args).Build().Run();
+		{
+			string? version = Assembly.GetExecutingAssembly()?.GetCustomAttribute<AssemblyInformationalVersionAttribute>()?.InformationalVersion;
+			Version = version ?? "Version not found";
+
+			CreateHostBuilder(args).Build().Run();
+		}
 
 		public static IHostBuilder CreateHostBuilder(string[] args)
 			=> Host.CreateDefaultBuilder(args)

@@ -19,12 +19,14 @@ using Microsoft.Extensions.Hosting;
 using Newtonsoft.Json.Converters;
 using System;
 using System.Collections.Generic;
+using System.Globalization;
+using System.Threading;
 
 namespace DevilDaggersWebsite.Blazor
 {
 	public class Startup
 	{
-		private const string defaultCorsPolicy = nameof(defaultCorsPolicy);
+		private const string _defaultCorsPolicy = nameof(_defaultCorsPolicy);
 
 		public Startup(IConfiguration configuration)
 		{
@@ -35,9 +37,12 @@ namespace DevilDaggersWebsite.Blazor
 
 		public void ConfigureServices(IServiceCollection services)
 		{
+			Thread.CurrentThread.CurrentCulture = CultureInfo.InvariantCulture;
+			Thread.CurrentThread.CurrentUICulture = CultureInfo.InvariantCulture;
+
 			services.AddCors(options =>
 			{
-				options.AddPolicy(defaultCorsPolicy, builder => { builder.AllowAnyOrigin(); });
+				options.AddPolicy(_defaultCorsPolicy, builder => { builder.AllowAnyOrigin(); });
 			});
 
 			services.AddRazorPages();
