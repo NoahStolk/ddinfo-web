@@ -12,6 +12,7 @@ using Microsoft.AspNetCore.Identity;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.AspNetCore.Mvc.Infrastructure;
 using Microsoft.AspNetCore.Mvc.Routing;
+using Microsoft.AspNetCore.Rewrite;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
@@ -19,8 +20,7 @@ using Microsoft.Extensions.Hosting;
 using Newtonsoft.Json.Converters;
 using System;
 using System.Collections.Generic;
-using System.Globalization;
-using System.Threading;
+using System.Threading.Tasks;
 
 namespace DevilDaggersWebsite.Blazor
 {
@@ -37,9 +37,6 @@ namespace DevilDaggersWebsite.Blazor
 
 		public void ConfigureServices(IServiceCollection services)
 		{
-			Thread.CurrentThread.CurrentCulture = CultureInfo.InvariantCulture;
-			Thread.CurrentThread.CurrentUICulture = CultureInfo.InvariantCulture;
-
 			services.AddCors(options =>
 			{
 				options.AddPolicy(_defaultCorsPolicy, builder => { builder.AllowAnyOrigin(); });
@@ -102,8 +99,35 @@ namespace DevilDaggersWebsite.Blazor
 			});
 		}
 
-		public void Configure(IApplicationBuilder app, IWebHostEnvironment env)
+		public void Configure(IApplicationBuilder app, IWebHostEnvironment env, IServiceProvider serviceProvider)
 		{
+			// Do not change order of redirects.
+			RewriteOptions options = new RewriteOptions()
+				.AddRedirect("^Home/Index$", "Index")
+				.AddRedirect("^Home/Leaderboard$", "Leaderboard")
+				.AddRedirect("^Home/Spawnset/(.*)$", "Spawnset?spawnset=$1")
+				.AddRedirect("^Home/Spawnsets$", "Spawnsets")
+				.AddRedirect("^Home/SpawnsetsInfo$", "Spawnsets")
+				.AddRedirect("^Home/Spawnset$", "Spawnset")
+				.AddRedirect("^Home/Hands$", "Wiki/Upgrades")
+				.AddRedirect("^Home/Enemies$", "Wiki/Enemies")
+				.AddRedirect("^Home/Daggers$", "Wiki/Daggers")
+				.AddRedirect("^Home/Donations$", "Donations")
+				.AddRedirect("^Home$", "Index")
+				.AddRedirect("^Upgrades$", "Wiki/Upgrades")
+				.AddRedirect("^Enemies$", "Wiki/Enemies")
+				.AddRedirect("^Daggers$", "Wiki/Daggers")
+				.AddRedirect("^GetSpawnsets$", "Api/GetSpawnsets")
+				.AddRedirect("^GetToolVersions$", "Api/GetToolVersions")
+				.AddRedirect("^LeaderboardJson$", "Api/LeaderboardJson")
+				.AddRedirect("^Spawns$", "Wiki/Spawns")
+				.AddRedirect("^Home/Spawns$", "Wiki/Spawns")
+				.AddRedirect("^Wiki/SpawnsetGuide$", "Wiki/Guides/SurvivalEditor")
+				.AddRedirect("^Wiki/AssetGuide$", "Wiki/Guides/AssetEditor")
+				.AddRedirect("^DownloadSpawnset", "Api/DownloadSpawnset")
+				.AddRedirect("^DownloadSpawnset?file=(.*)", "Api/DownloadSpawnset?file=$1");
+			app.UseRewriter(options);
+
 			if (env.IsDevelopment())
 			{
 				app.UseDeveloperExceptionPage();
@@ -129,6 +153,12 @@ namespace DevilDaggersWebsite.Blazor
 				endpoints.MapBlazorHub();
 				endpoints.MapFallbackToPage("/_Host");
 			});
+
+			app.UseOpenApi();
+			app.UseSwaggerUi3();
+
+			Task task = serviceProvider.CreateRolesAndAdminUser(Configuration.GetSection("AdminUser")["Email"]);
+			task.Wait();
 		}
 	}
 }

@@ -1,6 +1,8 @@
 using Microsoft.AspNetCore.Hosting;
 using Microsoft.Extensions.Hosting;
+using System.Globalization;
 using System.Reflection;
+using System.Threading;
 
 namespace DevilDaggersWebsite.Blazor
 {
@@ -10,6 +12,9 @@ namespace DevilDaggersWebsite.Blazor
 
 		public static void Main(string[] args)
 		{
+			Thread.CurrentThread.CurrentCulture = CultureInfo.InvariantCulture;
+			Thread.CurrentThread.CurrentUICulture = CultureInfo.InvariantCulture;
+
 			string? version = Assembly.GetExecutingAssembly()?.GetCustomAttribute<AssemblyInformationalVersionAttribute>()?.InformationalVersion;
 			Version = version ?? "Version not found";
 
