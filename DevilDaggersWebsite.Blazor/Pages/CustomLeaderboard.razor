@@ -1,7 +1,6 @@
 ﻿@page "/CustomLeaderboard/{Spawnset}"
 @inject ApplicationDbContext DbContext
 
-<a href="/CustomLeaderboards">Back</a>
 <CustomLeaderboardTable CustomEntries="_customEntries" Leaderboard="_customLeaderboard" />
 
 @code {
