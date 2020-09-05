@@ -36,7 +36,7 @@
     <DotNetCliToolReference Include="Microsoft.VisualStudio.Web.CodeGeneration.Tools" Version="2.0.2" />
   </ItemGroup>
   <ItemGroup>
-    <ProjectReference Include="..\..\DevilDaggersCore\DevilDaggersCore\DevilDaggersCore.csproj" />
+    <ProjectReference Include="..\..\DiscordBotDdInfo\DiscordBotDdInfo\DiscordBotDdInfo.csproj" />
     <ProjectReference Include="..\..\SitemapGenerator\SitemapGenerator\SitemapGenerator.csproj" />
     <ProjectReference Include="..\DevilDaggersWebsite.Core\DevilDaggersWebsite.Core.csproj" />
   </ItemGroup>
