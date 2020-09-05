@@ -50,6 +50,8 @@ namespace DevilDaggersWebsite.Pages.Admin.AssetMods
 
 		public async Task<IActionResult> OnPostAsync()
 		{
+			ModelState.Remove("AssetMod.PlayerTitles");
+
 			if (!ModelState.IsValid)
 				return Page();
 

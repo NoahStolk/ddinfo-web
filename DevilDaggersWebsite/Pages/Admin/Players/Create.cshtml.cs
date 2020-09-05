@@ -21,6 +21,9 @@ namespace DevilDaggersWebsite.Pages.Admin.Players
 
 		public async Task<IActionResult> OnPostAsync()
 		{
+			ModelState.Remove("Player.PlayerAssetMods");
+			ModelState.Remove("Player.PlayerTitles");
+
 			if (!ModelState.IsValid)
 				return Page();
 
