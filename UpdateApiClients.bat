@@ -1,4 +1,4 @@
-CALL :run_nswag ../DevilDaggersSurvivalEditor/DevilDaggersSurvivalEditor/Code/Clients
+CALL :run_nswag ../DevilDaggersSurvivalEditor/DevilDaggersSurvivalEditor/Clients
 CALL :run_nswag ../DevilDaggersAssetEditor/DevilDaggersAssetEditor.Wpf/Clients
 CALL :run_nswag ../DevilDaggersCustomLeaderboards/DevilDaggersCustomLeaderboards/Clients
 CALL :run_nswag ../DiscordBotDdInfo/DiscordBotDdInfo/Clients
