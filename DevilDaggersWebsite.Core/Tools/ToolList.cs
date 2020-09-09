@@ -258,10 +258,10 @@ namespace DevilDaggersWebsite.Core.Tools
 								new Change("Added continuous tile modification and selection to the arena editor."),
 								new Change("Added rectangular tile modification and selection to the arena editor."),
 								new Change("Added ability to round heights for selected tiles."),
-								new Change("Added ability to randomise heights for selected tiles."),
+								new Change("Added ability to randomize heights for selected tiles."),
 								new Change("Added ability to rotate and flip the arena."),
 								new Change("Made the tiles brighter for better visibility."),
-								new Change("Optimised the shrink preview slider for better performance."),
+								new Change("Optimized the shrink preview slider for better performance."),
 								new Change("Implemented custom pixel shading for the arena editor to take advantage of high-performant GPU rendering to render lighting, selection borders and selection highlighting."),
 							},
 						},
@@ -328,7 +328,7 @@ namespace DevilDaggersWebsite.Core.Tools
 									},
 								},
 								new Change("The application now uses logging, so whenever it crashes you can open the log to see what went wrong."),
-								new Change("The application is now dependent on Devil Daggers Core, which is a .NET Standard class library used to share code between various Devil Daggers related applications."),
+								new Change("The application is now dependent on DevilDaggersCore, which is a .NET Standard class library used to share code between various Devil Daggers related applications."),
 							},
 						},
 					},
@@ -368,7 +368,7 @@ namespace DevilDaggersWebsite.Core.Tools
 					Date = new DateTime(2018, 7, 26),
 					Changes = new List<Change>
 					{
-						new Change("Enforced en-US globalisation."),
+						new Change("Enforced en-US globalization."),
 					},
 				},
 				new ChangelogEntry
