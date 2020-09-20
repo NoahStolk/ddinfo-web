@@ -28,7 +28,7 @@
 		Current version: @(tool.VersionNumber)<br />
 		Oldest supported version: @(tool.VersionNumberRequired)<br />
 		File size: @(Math.Round(downloadFileInfo.Length / 1024f).ToString()) KB<br />
-		<a class="btn dont-break-out" href="/tools/@tool.Name/@downloadFileName">Download</a>
+		<a class="btn dont-break-out" href="/api/tools/@tool.Name/file">Download</a>
 	</p>
 
 	<h2>System requirements</h2>
