@@ -1,4 +1,5 @@
 ﻿using DevilDaggersWebsite.Core.Dto;
+using DevilDaggersWebsite.Core.Entities;
 using DevilDaggersWebsite.Core.Tools;
 using Microsoft.AspNetCore.Hosting;
 using Microsoft.AspNetCore.Http;
@@ -17,11 +18,13 @@ namespace DevilDaggersWebsite.Core.Api
 	[ApiController]
 	public class ToolsController : ControllerBase
 	{
-		private readonly IWebHostEnvironment env;
+		private readonly IWebHostEnvironment _env;
+		private readonly ApplicationDbContext _dbContext;
 
-		public ToolsController(IWebHostEnvironment env)
+		public ToolsController(IWebHostEnvironment env, ApplicationDbContext dbContext)
 		{
-			this.env = env;
+			_env = env;
+			_dbContext = dbContext;
 		}
 
 		[HttpGet]
@@ -45,10 +48,18 @@ namespace DevilDaggersWebsite.Core.Api
 				return new NotFoundObjectResult(new ProblemDetails { Title = $"Tool '{toolName}' was not found." });
 
 			string path = Path.Combine("tools", tool.Name, $"{tool.Name}{tool.VersionNumber}.zip");
-			if (!Io.File.Exists(Path.Combine(env.WebRootPath, path)))
+			if (!Io.File.Exists(Path.Combine(_env.WebRootPath, path)))
 				throw new Exception($"Tool file '{path}' does not exist.");
 
-			return File(Io.File.ReadAllBytes(Path.Combine(env.WebRootPath, path)), MediaTypeNames.Application.Zip, $"{toolName}{tool.VersionNumber}.zip");
+			ToolStatistic? toolStatistic = _dbContext.ToolStatistics.FirstOrDefault(ts => ts.ToolName == tool.Name && ts.VersionNumber == tool.VersionNumber.ToString());
+			if (toolStatistic == null)
+				_dbContext.ToolStatistics.Add(new ToolStatistic { DownloadCount = 1, ToolName = tool.Name, VersionNumber = tool.VersionNumber.ToString() });
+			else
+				toolStatistic.DownloadCount++;
+
+			_dbContext.SaveChanges();
+
+			return File(Io.File.ReadAllBytes(Path.Combine(_env.WebRootPath, path)), MediaTypeNames.Application.Zip, $"{toolName}{tool.VersionNumber}.zip");
 		}
 	}
 }
