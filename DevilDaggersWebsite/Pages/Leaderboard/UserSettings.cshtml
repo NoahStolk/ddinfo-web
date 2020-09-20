@@ -10,6 +10,12 @@
 </header>
 
 <main role="main">
+	@if (Model.Leaderboard == null)
+	{
+		<p>Failed to retrieve scores from the official Devil Daggers leaderboard servers. Please try again later.</p>
+		<p>If the problem persists, try contacting the Devil Daggers developer.</p>
+		return;
+	}
 	<div>
 		<p class="visible-xs visible-sm visible-md">
 			On mobile devices; tap on an entry to expand it.
