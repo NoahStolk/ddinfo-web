@@ -12,6 +12,12 @@
 	<h1>@ViewData["Title"]</h1>
 </header>
 
+@if (Model.Leaderboard == null)
+{
+	<p>Failed to retrieve scores from the official Devil Daggers leaderboard servers. Please try again later.</p>
+	<p>If the problem persists, try contacting the Devil Daggers developer.</p>
+	return;
+}
 <main role="main">
 	@await Html.PartialAsync("Partials/_LeaderboardGlobalPartial")
 	@using (Html.BeginForm(FormMethod.Get))

@@ -10,11 +10,11 @@ namespace DevilDaggersWebsite.Core.Clients
 {
 	public static class DdHasmodaiClient
 	{
-		private const string getScoresUrl = "http://dd.hasmodai.com/backend15/get_scores.php";
-		private const string getUserSearchUrl = "http://dd.hasmodai.com/backend16/get_user_search_public.php";
+		private const string _getScoresUrl = "http://dd.hasmodai.com/backend15/get_scores.php";
+		private const string _getUserSearchUrl = "http://dd.hasmodai.com/backend16/get_user_search_public.php";
 		public static readonly string GetUserByIdUrl = "http://dd.hasmodai.com/backend16/get_user_by_id_public.php";
 
-		public static async Task<Leaderboard> GetScores(int rank)
+		public static async Task<Leaderboard?> GetScores(int rank)
 		{
 			try
 			{
@@ -27,7 +27,7 @@ namespace DevilDaggersWebsite.Core.Clients
 
 				using FormUrlEncodedContent content = new FormUrlEncodedContent(postValues);
 				using HttpClient client = new HttpClient();
-				HttpResponseMessage resp = await client.PostAsync(getScoresUrl, content);
+				HttpResponseMessage resp = await client.PostAsync(_getScoresUrl, content);
 				byte[] data = await resp.Content.ReadAsByteArrayAsync();
 
 				Leaderboard leaderboard = new Leaderboard
@@ -76,11 +76,11 @@ namespace DevilDaggersWebsite.Core.Clients
 			}
 			catch
 			{
-				return new Leaderboard();
+				return null;
 			}
 		}
 
-		public static async Task<Leaderboard> GetUserSearch(string search)
+		public static async Task<Leaderboard?> GetUserSearch(string search)
 		{
 			try
 			{
@@ -91,7 +91,7 @@ namespace DevilDaggersWebsite.Core.Clients
 
 				using FormUrlEncodedContent content = new FormUrlEncodedContent(postValues);
 				using HttpClient client = new HttpClient();
-				HttpResponseMessage resp = await client.PostAsync(getUserSearchUrl, content);
+				HttpResponseMessage resp = await client.PostAsync(_getUserSearchUrl, content);
 				byte[] data = await resp.Content.ReadAsByteArrayAsync();
 
 				Leaderboard leaderboard = new Leaderboard();
@@ -131,17 +131,17 @@ namespace DevilDaggersWebsite.Core.Clients
 			}
 			catch
 			{
-				return new Leaderboard();
+				return null;
 			}
 		}
 
-		public static async Task<Entry> GetUserById(int userId)
+		public static async Task<Entry?> GetUserById(int userId)
 		{
 			try
 			{
 				Dictionary<string, string> postValues = new Dictionary<string, string>
 				{
-					{ "uid", userId.ToString() },
+					{ "uid", userId.ToString(CultureInfo.InvariantCulture) },
 				};
 
 				using FormUrlEncodedContent content = new FormUrlEncodedContent(postValues);
@@ -174,7 +174,7 @@ namespace DevilDaggersWebsite.Core.Clients
 			}
 			catch
 			{
-				return new Entry();
+				return null;
 			}
 		}
 
