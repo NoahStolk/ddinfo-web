@@ -1,14 +1,21 @@
-﻿<p>
-	<input />
-</p>
-<p>
-	Showing results for "@_search"
-</p>
-
-<LeaderboardTable Leaderboard="@_leaderboard" Players="Players" />
+﻿@if (_leaderboard == null)
+{
+	<p>Failed to retrieve scores from the official Devil Daggers leaderboard servers. Please try again later.</p>
+	<p>If the problem persists, try contacting the Devil Daggers developer.</p>
+}
+else
+{
+	<p>
+		<input />
+	</p>
+	<p>
+		Showing results for "@_search"
+	</p>
+	<LeaderboardTable Leaderboard="@_leaderboard" Players="Players" />
+}
 
 @code {
-	private Core.Dto.Leaderboard _leaderboard = new Core.Dto.Leaderboard();
+	private Core.Dto.Leaderboard? _leaderboard;
 
 	private string _search = string.Empty;
 

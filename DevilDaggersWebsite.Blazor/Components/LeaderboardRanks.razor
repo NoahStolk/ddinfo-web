@@ -1,22 +1,29 @@
-﻿<p>
-	<button class="btn btn-primary" @onclick="@(e => FetchLeaderboard(_rank = 1))">
-		Top
-	</button>
-	<button class="btn btn-primary" @onclick="@(e => FetchLeaderboard(_rank -= 100))">
-		Prev
-	</button>
-	<button class="btn btn-primary" @onclick="@(e => FetchLeaderboard(_rank += 100))">
-		Next
-	</button>
-</p>
-<p>
-	Showing rank @_rank - @(_rank + 99)
-</p>
-
-<LeaderboardTable Leaderboard="@_leaderboard" Players="Players" />
+﻿@if (_leaderboard == null)
+{
+	<p>Failed to retrieve scores from the official Devil Daggers leaderboard servers. Please try again later.</p>
+	<p>If the problem persists, try contacting the Devil Daggers developer.</p>
+}
+else
+{
+	<p>
+		<button class="btn btn-primary" @onclick="@(e => FetchLeaderboard(_rank = 1))">
+			Top
+		</button>
+		<button class="btn btn-primary" @onclick="@(e => FetchLeaderboard(_rank -= 100))">
+			Prev
+		</button>
+		<button class="btn btn-primary" @onclick="@(e => FetchLeaderboard(_rank += 100))">
+			Next
+		</button>
+	</p>
+	<p>
+		Showing rank @_rank - @(_rank + 99)
+	</p>
+	<LeaderboardTable Leaderboard="@_leaderboard" Players="Players" />
+}
 
 @code {
-	private Core.Dto.Leaderboard _leaderboard = new Core.Dto.Leaderboard();
+	private Core.Dto.Leaderboard? _leaderboard;
 
 	private int _rank;
 
@@ -33,7 +40,7 @@
 		_rank = Math.Max(_rank, 1);
 
 		_leaderboard = await DdHasmodaiClient.GetScores(_rank);
-		if (_rank > _leaderboard.Players - 99)
+		if (_leaderboard != null && _rank > _leaderboard.Players - 99)
 		{
 			_rank = _leaderboard.Players - 99;
 			_leaderboard.Entries.Clear();
