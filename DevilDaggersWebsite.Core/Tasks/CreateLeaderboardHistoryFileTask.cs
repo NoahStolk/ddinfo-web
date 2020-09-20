@@ -10,11 +10,11 @@ namespace DevilDaggersWebsite.Core.Tasks
 {
 	public class CreateLeaderboardHistoryFileTask : AbstractTask
 	{
-		private readonly IWebHostEnvironment env;
+		private readonly IWebHostEnvironment _env;
 
 		public CreateLeaderboardHistoryFileTask(IWebHostEnvironment env)
 		{
-			this.env = env;
+			_env = env;
 		}
 
 		public override string Schedule => "0 0 * * *";
@@ -22,12 +22,16 @@ namespace DevilDaggersWebsite.Core.Tasks
 		protected override async Task Execute()
 		{
 			if (!HistoryFileForThisDateExists(LastTriggered))
-				File.WriteAllText(Path.Combine(env.WebRootPath, "leaderboard-history", $"{DateTime.UtcNow:yyyyMMddHHmm}.json"), JsonConvert.SerializeObject(await DdHasmodaiClient.GetScores(1)));
+			{
+				Dto.Leaderboard? lb = await DdHasmodaiClient.GetScores(1);
+				if (lb != null)
+					File.WriteAllText(Path.Combine(_env.WebRootPath, "leaderboard-history", $"{DateTime.UtcNow:yyyyMMddHHmm}.json"), JsonConvert.SerializeObject(lb));
+			}
 		}
 
 		private bool HistoryFileForThisDateExists(DateTime dateTime)
 		{
-			foreach (string path in Directory.GetFiles(Path.Combine(env.WebRootPath, "leaderboard-history"), "*.json"))
+			foreach (string path in Directory.GetFiles(Path.Combine(_env.WebRootPath, "leaderboard-history"), "*.json"))
 			{
 				string fileName = Path.GetFileNameWithoutExtension(path);
 				if (HistoryUtils.HistoryJsonFileNameToDateTime(fileName).Date == dateTime.Date)
