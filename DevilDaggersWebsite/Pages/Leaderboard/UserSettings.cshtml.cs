@@ -10,7 +10,7 @@ namespace DevilDaggersWebsite.Pages.Leaderboard
 {
 	public class UserSettingsModel : PageModel
 	{
-		public Lb? Leaderboard { get; set; }
+		public Lb Leaderboard { get; set; } = new Lb();
 
 		public async Task OnGetAsync()
 		{
@@ -18,12 +18,11 @@ namespace DevilDaggersWebsite.Pages.Leaderboard
 			{
 				Lb? nextLeaderboard = await DdHasmodaiClient.GetScores(i * 100 + 1);
 				foreach (Entry entry in nextLeaderboard?.Entries ?? new List<Entry>())
-					Leaderboard?.Entries.Add(entry);
+					Leaderboard.Entries.Add(entry);
 			});
 			await Task.WhenAll(tasks);
 
-			if (Leaderboard != null)
-				Leaderboard.Entries = Leaderboard.Entries.OrderBy(e => e.Rank).ToList();
+			Leaderboard.Entries = Leaderboard.Entries.OrderBy(e => e.Rank).ToList();
 		}
 	}
 }
