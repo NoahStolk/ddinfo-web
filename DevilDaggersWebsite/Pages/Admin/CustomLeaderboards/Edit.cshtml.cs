@@ -10,11 +10,11 @@ namespace DevilDaggersWebsite.Pages.Admin.CustomLeaderboards
 {
 	public class EditModel : PageModel
 	{
-		private readonly ApplicationDbContext context;
+		private readonly ApplicationDbContext _context;
 
 		public EditModel(ApplicationDbContext context)
 		{
-			this.context = context;
+			_context = context;
 		}
 
 		[BindProperty]
@@ -25,25 +25,32 @@ namespace DevilDaggersWebsite.Pages.Admin.CustomLeaderboards
 			if (id == null)
 				return NotFound();
 
-			CustomLeaderboard = await context.CustomLeaderboards
-				.Include(c => c.Category).FirstOrDefaultAsync(m => m.Id == id);
+			CustomLeaderboard = await _context.CustomLeaderboards
+				.Include(c => c.Category)
+				.Include(c => c.SpawnsetFile)
+				.FirstOrDefaultAsync(m => m.Id == id);
 
 			if (CustomLeaderboard == null)
 				return NotFound();
-			ViewData["CategoryId"] = new SelectList(context.CustomLeaderboardCategories, "Id", "LayoutPartialName");
+			ViewData["CategoryId"] = new SelectList(_context.CustomLeaderboardCategories, "Id", "Name");
 			return Page();
 		}
 
 		public async Task<IActionResult> OnPostAsync()
 		{
+			ModelState.Remove("CustomLeaderboard.Category");
+			ModelState.Remove("CustomLeaderboard.SpawnsetFile.Player");
+			ModelState.Remove("CustomLeaderboard.DateLastPlayed");
+			ModelState.Remove("CustomLeaderboard.DateCreated");
+
 			if (!ModelState.IsValid)
 				return Page();
 
-			context.Attach(CustomLeaderboard).State = EntityState.Modified;
+			_context.Attach(CustomLeaderboard).State = EntityState.Modified;
 
 			try
 			{
-				await context.SaveChangesAsync();
+				await _context.SaveChangesAsync();
 			}
 			catch (DbUpdateConcurrencyException)
 			{
@@ -56,6 +63,7 @@ namespace DevilDaggersWebsite.Pages.Admin.CustomLeaderboards
 			return RedirectToPage("./Index");
 		}
 
-		private bool CustomLeaderboardExists(int id) => context.CustomLeaderboards.Any(e => e.Id == id);
+		private bool CustomLeaderboardExists(int id)
+			=> _context.CustomLeaderboards.Any(e => e.Id == id);
 	}
 }
