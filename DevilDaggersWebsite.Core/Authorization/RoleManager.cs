@@ -24,6 +24,9 @@ namespace DevilDaggersWebsite.Core.Authorization
 		public const string PlayersPolicy = nameof(PlayersPolicy);
 		public const string PlayersRole = nameof(PlayersRole);
 
+		public const string SpawnsetsPolicy = nameof(SpawnsetsPolicy);
+		public const string SpawnsetsRole = nameof(SpawnsetsRole);
+
 		public static readonly Dictionary<string, string> PolicyToRoleMapper = new Dictionary<string, string>
 		{
 			{ AdminPolicy, AdminRole },
@@ -31,6 +34,7 @@ namespace DevilDaggersWebsite.Core.Authorization
 			{ CustomLeaderboardsPolicy, CustomLeaderboardsRole },
 			{ DonationsPolicy, DonationsRole },
 			{ PlayersPolicy, PlayersRole },
+			{ SpawnsetsPolicy, SpawnsetsRole },
 		};
 
 		public static readonly Dictionary<string, string> FolderToPolicyMapper = new Dictionary<string, string>
