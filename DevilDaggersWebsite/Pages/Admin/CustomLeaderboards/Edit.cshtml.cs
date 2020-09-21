@@ -33,12 +33,14 @@ namespace DevilDaggersWebsite.Pages.Admin.CustomLeaderboards
 			if (CustomLeaderboard == null)
 				return NotFound();
 			ViewData["CategoryId"] = new SelectList(_context.CustomLeaderboardCategories, "Id", "Name");
+			ViewData["SpawnsetFileId"] = new SelectList(_context.SpawnsetFiles, "Id", "Name");
 			return Page();
 		}
 
 		public async Task<IActionResult> OnPostAsync()
 		{
 			ModelState.Remove("CustomLeaderboard.Category");
+			ModelState.Remove("CustomLeaderboard.SpawnsetFile");
 			ModelState.Remove("CustomLeaderboard.SpawnsetFile.Player");
 			ModelState.Remove("CustomLeaderboard.DateLastPlayed");
 			ModelState.Remove("CustomLeaderboard.DateCreated");
