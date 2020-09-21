@@ -8,11 +8,11 @@ namespace DevilDaggersWebsite.Pages.Admin.CustomLeaderboards
 {
 	public class DetailsModel : PageModel
 	{
-		private readonly ApplicationDbContext context;
+		private readonly ApplicationDbContext _context;
 
 		public DetailsModel(ApplicationDbContext context)
 		{
-			this.context = context;
+			_context = context;
 		}
 
 		public CustomLeaderboard CustomLeaderboard { get; set; }
@@ -22,7 +22,7 @@ namespace DevilDaggersWebsite.Pages.Admin.CustomLeaderboards
 			if (id == null)
 				return NotFound();
 
-			CustomLeaderboard = await context.CustomLeaderboards.Include(c => c.Category).FirstOrDefaultAsync(m => m.Id == id);
+			CustomLeaderboard = await _context.CustomLeaderboards.Include(c => c.Category).Include(c => c.SpawnsetFile).FirstOrDefaultAsync(m => m.Id == id);
 
 			if (CustomLeaderboard == null)
 				return NotFound();
