@@ -11,6 +11,7 @@ namespace DevilDaggersWebsite.Core.Extensions
 			Currency.Usd => '$',
 			Currency.Aud => '$',
 			Currency.Gbp => '£',
+			Currency.Sgd => '$',
 			_ => throw new NotImplementedException($"{nameof(Currency)} '{currency}' has not been implemented.")
 		};
 	}
