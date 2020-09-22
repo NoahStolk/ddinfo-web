@@ -138,7 +138,7 @@ namespace DevilDaggersWebsite.Core.Api
 
 			// Calculate the new rank.
 			IEnumerable<CustomEntry> entries = _dbContext.CustomEntries.Where(e => e.CustomLeaderboard == leaderboard).OrderByMember(leaderboard.Category.SortingPropertyName, leaderboard.Category.Ascending).ToArray();
-			int rank = leaderboard.Category.Ascending ? entries.Where(e => e.Time < uploadRequest.Time).Count() + 1 : entries.Where(e => e.Time > uploadRequest.Time).Count() + 1; // TODO: Use reflection to use Category.SortingPropertyName.
+			int rank = leaderboard.Category.Ascending ? entries.Count(e => e.Time < uploadRequest.Time) + 1 : entries.Count(e => e.Time > uploadRequest.Time) + 1; // TODO: Use reflection to use Category.SortingPropertyName.
 			int totalPlayers = entries.Count();
 
 			CustomEntry? entry = _dbContext.CustomEntries.FirstOrDefault(e => e.PlayerId == uploadRequest.PlayerId && e.CustomLeaderboardId == leaderboard.Id);
@@ -310,7 +310,7 @@ namespace DevilDaggersWebsite.Core.Api
 			// User got a better score.
 
 			// Calculate the old rank.
-			int oldRank = leaderboard.Category.Ascending ? entries.Where(e => e.Time < entry.Time).Count() + 1 : entries.Where(e => e.Time > entry.Time).Count() + 1;
+			int oldRank = leaderboard.Category.Ascending ? entries.Count(e => e.Time < entry.Time) + 1 : entries.Count(e => e.Time > entry.Time) + 1;
 
 			int rankDiff = oldRank - rank;
 			int timeDiff = uploadRequest.Time - entry.Time;
@@ -420,7 +420,7 @@ namespace DevilDaggersWebsite.Core.Api
 		}
 
 		private static async Task TryLog(Dto.UploadRequest uploadRequest, string? spawnsetName, Exception? exception = null)
-			=> await TryLog(uploadRequest, spawnsetName, exception?.Message ?? null);
+			=> await TryLog(uploadRequest, spawnsetName, exception?.Message);
 
 		private static async Task TryLog(Dto.UploadRequest uploadRequest, string? spawnsetName, string? errorMessage)
 		{
@@ -436,6 +436,7 @@ namespace DevilDaggersWebsite.Core.Api
 			}
 			catch
 			{
+				// Ignore exceptions that occurred while attempting to log.
 			}
 
 			string GetSpawnsetNameOrHash()
@@ -445,7 +446,7 @@ namespace DevilDaggersWebsite.Core.Api
 		private static async Task<string> GetUsername(Dto.UploadRequest uploadRequest)
 		{
 			if (uploadRequest.Username.EndsWith("med fragger", StringComparison.InvariantCulture))
-				return (await DdHasmodaiClient.GetUserById(uploadRequest.PlayerId)).Username;
+				return (await DdHasmodaiClient.GetUserById(uploadRequest.PlayerId))?.Username ?? uploadRequest.Username;
 			return uploadRequest.Username;
 		}
 
