@@ -251,3 +251,9 @@ dotnet_diagnostic.SA1615.severity                                        = none
 dotnet_diagnostic.SA1623.severity                                        = none
 dotnet_diagnostic.SA1633.severity                                        = none
 dotnet_diagnostic.SA1642.severity                                        = none
+
+# StyleCopAnalyzers suppressions when using NRT
+
+# SA1011: Closing square bracket should be followed by a space.
+
+dotnet_diagnostic.SA1011.severity                                        = none
