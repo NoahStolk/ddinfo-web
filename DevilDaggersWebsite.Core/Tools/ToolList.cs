@@ -26,10 +26,37 @@ namespace DevilDaggersWebsite.Core.Tools
 		{
 			Name = "DevilDaggersSurvivalEditor",
 			DisplayName = "Devil Daggers Survival Editor",
-			VersionNumber = new Version(2, 7, 6, 1),
+			VersionNumber = new Version(2, 10, 11, 0),
 			VersionNumberRequired = new Version(2, 7, 6, 1),
 			Changelog = new List<ChangelogEntry>
 			{
+				new ChangelogEntry
+				{
+					VersionNumber = new Version(2, 10, 11, 0),
+					Date = new DateTime(2020, 9, 24),
+					Changes = new List<Change>
+					{
+						new Change("Application now uses a custom dark theme. General layout for many components has been improved as well."),
+						new Change("Added Donut preset."),
+						new Change("Added new user settings.")
+						{
+							SubChanges = new List<Change>
+							{
+								new Change("Ask to confirm arena generation. When generating an arena with a preset the application prompts if you really want to replace the current arena. This can now be turned off with this new setting so you don't have to click \"Yes\" every time, which is convenient when playing with presets that involve randomness."),
+								new Change("Replace survival file with downloaded spawnset. When downloading a spawnset from within the application, it will ask if you want to replace the current survival file with the downloaded spawnset. This can now be done automatically, or not at all, using this new setting. You can set it to \"Always\", \"Ask\", or \"Never\"."),
+								new Change("Load current survival file on start up."),
+							},
+						},
+						new Change("Removed functionality to open log file from the menu as this doesn't work well with the current logging mechanism."),
+						new Change("Spawn seconds are now properly rounded to physics ticks in Devil Daggers (1/60 of a second)."),
+						new Change("Selecting an enemy type is now done with radio buttons rather than a dropdown."),
+						new Change("Selecting a delay modification function in the ModifySpawnDelay window is now done with radio buttons rather than a dropdown."),
+						new Change("Fixed crash when selecting all tiles."),
+						new Change("Fixed 'No survival file' warning not updating after writing a spawnset to the file."),
+						new Change("Fixed CheckingForUpdates window not waiting for the API result properly."),
+						new Change("Fixed being able to divide delay by zero in the ModifySpawnDelay window."),
+					},
+				},
 				new ChangelogEntry
 				{
 					VersionNumber = new Version(2, 7, 6, 1),
@@ -48,7 +75,7 @@ namespace DevilDaggersWebsite.Core.Tools
 						new Change("Rewrote much of the application."),
 						new Change("Removed dependencies."),
 						new Change("Ported to .NET Core. Application is no longer dependent on .NET Framework and does not require .NET Framework 4.6.1."),
-						new Change("Fixed 'No survival file' warning not going away after restoring V3."),
+						new Change("Fixed 'No survival file' warning not updating after restoring V3."),
 						new Change("Fixed clicking settings CheckBoxes text not affecting the CheckBox states."),
 						new Change("Fixed end loop warning seconds not being formatted correctly."),
 						new Change("Fixed not showing end loop warning for a single spawn."),
