@@ -16,21 +16,21 @@ namespace DevilDaggersWebsite.Pages
 
 		public void OnGet()
 		{
-			Assembly siteAssembly = AppDomain.CurrentDomain.GetAssemblies().FirstOrDefault(a => a.FullName.Contains("DevilDaggersWebsite.Core"));
+			Assembly siteAssembly = AppDomain.CurrentDomain.GetAssemblies().FirstOrDefault(a => a.FullName?.Contains("DevilDaggersWebsite.Core", StringComparison.InvariantCulture) ?? false);
 
 			foreach (Type controllerType in siteAssembly.GetTypes().Where(t => t.BaseType == typeof(ControllerBase)))
 			{
-				string controllerUrl = controllerType.GetCustomAttribute<RouteAttribute>().Template;
+				string controllerUrl = controllerType.GetCustomAttribute<RouteAttribute>()?.Template ?? string.Empty;
 
-				foreach (MethodInfo endpointMethod in controllerType.GetMethods(BindingFlags.Public | BindingFlags.Instance).Where(m => !m.Name.Contains("_")))
+				foreach (MethodInfo endpointMethod in controllerType.GetMethods(BindingFlags.Public | BindingFlags.Instance).Where(m => !m.Name.Contains("_", StringComparison.InvariantCulture)))
 				{
-					HttpMethodAttribute httpMethodAttribute = endpointMethod.GetCustomAttribute<HttpMethodAttribute>(true);
+					HttpMethodAttribute? httpMethodAttribute = endpointMethod.GetCustomAttribute<HttpMethodAttribute>(true);
 					IEnumerable<ProducesResponseTypeAttribute> responseTypeAttributes = endpointMethod.GetCustomAttributes<ProducesResponseTypeAttribute>();
 
 					if (httpMethodAttribute == null || responseTypeAttributes == null || !responseTypeAttributes.Any())
 						continue;
 
-					ObsoleteAttribute obsoleteAttribute = endpointMethod.GetCustomAttribute<ObsoleteAttribute>();
+					ObsoleteAttribute? obsoleteAttribute = endpointMethod.GetCustomAttribute<ObsoleteAttribute>();
 
 					Type returnType = endpointMethod.ReturnType;
 					while (returnType.IsGenericType && (returnType.GetGenericTypeDefinition() == typeof(Task<>) || returnType.GetGenericTypeDefinition() == typeof(ActionResult<>)))

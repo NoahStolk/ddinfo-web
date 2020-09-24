@@ -103,8 +103,6 @@ namespace DevilDaggersWebsite.Core.Tasks.Cron
 
 		private void FormatValue(int value, TextWriter writer, bool noNames)
 		{
-			Debug.Assert(writer != null);
-
 			if (noNames || _names == null)
 			{
 				if (value >= 0 && value < 100)
@@ -126,7 +124,6 @@ namespace DevilDaggersWebsite.Core.Tasks.Cron
 		private static void FastFormatNumericValue(int value, TextWriter writer)
 		{
 			Debug.Assert(value >= 0 && value < 100);
-			Debug.Assert(writer != null);
 
 			if (value >= 10)
 			{
@@ -159,18 +156,11 @@ namespace DevilDaggersWebsite.Core.Tasks.Cron
 
 		private static void ThrowParseException(Exception innerException, string str)
 		{
-			Debug.Assert(str != null);
-			Debug.Assert(innerException != null);
-
-			throw new FormatException($"'{str}' is not a valid crontab field expression.",
-				innerException);
+			throw new FormatException($"'{str}' is not a valid crontab field expression.", innerException);
 		}
 
 		private void InternalParse(string str, CrontabFieldAccumulator acc)
 		{
-			Debug.Assert(str != null);
-			Debug.Assert(acc != null);
-
 			if (str.Length == 0)
 				throw new FormatException("A crontab field value cannot be empty.");
 
@@ -232,8 +222,6 @@ namespace DevilDaggersWebsite.Core.Tasks.Cron
 
 		private int ParseValue(string str)
 		{
-			Debug.Assert(str != null);
-
 			if (str.Length == 0)
 				throw new FormatException("A crontab field value cannot be empty.");
 

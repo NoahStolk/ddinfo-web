@@ -3,6 +3,7 @@ using Microsoft.AspNetCore.Hosting;
 using Microsoft.AspNetCore.Html;
 using System;
 using System.Collections.Generic;
+using System.Globalization;
 using System.IO;
 using System.Linq;
 using System.Reflection;
@@ -39,7 +40,7 @@ namespace DevilDaggersWebsite.Code.Utils
 
 		public static HtmlString GetCopyrightString(string name, int startYear, int endYear)
 		{
-			string year = startYear == endYear ? startYear.ToString() : $"{startYear}-{endYear}";
+			string year = startYear == endYear ? startYear.ToString(CultureInfo.InvariantCulture) : $"{startYear}-{endYear}";
 
 			return new HtmlString($"Copyright &copy; {year} {name}");
 		}
@@ -51,7 +52,7 @@ namespace DevilDaggersWebsite.Code.Utils
 				colorCode = GameInfo.GetEntities<Enemy>(gameVersionOverride).FirstOrDefault(e => e.Name == enemy.Name).ColorCode;
 
 			string color = zalgo == 0 ? colorCode : ZalgoUtils.InterpolateHexColor($"#FF{colorCode}", "#FFFF0000", zalgo / 100f);
-			return new HtmlString($"<a style='color: #{color};' href='/Wiki/Enemies{(gameVersionOverride == null ? string.Empty : $"?GameVersion={gameVersionOverride}")}#{enemy.Name.Replace(" ", string.Empty)}'>{enemy.Name.ToZalgo(zalgo / 20f)}{(plural ? "s" : string.Empty)}</a>");
+			return new HtmlString($"<a style='color: #{color};' href='/Wiki/Enemies{(gameVersionOverride == null ? string.Empty : $"?GameVersion={gameVersionOverride}")}#{enemy.Name.Replace(" ", string.Empty, StringComparison.InvariantCulture)}'>{enemy.Name.ToZalgo(zalgo / 20f)}{(plural ? "s" : string.Empty)}</a>");
 		}
 
 		public static HtmlString GetLayoutAnchor(this Upgrade upgrade)
@@ -66,7 +67,9 @@ namespace DevilDaggersWebsite.Code.Utils
 			char[] endSeparators = new char[] { ' ', ',', '.', 's', ')', '\'', ';', '/' };
 
 			List<Enemy> enemies = GameInfo.GetEntities<Enemy>(gameVersion);
-			for (int i = enemies.Count - 1; i >= 0; i--) // Use reverse iteration because transmuted skulls come after normal skulls in the list.
+
+			// Use reverse iteration because transmuted skulls come after normal skulls in the list.
+			for (int i = enemies.Count - 1; i >= 0; i--)
 			{
 				Enemy enemy = enemies[i];
 				foreach (char begin in beginSeparators)
@@ -74,11 +77,11 @@ namespace DevilDaggersWebsite.Code.Utils
 					foreach (char end in endSeparators)
 					{
 						string enemyString = $"{begin}{enemy.Name}{end}";
-						if (str.Contains(enemyString))
+						if (str.Contains(enemyString, StringComparison.InvariantCulture))
 						{
 							// Enemy string should not be inside an <a> element.
-							if (str.Length < str.IndexOf(enemyString) + enemyString.Length + "</a>".Length || str.Substring(str.IndexOf(enemyString) + enemyString.Length, "</a>".Length) != "</a>")
-								str = str.Replace(enemyString, $"{begin}{GetLayoutAnchor(enemy, end == 's')}{((end == 's') ? string.Empty : end.ToString())}");
+							if (str.Length < str.IndexOf(enemyString, StringComparison.InvariantCulture) + enemyString.Length + "</a>".Length || str.Substring(str.IndexOf(enemyString, StringComparison.InvariantCulture) + enemyString.Length, "</a>".Length) != "</a>")
+								str = str.Replace(enemyString, $"{begin}{GetLayoutAnchor(enemy, end == 's')}{((end == 's') ? string.Empty : end.ToString())}", StringComparison.InvariantCulture);
 						}
 					}
 				}
@@ -91,8 +94,8 @@ namespace DevilDaggersWebsite.Code.Utils
 					foreach (char end in endSeparators)
 					{
 						string upgradeString = $"{begin}{upgrade.Name}{end}";
-						if (str.Contains(upgradeString))
-							str = str.Replace(upgradeString, $"{begin}{GetLayoutAnchor(upgrade)}{end}");
+						if (str.Contains(upgradeString, StringComparison.InvariantCulture))
+							str = str.Replace(upgradeString, $"{begin}{GetLayoutAnchor(upgrade)}{end}", StringComparison.InvariantCulture);
 					}
 				}
 			}
@@ -103,14 +106,14 @@ namespace DevilDaggersWebsite.Code.Utils
 		public static string TransmuteString(this string str)
 		{
 			str = str
-				.Replace(" transmute ", " <a style='color: var(--col-red);' href='/Wiki/Enemies#transmuted-skulls'>transmute</a> ")
-				.Replace(" transmutes ", " <a style='color: var(--col-red);' href='/Wiki/Enemies#transmuted-skulls'>transmutes</a> ");
+				.Replace(" transmute ", " <a style='color: var(--col-red);' href='/Wiki/Enemies#transmuted-skulls'>transmute</a> ", StringComparison.InvariantCulture)
+				.Replace(" transmutes ", " <a style='color: var(--col-red);' href='/Wiki/Enemies#transmuted-skulls'>transmutes</a> ", StringComparison.InvariantCulture);
 
 			return str;
 		}
 
 		public static string ToIdString(this string str)
-			=> $"{str.ToLower().Replace(" ", "-")}";
+			=> $"{str.ToLower(CultureInfo.InvariantCulture).Replace(" ", "-", StringComparison.InvariantCulture)}";
 
 		public static string S(this int value)
 			=> value == 1 ? string.Empty : "s";
@@ -127,24 +130,24 @@ namespace DevilDaggersWebsite.Code.Utils
 
 				sb.Append($"<span class='api-generic-return-type'>&lt;</span><span class='{cssClass}'>{string.Join(", ", genericArguments.Select(t => GetTypeString(t.Name)))}</span><span class='api-generic-return-type'>&gt;</span>");
 			}
+
 			return new HtmlString(sb.ToString());
 
 			static string GetTypeString(string typeName)
 			{
-				if (typeName.Contains('`'))
-					return typeName.Substring(0, typeName.IndexOf('`'));
+				if (typeName.Contains('`', StringComparison.InvariantCulture))
+					return typeName.Substring(0, typeName.IndexOf('`', StringComparison.InvariantCulture));
 				return typeName;
 			}
 		}
 
 		public static HtmlString GetFormattedParameter(ParameterInfo parameter)
 		{
-			Type underlyingType = Nullable.GetUnderlyingType(parameter.ParameterType);
-			bool isNullable = underlyingType != null;
-			Type actualType = isNullable ? underlyingType : parameter.ParameterType;
+			Type? underlyingType = Nullable.GetUnderlyingType(parameter.ParameterType);
+			Type actualType = underlyingType ?? parameter.ParameterType;
 
 			string typeSpan = $"<span class='api-parameter-type'>{actualType.Name}</span>";
-			typeSpan = isNullable ? $"<span class='api-nullable'>Nullable&lt;{typeSpan}&gt;</span>" : typeSpan;
+			typeSpan = underlyingType != null ? $"<span class='api-nullable'>Nullable&lt;{typeSpan}&gt;</span>" : typeSpan;
 
 			return new HtmlString(@$"{typeSpan}
 <span class='api-parameter{(parameter.IsOptional ? "-optional" : string.Empty)}'>{parameter.Name}</span>
@@ -153,18 +156,17 @@ namespace DevilDaggersWebsite.Code.Utils
 
 		public static HtmlString GetParameterFormattedDefaultValue(ParameterInfo parameter)
 		{
-			Type underlyingType = Nullable.GetUnderlyingType(parameter.ParameterType);
-			bool isNullable = underlyingType != null;
-			Type actualType = isNullable ? underlyingType : parameter.ParameterType;
+			Type? underlyingType = Nullable.GetUnderlyingType(parameter.ParameterType);
+			Type actualType = underlyingType ?? parameter.ParameterType;
 
 			if (actualType.IsValueType)
 			{
 				if (parameter.HasDefaultValue)
 					return new HtmlString(parameter.DefaultValue?.ToString() ?? "null");
-				return new HtmlString(Activator.CreateInstance(actualType).ToString());
+				return new HtmlString(Activator.CreateInstance(actualType)?.ToString() ?? string.Empty);
 			}
 
-			if (parameter.HasDefaultValue && !string.IsNullOrEmpty((string)parameter.DefaultValue))
+			if (parameter.HasDefaultValue && !string.IsNullOrEmpty((string?)parameter.DefaultValue))
 				return new HtmlString(parameter.DefaultValue.ToString());
 			return new HtmlString("<span class='api-null'>null</span>");
 		}

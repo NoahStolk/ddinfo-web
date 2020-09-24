@@ -1,6 +1,5 @@
 ﻿using System;
 using System.Collections.Generic;
-using System.Diagnostics;
 using System.Globalization;
 using System.IO;
 
@@ -12,32 +11,25 @@ namespace DevilDaggersWebsite.Core.Tasks.Cron
 	[Serializable]
 	public sealed class CrontabSchedule
 	{
-		private static readonly char[] separators = { ' ' };
-		private readonly CrontabField days;
-		private readonly CrontabField daysOfWeek;
-		private readonly CrontabField hours;
-		private readonly CrontabField minutes;
-		private readonly CrontabField months;
+		private static readonly char[] _separators = { ' ' };
+		private readonly CrontabField _days;
+		private readonly CrontabField _daysOfWeek;
+		private readonly CrontabField _hours;
+		private readonly CrontabField _minutes;
+		private readonly CrontabField _months;
 
 		private CrontabSchedule(string expression)
 		{
-			Debug.Assert(expression != null);
-
-			string[] fields = expression.Split(separators, StringSplitOptions.RemoveEmptyEntries);
+			string[] fields = expression.Split(_separators, StringSplitOptions.RemoveEmptyEntries);
 
 			if (fields.Length != 5)
-			{
-				throw new FormatException(string.Format(
-					"'{0}' is not a valid crontab expression. It must contain at least 5 components of a schedule "
-					+ "(in the sequence of minutes, hours, days, months, days of week).",
-					expression));
-			}
+				throw new FormatException($"'{expression}' is not a valid crontab expression. It must contain at least 5 components of a schedule (in the sequence of minutes, hours, days, months, days of week).");
 
-			minutes = CrontabField.Minutes(fields[0]);
-			hours = CrontabField.Hours(fields[1]);
-			days = CrontabField.Days(fields[2]);
-			months = CrontabField.Months(fields[3]);
-			daysOfWeek = CrontabField.DaysOfWeek(fields[4]);
+			_minutes = CrontabField.Minutes(fields[0]);
+			_hours = CrontabField.Hours(fields[1]);
+			_days = CrontabField.Days(fields[2]);
+			_months = CrontabField.Months(fields[3]);
+			_daysOfWeek = CrontabField.DaysOfWeek(fields[4]);
 		}
 
 		private static Calendar Calendar => CultureInfo.InvariantCulture.Calendar;
@@ -83,62 +75,62 @@ namespace DevilDaggersWebsite.Core.Tasks.Cron
 			int minute = baseMinute + 1;
 
 			// Minute
-			minute = minutes.Next(minute);
+			minute = _minutes.Next(minute);
 
 			if (minute == nil)
 			{
-				minute = minutes.GetFirst();
+				minute = _minutes.GetFirst();
 				hour++;
 			}
 
 			// Hour
-			hour = hours.Next(hour);
+			hour = _hours.Next(hour);
 
 			if (hour == nil)
 			{
-				minute = minutes.GetFirst();
-				hour = hours.GetFirst();
+				minute = _minutes.GetFirst();
+				hour = _hours.GetFirst();
 				day++;
 			}
 			else if (hour > baseHour)
 			{
-				minute = minutes.GetFirst();
+				minute = _minutes.GetFirst();
 			}
 
 			// Day
-			day = days.Next(day);
+			day = _days.Next(day);
 
 RetryDayMonth:
 
 			if (day == nil)
 			{
-				minute = minutes.GetFirst();
-				hour = hours.GetFirst();
-				day = days.GetFirst();
+				minute = _minutes.GetFirst();
+				hour = _hours.GetFirst();
+				day = _days.GetFirst();
 				month++;
 			}
 			else if (day > baseDay)
 			{
-				minute = minutes.GetFirst();
-				hour = hours.GetFirst();
+				minute = _minutes.GetFirst();
+				hour = _hours.GetFirst();
 			}
 
 			// Month
-			month = months.Next(month);
+			month = _months.Next(month);
 
 			if (month == nil)
 			{
-				minute = minutes.GetFirst();
-				hour = hours.GetFirst();
-				day = days.GetFirst();
-				month = months.GetFirst();
+				minute = _minutes.GetFirst();
+				hour = _hours.GetFirst();
+				day = _days.GetFirst();
+				month = _months.GetFirst();
 				year++;
 			}
 			else if (month > baseMonth)
 			{
-				minute = minutes.GetFirst();
-				hour = hours.GetFirst();
-				day = days.GetFirst();
+				minute = _minutes.GetFirst();
+				hour = _hours.GetFirst();
+				day = _days.GetFirst();
 			}
 
 			// The day field in a cron expression spans the entire range of days
@@ -172,7 +164,7 @@ RetryDayMonth:
 				return endTime;
 
 			// Day of week
-			if (daysOfWeek.Contains((int)nextTime.DayOfWeek))
+			if (_daysOfWeek.Contains((int)nextTime.DayOfWeek))
 				return nextTime;
 
 			return GetNextOccurrence(new DateTime(year, month, day, 23, 59, 0, 0, baseTime.Kind), endTime);
@@ -181,15 +173,15 @@ RetryDayMonth:
 		public override string ToString()
 		{
 			using StringWriter writer = new StringWriter(CultureInfo.InvariantCulture);
-			minutes.Format(writer, true);
+			_minutes.Format(writer, true);
 			writer.Write(' ');
-			hours.Format(writer, true);
+			_hours.Format(writer, true);
 			writer.Write(' ');
-			days.Format(writer, true);
+			_days.Format(writer, true);
 			writer.Write(' ');
-			months.Format(writer, true);
+			_months.Format(writer, true);
 			writer.Write(' ');
-			daysOfWeek.Format(writer, true);
+			_daysOfWeek.Format(writer, true);
 
 			return writer.ToString();
 		}

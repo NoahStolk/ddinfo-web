@@ -5,6 +5,7 @@ using Microsoft.AspNetCore.Mvc;
 using System;
 using System.Collections.Generic;
 using System.ComponentModel.DataAnnotations;
+using System.Globalization;
 using System.Net.Http;
 using System.Threading.Tasks;
 
@@ -17,7 +18,7 @@ namespace DevilDaggersWebsite.Core.Api
 		[HttpGet]
 		[ProducesResponseType(StatusCodes.Status200OK)]
 		[ProducesResponseType(StatusCodes.Status400BadRequest)]
-		public async Task<ActionResult<Leaderboard>> GetLeaderboard(int rankStart = 1)
+		public async Task<ActionResult<Leaderboard?>> GetLeaderboard(int rankStart = 1)
 		{
 			if (rankStart <= 0)
 				return new BadRequestObjectResult(new ProblemDetails { Title = $"Incorrect parameter {nameof(rankStart)} '{rankStart}' specified. Value should be at least 1." });
@@ -33,7 +34,7 @@ namespace DevilDaggersWebsite.Core.Api
 			{
 				Dictionary<string, string> postValues = new Dictionary<string, string>
 				{
-					{ "uid", userId.ToString() },
+					{ "uid", userId.ToString(CultureInfo.InvariantCulture) },
 				};
 
 				using FormUrlEncodedContent content = new FormUrlEncodedContent(postValues);
@@ -78,7 +79,7 @@ namespace DevilDaggersWebsite.Core.Api
 			if (string.IsNullOrEmpty(username) || username.Length < 3)
 				return new BadRequestObjectResult(new ProblemDetails { Title = $"Incorrect parameter {nameof(username)} '{username}' specified. Value should be at least 3 characters in length." });
 
-			return (await DdHasmodaiClient.GetUserSearch(username)).Entries;
+			return (await DdHasmodaiClient.GetUserSearch(username))?.Entries ?? new List<Entry>();
 		}
 
 		[HttpGet("user/by-rank")]
@@ -86,7 +87,7 @@ namespace DevilDaggersWebsite.Core.Api
 		[ProducesResponseType(StatusCodes.Status400BadRequest)]
 		public async Task<ActionResult<Entry>> GetUserByRank([Required] int rank)
 		{
-			List<Entry> entries = (await DdHasmodaiClient.GetScores(rank)).Entries;
+			List<Entry> entries = (await DdHasmodaiClient.GetScores(rank))?.Entries ?? new List<Entry>();
 			if (entries.Count == 0)
 				return new NotFoundObjectResult(new ProblemDetails { Title = $"Entry with {nameof(rank)} '{rank}' was not found." });
 			return entries[0];

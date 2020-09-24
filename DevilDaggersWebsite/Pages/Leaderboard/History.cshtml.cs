@@ -17,13 +17,13 @@ namespace DevilDaggersWebsite.Pages.Leaderboard
 {
 	public class HistoryModel : PageModel, IDefaultLeaderboardPage
 	{
-		private readonly IWebHostEnvironment env;
+		private readonly IWebHostEnvironment _env;
 
 		public HistoryModel(IWebHostEnvironment env)
 		{
-			this.env = env;
+			_env = env;
 
-			foreach (string leaderboardHistoryPath in Directory.GetFiles(Path.Combine(this.env.WebRootPath, "leaderboard-history"), "*.json"))
+			foreach (string leaderboardHistoryPath in Directory.GetFiles(Path.Combine(_env.WebRootPath, "leaderboard-history"), "*.json"))
 			{
 				Lb leaderboard = JsonConvert.DeserializeObject<Lb>(Io.File.ReadAllText(leaderboardHistoryPath, Encoding.UTF8));
 				JsonFiles.Add(new SelectListItem($"{HistoryUtils.HistoryJsonFileNameToDateString(Path.GetFileNameWithoutExtension(leaderboardHistoryPath))} ({leaderboard.GetCompletionRate():0.0%} complete)", Path.GetFileName(leaderboardHistoryPath)));
@@ -32,21 +32,21 @@ namespace DevilDaggersWebsite.Pages.Leaderboard
 			JsonFiles.Reverse();
 		}
 
-		public Lb Leaderboard { get; set; } = new Lb();
+		public Lb? Leaderboard { get; set; } = new Lb();
 		public Lb LeaderboardPrevious { get; set; } = new Lb();
 		public List<string> ChangesGlobal { get; private set; } = new List<string>();
 		public Dictionary<string, string> ChangesTop100 { get; private set; } = new Dictionary<string, string>();
 
-		public List<SelectListItem> JsonFiles { get; set; } = new List<SelectListItem>();
-		public string From { get; set; }
-		public string FromPrevious { get; set; }
-		public string FromNext { get; set; }
+		public List<SelectListItem> JsonFiles { get; } = new List<SelectListItem>();
+		public string? From { get; set; }
+		public string? FromPrevious { get; set; }
+		public string? FromNext { get; set; }
 		public bool ShowMoreStats { get; private set; }
 
 		public void OnGet(string from, bool showMoreStats)
 		{
 			From = from;
-			if (string.IsNullOrEmpty(From) || !Io.File.Exists(Path.Combine(env.WebRootPath, "leaderboard-history", From)))
+			if (string.IsNullOrEmpty(From) || !Io.File.Exists(Path.Combine(_env.WebRootPath, "leaderboard-history", From)))
 				From = JsonFiles[0].Value;
 			ShowMoreStats = showMoreStats;
 
@@ -61,11 +61,11 @@ namespace DevilDaggersWebsite.Pages.Leaderboard
 				}
 			}
 
-			Leaderboard = JsonConvert.DeserializeObject<Lb>(Io.File.ReadAllText(Path.Combine(env.WebRootPath, "leaderboard-history", From), Encoding.UTF8));
+			Leaderboard = JsonConvert.DeserializeObject<Lb>(Io.File.ReadAllText(Path.Combine(_env.WebRootPath, "leaderboard-history", From), Encoding.UTF8));
 
 			if (FromNext != null)
 			{
-				LeaderboardPrevious = JsonConvert.DeserializeObject<Lb>(Io.File.ReadAllText(Path.Combine(env.WebRootPath, "leaderboard-history", FromNext), Encoding.UTF8));
+				LeaderboardPrevious = JsonConvert.DeserializeObject<Lb>(Io.File.ReadAllText(Path.Combine(_env.WebRootPath, "leaderboard-history", FromNext), Encoding.UTF8));
 
 				if (LeaderboardPrevious.GetCompletionRate() > 0.999f && Leaderboard.GetCompletionRate() > 0.999f)
 				{

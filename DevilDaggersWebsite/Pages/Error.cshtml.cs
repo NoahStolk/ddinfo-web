@@ -4,6 +4,7 @@ using DSharpPlus.Entities;
 using Microsoft.AspNetCore.Diagnostics;
 using Microsoft.AspNetCore.Mvc.RazorPages;
 using System;
+using System.Globalization;
 using System.Threading.Tasks;
 using Bot = DiscordBotDdInfo.Program;
 
@@ -21,21 +22,20 @@ namespace DevilDaggersWebsite.Pages
 					Color = DiscordColor.Red,
 				};
 
-				IExceptionHandlerPathFeature exceptionFeature = HttpContext.Features?.Get<IExceptionHandlerPathFeature>();
-				builder.AddFieldObject("Timestamp", DateTime.Now.ToString(FormatUtils.DateTimeFullFormat), true);
+				IExceptionHandlerPathFeature? exceptionFeature = HttpContext.Features?.Get<IExceptionHandlerPathFeature>();
+				builder.AddFieldObject("Timestamp", DateTime.Now.ToString(FormatUtils.DateTimeFullFormat, CultureInfo.InvariantCulture), true);
 				builder.AddFieldObject("Route", exceptionFeature?.Path, true);
 				builder.AddFieldObject("Request query string", HttpContext.Request?.QueryString, true);
-				// builder.AddFieldObject("Request ID", Activity.Current?.Id ?? HttpContext.TraceIdentifier);
-				// builder.AddFieldObject("Request method", HttpContext.Request?.Method);
-				// builder.AddFieldObject("Content type", HttpContext.Request?.ContentType);
-				// builder.AddFieldObject("Content length", HttpContext.Request?.ContentLength);
-				builder.AddError(exceptionFeature?.Error);
+				if (exceptionFeature != null)
+					builder.AddError(exceptionFeature.Error);
 
-				await Bot.DdInfoDevChannel.SendMessageAsyncSafe(null, builder.Build());
+				if (Bot.DdInfoDevChannel != null)
+					await Bot.DdInfoDevChannel.SendMessageAsyncSafe(null, builder.Build());
 			}
 			catch (Exception ex)
 			{
-				await Bot.DdInfoDevChannel.SendMessageAsyncSafe($"Error report failed! {ex.Message}");
+				if (Bot.DdInfoDevChannel != null)
+					await Bot.DdInfoDevChannel.SendMessageAsyncSafe($"Error report failed! {ex.Message}");
 			}
 		}
 	}

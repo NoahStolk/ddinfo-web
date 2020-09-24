@@ -1,15 +1,16 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.Drawing;
+using System.Globalization;
 using System.Text;
 
 namespace DevilDaggersWebsite.Code.Utils
 {
 	public static class ZalgoUtils
 	{
-		private static readonly List<string> zalgoAll = new List<string>();
+		private static readonly List<string> _zalgoAll = new List<string>();
 
-		private static readonly Random random = new Random();
+		private static readonly Random _random = new Random();
 
 		static ZalgoUtils()
 		{
@@ -17,9 +18,9 @@ namespace DevilDaggersWebsite.Code.Utils
 			{
 				int num = i;
 				string codePoint = $"0{num}";
-				int code = int.Parse(codePoint, System.Globalization.NumberStyles.HexNumber);
+				int code = int.Parse(codePoint, NumberStyles.HexNumber, CultureInfo.InvariantCulture);
 				string unicodeString = char.ConvertFromUtf32(code);
-				zalgoAll.Add(unicodeString);
+				_zalgoAll.Add(unicodeString);
 			}
 		}
 
@@ -34,7 +35,7 @@ namespace DevilDaggersWebsite.Code.Utils
 			byte g = (byte)Lerp(color1.G, color2.G, percentage);
 			byte b = (byte)Lerp(color1.B, color2.B, percentage);
 
-			return string.Format("{0:x2}{1:x2}{2:x2}", r, g, b);
+			return $"{r:x2}{g:x2}{b:x2}";
 		}
 
 		public static string ToZalgo(this string str, float amount)
@@ -52,12 +53,12 @@ namespace DevilDaggersWebsite.Code.Utils
 					if (j == Math.Floor(amount))
 					{
 						float chance = amount % 1;
-						if (random.NextDouble() < chance)
-							sb.Append(zalgoAll[random.Next(zalgoAll.Count)]);
+						if (_random.NextDouble() < chance)
+							sb.Append(_zalgoAll[_random.Next(_zalgoAll.Count)]);
 					}
 					else
 					{
-						sb.Append(zalgoAll[random.Next(zalgoAll.Count)]);
+						sb.Append(_zalgoAll[_random.Next(_zalgoAll.Count)]);
 					}
 				}
 			}
@@ -65,6 +66,7 @@ namespace DevilDaggersWebsite.Code.Utils
 			return sb.ToString();
 		}
 
-		private static float Lerp(int x, int y, float percentage) => (y - x) * percentage + x;
+		private static float Lerp(int x, int y, float percentage)
+			=> (y - x) * percentage + x;
 	}
 }

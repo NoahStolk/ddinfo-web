@@ -78,11 +78,11 @@ namespace DevilDaggersWebsite.Core.Dto
 
 			foreach (PropertyInfo info in GetType().GetProperties())
 			{
-				object value = info.GetValue(this);
+				object? value = info.GetValue(this);
 				if (value == null)
 					continue;
 
-				string valueString = value.ToString();
+				string? valueString = value.ToString();
 				if (string.IsNullOrEmpty(valueString))
 					continue;
 
