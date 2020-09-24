@@ -37,7 +37,7 @@ namespace DevilDaggersWebsite.Core.Tools
 					Changes = new List<Change>
 					{
 						new Change("Application now uses a custom dark theme. General layout for many components has been improved as well."),
-						new Change("Added Donut preset."),
+						new Change("Added Donut arena preset."),
 						new Change("Added new user settings.")
 						{
 							SubChanges = new List<Change>
