@@ -10,7 +10,7 @@
 </header>
 
 <main role="main">
-	@if (Model.Leaderboard.Entries.Count == 0)
+	@if (Model.Leaderboard == null || Model.Leaderboard.Entries.Count == 0)
 	{
 		<p>Failed to retrieve scores from the official Devil Daggers leaderboard servers. Please try again later.</p>
 		<p>If the problem persists, try contacting the Devil Daggers developer.</p>
