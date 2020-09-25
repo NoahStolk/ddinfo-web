@@ -68,7 +68,7 @@ namespace DevilDaggersWebsite.Core.Api
 			}
 		}
 
-		private async Task<ActionResult<Dto.UploadSuccess>> ProcessUploadRequest(Dto.UploadRequest uploadRequest)
+		public async Task<ActionResult<Dto.UploadSuccess>> ProcessUploadRequest(Dto.UploadRequest uploadRequest)
 		{
 			Version clientVersionParsed = Version.Parse(uploadRequest.DdclClientVersion);
 			if (clientVersionParsed < ToolList.DevilDaggersCustomLeaderboards.VersionNumberRequired)
