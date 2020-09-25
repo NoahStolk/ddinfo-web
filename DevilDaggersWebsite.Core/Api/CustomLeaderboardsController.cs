@@ -4,6 +4,7 @@ using DevilDaggersWebsite.Core.Clients;
 using DevilDaggersWebsite.Core.Entities;
 using DevilDaggersWebsite.Core.Tools;
 using DiscordBotDdInfo.Extensions;
+using DSharpPlus.Entities;
 using Microsoft.AspNetCore.Hosting;
 using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
@@ -14,6 +15,7 @@ using System.IO;
 using System.Linq;
 using System.Threading.Tasks;
 using System.Web;
+using Bot = DiscordBotDdInfo.Program;
 
 namespace DevilDaggersWebsite.Core.Api
 {
@@ -63,7 +65,7 @@ namespace DevilDaggersWebsite.Core.Api
 			}
 			catch (Exception ex)
 			{
-				await TryLog(uploadRequest, null, ex);
+				await TryLogError($"Upload failed for user `{uploadRequest.Username}` (`{uploadRequest.PlayerId}`) for `{GetSpawnsetNameOrHash(uploadRequest, null)}`.", ex);
 				throw;
 			}
 		}
@@ -116,7 +118,7 @@ namespace DevilDaggersWebsite.Core.Api
 				uploadRequest.EnemiesAlive,
 				uploadRequest.Homing,
 				string.Join(",", new int[3] { uploadRequest.LevelUpTime2, uploadRequest.LevelUpTime3, uploadRequest.LevelUpTime4 }));
-			if (DecryptValidation(uploadRequest.Validation) != check)
+			if (await DecryptValidation(uploadRequest.Validation) != check)
 			{
 				string errorMessage = "Invalid submission.";
 				await TryLog(uploadRequest, spawnsetName, errorMessage);
@@ -423,29 +425,8 @@ namespace DevilDaggersWebsite.Core.Api
 			};
 		}
 
-		private static async Task TryLog(Dto.UploadRequest uploadRequest, string? spawnsetName, Exception? exception = null)
-			=> await TryLog(uploadRequest, spawnsetName, exception?.Message);
-
-		private static async Task TryLog(Dto.UploadRequest uploadRequest, string? spawnsetName, string? errorMessage)
-		{
-			try
-			{
-				if (DiscordBotDdInfo.Program.DdInfoDevChannel == null)
-					return;
-
-				if (!string.IsNullOrEmpty(errorMessage))
-					await DiscordBotDdInfo.Program.DdInfoDevChannel.SendMessageAsyncSafe($"Upload failed for user `{uploadRequest.Username}` (`{uploadRequest.PlayerId}`) for `{GetSpawnsetNameOrHash()}`.\n{errorMessage}");
-				else
-					await DiscordBotDdInfo.Program.DdInfoDevChannel.SendMessageAsyncSafe($"`{uploadRequest.Username}` just submitted a score of `{uploadRequest.Time / 10000f}` to `{GetSpawnsetNameOrHash()}`.");
-			}
-			catch
-			{
-				// Ignore exceptions that occurred while attempting to log.
-			}
-
-			string GetSpawnsetNameOrHash()
-				=> string.IsNullOrEmpty(spawnsetName) ? uploadRequest.SpawnsetHash : spawnsetName;
-		}
+		private static string GetSpawnsetNameOrHash(Dto.UploadRequest uploadRequest, string? spawnsetName)
+			=> string.IsNullOrEmpty(spawnsetName) ? uploadRequest.SpawnsetHash : spawnsetName;
 
 		private static async Task<string> GetUsername(Dto.UploadRequest uploadRequest)
 		{
@@ -454,7 +435,7 @@ namespace DevilDaggersWebsite.Core.Api
 			return uploadRequest.Username;
 		}
 
-		private static string DecryptValidation(string validation)
+		private static async Task<string> DecryptValidation(string validation)
 		{
 			try
 			{
@@ -462,7 +443,51 @@ namespace DevilDaggersWebsite.Core.Api
 			}
 			catch (Exception ex)
 			{
-				throw new Exception($"Could not decrypt '{validation}'.", ex);
+				await TryLogError($"Could not decrypt validation: `{validation}`", ex);
+
+				return string.Empty;
+			}
+		}
+
+		private static async Task TryLog(Dto.UploadRequest uploadRequest, string? spawnsetName, string? errorMessage = null)
+		{
+			try
+			{
+				if (Bot.DdInfoDevChannel == null)
+					return;
+
+				string spawnsetIdentification = GetSpawnsetNameOrHash(uploadRequest, spawnsetName);
+
+				if (!string.IsNullOrEmpty(errorMessage))
+					await Bot.DdInfoDevChannel.SendMessageAsyncSafe($"Upload failed for user `{uploadRequest.Username}` (`{uploadRequest.PlayerId}`) for `{spawnsetIdentification}`.\n{errorMessage}");
+				else
+					await Bot.DdInfoDevChannel.SendMessageAsyncSafe($"`{uploadRequest.Username}` just submitted a score of `{uploadRequest.Time / 10000f:0.0000}` to `{spawnsetIdentification}`.");
+			}
+			catch
+			{
+				// Ignore exceptions that occurred while attempting to log.
+			}
+		}
+
+		private static async Task TryLogError(string title, Exception ex)
+		{
+			try
+			{
+				if (Bot.DdInfoDevChannel == null)
+					return;
+
+				DiscordEmbedBuilder builder = new DiscordEmbedBuilder
+				{
+					Title = title,
+					Color = DiscordColor.Red,
+				};
+				builder.AddError(ex);
+
+				await Bot.DdInfoDevChannel.SendMessageAsyncSafe(null, builder.Build());
+			}
+			catch
+			{
+				// Ignore exceptions that occurred while attempting to log.
 			}
 		}
 	}
