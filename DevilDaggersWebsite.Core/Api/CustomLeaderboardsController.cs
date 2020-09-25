@@ -137,8 +137,21 @@ namespace DevilDaggersWebsite.Core.Api
 
 			// At this point, the submission is accepted.
 
-			// Fix any broken values.
-			uploadRequest.Homing = Math.Max(0, uploadRequest.Homing);
+			// Add the player or update the username.
+			Player player = _dbContext.Players.FirstOrDefault(p => p.Id == uploadRequest.PlayerId);
+			if (player == null)
+			{
+				player = new Player
+				{
+					Id = uploadRequest.PlayerId,
+					Username = await GetUsername(uploadRequest),
+				};
+				_dbContext.Players.Add(player);
+			}
+			else
+			{
+				player.Username = await GetUsername(uploadRequest);
+			}
 
 			// Update the date this leaderboard was submitted to.
 			leaderboard.DateLastPlayed = DateTime.Now;
@@ -146,7 +159,9 @@ namespace DevilDaggersWebsite.Core.Api
 
 			// Calculate the new rank.
 			IEnumerable<CustomEntry> entries = _dbContext.CustomEntries.Where(e => e.CustomLeaderboard == leaderboard).OrderByMember(leaderboard.Category.SortingPropertyName, leaderboard.Category.Ascending).ToArray();
-			int rank = leaderboard.Category.Ascending ? entries.Count(e => e.Time < uploadRequest.Time) + 1 : entries.Count(e => e.Time > uploadRequest.Time) + 1; // TODO: Use reflection to use Category.SortingPropertyName.
+
+			// TODO: Use reflection to use Category.SortingPropertyName.
+			int rank = leaderboard.Category.Ascending ? entries.Count(e => e.Time < uploadRequest.Time) + 1 : entries.Count(e => e.Time > uploadRequest.Time) + 1;
 			int totalPlayers = entries.Count();
 
 			CustomEntry? entry = _dbContext.CustomEntries.FirstOrDefault(e => e.PlayerId == uploadRequest.PlayerId && e.CustomLeaderboardId == leaderboard.Id);
@@ -240,22 +255,6 @@ namespace DevilDaggersWebsite.Core.Api
 					LevelUpTime3 = uploadRequest.LevelUpTime3,
 					LevelUpTime4 = uploadRequest.LevelUpTime4,
 				};
-			}
-
-			// Add the player or update the username.
-			Player player = _dbContext.Players.FirstOrDefault(p => p.Id == entry.PlayerId);
-			if (player == null)
-			{
-				player = new Player
-				{
-					Id = entry.PlayerId,
-					Username = await GetUsername(uploadRequest),
-				};
-				_dbContext.Players.Add(player);
-			}
-			else
-			{
-				player.Username = await GetUsername(uploadRequest);
 			}
 
 			// User is already on the leaderboard, but did not get a better score.
