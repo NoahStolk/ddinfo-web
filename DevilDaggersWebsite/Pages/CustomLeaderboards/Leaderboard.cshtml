@@ -3,7 +3,7 @@
 @using DevilDaggersCore.Game
 @model DevilDaggersWebsite.Pages.CustomLeaderboards.LeaderboardModel
 @{
-	string name = Model.SpawnsetFile.Name;
+	string name = Model.SpawnsetFile?.Name ?? throw new Exception("Spawnset was null in CustomLeaderboards/Leaderboard page.");
 	ViewData["Title"] = $"Leaderboard for {name} by {Model.SpawnsetFile.Player.Username}";
 }
 

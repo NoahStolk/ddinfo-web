@@ -4,6 +4,9 @@
 @inject DevilDaggersWebsite.Core.Entities.ApplicationDbContext dbContext
 @model DevilDaggersWebsite.Pages.SpawnsetModel
 @{
+	if (Model.SpawnsetFile == null || Model.Spawnset == null)
+		return;
+
 	ViewData["Title"] = "Spawnset";
 	ViewBag.Title = $"{Model.SpawnsetFile.Name} by {Model.SpawnsetFile.Player.Username}";
 	int[] widths = new int[4] { 160, 128, 192, 128 };
@@ -35,16 +38,16 @@
 
 	<div class="text-center">
 		<div class="flex-container flex-center">
-			<div style="width: @(widths[0])px;">Start radius</div>
-			<div style="width: @(widths[1])px;">End radius</div>
-			<div style="width: @(widths[2])px;">Shrinking rate</div>
-			<div style="width: @(widths[3])px;">Brightness</div>
+			<div style="@RazorUtils.GetCssWidth(widths[0])">Start radius</div>
+			<div style="@RazorUtils.GetCssWidth(widths[1])">End radius</div>
+			<div style="@RazorUtils.GetCssWidth(widths[2])">Shrinking rate</div>
+			<div style="@RazorUtils.GetCssWidth(widths[3])">Brightness</div>
 		</div>
 		<div class="flex-container flex-center">
-			<div style="width: @(widths[0])px;">@Model.Spawnset.ShrinkStart.ToString("0.#")</div>
-			<div style="width: @(widths[1])px;">@Model.Spawnset.ShrinkEnd.ToString("0.#")</div>
-			<div style="width: @(widths[2])px;">@Model.Spawnset.ShrinkRate.ToString("0.####")</div>
-			<div style="width: @(widths[3])px;">@Model.Spawnset.Brightness.ToString("0.#")</div>
+			<div style="@RazorUtils.GetCssWidth(widths[0])">@Model.Spawnset.ShrinkStart.ToString("0.#")</div>
+			<div style="@RazorUtils.GetCssWidth(widths[1])">@Model.Spawnset.ShrinkEnd.ToString("0.#")</div>
+			<div style="@RazorUtils.GetCssWidth(widths[2])">@Model.Spawnset.ShrinkRate.ToString("0.####")</div>
+			<div style="@RazorUtils.GetCssWidth(widths[3])">@Model.Spawnset.Brightness.ToString("0.#")</div>
 		</div>
 	</div>
 
@@ -57,7 +60,8 @@
 					{
 						float height = (float)Math.Round(Model.Spawnset.ArenaTiles[j, i] * 32 + 64); // Swap coordinates because <tr> elements cannot be vertical.
 
-						<td class="arena-tile" style="background-color: rgb(@height, @Math.Round(height / 2), 0);"></td>
+						string backgroundColorStyle = $"background-color: rgb({height}, {Math.Round(height / 2)}, 0)";
+						<td class="arena-tile" style="@backgroundColorStyle"></td>
 					}
 				</tr>
 			}

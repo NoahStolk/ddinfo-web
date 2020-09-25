@@ -1,4 +1,5 @@
-﻿using DevilDaggersWebsite.Core.Clients;
+﻿using DevilDaggersWebsite.Code.PageModels;
+using DevilDaggersWebsite.Core.Clients;
 using DevilDaggersWebsite.Core.Dto;
 using Microsoft.AspNetCore.Mvc.RazorPages;
 using System.Collections.Generic;
@@ -8,9 +9,9 @@ using Lb = DevilDaggersWebsite.Core.Dto.Leaderboard;
 
 namespace DevilDaggersWebsite.Pages.Leaderboard
 {
-	public class UserSettingsModel : PageModel
+	public class UserSettingsModel : PageModel, IDefaultLeaderboardPage
 	{
-		public Lb Leaderboard { get; set; } = new Lb();
+		public Lb? Leaderboard { get; set; } = new Lb();
 
 		public async Task OnGetAsync()
 		{
@@ -18,11 +19,11 @@ namespace DevilDaggersWebsite.Pages.Leaderboard
 			{
 				Lb? nextLeaderboard = await DdHasmodaiClient.GetScores(i * 100 + 1);
 				foreach (Entry entry in nextLeaderboard?.Entries ?? new List<Entry>())
-					Leaderboard.Entries.Add(entry);
+					Leaderboard!.Entries.Add(entry);
 			});
 			await Task.WhenAll(tasks);
 
-			Leaderboard.Entries = Leaderboard.Entries.OrderBy(e => e.Rank).ToList();
+			Leaderboard!.Entries = Leaderboard.Entries.OrderBy(e => e.Rank).ToList();
 		}
 	}
 }

@@ -113,5 +113,8 @@ namespace DevilDaggersWebsite.Code.Utils
 
 		public static string S(this int value)
 			=> value == 1 ? string.Empty : "s";
+
+		public static string GetCssWidth(int width)
+			=> $"width: {width}px;";
 	}
 }

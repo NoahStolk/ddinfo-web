@@ -25,16 +25,16 @@
 		<fieldset>
 			<div class="flex-container flex-center flex-column">
 				<div class="flex-container flex-center">
-					<div class="input-label text-left" style="width: @(widths[0])px;">Rank:</div>
-					<div style="width: @(widths[1])px;">@Html.TextBoxFor(m => m.Rank, new { @class = "input" })</div>
+					<div class="input-label text-left" style="@RazorUtils.GetCssWidth(widths[0])">Rank:</div>
+					<div style="@RazorUtils.GetCssWidth(widths[1])">@Html.TextBoxFor(m => m.Rank, new { @class = "input" })</div>
 				</div>
 				<div class="flex-container flex-center">
-					<div class="input-label text-left" style="width: @(widths[0])px;">Username:</div>
-					<div style="width: @(widths[1])px;">@Html.TextBoxFor(m => m.Username, new { @class = "input" })</div>
+					<div class="input-label text-left" style="@RazorUtils.GetCssWidth(widths[0])">Username:</div>
+					<div style="@RazorUtils.GetCssWidth(widths[1])">@Html.TextBoxFor(m => m.Username, new { @class = "input" })</div>
 				</div>
 				<div class="flex-container flex-center">
-					<div class="input-label text-left" style="width: @(widths[0])px;">User ID:</div>
-					<div style="width: @(widths[1])px;">@Html.TextBoxFor(m => m.UserId, new { @class = "input" })</div>
+					<div class="input-label text-left" style="@RazorUtils.GetCssWidth(widths[0])">User ID:</div>
+					<div style="@RazorUtils.GetCssWidth(widths[1])">@Html.TextBoxFor(m => m.UserId, new { @class = "input" })</div>
 				</div>
 			</div>
 			<div class="flex-container flex-center flex-column">

@@ -30,10 +30,10 @@
 		@if (spawnset.HasSpawns())
 		{
 			<div class="flex-container flex-center">
-				<div style="width: @(widths[0])px;">Time</div>
-				<div style="width: @(widths[1])px;">Enemy</div>
-				<div style="width: @(widths[2])px;">Gems (no farm)</div>
-				<div style="width: @(widths[3])px;">Total gems</div>
+				<div style="@RazorUtils.GetCssWidth(widths[0])">Time</div>
+				<div style="@RazorUtils.GetCssWidth(widths[1])">Enemy</div>
+				<div style="@RazorUtils.GetCssWidth(widths[2])">Gems (no farm)</div>
+				<div style="@RazorUtils.GetCssWidth(widths[3])">Total gems</div>
 			</div>
 
 			double totalSeconds = 0;
@@ -48,10 +48,10 @@
 					totalGems += spawn.Enemy.NoFarmGems;
 
 					<div class="flex-container flex-center">
-						<div style="width: @(widths[0])px;" class="text-right">@totalSeconds.ToString(FormatUtils.SpawnTimeFormat)</div>
-						<div style="width: @(widths[1])px;">@(spawn.Enemy.GetLayoutAnchor(false, gameVersion))</div>
-						<div style="width: @(widths[2])px;" class="text-right">@spawn.Enemy.NoFarmGems</div>
-						<div style="width: @(widths[3])px;" class="text-right">@totalGems</div>
+						<div style="@RazorUtils.GetCssWidth(widths[0])" class="text-right">@totalSeconds.ToString(FormatUtils.SpawnTimeFormat)</div>
+						<div style="@RazorUtils.GetCssWidth(widths[1])">@(spawn.Enemy.GetLayoutAnchor(false, gameVersion))</div>
+						<div style="@RazorUtils.GetCssWidth(widths[2])" class="text-right">@spawn.Enemy.NoFarmGems</div>
+						<div style="@RazorUtils.GetCssWidth(widths[3])" class="text-right">@totalGems</div>
 					</div>
 				}
 			}
@@ -103,10 +103,10 @@
 							totalGems += gems;
 
 							<div class="flex-container flex-center">
-								<div style="width: @(widths[0])px;" class="text-right">@((Math.Floor(endGameSecond * 60) / 60).ToString(FormatUtils.SpawnTimeFormat))</div>
-								<div style="width: @(widths[1])px;">@(finalEnemy.GetLayoutAnchor(false, gameVersion))</div>
-								<div style="width: @(widths[2])px;" class="text-right">@gems</div>
-								<div style="width: @(widths[3])px;" class="text-right">@totalGems</div>
+								<div style="@RazorUtils.GetCssWidth(widths[0])" class="text-right">@((Math.Floor(endGameSecond * 60) / 60).ToString(FormatUtils.SpawnTimeFormat))</div>
+								<div style="@RazorUtils.GetCssWidth(widths[1])">@(finalEnemy.GetLayoutAnchor(false, gameVersion))</div>
+								<div style="@RazorUtils.GetCssWidth(widths[2])" class="text-right">@gems</div>
+								<div style="@RazorUtils.GetCssWidth(widths[3])" class="text-right">@totalGems</div>
 							</div>
 						}
 					}

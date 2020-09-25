@@ -12,13 +12,13 @@
 
 	bool isHistory = modelType == typeof(HistoryModel);
 
-	string players = Model.Leaderboard.Players.ToString(FormatUtils.LeaderboardIntFormat);
-	string time = Model.Leaderboard.TimeGlobal.FormatTimeInteger(true);
-	string kills = Model.Leaderboard.KillsGlobal.ToString(FormatUtils.LeaderboardIntFormat);
-	string gems = Model.Leaderboard.GemsGlobal.ToString(FormatUtils.LeaderboardIntFormat);
-	string deaths = Model.Leaderboard.DeathsGlobal.ToString(FormatUtils.LeaderboardIntFormat);
-	string shots = FormatUtils.FormatDaggersUInt64(Model.Leaderboard.DaggersHitGlobal, Model.Leaderboard.DaggersFiredGlobal, isHistory);
-	string accuracy = Model.Leaderboard.AccuracyGlobal.ToString(FormatUtils.AccuracyFormat);
+	string players = Model.Leaderboard?.Players.ToString(FormatUtils.LeaderboardIntFormat) ?? "Failed to fetch";
+	string time = Model.Leaderboard?.TimeGlobal.FormatTimeInteger(true) ?? "Failed to fetch";
+	string kills = Model.Leaderboard?.KillsGlobal.ToString(FormatUtils.LeaderboardIntFormat) ?? "Failed to fetch";
+	string gems = Model.Leaderboard?.GemsGlobal.ToString(FormatUtils.LeaderboardIntFormat) ?? "Failed to fetch";
+	string deaths = Model.Leaderboard?.DeathsGlobal.ToString(FormatUtils.LeaderboardIntFormat) ?? "Failed to fetch";
+	string shots = Model.Leaderboard == null ? "Failed to fetch" : FormatUtils.FormatDaggersUInt64(Model.Leaderboard.DaggersHitGlobal, Model.Leaderboard.DaggersFiredGlobal, isHistory);
+	string accuracy = Model.Leaderboard?.AccuracyGlobal.ToString(FormatUtils.AccuracyFormat) ?? "Failed to fetch";
 }
 <div class="hidden-xs text-center">
 	<div class="flex-container leaderboard-flex flex-center flex-space-evenly">
@@ -66,7 +66,7 @@
 			<div class="devil">@kills</div>
 			<div class="devil">@gems</div>
 			@{
-				if (isHistory && (Model.Leaderboard.DaggersFiredGlobal == 10000 || Model.Leaderboard.DaggersFiredGlobal == 0))
+				if (isHistory && (Model.Leaderboard?.DaggersFiredGlobal == 10000 || Model.Leaderboard?.DaggersFiredGlobal == 0))
 				{
 					<span class="devil">@accuracy</span>
 				}

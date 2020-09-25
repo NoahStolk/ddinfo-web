@@ -1,6 +1,8 @@
-﻿@using DevilDaggersCore.Game
+﻿@model IDefaultLeaderboardPage
+@using DevilDaggersCore.Game
 @using DevilDaggersCore.Utils
 @using DevilDaggersWebsite.Core.Entities
+@using DevilDaggersWebsite.Code.PageModels
 @using DevilDaggersWebsite.Code.Utils
 @using Microsoft.EntityFrameworkCore
 @inject DevilDaggersWebsite.Core.Entities.ApplicationDbContext dbContext
@@ -25,13 +27,11 @@
 		@{
 			IEnumerable<Donation> donations = dbContext.Donations.ToList();
 			IEnumerable<Player> players = dbContext.Players.Include(p => p.PlayerTitles).ThenInclude(pt => pt.Title).ToList();
-			foreach (Core.Dto.Entry entry in Model.Leaderboard.Entries)
+			foreach (Core.Dto.Entry entry in Model.Leaderboard?.Entries ?? new List<Core.Dto.Entry>())
 			{
 				Player? player = players.FirstOrDefault(p => p.Id == entry.Id);
-				if (player == null || player.Dpi == null) // TODO: Check more values
-				{
+				if (player == null || player.Dpi == null)
 					continue;
-				}
 
 				bool isUnanonymousDonator = !player.IsAnonymous && donations.Any(d => d.PlayerId == entry.Id);
 
@@ -39,10 +39,10 @@
 				string[] titles = player.PlayerTitles.Select(pt => pt.Title.Name).ToArray();
 
 				Dagger dagger = GameInfo.GetDaggerFromTime(entry.Time);
-				Death death = GameInfo.GetDeathByType(entry.DeathType, GameInfo.GetGameVersionFromDate(Model.Leaderboard.DateTime));
+				Death? death = GameInfo.GetDeathByType(entry.DeathType, GameInfo.GetGameVersionFromDate(Model.Leaderboard?.DateTime ?? DateTime.Now));
 
 				string daggerColor = dagger.Name.ToLower();
-				string deathStyle = $"color: #{death.ColorCode};";
+				string deathStyle = $"color: #{death?.ColorCode ?? "444"};";
 
 				<div class="sort" @entry.ToHtmlData(flagCode, player)>
 					<div class="leaderboard-row flex-container" id="@(entry.Rank)-row">

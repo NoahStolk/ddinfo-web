@@ -50,9 +50,6 @@
 			<th class="hidden-xs hidden-sm hidden-md" width="200" colspan="2">
 				World record
 			</th>
-			@*<th class="hidden-xs hidden-sm hidden-md" width="400" colspan="4">
-					Completion rate
-				</th>*@
 		</tr>
 	</thead>
 	<tbody>
@@ -62,7 +59,7 @@
 				string fileName = lb.SpawnsetFile.Name;
 				string author = lb.SpawnsetFile.Player.Username;
 				List<CustomEntry> entries = dbContext.CustomEntries.Where(e => e.CustomLeaderboard == lb).OrderByMember(lb.Category.SortingPropertyName, lb.Category.Ascending).ToList();
-				string wrDagger = "";
+				string wrDagger = string.Empty;
 				if (entries.Count > 0)
 				{
 					wrDagger = lb.GetDagger(entries[0].Time);
@@ -121,24 +118,6 @@
 							}
 						}
 					</td>
-					@*<td class="text-right hidden-xs hidden-sm hidden-md bronze">
-							@(entries.Count == 0 ? "0.00%" : (entries.Where(e => e.Time >= lb.Bronze).Count() / (float)entries.Count).ToString("0.00%"))
-						</td>
-						<td class="text-right hidden-xs hidden-sm hidden-md silver">
-							@(entries.Count == 0 ? "0.00%" : (entries.Where(e => e.Time >= lb.Silver).Count() / (float)entries.Count).ToString("0.00%"))
-						</td>
-						<td class="text-right hidden-xs hidden-sm hidden-md golden">
-							@(entries.Count == 0 ? "0.00%" : (entries.Where(e => e.Time >= lb.Golden).Count() / (float)entries.Count).ToString("0.00%"))
-						</td>
-						<td class="text-right hidden-xs hidden-sm hidden-md devil">
-							@(entries.Count == 0 ? "0.00%" : (entries.Where(e => e.Time >= lb.Devil).Count() / (float)entries.Count).ToString("0.00%"))
-						</td>
-						@if (lb.Homing != 0)
-						{
-							<td class="text-right hidden-xs hidden-sm hidden-md homing">
-								@(entries.Count == 0 ? "0.00%" : (entries.Where(e => e.Time >= lb.Homing).Count() / (float)entries.Count).ToString("0.00%"))
-							</td>
-						}*@
 				</tr>
 			}
 		}

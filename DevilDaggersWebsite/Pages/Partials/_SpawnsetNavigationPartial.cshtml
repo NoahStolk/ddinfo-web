@@ -7,8 +7,8 @@
 	int maxAround = Model.MaxAround;
 	ScreenWidthVisibilities visibility = Model.Visibility;
 
-	string firstDisabled = !mod.PaginatedSpawnsetFiles.HasPreviousPage ? "disabled btn-info" : "";
-	string lastDisabled = !mod.PaginatedSpawnsetFiles.HasNextPage ? "disabled btn-info" : "";
+	string firstDisabled = mod.PaginatedSpawnsetFiles != null && !mod.PaginatedSpawnsetFiles.HasPreviousPage ? "disabled btn-info" : string.Empty;
+	string lastDisabled = mod.PaginatedSpawnsetFiles != null && !mod.PaginatedSpawnsetFiles.HasNextPage ? "disabled btn-info" : string.Empty;
 
 	int first = 1;
 	int last = (int)Math.Ceiling(mod.TotalResults / (float)mod.PageSize);

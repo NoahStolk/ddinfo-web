@@ -1,6 +1,8 @@
 ﻿@page
 @model DevilDaggersWebsite.Pages.Leaderboard.HistoryModel
 @{
+	if (Model.Leaderboard == null)
+		return;
 	ViewData["Title"] = $"Top 100 History ({Model.Leaderboard.DateTime.ToString("yyyy-MM-dd HH:mm")})";
 }
 @using DevilDaggersWebsite.Core.Extensions

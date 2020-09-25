@@ -17,20 +17,20 @@ namespace DevilDaggersWebsite.Pages
 			_spawnsetHelper = spawnsetHelper;
 		}
 
-		public PaginatedList<SpawnsetFile> PaginatedSpawnsetFiles { get; set; }
+		public PaginatedList<SpawnsetFile>? PaginatedSpawnsetFiles { get; private set; }
 
-		public string SearchAuthor { get; set; }
-		public string SearchName { get; set; }
+		public string? SearchAuthor { get; set; }
+		public string? SearchName { get; set; }
 
-		public string NameSort { get; set; }
-		public string AuthorSort { get; set; }
-		public string LastUpdated { get; set; }
-		public string NonLoopLength { get; set; }
-		public string NonLoopSpawns { get; set; }
-		public string LoopLength { get; set; }
-		public string LoopSpawns { get; set; }
+		public string? NameSort { get; set; }
+		public string? AuthorSort { get; set; }
+		public string? LastUpdated { get; set; }
+		public string? NonLoopLength { get; set; }
+		public string? NonLoopSpawns { get; set; }
+		public string? LoopLength { get; set; }
+		public string? LoopSpawns { get; set; }
 
-		public string SortOrder { get; set; }
+		public string? SortOrder { get; set; }
 
 		public int PageSize { get; set; } = 18;
 		public int PageIndex { get; private set; }
