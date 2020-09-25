@@ -1,9 +1,10 @@
 ﻿@page
 @model DevilDaggersWebsite.Pages.Leaderboard.HistoryModel
+@using DevilDaggersCore.Utils
 @{
 	if (Model.Leaderboard == null)
 		return;
-	ViewData["Title"] = $"Top 100 History ({Model.Leaderboard.DateTime.ToString("yyyy-MM-dd HH:mm")})";
+	ViewData["Title"] = $"Top 100 History ({Model.Leaderboard.DateTime.ToString(FormatUtils.DateTimeUtcFormat)})";
 }
 @using DevilDaggersWebsite.Core.Extensions
 @using DevilDaggersWebsite.Code.Utils
@@ -48,9 +49,8 @@
 		bool isDataMissingInUserCompletion = userCompletion.CompletionEntries.Any(c => c.Value == CompletionEntryCombined.Missing || c.Value == CompletionEntryCombined.PartiallyMissing);
 		if (isDataMissingInGlobalCompletion || isDataMissingInUserCompletion)
 		{
-			<div>
-				Missing information
-			</div>
+			<h2>Missing information</h2>
+			<div>This leaderboard is only <span class="devil">@($"{Model.Leaderboard.GetCompletionRate():0.0%}")</span> complete.</div>
 			<div class="info-container info-red">
 				<div class="flex-container leaderboard-flex flex-center flex-space-evenly text-left">
 					<div>
