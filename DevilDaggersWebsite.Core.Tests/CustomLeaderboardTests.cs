@@ -96,6 +96,33 @@ namespace DevilDaggersWebsite.Core.Tests
 			Assert.IsTrue(problemDetails.Title.Contains("unsupported and outdated", StringComparison.InvariantCulture));
 		}
 
+		[TestMethod]
+		public async Task PostUploadRequestInvalidValidation()
+		{
+			Spawnset emptySpawnset = new Spawnset();
+
+			Dto.UploadRequest uploadRequest = new Dto.UploadRequest
+			{
+				Time = 100000,
+				PlayerId = 1,
+				DdclClientVersion = ToolList.DevilDaggersCustomLeaderboards.VersionNumber.ToString(),
+				SpawnsetHash = emptySpawnset.GetHashString(),
+				GameStates = new List<Dto.GameState>(),
+				Username = "Sorath",
+				Validation = "Malformed validation",
+			};
+
+			ActionResult<Dto.UploadSuccess> response = await _customLeaderboardsController.ProcessUploadRequest(uploadRequest, new List<(string name, Spawnset spawnset)> { ("Empty", emptySpawnset) });
+
+			Assert.IsInstanceOfType(response.Result, typeof(BadRequestObjectResult));
+			BadRequestObjectResult badRequest = (BadRequestObjectResult)response.Result;
+			Assert.AreEqual(StatusCodes.Status400BadRequest, badRequest.StatusCode);
+
+			Assert.IsInstanceOfType(badRequest.Value, typeof(ProblemDetails));
+			ProblemDetails problemDetails = (ProblemDetails)badRequest.Value;
+			Assert.IsTrue(problemDetails.Title == "Invalid submission.");
+		}
+
 		private static string GetValidation(Dto.UploadRequest uploadRequest)
 		{
 			string toEncrypt = string.Join(";", uploadRequest.PlayerId, uploadRequest.Time, uploadRequest.Gems, uploadRequest.Kills, uploadRequest.DeathType, uploadRequest.DaggersHit, uploadRequest.DaggersFired, uploadRequest.EnemiesAlive, uploadRequest.Homing, string.Join(",", new[] { uploadRequest.LevelUpTime2, uploadRequest.LevelUpTime3, uploadRequest.LevelUpTime4 }));
