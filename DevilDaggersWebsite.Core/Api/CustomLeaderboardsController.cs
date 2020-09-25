@@ -59,7 +59,7 @@ namespace DevilDaggersWebsite.Core.Api
 		{
 			try
 			{
-				return await ProcessUploadRequest(uploadRequest);
+				return await ProcessUploadRequest(uploadRequest, GetSpawnsets());
 			}
 			catch (Exception ex)
 			{
@@ -68,7 +68,16 @@ namespace DevilDaggersWebsite.Core.Api
 			}
 		}
 
-		public async Task<ActionResult<Dto.UploadSuccess>> ProcessUploadRequest(Dto.UploadRequest uploadRequest)
+		private IEnumerable<(string name, Spawnset spawnset)> GetSpawnsets()
+		{
+			foreach (string spawnsetPath in Directory.GetFiles(Path.Combine(_env.WebRootPath, "spawnsets")))
+			{
+				if (Spawnset.TryParse(System.IO.File.ReadAllBytes(spawnsetPath), out Spawnset spawnset))
+					yield return (Path.GetFileName(spawnsetPath), spawnset);
+			}
+		}
+
+		public async Task<ActionResult<Dto.UploadSuccess>> ProcessUploadRequest(Dto.UploadRequest uploadRequest, IEnumerable<(string name, Spawnset spawnset)> spawnsets)
 		{
 			Version clientVersionParsed = Version.Parse(uploadRequest.DdclClientVersion);
 			if (clientVersionParsed < ToolList.DevilDaggersCustomLeaderboards.VersionNumberRequired)
@@ -79,16 +88,11 @@ namespace DevilDaggersWebsite.Core.Api
 			}
 
 			string spawnsetName = string.Empty;
-			foreach (string spawnsetPath in Directory.GetFiles(Path.Combine(_env.WebRootPath, "spawnsets")))
+			foreach ((string name, Spawnset spawnset) in spawnsets)
 			{
-				string hash = string.Empty;
-
-				if (Spawnset.TryParse(System.IO.File.ReadAllBytes(spawnsetPath), out Spawnset spawnsetObject))
-					hash = spawnsetObject.GetHashString();
-
-				if (hash == uploadRequest.SpawnsetHash)
+				if (spawnset.GetHashString() == uploadRequest.SpawnsetHash)
 				{
-					spawnsetName = Path.GetFileName(spawnsetPath);
+					spawnsetName = name;
 					break;
 				}
 			}
