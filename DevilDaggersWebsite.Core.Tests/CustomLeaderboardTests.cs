@@ -70,6 +70,72 @@ namespace DevilDaggersWebsite.Core.Tests
 		}
 
 		[TestMethod]
+		public async Task PostUploadRequestExistingPlayerExistingEntryNewHighscore()
+		{
+			Spawnset emptySpawnset = new Spawnset();
+
+			Dto.UploadRequest uploadRequest = new Dto.UploadRequest
+			{
+				Time = 200000,
+				PlayerId = 1,
+				DdclClientVersion = ToolList.DevilDaggersCustomLeaderboards.VersionNumber.ToString(),
+				SpawnsetHash = emptySpawnset.GetHashString(),
+				GameStates = new List<Dto.GameState>(),
+				Username = "TestPlayer1",
+			};
+			uploadRequest.Validation = GetValidation(uploadRequest);
+
+			Dto.UploadSuccess uploadSuccess = (await _customLeaderboardsController.ProcessUploadRequest(uploadRequest, new List<(string name, Spawnset spawnset)> { ("Empty", emptySpawnset) })).Value;
+
+			Assert.AreEqual(1, uploadSuccess.TotalPlayers);
+			Assert.IsTrue(uploadSuccess.Message.StartsWith("NEW HIGHSCORE", StringComparison.InvariantCulture));
+		}
+
+		[TestMethod]
+		public async Task PostUploadRequestExistingPlayerNewEntry()
+		{
+			Spawnset emptySpawnset = new Spawnset();
+
+			Dto.UploadRequest uploadRequest = new Dto.UploadRequest
+			{
+				Time = 200000,
+				PlayerId = 2,
+				DdclClientVersion = ToolList.DevilDaggersCustomLeaderboards.VersionNumber.ToString(),
+				SpawnsetHash = emptySpawnset.GetHashString(),
+				GameStates = new List<Dto.GameState>(),
+				Username = "TestPlayer2",
+			};
+			uploadRequest.Validation = GetValidation(uploadRequest);
+
+			Dto.UploadSuccess uploadSuccess = (await _customLeaderboardsController.ProcessUploadRequest(uploadRequest, new List<(string name, Spawnset spawnset)> { ("Empty", emptySpawnset) })).Value;
+
+			Assert.AreEqual(2, uploadSuccess.TotalPlayers);
+			Assert.IsTrue(uploadSuccess.Message.StartsWith("Welcome", StringComparison.InvariantCulture));
+		}
+
+		[TestMethod]
+		public async Task PostUploadRequestNewPlayer()
+		{
+			Spawnset emptySpawnset = new Spawnset();
+
+			Dto.UploadRequest uploadRequest = new Dto.UploadRequest
+			{
+				Time = 300000,
+				PlayerId = 3,
+				DdclClientVersion = ToolList.DevilDaggersCustomLeaderboards.VersionNumber.ToString(),
+				SpawnsetHash = emptySpawnset.GetHashString(),
+				GameStates = new List<Dto.GameState>(),
+				Username = "TestPlayer3",
+			};
+			uploadRequest.Validation = GetValidation(uploadRequest);
+
+			Dto.UploadSuccess uploadSuccess = (await _customLeaderboardsController.ProcessUploadRequest(uploadRequest, new List<(string name, Spawnset spawnset)> { ("Empty", emptySpawnset) })).Value;
+
+			Assert.AreEqual(2, uploadSuccess.TotalPlayers);
+			Assert.IsTrue(uploadSuccess.Message.StartsWith("Welcome", StringComparison.InvariantCulture));
+		}
+
+		[TestMethod]
 		public async Task PostUploadRequestOutdated()
 		{
 			Spawnset emptySpawnset = new Spawnset();
