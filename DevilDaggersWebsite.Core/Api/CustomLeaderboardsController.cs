@@ -79,6 +79,8 @@ namespace DevilDaggersWebsite.Core.Api
 			}
 		}
 
+		[ApiExplorerSettings(IgnoreApi = true)]
+		[NonAction]
 		public async Task<ActionResult<Dto.UploadSuccess>> ProcessUploadRequest(Dto.UploadRequest uploadRequest, IEnumerable<(string name, Spawnset spawnset)> spawnsets)
 		{
 			Version clientVersionParsed = Version.Parse(uploadRequest.DdclClientVersion);
