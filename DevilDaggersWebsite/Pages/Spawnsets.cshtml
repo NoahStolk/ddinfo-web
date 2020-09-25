@@ -25,12 +25,12 @@
 			<fieldset>
 				<div class="flex-container flex-center flex-column">
 					<div class="flex-container flex-center">
-						<div class="input-label text-left" style="width: @(widths[0])px;">Author search:</div>
-						<div style="width: @(widths[1])px;">@Html.TextBoxFor(m => m.SearchAuthor, new { @class = "input" })</div>
+						<div class="input-label text-left" style="@RazorUtils.GetCssWidth(widths[0])">Author search:</div>
+						<div style="@RazorUtils.GetCssWidth(widths[1])">@Html.TextBoxFor(m => m.SearchAuthor, new { @class = "input" })</div>
 					</div>
 					<div class="flex-container flex-center">
-						<div class="input-label text-left" style="width: @(widths[0])px;">Spawnset search:</div>
-						<div style="width: @(widths[1])px;">@Html.TextBoxFor(m => m.SearchName, new { @class = "input" })</div>
+						<div class="input-label text-left" style="@RazorUtils.GetCssWidth(widths[0])">Spawnset search:</div>
+						<div style="@RazorUtils.GetCssWidth(widths[1])">@Html.TextBoxFor(m => m.SearchName, new { @class = "input" })</div>
 					</div>
 				</div>
 

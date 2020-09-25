@@ -1,6 +1,7 @@
 ﻿@page
 @inject ApplicationDbContext dbContext
 @using DevilDaggersCore.Game
+@using DevilDaggersWebsite.Code.Utils
 @using DevilDaggersWebsite.Core.Entities
 @using DevilDaggersWebsite.Core.Enumerators
 @using DevilDaggersWebsite.Core.Extensions
@@ -44,8 +45,8 @@
 				string str = string.Join(" + ", donationsGroupedByCurrency);
 
 				<div class="flex-container flex-center">
-					<div style="width: @(widths[0])px; white-space: nowrap;" class="text-left devil">@username</div>
-					<div style="width: @(widths[1])px;" class="text-right devil donation-tooltip" data-toggle="tooltip" data-placement="left" title="@str">
+					<div style="@RazorUtils.GetCssWidth(widths[0]) white-space: nowrap;" class="text-left devil">@username</div>
+					<div style="@RazorUtils.GetCssWidth(widths[1])" class="text-right devil donation-tooltip" data-toggle="tooltip" data-placement="left" title="@str">
 						@(Currency.Eur.GetChar())
 						@((kvp.Value / 100.0).ToString("0.00"))
 					</div>
