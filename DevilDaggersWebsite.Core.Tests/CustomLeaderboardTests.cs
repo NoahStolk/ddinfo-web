@@ -59,7 +59,7 @@ namespace DevilDaggersWebsite.Core.Tests
 				DdclClientVersion = ToolList.DevilDaggersCustomLeaderboards.VersionNumber.ToString(),
 				SpawnsetHash = emptySpawnset.GetHashString(),
 				GameStates = new List<Dto.GameState>(),
-				Username = "Sorath",
+				Username = "TestPlayer1",
 			};
 			uploadRequest.Validation = GetValidation(uploadRequest);
 
@@ -81,7 +81,7 @@ namespace DevilDaggersWebsite.Core.Tests
 				DdclClientVersion = "0.0.0.0",
 				SpawnsetHash = emptySpawnset.GetHashString(),
 				GameStates = new List<Dto.GameState>(),
-				Username = "Sorath",
+				Username = "TestPlayer1",
 			};
 			uploadRequest.Validation = GetValidation(uploadRequest);
 
@@ -108,7 +108,7 @@ namespace DevilDaggersWebsite.Core.Tests
 				DdclClientVersion = ToolList.DevilDaggersCustomLeaderboards.VersionNumber.ToString(),
 				SpawnsetHash = emptySpawnset.GetHashString(),
 				GameStates = new List<Dto.GameState>(),
-				Username = "Sorath",
+				Username = "TestPlayer1",
 				Validation = "Malformed validation",
 			};
 
@@ -132,10 +132,15 @@ namespace DevilDaggersWebsite.Core.Tests
 		private static void SetUpInMemoryDatabase(DbContextOptions<ApplicationDbContext> options)
 		{
 			using ApplicationDbContext context = new ApplicationDbContext(options);
-			Player player = new Player
+			Player testPlayer1 = new Player
 			{
 				Id = 1,
-				Username = "Sorath",
+				Username = "TestPlayer1",
+			};
+			Player testPlayer2 = new Player
+			{
+				Id = 2,
+				Username = "TestPlayer2",
 			};
 			SpawnsetFile spawnsetFile = new SpawnsetFile
 			{
@@ -143,7 +148,7 @@ namespace DevilDaggersWebsite.Core.Tests
 				LastUpdated = DateTime.Now,
 				Name = "Empty",
 				PlayerId = 0,
-				Player = player,
+				Player = testPlayer1,
 				HtmlDescription = string.Empty,
 				MaxDisplayWaves = 5,
 			};
@@ -174,7 +179,7 @@ namespace DevilDaggersWebsite.Core.Tests
 			CustomEntry customEntry = new CustomEntry
 			{
 				Id = 1,
-				ClientVersion = "Test",
+				ClientVersion = ToolList.DevilDaggersCustomLeaderboards.VersionNumber.ToString(),
 				CustomLeaderboardId = 1,
 				DaggersFired = 15,
 				DaggersHit = 6,
@@ -186,7 +191,7 @@ namespace DevilDaggersWebsite.Core.Tests
 				PlayerId = 0,
 				Time = 166666,
 				CustomLeaderboard = customLeaderboard,
-				Player = player,
+				Player = testPlayer1,
 				DaggersFiredData = "0",
 				DaggersHitData = "0",
 				EnemiesAliveData = "0",
@@ -199,7 +204,8 @@ namespace DevilDaggersWebsite.Core.Tests
 				SubmitDate = DateTime.Now,
 			};
 
-			context.Players.Add(player);
+			context.Players.Add(testPlayer1);
+			context.Players.Add(testPlayer2);
 			context.SpawnsetFiles.Add(spawnsetFile);
 			context.CustomLeaderboardCategories.Add(customLeaderboardCategory);
 			context.CustomLeaderboards.Add(customLeaderboard);
