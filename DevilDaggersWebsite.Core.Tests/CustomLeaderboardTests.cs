@@ -1,6 +1,10 @@
-﻿using DevilDaggersWebsite.Core.Api;
+﻿using DevilDaggersCore.Spawnsets;
+using DevilDaggersWebsite.Core.Api;
 using DevilDaggersWebsite.Core.Entities;
+using DevilDaggersWebsite.Core.Tools;
 using Microsoft.AspNetCore.Hosting;
+using Microsoft.AspNetCore.Http;
+using Microsoft.AspNetCore.Mvc;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.VisualStudio.TestTools.UnitTesting;
 using Moq;
@@ -8,6 +12,7 @@ using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Threading.Tasks;
+using System.Web;
 
 namespace DevilDaggersWebsite.Core.Tests
 {
@@ -45,19 +50,56 @@ namespace DevilDaggersWebsite.Core.Tests
 		[TestMethod]
 		public async Task PostUploadRequestExistingPlayerExistingEntryNoHighscore()
 		{
+			Spawnset emptySpawnset = new Spawnset();
+
 			Dto.UploadRequest uploadRequest = new Dto.UploadRequest
 			{
 				Time = 100000,
-				PlayerId = 0,
-				DdclClientVersion = "0.10.0.0",
+				PlayerId = 1,
+				DdclClientVersion = ToolList.DevilDaggersCustomLeaderboards.VersionNumber.ToString(),
+				SpawnsetHash = emptySpawnset.GetHashString(),
+				GameStates = new List<Dto.GameState>(),
+				Username = "Sorath",
 			};
+			uploadRequest.Validation = GetValidation(uploadRequest);
 
-			Dto.UploadSuccess uploadSuccess = (await _customLeaderboardsController.ProcessUploadRequest(uploadRequest)).Value;
+			Dto.UploadSuccess uploadSuccess = (await _customLeaderboardsController.ProcessUploadRequest(uploadRequest, new List<(string name, Spawnset spawnset)> { ("Empty", emptySpawnset) })).Value;
 
 			Assert.AreEqual(1, uploadSuccess.TotalPlayers);
+			Assert.IsTrue(uploadSuccess.Message.StartsWith("No new highscore", StringComparison.InvariantCulture));
+		}
 
-			// TODO: Find a better way to test this.
-			Assert.IsTrue(uploadSuccess.Message.Contains("No new highscore", StringComparison.InvariantCulture));
+		[TestMethod]
+		public async Task PostUploadRequestOutdated()
+		{
+			Spawnset emptySpawnset = new Spawnset();
+
+			Dto.UploadRequest uploadRequest = new Dto.UploadRequest
+			{
+				Time = 100000,
+				PlayerId = 1,
+				DdclClientVersion = "0.0.0.0",
+				SpawnsetHash = emptySpawnset.GetHashString(),
+				GameStates = new List<Dto.GameState>(),
+				Username = "Sorath",
+			};
+			uploadRequest.Validation = GetValidation(uploadRequest);
+
+			ActionResult<Dto.UploadSuccess> response = await _customLeaderboardsController.ProcessUploadRequest(uploadRequest, new List<(string name, Spawnset spawnset)> { ("Empty", emptySpawnset) });
+
+			Assert.IsInstanceOfType(response.Result, typeof(BadRequestObjectResult));
+			BadRequestObjectResult badRequest = (BadRequestObjectResult)response.Result;
+			Assert.AreEqual(StatusCodes.Status400BadRequest, badRequest.StatusCode);
+
+			Assert.IsInstanceOfType(badRequest.Value, typeof(ProblemDetails));
+			ProblemDetails problemDetails = (ProblemDetails)badRequest.Value;
+			Assert.IsTrue(problemDetails.Title.Contains("unsupported and outdated", StringComparison.InvariantCulture));
+		}
+
+		private static string GetValidation(Dto.UploadRequest uploadRequest)
+		{
+			string toEncrypt = string.Join(";", uploadRequest.PlayerId, uploadRequest.Time, uploadRequest.Gems, uploadRequest.Kills, uploadRequest.DeathType, uploadRequest.DaggersHit, uploadRequest.DaggersFired, uploadRequest.EnemiesAlive, uploadRequest.Homing, string.Join(",", new[] { uploadRequest.LevelUpTime2, uploadRequest.LevelUpTime3, uploadRequest.LevelUpTime4 }));
+			return HttpUtility.HtmlEncode(Secrets.EncryptionWrapper.EncryptAndEncode(toEncrypt));
 		}
 
 		private static void SetUpInMemoryDatabase(DbContextOptions<ApplicationDbContext> options)
@@ -65,22 +107,26 @@ namespace DevilDaggersWebsite.Core.Tests
 			using ApplicationDbContext context = new ApplicationDbContext(options);
 			Player player = new Player
 			{
-				Id = 0,
+				Id = 1,
 				Username = "Sorath",
 			};
 			SpawnsetFile spawnsetFile = new SpawnsetFile
 			{
 				Id = 1,
 				LastUpdated = DateTime.Now,
-				Name = "V3",
+				Name = "Empty",
 				PlayerId = 0,
 				Player = player,
+				HtmlDescription = string.Empty,
+				MaxDisplayWaves = 5,
 			};
 			CustomLeaderboardCategory customLeaderboardCategory = new CustomLeaderboardCategory
 			{
 				Id = 1,
-				Ascending = true,
+				Ascending = false,
 				Name = "Default",
+				SortingPropertyName = "Time",
+				LayoutPartialName = "Default",
 			};
 			CustomLeaderboard customLeaderboard = new CustomLeaderboard
 			{
@@ -114,6 +160,16 @@ namespace DevilDaggersWebsite.Core.Tests
 				Time = 166666,
 				CustomLeaderboard = customLeaderboard,
 				Player = player,
+				DaggersFiredData = "0",
+				DaggersHitData = "0",
+				EnemiesAliveData = "0",
+				GemsData = "0",
+				KillsData = "0",
+				HomingData = "0",
+				LevelUpTime2 = 0,
+				LevelUpTime3 = 0,
+				LevelUpTime4 = 0,
+				SubmitDate = DateTime.Now,
 			};
 
 			context.Players.Add(player);
