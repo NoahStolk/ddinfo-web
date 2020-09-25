@@ -74,7 +74,7 @@ namespace DevilDaggersWebsite.Pages
 				return;
 
 			PageIndex = Math.Clamp(PageIndex, 1, (int)Math.Ceiling(TotalResults / (double)PageSize));
-			PaginatedSpawnsetFiles = PaginatedList<SpawnsetFile>.Create(spawnsetFiles, PageIndex, PageSize);
+			PaginatedSpawnsetFiles = new PaginatedList<SpawnsetFile>(spawnsetFiles, PageIndex, PageSize);
 		}
 	}
 }
