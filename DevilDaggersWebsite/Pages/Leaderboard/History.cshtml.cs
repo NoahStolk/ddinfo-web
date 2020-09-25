@@ -7,6 +7,7 @@ using Microsoft.AspNetCore.Mvc.RazorPages;
 using Microsoft.AspNetCore.Mvc.Rendering;
 using Newtonsoft.Json;
 using System.Collections.Generic;
+using System.Globalization;
 using System.IO;
 using System.Linq;
 using System.Text;
@@ -24,7 +25,10 @@ namespace DevilDaggersWebsite.Pages.Leaderboard
 			_env = env;
 
 			foreach (string leaderboardHistoryPath in Directory.GetFiles(Path.Combine(_env.WebRootPath, "leaderboard-history"), "*.json"))
-				JsonFiles.Add(new SelectListItem(HistoryUtils.HistoryJsonFileNameToDateTime(Path.GetFileNameWithoutExtension(leaderboardHistoryPath)).ToString(FormatUtils.DateTimeUtcFormat), Path.GetFileName(leaderboardHistoryPath)));
+			{
+				string listItemText = HistoryUtils.HistoryJsonFileNameToDateTime(Path.GetFileNameWithoutExtension(leaderboardHistoryPath)).ToString(FormatUtils.DateTimeUtcFormat, CultureInfo.InvariantCulture);
+				JsonFiles.Add(new SelectListItem(listItemText, Path.GetFileName(leaderboardHistoryPath)));
+			}
 
 			JsonFiles.Reverse();
 		}
