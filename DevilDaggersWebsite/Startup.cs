@@ -26,7 +26,7 @@ namespace DevilDaggersWebsite
 {
 	public class Startup
 	{
-		private const string defaultCorsPolicy = nameof(defaultCorsPolicy);
+		private const string _defaultCorsPolicy = nameof(_defaultCorsPolicy);
 
 		public Startup(IConfiguration configuration)
 		{
@@ -39,7 +39,7 @@ namespace DevilDaggersWebsite
 		{
 			services.AddCors(options =>
 			{
-				options.AddPolicy(defaultCorsPolicy, builder => { builder.AllowAnyOrigin(); });
+				options.AddPolicy(_defaultCorsPolicy, builder => { builder.AllowAnyOrigin(); });
 			});
 
 			services.AddMvc();
@@ -149,7 +149,7 @@ namespace DevilDaggersWebsite
 
 			app.UseRouting();
 
-			app.UseCors(defaultCorsPolicy);
+			app.UseCors(_defaultCorsPolicy);
 
 			app.UseAuthentication();
 			app.UseAuthorization();
