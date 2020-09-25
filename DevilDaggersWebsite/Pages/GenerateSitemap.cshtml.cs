@@ -1,6 +1,6 @@
-﻿using Microsoft.AspNetCore.Http;
+﻿using DevilDaggersWebsite.Core.SitemapGenerator;
+using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc.RazorPages;
-using SitemapGenerator;
 using System;
 using System.Linq;
 using System.Reflection;

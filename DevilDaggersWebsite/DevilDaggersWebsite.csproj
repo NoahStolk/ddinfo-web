@@ -37,7 +37,6 @@
   </ItemGroup>
   <ItemGroup>
     <ProjectReference Include="..\..\DiscordBotDdInfo\DiscordBotDdInfo\DiscordBotDdInfo.csproj" />
-    <ProjectReference Include="..\..\SitemapGenerator\SitemapGenerator\SitemapGenerator.csproj" />
     <ProjectReference Include="..\DevilDaggersWebsite.Core\DevilDaggersWebsite.Core.csproj" />
   </ItemGroup>
   <ItemGroup>

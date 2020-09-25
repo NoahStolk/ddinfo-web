@@ -5,11 +5,7 @@ VisualStudioVersion = 16.0.28917.181
 MinimumVisualStudioVersion = 10.0.40219.1
 Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "DevilDaggersWebsite", "DevilDaggersWebsite\DevilDaggersWebsite.csproj", "{8344EE88-0949-4B7C-BAD4-131EE6ECEDCD}"
 EndProject
-Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "Core", "Core", "{496E881B-2660-4D10-86D8-12ED3EE284C0}"
-EndProject
 Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "Bots", "Bots", "{7213D1A2-9EAC-47F2-9EC6-0A1B6858994D}"
-EndProject
-Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "SitemapGenerator", "..\SitemapGenerator\SitemapGenerator\SitemapGenerator.csproj", "{F71F0AA6-57F6-405F-A820-1E66329289DB}"
 EndProject
 Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "DiscordBotDdInfo", "..\DiscordBotDdInfo\DiscordBotDdInfo\DiscordBotDdInfo.csproj", "{C88B62CE-F56B-4F17-A31B-CC8A811A7D78}"
 EndProject
@@ -31,10 +27,6 @@ Global
 		{8344EE88-0949-4B7C-BAD4-131EE6ECEDCD}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{8344EE88-0949-4B7C-BAD4-131EE6ECEDCD}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{8344EE88-0949-4B7C-BAD4-131EE6ECEDCD}.Release|Any CPU.Build.0 = Release|Any CPU
-		{F71F0AA6-57F6-405F-A820-1E66329289DB}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
-		{F71F0AA6-57F6-405F-A820-1E66329289DB}.Debug|Any CPU.Build.0 = Debug|Any CPU
-		{F71F0AA6-57F6-405F-A820-1E66329289DB}.Release|Any CPU.ActiveCfg = Release|Any CPU
-		{F71F0AA6-57F6-405F-A820-1E66329289DB}.Release|Any CPU.Build.0 = Release|Any CPU
 		{C88B62CE-F56B-4F17-A31B-CC8A811A7D78}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
 		{C88B62CE-F56B-4F17-A31B-CC8A811A7D78}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{C88B62CE-F56B-4F17-A31B-CC8A811A7D78}.Release|Any CPU.ActiveCfg = Release|Any CPU
@@ -60,7 +52,6 @@ Global
 		HideSolutionNode = FALSE
 	EndGlobalSection
 	GlobalSection(NestedProjects) = preSolution
-		{F71F0AA6-57F6-405F-A820-1E66329289DB} = {496E881B-2660-4D10-86D8-12ED3EE284C0}
 		{C88B62CE-F56B-4F17-A31B-CC8A811A7D78} = {7213D1A2-9EAC-47F2-9EC6-0A1B6858994D}
 		{B45885C0-87A0-4F8C-938D-9D16D3E287B3} = {7213D1A2-9EAC-47F2-9EC6-0A1B6858994D}
 	EndGlobalSection
