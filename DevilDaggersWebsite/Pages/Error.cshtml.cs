@@ -6,7 +6,7 @@ using Microsoft.AspNetCore.Mvc.RazorPages;
 using System;
 using System.Globalization;
 using System.Threading.Tasks;
-using Bot = DiscordBotDdInfo.Program;
+using BotLogger = DiscordBotDdInfo.DiscordLogger;
 
 namespace DevilDaggersWebsite.Pages
 {
@@ -29,13 +29,11 @@ namespace DevilDaggersWebsite.Pages
 				if (exceptionFeature != null)
 					builder.AddError(exceptionFeature.Error);
 
-				if (Bot.DdInfoDevChannel != null)
-					await Bot.DdInfoDevChannel.SendMessageAsyncSafe(null, builder.Build());
+				await BotLogger.Instance.TryLog(null, builder.Build());
 			}
 			catch (Exception ex)
 			{
-				if (Bot.DdInfoDevChannel != null)
-					await Bot.DdInfoDevChannel.SendMessageAsyncSafe($"Error report failed! {ex.Message}");
+				await BotLogger.Instance.TryLog($"Error report failed! {ex.Message}");
 			}
 		}
 	}

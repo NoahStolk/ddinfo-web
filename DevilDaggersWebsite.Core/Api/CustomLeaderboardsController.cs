@@ -13,7 +13,7 @@ using System.IO;
 using System.Linq;
 using System.Threading.Tasks;
 using System.Web;
-using Bot = DiscordBotDdInfo.Program;
+using BotLogger = DiscordBotDdInfo.DiscordLogger;
 
 namespace DevilDaggersWebsite.Core.Api
 {
@@ -63,7 +63,7 @@ namespace DevilDaggersWebsite.Core.Api
 			}
 			catch (Exception ex)
 			{
-				await Bot.TryLogError($"Upload failed for user `{uploadRequest.Username}` (`{uploadRequest.PlayerId}`) for `{GetSpawnsetNameOrHash(uploadRequest, null)}`.", ex);
+				await BotLogger.Instance.TryLogException($"Upload failed for user `{uploadRequest.Username}` (`{uploadRequest.PlayerId}`) for `{GetSpawnsetNameOrHash(uploadRequest, null)}`.", ex);
 				throw;
 			}
 		}
@@ -442,7 +442,7 @@ namespace DevilDaggersWebsite.Core.Api
 			}
 			catch (Exception ex)
 			{
-				await Bot.TryLogError($"Could not decrypt validation: `{validation}`", ex);
+				await BotLogger.Instance.TryLogException($"Could not decrypt validation: `{validation}`", ex);
 
 				return string.Empty;
 			}
@@ -455,9 +455,9 @@ namespace DevilDaggersWebsite.Core.Api
 				string spawnsetIdentification = GetSpawnsetNameOrHash(uploadRequest, spawnsetName);
 
 				if (!string.IsNullOrEmpty(errorMessage))
-					await Bot.TryLog($"Upload failed for user `{uploadRequest.Username}` (`{uploadRequest.PlayerId}`) for `{spawnsetIdentification}`.\n{errorMessage}");
+					await BotLogger.Instance.TryLog($"Upload failed for user `{uploadRequest.Username}` (`{uploadRequest.PlayerId}`) for `{spawnsetIdentification}`.\n{errorMessage}");
 				else
-					await Bot.TryLog($"`{uploadRequest.Username}` just submitted a score of `{uploadRequest.Time / 10000f:0.0000}` to `{spawnsetIdentification}`.");
+					await BotLogger.Instance.TryLog($"`{uploadRequest.Username}` just submitted a score of `{uploadRequest.Time / 10000f:0.0000}` to `{spawnsetIdentification}`.");
 			}
 			catch
 			{
