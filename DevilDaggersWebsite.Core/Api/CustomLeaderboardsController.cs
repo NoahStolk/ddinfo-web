@@ -3,8 +3,6 @@ using DevilDaggersCore.Spawnsets;
 using DevilDaggersWebsite.Core.Clients;
 using DevilDaggersWebsite.Core.Entities;
 using DevilDaggersWebsite.Core.Tools;
-using DiscordBotDdInfo.Extensions;
-using DSharpPlus.Entities;
 using Microsoft.AspNetCore.Hosting;
 using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
@@ -65,7 +63,7 @@ namespace DevilDaggersWebsite.Core.Api
 			}
 			catch (Exception ex)
 			{
-				await TryLogError($"Upload failed for user `{uploadRequest.Username}` (`{uploadRequest.PlayerId}`) for `{GetSpawnsetNameOrHash(uploadRequest, null)}`.", ex);
+				await Bot.TryLogError($"Upload failed for user `{uploadRequest.Username}` (`{uploadRequest.PlayerId}`) for `{GetSpawnsetNameOrHash(uploadRequest, null)}`.", ex);
 				throw;
 			}
 		}
@@ -444,7 +442,7 @@ namespace DevilDaggersWebsite.Core.Api
 			}
 			catch (Exception ex)
 			{
-				await TryLogError($"Could not decrypt validation: `{validation}`", ex);
+				await Bot.TryLogError($"Could not decrypt validation: `{validation}`", ex);
 
 				return string.Empty;
 			}
@@ -454,37 +452,12 @@ namespace DevilDaggersWebsite.Core.Api
 		{
 			try
 			{
-				if (Bot.DdInfoDevChannel == null)
-					return;
-
 				string spawnsetIdentification = GetSpawnsetNameOrHash(uploadRequest, spawnsetName);
 
 				if (!string.IsNullOrEmpty(errorMessage))
-					await Bot.DdInfoDevChannel.SendMessageAsyncSafe($"Upload failed for user `{uploadRequest.Username}` (`{uploadRequest.PlayerId}`) for `{spawnsetIdentification}`.\n{errorMessage}");
+					await Bot.TryLog($"Upload failed for user `{uploadRequest.Username}` (`{uploadRequest.PlayerId}`) for `{spawnsetIdentification}`.\n{errorMessage}");
 				else
-					await Bot.DdInfoDevChannel.SendMessageAsyncSafe($"`{uploadRequest.Username}` just submitted a score of `{uploadRequest.Time / 10000f:0.0000}` to `{spawnsetIdentification}`.");
-			}
-			catch
-			{
-				// Ignore exceptions that occurred while attempting to log.
-			}
-		}
-
-		private static async Task TryLogError(string title, Exception ex)
-		{
-			try
-			{
-				if (Bot.DdInfoDevChannel == null)
-					return;
-
-				DiscordEmbedBuilder builder = new DiscordEmbedBuilder
-				{
-					Title = title,
-					Color = DiscordColor.Red,
-				};
-				builder.AddError(ex);
-
-				await Bot.DdInfoDevChannel.SendMessageAsyncSafe(null, builder.Build());
+					await Bot.TryLog($"`{uploadRequest.Username}` just submitted a score of `{uploadRequest.Time / 10000f:0.0000}` to `{spawnsetIdentification}`.");
 			}
 			catch
 			{
