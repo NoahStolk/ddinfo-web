@@ -11,11 +11,13 @@ namespace DevilDaggersWebsite.Pages.Leaderboard
 {
 	public class UserSettingsModel : PageModel, IDefaultLeaderboardPage
 	{
+		public int PageCount { get; } = 3;
+
 		public Lb? Leaderboard { get; set; } = new Lb();
 
 		public async Task OnGetAsync()
 		{
-			IEnumerable<Task> tasks = Enumerable.Range(0, 2).Select(async i =>
+			IEnumerable<Task> tasks = Enumerable.Range(0, PageCount).Select(async i =>
 			{
 				Lb? nextLeaderboard = await DdHasmodaiClient.GetScores(i * 100 + 1);
 				foreach (Entry entry in nextLeaderboard?.Entries ?? new List<Entry>())
