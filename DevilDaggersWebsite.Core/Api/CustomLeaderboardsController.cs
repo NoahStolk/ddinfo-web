@@ -338,7 +338,7 @@ namespace DevilDaggersWebsite.Core.Api
 			{
 				string spawnsetIdentification = GetSpawnsetNameOrHash(uploadRequest, spawnsetName);
 
-				string ddclInfo = $"(DDCL `{uploadRequest.ClientVersion}` `{uploadRequest.OperatingSystem}` `{uploadRequest.BuildMode}`)";
+				string ddclInfo = $"(`{uploadRequest.ClientVersion}` | `{uploadRequest.OperatingSystem}` | `{uploadRequest.BuildMode}`)";
 
 				if (!string.IsNullOrEmpty(errorMessage))
 					await BotLogger.Instance.TryLog($"Upload failed for user `{uploadRequest.Username}` (`{uploadRequest.PlayerId}`) for `{spawnsetIdentification}`. {ddclInfo}\n{errorMessage}");
