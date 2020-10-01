@@ -15,5 +15,6 @@ namespace DevilDaggersWebsite.Core.Dto
 		public DateTime? DateLastPlayed { get; set; }
 		public DateTime? DateCreated { get; set; }
 		public CustomLeaderboardCategory Category { get; set; }
+		public bool IsAscending { get; set; }
 	}
 }
