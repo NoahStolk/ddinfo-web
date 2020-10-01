@@ -432,10 +432,22 @@ namespace DevilDaggersWebsite.Core.Tools
 		{
 			Name = "DevilDaggersCustomLeaderboards",
 			DisplayName = "Devil Daggers Custom Leaderboards",
-			VersionNumber = new Version(0, 10, 0, 0),
-			VersionNumberRequired = new Version(0, 10, 0, 0),
+			VersionNumber = new Version(0, 10, 4, 0),
+			VersionNumberRequired = new Version(0, 10, 4, 0),
 			Changelog = new List<ChangelogEntry>
 			{
+				new ChangelogEntry
+				{
+					VersionNumber = new Version(0, 10, 4, 0),
+					Date = new DateTime(2020, 10, 1),
+					Changes = new List<Change>
+					{
+						new Change("The application does not display misleading stats in the menu or lobby anymore."),
+						new Change("Improved update messages."),
+						new Change("Fixed tiny bug where getting the very same score as a dagger time would display the score in the wrong color."),
+						new Change("Implemented API updates as preparation for a new leaderboard category."),
+					},
+				},
 				new ChangelogEntry
 				{
 					VersionNumber = new Version(0, 10, 0, 0),
