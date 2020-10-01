@@ -13,11 +13,11 @@ namespace DevilDaggersWebsite.Pages.Admin.Donations
 {
 	public class CreateModel : PageModel
 	{
-		private readonly ApplicationDbContext context;
+		private readonly ApplicationDbContext _context;
 
 		public CreateModel(ApplicationDbContext context)
 		{
-			this.context = context;
+			_context = context;
 
 			CurrencyList = ((IEnumerable<Currency>)Enum.GetValues(typeof(Currency))).Select(c => new SelectListItem { Text = c.ToString(), Value = ((int)c).ToString(CultureInfo.InvariantCulture) }).ToList();
 		}
@@ -34,8 +34,8 @@ namespace DevilDaggersWebsite.Pages.Admin.Donations
 			if (!ModelState.IsValid)
 				return Page();
 
-			context.Donations.Add(Donation);
-			await context.SaveChangesAsync();
+			_context.Donations.Add(Donation);
+			await _context.SaveChangesAsync();
 
 			return RedirectToPage("./Index");
 		}

@@ -12,11 +12,11 @@ namespace DevilDaggersWebsite.Pages.CustomLeaderboards
 {
 	public class LeaderboardModel : PageModel
 	{
-		private readonly ApplicationDbContext dbContext;
+		private readonly ApplicationDbContext _context;
 
 		public LeaderboardModel(ApplicationDbContext dbContext)
 		{
-			this.dbContext = dbContext;
+			_context = dbContext;
 		}
 
 		public SpawnsetFile? SpawnsetFile { get; private set; }
@@ -32,7 +32,7 @@ namespace DevilDaggersWebsite.Pages.CustomLeaderboards
 			if (string.IsNullOrEmpty(spawnsetName))
 				return RedirectToPage("Index");
 
-			SpawnsetFile = dbContext.SpawnsetFiles.Include(sf => sf.Player).FirstOrDefault(sf => sf.Name == spawnsetName);
+			SpawnsetFile = _context.SpawnsetFiles.Include(sf => sf.Player).FirstOrDefault(sf => sf.Name == spawnsetName);
 			if (SpawnsetFile == null)
 				return RedirectToPage("Index");
 
@@ -42,7 +42,7 @@ namespace DevilDaggersWebsite.Pages.CustomLeaderboards
 			if (Leaderboard == null)
 				return RedirectToPage("Index");
 
-			Entries = dbContext.CustomEntries
+			Entries = _context.CustomEntries
 				.Where(e => e.CustomLeaderboard == Leaderboard)
 				.OrderByMember(Leaderboard.Category.SortingPropertyName, Leaderboard.Category.Ascending)
 				.ThenByMember(nameof(CustomEntry.SubmitDate), true)

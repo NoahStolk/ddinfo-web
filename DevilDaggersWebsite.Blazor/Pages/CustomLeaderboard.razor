@@ -1,5 +1,5 @@
 ﻿@page "/CustomLeaderboard/{Spawnset}"
-@inject ApplicationDbContext DbContext
+@inject ApplicationDbContext context
 
 <CustomLeaderboardTable CustomEntries="_customEntries" Leaderboard="_customLeaderboard" />
 
@@ -12,7 +12,7 @@
 
 	protected override void OnInitialized()
 	{
-		_customLeaderboard = DbContext.CustomLeaderboards
+		_customLeaderboard = context.CustomLeaderboards
 			.Include(cl => cl.SpawnsetFile)
 			.Include(cl => cl.Category)
 			.FirstOrDefault(cl => cl.SpawnsetFile.Name == Spawnset);
@@ -20,7 +20,7 @@
 		if (string.IsNullOrEmpty(Spawnset) || _customLeaderboard == null)
 			return;
 
-		_customEntries = DbContext.CustomEntries
+		_customEntries = context.CustomEntries
 			.Include(ce => ce.CustomLeaderboard)
 				.ThenInclude(cl => cl.SpawnsetFile)
 			.Include(ce => ce.Player)

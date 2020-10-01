@@ -14,11 +14,11 @@ namespace DevilDaggersWebsite.Pages.Admin.Donations
 {
 	public class EditModel : PageModel
 	{
-		private readonly ApplicationDbContext context;
+		private readonly ApplicationDbContext _context;
 
 		public EditModel(ApplicationDbContext context)
 		{
-			this.context = context;
+			_context = context;
 
 			CurrencyList = ((IEnumerable<Currency>)Enum.GetValues(typeof(Currency))).Select(c => new SelectListItem { Text = c.ToString(), Value = ((int)c).ToString(CultureInfo.InvariantCulture) }).ToList();
 		}
@@ -33,7 +33,7 @@ namespace DevilDaggersWebsite.Pages.Admin.Donations
 			if (id == null)
 				return NotFound();
 
-			Donation = await context.Donations.FirstOrDefaultAsync(m => m.Id == id);
+			Donation = await _context.Donations.FirstOrDefaultAsync(m => m.Id == id);
 
 			if (Donation == null)
 				return NotFound();
@@ -45,11 +45,11 @@ namespace DevilDaggersWebsite.Pages.Admin.Donations
 			if (!ModelState.IsValid)
 				return Page();
 
-			context.Attach(Donation).State = EntityState.Modified;
+			_context.Attach(Donation).State = EntityState.Modified;
 
 			try
 			{
-				await context.SaveChangesAsync();
+				await _context.SaveChangesAsync();
 			}
 			catch (DbUpdateConcurrencyException)
 			{
@@ -62,6 +62,7 @@ namespace DevilDaggersWebsite.Pages.Admin.Donations
 			return RedirectToPage("./Index");
 		}
 
-		private bool DonationExists(int id) => context.Donations.Any(e => e.Id == id);
+		private bool DonationExists(int id)
+			=> _context.Donations.Any(e => e.Id == id);
 	}
 }

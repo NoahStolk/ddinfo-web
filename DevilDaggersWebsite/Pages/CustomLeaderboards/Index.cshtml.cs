@@ -9,11 +9,11 @@ namespace DevilDaggersWebsite.Pages.CustomLeaderboards
 {
 	public class IndexModel : PageModel
 	{
-		private readonly ApplicationDbContext context;
+		private readonly ApplicationDbContext _context;
 
 		public IndexModel(ApplicationDbContext context)
 		{
-			this.context = context;
+			_context = context;
 		}
 
 		public List<SelectListItem> CategoryListItems { get; private set; } = new List<SelectListItem>();

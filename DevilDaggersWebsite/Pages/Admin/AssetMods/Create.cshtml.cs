@@ -11,15 +11,15 @@ namespace DevilDaggersWebsite.Pages.Admin.AssetMods
 {
 	public class CreateModel : PageModel
 	{
-		private readonly ApplicationDbContext context;
+		private readonly ApplicationDbContext _context;
 
 		public CreateModel(ApplicationDbContext context)
 		{
-			this.context = context;
+			_context = context;
 
 			AuthorSelectList = context.Players
-				.OrderBy(p => p.Username).
-				Select(p => new SelectListItem
+				.OrderBy(p => p.Username)
+				.Select(p => new SelectListItem
 				{
 					Value = p.Id.ToString(CultureInfo.InvariantCulture),
 					Text = p.Username,
@@ -46,8 +46,8 @@ namespace DevilDaggersWebsite.Pages.Admin.AssetMods
 
 			AssetMod.PlayerAssetMods = AuthorIds.Select(id => new PlayerAssetMod { AssetModId = AssetMod.Id, PlayerId = id }).ToList();
 
-			context.AssetMods.Add(AssetMod);
-			await context.SaveChangesAsync();
+			_context.AssetMods.Add(AssetMod);
+			await _context.SaveChangesAsync();
 
 			return RedirectToPage("./Index");
 		}
