@@ -68,12 +68,10 @@ namespace DevilDaggersWebsite.Core.Api
 			}
 			catch (Exception ex)
 			{
-				await BotLogger.Instance.TryLogException(
-					$"Upload failed for user `{uploadRequest.Username}` (`{uploadRequest.PlayerId}`) for `{GetSpawnsetNameOrHash(uploadRequest, null)}`.",
-					ex,
-					("Version", uploadRequest.ClientVersion),
-					("Operating system", uploadRequest.OperatingSystem.ToString()),
-					("Build mode", uploadRequest.BuildMode.ToString()));
+				ex.Data[nameof(uploadRequest.ClientVersion)] = uploadRequest.ClientVersion;
+				ex.Data[nameof(uploadRequest.OperatingSystem)] = uploadRequest.OperatingSystem;
+				ex.Data[nameof(uploadRequest.BuildMode)] = uploadRequest.BuildMode;
+				await BotLogger.Instance.TryLogException($"Upload failed for user `{uploadRequest.Username}` (`{uploadRequest.PlayerId}`) for `{GetSpawnsetNameOrHash(uploadRequest, null)}`.", ex);
 				throw;
 			}
 		}
@@ -340,10 +338,12 @@ namespace DevilDaggersWebsite.Core.Api
 			{
 				string spawnsetIdentification = GetSpawnsetNameOrHash(uploadRequest, spawnsetName);
 
+				string ddclInfo = $"(DDCL `{uploadRequest.ClientVersion}` `{uploadRequest.OperatingSystem}` `{uploadRequest.BuildMode}`)";
+
 				if (!string.IsNullOrEmpty(errorMessage))
-					await BotLogger.Instance.TryLog($"Upload failed for user `{uploadRequest.Username}` (`{uploadRequest.PlayerId}`) for `{spawnsetIdentification}`.\n{errorMessage} (DDCL {uploadRequest.ClientVersion} {uploadRequest.OperatingSystem} {uploadRequest.BuildMode})");
+					await BotLogger.Instance.TryLog($"Upload failed for user `{uploadRequest.Username}` (`{uploadRequest.PlayerId}`) for `{spawnsetIdentification}`. {ddclInfo}\n{errorMessage}");
 				else
-					await BotLogger.Instance.TryLog($"`{uploadRequest.Username}` just submitted a score of `{uploadRequest.Time / 10000f:0.0000}` to `{spawnsetIdentification}`. (DDCL {uploadRequest.ClientVersion} {uploadRequest.OperatingSystem} {uploadRequest.BuildMode})");
+					await BotLogger.Instance.TryLog($"`{uploadRequest.Username}` just submitted a score of `{uploadRequest.Time / 10000f:0.0000}` to `{spawnsetIdentification}`. {ddclInfo}");
 			}
 			catch
 			{
