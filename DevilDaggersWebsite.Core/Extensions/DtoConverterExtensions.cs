@@ -23,7 +23,7 @@ namespace DevilDaggersWebsite.Core.Extensions
 				LevelUpTime3 = uploadRequest.LevelUpTime3,
 				LevelUpTime4 = uploadRequest.LevelUpTime4,
 				SubmitDate = DateTime.Now,
-				ClientVersion = uploadRequest.DdclClientVersion,
+				ClientVersion = uploadRequest.ClientVersion,
 				CustomLeaderboard = customLeaderboard,
 				GemsData = string.Join(",", uploadRequest.GameStates.Select(gs => gs.Gems)),
 				KillsData = string.Join(",", uploadRequest.GameStates.Select(gs => gs.Kills)),

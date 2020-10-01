@@ -68,7 +68,12 @@ namespace DevilDaggersWebsite.Core.Api
 			}
 			catch (Exception ex)
 			{
-				await BotLogger.Instance.TryLogException($"Upload failed for user `{uploadRequest.Username}` (`{uploadRequest.PlayerId}`) for `{GetSpawnsetNameOrHash(uploadRequest, null)}`.", ex);
+				await BotLogger.Instance.TryLogException(
+					$"Upload failed for user `{uploadRequest.Username}` (`{uploadRequest.PlayerId}`) for `{GetSpawnsetNameOrHash(uploadRequest, null)}`.",
+					ex,
+					("Version", uploadRequest.ClientVersion),
+					("Operating system", uploadRequest.OperatingSystem.ToString()),
+					("Build mode", uploadRequest.BuildMode.ToString()));
 				throw;
 			}
 		}
@@ -86,7 +91,7 @@ namespace DevilDaggersWebsite.Core.Api
 		[NonAction]
 		public async Task<ActionResult<Dto.UploadSuccess>> ProcessUploadRequest(Dto.UploadRequest uploadRequest, IEnumerable<(string name, Spawnset spawnset)> spawnsets)
 		{
-			Version clientVersionParsed = Version.Parse(uploadRequest.DdclClientVersion);
+			Version clientVersionParsed = Version.Parse(uploadRequest.ClientVersion);
 			if (clientVersionParsed < ToolList.DevilDaggersCustomLeaderboards.VersionNumberRequired)
 			{
 				string errorMessage = "You are using an unsupported and outdated version of DDCL. Please update the program.";
@@ -253,7 +258,7 @@ namespace DevilDaggersWebsite.Core.Api
 			entry.LevelUpTime3 = uploadRequest.LevelUpTime3;
 			entry.LevelUpTime4 = uploadRequest.LevelUpTime4;
 			entry.SubmitDate = DateTime.Now;
-			entry.ClientVersion = uploadRequest.DdclClientVersion;
+			entry.ClientVersion = uploadRequest.ClientVersion;
 			entry.GemsData = string.Join(",", uploadRequest.GameStates.Select(gs => gs.Gems));
 			entry.KillsData = string.Join(",", uploadRequest.GameStates.Select(gs => gs.Kills));
 			entry.HomingData = string.Join(",", uploadRequest.GameStates.Select(gs => gs.Homing));
@@ -336,9 +341,9 @@ namespace DevilDaggersWebsite.Core.Api
 				string spawnsetIdentification = GetSpawnsetNameOrHash(uploadRequest, spawnsetName);
 
 				if (!string.IsNullOrEmpty(errorMessage))
-					await BotLogger.Instance.TryLog($"Upload failed for user `{uploadRequest.Username}` (`{uploadRequest.PlayerId}`) for `{spawnsetIdentification}`.\n{errorMessage} (DDCL {uploadRequest.DdclClientVersion})");
+					await BotLogger.Instance.TryLog($"Upload failed for user `{uploadRequest.Username}` (`{uploadRequest.PlayerId}`) for `{spawnsetIdentification}`.\n{errorMessage} (DDCL {uploadRequest.ClientVersion} {uploadRequest.OperatingSystem} {uploadRequest.BuildMode})");
 				else
-					await BotLogger.Instance.TryLog($"`{uploadRequest.Username}` just submitted a score of `{uploadRequest.Time / 10000f:0.0000}` to `{spawnsetIdentification}`. (DDCL {uploadRequest.DdclClientVersion})");
+					await BotLogger.Instance.TryLog($"`{uploadRequest.Username}` just submitted a score of `{uploadRequest.Time / 10000f:0.0000}` to `{spawnsetIdentification}`. (DDCL {uploadRequest.ClientVersion} {uploadRequest.OperatingSystem} {uploadRequest.BuildMode})");
 			}
 			catch
 			{

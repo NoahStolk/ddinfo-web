@@ -57,7 +57,7 @@ namespace DevilDaggersWebsite.Core.Tests
 			{
 				Time = 100000,
 				PlayerId = 1,
-				DdclClientVersion = ToolList.DevilDaggersCustomLeaderboards.VersionNumber.ToString(),
+				ClientVersion = ToolList.DevilDaggersCustomLeaderboards.VersionNumber.ToString(),
 				SpawnsetHash = emptySpawnset.GetHashString(),
 				GameStates = new List<Dto.GameState>(),
 				Username = "TestPlayer1",
@@ -79,7 +79,7 @@ namespace DevilDaggersWebsite.Core.Tests
 			{
 				Time = 200000,
 				PlayerId = 1,
-				DdclClientVersion = ToolList.DevilDaggersCustomLeaderboards.VersionNumber.ToString(),
+				ClientVersion = ToolList.DevilDaggersCustomLeaderboards.VersionNumber.ToString(),
 				SpawnsetHash = emptySpawnset.GetHashString(),
 				GameStates = new List<Dto.GameState>(),
 				Username = "TestPlayer1",
@@ -101,7 +101,7 @@ namespace DevilDaggersWebsite.Core.Tests
 			{
 				Time = 200000,
 				PlayerId = 2,
-				DdclClientVersion = ToolList.DevilDaggersCustomLeaderboards.VersionNumber.ToString(),
+				ClientVersion = ToolList.DevilDaggersCustomLeaderboards.VersionNumber.ToString(),
 				SpawnsetHash = emptySpawnset.GetHashString(),
 				GameStates = new List<Dto.GameState>(),
 				Username = "TestPlayer2",
@@ -123,7 +123,7 @@ namespace DevilDaggersWebsite.Core.Tests
 			{
 				Time = 300000,
 				PlayerId = 3,
-				DdclClientVersion = ToolList.DevilDaggersCustomLeaderboards.VersionNumber.ToString(),
+				ClientVersion = ToolList.DevilDaggersCustomLeaderboards.VersionNumber.ToString(),
 				SpawnsetHash = emptySpawnset.GetHashString(),
 				GameStates = new List<Dto.GameState>(),
 				Username = "TestPlayer3",
@@ -146,7 +146,7 @@ namespace DevilDaggersWebsite.Core.Tests
 			{
 				Time = 100000,
 				PlayerId = 1,
-				DdclClientVersion = "0.0.0.0",
+				ClientVersion = "0.0.0.0",
 				SpawnsetHash = emptySpawnset.GetHashString(),
 				GameStates = new List<Dto.GameState>(),
 				Username = "TestPlayer1",
@@ -173,7 +173,7 @@ namespace DevilDaggersWebsite.Core.Tests
 			{
 				Time = 100000,
 				PlayerId = 1,
-				DdclClientVersion = ToolList.DevilDaggersCustomLeaderboards.VersionNumber.ToString(),
+				ClientVersion = ToolList.DevilDaggersCustomLeaderboards.VersionNumber.ToString(),
 				SpawnsetHash = emptySpawnset.GetHashString(),
 				GameStates = new List<Dto.GameState>(),
 				Username = "TestPlayer1",

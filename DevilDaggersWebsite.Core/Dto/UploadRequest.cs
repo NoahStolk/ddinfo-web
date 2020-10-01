@@ -1,4 +1,5 @@
-﻿using System.Collections.Generic;
+﻿using DevilDaggersWebsite.Core.Enumerators;
+using System.Collections.Generic;
 
 namespace DevilDaggersWebsite.Core.Dto
 {
@@ -18,7 +19,9 @@ namespace DevilDaggersWebsite.Core.Dto
 		public int LevelUpTime2 { get; set; }
 		public int LevelUpTime3 { get; set; }
 		public int LevelUpTime4 { get; set; }
-		public string DdclClientVersion { get; set; }
+		public string ClientVersion { get; set; }
+		public OperatingSystem OperatingSystem { get; set; }
+		public BuildMode BuildMode { get; set; }
 		public string Validation { get; set; }
 		public List<GameState>? GameStates { get; set; }
 	}

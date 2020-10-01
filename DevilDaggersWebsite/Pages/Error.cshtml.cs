@@ -33,7 +33,7 @@ namespace DevilDaggersWebsite.Pages
 			}
 			catch (Exception ex)
 			{
-				await BotLogger.Instance.TryLog($"Error report failed! {ex.Message}");
+				await BotLogger.Instance.TryLog($"Error report '{nameof(ErrorModel)}' failed! {ex.Message}");
 			}
 		}
 	}
