@@ -15,19 +15,19 @@ namespace DevilDaggersWebsite.Core.Api
 	[ApiController]
 	public class SpawnsetsController : ControllerBase
 	{
-		private readonly SpawnsetHelper spawnsetHelper;
-		private readonly IWebHostEnvironment env;
+		private readonly SpawnsetHelper _spawnsetHelper;
+		private readonly IWebHostEnvironment _env;
 
 		public SpawnsetsController(SpawnsetHelper spawnsetHelper, IWebHostEnvironment env)
 		{
-			this.spawnsetHelper = spawnsetHelper;
-			this.env = env;
+			_spawnsetHelper = spawnsetHelper;
+			_env = env;
 		}
 
 		[HttpGet]
 		[ProducesResponseType(StatusCodes.Status200OK)]
 		public List<SpawnsetFile> GetSpawnsets(string? authorFilter = null, string? nameFilter = null)
-			=> spawnsetHelper.GetSpawnsets(authorFilter, nameFilter);
+			=> _spawnsetHelper.GetSpawnsets(authorFilter, nameFilter);
 
 		[HttpGet("{fileName}/file")]
 		[ProducesResponseType(typeof(FileContentResult), StatusCodes.Status200OK)]
@@ -35,10 +35,10 @@ namespace DevilDaggersWebsite.Core.Api
 		[ProducesResponseType(StatusCodes.Status404NotFound)]
 		public ActionResult GetSpawnsetFile([Required] string fileName)
 		{
-			if (!Io.File.Exists(Path.Combine(env.WebRootPath, "spawnsets", fileName)))
+			if (!Io.File.Exists(Path.Combine(_env.WebRootPath, "spawnsets", fileName)))
 				return new NotFoundObjectResult(new ProblemDetails { Title = $"Spawnset '{fileName}' was not found." });
 
-			return File(Io.File.ReadAllBytes(Path.Combine(env.WebRootPath, "spawnsets", fileName)), MediaTypeNames.Application.Octet, fileName);
+			return File(Io.File.ReadAllBytes(Path.Combine(_env.WebRootPath, "spawnsets", fileName)), MediaTypeNames.Application.Octet, fileName);
 		}
 	}
 }
