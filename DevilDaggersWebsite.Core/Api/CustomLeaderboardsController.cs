@@ -336,9 +336,9 @@ namespace DevilDaggersWebsite.Core.Api
 				string spawnsetIdentification = GetSpawnsetNameOrHash(uploadRequest, spawnsetName);
 
 				if (!string.IsNullOrEmpty(errorMessage))
-					await BotLogger.Instance.TryLog($"Upload failed for user `{uploadRequest.Username}` (`{uploadRequest.PlayerId}`) for `{spawnsetIdentification}`.\n{errorMessage}");
+					await BotLogger.Instance.TryLog($"Upload failed for user `{uploadRequest.Username}` (`{uploadRequest.PlayerId}`) for `{spawnsetIdentification}`.\n{errorMessage} (DDCL {uploadRequest.DdclClientVersion})");
 				else
-					await BotLogger.Instance.TryLog($"`{uploadRequest.Username}` just submitted a score of `{uploadRequest.Time / 10000f:0.0000}` to `{spawnsetIdentification}`.");
+					await BotLogger.Instance.TryLog($"`{uploadRequest.Username}` just submitted a score of `{uploadRequest.Time / 10000f:0.0000}` to `{spawnsetIdentification}`. (DDCL {uploadRequest.DdclClientVersion})");
 			}
 			catch
 			{
