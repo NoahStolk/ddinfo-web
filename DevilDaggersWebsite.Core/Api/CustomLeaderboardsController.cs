@@ -44,7 +44,7 @@ namespace DevilDaggersWebsite.Core.Api
 				.ToList();
 		}
 
-		[HttpGet]
+		[HttpGet("{id}")]
 		[ProducesResponseType(StatusCodes.Status200OK)]
 		[ProducesResponseType(StatusCodes.Status404NotFound)]
 		public ActionResult<Dto.CustomLeaderboard> GetCustomLeaderboard(int id)
