@@ -14,7 +14,6 @@
 	{
 		_customLeaderboard = context.CustomLeaderboards
 			.Include(cl => cl.SpawnsetFile)
-			.Include(cl => cl.Category)
 			.FirstOrDefault(cl => cl.SpawnsetFile.Name == Spawnset);
 
 		if (string.IsNullOrEmpty(Spawnset) || _customLeaderboard == null)
@@ -25,7 +24,7 @@
 				.ThenInclude(cl => cl.SpawnsetFile)
 			.Include(ce => ce.Player)
 			.Where(ce => ce.CustomLeaderboard.Id == _customLeaderboard.Id)
-			.OrderByMember(_customLeaderboard.Category.SortingPropertyName, _customLeaderboard.Category.Ascending)
+			.OrderByMember(nameof(Core.Entities.CustomEntry.Time), _customLeaderboard.IsAscending())
 			.ToList();
 	}
 }

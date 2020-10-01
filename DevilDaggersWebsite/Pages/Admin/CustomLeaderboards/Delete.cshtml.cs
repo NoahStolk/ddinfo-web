@@ -23,7 +23,7 @@ namespace DevilDaggersWebsite.Pages.Admin.CustomLeaderboards
 			if (id == null)
 				return NotFound();
 
-			CustomLeaderboard = await _context.CustomLeaderboards.Include(c => c.Category).Include(c => c.SpawnsetFile).FirstOrDefaultAsync(m => m.Id == id);
+			CustomLeaderboard = await _context.CustomLeaderboards.Include(c => c.SpawnsetFile).FirstOrDefaultAsync(m => m.Id == id);
 
 			if (CustomLeaderboard == null)
 				return NotFound();

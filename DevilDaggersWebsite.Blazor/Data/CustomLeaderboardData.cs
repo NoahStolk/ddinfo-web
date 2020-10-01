@@ -10,7 +10,7 @@ namespace DevilDaggersWebsite.Blazor.Data
 			SpawnsetFileId = cl.SpawnsetFileId;
 			SpawnsetName = cl.SpawnsetFile.Name;
 			SpawnsetAuthorName = cl.SpawnsetFile.Player.Username;
-			Category = cl.Category.Name;
+			Category = cl.Category.ToString();
 			Bronze = cl.Bronze;
 			Silver = cl.Silver;
 			Golden = cl.Golden;

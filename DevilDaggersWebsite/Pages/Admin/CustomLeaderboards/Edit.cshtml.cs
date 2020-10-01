@@ -1,8 +1,11 @@
-﻿using DevilDaggersWebsite.Core.Entities;
+﻿using DevilDaggersWebsite.Code.Utils;
+using DevilDaggersWebsite.Core.Entities;
+using DevilDaggersWebsite.Core.Enumerators;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.AspNetCore.Mvc.RazorPages;
 using Microsoft.AspNetCore.Mvc.Rendering;
 using Microsoft.EntityFrameworkCore;
+using System.Collections.Generic;
 using System.Linq;
 using System.Threading.Tasks;
 
@@ -15,7 +18,11 @@ namespace DevilDaggersWebsite.Pages.Admin.CustomLeaderboards
 		public EditModel(ApplicationDbContext context)
 		{
 			_context = context;
+
+			CategoryList = RazorUtils.EnumToSelectList<CustomLeaderboardCategory>();
 		}
+
+		public List<SelectListItem> CategoryList { get; }
 
 		[BindProperty]
 		public CustomLeaderboard CustomLeaderboard { get; set; }
@@ -26,20 +33,17 @@ namespace DevilDaggersWebsite.Pages.Admin.CustomLeaderboards
 				return NotFound();
 
 			CustomLeaderboard = await _context.CustomLeaderboards
-				.Include(c => c.Category)
 				.Include(c => c.SpawnsetFile)
 				.FirstOrDefaultAsync(m => m.Id == id);
 
 			if (CustomLeaderboard == null)
 				return NotFound();
-			ViewData["CategoryId"] = new SelectList(_context.CustomLeaderboardCategories, "Id", "Name");
 			ViewData["SpawnsetFileId"] = new SelectList(_context.SpawnsetFiles, "Id", "Name");
 			return Page();
 		}
 
 		public async Task<IActionResult> OnPostAsync()
 		{
-			ModelState.Remove("CustomLeaderboard.Category");
 			ModelState.Remove("CustomLeaderboard.SpawnsetFile");
 			ModelState.Remove("CustomLeaderboard.SpawnsetFile.Player");
 			ModelState.Remove("CustomLeaderboard.DateLastPlayed");

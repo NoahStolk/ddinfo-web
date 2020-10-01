@@ -1,12 +1,11 @@
-﻿using DevilDaggersWebsite.Core.Entities;
+﻿using DevilDaggersWebsite.Code.Utils;
+using DevilDaggersWebsite.Core.Entities;
 using DevilDaggersWebsite.Core.Enumerators;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.AspNetCore.Mvc.RazorPages;
 using Microsoft.AspNetCore.Mvc.Rendering;
 using Microsoft.EntityFrameworkCore;
-using System;
 using System.Collections.Generic;
-using System.Globalization;
 using System.Linq;
 using System.Threading.Tasks;
 
@@ -20,7 +19,7 @@ namespace DevilDaggersWebsite.Pages.Admin.Donations
 		{
 			_context = context;
 
-			CurrencyList = ((IEnumerable<Currency>)Enum.GetValues(typeof(Currency))).Select(c => new SelectListItem { Text = c.ToString(), Value = ((int)c).ToString(CultureInfo.InvariantCulture) }).ToList();
+			CurrencyList = RazorUtils.EnumToSelectList<Currency>();
 		}
 
 		public List<SelectListItem> CurrencyList { get; }

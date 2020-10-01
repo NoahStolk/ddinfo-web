@@ -58,7 +58,7 @@
 			{
 				string fileName = lb.SpawnsetFile.Name;
 				string author = lb.SpawnsetFile.Player.Username;
-				List<CustomEntry> entries = dbContext.CustomEntries.Where(e => e.CustomLeaderboard == lb).OrderByMember(lb.Category.SortingPropertyName, lb.Category.Ascending).ToList();
+				List<CustomEntry> entries = dbContext.CustomEntries.Where(e => e.CustomLeaderboard == lb).OrderByMember(nameof(CustomEntry.Time), lb.IsAscending()).ToList();
 				string wrDagger = string.Empty;
 				if (entries.Count > 0)
 				{

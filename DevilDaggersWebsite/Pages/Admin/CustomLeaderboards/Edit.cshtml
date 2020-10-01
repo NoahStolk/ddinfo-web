@@ -15,9 +15,9 @@
 			<div asp-validation-summary="ModelOnly" class="text-danger"></div>
 			<input type="hidden" asp-for="CustomLeaderboard.Id" />
 			<div class="form-group">
-				<label asp-for="CustomLeaderboard.CategoryId" class="control-label"></label>
-				<select asp-for="CustomLeaderboard.CategoryId" class="form-control" asp-items="ViewBag.CategoryId"></select>
-				<span asp-validation-for="CustomLeaderboard.CategoryId" class="text-danger"></span>
+				<label asp-for="CustomLeaderboard.Category" class="control-label"></label>
+				<select asp-for="CustomLeaderboard.Category" class="form-control" asp-items="Model.CategoryList"></select>
+				<span asp-validation-for="CustomLeaderboard.Category" class="text-danger"></span>
 			</div>
 			<div class="form-group">
 				<label asp-for="CustomLeaderboard.SpawnsetFileId" class="control-label"></label>

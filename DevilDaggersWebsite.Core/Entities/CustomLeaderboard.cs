@@ -1,4 +1,5 @@
-﻿using System;
+﻿using DevilDaggersWebsite.Core.Enumerators;
+using System;
 using System.ComponentModel.DataAnnotations.Schema;
 
 namespace DevilDaggersWebsite.Core.Entities
@@ -7,9 +8,6 @@ namespace DevilDaggersWebsite.Core.Entities
 	{
 		public int Id { get; set; }
 
-		public int CategoryId { get; set; }
-
-		[ForeignKey(nameof(CategoryId))]
 		public CustomLeaderboardCategory Category { get; set; }
 
 		public int SpawnsetFileId { get; set; }
@@ -33,6 +31,9 @@ namespace DevilDaggersWebsite.Core.Entities
 
 		public int TotalRunsSubmitted { get; set; }
 
+		public bool IsAscending()
+			=> Category == CustomLeaderboardCategory.Challenge || Category == CustomLeaderboardCategory.Speedrun;
+
 		/// <summary>
 		/// Returns the CSS class name corresponding to the time in seconds.
 		/// </summary>
@@ -40,7 +41,7 @@ namespace DevilDaggersWebsite.Core.Entities
 		/// <returns>The CSS class name for the dagger.</returns>
 		public string GetDagger(int time)
 		{
-			if (Category.Ascending)
+			if (IsAscending())
 			{
 				if (time <= Homing && Homing > 0)
 					return "homing";

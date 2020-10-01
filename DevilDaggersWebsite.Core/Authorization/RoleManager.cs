@@ -42,7 +42,6 @@ namespace DevilDaggersWebsite.Core.Authorization
 			{ "/Admin/AdminTests", AdminPolicy },
 			{ "/Admin/AssetMods", AssetModsPolicy },
 			{ "/Admin/CustomEntries", AdminPolicy },
-			{ "/Admin/CustomLeaderboardCategories", AdminPolicy },
 			{ "/Admin/CustomLeaderboards", CustomLeaderboardsPolicy },
 			{ "/Admin/Donations", DonationsPolicy },
 			{ "/Admin/Players", PlayersPolicy },

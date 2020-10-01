@@ -1,7 +1,9 @@
 ﻿using DevilDaggersWebsite.Core.Entities;
+using DevilDaggersWebsite.Core.Enumerators;
 using Microsoft.AspNetCore.Mvc.RazorPages;
 using Microsoft.AspNetCore.Mvc.Rendering;
 using Microsoft.EntityFrameworkCore;
+using System;
 using System.Collections.Generic;
 using System.Linq;
 
@@ -14,6 +16,12 @@ namespace DevilDaggersWebsite.Pages.CustomLeaderboards
 		public IndexModel(ApplicationDbContext context)
 		{
 			_context = context;
+
+			foreach (CustomLeaderboardCategory e in (CustomLeaderboardCategory[])Enum.GetValues(typeof(CustomLeaderboardCategory)))
+			{
+				if (e != CustomLeaderboardCategory.None)
+					CategoryListItems.Add(new SelectListItem($"Category: {e}", e.ToString()));
+			}
 		}
 
 		public List<SelectListItem> CategoryListItems { get; private set; } = new List<SelectListItem>();
@@ -21,19 +29,11 @@ namespace DevilDaggersWebsite.Pages.CustomLeaderboards
 		public CustomLeaderboardCategory Category { get; private set; }
 		public List<CustomLeaderboard> Leaderboards { get; private set; }
 
-		public void OnGet(string category)
+		public void OnGet(CustomLeaderboardCategory category = CustomLeaderboardCategory.Default)
 		{
-			foreach (CustomLeaderboardCategory clc in context.CustomLeaderboardCategories)
-			{
-				if (clc.Name != "Challenge" && clc.Name != "Archive")
-					CategoryListItems.Add(new SelectListItem($"Category: {clc.Name}", clc.Name));
-			}
+			Category = category;
 
-			Category = context.CustomLeaderboardCategories.FirstOrDefault(clc => clc.Name == category);
-			if (Category == null)
-				Category = context.CustomLeaderboardCategories.FirstOrDefault(clc => clc.Name == "Default");
-
-			Leaderboards = context.CustomLeaderboards.Where(cl => cl.Category == Category).Include(cl => cl.SpawnsetFile).ThenInclude(sf => sf.Player).ToList();
+			Leaderboards = _context.CustomLeaderboards.Where(cl => cl.Category == category).Include(cl => cl.SpawnsetFile).ThenInclude(sf => sf.Player).ToList();
 		}
 	}
 }

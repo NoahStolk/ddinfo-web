@@ -1,4 +1,5 @@
-﻿using System.Collections.Generic;
+﻿using DevilDaggersWebsite.Core.Enumerators;
+using System.Collections.Generic;
 
 namespace DevilDaggersWebsite.Core.Dto
 {

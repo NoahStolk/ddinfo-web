@@ -2,6 +2,7 @@
 using DevilDaggersCore.Spawnsets;
 using DevilDaggersWebsite.Core.Clients;
 using DevilDaggersWebsite.Core.Entities;
+using DevilDaggersWebsite.Core.Extensions;
 using DevilDaggersWebsite.Core.Tools;
 using Microsoft.AspNetCore.Hosting;
 using Microsoft.AspNetCore.Http;
@@ -21,14 +22,14 @@ namespace DevilDaggersWebsite.Core.Api
 	[ApiController]
 	public class CustomLeaderboardsController : ControllerBase
 	{
-		private readonly ApplicationDbContext _dbContext;
+		private readonly ApplicationDbContext _context;
 		private readonly IWebHostEnvironment _env;
 
 		private readonly Dictionary<int, string> _usernames;
 
 		public CustomLeaderboardsController(ApplicationDbContext dbContext, IWebHostEnvironment env)
 		{
-			_dbContext = dbContext;
+			_context = dbContext;
 			_env = env;
 
 			_usernames = dbContext.Players.Select(p => new KeyValuePair<int, string>(p.Id, p.Username)).ToDictionary(kvp => kvp.Key, kvp => kvp.Value);
@@ -37,20 +38,24 @@ namespace DevilDaggersWebsite.Core.Api
 		[HttpGet]
 		[ProducesResponseType(StatusCodes.Status200OK)]
 		public ActionResult<List<Dto.CustomLeaderboard>> GetCustomLeaderboards()
-			=> _dbContext.CustomLeaderboards
-				.Select(cl => new Dto.CustomLeaderboard
-				{
-					SpawnsetAuthorName = cl.SpawnsetFile.Player.Username,
-					SpawnsetName = cl.SpawnsetFile.Name,
-					Bronze = cl.Bronze,
-					Silver = cl.Silver,
-					Golden = cl.Golden,
-					Devil = cl.Devil,
-					Homing = cl.Homing,
-					DateLastPlayed = cl.DateLastPlayed,
-					DateCreated = cl.DateCreated,
-				})
+		{
+			return _context.CustomLeaderboards
+				.Select(cl => cl.ToDto())
 				.ToList();
+		}
+
+		[HttpGet]
+		[ProducesResponseType(StatusCodes.Status200OK)]
+		[ProducesResponseType(StatusCodes.Status404NotFound)]
+		public ActionResult<Dto.CustomLeaderboard> GetCustomLeaderboard(int id)
+		{
+			if (!_context.CustomLeaderboards.Any(cl => cl.Id == id))
+				return new NotFoundObjectResult(new ProblemDetails { Title = $"Leaderboard with {nameof(id)} '{id}' was not found." });
+
+			return _context.CustomLeaderboards
+				.FirstOrDefault(cl => cl.Id == id)
+				.ToDto();
+		}
 
 		[HttpPost]
 		[ProducesResponseType(StatusCodes.Status200OK)]
@@ -125,7 +130,7 @@ namespace DevilDaggersWebsite.Core.Api
 				return new BadRequestObjectResult(new ProblemDetails { Title = errorMessage });
 			}
 
-			CustomLeaderboard leaderboard = _dbContext.CustomLeaderboards.Include(cl => cl.Category).Include(cl => cl.SpawnsetFile).ThenInclude(sf => sf.Player).FirstOrDefault(cl => cl.SpawnsetFile.Name == spawnsetName);
+			CustomLeaderboard leaderboard = _context.CustomLeaderboards.Include(cl => cl.SpawnsetFile).ThenInclude(sf => sf.Player).FirstOrDefault(cl => cl.SpawnsetFile.Name == spawnsetName);
 			if (leaderboard == null)
 			{
 				string errorMessage = "This spawnset exists on DevilDaggers.info, but doesn't have a leaderboard.";
@@ -136,7 +141,7 @@ namespace DevilDaggersWebsite.Core.Api
 			// At this point, the submission is accepted.
 
 			// Add the player or update the username.
-			Player player = _dbContext.Players.FirstOrDefault(p => p.Id == uploadRequest.PlayerId);
+			Player player = _context.Players.FirstOrDefault(p => p.Id == uploadRequest.PlayerId);
 			if (player == null)
 			{
 				player = new Player
@@ -144,7 +149,7 @@ namespace DevilDaggersWebsite.Core.Api
 					Id = uploadRequest.PlayerId,
 					Username = await GetUsername(uploadRequest),
 				};
-				_dbContext.Players.Add(player);
+				_context.Players.Add(player);
 			}
 			else
 			{
@@ -156,44 +161,20 @@ namespace DevilDaggersWebsite.Core.Api
 			leaderboard.TotalRunsSubmitted++;
 
 			// Calculate the new rank.
-			IEnumerable<CustomEntry> entries = _dbContext.CustomEntries.Where(e => e.CustomLeaderboard == leaderboard).OrderByMember(leaderboard.Category.SortingPropertyName, leaderboard.Category.Ascending).ToArray();
+			IEnumerable<CustomEntry> entries = _context.CustomEntries.Where(e => e.CustomLeaderboard == leaderboard).OrderByMember(nameof(CustomEntry.Time), leaderboard.IsAscending()).ToArray();
 
-			// TODO: Use reflection to use Category.SortingPropertyName.
-			int rank = leaderboard.Category.Ascending ? entries.Count(e => e.Time < uploadRequest.Time) + 1 : entries.Count(e => e.Time > uploadRequest.Time) + 1;
+			int rank = leaderboard.IsAscending() ? entries.Count(e => e.Time < uploadRequest.Time) + 1 : entries.Count(e => e.Time > uploadRequest.Time) + 1;
 			int totalPlayers = entries.Count();
 
-			CustomEntry? entry = _dbContext.CustomEntries.FirstOrDefault(e => e.PlayerId == uploadRequest.PlayerId && e.CustomLeaderboardId == leaderboard.Id);
+			CustomEntry? entry = _context.CustomEntries.FirstOrDefault(e => e.PlayerId == uploadRequest.PlayerId && e.CustomLeaderboardId == leaderboard.Id);
 			if (entry == null)
 			{
 				// Add new user to this leaderboard.
-				_dbContext.CustomEntries.Add(new CustomEntry
-				{
-					PlayerId = uploadRequest.PlayerId,
-					Time = uploadRequest.Time,
-					Gems = uploadRequest.Gems,
-					Kills = uploadRequest.Kills,
-					DeathType = uploadRequest.DeathType,
-					DaggersHit = uploadRequest.DaggersHit,
-					DaggersFired = uploadRequest.DaggersFired,
-					EnemiesAlive = uploadRequest.EnemiesAlive,
-					Homing = uploadRequest.Homing,
-					LevelUpTime2 = uploadRequest.LevelUpTime2,
-					LevelUpTime3 = uploadRequest.LevelUpTime3,
-					LevelUpTime4 = uploadRequest.LevelUpTime4,
-					SubmitDate = DateTime.Now,
-					ClientVersion = uploadRequest.DdclClientVersion,
-					CustomLeaderboard = leaderboard,
-					GemsData = string.Join(",", uploadRequest.GameStates.Select(gs => gs.Gems)),
-					KillsData = string.Join(",", uploadRequest.GameStates.Select(gs => gs.Kills)),
-					HomingData = string.Join(",", uploadRequest.GameStates.Select(gs => gs.Homing)),
-					EnemiesAliveData = string.Join(",", uploadRequest.GameStates.Select(gs => gs.EnemiesAlive)),
-					DaggersFiredData = string.Join(",", uploadRequest.GameStates.Select(gs => gs.DaggersFired)),
-					DaggersHitData = string.Join(",", uploadRequest.GameStates.Select(gs => gs.DaggersHit)),
-				});
-				_dbContext.SaveChanges();
+				_context.CustomEntries.Add(uploadRequest.ToCustomEntryEntity(leaderboard));
+				_context.SaveChanges();
 
 				// Fetch the entries again after having modified the leaderboard.
-				entries = _dbContext.CustomEntries.Where(e => e.CustomLeaderboard == leaderboard).OrderByMember(leaderboard.Category.SortingPropertyName, leaderboard.Category.Ascending);
+				entries = _context.CustomEntries.Where(e => e.CustomLeaderboard == leaderboard).OrderByMember(nameof(CustomEntry.Time), leaderboard.IsAscending());
 				totalPlayers = entries.Count();
 
 				await TryLog(uploadRequest, spawnsetName);
@@ -201,44 +182,10 @@ namespace DevilDaggersWebsite.Core.Api
 				{
 					Message = $"Welcome to the leaderboard for {spawnsetName}.",
 					TotalPlayers = totalPlayers,
-					Leaderboard = new Dto.CustomLeaderboard
-					{
-						SpawnsetName = spawnsetName,
-						SpawnsetAuthorName = leaderboard.SpawnsetFile.Player.Username,
-						Bronze = leaderboard.Bronze,
-						Silver = leaderboard.Silver,
-						Golden = leaderboard.Golden,
-						Devil = leaderboard.Devil,
-						Homing = leaderboard.Homing,
-						DateCreated = leaderboard.DateCreated,
-						DateLastPlayed = leaderboard.DateLastPlayed,
-					},
-					Category = new Dto.CustomLeaderboardCategory
-					{
-						Ascending = leaderboard.Category.Ascending,
-						LayoutPartialName = leaderboard.Category.LayoutPartialName,
-						Name = leaderboard.Category.Name,
-						SortingPropertyName = leaderboard.Category.SortingPropertyName,
-					},
+					Leaderboard = leaderboard.ToDto(),
+					Category = leaderboard.Category,
 					Entries = entries
-						.Select(e => new Dto.CustomEntry
-						{
-							PlayerId = e.PlayerId,
-							Username = _usernames.FirstOrDefault(u => u.Key == e.PlayerId).Value ?? "[Player not found]",
-							ClientVersion = e.ClientVersion,
-							DeathType = e.DeathType,
-							EnemiesAlive = e.EnemiesAlive,
-							Gems = e.Gems,
-							Homing = e.Homing,
-							Kills = e.Kills,
-							LevelUpTime2 = e.LevelUpTime2,
-							LevelUpTime3 = e.LevelUpTime3,
-							LevelUpTime4 = e.LevelUpTime4,
-							DaggersFired = e.DaggersFired,
-							DaggersHit = e.DaggersHit,
-							SubmitDate = e.SubmitDate,
-							Time = e.Time,
-						})
+						.Select(e => e.ToDto(GetUsernameFromCache(e)))
 						.ToList(),
 					IsNewUserOnThisLeaderboard = true,
 					Rank = rank,
@@ -256,57 +203,22 @@ namespace DevilDaggersWebsite.Core.Api
 			}
 
 			// User is already on the leaderboard, but did not get a better score.
-			// TODO: Use reflection to use Category.SortingPropertyName.
-			if (leaderboard.Category.Ascending && entry.Time <= uploadRequest.Time || !leaderboard.Category.Ascending && entry.Time >= uploadRequest.Time)
+			if (leaderboard.IsAscending() && entry.Time <= uploadRequest.Time || !leaderboard.IsAscending() && entry.Time >= uploadRequest.Time)
 			{
-				_dbContext.SaveChanges();
+				_context.SaveChanges();
 
 				// Fetch the entries again after having modified the leaderboard.
-				entries = _dbContext.CustomEntries.Where(e => e.CustomLeaderboard == leaderboard).OrderByMember(leaderboard.Category.SortingPropertyName, leaderboard.Category.Ascending).ToArray();
+				entries = _context.CustomEntries.Where(e => e.CustomLeaderboard == leaderboard).OrderByMember(nameof(CustomEntry.Time), leaderboard.IsAscending()).ToArray();
 
 				await TryLog(uploadRequest, spawnsetName);
 				return new Dto.UploadSuccess
 				{
 					Message = $"No new highscore for {leaderboard.SpawnsetFile.Name}.",
 					TotalPlayers = totalPlayers,
-					Leaderboard = new Dto.CustomLeaderboard
-					{
-						SpawnsetName = leaderboard.SpawnsetFile.Name,
-						SpawnsetAuthorName = leaderboard.SpawnsetFile.Player.Username,
-						Bronze = leaderboard.Bronze,
-						Silver = leaderboard.Silver,
-						Golden = leaderboard.Golden,
-						Devil = leaderboard.Devil,
-						Homing = leaderboard.Homing,
-						DateCreated = leaderboard.DateCreated,
-						DateLastPlayed = leaderboard.DateLastPlayed,
-					},
-					Category = new Dto.CustomLeaderboardCategory
-					{
-						Ascending = leaderboard.Category.Ascending,
-						LayoutPartialName = leaderboard.Category.LayoutPartialName,
-						Name = leaderboard.Category.Name,
-						SortingPropertyName = leaderboard.Category.SortingPropertyName,
-					},
+					Leaderboard = leaderboard.ToDto(),
+					Category = leaderboard.Category,
 					Entries = entries
-						.Select(e => new Dto.CustomEntry
-						{
-							PlayerId = e.PlayerId,
-							Username = _usernames.FirstOrDefault(u => u.Key == e.PlayerId).Value ?? "[Player not found]",
-							ClientVersion = e.ClientVersion,
-							DeathType = e.DeathType,
-							EnemiesAlive = e.EnemiesAlive,
-							Gems = e.Gems,
-							Homing = e.Homing,
-							Kills = e.Kills,
-							LevelUpTime2 = e.LevelUpTime2,
-							LevelUpTime3 = e.LevelUpTime3,
-							LevelUpTime4 = e.LevelUpTime4,
-							DaggersFired = e.DaggersFired,
-							DaggersHit = e.DaggersHit,
-							SubmitDate = e.SubmitDate,
-							Time = e.Time,
-						})
+						.Select(e => e.ToDto(GetUsernameFromCache(e)))
 						.ToList(),
 					IsNewUserOnThisLeaderboard = false,
 				};
@@ -315,7 +227,7 @@ namespace DevilDaggersWebsite.Core.Api
 			// User got a better score.
 
 			// Calculate the old rank.
-			int oldRank = leaderboard.Category.Ascending ? entries.Count(e => e.Time < entry.Time) + 1 : entries.Count(e => e.Time > entry.Time) + 1;
+			int oldRank = leaderboard.IsAscending() ? entries.Count(e => e.Time < entry.Time) + 1 : entries.Count(e => e.Time > entry.Time) + 1;
 
 			int rankDiff = oldRank - rank;
 			int timeDiff = uploadRequest.Time - entry.Time;
@@ -349,54 +261,20 @@ namespace DevilDaggersWebsite.Core.Api
 			entry.DaggersFiredData = string.Join(",", uploadRequest.GameStates.Select(gs => gs.DaggersFired));
 			entry.DaggersHitData = string.Join(",", uploadRequest.GameStates.Select(gs => gs.DaggersHit));
 
-			_dbContext.SaveChanges();
+			_context.SaveChanges();
 
 			// Fetch the entries again after having modified the leaderboard.
-			entries = _dbContext.CustomEntries.Where(e => e.CustomLeaderboard == leaderboard).OrderByMember(leaderboard.Category.SortingPropertyName, leaderboard.Category.Ascending).ToArray();
+			entries = _context.CustomEntries.Where(e => e.CustomLeaderboard == leaderboard).OrderByMember(nameof(CustomEntry.Time), leaderboard.IsAscending()).ToArray();
 
 			await TryLog(uploadRequest, spawnsetName);
 			return new Dto.UploadSuccess
 			{
 				Message = $"NEW HIGHSCORE for {leaderboard.SpawnsetFile.Name}!",
 				TotalPlayers = totalPlayers,
-				Leaderboard = new Dto.CustomLeaderboard
-				{
-					SpawnsetName = leaderboard.SpawnsetFile.Name,
-					SpawnsetAuthorName = leaderboard.SpawnsetFile.Player.Username,
-					Bronze = leaderboard.Bronze,
-					Silver = leaderboard.Silver,
-					Golden = leaderboard.Golden,
-					Devil = leaderboard.Devil,
-					Homing = leaderboard.Homing,
-					DateCreated = leaderboard.DateCreated,
-					DateLastPlayed = leaderboard.DateLastPlayed,
-				},
-				Category = new Dto.CustomLeaderboardCategory
-				{
-					Ascending = leaderboard.Category.Ascending,
-					LayoutPartialName = leaderboard.Category.LayoutPartialName,
-					Name = leaderboard.Category.Name,
-					SortingPropertyName = leaderboard.Category.SortingPropertyName,
-				},
+				Leaderboard = leaderboard.ToDto(),
+				Category = leaderboard.Category,
 				Entries = entries
-					.Select(e => new Dto.CustomEntry
-					{
-						PlayerId = e.PlayerId,
-						Username = _usernames.FirstOrDefault(u => u.Key == e.PlayerId).Value ?? "[Player not found]",
-						ClientVersion = e.ClientVersion,
-						DeathType = e.DeathType,
-						EnemiesAlive = e.EnemiesAlive,
-						Gems = e.Gems,
-						Homing = e.Homing,
-						Kills = e.Kills,
-						LevelUpTime2 = e.LevelUpTime2,
-						LevelUpTime3 = e.LevelUpTime3,
-						LevelUpTime4 = e.LevelUpTime4,
-						DaggersFired = e.DaggersFired,
-						DaggersHit = e.DaggersHit,
-						SubmitDate = e.SubmitDate,
-						Time = e.Time,
-					})
+					.Select(e => e.ToDto(GetUsernameFromCache(e)))
 					.ToList(),
 				IsNewUserOnThisLeaderboard = false,
 				Rank = rank,
@@ -423,6 +301,9 @@ namespace DevilDaggersWebsite.Core.Api
 				LevelUpTime4Diff = levelUpTime4Diff,
 			};
 		}
+
+		private string GetUsernameFromCache(CustomEntry e)
+			=> _usernames.FirstOrDefault(u => u.Key == e.PlayerId).Value ?? "[Player not found]";
 
 		private static string GetSpawnsetNameOrHash(Dto.UploadRequest uploadRequest, string? spawnsetName)
 			=> string.IsNullOrEmpty(spawnsetName) ? uploadRequest.SpawnsetHash : spawnsetName;

@@ -1,6 +1,7 @@
 ﻿using DevilDaggersCore.Spawnsets;
 using DevilDaggersWebsite.Core.Api;
 using DevilDaggersWebsite.Core.Entities;
+using DevilDaggersWebsite.Core.Enumerators;
 using DevilDaggersWebsite.Core.Tools;
 using Microsoft.AspNetCore.Hosting;
 using Microsoft.AspNetCore.Http;
@@ -219,14 +220,6 @@ namespace DevilDaggersWebsite.Core.Tests
 				HtmlDescription = string.Empty,
 				MaxDisplayWaves = 5,
 			};
-			CustomLeaderboardCategory customLeaderboardCategory = new CustomLeaderboardCategory
-			{
-				Id = 1,
-				Ascending = false,
-				Name = "Default",
-				SortingPropertyName = "Time",
-				LayoutPartialName = "Default",
-			};
 			CustomLeaderboard customLeaderboard = new CustomLeaderboard
 			{
 				Id = 1,
@@ -235,12 +228,11 @@ namespace DevilDaggersWebsite.Core.Tests
 				Golden = 250,
 				Devil = 500,
 				Homing = 1000,
-				CategoryId = 1,
+				Category = CustomLeaderboardCategory.Default,
 				DateCreated = DateTime.Now,
 				DateLastPlayed = DateTime.Now,
 				SpawnsetFileId = 1,
 				TotalRunsSubmitted = 666,
-				Category = customLeaderboardCategory,
 				SpawnsetFile = spawnsetFile,
 			};
 			CustomEntry customEntry = new CustomEntry
@@ -274,7 +266,6 @@ namespace DevilDaggersWebsite.Core.Tests
 			context.Players.Add(testPlayer1);
 			context.Players.Add(testPlayer2);
 			context.SpawnsetFiles.Add(spawnsetFile);
-			context.CustomLeaderboardCategories.Add(customLeaderboardCategory);
 			context.CustomLeaderboards.Add(customLeaderboard);
 			context.CustomEntries.Add(customEntry);
 			context.SaveChanges();

@@ -36,15 +36,13 @@ namespace DevilDaggersWebsite.Pages.CustomLeaderboards
 			if (SpawnsetFile == null)
 				return RedirectToPage("Index");
 
-			Leaderboard = dbContext.CustomLeaderboards
-				.Include(l => l.Category)
-				.FirstOrDefault(l => l.SpawnsetFileId == SpawnsetFile.Id);
+			Leaderboard = _context.CustomLeaderboards.FirstOrDefault(l => l.SpawnsetFileId == SpawnsetFile.Id);
 			if (Leaderboard == null)
 				return RedirectToPage("Index");
 
 			Entries = _context.CustomEntries
 				.Where(e => e.CustomLeaderboard == Leaderboard)
-				.OrderByMember(Leaderboard.Category.SortingPropertyName, Leaderboard.Category.Ascending)
+				.OrderByMember(nameof(CustomEntry.Time), Leaderboard.IsAscending())
 				.ThenByMember(nameof(CustomEntry.SubmitDate), true)
 				.ToList();
 

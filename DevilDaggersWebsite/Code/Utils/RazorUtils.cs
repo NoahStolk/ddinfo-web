@@ -1,6 +1,7 @@
 ﻿using DevilDaggersCore.Game;
 using Microsoft.AspNetCore.Hosting;
 using Microsoft.AspNetCore.Html;
+using Microsoft.AspNetCore.Mvc.Rendering;
 using System;
 using System.Collections.Generic;
 using System.Globalization;
@@ -116,5 +117,9 @@ namespace DevilDaggersWebsite.Code.Utils
 
 		public static string GetCssWidth(int width)
 			=> $"width: {width}px;";
+
+		public static List<SelectListItem> EnumToSelectList<TEnum>()
+			where TEnum : Enum
+			=> ((IEnumerable<TEnum>)Enum.GetValues(typeof(TEnum))).Select(c => new SelectListItem { Text = c.ToString(), Value = ((int)(object)c).ToString(CultureInfo.InvariantCulture) }).ToList();
 	}
 }
