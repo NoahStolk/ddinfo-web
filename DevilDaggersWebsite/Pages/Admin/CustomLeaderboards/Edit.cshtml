@@ -59,6 +59,12 @@
 				<input asp-for="CustomLeaderboard.DateCreated" class="form-control" />
 				<span asp-validation-for="CustomLeaderboard.DateCreated" class="text-danger"></span>
 			</div>
+			<div class="form-group hidden">
+				@*Hidden hack to trick ModelState*@
+				<label asp-for="CustomLeaderboard.TotalRunsSubmitted" class="control-label"></label>
+				<input asp-for="CustomLeaderboard.TotalRunsSubmitted" class="form-control" />
+				<span asp-validation-for="CustomLeaderboard.TotalRunsSubmitted" class="text-danger"></span>
+			</div>
 			<div class="form-group">
 				<input type="submit" value="Save" class="btn btn-default" />
 			</div>
