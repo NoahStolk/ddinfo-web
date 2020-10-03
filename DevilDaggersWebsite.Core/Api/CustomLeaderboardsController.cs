@@ -141,6 +141,13 @@ namespace DevilDaggersWebsite.Core.Api
 				return new BadRequestObjectResult(new ProblemDetails { Title = errorMessage });
 			}
 
+			if (leaderboard.Category == Enumerators.CustomLeaderboardCategory.Challenge && Version.Parse(uploadRequest.ClientVersion) <= new Version(0, 10, 4, 0))
+			{
+				string errorMessage = "Challenge leaderboards are not supported on version 0.10.4.0 or lower.";
+				await TryLog(uploadRequest, spawnsetName, errorMessage);
+				return new BadRequestObjectResult(new ProblemDetails { Title = errorMessage });
+			}
+
 			// At this point, the submission is accepted.
 
 			// Add the player or update the username.
