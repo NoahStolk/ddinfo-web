@@ -26,10 +26,20 @@ namespace DevilDaggersWebsite.Core.Tools
 		{
 			Name = "DevilDaggersSurvivalEditor",
 			DisplayName = "Devil Daggers Survival Editor",
-			VersionNumber = new Version(2, 10, 11, 0),
+			VersionNumber = new Version(2, 10, 13, 0),
 			VersionNumberRequired = new Version(2, 7, 6, 1),
 			Changelog = new List<ChangelogEntry>
 			{
+				new ChangelogEntry
+				{
+					VersionNumber = new Version(2, 10, 13, 0),
+					Date = new DateTime(2020, 10, 7),
+					Changes = new List<Change>
+					{
+						new Change("Fixed \"Download\" button in UpdateRecommended window navigating to an outdated URL."),
+						new Change("Removed misleading information from the Help window."),
+					},
+				},
 				new ChangelogEntry
 				{
 					VersionNumber = new Version(2, 10, 11, 0),
@@ -638,10 +648,31 @@ namespace DevilDaggersWebsite.Core.Tools
 		{
 			Name = "DevilDaggersAssetEditor",
 			DisplayName = "Devil Daggers Asset Editor",
-			VersionNumber = new Version(0, 16, 3, 0),
+			VersionNumber = new Version(0, 16, 16, 0),
 			VersionNumberRequired = new Version(0, 16, 2, 0),
 			Changelog = new List<ChangelogEntry>
 			{
+				new ChangelogEntry
+				{
+					VersionNumber = new Version(0, 16, 16, 0),
+					Date = new DateTime(2020, 10, 7),
+					Changes = new List<Change>
+					{
+						new Change("Fixed loudness values not being set when creating a mod file after extracting an audio binary."),
+						new Change("Fixed \"Access is denied\" error when attempting to open mod folder in Windows Explorer."),
+						new Change("Fixed \"Download\" button in UpdateRecommended window navigating to an outdated URL."),
+						new Change("Fixed CheckingForUpdates window not waiting for the API result properly."),
+						new Change("Improved confirmation windows."),
+						new Change("Improved progress logging."),
+						new Change("Improved error messages regarding extracting and making binaries."),
+						new Change("Added more model descriptions and tags."),
+						new Change("Added missing audio tags."),
+						new Change("Removed functionality to open log file from the menu as this doesn't work well with the current logging mechanism."),
+						new Change("Parsing model vertices now supports scientific notation."),
+						new Change("Better error messages are shown when model face data could not be parsed."),
+						new Change("Note: Dark theme is used for windows that are shared between DevilDaggersSurvivalEditor and DevilDaggersAssetEditor. I plan to fully integrate dark theme into DDAE in a future update."),
+					},
+				},
 				new ChangelogEntry
 				{
 					VersionNumber = new Version(0, 16, 3, 0),
