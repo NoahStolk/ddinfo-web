@@ -40,6 +40,9 @@ namespace DevilDaggersWebsite.Core.Api
 		public ActionResult<List<Dto.CustomLeaderboard>> GetCustomLeaderboards()
 		{
 			return _context.CustomLeaderboards
+				.AsNoTracking()
+				.Include(cl => cl.SpawnsetFile)
+					.ThenInclude(sf => sf.Player)
 				.Select(cl => cl.ToDto())
 				.ToList();
 		}
@@ -49,12 +52,16 @@ namespace DevilDaggersWebsite.Core.Api
 		[ProducesResponseType(StatusCodes.Status404NotFound)]
 		public ActionResult<Dto.CustomLeaderboard> GetCustomLeaderboard(int id)
 		{
-			if (!_context.CustomLeaderboards.Any(cl => cl.Id == id))
+			CustomLeaderboard? customLeaderboard = _context.CustomLeaderboards
+				.AsNoTracking()
+				.Include(cl => cl.SpawnsetFile)
+					.ThenInclude(sf => sf.Player)
+				.FirstOrDefault(cl => cl.Id == id);
+
+			if (customLeaderboard == null)
 				return new NotFoundObjectResult(new ProblemDetails { Title = $"Leaderboard with {nameof(id)} '{id}' was not found." });
 
-			return _context.CustomLeaderboards
-				.FirstOrDefault(cl => cl.Id == id)
-				.ToDto();
+			return customLeaderboard.ToDto();
 		}
 
 		[HttpPost]
