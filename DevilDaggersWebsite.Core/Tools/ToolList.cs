@@ -658,20 +658,12 @@ namespace DevilDaggersWebsite.Core.Tools
 					Date = new DateTime(2020, 10, 21),
 					Changes = new List<Change>
 					{
-						new Change("Fixed loudness text boxes being having a white background after changing the value which makes the number unreadable."),
-					},
-				},
-				new ChangelogEntry
-				{
-					VersionNumber = new Version(0, 18, 3, 0),
-					Date = new DateTime(2020, 10, 21),
-					Changes = new List<Change>
-					{
 						new Change("The application now uses a custom dark theme. General layout for many components has been improved as well."),
 						new Change("Added GLSL syntax highlighting."),
 						new Change("Fixed shader assets not being saved to mod file on extraction."),
 						new Change("Fixed Windows Explorer folder dialogs opening the directory above the specified folder."),
 						new Change("Fixed audio previewer crashing when attempting to play an empty audio file."),
+						new Change("Fixed loudness text boxes having a white background after changing the value which makes the number unreadable."),
 					},
 				},
 				new ChangelogEntry
