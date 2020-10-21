@@ -46,7 +46,7 @@ namespace DevilDaggersWebsite.Core.Tools
 					Date = new DateTime(2020, 9, 24),
 					Changes = new List<Change>
 					{
-						new Change("Application now uses a custom dark theme. General layout for many components has been improved as well."),
+						new Change("The application now uses a custom dark theme. General layout for many components has been improved as well."),
 						new Change("Added Donut arena preset."),
 						new Change("Added new user settings.")
 						{
@@ -648,10 +648,23 @@ namespace DevilDaggersWebsite.Core.Tools
 		{
 			Name = "DevilDaggersAssetEditor",
 			DisplayName = "Devil Daggers Asset Editor",
-			VersionNumber = new Version(0, 16, 16, 0),
+			VersionNumber = new Version(0, 18, 3, 0),
 			VersionNumberRequired = new Version(0, 16, 2, 0),
 			Changelog = new List<ChangelogEntry>
 			{
+				new ChangelogEntry
+				{
+					VersionNumber = new Version(0, 18, 3, 0),
+					Date = new DateTime(2020, 10, 21),
+					Changes = new List<Change>
+					{
+						new Change("The application now uses a custom dark theme. General layout for many components has been improved as well."),
+						new Change("Added GLSL syntax highlighting."),
+						new Change("Fixed shader assets not being saved to mod file on extraction."),
+						new Change("Fixed Windows Explorer folder dialogs opening the directory above the specified folder."),
+						new Change("Fixed audio previewer crashing when attempting to play an empty audio file."),
+					},
+				},
 				new ChangelogEntry
 				{
 					VersionNumber = new Version(0, 16, 16, 0),
