@@ -648,10 +648,19 @@ namespace DevilDaggersWebsite.Core.Tools
 		{
 			Name = "DevilDaggersAssetEditor",
 			DisplayName = "Devil Daggers Asset Editor",
-			VersionNumber = new Version(0, 18, 3, 0),
+			VersionNumber = new Version(0, 18, 4, 0),
 			VersionNumberRequired = new Version(0, 16, 2, 0),
 			Changelog = new List<ChangelogEntry>
 			{
+				new ChangelogEntry
+				{
+					VersionNumber = new Version(0, 18, 4, 0),
+					Date = new DateTime(2020, 10, 21),
+					Changes = new List<Change>
+					{
+						new Change("Fixed loudness text boxes being having a white background after changing the value which makes the number unreadable."),
+					},
+				},
 				new ChangelogEntry
 				{
 					VersionNumber = new Version(0, 18, 3, 0),
