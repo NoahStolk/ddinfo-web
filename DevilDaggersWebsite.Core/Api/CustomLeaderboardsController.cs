@@ -3,7 +3,7 @@ using DevilDaggersCore.Spawnsets;
 using DevilDaggersWebsite.Core.Clients;
 using DevilDaggersWebsite.Core.Entities;
 using DevilDaggersWebsite.Core.Extensions;
-using DevilDaggersWebsite.Core.Tools;
+using DevilDaggersWebsite.Core.Transients;
 using Microsoft.AspNetCore.Hosting;
 using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
@@ -24,13 +24,15 @@ namespace DevilDaggersWebsite.Core.Api
 	{
 		private readonly ApplicationDbContext _context;
 		private readonly IWebHostEnvironment _env;
+		private readonly ToolHelper _toolHelper;
 
 		private readonly Dictionary<int, string> _usernames;
 
-		public CustomLeaderboardsController(ApplicationDbContext dbContext, IWebHostEnvironment env)
+		public CustomLeaderboardsController(ApplicationDbContext dbContext, IWebHostEnvironment env, ToolHelper toolHelper)
 		{
 			_context = dbContext;
 			_env = env;
+			_toolHelper = toolHelper;
 
 			_usernames = dbContext.Players.Select(p => new KeyValuePair<int, string>(p.Id, p.Username)).ToDictionary(kvp => kvp.Key, kvp => kvp.Value);
 		}
@@ -97,7 +99,7 @@ namespace DevilDaggersWebsite.Core.Api
 		public async Task<ActionResult<Dto.UploadSuccess>> ProcessUploadRequest(Dto.UploadRequest uploadRequest, IEnumerable<(string name, Spawnset spawnset)> spawnsets)
 		{
 			Version clientVersionParsed = Version.Parse(uploadRequest.ClientVersion);
-			if (clientVersionParsed < ToolList.DevilDaggersCustomLeaderboards.VersionNumberRequired)
+			if (clientVersionParsed < _toolHelper.GetToolByName("DevilDaggersCustomLeaderboards").VersionNumberRequired)
 			{
 				string errorMessage = "You are using an unsupported and outdated version of DDCL. Please update the program.";
 				await TryLog(uploadRequest, null, errorMessage);

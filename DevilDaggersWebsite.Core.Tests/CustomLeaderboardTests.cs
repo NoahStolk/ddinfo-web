@@ -2,7 +2,7 @@
 using DevilDaggersWebsite.Core.Api;
 using DevilDaggersWebsite.Core.Entities;
 using DevilDaggersWebsite.Core.Enumerators;
-using DevilDaggersWebsite.Core.Tools;
+using DevilDaggersWebsite.Core.Transients;
 using Microsoft.AspNetCore.Hosting;
 using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
@@ -20,6 +20,8 @@ namespace DevilDaggersWebsite.Core.Tests
 	[TestClass]
 	public class CustomLeaderboardTests
 	{
+		private const string _ddclClientVersion = "0.10.4.0";
+
 		private static readonly ApplicationDbContext _context;
 		private static readonly CustomLeaderboardsController _customLeaderboardsController;
 
@@ -35,7 +37,8 @@ namespace DevilDaggersWebsite.Core.Tests
 			Mock<IWebHostEnvironment> mockEnvironment = new Mock<IWebHostEnvironment>();
 			mockEnvironment.Setup(m => m.EnvironmentName).Returns("Hosting:UnitTestEnvironment");
 
-			_customLeaderboardsController = new CustomLeaderboardsController(_context, mockEnvironment.Object);
+			Mock<ToolHelper> mockToolHelper = new Mock<ToolHelper>(mockEnvironment.Object);
+			_customLeaderboardsController = new CustomLeaderboardsController(_context, mockEnvironment.Object, mockToolHelper.Object);
 		}
 #pragma warning restore S3963 // "static" fields should be initialized inline
 
@@ -57,7 +60,7 @@ namespace DevilDaggersWebsite.Core.Tests
 			{
 				Time = 100000,
 				PlayerId = 1,
-				ClientVersion = ToolList.DevilDaggersCustomLeaderboards.VersionNumber.ToString(),
+				ClientVersion = _ddclClientVersion,
 				SpawnsetHash = emptySpawnset.GetHashString(),
 				GameStates = new List<Dto.GameState>(),
 				Username = "TestPlayer1",
@@ -79,7 +82,7 @@ namespace DevilDaggersWebsite.Core.Tests
 			{
 				Time = 200000,
 				PlayerId = 1,
-				ClientVersion = ToolList.DevilDaggersCustomLeaderboards.VersionNumber.ToString(),
+				ClientVersion = _ddclClientVersion,
 				SpawnsetHash = emptySpawnset.GetHashString(),
 				GameStates = new List<Dto.GameState>(),
 				Username = "TestPlayer1",
@@ -101,7 +104,7 @@ namespace DevilDaggersWebsite.Core.Tests
 			{
 				Time = 200000,
 				PlayerId = 2,
-				ClientVersion = ToolList.DevilDaggersCustomLeaderboards.VersionNumber.ToString(),
+				ClientVersion = _ddclClientVersion,
 				SpawnsetHash = emptySpawnset.GetHashString(),
 				GameStates = new List<Dto.GameState>(),
 				Username = "TestPlayer2",
@@ -123,7 +126,7 @@ namespace DevilDaggersWebsite.Core.Tests
 			{
 				Time = 300000,
 				PlayerId = 3,
-				ClientVersion = ToolList.DevilDaggersCustomLeaderboards.VersionNumber.ToString(),
+				ClientVersion = _ddclClientVersion,
 				SpawnsetHash = emptySpawnset.GetHashString(),
 				GameStates = new List<Dto.GameState>(),
 				Username = "TestPlayer3",
@@ -173,7 +176,7 @@ namespace DevilDaggersWebsite.Core.Tests
 			{
 				Time = 100000,
 				PlayerId = 1,
-				ClientVersion = ToolList.DevilDaggersCustomLeaderboards.VersionNumber.ToString(),
+				ClientVersion = _ddclClientVersion,
 				SpawnsetHash = emptySpawnset.GetHashString(),
 				GameStates = new List<Dto.GameState>(),
 				Username = "TestPlayer1",
@@ -238,7 +241,7 @@ namespace DevilDaggersWebsite.Core.Tests
 			CustomEntry customEntry = new CustomEntry
 			{
 				Id = 1,
-				ClientVersion = ToolList.DevilDaggersCustomLeaderboards.VersionNumber.ToString(),
+				ClientVersion = _ddclClientVersion,
 				CustomLeaderboardId = 1,
 				DaggersFired = 15,
 				DaggersHit = 6,

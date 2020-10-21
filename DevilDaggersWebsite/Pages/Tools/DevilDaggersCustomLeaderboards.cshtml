@@ -1,11 +1,11 @@
 ﻿@page
 @inject Microsoft.AspNetCore.Hosting.IWebHostEnvironment env
+@inject Core.Transients.ToolHelper toolHelper
 @using DevilDaggersCore.Utils
 @using DevilDaggersWebsite.Core.Dto
-@using DevilDaggersWebsite.Core.Tools
 @using System.IO
 @{
-	Tool tool = ToolList.DevilDaggersCustomLeaderboards;
+	Tool tool = toolHelper.GetToolByName("DevilDaggersCustomLeaderboards");
 	ViewData["Title"] = tool.DisplayName;
 	string downloadFileName = $"{tool.Name}{tool.VersionNumber}.zip";
 	FileInfo downloadFileInfo = new FileInfo(System.IO.Path.Combine(env.WebRootPath, "tools", tool.Name, downloadFileName));

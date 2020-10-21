@@ -1,11 +1,11 @@
 ﻿@page
 @inject Microsoft.AspNetCore.Hosting.IWebHostEnvironment env
+@inject Core.Transients.ToolHelper toolHelper
 @using DevilDaggersCore.Utils
 @using DevilDaggersWebsite.Core.Dto
-@using DevilDaggersWebsite.Core.Tools
 @using System.IO
 @{
-	Tool tool = ToolList.DevilDaggersAssetEditor;
+	Tool tool = toolHelper.GetToolByName("DevilDaggersAssetEditor");
 	ViewData["Title"] = tool.DisplayName;
 	string downloadFileName = $"{tool.Name}{tool.VersionNumber}.zip";
 	FileInfo downloadFileInfo = new FileInfo(System.IO.Path.Combine(env.WebRootPath, "tools", tool.Name, downloadFileName));
@@ -30,6 +30,31 @@
 		File size: @(Math.Round(downloadFileInfo.Length / 1024f).ToString()) KB<br />
 		<a class="btn dont-break-out" href="/api/tools/@tool.Name/file">Download</a>
 	</p>
+
+	<h2>Main features</h2>
+	<ul>
+		<li>
+			Extracting and compressing asset types
+			<ul>
+				<li>Audio</li>
+				<li>Models</li>
+				<li>Model bindings</li>
+				<li>Particles</li>
+				<li>Shaders</li>
+				<li>Textures</li>
+			</ul>
+		</li>
+
+		<li>
+			Extracting and compressing binary files
+			<ul>
+				<li>res/audio</li>
+				<li>res/dd</li>
+				<li>core/core</li>
+				<li>dd/particle</li>
+			</ul>
+		</li>
+	</ul>
 
 	<h2>System requirements</h2>
 	<ul>

@@ -66,6 +66,7 @@ namespace DevilDaggersWebsite.Blazor
 
 			services.AddTransient<LeaderboardHistoryHelper>();
 			services.AddTransient<SpawnsetHelper>();
+			services.AddTransient<ToolHelper>();
 
 			services.AddScheduler((sender, args) =>
 			{
