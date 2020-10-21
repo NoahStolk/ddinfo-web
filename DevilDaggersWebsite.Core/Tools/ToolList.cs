@@ -663,7 +663,6 @@ namespace DevilDaggersWebsite.Core.Tools
 						new Change("Fixed shader assets not being saved to mod file on extraction."),
 						new Change("Fixed Windows Explorer folder dialogs opening the directory above the specified folder."),
 						new Change("Fixed audio previewer crashing when attempting to play an empty audio file."),
-						new Change("Fixed loudness text boxes having a white background after changing the value which makes the number unreadable."),
 					},
 				},
 				new ChangelogEntry
