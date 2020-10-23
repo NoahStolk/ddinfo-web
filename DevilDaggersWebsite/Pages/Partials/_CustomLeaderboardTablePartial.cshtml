@@ -27,7 +27,7 @@
 				Players
 			</th>
 			<th class="hidden-xs" width="150">
-				Total submits <span style="cursor: pointer;" class="text-right devil" data-toggle="tooltip" data-placement="top" title="Data has only been collected since 25 Aug, 2020, and will not be correct for leaderboards that were created prior to this date.">?</span>
+				Total submits <span style="cursor: pointer;" class="text-right devil" data-toggle="tooltip" data-placement="top" title="Data has only been collected since 25 Aug 2020, and will not be correct for leaderboards that were created prior to this date.">?</span>
 			</th>
 			<th class="hidden-xs" width="200">
 				Last played
@@ -61,7 +61,11 @@
 			{
 				string fileName = lb.SpawnsetFile.Name;
 				string author = lb.SpawnsetFile.Player.Username;
-				List<CustomEntry> entries = dbContext.CustomEntries.Where(e => e.CustomLeaderboard == lb).OrderByMember(nameof(CustomEntry.Time), lb.IsAscending()).ToList();
+				List<CustomEntry> entries = dbContext.CustomEntries
+					.Where(e => e.CustomLeaderboard == lb)
+					.OrderByMember(nameof(CustomEntry.Time), lb.IsAscending())
+					.ThenByMember(nameof(CustomEntry.SubmitDate), true)
+					.ToList();
 				string wrDagger = string.Empty;
 				if (entries.Count > 0)
 				{
