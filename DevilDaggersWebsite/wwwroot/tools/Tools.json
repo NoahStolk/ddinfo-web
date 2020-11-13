@@ -919,13 +919,10 @@
 				"Date": "2020-11-13T00:00:00", // ?
 				"Changes": [
 					{
-						"Description": "Rewrote the application entirely."
+						"Description": "Rewrote the application and GUI entirely."
 					},
 					{
-						"Description": "Rewrote the menu entirely to be more intuitive."
-					},
-					{
-						"Description": "Added "Extract binaries", "Make binaries", and "Import folders" windows."
+						"Description": "Made the menu more intuitive by adding 'Extract binaries', 'Make binaries', and 'Import folders' windows."
 					},
 					{
 						"Description": "The mod format has changed. DDAE will no longer accept mod files with the extension .audio, .core, .dd, and .particle. Mod files are now saved under a unified extension named .ddae, which holds all asset data even if your mod does not specify, for example, particle assets. The easiest way to migrate is just to re-import your assets and save it as a .ddae file."
