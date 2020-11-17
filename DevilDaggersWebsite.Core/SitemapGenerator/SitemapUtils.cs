@@ -33,14 +33,12 @@ namespace DevilDaggersWebsite.Core.SitemapGenerator
 
 			SitemapBuilder sitemapBuilder = new SitemapBuilder();
 
-			foreach (Type type in AppDomain.CurrentDomain
-				.GetAssemblies()
-				.FirstOrDefault(a => a.FullName?.Contains("Views", StringComparison.InvariantCulture) == true)
+			foreach (Type type in Array.Find(AppDomain.CurrentDomain.GetAssemblies(), a => a.FullName?.Contains("Views", StringComparison.InvariantCulture) == true)?
 				.GetTypes()
 				.Where(t =>
 					t.BaseType == pageBaseType &&
 					t.Name.Contains("Pages_", StringComparison.InvariantCulture) &&
-					!_pageTypesToExclude.Contains(t)))
+					!_pageTypesToExclude.Contains(t)) ?? Enumerable.Empty<Type>())
 			{
 				string pageFileName = type.Name.Replace("Pages_", string.Empty, StringComparison.InvariantCulture);
 				if (!_pageNamesToExclude.Contains(pageFileName) && (recursive || !pageFileName.Contains('_', StringComparison.InvariantCulture)))

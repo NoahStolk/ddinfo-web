@@ -38,7 +38,7 @@ namespace DevilDaggersWebsite.Core.Api
 				foreach (string leaderboardHistoryPath in Io.Directory.GetFiles(Io.Path.Combine(_env.WebRootPath, "leaderboard-history"), "*.json"))
 				{
 					Leaderboard leaderboard = JsonConvert.DeserializeObject<Leaderboard>(Io.File.ReadAllText(leaderboardHistoryPath, Encoding.UTF8));
-					Entry entry = leaderboard.Entries.FirstOrDefault(e => e.Id == userId);
+					Entry? entry = leaderboard.Entries.Find(e => e.Id == userId);
 
 					// + 1 and - 1 are used to fix off-by-one errors in the history based on screenshots and videos. This is due to a rounding error in Devil Daggers itself.
 					if (entry != null && !data.Values.Any(e =>

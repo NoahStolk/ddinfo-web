@@ -62,9 +62,7 @@ namespace DevilDaggersWebsite.Core.Tasks.Cron
 				throw new ArgumentNullException(nameof(writer));
 
 			int next = field.GetFirst();
-			int count = 0;
-
-			while (next != -1)
+			for (int count = 0; next != -1; count++)
 			{
 				int first = next;
 				int last;
@@ -96,8 +94,6 @@ namespace DevilDaggersWebsite.Core.Tasks.Cron
 					writer.Write('-');
 					FormatValue(last, writer, noNames);
 				}
-
-				count++;
 			}
 		}
 

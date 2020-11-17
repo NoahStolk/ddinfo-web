@@ -18,7 +18,7 @@
 
 <main role="main">
 	<div class="flex-container flex-center upgrade-container">
-		@foreach (Upgrade upgrade in Model.upgrades)
+		@foreach (Upgrade upgrade in Model.Upgrades)
 		{
 			<div class="upgrade" id="@upgrade.Name" style="-webkit-box-shadow: @boxShadow #@(upgrade.ColorCode); -moz-box-shadow: @boxShadow #@(upgrade.ColorCode); box-shadow: @boxShadow #@(upgrade.ColorCode);">
 				<div class="upgrade-row flex-container">

@@ -101,7 +101,7 @@ namespace DevilDaggersWebsite.Core.Api
 			Version clientVersionParsed = Version.Parse(uploadRequest.ClientVersion);
 			if (clientVersionParsed < _toolHelper.GetToolByName("DevilDaggersCustomLeaderboards").VersionNumberRequired)
 			{
-				string errorMessage = "You are using an unsupported and outdated version of DDCL. Please update the program.";
+				const string errorMessage = "You are using an unsupported and outdated version of DDCL. Please update the program.";
 				await TryLog(uploadRequest, null, errorMessage);
 				return new BadRequestObjectResult(new ProblemDetails { Title = errorMessage });
 			}
@@ -118,7 +118,7 @@ namespace DevilDaggersWebsite.Core.Api
 
 			if (string.IsNullOrEmpty(spawnsetName))
 			{
-				string errorMessage = "This spawnset does not exist on DevilDaggers.info.";
+				const string errorMessage = "This spawnset does not exist on DevilDaggers.info.";
 				await TryLog(uploadRequest, spawnsetName, errorMessage);
 				return new BadRequestObjectResult(new ProblemDetails { Title = errorMessage });
 			}
@@ -145,14 +145,14 @@ namespace DevilDaggersWebsite.Core.Api
 			CustomLeaderboard leaderboard = _context.CustomLeaderboards.Include(cl => cl.SpawnsetFile).ThenInclude(sf => sf.Player).FirstOrDefault(cl => cl.SpawnsetFile.Name == spawnsetName);
 			if (leaderboard == null)
 			{
-				string errorMessage = "This spawnset exists on DevilDaggers.info, but doesn't have a leaderboard.";
+				const string errorMessage = "This spawnset exists on DevilDaggers.info, but doesn't have a leaderboard.";
 				await TryLog(uploadRequest, spawnsetName, errorMessage);
 				return new BadRequestObjectResult(new ProblemDetails { Title = errorMessage });
 			}
 
 			if (leaderboard.Category == Enumerators.CustomLeaderboardCategory.Challenge && Version.Parse(uploadRequest.ClientVersion) <= new Version(0, 10, 4, 0))
 			{
-				string errorMessage = "Challenge leaderboards are not supported on version 0.10.4.0 or lower.";
+				const string errorMessage = "Challenge leaderboards are not supported on version 0.10.4.0 or lower.";
 				await TryLog(uploadRequest, spawnsetName, errorMessage);
 				return new BadRequestObjectResult(new ProblemDetails { Title = errorMessage });
 			}
