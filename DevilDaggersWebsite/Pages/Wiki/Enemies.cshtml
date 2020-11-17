@@ -36,7 +36,7 @@
 			<div class="hidden-sm hidden-md">Appearances</div>
 			<div>Spawned by</div>
 		</div>
-		@foreach (Enemy enemy in Model.enemies)
+		@foreach (Enemy enemy in Model.Enemies)
 		{
 			<div class="flex-container">
 				<div>@RazorUtils.GetLayoutAnchor(enemy)</div>
@@ -63,7 +63,7 @@
 
 	<h2 id="@Model.TableOfContents[index].ToIdString()" class="text-center">@Model.TableOfContents[index++]</h2>
 	<div class="flex-container flex-center enemy-container">
-		@foreach (Enemy enemy in Model.enemies)
+		@foreach (Enemy enemy in Model.Enemies)
 		{
 			<div class="enemy" id="@(enemy.Name.Replace(" ", string.Empty))" style="-webkit-box-shadow: @boxShadow #@(enemy.ColorCode); -moz-box-shadow: @boxShadow #@(enemy.ColorCode); box-shadow: @boxShadow #@(enemy.ColorCode);">
 				<div class="enemy-row flex-container">
@@ -127,7 +127,7 @@
 	@{
 		// Add "gem" enemies to make regenerating the table easier
 		Dictionary<Enemy, bool> enemies = new Dictionary<Enemy, bool>();
-		foreach (Enemy enemy in Model.enemies)
+		foreach (Enemy enemy in Model.Enemies)
 		{
 			enemies.Add(enemy, false);
 			if (enemy.Gems > 1)
@@ -146,16 +146,16 @@
 			<tr>
 				<td>Name</td>
 				<td class="text-right">HP</td>
-				<td class="text-right" colspan="@Model.upgrades.Count">Spray (seconds)</td>
-				<td class="text-right" colspan="@Model.upgrades.Count">Shots</td>
-				<td class="text-right" colspan="@(Model.upgrades.Count - 2)">Homing daggers</td>
+				<td class="text-right" colspan="@Model.Upgrades.Count">Spray (seconds)</td>
+				<td class="text-right" colspan="@Model.Upgrades.Count">Shots</td>
+				<td class="text-right" colspan="@(Model.Upgrades.Count - 2)">Homing daggers</td>
 			</tr>
 			<tr>
 				<td></td>
 				<td></td>
 				@for (int i = 0; i < 3; i++)
 				{
-					foreach (Upgrade upgrade in Model.upgrades)
+					foreach (Upgrade upgrade in Model.Upgrades)
 					{
 						if (i == 2 && upgrade.Level < 3)
 						{
@@ -175,7 +175,7 @@
 						<td class="text-right">@kvp.Key.Hp</td>
 						@for (int i = 0; i < 3; i++)
 						{
-							foreach (Upgrade upgrade in Model.upgrades)
+							foreach (Upgrade upgrade in Model.Upgrades)
 							{
 								switch (i)
 								{
@@ -223,7 +223,7 @@
 								case 0:
 									<td>@kvp.Key.GetLayoutAnchor() @(kvp.Value ? "(Gem)" : "")</td>
 									<td class="text-right">@kvp.Key.Hp</td>
-									foreach (Upgrade upgrade in Model.upgrades)
+									foreach (Upgrade upgrade in Model.Upgrades)
 									{
 										<td class="text-right">@upgrade.GetLayoutAnchor()</td>
 									}
@@ -231,7 +231,7 @@
 								case 1:
 									<td>Spray (seconds)</td>
 									<td></td>
-									foreach (Upgrade upgrade in Model.upgrades)
+									foreach (Upgrade upgrade in Model.Upgrades)
 									{
 										<td class="text-right">@((kvp.Key.Hp / upgrade.DefaultSprayPerSecond).ToString("0.000"))</td>
 									}
@@ -239,7 +239,7 @@
 								case 2:
 									<td>Shots</td>
 									<td></td>
-									foreach (Upgrade upgrade in Model.upgrades)
+									foreach (Upgrade upgrade in Model.Upgrades)
 									{
 										<td class="text-right">@Math.Ceiling(kvp.Key.Hp / (double)upgrade.DefaultShot)</td>
 									}
@@ -247,7 +247,7 @@
 								case 3:
 									<td>Homing daggers</td>
 									<td></td>
-									foreach (Upgrade upgrade in Model.upgrades)
+									foreach (Upgrade upgrade in Model.Upgrades)
 									{
 										if (upgrade.Level == 3)
 										{
@@ -290,7 +290,7 @@
 						switch (i)
 						{
 							case 0:
-								foreach (Upgrade upgrade in Model.upgrades)
+								foreach (Upgrade upgrade in Model.Upgrades)
 								{
 									<tr>
 										<td>@upgrade.GetLayoutAnchor() spray (seconds)</td>
@@ -299,7 +299,7 @@
 								}
 								break;
 							case 1:
-								foreach (Upgrade upgrade in Model.upgrades)
+								foreach (Upgrade upgrade in Model.Upgrades)
 								{
 									<tr>
 										<td>@upgrade.GetLayoutAnchor() shots</td>
@@ -308,7 +308,7 @@
 								}
 								break;
 							case 2:
-								foreach (Upgrade upgrade in Model.upgrades)
+								foreach (Upgrade upgrade in Model.Upgrades)
 								{
 									if (upgrade.Level < 3)
 									{

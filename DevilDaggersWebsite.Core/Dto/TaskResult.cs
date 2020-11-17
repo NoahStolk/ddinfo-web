@@ -13,10 +13,10 @@ namespace DevilDaggersWebsite.Core.Dto
 			Schedule = schedule;
 		}
 
-		public string TypeName { get; private set; }
-		public DateTime LastTriggered { get; private set; }
-		public DateTime LastFinished { get; private set; }
-		public TimeSpan ExecutionTime { get; private set; }
-		public string Schedule { get; private set; }
+		public string TypeName { get; }
+		public DateTime LastTriggered { get; }
+		public DateTime LastFinished { get; }
+		public TimeSpan ExecutionTime { get; }
+		public string Schedule { get; }
 	}
 }

@@ -5,6 +5,6 @@ namespace DevilDaggersWebsite.Core.Tasks
 {
 	public static class TaskInstanceKeeper
 	{
-		public static Dictionary<Type, AbstractTask> Instances { get; private set; } = new Dictionary<Type, AbstractTask>();
+		public static Dictionary<Type, AbstractTask> Instances { get; } = new Dictionary<Type, AbstractTask>();
 	}
 }

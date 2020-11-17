@@ -91,9 +91,13 @@ namespace DevilDaggersWebsite.Core.Dto
 
 				if (info.Name == nameof(DeathType) && valueString == "-1"
 				 || info.Name != nameof(DeathType) && valueString == ReflectionUtils.GetDefaultValue(value.GetType()).ToString())
+				{
 					Completion.CompletionEntries[info.Name] = CompletionEntry.Missing;
+				}
 				else
+				{
 					Completion.CompletionEntries[info.Name] = CompletionEntry.Complete;
+				}
 			}
 
 			Completion.Initialized = true;

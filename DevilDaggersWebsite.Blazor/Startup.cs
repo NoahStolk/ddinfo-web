@@ -37,10 +37,7 @@ namespace DevilDaggersWebsite.Blazor
 
 		public void ConfigureServices(IServiceCollection services)
 		{
-			services.AddCors(options =>
-			{
-				options.AddPolicy(_defaultCorsPolicy, builder => { builder.AllowAnyOrigin(); });
-			});
+			services.AddCors(options => options.AddPolicy(_defaultCorsPolicy, builder => builder.AllowAnyOrigin()));
 
 			services.AddRazorPages();
 			services.AddServerSideBlazor();
@@ -74,10 +71,7 @@ namespace DevilDaggersWebsite.Blazor
 				args.SetObserved();
 			});
 
-			services.AddControllers().AddNewtonsoftJson(options =>
-			{
-				options.SerializerSettings.Converters.Add(new StringEnumConverter());
-			});
+			services.AddControllers().AddNewtonsoftJson(options => options.SerializerSettings.Converters.Add(new StringEnumConverter()));
 
 			services.AddAuthorization(options =>
 			{
@@ -91,13 +85,7 @@ namespace DevilDaggersWebsite.Blazor
 					options.Conventions.AuthorizeFolder(kvp.Key, kvp.Value);
 			});
 
-			services.AddSwaggerDocument(config =>
-			{
-				config.PostProcess = document =>
-				{
-					document.Info.Title = "DevilDaggers.Info API";
-				};
-			});
+			services.AddSwaggerDocument(config => config.PostProcess = document => document.Info.Title = "DevilDaggers.Info API");
 		}
 
 		public void Configure(IApplicationBuilder app, IWebHostEnvironment env, IServiceProvider serviceProvider)

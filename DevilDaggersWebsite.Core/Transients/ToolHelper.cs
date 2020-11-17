@@ -14,7 +14,7 @@ namespace DevilDaggersWebsite.Core.Transients
 			Tools = JsonConvert.DeserializeObject<List<Tool>>(File.ReadAllText(Path.Combine(env.WebRootPath, "tools", "Tools.json")));
 		}
 
-		public List<Tool> Tools { get; private set; }
+		public List<Tool> Tools { get; }
 
 		public Tool GetToolByName(string name)
 		{

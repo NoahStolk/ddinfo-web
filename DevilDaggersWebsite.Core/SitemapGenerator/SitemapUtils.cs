@@ -35,7 +35,7 @@ namespace DevilDaggersWebsite.Core.SitemapGenerator
 
 			foreach (Type type in AppDomain.CurrentDomain
 				.GetAssemblies()
-				.FirstOrDefault(a => a.FullName != null && a.FullName.Contains("Views", StringComparison.InvariantCulture))
+				.FirstOrDefault(a => a.FullName?.Contains("Views", StringComparison.InvariantCulture) == true)
 				.GetTypes()
 				.Where(t =>
 					t.BaseType == pageBaseType &&

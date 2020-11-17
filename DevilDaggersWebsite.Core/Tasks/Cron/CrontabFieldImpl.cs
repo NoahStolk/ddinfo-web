@@ -181,7 +181,7 @@ namespace DevilDaggersWebsite.Core.Tasks.Cron
 
 				if (slashIndex > 0)
 				{
-					every = int.Parse(str.Substring(slashIndex + 1), CultureInfo.InvariantCulture);
+					every = int.Parse(str[(slashIndex + 1)..], CultureInfo.InvariantCulture);
 					str = str.Substring(0, slashIndex);
 				}
 
@@ -198,7 +198,7 @@ namespace DevilDaggersWebsite.Core.Tasks.Cron
 				if (dashIndex > 0)
 				{
 					int first = ParseValue(str.Substring(0, dashIndex));
-					int last = ParseValue(str.Substring(dashIndex + 1));
+					int last = ParseValue(str[(dashIndex + 1)..]);
 
 					acc(first, last, every);
 					return;

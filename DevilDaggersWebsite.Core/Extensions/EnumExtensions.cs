@@ -1,5 +1,4 @@
 ﻿using DevilDaggersWebsite.Core.Enumerators;
-using System;
 
 namespace DevilDaggersWebsite.Core.Extensions
 {
@@ -12,7 +11,7 @@ namespace DevilDaggersWebsite.Core.Extensions
 			Currency.Aud => '$',
 			Currency.Gbp => '£',
 			Currency.Sgd => '$',
-			_ => throw new NotImplementedException($"{nameof(Currency)} '{currency}' has not been implemented.")
+			_ => '?',
 		};
 	}
 }

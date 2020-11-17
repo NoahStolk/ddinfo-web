@@ -94,7 +94,7 @@ namespace DevilDaggersWebsite.Core.Api
 			{
 				Leaderboard lb = JsonConvert.DeserializeObject<Leaderboard>(Io.File.ReadAllText(leaderboardHistoryPath, Encoding.UTF8));
 				Entry entry = lb.Entries.FirstOrDefault(e => e.Id == userId);
-				if (entry != null && entry.DeathsTotal > 0)
+				if (entry?.DeathsTotal > 0)
 					data.Add(lb.DateTime, entry.DeathsTotal);
 			}
 
