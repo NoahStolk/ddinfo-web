@@ -8,11 +8,11 @@ namespace DevilDaggersWebsite.Pages
 {
 	public class ModsModel : PageModel
 	{
-		private readonly ApplicationDbContext dbContext;
+		private readonly ApplicationDbContext _dbContext;
 
 		public ModsModel(ApplicationDbContext dbContext)
 		{
-			this.dbContext = dbContext;
+			_dbContext = dbContext;
 		}
 
 		public List<AssetMod> AssetMods { get; private set; } = new List<AssetMod>();
@@ -20,7 +20,7 @@ namespace DevilDaggersWebsite.Pages
 		public void OnGet()
 		{
 			Dictionary<AssetMod, string> sortedMods = new Dictionary<AssetMod, string>();
-			foreach (AssetMod assetMod in dbContext.AssetMods.Include(am => am.PlayerAssetMods).ThenInclude(pam => pam.Player))
+			foreach (AssetMod assetMod in _dbContext.AssetMods.Include(am => am.PlayerAssetMods).ThenInclude(pam => pam.Player))
 			{
 				string author = assetMod.PlayerAssetMods.Select(pam => pam.Player.Username).OrderBy(s => s).FirstOrDefault();
 				sortedMods.Add(assetMod, author);
