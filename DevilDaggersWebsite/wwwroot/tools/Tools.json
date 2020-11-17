@@ -911,12 +911,12 @@
 	{
 		"Name": "DevilDaggersAssetEditor",
 		"DisplayName": "Devil Daggers Asset Editor",
-		"VersionNumber": "0.39.11.0", // ?
+		"VersionNumber": "0.39.11.0",
 		"VersionNumberRequired": "0.16.2.0",
 		"Changelog": [
 			{
-				"VersionNumber": "0.39.11.0", // ?
-				"Date": "2020-11-13T00:00:00", // ?
+				"VersionNumber": "0.39.11.0",
+				"Date": "2020-11-17T00:00:00",
 				"Changes": [
 					{
 						"Description": "Rewrote the application and GUI entirely."
