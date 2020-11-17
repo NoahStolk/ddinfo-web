@@ -9,12 +9,18 @@
 
 <main role="main">
 	<p>
-		This page will guide you through the creation of mods for Devil Daggers.
+		This page will guide you through the creation of custom asset mods for Devil Daggers. This guide is aimed at Devil Daggers Asset Editor 0.39.11.0+, and will be inaccurate for any older versions. If you are not running the latest version, it is highly recommended to <a asp-page="/Tools/DevilDaggersAssetEditor">download the latest version</a>.
 	</p>
 
 	<h2>Basic information</h2>
+
 	<p>
-		There are 4 files that contain assets:
+		There is some basic information that you need to know in order to understand how to create asset mods for Devil Daggers.
+	</p>
+
+	<h3>Binaries</h3>
+	<p>
+		Devil Daggers uses custom binary formats to read asset data from asset files. There are 4 of these files that contain assets:
 	</p>
 	<ul>
 		<li><span class="path">devildaggers\res\audio</span> contains all audio</li>
@@ -26,63 +32,127 @@
 		Where <span class="path">devildaggers</span> is the installation folder for Devil Daggers. The default location for this folder is <span class="path">C:\Program Files (x86)\Steam\steamapps\common\devildaggers</span>.
 	</p>
 	<p>
-		All of these files can be modded using <a asp-page="/Tools/DevilDaggersAssetEditor">Devil Daggers Asset Editor</a>. These files are referred to as "binaries" in the application.
+		All of these files can be modded using <a asp-page="/Tools/DevilDaggersAssetEditor">Devil Daggers Asset Editor</a> (also known as DDAE). These files are referred to as "binaries" in the application. If you're interested how these files are structured and how DDAE operates with them, I've documented how they work <a href="//github.com/NoahStolk/DevilDaggersAssetEditor/blob/master/DOCUMENTATION.md">here</a>.
+	</p>
+
+	<h3>Asset types</h3>
+	<p>
+		There are 6 types of assets that Devil Daggers uses:
+	</p>
+	<ul>
+		<li>Audio (.wav)</li>
+		<li>Model bindings (.txt)</li>
+		<li>Models (.obj)</li>
+		<li>Particles (binary)</li>
+		<li>Shaders (.glsl)</li>
+		<li>Textures (.png)</li>
+	</ul>
+
+	<h2>The asset editor</h2>
+
+	<p>
+		I've created <a asp-page="/Tools/DevilDaggersAssetEditor">Devil Daggers Asset Editor</a> to make it easier to mod the game's assets, since the binaries can be huge in size, cannot easily be edited, and one mistake will prevent the game from starting. The sole purpose of DDAE is to make the transition between the binaries and actual asset files easier.
+	</p>
+
+	<p>
+		<img class="img-responsive" src="~/images/Tools/DevilDaggersAssetEditor.png" />
+	</p>
+
+	<p>
+		The first thing you will see when you open DDAE is a list of assets. These are all the default assets present in the binaries. Note that there are 7 different tabs at the top:
+	</p>
+	<p>
+		<ul>
+			<li>audio/Audio</li>
+			<li>core/Shaders</li>
+			<li>dd/Models</li>
+			<li>dd/Model Bindings</li>
+			<li>dd/Shaders</li>
+			<li>dd/Textures</li>
+			<li>particle/Particles</li>
+		</ul>
+	</p>
+	<p>
+		DDAE orders the assets by binary file, and then by asset type. So "dd/Models" will contain all model assets present in the "dd" file.
 	</p>
 
 	<h3>Mod files</h3>
 	<p>
-		Since binaries can be huge, Devil Daggers Asset Editor works with mod files, which, instead of holding all the asset data, are basically just lists of user-specified asset paths. Mod files are written in JSON format, and can be opened using a text editor. Mod files can have 4 different extensions, these are ".audio", ".core", ".dd", and ".particle", which correspond to the binaries listed at the top of the page. All 4 extensions represent the exact same file format and are only there to avoid confusion when the same mod targets multiple binaries.
+		Since binaries can be huge, DDAE works with mod files, which, instead of holding all the raw asset data, are basically just lists of user-specified asset paths. Mod files are written in JSON format, and can be opened using a text editor. Mod files can have the extension .ddae. Note that if you change the locations of assets, it will break the mod file. You can open the mod file using a text editor and globally replace all the paths with the new path to fix it (unless you also renamed the files themselves).
 	</p>
+
+	<h2>How to create a mod</h2>
 
 	<h3>Creating a default mod file</h3>
 	<p>
-		Before diving any further into the program, it is recommended to set up default mod files. This is a one-time process which will make things a lot easier in the future. The idea is that you extract all the original assets to a local folder, so that you can use these when creating a new mod. Devil Daggers has many assets, so this saves a lot of work since you would usually only replace some of the assets when creating a mod.
+		Before diving any further into DDAE, it is recommended to set up a default mod file. This is a one-time process which will make things a lot easier in the future. The idea is that you extract all the original assets to a local folder, so that you can use these when creating a new mod. Devil Daggers has many assets, so this saves a lot of work since you would usually only replace some of the assets when creating a mod.
 	</p>
 	<p>
-		In this example we will set up a default audio mod file. Let's go through it step by step:
+		In this example we will set up a default mod file. Let's go through it step by step:
 	</p>
 
 	<ol>
-		<li>First, we need to make sure a setting is enabled. Go to Options > Settings, and make sure the setting "Automatically create mod file when extracting binaries" under the heading "Extracting binaries" is enabled.</li>
-		<li>Go to File > audio > Extract 'audio' binary.</li>
-		<li>In the open file dialog, choose the file called "audio" located in <span class="path">devildaggers\res</span> (which is <span class="path">C:\Program Files (x86)\Steam\steamapps\common\devildaggers\res\audio</span> by default).</li>
-		<li>In the folder dialog, choose a folder to extract the original audio files into. The program will now put all the original audio files into that folder as .wav files.</li>
-		<li>Now, because we enabled the setting in step 1, there should be a mod file in the same folder you selected in the previous step. Open this mod file by going go File > audio > Open .audio mod file and selecting the .audio file.</li>
+		<li>First, we need to make sure a setting is enabled. Go to "Options > Settings", and make sure the setting "Automatically create mod file when extracting binaries" under the heading "Extracting binaries" is enabled.</li>
+		<li>
+			We also need to make sure that your Devil Daggers root folder is correct. In the same settings window, make sure "Devil Daggers root folder" is set to the directory containing "dd.exe". Again, this is <span class="path">C:\Program Files (x86)\Steam\steamapps\common\devildaggers</span> by default. If you're not sure where Devil Daggers is installed, you can launch Devil Daggers and click "Auto-detect" and DDAE will automatically detect the correct directory.
+			<img class="img-responsive" src="~/images/Tools/DevilDaggersAssetEditor-Settings.png" />
+		</li>
+		<li>We're all set now. Click on "File > Extract binaries".</li>
+		<li>
+			A new window will appear, and if our settings are correct, there should be 4 paths pointing to all the asset files. If the paths are incorrect, make sure to set them to the correct asset files using the "Browse" buttons.
+			<img class="img-responsive" src="~/images/Tools/DevilDaggersAssetEditor-Extract-Binaries.png" />
+		</li>
+		<li>Once the paths are correct, click on "Browse", under "Assets output directory", to set the folder where you want your default assets to be extracted to.</li>
+		<li>Click on the "Extract binaries" buttons. This will create the asset files in the assets output directory.</li>
+		<li>Now, because we enabled the setting in step 1, there should be a mod file in the same folder you selected in the previous step. Open this mod file by going go "File > Open mod" and selecting the .ddae file. This will open the files in the editor.</li>
 	</ol>
 
-	<p>
-		It is recommended to create a default mod file for all 4 asset files. Note that if you change the locations of assets, it will break the mod file. You can open the mod file using a text editor and globally replace all the paths with the new path to fix it (unless you also renamed the files themselves).
-	</p>
-
-	<h3>Making your own audio mod</h3>
+	<h3>Making your own mod</h3>
 
 	<h4>Step 1: Modifying assets</h4>
 	<ol>
-		<li>Since we opened the default mod file in the previous step, you will see the location for every default audio file in the "audio/Audio" tab. Change one or more audio paths by clicking the "Browse" button on the right.</li>
-		<li>In the open file dialog, select a compatible .wav file. There are various requirements for a .wav file to play correctly in Devil Daggers. These can be found under "Compatibility" at the bottom of the page.</li>
+		<li>Since we opened the default mod file in the previous step, you will see the location for every default asset file in the list of assets. You can select the assets to preview them. To use your own custom assets, change one or more paths by clicking the "Browse" button on the right.</li>
+		<li>In the open file dialog, select a compatible file. There are some requirements for certain assets, such as audio files. These can be found under <a href="#compatibility">Compatibility</a> at the bottom of the page.</li>
 	</ol>
-	<p>
-		Note: You can listen to your new audio file using the preview controls located above the asset list.
-	</p>
 
 	<h4>Step 2: Saving your mod</h4>
 	<ol>
-		<li>Since you may want to work on this mod again, it's a good idea to save it to your computer. Go to File > audio > Save .audio mod file to do so.</li>
-		<li>In the save file dialog, select a folder that will contain your mod files. Give your audio mod file a name and save it inside the folder.</li>
+		<li>Since you may want to work on this mod again, it's a good idea to save it to your computer. Go to "File > Save mod" to do so.</li>
+		<li>In the save file dialog, select a folder that will contain your mod files. Give your mod file a name and save it inside the folder.</li>
 	</ol>
 	<p>
-		Note: You can set a default path for mod files in Options > Settings for convenience. This is purely optional; this path will be used as default location when opening mod files.
+		Note: You can set a default path for mod files in "Options > Settings" for convenience. This is purely optional; this path will be used as default location when opening mod files.
 	</p>
 
-	<h4>Step 3: Making your audio mod into a binary file to be played in Devil Daggers</h4>
+	<h4>Step 3: Making your mod into a binary to be played in Devil Daggers</h4>
 	<ol>
-		<li>To test your audio mod, make sure it's opened. If it's not, open it by going to File > audio > Open .audio mod file.</li>
-		<li>You will now see all your custom files being listed in the asset editor. Now we will create the binary. Go to File > audio > Make 'audio' binary to do so.</li>
-		<li>In the save file dialog, choose the file called audio located in <span class="path">devildaggers\res</span> (which is <span class="path">C:\Program Files (x86)\Steam\steamapps\common\devildaggers\res</span> by default), and overwrite it. It is recommended to save a back-up of the original file so you can easily go back to the original.</li>
-		<li>Launch Devil Daggers to see if it's working. If it crashes, there might be something wrong with one of your custom .wav files. Be sure to check if all files are compatible. You will need to restart Devil Daggers after making a new binary, since the binaries are only loaded when the game starts up.</li>
+		<li>To test your mod, make sure it's opened. If it's not, open it by going to "File > Open mod".</li>
+		<li>You will now see all your custom files being listed in the asset editor. Now we will create the binary. Go to "File > Make binaries" to do so.</li>
+		<li>
+			A new window will appear. If your settings are correct, the paths should automatically be set to the right files. If they're not, set them by clicking the "Browse" buttons and choosing the correct file.
+			<img class="img-responsive" src="~/images/Tools/DevilDaggersAssetEditor-Make-Binaries.png" />
+		</li>
+		<li>Before we click the "Make binaries" button, note that it is recommended to save a back-up of the original files so you can easily go back to the originals without having to re-install Devil Daggers.</li>
+		<li>When you've done that, click "Make binaries".</li>
+		<li>Launch Devil Daggers to see if it's working. If it does not, a list of common known causes can be found under <a href="#crashes">Crashes</a>.</li>
+		<li>When you want to test a new version of your mod, you will need to restart Devil Daggers after making the binary again, as they are only loaded when Devil Daggers starts up.</li>
 	</ol>
 
-	<h2>Compatibility</h2>
+	<h2 id="crashes">Crashes</h2>
+	<p>
+		Devil Daggers will crash if there's something wrong with your mod. DDAE should automatically display an error message in some cases, such as when it cannot properly convert your model to the custom binary format Devil Daggers uses for models. However, some causes are uncaught. Here's a list of some other known causes that will cause Devil Daggers to crash:
+	</p>
+	<ul>
+		<li>You might not have specified all assets. Devil Daggers will crash if it tries to load an unspecified asset. Make sure all used assets are specified. It is possible to specify an empty asset, such as an empty model, or empty audio file, if you don't want to make use of these assets.</li>
+		<li>There might be something wrong with one of your custom audio asset. Be sure to check if all files are compatible under <a href="#compatibility">Compatibility</a>.</li>
+		<li>Your custom shader asset might not compile.</li>
+		<li>Your particle asset might not be 188 bytes long. Particles have a fixed byte length of 188.</li>
+	</ul>
+	<p>
+		Future versions of DDAE should include more warnings and error messages for these issues.
+	</p>
+
+	<h2 id="compatibility">Compatibility</h2>
 
 	<h3>Audio</h3>
 	<p>
@@ -113,3 +183,7 @@
 		<li>The Devil Daggers title screen music seems to start playing at some hardcoded offset.</li>
 	</ul>
 </main>
+
+@section Styles {
+	<link rel='stylesheet' href='~/styles/asset-guide.css' />
+}
