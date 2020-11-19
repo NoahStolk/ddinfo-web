@@ -8,11 +8,11 @@ namespace DevilDaggersWebsite.Pages.Admin.CustomEntries
 {
 	public class CreateModel : PageModel
 	{
-		private readonly ApplicationDbContext context;
+		private readonly ApplicationDbContext _dbContext;
 
-		public CreateModel(ApplicationDbContext context)
+		public CreateModel(ApplicationDbContext dbContext)
 		{
-			this.context = context;
+			_dbContext = dbContext;
 		}
 
 		[BindProperty]
@@ -20,7 +20,7 @@ namespace DevilDaggersWebsite.Pages.Admin.CustomEntries
 
 		public IActionResult OnGet()
 		{
-			ViewData["CustomLeaderboardId"] = new SelectList(context.CustomLeaderboards, "Id", "SpawnsetFileName");
+			ViewData["CustomLeaderboardId"] = new SelectList(_dbContext.CustomLeaderboards, "Id", "SpawnsetFileName");
 			return Page();
 		}
 
@@ -31,8 +31,8 @@ namespace DevilDaggersWebsite.Pages.Admin.CustomEntries
 			if (!ModelState.IsValid)
 				return Page();
 
-			context.CustomEntries.Add(CustomEntry);
-			await context.SaveChangesAsync();
+			_dbContext.CustomEntries.Add(CustomEntry);
+			await _dbContext.SaveChangesAsync();
 
 			return RedirectToPage("./Index");
 		}

@@ -8,11 +8,11 @@ namespace DevilDaggersWebsite.Pages.Admin.CustomEntries
 {
 	public class DeleteModel : PageModel
 	{
-		private readonly ApplicationDbContext context;
+		private readonly ApplicationDbContext _dbContext;
 
-		public DeleteModel(ApplicationDbContext context)
+		public DeleteModel(ApplicationDbContext dbContext)
 		{
-			this.context = context;
+			_dbContext = dbContext;
 		}
 
 		[BindProperty]
@@ -23,7 +23,7 @@ namespace DevilDaggersWebsite.Pages.Admin.CustomEntries
 			if (id == null)
 				return NotFound();
 
-			CustomEntry = await context.CustomEntries.Include(c => c.CustomLeaderboard).FirstOrDefaultAsync(m => m.Id == id);
+			CustomEntry = await _dbContext.CustomEntries.Include(c => c.CustomLeaderboard).FirstOrDefaultAsync(m => m.Id == id);
 
 			if (CustomEntry == null)
 				return NotFound();
@@ -35,12 +35,12 @@ namespace DevilDaggersWebsite.Pages.Admin.CustomEntries
 			if (id == null)
 				return NotFound();
 
-			CustomEntry = await context.CustomEntries.FindAsync(id);
+			CustomEntry = await _dbContext.CustomEntries.FindAsync(id);
 
 			if (CustomEntry != null)
 			{
-				context.CustomEntries.Remove(CustomEntry);
-				await context.SaveChangesAsync();
+				_dbContext.CustomEntries.Remove(CustomEntry);
+				await _dbContext.SaveChangesAsync();
 			}
 
 			return RedirectToPage("./Index");

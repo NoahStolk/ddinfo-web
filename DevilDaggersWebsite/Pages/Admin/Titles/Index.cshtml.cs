@@ -10,18 +10,18 @@ namespace DevilDaggersWebsite.Pages.Admin.Titles
 {
 	public class IndexModel : PageModel
 	{
-		private readonly ApplicationDbContext context;
+		private readonly ApplicationDbContext _dbContext;
 
-		public IndexModel(ApplicationDbContext context)
+		public IndexModel(ApplicationDbContext dbContext)
 		{
-			this.context = context;
+			_dbContext = dbContext;
 		}
 
 		public IList<Title> Titles { get; private set; }
 
 		public async Task OnGetAsync(string? sortMemberName, bool ascending)
 		{
-			IQueryable<Title> query = context.Titles;
+			IQueryable<Title> query = _dbContext.Titles;
 			if (!string.IsNullOrEmpty(sortMemberName))
 				query = query.OrderByMember(sortMemberName, ascending);
 

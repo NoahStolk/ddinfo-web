@@ -7,11 +7,11 @@ namespace DevilDaggersWebsite.Pages.Admin.Players
 {
 	public class CreateModel : PageModel
 	{
-		private readonly ApplicationDbContext context;
+		private readonly ApplicationDbContext _dbContext;
 
-		public CreateModel(ApplicationDbContext context)
+		public CreateModel(ApplicationDbContext dbContext)
 		{
-			this.context = context;
+			_dbContext = dbContext;
 		}
 
 		[BindProperty]
@@ -27,8 +27,8 @@ namespace DevilDaggersWebsite.Pages.Admin.Players
 			if (!ModelState.IsValid)
 				return Page();
 
-			context.Players.Add(Player);
-			await context.SaveChangesAsync();
+			_dbContext.Players.Add(Player);
+			await _dbContext.SaveChangesAsync();
 
 			return RedirectToPage("./Index");
 		}

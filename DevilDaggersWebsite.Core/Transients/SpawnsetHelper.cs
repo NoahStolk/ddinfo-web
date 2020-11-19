@@ -12,22 +12,22 @@ namespace DevilDaggersWebsite.Core.Transients
 {
 	public class SpawnsetHelper
 	{
-		private readonly IWebHostEnvironment env;
-		private readonly ApplicationDbContext dbContext;
+		private readonly IWebHostEnvironment _env;
+		private readonly ApplicationDbContext _dbContext;
 
-		private readonly List<int> spawnsetsWithCustomLeaderboardIds;
+		private readonly List<int> _spawnsetsWithCustomLeaderboardIds;
 
 		public SpawnsetHelper(IWebHostEnvironment env, ApplicationDbContext dbContext)
 		{
-			this.env = env;
-			this.dbContext = dbContext;
+			_env = env;
+			_dbContext = dbContext;
 
-			spawnsetsWithCustomLeaderboardIds = dbContext.CustomLeaderboards.Select(cl => cl.SpawnsetFileId).ToList();
+			_spawnsetsWithCustomLeaderboardIds = dbContext.CustomLeaderboards.Select(cl => cl.SpawnsetFileId).ToList();
 		}
 
 		public List<Dto.SpawnsetFile> GetSpawnsets(string? authorFilter = null, string? nameFilter = null)
 		{
-			IEnumerable<SpawnsetFile> query = dbContext.SpawnsetFiles.Include(sf => sf.Player);
+			IEnumerable<SpawnsetFile> query = _dbContext.SpawnsetFiles.Include(sf => sf.Player);
 
 			if (!string.IsNullOrEmpty(authorFilter))
 			{
@@ -46,14 +46,14 @@ namespace DevilDaggersWebsite.Core.Transients
 
 		private Dto.SpawnsetFile Map(SpawnsetFile spawnsetFile)
 		{
-			if (!Spawnset.TryGetSpawnData(File.ReadAllBytes(Path.Combine(env.WebRootPath, "spawnsets", spawnsetFile.Name)), out SpawnsetData spawnsetData))
+			if (!Spawnset.TryGetSpawnData(File.ReadAllBytes(Path.Combine(_env.WebRootPath, "spawnsets", spawnsetFile.Name)), out SpawnsetData spawnsetData))
 				throw new Exception($"Failed to get spawn data from spawnset file: '{spawnsetFile.Name}'.");
 
 			return new Dto.SpawnsetFile
 			{
 				AuthorName = spawnsetFile.Player.Username,
 				HtmlDescription = spawnsetFile.HtmlDescription,
-				HasCustomLeaderboard = spawnsetsWithCustomLeaderboardIds.Contains(spawnsetFile.Id),
+				HasCustomLeaderboard = _spawnsetsWithCustomLeaderboardIds.Contains(spawnsetFile.Id),
 				LastUpdated = spawnsetFile.LastUpdated,
 				MaxDisplayWaves = spawnsetFile.MaxDisplayWaves,
 				Name = spawnsetFile.Name,

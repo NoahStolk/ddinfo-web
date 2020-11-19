@@ -7,11 +7,11 @@ namespace DevilDaggersWebsite.Pages.Admin.Titles
 {
 	public class CreateModel : PageModel
 	{
-		private readonly ApplicationDbContext context;
+		private readonly ApplicationDbContext _dbContext;
 
-		public CreateModel(ApplicationDbContext context)
+		public CreateModel(ApplicationDbContext dbContext)
 		{
-			this.context = context;
+			_dbContext = dbContext;
 		}
 
 		[BindProperty]
@@ -26,8 +26,8 @@ namespace DevilDaggersWebsite.Pages.Admin.Titles
 			if (!ModelState.IsValid)
 				return Page();
 
-			context.Titles.Add(Title);
-			await context.SaveChangesAsync();
+			_dbContext.Titles.Add(Title);
+			await _dbContext.SaveChangesAsync();
 
 			return RedirectToPage("./Index");
 		}

@@ -12,26 +12,26 @@ namespace DevilDaggersWebsite.Pages
 {
 	public class SpawnsetModel : PageModel
 	{
-		private readonly ApplicationDbContext dbContext;
-		private readonly IWebHostEnvironment env;
+		private readonly ApplicationDbContext _dbContext;
+		private readonly IWebHostEnvironment _env;
 
 		public SpawnsetModel(ApplicationDbContext dbContext, IWebHostEnvironment env)
 		{
-			this.dbContext = dbContext;
-			this.env = env;
+			_dbContext = dbContext;
+			_env = env;
 		}
 
-		public string? Query { get; private set; }
+		public string? Query { get; }
 		public SpawnsetFile? SpawnsetFile { get; private set; }
 		public Spawnset? Spawnset { get; private set; }
 
 		public ActionResult? OnGet()
 		{
-			SpawnsetFile = dbContext.SpawnsetFiles.Include(sf => sf.Player).FirstOrDefault(sf => sf.Name == HttpContext.Request.Query["spawnset"].ToString());
+			SpawnsetFile = _dbContext.SpawnsetFiles.Include(sf => sf.Player).FirstOrDefault(sf => sf.Name == HttpContext.Request.Query["spawnset"].ToString());
 			if (SpawnsetFile == null)
 				return RedirectToPage("Spawnsets");
 
-			if (!Spawnset.TryParse(System.IO.File.ReadAllBytes(Path.Combine(env.WebRootPath, "spawnsets", SpawnsetFile.Name)), out Spawnset spawnset))
+			if (!Spawnset.TryParse(System.IO.File.ReadAllBytes(Path.Combine(_env.WebRootPath, "spawnsets", SpawnsetFile.Name)), out Spawnset spawnset))
 				throw new Exception($"Could not parse spawnset '{SpawnsetFile.Name}'.");
 
 			Spawnset = spawnset;

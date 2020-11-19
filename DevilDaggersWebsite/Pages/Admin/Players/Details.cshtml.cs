@@ -8,11 +8,11 @@ namespace DevilDaggersWebsite.Pages.Admin.Players
 {
 	public class DetailsModel : PageModel
 	{
-		private readonly ApplicationDbContext context;
+		private readonly ApplicationDbContext _dbContext;
 
-		public DetailsModel(ApplicationDbContext context)
+		public DetailsModel(ApplicationDbContext dbContext)
 		{
-			this.context = context;
+			_dbContext = dbContext;
 		}
 
 		public Player Player { get; set; }
@@ -22,7 +22,7 @@ namespace DevilDaggersWebsite.Pages.Admin.Players
 			if (id == null)
 				return NotFound();
 
-			Player = await context.Players.FirstOrDefaultAsync(m => m.Id == id);
+			Player = await _dbContext.Players.FirstOrDefaultAsync(m => m.Id == id);
 
 			if (Player == null)
 				return NotFound();

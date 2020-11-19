@@ -10,18 +10,18 @@ namespace DevilDaggersWebsite.Pages.Admin.Donations
 {
 	public class IndexModel : PageModel
 	{
-		private readonly ApplicationDbContext context;
+		private readonly ApplicationDbContext _dbContext;
 
-		public IndexModel(ApplicationDbContext context)
+		public IndexModel(ApplicationDbContext dbContext)
 		{
-			this.context = context;
+			_dbContext = dbContext;
 		}
 
 		public IList<Donation> Donations { get; private set; }
 
 		public async Task OnGetAsync(string? sortMemberName, bool ascending)
 		{
-			IQueryable<Donation> query = context.Donations;
+			IQueryable<Donation> query = _dbContext.Donations;
 			if (!string.IsNullOrEmpty(sortMemberName))
 				query = query.OrderByMember(sortMemberName, ascending);
 
