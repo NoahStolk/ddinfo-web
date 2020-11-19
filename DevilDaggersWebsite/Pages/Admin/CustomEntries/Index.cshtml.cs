@@ -17,7 +17,7 @@ namespace DevilDaggersWebsite.Pages.Admin.CustomEntries
 			_dbContext = dbContext;
 		}
 
-		public IList<CustomEntry> CustomEntries { get; private set; }
+		public IList<CustomEntry> CustomEntries { get; private set; } = null!;
 
 		public async Task OnGetAsync(string? sortMemberName, bool ascending)
 		{

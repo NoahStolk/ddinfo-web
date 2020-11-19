@@ -15,7 +15,7 @@ namespace DevilDaggersWebsite.Pages.Admin.CustomEntries
 			_dbContext = dbContext;
 		}
 
-		public CustomEntry CustomEntry { get; set; }
+		public CustomEntry CustomEntry { get; set; } = null!;
 
 		public async Task<IActionResult> OnGetAsync(int? id)
 		{

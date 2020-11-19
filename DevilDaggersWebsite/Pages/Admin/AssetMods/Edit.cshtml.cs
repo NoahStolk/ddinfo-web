@@ -28,13 +28,13 @@ namespace DevilDaggersWebsite.Pages.Admin.AssetMods
 				.ToList();
 		}
 
-		public List<SelectListItem> AuthorSelectList { get; }
+		public List<SelectListItem> AuthorSelectList { get; } = null!;
 
 		[BindProperty]
-		public AssetMod AssetMod { get; set; }
+		public AssetMod AssetMod { get; set; } = null!;
 
 		[BindProperty]
-		public List<int> AuthorIds { get; set; }
+		public List<int> AuthorIds { get; set; } = null!;
 
 		public async Task<IActionResult> OnGetAsync(int? id)
 		{

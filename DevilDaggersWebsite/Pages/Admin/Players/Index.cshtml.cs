@@ -17,7 +17,7 @@ namespace DevilDaggersWebsite.Pages.Admin.Players
 			_dbContext = dbContext;
 		}
 
-		public IList<Player> Players { get; private set; }
+		public IList<Player> Players { get; private set; } = null!;
 
 		public async Task OnGetAsync(string? sortMemberName, bool ascending)
 		{

@@ -16,7 +16,7 @@ namespace DevilDaggersWebsite.Pages.Admin.Titles
 		}
 
 		[BindProperty]
-		public Title Title { get; set; }
+		public Title Title { get; set; } = null!;
 
 		public async Task<IActionResult> OnGetAsync(int? id)
 		{

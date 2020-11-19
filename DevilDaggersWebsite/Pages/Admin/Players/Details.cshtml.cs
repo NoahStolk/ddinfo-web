@@ -15,7 +15,7 @@ namespace DevilDaggersWebsite.Pages.Admin.Players
 			_dbContext = dbContext;
 		}
 
-		public Player Player { get; set; }
+		public Player Player { get; set; } = null!;
 
 		public async Task<IActionResult> OnGetAsync(int? id)
 		{

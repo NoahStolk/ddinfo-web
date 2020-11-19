@@ -15,7 +15,7 @@ namespace DevilDaggersWebsite.Pages.Admin.Titles
 			_dbContext = dbContext;
 		}
 
-		public Title Title { get; set; }
+		public Title Title { get; set; } = null!;
 
 		public async Task<IActionResult> OnGetAsync(int? id)
 		{

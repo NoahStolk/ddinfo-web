@@ -17,7 +17,7 @@ namespace DevilDaggersWebsite.Pages.Admin.Titles
 			_dbContext = dbContext;
 		}
 
-		public IList<Title> Titles { get; private set; }
+		public IList<Title> Titles { get; private set; } = null!;
 
 		public async Task OnGetAsync(string? sortMemberName, bool ascending)
 		{

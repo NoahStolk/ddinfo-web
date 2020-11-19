@@ -16,7 +16,7 @@ namespace DevilDaggersWebsite.Pages.Admin.Donations
 		}
 
 		[BindProperty]
-		public Donation Donation { get; set; }
+		public Donation Donation { get; set; } = null!;
 
 		public async Task<IActionResult> OnGetAsync(int? id)
 		{

@@ -15,7 +15,7 @@ namespace DevilDaggersWebsite.Pages.Admin.Titles
 		}
 
 		[BindProperty]
-		public Title Title { get; set; }
+		public Title Title { get; set; } = null!;
 
 		public IActionResult OnGet() => Page();
 

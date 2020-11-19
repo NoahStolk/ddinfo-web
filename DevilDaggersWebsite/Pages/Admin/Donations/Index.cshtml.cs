@@ -17,7 +17,7 @@ namespace DevilDaggersWebsite.Pages.Admin.Donations
 			_dbContext = dbContext;
 		}
 
-		public IList<Donation> Donations { get; private set; }
+		public IList<Donation> Donations { get; private set; } = null!;
 
 		public async Task OnGetAsync(string? sortMemberName, bool ascending)
 		{

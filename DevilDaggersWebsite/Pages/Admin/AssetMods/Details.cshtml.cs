@@ -15,7 +15,7 @@ namespace DevilDaggersWebsite.Pages.Admin.AssetMods
 			_dbContext = dbContext;
 		}
 
-		public AssetMod AssetMod { get; set; }
+		public AssetMod AssetMod { get; set; } = null!;
 
 		public async Task<IActionResult> OnGetAsync(int? id)
 		{

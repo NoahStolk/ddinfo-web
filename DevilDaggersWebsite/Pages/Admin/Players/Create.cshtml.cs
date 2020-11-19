@@ -15,7 +15,7 @@ namespace DevilDaggersWebsite.Pages.Admin.Players
 		}
 
 		[BindProperty]
-		public Player Player { get; set; }
+		public Player Player { get; set; } = null!;
 
 		public IActionResult OnGet() => Page();
 

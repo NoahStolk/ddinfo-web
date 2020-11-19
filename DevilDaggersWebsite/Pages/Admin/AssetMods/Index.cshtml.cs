@@ -17,7 +17,7 @@ namespace DevilDaggersWebsite.Pages.Admin.AssetMods
 			_dbContext = dbContext;
 		}
 
-		public IList<AssetMod> AssetMods { get; private set; }
+		public IList<AssetMod> AssetMods { get; private set; } = null!;
 
 		public async Task OnGetAsync(string? sortMemberName, bool ascending)
 		{
