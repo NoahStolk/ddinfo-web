@@ -5,6 +5,10 @@
 	src: local('Goethe Bold'), url('../fonts/goethebold.ttf') format('truetype');
 }
 
+html {
+	overflow-y: scroll;
+}
+
 html, body, .login, .table {
 	font-family: 'Helvetica Neue', Helvetica, Arial, sans-serif;
 	color: #ddd;

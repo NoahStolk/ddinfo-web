@@ -1,7 +1,14 @@
 ﻿@page "/CustomLeaderboard/{Spawnset}"
-@inject ApplicationDbContext context
+@inject ApplicationDbContext DbContext
 
-<CustomLeaderboardTable CustomEntries="_customEntries" Leaderboard="_customLeaderboard" />
+@if (_isLoading)
+{
+	<EmptyState />
+}
+else
+{
+	<CustomLeaderboardTable CustomEntries="_customEntries" Leaderboard="_customLeaderboard" />
+}
 
 @code {
 	private List<Core.Entities.CustomEntry> _customEntries = new List<Core.Entities.CustomEntry>();
@@ -10,21 +17,27 @@
 	[Parameter]
 	public string? Spawnset { get; set; }
 
-	protected override void OnInitialized()
+	private bool _isLoading;
+
+	protected override async Task OnInitializedAsync()
 	{
-		_customLeaderboard = context.CustomLeaderboards
+		_isLoading = true;
+		_customLeaderboard = await DbContext.CustomLeaderboards
+			.AsNoTracking()
 			.Include(cl => cl.SpawnsetFile)
-			.FirstOrDefault(cl => cl.SpawnsetFile.Name == Spawnset);
+			.FirstOrDefaultAsync(cl => cl.SpawnsetFile.Name == Spawnset);
 
 		if (string.IsNullOrEmpty(Spawnset) || _customLeaderboard == null)
 			return;
 
-		_customEntries = context.CustomEntries
+		_customEntries = await DbContext.CustomEntries
+			.AsNoTracking()
 			.Include(ce => ce.CustomLeaderboard)
 				.ThenInclude(cl => cl.SpawnsetFile)
 			.Include(ce => ce.Player)
 			.Where(ce => ce.CustomLeaderboard.Id == _customLeaderboard.Id)
 			.OrderByMember(nameof(Core.Entities.CustomEntry.Time), _customLeaderboard.IsAscending())
-			.ToList();
+			.ToListAsync();
+		_isLoading = false;
 	}
 }

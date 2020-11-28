@@ -89,13 +89,7 @@ namespace DevilDaggersWebsite
 					options.Conventions.AuthorizeFolder(kvp.Key, kvp.Value);
 			});
 
-			services.AddSwaggerDocument(config =>
-			{
-				config.PostProcess = document =>
-				{
-					document.Info.Title = "DevilDaggers.Info API";
-				};
-			});
+			services.AddSwaggerDocument(config => config.PostProcess = document => document.Info.Title = "DevilDaggers.Info API");
 		}
 
 		public void Configure(IApplicationBuilder app, IWebHostEnvironment env, IServiceProvider serviceProvider)

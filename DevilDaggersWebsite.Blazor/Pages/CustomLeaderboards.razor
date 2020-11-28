@@ -2,53 +2,60 @@
 @inject ApplicationDbContext DbContext
 
 <h1>Custom Leaderboards</h1>
-<Table TableItem="CustomLeaderboardData" Items="_tableData" PageSize="100">
-	<Column TableItem="CustomLeaderboardData" Title="Spawnset" Field="@(cl => cl.SpawnsetName)" Sortable="true" Width="6%">
-		<Template>
-			<a href="/CustomLeaderboard/@context.SpawnsetName">@context.SpawnsetName</a>
-		</Template>
-	</Column>
-	<Column TableItem="CustomLeaderboardData" Title="Author" Field="@(cl => cl.SpawnsetAuthorName)" Sortable="true" Width="4%" />
-	<Column TableItem="CustomLeaderboardData" Title="Category" Field="@(cl => cl.Category)" Sortable="true" Width="4%" />
-	<Column TableItem="CustomLeaderboardData" Title="Players" Field="@(cl => cl.TotalPlayers)" Sortable="true" Width="2%" />
-	<Column TableItem="CustomLeaderboardData" Title="Plays" Field="@(cl => cl.TotalRunSubmitted)" Sortable="true" Width="2%" />
-	<Column TableItem="CustomLeaderboardData" Title="Bronze" Field="@(cl => cl.Bronze)" Sortable="true" Width="3%" Align="Align.Right">
-		<Template>
-			<span class="text-bronze">@FormatUtils.FormatTimeInteger(context.Bronze)</span>
-		</Template>
-	</Column>
-	<Column TableItem="CustomLeaderboardData" Title="Silver" Field="@(cl => cl.Silver)" Sortable="true" Width="3%" Align="Align.Right">
-		<Template>
-			<span class="text-silver">@FormatUtils.FormatTimeInteger(context.Silver)</span>
-		</Template>
-	</Column>
-	<Column TableItem="CustomLeaderboardData" Title="Golden" Field="@(cl => cl.Golden)" Sortable="true" Width="3%" Align="Align.Right">
-		<Template>
-			<span class="text-golden">@FormatUtils.FormatTimeInteger(context.Golden)</span>
-		</Template>
-	</Column>
-	<Column TableItem="CustomLeaderboardData" Title="Devil" Field="@(cl => cl.Devil)" Sortable="true" Width="3%" Align="Align.Right">
-		<Template>
-			<span class="text-devil">@FormatUtils.FormatTimeInteger(context.Devil)</span>
-		</Template>
-	</Column>
-	<Column TableItem="CustomLeaderboardData" Title="Homing" Field="@(cl => cl.Homing)" Sortable="true" Width="3%" Align="Align.Right">
-		<Template>
-			@if (context.Homing != 0)
-			{
-				<span class="text-homing">@FormatUtils.FormatTimeInteger(context.Homing)</span>
-			}
-		</Template>
-	</Column>
-	<Column TableItem="CustomLeaderboardData" Title="WR holder" Field="@(cl => cl.WorldRecordHolderUsername)" Sortable="true" Width="4%" />
-	<Column TableItem="CustomLeaderboardData" Title="WR" Field="@(cl => cl.WorldRecordTime)" Sortable="true" Width="4%" Align="Align.Right">
-		<Template>
-			<span class="text-@context.WorldRecordDagger">@FormatUtils.FormatTimeInteger(context.WorldRecordTime)</span>
-		</Template>
-	</Column>
-	<Column TableItem="CustomLeaderboardData" Title="Last played" Field="@(cl => cl.DateLastPlayedUtc)" Sortable="true" Width="5%" Format="@FormatUtils.DateTimeUtcFormat" />
-	<Column TableItem="CustomLeaderboardData" Title="Created" Field="@(cl => cl.DateCreated)" Sortable="true" Width="3%" Format="@FormatUtils.DateFormat" />
-</Table>
+@if (_isLoading)
+{
+	<EmptyState />
+}
+else
+{
+	<Table TableItem="CustomLeaderboardData" Items="_tableData" PageSize="100">
+		<Column TableItem="CustomLeaderboardData" Title="Spawnset" Field="@(cl => cl.SpawnsetName)" Sortable="true" Width="6%">
+			<Template>
+				<a href="/CustomLeaderboard/@context.SpawnsetName">@context.SpawnsetName</a>
+			</Template>
+		</Column>
+		<Column TableItem="CustomLeaderboardData" Title="Author" Field="@(cl => cl.SpawnsetAuthorName)" Sortable="true" Width="4%" />
+		<Column TableItem="CustomLeaderboardData" Title="Category" Field="@(cl => cl.Category)" Sortable="true" Width="4%" />
+		<Column TableItem="CustomLeaderboardData" Title="Players" Field="@(cl => cl.TotalPlayers)" Sortable="true" Width="2%" />
+		<Column TableItem="CustomLeaderboardData" Title="Plays" Field="@(cl => cl.TotalRunSubmitted)" Sortable="true" Width="2%" />
+		<Column TableItem="CustomLeaderboardData" Title="Bronze" Field="@(cl => cl.Bronze)" Sortable="true" Width="3%" Align="Align.Right">
+			<Template>
+				<span class="text-bronze">@FormatUtils.FormatTimeInteger(context.Bronze)</span>
+			</Template>
+		</Column>
+		<Column TableItem="CustomLeaderboardData" Title="Silver" Field="@(cl => cl.Silver)" Sortable="true" Width="3%" Align="Align.Right">
+			<Template>
+				<span class="text-silver">@FormatUtils.FormatTimeInteger(context.Silver)</span>
+			</Template>
+		</Column>
+		<Column TableItem="CustomLeaderboardData" Title="Golden" Field="@(cl => cl.Golden)" Sortable="true" Width="3%" Align="Align.Right">
+			<Template>
+				<span class="text-golden">@FormatUtils.FormatTimeInteger(context.Golden)</span>
+			</Template>
+		</Column>
+		<Column TableItem="CustomLeaderboardData" Title="Devil" Field="@(cl => cl.Devil)" Sortable="true" Width="3%" Align="Align.Right">
+			<Template>
+				<span class="text-devil">@FormatUtils.FormatTimeInteger(context.Devil)</span>
+			</Template>
+		</Column>
+		<Column TableItem="CustomLeaderboardData" Title="Homing" Field="@(cl => cl.Homing)" Sortable="true" Width="3%" Align="Align.Right">
+			<Template>
+				@if (context.Homing != 0)
+				{
+					<span class="text-homing">@FormatUtils.FormatTimeInteger(context.Homing)</span>
+				}
+			</Template>
+		</Column>
+		<Column TableItem="CustomLeaderboardData" Title="WR holder" Field="@(cl => cl.WorldRecordHolderUsername)" Sortable="true" Width="4%" />
+		<Column TableItem="CustomLeaderboardData" Title="WR" Field="@(cl => cl.WorldRecordTime)" Sortable="true" Width="4%" Align="Align.Right">
+			<Template>
+				<span class="text-@context.WorldRecordDagger">@FormatUtils.FormatTimeInteger(context.WorldRecordTime)</span>
+			</Template>
+		</Column>
+		<Column TableItem="CustomLeaderboardData" Title="Last played" Field="@(cl => cl.DateLastPlayedUtc)" Sortable="true" Width="5%" Format="@FormatUtils.DateTimeUtcFormat" />
+		<Column TableItem="CustomLeaderboardData" Title="Created" Field="@(cl => cl.DateCreated)" Sortable="true" Width="3%" Format="@FormatUtils.DateFormat" />
+	</Table>
+}
 
 @code {
 	private List<Core.Entities.CustomEntry> _customEntries = new List<Core.Entities.CustomEntry>();
@@ -56,17 +63,20 @@
 
 	private List<CustomLeaderboardData> _tableData = new List<CustomLeaderboardData>();
 
-	protected override void OnInitialized()
+	private bool _isLoading;
+
+	protected override async Task OnInitializedAsync()
 	{
-		_customEntries = DbContext.CustomEntries
+		_isLoading = true;
+		_customEntries = await DbContext.CustomEntries
 			.Include(ce => ce.CustomLeaderboard)
 			.Include(ce => ce.Player)
-			.ToList();
+			.ToListAsync();
 
-		_customLeaderboards = DbContext.CustomLeaderboards
+		_customLeaderboards = await DbContext.CustomLeaderboards
 			.Include(cl => cl.SpawnsetFile)
 				.ThenInclude(sf => sf.Player)
-			.ToList();
+			.ToListAsync();
 
 		for (int i = 0; i < _customLeaderboards.Count; i++)
 		{
@@ -82,5 +92,6 @@
 
 			_tableData.Add(new CustomLeaderboardData(cl, totalPlayers, worldRecordEntry));
 		}
+		_isLoading = false;
 	}
 }
