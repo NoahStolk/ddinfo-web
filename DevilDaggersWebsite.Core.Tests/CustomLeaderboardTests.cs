@@ -26,9 +26,7 @@ namespace DevilDaggersWebsite.Core.Tests
 		private static readonly CustomLeaderboardsController _customLeaderboardsController;
 
 #pragma warning disable S3963 // "static" fields should be initialized inline
-#pragma warning disable CA1810 // Initialize reference type static fields inline
 		static CustomLeaderboardTests()
-#pragma warning restore CA1810 // Initialize reference type static fields inline
 		{
 			DbContextOptions<ApplicationDbContext> options = new DbContextOptionsBuilder<ApplicationDbContext>().UseInMemoryDatabase(databaseName: "TestDatabase").Options;
 			SetUpInMemoryDatabase(options);

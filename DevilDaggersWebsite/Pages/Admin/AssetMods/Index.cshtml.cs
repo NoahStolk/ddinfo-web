@@ -10,18 +10,18 @@ namespace DevilDaggersWebsite.Pages.Admin.AssetMods
 {
 	public class IndexModel : PageModel
 	{
-		private readonly ApplicationDbContext context;
+		private readonly ApplicationDbContext _dbContext;
 
-		public IndexModel(ApplicationDbContext context)
+		public IndexModel(ApplicationDbContext dbContext)
 		{
-			this.context = context;
+			_dbContext = dbContext;
 		}
 
-		public IList<AssetMod> AssetMods { get; private set; }
+		public IList<AssetMod> AssetMods { get; private set; } = null!;
 
 		public async Task OnGetAsync(string? sortMemberName, bool ascending)
 		{
-			IQueryable<AssetMod> query = context.AssetMods.Include(am => am.PlayerAssetMods);
+			IQueryable<AssetMod> query = _dbContext.AssetMods.Include(am => am.PlayerAssetMods);
 			if (!string.IsNullOrEmpty(sortMemberName))
 				query = query.OrderByMember(sortMemberName, ascending);
 

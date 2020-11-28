@@ -8,21 +8,21 @@ namespace DevilDaggersWebsite.Pages.Admin.Donations
 {
 	public class DetailsModel : PageModel
 	{
-		private readonly ApplicationDbContext context;
+		private readonly ApplicationDbContext _dbContext;
 
-		public DetailsModel(ApplicationDbContext context)
+		public DetailsModel(ApplicationDbContext dbContext)
 		{
-			this.context = context;
+			_dbContext = dbContext;
 		}
 
-		public Donation Donation { get; set; }
+		public Donation Donation { get; set; } = null!;
 
 		public async Task<IActionResult> OnGetAsync(int? id)
 		{
 			if (id == null)
 				return NotFound();
 
-			Donation = await context.Donations.FirstOrDefaultAsync(m => m.Id == id);
+			Donation = await _dbContext.Donations.FirstOrDefaultAsync(m => m.Id == id);
 
 			if (Donation == null)
 				return NotFound();

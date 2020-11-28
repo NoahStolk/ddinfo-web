@@ -8,21 +8,21 @@ namespace DevilDaggersWebsite.Pages.Admin.AssetMods
 {
 	public class DetailsModel : PageModel
 	{
-		private readonly ApplicationDbContext context;
+		private readonly ApplicationDbContext _dbContext;
 
-		public DetailsModel(ApplicationDbContext context)
+		public DetailsModel(ApplicationDbContext dbContext)
 		{
-			this.context = context;
+			_dbContext = dbContext;
 		}
 
-		public AssetMod AssetMod { get; set; }
+		public AssetMod AssetMod { get; set; } = null!;
 
 		public async Task<IActionResult> OnGetAsync(int? id)
 		{
 			if (id == null)
 				return NotFound();
 
-			AssetMod = await context.AssetMods.Include(am => am.PlayerAssetMods).ThenInclude(pam => pam.Player).FirstOrDefaultAsync(m => m.Id == id);
+			AssetMod = await _dbContext.AssetMods.Include(am => am.PlayerAssetMods).ThenInclude(pam => pam.Player).FirstOrDefaultAsync(m => m.Id == id);
 
 			if (AssetMod == null)
 				return NotFound();

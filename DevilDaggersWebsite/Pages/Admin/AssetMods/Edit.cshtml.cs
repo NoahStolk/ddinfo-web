@@ -12,13 +12,13 @@ namespace DevilDaggersWebsite.Pages.Admin.AssetMods
 {
 	public class EditModel : PageModel
 	{
-		private readonly ApplicationDbContext context;
+		private readonly ApplicationDbContext _dbContext;
 
-		public EditModel(ApplicationDbContext context)
+		public EditModel(ApplicationDbContext dbContext)
 		{
-			this.context = context;
+			_dbContext = dbContext;
 
-			AuthorSelectList = context.Players
+			AuthorSelectList = dbContext.Players
 				.OrderBy(p => p.Username).
 				Select(p => new SelectListItem
 				{
@@ -28,20 +28,20 @@ namespace DevilDaggersWebsite.Pages.Admin.AssetMods
 				.ToList();
 		}
 
-		public List<SelectListItem> AuthorSelectList { get; }
+		public List<SelectListItem> AuthorSelectList { get; } = null!;
 
 		[BindProperty]
-		public AssetMod AssetMod { get; set; }
+		public AssetMod AssetMod { get; set; } = null!;
 
 		[BindProperty]
-		public List<int> AuthorIds { get; set; }
+		public List<int> AuthorIds { get; set; } = null!;
 
 		public async Task<IActionResult> OnGetAsync(int? id)
 		{
 			if (id == null)
 				return NotFound();
 
-			AssetMod = await context.AssetMods.Include(am => am.PlayerAssetMods).FirstOrDefaultAsync(m => m.Id == id);
+			AssetMod = await _dbContext.AssetMods.Include(am => am.PlayerAssetMods).FirstOrDefaultAsync(m => m.Id == id);
 
 			if (AssetMod == null)
 				return NotFound();
@@ -55,28 +55,25 @@ namespace DevilDaggersWebsite.Pages.Admin.AssetMods
 			if (!ModelState.IsValid)
 				return Page();
 
-			context.Attach(AssetMod).State = EntityState.Modified;
+			_dbContext.Attach(AssetMod).State = EntityState.Modified;
 
 			try
 			{
-				IQueryable<PlayerAssetMod> alreadyExistingPlayerAssetMods = context.PlayerAssetMods.Where(pam => pam.AssetModId == AssetMod.Id);
-				context.PlayerAssetMods.RemoveRange(alreadyExistingPlayerAssetMods);
+				IQueryable<PlayerAssetMod> alreadyExistingPlayerAssetMods = _dbContext.PlayerAssetMods.Where(pam => pam.AssetModId == AssetMod.Id);
+				_dbContext.PlayerAssetMods.RemoveRange(alreadyExistingPlayerAssetMods);
 
 				AssetMod.PlayerAssetMods = AuthorIds.Select(id => new PlayerAssetMod { AssetModId = AssetMod.Id, PlayerId = id }).ToList();
 
-				await context.SaveChangesAsync();
+				await _dbContext.SaveChangesAsync();
 			}
-			catch (DbUpdateConcurrencyException)
+			catch (DbUpdateConcurrencyException) when (!AssetModExists(AssetMod.Id))
 			{
-				if (!AssetModExists(AssetMod.Id))
-					return NotFound();
-				else
-					throw;
+				return NotFound();
 			}
 
 			return RedirectToPage("./Index");
 		}
 
-		private bool AssetModExists(int id) => context.AssetMods.Any(e => e.Id == id);
+		private bool AssetModExists(int id) => _dbContext.AssetMods.Any(e => e.Id == id);
 	}
 }

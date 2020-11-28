@@ -8,7 +8,12 @@
 
 <h1>Leaderboard History</h1>
 
-@{
+@if (_isLoading)
+{
+	<EmptyState />
+}
+else
+{
 	<LeaderboardTable Leaderboard="@_leaderboard" Players="_players" />
 }
 
@@ -18,12 +23,16 @@
 
 	private DateTime _dateTime;
 
-	protected override void OnInitialized()
+	private bool _isLoading;
+
+	protected override async Task OnInitializedAsync()
 	{
-		_players = DbContext.Players.ToList();
+		_isLoading = true;
+		_players = await DbContext.Players.ToListAsync();
 
 		//string jsonFileName = $"{_dateTime:yyyyMMddHHmm}.json";
 		string jsonFileName = $"201701140000.json";
 		_leaderboard = JsonConvert.DeserializeObject<Core.Dto.Leaderboard>(File.ReadAllText(Path.Combine(Env.WebRootPath, "leaderboard-history", jsonFileName), Encoding.UTF8));
+		_isLoading = false;
 	}
 }

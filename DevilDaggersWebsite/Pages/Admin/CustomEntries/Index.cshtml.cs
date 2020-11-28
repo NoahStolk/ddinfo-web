@@ -10,18 +10,18 @@ namespace DevilDaggersWebsite.Pages.Admin.CustomEntries
 {
 	public class IndexModel : PageModel
 	{
-		private readonly ApplicationDbContext context;
+		private readonly ApplicationDbContext _dbContext;
 
-		public IndexModel(ApplicationDbContext context)
+		public IndexModel(ApplicationDbContext dbContext)
 		{
-			this.context = context;
+			_dbContext = dbContext;
 		}
 
-		public IList<CustomEntry> CustomEntries { get; private set; }
+		public IList<CustomEntry> CustomEntries { get; private set; } = null!;
 
 		public async Task OnGetAsync(string? sortMemberName, bool ascending)
 		{
-			IQueryable<CustomEntry> query = context.CustomEntries.Include(ce => ce.CustomLeaderboard).ThenInclude(cl => cl.SpawnsetFile);
+			IQueryable<CustomEntry> query = _dbContext.CustomEntries.Include(ce => ce.CustomLeaderboard).ThenInclude(cl => cl.SpawnsetFile);
 			if (!string.IsNullOrEmpty(sortMemberName))
 				query = query.OrderByMember(sortMemberName, ascending);
 

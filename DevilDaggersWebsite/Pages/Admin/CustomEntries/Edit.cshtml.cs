@@ -10,27 +10,27 @@ namespace DevilDaggersWebsite.Pages.Admin.CustomEntries
 {
 	public class EditModel : PageModel
 	{
-		private readonly ApplicationDbContext context;
+		private readonly ApplicationDbContext _dbContext;
 
-		public EditModel(ApplicationDbContext context)
+		public EditModel(ApplicationDbContext dbContext)
 		{
-			this.context = context;
+			_dbContext = dbContext;
 		}
 
 		[BindProperty]
-		public CustomEntry CustomEntry { get; set; }
+		public CustomEntry CustomEntry { get; set; } = null!;
 
 		public async Task<IActionResult> OnGetAsync(int? id)
 		{
 			if (id == null)
 				return NotFound();
 
-			CustomEntry = await context.CustomEntries
+			CustomEntry = await _dbContext.CustomEntries
 				.Include(c => c.CustomLeaderboard).FirstOrDefaultAsync(m => m.Id == id);
 
 			if (CustomEntry == null)
 				return NotFound();
-			ViewData["CustomLeaderboardId"] = new SelectList(context.CustomLeaderboards, "Id", "SpawnsetFileName");
+			ViewData["CustomLeaderboardId"] = new SelectList(_dbContext.CustomLeaderboards, "Id", "SpawnsetFileName");
 			return Page();
 		}
 
@@ -39,23 +39,20 @@ namespace DevilDaggersWebsite.Pages.Admin.CustomEntries
 			if (!ModelState.IsValid)
 				return Page();
 
-			context.Attach(CustomEntry).State = EntityState.Modified;
+			_dbContext.Attach(CustomEntry).State = EntityState.Modified;
 
 			try
 			{
-				await context.SaveChangesAsync();
+				await _dbContext.SaveChangesAsync();
 			}
-			catch (DbUpdateConcurrencyException)
+			catch (DbUpdateConcurrencyException) when (!CustomEntryExists(CustomEntry.Id))
 			{
-				if (!CustomEntryExists(CustomEntry.Id))
-					return NotFound();
-				else
-					throw;
+				return NotFound();
 			}
 
 			return RedirectToPage("./Index");
 		}
 
-		private bool CustomEntryExists(int id) => context.CustomEntries.Any(e => e.Id == id);
+		private bool CustomEntryExists(int id) => _dbContext.CustomEntries.Any(e => e.Id == id);
 	}
 }

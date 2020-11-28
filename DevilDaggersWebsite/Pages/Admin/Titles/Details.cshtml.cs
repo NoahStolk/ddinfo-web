@@ -8,21 +8,21 @@ namespace DevilDaggersWebsite.Pages.Admin.Titles
 {
 	public class DetailsModel : PageModel
 	{
-		private readonly ApplicationDbContext context;
+		private readonly ApplicationDbContext _dbContext;
 
-		public DetailsModel(ApplicationDbContext context)
+		public DetailsModel(ApplicationDbContext dbContext)
 		{
-			this.context = context;
+			_dbContext = dbContext;
 		}
 
-		public Title Title { get; set; }
+		public Title Title { get; set; } = null!;
 
 		public async Task<IActionResult> OnGetAsync(int? id)
 		{
 			if (id == null)
 				return NotFound();
 
-			Title = await context.Titles.FirstOrDefaultAsync(m => m.Id == id);
+			Title = await _dbContext.Titles.FirstOrDefaultAsync(m => m.Id == id);
 
 			if (Title == null)
 				return NotFound();

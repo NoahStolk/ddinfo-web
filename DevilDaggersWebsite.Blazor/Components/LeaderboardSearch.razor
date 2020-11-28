@@ -1,16 +1,24 @@
-﻿@if (_leaderboard == null)
+﻿<p>
+	<input />
+</p>
+<p>
+	Showing results for "@_search"
+</p>
+@if (_search.Length < 3)
+{
+	<p>Please use 3 or more characters for the search.</p>
+}
+else if (_isLoading)
+{
+	<EmptyState />
+}
+else if (_leaderboard == null)
 {
 	<p>Failed to retrieve scores from the official Devil Daggers leaderboard servers. Please try again later.</p>
 	<p>If the problem persists, try contacting the Devil Daggers developer.</p>
 }
 else
 {
-	<p>
-		<input />
-	</p>
-	<p>
-		Showing results for "@_search"
-	</p>
 	<LeaderboardTable Leaderboard="@_leaderboard" Players="Players" />
 }
 
@@ -18,6 +26,8 @@ else
 	private Core.Dto.Leaderboard? _leaderboard;
 
 	private string _search = string.Empty;
+
+	private bool _isLoading;
 
 	[Parameter]
 	public List<Player> Players { get; set; } = new List<Player>();
@@ -29,6 +39,8 @@ else
 
 	private async Task FetchLeaderboard(string search)
 	{
+		_isLoading = true;
 		_leaderboard = await DdHasmodaiClient.GetUserSearch(_search);
+		_isLoading = false;
 	}
 }

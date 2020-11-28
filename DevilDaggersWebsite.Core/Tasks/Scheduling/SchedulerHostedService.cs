@@ -9,7 +9,7 @@ namespace DevilDaggersWebsite.Core.Tasks.Scheduling
 {
 	public class SchedulerHostedService : HostedService
 	{
-		private readonly List<SchedulerTaskWrapper> scheduledTasks = new List<SchedulerTaskWrapper>();
+		private readonly List<SchedulerTaskWrapper> _scheduledTasks = new List<SchedulerTaskWrapper>();
 
 		public SchedulerHostedService(IEnumerable<IScheduledTask> scheduledTasks)
 		{
@@ -17,7 +17,7 @@ namespace DevilDaggersWebsite.Core.Tasks.Scheduling
 
 			foreach (IScheduledTask scheduledTask in scheduledTasks)
 			{
-				this.scheduledTasks.Add(new SchedulerTaskWrapper
+				_scheduledTasks.Add(new SchedulerTaskWrapper
 				{
 					Schedule = CrontabSchedule.Parse(scheduledTask.Schedule),
 					Task = scheduledTask,
@@ -43,9 +43,7 @@ namespace DevilDaggersWebsite.Core.Tasks.Scheduling
 			TaskFactory taskFactory = new TaskFactory(TaskScheduler.Current);
 			DateTime referenceTime = DateTime.UtcNow;
 
-			List<SchedulerTaskWrapper> tasksThatShouldRun = scheduledTasks.Where(t => t.ShouldRun(referenceTime)).ToList();
-
-			foreach (SchedulerTaskWrapper taskThatShouldRun in tasksThatShouldRun)
+			foreach (SchedulerTaskWrapper taskThatShouldRun in _scheduledTasks.Where(t => t.ShouldRun(referenceTime)).ToList())
 			{
 				taskThatShouldRun.Increment();
 
