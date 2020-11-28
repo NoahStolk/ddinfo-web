@@ -37,14 +37,11 @@ namespace DevilDaggersWebsite
 
 		public void ConfigureServices(IServiceCollection services)
 		{
-			services.AddCors(options =>
-			{
-				options.AddPolicy(_defaultCorsPolicy, builder => { builder.AllowAnyOrigin(); });
-			});
+			services.AddCors(options => options.AddPolicy(_defaultCorsPolicy, builder => builder.AllowAnyOrigin()));
 
 			services.AddMvc();
 
-			services.AddDbContext<ApplicationDbContext>(options => options.UseMySql(Configuration.GetConnectionString("DefaultConnection"), providerOptions => providerOptions.EnableRetryOnFailure()));
+			services.AddDbContext<ApplicationDbContext>(options => options.UseMySql(Configuration.GetConnectionString("DefaultConnection"), MySqlServerVersion.LatestSupportedServerVersion, providerOptions => providerOptions.EnableRetryOnFailure()));
 			services.AddDefaultIdentity<IdentityUser>(options =>
 				{
 					options.SignIn.RequireConfirmedAccount = true;
@@ -72,10 +69,7 @@ namespace DevilDaggersWebsite
 				args.SetObserved();
 			});
 
-			services.AddControllers().AddNewtonsoftJson(options =>
-			{
-				options.SerializerSettings.Converters.Add(new StringEnumConverter());
-			});
+			services.AddControllers().AddNewtonsoftJson(options => options.SerializerSettings.Converters.Add(new StringEnumConverter()));
 
 			services.AddAuthorization(options =>
 			{
