@@ -51,16 +51,13 @@
 	private List<CustomLeaderboardEntryData> _tableData = new List<CustomLeaderboardEntryData>();
 
 	[Parameter]
-	public Core.Entities.CustomLeaderboard Leaderboard { get; set; }
+	public Core.Entities.CustomLeaderboard Leaderboard { get; set; } = null!;
 
 	[Parameter]
 	public List<Core.Entities.CustomEntry> CustomEntries { get; set; } = new List<Core.Entities.CustomEntry>();
 
 	protected override void OnInitialized()
 	{
-		if (Leaderboard == null)
-			return;
-
 		for (int i = 0; i < CustomEntries.Count; i++)
 			_tableData.Add(new CustomLeaderboardEntryData(i + 1, CustomEntries[i], Leaderboard));
 	}

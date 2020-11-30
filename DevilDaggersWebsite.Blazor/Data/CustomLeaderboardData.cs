@@ -16,7 +16,7 @@ namespace DevilDaggersWebsite.Blazor.Data
 			Golden = cl.Golden;
 			Devil = cl.Devil;
 			Homing = cl.Homing;
-			DateLastPlayedUtc = cl.DateLastPlayed?.ToUniversalTime() ?? null;
+			DateLastPlayedUtc = cl.DateLastPlayed?.ToUniversalTime();
 			DateCreated = cl.DateCreated;
 			TotalPlayers = totalPlayers;
 			TotalRunSubmitted = cl.TotalRunsSubmitted;
