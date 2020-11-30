@@ -9,9 +9,8 @@ using Microsoft.AspNetCore.Components.Authorization;
 using Microsoft.AspNetCore.Hosting;
 using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Identity;
-using Microsoft.AspNetCore.Mvc;
 using Microsoft.AspNetCore.Mvc.Infrastructure;
-using Microsoft.AspNetCore.Mvc.Routing;
+using Microsoft.AspNetCore.Mvc.Razor;
 using Microsoft.AspNetCore.Rewrite;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.Extensions.Configuration;
@@ -43,7 +42,7 @@ namespace DevilDaggersWebsite.Blazor
 			services.AddServerSideBlazor();
 			services.AddScoped<AuthenticationStateProvider, RevalidatingIdentityAuthenticationStateProvider<IdentityUser>>();
 
-			services.AddMvc();
+			services.AddMvc().AddViewLocalization(LanguageViewLocationExpanderFormat.Suffix);
 
 			services.AddDbContext<ApplicationDbContext>(options => options.UseMySql(Configuration.GetConnectionString("DefaultConnection"), MySqlServerVersion.LatestSupportedServerVersion, providerOptions => providerOptions.EnableRetryOnFailure()));
 			services.AddDefaultIdentity<IdentityUser>(options =>
@@ -58,8 +57,6 @@ namespace DevilDaggersWebsite.Blazor
 			services.AddSingleton<IActionContextAccessor, ActionContextAccessor>();
 
 			services.AddSingleton<IScheduledTask, CreateLeaderboardHistoryFileTask>();
-
-			services.AddScoped<IUrlHelper>(factory => new UrlHelper(factory.GetService<IActionContextAccessor>().ActionContext));
 
 			services.AddTransient<LeaderboardHistoryHelper>();
 			services.AddTransient<SpawnsetHelper>();
@@ -120,7 +117,6 @@ namespace DevilDaggersWebsite.Blazor
 			if (env.IsDevelopment())
 			{
 				app.UseDeveloperExceptionPage();
-				app.UseDatabaseErrorPage();
 			}
 			else
 			{
@@ -146,8 +142,8 @@ namespace DevilDaggersWebsite.Blazor
 			app.UseOpenApi();
 			app.UseSwaggerUi3();
 
-			Task task = serviceProvider.CreateRolesAndAdminUser(Configuration.GetSection("AdminUser")["Email"]);
-			task.Wait();
+			Task roleTask = serviceProvider.CreateRolesAndAdminUser(Configuration.GetSection("AdminUser")["Email"]);
+			roleTask.Wait();
 		}
 	}
 }
