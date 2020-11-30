@@ -35,8 +35,8 @@ namespace DevilDaggersWebsite.Core.Tests
 			Mock<IWebHostEnvironment> mockEnvironment = new Mock<IWebHostEnvironment>();
 			mockEnvironment.Setup(m => m.EnvironmentName).Returns("Hosting:UnitTestEnvironment");
 
-			Mock<ToolHelper> mockToolHelper = new Mock<ToolHelper>(mockEnvironment.Object);
-			_customLeaderboardsController = new CustomLeaderboardsController(_context, mockEnvironment.Object, mockToolHelper.Object);
+			Mock<ToolHelper> toolHelper = new Mock<ToolHelper>(mockEnvironment.Object);
+			_customLeaderboardsController = new CustomLeaderboardsController(_context, mockEnvironment.Object, toolHelper.Object);
 		}
 #pragma warning restore S3963 // "static" fields should be initialized inline
 
@@ -52,15 +52,15 @@ namespace DevilDaggersWebsite.Core.Tests
 		[TestMethod]
 		public async Task PostUploadRequestExistingPlayerExistingEntryNoHighscore()
 		{
-			Spawnset emptySpawnset = new Spawnset();
+			Spawnset emptySpawnset = new();
 
-			Dto.UploadRequest uploadRequest = new Dto.UploadRequest
+			Dto.UploadRequest uploadRequest = new()
 			{
 				Time = 100000,
 				PlayerId = 1,
 				ClientVersion = _ddclClientVersion,
 				SpawnsetHash = emptySpawnset.GetHashString(),
-				GameStates = new List<Dto.GameState>(),
+				GameStates = new(),
 				Username = "TestPlayer1",
 			};
 			uploadRequest.Validation = GetValidation(uploadRequest);
@@ -74,15 +74,15 @@ namespace DevilDaggersWebsite.Core.Tests
 		[TestMethod]
 		public async Task PostUploadRequestExistingPlayerExistingEntryNewHighscore()
 		{
-			Spawnset emptySpawnset = new Spawnset();
+			Spawnset emptySpawnset = new();
 
-			Dto.UploadRequest uploadRequest = new Dto.UploadRequest
+			Dto.UploadRequest uploadRequest = new()
 			{
 				Time = 200000,
 				PlayerId = 1,
 				ClientVersion = _ddclClientVersion,
 				SpawnsetHash = emptySpawnset.GetHashString(),
-				GameStates = new List<Dto.GameState>(),
+				GameStates = new(),
 				Username = "TestPlayer1",
 			};
 			uploadRequest.Validation = GetValidation(uploadRequest);
@@ -96,15 +96,15 @@ namespace DevilDaggersWebsite.Core.Tests
 		[TestMethod]
 		public async Task PostUploadRequestExistingPlayerNewEntry()
 		{
-			Spawnset emptySpawnset = new Spawnset();
+			Spawnset emptySpawnset = new();
 
-			Dto.UploadRequest uploadRequest = new Dto.UploadRequest
+			Dto.UploadRequest uploadRequest = new()
 			{
 				Time = 200000,
 				PlayerId = 2,
 				ClientVersion = _ddclClientVersion,
 				SpawnsetHash = emptySpawnset.GetHashString(),
-				GameStates = new List<Dto.GameState>(),
+				GameStates = new(),
 				Username = "TestPlayer2",
 			};
 			uploadRequest.Validation = GetValidation(uploadRequest);
@@ -118,15 +118,15 @@ namespace DevilDaggersWebsite.Core.Tests
 		[TestMethod]
 		public async Task PostUploadRequestNewPlayer()
 		{
-			Spawnset emptySpawnset = new Spawnset();
+			Spawnset emptySpawnset = new();
 
-			Dto.UploadRequest uploadRequest = new Dto.UploadRequest
+			Dto.UploadRequest uploadRequest = new()
 			{
 				Time = 300000,
 				PlayerId = 3,
 				ClientVersion = _ddclClientVersion,
 				SpawnsetHash = emptySpawnset.GetHashString(),
-				GameStates = new List<Dto.GameState>(),
+				GameStates = new(),
 				Username = "TestPlayer3",
 			};
 			uploadRequest.Validation = GetValidation(uploadRequest);
@@ -141,15 +141,15 @@ namespace DevilDaggersWebsite.Core.Tests
 		[TestMethod]
 		public async Task PostUploadRequestOutdated()
 		{
-			Spawnset emptySpawnset = new Spawnset();
+			Spawnset emptySpawnset = new();
 
-			Dto.UploadRequest uploadRequest = new Dto.UploadRequest
+			Dto.UploadRequest uploadRequest = new()
 			{
 				Time = 100000,
 				PlayerId = 1,
 				ClientVersion = "0.0.0.0",
 				SpawnsetHash = emptySpawnset.GetHashString(),
-				GameStates = new List<Dto.GameState>(),
+				GameStates = new(),
 				Username = "TestPlayer1",
 			};
 			uploadRequest.Validation = GetValidation(uploadRequest);
@@ -168,15 +168,15 @@ namespace DevilDaggersWebsite.Core.Tests
 		[TestMethod]
 		public async Task PostUploadRequestInvalidValidation()
 		{
-			Spawnset emptySpawnset = new Spawnset();
+			Spawnset emptySpawnset = new();
 
-			Dto.UploadRequest uploadRequest = new Dto.UploadRequest
+			Dto.UploadRequest uploadRequest = new()
 			{
 				Time = 100000,
 				PlayerId = 1,
 				ClientVersion = _ddclClientVersion,
 				SpawnsetHash = emptySpawnset.GetHashString(),
-				GameStates = new List<Dto.GameState>(),
+				GameStates = new(),
 				Username = "TestPlayer1",
 				Validation = "Malformed validation",
 			};
@@ -200,18 +200,18 @@ namespace DevilDaggersWebsite.Core.Tests
 
 		private static void SetUpInMemoryDatabase(DbContextOptions<ApplicationDbContext> options)
 		{
-			using ApplicationDbContext context = new ApplicationDbContext(options);
-			Player testPlayer1 = new Player
+			using ApplicationDbContext context = new(options);
+			Player testPlayer1 = new()
 			{
 				Id = 1,
 				Username = "TestPlayer1",
 			};
-			Player testPlayer2 = new Player
+			Player testPlayer2 = new()
 			{
 				Id = 2,
 				Username = "TestPlayer2",
 			};
-			SpawnsetFile spawnsetFile = new SpawnsetFile
+			SpawnsetFile spawnsetFile = new()
 			{
 				Id = 1,
 				LastUpdated = DateTime.Now,
@@ -221,7 +221,7 @@ namespace DevilDaggersWebsite.Core.Tests
 				HtmlDescription = string.Empty,
 				MaxDisplayWaves = 5,
 			};
-			CustomLeaderboard customLeaderboard = new CustomLeaderboard
+			CustomLeaderboard customLeaderboard = new()
 			{
 				Id = 1,
 				Bronze = 60,
@@ -236,7 +236,7 @@ namespace DevilDaggersWebsite.Core.Tests
 				TotalRunsSubmitted = 666,
 				SpawnsetFile = spawnsetFile,
 			};
-			CustomEntry customEntry = new CustomEntry
+			CustomEntry customEntry = new()
 			{
 				Id = 1,
 				ClientVersion = _ddclClientVersion,
