@@ -68,7 +68,7 @@ namespace DevilDaggersWebsite.Api
 			foreach (string leaderboardHistoryPath in Io.Directory.GetFiles(Io.Path.Combine(_env.WebRootPath, "leaderboard-history"), "*.json"))
 			{
 				Leaderboard lb = JsonConvert.DeserializeObject<Leaderboard>(Io.File.ReadAllText(leaderboardHistoryPath, Encoding.UTF8));
-				Entry entry = lb.Entries.Find(e => e.Id == userId);
+				Entry? entry = lb.Entries.Find(e => e.Id == userId);
 				if (entry != null)
 					entries.Add((lb.DateTime, entry));
 			}
@@ -93,7 +93,7 @@ namespace DevilDaggersWebsite.Api
 			foreach (string leaderboardHistoryPath in Io.Directory.GetFiles(Io.Path.Combine(_env.WebRootPath, "leaderboard-history"), "*.json"))
 			{
 				Leaderboard lb = JsonConvert.DeserializeObject<Leaderboard>(Io.File.ReadAllText(leaderboardHistoryPath, Encoding.UTF8));
-				Entry entry = lb.Entries.Find(e => e.Id == userId);
+				Entry? entry = lb.Entries.Find(e => e.Id == userId);
 				if (entry?.DeathsTotal > 0)
 					data.Add(lb.DateTime, entry.DeathsTotal);
 			}

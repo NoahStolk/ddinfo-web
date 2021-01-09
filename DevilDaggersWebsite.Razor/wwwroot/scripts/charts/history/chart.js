@@ -1,4 +1,9 @@
-﻿let monthShortNames = ["Jan", "Feb", "Mar", "Apr", "May", "Jun", "Jul", "Aug", "Sep", "Oct", "Nov", "Dec"];
+﻿const preRelease = new Date(2016, 0, 1); // January 1st
+const v1Release = new Date(2016, 1, 18); // February 18th
+const v2Release = new Date(2016, 6, 5); // July 5th
+const v3Release = new Date(2016, 8, 19); // September 19th
+
+let monthShortNames = ["Jan", "Feb", "Mar", "Apr", "May", "Jun", "Jul", "Aug", "Sep", "Oct", "Nov", "Dec"];
 
 let getUrlParameter = function getUrlParameter(sParam) {
 	let sPageURL = window.location.search.substring(1),
@@ -42,9 +47,9 @@ $.ajax({
 
 function getDeathType(date, entry) {
 	let gameVersionIndex = 0;
-	if (date > new Date(2016, 6, 5) && date < new Date(2016, 8, 19)) // V2 release = 5 july (yes that's month 6 in javascript help me please)
-		gameVersionIndex = 1; // haha V2 = index 1 i am javascript now
-	else if (date >= new Date(2016, 8, 19)) //also september 19 = V3 let's write grammatically incorrect comments because it's javascript anyway
+	if (date > v2Release && date < v3Release)
+		gameVersionIndex = 1;
+	else if (date >= v3Release)
 		gameVersionIndex = 2;
 
 	for (let i = 0; i < deathTypes[gameVersionIndex].length; i++)
@@ -99,8 +104,8 @@ function createChart(chartName, data, minDate, maxDate, minTime, maxTime, yNumbe
 			objects: [
 				{
 					rectangle: {
-						xmin: new Date("2016-01-01"),
-						xmax: new Date("2016-02-18"),
+						xmin: preRelease,
+						xmax: v1Release,
 						xminOffset: "0px",
 						xmaxOffset: "0px",
 						yminOffset: "0px",
@@ -113,8 +118,8 @@ function createChart(chartName, data, minDate, maxDate, minTime, maxTime, yNumbe
 				},
 				{
 					rectangle: {
-						xmin: new Date("2016-02-18"),
-						xmax: new Date("2016-07-05"),
+						xmin: v1Release,
+						xmax: v2Release,
 						xminOffset: "0px",
 						xmaxOffset: "0px",
 						yminOffset: "0px",
@@ -127,8 +132,8 @@ function createChart(chartName, data, minDate, maxDate, minTime, maxTime, yNumbe
 				},
 				{
 					rectangle: {
-						xmin: new Date("2016-07-05"),
-						xmax: new Date("2016-09-19"),
+						xmin: v2Release,
+						xmax: v3Release,
 						xminOffset: "0px",
 						xmaxOffset: "0px",
 						yminOffset: "0px",
@@ -141,7 +146,7 @@ function createChart(chartName, data, minDate, maxDate, minTime, maxTime, yNumbe
 				},
 				{
 					rectangle: {
-						xmin: new Date("2016-09-19"),
+						xmin: v3Release,
 						xmax: maxDate,
 						xminOffset: "0px",
 						xmaxOffset: "0px",
@@ -212,7 +217,6 @@ function setHighlighterPosition(chart, highlighterId, data, xy, minTime, maxTime
 }
 
 function setHighlighterStyle(time, colorCode) {
-	// Styles
 	if (time < 500) {
 		$('#h-time').addClass('golden');
 		$('#h-time').removeClass('devil');
