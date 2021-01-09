@@ -30,6 +30,6 @@
     </PackageReference>
   </ItemGroup>
   <ItemGroup>
-    <ProjectReference Include="..\DevilDaggersWebsite\DevilDaggersWebsite.csproj" />
+    <ProjectReference Include="..\DevilDaggersWebsite.Core\DevilDaggersWebsite.Core.csproj" />
   </ItemGroup>
 </Project>
