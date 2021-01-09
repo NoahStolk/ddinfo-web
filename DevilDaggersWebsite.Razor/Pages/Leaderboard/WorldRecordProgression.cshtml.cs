@@ -16,9 +16,9 @@ namespace DevilDaggersWebsite.Razor.Pages.Leaderboard
 			_leaderboardHistoryHelper = leaderboardHistoryHelper;
 		}
 
-		public List<WorldRecordHolder> WorldRecordHolders { get; private set; } = new List<WorldRecordHolder>();
+		public List<WorldRecordHolder> WorldRecordHolders { get; private set; } = new();
 
-		public Dictionary<WorldRecord, TimeSpan> WorldRecords { get; private set; } = new Dictionary<WorldRecord, TimeSpan>();
+		public Dictionary<WorldRecord, TimeSpan> WorldRecords { get; } = new();
 
 		public void OnGet()
 		{

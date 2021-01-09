@@ -10,7 +10,7 @@ namespace DevilDaggersWebsite.Dto
 			Entry = entry;
 		}
 
-		public DateTime DateTime { get; set; }
-		public Entry Entry { get; set; }
+		public DateTime DateTime { get; }
+		public Entry Entry { get; }
 	}
 }

@@ -22,7 +22,7 @@ namespace DevilDaggersWebsite.Transients
 		{
 			bool isDateParameterValid = date.HasValue && date <= DateTime.Now;
 
-			List<WorldRecord> data = new List<WorldRecord>();
+			List<WorldRecord> data = new();
 
 			int worldRecord = 0;
 			foreach (string leaderboardHistoryPath in Directory.GetFiles(Path.Combine(_env.WebRootPath, "leaderboard-history"), "*.json"))
@@ -38,7 +38,7 @@ namespace DevilDaggersWebsite.Transients
 						data.Clear();
 					}
 
-					data.Add(new WorldRecord(leaderboard.DateTime, leaderboard.Entries[0]));
+					data.Add(new(leaderboard.DateTime, leaderboard.Entries[0]));
 				}
 			}
 
