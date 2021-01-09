@@ -38,7 +38,7 @@
   </ItemGroup>
   <ItemGroup>
     <ProjectReference Include="..\..\DiscordBotDdInfo\DiscordBotDdInfo\DiscordBotDdInfo.csproj" />
-    <ProjectReference Include="..\DevilDaggersWebsite.Core\DevilDaggersWebsite.Core.csproj" />
+    <ProjectReference Include="..\DevilDaggersWebsite\DevilDaggersWebsite.csproj" />
   </ItemGroup>
   <ItemGroup>
     <Content Update="log4net.config">
