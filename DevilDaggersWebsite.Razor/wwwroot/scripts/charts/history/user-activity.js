@@ -47,7 +47,7 @@ $.getJSON("/api/leaderboard-history/user-activity?UserId=" + getUrlParameter("Us
 	const chart = createChart(chartName, activity, minDate, maxDate, 0, Math.ceil(maxDeaths / 100) * 100, 20, false);
 
 	$(chartId).bind('jqplotMouseMove', function (_event, xy, _axesData, _neighbor, plot) {
-		const closestData = getClosestDataToMouse(chart, xy, plot, minDate, maxDate, 0, maxDeaths);
+		const closestData = getDataBasedOnMouseXPosition(chart, xy, plot, minDate, maxDate);
 
 		if (!closestData)
 			$().hide();
@@ -71,7 +71,7 @@ $.getJSON("/api/leaderboard-history/user-activity?UserId=" + getUrlParameter("Us
 	});
 
 	function setHighlighter(data, xy) {
-		setHighlighterPosition(chart, highlighterId, data, xy, 0, maxDeaths);
+		setHighlighterPosition(chart, highlighterId, data, xy, 0, maxDeaths, true);
 
 		const dateCurrent = new Date(data[0]);
 		const yearCurrent = dateCurrent.getFullYear();

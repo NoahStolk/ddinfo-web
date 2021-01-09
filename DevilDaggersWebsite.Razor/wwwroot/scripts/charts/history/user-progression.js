@@ -65,7 +65,7 @@ $.getJSON("/api/leaderboard-history/user-progression?userId=" + getUrlParameter(
 	});
 
 	function setHighlighter(data, xy) {
-		setHighlighterPosition(chart, highlighterId, data, xy, minTime, maxTime);
+		setHighlighterPosition(chart, highlighterId, data, xy, minTime, maxTime, false);
 
 		// Values
 		const date = new Date(data[0]);

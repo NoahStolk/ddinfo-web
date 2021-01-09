@@ -20,3 +20,7 @@
 .chart {
 	height: 65vh;
 }
+
+#user-activity-highlighter {
+	width: 448px;
+}

@@ -206,13 +206,31 @@ function getClosestDataToMouse(chart, xy, plot, minDate, maxDate, minTime, maxTi
 	return null;
 }
 
-function setHighlighterPosition(chart, highlighterId, data, xy, minTime, maxTime) {
+function getDataBasedOnMouseXPosition(chart, xy, plot, minDate, maxDate) {
+	// Check which point is closest to the mouse.
+	let iData;
+	for (i = 0; i < plot.series[0].data.length - 1; i++) {
+		iData = plot.series[0].data[i];
+		const iDataNext = plot.series[0].data[i + 1];
+
+		let xPosStart = (iData[0] - minDate) / (maxDate - minDate) * chart.grid._width;
+		let xPosEnd = (iDataNext[0] - minDate) / (maxDate - minDate) * chart.grid._width;
+
+		if (xy.x > xPosStart && xy.x < xPosEnd) {
+			return iData;
+		}
+	}
+
+	return plot.series[0].data[plot.series[0].data.length - 1];
+}
+
+function setHighlighterPosition(chart, highlighterId, data, xy, minTime, maxTime, useMousePosition) {
 	const yAxisWidth = chart.grid._width - chart._width;
 	const timePerc = (data[1] - minTime) / (maxTime - minTime);
 	$(highlighterId).css({
 		position: "absolute",
 		left: xy.x - yAxisWidth - ($(highlighterId).width() / 2 + 6) + "px",
-		bottom: timePerc * chart.grid._height + (timePerc < 0.5 ? 112 : -256) + "px"
+		bottom: (useMousePosition ? (chart.grid._height - xy.y + 64) : (timePerc * chart.grid._height + (timePerc < 0.5 ? 112 : -256))) + "px",
 	});
 }
 
