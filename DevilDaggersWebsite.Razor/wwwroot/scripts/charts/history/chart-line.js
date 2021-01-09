@@ -207,7 +207,6 @@ function getClosestDataToMouse(chart, xy, plot, minDate, maxDate, minTime, maxTi
 }
 
 function getDataBasedOnMouseXPosition(chart, xy, plot, minDate, maxDate) {
-	// Check which point is closest to the mouse.
 	let iData;
 	for (i = 0; i < plot.series[0].data.length - 1; i++) {
 		iData = plot.series[0].data[i];

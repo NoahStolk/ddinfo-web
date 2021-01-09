@@ -1,7 +1,6 @@
 ﻿.highlighter {
 	background-color: rgba(0,0,0,0.8);
 	color: var(--col-default-text);
-	width: 304px;
 	text-align: right;
 	border: solid 1px;
 	border-color: #999;
@@ -19,6 +18,11 @@
 
 .chart {
 	height: 65vh;
+}
+
+#world-record-progression-highlighter,
+#user-progression-highlighter {
+	width: 304px;
 }
 
 #user-activity-highlighter {

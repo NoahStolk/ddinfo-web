@@ -65,7 +65,6 @@ $.getJSON("/api/leaderboard-history/world-records", function (data) {
 	function setHighlighter(data, xy) {
 		setHighlighterPosition(chart, highlighterId, data, xy, minTime, maxTime, false);
 
-		// Values
 		const date = new Date(data[0]);
 		const dateString = monthShortNames[date.getMonth()] + " " + ("0" + date.getDate()).slice(-2) + " '" + date.getFullYear().toString().substring(2, 4);
 		$('#h-date').html(dateString);
@@ -78,7 +77,6 @@ $.getJSON("/api/leaderboard-history/world-records", function (data) {
 
 		setHighlighterStyle(data[1], data[6]);
 
-		// Show
 		$(highlighterId).show();
 	}
 });

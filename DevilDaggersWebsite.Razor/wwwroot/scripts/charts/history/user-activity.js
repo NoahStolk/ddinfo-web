@@ -83,13 +83,7 @@ $.getJSON("/api/leaderboard-history/user-activity?UserId=" + getUrlParameter("Us
 		const monthPrevious = datePrevious.getMonth();
 		const dayPrevious = datePrevious.getDate();
 
-		let dateString;
-
-		// Only show current date if the difference was less than 25 hours.
-		if (Math.abs(dateCurrent - datePrevious) < dayLengthInMilliseconds + 1000 * 60 * 60)
-			dateString = getDateString(dayCurrent, monthCurrent, yearCurrent);
-		else
-			dateString = getDateString(dayPrevious, monthPrevious, yearPrevious) + ' - ' + getDateString(dayCurrent, monthCurrent, yearCurrent);
+		let dateString = getDateString(dayPrevious, monthPrevious, yearPrevious) + ' - ' + getDateString(dayCurrent, monthCurrent, yearCurrent);
 
 		$('#h-activity-date').html(dateString);
 		$('#h-activity-deaths-per-day').html(data[1].toFixed(2));
