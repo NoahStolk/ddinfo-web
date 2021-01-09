@@ -1,5 +1,5 @@
 ﻿using DevilDaggersCore.Utils;
-using DevilDaggersWebsite.Core.Dto;
+using DevilDaggersWebsite.Dto;
 using Microsoft.AspNetCore.Hosting;
 using Newtonsoft.Json;
 using System;
@@ -7,7 +7,7 @@ using System.Collections.Generic;
 using System.IO;
 using System.Text;
 
-namespace DevilDaggersWebsite.Core.Transients
+namespace DevilDaggersWebsite.Transients
 {
 	public class LeaderboardHistoryHelper
 	{

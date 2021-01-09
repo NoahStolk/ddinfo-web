@@ -1,9 +1,9 @@
 ﻿using DevilDaggersCore.Extensions;
 using DevilDaggersCore.Spawnsets;
-using DevilDaggersWebsite.Core.Clients;
-using DevilDaggersWebsite.Core.Entities;
-using DevilDaggersWebsite.Core.Extensions;
-using DevilDaggersWebsite.Core.Transients;
+using DevilDaggersWebsite.Clients;
+using DevilDaggersWebsite.Entities;
+using DevilDaggersWebsite.Extensions;
+using DevilDaggersWebsite.Transients;
 using Microsoft.AspNetCore.Hosting;
 using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
@@ -16,7 +16,7 @@ using System.Threading.Tasks;
 using System.Web;
 using BotLogger = DiscordBotDdInfo.DiscordLogger;
 
-namespace DevilDaggersWebsite.Core.Api
+namespace DevilDaggersWebsite.Api
 {
 	[Route("api/custom-leaderboards")]
 	[ApiController]
@@ -137,12 +137,12 @@ namespace DevilDaggersWebsite.Core.Api
 				string.Join(",", new int[3] { uploadRequest.LevelUpTime2, uploadRequest.LevelUpTime3, uploadRequest.LevelUpTime4 }));
 			if (await DecryptValidation(uploadRequest.Validation) != check)
 			{
-				string errorMessage = "Invalid submission.";
+				const string errorMessage = "Invalid submission.";
 				await TryLog(uploadRequest, spawnsetName, errorMessage);
 				return new BadRequestObjectResult(new ProblemDetails { Title = errorMessage });
 			}
 
-			CustomLeaderboard leaderboard = _context.CustomLeaderboards.Include(cl => cl.SpawnsetFile).ThenInclude(sf => sf.Player).FirstOrDefault(cl => cl.SpawnsetFile.Name == spawnsetName);
+			CustomLeaderboard? leaderboard = _context.CustomLeaderboards.Include(cl => cl.SpawnsetFile).ThenInclude(sf => sf.Player).FirstOrDefault(cl => cl.SpawnsetFile.Name == spawnsetName);
 			if (leaderboard == null)
 			{
 				const string errorMessage = "This spawnset exists on DevilDaggers.info, but doesn't have a leaderboard.";
@@ -160,7 +160,7 @@ namespace DevilDaggersWebsite.Core.Api
 			// At this point, the submission is accepted.
 
 			// Add the player or update the username.
-			Player player = _context.Players.FirstOrDefault(p => p.Id == uploadRequest.PlayerId);
+			Player? player = _context.Players.FirstOrDefault(p => p.Id == uploadRequest.PlayerId);
 			if (player == null)
 			{
 				player = new Player

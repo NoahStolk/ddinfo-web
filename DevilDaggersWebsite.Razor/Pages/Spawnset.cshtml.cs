@@ -1,5 +1,5 @@
 ﻿using DevilDaggersCore.Spawnsets;
-using DevilDaggersWebsite.Core.Entities;
+using DevilDaggersWebsite.Entities;
 using Microsoft.AspNetCore.Hosting;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.AspNetCore.Mvc.RazorPages;

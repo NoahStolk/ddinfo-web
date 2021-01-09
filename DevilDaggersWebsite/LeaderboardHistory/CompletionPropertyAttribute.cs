@@ -1,6 +1,6 @@
 ﻿using System;
 
-namespace DevilDaggersWebsite.Core.LeaderboardHistory
+namespace DevilDaggersWebsite.LeaderboardHistory
 {
 	[AttributeUsage(AttributeTargets.Property, AllowMultiple = false, Inherited = true)]
 	public class CompletionPropertyAttribute : Attribute

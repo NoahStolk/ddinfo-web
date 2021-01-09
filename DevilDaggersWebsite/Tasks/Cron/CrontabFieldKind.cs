@@ -1,6 +1,6 @@
 ﻿using System;
 
-namespace DevilDaggersWebsite.Core.Tasks.Cron
+namespace DevilDaggersWebsite.Tasks.Cron
 {
 	[Serializable]
 	public enum CrontabFieldKind

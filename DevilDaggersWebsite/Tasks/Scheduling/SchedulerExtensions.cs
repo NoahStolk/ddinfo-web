@@ -3,7 +3,7 @@ using Microsoft.Extensions.Hosting;
 using System;
 using System.Threading.Tasks;
 
-namespace DevilDaggersWebsite.Core.Tasks.Scheduling
+namespace DevilDaggersWebsite.Tasks.Scheduling
 {
 	public static class SchedulerExtensions
 	{

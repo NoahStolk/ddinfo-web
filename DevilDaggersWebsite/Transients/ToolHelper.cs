@@ -1,10 +1,10 @@
-﻿using DevilDaggersWebsite.Core.Dto;
+﻿using DevilDaggersWebsite.Dto;
 using Microsoft.AspNetCore.Hosting;
 using Newtonsoft.Json;
 using System.Collections.Generic;
 using System.IO;
 
-namespace DevilDaggersWebsite.Core.Transients
+namespace DevilDaggersWebsite.Transients
 {
 	public class ToolHelper
 	{

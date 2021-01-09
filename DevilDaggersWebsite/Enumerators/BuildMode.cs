@@ -1,4 +1,4 @@
-﻿namespace DevilDaggersWebsite.Core.Enumerators
+﻿namespace DevilDaggersWebsite.Enumerators
 {
 	public enum BuildMode
 	{

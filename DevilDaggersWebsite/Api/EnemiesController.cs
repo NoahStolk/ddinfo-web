@@ -5,7 +5,7 @@ using System.Collections.Generic;
 using System.Globalization;
 using System.Linq;
 
-namespace DevilDaggersWebsite.Core.Api
+namespace DevilDaggersWebsite.Api
 {
 	[Route("api/enemies")]
 	[ApiController]

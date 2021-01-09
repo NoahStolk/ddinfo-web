@@ -1,6 +1,6 @@
 ﻿using System.Collections.Generic;
 
-namespace DevilDaggersWebsite.Core.Entities
+namespace DevilDaggersWebsite.Entities
 {
 	public class Title
 	{

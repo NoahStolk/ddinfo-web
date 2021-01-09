@@ -2,7 +2,7 @@
 using System.Collections.Generic;
 using System.Text;
 
-namespace DevilDaggersWebsite.Core.Dto
+namespace DevilDaggersWebsite.Dto
 {
 	public class Change
 	{

@@ -4,7 +4,7 @@ using System.Globalization;
 using System.Linq;
 using System.Xml.Linq;
 
-namespace DevilDaggersWebsite.Core.SitemapGenerator
+namespace DevilDaggersWebsite.SitemapGenerator
 {
 	public class SitemapBuilder
 	{

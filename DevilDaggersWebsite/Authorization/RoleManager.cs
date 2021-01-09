@@ -5,7 +5,7 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Threading.Tasks;
 
-namespace DevilDaggersWebsite.Core.Authorization
+namespace DevilDaggersWebsite.Authorization
 {
 	public static class RoleManager
 	{

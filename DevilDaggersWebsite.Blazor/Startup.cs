@@ -1,9 +1,9 @@
+using DevilDaggersWebsite.Authorization;
 using DevilDaggersWebsite.Blazor.Areas.Identity;
-using DevilDaggersWebsite.Core.Authorization;
-using DevilDaggersWebsite.Core.Entities;
-using DevilDaggersWebsite.Core.Tasks;
-using DevilDaggersWebsite.Core.Tasks.Scheduling;
-using DevilDaggersWebsite.Core.Transients;
+using DevilDaggersWebsite.Entities;
+using DevilDaggersWebsite.Tasks;
+using DevilDaggersWebsite.Tasks.Scheduling;
+using DevilDaggersWebsite.Transients;
 using Microsoft.AspNetCore.Builder;
 using Microsoft.AspNetCore.Components.Authorization;
 using Microsoft.AspNetCore.Hosting;

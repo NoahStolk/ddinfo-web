@@ -1,4 +1,4 @@
-﻿namespace DevilDaggersWebsite.Core.Enumerators
+﻿namespace DevilDaggersWebsite.Enumerators
 {
 	// TODO: Add None.
 	public enum Currency

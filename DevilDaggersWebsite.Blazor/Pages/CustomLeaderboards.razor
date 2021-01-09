@@ -58,10 +58,10 @@ else
 }
 
 @code {
-	private List<Core.Entities.CustomEntry> _customEntries = new List<Core.Entities.CustomEntry>();
-	private List<Core.Entities.CustomLeaderboard> _customLeaderboards = new List<Core.Entities.CustomLeaderboard>();
+	private List<Entities.CustomEntry> _customEntries = new();
+	private List<Entities.CustomLeaderboard> _customLeaderboards = new();
 
-	private List<CustomLeaderboardData> _tableData = new List<CustomLeaderboardData>();
+	private List<CustomLeaderboardData> _tableData = new();
 
 	private bool _isLoading;
 
@@ -80,14 +80,14 @@ else
 
 		for (int i = 0; i < _customLeaderboards.Count; i++)
 		{
-			Core.Entities.CustomLeaderboard cl = _customLeaderboards[i];
+			Entities.CustomLeaderboard cl = _customLeaderboards[i];
 
 			int totalPlayers = _customEntries.Count(ce => ce.CustomLeaderboardId == cl.Id);
 
-			Core.Entities.CustomEntry? worldRecordEntry = _customEntries
+			Entities.CustomEntry? worldRecordEntry = _customEntries
 				.Where(ce => ce.CustomLeaderboardId == cl.Id)
 				.AsQueryable()
-				.OrderByMember(nameof(Core.Entities.CustomEntry.Time), cl.IsAscending())
+				.OrderByMember(nameof(Entities.CustomEntry.Time), cl.IsAscending())
 				.FirstOrDefault();
 
 			_tableData.Add(new CustomLeaderboardData(cl, totalPlayers, worldRecordEntry));

@@ -1,6 +1,6 @@
-﻿using DevilDaggersWebsite.Core.Entities;
+﻿using DevilDaggersWebsite.Entities;
 
-namespace DevilDaggersWebsite.Core.Extensions
+namespace DevilDaggersWebsite.Extensions
 {
 	public static class EntityConverterExtensions
 	{

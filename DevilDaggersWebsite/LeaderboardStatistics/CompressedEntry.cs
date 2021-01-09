@@ -1,6 +1,6 @@
 ﻿using System;
 
-namespace DevilDaggersWebsite.Core.LeaderboardStatistics
+namespace DevilDaggersWebsite.LeaderboardStatistics
 {
 	public class CompressedEntry
 	{

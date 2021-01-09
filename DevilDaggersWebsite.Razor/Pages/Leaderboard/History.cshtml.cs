@@ -1,5 +1,5 @@
 ﻿using DevilDaggersCore.Utils;
-using DevilDaggersWebsite.Core.Dto;
+using DevilDaggersWebsite.Dto;
 using DevilDaggersWebsite.Razor.PageModels;
 using DevilDaggersWebsite.Razor.Utils;
 using Microsoft.AspNetCore.Hosting;
@@ -12,7 +12,7 @@ using System.IO;
 using System.Linq;
 using System.Text;
 using Io = System.IO;
-using Lb = DevilDaggersWebsite.Core.Dto.Leaderboard;
+using Lb = DevilDaggersWebsite.Dto.Leaderboard;
 
 namespace DevilDaggersWebsite.Razor.Pages.Leaderboard
 {
@@ -33,12 +33,12 @@ namespace DevilDaggersWebsite.Razor.Pages.Leaderboard
 			JsonFiles.Reverse();
 		}
 
-		public Lb? Leaderboard { get; set; } = new Lb();
-		public Lb LeaderboardPrevious { get; set; } = new Lb();
-		public List<string> ChangesGlobal { get; private set; } = new List<string>();
-		public Dictionary<string, string> ChangesTop100 { get; private set; } = new Dictionary<string, string>();
+		public Lb? Leaderboard { get; set; } = new();
+		public Lb LeaderboardPrevious { get; set; } = new();
+		public List<string> ChangesGlobal { get; } = new();
+		public Dictionary<string, string> ChangesTop100 { get; } = new();
 
-		public List<SelectListItem> JsonFiles { get; } = new List<SelectListItem>();
+		public List<SelectListItem> JsonFiles { get; } = new();
 		public string? From { get; set; }
 		public string? FromPrevious { get; set; }
 		public string? FromNext { get; set; }
@@ -83,7 +83,7 @@ namespace DevilDaggersWebsite.Razor.Pages.Leaderboard
 					List<Entry> plays = new List<Entry>();
 					foreach (Entry entry in Leaderboard.Entries)
 					{
-						Entry entryPrevious = LeaderboardPrevious.Entries.FirstOrDefault(e => e.Id == entry.Id);
+						Entry? entryPrevious = LeaderboardPrevious.Entries.Find(e => e.Id == entry.Id);
 						if (entryPrevious == null)
 						{
 							top100joins.Add(entry);

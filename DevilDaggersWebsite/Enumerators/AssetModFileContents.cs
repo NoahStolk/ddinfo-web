@@ -1,6 +1,6 @@
 ﻿using System;
 
-namespace DevilDaggersWebsite.Core.Enumerators
+namespace DevilDaggersWebsite.Enumerators
 {
 	[Flags]
 	public enum AssetModFileContents

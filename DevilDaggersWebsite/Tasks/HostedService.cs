@@ -2,7 +2,7 @@
 using System.Threading;
 using System.Threading.Tasks;
 
-namespace DevilDaggersWebsite.Core.Tasks
+namespace DevilDaggersWebsite.Tasks
 {
 	public abstract class HostedService : IHostedService
 	{

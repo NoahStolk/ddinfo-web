@@ -4,7 +4,7 @@ using System;
 using System.ComponentModel.DataAnnotations.Schema;
 using System.Web;
 
-namespace DevilDaggersWebsite.Core.Entities
+namespace DevilDaggersWebsite.Entities
 {
 	public class CustomEntry
 	{

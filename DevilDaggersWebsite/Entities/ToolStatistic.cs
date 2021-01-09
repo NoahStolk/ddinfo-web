@@ -1,4 +1,4 @@
-﻿namespace DevilDaggersWebsite.Core.Entities
+﻿namespace DevilDaggersWebsite.Entities
 {
 	public class ToolStatistic
 	{

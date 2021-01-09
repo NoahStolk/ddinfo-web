@@ -1,6 +1,6 @@
-﻿using DevilDaggersWebsite.Core.Dto;
-using DevilDaggersWebsite.Core.Entities;
-using DevilDaggersWebsite.Core.Transients;
+﻿using DevilDaggersWebsite.Dto;
+using DevilDaggersWebsite.Entities;
+using DevilDaggersWebsite.Transients;
 using Microsoft.AspNetCore.Hosting;
 using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
@@ -12,7 +12,7 @@ using System.Linq;
 using System.Net.Mime;
 using Io = System.IO;
 
-namespace DevilDaggersWebsite.Core.Api
+namespace DevilDaggersWebsite.Api
 {
 	[Route("api/tools")]
 	[ApiController]

@@ -4,7 +4,7 @@ using System.Globalization;
 using System.IO;
 using System.Runtime.Serialization;
 
-namespace DevilDaggersWebsite.Core.Tasks.Cron
+namespace DevilDaggersWebsite.Tasks.Cron
 {
 	[Serializable]
 	public sealed class CrontabFieldImpl : IObjectReference

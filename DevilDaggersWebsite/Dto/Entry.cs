@@ -1,7 +1,7 @@
 ﻿using DevilDaggersCore.Game;
 using DevilDaggersCore.Utils;
-using DevilDaggersWebsite.Core.Entities;
-using DevilDaggersWebsite.Core.LeaderboardHistory;
+using DevilDaggersWebsite.Entities;
+using DevilDaggersWebsite.LeaderboardHistory;
 using Microsoft.AspNetCore.Hosting;
 using Microsoft.AspNetCore.Html;
 using Newtonsoft.Json;
@@ -13,7 +13,7 @@ using System.Reflection;
 using System.Text;
 using System.Web;
 
-namespace DevilDaggersWebsite.Core.Dto
+namespace DevilDaggersWebsite.Dto
 {
 	public class Entry
 	{
@@ -69,7 +69,7 @@ namespace DevilDaggersWebsite.Core.Dto
 		public double AccuracyTotal => DaggersFiredTotal == 0 ? 0 : DaggersHitTotal / (double)DaggersFiredTotal;
 
 		[JsonIgnore]
-		public Completion Completion { get; } = new Completion();
+		public Completion Completion { get; } = new();
 
 		public Completion GetCompletion()
 		{
@@ -169,7 +169,7 @@ namespace DevilDaggersWebsite.Core.Dto
 			foreach (string leaderboardHistoryPath in Directory.GetFiles(Path.Combine(env.WebRootPath, "leaderboard-history"), "*.json"))
 			{
 				Leaderboard leaderboard = JsonConvert.DeserializeObject<Leaderboard>(File.ReadAllText(leaderboardHistoryPath, Encoding.UTF8));
-				Entry historyEntry = leaderboard.Entries.FirstOrDefault(e => e.Id == Id);
+				Entry historyEntry = leaderboard.Entries.Find(e => e.Id == Id);
 				if (historyEntry != null)
 				{
 					if (string.IsNullOrWhiteSpace(historyEntry.Username))

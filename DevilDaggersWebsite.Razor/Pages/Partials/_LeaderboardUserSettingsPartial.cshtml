@@ -1,11 +1,11 @@
 ﻿@model IDefaultLeaderboardPage
 @using DevilDaggersCore.Game
 @using DevilDaggersCore.Utils
-@using DevilDaggersWebsite.Core.Entities
+@using DevilDaggersWebsite.Entities
 @using DevilDaggersWebsite.Razor.PageModels
 @using DevilDaggersWebsite.Razor.Utils
 @using Microsoft.EntityFrameworkCore
-@inject DevilDaggersWebsite.Core.Entities.ApplicationDbContext dbContext
+@inject DevilDaggersWebsite.Entities.ApplicationDbContext dbContext
 
 <div class="leaderboard-container flex-container flex-center">
 	<div class="leaderboard-title-row flex-container">
@@ -27,7 +27,7 @@
 		@{
 			IEnumerable<Donation> donations = dbContext.Donations.ToList();
 			IEnumerable<Player> players = dbContext.Players.Include(p => p.PlayerTitles).ThenInclude(pt => pt.Title).ToList();
-			foreach (Core.Dto.Entry entry in Model.Leaderboard?.Entries ?? new List<Core.Dto.Entry>())
+			foreach (Dto.Entry entry in Model.Leaderboard?.Entries ?? new())
 			{
 				Player? player = players.FirstOrDefault(p => p.Id == entry.Id);
 				if (player == null || player.Dpi == null)

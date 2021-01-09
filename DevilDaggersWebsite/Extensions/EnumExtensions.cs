@@ -1,6 +1,6 @@
-﻿using DevilDaggersWebsite.Core.Enumerators;
+﻿using DevilDaggersWebsite.Enumerators;
 
-namespace DevilDaggersWebsite.Core.Extensions
+namespace DevilDaggersWebsite.Extensions
 {
 	public static class EnumExtensions
 	{

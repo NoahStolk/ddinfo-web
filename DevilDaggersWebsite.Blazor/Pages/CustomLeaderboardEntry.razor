@@ -47,14 +47,14 @@
 </div>
 
 @code {
-	private List<(int seconds, int count)> _gemsData = new List<(int seconds, int count)> { (0, 0) };
-	private List<(int seconds, int count)> _killsData = new List<(int seconds, int count)> { (0, 0) };
-	private List<(int seconds, int count)> _homingData = new List<(int seconds, int count)> { (0, 0) };
-	private List<(int seconds, int count)> _enemiesAliveData = new List<(int seconds, int count)> { (0, 0) };
-	private List<(int seconds, int count)> _daggersFiredData = new List<(int seconds, int count)> { (0, 0) };
-	private List<(int seconds, int count)> _daggersHitData = new List<(int seconds, int count)> { (0, 0) };
-	private List<(int seconds, float count)> _accuracyData = new List<(int seconds, float count)> { (0, 0) };
-	private Core.Entities.CustomEntry? _customEntry;
+	private List<(int seconds, int count)> _gemsData = new() { (0, 0) };
+	private List<(int seconds, int count)> _killsData = new() { (0, 0) };
+	private List<(int seconds, int count)> _homingData = new() { (0, 0) };
+	private List<(int seconds, int count)> _enemiesAliveData = new() { (0, 0) };
+	private List<(int seconds, int count)> _daggersFiredData = new() { (0, 0) };
+	private List<(int seconds, int count)> _daggersHitData = new() { (0, 0) };
+	private List<(int seconds, float count)> _accuracyData = new() { (0, 0) };
+	private Entities.CustomEntry? _customEntry;
 
 	[Parameter]
 	public int CustomEntryId { get; set; }

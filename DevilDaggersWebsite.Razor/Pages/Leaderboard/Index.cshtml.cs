@@ -1,6 +1,6 @@
-﻿using DevilDaggersWebsite.Core.Clients;
-using DevilDaggersWebsite.Core.Dto;
-using DevilDaggersWebsite.Core.Entities;
+﻿using DevilDaggersWebsite.Clients;
+using DevilDaggersWebsite.Dto;
+using DevilDaggersWebsite.Entities;
 using DevilDaggersWebsite.Razor.Leaderboards;
 using DevilDaggersWebsite.Razor.PageModels;
 using Microsoft.AspNetCore.Hosting;
@@ -10,7 +10,7 @@ using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Threading.Tasks;
-using Lb = DevilDaggersWebsite.Core.Dto.Leaderboard;
+using Lb = DevilDaggersWebsite.Dto.Leaderboard;
 
 namespace DevilDaggersWebsite.Razor.Pages.Leaderboard
 {

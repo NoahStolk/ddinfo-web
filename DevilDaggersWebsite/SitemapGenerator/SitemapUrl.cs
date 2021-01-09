@@ -1,6 +1,6 @@
 ﻿using System;
 
-namespace DevilDaggersWebsite.Core.SitemapGenerator
+namespace DevilDaggersWebsite.SitemapGenerator
 {
 	public class SitemapUrl
 	{

@@ -1,11 +1,11 @@
-﻿using DevilDaggersWebsite.Core.Tasks.Cron;
+﻿using DevilDaggersWebsite.Tasks.Cron;
 using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Threading;
 using System.Threading.Tasks;
 
-namespace DevilDaggersWebsite.Core.Tasks.Scheduling
+namespace DevilDaggersWebsite.Tasks.Scheduling
 {
 	public class SchedulerHostedService : HostedService
 	{

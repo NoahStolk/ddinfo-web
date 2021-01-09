@@ -23,14 +23,14 @@ else
 }
 
 @code {
-	private Core.Dto.Leaderboard? _leaderboard;
+	private Dto.Leaderboard? _leaderboard;
 
 	private string _search = string.Empty;
 
 	private bool _isLoading;
 
 	[Parameter]
-	public List<Player> Players { get; set; } = new List<Player>();
+	public List<Player> Players { get; set; } = new();
 
 	protected override async Task OnInitializedAsync()
 	{

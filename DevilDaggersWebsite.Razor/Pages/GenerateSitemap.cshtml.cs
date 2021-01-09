@@ -1,4 +1,4 @@
-﻿using DevilDaggersWebsite.Core.SitemapGenerator;
+﻿using DevilDaggersWebsite.SitemapGenerator;
 using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc.RazorPages;
 using System;
@@ -20,7 +20,7 @@ namespace DevilDaggersWebsite.Razor.Pages
 
 		public void OnGet()
 		{
-			Assembly asm = AppDomain.CurrentDomain.GetAssemblies().FirstOrDefault(a => a.FullName?.Contains("Views", StringComparison.InvariantCulture) ?? false);
+			Assembly asm = Array.Find(AppDomain.CurrentDomain.GetAssemblies(), a => a.FullName?.Contains("Views", StringComparison.InvariantCulture) ?? false);
 			foreach (Type type in asm.GetTypes().Where(t => t.Name.Contains("Admin", StringComparison.InvariantCulture) || t.Name.Contains("Identity", StringComparison.InvariantCulture) || t.Name.Contains("Api", StringComparison.InvariantCulture)))
 				SitemapUtils.ExcludePage(type);
 

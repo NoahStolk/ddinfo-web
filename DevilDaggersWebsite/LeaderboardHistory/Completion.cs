@@ -1,6 +1,6 @@
 ﻿using System.Collections.Generic;
 
-namespace DevilDaggersWebsite.Core.LeaderboardHistory
+namespace DevilDaggersWebsite.LeaderboardHistory
 {
 	public class Completion
 	{

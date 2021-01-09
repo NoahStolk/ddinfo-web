@@ -1,6 +1,6 @@
 ﻿#if !DEBUG
 using DevilDaggersCore.Utils;
-using DevilDaggersWebsite.Core.Clients;
+using DevilDaggersWebsite.Clients;
 using Microsoft.AspNetCore.Hosting;
 using Newtonsoft.Json;
 using System;
@@ -8,7 +8,7 @@ using System.IO;
 #endif
 using System.Threading.Tasks;
 
-namespace DevilDaggersWebsite.Core.Tasks
+namespace DevilDaggersWebsite.Tasks
 {
 	public class CreateLeaderboardHistoryFileTask : AbstractTask
 	{

@@ -1,8 +1,8 @@
-﻿using DevilDaggersWebsite.Core.Enumerators;
+﻿using DevilDaggersWebsite.Enumerators;
 using System;
 using System.ComponentModel.DataAnnotations.Schema;
 
-namespace DevilDaggersWebsite.Core.Entities
+namespace DevilDaggersWebsite.Entities
 {
 	public class CustomLeaderboard
 	{

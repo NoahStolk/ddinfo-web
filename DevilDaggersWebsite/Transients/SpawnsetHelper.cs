@@ -1,5 +1,5 @@
 ﻿using DevilDaggersCore.Spawnsets;
-using DevilDaggersWebsite.Core.Entities;
+using DevilDaggersWebsite.Entities;
 using Microsoft.AspNetCore.Hosting;
 using Microsoft.EntityFrameworkCore;
 using System;
@@ -8,7 +8,7 @@ using System.Globalization;
 using System.IO;
 using System.Linq;
 
-namespace DevilDaggersWebsite.Core.Transients
+namespace DevilDaggersWebsite.Transients
 {
 	public class SpawnsetHelper
 	{

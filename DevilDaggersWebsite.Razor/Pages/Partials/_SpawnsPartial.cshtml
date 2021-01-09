@@ -1,12 +1,12 @@
 ﻿@model string
 @inject Microsoft.AspNetCore.Http.IHttpContextAccessor httpContextAccessor
 @inject Microsoft.AspNetCore.Hosting.IWebHostEnvironment env
-@inject DevilDaggersWebsite.Core.Transients.SpawnsetHelper spawnsetHelper
+@inject DevilDaggersWebsite.Transients.SpawnsetHelper spawnsetHelper
 @inject ApplicationDbContext dbContext
 @using DevilDaggersCore.Game
 @using DevilDaggersCore.Utils
 @using DevilDaggersCore.Spawnsets
-@using DevilDaggersWebsite.Core.Entities
+@using DevilDaggersWebsite.Entities
 @using DevilDaggersWebsite.Razor.Utils
 @using System.IO
 @{

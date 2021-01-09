@@ -1,4 +1,4 @@
-﻿using DevilDaggersWebsite.Core.Entities;
+﻿using DevilDaggersWebsite.Entities;
 using System;
 
 namespace DevilDaggersWebsite.Blazor.Data

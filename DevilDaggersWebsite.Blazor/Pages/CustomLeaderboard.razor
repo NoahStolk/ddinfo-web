@@ -11,8 +11,8 @@ else
 }
 
 @code {
-	private List<Core.Entities.CustomEntry> _customEntries = new List<Core.Entities.CustomEntry>();
-	private Core.Entities.CustomLeaderboard _customLeaderboard = new Core.Entities.CustomLeaderboard();
+	private List<Entities.CustomEntry> _customEntries = new();
+	private Entities.CustomLeaderboard _customLeaderboard = new();
 
 	[Parameter]
 	public string? Spawnset { get; set; }
@@ -36,7 +36,7 @@ else
 				.ThenInclude(cl => cl.SpawnsetFile)
 			.Include(ce => ce.Player)
 			.Where(ce => ce.CustomLeaderboard.Id == _customLeaderboard.Id)
-			.OrderByMember(nameof(Core.Entities.CustomEntry.Time), _customLeaderboard.IsAscending())
+			.OrderByMember(nameof(Entities.CustomEntry.Time), _customLeaderboard.IsAscending())
 			.ToListAsync();
 		_isLoading = false;
 	}

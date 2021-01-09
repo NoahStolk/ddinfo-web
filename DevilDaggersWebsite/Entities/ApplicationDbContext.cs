@@ -1,7 +1,7 @@
 ﻿using Microsoft.AspNetCore.Identity.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore;
 
-namespace DevilDaggersWebsite.Core.Entities
+namespace DevilDaggersWebsite.Entities
 {
 	public class ApplicationDbContext : IdentityDbContext
 	{

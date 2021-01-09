@@ -1,5 +1,5 @@
-﻿using DevilDaggersWebsite.Core.Dto;
-using DevilDaggersWebsite.Core.Transients;
+﻿using DevilDaggersWebsite.Dto;
+using DevilDaggersWebsite.Transients;
 using Microsoft.AspNetCore.Hosting;
 using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
@@ -11,7 +11,7 @@ using System.Linq;
 using System.Text;
 using Io = System.IO;
 
-namespace DevilDaggersWebsite.Core.Api
+namespace DevilDaggersWebsite.Api
 {
 	[Route("api/leaderboard-history")]
 	[ApiController]
@@ -68,7 +68,7 @@ namespace DevilDaggersWebsite.Core.Api
 			foreach (string leaderboardHistoryPath in Io.Directory.GetFiles(Io.Path.Combine(_env.WebRootPath, "leaderboard-history"), "*.json"))
 			{
 				Leaderboard lb = JsonConvert.DeserializeObject<Leaderboard>(Io.File.ReadAllText(leaderboardHistoryPath, Encoding.UTF8));
-				Entry entry = lb.Entries.FirstOrDefault(e => e.Id == userId);
+				Entry entry = lb.Entries.Find(e => e.Id == userId);
 				if (entry != null)
 					entries.Add((lb.DateTime, entry));
 			}
@@ -93,7 +93,7 @@ namespace DevilDaggersWebsite.Core.Api
 			foreach (string leaderboardHistoryPath in Io.Directory.GetFiles(Io.Path.Combine(_env.WebRootPath, "leaderboard-history"), "*.json"))
 			{
 				Leaderboard lb = JsonConvert.DeserializeObject<Leaderboard>(Io.File.ReadAllText(leaderboardHistoryPath, Encoding.UTF8));
-				Entry entry = lb.Entries.FirstOrDefault(e => e.Id == userId);
+				Entry entry = lb.Entries.Find(e => e.Id == userId);
 				if (entry?.DeathsTotal > 0)
 					data.Add(lb.DateTime, entry.DeathsTotal);
 			}

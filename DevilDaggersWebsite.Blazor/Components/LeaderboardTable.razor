@@ -73,8 +73,8 @@
 
 @code {
 	[Parameter]
-	public Core.Dto.Leaderboard Leaderboard { get; set; } = new Core.Dto.Leaderboard();
+	public Dto.Leaderboard Leaderboard { get; set; } = new();
 
 	[Parameter]
-	public List<Player> Players { get; set; } = new List<Player>();
+	public List<Player> Players { get; set; } = new();
 }

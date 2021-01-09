@@ -1,7 +1,7 @@
-﻿using DevilDaggersWebsite.Core.Enumerators;
+﻿using DevilDaggersWebsite.Enumerators;
 using System;
 
-namespace DevilDaggersWebsite.Core.Dto
+namespace DevilDaggersWebsite.Dto
 {
 	public class CustomLeaderboard
 	{

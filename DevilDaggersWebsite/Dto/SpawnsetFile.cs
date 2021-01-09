@@ -1,7 +1,7 @@
 ﻿using DevilDaggersCore.Spawnsets;
 using System;
 
-namespace DevilDaggersWebsite.Core.Dto
+namespace DevilDaggersWebsite.Dto
 {
 	public class SpawnsetFile
 	{

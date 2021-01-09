@@ -1,4 +1,4 @@
-﻿namespace DevilDaggersWebsite.Core.Dto
+﻿namespace DevilDaggersWebsite.Dto
 {
 	public class GameState
 	{

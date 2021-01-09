@@ -1,5 +1,5 @@
-﻿using DevilDaggersWebsite.Core.Entities;
-using DevilDaggersWebsite.Core.Enumerators;
+﻿using DevilDaggersWebsite.Entities;
+using DevilDaggersWebsite.Enumerators;
 using DevilDaggersWebsite.Razor.Utils;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.AspNetCore.Mvc.RazorPages;
@@ -58,12 +58,9 @@ namespace DevilDaggersWebsite.Razor.Pages.Admin.CustomLeaderboards
 			{
 				await _context.SaveChangesAsync();
 			}
-			catch (DbUpdateConcurrencyException)
+			catch (DbUpdateConcurrencyException) when (!CustomLeaderboardExists(CustomLeaderboard.Id))
 			{
-				if (!CustomLeaderboardExists(CustomLeaderboard.Id))
-					return NotFound();
-				else
-					throw;
+				return NotFound();
 			}
 
 			return RedirectToPage("./Index");

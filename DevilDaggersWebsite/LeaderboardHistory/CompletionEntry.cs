@@ -1,4 +1,4 @@
-﻿namespace DevilDaggersWebsite.Core.LeaderboardHistory
+﻿namespace DevilDaggersWebsite.LeaderboardHistory
 {
 	public enum CompletionEntry
 	{

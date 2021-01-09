@@ -1,7 +1,7 @@
-﻿using DevilDaggersWebsite.Core.Enumerators;
+﻿using DevilDaggersWebsite.Enumerators;
 using System;
 
-namespace DevilDaggersWebsite.Core.Entities
+namespace DevilDaggersWebsite.Entities
 {
 	public class Donation
 	{

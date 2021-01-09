@@ -1,7 +1,7 @@
-﻿using DevilDaggersWebsite.Core.Enumerators;
+﻿using DevilDaggersWebsite.Enumerators;
 using System.Collections.Generic;
 
-namespace DevilDaggersWebsite.Core.Dto
+namespace DevilDaggersWebsite.Dto
 {
 	public class UploadRequest
 	{

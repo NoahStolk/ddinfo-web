@@ -1,6 +1,6 @@
-﻿using DevilDaggersWebsite.Core.LeaderboardHistory;
+﻿using DevilDaggersWebsite.LeaderboardHistory;
 
-namespace DevilDaggersWebsite.Core.Extensions
+namespace DevilDaggersWebsite.Extensions
 {
 	public static class CompletionExtensions
 	{

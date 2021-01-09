@@ -1,5 +1,5 @@
-﻿using DevilDaggersWebsite.Core.Clients;
-using DevilDaggersWebsite.Core.Dto;
+﻿using DevilDaggersWebsite.Clients;
+using DevilDaggersWebsite.Dto;
 using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
 using System;
@@ -9,7 +9,7 @@ using System.Globalization;
 using System.Net.Http;
 using System.Threading.Tasks;
 
-namespace DevilDaggersWebsite.Core.Api
+namespace DevilDaggersWebsite.Api
 {
 	[Route("api/leaderboards")]
 	[ApiController]

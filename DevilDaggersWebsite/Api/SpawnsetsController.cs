@@ -1,5 +1,5 @@
-﻿using DevilDaggersWebsite.Core.Dto;
-using DevilDaggersWebsite.Core.Transients;
+﻿using DevilDaggersWebsite.Dto;
+using DevilDaggersWebsite.Transients;
 using Microsoft.AspNetCore.Hosting;
 using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
@@ -9,7 +9,7 @@ using System.IO;
 using System.Net.Mime;
 using Io = System.IO;
 
-namespace DevilDaggersWebsite.Core.Api
+namespace DevilDaggersWebsite.Api
 {
 	[Route("api/spawnsets")]
 	[ApiController]

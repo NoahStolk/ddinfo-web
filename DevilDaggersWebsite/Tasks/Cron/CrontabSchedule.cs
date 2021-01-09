@@ -3,7 +3,7 @@ using System.Collections.Generic;
 using System.Globalization;
 using System.IO;
 
-namespace DevilDaggersWebsite.Core.Tasks.Cron
+namespace DevilDaggersWebsite.Tasks.Cron
 {
 	/// <summary>
 	/// Represents a schedule initialized from the crontab expression.

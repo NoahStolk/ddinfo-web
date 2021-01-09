@@ -1,12 +1,12 @@
-﻿using DevilDaggersWebsite.Core.Dto;
-using DevilDaggersWebsite.Core.Tasks;
+﻿using DevilDaggersWebsite.Dto;
+using DevilDaggersWebsite.Tasks;
 using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
 using System.Linq;
 using System.Reflection;
 using Io = System.IO;
 
-namespace DevilDaggersWebsite.Core.Api
+namespace DevilDaggersWebsite.Api
 {
 	[Route("api/website")]
 	[ApiController]

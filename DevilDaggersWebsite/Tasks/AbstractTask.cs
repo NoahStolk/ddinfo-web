@@ -1,10 +1,10 @@
-﻿using DevilDaggersWebsite.Core.Tasks.Scheduling;
+﻿using DevilDaggersWebsite.Tasks.Scheduling;
 using System;
 using System.Diagnostics;
 using System.Threading;
 using System.Threading.Tasks;
 
-namespace DevilDaggersWebsite.Core.Tasks
+namespace DevilDaggersWebsite.Tasks
 {
 	public abstract class AbstractTask : IScheduledTask
 	{

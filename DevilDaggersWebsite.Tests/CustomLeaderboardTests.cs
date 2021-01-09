@@ -1,8 +1,8 @@
 ﻿using DevilDaggersCore.Spawnsets;
-using DevilDaggersWebsite.Core.Api;
-using DevilDaggersWebsite.Core.Entities;
-using DevilDaggersWebsite.Core.Enumerators;
-using DevilDaggersWebsite.Core.Transients;
+using DevilDaggersWebsite.Api;
+using DevilDaggersWebsite.Entities;
+using DevilDaggersWebsite.Enumerators;
+using DevilDaggersWebsite.Transients;
 using Microsoft.AspNetCore.Hosting;
 using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
@@ -14,7 +14,6 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Threading.Tasks;
 using System.Web;
-using Dto = DevilDaggersWebsite.Core.Dto;
 
 namespace DevilDaggersWebsite.Tests
 {

@@ -3,7 +3,7 @@ using System;
 using System.Collections.Generic;
 using System.Linq;
 
-namespace DevilDaggersWebsite.Core.SitemapGenerator
+namespace DevilDaggersWebsite.SitemapGenerator
 {
 	public static class SitemapUtils
 	{

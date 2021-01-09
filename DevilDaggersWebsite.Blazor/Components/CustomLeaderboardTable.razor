@@ -48,13 +48,13 @@
 </Table>
 
 @code {
-	private List<CustomLeaderboardEntryData> _tableData = new List<CustomLeaderboardEntryData>();
+	private List<CustomLeaderboardEntryData> _tableData = new();
 
 	[Parameter]
-	public Core.Entities.CustomLeaderboard Leaderboard { get; set; } = null!;
+	public Entities.CustomLeaderboard Leaderboard { get; set; } = null!;
 
 	[Parameter]
-	public List<Core.Entities.CustomEntry> CustomEntries { get; set; } = new List<Core.Entities.CustomEntry>();
+	public List<Entities.CustomEntry> CustomEntries { get; set; } = new();
 
 	protected override void OnInitialized()
 	{

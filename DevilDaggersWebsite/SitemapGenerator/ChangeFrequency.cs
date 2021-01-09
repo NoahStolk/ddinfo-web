@@ -1,4 +1,4 @@
-﻿namespace DevilDaggersWebsite.Core.SitemapGenerator
+﻿namespace DevilDaggersWebsite.SitemapGenerator
 {
 	public enum ChangeFrequency
 	{

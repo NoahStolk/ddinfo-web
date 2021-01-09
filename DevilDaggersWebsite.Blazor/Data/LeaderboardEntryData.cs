@@ -1,7 +1,7 @@
 ﻿using DevilDaggersCore.Game;
 using DevilDaggersCore.Utils;
-using DevilDaggersWebsite.Core.Dto;
-using DevilDaggersWebsite.Core.Entities;
+using DevilDaggersWebsite.Dto;
+using DevilDaggersWebsite.Entities;
 using System.Globalization;
 
 namespace DevilDaggersWebsite.Blazor.Data

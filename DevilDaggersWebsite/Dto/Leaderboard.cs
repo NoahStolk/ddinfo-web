@@ -1,12 +1,12 @@
 ﻿using DevilDaggersCore.Utils;
-using DevilDaggersWebsite.Core.LeaderboardHistory;
+using DevilDaggersWebsite.LeaderboardHistory;
 using Newtonsoft.Json;
 using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Reflection;
 
-namespace DevilDaggersWebsite.Core.Dto
+namespace DevilDaggersWebsite.Dto
 {
 	public class Leaderboard
 	{

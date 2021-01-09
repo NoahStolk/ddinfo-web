@@ -1,7 +1,7 @@
 ﻿using System;
 using System.Collections.Generic;
 
-namespace DevilDaggersWebsite.Core.Tasks
+namespace DevilDaggersWebsite.Tasks
 {
 	public static class TaskInstanceKeeper
 	{

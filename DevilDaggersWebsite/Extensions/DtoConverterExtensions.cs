@@ -1,8 +1,8 @@
-﻿using DevilDaggersWebsite.Core.Dto;
+﻿using DevilDaggersWebsite.Dto;
 using System;
 using System.Linq;
 
-namespace DevilDaggersWebsite.Core.Extensions
+namespace DevilDaggersWebsite.Extensions
 {
 	public static class DtoConverterExtensions
 	{

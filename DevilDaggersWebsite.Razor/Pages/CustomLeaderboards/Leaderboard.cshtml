@@ -1,7 +1,7 @@
 ﻿@page
 @using DevilDaggersWebsite.Razor.Utils
 @using DevilDaggersCore.Game
-@using DevilDaggersWebsite.Core.Enumerators
+@using DevilDaggersWebsite.Enumerators
 @model DevilDaggersWebsite.Razor.Pages.CustomLeaderboards.LeaderboardModel
 @{
 	string name = Model.SpawnsetFile?.Name ?? throw new Exception("Spawnset was null in CustomLeaderboards/Leaderboard page.");

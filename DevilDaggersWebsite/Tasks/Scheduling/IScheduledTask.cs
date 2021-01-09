@@ -1,7 +1,7 @@
 ﻿using System.Threading;
 using System.Threading.Tasks;
 
-namespace DevilDaggersWebsite.Core.Tasks.Scheduling
+namespace DevilDaggersWebsite.Tasks.Scheduling
 {
 	public interface IScheduledTask
 	{
