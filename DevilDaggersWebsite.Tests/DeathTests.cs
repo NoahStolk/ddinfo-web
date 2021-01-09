@@ -4,12 +4,12 @@ using Microsoft.VisualStudio.TestTools.UnitTesting;
 using System.Collections.Generic;
 using System.Linq;
 
-namespace DevilDaggersWebsite.Core.Tests
+namespace DevilDaggersWebsite.Tests
 {
 	[TestClass]
 	public class DeathTests
 	{
-		private readonly DeathsController _deathsController = new DeathsController();
+		private readonly DeathsController _deathsController = new();
 
 		[TestMethod]
 		public void GetDeaths()

@@ -14,8 +14,9 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Threading.Tasks;
 using System.Web;
+using Dto = DevilDaggersWebsite.Core.Dto;
 
-namespace DevilDaggersWebsite.Core.Tests
+namespace DevilDaggersWebsite.Tests
 {
 	[TestClass]
 	public class CustomLeaderboardTests

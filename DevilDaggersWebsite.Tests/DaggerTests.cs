@@ -4,12 +4,12 @@ using Microsoft.VisualStudio.TestTools.UnitTesting;
 using System.Collections.Generic;
 using System.Linq;
 
-namespace DevilDaggersWebsite.Core.Tests
+namespace DevilDaggersWebsite.Tests
 {
 	[TestClass]
 	public class DaggerTests
 	{
-		private readonly DaggersController _daggersController = new DaggersController();
+		private readonly DaggersController _daggersController = new();
 
 		[TestMethod]
 		public void GetDaggers()
