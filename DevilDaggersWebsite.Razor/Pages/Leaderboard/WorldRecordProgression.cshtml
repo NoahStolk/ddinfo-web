@@ -39,7 +39,7 @@
 		<div class="text-bold col-lg-3 col-md-3 col-sm-4 hidden-xs">Last held</div>
 	</div>
 	@{
-		TimeSpan total = DateTime.Now - (GameInfo.GetReleaseDate(GameVersion.V1) ?? throw new Exception("Could not retrieve release version from V1."));
+		TimeSpan total = DateTime.Now - (GameInfo.GetReleaseDate(GameVersion.V1) ?? throw new("Could not retrieve release version from V1."));
 		Entry wr = Model.WorldRecords.Last().Key.Entry;
 		foreach (WorldRecordHolder wrh in Model.WorldRecordHolders)
 		{
@@ -89,7 +89,7 @@
 	<script defer src='~/plugins/jqPlot/jqplot.dateAxisRenderer.js' asp-append-version='true'></script>
 	<script defer src='~/plugins/jqPlot/jqplot.highlighter.js' asp-append-version='true'></script>
 	<script defer src='~/plugins/jqPlot/jqplot.canvasOverlay.js' asp-append-version='true'></script>
-	<script defer src='~/scripts/charts/history/chart.js' asp-append-version='true'></script>
+	<script defer src='~/scripts/charts/history/chart-line.js' asp-append-version='true'></script>
 	<script defer src='~/scripts/charts/history/world-record-progression.js' asp-append-version='true'></script>
 }
 
