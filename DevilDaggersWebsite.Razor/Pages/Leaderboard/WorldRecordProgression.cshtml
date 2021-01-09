@@ -1,0 +1,99 @@
+﻿@page
+@using DevilDaggersCore.Game
+@using DevilDaggersCore.Utils
+@using DevilDaggersWebsite.Razor.Utils
+@using DevilDaggersWebsite.Core.Clients
+@using DevilDaggersWebsite.Core.Dto
+@model DevilDaggersWebsite.Razor.Pages.Leaderboard.WorldRecordProgressionModel
+@{
+	ViewData["Title"] = "World Record Progression";
+}
+
+<header>
+	<h1>@ViewData["Title"]</h1>
+</header>
+
+<main role="main">
+	<p>
+		This is the world record progression for Devil Daggers based on the <a asp-page="/Leaderboard/History">Leaderboard History</a> section of the website. While keeping track of any records since October 2018 has been fully automated, some older information is still missing. Most of the older information is based on screenshots and YouTube videos.
+	</p>
+
+	<div class="chart" id="world-record-progression-chart">
+		<table class="highlighter" id="world-record-progression-highlighter">
+			<tr><td>Date</td><td id="h-date"></td></tr>
+			<tr><td>Time</td><td id="h-time"></td></tr>
+			<tr><td>Username</td><td id="h-username"></td></tr>
+			<tr><td>Gems</td><td id="h-gems"></td></tr>
+			<tr><td>Kills</td><td id="h-kills"></td></tr>
+			<tr><td>Accuracy</td><td id="h-accuracy"></td></tr>
+			<tr><td>Death type</td><td id="h-death-type"></td></tr>
+		</table>
+	</div>
+
+	<h2>World record holders</h2>
+	<div class="row">
+		<div class="text-bold col-lg-2 col-md-2 col-sm-4 col-xs-6">Username (and aliases)</div>
+		<div class="text-bold col-lg-2 col-md-2 col-sm-4 col-xs-6">Total time held</div>
+		<div class="text-bold col-lg-3 col-md-3 hidden-sm hidden-xs">Longest time held consecutively</div>
+		<div class="text-bold col-lg-2 col-md-2 hidden-sm hidden-xs">World records</div>
+		<div class="text-bold col-lg-3 col-md-3 col-sm-4 hidden-xs">Last held</div>
+	</div>
+	@{
+		TimeSpan total = DateTime.Now - (GameInfo.GetReleaseDate(GameVersion.V1) ?? throw new Exception("Could not retrieve release version from V1."));
+		Entry wr = Model.WorldRecords.Last().Key.Entry;
+		foreach (WorldRecordHolder wrh in Model.WorldRecordHolders)
+		{
+			int days = (int)Math.Round(wrh.TotalTimeHeld.TotalDays);
+			int daysAgo = (int)Math.Round((DateTime.Now - wrh.LastHeld).TotalDays);
+			int daysConsecutively = (int)Math.Round(wrh.LongestTimeHeldConsecutively.TotalDays);
+
+			string timeHeld = $"{days} day{days.S()} ({(wrh.TotalTimeHeld / total).ToString("00.00%")})";
+
+			Entry? current = await DdHasmodaiClient.GetUserById(wrh.Id);
+			string lastHeld = wr.Time == current?.Time ? "Current holder" : $"{wrh.LastHeld.ToString("MMM dd")} '{wrh.LastHeld.ToString("yy")} ({daysAgo} day{daysAgo.S()} ago)";
+			string heldConsecutively = $"{daysConsecutively} day{daysConsecutively.S()}";
+			IEnumerable<string> aliases = wrh.Usernames.Where(s => s != wrh.MostRecentUsername);
+
+			<div class="row">
+				<div class="col-lg-2 col-md-2 col-sm-4 col-xs-6">@wrh.MostRecentUsername @(aliases.Count() != 0 ? $"({string.Join(", ", aliases)})" : "")</div>
+				<div class="col-lg-2 col-md-2 col-sm-4 col-xs-6">@timeHeld</div>
+				<div class="col-lg-3 col-md-3 hidden-sm hidden-xs">@heldConsecutively</div>
+				<div class="col-lg-2 col-md-2 hidden-sm hidden-xs">@wrh.WorldRecordCount</div>
+				<div class="col-lg-3 col-md-3 col-sm-4 hidden-xs">@lastHeld</div>
+			</div>
+		}
+	}
+
+	<h2>World records by time lasted</h2>
+	<div class="row">
+		<div class="text-bold col-lg-2 col-md-3 col-sm-4 col-xs-4">Username</div>
+		<div class="text-bold col-lg-2 col-md-3 col-sm-4 col-xs-4">Time</div>
+		<div class="text-bold col-lg-2 col-md-3 col-sm-4 col-xs-4">Lasted</div>
+	</div>
+	@{
+		foreach (KeyValuePair<WorldRecord, TimeSpan> kvp in Model.WorldRecords.OrderByDescending(w => w.Value))
+		{
+			int days = (int)Math.Round(kvp.Value.TotalDays);
+			string daysString = days == 0 ? "Less than 1 day" : days == 1 ? "1 day" : $"{days} days";
+			<div class="row">
+				<div class="col-lg-2 col-md-3 col-sm-4 col-xs-4">@kvp.Key.Entry.Username</div>
+				<div class="col-lg-2 col-md-3 col-sm-4 col-xs-4">@kvp.Key.Entry.Time.FormatTimeInteger()</div>
+				<div class="col-lg-2 col-md-3 col-sm-4 col-xs-4">@daysString</div>
+			</div>
+		}
+	}
+</main>
+
+@section Scripts {
+	<script defer src='~/plugins/jqPlot/jquery.jqplot.min.js' asp-append-version='true'></script>
+	<script defer src='~/plugins/jqPlot/jqplot.dateAxisRenderer.js' asp-append-version='true'></script>
+	<script defer src='~/plugins/jqPlot/jqplot.highlighter.js' asp-append-version='true'></script>
+	<script defer src='~/plugins/jqPlot/jqplot.canvasOverlay.js' asp-append-version='true'></script>
+	<script defer src='~/scripts/charts/leaderboard-chart.js' asp-append-version='true'></script>
+	<script defer src='~/scripts/charts/leaderboard-world-record-progression.js' asp-append-version='true'></script>
+}
+
+@section Styles {
+	<link rel='stylesheet' href='~/lib/jqPlot/jquery.jqplot.min.css' />
+	<link rel='stylesheet' href='~/styles/leaderboard-chart.css' />
+}

@@ -1,0 +1,214 @@
+﻿@page
+@using DevilDaggersCore.Utils
+@using DevilDaggersWebsite.Razor.Utils
+@using DevilDaggersWebsite.Razor.Spawnsets
+@using DevilDaggersWebsite.Core.Dto
+@model SpawnsetsModel
+@{
+	ViewData["Title"] = "Spawnsets";
+
+	int[] widths = new int[2] { 160, 160 };
+}
+
+<header>
+	<h1>@ViewData["Title"]</h1>
+</header>
+
+<main role="main">
+	<p class="text-center">
+		Here's a list of custom spawnsets created by the community. They can be played in the real game. Read below for more information.
+	</p>
+
+	@{
+		using (Html.BeginForm(FormMethod.Get))
+		{
+			<fieldset>
+				<div class="flex-container flex-center flex-column">
+					<div class="flex-container flex-center">
+						<div class="input-label text-left" style="@RazorUtils.GetCssWidth(widths[0])">Author search:</div>
+						<div style="@RazorUtils.GetCssWidth(widths[1])">@Html.TextBoxFor(m => m.SearchAuthor, new { @class = "input" })</div>
+					</div>
+					<div class="flex-container flex-center">
+						<div class="input-label text-left" style="@RazorUtils.GetCssWidth(widths[0])">Spawnset search:</div>
+						<div style="@RazorUtils.GetCssWidth(widths[1])">@Html.TextBoxFor(m => m.SearchName, new { @class = "input" })</div>
+					</div>
+				</div>
+
+				<div class="flex-container flex-center flex-column">
+					<div class="flex-container flex-center">
+						<input class="btn" type="submit" value="Search" />
+					</div>
+				</div>
+			</fieldset>
+		}
+
+		if (Model.PaginatedSpawnsetFiles != null)
+		{
+			int last = (int)Math.Ceiling(Model.TotalResults / (float)Model.PageSize);
+			int curr = Model.PageIndex;
+
+			<p class="text-center">
+				Page @curr of @last
+			</p>
+			<p class="text-center">
+				Showing @((curr - 1) * Model.PageSize + 1) - @(Math.Min(Model.TotalResults, curr * Model.PageSize)) of @Model.TotalResults results
+			</p>
+
+			@await Html.PartialAsync("Partials/_SpawnsetNavigationPartial", new SpawnsetNavigationSettings(Model, 20, ScreenWidthVisibilities.Lg | ScreenWidthVisibilities.Md | ScreenWidthVisibilities.Sm))
+			@await Html.PartialAsync("Partials/_SpawnsetNavigationPartial", new SpawnsetNavigationSettings(Model, 1, ScreenWidthVisibilities.Xs))
+
+			<table>
+				<thead>
+					<tr>
+						<th class="hidden-xs" colspan="3"></th>
+						<th class="hidden-xs hidden-sm hidden-md" colspan="2">Non-loop</th>
+						<th class="hidden-xs hidden-sm hidden-md" colspan="3">Loop</th>
+					</tr>
+					<tr class="spawnsets-sort">
+						<th width="500">
+							<a asp-page="./Spawnsets"
+							   asp-route-searchAuthor="@Model.SearchAuthor"
+							   asp-route-searchName="@Model.SearchName"
+							   asp-route-sortOrder="@Model.NameSort"
+							   asp-route-pageIndex="@Model.PageIndex">Name</a>
+						</th>
+						<th width="220">
+							<a asp-page="./Spawnsets"
+							   asp-route-searchAuthor="@Model.SearchAuthor"
+							   asp-route-searchName="@Model.SearchName"
+							   asp-route-sortOrder="@Model.AuthorSort"
+							   asp-route-pageIndex="@Model.PageIndex">Author</a>
+						</th>
+						<th class="hidden-xs" width="160">
+							<a asp-page="./Spawnsets"
+							   asp-route-searchAuthor="@Model.SearchAuthor"
+							   asp-route-searchName="@Model.SearchName"
+							   asp-route-sortOrder="@Model.LastUpdated"
+							   asp-route-pageIndex="@Model.PageIndex">Last updated</a>
+						</th>
+						<th class="hidden-xs hidden-sm hidden-md" width="160">
+							<a asp-page="./Spawnsets"
+							   asp-route-searchAuthor="@Model.SearchAuthor"
+							   asp-route-searchName="@Model.SearchName"
+							   asp-route-sortOrder="@Model.NonLoopLength"
+							   asp-route-pageIndex="@Model.PageIndex">Length</a>
+						</th>
+						<th class="hidden-xs hidden-sm hidden-md" width="160">
+							<a asp-page="./Spawnsets"
+							   asp-route-searchAuthor="@Model.SearchAuthor"
+							   asp-route-searchName="@Model.SearchName"
+							   asp-route-sortOrder="@Model.NonLoopSpawns"
+							   asp-route-pageIndex="@Model.PageIndex">Spawns</a>
+						</th>
+						<th class="hidden-xs hidden-sm hidden-md" width="160">
+							<a asp-page="./Spawnsets"
+							   asp-route-searchAuthor="@Model.SearchAuthor"
+							   asp-route-searchName="@Model.SearchName"
+							   asp-route-sortOrder="@Model.LoopLength"
+							   asp-route-pageIndex="@Model.PageIndex">Length (wave 1)</a>
+						</th>
+						<th class="hidden-xs hidden-sm hidden-md" width="160">
+							<a asp-page="./Spawnsets"
+							   asp-route-searchAuthor="@Model.SearchAuthor"
+							   asp-route-searchName="@Model.SearchName"
+							   asp-route-sortOrder="@Model.LoopSpawns"
+							   asp-route-pageIndex="@Model.PageIndex">Spawns</a>
+						</th>
+					</tr>
+				</thead>
+				<tbody>
+					@foreach (SpawnsetFile spawnsetFile in Model.PaginatedSpawnsetFiles)
+					{
+						<tr>
+							<td><a asp-page="Spawnset" asp-route-spawnset="@spawnsetFile.Name">@spawnsetFile.Name</a></td>
+							<td><a asp-page="/Spawnsets" asp-route-SearchAuthor="@spawnsetFile.AuthorName">@spawnsetFile.AuthorName</a></td>
+							<td class="hidden-xs">
+								@(spawnsetFile.LastUpdated.ToString("dd MMM yyyy"))
+							</td>
+							<td class="hidden-xs hidden-sm hidden-md">
+								@(!spawnsetFile.SpawnsetData.NonLoopLength.HasValue ? RazorUtils.NAString : Html.Raw(spawnsetFile.SpawnsetData.NonLoopLength.Value.ToString(FormatUtils.SpawnTimeFormat)))
+							</td>
+							<td class="hidden-xs hidden-sm hidden-md">
+								@(spawnsetFile.SpawnsetData.NonLoopSpawnCount == 0 ? RazorUtils.NAString : Html.Raw(spawnsetFile.SpawnsetData.NonLoopSpawnCount))
+							</td>
+							<td class="hidden-xs hidden-sm hidden-md">
+								@(!spawnsetFile.SpawnsetData.LoopLength.HasValue ? RazorUtils.NAString : Html.Raw(spawnsetFile.SpawnsetData.LoopLength.Value.ToString(FormatUtils.SpawnTimeFormat)))
+							</td>
+							<td class="hidden-xs hidden-sm hidden-md">
+								@(spawnsetFile.SpawnsetData.LoopSpawnCount == 0 ? RazorUtils.NAString : Html.Raw(spawnsetFile.SpawnsetData.LoopSpawnCount))
+							</td>
+						</tr>
+					}
+				</tbody>
+			</table>
+		}
+		else
+		{
+			<p class="text-center">Search returned no results</p>
+		}
+	}
+
+	<h2>How to play spawnsets</h2>
+	<h3>The easy way</h3>
+	<ol>
+		<li>Download <a asp-page="/Tools/DevilDaggersSurvivalEditor">DevilDaggersSurvivalEditor</a>.</li>
+		<li>Go to "File", then "Open from DevilDaggers.info".</li>
+		<li>Click on the spawnset you want to play and click "Yes" when it asks you if you want it to replace the current survival file.</li>
+	</ol>
+	<h3>The original way</h3>
+	<ol>
+		<li>Select the spawnset you want to play from the list above.</li>
+		<li>Click the download button.</li>
+		<li>Rename the file to "survival" (no quotes). The file should not have a file extension.</li>
+		<li>
+			Navigate to the directory where Devil Daggers is installed and open the folder named "dd".<br />
+			By default, this is <span class="path">C:\Program Files (x86)\Steam\steamapps\common\devildaggers\dd</span> on Windows.
+		</li>
+		<li>Replace the file called "survival" with the file you just downloaded.</li>
+	</ol>
+	<h3>Notes</h3>
+	<ul>
+		<li>You can replace the "survival" file while Devil Daggers is running. Just make sure to go back to the main menu before playing again, otherwise it won't change. The game reloads the file every time you grab the dagger in the lobby.</li>
+		<li>If the currently active custom spawnset has a modified arena, replays from the official leaderboards will NOT work properly and will likely crash the game.</li>
+	</ul>
+
+	<h2>FAQ</h2>
+	<div class="faq-question">Can I get banned for using custom spawnsets?</div>
+	<div class="faq-answer">No, you can only get banned manually by the developer for submitting illegitimate runs to the official leaderboard.</div>
+	<div class="faq-question">Can I override my real score using a custom spawnset?</div>
+	<div class="faq-answer">No, the game only uploads scores done with the original V3 spawnset.</div>
+	<div class="faq-question">The game doesn't submit my scores anymore even though I put the original survival file back in the dd folder. Why?</div>
+	<div class="faq-answer">
+		In order to be absolutely certain that the survival file is verified, follow these steps:<br />
+		<ol>
+			<li>Go to your Steam library.</li>
+			<li>Right click on Devil Daggers.</li>
+			<li>Click "Properties".</li>
+			<li>Select the tab "Local files".</li>
+			<li>Click "Verify integrity of game files".</li>
+		</ol>
+		NOTE: Keep an eye out for the "Score not submitted (error)" message. This indicates that your currently active survival file is not accepted by the official leaderboard servers.
+	</div>
+	<div class="faq-question">How do I make my own spawnsets?</div>
+	<div class="faq-answer">
+		<ol>
+			<li>Download <a asp-page="/Tools/DevilDaggersSurvivalEditor">DevilDaggersSurvivalEditor</a>.</li>
+			<li>Check out the <a asp-page="/Wiki/Guides/SurvivalEditor">Survival Editor Guide</a>.</li>
+		</ol>
+	</div>
+	<div class="faq-question">I've made my own custom spawnsets that I want to share with the community. Can I get them listed on here?</div>
+	<div class="faq-answer">
+		Yes, certainly. Send the file to <a href="mailto:@RazorUtils.ContactEmail">@RazorUtils.ContactEmail</a>, or just join the <a href="@RazorUtils.DiscordUrl">Discord server</a> and send it there.<br />
+		Please include the following information:<br />
+		<ul>
+			<li>Spawnset name (must be unique)</li>
+			<li>Leaderboard username, rank, or user ID (user ID can be found by hovering over your rank number on the <a asp-page="./Leaderboard/Index">Leaderboard</a> page), or if you prefer to stay anonymous, an alias or no name at all is fine too</li>
+			<li>Description (optional)</li>
+			<li>If you have an end loop, you can specify how many end waves should be shown. The default is @SpawnsetUtils.DefaultMaxWaves.</li>
+		</ul>
+	</div>
+</main>
+
+@section Styles {
+	<link rel='stylesheet' href='~/styles/spawnsets.css' />
+}

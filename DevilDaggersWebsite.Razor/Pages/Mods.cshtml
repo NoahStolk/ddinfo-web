@@ -1,0 +1,90 @@
+﻿@page
+@model ModsModel
+@using DevilDaggersCore.Utils
+@using DevilDaggersWebsite.Razor.Utils
+@using DevilDaggersWebsite.Core.Entities
+@{
+	ViewData["Title"] = "Mods";
+}
+
+<header>
+	<h1>@ViewData["Title"]</h1>
+</header>
+
+<main role="main">
+	<p>
+		Here's a list of custom asset mods created by the community using <a asp-page="/Tools/DevilDaggersAssetEditor">Devil Daggers Asset Editor</a>. The mods may also come with their own <a asp-page="/Spawnsets">custom spawnset</a>. Read below for more information.
+	</p>
+
+	<h2>Mods list</h2>
+	<table>
+		<thead>
+			<tr>
+				<th width="256">Name</th>
+				<th width="256">Author(s)</th>
+				<th width="256" class="hidden-xs">Type</th>
+				<th width="256" class="hidden-xs">Contents</th>
+			</tr>
+		</thead>
+		<tbody>
+			@foreach (AssetMod mod in Model.AssetMods)
+			{
+				<tr>
+					<td>
+						<a href="@mod.Url" target="_blank">@mod.Name</a>
+					</td>
+					<td>
+						@string.Join(", ", mod.PlayerAssetMods.Select(pam => pam.Player?.Username).OrderBy(s => s))
+					</td>
+					<td class="hidden-xs">
+						@string.Join(", ", EnumUtils.GetEnumFlagValues(mod.AssetModTypes, true))
+					</td>
+					<td class="hidden-xs">
+						@string.Join(", ", EnumUtils.GetEnumFlagValues(mod.AssetModFileContents, true))
+					</td>
+				</tr>
+			}
+		</tbody>
+	</table>
+
+	<h2>How to play mods</h2>
+	<ol>
+		<li>Download the files from a mod listed above.</li>
+		<li>
+			Navigate to the directory where Devil Daggers is installed.<br />
+			By default, this is <span class="path">C:\Program Files (x86)\Steam\steamapps\common\devildaggers</span> on Windows.<br />
+			The folders "core", "dd", and "res" contain the files that can be modded.
+		</li>
+		<li>Replace the files inside the folders with the files you downloaded.</li>
+	</ol>
+	<h3>Notes</h3>
+	<ul>
+		<li>All 4 files are loaded when Devil Daggers starts up, so you will need to restart the game when you want to play a different mod.</li>
+	</ul>
+
+	<h2>FAQ</h2>
+	<div class="faq-question">Can I get banned for using mods?</div>
+	<div class="faq-answer">No, you can only get banned manually by the developer for submitting illegitimate runs to the official leaderboard.</div>
+	<div class="faq-question">Can I override my real score while playing a mod?</div>
+	<div class="faq-answer">Yes, unless you have modified the <span class="path">devildaggers/dd/particle</span> file.</div>
+	<div class="faq-question">How do I make my own mods?</div>
+	<div class="faq-answer">
+		<ol>
+			<li>Download <a asp-page="/Tools/DevilDaggersAssetEditor">DevilDaggersAssetEditor</a>.</li>
+			<li>Check out the <a asp-page="/Wiki/Guides/AssetEditor">Asset Editor Guide</a>.</li>
+		</ol>
+	</div>
+	<div class="faq-question">I've made my own mods that I want to share with the community. Can I get them listed on here?</div>
+	<div class="faq-answer">
+		Yes, certainly. Send a link to <a href="mailto:@RazorUtils.ContactEmail">@RazorUtils.ContactEmail</a>, or just join the <a href="@RazorUtils.DiscordUrl">Discord server</a> and send it there.<br />
+		Please include the following information:<br />
+		<ul>
+			<li>Mod name</li>
+			<li>Leaderboard username, rank, or user ID (user ID can be found by hovering over your rank number on the <a asp-page="./Leaderboard/Index">Leaderboard</a> page), or if you prefer to stay anonymous, an alias or no name at all is fine too</li>
+		</ul>
+	</div>
+</main>
+
+@section Styles {
+	<link rel='stylesheet' href='~/styles/mods.css' />
+}

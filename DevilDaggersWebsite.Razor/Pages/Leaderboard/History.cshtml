@@ -1,0 +1,175 @@
+﻿@page
+@model DevilDaggersWebsite.Razor.Pages.Leaderboard.HistoryModel
+@using DevilDaggersCore.Utils
+@{
+	if (Model.Leaderboard == null)
+		return;
+	ViewData["Title"] = $"Top 100 History ({Model.Leaderboard.DateTime.ToString(FormatUtils.DateTimeUtcFormat)})";
+}
+@using DevilDaggersWebsite.Core.Extensions
+@using DevilDaggersWebsite.Razor.Utils
+@using DevilDaggersWebsite.Core.LeaderboardHistory
+
+<header>
+	<h1>@ViewData["Title"]</h1>
+</header>
+
+<main role="main">
+	@await Html.PartialAsync("Partials/_LeaderboardGlobalPartial")
+	<div>
+		<form method="get">
+			<select class="select form-control" asp-for="From" asp-items="Model.JsonFiles" onchange="this.form.submit()"></select>
+		</form>
+		<div class="flex-container flex-center flex-column">
+			<div class="flex-container flex-center leaderboard-nav-buttons">
+				@if (Model.FromNext != null)
+				{
+					<a class="btn" asp-page="/Leaderboard/History" asp-route-from="@(Model.FromNext)">&lt;</a>
+				}
+				else
+				{
+					<button class="btn btn-disabled">&lt;</button>
+				}
+				@if (Model.FromPrevious != null)
+				{
+					<a class="btn" asp-page="/Leaderboard/History" asp-route-from="@(Model.FromPrevious)">&gt;</a>
+				}
+				else
+				{
+					<button class="btn btn-disabled">&gt;</button>
+				}
+			</div>
+		</div>
+	</div>
+
+	@{
+		Completion completion = Model.Leaderboard.GetCompletion();
+		CompletionCombined userCompletion = Model.Leaderboard.GetUserCompletion();
+		bool isDataMissingInGlobalCompletion = completion.CompletionEntries.Any(c => c.Value == CompletionEntry.Missing);
+		bool isDataMissingInUserCompletion = userCompletion.CompletionEntries.Any(c => c.Value == CompletionEntryCombined.Missing || c.Value == CompletionEntryCombined.PartiallyMissing);
+		if (isDataMissingInGlobalCompletion || isDataMissingInUserCompletion)
+		{
+			<h2>Missing information</h2>
+			<div>This leaderboard is only <span class="devil">@($"{Model.Leaderboard.GetCompletionRate():0.0%}")</span> complete.</div>
+			<div class="info-container info-red">
+				<div class="flex-container leaderboard-flex flex-center flex-space-evenly text-left">
+					<div>
+						<div>Global</div>
+						<div class="info-text">
+							@{
+								if (isDataMissingInGlobalCompletion)
+								{
+									foreach (KeyValuePair<string, CompletionEntry> kvp in completion.CompletionEntries)
+									{
+										if (kvp.Value != CompletionEntry.Complete)
+										{
+											@:@kvp.Key @Html.Raw(kvp.Value.ToHtmlString())<br />
+										}
+									}
+								}
+								else
+								{
+									@RazorUtils.NAString
+								}
+							}
+						</div>
+					</div>
+					<div>
+						<div>User</div>
+						<div class="info-text">
+							@{
+								if (isDataMissingInUserCompletion)
+								{
+									foreach (KeyValuePair<string, CompletionEntryCombined> kvp in userCompletion.CompletionEntries)
+									{
+										if (kvp.Value != CompletionEntryCombined.Complete)
+										{
+											@:@kvp.Key @Html.Raw(kvp.Value.ToHtmlString())<br />
+										}
+									}
+								}
+								else
+								{
+									@RazorUtils.NAString
+								}
+							}
+						</div>
+					</div>
+				</div>
+			</div>
+		}
+
+		List<string> changesGlobal = Model.ChangesGlobal;
+		Dictionary<string, string> changesTop100 = Model.ChangesTop100;
+		TimeSpan diff = Model.Leaderboard.DateTime - Model.LeaderboardPrevious.DateTime;
+		if (changesGlobal.Count != 0 || changesTop100.Count != 0)
+		{
+			<div>
+				Changes since @Model.LeaderboardPrevious.DateTime.ToString("yyyy-MM-dd HH:mm")<br />
+				@diff.Days day@(diff.Days.S()), @diff.Hours hour@(diff.Hours.S()), @diff.Minutes minute@(diff.Minutes.S()) before
+			</div>
+			<div class="info-container info-orange">
+				<div class="flex-container leaderboard-flex flex-center flex-space-evenly text-left">
+					<div>
+						<div>Global</div>
+						<div class="info-text">
+							@{
+								if (changesGlobal.Count == 0)
+								{
+									@RazorUtils.NAString
+								}
+								else
+								{
+									foreach (string change in changesGlobal)
+									{
+										@:@change<br />
+									}
+								}
+							}
+						</div>
+					</div>
+					<div>
+						<div>Top 100</div>
+						<div class="info-text">
+							@{
+								if (changesGlobal.Count == 0)
+								{
+									@RazorUtils.NAString
+								}
+								else
+								{
+									foreach (KeyValuePair<string, string> change in changesTop100)
+									{
+										<span data-toggle="tooltip" title="@change.Value" class="leaderboard-tooltip">@change.Key</span><br />
+									}
+								}
+							}
+						</div>
+					</div>
+				</div>
+			</div>
+		}
+	}
+
+	<p class="visible-xs visible-sm visible-md">
+		On mobile devices; tap on an entry to expand it.
+	</p>
+	<p>
+		You can sort the leaderboard by clicking the headers.
+	</p>
+	<p>
+		<span class="ban leaderboard-username">Crossed out entries</span> are runs that are cheated, boosted, submitted on an alternative account, or otherwise considered invalid.
+	</p>
+
+	@await Html.PartialAsync("Partials/_LeaderboardUserPartial")
+</main>
+
+@section Scripts {
+	<script defer src='~/scripts/leaderboard-user.js' asp-append-version='true'></script>
+}
+
+@section Styles {
+	<link rel='stylesheet' href='~/styles/leaderboard.css' />
+	<link rel='stylesheet' href='~/styles/leaderboard-history.css' />
+	<link rel='stylesheet' href='~/styles/leaderboard-rows-general.css' />
+}

@@ -1,0 +1,28 @@
+﻿@page
+@model DevilDaggersWebsite.Razor.Pages.Admin.IndexModel
+@using DevilDaggersWebsite.Core.Authorization
+@{
+	ViewData["Title"] = "Admin";
+}
+
+<header>
+	<h1>@ViewData["Title"]</h1>
+</header>
+
+<main role="main">
+	@{
+		foreach (KeyValuePair<string, string> kvp in RoleManager.FolderToPolicyMapper)
+		{
+			string adminPage = kvp.Key.Replace("/Admin/", string.Empty);
+			string adminRoute = $"./{adminPage}/Index";
+			string role = RoleManager.PolicyToRoleMapper[kvp.Value];
+
+			<ul>
+				@if (Model.IdentityUser != null && await Model.UserManager.IsInRoleAsync(Model.IdentityUser, role))
+				{
+					<li><a asp-page="@adminRoute">@adminPage</a></li>
+				}
+			</ul>
+		}
+	}
+</main>

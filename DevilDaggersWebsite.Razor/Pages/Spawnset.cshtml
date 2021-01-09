@@ -1,0 +1,77 @@
+﻿@page
+@using DevilDaggersWebsite.Razor.Utils
+@using DevilDaggersCore.Game
+@inject DevilDaggersWebsite.Core.Entities.ApplicationDbContext dbContext
+@model DevilDaggersWebsite.Razor.Pages.SpawnsetModel
+@{
+	if (Model.SpawnsetFile == null || Model.Spawnset == null)
+		return;
+
+	ViewData["Title"] = "Spawnset";
+	ViewBag.Title = $"{Model.SpawnsetFile.Name} by {Model.SpawnsetFile.Player.Username}";
+	int[] widths = new int[4] { 160, 128, 192, 128 };
+}
+
+<header>
+	<h1 class="dont-break-out">@Model.SpawnsetFile.Name by @Model.SpawnsetFile.Player.Username</h1>
+</header>
+
+<main role="main">
+	<p class="text-center">
+		<a class="btn" href="api/spawnsets/@Model.SpawnsetFile.Name/file">Download</a>
+	</p>
+	@if (dbContext.CustomLeaderboards.Any(cl => cl.SpawnsetFileId == Model.SpawnsetFile.Id))
+	{
+		<p class="text-center">
+			<a asp-page="/CustomLeaderboards/Leaderboard" asp-route-spawnsetName="@Model.SpawnsetFile.Name">Custom leaderboard for @Model.SpawnsetFile.Name</a>
+		</p>
+	}
+
+	@{
+		if (!string.IsNullOrEmpty(Model.SpawnsetFile.HtmlDescription))
+		{
+			<div class="description">
+				@RazorUtils.GetLayout(Model.SpawnsetFile.HtmlDescription, GameVersion.V3)
+			</div>
+		}
+	}
+
+	<div class="text-center">
+		<div class="flex-container flex-center">
+			<div style="@RazorUtils.GetCssWidth(widths[0])">Start radius</div>
+			<div style="@RazorUtils.GetCssWidth(widths[1])">End radius</div>
+			<div style="@RazorUtils.GetCssWidth(widths[2])">Shrinking rate</div>
+			<div style="@RazorUtils.GetCssWidth(widths[3])">Brightness</div>
+		</div>
+		<div class="flex-container flex-center">
+			<div style="@RazorUtils.GetCssWidth(widths[0])">@Model.Spawnset.ShrinkStart.ToString("0.#")</div>
+			<div style="@RazorUtils.GetCssWidth(widths[1])">@Model.Spawnset.ShrinkEnd.ToString("0.#")</div>
+			<div style="@RazorUtils.GetCssWidth(widths[2])">@Model.Spawnset.ShrinkRate.ToString("0.####")</div>
+			<div style="@RazorUtils.GetCssWidth(widths[3])">@Model.Spawnset.Brightness.ToString("0.#")</div>
+		</div>
+	</div>
+
+	<table class="tile-table">
+		@{
+			for (int i = 0; i < Model.Spawnset.ArenaTiles.GetLength(0); i++)
+			{
+				<tr>
+					@for (int j = 0; j < Model.Spawnset.ArenaTiles.GetLength(1); j++)
+					{
+						float height = (float)Math.Round(Model.Spawnset.ArenaTiles[j, i] * 32 + 64); // Swap coordinates because <tr> elements cannot be vertical.
+
+						string backgroundColorStyle = $"background-color: rgb({height}, {Math.Round(height / 2)}, 0)";
+						<td class="arena-tile" style="@backgroundColorStyle"></td>
+					}
+				</tr>
+			}
+		}
+	</table>
+
+	@await Html.PartialAsync("Partials/_SpawnsPartial", Model.SpawnsetFile.Name)
+</main>
+
+@section Styles {
+	<link rel='stylesheet' href='~/styles/spawns.css' />
+	<link rel='stylesheet' href='~/styles/spawnset.css' />
+}

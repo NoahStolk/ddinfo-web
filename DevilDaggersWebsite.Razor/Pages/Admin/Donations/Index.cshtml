@@ -1,0 +1,73 @@
+﻿@page
+@model DevilDaggersWebsite.Razor.Pages.Admin.Donations.IndexModel
+
+@{
+	ViewData["Title"] = "Index";
+}
+
+<h2>Index</h2>
+
+<p>
+	<a asp-page="Create">Create New</a>
+</p>
+<table class="table">
+	<thead>
+		<tr>
+			<th>
+				<a asp-route-sortMemberName="PlayerId">@Html.DisplayNameFor(model => model.Donations[0].PlayerId)</a>
+			</th>
+			<th>
+				<a asp-route-sortMemberName="Amount">@Html.DisplayNameFor(model => model.Donations[0].Amount)</a>
+			</th>
+			<th>
+				<a asp-route-sortMemberName="Currency">@Html.DisplayNameFor(model => model.Donations[0].Currency)</a>
+			</th>
+			<th>
+				<a asp-route-sortMemberName="ConvertedEuroCentsReceived">@Html.DisplayNameFor(model => model.Donations[0].ConvertedEuroCentsReceived)</a>
+			</th>
+			<th>
+				<a asp-route-sortMemberName="DateReceived">@Html.DisplayNameFor(model => model.Donations[0].DateReceived)</a>
+			</th>
+			<th>
+				<a asp-route-sortMemberName="Note">@Html.DisplayNameFor(model => model.Donations[0].Note)</a>
+			</th>
+			<th>
+				<a asp-route-sortMemberName="IsRefunded">@Html.DisplayNameFor(model => model.Donations[0].IsRefunded)</a>
+			</th>
+			<th></th>
+		</tr>
+	</thead>
+	<tbody>
+		@foreach (var item in Model.Donations)
+		{
+			<tr>
+				<td>
+					@Html.DisplayFor(modelItem => item.PlayerId)
+				</td>
+				<td>
+					@Html.DisplayFor(modelItem => item.Amount)
+				</td>
+				<td>
+					@Html.DisplayFor(modelItem => item.Currency)
+				</td>
+				<td>
+					@Html.DisplayFor(modelItem => item.ConvertedEuroCentsReceived)
+				</td>
+				<td>
+					@Html.DisplayFor(modelItem => item.DateReceived)
+				</td>
+				<td>
+					@Html.DisplayFor(modelItem => item.Note)
+				</td>
+				<td>
+					@Html.DisplayFor(modelItem => item.IsRefunded)
+				</td>
+				<td>
+					<a asp-page="./Edit" asp-route-id="@item.Id">Edit</a> |
+					<a asp-page="./Details" asp-route-id="@item.Id">Details</a> |
+					<a asp-page="./Delete" asp-route-id="@item.Id">Delete</a>
+				</td>
+			</tr>
+		}
+	</tbody>
+</table>

@@ -1,0 +1,119 @@
+﻿@model string
+@inject Microsoft.AspNetCore.Http.IHttpContextAccessor httpContextAccessor
+@inject Microsoft.AspNetCore.Hosting.IWebHostEnvironment env
+@inject DevilDaggersWebsite.Core.Transients.SpawnsetHelper spawnsetHelper
+@inject ApplicationDbContext dbContext
+@using DevilDaggersCore.Game
+@using DevilDaggersCore.Utils
+@using DevilDaggersCore.Spawnsets
+@using DevilDaggersWebsite.Core.Entities
+@using DevilDaggersWebsite.Razor.Utils
+@using System.IO
+@{
+	int[] widths = new int[4] { 160, 160, 144, 128 };
+
+	SpawnsetFile? sf = dbContext.SpawnsetFiles.FirstOrDefault(sf => sf.Name == Model);
+	if (sf == null || !Spawnset.TryParse(File.ReadAllBytes(System.IO.Path.Combine(env.WebRootPath, "spawnsets", Model)), out Spawnset spawnset))
+	{
+		return;
+	}
+
+	GameVersion gameVersion = sf.PlayerId == 0 && sf.Name.StartsWith("V") ? Enum.Parse<GameVersion>(sf.Name) : GameVersion.V3;
+	int maxWaves = sf.MaxDisplayWaves ?? SpawnsetUtils.DefaultMaxWaves;
+	string wavesQuery = httpContextAccessor.HttpContext.Request.Query["waves"];
+	if (int.TryParse(wavesQuery, out int parsed) && parsed > 0)
+	{
+		maxWaves = parsed;
+	}
+
+	<div class="flex-container flex-center flex-column text-center">
+		@if (spawnset.HasSpawns())
+		{
+			<div class="flex-container flex-center">
+				<div style="@RazorUtils.GetCssWidth(widths[0])">Time</div>
+				<div style="@RazorUtils.GetCssWidth(widths[1])">Enemy</div>
+				<div style="@RazorUtils.GetCssWidth(widths[2])">Gems (no farm)</div>
+				<div style="@RazorUtils.GetCssWidth(widths[3])">Total gems</div>
+			</div>
+
+			double totalSeconds = 0;
+			int totalGems = 0;
+			int endLoopIndex = spawnset.GetEndLoopStartIndex();
+
+			foreach (Spawn spawn in spawnset.Spawns.Values.SkipLast(spawnset.Spawns.Count() - endLoopIndex))
+			{
+				totalSeconds += spawn.Delay;
+				if (spawn.Enemy != null)
+				{
+					totalGems += spawn.Enemy.NoFarmGems;
+
+					<div class="flex-container flex-center">
+						<div style="@RazorUtils.GetCssWidth(widths[0])" class="text-right">@totalSeconds.ToString(FormatUtils.SpawnTimeFormat)</div>
+						<div style="@RazorUtils.GetCssWidth(widths[1])">@(spawn.Enemy.GetLayoutAnchor(false, gameVersion))</div>
+						<div style="@RazorUtils.GetCssWidth(widths[2])" class="text-right">@spawn.Enemy.NoFarmGems</div>
+						<div style="@RazorUtils.GetCssWidth(widths[3])" class="text-right">@totalGems</div>
+					</div>
+				}
+			}
+
+			List<Spawn> endLoop = spawnset.Spawns.Values.Skip(endLoopIndex).ToList();
+
+			if (endLoop.Count(s => s.Enemy != null) != 0)
+			{
+				int spawns = spawnset.Spawns.Where(s => s.Value.Enemy != null).Count();
+
+				double endGameSecond = totalSeconds;
+				for (int i = 0; i < maxWaves; i++)
+				{
+					if (spawns > SpawnsetUtils.MaxSpawns)
+					{
+						break;
+					}
+
+					<div class="text-left end-wave-separator">
+						<div style="background-color: red; height: 2px; width: auto;"></div>
+						<div class="hidden-xs">End wave @(i + 1)</div>
+					</div>
+					double enemyTimer = 0;
+					double delay = 0;
+					foreach (Spawn spawn in endLoop)
+					{
+						if (spawn.Enemy != null)
+						{
+							spawns++;
+						}
+
+						delay += spawn.Delay;
+						while (enemyTimer < delay)
+						{
+							endGameSecond += 1f / 60f;
+							enemyTimer += (1f / 60f) + (1f / 60f / 8f * i);
+						}
+
+						if (spawn.Enemy != null)
+						{
+							Enemy finalEnemy = spawn.Enemy;
+							// Change the third Gigapede into a Ghostpede.
+							if (i % 3 == 2 && gameVersion == GameVersion.V3 && finalEnemy == GameInfo.V3Gigapede)
+							{
+								finalEnemy = GameInfo.V3Ghostpede;
+							}
+
+							int gems = finalEnemy.NoFarmGems;
+							totalGems += gems;
+
+							<div class="flex-container flex-center">
+								<div style="@RazorUtils.GetCssWidth(widths[0])" class="text-right">@((Math.Floor(endGameSecond * 60) / 60).ToString(FormatUtils.SpawnTimeFormat))</div>
+								<div style="@RazorUtils.GetCssWidth(widths[1])">@(finalEnemy.GetLayoutAnchor(false, gameVersion))</div>
+								<div style="@RazorUtils.GetCssWidth(widths[2])" class="text-right">@gems</div>
+								<div style="@RazorUtils.GetCssWidth(widths[3])" class="text-right">@totalGems</div>
+							</div>
+						}
+					}
+				}
+			}
+
+			<div style="color: var(--col-red); font-size: 24px;">@(endLoop.Count != 1 || (endLoop.Count == 1 && endLoop[0].Enemy != null) ? "Goes on eternally..." : "End of spawnset")</div>
+		}
+	</div>
+}
