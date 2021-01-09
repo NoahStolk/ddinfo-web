@@ -62,7 +62,7 @@ function getDeathType(date, entry) {
 	};
 }
 
-function createChart(chartName, data, minDate, maxDate, minTime, maxTime, yNumberTicks) {
+function createChart(chartName, data, minDate, maxDate, minTime, maxTime, yNumberTicks, showMarker) {
 	return $.jqplot(chartName, [data], {
 		axes: {
 			xaxis: {
@@ -90,7 +90,7 @@ function createChart(chartName, data, minDate, maxDate, minTime, maxTime, yNumbe
 				}
 			},
 			markerOptions: {
-				show: true,
+				show: showMarker,
 				size: 6.5
 			},
 			color: '#f00'

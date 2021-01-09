@@ -12,7 +12,8 @@ $.getJSON("/api/leaderboard-history/world-records", function (data) {
 		wrs.push([date, wr.entry.time / 10000, wr.entry.username, wr.entry.gems === 0 ? "?" : wr.entry.gems.toFixed(0), wr.entry.kills === 0 ? "?" : wr.entry.kills.toFixed(0), accuracy === 0 ? "?" : accuracy.toFixed(2) + "%", deathType.colorCode, deathType.name]);
 
 		if (++wrIndex === data.length) {
-			wrs.push([maxDate + 10000000000 /*Ugly way to make sure no dot is visible*/, wr.entry.time / 10000, wr.entry.username, wr.entry.gems === 0 ? "?" : wr.entry.gems.toFixed(0), wr.entry.kills === 0 ? "?" : wr.entry.kills.toFixed(0), accuracy === 0 ? "?" : accuracy.toFixed(2) + "%", deathType.colorCode, deathType.name]);
+			// Ugly way to make sure no dot is visible
+			wrs.push([maxDate + 10000000000, wr.entry.time / 10000, '', '', '', '', deathType.colorCode, deathType.name]);
 		}
 	});
 
@@ -31,7 +32,7 @@ $.getJSON("/api/leaderboard-history/world-records", function (data) {
 	const chartId = "#" + chartName;
 	const highlighterName = "world-record-progression-highlighter";
 	const highlighterId = "#" + highlighterName;
-	const chart = createChart(chartName, wrs, minDate, maxDate, minTime, maxTime, (maxTime - minTime) / 50 + 1);
+	const chart = createChart(chartName, wrs, minDate, maxDate, minTime, maxTime, (maxTime - minTime) / 50 + 1, true);
 
 	$(chartId).bind('jqplotMouseMove', function (_event, xy, _axesData, _neighbor, plot) {
 		const closestData = getClosestDataToMouse(chart, xy, plot, minDate, maxDate, minTime, maxTime);

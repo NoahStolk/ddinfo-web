@@ -11,7 +11,8 @@ $.getJSON("/api/leaderboard-history/user-progression?userId=" + getUrlParameter(
 		pbs.push([date, pb.time / 10000, pb.rank.toFixed(0), pb.username, pb.gems === 0 ? "?" : pb.gems.toFixed(0), pb.kills === 0 ? "?" : pb.kills.toFixed(0), accuracy === 0 ? "?" : accuracy.toFixed(2) + "%", deathType.colorCode, deathType.name]);
 
 		if (++pbIndex === Object.keys(data).length) {
-			pbs.push([maxDate + 10000000000 /*Ugly way to make sure no dot is visible*/, pb.time / 10000, pb.rank.toFixed(0), pb.username, pb.gems === 0 ? "?" : pb.gems.toFixed(0), pb.kills === 0 ? "?" : pb.kills.toFixed(0), accuracy === 0 ? "?" : accuracy.toFixed(2) + "%", deathType.colorCode, deathType.name]);
+			// Ugly way to make sure no dot is visible
+			pbs.push([maxDate + 10000000000, pb.time / 10000, '', '', '', '', '', deathType.colorCode, deathType.name]);
 		}
 	});
 
@@ -32,7 +33,7 @@ $.getJSON("/api/leaderboard-history/user-progression?userId=" + getUrlParameter(
 	const chartId = "#" + chartName;
 	const highlighterName = "user-progression-highlighter";
 	const highlighterId = "#" + highlighterName;
-	const chart = createChart(chartName, pbs, minDate, maxDate, minTime, maxTime, (maxTime - minTime) / 50 + 1);
+	const chart = createChart(chartName, pbs, minDate, maxDate, minTime, maxTime, (maxTime - minTime) / 50 + 1, true);
 
 	$(chartId).bind('jqplotMouseMove', function (_event, xy, _axesData, _neighbor, plot) {
 		const closestData = getClosestDataToMouse(chart, xy, plot, minDate, maxDate, minTime, maxTime);
