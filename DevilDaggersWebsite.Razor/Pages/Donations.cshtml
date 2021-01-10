@@ -9,7 +9,8 @@
 @{
 	ViewData["Title"] = "Donations";
 
-	int[] widths = new[] { 256, 128 };
+	IOrderedEnumerable<KeyValuePair<int, int>> donators = Model.DonatorsWithReceivedEuroAmounts.OrderByDescending(kvp => kvp.Value);
+	int total = donators.Count();
 }
 
 <header>
@@ -30,26 +31,37 @@
 		}
 	</p>
 
-	<div class="flex-container flex-center flex-column">
+	<div class="row">
 		@{
-			foreach (KeyValuePair<int, int> kvp in Model.DonatorsWithReceivedEuroAmounts.OrderByDescending(kvp => kvp.Value))
+			const float columns = 3f;
+			int interval = (int)Math.Ceiling(total / columns);
+			if (interval % 2 != 0)
+				interval++;
+			for (int i = 0; i < total; i += interval)
 			{
-				Player donator = dbContext.Players.FirstOrDefault(d => d.Id == kvp.Key);
-				string username = donator.IsAnonymous ? "(anonymous)" : donator.Username;
+				<div class="col-lg-4 col-md-12 col-sm-12 col-xs-12">
+					@{
+						foreach (KeyValuePair<int, int> kvp in donators.Skip(i).Take(interval))
+						{
+							Player donator = dbContext.Players.First(d => d.Id == kvp.Key);
+							string username = donator.IsAnonymous ? "(anonymous)" : donator.Username;
 
-				List<string> donationsGroupedByCurrency = new List<string>();
-				foreach (var donations in Model.Donations.Where(d => !d.IsRefunded && d.PlayerId == kvp.Key).GroupBy(d => d.Currency))
-				{
-					donationsGroupedByCurrency.Add($"{donations.Key.GetChar()} {(donations.Sum(d => d.Amount) / 100.0).ToString("0.00")} {(donations.Key.ToString().ToUpper())}");
-				}
-				string str = string.Join(" + ", donationsGroupedByCurrency);
+							List<string> donationsGroupedByCurrency = new();
+							foreach (var donations in Model.Donations.Where(d => !d.IsRefunded && d.PlayerId == kvp.Key).GroupBy(d => d.Currency))
+							{
+								donationsGroupedByCurrency.Add($"{donations.Key.GetChar()} {(donations.Sum(d => d.Amount) / 100.0).ToString("0.00")} {(donations.Key.ToString().ToUpper())}");
+							}
+							string tooltipText = string.Join(" + ", donationsGroupedByCurrency);
 
-				<div class="flex-container flex-center">
-					<div style="@RazorUtils.GetCssWidth(widths[0]) white-space: nowrap;" class="text-left devil">@username</div>
-					<div style="@RazorUtils.GetCssWidth(widths[1])" class="text-right devil donation-tooltip" data-toggle="tooltip" data-placement="left" title="@str">
-						@(Currency.Eur.GetChar())
-						@((kvp.Value / 100.0).ToString("0.00"))
-					</div>
+							<div class="donator flex-container">
+								<div style="white-space: nowrap; flex-grow: 4;" class="text-left devil">@username</div>
+								<div class="text-right devil donation-tooltip" data-toggle="tooltip" data-placement="left" title="@tooltipText">
+									@(Currency.Eur.GetChar())
+									@((kvp.Value / 100.0).ToString("0.00"))
+								</div>
+							</div>
+						}
+					}
 				</div>
 			}
 		}
