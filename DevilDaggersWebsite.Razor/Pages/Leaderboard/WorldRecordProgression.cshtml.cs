@@ -1,4 +1,5 @@
 ﻿using DevilDaggersWebsite.Dto;
+using DevilDaggersWebsite.Razor.Utils;
 using DevilDaggersWebsite.Transients;
 using Microsoft.AspNetCore.Mvc.RazorPages;
 using System;
@@ -30,15 +31,18 @@ namespace DevilDaggersWebsite.Razor.Pages.Leaderboard
 				WorldRecord wr = worldRecords[i];
 
 				TimeSpan difference;
+				DateTime firstHeld;
 				DateTime lastHeld;
 				if (i == worldRecords.Count - 1)
 				{
 					difference = DateTime.Now - wr.DateTime;
+					firstHeld = wr.DateTime;
 					lastHeld = DateTime.Now;
 				}
 				else
 				{
 					difference = worldRecords[i + 1].DateTime - wr.DateTime;
+					firstHeld = wr.DateTime;
 					lastHeld = worldRecords[i + 1].DateTime;
 				}
 
@@ -63,6 +67,8 @@ namespace DevilDaggersWebsite.Razor.Pages.Leaderboard
 
 						wrh.TotalTimeHeld += difference;
 						wrh.WorldRecordCount++;
+						if (firstHeld < wrh.FirstHeld)
+							wrh.FirstHeld = firstHeld;
 						wrh.LastHeld = lastHeld;
 						added = true;
 						break;
@@ -70,10 +76,16 @@ namespace DevilDaggersWebsite.Razor.Pages.Leaderboard
 				}
 
 				if (!added)
-					WorldRecordHolders.Add(new WorldRecordHolder(wr.Entry.Id, wr.Entry.Username, difference, heldConsecutively, 1, lastHeld));
+					WorldRecordHolders.Add(new(wr.Entry.Id, wr.Entry.Username, difference, heldConsecutively, 1, firstHeld, lastHeld));
 			}
 
 			WorldRecordHolders = WorldRecordHolders.OrderByDescending(wrh => wrh.TotalTimeHeld).ToList();
+		}
+
+		public string GetHistoryDateString(DateTime dateTime)
+		{
+			int daysAgo = (int)Math.Round((DateTime.Now - dateTime).TotalDays);
+			return $"{dateTime:MMM dd} '{dateTime:yy} ({daysAgo} day{daysAgo.S()} ago)";
 		}
 	}
 }
