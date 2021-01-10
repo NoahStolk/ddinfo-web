@@ -1,4 +1,5 @@
 ﻿const deathNames = ["FALLEN", "SWARMED", "IMPALED", "GORED", "INFESTED", "OPENED", "PURGED", "DESECRATED", "SACRIFICED", "EVISCERATED", "ANNIHILATED", "INTOXICATED", "ENVENOMATED", "INCARNATED", "DISCARNATED", "BARBED"];
+const deathColors = ["#DDDDDD", "#352710", "#433114", "#6E5021", "#DCCB00", "#976E2E", "#4E3000", "#804E00", "#AF6B00", "#837E75", "#478B41", "#99A100", "#657A00", "#FF0000", "#FF3131", "#771D00"];
 
 $.getJSON("/api/leaderboard-statistics/death-types", function (data) {
 	const deathCounts = [];
@@ -17,6 +18,7 @@ $.getJSON("/api/leaderboard-statistics/death-types", function (data) {
 
 	const chart = $.jqplot(chartName, [deathCounts], {
 		animate: !$.jqplot.use_excanvas,
+		seriesColors: deathColors,
 		axes: {
 			xaxis: {
 				renderer: $.jqplot.CategoryAxisRenderer,
@@ -32,10 +34,10 @@ $.getJSON("/api/leaderboard-statistics/death-types", function (data) {
 		seriesDefaults: {
 			renderer: $.jqplot.BarRenderer,
 			rendererOptions: {
-				highlightMouseDown: true
+				highlightMouseDown: true,
+				varyBarColor: true
 			},
-			pointLabels: { show: true },
-			color: '#f00'
+			pointLabels: { show: true }
 		},
 		grid: {
 			backgroundColor: '#000',
@@ -78,21 +80,3 @@ $.getJSON("/api/leaderboard-statistics/death-types", function (data) {
 		$(highlighterId).show();
 	}
 });
-
-function getDataBasedOnMouseXPositionBar(chart, xy, plot, minXValue, maxXValue) {
-	const data = plot.series[0].data;
-
-	for (i = 1; i < data.length; i++) {
-		const iDataPrevious = data[i - 1];
-		const iData = data[i];
-
-		let xPosStart = (iDataPrevious[0] - minXValue) / (maxXValue - minXValue) * chart.grid._width;
-		let xPosEnd = (iData[0] - minXValue) / (maxXValue - minXValue) * chart.grid._width;
-
-		if (xy.x > xPosStart && xy.x < xPosEnd) {
-			return iData;
-		}
-	}
-
-	return data[0];
-}

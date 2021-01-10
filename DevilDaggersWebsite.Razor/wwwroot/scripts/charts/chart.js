@@ -1,23 +1,4 @@
-﻿function getDataBasedOnMouseXPosition(chart, xy, plot, minXValue, maxXValue) {
-	const data = plot.series[0].data;
-
-	let iData;
-	for (i = 0; i < data.length - 1; i++) {
-		iData = data[i];
-		const iDataNext = data[i + 1];
-
-		let xPosStart = (iData[0] - minXValue) / (maxXValue - minXValue) * chart.grid._width;
-		let xPosEnd = (iDataNext[0] - minXValue) / (maxXValue - minXValue) * chart.grid._width;
-
-		if (xy.x > xPosStart && xy.x < xPosEnd) {
-			return iData;
-		}
-	}
-
-	return data[data.length - 1];
-}
-
-function setHighlighterPosition(chart, highlighterId, data, xy, minYValue, maxYValue, useMousePosition) {
+﻿function setHighlighterPosition(chart, highlighterId, data, xy, minYValue, maxYValue, useMousePosition) {
 	const yAxisWidth = chart.grid._width - chart._width;
 	const yPerc = (data[1] - minYValue) / (maxYValue - minYValue);
 
