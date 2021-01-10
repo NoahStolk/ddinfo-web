@@ -226,11 +226,17 @@ function getDataBasedOnMouseXPosition(chart, xy, plot, minDate, maxDate) {
 function setHighlighterPosition(chart, highlighterId, data, xy, minTime, maxTime, useMousePosition) {
 	const yAxisWidth = chart.grid._width - chart._width;
 	const timePerc = (data[1] - minTime) / (maxTime - minTime);
+
+	const width = $(highlighterId).css('width').replace('px', '');
 	$(highlighterId).css({
 		position: "absolute",
-		left: xy.x - yAxisWidth - ($(highlighterId).width() / 2 + 6) + "px",
+		left: clamp(xy.x - yAxisWidth - ($(highlighterId).width() / 2 + 6), 0, chart._width - width) + "px",
 		bottom: (useMousePosition ? (chart.grid._height - xy.y + 64) : (timePerc * chart.grid._height + (timePerc < 0.5 ? 112 : -256))) + "px",
 	});
+}
+
+function clamp(val, min, max) {
+	return val < min ? min : val > max ? max : val;
 }
 
 function setHighlighterStyle(time, colorCode) {
