@@ -21,7 +21,8 @@
 }
 
 #world-record-progression-highlighter,
-#user-progression-highlighter {
+#user-progression-highlighter,
+#death-types-highlighter {
 	width: 304px;
 }
 
