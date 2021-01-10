@@ -1,4 +1,9 @@
-﻿function setHighlighterPosition(chart, highlighterId, data, xy, minYValue, maxYValue, useMousePosition) {
+﻿const deathNames = ["FALLEN", "SWARMED", "IMPALED", "GORED", "INFESTED", "OPENED", "PURGED", "DESECRATED", "SACRIFICED", "EVISCERATED", "ANNIHILATED", "INTOXICATED", "ENVENOMATED", "INCARNATED", "DISCARNATED", "BARBED"];
+const deathColors = ["#DDDDDD", "#352710", "#433114", "#6E5021", "#DCCB00", "#976E2E", "#4E3000", "#804E00", "#AF6B00", "#837E75", "#478B41", "#99A100", "#657A00", "#FF0000", "#FF3131", "#771D00"];
+const daggerNames = ["Devil", "Golden", "Silver", "Bronze", "Default"];
+const daggerColors = ["#FF0000", "#FFDF00", "#DDDDDD", "#CD7F32", "#444444"];
+
+function setHighlighterPosition(chart, highlighterId, data, xy, minYValue, maxYValue, useMousePosition) {
 	const yAxisWidth = chart.grid._width - chart._width;
 	const yPerc = (data[1] - minYValue) / (maxYValue - minYValue);
 

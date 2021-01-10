@@ -1,7 +1,4 @@
-﻿const daggerNames = ["Devil", "Golden", "Silver", "Bronze", "Default"];
-const daggerColors = ["#FF0000", "#FFDF00", "#DDDDDD", "#CD7F32", "#444444"];
-
-$.getJSON("/api/leaderboard-statistics/daggers", function (data) {
+﻿$.getJSON("/api/leaderboard-statistics/daggers", function (data) {
 	const daggerCounts = [];
 	$.each(data, function (_, daggerCount) {
 		daggerCounts.push(daggerCount);
