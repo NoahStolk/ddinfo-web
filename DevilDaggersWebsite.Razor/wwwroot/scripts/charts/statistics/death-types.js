@@ -6,6 +6,10 @@ $.getJSON("/api/leaderboard-statistics/death-types", function (data) {
 		deathCounts.push(deathCount);
 	});
 
+	let sum = deathCounts.reduce(function (a, b) {
+		return a + b;
+	});
+
 	const chartName = "death-types-chart";
 	const chartId = "#" + chartName;
 	const highlighterName = "death-types-highlighter";
@@ -27,6 +31,9 @@ $.getJSON("/api/leaderboard-statistics/death-types", function (data) {
 		},
 		seriesDefaults: {
 			renderer: $.jqplot.BarRenderer,
+			rendererOptions: {
+				highlightMouseDown: true
+			},
 			pointLabels: { show: true },
 			color: '#f00'
 		},
@@ -37,7 +44,7 @@ $.getJSON("/api/leaderboard-statistics/death-types", function (data) {
 	});
 
 	$(chartId).bind('jqplotMouseMove', function (_event, xy, _axesData, _neighbor, plot) {
-		const closestData = getDataBasedOnMouseXPosition(chart, xy, plot, 0, 16, deathCounts);
+		const closestData = getDataBasedOnMouseXPositionBar(chart, xy, plot, 0, 16, deathCounts);
 
 		if (!closestData)
 			$().hide();
@@ -63,14 +70,29 @@ $.getJSON("/api/leaderboard-statistics/death-types", function (data) {
 	function setHighlighter(data, xy) {
 		setHighlighterPosition(chart, highlighterId, data, xy, 0, 100000, true);
 
-		$('#h-death').html(deathNames[data[0]]);
-		$('#h-count').html(data[1] + ' - ' + data[0]);
-
-		let sum = deathCounts.reduce(function (a, b) {
-			return a + b;
-		});
+		const index = data[0] - 1;
+		$('#h-death').html(deathNames[index]);
+		$('#h-count').html(data[1]);
 		$('#h-percentage').html((data[1] / sum * 100).toFixed(2) + '%');
 
 		$(highlighterId).show();
 	}
 });
+
+function getDataBasedOnMouseXPositionBar(chart, xy, plot, minXValue, maxXValue) {
+	const data = plot.series[0].data;
+
+	for (i = 1; i < data.length; i++) {
+		const iDataPrevious = data[i - 1];
+		const iData = data[i];
+
+		let xPosStart = (iDataPrevious[0] - minXValue) / (maxXValue - minXValue) * chart.grid._width;
+		let xPosEnd = (iData[0] - minXValue) / (maxXValue - minXValue) * chart.grid._width;
+
+		if (xy.x > xPosStart && xy.x < xPosEnd) {
+			return iData;
+		}
+	}
+
+	return data[0];
+}
