@@ -15,6 +15,15 @@
 		Statistics were last fetched on @HistoryUtils.HistoryJsonFileNameToDateTime(StatisticsDataHolder.Instance.FileName).
 	</p>
 
+	<h2>Scores</h2>
+	<div class="chart" id="scores-chart">
+		<table class="highlighter" id="scores-highlighter">
+			<tr><td>Score</td><td id="h-score"></td></tr>
+			<tr><td>Amount</td><td id="h-score-count"></td></tr>
+			<tr><td>Percentage</td><td id="h-score-percentage"></td></tr>
+		</table>
+	</div>
+
 	<h2>Daggers</h2>
 	<div class="chart" id="daggers-chart">
 		<table class="highlighter" id="daggers-highlighter">
@@ -42,6 +51,7 @@
 	<script defer src='~/plugins/jqPlot/jqplot.canvasOverlay.js' asp-append-version='true'></script>
 	<script defer src='~/scripts/charts/chart.js' asp-append-version='true'></script>
 	<script defer src='~/scripts/charts/statistics/chart-bar.js' asp-append-version='true'></script>
+	<script defer src='~/scripts/charts/statistics/scores.js' asp-append-version='true'></script>
 	<script defer src='~/scripts/charts/statistics/daggers.js' asp-append-version='true'></script>
 	<script defer src='~/scripts/charts/statistics/death-types.js' asp-append-version='true'></script>
 }

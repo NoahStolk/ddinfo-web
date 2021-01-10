@@ -3,6 +3,7 @@ using Microsoft.AspNetCore.Hosting;
 using System;
 using System.Collections.Generic;
 using System.IO;
+using System.Linq;
 
 namespace DevilDaggersWebsite.LeaderboardStatistics
 {
@@ -24,7 +25,7 @@ namespace DevilDaggersWebsite.LeaderboardStatistics
 
 		public Dictionary<Dagger, int> DaggerStats { get; } = new();
 		public Dictionary<Death, int> DeathStats { get; } = new();
-		public Dictionary<int, int> TimeStats { get; } = new();
+		public Dictionary<int, int> TimeStats { get; private set; } = new();
 
 		public void Update(IWebHostEnvironment env)
 		{
@@ -37,7 +38,7 @@ namespace DevilDaggersWebsite.LeaderboardStatistics
 			_entries.Clear();
 			DaggerStats.Clear();
 			DeathStats.Clear();
-			TimeStats.Clear();
+			TimeStats = Enumerable.Range(0, 120).ToDictionary(i => i * 10, _ => 0);
 
 			byte[] bytes = File.ReadAllBytes(fileName);
 			for (int i = 0; i < bytes.Length / 15; i++)
