@@ -15,48 +15,53 @@
 </header>
 
 <main role="main">
-	<p class="text-center">
+	<p>
 		Here's a list of custom spawnsets created by the community. They can be played in the real game. Read below for more information.
 	</p>
 
 	@{
 		using (Html.BeginForm(FormMethod.Get))
 		{
-			<fieldset>
-				<div class="flex-container flex-center flex-column">
-					<div class="flex-container flex-center">
-						<div class="input-label text-left" style="@RazorUtils.GetCssWidth(widths[0])">Author search:</div>
-						<div style="@RazorUtils.GetCssWidth(widths[1])">@Html.TextBoxFor(m => m.SearchAuthor, new { @class = "input" })</div>
+			<div class="navigation-wrapper">
+				<fieldset>
+					<div class="flex-container flex-center flex-column">
+						<div class="flex-container flex-center">
+							<div class="input-label text-left" style="@RazorUtils.GetCssWidth(widths[0])">Author search:</div>
+							<div style="@RazorUtils.GetCssWidth(widths[1])">@Html.TextBoxFor(m => m.SearchAuthor, new { @class = "input" })</div>
+						</div>
+						<div class="flex-container flex-center">
+							<div class="input-label text-left" style="@RazorUtils.GetCssWidth(widths[0])">Spawnset search:</div>
+							<div style="@RazorUtils.GetCssWidth(widths[1])">@Html.TextBoxFor(m => m.SearchName, new { @class = "input" })</div>
+						</div>
 					</div>
-					<div class="flex-container flex-center">
-						<div class="input-label text-left" style="@RazorUtils.GetCssWidth(widths[0])">Spawnset search:</div>
-						<div style="@RazorUtils.GetCssWidth(widths[1])">@Html.TextBoxFor(m => m.SearchName, new { @class = "input" })</div>
-					</div>
-				</div>
 
-				<div class="flex-container flex-center flex-column">
-					<div class="flex-container flex-center">
-						<input class="btn" type="submit" value="Search" />
+					<div class="flex-container flex-center flex-column">
+						<div class="flex-container flex-center">
+							<input class="btn" type="submit" value="Search" />
+						</div>
 					</div>
-				</div>
-			</fieldset>
+				</fieldset>
+
+				@if (Model.PaginatedList != null)
+				{
+					int last = (int)Math.Ceiling(Model.TotalResults / (float)Model.PageSize);
+					int curr = Model.PageIndex;
+
+					<p class="text-center">
+						Page @curr of @last
+					</p>
+					<p class="text-center">
+						Showing @((curr - 1) * Model.PageSize + 1) - @(Math.Min(Model.TotalResults, curr * Model.PageSize)) of @Model.TotalResults results
+					</p>
+
+					@await Html.PartialAsync("Partials/_SpawnsetNavigationPartial", new NavigationSettings(Model, 20, ScreenWidthVisibilities.Lg | ScreenWidthVisibilities.Md | ScreenWidthVisibilities.Sm))
+					@await Html.PartialAsync("Partials/_SpawnsetNavigationPartial", new NavigationSettings(Model, 1, ScreenWidthVisibilities.Xs))
+				}
+			</div>
 		}
 
-		if (Model.PaginatedList != null)
+		@if (Model.PaginatedList != null)
 		{
-			int last = (int)Math.Ceiling(Model.TotalResults / (float)Model.PageSize);
-			int curr = Model.PageIndex;
-
-			<p class="text-center">
-				Page @curr of @last
-			</p>
-			<p class="text-center">
-				Showing @((curr - 1) * Model.PageSize + 1) - @(Math.Min(Model.TotalResults, curr * Model.PageSize)) of @Model.TotalResults results
-			</p>
-
-			@await Html.PartialAsync("Partials/_SpawnsetNavigationPartial", new NavigationSettings(Model, 20, ScreenWidthVisibilities.Lg | ScreenWidthVisibilities.Md | ScreenWidthVisibilities.Sm))
-			@await Html.PartialAsync("Partials/_SpawnsetNavigationPartial", new NavigationSettings(Model, 1, ScreenWidthVisibilities.Xs))
-
 			<table>
 				<thead>
 					<tr>

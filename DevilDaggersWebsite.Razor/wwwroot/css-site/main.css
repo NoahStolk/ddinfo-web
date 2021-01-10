@@ -71,7 +71,7 @@ a:hover {
 .btn {
 	margin: 4px 0 0 0;
 	border: 2px solid;
-	border-color: var(--col-default-text);
+	border-color: #999;
 	color: var(--col-red);
 	text-align: center;
 	padding: 6px 12px;
@@ -95,6 +95,7 @@ a:hover {
 
 input {
 	background-color: var(--col-black);
+	border-color: #999;
 }
 
 .select {
