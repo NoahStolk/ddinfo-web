@@ -76,7 +76,7 @@
 						</ul>
 					</li>
 					<li><a href="/swagger/index.html">API</a></li>
-					@if (User.Identity.IsAuthenticated)
+					@if (User.Identity?.IsAuthenticated == true)
 					{
 						<partial name="_LoginPartial" />
 					}
@@ -94,7 +94,7 @@
 		<footer>
 			<div class="row">
 				<div class="col-lg-4 col-lg-offset-2 text-center">
-					@(RazorUtils.GetCopyrightString("", 2017))<br />
+					@(RazorUtils.GetCopyrightString("", 2017)) <span class="build-time">(Build: @RazorUtils.BuildTime)</span><br />
 					Website created by Noah Stolk<br />
 					<a href="//noahstolk.com/">www.noahstolk.com</a>
 				</div>

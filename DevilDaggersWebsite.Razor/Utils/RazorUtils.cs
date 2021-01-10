@@ -7,6 +7,7 @@ using System.Collections.Generic;
 using System.Globalization;
 using System.IO;
 using System.Linq;
+using System.Reflection;
 using System.Text;
 
 namespace DevilDaggersWebsite.Razor.Utils
@@ -16,19 +17,32 @@ namespace DevilDaggersWebsite.Razor.Utils
 		public const string DiscordUrl = "https://discord.gg/NF32j8S";
 		public const string ContactEmail = "contact@devildaggers.info";
 
-		public static HtmlString NAString { get; set; } = new HtmlString($"<span style='color: #444;'>N/A</span>");
+		static RazorUtils()
+		{
+			try
+			{
+				BuildTime = File.GetLastWriteTime(Assembly.GetExecutingAssembly().Location).ToUniversalTime().ToString("yyyy-MM-dd HH:mm UTC", CultureInfo.InvariantCulture);
+			}
+			catch
+			{
+			}
+		}
+
+		public static string BuildTime { get; } = string.Empty;
+
+		public static HtmlString NAString { get; set; } = new("<span style='color: #444;'>N/A</span>");
 
 		public static HtmlString GetCssList(IWebHostEnvironment env, string subdirectory)
-			=> GetList(env, subdirectory, (sb, href) => sb.Append($"<link rel='stylesheet' href='/{href}' />\n"));
+			=> GetList(env, subdirectory, (sb, href) => sb.Append("<link rel='stylesheet' href='/").Append(href).Append("' />\n"));
 
 		public static HtmlString GetJsList(IWebHostEnvironment env, string subdirectory)
-			=> GetList(env, subdirectory, (sb, href) => sb.Append($"<script defer src='/{href}' asp-append-version='true'></script>\n"));
+			=> GetList(env, subdirectory, (sb, href) => sb.Append("<script defer src='/").Append(href).Append("' asp-append-version='true'></script>\n"));
 
 		private static HtmlString GetList(IWebHostEnvironment env, string subdirectory, Action<StringBuilder, string> appendAction)
 		{
 			string directory = Path.Combine(env.WebRootPath, subdirectory);
 
-			StringBuilder sb = new StringBuilder();
+			StringBuilder sb = new();
 			foreach (string path in Directory.GetFiles(directory))
 				appendAction(sb, Path.Combine(subdirectory, Path.GetFileName(path)));
 
@@ -49,7 +63,7 @@ namespace DevilDaggersWebsite.Razor.Utils
 		{
 			string colorCode = enemy.ColorCode;
 			if (gameVersionOverride.HasValue)
-				colorCode = GameInfo.GetEntities<Enemy>(gameVersionOverride).FirstOrDefault(e => e.Name == enemy.Name).ColorCode;
+				colorCode = GameInfo.GetEntities<Enemy>(gameVersionOverride).First(e => e.Name == enemy.Name).ColorCode;
 
 			return new HtmlString($"<a style='color: #{colorCode};' href='/Wiki/Enemies{(gameVersionOverride == null ? string.Empty : $"?GameVersion={gameVersionOverride}")}#{enemy.Name.Replace(" ", string.Empty, StringComparison.InvariantCulture)}'>{enemy.Name}{(plural ? "s" : string.Empty)}</a>");
 		}
@@ -102,11 +116,9 @@ namespace DevilDaggersWebsite.Razor.Utils
 
 		public static string TransmuteString(this string str)
 		{
-			str = str
+			return str
 				.Replace(" transmute ", " <a style='color: var(--col-red);' href='/Wiki/Enemies#transmuted-skulls'>transmute</a> ", StringComparison.InvariantCulture)
 				.Replace(" transmutes ", " <a style='color: var(--col-red);' href='/Wiki/Enemies#transmuted-skulls'>transmutes</a> ", StringComparison.InvariantCulture);
-
-			return str;
 		}
 
 		public static string ToIdString(this string str)
