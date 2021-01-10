@@ -63,8 +63,8 @@ $.getJSON("/api/leaderboard-statistics/death-types", function (data) {
 		$(chartId).append('<table class="highlighter" id="' + highlighterName + '">');
 		$(highlighterId).append('<tbody>');
 		$(highlighterId).append('<tr><td>Death</td><td id="h-death"></td></tr>');
-		$(highlighterId).append('<tr><td>Amount</td><td id="h-count"></td></tr>');
-		$(highlighterId).append('<tr><td>Percentage</td><td id="h-percentage"></td></tr>');
+		$(highlighterId).append('<tr><td>Amount</td><td id="h-death-count"></td></tr>');
+		$(highlighterId).append('<tr><td>Percentage</td><td id="h-death-percentage"></td></tr>');
 		$(highlighterId).append('</tbody>');
 		$(chartId).append('</table>');
 	});
@@ -74,8 +74,8 @@ $.getJSON("/api/leaderboard-statistics/death-types", function (data) {
 
 		const index = data[0] - 1;
 		$('#h-death').html(deathNames[index]);
-		$('#h-count').html(data[1]);
-		$('#h-percentage').html((data[1] / sum * 100).toFixed(2) + '%');
+		$('#h-death-count').html(data[1]);
+		$('#h-death-percentage').html((data[1] / sum * 100).toFixed(2) + '%');
 
 		$(highlighterId).show();
 	}

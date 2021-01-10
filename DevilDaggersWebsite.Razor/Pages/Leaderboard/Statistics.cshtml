@@ -15,11 +15,21 @@
 		Statistics were last fetched on @HistoryUtils.HistoryJsonFileNameToDateTime(StatisticsDataHolder.Instance.FileName).
 	</p>
 
+	<h2>Daggers</h2>
+	<div class="chart" id="daggers-chart">
+		<table class="highlighter" id="daggers-highlighter">
+			<tr><td>Dagger</td><td id="h-dagger"></td></tr>
+			<tr><td>Amount</td><td id="h-dagger-count"></td></tr>
+			<tr><td>Percentage</td><td id="h-dagger-percentage"></td></tr>
+		</table>
+	</div>
+
+	<h2>Death types</h2>
 	<div class="chart" id="death-types-chart">
 		<table class="highlighter" id="death-types-highlighter">
 			<tr><td>Death</td><td id="h-death"></td></tr>
-			<tr><td>Amount</td><td id="h-count"></td></tr>
-			<tr><td>Percentage</td><td id="h-percentage"></td></tr>
+			<tr><td>Amount</td><td id="h-death-count"></td></tr>
+			<tr><td>Percentage</td><td id="h-death-percentage"></td></tr>
 		</table>
 	</div>
 </main>
@@ -32,6 +42,7 @@
 	<script defer src='~/plugins/jqPlot/jqplot.canvasOverlay.js' asp-append-version='true'></script>
 	<script defer src='~/scripts/charts/chart.js' asp-append-version='true'></script>
 	<script defer src='~/scripts/charts/statistics/chart-bar.js' asp-append-version='true'></script>
+	<script defer src='~/scripts/charts/statistics/daggers.js' asp-append-version='true'></script>
 	<script defer src='~/scripts/charts/statistics/death-types.js' asp-append-version='true'></script>
 }
 
