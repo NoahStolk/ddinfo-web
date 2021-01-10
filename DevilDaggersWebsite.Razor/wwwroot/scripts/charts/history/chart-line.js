@@ -70,15 +70,23 @@ function createChart(chartName, data, minDate, maxDate, minTime, maxTime, yNumbe
 				min: minDate,
 				max: maxDate,
 				tickOptions: {
-					formatString: "%b %#d '%y"
+					formatString: "%b %#d '%y",
+					labelPosition: 'left',
+					angle: -45
 				},
-				numberTicks: 15
+				numberTicks: 15,
+				labelRenderer: $.jqplot.CanvasAxisLabelRenderer,
+				tickRenderer: $.jqplot.CanvasAxisTickRenderer
 			},
 			yaxis: {
-				mark: 'outside',
 				min: minTime,
 				max: maxTime,
-				numberTicks: yNumberTicks
+				numberTicks: yNumberTicks,
+				labelRenderer: $.jqplot.CanvasAxisLabelRenderer,
+				tickRenderer: $.jqplot.CanvasAxisTickRenderer,
+				tickOptions: {
+					formatString: "%#4d  " // Spaces are a hack to add more margin.
+				}
 			}
 		},
 		seriesDefaults: {

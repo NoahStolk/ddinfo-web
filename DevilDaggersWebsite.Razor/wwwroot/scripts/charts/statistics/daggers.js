@@ -25,7 +25,12 @@
 				mark: 'outside',
 				min: 0,
 				max: 100000,
-				numberTicks: 11
+				numberTicks: 11,
+				labelRenderer: $.jqplot.CanvasAxisLabelRenderer,
+				tickRenderer: $.jqplot.CanvasAxisTickRenderer,
+				tickOptions: {
+					formatString: "%#6d  " // Spaces are a hack to add more margin.
+				}
 			}
 		},
 		seriesDefaults: {

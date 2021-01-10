@@ -18,13 +18,24 @@
 		axes: {
 			xaxis: {
 				renderer: $.jqplot.CategoryAxisRenderer,
-				ticks: range(0, 1200, 10)
+				ticks: range(0, 1200, 10),
+				labelRenderer: $.jqplot.CanvasAxisLabelRenderer,
+				tickRenderer: $.jqplot.CanvasAxisTickRenderer,
+				tickOptions: {
+					labelPosition: 'left',
+					angle: -45
+				}
 			},
 			yaxis: {
 				mark: 'outside',
 				min: 0,
 				max: 50000,
-				numberTicks: 11
+				numberTicks: 11,
+				labelRenderer: $.jqplot.CanvasAxisLabelRenderer,
+				tickRenderer: $.jqplot.CanvasAxisTickRenderer,
+				tickOptions: {
+					formatString: "%#5d  " // Spaces are a hack to add more margin.
+				}
 			}
 		},
 		seriesDefaults: {
