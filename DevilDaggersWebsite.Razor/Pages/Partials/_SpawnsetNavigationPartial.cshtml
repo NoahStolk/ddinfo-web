@@ -1,18 +1,16 @@
-﻿@model SpawnsetNavigationSettings
-@using DevilDaggersWebsite.Razor.Spawnsets
-@using DevilDaggersWebsite.Razor.Pages
+﻿@model NavigationSettings
+@using DevilDaggersWebsite.Razor.Pagination
 @using System.Text
 @{
-	SpawnsetsModel mod = Model.Model;
 	int maxAround = Model.MaxAround;
 	ScreenWidthVisibilities visibility = Model.Visibility;
 
-	string firstDisabled = mod.PaginatedSpawnsetFiles != null && !mod.PaginatedSpawnsetFiles.HasPreviousPage ? "disabled btn-info" : string.Empty;
-	string lastDisabled = mod.PaginatedSpawnsetFiles != null && !mod.PaginatedSpawnsetFiles.HasNextPage ? "disabled btn-info" : string.Empty;
+	string firstDisabled = Model.Model.PaginatedList != null && !Model.Model.PaginatedList.HasPreviousPage ? "disabled btn-info" : string.Empty;
+	string lastDisabled = Model.Model.PaginatedList != null && !Model.Model.PaginatedList.HasNextPage ? "disabled btn-info" : string.Empty;
 
 	int first = 1;
-	int last = (int)Math.Ceiling(mod.TotalResults / (float)mod.PageSize);
-	int curr = mod.PageIndex;
+	int last = (int)Math.Ceiling(Model.Model.TotalResults / (float)Model.Model.PageSize);
+	int curr = Model.Model.PageIndex;
 
 	int start = Math.Max(first + 1, curr - maxAround);
 	int end = Math.Min(last, curr + maxAround + 1);
@@ -29,17 +27,17 @@
 		sb.Append($"-{v.ToString().ToLower()} ");
 	}
 }
-<div class="row spawnsets-page-nav @sb.ToString()">
+<div class="row navigation-page-nav @sb.ToString()">
 	<div class="col-xs-12 col-sm-6 col-sm-offset-3 col-lg-4 col-lg-offset-4">
 		<div class="flex-container" style="justify-content: space-evenly;">
 			@{
 				if (multi)
 				{
 					<div>
-						<a asp-page="./Spawnsets"
-						   asp-route-searchAuthor="@mod.SearchAuthor"
-						   asp-route-searchName="@mod.SearchName"
-						   asp-route-sortOrder="@mod.SortOrder"
+						<a asp-page="./@(Model.Model.PageName)"
+						   asp-route-searchAuthor="@Model.Model.SearchAuthor"
+						   asp-route-searchName="@Model.Model.SearchName"
+						   asp-route-sortOrder="@Model.Model.SortOrder"
 						   asp-route-pageIndex="@first"
 						   class="btn btn-default btn-page @firstDisabled">
 							@first
@@ -55,10 +53,10 @@
 				for (int i = start - startExtras; i < end + endExtras; i++)
 				{
 					<div>
-						<a asp-page="./Spawnsets"
-						   asp-route-searchAuthor="@mod.SearchAuthor"
-						   asp-route-searchName="@mod.SearchName"
-						   asp-route-sortOrder="@mod.SortOrder"
+						<a asp-page="./@(Model.Model.PageName)"
+						   asp-route-searchAuthor="@Model.Model.SearchAuthor"
+						   asp-route-searchName="@Model.Model.SearchName"
+						   asp-route-sortOrder="@Model.Model.SortOrder"
 						   asp-route-pageIndex="@i"
 						   class="btn btn-default btn-page @(curr == i ? "disabled btn-info" : "")">
 							@i
@@ -74,10 +72,10 @@
 						}
 					</div>
 					<div>
-						<a asp-page="./Spawnsets"
-						   asp-route-searchAuthor="@mod.SearchAuthor"
-						   asp-route-searchName="@mod.SearchName"
-						   asp-route-sortOrder="@mod.SortOrder"
+						<a asp-page="./@(Model.Model.PageName)"
+						   asp-route-searchAuthor="@Model.Model.SearchAuthor"
+						   asp-route-searchName="@Model.Model.SearchName"
+						   asp-route-sortOrder="@Model.Model.SortOrder"
 						   asp-route-pageIndex="@last"
 						   class="btn btn-default btn-page @lastDisabled">
 							@last

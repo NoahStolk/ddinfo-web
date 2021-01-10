@@ -1,4 +1,5 @@
 ﻿using DevilDaggersWebsite.Dto;
+using DevilDaggersWebsite.Razor.PageModels;
 using DevilDaggersWebsite.Razor.Pagination;
 using DevilDaggersWebsite.Transients;
 using Microsoft.AspNetCore.Mvc.RazorPages;
@@ -8,7 +9,7 @@ using System.Linq;
 
 namespace DevilDaggersWebsite.Razor.Pages
 {
-	public class SpawnsetsModel : PageModel
+	public class SpawnsetsModel : PageModel, IPaginationModel
 	{
 		private readonly SpawnsetHelper _spawnsetHelper;
 
@@ -17,24 +18,28 @@ namespace DevilDaggersWebsite.Razor.Pages
 			_spawnsetHelper = spawnsetHelper;
 		}
 
-		public PaginatedList<SpawnsetFile>? PaginatedSpawnsetFiles { get; private set; }
+		public PaginatedList<SpawnsetFile>? PaginatedList { get; private set; }
 
 		public string? SearchAuthor { get; set; }
 		public string? SearchName { get; set; }
 
 		public string? NameSort { get; set; }
 		public string? AuthorSort { get; set; }
-		public string? LastUpdated { get; set; }
-		public string? NonLoopLength { get; set; }
-		public string? NonLoopSpawns { get; set; }
-		public string? LoopLength { get; set; }
-		public string? LoopSpawns { get; set; }
+		public string? LastUpdatedSort { get; set; }
+		public string? NonLoopLengthSort { get; set; }
+		public string? NonLoopSpawnsSort { get; set; }
+		public string? LoopLengthSort { get; set; }
+		public string? LoopSpawnsSort { get; set; }
 
 		public string? SortOrder { get; set; }
 
 		public int PageSize { get; set; } = 18;
 		public int PageIndex { get; private set; }
 		public int TotalResults { get; private set; }
+
+		public string PageName => "Spawnsets";
+
+		IPaginatedList? IPaginationModel.PaginatedList => PaginatedList;
 
 		public void OnGet(string searchAuthor, string searchName, string sortOrder, int? pageIndex)
 		{
@@ -45,11 +50,11 @@ namespace DevilDaggersWebsite.Razor.Pages
 
 			NameSort = sortOrder == "Name" ? "Name_asc" : "Name";
 			AuthorSort = sortOrder == "Author_asc" ? "Author" : "Author_asc";
-			LastUpdated = sortOrder == "LastUpdated_asc" ? "LastUpdated" : "LastUpdated_asc";
-			NonLoopLength = sortOrder == "NonLoopLength_asc" ? "NonLoopLength" : "NonLoopLength_asc";
-			NonLoopSpawns = sortOrder == "NonLoopSpawns_asc" ? "NonLoopSpawns" : "NonLoopSpawns_asc";
-			LoopLength = sortOrder == "LoopLength_asc" ? "LoopLength" : "LoopLength_asc";
-			LoopSpawns = sortOrder == "LoopSpawns_asc" ? "LoopSpawns" : "LoopSpawns_asc";
+			LastUpdatedSort = sortOrder == "LastUpdated_asc" ? "LastUpdated" : "LastUpdated_asc";
+			NonLoopLengthSort = sortOrder == "NonLoopLength_asc" ? "NonLoopLength" : "NonLoopLength_asc";
+			NonLoopSpawnsSort = sortOrder == "NonLoopSpawns_asc" ? "NonLoopSpawns" : "NonLoopSpawns_asc";
+			LoopLengthSort = sortOrder == "LoopLength_asc" ? "LoopLength" : "LoopLength_asc";
+			LoopSpawnsSort = sortOrder == "LoopSpawns_asc" ? "LoopSpawns" : "LoopSpawns_asc";
 
 			List<SpawnsetFile> spawnsetFiles = _spawnsetHelper.GetSpawnsets(SearchAuthor, SearchName);
 			spawnsetFiles = sortOrder switch
@@ -74,7 +79,7 @@ namespace DevilDaggersWebsite.Razor.Pages
 				return;
 
 			PageIndex = Math.Clamp(PageIndex, 1, (int)Math.Ceiling(TotalResults / (double)PageSize));
-			PaginatedSpawnsetFiles = new PaginatedList<SpawnsetFile>(spawnsetFiles, PageIndex, PageSize);
+			PaginatedList = new(spawnsetFiles, PageIndex, PageSize);
 		}
 	}
 }

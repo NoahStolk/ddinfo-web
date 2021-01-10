@@ -4,7 +4,7 @@ using System.Linq;
 
 namespace DevilDaggersWebsite.Razor.Pagination
 {
-	public class PaginatedList<T> : List<T>
+	public class PaginatedList<T> : List<T>, IPaginatedList
 	{
 		public PaginatedList(List<T> items, int pageIndex, int pageSize)
 		{

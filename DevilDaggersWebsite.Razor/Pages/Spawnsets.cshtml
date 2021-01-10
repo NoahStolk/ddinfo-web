@@ -1,7 +1,7 @@
 ﻿@page
 @using DevilDaggersCore.Utils
 @using DevilDaggersWebsite.Razor.Utils
-@using DevilDaggersWebsite.Razor.Spawnsets
+@using DevilDaggersWebsite.Razor.Pagination
 @using DevilDaggersWebsite.Dto
 @model SpawnsetsModel
 @{
@@ -42,7 +42,7 @@
 			</fieldset>
 		}
 
-		if (Model.PaginatedSpawnsetFiles != null)
+		if (Model.PaginatedList != null)
 		{
 			int last = (int)Math.Ceiling(Model.TotalResults / (float)Model.PageSize);
 			int curr = Model.PageIndex;
@@ -54,8 +54,8 @@
 				Showing @((curr - 1) * Model.PageSize + 1) - @(Math.Min(Model.TotalResults, curr * Model.PageSize)) of @Model.TotalResults results
 			</p>
 
-			@await Html.PartialAsync("Partials/_SpawnsetNavigationPartial", new SpawnsetNavigationSettings(Model, 20, ScreenWidthVisibilities.Lg | ScreenWidthVisibilities.Md | ScreenWidthVisibilities.Sm))
-			@await Html.PartialAsync("Partials/_SpawnsetNavigationPartial", new SpawnsetNavigationSettings(Model, 1, ScreenWidthVisibilities.Xs))
+			@await Html.PartialAsync("Partials/_SpawnsetNavigationPartial", new NavigationSettings(Model, 20, ScreenWidthVisibilities.Lg | ScreenWidthVisibilities.Md | ScreenWidthVisibilities.Sm))
+			@await Html.PartialAsync("Partials/_SpawnsetNavigationPartial", new NavigationSettings(Model, 1, ScreenWidthVisibilities.Xs))
 
 			<table>
 				<thead>
@@ -64,7 +64,7 @@
 						<th class="hidden-xs hidden-sm hidden-md" colspan="2">Non-loop</th>
 						<th class="hidden-xs hidden-sm hidden-md" colspan="3">Loop</th>
 					</tr>
-					<tr class="spawnsets-sort">
+					<tr class="navigation-sort">
 						<th width="500">
 							<a asp-page="./Spawnsets"
 							   asp-route-searchAuthor="@Model.SearchAuthor"
@@ -83,41 +83,41 @@
 							<a asp-page="./Spawnsets"
 							   asp-route-searchAuthor="@Model.SearchAuthor"
 							   asp-route-searchName="@Model.SearchName"
-							   asp-route-sortOrder="@Model.LastUpdated"
+							   asp-route-sortOrder="@Model.LastUpdatedSort"
 							   asp-route-pageIndex="@Model.PageIndex">Last updated</a>
 						</th>
 						<th class="hidden-xs hidden-sm hidden-md" width="160">
 							<a asp-page="./Spawnsets"
 							   asp-route-searchAuthor="@Model.SearchAuthor"
 							   asp-route-searchName="@Model.SearchName"
-							   asp-route-sortOrder="@Model.NonLoopLength"
+							   asp-route-sortOrder="@Model.NonLoopLengthSort"
 							   asp-route-pageIndex="@Model.PageIndex">Length</a>
 						</th>
 						<th class="hidden-xs hidden-sm hidden-md" width="160">
 							<a asp-page="./Spawnsets"
 							   asp-route-searchAuthor="@Model.SearchAuthor"
 							   asp-route-searchName="@Model.SearchName"
-							   asp-route-sortOrder="@Model.NonLoopSpawns"
+							   asp-route-sortOrder="@Model.NonLoopSpawnsSort"
 							   asp-route-pageIndex="@Model.PageIndex">Spawns</a>
 						</th>
 						<th class="hidden-xs hidden-sm hidden-md" width="160">
 							<a asp-page="./Spawnsets"
 							   asp-route-searchAuthor="@Model.SearchAuthor"
 							   asp-route-searchName="@Model.SearchName"
-							   asp-route-sortOrder="@Model.LoopLength"
+							   asp-route-sortOrder="@Model.LoopLengthSort"
 							   asp-route-pageIndex="@Model.PageIndex">Length (wave 1)</a>
 						</th>
 						<th class="hidden-xs hidden-sm hidden-md" width="160">
 							<a asp-page="./Spawnsets"
 							   asp-route-searchAuthor="@Model.SearchAuthor"
 							   asp-route-searchName="@Model.SearchName"
-							   asp-route-sortOrder="@Model.LoopSpawns"
+							   asp-route-sortOrder="@Model.LoopSpawnsSort"
 							   asp-route-pageIndex="@Model.PageIndex">Spawns</a>
 						</th>
 					</tr>
 				</thead>
 				<tbody>
-					@foreach (SpawnsetFile spawnsetFile in Model.PaginatedSpawnsetFiles)
+					@foreach (SpawnsetFile spawnsetFile in Model.PaginatedList)
 					{
 						<tr>
 							<td><a asp-page="Spawnset" asp-route-spawnset="@spawnsetFile.Name">@spawnsetFile.Name</a></td>
@@ -210,5 +210,5 @@
 </main>
 
 @section Styles {
-	<link rel='stylesheet' href='~/styles/spawnsets.css' />
+	<link rel='stylesheet' href='~/styles/navigation.css' />
 }

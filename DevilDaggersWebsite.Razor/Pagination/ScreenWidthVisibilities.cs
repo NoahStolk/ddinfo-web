@@ -1,10 +1,11 @@
 ﻿using System;
 
-namespace DevilDaggersWebsite.Razor.Spawnsets
+namespace DevilDaggersWebsite.Razor.Pagination
 {
 	[Flags]
 	public enum ScreenWidthVisibilities
 	{
+		None = 0,
 		Lg = 1,
 		Md = 2,
 		Sm = 4,

@@ -1,10 +1,11 @@
 ﻿@page
 @model ModsModel
-@using DevilDaggersCore.Utils
 @using DevilDaggersWebsite.Razor.Utils
-@using DevilDaggersWebsite.Entities
+@using DevilDaggersWebsite.Razor.Pagination
 @{
 	ViewData["Title"] = "Mods";
+
+	int[] widths = new int[2] { 160, 160 };
 }
 
 <header>
@@ -16,36 +17,107 @@
 		Here's a list of custom asset mods created by the community using <a asp-page="/Tools/DevilDaggersAssetEditor">Devil Daggers Asset Editor</a>. The mods may also come with their own <a asp-page="/Spawnsets">custom spawnset</a>. Read below for more information.
 	</p>
 
-	<h2>Mods list</h2>
-	<table>
-		<thead>
-			<tr>
-				<th width="256">Name</th>
-				<th width="256">Author(s)</th>
-				<th width="256" class="hidden-xs">Type</th>
-				<th width="256" class="hidden-xs">Contents</th>
-			</tr>
-		</thead>
-		<tbody>
-			@foreach (AssetMod mod in Model.AssetMods)
-			{
-				<tr>
-					<td>
-						<a href="@mod.Url" target="_blank">@mod.Name</a>
-					</td>
-					<td>
-						@string.Join(", ", mod.PlayerAssetMods.Select(pam => pam.Player?.Username).OrderBy(s => s))
-					</td>
-					<td class="hidden-xs">
-						@string.Join(", ", EnumUtils.GetEnumFlagValues(mod.AssetModTypes, true))
-					</td>
-					<td class="hidden-xs">
-						@string.Join(", ", EnumUtils.GetEnumFlagValues(mod.AssetModFileContents, true))
-					</td>
-				</tr>
-			}
-		</tbody>
-	</table>
+	@{
+		using (Html.BeginForm(FormMethod.Get))
+		{
+			<fieldset>
+				<div class="flex-container flex-center flex-column">
+					<div class="flex-container flex-center">
+						<div class="input-label text-left" style="@RazorUtils.GetCssWidth(widths[0])">Author search:</div>
+						<div style="@RazorUtils.GetCssWidth(widths[1])">@Html.TextBoxFor(m => m.SearchAuthor, new { @class = "input" })</div>
+					</div>
+					<div class="flex-container flex-center">
+						<div class="input-label text-left" style="@RazorUtils.GetCssWidth(widths[0])">Mod search:</div>
+						<div style="@RazorUtils.GetCssWidth(widths[1])">@Html.TextBoxFor(m => m.SearchName, new { @class = "input" })</div>
+					</div>
+				</div>
+
+				<div class="flex-container flex-center flex-column">
+					<div class="flex-container flex-center">
+						<input class="btn" type="submit" value="Search" />
+					</div>
+				</div>
+			</fieldset>
+		}
+
+		if (Model.PaginatedList != null)
+		{
+			int last = (int)Math.Ceiling(Model.TotalResults / (float)Model.PageSize);
+			int curr = Model.PageIndex;
+
+			<p class="text-center">
+				Page @curr of @last
+			</p>
+			<p class="text-center">
+				Showing @((curr - 1) * Model.PageSize + 1) - @(Math.Min(Model.TotalResults, curr * Model.PageSize)) of @Model.TotalResults results
+			</p>
+
+			@await Html.PartialAsync("Partials/_SpawnsetNavigationPartial", new NavigationSettings(Model, 20, ScreenWidthVisibilities.Lg | ScreenWidthVisibilities.Md | ScreenWidthVisibilities.Sm))
+			@await Html.PartialAsync("Partials/_SpawnsetNavigationPartial", new NavigationSettings(Model, 1, ScreenWidthVisibilities.Xs))
+
+			<table>
+				<thead>
+					<tr>
+						<th class="hidden-xs" colspan="3"></th>
+					</tr>
+					<tr class="navigation-sort">
+						<th width="500">
+							<a asp-page="./Mods"
+							   asp-route-searchAuthor="@Model.SearchAuthor"
+							   asp-route-searchName="@Model.SearchName"
+							   asp-route-sortOrder="@Model.NameSort"
+							   asp-route-pageIndex="@Model.PageIndex">Name</a>
+						</th>
+						<th width="220">
+							<a asp-page="./Mods"
+							   asp-route-searchAuthor="@Model.SearchAuthor"
+							   asp-route-searchName="@Model.SearchName"
+							   asp-route-sortOrder="@Model.AuthorSort"
+							   asp-route-pageIndex="@Model.PageIndex">Author</a>
+						</th>
+						<th class="hidden-xs" width="220">
+							<a asp-page="./Mods"
+							   asp-route-searchAuthor="@Model.SearchAuthor"
+							   asp-route-searchName="@Model.SearchName"
+							   asp-route-sortOrder="@Model.TypeSort"
+							   asp-route-pageIndex="@Model.PageIndex">Type</a>
+						</th>
+						<th class="hidden-xs hidden-sm hidden-md" width="220">
+							<a asp-page="./Mods"
+							   asp-route-searchAuthor="@Model.SearchAuthor"
+							   asp-route-searchName="@Model.SearchName"
+							   asp-route-sortOrder="@Model.FileContentsSort"
+							   asp-route-pageIndex="@Model.PageIndex">Contents</a>
+						</th>
+					</tr>
+				</thead>
+				<tbody>
+					@foreach (Mod mod in Model.PaginatedList)
+					{
+						<tr>
+							<td><a href="@mod.Url">@mod.Name</a></td>
+							<td>
+								@foreach (string author in mod.Authors)
+								{
+									<a asp-page="/Mods" asp-route-SearchAuthor="@author">@author</a>
+								}
+							</td>
+							<td class="hidden-xs">
+								@(mod.AssetModTypes)
+							</td>
+							<td class="hidden-xs">
+								@(mod.AssetModFileContents)
+							</td>
+						</tr>
+					}
+				</tbody>
+			</table>
+		}
+		else
+		{
+			<p class="text-center">Search returned no results</p>
+		}
+	}
 
 	<h2>How to play mods</h2>
 	<ol>
@@ -86,5 +158,5 @@
 </main>
 
 @section Styles {
-	<link rel='stylesheet' href='~/styles/mods.css' />
+	<link rel='stylesheet' href='~/styles/navigation.css' />
 }

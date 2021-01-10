@@ -29,13 +29,13 @@ namespace DevilDaggersWebsite.Transients
 		{
 			IEnumerable<SpawnsetFile> query = _dbContext.SpawnsetFiles.Include(sf => sf.Player);
 
-			if (!string.IsNullOrEmpty(authorFilter))
+			if (!string.IsNullOrWhiteSpace(authorFilter))
 			{
 				authorFilter = authorFilter.ToLower(CultureInfo.InvariantCulture);
 				query = query.Where(sf => sf.Player.Username.ToLower(CultureInfo.InvariantCulture).Contains(authorFilter, StringComparison.InvariantCulture));
 			}
 
-			if (!string.IsNullOrEmpty(nameFilter))
+			if (!string.IsNullOrWhiteSpace(nameFilter))
 			{
 				nameFilter = nameFilter.ToLower(CultureInfo.InvariantCulture);
 				query = query.Where(sf => sf.Name.ToLower(CultureInfo.InvariantCulture).Contains(nameFilter, StringComparison.InvariantCulture));
