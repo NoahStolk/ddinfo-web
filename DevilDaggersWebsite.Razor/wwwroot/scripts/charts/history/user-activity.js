@@ -4,17 +4,17 @@ $.getJSON("/api/leaderboard-history/user-activity?UserId=" + getUrlParameter("Us
 	const activity = [];
 	let activityIndex = 0;
 	let deathsPrevious = 0;
-	let datePrevious;
+	let dateStart;
 	let maxDeaths = 0;
 	$.each(data, function (key, deaths) {
-		const dateCurrent = new Date(key);
-		if (!datePrevious)
-			datePrevious = dateCurrent;
+		const dateEnd = new Date(key);
+		if (!dateStart)
+			dateStart = dateEnd;
 
 		if (activityIndex === 0)
 			deathsPrevious = deaths;
 
-		const periodLengthInMilliseconds = Math.abs(dateCurrent - datePrevious);
+		const periodLengthInMilliseconds = Math.abs(dateEnd - dateStart);
 		const periodLengthInDays = dayLengthInMilliseconds / periodLengthInMilliseconds;
 
 		const newDeaths = deaths - deathsPrevious;
@@ -22,7 +22,7 @@ $.getJSON("/api/leaderboard-history/user-activity?UserId=" + getUrlParameter("Us
 			// Only apply when the numbers are realistic (less than 300 deaths per day); sometimes people switch accounts which messes up statistics.
 
 			const approximateDailyDeaths = newDeaths * periodLengthInDays;
-			activity.push([dateCurrent, approximateDailyDeaths, newDeaths, datePrevious]);
+			activity.push([dateEnd, approximateDailyDeaths, newDeaths, dateStart]);
 
 			if (newDeaths > maxDeaths) {
 				maxDeaths = newDeaths;
@@ -30,7 +30,7 @@ $.getJSON("/api/leaderboard-history/user-activity?UserId=" + getUrlParameter("Us
 		}
 
 		deathsPrevious = deaths;
-		datePrevious = dateCurrent;
+		dateStart = dateEnd;
 
 		if (++activityIndex === Object.keys(data).length) {
 			// Ugly way to make sure no dot is visible
@@ -73,17 +73,17 @@ $.getJSON("/api/leaderboard-history/user-activity?UserId=" + getUrlParameter("Us
 	function setHighlighter(data, xy) {
 		setHighlighterPosition(chart, highlighterId, data, xy, 0, maxDeaths, true);
 
-		const dateCurrent = new Date(data[0]);
-		const yearCurrent = dateCurrent.getFullYear();
-		const monthCurrent = dateCurrent.getMonth();
-		const dayCurrent = dateCurrent.getDate();
+		const dateEnd = new Date(data[0]);
+		const yearEnd = dateEnd.getFullYear();
+		const monthEnd = dateEnd.getMonth();
+		const dayEnd = dateEnd.getDate();
 
-		const datePrevious = new Date(data[3]);
-		const yearPrevious = datePrevious.getFullYear();
-		const monthPrevious = datePrevious.getMonth();
-		const dayPrevious = datePrevious.getDate();
+		const dateStart = new Date(data[3]);
+		const yearStart = dateStart.getFullYear();
+		const monthStart = dateStart.getMonth();
+		const dayStart = dateStart.getDate();
 
-		let dateString = getDateString(dayPrevious, monthPrevious, yearPrevious) + ' - ' + getDateString(dayCurrent, monthCurrent, yearCurrent);
+		let dateString = getDateString(dayStart, monthStart, yearStart) + ' - ' + getDateString(dayEnd, monthEnd, yearEnd);
 
 		$('#h-activity-date').html(dateString);
 		$('#h-activity-deaths-per-day').html(data[1].toFixed(2));
