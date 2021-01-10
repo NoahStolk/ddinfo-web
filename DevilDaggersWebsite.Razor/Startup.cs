@@ -1,6 +1,7 @@
 // #define TEST_EXCEPTION_HANDLER
 using DevilDaggersWebsite.Authorization;
 using DevilDaggersWebsite.Entities;
+using DevilDaggersWebsite.LeaderboardStatistics;
 using DevilDaggersWebsite.Tasks;
 using DevilDaggersWebsite.Tasks.Scheduling;
 using DevilDaggersWebsite.Transients;
@@ -147,6 +148,9 @@ namespace DevilDaggersWebsite.Razor
 
 			Task task = serviceProvider.CreateRolesAndAdminUser(Configuration.GetSection("AdminUser")["Email"]);
 			task.Wait();
+
+			// Calculate statistics once on startup because this is a heavy operation.
+			StatisticsDataHolder.Instance.Update(env);
 		}
 	}
 }
