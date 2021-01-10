@@ -50,9 +50,6 @@ namespace DevilDaggersWebsite.Razor
 
 			services.AddSingleton<IHttpContextAccessor, HttpContextAccessor>();
 			services.AddSingleton<IActionContextAccessor, ActionContextAccessor>();
-
-			// TODO: Add all tasks using reflection?
-			// services.AddSingleton<IScheduledTask, RetrieveEntireLeaderboardTask>();
 			services.AddSingleton<IScheduledTask, CreateLeaderboardHistoryFileTask>();
 
 			services.AddTransient<LeaderboardHistoryHelper>();

@@ -54,11 +54,11 @@ else
 @code {
 	private readonly int _timeStep = 100000;
 
-	private readonly List<CompressedEntry> _entries = new List<CompressedEntry>();
+	private readonly List<CompressedEntry> _entries = new();
 
-	private readonly Dictionary<Dagger, int> _daggerStats = new Dictionary<Dagger, int>();
-	private readonly Dictionary<Death, int> _deathStats = new Dictionary<Death, int>();
-	private readonly Dictionary<int, int> _timeStats = new Dictionary<int, int>();
+	private readonly Dictionary<Dagger, int> _daggerStats = new();
+	private readonly Dictionary<Death, int> _deathStats = new();
+	private readonly Dictionary<int, int> _timeStats = new();
 
 	private bool _isLoading;
 
@@ -92,7 +92,7 @@ else
 			else
 				_daggerStats.Add(dagger, 1);
 
-			Death death = GameInfo.GetDeathByType(entry.DeathType, GameVersion.V3) ?? throw new Exception($"Invalid death type for entry with time {entry.Time}.");
+			Death death = GameInfo.GetDeathByType(entry.DeathType, GameVersion.V3) ?? throw new($"Invalid death type for entry with time {entry.Time}.");
 			if (_deathStats.ContainsKey(death))
 				_deathStats[death]++;
 			else
