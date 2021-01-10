@@ -30,7 +30,7 @@ namespace DevilDaggersWebsite.Razor.Pages
 
 		public string? SortOrder { get; set; }
 
-		public int PageSize { get; set; } = 15;
+		public int PageSize { get; set; } = 10;
 		public int PageIndex { get; private set; }
 		public int TotalResults { get; private set; }
 
