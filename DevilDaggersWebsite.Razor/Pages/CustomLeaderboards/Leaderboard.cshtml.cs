@@ -36,7 +36,7 @@ namespace DevilDaggersWebsite.Razor.Pages.CustomLeaderboards
 			if (SpawnsetFile == null)
 				return RedirectToPage("Index");
 
-			Leaderboard = _context.CustomLeaderboards.FirstOrDefault(l => l.SpawnsetFileId == SpawnsetFile.Id);
+			Leaderboard = _context.CustomLeaderboards1.FirstOrDefault(l => l.SpawnsetFileId == SpawnsetFile.Id);
 			if (Leaderboard == null)
 				return RedirectToPage("Index");
 

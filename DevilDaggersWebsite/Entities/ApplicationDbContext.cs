@@ -12,7 +12,7 @@ namespace DevilDaggersWebsite.Entities
 
 		public DbSet<AssetMod> AssetMods { get; set; }
 		public DbSet<CustomEntry> CustomEntries { get; set; }
-		public DbSet<CustomLeaderboard> CustomLeaderboards { get; set; }
+		public DbSet<CustomLeaderboard> CustomLeaderboards1 { get; set; }
 		public DbSet<Donation> Donations { get; set; }
 		public DbSet<Player> Players { get; set; }
 		public DbSet<SpawnsetFile> SpawnsetFiles { get; set; }

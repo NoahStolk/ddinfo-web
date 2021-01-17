@@ -33,7 +33,7 @@ namespace DevilDaggersWebsite.Razor.Pages.CustomLeaderboards
 		{
 			Category = category;
 
-			Leaderboards = _context.CustomLeaderboards.Where(cl => cl.Category == category).Include(cl => cl.SpawnsetFile).ThenInclude(sf => sf.Player).ToList();
+			Leaderboards = _context.CustomLeaderboards1.Where(cl => cl.Category == category).Include(cl => cl.SpawnsetFile).ThenInclude(sf => sf.Player).ToList();
 		}
 	}
 }

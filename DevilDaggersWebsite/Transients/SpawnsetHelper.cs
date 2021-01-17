@@ -22,7 +22,7 @@ namespace DevilDaggersWebsite.Transients
 			_env = env;
 			_dbContext = dbContext;
 
-			_spawnsetsWithCustomLeaderboardIds = dbContext.CustomLeaderboards.Select(cl => cl.SpawnsetFileId).ToList();
+			_spawnsetsWithCustomLeaderboardIds = dbContext.CustomLeaderboards1.Select(cl => cl.SpawnsetFileId).ToList();
 		}
 
 		public List<Dto.SpawnsetFile> GetSpawnsets(string? authorFilter = null, string? nameFilter = null)

@@ -20,7 +20,7 @@
 	<p class="text-center">
 		<a class="btn" href="api/spawnsets/@Model.SpawnsetFile.Name/file">Download</a>
 	</p>
-	@if (dbContext.CustomLeaderboards.Any(cl => cl.SpawnsetFileId == Model.SpawnsetFile.Id))
+	@if (dbContext.CustomLeaderboards1.Any(cl => cl.SpawnsetFileId == Model.SpawnsetFile.Id))
 	{
 		<p class="text-center">
 			<a asp-page="/CustomLeaderboards/Leaderboard" asp-route-spawnsetName="@Model.SpawnsetFile.Name">Custom leaderboard for @Model.SpawnsetFile.Name</a>

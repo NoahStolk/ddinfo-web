@@ -23,7 +23,7 @@ namespace DevilDaggersWebsite.Razor.Pages.Admin.CustomLeaderboards
 			if (id == null)
 				return NotFound();
 
-			CustomLeaderboard = await _context.CustomLeaderboards.Include(c => c.SpawnsetFile).FirstOrDefaultAsync(m => m.Id == id);
+			CustomLeaderboard = await _context.CustomLeaderboards1.Include(c => c.SpawnsetFile).FirstOrDefaultAsync(m => m.Id == id);
 
 			if (CustomLeaderboard == null)
 				return NotFound();
@@ -35,11 +35,11 @@ namespace DevilDaggersWebsite.Razor.Pages.Admin.CustomLeaderboards
 			if (id == null)
 				return NotFound();
 
-			CustomLeaderboard = await _context.CustomLeaderboards.FindAsync(id);
+			CustomLeaderboard = await _context.CustomLeaderboards1.FindAsync(id);
 
 			if (CustomLeaderboard != null)
 			{
-				_context.CustomLeaderboards.Remove(CustomLeaderboard);
+				_context.CustomLeaderboards1.Remove(CustomLeaderboard);
 				await _context.SaveChangesAsync();
 			}
 
