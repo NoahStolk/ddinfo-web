@@ -10,17 +10,17 @@ namespace DevilDaggersWebsite.Entities
 		{
 		}
 
-		public DbSet<AssetMod> AssetMods { get; set; }
-		public DbSet<CustomEntry> CustomEntries { get; set; }
-		public DbSet<CustomLeaderboard> CustomLeaderboards1 { get; set; }
-		public DbSet<Donation> Donations { get; set; }
-		public DbSet<Player> Players { get; set; }
-		public DbSet<SpawnsetFile> SpawnsetFiles { get; set; }
-		public DbSet<Title> Titles { get; set; }
-		public DbSet<ToolStatistic> ToolStatistics { get; set; }
+		public DbSet<AssetMod> AssetMods => Set<AssetMod>();
+		public DbSet<CustomEntry> CustomEntries => Set<CustomEntry>();
+		public DbSet<CustomLeaderboard> CustomLeaderboards1 => Set<CustomLeaderboard>();
+		public DbSet<Donation> Donations => Set<Donation>();
+		public DbSet<Player> Players => Set<Player>();
+		public DbSet<SpawnsetFile> SpawnsetFiles => Set<SpawnsetFile>();
+		public DbSet<Title> Titles => Set<Title>();
+		public DbSet<ToolStatistic> ToolStatistics => Set<ToolStatistic>();
 
-		public DbSet<PlayerAssetMod> PlayerAssetMods { get; set; }
-		public DbSet<PlayerTitle> PlayerTitles { get; set; }
+		public DbSet<PlayerAssetMod> PlayerAssetMods => Set<PlayerAssetMod>();
+		public DbSet<PlayerTitle> PlayerTitles => Set<PlayerTitle>();
 
 		protected override void OnModelCreating(ModelBuilder builder)
 		{
