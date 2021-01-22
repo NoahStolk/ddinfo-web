@@ -24,7 +24,7 @@ namespace DevilDaggersWebsite.Razor.Pages.CustomLeaderboards
 			}
 		}
 
-		public List<SelectListItem> CategoryListItems { get; private set; } = new List<SelectListItem>();
+		public List<SelectListItem> CategoryListItems { get; } = new();
 
 		public CustomLeaderboardCategory Category { get; private set; }
 		public List<CustomLeaderboard> Leaderboards { get; private set; }
