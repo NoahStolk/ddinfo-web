@@ -8,7 +8,9 @@
 	Tool tool = toolHelper.GetToolByName("DevilDaggersAssetEditor");
 	ViewData["Title"] = tool.DisplayName;
 	string downloadFileName = $"{tool.Name}{tool.VersionNumber}.zip";
-	FileInfo downloadFileInfo = new FileInfo(System.IO.Path.Combine(env.WebRootPath, "tools", tool.Name, downloadFileName));
+	FileInfo downloadFileInfo = new(System.IO.Path.Combine(env.WebRootPath, "tools", tool.Name, downloadFileName));
+	const string runtimeUrl = "https://dotnet.microsoft.com/download/dotnet/5.0";
+	const string runtimeName = ".NET Desktop Runtime 5.0.x (x64)";
 }
 
 <header>
@@ -59,12 +61,12 @@
 	<h2>System requirements</h2>
 	<ul>
 		<li>Microsoft Windows (64-bit)</li>
-		<li><a href="https://dotnet.microsoft.com/download/dotnet-core/3.1">.NET Core Desktop Runtime 3.1.x (x64)</a></li>
+		<li><a href="@runtimeUrl">@runtimeName</a></li>
 	</ul>
 
 	<h2>Installation</h2>
 	<ol>
-		<li>Make sure to install <a href="https://dotnet.microsoft.com/download/dotnet-core/3.1">.NET Core Desktop Runtime 3.1.x (x64)</a>.</li>
+		<li>Make sure to install <a href="@runtimeUrl">@runtimeName</a>.</li>
 		<li>Download the .zip file.</li>
 		<li>Unzip its contents.</li>
 		<li>Run the executable (.exe file) inside the folder.</li>
