@@ -1,11 +1,13 @@
 ﻿using DevilDaggersWebsite.Enumerators;
 using System;
+using System.ComponentModel.DataAnnotations;
 using System.ComponentModel.DataAnnotations.Schema;
 
 namespace DevilDaggersWebsite.Entities
 {
 	public class CustomLeaderboard
 	{
+		[Key]
 		public int Id { get; set; }
 
 		public CustomLeaderboardCategory Category { get; set; }
