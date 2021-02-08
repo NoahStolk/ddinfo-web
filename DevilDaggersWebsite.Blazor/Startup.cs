@@ -1,6 +1,7 @@
 using DevilDaggersWebsite.Authorization;
 using DevilDaggersWebsite.Blazor.Areas.Identity;
 using DevilDaggersWebsite.Entities;
+using DevilDaggersWebsite.LeaderboardStatistics;
 using DevilDaggersWebsite.Tasks;
 using DevilDaggersWebsite.Tasks.Scheduling;
 using DevilDaggersWebsite.Transients;
@@ -144,6 +145,9 @@ namespace DevilDaggersWebsite.Blazor
 
 			Task roleTask = serviceProvider.CreateRolesAndAdminUser(Configuration.GetSection("AdminUser")["Email"]);
 			roleTask.Wait();
+
+			// Calculate statistics once on startup because this is a heavy operation.
+			StatisticsDataHolder.Instance.Update(env);
 		}
 	}
 }
