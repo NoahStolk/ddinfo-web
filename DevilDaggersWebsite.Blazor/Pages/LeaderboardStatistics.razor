@@ -2,107 +2,58 @@
 @inject Microsoft.AspNetCore.Hosting.IWebHostEnvironment Env
 @using DevilDaggersWebsite.LeaderboardStatistics
 
-@if (_isLoading)
+<p>
+	This page contains some global statistics from the leaderboard. The page is still a work in progress.
+</p>
+<p>
+	@{
+		if (_initialized)
+		{
+			@:Statistics were last fetched on @(string.IsNullOrWhiteSpace(StatisticsDataHolder.Instance.FileName) ? "..." : @HistoryUtils.HistoryJsonFileNameToDateTime(StatisticsDataHolder.Instance.FileName)).
+		}
+		else
+		{
+			@:Statistics not initialized.
+		}
+	}
+</p>
+
+@if (_initialized)
 {
-	<LoadingState />
-}
-else
-{
-	<div class="card-deck mb-lg-3 pb-lg-3">
-		<DxChart Data="@_daggerStats">
-			<DxChartTitle Text="Daggers" />
-			<DxChartTooltip>
-				<div class="p-3">
-					<p class="text-align-center"><b>@context.Point.SeriesName</b></p>
-					<p>Dagger: @context.Point.Argument</p>
-					<p>Players: @context.Point.Value</p>
-				</div>
-			</DxChartTooltip>
-			<DxChartLegend Visible="false" />
-			<DxChartPieSeries ArgumentField="@(kvp => kvp.Key.Name)" ValueField="@((KeyValuePair<Dagger, int> kvp) => kvp.Value)" />
-		</DxChart>
-		<DxChart Data="@_deathStats">
-			<DxChartTitle Text="Deaths" />
-			<DxChartTooltip>
-				<div class="p-3">
-					<p class="text-align-center"><b>@context.Point.SeriesName</b></p>
-					<p>Death: @context.Point.Argument</p>
-					<p>Players: @context.Point.Value</p>
-				</div>
-			</DxChartTooltip>
-			<DxChartLegend Visible="false" />
-			<DxChartPieSeries ArgumentField="@(kvp => kvp.Key.Name)" ValueField="@((KeyValuePair<Death, int> kvp) => kvp.Value)">
-				<DxChartSeriesLabel Visible="true" />
-				<!-- Color="@(System.Drawing.ColorTranslator.FromHtml(context.Key.ColorCode))"-->
-			</DxChartPieSeries>
-		</DxChart>
-		<DxChart Data="@_timeStats">
-			<DxChartTitle Text="Highscores" />
-			<DxChartTooltip>
-				<div class="p-3">
-					<p class="text-align-center"><b>@context.Point.SeriesName</b></p>
-					<p>Time range: @context.Point.Argument - @((int)context.Point.Argument + 10)</p>
-					<p>Players: @context.Point.Value</p>
-				</div>
-			</DxChartTooltip>
-			<DxChartLegend Visible="false" />
-			<DxChartCommonSeries NameField="@((KeyValuePair<int, int> kvp) => kvp.Key)" ArgumentField="@(kvp => kvp.Key)" ValueField="@(kvp => kvp.Value)" AggregationMethod="@Enumerable.Sum" SeriesType="@ChartSeriesType.Bar" />
-		</DxChart>
+	<h2>Scores</h2>
+
+	<div class="chart" id="scores-chart">
+		<table class="highlighter" id="scores-highlighter">
+			<tr><td>Score</td><td id="h-score"></td></tr>
+			<tr><td>Amount</td><td id="h-score-count"></td></tr>
+			<tr><td>Percentage</td><td id="h-score-percentage"></td></tr>
+		</table>
+	</div>
+
+	<h2>Daggers</h2>
+	<div class="chart" id="daggers-chart">
+		<table class="highlighter" id="daggers-highlighter">
+			<tr><td>Dagger</td><td id="h-dagger"></td></tr>
+			<tr><td>Amount</td><td id="h-dagger-count"></td></tr>
+			<tr><td>Percentage</td><td id="h-dagger-percentage"></td></tr>
+		</table>
+	</div>
+
+	<h2>Death types</h2>
+	<div class="chart" id="death-types-chart">
+		<table class="highlighter" id="death-types-highlighter">
+			<tr><td>Death</td><td id="h-death"></td></tr>
+			<tr><td>Amount</td><td id="h-death-count"></td></tr>
+			<tr><td>Percentage</td><td id="h-death-percentage"></td></tr>
+		</table>
 	</div>
 }
 
 @code {
-	private readonly int _timeStep = 100000;
+	private bool _initialized;
 
-	private readonly List<CompressedEntry> _entries = new();
-
-	private readonly Dictionary<Dagger, int> _daggerStats = new();
-	private readonly Dictionary<Death, int> _deathStats = new();
-	private readonly Dictionary<int, int> _timeStats = new();
-
-	private bool _isLoading;
-
-	protected void PreparePointColor(ChartSeriesPointCustomizationSettings pointSettings)
+	protected override void OnInitialized()
 	{
-		double value = (double)pointSettings.Point.Value;
-		if (value > 75)
-			pointSettings.PointAppearance.Color = System.Drawing.Color.Red;
-		else if (value < 25)
-			pointSettings.PointAppearance.Color = System.Drawing.Color.Blue;
-	}
-
-	protected override async Task OnInitializedAsync()
-	{
-		_isLoading = true;
-		await Task.Run(() => ReadStatistics());
-		_isLoading = false;
-	}
-
-	private void ReadStatistics()
-	{
-		byte[] bytes = System.IO.File.ReadAllBytes(System.IO.Path.Combine(Env.WebRootPath, "leaderboard-statistics", "lb.bin"));
-		for (int i = 0; i < bytes.Length / 15; i++)
-			_entries.Add(CompressedEntry.FromBytes(bytes[(i * 15)..((i + 1) * 15)]));
-
-		foreach (CompressedEntry entry in _entries)
-		{
-			Dagger dagger = GameInfo.GetDaggerFromTime((int)entry.Time);
-			if (_daggerStats.ContainsKey(dagger))
-				_daggerStats[dagger]++;
-			else
-				_daggerStats.Add(dagger, 1);
-
-			Death death = GameInfo.GetDeathByType(entry.DeathType, GameVersion.V3) ?? throw new($"Invalid death type for entry with time {entry.Time}.");
-			if (_deathStats.ContainsKey(death))
-				_deathStats[death]++;
-			else
-				_deathStats.Add(death, 1);
-
-			int step = (int)(entry.Time / _timeStep * 10);
-			if (_timeStats.ContainsKey(step))
-				_timeStats[step]++;
-			else
-				_timeStats.Add(step, 1);
-		}
+		_initialized = !string.IsNullOrWhiteSpace(StatisticsDataHolder.Instance.FileName);
 	}
 }

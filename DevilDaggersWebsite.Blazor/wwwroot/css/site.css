@@ -370,3 +370,39 @@ a.text-bronze,
 a.text-default {
 	background-position-y: 3px;
 }
+
+/*CHART*/
+
+.highlighter {
+	background-color: rgba(0,0,0,0.8);
+	color: var(--col-default-text);
+	text-align: right;
+	border: solid 1px;
+	border-color: #999;
+	z-index: 1;
+	display: none;
+}
+
+	.highlighter > tbody > tr > td {
+		padding: 0px 6px;
+	}
+
+		.highlighter > tbody > tr > td:nth-child(1) {
+			text-align: left;
+		}
+
+.chart {
+	height: 65vh;
+}
+
+#world-record-progression-highlighter,
+#user-progression-highlighter,
+#death-types-highlighter,
+#daggers-highlighter,
+#scores-highlighter {
+	width: 304px;
+}
+
+#user-activity-highlighter {
+	width: 448px;
+}

@@ -1,27 +1,155 @@
 ﻿@page "/WorldRecordProgression"
 @inject LeaderboardHistoryHelper _leaderboardHistoryHelper
 
-@if (_isLoading)
-{
-	<LoadingState />
-}
-else
-{
-	<DxChart Data="@_worldRecords">
-		<DxChartCommonSeries NameField="@((WorldRecord wr) => GameInfo.GetGameVersionFromDate(wr.DateTime))" ArgumentField="@(wr => wr.DateTime)" ValueField="@(wr => wr.Entry.Time / (float)10000)" SeriesType="@ChartSeriesType.StepLine" />
-	</DxChart>
+<p>
+	This is the world record progression for Devil Daggers based on the <a href="/LeaderboardHistory">Leaderboard History</a> section of the website. While keeping track of any records since October 2018 has been fully automated, some older information is still missing. Most of the older information is based on screenshots and YouTube videos.
+</p>
+
+<div class="chart" id="world-record-progression-chart">
+	<table class="highlighter" id="world-record-progression-highlighter">
+		<tr><td>Date</td><td id="h-date"></td></tr>
+		<tr><td>Time</td><td id="h-time"></td></tr>
+		<tr><td>Username</td><td id="h-username"></td></tr>
+		<tr><td>Gems</td><td id="h-gems"></td></tr>
+		<tr><td>Kills</td><td id="h-kills"></td></tr>
+		<tr><td>Accuracy</td><td id="h-accuracy"></td></tr>
+		<tr><td>Death type</td><td id="h-death-type"></td></tr>
+	</table>
+</div>
+
+<h2>World record holders</h2>
+<div class="row">
+	<div class="text-bold col-lg-2 col-md-3 col-sm-4 col-xs-6">Username (and aliases)</div>
+	<div class="text-bold col-lg-2 col-md-3 col-sm-4 col-xs-6">Total time held</div>
+	<div class="text-bold col-lg-2 col-md-3 col-sm-2 hidden-xs">Longest time held consecutively</div>
+	<div class="text-bold col-lg-2 col-md-3 col-sm-2 hidden-xs">World records</div>
+	<div class="text-bold col-lg-2 hidden-md hidden-sm hiddenxs">First held</div>
+	<div class="text-bold col-lg-2 hidden-md hidden-sm hiddenxs">Last held</div>
+</div>
+@{
+	TimeSpan total = DateTime.Now - (GameInfo.GetReleaseDate(GameVersion.V1) ?? throw new("Could not retrieve release version from V1."));
+	foreach (WorldRecordHolder wrh in _worldRecordHolders)
+	{
+		int days = (int)Math.Round(wrh.TotalTimeHeld.TotalDays);
+		int daysConsecutively = (int)Math.Round(wrh.LongestTimeHeldConsecutively.TotalDays);
+
+		string timeHeld = $"{days} day{Pluralize(days)} ({(wrh.TotalTimeHeld / total).ToString("00.00%")})";
+
+		bool isCurrentWr = _currentWr == _currentWrr?.Time;
+
+		string lastHeld = isCurrentWr ? "Current holder" : GetHistoryDateString(wrh.LastHeld);
+		string firstHeld = GetHistoryDateString(wrh.FirstHeld);
+		string heldConsecutively = $"{daysConsecutively} day{Pluralize(daysConsecutively)}";
+		IEnumerable<string> aliases = wrh.Usernames.Where(s => s != wrh.MostRecentUsername);
+
+		<div class="row" style="background-color: @(isCurrentWr ? "#800" : "#000")">
+			<div class="col-lg-2 col-md-3 col-sm-4 col-xs-6">@wrh.MostRecentUsername @(aliases.Count() != 0 ? $"({string.Join(", ", aliases)})" : "")</div>
+			<div class="col-lg-2 col-md-3 col-sm-4 col-xs-6">@timeHeld</div>
+			<div class="col-lg-2 col-md-3 col-sm-2 hidden-xs">@heldConsecutively</div>
+			<div class="col-lg-2 col-md-3 col-sm-2 hidden-xs">@wrh.WorldRecordCount</div>
+			<div class="col-lg-2 hidden-md hidden-sm hidden-xs">@firstHeld</div>
+			<div class="col-lg-2 hidden-md hidden-sm hidden-xs">@lastHeld</div>
+		</div>
+	}
 }
 
-@code
-{
-	private List<WorldRecord> _worldRecords = new();
+<h2>World records by time lasted</h2>
+<div class="row">
+	<div class="text-bold col-lg-2 col-md-3 col-sm-4 col-xs-4">Username</div>
+	<div class="text-bold col-lg-2 col-md-3 col-sm-4 col-xs-4">Time</div>
+	<div class="text-bold col-lg-2 col-md-3 col-sm-4 col-xs-4">Lasted</div>
+</div>
+@{
+	foreach (KeyValuePair<WorldRecord, TimeSpan> kvp in _worldRecords.OrderByDescending(w => w.Value))
+	{
+		bool isCurrentWr = kvp.Key.Entry.Time == _currentWr;
+		int days = (int)Math.Round(kvp.Value.TotalDays);
+		string daysString = days == 0 ? "Less than 1 day" : days == 1 ? "1 day" : $"{days} days";
+		<div class="row" style="background-color: @(isCurrentWr ? "#800" : "#000")">
+			<div class="col-lg-2 col-md-3 col-sm-4 col-xs-4">@kvp.Key.Entry.Username</div>
+			<div class="col-lg-2 col-md-3 col-sm-4 col-xs-4">@kvp.Key.Entry.Time.FormatTimeInteger() @(isCurrentWr ? "(Current WR)" : string.Empty)</div>
+			<div class="col-lg-2 col-md-3 col-sm-4 col-xs-4">@daysString</div>
+		</div>
+	}
+}
 
-	private bool _isLoading;
+@code {
+	private List<WorldRecordHolder> _worldRecordHolders = new();
+
+	private Dictionary<WorldRecord, TimeSpan> _worldRecords = new();
+
+	private Entry? _currentWrr;
 
 	protected override async Task OnInitializedAsync()
 	{
-		_isLoading = true;
-		_worldRecords = await Task.Run(() => _leaderboardHistoryHelper.GetWorldRecords(null));
-		_isLoading = false;
+		Dto.Leaderboard? lb = await DdHasmodaiClient.GetScores(1);
+		_currentWrr = lb?.Entries[0];
+
+		List<WorldRecord> worldRecords = _leaderboardHistoryHelper.GetWorldRecords(null);
+
+		TimeSpan heldConsecutively = default;
+		for (int i = 0; i < worldRecords.Count; i++)
+		{
+			WorldRecord wr = worldRecords[i];
+
+			TimeSpan difference;
+			DateTime firstHeld;
+			DateTime lastHeld;
+			if (i == worldRecords.Count - 1)
+			{
+				difference = DateTime.Now - wr.DateTime;
+				firstHeld = wr.DateTime;
+				lastHeld = DateTime.Now;
+			}
+			else
+			{
+				difference = worldRecords[i + 1].DateTime - wr.DateTime;
+				firstHeld = wr.DateTime;
+				lastHeld = worldRecords[i + 1].DateTime;
+			}
+
+			if (i != 0 && wr.Entry.Id != worldRecords[i - 1].Entry.Id)
+				heldConsecutively = default;
+
+			heldConsecutively += difference;
+
+			_worldRecords[wr] = difference;
+
+			bool added = false;
+			foreach (WorldRecordHolder wrh in _worldRecordHolders)
+			{
+				if (wrh.Id == wr.Entry.Id)
+				{
+					wrh.MostRecentUsername = wr.Entry.Username;
+					if (!wrh.Usernames.Contains(wr.Entry.Username))
+						wrh.Usernames.Add(wr.Entry.Username);
+
+					if (heldConsecutively > wrh.LongestTimeHeldConsecutively)
+						wrh.LongestTimeHeldConsecutively = heldConsecutively;
+
+					wrh.TotalTimeHeld += difference;
+					wrh.WorldRecordCount++;
+					if (firstHeld < wrh.FirstHeld)
+						wrh.FirstHeld = firstHeld;
+					wrh.LastHeld = lastHeld;
+					added = true;
+					break;
+				}
+			}
+
+			if (!added)
+				_worldRecordHolders.Add(new(wr.Entry.Id, wr.Entry.Username, difference, heldConsecutively, 1, firstHeld, lastHeld));
+		}
+
+		_worldRecordHolders = _worldRecordHolders.OrderByDescending(wrh => wrh.TotalTimeHeld).ToList();
 	}
+
+	public string GetHistoryDateString(DateTime dateTime)
+	{
+		int daysAgo = (int)Math.Round((DateTime.Now - dateTime).TotalDays);
+		return $"{dateTime:MMM dd} '{dateTime:yy} ({daysAgo} day{Pluralize(daysAgo)} ago)";
+	}
+
+	public static string Pluralize(int value)
+		=> value == 1 ? string.Empty : "s";
 }
