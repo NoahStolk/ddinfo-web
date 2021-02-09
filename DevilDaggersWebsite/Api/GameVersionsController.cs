@@ -16,9 +16,7 @@ namespace DevilDaggersWebsite.Api
 		public ActionResult<DateTime> GetGameVersionReleaseDate([Required] GameVersion gameVersion)
 		{
 			DateTime? releaseDate = GameInfo.GetReleaseDate(gameVersion);
-			if (releaseDate == null)
-				return new BadRequestObjectResult(new ProblemDetails { Title = $"Incorrect parameter {nameof(gameVersion)} '{gameVersion}' specified." });
-			return releaseDate;
+			return releaseDate ?? (ActionResult<DateTime>)new BadRequestObjectResult(new ProblemDetails { Title = $"Incorrect parameter {nameof(gameVersion)} '{gameVersion}' specified." });
 		}
 
 		[HttpGet("at-date")]
@@ -27,9 +25,7 @@ namespace DevilDaggersWebsite.Api
 		public ActionResult<GameVersion> GetGameVersionAtDate([Required] DateTime date)
 		{
 			GameVersion? gameVersion = GameInfo.GetGameVersionFromDate(date);
-			if (gameVersion == null)
-				return new BadRequestObjectResult(new ProblemDetails { Title = $"No game version found at date '{date}'." });
-			return gameVersion;
+			return gameVersion ?? (ActionResult<GameVersion>)new BadRequestObjectResult(new ProblemDetails { Title = $"No game version found at date '{date}'." });
 		}
 	}
 }

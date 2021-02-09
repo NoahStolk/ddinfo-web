@@ -45,7 +45,7 @@ namespace DevilDaggersWebsite.Api
 		[ProducesResponseType(StatusCodes.Status404NotFound)]
 		public ActionResult GetToolFile([Required] string toolName)
 		{
-			Tool tool = _toolHelper.Tools.FirstOrDefault(t => t.Name == toolName);
+			Tool? tool = _toolHelper.Tools.Find(t => t.Name == toolName);
 			if (tool == null)
 				return new NotFoundObjectResult(new ProblemDetails { Title = $"Tool '{toolName}' was not found." });
 

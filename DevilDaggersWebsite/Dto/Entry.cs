@@ -169,7 +169,7 @@ namespace DevilDaggersWebsite.Dto
 			foreach (string leaderboardHistoryPath in Directory.GetFiles(Path.Combine(env.WebRootPath, "leaderboard-history"), "*.json"))
 			{
 				Leaderboard leaderboard = JsonConvert.DeserializeObject<Leaderboard>(File.ReadAllText(leaderboardHistoryPath, Encoding.UTF8));
-				Entry historyEntry = leaderboard.Entries.Find(e => e.Id == Id);
+				Entry? historyEntry = leaderboard.Entries.Find(e => e.Id == Id);
 				if (historyEntry != null)
 				{
 					if (string.IsNullOrWhiteSpace(historyEntry.Username))

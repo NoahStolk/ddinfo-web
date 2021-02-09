@@ -18,11 +18,11 @@ namespace DevilDaggersWebsite.Dto
 		public HtmlString ToHtmlString()
 		{
 			StringBuilder sb = new StringBuilder();
-			sb.Append($"<li>{Description}</li>");
+			sb.Append("<li>").Append(Description).Append("</li>");
 			if (SubChanges != null && SubChanges.Count != 0)
 			{
 				foreach (Change subChange in SubChanges)
-					sb.Append($"<ul>{subChange.ToHtmlString()}</ul>");
+					sb.Append("<ul>").Append(subChange.ToHtmlString()).Append("</ul>");
 			}
 
 			return new HtmlString(sb.ToString());

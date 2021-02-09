@@ -25,16 +25,16 @@ namespace DevilDaggersWebsite.Dto
 
 		public HtmlString ToChangelogHtmlString()
 		{
-			StringBuilder sb = new StringBuilder();
+			StringBuilder sb = new();
 			foreach (ChangelogEntry entry in Changelog)
 			{
-				sb.Append($"<h3>{entry.VersionNumber} - {entry.Date:MMMM dd, yyyy}</h3><ul>");
+				sb.Append("<h3>").Append(entry.VersionNumber).Append(" - ").AppendFormat("{0:MMMM dd, yyyy}", entry.Date).Append("</h3><ul>");
 				foreach (Change change in entry.Changes)
 					sb.Append(change.ToHtmlString());
 				sb.Append("</ul>");
 			}
 
-			return new HtmlString(sb.ToString());
+			return new(sb.ToString());
 		}
 	}
 }

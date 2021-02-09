@@ -32,19 +32,19 @@ namespace DevilDaggersWebsite.Api
 		{
 			try
 			{
-				Dictionary<string, string> postValues = new Dictionary<string, string>
+				List<KeyValuePair<string?, string?>> postValues = new()
 				{
-					{ "uid", userId.ToString(CultureInfo.InvariantCulture) },
+					new("uid", userId.ToString(CultureInfo.InvariantCulture)),
 				};
 
-				using FormUrlEncodedContent content = new FormUrlEncodedContent(postValues);
-				using HttpClient client = new HttpClient();
+				using FormUrlEncodedContent content = new(postValues);
+				using HttpClient client = new();
 				HttpResponseMessage response = await client.PostAsync(DdHasmodaiClient.GetUserByIdUrl, content);
 				byte[] data = await response.Content.ReadAsByteArrayAsync();
 
 				int bytePosition = 19;
 
-				Entry entry = new Entry
+				return new Entry
 				{
 					Username = DdHasmodaiClient.GetUsername(data, ref bytePosition),
 					Rank = BitConverter.ToInt32(data, bytePosition),
@@ -62,8 +62,6 @@ namespace DevilDaggersWebsite.Api
 					DaggersHitTotal = BitConverter.ToUInt64(data, bytePosition + 76),
 					DaggersFiredTotal = BitConverter.ToUInt64(data, bytePosition + 52),
 				};
-
-				return entry;
 			}
 			catch
 			{

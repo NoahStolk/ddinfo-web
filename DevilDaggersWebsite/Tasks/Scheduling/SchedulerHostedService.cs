@@ -9,7 +9,7 @@ namespace DevilDaggersWebsite.Tasks.Scheduling
 {
 	public class SchedulerHostedService : HostedService
 	{
-		private readonly List<SchedulerTaskWrapper> _scheduledTasks = new List<SchedulerTaskWrapper>();
+		private readonly List<SchedulerTaskWrapper> _scheduledTasks = new();
 
 		public SchedulerHostedService(IEnumerable<IScheduledTask> scheduledTasks)
 		{
