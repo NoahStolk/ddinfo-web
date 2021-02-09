@@ -26,7 +26,7 @@ namespace DevilDaggersWebsite.Tasks.Scheduling
 			}
 		}
 
-		public event EventHandler<UnobservedTaskExceptionEventArgs> UnobservedTaskException;
+		public event EventHandler<UnobservedTaskExceptionEventArgs>? UnobservedTaskException;
 
 		protected override async Task ExecuteAsync(CancellationToken cancellationToken)
 		{
