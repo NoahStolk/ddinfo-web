@@ -9,7 +9,7 @@ using System.Security.Claims;
 using System.Threading;
 using System.Threading.Tasks;
 
-namespace DevilDaggersWebsite.Blazor.Areas.Identity
+namespace DevilDaggersWebsite.BlazorServer.Areas.Identity
 {
 	public class RevalidatingIdentityAuthenticationStateProvider<TUser> : RevalidatingServerAuthenticationStateProvider
 		where TUser : class

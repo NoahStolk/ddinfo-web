@@ -4,7 +4,7 @@ using System.Globalization;
 using System.Reflection;
 using System.Threading;
 
-namespace DevilDaggersWebsite.Blazor
+namespace DevilDaggersWebsite.BlazorServer
 {
 	public static class Program
 	{

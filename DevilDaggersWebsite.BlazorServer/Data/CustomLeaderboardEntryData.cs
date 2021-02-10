@@ -2,7 +2,7 @@
 using DevilDaggersWebsite.Entities;
 using System;
 
-namespace DevilDaggersWebsite.Blazor.Data
+namespace DevilDaggersWebsite.BlazorServer.Data
 {
 	public class CustomLeaderboardEntryData
 	{

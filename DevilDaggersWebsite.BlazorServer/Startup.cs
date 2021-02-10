@@ -1,5 +1,5 @@
 using DevilDaggersWebsite.Authorization;
-using DevilDaggersWebsite.Blazor.Areas.Identity;
+using DevilDaggersWebsite.BlazorServer.Areas.Identity;
 using DevilDaggersWebsite.Entities;
 using DevilDaggersWebsite.LeaderboardStatistics;
 using DevilDaggersWebsite.Tasks;
@@ -22,7 +22,7 @@ using System;
 using System.Collections.Generic;
 using System.Threading.Tasks;
 
-namespace DevilDaggersWebsite.Blazor
+namespace DevilDaggersWebsite.BlazorServer
 {
 	public class Startup
 	{

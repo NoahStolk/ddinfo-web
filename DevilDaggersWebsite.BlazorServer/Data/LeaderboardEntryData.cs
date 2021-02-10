@@ -4,7 +4,7 @@ using DevilDaggersWebsite.Dto;
 using DevilDaggersWebsite.Entities;
 using System.Globalization;
 
-namespace DevilDaggersWebsite.Blazor.Data
+namespace DevilDaggersWebsite.BlazorServer.Data
 {
 	public class LeaderboardEntryData
 	{

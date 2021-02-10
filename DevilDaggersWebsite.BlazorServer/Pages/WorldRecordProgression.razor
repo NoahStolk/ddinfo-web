@@ -35,7 +35,7 @@
 
 		string timeHeld = $"{days} day{Pluralize(days)} ({(wrh.TotalTimeHeld / total).ToString("00.00%")})";
 
-		bool isCurrentWr = _currentWr == _currentWrr?.Time;
+		bool isCurrentWr = wrh.Id == _currentWrr?.Time;
 
 		string lastHeld = isCurrentWr ? "Current holder" : GetHistoryDateString(wrh.LastHeld);
 		string firstHeld = GetHistoryDateString(wrh.FirstHeld);
@@ -62,7 +62,7 @@
 @{
 	foreach (KeyValuePair<WorldRecord, TimeSpan> kvp in _worldRecords.OrderByDescending(w => w.Value))
 	{
-		bool isCurrentWr = kvp.Key.Entry.Time == _currentWr;
+		bool isCurrentWr = kvp.Key.Entry.Time == _currentWrr.Time;
 		int days = (int)Math.Round(kvp.Value.TotalDays);
 		string daysString = days == 0 ? "Less than 1 day" : days == 1 ? "1 day" : $"{days} days";
 		<div class="row" style="background-color: @(isCurrentWr ? "#800" : "#000")">
