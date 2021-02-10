@@ -10,7 +10,7 @@ namespace DevilDaggersWebsite.BlazorServer.Data
 	{
 		public LeaderboardEntryData(Entry entry, Player? player, GameVersion gameVersion)
 		{
-			RowClass = player?.IsBanned == true ? "table-danger" : string.Empty;
+			RowClass = player?.IsBanned == true ? "banned" : string.Empty;
 
 			Dagger dagger = GameInfo.GetDaggerFromTime(entry.Time);
 			DaggerCssClass = $"text-{dagger.Name.ToLower(CultureInfo.InvariantCulture)}";
