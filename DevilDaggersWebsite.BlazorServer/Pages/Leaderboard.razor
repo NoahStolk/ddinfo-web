@@ -1,0 +1,49 @@
+﻿@page "/Leaderboard"
+@inject ApplicationDbContext DbContext
+
+<h1>Leaderboard</h1>
+<p>
+	<button class="btn btn-primary" @onclick="@(e => UpdateState(LeaderboardState.Rank))">
+		Ranks
+	</button>
+	<button class="btn btn-primary" @onclick="@(e => UpdateState(LeaderboardState.Username))">
+		Username Search
+	</button>
+	<button class="btn btn-primary" @onclick="@(e => UpdateState(LeaderboardState.UserId))">
+		UserId Search
+	</button>
+</p>
+
+@{
+	if (State == LeaderboardState.Rank)
+	{
+		<LeaderboardRanks Players="_players" />
+	}
+	else if (State == LeaderboardState.Username)
+	{
+		<LeaderboardSearch Players="_players" />
+	}
+}
+
+@code {
+	private List<Player> _players = new List<Player>();
+
+	protected override void OnInitialized()
+	{
+		_players = DbContext.Players.ToList();
+	}
+
+	private LeaderboardState State { get; set; }
+
+	public void UpdateState(LeaderboardState state)
+	{
+		State = state;
+	}
+
+	public enum LeaderboardState
+	{
+		Rank,
+		Username,
+		UserId,
+	}
+}

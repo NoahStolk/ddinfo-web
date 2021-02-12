@@ -1,0 +1,58 @@
+﻿<p>
+	<button class="btn btn-primary" @onclick="@(e => FetchLeaderboard(_rank = 1))" disabled="@(_rank <= 1)">
+		Top
+	</button>
+	<button class="btn btn-primary" @onclick="@(e => FetchLeaderboard(_rank -= 100))" disabled="@(_rank <= 1)">
+		Prev
+	</button>
+	<button class="btn btn-primary" @onclick="@(e => FetchLeaderboard(_rank += 100))">
+		Next
+	</button>
+</p>
+<p>
+	Showing rank @_rank - @(_rank + 99)
+</p>
+@if (_isLoading)
+{
+	<LoadingState />
+}
+else if (_leaderboard == null)
+{
+	<p>Failed to retrieve scores from the official Devil Daggers leaderboard servers. Please try again later.</p>
+	<p>If the problem persists, try contacting the Devil Daggers developer.</p>
+}
+else
+{
+	<LeaderboardTable Leaderboard="@_leaderboard" Players="Players" />
+}
+
+@code {
+	private Dto.Leaderboard? _leaderboard;
+
+	private int _rank;
+
+	private bool _isLoading;
+
+	[Parameter]
+	public List<Player> Players { get; set; } = new();
+
+	protected override async Task OnInitializedAsync()
+	{
+		await FetchLeaderboard(_rank);
+	}
+
+	private async Task FetchLeaderboard(int rank)
+	{
+		_isLoading = true;
+		_rank = Math.Max(_rank, 1);
+
+		_leaderboard = await DdHasmodaiClient.GetScores(_rank);
+		if (_leaderboard != null && _rank > _leaderboard.Players - 99)
+		{
+			_rank = _leaderboard.Players - 99;
+			_leaderboard.Entries.Clear();
+			_leaderboard = await DdHasmodaiClient.GetScores(_rank);
+		}
+		_isLoading = false;
+	}
+}

@@ -1,10 +1,12 @@
 ﻿using DevilDaggersWebsite.Enumerators;
 using System;
+using System.ComponentModel.DataAnnotations;
 
 namespace DevilDaggersWebsite.Entities
 {
 	public class Donation
 	{
+		[Key]
 		public int Id { get; set; }
 
 		public int? PlayerId { get; set; }

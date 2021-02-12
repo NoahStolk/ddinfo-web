@@ -1,0 +1,64 @@
+﻿<Table TableItem="CustomLeaderboardEntryData" Items="_tableData" PageSize="100">
+	<Column TableItem="CustomLeaderboardEntryData" Title="#" Field="@(cled => cled.Rank)" Sortable="true" Width="2%" Align="Align.Right" Format="@FormatUtils.LeaderboardIntFormat" />
+	<Column TableItem="CustomLeaderboardEntryData" Title="Flag" Field="@(cled => cled.FlagCode)" Sortable="true" Width="2%">
+		<Template>
+			@if (!string.IsNullOrEmpty(context.FlagCode))
+			{
+				<img src="/images/flags/@(context.FlagCode).png" />
+			}
+		</Template>
+	</Column>
+	<Column TableItem="CustomLeaderboardEntryData" Title="Username" Field="@(cled => cled.Username)" Sortable="true" Width="8%">
+		<Template>
+			<a href="/CustomLeaderboardEntry/@context.CustomEntryId" class="@context.DaggerCssClass">@context.Username</a>
+		</Template>
+	</Column>
+	<Column TableItem="CustomLeaderboardEntryData" Title="Time" Field="@(cled => cled.Time)" Sortable="true" Width="4%" Align="Align.Right">
+		<Template>
+			<span class="@context.DaggerCssClass">@FormatUtils.FormatTimeInteger(context.Time)</span>
+		</Template>
+	</Column>
+	<Column TableItem="CustomLeaderboardEntryData" Title="Kills" Field="@(cled => cled.Kills)" Sortable="true" Width="2%" Align="Align.Right" Format="@FormatUtils.LeaderboardIntFormat" />
+	<Column TableItem="CustomLeaderboardEntryData" Title="Gems" Field="@(cled => cled.Gems)" Sortable="true" Width="2%" Align="Align.Right" Format="@FormatUtils.LeaderboardIntFormat" />
+	<Column TableItem="CustomLeaderboardEntryData" Title="Accuracy" Field="@(cled => cled.Accuracy)" Sortable="true" Width="4%" Align="Align.Right" Format="@FormatUtils.AccuracyFormat" />
+	<Column TableItem="CustomLeaderboardEntryData" Title="Death" Field="@(cled => cled.Kills)" Sortable="true" Width="6%">
+		<Template>
+			<span class="death" style="color: @context.DeathHexColor;">@context.DeathName</span>
+		</Template>
+	</Column>
+	<Column TableItem="CustomLeaderboardEntryData" Title="Enemies alive" Field="@(cled => cled.EnemiesAlive)" Sortable="true" Width="4%" Align="Align.Right" Format="@FormatUtils.LeaderboardIntFormat" />
+	<Column TableItem="CustomLeaderboardEntryData" Title="Homing" Field="@(cled => cled.Homing)" Sortable="true" Width="4%" Align="Align.Right" Format="@FormatUtils.LeaderboardIntFormat" />
+	<Column TableItem="CustomLeaderboardEntryData" Title="Level 2" Field="@(cled => cled.LevelUpTime2)" Sortable="true" Width="2%" Align="Align.Right">
+		<Template>
+			@(context.LevelUpTime2 == 0 ? "N/A" : FormatUtils.FormatTimeInteger(context.LevelUpTime2))
+		</Template>
+	</Column>
+	<Column TableItem="CustomLeaderboardEntryData" Title="Level 3" Field="@(cled => cled.LevelUpTime3)" Sortable="true" Width="2%" Align="Align.Right">
+		<Template>
+			@(context.LevelUpTime3 == 0 ? "N/A" : FormatUtils.FormatTimeInteger(context.LevelUpTime3))
+		</Template>
+	</Column>
+	<Column TableItem="CustomLeaderboardEntryData" Title="Level 4" Field="@(cled => cled.LevelUpTime4)" Sortable="true" Width="2%" Align="Align.Right">
+		<Template>
+			@(context.LevelUpTime4 == 0 ? "N/A" : FormatUtils.FormatTimeInteger(context.LevelUpTime4))
+		</Template>
+	</Column>
+	<Column TableItem="CustomLeaderboardEntryData" Title="Date submitted" Field="@(cled => cled.SubmitDateUtc)" Sortable="true" Width="5%" Align="Align.Right" Format="@FormatUtils.DateTimeUtcFormat" />
+	<Column TableItem="CustomLeaderboardEntryData" Title="DDCL version" Field="@(cled => cled.ClientVersion)" Sortable="true" Width="4%" Align="Align.Right" />
+</Table>
+
+@code {
+	private List<CustomLeaderboardEntryData> _tableData = new();
+
+	[Parameter]
+	public Entities.CustomLeaderboard Leaderboard { get; set; } = null!;
+
+	[Parameter]
+	public List<Entities.CustomEntry> CustomEntries { get; set; } = new();
+
+	protected override void OnInitialized()
+	{
+		for (int i = 0; i < CustomEntries.Count; i++)
+			_tableData.Add(new CustomLeaderboardEntryData(i + 1, CustomEntries[i], Leaderboard));
+	}
+}

@@ -24,7 +24,7 @@ namespace DevilDaggersWebsite.Dto
 		public int Id { get; set; }
 
 		[CompletionProperty]
-		public string Username { get; set; }
+		public string Username { get; set; } = null!;
 
 		[CompletionProperty]
 		public int Time { get; set; }
@@ -165,11 +165,11 @@ namespace DevilDaggersWebsite.Dto
 
 		public List<string> GetAllUsernameAliases(IWebHostEnvironment env)
 		{
-			Dictionary<string, int> aliases = new Dictionary<string, int>();
+			Dictionary<string, int> aliases = new();
 			foreach (string leaderboardHistoryPath in Directory.GetFiles(Path.Combine(env.WebRootPath, "leaderboard-history"), "*.json"))
 			{
 				Leaderboard leaderboard = JsonConvert.DeserializeObject<Leaderboard>(File.ReadAllText(leaderboardHistoryPath, Encoding.UTF8));
-				Entry historyEntry = leaderboard.Entries.Find(e => e.Id == Id);
+				Entry? historyEntry = leaderboard.Entries.Find(e => e.Id == Id);
 				if (historyEntry != null)
 				{
 					if (string.IsNullOrWhiteSpace(historyEntry.Username))

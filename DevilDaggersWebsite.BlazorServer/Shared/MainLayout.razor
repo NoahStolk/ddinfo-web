@@ -1,0 +1,27 @@
+﻿@inherits LayoutComponentBase
+
+<div class="sidebar">
+	<NavMenu />
+</div>
+
+<div class="main">
+	@*<div class="top-row px-4 auth">
+			<LoginDisplay />
+		</div>*@
+
+	<div class="content">
+		@Body
+	</div>
+
+	<div class="footer fixed-bottom">
+		<p>
+			Copyright © 2017-@DateTime.Now.Year Website created by Noah Stolk
+		</p>
+		<p>
+			This website, which is a completely rewritten version of the website at <a href="//devildaggers.info">devildaggers.info</a>, is currently under construction.
+		</p>
+		<p>
+			DEVILDAGGERS.INFO @Program.Version
+		</p>
+	</div>
+</div>

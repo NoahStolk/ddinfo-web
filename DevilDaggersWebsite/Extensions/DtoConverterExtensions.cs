@@ -1,5 +1,6 @@
 ﻿using DevilDaggersWebsite.Dto;
 using System;
+using System.Collections.Generic;
 using System.Linq;
 
 namespace DevilDaggersWebsite.Extensions
@@ -25,12 +26,12 @@ namespace DevilDaggersWebsite.Extensions
 				SubmitDate = DateTime.Now,
 				ClientVersion = uploadRequest.ClientVersion,
 				CustomLeaderboard = customLeaderboard,
-				GemsData = string.Join(",", uploadRequest.GameStates.Select(gs => gs.Gems)),
-				KillsData = string.Join(",", uploadRequest.GameStates.Select(gs => gs.Kills)),
-				HomingData = string.Join(",", uploadRequest.GameStates.Select(gs => gs.Homing)),
-				EnemiesAliveData = string.Join(",", uploadRequest.GameStates.Select(gs => gs.EnemiesAlive)),
-				DaggersFiredData = string.Join(",", uploadRequest.GameStates.Select(gs => gs.DaggersFired)),
-				DaggersHitData = string.Join(",", uploadRequest.GameStates.Select(gs => gs.DaggersHit)),
+				GemsData = string.Join(",", uploadRequest.GameStates?.Select(gs => gs.Gems) ?? new List<int>()),
+				KillsData = string.Join(",", uploadRequest.GameStates?.Select(gs => gs.Kills) ?? new List<int>()),
+				HomingData = string.Join(",", uploadRequest.GameStates?.Select(gs => gs.Homing) ?? new List<int>()),
+				EnemiesAliveData = string.Join(",", uploadRequest.GameStates?.Select(gs => gs.EnemiesAlive) ?? new List<int>()),
+				DaggersFiredData = string.Join(",", uploadRequest.GameStates?.Select(gs => gs.DaggersFired) ?? new List<int>()),
+				DaggersHitData = string.Join(",", uploadRequest.GameStates?.Select(gs => gs.DaggersHit) ?? new List<int>()),
 			};
 		}
 	}

@@ -29,9 +29,9 @@ namespace DevilDaggersWebsite.SitemapGenerator
 
 		public static string GetSitemap(IHttpContextAccessor httpContextAccessor, Type pageBaseType, bool recursive = false)
 		{
-			string baseUrl = httpContextAccessor.HttpContext.Request.Host.Host;
+			string baseUrl = httpContextAccessor.HttpContext?.Request.Host.Host ?? throw new("Could not get base URL for sitemap.");
 
-			SitemapBuilder sitemapBuilder = new SitemapBuilder();
+			SitemapBuilder sitemapBuilder = new();
 
 			foreach (Type type in Array.Find(AppDomain.CurrentDomain.GetAssemblies(), a => a.FullName?.Contains("Views", StringComparison.InvariantCulture) == true)?
 				.GetTypes()

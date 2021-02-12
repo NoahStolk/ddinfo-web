@@ -8,17 +8,18 @@ namespace DevilDaggersWebsite.Dto
 		public WorldRecordHolder(int id, string username, TimeSpan totalTimeHeld, TimeSpan longestTimeHeldConsecutively, int worldRecordCount, DateTime firstHeld, DateTime lastHeld)
 		{
 			Id = id;
+
 			Usernames.Add(username);
+			MostRecentUsername = username;
+
 			TotalTimeHeld = totalTimeHeld;
 			LongestTimeHeldConsecutively = longestTimeHeldConsecutively;
 			WorldRecordCount = worldRecordCount;
 			FirstHeld = firstHeld;
 			LastHeld = lastHeld;
-
-			MostRecentUsername = username;
 		}
 
-		public int Id { get; set; }
+		public int Id { get; }
 		public List<string> Usernames { get; } = new();
 		public TimeSpan TotalTimeHeld { get; set; }
 		public TimeSpan LongestTimeHeldConsecutively { get; set; }

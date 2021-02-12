@@ -1,6 +1,7 @@
 ﻿using DevilDaggersCore.Game;
 using Microsoft.AspNetCore.Html;
 using System;
+using System.ComponentModel.DataAnnotations;
 using System.ComponentModel.DataAnnotations.Schema;
 using System.Web;
 
@@ -8,6 +9,7 @@ namespace DevilDaggersWebsite.Entities
 {
 	public class CustomEntry
 	{
+		[Key]
 		public int Id { get; set; }
 
 		public int CustomLeaderboardId { get; set; }

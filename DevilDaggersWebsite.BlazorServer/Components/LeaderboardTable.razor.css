@@ -1,0 +1,10 @@
+﻿/*Does this even work*/
+.banned {
+	text-decoration: line-through;
+}
+
+/*Does this even work*/
+td {
+	height: 16px;
+	line-height: 1.2em;
+}

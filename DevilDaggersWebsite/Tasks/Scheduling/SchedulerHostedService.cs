@@ -9,7 +9,7 @@ namespace DevilDaggersWebsite.Tasks.Scheduling
 {
 	public class SchedulerHostedService : HostedService
 	{
-		private readonly List<SchedulerTaskWrapper> _scheduledTasks = new List<SchedulerTaskWrapper>();
+		private readonly List<SchedulerTaskWrapper> _scheduledTasks = new();
 
 		public SchedulerHostedService(IEnumerable<IScheduledTask> scheduledTasks)
 		{
@@ -26,7 +26,7 @@ namespace DevilDaggersWebsite.Tasks.Scheduling
 			}
 		}
 
-		public event EventHandler<UnobservedTaskExceptionEventArgs> UnobservedTaskException;
+		public event EventHandler<UnobservedTaskExceptionEventArgs>? UnobservedTaskException;
 
 		protected override async Task ExecuteAsync(CancellationToken cancellationToken)
 		{

@@ -1,0 +1,54 @@
+﻿@page "/WorldRecordProgression"
+@inject LeaderboardHistoryHelper LeaderboardHistoryHelper
+
+<h1>World Record Progression</h1>
+<p>
+	This is the world record progression for Devil Daggers based on the <a href="/LeaderboardHistory">Leaderboard History</a> section of the website. While keeping track of any records since October 2018 has been fully automated, some older information is still missing. Most of the older information is based on screenshots and YouTube videos.
+</p>
+
+<div class="chart" id="world-record-progression-chart">
+	<table class="highlighter" id="world-record-progression-highlighter">
+		<tr><td>Date</td><td id="h-date"></td></tr>
+		<tr><td>Time</td><td id="h-time"></td></tr>
+		<tr><td>Username</td><td id="h-username"></td></tr>
+		<tr><td>Gems</td><td id="h-gems"></td></tr>
+		<tr><td>Kills</td><td id="h-kills"></td></tr>
+		<tr><td>Accuracy</td><td id="h-accuracy"></td></tr>
+		<tr><td>Death type</td><td id="h-death-type"></td></tr>
+	</table>
+</div>
+
+<h2>World record holders</h2>
+
+<Table TableItem="WorldRecordHolderData" Items="_worldRecordHolders.Select(wrh => WorldRecordHolderData.FromWorldRecordHolder(wrh))" PageSize="25">
+	<Column TableItem="WorldRecordHolderData" Title="Username" Field="@(wrh => wrh.MostRecentUsername)" Sortable="true" Width="20%" />
+	<Column TableItem="WorldRecordHolderData" Title="Time Held" Field="@(wrh => wrh.TotalTimeHeldString)" Sortable="true" Width="10%" Align="Align.Right" />
+	<Column TableItem="WorldRecordHolderData" Title="Longest Time Held Consecutively" Field="@(wrh => wrh.LongestTimeHeldConsecutivelyString)" Sortable="true" Width="10%" Align="Align.Right" />
+	<Column TableItem="WorldRecordHolderData" Title="World Record Count" Field="@(wrh => wrh.WorldRecordCount)" Sortable="true" Width="10%" Align="Align.Right" />
+	<Column TableItem="WorldRecordHolderData" Title="First Held" Field="@(wrh => wrh.FirstHeldString)" Sortable="true" Width="10%" Align="Align.Right" />
+	<Column TableItem="WorldRecordHolderData" Title="Last Held" Field="@(wrh => wrh.LastHeldString)" Sortable="true" Width="10%" Align="Align.Right" />
+</Table>
+
+<h2>World records by time lasted</h2>
+
+<Table TableItem="WorldRecordData" Items="_worldRecords.Select(kvp => WorldRecordData.FromWorldRecord(kvp.Key, kvp.Value))" PageSize="25">
+	<Column TableItem="WorldRecordData" Title="Username" Field="@(wr => wr.Username)" Sortable="true" Width="20%" />
+	<Column TableItem="WorldRecordData" Title="Time" Field="@(wr => wr.Time)" Sortable="true" Width="10%" Align="Align.Right" Format="@FormatUtils.LeaderboardTimeFormat" />
+	<Column TableItem="WorldRecordData" Title="Lasted" Field="@(wrh => wrh.Lasted)" Sortable="true" Width="10%" Align="Align.Right" Format="%d" />
+</Table>
+
+@code {
+	private List<WorldRecordHolder> _worldRecordHolders = new();
+
+	private Dictionary<WorldRecord, TimeSpan> _worldRecords = new();
+
+	private Entry? _currentWr;
+
+	protected override async Task OnInitializedAsync()
+	{
+		Dto.Leaderboard? lb = await DdHasmodaiClient.GetScores(1);
+		_currentWr = lb?.Entries[0];
+
+		(_worldRecordHolders, _worldRecords) = LeaderboardHistoryHelper.GetWorldRecordData();
+	}
+}

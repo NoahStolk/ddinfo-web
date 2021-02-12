@@ -18,15 +18,15 @@ namespace DevilDaggersWebsite.Clients
 		{
 			try
 			{
-				Dictionary<string, string> postValues = new Dictionary<string, string>
+				List<KeyValuePair<string?, string?>> postValues = new()
 				{
-					{ "user", "0" },
-					{ "level", "survival" },
-					{ "offset", (rank - 1).ToString(CultureInfo.InvariantCulture) },
+					new("user", "0"),
+					new("level", "survival"),
+					new("offset", (rank - 1).ToString(CultureInfo.InvariantCulture)),
 				};
 
-				using FormUrlEncodedContent content = new FormUrlEncodedContent(postValues);
-				using HttpClient client = new HttpClient();
+				using FormUrlEncodedContent content = new(postValues);
+				using HttpClient client = new();
 				HttpResponseMessage resp = await client.PostAsync(_getScoresUrl, content);
 				byte[] data = await resp.Content.ReadAsByteArrayAsync();
 
@@ -46,7 +46,7 @@ namespace DevilDaggersWebsite.Clients
 				int bytePos = 83;
 				while (rankIterator < entryCount)
 				{
-					Entry entry = new Entry
+					Entry entry = new()
 					{
 						Username = GetUsername(data, ref bytePos),
 						Rank = BitConverter.ToInt32(data, bytePos),
@@ -84,24 +84,24 @@ namespace DevilDaggersWebsite.Clients
 		{
 			try
 			{
-				Dictionary<string, string> postValues = new Dictionary<string, string>
+				List<KeyValuePair<string?, string?>> postValues = new()
 				{
-					{ "search", search },
+					new("search", search),
 				};
 
-				using FormUrlEncodedContent content = new FormUrlEncodedContent(postValues);
-				using HttpClient client = new HttpClient();
+				using FormUrlEncodedContent content = new(postValues);
+				using HttpClient client = new();
 				HttpResponseMessage resp = await client.PostAsync(_getUserSearchUrl, content);
 				byte[] data = await resp.Content.ReadAsByteArrayAsync();
 
-				Leaderboard leaderboard = new Leaderboard();
+				Leaderboard leaderboard = new();
 
 				int entryCount = BitConverter.ToInt16(data, 11);
 				int rankIterator = 0;
 				int bytePos = 19;
 				while (rankIterator < entryCount)
 				{
-					Entry entry = new Entry
+					Entry entry = new()
 					{
 						Username = GetUsername(data, ref bytePos),
 						Rank = BitConverter.ToInt32(data, bytePos),
@@ -139,19 +139,19 @@ namespace DevilDaggersWebsite.Clients
 		{
 			try
 			{
-				Dictionary<string, string> postValues = new Dictionary<string, string>
+				List<KeyValuePair<string?, string?>> postValues = new()
 				{
-					{ "uid", userId.ToString(CultureInfo.InvariantCulture) },
+					new("uid", userId.ToString(CultureInfo.InvariantCulture)),
 				};
 
-				using FormUrlEncodedContent content = new FormUrlEncodedContent(postValues);
-				using HttpClient client = new HttpClient();
+				using FormUrlEncodedContent content = new(postValues);
+				using HttpClient client = new();
 				HttpResponseMessage resp = await client.PostAsync(GetUserByIdUrl, content);
 				byte[] data = await resp.Content.ReadAsByteArrayAsync();
 
 				int bytePos = 19;
 
-				Entry entry = new Entry
+				return new Entry
 				{
 					Username = GetUsername(data, ref bytePos),
 					Rank = BitConverter.ToInt32(data, bytePos),
@@ -169,8 +169,6 @@ namespace DevilDaggersWebsite.Clients
 					DaggersHitTotal = BitConverter.ToUInt64(data, bytePos + 76),
 					DaggersFiredTotal = BitConverter.ToUInt64(data, bytePos + 52),
 				};
-
-				return entry;
 			}
 			catch
 			{

@@ -1,11 +1,13 @@
 ﻿using DevilDaggersWebsite.Enumerators;
 using System;
 using System.Collections.Generic;
+using System.ComponentModel.DataAnnotations;
 
 namespace DevilDaggersWebsite.Entities
 {
 	public class AssetMod
 	{
+		[Key]
 		public int Id { get; set; }
 
 		public List<PlayerAssetMod> PlayerAssetMods { get; set; }

@@ -1,0 +1,95 @@
+﻿@page "/CustomLeaderboardEntry/{CustomEntryId:int}"
+@inject ApplicationDbContext DbContext
+
+<div>
+	@_customEntry?.Player?.Username
+</div>
+<div>
+	@_customEntry?.Time
+</div>
+<div class="card-deck mb-lg-3 pb-lg-3">
+	<DxChart Data="@_gemsData" CssClass="chart">
+		<div class="chart-title">Gems</div>
+		<DxChartLineSeries ArgumentField="@(((int seconds, int count) data) => data.seconds)" ValueField="@(data => data.count)" Color="System.Drawing.Color.Red" />
+		<DxChartLegend Visible="false" />
+	</DxChart>
+	<DxChart Data="@_killsData" CssClass="chart">
+		<div class="chart-title">Kills</div>
+		<DxChartLineSeries ArgumentField="@(((int seconds, int count) data) => data.seconds)" ValueField="@(data => data.count)" Color="System.Drawing.Color.SandyBrown" />
+		<DxChartLegend Visible="false" />
+	</DxChart>
+	<DxChart Data="@_homingData" CssClass="chart">
+		<div class="chart-title">Homing</div>
+		<DxChartLineSeries ArgumentField="@(((int seconds, int count) data) => data.seconds)" ValueField="@(data => data.count)" Color="System.Drawing.Color.Magenta" />
+		<DxChartLegend Visible="false" />
+	</DxChart>
+</div>
+<div class="card-deck mb-lg-3 pb-lg-3">
+	<DxChart Data="@_enemiesAliveData" CssClass="chart">
+		<div class="chart-title">Enemies alive</div>
+		<DxChartLineSeries ArgumentField="@(((int seconds, int count) data) => data.seconds)" ValueField="@(data => data.count)" Color="System.Drawing.Color.Orange" />
+		<DxChartLegend Visible="false" />
+	</DxChart>
+	<DxChart Data="_daggersFiredData" CssClass="chart">
+		<div class="chart-title">Daggers hit / fired</div>
+		<DxChartLineSeries Data="_daggersFiredData" ArgumentField="@(((int seconds, int count) data) => data.seconds)" ValueField="@(data => data.count)" />
+		<DxChartLineSeries Data="_daggersHitData" ArgumentField="@(((int seconds, int count) data) => data.seconds)" ValueField="@(data => data.count)" />
+		<DxChartLegend Visible="false" />
+	</DxChart>
+	<DxChart Data="_accuracyData" CssClass="chart">
+		<div class="chart-title">Accuracy</div>
+		<DxChartValueAxis>
+			<DxChartAxisLabel Format="ChartAxisLabelFormat.Percent"></DxChartAxisLabel>
+		</DxChartValueAxis>
+		<DxChartLineSeries ArgumentField="@(((int seconds, float count) data) => data.seconds)" ValueField="@(data => data.count)" Color="System.Drawing.Color.LimeGreen" />
+		<DxChartLegend Visible="false" />
+	</DxChart>
+</div>
+
+@code {
+	private List<(int seconds, int count)> _gemsData = new() { (0, 0) };
+	private List<(int seconds, int count)> _killsData = new() { (0, 0) };
+	private List<(int seconds, int count)> _homingData = new() { (0, 0) };
+	private List<(int seconds, int count)> _enemiesAliveData = new() { (0, 0) };
+	private List<(int seconds, int count)> _daggersFiredData = new() { (0, 0) };
+	private List<(int seconds, int count)> _daggersHitData = new() { (0, 0) };
+	private List<(int seconds, float count)> _accuracyData = new() { (0, 0) };
+	private Entities.CustomEntry? _customEntry;
+
+	[Parameter]
+	public int CustomEntryId { get; set; }
+
+	protected override void OnInitialized()
+	{
+		_customEntry = DbContext.CustomEntries.Include(ce => ce.Player).FirstOrDefault(ce => ce.Id == CustomEntryId);
+		if (_customEntry == null)
+			return;
+
+		PopulateData(_customEntry.GemsData, _gemsData);
+		PopulateData(_customEntry.KillsData, _killsData);
+		PopulateData(_customEntry.HomingData, _homingData);
+		PopulateData(_customEntry.EnemiesAliveData, _enemiesAliveData);
+		PopulateData(_customEntry.DaggersFiredData, _daggersFiredData);
+		PopulateData(_customEntry.DaggersHitData, _daggersHitData);
+		PopulateAccuracy(_accuracyData);
+	}
+
+	private void PopulateData(string? source, List<(int seconds, int count)> destination)
+	{
+		int i = 0;
+		foreach (int count in source?.Split(',').Select(int.Parse) ?? Array.Empty<int>())
+			destination.Add((i++, count));
+	}
+
+	private void PopulateAccuracy(List<(int seconds, float count)> destination)
+	{
+		for (int i = 0; i < _daggersHitData.Count; i++)
+		{
+			float accuracy = _daggersHitData[i].count / (float)_daggersFiredData[i].count;
+			if (float.IsNaN(accuracy) || float.IsInfinity(accuracy))
+				accuracy = 0;
+
+			destination.Add((i++, accuracy));
+		}
+	}
+}
