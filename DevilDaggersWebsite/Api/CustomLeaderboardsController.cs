@@ -127,13 +127,15 @@ namespace DevilDaggersWebsite.Api
 				";",
 				uploadRequest.PlayerId,
 				uploadRequest.Time,
-				uploadRequest.Gems,
+				uploadRequest.GemsCollected,
+				uploadRequest.GemsDespawned,
+				uploadRequest.GemsEaten,
 				uploadRequest.Kills,
 				uploadRequest.DeathType,
 				uploadRequest.DaggersHit,
 				uploadRequest.DaggersFired,
 				uploadRequest.EnemiesAlive,
-				uploadRequest.Homing,
+				uploadRequest.HomingDaggers,
 				string.Join(",", new int[3] { uploadRequest.LevelUpTime2, uploadRequest.LevelUpTime3, uploadRequest.LevelUpTime4 }));
 			if (await DecryptValidation(uploadRequest.Validation) != check)
 			{
@@ -210,11 +212,13 @@ namespace DevilDaggersWebsite.Api
 					Rank = rank,
 					Time = uploadRequest.Time,
 					Kills = uploadRequest.Kills,
-					Gems = uploadRequest.Gems,
+					GemsCollected = uploadRequest.GemsCollected,
+					GemsDespawned = uploadRequest.GemsDespawned,
+					GemsEaten = uploadRequest.GemsEaten,
 					DaggersHit = uploadRequest.DaggersHit,
 					DaggersFired = uploadRequest.DaggersFired,
 					EnemiesAlive = uploadRequest.EnemiesAlive,
-					Homing = uploadRequest.Homing,
+					HomingDaggers = uploadRequest.HomingDaggers,
 					LevelUpTime2 = uploadRequest.LevelUpTime2,
 					LevelUpTime3 = uploadRequest.LevelUpTime3,
 					LevelUpTime4 = uploadRequest.LevelUpTime4,
@@ -251,31 +255,37 @@ namespace DevilDaggersWebsite.Api
 			int rankDiff = oldRank - rank;
 			int timeDiff = uploadRequest.Time - entry.Time;
 			int killsDiff = uploadRequest.Kills - entry.Kills;
-			int gemsDiff = uploadRequest.Gems - entry.Gems;
+			int gemsDiff = uploadRequest.GemsCollected - entry.Gems;
+			int gemsDespawnedDiff = uploadRequest.GemsDespawned - entry.GemsDespawned;
+			int gemsEatenDiff = uploadRequest.GemsEaten - entry.GemsEaten;
 			int shotsHitDiff = uploadRequest.DaggersHit - entry.DaggersHit;
 			int shotsFiredDiff = uploadRequest.DaggersFired - entry.DaggersFired;
 			int enemiesAliveDiff = uploadRequest.EnemiesAlive - entry.EnemiesAlive;
-			int homingDiff = uploadRequest.Homing - entry.Homing;
+			int homingDiff = uploadRequest.HomingDaggers - entry.Homing;
 			int levelUpTime2Diff = uploadRequest.LevelUpTime2 - entry.LevelUpTime2;
 			int levelUpTime3Diff = uploadRequest.LevelUpTime3 - entry.LevelUpTime3;
 			int levelUpTime4Diff = uploadRequest.LevelUpTime4 - entry.LevelUpTime4;
 
 			entry.Time = uploadRequest.Time;
 			entry.Kills = uploadRequest.Kills;
-			entry.Gems = uploadRequest.Gems;
+			entry.Gems = uploadRequest.GemsCollected;
+			entry.GemsDespawned = uploadRequest.GemsDespawned;
+			entry.GemsEaten = uploadRequest.GemsEaten;
 			entry.DeathType = uploadRequest.DeathType;
 			entry.DaggersHit = uploadRequest.DaggersHit;
 			entry.DaggersFired = uploadRequest.DaggersFired;
 			entry.EnemiesAlive = uploadRequest.EnemiesAlive;
-			entry.Homing = uploadRequest.Homing;
+			entry.Homing = uploadRequest.HomingDaggers;
 			entry.LevelUpTime2 = uploadRequest.LevelUpTime2;
 			entry.LevelUpTime3 = uploadRequest.LevelUpTime3;
 			entry.LevelUpTime4 = uploadRequest.LevelUpTime4;
 			entry.SubmitDate = DateTime.Now;
 			entry.ClientVersion = uploadRequest.ClientVersion;
-			entry.GemsData = string.Join(",", uploadRequest.GameStates.Select(gs => gs.Gems));
+			entry.GemsData = string.Join(",", uploadRequest.GameStates.Select(gs => gs.GemsCollected));
+			entry.GemsDespawnedData = string.Join(",", uploadRequest.GameStates.Select(gs => gs.GemsDespawned));
+			entry.GemsEatenData = string.Join(",", uploadRequest.GameStates.Select(gs => gs.GemsEaten));
 			entry.KillsData = string.Join(",", uploadRequest.GameStates.Select(gs => gs.Kills));
-			entry.HomingData = string.Join(",", uploadRequest.GameStates.Select(gs => gs.Homing));
+			entry.HomingData = string.Join(",", uploadRequest.GameStates.Select(gs => gs.HomingDaggers));
 			entry.EnemiesAliveData = string.Join(",", uploadRequest.GameStates.Select(gs => gs.EnemiesAlive));
 			entry.DaggersFiredData = string.Join(",", uploadRequest.GameStates.Select(gs => gs.DaggersFired));
 			entry.DaggersHitData = string.Join(",", uploadRequest.GameStates.Select(gs => gs.DaggersHit));
@@ -302,16 +312,20 @@ namespace DevilDaggersWebsite.Api
 				TimeDiff = timeDiff,
 				Kills = uploadRequest.Kills,
 				KillsDiff = killsDiff,
-				Gems = uploadRequest.Gems,
-				GemsDiff = gemsDiff,
+				GemsCollected = uploadRequest.GemsCollected,
+				GemsCollectedDiff = gemsDiff,
+				GemsDespawned = uploadRequest.GemsDespawned,
+				GemsDespawnedDiff = gemsDespawnedDiff,
+				GemsEaten = uploadRequest.GemsEaten,
+				GemsEatenDiff = gemsEatenDiff,
 				DaggersHit = uploadRequest.DaggersHit,
 				DaggersHitDiff = shotsHitDiff,
 				DaggersFired = uploadRequest.DaggersFired,
 				DaggersFiredDiff = shotsFiredDiff,
 				EnemiesAlive = uploadRequest.EnemiesAlive,
 				EnemiesAliveDiff = enemiesAliveDiff,
-				Homing = uploadRequest.Homing,
-				HomingDiff = homingDiff,
+				HomingDaggers = uploadRequest.HomingDaggers,
+				HomingDaggersDiff = homingDiff,
 				LevelUpTime2 = uploadRequest.LevelUpTime2,
 				LevelUpTime2Diff = levelUpTime2Diff,
 				LevelUpTime3 = uploadRequest.LevelUpTime3,

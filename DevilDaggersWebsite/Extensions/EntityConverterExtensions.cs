@@ -6,7 +6,7 @@ namespace DevilDaggersWebsite.Extensions
 	{
 		public static Dto.CustomLeaderboard ToDto(this CustomLeaderboard customLeaderboard)
 		{
-			return new Dto.CustomLeaderboard
+			return new()
 			{
 				SpawnsetAuthorName = customLeaderboard.SpawnsetFile.Player.Username,
 				SpawnsetName = customLeaderboard.SpawnsetFile.Name,
@@ -24,15 +24,17 @@ namespace DevilDaggersWebsite.Extensions
 
 		public static Dto.CustomEntry ToDto(this CustomEntry customEntry, string username)
 		{
-			return new Dto.CustomEntry
+			return new()
 			{
 				PlayerId = customEntry.PlayerId,
 				Username = username,
 				ClientVersion = customEntry.ClientVersion,
 				DeathType = customEntry.DeathType,
 				EnemiesAlive = customEntry.EnemiesAlive,
-				Gems = customEntry.Gems,
-				Homing = customEntry.Homing,
+				GemsCollected = customEntry.Gems,
+				GemsDespawned = customEntry.GemsDespawned,
+				GemsEaten = customEntry.GemsEaten,
+				HomingDaggers = customEntry.Homing,
 				Kills = customEntry.Kills,
 				LevelUpTime2 = customEntry.LevelUpTime2,
 				LevelUpTime3 = customEntry.LevelUpTime3,

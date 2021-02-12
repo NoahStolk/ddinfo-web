@@ -5,45 +5,51 @@ namespace DevilDaggersWebsite.Dto
 {
 	public class UploadSuccess
 	{
-		public string Message { get; set; }
+		public string Message { get; init; } = string.Empty;
 
-		public int TotalPlayers { get; set; }
-		public CustomLeaderboard Leaderboard { get; set; }
-		public CustomLeaderboardCategory Category { get; set; }
-		public List<CustomEntry> Entries { get; set; }
-		public bool IsNewUserOnThisLeaderboard { get; set; }
+		public int TotalPlayers { get; init; }
+		public CustomLeaderboard Leaderboard { get; init; } = null!;
+		public CustomLeaderboardCategory Category { get; init; }
+		public List<CustomEntry> Entries { get; init; } = new();
+		public bool IsNewUserOnThisLeaderboard { get; init; }
 
-		public int Rank { get; set; }
-		public int RankDiff { get; set; }
+		public int Rank { get; init; }
+		public int RankDiff { get; init; }
 
-		public int Time { get; set; }
-		public int TimeDiff { get; set; }
+		public int Time { get; init; }
+		public int TimeDiff { get; init; }
 
-		public int Kills { get; set; }
-		public int KillsDiff { get; set; }
+		public int Kills { get; init; }
+		public int KillsDiff { get; init; }
 
-		public int Gems { get; set; }
-		public int GemsDiff { get; set; }
+		public int GemsCollected { get; init; }
+		public int GemsCollectedDiff { get; init; }
 
-		public int DaggersHit { get; set; }
-		public int DaggersHitDiff { get; set; }
+		public int GemsDespawned { get; init; }
+		public int GemsDespawnedDiff { get; init; }
 
-		public int DaggersFired { get; set; }
-		public int DaggersFiredDiff { get; set; }
+		public int GemsEaten { get; init; }
+		public int GemsEatenDiff { get; init; }
 
-		public int EnemiesAlive { get; set; }
-		public int EnemiesAliveDiff { get; set; }
+		public int DaggersHit { get; init; }
+		public int DaggersHitDiff { get; init; }
 
-		public int Homing { get; set; }
-		public int HomingDiff { get; set; }
+		public int DaggersFired { get; init; }
+		public int DaggersFiredDiff { get; init; }
 
-		public int LevelUpTime2 { get; set; }
-		public int LevelUpTime2Diff { get; set; }
+		public int EnemiesAlive { get; init; }
+		public int EnemiesAliveDiff { get; init; }
 
-		public int LevelUpTime3 { get; set; }
-		public int LevelUpTime3Diff { get; set; }
+		public int HomingDaggers { get; init; }
+		public int HomingDaggersDiff { get; init; }
 
-		public int LevelUpTime4 { get; set; }
-		public int LevelUpTime4Diff { get; set; }
+		public int LevelUpTime2 { get; init; }
+		public int LevelUpTime2Diff { get; init; }
+
+		public int LevelUpTime3 { get; init; }
+		public int LevelUpTime3Diff { get; init; }
+
+		public int LevelUpTime4 { get; init; }
+		public int LevelUpTime4Diff { get; init; }
 	}
 }

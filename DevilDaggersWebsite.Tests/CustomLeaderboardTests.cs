@@ -194,7 +194,7 @@ namespace DevilDaggersWebsite.Tests
 
 		private static string GetValidation(Dto.UploadRequest uploadRequest)
 		{
-			string toEncrypt = string.Join(";", uploadRequest.PlayerId, uploadRequest.Time, uploadRequest.Gems, uploadRequest.Kills, uploadRequest.DeathType, uploadRequest.DaggersHit, uploadRequest.DaggersFired, uploadRequest.EnemiesAlive, uploadRequest.Homing, string.Join(",", new[] { uploadRequest.LevelUpTime2, uploadRequest.LevelUpTime3, uploadRequest.LevelUpTime4 }));
+			string toEncrypt = string.Join(";", uploadRequest.PlayerId, uploadRequest.Time, uploadRequest.GemsCollected, uploadRequest.Kills, uploadRequest.DeathType, uploadRequest.DaggersHit, uploadRequest.DaggersFired, uploadRequest.EnemiesAlive, uploadRequest.HomingDaggers, string.Join(",", new[] { uploadRequest.LevelUpTime2, uploadRequest.LevelUpTime3, uploadRequest.LevelUpTime4 }));
 			return HttpUtility.HtmlEncode(Secrets.EncryptionWrapper.EncryptAndEncode(toEncrypt));
 		}
 

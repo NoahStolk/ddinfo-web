@@ -15,15 +15,17 @@ namespace DevilDaggersWebsite.Entities
 		public int CustomLeaderboardId { get; set; }
 
 		[ForeignKey(nameof(CustomLeaderboardId))]
-		public CustomLeaderboard CustomLeaderboard { get; set; }
+		public CustomLeaderboard CustomLeaderboard { get; set; } = null!;
 
 		public int PlayerId { get; set; }
 
 		[ForeignKey(nameof(PlayerId))]
-		public Player Player { get; set; }
+		public Player Player { get; set; } = null!;
 
 		public int Time { get; set; }
 		public int Gems { get; set; }
+		public int GemsDespawned { get; set; }
+		public int GemsEaten { get; set; }
 		public int Kills { get; set; }
 		public int DeathType { get; set; }
 		public int DaggersHit { get; set; }
@@ -37,6 +39,8 @@ namespace DevilDaggersWebsite.Entities
 		public string? ClientVersion { get; set; }
 
 		public string? GemsData { get; set; }
+		public string? GemsDespawnedData { get; set; }
+		public string? GemsEatenData { get; set; }
 		public string? KillsData { get; set; }
 		public string? HomingData { get; set; }
 		public string? EnemiesAliveData { get; set; }
@@ -45,7 +49,7 @@ namespace DevilDaggersWebsite.Entities
 
 		public double Accuracy => DaggersFired == 0 ? 0 : DaggersHit / (double)DaggersFired;
 
-		public HtmlString ToHtmlData(int rank, string username, string flagCode) => new HtmlString($@"
+		public HtmlString ToHtmlData(int rank, string username, string flagCode) => new($@"
 			rank='{rank}'
 			flag='{flagCode}'
 			username='{HttpUtility.HtmlEncode(username)}'
