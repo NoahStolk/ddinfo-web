@@ -22,7 +22,7 @@ else
 	protected override async Task OnInitializedAsync()
 	{
 		_isLoading = true;
-		_customLeaderboard = await DbContext.CustomLeaderboards1
+		_customLeaderboard = await DbContext.CustomLeaderboards
 			.AsNoTracking()
 			.Include(cl => cl.SpawnsetFile)
 			.FirstOrDefaultAsync(cl => cl.SpawnsetFile.Name == Spawnset);
