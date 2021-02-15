@@ -43,7 +43,7 @@ namespace DevilDaggersWebsite.Razor.Pages.Admin.CustomLeaderboards
 				return Page();
 
 			CustomLeaderboard.DateCreated = DateTime.Now;
-			_context.CustomLeaderboards1.Add(CustomLeaderboard);
+			_context.CustomLeaderboards.Add(CustomLeaderboard);
 			await _context.SaveChangesAsync();
 
 			return RedirectToPage("./Index");

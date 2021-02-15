@@ -32,7 +32,7 @@ namespace DevilDaggersWebsite.Razor.Pages.Admin.CustomLeaderboards
 			if (id == null)
 				return NotFound();
 
-			CustomLeaderboard = await _context.CustomLeaderboards1
+			CustomLeaderboard = await _context.CustomLeaderboards
 				.Include(c => c.SpawnsetFile)
 				.FirstOrDefaultAsync(m => m.Id == id);
 
@@ -67,6 +67,6 @@ namespace DevilDaggersWebsite.Razor.Pages.Admin.CustomLeaderboards
 		}
 
 		private bool CustomLeaderboardExists(int id)
-			=> _context.CustomLeaderboards1.Any(e => e.Id == id);
+			=> _context.CustomLeaderboards.Any(e => e.Id == id);
 	}
 }

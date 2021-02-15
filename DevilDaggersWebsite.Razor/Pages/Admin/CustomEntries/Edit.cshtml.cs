@@ -30,7 +30,7 @@ namespace DevilDaggersWebsite.Razor.Pages.Admin.CustomEntries
 
 			if (CustomEntry == null)
 				return NotFound();
-			ViewData["CustomLeaderboardId"] = new SelectList(_dbContext.CustomLeaderboards1, "Id", "SpawnsetFileName");
+			ViewData["CustomLeaderboardId"] = new SelectList(_dbContext.CustomLeaderboards, "Id", "SpawnsetFileName");
 			return Page();
 		}
 
