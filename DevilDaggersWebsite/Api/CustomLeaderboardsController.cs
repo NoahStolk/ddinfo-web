@@ -99,6 +99,15 @@ namespace DevilDaggersWebsite.Api
 		public async Task<ActionResult<Dto.UploadSuccess>> ProcessUploadRequest(Dto.UploadRequest uploadRequest, IEnumerable<(string name, Spawnset spawnset)> spawnsets)
 		{
 			Version clientVersionParsed = Version.Parse(uploadRequest.ClientVersion);
+
+			// TODO: Remove when new DDCL for QOL is released.
+			if (clientVersionParsed <= new Version(0, 10, 4, 0))
+			{
+				const string errorMessage = "This version of DDCL does not work with the latest build of Devil Daggers. Please wait for the program to be updated.";
+				await TryLog(uploadRequest, null, errorMessage);
+				return new BadRequestObjectResult(new ProblemDetails { Title = errorMessage });
+			}
+
 			if (clientVersionParsed < _toolHelper.GetToolByName("DevilDaggersCustomLeaderboards").VersionNumberRequired)
 			{
 				const string errorMessage = "You are using an unsupported and outdated version of DDCL. Please update the program.";
