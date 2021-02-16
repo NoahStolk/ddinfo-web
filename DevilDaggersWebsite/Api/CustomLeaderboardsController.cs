@@ -85,7 +85,7 @@ namespace DevilDaggersWebsite.Api
 			}
 		}
 
-		private IEnumerable<(string name, Spawnset spawnset)> GetSpawnsets()
+		private IEnumerable<(string Name, Spawnset Spawnset)> GetSpawnsets()
 		{
 			foreach (string spawnsetPath in Directory.GetFiles(Path.Combine(_env.WebRootPath, "spawnsets")))
 			{
@@ -96,7 +96,7 @@ namespace DevilDaggersWebsite.Api
 
 		[ApiExplorerSettings(IgnoreApi = true)]
 		[NonAction]
-		public async Task<ActionResult<Dto.UploadSuccess>> ProcessUploadRequest(Dto.UploadRequest uploadRequest, IEnumerable<(string name, Spawnset spawnset)> spawnsets)
+		public async Task<ActionResult<Dto.UploadSuccess>> ProcessUploadRequest(Dto.UploadRequest uploadRequest, IEnumerable<(string Name, Spawnset Spawnset)> spawnsets)
 		{
 			Version clientVersionParsed = Version.Parse(uploadRequest.ClientVersion);
 			if (clientVersionParsed < _toolHelper.GetToolByName("DevilDaggersCustomLeaderboards").VersionNumberRequired)

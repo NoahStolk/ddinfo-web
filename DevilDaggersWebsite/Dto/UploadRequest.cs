@@ -23,6 +23,6 @@ namespace DevilDaggersWebsite.Dto
 		public OperatingSystem OperatingSystem { get; set; }
 		public BuildMode BuildMode { get; set; }
 		public string Validation { get; set; } = null!;
-		public List<GameState>? GameStates { get; set; }
+		public List<GameState> GameStates { get; set; } = new();
 	}
 }
