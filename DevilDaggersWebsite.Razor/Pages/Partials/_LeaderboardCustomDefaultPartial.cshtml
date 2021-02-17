@@ -17,7 +17,7 @@
 		<div class="sorter hidden-xs text-center" sort="kills">Kills</div>
 		<div class="sorter hidden-xs text-center" sort="gems">Gems</div>
 		<div class="sorter hidden-xs text-center" sort="accuracy">Accuracy</div>
-		@if (Model.Leaderboard.Category != CustomLeaderboardCategory.Challenge)
+		@if (Model.Leaderboard!.Category != CustomLeaderboardCategory.Challenge)
 		{
 			<div class="sorter hidden-xs hidden-sm hidden-md text-center" sort="death-type">Death type</div>
 			<div class="sorter hidden-xs hidden-sm hidden-md text-center" sort="enemies-alive">Enemies alive</div>
@@ -33,11 +33,8 @@
 			IEnumerable<Donation> donations = dbContext.Donations.ToList();
 			IEnumerable<Player> players = dbContext.Players.Include(p => p.PlayerTitles).ThenInclude(pt => pt.Title).ToList();
 			int rank = 0;
-			foreach (CustomEntry? entry in Model.Entries)
+			foreach (CustomEntry entry in Model.Entries!)
 			{
-				if (entry == null)
-					continue;
-
 				rank++;
 
 				Player? player = players.FirstOrDefault(p => p.Id == entry.PlayerId);
@@ -46,7 +43,7 @@
 				string flagCode = player?.CountryCode ?? string.Empty;
 				string[] titles = player?.PlayerTitles.Select(pt => pt.Title.Name).ToArray() ?? Array.Empty<string>();
 
-				string dagger = Model.Leaderboard.GetDagger(entry.Time);
+				string dagger = Model.Leaderboard!.GetDagger(entry.Time);
 				Death? death = GameInfo.GetDeathByType(entry.DeathType, GameVersion.V3);
 
 				string deathStyle = $"color: #{death?.ColorCode ?? "444"};";

@@ -1,5 +1,6 @@
 ﻿using DevilDaggersCore.Spawnsets;
 using DevilDaggersWebsite.Entities;
+using DevilDaggersWebsite.Extensions;
 using Microsoft.AspNetCore.Hosting;
 using Microsoft.EntityFrameworkCore;
 using System;
@@ -47,18 +48,9 @@ namespace DevilDaggersWebsite.Transients
 		private Dto.SpawnsetFile Map(SpawnsetFile spawnsetFile)
 		{
 			if (!Spawnset.TryGetSpawnData(File.ReadAllBytes(Path.Combine(_env.WebRootPath, "spawnsets", spawnsetFile.Name)), out SpawnsetData spawnsetData))
-				throw new Exception($"Failed to get spawn data from spawnset file: '{spawnsetFile.Name}'.");
+				throw new($"Failed to get spawn data from spawnset file: '{spawnsetFile.Name}'.");
 
-			return new Dto.SpawnsetFile
-			{
-				AuthorName = spawnsetFile.Player.Username,
-				HtmlDescription = spawnsetFile.HtmlDescription,
-				HasCustomLeaderboard = _spawnsetsWithCustomLeaderboardIds.Contains(spawnsetFile.Id),
-				LastUpdated = spawnsetFile.LastUpdated,
-				MaxDisplayWaves = spawnsetFile.MaxDisplayWaves,
-				Name = spawnsetFile.Name,
-				SpawnsetData = spawnsetData,
-			};
+			return spawnsetFile.ToDto(spawnsetData, _spawnsetsWithCustomLeaderboardIds.Contains(spawnsetFile.Id));
 		}
 	}
 }

@@ -41,7 +41,7 @@ namespace DevilDaggersWebsite.Api
 			if (string.IsNullOrEmpty(username) || username.Length < 3)
 				return new BadRequestObjectResult(new ProblemDetails { Title = $"Incorrect parameter {nameof(username)} '{username}' specified. Value should be at least 3 characters in length." });
 
-			return (await DdHasmodaiClient.GetUserSearch(username))?.Entries ?? new List<Entry>();
+			return (await DdHasmodaiClient.GetUserSearch(username))?.Entries ?? new();
 		}
 
 		[HttpGet("user/by-rank")]
@@ -49,7 +49,7 @@ namespace DevilDaggersWebsite.Api
 		[ProducesResponseType(StatusCodes.Status400BadRequest)]
 		public async Task<ActionResult<Entry>> GetUserByRank([Required] int rank)
 		{
-			List<Entry> entries = (await DdHasmodaiClient.GetScores(rank))?.Entries ?? new List<Entry>();
+			List<Entry> entries = (await DdHasmodaiClient.GetScores(rank))?.Entries ?? new();
 			if (entries.Count == 0)
 				return new NotFoundObjectResult(new ProblemDetails { Title = $"Entry with {nameof(rank)} '{rank}' was not found." });
 			return entries[0];
