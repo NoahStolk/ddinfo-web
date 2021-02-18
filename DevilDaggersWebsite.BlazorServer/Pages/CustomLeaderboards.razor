@@ -73,7 +73,7 @@ else
 			.Include(ce => ce.Player)
 			.ToListAsync();
 
-		_customLeaderboards = await DbContext.CustomLeaderboards1
+		_customLeaderboards = await DbContext.CustomLeaderboards
 			.Include(cl => cl.SpawnsetFile)
 				.ThenInclude(sf => sf.Player)
 			.ToListAsync();

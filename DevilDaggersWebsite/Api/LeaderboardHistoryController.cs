@@ -62,9 +62,9 @@ namespace DevilDaggersWebsite.Api
 		[HttpGet("latest-date-played")]
 		[ProducesResponseType(StatusCodes.Status200OK)]
 		[ProducesResponseType(StatusCodes.Status400BadRequest)]
-		public (DateTime from, DateTime to) GetLatestDatePlayed([Required] int userId)
+		public (DateTime From, DateTime To) GetLatestDatePlayed([Required] int userId)
 		{
-			List<(DateTime dateTime, Entry entry)> entries = new List<(DateTime, Entry)>();
+			List<(DateTime DateTime, Entry Entry)> entries = new List<(DateTime, Entry)>();
 			foreach (string leaderboardHistoryPath in Io.Directory.GetFiles(Io.Path.Combine(_env.WebRootPath, "leaderboard-history"), "*.json"))
 			{
 				Leaderboard lb = JsonConvert.DeserializeObject<Leaderboard>(Io.File.ReadAllText(leaderboardHistoryPath, Encoding.UTF8));
@@ -73,12 +73,12 @@ namespace DevilDaggersWebsite.Api
 					entries.Add((lb.DateTime, entry));
 			}
 
-			entries = entries.OrderByDescending(l => l.dateTime).ToList();
-			ulong deaths = entries[0].entry.DeathsTotal;
+			entries = entries.OrderByDescending(l => l.DateTime).ToList();
+			ulong deaths = entries[0].Entry.DeathsTotal;
 			for (int i = 1; i < entries.Count; i++)
 			{
-				if (entries[i].entry.DeathsTotal < deaths)
-					return (entries[i].dateTime, entries[i - 1].dateTime);
+				if (entries[i].Entry.DeathsTotal < deaths)
+					return (entries[i].DateTime, entries[i - 1].DateTime);
 			}
 
 			return (DateTime.Now, DateTime.Now);

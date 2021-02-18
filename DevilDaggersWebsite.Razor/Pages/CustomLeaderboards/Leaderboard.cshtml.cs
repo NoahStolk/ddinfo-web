@@ -22,10 +22,10 @@ namespace DevilDaggersWebsite.Razor.Pages.CustomLeaderboards
 		public SpawnsetFile? SpawnsetFile { get; private set; }
 
 		[BindProperty]
-		public CustomLeaderboard Leaderboard { get; set; }
+		public CustomLeaderboard? Leaderboard { get; set; }
 
 		[BindProperty]
-		public List<CustomEntry> Entries { get; private set; }
+		public List<CustomEntry>? Entries { get; private set; }
 
 		public ActionResult? OnGet(string spawnsetName)
 		{
@@ -36,7 +36,7 @@ namespace DevilDaggersWebsite.Razor.Pages.CustomLeaderboards
 			if (SpawnsetFile == null)
 				return RedirectToPage("Index");
 
-			Leaderboard = _context.CustomLeaderboards1.FirstOrDefault(l => l.SpawnsetFileId == SpawnsetFile.Id);
+			Leaderboard = _context.CustomLeaderboards.FirstOrDefault(l => l.SpawnsetFileId == SpawnsetFile.Id);
 			if (Leaderboard == null)
 				return RedirectToPage("Index");
 
@@ -49,7 +49,7 @@ namespace DevilDaggersWebsite.Razor.Pages.CustomLeaderboards
 			return null;
 		}
 
-		public (string daggerName, string seconds) GetDaggerInfo(int daggerIndex)
+		public (string DaggerName, string Seconds) GetDaggerInfo(int daggerIndex)
 		{
 			if (daggerIndex < 0 || daggerIndex > 4)
 				throw new ArgumentOutOfRangeException(nameof(daggerIndex), $"'{nameof(daggerIndex)}' must be between 0 (bronze) and 4 (homing). '{nameof(daggerIndex)}' was {daggerIndex}.");
@@ -60,18 +60,18 @@ namespace DevilDaggersWebsite.Razor.Pages.CustomLeaderboards
 				1 => "Silver",
 				2 => "Golden",
 				3 => "Devil",
-				_ => "Homing"
+				_ => "Homing",
 			};
-			string seconds = daggerIndex switch
+			string? seconds = daggerIndex switch
 			{
-				0 => Leaderboard.Bronze.FormatTimeInteger(),
-				1 => Leaderboard.Silver.FormatTimeInteger(),
-				2 => Leaderboard.Golden.FormatTimeInteger(),
-				3 => Leaderboard.Devil.FormatTimeInteger(),
-				_ => Leaderboard.Homing.FormatTimeInteger()
+				0 => Leaderboard!.Bronze.FormatTimeInteger(),
+				1 => Leaderboard!.Silver.FormatTimeInteger(),
+				2 => Leaderboard!.Golden.FormatTimeInteger(),
+				3 => Leaderboard!.Devil.FormatTimeInteger(),
+				_ => Leaderboard!.Homing.FormatTimeInteger(),
 			};
 
-			return (daggerName, seconds);
+			return (daggerName, seconds ?? "?");
 		}
 	}
 }

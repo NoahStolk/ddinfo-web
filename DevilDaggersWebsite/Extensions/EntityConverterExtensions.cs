@@ -1,4 +1,5 @@
-﻿using DevilDaggersWebsite.Entities;
+﻿using DevilDaggersCore.Spawnsets;
+using DevilDaggersWebsite.Entities;
 
 namespace DevilDaggersWebsite.Extensions
 {
@@ -43,6 +44,20 @@ namespace DevilDaggersWebsite.Extensions
 				DaggersHit = customEntry.DaggersHit,
 				SubmitDate = customEntry.SubmitDate,
 				Time = customEntry.Time,
+			};
+		}
+
+		public static Dto.SpawnsetFile ToDto(this SpawnsetFile spawnsetFile, SpawnsetData spawnsetData, bool hasCustomLeaderboard)
+		{
+			return new()
+			{
+				AuthorName = spawnsetFile.Player.Username,
+				HtmlDescription = spawnsetFile.HtmlDescription,
+				HasCustomLeaderboard = hasCustomLeaderboard,
+				LastUpdated = spawnsetFile.LastUpdated,
+				MaxDisplayWaves = spawnsetFile.MaxDisplayWaves,
+				Name = spawnsetFile.Name,
+				SpawnsetData = spawnsetData,
 			};
 		}
 	}

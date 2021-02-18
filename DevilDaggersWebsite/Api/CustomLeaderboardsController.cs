@@ -41,7 +41,7 @@ namespace DevilDaggersWebsite.Api
 		[ProducesResponseType(StatusCodes.Status200OK)]
 		public ActionResult<List<Dto.CustomLeaderboard>> GetCustomLeaderboards()
 		{
-			return _context.CustomLeaderboards1
+			return _context.CustomLeaderboards
 				.AsNoTracking()
 				.Include(cl => cl.SpawnsetFile)
 					.ThenInclude(sf => sf.Player)
@@ -54,7 +54,7 @@ namespace DevilDaggersWebsite.Api
 		[ProducesResponseType(StatusCodes.Status404NotFound)]
 		public ActionResult<Dto.CustomLeaderboard> GetCustomLeaderboard(int id)
 		{
-			CustomLeaderboard? customLeaderboard = _context.CustomLeaderboards1
+			CustomLeaderboard? customLeaderboard = _context.CustomLeaderboards
 				.AsNoTracking()
 				.Include(cl => cl.SpawnsetFile)
 					.ThenInclude(sf => sf.Player)
@@ -85,7 +85,7 @@ namespace DevilDaggersWebsite.Api
 			}
 		}
 
-		private IEnumerable<(string name, Spawnset spawnset)> GetSpawnsets()
+		private IEnumerable<(string Name, Spawnset Spawnset)> GetSpawnsets()
 		{
 			foreach (string spawnsetPath in Directory.GetFiles(Path.Combine(_env.WebRootPath, "spawnsets")))
 			{
@@ -96,7 +96,7 @@ namespace DevilDaggersWebsite.Api
 
 		[ApiExplorerSettings(IgnoreApi = true)]
 		[NonAction]
-		public async Task<ActionResult<Dto.UploadSuccess>> ProcessUploadRequest(Dto.UploadRequest uploadRequest, IEnumerable<(string name, Spawnset spawnset)> spawnsets)
+		public async Task<ActionResult<Dto.UploadSuccess>> ProcessUploadRequest(Dto.UploadRequest uploadRequest, IEnumerable<(string Name, Spawnset Spawnset)> spawnsets)
 		{
 			Version clientVersionParsed = Version.Parse(uploadRequest.ClientVersion);
 
@@ -153,7 +153,7 @@ namespace DevilDaggersWebsite.Api
 				return new BadRequestObjectResult(new ProblemDetails { Title = errorMessage });
 			}
 
-			CustomLeaderboard? leaderboard = _context.CustomLeaderboards1.Include(cl => cl.SpawnsetFile).ThenInclude(sf => sf.Player).FirstOrDefault(cl => cl.SpawnsetFile.Name == spawnsetName);
+			CustomLeaderboard? leaderboard = _context.CustomLeaderboards.Include(cl => cl.SpawnsetFile).ThenInclude(sf => sf.Player).FirstOrDefault(cl => cl.SpawnsetFile.Name == spawnsetName);
 			if (leaderboard == null)
 			{
 				const string errorMessage = "This spawnset exists on DevilDaggers.info, but doesn't have a leaderboard.";

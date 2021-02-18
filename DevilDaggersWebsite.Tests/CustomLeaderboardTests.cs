@@ -267,7 +267,7 @@ namespace DevilDaggersWebsite.Tests
 			context.Players.Add(testPlayer1);
 			context.Players.Add(testPlayer2);
 			context.SpawnsetFiles.Add(spawnsetFile);
-			context.CustomLeaderboards1.Add(customLeaderboard);
+			context.CustomLeaderboards.Add(customLeaderboard);
 			context.CustomEntries.Add(customEntry);
 			context.SaveChanges();
 		}
