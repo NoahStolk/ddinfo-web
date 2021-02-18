@@ -25,8 +25,9 @@ $.getJSON("/api/leaderboard-history/world-records", function (data) {
 		if (wrs[i][1] < minTime)
 			minTime = wrs[i][1];
 	}
-	minTime = Math.floor(minTime / 50) * 50;
-	maxTime = Math.ceil(maxTime / 50) * 50;
+	const timeSplit = 100;
+	minTime = Math.floor(minTime / timeSplit) * timeSplit;
+	maxTime = Math.ceil(maxTime / timeSplit) * timeSplit;
 
 	const chartName = "world-record-progression-chart";
 	const chartId = "#" + chartName;
