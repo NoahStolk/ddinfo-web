@@ -5,7 +5,7 @@
 @model DevilDaggersWebsite.Razor.Pages.CustomLeaderboards.LeaderboardModel
 @{
 	string name = Model.SpawnsetFile?.Name ?? throw new Exception("Spawnset was null in CustomLeaderboards/Leaderboard page.");
-	ViewData["Title"] = $"Leaderboard for {name} by {Model.SpawnsetFile.Player.Username}";
+	ViewData["Title"] = $"Leaderboard for {name} by {Model.SpawnsetFile.Player.PlayerName}";
 }
 
 <header>
@@ -29,7 +29,7 @@
 
 		<div style="flex-direction: column; width: 200px; margin: auto;">
 			@{
-				for (int i = 0; i < (Model.Leaderboard!.Homing == 0 ? 4 : 5); i++)
+				for (int i = 0; i < 5; i++)
 				{
 					(string daggerName, string seconds) = Model.GetDaggerInfo(i);
 

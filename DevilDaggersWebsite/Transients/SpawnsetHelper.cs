@@ -33,7 +33,7 @@ namespace DevilDaggersWebsite.Transients
 			if (!string.IsNullOrWhiteSpace(authorFilter))
 			{
 				authorFilter = authorFilter.ToLower(CultureInfo.InvariantCulture);
-				query = query.Where(sf => sf.Player.Username.ToLower(CultureInfo.InvariantCulture).Contains(authorFilter, StringComparison.InvariantCulture));
+				query = query.Where(sf => sf.Player.PlayerName.ToLower(CultureInfo.InvariantCulture).Contains(authorFilter, StringComparison.InvariantCulture));
 			}
 
 			if (!string.IsNullOrWhiteSpace(nameFilter))

@@ -1,5 +1,4 @@
 ﻿using DevilDaggersWebsite.Enumerators;
-using System;
 using System.Collections.Generic;
 using System.ComponentModel.DataAnnotations;
 
@@ -10,10 +9,10 @@ namespace DevilDaggersWebsite.Entities
 		[Key]
 		public int Id { get; set; }
 
-		public List<PlayerAssetMod> PlayerAssetMods { get; set; }
+		public List<PlayerAssetMod> PlayerAssetMods { get; set; } = new();
 		public AssetModTypes AssetModTypes { get; set; }
 		public AssetModFileContents AssetModFileContents { get; set; }
-		public string Name { get; set; }
-		public Uri Url { get; set; }
+		public string Name { get; set; } = null!;
+		public string Url { get; set; } = null!;
 	}
 }

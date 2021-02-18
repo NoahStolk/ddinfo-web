@@ -64,11 +64,11 @@ namespace DevilDaggersWebsite.Razor.Pages.CustomLeaderboards
 			};
 			string? seconds = daggerIndex switch
 			{
-				0 => Leaderboard!.Bronze.FormatTimeInteger(),
-				1 => Leaderboard!.Silver.FormatTimeInteger(),
-				2 => Leaderboard!.Golden.FormatTimeInteger(),
-				3 => Leaderboard!.Devil.FormatTimeInteger(),
-				_ => Leaderboard!.Homing.FormatTimeInteger(),
+				0 => Leaderboard!.TimeBronze.FormatTimeInteger(),
+				1 => Leaderboard!.TimeSilver.FormatTimeInteger(),
+				2 => Leaderboard!.TimeGolden.FormatTimeInteger(),
+				3 => Leaderboard!.TimeDevil.FormatTimeInteger(),
+				_ => Leaderboard!.TimeLeviathan.FormatTimeInteger(),
 			};
 
 			return (daggerName, seconds ?? "?");

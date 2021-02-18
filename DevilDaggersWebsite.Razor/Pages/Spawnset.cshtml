@@ -8,12 +8,12 @@
 		return;
 
 	ViewData["Title"] = "Spawnset";
-	ViewBag.Title = $"{Model.SpawnsetFile.Name} by {Model.SpawnsetFile.Player.Username}";
+	ViewBag.Title = $"{Model.SpawnsetFile.Name} by {Model.SpawnsetFile.Player.PlayerName}";
 	int[] widths = new int[4] { 160, 128, 192, 128 };
 }
 
 <header>
-	<h1 class="dont-break-out">@Model.SpawnsetFile.Name by @Model.SpawnsetFile.Player.Username</h1>
+	<h1 class="dont-break-out">@Model.SpawnsetFile.Name by @Model.SpawnsetFile.Player.PlayerName</h1>
 </header>
 
 <main role="main">

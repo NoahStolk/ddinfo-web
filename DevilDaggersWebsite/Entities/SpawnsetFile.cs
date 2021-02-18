@@ -9,12 +9,12 @@ namespace DevilDaggersWebsite.Entities
 		[Key]
 		public int Id { get; set; }
 
-		public string Name { get; set; }
+		public string Name { get; set; } = null!;
 
 		public int PlayerId { get; set; }
 
 		[ForeignKey(nameof(PlayerId))]
-		public Player Player { get; set; }
+		public Player Player { get; set; } = null!;
 
 		public int? MaxDisplayWaves { get; set; }
 

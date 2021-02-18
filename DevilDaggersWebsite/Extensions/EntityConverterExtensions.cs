@@ -9,13 +9,13 @@ namespace DevilDaggersWebsite.Extensions
 		{
 			return new()
 			{
-				SpawnsetAuthorName = customLeaderboard.SpawnsetFile.Player.Username,
+				SpawnsetAuthorName = customLeaderboard.SpawnsetFile.Player.PlayerName,
 				SpawnsetName = customLeaderboard.SpawnsetFile.Name,
-				Bronze = customLeaderboard.Bronze,
-				Silver = customLeaderboard.Silver,
-				Golden = customLeaderboard.Golden,
-				Devil = customLeaderboard.Devil,
-				Homing = customLeaderboard.Homing,
+				TimeBronze = customLeaderboard.TimeBronze,
+				TimeSilver = customLeaderboard.TimeSilver,
+				TimeGolden = customLeaderboard.TimeGolden,
+				TimeDevil = customLeaderboard.TimeDevil,
+				TimeLeviathan = customLeaderboard.TimeLeviathan,
 				DateLastPlayed = customLeaderboard.DateLastPlayed,
 				DateCreated = customLeaderboard.DateCreated,
 				Category = customLeaderboard.Category,
@@ -28,15 +28,15 @@ namespace DevilDaggersWebsite.Extensions
 			return new()
 			{
 				PlayerId = customEntry.PlayerId,
-				Username = username,
+				PlayerName = username,
 				ClientVersion = customEntry.ClientVersion,
 				DeathType = customEntry.DeathType,
 				EnemiesAlive = customEntry.EnemiesAlive,
-				GemsCollected = customEntry.Gems,
+				GemsCollected = customEntry.GemsCollected,
 				GemsDespawned = customEntry.GemsDespawned,
 				GemsEaten = customEntry.GemsEaten,
-				HomingDaggers = customEntry.Homing,
-				Kills = customEntry.Kills,
+				HomingDaggers = customEntry.HomingDaggers,
+				EnemiesKilled = customEntry.EnemiesKilled,
 				LevelUpTime2 = customEntry.LevelUpTime2,
 				LevelUpTime3 = customEntry.LevelUpTime3,
 				LevelUpTime4 = customEntry.LevelUpTime4,
@@ -51,7 +51,7 @@ namespace DevilDaggersWebsite.Extensions
 		{
 			return new()
 			{
-				AuthorName = spawnsetFile.Player.Username,
+				AuthorName = spawnsetFile.Player.PlayerName,
 				HtmlDescription = spawnsetFile.HtmlDescription,
 				HasCustomLeaderboard = hasCustomLeaderboard,
 				LastUpdated = spawnsetFile.LastUpdated,

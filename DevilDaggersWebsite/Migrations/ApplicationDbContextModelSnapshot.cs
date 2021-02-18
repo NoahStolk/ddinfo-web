@@ -48,6 +48,12 @@ namespace DevilDaggersWebsite.Migrations
                         .ValueGeneratedOnAdd()
                         .HasColumnType("int");
 
+                    b.Property<byte[]>("CentipedesAliveData")
+                        .HasColumnType("longblob");
+
+                    b.Property<byte[]>("CentipedesKilledData")
+                        .HasColumnType("longblob");
+
                     b.Property<string>("ClientVersion")
                         .HasColumnType("longtext CHARACTER SET utf8mb4");
 
@@ -57,41 +63,71 @@ namespace DevilDaggersWebsite.Migrations
                     b.Property<int>("DaggersFired")
                         .HasColumnType("int");
 
-                    b.Property<string>("DaggersFiredData")
-                        .HasColumnType("longtext CHARACTER SET utf8mb4");
+                    b.Property<byte[]>("DaggersFiredData")
+                        .HasColumnType("longblob");
 
                     b.Property<int>("DaggersHit")
                         .HasColumnType("int");
 
-                    b.Property<string>("DaggersHitData")
-                        .HasColumnType("longtext CHARACTER SET utf8mb4");
+                    b.Property<byte[]>("DaggersHitData")
+                        .HasColumnType("longblob");
 
-                    b.Property<int>("DeathType")
-                        .HasColumnType("int");
+                    b.Property<byte>("DeathType")
+                        .HasColumnType("tinyint unsigned");
 
                     b.Property<int>("EnemiesAlive")
                         .HasColumnType("int");
 
-                    b.Property<string>("EnemiesAliveData")
-                        .HasColumnType("longtext CHARACTER SET utf8mb4");
+                    b.Property<byte[]>("EnemiesAliveData")
+                        .HasColumnType("longblob");
 
-                    b.Property<int>("Gems")
+                    b.Property<int>("EnemiesKilled")
                         .HasColumnType("int");
 
-                    b.Property<string>("GemsData")
-                        .HasColumnType("longtext CHARACTER SET utf8mb4");
+                    b.Property<byte[]>("EnemiesKilledData")
+                        .HasColumnType("longblob");
 
-                    b.Property<int>("Homing")
+                    b.Property<int>("GemsCollected")
                         .HasColumnType("int");
 
-                    b.Property<string>("HomingData")
-                        .HasColumnType("longtext CHARACTER SET utf8mb4");
+                    b.Property<byte[]>("GemsCollectedData")
+                        .HasColumnType("longblob");
 
-                    b.Property<int>("Kills")
+                    b.Property<int>("GemsDespawned")
                         .HasColumnType("int");
 
-                    b.Property<string>("KillsData")
-                        .HasColumnType("longtext CHARACTER SET utf8mb4");
+                    b.Property<byte[]>("GemsDespawnedData")
+                        .HasColumnType("longblob");
+
+                    b.Property<int>("GemsEaten")
+                        .HasColumnType("int");
+
+                    b.Property<byte[]>("GemsEatenData")
+                        .HasColumnType("longblob");
+
+                    b.Property<int>("GemsTotal")
+                        .HasColumnType("int");
+
+                    b.Property<byte[]>("GemsTotalData")
+                        .HasColumnType("longblob");
+
+                    b.Property<byte[]>("GhostpedesAliveData")
+                        .HasColumnType("longblob");
+
+                    b.Property<byte[]>("GhostpedesKilledData")
+                        .HasColumnType("longblob");
+
+                    b.Property<byte[]>("GigapedesAliveData")
+                        .HasColumnType("longblob");
+
+                    b.Property<byte[]>("GigapedesKilledData")
+                        .HasColumnType("longblob");
+
+                    b.Property<int>("HomingDaggers")
+                        .HasColumnType("int");
+
+                    b.Property<byte[]>("HomingDaggersData")
+                        .HasColumnType("longblob");
 
                     b.Property<int>("LevelUpTime2")
                         .HasColumnType("int");
@@ -102,11 +138,95 @@ namespace DevilDaggersWebsite.Migrations
                     b.Property<int>("LevelUpTime4")
                         .HasColumnType("int");
 
+                    b.Property<byte[]>("LeviathansAliveData")
+                        .HasColumnType("longblob");
+
+                    b.Property<byte[]>("LeviathansKilledData")
+                        .HasColumnType("longblob");
+
+                    b.Property<byte[]>("OrbsAliveData")
+                        .HasColumnType("longblob");
+
+                    b.Property<byte[]>("OrbsKilledData")
+                        .HasColumnType("longblob");
+
                     b.Property<int>("PlayerId")
                         .HasColumnType("int");
 
+                    b.Property<byte[]>("Skull1sAliveData")
+                        .HasColumnType("longblob");
+
+                    b.Property<byte[]>("Skull1sKilledData")
+                        .HasColumnType("longblob");
+
+                    b.Property<byte[]>("Skull2sAliveData")
+                        .HasColumnType("longblob");
+
+                    b.Property<byte[]>("Skull2sKilledData")
+                        .HasColumnType("longblob");
+
+                    b.Property<byte[]>("Skull3sAliveData")
+                        .HasColumnType("longblob");
+
+                    b.Property<byte[]>("Skull3sKilledData")
+                        .HasColumnType("longblob");
+
+                    b.Property<byte[]>("Skull4sAliveData")
+                        .HasColumnType("longblob");
+
+                    b.Property<byte[]>("Skull4sKilledData")
+                        .HasColumnType("longblob");
+
+                    b.Property<byte[]>("Spider1sAliveData")
+                        .HasColumnType("longblob");
+
+                    b.Property<byte[]>("Spider1sKilledData")
+                        .HasColumnType("longblob");
+
+                    b.Property<byte[]>("Spider2sAliveData")
+                        .HasColumnType("longblob");
+
+                    b.Property<byte[]>("Spider2sKilledData")
+                        .HasColumnType("longblob");
+
+                    b.Property<byte[]>("SpiderEggsAliveData")
+                        .HasColumnType("longblob");
+
+                    b.Property<byte[]>("SpiderEggsKilledData")
+                        .HasColumnType("longblob");
+
+                    b.Property<byte[]>("SpiderlingsAliveData")
+                        .HasColumnType("longblob");
+
+                    b.Property<byte[]>("SpiderlingsKilledData")
+                        .HasColumnType("longblob");
+
+                    b.Property<byte[]>("Squid1sAliveData")
+                        .HasColumnType("longblob");
+
+                    b.Property<byte[]>("Squid1sKilledData")
+                        .HasColumnType("longblob");
+
+                    b.Property<byte[]>("Squid2sAliveData")
+                        .HasColumnType("longblob");
+
+                    b.Property<byte[]>("Squid2sKilledData")
+                        .HasColumnType("longblob");
+
+                    b.Property<byte[]>("Squid3sAliveData")
+                        .HasColumnType("longblob");
+
+                    b.Property<byte[]>("Squid3sKilledData")
+                        .HasColumnType("longblob");
+
                     b.Property<DateTime>("SubmitDate")
                         .HasColumnType("datetime(6)");
+
+                    b.Property<byte[]>("ThornsAliveData")
+                        .HasColumnType("longblob");
+
+                    b.Property<byte[]>("ThornsKilledData")
+                        .HasColumnType("longblob");
 
                     b.Property<int>("Time")
                         .HasColumnType("int");
@@ -126,9 +246,6 @@ namespace DevilDaggersWebsite.Migrations
                         .ValueGeneratedOnAdd()
                         .HasColumnType("int");
 
-                    b.Property<int>("Bronze")
-                        .HasColumnType("int");
-
                     b.Property<int>("Category")
                         .HasColumnType("int");
 
@@ -138,19 +255,22 @@ namespace DevilDaggersWebsite.Migrations
                     b.Property<DateTime?>("DateLastPlayed")
                         .HasColumnType("datetime(6)");
 
-                    b.Property<int>("Devil")
-                        .HasColumnType("int");
-
-                    b.Property<int>("Golden")
-                        .HasColumnType("int");
-
-                    b.Property<int>("Homing")
-                        .HasColumnType("int");
-
-                    b.Property<int>("Silver")
-                        .HasColumnType("int");
-
                     b.Property<int>("SpawnsetFileId")
+                        .HasColumnType("int");
+
+                    b.Property<int>("TimeBronze")
+                        .HasColumnType("int");
+
+                    b.Property<int>("TimeDevil")
+                        .HasColumnType("int");
+
+                    b.Property<int>("TimeGolden")
+                        .HasColumnType("int");
+
+                    b.Property<int>("TimeLeviathan")
+                        .HasColumnType("int");
+
+                    b.Property<int>("TimeSilver")
                         .HasColumnType("int");
 
                     b.Property<int>("TotalRunsSubmitted")
@@ -187,10 +307,12 @@ namespace DevilDaggersWebsite.Migrations
                     b.Property<string>("Note")
                         .HasColumnType("longtext CHARACTER SET utf8mb4");
 
-                    b.Property<int?>("PlayerId")
+                    b.Property<int>("PlayerId")
                         .HasColumnType("int");
 
                     b.HasKey("Id");
+
+                    b.HasIndex("PlayerId");
 
                     b.ToTable("Donations");
                 });
@@ -231,12 +353,12 @@ namespace DevilDaggersWebsite.Migrations
                     b.Property<bool>("IsBanned")
                         .HasColumnType("tinyint(1)");
 
-                    b.Property<bool?>("RightHanded")
-                        .HasColumnType("tinyint(1)");
-
-                    b.Property<string>("Username")
+                    b.Property<string>("PlayerName")
                         .IsRequired()
                         .HasColumnType("longtext CHARACTER SET utf8mb4");
+
+                    b.Property<bool?>("RightHanded")
+                        .HasColumnType("tinyint(1)");
 
                     b.HasKey("Id");
 
@@ -563,6 +685,17 @@ namespace DevilDaggersWebsite.Migrations
                         .IsRequired();
 
                     b.Navigation("SpawnsetFile");
+                });
+
+            modelBuilder.Entity("DevilDaggersWebsite.Entities.Donation", b =>
+                {
+                    b.HasOne("DevilDaggersWebsite.Entities.Player", "Player")
+                        .WithMany()
+                        .HasForeignKey("PlayerId")
+                        .OnDelete(DeleteBehavior.Cascade)
+                        .IsRequired();
+
+                    b.Navigation("Player");
                 });
 
             modelBuilder.Entity("DevilDaggersWebsite.Entities.PlayerAssetMod", b =>

@@ -23,10 +23,10 @@
 				<a asp-route-sortMemberName="Time">@Html.DisplayNameFor(model => model.CustomEntries[0].Time)</a>
 			</th>
 			<th>
-				<a asp-route-sortMemberName="Gems">@Html.DisplayNameFor(model => model.CustomEntries[0].Gems)</a>
+				<a asp-route-sortMemberName="GemsCollected">@Html.DisplayNameFor(model => model.CustomEntries[0].GemsCollected)</a>
 			</th>
 			<th>
-				<a asp-route-sortMemberName="Kills">@Html.DisplayNameFor(model => model.CustomEntries[0].Kills)</a>
+				<a asp-route-sortMemberName="EnemiesKilled">@Html.DisplayNameFor(model => model.CustomEntries[0].EnemiesKilled)</a>
 			</th>
 			<th>
 				<a asp-route-sortMemberName="DeathType">@Html.DisplayNameFor(model => model.CustomEntries[0].DeathType)</a>
@@ -41,7 +41,7 @@
 				<a asp-route-sortMemberName="EnemiesAlive">@Html.DisplayNameFor(model => model.CustomEntries[0].EnemiesAlive)</a>
 			</th>
 			<th>
-				<a asp-route-sortMemberName="Homing">@Html.DisplayNameFor(model => model.CustomEntries[0].Homing)</a>
+				<a asp-route-sortMemberName="HomingDaggers">@Html.DisplayNameFor(model => model.CustomEntries[0].HomingDaggers)</a>
 			</th>
 			<th>
 				<a asp-route-sortMemberName="LevelUpTime2">@Html.DisplayNameFor(model => model.CustomEntries[0].LevelUpTime2)</a>
@@ -75,10 +75,10 @@
 					@Html.DisplayFor(modelItem => item.Time)
 				</td>
 				<td>
-					@Html.DisplayFor(modelItem => item.Gems)
+					@Html.DisplayFor(modelItem => item.GemsCollected)
 				</td>
 				<td>
-					@Html.DisplayFor(modelItem => item.Kills)
+					@Html.DisplayFor(modelItem => item.EnemiesKilled)
 				</td>
 				<td>
 					@Html.DisplayFor(modelItem => item.DeathType)
@@ -93,7 +93,7 @@
 					@Html.DisplayFor(modelItem => item.EnemiesAlive)
 				</td>
 				<td>
-					@Html.DisplayFor(modelItem => item.Homing)
+					@Html.DisplayFor(modelItem => item.HomingDaggers)
 				</td>
 				<td>
 					@Html.DisplayFor(modelItem => item.LevelUpTime2)

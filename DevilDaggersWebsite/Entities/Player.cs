@@ -8,10 +8,10 @@ namespace DevilDaggersWebsite.Entities
 		[Key]
 		public int Id { get; set; }
 
-		public string Username { get; set; }
+		public string PlayerName { get; set; } = null!;
 		public bool IsAnonymous { get; set; }
-		public List<PlayerAssetMod> PlayerAssetMods { get; set; }
-		public List<PlayerTitle> PlayerTitles { get; set; }
+		public List<PlayerAssetMod> PlayerAssetMods { get; set; } = new();
+		public List<PlayerTitle> PlayerTitles { get; set; } = new();
 		public string? CountryCode { get; set; }
 		public int? Dpi { get; set; }
 		public float? InGameSens { get; set; }
@@ -28,6 +28,6 @@ namespace DevilDaggersWebsite.Entities
 		public string FlashEnabledString => !FlashEnabled.HasValue ? string.Empty : FlashEnabled.Value ? "On" : "Off";
 
 		public override string ToString()
-			=> $"{Username} ({Id})";
+			=> $"{PlayerName} ({Id})";
 	}
 }

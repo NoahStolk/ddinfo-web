@@ -2,13 +2,14 @@
 {
 	public class GameState
 	{
-		public int Kills { get; set; }
-		public int GemsCollected { get; set; }
-		public int GemsDespawned { get; set; }
-		public int GemsEaten { get; set; }
-		public int HomingDaggers { get; set; }
-		public int EnemiesAlive { get; set; }
-		public int DaggersHit { get; set; }
+		public ushort GemsCollected { get; set; }
+		public ushort EnemiesKilled { get; set; }
 		public int DaggersFired { get; set; }
+		public int DaggersHit { get; set; }
+		public ushort EnemiesAlive { get; set; }
+		public ushort HomingDaggers { get; set; }
+		public ushort GemsDespawned { get; set; }
+		public ushort GemsEaten { get; set; }
+		public ushort GemsTotal { get; set; }
 	}
 }

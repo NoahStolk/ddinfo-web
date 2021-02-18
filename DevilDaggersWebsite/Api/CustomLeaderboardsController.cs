@@ -12,6 +12,7 @@ using System;
 using System.Collections.Generic;
 using System.IO;
 using System.Linq;
+using System.Security.Cryptography;
 using System.Threading.Tasks;
 using System.Web;
 using BotLogger = DiscordBotDdInfo.DiscordLogger;
@@ -34,7 +35,7 @@ namespace DevilDaggersWebsite.Api
 			_env = env;
 			_toolHelper = toolHelper;
 
-			_usernames = dbContext.Players.Select(p => new KeyValuePair<int, string>(p.Id, p.Username)).ToDictionary(kvp => kvp.Key, kvp => kvp.Value);
+			_usernames = dbContext.Players.Select(p => new KeyValuePair<int, string>(p.Id, p.PlayerName)).ToDictionary(kvp => kvp.Key, kvp => kvp.Value);
 		}
 
 		[HttpGet]
@@ -80,7 +81,7 @@ namespace DevilDaggersWebsite.Api
 				ex.Data[nameof(uploadRequest.ClientVersion)] = uploadRequest.ClientVersion;
 				ex.Data[nameof(uploadRequest.OperatingSystem)] = uploadRequest.OperatingSystem;
 				ex.Data[nameof(uploadRequest.BuildMode)] = uploadRequest.BuildMode;
-				await BotLogger.Instance.TryLogException($"Upload failed for user `{uploadRequest.Username}` (`{uploadRequest.PlayerId}`) for `{GetSpawnsetNameOrHash(uploadRequest, null)}`.", ex);
+				await BotLogger.Instance.TryLogException($"Upload failed for user `{uploadRequest.PlayerName}` (`{uploadRequest.PlayerId}`) for `{GetSpawnsetNameOrHash(uploadRequest, null)}`.", ex);
 				throw;
 			}
 		}
@@ -118,7 +119,11 @@ namespace DevilDaggersWebsite.Api
 			string spawnsetName = string.Empty;
 			foreach ((string name, Spawnset spawnset) in spawnsets)
 			{
-				if (spawnset.GetHashString() == uploadRequest.SpawnsetHash)
+				// TODO: Use cache.
+				if (!spawnset.TryGetBytes(out byte[] bytes))
+					throw new("Could not get bytes from spawnset.");
+
+				if (MD5.HashData(bytes) == uploadRequest.SurvivalHashMd5)
 				{
 					spawnsetName = name;
 					break;
@@ -139,7 +144,7 @@ namespace DevilDaggersWebsite.Api
 				uploadRequest.GemsCollected,
 				uploadRequest.GemsDespawned,
 				uploadRequest.GemsEaten,
-				uploadRequest.Kills,
+				uploadRequest.EnemiesKilled,
 				uploadRequest.DeathType,
 				uploadRequest.DaggersHit,
 				uploadRequest.DaggersFired,
@@ -177,13 +182,13 @@ namespace DevilDaggersWebsite.Api
 				player = new Player
 				{
 					Id = uploadRequest.PlayerId,
-					Username = await GetUsername(uploadRequest),
+					PlayerName = await GetUsername(uploadRequest),
 				};
 				_context.Players.Add(player);
 			}
 			else
 			{
-				player.Username = await GetUsername(uploadRequest);
+				player.PlayerName = await GetUsername(uploadRequest);
 			}
 
 			// Update the date this leaderboard was submitted to.
@@ -217,10 +222,10 @@ namespace DevilDaggersWebsite.Api
 					Entries = entries
 						.Select(e => e.ToDto(GetUsernameFromCache(e)))
 						.ToList(),
-					IsNewUserOnThisLeaderboard = true,
+					IsNewPlayerOnThisLeaderboard = true,
 					Rank = rank,
 					Time = uploadRequest.Time,
-					Kills = uploadRequest.Kills,
+					EnemiesKilled = uploadRequest.EnemiesKilled,
 					GemsCollected = uploadRequest.GemsCollected,
 					GemsDespawned = uploadRequest.GemsDespawned,
 					GemsEaten = uploadRequest.GemsEaten,
@@ -252,7 +257,7 @@ namespace DevilDaggersWebsite.Api
 					Entries = entries
 						.Select(e => e.ToDto(GetUsernameFromCache(e)))
 						.ToList(),
-					IsNewUserOnThisLeaderboard = false,
+					IsNewPlayerOnThisLeaderboard = false,
 				};
 			}
 
@@ -263,41 +268,43 @@ namespace DevilDaggersWebsite.Api
 
 			int rankDiff = oldRank - rank;
 			int timeDiff = uploadRequest.Time - entry.Time;
-			int killsDiff = uploadRequest.Kills - entry.Kills;
-			int gemsDiff = uploadRequest.GemsCollected - entry.Gems;
+			int gemsCollectedDiff = uploadRequest.GemsCollected - entry.GemsCollected;
+			int enemiesKilledDiff = uploadRequest.EnemiesKilled - entry.EnemiesKilled;
+			int daggersFiredDiff = uploadRequest.DaggersFired - entry.DaggersFired;
+			int daggersHitDiff = uploadRequest.DaggersHit - entry.DaggersHit;
+			int enemiesAliveDiff = uploadRequest.EnemiesAlive - entry.EnemiesAlive;
+			int homingDaggersDiff = uploadRequest.HomingDaggers - entry.HomingDaggers;
 			int gemsDespawnedDiff = uploadRequest.GemsDespawned - entry.GemsDespawned;
 			int gemsEatenDiff = uploadRequest.GemsEaten - entry.GemsEaten;
-			int shotsHitDiff = uploadRequest.DaggersHit - entry.DaggersHit;
-			int shotsFiredDiff = uploadRequest.DaggersFired - entry.DaggersFired;
-			int enemiesAliveDiff = uploadRequest.EnemiesAlive - entry.EnemiesAlive;
-			int homingDiff = uploadRequest.HomingDaggers - entry.Homing;
+			int gemsTotalDiff = uploadRequest.GemsTotal - entry.GemsTotal;
 			int levelUpTime2Diff = uploadRequest.LevelUpTime2 - entry.LevelUpTime2;
 			int levelUpTime3Diff = uploadRequest.LevelUpTime3 - entry.LevelUpTime3;
 			int levelUpTime4Diff = uploadRequest.LevelUpTime4 - entry.LevelUpTime4;
 
 			entry.Time = uploadRequest.Time;
-			entry.Kills = uploadRequest.Kills;
-			entry.Gems = uploadRequest.GemsCollected;
+			entry.EnemiesKilled = uploadRequest.EnemiesKilled;
+			entry.GemsCollected = uploadRequest.GemsCollected;
+			entry.DaggersFired = uploadRequest.DaggersFired;
+			entry.DaggersHit = uploadRequest.DaggersHit;
+			entry.EnemiesAlive = uploadRequest.EnemiesAlive;
+			entry.HomingDaggers = uploadRequest.HomingDaggers;
 			entry.GemsDespawned = uploadRequest.GemsDespawned;
 			entry.GemsEaten = uploadRequest.GemsEaten;
 			entry.DeathType = uploadRequest.DeathType;
-			entry.DaggersHit = uploadRequest.DaggersHit;
-			entry.DaggersFired = uploadRequest.DaggersFired;
-			entry.EnemiesAlive = uploadRequest.EnemiesAlive;
-			entry.Homing = uploadRequest.HomingDaggers;
 			entry.LevelUpTime2 = uploadRequest.LevelUpTime2;
 			entry.LevelUpTime3 = uploadRequest.LevelUpTime3;
 			entry.LevelUpTime4 = uploadRequest.LevelUpTime4;
 			entry.SubmitDate = DateTime.Now;
 			entry.ClientVersion = uploadRequest.ClientVersion;
-			entry.GemsData = string.Join(",", uploadRequest.GameStates.Select(gs => gs.GemsCollected));
-			entry.GemsDespawnedData = string.Join(",", uploadRequest.GameStates.Select(gs => gs.GemsDespawned));
-			entry.GemsEatenData = string.Join(",", uploadRequest.GameStates.Select(gs => gs.GemsEaten));
-			entry.KillsData = string.Join(",", uploadRequest.GameStates.Select(gs => gs.Kills));
-			entry.HomingData = string.Join(",", uploadRequest.GameStates.Select(gs => gs.HomingDaggers));
-			entry.EnemiesAliveData = string.Join(",", uploadRequest.GameStates.Select(gs => gs.EnemiesAlive));
-			entry.DaggersFiredData = string.Join(",", uploadRequest.GameStates.Select(gs => gs.DaggersFired));
-			entry.DaggersHitData = string.Join(",", uploadRequest.GameStates.Select(gs => gs.DaggersHit));
+			entry.GemsCollectedData = uploadRequest.GameStates.Select(gs => gs.GemsCollected).SelectMany(BitConverter.GetBytes).ToArray();
+			entry.EnemiesKilledData = uploadRequest.GameStates.Select(gs => gs.EnemiesKilled).SelectMany(BitConverter.GetBytes).ToArray();
+			entry.DaggersFiredData = uploadRequest.GameStates.Select(gs => gs.DaggersFired).SelectMany(BitConverter.GetBytes).ToArray();
+			entry.DaggersHitData = uploadRequest.GameStates.Select(gs => gs.DaggersHit).SelectMany(BitConverter.GetBytes).ToArray();
+			entry.EnemiesAliveData = uploadRequest.GameStates.Select(gs => gs.EnemiesAlive).SelectMany(BitConverter.GetBytes).ToArray();
+			entry.HomingDaggersData = uploadRequest.GameStates.Select(gs => gs.HomingDaggers).SelectMany(BitConverter.GetBytes).ToArray();
+			entry.GemsDespawnedData = uploadRequest.GameStates.Select(gs => gs.GemsDespawned).SelectMany(BitConverter.GetBytes).ToArray();
+			entry.GemsEatenData = uploadRequest.GameStates.Select(gs => gs.GemsEaten).SelectMany(BitConverter.GetBytes).ToArray();
+			entry.GemsTotalData = uploadRequest.GameStates.Select(gs => gs.GemsTotal).SelectMany(BitConverter.GetBytes).ToArray();
 
 			_context.SaveChanges();
 
@@ -314,27 +321,29 @@ namespace DevilDaggersWebsite.Api
 				Entries = entries
 					.Select(e => e.ToDto(GetUsernameFromCache(e)))
 					.ToList(),
-				IsNewUserOnThisLeaderboard = false,
+				IsNewPlayerOnThisLeaderboard = false,
 				Rank = rank,
 				RankDiff = rankDiff,
 				Time = uploadRequest.Time,
 				TimeDiff = timeDiff,
-				Kills = uploadRequest.Kills,
-				KillsDiff = killsDiff,
 				GemsCollected = uploadRequest.GemsCollected,
-				GemsCollectedDiff = gemsDiff,
+				GemsCollectedDiff = gemsCollectedDiff,
+				EnemiesKilled = uploadRequest.EnemiesKilled,
+				EnemiesKilledDiff = enemiesKilledDiff,
+				DaggersFired = uploadRequest.DaggersFired,
+				DaggersFiredDiff = daggersFiredDiff,
+				DaggersHit = uploadRequest.DaggersHit,
+				DaggersHitDiff = daggersHitDiff,
+				EnemiesAlive = uploadRequest.EnemiesAlive,
+				EnemiesAliveDiff = enemiesAliveDiff,
+				HomingDaggers = uploadRequest.HomingDaggers,
+				HomingDaggersDiff = homingDaggersDiff,
 				GemsDespawned = uploadRequest.GemsDespawned,
 				GemsDespawnedDiff = gemsDespawnedDiff,
 				GemsEaten = uploadRequest.GemsEaten,
 				GemsEatenDiff = gemsEatenDiff,
-				DaggersHit = uploadRequest.DaggersHit,
-				DaggersHitDiff = shotsHitDiff,
-				DaggersFired = uploadRequest.DaggersFired,
-				DaggersFiredDiff = shotsFiredDiff,
-				EnemiesAlive = uploadRequest.EnemiesAlive,
-				EnemiesAliveDiff = enemiesAliveDiff,
-				HomingDaggers = uploadRequest.HomingDaggers,
-				HomingDaggersDiff = homingDiff,
+				GemsTotal = uploadRequest.GemsTotal,
+				GemsTotalDiff = gemsTotalDiff,
 				LevelUpTime2 = uploadRequest.LevelUpTime2,
 				LevelUpTime2Diff = levelUpTime2Diff,
 				LevelUpTime3 = uploadRequest.LevelUpTime3,
@@ -348,13 +357,13 @@ namespace DevilDaggersWebsite.Api
 			=> _usernames.FirstOrDefault(u => u.Key == e.PlayerId).Value ?? "[Player not found]";
 
 		private static string GetSpawnsetNameOrHash(Dto.UploadRequest uploadRequest, string? spawnsetName)
-			=> string.IsNullOrEmpty(spawnsetName) ? uploadRequest.SpawnsetHash : spawnsetName;
+			=> string.IsNullOrEmpty(spawnsetName) ? BitConverter.ToString(uploadRequest.SurvivalHashMd5).Replace("-", string.Empty) : spawnsetName;
 
 		private static async Task<string> GetUsername(Dto.UploadRequest uploadRequest)
 		{
-			if (uploadRequest.Username.EndsWith("med fragger", StringComparison.InvariantCulture))
-				return (await DdHasmodaiClient.GetUserById(uploadRequest.PlayerId))?.Username ?? uploadRequest.Username;
-			return uploadRequest.Username;
+			if (uploadRequest.PlayerName.EndsWith("med fragger", StringComparison.InvariantCulture))
+				return (await DdHasmodaiClient.GetUserById(uploadRequest.PlayerId))?.Username ?? uploadRequest.PlayerName;
+			return uploadRequest.PlayerName;
 		}
 
 		private static async Task<string> DecryptValidation(string validation)
@@ -380,9 +389,9 @@ namespace DevilDaggersWebsite.Api
 				string ddclInfo = $"(`{uploadRequest.ClientVersion}` | `{uploadRequest.OperatingSystem}` | `{uploadRequest.BuildMode}`)";
 
 				if (!string.IsNullOrEmpty(errorMessage))
-					await BotLogger.Instance.TryLog($"Upload failed for user `{uploadRequest.Username}` (`{uploadRequest.PlayerId}`) for `{spawnsetIdentification}`. {ddclInfo}\n{errorMessage}");
+					await BotLogger.Instance.TryLog($"Upload failed for user `{uploadRequest.PlayerName}` (`{uploadRequest.PlayerId}`) for `{spawnsetIdentification}`. {ddclInfo}\n{errorMessage}");
 				else
-					await BotLogger.Instance.TryLog($"`{uploadRequest.Username}` just submitted a score of `{uploadRequest.Time / 10000f:0.0000}` to `{spawnsetIdentification}`. {ddclInfo}");
+					await BotLogger.Instance.TryLog($"`{uploadRequest.PlayerName}` just submitted a score of `{uploadRequest.Time / 10000f:0.0000}` to `{spawnsetIdentification}`. {ddclInfo}");
 			}
 			catch
 			{

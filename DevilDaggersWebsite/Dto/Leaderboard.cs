@@ -36,7 +36,7 @@ namespace DevilDaggersWebsite.Dto
 		[CompletionProperty]
 		public ulong DaggersFiredGlobal { get; set; }
 
-		public List<Entry> Entries { get; set; } = new List<Entry>();
+		public List<Entry> Entries { get; set; } = new();
 
 		[JsonIgnore]
 		public double AccuracyGlobal => DaggersFiredGlobal == 0 ? 0 : DaggersHitGlobal / (double)DaggersFiredGlobal;
@@ -45,10 +45,10 @@ namespace DevilDaggersWebsite.Dto
 		public bool HasBlankName => Entries.Any(e => e.IsBlankName());
 
 		[JsonIgnore]
-		public Completion Completion { get; } = new Completion();
+		public Completion Completion { get; } = new();
 
 		[JsonIgnore]
-		public CompletionCombined UserCompletion { get; } = new CompletionCombined();
+		public CompletionCombined UserCompletion { get; } = new();
 
 		public Completion GetCompletion()
 		{

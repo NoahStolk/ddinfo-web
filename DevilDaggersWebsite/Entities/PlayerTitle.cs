@@ -1,11 +1,17 @@
-﻿namespace DevilDaggersWebsite.Entities
+﻿using System.ComponentModel.DataAnnotations.Schema;
+
+namespace DevilDaggersWebsite.Entities
 {
 	public class PlayerTitle
 	{
 		public int PlayerId { get; set; }
-		public Player Player { get; set; }
+
+		[ForeignKey(nameof(PlayerId))]
+		public Player Player { get; set; } = null!;
 
 		public int TitleId { get; set; }
-		public Title Title { get; set; }
+
+		[ForeignKey(nameof(TitleId))]
+		public Title Title { get; set; } = null!;
 	}
 }

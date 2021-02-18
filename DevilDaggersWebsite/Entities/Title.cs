@@ -8,7 +8,7 @@ namespace DevilDaggersWebsite.Entities
 		[Key]
 		public int Id { get; set; }
 
-		public string Name { get; set; }
-		public List<PlayerTitle> PlayerTitles { get; set; }
+		public string Name { get; set; } = null!;
+		public List<PlayerTitle> PlayerTitles { get; set; } = new();
 	}
 }

@@ -11,7 +11,7 @@ namespace DevilDaggersWebsite.Dto
 		public CustomLeaderboard Leaderboard { get; init; } = null!;
 		public CustomLeaderboardCategory Category { get; init; }
 		public List<CustomEntry> Entries { get; init; } = new();
-		public bool IsNewUserOnThisLeaderboard { get; init; }
+		public bool IsNewPlayerOnThisLeaderboard { get; init; }
 
 		public int Rank { get; init; }
 		public int RankDiff { get; init; }
@@ -19,11 +19,23 @@ namespace DevilDaggersWebsite.Dto
 		public int Time { get; init; }
 		public int TimeDiff { get; init; }
 
-		public int Kills { get; init; }
-		public int KillsDiff { get; init; }
-
 		public int GemsCollected { get; init; }
 		public int GemsCollectedDiff { get; init; }
+
+		public int EnemiesKilled { get; init; }
+		public int EnemiesKilledDiff { get; init; }
+
+		public int DaggersFired { get; init; }
+		public int DaggersFiredDiff { get; init; }
+
+		public int DaggersHit { get; init; }
+		public int DaggersHitDiff { get; init; }
+
+		public int EnemiesAlive { get; init; }
+		public int EnemiesAliveDiff { get; init; }
+
+		public int HomingDaggers { get; init; }
+		public int HomingDaggersDiff { get; init; }
 
 		public int GemsDespawned { get; init; }
 		public int GemsDespawnedDiff { get; init; }
@@ -31,17 +43,8 @@ namespace DevilDaggersWebsite.Dto
 		public int GemsEaten { get; init; }
 		public int GemsEatenDiff { get; init; }
 
-		public int DaggersHit { get; init; }
-		public int DaggersHitDiff { get; init; }
-
-		public int DaggersFired { get; init; }
-		public int DaggersFiredDiff { get; init; }
-
-		public int EnemiesAlive { get; init; }
-		public int EnemiesAliveDiff { get; init; }
-
-		public int HomingDaggers { get; init; }
-		public int HomingDaggersDiff { get; init; }
+		public int GemsTotal { get; init; }
+		public int GemsTotalDiff { get; init; }
 
 		public int LevelUpTime2 { get; init; }
 		public int LevelUpTime2Diff { get; init; }

@@ -18,11 +18,11 @@ namespace DevilDaggersWebsite.Razor.Pages.Admin.AssetMods
 			_context = context;
 
 			AuthorSelectList = context.Players
-				.OrderBy(p => p.Username)
+				.OrderBy(p => p.PlayerName)
 				.Select(p => new SelectListItem
 				{
 					Value = p.Id.ToString(CultureInfo.InvariantCulture),
-					Text = p.Username,
+					Text = p.PlayerName,
 				})
 				.ToList();
 		}

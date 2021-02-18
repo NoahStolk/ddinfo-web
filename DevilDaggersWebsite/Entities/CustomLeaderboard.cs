@@ -15,17 +15,17 @@ namespace DevilDaggersWebsite.Entities
 		public int SpawnsetFileId { get; set; }
 
 		[ForeignKey(nameof(SpawnsetFileId))]
-		public SpawnsetFile SpawnsetFile { get; set; }
+		public SpawnsetFile SpawnsetFile { get; set; } = null!;
 
-		public int Bronze { get; set; }
+		public int TimeBronze { get; set; }
 
-		public int Silver { get; set; }
+		public int TimeSilver { get; set; }
 
-		public int Golden { get; set; }
+		public int TimeGolden { get; set; }
 
-		public int Devil { get; set; }
+		public int TimeDevil { get; set; }
 
-		public int Homing { get; set; }
+		public int TimeLeviathan { get; set; }
 
 		public DateTime? DateLastPlayed { get; set; }
 
@@ -35,40 +35,5 @@ namespace DevilDaggersWebsite.Entities
 
 		public bool IsAscending()
 			=> Category == CustomLeaderboardCategory.Challenge || Category == CustomLeaderboardCategory.Speedrun;
-
-		/// <summary>
-		/// Returns the CSS class name corresponding to the time in seconds.
-		/// </summary>
-		/// <param name="time">The time in tenths of milliseconds.</param>
-		/// <returns>The CSS class name for the dagger.</returns>
-		public string GetDagger(int time)
-		{
-			if (IsAscending())
-			{
-				if (time <= Homing && Homing > 0)
-					return "homing";
-				if (time <= Devil && Devil > 0)
-					return "devil";
-				if (time <= Golden && Golden > 0)
-					return "golden";
-				if (time <= Silver && Silver > 0)
-					return "silver";
-				if (time <= Bronze && Bronze > 0)
-					return "bronze";
-				return "default";
-			}
-
-			if (time >= Homing && Homing > 0)
-				return "homing";
-			if (time >= Devil && Devil > 0)
-				return "devil";
-			if (time >= Golden && Golden > 0)
-				return "golden";
-			if (time >= Silver && Silver > 0)
-				return "silver";
-			if (time >= Bronze && Bronze > 0)
-				return "bronze";
-			return "default";
-		}
 	}
 }

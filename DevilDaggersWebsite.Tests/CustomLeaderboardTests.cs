@@ -12,6 +12,7 @@ using Moq;
 using System;
 using System.Collections.Generic;
 using System.Linq;
+using System.Security.Cryptography;
 using System.Threading.Tasks;
 using System.Web;
 
@@ -46,7 +47,7 @@ namespace DevilDaggersWebsite.Tests
 			List<Dto.CustomLeaderboard> customLeaderboards = _customLeaderboardsController.GetCustomLeaderboards().Value;
 
 			Assert.AreEqual(1, customLeaderboards.Count);
-			Assert.IsTrue(customLeaderboards.Any(cl => cl.Bronze == 60));
+			Assert.IsTrue(customLeaderboards.Any(cl => cl.TimeBronze == 60));
 		}
 
 		[TestMethod]
@@ -59,13 +60,13 @@ namespace DevilDaggersWebsite.Tests
 				Time = 100000,
 				PlayerId = 1,
 				ClientVersion = _ddclClientVersion,
-				SpawnsetHash = emptySpawnset.GetHashString(),
+				SurvivalHashMd5 = GetSpawnsetHash(emptySpawnset),
 				GameStates = new(),
-				Username = "TestPlayer1",
+				PlayerName = "TestPlayer1",
 			};
 			uploadRequest.Validation = GetValidation(uploadRequest);
 
-			Dto.UploadSuccess uploadSuccess = (await _customLeaderboardsController.ProcessUploadRequest(uploadRequest, new List<(string name, Spawnset spawnset)> { ("Empty", emptySpawnset) })).Value;
+			Dto.UploadSuccess uploadSuccess = (await _customLeaderboardsController.ProcessUploadRequest(uploadRequest, new List<(string Name, Spawnset Spawnset)> { ("Empty", emptySpawnset) })).Value;
 
 			Assert.AreEqual(1, uploadSuccess.TotalPlayers);
 			Assert.IsTrue(uploadSuccess.Message.StartsWith("No new highscore", StringComparison.InvariantCulture));
@@ -81,13 +82,13 @@ namespace DevilDaggersWebsite.Tests
 				Time = 200000,
 				PlayerId = 1,
 				ClientVersion = _ddclClientVersion,
-				SpawnsetHash = emptySpawnset.GetHashString(),
+				SurvivalHashMd5 = GetSpawnsetHash(emptySpawnset),
 				GameStates = new(),
-				Username = "TestPlayer1",
+				PlayerName = "TestPlayer1",
 			};
 			uploadRequest.Validation = GetValidation(uploadRequest);
 
-			Dto.UploadSuccess uploadSuccess = (await _customLeaderboardsController.ProcessUploadRequest(uploadRequest, new List<(string name, Spawnset spawnset)> { ("Empty", emptySpawnset) })).Value;
+			Dto.UploadSuccess uploadSuccess = (await _customLeaderboardsController.ProcessUploadRequest(uploadRequest, new List<(string Name, Spawnset Spawnset)> { ("Empty", emptySpawnset) })).Value;
 
 			Assert.AreEqual(1, uploadSuccess.TotalPlayers);
 			Assert.IsTrue(uploadSuccess.Message.StartsWith("NEW HIGHSCORE", StringComparison.InvariantCulture));
@@ -103,13 +104,13 @@ namespace DevilDaggersWebsite.Tests
 				Time = 200000,
 				PlayerId = 2,
 				ClientVersion = _ddclClientVersion,
-				SpawnsetHash = emptySpawnset.GetHashString(),
+				SurvivalHashMd5 = GetSpawnsetHash(emptySpawnset),
 				GameStates = new(),
-				Username = "TestPlayer2",
+				PlayerName = "TestPlayer2",
 			};
 			uploadRequest.Validation = GetValidation(uploadRequest);
 
-			Dto.UploadSuccess uploadSuccess = (await _customLeaderboardsController.ProcessUploadRequest(uploadRequest, new List<(string name, Spawnset spawnset)> { ("Empty", emptySpawnset) })).Value;
+			Dto.UploadSuccess uploadSuccess = (await _customLeaderboardsController.ProcessUploadRequest(uploadRequest, new List<(string Name, Spawnset Spawnset)> { ("Empty", emptySpawnset) })).Value;
 
 			Assert.AreEqual(2, uploadSuccess.TotalPlayers);
 			Assert.IsTrue(uploadSuccess.Message.StartsWith("Welcome", StringComparison.InvariantCulture));
@@ -125,9 +126,9 @@ namespace DevilDaggersWebsite.Tests
 				Time = 300000,
 				PlayerId = 3,
 				ClientVersion = _ddclClientVersion,
-				SpawnsetHash = emptySpawnset.GetHashString(),
+				SurvivalHashMd5 = GetSpawnsetHash(emptySpawnset),
 				GameStates = new(),
-				Username = "TestPlayer3",
+				PlayerName = "TestPlayer3",
 			};
 			uploadRequest.Validation = GetValidation(uploadRequest);
 
@@ -148,9 +149,9 @@ namespace DevilDaggersWebsite.Tests
 				Time = 100000,
 				PlayerId = 1,
 				ClientVersion = "0.0.0.0",
-				SpawnsetHash = emptySpawnset.GetHashString(),
+				SurvivalHashMd5 = GetSpawnsetHash(emptySpawnset),
 				GameStates = new(),
-				Username = "TestPlayer1",
+				PlayerName = "TestPlayer1",
 			};
 			uploadRequest.Validation = GetValidation(uploadRequest);
 
@@ -175,9 +176,9 @@ namespace DevilDaggersWebsite.Tests
 				Time = 100000,
 				PlayerId = 1,
 				ClientVersion = _ddclClientVersion,
-				SpawnsetHash = emptySpawnset.GetHashString(),
+				SurvivalHashMd5 = GetSpawnsetHash(emptySpawnset),
 				GameStates = new(),
-				Username = "TestPlayer1",
+				PlayerName = "TestPlayer1",
 				Validation = "Malformed validation",
 			};
 
@@ -194,7 +195,18 @@ namespace DevilDaggersWebsite.Tests
 
 		private static string GetValidation(Dto.UploadRequest uploadRequest)
 		{
-			string toEncrypt = string.Join(";", uploadRequest.PlayerId, uploadRequest.Time, uploadRequest.GemsCollected, uploadRequest.Kills, uploadRequest.DeathType, uploadRequest.DaggersHit, uploadRequest.DaggersFired, uploadRequest.EnemiesAlive, uploadRequest.HomingDaggers, string.Join(",", new[] { uploadRequest.LevelUpTime2, uploadRequest.LevelUpTime3, uploadRequest.LevelUpTime4 }));
+			string toEncrypt = string.Join(
+				";",
+				uploadRequest.PlayerId,
+				uploadRequest.Time,
+				uploadRequest.GemsCollected,
+				uploadRequest.EnemiesKilled,
+				uploadRequest.DeathType,
+				uploadRequest.DaggersHit,
+				uploadRequest.DaggersFired,
+				uploadRequest.EnemiesAlive,
+				uploadRequest.HomingDaggers,
+				string.Join(",", new[] { uploadRequest.LevelUpTime2, uploadRequest.LevelUpTime3, uploadRequest.LevelUpTime4 }));
 			return HttpUtility.HtmlEncode(Secrets.EncryptionWrapper.EncryptAndEncode(toEncrypt));
 		}
 
@@ -204,12 +216,12 @@ namespace DevilDaggersWebsite.Tests
 			Player testPlayer1 = new()
 			{
 				Id = 1,
-				Username = "TestPlayer1",
+				PlayerName = "TestPlayer1",
 			};
 			Player testPlayer2 = new()
 			{
 				Id = 2,
-				Username = "TestPlayer2",
+				PlayerName = "TestPlayer2",
 			};
 			SpawnsetFile spawnsetFile = new()
 			{
@@ -224,11 +236,11 @@ namespace DevilDaggersWebsite.Tests
 			CustomLeaderboard customLeaderboard = new()
 			{
 				Id = 1,
-				Bronze = 60,
-				Silver = 120,
-				Golden = 250,
-				Devil = 500,
-				Homing = 1000,
+				TimeBronze = 60,
+				TimeSilver = 120,
+				TimeGolden = 250,
+				TimeDevil = 500,
+				TimeLeviathan = 1000,
 				Category = CustomLeaderboardCategory.Default,
 				DateCreated = DateTime.Now,
 				DateLastPlayed = DateTime.Now,
@@ -245,19 +257,19 @@ namespace DevilDaggersWebsite.Tests
 				DaggersHit = 6,
 				DeathType = 1,
 				EnemiesAlive = 6,
-				Gems = 3,
-				Homing = 0,
-				Kills = 2,
+				GemsCollected = 3,
+				HomingDaggers = 0,
+				EnemiesKilled = 2,
 				PlayerId = 0,
 				Time = 166666,
 				CustomLeaderboard = customLeaderboard,
 				Player = testPlayer1,
-				DaggersFiredData = "0",
-				DaggersHitData = "0",
-				EnemiesAliveData = "0",
-				GemsData = "0",
-				KillsData = "0",
-				HomingData = "0",
+				DaggersFiredData = Array.Empty<byte>(),
+				DaggersHitData = Array.Empty<byte>(),
+				EnemiesAliveData = Array.Empty<byte>(),
+				GemsCollectedData = Array.Empty<byte>(),
+				EnemiesKilledData = Array.Empty<byte>(),
+				HomingDaggersData = Array.Empty<byte>(),
 				LevelUpTime2 = 0,
 				LevelUpTime3 = 0,
 				LevelUpTime4 = 0,
@@ -270,6 +282,14 @@ namespace DevilDaggersWebsite.Tests
 			context.CustomLeaderboards.Add(customLeaderboard);
 			context.CustomEntries.Add(customEntry);
 			context.SaveChanges();
+		}
+
+		private static byte[] GetSpawnsetHash(Spawnset spawnset)
+		{
+			if (!spawnset.TryGetBytes(out byte[] bytes))
+				throw new("Could not get bytes from spawnset.");
+
+			return MD5.HashData(bytes);
 		}
 	}
 }
