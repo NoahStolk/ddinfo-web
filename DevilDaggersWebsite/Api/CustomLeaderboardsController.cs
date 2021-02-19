@@ -84,14 +84,14 @@ namespace DevilDaggersWebsite.Api
 				await BotLogger.Instance.TryLogException($"Upload failed for user `{uploadRequest.PlayerName}` (`{uploadRequest.PlayerId}`) for `{GetSpawnsetNameOrHash(uploadRequest, null)}`.", ex);
 				throw;
 			}
-		}
 
-		private IEnumerable<(string Name, Spawnset Spawnset)> GetSpawnsets()
-		{
-			foreach (string spawnsetPath in Directory.GetFiles(Path.Combine(_env.WebRootPath, "spawnsets")))
+			IEnumerable<(string Name, Spawnset Spawnset)> GetSpawnsets()
 			{
-				if (Spawnset.TryParse(System.IO.File.ReadAllBytes(spawnsetPath), out Spawnset spawnset))
-					yield return (Path.GetFileName(spawnsetPath), spawnset);
+				foreach (string spawnsetPath in Directory.GetFiles(Path.Combine(_env.WebRootPath, "spawnsets")))
+				{
+					if (Spawnset.TryParse(System.IO.File.ReadAllBytes(spawnsetPath), out Spawnset spawnset))
+						yield return (Path.GetFileName(spawnsetPath), spawnset);
+				}
 			}
 		}
 
