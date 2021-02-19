@@ -52,7 +52,7 @@ namespace DevilDaggersWebsite.LeaderboardStatistics
 				else
 					DaggerStats.Add(dagger, 1);
 
-				Death death = GameInfo.GetDeathByType(entry.DeathType, GameVersion.V3) ?? throw new($"Invalid death type for entry with time {entry.Time}.");
+				Death death = GameInfo.GetDeathByType(entry.DeathType, GameVersion.V31) ?? throw new($"Invalid death type for entry with time {entry.Time}.");
 				if (DeathStats.ContainsKey(death))
 					DeathStats[death]++;
 				else

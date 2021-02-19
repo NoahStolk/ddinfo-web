@@ -32,7 +32,7 @@ namespace DevilDaggersWebsite.Dto
 		public int Gems { get; set; }
 
 		[CompletionProperty]
-		public int DeathType { get; set; }
+		public short DeathType { get; set; }
 
 		[CompletionProperty]
 		public int DaggersHit { get; set; }

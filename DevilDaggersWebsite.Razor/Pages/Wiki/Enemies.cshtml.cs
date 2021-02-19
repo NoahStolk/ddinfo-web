@@ -6,11 +6,16 @@ namespace DevilDaggersWebsite.Razor.Pages.Wiki
 {
 	public class EnemiesModel : WikiPageModel
 	{
+		public EnemiesModel()
+			: base(skipV31: false)
+		{
+		}
+
 		public List<Enemy> Enemies { get; private set; } = null!;
 
 		public List<Upgrade> Upgrades { get; private set; } = null!;
 
-		public List<string> TableOfContents { get; } = new List<string>
+		public List<string> TableOfContents { get; } = new()
 		{
 			"Summary",
 			"Details",
@@ -18,14 +23,14 @@ namespace DevilDaggersWebsite.Razor.Pages.Wiki
 			"Transmuted skulls",
 		};
 
-		public void OnGet(GameVersion gameVersion = GameVersion.V3)
+		public void OnGet(GameVersion gameVersion = GameVersion.V31)
 		{
 			SetGameVersion(gameVersion);
 
 			Enemies = GameInfo.GetEntities<Enemy>(GameVersion);
 			Upgrades = GameInfo.GetEntities<Upgrade>(GameVersion);
 
-			if (GameVersion == GameVersion.V3)
+			if (GameVersion >= GameVersion.V3)
 				TableOfContents.Add("Homing daggers");
 		}
 	}

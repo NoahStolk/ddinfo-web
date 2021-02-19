@@ -45,7 +45,7 @@
 				string[] titles = player?.PlayerTitles.Select(pt => pt.Title.Name).ToArray() ?? Array.Empty<string>();
 
 				string dagger = Model.Leaderboard!.GetDagger(entry.Time);
-				Death? death = GameInfo.GetDeathByType(entry.DeathType, GameVersion.V3);
+				Death? death = GameInfo.GetDeathByType(entry.DeathType, GameVersion.V31);
 
 				string deathStyle = $"color: #{death?.ColorCode ?? "444"};";
 				HtmlString level2 = entry.LevelUpTime2 == 0 ? RazorUtils.NAString : new(entry.LevelUpTime2.FormatTimeInteger());

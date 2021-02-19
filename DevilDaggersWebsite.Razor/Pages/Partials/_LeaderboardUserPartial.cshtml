@@ -52,7 +52,7 @@
 		@{
 			IEnumerable<Donation> donations = dbContext.Donations.ToList();
 			IEnumerable<Player> players = dbContext.Players.Include(p => p.PlayerTitles).ThenInclude(pt => pt.Title).ToList();
-			foreach (Dto.Entry entry in Model.Leaderboard?.Entries ?? new())
+			foreach (Dto.Entry entry in Model.Leaderboard!.Entries)
 			{
 				Player? player = players.FirstOrDefault(p => p.Id == entry.Id);
 
@@ -64,8 +64,9 @@
 				Dagger dagger = GameInfo.GetDaggerFromTime(entry.Time);
 				string daggerColor = player?.IsBanned ?? false ? "ban" : dagger.Name.ToLower();
 
-				Death? death = GameInfo.GetDeathByType(entry.DeathType, GameInfo.GetGameVersionFromDate(Model.Leaderboard?.DateTime ?? DateTime.Now));
+				Death? death = GameInfo.GetDeathByType(entry.DeathType, GameInfo.GetGameVersionFromDate(Model.Leaderboard!.DateTime));
 				string deathStyle = player?.IsBanned ?? false ? string.Empty : $"color: #{death?.ColorCode ?? "444"};";
+				string deathName = death?.Name ?? "Unknown";
 
 				string banString = player?.IsBanned ?? false ? "ban" : string.Empty;
 
@@ -87,12 +88,12 @@
 				string daggersFired = entry.DaggersFired.ToString(FormatUtils.LeaderboardIntFormat);
 				string totalDaggersHit = entry.DaggersHitTotal.ToString(FormatUtils.LeaderboardIntFormat);
 				string totalDaggersFired = entry.DaggersFiredTotal.ToString(FormatUtils.LeaderboardIntFormat);
-				HtmlString averageTime = entry.DeathsTotal == 0 ? RazorUtils.NAString : new HtmlString((entry.TimeTotal / entry.DeathsTotal).FormatTimeInteger());
-				HtmlString averageKills = entry.DeathsTotal == 0 ? RazorUtils.NAString : new HtmlString((entry.KillsTotal / (float)entry.DeathsTotal).ToString(FormatUtils.LeaderboardIntAverageFormat));
-				HtmlString averageGems = entry.DeathsTotal == 0 ? RazorUtils.NAString : new HtmlString((entry.GemsTotal / (float)entry.DeathsTotal).ToString(FormatUtils.LeaderboardIntAverageFormat));
-				HtmlString averageDaggersHit = entry.DeathsTotal == 0 ? RazorUtils.NAString : new HtmlString((entry.DaggersHitTotal / (float)entry.DeathsTotal).ToString(FormatUtils.LeaderboardIntAverageFormat));
-				HtmlString averageDaggersFired = entry.DeathsTotal == 0 ? RazorUtils.NAString : new HtmlString((entry.DaggersFiredTotal / (float)entry.DeathsTotal).ToString(FormatUtils.LeaderboardIntAverageFormat));
-				HtmlString timeByDeath = entry.DeathsTotal == 0 ? RazorUtils.NAString : new HtmlString((entry.Time / (float)entry.DeathsTotal).ToString(FormatUtils.LeaderboardTimeLargeFormat));
+				HtmlString averageTime = entry.DeathsTotal == 0 ? RazorUtils.NAString : new((entry.TimeTotal / entry.DeathsTotal).FormatTimeInteger());
+				HtmlString averageKills = entry.DeathsTotal == 0 ? RazorUtils.NAString : new((entry.KillsTotal / (float)entry.DeathsTotal).ToString(FormatUtils.LeaderboardIntAverageFormat));
+				HtmlString averageGems = entry.DeathsTotal == 0 ? RazorUtils.NAString : new((entry.GemsTotal / (float)entry.DeathsTotal).ToString(FormatUtils.LeaderboardIntAverageFormat));
+				HtmlString averageDaggersHit = entry.DeathsTotal == 0 ? RazorUtils.NAString : new((entry.DaggersHitTotal / (float)entry.DeathsTotal).ToString(FormatUtils.LeaderboardIntAverageFormat));
+				HtmlString averageDaggersFired = entry.DeathsTotal == 0 ? RazorUtils.NAString : new((entry.DaggersFiredTotal / (float)entry.DeathsTotal).ToString(FormatUtils.LeaderboardIntAverageFormat));
+				HtmlString timeByDeath = entry.DeathsTotal == 0 ? RazorUtils.NAString : new((entry.Time / (float)entry.DeathsTotal).ToString(FormatUtils.LeaderboardTimeLargeFormat));
 
 				<div class="sort @banString" @entry.ToHtmlData(flagCode)>
 					<div class="leaderboard-row @(showMoreStats ? "row-more-stats" : "") flex-container" id="@(entry.Rank)-row">
@@ -147,7 +148,7 @@
 						<div class="hidden-xs text-right">
 							<span data-toggle="tooltip" title="@shots" class="leaderboard-tooltip">@accuracy</span>
 						</div>
-						<div class="hidden-xs hidden-sm hidden-md text-center" style="@deathStyle">@(death?.Name ?? "Unknown")</div>
+						<div class="hidden-xs hidden-sm hidden-md text-center" style="@deathStyle">@deathName</div>
 						<div class="hidden-xs hidden-sm hidden-md text-right">@timeTotal</div>
 						<div class="hidden-xs hidden-sm hidden-md text-right">@killsTotal</div>
 						<div class="hidden-xs hidden-sm hidden-md text-right">@gemsTotal</div>
