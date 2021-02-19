@@ -146,6 +146,7 @@ namespace DevilDaggersWebsite.Api
 				uploadRequest.GemsCollected,
 				uploadRequest.GemsDespawned,
 				uploadRequest.GemsEaten,
+				uploadRequest.GemsTotal,
 				uploadRequest.EnemiesKilled,
 				uploadRequest.DeathType,
 				uploadRequest.DaggersHit,
