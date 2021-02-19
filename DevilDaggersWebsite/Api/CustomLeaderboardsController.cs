@@ -125,7 +125,18 @@ namespace DevilDaggersWebsite.Api
 				if (!spawnset.TryGetBytes(out byte[] bytes))
 					throw new("Could not get bytes from spawnset.");
 
-				if (MD5.HashData(bytes) == uploadRequest.SurvivalHashMd5)
+				byte[] spawnsetHash = MD5.HashData(bytes);
+				bool found = true;
+				for (int i = 0; i < 16; i++)
+				{
+					if (spawnsetHash[i] != uploadRequest.SurvivalHashMd5[i])
+					{
+						found = false;
+						break;
+					}
+				}
+
+				if (found)
 				{
 					spawnsetName = name;
 					break;
