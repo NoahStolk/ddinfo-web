@@ -23,6 +23,8 @@ namespace DevilDaggersWebsite.Api
 	[ApiController]
 	public class CustomLeaderboardsController : ControllerBase
 	{
+		private static readonly bool _enableData;
+
 		private readonly ApplicationDbContext _context;
 		private readonly IWebHostEnvironment _env;
 		private readonly ToolHelper _toolHelper;
@@ -204,8 +206,17 @@ namespace DevilDaggersWebsite.Api
 			CustomEntry? entry = _context.CustomEntries.FirstOrDefault(e => e.PlayerId == uploadRequest.PlayerId && e.CustomLeaderboardId == leaderboard.Id);
 			if (entry == null)
 			{
-				// Add new user to this leaderboard.
-				_context.CustomEntries.Add(uploadRequest.ToCustomEntryEntity(leaderboard));
+				// Add new custom entry to this leaderboard.
+				CustomEntry newCustomEntry = uploadRequest.ToCustomEntryEntity(leaderboard);
+				_context.CustomEntries.Add(newCustomEntry);
+
+				if (_enableData)
+				{
+					CustomEntryData newCustomEntryData = new() { CustomEntryId = newCustomEntry.Id, };
+					newCustomEntryData.Populate(uploadRequest.GameStates);
+					_context.CustomEntryData.Add(newCustomEntryData);
+				}
+
 				_context.SaveChanges();
 
 				// Fetch the entries again after having modified the leaderboard.
@@ -281,6 +292,7 @@ namespace DevilDaggersWebsite.Api
 			int levelUpTime3Diff = uploadRequest.LevelUpTime3 - entry.LevelUpTime3;
 			int levelUpTime4Diff = uploadRequest.LevelUpTime4 - entry.LevelUpTime4;
 
+			// Update the entry.
 			entry.Time = uploadRequest.Time;
 			entry.EnemiesKilled = uploadRequest.EnemiesKilled;
 			entry.GemsCollected = uploadRequest.GemsCollected;
@@ -297,40 +309,23 @@ namespace DevilDaggersWebsite.Api
 			entry.SubmitDate = DateTime.Now;
 			entry.ClientVersion = uploadRequest.ClientVersion;
 
-			CustomEntryData? customEntryData = _context.CustomEntryData.FirstOrDefault(ced => ced.CustomEntryId == entry.Id);
-			if (customEntryData == null)
+			// Update the entry data.
+			if (_enableData)
 			{
-				customEntryData = new()
+				CustomEntryData? customEntryData = _context.CustomEntryData.FirstOrDefault(ced => ced.CustomEntryId == entry.Id);
+				if (customEntryData == null)
 				{
-					CustomEntryId = entry.Id,
-
-					GemsCollectedData = uploadRequest.GameStates.Select(gs => gs.GemsCollected).SelectMany(BitConverter.GetBytes).ToArray(),
-					EnemiesKilledData = uploadRequest.GameStates.Select(gs => gs.EnemiesKilled).SelectMany(BitConverter.GetBytes).ToArray(),
-					DaggersFiredData = uploadRequest.GameStates.Select(gs => gs.DaggersFired).SelectMany(BitConverter.GetBytes).ToArray(),
-					DaggersHitData = uploadRequest.GameStates.Select(gs => gs.DaggersHit).SelectMany(BitConverter.GetBytes).ToArray(),
-					EnemiesAliveData = uploadRequest.GameStates.Select(gs => gs.EnemiesAlive).SelectMany(BitConverter.GetBytes).ToArray(),
-					HomingDaggersData = uploadRequest.GameStates.Select(gs => gs.HomingDaggers).SelectMany(BitConverter.GetBytes).ToArray(),
-					GemsDespawnedData = uploadRequest.GameStates.Select(gs => gs.GemsDespawned).SelectMany(BitConverter.GetBytes).ToArray(),
-					GemsEatenData = uploadRequest.GameStates.Select(gs => gs.GemsEaten).SelectMany(BitConverter.GetBytes).ToArray(),
-					GemsTotalData = uploadRequest.GameStates.Select(gs => gs.GemsTotal).SelectMany(BitConverter.GetBytes).ToArray(),
-
-					// TODO: Enemies data.
-				};
-				_context.CustomEntryData.Add(customEntryData);
-			}
-			else
-			{
-				customEntryData.GemsCollectedData = uploadRequest.GameStates.Select(gs => gs.GemsCollected).SelectMany(BitConverter.GetBytes).ToArray();
-				customEntryData.EnemiesKilledData = uploadRequest.GameStates.Select(gs => gs.EnemiesKilled).SelectMany(BitConverter.GetBytes).ToArray();
-				customEntryData.DaggersFiredData = uploadRequest.GameStates.Select(gs => gs.DaggersFired).SelectMany(BitConverter.GetBytes).ToArray();
-				customEntryData.DaggersHitData = uploadRequest.GameStates.Select(gs => gs.DaggersHit).SelectMany(BitConverter.GetBytes).ToArray();
-				customEntryData.EnemiesAliveData = uploadRequest.GameStates.Select(gs => gs.EnemiesAlive).SelectMany(BitConverter.GetBytes).ToArray();
-				customEntryData.HomingDaggersData = uploadRequest.GameStates.Select(gs => gs.HomingDaggers).SelectMany(BitConverter.GetBytes).ToArray();
-				customEntryData.GemsDespawnedData = uploadRequest.GameStates.Select(gs => gs.GemsDespawned).SelectMany(BitConverter.GetBytes).ToArray();
-				customEntryData.GemsEatenData = uploadRequest.GameStates.Select(gs => gs.GemsEaten).SelectMany(BitConverter.GetBytes).ToArray();
-				customEntryData.GemsTotalData = uploadRequest.GameStates.Select(gs => gs.GemsTotal).SelectMany(BitConverter.GetBytes).ToArray();
-
-				// TODO: Enemies data.
+					customEntryData = new()
+					{
+						CustomEntryId = entry.Id,
+					};
+					customEntryData.Populate(uploadRequest.GameStates);
+					_context.CustomEntryData.Add(customEntryData);
+				}
+				else
+				{
+					customEntryData.Populate(uploadRequest.GameStates);
+				}
 			}
 
 			_context.SaveChanges();
