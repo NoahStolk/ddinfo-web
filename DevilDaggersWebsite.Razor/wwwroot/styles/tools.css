@@ -1,3 +1,7 @@
 ﻿.image-narrow {
 	width: 920px;
 }
+
+.ddcl-image {
+	max-width: 380px;
+}
