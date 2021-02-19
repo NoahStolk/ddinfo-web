@@ -296,15 +296,42 @@ namespace DevilDaggersWebsite.Api
 			entry.LevelUpTime4 = uploadRequest.LevelUpTime4;
 			entry.SubmitDate = DateTime.Now;
 			entry.ClientVersion = uploadRequest.ClientVersion;
-			entry.GemsCollectedData = uploadRequest.GameStates.Select(gs => gs.GemsCollected).SelectMany(BitConverter.GetBytes).ToArray();
-			entry.EnemiesKilledData = uploadRequest.GameStates.Select(gs => gs.EnemiesKilled).SelectMany(BitConverter.GetBytes).ToArray();
-			entry.DaggersFiredData = uploadRequest.GameStates.Select(gs => gs.DaggersFired).SelectMany(BitConverter.GetBytes).ToArray();
-			entry.DaggersHitData = uploadRequest.GameStates.Select(gs => gs.DaggersHit).SelectMany(BitConverter.GetBytes).ToArray();
-			entry.EnemiesAliveData = uploadRequest.GameStates.Select(gs => gs.EnemiesAlive).SelectMany(BitConverter.GetBytes).ToArray();
-			entry.HomingDaggersData = uploadRequest.GameStates.Select(gs => gs.HomingDaggers).SelectMany(BitConverter.GetBytes).ToArray();
-			entry.GemsDespawnedData = uploadRequest.GameStates.Select(gs => gs.GemsDespawned).SelectMany(BitConverter.GetBytes).ToArray();
-			entry.GemsEatenData = uploadRequest.GameStates.Select(gs => gs.GemsEaten).SelectMany(BitConverter.GetBytes).ToArray();
-			entry.GemsTotalData = uploadRequest.GameStates.Select(gs => gs.GemsTotal).SelectMany(BitConverter.GetBytes).ToArray();
+
+			CustomEntryData? customEntryData = _context.CustomEntryData.FirstOrDefault(ced => ced.CustomEntryId == entry.Id);
+			if (customEntryData == null)
+			{
+				customEntryData = new()
+				{
+					CustomEntryId = entry.Id,
+
+					GemsCollectedData = uploadRequest.GameStates.Select(gs => gs.GemsCollected).SelectMany(BitConverter.GetBytes).ToArray(),
+					EnemiesKilledData = uploadRequest.GameStates.Select(gs => gs.EnemiesKilled).SelectMany(BitConverter.GetBytes).ToArray(),
+					DaggersFiredData = uploadRequest.GameStates.Select(gs => gs.DaggersFired).SelectMany(BitConverter.GetBytes).ToArray(),
+					DaggersHitData = uploadRequest.GameStates.Select(gs => gs.DaggersHit).SelectMany(BitConverter.GetBytes).ToArray(),
+					EnemiesAliveData = uploadRequest.GameStates.Select(gs => gs.EnemiesAlive).SelectMany(BitConverter.GetBytes).ToArray(),
+					HomingDaggersData = uploadRequest.GameStates.Select(gs => gs.HomingDaggers).SelectMany(BitConverter.GetBytes).ToArray(),
+					GemsDespawnedData = uploadRequest.GameStates.Select(gs => gs.GemsDespawned).SelectMany(BitConverter.GetBytes).ToArray(),
+					GemsEatenData = uploadRequest.GameStates.Select(gs => gs.GemsEaten).SelectMany(BitConverter.GetBytes).ToArray(),
+					GemsTotalData = uploadRequest.GameStates.Select(gs => gs.GemsTotal).SelectMany(BitConverter.GetBytes).ToArray(),
+
+					// TODO: Enemies data.
+				};
+				_context.CustomEntryData.Add(customEntryData);
+			}
+			else
+			{
+				customEntryData.GemsCollectedData = uploadRequest.GameStates.Select(gs => gs.GemsCollected).SelectMany(BitConverter.GetBytes).ToArray();
+				customEntryData.EnemiesKilledData = uploadRequest.GameStates.Select(gs => gs.EnemiesKilled).SelectMany(BitConverter.GetBytes).ToArray();
+				customEntryData.DaggersFiredData = uploadRequest.GameStates.Select(gs => gs.DaggersFired).SelectMany(BitConverter.GetBytes).ToArray();
+				customEntryData.DaggersHitData = uploadRequest.GameStates.Select(gs => gs.DaggersHit).SelectMany(BitConverter.GetBytes).ToArray();
+				customEntryData.EnemiesAliveData = uploadRequest.GameStates.Select(gs => gs.EnemiesAlive).SelectMany(BitConverter.GetBytes).ToArray();
+				customEntryData.HomingDaggersData = uploadRequest.GameStates.Select(gs => gs.HomingDaggers).SelectMany(BitConverter.GetBytes).ToArray();
+				customEntryData.GemsDespawnedData = uploadRequest.GameStates.Select(gs => gs.GemsDespawned).SelectMany(BitConverter.GetBytes).ToArray();
+				customEntryData.GemsEatenData = uploadRequest.GameStates.Select(gs => gs.GemsEaten).SelectMany(BitConverter.GetBytes).ToArray();
+				customEntryData.GemsTotalData = uploadRequest.GameStates.Select(gs => gs.GemsTotal).SelectMany(BitConverter.GetBytes).ToArray();
+
+				// TODO: Enemies data.
+			}
 
 			_context.SaveChanges();
 

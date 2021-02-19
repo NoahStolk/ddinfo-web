@@ -9,8 +9,8 @@ using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 namespace DevilDaggersWebsite.Migrations
 {
     [DbContext(typeof(ApplicationDbContext))]
-    [Migration("20210218230007_InitiateDatabaseMigrations")]
-    partial class InitiateDatabaseMigrations
+    [Migration("20210219102625_InitiateDatabase")]
+    partial class InitiateDatabase
     {
         protected override void BuildTargetModel(ModelBuilder modelBuilder)
         {
@@ -50,13 +50,8 @@ namespace DevilDaggersWebsite.Migrations
                         .ValueGeneratedOnAdd()
                         .HasColumnType("int");
 
-                    b.Property<byte[]>("CentipedesAliveData")
-                        .HasColumnType("longblob");
-
-                    b.Property<byte[]>("CentipedesKilledData")
-                        .HasColumnType("longblob");
-
                     b.Property<string>("ClientVersion")
+                        .IsRequired()
                         .HasColumnType("longtext CHARACTER SET utf8mb4");
 
                     b.Property<int>("CustomLeaderboardId")
@@ -65,14 +60,8 @@ namespace DevilDaggersWebsite.Migrations
                     b.Property<int>("DaggersFired")
                         .HasColumnType("int");
 
-                    b.Property<byte[]>("DaggersFiredData")
-                        .HasColumnType("longblob");
-
                     b.Property<int>("DaggersHit")
                         .HasColumnType("int");
-
-                    b.Property<byte[]>("DaggersHitData")
-                        .HasColumnType("longblob");
 
                     b.Property<byte>("DeathType")
                         .HasColumnType("tinyint unsigned");
@@ -80,56 +69,23 @@ namespace DevilDaggersWebsite.Migrations
                     b.Property<int>("EnemiesAlive")
                         .HasColumnType("int");
 
-                    b.Property<byte[]>("EnemiesAliveData")
-                        .HasColumnType("longblob");
-
                     b.Property<int>("EnemiesKilled")
                         .HasColumnType("int");
-
-                    b.Property<byte[]>("EnemiesKilledData")
-                        .HasColumnType("longblob");
 
                     b.Property<int>("GemsCollected")
                         .HasColumnType("int");
 
-                    b.Property<byte[]>("GemsCollectedData")
-                        .HasColumnType("longblob");
-
                     b.Property<int>("GemsDespawned")
                         .HasColumnType("int");
-
-                    b.Property<byte[]>("GemsDespawnedData")
-                        .HasColumnType("longblob");
 
                     b.Property<int>("GemsEaten")
                         .HasColumnType("int");
 
-                    b.Property<byte[]>("GemsEatenData")
-                        .HasColumnType("longblob");
-
                     b.Property<int>("GemsTotal")
                         .HasColumnType("int");
 
-                    b.Property<byte[]>("GemsTotalData")
-                        .HasColumnType("longblob");
-
-                    b.Property<byte[]>("GhostpedesAliveData")
-                        .HasColumnType("longblob");
-
-                    b.Property<byte[]>("GhostpedesKilledData")
-                        .HasColumnType("longblob");
-
-                    b.Property<byte[]>("GigapedesAliveData")
-                        .HasColumnType("longblob");
-
-                    b.Property<byte[]>("GigapedesKilledData")
-                        .HasColumnType("longblob");
-
                     b.Property<int>("HomingDaggers")
                         .HasColumnType("int");
-
-                    b.Property<byte[]>("HomingDaggersData")
-                        .HasColumnType("longblob");
 
                     b.Property<int>("LevelUpTime2")
                         .HasColumnType("int");
@@ -140,95 +96,11 @@ namespace DevilDaggersWebsite.Migrations
                     b.Property<int>("LevelUpTime4")
                         .HasColumnType("int");
 
-                    b.Property<byte[]>("LeviathansAliveData")
-                        .HasColumnType("longblob");
-
-                    b.Property<byte[]>("LeviathansKilledData")
-                        .HasColumnType("longblob");
-
-                    b.Property<byte[]>("OrbsAliveData")
-                        .HasColumnType("longblob");
-
-                    b.Property<byte[]>("OrbsKilledData")
-                        .HasColumnType("longblob");
-
                     b.Property<int>("PlayerId")
                         .HasColumnType("int");
 
-                    b.Property<byte[]>("Skull1sAliveData")
-                        .HasColumnType("longblob");
-
-                    b.Property<byte[]>("Skull1sKilledData")
-                        .HasColumnType("longblob");
-
-                    b.Property<byte[]>("Skull2sAliveData")
-                        .HasColumnType("longblob");
-
-                    b.Property<byte[]>("Skull2sKilledData")
-                        .HasColumnType("longblob");
-
-                    b.Property<byte[]>("Skull3sAliveData")
-                        .HasColumnType("longblob");
-
-                    b.Property<byte[]>("Skull3sKilledData")
-                        .HasColumnType("longblob");
-
-                    b.Property<byte[]>("Skull4sAliveData")
-                        .HasColumnType("longblob");
-
-                    b.Property<byte[]>("Skull4sKilledData")
-                        .HasColumnType("longblob");
-
-                    b.Property<byte[]>("Spider1sAliveData")
-                        .HasColumnType("longblob");
-
-                    b.Property<byte[]>("Spider1sKilledData")
-                        .HasColumnType("longblob");
-
-                    b.Property<byte[]>("Spider2sAliveData")
-                        .HasColumnType("longblob");
-
-                    b.Property<byte[]>("Spider2sKilledData")
-                        .HasColumnType("longblob");
-
-                    b.Property<byte[]>("SpiderEggsAliveData")
-                        .HasColumnType("longblob");
-
-                    b.Property<byte[]>("SpiderEggsKilledData")
-                        .HasColumnType("longblob");
-
-                    b.Property<byte[]>("SpiderlingsAliveData")
-                        .HasColumnType("longblob");
-
-                    b.Property<byte[]>("SpiderlingsKilledData")
-                        .HasColumnType("longblob");
-
-                    b.Property<byte[]>("Squid1sAliveData")
-                        .HasColumnType("longblob");
-
-                    b.Property<byte[]>("Squid1sKilledData")
-                        .HasColumnType("longblob");
-
-                    b.Property<byte[]>("Squid2sAliveData")
-                        .HasColumnType("longblob");
-
-                    b.Property<byte[]>("Squid2sKilledData")
-                        .HasColumnType("longblob");
-
-                    b.Property<byte[]>("Squid3sAliveData")
-                        .HasColumnType("longblob");
-
-                    b.Property<byte[]>("Squid3sKilledData")
-                        .HasColumnType("longblob");
-
                     b.Property<DateTime>("SubmitDate")
                         .HasColumnType("datetime(6)");
-
-                    b.Property<byte[]>("ThornsAliveData")
-                        .HasColumnType("longblob");
-
-                    b.Property<byte[]>("ThornsKilledData")
-                        .HasColumnType("longblob");
 
                     b.Property<int>("Time")
                         .HasColumnType("int");
@@ -240,6 +112,194 @@ namespace DevilDaggersWebsite.Migrations
                     b.HasIndex("PlayerId");
 
                     b.ToTable("CustomEntries");
+                });
+
+            modelBuilder.Entity("DevilDaggersWebsite.Entities.CustomEntryData", b =>
+                {
+                    b.Property<int>("Id")
+                        .ValueGeneratedOnAdd()
+                        .HasColumnType("int");
+
+                    b.Property<byte[]>("CentipedesAliveData")
+                        .IsRequired()
+                        .HasColumnType("longblob");
+
+                    b.Property<byte[]>("CentipedesKilledData")
+                        .IsRequired()
+                        .HasColumnType("longblob");
+
+                    b.Property<int>("CustomEntryId")
+                        .HasColumnType("int");
+
+                    b.Property<byte[]>("DaggersFiredData")
+                        .IsRequired()
+                        .HasColumnType("longblob");
+
+                    b.Property<byte[]>("DaggersHitData")
+                        .IsRequired()
+                        .HasColumnType("longblob");
+
+                    b.Property<byte[]>("EnemiesAliveData")
+                        .IsRequired()
+                        .HasColumnType("longblob");
+
+                    b.Property<byte[]>("EnemiesKilledData")
+                        .IsRequired()
+                        .HasColumnType("longblob");
+
+                    b.Property<byte[]>("GemsCollectedData")
+                        .IsRequired()
+                        .HasColumnType("longblob");
+
+                    b.Property<byte[]>("GemsDespawnedData")
+                        .IsRequired()
+                        .HasColumnType("longblob");
+
+                    b.Property<byte[]>("GemsEatenData")
+                        .IsRequired()
+                        .HasColumnType("longblob");
+
+                    b.Property<byte[]>("GemsTotalData")
+                        .IsRequired()
+                        .HasColumnType("longblob");
+
+                    b.Property<byte[]>("GhostpedesAliveData")
+                        .IsRequired()
+                        .HasColumnType("longblob");
+
+                    b.Property<byte[]>("GhostpedesKilledData")
+                        .IsRequired()
+                        .HasColumnType("longblob");
+
+                    b.Property<byte[]>("GigapedesAliveData")
+                        .IsRequired()
+                        .HasColumnType("longblob");
+
+                    b.Property<byte[]>("GigapedesKilledData")
+                        .IsRequired()
+                        .HasColumnType("longblob");
+
+                    b.Property<byte[]>("HomingDaggersData")
+                        .IsRequired()
+                        .HasColumnType("longblob");
+
+                    b.Property<byte[]>("LeviathansAliveData")
+                        .IsRequired()
+                        .HasColumnType("longblob");
+
+                    b.Property<byte[]>("LeviathansKilledData")
+                        .IsRequired()
+                        .HasColumnType("longblob");
+
+                    b.Property<byte[]>("OrbsAliveData")
+                        .IsRequired()
+                        .HasColumnType("longblob");
+
+                    b.Property<byte[]>("OrbsKilledData")
+                        .IsRequired()
+                        .HasColumnType("longblob");
+
+                    b.Property<byte[]>("Skull1sAliveData")
+                        .IsRequired()
+                        .HasColumnType("longblob");
+
+                    b.Property<byte[]>("Skull1sKilledData")
+                        .IsRequired()
+                        .HasColumnType("longblob");
+
+                    b.Property<byte[]>("Skull2sAliveData")
+                        .IsRequired()
+                        .HasColumnType("longblob");
+
+                    b.Property<byte[]>("Skull2sKilledData")
+                        .IsRequired()
+                        .HasColumnType("longblob");
+
+                    b.Property<byte[]>("Skull3sAliveData")
+                        .IsRequired()
+                        .HasColumnType("longblob");
+
+                    b.Property<byte[]>("Skull3sKilledData")
+                        .IsRequired()
+                        .HasColumnType("longblob");
+
+                    b.Property<byte[]>("Skull4sAliveData")
+                        .IsRequired()
+                        .HasColumnType("longblob");
+
+                    b.Property<byte[]>("Skull4sKilledData")
+                        .IsRequired()
+                        .HasColumnType("longblob");
+
+                    b.Property<byte[]>("Spider1sAliveData")
+                        .IsRequired()
+                        .HasColumnType("longblob");
+
+                    b.Property<byte[]>("Spider1sKilledData")
+                        .IsRequired()
+                        .HasColumnType("longblob");
+
+                    b.Property<byte[]>("Spider2sAliveData")
+                        .IsRequired()
+                        .HasColumnType("longblob");
+
+                    b.Property<byte[]>("Spider2sKilledData")
+                        .IsRequired()
+                        .HasColumnType("longblob");
+
+                    b.Property<byte[]>("SpiderEggsAliveData")
+                        .IsRequired()
+                        .HasColumnType("longblob");
+
+                    b.Property<byte[]>("SpiderEggsKilledData")
+                        .IsRequired()
+                        .HasColumnType("longblob");
+
+                    b.Property<byte[]>("SpiderlingsAliveData")
+                        .IsRequired()
+                        .HasColumnType("longblob");
+
+                    b.Property<byte[]>("SpiderlingsKilledData")
+                        .IsRequired()
+                        .HasColumnType("longblob");
+
+                    b.Property<byte[]>("Squid1sAliveData")
+                        .IsRequired()
+                        .HasColumnType("longblob");
+
+                    b.Property<byte[]>("Squid1sKilledData")
+                        .IsRequired()
+                        .HasColumnType("longblob");
+
+                    b.Property<byte[]>("Squid2sAliveData")
+                        .IsRequired()
+                        .HasColumnType("longblob");
+
+                    b.Property<byte[]>("Squid2sKilledData")
+                        .IsRequired()
+                        .HasColumnType("longblob");
+
+                    b.Property<byte[]>("Squid3sAliveData")
+                        .IsRequired()
+                        .HasColumnType("longblob");
+
+                    b.Property<byte[]>("Squid3sKilledData")
+                        .IsRequired()
+                        .HasColumnType("longblob");
+
+                    b.Property<byte[]>("ThornsAliveData")
+                        .IsRequired()
+                        .HasColumnType("longblob");
+
+                    b.Property<byte[]>("ThornsKilledData")
+                        .IsRequired()
+                        .HasColumnType("longblob");
+
+                    b.HasKey("Id");
+
+                    b.HasIndex("CustomEntryId");
+
+                    b.ToTable("CustomEntryData");
                 });
 
             modelBuilder.Entity("DevilDaggersWebsite.Entities.CustomLeaderboard", b =>
@@ -676,6 +736,17 @@ namespace DevilDaggersWebsite.Migrations
                     b.Navigation("CustomLeaderboard");
 
                     b.Navigation("Player");
+                });
+
+            modelBuilder.Entity("DevilDaggersWebsite.Entities.CustomEntryData", b =>
+                {
+                    b.HasOne("DevilDaggersWebsite.Entities.CustomEntry", "CustomEntry")
+                        .WithMany()
+                        .HasForeignKey("CustomEntryId")
+                        .OnDelete(DeleteBehavior.Cascade)
+                        .IsRequired();
+
+                    b.Navigation("CustomEntry");
                 });
 
             modelBuilder.Entity("DevilDaggersWebsite.Entities.CustomLeaderboard", b =>

@@ -4,7 +4,7 @@ using Microsoft.EntityFrameworkCore.Migrations;
 
 namespace DevilDaggersWebsite.Migrations
 {
-    public partial class InitiateDatabaseMigrations : Migration
+    public partial class InitiateDatabase : Migration
     {
         protected override void Up(MigrationBuilder migrationBuilder)
         {
@@ -368,50 +368,7 @@ namespace DevilDaggersWebsite.Migrations
                     LevelUpTime3 = table.Column<int>(type: "int", nullable: false),
                     LevelUpTime4 = table.Column<int>(type: "int", nullable: false),
                     SubmitDate = table.Column<DateTime>(type: "datetime(6)", nullable: false),
-                    ClientVersion = table.Column<string>(type: "longtext CHARACTER SET utf8mb4", nullable: true),
-                    GemsCollectedData = table.Column<byte[]>(type: "longblob", nullable: true),
-                    EnemiesKilledData = table.Column<byte[]>(type: "longblob", nullable: true),
-                    DaggersFiredData = table.Column<byte[]>(type: "longblob", nullable: true),
-                    DaggersHitData = table.Column<byte[]>(type: "longblob", nullable: true),
-                    EnemiesAliveData = table.Column<byte[]>(type: "longblob", nullable: true),
-                    HomingDaggersData = table.Column<byte[]>(type: "longblob", nullable: true),
-                    GemsDespawnedData = table.Column<byte[]>(type: "longblob", nullable: true),
-                    GemsEatenData = table.Column<byte[]>(type: "longblob", nullable: true),
-                    GemsTotalData = table.Column<byte[]>(type: "longblob", nullable: true),
-                    Skull1sAliveData = table.Column<byte[]>(type: "longblob", nullable: true),
-                    Skull2sAliveData = table.Column<byte[]>(type: "longblob", nullable: true),
-                    Skull3sAliveData = table.Column<byte[]>(type: "longblob", nullable: true),
-                    SpiderlingsAliveData = table.Column<byte[]>(type: "longblob", nullable: true),
-                    Skull4sAliveData = table.Column<byte[]>(type: "longblob", nullable: true),
-                    Squid1sAliveData = table.Column<byte[]>(type: "longblob", nullable: true),
-                    Squid2sAliveData = table.Column<byte[]>(type: "longblob", nullable: true),
-                    Squid3sAliveData = table.Column<byte[]>(type: "longblob", nullable: true),
-                    CentipedesAliveData = table.Column<byte[]>(type: "longblob", nullable: true),
-                    GigapedesAliveData = table.Column<byte[]>(type: "longblob", nullable: true),
-                    Spider1sAliveData = table.Column<byte[]>(type: "longblob", nullable: true),
-                    Spider2sAliveData = table.Column<byte[]>(type: "longblob", nullable: true),
-                    LeviathansAliveData = table.Column<byte[]>(type: "longblob", nullable: true),
-                    OrbsAliveData = table.Column<byte[]>(type: "longblob", nullable: true),
-                    ThornsAliveData = table.Column<byte[]>(type: "longblob", nullable: true),
-                    GhostpedesAliveData = table.Column<byte[]>(type: "longblob", nullable: true),
-                    SpiderEggsAliveData = table.Column<byte[]>(type: "longblob", nullable: true),
-                    Skull1sKilledData = table.Column<byte[]>(type: "longblob", nullable: true),
-                    Skull2sKilledData = table.Column<byte[]>(type: "longblob", nullable: true),
-                    Skull3sKilledData = table.Column<byte[]>(type: "longblob", nullable: true),
-                    SpiderlingsKilledData = table.Column<byte[]>(type: "longblob", nullable: true),
-                    Skull4sKilledData = table.Column<byte[]>(type: "longblob", nullable: true),
-                    Squid1sKilledData = table.Column<byte[]>(type: "longblob", nullable: true),
-                    Squid2sKilledData = table.Column<byte[]>(type: "longblob", nullable: true),
-                    Squid3sKilledData = table.Column<byte[]>(type: "longblob", nullable: true),
-                    CentipedesKilledData = table.Column<byte[]>(type: "longblob", nullable: true),
-                    GigapedesKilledData = table.Column<byte[]>(type: "longblob", nullable: true),
-                    Spider1sKilledData = table.Column<byte[]>(type: "longblob", nullable: true),
-                    Spider2sKilledData = table.Column<byte[]>(type: "longblob", nullable: true),
-                    LeviathansKilledData = table.Column<byte[]>(type: "longblob", nullable: true),
-                    OrbsKilledData = table.Column<byte[]>(type: "longblob", nullable: true),
-                    ThornsKilledData = table.Column<byte[]>(type: "longblob", nullable: true),
-                    GhostpedesKilledData = table.Column<byte[]>(type: "longblob", nullable: true),
-                    SpiderEggsKilledData = table.Column<byte[]>(type: "longblob", nullable: true)
+                    ClientVersion = table.Column<string>(type: "longtext CHARACTER SET utf8mb4", nullable: false)
                 },
                 constraints: table =>
                 {
@@ -426,6 +383,68 @@ namespace DevilDaggersWebsite.Migrations
                         name: "FK_CustomEntries_Players_PlayerId",
                         column: x => x.PlayerId,
                         principalTable: "Players",
+                        principalColumn: "Id",
+                        onDelete: ReferentialAction.Cascade);
+                });
+
+            migrationBuilder.CreateTable(
+                name: "CustomEntryData",
+                columns: table => new
+                {
+                    Id = table.Column<int>(type: "int", nullable: false)
+                        .Annotation("MySql:ValueGenerationStrategy", MySqlValueGenerationStrategy.IdentityColumn),
+                    CustomEntryId = table.Column<int>(type: "int", nullable: false),
+                    GemsCollectedData = table.Column<byte[]>(type: "longblob", nullable: false),
+                    EnemiesKilledData = table.Column<byte[]>(type: "longblob", nullable: false),
+                    DaggersFiredData = table.Column<byte[]>(type: "longblob", nullable: false),
+                    DaggersHitData = table.Column<byte[]>(type: "longblob", nullable: false),
+                    EnemiesAliveData = table.Column<byte[]>(type: "longblob", nullable: false),
+                    HomingDaggersData = table.Column<byte[]>(type: "longblob", nullable: false),
+                    GemsDespawnedData = table.Column<byte[]>(type: "longblob", nullable: false),
+                    GemsEatenData = table.Column<byte[]>(type: "longblob", nullable: false),
+                    GemsTotalData = table.Column<byte[]>(type: "longblob", nullable: false),
+                    Skull1sAliveData = table.Column<byte[]>(type: "longblob", nullable: false),
+                    Skull2sAliveData = table.Column<byte[]>(type: "longblob", nullable: false),
+                    Skull3sAliveData = table.Column<byte[]>(type: "longblob", nullable: false),
+                    SpiderlingsAliveData = table.Column<byte[]>(type: "longblob", nullable: false),
+                    Skull4sAliveData = table.Column<byte[]>(type: "longblob", nullable: false),
+                    Squid1sAliveData = table.Column<byte[]>(type: "longblob", nullable: false),
+                    Squid2sAliveData = table.Column<byte[]>(type: "longblob", nullable: false),
+                    Squid3sAliveData = table.Column<byte[]>(type: "longblob", nullable: false),
+                    CentipedesAliveData = table.Column<byte[]>(type: "longblob", nullable: false),
+                    GigapedesAliveData = table.Column<byte[]>(type: "longblob", nullable: false),
+                    Spider1sAliveData = table.Column<byte[]>(type: "longblob", nullable: false),
+                    Spider2sAliveData = table.Column<byte[]>(type: "longblob", nullable: false),
+                    LeviathansAliveData = table.Column<byte[]>(type: "longblob", nullable: false),
+                    OrbsAliveData = table.Column<byte[]>(type: "longblob", nullable: false),
+                    ThornsAliveData = table.Column<byte[]>(type: "longblob", nullable: false),
+                    GhostpedesAliveData = table.Column<byte[]>(type: "longblob", nullable: false),
+                    SpiderEggsAliveData = table.Column<byte[]>(type: "longblob", nullable: false),
+                    Skull1sKilledData = table.Column<byte[]>(type: "longblob", nullable: false),
+                    Skull2sKilledData = table.Column<byte[]>(type: "longblob", nullable: false),
+                    Skull3sKilledData = table.Column<byte[]>(type: "longblob", nullable: false),
+                    SpiderlingsKilledData = table.Column<byte[]>(type: "longblob", nullable: false),
+                    Skull4sKilledData = table.Column<byte[]>(type: "longblob", nullable: false),
+                    Squid1sKilledData = table.Column<byte[]>(type: "longblob", nullable: false),
+                    Squid2sKilledData = table.Column<byte[]>(type: "longblob", nullable: false),
+                    Squid3sKilledData = table.Column<byte[]>(type: "longblob", nullable: false),
+                    CentipedesKilledData = table.Column<byte[]>(type: "longblob", nullable: false),
+                    GigapedesKilledData = table.Column<byte[]>(type: "longblob", nullable: false),
+                    Spider1sKilledData = table.Column<byte[]>(type: "longblob", nullable: false),
+                    Spider2sKilledData = table.Column<byte[]>(type: "longblob", nullable: false),
+                    LeviathansKilledData = table.Column<byte[]>(type: "longblob", nullable: false),
+                    OrbsKilledData = table.Column<byte[]>(type: "longblob", nullable: false),
+                    ThornsKilledData = table.Column<byte[]>(type: "longblob", nullable: false),
+                    GhostpedesKilledData = table.Column<byte[]>(type: "longblob", nullable: false),
+                    SpiderEggsKilledData = table.Column<byte[]>(type: "longblob", nullable: false)
+                },
+                constraints: table =>
+                {
+                    table.PrimaryKey("PK_CustomEntryData", x => x.Id);
+                    table.ForeignKey(
+                        name: "FK_CustomEntryData_CustomEntries_CustomEntryId",
+                        column: x => x.CustomEntryId,
+                        principalTable: "CustomEntries",
                         principalColumn: "Id",
                         onDelete: ReferentialAction.Cascade);
                 });
@@ -478,6 +497,11 @@ namespace DevilDaggersWebsite.Migrations
                 column: "PlayerId");
 
             migrationBuilder.CreateIndex(
+                name: "IX_CustomEntryData_CustomEntryId",
+                table: "CustomEntryData",
+                column: "CustomEntryId");
+
+            migrationBuilder.CreateIndex(
                 name: "IX_CustomLeaderboards_SpawnsetFileId",
                 table: "CustomLeaderboards",
                 column: "SpawnsetFileId");
@@ -521,7 +545,7 @@ namespace DevilDaggersWebsite.Migrations
                 name: "AspNetUserTokens");
 
             migrationBuilder.DropTable(
-                name: "CustomEntries");
+                name: "CustomEntryData");
 
             migrationBuilder.DropTable(
                 name: "Donations");
@@ -542,13 +566,16 @@ namespace DevilDaggersWebsite.Migrations
                 name: "AspNetUsers");
 
             migrationBuilder.DropTable(
-                name: "CustomLeaderboards");
+                name: "CustomEntries");
 
             migrationBuilder.DropTable(
                 name: "AssetMods");
 
             migrationBuilder.DropTable(
                 name: "Titles");
+
+            migrationBuilder.DropTable(
+                name: "CustomLeaderboards");
 
             migrationBuilder.DropTable(
                 name: "SpawnsetFiles");
