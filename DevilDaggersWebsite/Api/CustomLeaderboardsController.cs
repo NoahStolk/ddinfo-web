@@ -164,6 +164,7 @@ namespace DevilDaggersWebsite.Api
 				uploadRequest.DaggersFired,
 				uploadRequest.EnemiesAlive,
 				uploadRequest.HomingDaggers,
+				ByteArrayToHexString(uploadRequest.SurvivalHashMd5),
 				string.Join(",", new int[3] { uploadRequest.LevelUpTime2, uploadRequest.LevelUpTime3, uploadRequest.LevelUpTime4 }));
 			if (await DecryptValidation(uploadRequest.Validation) != check)
 			{
@@ -432,5 +433,8 @@ namespace DevilDaggersWebsite.Api
 				// Ignore exceptions that occurred while attempting to log.
 			}
 		}
+
+		private static string ByteArrayToHexString(byte[] byteArray)
+			=> BitConverter.ToString(byteArray).Replace("-", string.Empty);
 	}
 }
