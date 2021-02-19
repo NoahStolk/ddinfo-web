@@ -17,7 +17,7 @@
 	string kills = Model.Leaderboard?.KillsGlobal.ToString(FormatUtils.LeaderboardIntFormat) ?? "Failed to fetch";
 	string gems = Model.Leaderboard?.GemsGlobal.ToString(FormatUtils.LeaderboardIntFormat) ?? "Failed to fetch";
 	string deaths = Model.Leaderboard?.DeathsGlobal.ToString(FormatUtils.LeaderboardIntFormat) ?? "Failed to fetch";
-	string shots = Model.Leaderboard == null ? "Failed to fetch" : FormatUtils.FormatDaggersUInt64(Model.Leaderboard.DaggersHitGlobal, Model.Leaderboard.DaggersFiredGlobal, isHistory);
+	string daggers = Model.Leaderboard == null ? "Failed to fetch" : FormatUtils.FormatDaggersUInt64(Model.Leaderboard.DaggersHitGlobal, Model.Leaderboard.DaggersFiredGlobal, isHistory);
 	string accuracy = Model.Leaderboard?.AccuracyGlobal.ToString(FormatUtils.AccuracyFormat) ?? "Failed to fetch";
 }
 <div class="hidden-xs text-center">
@@ -42,7 +42,7 @@
 		</div>
 		<div>
 			<div>Global accuracy</div>
-			<span data-toggle="tooltip" data-placement="bottom" title="@shots" class="leaderboard-tooltip"><span class="text-center devil">@accuracy</span></span>
+			<span data-toggle="tooltip" data-placement="bottom" title="@daggers" class="leaderboard-tooltip"><span class="text-center devil">@accuracy</span></span>
 		</div>
 		<div>
 			<div>Global deaths</div>
@@ -72,7 +72,7 @@
 				}
 				else
 				{
-					<span data-toggle="tooltip" title="@shots" class="leaderboard-tooltip"><span class="devil">@accuracy</span></span>
+					<span data-toggle="tooltip" title="@daggers" class="leaderboard-tooltip"><span class="devil">@accuracy</span></span>
 				}
 			}
 			<div class="devil">@deaths</div>
