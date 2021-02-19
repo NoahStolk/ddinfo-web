@@ -52,7 +52,7 @@ namespace DevilDaggersWebsite.Razor.Pages.CustomLeaderboards
 		public (string DaggerName, string Seconds) GetDaggerInfo(int daggerIndex)
 		{
 			if (daggerIndex < 0 || daggerIndex > 4)
-				throw new ArgumentOutOfRangeException(nameof(daggerIndex), $"'{nameof(daggerIndex)}' must be between 0 (bronze) and 4 (homing). '{nameof(daggerIndex)}' was {daggerIndex}.");
+				throw new ArgumentOutOfRangeException(nameof(daggerIndex), $"'{nameof(daggerIndex)}' must be between 0 (Bronze) and 4 (Leviathan). '{nameof(daggerIndex)}' was {daggerIndex}.");
 
 			string daggerName = daggerIndex switch
 			{
@@ -60,7 +60,7 @@ namespace DevilDaggersWebsite.Razor.Pages.CustomLeaderboards
 				1 => "Silver",
 				2 => "Golden",
 				3 => "Devil",
-				_ => "Homing",
+				_ => "Leviathan",
 			};
 			string? seconds = daggerIndex switch
 			{
