@@ -160,15 +160,15 @@ namespace DevilDaggersWebsite.Api
 				return new BadRequestObjectResult(new ProblemDetails { Title = errorMessage });
 			}
 
-			CustomLeaderboard? leaderboard = _context.CustomLeaderboards.Include(cl => cl.SpawnsetFile).ThenInclude(sf => sf.Player).FirstOrDefault(cl => cl.SpawnsetFile.Name == spawnsetName);
-			if (leaderboard == null)
+			CustomLeaderboard? customLeaderboard = _context.CustomLeaderboards.Include(cl => cl.SpawnsetFile).ThenInclude(sf => sf.Player).FirstOrDefault(cl => cl.SpawnsetFile.Name == spawnsetName);
+			if (customLeaderboard == null)
 			{
 				const string errorMessage = "This spawnset exists on DevilDaggers.info, but doesn't have a leaderboard.";
 				await TryLog(uploadRequest, spawnsetName, errorMessage);
 				return new BadRequestObjectResult(new ProblemDetails { Title = errorMessage });
 			}
 
-			if (leaderboard.Category == Enumerators.CustomLeaderboardCategory.Challenge && Version.Parse(uploadRequest.ClientVersion) <= new Version(0, 10, 4, 0))
+			if (customLeaderboard.Category == Enumerators.CustomLeaderboardCategory.Challenge && Version.Parse(uploadRequest.ClientVersion) <= new Version(0, 10, 4, 0))
 			{
 				const string errorMessage = "Challenge leaderboards are not supported on version 0.10.4.0 or lower.";
 				await TryLog(uploadRequest, spawnsetName, errorMessage);
@@ -194,20 +194,20 @@ namespace DevilDaggersWebsite.Api
 			}
 
 			// Update the date this leaderboard was submitted to.
-			leaderboard.DateLastPlayed = DateTime.Now;
-			leaderboard.TotalRunsSubmitted++;
+			customLeaderboard.DateLastPlayed = DateTime.Now;
+			customLeaderboard.TotalRunsSubmitted++;
 
 			// Calculate the new rank.
-			IEnumerable<CustomEntry> entries = _context.CustomEntries.Where(e => e.CustomLeaderboard == leaderboard).OrderByMember(nameof(CustomEntry.Time), leaderboard.IsAscending()).ToArray();
+			IEnumerable<CustomEntry> entries = _context.CustomEntries.Where(e => e.CustomLeaderboard == customLeaderboard).OrderByMember(nameof(CustomEntry.Time), customLeaderboard.IsAscending()).ToArray();
 
-			int rank = leaderboard.IsAscending() ? entries.Count(e => e.Time < uploadRequest.Time) + 1 : entries.Count(e => e.Time > uploadRequest.Time) + 1;
+			int rank = customLeaderboard.IsAscending() ? entries.Count(e => e.Time < uploadRequest.Time) + 1 : entries.Count(e => e.Time > uploadRequest.Time) + 1;
 			int totalPlayers = entries.Count();
 
-			CustomEntry? entry = _context.CustomEntries.FirstOrDefault(e => e.PlayerId == uploadRequest.PlayerId && e.CustomLeaderboardId == leaderboard.Id);
-			if (entry == null)
+			CustomEntry? customEntry = _context.CustomEntries.FirstOrDefault(e => e.PlayerId == uploadRequest.PlayerId && e.CustomLeaderboardId == customLeaderboard.Id);
+			if (customEntry == null)
 			{
 				// Add new custom entry to this leaderboard.
-				CustomEntry newCustomEntry = uploadRequest.ToCustomEntryEntity(leaderboard);
+				CustomEntry newCustomEntry = uploadRequest.ToCustomEntryEntity(customLeaderboard);
 				_context.CustomEntries.Add(newCustomEntry);
 
 				if (_enableData)
@@ -220,7 +220,7 @@ namespace DevilDaggersWebsite.Api
 				_context.SaveChanges();
 
 				// Fetch the entries again after having modified the leaderboard.
-				entries = _context.CustomEntries.Where(e => e.CustomLeaderboard == leaderboard).OrderByMember(nameof(CustomEntry.Time), leaderboard.IsAscending());
+				entries = _context.CustomEntries.Where(e => e.CustomLeaderboard == customLeaderboard).OrderByMember(nameof(CustomEntry.Time), customLeaderboard.IsAscending());
 				totalPlayers = entries.Count();
 
 				await TryLog(uploadRequest, spawnsetName);
@@ -228,8 +228,8 @@ namespace DevilDaggersWebsite.Api
 				{
 					Message = $"Welcome to the leaderboard for {spawnsetName}.",
 					TotalPlayers = totalPlayers,
-					Leaderboard = leaderboard.ToDto(),
-					Category = leaderboard.Category,
+					Leaderboard = customLeaderboard.ToDto(),
+					Category = customLeaderboard.Category,
 					Entries = entries
 						.Select(e => e.ToDto(GetUsernameFromCache(e)))
 						.ToList(),
@@ -251,20 +251,20 @@ namespace DevilDaggersWebsite.Api
 			}
 
 			// User is already on the leaderboard, but did not get a better score.
-			if (leaderboard.IsAscending() && entry.Time <= uploadRequest.Time || !leaderboard.IsAscending() && entry.Time >= uploadRequest.Time)
+			if (customLeaderboard.IsAscending() && customEntry.Time <= uploadRequest.Time || !customLeaderboard.IsAscending() && customEntry.Time >= uploadRequest.Time)
 			{
 				_context.SaveChanges();
 
 				// Fetch the entries again after having modified the leaderboard.
-				entries = _context.CustomEntries.Where(e => e.CustomLeaderboard == leaderboard).OrderByMember(nameof(CustomEntry.Time), leaderboard.IsAscending()).ToArray();
+				entries = _context.CustomEntries.Where(e => e.CustomLeaderboard == customLeaderboard).OrderByMember(nameof(CustomEntry.Time), customLeaderboard.IsAscending()).ToArray();
 
 				await TryLog(uploadRequest, spawnsetName);
 				return new Dto.UploadSuccess
 				{
-					Message = $"No new highscore for {leaderboard.SpawnsetFile.Name}.",
+					Message = $"No new highscore for {customLeaderboard.SpawnsetFile.Name}.",
 					TotalPlayers = totalPlayers,
-					Leaderboard = leaderboard.ToDto(),
-					Category = leaderboard.Category,
+					Leaderboard = customLeaderboard.ToDto(),
+					Category = customLeaderboard.Category,
 					Entries = entries
 						.Select(e => e.ToDto(GetUsernameFromCache(e)))
 						.ToList(),
@@ -275,49 +275,49 @@ namespace DevilDaggersWebsite.Api
 			// User got a better score.
 
 			// Calculate the old rank.
-			int oldRank = leaderboard.IsAscending() ? entries.Count(e => e.Time < entry.Time) + 1 : entries.Count(e => e.Time > entry.Time) + 1;
+			int oldRank = customLeaderboard.IsAscending() ? entries.Count(e => e.Time < customEntry.Time) + 1 : entries.Count(e => e.Time > customEntry.Time) + 1;
 
 			int rankDiff = oldRank - rank;
-			int timeDiff = uploadRequest.Time - entry.Time;
-			int gemsCollectedDiff = uploadRequest.GemsCollected - entry.GemsCollected;
-			int enemiesKilledDiff = uploadRequest.EnemiesKilled - entry.EnemiesKilled;
-			int daggersFiredDiff = uploadRequest.DaggersFired - entry.DaggersFired;
-			int daggersHitDiff = uploadRequest.DaggersHit - entry.DaggersHit;
-			int enemiesAliveDiff = uploadRequest.EnemiesAlive - entry.EnemiesAlive;
-			int homingDaggersDiff = uploadRequest.HomingDaggers - entry.HomingDaggers;
-			int gemsDespawnedDiff = uploadRequest.GemsDespawned - entry.GemsDespawned;
-			int gemsEatenDiff = uploadRequest.GemsEaten - entry.GemsEaten;
-			int gemsTotalDiff = uploadRequest.GemsTotal - entry.GemsTotal;
-			int levelUpTime2Diff = uploadRequest.LevelUpTime2 - entry.LevelUpTime2;
-			int levelUpTime3Diff = uploadRequest.LevelUpTime3 - entry.LevelUpTime3;
-			int levelUpTime4Diff = uploadRequest.LevelUpTime4 - entry.LevelUpTime4;
+			int timeDiff = uploadRequest.Time - customEntry.Time;
+			int gemsCollectedDiff = uploadRequest.GemsCollected - customEntry.GemsCollected;
+			int enemiesKilledDiff = uploadRequest.EnemiesKilled - customEntry.EnemiesKilled;
+			int daggersFiredDiff = uploadRequest.DaggersFired - customEntry.DaggersFired;
+			int daggersHitDiff = uploadRequest.DaggersHit - customEntry.DaggersHit;
+			int enemiesAliveDiff = uploadRequest.EnemiesAlive - customEntry.EnemiesAlive;
+			int homingDaggersDiff = uploadRequest.HomingDaggers - customEntry.HomingDaggers;
+			int gemsDespawnedDiff = uploadRequest.GemsDespawned - customEntry.GemsDespawned;
+			int gemsEatenDiff = uploadRequest.GemsEaten - customEntry.GemsEaten;
+			int gemsTotalDiff = uploadRequest.GemsTotal - customEntry.GemsTotal;
+			int levelUpTime2Diff = uploadRequest.LevelUpTime2 - customEntry.LevelUpTime2;
+			int levelUpTime3Diff = uploadRequest.LevelUpTime3 - customEntry.LevelUpTime3;
+			int levelUpTime4Diff = uploadRequest.LevelUpTime4 - customEntry.LevelUpTime4;
 
 			// Update the entry.
-			entry.Time = uploadRequest.Time;
-			entry.EnemiesKilled = uploadRequest.EnemiesKilled;
-			entry.GemsCollected = uploadRequest.GemsCollected;
-			entry.DaggersFired = uploadRequest.DaggersFired;
-			entry.DaggersHit = uploadRequest.DaggersHit;
-			entry.EnemiesAlive = uploadRequest.EnemiesAlive;
-			entry.HomingDaggers = uploadRequest.HomingDaggers;
-			entry.GemsDespawned = uploadRequest.GemsDespawned;
-			entry.GemsEaten = uploadRequest.GemsEaten;
-			entry.DeathType = uploadRequest.DeathType;
-			entry.LevelUpTime2 = uploadRequest.LevelUpTime2;
-			entry.LevelUpTime3 = uploadRequest.LevelUpTime3;
-			entry.LevelUpTime4 = uploadRequest.LevelUpTime4;
-			entry.SubmitDate = DateTime.Now;
-			entry.ClientVersion = uploadRequest.ClientVersion;
+			customEntry.Time = uploadRequest.Time;
+			customEntry.EnemiesKilled = uploadRequest.EnemiesKilled;
+			customEntry.GemsCollected = uploadRequest.GemsCollected;
+			customEntry.DaggersFired = uploadRequest.DaggersFired;
+			customEntry.DaggersHit = uploadRequest.DaggersHit;
+			customEntry.EnemiesAlive = uploadRequest.EnemiesAlive;
+			customEntry.HomingDaggers = uploadRequest.HomingDaggers;
+			customEntry.GemsDespawned = uploadRequest.GemsDespawned;
+			customEntry.GemsEaten = uploadRequest.GemsEaten;
+			customEntry.DeathType = uploadRequest.DeathType;
+			customEntry.LevelUpTime2 = uploadRequest.LevelUpTime2;
+			customEntry.LevelUpTime3 = uploadRequest.LevelUpTime3;
+			customEntry.LevelUpTime4 = uploadRequest.LevelUpTime4;
+			customEntry.SubmitDate = DateTime.Now;
+			customEntry.ClientVersion = uploadRequest.ClientVersion;
 
 			// Update the entry data.
 			if (_enableData)
 			{
-				CustomEntryData? customEntryData = _context.CustomEntryData.FirstOrDefault(ced => ced.CustomEntryId == entry.Id);
+				CustomEntryData? customEntryData = _context.CustomEntryData.FirstOrDefault(ced => ced.CustomEntryId == customEntry.Id);
 				if (customEntryData == null)
 				{
 					customEntryData = new()
 					{
-						CustomEntryId = entry.Id,
+						CustomEntryId = customEntry.Id,
 					};
 					customEntryData.Populate(uploadRequest.GameStates);
 					_context.CustomEntryData.Add(customEntryData);
@@ -331,15 +331,15 @@ namespace DevilDaggersWebsite.Api
 			_context.SaveChanges();
 
 			// Fetch the entries again after having modified the leaderboard.
-			entries = _context.CustomEntries.Where(e => e.CustomLeaderboard == leaderboard).OrderByMember(nameof(CustomEntry.Time), leaderboard.IsAscending()).ToArray();
+			entries = _context.CustomEntries.Where(e => e.CustomLeaderboard == customLeaderboard).OrderByMember(nameof(CustomEntry.Time), customLeaderboard.IsAscending()).ToArray();
 
 			await TryLog(uploadRequest, spawnsetName);
 			return new Dto.UploadSuccess
 			{
-				Message = $"NEW HIGHSCORE for {leaderboard.SpawnsetFile.Name}!",
+				Message = $"NEW HIGHSCORE for {customLeaderboard.SpawnsetFile.Name}!",
 				TotalPlayers = totalPlayers,
-				Leaderboard = leaderboard.ToDto(),
-				Category = leaderboard.Category,
+				Leaderboard = customLeaderboard.ToDto(),
+				Category = customLeaderboard.Category,
 				Entries = entries
 					.Select(e => e.ToDto(GetUsernameFromCache(e)))
 					.ToList(),
