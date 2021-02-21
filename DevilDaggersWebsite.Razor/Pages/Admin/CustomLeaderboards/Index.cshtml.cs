@@ -10,18 +10,18 @@ namespace DevilDaggersWebsite.Razor.Pages.Admin.CustomLeaderboards
 {
 	public class IndexModel : PageModel
 	{
-		private readonly ApplicationDbContext _context;
+		private readonly ApplicationDbContext _dbContext;
 
-		public IndexModel(ApplicationDbContext context)
+		public IndexModel(ApplicationDbContext dbContext)
 		{
-			_context = context;
+			_dbContext = dbContext;
 		}
 
-		public IList<CustomLeaderboard> CustomLeaderboards { get; private set; }
+		public IList<CustomLeaderboard> CustomLeaderboards { get; private set; } = new List<CustomLeaderboard>();
 
 		public async Task OnGetAsync(string? sortMemberName, bool ascending)
 		{
-			IQueryable<CustomLeaderboard> query = _context.CustomLeaderboards.Include(cl => cl.SpawnsetFile);
+			IQueryable<CustomLeaderboard> query = _dbContext.CustomLeaderboards.Include(cl => cl.SpawnsetFile);
 			if (!string.IsNullOrEmpty(sortMemberName))
 				query = query.OrderByMember(sortMemberName, ascending);
 

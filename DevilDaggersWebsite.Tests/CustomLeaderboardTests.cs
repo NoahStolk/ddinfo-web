@@ -21,9 +21,9 @@ namespace DevilDaggersWebsite.Tests
 	[TestClass]
 	public class CustomLeaderboardTests
 	{
-		private const string _ddclClientVersion = "0.10.4.0";
+		private const string _ddclClientVersion = "0.14.1.0";
 
-		private static readonly ApplicationDbContext _context;
+		private static readonly ApplicationDbContext _dbContext;
 		private static readonly CustomLeaderboardsController _customLeaderboardsController;
 
 #pragma warning disable S3963 // "static" fields should be initialized inline
@@ -31,13 +31,13 @@ namespace DevilDaggersWebsite.Tests
 		{
 			DbContextOptions<ApplicationDbContext> options = new DbContextOptionsBuilder<ApplicationDbContext>().UseInMemoryDatabase(databaseName: "TestDatabase").Options;
 			SetUpInMemoryDatabase(options);
-			_context = new ApplicationDbContext(options);
+			_dbContext = new ApplicationDbContext(options);
 
 			Mock<IWebHostEnvironment> mockEnvironment = new Mock<IWebHostEnvironment>();
 			mockEnvironment.Setup(m => m.EnvironmentName).Returns("Hosting:UnitTestEnvironment");
 
 			Mock<ToolHelper> toolHelper = new Mock<ToolHelper>(mockEnvironment.Object);
-			_customLeaderboardsController = new CustomLeaderboardsController(_context, mockEnvironment.Object, toolHelper.Object);
+			_customLeaderboardsController = new CustomLeaderboardsController(_dbContext, mockEnvironment.Object, toolHelper.Object);
 		}
 #pragma warning restore S3963 // "static" fields should be initialized inline
 
@@ -132,7 +132,7 @@ namespace DevilDaggersWebsite.Tests
 			};
 			uploadRequest.Validation = GetValidation(uploadRequest);
 
-			Dto.UploadSuccess uploadSuccess = (await _customLeaderboardsController.ProcessUploadRequest(uploadRequest, new List<(string name, Spawnset spawnset)> { ("Empty", emptySpawnset) })).Value;
+			Dto.UploadSuccess uploadSuccess = (await _customLeaderboardsController.ProcessUploadRequest(uploadRequest, new List<(string Name, Spawnset Spawnset)> { ("Empty", emptySpawnset) })).Value;
 
 			// TODO: Clear the database before running this test.
 			// Assert.AreEqual(2, uploadSuccess.TotalPlayers);
@@ -155,7 +155,7 @@ namespace DevilDaggersWebsite.Tests
 			};
 			uploadRequest.Validation = GetValidation(uploadRequest);
 
-			ActionResult<Dto.UploadSuccess> response = await _customLeaderboardsController.ProcessUploadRequest(uploadRequest, new List<(string name, Spawnset spawnset)> { ("Empty", emptySpawnset) });
+			ActionResult<Dto.UploadSuccess> response = await _customLeaderboardsController.ProcessUploadRequest(uploadRequest, new List<(string Name, Spawnset Spawnset)> { ("Empty", emptySpawnset) });
 
 			Assert.IsInstanceOfType(response.Result, typeof(BadRequestObjectResult));
 			BadRequestObjectResult badRequest = (BadRequestObjectResult)response.Result;
@@ -182,7 +182,7 @@ namespace DevilDaggersWebsite.Tests
 				Validation = "Malformed validation",
 			};
 
-			ActionResult<Dto.UploadSuccess> response = await _customLeaderboardsController.ProcessUploadRequest(uploadRequest, new List<(string name, Spawnset spawnset)> { ("Empty", emptySpawnset) });
+			ActionResult<Dto.UploadSuccess> response = await _customLeaderboardsController.ProcessUploadRequest(uploadRequest, new List<(string Name, Spawnset Spawnset)> { ("Empty", emptySpawnset) });
 
 			Assert.IsInstanceOfType(response.Result, typeof(BadRequestObjectResult));
 			BadRequestObjectResult badRequest = (BadRequestObjectResult)response.Result;
@@ -212,7 +212,7 @@ namespace DevilDaggersWebsite.Tests
 
 		private static void SetUpInMemoryDatabase(DbContextOptions<ApplicationDbContext> options)
 		{
-			using ApplicationDbContext context = new(options);
+			using ApplicationDbContext dbContext = new(options);
 			Player testPlayer1 = new()
 			{
 				Id = 1,
@@ -270,12 +270,12 @@ namespace DevilDaggersWebsite.Tests
 				SubmitDate = DateTime.Now,
 			};
 
-			context.Players.Add(testPlayer1);
-			context.Players.Add(testPlayer2);
-			context.SpawnsetFiles.Add(spawnsetFile);
-			context.CustomLeaderboards.Add(customLeaderboard);
-			context.CustomEntries.Add(customEntry);
-			context.SaveChanges();
+			_dbContext.Players.Add(testPlayer1);
+			_dbContext.Players.Add(testPlayer2);
+			_dbContext.SpawnsetFiles.Add(spawnsetFile);
+			_dbContext.CustomLeaderboards.Add(customLeaderboard);
+			_dbContext.CustomEntries.Add(customEntry);
+			_dbContext.SaveChanges();
 		}
 
 		private static byte[] GetSpawnsetHash(Spawnset spawnset)

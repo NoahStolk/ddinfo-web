@@ -13,11 +13,11 @@ namespace DevilDaggersWebsite.Razor.Pages.Admin.CustomLeaderboards
 {
 	public class EditModel : PageModel
 	{
-		private readonly ApplicationDbContext _context;
+		private readonly ApplicationDbContext _dbContext;
 
-		public EditModel(ApplicationDbContext context)
+		public EditModel(ApplicationDbContext dbContext)
 		{
-			_context = context;
+			_dbContext = dbContext;
 
 			CategoryList = RazorUtils.EnumToSelectList<CustomLeaderboardCategory>();
 		}
@@ -25,20 +25,20 @@ namespace DevilDaggersWebsite.Razor.Pages.Admin.CustomLeaderboards
 		public List<SelectListItem> CategoryList { get; }
 
 		[BindProperty]
-		public CustomLeaderboard CustomLeaderboard { get; set; }
+		public CustomLeaderboard CustomLeaderboard { get; set; } = null!;
 
 		public async Task<IActionResult> OnGetAsync(int? id)
 		{
 			if (id == null)
 				return NotFound();
 
-			CustomLeaderboard = await _context.CustomLeaderboards
+			CustomLeaderboard = await _dbContext.CustomLeaderboards
 				.Include(c => c.SpawnsetFile)
 				.FirstOrDefaultAsync(m => m.Id == id);
 
 			if (CustomLeaderboard == null)
 				return NotFound();
-			ViewData["SpawnsetFileId"] = new SelectList(_context.SpawnsetFiles, "Id", "Name");
+			ViewData["SpawnsetFileId"] = new SelectList(_dbContext.SpawnsetFiles, "Id", "Name");
 			return Page();
 		}
 
@@ -52,11 +52,11 @@ namespace DevilDaggersWebsite.Razor.Pages.Admin.CustomLeaderboards
 			if (!ModelState.IsValid)
 				return Page();
 
-			_context.Attach(CustomLeaderboard).State = EntityState.Modified;
+			_dbContext.Attach(CustomLeaderboard).State = EntityState.Modified;
 
 			try
 			{
-				await _context.SaveChangesAsync();
+				await _dbContext.SaveChangesAsync();
 			}
 			catch (DbUpdateConcurrencyException) when (!CustomLeaderboardExists(CustomLeaderboard.Id))
 			{
@@ -67,6 +67,6 @@ namespace DevilDaggersWebsite.Razor.Pages.Admin.CustomLeaderboards
 		}
 
 		private bool CustomLeaderboardExists(int id)
-			=> _context.CustomLeaderboards.Any(e => e.Id == id);
+			=> _dbContext.CustomLeaderboards.Any(e => e.Id == id);
 	}
 }

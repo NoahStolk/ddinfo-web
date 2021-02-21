@@ -11,13 +11,13 @@ namespace DevilDaggersWebsite.Razor.Pages.Admin.AssetMods
 {
 	public class CreateModel : PageModel
 	{
-		private readonly ApplicationDbContext _context;
+		private readonly ApplicationDbContext _dbContext;
 
-		public CreateModel(ApplicationDbContext context)
+		public CreateModel(ApplicationDbContext dbContext)
 		{
-			_context = context;
+			_dbContext = dbContext;
 
-			AuthorSelectList = context.Players
+			AuthorSelectList = _dbContext.Players
 				.OrderBy(p => p.PlayerName)
 				.Select(p => new SelectListItem
 				{
@@ -30,10 +30,10 @@ namespace DevilDaggersWebsite.Razor.Pages.Admin.AssetMods
 		public List<SelectListItem> AuthorSelectList { get; }
 
 		[BindProperty]
-		public AssetMod AssetMod { get; set; }
+		public AssetMod AssetMod { get; set; } = null!;
 
 		[BindProperty]
-		public List<int> AuthorIds { get; set; }
+		public List<int> AuthorIds { get; set; } = new();
 
 		public IActionResult OnGet() => Page();
 
@@ -44,10 +44,10 @@ namespace DevilDaggersWebsite.Razor.Pages.Admin.AssetMods
 			if (!ModelState.IsValid)
 				return Page();
 
-			AssetMod.PlayerAssetMods = AuthorIds.Select(id => new PlayerAssetMod { AssetModId = AssetMod.Id, PlayerId = id }).ToList();
+			AssetMod.PlayerAssetMods = AuthorIds.ConvertAll(id => new PlayerAssetMod { AssetModId = AssetMod.Id, PlayerId = id });
 
-			_context.AssetMods.Add(AssetMod);
-			await _context.SaveChangesAsync();
+			_dbContext.AssetMods.Add(AssetMod);
+			await _dbContext.SaveChangesAsync();
 
 			return RedirectToPage("./Index");
 		}

@@ -11,11 +11,11 @@ namespace DevilDaggersWebsite.Razor.Pages.CustomLeaderboards
 {
 	public class IndexModel : PageModel
 	{
-		private readonly ApplicationDbContext _context;
+		private readonly ApplicationDbContext _dbContext;
 
-		public IndexModel(ApplicationDbContext context)
+		public IndexModel(ApplicationDbContext dbContext)
 		{
-			_context = context;
+			_dbContext = dbContext;
 
 			foreach (CustomLeaderboardCategory e in (CustomLeaderboardCategory[])Enum.GetValues(typeof(CustomLeaderboardCategory)))
 			{
@@ -27,13 +27,13 @@ namespace DevilDaggersWebsite.Razor.Pages.CustomLeaderboards
 		public List<SelectListItem> CategoryListItems { get; } = new();
 
 		public CustomLeaderboardCategory Category { get; private set; }
-		public List<CustomLeaderboard> Leaderboards { get; private set; }
+		public List<CustomLeaderboard> Leaderboards { get; private set; } = null!;
 
 		public void OnGet(CustomLeaderboardCategory category = CustomLeaderboardCategory.Default)
 		{
 			Category = category;
 
-			Leaderboards = _context.CustomLeaderboards.Where(cl => cl.Category == category).Include(cl => cl.SpawnsetFile).ThenInclude(sf => sf.Player).ToList();
+			Leaderboards = _dbContext.CustomLeaderboards.Where(cl => cl.Category == category).Include(cl => cl.SpawnsetFile).ThenInclude(sf => sf.Player).ToList();
 		}
 	}
 }

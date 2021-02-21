@@ -12,11 +12,11 @@ namespace DevilDaggersWebsite.Razor.Pages.Admin.CustomLeaderboards
 {
 	public class CreateModel : PageModel
 	{
-		private readonly ApplicationDbContext _context;
+		private readonly ApplicationDbContext _dbContext;
 
-		public CreateModel(ApplicationDbContext context)
+		public CreateModel(ApplicationDbContext dbContext)
 		{
-			_context = context;
+			_dbContext = dbContext;
 
 			CategoryList = RazorUtils.EnumToSelectList<CustomLeaderboardCategory>();
 		}
@@ -24,11 +24,11 @@ namespace DevilDaggersWebsite.Razor.Pages.Admin.CustomLeaderboards
 		public List<SelectListItem> CategoryList { get; }
 
 		[BindProperty]
-		public CustomLeaderboard CustomLeaderboard { get; set; }
+		public CustomLeaderboard CustomLeaderboard { get; set; } = null!;
 
 		public IActionResult OnGet()
 		{
-			ViewData["SpawnsetFileId"] = new SelectList(_context.SpawnsetFiles, "Id", "Name");
+			ViewData["SpawnsetFileId"] = new SelectList(_dbContext.SpawnsetFiles, "Id", "Name");
 			return Page();
 		}
 
@@ -43,8 +43,8 @@ namespace DevilDaggersWebsite.Razor.Pages.Admin.CustomLeaderboards
 				return Page();
 
 			CustomLeaderboard.DateCreated = DateTime.Now;
-			_context.CustomLeaderboards.Add(CustomLeaderboard);
-			await _context.SaveChangesAsync();
+			_dbContext.CustomLeaderboards.Add(CustomLeaderboard);
+			await _dbContext.SaveChangesAsync();
 
 			return RedirectToPage("./Index");
 		}

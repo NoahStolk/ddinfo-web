@@ -25,7 +25,7 @@ namespace DevilDaggersWebsite.Api
 	{
 		private static readonly bool _enableData;
 
-		private readonly ApplicationDbContext _context;
+		private readonly ApplicationDbContext _dbContext;
 		private readonly IWebHostEnvironment _env;
 		private readonly ToolHelper _toolHelper;
 
@@ -33,7 +33,7 @@ namespace DevilDaggersWebsite.Api
 
 		public CustomLeaderboardsController(ApplicationDbContext dbContext, IWebHostEnvironment env, ToolHelper toolHelper)
 		{
-			_context = dbContext;
+			_dbContext = dbContext;
 			_env = env;
 			_toolHelper = toolHelper;
 
@@ -44,7 +44,7 @@ namespace DevilDaggersWebsite.Api
 		[ProducesResponseType(StatusCodes.Status200OK)]
 		public ActionResult<List<Dto.CustomLeaderboard>> GetCustomLeaderboards()
 		{
-			return _context.CustomLeaderboards
+			return _dbContext.CustomLeaderboards
 				.AsNoTracking()
 				.Include(cl => cl.SpawnsetFile)
 					.ThenInclude(sf => sf.Player)
@@ -57,7 +57,7 @@ namespace DevilDaggersWebsite.Api
 		[ProducesResponseType(StatusCodes.Status404NotFound)]
 		public ActionResult<Dto.CustomLeaderboard> GetCustomLeaderboard(int id)
 		{
-			CustomLeaderboard? customLeaderboard = _context.CustomLeaderboards
+			CustomLeaderboard? customLeaderboard = _dbContext.CustomLeaderboards
 				.AsNoTracking()
 				.Include(cl => cl.SpawnsetFile)
 					.ThenInclude(sf => sf.Player)
@@ -165,7 +165,7 @@ namespace DevilDaggersWebsite.Api
 				return new BadRequestObjectResult(new ProblemDetails { Title = errorMessage });
 			}
 
-			CustomLeaderboard? customLeaderboard = _context.CustomLeaderboards.Include(cl => cl.SpawnsetFile).ThenInclude(sf => sf.Player).FirstOrDefault(cl => cl.SpawnsetFile.Name == spawnsetName);
+			CustomLeaderboard? customLeaderboard = _dbContext.CustomLeaderboards.Include(cl => cl.SpawnsetFile).ThenInclude(sf => sf.Player).FirstOrDefault(cl => cl.SpawnsetFile.Name == spawnsetName);
 			if (customLeaderboard == null)
 			{
 				const string errorMessage = "This spawnset exists on DevilDaggers.info, but doesn't have a leaderboard.";
@@ -183,7 +183,7 @@ namespace DevilDaggersWebsite.Api
 			// At this point, the submission is accepted.
 
 			// Add the player or update the username.
-			Player? player = _context.Players.FirstOrDefault(p => p.Id == uploadRequest.PlayerId);
+			Player? player = _dbContext.Players.FirstOrDefault(p => p.Id == uploadRequest.PlayerId);
 			if (player == null)
 			{
 				player = new Player
@@ -191,7 +191,7 @@ namespace DevilDaggersWebsite.Api
 					Id = uploadRequest.PlayerId,
 					PlayerName = await GetUsername(uploadRequest),
 				};
-				_context.Players.Add(player);
+				_dbContext.Players.Add(player);
 			}
 			else
 			{
@@ -203,29 +203,29 @@ namespace DevilDaggersWebsite.Api
 			customLeaderboard.TotalRunsSubmitted++;
 
 			// Calculate the new rank.
-			IEnumerable<CustomEntry> entries = _context.CustomEntries.Where(e => e.CustomLeaderboard == customLeaderboard).OrderByMember(nameof(CustomEntry.Time), customLeaderboard.IsAscending()).ToArray();
+			IEnumerable<CustomEntry> entries = _dbContext.CustomEntries.Where(e => e.CustomLeaderboard == customLeaderboard).OrderByMember(nameof(CustomEntry.Time), customLeaderboard.IsAscending()).ToArray();
 
 			int rank = customLeaderboard.IsAscending() ? entries.Count(e => e.Time < uploadRequest.Time) + 1 : entries.Count(e => e.Time > uploadRequest.Time) + 1;
 			int totalPlayers = entries.Count();
 
-			CustomEntry? customEntry = _context.CustomEntries.FirstOrDefault(e => e.PlayerId == uploadRequest.PlayerId && e.CustomLeaderboardId == customLeaderboard.Id);
+			CustomEntry? customEntry = _dbContext.CustomEntries.FirstOrDefault(e => e.PlayerId == uploadRequest.PlayerId && e.CustomLeaderboardId == customLeaderboard.Id);
 			if (customEntry == null)
 			{
 				// Add new custom entry to this leaderboard.
 				CustomEntry newCustomEntry = uploadRequest.ToCustomEntryEntity(customLeaderboard);
-				_context.CustomEntries.Add(newCustomEntry);
+				_dbContext.CustomEntries.Add(newCustomEntry);
 
 				if (_enableData)
 				{
 					CustomEntryData newCustomEntryData = new() { CustomEntryId = newCustomEntry.Id, };
 					newCustomEntryData.Populate(uploadRequest.GameStates);
-					_context.CustomEntryData.Add(newCustomEntryData);
+					_dbContext.CustomEntryData.Add(newCustomEntryData);
 				}
 
-				_context.SaveChanges();
+				_dbContext.SaveChanges();
 
 				// Fetch the entries again after having modified the leaderboard.
-				entries = _context.CustomEntries.Where(e => e.CustomLeaderboard == customLeaderboard).OrderByMember(nameof(CustomEntry.Time), customLeaderboard.IsAscending());
+				entries = _dbContext.CustomEntries.Where(e => e.CustomLeaderboard == customLeaderboard).OrderByMember(nameof(CustomEntry.Time), customLeaderboard.IsAscending());
 				totalPlayers = entries.Count();
 
 				await TryLog(uploadRequest, spawnsetName);
@@ -258,10 +258,10 @@ namespace DevilDaggersWebsite.Api
 			// User is already on the leaderboard, but did not get a better score.
 			if (customLeaderboard.IsAscending() && customEntry.Time <= uploadRequest.Time || !customLeaderboard.IsAscending() && customEntry.Time >= uploadRequest.Time)
 			{
-				_context.SaveChanges();
+				_dbContext.SaveChanges();
 
 				// Fetch the entries again after having modified the leaderboard.
-				entries = _context.CustomEntries.Where(e => e.CustomLeaderboard == customLeaderboard).OrderByMember(nameof(CustomEntry.Time), customLeaderboard.IsAscending()).ToArray();
+				entries = _dbContext.CustomEntries.Where(e => e.CustomLeaderboard == customLeaderboard).OrderByMember(nameof(CustomEntry.Time), customLeaderboard.IsAscending()).ToArray();
 
 				await TryLog(uploadRequest, spawnsetName);
 				return new Dto.UploadSuccess
@@ -317,7 +317,7 @@ namespace DevilDaggersWebsite.Api
 			// Update the entry data.
 			if (_enableData)
 			{
-				CustomEntryData? customEntryData = _context.CustomEntryData.FirstOrDefault(ced => ced.CustomEntryId == customEntry.Id);
+				CustomEntryData? customEntryData = _dbContext.CustomEntryData.FirstOrDefault(ced => ced.CustomEntryId == customEntry.Id);
 				if (customEntryData == null)
 				{
 					customEntryData = new()
@@ -325,7 +325,7 @@ namespace DevilDaggersWebsite.Api
 						CustomEntryId = customEntry.Id,
 					};
 					customEntryData.Populate(uploadRequest.GameStates);
-					_context.CustomEntryData.Add(customEntryData);
+					_dbContext.CustomEntryData.Add(customEntryData);
 				}
 				else
 				{
@@ -333,10 +333,10 @@ namespace DevilDaggersWebsite.Api
 				}
 			}
 
-			_context.SaveChanges();
+			_dbContext.SaveChanges();
 
 			// Fetch the entries again after having modified the leaderboard.
-			entries = _context.CustomEntries.Where(e => e.CustomLeaderboard == customLeaderboard).OrderByMember(nameof(CustomEntry.Time), customLeaderboard.IsAscending()).ToArray();
+			entries = _dbContext.CustomEntries.Where(e => e.CustomLeaderboard == customLeaderboard).OrderByMember(nameof(CustomEntry.Time), customLeaderboard.IsAscending()).ToArray();
 
 			await TryLog(uploadRequest, spawnsetName);
 			return new Dto.UploadSuccess

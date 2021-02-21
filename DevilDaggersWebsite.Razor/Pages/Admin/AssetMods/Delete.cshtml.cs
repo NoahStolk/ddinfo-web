@@ -10,13 +10,13 @@ namespace DevilDaggersWebsite.Razor.Pages.Admin.AssetMods
 	{
 		private readonly ApplicationDbContext _dbcontext;
 
-		public DeleteModel(ApplicationDbContext context)
+		public DeleteModel(ApplicationDbContext dbContext)
 		{
-			_dbcontext = context;
+			_dbcontext = dbContext;
 		}
 
 		[BindProperty]
-		public AssetMod AssetMod { get; set; }
+		public AssetMod AssetMod { get; set; } = null!;
 
 		public async Task<IActionResult> OnGetAsync(int? id)
 		{

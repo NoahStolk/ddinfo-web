@@ -11,11 +11,11 @@ namespace DevilDaggersWebsite.Razor.Pages.Admin.Donations
 {
 	public class CreateModel : PageModel
 	{
-		private readonly ApplicationDbContext _context;
+		private readonly ApplicationDbContext _dbContext;
 
-		public CreateModel(ApplicationDbContext context)
+		public CreateModel(ApplicationDbContext dbContext)
 		{
-			_context = context;
+			_dbContext = dbContext;
 
 			CurrencyList = RazorUtils.EnumToSelectList<Currency>();
 		}
@@ -23,7 +23,7 @@ namespace DevilDaggersWebsite.Razor.Pages.Admin.Donations
 		public List<SelectListItem> CurrencyList { get; }
 
 		[BindProperty]
-		public Donation Donation { get; set; }
+		public Donation Donation { get; set; } = null!;
 
 		public IActionResult OnGet() => Page();
 
@@ -32,8 +32,8 @@ namespace DevilDaggersWebsite.Razor.Pages.Admin.Donations
 			if (!ModelState.IsValid)
 				return Page();
 
-			_context.Donations.Add(Donation);
-			await _context.SaveChangesAsync();
+			_dbContext.Donations.Add(Donation);
+			await _dbContext.SaveChangesAsync();
 
 			return RedirectToPage("./Index");
 		}

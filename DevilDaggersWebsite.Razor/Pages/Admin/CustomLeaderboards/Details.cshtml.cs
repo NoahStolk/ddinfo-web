@@ -8,21 +8,21 @@ namespace DevilDaggersWebsite.Razor.Pages.Admin.CustomLeaderboards
 {
 	public class DetailsModel : PageModel
 	{
-		private readonly ApplicationDbContext _context;
+		private readonly ApplicationDbContext _dbContext;
 
-		public DetailsModel(ApplicationDbContext context)
+		public DetailsModel(ApplicationDbContext dbContext)
 		{
-			_context = context;
+			_dbContext = dbContext;
 		}
 
-		public CustomLeaderboard CustomLeaderboard { get; set; }
+		public CustomLeaderboard CustomLeaderboard { get; set; } = null!;
 
 		public async Task<IActionResult> OnGetAsync(int? id)
 		{
 			if (id == null)
 				return NotFound();
 
-			CustomLeaderboard = await _context.CustomLeaderboards.Include(c => c.SpawnsetFile).FirstOrDefaultAsync(m => m.Id == id);
+			CustomLeaderboard = await _dbContext.CustomLeaderboards.Include(c => c.SpawnsetFile).FirstOrDefaultAsync(m => m.Id == id);
 
 			if (CustomLeaderboard == null)
 				return NotFound();

@@ -13,11 +13,11 @@ namespace DevilDaggersWebsite.Razor.Pages.Admin.Donations
 {
 	public class EditModel : PageModel
 	{
-		private readonly ApplicationDbContext _context;
+		private readonly ApplicationDbContext _dbContext;
 
-		public EditModel(ApplicationDbContext context)
+		public EditModel(ApplicationDbContext dbContext)
 		{
-			_context = context;
+			_dbContext = dbContext;
 
 			CurrencyList = RazorUtils.EnumToSelectList<Currency>();
 		}
@@ -25,14 +25,14 @@ namespace DevilDaggersWebsite.Razor.Pages.Admin.Donations
 		public List<SelectListItem> CurrencyList { get; }
 
 		[BindProperty]
-		public Donation Donation { get; set; }
+		public Donation Donation { get; set; } = null!;
 
 		public async Task<IActionResult> OnGetAsync(int? id)
 		{
 			if (id == null)
 				return NotFound();
 
-			Donation = await _context.Donations.FirstOrDefaultAsync(m => m.Id == id);
+			Donation = await _dbContext.Donations.FirstOrDefaultAsync(m => m.Id == id);
 
 			if (Donation == null)
 				return NotFound();
@@ -44,11 +44,11 @@ namespace DevilDaggersWebsite.Razor.Pages.Admin.Donations
 			if (!ModelState.IsValid)
 				return Page();
 
-			_context.Attach(Donation).State = EntityState.Modified;
+			_dbContext.Attach(Donation).State = EntityState.Modified;
 
 			try
 			{
-				await _context.SaveChangesAsync();
+				await _dbContext.SaveChangesAsync();
 			}
 			catch (DbUpdateConcurrencyException) when (!DonationExists(Donation.Id))
 			{
@@ -59,6 +59,6 @@ namespace DevilDaggersWebsite.Razor.Pages.Admin.Donations
 		}
 
 		private bool DonationExists(int id)
-			=> _context.Donations.Any(e => e.Id == id);
+			=> _dbContext.Donations.Any(e => e.Id == id);
 	}
 }
