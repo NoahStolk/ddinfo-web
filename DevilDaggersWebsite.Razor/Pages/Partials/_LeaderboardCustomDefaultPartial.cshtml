@@ -58,7 +58,6 @@
 				<div class="sort" @entry.ToHtmlData(rank, player?.PlayerName ?? "Player not found", flagCode)>
 					<div class="leaderboard-row flex-container" id="@(rank)-row">
 						<div class="text-right">
-							<span data-toggle="tooltip" title="ID: @entry.PlayerId" class="leaderboard-tooltip">@rank</span>
 						</div>
 						<div>
 							@if (string.IsNullOrEmpty(flagCode))
@@ -69,6 +68,7 @@
 							{
 								<span class="leaderboard-tooltip" data-toggle="tooltip" title="@UserUtils.CountryNames[flagCode]"><img src="/images/Flags/24x24/@(flagCode).png" /></span>
 							}
+							<span data-toggle="tooltip" title="ID: @entry.PlayerId (click to copy)" onclick="copyToClipboard('@entry.PlayerId')" class="leaderboard-tooltip">@rank</span>
 						</div>
 						<div class="text-left leaderboard-username">
 							@{

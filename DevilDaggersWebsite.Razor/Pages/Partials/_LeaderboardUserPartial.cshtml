@@ -100,7 +100,7 @@
 						<div class="text-right">
 							@if (entry.Id != 0)
 							{
-								<span data-toggle="tooltip" title="ID: @entry.Id" class="leaderboard-tooltip">@rank</span>
+								<span data-toggle="tooltip" title="ID: @entry.Id (click to copy)" onclick="copyToClipboard('@entry.Id')" class="leaderboard-tooltip">@rank</span>
 							}
 							else
 							{
