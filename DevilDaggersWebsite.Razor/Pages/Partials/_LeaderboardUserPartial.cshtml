@@ -96,7 +96,7 @@
 				HtmlString timeByDeath = entry.DeathsTotal == 0 ? RazorUtils.NAString : new((entry.Time / (float)entry.DeathsTotal).ToString(FormatUtils.LeaderboardTimeLargeFormat));
 
 				<div class="sort @banString" @entry.ToHtmlData(flagCode)>
-					<div class="leaderboard-row @(showMoreStats ? "row-more-stats" : "") flex-container" id="@(entry.Rank)-row">
+					<div class="leaderboard-row pointer @(showMoreStats ? "row-more-stats" : "") flex-container" id="@(entry.Rank)-row">
 						<div class="text-right">
 							@if (entry.Id != 0)
 							{

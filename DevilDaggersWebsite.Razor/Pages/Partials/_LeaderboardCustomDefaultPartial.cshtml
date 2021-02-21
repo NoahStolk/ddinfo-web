@@ -67,7 +67,7 @@
 				CustomEntryModel cem = new(rank, entry, Model.Leaderboard!, player, donations);
 
 				<div class="sort" @cem.HtmlData>
-					<div class="leaderboard-row flex-container" id="@(rank)-row">
+					<div class="leaderboard-row pointer flex-container" id="@(rank)-row">
 						<div class="text-right">
 							<span data-toggle="tooltip" title="ID: @entry.PlayerId (click to copy)" onclick="copyToClipboard('@entry.PlayerId')" class="leaderboard-tooltip">@rank</span>
 						</div>

@@ -2,7 +2,7 @@
 @using DevilDaggersCore.Extensions
 @using DevilDaggersCore.Utils
 @using DevilDaggersWebsite.Entities
-@using DevilDaggersWebsite.Razor.Extensions
+@using DevilDaggersWebsite.Razor.Models
 @using DevilDaggersWebsite.Razor.Utils
 @using System.Linq
 @inject DevilDaggersWebsite.Entities.ApplicationDbContext dbContext
@@ -15,119 +15,46 @@
 	}
 }
 
-<table class="custom-leaderboard-table">
-	<thead>
-		<tr>
-			<th width="300">
-				Spawnset name
-			</th>
-			<th width="200">
-				Spawnset author
-			</th>
-			<th class="hidden-xs" width="100">
-				Players
-			</th>
-			<th class="hidden-xs" width="150">
-				Total submits <span style="cursor: pointer;" class="text-right devil" data-toggle="tooltip" data-placement="top" title="Data has only been collected since 25 Aug 2020, and will not be correct for leaderboards that were created prior to this date.">?</span>
-			</th>
-			<th class="hidden-xs" width="200">
-				Last played
-			</th>
-			<th class="hidden-xs" width="150">
-				Created
-			</th>
-			<th class="hidden-xs hidden-sm hidden-md" width="100">
-				Bronze
-			</th>
-			<th class="hidden-xs hidden-sm hidden-md" width="100">
-				Silver
-			</th>
-			<th class="hidden-xs hidden-sm hidden-md" width="100">
-				Golden
-			</th>
-			<th class="hidden-xs hidden-sm hidden-md" width="100">
-				Devil
-			</th>
-			<th class="hidden-xs hidden-sm hidden-md" width="100">
-				Leviathan
-			</th>
-			<th class="hidden-xs hidden-sm hidden-md" width="200" colspan="2">
-				World record
-			</th>
-		</tr>
-	</thead>
-	<tbody>
+<div class="leaderboard-container flex-container flex-center">
+	<div class="leaderboard-title-row flex-container">
+		<div class="sorter text-left" sort="name">Spawnset name</div>
+		<div class="sorter hidden-xs text-right" sort="players">Players</div>
+		<div class="sorter hidden-xs text-right" sort="submits">Submits <span style="cursor: pointer;" class="text-right devil" data-toggle="tooltip" data-placement="top" title="Data has only been collected since 25 Aug 2020, and will not be correct for leaderboards that were created prior to this date.">?</span></div>
+		<div class="sorter hidden-xs text-right date" sort="last-played">Last played</div>
+		<div class="sorter hidden-xs text-right date" sort="created">Created</div>
+		<div class="sorter hidden-xs hidden-sm hidden-md text-right" sort="bronze">Bronze</div>
+		<div class="sorter hidden-xs hidden-sm hidden-md text-right" sort="silver">Silver</div>
+		<div class="sorter hidden-xs hidden-sm hidden-md text-right" sort="golden">Golden</div>
+		<div class="sorter hidden-xs hidden-sm hidden-md text-right" sort="devil">Devil</div>
+		<div class="sorter hidden-xs hidden-sm hidden-md text-right" sort="leviathan">Leviathan</div>
+		<div class="sorter hidden-xs hidden-sm hidden-md text-right" sort="world-record">WR</div>
+	</div>
+	<div class="leaderboard-body">
 		@{
 			foreach (CustomLeaderboard lb in Model)
 			{
-				string fileName = lb.SpawnsetFile.Name;
-				string author = lb.SpawnsetFile.Player.PlayerName;
 				List<CustomEntry> entries = dbContext.CustomEntries
-					.Where(e => e.CustomLeaderboard == lb)
-					.OrderByMember(nameof(CustomEntry.Time), lb.IsAscending())
-					.ThenByMember(nameof(CustomEntry.SubmitDate), true)
-					.ToList();
-				string wrDagger = string.Empty;
-				if (entries.Count > 0)
-				{
-					wrDagger = lb.GetDagger(entries[0].Time);
-				}
-				<tr>
-					<td class="leaderboard-spawnset-name">
-						<a asp-page="/CustomLeaderboards/Leaderboard" asp-route-spawnsetName="@fileName">@fileName</a>
-					</td>
-					<td>
-						<a asp-page="/Spawnsets" asp-route-SearchAuthor="@author">@author</a>
-					</td>
-					<td class="text-right hidden-xs">
-						@dbContext.CustomEntries.Count(e => e.CustomLeaderboardId == lb.Id)
-					</td>
-					<td class="text-right hidden-xs">
-						@lb.TotalRunsSubmitted
-					</td>
-					<td class="text-right hidden-xs">
-						@(lb.DateLastPlayed.HasValue ? Html.Raw(lb.DateLastPlayed.Value.ToString("dd MMM yyyy, HH:mm")) : RazorUtils.NAString)
-					</td>
-					<td class="text-right hidden-xs">
-						@(lb.DateCreated.HasValue ? Html.Raw(lb.DateCreated.Value.ToString("dd MMM yyyy")) : RazorUtils.NAString)
-					</td>
-					<td class="text-right hidden-xs hidden-sm hidden-md bronze">
-						@(lb.TimeBronze.FormatTimeInteger())
-					</td>
-					<td class="text-right hidden-xs hidden-sm hidden-md silver">
-						@(lb.TimeSilver.FormatTimeInteger())
-					</td>
-					<td class="text-right hidden-xs hidden-sm hidden-md golden">
-						@(lb.TimeGolden.FormatTimeInteger())
-					</td>
-					<td class="text-right hidden-xs hidden-sm hidden-md devil">
-						@(lb.TimeDevil.FormatTimeInteger())
-					</td>
-					<td class="text-right hidden-xs hidden-sm hidden-md leviathan">
-						@(lb.TimeLeviathan.FormatTimeInteger())
-					</td>
-					<td class="@wrDagger hidden-xs hidden-sm hidden-md leaderboard-username">
-						@{
-							if (entries.Count == 0)
-							{
-								@:@RazorUtils.NAString
-							}
-							else
-							{
-								@(dbContext.Players.FirstOrDefault(p => p.Id == entries[0].PlayerId)?.PlayerName ?? "[Player not found]")
-							}
-						}
-					</td>
-					<td class="text-right hidden-xs hidden-sm hidden-md @wrDagger">
-						@{
-							if (entries.Count > 0)
-							{
-								@(entries[0].Time.FormatTimeInteger())
-							}
-						}
-					</td>
-				</tr>
+				   .Where(e => e.CustomLeaderboard == lb)
+				   .OrderByMember(nameof(CustomEntry.Time), lb.IsAscending())
+				   .ThenByMember(nameof(CustomEntry.SubmitDate), true)
+				   .ToList();
+				CustomLeaderboardModel clm = new(lb, entries);
+				<div class="sort" @clm.HtmlData>
+					<div class="leaderboard-row flex-container">
+						<div class="text-left"><a asp-page="/CustomLeaderboards/Leaderboard" asp-route-spawnsetName="@clm.SpawnsetName">@clm.SpawnsetName</a></div>
+						<div class="hidden-xs text-right">@entries.Count</div>
+						<div class="hidden-xs text-right">@lb.TotalRunsSubmitted</div>
+						<div class="hidden-xs text-right date">@clm.DateLastPlayed</div>
+						<div class="hidden-xs text-right date">@clm.DateCreated</div>
+						<div class="hidden-xs hidden-sm hidden-md text-right bronze">@clm.TimeBronze.FormatTimeInteger()</div>
+						<div class="hidden-xs hidden-sm hidden-md text-right silver">@clm.TimeSilver.FormatTimeInteger()</div>
+						<div class="hidden-xs hidden-sm hidden-md text-right golden">@clm.TimeGolden.FormatTimeInteger()</div>
+						<div class="hidden-xs hidden-sm hidden-md text-right devil">@clm.TimeDevil.FormatTimeInteger()</div>
+						<div class="hidden-xs hidden-sm hidden-md text-right leviathan">@clm.TimeLeviathan.FormatTimeInteger()</div>
+						<div class="hidden-xs hidden-sm hidden-md text-right @clm.WorldRecordDagger">@clm.WorldRecord</div>
+					</div>
+				</div>
 			}
 		}
-	</tbody>
-</table>
+	</div>
+</div>

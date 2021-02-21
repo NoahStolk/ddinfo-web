@@ -38,8 +38,11 @@
 	margin-left: 2px;
 }
 
-.leaderboard-row,
 .sorter:hover {
+	cursor: pointer;
+}
+
+.pointer {
 	cursor: pointer;
 }
 

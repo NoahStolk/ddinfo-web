@@ -46,7 +46,7 @@
 				string deathStyle = $"color: #{death?.ColorCode ?? "444"};";
 
 				<div class="sort" @entry.ToHtmlData(flagCode, player)>
-					<div class="leaderboard-row flex-container" id="@(entry.Rank)-row">
+					<div class="leaderboard-row pointer flex-container" id="@(entry.Rank)-row">
 						<div class="text-right"><span data-toggle="tooltip" title="ID: @entry.Id (click to copy)" onclick="copyToClipboard('@entry.Id')" class="leaderboard-tooltip">@entry.Rank</span></div>
 						<div>
 							@if (string.IsNullOrEmpty(flagCode))
