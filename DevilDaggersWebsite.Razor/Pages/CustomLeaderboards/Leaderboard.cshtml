@@ -5,7 +5,13 @@
 @model DevilDaggersWebsite.Razor.Pages.CustomLeaderboards.LeaderboardModel
 @{
 	string name = Model.SpawnsetFile?.Name ?? throw new Exception("Spawnset was null in CustomLeaderboards/Leaderboard page.");
-	ViewData["Title"] = $"Leaderboard for {name} by {Model.SpawnsetFile.Player.Username}";
+	ViewData["Title"] = $"Leaderboard for {name} by {Model.SpawnsetFile.Player.PlayerName}";
+
+	List<(string DaggerName, string DisplaySeconds)> daggerInfo = new();
+	for (int i = 0; i < 5; i++)
+	{
+		daggerInfo.Add(Model.GetDaggerInfo(i));
+	}
 }
 
 <header>
@@ -22,23 +28,43 @@
 			if (!string.IsNullOrEmpty(Model.SpawnsetFile.HtmlDescription))
 			{
 				<div class="description">
-					@RazorUtils.GetLayout(Model.SpawnsetFile.HtmlDescription, GameVersion.V3)
+					@RazorUtils.GetLayout(Model.SpawnsetFile.HtmlDescription, GameVersion.V31)
 				</div>
 			}
 		}
 
-		<div style="flex-direction: column; width: 200px; margin: auto;">
-			@{
-				for (int i = 0; i < (Model.Leaderboard.Homing == 0 ? 4 : 5); i++)
+		<div class="hidden-xs text-center">
+			<div class="flex-container flex-center flex-space-evenly" style="margin: 12px;">
+				@for (int i = 0; i < 5; i++)
 				{
-					(string daggerName, string seconds) = Model.GetDaggerInfo(i);
+					(string daggerName, string seconds) = daggerInfo[i];
 
-					<div class="flex-container" style="padding-bottom: 4px;">
+					<div>
 						<div><img src="~/Images/Daggers/@(daggerName)Small.png" /></div>
-						<div class="@daggerName.ToLower() text-right" style="width: 100%;">@seconds</div>
+						<div class="@daggerName.ToLower() text-center" style="width: 100%;">@seconds</div>
 					</div>
 				}
-			}
+			</div>
+		</div>
+		<div class="visible-xs">
+			<div class="flex-container flex-center">
+				<div class="mobile-left" style="padding-right: 8px;">
+					@for (int i = 0; i < 5; i++)
+					{
+						(string daggerName, _) = daggerInfo[i];
+
+						<div>@daggerName</div>
+					}
+				</div>
+				<div class="mobile-right" style="padding-left: 8px;">
+					@for (int i = 0; i < 5; i++)
+					{
+						(string daggerName, string displaySeconds) = daggerInfo[i];
+
+						<div class="@daggerName.ToLower() text-right">@displaySeconds</div>
+					}
+				</div>
+			</div>
 		</div>
 
 		<p class="visible-xs visible-sm visible-md">
@@ -57,7 +83,7 @@
 
 @section Styles {
 	<link rel='stylesheet' href='~/styles/leaderboard.css' />
-	@if (Model.Leaderboard.Category == CustomLeaderboardCategory.Challenge)
+	@if (Model.Leaderboard!.Category == CustomLeaderboardCategory.Challenge)
 	{
 		<link rel='stylesheet' href='~/styles/leaderboard-rows-custom-challenge.css' />
 	}

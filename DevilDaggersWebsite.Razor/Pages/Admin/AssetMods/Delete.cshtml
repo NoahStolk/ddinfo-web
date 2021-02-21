@@ -34,7 +34,7 @@
 			Authors
 		</dt>
 		<dd>
-			@(string.Join(", ", Model.AssetMod.PlayerAssetMods.Select(pam => pam.Player.Username).OrderBy(s => s)))
+			@(string.Join(", ", Model.AssetMod.PlayerAssetMods.Select(pam => pam.Player.PlayerName).OrderBy(s => s)))
 		</dd>
 		<dt>
 			@Html.DisplayNameFor(model => model.AssetMod.Url)

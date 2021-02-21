@@ -9,6 +9,6 @@ namespace DevilDaggersWebsite.Dto
 
 		public DateTime Date { get; set; }
 
-		public IReadOnlyList<Change> Changes { get; set; } = null!;
+		public IReadOnlyList<Change> Changes { get; set; } = new List<Change>();
 	}
 }

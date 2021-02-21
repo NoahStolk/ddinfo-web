@@ -11,11 +11,11 @@ namespace DevilDaggersWebsite.Dto
 
 		public DateTime LastUpdated { get; set; }
 
-		public SpawnsetData SpawnsetData { get; set; }
+		public SpawnsetData SpawnsetData { get; set; } = null!;
 
-		public string Name { get; set; }
+		public string Name { get; set; } = null!;
 
-		public string AuthorName { get; set; }
+		public string AuthorName { get; set; } = null!;
 
 		public bool HasCustomLeaderboard { get; set; }
 	}

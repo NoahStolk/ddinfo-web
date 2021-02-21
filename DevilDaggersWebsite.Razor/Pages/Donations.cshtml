@@ -22,12 +22,12 @@
 		I've built this website and the tools that come with it entirely in my free time. If you appreciate the work I've done, or want to support hosting and domain costs for the website, you can consider <a href="http://paypal.me/NoahStolk">donating via PayPal</a>. Please be sure to include your leaderboard username, rank, or user ID (user ID can be found by hovering over your rank number on the <a asp-page="./Leaderboard/Index">Leaderboard</a> page), so I can add you to the list of donators below, or if you prefer to stay anonymous, an alias or no name at all is fine too.
 	</p>
 	<p>
-		Thanks to everyone who donated.
+		Thanks to everyone who donated!
 	</p>
 	<p>
-		@foreach (Dagger dagger in GameInfo.GetEntities<Dagger>(GameVersion.V3))
+		@foreach (Dagger dagger in GameInfo.GetEntities<Dagger>(GameVersion.V31))
 		{
-			<img src="~/Images/Daggers/@(dagger.Name)Small.png" />
+			<img src="~/Images/Daggers/@(dagger.Name)Small.png" style="margin: 8px;" />
 		}
 	</p>
 
@@ -44,7 +44,7 @@
 						foreach (KeyValuePair<int, int> kvp in donators.Skip(i).Take(interval))
 						{
 							Player donator = dbContext.Players.First(d => d.Id == kvp.Key);
-							string username = donator.IsAnonymous ? "(anonymous)" : donator.Username;
+							string username = donator.IsAnonymous ? "(anonymous)" : donator.PlayerName;
 
 							List<string> donationsGroupedByCurrency = new();
 							foreach (var donations in Model.Donations.Where(d => !d.IsRefunded && d.PlayerId == kvp.Key).GroupBy(d => d.Currency))

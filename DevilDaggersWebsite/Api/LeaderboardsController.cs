@@ -2,11 +2,8 @@
 using DevilDaggersWebsite.Dto;
 using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
-using System;
 using System.Collections.Generic;
 using System.ComponentModel.DataAnnotations;
-using System.Globalization;
-using System.Net.Http;
 using System.Threading.Tasks;
 
 namespace DevilDaggersWebsite.Api
@@ -30,43 +27,10 @@ namespace DevilDaggersWebsite.Api
 		[ProducesResponseType(StatusCodes.Status400BadRequest)]
 		public async Task<ActionResult<Entry>> GetUserById([Required] int userId)
 		{
-			try
-			{
-				List<KeyValuePair<string?, string?>> postValues = new()
-				{
-					new("uid", userId.ToString(CultureInfo.InvariantCulture)),
-				};
-
-				using FormUrlEncodedContent content = new(postValues);
-				using HttpClient client = new();
-				HttpResponseMessage response = await client.PostAsync(DdHasmodaiClient.GetUserByIdUrl, content);
-				byte[] data = await response.Content.ReadAsByteArrayAsync();
-
-				int bytePosition = 19;
-
-				return new Entry
-				{
-					Username = DdHasmodaiClient.GetUsername(data, ref bytePosition),
-					Rank = BitConverter.ToInt32(data, bytePosition),
-					Id = BitConverter.ToInt32(data, bytePosition + 4),
-					Time = BitConverter.ToInt32(data, bytePosition + 12),
-					Kills = BitConverter.ToInt32(data, bytePosition + 16),
-					Gems = BitConverter.ToInt32(data, bytePosition + 28),
-					DaggersHit = BitConverter.ToInt32(data, bytePosition + 24),
-					DaggersFired = BitConverter.ToInt32(data, bytePosition + 20),
-					DeathType = BitConverter.ToInt16(data, bytePosition + 32),
-					TimeTotal = BitConverter.ToUInt64(data, bytePosition + 60),
-					KillsTotal = BitConverter.ToUInt64(data, bytePosition + 44),
-					GemsTotal = BitConverter.ToUInt64(data, bytePosition + 68),
-					DeathsTotal = BitConverter.ToUInt64(data, bytePosition + 36),
-					DaggersHitTotal = BitConverter.ToUInt64(data, bytePosition + 76),
-					DaggersFiredTotal = BitConverter.ToUInt64(data, bytePosition + 52),
-				};
-			}
-			catch
-			{
-				return new NotFoundObjectResult(new ProblemDetails { Title = $"Entry with {nameof(userId)} '{userId}' was not found." });
-			}
+			Entry? entry = await DdHasmodaiClient.GetUserById(userId);
+			return entry == null
+				? new NotFoundObjectResult(new ProblemDetails { Title = $"Entry with {nameof(userId)} '{userId}' was not found." })
+				: (ActionResult<Entry>)entry;
 		}
 
 		[HttpGet("user/by-username")]
@@ -77,7 +41,7 @@ namespace DevilDaggersWebsite.Api
 			if (string.IsNullOrEmpty(username) || username.Length < 3)
 				return new BadRequestObjectResult(new ProblemDetails { Title = $"Incorrect parameter {nameof(username)} '{username}' specified. Value should be at least 3 characters in length." });
 
-			return (await DdHasmodaiClient.GetUserSearch(username))?.Entries ?? new List<Entry>();
+			return (await DdHasmodaiClient.GetUserSearch(username))?.Entries ?? new();
 		}
 
 		[HttpGet("user/by-rank")]
@@ -85,7 +49,7 @@ namespace DevilDaggersWebsite.Api
 		[ProducesResponseType(StatusCodes.Status400BadRequest)]
 		public async Task<ActionResult<Entry>> GetUserByRank([Required] int rank)
 		{
-			List<Entry> entries = (await DdHasmodaiClient.GetScores(rank))?.Entries ?? new List<Entry>();
+			List<Entry> entries = (await DdHasmodaiClient.GetScores(rank))?.Entries ?? new();
 			if (entries.Count == 0)
 				return new NotFoundObjectResult(new ProblemDetails { Title = $"Entry with {nameof(rank)} '{rank}' was not found." });
 			return entries[0];

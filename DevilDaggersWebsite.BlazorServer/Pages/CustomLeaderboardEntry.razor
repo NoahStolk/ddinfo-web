@@ -2,7 +2,7 @@
 @inject ApplicationDbContext DbContext
 
 <div>
-	@_customEntry?.Player?.Username
+	@_customEntry?.Player?.PlayerName
 </div>
 <div>
 	@_customEntry?.Time
@@ -65,12 +65,12 @@
 		if (_customEntry == null)
 			return;
 
-		PopulateData(_customEntry.GemsData, _gemsData);
-		PopulateData(_customEntry.KillsData, _killsData);
-		PopulateData(_customEntry.HomingData, _homingData);
-		PopulateData(_customEntry.EnemiesAliveData, _enemiesAliveData);
-		PopulateData(_customEntry.DaggersFiredData, _daggersFiredData);
-		PopulateData(_customEntry.DaggersHitData, _daggersHitData);
+		//PopulateData(_customEntry.GemsCollectedData, _gemsData);
+		//PopulateData(_customEntry.EnemiesKilledData, _killsData);
+		//PopulateData(_customEntry.HomingDaggersData, _homingData);
+		//PopulateData(_customEntry.EnemiesAliveData, _enemiesAliveData);
+		//PopulateData(_customEntry.DaggersFiredData, _daggersFiredData);
+		//PopulateData(_customEntry.DaggersHitData, _daggersHitData);
 		PopulateAccuracy(_accuracyData);
 	}
 

@@ -1,4 +1,5 @@
 ﻿using DevilDaggersCore.Game;
+using DevilDaggersWebsite.BlazorServer.Extensions;
 using DevilDaggersWebsite.Entities;
 using System;
 
@@ -10,7 +11,7 @@ namespace DevilDaggersWebsite.BlazorServer.Data
 		{
 			DaggerCssClass = $"text-{customLeaderboard.GetDagger(customEntry.Time)}";
 
-			Death? death = GameInfo.GetDeathByType(customEntry.DeathType, GameVersion.V3);
+			Death? death = GameInfo.GetDeathByType(customEntry.DeathType, GameVersion.V31);
 			DeathName = death?.Name ?? "Unknown";
 			DeathHexColor = $"#{death?.ColorCode ?? "444"}";
 
@@ -18,15 +19,15 @@ namespace DevilDaggersWebsite.BlazorServer.Data
 			Rank = rank;
 			PlayerId = customEntry.PlayerId;
 			FlagCode = customEntry.Player?.CountryCode ?? string.Empty;
-			Username = customEntry.Player?.Username ?? "[Unknown player]";
+			Username = customEntry.Player?.PlayerName ?? "[Unknown player]";
 			Time = customEntry.Time;
-			Gems = customEntry.Gems;
-			Kills = customEntry.Kills;
+			Gems = customEntry.GemsCollected;
+			Kills = customEntry.EnemiesKilled;
 			DeathType = customEntry.DeathType;
 			DaggersHit = customEntry.DaggersHit;
 			DaggersFired = customEntry.DaggersFired;
 			EnemiesAlive = customEntry.EnemiesAlive;
-			Homing = customEntry.Homing;
+			Homing = customEntry.HomingDaggers;
 			LevelUpTime2 = customEntry.LevelUpTime2;
 			LevelUpTime3 = customEntry.LevelUpTime3;
 			LevelUpTime4 = customEntry.LevelUpTime4;

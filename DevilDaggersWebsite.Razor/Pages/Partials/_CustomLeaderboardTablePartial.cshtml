@@ -2,6 +2,7 @@
 @using DevilDaggersCore.Extensions
 @using DevilDaggersCore.Utils
 @using DevilDaggersWebsite.Entities
+@using DevilDaggersWebsite.Razor.Extensions
 @using DevilDaggersWebsite.Razor.Utils
 @using System.Linq
 @inject DevilDaggersWebsite.Entities.ApplicationDbContext dbContext
@@ -48,7 +49,7 @@
 				Devil
 			</th>
 			<th class="hidden-xs hidden-sm hidden-md" width="100">
-				Homing
+				Leviathan
 			</th>
 			<th class="hidden-xs hidden-sm hidden-md" width="200" colspan="2">
 				World record
@@ -60,7 +61,7 @@
 			foreach (CustomLeaderboard lb in Model)
 			{
 				string fileName = lb.SpawnsetFile.Name;
-				string author = lb.SpawnsetFile.Player.Username;
+				string author = lb.SpawnsetFile.Player.PlayerName;
 				List<CustomEntry> entries = dbContext.CustomEntries
 					.Where(e => e.CustomLeaderboard == lb)
 					.OrderByMember(nameof(CustomEntry.Time), lb.IsAscending())
@@ -91,22 +92,19 @@
 						@(lb.DateCreated.HasValue ? Html.Raw(lb.DateCreated.Value.ToString("dd MMM yyyy")) : RazorUtils.NAString)
 					</td>
 					<td class="text-right hidden-xs hidden-sm hidden-md bronze">
-						@(lb.Bronze.FormatTimeInteger())
+						@(lb.TimeBronze.FormatTimeInteger())
 					</td>
 					<td class="text-right hidden-xs hidden-sm hidden-md silver">
-						@(lb.Silver.FormatTimeInteger())
+						@(lb.TimeSilver.FormatTimeInteger())
 					</td>
 					<td class="text-right hidden-xs hidden-sm hidden-md golden">
-						@(lb.Golden.FormatTimeInteger())
+						@(lb.TimeGolden.FormatTimeInteger())
 					</td>
 					<td class="text-right hidden-xs hidden-sm hidden-md devil">
-						@(lb.Devil.FormatTimeInteger())
+						@(lb.TimeDevil.FormatTimeInteger())
 					</td>
-					<td class="text-right hidden-xs hidden-sm hidden-md homing">
-						@if (lb.Homing != 0)
-						{
-							@(lb.Homing.FormatTimeInteger())
-						}
+					<td class="text-right hidden-xs hidden-sm hidden-md leviathan">
+						@(lb.TimeLeviathan.FormatTimeInteger())
 					</td>
 					<td class="@wrDagger hidden-xs hidden-sm hidden-md leaderboard-username">
 						@{
@@ -116,7 +114,7 @@
 							}
 							else
 							{
-								@(dbContext.Players.FirstOrDefault(p => p.Id == entries[0].PlayerId)?.Username ?? "[Player not found]")
+								@(dbContext.Players.FirstOrDefault(p => p.Id == entries[0].PlayerId)?.PlayerName ?? "[Player not found]")
 							}
 						}
 					</td>

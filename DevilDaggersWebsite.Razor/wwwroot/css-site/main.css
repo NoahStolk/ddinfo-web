@@ -232,8 +232,8 @@ form.left {
 	background-color: #201010;
 }
 
-.homing {
-	background: url('../Images/Fonts/Homing.png');
+.leviathan {
+	background: url('../Images/Fonts/Leviathan.png');
 	background-repeat: repeat-x;
 	background-position-y: 7px;
 	-webkit-font-smoothing: antialiased;
@@ -298,7 +298,7 @@ form.left {
 	-webkit-text-fill-color: transparent;
 }
 
-span.homing,
+span.leviathan,
 span.devil,
 span.golden,
 span.silver,

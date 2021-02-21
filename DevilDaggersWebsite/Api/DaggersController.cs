@@ -13,7 +13,7 @@ namespace DevilDaggersWebsite.Api
 		[HttpGet]
 		[ProducesResponseType(StatusCodes.Status200OK)]
 		public ActionResult<List<Dagger>> GetDaggers()
-			=> GameInfo.GetEntities<Dagger>(GameVersion.V3);
+			=> GameInfo.GetEntities<Dagger>(GameVersion.V31);
 
 		[HttpGet("at-time")]
 		[ProducesResponseType(StatusCodes.Status200OK)]

@@ -4,20 +4,23 @@ namespace DevilDaggersWebsite.Dto
 {
 	public class CustomEntry
 	{
-		public int PlayerId { get; set; }
-		public string Username { get; set; }
-		public int Time { get; set; }
-		public int Gems { get; set; }
-		public int Kills { get; set; }
-		public int DeathType { get; set; }
-		public int DaggersHit { get; set; }
-		public int DaggersFired { get; set; }
-		public int EnemiesAlive { get; set; }
-		public int Homing { get; set; }
-		public int LevelUpTime2 { get; set; }
-		public int LevelUpTime3 { get; set; }
-		public int LevelUpTime4 { get; set; }
-		public DateTime SubmitDate { get; set; }
-		public string? ClientVersion { get; set; }
+		public int PlayerId { get; init; }
+		public string PlayerName { get; init; } = null!;
+		public int Time { get; init; }
+		public int GemsCollected { get; init; }
+		public int EnemiesKilled { get; init; }
+		public int DaggersFired { get; init; }
+		public int DaggersHit { get; init; }
+		public int EnemiesAlive { get; init; }
+		public int HomingDaggers { get; init; }
+		public int GemsDespawned { get; init; }
+		public int GemsEaten { get; init; }
+		public int GemsTotal { get; init; }
+		public byte DeathType { get; init; }
+		public int LevelUpTime2 { get; init; }
+		public int LevelUpTime3 { get; init; }
+		public int LevelUpTime4 { get; init; }
+		public DateTime SubmitDate { get; init; }
+		public string? ClientVersion { get; init; }
 	}
 }

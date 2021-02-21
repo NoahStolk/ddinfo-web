@@ -11,13 +11,12 @@ namespace DevilDaggersWebsite.Razor.Pages
 		{
 			Donations = dbContext.Donations.ToList();
 
-			foreach (Donation donation in Donations.Where(d => !d.IsRefunded && d.PlayerId.HasValue))
+			foreach (Donation donation in Donations.Where(d => !d.IsRefunded))
 			{
-				int playerId = (int)donation.PlayerId!; // TODO: Don't make nullable.
-				if (!DonatorsWithReceivedEuroAmounts.ContainsKey(playerId))
-					DonatorsWithReceivedEuroAmounts.Add(playerId, donation.ConvertedEuroCentsReceived);
+				if (!DonatorsWithReceivedEuroAmounts.ContainsKey(donation.PlayerId))
+					DonatorsWithReceivedEuroAmounts.Add(donation.PlayerId, donation.ConvertedEuroCentsReceived);
 				else
-					DonatorsWithReceivedEuroAmounts[playerId] += donation.ConvertedEuroCentsReceived;
+					DonatorsWithReceivedEuroAmounts[donation.PlayerId] += donation.ConvertedEuroCentsReceived;
 			}
 		}
 

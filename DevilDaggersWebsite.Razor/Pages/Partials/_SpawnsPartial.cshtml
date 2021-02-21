@@ -18,9 +18,9 @@
 		return;
 	}
 
-	GameVersion gameVersion = sf.PlayerId == 0 && sf.Name.StartsWith("V") ? Enum.Parse<GameVersion>(sf.Name) : GameVersion.V3;
+	GameVersion gameVersion = sf.PlayerId == 0 && sf.Name.StartsWith("V") ? Enum.Parse<GameVersion>(sf.Name) : GameVersion.V31;
 	int maxWaves = sf.MaxDisplayWaves ?? SpawnsetUtils.DefaultMaxWaves;
-	string wavesQuery = httpContextAccessor.HttpContext.Request.Query["waves"];
+	string wavesQuery = httpContextAccessor.HttpContext!.Request.Query["waves"];
 	if (int.TryParse(wavesQuery, out int parsed) && parsed > 0)
 	{
 		maxWaves = parsed;
@@ -94,7 +94,7 @@
 						{
 							Enemy finalEnemy = spawn.Enemy;
 							// Change the third Gigapede into a Ghostpede.
-							if (i % 3 == 2 && gameVersion == GameVersion.V3 && finalEnemy == GameInfo.V3Gigapede)
+							if (i % 3 == 2 && gameVersion >= GameVersion.V3 && finalEnemy.SpawnsetType == GameInfo.V3Gigapede.SpawnsetType)
 							{
 								finalEnemy = GameInfo.V3Ghostpede;
 							}

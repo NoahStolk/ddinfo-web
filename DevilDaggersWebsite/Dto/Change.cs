@@ -17,7 +17,7 @@ namespace DevilDaggersWebsite.Dto
 
 		public HtmlString ToHtmlString()
 		{
-			StringBuilder sb = new StringBuilder();
+			StringBuilder sb = new();
 			sb.Append("<li>").Append(Description).Append("</li>");
 			if (SubChanges != null && SubChanges.Count != 0)
 			{
@@ -25,7 +25,7 @@ namespace DevilDaggersWebsite.Dto
 					sb.Append("<ul>").Append(subChange.ToHtmlString()).Append("</ul>");
 			}
 
-			return new HtmlString(sb.ToString());
+			return new(sb.ToString());
 		}
 	}
 }

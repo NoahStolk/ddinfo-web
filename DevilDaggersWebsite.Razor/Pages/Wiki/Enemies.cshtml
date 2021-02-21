@@ -72,7 +72,7 @@
 				</div>
 				<div class="enemy-row flex-container">
 					<div>Image</div>
-					<div><img class="img-responsive pull-right" src='~/Images/Enemies/@(enemy == GameInfo.V3Gigapede ? "GigapedeV3" : enemy.Name).png' /></div>
+					<div><img class="img-responsive pull-right" src='~/Images/Enemies/@(enemy == GameInfo.V3Gigapede || enemy == GameInfo.V31Gigapede ? "GigapedeV3" : enemy.Name).png' /></div>
 				</div>
 				<div class="enemy-row flex-container">
 					<div>HP</div>
@@ -338,7 +338,7 @@
 	<h2 id="@Model.TableOfContents[index].ToIdString()" class="text-center">@Model.TableOfContents[index++]</h2>
 	<ul>
 		@{
-			string transmuters = Model.GameVersion == GameVersion.V3 ? "Leviathan or The Orb beckon, they" : "Leviathan beckons, it";
+			string transmuters = Model.GameVersion >= GameVersion.V3 ? "Leviathan or The Orb beckon, they" : "Leviathan beckons, it";
 
 			string transmutedSkullList = (Model.GameVersion == GameVersion.V1)
 				? @"
@@ -360,7 +360,7 @@
 	</ul>
 
 	@{
-		if (Model.GameVersion == GameVersion.V3)
+		if (Model.GameVersion >= GameVersion.V3)
 		{
 			<h2 id="@Model.TableOfContents[index].ToIdString()" class="text-center">@Model.TableOfContents[index++]</h2>
 			<ul>

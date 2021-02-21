@@ -40,7 +40,7 @@ namespace DevilDaggersWebsite.Razor
 
 			services.AddMvc();
 
-			services.AddDbContext<ApplicationDbContext>(options => options.UseMySql(Configuration.GetConnectionString("DefaultConnection"), MySqlServerVersion.LatestSupportedServerVersion, providerOptions => providerOptions.EnableRetryOnFailure()));
+			services.AddDbContext<ApplicationDbContext>(options => options.UseMySql(Configuration.GetConnectionString("DefaultConnection"), MySqlServerVersion.LatestSupportedServerVersion, providerOptions => providerOptions.EnableRetryOnFailure(1)));
 			services.AddDefaultIdentity<IdentityUser>(options =>
 				{
 					options.SignIn.RequireConfirmedAccount = true;
@@ -112,6 +112,7 @@ namespace DevilDaggersWebsite.Razor
 				.AddRedirect("^DownloadSpawnset?file=(.*)", "Api/DownloadSpawnset?file=$1");
 			app.UseRewriter(options);
 
+			app.UseDeveloperExceptionPage();
 			if (env.IsDevelopment())
 			{
 #if TEST_EXCEPTION_HANDLER

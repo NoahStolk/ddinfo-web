@@ -12,7 +12,8 @@ namespace DevilDaggersWebsite.Entities
 
 		public DbSet<AssetMod> AssetMods => Set<AssetMod>();
 		public DbSet<CustomEntry> CustomEntries => Set<CustomEntry>();
-		public DbSet<CustomLeaderboard> CustomLeaderboards1 => Set<CustomLeaderboard>();
+		public DbSet<CustomEntryData> CustomEntryData => Set<CustomEntryData>();
+		public DbSet<CustomLeaderboard> CustomLeaderboards => Set<CustomLeaderboard>();
 		public DbSet<Donation> Donations => Set<Donation>();
 		public DbSet<Player> Players => Set<Player>();
 		public DbSet<SpawnsetFile> SpawnsetFiles => Set<SpawnsetFile>();

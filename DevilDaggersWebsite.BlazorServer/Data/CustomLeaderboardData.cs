@@ -1,4 +1,5 @@
-﻿using DevilDaggersWebsite.Entities;
+﻿using DevilDaggersWebsite.BlazorServer.Extensions;
+using DevilDaggersWebsite.Entities;
 using System;
 
 namespace DevilDaggersWebsite.BlazorServer.Data
@@ -9,18 +10,18 @@ namespace DevilDaggersWebsite.BlazorServer.Data
 		{
 			SpawnsetFileId = cl.SpawnsetFileId;
 			SpawnsetName = cl.SpawnsetFile.Name;
-			SpawnsetAuthorName = cl.SpawnsetFile.Player.Username;
+			SpawnsetAuthorName = cl.SpawnsetFile.Player.PlayerName;
 			Category = cl.Category.ToString();
-			Bronze = cl.Bronze;
-			Silver = cl.Silver;
-			Golden = cl.Golden;
-			Devil = cl.Devil;
-			Homing = cl.Homing;
+			Bronze = cl.TimeBronze;
+			Silver = cl.TimeSilver;
+			Golden = cl.TimeGolden;
+			Devil = cl.TimeDevil;
+			Homing = cl.TimeLeviathan;
 			DateLastPlayedUtc = cl.DateLastPlayed?.ToUniversalTime();
 			DateCreated = cl.DateCreated;
 			TotalPlayers = totalPlayers;
 			TotalRunSubmitted = cl.TotalRunsSubmitted;
-			WorldRecordHolderUsername = worldRecord?.Player.Username ?? "N/A";
+			WorldRecordHolderUsername = worldRecord?.Player.PlayerName ?? "N/A";
 			WorldRecordTime = worldRecord?.Time ?? 0;
 			WorldRecordDagger = cl.GetDagger(worldRecord?.Time ?? 0);
 		}

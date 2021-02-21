@@ -25,7 +25,7 @@
 	</div>
 </div>
 
-<Table TableItem="LeaderboardEntryData" Items="Leaderboard.Entries.Select(e => new LeaderboardEntryData(e, Players.FirstOrDefault(p => p.Id == e.Id), GameVersion.V3))" TableRowClass="@(le => le.RowClass)" PageSize="100">
+<Table TableItem="LeaderboardEntryData" Items="Leaderboard.Entries.Select(e => new LeaderboardEntryData(e, Players.FirstOrDefault(p => p.Id == e.Id), GameVersion.V31))" TableRowClass="@(le => le.RowClass)" PageSize="100">
 	<Column TableItem="LeaderboardEntryData" Title="#" Field="@(led => led.Rank)" Sortable="true" Width="2%" Align="Align.Right" Format="@FormatUtils.LeaderboardIntFormat" />
 	<Column TableItem="LeaderboardEntryData" Title="Flag" Field="@(led => led.FlagCode)" Sortable="true" Width="1%">
 		<Template>

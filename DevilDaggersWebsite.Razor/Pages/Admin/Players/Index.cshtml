@@ -17,7 +17,7 @@
 				<a asp-route-sortMemberName="Id">@Html.DisplayNameFor(model => model.Players[0].Id)</a>
 			</th>
 			<th>
-				<a asp-route-sortMemberName="Username">@Html.DisplayNameFor(model => model.Players[0].Username)</a>
+				<a asp-route-sortMemberName="PlayerName">@Html.DisplayNameFor(model => model.Players[0].PlayerName)</a>
 			</th>
 			<th>
 				<a asp-route-sortMemberName="IsAnonymous">@Html.DisplayNameFor(model => model.Players[0].IsAnonymous)</a>
@@ -63,7 +63,7 @@
 					@Html.DisplayFor(modelItem => item.Id)
 				</td>
 				<td>
-					@Html.DisplayFor(modelItem => item.Username)
+					@Html.DisplayFor(modelItem => item.PlayerName)
 				</td>
 				<td>
 					@Html.DisplayFor(modelItem => item.IsAnonymous)

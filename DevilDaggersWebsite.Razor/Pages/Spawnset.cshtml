@@ -8,19 +8,19 @@
 		return;
 
 	ViewData["Title"] = "Spawnset";
-	ViewBag.Title = $"{Model.SpawnsetFile.Name} by {Model.SpawnsetFile.Player.Username}";
+	ViewBag.Title = $"{Model.SpawnsetFile.Name} by {Model.SpawnsetFile.Player.PlayerName}";
 	int[] widths = new int[4] { 160, 128, 192, 128 };
 }
 
 <header>
-	<h1 class="dont-break-out">@Model.SpawnsetFile.Name by @Model.SpawnsetFile.Player.Username</h1>
+	<h1 class="dont-break-out">@Model.SpawnsetFile.Name by @Model.SpawnsetFile.Player.PlayerName</h1>
 </header>
 
 <main role="main">
 	<p class="text-center">
 		<a class="btn" href="api/spawnsets/@Model.SpawnsetFile.Name/file">Download</a>
 	</p>
-	@if (dbContext.CustomLeaderboards1.Any(cl => cl.SpawnsetFileId == Model.SpawnsetFile.Id))
+	@if (dbContext.CustomLeaderboards.Any(cl => cl.SpawnsetFileId == Model.SpawnsetFile.Id))
 	{
 		<p class="text-center">
 			<a asp-page="/CustomLeaderboards/Leaderboard" asp-route-spawnsetName="@Model.SpawnsetFile.Name">Custom leaderboard for @Model.SpawnsetFile.Name</a>
@@ -31,7 +31,7 @@
 		if (!string.IsNullOrEmpty(Model.SpawnsetFile.HtmlDescription))
 		{
 			<div class="description">
-				@RazorUtils.GetLayout(Model.SpawnsetFile.HtmlDescription, GameVersion.V3)
+				@RazorUtils.GetLayout(Model.SpawnsetFile.HtmlDescription, GameVersion.V31)
 			</div>
 		}
 	}

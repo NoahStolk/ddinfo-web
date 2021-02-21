@@ -20,7 +20,7 @@ namespace DevilDaggersWebsite.Razor.Pages.Admin.CustomEntries
 
 		public IActionResult OnGet()
 		{
-			ViewData["CustomLeaderboardId"] = new SelectList(_dbContext.CustomLeaderboards1, "Id", "SpawnsetFileName");
+			ViewData["CustomLeaderboardId"] = new SelectList(_dbContext.CustomLeaderboards, "Id", "SpawnsetFileName");
 			return Page();
 		}
 
