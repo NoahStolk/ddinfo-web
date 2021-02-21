@@ -4,8 +4,8 @@
 @using DevilDaggersWebsite.Enumerators
 @model DevilDaggersWebsite.Razor.Pages.CustomLeaderboards.LeaderboardModel
 @{
-	string name = Model.SpawnsetFile?.Name ?? throw new Exception("Spawnset was null in CustomLeaderboards/Leaderboard page.");
-	ViewData["Title"] = $"Leaderboard for {name} by {Model.SpawnsetFile.Player.PlayerName}";
+	string spawnsetName = Model.SpawnsetFile?.Name ?? throw new("Spawnset was null in CustomLeaderboards/Leaderboard page.");
+	ViewData["Title"] = $"Leaderboard for {spawnsetName} by {Model.SpawnsetFile.Player.PlayerName}";
 
 	List<(string DaggerName, string DisplaySeconds)> daggerInfo = new();
 	for (int i = 0; i < 5; i++)
@@ -21,7 +21,7 @@
 <main role="main">
 	<div class="text-center">
 		<p>
-			<a asp-page="/Spawnset" asp-route-spawnset="@Model.SpawnsetFile.Name">Spawnset page for @name</a>
+			<a asp-page="/Spawnset" asp-route-spawnset="@Model.SpawnsetFile.Name">Spawnset page for @spawnsetName</a>
 		</p>
 
 		@{

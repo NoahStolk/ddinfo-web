@@ -13,8 +13,8 @@
 
 	.leaderboard-row > div:nth-child(3),
 	.leaderboard-title-row > div:nth-child(3) {
-		min-width: 16%;
-		width: 16%;
+		min-width: 10%;
+		width: 10%;
 	}
 
 	.leaderboard-row > div:nth-child(4),
@@ -25,44 +25,44 @@
 
 	.leaderboard-row > div:nth-child(5),
 	.leaderboard-title-row > div:nth-child(5) {
-		min-width: 4%;
-		width: 4%;
+		min-width: 6%;
+		width: 6%;
 	}
 
 	.leaderboard-row > div:nth-child(6),
 	.leaderboard-title-row > div:nth-child(6) {
-		min-width: 4%;
-		width: 4%;
+		min-width: 6%;
+		width: 6%;
 	}
 
 	.leaderboard-row > div:nth-child(7),
 	.leaderboard-title-row > div:nth-child(7) {
-		min-width: 8%;
-		width: 8%;
+		min-width: 6%;
+		width: 6%;
 	}
 
 	.leaderboard-row > div:nth-child(8),
 	.leaderboard-title-row > div:nth-child(8) {
-		min-width: 11%;
-		width: 11%;
+		min-width: 6%;
+		width: 6%;
 	}
 
 	.leaderboard-row > div:nth-child(9),
 	.leaderboard-title-row > div:nth-child(9) {
-		min-width: 11%;
-		width: 11%;
+		min-width: 6%;
+		width: 6%;
 	}
 
 	.leaderboard-row > div:nth-child(10),
 	.leaderboard-title-row > div:nth-child(10) {
-		min-width: 5%;
-		width: 5%;
+		min-width: 6%;
+		width: 6%;
 	}
 
 	.leaderboard-row > div:nth-child(11),
 	.leaderboard-title-row > div:nth-child(11) {
-		min-width: 5%;
-		width: 5%;
+		min-width: 8%;
+		width: 8%;
 	}
 
 	.leaderboard-row > div:nth-child(12),
@@ -79,6 +79,18 @@
 
 	.leaderboard-row > div:nth-child(14),
 	.leaderboard-title-row > div:nth-child(14) {
+		min-width: 5%;
+		width: 5%;
+	}
+
+	.leaderboard-row > div:nth-child(15),
+	.leaderboard-title-row > div:nth-child(15) {
+		min-width: 5%;
+		width: 5%;
+	}
+
+	.leaderboard-row > div:nth-child(16),
+	.leaderboard-title-row > div:nth-child(16) {
 		min-width: 12%;
 		width: 12%;
 	}
@@ -103,8 +115,8 @@
 
 	.leaderboard-row > div:nth-child(3),
 	.leaderboard-title-row > div:nth-child(3) {
-		min-width: 16%;
-		width: 16%;
+		min-width: 10%;
+		width: 10%;
 	}
 
 	.leaderboard-row > div:nth-child(4),
@@ -115,54 +127,66 @@
 
 	.leaderboard-row > div:nth-child(5),
 	.leaderboard-title-row > div:nth-child(5) {
-		min-width: 4%;
-		width: 4%;
+		min-width: 6%;
+		width: 6%;
 	}
 
 	.leaderboard-row > div:nth-child(6),
 	.leaderboard-title-row > div:nth-child(6) {
-		min-width: 4%;
-		width: 4%;
+		min-width: 6%;
+		width: 6%;
 	}
 
 	.leaderboard-row > div:nth-child(7),
 	.leaderboard-title-row > div:nth-child(7) {
-		min-width: 8%;
-		width: 8%;
+		min-width: 6%;
+		width: 6%;
 	}
 
 	.leaderboard-row > div:nth-child(8),
 	.leaderboard-title-row > div:nth-child(8) {
-		min-width: 11%;
-		width: 11%;
+		min-width: 6%;
+		width: 6%;
 	}
 
 	.leaderboard-row > div:nth-child(9),
 	.leaderboard-title-row > div:nth-child(9) {
-		min-width: 12%;
-		width: 12%;
+		min-width: 6%;
+		width: 6%;
 	}
 
 	.leaderboard-row > div:nth-child(10),
 	.leaderboard-title-row > div:nth-child(10) {
-		min-width: 7%;
-		width: 7%;
+		min-width: 6%;
+		width: 6%;
 	}
 
 	.leaderboard-row > div:nth-child(11),
 	.leaderboard-title-row > div:nth-child(11) {
-		min-width: 8%;
-		width: 8%;
+		min-width: 11%;
+		width: 11%;
 	}
 
 	.leaderboard-row > div:nth-child(12),
 	.leaderboard-title-row > div:nth-child(12) {
-		min-width: 8%;
-		width: 8%;
+		min-width: 5%;
+		width: 5%;
 	}
 
 	.leaderboard-row > div:nth-child(13),
 	.leaderboard-title-row > div:nth-child(13) {
+		min-width: 8%;
+		width: 8%;
+	}
+
+	.leaderboard-row > div:nth-child(14),
+	.leaderboard-title-row > div:nth-child(14) {
+		min-width: 8%;
+		width: 8%;
+	}
+
+	.leaderboard-row > div:nth-child(15),
+	.leaderboard-title-row > div:nth-child(15) {
 		min-width: 8%;
 		width: 8%;
 	}
@@ -171,7 +195,7 @@
 @media (min-width: 768px) and (max-width: 1199px) {
 	.leaderboard-row > div,
 	.leaderboard-title-row > div {
-		width: 14%;
+		width: 16%;
 	}
 
 		.leaderboard-row > div:nth-child(1),
@@ -182,38 +206,38 @@
 
 		.leaderboard-row > div:nth-child(2),
 		.leaderboard-title-row > div:nth-child(2) {
-			min-width: 4.5%;
-			width: 4.5%;
+			min-width: 6%;
+			width: 6%;
 		}
 
 		.leaderboard-row > div:nth-child(3),
 		.leaderboard-title-row > div:nth-child(3) {
-			min-width: 35%;
-			width: 35%;
+			min-width: 21%;
+			width: 21%;
 		}
 
 	.leaderboard-expand {
-		padding-left: 13.5%;
+		padding-left: 15%;
 	}
 }
 
 @media (max-width: 767px) {
 	.leaderboard-row > div:nth-child(1),
 	.leaderboard-title-row > div:nth-child(1) {
-		min-width: 18%;
-		width: 18%;
+		min-width: 10%;
+		width: 10%;
 	}
 
 	.leaderboard-row > div:nth-child(2),
 	.leaderboard-title-row > div:nth-child(2) {
-		min-width: 9%;
-		width: 9%;
+		min-width: 10%;
+		width: 10%;
 	}
 
 	.leaderboard-row > div:nth-child(3),
 	.leaderboard-title-row > div:nth-child(3) {
-		min-width: 41%;
-		width: 41%;
+		min-width: 48%;
+		width: 48%;
 	}
 
 	.leaderboard-row > div:nth-child(4),
@@ -223,6 +247,6 @@
 	}
 
 	.leaderboard-expand {
-		padding-left: 27%;
+		padding-left: 20%;
 	}
 }

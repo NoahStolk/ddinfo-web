@@ -1,31 +1,9 @@
-﻿using DevilDaggersCore.Game;
-using DevilDaggersWebsite.Entities;
-using Microsoft.AspNetCore.Html;
-using System.Web;
+﻿using DevilDaggersWebsite.Entities;
 
 namespace DevilDaggersWebsite.Razor.Extensions
 {
 	public static class EntityExtensions
 	{
-		public static HtmlString ToHtmlData(this CustomEntry customEntry, int rank, string username, string flagCode)
-		{
-			return new($@"
-rank='{rank}'
-flag='{flagCode}'
-username='{HttpUtility.HtmlEncode(username)}'
-time='{customEntry.Time}'
-kills='{customEntry.EnemiesKilled}'
-gems='{customEntry.GemsCollected}'
-accuracy='{customEntry.Accuracy * 10000:0}'
-death-type='{GameInfo.GetDeathByType(customEntry.DeathType, GameVersion.V31)}'
-enemies-alive='{customEntry.EnemiesAlive}'
-homing='{customEntry.HomingDaggers}'
-level-2='{(customEntry.LevelUpTime2 == 0 ? 999999999 : customEntry.LevelUpTime2)}'
-level-3='{(customEntry.LevelUpTime3 == 0 ? 999999999 : customEntry.LevelUpTime3)}'
-level-4='{(customEntry.LevelUpTime4 == 0 ? 999999999 : customEntry.LevelUpTime4)}'
-submit-date='{customEntry.SubmitDate:yyyyMMddHHmm}'");
-		}
-
 		/// <summary>
 		/// Returns the CSS class name corresponding to the time in seconds.
 		/// </summary>
