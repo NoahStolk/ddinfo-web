@@ -112,7 +112,6 @@ namespace DevilDaggersWebsite.Razor
 				.AddRedirect("^DownloadSpawnset?file=(.*)", "Api/DownloadSpawnset?file=$1");
 			app.UseRewriter(options);
 
-			app.UseDeveloperExceptionPage();
 			if (env.IsDevelopment())
 			{
 #if TEST_EXCEPTION_HANDLER
