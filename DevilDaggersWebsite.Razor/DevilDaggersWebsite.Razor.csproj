@@ -6,6 +6,7 @@
     <Copyright>Copyright © Noah Stolk 2017 - 2021</Copyright>
     <GenerateDocumentationFile>true</GenerateDocumentationFile>
     <Nullable>enable</Nullable>
+    <UserSecretsId>e10f71ca-9d53-4d2f-b775-21049b1ac8ca</UserSecretsId>
   </PropertyGroup>
   <ItemGroup>
     <PackageReference Include="BuildBundlerMinifier" Version="3.2.449" />

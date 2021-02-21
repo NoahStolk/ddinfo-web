@@ -14,7 +14,6 @@ using Microsoft.AspNetCore.Rewrite;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
-using Microsoft.Extensions.Hosting;
 using Newtonsoft.Json.Converters;
 using System;
 using System.Collections.Generic;
@@ -40,7 +39,7 @@ namespace DevilDaggersWebsite.Razor
 
 			services.AddMvc();
 
-			services.AddDbContext<ApplicationDbContext>(options => options.UseMySql(Configuration.GetConnectionString("DefaultConnection"), MySqlServerVersion.LatestSupportedServerVersion, providerOptions => providerOptions.EnableRetryOnFailure()));
+			services.AddDbContext<ApplicationDbContext>(options => options.UseMySql(Configuration.GetConnectionString("DefaultConnection"), MySqlServerVersion.LatestSupportedServerVersion, providerOptions => providerOptions.EnableRetryOnFailure(1)));
 			services.AddDefaultIdentity<IdentityUser>(options =>
 				{
 					options.SignIn.RequireConfirmedAccount = true;
@@ -112,19 +111,20 @@ namespace DevilDaggersWebsite.Razor
 				.AddRedirect("^DownloadSpawnset?file=(.*)", "Api/DownloadSpawnset?file=$1");
 			app.UseRewriter(options);
 
-			if (env.IsDevelopment())
-			{
-#if TEST_EXCEPTION_HANDLER
-				app.UseExceptionHandler("/Error");
-#else
-				app.UseDeveloperExceptionPage();
-#endif
-			}
-			else
-			{
-				app.UseExceptionHandler("/Error");
-				app.UseHsts();
-			}
+			app.UseDeveloperExceptionPage();
+			//			if (env.IsDevelopment())
+			//			{
+			//#if TEST_EXCEPTION_HANDLER
+			//				app.UseExceptionHandler("/Error");
+			//#else
+			//				app.UseDeveloperExceptionPage();
+			//#endif
+			//			}
+			//			else
+			//			{
+			//				app.UseExceptionHandler("/Error");
+			//				app.UseHsts();
+			//			}
 
 			app.UseStatusCodePagesWithReExecute("/Error/{0}");
 			app.UseHttpsRedirection();
