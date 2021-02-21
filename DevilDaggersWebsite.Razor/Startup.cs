@@ -14,6 +14,7 @@ using Microsoft.AspNetCore.Rewrite;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
+using Microsoft.Extensions.Hosting;
 using Newtonsoft.Json.Converters;
 using System;
 using System.Collections.Generic;
@@ -112,19 +113,19 @@ namespace DevilDaggersWebsite.Razor
 			app.UseRewriter(options);
 
 			app.UseDeveloperExceptionPage();
-			//			if (env.IsDevelopment())
-			//			{
-			//#if TEST_EXCEPTION_HANDLER
-			//				app.UseExceptionHandler("/Error");
-			//#else
-			//				app.UseDeveloperExceptionPage();
-			//#endif
-			//			}
-			//			else
-			//			{
-			//				app.UseExceptionHandler("/Error");
-			//				app.UseHsts();
-			//			}
+			if (env.IsDevelopment())
+			{
+#if TEST_EXCEPTION_HANDLER
+				app.UseExceptionHandler("/Error");
+#else
+				app.UseDeveloperExceptionPage();
+#endif
+			}
+			else
+			{
+				app.UseExceptionHandler("/Error");
+				app.UseHsts();
+			}
 
 			app.UseStatusCodePagesWithReExecute("/Error/{0}");
 			app.UseHttpsRedirection();
