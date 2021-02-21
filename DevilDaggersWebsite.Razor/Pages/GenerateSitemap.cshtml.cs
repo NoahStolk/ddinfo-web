@@ -20,7 +20,7 @@ namespace DevilDaggersWebsite.Razor.Pages
 
 		public void OnGet()
 		{
-			Assembly asm = Array.Find(AppDomain.CurrentDomain.GetAssemblies(), a => a.FullName?.Contains("Views", StringComparison.InvariantCulture) ?? false);
+			Assembly asm = Array.Find(AppDomain.CurrentDomain.GetAssemblies(), a => a.FullName?.Contains("Views", StringComparison.InvariantCulture) ?? false) ?? throw new("Could not retrieve 'Views' assembly.");
 			foreach (Type type in asm.GetTypes().Where(t => t.Name.Contains("Admin", StringComparison.InvariantCulture) || t.Name.Contains("Identity", StringComparison.InvariantCulture) || t.Name.Contains("Api", StringComparison.InvariantCulture)))
 				SitemapUtils.ExcludePage(type);
 
