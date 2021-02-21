@@ -1,7 +1,6 @@
 ﻿@using DevilDaggersCore.Utils
 @using DevilDaggersWebsite.Entities
 @using Microsoft.EntityFrameworkCore
-@using DevilDaggersWebsite.Enumerators
 @using DevilDaggersWebsite.Razor.Models
 @model DevilDaggersWebsite.Razor.Pages.CustomLeaderboards.LeaderboardModel
 @inject DevilDaggersWebsite.Entities.ApplicationDbContext dbContext
@@ -21,12 +20,9 @@
 		<div class="sorter hidden-xs text-right" sort="enemies-killed">
 			<span data-toggle='tooltip' title='Enemies killed'><img src="~/images/Icons/skullred.png" /></span>
 		</div>
-		@if (Model.Leaderboard!.Category != CustomLeaderboardCategory.Challenge)
-		{
-			<div class="sorter hidden-xs hidden-sm hidden-md text-right" sort="enemies-alive">
-				<span data-toggle='tooltip' title='Enemies alive'><img src="~/images/Icons/skullalive.png" /></span>
-			</div>
-		}
+		<div class="sorter hidden-xs hidden-sm hidden-md text-right" sort="enemies-alive">
+			<span data-toggle='tooltip' title='Enemies alive'><img src="~/images/Icons/skullalive.png" /></span>
+		</div>
 		<div class="sorter hidden-xs text-right" sort="gems-collected">
 			<span data-toggle='tooltip' title='Gems collected'><img src="~/images/Icons/gemred.png" /></span>
 		</div>
@@ -39,12 +35,9 @@
 		<div class="sorter hidden-xs text-right" sort="accuracy">
 			<span data-toggle='tooltip' title='Accuracy'><img src="~/images/Icons/maskcrosshair.png" /></span>
 		</div>
-		@if (Model.Leaderboard!.Category != CustomLeaderboardCategory.Challenge)
-		{
-			<div class="sorter hidden-xs hidden-sm hidden-md text-left" sort="death-type">
-				<span data-toggle='tooltip' title='Death type'><img src="~/images/Icons/skullgray.png" /></span>
-			</div>
-		}
+		<div class="sorter hidden-xs hidden-sm hidden-md text-left" sort="death-type">
+			<span data-toggle='tooltip' title='Death type'><img src="~/images/Icons/skullgray.png" /></span>
+		</div>
 		<div class="sorter hidden-xs hidden-sm hidden-md text-right" sort="homing-daggers">
 			<span data-toggle='tooltip' title='Homing daggers'><img src="~/images/Icons/maskhoming.png" /></span>
 		</div>
@@ -87,20 +80,14 @@
 						</div>
 						<div class="text-right @cem.DaggerName">@(entry.Time.FormatTimeInteger())</div>
 						<div class="hidden-xs text-right">@entry.EnemiesKilled.ToString(FormatUtils.LeaderboardIntFormat)</div>
-						@if (Model.Leaderboard.Category != CustomLeaderboardCategory.Challenge)
-						{
-							<div class="hidden-xs hidden-sm hidden-md text-right">@entry.EnemiesAlive.ToString(FormatUtils.LeaderboardIntFormat)</div>
-						}
+						<div class="hidden-xs hidden-sm hidden-md text-right">@entry.EnemiesAlive.ToString(FormatUtils.LeaderboardIntFormat)</div>
 						<div class="hidden-xs text-right">@entry.GemsCollected.ToString(FormatUtils.LeaderboardIntFormat)</div>
 						<div class="hidden-xs hidden-sm text-right">@cem.GemsDespawned</div>
 						<div class="hidden-xs hidden-sm text-right">@cem.GemsEaten</div>
 						<div class="hidden-xs text-right">
 							<span data-toggle="tooltip" title="@cem.DaggerTooltipText" class="leaderboard-tooltip">@cem.Accuracy</span>
 						</div>
-						@if (Model.Leaderboard.Category != CustomLeaderboardCategory.Challenge)
-						{
-							<div class="hidden-xs hidden-sm hidden-md text-left" style="@cem.DeathStyle">@cem.DeathName</div>
-						}
+						<div class="hidden-xs hidden-sm hidden-md text-left" style="@cem.DeathStyle">@cem.DeathName</div>
 						<div class="hidden-xs hidden-sm hidden-md text-right">@entry.HomingDaggers.ToString(FormatUtils.LeaderboardIntFormat)</div>
 						<div class="hidden-xs hidden-sm hidden-md text-right">@cem.LevelUpTime2</div>
 						<div class="hidden-xs hidden-sm hidden-md text-right">@cem.LevelUpTime3</div>
@@ -112,13 +99,10 @@
 							<div class="text-left">Enemies killed</div>
 							<div class="text-right">@entry.EnemiesKilled.ToString(FormatUtils.LeaderboardIntFormat)</div>
 						</div>
-						@if (Model.Leaderboard.Category != CustomLeaderboardCategory.Challenge)
-						{
-							<div class="visible-xs visible-sm visible-md">
-								<div class="text-left">Enemies alive</div>
-								<div class="text-right">@entry.EnemiesAlive.ToString(FormatUtils.LeaderboardIntFormat)</div>
-							</div>
-						}
+						<div class="visible-xs visible-sm visible-md">
+							<div class="text-left">Enemies alive</div>
+							<div class="text-right">@entry.EnemiesAlive.ToString(FormatUtils.LeaderboardIntFormat)</div>
+						</div>
 						<div class="visible-xs">
 							<div class="text-left">Gems collected</div>
 							<div class="text-right">@entry.GemsCollected.ToString(FormatUtils.LeaderboardIntFormat)</div>
@@ -137,13 +121,10 @@
 								<span data-toggle="tooltip" title="@cem.DaggerTooltipText" class="leaderboard-tooltip">@cem.Accuracy</span>
 							</div>
 						</div>
-						@if (Model.Leaderboard.Category != CustomLeaderboardCategory.Challenge)
-						{
-							<div class="visible-xs visible-sm visible-md">
-								<div class="text-left">Death type</div>
-								<div class="text-right" style="@cem.DeathStyle">@cem.DeathName</div>
-							</div>
-						}
+						<div class="visible-xs visible-sm visible-md">
+							<div class="text-left">Death type</div>
+							<div class="text-right" style="@cem.DeathStyle">@cem.DeathName</div>
+						</div>
 						<div class="visible-xs visible-sm visible-md">
 							<div class="text-left">Homing</div>
 							<div class="text-right">@entry.HomingDaggers.ToString(FormatUtils.LeaderboardIntFormat)</div>

@@ -1,6 +1,7 @@
 ﻿using DevilDaggersCore.Game;
 using DevilDaggersCore.Utils;
 using DevilDaggersWebsite.Entities;
+using DevilDaggersWebsite.Enumerators;
 using DevilDaggersWebsite.Razor.Extensions;
 using DevilDaggersWebsite.Razor.Utils;
 using Microsoft.AspNetCore.Html;
@@ -47,9 +48,17 @@ namespace DevilDaggersWebsite.Razor.Models
 
 			DaggerName = customLeaderboard!.GetDagger(Time);
 
-			Death? death = GameInfo.GetDeathByType(DeathType, GameVersion.V31);
-			DeathStyle = $"color: #{death?.ColorCode ?? "444"};";
-			DeathName = death?.Name ?? "Invalid";
+			if (customLeaderboard.Category == CustomLeaderboardCategory.Challenge)
+			{
+				DeathStyle = "color: #ff4400;";
+				DeathName = "IMMORTAL";
+			}
+			else
+			{
+				Death? death = GameInfo.GetDeathByType(DeathType, GameVersion.V31);
+				DeathStyle = $"color: #{death?.ColorCode ?? "444"};";
+				DeathName = death?.Name ?? "Invalid";
+			}
 
 			LevelUpTime2 = customEntry.LevelUpTime2 == 0 ? RazorUtils.NAString : new(customEntry.LevelUpTime2.FormatTimeInteger());
 			LevelUpTime3 = customEntry.LevelUpTime3 == 0 ? RazorUtils.NAString : new(customEntry.LevelUpTime3.FormatTimeInteger());

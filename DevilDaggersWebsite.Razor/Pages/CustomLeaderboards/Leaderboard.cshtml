@@ -1,7 +1,6 @@
 ﻿@page
 @using DevilDaggersWebsite.Razor.Utils
 @using DevilDaggersCore.Game
-@using DevilDaggersWebsite.Enumerators
 @model DevilDaggersWebsite.Razor.Pages.CustomLeaderboards.LeaderboardModel
 @{
 	string spawnsetName = Model.SpawnsetFile?.Name ?? throw new("Spawnset was null in CustomLeaderboards/Leaderboard page.");
@@ -83,12 +82,5 @@
 
 @section Styles {
 	<link rel='stylesheet' href='~/styles/leaderboard.css' />
-	@if (Model.Leaderboard!.Category == CustomLeaderboardCategory.Challenge)
-	{
-		<link rel='stylesheet' href='~/styles/leaderboard-rows-custom-challenge.css' />
-	}
-	else
-	{
-		<link rel='stylesheet' href='~/styles/leaderboard-rows-custom-default.css' />
-	}
+	<link rel='stylesheet' href='~/styles/leaderboard-rows-custom-default.css' />
 }
