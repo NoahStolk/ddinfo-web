@@ -37,8 +37,8 @@
 		<div class="text-bold col-lg-2 col-md-3 col-sm-4 col-xs-6">Total time held</div>
 		<div class="text-bold col-lg-2 col-md-3 col-sm-2 hidden-xs">Longest time held consecutively</div>
 		<div class="text-bold col-lg-2 col-md-3 col-sm-2 hidden-xs">World records</div>
-		<div class="text-bold col-lg-2 hidden-md hidden-sm hiddenxs">First held</div>
-		<div class="text-bold col-lg-2 hidden-md hidden-sm hiddenxs">Last held</div>
+		<div class="text-bold col-lg-2 hidden-md hidden-sm hidden-xs">First held</div>
+		<div class="text-bold col-lg-2 hidden-md hidden-sm hidden-xs">Last held</div>
 	</div>
 	@{
 		TimeSpan total = DateTime.Now - (GameInfo.GetReleaseDate(GameVersion.V1) ?? throw new("Could not retrieve release version from V1."));

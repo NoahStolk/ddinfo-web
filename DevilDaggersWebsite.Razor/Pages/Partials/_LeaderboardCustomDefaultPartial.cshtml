@@ -55,7 +55,7 @@
 				string daggers = FormatUtils.FormatDaggersInt32(entry.DaggersHit, entry.DaggersFired, false);
 				string accuracy = entry.Accuracy.ToString(FormatUtils.AccuracyFormat);
 
-				<div class="sort" @entry.ToHtmlData(rank, player?.PlayerName ?? "[Player not found]", flagCode)>
+				<div class="sort" @entry.ToHtmlData(rank, player?.PlayerName ?? "Player not found", flagCode)>
 					<div class="leaderboard-row flex-container" id="@(rank)-row">
 						<div class="text-right">
 							<span data-toggle="tooltip" title="ID: @entry.PlayerId" class="leaderboard-tooltip">@rank</span>
@@ -72,7 +72,7 @@
 						</div>
 						<div class="text-left leaderboard-username">
 							@{
-								<span class="@dagger">@(player?.PlayerName ?? "[Player not found]")</span>
+								<span class="@dagger">@(player?.PlayerName ?? "Player not found")</span>
 
 								if (titles != null)
 								{
