@@ -642,24 +642,33 @@
 	{
 		"Name": "DevilDaggersCustomLeaderboards",
 		"DisplayName": "Devil Daggers Custom Leaderboards",
-		"VersionNumber": "0.10.4.0",
-		"VersionNumberRequired": "0.10.4.0",
+		"VersionNumber": "0.14.1.0",
+		"VersionNumberRequired": "0.14.1.0",
 		"Changelog": [
-			//{
-			//	"VersionNumber": "0.1x.0.0",
-			//	"Date": "2021-xx-xxT00:00:00",
-			//	"Changes": [
-			//		{
-			//			"Description": "Works with the latest build of Devil Daggers (QOL update)."
-			//		},
-			//		{
-			//			"Description": "Fixed detection for usernames longer than 16 characters."
-			//		},
-			//		{
-			//			"Description": "Added new stats: GemsDespawned, GemsEaten, GemsTotal, Enemies alive and killed per enemy type"
-			//		}
-			//	]
-			//},
+			{
+				"VersionNumber": "0.14.1.0",
+				"Date": "2021-02-21T00:00:00",
+				"Changes": [
+					{
+						"Description": "The application now works with Devil Daggers V3.1 and has the new features built-in, such as the Leviathan dagger and the new death types."
+					},
+					{
+						"Description": "Added new stats: Gems despawned, Gems eaten, Gems total, Enemies alive per enemy type, Enemies killed per enemy type"
+					},
+					{
+						"Description": "The Homing dagger has been replaced by the new Leviathan dagger."
+					},
+					{
+						"Description": "The application now runs on .NET 5.0."
+					},
+					{
+						"Description": "Graphical improvements (for as far as console graphics go) and other small improvements."
+					},
+					{
+						"Description": "Fixed detection for usernames longer than 16 characters."
+					}
+				]
+			},
 			{
 				"VersionNumber": "0.10.4.0",
 				"Date": "2020-10-01T00:00:00",

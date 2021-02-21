@@ -103,14 +103,6 @@ namespace DevilDaggersWebsite.Api
 		{
 			Version clientVersionParsed = Version.Parse(uploadRequest.ClientVersion);
 
-			// TODO: Remove when new DDCL for QOL is released.
-			if (clientVersionParsed <= new Version(0, 10, 4, 0))
-			{
-				const string errorMessage = "This version of DDCL does not work with the latest build of Devil Daggers. Please wait for the program to be updated.";
-				await TryLog(uploadRequest, null, errorMessage);
-				return new BadRequestObjectResult(new ProblemDetails { Title = errorMessage });
-			}
-
 			if (clientVersionParsed < _toolHelper.GetToolByName("DevilDaggersCustomLeaderboards").VersionNumberRequired)
 			{
 				const string errorMessage = "You are using an unsupported and outdated version of DDCL. Please update the program.";
@@ -181,9 +173,9 @@ namespace DevilDaggersWebsite.Api
 				return new BadRequestObjectResult(new ProblemDetails { Title = errorMessage });
 			}
 
-			if (customLeaderboard.Category == Enumerators.CustomLeaderboardCategory.Challenge && Version.Parse(uploadRequest.ClientVersion) <= new Version(0, 10, 4, 0))
+			if (customLeaderboard.Category == Enumerators.CustomLeaderboardCategory.Challenge && Version.Parse(uploadRequest.ClientVersion) <= new Version(0, 14, 1, 0))
 			{
-				const string errorMessage = "Challenge leaderboards are not supported on version 0.10.4.0 or lower.";
+				const string errorMessage = "Challenge leaderboards are not supported on version 0.14.1.0 or lower.";
 				await TryLog(uploadRequest, spawnsetName, errorMessage);
 				return new BadRequestObjectResult(new ProblemDetails { Title = errorMessage });
 			}
