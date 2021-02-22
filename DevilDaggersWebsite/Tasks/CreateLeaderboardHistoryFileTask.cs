@@ -23,8 +23,10 @@ namespace DevilDaggersWebsite.Tasks
 
 		protected override async Task Execute()
 		{
-			await BotLogger.Instance.TryLog(LoggingChannel.Task, $"{nameof(CreateLeaderboardHistoryFileTask)} starting...");
-			if (!HistoryFileForThisDateExists(LastTriggered))
+			await BotLogger.Instance.TryLog(LoggingChannel.Task, $"{nameof(CreateLeaderboardHistoryFileTask)} starting... Triggered: {LastTriggered}");
+
+			string? historyFileName = GetHistoryFileNameFromDate(LastTriggered);
+			if (historyFileName == null)
 			{
 				Dto.Leaderboard? lb = await DdHasmodaiClient.GetScores(1);
 				if (lb != null)
@@ -40,20 +42,20 @@ namespace DevilDaggersWebsite.Tasks
 			}
 			else
 			{
-				await BotLogger.Instance.TryLog(LoggingChannel.Task, $"{nameof(CreateLeaderboardHistoryFileTask)} skipped because a file for {DateTime.UtcNow.Date:yyyy-MM-dd} already exists.");
+				await BotLogger.Instance.TryLog(LoggingChannel.Task, $"{nameof(CreateLeaderboardHistoryFileTask)} skipped because a file for today's history already exists ({historyFileName}).");
 			}
 		}
 
-		private bool HistoryFileForThisDateExists(DateTime dateTime)
+		private string? GetHistoryFileNameFromDate(DateTime dateTime)
 		{
 			foreach (string path in Directory.GetFiles(Path.Combine(_env.WebRootPath, "leaderboard-history"), "*.json"))
 			{
 				string fileName = Path.GetFileNameWithoutExtension(path);
 				if (HistoryUtils.HistoryJsonFileNameToDateTime(fileName).Date == dateTime.Date)
-					return true;
+					return fileName;
 			}
 
-			return false;
+			return null;
 		}
 	}
 }
