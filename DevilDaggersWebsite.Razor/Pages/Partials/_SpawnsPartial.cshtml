@@ -37,7 +37,15 @@
 			</div>
 
 			double totalSeconds = 0;
-			int totalGems = 0;
+			int totalGems = spawnset.Hand switch
+			{
+				2 => 10,
+				3 => 70,
+				4 => 150,
+				_ => 0,
+			};
+			totalGems += spawnset.AdditionalGems;
+
 			int endLoopIndex = spawnset.GetEndLoopStartIndex();
 
 			foreach (Spawn spawn in spawnset.Spawns.Values.SkipLast(spawnset.Spawns.Count() - endLoopIndex))

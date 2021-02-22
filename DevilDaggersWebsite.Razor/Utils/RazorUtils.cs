@@ -111,7 +111,7 @@ namespace DevilDaggersWebsite.Razor.Utils
 				}
 			}
 
-			return new HtmlString(str);
+			return new (str);
 		}
 
 		public static string TransmuteString(this string str)

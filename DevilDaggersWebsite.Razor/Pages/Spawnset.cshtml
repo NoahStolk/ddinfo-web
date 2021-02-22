@@ -9,7 +9,9 @@
 
 	ViewData["Title"] = "Spawnset";
 	ViewBag.Title = $"{Model.SpawnsetFile.Name} by {Model.SpawnsetFile.Player.PlayerName}";
-	int[] widths = new int[4] { 160, 128, 192, 128 };
+	int[] widths = new int[] { 160, 160, 160 };
+
+	Upgrade? hand = GameInfo.GetEntities<Upgrade>().FirstOrDefault(u => u.Name == $"Level {Model.Spawnset.Hand}") ?? GameInfo.V31Level1;
 }
 
 <header>
@@ -41,13 +43,24 @@
 			<div style="@RazorUtils.GetCssWidth(widths[0])">Start radius</div>
 			<div style="@RazorUtils.GetCssWidth(widths[1])">End radius</div>
 			<div style="@RazorUtils.GetCssWidth(widths[2])">Shrinking rate</div>
-			<div style="@RazorUtils.GetCssWidth(widths[3])">Brightness</div>
 		</div>
 		<div class="flex-container flex-center">
 			<div style="@RazorUtils.GetCssWidth(widths[0])">@Model.Spawnset.ShrinkStart.ToString("0.#")</div>
 			<div style="@RazorUtils.GetCssWidth(widths[1])">@Model.Spawnset.ShrinkEnd.ToString("0.#")</div>
 			<div style="@RazorUtils.GetCssWidth(widths[2])">@Model.Spawnset.ShrinkRate.ToString("0.####")</div>
-			<div style="@RazorUtils.GetCssWidth(widths[3])">@Model.Spawnset.Brightness.ToString("0.#")</div>
+		</div>
+	</div>
+
+	<div class="text-center">
+		<div class="flex-container flex-center">
+			<div style="@RazorUtils.GetCssWidth(widths[0])">Brightness</div>
+			<div style="@RazorUtils.GetCssWidth(widths[1])">Hand</div>
+			<div style="@RazorUtils.GetCssWidth(widths[2])">Additional gems</div>
+		</div>
+		<div class="flex-container flex-center">
+			<div style="@RazorUtils.GetCssWidth(widths[0])">@Model.Spawnset.Brightness.ToString("0.#")</div>
+			<div style="@RazorUtils.GetCssWidth(widths[1])">@hand.GetLayoutAnchor()</div>
+			<div style="@RazorUtils.GetCssWidth(widths[2])">@Model.Spawnset.AdditionalGems</div>
 		</div>
 	</div>
 
