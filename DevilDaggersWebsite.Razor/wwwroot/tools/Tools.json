@@ -2,11 +2,11 @@
 	{
 		"Name": "DevilDaggersSurvivalEditor",
 		"DisplayName": "Devil Daggers Survival Editor",
-		"VersionNumber": "2.14.6.0",
+		"VersionNumber": "2.14.7.0",
 		"VersionNumberRequired": "2.7.6.1",
 		"Changelog": [
 			{
-				"VersionNumber": "2.14.6.0",
+				"VersionNumber": "2.14.7.0",
 				"Date": "2021-02-22T00:00:00",
 				"Changes": [
 					{
