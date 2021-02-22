@@ -10,7 +10,7 @@
 				"Date": "2021-02-22T00:00:00",
 				"Changes": [
 					{
-						"Description": "Added support for new practice values. You can now change the hand upgrade, as well as the amount of additional gems, in the survival file itself. This makes spawnsets significantly more interesting."
+						"Description": "Added support for new practice values. You can now change the initial hand upgrade, as well as the amount of additional gems, in the survival file itself. This makes spawnsets significantly more interesting."
 					},
 					{
 						"Description": "Custom spawnsets are now saved to the \"mods\" directory to keep the original survival file intact. You do not need to modify the original survival file anymore. When you are done playing a custom spawnset, just delete the file to go back to the original game."
