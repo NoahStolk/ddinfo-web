@@ -40,7 +40,7 @@ namespace DevilDaggersWebsite.Tasks.Scheduling
 
 		private async Task ExecuteOnceAsync(CancellationToken cancellationToken)
 		{
-			TaskFactory taskFactory = new TaskFactory(TaskScheduler.Current);
+			TaskFactory taskFactory = new(TaskScheduler.Current);
 			DateTime referenceTime = DateTime.UtcNow;
 
 			foreach (SchedulerTaskWrapper taskThatShouldRun in _scheduledTasks.Where(t => t.ShouldRun(referenceTime)).ToList())
@@ -56,8 +56,7 @@ namespace DevilDaggersWebsite.Tasks.Scheduling
 						}
 						catch (Exception ex)
 						{
-							UnobservedTaskExceptionEventArgs args = new UnobservedTaskExceptionEventArgs(
-								ex as AggregateException ?? new AggregateException(ex));
+							UnobservedTaskExceptionEventArgs args = new(ex as AggregateException ?? new(ex));
 
 							UnobservedTaskException?.Invoke(this, args);
 
@@ -85,7 +84,8 @@ namespace DevilDaggersWebsite.Tasks.Scheduling
 				NextRunTime = Schedule.GetNextOccurrence(NextRunTime);
 			}
 
-			public bool ShouldRun(DateTime currentTime) => NextRunTime < currentTime && LastRunTime != NextRunTime;
+			public bool ShouldRun(DateTime currentTime)
+				=> NextRunTime < currentTime && LastRunTime != NextRunTime;
 		}
 	}
 }

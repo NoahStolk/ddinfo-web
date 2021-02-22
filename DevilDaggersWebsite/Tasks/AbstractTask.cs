@@ -23,7 +23,7 @@ namespace DevilDaggersWebsite.Tasks
 
 		public async Task ExecuteAsync(CancellationToken cancellationToken)
 		{
-			Stopwatch stopwatch = new Stopwatch();
+			Stopwatch stopwatch = new();
 			stopwatch.Start();
 
 			LastTriggered = DateTime.Now;

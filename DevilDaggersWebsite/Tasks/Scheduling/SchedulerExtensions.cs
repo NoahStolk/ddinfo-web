@@ -16,7 +16,7 @@ namespace DevilDaggersWebsite.Tasks.Scheduling
 		{
 			return services.AddSingleton<IHostedService, SchedulerHostedService>(serviceProvider =>
 			{
-				SchedulerHostedService instance = new SchedulerHostedService(serviceProvider.GetServices<IScheduledTask>());
+				SchedulerHostedService instance = new(serviceProvider.GetServices<IScheduledTask>());
 				instance.UnobservedTaskException += unobservedTaskExceptionHandler;
 				return instance;
 			});
