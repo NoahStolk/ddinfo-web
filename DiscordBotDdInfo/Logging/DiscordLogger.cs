@@ -1,11 +1,10 @@
 ﻿using DiscordBotDdInfo.Extensions;
-using DiscordBotDdInfo.Logging;
 using DSharpPlus.Entities;
 using System;
 using System.Collections;
 using System.Threading.Tasks;
 
-namespace DiscordBotDdInfo
+namespace DiscordBotDdInfo.Logging
 {
 	public sealed class DiscordLogger
 	{

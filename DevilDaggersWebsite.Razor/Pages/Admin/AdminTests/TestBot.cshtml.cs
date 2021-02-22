@@ -1,7 +1,7 @@
 ﻿using DiscordBotDdInfo.Logging;
 using Microsoft.AspNetCore.Mvc.RazorPages;
 using System.Threading.Tasks;
-using BotLogger = DiscordBotDdInfo.DiscordLogger;
+using BotLogger = DiscordBotDdInfo.Logging.DiscordLogger;
 
 namespace DevilDaggersWebsite.Razor.Pages.Admin.AdminTests
 {

@@ -6,7 +6,7 @@ using Newtonsoft.Json;
 using System;
 using System.IO;
 using System.Threading.Tasks;
-using BotLogger = DiscordBotDdInfo.DiscordLogger;
+using BotLogger = DiscordBotDdInfo.Logging.DiscordLogger;
 
 namespace DevilDaggersWebsite.Tasks
 {

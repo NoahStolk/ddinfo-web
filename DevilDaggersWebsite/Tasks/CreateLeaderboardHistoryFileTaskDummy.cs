@@ -1,6 +1,6 @@
 ﻿using DiscordBotDdInfo.Logging;
 using System.Threading.Tasks;
-using BotLogger = DiscordBotDdInfo.DiscordLogger;
+using BotLogger = DiscordBotDdInfo.Logging.DiscordLogger;
 
 namespace DevilDaggersWebsite.Tasks
 {

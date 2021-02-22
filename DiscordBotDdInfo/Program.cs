@@ -1,4 +1,5 @@
-﻿using DSharpPlus;
+﻿using DiscordBotDdInfo.Logging;
+using DSharpPlus;
 using System.IO;
 using System.Threading.Tasks;
 

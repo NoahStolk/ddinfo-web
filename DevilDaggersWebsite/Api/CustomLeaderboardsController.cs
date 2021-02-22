@@ -16,7 +16,7 @@ using System.Linq;
 using System.Security.Cryptography;
 using System.Threading.Tasks;
 using System.Web;
-using BotLogger = DiscordBotDdInfo.DiscordLogger;
+using BotLogger = DiscordBotDdInfo.Logging.DiscordLogger;
 
 namespace DevilDaggersWebsite.Api
 {
