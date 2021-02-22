@@ -19,7 +19,7 @@ namespace DevilDaggersWebsite.Tasks
 			_env = env;
 		}
 
-		public override string Schedule => "* * * * *";
+		public override string Schedule => "0 * * * *";
 
 		protected override async Task Execute()
 		{
