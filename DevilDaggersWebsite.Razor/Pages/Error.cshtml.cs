@@ -1,5 +1,6 @@
 using DevilDaggersCore.Utils;
 using DiscordBotDdInfo.Extensions;
+using DiscordBotDdInfo.Logging;
 using DSharpPlus.Entities;
 using Microsoft.AspNetCore.Diagnostics;
 using Microsoft.AspNetCore.Mvc.RazorPages;
@@ -29,11 +30,11 @@ namespace DevilDaggersWebsite.Razor.Pages
 				if (exceptionFeature != null)
 					builder.AddError(exceptionFeature.Error);
 
-				await BotLogger.Instance.TryLog(null, builder.Build());
+				await BotLogger.Instance.TryLog(LoggingChannel.Error, null, builder.Build());
 			}
 			catch (Exception ex)
 			{
-				await BotLogger.Instance.TryLog($"Error report '{nameof(ErrorModel)}' failed! {ex.Message}");
+				await BotLogger.Instance.TryLog(LoggingChannel.Error, $"Error report '{nameof(ErrorModel)}' failed! {ex.Message}");
 			}
 		}
 	}

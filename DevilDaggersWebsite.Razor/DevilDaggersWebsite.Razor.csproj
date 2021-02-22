@@ -38,7 +38,6 @@
     <DotNetCliToolReference Include="Microsoft.VisualStudio.Web.CodeGeneration.Tools" Version="2.0.2" />
   </ItemGroup>
   <ItemGroup>
-    <ProjectReference Include="..\..\DiscordBotDdInfo\DiscordBotDdInfo\DiscordBotDdInfo.csproj" />
     <ProjectReference Include="..\DevilDaggersWebsite\DevilDaggersWebsite.csproj" />
   </ItemGroup>
   <ItemGroup>

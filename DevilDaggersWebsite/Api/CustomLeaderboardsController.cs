@@ -4,6 +4,7 @@ using DevilDaggersWebsite.Clients;
 using DevilDaggersWebsite.Entities;
 using DevilDaggersWebsite.Extensions;
 using DevilDaggersWebsite.Transients;
+using DiscordBotDdInfo.Logging;
 using Microsoft.AspNetCore.Hosting;
 using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
@@ -416,9 +417,9 @@ namespace DevilDaggersWebsite.Api
 				string ddclInfo = $"(`{uploadRequest.ClientVersion}` | `{uploadRequest.OperatingSystem}` | `{uploadRequest.BuildMode}`)";
 
 				if (!string.IsNullOrEmpty(errorMessage))
-					await BotLogger.Instance.TryLog($"Upload failed for user `{uploadRequest.PlayerName}` (`{uploadRequest.PlayerId}`) for `{spawnsetIdentification}`. {ddclInfo}\n{errorMessage}");
+					await BotLogger.Instance.TryLog(LoggingChannel.CustomLeaderboard, $"Upload failed for user `{uploadRequest.PlayerName}` (`{uploadRequest.PlayerId}`) for `{spawnsetIdentification}`. {ddclInfo}\n{errorMessage}");
 				else
-					await BotLogger.Instance.TryLog($"`{uploadRequest.PlayerName}` just submitted a score of `{uploadRequest.Time / 10000f:0.0000}` to `{spawnsetIdentification}`. {ddclInfo}");
+					await BotLogger.Instance.TryLog(LoggingChannel.CustomLeaderboard, $"`{uploadRequest.PlayerName}` just submitted a score of `{uploadRequest.Time / 10000f:0.0000}` to `{spawnsetIdentification}`. {ddclInfo}");
 			}
 			catch
 			{

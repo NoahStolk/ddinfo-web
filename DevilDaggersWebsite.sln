@@ -3,12 +3,6 @@ Microsoft Visual Studio Solution File, Format Version 12.00
 # Visual Studio Version 16
 VisualStudioVersion = 16.0.28917.181
 MinimumVisualStudioVersion = 10.0.40219.1
-Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "Bots", "Bots", "{7213D1A2-9EAC-47F2-9EC6-0A1B6858994D}"
-EndProject
-Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "DiscordBotDdInfo", "..\DiscordBotDdInfo\DiscordBotDdInfo\DiscordBotDdInfo.csproj", "{C88B62CE-F56B-4F17-A31B-CC8A811A7D78}"
-EndProject
-Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "DiscordBotDdInfo.Tests", "..\DiscordBotDdInfo\DiscordBotDdInfo.Tests\DiscordBotDdInfo.Tests.csproj", "{B45885C0-87A0-4F8C-938D-9D16D3E287B3}"
-EndProject
 Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "DevilDaggersWebsite.Razor", "DevilDaggersWebsite.Razor\DevilDaggersWebsite.Razor.csproj", "{43297161-4F0D-413F-8961-8678B9F3DFFB}"
 EndProject
 Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "DevilDaggersWebsite.Tests", "DevilDaggersWebsite.Tests\DevilDaggersWebsite.Tests.csproj", "{EF02C310-86AD-4F70-8D30-D73FAD185F23}"
@@ -17,20 +11,18 @@ Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "DevilDaggersWebsite", "Devi
 EndProject
 Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "DevilDaggersWebsite.BlazorServer", "DevilDaggersWebsite.BlazorServer\DevilDaggersWebsite.BlazorServer.csproj", "{19B0E20C-A322-4A45-9F0A-949D8E9AC8F2}"
 EndProject
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "DiscordBotDdInfo", "DiscordBotDdInfo\DiscordBotDdInfo.csproj", "{DCBD0228-8DBE-48ED-8CE6-76EA0FD92309}"
+EndProject
+Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "Tests", "Tests", "{F7BF9B31-DDAD-4562-93A8-677E71FA8774}"
+EndProject
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "DiscordBotDdInfo.Tests", "DiscordBotDdInfo.Tests\DiscordBotDdInfo.Tests.csproj", "{D398E9EF-FA3A-475E-90A8-8A574D7EBD93}"
+EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
 		Debug|Any CPU = Debug|Any CPU
 		Release|Any CPU = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(ProjectConfigurationPlatforms) = postSolution
-		{C88B62CE-F56B-4F17-A31B-CC8A811A7D78}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
-		{C88B62CE-F56B-4F17-A31B-CC8A811A7D78}.Debug|Any CPU.Build.0 = Debug|Any CPU
-		{C88B62CE-F56B-4F17-A31B-CC8A811A7D78}.Release|Any CPU.ActiveCfg = Release|Any CPU
-		{C88B62CE-F56B-4F17-A31B-CC8A811A7D78}.Release|Any CPU.Build.0 = Release|Any CPU
-		{B45885C0-87A0-4F8C-938D-9D16D3E287B3}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
-		{B45885C0-87A0-4F8C-938D-9D16D3E287B3}.Debug|Any CPU.Build.0 = Debug|Any CPU
-		{B45885C0-87A0-4F8C-938D-9D16D3E287B3}.Release|Any CPU.ActiveCfg = Release|Any CPU
-		{B45885C0-87A0-4F8C-938D-9D16D3E287B3}.Release|Any CPU.Build.0 = Release|Any CPU
 		{43297161-4F0D-413F-8961-8678B9F3DFFB}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
 		{43297161-4F0D-413F-8961-8678B9F3DFFB}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{43297161-4F0D-413F-8961-8678B9F3DFFB}.Release|Any CPU.ActiveCfg = Release|Any CPU
@@ -47,13 +39,21 @@ Global
 		{19B0E20C-A322-4A45-9F0A-949D8E9AC8F2}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{19B0E20C-A322-4A45-9F0A-949D8E9AC8F2}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{19B0E20C-A322-4A45-9F0A-949D8E9AC8F2}.Release|Any CPU.Build.0 = Release|Any CPU
+		{DCBD0228-8DBE-48ED-8CE6-76EA0FD92309}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{DCBD0228-8DBE-48ED-8CE6-76EA0FD92309}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{DCBD0228-8DBE-48ED-8CE6-76EA0FD92309}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{DCBD0228-8DBE-48ED-8CE6-76EA0FD92309}.Release|Any CPU.Build.0 = Release|Any CPU
+		{D398E9EF-FA3A-475E-90A8-8A574D7EBD93}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{D398E9EF-FA3A-475E-90A8-8A574D7EBD93}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{D398E9EF-FA3A-475E-90A8-8A574D7EBD93}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{D398E9EF-FA3A-475E-90A8-8A574D7EBD93}.Release|Any CPU.Build.0 = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE
 	EndGlobalSection
 	GlobalSection(NestedProjects) = preSolution
-		{C88B62CE-F56B-4F17-A31B-CC8A811A7D78} = {7213D1A2-9EAC-47F2-9EC6-0A1B6858994D}
-		{B45885C0-87A0-4F8C-938D-9D16D3E287B3} = {7213D1A2-9EAC-47F2-9EC6-0A1B6858994D}
+		{EF02C310-86AD-4F70-8D30-D73FAD185F23} = {F7BF9B31-DDAD-4562-93A8-677E71FA8774}
+		{D398E9EF-FA3A-475E-90A8-8A574D7EBD93} = {F7BF9B31-DDAD-4562-93A8-677E71FA8774}
 	EndGlobalSection
 	GlobalSection(ExtensibilityGlobals) = postSolution
 		SolutionGuid = {E27EC676-81BF-4099-BFC9-20E860CE83A5}

@@ -1,5 +1,6 @@
 ﻿using DevilDaggersCore.Utils;
 using DevilDaggersWebsite.Clients;
+using DiscordBotDdInfo.Logging;
 using Microsoft.AspNetCore.Hosting;
 using Newtonsoft.Json;
 using System;
@@ -22,7 +23,7 @@ namespace DevilDaggersWebsite.Tasks
 
 		protected override async Task Execute()
 		{
-			await BotLogger.Instance.TryLog($"{nameof(CreateLeaderboardHistoryFileTask)} executed.");
+			await BotLogger.Instance.TryLog(LoggingChannel.Task, $"{nameof(CreateLeaderboardHistoryFileTask)} starting...");
 			if (!HistoryFileForThisDateExists(LastTriggered))
 			{
 				Dto.Leaderboard? lb = await DdHasmodaiClient.GetScores(1);
@@ -30,16 +31,16 @@ namespace DevilDaggersWebsite.Tasks
 				{
 					string fileName = $"{DateTime.UtcNow:yyyyMMddHHmm}.json";
 					File.WriteAllText(Path.Combine(_env.WebRootPath, "leaderboard-history", fileName), JsonConvert.SerializeObject(lb));
-					await BotLogger.Instance.TryLog($"{nameof(CreateLeaderboardHistoryFileTask)} succeeded. '{fileName}' was created.");
+					await BotLogger.Instance.TryLog(LoggingChannel.Task, $"{nameof(CreateLeaderboardHistoryFileTask)} succeeded. '{fileName}' was created.");
 				}
 				else
 				{
-					await BotLogger.Instance.TryLog($"{nameof(CreateLeaderboardHistoryFileTask)} failed because the Devil Daggers servers didn't return a leaderboard.");
+					await BotLogger.Instance.TryLog(LoggingChannel.Task, $"{nameof(CreateLeaderboardHistoryFileTask)} failed because the Devil Daggers servers didn't return a leaderboard.");
 				}
 			}
 			else
 			{
-				await BotLogger.Instance.TryLog($"{nameof(CreateLeaderboardHistoryFileTask)} skipped because a file for {DateTime.UtcNow.Date} already exists.");
+				await BotLogger.Instance.TryLog(LoggingChannel.Task, $"{nameof(CreateLeaderboardHistoryFileTask)} skipped because a file for {DateTime.UtcNow.Date:yyyy-MM-dd} already exists.");
 			}
 		}
 
