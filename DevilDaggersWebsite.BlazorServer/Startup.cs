@@ -28,12 +28,14 @@ namespace DevilDaggersWebsite.BlazorServer
 	{
 		private const string _defaultCorsPolicy = nameof(_defaultCorsPolicy);
 
-		public Startup(IConfiguration configuration)
+		public Startup(IConfiguration configuration, IWebHostEnvironment webHostEnvironment)
 		{
 			Configuration = configuration;
+			WebHostEnvironment = webHostEnvironment;
 		}
 
 		public IConfiguration Configuration { get; }
+		public IWebHostEnvironment WebHostEnvironment { get; }
 
 		public void ConfigureServices(IServiceCollection services)
 		{
@@ -57,7 +59,10 @@ namespace DevilDaggersWebsite.BlazorServer
 			services.AddSingleton<IHttpContextAccessor, HttpContextAccessor>();
 			services.AddSingleton<IActionContextAccessor, ActionContextAccessor>();
 
-			services.AddSingleton<IScheduledTask, CreateLeaderboardHistoryFileTask>();
+			if (WebHostEnvironment.IsDevelopment())
+				services.AddSingleton<IScheduledTask, CreateLeaderboardHistoryFileTaskDummy>();
+			else
+				services.AddSingleton<IScheduledTask, CreateLeaderboardHistoryFileTask>();
 
 			services.AddTransient<LeaderboardHistoryHelper>();
 			services.AddTransient<SpawnsetHelper>();

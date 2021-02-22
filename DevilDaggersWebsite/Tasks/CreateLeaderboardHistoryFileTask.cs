@@ -1,43 +1,48 @@
-﻿#if !DEBUG
-using DevilDaggersCore.Utils;
+﻿using DevilDaggersCore.Utils;
 using DevilDaggersWebsite.Clients;
 using Microsoft.AspNetCore.Hosting;
 using Newtonsoft.Json;
 using System;
 using System.IO;
-#endif
 using System.Threading.Tasks;
+using BotLogger = DiscordBotDdInfo.DiscordLogger;
 
 namespace DevilDaggersWebsite.Tasks
 {
 	public class CreateLeaderboardHistoryFileTask : AbstractTask
 	{
-#if !DEBUG
 		private readonly IWebHostEnvironment _env;
 
 		public CreateLeaderboardHistoryFileTask(IWebHostEnvironment env)
 		{
 			_env = env;
 		}
-#endif
 
-		public override string Schedule => "0 0 * * *";
+		public override string Schedule => "* * * * *";
 
-#pragma warning disable CS1998 // Async method lacks 'await' operators and will run synchronously
 		protected override async Task Execute()
-#pragma warning restore CS1998 // Async method lacks 'await' operators and will run synchronously
 		{
-#if !DEBUG
+			await BotLogger.Instance.TryLog($"{nameof(CreateLeaderboardHistoryFileTask)} executed.");
 			if (!HistoryFileForThisDateExists(LastTriggered))
 			{
 				Dto.Leaderboard? lb = await DdHasmodaiClient.GetScores(1);
 				if (lb != null)
-					File.WriteAllText(Path.Combine(_env.WebRootPath, "leaderboard-history", $"{DateTime.UtcNow:yyyyMMddHHmm}.json"), JsonConvert.SerializeObject(lb));
+				{
+					string fileName = $"{DateTime.UtcNow:yyyyMMddHHmm}.json";
+					File.WriteAllText(Path.Combine(_env.WebRootPath, "leaderboard-history", fileName), JsonConvert.SerializeObject(lb));
+					await BotLogger.Instance.TryLog($"{nameof(CreateLeaderboardHistoryFileTask)} succeeded. '{fileName}' was created.");
+				}
+				else
+				{
+					await BotLogger.Instance.TryLog($"{nameof(CreateLeaderboardHistoryFileTask)} failed because the Devil Daggers servers didn't return a leaderboard.");
+				}
 			}
-#endif
+			else
+			{
+				await BotLogger.Instance.TryLog($"{nameof(CreateLeaderboardHistoryFileTask)} skipped because a file for {DateTime.UtcNow.Date} already exists.");
+			}
 		}
 
-#if !DEBUG
 		private bool HistoryFileForThisDateExists(DateTime dateTime)
 		{
 			foreach (string path in Directory.GetFiles(Path.Combine(_env.WebRootPath, "leaderboard-history"), "*.json"))
@@ -49,6 +54,5 @@ namespace DevilDaggersWebsite.Tasks
 
 			return false;
 		}
-#endif
 	}
 }
