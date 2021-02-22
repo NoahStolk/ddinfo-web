@@ -2,9 +2,39 @@
 	{
 		"Name": "DevilDaggersSurvivalEditor",
 		"DisplayName": "Devil Daggers Survival Editor",
-		"VersionNumber": "2.10.13.0",
+		"VersionNumber": "2.14.6.0",
 		"VersionNumberRequired": "2.7.6.1",
 		"Changelog": [
+			{
+				"VersionNumber": "2.14.6.0",
+				"Date": "2021-02-22T00:00:00",
+				"Changes": [
+					{
+						"Description": "Added support for new practice values. You can now change the hand upgrade, as well as the amount of additional gems, in the survival file itself. This makes spawnsets significantly more interesting."
+					},
+					{
+						"Description": "Custom spawnsets are now saved to the \"mods\" directory to keep the original survival file intact. You do not need to modify the original survival file anymore. When you are done playing a custom spawnset, just delete the file to go back to the original game."
+					},
+					{
+						"Description": "The application now runs on .NET 5.0."
+					},
+					{
+						"Description": "Added more keyboard shortcuts for menu items."
+					},
+					{
+						"Description": "Functionality to quickly restore the original V3 spawnset has been replaced by a new option that lets you delete the survival mod file."
+					},
+					{
+						"Description": "Removed validation of the survival file on launch."
+					},
+					{
+						"Description": "Replaced \"no survival file\" warning with \"invalid Devil Daggers root folder\" warning."
+					},
+					{
+						"Description": "Added AskToReplaceSurvivalFile and AskToDeleteSurvivalFile user settings."
+					}
+				]
+			},
 			{
 				"VersionNumber": "2.10.13.0",
 				"Date": "2020-10-07T00:00:00",
