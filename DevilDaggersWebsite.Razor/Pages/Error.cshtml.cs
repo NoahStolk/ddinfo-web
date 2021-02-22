@@ -7,7 +7,6 @@ using Microsoft.AspNetCore.Mvc.RazorPages;
 using System;
 using System.Globalization;
 using System.Threading.Tasks;
-using BotLogger = DiscordBotDdInfo.Logging.DiscordLogger;
 
 namespace DevilDaggersWebsite.Razor.Pages
 {
@@ -30,11 +29,11 @@ namespace DevilDaggersWebsite.Razor.Pages
 				if (exceptionFeature != null)
 					builder.AddError(exceptionFeature.Error);
 
-				await BotLogger.Instance.TryLog(LoggingChannel.Error, null, builder.Build());
+				await DiscordLogger.Instance.TryLog(LoggingChannel.Error, null, builder.Build());
 			}
 			catch (Exception ex)
 			{
-				await BotLogger.Instance.TryLog(LoggingChannel.Error, $"Error report '{nameof(ErrorModel)}' failed! {ex.Message}");
+				await DiscordLogger.Instance.TryLog(LoggingChannel.Error, $"Error report '{nameof(ErrorModel)}' failed! {ex.Message}");
 			}
 		}
 	}
