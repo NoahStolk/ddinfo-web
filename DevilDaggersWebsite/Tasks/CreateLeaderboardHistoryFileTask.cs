@@ -19,7 +19,7 @@ namespace DevilDaggersWebsite.Tasks
 			_env = env;
 		}
 
-		public override string Schedule => "* * * * *";
+		public override string Schedule => "0 */6 * * *";
 
 		protected override async Task Execute()
 		{
@@ -27,9 +27,8 @@ namespace DevilDaggersWebsite.Tasks
 
 			try
 			{
-				const bool forceUpdate = true;
 				string? historyFileName = GetHistoryFileNameFromDate(LastTriggered);
-				if (forceUpdate || historyFileName == null)
+				if (historyFileName == null)
 				{
 					Dto.Leaderboard? lb = await DdHasmodaiClient.GetScores(1);
 					if (lb != null)
