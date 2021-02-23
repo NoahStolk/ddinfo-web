@@ -29,11 +29,11 @@ namespace DevilDaggersWebsite.Razor.Pages
 				if (exceptionFeature != null)
 					builder.AddError(exceptionFeature.Error);
 
-				await DiscordLogger.Instance.TryLog(LoggingChannel.Error, null, builder.Build());
+				await DiscordLogger.Instance.TryLog(Channel.ErrorMonitoring, null, builder.Build());
 			}
 			catch (Exception ex)
 			{
-				await DiscordLogger.Instance.TryLog(LoggingChannel.Error, $"Error report '{nameof(ErrorModel)}' failed! {ex.Message}");
+				await DiscordLogger.Instance.TryLog(Channel.ErrorMonitoring, $"Error report '{nameof(ErrorModel)}' failed! {ex.Message}");
 			}
 		}
 	}

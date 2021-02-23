@@ -20,10 +20,11 @@ namespace DiscordBotDdInfo
 					Token = token,
 					TokenType = TokenType.Bot,
 				});
-				DiscordLogger.Instance.CustomLeaderboardChannel = await client.GetChannelAsync(ServerConstants.CustomLeaderboardChannelId);
-				DiscordLogger.Instance.ErrorChannel = await client.GetChannelAsync(ServerConstants.ErrorChannelId);
-				DiscordLogger.Instance.TaskChannel = await client.GetChannelAsync(ServerConstants.TaskChannelId);
-				DiscordLogger.Instance.TestChannel = await client.GetChannelAsync(ServerConstants.TestChannelId);
+				DiscordLogger.Instance.CustomLeaderboardsChannel = await client.GetChannelAsync(ServerConstants.CustomLeaderboardsChannelId);
+				DiscordLogger.Instance.CustomLeaderboardMonitoringChannel = await client.GetChannelAsync(ServerConstants.CustomLeaderboardMonitoringChannelId);
+				DiscordLogger.Instance.ErrorMonitoringChannel = await client.GetChannelAsync(ServerConstants.ErrorMonitoringChannelId);
+				DiscordLogger.Instance.TaskMonitoringChannel = await client.GetChannelAsync(ServerConstants.TaskMonitoringChannelId);
+				DiscordLogger.Instance.TestMonitoringChannel = await client.GetChannelAsync(ServerConstants.TestMonitoringChannelId);
 
 				client.MessageCreated += async (client, e) => await CommandHandler.Instance.MessageReceived(client, e);
 

@@ -16,16 +16,17 @@ namespace DiscordBotDdInfo.Logging
 
 		public static DiscordLogger Instance => _lazy.Value;
 
-		internal DiscordChannel? CustomLeaderboardChannel { get; set; }
-		internal DiscordChannel? ErrorChannel { get; set; }
-		internal DiscordChannel? TaskChannel { get; set; }
-		internal DiscordChannel? TestChannel { get; set; }
+		internal DiscordChannel? CustomLeaderboardsChannel { get; set; }
+		internal DiscordChannel? CustomLeaderboardMonitoringChannel { get; set; }
+		internal DiscordChannel? ErrorMonitoringChannel { get; set; }
+		internal DiscordChannel? TaskMonitoringChannel { get; set; }
+		internal DiscordChannel? TestMonitoringChannel { get; set; }
 
 		public async Task TryLogException(string title, Exception ex)
 		{
 			try
 			{
-				if (ErrorChannel == null)
+				if (ErrorMonitoringChannel == null)
 					return;
 
 				DiscordEmbedBuilder builder = new()
@@ -37,22 +38,23 @@ namespace DiscordBotDdInfo.Logging
 				foreach (DictionaryEntry? data in ex.Data)
 					builder.AddFieldObject(data?.Key?.ToString() ?? "Null", data?.Value?.ToString() ?? "Null");
 
-				await ErrorChannel.SendMessageAsyncSafe(null, builder.Build());
+				await ErrorMonitoringChannel.SendMessageAsyncSafe(null, builder.Build());
 			}
 			catch (Exception logEx)
 			{
-				await TryLog(LoggingChannel.Error, $"Error report '{nameof(TryLogException)}' failed! {logEx.Message}");
+				await TryLog(Channel.ErrorMonitoring, $"Error report '{nameof(TryLogException)}' failed! {logEx.Message}");
 			}
 		}
 
-		public async Task TryLog(LoggingChannel loggingChannel, string? message, DiscordEmbed? embed = null)
+		public async Task TryLog(Channel loggingChannel, string? message, DiscordEmbed? embed = null)
 		{
 			DiscordChannel? channel = loggingChannel switch
 			{
-				LoggingChannel.CustomLeaderboard => CustomLeaderboardChannel,
-				LoggingChannel.Task => TaskChannel,
-				LoggingChannel.Test => TestChannel,
-				_ => ErrorChannel,
+				Channel.CustomLeaderboards => CustomLeaderboardsChannel,
+				Channel.CustomLeaderboardMonitoring => CustomLeaderboardMonitoringChannel,
+				Channel.TaskMonitoring => TaskMonitoringChannel,
+				Channel.TestMonitoring => TestMonitoringChannel,
+				_ => ErrorMonitoringChannel,
 			};
 
 			try

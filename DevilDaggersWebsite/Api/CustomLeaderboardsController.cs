@@ -408,7 +408,7 @@ namespace DevilDaggersWebsite.Api
 				};
 				builder.AddFieldObject("Score", time / 10000.0, true);
 				builder.AddFieldObject("Rank", $"{rank}/{totalPlayers}", true);
-				await BotLogger.Instance.TryLog(LoggingChannel.CustomLeaderboard, null, builder.Build());
+				await BotLogger.Instance.TryLog(Channel.CustomLeaderboardMonitoring, null, builder.Build());
 			}
 			catch (Exception ex)
 			{
@@ -452,9 +452,9 @@ namespace DevilDaggersWebsite.Api
 				string ddclInfo = $"(`{uploadRequest.ClientVersion}` | `{uploadRequest.OperatingSystem}` | `{uploadRequest.BuildMode}`)";
 
 				if (!string.IsNullOrEmpty(errorMessage))
-					await BotLogger.Instance.TryLog(LoggingChannel.CustomLeaderboard, $"Upload failed for user `{uploadRequest.PlayerName}` (`{uploadRequest.PlayerId}`) for `{spawnsetIdentification}`. {ddclInfo}\n{errorMessage}");
+					await BotLogger.Instance.TryLog(Channel.CustomLeaderboardMonitoring, $"Upload failed for user `{uploadRequest.PlayerName}` (`{uploadRequest.PlayerId}`) for `{spawnsetIdentification}`. {ddclInfo}\n{errorMessage}");
 				else
-					await BotLogger.Instance.TryLog(LoggingChannel.CustomLeaderboard, $"`{uploadRequest.PlayerName}` just submitted a score of `{uploadRequest.Time / 10000f:0.0000}` to `{spawnsetIdentification}`. {ddclInfo}");
+					await BotLogger.Instance.TryLog(Channel.CustomLeaderboardMonitoring, $"`{uploadRequest.PlayerName}` just submitted a score of `{uploadRequest.Time / 10000f:0.0000}` to `{spawnsetIdentification}`. {ddclInfo}");
 			}
 			catch
 			{

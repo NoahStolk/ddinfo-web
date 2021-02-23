@@ -22,10 +22,10 @@ namespace DiscordBotDdInfo
 		private readonly List<ulong> _channelIds = new()
 		{
 			ServerConstants.DdInfoChannelId,
-			ServerConstants.CustomLeaderboardChannelId,
-			ServerConstants.ErrorChannelId,
-			ServerConstants.TaskChannelId,
-			ServerConstants.TestChannelId,
+			ServerConstants.CustomLeaderboardMonitoringChannelId,
+			ServerConstants.ErrorMonitoringChannelId,
+			ServerConstants.TaskMonitoringChannelId,
+			ServerConstants.TestMonitoringChannelId,
 		};
 
 		private static readonly Lazy<CommandHandler> _lazy = new(() => new());
