@@ -342,7 +342,7 @@ namespace DevilDaggersWebsite.Api
 			// Fetch the entries again after having modified the leaderboard.
 			entries = _dbContext.CustomEntries.Where(e => e.CustomLeaderboard == customLeaderboard).OrderByMember(nameof(CustomEntry.Time), customLeaderboard.IsAscending()).ToArray();
 
-			await TrySendLeaderboardMessage(customLeaderboard, $"`{uploadRequest.PlayerName}` just got {uploadRequest.Time / 10000.0} seconds on the `{spawnsetName}` leaderboard, beating their previous highscore of {(uploadRequest.Time - timeDiff) / 10000.0} by {Math.Abs(timeDiff) / 10000.0} seconds!", rank, totalPlayers, uploadRequest.Time);
+			await TrySendLeaderboardMessage(customLeaderboard, $"`{uploadRequest.PlayerName}` just got {FormatTimeString(uploadRequest.Time)} seconds on the `{spawnsetName}` leaderboard, beating their previous highscore of {FormatTimeString(uploadRequest.Time - timeDiff)} by {FormatTimeString(Math.Abs(timeDiff))} seconds!", rank, totalPlayers, uploadRequest.Time);
 			await TryLog(uploadRequest, spawnsetName);
 			return new Dto.UploadSuccess
 			{
@@ -406,7 +406,7 @@ namespace DevilDaggersWebsite.Api
 					Title = message,
 					Color = color,
 				};
-				builder.AddFieldObject("Score", (time / 10000.0).ToString("0.0000"), true);
+				builder.AddFieldObject("Score", FormatTimeString(time), true);
 				builder.AddFieldObject("Rank", $"{rank}/{totalPlayers}", true);
 				await BotLogger.Instance.TryLog(Channel.CustomLeaderboards, null, builder.Build());
 			}
@@ -415,6 +415,9 @@ namespace DevilDaggersWebsite.Api
 				await BotLogger.Instance.TryLogException("Error while attempting to send leaderboard message.", ex);
 			}
 		}
+
+		private static string FormatTimeString(int time)
+			=> (time / 10000.0).ToString("0.0000");
 
 		private string GetUsernameFromCache(CustomEntry e)
 			=> _usernames.FirstOrDefault(u => u.Key == e.PlayerId).Value ?? "[Player not found]";
