@@ -342,7 +342,7 @@ namespace DevilDaggersWebsite.Api
 			// Fetch the entries again after having modified the leaderboard.
 			entries = _dbContext.CustomEntries.Where(e => e.CustomLeaderboard == customLeaderboard).OrderByMember(nameof(CustomEntry.Time), customLeaderboard.IsAscending()).ToArray();
 
-			await TrySendLeaderboardMessage(customLeaderboard, $"`{uploadRequest.PlayerName}` just beat their old highscore of {(uploadRequest.Time - timeDiff) / 10000.0} on the `{spawnsetName}` leaderboard by {Math.Abs(timeDiff) / 10000.0} seconds!", rank, totalPlayers, uploadRequest.Time);
+			await TrySendLeaderboardMessage(customLeaderboard, $"`{uploadRequest.PlayerName}` just got {uploadRequest.Time} seconds on the `{spawnsetName}` leaderboard, beating their previous highscore of {(uploadRequest.Time - timeDiff) / 10000.0} by {Math.Abs(timeDiff) / 10000.0} seconds!", rank, totalPlayers, uploadRequest.Time);
 			await TryLog(uploadRequest, spawnsetName);
 			return new Dto.UploadSuccess
 			{
@@ -404,9 +404,9 @@ namespace DevilDaggersWebsite.Api
 				DiscordEmbedBuilder builder = new()
 				{
 					Title = message,
-					Color = DiscordColor.Green,
+					Color = color,
 				};
-				builder.AddFieldObject("Score", time / 10000.0, true);
+				builder.AddFieldObject("Score", (time / 10000.0).ToString("0.0000"), true);
 				builder.AddFieldObject("Rank", $"{rank}/{totalPlayers}", true);
 				await BotLogger.Instance.TryLog(Channel.CustomLeaderboards, null, builder.Build());
 			}
