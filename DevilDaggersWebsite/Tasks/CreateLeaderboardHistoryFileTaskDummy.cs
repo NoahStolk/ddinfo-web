@@ -1,6 +1,4 @@
-﻿using DiscordBotDdInfo.Logging;
-using System.Threading.Tasks;
-using BotLogger = DiscordBotDdInfo.Logging.DiscordLogger;
+﻿using System.Threading.Tasks;
 
 namespace DevilDaggersWebsite.Tasks
 {
@@ -10,7 +8,6 @@ namespace DevilDaggersWebsite.Tasks
 
 		protected override async Task Execute()
 		{
-			await BotLogger.Instance.TryLog(LoggingChannel.Task, $"{nameof(CreateLeaderboardHistoryFileTaskDummy)} executed.");
 			await Task.CompletedTask;
 		}
 	}
