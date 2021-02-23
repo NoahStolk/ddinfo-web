@@ -231,7 +231,7 @@ namespace DevilDaggersWebsite.Api
 				entries = _dbContext.CustomEntries.Where(e => e.CustomLeaderboard == customLeaderboard).OrderByMember(nameof(CustomEntry.Time), customLeaderboard.IsAscending());
 				totalPlayers = entries.Count();
 
-				await TrySendLeaderboardMessage($"`{uploadRequest.PlayerName}` just entered the `{spawnsetName}` leaderboard!", rank, totalPlayers, uploadRequest.Time);
+				await TrySendLeaderboardMessage(customLeaderboard, $"`{uploadRequest.PlayerName}` just entered the `{spawnsetName}` leaderboard!", rank, totalPlayers, uploadRequest.Time);
 				await TryLog(uploadRequest, spawnsetName);
 				return new Dto.UploadSuccess
 				{
@@ -342,7 +342,7 @@ namespace DevilDaggersWebsite.Api
 			// Fetch the entries again after having modified the leaderboard.
 			entries = _dbContext.CustomEntries.Where(e => e.CustomLeaderboard == customLeaderboard).OrderByMember(nameof(CustomEntry.Time), customLeaderboard.IsAscending()).ToArray();
 
-			await TrySendLeaderboardMessage($"`{uploadRequest.PlayerName}` just beat their old highscore of {uploadRequest.Time - timeDiff} on the `{spawnsetName}` leaderboard by {Math.Abs(timeDiff)} seconds!", rank, totalPlayers, uploadRequest.Time);
+			await TrySendLeaderboardMessage(customLeaderboard, $"`{uploadRequest.PlayerName}` just beat their old highscore of {(uploadRequest.Time - timeDiff) / 10000.0} on the `{spawnsetName}` leaderboard by {Math.Abs(timeDiff) / 10000.0} seconds!", rank, totalPlayers, uploadRequest.Time);
 			await TryLog(uploadRequest, spawnsetName);
 			return new Dto.UploadSuccess
 			{
@@ -385,22 +385,34 @@ namespace DevilDaggersWebsite.Api
 			};
 		}
 
-		private static async Task TrySendLeaderboardMessage(string message, int rank, int totalPlayers, int time)
+		private static async Task TrySendLeaderboardMessage(CustomLeaderboard customLeaderboard, string message, int rank, int totalPlayers, int time)
 		{
 			try
 			{
+				DiscordColor color = DiscordColor.Gray;
+				if (time > customLeaderboard.TimeLeviathan)
+					color = DiscordColor.DarkRed;
+				else if (time > customLeaderboard.TimeDevil)
+					color = DiscordColor.Red;
+				else if (time > customLeaderboard.TimeGolden)
+					color = DiscordColor.Gold;
+				else if (time > customLeaderboard.TimeSilver)
+					color = DiscordColor.LightGray;
+				else if (time > customLeaderboard.TimeBronze)
+					color = DiscordColor.Orange;
+
 				DiscordEmbedBuilder builder = new()
 				{
 					Title = message,
 					Color = DiscordColor.Green,
 				};
-				builder.AddFieldObject("Score", time, true);
+				builder.AddFieldObject("Score", time / 10000.0, true);
 				builder.AddFieldObject("Rank", $"{rank}/{totalPlayers}", true);
 				await BotLogger.Instance.TryLog(LoggingChannel.CustomLeaderboard, null, builder.Build());
 			}
 			catch (Exception ex)
 			{
-				await BotLogger.Instance.TryLogException($"Error while attempting to send leaderboard message.", ex);
+				await BotLogger.Instance.TryLogException("Error while attempting to send leaderboard message.", ex);
 			}
 		}
 
