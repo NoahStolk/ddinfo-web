@@ -19,30 +19,38 @@ namespace DevilDaggersWebsite.Tasks
 			_env = env;
 		}
 
-		public override string Schedule => "0 * * * *";
+		public override string Schedule => "* * * * *";
 
 		protected override async Task Execute()
 		{
 			await BotLogger.Instance.TryLog(LoggingChannel.Task, $"{nameof(CreateLeaderboardHistoryFileTask)} starting... Triggered: {LastTriggered}");
 
-			string? historyFileName = GetHistoryFileNameFromDate(LastTriggered);
-			if (historyFileName == null)
+			try
 			{
-				Dto.Leaderboard? lb = await DdHasmodaiClient.GetScores(1);
-				if (lb != null)
+				const bool forceUpdate = true;
+				string? historyFileName = GetHistoryFileNameFromDate(LastTriggered);
+				if (forceUpdate || historyFileName == null)
 				{
-					string fileName = $"{DateTime.UtcNow:yyyyMMddHHmm}.json";
-					File.WriteAllText(Path.Combine(_env.WebRootPath, "leaderboard-history", fileName), JsonConvert.SerializeObject(lb));
-					await BotLogger.Instance.TryLog(LoggingChannel.Task, $"{nameof(CreateLeaderboardHistoryFileTask)} succeeded. '{fileName}' was created.");
+					Dto.Leaderboard? lb = await DdHasmodaiClient.GetScores(1);
+					if (lb != null)
+					{
+						string fileName = $"{DateTime.UtcNow:yyyyMMddHHmm}.json";
+						File.WriteAllText(Path.Combine(_env.WebRootPath, "leaderboard-history", fileName), JsonConvert.SerializeObject(lb));
+						await BotLogger.Instance.TryLog(LoggingChannel.Task, $"{nameof(CreateLeaderboardHistoryFileTask)} succeeded. '{fileName}' was created.");
+					}
+					else
+					{
+						await BotLogger.Instance.TryLog(LoggingChannel.Task, $"{nameof(CreateLeaderboardHistoryFileTask)} failed because the Devil Daggers servers didn't return a leaderboard.");
+					}
 				}
 				else
 				{
-					await BotLogger.Instance.TryLog(LoggingChannel.Task, $"{nameof(CreateLeaderboardHistoryFileTask)} failed because the Devil Daggers servers didn't return a leaderboard.");
+					await BotLogger.Instance.TryLog(LoggingChannel.Task, $"{nameof(CreateLeaderboardHistoryFileTask)} skipped because a file for today's history already exists ({historyFileName}).");
 				}
 			}
-			else
+			catch (Exception ex)
 			{
-				await BotLogger.Instance.TryLog(LoggingChannel.Task, $"{nameof(CreateLeaderboardHistoryFileTask)} skipped because a file for today's history already exists ({historyFileName}).");
+				await BotLogger.Instance.TryLog(LoggingChannel.Task, $"{nameof(CreateLeaderboardHistoryFileTask)} failed with exception: {ex.Message}");
 			}
 		}
 
