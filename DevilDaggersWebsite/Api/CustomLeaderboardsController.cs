@@ -342,7 +342,7 @@ namespace DevilDaggersWebsite.Api
 			// Fetch the entries again after having modified the leaderboard.
 			entries = _dbContext.CustomEntries.Where(e => e.CustomLeaderboard == customLeaderboard).OrderByMember(nameof(CustomEntry.Time), customLeaderboard.IsAscending()).ToArray();
 
-			await TrySendLeaderboardMessage(customLeaderboard, $"`{uploadRequest.PlayerName}` just got {uploadRequest.Time} seconds on the `{spawnsetName}` leaderboard, beating their previous highscore of {(uploadRequest.Time - timeDiff) / 10000.0} by {Math.Abs(timeDiff) / 10000.0} seconds!", rank, totalPlayers, uploadRequest.Time);
+			await TrySendLeaderboardMessage(customLeaderboard, $"`{uploadRequest.PlayerName}` just got {uploadRequest.Time / 10000.0} seconds on the `{spawnsetName}` leaderboard, beating their previous highscore of {(uploadRequest.Time - timeDiff) / 10000.0} by {Math.Abs(timeDiff) / 10000.0} seconds!", rank, totalPlayers, uploadRequest.Time);
 			await TryLog(uploadRequest, spawnsetName);
 			return new Dto.UploadSuccess
 			{
