@@ -26,13 +26,13 @@ namespace DevilDaggersWebsite.Tasks
 			Stopwatch stopwatch = new();
 			stopwatch.Start();
 
-			LastTriggered = DateTime.Now;
+			LastTriggered = DateTime.UtcNow;
 
 			await Execute();
 
 			ExecutionTime = stopwatch.Elapsed;
 
-			LastFinished = DateTime.Now;
+			LastFinished = DateTime.UtcNow;
 		}
 	}
 }

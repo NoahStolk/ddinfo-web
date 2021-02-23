@@ -200,7 +200,7 @@ namespace DevilDaggersWebsite.Api
 			}
 
 			// Update the date this leaderboard was submitted to.
-			customLeaderboard.DateLastPlayed = DateTime.Now;
+			customLeaderboard.DateLastPlayed = DateTime.UtcNow;
 			customLeaderboard.TotalRunsSubmitted++;
 
 			// Calculate the new rank.
@@ -312,7 +312,7 @@ namespace DevilDaggersWebsite.Api
 			customEntry.LevelUpTime2 = uploadRequest.LevelUpTime2;
 			customEntry.LevelUpTime3 = uploadRequest.LevelUpTime3;
 			customEntry.LevelUpTime4 = uploadRequest.LevelUpTime4;
-			customEntry.SubmitDate = DateTime.Now;
+			customEntry.SubmitDate = DateTime.UtcNow;
 			customEntry.ClientVersion = uploadRequest.ClientVersion;
 
 			// Update the entry data.

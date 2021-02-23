@@ -21,7 +21,7 @@ namespace DevilDaggersWebsite.Transients
 
 		public List<WorldRecord> GetWorldRecords(DateTime? date)
 		{
-			bool isDateParameterValid = date.HasValue && date <= DateTime.Now;
+			bool isDateParameterValid = date.HasValue && date <= DateTime.UtcNow;
 
 			List<WorldRecord> worldRecords = new();
 
@@ -62,9 +62,9 @@ namespace DevilDaggersWebsite.Transients
 				DateTime lastHeld;
 				if (i == worldRecords.Count - 1)
 				{
-					difference = DateTime.Now - wr.DateTime;
+					difference = DateTime.UtcNow - wr.DateTime;
 					firstHeld = wr.DateTime;
-					lastHeld = DateTime.Now;
+					lastHeld = DateTime.UtcNow;
 				}
 				else
 				{

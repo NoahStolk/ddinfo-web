@@ -27,7 +27,7 @@ namespace DevilDaggersWebsite.Razor.Pages.Leaderboard
 
 		public string GetHistoryDateString(DateTime dateTime)
 		{
-			int daysAgo = (int)Math.Round((DateTime.Now - dateTime).TotalDays);
+			int daysAgo = (int)Math.Round((DateTime.UtcNow - dateTime).TotalDays);
 			return $"{dateTime:MMM dd} '{dateTime:yy} ({daysAgo} day{daysAgo.S()} ago)";
 		}
 	}

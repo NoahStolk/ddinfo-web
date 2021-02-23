@@ -14,13 +14,13 @@ namespace DiscordBotDdInfo.Commands
 		public override string Name => "wr";
 
 		public async Task<CommandResult> Execute()
-			=> await Execute(DateTime.Now);
+			=> await Execute(DateTime.UtcNow);
 
 		public async Task<CommandResult> Execute(DateTime dateTime)
 		{
-			if (dateTime > DateTime.Now)
+			if (dateTime > DateTime.UtcNow)
 			{
-				int days = (dateTime - DateTime.Now).Days;
+				int days = (dateTime - DateTime.UtcNow).Days;
 				return CommandResult.GetCustomResponse($"Wait {days} day{(days == 1 ? string.Empty : "s")} and I'll tell you.");
 			}
 

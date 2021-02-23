@@ -81,7 +81,7 @@ namespace DevilDaggersWebsite.Api
 					return (entries[i].DateTime, entries[i - 1].DateTime);
 			}
 
-			return (DateTime.Now, DateTime.Now);
+			return (DateTime.UtcNow, DateTime.UtcNow);
 		}
 
 		[HttpGet("user-activity")]

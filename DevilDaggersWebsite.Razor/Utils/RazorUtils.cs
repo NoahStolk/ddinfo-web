@@ -50,7 +50,7 @@ namespace DevilDaggersWebsite.Razor.Utils
 		}
 
 		public static HtmlString GetCopyrightString(string name, int startYear)
-			=> GetCopyrightString(name, startYear, DateTime.Now.Year);
+			=> GetCopyrightString(name, startYear, DateTime.UtcNow.Year);
 
 		public static HtmlString GetCopyrightString(string name, int startYear, int endYear)
 		{
@@ -111,7 +111,7 @@ namespace DevilDaggersWebsite.Razor.Utils
 				}
 			}
 
-			return new (str);
+			return new(str);
 		}
 
 		public static string TransmuteString(this string str)

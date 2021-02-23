@@ -30,13 +30,13 @@ namespace DevilDaggersWebsite.BlazorServer.Data
 
 			string GetHistoryDateString(DateTime dateTime)
 			{
-				int daysAgo = (int)Math.Round((DateTime.Now - dateTime).TotalDays);
+				int daysAgo = (int)Math.Round((DateTime.UtcNow - dateTime).TotalDays);
 				return $"{dateTime:MMM dd} '{dateTime:yy} ({daysAgo} day{daysAgo.Pluralize()} ago)";
 			}
 
 			string GetTotalTimeHeldString(WorldRecordHolder wrh)
 			{
-				TimeSpan total = DateTime.Now - (GameInfo.GetReleaseDate(GameVersion.V1) ?? throw new("Could not retrieve release version from V1."));
+				TimeSpan total = DateTime.UtcNow - (GameInfo.GetReleaseDate(GameVersion.V1) ?? throw new("Could not retrieve release version from V1."));
 				int days = (int)Math.Round(wrh.TotalTimeHeld.TotalDays);
 				return $"{days} day{days.Pluralize()} ({wrh.TotalTimeHeld / total:00.00%})";
 			}

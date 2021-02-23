@@ -16,14 +16,14 @@ namespace DevilDaggersWebsite.Razor.Pages
 		{
 			try
 			{
-				DiscordEmbedBuilder builder = new DiscordEmbedBuilder
+				DiscordEmbedBuilder builder = new()
 				{
 					Title = "INTERNAL SERVER ERROR",
 					Color = DiscordColor.Red,
 				};
 
 				IExceptionHandlerPathFeature? exceptionFeature = HttpContext.Features?.Get<IExceptionHandlerPathFeature>();
-				builder.AddFieldObject("Timestamp", DateTime.Now.ToString(FormatUtils.DateTimeFullFormat, CultureInfo.InvariantCulture), true);
+				builder.AddFieldObject("Timestamp", DateTime.UtcNow.ToString(FormatUtils.DateTimeFullFormat, CultureInfo.InvariantCulture), true);
 				builder.AddFieldObject("Route", exceptionFeature?.Path, true);
 				builder.AddFieldObject("Request query string", HttpContext.Request?.QueryString, true);
 				if (exceptionFeature != null)

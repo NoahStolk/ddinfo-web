@@ -42,7 +42,7 @@ namespace DevilDaggersWebsite.Razor.Pages.Admin.CustomLeaderboards
 			if (!ModelState.IsValid)
 				return Page();
 
-			CustomLeaderboard.DateCreated = DateTime.Now;
+			CustomLeaderboard.DateCreated = DateTime.UtcNow;
 			_dbContext.CustomLeaderboards.Add(CustomLeaderboard);
 			await _dbContext.SaveChangesAsync();
 

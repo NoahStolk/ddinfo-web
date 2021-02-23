@@ -41,7 +41,7 @@
 		<div class="text-bold col-lg-2 hidden-md hidden-sm hidden-xs">Last held</div>
 	</div>
 	@{
-		TimeSpan total = DateTime.Now - (GameInfo.GetReleaseDate(GameVersion.V1) ?? throw new("Could not retrieve release version from V1."));
+		TimeSpan total = DateTime.UtcNow - (GameInfo.GetReleaseDate(GameVersion.V1) ?? throw new("Could not retrieve release version from V1."));
 		foreach (WorldRecordHolder wrh in Model.WorldRecordHolders)
 		{
 			int days = (int)Math.Round(wrh.TotalTimeHeld.TotalDays);

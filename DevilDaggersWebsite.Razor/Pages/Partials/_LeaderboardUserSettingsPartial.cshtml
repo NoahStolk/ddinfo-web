@@ -40,7 +40,7 @@
 				string[] titles = player.PlayerTitles.Select(pt => pt.Title.Name).ToArray();
 
 				Dagger dagger = GameInfo.GetDaggerFromTime(entry.Time);
-				Death? death = GameInfo.GetDeathByType(entry.DeathType, GameInfo.GetGameVersionFromDate(Model.Leaderboard?.DateTime ?? DateTime.Now));
+				Death? death = GameInfo.GetDeathByType(entry.DeathType, GameInfo.GetGameVersionFromDate(Model.Leaderboard?.DateTime ?? DateTime.UtcNow));
 
 				string daggerColor = dagger.Name.ToLower();
 				string deathStyle = $"color: #{death?.ColorCode ?? "444"};";

@@ -226,7 +226,7 @@ namespace DevilDaggersWebsite.Tests
 			SpawnsetFile spawnsetFile = new()
 			{
 				Id = 1,
-				LastUpdated = DateTime.Now,
+				LastUpdated = DateTime.UtcNow,
 				Name = "Empty",
 				PlayerId = 0,
 				Player = testPlayer1,
@@ -242,8 +242,8 @@ namespace DevilDaggersWebsite.Tests
 				TimeDevil = 500,
 				TimeLeviathan = 1000,
 				Category = CustomLeaderboardCategory.Default,
-				DateCreated = DateTime.Now,
-				DateLastPlayed = DateTime.Now,
+				DateCreated = DateTime.UtcNow,
+				DateLastPlayed = DateTime.UtcNow,
 				SpawnsetFileId = 1,
 				TotalRunsSubmitted = 666,
 				SpawnsetFile = spawnsetFile,
@@ -267,7 +267,7 @@ namespace DevilDaggersWebsite.Tests
 				LevelUpTime2 = 0,
 				LevelUpTime3 = 0,
 				LevelUpTime4 = 0,
-				SubmitDate = DateTime.Now,
+				SubmitDate = DateTime.UtcNow,
 			};
 
 			_dbContext.Players.Add(testPlayer1);
