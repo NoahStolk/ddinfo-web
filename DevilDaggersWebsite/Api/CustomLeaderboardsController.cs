@@ -408,7 +408,7 @@ namespace DevilDaggersWebsite.Api
 				};
 				builder.AddFieldObject("Score", time / 10000.0, true);
 				builder.AddFieldObject("Rank", $"{rank}/{totalPlayers}", true);
-				await BotLogger.Instance.TryLog(Channel.CustomLeaderboardMonitoring, null, builder.Build());
+				await BotLogger.Instance.TryLog(Channel.CustomLeaderboards, null, builder.Build());
 			}
 			catch (Exception ex)
 			{
