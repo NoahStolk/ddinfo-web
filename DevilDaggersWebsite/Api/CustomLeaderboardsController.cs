@@ -4,7 +4,9 @@ using DevilDaggersWebsite.Clients;
 using DevilDaggersWebsite.Entities;
 using DevilDaggersWebsite.Extensions;
 using DevilDaggersWebsite.Transients;
+using DiscordBotDdInfo.Extensions;
 using DiscordBotDdInfo.Logging;
+using DSharpPlus.Entities;
 using Microsoft.AspNetCore.Hosting;
 using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
@@ -229,10 +231,11 @@ namespace DevilDaggersWebsite.Api
 				entries = _dbContext.CustomEntries.Where(e => e.CustomLeaderboard == customLeaderboard).OrderByMember(nameof(CustomEntry.Time), customLeaderboard.IsAscending());
 				totalPlayers = entries.Count();
 
+				await TrySendLeaderboardMessage($"`{uploadRequest.PlayerName}` just entered the `{spawnsetName}` leaderboard!", rank, totalPlayers, uploadRequest.Time);
 				await TryLog(uploadRequest, spawnsetName);
 				return new Dto.UploadSuccess
 				{
-					Message = $"Welcome to the leaderboard for {spawnsetName}.",
+					Message = $"Welcome to the {spawnsetName} leaderboard!",
 					TotalPlayers = totalPlayers,
 					Leaderboard = customLeaderboard.ToDto(),
 					Category = customLeaderboard.Category,
@@ -339,6 +342,7 @@ namespace DevilDaggersWebsite.Api
 			// Fetch the entries again after having modified the leaderboard.
 			entries = _dbContext.CustomEntries.Where(e => e.CustomLeaderboard == customLeaderboard).OrderByMember(nameof(CustomEntry.Time), customLeaderboard.IsAscending()).ToArray();
 
+			await TrySendLeaderboardMessage($"`{uploadRequest.PlayerName}` just beat their old highscore of {uploadRequest.Time - timeDiff} on the `{spawnsetName}` leaderboard by {Math.Abs(timeDiff)} seconds!", rank, totalPlayers, uploadRequest.Time);
 			await TryLog(uploadRequest, spawnsetName);
 			return new Dto.UploadSuccess
 			{
@@ -379,6 +383,25 @@ namespace DevilDaggersWebsite.Api
 				LevelUpTime4 = uploadRequest.LevelUpTime4,
 				LevelUpTime4Diff = levelUpTime4Diff,
 			};
+		}
+
+		private static async Task TrySendLeaderboardMessage(string message, int rank, int totalPlayers, int time)
+		{
+			try
+			{
+				DiscordEmbedBuilder builder = new()
+				{
+					Title = message,
+					Color = DiscordColor.Green,
+				};
+				builder.AddFieldObject("Score", time, true);
+				builder.AddFieldObject("Rank", $"{rank}/{totalPlayers}", true);
+				await BotLogger.Instance.TryLog(LoggingChannel.CustomLeaderboard, null, builder.Build());
+			}
+			catch (Exception ex)
+			{
+				await BotLogger.Instance.TryLogException($"Error while attempting to send leaderboard message.", ex);
+			}
 		}
 
 		private string GetUsernameFromCache(CustomEntry e)
