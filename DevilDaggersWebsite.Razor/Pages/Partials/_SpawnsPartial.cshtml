@@ -27,6 +27,7 @@
 	}
 
 	<div class="flex-container flex-center flex-column text-center">
+		<div style="padding: 8px;">Timer starts at @spawnset.TimerStart</div>
 		@if (spawnset.HasSpawns())
 		{
 			<div class="flex-container flex-center">
@@ -36,7 +37,7 @@
 				<div style="@RazorUtils.GetCssWidth(widths[3])">Total gems</div>
 			</div>
 
-			double totalSeconds = 0;
+			double totalSeconds = spawnset.TimerStart;
 			int totalGems = spawnset.Hand switch
 			{
 				2 => 10,
