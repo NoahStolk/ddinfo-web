@@ -13,7 +13,7 @@ namespace DevilDaggersWebsite.Api
 		[HttpGet("daggers")]
 		[ProducesResponseType(StatusCodes.Status200OK)]
 		public Dictionary<string, int> GetDaggers()
-			=> StatisticsDataHolder.Instance.DaggerStats.ToDictionary(kvp => kvp.Key.Name, kvp => kvp.Value);
+			=> StatisticsDataHolder.Instance.DaggerStats.OrderBy(kvp => kvp.Key.UnlockSecond).ToDictionary(kvp => kvp.Key.Name, kvp => kvp.Value);
 
 		[HttpGet("death-types")]
 		[ProducesResponseType(StatusCodes.Status200OK)]

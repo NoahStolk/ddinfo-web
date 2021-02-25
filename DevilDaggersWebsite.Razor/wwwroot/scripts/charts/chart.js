@@ -1,7 +1,7 @@
 ﻿const deathNames = ["FALLEN", "SWARMED", "IMPALED", "GORED", "INFESTED", "OPENED", "PURGED", "DESECRATED", "SACRIFICED", "EVISCERATED", "ANNIHILATED", "INTOXICATED", "ENVENOMATED", "INCARNATED", "DISCARNATED", "ENTANGLED", "HAUNTED"];
 const deathColors = ["#DDDDDD", "#352710", "#433114", "#6E5021", "#DCCB00", "#976E2E", "#4E3000", "#804E00", "#AF6B00", "#837E75", "#478B41", "#99A100", "#657A00", "#FF0000", "#FF3131", "#771D00", "#C8A2C8"];
-const daggerNames = ["Leviathan", "Devil", "Golden", "Silver", "Bronze", "Default"];
-const daggerColors = ["#A00000", "#FF0000", "#FFDF00", "#DDDDDD", "#CD7F32", "#444444"];
+const daggerNames = ["Default", "Bronze", "Silver", "Golden", "Devil", "Leviathan"];
+const daggerColors = ["#444444", "#CD7F32", "#DDDDDD", "#FFDF00", "#FF0000", "#A00000"];
 
 function setHighlighterPosition(chart, highlighterId, data, xy, minYValue, maxYValue, useMousePosition) {
 	const yAxisWidth = chart.grid._width - chart._width;

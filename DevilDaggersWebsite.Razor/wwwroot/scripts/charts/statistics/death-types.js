@@ -48,7 +48,7 @@
 	});
 
 	$(chartId).bind('jqplotMouseMove', function (_event, xy, _axesData, _neighbor, plot) {
-		const closestData = getDataBasedOnMouseXPositionBar(chart, xy, plot, 0, 16, deathCounts);
+		const closestData = getDataBasedOnMouseXPositionBar(chart, xy, plot, 0, deathCounts.length, deathCounts);
 
 		if (!closestData)
 			$().hide();

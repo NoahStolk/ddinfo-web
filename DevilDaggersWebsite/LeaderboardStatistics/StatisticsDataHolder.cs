@@ -23,6 +23,8 @@ namespace DevilDaggersWebsite.LeaderboardStatistics
 
 		public string FileName { get; private set; } = string.Empty;
 
+		public bool IsFetched { get; private set; }
+
 		public Dictionary<Dagger, int> DaggerStats { get; } = new();
 		public Dictionary<Death, int> DeathStats { get; } = new();
 		public Dictionary<int, int> TimeStats { get; private set; } = new();
@@ -44,26 +46,28 @@ namespace DevilDaggersWebsite.LeaderboardStatistics
 			for (int i = 0; i < bytes.Length / 15; i++)
 				_entries.Add(CompressedEntry.FromBytes(bytes[(i * 15)..((i + 1) * 15)]));
 
+			foreach (Death death in GameInfo.GetEntities<Death>(GameVersion.V31))
+				DeathStats.Add(death, 0);
+
+			foreach (Dagger dagger in GameInfo.GetEntities<Dagger>(GameVersion.V31))
+				DaggerStats.Add(dagger, 0);
+
 			foreach (CompressedEntry entry in _entries)
 			{
 				Dagger dagger = GameInfo.GetDaggerFromTime((int)entry.Time);
 				if (DaggerStats.ContainsKey(dagger))
 					DaggerStats[dagger]++;
-				else
-					DaggerStats.Add(dagger, 1);
 
 				Death death = GameInfo.GetDeathByType(entry.DeathType, GameVersion.V31) ?? throw new($"Invalid death type for entry with time {entry.Time}.");
 				if (DeathStats.ContainsKey(death))
 					DeathStats[death]++;
-				else
-					DeathStats.Add(death, 1);
 
 				int step = (int)(entry.Time / _timeStep * 10);
 				if (TimeStats.ContainsKey(step))
 					TimeStats[step]++;
-				else
-					TimeStats.Add(step, 1);
 			}
+
+			IsFetched = true;
 		}
 	}
 }

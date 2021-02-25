@@ -48,7 +48,7 @@
 	});
 
 	$(chartId).bind('jqplotMouseMove', function (_event, xy, _axesData, _neighbor, plot) {
-		const closestData = getDataBasedOnMouseXPositionBar(chart, xy, plot, 0, 5, daggerCounts);
+		const closestData = getDataBasedOnMouseXPositionBar(chart, xy, plot, 0, daggerCounts.length, daggerCounts);
 
 		if (!closestData)
 			$().hide();
