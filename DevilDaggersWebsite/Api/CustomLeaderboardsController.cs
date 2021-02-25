@@ -176,9 +176,9 @@ namespace DevilDaggersWebsite.Api
 				return new BadRequestObjectResult(new ProblemDetails { Title = errorMessage });
 			}
 
-			if (customLeaderboard.Category == Enumerators.CustomLeaderboardCategory.Challenge && Version.Parse(uploadRequest.ClientVersion) <= new Version(0, 14, 1, 0))
+			if (customLeaderboard.Category == Enumerators.CustomLeaderboardCategory.Challenge)
 			{
-				const string errorMessage = "Challenge leaderboards are not supported on version 0.14.1.0 or lower.";
+				const string errorMessage = "Challenge leaderboards are still in development and therefore not supported yet.";
 				await TryLog(uploadRequest, spawnsetName, errorMessage);
 				return new BadRequestObjectResult(new ProblemDetails { Title = errorMessage });
 			}

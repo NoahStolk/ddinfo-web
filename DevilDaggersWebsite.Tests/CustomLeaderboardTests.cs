@@ -21,7 +21,7 @@ namespace DevilDaggersWebsite.Tests
 	[TestClass]
 	public class CustomLeaderboardTests
 	{
-		private const string _ddclClientVersion = "0.14.1.0";
+		private const string _ddclClientVersion = "0.14.2.0";
 
 		private static readonly ApplicationDbContext _dbContext;
 		private static readonly CustomLeaderboardsController _customLeaderboardsController;

@@ -681,9 +681,18 @@
 	{
 		"Name": "DevilDaggersCustomLeaderboards",
 		"DisplayName": "Devil Daggers Custom Leaderboards",
-		"VersionNumber": "0.14.1.0",
-		"VersionNumberRequired": "0.14.1.0",
+		"VersionNumber": "0.14.2.0",
+		"VersionNumberRequired": "0.14.2.0",
 		"Changelog": [
+			{
+				"VersionNumber": "0.14.2.0",
+				"Date": "2021-02-25T00:00:00",
+				"Changes": [
+					{
+						"Description": "Works with the latest Devil Daggers build."
+					}
+				]
+			},
 			{
 				"VersionNumber": "0.14.1.0",
 				"Date": "2021-02-21T00:00:00",
