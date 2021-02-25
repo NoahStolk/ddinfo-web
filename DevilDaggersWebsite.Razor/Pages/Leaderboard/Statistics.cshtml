@@ -16,7 +16,7 @@
 	</p>
 	@if (StatisticsDataHolder.Instance.IsFetched)
 	{
-		<p>Statistics were last fetched on @HistoryUtils.HistoryJsonFileNameToDateTime(StatisticsDataHolder.Instance.FileName).</p>
+		<p>Statistics were last fetched on @HistoryUtils.HistoryJsonFileNameToDateTime(StatisticsDataHolder.Instance.FileName).ToString(FormatUtils.DateTimeUtcFormat).</p>
 
 		<h2>Scores</h2>
 		<div class="chart" id="scores-chart">
