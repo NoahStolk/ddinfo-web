@@ -55,7 +55,7 @@ namespace DevilDaggersWebsite.Razor.Models
 			}
 			else
 			{
-				Death? death = GameInfo.GetDeathByType(DeathType, GameVersion.V31);
+				Death? death = GameInfo.GetDeathByType(GameInfo.V31Deaths, DeathType);
 				DeathStyle = $"color: #{death?.ColorCode ?? "444"};";
 				DeathName = death?.Name ?? "Invalid";
 			}
@@ -84,7 +84,7 @@ gems-collected='{GemsCollected}'
 gems-despawned='{(v31 ? customEntry.GemsDespawned : -1)}'
 gems-eaten='{(v31 ? customEntry.GemsEaten : -1)}'
 accuracy='{customEntry.Accuracy * 10000:0}'
-death-type='{GameInfo.GetDeathByType(DeathType, GameVersion.V31)?.Name ?? "Invalid"}'
+death-type='{GameInfo.GetDeathByType(GameInfo.V31Deaths, DeathType)?.Name ?? "Invalid"}'
 homing-daggers='{HomingDaggers}'
 level-2='{(customEntry.LevelUpTime2 == 0 ? 999999999 : customEntry.LevelUpTime2)}'
 level-3='{(customEntry.LevelUpTime3 == 0 ? 999999999 : customEntry.LevelUpTime3)}'

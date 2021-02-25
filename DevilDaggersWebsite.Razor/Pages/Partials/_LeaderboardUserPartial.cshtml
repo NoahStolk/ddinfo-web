@@ -50,6 +50,22 @@
 	</div>
 	<div class="leaderboard-body">
 		@{
+			GameVersion? gameVersion = GameInfo.GetGameVersionFromDate(Model.Leaderboard!.DateTime);
+			List<Death> deaths = gameVersion switch
+			{
+				GameVersion.V2 => GameInfo.V2Deaths,
+				GameVersion.V3 => GameInfo.V3Deaths,
+				GameVersion.V31 => GameInfo.V31Deaths,
+				_ => GameInfo.V1Deaths,
+			};
+			List<Dagger> daggers = gameVersion switch
+			{
+				GameVersion.V2 => GameInfo.V2Daggers,
+				GameVersion.V3 => GameInfo.V3Daggers,
+				GameVersion.V31 => GameInfo.V31Daggers,
+				_ => GameInfo.V1Daggers,
+			};
+
 			IEnumerable<Donation> donations = dbContext.Donations.ToList();
 			IEnumerable<Player> players = dbContext.Players.Include(p => p.PlayerTitles).ThenInclude(pt => pt.Title).ToList();
 			foreach (Dto.Entry entry in Model.Leaderboard!.Entries)
@@ -61,10 +77,10 @@
 				string flagCode = player?.CountryCode ?? string.Empty;
 				string[] titles = player?.PlayerTitles.Select(pt => pt.Title.Name).ToArray() ?? Array.Empty<string>();
 
-				Dagger dagger = GameInfo.GetDaggerFromTime(entry.Time);
+				Dagger dagger = GameInfo.GetDaggerFromTime(daggers, entry.Time);
 				string daggerColor = player?.IsBanned ?? false ? "ban" : dagger.Name.ToLower();
 
-				Death? death = GameInfo.GetDeathByType(entry.DeathType, GameInfo.GetGameVersionFromDate(Model.Leaderboard!.DateTime));
+				Death? death = GameInfo.GetDeathByType(deaths, entry.DeathType);
 				string deathStyle = player?.IsBanned ?? false ? string.Empty : $"color: #{death?.ColorCode ?? "444"};";
 				string deathName = death?.Name ?? "Unknown";
 
@@ -95,7 +111,7 @@
 				HtmlString averageDaggersFired = entry.DeathsTotal == 0 ? RazorUtils.NAString : new((entry.DaggersFiredTotal / (float)entry.DeathsTotal).ToString(FormatUtils.LeaderboardIntAverageFormat));
 				HtmlString timeByDeath = entry.DeathsTotal == 0 ? RazorUtils.NAString : new((entry.Time / (float)entry.DeathsTotal).ToString(FormatUtils.LeaderboardTimeLargeFormat));
 
-				<div class="sort @banString" @entry.ToHtmlData(flagCode)>
+				<div class="sort @banString" @entry.ToHtmlData(flagCode, gameVersion)>
 					<div class="leaderboard-row pointer @(showMoreStats ? "row-more-stats" : "") flex-container" id="@(entry.Rank)-row">
 						<div class="text-right">
 							@if (entry.Id != 0)
