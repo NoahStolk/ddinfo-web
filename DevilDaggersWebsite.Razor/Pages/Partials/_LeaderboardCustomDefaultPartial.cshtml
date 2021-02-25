@@ -92,7 +92,7 @@
 						<div class="hidden-xs hidden-sm hidden-md text-right">@cem.LevelUpTime2</div>
 						<div class="hidden-xs hidden-sm hidden-md text-right">@cem.LevelUpTime3</div>
 						<div class="hidden-xs hidden-sm hidden-md text-right">@cem.LevelUpTime4</div>
-						<div class="hidden-xs hidden-sm hidden-md text-right submit-date">@cem.SubmitDate</div>
+						<div class="hidden-xs hidden-sm hidden-md text-right submit-date">@cem.SubmitDate.ToString("dd MMM yyyy")</div>
 					</div>
 					<div class="leaderboard-expand flex-container" id="@(rank)-expand">
 						<div class="visible-xs">
@@ -143,7 +143,7 @@
 						</div>
 						<div class="visible-xs visible-sm visible-md submit-date">
 							<div class="text-left">Submit date</div>
-							<div class="text-right">@cem.SubmitDate</div>
+							<div class="text-right">@cem.SubmitDate.ToString("dd MMM yyyy")</div>
 						</div>
 					</div>
 				</div>
