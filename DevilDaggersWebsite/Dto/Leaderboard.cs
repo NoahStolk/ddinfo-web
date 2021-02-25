@@ -1,5 +1,5 @@
-﻿using DevilDaggersCore.Utils;
-using DevilDaggersWebsite.LeaderboardHistory;
+﻿using DevilDaggersWebsite.LeaderboardHistory;
+using DevilDaggersWebsite.Utils;
 using Newtonsoft.Json;
 using System;
 using System.Collections.Generic;
@@ -68,7 +68,7 @@ namespace DevilDaggersWebsite.Dto
 				if (!Attribute.IsDefined(info, typeof(CompletionPropertyAttribute)))
 					continue;
 
-				if (valueString == ReflectionUtils.GetDefaultValue(value.GetType()).ToString())
+				if (valueString == ReflectionUtils.GetDefaultValue(value.GetType())?.ToString())
 					Completion.CompletionEntries[info.Name] = CompletionEntry.Missing;
 				else
 					Completion.CompletionEntries[info.Name] = CompletionEntry.Complete;

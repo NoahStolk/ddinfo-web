@@ -17,7 +17,7 @@ namespace DevilDaggersWebsite.Razor.Pages.Wiki
 		{
 			SetGameVersion(gameVersion);
 
-			Daggers = GameInfo.GetEntities<Dagger>(GameVersion);
+			Daggers = GameInfo.GetDaggers(gameVersion);
 		}
 	}
 }

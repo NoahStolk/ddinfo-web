@@ -15,14 +15,14 @@ namespace DevilDaggersWebsite.Api
 		[ProducesResponseType(StatusCodes.Status200OK)]
 		public ActionResult<List<Death>> GetDeaths(GameVersion? gameVersion = null, string? name = null, byte? type = null)
 		{
-			IEnumerable<Death> query = GameInfo.GetEntities<Death>(gameVersion);
+			IEnumerable<Death> deaths = GameInfo.GetDeaths(gameVersion ?? GameVersion.V31);
 
 			if (!string.IsNullOrEmpty(name))
-				query = query.Where(e => e.Name.ToLower(CultureInfo.InvariantCulture) == name.ToLower(CultureInfo.InvariantCulture));
+				deaths = deaths.Where(e => e.Name.ToLower(CultureInfo.InvariantCulture) == name.ToLower(CultureInfo.InvariantCulture));
 			if (type != null)
-				query = query.Where(e => e.DeathType == type);
+				deaths = deaths.Where(e => e.DeathType == type);
 
-			return query.ToList();
+			return deaths.ToList();
 		}
 	}
 }

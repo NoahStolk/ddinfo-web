@@ -6,9 +6,6 @@ namespace DiscordBotDdInfo.Extensions
 {
 	public static class DSharpExtensions
 	{
-		public static async Task SendCommandResult(this DiscordChannel channel, CommandResult result)
-			=> await channel.SendMessageAsyncSafe(result.Text, result.Embed);
-
 		public static void AddError(this DiscordEmbedBuilder builder, Exception exception, int level = 0)
 		{
 			builder.AddField(level == 0 ? "Exception message" : $"Inner exception message {level}", exception.Message);

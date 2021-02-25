@@ -26,8 +26,6 @@ namespace DiscordBotDdInfo
 				DiscordLogger.Instance.TaskMonitoringChannel = await client.GetChannelAsync(ServerConstants.TaskMonitoringChannelId);
 				DiscordLogger.Instance.TestMonitoringChannel = await client.GetChannelAsync(ServerConstants.TestMonitoringChannelId);
 
-				client.MessageCreated += async (client, e) => await CommandHandler.Instance.MessageReceived(client, e);
-
 				await client.ConnectAsync();
 				await Task.Delay(-1);
 			}

@@ -39,8 +39,8 @@
 				string flagCode = player.CountryCode ?? string.Empty;
 				string[] titles = player.PlayerTitles.Select(pt => pt.Title.Name).ToArray();
 
-				Dagger dagger = GameInfo.GetDaggerFromTime(GameInfo.V31Daggers, entry.Time);
-				Death? death = GameInfo.GetDeathByType(GameInfo.V31Deaths, entry.DeathType);
+				Dagger dagger = GameInfo.GetDaggerFromTime(GameVersion.V31, entry.Time);
+				Death? death = GameInfo.GetDeathByType(GameVersion.V31, entry.DeathType);
 
 				string daggerColor = dagger.Name.ToLower();
 				string deathStyle = $"color: #{death?.ColorCode ?? "444"};";

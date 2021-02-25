@@ -46,19 +46,19 @@ namespace DevilDaggersWebsite.LeaderboardStatistics
 			for (int i = 0; i < bytes.Length / 15; i++)
 				_entries.Add(CompressedEntry.FromBytes(bytes[(i * 15)..((i + 1) * 15)]));
 
-			foreach (Death death in GameInfo.V31Deaths)
+			foreach (Death death in GameInfo.GetDeaths(GameVersion.V31))
 				DeathStats.Add(death, 0);
 
-			foreach (Dagger dagger in GameInfo.V31Daggers)
+			foreach (Dagger dagger in GameInfo.GetDaggers(GameVersion.V31))
 				DaggerStats.Add(dagger, 0);
 
 			foreach (CompressedEntry entry in _entries)
 			{
-				Dagger dagger = GameInfo.GetDaggerFromTime(GameInfo.V31Daggers, (int)entry.Time);
+				Dagger dagger = GameInfo.GetDaggerFromTime(GameVersion.V31, (int)entry.Time);
 				if (DaggerStats.ContainsKey(dagger))
 					DaggerStats[dagger]++;
 
-				Death death = GameInfo.GetDeathByType(GameInfo.V31Deaths, entry.DeathType) ?? throw new($"Invalid death type for entry with time {entry.Time}.");
+				Death death = GameInfo.GetDeathByType(GameVersion.V31, entry.DeathType) ?? throw new($"Invalid death type for entry with time {entry.Time}.");
 				if (DeathStats.ContainsKey(death))
 					DeathStats[death]++;
 

@@ -11,7 +11,7 @@
 	ViewBag.Title = $"{Model.SpawnsetFile.Name} by {Model.SpawnsetFile.Player.PlayerName}";
 	int[] widths = new int[] { 160, 160, 160 };
 
-	Upgrade? hand = GameInfo.GetEntities<Upgrade>().FirstOrDefault(u => u.Name == $"Level {Model.Spawnset.Hand}") ?? GameInfo.V31Level1;
+	Upgrade? hand = GameInfo.GetUpgrades(GameVersion.V31).FirstOrDefault(u => u.Name == $"Level {Model.Spawnset.Hand}") ?? GameInfo.V31Level1;
 }
 
 <header>

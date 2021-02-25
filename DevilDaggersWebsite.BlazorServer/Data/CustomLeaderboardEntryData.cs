@@ -11,7 +11,7 @@ namespace DevilDaggersWebsite.BlazorServer.Data
 		{
 			DaggerCssClass = $"text-{customLeaderboard.GetDagger(customEntry.Time)}";
 
-			Death? death = GameInfo.GetDeathByType(GameInfo.V31Deaths, customEntry.DeathType);
+			Death? death = GameInfo.GetDeathByType(GameVersion.V31, customEntry.DeathType);
 			DeathName = death?.Name ?? "Unknown";
 			DeathHexColor = $"#{death?.ColorCode ?? "444"}";
 

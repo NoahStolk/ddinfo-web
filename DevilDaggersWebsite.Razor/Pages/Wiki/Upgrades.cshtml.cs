@@ -17,7 +17,7 @@ namespace DevilDaggersWebsite.Razor.Pages.Wiki
 		{
 			SetGameVersion(gameVersion);
 
-			Upgrades = GameInfo.GetEntities<Upgrade>(GameVersion);
+			Upgrades = GameInfo.GetUpgrades(gameVersion);
 		}
 	}
 }

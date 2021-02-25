@@ -2,7 +2,6 @@
 using DevilDaggersCore.Utils;
 using DevilDaggersWebsite.Dto;
 using DevilDaggersWebsite.Entities;
-using System.Collections.Generic;
 using System.Globalization;
 
 namespace DevilDaggersWebsite.BlazorServer.Data
@@ -13,17 +12,10 @@ namespace DevilDaggersWebsite.BlazorServer.Data
 		{
 			RowClass = player?.IsBanned == true ? "banned" : string.Empty;
 
-			Dagger dagger = GameInfo.GetDaggerFromTime(GameInfo.V31Daggers, entry.Time);
+			Dagger dagger = GameInfo.GetDaggerFromTime(gameVersion, entry.Time);
 			DaggerCssClass = $"text-{dagger.Name.ToLower(CultureInfo.InvariantCulture)}";
 
-			List<Death> deaths = gameVersion switch
-			{
-				GameVersion.V1 => GameInfo.V1Deaths,
-				GameVersion.V2 => GameInfo.V2Deaths,
-				GameVersion.V3 => GameInfo.V3Deaths,
-				_ => GameInfo.V31Deaths,
-			};
-			Death? death = GameInfo.GetDeathByType(deaths, entry.DeathType);
+			Death? death = GameInfo.GetDeathByType(gameVersion, entry.DeathType);
 			DeathName = death?.Name ?? "Unknown";
 			DeathHexColor = $"#{death?.ColorCode ?? "444"}";
 

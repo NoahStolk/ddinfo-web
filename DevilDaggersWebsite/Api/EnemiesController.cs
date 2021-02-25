@@ -15,14 +15,14 @@ namespace DevilDaggersWebsite.Api
 		[ProducesResponseType(StatusCodes.Status200OK)]
 		public ActionResult<List<Enemy>> GetEnemies(GameVersion? gameVersion = null, string? name = null, byte? spawnsetType = null)
 		{
-			IEnumerable<Enemy> query = GameInfo.GetEntities<Enemy>(gameVersion);
+			IEnumerable<Enemy> enemies = GameInfo.GetEnemies(gameVersion ?? GameVersion.V31);
 
 			if (!string.IsNullOrEmpty(name))
-				query = query.Where(e => e.Name.ToLower(CultureInfo.InvariantCulture) == name.ToLower(CultureInfo.InvariantCulture));
+				enemies = enemies.Where(e => e.Name.ToLower(CultureInfo.InvariantCulture) == name.ToLower(CultureInfo.InvariantCulture));
 			if (spawnsetType != null)
-				query = query.Where(e => e.SpawnsetType == spawnsetType);
+				enemies = enemies.Where(e => e.SpawnsetType == spawnsetType);
 
-			return query.ToList();
+			return enemies.ToList();
 		}
 	}
 }

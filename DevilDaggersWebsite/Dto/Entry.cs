@@ -1,5 +1,5 @@
-﻿using DevilDaggersCore.Utils;
-using DevilDaggersWebsite.LeaderboardHistory;
+﻿using DevilDaggersWebsite.LeaderboardHistory;
+using DevilDaggersWebsite.Utils;
 using Microsoft.AspNetCore.Hosting;
 using Newtonsoft.Json;
 using System;
@@ -86,7 +86,7 @@ namespace DevilDaggersWebsite.Dto
 					continue;
 
 				if (info.Name == nameof(DeathType) && valueString == "-1"
-				 || info.Name != nameof(DeathType) && valueString == ReflectionUtils.GetDefaultValue(value.GetType()).ToString())
+				 || info.Name != nameof(DeathType) && valueString == ReflectionUtils.GetDefaultValue(value.GetType())?.ToString())
 				{
 					Completion.CompletionEntries[info.Name] = CompletionEntry.Missing;
 				}

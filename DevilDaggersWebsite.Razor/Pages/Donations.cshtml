@@ -1,7 +1,6 @@
 ﻿@page
 @inject ApplicationDbContext dbContext
 @using DevilDaggersCore.Game
-@using DevilDaggersWebsite.Razor.Utils
 @using DevilDaggersWebsite.Entities
 @using DevilDaggersWebsite.Enumerators
 @using DevilDaggersWebsite.Extensions
@@ -25,7 +24,7 @@
 		Thanks to everyone who donated!
 	</p>
 	<p>
-		@foreach (Dagger dagger in GameInfo.GetEntities<Dagger>(GameVersion.V31))
+		@foreach (Dagger dagger in GameInfo.GetDaggers(GameVersion.V31))
 		{
 			<img src="~/Images/Daggers/@(dagger.Name)Small.png" style="margin: 8px;" />
 		}

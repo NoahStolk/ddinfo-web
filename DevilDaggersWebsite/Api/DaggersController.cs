@@ -13,12 +13,12 @@ namespace DevilDaggersWebsite.Api
 		[HttpGet]
 		[ProducesResponseType(StatusCodes.Status200OK)]
 		public ActionResult<List<Dagger>> GetDaggers()
-			=> GameInfo.V31Daggers;
+			=> GameInfo.GetDaggers(GameVersion.V31);
 
 		[HttpGet("at-time")]
 		[ProducesResponseType(StatusCodes.Status200OK)]
 		[ProducesResponseType(StatusCodes.Status400BadRequest)]
 		public ActionResult<Dagger> GetDaggerAtSeconds([Required] uint seconds)
-			=> GameInfo.GetDaggerFromTime(GameInfo.V31Daggers, (int)seconds * 10000);
+			=> GameInfo.GetDaggerFromTime(GameVersion.V31, (int)seconds * 10000);
 	}
 }

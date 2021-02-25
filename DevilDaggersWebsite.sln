@@ -15,8 +15,6 @@ Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "DiscordBotDdInfo", "Discord
 EndProject
 Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "Tests", "Tests", "{F7BF9B31-DDAD-4562-93A8-677E71FA8774}"
 EndProject
-Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "DiscordBotDdInfo.Tests", "DiscordBotDdInfo.Tests\DiscordBotDdInfo.Tests.csproj", "{D398E9EF-FA3A-475E-90A8-8A574D7EBD93}"
-EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
 		Debug|Any CPU = Debug|Any CPU
@@ -43,17 +41,12 @@ Global
 		{DCBD0228-8DBE-48ED-8CE6-76EA0FD92309}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{DCBD0228-8DBE-48ED-8CE6-76EA0FD92309}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{DCBD0228-8DBE-48ED-8CE6-76EA0FD92309}.Release|Any CPU.Build.0 = Release|Any CPU
-		{D398E9EF-FA3A-475E-90A8-8A574D7EBD93}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
-		{D398E9EF-FA3A-475E-90A8-8A574D7EBD93}.Debug|Any CPU.Build.0 = Debug|Any CPU
-		{D398E9EF-FA3A-475E-90A8-8A574D7EBD93}.Release|Any CPU.ActiveCfg = Release|Any CPU
-		{D398E9EF-FA3A-475E-90A8-8A574D7EBD93}.Release|Any CPU.Build.0 = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE
 	EndGlobalSection
 	GlobalSection(NestedProjects) = preSolution
 		{EF02C310-86AD-4F70-8D30-D73FAD185F23} = {F7BF9B31-DDAD-4562-93A8-677E71FA8774}
-		{D398E9EF-FA3A-475E-90A8-8A574D7EBD93} = {F7BF9B31-DDAD-4562-93A8-677E71FA8774}
 	EndGlobalSection
 	GlobalSection(ExtensibilityGlobals) = postSolution
 		SolutionGuid = {E27EC676-81BF-4099-BFC9-20E860CE83A5}

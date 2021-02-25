@@ -62,7 +62,7 @@ namespace DevilDaggersWebsite.Razor.Utils
 		{
 			string colorCode = enemy.ColorCode;
 			if (gameVersionOverride.HasValue)
-				colorCode = GameInfo.GetEntities<Enemy>(gameVersionOverride).First(e => e.Name == enemy.Name).ColorCode;
+				colorCode = GameInfo.GetEnemies(gameVersionOverride.Value).First(e => e.Name == enemy.Name).ColorCode;
 
 			return new($"<a style='color: #{colorCode};' href='/Wiki/Enemies{(gameVersionOverride == null ? string.Empty : $"?GameVersion={gameVersionOverride}")}#{enemy.Name.Replace(" ", string.Empty, StringComparison.InvariantCulture)}'>{enemy.Name}{(plural ? "s" : string.Empty)}</a>");
 		}
@@ -76,7 +76,7 @@ namespace DevilDaggersWebsite.Razor.Utils
 			char[] beginSeparators = new char[] { '>', ' ', ',', '.', '(', '-', '/' };
 			char[] endSeparators = new char[] { ' ', ',', '.', 's', ')', '\'', ';', '/' };
 
-			List<Enemy> enemies = GameInfo.GetEntities<Enemy>(gameVersion);
+			List<Enemy> enemies = GameInfo.GetEnemies(gameVersion ?? GameVersion.V31);
 
 			// Use reverse iteration because transmuted skulls come after normal skulls in the list.
 			for (int i = enemies.Count - 1; i >= 0; i--)
@@ -97,7 +97,7 @@ namespace DevilDaggersWebsite.Razor.Utils
 				}
 			}
 
-			foreach (Upgrade upgrade in GameInfo.GetEntities<Upgrade>(gameVersion))
+			foreach (Upgrade upgrade in GameInfo.GetUpgrades(gameVersion ?? GameVersion.V31))
 			{
 				foreach (char begin in beginSeparators)
 				{

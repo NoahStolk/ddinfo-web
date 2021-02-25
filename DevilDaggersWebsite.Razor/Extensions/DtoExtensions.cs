@@ -2,7 +2,6 @@
 using DevilDaggersWebsite.Dto;
 using DevilDaggersWebsite.Entities;
 using Microsoft.AspNetCore.Html;
-using System.Collections.Generic;
 using System.Web;
 
 namespace DevilDaggersWebsite.Razor.Extensions
@@ -25,16 +24,8 @@ flash='{(!player.FlashEnabled.HasValue ? -1 : player.FlashEnabled.Value ? 1 : 0)
 gamma='{player.Gamma ?? 0}'");
 		}
 
-		public static HtmlString ToHtmlData(this Entry entry, string flagCode, GameVersion? gameVersion)
+		public static HtmlString ToHtmlData(this Entry entry, string flagCode, GameVersion gameVersion)
 		{
-			List<Death> deaths = gameVersion switch
-			{
-				GameVersion.V2 => GameInfo.V2Deaths,
-				GameVersion.V3 => GameInfo.V3Deaths,
-				GameVersion.V31 => GameInfo.V31Deaths,
-				_ => GameInfo.V1Deaths,
-			};
-
 			ulong deathsTotal = entry.DeathsTotal == 0 ? 1 : entry.DeathsTotal;
 			return new($@"
 rank='{entry.Rank}'
@@ -44,7 +35,7 @@ time='{entry.Time}'
 kills='{entry.Kills}'
 gems='{entry.Gems}'
 accuracy='{entry.Accuracy * 10000:0}'
-death-type='{GameInfo.GetDeathByType(deaths, entry.DeathType)?.Name ?? "Unknown"}'
+death-type='{GameInfo.GetDeathByType(gameVersion, entry.DeathType)?.Name ?? "Unknown"}'
 total-time='{entry.TimeTotal}'
 total-kills='{entry.KillsTotal}'
 total-gems='{entry.GemsTotal}'
