@@ -49,7 +49,7 @@
 
 			int endLoopIndex = spawnset.GetEndLoopStartIndex();
 
-			foreach (Spawn spawn in spawnset.Spawns.Values.SkipLast(spawnset.Spawns.Count() - endLoopIndex))
+			foreach (Spawn spawn in spawnset.Spawns.Values.SkipLast(spawnset.Spawns.Count - endLoopIndex))
 			{
 				totalSeconds += spawn.Delay;
 				if (spawn.Enemy != null)
@@ -67,9 +67,9 @@
 
 			List<Spawn> endLoop = spawnset.Spawns.Values.Skip(endLoopIndex).ToList();
 
-			if (endLoop.Count(s => s.Enemy != null) != 0)
+			if (endLoop.Any(s => s.Enemy != null))
 			{
-				int spawns = spawnset.Spawns.Where(s => s.Value.Enemy != null).Count();
+				int spawns = spawnset.Spawns.Count(s => s.Value.Enemy != null);
 
 				double endGameSecond = totalSeconds;
 				for (int i = 0; i < maxWaves; i++)
