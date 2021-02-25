@@ -1,5 +1,8 @@
-﻿using DiscordBotDdInfo.Logging;
+﻿using DiscordBotDdInfo.Extensions;
+using DiscordBotDdInfo.Logging;
 using DSharpPlus;
+using DSharpPlus.Entities;
+using System;
 using System.IO;
 using System.Threading.Tasks;
 
@@ -25,6 +28,20 @@ namespace DiscordBotDdInfo
 				DiscordLogger.Instance.ErrorMonitoringChannel = await client.GetChannelAsync(ServerConstants.ErrorMonitoringChannelId);
 				DiscordLogger.Instance.TaskMonitoringChannel = await client.GetChannelAsync(ServerConstants.TaskMonitoringChannelId);
 				DiscordLogger.Instance.TestMonitoringChannel = await client.GetChannelAsync(ServerConstants.TestMonitoringChannelId);
+
+				client.MessageCreated += async (client, e) =>
+				{
+					string msg = e.Message.Content.ToLower();
+					if (msg.Length <= 1)
+						return;
+
+					// React with an emoji when the bot gets mentioned anywhere.
+					if (msg.Contains($"@!{ServerConstants.BotUserId}", StringComparison.InvariantCulture))
+						await e.Message.CreateReactionAsync(DiscordEmoji.FromName(client, ":eye_in_speech_bubble:"));
+
+					if (e.Channel.Id == ServerConstants.TestMonitoringChannelId && msg.StartsWith(".bot"))
+						await e.Channel.SendMessageAsyncSafe("Hi.");
+				};
 
 				await client.ConnectAsync();
 				await Task.Delay(-1);
