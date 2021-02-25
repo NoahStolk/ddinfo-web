@@ -95,14 +95,13 @@
 		<footer>
 			<div class="row">
 				<div class="col-lg-4 col-lg-offset-2 text-center">
-					@(RazorUtils.GetCopyrightString("", 2017)) <span class="build-time">(Build: @RazorUtils.BuildTime)</span><br />
-					Website created by Noah Stolk<br />
-					<a href="//noahstolk.com/">www.noahstolk.com</a>
+					@(RazorUtils.GetCopyrightString("", 2017))<br />
+					Build: @RazorUtils.BuildTime<br />
+					<a href="@RazorUtils.DiscordUrl">Discord server</a>
 				</div>
 				<div class="col-lg-4 text-center">
-					Contact<br />
-					<a href="mailto:@(RazorUtils.ContactEmail)">@(RazorUtils.ContactEmail)</a><br />
-					<a href="@RazorUtils.DiscordUrl">Discord server</a>
+					Website created by Noah Stolk<br />
+					<a href="//noahstolk.com/">www.noahstolk.com</a>
 				</div>
 			</div>
 		</footer>

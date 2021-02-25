@@ -15,7 +15,6 @@ namespace DevilDaggersWebsite.Razor.Utils
 	public static class RazorUtils
 	{
 		public const string DiscordUrl = "https://discord.gg/NF32j8S";
-		public const string ContactEmail = "contact@devildaggers.info";
 
 		static RazorUtils()
 		{
@@ -56,7 +55,7 @@ namespace DevilDaggersWebsite.Razor.Utils
 		{
 			string year = startYear == endYear ? startYear.ToString(CultureInfo.InvariantCulture) : $"{startYear}-{endYear}";
 
-			return new HtmlString($"Copyright &copy; {year} {name}");
+			return new($"&copy; DevilDaggers.info {year} {name}");
 		}
 
 		public static HtmlString GetLayoutAnchor(this Enemy enemy, bool plural = false, GameVersion? gameVersionOverride = null)
@@ -65,7 +64,7 @@ namespace DevilDaggersWebsite.Razor.Utils
 			if (gameVersionOverride.HasValue)
 				colorCode = GameInfo.GetEntities<Enemy>(gameVersionOverride).First(e => e.Name == enemy.Name).ColorCode;
 
-			return new HtmlString($"<a style='color: #{colorCode};' href='/Wiki/Enemies{(gameVersionOverride == null ? string.Empty : $"?GameVersion={gameVersionOverride}")}#{enemy.Name.Replace(" ", string.Empty, StringComparison.InvariantCulture)}'>{enemy.Name}{(plural ? "s" : string.Empty)}</a>");
+			return new($"<a style='color: #{colorCode};' href='/Wiki/Enemies{(gameVersionOverride == null ? string.Empty : $"?GameVersion={gameVersionOverride}")}#{enemy.Name.Replace(" ", string.Empty, StringComparison.InvariantCulture)}'>{enemy.Name}{(plural ? "s" : string.Empty)}</a>");
 		}
 
 		public static HtmlString GetLayoutAnchor(this Upgrade upgrade)
