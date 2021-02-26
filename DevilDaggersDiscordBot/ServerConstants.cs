@@ -1,4 +1,4 @@
-﻿namespace DiscordBotDdInfo
+﻿namespace DevilDaggersDiscordBot
 {
 	public static class ServerConstants
 	{

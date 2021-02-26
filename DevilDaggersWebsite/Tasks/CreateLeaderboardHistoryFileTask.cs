@@ -1,12 +1,12 @@
 ﻿using DevilDaggersCore.Utils;
+using DevilDaggersDiscordBot.Logging;
 using DevilDaggersWebsite.Clients;
-using DiscordBotDdInfo.Logging;
 using Microsoft.AspNetCore.Hosting;
 using Newtonsoft.Json;
 using System;
 using System.IO;
 using System.Threading.Tasks;
-using BotLogger = DiscordBotDdInfo.Logging.DiscordLogger;
+using BotLogger = DevilDaggersDiscordBot.Logging.DiscordLogger;
 
 namespace DevilDaggersWebsite.Tasks
 {

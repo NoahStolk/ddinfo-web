@@ -8,7 +8,7 @@ namespace DevilDaggersWebsite.Razor.Bots
 	{
 		public Task StartAsync(CancellationToken cancellationToken)
 		{
-			DiscordBotDdInfo.Program.Main();
+			DevilDaggersDiscordBot.Program.Main();
 
 			return Task.CompletedTask;
 		}

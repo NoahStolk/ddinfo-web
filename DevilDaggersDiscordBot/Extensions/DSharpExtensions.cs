@@ -2,7 +2,7 @@
 using System;
 using System.Threading.Tasks;
 
-namespace DiscordBotDdInfo.Extensions
+namespace DevilDaggersDiscordBot.Extensions
 {
 	public static class DSharpExtensions
 	{

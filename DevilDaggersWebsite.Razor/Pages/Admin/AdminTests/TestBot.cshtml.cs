@@ -1,4 +1,4 @@
-﻿using DiscordBotDdInfo.Logging;
+﻿using DevilDaggersDiscordBot.Logging;
 using Microsoft.AspNetCore.Mvc.RazorPages;
 using System.Threading.Tasks;
 

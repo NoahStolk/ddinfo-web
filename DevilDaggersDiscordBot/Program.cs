@@ -1,12 +1,12 @@
-﻿using DiscordBotDdInfo.Extensions;
-using DiscordBotDdInfo.Logging;
+﻿using DevilDaggersDiscordBot.Extensions;
+using DevilDaggersDiscordBot.Logging;
 using DSharpPlus;
 using DSharpPlus.Entities;
 using System;
 using System.IO;
 using System.Threading.Tasks;
 
-namespace DiscordBotDdInfo
+namespace DevilDaggersDiscordBot
 {
 	public static class Program
 	{

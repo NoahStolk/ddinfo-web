@@ -1,11 +1,11 @@
 ﻿using DevilDaggersCore.Extensions;
 using DevilDaggersCore.Spawnsets;
+using DevilDaggersDiscordBot.Extensions;
+using DevilDaggersDiscordBot.Logging;
 using DevilDaggersWebsite.Clients;
 using DevilDaggersWebsite.Entities;
 using DevilDaggersWebsite.Extensions;
 using DevilDaggersWebsite.Transients;
-using DiscordBotDdInfo.Extensions;
-using DiscordBotDdInfo.Logging;
 using DSharpPlus.Entities;
 using Microsoft.AspNetCore.Hosting;
 using Microsoft.AspNetCore.Http;
@@ -18,7 +18,7 @@ using System.Linq;
 using System.Security.Cryptography;
 using System.Threading.Tasks;
 using System.Web;
-using BotLogger = DiscordBotDdInfo.Logging.DiscordLogger;
+using BotLogger = DevilDaggersDiscordBot.Logging.DiscordLogger;
 
 namespace DevilDaggersWebsite.Api
 {

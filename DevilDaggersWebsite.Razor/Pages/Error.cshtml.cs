@@ -1,6 +1,6 @@
 using DevilDaggersCore.Utils;
-using DiscordBotDdInfo.Extensions;
-using DiscordBotDdInfo.Logging;
+using DevilDaggersDiscordBot.Extensions;
+using DevilDaggersDiscordBot.Logging;
 using DSharpPlus.Entities;
 using Microsoft.AspNetCore.Diagnostics;
 using Microsoft.AspNetCore.Mvc.RazorPages;

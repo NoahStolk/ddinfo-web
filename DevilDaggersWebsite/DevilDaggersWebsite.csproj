@@ -27,6 +27,6 @@
     </PackageReference>
   </ItemGroup>
   <ItemGroup>
-    <ProjectReference Include="..\DiscordBotDdInfo\DiscordBotDdInfo.csproj" />
+    <ProjectReference Include="..\DevilDaggersDiscordBot\DevilDaggersDiscordBot.csproj" />
   </ItemGroup>
 </Project>

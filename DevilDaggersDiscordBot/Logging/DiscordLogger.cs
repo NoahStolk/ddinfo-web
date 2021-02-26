@@ -1,10 +1,10 @@
-﻿using DiscordBotDdInfo.Extensions;
+﻿using DevilDaggersDiscordBot.Extensions;
 using DSharpPlus.Entities;
 using System;
 using System.Collections;
 using System.Threading.Tasks;
 
-namespace DiscordBotDdInfo.Logging
+namespace DevilDaggersDiscordBot.Logging
 {
 	public sealed class DiscordLogger
 	{
