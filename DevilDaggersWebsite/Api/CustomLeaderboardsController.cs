@@ -1,5 +1,4 @@
-﻿using DevilDaggersCore.Extensions;
-using DevilDaggersCore.Spawnsets;
+﻿using DevilDaggersCore.Spawnsets;
 using DevilDaggersDiscordBot.Extensions;
 using DevilDaggersDiscordBot.Logging;
 using DevilDaggersWebsite.Clients;
@@ -405,6 +404,7 @@ namespace DevilDaggersWebsite.Api
 				{
 					Title = message,
 					Color = color,
+					Url = $"http://localhost:2963/CustomLeaderboards/Leaderboard?spawnsetName={customLeaderboard.SpawnsetFile.Name}",
 				};
 				builder.AddFieldObject("Score", FormatTimeString(time), true);
 				builder.AddFieldObject("Rank", $"{rank}/{totalPlayers}", true);
