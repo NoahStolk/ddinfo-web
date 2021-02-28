@@ -56,8 +56,8 @@ namespace DevilDaggersWebsite.Api
 
 		[HttpGet("world-records")]
 		[ProducesResponseType(StatusCodes.Status200OK)]
-		public List<WorldRecord> GetWorldRecords(DateTime? date = null)
-			=> _leaderboardHistoryHelper.GetWorldRecords(date);
+		public List<WorldRecord> GetWorldRecords()
+			=> _leaderboardHistoryHelper.GetWorldRecords();
 
 		[HttpGet("latest-date-played")]
 		[ProducesResponseType(StatusCodes.Status200OK)]

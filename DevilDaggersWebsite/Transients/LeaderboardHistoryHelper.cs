@@ -1,5 +1,4 @@
-﻿using DevilDaggersCore.Utils;
-using DevilDaggersWebsite.Dto;
+﻿using DevilDaggersWebsite.Dto;
 using Microsoft.AspNetCore.Hosting;
 using Newtonsoft.Json;
 using System;
@@ -12,6 +11,8 @@ namespace DevilDaggersWebsite.Transients
 {
 	public class LeaderboardHistoryHelper
 	{
+		private static readonly DateTime _automationStart = new(2019, 10, 26);
+
 		private readonly IWebHostEnvironment _env;
 
 		public LeaderboardHistoryHelper(IWebHostEnvironment env)
@@ -19,12 +20,10 @@ namespace DevilDaggersWebsite.Transients
 			_env = env;
 		}
 
-		public List<WorldRecord> GetWorldRecords(DateTime? date)
+		public List<WorldRecord> GetWorldRecords()
 		{
-			bool isDateParameterValid = date.HasValue && date <= DateTime.UtcNow;
-
+			DateTime? previous = null;
 			List<WorldRecord> worldRecords = new();
-
 			int worldRecord = 0;
 			foreach (string leaderboardHistoryPath in Directory.GetFiles(Path.Combine(_env.WebRootPath, "leaderboard-history"), "*.json"))
 			{
@@ -32,23 +31,32 @@ namespace DevilDaggersWebsite.Transients
 				if (leaderboard.Entries[0].Time != worldRecord)
 				{
 					worldRecord = leaderboard.Entries[0].Time;
-					if (isDateParameterValid)
-					{
-						if (HistoryUtils.HistoryJsonFileNameToDateTime(Path.GetFileNameWithoutExtension(leaderboardHistoryPath)) > date)
-							break;
-						worldRecords.Clear();
-					}
 
-					worldRecords.Add(new(leaderboard.DateTime, leaderboard.Entries[0]));
+					DateTime date;
+
+					// If history dates are only one day apart (which is assumed to be every day after _automationStart), use the average of the previous and the current date.
+					// This is because leaderboard history is recorded exactly at 00:00 UTC, and the date will therefore be one day ahead all the time.
+					// For older history, use the literal leaderboard DateTime.
+					if (previous.HasValue && leaderboard.DateTime >= _automationStart)
+						date = GetAverage(previous.Value, leaderboard.DateTime);
+					else
+						date = leaderboard.DateTime;
+
+					worldRecords.Add(new(date, leaderboard.Entries[0]));
 				}
+
+				previous = leaderboard.DateTime;
 			}
 
 			return worldRecords;
+
+			static DateTime GetAverage(DateTime a, DateTime b)
+				=> new((a.Ticks + b.Ticks) / 2);
 		}
 
 		public (List<WorldRecordHolder> WorldRecordHolders, Dictionary<WorldRecord, TimeSpan> WorldRecordsByTimeLasted) GetWorldRecordData()
 		{
-			List<WorldRecord> worldRecords = GetWorldRecords(null);
+			List<WorldRecord> worldRecords = GetWorldRecords();
 			Dictionary<WorldRecord, TimeSpan> worldRecordsByTimeLasted = new();
 			List<WorldRecordHolder> worldRecordHolders = new();
 
