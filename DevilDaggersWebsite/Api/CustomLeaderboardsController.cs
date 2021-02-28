@@ -404,7 +404,7 @@ namespace DevilDaggersWebsite.Api
 				{
 					Title = message,
 					Color = color,
-					Url = $"http://localhost:2963/CustomLeaderboards/Leaderboard?spawnsetName={customLeaderboard.SpawnsetFile.Name}",
+					Url = $"https://devildaggers.info/CustomLeaderboards/Leaderboard?spawnsetName={customLeaderboard.SpawnsetFile.Name}",
 				};
 				builder.AddFieldObject("Score", FormatTimeString(time), true);
 				builder.AddFieldObject("Rank", $"{rank}/{totalPlayers}", true);
