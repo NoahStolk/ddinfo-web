@@ -35,7 +35,7 @@ namespace DevilDaggersWebsite.Transients
 					DateTime date;
 
 					// If history dates are only one day apart (which is assumed to be every day after _automationStart), use the average of the previous and the current date.
-					// This is because leaderboard history is recorded exactly at 00:00 UTC, and the date will therefore be one day ahead all the time.
+					// This is because leaderboard history is recorded exactly at 00:00 UTC, and the date will therefore be one day ahead in all cases.
 					// For older history, use the literal leaderboard DateTime.
 					if (previous.HasValue && leaderboard.DateTime >= _automationStart)
 						date = GetAverage(previous.Value, leaderboard.DateTime);
