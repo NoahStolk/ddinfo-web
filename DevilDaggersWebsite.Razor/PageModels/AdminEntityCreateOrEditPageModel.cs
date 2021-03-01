@@ -2,24 +2,30 @@
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.AspNetCore.Mvc.RazorPages;
 using Microsoft.EntityFrameworkCore;
+using System;
 using System.Linq;
 using System.Threading.Tasks;
 
-namespace DevilDaggersWebsite.Razor.Pages.Admin.Titles
+namespace DevilDaggersWebsite.Razor.PageModels
 {
-	public class EditModel : PageModel
+	public class AdminEntityCreateOrEditPageModel<TEntity> : PageModel
+	   where TEntity : class, IEntity
 	{
 		private readonly ApplicationDbContext _dbContext;
 
-		public EditModel(ApplicationDbContext dbContext)
+		public AdminEntityCreateOrEditPageModel(ApplicationDbContext dbContext)
 		{
 			_dbContext = dbContext;
+
+			DbSet = ((Array.Find(typeof(ApplicationDbContext).GetProperties(), pi => pi.PropertyType == typeof(DbSet<TEntity>)) ?? throw new("Could not retrieve DbSet of TEntity.")).GetValue(_dbContext) as DbSet<TEntity>)!;
 		}
 
 		public int? Id { get; private set; }
 
 		[BindProperty]
-		public Title Title { get; set; } = null!;
+		public TEntity Entity { get; set; } = null!;
+
+		public DbSet<TEntity> DbSet { get; }
 
 		public bool IsEditing => Id.HasValue;
 
@@ -27,7 +33,7 @@ namespace DevilDaggersWebsite.Razor.Pages.Admin.Titles
 		{
 			Id = id;
 
-			Title = await _dbContext.Titles.FirstOrDefaultAsync(m => m.Id == id);
+			Entity = await DbSet.FirstOrDefaultAsync(m => m.Id == id);
 
 			return Page();
 		}
@@ -41,20 +47,20 @@ namespace DevilDaggersWebsite.Razor.Pages.Admin.Titles
 
 			if (IsEditing)
 			{
-				_dbContext.Attach(Title).State = EntityState.Modified;
+				_dbContext.Attach(Entity).State = EntityState.Modified;
 
 				try
 				{
 					await _dbContext.SaveChangesAsync();
 				}
-				catch (DbUpdateConcurrencyException) when (!_dbContext.Titles.Any(e => e.Id == Title.Id))
+				catch (DbUpdateConcurrencyException) when (!DbSet.Any(e => e.Id == Entity.Id))
 				{
 					return NotFound();
 				}
 			}
 			else
 			{
-				_dbContext.Titles.Add(Title);
+				DbSet.Add(Entity);
 				await _dbContext.SaveChangesAsync();
 			}
 
