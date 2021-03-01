@@ -3,7 +3,7 @@ using System.ComponentModel.DataAnnotations.Schema;
 
 namespace DevilDaggersWebsite.Entities
 {
-	public class CustomEntryData
+	public class CustomEntryData : IEntity
 	{
 		[Key]
 		public int Id { get; set; }

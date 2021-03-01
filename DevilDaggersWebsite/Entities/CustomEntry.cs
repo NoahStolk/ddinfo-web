@@ -4,7 +4,7 @@ using System.ComponentModel.DataAnnotations.Schema;
 
 namespace DevilDaggersWebsite.Entities
 {
-	public class CustomEntry
+	public class CustomEntry : IEntity
 	{
 		[Key]
 		public int Id { get; set; }

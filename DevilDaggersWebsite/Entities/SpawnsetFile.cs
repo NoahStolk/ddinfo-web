@@ -4,7 +4,7 @@ using System.ComponentModel.DataAnnotations.Schema;
 
 namespace DevilDaggersWebsite.Entities
 {
-	public class SpawnsetFile
+	public class SpawnsetFile : IEntity
 	{
 		[Key]
 		public int Id { get; set; }

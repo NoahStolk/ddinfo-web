@@ -5,7 +5,7 @@ using System.ComponentModel.DataAnnotations.Schema;
 
 namespace DevilDaggersWebsite.Entities
 {
-	public class Donation
+	public class Donation : IEntity
 	{
 		[Key]
 		public int Id { get; set; }

@@ -4,7 +4,7 @@ using System.ComponentModel.DataAnnotations;
 
 namespace DevilDaggersWebsite.Entities
 {
-	public class AssetMod
+	public class AssetMod : IEntity
 	{
 		[Key]
 		public int Id { get; set; }

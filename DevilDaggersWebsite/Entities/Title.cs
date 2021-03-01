@@ -3,7 +3,7 @@ using System.ComponentModel.DataAnnotations;
 
 namespace DevilDaggersWebsite.Entities
 {
-	public class Title
+	public class Title : IEntity
 	{
 		[Key]
 		public int Id { get; set; }

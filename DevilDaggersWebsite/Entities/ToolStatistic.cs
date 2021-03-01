@@ -2,7 +2,7 @@
 
 namespace DevilDaggersWebsite.Entities
 {
-	public class ToolStatistic
+	public class ToolStatistic : IEntity
 	{
 		[Key]
 		public int Id { get; set; }
