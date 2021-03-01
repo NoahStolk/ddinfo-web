@@ -73,13 +73,13 @@ namespace DevilDaggersWebsite.Razor
 
 			services.AddAuthorization(options =>
 			{
-				foreach (KeyValuePair<string, string> kvp in RoleManager.PolicyToRoleMapper)
+				foreach (KeyValuePair<string, string> kvp in AuthorizationManager.PolicyToRoleMapper)
 					options.AddPolicy(kvp.Key, policy => policy.RequireRole(kvp.Value));
 			});
 
 			services.AddRazorPages().AddRazorPagesOptions(options =>
 			{
-				foreach (KeyValuePair<string, string> kvp in RoleManager.FolderToPolicyMapper)
+				foreach (KeyValuePair<string, string> kvp in AuthorizationManager.FolderToPolicyMapper)
 					options.Conventions.AuthorizeFolder(kvp.Key, kvp.Value);
 			});
 

@@ -7,7 +7,7 @@ using System.Threading.Tasks;
 
 namespace DevilDaggersWebsite.Authorization
 {
-	public static class RoleManager
+	public static class AuthorizationManager
 	{
 		public const string AdminPolicy = nameof(AdminPolicy);
 		public const string AdminRole = nameof(AdminRole);
@@ -27,7 +27,7 @@ namespace DevilDaggersWebsite.Authorization
 		public const string SpawnsetsPolicy = nameof(SpawnsetsPolicy);
 		public const string SpawnsetsRole = nameof(SpawnsetsRole);
 
-		public static readonly Dictionary<string, string> PolicyToRoleMapper = new Dictionary<string, string>
+		public static readonly Dictionary<string, string> PolicyToRoleMapper = new()
 		{
 			{ AdminPolicy, AdminRole },
 			{ AssetModsPolicy, AssetModsRole },
@@ -37,7 +37,7 @@ namespace DevilDaggersWebsite.Authorization
 			{ SpawnsetsPolicy, SpawnsetsRole },
 		};
 
-		public static readonly Dictionary<string, string> FolderToPolicyMapper = new Dictionary<string, string>
+		public static readonly Dictionary<string, string> FolderToPolicyMapper = new()
 		{
 			{ "/Admin/AdminTests", AdminPolicy },
 			{ "/Admin/AssetMods", AssetModsPolicy },

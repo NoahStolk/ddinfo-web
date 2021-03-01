@@ -1,15 +1,35 @@
-﻿@using Microsoft.AspNetCore.Identity
+﻿@using DevilDaggersWebsite.Authorization
+@using Microsoft.AspNetCore.Identity
 @inject SignInManager<IdentityUser> SignInManager
 @inject UserManager<IdentityUser> UserManager
+@{
+	string? id = UserManager.GetUserId(User);
+	IdentityUser? identityUser = await UserManager.FindByIdAsync(id);
+
+	if (id == null || identityUser == null)
+		throw new UnauthorizedAccessException("Not allowed to access this resource.");
+}
 
 @if (SignInManager.IsSignedIn(User))
 {
 	<li class="dropdown">
 		<a href="#" class="dropdown-toggle" data-toggle="dropdown" role="button" aria-haspopup="true" aria-expanded="false">Hello @User.Identity!.Name! <span class="caret"></span></a>
 		<ul class="dropdown-menu">
-			<li class="nav-item">
-				<a class="nav-link text-dark" asp-page="/Admin/Index">Admin</a>
-			</li>
+			@{
+				foreach (KeyValuePair<string, string> kvp in AuthorizationManager.FolderToPolicyMapper)
+				{
+					string pageName = kvp.Key.Replace("/Admin/", string.Empty);
+					string adminRoute = $"{kvp.Key}/Index";
+					string role = AuthorizationManager.PolicyToRoleMapper[kvp.Value];
+
+					@if (identityUser != null && await UserManager.IsInRoleAsync(identityUser, role))
+					{
+						<li class="nav-item">
+							<a class="nav-link text-dark" asp-page="@adminRoute">@pageName</a>
+						</li>
+					}
+				}
+			}
 			<li class="nav-item">
 				<a class="nav-link text-dark" asp-area="Identity" asp-page="/Account/Manage/Index">Manage account</a>
 			</li>
