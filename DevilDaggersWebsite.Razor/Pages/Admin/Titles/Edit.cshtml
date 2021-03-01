@@ -2,18 +2,19 @@
 @model DevilDaggersWebsite.Razor.Pages.Admin.Titles.EditModel
 
 @{
-	ViewData["Title"] = "Edit";
+	ViewData["Title"] = Model.IsEditing ? "Edit" : "Create";
 }
 
-<h2>Edit</h2>
+<h2>@ViewData["Title"]</h2>
 
-<h4>Title</h4>
-<hr />
 <div class="row">
 	<div class="col-md-4">
 		<form method="post">
 			<div asp-validation-summary="ModelOnly" class="text-danger"></div>
-			<input type="hidden" asp-for="Title.Id" />
+			@if (Model.IsEditing)
+			{
+				<input type="hidden" asp-for="Title.Id" />
+			}
 			<div class="form-group">
 				<label asp-for="Title.Name" class="control-label"></label>
 				<input asp-for="Title.Name" class="form-control" />

@@ -16,42 +16,49 @@ namespace DevilDaggersWebsite.Razor.Pages.Admin.Titles
 			_dbContext = dbContext;
 		}
 
+		public int? Id { get; private set; }
+
 		[BindProperty]
 		public Title Title { get; set; } = null!;
 
+		public bool IsEditing => Id.HasValue;
+
 		public async Task<IActionResult> OnGetAsync(int? id)
 		{
-			if (id == null)
-				return NotFound();
+			Id = id;
 
 			Title = await _dbContext.Titles.FirstOrDefaultAsync(m => m.Id == id);
 
-			if (Title == null)
-				return NotFound();
 			return Page();
 		}
 
-		public async Task<IActionResult> OnPostAsync()
+		public async Task<IActionResult> OnPostAsync(int? id)
 		{
-			ModelState.Remove("Title.PlayerTitles");
-
 			if (!ModelState.IsValid)
 				return Page();
 
-			_dbContext.Attach(Title).State = EntityState.Modified;
+			Id = id;
 
-			try
+			if (IsEditing)
 			{
-				await _dbContext.SaveChangesAsync();
+				_dbContext.Attach(Title).State = EntityState.Modified;
+
+				try
+				{
+					await _dbContext.SaveChangesAsync();
+				}
+				catch (DbUpdateConcurrencyException) when (!_dbContext.Titles.Any(e => e.Id == Title.Id))
+				{
+					return NotFound();
+				}
 			}
-			catch (DbUpdateConcurrencyException) when (!TitleExists(Title.Id))
+			else
 			{
-				return NotFound();
+				_dbContext.Titles.Add(Title);
+				await _dbContext.SaveChangesAsync();
 			}
 
 			return RedirectToPage("./Index");
 		}
-
-		private bool TitleExists(int id) => _dbContext.Titles.Any(e => e.Id == id);
 	}
 }
