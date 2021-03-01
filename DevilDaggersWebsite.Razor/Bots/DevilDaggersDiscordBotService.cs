@@ -4,7 +4,7 @@ using System.Threading.Tasks;
 
 namespace DevilDaggersWebsite.Razor.Bots
 {
-	public class DiscordBotDdInfoService : IHostedService
+	public class DevilDaggersDiscordBotService : IHostedService
 	{
 		public Task StartAsync(CancellationToken cancellationToken)
 		{
