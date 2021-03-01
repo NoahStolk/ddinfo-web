@@ -1,0 +1,80 @@
+﻿@page
+@using DevilDaggersWebsite.Razor.PageModels
+@using DevilDaggersWebsite.Entities
+@model AdminEntityCreateOrEditPageModel<CustomLeaderboard>
+
+@{
+	ViewData["Title"] = "Edit";
+}
+
+<h2>Edit</h2>
+
+<h4>CustomLeaderboard</h4>
+<hr />
+<div class="row">
+	<div class="col-md-4">
+		<form method="post">
+			<div asp-validation-summary="ModelOnly" class="text-danger"></div>
+			@if (Model.IsEditing)
+			{
+				<input type="hidden" asp-for="Entity.Id" />
+			}
+			<div class="form-group">
+				<label asp-for="Entity.Category" class="control-label"></label>
+				<select asp-for="Entity.Category" class="form-control"></select>
+				<span asp-validation-for="Entity.Category" class="text-danger"></span>
+			</div>
+			<div class="form-group">
+				<label asp-for="Entity.SpawnsetFileId" class="control-label"></label>
+				<select asp-for="Entity.SpawnsetFileId" class="form-control" asp-items="ViewBag.SpawnsetFileId"></select>
+				<span asp-validation-for="Entity.SpawnsetFileId" class="text-danger"></span>
+			</div>
+			<div class="form-group">
+				<label asp-for="Entity.TimeBronze" class="control-label"></label>
+				<input asp-for="Entity.TimeBronze" class="form-control" />
+				<span asp-validation-for="Entity.TimeBronze" class="text-danger"></span>
+			</div>
+			<div class="form-group">
+				<label asp-for="Entity.TimeSilver" class="control-label"></label>
+				<input asp-for="Entity.TimeSilver" class="form-control" />
+				<span asp-validation-for="Entity.TimeSilver" class="text-danger"></span>
+			</div>
+			<div class="form-group">
+				<label asp-for="Entity.TimeGolden" class="control-label"></label>
+				<input asp-for="Entity.TimeGolden" class="form-control" />
+				<span asp-validation-for="Entity.TimeGolden" class="text-danger"></span>
+			</div>
+			<div class="form-group">
+				<label asp-for="Entity.TimeDevil" class="control-label"></label>
+				<input asp-for="Entity.TimeDevil" class="form-control" />
+				<span asp-validation-for="Entity.TimeDevil" class="text-danger"></span>
+			</div>
+			<div class="form-group">
+				<label asp-for="Entity.TimeLeviathan" class="control-label"></label>
+				<input asp-for="Entity.TimeLeviathan" class="form-control" />
+				<span asp-validation-for="Entity.TimeLeviathan" class="text-danger"></span>
+			</div>
+			<div class="form-group hidden">
+				<label asp-for="Entity.DateLastPlayed" class="control-label"></label>
+				<input asp-for="Entity.DateLastPlayed" class="form-control" />
+				<span asp-validation-for="Entity.DateLastPlayed" class="text-danger"></span>
+			</div>
+			<div class="form-group hidden">
+				<label asp-for="Entity.DateCreated" class="control-label"></label>
+				<input asp-for="Entity.DateCreated" class="form-control" />
+				<span asp-validation-for="Entity.DateCreated" class="text-danger"></span>
+			</div>
+			<div class="form-group">
+				<input type="submit" value="Save" class="btn btn-default" />
+			</div>
+		</form>
+	</div>
+</div>
+
+<div>
+	<a asp-page="./Index">Back to List</a>
+</div>
+
+@section Scripts {
+	@{await Html.RenderPartialAsync("_ValidationScriptsPartial");}
+}

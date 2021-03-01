@@ -1,31 +1,33 @@
 ﻿using DevilDaggersWebsite.Entities;
+using DevilDaggersWebsite.Enumerators;
+using DevilDaggersWebsite.Razor.Utils;
 using Microsoft.AspNetCore.Mvc;
-using Microsoft.AspNetCore.Mvc.RazorPages;
+using Microsoft.AspNetCore.Mvc.ModelBinding;
+using Microsoft.AspNetCore.Mvc.Rendering;
 using Microsoft.EntityFrameworkCore;
-using System;
+using System.Collections.Generic;
 using System.Linq;
 using System.Threading.Tasks;
 
 namespace DevilDaggersWebsite.Razor.PageModels
 {
-	public class AdminEntityCreateOrEditPageModel<TEntity> : PageModel
+	public class AdminEntityCreateOrEditPageModel<TEntity> : AbstractAdminEntityPageModel<TEntity>
 	   where TEntity : class, IEntity
 	{
-		private readonly ApplicationDbContext _dbContext;
-
 		public AdminEntityCreateOrEditPageModel(ApplicationDbContext dbContext)
+			: base(dbContext)
 		{
-			_dbContext = dbContext;
-
-			DbSet = ((Array.Find(typeof(ApplicationDbContext).GetProperties(), pi => pi.PropertyType == typeof(DbSet<TEntity>)) ?? throw new("Could not retrieve DbSet of TEntity.")).GetValue(_dbContext) as DbSet<TEntity>)!;
+			CurrencyList = RazorUtils.EnumToSelectList<Currency>();
+			PlayerList = DbContext.Players.Select(p => new SelectListItem(p.PlayerName, p.Id.ToString())).ToList();
 		}
+
+		public List<SelectListItem> CurrencyList { get; }
+		public List<SelectListItem> PlayerList { get; }
 
 		public int? Id { get; private set; }
 
 		[BindProperty]
 		public TEntity Entity { get; set; } = null!;
-
-		public DbSet<TEntity> DbSet { get; }
 
 		public bool IsEditing => Id.HasValue;
 
@@ -40,6 +42,8 @@ namespace DevilDaggersWebsite.Razor.PageModels
 
 		public async Task<IActionResult> OnPostAsync(int? id)
 		{
+			IEnumerable<ModelError> allErrors = ModelState.Values.SelectMany(v => v.Errors);
+
 			if (!ModelState.IsValid)
 				return Page();
 
@@ -47,11 +51,11 @@ namespace DevilDaggersWebsite.Razor.PageModels
 
 			if (IsEditing)
 			{
-				_dbContext.Attach(Entity).State = EntityState.Modified;
+				DbContext.Attach(Entity).State = EntityState.Modified;
 
 				try
 				{
-					await _dbContext.SaveChangesAsync();
+					await DbContext.SaveChangesAsync();
 				}
 				catch (DbUpdateConcurrencyException) when (!DbSet.Any(e => e.Id == Entity.Id))
 				{
@@ -61,7 +65,7 @@ namespace DevilDaggersWebsite.Razor.PageModels
 			else
 			{
 				DbSet.Add(Entity);
-				await _dbContext.SaveChangesAsync();
+				await DbContext.SaveChangesAsync();
 			}
 
 			return RedirectToPage("./Index");

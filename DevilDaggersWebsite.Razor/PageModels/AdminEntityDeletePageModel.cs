@@ -1,34 +1,20 @@
 ﻿using DevilDaggersWebsite.Entities;
 using Microsoft.AspNetCore.Mvc;
-using Microsoft.AspNetCore.Mvc.RazorPages;
 using Microsoft.EntityFrameworkCore;
-using System;
-using System.Linq;
-using System.Reflection;
 using System.Threading.Tasks;
 
 namespace DevilDaggersWebsite.Razor.PageModels
 {
-	public class AdminEntityDeletePageModel<TEntity> : PageModel
+	public class AdminEntityDeletePageModel<TEntity> : AbstractAdminEntityPageModel<TEntity>
 	   where TEntity : class, IEntity
 	{
-		private readonly ApplicationDbContext _dbContext;
-
 		public AdminEntityDeletePageModel(ApplicationDbContext dbContext)
+			: base(dbContext)
 		{
-			_dbContext = dbContext;
-
-			DbSet = ((Array.Find(typeof(ApplicationDbContext).GetProperties(), pi => pi.PropertyType == typeof(DbSet<TEntity>)) ?? throw new("Could not retrieve DbSet of TEntity.")).GetValue(_dbContext) as DbSet<TEntity>)!;
-
-			EntityProperties = typeof(TEntity).GetProperties().Where(pi => !pi.PropertyType.IsGenericType).ToArray();
 		}
 
 		[BindProperty]
 		public TEntity Entity { get; set; } = null!;
-
-		public DbSet<TEntity> DbSet { get; }
-
-		public PropertyInfo[] EntityProperties { get; } = null!;
 
 		public async Task<IActionResult> OnGetAsync(int? id)
 		{
@@ -51,7 +37,7 @@ namespace DevilDaggersWebsite.Razor.PageModels
 			if (Entity != null)
 			{
 				DbSet.Remove(Entity);
-				await _dbContext.SaveChangesAsync();
+				await DbContext.SaveChangesAsync();
 			}
 
 			return RedirectToPage("./Index");

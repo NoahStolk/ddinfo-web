@@ -1,0 +1,104 @@
+﻿@page
+@using DevilDaggersWebsite.Razor.PageModels
+@using DevilDaggersWebsite.Entities
+@model AdminEntityCreateOrEditPageModel<Player>
+
+@{
+	ViewData["Title"] = "Edit";
+}
+
+<h2>Edit</h2>
+
+<h4>Player</h4>
+<hr />
+<div class="row">
+	<div class="col-md-4">
+		<form method="post">
+			<div asp-validation-summary="ModelOnly" class="text-danger"></div>
+			@if (Model.IsEditing)
+			{
+				<input type="hidden" asp-for="Entity.Id" />
+			}
+			<div class="form-group">
+				<label asp-for="Entity.Id" class="control-label"></label>
+				<input asp-for="Entity.Id" class="form-control" />
+				<span asp-validation-for="Entity.Id" class="text-danger"></span>
+			</div>
+			<div class="form-group">
+				<label asp-for="Entity.PlayerName" class="control-label"></label>
+				<input asp-for="Entity.PlayerName" class="form-control" />
+				<span asp-validation-for="Entity.PlayerName" class="text-danger"></span>
+			</div>
+			<div class="form-group">
+				<div class="checkbox">
+					<label>
+						<input asp-for="Entity.IsAnonymous" /> @Html.DisplayNameFor(model => model.Entity.IsAnonymous)
+					</label>
+				</div>
+			</div>
+			<div class="form-group">
+				<label asp-for="Entity.CountryCode" class="control-label"></label>
+				<input asp-for="Entity.CountryCode" class="form-control" />
+				<span asp-validation-for="Entity.CountryCode" class="text-danger"></span>
+			</div>
+			<div class="form-group">
+				<label asp-for="Entity.Dpi" class="control-label"></label>
+				<input asp-for="Entity.Dpi" class="form-control" />
+				<span asp-validation-for="Entity.Dpi" class="text-danger"></span>
+			</div>
+			<div class="form-group">
+				<label asp-for="Entity.InGameSens" class="control-label"></label>
+				<input asp-for="Entity.InGameSens" class="form-control" />
+				<span asp-validation-for="Entity.InGameSens" class="text-danger"></span>
+			</div>
+			<div class="form-group">
+				<label asp-for="Entity.Fov" class="control-label"></label>
+				<input asp-for="Entity.Fov" class="form-control" />
+				<span asp-validation-for="Entity.Fov" class="text-danger"></span>
+			</div>
+			<div class="form-group">
+				<label asp-for="Entity.RightHanded" class="control-label"></label>
+				<input asp-for="Entity.RightHanded" class="form-control" />
+				<span asp-validation-for="Entity.RightHanded" class="text-danger"></span>
+			</div>
+			<div class="form-group">
+				<label asp-for="Entity.FlashEnabled" class="control-label"></label>
+				<input asp-for="Entity.FlashEnabled" class="form-control" />
+				<span asp-validation-for="Entity.FlashEnabled" class="text-danger"></span>
+			</div>
+			<div class="form-group">
+				<label asp-for="Entity.Gamma" class="control-label"></label>
+				<input asp-for="Entity.Gamma" class="form-control" />
+				<span asp-validation-for="Entity.Gamma" class="text-danger"></span>
+			</div>
+			<div class="form-group">
+				<div class="checkbox">
+					<label>
+						<input asp-for="Entity.IsBanned" /> @Html.DisplayNameFor(model => model.Entity.IsBanned)
+					</label>
+				</div>
+			</div>
+			<div class="form-group">
+				<label asp-for="Entity.BanDescription" class="control-label"></label>
+				<input asp-for="Entity.BanDescription" class="form-control" />
+				<span asp-validation-for="Entity.BanDescription" class="text-danger"></span>
+			</div>
+			<div class="form-group">
+				<label asp-for="Entity.BanResponsibleId" class="control-label"></label>
+				<input asp-for="Entity.BanResponsibleId" class="form-control" />
+				<span asp-validation-for="Entity.BanResponsibleId" class="text-danger"></span>
+			</div>
+			<div class="form-group">
+				<input type="submit" value="Save" class="btn btn-default" />
+			</div>
+		</form>
+	</div>
+</div>
+
+<div>
+	<a asp-page="./Index">Back to List</a>
+</div>
+
+@section Scripts {
+	@{await Html.RenderPartialAsync("_ValidationScriptsPartial");}
+}

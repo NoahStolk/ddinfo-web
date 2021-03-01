@@ -12,7 +12,7 @@
 	<a asp-page="../Index">Back</a>
 </p>
 <p>
-	<a asp-page="Create">Create New</a>
+	<a asp-page="CreateOrEdit">Create New</a>
 </p>
 <table class="table">
 	<thead>
@@ -35,8 +35,8 @@
 					<td>@Model.GetString(pi, entity)</td>
 				}
 				<td>
-					<a asp-page="./Edit" asp-route-id="@entity.Id">Edit</a> |
-					<a asp-page="./Delete" asp-route-id="@entity.Id">Delete</a>
+					<a asp-page="CreateOrEdit" asp-route-id="@entity.Id">Edit</a> |
+					<a asp-page="Delete" asp-route-id="@entity.Id">Delete</a>
 				</td>
 			</tr>
 		}
