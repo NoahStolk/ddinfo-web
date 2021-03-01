@@ -1,11 +1,12 @@
 ﻿@page
-@model DevilDaggersWebsite.Razor.Pages.Admin.AssetMods.IndexModel
-
+@using DevilDaggersWebsite.Razor.PageModels
+@using DevilDaggersWebsite.Entities
+@model AdminEntitiesPageModel<AssetMod>
 @{
-	ViewData["Title"] = "Index";
+	ViewData["Title"] = "AssetMods";
 }
 
-<h2>Asset Mods</h2>
+<h2>@ViewData["Title"]</h2>
 
 <p>
 	<a asp-page="../Index">Back</a>
@@ -16,46 +17,26 @@
 <table class="table">
 	<thead>
 		<tr>
-			<th>
-				<a asp-route-sortMemberName="AssetModTypes">@Html.DisplayNameFor(model => model.AssetMods[0].AssetModTypes)</a>
-			</th>
-			<th>
-				<a asp-route-sortMemberName="AssetModFileContents">@Html.DisplayNameFor(model => model.AssetMods[0].AssetModFileContents)</a>
-			</th>
-			<th>
-				<a asp-route-sortMemberName="Name">@Html.DisplayNameFor(model => model.AssetMods[0].Name)</a>
-			</th>
-			<th>
-				Authors
-			</th>
-			<th>
-				<a asp-route-sortMemberName="Url">@Html.DisplayNameFor(model => model.AssetMods[0].Url)</a>
-			</th>
+			@foreach (var pi in Model.EntityProperties)
+			{
+				<th>
+					<a asp-route-sortMemberName="@pi.Name">@pi.Name</a>
+				</th>
+			}
 			<th></th>
 		</tr>
 	</thead>
 	<tbody>
-		@foreach (var item in Model.AssetMods)
+		@foreach (var entity in Model.DbSet)
 		{
 			<tr>
+				@foreach (var pi in Model.EntityProperties)
+				{
+					<td>@Model.GetString(pi, entity)</td>
+				}
 				<td>
-					@Html.DisplayFor(modelItem => item.AssetModTypes)
-				</td>
-				<td>
-					@Html.DisplayFor(modelItem => item.AssetModFileContents)
-				</td>
-				<td>
-					@Html.DisplayFor(modelItem => item.Name)
-				</td>
-				<td>
-					@string.Join(", ", item.PlayerAssetMods.Select(pam => pam.PlayerId))
-				</td>
-				<td>
-					@Html.DisplayFor(modelItem => item.Url)
-				</td>
-				<td>
-					<a asp-page="./Edit" asp-route-id="@item.Id">Edit</a> |
-					<a asp-page="./Delete" asp-route-id="@item.Id">Delete</a>
+					<a asp-page="./Edit" asp-route-id="@entity.Id">Edit</a> |
+					<a asp-page="./Delete" asp-route-id="@entity.Id">Delete</a>
 				</td>
 			</tr>
 		}

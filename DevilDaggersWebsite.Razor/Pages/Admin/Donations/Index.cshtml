@@ -1,11 +1,12 @@
 ﻿@page
-@model DevilDaggersWebsite.Razor.Pages.Admin.Donations.IndexModel
-
+@using DevilDaggersWebsite.Razor.PageModels
+@using DevilDaggersWebsite.Entities
+@model AdminEntitiesPageModel<Donation>
 @{
-	ViewData["Title"] = "Index";
+	ViewData["Title"] = "Donations";
 }
 
-<h2>Donations</h2>
+<h2>@ViewData["Title"]</h2>
 
 <p>
 	<a asp-page="../Index">Back</a>
@@ -16,58 +17,26 @@
 <table class="table">
 	<thead>
 		<tr>
-			<th>
-				<a asp-route-sortMemberName="PlayerId">@Html.DisplayNameFor(model => model.Donations[0].PlayerId)</a>
-			</th>
-			<th>
-				<a asp-route-sortMemberName="Amount">@Html.DisplayNameFor(model => model.Donations[0].Amount)</a>
-			</th>
-			<th>
-				<a asp-route-sortMemberName="Currency">@Html.DisplayNameFor(model => model.Donations[0].Currency)</a>
-			</th>
-			<th>
-				<a asp-route-sortMemberName="ConvertedEuroCentsReceived">@Html.DisplayNameFor(model => model.Donations[0].ConvertedEuroCentsReceived)</a>
-			</th>
-			<th>
-				<a asp-route-sortMemberName="DateReceived">@Html.DisplayNameFor(model => model.Donations[0].DateReceived)</a>
-			</th>
-			<th>
-				<a asp-route-sortMemberName="Note">@Html.DisplayNameFor(model => model.Donations[0].Note)</a>
-			</th>
-			<th>
-				<a asp-route-sortMemberName="IsRefunded">@Html.DisplayNameFor(model => model.Donations[0].IsRefunded)</a>
-			</th>
+			@foreach (var pi in Model.EntityProperties)
+			{
+				<th>
+					<a asp-route-sortMemberName="@pi.Name">@pi.Name</a>
+				</th>
+			}
 			<th></th>
 		</tr>
 	</thead>
 	<tbody>
-		@foreach (var item in Model.Donations)
+		@foreach (var entity in Model.DbSet)
 		{
 			<tr>
+				@foreach (var pi in Model.EntityProperties)
+				{
+					<td>@Model.GetString(pi, entity)</td>
+				}
 				<td>
-					@Html.DisplayFor(modelItem => item.PlayerId)
-				</td>
-				<td>
-					@Html.DisplayFor(modelItem => item.Amount)
-				</td>
-				<td>
-					@Html.DisplayFor(modelItem => item.Currency)
-				</td>
-				<td>
-					@Html.DisplayFor(modelItem => item.ConvertedEuroCentsReceived)
-				</td>
-				<td>
-					@Html.DisplayFor(modelItem => item.DateReceived)
-				</td>
-				<td>
-					@Html.DisplayFor(modelItem => item.Note)
-				</td>
-				<td>
-					@Html.DisplayFor(modelItem => item.IsRefunded)
-				</td>
-				<td>
-					<a asp-page="./Edit" asp-route-id="@item.Id">Edit</a> |
-					<a asp-page="./Delete" asp-route-id="@item.Id">Delete</a>
+					<a asp-page="./Edit" asp-route-id="@entity.Id">Edit</a> |
+					<a asp-page="./Delete" asp-route-id="@entity.Id">Delete</a>
 				</td>
 			</tr>
 		}

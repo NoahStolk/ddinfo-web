@@ -1,11 +1,12 @@
 ﻿@page
-@model DevilDaggersWebsite.Razor.Pages.Admin.CustomLeaderboards.IndexModel
-
+@using DevilDaggersWebsite.Razor.PageModels
+@using DevilDaggersWebsite.Entities
+@model AdminEntitiesPageModel<CustomLeaderboard>
 @{
-	ViewData["Title"] = "Index";
+	ViewData["Title"] = "CustomLeaderboards";
 }
 
-<h2>Custom Leaderboards</h2>
+<h2>@ViewData["Title"]</h2>
 
 <p>
 	<a asp-page="../Index">Back</a>
@@ -16,70 +17,26 @@
 <table class="table">
 	<thead>
 		<tr>
-			<th>
-				<a asp-route-sortMemberName="Category">@Html.DisplayNameFor(model => model.CustomLeaderboards[0].Category)</a>
-			</th>
-			<th>
-				<a asp-route-sortMemberName="SpawnsetFileName">@Html.DisplayNameFor(model => model.CustomLeaderboards[0].SpawnsetFile.Name)</a>
-			</th>
-			<th>
-				<a asp-route-sortMemberName="TimeBronze">@Html.DisplayNameFor(model => model.CustomLeaderboards[0].TimeBronze)</a>
-			</th>
-			<th>
-				<a asp-route-sortMemberName="TimeSilver">@Html.DisplayNameFor(model => model.CustomLeaderboards[0].TimeSilver)</a>
-			</th>
-			<th>
-				<a asp-route-sortMemberName="TimeGolden">@Html.DisplayNameFor(model => model.CustomLeaderboards[0].TimeGolden)</a>
-			</th>
-			<th>
-				<a asp-route-sortMemberName="TimeDevil">@Html.DisplayNameFor(model => model.CustomLeaderboards[0].TimeDevil)</a>
-			</th>
-			<th>
-				<a asp-route-sortMemberName="TimeLeviathan">@Html.DisplayNameFor(model => model.CustomLeaderboards[0].TimeLeviathan)</a>
-			</th>
-			<th>
-				<a asp-route-sortMemberName="DateLastPlayed">@Html.DisplayNameFor(model => model.CustomLeaderboards[0].DateLastPlayed)</a>
-			</th>
-			<th>
-				<a asp-route-sortMemberName="DateCreated">@Html.DisplayNameFor(model => model.CustomLeaderboards[0].DateCreated)</a>
-			</th>
+			@foreach (var pi in Model.EntityProperties)
+			{
+				<th>
+					<a asp-route-sortMemberName="@pi.Name">@pi.Name</a>
+				</th>
+			}
 			<th></th>
 		</tr>
 	</thead>
 	<tbody>
-		@foreach (var item in Model.CustomLeaderboards)
+		@foreach (var entity in Model.DbSet)
 		{
 			<tr>
+				@foreach (var pi in Model.EntityProperties)
+				{
+					<td>@Model.GetString(pi, entity)</td>
+				}
 				<td>
-					@Html.DisplayFor(modelItem => item.Category)
-				</td>
-				<td>
-					@Html.DisplayFor(modelItem => item.SpawnsetFile.Name)
-				</td>
-				<td>
-					@Html.DisplayFor(modelItem => item.TimeBronze)
-				</td>
-				<td>
-					@Html.DisplayFor(modelItem => item.TimeSilver)
-				</td>
-				<td>
-					@Html.DisplayFor(modelItem => item.TimeGolden)
-				</td>
-				<td>
-					@Html.DisplayFor(modelItem => item.TimeDevil)
-				</td>
-				<td>
-					@Html.DisplayFor(modelItem => item.TimeLeviathan)
-				</td>
-				<td>
-					@Html.DisplayFor(modelItem => item.DateLastPlayed)
-				</td>
-				<td>
-					@Html.DisplayFor(modelItem => item.DateCreated)
-				</td>
-				<td>
-					<a asp-page="./Edit" asp-route-id="@item.Id">Edit</a> |
-					<a asp-page="./Delete" asp-route-id="@item.Id">Delete</a>
+					<a asp-page="./Edit" asp-route-id="@entity.Id">Edit</a> |
+					<a asp-page="./Delete" asp-route-id="@entity.Id">Delete</a>
 				</td>
 			</tr>
 		}
