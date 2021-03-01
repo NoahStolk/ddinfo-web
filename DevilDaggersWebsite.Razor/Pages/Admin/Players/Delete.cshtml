@@ -15,7 +15,7 @@
 		@foreach (var pi in Model.EntityProperties)
 		{
 			<dt>
-				@pi.PropertyType
+				@pi.Name
 			</dt>
 			<dd>
 				@pi.GetValue(Model.Entity)
