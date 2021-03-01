@@ -1,4 +1,5 @@
 ﻿@page
+@model IndexModel
 @{
 	ViewData["Title"] = "AdminTests";
 }
@@ -8,7 +9,11 @@
 </header>
 
 <main role="main">
-	<a asp-page="TestBot">TestBot</a>
-	<a asp-page="TestException">TestException</a>
-	<a asp-page="UpdateStatisticsDataHolder">UpdateStatisticsDataHolder</a>
+	<form method="post">
+		<input type="submit" value="TestBot" asp-page-handler="TestBot" />
+		<br />
+		<input type="submit" value="TestException" asp-page-handler="TestException" />
+		<br />
+		<input type="submit" value="UpdateStatisticsDataHolder" asp-page-handler="UpdateStatisticsDataHolder" />
+	</form>
 </main>
