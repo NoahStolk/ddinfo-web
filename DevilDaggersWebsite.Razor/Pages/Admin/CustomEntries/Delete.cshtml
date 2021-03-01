@@ -1,5 +1,7 @@
 ﻿@page
-@model DevilDaggersWebsite.Razor.Pages.Admin.CustomEntries.DeleteModel
+@using DevilDaggersWebsite.Razor.PageModels
+@using DevilDaggersWebsite.Entities
+@model AdminEntityDeletePageModel<CustomEntries>
 
 @{
 	ViewData["Title"] = "Delete";
@@ -9,103 +11,20 @@
 
 <h3>Are you sure you want to delete this?</h3>
 <div>
-	<h4>CustomEntry</h4>
-	<hr />
 	<dl class="dl-horizontal">
-		<dt>
-			@Html.DisplayNameFor(model => model.CustomEntry.CustomLeaderboard)
-		</dt>
-		<dd>
-			@Html.DisplayFor(model => model.CustomEntry.CustomLeaderboard.SpawnsetFile.Name)
-		</dd>
-		<dt>
-			@Html.DisplayNameFor(model => model.CustomEntry.PlayerId)
-		</dt>
-		<dd>
-			@Html.DisplayFor(model => model.CustomEntry.PlayerId)
-		</dd>
-		<dt>
-			@Html.DisplayNameFor(model => model.CustomEntry.Time)
-		</dt>
-		<dd>
-			@Html.DisplayFor(model => model.CustomEntry.Time)
-		</dd>
-		<dt>
-			@Html.DisplayNameFor(model => model.CustomEntry.GemsCollected)
-		</dt>
-		<dd>
-			@Html.DisplayFor(model => model.CustomEntry.GemsCollected)
-		</dd>
-		<dt>
-			@Html.DisplayNameFor(model => model.CustomEntry.EnemiesKilled)
-		</dt>
-		<dd>
-			@Html.DisplayFor(model => model.CustomEntry.EnemiesKilled)
-		</dd>
-		<dt>
-			@Html.DisplayNameFor(model => model.CustomEntry.DeathType)
-		</dt>
-		<dd>
-			@Html.DisplayFor(model => model.CustomEntry.DeathType)
-		</dd>
-		<dt>
-			@Html.DisplayNameFor(model => model.CustomEntry.DaggersHit)
-		</dt>
-		<dd>
-			@Html.DisplayFor(model => model.CustomEntry.DaggersHit)
-		</dd>
-		<dt>
-			@Html.DisplayNameFor(model => model.CustomEntry.DaggersFired)
-		</dt>
-		<dd>
-			@Html.DisplayFor(model => model.CustomEntry.DaggersFired)
-		</dd>
-		<dt>
-			@Html.DisplayNameFor(model => model.CustomEntry.EnemiesAlive)
-		</dt>
-		<dd>
-			@Html.DisplayFor(model => model.CustomEntry.EnemiesAlive)
-		</dd>
-		<dt>
-			@Html.DisplayNameFor(model => model.CustomEntry.HomingDaggers)
-		</dt>
-		<dd>
-			@Html.DisplayFor(model => model.CustomEntry.HomingDaggers)
-		</dd>
-		<dt>
-			@Html.DisplayNameFor(model => model.CustomEntry.LevelUpTime2)
-		</dt>
-		<dd>
-			@Html.DisplayFor(model => model.CustomEntry.LevelUpTime2)
-		</dd>
-		<dt>
-			@Html.DisplayNameFor(model => model.CustomEntry.LevelUpTime3)
-		</dt>
-		<dd>
-			@Html.DisplayFor(model => model.CustomEntry.LevelUpTime3)
-		</dd>
-		<dt>
-			@Html.DisplayNameFor(model => model.CustomEntry.LevelUpTime4)
-		</dt>
-		<dd>
-			@Html.DisplayFor(model => model.CustomEntry.LevelUpTime4)
-		</dd>
-		<dt>
-			@Html.DisplayNameFor(model => model.CustomEntry.SubmitDate)
-		</dt>
-		<dd>
-			@Html.DisplayFor(model => model.CustomEntry.SubmitDate)
-		</dd>
-		<dt>
-			@Html.DisplayNameFor(model => model.CustomEntry.ClientVersion)
-		</dt>
-		<dd>
-			@Html.DisplayFor(model => model.CustomEntry.ClientVersion)
-		</dd>
+		@foreach (var pi in Model.EntityProperties)
+		{
+			<dt>
+				@pi.PropertyType
+			</dt>
+			<dd>
+				@pi.GetValue(Model.Entity)
+			</dd>
+		}
 	</dl>
 
 	<form method="post">
-		<input type="hidden" asp-for="CustomEntry.Id" />
+		<input type="hidden" asp-for="Entity.Id" />
 		<input type="submit" value="Delete" class="btn btn-default" /> |
 		<a asp-page="./Index">Back to List</a>
 	</form>

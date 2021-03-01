@@ -1,5 +1,7 @@
 ﻿@page
-@model DevilDaggersWebsite.Razor.Pages.Admin.CustomLeaderboards.DeleteModel
+@using DevilDaggersWebsite.Razor.PageModels
+@using DevilDaggersWebsite.Entities
+@model AdminEntityDeletePageModel<CustomLeaderboard>
 
 @{
 	ViewData["Title"] = "Delete";
@@ -9,67 +11,20 @@
 
 <h3>Are you sure you want to delete this?</h3>
 <div>
-	<h4>CustomLeaderboard</h4>
-	<hr />
 	<dl class="dl-horizontal">
-		<dt>
-			@Html.DisplayNameFor(model => model.CustomLeaderboard.Category)
-		</dt>
-		<dd>
-			@Html.DisplayFor(model => model.CustomLeaderboard.Category)
-		</dd>
-		<dt>
-			@Html.DisplayNameFor(model => model.CustomLeaderboard.SpawnsetFile.Name)
-		</dt>
-		<dd>
-			@Html.DisplayFor(model => model.CustomLeaderboard.SpawnsetFile.Name)
-		</dd>
-		<dt>
-			@Html.DisplayNameFor(model => model.CustomLeaderboard.TimeBronze)
-		</dt>
-		<dd>
-			@Html.DisplayFor(model => model.CustomLeaderboard.TimeBronze)
-		</dd>
-		<dt>
-			@Html.DisplayNameFor(model => model.CustomLeaderboard.TimeSilver)
-		</dt>
-		<dd>
-			@Html.DisplayFor(model => model.CustomLeaderboard.TimeSilver)
-		</dd>
-		<dt>
-			@Html.DisplayNameFor(model => model.CustomLeaderboard.TimeGolden)
-		</dt>
-		<dd>
-			@Html.DisplayFor(model => model.CustomLeaderboard.TimeGolden)
-		</dd>
-		<dt>
-			@Html.DisplayNameFor(model => model.CustomLeaderboard.TimeDevil)
-		</dt>
-		<dd>
-			@Html.DisplayFor(model => model.CustomLeaderboard.TimeDevil)
-		</dd>
-		<dt>
-			@Html.DisplayNameFor(model => model.CustomLeaderboard.TimeLeviathan)
-		</dt>
-		<dd>
-			@Html.DisplayFor(model => model.CustomLeaderboard.TimeLeviathan)
-		</dd>
-		<dt>
-			@Html.DisplayNameFor(model => model.CustomLeaderboard.DateLastPlayed)
-		</dt>
-		<dd>
-			@Html.DisplayFor(model => model.CustomLeaderboard.DateLastPlayed)
-		</dd>
-		<dt>
-			@Html.DisplayNameFor(model => model.CustomLeaderboard.DateCreated)
-		</dt>
-		<dd>
-			@Html.DisplayFor(model => model.CustomLeaderboard.DateCreated)
-		</dd>
+		@foreach (var pi in Model.EntityProperties)
+		{
+			<dt>
+				@pi.PropertyType
+			</dt>
+			<dd>
+				@pi.GetValue(Model.Entity)
+			</dd>
+		}
 	</dl>
 
 	<form method="post">
-		<input type="hidden" asp-for="CustomLeaderboard.Id" />
+		<input type="hidden" asp-for="Entity.Id" />
 		<input type="submit" value="Delete" class="btn btn-default" /> |
 		<a asp-page="./Index">Back to List</a>
 	</form>
