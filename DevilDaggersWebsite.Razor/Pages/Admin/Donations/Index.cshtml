@@ -14,10 +14,10 @@
 <table class="table">
 	<thead>
 		<tr>
-			@foreach (var pi in Model.EntityProperties)
+			@foreach (var pi in Model.EntityDisplayProperties)
 			{
 				<th>
-					<a asp-route-sortMemberName="@pi.Name">@pi.Name</a>
+					<a>@pi.Name</a>
 				</th>
 			}
 			<th></th>
@@ -27,7 +27,7 @@
 		@foreach (var entity in Model.DbSet)
 		{
 			<tr>
-				@foreach (var pi in Model.EntityProperties)
+				@foreach (var pi in Model.EntityDisplayProperties)
 				{
 					<td>@Model.GetString(pi, entity)</td>
 				}

@@ -2,7 +2,6 @@
 using Microsoft.AspNetCore.Mvc.RazorPages;
 using Microsoft.EntityFrameworkCore;
 using System;
-using System.Collections;
 using System.Linq;
 using System.Reflection;
 
@@ -17,13 +16,13 @@ namespace DevilDaggersWebsite.Razor.PageModels
 
 			DbSet = ((Array.Find(typeof(ApplicationDbContext).GetProperties(), pi => pi.PropertyType == typeof(DbSet<TEntity>)) ?? throw new("Could not retrieve DbSet of TEntity.")).GetValue(DbContext) as DbSet<TEntity>)!;
 
-			EntityProperties = typeof(TEntity).GetProperties().Where(pi => !(pi.PropertyType.IsGenericType && typeof(IList).IsAssignableFrom(pi.PropertyType)) && pi.CanWrite).ToArray();
+			EntityDisplayProperties = typeof(TEntity).GetProperties().Where(pi => pi.CanWrite && (pi.PropertyType.IsValueType || pi.PropertyType == typeof(string))).ToArray();
 		}
 
 		protected ApplicationDbContext DbContext { get; }
 
 		public DbSet<TEntity> DbSet { get; }
 
-		public PropertyInfo[] EntityProperties { get; }
+		public PropertyInfo[] EntityDisplayProperties { get; }
 	}
 }
