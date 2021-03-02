@@ -16,10 +16,9 @@
 		<tr>
 			@foreach (var pi in Model.EntityDisplayProperties)
 			{
-				<th>
-					@pi.Name
-				</th>
+				<th>@pi.Name</th>
 			}
+			<th></th>
 			<th></th>
 		</tr>
 	</thead>
@@ -32,7 +31,9 @@
 					<td>@Model.GetString(pi, entity)</td>
 				}
 				<td>
-					<a asp-page="CreateOrEdit" asp-route-id="@entity.Id">Edit</a> |
+					<a asp-page="CreateOrEdit" asp-route-id="@entity.Id">Edit</a>
+				</td>
+				<td>
 					<a asp-page="Delete" asp-route-id="@entity.Id">Delete</a>
 				</td>
 			</tr>
