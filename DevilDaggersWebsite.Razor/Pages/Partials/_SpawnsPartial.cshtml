@@ -27,7 +27,7 @@
 	}
 
 	<div class="flex-container flex-center flex-column text-center">
-		<div style="padding: 8px;">Timer starts at @spawnset.TimerStart</div>
+		<div style="padding: 8px;">Timer starts at @spawnset.TimerStart.ToString(FormatUtils.SpawnTimeFormat)</div>
 		@if (spawnset.HasSpawns())
 		{
 			<div class="flex-container flex-center">
