@@ -1,11 +1,12 @@
-﻿using DevilDaggersWebsite.Enumerators;
+﻿using DevilDaggersWebsite.Dto.Admin;
+using DevilDaggersWebsite.Enumerators;
 using System;
 using System.ComponentModel.DataAnnotations;
 using System.ComponentModel.DataAnnotations.Schema;
 
 namespace DevilDaggersWebsite.Entities
 {
-	public class CustomLeaderboard : IEntity
+	public class CustomLeaderboard : IAdminUpdatableEntity<AdminCustomLeaderboard>
 	{
 		[Key]
 		public int Id { get; set; }
@@ -35,5 +36,39 @@ namespace DevilDaggersWebsite.Entities
 
 		public bool IsAscending()
 			=> Category == CustomLeaderboardCategory.Challenge || Category == CustomLeaderboardCategory.Speedrun;
+
+		public void Create(ApplicationDbContext dbContext, AdminCustomLeaderboard adminDto)
+		{
+			Category = adminDto.Category;
+			SpawnsetFileId = adminDto.SpawnsetFileId;
+			DateCreated = DateTime.UtcNow;
+
+			Edit(dbContext, adminDto);
+
+			dbContext.CustomLeaderboards.Add(this);
+		}
+
+		public void Edit(ApplicationDbContext dbContext, AdminCustomLeaderboard adminDto)
+		{
+			TimeBronze = adminDto.TimeBronze;
+			TimeSilver = adminDto.TimeSilver;
+			TimeGolden = adminDto.TimeGolden;
+			TimeDevil = adminDto.TimeDevil;
+			TimeLeviathan = adminDto.TimeLeviathan;
+		}
+
+		public AdminCustomLeaderboard Populate()
+		{
+			return new()
+			{
+				Category = Category,
+				SpawnsetFileId = SpawnsetFileId,
+				TimeBronze = TimeBronze,
+				TimeDevil = TimeDevil,
+				TimeGolden = TimeGolden,
+				TimeLeviathan = TimeLeviathan,
+				TimeSilver = TimeSilver,
+			};
+		}
 	}
 }

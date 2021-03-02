@@ -1,7 +1,8 @@
 ﻿@page
-@using DevilDaggersWebsite.Razor.PageModels
+@using DevilDaggersWebsite.Dto.Admin
 @using DevilDaggersWebsite.Entities
-@model AdminEntityCreateOrEditPageModel<Title>
+@using DevilDaggersWebsite.Razor.PageModels
+@model AdminEntityCreateOrEditPageModel<Title, AdminTitle>
 
 @{
 	ViewData["Title"] = Model.IsEditing ? "Edit" : "Create";
@@ -13,14 +14,11 @@
 	<div class="col-md-4">
 		<form method="post">
 			<div asp-validation-summary="ModelOnly" class="text-danger"></div>
-			@if (Model.IsEditing)
-			{
-				<input type="hidden" asp-for="Entity.Id" />
-			}
+			@*TODO: Players*@
 			<div class="form-group">
-				<label asp-for="Entity.Name" class="control-label"></label>
-				<input asp-for="Entity.Name" class="form-control" />
-				<span asp-validation-for="Entity.Name" class="text-danger"></span>
+				<label asp-for="AdminDto.Name" class="control-label"></label>
+				<input asp-for="AdminDto.Name" class="form-control" />
+				<span asp-validation-for="AdminDto.Name" class="text-danger"></span>
 			</div>
 			<div class="form-group">
 				<input type="submit" value="Save" class="btn btn-default" />

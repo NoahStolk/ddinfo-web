@@ -1,7 +1,8 @@
 ﻿@page
-@using DevilDaggersWebsite.Razor.PageModels
+@using DevilDaggersWebsite.Dto.Admin
 @using DevilDaggersWebsite.Entities
-@model AdminEntityCreateOrEditPageModel<CustomEntry>
+@using DevilDaggersWebsite.Razor.PageModels
+@model AdminEntityCreateOrEditPageModel<CustomEntry, AdminCustomEntry>
 
 @{
 	ViewData["Title"] = "Edit";
@@ -15,84 +16,83 @@
 	<div class="col-md-4">
 		<form method="post">
 			<div asp-validation-summary="ModelOnly" class="text-danger"></div>
-			@if (Model.IsEditing)
+			@if (!Model.IsEditing)
 			{
-				<input type="hidden" asp-for="Entity.Id" />
+				<div class="form-group">
+					<label asp-for="AdminDto.CustomLeaderboardId" class="control-label"></label>
+					<select asp-for="AdminDto.CustomLeaderboardId" class="form-control" asp-items="ViewBag.CustomLeaderboardId"></select>
+					<span asp-validation-for="AdminDto.CustomLeaderboardId" class="text-danger"></span>
+				</div>
+				<div class="form-group">
+					<label asp-for="AdminDto.PlayerId" class="control-label"></label>
+					<input asp-for="AdminDto.PlayerId" class="form-control" />
+					<span asp-validation-for="AdminDto.PlayerId" class="text-danger"></span>
+				</div>
 			}
 			<div class="form-group">
-				<label asp-for="Entity.CustomLeaderboardId" class="control-label"></label>
-				<select asp-for="Entity.CustomLeaderboardId" class="form-control" asp-items="ViewBag.CustomLeaderboardId"></select>
-				<span asp-validation-for="Entity.CustomLeaderboardId" class="text-danger"></span>
+				<label asp-for="AdminDto.Time" class="control-label"></label>
+				<input asp-for="AdminDto.Time" class="form-control" />
+				<span asp-validation-for="AdminDto.Time" class="text-danger"></span>
 			</div>
 			<div class="form-group">
-				<label asp-for="Entity.PlayerId" class="control-label"></label>
-				<input asp-for="Entity.PlayerId" class="form-control" />
-				<span asp-validation-for="Entity.PlayerId" class="text-danger"></span>
+				<label asp-for="AdminDto.GemsCollected" class="control-label"></label>
+				<input asp-for="AdminDto.GemsCollected" class="form-control" />
+				<span asp-validation-for="AdminDto.GemsCollected" class="text-danger"></span>
 			</div>
 			<div class="form-group">
-				<label asp-for="Entity.Time" class="control-label"></label>
-				<input asp-for="Entity.Time" class="form-control" />
-				<span asp-validation-for="Entity.Time" class="text-danger"></span>
+				<label asp-for="AdminDto.EnemiesKilled" class="control-label"></label>
+				<input asp-for="AdminDto.EnemiesKilled" class="form-control" />
+				<span asp-validation-for="AdminDto.EnemiesKilled" class="text-danger"></span>
 			</div>
 			<div class="form-group">
-				<label asp-for="Entity.GemsCollected" class="control-label"></label>
-				<input asp-for="Entity.GemsCollected" class="form-control" />
-				<span asp-validation-for="Entity.GemsCollected" class="text-danger"></span>
+				<label asp-for="AdminDto.DeathType" class="control-label"></label>
+				<input asp-for="AdminDto.DeathType" class="form-control" />
+				<span asp-validation-for="AdminDto.DeathType" class="text-danger"></span>
 			</div>
 			<div class="form-group">
-				<label asp-for="Entity.EnemiesKilled" class="control-label"></label>
-				<input asp-for="Entity.EnemiesKilled" class="form-control" />
-				<span asp-validation-for="Entity.EnemiesKilled" class="text-danger"></span>
+				<label asp-for="AdminDto.DaggersHit" class="control-label"></label>
+				<input asp-for="AdminDto.DaggersHit" class="form-control" />
+				<span asp-validation-for="AdminDto.DaggersHit" class="text-danger"></span>
 			</div>
 			<div class="form-group">
-				<label asp-for="Entity.DeathType" class="control-label"></label>
-				<input asp-for="Entity.DeathType" class="form-control" />
-				<span asp-validation-for="Entity.DeathType" class="text-danger"></span>
+				<label asp-for="AdminDto.DaggersFired" class="control-label"></label>
+				<input asp-for="AdminDto.DaggersFired" class="form-control" />
+				<span asp-validation-for="AdminDto.DaggersFired" class="text-danger"></span>
 			</div>
 			<div class="form-group">
-				<label asp-for="Entity.DaggersHit" class="control-label"></label>
-				<input asp-for="Entity.DaggersHit" class="form-control" />
-				<span asp-validation-for="Entity.DaggersHit" class="text-danger"></span>
+				<label asp-for="AdminDto.EnemiesAlive" class="control-label"></label>
+				<input asp-for="AdminDto.EnemiesAlive" class="form-control" />
+				<span asp-validation-for="AdminDto.EnemiesAlive" class="text-danger"></span>
 			</div>
 			<div class="form-group">
-				<label asp-for="Entity.DaggersFired" class="control-label"></label>
-				<input asp-for="Entity.DaggersFired" class="form-control" />
-				<span asp-validation-for="Entity.DaggersFired" class="text-danger"></span>
+				<label asp-for="AdminDto.HomingDaggers" class="control-label"></label>
+				<input asp-for="AdminDto.HomingDaggers" class="form-control" />
+				<span asp-validation-for="AdminDto.HomingDaggers" class="text-danger"></span>
 			</div>
 			<div class="form-group">
-				<label asp-for="Entity.EnemiesAlive" class="control-label"></label>
-				<input asp-for="Entity.EnemiesAlive" class="form-control" />
-				<span asp-validation-for="Entity.EnemiesAlive" class="text-danger"></span>
+				<label asp-for="AdminDto.LevelUpTime2" class="control-label"></label>
+				<input asp-for="AdminDto.LevelUpTime2" class="form-control" />
+				<span asp-validation-for="AdminDto.LevelUpTime2" class="text-danger"></span>
 			</div>
 			<div class="form-group">
-				<label asp-for="Entity.HomingDaggers" class="control-label"></label>
-				<input asp-for="Entity.HomingDaggers" class="form-control" />
-				<span asp-validation-for="Entity.HomingDaggers" class="text-danger"></span>
+				<label asp-for="AdminDto.LevelUpTime3" class="control-label"></label>
+				<input asp-for="AdminDto.LevelUpTime3" class="form-control" />
+				<span asp-validation-for="AdminDto.LevelUpTime3" class="text-danger"></span>
 			</div>
 			<div class="form-group">
-				<label asp-for="Entity.LevelUpTime2" class="control-label"></label>
-				<input asp-for="Entity.LevelUpTime2" class="form-control" />
-				<span asp-validation-for="Entity.LevelUpTime2" class="text-danger"></span>
+				<label asp-for="AdminDto.LevelUpTime4" class="control-label"></label>
+				<input asp-for="AdminDto.LevelUpTime4" class="form-control" />
+				<span asp-validation-for="AdminDto.LevelUpTime4" class="text-danger"></span>
 			</div>
 			<div class="form-group">
-				<label asp-for="Entity.LevelUpTime3" class="control-label"></label>
-				<input asp-for="Entity.LevelUpTime3" class="form-control" />
-				<span asp-validation-for="Entity.LevelUpTime3" class="text-danger"></span>
+				<label asp-for="AdminDto.SubmitDate" class="control-label"></label>
+				<input asp-for="AdminDto.SubmitDate" class="form-control" />
+				<span asp-validation-for="AdminDto.SubmitDate" class="text-danger"></span>
 			</div>
 			<div class="form-group">
-				<label asp-for="Entity.LevelUpTime4" class="control-label"></label>
-				<input asp-for="Entity.LevelUpTime4" class="form-control" />
-				<span asp-validation-for="Entity.LevelUpTime4" class="text-danger"></span>
-			</div>
-			<div class="form-group">
-				<label asp-for="Entity.SubmitDate" class="control-label"></label>
-				<input asp-for="Entity.SubmitDate" class="form-control" />
-				<span asp-validation-for="Entity.SubmitDate" class="text-danger"></span>
-			</div>
-			<div class="form-group">
-				<label asp-for="Entity.ClientVersion" class="control-label"></label>
-				<input asp-for="Entity.ClientVersion" class="form-control" />
-				<span asp-validation-for="Entity.ClientVersion" class="text-danger"></span>
+				<label asp-for="AdminDto.ClientVersion" class="control-label"></label>
+				<input asp-for="AdminDto.ClientVersion" class="form-control" />
+				<span asp-validation-for="AdminDto.ClientVersion" class="text-danger"></span>
 			</div>
 			<div class="form-group">
 				<input type="submit" value="Save" class="btn btn-default" />

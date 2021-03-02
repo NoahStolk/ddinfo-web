@@ -1,9 +1,10 @@
-﻿using System.Collections.Generic;
+﻿using DevilDaggersWebsite.Dto.Admin;
+using System.Collections.Generic;
 using System.ComponentModel.DataAnnotations;
 
 namespace DevilDaggersWebsite.Entities
 {
-	public class Player : IEntity
+	public class Player : IAdminUpdatableEntity<AdminPlayer>
 	{
 		[Key]
 		public int Id { get; set; }
@@ -29,5 +30,58 @@ namespace DevilDaggersWebsite.Entities
 
 		public override string ToString()
 			=> $"{PlayerName} ({Id})";
+
+		public void Create(ApplicationDbContext dbContext, AdminPlayer adminDto)
+		{
+			Id = adminDto.Id;
+
+			Edit(dbContext, adminDto);
+
+			dbContext.Players.Add(this);
+		}
+
+		public void Edit(ApplicationDbContext dbContext, AdminPlayer adminDto)
+		{
+			PlayerName = adminDto.PlayerName;
+			IsAnonymous = adminDto.IsAnonymous;
+			CountryCode = adminDto.CountryCode;
+			Dpi = adminDto.Dpi;
+			InGameSens = adminDto.InGameSens;
+			Fov = adminDto.Fov;
+			RightHanded = adminDto.RightHanded;
+			FlashEnabled = adminDto.FlashEnabled;
+			Gamma = adminDto.Gamma;
+			IsBanned = adminDto.IsBanned;
+			BanDescription = adminDto.BanDescription;
+			BanResponsibleId = adminDto.BanResponsibleId;
+
+			dbContext.PlayerAssetMods.RemoveRange(PlayerAssetMods);
+			dbContext.PlayerAssetMods.AddRange(adminDto.AssetModIds.ConvertAll(ami => new PlayerAssetMod { AssetModId = ami, PlayerId = Id }));
+
+			dbContext.PlayerTitles.RemoveRange(PlayerTitles);
+			dbContext.PlayerTitles.AddRange(adminDto.TitleIds.ConvertAll(ti => new PlayerTitle { PlayerId = Id, TitleId = ti }));
+		}
+
+		public AdminPlayer Populate()
+		{
+			return new()
+			{
+				AssetModIds = PlayerAssetMods.ConvertAll(pam => pam.AssetModId),
+				BanDescription = BanDescription,
+				BanResponsibleId = BanResponsibleId,
+				CountryCode = CountryCode,
+				Dpi = Dpi,
+				FlashEnabled = FlashEnabled,
+				Fov = Fov,
+				Gamma = Gamma,
+				Id = Id,
+				InGameSens = InGameSens,
+				IsAnonymous = IsAnonymous,
+				IsBanned = IsBanned,
+				PlayerName = PlayerName,
+				RightHanded = RightHanded,
+				TitleIds = PlayerTitles.ConvertAll(pt => pt.TitleId),
+			};
+		}
 	}
 }

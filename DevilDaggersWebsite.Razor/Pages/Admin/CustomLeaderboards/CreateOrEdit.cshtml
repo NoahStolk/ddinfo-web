@@ -1,7 +1,8 @@
 ﻿@page
-@using DevilDaggersWebsite.Razor.PageModels
+@using DevilDaggersWebsite.Dto.Admin
 @using DevilDaggersWebsite.Entities
-@model AdminEntityCreateOrEditPageModel<CustomLeaderboard>
+@using DevilDaggersWebsite.Razor.PageModels
+@model AdminEntityCreateOrEditPageModel<CustomLeaderboard, AdminCustomLeaderboard>
 
 @{
 	ViewData["Title"] = "Edit";
@@ -15,54 +16,43 @@
 	<div class="col-md-4">
 		<form method="post">
 			<div asp-validation-summary="ModelOnly" class="text-danger"></div>
-			@if (Model.IsEditing)
+			@if (!Model.IsEditing)
 			{
-				<input type="hidden" asp-for="Entity.Id" />
+				<div class="form-group">
+					<label asp-for="AdminDto.Category" class="control-label"></label>
+					<select asp-for="AdminDto.Category" class="form-control"></select>
+					<span asp-validation-for="AdminDto.Category" class="text-danger"></span>
+				</div>
+				<div class="form-group">
+					<label asp-for="AdminDto.SpawnsetFileId" class="control-label"></label>
+					<select asp-for="AdminDto.SpawnsetFileId" class="form-control" asp-items="ViewBag.SpawnsetFileId"></select>
+					<span asp-validation-for="AdminDto.SpawnsetFileId" class="text-danger"></span>
+				</div>
 			}
 			<div class="form-group">
-				<label asp-for="Entity.Category" class="control-label"></label>
-				<select asp-for="Entity.Category" class="form-control"></select>
-				<span asp-validation-for="Entity.Category" class="text-danger"></span>
+				<label asp-for="AdminDto.TimeBronze" class="control-label"></label>
+				<input asp-for="AdminDto.TimeBronze" class="form-control" />
+				<span asp-validation-for="AdminDto.TimeBronze" class="text-danger"></span>
 			</div>
 			<div class="form-group">
-				<label asp-for="Entity.SpawnsetFileId" class="control-label"></label>
-				<select asp-for="Entity.SpawnsetFileId" class="form-control" asp-items="ViewBag.SpawnsetFileId"></select>
-				<span asp-validation-for="Entity.SpawnsetFileId" class="text-danger"></span>
+				<label asp-for="AdminDto.TimeSilver" class="control-label"></label>
+				<input asp-for="AdminDto.TimeSilver" class="form-control" />
+				<span asp-validation-for="AdminDto.TimeSilver" class="text-danger"></span>
 			</div>
 			<div class="form-group">
-				<label asp-for="Entity.TimeBronze" class="control-label"></label>
-				<input asp-for="Entity.TimeBronze" class="form-control" />
-				<span asp-validation-for="Entity.TimeBronze" class="text-danger"></span>
+				<label asp-for="AdminDto.TimeGolden" class="control-label"></label>
+				<input asp-for="AdminDto.TimeGolden" class="form-control" />
+				<span asp-validation-for="AdminDto.TimeGolden" class="text-danger"></span>
 			</div>
 			<div class="form-group">
-				<label asp-for="Entity.TimeSilver" class="control-label"></label>
-				<input asp-for="Entity.TimeSilver" class="form-control" />
-				<span asp-validation-for="Entity.TimeSilver" class="text-danger"></span>
+				<label asp-for="AdminDto.TimeDevil" class="control-label"></label>
+				<input asp-for="AdminDto.TimeDevil" class="form-control" />
+				<span asp-validation-for="AdminDto.TimeDevil" class="text-danger"></span>
 			</div>
 			<div class="form-group">
-				<label asp-for="Entity.TimeGolden" class="control-label"></label>
-				<input asp-for="Entity.TimeGolden" class="form-control" />
-				<span asp-validation-for="Entity.TimeGolden" class="text-danger"></span>
-			</div>
-			<div class="form-group">
-				<label asp-for="Entity.TimeDevil" class="control-label"></label>
-				<input asp-for="Entity.TimeDevil" class="form-control" />
-				<span asp-validation-for="Entity.TimeDevil" class="text-danger"></span>
-			</div>
-			<div class="form-group">
-				<label asp-for="Entity.TimeLeviathan" class="control-label"></label>
-				<input asp-for="Entity.TimeLeviathan" class="form-control" />
-				<span asp-validation-for="Entity.TimeLeviathan" class="text-danger"></span>
-			</div>
-			<div class="form-group hidden">
-				<label asp-for="Entity.DateLastPlayed" class="control-label"></label>
-				<input asp-for="Entity.DateLastPlayed" class="form-control" />
-				<span asp-validation-for="Entity.DateLastPlayed" class="text-danger"></span>
-			</div>
-			<div class="form-group hidden">
-				<label asp-for="Entity.DateCreated" class="control-label"></label>
-				<input asp-for="Entity.DateCreated" class="form-control" />
-				<span asp-validation-for="Entity.DateCreated" class="text-danger"></span>
+				<label asp-for="AdminDto.TimeLeviathan" class="control-label"></label>
+				<input asp-for="AdminDto.TimeLeviathan" class="form-control" />
+				<span asp-validation-for="AdminDto.TimeLeviathan" class="text-danger"></span>
 			</div>
 			<div class="form-group">
 				<input type="submit" value="Save" class="btn btn-default" />

@@ -1,7 +1,8 @@
 ﻿@page
-@using DevilDaggersWebsite.Razor.PageModels
+@using DevilDaggersWebsite.Dto.Admin
 @using DevilDaggersWebsite.Entities
-@model AdminEntityCreateOrEditPageModel<Donation>
+@using DevilDaggersWebsite.Razor.PageModels
+@model AdminEntityCreateOrEditPageModel<Donation, AdminDonation>
 
 @{
 	ViewData["Title"] = "Edit";
@@ -15,43 +16,39 @@
 	<div class="col-md-4">
 		<form method="post">
 			<div asp-validation-summary="ModelOnly" class="text-danger"></div>
-			@if (Model.IsEditing)
-			{
-				<input type="hidden" asp-for="Entity.Id" />
-			}
 			<div class="form-group">
-				<label asp-for="Entity.PlayerId" class="control-label"></label>
-				<select asp-for="Entity.PlayerId" class="form-control" asp-items="Model.PlayerList"></select>
+				<label asp-for="AdminDto.PlayerId" class="control-label"></label>
+				<select asp-for="AdminDto.PlayerId" class="form-control" asp-items="Model.PlayerList"></select>
 			</div>
 			<div class="form-group">
-				<label asp-for="Entity.Amount" class="control-label"></label>
-				<input asp-for="Entity.Amount" class="form-control" />
-				<span asp-validation-for="Entity.Amount" class="text-danger"></span>
+				<label asp-for="AdminDto.Amount" class="control-label"></label>
+				<input asp-for="AdminDto.Amount" class="form-control" />
+				<span asp-validation-for="AdminDto.Amount" class="text-danger"></span>
 			</div>
 			<div class="form-group">
-				<label asp-for="Entity.Currency" class="control-label"></label>
-				<select asp-for="Entity.Currency" class="form-control" asp-items="Model.CurrencyList"></select>
-				<span asp-validation-for="Entity.Currency" class="text-danger"></span>
+				<label asp-for="AdminDto.Currency" class="control-label"></label>
+				<select asp-for="AdminDto.Currency" class="form-control" asp-items="Model.CurrencyList"></select>
+				<span asp-validation-for="AdminDto.Currency" class="text-danger"></span>
 			</div>
 			<div class="form-group">
-				<label asp-for="Entity.ConvertedEuroCentsReceived" class="control-label"></label>
-				<input asp-for="Entity.ConvertedEuroCentsReceived" class="form-control" />
-				<span asp-validation-for="Entity.ConvertedEuroCentsReceived" class="text-danger"></span>
+				<label asp-for="AdminDto.ConvertedEuroCentsReceived" class="control-label"></label>
+				<input asp-for="AdminDto.ConvertedEuroCentsReceived" class="form-control" />
+				<span asp-validation-for="AdminDto.ConvertedEuroCentsReceived" class="text-danger"></span>
 			</div>
 			<div class="form-group">
-				<label asp-for="Entity.DateReceived" class="control-label"></label>
-				<input asp-for="Entity.DateReceived" class="form-control" />
-				<span asp-validation-for="Entity.DateReceived" class="text-danger"></span>
+				<label asp-for="AdminDto.DateReceived" class="control-label"></label>
+				<input asp-for="AdminDto.DateReceived" class="form-control" />
+				<span asp-validation-for="AdminDto.DateReceived" class="text-danger"></span>
 			</div>
 			<div class="form-group">
-				<label asp-for="Entity.Note" class="control-label"></label>
-				<input asp-for="Entity.Note" class="form-control" />
-				<span asp-validation-for="Entity.Note" class="text-danger"></span>
+				<label asp-for="AdminDto.Note" class="control-label"></label>
+				<input asp-for="AdminDto.Note" class="form-control" />
+				<span asp-validation-for="AdminDto.Note" class="text-danger"></span>
 			</div>
 			<div class="form-group">
 				<div class="checkbox">
 					<label>
-						<input asp-for="Entity.IsRefunded" /> @Html.DisplayNameFor(model => model.Entity.IsRefunded)
+						<input asp-for="AdminDto.IsRefunded" /> @Html.DisplayNameFor(model => model.AdminDto.IsRefunded)
 					</label>
 				</div>
 			</div>

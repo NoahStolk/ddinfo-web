@@ -8,7 +8,7 @@ using System.Reflection;
 namespace DevilDaggersWebsite.Razor.PageModels
 {
 	public abstract class AbstractAdminEntityPageModel<TEntity> : PageModel
-	   where TEntity : class, IEntity
+		where TEntity : class, IEntity
 	{
 		protected AbstractAdminEntityPageModel(ApplicationDbContext dbContext)
 		{

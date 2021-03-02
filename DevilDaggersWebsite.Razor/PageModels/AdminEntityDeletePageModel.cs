@@ -6,7 +6,7 @@ using System.Threading.Tasks;
 namespace DevilDaggersWebsite.Razor.PageModels
 {
 	public class AdminEntityDeletePageModel<TEntity> : AbstractAdminEntityPageModel<TEntity>
-	   where TEntity : class, IEntity
+		where TEntity : class, IEntity
 	{
 		public AdminEntityDeletePageModel(ApplicationDbContext dbContext)
 			: base(dbContext)

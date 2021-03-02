@@ -1,7 +1,8 @@
 ﻿@page
-@using DevilDaggersWebsite.Razor.PageModels
+@using DevilDaggersWebsite.Dto.Admin
 @using DevilDaggersWebsite.Entities
-@model AdminEntityCreateOrEditPageModel<AssetMod>
+@using DevilDaggersWebsite.Razor.PageModels
+@model AdminEntityCreateOrEditPageModel<AssetMod, AdminAssetMod>
 
 @{
 	ViewData["Title"] = "Edit";
@@ -15,29 +16,26 @@
 	<div class="col-md-4">
 		<form method="post">
 			<div asp-validation-summary="ModelOnly" class="text-danger"></div>
-			@if (Model.IsEditing)
-			{
-				<input type="hidden" asp-for="Entity.Id" />
-			}
+			@*TODO: Players*@
 			<div class="form-group">
-				<label asp-for="Entity.AssetModTypes" class="control-label"></label>
-				<input asp-for="Entity.AssetModTypes" class="form-control" />
-				<span asp-validation-for="Entity.AssetModTypes" class="text-danger"></span>
+				<label asp-for="AdminDto.AssetModTypes" class="control-label"></label>
+				<input asp-for="AdminDto.AssetModTypes" class="form-control" />
+				<span asp-validation-for="AdminDto.AssetModTypes" class="text-danger"></span>
 			</div>
 			<div class="form-group">
-				<label asp-for="Entity.AssetModFileContents" class="control-label"></label>
-				<input asp-for="Entity.AssetModFileContents" class="form-control" />
-				<span asp-validation-for="Entity.AssetModFileContents" class="text-danger"></span>
+				<label asp-for="AdminDto.AssetModFileContents" class="control-label"></label>
+				<input asp-for="AdminDto.AssetModFileContents" class="form-control" />
+				<span asp-validation-for="AdminDto.AssetModFileContents" class="text-danger"></span>
 			</div>
 			<div class="form-group">
-				<label asp-for="Entity.Name" class="control-label"></label>
-				<input asp-for="Entity.Name" class="form-control" />
-				<span asp-validation-for="Entity.Name" class="text-danger"></span>
+				<label asp-for="AdminDto.Name" class="control-label"></label>
+				<input asp-for="AdminDto.Name" class="form-control" />
+				<span asp-validation-for="AdminDto.Name" class="text-danger"></span>
 			</div>
 			<div class="form-group">
-				<label asp-for="Entity.Url" class="control-label"></label>
-				<input asp-for="Entity.Url" class="form-control" />
-				<span asp-validation-for="Entity.Url" class="text-danger"></span>
+				<label asp-for="AdminDto.Url" class="control-label"></label>
+				<input asp-for="AdminDto.Url" class="form-control" />
+				<span asp-validation-for="AdminDto.Url" class="text-danger"></span>
 			</div>
 			<div class="form-group">
 				<input type="submit" value="Save" class="btn btn-default" />
