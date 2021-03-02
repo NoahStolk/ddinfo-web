@@ -1,6 +1,7 @@
 ﻿using DevilDaggersWebsite.Dto.Admin;
 using System.Collections.Generic;
 using System.ComponentModel.DataAnnotations;
+using System.Linq;
 
 namespace DevilDaggersWebsite.Entities
 {
@@ -23,8 +24,14 @@ namespace DevilDaggersWebsite.Entities
 		{
 			Name = adminDto.Name;
 
-			dbContext.PlayerTitles.RemoveRange(PlayerTitles);
-			dbContext.PlayerTitles.AddRange(adminDto.PlayerIds.ConvertAll(pi => new PlayerTitle { PlayerId = pi, TitleId = Id }));
+			foreach (PlayerTitle newEntity in adminDto.PlayerIds.ConvertAll(pi => new PlayerTitle { TitleId = Id, PlayerId = pi }))
+			{
+				if (!dbContext.PlayerTitles.Any(pam => pam.TitleId == newEntity.TitleId && pam.PlayerId == newEntity.PlayerId))
+					dbContext.PlayerTitles.Add(newEntity);
+			}
+
+			foreach (PlayerTitle entityToRemove in dbContext.PlayerTitles.Where(pam => pam.TitleId == Id && !adminDto.PlayerIds.Contains(pam.PlayerId)))
+				dbContext.PlayerTitles.Remove(entityToRemove);
 		}
 
 		public AdminTitle Populate()

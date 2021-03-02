@@ -47,7 +47,15 @@ namespace DevilDaggersWebsite.Razor.PageModels
 		{
 			Id = id;
 
-			_entity = DbSet.FirstOrDefault(m => m.Id == id) ?? (TEntity?)new();
+			IQueryable<TEntity> query = DbSet.AsQueryable();
+			if (typeof(TEntity) == typeof(Title))
+				query = DbSet.Include(t => (t as Title)!.PlayerTitles);
+			else if (typeof(TEntity) == typeof(AssetMod))
+				query = DbSet.Include(t => (t as AssetMod)!.PlayerAssetMods);
+			else if (typeof(TEntity) == typeof(Player))
+				query = DbSet.Include(t => (t as Player)!.PlayerAssetMods).Include(t => (t as Player)!.PlayerTitles);
+
+			_entity = query.FirstOrDefault(m => m.Id == id) ?? (TEntity?)new();
 
 			AdminDto = _entity.Populate();
 

@@ -1,6 +1,7 @@
 ﻿using DevilDaggersWebsite.Dto.Admin;
 using System.Collections.Generic;
 using System.ComponentModel.DataAnnotations;
+using System.Linq;
 
 namespace DevilDaggersWebsite.Entities
 {
@@ -55,11 +56,23 @@ namespace DevilDaggersWebsite.Entities
 			BanDescription = adminDto.BanDescription;
 			BanResponsibleId = adminDto.BanResponsibleId;
 
-			dbContext.PlayerAssetMods.RemoveRange(PlayerAssetMods);
-			dbContext.PlayerAssetMods.AddRange(adminDto.AssetModIds.ConvertAll(ami => new PlayerAssetMod { AssetModId = ami, PlayerId = Id }));
+			foreach (PlayerAssetMod newEntity in adminDto.AssetModIds.ConvertAll(pi => new PlayerAssetMod { AssetModId = Id, PlayerId = pi }))
+			{
+				if (!dbContext.PlayerAssetMods.Any(pam => pam.AssetModId == newEntity.AssetModId && pam.PlayerId == newEntity.PlayerId))
+					dbContext.PlayerAssetMods.Add(newEntity);
+			}
 
-			dbContext.PlayerTitles.RemoveRange(PlayerTitles);
-			dbContext.PlayerTitles.AddRange(adminDto.TitleIds.ConvertAll(ti => new PlayerTitle { PlayerId = Id, TitleId = ti }));
+			foreach (PlayerAssetMod entityToRemove in dbContext.PlayerAssetMods.Where(pam => pam.PlayerId == Id && !adminDto.AssetModIds.Contains(pam.AssetModId)))
+				dbContext.PlayerAssetMods.Remove(entityToRemove);
+
+			foreach (PlayerTitle newEntity in adminDto.TitleIds.ConvertAll(pi => new PlayerTitle { TitleId = Id, PlayerId = pi }))
+			{
+				if (!dbContext.PlayerTitles.Any(pam => pam.TitleId == newEntity.TitleId && pam.PlayerId == newEntity.PlayerId))
+					dbContext.PlayerTitles.Add(newEntity);
+			}
+
+			foreach (PlayerTitle entityToRemove in dbContext.PlayerTitles.Where(pam => pam.PlayerId == Id && !adminDto.TitleIds.Contains(pam.TitleId)))
+				dbContext.PlayerTitles.Remove(entityToRemove);
 		}
 
 		public AdminPlayer Populate()

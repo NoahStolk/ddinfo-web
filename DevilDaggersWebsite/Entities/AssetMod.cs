@@ -2,6 +2,7 @@
 using DevilDaggersWebsite.Enumerators;
 using System.Collections.Generic;
 using System.ComponentModel.DataAnnotations;
+using System.Linq;
 
 namespace DevilDaggersWebsite.Entities
 {
@@ -30,8 +31,14 @@ namespace DevilDaggersWebsite.Entities
 			Name = adminDto.Name;
 			Url = adminDto.Url;
 
-			dbContext.PlayerAssetMods.RemoveRange(PlayerAssetMods);
-			dbContext.PlayerAssetMods.AddRange(adminDto.PlayerIds.ConvertAll(pi => new PlayerAssetMod { AssetModId = Id, PlayerId = pi }));
+			foreach (PlayerAssetMod newEntity in adminDto.PlayerIds.ConvertAll(pi => new PlayerAssetMod { AssetModId = Id, PlayerId = pi }))
+			{
+				if (!dbContext.PlayerAssetMods.Any(pam => pam.AssetModId == newEntity.AssetModId && pam.PlayerId == newEntity.PlayerId))
+					dbContext.PlayerAssetMods.Add(newEntity);
+			}
+
+			foreach (PlayerAssetMod entityToRemove in dbContext.PlayerAssetMods.Where(pam => pam.AssetModId == Id && !adminDto.PlayerIds.Contains(pam.PlayerId)))
+				dbContext.PlayerAssetMods.Remove(entityToRemove);
 		}
 
 		public AdminAssetMod Populate()
