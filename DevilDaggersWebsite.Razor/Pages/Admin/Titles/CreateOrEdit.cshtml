@@ -14,11 +14,15 @@
 	<div class="col-md-4">
 		<form method="post">
 			<div asp-validation-summary="ModelOnly" class="text-danger"></div>
-			@*TODO: Players*@
 			<div class="form-group">
 				<label asp-for="AdminDto.Name" class="control-label"></label>
 				<input asp-for="AdminDto.Name" class="form-control" />
 				<span asp-validation-for="AdminDto.Name" class="text-danger"></span>
+			</div>
+			<div class="form-group">
+				<label asp-for="AdminDto.PlayerIds" class="control-label"></label>
+				<select asp-for="AdminDto.PlayerIds" class="admin-select form-control" asp-items="Model.PlayerList"></select>
+				<span asp-validation-for="AdminDto.PlayerIds" class="text-danger"></span>
 			</div>
 			<div class="form-group">
 				<input type="submit" value="Save" class="btn btn-default" />

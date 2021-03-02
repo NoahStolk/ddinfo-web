@@ -19,16 +19,22 @@ namespace DevilDaggersWebsite.Razor.PageModels
 		public AdminEntityCreateOrEditPageModel(ApplicationDbContext dbContext)
 			: base(dbContext)
 		{
-			CurrencyList = RazorUtils.EnumToSelectList<Currency>();
-			PlayerList = DbContext.Players.Select(p => new SelectListItem(p.PlayerName, p.Id.ToString())).ToList();
 			CategoryList = RazorUtils.EnumToSelectList<CustomLeaderboardCategory>();
+			CurrencyList = RazorUtils.EnumToSelectList<Currency>();
+
+			AssetModList = DbContext.AssetMods.Select(p => new SelectListItem(p.Name, p.Id.ToString())).ToList();
+			PlayerList = DbContext.Players.Select(p => new SelectListItem(p.PlayerName, p.Id.ToString())).ToList();
 			SpawnsetFileList = DbContext.SpawnsetFiles.Select(sf => new SelectListItem(sf.Name, sf.Id.ToString())).ToList();
+			TitleList = DbContext.Titles.Select(p => new SelectListItem(p.Name, p.Id.ToString())).ToList();
 		}
 
-		public List<SelectListItem> CurrencyList { get; }
-		public List<SelectListItem> PlayerList { get; }
 		public List<SelectListItem> CategoryList { get; }
+		public List<SelectListItem> CurrencyList { get; }
+
+		public List<SelectListItem> AssetModList { get; }
+		public List<SelectListItem> PlayerList { get; }
 		public List<SelectListItem> SpawnsetFileList { get; }
+		public List<SelectListItem> TitleList { get; }
 
 		public int? Id { get; private set; }
 
