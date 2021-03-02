@@ -109,7 +109,6 @@ input {
 	color: var(--col-red);
 	background-color: var(--col-black);
 	margin: 12px auto;
-	height: 240px;
 }
 
 .admin-table > thead {
@@ -130,6 +129,12 @@ input {
 
 .admin-table > tbody > tr:nth-child(odd) {
 	background-color: #111;
+}
+
+div.form-group > .text-danger {
+	background-color: red;
+	color: white;
+	font-size: 26px;
 }
 
 option {

@@ -20,8 +20,8 @@
 				<span asp-validation-for="AdminDto.Name" class="text-danger"></span>
 			</div>
 			<div class="form-group">
-				<label asp-for="AdminDto.PlayerIds" class="control-label"></label>
-				<select asp-for="AdminDto.PlayerIds" class="admin-select form-control" asp-items="Model.PlayerList"></select>
+				<label class="control-label">Players (CTRL+click for multiple)</label>
+				<select asp-for="AdminDto.PlayerIds" class="admin-select form-control" asp-items="Model.PlayerList" style="height: 640px;"></select>
 				<span asp-validation-for="AdminDto.PlayerIds" class="text-danger"></span>
 			</div>
 			<div class="form-group">

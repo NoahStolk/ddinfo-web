@@ -89,12 +89,12 @@
 				<span asp-validation-for="AdminDto.BanResponsibleId" class="text-danger"></span>
 			</div>
 			<div class="form-group">
-				<label asp-for="AdminDto.AssetModIds" class="control-label"></label>
-				<select asp-for="AdminDto.AssetModIds" class="admin-select form-control" asp-items="Model.AssetModList"></select>
+				<label class="control-label">AssetMods (CTRL+click for multiple)</label>
+				<select asp-for="AdminDto.AssetModIds" class="admin-select form-control" asp-items="Model.AssetModList" style="height: 640px;"></select>
 				<span asp-validation-for="AdminDto.AssetModIds" class="text-danger"></span>
 			</div>
 			<div class="form-group">
-				<label asp-for="AdminDto.TitleIds" class="control-label"></label>
+				<label class="control-label">Titles (CTRL+click for multiple)</label>
 				<select asp-for="AdminDto.TitleIds" class="admin-select form-control" asp-items="Model.TitleList"></select>
 				<span asp-validation-for="AdminDto.TitleIds" class="text-danger"></span>
 			</div>
