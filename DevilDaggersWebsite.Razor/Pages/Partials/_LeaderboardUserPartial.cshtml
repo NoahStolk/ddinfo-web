@@ -60,6 +60,7 @@
 				bool isUnanonymousDonator = donations.Any(d => d.PlayerId == entry.Id) && !(player?.IsAnonymous ?? true);
 
 				string flagCode = player?.CountryCode ?? string.Empty;
+				string countryName = UserUtils.CountryNames.ContainsKey(flagCode) ? UserUtils.CountryNames[flagCode] : "Invalid country code";
 				string[] titles = player?.PlayerTitles.Select(pt => pt.Title.Name).ToArray() ?? Array.Empty<string>();
 
 				Dagger dagger = GameInfo.GetDaggerFromTime(gameVersion, entry.Time);
@@ -115,7 +116,7 @@
 							}
 							else
 							{
-								<span class="leaderboard-tooltip" data-toggle="tooltip" title="@UserUtils.CountryNames[flagCode]"><img src="/images/Flags/24x24/@(flagCode).png" /></span>
+								<span class="leaderboard-tooltip" data-toggle="tooltip" title="@countryName"><img src="/images/Flags/24x24/@(flagCode).png" /></span>
 							}
 						</div>
 						<div class="text-left leaderboard-username @banString">
