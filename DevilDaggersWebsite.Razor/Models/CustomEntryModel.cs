@@ -20,7 +20,7 @@ namespace DevilDaggersWebsite.Razor.Models
 			PlayerId = customEntry.PlayerId;
 			Rank = rank;
 			FlagCode = player?.CountryCode ?? string.Empty;
-			string countryName = UserUtils.CountryNames.ContainsKey(FlagCode) ? UserUtils.CountryNames[FlagCode] : "Invalid country code";
+			string countryName = PlayerUtils.CountryNames.ContainsKey(FlagCode) ? PlayerUtils.CountryNames[FlagCode] : "Invalid country code";
 			FlagHtml = string.IsNullOrEmpty(FlagCode) ? new("<span><img src='/images/Flags/24x24/00.png' /></span>") : new($"<span class='leaderboard-tooltip' data-toggle='tooltip' title='{countryName}'><img src='/images/Flags/24x24/{FlagCode}.png' /></span>");
 
 			Username = player?.PlayerName ?? "Player not found";
@@ -41,7 +41,7 @@ namespace DevilDaggersWebsite.Razor.Models
 			if (titles != null)
 			{
 				foreach (string title in titles)
-					sb.Append("<span class='leaderboard-tooltip' data-toggle='tooltip' title='").Append(title).Append("'><img src='/images/Icons/").Append(UserUtils.TitleImages[title]).AppendLine(".png' /></span>");
+					sb.Append("<span class='leaderboard-tooltip' data-toggle='tooltip' title='").Append(title).Append("'><img src='/images/Icons/").Append(PlayerUtils.TitleImages[title]).AppendLine(".png' /></span>");
 			}
 
 			TitlesHtml = new(sb.ToString());

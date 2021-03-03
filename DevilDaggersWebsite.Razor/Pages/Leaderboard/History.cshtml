@@ -44,10 +44,10 @@
 
 	@{
 		Completion completion = Model.Leaderboard.GetCompletion();
-		CompletionCombined userCompletion = Model.Leaderboard.GetUserCompletion();
+		CompletionCombined playerCompletion = Model.Leaderboard.GetPlayerCompletion();
 		bool isDataMissingInGlobalCompletion = completion.CompletionEntries.Any(c => c.Value == CompletionEntry.Missing);
-		bool isDataMissingInUserCompletion = userCompletion.CompletionEntries.Any(c => c.Value == CompletionEntryCombined.Missing || c.Value == CompletionEntryCombined.PartiallyMissing);
-		if (isDataMissingInGlobalCompletion || isDataMissingInUserCompletion)
+		bool isDataMissingInPlayerCompletion = playerCompletion.CompletionEntries.Any(c => c.Value == CompletionEntryCombined.Missing || c.Value == CompletionEntryCombined.PartiallyMissing);
+		if (isDataMissingInGlobalCompletion || isDataMissingInPlayerCompletion)
 		{
 			<h2>Missing information</h2>
 			<div>This leaderboard is only <span class="devil">@($"{Model.Leaderboard.GetCompletionRate():0.0%}")</span> complete.</div>
@@ -75,12 +75,12 @@
 						</div>
 					</div>
 					<div>
-						<div>User</div>
+						<div>Player</div>
 						<div class="info-text">
 							@{
-								if (isDataMissingInUserCompletion)
+								if (isDataMissingInPlayerCompletion)
 								{
-									foreach (KeyValuePair<string, CompletionEntryCombined> kvp in userCompletion.CompletionEntries)
+									foreach (KeyValuePair<string, CompletionEntryCombined> kvp in playerCompletion.CompletionEntries)
 									{
 										if (kvp.Value != CompletionEntryCombined.Complete)
 										{

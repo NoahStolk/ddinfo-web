@@ -2,7 +2,7 @@
 
 namespace DevilDaggersWebsite.Razor.Utils
 {
-	public static class UserUtils
+	public static class PlayerUtils
 	{
 		public static Dictionary<string, string> TitleImages { get; } = new()
 		{
