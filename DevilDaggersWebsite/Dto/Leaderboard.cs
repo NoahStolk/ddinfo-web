@@ -48,7 +48,7 @@ namespace DevilDaggersWebsite.Dto
 		public Completion Completion { get; } = new();
 
 		[JsonIgnore]
-		public CompletionCombined PlayerCompletion { get; } = new();
+		public CompletionCombined UserCompletion { get; } = new();
 
 		public Completion GetCompletion()
 		{
@@ -76,16 +76,16 @@ namespace DevilDaggersWebsite.Dto
 
 			int players = Players == 0 ? 100 : Math.Min(Players, 100);
 			if (Entries.Count != players)
-				Completion.CompletionEntries[$"{players - Entries.Count} players"] = CompletionEntry.Missing;
+				Completion.CompletionEntries[$"{players - Entries.Count} users"] = CompletionEntry.Missing;
 
 			Completion.Initialized = true;
 			return Completion;
 		}
 
-		public CompletionCombined GetPlayerCompletion()
+		public CompletionCombined GetUserCompletion()
 		{
-			if (PlayerCompletion.Initialized)
-				return PlayerCompletion;
+			if (UserCompletion.Initialized)
+				return UserCompletion;
 
 			List<Completion> completions = new();
 			foreach (Entry entry in Entries)
@@ -104,11 +104,11 @@ namespace DevilDaggersWebsite.Dto
 						missing++;
 				}
 
-				PlayerCompletion.CompletionEntries[kvp.Key] = missing == 0 ? CompletionEntryCombined.Complete : missing == total ? CompletionEntryCombined.Missing : CompletionEntryCombined.PartiallyMissing;
+				UserCompletion.CompletionEntries[kvp.Key] = missing == 0 ? CompletionEntryCombined.Complete : missing == total ? CompletionEntryCombined.Missing : CompletionEntryCombined.PartiallyMissing;
 			}
 
-			PlayerCompletion.Initialized = true;
-			return PlayerCompletion;
+			UserCompletion.Initialized = true;
+			return UserCompletion;
 		}
 
 		public float GetCompletionRate()

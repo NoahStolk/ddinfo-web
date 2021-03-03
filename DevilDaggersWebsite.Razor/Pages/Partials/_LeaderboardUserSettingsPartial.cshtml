@@ -37,7 +37,7 @@
 				bool isUnanonymousDonator = !player.IsAnonymous && donations.Any(d => d.PlayerId == entry.Id);
 
 				string flagCode = player.CountryCode ?? string.Empty;
-				string countryName = PlayerUtils.CountryNames.ContainsKey(flagCode) ? PlayerUtils.CountryNames[flagCode] : "Invalid country code";
+				string countryName = UserUtils.CountryNames.ContainsKey(flagCode) ? UserUtils.CountryNames[flagCode] : "Invalid country code";
 				string[] titles = player.PlayerTitles.Select(pt => pt.Title.Name).ToArray();
 
 				Dagger dagger = GameInfo.GetDaggerFromTime(GameVersion.V31, entry.Time);
@@ -66,13 +66,13 @@
 								{
 									foreach (string title in titles)
 									{
-										<span class="leaderboard-tooltip" data-toggle="tooltip" title="@title"><img src="/images/Icons/@(PlayerUtils.TitleImages[title]).png" /></span>
+										<span class="leaderboard-tooltip" data-toggle="tooltip" title="@title"><img src="/images/Icons/@(UserUtils.TitleImages[title]).png" /></span>
 									}
 								}
 								if (isUnanonymousDonator)
 								{
 									string title = "Donator";
-									<span class="leaderboard-tooltip" data-toggle="tooltip" title="@title"><img src="/images/Icons/@(PlayerUtils.TitleImages[title]).png" /></span>
+									<span class="leaderboard-tooltip" data-toggle="tooltip" title="@title"><img src="/images/Icons/@(UserUtils.TitleImages[title]).png" /></span>
 								}
 							}
 						</div>
