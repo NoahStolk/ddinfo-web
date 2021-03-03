@@ -1,4 +1,5 @@
-﻿using DevilDaggersWebsite.Entities;
+﻿using DevilDaggersWebsite.Dto.Admin;
+using DevilDaggersWebsite.Entities;
 using DevilDaggersWebsite.Enumerators;
 using DevilDaggersWebsite.Razor.Utils;
 using Microsoft.AspNetCore.Mvc;
@@ -94,6 +95,12 @@ namespace DevilDaggersWebsite.Razor.PageModels
 			}
 			else
 			{
+				if (AdminDto is AdminPlayer player && DbSet.Any(e => e.Id == player.Id))
+				{
+					ModelState.AddModelError("PlayerId", "Player already exists.");
+					return Page();
+				}
+
 				_entity = new();
 				_entity.Create(DbContext, AdminDto);
 				DbContext.SaveChanges();
