@@ -57,7 +57,7 @@ namespace DevilDaggersWebsite.Entities
 			BanResponsibleId = adminDto.BanResponsibleId;
 
 			List<int> assetModIds = adminDto.AssetModIds ?? new();
-			foreach (PlayerAssetMod newEntity in assetModIds.ConvertAll(pi => new PlayerAssetMod { AssetModId = Id, PlayerId = pi }))
+			foreach (PlayerAssetMod newEntity in assetModIds.ConvertAll(ami => new PlayerAssetMod { AssetModId = ami, PlayerId = Id }))
 			{
 				if (!dbContext.PlayerAssetMods.Any(pam => pam.AssetModId == newEntity.AssetModId && pam.PlayerId == newEntity.PlayerId))
 					dbContext.PlayerAssetMods.Add(newEntity);
@@ -67,7 +67,7 @@ namespace DevilDaggersWebsite.Entities
 				dbContext.PlayerAssetMods.Remove(entityToRemove);
 
 			List<int> titleIds = adminDto.TitleIds ?? new();
-			foreach (PlayerTitle newEntity in titleIds.ConvertAll(pi => new PlayerTitle { TitleId = Id, PlayerId = pi }))
+			foreach (PlayerTitle newEntity in titleIds.ConvertAll(ti => new PlayerTitle { TitleId = ti, PlayerId = Id }))
 			{
 				if (!dbContext.PlayerTitles.Any(pam => pam.TitleId == newEntity.TitleId && pam.PlayerId == newEntity.PlayerId))
 					dbContext.PlayerTitles.Add(newEntity);
