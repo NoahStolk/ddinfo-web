@@ -31,13 +31,14 @@ namespace DevilDaggersWebsite.Entities
 			Name = adminDto.Name;
 			Url = adminDto.Url;
 
-			foreach (PlayerAssetMod newEntity in adminDto.PlayerIds.ConvertAll(pi => new PlayerAssetMod { AssetModId = Id, PlayerId = pi }))
+			List<int> playerIds = adminDto.PlayerIds ?? new();
+			foreach (PlayerAssetMod newEntity in playerIds.ConvertAll(pi => new PlayerAssetMod { AssetModId = Id, PlayerId = pi }))
 			{
 				if (!dbContext.PlayerAssetMods.Any(pam => pam.AssetModId == newEntity.AssetModId && pam.PlayerId == newEntity.PlayerId))
 					dbContext.PlayerAssetMods.Add(newEntity);
 			}
 
-			foreach (PlayerAssetMod entityToRemove in dbContext.PlayerAssetMods.Where(pam => pam.AssetModId == Id && !adminDto.PlayerIds.Contains(pam.PlayerId)))
+			foreach (PlayerAssetMod entityToRemove in dbContext.PlayerAssetMods.Where(pam => pam.AssetModId == Id && !playerIds.Contains(pam.PlayerId)))
 				dbContext.PlayerAssetMods.Remove(entityToRemove);
 		}
 

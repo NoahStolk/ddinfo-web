@@ -7,8 +7,8 @@ namespace DevilDaggersWebsite.Dto.Admin
 		public int Id { get; init; }
 		public string PlayerName { get; init; }
 		public bool IsAnonymous { get; init; }
-		public List<int> AssetModIds { get; init; }
-		public List<int> TitleIds { get; init; }
+		public List<int>? AssetModIds { get; init; }
+		public List<int>? TitleIds { get; init; }
 		public string? CountryCode { get; init; }
 		public int? Dpi { get; init; }
 		public float? InGameSens { get; init; }

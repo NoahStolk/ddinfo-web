@@ -56,22 +56,24 @@ namespace DevilDaggersWebsite.Entities
 			BanDescription = adminDto.BanDescription;
 			BanResponsibleId = adminDto.BanResponsibleId;
 
-			foreach (PlayerAssetMod newEntity in adminDto.AssetModIds.ConvertAll(pi => new PlayerAssetMod { AssetModId = Id, PlayerId = pi }))
+			List<int> assetModIds = adminDto.AssetModIds ?? new();
+			foreach (PlayerAssetMod newEntity in assetModIds.ConvertAll(pi => new PlayerAssetMod { AssetModId = Id, PlayerId = pi }))
 			{
 				if (!dbContext.PlayerAssetMods.Any(pam => pam.AssetModId == newEntity.AssetModId && pam.PlayerId == newEntity.PlayerId))
 					dbContext.PlayerAssetMods.Add(newEntity);
 			}
 
-			foreach (PlayerAssetMod entityToRemove in dbContext.PlayerAssetMods.Where(pam => pam.PlayerId == Id && !adminDto.AssetModIds.Contains(pam.AssetModId)))
+			foreach (PlayerAssetMod entityToRemove in dbContext.PlayerAssetMods.Where(pam => pam.PlayerId == Id && !assetModIds.Contains(pam.AssetModId)))
 				dbContext.PlayerAssetMods.Remove(entityToRemove);
 
-			foreach (PlayerTitle newEntity in adminDto.TitleIds.ConvertAll(pi => new PlayerTitle { TitleId = Id, PlayerId = pi }))
+			List<int> titleIds = adminDto.TitleIds ?? new();
+			foreach (PlayerTitle newEntity in titleIds.ConvertAll(pi => new PlayerTitle { TitleId = Id, PlayerId = pi }))
 			{
 				if (!dbContext.PlayerTitles.Any(pam => pam.TitleId == newEntity.TitleId && pam.PlayerId == newEntity.PlayerId))
 					dbContext.PlayerTitles.Add(newEntity);
 			}
 
-			foreach (PlayerTitle entityToRemove in dbContext.PlayerTitles.Where(pam => pam.PlayerId == Id && !adminDto.TitleIds.Contains(pam.TitleId)))
+			foreach (PlayerTitle entityToRemove in dbContext.PlayerTitles.Where(pam => pam.PlayerId == Id && !titleIds.Contains(pam.TitleId)))
 				dbContext.PlayerTitles.Remove(entityToRemove);
 		}
 

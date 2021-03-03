@@ -5,7 +5,7 @@ namespace DevilDaggersWebsite.Dto.Admin
 {
 	public class AdminAssetMod
 	{
-		public List<int> PlayerIds { get; init; }
+		public List<int>? PlayerIds { get; init; }
 		public AssetModTypes AssetModTypes { get; init; }
 		public AssetModFileContents AssetModFileContents { get; init; }
 		public string Name { get; init; }

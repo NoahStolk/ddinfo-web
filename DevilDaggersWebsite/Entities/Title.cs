@@ -24,13 +24,14 @@ namespace DevilDaggersWebsite.Entities
 		{
 			Name = adminDto.Name;
 
-			foreach (PlayerTitle newEntity in adminDto.PlayerIds.ConvertAll(pi => new PlayerTitle { TitleId = Id, PlayerId = pi }))
+			List<int> playerIds = adminDto.PlayerIds ?? new();
+			foreach (PlayerTitle newEntity in playerIds.ConvertAll(pi => new PlayerTitle { TitleId = Id, PlayerId = pi }))
 			{
 				if (!dbContext.PlayerTitles.Any(pam => pam.TitleId == newEntity.TitleId && pam.PlayerId == newEntity.PlayerId))
 					dbContext.PlayerTitles.Add(newEntity);
 			}
 
-			foreach (PlayerTitle entityToRemove in dbContext.PlayerTitles.Where(pam => pam.TitleId == Id && !adminDto.PlayerIds.Contains(pam.PlayerId)))
+			foreach (PlayerTitle entityToRemove in dbContext.PlayerTitles.Where(pam => pam.TitleId == Id && !playerIds.Contains(pam.PlayerId)))
 				dbContext.PlayerTitles.Remove(entityToRemove);
 		}
 
