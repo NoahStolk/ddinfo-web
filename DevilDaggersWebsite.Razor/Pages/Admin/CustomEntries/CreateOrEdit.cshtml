@@ -5,10 +5,10 @@
 @model AdminEntityCreateOrEditPageModel<CustomEntry, AdminCustomEntry>
 
 @{
-	ViewData["Title"] = "Edit";
+	ViewData["Title"] = Model.IsEditing ? "Edit" : "Create";
 }
 
-<h2>Edit</h2>
+<h2>@ViewData["Title"]</h2>
 
 <h4>CustomEntry</h4>
 <hr />
