@@ -1,5 +1,6 @@
 ﻿using DevilDaggersWebsite.Dto.Admin;
 using DevilDaggersWebsite.Enumerators;
+using System;
 using System.Collections.Generic;
 using System.ComponentModel.DataAnnotations;
 using System.Linq;
@@ -26,8 +27,8 @@ namespace DevilDaggersWebsite.Entities
 
 		public void Edit(ApplicationDbContext dbContext, AdminAssetMod adminDto)
 		{
-			AssetModTypes = adminDto.AssetModTypes;
-			AssetModFileContents = adminDto.AssetModFileContents;
+			AssetModTypes = (AssetModTypes)adminDto.AssetModTypes.Cast<int>().Sum();
+			AssetModFileContents = (AssetModFileContents)adminDto.AssetModFileContents.Cast<int>().Sum();
 			Name = adminDto.Name;
 			Url = adminDto.Url;
 
@@ -46,12 +47,16 @@ namespace DevilDaggersWebsite.Entities
 		{
 			return new()
 			{
-				AssetModTypes = AssetModTypes,
-				AssetModFileContents = AssetModFileContents,
+				AssetModTypes = ToFlagEnumList(AssetModTypes).ToList(),
+				AssetModFileContents = ToFlagEnumList(AssetModFileContents).ToList(),
 				Name = Name,
 				PlayerIds = PlayerAssetMods.ConvertAll(pam => pam.PlayerId),
 				Url = Url,
 			};
+
+			static IEnumerable<T> ToFlagEnumList<T>(T value)
+				where T : struct, Enum
+				=> Enum.GetValues(typeof(T)).Cast<T>().Where(r => ((int)(object)value & (int)(object)r) == (int)(object)r);
 		}
 	}
 }

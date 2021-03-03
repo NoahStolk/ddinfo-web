@@ -20,6 +20,9 @@ namespace DevilDaggersWebsite.Razor.PageModels
 		public AdminEntityCreateOrEditPageModel(ApplicationDbContext dbContext)
 			: base(dbContext)
 		{
+			AssetModFileContentsList = RazorUtils.EnumToSelectList<AssetModFileContents>();
+			AssetModTypesList = RazorUtils.EnumToSelectList<AssetModTypes>();
+
 			CategoryList = RazorUtils.EnumToSelectList<CustomLeaderboardCategory>();
 			CurrencyList = RazorUtils.EnumToSelectList<Currency>();
 
@@ -28,6 +31,9 @@ namespace DevilDaggersWebsite.Razor.PageModels
 			SpawnsetFileList = DbContext.SpawnsetFiles.Select(sf => new SelectListItem(sf.Name, sf.Id.ToString())).ToList();
 			TitleList = DbContext.Titles.Select(p => new SelectListItem(p.Name, p.Id.ToString())).ToList();
 		}
+
+		public List<SelectListItem> AssetModFileContentsList { get; }
+		public List<SelectListItem> AssetModTypesList { get; }
 
 		public List<SelectListItem> CategoryList { get; }
 		public List<SelectListItem> CurrencyList { get; }

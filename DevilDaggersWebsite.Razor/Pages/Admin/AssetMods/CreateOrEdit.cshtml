@@ -17,13 +17,13 @@
 		<form method="post">
 			<div asp-validation-summary="ModelOnly" class="text-danger"></div>
 			<div class="form-group">
-				<label asp-for="AdminDto.AssetModTypes" class="control-label"></label>
-				<input asp-for="AdminDto.AssetModTypes" class="form-control" />
+				<label class="control-label">AssetModTypes (CTRL+click for multiple)</label>
+				<select asp-for="AdminDto.AssetModTypes" class="admin-select form-control" asp-items="Model.AssetModTypesList" style="height: 192px;"></select>
 				<span asp-validation-for="AdminDto.AssetModTypes" class="text-danger"></span>
 			</div>
 			<div class="form-group">
-				<label asp-for="AdminDto.AssetModFileContents" class="control-label"></label>
-				<input asp-for="AdminDto.AssetModFileContents" class="form-control" />
+				<label class="control-label">AssetModFileContents (CTRL+click for multiple)</label>
+				<select asp-for="AdminDto.AssetModFileContents" class="admin-select form-control" asp-items="Model.AssetModFileContentsList"></select>
 				<span asp-validation-for="AdminDto.AssetModFileContents" class="text-danger"></span>
 			</div>
 			<div class="form-group">
