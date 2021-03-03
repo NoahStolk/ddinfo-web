@@ -21,31 +21,31 @@
 
 <div class="leaderboard-container flex-container flex-center">
 	<div class="leaderboard-title-row @(showMoreStats ? "row-more-stats" : "") flex-container">
-		<div class="sorter text-center" sort="rank">#</div>
-		<div class="sorter text-center" sort="flag">Flag</div>
-		<div class="sorter text-center" sort="username">Username</div>
-		<div class="sorter text-center" sort="time">Time</div>
-		<div class="sorter hidden-xs text-center" sort="kills">Kills</div>
-		<div class="sorter hidden-xs text-center" sort="gems">Gems</div>
-		<div class="sorter hidden-xs text-center" sort="accuracy">Accuracy</div>
-		<div class="sorter hidden-xs hidden-sm hidden-md text-center" sort="death-type">Death type</div>
-		<div class="sorter hidden-xs hidden-sm hidden-md text-center" sort="total-time">Total time</div>
-		<div class="sorter hidden-xs hidden-sm hidden-md text-center" sort="total-kills">Total kills</div>
-		<div class="sorter hidden-xs hidden-sm hidden-md text-center" sort="total-gems">Total gems</div>
-		<div class="sorter hidden-xs hidden-sm hidden-md text-center" sort="total-accuracy">Total accuracy</div>
-		<div class="sorter hidden-xs hidden-sm hidden-md text-center" sort="total-deaths">Total deaths</div>
+		<div class="sorter text-right" sort="rank">#</div>
+		<div class="sorter text-left" sort="flag">Flag</div>
+		<div class="sorter text-left" sort="username">Username</div>
+		<div class="sorter text-right" sort="time">Time</div>
+		<div class="sorter hidden-xs text-right" sort="kills">Kills</div>
+		<div class="sorter hidden-xs text-right" sort="gems">Gems</div>
+		<div class="sorter hidden-xs text-right" sort="accuracy">Accuracy</div>
+		<div class="sorter hidden-xs hidden-sm hidden-md text-left" sort="death-type">Death type</div>
+		<div class="sorter hidden-xs hidden-sm hidden-md text-right" sort="total-time">Total time</div>
+		<div class="sorter hidden-xs hidden-sm hidden-md text-right" sort="total-kills">Total kills</div>
+		<div class="sorter hidden-xs hidden-sm hidden-md text-right" sort="total-gems">Total gems</div>
+		<div class="sorter hidden-xs hidden-sm hidden-md text-right" sort="total-accuracy">Total accuracy</div>
+		<div class="sorter hidden-xs hidden-sm hidden-md text-right" sort="total-deaths">Total deaths</div>
 		@if (showMoreStats)
 		{
-			<div class="sorter visible-xl text-center" sort="daggers-hit">Daggers hit</div>
-			<div class="sorter visible-xl text-center" sort="daggers-fired">Daggers fired</div>
-			<div class="sorter visible-xl text-center" sort="total-daggers-hit">Total daggers hit</div>
-			<div class="sorter visible-xl text-center" sort="total-daggers-fired">Total daggers fired</div>
-			<div class="sorter visible-xl text-center" sort="average-time">Average time</div>
-			<div class="sorter visible-xl text-center" sort="average-kills">Average kills</div>
-			<div class="sorter visible-xl text-center" sort="average-gems">Average gems</div>
-			<div class="sorter visible-xl text-center" sort="average-daggers-hit">Average daggers hit</div>
-			<div class="sorter visible-xl text-center" sort="average-daggers-fired">Average daggers fired</div>
-			<div class="sorter visible-xl text-center" sort="time-by-death">Time divided by deaths</div>
+			<div class="sorter visible-xl text-right" sort="daggers-hit">Daggers hit</div>
+			<div class="sorter visible-xl text-right" sort="daggers-fired">Daggers fired</div>
+			<div class="sorter visible-xl text-right" sort="total-daggers-hit">Total daggers hit</div>
+			<div class="sorter visible-xl text-right" sort="total-daggers-fired">Total daggers fired</div>
+			<div class="sorter visible-xl text-right" sort="average-time">Average time</div>
+			<div class="sorter visible-xl text-right" sort="average-kills">Average kills</div>
+			<div class="sorter visible-xl text-right" sort="average-gems">Average gems</div>
+			<div class="sorter visible-xl text-right" sort="average-daggers-hit">Average daggers hit</div>
+			<div class="sorter visible-xl text-right" sort="average-daggers-fired">Average daggers fired</div>
+			<div class="sorter visible-xl text-right" sort="time-by-death">Time divided by deaths</div>
 		}
 	</div>
 	<div class="leaderboard-body">
@@ -150,7 +150,7 @@
 						<div class="hidden-xs text-right">
 							<span data-toggle="tooltip" title="@shots" class="leaderboard-tooltip">@accuracy</span>
 						</div>
-						<div class="hidden-xs hidden-sm hidden-md text-center" style="@deathStyle">@deathName</div>
+						<div class="hidden-xs hidden-sm hidden-md text-left" style="@deathStyle">@deathName</div>
 						<div class="hidden-xs hidden-sm hidden-md text-right">@timeTotal</div>
 						<div class="hidden-xs hidden-sm hidden-md text-right">@killsTotal</div>
 						<div class="hidden-xs hidden-sm hidden-md text-right">@gemsTotal</div>

@@ -10,19 +10,19 @@
 
 <div class="leaderboard-container flex-container flex-center">
 	<div class="leaderboard-title-row flex-container">
-		<div class="sorter text-center" sort="rank">#</div>
-		<div class="sorter text-center" sort="flag">Flag</div>
-		<div class="sorter text-center" sort="username">Username</div>
-		<div class="sorter text-center" sort="time">Time</div>
+		<div class="sorter text-right" sort="rank">#</div>
+		<div class="sorter text-left" sort="flag">Flag</div>
+		<div class="sorter text-left" sort="username">Username</div>
+		<div class="sorter text-right" sort="time">Time</div>
 
-		<div class="sorter hidden-xs text-center" sort="e-dpi">eDPI</div>
-		<div class="sorter hidden-xs text-center" sort="dpi">DPI</div>
-		<div class="sorter hidden-xs text-center" sort="in-game-sens">In-game sens</div>
-		<div class="sorter hidden-xs text-center" sort="fov">FOV</div>
+		<div class="sorter hidden-xs text-right" sort="e-dpi">eDPI</div>
+		<div class="sorter hidden-xs text-right" sort="dpi">DPI</div>
+		<div class="sorter hidden-xs text-right" sort="in-game-sens">In-game sens</div>
+		<div class="sorter hidden-xs text-right" sort="fov">FOV</div>
 
-		<div class="sorter hidden-xs hidden-sm hidden-md text-center" sort="hand">Hand orientation</div>
-		<div class="sorter hidden-xs hidden-sm hidden-md text-center" sort="flash">Hand flash</div>
-		<div class="sorter hidden-xs hidden-sm hidden-md text-center" sort="gamma">Gamma</div>
+		<div class="sorter hidden-xs hidden-sm hidden-md text-left" sort="hand">Hand orientation</div>
+		<div class="sorter hidden-xs hidden-sm hidden-md text-left" sort="flash">Hand flash</div>
+		<div class="sorter hidden-xs hidden-sm hidden-md text-right" sort="gamma">Gamma</div>
 	</div>
 	<div class="leaderboard-body">
 		@{
@@ -81,8 +81,8 @@
 						<div class="hidden-xs text-right">@player.Dpi</div>
 						<div class="hidden-xs text-right">@(player.InGameSens != null ? player.InGameSens.Value.ToString(FormatUtils.MouseSensitivityFormat) : string.Empty)</div>
 						<div class="hidden-xs text-right">@player.Fov</div>
-						<div class="hidden-xs hidden-sm hidden-md text-right">@player.RightHandedString</div>
-						<div class="hidden-xs hidden-sm hidden-md text-right">@player.FlashEnabledString</div>
+						<div class="hidden-xs hidden-sm hidden-md text-left">@player.RightHandedString</div>
+						<div class="hidden-xs hidden-sm hidden-md text-left">@player.FlashEnabledString</div>
 						<div class="hidden-xs hidden-sm hidden-md text-right">@player.Gamma</div>
 					</div>
 					<div class="leaderboard-expand flex-container" id="@(entry.Rank)-expand">
