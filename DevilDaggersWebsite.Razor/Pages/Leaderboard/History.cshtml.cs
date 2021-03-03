@@ -78,9 +78,9 @@ namespace DevilDaggersWebsite.Razor.Pages.Leaderboard
 					if (LeaderboardPrevious.DeathsGlobal != Leaderboard.DeathsGlobal)
 						ChangesGlobal.Add($"Global deaths +{Leaderboard.DeathsGlobal - LeaderboardPrevious.DeathsGlobal}\n");
 
-					List<Entry> top100joins = new List<Entry>();
-					List<Entry> highscores = new List<Entry>();
-					List<Entry> plays = new List<Entry>();
+					List<Entry> top100joins = new();
+					List<Entry> highscores = new();
+					List<Entry> plays = new();
 					foreach (Entry entry in Leaderboard.Entries)
 					{
 						Entry? entryPrevious = LeaderboardPrevious.Entries.Find(e => e.Id == entry.Id);
