@@ -7,6 +7,8 @@
 @inject DevilDaggersWebsite.Entities.ApplicationDbContext dbContext
 
 @{
+	DateTime submitCountCollectionStart = new(2020, 8, 25);
+
 	if (Model.Count == 0)
 	{
 		<p>No leaderboards for this category yet</p>
@@ -18,7 +20,7 @@
 	<div class="leaderboard-title-row flex-container">
 		<div class="sorter text-left" sort="name">Spawnset name</div>
 		<div class="sorter hidden-xs text-right" sort="players">Players</div>
-		<div class="sorter hidden-xs text-right" sort="submits">Submits <span style="cursor: pointer;" class="text-right devil" data-toggle="tooltip" data-placement="top" title="Data has only been collected since 25 Aug 2020, and will not be correct for leaderboards that were created prior to this date.">?</span></div>
+		<div class="sorter hidden-xs text-right" sort="submits">Submits <span style="cursor: pointer;" class="text-right devil" data-toggle="tooltip" data-placement="top" title="Data has only been collected since @submitCountCollectionStart.ToString("dd MMM yyyy"), and will not be correct for leaderboards that were created prior to this date.">?</span></div>
 		<div class="sorter hidden-xs text-right date" sort="last-played">Last played</div>
 		<div class="sorter hidden-xs text-right date" sort="created">Created</div>
 		<div class="sorter hidden-xs hidden-sm hidden-md text-right" sort="bronze">Bronze</div>
@@ -32,6 +34,8 @@
 		@{
 			foreach (CustomLeaderboard lb in Model)
 			{
+				bool possibleMissingSubmitCounts = lb.DateCreated < submitCountCollectionStart;
+
 				List<CustomEntry> entries = dbContext.CustomEntries
 				   .Where(e => e.CustomLeaderboard == lb)
 				   .OrderByMember(nameof(CustomEntry.Time), lb.IsAscending())
@@ -42,7 +46,7 @@
 					<div class="leaderboard-row flex-container">
 						<div class="text-left"><a asp-page="/CustomLeaderboards/Leaderboard" asp-route-spawnsetName="@clm.SpawnsetName">@clm.SpawnsetName</a></div>
 						<div class="hidden-xs text-right">@entries.Count</div>
-						<div class="hidden-xs text-right">@lb.TotalRunsSubmitted</div>
+						<div class="hidden-xs text-right">@(possibleMissingSubmitCounts ? "+" : string.Empty)@lb.TotalRunsSubmitted</div>
 						<div class="hidden-xs text-right date">@clm.DateLastPlayed</div>
 						<div class="hidden-xs text-right date">@clm.DateCreated</div>
 						<div class="hidden-xs hidden-sm hidden-md text-right bronze">@clm.TimeBronze.FormatTimeInteger()</div>
