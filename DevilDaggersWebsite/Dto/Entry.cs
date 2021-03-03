@@ -20,6 +20,7 @@ namespace DevilDaggersWebsite.Dto
 		public int Id { get; set; }
 
 		[CompletionProperty]
+		// TODO: Rename to PlayerName. (Will break history?)
 		public string Username { get; set; } = null!;
 
 		[CompletionProperty]
@@ -115,7 +116,7 @@ namespace DevilDaggersWebsite.Dto
 			return false;
 		}
 
-		public List<string> GetAllUsernameAliases(IWebHostEnvironment env)
+		public List<string> GetAllPlayerNameAliases(IWebHostEnvironment env)
 		{
 			Dictionary<string, int> aliases = new();
 			foreach (string leaderboardHistoryPath in Directory.GetFiles(Path.Combine(env.WebRootPath, "leaderboard-history"), "*.json"))

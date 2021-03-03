@@ -72,10 +72,10 @@ namespace DevilDaggersWebsite.Razor.Pages.Leaderboard
 			switch (LeaderboardSearchType)
 			{
 				case LeaderboardSearchType.Username:
-					Leaderboard = await DdHasmodaiClient.GetUserSearch(Username);
+					Leaderboard = await DdHasmodaiClient.GetPlayerSearch(Username);
 					break;
 				case LeaderboardSearchType.UserId:
-					Entry? entry = await DdHasmodaiClient.GetUserById(UserId);
+					Entry? entry = await DdHasmodaiClient.GetPlayerById(UserId);
 					if (entry != null)
 						Leaderboard = new Lb { Entries = new List<Entry> { entry } };
 					else
@@ -102,7 +102,7 @@ namespace DevilDaggersWebsite.Razor.Pages.Leaderboard
 				{
 					Entry entry = Leaderboard.Entries[0];
 					IsValidTop100Graph = UserId > 0 && entry.ExistsInHistory(_env);
-					IEnumerable<string> aliases = entry.GetAllUsernameAliases(_env).Where(s => s != entry.Username);
+					IEnumerable<string> aliases = entry.GetAllPlayerNameAliases(_env).Where(s => s != entry.Username);
 					UsernameAliases = aliases.Any() ? $" (also known as: {string.Join(", ", aliases)})" : string.Empty;
 				}
 			}

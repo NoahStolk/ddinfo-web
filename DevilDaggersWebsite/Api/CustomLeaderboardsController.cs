@@ -31,7 +31,7 @@ namespace DevilDaggersWebsite.Api
 		private readonly IWebHostEnvironment _env;
 		private readonly ToolHelper _toolHelper;
 
-		private readonly Dictionary<int, string> _usernames;
+		private readonly Dictionary<int, string> _playerNames;
 
 		public CustomLeaderboardsController(ApplicationDbContext dbContext, IWebHostEnvironment env, ToolHelper toolHelper)
 		{
@@ -39,7 +39,7 @@ namespace DevilDaggersWebsite.Api
 			_env = env;
 			_toolHelper = toolHelper;
 
-			_usernames = dbContext.Players.Select(p => new KeyValuePair<int, string>(p.Id, p.PlayerName)).ToDictionary(kvp => kvp.Key, kvp => kvp.Value);
+			_playerNames = dbContext.Players.Select(p => new KeyValuePair<int, string>(p.Id, p.PlayerName)).ToDictionary(kvp => kvp.Key, kvp => kvp.Value);
 		}
 
 		[HttpGet]
@@ -85,7 +85,7 @@ namespace DevilDaggersWebsite.Api
 				ex.Data[nameof(uploadRequest.ClientVersion)] = uploadRequest.ClientVersion;
 				ex.Data[nameof(uploadRequest.OperatingSystem)] = uploadRequest.OperatingSystem;
 				ex.Data[nameof(uploadRequest.BuildMode)] = uploadRequest.BuildMode;
-				await BotLogger.Instance.TryLogException($"Upload failed for user `{uploadRequest.PlayerName}` (`{uploadRequest.PlayerId}`) for `{GetSpawnsetNameOrHash(uploadRequest, null)}`.", ex);
+				await BotLogger.Instance.TryLogException($"Upload failed for player `{uploadRequest.PlayerName}` (`{uploadRequest.PlayerId}`) for `{GetSpawnsetNameOrHash(uploadRequest, null)}`.", ex);
 				throw;
 			}
 
@@ -184,20 +184,20 @@ namespace DevilDaggersWebsite.Api
 
 			// At this point, the submission is accepted.
 
-			// Add the player or update the username.
+			// Add the player or update the player name.
 			Player? player = _dbContext.Players.FirstOrDefault(p => p.Id == uploadRequest.PlayerId);
 			if (player == null)
 			{
 				player = new Player
 				{
 					Id = uploadRequest.PlayerId,
-					PlayerName = await GetUsername(uploadRequest),
+					PlayerName = await GetPlayerName(uploadRequest),
 				};
 				_dbContext.Players.Add(player);
 			}
 			else
 			{
-				player.PlayerName = await GetUsername(uploadRequest);
+				player.PlayerName = await GetPlayerName(uploadRequest);
 			}
 
 			// Update the date this leaderboard was submitted to.
@@ -239,7 +239,7 @@ namespace DevilDaggersWebsite.Api
 					Leaderboard = customLeaderboard.ToDto(),
 					Category = customLeaderboard.Category,
 					Entries = entries
-						.Select(e => e.ToDto(GetUsernameFromCache(e)))
+						.Select(e => e.ToDto(GetPlayerNameFromCache(e)))
 						.ToList(),
 					IsNewPlayerOnThisLeaderboard = true,
 					Rank = rank,
@@ -258,7 +258,7 @@ namespace DevilDaggersWebsite.Api
 				};
 			}
 
-			// User is already on the leaderboard, but did not get a better score.
+			// Player is already on the leaderboard, but did not get a better score.
 			if (customLeaderboard.IsAscending() && customEntry.Time <= uploadRequest.Time || !customLeaderboard.IsAscending() && customEntry.Time >= uploadRequest.Time)
 			{
 				_dbContext.SaveChanges();
@@ -274,13 +274,13 @@ namespace DevilDaggersWebsite.Api
 					Leaderboard = customLeaderboard.ToDto(),
 					Category = customLeaderboard.Category,
 					Entries = entries
-						.Select(e => e.ToDto(GetUsernameFromCache(e)))
+						.Select(e => e.ToDto(GetPlayerNameFromCache(e)))
 						.ToList(),
 					IsNewPlayerOnThisLeaderboard = false,
 				};
 			}
 
-			// User got a better score.
+			// Player got a better score.
 
 			// Calculate the old rank.
 			int oldRank = customLeaderboard.IsAscending() ? entries.Count(e => e.Time < customEntry.Time) + 1 : entries.Count(e => e.Time > customEntry.Time) + 1;
@@ -350,7 +350,7 @@ namespace DevilDaggersWebsite.Api
 				Leaderboard = customLeaderboard.ToDto(),
 				Category = customLeaderboard.Category,
 				Entries = entries
-					.Select(e => e.ToDto(GetUsernameFromCache(e)))
+					.Select(e => e.ToDto(GetPlayerNameFromCache(e)))
 					.ToList(),
 				IsNewPlayerOnThisLeaderboard = false,
 				Rank = rank,
@@ -419,16 +419,16 @@ namespace DevilDaggersWebsite.Api
 		private static string FormatTimeString(int time)
 			=> (time / 10000.0).ToString("0.0000");
 
-		private string GetUsernameFromCache(CustomEntry e)
-			=> _usernames.FirstOrDefault(u => u.Key == e.PlayerId).Value ?? "[Player not found]";
+		private string GetPlayerNameFromCache(CustomEntry e)
+			=> _playerNames.FirstOrDefault(u => u.Key == e.PlayerId).Value ?? "[Player not found]";
 
 		private static string GetSpawnsetNameOrHash(Dto.UploadRequest uploadRequest, string? spawnsetName)
 			=> string.IsNullOrEmpty(spawnsetName) ? BitConverter.ToString(uploadRequest.SurvivalHashMd5).Replace("-", string.Empty) : spawnsetName;
 
-		private static async Task<string> GetUsername(Dto.UploadRequest uploadRequest)
+		private static async Task<string> GetPlayerName(Dto.UploadRequest uploadRequest)
 		{
 			if (uploadRequest.PlayerName.EndsWith("med fragger", StringComparison.InvariantCulture))
-				return (await DdHasmodaiClient.GetUserById(uploadRequest.PlayerId))?.Username ?? uploadRequest.PlayerName;
+				return (await DdHasmodaiClient.GetPlayerById(uploadRequest.PlayerId))?.Username ?? uploadRequest.PlayerName;
 			return uploadRequest.PlayerName;
 		}
 
@@ -455,7 +455,7 @@ namespace DevilDaggersWebsite.Api
 				string ddclInfo = $"(`{uploadRequest.ClientVersion}` | `{uploadRequest.OperatingSystem}` | `{uploadRequest.BuildMode}`)";
 
 				if (!string.IsNullOrEmpty(errorMessage))
-					await BotLogger.Instance.TryLog(Channel.CustomLeaderboardMonitoring, $"Upload failed for user `{uploadRequest.PlayerName}` (`{uploadRequest.PlayerId}`) for `{spawnsetIdentification}`. {ddclInfo}\n{errorMessage}");
+					await BotLogger.Instance.TryLog(Channel.CustomLeaderboardMonitoring, $"Upload failed for player `{uploadRequest.PlayerName}` (`{uploadRequest.PlayerId}`) for `{spawnsetIdentification}`. {ddclInfo}\n{errorMessage}");
 				else
 					await BotLogger.Instance.TryLog(Channel.CustomLeaderboardMonitoring, $"`{uploadRequest.PlayerName}` just submitted a score of `{uploadRequest.Time / 10000f:0.0000}` to `{spawnsetIdentification}`. {ddclInfo}");
 			}
