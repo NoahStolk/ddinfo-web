@@ -30,7 +30,7 @@ namespace DevilDaggersWebsite.Clients
 				HttpResponseMessage resp = await client.PostAsync(_getScoresUrl, content);
 				byte[] data = await resp.Content.ReadAsByteArrayAsync();
 
-				Leaderboard leaderboard = new()
+				Leaderboard leaderboard = new Leaderboard
 				{
 					DeathsGlobal = BitConverter.ToUInt64(data, 11),
 					KillsGlobal = BitConverter.ToUInt64(data, 19),
@@ -48,7 +48,7 @@ namespace DevilDaggersWebsite.Clients
 				{
 					Entry entry = new()
 					{
-						Username = GetPlayerName(data, ref bytePos),
+						Username = GetUsername(data, ref bytePos),
 						Rank = BitConverter.ToInt32(data, bytePos),
 						Id = BitConverter.ToInt32(data, bytePos + 4),
 						Time = BitConverter.ToInt32(data, bytePos + 8),
@@ -80,7 +80,7 @@ namespace DevilDaggersWebsite.Clients
 			}
 		}
 
-		public static async Task<Leaderboard?> GetPlayerSearch(string search)
+		public static async Task<Leaderboard?> GetUserSearch(string search)
 		{
 			try
 			{
@@ -103,7 +103,7 @@ namespace DevilDaggersWebsite.Clients
 				{
 					Entry entry = new()
 					{
-						Username = GetPlayerName(data, ref bytePos),
+						Username = GetUsername(data, ref bytePos),
 						Rank = BitConverter.ToInt32(data, bytePos),
 						Id = BitConverter.ToInt32(data, bytePos + 4),
 						Time = BitConverter.ToInt32(data, bytePos + 12),
@@ -135,13 +135,13 @@ namespace DevilDaggersWebsite.Clients
 			}
 		}
 
-		public static async Task<Entry?> GetPlayerById(int playerId)
+		public static async Task<Entry?> GetUserById(int userId)
 		{
 			try
 			{
 				List<KeyValuePair<string?, string?>> postValues = new()
 				{
-					new("uid", playerId.ToString(CultureInfo.InvariantCulture)),
+					new("uid", userId.ToString(CultureInfo.InvariantCulture)),
 				};
 
 				using FormUrlEncodedContent content = new(postValues);
@@ -153,7 +153,7 @@ namespace DevilDaggersWebsite.Clients
 
 				return new Entry
 				{
-					Username = GetPlayerName(data, ref bytePosition),
+					Username = GetUsername(data, ref bytePosition),
 					Rank = BitConverter.ToInt32(data, bytePosition),
 					Id = BitConverter.ToInt32(data, bytePosition + 4),
 					Time = BitConverter.ToInt32(data, bytePosition + 12),
@@ -176,16 +176,16 @@ namespace DevilDaggersWebsite.Clients
 			}
 		}
 
-		public static string GetPlayerName(byte[] data, ref int bytePos)
+		public static string GetUsername(byte[] data, ref int bytePos)
 		{
-			short playerNameLength = BitConverter.ToInt16(data, bytePos);
+			short usernameLength = BitConverter.ToInt16(data, bytePos);
 			bytePos += 2;
 
-			byte[] playerNameBytes = new byte[playerNameLength];
-			Buffer.BlockCopy(data, bytePos, playerNameBytes, 0, playerNameLength);
+			byte[] usernameBytes = new byte[usernameLength];
+			Buffer.BlockCopy(data, bytePos, usernameBytes, 0, usernameLength);
 
-			bytePos += playerNameLength;
-			return Encoding.UTF8.GetString(playerNameBytes);
+			bytePos += usernameLength;
+			return Encoding.UTF8.GetString(usernameBytes);
 		}
 	}
 }

@@ -22,31 +22,28 @@ namespace DevilDaggersWebsite.Api
 			return await DdHasmodaiClient.GetScores(rankStart);
 		}
 
-		// TODO: Rename to player.
 		[HttpGet("user/by-id")]
 		[ProducesResponseType(StatusCodes.Status200OK)]
 		[ProducesResponseType(StatusCodes.Status400BadRequest)]
-		public async Task<ActionResult<Entry>> GetUserById([Required] int userId) // TODO: Rename to playerId.
+		public async Task<ActionResult<Entry>> GetUserById([Required] int userId)
 		{
-			Entry? entry = await DdHasmodaiClient.GetPlayerById(userId);
+			Entry? entry = await DdHasmodaiClient.GetUserById(userId);
 			return entry == null
 				? new NotFoundObjectResult(new ProblemDetails { Title = $"Entry with {nameof(userId)} '{userId}' was not found." })
 				: (ActionResult<Entry>)entry;
 		}
 
-		// TODO: Rename to player.
 		[HttpGet("user/by-username")]
 		[ProducesResponseType(StatusCodes.Status200OK)]
 		[ProducesResponseType(StatusCodes.Status400BadRequest)]
-		public async Task<ActionResult<List<Entry>>> GetUserByUsername([Required] string username) // TODO: Rename to playerName.
+		public async Task<ActionResult<List<Entry>>> GetUserByUsername([Required] string username)
 		{
 			if (string.IsNullOrEmpty(username) || username.Length < 3)
 				return new BadRequestObjectResult(new ProblemDetails { Title = $"Incorrect parameter {nameof(username)} '{username}' specified. Value should be at least 3 characters in length." });
 
-			return (await DdHasmodaiClient.GetPlayerSearch(username))?.Entries ?? new();
+			return (await DdHasmodaiClient.GetUserSearch(username))?.Entries ?? new();
 		}
 
-		// TODO: Rename to player.
 		[HttpGet("user/by-rank")]
 		[ProducesResponseType(StatusCodes.Status200OK)]
 		[ProducesResponseType(StatusCodes.Status400BadRequest)]

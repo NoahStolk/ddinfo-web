@@ -26,13 +26,12 @@ namespace DevilDaggersWebsite.Api
 			_leaderboardHistoryHelper = leaderboardHistoryHelper;
 		}
 
-		// TODO: Rename to player-progression. (Will break JS.)
 		[HttpGet("user-progression")]
 		[ProducesResponseType(StatusCodes.Status200OK)]
 		[ProducesResponseType(StatusCodes.Status400BadRequest)]
-		public SortedDictionary<DateTime, Entry> GetPlayerProgressionById([Required] int userId)// TODO: Rename to playerId. (Will break JS.)
+		public SortedDictionary<DateTime, Entry> GetUserProgressionById([Required] int userId)
 		{
-			SortedDictionary<DateTime, Entry> data = new();
+			SortedDictionary<DateTime, Entry> data = new SortedDictionary<DateTime, Entry>();
 
 			if (userId != 0)
 			{
@@ -65,7 +64,7 @@ namespace DevilDaggersWebsite.Api
 		[ProducesResponseType(StatusCodes.Status400BadRequest)]
 		public (DateTime From, DateTime To) GetLatestDatePlayed([Required] int userId)
 		{
-			List<(DateTime DateTime, Entry Entry)> entries = new();
+			List<(DateTime DateTime, Entry Entry)> entries = new List<(DateTime, Entry)>();
 			foreach (string leaderboardHistoryPath in Io.Directory.GetFiles(Io.Path.Combine(_env.WebRootPath, "leaderboard-history"), "*.json"))
 			{
 				Leaderboard lb = JsonConvert.DeserializeObject<Leaderboard>(Io.File.ReadAllText(leaderboardHistoryPath, Encoding.UTF8));
@@ -85,13 +84,12 @@ namespace DevilDaggersWebsite.Api
 			return (DateTime.UtcNow, DateTime.UtcNow);
 		}
 
-		// TODO: Rename to player-progression. (Will break JS.)
 		[HttpGet("user-activity")]
 		[ProducesResponseType(StatusCodes.Status200OK)]
 		[ProducesResponseType(StatusCodes.Status400BadRequest)]
-		public Dictionary<DateTime, ulong> GetUserActivity([Required] int userId)// TODO: Rename to playerId. (Will break JS.)
+		public Dictionary<DateTime, ulong> GetUserActivity([Required] int userId)
 		{
-			Dictionary<DateTime, ulong> data = new();
+			Dictionary<DateTime, ulong> data = new Dictionary<DateTime, ulong>();
 			foreach (string leaderboardHistoryPath in Io.Directory.GetFiles(Io.Path.Combine(_env.WebRootPath, "leaderboard-history"), "*.json"))
 			{
 				Leaderboard lb = JsonConvert.DeserializeObject<Leaderboard>(Io.File.ReadAllText(leaderboardHistoryPath, Encoding.UTF8));
