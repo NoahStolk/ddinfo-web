@@ -1,5 +1,5 @@
-﻿using DevilDaggersCore.Leaderboards;
-using DevilDaggersCore.Utils;
+﻿using DevilDaggersCore.Utils;
+using DevilDaggersWebsite.Dto;
 using Newtonsoft.Json;
 using System;
 using System.Collections.Generic;
@@ -59,7 +59,7 @@ namespace LeaderboardJsonIdFixer
 				string jsonString = File.ReadAllText(path, Encoding.UTF8);
 				Leaderboard leaderboard = JsonConvert.DeserializeObject<Leaderboard>(jsonString);
 
-				List<Entry> changes = new List<Entry>();
+				List<Entry> changes = new();
 				foreach (Entry entry in leaderboard.Entries)
 				{
 					if ((entry.Id == 0 || entry.Id == -1) && NameData.NameTable.ContainsKey(entry.Username))
@@ -71,7 +71,7 @@ namespace LeaderboardJsonIdFixer
 
 				if (changes.Count != 0)
 				{
-					Console.WriteLine(HistoryUtils.HistoryJsonFileNameToDateString(Path.GetFileNameWithoutExtension(path)));
+					Console.WriteLine(HistoryUtils.HistoryJsonFileNameToDateTime(Path.GetFileNameWithoutExtension(path)));
 					foreach (Entry entry in changes)
 						Console.WriteLine($"\tSet Id to {entry.Id:D6} for rank {entry.Rank:D3} with name {entry.Username} and score {entry.Time.FormatTimeInteger()}");
 					Console.WriteLine();

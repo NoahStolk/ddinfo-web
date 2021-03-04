@@ -1,6 +1,6 @@
 ﻿using DevilDaggersCore.Game;
-using DevilDaggersCore.Leaderboards;
 using DevilDaggersCore.Utils;
+using DevilDaggersWebsite.Dto;
 using Newtonsoft.Json;
 using System;
 using System.Collections.Generic;
@@ -12,13 +12,13 @@ namespace ToolsShared
 {
 	public static class HighscoreSpreadUtils
 	{
-		private static readonly StringBuilder log = new StringBuilder();
+		private static readonly StringBuilder _log = new();
 
-		public static void SpreadAllHighscoreStats(bool useLogging, bool useConsole)
+		public static void SpreadAllHighscoreStats(bool writeLogToFile, bool useConsole)
 		{
 			Dictionary<string, Leaderboard> leaderboards = GetAllLeaderboards();
 
-			log.Clear();
+			_log.Clear();
 			foreach (KeyValuePair<string, Leaderboard> kvp in leaderboards)
 			{
 				SpreadHighscoreStats(leaderboards.Select(kvp => kvp.Value).ToList(), kvp.Value);
@@ -27,15 +27,15 @@ namespace ToolsShared
 				sw.Write(JsonConvert.SerializeObject(kvp.Value));
 			}
 
-			if (useLogging)
-				File.WriteAllText("Results.log", log.ToString());
+			if (writeLogToFile)
+				File.WriteAllText("Results.log", _log.ToString());
 			if (useConsole)
-				Console.WriteLine(log.ToString());
+				Console.WriteLine(_log.ToString());
 		}
 
 		public static Dictionary<string, Leaderboard> GetAllLeaderboards()
 		{
-			Dictionary<string, Leaderboard> leaderboards = new Dictionary<string, Leaderboard>();
+			Dictionary<string, Leaderboard> leaderboards = new();
 			foreach (string path in Directory.GetFiles(@"C:\Users\NOAH\source\repos\DevilDaggersWebsite\DevilDaggersWebsite\wwwroot\leaderboard-history", "*.json"))
 			{
 				string jsonString = File.ReadAllText(path, Encoding.UTF8);
@@ -47,7 +47,7 @@ namespace ToolsShared
 
 		public static void SpreadHighscoreStats(List<Leaderboard> leaderboards, Leaderboard leaderboard)
 		{
-			List<Entry> changes = new List<Entry>();
+			List<Entry> changes = new();
 			foreach (Entry entry in leaderboard.Entries)
 			{
 				if (entry.Id != 0 && entry.IsEmpty())
@@ -59,25 +59,25 @@ namespace ToolsShared
 					entry.Gems = entryWithStats.Gems;
 					entry.Kills = entryWithStats.Kills;
 					entry.DeathType = entryWithStats.DeathType;
-					entry.ShotsHit = entryWithStats.ShotsHit;
-					entry.ShotsFired = entryWithStats.ShotsFired;
+					entry.DaggersHit = entryWithStats.DaggersHit;
+					entry.DaggersFired = entryWithStats.DaggersFired;
 					changes.Add(entry);
 				}
 			}
 
 			if (changes.Count != 0)
 			{
-				log.AppendLine(leaderboard.DateTime.ToString());
+				_log.AppendLine(leaderboard.DateTime.ToString());
 				foreach (Entry entry in changes)
 				{
-					log.AppendLine($"\tSet missing stats for {entry.Username} {entry.Time.FormatTimeInteger()}");
-					log.AppendLine($"\t\tGems: {entry.Gems}");
-					log.AppendLine($"\t\tKills: {entry.Kills}");
-					log.AppendLine($"\t\tDeathType: {GameInfo.GetDeathByType(entry.DeathType).Name}");
-					log.AppendLine($"\t\tAccuracy: {entry.ShotsHit / (float)entry.ShotsFired:00.00%}");
+					_log.AppendLine($"\tSet missing stats for {entry.Username} {entry.Time.FormatTimeInteger()}");
+					_log.AppendLine($"\t\tGems: {entry.Gems}");
+					_log.AppendLine($"\t\tKills: {entry.Kills}");
+					_log.AppendLine($"\t\tDeathType: {GameInfo.GetDeathByType(GameInfo.GetGameVersionFromDate(leaderboard.DateTime) ?? GameVersion.V1, entry.DeathType).Name}");
+					_log.AppendLine($"\t\tAccuracy: {entry.DaggersHit / (float)entry.DaggersFired:00.00%}");
 				}
 
-				log.AppendLine();
+				_log.AppendLine();
 			}
 		}
 
@@ -93,6 +93,6 @@ namespace ToolsShared
 			return leaderboardWithStats.Entries.FirstOrDefault(e => e.Id == id);
 		}
 
-		private static bool IsEmpty(this Entry entry) => entry.Gems == 0 && entry.Kills == 0 && entry.DeathType == -1 && entry.ShotsHit == 0 && entry.ShotsFired == 0;
+		private static bool IsEmpty(this Entry entry) => entry.Gems == 0 && entry.Kills == 0 && entry.DeathType == -1 && entry.DaggersHit == 0 && entry.DaggersFired == 0;
 	}
 }

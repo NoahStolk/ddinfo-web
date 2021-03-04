@@ -15,7 +15,7 @@ namespace SpawnsetHashes
 
 		private void Open_Click(object sender, RoutedEventArgs e)
 		{
-			OpenFileDialog dialog = new OpenFileDialog
+			OpenFileDialog dialog = new()
 			{
 				InitialDirectory = @"C:\Users\NOAH\source\repos\DevilDaggersWebsite\DevilDaggersWebsite\wwwroot\spawnsets"
 			};
@@ -23,14 +23,10 @@ namespace SpawnsetHashes
 
 			if (result.HasValue && result.Value)
 			{
-				using (MD5 md5 = MD5.Create())
-				{
-					using (FileStream stream = File.OpenRead(dialog.FileName))
-					{
-						byte[] hash = md5.ComputeHash(stream);
-						Hash.Text = BitConverter.ToString(hash).Replace("-", "").ToLowerInvariant();
-					}
-				}
+				using MD5 md5 = MD5.Create();
+				using FileStream stream = File.OpenRead(dialog.FileName);
+				byte[] hash = md5.ComputeHash(stream);
+				Hash.Text = BitConverter.ToString(hash).Replace("-", "").ToLowerInvariant();
 			}
 		}
 	}

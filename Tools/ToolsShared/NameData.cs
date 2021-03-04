@@ -5,7 +5,7 @@ namespace ToolsShared
 	public class NameData
 	{
 		// TODO: Rewrite so key and value are swapped and use string[].
-		public static Dictionary<string, int> NameTable = new Dictionary<string, int>
+		public static Dictionary<string, int> NameTable = new()
 		{
 			{ "bowsr", 1135 },
 			{ "Sojk", 229 },
