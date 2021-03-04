@@ -12,7 +12,7 @@ namespace ToolsShared
 {
 	public static class HighscoreSpreadUtils
 	{
-		private static readonly DateTime _fullHistoryDateStart = new(2018, 9, 1);
+		private static readonly DateTime _fullHistoryDateStart = new(2018, 10, 1);
 
 		private static readonly StringBuilder _log = new();
 
@@ -50,9 +50,9 @@ namespace ToolsShared
 			List<Entry> changes = new();
 			foreach (Entry entry in leaderboard.Entries)
 			{
-				if (entry.Id != 0 && entry.IsEmpty())
+				if (entry.Id != 0 && entry.HasMissingStats())
 				{
-					IEnumerable<Leaderboard> leaderboardsWithStats = leaderboards.Where(l => l.Entries.Any(e => e.Id == entry.Id && e.Time >= entry.Time - 1 && e.Time <= entry.Time + 1 && !e.IsEmpty()));
+					IEnumerable<Leaderboard> leaderboardsWithStats = leaderboards.Where(l => l.Entries.Any(e => e.Id == entry.Id && e.Time >= entry.Time - 1 && e.Time <= entry.Time + 1 && !e.HasMissingStats()));
 					if (!leaderboardsWithStats.Any())
 						continue;
 
@@ -80,8 +80,8 @@ namespace ToolsShared
 			}
 		}
 
-		private static bool IsEmpty(this Entry entry)
-			=> entry.Gems == 0 && entry.Kills == 0 && entry.DeathType == -1 && entry.DaggersHit == 0 && entry.DaggersFired == 0;
+		private static bool HasMissingStats(this Entry entry)
+			=> entry.Gems == 0 || entry.Kills == 0 || entry.DeathType == -1 || entry.DaggersHit == 0 || entry.DaggersFired == 0 || entry.DaggersFired == 10000;
 
 		private static void Combine(Entry original, IEnumerable<Entry> entries)
 		{

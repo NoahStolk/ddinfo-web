@@ -9,7 +9,7 @@ namespace LeaderboardJsonFormatter
 	{
 		public static void Main()
 		{
-			DateTime fullHistoryDateStart = new(2018, 9, 1);
+			DateTime fullHistoryDateStart = new(2018, 10, 1);
 
 			foreach (string path in Directory.GetFiles(@"C:\Users\NOAH\source\repos\DevilDaggersWebsite\DevilDaggersWebsite.Razor\wwwroot\leaderboard-history", "*.json"))
 			{
