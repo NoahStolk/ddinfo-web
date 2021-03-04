@@ -12,6 +12,8 @@ namespace ToolsShared
 {
 	public static class HighscoreSpreadUtils
 	{
+		private static readonly DateTime _fullHistoryDateStart = new(2018, 9, 1);
+
 		private static readonly StringBuilder _log = new();
 
 		public static void SpreadAllHighscoreStats(bool writeLogToFile, bool useConsole)
@@ -22,7 +24,7 @@ namespace ToolsShared
 			foreach (KeyValuePair<string, Leaderboard> kvp in leaderboards)
 			{
 				SpreadHighscoreStats(leaderboards.Select(kvp => kvp.Value).ToList(), kvp.Value);
-				File.WriteAllText(kvp.Key, JsonConvert.SerializeObject(kvp.Value));
+				File.WriteAllText(kvp.Key, JsonConvert.SerializeObject(kvp.Value, kvp.Value.DateTime > _fullHistoryDateStart ? Formatting.None : Formatting.Indented));
 			}
 
 			if (writeLogToFile)
