@@ -1,1 +1,63 @@
-{"DateTime":"2016-07-08T00:00:00","Players":8803,"TimeGlobal":0,"KillsGlobal":0,"GemsGlobal":0,"DeathsGlobal":0,"DaggersHitGlobal":0,"DaggersFiredGlobal":0,"Entries":[{"Rank":1,"Id":229,"Username":"Sojk","Time":6861599,"Kills":1345,"Gems":964,"DeathType":0,"DaggersHit":2749,"DaggersFired":10000,"TimeTotal":0,"KillsTotal":0,"GemsTotal":0,"DeathsTotal":0,"DaggersHitTotal":0,"DaggersFiredTotal":0},{"Rank":2,"Id":362,"Username":"Prophet Skeram","Time":5260822,"Kills":0,"Gems":0,"DeathType":-1,"DaggersHit":0,"DaggersFired":0,"TimeTotal":0,"KillsTotal":0,"GemsTotal":0,"DeathsTotal":0,"DaggersHitTotal":0,"DaggersFiredTotal":0},{"Rank":3,"Id":3294,"Username":"aiunzovovor","Time":4919405,"Kills":0,"Gems":0,"DeathType":-1,"DaggersHit":0,"DaggersFired":0,"TimeTotal":0,"KillsTotal":0,"GemsTotal":0,"DeathsTotal":0,"DaggersHitTotal":0,"DaggersFiredTotal":0}]}
+{
+  "DateTime": "2016-07-08T00:00:00",
+  "Players": 8803,
+  "TimeGlobal": 0,
+  "KillsGlobal": 0,
+  "GemsGlobal": 0,
+  "DeathsGlobal": 0,
+  "DaggersHitGlobal": 0,
+  "DaggersFiredGlobal": 0,
+  "Entries": [
+    {
+      "Rank": 1,
+      "Id": 229,
+      "Username": "Sojk",
+      "Time": 6861599,
+      "Kills": 1345,
+      "Gems": 964,
+      "DeathType": 0,
+      "DaggersHit": 2749,
+      "DaggersFired": 10000,
+      "TimeTotal": 0,
+      "KillsTotal": 0,
+      "GemsTotal": 0,
+      "DeathsTotal": 0,
+      "DaggersHitTotal": 0,
+      "DaggersFiredTotal": 0
+    },
+    {
+      "Rank": 2,
+      "Id": 362,
+      "Username": "Prophet Skeram",
+      "Time": 5260822,
+      "Kills": 0,
+      "Gems": 0,
+      "DeathType": -1,
+      "DaggersHit": 0,
+      "DaggersFired": 0,
+      "TimeTotal": 0,
+      "KillsTotal": 0,
+      "GemsTotal": 0,
+      "DeathsTotal": 0,
+      "DaggersHitTotal": 0,
+      "DaggersFiredTotal": 0
+    },
+    {
+      "Rank": 3,
+      "Id": 3294,
+      "Username": "aiunzovovor",
+      "Time": 4919405,
+      "Kills": 0,
+      "Gems": 0,
+      "DeathType": -1,
+      "DaggersHit": 0,
+      "DaggersFired": 0,
+      "TimeTotal": 0,
+      "KillsTotal": 0,
+      "GemsTotal": 0,
+      "DeathsTotal": 0,
+      "DaggersHitTotal": 0,
+      "DaggersFiredTotal": 0
+    }
+  ]
+}
