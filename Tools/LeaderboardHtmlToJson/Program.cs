@@ -1,6 +1,6 @@
 ﻿using DevilDaggersCore.Game;
-using DevilDaggersCore.Leaderboards;
 using DevilDaggersCore.Utils;
+using DevilDaggersWebsite.Dto;
 using Newtonsoft.Json;
 using System.IO;
 using System.Text;
@@ -12,12 +12,12 @@ namespace LeaderboardHtmlToJson
 		public static void Main()
 		{
 			string dateString = "20180902073511";
-			File.WriteAllText($"{dateString.Substring(0, 12)}.json", JsonConvert.SerializeObject(GetLeaderboardFromHTML(dateString)), Encoding.UTF8);
+			File.WriteAllText($"{dateString.Substring(0, 12)}.json", JsonConvert.SerializeObject(GetLeaderboardFromHtml(dateString)), Encoding.UTF8);
 		}
 
-		public static Leaderboard GetLeaderboardFromHTML(string dateString)
+		public static Leaderboard GetLeaderboardFromHtml(string dateString)
 		{
-			Leaderboard lb = new Leaderboard
+			Leaderboard lb = new()
 			{
 				DateTime = HistoryUtils.HistoryJsonFileNameToDateTime(dateString),
 				// TODO
@@ -26,8 +26,8 @@ namespace LeaderboardHtmlToJson
 				KillsGlobal = 2599153686,
 				GemsGlobal = 293243405,
 				DeathsGlobal = 14380029,
-				ShotsHitGlobal = 2178,
-				ShotsFiredGlobal = 10000
+				DaggersHitGlobal = 2178,
+				DaggersFiredGlobal = 10000
 			};
 
 			string[] lines = File.ReadAllLines(Path.Combine("Content", $"{dateString}.html"), Encoding.UTF8);
@@ -44,14 +44,14 @@ namespace LeaderboardHtmlToJson
 						Time = int.Parse(GetValue(lines[i], "time")),
 						Kills = int.Parse(GetValue(lines[i], "kills")),
 						Gems = int.Parse(GetValue(lines[i], "gems")),
-						ShotsFired = 10000,
-						ShotsHit = int.Parse(GetValue(lines[i], "accuracy")),
-						DeathType = GameInfo.GetDeathByName(GetValue(lines[i], "death-type")).DeathType,
+						DaggersFired = 10000,
+						DaggersHit = int.Parse(GetValue(lines[i], "accuracy")),
+						DeathType = (short)GameInfo.GetDeathByName(GameInfo.GetGameVersionFromDate(lb.DateTime) ?? GameVersion.V1, GetValue(lines[i], "death-type")).DeathType,
 						TimeTotal = ulong.Parse(GetValue(lines[i], "total-time")),
 						KillsTotal = ulong.Parse(GetValue(lines[i], "total-kills")),
 						GemsTotal = ulong.Parse(GetValue(lines[i], "total-gems")),
-						ShotsFiredTotal = 10000,
-						ShotsHitTotal = ulong.Parse(GetValue(lines[i], "total-accuracy")),
+						DaggersFiredTotal = 10000,
+						DaggersHitTotal = ulong.Parse(GetValue(lines[i], "total-accuracy")),
 						DeathsTotal = ulong.Parse(GetValue(lines[i], "total-deaths"))
 					});
 				}
@@ -66,7 +66,7 @@ namespace LeaderboardHtmlToJson
 				return null;
 
 			int pos = line.IndexOf(name) + name.Length + 2;
-			string sub = line.Substring(pos);
+			string sub = line[pos..];
 			return sub.Substring(0, sub.IndexOf('"'));
 		}
 	}
