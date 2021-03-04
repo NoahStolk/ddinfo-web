@@ -7,7 +7,6 @@
     <PackageReference Include="Newtonsoft.Json" Version="12.0.3" />
   </ItemGroup>
   <ItemGroup>
-    <ProjectReference Include="..\..\..\DevilDaggersCore\DevilDaggersCore\DevilDaggersCore.csproj" />
     <ProjectReference Include="..\ToolsShared\ToolsShared.csproj" />
   </ItemGroup>
 </Project>

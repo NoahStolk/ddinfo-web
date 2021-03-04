@@ -32,7 +32,7 @@ namespace LeaderboardJsonIdFixer
 		/// <param name="id2">The second Id to swap.</param>
 		public static void SwapIds(DateTime dateStart, DateTime dateEnd, int id1, int id2)
 		{
-			foreach (string leaderboardHistoryPath in Directory.GetFiles(@"C:\Users\NOAH\source\repos\DevilDaggersWebsite\DevilDaggersWebsite\wwwroot\leaderboard-history", "*.json"))
+			foreach (string leaderboardHistoryPath in Directory.GetFiles(@"C:\Users\NOAH\source\repos\DevilDaggersWebsite\DevilDaggersWebsite.Razor\wwwroot\leaderboard-history", "*.json"))
 			{
 				string fileName = Path.GetFileNameWithoutExtension(leaderboardHistoryPath);
 				Leaderboard leaderboard = JsonConvert.DeserializeObject<Leaderboard>(File.ReadAllText(leaderboardHistoryPath, Encoding.UTF8));
@@ -54,7 +54,7 @@ namespace LeaderboardJsonIdFixer
 
 		private static void ApplyNameTable()
 		{
-			foreach (string path in Directory.GetFiles(@"C:\Users\NOAH\source\repos\DevilDaggersWebsite\DevilDaggersWebsite\wwwroot\leaderboard-history", "*.json"))
+			foreach (string path in Directory.GetFiles(@"C:\Users\NOAH\source\repos\DevilDaggersWebsite\DevilDaggersWebsite.Razor\wwwroot\leaderboard-history", "*.json"))
 			{
 				string jsonString = File.ReadAllText(path, Encoding.UTF8);
 				Leaderboard leaderboard = JsonConvert.DeserializeObject<Leaderboard>(jsonString);

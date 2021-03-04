@@ -17,7 +17,7 @@ namespace SpawnsetHashes
 		{
 			OpenFileDialog dialog = new()
 			{
-				InitialDirectory = @"C:\Users\NOAH\source\repos\DevilDaggersWebsite\DevilDaggersWebsite\wwwroot\spawnsets"
+				InitialDirectory = @"C:\Users\NOAH\source\repos\DevilDaggersWebsite\DevilDaggersWebsite.Razor\wwwroot\spawnsets"
 			};
 			bool? result = dialog.ShowDialog();
 

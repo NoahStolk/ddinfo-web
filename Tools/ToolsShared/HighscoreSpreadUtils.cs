@@ -22,9 +22,7 @@ namespace ToolsShared
 			foreach (KeyValuePair<string, Leaderboard> kvp in leaderboards)
 			{
 				SpreadHighscoreStats(leaderboards.Select(kvp => kvp.Value).ToList(), kvp.Value);
-
-				using StreamWriter sw = File.CreateText(kvp.Key);
-				sw.Write(JsonConvert.SerializeObject(kvp.Value));
+				File.WriteAllText(kvp.Key, JsonConvert.SerializeObject(kvp.Value));
 			}
 
 			if (writeLogToFile)
@@ -36,7 +34,7 @@ namespace ToolsShared
 		public static Dictionary<string, Leaderboard> GetAllLeaderboards()
 		{
 			Dictionary<string, Leaderboard> leaderboards = new();
-			foreach (string path in Directory.GetFiles(@"C:\Users\NOAH\source\repos\DevilDaggersWebsite\DevilDaggersWebsite\wwwroot\leaderboard-history", "*.json"))
+			foreach (string path in Directory.GetFiles(@"C:\Users\NOAH\source\repos\DevilDaggersWebsite\DevilDaggersWebsite.Razor\wwwroot\leaderboard-history", "*.json"))
 			{
 				string jsonString = File.ReadAllText(path, Encoding.UTF8);
 				leaderboards.Add(path, JsonConvert.DeserializeObject<Leaderboard>(jsonString));
@@ -93,6 +91,7 @@ namespace ToolsShared
 			return leaderboardWithStats.Entries.FirstOrDefault(e => e.Id == id);
 		}
 
-		private static bool IsEmpty(this Entry entry) => entry.Gems == 0 && entry.Kills == 0 && entry.DeathType == -1 && entry.DaggersHit == 0 && entry.DaggersFired == 0;
+		private static bool IsEmpty(this Entry entry)
+			=> entry.Gems == 0 && entry.Kills == 0 && entry.DeathType == -1 && entry.DaggersHit == 0 && entry.DaggersFired == 0;
 	}
 }
