@@ -13,6 +13,10 @@ Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "Tests", "Tests", "{F7BF9B31
 EndProject
 Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "DevilDaggersDiscordBot", "DevilDaggersDiscordBot\DevilDaggersDiscordBot.csproj", "{47AD823A-94AE-4842-B8CA-E44D6EBEC69C}"
 EndProject
+Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "Tools", "Tools", "{A682E0EF-9B0E-4113-8BED-4534C64A9BDE}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "LeaderboardCsvToJson", "Tools\LeaderboardCsvToJson\LeaderboardCsvToJson.csproj", "{70088682-9AB0-4040-8E20-5F8A38DD7799}"
+EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
 		Debug|Any CPU = Debug|Any CPU
@@ -35,12 +39,17 @@ Global
 		{47AD823A-94AE-4842-B8CA-E44D6EBEC69C}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{47AD823A-94AE-4842-B8CA-E44D6EBEC69C}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{47AD823A-94AE-4842-B8CA-E44D6EBEC69C}.Release|Any CPU.Build.0 = Release|Any CPU
+		{70088682-9AB0-4040-8E20-5F8A38DD7799}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{70088682-9AB0-4040-8E20-5F8A38DD7799}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{70088682-9AB0-4040-8E20-5F8A38DD7799}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{70088682-9AB0-4040-8E20-5F8A38DD7799}.Release|Any CPU.Build.0 = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE
 	EndGlobalSection
 	GlobalSection(NestedProjects) = preSolution
 		{EF02C310-86AD-4F70-8D30-D73FAD185F23} = {F7BF9B31-DDAD-4562-93A8-677E71FA8774}
+		{70088682-9AB0-4040-8E20-5F8A38DD7799} = {A682E0EF-9B0E-4113-8BED-4534C64A9BDE}
 	EndGlobalSection
 	GlobalSection(ExtensibilityGlobals) = postSolution
 		SolutionGuid = {E27EC676-81BF-4099-BFC9-20E860CE83A5}

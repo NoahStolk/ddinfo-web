@@ -1,8 +1,12 @@
-﻿using DevilDaggersCore.Game;
-using DevilDaggersCore.Leaderboards;
+﻿#define COOKLE
+#if !COOKLE
+using DevilDaggersCore.Game;
+#endif
 using DevilDaggersCore.Utils;
+using DevilDaggersWebsite.Dto;
 using Microsoft.Win32;
 using Newtonsoft.Json;
+using System;
 using System.IO;
 using System.Text;
 using System.Windows;
@@ -18,7 +22,7 @@ namespace LeaderboardCsvToJson
 
 		private void Button_Click(object sender, RoutedEventArgs e)
 		{
-			OpenFileDialog dlg = new OpenFileDialog
+			OpenFileDialog dlg = new()
 			{
 				DefaultExt = ".csv",
 				InitialDirectory = @"C:\Users\NOAH\source\repos\DevilDaggersWebsite\LeaderboardCsvToJson\Content"
@@ -27,20 +31,20 @@ namespace LeaderboardCsvToJson
 			bool? result = dlg.ShowDialog();
 			if (result.HasValue && result.Value)
 			{
-				Leaderboard leaderboard = new Leaderboard
+				Leaderboard leaderboard = new()
 				{
 					DateTime = HistoryUtils.HistoryJsonFileNameToDateTime(Path.GetFileNameWithoutExtension(dlg.FileName))
 				};
 
-				using (StreamReader reader = new StreamReader(dlg.FileName))
+				using (StreamReader reader = new(dlg.FileName))
 				{
 					int i = 0;
 					while (!reader.EndOfStream)
 					{
 						i++;
 
-						string line = reader.ReadLine();
-						string[] values = line.Split(',');
+						string? line = reader.ReadLine();
+						string[] values = line?.Split(',') ?? Array.Empty<string>();
 
 						switch (i)
 						{
@@ -65,36 +69,44 @@ namespace LeaderboardCsvToJson
 									leaderboard.DeathsGlobal = deathsGlobal;
 								break;
 							case 6:
-								leaderboard.ShotsHitGlobal = (ulong)GetAccuracyFromPercentageString(values[1]);
-								if (leaderboard.ShotsHitGlobal != 0)
-									leaderboard.ShotsFiredGlobal = 10000;
+								leaderboard.DaggersHitGlobal = (ulong)GetAccuracyFromPercentageString(values[1]);
+								if (leaderboard.DaggersHitGlobal != 0)
+									leaderboard.DaggersFiredGlobal = 10000;
 								break;
 						}
 
 						if (i >= 9 && i < 109)
 						{
-							Entry entry = new Entry
+							Entry entry = new()
 							{
-								DeathType = -1
+								DeathType = -1,
 							};
+
+							if (values.Length == 0)
+								break;
 
 							if (int.TryParse(values[0], out int rank))
 								entry.Rank = rank;
 
 							entry.Username = values[1];
 
-							if (int.TryParse(values[2].Replace(".", ""), out int time))
-								entry.Time = time;
+							if (float.TryParse(values[2], out float f))
+								entry.Time = (int)(f * 10000);
+
+#if COOKLE
+							if (int.TryParse(values[3], out int id))
+								entry.Id = id;
+#else
 							if (int.TryParse(values[3], out int kills))
 								entry.Kills = kills;
 							if (int.TryParse(values[4], out int gems))
 								entry.Gems = gems;
 
-							entry.ShotsHit = (int)GetAccuracyFromPercentageString(values[5]);
-							if (entry.ShotsHit != 0)
-								entry.ShotsFired = 10000;
+							entry.DaggersHit = (int)GetAccuracyFromPercentageString(values[5]);
+							if (entry.DaggersHit != 0)
+								entry.DaggersFired = 10000;
 
-							entry.DeathType = GameInfo.GetDeathByName(values[6]).DeathType;
+							entry.DeathType = (short)(GameInfo.GetDeathByName(GameInfo.GetGameVersionFromDate(leaderboard.DateTime) ?? GameVersion.V1, values[6])?.DeathType ?? -1);
 
 							if (ulong.TryParse(values[7].Replace(".", ""), out ulong timeTotal))
 								entry.TimeTotal = timeTotal;
@@ -103,13 +115,13 @@ namespace LeaderboardCsvToJson
 							if (ulong.TryParse(values[9], out ulong gemsTotal))
 								entry.GemsTotal = gemsTotal;
 
-							entry.ShotsHitTotal = (ulong)GetAccuracyFromPercentageString(values[10]);
-							if (entry.ShotsHitTotal != 0)
-								entry.ShotsFiredTotal = 10000;
+							entry.DaggersHitTotal = (ulong)GetAccuracyFromPercentageString(values[10]);
+							if (entry.DaggersHitTotal != 0)
+								entry.DaggersFiredTotal = 10000;
 
 							if (ulong.TryParse(values[11], out ulong deathsTotal))
 								entry.DeathsTotal = deathsTotal;
-
+#endif
 							leaderboard.Entries.Add(entry);
 						}
 					}
@@ -117,7 +129,7 @@ namespace LeaderboardCsvToJson
 
 				string json = JsonConvert.SerializeObject(leaderboard);
 
-				File.WriteAllText($@"C:\Users\NOAH\source\repos\DevilDaggersWebsite\DevilDaggersWebsite\wwwroot\leaderboard-history\{Path.GetFileNameWithoutExtension(dlg.FileName)}.json", json, Encoding.UTF8);
+				File.WriteAllText($@"C:\Users\NOAH\source\repos\DevilDaggersWebsite\DevilDaggersWebsite.Razor\wwwroot\leaderboard-history\{Path.GetFileNameWithoutExtension(dlg.FileName)}.json", json, Encoding.UTF8);
 			}
 		}
 
