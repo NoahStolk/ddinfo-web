@@ -80,7 +80,7 @@ namespace ToolsShared
 			}
 		}
 
-		private static bool HasMissingStats(this Entry entry)
+		public static bool HasMissingStats(this Entry entry)
 			=> entry.Gems == 0 || entry.Kills == 0 || entry.DeathType == -1 || entry.DaggersHit == 0 || entry.DaggersFired == 0 || entry.DaggersFired == 10000;
 
 		private static void Combine(Entry original, IEnumerable<Entry> entries)

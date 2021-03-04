@@ -9,5 +9,6 @@
   </PropertyGroup>
   <ItemGroup>
     <ProjectReference Include="..\..\DevilDaggersWebsite\DevilDaggersWebsite.csproj" />
+    <ProjectReference Include="..\ToolsShared\ToolsShared.csproj" />
   </ItemGroup>
 </Project>

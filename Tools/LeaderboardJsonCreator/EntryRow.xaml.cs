@@ -1,5 +1,5 @@
 ﻿using DevilDaggersCore.Game;
-using DevilDaggersCore.Leaderboards;
+using DevilDaggersWebsite.Dto;
 using System.Windows;
 using System.Windows.Controls;
 
@@ -7,11 +7,11 @@ namespace LeaderboardJsonCreator
 {
 	public partial class EntryRow : UserControl
 	{
-		private readonly Entry entry;
+		private readonly Entry _entry;
 
 		public EntryRow(Entry entry)
 		{
-			this.entry = entry;
+			_entry = entry;
 
 			InitializeComponent();
 
@@ -21,18 +21,18 @@ namespace LeaderboardJsonCreator
 			Time.Text = entry.Time.ToString();
 			Kills.Text = entry.Kills.ToString();
 			Gems.Text = entry.Gems.ToString();
-			DeathType.Text = $"{entry.DeathType} ({GameInfo.GetDeathByType(entry.DeathType).Name})";
-			Accuracy.Text = entry.ShotsFired == 0 ? "" : $"{entry.ShotsHit / (float)entry.ShotsFired:0.00%} ({entry.ShotsHit}/{entry.ShotsFired})";
+			DeathType.Text = $"{entry.DeathType} ({GameInfo.GetDeathByType(GameVersion.V3, entry.DeathType)?.Name ?? "Unknown"})";
+			Accuracy.Text = entry.DaggersFired == 0 ? "" : $"{entry.DaggersHit / (float)entry.DaggersFired:0.00%} ({entry.DaggersHit}/{entry.DaggersFired})";
 			TimeTotal.Text = entry.TimeTotal.ToString();
 			KillsTotal.Text = entry.KillsTotal.ToString();
 			GemsTotal.Text = entry.GemsTotal.ToString();
 			DeathsTotal.Text = entry.DeathsTotal.ToString();
-			AccuracyTotal.Text = entry.ShotsFiredTotal == 0 ? "" : $"{entry.ShotsHitTotal / (float)entry.ShotsFiredTotal:0.00%} ({entry.ShotsHitTotal}/{entry.ShotsFiredTotal})";
+			AccuracyTotal.Text = entry.DaggersFiredTotal == 0 ? "" : $"{entry.DaggersHitTotal / (float)entry.DaggersFiredTotal:0.00%} ({entry.DaggersHitTotal}/{entry.DaggersFiredTotal})";
 		}
 
 		private void EditButton_Click(object sender, RoutedEventArgs e)
 		{
-			AddNewEntry.This.SetEntry(entry);
+			AddNewEntry.This.SetEntry(_entry);
 		}
 	}
 }

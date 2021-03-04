@@ -1,4 +1,5 @@
 ﻿using DevilDaggersCore.Utils;
+using DevilDaggersWebsite.Dto;
 using Microsoft.Win32;
 using Newtonsoft.Json;
 using System;
@@ -13,7 +14,7 @@ namespace LeaderboardJsonCreator
 	{
 		public static MainWindow This;
 
-		public Leaderboard leaderboard = new Leaderboard();
+		public Leaderboard _leaderboard = new();
 
 		public MainWindow()
 		{
@@ -24,39 +25,39 @@ namespace LeaderboardJsonCreator
 
 		public void RefreshLeaderboard()
 		{
-			LeaderboardDateTime.Text = HistoryUtils.DateTimeToHistoryJsonFileName(leaderboard.DateTime);
-			Players.Text = leaderboard.Players.ToString();
-			TimeGlobal.Text = leaderboard.TimeGlobal.ToString();
-			KillsGlobal.Text = leaderboard.KillsGlobal.ToString();
-			GemsGlobal.Text = leaderboard.GemsGlobal.ToString();
-			ShotsHitGlobal.Text = leaderboard.ShotsHitGlobal.ToString();
-			ShotsFiredGlobal.Text = leaderboard.ShotsFiredGlobal.ToString();
-			DeathsGlobal.Text = leaderboard.DeathsGlobal.ToString();
+			LeaderboardDateTime.Text = HistoryUtils.DateTimeToHistoryJsonFileName(_leaderboard.DateTime);
+			Players.Text = _leaderboard.Players.ToString();
+			TimeGlobal.Text = _leaderboard.TimeGlobal.ToString();
+			KillsGlobal.Text = _leaderboard.KillsGlobal.ToString();
+			GemsGlobal.Text = _leaderboard.GemsGlobal.ToString();
+			ShotsHitGlobal.Text = _leaderboard.DaggersHitGlobal.ToString();
+			ShotsFiredGlobal.Text = _leaderboard.DaggersFiredGlobal.ToString();
+			DeathsGlobal.Text = _leaderboard.DeathsGlobal.ToString();
 		}
 
 		public void RefreshEntryList()
 		{
 			EntryList.Children.Clear();
-			foreach (Entry entry in leaderboard.Entries)
+			foreach (Entry entry in _leaderboard.Entries)
 				EntryList.Children.Add(new EntryRow(entry));
 		}
 
 		private void FileNew_Click(object sender, RoutedEventArgs e)
 		{
-			leaderboard = new Leaderboard();
+			_leaderboard = new Leaderboard();
 			RefreshLeaderboard();
 			RefreshEntryList();
 		}
 
 		private void FileOpen_Click(object sender, RoutedEventArgs e)
 		{
-			OpenFileDialog dialog = new OpenFileDialog();
+			OpenFileDialog dialog = new();
 			bool? result = dialog.ShowDialog();
 
 			if (result.HasValue && result.Value)
 			{
-				leaderboard = JsonConvert.DeserializeObject<Leaderboard>(File.ReadAllText(dialog.FileName));
-				leaderboard.Entries = leaderboard.Entries.OrderBy(en => en.Rank).ToList();
+				_leaderboard = JsonConvert.DeserializeObject<Leaderboard>(File.ReadAllText(dialog.FileName));
+				_leaderboard.Entries = _leaderboard.Entries.OrderBy(en => en.Rank).ToList();
 				RefreshLeaderboard();
 				RefreshEntryList();
 			}
@@ -66,24 +67,24 @@ namespace LeaderboardJsonCreator
 		{
 			try
 			{
-				leaderboard.DateTime = HistoryUtils.HistoryJsonFileNameToDateTime(LeaderboardDateTime.Text);
+				_leaderboard.DateTime = HistoryUtils.HistoryJsonFileNameToDateTime(LeaderboardDateTime.Text);
 
 				if (int.TryParse(Players.Text, out int players))
-					leaderboard.Players = players;
+					_leaderboard.Players = players;
 				if (ulong.TryParse(TimeGlobal.Text, out ulong timeGlobal))
-					leaderboard.TimeGlobal = timeGlobal;
+					_leaderboard.TimeGlobal = timeGlobal;
 				if (ulong.TryParse(KillsGlobal.Text, out ulong killsGlobal))
-					leaderboard.KillsGlobal = killsGlobal;
+					_leaderboard.KillsGlobal = killsGlobal;
 				if (ulong.TryParse(GemsGlobal.Text, out ulong gemsGlobal))
-					leaderboard.GemsGlobal = gemsGlobal;
+					_leaderboard.GemsGlobal = gemsGlobal;
 				if (ulong.TryParse(DeathsGlobal.Text, out ulong deathsGlobal))
-					leaderboard.DeathsGlobal = deathsGlobal;
+					_leaderboard.DeathsGlobal = deathsGlobal;
 				if (ulong.TryParse(ShotsHitGlobal.Text, out ulong shotsHitGlobal))
-					leaderboard.ShotsHitGlobal = shotsHitGlobal;
+					_leaderboard.DaggersHitGlobal = shotsHitGlobal;
 				if (ulong.TryParse(ShotsFiredGlobal.Text, out ulong shotsFiredGlobal))
-					leaderboard.ShotsFiredGlobal = shotsFiredGlobal;
+					_leaderboard.DaggersFiredGlobal = shotsFiredGlobal;
 
-				File.WriteAllText($@"C:\Users\NOAH\source\repos\DevilDaggersWebsite\DevilDaggersWebsite.Razor\wwwroot\leaderboard-history\{LeaderboardDateTime.Text}.json", JsonConvert.SerializeObject(leaderboard), Encoding.UTF8);
+				File.WriteAllText($@"C:\Users\NOAH\source\repos\DevilDaggersWebsite\DevilDaggersWebsite.Razor\wwwroot\leaderboard-history\{LeaderboardDateTime.Text}.json", JsonConvert.SerializeObject(_leaderboard), Encoding.UTF8);
 				MessageBox.Show("Save successful");
 			}
 			catch (Exception ex)

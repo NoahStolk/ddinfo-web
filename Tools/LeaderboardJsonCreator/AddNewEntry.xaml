@@ -37,14 +37,14 @@
 				<TextBox Name="Kills" />
 				<TextBox Name="Gems" />
 				<TextBox Name="DeathType" />
-				<TextBox Name="ShotsHit" />
-				<TextBox Name="ShotsFired" />
+				<TextBox Name="DaggersHit" />
+				<TextBox Name="DaggersFired" />
 				<TextBox Name="TimeTotal" />
 				<TextBox Name="KillsTotal" />
 				<TextBox Name="GemsTotal" />
 				<TextBox Name="DeathsTotal" />
-				<TextBox Name="ShotsHitTotal" />
-				<TextBox Name="ShotsFiredTotal" />
+				<TextBox Name="DaggersHitTotal" />
+				<TextBox Name="DaggersFiredTotal" />
 				<Button Click="AddEntry_Click" IsDefault="True">Add entry</Button>
 			</StackPanel>
 		</Grid>

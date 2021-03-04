@@ -1,4 +1,4 @@
-﻿using DevilDaggersCore.Leaderboards;
+﻿using DevilDaggersWebsite.Dto;
 using System.Collections.Generic;
 using System.Linq;
 using System.Windows;
@@ -11,7 +11,7 @@ namespace LeaderboardJsonCreator
 	{
 		public static AddNewEntry This;
 
-		public Entry entry = new Entry { DeathType = -1 };
+		public Entry _entry = new() { DeathType = -1 };
 
 		public AddNewEntry()
 		{
@@ -22,7 +22,7 @@ namespace LeaderboardJsonCreator
 
 		public void SetEntry(Entry entry)
 		{
-			this.entry = entry;
+			_entry = entry;
 
 			Id.Text = entry.Id.ToString();
 			Rank.Text = entry.Rank.ToString();
@@ -30,14 +30,14 @@ namespace LeaderboardJsonCreator
 			Time.Text = entry.Time.ToString();
 			Kills.Text = entry.Kills.ToString();
 			Gems.Text = entry.Gems.ToString();
-			ShotsHit.Text = entry.ShotsHit.ToString();
-			ShotsFired.Text = entry.ShotsFired.ToString();
+			DaggersHit.Text = entry.DaggersHit.ToString();
+			DaggersFired.Text = entry.DaggersFired.ToString();
 			DeathType.Text = entry.DeathType.ToString();
 			TimeTotal.Text = entry.TimeTotal.ToString();
 			KillsTotal.Text = entry.KillsTotal.ToString();
 			GemsTotal.Text = entry.GemsTotal.ToString();
-			ShotsHitTotal.Text = entry.ShotsHitTotal.ToString();
-			ShotsFiredTotal.Text = entry.ShotsFiredTotal.ToString();
+			DaggersHitTotal.Text = entry.DaggersHitTotal.ToString();
+			DaggersFiredTotal.Text = entry.DaggersFiredTotal.ToString();
 			DeathsTotal.Text = entry.DeathsTotal.ToString();
 		}
 
@@ -45,46 +45,46 @@ namespace LeaderboardJsonCreator
 		{
 			// TODO: Check if rank/ID already exists.
 			if (int.TryParse(Rank.Text, out int rank))
-				entry.Rank = rank;
+				_entry.Rank = rank;
 			if (int.TryParse(Id.Text, out int id))
-				entry.Id = id;
+				_entry.Id = id;
 
-			entry.Username = Username.Text;
+			_entry.Username = Username.Text;
 
 			if (int.TryParse(Time.Text, out int time))
-				entry.Time = time;
+				_entry.Time = time;
 			if (int.TryParse(Kills.Text, out int kills))
-				entry.Kills = kills;
+				_entry.Kills = kills;
 			if (int.TryParse(Gems.Text, out int gems))
-				entry.Gems = gems;
-			if (int.TryParse(DeathType.Text, out int deathType))
-				entry.DeathType = deathType;
-			if (int.TryParse(ShotsHit.Text, out int shotsHit))
-				entry.ShotsHit = shotsHit;
-			if (int.TryParse(ShotsFired.Text, out int shotsFired))
-				entry.ShotsFired = shotsFired;
+				_entry.Gems = gems;
+			if (short.TryParse(DeathType.Text, out short deathType))
+				_entry.DeathType = deathType;
+			if (int.TryParse(DaggersHit.Text, out int daggersHit))
+				_entry.DaggersHit = daggersHit;
+			if (int.TryParse(DaggersFired.Text, out int daggersFired))
+				_entry.DaggersFired = daggersFired;
 			if (ulong.TryParse(TimeTotal.Text, out ulong timeTotal))
-				entry.TimeTotal = timeTotal;
+				_entry.TimeTotal = timeTotal;
 			if (ulong.TryParse(KillsTotal.Text, out ulong killsTotal))
-				entry.KillsTotal = killsTotal;
+				_entry.KillsTotal = killsTotal;
 			if (ulong.TryParse(GemsTotal.Text, out ulong gemsTotal))
-				entry.GemsTotal = gemsTotal;
+				_entry.GemsTotal = gemsTotal;
 			if (ulong.TryParse(DeathsTotal.Text, out ulong deathsTotal))
-				entry.DeathsTotal = deathsTotal;
-			if (ulong.TryParse(ShotsHitTotal.Text, out ulong shotsHitTotal))
-				entry.ShotsHitTotal = shotsHitTotal;
-			if (ulong.TryParse(ShotsFiredTotal.Text, out ulong shotsFiredTotal))
-				entry.ShotsFiredTotal = shotsFiredTotal;
+				_entry.DeathsTotal = deathsTotal;
+			if (ulong.TryParse(DaggersHitTotal.Text, out ulong shotsHitTotal))
+				_entry.DaggersHitTotal = shotsHitTotal;
+			if (ulong.TryParse(DaggersFiredTotal.Text, out ulong shotsFiredTotal))
+				_entry.DaggersFiredTotal = shotsFiredTotal;
 
-			Entry existingEntry = MainWindow.This.leaderboard.Entries.FirstOrDefault(en => en.Id == entry.Id);
+			Entry? existingEntry = MainWindow.This._leaderboard.Entries.FirstOrDefault(en => en.Id == _entry.Id);
 			if (existingEntry != null)
-				existingEntry = entry;
+				existingEntry = _entry;
 			else
-				MainWindow.This.leaderboard.Entries.Add(entry);
+				MainWindow.This._leaderboard.Entries.Add(_entry);
 			MainWindow.This.RefreshEntryList();
 
 			Rank.Text = (++rank).ToString();
-			entry = new Entry { DeathType = -1 };
+			_entry = new Entry { DeathType = -1 };
 		}
 
 		private void Username_TextChanged(object sender, TextChangedEventArgs e)
@@ -103,23 +103,35 @@ namespace LeaderboardJsonCreator
 				return;
 
 			Dictionary<string, Leaderboard> leaderboards = HighscoreSpreadUtils.GetAllLeaderboards();
-			Entry entryWithData = HighscoreSpreadUtils.GetEntryWithData(leaderboards.Select(kvp => kvp.Value).ToList(), entry, id, time);
+			Entry? entryWithData = GetEntryWithData(leaderboards.Select(kvp => kvp.Value).ToList(), _entry, id, time);
 			if (entryWithData == null)
 			{
 				Gems.Text = string.Empty;
 				Kills.Text = string.Empty;
 				DeathType.Text = string.Empty;
-				ShotsHit.Text = string.Empty;
-				ShotsFired.Text = string.Empty;
+				DaggersHit.Text = string.Empty;
+				DaggersFired.Text = string.Empty;
 			}
 			else
 			{
 				Gems.Text = entryWithData.Gems.ToString();
 				Kills.Text = entryWithData.Kills.ToString();
 				DeathType.Text = entryWithData.DeathType.ToString();
-				ShotsHit.Text = entryWithData.ShotsHit.ToString();
-				ShotsFired.Text = entryWithData.ShotsFired.ToString();
+				DaggersHit.Text = entryWithData.DaggersHit.ToString();
+				DaggersFired.Text = entryWithData.DaggersFired.ToString();
 			}
+		}
+
+		private static Entry? GetEntryWithData(List<Leaderboard> leaderboards, Entry entry, int id, int time)
+		{
+			if (id == 0 || !HighscoreSpreadUtils.HasMissingStats(entry))
+				return null;
+
+			Leaderboard? leaderboardWithStats = leaderboards.FirstOrDefault(l => l.Entries.Any(e => e.Id == id && e.Time >= time - 1 && e.Time <= time + 1 && !HighscoreSpreadUtils.HasMissingStats(e))); // TODO: Get most complete data.
+			if (leaderboardWithStats == null)
+				return null;
+
+			return leaderboardWithStats.Entries.FirstOrDefault(e => e.Id == id);
 		}
 	}
 }
