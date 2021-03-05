@@ -103,7 +103,7 @@ namespace DevilDaggersWebsite.Razor.PageModels
 			{
 				if (AdminDto is AdminPlayer player && DbSet.Any(e => e.Id == player.Id))
 				{
-					ModelState.AddModelError("PlayerId", "Player already exists.");
+					ModelState.AddModelError("AdminDto.Id", "Player already exists.");
 					return Page();
 				}
 
