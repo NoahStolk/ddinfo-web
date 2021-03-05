@@ -52,7 +52,7 @@ namespace ToolsShared
 			{
 				if (entry.Id != 0 && entry.HasMissingStats())
 				{
-					IEnumerable<Leaderboard> leaderboardsWithStats = leaderboards.Where(l => l.Entries.Any(e => e.Id == entry.Id && e.Time >= entry.Time - 1 && e.Time <= entry.Time + 1 && !e.HasMissingStats()));
+					IEnumerable<Leaderboard> leaderboardsWithStats = leaderboards.Where(l => l.Entries.Any(e => e.Id == entry.Id && e.Time >= entry.Time - 1 && e.Time <= entry.Time + 1));
 					if (!leaderboardsWithStats.Any())
 						continue;
 
