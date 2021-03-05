@@ -56,10 +56,7 @@ namespace ToolsShared
 					if (!leaderboardsWithStats.Any())
 						continue;
 
-					IEnumerable<Entry> entries = leaderboardsWithStats.SelectMany(lb => lb.Entries).Where(e => e.Id == entry.Id);
-
-					Combine(entry, entries);
-
+					Combine(entry, leaderboardsWithStats.SelectMany(lb => lb.Entries).Where(e => e.Id == entry.Id));
 					changes.Add(entry);
 				}
 			}
