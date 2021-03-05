@@ -6,6 +6,13 @@
 	margin-right: auto;
 }
 
+@media (min-width: 1200px) and (max-width: 1460px) {
+	.end-wave-separator {
+		min-width: unset;
+		width: 100%;
+		padding-right: 0;
+	}
+}
 
 @media (max-width: 767px) {
 	.end-wave-separator {

@@ -29,59 +29,68 @@
 		</p>
 	}
 
-	@{
-		if (!string.IsNullOrEmpty(Model.SpawnsetFile.HtmlDescription))
+	<div class="description">
+		@if (!string.IsNullOrEmpty(Model.SpawnsetFile.HtmlDescription))
 		{
-			<div class="description">
-				@RazorUtils.GetLayout(Model.SpawnsetFile.HtmlDescription, GameVersion.V31)
+			@RazorUtils.GetLayout(Model.SpawnsetFile.HtmlDescription, GameVersion.V31)
+		}
+		else
+		{
+			@:(No description.)
+		}
+	</div>
+
+	<div class="row">
+		<div class="col-xs-12 col-sm-12 col-md-12 col-lg-6">
+			<h2 class="text-center">Arena</h2>
+			<div class="text-center">
+				<div class="flex-container flex-center">
+					<div style="@RazorUtils.GetCssWidth(widths[0])">Start radius</div>
+					<div style="@RazorUtils.GetCssWidth(widths[1])">End radius</div>
+					<div style="@RazorUtils.GetCssWidth(widths[2])">Shrinking rate</div>
+				</div>
+				<div class="flex-container flex-center">
+					<div style="@RazorUtils.GetCssWidth(widths[0])">@Model.Spawnset.ShrinkStart.ToString("0.#")</div>
+					<div style="@RazorUtils.GetCssWidth(widths[1])">@Model.Spawnset.ShrinkEnd.ToString("0.#")</div>
+					<div style="@RazorUtils.GetCssWidth(widths[2])">@Model.Spawnset.ShrinkRate.ToString("0.####")</div>
+				</div>
 			</div>
-		}
-	}
 
-	<div class="text-center">
-		<div class="flex-container flex-center">
-			<div style="@RazorUtils.GetCssWidth(widths[0])">Start radius</div>
-			<div style="@RazorUtils.GetCssWidth(widths[1])">End radius</div>
-			<div style="@RazorUtils.GetCssWidth(widths[2])">Shrinking rate</div>
-		</div>
-		<div class="flex-container flex-center">
-			<div style="@RazorUtils.GetCssWidth(widths[0])">@Model.Spawnset.ShrinkStart.ToString("0.#")</div>
-			<div style="@RazorUtils.GetCssWidth(widths[1])">@Model.Spawnset.ShrinkEnd.ToString("0.#")</div>
-			<div style="@RazorUtils.GetCssWidth(widths[2])">@Model.Spawnset.ShrinkRate.ToString("0.####")</div>
-		</div>
-	</div>
+			<div class="text-center">
+				<div class="flex-container flex-center">
+					<div style="@RazorUtils.GetCssWidth(widths[0])">Brightness</div>
+					<div style="@RazorUtils.GetCssWidth(widths[1])">Hand</div>
+					<div style="@RazorUtils.GetCssWidth(widths[2])">Additional gems</div>
+				</div>
+				<div class="flex-container flex-center">
+					<div style="@RazorUtils.GetCssWidth(widths[0])">@Model.Spawnset.Brightness.ToString("0.#")</div>
+					<div style="@RazorUtils.GetCssWidth(widths[1])">@hand.GetLayoutAnchor()</div>
+					<div style="@RazorUtils.GetCssWidth(widths[2])">@Model.Spawnset.AdditionalGems</div>
+				</div>
+			</div>
 
-	<div class="text-center">
-		<div class="flex-container flex-center">
-			<div style="@RazorUtils.GetCssWidth(widths[0])">Brightness</div>
-			<div style="@RazorUtils.GetCssWidth(widths[1])">Hand</div>
-			<div style="@RazorUtils.GetCssWidth(widths[2])">Additional gems</div>
-		</div>
-		<div class="flex-container flex-center">
-			<div style="@RazorUtils.GetCssWidth(widths[0])">@Model.Spawnset.Brightness.ToString("0.#")</div>
-			<div style="@RazorUtils.GetCssWidth(widths[1])">@hand.GetLayoutAnchor()</div>
-			<div style="@RazorUtils.GetCssWidth(widths[2])">@Model.Spawnset.AdditionalGems</div>
-		</div>
-	</div>
-
-	<table class="tile-table">
-		@{
-			for (int i = 0; i < Model.Spawnset.ArenaTiles.GetLength(0); i++)
-			{
-				<tr>
-					@for (int j = 0; j < Model.Spawnset.ArenaTiles.GetLength(1); j++)
+			<table class="tile-table">
+				@{
+					for (int i = 0; i < Model.Spawnset.ArenaTiles.GetLength(0); i++)
 					{
-						float height = (float)Math.Round(Model.Spawnset.ArenaTiles[j, i] * 32 + 64); // Swap coordinates because <tr> elements cannot be vertical.
+						<tr>
+							@for (int j = 0; j < Model.Spawnset.ArenaTiles.GetLength(1); j++)
+							{
+								float height = (float)Math.Round(Model.Spawnset.ArenaTiles[j, i] * 32 + 64); // Swap coordinates because <tr> elements cannot be vertical.
 
-						string backgroundColorStyle = $"background-color: rgb({height}, {Math.Round(height / 2)}, 0)";
-						<td class="arena-tile" style="@backgroundColorStyle"></td>
+								string backgroundColorStyle = $"background-color: rgb({height}, {Math.Round(height / 2)}, 0)";
+								<td class="arena-tile" style="@backgroundColorStyle"></td>
+							}
+						</tr>
 					}
-				</tr>
-			}
-		}
-	</table>
-
-	@await Html.PartialAsync("Partials/_SpawnsPartial", Model.SpawnsetFile.Name)
+				}
+			</table>
+		</div>
+		<div class="col-xs-12 col-sm-12 col-md-12 col-lg-6">
+			<h2 class="text-center">Spawns</h2>
+			@await Html.PartialAsync("Partials/_SpawnsPartial", Model.SpawnsetFile.Name)
+		</div>
+	</div>
 </main>
 
 @section Styles {
