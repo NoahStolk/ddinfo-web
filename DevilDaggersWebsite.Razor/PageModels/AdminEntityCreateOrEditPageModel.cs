@@ -104,9 +104,15 @@ namespace DevilDaggersWebsite.Razor.PageModels
 			}
 			else
 			{
-				if (AdminDto is AdminPlayer player && DbSet.Any(e => e.Id == player.Id))
+				if (AdminDto is AdminPlayer player && DbContext.Players.Any(p => p.Id == player.Id))
 				{
 					ModelState.AddModelError("AdminDto.Id", "Player already exists.");
+					return Page();
+				}
+
+				if (AdminDto is AdminCustomLeaderboard customLeaderboard && DbContext.CustomLeaderboards.Any(cl => cl.SpawnsetFileId == customLeaderboard.SpawnsetFileId))
+				{
+					ModelState.AddModelError("AdminDto.SpawnsetFileId", "A leaderboard for this spawnset already exists.");
 					return Page();
 				}
 
