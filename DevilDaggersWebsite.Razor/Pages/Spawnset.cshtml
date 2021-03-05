@@ -19,9 +19,6 @@
 </header>
 
 <main role="main">
-	<p class="text-center">
-		<a class="btn" href="api/spawnsets/@Model.SpawnsetFile.Name/file">Download</a>
-	</p>
 	@if (dbContext.CustomLeaderboards.Any(cl => cl.SpawnsetFileId == Model.SpawnsetFile.Id))
 	{
 		<p class="text-center">
@@ -39,6 +36,10 @@
 			@:(No description.)
 		}
 	</div>
+
+	<p class="text-center">
+		<a class="btn" href="api/spawnsets/@Model.SpawnsetFile.Name/file">Download</a>
+	</p>
 
 	<div class="row">
 		<div class="col-xs-12 col-sm-12 col-md-12 col-lg-6">
