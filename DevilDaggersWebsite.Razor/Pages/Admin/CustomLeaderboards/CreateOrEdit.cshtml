@@ -16,19 +16,16 @@
 	<div class="col-md-4">
 		<form method="post">
 			<div asp-validation-summary="ModelOnly" class="text-danger"></div>
-			@if (!Model.IsEditing)
-			{
-				<div class="form-group">
-					<label asp-for="AdminDto.Category" class="control-label"></label>
-					<select asp-for="AdminDto.Category" class="form-control" asp-items="Model.CategoryList"></select>
-					<span asp-validation-for="AdminDto.Category" class="text-danger"></span>
-				</div>
-				<div class="form-group">
-					<label asp-for="AdminDto.SpawnsetFileId" class="control-label"></label>
-					<select asp-for="AdminDto.SpawnsetFileId" class="form-control" asp-items="Model.SpawnsetFileList"></select>
-					<span asp-validation-for="AdminDto.SpawnsetFileId" class="text-danger"></span>
-				</div>
-			}
+			<div class="form-group">
+				<label asp-for="AdminDto.Category" class="control-label"></label>
+				<select asp-for="AdminDto.Category" class="form-control" asp-items="Model.CategoryList"></select>
+				<span asp-validation-for="AdminDto.Category" class="text-danger"></span>
+			</div>
+			<div class="form-group">
+				<label asp-for="AdminDto.SpawnsetFileId" class="control-label"></label>
+				<select asp-for="AdminDto.SpawnsetFileId" class="form-control" asp-items="Model.SpawnsetFileList"></select>
+				<span asp-validation-for="AdminDto.SpawnsetFileId" class="text-danger"></span>
+			</div>
 			<div class="form-group">
 				<label asp-for="AdminDto.TimeBronze" class="control-label"></label>
 				<input asp-for="AdminDto.TimeBronze" class="form-control" />

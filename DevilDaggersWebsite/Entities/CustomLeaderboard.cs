@@ -39,8 +39,6 @@ namespace DevilDaggersWebsite.Entities
 
 		public void Create(ApplicationDbContext dbContext, AdminCustomLeaderboard adminDto)
 		{
-			Category = adminDto.Category;
-			SpawnsetFileId = adminDto.SpawnsetFileId;
 			DateCreated = DateTime.UtcNow;
 
 			Edit(dbContext, adminDto);
@@ -50,6 +48,8 @@ namespace DevilDaggersWebsite.Entities
 
 		public void Edit(ApplicationDbContext dbContext, AdminCustomLeaderboard adminDto)
 		{
+			Category = adminDto.Category;
+			SpawnsetFileId = adminDto.SpawnsetFileId;
 			TimeBronze = adminDto.TimeBronze;
 			TimeSilver = adminDto.TimeSilver;
 			TimeGolden = adminDto.TimeGolden;
