@@ -41,6 +41,11 @@ namespace DevilDaggersWebsite.Entities
 			IsRefunded = adminDto.IsRefunded;
 		}
 
+		public void CreateManyToManyRelations(ApplicationDbContext dbContext, AdminDonation adminDto)
+		{
+			// Method intentionally left empty.
+		}
+
 		public AdminDonation Populate()
 		{
 			return new()

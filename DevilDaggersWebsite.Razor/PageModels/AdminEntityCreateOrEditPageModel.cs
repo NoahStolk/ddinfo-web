@@ -93,6 +93,9 @@ namespace DevilDaggersWebsite.Razor.PageModels
 				{
 					_entity.Edit(DbContext, AdminDto);
 					DbContext.SaveChanges();
+
+					_entity.CreateManyToManyRelations(DbContext, AdminDto);
+					DbContext.SaveChanges();
 				}
 				catch (DbUpdateConcurrencyException) when (!DbSet.Any(e => e.Id == _entity.Id))
 				{
@@ -109,6 +112,9 @@ namespace DevilDaggersWebsite.Razor.PageModels
 
 				_entity = new();
 				_entity.Create(DbContext, AdminDto);
+				DbContext.SaveChanges();
+
+				_entity.CreateManyToManyRelations(DbContext, AdminDto);
 				DbContext.SaveChanges();
 			}
 

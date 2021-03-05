@@ -23,7 +23,10 @@ namespace DevilDaggersWebsite.Entities
 		public void Edit(ApplicationDbContext dbContext, AdminTitle adminDto)
 		{
 			Name = adminDto.Name;
+		}
 
+		public void CreateManyToManyRelations(ApplicationDbContext dbContext, AdminTitle adminDto)
+		{
 			List<int> playerIds = adminDto.PlayerIds ?? new();
 			foreach (PlayerTitle newEntity in playerIds.ConvertAll(pi => new PlayerTitle { TitleId = Id, PlayerId = pi }))
 			{

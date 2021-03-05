@@ -31,7 +31,10 @@ namespace DevilDaggersWebsite.Entities
 			AssetModFileContents = (AssetModFileContents)adminDto.AssetModFileContents.Cast<int>().Sum();
 			Name = adminDto.Name;
 			Url = adminDto.Url;
+		}
 
+		public void CreateManyToManyRelations(ApplicationDbContext dbContext, AdminAssetMod adminDto)
+		{
 			List<int> playerIds = adminDto.PlayerIds ?? new();
 			foreach (PlayerAssetMod newEntity in playerIds.ConvertAll(pi => new PlayerAssetMod { AssetModId = Id, PlayerId = pi }))
 			{
