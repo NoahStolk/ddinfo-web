@@ -6,6 +6,48 @@
 		"VersionNumberRequired": "2.15.0.0",
 		"Changelog": [
 			{
+				"VersionNumber": "2.20.7.0",
+				"Date": "2021-03-08T00:00:00",
+				"Changes": [
+					{
+						"Description": "Added support for reading older survival formats. Loading spawnsets is no longer limited to V3. (TODO: Save V1/V2?)"
+					},
+					{
+						"Description": "Added cancellation to confirmation windows. Clicking [X] on a confirmation window now does nothing."
+					},
+					{
+						"Description": "Added keyboard shortcuts for every menu item under 'File'."
+					},
+					{
+						"Description": "Added menu item to open default V3 survival file."
+					},
+					{
+						"Description": "New V3.1 spawnset settings now have their own section."
+					},
+					{
+						"Description": "Added [X] button to Settings window."
+					},
+					{
+						"Description": "Removed glitch tile (25,27) setting, workaround, and warning. This seems to be fixed in V3.1."
+					},
+					{
+						"Description": "Improved performance for spawns list refresh when modifying initial hand, additional gems, and start timer."
+					},
+					{
+						"Description": "Warnings are now more apparent."
+					},
+					{
+						"Description": "Fixed keyboard shortcut bugs."
+					},
+					{
+						"Description": "Fixed bug where end loop timings would sometimes not update properly when editing start timer."
+					},
+					{
+						"Description": "Improved keyboard shortcut support."
+					}
+				]
+			},
+			{
 				"VersionNumber": "2.15.0.0",
 				"Date": "2021-02-24T00:00:00",
 				"Changes": [
