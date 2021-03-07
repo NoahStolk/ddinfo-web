@@ -46,7 +46,7 @@ namespace DevilDaggersWebsite.Razor.PageModels
 		public int? Id { get; private set; }
 
 		[BindProperty]
-		public TAdminDto? AdminDto { get; set; }
+		public TAdminDto AdminDto { get; set; } = null!;
 
 		public bool IsEditing => Id.HasValue;
 
