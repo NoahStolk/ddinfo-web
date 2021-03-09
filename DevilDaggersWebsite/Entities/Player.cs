@@ -24,6 +24,8 @@ namespace DevilDaggersWebsite.Entities
 		public bool IsBanned { get; set; }
 		public string? BanDescription { get; set; }
 		public int? BanResponsibleId { get; set; }
+		public bool? UsesLegacyAudio { get; set; }
+		public bool IsBannedFromDdcl { get; set; }
 
 		public float? Edpi => Dpi * InGameSens;
 		public string RightHandedString => !RightHanded.HasValue ? string.Empty : RightHanded.Value ? "Right" : "Left";

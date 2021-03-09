@@ -19,6 +19,7 @@ namespace DevilDaggersWebsite.Entities
 		public byte[] DaggersHitData { get; set; } = null!;
 		public byte[] EnemiesAliveData { get; set; } = null!;
 		public byte[] HomingDaggersData { get; set; } = null!;
+		public byte[] HomingDaggersEatenData { get; set; } = null!;
 		public byte[] GemsDespawnedData { get; set; } = null!;
 		public byte[] GemsEatenData { get; set; } = null!;
 		public byte[] GemsTotalData { get; set; } = null!;

@@ -21,5 +21,7 @@ namespace DevilDaggersWebsite.Entities
 		public string? HtmlDescription { get; set; }
 
 		public DateTime LastUpdated { get; set; }
+
+		public bool IsPractice { get; set; }
 	}
 }
