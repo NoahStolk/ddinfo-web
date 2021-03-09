@@ -197,6 +197,13 @@ namespace DevilDaggersWebsite.Api
 			}
 			else
 			{
+				if (player.IsBannedFromDdcl)
+				{
+					const string errorMessage = "Banned.";
+					await TryLog(uploadRequest, spawnsetName, errorMessage);
+					return new BadRequestObjectResult(new ProblemDetails { Title = errorMessage });
+				}
+
 				player.PlayerName = await GetUsername(uploadRequest);
 			}
 
