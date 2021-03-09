@@ -10,7 +10,8 @@
 		"fov": -1,
 		"hand": -1,
 		"flash": -1,
-		"gamma": -1
+		"gamma": -1,
+		"legacy-audio": -1
 	};
 
 	$(document).on("click", ".leaderboard-row", function () {

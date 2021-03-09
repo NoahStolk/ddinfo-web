@@ -19,10 +19,11 @@
 		<div class="sorter hidden-xs text-right" sort="dpi">DPI</div>
 		<div class="sorter hidden-xs text-right" sort="in-game-sens">In-game sens</div>
 		<div class="sorter hidden-xs text-right" sort="fov">FOV</div>
+		<div class="sorter hidden-xs hidden-sm hidden-md text-right" sort="gamma">Gamma</div>
 
 		<div class="sorter hidden-xs hidden-sm hidden-md text-left" sort="hand">Hand orientation</div>
 		<div class="sorter hidden-xs hidden-sm hidden-md text-left" sort="flash">Hand flash</div>
-		<div class="sorter hidden-xs hidden-sm hidden-md text-right" sort="gamma">Gamma</div>
+		<div class="sorter hidden-xs hidden-sm hidden-md text-left" sort="legacy-audio">Legacy audio</div>
 	</div>
 	<div class="leaderboard-body">
 		@{
@@ -81,9 +82,10 @@
 						<div class="hidden-xs text-right">@player.Dpi</div>
 						<div class="hidden-xs text-right">@(player.InGameSens != null ? player.InGameSens.Value.ToString(FormatUtils.MouseSensitivityFormat) : string.Empty)</div>
 						<div class="hidden-xs text-right">@player.Fov</div>
+						<div class="hidden-xs hidden-sm hidden-md text-right">@player.Gamma</div>
 						<div class="hidden-xs hidden-sm hidden-md text-left">@player.RightHandedString</div>
 						<div class="hidden-xs hidden-sm hidden-md text-left">@player.FlashEnabledString</div>
-						<div class="hidden-xs hidden-sm hidden-md text-right">@player.Gamma</div>
+						<div class="hidden-xs hidden-sm hidden-md text-left">@player.UsesLegacyAudioString</div>
 					</div>
 					<div class="leaderboard-expand flex-container" id="@(entry.Rank)-expand">
 						<div class="visible-xs">
@@ -103,6 +105,10 @@
 							<div class="text-right">@player.Fov</div>
 						</div>
 						<div class="visible-xs visible-sm visible-md">
+							<div class="text-left">Gamma</div>
+							<div class="text-right">@player.Gamma</div>
+						</div>
+						<div class="visible-xs visible-sm visible-md">
 							<div class="text-left">Hand orientation</div>
 							<div class="text-right">@player.RightHandedString</div>
 						</div>
@@ -111,8 +117,8 @@
 							<div class="text-right">@player.FlashEnabledString</div>
 						</div>
 						<div class="visible-xs visible-sm visible-md">
-							<div class="text-left">Gamma</div>
-							<div class="text-right">@player.Gamma</div>
+							<div class="text-left">Legacy audio</div>
+							<div class="text-right">@player.UsesLegacyAudioString</div>
 						</div>
 						<div style="padding-top: 1em;">
 							<a asp-page="../Leaderboard/Index" asp-route-UserId="@entry.Id">View more info</a>

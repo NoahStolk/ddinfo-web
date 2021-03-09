@@ -30,6 +30,7 @@ namespace DevilDaggersWebsite.Entities
 		public float? Edpi => Dpi * InGameSens;
 		public string RightHandedString => !RightHanded.HasValue ? string.Empty : RightHanded.Value ? "Right" : "Left";
 		public string FlashEnabledString => !FlashEnabled.HasValue ? string.Empty : FlashEnabled.Value ? "On" : "Off";
+		public string UsesLegacyAudioString => !UsesLegacyAudio.HasValue ? string.Empty : UsesLegacyAudio.Value ? "On" : "Off";
 
 		public override string ToString()
 			=> $"{PlayerName} ({Id})";
