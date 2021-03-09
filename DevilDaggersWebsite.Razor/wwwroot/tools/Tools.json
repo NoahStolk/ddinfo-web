@@ -6,7 +6,7 @@
 		"VersionNumberRequired": "2.15.0.0",
 		"Changelog": [
 			{
-				"VersionNumber": "2.21.8.0",
+				"VersionNumber": "2.28.15.0",
 				"Date": "2021-03-08T00:00:00",
 				"Changes": [
 					{
@@ -14,6 +14,12 @@
 					},
 					{
 						"Description": "Added cancellation to confirmation windows. Clicking [X] on a confirmation window now cancels the operation properly."
+					},
+					{
+						"Description": "Rewrote 'Download spawnset' window. Now includes 'Custom leaderboard' and 'Practice' filtering, paging, improved and extended sorting, and improved performance."
+					},
+					{
+						"Description": "User settings are now saved as settings.json in the local application data Windows folder (access by pressing Windows R and typing %localappdata%)."
 					},
 					{
 						"Description": "Added keyboard shortcuts for every menu item under 'File'."
@@ -31,7 +37,10 @@
 						"Description": "Removed glitch tile (25,27) setting, workaround, and warning. This seems to be fixed in V3.1."
 					},
 					{
-						"Description": "Improved performance for spawns list."
+						"Description": "Improved performance for updating spawns list."
+					},
+					{
+						"Description": "Improved performance for individual spawn controls."
 					},
 					{
 						"Description": "Warnings are now more apparent."
@@ -47,6 +56,9 @@
 					},
 					{
 						"Description": "Improved keyboard shortcut support."
+					},
+					{
+						"Description": "Improved logo."
 					}
 				]
 			},
