@@ -18,5 +18,7 @@ namespace DevilDaggersWebsite.Dto
 		public string AuthorName { get; set; } = null!;
 
 		public bool HasCustomLeaderboard { get; set; }
+
+		public bool IsPractice { get; set; }
 	}
 }

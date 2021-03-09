@@ -51,13 +51,14 @@ namespace DevilDaggersWebsite.Extensions
 		{
 			return new()
 			{
-				AuthorName = spawnsetFile.Player.PlayerName,
-				HtmlDescription = spawnsetFile.HtmlDescription,
-				HasCustomLeaderboard = hasCustomLeaderboard,
-				LastUpdated = spawnsetFile.LastUpdated,
 				MaxDisplayWaves = spawnsetFile.MaxDisplayWaves,
-				Name = spawnsetFile.Name,
+				HtmlDescription = spawnsetFile.HtmlDescription,
+				LastUpdated = spawnsetFile.LastUpdated,
 				SpawnsetData = spawnsetData,
+				Name = spawnsetFile.Name,
+				AuthorName = spawnsetFile.Player.PlayerName,
+				HasCustomLeaderboard = hasCustomLeaderboard,
+				IsPractice = spawnsetFile.IsPractice,
 			};
 		}
 	}
