@@ -14,6 +14,7 @@ namespace DevilDaggersWebsite.Dto.Admin
 		public int DaggersHit { get; init; }
 		public int EnemiesAlive { get; init; }
 		public int HomingDaggers { get; init; }
+		public int HomingDaggersEaten { get; init; }
 		public int GemsDespawned { get; init; }
 		public int GemsEaten { get; init; }
 		public int GemsTotal { get; init; }
@@ -22,6 +23,6 @@ namespace DevilDaggersWebsite.Dto.Admin
 		public int LevelUpTime3 { get; init; }
 		public int LevelUpTime4 { get; init; }
 		public DateTime SubmitDate { get; init; }
-		public string ClientVersion { get; init; }
+		public string ClientVersion { get; init; } = null!;
 	}
 }

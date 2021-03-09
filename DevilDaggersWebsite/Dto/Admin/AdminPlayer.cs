@@ -5,7 +5,7 @@ namespace DevilDaggersWebsite.Dto.Admin
 	public class AdminPlayer
 	{
 		public int Id { get; init; }
-		public string PlayerName { get; init; }
+		public string PlayerName { get; init; } = null!;
 		public bool IsAnonymous { get; init; }
 		public List<int>? AssetModIds { get; init; }
 		public List<int>? TitleIds { get; init; }
@@ -19,5 +19,7 @@ namespace DevilDaggersWebsite.Dto.Admin
 		public bool IsBanned { get; init; }
 		public string? BanDescription { get; init; }
 		public int? BanResponsibleId { get; init; }
+		public bool? UsesLegacyAudio { get; init; }
+		public bool IsBannedFromDdcl { get; init; }
 	}
 }

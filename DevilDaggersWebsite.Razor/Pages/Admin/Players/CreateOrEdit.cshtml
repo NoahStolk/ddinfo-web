@@ -89,6 +89,16 @@
 				<span asp-validation-for="AdminDto.BanResponsibleId" class="text-danger"></span>
 			</div>
 			<div class="form-group">
+				<label asp-for="AdminDto.UsesLegacyAudio" class="control-label"></label>
+				<input asp-for="AdminDto.UsesLegacyAudio" class="form-control" />
+				<span asp-validation-for="AdminDto.UsesLegacyAudio" class="text-danger"></span>
+			</div>
+			<div class="form-group">
+				<label asp-for="AdminDto.IsBannedFromDdcl" class="control-label"></label>
+				<input asp-for="AdminDto.IsBannedFromDdcl" class="form-control" />
+				<span asp-validation-for="AdminDto.IsBannedFromDdcl" class="text-danger"></span>
+			</div>
+			<div class="form-group">
 				<label class="control-label">AssetMods (CTRL+click for multiple)</label>
 				<select asp-for="AdminDto.AssetModIds" class="admin-select form-control" asp-items="Model.AssetModList" style="height: 640px;"></select>
 				<span asp-validation-for="AdminDto.AssetModIds" class="text-danger"></span>
