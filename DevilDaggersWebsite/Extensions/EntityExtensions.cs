@@ -21,6 +21,7 @@ namespace DevilDaggersWebsite.Extensions
 			customEntryData.DaggersHitData = gameStates.Select(gs => gs.DaggersHit).SelectMany(BitConverter.GetBytes).ToArray();
 			customEntryData.EnemiesAliveData = gameStates.Select(gs => gs.EnemiesAlive).SelectMany(BitConverter.GetBytes).ToArray();
 			customEntryData.HomingDaggersData = gameStates.Select(gs => gs.HomingDaggers).SelectMany(BitConverter.GetBytes).ToArray();
+			customEntryData.HomingDaggersEatenData = gameStates.Select(gs => gs.HomingDaggersEaten).SelectMany(BitConverter.GetBytes).ToArray();
 			customEntryData.GemsDespawnedData = gameStates.Select(gs => gs.GemsDespawned).SelectMany(BitConverter.GetBytes).ToArray();
 			customEntryData.GemsEatenData = gameStates.Select(gs => gs.GemsEaten).SelectMany(BitConverter.GetBytes).ToArray();
 			customEntryData.GemsTotalData = gameStates.Select(gs => gs.GemsTotal).SelectMany(BitConverter.GetBytes).ToArray();

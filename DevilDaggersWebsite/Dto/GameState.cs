@@ -8,6 +8,7 @@
 		public int DaggersHit { get; set; }
 		public int EnemiesAlive { get; set; }
 		public int HomingDaggers { get; set; }
+		public int HomingDaggersEaten { get; set; }
 		public int GemsDespawned { get; set; }
 		public int GemsEaten { get; set; }
 		public int GemsTotal { get; set; }

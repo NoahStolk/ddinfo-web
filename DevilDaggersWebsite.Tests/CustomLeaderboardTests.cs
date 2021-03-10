@@ -2,6 +2,7 @@
 using DevilDaggersWebsite.Api;
 using DevilDaggersWebsite.Entities;
 using DevilDaggersWebsite.Enumerators;
+using DevilDaggersWebsite.Extensions;
 using DevilDaggersWebsite.Transients;
 using Microsoft.AspNetCore.Hosting;
 using Microsoft.AspNetCore.Http;
@@ -200,13 +201,18 @@ namespace DevilDaggersWebsite.Tests
 				uploadRequest.PlayerId,
 				uploadRequest.Time,
 				uploadRequest.GemsCollected,
+				uploadRequest.GemsDespawned,
+				uploadRequest.GemsEaten,
+				uploadRequest.GemsTotal,
 				uploadRequest.EnemiesKilled,
 				uploadRequest.DeathType,
 				uploadRequest.DaggersHit,
 				uploadRequest.DaggersFired,
 				uploadRequest.EnemiesAlive,
 				uploadRequest.HomingDaggers,
-				string.Join(",", new[] { uploadRequest.LevelUpTime2, uploadRequest.LevelUpTime3, uploadRequest.LevelUpTime4 }));
+				uploadRequest.HomingDaggersEaten,
+				uploadRequest.SurvivalHashMd5.ByteArrayToHexString(),
+				string.Join(",", new int[3] { uploadRequest.LevelUpTime2, uploadRequest.LevelUpTime3, uploadRequest.LevelUpTime4 }));
 			return HttpUtility.HtmlEncode(Secrets.EncryptionWrapper.EncryptAndEncode(toEncrypt));
 		}
 

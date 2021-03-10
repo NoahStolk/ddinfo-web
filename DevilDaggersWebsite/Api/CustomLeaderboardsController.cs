@@ -25,7 +25,9 @@ namespace DevilDaggersWebsite.Api
 	[ApiController]
 	public class CustomLeaderboardsController : ControllerBase
 	{
+#pragma warning disable S3459 // Unassigned members should be removed
 		private static readonly bool _enableData;
+#pragma warning restore S3459 // Unassigned members should be removed
 
 		private readonly ApplicationDbContext _dbContext;
 		private readonly IWebHostEnvironment _env;
@@ -115,7 +117,6 @@ namespace DevilDaggersWebsite.Api
 			string spawnsetName = string.Empty;
 			foreach ((string name, Spawnset spawnset) in spawnsets)
 			{
-				// TODO: Use cache.
 				if (!spawnset.TryGetBytes(out byte[] bytes))
 					throw new("Could not get bytes from spawnset.");
 
@@ -158,7 +159,8 @@ namespace DevilDaggersWebsite.Api
 				uploadRequest.DaggersFired,
 				uploadRequest.EnemiesAlive,
 				uploadRequest.HomingDaggers,
-				ByteArrayToHexString(uploadRequest.SurvivalHashMd5),
+				uploadRequest.HomingDaggersEaten,
+				uploadRequest.SurvivalHashMd5.ByteArrayToHexString(),
 				string.Join(",", new int[3] { uploadRequest.LevelUpTime2, uploadRequest.LevelUpTime3, uploadRequest.LevelUpTime4 }));
 			if (await DecryptValidation(uploadRequest.Validation) != check)
 			{
@@ -259,6 +261,7 @@ namespace DevilDaggersWebsite.Api
 					DaggersFired = uploadRequest.DaggersFired,
 					EnemiesAlive = uploadRequest.EnemiesAlive,
 					HomingDaggers = uploadRequest.HomingDaggers,
+					HomingDaggersEaten = uploadRequest.HomingDaggersEaten,
 					LevelUpTime2 = uploadRequest.LevelUpTime2,
 					LevelUpTime3 = uploadRequest.LevelUpTime3,
 					LevelUpTime4 = uploadRequest.LevelUpTime4,
@@ -300,6 +303,7 @@ namespace DevilDaggersWebsite.Api
 			int daggersHitDiff = uploadRequest.DaggersHit - customEntry.DaggersHit;
 			int enemiesAliveDiff = uploadRequest.EnemiesAlive - customEntry.EnemiesAlive;
 			int homingDaggersDiff = uploadRequest.HomingDaggers - customEntry.HomingDaggers;
+			int homingDaggersEatenDiff = uploadRequest.HomingDaggersEaten - customEntry.HomingDaggersEaten;
 			int gemsDespawnedDiff = uploadRequest.GemsDespawned - customEntry.GemsDespawned;
 			int gemsEatenDiff = uploadRequest.GemsEaten - customEntry.GemsEaten;
 			int gemsTotalDiff = uploadRequest.GemsTotal - customEntry.GemsTotal;
@@ -315,6 +319,7 @@ namespace DevilDaggersWebsite.Api
 			customEntry.DaggersHit = uploadRequest.DaggersHit;
 			customEntry.EnemiesAlive = uploadRequest.EnemiesAlive;
 			customEntry.HomingDaggers = uploadRequest.HomingDaggers;
+			customEntry.HomingDaggersEaten = uploadRequest.HomingDaggersEaten;
 			customEntry.GemsDespawned = uploadRequest.GemsDespawned;
 			customEntry.GemsEaten = uploadRequest.GemsEaten;
 			customEntry.DeathType = uploadRequest.DeathType;
@@ -376,6 +381,8 @@ namespace DevilDaggersWebsite.Api
 				EnemiesAliveDiff = enemiesAliveDiff,
 				HomingDaggers = uploadRequest.HomingDaggers,
 				HomingDaggersDiff = homingDaggersDiff,
+				HomingDaggersEaten = uploadRequest.HomingDaggersEaten,
+				HomingDaggersEatenDiff = homingDaggersEatenDiff,
 				GemsDespawned = uploadRequest.GemsDespawned,
 				GemsDespawnedDiff = gemsDespawnedDiff,
 				GemsEaten = uploadRequest.GemsEaten,
@@ -471,8 +478,5 @@ namespace DevilDaggersWebsite.Api
 				// Ignore exceptions that occurred while attempting to log.
 			}
 		}
-
-		private static string ByteArrayToHexString(byte[] byteArray)
-			=> BitConverter.ToString(byteArray).Replace("-", string.Empty);
 	}
 }

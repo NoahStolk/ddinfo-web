@@ -20,6 +20,7 @@ namespace DevilDaggersWebsite.Extensions
 				DaggersFired = uploadRequest.DaggersFired,
 				EnemiesAlive = uploadRequest.EnemiesAlive,
 				HomingDaggers = uploadRequest.HomingDaggers,
+				HomingDaggersEaten = uploadRequest.HomingDaggersEaten,
 				LevelUpTime2 = uploadRequest.LevelUpTime2,
 				LevelUpTime3 = uploadRequest.LevelUpTime3,
 				LevelUpTime4 = uploadRequest.LevelUpTime4,
