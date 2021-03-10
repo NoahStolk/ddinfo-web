@@ -16,29 +16,30 @@ namespace DevilDaggersWebsite.Tests
 		{
 			List<Dagger> daggers = _daggersController.GetDaggers().Value;
 
-			Assert.AreEqual(5, daggers.Count);
-			Assert.IsTrue(daggers.All(d => d.GameVersion == GameVersion.V3));
+			Assert.AreEqual(6, daggers.Count);
+			Assert.IsTrue(daggers.All(d => d.GameVersion == GameVersion.V31));
 			Assert.AreEqual(1, daggers.Count(d => d.Name == "Default"));
 			Assert.AreEqual(1, daggers.Count(d => d.Name == "Bronze"));
 			Assert.AreEqual(1, daggers.Count(d => d.Name == "Silver"));
 			Assert.AreEqual(1, daggers.Count(d => d.Name == "Golden"));
 			Assert.AreEqual(1, daggers.Count(d => d.Name == "Devil"));
+			Assert.AreEqual(1, daggers.Count(d => d.Name == "Leviathan"));
 		}
 
 		[TestMethod]
 		public void GetDaggerAtSeconds()
 		{
-			TestDaggerAtSeconds(1100, GameInfo.V3Devil);
-			TestDaggerAtSeconds(600, GameInfo.V3Devil);
-			TestDaggerAtSeconds(500, GameInfo.V3Devil);
-			TestDaggerAtSeconds(400, GameInfo.V3Golden);
-			TestDaggerAtSeconds(250, GameInfo.V3Golden);
-			TestDaggerAtSeconds(200, GameInfo.V3Silver);
-			TestDaggerAtSeconds(120, GameInfo.V3Silver);
-			TestDaggerAtSeconds(100, GameInfo.V3Bronze);
-			TestDaggerAtSeconds(60, GameInfo.V3Bronze);
-			TestDaggerAtSeconds(30, GameInfo.V3Default);
-			TestDaggerAtSeconds(0, GameInfo.V3Default);
+			TestDaggerAtSeconds(1100, GameInfo.V31LeviathanDagger);
+			TestDaggerAtSeconds(600, GameInfo.V31Devil);
+			TestDaggerAtSeconds(500, GameInfo.V31Devil);
+			TestDaggerAtSeconds(400, GameInfo.V31Golden);
+			TestDaggerAtSeconds(250, GameInfo.V31Golden);
+			TestDaggerAtSeconds(200, GameInfo.V31Silver);
+			TestDaggerAtSeconds(120, GameInfo.V31Silver);
+			TestDaggerAtSeconds(100, GameInfo.V31Bronze);
+			TestDaggerAtSeconds(60, GameInfo.V31Bronze);
+			TestDaggerAtSeconds(30, GameInfo.V31Default);
+			TestDaggerAtSeconds(0, GameInfo.V31Default);
 
 			void TestDaggerAtSeconds(uint seconds, Dagger expectedDagger)
 			{
