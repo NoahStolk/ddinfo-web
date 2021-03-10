@@ -2,12 +2,12 @@
 	{
 		"Name": "DevilDaggersSurvivalEditor",
 		"DisplayName": "Devil Daggers Survival Editor",
-		"VersionNumber": "2.15.0.0",
-		"VersionNumberRequired": "2.15.0.0",
+		"VersionNumber": "2.28.18.0",
+		"VersionNumberRequired": "2.28.18.0",
 		"Changelog": [
 			{
-				"VersionNumber": "2.28.15.0",
-				"Date": "2021-03-08T00:00:00",
+				"VersionNumber": "2.28.18.0",
+				"Date": "2021-03-10T00:00:00",
 				"Changes": [
 					{
 						"Description": "Added support for reading and writing older survival formats. You can open and save V1 spawnsets and select the format you want to use in the editor."
