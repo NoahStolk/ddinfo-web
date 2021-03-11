@@ -59,6 +59,7 @@ namespace DevilDaggersWebsite.Entities
 			DaggersHit = adminDto.DaggersHit;
 			EnemiesAlive = adminDto.EnemiesAlive;
 			HomingDaggers = adminDto.HomingDaggers;
+			HomingDaggersEaten = adminDto.HomingDaggersEaten;
 			GemsDespawned = adminDto.GemsDespawned;
 			GemsEaten = adminDto.GemsEaten;
 			GemsTotal = adminDto.GemsTotal;
@@ -91,6 +92,7 @@ namespace DevilDaggersWebsite.Entities
 				GemsEaten = GemsEaten,
 				GemsTotal = GemsTotal,
 				HomingDaggers = HomingDaggers,
+				HomingDaggersEaten = HomingDaggersEaten,
 				LevelUpTime2 = LevelUpTime2,
 				LevelUpTime3 = LevelUpTime3,
 				LevelUpTime4 = LevelUpTime4,
