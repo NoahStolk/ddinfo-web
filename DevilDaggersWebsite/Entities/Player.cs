@@ -58,6 +58,8 @@ namespace DevilDaggersWebsite.Entities
 			IsBanned = adminDto.IsBanned;
 			BanDescription = adminDto.BanDescription;
 			BanResponsibleId = adminDto.BanResponsibleId;
+			UsesLegacyAudio = adminDto.UsesLegacyAudio;
+			IsBannedFromDdcl = adminDto.IsBannedFromDdcl;
 		}
 
 		public void CreateManyToManyRelations(ApplicationDbContext dbContext, AdminPlayer adminDto)
@@ -102,6 +104,8 @@ namespace DevilDaggersWebsite.Entities
 				PlayerName = PlayerName,
 				RightHanded = RightHanded,
 				TitleIds = PlayerTitles.ConvertAll(pt => pt.TitleId),
+				IsBannedFromDdcl = IsBannedFromDdcl,
+				UsesLegacyAudio = UsesLegacyAudio,
 			};
 		}
 	}
