@@ -1,7 +1,6 @@
 ﻿using DevilDaggersCore.Spawnsets;
 using DevilDaggersDiscordBot.Extensions;
 using DevilDaggersDiscordBot.Logging;
-using DevilDaggersWebsite.Clients;
 using DevilDaggersWebsite.Entities;
 using DevilDaggersWebsite.Extensions;
 using DevilDaggersWebsite.Transients;
@@ -198,7 +197,7 @@ namespace DevilDaggersWebsite.Api
 				player = new Player
 				{
 					Id = uploadRequest.PlayerId,
-					PlayerName = await GetUsername(uploadRequest),
+					PlayerName = uploadRequest.PlayerName,
 				};
 				_dbContext.Players.Add(player);
 			}
@@ -211,7 +210,7 @@ namespace DevilDaggersWebsite.Api
 					return new BadRequestObjectResult(new ProblemDetails { Title = errorMessage });
 				}
 
-				player.PlayerName = await GetUsername(uploadRequest);
+				player.PlayerName = uploadRequest.PlayerName;
 			}
 
 			// Update the date this leaderboard was submitted to.
@@ -446,13 +445,6 @@ namespace DevilDaggersWebsite.Api
 
 		private static string GetSpawnsetNameOrHash(Dto.UploadRequest uploadRequest, string? spawnsetName)
 			=> string.IsNullOrEmpty(spawnsetName) ? BitConverter.ToString(uploadRequest.SurvivalHashMd5).Replace("-", string.Empty) : spawnsetName;
-
-		private static async Task<string> GetUsername(Dto.UploadRequest uploadRequest)
-		{
-			if (uploadRequest.PlayerName.EndsWith("med fragger", StringComparison.InvariantCulture))
-				return (await DdHasmodaiClient.GetUserById(uploadRequest.PlayerId))?.Username ?? uploadRequest.PlayerName;
-			return uploadRequest.PlayerName;
-		}
 
 		private static async Task<string> DecryptValidation(string validation)
 		{
