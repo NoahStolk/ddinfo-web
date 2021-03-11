@@ -14,7 +14,7 @@
 
 <main role="main">
 	<p>
-		Here's a list of custom asset mods created by the community using <a asp-page="/Tools/DevilDaggersAssetEditor">Devil Daggers Asset Editor</a>. The mods may also come with their own <a asp-page="/Spawnsets">custom spawnset</a>. Read below for more information.
+		Here's a list of custom asset mods created by the community using <a asp-page="/Tools/DevilDaggersAssetEditor">Devil Daggers Asset Editor</a>. Read below for more information.
 	</p>
 
 	@{
@@ -130,13 +130,12 @@
 		<li>
 			Navigate to the directory where Devil Daggers is installed.<br />
 			By default, this is <span class="path">C:\Program Files (x86)\Steam\steamapps\common\devildaggers</span> on Windows.<br />
-			The folders "core", "dd", and "res" contain the files that can be modded.
 		</li>
-		<li>Replace the files inside the folders with the files you downloaded.</li>
+		<li>Place the files you downloaded inside the "mods" folder. The file names MUST start with the name of the original file they target. This means that an audio mod (which replaces assets found in the "audio" file) needs to have the prefix "audio" in its file name. The same applies to "dd", "core", and "particle" mods.</li>
 	</ol>
 	<h3>Notes</h3>
 	<ul>
-		<li>All 4 files are loaded when Devil Daggers starts up, so you will need to restart the game when you want to play a different mod.</li>
+		<li>Mods are loaded when Devil Daggers starts up, so you will need to restart the game when you want to play a different mod.</li>
 	</ul>
 
 	<h2>FAQ</h2>
