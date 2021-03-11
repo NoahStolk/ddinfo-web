@@ -410,16 +410,33 @@ namespace DevilDaggersWebsite.Api
 			try
 			{
 				DiscordColor color = DiscordColor.Gray;
-				if (time > customLeaderboard.TimeLeviathan)
-					color = DiscordColor.DarkRed;
-				else if (time > customLeaderboard.TimeDevil)
-					color = DiscordColor.Red;
-				else if (time > customLeaderboard.TimeGolden)
-					color = DiscordColor.Gold;
-				else if (time > customLeaderboard.TimeSilver)
-					color = DiscordColor.LightGray;
-				else if (time > customLeaderboard.TimeBronze)
-					color = DiscordColor.Orange;
+
+				if (customLeaderboard.IsAscending())
+				{
+					if (time < customLeaderboard.TimeLeviathan)
+						color = DiscordColor.DarkRed;
+					else if (time < customLeaderboard.TimeDevil)
+						color = DiscordColor.Red;
+					else if (time < customLeaderboard.TimeGolden)
+						color = DiscordColor.Gold;
+					else if (time < customLeaderboard.TimeSilver)
+						color = DiscordColor.LightGray;
+					else if (time < customLeaderboard.TimeBronze)
+						color = DiscordColor.Orange;
+				}
+				else
+				{
+					if (time > customLeaderboard.TimeLeviathan)
+						color = DiscordColor.DarkRed;
+					else if (time > customLeaderboard.TimeDevil)
+						color = DiscordColor.Red;
+					else if (time > customLeaderboard.TimeGolden)
+						color = DiscordColor.Gold;
+					else if (time > customLeaderboard.TimeSilver)
+						color = DiscordColor.LightGray;
+					else if (time > customLeaderboard.TimeBronze)
+						color = DiscordColor.Orange;
+				}
 
 				DiscordEmbedBuilder builder = new()
 				{
