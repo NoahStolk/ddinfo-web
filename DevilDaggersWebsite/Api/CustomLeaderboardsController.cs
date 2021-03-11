@@ -90,6 +90,7 @@ namespace DevilDaggersWebsite.Api
 				throw;
 			}
 
+			// TODO: Cache this statically and add a force refresh button to admin panel.
 			IEnumerable<(string Name, Spawnset Spawnset)> GetSpawnsets()
 			{
 				foreach (string spawnsetPath in Directory.GetFiles(Path.Combine(_env.WebRootPath, "spawnsets")))
@@ -104,8 +105,37 @@ namespace DevilDaggersWebsite.Api
 		[NonAction]
 		public async Task<ActionResult<Dto.UploadSuccess>> ProcessUploadRequest(Dto.UploadRequest uploadRequest, IEnumerable<(string Name, Spawnset Spawnset)> spawnsets)
 		{
-			Version clientVersionParsed = Version.Parse(uploadRequest.ClientVersion);
+			// Add the player or update the username.
+			Player? player = _dbContext.Players.FirstOrDefault(p => p.Id == uploadRequest.PlayerId);
+			if (player == null)
+			{
+				player = new Player
+				{
+					Id = uploadRequest.PlayerId,
+					PlayerName = uploadRequest.PlayerName,
+				};
+				_dbContext.Players.Add(player);
+			}
+			else
+			{
+				if (player.IsBannedFromDdcl)
+				{
+					const string errorMessage = "Banned.";
+					await TryLog(uploadRequest, null, errorMessage);
+					return new BadRequestObjectResult(new ProblemDetails { Title = errorMessage });
+				}
 
+				player.PlayerName = uploadRequest.PlayerName;
+			}
+
+			if (uploadRequest.IsReplay)
+			{
+				const string errorMessage = "Run cannot be verified because the timings in Devil Daggers are inconsistent for replays.";
+				await TryLog(uploadRequest, null, errorMessage);
+				return new BadRequestObjectResult(new ProblemDetails { Title = errorMessage });
+			}
+
+			Version clientVersionParsed = Version.Parse(uploadRequest.ClientVersion);
 			if (clientVersionParsed < _toolHelper.GetToolByName("DevilDaggersCustomLeaderboards").VersionNumberRequired)
 			{
 				const string errorMessage = "You are using an unsupported and outdated version of DDCL. Please update the program.";
@@ -119,6 +149,7 @@ namespace DevilDaggersWebsite.Api
 				if (!spawnset.TryGetBytes(out byte[] bytes))
 					throw new("Could not get bytes from spawnset.");
 
+				// TODO: Cache hashes.
 				byte[] spawnsetHash = MD5.HashData(bytes);
 				bool found = true;
 				for (int i = 0; i < 16; i++)
@@ -185,33 +216,6 @@ namespace DevilDaggersWebsite.Api
 			}
 
 			// At this point, the submission is accepted.
-
-			// Due to a bug in the game, we need to subtract one tick if the run is a replay, so replays don't overwrite the actual score if submitted twice.
-			if (uploadRequest.IsReplay)
-				uploadRequest.Time -= 167;
-
-			// Add the player or update the username.
-			Player? player = _dbContext.Players.FirstOrDefault(p => p.Id == uploadRequest.PlayerId);
-			if (player == null)
-			{
-				player = new Player
-				{
-					Id = uploadRequest.PlayerId,
-					PlayerName = uploadRequest.PlayerName,
-				};
-				_dbContext.Players.Add(player);
-			}
-			else
-			{
-				if (player.IsBannedFromDdcl)
-				{
-					const string errorMessage = "Banned.";
-					await TryLog(uploadRequest, spawnsetName, errorMessage);
-					return new BadRequestObjectResult(new ProblemDetails { Title = errorMessage });
-				}
-
-				player.PlayerName = uploadRequest.PlayerName;
-			}
 
 			// Update the date this leaderboard was submitted to.
 			if (!uploadRequest.IsReplay)
