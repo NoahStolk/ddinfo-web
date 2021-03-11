@@ -160,6 +160,7 @@ namespace DevilDaggersWebsite.Api
 				uploadRequest.EnemiesAlive,
 				uploadRequest.HomingDaggers,
 				uploadRequest.HomingDaggersEaten,
+				uploadRequest.IsReplay ? 1 : 0,
 				uploadRequest.SurvivalHashMd5.ByteArrayToHexString(),
 				string.Join(",", new int[3] { uploadRequest.LevelUpTime2, uploadRequest.LevelUpTime3, uploadRequest.LevelUpTime4 }));
 			if (await DecryptValidation(uploadRequest.Validation) != check)
@@ -185,6 +186,10 @@ namespace DevilDaggersWebsite.Api
 			}
 
 			// At this point, the submission is accepted.
+
+			// Due to a bug in the game, we need to subtract one tick if the run is a replay, so replays don't overwrite the actual score if submitted twice.
+			if (uploadRequest.IsReplay)
+				uploadRequest.Time -= 167;
 
 			// Add the player or update the username.
 			Player? player = _dbContext.Players.FirstOrDefault(p => p.Id == uploadRequest.PlayerId);
