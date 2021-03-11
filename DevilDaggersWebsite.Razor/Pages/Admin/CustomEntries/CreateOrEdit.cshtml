@@ -20,7 +20,7 @@
 			{
 				<div class="form-group">
 					<label asp-for="AdminDto.CustomLeaderboardId" class="control-label"></label>
-					<select asp-for="AdminDto.CustomLeaderboardId" class="form-control" asp-items="ViewBag.CustomLeaderboardId"></select>
+					<select asp-for="AdminDto.CustomLeaderboardId" class="form-control" asp-items="Model.CustomLeaderboardList"></select>
 					<span asp-validation-for="AdminDto.CustomLeaderboardId" class="text-danger"></span>
 				</div>
 				<div class="form-group">

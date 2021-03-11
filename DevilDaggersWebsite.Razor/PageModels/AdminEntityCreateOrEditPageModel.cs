@@ -26,10 +26,11 @@ namespace DevilDaggersWebsite.Razor.PageModels
 			CategoryList = RazorUtils.EnumToSelectList<CustomLeaderboardCategory>();
 			CurrencyList = RazorUtils.EnumToSelectList<Currency>();
 
-			AssetModList = DbContext.AssetMods.Select(p => new SelectListItem(p.Name, p.Id.ToString())).ToList();
+			AssetModList = DbContext.AssetMods.Select(am => new SelectListItem(am.Name, am.Id.ToString())).ToList();
+			CustomLeaderboardList = DbContext.CustomLeaderboards.Include(cl => cl.SpawnsetFile).Select(cl => new SelectListItem(cl.SpawnsetFile.Name, cl.Id.ToString())).ToList();
 			PlayerList = DbContext.Players.Select(p => new SelectListItem(p.PlayerName, p.Id.ToString())).ToList();
 			SpawnsetFileList = DbContext.SpawnsetFiles.Select(sf => new SelectListItem(sf.Name, sf.Id.ToString())).ToList();
-			TitleList = DbContext.Titles.Select(p => new SelectListItem(p.Name, p.Id.ToString())).ToList();
+			TitleList = DbContext.Titles.Select(t => new SelectListItem(t.Name, t.Id.ToString())).ToList();
 		}
 
 		public List<SelectListItem> AssetModFileContentsList { get; }
@@ -39,6 +40,7 @@ namespace DevilDaggersWebsite.Razor.PageModels
 		public List<SelectListItem> CurrencyList { get; }
 
 		public List<SelectListItem> AssetModList { get; }
+		public List<SelectListItem> CustomLeaderboardList { get; }
 		public List<SelectListItem> PlayerList { get; }
 		public List<SelectListItem> SpawnsetFileList { get; }
 		public List<SelectListItem> TitleList { get; }
