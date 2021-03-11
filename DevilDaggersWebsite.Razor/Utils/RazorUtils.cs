@@ -68,7 +68,7 @@ namespace DevilDaggersWebsite.Razor.Utils
 		}
 
 		public static HtmlString GetLayoutAnchor(this Upgrade upgrade)
-			=> new HtmlString($"<a style='color: #{upgrade.ColorCode};' href='/Wiki/Upgrades?GameVersion={upgrade.GameVersion}#{upgrade.Name}'>{upgrade.Name}</a>");
+			=> new($"<a style='color: #{upgrade.ColorCode};' href='/Wiki/Upgrades?GameVersion={upgrade.GameVersion}#{upgrade.Name}'>{upgrade.Name}</a>");
 
 		// TODO: Rewrite whole method. It's messy and not very performant.
 		public static HtmlString GetLayout(string str, GameVersion? gameVersion = null)
@@ -131,6 +131,13 @@ namespace DevilDaggersWebsite.Razor.Utils
 
 		public static List<SelectListItem> EnumToSelectList<TEnum>()
 			where TEnum : Enum
-			=> ((IEnumerable<TEnum>)Enum.GetValues(typeof(TEnum))).Select(c => new SelectListItem { Text = c.ToString(), Value = ((int)(object)c).ToString(CultureInfo.InvariantCulture) }).ToList();
+			=> ((IEnumerable<TEnum>)Enum.GetValues(typeof(TEnum)))
+				.Where(e => (int)(object)e != 0)
+				.Select(c => new SelectListItem
+				{
+					Text = c.ToString(),
+					Value = ((int)(object)c).ToString(CultureInfo.InvariantCulture),
+				})
+				.ToList();
 	}
 }
