@@ -109,7 +109,7 @@ namespace DevilDaggersWebsite.Api
 			Player? player = _dbContext.Players.FirstOrDefault(p => p.Id == uploadRequest.PlayerId);
 			if (player == null)
 			{
-				player = new Player
+				player = new()
 				{
 					Id = uploadRequest.PlayerId,
 					PlayerName = uploadRequest.PlayerName,
