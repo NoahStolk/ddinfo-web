@@ -8,7 +8,7 @@ namespace DevilDaggersWebsite.Dto
 		public byte[] SurvivalHashMd5 { get; init; } = null!;
 		public int PlayerId { get; init; }
 		public string PlayerName { get; init; } = null!;
-		public int Time { get; init; }
+		public int Time { get; set; }
 		public int GemsCollected { get; init; }
 		public int EnemiesKilled { get; init; }
 		public int DaggersFired { get; init; }
@@ -27,6 +27,7 @@ namespace DevilDaggersWebsite.Dto
 		public OperatingSystem OperatingSystem { get; init; }
 		public BuildMode BuildMode { get; init; }
 		public string Validation { get; set; } = null!;
+		public bool IsReplay { get; set; }
 		public List<GameState> GameStates { get; init; } = new();
 	}
 }
