@@ -738,9 +738,18 @@
 	{
 		"Name": "DevilDaggersCustomLeaderboards",
 		"DisplayName": "Devil Daggers Custom Leaderboards",
-		"VersionNumber": "0.14.5.0",
-		"VersionNumberRequired": "0.14.5.0",
+		"VersionNumber": "0.14.6.0",
+		"VersionNumberRequired": "0.14.6.0",
 		"Changelog": [
+			{
+				"VersionNumber": "0.14.6.0",
+				"Date": "2021-03-11T00:00:00",
+				"Changes": [
+					{
+						"Description": "Applied new API updates to fix replays overwriting real scores by 1/60 second due to bug in game."
+					}
+				]
+			},
 			{
 				"VersionNumber": "0.14.5.0",
 				"Date": "2021-03-10T00:00:00",
@@ -753,7 +762,7 @@
 					},
 					{
 						"Description": "Improved logo."
-					},
+					}
 				]
 			},
 			{
