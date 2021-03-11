@@ -215,8 +215,11 @@ namespace DevilDaggersWebsite.Api
 			}
 
 			// Update the date this leaderboard was submitted to.
-			customLeaderboard.DateLastPlayed = DateTime.UtcNow;
-			customLeaderboard.TotalRunsSubmitted++;
+			if (!uploadRequest.IsReplay)
+			{
+				customLeaderboard.DateLastPlayed = DateTime.UtcNow;
+				customLeaderboard.TotalRunsSubmitted++;
+			}
 
 			// Calculate the new rank.
 			IEnumerable<CustomEntry> entries = _dbContext.CustomEntries.Where(e => e.CustomLeaderboard == customLeaderboard).OrderByMember(nameof(CustomEntry.Time), customLeaderboard.IsAscending()).ToArray();
