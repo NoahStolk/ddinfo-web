@@ -39,7 +39,10 @@
 			<span data-toggle='tooltip' title='Death type'><img src="~/images/Icons/skullgray.png" /></span>
 		</div>
 		<div class="sorter hidden-xs hidden-sm hidden-md text-right" sort="homing-daggers">
-			<span data-toggle='tooltip' title='Homing daggers'><img src="~/images/Icons/maskhoming.png" /></span>
+			<span data-toggle='tooltip' title='Homing stored'><img src="~/images/Icons/maskhoming.png" /></span>
+		</div>
+		<div class="sorter hidden-xs hidden-sm hidden-md text-right" sort="homing-daggers-eaten">
+			<span data-toggle='tooltip' title='Homing eaten'><img src="~/images/Icons/maskhomingeaten.png" /></span>
 		</div>
 		<div class="sorter hidden-xs hidden-sm hidden-md text-right" sort="level-2">
 			<span data-toggle='tooltip' title='Level 2 achieved'><img src="~/images/Icons/dagger2.png" /></span>
@@ -89,10 +92,11 @@
 						</div>
 						<div class="hidden-xs hidden-sm hidden-md text-left" style="@cem.DeathStyle">@cem.DeathName</div>
 						<div class="hidden-xs hidden-sm hidden-md text-right">@entry.HomingDaggers.ToString(FormatUtils.LeaderboardIntFormat)</div>
+						<div class="hidden-xs hidden-sm hidden-md text-right">@entry.HomingDaggersEaten.ToString(FormatUtils.LeaderboardIntFormat)</div>
 						<div class="hidden-xs hidden-sm hidden-md text-right">@cem.LevelUpTime2</div>
 						<div class="hidden-xs hidden-sm hidden-md text-right">@cem.LevelUpTime3</div>
 						<div class="hidden-xs hidden-sm hidden-md text-right">@cem.LevelUpTime4</div>
-						<div class="hidden-xs hidden-sm hidden-md text-right submit-date">@cem.SubmitDate.ToString("dd MMM yyyy")</div>
+						<div class="hidden-xs hidden-sm hidden-md text-right submit-date">@cem.SubmitDate.ToString("dd MMM yyyy, HH:mm")</div>
 					</div>
 					<div class="leaderboard-expand flex-container" id="@(rank)-expand">
 						<div class="visible-xs">
@@ -126,8 +130,12 @@
 							<div class="text-right" style="@cem.DeathStyle">@cem.DeathName</div>
 						</div>
 						<div class="visible-xs visible-sm visible-md">
-							<div class="text-left">Homing</div>
+							<div class="text-left">Homing stored</div>
 							<div class="text-right">@entry.HomingDaggers.ToString(FormatUtils.LeaderboardIntFormat)</div>
+						</div>
+						<div class="visible-xs visible-sm visible-md">
+							<div class="text-left">Homing eaten</div>
+							<div class="text-right">@entry.HomingDaggersEaten.ToString(FormatUtils.LeaderboardIntFormat)</div>
 						</div>
 						<div class="visible-xs visible-sm visible-md">
 							<div class="text-left">Level 2</div>
@@ -143,7 +151,7 @@
 						</div>
 						<div class="visible-xs visible-sm visible-md submit-date">
 							<div class="text-left">Submit date</div>
-							<div class="text-right">@cem.SubmitDate.ToString("dd MMM yyyy")</div>
+							<div class="text-right">@cem.SubmitDate.ToString("dd MMM yyyy, HH:mm")</div>
 						</div>
 					</div>
 				</div>

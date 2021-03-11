@@ -25,38 +25,38 @@
 
 	.leaderboard-row > div:nth-child(5),
 	.leaderboard-title-row > div:nth-child(5) {
-		min-width: 6%;
-		width: 6%;
+		min-width: 5%;
+		width: 5%;
 	}
 
 	.leaderboard-row > div:nth-child(6),
 	.leaderboard-title-row > div:nth-child(6) {
-		min-width: 6%;
-		width: 6%;
+		min-width: 5%;
+		width: 5%;
 	}
 
 	.leaderboard-row > div:nth-child(7),
 	.leaderboard-title-row > div:nth-child(7) {
-		min-width: 6%;
-		width: 6%;
+		min-width: 5%;
+		width: 5%;
 	}
 
 	.leaderboard-row > div:nth-child(8),
 	.leaderboard-title-row > div:nth-child(8) {
-		min-width: 6%;
-		width: 6%;
+		min-width: 5%;
+		width: 5%;
 	}
 
 	.leaderboard-row > div:nth-child(9),
 	.leaderboard-title-row > div:nth-child(9) {
-		min-width: 6%;
-		width: 6%;
+		min-width: 5%;
+		width: 5%;
 	}
 
 	.leaderboard-row > div:nth-child(10),
 	.leaderboard-title-row > div:nth-child(10) {
-		min-width: 6%;
-		width: 6%;
+		min-width: 5%;
+		width: 5%;
 	}
 
 	.leaderboard-row > div:nth-child(11),
@@ -67,30 +67,36 @@
 
 	.leaderboard-row > div:nth-child(12),
 	.leaderboard-title-row > div:nth-child(12) {
-		min-width: 5%;
-		width: 5%;
+		min-width: 4%;
+		width: 4%;
 	}
 
 	.leaderboard-row > div:nth-child(13),
 	.leaderboard-title-row > div:nth-child(13) {
-		min-width: 5%;
-		width: 5%;
+		min-width: 4%;
+		width: 4%;
 	}
 
 	.leaderboard-row > div:nth-child(14),
 	.leaderboard-title-row > div:nth-child(14) {
-		min-width: 5%;
-		width: 5%;
+		min-width: 6%;
+		width: 6%;
 	}
 
 	.leaderboard-row > div:nth-child(15),
 	.leaderboard-title-row > div:nth-child(15) {
-		min-width: 5%;
-		width: 5%;
+		min-width: 6%;
+		width: 6%;
 	}
 
 	.leaderboard-row > div:nth-child(16),
 	.leaderboard-title-row > div:nth-child(16) {
+		min-width: 6%;
+		width: 6%;
+	}
+
+	.leaderboard-row > div:nth-child(17),
+	.leaderboard-title-row > div:nth-child(17) {
 		min-width: 12%;
 		width: 12%;
 	}
@@ -127,32 +133,32 @@
 
 	.leaderboard-row > div:nth-child(5),
 	.leaderboard-title-row > div:nth-child(5) {
-		min-width: 6%;
-		width: 6%;
+		min-width: 5%;
+		width: 5%;
 	}
 
 	.leaderboard-row > div:nth-child(6),
 	.leaderboard-title-row > div:nth-child(6) {
-		min-width: 6%;
-		width: 6%;
+		min-width: 5%;
+		width: 5%;
 	}
 
 	.leaderboard-row > div:nth-child(7),
 	.leaderboard-title-row > div:nth-child(7) {
-		min-width: 6%;
-		width: 6%;
+		min-width: 5%;
+		width: 5%;
 	}
 
 	.leaderboard-row > div:nth-child(8),
 	.leaderboard-title-row > div:nth-child(8) {
-		min-width: 6%;
-		width: 6%;
+		min-width: 5%;
+		width: 5%;
 	}
 
 	.leaderboard-row > div:nth-child(9),
 	.leaderboard-title-row > div:nth-child(9) {
-		min-width: 6%;
-		width: 6%;
+		min-width: 5%;
+		width: 5%;
 	}
 
 	.leaderboard-row > div:nth-child(10),
@@ -175,8 +181,8 @@
 
 	.leaderboard-row > div:nth-child(13),
 	.leaderboard-title-row > div:nth-child(13) {
-		min-width: 8%;
-		width: 8%;
+		min-width: 5%;
+		width: 5%;
 	}
 
 	.leaderboard-row > div:nth-child(14),
@@ -187,6 +193,12 @@
 
 	.leaderboard-row > div:nth-child(15),
 	.leaderboard-title-row > div:nth-child(15) {
+		min-width: 8%;
+		width: 8%;
+	}
+
+	.leaderboard-row > div:nth-child(16),
+	.leaderboard-title-row > div:nth-child(16) {
 		min-width: 8%;
 		width: 8%;
 	}
