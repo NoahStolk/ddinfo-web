@@ -3,6 +3,7 @@ using DevilDaggersDiscordBot.Extensions;
 using DevilDaggersDiscordBot.Logging;
 using DSharpPlus.Entities;
 using Microsoft.AspNetCore.Diagnostics;
+using Microsoft.AspNetCore.Hosting;
 using Microsoft.AspNetCore.Mvc.RazorPages;
 using System;
 using System.Globalization;
@@ -12,6 +13,13 @@ namespace DevilDaggersWebsite.Razor.Pages
 {
 	public class ErrorModel : PageModel
 	{
+		private readonly IWebHostEnvironment _env;
+
+		public ErrorModel(IWebHostEnvironment env)
+		{
+			_env = env;
+		}
+
 		public async Task OnGetAsync()
 		{
 			try
@@ -29,11 +37,11 @@ namespace DevilDaggersWebsite.Razor.Pages
 				if (exceptionFeature != null)
 					builder.AddError(exceptionFeature.Error);
 
-				await DiscordLogger.Instance.TryLog(Channel.ErrorMonitoring, null, builder.Build());
+				await DiscordLogger.Instance.TryLog(Channel.ErrorMonitoring, _env.EnvironmentName, null, builder.Build());
 			}
 			catch (Exception ex)
 			{
-				await DiscordLogger.Instance.TryLog(Channel.ErrorMonitoring, $"Error report '{nameof(ErrorModel)}' failed! {ex.Message}");
+				await DiscordLogger.Instance.TryLog(Channel.ErrorMonitoring, _env.EnvironmentName, $"Error report '{nameof(ErrorModel)}' failed! {ex.Message}");
 			}
 		}
 	}

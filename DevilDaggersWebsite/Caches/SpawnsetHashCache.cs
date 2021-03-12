@@ -23,6 +23,8 @@ namespace DevilDaggersWebsite.Caches
 
 		public async Task<SpawnsetCacheData?> GetSpawnset(IWebHostEnvironment env, byte[] hash)
 		{
+			int cacheCount = _cache.Count;
+
 			SpawnsetCacheData? spawnsetCacheData = _cache.Find(scd => MatchHashes(scd.Hash, hash));
 			if (spawnsetCacheData != null)
 				return spawnsetCacheData;
@@ -32,7 +34,7 @@ namespace DevilDaggersWebsite.Caches
 				byte[] spawnsetBytes = File.ReadAllBytes(spawnsetPath);
 				if (!Spawnset.TryParse(spawnsetBytes, out _))
 				{
-					await DiscordLogger.Instance.TryLog(Channel.ErrorMonitoring, $"Could not parse file at `{spawnsetPath}` to a spawnset. Skipping file for cache.");
+					await DiscordLogger.Instance.TryLog(Channel.ErrorMonitoring, env.EnvironmentName, $"Could not parse file at `{spawnsetPath}` to a spawnset. Skipping file for cache.");
 					continue;
 				}
 
@@ -43,13 +45,19 @@ namespace DevilDaggersWebsite.Caches
 
 				if (MatchHashes(spawnsetHash, hash))
 				{
-					await DiscordLogger.Instance.TryLog(Channel.CustomLeaderboardMonitoring, $"Successfully updated {nameof(SpawnsetHashCache)}. ({_cache.Count} instances in memory).");
+					await LogCacheInfo();
 					return spawnsetCacheData;
 				}
 			}
 
-			await DiscordLogger.Instance.TryLog(Channel.CustomLeaderboardMonitoring, $"Successfully updated {nameof(SpawnsetHashCache)} ({_cache.Count} instances in memory).");
+			await LogCacheInfo();
 			return null;
+
+			async Task LogCacheInfo()
+			{
+				if (_cache.Count > cacheCount)
+					await DiscordLogger.Instance.TryLog(Channel.CustomLeaderboardMonitoring, env.EnvironmentName, $"Successfully updated `{nameof(SpawnsetHashCache)}`. (`{_cache.Count}` (`+{_cache.Count - cacheCount}`) instances in memory).");
+			}
 		}
 
 		public void Clear()

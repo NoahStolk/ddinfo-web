@@ -22,7 +22,7 @@ namespace DevilDaggersDiscordBot.Logging
 		internal DiscordChannel? TaskMonitoringChannel { get; set; }
 		internal DiscordChannel? TestMonitoringChannel { get; set; }
 
-		public async Task TryLogException(string title, Exception ex)
+		public async Task TryLogException(string title, string environmentName, Exception ex)
 		{
 			try
 			{
@@ -42,11 +42,11 @@ namespace DevilDaggersDiscordBot.Logging
 			}
 			catch (Exception logEx)
 			{
-				await TryLog(Channel.ErrorMonitoring, $"Error report '{nameof(TryLogException)}' failed! {logEx.Message}");
+				await TryLog(Channel.ErrorMonitoring, environmentName, $"Error report '{nameof(TryLogException)}' failed! {logEx.Message}");
 			}
 		}
 
-		public async Task TryLog(Channel loggingChannel, string? message, DiscordEmbed? embed = null)
+		public async Task TryLog(Channel loggingChannel, string environmentName, string? message, DiscordEmbed? embed = null)
 		{
 			DiscordChannel? channel = loggingChannel switch
 			{
@@ -60,7 +60,10 @@ namespace DevilDaggersDiscordBot.Logging
 			try
 			{
 				if (channel != null)
-					await channel.SendMessageAsyncSafe(message, embed);
+				{
+					string? composedMessage = embed == null ? $"[`{environmentName}`]: {message}" : null;
+					await channel.SendMessageAsyncSafe(composedMessage, embed);
+				}
 			}
 			catch
 			{

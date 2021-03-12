@@ -79,7 +79,7 @@ namespace DevilDaggersWebsite.Api
 				ex.Data[nameof(uploadRequest.ClientVersion)] = uploadRequest.ClientVersion;
 				ex.Data[nameof(uploadRequest.OperatingSystem)] = uploadRequest.OperatingSystem;
 				ex.Data[nameof(uploadRequest.BuildMode)] = uploadRequest.BuildMode;
-				await DiscordLogger.Instance.TryLogException($"Upload failed for user `{uploadRequest.PlayerName}` (`{uploadRequest.PlayerId}`) for `{GetSpawnsetHashOrName(uploadRequest.SurvivalHashMd5, null)}`.", ex);
+				await DiscordLogger.Instance.TryLogException($"Upload failed for user `{uploadRequest.PlayerName}` (`{uploadRequest.PlayerId}`) for `{GetSpawnsetHashOrName(uploadRequest.SurvivalHashMd5, null)}`.", _env.EnvironmentName, ex);
 				throw;
 			}
 		}
@@ -151,7 +151,7 @@ namespace DevilDaggersWebsite.Api
 			string? spawnsetName = spawnsetCacheData?.Name;
 			if (string.IsNullOrEmpty(spawnsetName))
 			{
-				const string errorMessage = "This spawnset does not exist on DevilDaggers.info.";
+				const string errorMessage = "This spawnset doesn't exist on DevilDaggers.info.";
 				await TryLog(uploadRequest, spawnsetName, errorMessage);
 				return new BadRequestObjectResult(new ProblemDetails { Title = errorMessage });
 			}
@@ -414,11 +414,11 @@ namespace DevilDaggersWebsite.Api
 				};
 				builder.AddFieldObject("Score", FormatTimeString(time), true);
 				builder.AddFieldObject("Rank", $"{rank}/{totalPlayers}", true);
-				await DiscordLogger.Instance.TryLog(Channel.CustomLeaderboards, null, builder.Build());
+				await DiscordLogger.Instance.TryLog(Channel.CustomLeaderboards, _env.EnvironmentName, null, builder.Build());
 			}
 			catch (Exception ex)
 			{
-				await DiscordLogger.Instance.TryLogException("Error while attempting to send leaderboard message.", ex);
+				await DiscordLogger.Instance.TryLogException("Error while attempting to send leaderboard message.", _env.EnvironmentName, ex);
 			}
 		}
 
@@ -428,7 +428,7 @@ namespace DevilDaggersWebsite.Api
 		private static string GetSpawnsetHashOrName(byte[] spawnsetHash, string? spawnsetName)
 			=> string.IsNullOrEmpty(spawnsetName) ? BitConverter.ToString(spawnsetHash).Replace("-", string.Empty) : spawnsetName;
 
-		private static async Task<string> DecryptValidation(string validation)
+		private async Task<string> DecryptValidation(string validation)
 		{
 			try
 			{
@@ -436,13 +436,13 @@ namespace DevilDaggersWebsite.Api
 			}
 			catch (Exception ex)
 			{
-				await DiscordLogger.Instance.TryLogException($"Could not decrypt validation: `{validation}`", ex);
+				await DiscordLogger.Instance.TryLogException($"Could not decrypt validation: `{validation}`", _env.EnvironmentName, ex);
 
 				return string.Empty;
 			}
 		}
 
-		private static async Task TryLog(Dto.UploadRequest uploadRequest, string? spawnsetName, string? errorMessage = null)
+		private async Task TryLog(Dto.UploadRequest uploadRequest, string? spawnsetName, string? errorMessage = null)
 		{
 			try
 			{
@@ -452,9 +452,9 @@ namespace DevilDaggersWebsite.Api
 				string ddclInfo = $"(`{uploadRequest.ClientVersion}` | `{uploadRequest.OperatingSystem}` | `{uploadRequest.BuildMode}`{replayString})";
 
 				if (!string.IsNullOrEmpty(errorMessage))
-					await DiscordLogger.Instance.TryLog(Channel.CustomLeaderboardMonitoring, $"Upload failed for user `{uploadRequest.PlayerName}` (`{uploadRequest.PlayerId}`) for `{spawnsetIdentification}`. {ddclInfo}\n{errorMessage}");
+					await DiscordLogger.Instance.TryLog(Channel.CustomLeaderboardMonitoring, _env.EnvironmentName, $"Upload failed for user `{uploadRequest.PlayerName}` (`{uploadRequest.PlayerId}`) for `{spawnsetIdentification}`. {ddclInfo}\n{errorMessage}");
 				else
-					await DiscordLogger.Instance.TryLog(Channel.CustomLeaderboardMonitoring, $"`{uploadRequest.PlayerName}` just submitted a score of `{uploadRequest.Time / 10000f:0.0000}` to `{spawnsetIdentification}`. {ddclInfo}");
+					await DiscordLogger.Instance.TryLog(Channel.CustomLeaderboardMonitoring, _env.EnvironmentName, $"`{uploadRequest.PlayerName}` just submitted a score of `{uploadRequest.Time / 10000f:0.0000}` to `{spawnsetIdentification}`. {ddclInfo}");
 			}
 			catch
 			{

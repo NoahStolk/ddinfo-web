@@ -14,7 +14,7 @@ namespace DevilDaggersWebsite.Razor.Pages.Admin.AdminTests
 			=> _env = env;
 
 		public async Task OnPostTestBotAsync()
-			=> await DiscordLogger.Instance.TryLog(Channel.TestMonitoring, "Hello, this is a test message sent from an external environment.");
+			=> await DiscordLogger.Instance.TryLog(Channel.TestMonitoring, _env.EnvironmentName, "Hello, this is a test message sent from an external environment.");
 
 		public void OnPostTestException()
 			=> throw new("TEST EXCEPTION with 3 inner exceptions", new("Inner exception message", new("Another inner exception message", new("Big Discord embed"))));
