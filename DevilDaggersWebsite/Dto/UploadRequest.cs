@@ -14,7 +14,7 @@ namespace DevilDaggersWebsite.Dto
 		public int DaggersFired { get; init; }
 		public int DaggersHit { get; init; }
 		public int EnemiesAlive { get; init; }
-		public int HomingDaggers { get; init; }
+		public int HomingDaggers { get; set; }
 		public int HomingDaggersEaten { get; init; }
 		public int GemsDespawned { get; init; }
 		public int GemsEaten { get; init; }

@@ -90,7 +90,7 @@ namespace DevilDaggersWebsite.Api
 				throw;
 			}
 
-			// TODO: Cache this statically and add a force refresh button to admin panel.
+			// TODO: Cache this statically.
 			IEnumerable<(string Name, Spawnset Spawnset)> GetSpawnsets()
 			{
 				foreach (string spawnsetPath in Directory.GetFiles(Path.Combine(_env.WebRootPath, "spawnsets")))
@@ -126,13 +126,6 @@ namespace DevilDaggersWebsite.Api
 				}
 
 				player.PlayerName = uploadRequest.PlayerName;
-			}
-
-			if (uploadRequest.IsReplay)
-			{
-				const string errorMessage = "Run cannot be verified because the timings in Devil Daggers are inconsistent for replays.";
-				await TryLog(uploadRequest, null, errorMessage);
-				return new BadRequestObjectResult(new ProblemDetails { Title = errorMessage });
 			}
 
 			Version clientVersionParsed = Version.Parse(uploadRequest.ClientVersion);
@@ -216,13 +209,19 @@ namespace DevilDaggersWebsite.Api
 			}
 
 			// At this point, the submission is accepted.
-
-			// Update the date this leaderboard was submitted to.
 			if (!uploadRequest.IsReplay)
 			{
+				// Update leaderboard statistics.
 				customLeaderboard.DateLastPlayed = DateTime.UtcNow;
 				customLeaderboard.TotalRunsSubmitted++;
 			}
+			else if (!customLeaderboard.IsAscending())
+			{
+				// Due to a bug in the game, we need to subtract one tick if the run is a replay, so replays don't overwrite the actual score if submitted twice.
+				uploadRequest.Time -= 167;
+			}
+
+			uploadRequest.HomingDaggers = Math.Max(0, uploadRequest.HomingDaggers);
 
 			// Calculate the new rank.
 			IEnumerable<CustomEntry> entries = _dbContext.CustomEntries.Where(e => e.CustomLeaderboard == customLeaderboard).OrderByMember(nameof(CustomEntry.Time), customLeaderboard.IsAscending()).ToArray();
@@ -239,7 +238,7 @@ namespace DevilDaggersWebsite.Api
 
 				if (_enableData)
 				{
-					CustomEntryData newCustomEntryData = new() { CustomEntryId = newCustomEntry.Id, };
+					CustomEntryData newCustomEntryData = new() { CustomEntryId = newCustomEntry.Id };
 					newCustomEntryData.Populate(uploadRequest.GameStates);
 					_dbContext.CustomEntryData.Add(newCustomEntryData);
 				}
