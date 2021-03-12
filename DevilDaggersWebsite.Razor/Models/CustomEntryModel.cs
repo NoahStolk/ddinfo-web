@@ -46,7 +46,7 @@ namespace DevilDaggersWebsite.Razor.Models
 
 			TitlesHtml = new(sb.ToString());
 
-			DaggerName = customLeaderboard!.GetDagger(Time);
+			DaggerName = customLeaderboard.GetDagger(Time);
 
 			if (customLeaderboard.Category == CustomLeaderboardCategory.Challenge)
 			{
@@ -65,10 +65,16 @@ namespace DevilDaggersWebsite.Razor.Models
 			LevelUpTime4 = customEntry.LevelUpTime4 == 0 ? RazorUtils.NAString : new(customEntry.LevelUpTime4.FormatTimeInteger());
 			string submitDate = customEntry.SubmitDate.ToString("dd MMM yyyy, HH:mm");
 			bool v31 = false;
+			bool homingEaten = false;
 			if (Version.TryParse(customEntry.ClientVersion, out Version? version) && version != null)
+			{
 				v31 = version > new Version(0, 10, 4, 0);
+				homingEaten = version >= new Version(0, 14, 5, 0);
+			}
+
 			GemsDespawned = v31 ? new(customEntry.GemsDespawned.ToString(FormatUtils.LeaderboardIntFormat)) : RazorUtils.NAString;
 			GemsEaten = v31 ? new(customEntry.GemsEaten.ToString(FormatUtils.LeaderboardIntFormat)) : RazorUtils.NAString;
+			HomingDaggersEaten = homingEaten ? new(customEntry.HomingDaggersEaten.ToString(FormatUtils.LeaderboardIntFormat)) : RazorUtils.NAString;
 
 			DaggerTooltipText = FormatUtils.FormatDaggersInt32(customEntry.DaggersHit, customEntry.DaggersFired, false);
 			Accuracy = customEntry.Accuracy.ToString(FormatUtils.AccuracyFormat);
@@ -86,6 +92,7 @@ gems-eaten='{(v31 ? customEntry.GemsEaten : -1)}'
 accuracy='{customEntry.Accuracy * 10000:0}'
 death-type='{GameInfo.GetDeathByType(GameVersion.V31, DeathType)?.Name ?? "Invalid"}'
 homing-daggers='{HomingDaggers}'
+homing-daggers-eaten='{(homingEaten ? customEntry.HomingDaggersEaten : -1)}'
 level-2='{(customEntry.LevelUpTime2 == 0 ? 999999999 : customEntry.LevelUpTime2)}'
 level-3='{(customEntry.LevelUpTime3 == 0 ? 999999999 : customEntry.LevelUpTime3)}'
 level-4='{(customEntry.LevelUpTime4 == 0 ? 999999999 : customEntry.LevelUpTime4)}'
@@ -107,6 +114,7 @@ submit-date='{SubmitDate:yyyyMMddHHmm}'");
 		public int DaggersFired { get; }
 		public int DaggersHit { get; }
 		public int HomingDaggers { get; }
+		public HtmlString HomingDaggersEaten { get; }
 		public byte DeathType { get; }
 		public HtmlString LevelUpTime2 { get; }
 		public HtmlString LevelUpTime3 { get; }

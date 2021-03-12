@@ -91,8 +91,8 @@
 							<span data-toggle="tooltip" title="@cem.DaggerTooltipText" class="leaderboard-tooltip">@cem.Accuracy</span>
 						</div>
 						<div class="hidden-xs hidden-sm hidden-md text-left" style="@cem.DeathStyle">@cem.DeathName</div>
-						<div class="hidden-xs hidden-sm hidden-md text-right">@entry.HomingDaggers.ToString(FormatUtils.LeaderboardIntFormat)</div>
-						<div class="hidden-xs hidden-sm hidden-md text-right">@entry.HomingDaggersEaten.ToString(FormatUtils.LeaderboardIntFormat)</div>
+						<div class="hidden-xs hidden-sm hidden-md text-right">@cem.HomingDaggers.ToString(FormatUtils.LeaderboardIntFormat)</div>
+						<div class="hidden-xs hidden-sm hidden-md text-right">@cem.HomingDaggersEaten</div>
 						<div class="hidden-xs hidden-sm hidden-md text-right">@cem.LevelUpTime2</div>
 						<div class="hidden-xs hidden-sm hidden-md text-right">@cem.LevelUpTime3</div>
 						<div class="hidden-xs hidden-sm hidden-md text-right">@cem.LevelUpTime4</div>
@@ -131,11 +131,11 @@
 						</div>
 						<div class="visible-xs visible-sm visible-md">
 							<div class="text-left">Homing stored</div>
-							<div class="text-right">@entry.HomingDaggers.ToString(FormatUtils.LeaderboardIntFormat)</div>
+							<div class="text-right">@cem.HomingDaggers.ToString(FormatUtils.LeaderboardIntFormat)</div>
 						</div>
 						<div class="visible-xs visible-sm visible-md">
 							<div class="text-left">Homing eaten</div>
-							<div class="text-right">@entry.HomingDaggersEaten.ToString(FormatUtils.LeaderboardIntFormat)</div>
+							<div class="text-right">@cem.HomingDaggersEaten</div>
 						</div>
 						<div class="visible-xs visible-sm visible-md">
 							<div class="text-left">Level 2</div>
