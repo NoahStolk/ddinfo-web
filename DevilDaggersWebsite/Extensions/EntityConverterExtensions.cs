@@ -23,12 +23,12 @@ namespace DevilDaggersWebsite.Extensions
 			};
 		}
 
-		public static Dto.CustomEntry ToDto(this CustomEntry customEntry, string username)
+		public static Dto.CustomEntry ToDto(this CustomEntry customEntry)
 		{
 			return new()
 			{
 				PlayerId = customEntry.PlayerId,
-				PlayerName = username,
+				PlayerName = customEntry.Player.PlayerName,
 				ClientVersion = customEntry.ClientVersion,
 				DeathType = customEntry.DeathType,
 				EnemiesAlive = customEntry.EnemiesAlive,

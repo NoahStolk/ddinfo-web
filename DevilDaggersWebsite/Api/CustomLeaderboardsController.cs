@@ -172,6 +172,8 @@ namespace DevilDaggersWebsite.Api
 				return new BadRequestObjectResult(new ProblemDetails { Title = errorMessage });
 			}
 
+			bool isAscending = customLeaderboard.IsAscending();
+
 			// At this point, the submission is accepted.
 			if (!uploadRequest.IsReplay)
 			{
@@ -179,7 +181,7 @@ namespace DevilDaggersWebsite.Api
 				customLeaderboard.DateLastPlayed = DateTime.UtcNow;
 				customLeaderboard.TotalRunsSubmitted++;
 			}
-			else if (!customLeaderboard.IsAscending())
+			else if (!isAscending)
 			{
 				// Due to a bug in the game, we need to subtract one tick if the run is a replay, so replays don't overwrite the actual score if submitted twice.
 				uploadRequest.Time -= 167;
@@ -189,12 +191,11 @@ namespace DevilDaggersWebsite.Api
 			uploadRequest.HomingDaggers = Math.Max(0, uploadRequest.HomingDaggers);
 
 			// Calculate the new rank.
-			IEnumerable<CustomEntry> entries = _dbContext.CustomEntries.Where(e => e.CustomLeaderboard == customLeaderboard).OrderByMember(nameof(CustomEntry.Time), customLeaderboard.IsAscending()).ToArray();
+			List<CustomEntry> entries = FetchEntriesFromDatabase(customLeaderboard, isAscending);
+			int rank = isAscending ? entries.Count(e => e.Time < uploadRequest.Time) + 1 : entries.Count(e => e.Time > uploadRequest.Time) + 1;
+			int totalPlayers = entries.Count;
 
-			int rank = customLeaderboard.IsAscending() ? entries.Count(e => e.Time < uploadRequest.Time) + 1 : entries.Count(e => e.Time > uploadRequest.Time) + 1;
-			int totalPlayers = entries.Count();
-
-			CustomEntry? customEntry = _dbContext.CustomEntries.FirstOrDefault(e => e.PlayerId == uploadRequest.PlayerId && e.CustomLeaderboardId == customLeaderboard.Id);
+			CustomEntry? customEntry = entries.Find(e => e.PlayerId == uploadRequest.PlayerId);
 			if (customEntry == null)
 			{
 				// Add new custom entry to this leaderboard.
@@ -211,8 +212,8 @@ namespace DevilDaggersWebsite.Api
 				_dbContext.SaveChanges();
 
 				// Fetch the entries again after having modified the leaderboard.
-				entries = _dbContext.CustomEntries.Where(e => e.CustomLeaderboard == customLeaderboard).OrderByMember(nameof(CustomEntry.Time), customLeaderboard.IsAscending());
-				totalPlayers = entries.Count();
+				entries = FetchEntriesFromDatabase(customLeaderboard, isAscending);
+				totalPlayers = entries.Count;
 
 				await TrySendLeaderboardMessage(customLeaderboard, $"`{uploadRequest.PlayerName}` just entered the `{spawnsetName}` leaderboard!", rank, totalPlayers, uploadRequest.Time);
 				await TryLog(uploadRequest, spawnsetName);
@@ -222,9 +223,7 @@ namespace DevilDaggersWebsite.Api
 					TotalPlayers = totalPlayers,
 					Leaderboard = customLeaderboard.ToDto(),
 					Category = customLeaderboard.Category,
-					Entries = entries
-						.Select(e => e.ToDto(uploadRequest.PlayerName))
-						.ToList(),
+					Entries = entries.ConvertAll(e => e.ToDto()),
 					IsNewPlayerOnThisLeaderboard = true,
 					Rank = rank,
 					Time = uploadRequest.Time,
@@ -244,12 +243,12 @@ namespace DevilDaggersWebsite.Api
 			}
 
 			// User is already on the leaderboard, but did not get a better score.
-			if (customLeaderboard.IsAscending() && customEntry.Time <= uploadRequest.Time || !customLeaderboard.IsAscending() && customEntry.Time >= uploadRequest.Time)
+			if (isAscending && customEntry.Time <= uploadRequest.Time || !isAscending && customEntry.Time >= uploadRequest.Time)
 			{
 				_dbContext.SaveChanges();
 
 				// Fetch the entries again after having modified the leaderboard.
-				entries = _dbContext.CustomEntries.Where(e => e.CustomLeaderboard == customLeaderboard).OrderByMember(nameof(CustomEntry.Time), customLeaderboard.IsAscending()).ToArray();
+				entries = FetchEntriesFromDatabase(customLeaderboard, isAscending);
 
 				await TryLog(uploadRequest, spawnsetName);
 				return new Dto.UploadSuccess
@@ -258,9 +257,7 @@ namespace DevilDaggersWebsite.Api
 					TotalPlayers = totalPlayers,
 					Leaderboard = customLeaderboard.ToDto(),
 					Category = customLeaderboard.Category,
-					Entries = entries
-						.Select(e => e.ToDto(uploadRequest.PlayerName))
-						.ToList(),
+					Entries = entries.ConvertAll(e => e.ToDto()),
 					IsNewPlayerOnThisLeaderboard = false,
 				};
 			}
@@ -268,7 +265,7 @@ namespace DevilDaggersWebsite.Api
 			// User got a better score.
 
 			// Calculate the old rank.
-			int oldRank = customLeaderboard.IsAscending() ? entries.Count(e => e.Time < customEntry.Time) + 1 : entries.Count(e => e.Time > customEntry.Time) + 1;
+			int oldRank = isAscending ? entries.Count(e => e.Time < customEntry.Time) + 1 : entries.Count(e => e.Time > customEntry.Time) + 1;
 
 			int rankDiff = oldRank - rank;
 			int timeDiff = uploadRequest.Time - customEntry.Time;
@@ -326,7 +323,7 @@ namespace DevilDaggersWebsite.Api
 			_dbContext.SaveChanges();
 
 			// Fetch the entries again after having modified the leaderboard.
-			entries = _dbContext.CustomEntries.Where(e => e.CustomLeaderboard == customLeaderboard).OrderByMember(nameof(CustomEntry.Time), customLeaderboard.IsAscending()).ToArray();
+			entries = FetchEntriesFromDatabase(customLeaderboard, isAscending);
 
 			await TrySendLeaderboardMessage(customLeaderboard, $"`{uploadRequest.PlayerName}` just got {FormatTimeString(uploadRequest.Time)} seconds on the `{spawnsetName}` leaderboard, beating their previous highscore of {FormatTimeString(uploadRequest.Time - timeDiff)} by {FormatTimeString(Math.Abs(timeDiff))} seconds!", rank, totalPlayers, uploadRequest.Time);
 			await TryLog(uploadRequest, spawnsetName);
@@ -336,9 +333,7 @@ namespace DevilDaggersWebsite.Api
 				TotalPlayers = totalPlayers,
 				Leaderboard = customLeaderboard.ToDto(),
 				Category = customLeaderboard.Category,
-				Entries = entries
-					.Select(e => e.ToDto(uploadRequest.PlayerName))
-					.ToList(),
+				Entries = entries.ConvertAll(e => e.ToDto()),
 				IsNewPlayerOnThisLeaderboard = false,
 				Rank = rank,
 				RankDiff = rankDiff,
@@ -373,8 +368,21 @@ namespace DevilDaggersWebsite.Api
 			};
 		}
 
-		private static async Task TrySendLeaderboardMessage(CustomLeaderboard customLeaderboard, string message, int rank, int totalPlayers, int time)
+		private List<CustomEntry> FetchEntriesFromDatabase(CustomLeaderboard? customLeaderboard, bool isAscending)
 		{
+			return _dbContext.CustomEntries
+				.Include(ce => ce.Player)
+				.Where(e => e.CustomLeaderboard == customLeaderboard)
+				.OrderByMember(nameof(CustomEntry.Time), isAscending)
+				.ThenByMember(nameof(CustomEntry.SubmitDate), true)
+				.ToList();
+		}
+
+		private async Task TrySendLeaderboardMessage(CustomLeaderboard customLeaderboard, string message, int rank, int totalPlayers, int time)
+		{
+			if (_env.EnvironmentName == "Development")
+				return;
+
 			try
 			{
 				DiscordColor color = DiscordColor.Gray;
