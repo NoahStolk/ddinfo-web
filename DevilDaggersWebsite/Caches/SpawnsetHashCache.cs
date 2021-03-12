@@ -24,12 +24,11 @@ namespace DevilDaggersWebsite.Caches
 
 		public async Task<SpawnsetCacheData?> GetSpawnset(IWebHostEnvironment env, byte[] hash)
 		{
-			int cacheCount = _cache.Count;
-
 			SpawnsetCacheData? spawnsetCacheData = _cache.Find(scd => MatchHashes(scd.Hash, hash));
 			if (spawnsetCacheData != null)
 				return spawnsetCacheData;
 
+			int cacheCount = _cache.Count;
 			foreach (string spawnsetPath in Directory.GetFiles(Path.Combine(env.WebRootPath, "spawnsets")))
 			{
 				byte[] spawnsetBytes = File.ReadAllBytes(spawnsetPath);
@@ -73,7 +72,7 @@ namespace DevilDaggersWebsite.Caches
 			if (a.Length != b.Length)
 				return false;
 
-			for (int i = 0; i < 16; i++)
+			for (int i = 0; i < a.Length; i++)
 			{
 				if (a[i] != b[i])
 					return false;
