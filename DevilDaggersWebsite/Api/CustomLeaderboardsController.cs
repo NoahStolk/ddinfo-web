@@ -1,6 +1,6 @@
-﻿using DevilDaggersCore.Spawnsets;
-using DevilDaggersDiscordBot.Extensions;
+﻿using DevilDaggersDiscordBot.Extensions;
 using DevilDaggersDiscordBot.Logging;
+using DevilDaggersWebsite.Caches;
 using DevilDaggersWebsite.Entities;
 using DevilDaggersWebsite.Extensions;
 using DevilDaggersWebsite.Transients;
@@ -11,12 +11,9 @@ using Microsoft.AspNetCore.Mvc;
 using Microsoft.EntityFrameworkCore;
 using System;
 using System.Collections.Generic;
-using System.IO;
 using System.Linq;
-using System.Security.Cryptography;
 using System.Threading.Tasks;
 using System.Web;
-using BotLogger = DevilDaggersDiscordBot.Logging.DiscordLogger;
 
 namespace DevilDaggersWebsite.Api
 {
@@ -32,15 +29,11 @@ namespace DevilDaggersWebsite.Api
 		private readonly IWebHostEnvironment _env;
 		private readonly ToolHelper _toolHelper;
 
-		private readonly Dictionary<int, string> _usernames;
-
 		public CustomLeaderboardsController(ApplicationDbContext dbContext, IWebHostEnvironment env, ToolHelper toolHelper)
 		{
 			_dbContext = dbContext;
 			_env = env;
 			_toolHelper = toolHelper;
-
-			_usernames = dbContext.Players.Select(p => new KeyValuePair<int, string>(p.Id, p.PlayerName)).ToDictionary(kvp => kvp.Key, kvp => kvp.Value);
 		}
 
 		[HttpGet]
@@ -79,95 +72,23 @@ namespace DevilDaggersWebsite.Api
 		{
 			try
 			{
-				return await ProcessUploadRequest(uploadRequest, GetSpawnsets());
+				return await ProcessUploadRequest(uploadRequest);
 			}
 			catch (Exception ex)
 			{
 				ex.Data[nameof(uploadRequest.ClientVersion)] = uploadRequest.ClientVersion;
 				ex.Data[nameof(uploadRequest.OperatingSystem)] = uploadRequest.OperatingSystem;
 				ex.Data[nameof(uploadRequest.BuildMode)] = uploadRequest.BuildMode;
-				await BotLogger.Instance.TryLogException($"Upload failed for user `{uploadRequest.PlayerName}` (`{uploadRequest.PlayerId}`) for `{GetSpawnsetNameOrHash(uploadRequest, null)}`.", ex);
+				await DiscordLogger.Instance.TryLogException($"Upload failed for user `{uploadRequest.PlayerName}` (`{uploadRequest.PlayerId}`) for `{GetSpawnsetHashOrName(uploadRequest.SurvivalHashMd5, null)}`.", ex);
 				throw;
-			}
-
-			// TODO: Cache this statically.
-			IEnumerable<(string Name, Spawnset Spawnset)> GetSpawnsets()
-			{
-				foreach (string spawnsetPath in Directory.GetFiles(Path.Combine(_env.WebRootPath, "spawnsets")))
-				{
-					if (Spawnset.TryParse(System.IO.File.ReadAllBytes(spawnsetPath), out Spawnset spawnset))
-						yield return (Path.GetFileName(spawnsetPath), spawnset);
-				}
 			}
 		}
 
 		[ApiExplorerSettings(IgnoreApi = true)]
 		[NonAction]
-		public async Task<ActionResult<Dto.UploadSuccess>> ProcessUploadRequest(Dto.UploadRequest uploadRequest, IEnumerable<(string Name, Spawnset Spawnset)> spawnsets)
+		public async Task<ActionResult<Dto.UploadSuccess>> ProcessUploadRequest(Dto.UploadRequest uploadRequest)
 		{
-			// Add the player or update the username.
-			Player? player = _dbContext.Players.FirstOrDefault(p => p.Id == uploadRequest.PlayerId);
-			if (player == null)
-			{
-				player = new()
-				{
-					Id = uploadRequest.PlayerId,
-					PlayerName = uploadRequest.PlayerName,
-				};
-				_dbContext.Players.Add(player);
-			}
-			else
-			{
-				if (player.IsBannedFromDdcl)
-				{
-					const string errorMessage = "Banned.";
-					await TryLog(uploadRequest, null, errorMessage);
-					return new BadRequestObjectResult(new ProblemDetails { Title = errorMessage });
-				}
-
-				player.PlayerName = uploadRequest.PlayerName;
-			}
-
-			Version clientVersionParsed = Version.Parse(uploadRequest.ClientVersion);
-			if (clientVersionParsed < _toolHelper.GetToolByName("DevilDaggersCustomLeaderboards").VersionNumberRequired)
-			{
-				const string errorMessage = "You are using an unsupported and outdated version of DDCL. Please update the program.";
-				await TryLog(uploadRequest, null, errorMessage);
-				return new BadRequestObjectResult(new ProblemDetails { Title = errorMessage });
-			}
-
-			string spawnsetName = string.Empty;
-			foreach ((string name, Spawnset spawnset) in spawnsets)
-			{
-				if (!spawnset.TryGetBytes(out byte[] bytes))
-					throw new("Could not get bytes from spawnset.");
-
-				// TODO: Cache hashes.
-				byte[] spawnsetHash = MD5.HashData(bytes);
-				bool found = true;
-				for (int i = 0; i < 16; i++)
-				{
-					if (spawnsetHash[i] != uploadRequest.SurvivalHashMd5[i])
-					{
-						found = false;
-						break;
-					}
-				}
-
-				if (found)
-				{
-					spawnsetName = name;
-					break;
-				}
-			}
-
-			if (string.IsNullOrEmpty(spawnsetName))
-			{
-				const string errorMessage = "This spawnset does not exist on DevilDaggers.info.";
-				await TryLog(uploadRequest, spawnsetName, errorMessage);
-				return new BadRequestObjectResult(new ProblemDetails { Title = errorMessage });
-			}
-
+			// Check if the submission actually came from DDCL.
 			string check = string.Join(
 				";",
 				uploadRequest.PlayerId,
@@ -189,10 +110,53 @@ namespace DevilDaggersWebsite.Api
 			if (await DecryptValidation(uploadRequest.Validation) != check)
 			{
 				const string errorMessage = "Invalid submission.";
+				await TryLog(uploadRequest, null, errorMessage);
+				return new BadRequestObjectResult(new ProblemDetails { Title = errorMessage });
+			}
+
+			// Add the player or update the username. Also check for banned user immediately.
+			Player? player = _dbContext.Players.FirstOrDefault(p => p.Id == uploadRequest.PlayerId);
+			if (player != null)
+			{
+				if (player.IsBannedFromDdcl)
+				{
+					const string errorMessage = "Banned.";
+					await TryLog(uploadRequest, null, errorMessage);
+					return new BadRequestObjectResult(new ProblemDetails { Title = errorMessage });
+				}
+
+				player.PlayerName = uploadRequest.PlayerName;
+			}
+			else
+			{
+				player = new()
+				{
+					Id = uploadRequest.PlayerId,
+					PlayerName = uploadRequest.PlayerName,
+				};
+				_dbContext.Players.Add(player);
+			}
+
+			// Check for required version.
+			Version clientVersionParsed = Version.Parse(uploadRequest.ClientVersion);
+			if (clientVersionParsed < _toolHelper.GetToolByName("DevilDaggersCustomLeaderboards").VersionNumberRequired)
+			{
+				const string errorMessage = "You are using an unsupported and outdated version of DDCL. Please update the program.";
+				await TryLog(uploadRequest, null, errorMessage);
+				return new BadRequestObjectResult(new ProblemDetails { Title = errorMessage });
+			}
+
+			// Check for existing spawnset.
+			SpawnsetCacheData? spawnsetCacheData = await SpawnsetHashCache.Instance.GetSpawnset(_env, uploadRequest.SurvivalHashMd5);
+			string? spawnsetName = spawnsetCacheData?.Name;
+			if (string.IsNullOrEmpty(spawnsetName))
+			{
+				const string errorMessage = "This spawnset does not exist on DevilDaggers.info.";
 				await TryLog(uploadRequest, spawnsetName, errorMessage);
 				return new BadRequestObjectResult(new ProblemDetails { Title = errorMessage });
 			}
 
+			// Check for existing leaderboard.
 			CustomLeaderboard? customLeaderboard = _dbContext.CustomLeaderboards.Include(cl => cl.SpawnsetFile).ThenInclude(sf => sf.Player).FirstOrDefault(cl => cl.SpawnsetFile.Name == spawnsetName);
 			if (customLeaderboard == null)
 			{
@@ -221,6 +185,7 @@ namespace DevilDaggersWebsite.Api
 				uploadRequest.Time -= 167;
 			}
 
+			// Make sure HomingDaggers is not negative (happens rarely).
 			uploadRequest.HomingDaggers = Math.Max(0, uploadRequest.HomingDaggers);
 
 			// Calculate the new rank.
@@ -258,7 +223,7 @@ namespace DevilDaggersWebsite.Api
 					Leaderboard = customLeaderboard.ToDto(),
 					Category = customLeaderboard.Category,
 					Entries = entries
-						.Select(e => e.ToDto(GetUsernameFromCache(e)))
+						.Select(e => e.ToDto(uploadRequest.PlayerName))
 						.ToList(),
 					IsNewPlayerOnThisLeaderboard = true,
 					Rank = rank,
@@ -294,7 +259,7 @@ namespace DevilDaggersWebsite.Api
 					Leaderboard = customLeaderboard.ToDto(),
 					Category = customLeaderboard.Category,
 					Entries = entries
-						.Select(e => e.ToDto(GetUsernameFromCache(e)))
+						.Select(e => e.ToDto(uploadRequest.PlayerName))
 						.ToList(),
 					IsNewPlayerOnThisLeaderboard = false,
 				};
@@ -372,7 +337,7 @@ namespace DevilDaggersWebsite.Api
 				Leaderboard = customLeaderboard.ToDto(),
 				Category = customLeaderboard.Category,
 				Entries = entries
-					.Select(e => e.ToDto(GetUsernameFromCache(e)))
+					.Select(e => e.ToDto(uploadRequest.PlayerName))
 					.ToList(),
 				IsNewPlayerOnThisLeaderboard = false,
 				Rank = rank,
@@ -449,22 +414,19 @@ namespace DevilDaggersWebsite.Api
 				};
 				builder.AddFieldObject("Score", FormatTimeString(time), true);
 				builder.AddFieldObject("Rank", $"{rank}/{totalPlayers}", true);
-				await BotLogger.Instance.TryLog(Channel.CustomLeaderboards, null, builder.Build());
+				await DiscordLogger.Instance.TryLog(Channel.CustomLeaderboards, null, builder.Build());
 			}
 			catch (Exception ex)
 			{
-				await BotLogger.Instance.TryLogException("Error while attempting to send leaderboard message.", ex);
+				await DiscordLogger.Instance.TryLogException("Error while attempting to send leaderboard message.", ex);
 			}
 		}
 
 		private static string FormatTimeString(int time)
 			=> (time / 10000.0).ToString("0.0000");
 
-		private string GetUsernameFromCache(CustomEntry e)
-			=> _usernames.FirstOrDefault(u => u.Key == e.PlayerId).Value ?? "[Player not found]";
-
-		private static string GetSpawnsetNameOrHash(Dto.UploadRequest uploadRequest, string? spawnsetName)
-			=> string.IsNullOrEmpty(spawnsetName) ? BitConverter.ToString(uploadRequest.SurvivalHashMd5).Replace("-", string.Empty) : spawnsetName;
+		private static string GetSpawnsetHashOrName(byte[] spawnsetHash, string? spawnsetName)
+			=> string.IsNullOrEmpty(spawnsetName) ? BitConverter.ToString(spawnsetHash).Replace("-", string.Empty) : spawnsetName;
 
 		private static async Task<string> DecryptValidation(string validation)
 		{
@@ -474,7 +436,7 @@ namespace DevilDaggersWebsite.Api
 			}
 			catch (Exception ex)
 			{
-				await BotLogger.Instance.TryLogException($"Could not decrypt validation: `{validation}`", ex);
+				await DiscordLogger.Instance.TryLogException($"Could not decrypt validation: `{validation}`", ex);
 
 				return string.Empty;
 			}
@@ -484,15 +446,15 @@ namespace DevilDaggersWebsite.Api
 		{
 			try
 			{
-				string spawnsetIdentification = GetSpawnsetNameOrHash(uploadRequest, spawnsetName);
+				string spawnsetIdentification = GetSpawnsetHashOrName(uploadRequest.SurvivalHashMd5, spawnsetName);
 
 				string replayString = uploadRequest.IsReplay ? " | `Replay`" : string.Empty;
 				string ddclInfo = $"(`{uploadRequest.ClientVersion}` | `{uploadRequest.OperatingSystem}` | `{uploadRequest.BuildMode}`{replayString})";
 
 				if (!string.IsNullOrEmpty(errorMessage))
-					await BotLogger.Instance.TryLog(Channel.CustomLeaderboardMonitoring, $"Upload failed for user `{uploadRequest.PlayerName}` (`{uploadRequest.PlayerId}`) for `{spawnsetIdentification}`. {ddclInfo}\n{errorMessage}");
+					await DiscordLogger.Instance.TryLog(Channel.CustomLeaderboardMonitoring, $"Upload failed for user `{uploadRequest.PlayerName}` (`{uploadRequest.PlayerId}`) for `{spawnsetIdentification}`. {ddclInfo}\n{errorMessage}");
 				else
-					await BotLogger.Instance.TryLog(Channel.CustomLeaderboardMonitoring, $"`{uploadRequest.PlayerName}` just submitted a score of `{uploadRequest.Time / 10000f:0.0000}` to `{spawnsetIdentification}`. {ddclInfo}");
+					await DiscordLogger.Instance.TryLog(Channel.CustomLeaderboardMonitoring, $"`{uploadRequest.PlayerName}` just submitted a score of `{uploadRequest.Time / 10000f:0.0000}` to `{spawnsetIdentification}`. {ddclInfo}");
 			}
 			catch
 			{
