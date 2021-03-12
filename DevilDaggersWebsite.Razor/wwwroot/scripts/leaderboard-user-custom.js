@@ -12,6 +12,7 @@
 		"accuracy": -1,
 		"death-type": 1,
 		"homing-daggers": -1,
+		"homing-daggers-eaten": -1,
 		"level-2": 1,
 		"level-3": 1,
 		"level-4": 1,
