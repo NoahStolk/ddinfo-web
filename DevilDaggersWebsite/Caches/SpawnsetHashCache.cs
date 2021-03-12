@@ -4,6 +4,7 @@ using Microsoft.AspNetCore.Hosting;
 using System;
 using System.Collections.Generic;
 using System.IO;
+using System.Linq;
 using System.Security.Cryptography;
 using System.Threading.Tasks;
 
@@ -41,7 +42,9 @@ namespace DevilDaggersWebsite.Caches
 				byte[] spawnsetHash = MD5.HashData(spawnsetBytes);
 				string spawnsetName = Path.GetFileName(spawnsetPath);
 				spawnsetCacheData = new(spawnsetName, spawnsetHash);
-				_cache.Add(spawnsetCacheData);
+
+				if (!_cache.Any(scd => scd.Name == spawnsetName))
+					_cache.Add(spawnsetCacheData);
 
 				if (MatchHashes(spawnsetHash, hash))
 				{
