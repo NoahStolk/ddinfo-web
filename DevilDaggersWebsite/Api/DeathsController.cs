@@ -1,8 +1,8 @@
 ﻿using DevilDaggersCore.Game;
 using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
+using System;
 using System.Collections.Generic;
-using System.Globalization;
 using System.Linq;
 
 namespace DevilDaggersWebsite.Api
@@ -18,9 +18,9 @@ namespace DevilDaggersWebsite.Api
 			IEnumerable<Death> deaths = GameInfo.GetDeaths(gameVersion ?? GameVersion.V31);
 
 			if (!string.IsNullOrEmpty(name))
-				deaths = deaths.Where(e => e.Name.ToLower(CultureInfo.InvariantCulture) == name.ToLower(CultureInfo.InvariantCulture));
+				deaths = deaths.Where(d => string.Equals(d.Name, name, StringComparison.InvariantCultureIgnoreCase));
 			if (type != null)
-				deaths = deaths.Where(e => e.DeathType == type);
+				deaths = deaths.Where(d => d.DeathType == type);
 
 			return deaths.ToList();
 		}

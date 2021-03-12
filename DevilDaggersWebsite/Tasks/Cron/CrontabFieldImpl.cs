@@ -107,7 +107,7 @@ namespace DevilDaggersWebsite.Tasks.Cron
 				}
 				else
 				{
-					writer.Write(value.ToString(CultureInfo.InvariantCulture));
+					writer.Write(value.ToString());
 				}
 			}
 			else
@@ -177,7 +177,7 @@ namespace DevilDaggersWebsite.Tasks.Cron
 
 				if (slashIndex > 0)
 				{
-					every = int.Parse(str[(slashIndex + 1)..], CultureInfo.InvariantCulture);
+					every = int.Parse(str[(slashIndex + 1)..]);
 					str = str.Substring(0, slashIndex);
 				}
 
@@ -224,7 +224,7 @@ namespace DevilDaggersWebsite.Tasks.Cron
 			char firstChar = str[0];
 
 			if (firstChar >= '0' && firstChar <= '9')
-				return int.Parse(str, CultureInfo.InvariantCulture);
+				return int.Parse(str);
 
 			if (_names == null)
 			{

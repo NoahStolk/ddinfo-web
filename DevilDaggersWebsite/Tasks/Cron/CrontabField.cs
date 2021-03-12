@@ -1,6 +1,5 @@
 ﻿using System;
 using System.Collections;
-using System.Globalization;
 using System.IO;
 
 namespace DevilDaggersWebsite.Tasks.Cron
@@ -197,7 +196,7 @@ namespace DevilDaggersWebsite.Tasks.Cron
 
 		public string ToString(string? format)
 		{
-			using StringWriter writer = new StringWriter(CultureInfo.InvariantCulture);
+			using StringWriter writer = new();
 			switch (format)
 			{
 				case "G":

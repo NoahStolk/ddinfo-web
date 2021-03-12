@@ -1,7 +1,6 @@
 ﻿using DevilDaggersWebsite.Dto;
 using System;
 using System.Collections.Generic;
-using System.Globalization;
 using System.Net.Http;
 using System.Text;
 using System.Threading.Tasks;
@@ -22,7 +21,7 @@ namespace DevilDaggersWebsite.Clients
 				{
 					new("user", "0"),
 					new("level", "survival"),
-					new("offset", (rank - 1).ToString(CultureInfo.InvariantCulture)),
+					new("offset", (rank - 1).ToString()),
 				};
 
 				using FormUrlEncodedContent content = new(postValues);
@@ -141,7 +140,7 @@ namespace DevilDaggersWebsite.Clients
 			{
 				List<KeyValuePair<string?, string?>> postValues = new()
 				{
-					new("uid", userId.ToString(CultureInfo.InvariantCulture)),
+					new("uid", userId.ToString()),
 				};
 
 				using FormUrlEncodedContent content = new(postValues);

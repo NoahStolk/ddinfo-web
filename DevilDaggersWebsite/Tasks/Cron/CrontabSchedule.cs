@@ -158,7 +158,7 @@ RetryDayMonth:
 				goto RetryDayMonth;
 			}
 
-			DateTime nextTime = new DateTime(year, month, day, hour, minute, 0, 0, baseTime.Kind);
+			DateTime nextTime = new(year, month, day, hour, minute, 0, 0, baseTime.Kind);
 
 			if (nextTime >= endTime)
 				return endTime;
@@ -172,7 +172,7 @@ RetryDayMonth:
 
 		public override string ToString()
 		{
-			using StringWriter writer = new StringWriter(CultureInfo.InvariantCulture);
+			using StringWriter writer = new();
 			_minutes.Format(writer, true);
 			writer.Write(' ');
 			_hours.Format(writer, true);

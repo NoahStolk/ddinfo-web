@@ -1,8 +1,8 @@
 ﻿using DevilDaggersCore.Game;
 using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
+using System;
 using System.Collections.Generic;
-using System.Globalization;
 using System.Linq;
 
 namespace DevilDaggersWebsite.Api
@@ -18,7 +18,7 @@ namespace DevilDaggersWebsite.Api
 			IEnumerable<Enemy> enemies = GameInfo.GetEnemies(gameVersion ?? GameVersion.V31);
 
 			if (!string.IsNullOrEmpty(name))
-				enemies = enemies.Where(e => e.Name.ToLower(CultureInfo.InvariantCulture) == name.ToLower(CultureInfo.InvariantCulture));
+				enemies = enemies.Where(e => string.Equals(e.Name, name, StringComparison.InvariantCultureIgnoreCase));
 			if (spawnsetType != null)
 				enemies = enemies.Where(e => e.SpawnsetType == spawnsetType);
 

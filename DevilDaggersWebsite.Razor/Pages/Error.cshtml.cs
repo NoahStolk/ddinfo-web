@@ -6,7 +6,6 @@ using Microsoft.AspNetCore.Diagnostics;
 using Microsoft.AspNetCore.Hosting;
 using Microsoft.AspNetCore.Mvc.RazorPages;
 using System;
-using System.Globalization;
 using System.Threading.Tasks;
 
 namespace DevilDaggersWebsite.Razor.Pages
@@ -31,7 +30,7 @@ namespace DevilDaggersWebsite.Razor.Pages
 				};
 
 				IExceptionHandlerPathFeature? exceptionFeature = HttpContext.Features?.Get<IExceptionHandlerPathFeature>();
-				builder.AddFieldObject("Timestamp", DateTime.UtcNow.ToString(FormatUtils.DateTimeFullFormat, CultureInfo.InvariantCulture), true);
+				builder.AddFieldObject("Timestamp", DateTime.UtcNow.ToString(FormatUtils.DateTimeFullFormat), true);
 				builder.AddFieldObject("Route", exceptionFeature?.Path, true);
 				builder.AddFieldObject("Request query string", HttpContext.Request?.QueryString, true);
 				if (exceptionFeature != null)

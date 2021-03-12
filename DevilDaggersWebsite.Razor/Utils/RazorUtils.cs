@@ -4,7 +4,6 @@ using Microsoft.AspNetCore.Html;
 using Microsoft.AspNetCore.Mvc.Rendering;
 using System;
 using System.Collections.Generic;
-using System.Globalization;
 using System.IO;
 using System.Linq;
 using System.Reflection;
@@ -20,7 +19,7 @@ namespace DevilDaggersWebsite.Razor.Utils
 		{
 			try
 			{
-				BuildTime = File.GetLastWriteTime(Assembly.GetExecutingAssembly().Location).ToUniversalTime().ToString("yyyy-MM-dd HH:mm UTC", CultureInfo.InvariantCulture);
+				BuildTime = File.GetLastWriteTime(Assembly.GetExecutingAssembly().Location).ToUniversalTime().ToString("yyyy-MM-dd HH:mm UTC");
 			}
 			catch
 			{
@@ -53,7 +52,7 @@ namespace DevilDaggersWebsite.Razor.Utils
 
 		public static HtmlString GetCopyrightString(string name, int startYear, int endYear)
 		{
-			string year = startYear == endYear ? startYear.ToString(CultureInfo.InvariantCulture) : $"{startYear}-{endYear}";
+			string year = startYear == endYear ? startYear.ToString() : $"{startYear}-{endYear}";
 
 			return new($"&copy; DevilDaggers.info {year} {name}");
 		}
@@ -121,7 +120,7 @@ namespace DevilDaggersWebsite.Razor.Utils
 		}
 
 		public static string ToIdString(this string str)
-			=> $"{str.ToLower(CultureInfo.InvariantCulture).Replace(" ", "-", StringComparison.InvariantCulture)}";
+			=> $"{str.ToLower().Replace(" ", "-", StringComparison.InvariantCulture)}";
 
 		public static string S(this int value)
 			=> value == 1 ? string.Empty : "s";
@@ -136,7 +135,7 @@ namespace DevilDaggersWebsite.Razor.Utils
 				.Select(c => new SelectListItem
 				{
 					Text = c.ToString(),
-					Value = ((int)(object)c).ToString(CultureInfo.InvariantCulture),
+					Value = ((int)(object)c).ToString(),
 				})
 				.ToList();
 	}

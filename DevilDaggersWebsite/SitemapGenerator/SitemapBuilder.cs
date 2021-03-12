@@ -1,6 +1,5 @@
 ﻿using System;
 using System.Collections.Generic;
-using System.Globalization;
 using System.Linq;
 using System.Xml.Linq;
 
@@ -25,16 +24,16 @@ namespace DevilDaggersWebsite.SitemapGenerator
 
 		private XElement CreateItemElement(SitemapUrl sitemapUrl)
 		{
-			XElement itemElement = new(_ns + "url", new XElement(_ns + "loc", sitemapUrl.Url.ToLower(CultureInfo.InvariantCulture)));
+			XElement itemElement = new(_ns + "url", new XElement(_ns + "loc", sitemapUrl.Url.ToLower()));
 
 			if (sitemapUrl.Modified.HasValue)
-				itemElement.Add(new XElement(_ns + "lastmod", sitemapUrl.Modified.Value.ToString("yyyy-MM-ddTHH:mm:ss.fzzz", CultureInfo.InvariantCulture)));
+				itemElement.Add(new XElement(_ns + "lastmod", sitemapUrl.Modified.Value.ToString("yyyy-MM-ddTHH:mm:ss.fzzz")));
 
 			if (sitemapUrl.ChangeFrequency.HasValue)
-				itemElement.Add(new XElement(_ns + "changefreq", sitemapUrl.ChangeFrequency.Value.ToString().ToLower(CultureInfo.InvariantCulture)));
+				itemElement.Add(new XElement(_ns + "changefreq", sitemapUrl.ChangeFrequency.Value.ToString().ToLower()));
 
 			if (sitemapUrl.Priority.HasValue)
-				itemElement.Add(new XElement(_ns + "priority", sitemapUrl.Priority.Value.ToString("N1", CultureInfo.InvariantCulture)));
+				itemElement.Add(new XElement(_ns + "priority", sitemapUrl.Priority.Value.ToString("N1")));
 
 			return itemElement;
 		}
