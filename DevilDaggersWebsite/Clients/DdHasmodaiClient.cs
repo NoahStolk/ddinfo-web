@@ -129,7 +129,7 @@ namespace DevilDaggersWebsite.Clients
 			}
 		}
 
-		public static async Task<List<Entry>?> GetUsersByIds(List<int> ids)
+		public static async Task<List<Entry>?> GetUsersByIds(IEnumerable<int> ids)
 		{
 			try
 			{

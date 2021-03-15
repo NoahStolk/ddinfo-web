@@ -1,11 +1,11 @@
-﻿@model IDefaultLeaderboardPage
+﻿@model UserSettingsModel
 @using DevilDaggersCore.Game
 @using DevilDaggersCore.Utils
+@using DevilDaggersWebsite.Dto
 @using DevilDaggersWebsite.Entities
 @using DevilDaggersWebsite.Razor.Extensions
-@using DevilDaggersWebsite.Razor.PageModels
+@using DevilDaggersWebsite.Razor.Pages.Leaderboard
 @using DevilDaggersWebsite.Razor.Utils
-@using Microsoft.EntityFrameworkCore
 @inject DevilDaggersWebsite.Entities.ApplicationDbContext dbContext
 
 <div class="leaderboard-container flex-container flex-center">
@@ -27,13 +27,10 @@
 	</div>
 	<div class="leaderboard-body">
 		@{
-			IEnumerable<Donation> donations = dbContext.Donations.ToList();
-			IEnumerable<Player> players = dbContext.Players.Include(p => p.PlayerTitles).ThenInclude(pt => pt.Title).ToList();
-			foreach (Dto.Entry entry in Model.Leaderboard?.Entries ?? new())
+			List<Donation> donations = dbContext.Donations.ToList();
+			foreach (Entry entry in Model.Entries ?? new())
 			{
-				Player? player = players.FirstOrDefault(p => p.Id == entry.Id);
-				if (player == null || player.Dpi == null)
-					continue;
+				Player player = Model.Players.First(p => p.Id == entry.Id);
 
 				bool isUnanonymousDonator = !player.IsAnonymous && donations.Any(d => d.PlayerId == entry.Id);
 
