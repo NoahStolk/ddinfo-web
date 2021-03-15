@@ -26,7 +26,7 @@ namespace DevilDaggersWebsite.Razor.Pages.Leaderboard
 		{
 			Players = _dbContext.Players.Include(p => p.PlayerTitles).ThenInclude(pt => pt.Title).Where(p => p.Dpi != null).ToList();
 
-			Entries = await LeaderboardClient.GetUsersByIds(Players.Select(p => p.Id));
+			Entries = await LeaderboardClient.Instance.GetUsersByIds(Players.Select(p => p.Id));
 			if (Entries != null)
 				Entries = Entries.OrderBy(e => e.Rank).ToList();
 		}

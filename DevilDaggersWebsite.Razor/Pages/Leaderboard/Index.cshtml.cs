@@ -72,20 +72,20 @@ namespace DevilDaggersWebsite.Razor.Pages.Leaderboard
 			switch (LeaderboardSearchType)
 			{
 				case LeaderboardSearchType.Username:
-					List<Entry>? entries = await LeaderboardClient.GetUserSearch(Username);
+					List<Entry>? entries = await LeaderboardClient.Instance.GetUserSearch(Username);
 					Leaderboard = entries == null ? null : new() { Entries = entries };
 					break;
 				case LeaderboardSearchType.UserId:
-					Entry? entry = await LeaderboardClient.GetUserById(UserId);
+					Entry? entry = await LeaderboardClient.Instance.GetUserById(UserId);
 					Leaderboard = entry == null ? null : new Lb { Entries = new() { entry } };
 					break;
 				default:
-					Leaderboard = await LeaderboardClient.GetScores(Rank);
+					Leaderboard = await LeaderboardClient.Instance.GetScores(Rank);
 					if (Leaderboard != null && Rank > Leaderboard.Players - 99)
 					{
 						Rank = Leaderboard.Players - 99;
 						Leaderboard.Entries.Clear();
-						Leaderboard = await LeaderboardClient.GetScores(Rank);
+						Leaderboard = await LeaderboardClient.Instance.GetScores(Rank);
 					}
 
 					break;

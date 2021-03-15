@@ -76,9 +76,10 @@ namespace DevilDaggersWebsite.Transients
 				}
 				else
 				{
-					difference = worldRecords[i + 1].DateTime - wr.DateTime;
+					WorldRecord nextWr = worldRecords[i + 1];
+					difference = nextWr.DateTime - wr.DateTime;
 					firstHeld = wr.DateTime;
-					lastHeld = worldRecords[i + 1].DateTime;
+					lastHeld = nextWr.DateTime;
 				}
 
 				if (i != 0 && wr.Entry.Id != worldRecords[i - 1].Entry.Id)

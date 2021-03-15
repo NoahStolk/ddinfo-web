@@ -7,28 +7,37 @@ using System.Threading.Tasks;
 
 namespace DevilDaggersWebsite.Clients
 {
-	public static class LeaderboardClient
+	public sealed class LeaderboardClient
 	{
 		private const string _getScoresUrl = "http://dd.hasmodai.com/backend15/get_scores.php";
 		private const string _getUserSearchUrl = "http://dd.hasmodai.com/backend16/get_user_search_public.php";
 		private const string _getUsersByIdsUrl = "http://l.sorath.com/dd/get_multiple_users_by_id_public.php";
-		public static readonly string GetUserByIdUrl = "http://dd.hasmodai.com/backend16/get_user_by_id_public.php";
+		private const string _getUserByIdUrl = "http://dd.hasmodai.com/backend16/get_user_by_id_public.php";
 
-		public static async Task<Leaderboard?> GetScores(int rank)
+		private readonly HttpClient _httpClient;
+
+		private static readonly Lazy<LeaderboardClient> _lazy = new(() => new());
+
+		private LeaderboardClient()
+		{
+			_httpClient = new();
+		}
+
+		public static LeaderboardClient Instance => _lazy.Value;
+
+		private async Task<byte[]> ExecuteRequest(string url, params KeyValuePair<string?, string?>[] parameters)
+		{
+			using FormUrlEncodedContent content = new(parameters);
+			using HttpResponseMessage response = await _httpClient.PostAsync(url, content);
+			return await response.Content.ReadAsByteArrayAsync();
+		}
+
+		public async Task<Leaderboard?> GetScores(int rankStart)
 		{
 			try
 			{
-				List<KeyValuePair<string?, string?>> postValues = new()
-				{
-					new("user", "0"),
-					new("level", "survival"),
-					new("offset", (rank - 1).ToString()),
-				};
-
-				using FormUrlEncodedContent content = new(postValues);
-				using HttpClient client = new();
-				HttpResponseMessage resp = await client.PostAsync(_getScoresUrl, content);
-				byte[] data = await resp.Content.ReadAsByteArrayAsync();
+				string offset = (rankStart - 1).ToString();
+				byte[] data = await ExecuteRequest(_getScoresUrl, new KeyValuePair<string?, string?>("offset", offset));
 
 				Leaderboard leaderboard = new()
 				{
@@ -43,29 +52,29 @@ namespace DevilDaggersWebsite.Clients
 
 				int entryCount = BitConverter.ToInt16(data, 59);
 				int rankIterator = 0;
-				int bytePos = 83;
+				int bytePosition = 83;
 				while (rankIterator < entryCount)
 				{
 					leaderboard.Entries.Add(new()
 					{
-						Username = GetUsername(data, ref bytePos),
-						Rank = BitConverter.ToInt32(data, bytePos),
-						Id = BitConverter.ToInt32(data, bytePos + 4),
-						Time = BitConverter.ToInt32(data, bytePos + 8),
-						Kills = BitConverter.ToInt32(data, bytePos + 12),
-						Gems = BitConverter.ToInt32(data, bytePos + 24),
-						DaggersHit = BitConverter.ToInt32(data, bytePos + 20),
-						DaggersFired = BitConverter.ToInt32(data, bytePos + 16),
-						DeathType = BitConverter.ToInt16(data, bytePos + 28),
-						TimeTotal = BitConverter.ToUInt64(data, bytePos + 56),
-						KillsTotal = BitConverter.ToUInt64(data, bytePos + 40),
-						GemsTotal = BitConverter.ToUInt64(data, bytePos + 64),
-						DeathsTotal = BitConverter.ToUInt64(data, bytePos + 32),
-						DaggersHitTotal = BitConverter.ToUInt64(data, bytePos + 72),
-						DaggersFiredTotal = BitConverter.ToUInt64(data, bytePos + 48),
+						Username = GetUsername(data, ref bytePosition),
+						Rank = BitConverter.ToInt32(data, bytePosition),
+						Id = BitConverter.ToInt32(data, bytePosition + 4),
+						Time = BitConverter.ToInt32(data, bytePosition + 8),
+						Kills = BitConverter.ToInt32(data, bytePosition + 12),
+						Gems = BitConverter.ToInt32(data, bytePosition + 24),
+						DaggersHit = BitConverter.ToInt32(data, bytePosition + 20),
+						DaggersFired = BitConverter.ToInt32(data, bytePosition + 16),
+						DeathType = BitConverter.ToInt16(data, bytePosition + 28),
+						TimeTotal = BitConverter.ToUInt64(data, bytePosition + 56),
+						KillsTotal = BitConverter.ToUInt64(data, bytePosition + 40),
+						GemsTotal = BitConverter.ToUInt64(data, bytePosition + 64),
+						DeathsTotal = BitConverter.ToUInt64(data, bytePosition + 32),
+						DaggersHitTotal = BitConverter.ToUInt64(data, bytePosition + 72),
+						DaggersFiredTotal = BitConverter.ToUInt64(data, bytePosition + 48),
 					});
 
-					bytePos += 84;
+					bytePosition += 84;
 					rankIterator++;
 				}
 
@@ -77,47 +86,39 @@ namespace DevilDaggersWebsite.Clients
 			}
 		}
 
-		public static async Task<List<Entry>?> GetUserSearch(string search)
+		public async Task<List<Entry>?> GetUserSearch(string search)
 		{
 			try
 			{
-				List<KeyValuePair<string?, string?>> postValues = new()
-				{
-					new("search", search),
-				};
-
-				using FormUrlEncodedContent content = new(postValues);
-				using HttpClient client = new();
-				HttpResponseMessage resp = await client.PostAsync(_getUserSearchUrl, content);
-				byte[] data = await resp.Content.ReadAsByteArrayAsync();
-
-				List<Entry> entries = new();
+				byte[] data = await ExecuteRequest(_getUserSearchUrl, new KeyValuePair<string?, string?>("search", search));
 
 				int entryCount = BitConverter.ToInt16(data, 11);
 				int rankIterator = 0;
-				int bytePos = 19;
+				int bytePosition = 19;
+
+				List<Entry> entries = new();
 				while (rankIterator < entryCount)
 				{
 					entries.Add(new()
 					{
-						Username = GetUsername(data, ref bytePos),
-						Rank = BitConverter.ToInt32(data, bytePos),
-						Id = BitConverter.ToInt32(data, bytePos + 4),
-						Time = BitConverter.ToInt32(data, bytePos + 12),
-						Kills = BitConverter.ToInt32(data, bytePos + 16),
-						Gems = BitConverter.ToInt32(data, bytePos + 28),
-						DaggersHit = BitConverter.ToInt32(data, bytePos + 24),
-						DaggersFired = BitConverter.ToInt32(data, bytePos + 20),
-						DeathType = BitConverter.ToInt16(data, bytePos + 32),
-						TimeTotal = BitConverter.ToUInt64(data, bytePos + 60),
-						KillsTotal = BitConverter.ToUInt64(data, bytePos + 44),
-						GemsTotal = BitConverter.ToUInt64(data, bytePos + 68),
-						DeathsTotal = BitConverter.ToUInt64(data, bytePos + 36),
-						DaggersHitTotal = BitConverter.ToUInt64(data, bytePos + 76),
-						DaggersFiredTotal = BitConverter.ToUInt64(data, bytePos + 52),
+						Username = GetUsername(data, ref bytePosition),
+						Rank = BitConverter.ToInt32(data, bytePosition),
+						Id = BitConverter.ToInt32(data, bytePosition + 4),
+						Time = BitConverter.ToInt32(data, bytePosition + 12),
+						Kills = BitConverter.ToInt32(data, bytePosition + 16),
+						Gems = BitConverter.ToInt32(data, bytePosition + 28),
+						DaggersHit = BitConverter.ToInt32(data, bytePosition + 24),
+						DaggersFired = BitConverter.ToInt32(data, bytePosition + 20),
+						DeathType = BitConverter.ToInt16(data, bytePosition + 32),
+						TimeTotal = BitConverter.ToUInt64(data, bytePosition + 60),
+						KillsTotal = BitConverter.ToUInt64(data, bytePosition + 44),
+						GemsTotal = BitConverter.ToUInt64(data, bytePosition + 68),
+						DeathsTotal = BitConverter.ToUInt64(data, bytePosition + 36),
+						DaggersHitTotal = BitConverter.ToUInt64(data, bytePosition + 76),
+						DaggersFiredTotal = BitConverter.ToUInt64(data, bytePosition + 52),
 					});
 
-					bytePos += 88;
+					bytePosition += 88;
 					rankIterator++;
 				}
 
@@ -129,45 +130,36 @@ namespace DevilDaggersWebsite.Clients
 			}
 		}
 
-		public static async Task<List<Entry>?> GetUsersByIds(IEnumerable<int> ids)
+		public async Task<List<Entry>?> GetUsersByIds(IEnumerable<int> ids)
 		{
 			try
 			{
-				List<KeyValuePair<string?, string?>> postValues = new()
-				{
-					new("uid", string.Join(',', ids)),
-				};
+				byte[] data = await ExecuteRequest(_getUsersByIdsUrl, new KeyValuePair<string?, string?>("uid", string.Join(',', ids)));
 
-				using FormUrlEncodedContent content = new(postValues);
-				using HttpClient client = new();
-				HttpResponseMessage resp = await client.PostAsync(_getUsersByIdsUrl, content);
-				byte[] data = await resp.Content.ReadAsByteArrayAsync();
-
+				int bytePosition = 19;
 				List<Entry> entries = new();
-
-				int bytePos = 19;
-				while (bytePos < data.Length)
+				while (bytePosition < data.Length)
 				{
 					entries.Add(new()
 					{
-						Username = GetUsername(data, ref bytePos),
-						Rank = BitConverter.ToInt32(data, bytePos),
-						Id = BitConverter.ToInt32(data, bytePos + 4),
-						Time = BitConverter.ToInt32(data, bytePos + 12),
-						Kills = BitConverter.ToInt32(data, bytePos + 16),
-						Gems = BitConverter.ToInt32(data, bytePos + 28),
-						DaggersHit = BitConverter.ToInt32(data, bytePos + 24),
-						DaggersFired = BitConverter.ToInt32(data, bytePos + 20),
-						DeathType = BitConverter.ToInt16(data, bytePos + 32),
-						TimeTotal = BitConverter.ToUInt64(data, bytePos + 60),
-						KillsTotal = BitConverter.ToUInt64(data, bytePos + 44),
-						GemsTotal = BitConverter.ToUInt64(data, bytePos + 68),
-						DeathsTotal = BitConverter.ToUInt64(data, bytePos + 36),
-						DaggersHitTotal = BitConverter.ToUInt64(data, bytePos + 76),
-						DaggersFiredTotal = BitConverter.ToUInt64(data, bytePos + 52),
+						Username = GetUsername(data, ref bytePosition),
+						Rank = BitConverter.ToInt32(data, bytePosition),
+						Id = BitConverter.ToInt32(data, bytePosition + 4),
+						Time = BitConverter.ToInt32(data, bytePosition + 12),
+						Kills = BitConverter.ToInt32(data, bytePosition + 16),
+						Gems = BitConverter.ToInt32(data, bytePosition + 28),
+						DaggersHit = BitConverter.ToInt32(data, bytePosition + 24),
+						DaggersFired = BitConverter.ToInt32(data, bytePosition + 20),
+						DeathType = BitConverter.ToInt16(data, bytePosition + 32),
+						TimeTotal = BitConverter.ToUInt64(data, bytePosition + 60),
+						KillsTotal = BitConverter.ToUInt64(data, bytePosition + 44),
+						GemsTotal = BitConverter.ToUInt64(data, bytePosition + 68),
+						DeathsTotal = BitConverter.ToUInt64(data, bytePosition + 36),
+						DaggersHitTotal = BitConverter.ToUInt64(data, bytePosition + 76),
+						DaggersFiredTotal = BitConverter.ToUInt64(data, bytePosition + 52),
 					});
 
-					bytePos += 88;
+					bytePosition += 88;
 				}
 
 				return entries;
@@ -178,22 +170,13 @@ namespace DevilDaggersWebsite.Clients
 			}
 		}
 
-		public static async Task<Entry?> GetUserById(int userId)
+		public async Task<Entry?> GetUserById(int userId)
 		{
 			try
 			{
-				List<KeyValuePair<string?, string?>> postValues = new()
-				{
-					new("uid", userId.ToString()),
-				};
-
-				using FormUrlEncodedContent content = new(postValues);
-				using HttpClient client = new();
-				HttpResponseMessage response = await client.PostAsync(GetUserByIdUrl, content);
-				byte[] data = await response.Content.ReadAsByteArrayAsync();
+				byte[] data = await ExecuteRequest(_getUserByIdUrl, new KeyValuePair<string?, string?>("uid", userId.ToString()));
 
 				int bytePosition = 19;
-
 				return new Entry
 				{
 					Username = GetUsername(data, ref bytePosition),
