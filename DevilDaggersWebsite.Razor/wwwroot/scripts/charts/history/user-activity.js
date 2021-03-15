@@ -19,8 +19,15 @@ $.getJSON("/api/leaderboard-history/user-activity?UserId=" + getUrlParameter("Us
 		const periodLengthInMilliseconds = Math.abs(dateEnd - dateStart);
 		const periodLengthInDays = Math.max(1, periodLengthInMilliseconds / dayLengthInMilliseconds);
 
-		const deathsInThisPeriod = deathsNext - deaths;
-		const approximateDailyDeaths = periodLengthInDays === 0 ? 0 : deathsInThisPeriod / periodLengthInDays;
+		let deathsInThisPeriod = deathsNext - deaths;
+		let approximateDailyDeaths = periodLengthInDays === 0 ? 0 : deathsInThisPeriod / periodLengthInDays;
+
+		// Workaround for pocket and Ravenholmzombies who switched accounts.
+		if (approximateDailyDeaths > 234) {
+			deathsInThisPeriod = 0;
+			approximateDailyDeaths = 0;
+		}
+
 		activity.push([dateStart, approximateDailyDeaths, deathsInThisPeriod, dateEnd]);
 
 		if (approximateDailyDeaths > maxDeaths) {
