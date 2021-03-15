@@ -30,7 +30,7 @@ namespace DevilDaggersWebsite.Tasks
 				string? historyFileName = GetHistoryFileNameFromDate(LastTriggered);
 				if (historyFileName == null)
 				{
-					Dto.Leaderboard? lb = await DdHasmodaiClient.GetScores(1);
+					Dto.Leaderboard? lb = await LeaderboardClient.GetScores(1);
 					if (lb != null)
 					{
 						string fileName = $"{DateTime.UtcNow:yyyyMMddHHmm}.json";

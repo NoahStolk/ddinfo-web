@@ -7,7 +7,7 @@ using System.Threading.Tasks;
 
 namespace DevilDaggersWebsite.Clients
 {
-	public static class DdHasmodaiClient
+	public static class LeaderboardClient
 	{
 		private const string _getScoresUrl = "http://dd.hasmodai.com/backend15/get_scores.php";
 		private const string _getUserSearchUrl = "http://dd.hasmodai.com/backend16/get_user_search_public.php";

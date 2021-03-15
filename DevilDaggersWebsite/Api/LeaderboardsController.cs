@@ -19,7 +19,7 @@ namespace DevilDaggersWebsite.Api
 		{
 			if (rankStart <= 0)
 				return new BadRequestObjectResult(new ProblemDetails { Title = $"Incorrect parameter {nameof(rankStart)} '{rankStart}' specified. Value should be at least 1." });
-			return await DdHasmodaiClient.GetScores(rankStart);
+			return await LeaderboardClient.GetScores(rankStart);
 		}
 
 		[HttpGet("user/by-id")]
@@ -27,7 +27,7 @@ namespace DevilDaggersWebsite.Api
 		[ProducesResponseType(StatusCodes.Status400BadRequest)]
 		public async Task<ActionResult<Entry>> GetUserById([Required] int userId)
 		{
-			Entry? entry = await DdHasmodaiClient.GetUserById(userId);
+			Entry? entry = await LeaderboardClient.GetUserById(userId);
 			return entry == null
 				? new NotFoundObjectResult(new ProblemDetails { Title = $"Entry with {nameof(userId)} '{userId}' was not found." })
 				: (ActionResult<Entry>)entry;
@@ -41,7 +41,7 @@ namespace DevilDaggersWebsite.Api
 			if (string.IsNullOrEmpty(username) || username.Length < 3)
 				return new BadRequestObjectResult(new ProblemDetails { Title = $"Incorrect parameter {nameof(username)} '{username}' specified. Value should be at least 3 characters in length." });
 
-			return await DdHasmodaiClient.GetUserSearch(username);
+			return await LeaderboardClient.GetUserSearch(username);
 		}
 
 		[HttpGet("user/by-rank")]
@@ -49,7 +49,7 @@ namespace DevilDaggersWebsite.Api
 		[ProducesResponseType(StatusCodes.Status400BadRequest)]
 		public async Task<ActionResult<Entry>> GetUserByRank([Required] int rank)
 		{
-			List<Entry> entries = (await DdHasmodaiClient.GetScores(rank))?.Entries ?? new();
+			List<Entry> entries = (await LeaderboardClient.GetScores(rank))?.Entries ?? new();
 			if (entries.Count == 0)
 				return new NotFoundObjectResult(new ProblemDetails { Title = $"Entry with {nameof(rank)} '{rank}' was not found." });
 			return entries[0];
