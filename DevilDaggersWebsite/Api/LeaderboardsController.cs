@@ -36,12 +36,12 @@ namespace DevilDaggersWebsite.Api
 		[HttpGet("user/by-username")]
 		[ProducesResponseType(StatusCodes.Status200OK)]
 		[ProducesResponseType(StatusCodes.Status400BadRequest)]
-		public async Task<ActionResult<List<Entry>>> GetUserByUsername([Required] string username)
+		public async Task<ActionResult<List<Entry>?>> GetUserByUsername([Required] string username)
 		{
 			if (string.IsNullOrEmpty(username) || username.Length < 3)
 				return new BadRequestObjectResult(new ProblemDetails { Title = $"Incorrect parameter {nameof(username)} '{username}' specified. Value should be at least 3 characters in length." });
 
-			return (await DdHasmodaiClient.GetUserSearch(username))?.Entries ?? new();
+			return await DdHasmodaiClient.GetUserSearch(username);
 		}
 
 		[HttpGet("user/by-rank")]

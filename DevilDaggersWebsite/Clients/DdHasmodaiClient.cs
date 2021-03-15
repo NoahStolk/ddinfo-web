@@ -77,7 +77,7 @@ namespace DevilDaggersWebsite.Clients
 			}
 		}
 
-		public static async Task<Leaderboard?> GetUserSearch(string search)
+		public static async Task<List<Entry>?> GetUserSearch(string search)
 		{
 			try
 			{
@@ -91,14 +91,14 @@ namespace DevilDaggersWebsite.Clients
 				HttpResponseMessage resp = await client.PostAsync(_getUserSearchUrl, content);
 				byte[] data = await resp.Content.ReadAsByteArrayAsync();
 
-				Leaderboard leaderboard = new();
+				List<Entry> entries = new();
 
 				int entryCount = BitConverter.ToInt16(data, 11);
 				int rankIterator = 0;
 				int bytePos = 19;
 				while (rankIterator < entryCount)
 				{
-					leaderboard.Entries.Add(new()
+					entries.Add(new()
 					{
 						Username = GetUsername(data, ref bytePos),
 						Rank = BitConverter.ToInt32(data, bytePos),
@@ -121,7 +121,7 @@ namespace DevilDaggersWebsite.Clients
 					rankIterator++;
 				}
 
-				return leaderboard;
+				return entries;
 			}
 			catch
 			{
