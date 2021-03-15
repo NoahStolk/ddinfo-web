@@ -3,36 +3,36 @@
 $.getJSON("/api/leaderboard-history/user-activity?UserId=" + getUrlParameter("UserId"), function (data) {
 	const activity = [];
 	let activityIndex = 0;
-	let deathsPrevious = 0;
-	let maxDeaths = 0;
+	let deathsNext = 0;
+	let maxDeaths = 0; // Used for determining the highest value of the graph.
 	let i = 0;
 	$.each(data, function (_, deaths) {
-		let length = Object.keys(data).length;
+		const length = Object.keys(data).length;
 
 		const dateStart = new Date(Object.keys(data)[i]);
 		const dateEnd = i >= length - 1 ? Date.now() : new Date(Object.keys(data)[i + 1]);
-		i++;
-
-		if (activityIndex === 0)
-			deathsPrevious = deaths;
+		if (activityIndex === length - 1)
+			deathsNext = deaths;
+		else
+			deathsNext = Object.values(data)[i + 1];
 
 		const periodLengthInMilliseconds = Math.abs(dateEnd - dateStart);
 		const periodLengthInDays = Math.max(1, periodLengthInMilliseconds / dayLengthInMilliseconds);
 
-		const newDeaths = deaths - deathsPrevious;
-		const approximateDailyDeaths = periodLengthInDays === 0 ? 0 : newDeaths / periodLengthInDays;
-		activity.push([dateStart, approximateDailyDeaths, newDeaths, dateEnd]);
+		const deathsInThisPeriod = deathsNext - deaths;
+		const approximateDailyDeaths = periodLengthInDays === 0 ? 0 : deathsInThisPeriod / periodLengthInDays;
+		activity.push([dateStart, approximateDailyDeaths, deathsInThisPeriod, dateEnd]);
 
 		if (approximateDailyDeaths > maxDeaths) {
 			maxDeaths = approximateDailyDeaths;
 		}
 
-		deathsPrevious = deaths;
-
 		if (++activityIndex === length) {
 			// Ugly way to make sure no dot is visible
 			activity.push([maxDate + 10000000000, deaths]);
 		}
+
+		i++;
 	});
 
 	const minDate = activity[0][0];
