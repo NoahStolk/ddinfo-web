@@ -50,10 +50,10 @@
 	</div>
 	<div class="leaderboard-body">
 		@{
-			GameVersion gameVersion = GameInfo.GetGameVersionFromDate(Model.Leaderboard!.DateTime) ?? GameVersion.V1;
+			GameVersion gameVersion = GameInfo.GetGameVersionFromDate(Model.Leaderboard?.DateTime ?? DateTime.UtcNow) ?? GameVersion.V1;
 			IEnumerable<Donation> donations = dbContext.Donations.ToList();
 			IEnumerable<Player> players = dbContext.Players.Include(p => p.PlayerTitles).ThenInclude(pt => pt.Title).ToList();
-			foreach (Dto.Entry entry in Model.Leaderboard!.Entries)
+			foreach (Dto.Entry entry in Model.Leaderboard?.Entries ?? new())
 			{
 				Player? player = players.FirstOrDefault(p => p.Id == entry.Id);
 
