@@ -31,7 +31,7 @@ namespace DevilDaggersWebsite.Api
 		[ProducesResponseType(StatusCodes.Status400BadRequest)]
 		public SortedDictionary<DateTime, Entry> GetUserProgressionById([Required] int userId)
 		{
-			SortedDictionary<DateTime, Entry> data = new SortedDictionary<DateTime, Entry>();
+			SortedDictionary<DateTime, Entry> data = new();
 
 			if (userId != 0)
 			{
@@ -64,7 +64,7 @@ namespace DevilDaggersWebsite.Api
 		[ProducesResponseType(StatusCodes.Status400BadRequest)]
 		public (DateTime From, DateTime To) GetLatestDatePlayed([Required] int userId)
 		{
-			List<(DateTime DateTime, Entry Entry)> entries = new List<(DateTime, Entry)>();
+			List<(DateTime DateTime, Entry Entry)> entries = new();
 			foreach (string leaderboardHistoryPath in Io.Directory.GetFiles(Io.Path.Combine(_env.WebRootPath, "leaderboard-history"), "*.json"))
 			{
 				Leaderboard lb = JsonConvert.DeserializeObject<Leaderboard>(Io.File.ReadAllText(leaderboardHistoryPath, Encoding.UTF8));
@@ -89,7 +89,7 @@ namespace DevilDaggersWebsite.Api
 		[ProducesResponseType(StatusCodes.Status400BadRequest)]
 		public Dictionary<DateTime, ulong> GetUserActivity([Required] int userId)
 		{
-			Dictionary<DateTime, ulong> data = new Dictionary<DateTime, ulong>();
+			Dictionary<DateTime, ulong> data = new();
 			foreach (string leaderboardHistoryPath in Io.Directory.GetFiles(Io.Path.Combine(_env.WebRootPath, "leaderboard-history"), "*.json"))
 			{
 				Leaderboard lb = JsonConvert.DeserializeObject<Leaderboard>(Io.File.ReadAllText(leaderboardHistoryPath, Encoding.UTF8));
