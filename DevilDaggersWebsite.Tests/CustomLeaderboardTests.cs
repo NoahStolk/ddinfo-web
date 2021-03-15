@@ -34,10 +34,10 @@ namespace DevilDaggersWebsite.Tests
 			SetUpInMemoryDatabase(options);
 			_dbContext = new ApplicationDbContext(options);
 
-			Mock<IWebHostEnvironment> mockEnvironment = new Mock<IWebHostEnvironment>();
+			Mock<IWebHostEnvironment> mockEnvironment = new();
 			mockEnvironment.Setup(m => m.EnvironmentName).Returns("Hosting:UnitTestEnvironment");
 
-			Mock<ToolHelper> toolHelper = new Mock<ToolHelper>(mockEnvironment.Object);
+			Mock<ToolHelper> toolHelper = new(mockEnvironment.Object);
 			_customLeaderboardsController = new CustomLeaderboardsController(_dbContext, mockEnvironment.Object, toolHelper.Object);
 		}
 #pragma warning restore S3963 // "static" fields should be initialized inline
@@ -67,7 +67,7 @@ namespace DevilDaggersWebsite.Tests
 			};
 			uploadRequest.Validation = GetValidation(uploadRequest);
 
-			Dto.UploadSuccess uploadSuccess = (await _customLeaderboardsController.ProcessUploadRequest(uploadRequest, new List<(string Name, Spawnset Spawnset)> { ("Empty", emptySpawnset) })).Value;
+			Dto.UploadSuccess uploadSuccess = (await _customLeaderboardsController.ProcessUploadRequest(uploadRequest)).Value;
 
 			Assert.AreEqual(1, uploadSuccess.TotalPlayers);
 			Assert.IsTrue(uploadSuccess.Message.StartsWith("No new highscore", StringComparison.InvariantCulture));
@@ -89,7 +89,7 @@ namespace DevilDaggersWebsite.Tests
 			};
 			uploadRequest.Validation = GetValidation(uploadRequest);
 
-			Dto.UploadSuccess uploadSuccess = (await _customLeaderboardsController.ProcessUploadRequest(uploadRequest, new List<(string Name, Spawnset Spawnset)> { ("Empty", emptySpawnset) })).Value;
+			Dto.UploadSuccess uploadSuccess = (await _customLeaderboardsController.ProcessUploadRequest(uploadRequest)).Value;
 
 			Assert.AreEqual(1, uploadSuccess.TotalPlayers);
 			Assert.IsTrue(uploadSuccess.Message.StartsWith("NEW HIGHSCORE", StringComparison.InvariantCulture));
@@ -111,7 +111,7 @@ namespace DevilDaggersWebsite.Tests
 			};
 			uploadRequest.Validation = GetValidation(uploadRequest);
 
-			Dto.UploadSuccess uploadSuccess = (await _customLeaderboardsController.ProcessUploadRequest(uploadRequest, new List<(string Name, Spawnset Spawnset)> { ("Empty", emptySpawnset) })).Value;
+			Dto.UploadSuccess uploadSuccess = (await _customLeaderboardsController.ProcessUploadRequest(uploadRequest)).Value;
 
 			Assert.AreEqual(2, uploadSuccess.TotalPlayers);
 			Assert.IsTrue(uploadSuccess.Message.StartsWith("Welcome", StringComparison.InvariantCulture));
@@ -133,7 +133,7 @@ namespace DevilDaggersWebsite.Tests
 			};
 			uploadRequest.Validation = GetValidation(uploadRequest);
 
-			Dto.UploadSuccess uploadSuccess = (await _customLeaderboardsController.ProcessUploadRequest(uploadRequest, new List<(string Name, Spawnset Spawnset)> { ("Empty", emptySpawnset) })).Value;
+			Dto.UploadSuccess uploadSuccess = (await _customLeaderboardsController.ProcessUploadRequest(uploadRequest)).Value;
 
 			// TODO: Clear the database before running this test.
 			// Assert.AreEqual(2, uploadSuccess.TotalPlayers);
@@ -156,7 +156,7 @@ namespace DevilDaggersWebsite.Tests
 			};
 			uploadRequest.Validation = GetValidation(uploadRequest);
 
-			ActionResult<Dto.UploadSuccess> response = await _customLeaderboardsController.ProcessUploadRequest(uploadRequest, new List<(string Name, Spawnset Spawnset)> { ("Empty", emptySpawnset) });
+			ActionResult<Dto.UploadSuccess> response = await _customLeaderboardsController.ProcessUploadRequest(uploadRequest);
 
 			Assert.IsInstanceOfType(response.Result, typeof(BadRequestObjectResult));
 			BadRequestObjectResult badRequest = (BadRequestObjectResult)response.Result;
@@ -183,7 +183,7 @@ namespace DevilDaggersWebsite.Tests
 				Validation = "Malformed validation",
 			};
 
-			ActionResult<Dto.UploadSuccess> response = await _customLeaderboardsController.ProcessUploadRequest(uploadRequest, new List<(string Name, Spawnset Spawnset)> { ("Empty", emptySpawnset) });
+			ActionResult<Dto.UploadSuccess> response = await _customLeaderboardsController.ProcessUploadRequest(uploadRequest);
 
 			Assert.IsInstanceOfType(response.Result, typeof(BadRequestObjectResult));
 			BadRequestObjectResult badRequest = (BadRequestObjectResult)response.Result;
