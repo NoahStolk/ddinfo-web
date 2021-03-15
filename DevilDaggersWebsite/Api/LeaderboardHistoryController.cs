@@ -90,12 +90,16 @@ namespace DevilDaggersWebsite.Api
 		public Dictionary<DateTime, ulong> GetUserActivity([Required] int userId)
 		{
 			Dictionary<DateTime, ulong> data = new();
+			ulong deathsTotal = 0;
 			foreach (string leaderboardHistoryPath in Io.Directory.GetFiles(Io.Path.Combine(_env.WebRootPath, "leaderboard-history"), "*.json"))
 			{
 				Leaderboard lb = JsonConvert.DeserializeObject<Leaderboard>(Io.File.ReadAllText(leaderboardHistoryPath, Encoding.UTF8));
 				Entry? entry = lb.Entries.Find(e => e.Id == userId);
-				if (entry?.DeathsTotal > 0)
+				if (entry?.DeathsTotal > 0 && entry.DeathsTotal != deathsTotal)
+				{
+					deathsTotal = entry.DeathsTotal;
 					data.Add(lb.DateTime, entry.DeathsTotal);
+				}
 			}
 
 			return data;
