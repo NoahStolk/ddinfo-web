@@ -98,6 +98,8 @@ namespace DevilDaggersWebsite.Razor.PageModels
 
 					_entity.CreateManyToManyRelations(DbContext, AdminDto);
 					DbContext.SaveChanges();
+
+					// TODO: Send edit audit log message.
 				}
 				catch (DbUpdateConcurrencyException) when (!DbSet.Any(e => e.Id == _entity.Id))
 				{
@@ -124,6 +126,8 @@ namespace DevilDaggersWebsite.Razor.PageModels
 
 				_entity.CreateManyToManyRelations(DbContext, AdminDto);
 				DbContext.SaveChanges();
+
+				// TODO: Send create audit log message.
 			}
 
 			return RedirectToPage("./Index");

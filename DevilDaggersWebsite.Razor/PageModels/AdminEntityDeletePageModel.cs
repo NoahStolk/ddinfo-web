@@ -38,6 +38,8 @@ namespace DevilDaggersWebsite.Razor.PageModels
 			{
 				DbSet.Remove(Entity);
 				await DbContext.SaveChangesAsync();
+
+				// TODO: Send delete audit log message.
 			}
 
 			return RedirectToPage("./Index");
