@@ -1,0 +1,13 @@
+﻿@model IEntryModel
+@using DevilDaggersWebsite.Razor.Models
+
+<div class="text-right">
+	@if (Model.PlayerId != 0)
+	{
+		<span data-toggle="tooltip" title="ID: @Model.PlayerId (click to copy)" onclick="copyToClipboard('@Model.PlayerId')" class="leaderboard-tooltip">@Model.Rank</span>
+	}
+	else
+	{
+		<span style="color: #ff0;" data-toggle="tooltip" title="ID: ???" class="leaderboard-tooltip">@Model.Rank</span>
+	}
+</div>

@@ -72,9 +72,7 @@
 
 				<div class="sort" @cem.HtmlData>
 					<div class="leaderboard-row pointer flex-container" id="@(rank)-row">
-						<div class="text-right">
-							<span data-toggle="tooltip" title="ID: @entry.PlayerId (click to copy)" onclick="copyToClipboard('@entry.PlayerId')" class="leaderboard-tooltip">@rank</span>
-						</div>
+						@await Html.PartialAsync("Partials/EntryIdPartial", cem)
 						@await Html.PartialAsync("Partials/EntryFlagPartial", cem)
 						@await Html.PartialAsync("Partials/EntryUsernamePartial", cem)
 						<div class="text-right @cem.DaggerColor">@(entry.Time.FormatTimeInteger())</div>

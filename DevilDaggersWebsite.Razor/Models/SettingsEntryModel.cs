@@ -13,6 +13,9 @@ namespace DevilDaggersWebsite.Razor.Models
 	{
 		public SettingsEntryModel(Entry entry, Player player, IEnumerable<Donation> donations)
 		{
+			PlayerId = entry.Id;
+			Rank = entry.Rank;
+
 			IsBanned = player.IsBanned;
 			BanDescription = player.BanDescription;
 
@@ -45,6 +48,9 @@ hand='{(!player.RightHanded.HasValue ? -1 : player.RightHanded.Value ? 1 : 0)}'
 flash='{(!player.FlashEnabled.HasValue ? -1 : player.FlashEnabled.Value ? 1 : 0)}'
 gamma='{player.Gamma * 1000 ?? 0}'");
 		}
+
+		public int PlayerId { get; }
+		public int Rank { get; }
 
 		public bool IsBanned { get; }
 		public string? BanDescription { get; }

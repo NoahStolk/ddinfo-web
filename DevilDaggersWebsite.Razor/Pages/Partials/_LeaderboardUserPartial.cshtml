@@ -58,16 +58,7 @@
 
 				<div class="sort @em.BanString" @em.HtmlData>
 					<div class="leaderboard-row pointer @(showMoreStats ? "row-more-stats" : "") flex-container" id="@(entry.Rank)-row">
-						<div class="text-right">
-							@if (entry.Id != 0)
-							{
-								<span data-toggle="tooltip" title="ID: @entry.Id (click to copy)" onclick="copyToClipboard('@entry.Id')" class="leaderboard-tooltip">@em.Rank</span>
-							}
-							else
-							{
-								<span style="color: #ff0;" data-toggle="tooltip" title="ID: ???" class="leaderboard-tooltip">@em.Rank</span>
-							}
-						</div>
+						@await Html.PartialAsync("Partials/EntryIdPartial", em)
 						@await Html.PartialAsync("Partials/EntryFlagPartial", em)
 						@await Html.PartialAsync("Partials/EntryUsernamePartial", em)
 						<div class="text-right @em.DaggerColor">@em.Time</div>

@@ -34,7 +34,7 @@
 
 				<div class="sort" @sem.HtmlData>
 					<div class="leaderboard-row pointer flex-container" id="@(entry.Rank)-row">
-						<div class="text-right"><span data-toggle="tooltip" title="ID: @entry.Id (click to copy)" onclick="copyToClipboard('@entry.Id')" class="leaderboard-tooltip">@entry.Rank</span></div>
+						@await Html.PartialAsync("Partials/EntryIdPartial", sem)
 						@await Html.PartialAsync("Partials/EntryFlagPartial", sem)
 						@await Html.PartialAsync("Partials/EntryUsernamePartial", sem)
 						<div class="text-right @sem.DaggerColor">@(entry.Time.FormatTimeInteger())</div>

@@ -15,6 +15,9 @@ namespace DevilDaggersWebsite.Razor.Models
 	{
 		public EntryModel(Entry entry, Player? player, IEnumerable<Donation> donations, bool isHistory, GameVersion gameVersion)
 		{
+			PlayerId = entry.Id;
+			Rank = entry.Rank;
+
 			Titles = Array.Empty<string>();
 			if (player != null)
 			{
@@ -40,7 +43,7 @@ namespace DevilDaggersWebsite.Razor.Models
 
 			BanString = player?.IsBanned ?? false ? "ban" : string.Empty;
 
-			Rank = entry.Rank.ToString();
+			Rank = entry.Rank;
 			Time = entry.Time.FormatTimeInteger();
 			Kills = entry.Kills.ToString(FormatUtils.LeaderboardIntFormat);
 			Gems = entry.Gems.ToString(FormatUtils.LeaderboardIntFormat);
@@ -95,6 +98,8 @@ time-by-death='{entry.Time * 10000f / deathsTotal:0}'");
 		public bool IsBanned { get; }
 		public string? BanDescription { get; }
 
+		public int PlayerId { get; }
+		public int Rank { get; }
 		public string Username { get; }
 		public string FlagCode { get; }
 		public string CountryName { get; }
@@ -103,7 +108,6 @@ time-by-death='{entry.Time * 10000f / deathsTotal:0}'");
 		public string DeathStyle { get; }
 		public string DeathName { get; }
 		public string BanString { get; }
-		public string Rank { get; }
 		public string Time { get; }
 		public string Kills { get; }
 		public string Gems { get; }

@@ -2,6 +2,9 @@
 {
 	public interface IEntryModel
 	{
+		public int PlayerId { get; }
+		public int Rank { get; }
+
 		public bool IsBanned { get; }
 		public string? BanDescription { get; }
 
