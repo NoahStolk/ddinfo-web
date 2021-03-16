@@ -23,11 +23,14 @@ namespace DevilDaggersDiscordBot
 					Token = token,
 					TokenType = TokenType.Bot,
 				});
-				DiscordLogger.Instance.CustomLeaderboardsChannel = await client.GetChannelAsync(ServerConstants.CustomLeaderboardsChannelId);
+
+				DiscordLogger.Instance.AuditLogMonitoringChannel = await client.GetChannelAsync(ServerConstants.AuditLogMonitoringChannelId);
 				DiscordLogger.Instance.CustomLeaderboardMonitoringChannel = await client.GetChannelAsync(ServerConstants.CustomLeaderboardMonitoringChannelId);
 				DiscordLogger.Instance.ErrorMonitoringChannel = await client.GetChannelAsync(ServerConstants.ErrorMonitoringChannelId);
 				DiscordLogger.Instance.TaskMonitoringChannel = await client.GetChannelAsync(ServerConstants.TaskMonitoringChannelId);
 				DiscordLogger.Instance.TestMonitoringChannel = await client.GetChannelAsync(ServerConstants.TestMonitoringChannelId);
+
+				DiscordLogger.Instance.CustomLeaderboardsChannel = await client.GetChannelAsync(ServerConstants.CustomLeaderboardsChannelId);
 
 				client.MessageCreated += async (client, e) =>
 				{

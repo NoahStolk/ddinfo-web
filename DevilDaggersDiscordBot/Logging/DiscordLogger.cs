@@ -16,11 +16,13 @@ namespace DevilDaggersDiscordBot.Logging
 
 		public static DiscordLogger Instance => _lazy.Value;
 
-		internal DiscordChannel? CustomLeaderboardsChannel { get; set; }
+		internal DiscordChannel? AuditLogMonitoringChannel { get; set; }
 		internal DiscordChannel? CustomLeaderboardMonitoringChannel { get; set; }
 		internal DiscordChannel? ErrorMonitoringChannel { get; set; }
 		internal DiscordChannel? TaskMonitoringChannel { get; set; }
 		internal DiscordChannel? TestMonitoringChannel { get; set; }
+
+		internal DiscordChannel? CustomLeaderboardsChannel { get; set; }
 
 		public async Task TryLogException(string title, string environmentName, Exception ex)
 		{
@@ -50,10 +52,13 @@ namespace DevilDaggersDiscordBot.Logging
 		{
 			DiscordChannel? channel = loggingChannel switch
 			{
-				Channel.CustomLeaderboards => CustomLeaderboardsChannel,
+				Channel.AuditLogMonitoring => AuditLogMonitoringChannel,
 				Channel.CustomLeaderboardMonitoring => CustomLeaderboardMonitoringChannel,
 				Channel.TaskMonitoring => TaskMonitoringChannel,
 				Channel.TestMonitoring => TestMonitoringChannel,
+
+				Channel.CustomLeaderboards => CustomLeaderboardsChannel,
+
 				_ => ErrorMonitoringChannel,
 			};
 
