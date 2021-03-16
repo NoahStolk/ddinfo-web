@@ -14,7 +14,7 @@ using Lb = DevilDaggersWebsite.Dto.Leaderboard;
 
 namespace DevilDaggersWebsite.Razor.Pages.Leaderboard
 {
-	public class IndexModel : PageModel, IDefaultLeaderboardPage
+	public class IndexModel : PageModel, IDefaultLeaderboardPageModel
 	{
 		private readonly IWebHostEnvironment _env;
 		private readonly ApplicationDbContext _dbContext;

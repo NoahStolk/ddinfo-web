@@ -2,7 +2,7 @@
 
 namespace DevilDaggersWebsite.Razor.PageModels
 {
-	public interface IDefaultLeaderboardPage
+	public interface IDefaultLeaderboardPageModel
 	{
 		public Lb? Leaderboard { get; set; }
 	}

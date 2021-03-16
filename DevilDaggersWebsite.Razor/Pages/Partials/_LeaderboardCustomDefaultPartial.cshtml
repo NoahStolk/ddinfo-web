@@ -1,8 +1,9 @@
-﻿@using DevilDaggersCore.Utils
+﻿@model LeaderboardModel
+@using DevilDaggersCore.Utils
 @using DevilDaggersWebsite.Entities
-@using Microsoft.EntityFrameworkCore
 @using DevilDaggersWebsite.Razor.Models
-@model DevilDaggersWebsite.Razor.Pages.CustomLeaderboards.LeaderboardModel
+@using DevilDaggersWebsite.Razor.Pages.CustomLeaderboards
+@using Microsoft.EntityFrameworkCore
 @inject DevilDaggersWebsite.Entities.ApplicationDbContext dbContext
 
 <div class="leaderboard-container flex-container flex-center">
