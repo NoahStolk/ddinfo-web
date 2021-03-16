@@ -70,16 +70,7 @@
 								<span style="color: #ff0;" data-toggle="tooltip" title="ID: ???" class="leaderboard-tooltip">@em.Rank</span>
 							}
 						</div>
-						<div>
-							@if (string.IsNullOrEmpty(em.FlagCode))
-							{
-								<span><img src="/images/Flags/24x24/00.png" /></span>
-							}
-							else
-							{
-								<span class="leaderboard-tooltip" data-toggle="tooltip" title="@em.CountryName"><img src="/images/Flags/24x24/@(em.FlagCode).png" /></span>
-							}
-						</div>
+						@await Html.PartialAsync("Partials/EntryFlagPartial", em)
 						@await Html.PartialAsync("Partials/EntryUsernamePartial", em)
 						<div class="text-right @em.DaggerColor">@em.Time</div>
 						<div class="hidden-xs text-right">@em.Kills</div>

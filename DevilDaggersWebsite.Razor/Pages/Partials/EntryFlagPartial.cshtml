@@ -1,0 +1,13 @@
+﻿@model IEntryModel
+@using DevilDaggersWebsite.Razor.Models
+
+<div>
+	@if (string.IsNullOrEmpty(Model.FlagCode))
+	{
+		<span><img src="/images/Flags/24x24/00.png" /></span>
+	}
+	else
+	{
+		<span class="leaderboard-tooltip" data-toggle="tooltip" title="@Model.CountryName"><img src="/images/Flags/24x24/@(Model.FlagCode).png" /></span>
+	}
+</div>

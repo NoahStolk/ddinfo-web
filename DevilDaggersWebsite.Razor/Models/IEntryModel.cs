@@ -8,6 +8,9 @@ namespace DevilDaggersWebsite.Razor.Models
 		public Entry Entry { get; }
 		public Player? Player { get; }
 
+		public string FlagCode { get; }
+		public string CountryName { get; }
+
 		public string[] Titles { get; }
 		public string DaggerColor { get; }
 		public string BanString { get; }
