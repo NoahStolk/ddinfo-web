@@ -16,6 +16,8 @@ namespace DevilDaggersWebsite.Razor.Models
 	{
 		public CustomEntryModel(int rank, CustomEntry customEntry, CustomLeaderboard customLeaderboard, Player? player, IEnumerable<Donation> donations)
 		{
+			IsBanned = player?.IsBannedFromDdcl ?? false;
+
 			PlayerId = customEntry.PlayerId;
 			Rank = rank;
 			FlagCode = player?.CountryCode ?? string.Empty;
@@ -40,7 +42,7 @@ namespace DevilDaggersWebsite.Razor.Models
 			SubmitDate = customEntry.SubmitDate;
 			ClientVersion = customEntry.ClientVersion;
 
-			DaggerColor = player?.IsBannedFromDdcl ?? false ? "ban" : customLeaderboard.GetDagger(Time);
+			DaggerColor = IsBanned ? "ban" : customLeaderboard.GetDagger(Time);
 
 			if (customLeaderboard.Category == CustomLeaderboardCategory.Challenge)
 			{
@@ -93,7 +95,9 @@ level-4='{(customEntry.LevelUpTime4 == 0 ? 999999999 : customEntry.LevelUpTime4)
 submit-date='{SubmitDate:yyyyMMddHHmm}'");
 		}
 
-		public Player? Player { get; }
+		public bool IsBanned { get; }
+		public string? BanDescription { get; }
+
 		public string CountryName { get; }
 		public string[] Titles { get; }
 

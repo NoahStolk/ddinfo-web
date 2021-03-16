@@ -4,9 +4,9 @@
 
 <div class="text-left leaderboard-username @Model.BanString">
 	@{
-		if (Model.Player?.IsBanned ?? false)
+		if (Model.IsBanned)
 		{
-			<span data-toggle="tooltip" title="@Model.Player.BanDescription" class="leaderboard-tooltip @Model.DaggerColor">@Model.Username</span>
+			<span data-toggle="tooltip" title="@Model.BanDescription" class="leaderboard-tooltip @Model.DaggerColor">@Model.Username</span>
 		}
 		else
 		{

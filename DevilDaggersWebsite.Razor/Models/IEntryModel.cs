@@ -1,10 +1,9 @@
-﻿using DevilDaggersWebsite.Entities;
-
-namespace DevilDaggersWebsite.Razor.Models
+﻿namespace DevilDaggersWebsite.Razor.Models
 {
 	public interface IEntryModel
 	{
-		public Player? Player { get; }
+		public bool IsBanned { get; }
+		public string? BanDescription { get; }
 
 		public string Username { get; }
 		public string FlagCode { get; }

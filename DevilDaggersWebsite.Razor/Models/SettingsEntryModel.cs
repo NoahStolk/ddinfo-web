@@ -13,7 +13,8 @@ namespace DevilDaggersWebsite.Razor.Models
 	{
 		public SettingsEntryModel(Entry entry, Player player, IEnumerable<Donation> donations)
 		{
-			Player = player;
+			IsBanned = player.IsBanned;
+			BanDescription = player.BanDescription;
 
 			Username = entry.Username;
 
@@ -45,7 +46,8 @@ flash='{(!player.FlashEnabled.HasValue ? -1 : player.FlashEnabled.Value ? 1 : 0)
 gamma='{player.Gamma * 1000 ?? 0}'");
 		}
 
-		public Player? Player { get; }
+		public bool IsBanned { get; }
+		public string? BanDescription { get; }
 
 		public string Username { get; }
 		public string[] Titles { get; }

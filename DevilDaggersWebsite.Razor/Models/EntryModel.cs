@@ -15,8 +15,6 @@ namespace DevilDaggersWebsite.Razor.Models
 	{
 		public EntryModel(Entry entry, Player? player, IEnumerable<Donation> donations, bool isHistory, GameVersion gameVersion)
 		{
-			Player = player;
-
 			Titles = Array.Empty<string>();
 			if (player != null)
 			{
@@ -24,6 +22,9 @@ namespace DevilDaggersWebsite.Razor.Models
 				if (donations.Any(d => d.PlayerId == player.Id) && !(player?.IsAnonymous ?? true))
 					titles.Add("Donator");
 				Titles = titles.ToArray();
+
+				IsBanned = player.IsBanned;
+				BanDescription = player.BanDescription;
 			}
 
 			Username = entry.Username;
@@ -91,7 +92,8 @@ average-daggers-fired='{entry.DaggersFiredTotal * 100f / deathsTotal:0}'
 time-by-death='{entry.Time * 10000f / deathsTotal:0}'");
 		}
 
-		public Player? Player { get; }
+		public bool IsBanned { get; }
+		public string? BanDescription { get; }
 
 		public string Username { get; }
 		public string FlagCode { get; }
