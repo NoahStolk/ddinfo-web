@@ -1,0 +1,24 @@
+﻿@model IEntryModel
+@using DevilDaggersWebsite.Razor.Models
+@using DevilDaggersWebsite.Razor.Utils
+
+<div class="text-left leaderboard-username @Model.BanString">
+	@{
+		if (Model.Player?.IsBanned ?? false)
+		{
+			<span data-toggle="tooltip" title="@Model.Player.BanDescription" class="leaderboard-tooltip @Model.DaggerColor">@Model.Entry.Username</span>
+		}
+		else
+		{
+			<span class="@Model.DaggerColor">@Model.Entry.Username</span>
+		}
+
+		if (Model.Titles.Length > 0)
+		{
+			foreach (string title in Model.Titles)
+			{
+				<span class="leaderboard-tooltip" data-toggle="tooltip" title="@title"><img src="/images/Icons/@(UserUtils.TitleImages[title]).png" /></span>
+			}
+		}
+	}
+</div>

@@ -46,23 +46,7 @@
 								<span class="leaderboard-tooltip" data-toggle="tooltip" title="@sem.CountryName"><img src="/images/Flags/24x24/@(sem.FlagCode).png" /></span>
 							}
 						</div>
-						<div class="text-left leaderboard-username">
-							<span class="@sem.DaggerColor">@entry.Username</span>
-							@{
-								if (sem.Titles != null)
-								{
-									foreach (string title in sem.Titles)
-									{
-										<span class="leaderboard-tooltip" data-toggle="tooltip" title="@title"><img src="/images/Icons/@(UserUtils.TitleImages[title]).png" /></span>
-									}
-								}
-								if (sem.IsUnanonymousDonator)
-								{
-									string title = "Donator";
-									<span class="leaderboard-tooltip" data-toggle="tooltip" title="@title"><img src="/images/Icons/@(UserUtils.TitleImages[title]).png" /></span>
-								}
-							}
-						</div>
+						@await Html.PartialAsync("Partials/EntryUsernamePartial", sem)
 						<div class="text-right @sem.DaggerColor">@(entry.Time.FormatTimeInteger())</div>
 						<div class="hidden-xs text-right">@(player.Edpi != null ? player.Edpi.Value.ToString(FormatUtils.MouseSensitivityFormat) : string.Empty)</div>
 						<div class="hidden-xs text-right">@player.Dpi</div>

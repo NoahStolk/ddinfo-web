@@ -9,13 +9,17 @@ using System.Web;
 
 namespace DevilDaggersWebsite.Razor.Models
 {
-	public class SettingsEntryModel
+	public class SettingsEntryModel : IEntryModel
 	{
 		public SettingsEntryModel(Entry entry, Player player, IEnumerable<Donation> donations)
 		{
-			IsUnanonymousDonator = !player.IsAnonymous && donations.Any(d => d.PlayerId == entry.Id);
+			Entry = entry;
+			Player = player;
 
-			Titles = player.PlayerTitles.Select(pt => pt.Title.Name).ToArray();
+			List<string> titles = player.PlayerTitles.ConvertAll(pt => pt.Title.Name) ?? new();
+			if (donations.Any(d => d.PlayerId == player.Id) && !(player?.IsAnonymous ?? true))
+				titles.Add("Donator");
+			Titles = titles.ToArray();
 
 			Dagger dagger = GameInfo.GetDaggerFromTime(GameVersion.V31, entry.Time);
 			Death? death = GameInfo.GetDeathByType(GameVersion.V31, entry.DeathType);
@@ -40,7 +44,9 @@ flash='{(!player.FlashEnabled.HasValue ? -1 : player.FlashEnabled.Value ? 1 : 0)
 gamma='{player.Gamma * 1000 ?? 0}'");
 		}
 
-		public bool IsUnanonymousDonator { get; }
+		public Entry Entry { get; }
+		public Player? Player { get; }
+
 		public string[] Titles { get; }
 		public string DaggerColor { get; }
 		public string DeathStyle { get; }
@@ -49,5 +55,7 @@ gamma='{player.Gamma * 1000 ?? 0}'");
 		public string CountryName { get; }
 
 		public HtmlString HtmlData { get; }
+
+		public string BanString => string.Empty;
 	}
 }

@@ -11,15 +11,24 @@ using System.Web;
 
 namespace DevilDaggersWebsite.Razor.Models
 {
-	public class EntryModel
+	public class EntryModel : IEntryModel
 	{
 		public EntryModel(Entry entry, Player? player, IEnumerable<Donation> donations, bool isHistory, GameVersion gameVersion)
 		{
-			IsUnanonymousDonator = donations.Any(d => d.PlayerId == entry.Id) && !(player?.IsAnonymous ?? true);
+			Entry = entry;
+			Player = player;
+
+			Titles = Array.Empty<string>();
+			if (player != null)
+			{
+				List<string> titles = player.PlayerTitles.ConvertAll(pt => pt.Title.Name) ?? new();
+				if (donations.Any(d => d.PlayerId == player.Id) && !(player?.IsAnonymous ?? true))
+					titles.Add("Donator");
+				Titles = titles.ToArray();
+			}
 
 			FlagCode = player?.CountryCode ?? string.Empty;
 			CountryName = UserUtils.CountryNames.ContainsKey(FlagCode) ? UserUtils.CountryNames[FlagCode] : "Invalid country code";
-			Titles = player?.PlayerTitles.Select(pt => pt.Title.Name).ToArray() ?? Array.Empty<string>();
 
 			Dagger dagger = GameInfo.GetDaggerFromTime(gameVersion, entry.Time);
 			DaggerColor = player?.IsBanned ?? false ? "ban" : dagger.Name.ToLower();
@@ -82,7 +91,9 @@ average-daggers-fired='{entry.DaggersFiredTotal * 100f / deathsTotal:0}'
 time-by-death='{entry.Time * 10000f / deathsTotal:0}'");
 		}
 
-		public bool IsUnanonymousDonator { get; }
+		public Entry Entry { get; }
+		public Player? Player { get; }
+
 		public string FlagCode { get; }
 		public string CountryName { get; }
 		public string[] Titles { get; }

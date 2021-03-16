@@ -80,31 +80,7 @@
 								<span class="leaderboard-tooltip" data-toggle="tooltip" title="@em.CountryName"><img src="/images/Flags/24x24/@(em.FlagCode).png" /></span>
 							}
 						</div>
-						<div class="text-left leaderboard-username @em.BanString">
-							@{
-								if (player?.IsBanned ?? false)
-								{
-									<span data-toggle="tooltip" title="@player.BanDescription" class="leaderboard-tooltip @em.DaggerColor">@entry.Username</span>
-								}
-								else
-								{
-									<span class="@em.DaggerColor">@entry.Username</span>
-								}
-
-								if (em.Titles != null)
-								{
-									foreach (string title in em.Titles)
-									{
-										<span class="leaderboard-tooltip" data-toggle="tooltip" title="@title"><img src="/images/Icons/@(UserUtils.TitleImages[title]).png" /></span>
-									}
-								}
-								if (em.IsUnanonymousDonator)
-								{
-									string title = "Donator";
-									<span class="leaderboard-tooltip" data-toggle="tooltip" title="@title"><img src="/images/Icons/@(UserUtils.TitleImages[title]).png" /></span>
-								}
-							}
-						</div>
+						@await Html.PartialAsync("Partials/EntryUsernamePartial", em)
 						<div class="text-right @em.DaggerColor">@em.Time</div>
 						<div class="hidden-xs text-right">@em.Kills</div>
 						<div class="hidden-xs text-right">@em.Gems</div>
