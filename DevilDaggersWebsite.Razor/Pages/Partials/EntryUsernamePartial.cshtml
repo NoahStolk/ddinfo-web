@@ -6,11 +6,11 @@
 	@{
 		if (Model.Player?.IsBanned ?? false)
 		{
-			<span data-toggle="tooltip" title="@Model.Player.BanDescription" class="leaderboard-tooltip @Model.DaggerColor">@Model.Entry.Username</span>
+			<span data-toggle="tooltip" title="@Model.Player.BanDescription" class="leaderboard-tooltip @Model.DaggerColor">@Model.Username</span>
 		}
 		else
 		{
-			<span class="@Model.DaggerColor">@Model.Entry.Username</span>
+			<span class="@Model.DaggerColor">@Model.Username</span>
 		}
 
 		if (Model.Titles.Length > 0)

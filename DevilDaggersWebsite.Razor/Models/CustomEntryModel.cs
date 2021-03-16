@@ -8,20 +8,27 @@ using Microsoft.AspNetCore.Html;
 using System;
 using System.Collections.Generic;
 using System.Linq;
-using System.Text;
 using System.Web;
 
 namespace DevilDaggersWebsite.Razor.Models
 {
-	public class CustomEntryModel
+	public class CustomEntryModel : IEntryModel
 	{
 		public CustomEntryModel(int rank, CustomEntry customEntry, CustomLeaderboard customLeaderboard, Player? player, IEnumerable<Donation> donations)
 		{
 			PlayerId = customEntry.PlayerId;
 			Rank = rank;
 			FlagCode = player?.CountryCode ?? string.Empty;
-			string countryName = UserUtils.CountryNames.ContainsKey(FlagCode) ? UserUtils.CountryNames[FlagCode] : "Invalid country code";
-			FlagHtml = string.IsNullOrEmpty(FlagCode) ? new("<span><img src='/images/Flags/24x24/00.png' /></span>") : new($"<span class='leaderboard-tooltip' data-toggle='tooltip' title='{countryName}'><img src='/images/Flags/24x24/{FlagCode}.png' /></span>");
+			CountryName = UserUtils.CountryNames.ContainsKey(FlagCode) ? UserUtils.CountryNames[FlagCode] : "Invalid country code";
+
+			Titles = Array.Empty<string>();
+			if (player != null)
+			{
+				List<string> titles = player.PlayerTitles.ConvertAll(pt => pt.Title.Name) ?? new();
+				if (donations.Any(d => d.PlayerId == player.Id) && !(player?.IsAnonymous ?? true))
+					titles.Add("Donator");
+				Titles = titles.ToArray();
+			}
 
 			Username = player?.PlayerName ?? "Player not found";
 			Time = customEntry.Time;
@@ -33,20 +40,7 @@ namespace DevilDaggersWebsite.Razor.Models
 			SubmitDate = customEntry.SubmitDate;
 			ClientVersion = customEntry.ClientVersion;
 
-			List<string> titles = player?.PlayerTitles.ConvertAll(pt => pt.Title.Name) ?? new();
-			if (donations.Any(d => d.PlayerId == PlayerId) && !(player?.IsAnonymous ?? true))
-				titles.Add("Donator");
-
-			StringBuilder sb = new();
-			if (titles != null)
-			{
-				foreach (string title in titles)
-					sb.Append("<span class='leaderboard-tooltip' data-toggle='tooltip' title='").Append(title).Append("'><img src='/images/Icons/").Append(UserUtils.TitleImages[title]).AppendLine(".png' /></span>");
-			}
-
-			TitlesHtml = new(sb.ToString());
-
-			DaggerName = customLeaderboard.GetDagger(Time);
+			DaggerColor = player?.IsBannedFromDdcl ?? false ? "ban" : customLeaderboard.GetDagger(Time);
 
 			if (customLeaderboard.Category == CustomLeaderboardCategory.Challenge)
 			{
@@ -99,11 +93,13 @@ level-4='{(customEntry.LevelUpTime4 == 0 ? 999999999 : customEntry.LevelUpTime4)
 submit-date='{SubmitDate:yyyyMMddHHmm}'");
 		}
 
+		public Player? Player { get; }
+		public string CountryName { get; }
+		public string[] Titles { get; }
+
 		public int PlayerId { get; }
 		public int Rank { get; }
 		public string FlagCode { get; }
-		public HtmlString FlagHtml { get; }
-		public HtmlString TitlesHtml { get; }
 		public string Username { get; }
 		public int Time { get; }
 		public int EnemiesKilled { get; }
@@ -122,7 +118,7 @@ submit-date='{SubmitDate:yyyyMMddHHmm}'");
 		public DateTime SubmitDate { get; }
 		public string ClientVersion { get; }
 
-		public string DaggerName { get; }
+		public string DaggerColor { get; }
 		public string DeathStyle { get; }
 		public string DeathName { get; }
 		public string DaggerTooltipText { get; }
@@ -130,5 +126,7 @@ submit-date='{SubmitDate:yyyyMMddHHmm}'");
 		public HtmlString HtmlData { get; }
 
 		public string Accuracy { get; }
+
+		public string BanString => string.Empty;
 	}
 }

@@ -13,8 +13,9 @@ namespace DevilDaggersWebsite.Razor.Models
 	{
 		public SettingsEntryModel(Entry entry, Player player, IEnumerable<Donation> donations)
 		{
-			Entry = entry;
 			Player = player;
+
+			Username = entry.Username;
 
 			List<string> titles = player.PlayerTitles.ConvertAll(pt => pt.Title.Name) ?? new();
 			if (donations.Any(d => d.PlayerId == player.Id) && !(player?.IsAnonymous ?? true))
@@ -44,9 +45,9 @@ flash='{(!player.FlashEnabled.HasValue ? -1 : player.FlashEnabled.Value ? 1 : 0)
 gamma='{player.Gamma * 1000 ?? 0}'");
 		}
 
-		public Entry Entry { get; }
 		public Player? Player { get; }
 
+		public string Username { get; }
 		public string[] Titles { get; }
 		public string DaggerColor { get; }
 		public string DeathStyle { get; }

@@ -15,7 +15,6 @@ namespace DevilDaggersWebsite.Razor.Models
 	{
 		public EntryModel(Entry entry, Player? player, IEnumerable<Donation> donations, bool isHistory, GameVersion gameVersion)
 		{
-			Entry = entry;
 			Player = player;
 
 			Titles = Array.Empty<string>();
@@ -27,6 +26,7 @@ namespace DevilDaggersWebsite.Razor.Models
 				Titles = titles.ToArray();
 			}
 
+			Username = entry.Username;
 			FlagCode = player?.CountryCode ?? string.Empty;
 			CountryName = UserUtils.CountryNames.ContainsKey(FlagCode) ? UserUtils.CountryNames[FlagCode] : "Invalid country code";
 
@@ -91,9 +91,9 @@ average-daggers-fired='{entry.DaggersFiredTotal * 100f / deathsTotal:0}'
 time-by-death='{entry.Time * 10000f / deathsTotal:0}'");
 		}
 
-		public Entry Entry { get; }
 		public Player? Player { get; }
 
+		public string Username { get; }
 		public string FlagCode { get; }
 		public string CountryName { get; }
 		public string[] Titles { get; }
