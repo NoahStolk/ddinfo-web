@@ -1,9 +1,8 @@
 ﻿@model UserSettingsModel
-@using DevilDaggersCore.Game
 @using DevilDaggersCore.Utils
 @using DevilDaggersWebsite.Dto
 @using DevilDaggersWebsite.Entities
-@using DevilDaggersWebsite.Razor.Extensions
+@using DevilDaggersWebsite.Razor.Models
 @using DevilDaggersWebsite.Razor.Pages.Leaderboard
 @using DevilDaggersWebsite.Razor.Utils
 @inject DevilDaggersWebsite.Entities.ApplicationDbContext dbContext
@@ -32,49 +31,39 @@
 			{
 				Player player = Model.Players.First(p => p.Id == entry.Id);
 
-				bool isUnanonymousDonator = !player.IsAnonymous && donations.Any(d => d.PlayerId == entry.Id);
+				SettingsEntryModel sem = new(entry, player, donations);
 
-				string flagCode = player.CountryCode ?? string.Empty;
-				string countryName = UserUtils.CountryNames.ContainsKey(flagCode) ? UserUtils.CountryNames[flagCode] : "Invalid country code";
-				string[] titles = player.PlayerTitles.Select(pt => pt.Title.Name).ToArray();
-
-				Dagger dagger = GameInfo.GetDaggerFromTime(GameVersion.V31, entry.Time);
-				Death? death = GameInfo.GetDeathByType(GameVersion.V31, entry.DeathType);
-
-				string daggerColor = dagger.Name.ToLower();
-				string deathStyle = $"color: #{death?.ColorCode ?? "444"};";
-
-				<div class="sort" @entry.ToHtmlData(flagCode, player)>
+				<div class="sort" @sem.HtmlData>
 					<div class="leaderboard-row pointer flex-container" id="@(entry.Rank)-row">
 						<div class="text-right"><span data-toggle="tooltip" title="ID: @entry.Id (click to copy)" onclick="copyToClipboard('@entry.Id')" class="leaderboard-tooltip">@entry.Rank</span></div>
 						<div>
-							@if (string.IsNullOrEmpty(flagCode))
+							@if (string.IsNullOrEmpty(sem.FlagCode))
 							{
 								<span><img src="/images/Flags/24x24/00.png" /></span>
 							}
 							else
 							{
-								<span class="leaderboard-tooltip" data-toggle="tooltip" title="@countryName"><img src="/images/Flags/24x24/@(flagCode).png" /></span>
+								<span class="leaderboard-tooltip" data-toggle="tooltip" title="@sem.CountryName"><img src="/images/Flags/24x24/@(sem.FlagCode).png" /></span>
 							}
 						</div>
 						<div class="text-left leaderboard-username">
-							<span class="@daggerColor">@entry.Username</span>
+							<span class="@sem.DaggerColor">@entry.Username</span>
 							@{
-								if (titles != null)
+								if (sem.Titles != null)
 								{
-									foreach (string title in titles)
+									foreach (string title in sem.Titles)
 									{
 										<span class="leaderboard-tooltip" data-toggle="tooltip" title="@title"><img src="/images/Icons/@(UserUtils.TitleImages[title]).png" /></span>
 									}
 								}
-								if (isUnanonymousDonator)
+								if (sem.IsUnanonymousDonator)
 								{
 									string title = "Donator";
 									<span class="leaderboard-tooltip" data-toggle="tooltip" title="@title"><img src="/images/Icons/@(UserUtils.TitleImages[title]).png" /></span>
 								}
 							}
 						</div>
-						<div class="text-right @daggerColor">@(entry.Time.FormatTimeInteger())</div>
+						<div class="text-right @sem.DaggerColor">@(entry.Time.FormatTimeInteger())</div>
 						<div class="hidden-xs text-right">@(player.Edpi != null ? player.Edpi.Value.ToString(FormatUtils.MouseSensitivityFormat) : string.Empty)</div>
 						<div class="hidden-xs text-right">@player.Dpi</div>
 						<div class="hidden-xs text-right">@(player.InGameSens != null ? player.InGameSens.Value.ToString(FormatUtils.MouseSensitivityFormat) : string.Empty)</div>
