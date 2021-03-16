@@ -19,8 +19,10 @@ namespace DevilDaggersWebsite.Razor.Pages.CustomLeaderboards
 
 			foreach (CustomLeaderboardCategory e in (CustomLeaderboardCategory[])Enum.GetValues(typeof(CustomLeaderboardCategory)))
 			{
-				if (e != CustomLeaderboardCategory.None)
-					CategoryListItems.Add(new SelectListItem($"Category: {e}", e.ToString()));
+				if (e == CustomLeaderboardCategory.None || e == CustomLeaderboardCategory.Challenge || e == CustomLeaderboardCategory.Archive)
+					continue;
+
+				CategoryListItems.Add(new SelectListItem($"Category: {e}", e.ToString()));
 			}
 		}
 
@@ -31,9 +33,17 @@ namespace DevilDaggersWebsite.Razor.Pages.CustomLeaderboards
 
 		public void OnGet(CustomLeaderboardCategory category = CustomLeaderboardCategory.Default)
 		{
+			if (category == CustomLeaderboardCategory.None || category == CustomLeaderboardCategory.Challenge || category == CustomLeaderboardCategory.Archive)
+				category = CustomLeaderboardCategory.Default;
+
 			Category = category;
 
-			Leaderboards = _dbContext.CustomLeaderboards.Where(cl => cl.Category == category).Include(cl => cl.SpawnsetFile).ThenInclude(sf => sf.Player).OrderByDescending(cl => cl.DateLastPlayed).ToList();
+			Leaderboards = _dbContext.CustomLeaderboards
+				.Where(cl => cl.Category == category)
+				.Include(cl => cl.SpawnsetFile)
+					.ThenInclude(sf => sf.Player)
+				.OrderByDescending(cl => cl.DateLastPlayed)
+				.ToList();
 		}
 	}
 }

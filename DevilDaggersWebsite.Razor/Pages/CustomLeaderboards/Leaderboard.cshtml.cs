@@ -1,5 +1,6 @@
 ﻿using DevilDaggersCore.Utils;
 using DevilDaggersWebsite.Entities;
+using DevilDaggersWebsite.Enumerators;
 using DevilDaggersWebsite.Extensions;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.AspNetCore.Mvc.RazorPages;
@@ -37,7 +38,7 @@ namespace DevilDaggersWebsite.Razor.Pages.CustomLeaderboards
 				return RedirectToPage("Index");
 
 			Leaderboard = _dbContext.CustomLeaderboards.FirstOrDefault(l => l.SpawnsetFileId == SpawnsetFile.Id);
-			if (Leaderboard == null)
+			if (Leaderboard == null || Leaderboard.Category == CustomLeaderboardCategory.Challenge)
 				return RedirectToPage("Index");
 
 			Entries = _dbContext.CustomEntries
