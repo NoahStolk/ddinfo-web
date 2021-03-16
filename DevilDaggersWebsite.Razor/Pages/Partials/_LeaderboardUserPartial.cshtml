@@ -50,15 +50,15 @@
 	<div class="leaderboard-body">
 		@{
 			GameVersion gameVersion = GameInfo.GetGameVersionFromDate(Model.Leaderboard?.DateTime ?? DateTime.UtcNow) ?? GameVersion.V1;
-			IEnumerable<Donation> donations = dbContext.Donations.ToList();
-			IEnumerable<Player> players = dbContext.Players.Include(p => p.PlayerTitles).ThenInclude(pt => pt.Title).ToList();
+			List<Donation> donations = dbContext.Donations.ToList();
+			List<Player> players = dbContext.Players.Include(p => p.PlayerTitles).ThenInclude(pt => pt.Title).ToList();
 			foreach (Dto.Entry entry in Model.Leaderboard?.Entries ?? new())
 			{
 				Player? player = players.FirstOrDefault(p => p.Id == entry.Id);
 
 				EntryModel em = new(entry, player, donations, !isIndex, gameVersion);
 
-				<div class="sort @em.BanString" @entry.ToHtmlData(em.FlagCode, gameVersion)>
+				<div class="sort @em.BanString" @em.HtmlData>
 					<div class="leaderboard-row pointer @(showMoreStats ? "row-more-stats" : "") flex-container" id="@(entry.Rank)-row">
 						<div class="text-right">
 							@if (entry.Id != 0)

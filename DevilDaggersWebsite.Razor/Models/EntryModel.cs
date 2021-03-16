@@ -7,6 +7,7 @@ using Microsoft.AspNetCore.Html;
 using System;
 using System.Collections.Generic;
 using System.Linq;
+using System.Web;
 
 namespace DevilDaggersWebsite.Razor.Models
 {
@@ -53,6 +54,32 @@ namespace DevilDaggersWebsite.Razor.Models
 			AverageDaggersHit = entry.DeathsTotal == 0 ? RazorUtils.NAString : new((entry.DaggersHitTotal / (float)entry.DeathsTotal).ToString(FormatUtils.LeaderboardIntAverageFormat));
 			AverageDaggersFired = entry.DeathsTotal == 0 ? RazorUtils.NAString : new((entry.DaggersFiredTotal / (float)entry.DeathsTotal).ToString(FormatUtils.LeaderboardIntAverageFormat));
 			TimeByDeath = entry.DeathsTotal == 0 ? RazorUtils.NAString : new((entry.Time / (float)entry.DeathsTotal).ToString(FormatUtils.LeaderboardTimeLargeFormat));
+
+			ulong deathsTotal = entry.DeathsTotal == 0 ? 1 : entry.DeathsTotal;
+			HtmlData = new($@"
+rank='{entry.Rank}'
+flag='{FlagCode}'
+username='{HttpUtility.HtmlEncode(entry.Username)}'
+time='{entry.Time}'
+kills='{entry.Kills}'
+gems='{entry.Gems}'
+accuracy='{entry.Accuracy * 10000:0}'
+death-type='{GameInfo.GetDeathByType(gameVersion, entry.DeathType)?.Name ?? "Unknown"}'
+total-time='{entry.TimeTotal}'
+total-kills='{entry.KillsTotal}'
+total-gems='{entry.GemsTotal}'
+total-accuracy='{entry.AccuracyTotal * 10000:0}'
+total-deaths='{entry.DeathsTotal}'
+daggers-hit='{entry.DaggersHit}'
+daggers-fired='{entry.DaggersFired}'
+total-daggers-hit='{entry.DaggersHitTotal}'
+total-daggers-fired='{entry.DaggersFiredTotal}'
+average-time='{entry.TimeTotal * 10000f / deathsTotal:0}'
+average-kills='{entry.KillsTotal * 100f / deathsTotal:0}'
+average-gems='{entry.GemsTotal * 100f / deathsTotal:0}'
+average-daggers-hit='{entry.DaggersHitTotal * 100f / deathsTotal:0}'
+average-daggers-fired='{entry.DaggersFiredTotal * 100f / deathsTotal:0}'
+time-by-death='{entry.Time * 10000f / deathsTotal:0}'");
 		}
 
 		public bool IsUnanonymousDonator { get; }
@@ -85,5 +112,7 @@ namespace DevilDaggersWebsite.Razor.Models
 		public HtmlString AverageDaggersHit { get; }
 		public HtmlString AverageDaggersFired { get; }
 		public HtmlString TimeByDeath { get; }
+
+		public HtmlString HtmlData { get; }
 	}
 }
