@@ -15,11 +15,11 @@ Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "DevilDaggersDiscordBot", "D
 EndProject
 Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "Tools", "Tools", "{A682E0EF-9B0E-4113-8BED-4534C64A9BDE}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "LeaderboardCsvToJson", "Tools\LeaderboardCsvToJson\LeaderboardCsvToJson.csproj", "{70088682-9AB0-4040-8E20-5F8A38DD7799}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "LeaderboardCsvToJson", "Tools\LeaderboardCsvToJson\LeaderboardCsvToJson.csproj", "{70088682-9AB0-4040-8E20-5F8A38DD7799}"
 EndProject
 Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "LeaderboardHtmlToJson", "Tools\LeaderboardHtmlToJson\LeaderboardHtmlToJson.csproj", "{DFD4E2BC-2023-4629-85FB-A3C51A32E040}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "LeaderboardJsonCreator", "Tools\LeaderboardJsonCreator\LeaderboardJsonCreator.csproj", "{7FF030A0-D588-4BCD-A01B-7CF847BD7DE4}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "LeaderboardJsonCreator", "Tools\LeaderboardJsonCreator\LeaderboardJsonCreator.csproj", "{7FF030A0-D588-4BCD-A01B-7CF847BD7DE4}"
 EndProject
 Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "LeaderboardJsonHighscoreStatsSpreader", "Tools\LeaderboardJsonHighscoreStatsSpreader\LeaderboardJsonHighscoreStatsSpreader.csproj", "{57F71E3E-564E-40D1-943D-D649FA279957}"
 EndProject
@@ -27,9 +27,9 @@ Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "ToolsShared", "Tools\ToolsS
 EndProject
 Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "LeaderboardJsonIdFixer", "Tools\LeaderboardJsonIdFixer\LeaderboardJsonIdFixer.csproj", "{FCDDD536-D37A-403C-AC2F-51E3B346ECB6}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "SpawnsetHashes", "Tools\SpawnsetHashes\SpawnsetHashes.csproj", "{ECD2B92B-F21E-49A4-900F-797C9243BCAC}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "SpawnsetHashes", "Tools\SpawnsetHashes\SpawnsetHashes.csproj", "{ECD2B92B-F21E-49A4-900F-797C9243BCAC}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "LeaderboardJsonFormatter", "Tools\LeaderboardJsonFormatter\LeaderboardJsonFormatter.csproj", "{FDB16A56-8156-4D82-9C01-3507E756E431}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "LeaderboardJsonFormatter", "Tools\LeaderboardJsonFormatter\LeaderboardJsonFormatter.csproj", "{FDB16A56-8156-4D82-9C01-3507E756E431}"
 EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
