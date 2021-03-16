@@ -1,12 +1,11 @@
 ﻿@model IDefaultLeaderboardPageModel
 @using DevilDaggersCore.Game
-@using DevilDaggersCore.Utils
 @using DevilDaggersWebsite.Entities
 @using DevilDaggersWebsite.Razor.Extensions
+@using DevilDaggersWebsite.Razor.Models
 @using DevilDaggersWebsite.Razor.PageModels
 @using DevilDaggersWebsite.Razor.Utils
 @using DevilDaggersWebsite.Razor.Pages.Leaderboard
-@using Microsoft.AspNetCore.Html
 @using Microsoft.EntityFrameworkCore
 @inject DevilDaggersWebsite.Entities.ApplicationDbContext dbContext
 @{
@@ -57,203 +56,165 @@
 			{
 				Player? player = players.FirstOrDefault(p => p.Id == entry.Id);
 
-				bool isUnanonymousDonator = donations.Any(d => d.PlayerId == entry.Id) && !(player?.IsAnonymous ?? true);
+				EntryModel em = new(entry, player, donations, !isIndex, gameVersion);
 
-				string flagCode = player?.CountryCode ?? string.Empty;
-				string countryName = UserUtils.CountryNames.ContainsKey(flagCode) ? UserUtils.CountryNames[flagCode] : "Invalid country code";
-				string[] titles = player?.PlayerTitles.Select(pt => pt.Title.Name).ToArray() ?? Array.Empty<string>();
-
-				Dagger dagger = GameInfo.GetDaggerFromTime(gameVersion, entry.Time);
-				string daggerColor = player?.IsBanned ?? false ? "ban" : dagger.Name.ToLower();
-
-				Death? death = GameInfo.GetDeathByType(gameVersion, entry.DeathType);
-				string deathStyle = player?.IsBanned ?? false ? string.Empty : $"color: #{death?.ColorCode ?? "444"};";
-				string deathName = death?.Name ?? "Unknown";
-
-				string banString = player?.IsBanned ?? false ? "ban" : string.Empty;
-
-				string rank = entry.Rank.ToString();
-				string time = entry.Time.FormatTimeInteger();
-				string kills = entry.Kills.ToString(FormatUtils.LeaderboardIntFormat);
-				string gems = entry.Gems.ToString(FormatUtils.LeaderboardIntFormat);
-				string timeTotal = entry.TimeTotal.FormatTimeInteger(true);
-				string killsTotal = entry.KillsTotal.ToString(FormatUtils.LeaderboardIntFormat);
-				string gemsTotal = entry.GemsTotal.ToString(FormatUtils.LeaderboardIntFormat);
-				string deathsTotal = entry.DeathsTotal.ToString(FormatUtils.LeaderboardIntFormat);
-
-				string shots = FormatUtils.FormatDaggersInt32(entry.DaggersHit, entry.DaggersFired, !isIndex);
-				string accuracy = entry.Accuracy.ToString(FormatUtils.AccuracyFormat);
-				string shotsTotal = FormatUtils.FormatDaggersUInt64(entry.DaggersHitTotal, entry.DaggersFiredTotal, !isIndex);
-				string accuracyTotal = entry.AccuracyTotal.ToString(FormatUtils.AccuracyFormat);
-
-				string daggersHit = entry.DaggersHit.ToString(FormatUtils.LeaderboardIntFormat);
-				string daggersFired = entry.DaggersFired.ToString(FormatUtils.LeaderboardIntFormat);
-				string totalDaggersHit = entry.DaggersHitTotal.ToString(FormatUtils.LeaderboardIntFormat);
-				string totalDaggersFired = entry.DaggersFiredTotal.ToString(FormatUtils.LeaderboardIntFormat);
-				HtmlString averageTime = entry.DeathsTotal == 0 ? RazorUtils.NAString : new((entry.TimeTotal / entry.DeathsTotal).FormatTimeInteger());
-				HtmlString averageKills = entry.DeathsTotal == 0 ? RazorUtils.NAString : new((entry.KillsTotal / (float)entry.DeathsTotal).ToString(FormatUtils.LeaderboardIntAverageFormat));
-				HtmlString averageGems = entry.DeathsTotal == 0 ? RazorUtils.NAString : new((entry.GemsTotal / (float)entry.DeathsTotal).ToString(FormatUtils.LeaderboardIntAverageFormat));
-				HtmlString averageDaggersHit = entry.DeathsTotal == 0 ? RazorUtils.NAString : new((entry.DaggersHitTotal / (float)entry.DeathsTotal).ToString(FormatUtils.LeaderboardIntAverageFormat));
-				HtmlString averageDaggersFired = entry.DeathsTotal == 0 ? RazorUtils.NAString : new((entry.DaggersFiredTotal / (float)entry.DeathsTotal).ToString(FormatUtils.LeaderboardIntAverageFormat));
-				HtmlString timeByDeath = entry.DeathsTotal == 0 ? RazorUtils.NAString : new((entry.Time / (float)entry.DeathsTotal).ToString(FormatUtils.LeaderboardTimeLargeFormat));
-
-				<div class="sort @banString" @entry.ToHtmlData(flagCode, gameVersion)>
+				<div class="sort @em.BanString" @entry.ToHtmlData(em.FlagCode, gameVersion)>
 					<div class="leaderboard-row pointer @(showMoreStats ? "row-more-stats" : "") flex-container" id="@(entry.Rank)-row">
 						<div class="text-right">
 							@if (entry.Id != 0)
 							{
-								<span data-toggle="tooltip" title="ID: @entry.Id (click to copy)" onclick="copyToClipboard('@entry.Id')" class="leaderboard-tooltip">@rank</span>
+								<span data-toggle="tooltip" title="ID: @entry.Id (click to copy)" onclick="copyToClipboard('@entry.Id')" class="leaderboard-tooltip">@em.Rank</span>
 							}
 							else
 							{
-								<span style="color: #ff0;" data-toggle="tooltip" title="ID: ???" class="leaderboard-tooltip">@rank</span>
+								<span style="color: #ff0;" data-toggle="tooltip" title="ID: ???" class="leaderboard-tooltip">@em.Rank</span>
 							}
 						</div>
 						<div>
-							@if (string.IsNullOrEmpty(flagCode))
+							@if (string.IsNullOrEmpty(em.FlagCode))
 							{
 								<span><img src="/images/Flags/24x24/00.png" /></span>
 							}
 							else
 							{
-								<span class="leaderboard-tooltip" data-toggle="tooltip" title="@countryName"><img src="/images/Flags/24x24/@(flagCode).png" /></span>
+								<span class="leaderboard-tooltip" data-toggle="tooltip" title="@em.CountryName"><img src="/images/Flags/24x24/@(em.FlagCode).png" /></span>
 							}
 						</div>
-						<div class="text-left leaderboard-username @banString">
+						<div class="text-left leaderboard-username @em.BanString">
 							@{
 								if (player?.IsBanned ?? false)
 								{
-									<span data-toggle="tooltip" title="@player.BanDescription" class="leaderboard-tooltip @daggerColor">@entry.Username</span>
+									<span data-toggle="tooltip" title="@player.BanDescription" class="leaderboard-tooltip @em.DaggerColor">@entry.Username</span>
 								}
 								else
 								{
-									<span class="@daggerColor">@entry.Username</span>
+									<span class="@em.DaggerColor">@entry.Username</span>
 								}
 
-								if (titles != null)
+								if (em.Titles != null)
 								{
-									foreach (string title in titles)
+									foreach (string title in em.Titles)
 									{
 										<span class="leaderboard-tooltip" data-toggle="tooltip" title="@title"><img src="/images/Icons/@(UserUtils.TitleImages[title]).png" /></span>
 									}
 								}
-								if (isUnanonymousDonator)
+								if (em.IsUnanonymousDonator)
 								{
 									string title = "Donator";
 									<span class="leaderboard-tooltip" data-toggle="tooltip" title="@title"><img src="/images/Icons/@(UserUtils.TitleImages[title]).png" /></span>
 								}
 							}
 						</div>
-						<div class="text-right @daggerColor">@time</div>
-						<div class="hidden-xs text-right">@kills</div>
-						<div class="hidden-xs text-right">@gems</div>
+						<div class="text-right @em.DaggerColor">@em.Time</div>
+						<div class="hidden-xs text-right">@em.Kills</div>
+						<div class="hidden-xs text-right">@em.Gems</div>
 						<div class="hidden-xs text-right">
-							<span data-toggle="tooltip" title="@shots" class="leaderboard-tooltip">@accuracy</span>
+							<span data-toggle="tooltip" title="@em.Daggers" class="leaderboard-tooltip">@em.Accuracy</span>
 						</div>
-						<div class="hidden-xs hidden-sm hidden-md text-left" style="@deathStyle">@deathName</div>
-						<div class="hidden-xs hidden-sm hidden-md text-right">@timeTotal</div>
-						<div class="hidden-xs hidden-sm hidden-md text-right">@killsTotal</div>
-						<div class="hidden-xs hidden-sm hidden-md text-right">@gemsTotal</div>
+						<div class="hidden-xs hidden-sm hidden-md text-left" style="@em.DeathStyle">@em.DeathName</div>
+						<div class="hidden-xs hidden-sm hidden-md text-right">@em.TimeTotal</div>
+						<div class="hidden-xs hidden-sm hidden-md text-right">@em.KillsTotal</div>
+						<div class="hidden-xs hidden-sm hidden-md text-right">@em.GemsTotal</div>
 						<div class="hidden-xs hidden-sm hidden-md text-right">
-							<span data-toggle="tooltip" title="@shotsTotal" class="leaderboard-tooltip">@accuracyTotal</span>
+							<span data-toggle="tooltip" title="@em.DaggersTotal" class="leaderboard-tooltip">@em.AccuracyTotal</span>
 						</div>
-						<div class="hidden-xs hidden-sm hidden-md text-right">@deathsTotal</div>
+						<div class="hidden-xs hidden-sm hidden-md text-right">@em.DeathsTotal</div>
 						@if (showMoreStats)
 						{
-							<div class="visible-xl text-right">@daggersHit</div>
-							<div class="visible-xl text-right">@daggersFired</div>
-							<div class="visible-xl text-right">@totalDaggersHit</div>
-							<div class="visible-xl text-right">@totalDaggersFired</div>
-							<div class="visible-xl text-right">@averageTime</div>
-							<div class="visible-xl text-right">@averageKills</div>
-							<div class="visible-xl text-right">@averageGems</div>
-							<div class="visible-xl text-right">@averageDaggersHit</div>
-							<div class="visible-xl text-right">@averageDaggersFired</div>
-							<div class="visible-xl text-right">@timeByDeath</div>
+							<div class="visible-xl text-right">@em.DaggersHit</div>
+							<div class="visible-xl text-right">@em.DaggersFired</div>
+							<div class="visible-xl text-right">@em.DaggersHitTotal</div>
+							<div class="visible-xl text-right">@em.DaggersFiredTotal</div>
+							<div class="visible-xl text-right">@em.AverageTime</div>
+							<div class="visible-xl text-right">@em.AverageKills</div>
+							<div class="visible-xl text-right">@em.AverageGems</div>
+							<div class="visible-xl text-right">@em.AverageDaggersHit</div>
+							<div class="visible-xl text-right">@em.AverageDaggersFired</div>
+							<div class="visible-xl text-right">@em.TimeByDeath</div>
 						}
 					</div>
 					<div class="leaderboard-expand flex-container" id="@(entry.Rank)-expand">
 						<div class="visible-xs">
 							<div class="text-left">Kills</div>
-							<div class="text-right">@kills</div>
+							<div class="text-right">@em.Kills</div>
 						</div>
 						<div class="visible-xs">
 							<div class="text-left">Gems</div>
-							<div class="text-right">@gems</div>
+							<div class="text-right">@em.Gems</div>
 						</div>
 						<div class="visible-xs">
 							<div class="text-left">Accuracy</div>
 							<div class="text-right">
-								<span data-toggle="tooltip" title="@shots" class="leaderboard-tooltip">@accuracy</span>
+								<span data-toggle="tooltip" title="@em.Daggers" class="leaderboard-tooltip">@em.Accuracy</span>
 							</div>
 						</div>
 						<div class="visible-xs visible-sm visible-md">
 							<div class="text-left">Death type</div>
-							<div class="text-right" style="@deathStyle">@(death?.Name ?? "Unknown")</div>
+							<div class="text-right" style="@em.DeathStyle">@(em.DeathName)</div>
 						</div>
 						<div class="visible-xs visible-sm visible-md">
 							<div class="text-left">Total time</div>
-							<div class="text-right">@timeTotal</div>
+							<div class="text-right">@em.TimeTotal</div>
 						</div>
 						<div class="visible-xs visible-sm visible-md">
 							<div class="text-left">Total kills</div>
-							<div class="text-right">@killsTotal</div>
+							<div class="text-right">@em.KillsTotal</div>
 						</div>
 						<div class="visible-xs visible-sm visible-md">
 							<div class="text-left">Total gems</div>
-							<div class="text-right">@gemsTotal</div>
+							<div class="text-right">@em.GemsTotal</div>
 						</div>
 						<div class="visible-xs visible-sm visible-md">
 							<div class="text-left">Total accuracy</div>
 							<div class="text-right">
-								<span data-toggle="tooltip" title="@shotsTotal" class="leaderboard-tooltip">@accuracyTotal</span>
+								<span data-toggle="tooltip" title="@em.DaggersTotal" class="leaderboard-tooltip">@em.AccuracyTotal</span>
 							</div>
 						</div>
 						<div class="visible-xs visible-sm visible-md">
 							<div class="text-left">Total deaths</div>
-							<div class="text-right">@deathsTotal</div>
+							<div class="text-right">@em.DeathsTotal</div>
 						</div>
 						@if (showMoreStats)
 						{
 							<div class="hidden-xs hidden-xl">
 								<div class="text-left">Daggers hit</div>
-								<div class="text-right">@daggersHit</div>
+								<div class="text-right">@em.DaggersHit</div>
 							</div>
 							<div class="hidden-xs hidden-xl">
 								<div class="text-left">Daggers fired</div>
-								<div class="text-right">@daggersFired</div>
+								<div class="text-right">@em.DaggersFired</div>
 							</div>
 							<div class="hidden-xs hidden-xl">
 								<div class="text-left">Total daggers hit</div>
-								<div class="text-right">@totalDaggersHit</div>
+								<div class="text-right">@em.DaggersHitTotal</div>
 							</div>
 							<div class="hidden-xs hidden-xl">
 								<div class="text-left">Total daggers fired</div>
-								<div class="text-right">@totalDaggersFired</div>
+								<div class="text-right">@em.DaggersFiredTotal</div>
 							</div>
 							<div class="hidden-xs hidden-xl">
 								<div class="text-left">Average time</div>
-								<div class="text-right">@averageTime</div>
+								<div class="text-right">@em.AverageTime</div>
 							</div>
 							<div class="hidden-xs hidden-xl">
 								<div class="text-left">Average kills</div>
-								<div class="text-right">@averageKills</div>
+								<div class="text-right">@em.AverageKills</div>
 							</div>
 							<div class="hidden-xs hidden-xl">
 								<div class="text-left">Average gems</div>
-								<div class="text-right">@averageGems</div>
+								<div class="text-right">@em.AverageGems</div>
 							</div>
 							<div class="hidden-xs hidden-xl">
 								<div class="text-left">Average daggers hit</div>
-								<div class="text-right">@averageDaggersHit</div>
+								<div class="text-right">@em.AverageDaggersHit</div>
 							</div>
 							<div class="hidden-xs hidden-xl">
 								<div class="text-left">Average daggers fired</div>
-								<div class="text-right">@averageDaggersFired</div>
+								<div class="text-right">@em.AverageDaggersFired</div>
 							</div>
 							<div class="hidden-xs hidden-xl">
 								<div class="text-left">Time divided by deaths</div>
-								<div class="text-right">@timeByDeath</div>
+								<div class="text-right">@em.TimeByDeath</div>
 							</div>
 						}
 						<div style="padding-top: 1em;">
