@@ -773,9 +773,18 @@
 	{
 		"Name": "DevilDaggersCustomLeaderboards",
 		"DisplayName": "Devil Daggers Custom Leaderboards",
-		"VersionNumber": "0.14.7.0",
+		"VersionNumber": "1.0.0.0",
 		"VersionNumberRequired": "0.14.6.0",
 		"Changelog": [
+			{
+				"VersionNumber": "1.0.0.0",
+				"Date": "2021-03-16T00:00:00",
+				"Changes": [
+					{
+						"Description": "The application now retrieves the memory offset marker from the DevilDaggers.info API, so no updates for the program are required each time Devil Daggers itself gets updated."
+					}
+				]
+			},
 			{
 				"VersionNumber": "0.14.7.0",
 				"Date": "2021-03-12T00:00:00",
