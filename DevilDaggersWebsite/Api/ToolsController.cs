@@ -4,6 +4,7 @@ using DevilDaggersWebsite.Transients;
 using Microsoft.AspNetCore.Hosting;
 using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
+using Newtonsoft.Json;
 using System;
 using System.Collections.Generic;
 using System.ComponentModel.DataAnnotations;
@@ -62,6 +63,13 @@ namespace DevilDaggersWebsite.Api
 			_dbContext.SaveChanges();
 
 			return File(Io.File.ReadAllBytes(Path.Combine(_env.WebRootPath, path)), MediaTypeNames.Application.Zip, $"{toolName}{tool.VersionNumber}.zip");
+		}
+
+		[HttpGet("devildaggerscustomleaderboards/settings")]
+		[ProducesResponseType(StatusCodes.Status200OK)]
+		public ActionResult<DdclSettings> GetDdclSettings()
+		{
+			return JsonConvert.DeserializeObject<DdclSettings>(Io.File.ReadAllText(Path.Combine(_env.WebRootPath, "tools", "DevilDaggersCustomLeaderboards", "Settings.json")));
 		}
 	}
 }
