@@ -2,6 +2,7 @@
 using DevilDaggersDiscordBot.Logging;
 using DevilDaggersWebsite.Caches;
 using DevilDaggersWebsite.Entities;
+using DevilDaggersWebsite.Enumerators;
 using DevilDaggersWebsite.Extensions;
 using DevilDaggersWebsite.Transients;
 using DSharpPlus.Entities;
@@ -42,6 +43,7 @@ namespace DevilDaggersWebsite.Api
 		{
 			return _dbContext.CustomLeaderboards
 				.AsNoTracking()
+				.Where(cl => cl.Category != CustomLeaderboardCategory.Challenge)
 				.Include(cl => cl.SpawnsetFile)
 					.ThenInclude(sf => sf.Player)
 				.Select(cl => cl.ToDto())
@@ -55,6 +57,7 @@ namespace DevilDaggersWebsite.Api
 		{
 			CustomLeaderboard? customLeaderboard = _dbContext.CustomLeaderboards
 				.AsNoTracking()
+				.Where(cl => cl.Category != CustomLeaderboardCategory.Challenge)
 				.Include(cl => cl.SpawnsetFile)
 					.ThenInclude(sf => sf.Player)
 				.FirstOrDefault(cl => cl.Id == id);
@@ -158,16 +161,9 @@ namespace DevilDaggersWebsite.Api
 
 			// Check for existing leaderboard.
 			CustomLeaderboard? customLeaderboard = _dbContext.CustomLeaderboards.Include(cl => cl.SpawnsetFile).ThenInclude(sf => sf.Player).FirstOrDefault(cl => cl.SpawnsetFile.Name == spawnsetName);
-			if (customLeaderboard == null)
+			if (customLeaderboard == null || customLeaderboard.Category == CustomLeaderboardCategory.Challenge)
 			{
 				const string errorMessage = "This spawnset exists on DevilDaggers.info, but doesn't have a leaderboard.";
-				await TryLog(uploadRequest, spawnsetName, errorMessage);
-				return new BadRequestObjectResult(new ProblemDetails { Title = errorMessage });
-			}
-
-			if (customLeaderboard.Category == Enumerators.CustomLeaderboardCategory.Challenge)
-			{
-				const string errorMessage = "Challenge leaderboards are still in development and therefore not supported yet.";
 				await TryLog(uploadRequest, spawnsetName, errorMessage);
 				return new BadRequestObjectResult(new ProblemDetails { Title = errorMessage });
 			}
