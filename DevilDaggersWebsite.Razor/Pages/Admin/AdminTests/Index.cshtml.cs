@@ -1,4 +1,5 @@
 ﻿using DevilDaggersDiscordBot.Logging;
+using DevilDaggersWebsite.Caches;
 using DevilDaggersWebsite.LeaderboardStatistics;
 using Microsoft.AspNetCore.Hosting;
 using Microsoft.AspNetCore.Mvc.RazorPages;
@@ -21,5 +22,8 @@ namespace DevilDaggersWebsite.Razor.Pages.Admin.AdminTests
 
 		public void OnPostUpdateStatisticsDataHolder()
 			=> StatisticsDataHolder.Instance.Update(_env);
+
+		public void OnPostClearSpawnsetHashCache()
+			=> SpawnsetHashCache.Instance.Clear();
 	}
 }

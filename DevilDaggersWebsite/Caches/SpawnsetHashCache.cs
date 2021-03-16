@@ -63,9 +63,7 @@ namespace DevilDaggersWebsite.Caches
 		}
 
 		public void Clear()
-		{
-			_cache.Clear();
-		}
+			=> _cache.Clear();
 
 		private static bool MatchHashes(byte[] a, byte[] b)
 		{
