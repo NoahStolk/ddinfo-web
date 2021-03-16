@@ -21,7 +21,7 @@ in-game-sens='{player.InGameSens * 1000 ?? 0}'
 fov='{player.Fov ?? 0}'
 hand='{(!player.RightHanded.HasValue ? -1 : player.RightHanded.Value ? 1 : 0)}'
 flash='{(!player.FlashEnabled.HasValue ? -1 : player.FlashEnabled.Value ? 1 : 0)}'
-gamma='{player.Gamma ?? 0}'");
+gamma='{player.Gamma * 1000 ?? 0}'");
 		}
 
 		public static HtmlString ToHtmlData(this Entry entry, string flagCode, GameVersion gameVersion)
