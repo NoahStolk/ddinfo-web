@@ -70,7 +70,7 @@ namespace DevilDaggersWebsite.Tests
 			Dto.UploadSuccess uploadSuccess = (await _customLeaderboardsController.ProcessUploadRequest(uploadRequest)).Value;
 
 			Assert.AreEqual(1, uploadSuccess.TotalPlayers);
-			Assert.IsTrue(uploadSuccess.Message.StartsWith("No new highscore", StringComparison.InvariantCulture));
+			Assert.IsTrue(uploadSuccess.Message.StartsWith("No new highscore"));
 		}
 
 		[TestMethod]
@@ -92,7 +92,7 @@ namespace DevilDaggersWebsite.Tests
 			Dto.UploadSuccess uploadSuccess = (await _customLeaderboardsController.ProcessUploadRequest(uploadRequest)).Value;
 
 			Assert.AreEqual(1, uploadSuccess.TotalPlayers);
-			Assert.IsTrue(uploadSuccess.Message.StartsWith("NEW HIGHSCORE", StringComparison.InvariantCulture));
+			Assert.IsTrue(uploadSuccess.Message.StartsWith("NEW HIGHSCORE"));
 		}
 
 		[TestMethod]
@@ -114,7 +114,7 @@ namespace DevilDaggersWebsite.Tests
 			Dto.UploadSuccess uploadSuccess = (await _customLeaderboardsController.ProcessUploadRequest(uploadRequest)).Value;
 
 			Assert.AreEqual(2, uploadSuccess.TotalPlayers);
-			Assert.IsTrue(uploadSuccess.Message.StartsWith("Welcome", StringComparison.InvariantCulture));
+			Assert.IsTrue(uploadSuccess.Message.StartsWith("Welcome"));
 		}
 
 		[TestMethod]
@@ -137,7 +137,7 @@ namespace DevilDaggersWebsite.Tests
 
 			// TODO: Clear the database before running this test.
 			// Assert.AreEqual(2, uploadSuccess.TotalPlayers);
-			Assert.IsTrue(uploadSuccess.Message.StartsWith("Welcome", StringComparison.InvariantCulture));
+			Assert.IsTrue(uploadSuccess.Message.StartsWith("Welcome"));
 		}
 
 		[TestMethod]
@@ -164,7 +164,7 @@ namespace DevilDaggersWebsite.Tests
 
 			Assert.IsInstanceOfType(badRequest.Value, typeof(ProblemDetails));
 			ProblemDetails problemDetails = (ProblemDetails)badRequest.Value;
-			Assert.IsTrue(problemDetails.Title.Contains("unsupported and outdated", StringComparison.InvariantCulture));
+			Assert.IsTrue(problemDetails.Title.Contains("unsupported and outdated"));
 		}
 
 		[TestMethod]

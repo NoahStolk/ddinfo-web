@@ -2,7 +2,6 @@
 using DevilDaggersDiscordBot.Logging;
 using DSharpPlus;
 using DSharpPlus.Entities;
-using System;
 using System.IO;
 using System.Threading.Tasks;
 
@@ -39,7 +38,7 @@ namespace DevilDaggersDiscordBot
 						return;
 
 					// React with an emoji when the bot gets mentioned anywhere.
-					if (msg.Contains($"@!{ServerConstants.BotUserId}", StringComparison.InvariantCulture))
+					if (msg.Contains($"@!{ServerConstants.BotUserId}"))
 						await e.Message.CreateReactionAsync(DiscordEmoji.FromName(client, ":eye_in_speech_bubble:"));
 
 					if (e.Channel.Id == ServerConstants.TestMonitoringChannelId && msg.StartsWith(".bot"))

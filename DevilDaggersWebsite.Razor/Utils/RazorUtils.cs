@@ -63,7 +63,7 @@ namespace DevilDaggersWebsite.Razor.Utils
 			if (gameVersionOverride.HasValue)
 				colorCode = GameInfo.GetEnemies(gameVersionOverride.Value).First(e => e.Name == enemy.Name).ColorCode;
 
-			return new($"<a style='color: #{colorCode};' href='/Wiki/Enemies{(gameVersionOverride == null ? string.Empty : $"?GameVersion={gameVersionOverride}")}#{enemy.Name.Replace(" ", string.Empty, StringComparison.InvariantCulture)}'>{enemy.Name}{(plural ? "s" : string.Empty)}</a>");
+			return new($"<a style='color: #{colorCode};' href='/Wiki/Enemies{(gameVersionOverride == null ? string.Empty : $"?GameVersion={gameVersionOverride}")}#{enemy.Name.Replace(" ", string.Empty)}'>{enemy.Name}{(plural ? "s" : string.Empty)}</a>");
 		}
 
 		public static HtmlString GetLayoutAnchor(this Upgrade upgrade)
@@ -86,11 +86,11 @@ namespace DevilDaggersWebsite.Razor.Utils
 					foreach (char end in endSeparators)
 					{
 						string enemyString = $"{begin}{enemy.Name}{end}";
-						if (str.Contains(enemyString, StringComparison.InvariantCulture))
+						if (str.Contains(enemyString))
 						{
 							// Enemy string should not be inside an <a> element.
-							if (str.Length < str.IndexOf(enemyString, StringComparison.InvariantCulture) + enemyString.Length + "</a>".Length || str.Substring(str.IndexOf(enemyString, StringComparison.InvariantCulture) + enemyString.Length, "</a>".Length) != "</a>")
-								str = str.Replace(enemyString, $"{begin}{enemy.GetLayoutAnchor(end == 's')}{(end == 's' ? string.Empty : end.ToString())}", StringComparison.InvariantCulture);
+							if (str.Length < str.IndexOf(enemyString) + enemyString.Length + "</a>".Length || str.Substring(str.IndexOf(enemyString) + enemyString.Length, "</a>".Length) != "</a>")
+								str = str.Replace(enemyString, $"{begin}{enemy.GetLayoutAnchor(end == 's')}{(end == 's' ? string.Empty : end.ToString())}");
 						}
 					}
 				}
@@ -103,8 +103,8 @@ namespace DevilDaggersWebsite.Razor.Utils
 					foreach (char end in endSeparators)
 					{
 						string upgradeString = $"{begin}{upgrade.Name}{end}";
-						if (str.Contains(upgradeString, StringComparison.InvariantCulture))
-							str = str.Replace(upgradeString, $"{begin}{upgrade.GetLayoutAnchor()}{end}", StringComparison.InvariantCulture);
+						if (str.Contains(upgradeString))
+							str = str.Replace(upgradeString, $"{begin}{upgrade.GetLayoutAnchor()}{end}");
 					}
 				}
 			}
@@ -115,12 +115,12 @@ namespace DevilDaggersWebsite.Razor.Utils
 		public static string TransmuteString(this string str)
 		{
 			return str
-				.Replace(" transmute ", " <a style='color: var(--col-red);' href='/Wiki/Enemies#transmuted-skulls'>transmute</a> ", StringComparison.InvariantCulture)
-				.Replace(" transmutes ", " <a style='color: var(--col-red);' href='/Wiki/Enemies#transmuted-skulls'>transmutes</a> ", StringComparison.InvariantCulture);
+				.Replace(" transmute ", " <a style='color: var(--col-red);' href='/Wiki/Enemies#transmuted-skulls'>transmute</a> ")
+				.Replace(" transmutes ", " <a style='color: var(--col-red);' href='/Wiki/Enemies#transmuted-skulls'>transmutes</a> ");
 		}
 
 		public static string ToIdString(this string str)
-			=> $"{str.ToLower().Replace(" ", "-", StringComparison.InvariantCulture)}";
+			=> $"{str.ToLower().Replace(" ", "-")}";
 
 		public static string S(this int value)
 			=> value == 1 ? string.Empty : "s";

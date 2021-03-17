@@ -36,7 +36,7 @@ namespace DevilDaggersWebsite.Api
 		{
 			IEnumerable<Tool> tools = _toolHelper.Tools;
 			if (!string.IsNullOrEmpty(toolNameFilter))
-				tools = tools.Where(t => t.Name.Contains(toolNameFilter, StringComparison.InvariantCulture));
+				tools = tools.Where(t => t.Name.Contains(toolNameFilter));
 			return tools.ToList();
 		}
 

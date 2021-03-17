@@ -55,10 +55,10 @@ namespace DevilDaggersWebsite.Razor.Pages
 				sortedMods.Add(new(assetMod.AssetModTypes, assetMod.AssetModFileContents, assetMod.Name, assetMod.Url, assetMod.PlayerAssetMods.Select(pam => pam.Player.PlayerName).OrderBy(s => s).ToList()));
 
 			if (!string.IsNullOrWhiteSpace(SearchAuthor))
-				sortedMods = sortedMods.Where(am => am.Authors.Any(a => a.Contains(SearchAuthor, StringComparison.InvariantCultureIgnoreCase))).ToList();
+				sortedMods = sortedMods.Where(am => am.Authors.Any(a => a.Contains(SearchAuthor))).ToList();
 
 			if (!string.IsNullOrWhiteSpace(SearchName))
-				sortedMods = sortedMods.Where(am => am.Name.Contains(SearchName, StringComparison.InvariantCultureIgnoreCase)).ToList();
+				sortedMods = sortedMods.Where(am => am.Name.Contains(SearchName)).ToList();
 
 			sortedMods = sortOrder switch
 			{

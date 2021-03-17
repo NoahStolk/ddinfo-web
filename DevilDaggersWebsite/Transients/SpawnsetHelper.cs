@@ -4,7 +4,6 @@ using DevilDaggersWebsite.Enumerators;
 using DevilDaggersWebsite.Extensions;
 using Microsoft.AspNetCore.Hosting;
 using Microsoft.EntityFrameworkCore;
-using System;
 using System.Collections.Generic;
 using System.IO;
 using System.Linq;
@@ -36,13 +35,13 @@ namespace DevilDaggersWebsite.Transients
 			if (!string.IsNullOrWhiteSpace(authorFilter))
 			{
 				authorFilter = authorFilter.ToLower();
-				query = query.Where(sf => sf.Player.PlayerName.ToLower().Contains(authorFilter, StringComparison.InvariantCulture));
+				query = query.Where(sf => sf.Player.PlayerName.ToLower().Contains(authorFilter));
 			}
 
 			if (!string.IsNullOrWhiteSpace(nameFilter))
 			{
 				nameFilter = nameFilter.ToLower();
-				query = query.Where(sf => sf.Name.ToLower().Contains(nameFilter, StringComparison.InvariantCulture));
+				query = query.Where(sf => sf.Name.ToLower().Contains(nameFilter));
 			}
 
 			return query.Select(sf => Map(sf)).ToList();
