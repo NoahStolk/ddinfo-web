@@ -19,7 +19,13 @@
 		axes: {
 			xaxis: {
 				renderer: $.jqplot.CategoryAxisRenderer,
-				ticks: deathNames
+				ticks: deathNames,
+				labelRenderer: $.jqplot.CanvasAxisLabelRenderer,
+				tickRenderer: $.jqplot.CanvasAxisTickRenderer,
+				tickOptions: {
+					labelPosition: 'left',
+					angle: -45
+				}
 			},
 			yaxis: {
 				mark: 'outside',
