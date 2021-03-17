@@ -3,6 +3,7 @@ using DevilDaggersWebsite.Enumerators;
 using System;
 using System.ComponentModel.DataAnnotations;
 using System.ComponentModel.DataAnnotations.Schema;
+using System.Text;
 
 namespace DevilDaggersWebsite.Entities
 {
@@ -37,17 +38,19 @@ namespace DevilDaggersWebsite.Entities
 		public bool IsAscending()
 			=> Category == CustomLeaderboardCategory.Challenge || Category == CustomLeaderboardCategory.Speedrun;
 
-		public void Create(ApplicationDbContext dbContext, AdminCustomLeaderboard adminDto)
+		public void Create(ApplicationDbContext dbContext, AdminCustomLeaderboard adminDto, StringBuilder auditLogger)
 		{
 			DateCreated = DateTime.UtcNow;
 
-			Edit(dbContext, adminDto);
+			Edit(dbContext, adminDto, auditLogger);
 
 			dbContext.CustomLeaderboards.Add(this);
 		}
 
-		public void Edit(ApplicationDbContext dbContext, AdminCustomLeaderboard adminDto)
+		public void Edit(ApplicationDbContext dbContext, AdminCustomLeaderboard adminDto, StringBuilder auditLogger)
 		{
+			(this as IAdminUpdatableEntity<AdminCustomLeaderboard>).TrackEditUpdates(auditLogger, adminDto, typeof(CustomLeaderboard));
+
 			Category = adminDto.Category;
 			SpawnsetFileId = adminDto.SpawnsetFileId;
 			TimeBronze = adminDto.TimeBronze;
@@ -57,7 +60,7 @@ namespace DevilDaggersWebsite.Entities
 			TimeLeviathan = adminDto.TimeLeviathan;
 		}
 
-		public void CreateManyToManyRelations(ApplicationDbContext dbContext, AdminCustomLeaderboard adminDto)
+		public void CreateManyToManyRelations(ApplicationDbContext dbContext, AdminCustomLeaderboard adminDto, StringBuilder auditLogger)
 		{
 			// Method intentionally left empty.
 		}

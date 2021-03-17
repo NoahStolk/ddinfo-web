@@ -2,6 +2,7 @@
 using System.Collections.Generic;
 using System.ComponentModel.DataAnnotations;
 using System.Linq;
+using System.Text;
 
 namespace DevilDaggersWebsite.Entities
 {
@@ -13,19 +14,21 @@ namespace DevilDaggersWebsite.Entities
 		public string Name { get; set; } = null!;
 		public List<PlayerTitle> PlayerTitles { get; set; } = new();
 
-		public void Create(ApplicationDbContext dbContext, AdminTitle adminDto)
+		public void Create(ApplicationDbContext dbContext, AdminTitle adminDto, StringBuilder auditLogger)
 		{
-			Edit(dbContext, adminDto);
+			Edit(dbContext, adminDto, auditLogger);
 
 			dbContext.Titles.Add(this);
 		}
 
-		public void Edit(ApplicationDbContext dbContext, AdminTitle adminDto)
+		public void Edit(ApplicationDbContext dbContext, AdminTitle adminDto, StringBuilder auditLogger)
 		{
+			(this as IAdminUpdatableEntity<AdminTitle>).TrackEditUpdates(auditLogger, adminDto, typeof(Title));
+
 			Name = adminDto.Name;
 		}
 
-		public void CreateManyToManyRelations(ApplicationDbContext dbContext, AdminTitle adminDto)
+		public void CreateManyToManyRelations(ApplicationDbContext dbContext, AdminTitle adminDto, StringBuilder auditLogger)
 		{
 			List<int> playerIds = adminDto.PlayerIds ?? new();
 			foreach (PlayerTitle newEntity in playerIds.ConvertAll(pi => new PlayerTitle { TitleId = Id, PlayerId = pi }))

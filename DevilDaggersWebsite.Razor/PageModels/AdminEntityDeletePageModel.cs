@@ -1,4 +1,6 @@
-﻿using DevilDaggersWebsite.Entities;
+﻿using DevilDaggersDiscordBot.Logging;
+using DevilDaggersWebsite.Entities;
+using Microsoft.AspNetCore.Hosting;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.EntityFrameworkCore;
 using System.Threading.Tasks;
@@ -8,9 +10,12 @@ namespace DevilDaggersWebsite.Razor.PageModels
 	public class AdminEntityDeletePageModel<TEntity> : AbstractAdminEntityPageModel<TEntity>
 		where TEntity : class, IEntity
 	{
-		public AdminEntityDeletePageModel(ApplicationDbContext dbContext)
+		private readonly IWebHostEnvironment _env;
+
+		public AdminEntityDeletePageModel(IWebHostEnvironment env, ApplicationDbContext dbContext)
 			: base(dbContext)
 		{
+			_env = env;
 		}
 
 		[BindProperty]
@@ -39,7 +44,7 @@ namespace DevilDaggersWebsite.Razor.PageModels
 				DbSet.Remove(Entity);
 				await DbContext.SaveChangesAsync();
 
-				// TODO: Send delete audit log message.
+				await DiscordLogger.Instance.TryLog(Channel.AuditLogMonitoring, _env.EnvironmentName, $"`DELETE by {GetIdentity()} for {typeof(TEntity).Name} {id}`");
 			}
 
 			return RedirectToPage("./Index");

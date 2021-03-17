@@ -3,6 +3,7 @@ using DevilDaggersWebsite.Enumerators;
 using System;
 using System.ComponentModel.DataAnnotations;
 using System.ComponentModel.DataAnnotations.Schema;
+using System.Text;
 
 namespace DevilDaggersWebsite.Entities
 {
@@ -23,15 +24,17 @@ namespace DevilDaggersWebsite.Entities
 		public string? Note { get; set; }
 		public bool IsRefunded { get; set; }
 
-		public void Create(ApplicationDbContext dbContext, AdminDonation adminDto)
+		public void Create(ApplicationDbContext dbContext, AdminDonation adminDto, StringBuilder auditLogger)
 		{
-			Edit(dbContext, adminDto);
+			Edit(dbContext, adminDto, auditLogger);
 
 			dbContext.Donations.Add(this);
 		}
 
-		public void Edit(ApplicationDbContext dbContext, AdminDonation adminDto)
+		public void Edit(ApplicationDbContext dbContext, AdminDonation adminDto, StringBuilder auditLogger)
 		{
+			(this as IAdminUpdatableEntity<AdminDonation>).TrackEditUpdates(auditLogger, adminDto, typeof(Donation));
+
 			PlayerId = adminDto.PlayerId;
 			Amount = adminDto.Amount;
 			Currency = adminDto.Currency;
@@ -41,7 +44,7 @@ namespace DevilDaggersWebsite.Entities
 			IsRefunded = adminDto.IsRefunded;
 		}
 
-		public void CreateManyToManyRelations(ApplicationDbContext dbContext, AdminDonation adminDto)
+		public void CreateManyToManyRelations(ApplicationDbContext dbContext, AdminDonation adminDto, StringBuilder auditLogger)
 		{
 			// Method intentionally left empty.
 		}

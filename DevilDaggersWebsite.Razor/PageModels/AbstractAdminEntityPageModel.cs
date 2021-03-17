@@ -24,5 +24,8 @@ namespace DevilDaggersWebsite.Razor.PageModels
 		public DbSet<TEntity> DbSet { get; }
 
 		public PropertyInfo[] EntityDisplayProperties { get; }
+
+		public string GetIdentity()
+			=> User.Identity?.Name?.Substring(0, 4) ?? "UNKNOWN IDENTITY";
 	}
 }

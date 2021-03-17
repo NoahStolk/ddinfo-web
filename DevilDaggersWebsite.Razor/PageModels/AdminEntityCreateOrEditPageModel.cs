@@ -1,13 +1,17 @@
-﻿using DevilDaggersWebsite.Dto.Admin;
+﻿using DevilDaggersDiscordBot.Logging;
+using DevilDaggersWebsite.Dto.Admin;
 using DevilDaggersWebsite.Entities;
 using DevilDaggersWebsite.Enumerators;
 using DevilDaggersWebsite.Razor.Utils;
+using Microsoft.AspNetCore.Hosting;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.AspNetCore.Mvc.ModelBinding;
 using Microsoft.AspNetCore.Mvc.Rendering;
 using Microsoft.EntityFrameworkCore;
 using System.Collections.Generic;
 using System.Linq;
+using System.Text;
+using System.Threading.Tasks;
 
 namespace DevilDaggersWebsite.Razor.PageModels
 {
@@ -15,11 +19,15 @@ namespace DevilDaggersWebsite.Razor.PageModels
 		where TEntity : class, IAdminUpdatableEntity<TAdminDto>, new()
 		where TAdminDto : class
 	{
+		private readonly IWebHostEnvironment _env;
+
 		private TEntity? _entity;
 
-		public AdminEntityCreateOrEditPageModel(ApplicationDbContext dbContext)
+		public AdminEntityCreateOrEditPageModel(IWebHostEnvironment env, ApplicationDbContext dbContext)
 			: base(dbContext)
 		{
+			_env = env;
+
 			AssetModFileContentsList = RazorUtils.EnumToSelectList<AssetModFileContents>();
 			AssetModTypesList = RazorUtils.EnumToSelectList<AssetModTypes>();
 
@@ -71,7 +79,7 @@ namespace DevilDaggersWebsite.Razor.PageModels
 			return Page();
 		}
 
-		public IActionResult OnPost(int? id)
+		public async Task<IActionResult> OnPostAsync(int? id)
 		{
 			IEnumerable<ModelError> allErrors = ModelState.Values.SelectMany(v => v.Errors);
 
@@ -93,13 +101,15 @@ namespace DevilDaggersWebsite.Razor.PageModels
 
 				try
 				{
-					_entity.Edit(DbContext, AdminDto);
+					StringBuilder auditLogger = new($"EDIT by {GetIdentity()} for {typeof(TEntity).Name} {id}\n");
+
+					_entity.Edit(DbContext, AdminDto, auditLogger);
 					DbContext.SaveChanges();
 
-					_entity.CreateManyToManyRelations(DbContext, AdminDto);
+					_entity.CreateManyToManyRelations(DbContext, AdminDto, auditLogger);
 					DbContext.SaveChanges();
 
-					// TODO: Send edit audit log message.
+					await DiscordLogger.Instance.TryLog(Channel.AuditLogMonitoring, _env.EnvironmentName, $"`{auditLogger}`");
 				}
 				catch (DbUpdateConcurrencyException) when (!DbSet.Any(e => e.Id == _entity.Id))
 				{
@@ -120,14 +130,16 @@ namespace DevilDaggersWebsite.Razor.PageModels
 					return Page();
 				}
 
+				StringBuilder auditLogger = new($"CREATE by {GetIdentity()} for {typeof(TEntity).Name}\n");
+
 				_entity = new();
-				_entity.Create(DbContext, AdminDto);
+				_entity.Create(DbContext, AdminDto, auditLogger);
 				DbContext.SaveChanges();
 
-				_entity.CreateManyToManyRelations(DbContext, AdminDto);
+				_entity.CreateManyToManyRelations(DbContext, AdminDto, auditLogger);
 				DbContext.SaveChanges();
 
-				// TODO: Send create audit log message.
+				await DiscordLogger.Instance.TryLog(Channel.AuditLogMonitoring, _env.EnvironmentName, $"`{auditLogger}`");
 			}
 
 			return RedirectToPage("./Index");

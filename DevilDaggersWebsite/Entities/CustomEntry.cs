@@ -2,6 +2,7 @@
 using System;
 using System.ComponentModel.DataAnnotations;
 using System.ComponentModel.DataAnnotations.Schema;
+using System.Text;
 
 namespace DevilDaggersWebsite.Entities
 {
@@ -40,18 +41,20 @@ namespace DevilDaggersWebsite.Entities
 
 		public double Accuracy => DaggersFired == 0 ? 0 : DaggersHit / (double)DaggersFired;
 
-		public void Create(ApplicationDbContext dbContext, AdminCustomEntry adminDto)
+		public void Create(ApplicationDbContext dbContext, AdminCustomEntry adminDto, StringBuilder auditLogger)
 		{
 			CustomLeaderboardId = adminDto.CustomLeaderboardId;
 			PlayerId = adminDto.PlayerId;
 
-			Edit(dbContext, adminDto);
+			Edit(dbContext, adminDto, auditLogger);
 
 			dbContext.CustomEntries.Add(this);
 		}
 
-		public void Edit(ApplicationDbContext dbContext, AdminCustomEntry adminDto)
+		public void Edit(ApplicationDbContext dbContext, AdminCustomEntry adminDto, StringBuilder auditLogger)
 		{
+			(this as IAdminUpdatableEntity<AdminCustomEntry>).TrackEditUpdates(auditLogger, adminDto, typeof(CustomEntry));
+
 			Time = adminDto.Time;
 			GemsCollected = adminDto.GemsCollected;
 			EnemiesKilled = adminDto.EnemiesKilled;
@@ -71,7 +74,7 @@ namespace DevilDaggersWebsite.Entities
 			ClientVersion = adminDto.ClientVersion;
 		}
 
-		public void CreateManyToManyRelations(ApplicationDbContext dbContext, AdminCustomEntry adminDto)
+		public void CreateManyToManyRelations(ApplicationDbContext dbContext, AdminCustomEntry adminDto, StringBuilder auditLogger)
 		{
 			// Method intentionally left empty.
 		}

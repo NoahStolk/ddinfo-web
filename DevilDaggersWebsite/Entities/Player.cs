@@ -2,6 +2,7 @@
 using System.Collections.Generic;
 using System.ComponentModel.DataAnnotations;
 using System.Linq;
+using System.Text;
 
 namespace DevilDaggersWebsite.Entities
 {
@@ -35,17 +36,21 @@ namespace DevilDaggersWebsite.Entities
 		public override string ToString()
 			=> $"{PlayerName} ({Id})";
 
-		public void Create(ApplicationDbContext dbContext, AdminPlayer adminDto)
+		public void Create(ApplicationDbContext dbContext, AdminPlayer adminDto, StringBuilder auditLogger)
 		{
 			Id = adminDto.Id;
 
-			Edit(dbContext, adminDto);
+			auditLogger.AppendFormat("{0,20}", "Id").Append(": ").AppendFormat("{0,20}", string.Empty).Append(" -> ").AppendFormat("{0,20}", Id).AppendLine();
+
+			Edit(dbContext, adminDto, auditLogger);
 
 			dbContext.Players.Add(this);
 		}
 
-		public void Edit(ApplicationDbContext dbContext, AdminPlayer adminDto)
+		public void Edit(ApplicationDbContext dbContext, AdminPlayer adminDto, StringBuilder auditLogger)
 		{
+			(this as IAdminUpdatableEntity<AdminPlayer>).TrackEditUpdates(auditLogger, adminDto, typeof(Player));
+
 			PlayerName = adminDto.PlayerName;
 			IsAnonymous = adminDto.IsAnonymous;
 			CountryCode = adminDto.CountryCode;
@@ -62,7 +67,7 @@ namespace DevilDaggersWebsite.Entities
 			IsBannedFromDdcl = adminDto.IsBannedFromDdcl;
 		}
 
-		public void CreateManyToManyRelations(ApplicationDbContext dbContext, AdminPlayer adminDto)
+		public void CreateManyToManyRelations(ApplicationDbContext dbContext, AdminPlayer adminDto, StringBuilder auditLogger)
 		{
 			List<int> assetModIds = adminDto.AssetModIds ?? new();
 			foreach (PlayerAssetMod newEntity in assetModIds.ConvertAll(ami => new PlayerAssetMod { AssetModId = ami, PlayerId = Id }))
