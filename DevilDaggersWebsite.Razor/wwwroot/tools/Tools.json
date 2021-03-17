@@ -774,7 +774,7 @@
 		"Name": "DevilDaggersCustomLeaderboards",
 		"DisplayName": "Devil Daggers Custom Leaderboards",
 		"VersionNumber": "1.0.0.0",
-		"VersionNumberRequired": "0.14.6.0",
+		"VersionNumberRequired": "1.0.0.0",
 		"Changelog": [
 			{
 				"VersionNumber": "1.0.0.0",
