@@ -155,11 +155,8 @@ namespace DevilDaggersWebsite.Razor
 			Task task = serviceProvider.CreateRolesAndAdminUser(Configuration.GetSection("AdminUser")["Email"]);
 			task.Wait();
 
-			if (!env.IsDevelopment())
-			{
-				// Calculate statistics once on startup because this is a heavy operation.
-				StatisticsDataHolder.Instance.Update(env);
-			}
+			// Calculate statistics once on startup because this is a heavy operation.
+			StatisticsDataHolder.Instance.Update(env);
 		}
 	}
 }
