@@ -18,8 +18,8 @@
 </header>
 
 <main role="main">
-	<div class="text-center">
-		<p>
+	<div>
+		<p class="text-center">
 			<a asp-page="/Spawnset" asp-route-spawnset="@Model.SpawnsetFile.Name">Spawnset page for @spawnsetName</a>
 		</p>
 
@@ -68,10 +68,10 @@
 			</div>
 		</div>
 
-		<p class="visible-xs visible-sm visible-md">
+		<p class="visible-xs visible-sm visible-md text-center">
 			On mobile devices; tap on an entry to expand it.
 		</p>
-		<p>
+		<p class="text-center">
 			You can sort the leaderboard by clicking the headers.
 		</p>
 	</div>
