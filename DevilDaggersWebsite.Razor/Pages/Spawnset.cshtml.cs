@@ -5,8 +5,8 @@ using Microsoft.AspNetCore.Mvc;
 using Microsoft.AspNetCore.Mvc.RazorPages;
 using Microsoft.EntityFrameworkCore;
 using System;
-using System.IO;
 using System.Linq;
+using Io = System.IO;
 
 namespace DevilDaggersWebsite.Razor.Pages
 {
@@ -31,7 +31,11 @@ namespace DevilDaggersWebsite.Razor.Pages
 			if (SpawnsetFile == null)
 				return RedirectToPage("Spawnsets");
 
-			if (!Spawnset.TryParse(System.IO.File.ReadAllBytes(Path.Combine(_env.WebRootPath, "spawnsets", SpawnsetFile.Name)), out Spawnset spawnset))
+			string path = Io.Path.Combine(_env.WebRootPath, "spawnsets", SpawnsetFile.Name);
+			if (!Io.File.Exists(path))
+				return RedirectToPage("Spawnsets");
+
+			if (!Spawnset.TryParse(Io.File.ReadAllBytes(path), out Spawnset spawnset))
 				throw new Exception($"Could not parse spawnset '{SpawnsetFile.Name}'.");
 
 			Spawnset = spawnset;

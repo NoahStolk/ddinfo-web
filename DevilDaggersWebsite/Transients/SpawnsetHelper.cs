@@ -44,7 +44,10 @@ namespace DevilDaggersWebsite.Transients
 				query = query.Where(sf => sf.Name.ToLower().Contains(nameFilter));
 			}
 
-			return query.Select(sf => Map(sf)).ToList();
+			return query
+				.Where(sf => File.Exists(Path.Combine(_env.WebRootPath, "spawnsets", sf.Name)))
+				.Select(sf => Map(sf))
+				.ToList();
 		}
 
 		private Dto.SpawnsetFile Map(SpawnsetFile spawnsetFile)
