@@ -19,6 +19,7 @@
 			<div class="form-group">
 				<label asp-for="AdminDto.PlayerId" class="control-label"></label>
 				<select asp-for="AdminDto.PlayerId" class="form-control" asp-items="Model.PlayerList"></select>
+				<span asp-validation-for="AdminDto.PlayerId" class="text-danger"></span>
 			</div>
 			<div class="form-group">
 				<label asp-for="AdminDto.Amount" class="control-label"></label>
