@@ -179,8 +179,8 @@ namespace DevilDaggersWebsite.Api
 			}
 			else if (!isAscending)
 			{
-				// Due to a bug in the game, we need to subtract one tick if the run is a replay, so replays don't overwrite the actual score if submitted twice.
-				uploadRequest.Time -= 167;
+				// Due to a bug in the game, we need to subtract two ticks if the run is a replay, so replays don't overwrite the actual score if submitted twice.
+				uploadRequest.Time -= 334;
 			}
 
 			// Make sure HomingDaggers is not negative (happens rarely).
