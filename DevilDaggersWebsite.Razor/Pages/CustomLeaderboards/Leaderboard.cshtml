@@ -23,14 +23,16 @@
 			<a asp-page="/Spawnset" asp-route-spawnset="@Model.SpawnsetFile.Name">Spawnset page for @spawnsetName</a>
 		</p>
 
-		@{
-			if (!string.IsNullOrEmpty(Model.SpawnsetFile.HtmlDescription))
+		<div class="description">
+			@if (!string.IsNullOrEmpty(Model.SpawnsetFile.HtmlDescription))
 			{
-				<div class="description">
-					@RazorUtils.GetLayout(Model.SpawnsetFile.HtmlDescription, GameVersion.V31)
-				</div>
+				@RazorUtils.GetLayout(Model.SpawnsetFile.HtmlDescription, GameVersion.V31)
 			}
-		}
+			else
+			{
+				@:(No description.)
+			}
+		</div>
 
 		<div class="hidden-xs text-center">
 			<div class="flex-container flex-center flex-space-evenly" style="margin: 12px;">
