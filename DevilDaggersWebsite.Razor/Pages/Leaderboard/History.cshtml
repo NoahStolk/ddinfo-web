@@ -15,7 +15,7 @@
 </header>
 
 <main role="main">
-	@await Html.PartialAsync("Partials/_LeaderboardGlobalPartial")
+	@await Html.PartialAsync("Partials/LeaderboardGlobalPartial")
 	<div>
 		<form method="get">
 			<select class="select form-control" asp-for="From" asp-items="Model.JsonFiles" onchange="this.form.submit()"></select>
@@ -161,7 +161,7 @@
 		<span class="ban leaderboard-username">Crossed out entries</span> are runs that are cheated, boosted, submitted on an alternative account, or otherwise considered invalid.
 	</p>
 
-	@await Html.PartialAsync("Partials/_LeaderboardUserPartial")
+	@await Html.PartialAsync("Partials/LeaderboardUserPartial")
 </main>
 
 @section Scripts {

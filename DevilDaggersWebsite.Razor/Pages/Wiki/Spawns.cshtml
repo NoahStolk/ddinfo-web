@@ -21,7 +21,7 @@
 		@RazorUtils.GetLayout($"Note that {Model.EmergeEnemies} emerge around 3 seconds later than their actual spawn time.", Model.GameVersion)
 	</p>
 
-	@await Html.PartialAsync("Partials/_SpawnsPartial", Model.SpawnsetPath)
+	@await Html.PartialAsync("Partials/SpawnsPartial", Model.SpawnsetPath)
 </main>
 
 @section Styles {

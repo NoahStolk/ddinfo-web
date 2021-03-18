@@ -19,7 +19,7 @@
 		<p>If the problem persists, try contacting the Devil Daggers developer.</p>
 		return;
 	}
-	@await Html.PartialAsync("Partials/_LeaderboardGlobalPartial")
+	@await Html.PartialAsync("Partials/LeaderboardGlobalPartial")
 	@using (Html.BeginForm(FormMethod.Get))
 	{
 		<fieldset>
@@ -94,7 +94,7 @@
 			<span class="ban leaderboard-username">Crossed out entries</span> are runs that are cheated, boosted, submitted on an alternative account, or otherwise considered invalid.
 		</p>
 	}
-	@await Html.PartialAsync("Partials/_LeaderboardUserPartial")
+	@await Html.PartialAsync("Partials/LeaderboardUserPartial")
 	@if (Model.LeaderboardSearchType == LeaderboardSearchType.UserId)
 	{
 		if (Model.IsValidTop100Graph)

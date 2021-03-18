@@ -54,8 +54,8 @@
 						Showing @((curr - 1) * Model.PageSize + 1) - @(Math.Min(Model.TotalResults, curr * Model.PageSize)) of @Model.TotalResults results
 					</p>
 
-					@await Html.PartialAsync("Partials/_SpawnsetNavigationPartial", new NavigationSettings(Model, 20, ScreenWidthVisibilities.Lg | ScreenWidthVisibilities.Md | ScreenWidthVisibilities.Sm))
-					@await Html.PartialAsync("Partials/_SpawnsetNavigationPartial", new NavigationSettings(Model, 1, ScreenWidthVisibilities.Xs))
+					@await Html.PartialAsync("Partials/NavigationPartial", new NavigationSettings(Model, 20, ScreenWidthVisibilities.Lg | ScreenWidthVisibilities.Md | ScreenWidthVisibilities.Sm))
+					@await Html.PartialAsync("Partials/NavigationPartial", new NavigationSettings(Model, 1, ScreenWidthVisibilities.Xs))
 				}
 			</div>
 		}
