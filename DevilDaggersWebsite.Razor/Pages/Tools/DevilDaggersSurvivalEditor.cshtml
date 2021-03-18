@@ -1,7 +1,6 @@
 ﻿@page
 @inject Microsoft.AspNetCore.Hosting.IWebHostEnvironment env
 @inject Transients.ToolHelper toolHelper
-@using DevilDaggersCore.Utils
 @using DevilDaggersWebsite.Dto
 @using DevilDaggersWebsite.Razor.Utils
 @using System.IO
@@ -10,6 +9,7 @@
 	ViewData["Title"] = tool.DisplayName;
 	string downloadFileName = $"{tool.Name}{tool.VersionNumber}.zip";
 	FileInfo downloadFileInfo = new(System.IO.Path.Combine(env.WebRootPath, "tools", tool.Name, downloadFileName));
+	string runtimeUrl = ToolRuntimeUtils.GetRuntimeUrl("5.0");
 }
 
 <header>
@@ -25,12 +25,7 @@
 		<img class="img-responsive image-narrow" src="~/images/Tools/@(tool.Name).png" />
 	</p>
 
-	<p>
-		Current version: @(tool.VersionNumber)<br />
-		Oldest supported version: @(tool.VersionNumberRequired)<br />
-		File size: @(Math.Round(downloadFileInfo.Length / 1024f).ToString()) KB<br />
-		<a class="btn dont-break-out" href="/api/tools/@tool.Name/file">Download</a>
-	</p>
+	@await Html.PartialAsync("Partials/ToolInfoPartial", (tool, downloadFileInfo))
 
 	<h2>Main features</h2>
 	<ul>
@@ -45,24 +40,18 @@
 	<h2>System requirements</h2>
 	<ul>
 		<li>Microsoft Windows</li>
-		<li><a href="@ToolRuntimeUtils.GetRuntimeUrl("5.0")">@ToolRuntimeUtils.DesktopRuntimeNameDotNet50</a> (x64 for 64-bit systems, x86 for 32-bit systems)</li>
+		<li><a href="@runtimeUrl">@ToolRuntimeUtils.DesktopRuntimeNameDotNet50</a> (x64 for 64-bit systems, x86 for 32-bit systems)</li>
 	</ul>
 
 	<h2>Installation</h2>
 	<ol>
-		<li>Make sure to install <a href="@ToolRuntimeUtils.GetRuntimeUrl("5.0")">@ToolRuntimeUtils.DesktopRuntimeNameDotNet50</a> before running the program.</li>
+		<li>Make sure to install <a href="@runtimeUrl">@ToolRuntimeUtils.DesktopRuntimeNameDotNet50</a> before running the program.</li>
 		<li>Download the .zip file.</li>
 		<li>Unzip its contents.</li>
 		<li>Run the executable (.exe file) inside the folder.</li>
 	</ol>
 
-	<h2>Source code</h2>
-	<p>
-		The source code can be found on <a target="_blank" href="@UrlUtils.SourceCodeUrl(tool.Name)">GitHub</a>.
-	</p>
-
-	<h2>Changelog</h2>
-	@tool.ToChangelogHtmlString()
+	@await Html.PartialAsync("Partials/ToolSourcePartial", tool)
 </main>
 
 @section Styles {

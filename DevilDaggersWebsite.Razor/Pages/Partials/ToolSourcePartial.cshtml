@@ -1,0 +1,11 @@
+﻿@model Tool
+@using DevilDaggersCore.Utils
+@using DevilDaggersWebsite.Dto
+
+<h2>Source code</h2>
+<p>
+	The source code can be found on <a target="_blank" href="@UrlUtils.SourceCodeUrl(Model.Name)">GitHub</a>.
+</p>
+
+<h2>Changelog</h2>
+@Model.ToChangelogHtmlString()

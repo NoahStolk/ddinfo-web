@@ -1,0 +1,9 @@
+﻿@model (Tool Tool, FileInfo FileInfo)
+@using DevilDaggersWebsite.Dto
+@using System.IO
+<p>
+	Current version: @(Model.Tool.VersionNumber)<br />
+	Oldest supported version: @(Model.Tool.VersionNumberRequired)<br />
+	File size: @(Math.Round(Model.FileInfo.Length / 1024f).ToString()) KB<br />
+	<a class="btn dont-break-out" href="/api/tools/@Model.Tool.Name/file">Download</a>
+</p>
