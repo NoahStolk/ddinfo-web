@@ -45,6 +45,7 @@ namespace DevilDaggersWebsite.Authorization
 			{ "/Admin/CustomLeaderboards", CustomLeaderboardsPolicy },
 			{ "/Admin/Donations", DonationsPolicy },
 			{ "/Admin/Players", PlayersPolicy },
+			{ "/Admin/SpawnsetFiles", SpawnsetsPolicy },
 			{ "/Admin/Titles", AdminPolicy },
 		};
 

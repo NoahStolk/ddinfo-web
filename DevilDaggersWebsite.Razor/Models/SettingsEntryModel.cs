@@ -32,7 +32,7 @@ namespace DevilDaggersWebsite.Razor.Models
 			DaggerColor = dagger.Name.ToLower();
 			DeathStyle = $"color: #{death?.ColorCode ?? "444"};";
 
-			FlagCode = player.CountryCode ?? string.Empty;
+			FlagCode = player!.CountryCode ?? string.Empty;
 			CountryName = UserUtils.CountryNames.ContainsKey(FlagCode) ? UserUtils.CountryNames[FlagCode] : "Invalid country code";
 
 			HtmlData = new($@"

@@ -1,0 +1,57 @@
+﻿@page
+@using DevilDaggersWebsite.Dto.Admin
+@using DevilDaggersWebsite.Entities
+@using DevilDaggersWebsite.Razor.PageModels
+@model AdminEntityCreateOrEditPageModel<SpawnsetFile, AdminSpawnsetFile>
+
+@{
+	ViewData["Title"] = Model.IsEditing ? "Edit" : "Create";
+}
+
+<h2>@ViewData["Title"]</h2>
+
+<h4>SpawnsetFile</h4>
+<hr />
+<div class="row">
+	<div class="col-md-4">
+		<form method="post">
+			<div asp-validation-summary="ModelOnly" class="text-danger"></div>
+			<div class="form-group">
+				<label asp-for="AdminDto.Name" class="control-label"></label>
+				<input asp-for="AdminDto.Name" class="form-control" />
+				<span asp-validation-for="AdminDto.Name" class="text-danger"></span>
+			</div>
+			<div class="form-group">
+				<label asp-for="AdminDto.PlayerId" class="control-label"></label>
+				<select asp-for="AdminDto.PlayerId" class="form-control" asp-items="Model.PlayerList"></select>
+				<span asp-validation-for="AdminDto.PlayerId" class="text-danger"></span>
+			</div>
+			<div class="form-group">
+				<label asp-for="AdminDto.MaxDisplayWaves" class="control-label"></label>
+				<input asp-for="AdminDto.MaxDisplayWaves" class="form-control" />
+				<span asp-validation-for="AdminDto.MaxDisplayWaves" class="text-danger"></span>
+			</div>
+			<div class="form-group">
+				<label asp-for="AdminDto.HtmlDescription" class="control-label"></label>
+				<input asp-for="AdminDto.HtmlDescription" class="form-control" />
+				<span asp-validation-for="AdminDto.HtmlDescription" class="text-danger"></span>
+			</div>
+			<div class="form-group">
+				<label asp-for="AdminDto.IsPractice" class="control-label"></label>
+				<input asp-for="AdminDto.IsPractice" class="form-control" />
+				<span asp-validation-for="AdminDto.IsPractice" class="text-danger"></span>
+			</div>
+			<div class="form-group">
+				<input type="submit" value="Save" class="btn btn-default" />
+			</div>
+		</form>
+	</div>
+</div>
+
+<div>
+	<a asp-page="./Index">Back to List</a>
+</div>
+
+@section Scripts {
+	@{await Html.RenderPartialAsync("_ValidationScriptsPartial");}
+}

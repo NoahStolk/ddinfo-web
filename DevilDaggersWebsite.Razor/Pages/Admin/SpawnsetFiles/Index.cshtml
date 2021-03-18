@@ -1,0 +1,42 @@
+﻿@page
+@using DevilDaggersWebsite.Razor.PageModels
+@using DevilDaggersWebsite.Entities
+@model AdminEntityIndexPageModel<SpawnsetFile>
+@{
+	ViewData["Title"] = "SpawnsetFiles";
+}
+
+<h2>@ViewData["Title"]</h2>
+
+<p>
+	<a asp-page="CreateOrEdit">Create New</a>
+</p>
+<table class="table admin-table">
+	<thead>
+		<tr>
+			@foreach (var pi in Model.EntityDisplayProperties)
+			{
+				<th>@pi.Name</th>
+			}
+			<th></th>
+			<th></th>
+		</tr>
+	</thead>
+	<tbody>
+		@foreach (var entity in Model.DbSet)
+		{
+			<tr>
+				@foreach (var pi in Model.EntityDisplayProperties)
+				{
+					<td>@Model.GetString(pi, entity)</td>
+				}
+				<td>
+					<a asp-page="CreateOrEdit" asp-route-id="@entity.Id">Edit</a>
+				</td>
+				<td>
+					<a asp-page="Delete" asp-route-id="@entity.Id">Delete</a>
+				</td>
+			</tr>
+		}
+	</tbody>
+</table>

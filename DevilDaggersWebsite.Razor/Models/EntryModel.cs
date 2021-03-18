@@ -26,7 +26,7 @@ namespace DevilDaggersWebsite.Razor.Models
 					titles.Add("Donator");
 				Titles = titles.ToArray();
 
-				IsBanned = player.IsBanned;
+				IsBanned = player!.IsBanned;
 				BanDescription = player.BanDescription;
 			}
 
