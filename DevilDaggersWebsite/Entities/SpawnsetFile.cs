@@ -42,6 +42,8 @@ namespace DevilDaggersWebsite.Entities
 			IsPractice = adminDto.IsPractice;
 			MaxDisplayWaves = adminDto.MaxDisplayWaves;
 			PlayerId = adminDto.PlayerId;
+
+			LastUpdated = DateTime.UtcNow;
 		}
 
 		public void CreateManyToManyRelations(ApplicationDbContext dbContext, AdminSpawnsetFile adminDto, StringBuilder auditLogger)
