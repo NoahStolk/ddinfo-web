@@ -11,7 +11,7 @@ namespace DevilDaggersWebsite.Razor.Pages
 		{
 			Donations = dbContext.Donations.ToList();
 
-			foreach (Donation donation in Donations.Where(d => !d.IsRefunded))
+			foreach (Donation donation in Donations.Where(d => !d.IsRefunded && d.ConvertedEuroCentsReceived > 0))
 			{
 				if (!DonatorsWithReceivedEuroAmounts.ContainsKey(donation.PlayerId))
 					DonatorsWithReceivedEuroAmounts.Add(donation.PlayerId, donation.ConvertedEuroCentsReceived);
