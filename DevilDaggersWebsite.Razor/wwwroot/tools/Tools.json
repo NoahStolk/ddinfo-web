@@ -2,9 +2,24 @@
 	{
 		"Name": "DevilDaggersSurvivalEditor",
 		"DisplayName": "Devil Daggers Survival Editor",
-		"VersionNumber": "2.30.2.0",
+		"VersionNumber": "2.30.5.0",
 		"VersionNumberRequired": "2.28.18.0",
 		"Changelog": [
+			{
+				"VersionNumber": "2.30.5.0",
+				"Date": "2021-03-18T00:00:00",
+				"Changes": [
+					{
+						"Description": "Fixed empty settings or cache files crashing the application."
+					},
+					{
+						"Description": "Fixed About window crashing."
+					},
+					{
+						"Description": "Removed Help window. The Help menu item now navigates to the Survival Editor Guide on the website."
+					}
+				]
+			},
 			{
 				"VersionNumber": "2.30.2.0",
 				"Date": "2021-03-15T00:00:00",
