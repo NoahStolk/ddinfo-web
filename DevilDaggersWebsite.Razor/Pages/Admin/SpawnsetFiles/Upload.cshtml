@@ -1,0 +1,14 @@
+﻿@page
+@model DevilDaggersWebsite.Razor.Pages.Admin.SpawnsetFiles.UploadModel
+@{
+	ViewData["Title"] = "Upload Spawnset File";
+}
+
+<div class="text-center">
+	<h1>@ViewData["Title"]</h1>
+</div>
+
+<form method="post" enctype="multipart/form-data">
+	<input asp-for="FormFile" />
+	<input type="submit" />
+</form>
