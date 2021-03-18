@@ -2,6 +2,7 @@
 using DevilDaggersWebsite.Dto.Admin;
 using DevilDaggersWebsite.Entities;
 using DevilDaggersWebsite.Enumerators;
+using DevilDaggersWebsite.Razor.Extensions;
 using DevilDaggersWebsite.Razor.Utils;
 using Microsoft.AspNetCore.Hosting;
 using Microsoft.AspNetCore.Mvc;
@@ -101,7 +102,7 @@ namespace DevilDaggersWebsite.Razor.PageModels
 
 				try
 				{
-					StringBuilder auditLogger = new($"EDIT by {GetIdentity()} for {typeof(TEntity).Name} {id}\n");
+					StringBuilder auditLogger = new($"EDIT by {this.GetIdentity()} for {typeof(TEntity).Name} {id}\n");
 
 					_entity.Edit(DbContext, AdminDto, auditLogger);
 					DbContext.SaveChanges();
@@ -136,7 +137,7 @@ namespace DevilDaggersWebsite.Razor.PageModels
 					return Page();
 				}
 
-				StringBuilder auditLogger = new($"CREATE by {GetIdentity()} for {typeof(TEntity).Name}\n");
+				StringBuilder auditLogger = new($"CREATE by {this.GetIdentity()} for {typeof(TEntity).Name}\n");
 
 				_entity = new();
 				_entity.Create(DbContext, AdminDto, auditLogger);
