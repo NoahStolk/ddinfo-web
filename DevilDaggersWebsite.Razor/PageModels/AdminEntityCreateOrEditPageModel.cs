@@ -120,7 +120,13 @@ namespace DevilDaggersWebsite.Razor.PageModels
 			{
 				if (AdminDto is AdminPlayer player && DbContext.Players.Any(p => p.Id == player.Id))
 				{
-					ModelState.AddModelError("AdminDto.Id", "Player already exists.");
+					ModelState.AddModelError("AdminDto.Id", $"Player with {nameof(AdminPlayer.Id)} '{player.Id}' already exists.");
+					return Page();
+				}
+
+				if (AdminDto is AdminSpawnsetFile spawnsetFile && DbContext.SpawnsetFiles.Any(sf => sf.Name == spawnsetFile.Name))
+				{
+					ModelState.AddModelError("AdminDto.Name", $"SpawnsetFile with {nameof(AdminSpawnsetFile.Name)} '{spawnsetFile.Name}' already exists.");
 					return Page();
 				}
 
