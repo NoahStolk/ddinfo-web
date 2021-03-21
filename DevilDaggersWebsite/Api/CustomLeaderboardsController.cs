@@ -113,7 +113,7 @@ namespace DevilDaggersWebsite.Api
 			if (await DecryptValidation(uploadRequest.Validation) != check)
 			{
 				const string errorMessage = "Invalid submission.";
-				await TryLog(uploadRequest, null, errorMessage);
+				await TryLog(uploadRequest, null, errorMessage, "rotating_light");
 				return new BadRequestObjectResult(new ProblemDetails { Title = errorMessage });
 			}
 
@@ -124,7 +124,7 @@ namespace DevilDaggersWebsite.Api
 				if (player.IsBannedFromDdcl)
 				{
 					const string errorMessage = "Banned.";
-					await TryLog(uploadRequest, null, errorMessage);
+					await TryLog(uploadRequest, null, errorMessage, "rotating_light");
 					return new BadRequestObjectResult(new ProblemDetails { Title = errorMessage });
 				}
 
@@ -446,7 +446,7 @@ namespace DevilDaggersWebsite.Api
 			}
 		}
 
-		private async Task TryLog(Dto.UploadRequest uploadRequest, string? spawnsetName, string? errorMessage = null)
+		private async Task TryLog(Dto.UploadRequest uploadRequest, string? spawnsetName, string? errorMessage = null, string? errorEmoteNameOverride = null)
 		{
 			try
 			{
@@ -456,9 +456,9 @@ namespace DevilDaggersWebsite.Api
 				string ddclInfo = $"(`{uploadRequest.ClientVersion}` | `{uploadRequest.OperatingSystem}` | `{uploadRequest.BuildMode}`{replayString})";
 
 				if (!string.IsNullOrEmpty(errorMessage))
-					await DiscordLogger.Instance.TryLog(Channel.CustomLeaderboardMonitoring, _env.EnvironmentName, $"Upload failed for user `{uploadRequest.PlayerName}` (`{uploadRequest.PlayerId}`) for `{spawnsetIdentification}`. {ddclInfo}\n{errorMessage}");
+					await DiscordLogger.Instance.TryLog(Channel.CustomLeaderboardMonitoring, _env.EnvironmentName, $":{errorEmoteNameOverride ?? "warning"}: Upload failed for user `{uploadRequest.PlayerName}` (`{uploadRequest.PlayerId}`) for `{spawnsetIdentification}`. {ddclInfo}\n{errorMessage}");
 				else
-					await DiscordLogger.Instance.TryLog(Channel.CustomLeaderboardMonitoring, _env.EnvironmentName, $"`{uploadRequest.PlayerName}` just submitted a score of `{uploadRequest.Time / 10000f:0.0000}` to `{spawnsetIdentification}`. {ddclInfo}");
+					await DiscordLogger.Instance.TryLog(Channel.CustomLeaderboardMonitoring, _env.EnvironmentName, $":white_check_mark: `{uploadRequest.PlayerName}` just submitted a score of `{uploadRequest.Time / 10000f:0.0000}` to `{spawnsetIdentification}`. {ddclInfo}");
 			}
 			catch
 			{
