@@ -13,8 +13,20 @@ namespace LeaderboardJsonFormatter
 
 			foreach (string path in Directory.GetFiles(@"C:\Users\NOAH\source\repos\DevilDaggersWebsite\DevilDaggersWebsite.Razor\wwwroot\leaderboard-history", "*.json"))
 			{
-				Leaderboard leaderboard = JsonConvert.DeserializeObject<Leaderboard>(File.ReadAllText(path));
-				File.WriteAllText(path, JsonConvert.SerializeObject(leaderboard, leaderboard.DateTime > fullHistoryDateStart ? Formatting.None : Formatting.Indented));
+				try
+				{
+					Leaderboard leaderboard = JsonConvert.DeserializeObject<Leaderboard>(File.ReadAllText(path));
+					Formatting formatting = leaderboard.DateTime > fullHistoryDateStart ? Formatting.None : Formatting.Indented;
+					File.WriteAllText(path, JsonConvert.SerializeObject(leaderboard, formatting));
+
+					Console.ForegroundColor = ConsoleColor.Green;
+					Console.WriteLine($"SUCCESS for {path}: {formatting}");
+				}
+				catch (Exception ex)
+				{
+					Console.ForegroundColor = ConsoleColor.Red;
+					Console.WriteLine($"FAIL for {path}: {ex.Message}");
+				}
 			}
 		}
 	}
