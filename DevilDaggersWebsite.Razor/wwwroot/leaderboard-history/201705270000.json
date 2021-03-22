@@ -58,6 +58,23 @@
       "DeathsTotal": 0,
       "DaggersHitTotal": 0,
       "DaggersFiredTotal": 0
+    },
+    {
+      "Rank": 17,
+      "Id": 93991,
+      "Username": "K~a~c~p~r~☆",
+      "Time": 8169613,
+      "Kills": 1978,
+      "Gems": 858,
+      "DeathType": 2,
+      "DaggersHit": 3195,
+      "DaggersFired": 10000,
+      "TimeTotal": 0,
+      "KillsTotal": 0,
+      "GemsTotal": 0,
+      "DeathsTotal": 0,
+      "DaggersHitTotal": 0,
+      "DaggersFiredTotal": 0
     }
   ]
 }
