@@ -28,9 +28,13 @@ namespace DevilDaggersWebsite.Transients
 			foreach (string leaderboardHistoryPath in Directory.GetFiles(Path.Combine(_env.WebRootPath, "leaderboard-history"), "*.json"))
 			{
 				Leaderboard leaderboard = JsonConvert.DeserializeObject<Leaderboard>(File.ReadAllText(leaderboardHistoryPath, Encoding.UTF8));
-				if (leaderboard.Entries[0].Time != worldRecord)
+				Entry? firstPlace = leaderboard.Entries.Find(e => e.Rank == 1);
+				if (firstPlace == null)
+					continue;
+
+				if (firstPlace.Time != worldRecord)
 				{
-					worldRecord = leaderboard.Entries[0].Time;
+					worldRecord = firstPlace.Time;
 
 					DateTime date;
 
@@ -42,7 +46,7 @@ namespace DevilDaggersWebsite.Transients
 					else
 						date = leaderboard.DateTime;
 
-					worldRecords.Add(new(date, leaderboard.Entries[0]));
+					worldRecords.Add(new(date, firstPlace));
 				}
 
 				previous = leaderboard.DateTime;
