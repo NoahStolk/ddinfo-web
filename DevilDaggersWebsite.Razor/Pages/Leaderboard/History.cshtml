@@ -15,29 +15,27 @@
 </header>
 
 <main role="main">
-	<div>
+	<div class="leaderboard-history-form-container">
 		<form method="get">
 			<select class="select form-control" asp-for="From" asp-items="Model.JsonFiles" onchange="this.form.submit()"></select>
 		</form>
-		<div class="flex-container flex-column">
-			<div class="flex-container leaderboard-nav-buttons">
-				@if (Model.FromNext != null)
-				{
-					<a class="btn" asp-page="/Leaderboard/History" asp-route-from="@(Model.FromNext)">&lt;</a>
-				}
-				else
-				{
-					<button class="btn btn-disabled">&lt;</button>
-				}
-				@if (Model.FromPrevious != null)
-				{
-					<a class="btn" asp-page="/Leaderboard/History" asp-route-from="@(Model.FromPrevious)">&gt;</a>
-				}
-				else
-				{
-					<button class="btn btn-disabled">&gt;</button>
-				}
-			</div>
+		<div class="leaderboard-nav-buttons">
+			@if (Model.FromNext != null)
+			{
+				<a class="btn" asp-page="/Leaderboard/History" asp-route-from="@(Model.FromNext)">&lt;</a>
+			}
+			else
+			{
+				<button class="btn btn-disabled">&lt;</button>
+			}
+			@if (Model.FromPrevious != null)
+			{
+				<a class="btn" asp-page="/Leaderboard/History" asp-route-from="@(Model.FromPrevious)">&gt;</a>
+			}
+			else
+			{
+				<button class="btn btn-disabled">&gt;</button>
+			}
 		</div>
 	</div>
 	@await Html.PartialAsync("Partials/LeaderboardGlobalPartial")

@@ -3,7 +3,7 @@
 }
 
 .info-container {
-	max-width: 460px;
+	max-width: 480px;
 	border: solid 1px;
 	padding: 8px;
 	margin: 8px;
@@ -15,4 +15,14 @@
 
 .info-orange {
 	border-color: var(--col-dark-orange);
+}
+
+.leaderboard-history-form-container {
+	max-width: 480px;
+	margin: 12px 0;
+}
+
+select {
+	max-width: 480px;
+	width: 480px;
 }

@@ -28,14 +28,9 @@
 	overflow: hidden;
 }
 
-.leaderboard-nav-buttons > a:nth-child(1),
-.leaderboard-nav-buttons > button:nth-child(1) {
-	margin-right: 2px;
-}
-
-.leaderboard-nav-buttons > a:nth-child(2),
-.leaderboard-nav-buttons > button:nth-child(2) {
-	margin-left: 2px;
+.leaderboard-nav-buttons {
+	margin: auto;
+	max-width: 80px;
 }
 
 .sorter:hover {
@@ -104,5 +99,6 @@
 }
 
 .leaderboard-global-container {
-	max-width: 460px;
+	max-width: 480px;
+	margin: 12px 0;
 }
