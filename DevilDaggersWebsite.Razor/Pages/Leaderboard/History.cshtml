@@ -6,9 +6,7 @@
 		return;
 	ViewData["Title"] = $"Top 100 History ({Model.Leaderboard.DateTime.ToString(FormatUtils.DateTimeUtcFormat)})";
 }
-@using DevilDaggersWebsite.Extensions
 @using DevilDaggersWebsite.Razor.Utils
-@using DevilDaggersWebsite.LeaderboardHistory
 
 <header>
 	<h1>@ViewData["Title"]</h1>
@@ -41,62 +39,6 @@
 	@await Html.PartialAsync("Partials/LeaderboardGlobalPartial")
 
 	@{
-		Completion completion = Model.Leaderboard.GetCompletion();
-		CompletionCombined userCompletion = Model.Leaderboard.GetUserCompletion();
-		bool isDataMissingInGlobalCompletion = completion.CompletionEntries.Any(c => c.Value == CompletionEntry.Missing);
-		bool isDataMissingInUserCompletion = userCompletion.CompletionEntries.Any(c => c.Value == CompletionEntryCombined.Missing || c.Value == CompletionEntryCombined.PartiallyMissing);
-		if (isDataMissingInGlobalCompletion || isDataMissingInUserCompletion)
-		{
-			<h2>Missing information</h2>
-			<div>This leaderboard is only <span class="devil">@($"{Model.Leaderboard.GetCompletionRate():0.0%}")</span> complete.</div>
-			<div class="info-container info-red">
-				<div class="flex-container leaderboard-flex flex-center flex-space-evenly text-left">
-					<div>
-						<div>Global</div>
-						<div class="info-text">
-							@{
-								if (isDataMissingInGlobalCompletion)
-								{
-									foreach (KeyValuePair<string, CompletionEntry> kvp in completion.CompletionEntries)
-									{
-										if (kvp.Value != CompletionEntry.Complete)
-										{
-											@:@kvp.Key @Html.Raw(kvp.Value.ToHtmlString())<br />
-										}
-									}
-								}
-								else
-								{
-									@RazorUtils.NAString
-								}
-							}
-						</div>
-					</div>
-					<div>
-						<div>User</div>
-						<div class="info-text">
-							@{
-								if (isDataMissingInUserCompletion)
-								{
-									foreach (KeyValuePair<string, CompletionEntryCombined> kvp in userCompletion.CompletionEntries)
-									{
-										if (kvp.Value != CompletionEntryCombined.Complete)
-										{
-											@:@kvp.Key @Html.Raw(kvp.Value.ToHtmlString())<br />
-										}
-									}
-								}
-								else
-								{
-									@RazorUtils.NAString
-								}
-							}
-						</div>
-					</div>
-				</div>
-			</div>
-		}
-
 		List<string> changesGlobal = Model.ChangesGlobal;
 		Dictionary<string, string> changesTop100 = Model.ChangesTop100;
 		TimeSpan diff = Model.Leaderboard.DateTime - Model.LeaderboardPrevious.DateTime;
