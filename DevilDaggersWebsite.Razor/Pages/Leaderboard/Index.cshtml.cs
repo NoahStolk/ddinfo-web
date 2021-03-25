@@ -58,16 +58,14 @@ namespace DevilDaggersWebsite.Razor.Pages.Leaderboard
 		public bool HasBans { get; private set; }
 		public bool IsValidTop100Graph { get; private set; }
 		public string? UsernameAliases { get; private set; }
-		public bool ShowMoreStats { get; private set; }
 
 		public LeaderboardSearchType LeaderboardSearchType => !string.IsNullOrEmpty(Username) && Username.Length >= 3 ? LeaderboardSearchType.Username : UserId != 0 ? LeaderboardSearchType.UserId : LeaderboardSearchType.Rank;
 
-		public async Task OnGetAsync(int rank, string username, int userId, bool showMoreStats)
+		public async Task OnGetAsync(int rank, string username, int userId)
 		{
 			Rank = Math.Max(rank, 1);
 			Username = username;
 			UserId = userId;
-			ShowMoreStats = showMoreStats;
 
 			switch (LeaderboardSearchType)
 			{

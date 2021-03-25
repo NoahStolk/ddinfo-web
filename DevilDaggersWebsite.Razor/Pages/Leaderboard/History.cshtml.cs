@@ -44,14 +44,12 @@ namespace DevilDaggersWebsite.Razor.Pages.Leaderboard
 		public string? From { get; set; }
 		public string? FromPrevious { get; set; }
 		public string? FromNext { get; set; }
-		public bool ShowMoreStats { get; private set; }
 
-		public void OnGet(string from, bool showMoreStats)
+		public void OnGet(string from)
 		{
 			From = from;
 			if (string.IsNullOrEmpty(From) || !Io.File.Exists(Path.Combine(_env.WebRootPath, "leaderboard-history", From)))
 				From = JsonFiles[0].Value;
-			ShowMoreStats = showMoreStats;
 
 			for (int i = 0; i < JsonFiles.Count; i++)
 			{
