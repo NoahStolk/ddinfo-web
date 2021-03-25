@@ -5,11 +5,15 @@
 }
 
 <header>
-	<h1>Devil Daggers Info</h1>
+	<h1 class="home-title">
+		<img src="~/images/Daggers/LeviathanSmall.png" />
+		Devil Daggers Info
+		<img src="~/images/Daggers/LeviathanSmall.png" />
+	</h1>
 </header>
 
 <main role="main">
-	<img class="img-responsive" style="margin: auto;" src="~/images/home-logo.gif" />
+	<img class="img-responsive" src="~/images/home-logo.gif" />
 	<p>
 		Accurate and up-to-date information about the game <a href="//store.steampowered.com/app/422970/Devil_Daggers/">Devil Daggers</a>.
 	</p>
@@ -31,3 +35,7 @@
 		Feel free to join the <a href="@RazorUtils.DiscordUrl" target="_blank">Discord server</a>.
 	</p>
 </main>
+
+@section Styles {
+	<link rel='stylesheet' href='~/styles/index.css' />
+}
