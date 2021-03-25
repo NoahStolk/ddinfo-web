@@ -9,8 +9,13 @@ namespace DevilDaggersWebsite.Entities
 		where TAdminDto : class
 	{
 		public void Create(ApplicationDbContext dbContext, TAdminDto adminDto, StringBuilder auditLogger);
+
 		public void Edit(ApplicationDbContext dbContext, TAdminDto adminDto, StringBuilder auditLogger);
-		public void CreateManyToManyRelations(ApplicationDbContext dbContext, TAdminDto adminDto, StringBuilder auditLogger);
+
+		public virtual void CreateManyToManyRelations(ApplicationDbContext dbContext, TAdminDto adminDto)
+		{
+		}
+
 		public TAdminDto Populate();
 
 		public void TrackEditUpdates(StringBuilder auditLogger, TAdminDto adminDto, Type entityType)

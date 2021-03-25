@@ -47,11 +47,6 @@ namespace DevilDaggersWebsite.Entities
 				LastUpdated = DateTime.UtcNow;
 		}
 
-		public void CreateManyToManyRelations(ApplicationDbContext dbContext, AdminSpawnsetFile adminDto, StringBuilder auditLogger)
-		{
-			// Method intentionally left empty.
-		}
-
 		public AdminSpawnsetFile Populate()
 		{
 			return new()

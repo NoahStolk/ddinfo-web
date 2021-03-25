@@ -67,7 +67,7 @@ namespace DevilDaggersWebsite.Entities
 			IsBannedFromDdcl = adminDto.IsBannedFromDdcl;
 		}
 
-		public void CreateManyToManyRelations(ApplicationDbContext dbContext, AdminPlayer adminDto, StringBuilder auditLogger)
+		public void CreateManyToManyRelations(ApplicationDbContext dbContext, AdminPlayer adminDto)
 		{
 			List<int> assetModIds = adminDto.AssetModIds ?? new();
 			foreach (PlayerAssetMod newEntity in assetModIds.ConvertAll(ami => new PlayerAssetMod { AssetModId = ami, PlayerId = Id }))

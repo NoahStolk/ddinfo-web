@@ -74,11 +74,6 @@ namespace DevilDaggersWebsite.Entities
 			ClientVersion = adminDto.ClientVersion;
 		}
 
-		public void CreateManyToManyRelations(ApplicationDbContext dbContext, AdminCustomEntry adminDto, StringBuilder auditLogger)
-		{
-			// Method intentionally left empty.
-		}
-
 		public AdminCustomEntry Populate()
 		{
 			return new()

@@ -60,11 +60,6 @@ namespace DevilDaggersWebsite.Entities
 			TimeLeviathan = adminDto.TimeLeviathan;
 		}
 
-		public void CreateManyToManyRelations(ApplicationDbContext dbContext, AdminCustomLeaderboard adminDto, StringBuilder auditLogger)
-		{
-			// Method intentionally left empty.
-		}
-
 		public AdminCustomLeaderboard Populate()
 		{
 			return new()

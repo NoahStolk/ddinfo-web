@@ -36,7 +36,7 @@ namespace DevilDaggersWebsite.Entities
 			Url = adminDto.Url;
 		}
 
-		public void CreateManyToManyRelations(ApplicationDbContext dbContext, AdminAssetMod adminDto, StringBuilder auditLogger)
+		public void CreateManyToManyRelations(ApplicationDbContext dbContext, AdminAssetMod adminDto)
 		{
 			List<int> playerIds = adminDto.PlayerIds ?? new();
 			foreach (PlayerAssetMod newEntity in playerIds.ConvertAll(pi => new PlayerAssetMod { AssetModId = Id, PlayerId = pi }))

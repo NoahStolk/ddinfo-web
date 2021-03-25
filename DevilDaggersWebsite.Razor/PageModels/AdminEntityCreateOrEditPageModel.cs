@@ -107,7 +107,7 @@ namespace DevilDaggersWebsite.Razor.PageModels
 					_entity.Edit(DbContext, AdminDto, auditLogger);
 					DbContext.SaveChanges();
 
-					_entity.CreateManyToManyRelations(DbContext, AdminDto, auditLogger);
+					_entity.CreateManyToManyRelations(DbContext, AdminDto);
 					DbContext.SaveChanges();
 
 					await DiscordLogger.Instance.TryLog(Channel.AuditLogMonitoring, _env.EnvironmentName, $"`{auditLogger}`");
@@ -143,7 +143,7 @@ namespace DevilDaggersWebsite.Razor.PageModels
 				_entity.Create(DbContext, AdminDto, auditLogger);
 				DbContext.SaveChanges();
 
-				_entity.CreateManyToManyRelations(DbContext, AdminDto, auditLogger);
+				_entity.CreateManyToManyRelations(DbContext, AdminDto);
 				DbContext.SaveChanges();
 
 				await DiscordLogger.Instance.TryLog(Channel.AuditLogMonitoring, _env.EnvironmentName, $"`{auditLogger}`");
