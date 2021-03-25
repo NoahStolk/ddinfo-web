@@ -57,17 +57,6 @@ namespace DevilDaggersWebsite.Razor.Models
 			DaggersTotal = FormatUtils.FormatDaggersUInt64(entry.DaggersHitTotal, entry.DaggersFiredTotal, isHistory);
 			AccuracyTotal = entry.AccuracyTotal.ToString(FormatUtils.AccuracyFormat);
 
-			DaggersHit = entry.DaggersHit.ToString(FormatUtils.LeaderboardIntFormat);
-			DaggersFired = entry.DaggersFired.ToString(FormatUtils.LeaderboardIntFormat);
-			DaggersHitTotal = entry.DaggersHitTotal.ToString(FormatUtils.LeaderboardIntFormat);
-			DaggersFiredTotal = entry.DaggersFiredTotal.ToString(FormatUtils.LeaderboardIntFormat);
-			AverageTime = entry.DeathsTotal == 0 ? RazorUtils.NAString : new((entry.TimeTotal / entry.DeathsTotal).FormatTimeInteger());
-			AverageKills = entry.DeathsTotal == 0 ? RazorUtils.NAString : new((entry.KillsTotal / (float)entry.DeathsTotal).ToString(FormatUtils.LeaderboardIntAverageFormat));
-			AverageGems = entry.DeathsTotal == 0 ? RazorUtils.NAString : new((entry.GemsTotal / (float)entry.DeathsTotal).ToString(FormatUtils.LeaderboardIntAverageFormat));
-			AverageDaggersHit = entry.DeathsTotal == 0 ? RazorUtils.NAString : new((entry.DaggersHitTotal / (float)entry.DeathsTotal).ToString(FormatUtils.LeaderboardIntAverageFormat));
-			AverageDaggersFired = entry.DeathsTotal == 0 ? RazorUtils.NAString : new((entry.DaggersFiredTotal / (float)entry.DeathsTotal).ToString(FormatUtils.LeaderboardIntAverageFormat));
-			TimeByDeath = entry.DeathsTotal == 0 ? RazorUtils.NAString : new((entry.Time / (float)entry.DeathsTotal).ToString(FormatUtils.LeaderboardTimeLargeFormat));
-
 			ulong deathsTotal = entry.DeathsTotal == 0 ? 1 : entry.DeathsTotal;
 			HtmlData = new($@"
 rank='{entry.Rank}'
@@ -82,17 +71,7 @@ total-time='{entry.TimeTotal}'
 total-kills='{entry.KillsTotal}'
 total-gems='{entry.GemsTotal}'
 total-accuracy='{entry.AccuracyTotal * 10000:0}'
-total-deaths='{entry.DeathsTotal}'
-daggers-hit='{entry.DaggersHit}'
-daggers-fired='{entry.DaggersFired}'
-total-daggers-hit='{entry.DaggersHitTotal}'
-total-daggers-fired='{entry.DaggersFiredTotal}'
-average-time='{entry.TimeTotal * 10000f / deathsTotal:0}'
-average-kills='{entry.KillsTotal * 100f / deathsTotal:0}'
-average-gems='{entry.GemsTotal * 100f / deathsTotal:0}'
-average-daggers-hit='{entry.DaggersHitTotal * 100f / deathsTotal:0}'
-average-daggers-fired='{entry.DaggersFiredTotal * 100f / deathsTotal:0}'
-time-by-death='{entry.Time * 10000f / deathsTotal:0}'");
+total-deaths='{entry.DeathsTotal}'");
 		}
 
 		public bool IsBanned { get; }
@@ -119,16 +98,6 @@ time-by-death='{entry.Time * 10000f / deathsTotal:0}'");
 		public string Accuracy { get; }
 		public string DaggersTotal { get; }
 		public string AccuracyTotal { get; }
-		public string DaggersHit { get; }
-		public string DaggersFired { get; }
-		public string DaggersHitTotal { get; }
-		public string DaggersFiredTotal { get; }
-		public HtmlString AverageTime { get; }
-		public HtmlString AverageKills { get; }
-		public HtmlString AverageGems { get; }
-		public HtmlString AverageDaggersHit { get; }
-		public HtmlString AverageDaggersFired { get; }
-		public HtmlString TimeByDeath { get; }
 
 		public HtmlString HtmlData { get; }
 	}
