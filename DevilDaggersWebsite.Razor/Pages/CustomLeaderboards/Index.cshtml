@@ -17,7 +17,7 @@
 		Select a leaderboard category to view leaderboards:
 	</p>
 
-	<form method="get" class="left">
+	<form method="get">
 		<select class="select form-control" asp-for="Category" asp-items="Model.CategoryListItems" onchange="this.form.submit()"></select>
 	</form>
 
