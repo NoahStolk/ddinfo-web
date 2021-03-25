@@ -12,17 +12,7 @@
 		"total-kills": -1,
 		"total-gems": -1,
 		"total-accuracy": -1,
-		"total-deaths": -1,
-		"daggers-hit": -1,
-		"daggers-fired": -1,
-		"total-daggers-hit": -1,
-		"total-daggers-fired": -1,
-		"average-time": 1,
-		"average-kills": -1,
-		"average-gems": -1,
-		"average-daggers-hit": -1,
-		"average-daggers-fired": -1,
-		"time-by-death": -1
+		"total-deaths": -1
 	};
 
 	$(document).on("click", ".leaderboard-row", function () {
