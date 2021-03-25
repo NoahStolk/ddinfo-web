@@ -23,25 +23,25 @@
 	@using (Html.BeginForm(FormMethod.Get))
 	{
 		<fieldset>
-			<div class="flex-container flex-center flex-column">
-				<div class="flex-container flex-center">
+			<div class="flex-container flex-column">
+				<div class="flex-container">
 					<div class="input-label text-left" style="@RazorUtils.GetCssWidth(widths[0])">Rank:</div>
 					<div style="@RazorUtils.GetCssWidth(widths[1])">@Html.TextBoxFor(m => m.Rank, new { @class = "input" })</div>
 				</div>
-				<div class="flex-container flex-center">
+				<div class="flex-container">
 					<div class="input-label text-left" style="@RazorUtils.GetCssWidth(widths[0])">Username:</div>
 					<div style="@RazorUtils.GetCssWidth(widths[1])">@Html.TextBoxFor(m => m.Username, new { @class = "input" })</div>
 				</div>
-				<div class="flex-container flex-center">
+				<div class="flex-container">
 					<div class="input-label text-left" style="@RazorUtils.GetCssWidth(widths[0])">User ID:</div>
 					<div style="@RazorUtils.GetCssWidth(widths[1])">@Html.TextBoxFor(m => m.UserId, new { @class = "input" })</div>
 				</div>
 			</div>
-			<div class="flex-container flex-center flex-column">
-				<div class="flex-container flex-center">
+			<div>
+				<div>
 					<input class="btn" type="submit" value="Show" />
 				</div>
-				<div class="flex-container flex-center leaderboard-nav-buttons">
+				<div class="leaderboard-nav-buttons">
 					@{
 						if (Model.LeaderboardSearchType == LeaderboardSearchType.Rank)
 						{
