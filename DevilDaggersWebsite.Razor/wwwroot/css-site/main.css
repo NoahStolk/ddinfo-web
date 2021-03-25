@@ -98,7 +98,7 @@ input {
 }
 
 .select-small {
-	max-width: 192px;
+	max-width: 256px;
 }
 
 div.form-group > .text-danger {

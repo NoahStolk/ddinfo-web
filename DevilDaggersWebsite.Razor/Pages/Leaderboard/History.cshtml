@@ -102,11 +102,11 @@
 		TimeSpan diff = Model.Leaderboard.DateTime - Model.LeaderboardPrevious.DateTime;
 		if (changesGlobal.Count != 0 || changesTop100.Count != 0)
 		{
-			<div>
-				Changes since @Model.LeaderboardPrevious.DateTime.ToString("yyyy-MM-dd HH:mm")<br />
-				@diff.Days day@(diff.Days.S()), @diff.Hours hour@(diff.Hours.S()), @diff.Minutes minute@(diff.Minutes.S()) before
-			</div>
 			<div class="info-container info-orange">
+				<div>
+					Changes since @Model.LeaderboardPrevious.DateTime.ToString("yyyy-MM-dd HH:mm")<br />
+					@diff.Days day@(diff.Days.S()), @diff.Hours hour@(diff.Hours.S()), @diff.Minutes minute@(diff.Minutes.S()) before
+				</div>
 				<div class="flex-container leaderboard-flex flex-center flex-space-evenly text-left">
 					<div>
 						<div>Global</div>
