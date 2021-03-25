@@ -11,6 +11,7 @@
 	}
 
 	bool isHistory = modelType == typeof(HistoryModel);
+	bool showAccuracyTooltip = !(isHistory && (Model.Leaderboard?.DaggersFiredGlobal == 10000 || Model.Leaderboard?.DaggersFiredGlobal == 0));
 
 	string players = Model.Leaderboard?.Players.ToString(FormatUtils.LeaderboardIntFormat) ?? "Failed to fetch";
 	string time = Model.Leaderboard?.TimeGlobal.FormatTimeInteger(true) ?? "Failed to fetch";
@@ -20,62 +21,31 @@
 	string daggers = Model.Leaderboard == null ? "Failed to fetch" : FormatUtils.FormatDaggersUInt64(Model.Leaderboard.DaggersHitGlobal, Model.Leaderboard.DaggersFiredGlobal, isHistory);
 	string accuracy = Model.Leaderboard?.AccuracyGlobal.ToString(FormatUtils.AccuracyFormat) ?? "Failed to fetch";
 }
-<div class="hidden-xs text-center">
-	<div class="flex-container leaderboard-flex flex-center flex-space-evenly">
-		<div>
-			<div>Total players</div>
-			<div class="text-center devil">@players</div>
+<div class="leaderboard-body">
+	<div class="row">
+		<div class="col-xs-6">Total players</div>
+		<div class="col-xs-6 devil text-right">@players</div>
+	</div>
+	<div class="row">
+		<div class="col-xs-6">Global time</div>
+		<div class="col-xs-6 devil text-right">@time</div>
+	</div>
+	<div class="row">
+		<div class="col-xs-6">Global kills</div>
+		<div class="col-xs-6 devil text-right">@kills</div>
+	</div>
+	<div class="row">
+		<div class="col-xs-6">Global gems</div>
+		<div class="col-xs-6 devil text-right">@gems</div>
+	</div>
+	<div class="row">
+		<div class="col-xs-6">Global accuracy</div>
+		<div class="col-xs-6 text-right">
+			<span data-toggle="tooltip" title="@daggers" class="leaderboard-tooltip"><span class="devil">@accuracy</span></span>
 		</div>
 	</div>
-	<div class="flex-container leaderboard-flex flex-center flex-space-evenly">
-		<div>
-			<div>Global time</div>
-			<div class="text-center devil">@time</div>
-		</div>
-		<div>
-			<div>Global kills</div>
-			<div class="text-center devil">@kills</div>
-		</div>
-		<div>
-			<div>Global gems</div>
-			<div class="text-center devil">@gems</div>
-		</div>
-		<div>
-			<div>Global accuracy</div>
-			<span data-toggle="tooltip" data-placement="bottom" title="@daggers" class="leaderboard-tooltip"><span class="text-center devil">@accuracy</span></span>
-		</div>
-		<div>
-			<div>Global deaths</div>
-			<div class="text-center devil">@deaths</div>
-		</div>
-	</div>
-</div>
-<div class="visible-xs">
-	<div class="flex-container flex-center">
-		<div class="mobile-left">
-			<div>Total players</div>
-			<div>Global time</div>
-			<div>Global kills</div>
-			<div>Global gems</div>
-			<div>Global accuracy</div>
-			<div>Global deaths</div>
-		</div>
-		<div class="mobile-right">
-			<div class="devil">@players</div>
-			<div class="devil">@time</div>
-			<div class="devil">@kills</div>
-			<div class="devil">@gems</div>
-			@{
-				if (isHistory && (Model.Leaderboard?.DaggersFiredGlobal == 10000 || Model.Leaderboard?.DaggersFiredGlobal == 0))
-				{
-					<span class="devil">@accuracy</span>
-				}
-				else
-				{
-					<span data-toggle="tooltip" title="@daggers" class="leaderboard-tooltip"><span class="devil">@accuracy</span></span>
-				}
-			}
-			<div class="devil">@deaths</div>
-		</div>
+	<div class="row">
+		<div class="col-xs-6">Global deaths</div>
+		<div class="col-xs-6 devil text-right">@deaths</div>
 	</div>
 </div>
