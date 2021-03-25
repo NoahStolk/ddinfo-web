@@ -4,6 +4,7 @@ using DevilDaggersWebsite.Enumerators;
 using DevilDaggersWebsite.Extensions;
 using Microsoft.AspNetCore.Hosting;
 using Microsoft.EntityFrameworkCore;
+using System;
 using System.Collections.Generic;
 using System.IO;
 using System.Linq;
@@ -33,16 +34,10 @@ namespace DevilDaggersWebsite.Transients
 			IEnumerable<SpawnsetFile> query = _dbContext.SpawnsetFiles.Include(sf => sf.Player);
 
 			if (!string.IsNullOrWhiteSpace(authorFilter))
-			{
-				authorFilter = authorFilter.ToLower();
-				query = query.Where(sf => sf.Player.PlayerName.ToLower().Contains(authorFilter));
-			}
+				query = query.Where(sf => sf.Player.PlayerName.Contains(authorFilter, StringComparison.InvariantCultureIgnoreCase));
 
 			if (!string.IsNullOrWhiteSpace(nameFilter))
-			{
-				nameFilter = nameFilter.ToLower();
-				query = query.Where(sf => sf.Name.ToLower().Contains(nameFilter));
-			}
+				query = query.Where(sf => sf.Name.Contains(nameFilter, StringComparison.InvariantCultureIgnoreCase));
 
 			return query
 				.Where(sf => File.Exists(Path.Combine(_env.WebRootPath, "spawnsets", sf.Name)))
