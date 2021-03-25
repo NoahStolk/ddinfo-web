@@ -96,7 +96,7 @@ input {
 	color: var(--col-red);
 	background-color: var(--col-black);
 	max-width: 280px;
-	margin: 12px auto;
+	margin: 12px;
 }
 
 .admin-select {

@@ -102,3 +102,7 @@
 .leaderboard-body > :nth-child(2n+1) {
 	background-color: var(--col-nav-background);
 }
+
+.leaderboard-global-container {
+	max-width: 460px;
+}

@@ -15,13 +15,12 @@
 </header>
 
 <main role="main">
-	@await Html.PartialAsync("Partials/LeaderboardGlobalPartial")
 	<div>
 		<form method="get">
 			<select class="select form-control" asp-for="From" asp-items="Model.JsonFiles" onchange="this.form.submit()"></select>
 		</form>
-		<div class="flex-container flex-center flex-column">
-			<div class="flex-container flex-center leaderboard-nav-buttons">
+		<div class="flex-container flex-column">
+			<div class="flex-container leaderboard-nav-buttons">
 				@if (Model.FromNext != null)
 				{
 					<a class="btn" asp-page="/Leaderboard/History" asp-route-from="@(Model.FromNext)">&lt;</a>
@@ -41,6 +40,7 @@
 			</div>
 		</div>
 	</div>
+	@await Html.PartialAsync("Partials/LeaderboardGlobalPartial")
 
 	@{
 		Completion completion = Model.Leaderboard.GetCompletion();
