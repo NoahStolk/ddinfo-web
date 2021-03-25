@@ -2,7 +2,6 @@
 using System.Collections.Generic;
 using System.ComponentModel.DataAnnotations;
 using System.Linq;
-using System.Text;
 
 namespace DevilDaggersWebsite.Entities
 {
@@ -36,21 +35,17 @@ namespace DevilDaggersWebsite.Entities
 		public override string ToString()
 			=> $"{PlayerName} ({Id})";
 
-		public void Create(ApplicationDbContext dbContext, AdminPlayer adminDto, StringBuilder auditLogger)
+		public void Create(ApplicationDbContext dbContext, AdminPlayer adminDto)
 		{
 			Id = adminDto.Id;
 
-			auditLogger.AppendFormat("{0,20}", "Id").Append(": ").AppendFormat("{0,20}", string.Empty).Append(" -> ").AppendFormat("{0,20}", Id).AppendLine();
-
-			Edit(dbContext, adminDto, auditLogger);
+			Edit(dbContext, adminDto);
 
 			dbContext.Players.Add(this);
 		}
 
-		public void Edit(ApplicationDbContext dbContext, AdminPlayer adminDto, StringBuilder auditLogger)
+		public void Edit(ApplicationDbContext dbContext, AdminPlayer adminDto)
 		{
-			(this as IAdminUpdatableEntity<AdminPlayer>).TrackEditUpdates(auditLogger, adminDto, typeof(Player));
-
 			PlayerName = adminDto.PlayerName;
 			IsAnonymous = adminDto.IsAnonymous;
 			CountryCode = adminDto.CountryCode;

@@ -1,5 +1,6 @@
 ﻿using DevilDaggersWebsite.Enumerators;
 using System;
+using System.Text;
 
 namespace DevilDaggersWebsite.Dto.Admin
 {
@@ -12,5 +13,18 @@ namespace DevilDaggersWebsite.Dto.Admin
 		public DateTime DateReceived { get; init; }
 		public string? Note { get; init; }
 		public bool IsRefunded { get; init; }
+
+		public override string ToString()
+		{
+			StringBuilder sb = new();
+			sb.AppendFormat("{0,-28}", nameof(PlayerId)).AppendLine(PlayerId.ToString());
+			sb.AppendFormat("{0,-28}", nameof(Amount)).AppendLine(Amount.ToString());
+			sb.AppendFormat("{0,-28}", nameof(Currency)).AppendLine(Currency.ToString());
+			sb.AppendFormat("{0,-28}", nameof(ConvertedEuroCentsReceived)).AppendLine(ConvertedEuroCentsReceived.ToString());
+			sb.AppendFormat("{0,-28}", nameof(DateReceived)).AppendLine(DateReceived.ToString());
+			sb.AppendFormat("{0,-28}", nameof(Note)).AppendLine(Note);
+			sb.AppendFormat("{0,-28}", nameof(IsRefunded)).AppendLine(IsRefunded.ToString());
+			return sb.ToString();
+		}
 	}
 }

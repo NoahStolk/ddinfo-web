@@ -3,7 +3,6 @@ using DevilDaggersWebsite.Enumerators;
 using System;
 using System.ComponentModel.DataAnnotations;
 using System.ComponentModel.DataAnnotations.Schema;
-using System.Text;
 
 namespace DevilDaggersWebsite.Entities
 {
@@ -38,19 +37,17 @@ namespace DevilDaggersWebsite.Entities
 		public bool IsAscending()
 			=> Category == CustomLeaderboardCategory.Challenge || Category == CustomLeaderboardCategory.Speedrun;
 
-		public void Create(ApplicationDbContext dbContext, AdminCustomLeaderboard adminDto, StringBuilder auditLogger)
+		public void Create(ApplicationDbContext dbContext, AdminCustomLeaderboard adminDto)
 		{
 			DateCreated = DateTime.UtcNow;
 
-			Edit(dbContext, adminDto, auditLogger);
+			Edit(dbContext, adminDto);
 
 			dbContext.CustomLeaderboards.Add(this);
 		}
 
-		public void Edit(ApplicationDbContext dbContext, AdminCustomLeaderboard adminDto, StringBuilder auditLogger)
+		public void Edit(ApplicationDbContext dbContext, AdminCustomLeaderboard adminDto)
 		{
-			(this as IAdminUpdatableEntity<AdminCustomLeaderboard>).TrackEditUpdates(auditLogger, adminDto, typeof(CustomLeaderboard));
-
 			Category = adminDto.Category;
 			SpawnsetFileId = adminDto.SpawnsetFileId;
 			TimeBronze = adminDto.TimeBronze;

@@ -1,5 +1,6 @@
 ﻿using DevilDaggersWebsite.Enumerators;
 using System.Collections.Generic;
+using System.Text;
 
 namespace DevilDaggersWebsite.Dto.Admin
 {
@@ -10,5 +11,17 @@ namespace DevilDaggersWebsite.Dto.Admin
 		public List<AssetModFileContents> AssetModFileContents { get; init; } = null!;
 		public string Name { get; init; } = null!;
 		public string Url { get; init; } = null!;
+
+		public override string ToString()
+		{
+			StringBuilder sb = new();
+			if (PlayerIds != null)
+				sb.AppendFormat("{0,-22}", nameof(PlayerIds)).AppendLine(string.Join(", ", PlayerIds));
+			sb.AppendFormat("{0,-22}", nameof(AssetModTypes)).AppendLine(string.Join(", ", AssetModTypes));
+			sb.AppendFormat("{0,-22}", nameof(AssetModFileContents)).AppendLine(string.Join(", ", AssetModFileContents));
+			sb.AppendFormat("{0,-22}", nameof(Name)).AppendLine(Name);
+			sb.AppendFormat("{0,-22}", nameof(Url)).AppendLine(Url);
+			return sb.ToString();
+		}
 	}
 }

@@ -103,8 +103,9 @@ namespace DevilDaggersWebsite.Razor.PageModels
 				try
 				{
 					StringBuilder auditLogger = new($"EDIT by {this.GetIdentity()} for {typeof(TEntity).Name} {id}\n");
+					auditLogger.Append(AdminDto);
 
-					_entity.Edit(DbContext, AdminDto, auditLogger);
+					_entity.Edit(DbContext, AdminDto);
 					DbContext.SaveChanges();
 
 					_entity.CreateManyToManyRelations(DbContext, AdminDto);
@@ -138,9 +139,10 @@ namespace DevilDaggersWebsite.Razor.PageModels
 				}
 
 				StringBuilder auditLogger = new($"CREATE by {this.GetIdentity()} for {typeof(TEntity).Name}\n");
+				auditLogger.Append(AdminDto);
 
 				_entity = new();
-				_entity.Create(DbContext, AdminDto, auditLogger);
+				_entity.Create(DbContext, AdminDto);
 				DbContext.SaveChanges();
 
 				_entity.CreateManyToManyRelations(DbContext, AdminDto);

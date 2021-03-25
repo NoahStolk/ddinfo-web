@@ -4,7 +4,6 @@ using System;
 using System.Collections.Generic;
 using System.ComponentModel.DataAnnotations;
 using System.Linq;
-using System.Text;
 
 namespace DevilDaggersWebsite.Entities
 {
@@ -19,17 +18,15 @@ namespace DevilDaggersWebsite.Entities
 		public string Name { get; set; } = null!;
 		public string Url { get; set; } = null!;
 
-		public void Create(ApplicationDbContext dbContext, AdminAssetMod adminDto, StringBuilder auditLogger)
+		public void Create(ApplicationDbContext dbContext, AdminAssetMod adminDto)
 		{
-			Edit(dbContext, adminDto, auditLogger);
+			Edit(dbContext, adminDto);
 
 			dbContext.AssetMods.Add(this);
 		}
 
-		public void Edit(ApplicationDbContext dbContext, AdminAssetMod adminDto, StringBuilder auditLogger)
+		public void Edit(ApplicationDbContext dbContext, AdminAssetMod adminDto)
 		{
-			(this as IAdminUpdatableEntity<AdminAssetMod>).TrackEditUpdates(auditLogger, adminDto, typeof(AssetMod));
-
 			AssetModTypes = (AssetModTypes)adminDto.AssetModTypes.Cast<int>().Sum();
 			AssetModFileContents = (AssetModFileContents)adminDto.AssetModFileContents.Cast<int>().Sum();
 			Name = adminDto.Name;

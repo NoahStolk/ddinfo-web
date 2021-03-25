@@ -2,7 +2,6 @@
 using System;
 using System.ComponentModel.DataAnnotations;
 using System.ComponentModel.DataAnnotations.Schema;
-using System.Text;
 
 namespace DevilDaggersWebsite.Entities
 {
@@ -26,17 +25,15 @@ namespace DevilDaggersWebsite.Entities
 
 		public bool IsPractice { get; set; }
 
-		public void Create(ApplicationDbContext dbContext, AdminSpawnsetFile adminDto, StringBuilder auditLogger)
+		public void Create(ApplicationDbContext dbContext, AdminSpawnsetFile adminDto)
 		{
-			Edit(dbContext, adminDto, auditLogger);
+			Edit(dbContext, adminDto);
 
 			dbContext.SpawnsetFiles.Add(this);
 		}
 
-		public void Edit(ApplicationDbContext dbContext, AdminSpawnsetFile adminDto, StringBuilder auditLogger)
+		public void Edit(ApplicationDbContext dbContext, AdminSpawnsetFile adminDto)
 		{
-			(this as IAdminUpdatableEntity<AdminSpawnsetFile>).TrackEditUpdates(auditLogger, adminDto, typeof(SpawnsetFile));
-
 			Name = adminDto.Name;
 			HtmlDescription = adminDto.HtmlDescription;
 			IsPractice = adminDto.IsPractice;

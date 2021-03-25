@@ -2,7 +2,6 @@
 using System.Collections.Generic;
 using System.ComponentModel.DataAnnotations;
 using System.Linq;
-using System.Text;
 
 namespace DevilDaggersWebsite.Entities
 {
@@ -14,17 +13,15 @@ namespace DevilDaggersWebsite.Entities
 		public string Name { get; set; } = null!;
 		public List<PlayerTitle> PlayerTitles { get; set; } = new();
 
-		public void Create(ApplicationDbContext dbContext, AdminTitle adminDto, StringBuilder auditLogger)
+		public void Create(ApplicationDbContext dbContext, AdminTitle adminDto)
 		{
-			Edit(dbContext, adminDto, auditLogger);
+			Edit(dbContext, adminDto);
 
 			dbContext.Titles.Add(this);
 		}
 
-		public void Edit(ApplicationDbContext dbContext, AdminTitle adminDto, StringBuilder auditLogger)
+		public void Edit(ApplicationDbContext dbContext, AdminTitle adminDto)
 		{
-			(this as IAdminUpdatableEntity<AdminTitle>).TrackEditUpdates(auditLogger, adminDto, typeof(Title));
-
 			Name = adminDto.Name;
 		}
 
