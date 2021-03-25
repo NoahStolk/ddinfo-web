@@ -6,6 +6,7 @@ using Microsoft.AspNetCore.Hosting;
 using Microsoft.AspNetCore.Mvc.RazorPages;
 using Microsoft.AspNetCore.Mvc.Rendering;
 using Newtonsoft.Json;
+using System;
 using System.Collections.Generic;
 using System.IO;
 using System.Linq;
@@ -17,6 +18,8 @@ namespace DevilDaggersWebsite.Razor.Pages.Leaderboard
 {
 	public class HistoryModel : PageModel, IDefaultLeaderboardPageModel
 	{
+		private static readonly DateTime _fullHistoryDateStart = new(2018, 10, 1);
+
 		private readonly IWebHostEnvironment _env;
 
 		public HistoryModel(IWebHostEnvironment env)
@@ -65,7 +68,7 @@ namespace DevilDaggersWebsite.Razor.Pages.Leaderboard
 
 			Leaderboard = JsonConvert.DeserializeObject<Lb>(Io.File.ReadAllText(Path.Combine(_env.WebRootPath, "leaderboard-history", From), Encoding.UTF8));
 
-			if (FromNext != null)
+			if (FromNext != null && Leaderboard.DateTime > _fullHistoryDateStart)
 			{
 				LeaderboardPrevious = JsonConvert.DeserializeObject<Lb>(Io.File.ReadAllText(Path.Combine(_env.WebRootPath, "leaderboard-history", FromNext), Encoding.UTF8));
 
