@@ -7,17 +7,11 @@
 @using Microsoft.EntityFrameworkCore
 @inject DevilDaggersWebsite.Entities.ApplicationDbContext dbContext
 @{
-	bool isIndex = false;
-	bool showMoreStats = false;
-	if (Model is IndexModel indexModel)
-	{
-		isIndex = true;
-		showMoreStats = indexModel.ShowMoreStats;
-	}
+	bool isIndex = Model is IndexModel;
 }
 
 <div class="leaderboard-container flex-container flex-center">
-	<div class="leaderboard-title-row @(showMoreStats ? "row-more-stats" : "") flex-container">
+	<div class="leaderboard-title-row flex-container">
 		<div class="sorter text-right" sort="rank">#</div>
 		<div class="sorter text-left" sort="flag">Flag</div>
 		<div class="sorter text-left" sort="username">Username</div>
@@ -31,19 +25,6 @@
 		<div class="sorter hidden-xs hidden-sm hidden-md text-right" sort="total-gems">Total gems</div>
 		<div class="sorter hidden-xs hidden-sm hidden-md text-right" sort="total-accuracy">Total accuracy</div>
 		<div class="sorter hidden-xs hidden-sm hidden-md text-right" sort="total-deaths">Total deaths</div>
-		@if (showMoreStats)
-		{
-			<div class="sorter visible-xl text-right" sort="daggers-hit">Daggers hit</div>
-			<div class="sorter visible-xl text-right" sort="daggers-fired">Daggers fired</div>
-			<div class="sorter visible-xl text-right" sort="total-daggers-hit">Total daggers hit</div>
-			<div class="sorter visible-xl text-right" sort="total-daggers-fired">Total daggers fired</div>
-			<div class="sorter visible-xl text-right" sort="average-time">Average time</div>
-			<div class="sorter visible-xl text-right" sort="average-kills">Average kills</div>
-			<div class="sorter visible-xl text-right" sort="average-gems">Average gems</div>
-			<div class="sorter visible-xl text-right" sort="average-daggers-hit">Average daggers hit</div>
-			<div class="sorter visible-xl text-right" sort="average-daggers-fired">Average daggers fired</div>
-			<div class="sorter visible-xl text-right" sort="time-by-death">Time divided by deaths</div>
-		}
 	</div>
 	<div class="leaderboard-body">
 		@{
@@ -57,7 +38,7 @@
 				EntryModel em = new(entry, player, donations, !isIndex, gameVersion);
 
 				<div class="sort @em.BanString" @em.HtmlData>
-					<div class="leaderboard-row pointer @(showMoreStats ? "row-more-stats" : "") flex-container" id="@(entry.Rank)-row">
+					<div class="leaderboard-row pointer flex-container" id="@(entry.Rank)-row">
 						@await Html.PartialAsync("Partials/EntryIdPartial", em)
 						@await Html.PartialAsync("Partials/EntryFlagPartial", em)
 						@await Html.PartialAsync("Partials/EntryUsernamePartial", em)
@@ -75,19 +56,6 @@
 							<span data-toggle="tooltip" title="@em.DaggersTotal" class="leaderboard-tooltip">@em.AccuracyTotal</span>
 						</div>
 						<div class="hidden-xs hidden-sm hidden-md text-right">@em.DeathsTotal</div>
-						@if (showMoreStats)
-						{
-							<div class="visible-xl text-right">@em.DaggersHit</div>
-							<div class="visible-xl text-right">@em.DaggersFired</div>
-							<div class="visible-xl text-right">@em.DaggersHitTotal</div>
-							<div class="visible-xl text-right">@em.DaggersFiredTotal</div>
-							<div class="visible-xl text-right">@em.AverageTime</div>
-							<div class="visible-xl text-right">@em.AverageKills</div>
-							<div class="visible-xl text-right">@em.AverageGems</div>
-							<div class="visible-xl text-right">@em.AverageDaggersHit</div>
-							<div class="visible-xl text-right">@em.AverageDaggersFired</div>
-							<div class="visible-xl text-right">@em.TimeByDeath</div>
-						}
 					</div>
 					<div class="leaderboard-expand flex-container" id="@(entry.Rank)-expand">
 						<div class="visible-xs">
@@ -130,49 +98,6 @@
 							<div class="text-left">Total deaths</div>
 							<div class="text-right">@em.DeathsTotal</div>
 						</div>
-						@if (showMoreStats)
-						{
-							<div class="hidden-xs hidden-xl">
-								<div class="text-left">Daggers hit</div>
-								<div class="text-right">@em.DaggersHit</div>
-							</div>
-							<div class="hidden-xs hidden-xl">
-								<div class="text-left">Daggers fired</div>
-								<div class="text-right">@em.DaggersFired</div>
-							</div>
-							<div class="hidden-xs hidden-xl">
-								<div class="text-left">Total daggers hit</div>
-								<div class="text-right">@em.DaggersHitTotal</div>
-							</div>
-							<div class="hidden-xs hidden-xl">
-								<div class="text-left">Total daggers fired</div>
-								<div class="text-right">@em.DaggersFiredTotal</div>
-							</div>
-							<div class="hidden-xs hidden-xl">
-								<div class="text-left">Average time</div>
-								<div class="text-right">@em.AverageTime</div>
-							</div>
-							<div class="hidden-xs hidden-xl">
-								<div class="text-left">Average kills</div>
-								<div class="text-right">@em.AverageKills</div>
-							</div>
-							<div class="hidden-xs hidden-xl">
-								<div class="text-left">Average gems</div>
-								<div class="text-right">@em.AverageGems</div>
-							</div>
-							<div class="hidden-xs hidden-xl">
-								<div class="text-left">Average daggers hit</div>
-								<div class="text-right">@em.AverageDaggersHit</div>
-							</div>
-							<div class="hidden-xs hidden-xl">
-								<div class="text-left">Average daggers fired</div>
-								<div class="text-right">@em.AverageDaggersFired</div>
-							</div>
-							<div class="hidden-xs hidden-xl">
-								<div class="text-left">Time divided by deaths</div>
-								<div class="text-right">@em.TimeByDeath</div>
-							</div>
-						}
 						<div style="padding-top: 1em;">
 							@if (isIndex)
 							{
