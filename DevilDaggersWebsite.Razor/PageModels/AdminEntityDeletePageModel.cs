@@ -45,7 +45,7 @@ namespace DevilDaggersWebsite.Razor.PageModels
 				DbSet.Remove(Entity);
 				await DbContext.SaveChangesAsync();
 
-				await DiscordLogger.Instance.TryLog(Channel.AuditLogMonitoring, _env.EnvironmentName, $"`DELETE by {this.GetIdentity()} for {typeof(TEntity).Name} {id}`");
+				await DiscordLogger.Instance.TryLog(Channel.AuditLogMonitoring, _env.EnvironmentName, $"`DELETE` by `{this.GetIdentity()}` for `{typeof(TEntity).Name}` `{id}`");
 			}
 
 			return RedirectToPage("./Index");

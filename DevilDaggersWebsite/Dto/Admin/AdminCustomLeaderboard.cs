@@ -16,7 +16,7 @@ namespace DevilDaggersWebsite.Dto.Admin
 
 		public override string ToString()
 		{
-			StringBuilder sb = new();
+			StringBuilder sb = new("```\n");
 			sb.AppendFormat("{0,-22}", nameof(Category)).AppendLine(Category.ToString());
 			sb.AppendFormat("{0,-22}", nameof(SpawnsetFileId)).AppendLine(SpawnsetFileId.ToString());
 			sb.AppendFormat("{0,-22}", nameof(TimeBronze)).AppendLine(TimeBronze.ToString());
@@ -24,7 +24,7 @@ namespace DevilDaggersWebsite.Dto.Admin
 			sb.AppendFormat("{0,-22}", nameof(TimeGolden)).AppendLine(TimeGolden.ToString());
 			sb.AppendFormat("{0,-22}", nameof(TimeDevil)).AppendLine(TimeDevil.ToString());
 			sb.AppendFormat("{0,-22}", nameof(TimeLeviathan)).AppendLine(TimeLeviathan.ToString());
-			return sb.ToString();
+			return sb.AppendLine("```").ToString();
 		}
 	}
 }

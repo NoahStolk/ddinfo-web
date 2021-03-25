@@ -16,7 +16,7 @@ namespace DevilDaggersWebsite.Dto.Admin
 
 		public override string ToString()
 		{
-			StringBuilder sb = new();
+			StringBuilder sb = new("```\n");
 			sb.AppendFormat("{0,-28}", nameof(PlayerId)).AppendLine(PlayerId.ToString());
 			sb.AppendFormat("{0,-28}", nameof(Amount)).AppendLine(Amount.ToString());
 			sb.AppendFormat("{0,-28}", nameof(Currency)).AppendLine(Currency.ToString());
@@ -24,7 +24,7 @@ namespace DevilDaggersWebsite.Dto.Admin
 			sb.AppendFormat("{0,-28}", nameof(DateReceived)).AppendLine(DateReceived.ToString());
 			sb.AppendFormat("{0,-28}", nameof(Note)).AppendLine(Note);
 			sb.AppendFormat("{0,-28}", nameof(IsRefunded)).AppendLine(IsRefunded.ToString());
-			return sb.ToString();
+			return sb.AppendLine("```").ToString();
 		}
 	}
 }

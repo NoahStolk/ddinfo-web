@@ -10,11 +10,10 @@ namespace DevilDaggersWebsite.Dto.Admin
 
 		public override string ToString()
 		{
-			StringBuilder sb = new();
+			StringBuilder sb = new("```\n");
 			sb.AppendFormat("{0,-22}", nameof(Name)).AppendLine(Name);
-			if (PlayerIds != null)
-				sb.AppendFormat("{0,-22}", nameof(PlayerIds)).AppendLine(string.Join(", ", PlayerIds));
-			return sb.ToString();
+			sb.AppendFormat("{0,-22}", nameof(PlayerIds)).AppendLine(PlayerIds != null ? string.Join(", ", PlayerIds) : "Empty");
+			return sb.AppendLine("```").ToString();
 		}
 	}
 }

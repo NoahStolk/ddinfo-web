@@ -12,13 +12,13 @@ namespace DevilDaggersWebsite.Dto.Admin
 
 		public override string ToString()
 		{
-			StringBuilder sb = new();
+			StringBuilder sb = new("```\n");
 			sb.AppendFormat("{0,-22}", nameof(Name)).AppendLine(Name);
 			sb.AppendFormat("{0,-22}", nameof(PlayerId)).AppendLine(PlayerId.ToString());
 			sb.AppendFormat("{0,-22}", nameof(MaxDisplayWaves)).AppendLine(MaxDisplayWaves.ToString());
 			sb.AppendFormat("{0,-22}", nameof(HtmlDescription)).AppendLine(HtmlDescription);
 			sb.AppendFormat("{0,-22}", nameof(IsPractice)).AppendLine(IsPractice.ToString());
-			return sb.ToString();
+			return sb.AppendLine("```").ToString();
 		}
 	}
 }

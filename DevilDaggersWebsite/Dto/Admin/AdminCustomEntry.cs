@@ -28,7 +28,7 @@ namespace DevilDaggersWebsite.Dto.Admin
 
 		public override string ToString()
 		{
-			StringBuilder sb = new();
+			StringBuilder sb = new("```\n");
 			sb.AppendFormat("{0,-22}", nameof(PlayerId)).AppendLine(PlayerId.ToString());
 			sb.AppendFormat("{0,-22}", nameof(CustomLeaderboardId)).AppendLine(CustomLeaderboardId.ToString());
 			sb.AppendFormat("{0,-22}", nameof(Time)).AppendLine(Time.ToString());
@@ -47,8 +47,8 @@ namespace DevilDaggersWebsite.Dto.Admin
 			sb.AppendFormat("{0,-22}", nameof(LevelUpTime3)).AppendLine(LevelUpTime3.ToString());
 			sb.AppendFormat("{0,-22}", nameof(LevelUpTime4)).AppendLine(LevelUpTime4.ToString());
 			sb.AppendFormat("{0,-22}", nameof(SubmitDate)).AppendLine(SubmitDate.ToString());
-			sb.AppendFormat("{0,-22}", nameof(ClientVersion)).AppendLine(ClientVersion.ToString());
-			return sb.ToString();
+			sb.AppendFormat("{0,-22}", nameof(ClientVersion)).AppendLine(ClientVersion);
+			return sb.AppendLine("```").ToString();
 		}
 	}
 }

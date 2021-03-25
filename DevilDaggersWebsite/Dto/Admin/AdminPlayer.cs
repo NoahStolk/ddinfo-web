@@ -25,14 +25,12 @@ namespace DevilDaggersWebsite.Dto.Admin
 
 		public override string ToString()
 		{
-			StringBuilder sb = new();
+			StringBuilder sb = new("```\n");
 			sb.AppendFormat("{0,-22}", nameof(Id)).AppendLine(Id.ToString());
 			sb.AppendFormat("{0,-22}", nameof(PlayerName)).AppendLine(PlayerName);
 			sb.AppendFormat("{0,-22}", nameof(IsAnonymous)).AppendLine(IsAnonymous.ToString());
-			if (AssetModIds != null)
-				sb.AppendFormat("{0,-22}", nameof(AssetModIds)).AppendLine(string.Join(", ", AssetModIds));
-			if (TitleIds != null)
-				sb.AppendFormat("{0,-22}", nameof(TitleIds)).AppendLine(string.Join(", ", TitleIds));
+			sb.AppendFormat("{0,-22}", nameof(AssetModIds)).AppendLine(AssetModIds != null ? string.Join(", ", AssetModIds) : "Empty");
+			sb.AppendFormat("{0,-22}", nameof(TitleIds)).AppendLine(TitleIds != null ? string.Join(", ", TitleIds) : "Empty");
 			sb.AppendFormat("{0,-22}", nameof(CountryCode)).AppendLine(CountryCode);
 			sb.AppendFormat("{0,-22}", nameof(Dpi)).AppendLine(Dpi.ToString());
 			sb.AppendFormat("{0,-22}", nameof(InGameSens)).AppendLine(InGameSens.ToString());
@@ -45,7 +43,7 @@ namespace DevilDaggersWebsite.Dto.Admin
 			sb.AppendFormat("{0,-22}", nameof(BanResponsibleId)).AppendLine(BanResponsibleId.ToString());
 			sb.AppendFormat("{0,-22}", nameof(UsesLegacyAudio)).AppendLine(UsesLegacyAudio.ToString());
 			sb.AppendFormat("{0,-22}", nameof(IsBannedFromDdcl)).AppendLine(IsBannedFromDdcl.ToString());
-			return sb.ToString();
+			return sb.AppendLine("```").ToString();
 		}
 	}
 }
