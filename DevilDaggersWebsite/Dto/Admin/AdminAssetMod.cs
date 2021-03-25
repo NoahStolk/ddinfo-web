@@ -15,11 +15,11 @@ namespace DevilDaggersWebsite.Dto.Admin
 		public override string ToString()
 		{
 			StringBuilder sb = new("```\n");
-			sb.AppendFormat("{0,-22}", nameof(PlayerIds)).AppendLine(PlayerIds != null ? string.Join(", ", PlayerIds) : "Empty");
-			sb.AppendFormat("{0,-22}", nameof(AssetModTypes)).AppendLine(string.Join(", ", AssetModTypes));
-			sb.AppendFormat("{0,-22}", nameof(AssetModFileContents)).AppendLine(string.Join(", ", AssetModFileContents));
-			sb.AppendFormat("{0,-22}", nameof(Name)).AppendLine(Name);
-			sb.AppendFormat("{0,-22}", nameof(Url)).AppendLine(Url);
+			sb.AppendFormat("{0,-30}", nameof(PlayerIds)).AppendLine(PlayerIds != null ? string.Join(", ", PlayerIds) : "Empty");
+			sb.AppendFormat("{0,-30}", nameof(AssetModTypes)).AppendLine(string.Join(", ", AssetModTypes));
+			sb.AppendFormat("{0,-30}", nameof(AssetModFileContents)).AppendLine(string.Join(", ", AssetModFileContents));
+			sb.AppendFormat("{0,-30}", nameof(Name)).AppendLine(Name);
+			sb.AppendFormat("{0,-30}", nameof(Url)).AppendLine(Url);
 			return sb.AppendLine("```").ToString();
 		}
 	}

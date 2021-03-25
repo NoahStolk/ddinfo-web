@@ -17,13 +17,13 @@ namespace DevilDaggersWebsite.Dto.Admin
 		public override string ToString()
 		{
 			StringBuilder sb = new("```\n");
-			sb.AppendFormat("{0,-28}", nameof(PlayerId)).AppendLine(PlayerId.ToString());
-			sb.AppendFormat("{0,-28}", nameof(Amount)).AppendLine(Amount.ToString());
-			sb.AppendFormat("{0,-28}", nameof(Currency)).AppendLine(Currency.ToString());
-			sb.AppendFormat("{0,-28}", nameof(ConvertedEuroCentsReceived)).AppendLine(ConvertedEuroCentsReceived.ToString());
-			sb.AppendFormat("{0,-28}", nameof(DateReceived)).AppendLine(DateReceived.ToString());
-			sb.AppendFormat("{0,-28}", nameof(Note)).AppendLine(Note);
-			sb.AppendFormat("{0,-28}", nameof(IsRefunded)).AppendLine(IsRefunded.ToString());
+			sb.AppendFormat("{0,-30}", nameof(PlayerId)).AppendLine(PlayerId.ToString());
+			sb.AppendFormat("{0,-30}", nameof(Amount)).AppendLine(Amount.ToString());
+			sb.AppendFormat("{0,-30}", nameof(Currency)).AppendLine(Currency.ToString());
+			sb.AppendFormat("{0,-30}", nameof(ConvertedEuroCentsReceived)).AppendLine(ConvertedEuroCentsReceived.ToString());
+			sb.AppendFormat("{0,-30}", nameof(DateReceived)).AppendLine(DateReceived.ToString());
+			sb.AppendFormat("{0,-30}", nameof(Note)).AppendLine(Note);
+			sb.AppendFormat("{0,-30}", nameof(IsRefunded)).AppendLine(IsRefunded.ToString());
 			return sb.AppendLine("```").ToString();
 		}
 	}

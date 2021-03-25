@@ -11,8 +11,8 @@ namespace DevilDaggersWebsite.Dto.Admin
 		public override string ToString()
 		{
 			StringBuilder sb = new("```\n");
-			sb.AppendFormat("{0,-22}", nameof(Name)).AppendLine(Name);
-			sb.AppendFormat("{0,-22}", nameof(PlayerIds)).AppendLine(PlayerIds != null ? string.Join(", ", PlayerIds) : "Empty");
+			sb.AppendFormat("{0,-30}", nameof(Name)).AppendLine(Name);
+			sb.AppendFormat("{0,-30}", nameof(PlayerIds)).AppendLine(PlayerIds != null ? string.Join(", ", PlayerIds) : "Empty");
 			return sb.AppendLine("```").ToString();
 		}
 	}

@@ -26,23 +26,23 @@ namespace DevilDaggersWebsite.Dto.Admin
 		public override string ToString()
 		{
 			StringBuilder sb = new("```\n");
-			sb.AppendFormat("{0,-22}", nameof(Id)).AppendLine(Id.ToString());
-			sb.AppendFormat("{0,-22}", nameof(PlayerName)).AppendLine(PlayerName);
-			sb.AppendFormat("{0,-22}", nameof(IsAnonymous)).AppendLine(IsAnonymous.ToString());
-			sb.AppendFormat("{0,-22}", nameof(AssetModIds)).AppendLine(AssetModIds != null ? string.Join(", ", AssetModIds) : "Empty");
-			sb.AppendFormat("{0,-22}", nameof(TitleIds)).AppendLine(TitleIds != null ? string.Join(", ", TitleIds) : "Empty");
-			sb.AppendFormat("{0,-22}", nameof(CountryCode)).AppendLine(CountryCode);
-			sb.AppendFormat("{0,-22}", nameof(Dpi)).AppendLine(Dpi.ToString());
-			sb.AppendFormat("{0,-22}", nameof(InGameSens)).AppendLine(InGameSens.ToString());
-			sb.AppendFormat("{0,-22}", nameof(Fov)).AppendLine(Fov.ToString());
-			sb.AppendFormat("{0,-22}", nameof(RightHanded)).AppendLine(RightHanded.ToString());
-			sb.AppendFormat("{0,-22}", nameof(FlashEnabled)).AppendLine(FlashEnabled.ToString());
-			sb.AppendFormat("{0,-22}", nameof(Gamma)).AppendLine(Gamma.ToString());
-			sb.AppendFormat("{0,-22}", nameof(IsBanned)).AppendLine(IsBanned.ToString());
-			sb.AppendFormat("{0,-22}", nameof(BanDescription)).AppendLine(BanDescription);
-			sb.AppendFormat("{0,-22}", nameof(BanResponsibleId)).AppendLine(BanResponsibleId.ToString());
-			sb.AppendFormat("{0,-22}", nameof(UsesLegacyAudio)).AppendLine(UsesLegacyAudio.ToString());
-			sb.AppendFormat("{0,-22}", nameof(IsBannedFromDdcl)).AppendLine(IsBannedFromDdcl.ToString());
+			sb.AppendFormat("{0,-30}", nameof(Id)).AppendLine(Id.ToString());
+			sb.AppendFormat("{0,-30}", nameof(PlayerName)).AppendLine(PlayerName);
+			sb.AppendFormat("{0,-30}", nameof(IsAnonymous)).AppendLine(IsAnonymous.ToString());
+			sb.AppendFormat("{0,-30}", nameof(AssetModIds)).AppendLine(AssetModIds != null ? string.Join(", ", AssetModIds) : "Empty");
+			sb.AppendFormat("{0,-30}", nameof(TitleIds)).AppendLine(TitleIds != null ? string.Join(", ", TitleIds) : "Empty");
+			sb.AppendFormat("{0,-30}", nameof(CountryCode)).AppendLine(CountryCode);
+			sb.AppendFormat("{0,-30}", nameof(Dpi)).AppendLine(Dpi.ToString());
+			sb.AppendFormat("{0,-30}", nameof(InGameSens)).AppendLine(InGameSens.ToString());
+			sb.AppendFormat("{0,-30}", nameof(Fov)).AppendLine(Fov.ToString());
+			sb.AppendFormat("{0,-30}", nameof(RightHanded)).AppendLine(RightHanded.ToString());
+			sb.AppendFormat("{0,-30}", nameof(FlashEnabled)).AppendLine(FlashEnabled.ToString());
+			sb.AppendFormat("{0,-30}", nameof(Gamma)).AppendLine(Gamma.ToString());
+			sb.AppendFormat("{0,-30}", nameof(IsBanned)).AppendLine(IsBanned.ToString());
+			sb.AppendFormat("{0,-30}", nameof(BanDescription)).AppendLine(BanDescription);
+			sb.AppendFormat("{0,-30}", nameof(BanResponsibleId)).AppendLine(BanResponsibleId.ToString());
+			sb.AppendFormat("{0,-30}", nameof(UsesLegacyAudio)).AppendLine(UsesLegacyAudio.ToString());
+			sb.AppendFormat("{0,-30}", nameof(IsBannedFromDdcl)).AppendLine(IsBannedFromDdcl.ToString());
 			return sb.AppendLine("```").ToString();
 		}
 	}
