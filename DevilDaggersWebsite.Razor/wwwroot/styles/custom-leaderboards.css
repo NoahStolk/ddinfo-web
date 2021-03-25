@@ -1,8 +1,4 @@
-﻿select {
-	max-width: 192px;
-}
-
-@media (min-width: 1600px) {
+﻿@media (min-width: 1600px) {
 	.leaderboard-row > div:nth-child(1),
 	.leaderboard-title-row > div:nth-child(1) {
 		min-width: 20%;

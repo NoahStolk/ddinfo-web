@@ -95,8 +95,10 @@ input {
 .select {
 	color: var(--col-red);
 	background-color: var(--col-black);
-	max-width: 280px;
-	margin: 12px;
+}
+
+.select-small {
+	max-width: 192px;
 }
 
 div.form-group > .text-danger {
