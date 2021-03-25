@@ -78,33 +78,27 @@ namespace DevilDaggersWebsite.Razor.Pages.Leaderboard
 				if (LeaderboardPrevious.DeathsGlobal != Leaderboard.DeathsGlobal)
 					ChangesGlobal.Add($"Global deaths +{Leaderboard.DeathsGlobal - LeaderboardPrevious.DeathsGlobal}\n");
 
-				List<Entry> top100joins = new();
+				List<Entry> top100Joins = new();
 				List<Entry> highscores = new();
-				List<Entry> plays = new();
 				foreach (Entry entry in Leaderboard.Entries)
 				{
 					Entry? entryPrevious = LeaderboardPrevious.Entries.Find(e => e.Id == entry.Id);
 					if (entryPrevious == null)
 					{
-						top100joins.Add(entry);
+						top100Joins.Add(entry);
 						highscores.Add(entry);
-						plays.Add(entry);
 					}
 					else
 					{
 						if (entry.Time != entryPrevious.Time)
 							highscores.Add(entry);
-						if (entry.DeathsTotal != entryPrevious.DeathsTotal)
-							plays.Add(entry);
 					}
 				}
 
-				if (top100joins.Count != 0)
-					ChangesTop100[$"{top100joins.Count} player{top100joins.Count.S()} joined top 100"] = string.Join(", ", top100joins.Select(e => e.Username));
+				if (top100Joins.Count != 0)
+					ChangesTop100[$"{top100Joins.Count} player{top100Joins.Count.S()} joined top 100"] = string.Join(", ", top100Joins.Select(e => e.Username));
 				if (highscores.Count != 0)
 					ChangesTop100[$"{highscores.Count} player{highscores.Count.S()} set a new highscore"] = string.Join(", ", highscores.Select(e => e.Username));
-				if (plays.Count != 0)
-					ChangesTop100[$"{plays.Count} player{plays.Count.S()} played"] = string.Join(", ", plays.Select(e => e.Username));
 			}
 		}
 	}
