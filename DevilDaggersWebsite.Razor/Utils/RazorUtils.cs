@@ -128,15 +128,21 @@ namespace DevilDaggersWebsite.Razor.Utils
 		public static string GetCssWidth(int width)
 			=> $"width: {width}px;";
 
-		public static List<SelectListItem> EnumToSelectList<TEnum>()
+		public static List<SelectListItem> EnumToSelectList<TEnum>(bool ignoreZero)
 			where TEnum : Enum
-			=> ((IEnumerable<TEnum>)Enum.GetValues(typeof(TEnum)))
-				.Where(e => (int)(object)e != 0)
+		{
+			IEnumerable<TEnum> enumValues = (IEnumerable<TEnum>)Enum.GetValues(typeof(TEnum));
+
+			if (ignoreZero)
+				enumValues = enumValues.Where(e => (int)(object)e != 0);
+
+			return enumValues
 				.Select(c => new SelectListItem
 				{
 					Text = c.ToString(),
 					Value = ((int)(object)c).ToString(),
 				})
 				.ToList();
+		}
 	}
 }

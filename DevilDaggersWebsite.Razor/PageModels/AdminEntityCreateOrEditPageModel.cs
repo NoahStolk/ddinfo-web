@@ -29,11 +29,11 @@ namespace DevilDaggersWebsite.Razor.PageModels
 		{
 			_env = env;
 
-			AssetModFileContentsList = RazorUtils.EnumToSelectList<AssetModFileContents>();
-			AssetModTypesList = RazorUtils.EnumToSelectList<AssetModTypes>();
+			AssetModFileContentsList = RazorUtils.EnumToSelectList<AssetModFileContents>(true);
+			AssetModTypesList = RazorUtils.EnumToSelectList<AssetModTypes>(true);
 
-			CategoryList = RazorUtils.EnumToSelectList<CustomLeaderboardCategory>();
-			CurrencyList = RazorUtils.EnumToSelectList<Currency>();
+			CategoryList = RazorUtils.EnumToSelectList<CustomLeaderboardCategory>(true);
+			CurrencyList = RazorUtils.EnumToSelectList<Currency>(false);
 
 			AssetModList = DbContext.AssetMods.Select(am => new SelectListItem(am.Name, am.Id.ToString())).ToList();
 			CustomLeaderboardList = DbContext.CustomLeaderboards.Include(cl => cl.SpawnsetFile).Select(cl => new SelectListItem(cl.SpawnsetFile.Name, cl.Id.ToString())).ToList();
