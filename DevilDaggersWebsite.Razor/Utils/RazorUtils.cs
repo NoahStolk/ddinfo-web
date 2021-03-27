@@ -6,7 +6,6 @@ using System;
 using System.Collections.Generic;
 using System.IO;
 using System.Linq;
-using System.Reflection;
 using System.Text;
 
 namespace DevilDaggersWebsite.Razor.Utils
@@ -14,19 +13,6 @@ namespace DevilDaggersWebsite.Razor.Utils
 	public static class RazorUtils
 	{
 		public const string DiscordUrl = "https://discord.gg/NF32j8S";
-
-		static RazorUtils()
-		{
-			try
-			{
-				BuildTime = File.GetLastWriteTime(Assembly.GetExecutingAssembly().Location).ToUniversalTime().ToString("yyyy-MM-dd HH:mm UTC");
-			}
-			catch
-			{
-			}
-		}
-
-		public static string BuildTime { get; } = string.Empty;
 
 		public static HtmlString NAString { get; set; } = new("<span style='color: #444;'>N/A</span>");
 
