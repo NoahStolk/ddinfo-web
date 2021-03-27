@@ -63,10 +63,6 @@
 	background-color: var(--col-nav-background);
 }
 
-.icon-bar {
-	background-color: var(--col-red);
-}
-
 @media screen and (max-width: 767px) {
 	.navbar-nav {
 		min-height: unset;
