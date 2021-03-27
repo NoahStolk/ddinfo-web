@@ -3,7 +3,6 @@
 <environment include="Development" exclude="Production">
 	<script defer src="~/lib/jquery/dist/jquery.js"></script>
 	<script defer src="~/lib/bootstrap/dist/js/bootstrap.js"></script>
-	@RazorUtils.GetJsList(env, "js-site/core")
 	@RazorUtils.GetJsList(env, "js-site")
 </environment>
 <environment exclude="Development">

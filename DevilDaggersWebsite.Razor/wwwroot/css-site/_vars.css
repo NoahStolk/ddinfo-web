@@ -1,4 +1,6 @@
 ﻿:root {
+	--col-dropdown: #337ab7;
+	--col-dropdown-hover: #23527c;
 	--col-red: #f00;
 	--col-dark-red: #600;
 	--col-dark-orange: #630;
