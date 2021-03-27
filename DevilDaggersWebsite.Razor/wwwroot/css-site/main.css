@@ -216,12 +216,6 @@ option {
 	margin-bottom: 1em;
 }
 
-.dropdown-menu .divider {
-	background-color: var(--col-nav-background-hover);
-	margin: 0;
-	padding: 2px;
-}
-
 pre {
 	background-color: var(--col-nav-background-hover);
 	color: var(--col-default-text)
