@@ -37,31 +37,20 @@
 				background-color: var(--col-nav-background-hover);
 			}
 
-	.navbar, .navbar-header, .navbar-nav, .navbar-nav > li, .navbar-brand, .navbar-collapse, ul.navbar-nav {
+	.navbar, .navbar-header, .navbar-nav, .navbar-nav > li, .navbar-collapse, ul.navbar-nav {
 		margin-top: 0;
 		margin-bottom: 0;
 		background-color: unset;
 	}
 
-		.navbar-brand > img {
-			display: inline;
+		.navbar > .container {
+			margin-left: 17.5%;
+			width: 65%;
 		}
 
-.brand-image {
-	width: 22px;
-	height: 22px;
-	margin-right: 8px;
-	vertical-align: top;
-}
-
-.navbar > .container {
-	margin-left: 17.5%;
-	width: 65%;
-}
-
-.navbar, .navbar-header, .navbar-nav, .navbar-nav > li, .navbar-brand, .navbar-collapse, ul.navbar-nav {
-	background-color: var(--col-nav-background);
-}
+		.navbar, .navbar-header, .navbar-nav, .navbar-nav > li, .navbar-collapse, ul.navbar-nav {
+			background-color: var(--col-nav-background);
+		}
 
 @media screen and (max-width: 767px) {
 	.navbar-nav {
