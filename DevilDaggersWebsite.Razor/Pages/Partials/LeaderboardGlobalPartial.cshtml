@@ -11,7 +11,6 @@
 	}
 
 	bool isHistory = modelType == typeof(HistoryModel);
-	bool showAccuracyTooltip = !(isHistory && (Model.Leaderboard?.DaggersFiredGlobal == 10000 || Model.Leaderboard?.DaggersFiredGlobal == 0));
 
 	string players = Model.Leaderboard?.Players.ToString(FormatUtils.LeaderboardIntFormat) ?? "Failed to fetch";
 	string time = Model.Leaderboard?.TimeGlobal.FormatTimeInteger(true) ?? "Failed to fetch";
