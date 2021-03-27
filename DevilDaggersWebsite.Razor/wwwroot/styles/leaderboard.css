@@ -28,11 +28,6 @@
 	overflow: hidden;
 }
 
-.leaderboard-nav-buttons {
-	margin: auto;
-	max-width: 80px;
-}
-
 .sorter:hover {
 	cursor: pointer;
 }

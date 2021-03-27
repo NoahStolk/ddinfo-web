@@ -38,23 +38,19 @@
 				</div>
 			</div>
 			<div>
-				<div>
-					<input class="btn" type="submit" value="Show" />
-				</div>
-				<div class="leaderboard-nav-buttons">
-					@{
-						if (Model.LeaderboardSearchType == LeaderboardSearchType.Rank)
-						{
-							<a class="btn" asp-page="/Leaderboard/Index" asp-route-rank="@(Math.Max(1, Model.Rank - 100))" asp-route-search="@Model.Username">&lt;</a>
-							<a class="btn" asp-page="/Leaderboard/Index" asp-route-rank="@(Math.Min(Model.Leaderboard.Players - 99, Model.Rank + 100))" asp-route-search="@Model.Username">&gt;</a>
-						}
-						else
-						{
-							<button class="btn btn-disabled">&lt;</button>
-							<button class="btn btn-disabled">&gt;</button>
-						}
+				<input class="btn" type="submit" value="Show" />
+				@{
+					if (Model.LeaderboardSearchType == LeaderboardSearchType.Rank)
+					{
+						<a class="btn" asp-page="/Leaderboard/Index" asp-route-rank="@(Math.Max(1, Model.Rank - 100))" asp-route-search="@Model.Username">&lt;</a>
+						<a class="btn" asp-page="/Leaderboard/Index" asp-route-rank="@(Math.Min(Model.Leaderboard.Players - 99, Model.Rank + 100))" asp-route-search="@Model.Username">&gt;</a>
 					}
-				</div>
+					else
+					{
+						<button class="btn btn-disabled">&lt;</button>
+						<button class="btn btn-disabled">&gt;</button>
+					}
+				}
 			</div>
 		</fieldset>
 	}

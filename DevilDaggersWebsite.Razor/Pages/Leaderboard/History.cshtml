@@ -17,7 +17,7 @@
 		<form method="get">
 			<select class="select form-control" asp-for="From" asp-items="Model.JsonFiles" onchange="this.form.submit()"></select>
 		</form>
-		<div class="leaderboard-nav-buttons">
+		<div>
 			@if (Model.FromNext != null)
 			{
 				<a class="btn" asp-page="/Leaderboard/History" asp-route-from="@(Model.FromNext)">&lt;</a>
