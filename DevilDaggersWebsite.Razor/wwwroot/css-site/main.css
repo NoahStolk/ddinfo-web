@@ -13,6 +13,7 @@ body {
 	background-color: var(--col-black);
 	font-family: 'default', sans-serif;
 	font-size: 19.9px; /*blur fix???*/
+	line-height: 1.15em;
 }
 
 .body-content {
