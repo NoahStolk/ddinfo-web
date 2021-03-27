@@ -4,24 +4,10 @@
 
 body {
 	padding-top: 70px;
-}
-
-h1 {
-	padding: 16px 8px 16px 8px;
-}
-
-h2, h3, h4, h5, h6 {
-	padding: 12px 8px 8px 8px;
-}
-
-p {
-	padding: 8px;
-}
-
-@media screen and (max-width: 767px) {
-	body {
-		padding-top: 50px;
-	}
+	color: var(--col-default-text);
+	background-color: var(--col-black);
+	font-family: 'default', sans-serif;
+	font-size: 19.9px; /*blur fix???*/
 }
 
 .body-content {
@@ -32,32 +18,36 @@ p {
 }
 
 @media screen and (max-width: 767px) {
+	body {
+		padding-top: 50px;
+	}
+
 	.body-content {
 		min-height: calc(100vh - 50px);
 	}
 }
 
+h1 {
+	padding: 16px 8px 16px 8px;
+	text-align: center;
+}
+
+h1, h2, h3, h4, h5, h6 {
+	color: var(--col-red);
+	margin-left: 0;
+	padding-left: 0;
+}
+
+h2, h3, h4, h5, h6 {
+	padding: 12px 8px 8px 8px;
+}
+
+p {
+	padding: 0;
+}
+
 .spacer {
 	flex: 1;
-}
-
-.inner-container {
-	margin-left: 17.5%;
-	width: 65%;
-}
-
-@media screen and (max-width: 1199px) {
-	.inner-container {
-		margin-left: 7.5%;
-		width: 85%;
-	}
-}
-
-@media screen and (max-width: 767px) {
-	.inner-container {
-		margin-left: 0;
-		width: 100%;
-	}
 }
 
 .flex-container {
@@ -72,24 +62,6 @@ p {
 	flex-direction: column;
 }
 
-.valign-center {
-	display: flex;
-	align-items: center;
-}
-
-.valign-center-no-xs {
-	display: flex;
-	align-items: center;
-	padding: 16px;
-}
-
-@media screen and (max-width: 767px) {
-	.valign-center-no-xs {
-		display: unset;
-		align-items: unset;
-	}
-}
-
 .flex-space-evenly {
 	justify-content: space-evenly;
 }
@@ -101,10 +73,6 @@ p {
 @font-face {
 	font-family: 'default';
 	src: local('Goethe Bold'), url('../Fonts/goethebold.ttf') format('truetype');
-}
-
-html {
-	overflow-y: scroll;
 }
 
 .body-content {
@@ -125,31 +93,8 @@ html {
 	background: var(--col-selection-text);
 }
 
-body {
-	color: var(--col-default-text);
-	background-color: var(--col-black);
-	font-family: 'default', sans-serif;
-	font-size: 19.9px; /*blur fix???*/
-	/*font-family: Consolas, sans-serif;
-	font-size: 16px;*/
-}
-
 footer {
 	padding-bottom: 10px;
-}
-
-h1, h2, h3, h4, h5, h6 {
-	color: var(--col-red);
-	margin-left: 0;
-	padding-left: 0;
-}
-
-h1 {
-	text-align: center;
-}
-
-p {
-	padding: 0;
 }
 
 p, table {
