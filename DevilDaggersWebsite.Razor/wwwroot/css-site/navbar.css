@@ -7,10 +7,14 @@
 		max-height: 540px;
 	}
 
+#navbar-collapse {
+	max-height: 540px;
+}
+
 .navbar {
-	-webkit-box-shadow: 0 -4px 8px 6px #999;
-	-moz-box-shadow: 0 -4px 8px 6px #999;
-	box-shadow: 0 -4px 8px 6px #999;
+	-webkit-box-shadow: 0 -4px 8px 6px var(--col-dark-red);
+	-moz-box-shadow: 0 -4px 8px 6px var(--col-dark-red);
+	box-shadow: 0 -4px 8px 6px var(--col-dark-red);
 }
 
 .navbar, .navbar-header, .navbar-nav, .navbar-nav > li {
@@ -24,7 +28,14 @@
 		.navbar-nav > li > a {
 			padding-top: 15px;
 			padding-bottom: 15px;
+			padding-right: 10px;
+			padding-left: 10px;
 		}
+
+			.navbar-nav > li > a:hover,
+			.navbar-nav > li > a:focus {
+				background-color: var(--col-nav-background-hover);
+			}
 
 	.navbar, .navbar-header, .navbar-nav, .navbar-nav > li, .navbar-brand, .navbar-collapse, ul.navbar-nav {
 		margin-top: 0;
@@ -43,6 +54,19 @@
 	vertical-align: top;
 }
 
+.navbar > .container {
+	margin-left: 17.5%;
+	width: 65%;
+}
+
+.navbar, .navbar-header, .navbar-nav, .navbar-nav > li, .navbar-brand, .navbar-collapse, ul.navbar-nav {
+	background-color: var(--col-nav-background);
+}
+
+.icon-bar {
+	background-color: var(--col-red);
+}
+
 @media screen and (max-width: 767px) {
 	.navbar-nav {
 		min-height: unset;
@@ -57,41 +81,6 @@
 		}
 }
 
-.navbar > .container {
-	margin-left: 17.5%;
-	width: 65%;
-}
-
-@media screen and (max-width: 1199px) {
-	.navbar > .container {
-		margin-left: 0;
-		width: 100%;
-	}
-}
-
-#navbar-collapse {
-	max-height: 540px;
-}
-
-.navbar, .navbar-header, .navbar-nav, .navbar-nav > li, .navbar-brand, .navbar-collapse, ul.navbar-nav {
-	background-color: var(--col-nav-background);
-}
-
-.navbar {
-	-webkit-box-shadow: 0 -4px 8px 6px var(--col-dark-red);
-	-moz-box-shadow: 0 -4px 8px 6px var(--col-dark-red);
-	box-shadow: 0 -4px 8px 6px var(--col-dark-red);
-}
-
-.navbar-nav > li > a:hover,
-.navbar-nav > li > a:focus {
-	background-color: var(--col-nav-background-hover);
-}
-
-.icon-bar {
-	background-color: var(--col-red);
-}
-
 @media (min-width: 768px) {
 	.navbar .navbar-nav {
 		display: inline-block;
@@ -104,7 +93,9 @@
 	}
 }
 
-.navbar-nav > li > a {
-	padding-right: 10px;
-	padding-left: 10px;
+@media screen and (max-width: 1199px) {
+	.navbar > .container {
+		margin-left: 0;
+		width: 100%;
+	}
 }
