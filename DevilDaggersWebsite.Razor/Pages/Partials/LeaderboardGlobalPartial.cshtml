@@ -20,7 +20,7 @@
 	string daggers = Model.Leaderboard == null ? "Failed to fetch" : FormatUtils.FormatDaggersUInt64(Model.Leaderboard.DaggersHitGlobal, Model.Leaderboard.DaggersFiredGlobal, isHistory);
 	string accuracy = Model.Leaderboard?.AccuracyGlobal.ToString(FormatUtils.AccuracyFormat) ?? "Failed to fetch";
 }
-<div class="leaderboard-body leaderboard-global-container">
+<div class="leaderboard-global-container">
 	<div class="row">
 		<div class="col-xs-6">Total players</div>
 		<div class="col-xs-6 devil text-right">@players</div>

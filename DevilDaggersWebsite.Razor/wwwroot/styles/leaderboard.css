@@ -94,7 +94,8 @@
 			float: left;
 		}
 
-.leaderboard-body > :nth-child(2n+1) {
+.leaderboard-body > :nth-child(2n+1),
+.leaderboard-global-container > :nth-child(2n+1) {
 	background-color: var(--col-nav-background);
 }
 
