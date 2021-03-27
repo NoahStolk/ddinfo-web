@@ -26,10 +26,7 @@
 	}
 
 		.navbar-nav > li > a {
-			padding-top: 15px;
-			padding-bottom: 15px;
-			padding-right: 10px;
-			padding-left: 10px;
+			padding: 15px 10px;
 		}
 
 			.navbar-nav > li > a:hover,
@@ -43,14 +40,14 @@
 		background-color: unset;
 	}
 
-		.navbar > .container {
-			margin-left: 17.5%;
-			width: 65%;
-		}
-
 		.navbar, .navbar-header, .navbar-nav, .navbar-nav > li, .navbar-collapse, ul.navbar-nav {
 			background-color: var(--col-nav-background);
 		}
+
+			.navbar > .container {
+				margin-left: 17.5%;
+				width: 65%;
+			}
 
 @media screen and (max-width: 767px) {
 	.navbar-nav {
