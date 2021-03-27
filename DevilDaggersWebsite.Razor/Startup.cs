@@ -1,4 +1,4 @@
-// #define TEST_EXCEPTION_HANDLER
+﻿// #define TEST_EXCEPTION_HANDLER
 using DevilDaggersWebsite.Authorization;
 using DevilDaggersWebsite.Entities;
 using DevilDaggersWebsite.LeaderboardStatistics;
@@ -83,7 +83,15 @@ namespace DevilDaggersWebsite.Razor
 					options.Conventions.AuthorizeFolder(kvp.Key, kvp.Value);
 			});
 
-			services.AddSwaggerDocument(config => config.PostProcess = document => document.Info.Title = "DevilDaggers.Info API");
+			services.AddSwaggerDocument(config => config.PostProcess = document =>
+			{
+				document.Info.Title = "DevilDaggers.Info API";
+				document.Info.Contact = new()
+				{
+					Name = "Noah Stolk",
+					Url = "//noahstolk.com/",
+				};
+			});
 		}
 
 		public void Configure(IApplicationBuilder app, IWebHostEnvironment env, IServiceProvider serviceProvider)
