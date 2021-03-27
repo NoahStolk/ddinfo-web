@@ -52,7 +52,7 @@
 </div>
 <div class="visible-xs">
 	<div class="flex-container flex-center">
-		<div class="mobile-left">
+		<div>
 			<div>Total players</div>
 			<div>Global time</div>
 			<div>Global kills</div>
@@ -60,22 +60,22 @@
 			<div>Global accuracy</div>
 			<div>Global deaths</div>
 		</div>
-		<div class="mobile-right">
-			<div class="devil">@players</div>
-			<div class="devil">@time</div>
-			<div class="devil">@kills</div>
-			<div class="devil">@gems</div>
+		<div>
+			<div class="devil text-right">@players</div>
+			<div class="devil text-right">@time</div>
+			<div class="devil text-right">@kills</div>
+			<div class="devil text-right">@gems</div>
 			@{
 				if (isHistory && (Model.Leaderboard?.DaggersFiredGlobal == 10000 || Model.Leaderboard?.DaggersFiredGlobal == 0))
 				{
-					<span class="devil">@accuracy</span>
+					<span class="devil text-right">@accuracy</span>
 				}
 				else
 				{
-					<span data-toggle="tooltip" title="@daggers" class="leaderboard-tooltip"><span class="devil">@accuracy</span></span>
+					<span class="text-right" data-toggle="tooltip" title="@daggers" class="leaderboard-tooltip"><span class="devil">@accuracy</span></span>
 				}
 			}
-			<div class="devil">@deaths</div>
+			<div class="devil text-right">@deaths</div>
 		</div>
 	</div>
 </div>

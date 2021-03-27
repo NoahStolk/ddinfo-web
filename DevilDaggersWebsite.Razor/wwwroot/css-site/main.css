@@ -193,14 +193,6 @@ option {
 	.back-to-top {
 		visibility: hidden;
 	}
-
-	.mobile-left {
-		text-align: left;
-	}
-
-	.mobile-right {
-		text-align: right;
-	}
 }
 
 .footable-details td,
