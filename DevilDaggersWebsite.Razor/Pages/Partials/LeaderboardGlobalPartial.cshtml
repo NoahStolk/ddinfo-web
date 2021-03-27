@@ -65,16 +65,9 @@
 			<div class="devil text-right">@time</div>
 			<div class="devil text-right">@kills</div>
 			<div class="devil text-right">@gems</div>
-			@{
-				if (isHistory && (Model.Leaderboard?.DaggersFiredGlobal == 10000 || Model.Leaderboard?.DaggersFiredGlobal == 0))
-				{
-					<span class="devil text-right">@accuracy</span>
-				}
-				else
-				{
-					<span class="text-right" data-toggle="tooltip" title="@daggers" class="leaderboard-tooltip"><span class="devil">@accuracy</span></span>
-				}
-			}
+			<div class="text-right">
+				<span data-toggle="tooltip" title="@daggers" class="leaderboard-tooltip"><span class="devil">@accuracy</span></span>
+			</div>
 			<div class="devil text-right">@deaths</div>
 		</div>
 	</div>
