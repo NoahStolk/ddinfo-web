@@ -1,6 +1,6 @@
 ﻿@using DevilDaggersWebsite.Razor.Utils
 @inject Microsoft.AspNetCore.Hosting.IWebHostEnvironment env
-<environment include="Development">
+<environment include="Development" exclude="Production">
 	<script defer src="~/lib/jquery/dist/jquery.js"></script>
 	<script defer src="~/lib/bootstrap/dist/js/bootstrap.js"></script>
 	@RazorUtils.GetJsList(env, "js-site/core")
@@ -8,11 +8,11 @@
 </environment>
 <environment exclude="Development">
 	<script defer src="https://ajax.aspnetcdn.com/ajax/jquery/jquery-2.2.0.min.js"
-			asp-fallback-src="~/lib/jquery/dist/jquery.min.js"
+			asp-fallback-src="~/lib/jquery/dist/jquery.js"
 			asp-fallback-test="window.jQuery">
 	</script>
 	<script defer src="https://ajax.aspnetcdn.com/ajax/bootstrap/3.3.7/bootstrap.min.js"
-			asp-fallback-src="~/lib/bootstrap/dist/js/bootstrap.min.js"
+			asp-fallback-src="~/lib/bootstrap/dist/js/bootstrap.js"
 			asp-fallback-test="window.jQuery && window.jQuery.fn && window.jQuery.fn.modal">
 	</script>
 	<script defer src="~/js/site.min.js" asp-append-version="true"></script>
