@@ -63,7 +63,7 @@
 }
 
 	.dropdown-menu .divider {
-		background-color: var(--col-nav-background-hover);
+		background-color: var(--col-dark-red);
 		margin: 0;
 		padding: 2px;
 	}
