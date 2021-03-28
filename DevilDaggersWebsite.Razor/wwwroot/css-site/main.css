@@ -120,7 +120,7 @@ a:hover {
 		border-color: var(--col-default-text);
 		cursor: pointer;
 		color: var(--col-red);
-		background-color: var(--col-nav-background);
+		background-color: var(--col-gray-111);
 	}
 
 .btn-disabled, .btn-disabled:hover {
@@ -215,11 +215,6 @@ option {
 
 .faq-answer {
 	margin-bottom: 1em;
-}
-
-pre {
-	background-color: var(--col-nav-background-hover);
-	color: var(--col-default-text)
 }
 
 .description {
