@@ -25,12 +25,20 @@
 		maxWaves = parsed;
 	}
 
-	<div class="flex-container flex-column">
+	int endLoopIndex = spawnset.GetEndLoopStartIndex();
+	IEnumerable<Spawn> preLoopSpawns = spawnset.Spawns.Values.SkipLast(spawnset.Spawns.Count - endLoopIndex);
+	List<Spawn> loopSpawns = spawnset.Spawns.Values.Skip(endLoopIndex).ToList();
+	bool hasEndLoop = loopSpawns.Any(s => s.Enemy != null);
+
+	<div class="flex-container flex-column spawns-container">
 		<p>Timer starts at @spawnset.TimerStart.ToString(FormatUtils.SpawnTimeFormat)</p>
 		@if (spawnset.HasSpawns())
 		{
 			<div class="flex-container flex-space-evenly spawns-flex-container">
-				<div class="text-right">End wave</div>
+				@if (hasEndLoop)
+				{
+					<div>Section</div>
+				}
 				<div class="text-right">Time</div>
 				<div>Enemy</div>
 				<div class="text-right">Gems (no farm)</div>
@@ -47,9 +55,7 @@
 			};
 			totalGems += spawnset.AdditionalGems;
 
-			int endLoopIndex = spawnset.GetEndLoopStartIndex();
-
-			foreach (Spawn spawn in spawnset.Spawns.Values.SkipLast(spawnset.Spawns.Count - endLoopIndex))
+			foreach (Spawn spawn in preLoopSpawns)
 			{
 				totalSeconds += spawn.Delay;
 				if (spawn.Enemy != null)
@@ -57,7 +63,10 @@
 					totalGems += spawn.Enemy.NoFarmGems;
 
 					<div class="flex-container flex-space-evenly spawns-flex-container">
-						<div></div>
+						@if (hasEndLoop)
+						{
+							<div></div>
+						}
 						<div class="text-right">@totalSeconds.ToString(FormatUtils.SpawnTimeFormat)</div>
 						<div>@(spawn.Enemy.GetLayoutAnchor(false, gameVersion))</div>
 						<div class="text-right">@spawn.Enemy.NoFarmGems</div>
@@ -66,9 +75,7 @@
 				}
 			}
 
-			List<Spawn> endLoop = spawnset.Spawns.Values.Skip(endLoopIndex).ToList();
-
-			if (endLoop.Any(s => s.Enemy != null))
+			if (loopSpawns.Any(s => s.Enemy != null))
 			{
 				int spawns = spawnset.Spawns.Count(s => s.Value.Enemy != null);
 
@@ -84,7 +91,7 @@
 					double enemyTimer = 0;
 					double delay = 0;
 					bool firstSpawnDone = false;
-					foreach (Spawn spawn in endLoop)
+					foreach (Spawn spawn in loopSpawns)
 					{
 						if (spawn.Enemy != null)
 						{
@@ -111,7 +118,10 @@
 							totalGems += gems;
 
 							<div class="flex-container flex-space-evenly spawns-flex-container">
-								<div class="text-right">@(!firstSpawnDone ? i + 1 : string.Empty)</div>
+								@if (hasEndLoop)
+								{
+									<div>@(!firstSpawnDone ? $"Wave {i + 1}" : string.Empty)</div>
+								}
 								<div class="text-right">@((Math.Floor(endGameSecond * 60) / 60).ToString(FormatUtils.SpawnTimeFormat))</div>
 								<div>@(finalEnemy.GetLayoutAnchor(false, gameVersion))</div>
 								<div class="text-right">@gems</div>
@@ -124,7 +134,7 @@
 				}
 			}
 
-			<div style="color: var(--col-red); font-size: 24px;">@(endLoop.Count != 1 || (endLoop.Count == 1 && endLoop[0].Enemy != null) ? "Goes on eternally..." : "End of spawnset")</div>
+			<div style="color: var(--col-red); font-size: 24px;">@(hasEndLoop ? "Goes on eternally..." : "End of spawnset")</div>
 		}
 	</div>
 }
