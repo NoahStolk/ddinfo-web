@@ -10,25 +10,27 @@
 	<h1>@ViewData["Title"]</h1>
 </header>
 
-<form method="get">
-	<select class="select form-control select-small" asp-for="GameVersion" asp-items="Model.GameVersionListItems" onchange="this.form.submit()"></select>
-</form>
-
 <main role="main">
+	<form method="get">
+		<select class="select form-control select-small" asp-for="GameVersion" asp-items="Model.GameVersionListItems" onchange="this.form.submit()"></select>
+	</form>
+
 	<p>
-		There are @Model.Daggers.Count different types of daggers in Devil Daggers. These daggers do not change anything in-game, they're more like extras that you unlock as you progress. You pick them up in the dagger lobby, and then the game starts. Each dagger makes a different sound.
+		There are @Model.Daggers.Count different types of daggers in Devil Daggers @Model.GetGameVersionName(Model.GameVersion). These daggers do not change anything in-game, they're more like extras that you unlock as you progress. You pick them up in the dagger lobby, and then the game starts. Each dagger makes a different sound.
 	</p>
 
-	<div class="flex-container flex-center dagger-container">
+	<div class="row">
 		@foreach (Dagger dagger in Model.Daggers)
 		{
-			<div class="dagger" style="-webkit-box-shadow: @boxShadow #@(dagger.ColorCode); -moz-box-shadow: @boxShadow #@(dagger.ColorCode); box-shadow: @boxShadow #@(dagger.ColorCode);">
-				<div>
-					<div class="@dagger.Name.ToLower()">@dagger.Name Dagger</div>
-					Unlocks at <span class="@dagger.Name.ToLower()">@(dagger.UnlockSecond == null ? "N/A" : dagger.UnlockSecond.ToString())</span> @(dagger.UnlockSecond != null ? " seconds" : "")
-				</div>
-				<div>
-					<div><img class="img-responsive" src='~/Images/Daggers/@(dagger.Name).png' /></div>
+			<div class="col-xs-12 col-sm-6 col-md-6 col-lg-4">
+				<div class="dagger" style="-webkit-box-shadow: @boxShadow #@(dagger.ColorCode); -moz-box-shadow: @boxShadow #@(dagger.ColorCode); box-shadow: @boxShadow #@(dagger.ColorCode);">
+					<div>
+						<div class="@dagger.Name.ToLower()">@dagger.Name Dagger</div>
+						Unlocks at <span class="@dagger.Name.ToLower()">@(dagger.UnlockSecond == null ? "N/A" : dagger.UnlockSecond.ToString())</span> @(dagger.UnlockSecond != null ? " seconds" : "")
+					</div>
+					<div>
+						<img class="img-responsive" src='~/Images/Daggers/@(dagger.Name).png' />
+					</div>
 				</div>
 			</div>
 		}

@@ -32,9 +32,17 @@ namespace DevilDaggersWebsite.Razor.PageModels
 					continue;
 
 				string text = e.ToString();
-				string value = e == GameVersion.V31 ? "V3.1" : text;
+				string value = GetGameVersionName(e);
 				GameVersionListItems.Add(new(value, text));
 			}
+		}
+
+		public string GetGameVersionName(GameVersion gameVersion)
+		{
+			if (gameVersion == GameVersion.V31)
+				return "V3.1";
+
+			return gameVersion.ToString();
 		}
 	}
 }
