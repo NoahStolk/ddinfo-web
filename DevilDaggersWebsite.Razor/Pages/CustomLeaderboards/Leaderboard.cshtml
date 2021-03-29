@@ -54,48 +54,41 @@
 				</div>
 			</div>
 		</div>
-
-		<div class="hidden-xs text-center">
-			<div class="flex-container flex-center flex-space-evenly" style="margin: 12px;">
+		<div class="section-container visible-xs">
+			<div class="spawns-header-container">
 				@for (int i = 0; i < 5; i++)
 				{
-					(string daggerName, string seconds) = daggerInfo[i];
+					(string daggerName, string displaySeconds) = daggerInfo[i];
 
-					<div>
-						<div><img src="~/Images/Daggers/@(daggerName)Small.png" /></div>
-						<div class="@daggerName.ToLower() text-center" style="width: 100%;">@seconds</div>
+					<div class="row">
+						<div class="col-xs-6">@daggerName</div>
+						<div class="col-xs-6 @daggerName.ToLower() text-right">@displaySeconds</div>
 					</div>
 				}
 			</div>
 		</div>
-		<div class="visible-xs">
-			<div class="flex-container flex-center">
-				<div style="padding-right: 8px;">
-					@for (int i = 0; i < 5; i++)
-					{
-						(string daggerName, _) = daggerInfo[i];
-
-						<div>@daggerName</div>
-					}
-				</div>
-				<div style="padding-left: 8px;">
-					@for (int i = 0; i < 5; i++)
-					{
-						(string daggerName, string displaySeconds) = daggerInfo[i];
-
-						<div class="@daggerName.ToLower() text-right">@displaySeconds</div>
-					}
-				</div>
-			</div>
-		</div>
-
-		<p class="visible-xs visible-sm visible-md">
-			On mobile devices; tap on an entry to expand it.
-		</p>
-		<p>
-			You can sort the leaderboard by clicking the headers.
-		</p>
 	</div>
+
+	<div class="hidden-xs text-center">
+		<div class="flex-container flex-center flex-space-evenly" style="margin: 12px;">
+			@for (int i = 0; i < 5; i++)
+			{
+				(string daggerName, string seconds) = daggerInfo[i];
+
+				<div>
+					<div><img src="~/Images/Daggers/@(daggerName)Small.png" /></div>
+					<div class="@daggerName.ToLower() text-center" style="width: 100%;">@seconds</div>
+				</div>
+			}
+		</div>
+	</div>
+
+	<p class="visible-xs visible-sm visible-md">
+		On mobile devices; tap on an entry to expand it.
+	</p>
+	<p>
+		You can sort the leaderboard by clicking the headers.
+	</p>
 	@await Html.PartialAsync($"Partials/LeaderboardUserCustomPartial")
 </main>
 
