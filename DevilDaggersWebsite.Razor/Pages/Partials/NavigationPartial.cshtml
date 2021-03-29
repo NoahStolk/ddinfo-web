@@ -1,88 +1,56 @@
-﻿@model NavigationSettings
-@using DevilDaggersWebsite.Razor.Pagination
-@using System.Text
+﻿@model IPaginationModel
+@using DevilDaggersWebsite.Razor.PageModels
+@using DevilDaggersWebsite.Razor.Utils
 @{
-	int maxAround = Model.MaxAround;
-	ScreenWidthVisibilities visibility = Model.Visibility;
-
-	string firstDisabled = Model.Model.PaginatedList != null && !Model.Model.PaginatedList.HasPreviousPage ? "disabled btn-info" : string.Empty;
-	string lastDisabled = Model.Model.PaginatedList != null && !Model.Model.PaginatedList.HasNextPage ? "disabled btn-info" : string.Empty;
-
-	int first = 1;
-	int last = (int)Math.Ceiling(Model.Model.TotalResults / (float)Model.Model.PageSize);
-	int curr = Model.Model.PageIndex;
-
-	int start = Math.Max(first + 1, curr - maxAround);
-	int end = Math.Min(last, curr + maxAround + 1);
-
-	bool multi = last > maxAround * 2 + 1;
-
-	int startExtras = multi ? maxAround - Math.Min(last - 1 - curr, maxAround) : 1;
-	int endExtras = multi ? maxAround - Math.Min(curr - first - 1, maxAround) : 1;
-
-	StringBuilder sb = new StringBuilder();
-	foreach (ScreenWidthVisibilities v in (ScreenWidthVisibilities[])Enum.GetValues(typeof(ScreenWidthVisibilities)))
+	int[] widths = new int[2] { 160, 160 };
+	using (Html.BeginForm(FormMethod.Get))
 	{
-		sb.Append(visibility.HasFlag(v) ? "visible" : "hidden");
-		sb.Append($"-{v.ToString().ToLower()} ");
-	}
-}
-<div class="row navigation-page-nav @sb.ToString()">
-	<div class="col-xs-12 col-sm-6 col-sm-offset-3 col-lg-4 col-lg-offset-4">
-		<div class="flex-container" style="justify-content: space-evenly;">
+		<div class="navigation-wrapper">
+			<div>
+				<div class="input-label text-left" style="@RazorUtils.GetCssWidth(widths[0])">Author search:</div>
+				<div style="@RazorUtils.GetCssWidth(widths[1])">@Html.TextBoxFor(m => m.SearchAuthor, new { @class = "input" })</div>
+			</div>
+			<div>
+				<div class="input-label text-left" style="@RazorUtils.GetCssWidth(widths[0])">Name search:</div>
+				<div style="@RazorUtils.GetCssWidth(widths[1])">@Html.TextBoxFor(m => m.SearchName, new { @class = "input" })</div>
+			</div>
+
+			<input class="btn navigation-search-button" type="submit" value="Search" />
+
+			@if (Model.TotalResults > 0)
+			{
+				<p>
+					Page @Model.PageIndex of @Model.TotalPages
+				</p>
+				<p>
+					Showing @((Model.PageIndex - 1) * Model.PageSize + 1) - @(Math.Min(Model.TotalResults, Model.PageIndex * Model.PageSize)) of @Model.TotalResults results
+				</p>
+			}
+			else
+			{
+				<p>
+					Page 0 of 0
+				</p>
+				<p>
+					Showing 0 - 0 of 0 results
+				</p>
+			}
+
 			@{
-				if (multi)
+				List<int> pages = new[] { 1, Model.PageIndex - 1, Model.PageIndex + 1, Model.TotalPages }.Select(i => Math.Clamp(i, 1, Model.TotalPages)).ToList();
+				string[] buttons = new[] { "<<", "<", ">", ">>" };
+				for (int i = 0; i < pages.Count; i++)
 				{
-					<div>
-						<a asp-page="./@(Model.Model.PageName)"
-						   asp-route-searchAuthor="@Model.Model.SearchAuthor"
-						   asp-route-searchName="@Model.Model.SearchName"
-						   asp-route-sortOrder="@Model.Model.SortOrder"
-						   asp-route-pageIndex="@first"
-						   class="btn btn-default btn-page @firstDisabled">
-							@first
-						</a>
-					</div>
-					<div class="page-separator">
-						@if (start > first + 1)
-						{
-							@:...
-						}
-					</div>
-				}
-				for (int i = start - startExtras; i < end + endExtras; i++)
-				{
-					<div>
-						<a asp-page="./@(Model.Model.PageName)"
-						   asp-route-searchAuthor="@Model.Model.SearchAuthor"
-						   asp-route-searchName="@Model.Model.SearchName"
-						   asp-route-sortOrder="@Model.Model.SortOrder"
-						   asp-route-pageIndex="@i"
-						   class="btn btn-default btn-page @(curr == i ? "disabled btn-info" : "")">
-							@i
-						</a>
-					</div>
-				}
-				if (multi)
-				{
-					<div class="page-separator">
-						@if (end < last - 1)
-						{
-							@:...
-						}
-					</div>
-					<div>
-						<a asp-page="./@(Model.Model.PageName)"
-						   asp-route-searchAuthor="@Model.Model.SearchAuthor"
-						   asp-route-searchName="@Model.Model.SearchName"
-						   asp-route-sortOrder="@Model.Model.SortOrder"
-						   asp-route-pageIndex="@last"
-						   class="btn btn-default btn-page @lastDisabled">
-							@last
-						</a>
-					</div>
+					<a asp-page="./@(Model.PageName)"
+					   asp-route-searchAuthor="@Model.SearchAuthor"
+					   asp-route-searchName="@Model.SearchName"
+					   asp-route-sortOrder="@Model.SortOrder"
+					   asp-route-pageIndex="@pages[i]"
+					   class="btn btn-default btn-page @(pages[i] == Model.PageIndex ? "disabled" : string.Empty)">
+						@buttons[i]
+					</a>
 				}
 			}
 		</div>
-	</div>
-</div>
+	}
+}

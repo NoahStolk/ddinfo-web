@@ -1,18 +1,11 @@
 ﻿.navigation-wrapper {
-	background-color: #111;
-	max-width: 1160px;
+	background-color: var(--col-gray-11);
 	padding: 12px;
-	margin: 12px 0;
 }
 
 .navigation-sort > th > a {
 	color: #ddd;
 	text-decoration: none;
-}
-
-.navigation-page-nav {
-	padding: 0;
-	margin-bottom: 10px;
 }
 
 .btn-page {
@@ -28,5 +21,14 @@
 }
 
 tbody > tr:nth-child(2n+1) {
-	background-color: var(--col-gray-111);
+	background-color: var(--col-gray-11);
+}
+
+.navigation-search-button {
+	margin: 8px 8px 8px 0;
+}
+
+.navigation-result-wrapper {
+	background-color: var(--col-gray-0B);
+	padding: 12px;
 }

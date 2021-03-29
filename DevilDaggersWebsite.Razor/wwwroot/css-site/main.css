@@ -119,7 +119,7 @@ a:hover {
 		border-color: var(--col-default-text);
 		cursor: pointer;
 		color: var(--col-red);
-		background-color: var(--col-gray-111);
+		background-color: var(--col-gray-11);
 	}
 
 .btn-disabled, .btn-disabled:hover {
@@ -215,7 +215,7 @@ option {
 	max-width: 700px;
 	padding: 24px;
 	margin: 16px auto;
-	background: #111;
+	background: var(--col-gray-11);
 }
 
 /* https://css-tricks.com/snippets/css/prevent-long-urls-from-breaking-out-of-container/ */

@@ -8,10 +8,10 @@
 }
 
 div > .donator:nth-child(2n) {
-	background-color: #080808;
+	background-color: var(--col-gray-08);
 }
 
 
 div > .donator:nth-child(2n+1) {
-	background-color: #111;
+	background-color: var(--col-gray-11);
 }

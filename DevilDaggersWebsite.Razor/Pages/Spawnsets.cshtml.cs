@@ -18,7 +18,7 @@ namespace DevilDaggersWebsite.Razor.Pages
 			_spawnsetHelper = spawnsetHelper;
 		}
 
-		public PaginatedList<SpawnsetFile>? PaginatedList { get; private set; }
+		public PaginatedList<SpawnsetFile> PaginatedList { get; private set; } = null!;
 
 		public string? SearchAuthor { get; set; }
 		public string? SearchName { get; set; }
@@ -33,13 +33,12 @@ namespace DevilDaggersWebsite.Razor.Pages
 
 		public string? SortOrder { get; set; }
 
-		public int PageSize { get; set; } = 18;
+		public int PageSize { get; set; } = 20;
 		public int PageIndex { get; private set; }
+		public int TotalPages { get; private set; }
 		public int TotalResults { get; private set; }
 
 		public string PageName => "Spawnsets";
-
-		IPaginatedList? IPaginationModel.PaginatedList => PaginatedList;
 
 		public void OnGet(string searchAuthor, string searchName, string sortOrder, int? pageIndex)
 		{
@@ -75,10 +74,8 @@ namespace DevilDaggersWebsite.Razor.Pages
 				_ => spawnsetFiles.OrderByDescending(s => s.LastUpdated).ThenBy(s => s.Name).ToList(),
 			};
 			TotalResults = spawnsetFiles.Count;
-			if (TotalResults == 0)
-				return;
-
-			PageIndex = Math.Clamp(PageIndex, 1, (int)Math.Ceiling(TotalResults / (double)PageSize));
+			TotalPages = Math.Max(1, (int)Math.Ceiling(TotalResults / (double)PageSize));
+			PageIndex = Math.Clamp(PageIndex, 1, TotalPages);
 			PaginatedList = new(spawnsetFiles, PageIndex, PageSize);
 		}
 	}
