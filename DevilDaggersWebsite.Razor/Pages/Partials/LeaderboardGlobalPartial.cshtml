@@ -20,7 +20,7 @@
 	string daggers = Model.Leaderboard == null ? "Failed to fetch" : FormatUtils.FormatDaggersUInt64(Model.Leaderboard.DaggersHitGlobal, Model.Leaderboard.DaggersFiredGlobal, isHistory);
 	string accuracy = Model.Leaderboard?.AccuracyGlobal.ToString(FormatUtils.AccuracyFormat) ?? "Failed to fetch";
 }
-<div class="leaderboard-global-container">
+<div class="leaderboard-global-container visible-xs">
 	<div class="row">
 		<div class="col-xs-6">Total players</div>
 		<div class="col-xs-6 devil text-right">@players</div>
@@ -46,5 +46,36 @@
 	<div class="row">
 		<div class="col-xs-6">Global deaths</div>
 		<div class="col-xs-6 devil text-right">@deaths</div>
+	</div>
+</div>
+
+<div class="hidden-xs text-center">
+	<div class="flex-container flex-center flex-space-evenly icon-list">
+		<div>
+			<span class="cursor-hover" data-toggle='tooltip' title='Total players'><img src="~/images/Icons/eye2.png" /></span>
+			<div class="devil text-center">@players</div>
+		</div>
+		<div>
+			<span class="cursor-hover" data-toggle='tooltip' title='Global time'><img src="~/images/Icons/stopwatch.png" /></span>
+			<div class="devil text-center">@time</div>
+		</div>
+		<div>
+			<span class="cursor-hover" data-toggle='tooltip' title='Global kills'><img src="~/images/Icons/dagger.png" /></span>
+			<div class="devil text-center">@kills</div>
+		</div>
+		<div>
+			<span class="cursor-hover" data-toggle='tooltip' title='Global gems'><img src="~/images/Icons/gem.png" /></span>
+			<div class="devil text-center">@gems</div>
+		</div>
+		<div>
+			<span class="cursor-hover" data-toggle='tooltip' title='Global accuracy'><img src="~/images/Icons/crosshair.png" /></span>
+			<div class="text-center">
+				<span data-toggle="tooltip" title="@daggers" class="leaderboard-tooltip"><span class="devil">@accuracy</span></span>
+			</div>
+		</div>
+		<div>
+			<span class="cursor-hover" data-toggle='tooltip' title='Global deaths'><img src="~/images/Icons/skull.png" /></span>
+			<div class="devil text-center">@deaths</div>
+		</div>
 	</div>
 </div>

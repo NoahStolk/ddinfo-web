@@ -122,6 +122,10 @@ a:hover {
 		background-color: var(--col-gray-11);
 	}
 
+.cursor-hover {
+	cursor: pointer;
+}
+
 .btn-disabled, .btn-disabled:hover {
 	border-color: var(--col-gray);
 	cursor: default;
@@ -240,4 +244,8 @@ option {
 	hyphens: auto;
 	color: #d77;
 	background-color: #201010;
+}
+
+.icon-list {
+	margin: 12px;
 }
