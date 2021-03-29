@@ -4,7 +4,7 @@
 @model DevilDaggersWebsite.Razor.Pages.CustomLeaderboards.LeaderboardModel
 @{
 	string spawnsetName = Model.SpawnsetFile?.Name ?? throw new("Spawnset was null in CustomLeaderboards/Leaderboard page.");
-	ViewData["Title"] = $"Leaderboard for {spawnsetName} by {Model.SpawnsetFile.Player.PlayerName}";
+	ViewData["Title"] = $"Custom Leaderboard - {spawnsetName}";
 
 	List<(string DaggerName, string DisplaySeconds)> daggerInfo = new();
 	for (int i = 0; i < 5; i++)
@@ -19,20 +19,40 @@
 
 <main role="main">
 	<div>
-		@*TODO: Same as spawnset*@
-		<p class="text-center">
-			<a asp-page="/Spawnset" asp-route-spawnset="@Model.SpawnsetFile.Name">Spawnset page for @spawnsetName</a>
-		</p>
-
-		<div class="description">
-			@if (!string.IsNullOrEmpty(Model.SpawnsetFile.HtmlDescription))
-			{
-				@RazorUtils.GetLayout(Model.SpawnsetFile.HtmlDescription, GameVersion.V31)
-			}
-			else
-			{
-				@:(No description.)
-			}
+		<div class="section-container">
+			<div class="spawns-header-container">
+				<div class="row">
+					<div class="col-xs-6">Author</div>
+					<div class="col-xs-6"><a asp-page="/Spawnsets" asp-route-SearchAuthor="@Model.SpawnsetFile.Player.PlayerName">@Model.SpawnsetFile.Player.PlayerName</a></div>
+				</div>
+				<div class="row">
+					<div class="col-xs-6">Last updated</div>
+					<div class="col-xs-6">@Model.SpawnsetFile.LastUpdated.ToString("dd MMM yyyy")</div>
+				</div>
+				<div class="row">
+					<div class="col-xs-6">Description</div>
+					@if (!string.IsNullOrEmpty(Model.SpawnsetFile.HtmlDescription))
+					{
+						<div class="col-xs-6 spawnset-description">
+							@RazorUtils.GetLayout(Model.SpawnsetFile.HtmlDescription, GameVersion.V31)
+						</div>
+					}
+					else
+					{
+						<div class="col-xs-6">
+							@RazorUtils.NAString
+						</div>
+					}
+				</div>
+			</div>
+		</div>
+		<div class="section-container">
+			<div class="spawns-header-container">
+				<div class="row">
+					<div class="col-xs-6"><a href="api/spawnsets/@Model.SpawnsetFile.Name/file">Download spawnset</a></div>
+					<div class="col-xs-6"><a asp-page="/Spawnset" asp-route-spawnset="@Model.SpawnsetFile.Name">Spawnset page</a></div>
+				</div>
+			</div>
 		</div>
 
 		<div class="hidden-xs text-center">
@@ -69,10 +89,10 @@
 			</div>
 		</div>
 
-		<p class="visible-xs visible-sm visible-md text-center">
+		<p class="visible-xs visible-sm visible-md">
 			On mobile devices; tap on an entry to expand it.
 		</p>
-		<p class="text-center">
+		<p>
 			You can sort the leaderboard by clicking the headers.
 		</p>
 	</div>
@@ -86,4 +106,5 @@
 @section Styles {
 	<link rel='stylesheet' href='~/styles/leaderboard.css' />
 	<link rel='stylesheet' href='~/styles/leaderboard-rows-custom-default.css' />
+	<link rel='stylesheet' href='~/styles/spawnset.css' />
 }

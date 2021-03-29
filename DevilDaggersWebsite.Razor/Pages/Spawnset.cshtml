@@ -52,11 +52,11 @@
 	<div class="section-container">
 		<div class="spawns-header-container">
 			<div class="row">
-				<div class="col-xs-6"><a href="api/spawnsets/@Model.SpawnsetFile.Name/file">Download</a></div>
+				<div class="col-xs-6"><a href="api/spawnsets/@Model.SpawnsetFile.Name/file">Download spawnset</a></div>
 				@if (hasCustomLeaderboard)
 				{
 					<div class="col-xs-6">
-						<a asp-page="/CustomLeaderboards/Leaderboard" asp-route-spawnsetName="@Model.SpawnsetFile.Name">Custom leaderboard</a>
+						<a asp-page="/CustomLeaderboards/Leaderboard" asp-route-spawnsetName="@Model.SpawnsetFile.Name">Custom leaderboard page</a>
 					</div>
 				}
 			</div>
