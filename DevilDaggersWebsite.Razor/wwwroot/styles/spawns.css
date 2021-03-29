@@ -1,9 +1,7 @@
 ﻿.end-wave-separator {
-	height: 0;
-	min-width: 680px;
 	padding-right: 40px;
-	margin-left: auto;
-	margin-right: auto;
+	background-color: red;
+	height: 2px;
 }
 
 @media (min-width: 1200px) and (max-width: 1460px) {
@@ -20,4 +18,8 @@
 		width: 100%;
 		padding-right: 0;
 	}
+}
+
+.spawns-flex-container > div {
+	padding: 0 4px;
 }
