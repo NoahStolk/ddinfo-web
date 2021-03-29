@@ -27,7 +27,7 @@ namespace DevilDaggersWebsite.Razor.Models
 			if (player != null)
 			{
 				List<string> titles = player.PlayerTitles.ConvertAll(pt => pt.Title.Name) ?? new();
-				if (donations.Any(d => d.PlayerId == player.Id) && !(player?.IsAnonymous ?? true))
+				if (donations.Any(d => d.PlayerId == player.Id && !d.IsRefunded && d.ConvertedEuroCentsReceived > 0) && !(player?.IsAnonymous ?? true))
 					titles.Add("Donator");
 				Titles = titles.ToArray();
 			}
