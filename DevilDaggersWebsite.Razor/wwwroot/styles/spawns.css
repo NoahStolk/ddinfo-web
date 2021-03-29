@@ -23,3 +23,7 @@
 .spawns-flex-container > div {
 	padding: 0 4px;
 }
+
+.spawns-container {
+	max-width: 640px;
+}
