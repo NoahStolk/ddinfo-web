@@ -24,10 +24,6 @@ tbody > tr:nth-child(2n+1) {
 	background-color: var(--col-gray-11);
 }
 
-.navigation-search-button {
-	margin: 8px 8px 8px 0;
-}
-
 .navigation-result-wrapper {
 	background-color: var(--col-gray-0B);
 	padding: 12px;
