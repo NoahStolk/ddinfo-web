@@ -1,0 +1,73 @@
+﻿/*General*/
+.spawns-header-container {
+	background-color: var(--col-gray-11);
+	padding: 8px;
+	margin-bottom: 8px;
+}
+
+.section-container {
+	max-width: 640px;
+}
+
+/*Info*/
+.spawnset-description {
+	background-color: var(--col-gray-22);
+	padding: 8px 15px;
+	margin: 4px 0;
+}
+
+/*Spawns*/
+.end-wave-separator {
+	padding-right: 40px;
+	background-color: red;
+	height: 2px;
+}
+
+@media (min-width: 1200px) and (max-width: 1460px) {
+	.end-wave-separator {
+		min-width: unset;
+		width: 100%;
+		padding-right: 0;
+	}
+}
+
+@media (max-width: 767px) {
+	.end-wave-separator {
+		min-width: unset;
+		width: 100%;
+		padding-right: 0;
+	}
+}
+
+.spawns-flex-container > div {
+	padding: 0 4px;
+}
+
+/*Arena*/
+.tile-table {
+	border-collapse: collapse;
+	border: 2px solid rgb(64, 32, 0);
+	width: auto;
+}
+
+.arena-container {
+	max-width: calc(8px * 51);
+}
+
+.arena-tile {
+	padding: 0;
+	border: solid 1px black;
+	width: 8px;
+	height: 8px;
+}
+
+@media (max-width: 767px) {
+	.arena-container {
+		max-width: calc(6px * 51);
+	}
+
+	.arena-tile {
+		width: 6px;
+		height: 6px;
+	}
+}

@@ -7,83 +7,102 @@
 	if (Model.SpawnsetFile == null || Model.Spawnset == null)
 		return;
 
-	ViewData["Title"] = "Spawnset";
-	ViewBag.Title = $"{Model.SpawnsetFile.Name} by {Model.SpawnsetFile.Player.PlayerName}";
+	ViewData["Title"] = $"Spawnset - {Model.SpawnsetFile.Name}";
 
 	Upgrade? hand = GameInfo.GetUpgrades(GameVersion.V31).FirstOrDefault(u => u.Name == $"Level {Model.Spawnset.Hand}") ?? GameInfo.V31Level1;
+	bool hasCustomLeaderboard = dbContext.CustomLeaderboards.Any(cl => cl.SpawnsetFileId == Model.SpawnsetFile.Id);
 }
 
 <header>
-	<h1 class="dont-break-out">@Model.SpawnsetFile.Name by @Model.SpawnsetFile.Player.PlayerName</h1>
+	<h1 class="dont-break-out">@ViewData["Title"]</h1>
 </header>
 
 <main role="main">
-	@if (dbContext.CustomLeaderboards.Any(cl => cl.SpawnsetFileId == Model.SpawnsetFile.Id))
-	{
-		<p>
-			<a asp-page="/CustomLeaderboards/Leaderboard" asp-route-spawnsetName="@Model.SpawnsetFile.Name">Custom leaderboard for @Model.SpawnsetFile.Name</a>
-		</p>
-	}
-
-	<div class="description">
-		@if (!string.IsNullOrEmpty(Model.SpawnsetFile.HtmlDescription))
-		{
-			@RazorUtils.GetLayout(Model.SpawnsetFile.HtmlDescription, GameVersion.V31)
-		}
-		else
-		{
-			@:(No description.)
-		}
-	</div>
-
-	<p>
-		<a class="btn" href="api/spawnsets/@Model.SpawnsetFile.Name/file">Download</a>
-	</p>
-
-	<div class="row">
-		<div class="col-xs-12 col-sm-12 col-md-12 col-lg-6">
-			<h2>Arena</h2>
-
-			<div class="spawns-header-container">
-				<div class="flex-container flex-space-evenly spawns-flex-container">
-					<div>Start radius</div>
-					<div>End radius</div>
-					<div>Shrinking rate</div>
-					<div>Brightness</div>
-				</div>
-				<div class="flex-container flex-space-evenly spawns-flex-container">
-					<div>@Model.Spawnset.ShrinkStart.ToString("0.#")</div>
-					<div>@Model.Spawnset.ShrinkEnd.ToString("0.#")</div>
-					<div>@Model.Spawnset.ShrinkRate.ToString("0.####")</div>
-					<div>@Model.Spawnset.Brightness.ToString("0.#")</div>
-				</div>
+	<div class="section-container">
+		<div class="spawns-header-container">
+			<div class="row">
+				<div class="col-xs-6">Author</div>
+				<div class="col-xs-6"><a asp-page="/Spawnsets" asp-route-SearchAuthor="@Model.SpawnsetFile.Player.PlayerName">@Model.SpawnsetFile.Player.PlayerName</a></div>
 			</div>
-
-			<table class="tile-table">
-				@{
-					for (int i = 0; i < Model.Spawnset.ArenaTiles.GetLength(0); i++)
-					{
-						<tr>
-							@for (int j = 0; j < Model.Spawnset.ArenaTiles.GetLength(1); j++)
-							{
-								float height = (float)Math.Round(Model.Spawnset.ArenaTiles[j, i] * 32 + 64); // Swap coordinates because <tr> elements cannot be vertical.
-
-								string backgroundColorStyle = $"background-color: rgb({height}, {Math.Round(height / 2)}, 0)";
-								<td class="arena-tile" style="@backgroundColorStyle"></td>
-							}
-						</tr>
-					}
+			<div class="row">
+				<div class="col-xs-6">Last updated</div>
+				<div class="col-xs-6">@Model.SpawnsetFile.LastUpdated.ToString("dd MMM yyyy")</div>
+			</div>
+			<div class="row">
+				<div class="col-xs-6">Description</div>
+				@if (!string.IsNullOrEmpty(Model.SpawnsetFile.HtmlDescription))
+				{
+					<div class="col-xs-6 spawnset-description">
+						@RazorUtils.GetLayout(Model.SpawnsetFile.HtmlDescription, GameVersion.V31)
+					</div>
 				}
-			</table>
-		</div>
-		<div class="col-xs-12 col-sm-12 col-md-12 col-lg-6">
-			<h2>Spawns</h2>
-			@await Html.PartialAsync("Partials/SpawnsPartial", Model.SpawnsetFile.Name)
+				else
+				{
+					<div class="col-xs-6">
+						@RazorUtils.NAString
+					</div>
+				}
+			</div>
+			<div class="row">
+				<div class="col-xs-6">Practice</div>
+				<div class="col-xs-6">@(Model.SpawnsetFile.IsPractice ? "Yes" : "No")</div>
+			</div>
 		</div>
 	</div>
+	<div class="section-container">
+		<div class="spawns-header-container">
+			<div class="row">
+				<div class="col-xs-6"><a href="api/spawnsets/@Model.SpawnsetFile.Name/file">Download</a></div>
+				@if (hasCustomLeaderboard)
+				{
+					<div class="col-xs-6">
+						<a asp-page="/CustomLeaderboards/Leaderboard" asp-route-spawnsetName="@Model.SpawnsetFile.Name">Custom leaderboard</a>
+					</div>
+				}
+			</div>
+		</div>
+	</div>
+
+	<h2>Arena</h2>
+
+	<div class="arena-container">
+		<div class="spawns-header-container">
+			<div class="flex-container flex-space-evenly spawns-flex-container">
+				<div>Start radius</div>
+				<div>End radius</div>
+				<div>Shrinking rate</div>
+				<div>Brightness</div>
+			</div>
+			<div class="flex-container flex-space-evenly spawns-flex-container">
+				<div>@Model.Spawnset.ShrinkStart.ToString("0.#")</div>
+				<div>@Model.Spawnset.ShrinkEnd.ToString("0.#")</div>
+				<div>@Model.Spawnset.ShrinkRate.ToString("0.####")</div>
+				<div>@Model.Spawnset.Brightness.ToString("0.#")</div>
+			</div>
+		</div>
+		<table class="tile-table">
+			@{
+				for (int i = 0; i < Model.Spawnset.ArenaTiles.GetLength(0); i++)
+				{
+					<tr>
+						@for (int j = 0; j < Model.Spawnset.ArenaTiles.GetLength(1); j++)
+						{
+							float height = (float)Math.Round(Model.Spawnset.ArenaTiles[j, i] * 32 + 64); // Swap coordinates because <tr> elements cannot be vertical.
+
+							string backgroundColorStyle = $"background-color: rgb({height}, {Math.Round(height / 2)}, 0)";
+							<td class="arena-tile" style="@backgroundColorStyle"></td>
+						}
+					</tr>
+				}
+			}
+		</table>
+	</div>
+
+	<h2>Spawns</h2>
+
+	@await Html.PartialAsync("Partials/SpawnsPartial", Model.SpawnsetFile.Name)
 </main>
 
 @section Styles {
-	<link rel='stylesheet' href='~/styles/spawnset-arena.css' />
-	<link rel='stylesheet' href='~/styles/spawnset-spawns.css' />
+	<link rel='stylesheet' href='~/styles/spawnset.css' />
 }

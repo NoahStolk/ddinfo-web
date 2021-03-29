@@ -211,13 +211,6 @@ option {
 	margin-bottom: 1em;
 }
 
-.description {
-	max-width: 700px;
-	padding: 12px;
-	margin-bottom: 16px;
-	background: var(--col-gray-11);
-}
-
 /* https://css-tricks.com/snippets/css/prevent-long-urls-from-breaking-out-of-container/ */
 .dont-break-out {
 	overflow-wrap: break-word;
