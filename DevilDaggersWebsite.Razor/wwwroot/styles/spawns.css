@@ -27,3 +27,8 @@
 .spawns-container {
 	max-width: 640px;
 }
+
+.spawns-header-container {
+	background-color: var(--col-gray-11);
+	padding: 8px;
+}

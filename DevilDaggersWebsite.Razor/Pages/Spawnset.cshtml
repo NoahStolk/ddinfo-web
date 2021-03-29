@@ -9,7 +9,6 @@
 
 	ViewData["Title"] = "Spawnset";
 	ViewBag.Title = $"{Model.SpawnsetFile.Name} by {Model.SpawnsetFile.Player.PlayerName}";
-	int[] widths = new int[] { 160, 160, 160 };
 
 	Upgrade? hand = GameInfo.GetUpgrades(GameVersion.V31).FirstOrDefault(u => u.Name == $"Level {Model.Spawnset.Hand}") ?? GameInfo.V31Level1;
 }
@@ -48,29 +47,19 @@
 		</div>
 		<div class="col-xs-12 col-sm-12 col-md-12 col-lg-6">
 			<h2>Arena</h2>
-			<div>
-				<div class="flex-container">
-					<div style="@RazorUtils.GetCssWidth(widths[0])">Start radius</div>
-					<div style="@RazorUtils.GetCssWidth(widths[1])">End radius</div>
-					<div style="@RazorUtils.GetCssWidth(widths[2])">Shrinking rate</div>
-				</div>
-				<div class="flex-container">
-					<div style="@RazorUtils.GetCssWidth(widths[0])">@Model.Spawnset.ShrinkStart.ToString("0.#")</div>
-					<div style="@RazorUtils.GetCssWidth(widths[1])">@Model.Spawnset.ShrinkEnd.ToString("0.#")</div>
-					<div style="@RazorUtils.GetCssWidth(widths[2])">@Model.Spawnset.ShrinkRate.ToString("0.####")</div>
-				</div>
-			</div>
 
-			<div>
-				<div class="flex-container">
-					<div style="@RazorUtils.GetCssWidth(widths[0])">Brightness</div>
-					<div style="@RazorUtils.GetCssWidth(widths[1])">Hand</div>
-					<div style="@RazorUtils.GetCssWidth(widths[2])">Additional gems</div>
+			<div class="spawns-header-container">
+				<div class="flex-container flex-space-evenly spawns-flex-container">
+					<div>Start radius</div>
+					<div>End radius</div>
+					<div>Shrinking rate</div>
+					<div>Brightness</div>
 				</div>
-				<div class="flex-container">
-					<div style="@RazorUtils.GetCssWidth(widths[0])">@Model.Spawnset.Brightness.ToString("0.#")</div>
-					<div style="@RazorUtils.GetCssWidth(widths[1])">@hand.GetLayoutAnchor()</div>
-					<div style="@RazorUtils.GetCssWidth(widths[2])">@Model.Spawnset.AdditionalGems</div>
+				<div class="flex-container flex-space-evenly spawns-flex-container">
+					<div>@Model.Spawnset.ShrinkStart.ToString("0.#")</div>
+					<div>@Model.Spawnset.ShrinkEnd.ToString("0.#")</div>
+					<div>@Model.Spawnset.ShrinkRate.ToString("0.####")</div>
+					<div>@Model.Spawnset.Brightness.ToString("0.#")</div>
 				</div>
 			</div>
 
