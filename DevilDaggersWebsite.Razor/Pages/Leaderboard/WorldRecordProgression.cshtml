@@ -51,7 +51,7 @@
 
 			string timeHeld = $"{days} day{days.S()} ({(wrh.TotalTimeHeld / total).ToString("00.00%")})";
 
-			bool isCurrentWr = currentWr == worldRecordHolderEntries?.FirstOrDefault(wrh => wrh.Id == wrh.Id)?.Time;
+			bool isCurrentWr = currentWr == worldRecordHolderEntries?.FirstOrDefault(w => w.Id == wrh.Id)?.Time;
 
 			string lastHeld = isCurrentWr ? "Current holder" : Model.GetHistoryDateString(wrh.LastHeld);
 			string firstHeld = Model.GetHistoryDateString(wrh.FirstHeld);
