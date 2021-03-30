@@ -18,15 +18,15 @@
 		<select class="select form-control select-small" asp-for="GameVersion" asp-items="Model.GameVersionListItems" onchange="this.form.submit()"></select>
 	</form>
 
-	<h2 class="text-center">Table of contents</h2>
-	<ul class="text-center table-of-contents">
+	<h2>Table of contents</h2>
+	<ul class="table-of-contents">
 		@for (int i = 0; i < Model.TableOfContents.Count; i++)
 		{
 			<li><a href="#@Model.TableOfContents[i].ToIdString()">@Model.TableOfContents[i]</a></li>
 		}
 	</ul>
 
-	<h2 id="@Model.TableOfContents[index].ToIdString()" class="text-center hidden-xs">@Model.TableOfContents[index++]</h2>
+	<h2 id="@Model.TableOfContents[index].ToIdString()" class="hidden-xs">@Model.TableOfContents[index++]</h2>
 	<div class="enemies-summary flex-container flex-center hidden-xs">
 		<div class="flex-container">
 			<div>Enemy</div>
@@ -45,7 +45,7 @@
 				<div style='color: #@(enemy.Death?.ColorCode ?? "444")'>@(enemy.Death?.Name ?? "None")</div>
 				<div class="hidden-sm hidden-md">@string.Join(", ", GameInfo.GetAppearances(enemy.Name))</div>
 				<div>
-					@if (enemy.SpawnedBy.Count() == 0)
+					@if (enemy.SpawnedBy.Count == 0)
 					{
 						@:Game
 					}
@@ -61,7 +61,7 @@
 		}
 	</div>
 
-	<h2 id="@Model.TableOfContents[index].ToIdString()" class="text-center">@Model.TableOfContents[index++]</h2>
+	<h2 id="@Model.TableOfContents[index].ToIdString()">@Model.TableOfContents[index++]</h2>
 	<div class="flex-container flex-center enemy-container">
 		@foreach (Enemy enemy in Model.Enemies)
 		{
@@ -95,7 +95,7 @@
 					<div class="text-right">
 						@if (enemy.SpawnedBy.Count() == 0)
 						{
-							<span style='color: #DDDDDD;'>Game</span>
+							@:Game
 						}
 						else
 						{
@@ -121,8 +121,8 @@
 		}
 	</div>
 
-	<h2 id="@Model.TableOfContents[index].ToIdString()" class="text-center">@Model.TableOfContents[index++]</h2>
-	<p class="text-center">All of this information assumes 100% shot accuracy, and may not be relevant in some cases.</p>
+	<h2 id="@Model.TableOfContents[index].ToIdString()">@Model.TableOfContents[index++]</h2>
+	<p>All of this information assumes 100% shot accuracy, and may not be relevant in some cases.</p>
 
 	@{
 		// Add "gem" enemies to make regenerating the table easier
@@ -335,7 +335,7 @@
 		}
 	</table>
 
-	<h2 id="@Model.TableOfContents[index].ToIdString()" class="text-center">@Model.TableOfContents[index++]</h2>
+	<h2 id="@Model.TableOfContents[index].ToIdString()">@Model.TableOfContents[index++]</h2>
 	<ul>
 		@{
 			string transmuters = Model.GameVersion >= GameVersion.V3 ? "Leviathan or The Orb beckon, they" : "Leviathan beckons, it";
@@ -362,7 +362,7 @@
 	@{
 		if (Model.GameVersion >= GameVersion.V3)
 		{
-			<h2 id="@Model.TableOfContents[index].ToIdString()" class="text-center">@Model.TableOfContents[index++]</h2>
+			<h2 id="@Model.TableOfContents[index].ToIdString()">@Model.TableOfContents[index++]</h2>
 			<ul>
 				@RazorUtils.GetLayout(@"
 				<li>All homing daggers cause 10 damage to most enemies.</li>
