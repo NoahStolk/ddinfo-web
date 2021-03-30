@@ -122,8 +122,9 @@ a:hover {
 		background-color: var(--col-gray-11);
 	}
 
-.cursor-hover {
+.icon-large {
 	cursor: pointer;
+	margin-bottom: 8px;
 }
 
 .btn-disabled, .btn-disabled:hover {
