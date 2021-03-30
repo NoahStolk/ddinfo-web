@@ -7,7 +7,6 @@ using DevilDaggersWebsite.Razor.Utils;
 using Microsoft.AspNetCore.Html;
 using System;
 using System.Collections.Generic;
-using System.Linq;
 using System.Web;
 
 namespace DevilDaggersWebsite.Razor.Models
@@ -27,7 +26,7 @@ namespace DevilDaggersWebsite.Razor.Models
 			if (player != null)
 			{
 				List<string> titles = player.PlayerTitles.ConvertAll(pt => pt.Title.Name) ?? new();
-				if (donations.Any(d => d.PlayerId == player.Id && !d.IsRefunded && d.ConvertedEuroCentsReceived > 0) && !(player?.IsAnonymous ?? true))
+				if (player.IsPublicDonator(donations))
 					titles.Add("Donator");
 				Titles = titles.ToArray();
 			}

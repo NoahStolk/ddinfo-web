@@ -4,7 +4,6 @@ using DevilDaggersWebsite.Entities;
 using DevilDaggersWebsite.Razor.Utils;
 using Microsoft.AspNetCore.Html;
 using System.Collections.Generic;
-using System.Linq;
 using System.Web;
 
 namespace DevilDaggersWebsite.Razor.Models
@@ -22,7 +21,7 @@ namespace DevilDaggersWebsite.Razor.Models
 			Username = entry.Username;
 
 			List<string> titles = player.PlayerTitles.ConvertAll(pt => pt.Title.Name) ?? new();
-			if (donations.Any(d => d.PlayerId == player.Id && !d.IsRefunded && d.ConvertedEuroCentsReceived > 0) && !(player?.IsAnonymous ?? true))
+			if (player.IsPublicDonator(donations))
 				titles.Add("Donator");
 			Titles = titles.ToArray();
 
@@ -32,7 +31,7 @@ namespace DevilDaggersWebsite.Razor.Models
 			DaggerColor = dagger.Name.ToLower();
 			DeathStyle = $"color: #{death?.ColorCode ?? "444"};";
 
-			FlagCode = player!.CountryCode ?? string.Empty;
+			FlagCode = player.CountryCode ?? string.Empty;
 			CountryName = UserUtils.CountryNames.ContainsKey(FlagCode) ? UserUtils.CountryNames[FlagCode] : "Invalid country code";
 
 			HtmlData = new($@"

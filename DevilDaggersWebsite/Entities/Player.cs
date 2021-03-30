@@ -108,5 +108,8 @@ namespace DevilDaggersWebsite.Entities
 				UsesLegacyAudio = UsesLegacyAudio,
 			};
 		}
+
+		public bool IsPublicDonator(IEnumerable<Donation> donations)
+			=> !IsAnonymous && donations.Any(d => d.PlayerId == Id && !d.IsRefunded && d.ConvertedEuroCentsReceived > 0);
 	}
 }
