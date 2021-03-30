@@ -1,4 +1,5 @@
 ﻿@page
+@using DevilDaggersCore.Utils
 @model DevilDaggersWebsite.Razor.Pages.Leaderboard.PlayerModel
 @{
 	string? username = Model.Entry?.Username;
@@ -12,24 +13,77 @@
 <main role="main">
 	@if (Model.Entry == null)
 	{
-		<p>Failed to retrieve player with ID @Model.UserId.</p>
+		<p>Failed to retrieve player with ID @Model.PlayerId.</p>
 		return;
 	}
-	<p>
-		Showing user with ID @Model.UserId
-	</p>
 
-	@if (Model.IsValidTop100Graph)
+	<div>Currently rank @Model.Entry.Rank</div>
+
+	<h2>Personal Best</h2>
+	<div class="flex-container flex-space-evenly icon-list">
+		<div class="flex-container flex-space-evenly">
+			<div class="icon-large" data-toggle='tooltip' title='Time'><img src="~/images/Icons/stopwatchx4.png" /></div>
+			<div class="devil stat-text">@Model.Entry.Time.FormatTimeInteger(false)</div>
+		</div>
+		<div class="flex-container flex-space-evenly">
+			<div class="icon-large" data-toggle='tooltip' title='Kills'><img src="~/images/Icons/daggerx4.png" /></div>
+			<div class="devil stat-text">@Model.Entry.Kills.ToString(FormatUtils.LeaderboardIntFormat)</div>
+		</div>
+		<div class="flex-container flex-space-evenly">
+			<div class="icon-large" data-toggle='tooltip' title='Gems'><img src="~/images/Icons/gemx4.png" /></div>
+			<div class="devil stat-text">@Model.Entry.Gems.ToString(FormatUtils.LeaderboardIntFormat)</div>
+		</div>
+		<div class="flex-container flex-space-evenly">
+			<div class="icon-large" data-toggle='tooltip' title='Accuracy'><img src="~/images/Icons/crosshairx4.png" /></div>
+			<div>
+				<span data-toggle="tooltip" title="@FormatUtils.FormatDaggersInt32(Model.Entry.DaggersHit, Model.Entry.DaggersFired, false)" class="devil stat-text leaderboard-tooltip"><span class="devil">@Model.Entry.Accuracy.ToString(FormatUtils.AccuracyFormat)</span></span>
+			</div>
+		</div>
+		<div class="flex-container flex-space-evenly">
+			<div class="icon-large" data-toggle='tooltip' title='Death type'><img src="~/images/Icons/skullx4.png" /></div>
+			<div class="stat-text" style="color: #@Model.Death?.ColorCode">@(Model.Death?.Name)</div>
+		</div>
+	</div>
+
+	<h2>Statistics</h2>
+	<div class="flex-container flex-space-evenly icon-list">
+		<div class="flex-container flex-space-evenly">
+			<div class="icon-large" data-toggle='tooltip' title='Total time'><img src="~/images/Icons/stopwatchx4.png" /></div>
+			<div class="devil stat-text">@Model.Entry.TimeTotal.FormatTimeInteger(true)</div>
+		</div>
+		<div class="flex-container flex-space-evenly">
+			<div class="icon-large" data-toggle='tooltip' title='Total kills'><img src="~/images/Icons/daggerx4.png" /></div>
+			<div class="devil stat-text">@Model.Entry.KillsTotal.ToString(FormatUtils.LeaderboardIntFormat)</div>
+		</div>
+		<div class="flex-container flex-space-evenly">
+			<div class="icon-large" data-toggle='tooltip' title='Total gems'><img src="~/images/Icons/gemx4.png" /></div>
+			<div class="devil stat-text">@Model.Entry.GemsTotal.ToString(FormatUtils.LeaderboardIntFormat)</div>
+		</div>
+		<div class="flex-container flex-space-evenly">
+			<div class="icon-large" data-toggle='tooltip' title='Total accuracy'><img src="~/images/Icons/crosshairx4.png" /></div>
+			<div>
+				<span data-toggle="tooltip" title="@FormatUtils.FormatDaggersUInt64(Model.Entry.DaggersHitTotal, Model.Entry.DaggersFiredTotal, false)" class="devil stat-text leaderboard-tooltip"><span class="devil">@Model.Entry.AccuracyTotal.ToString(FormatUtils.AccuracyFormat)</span></span>
+			</div>
+		</div>
+		<div class="flex-container flex-space-evenly">
+			<div class="icon-large" data-toggle='tooltip' title='Total deaths'><img src="~/images/Icons/skullx4.png" /></div>
+			<div class="devil stat-text">@Model.Entry.DeathsTotal.ToString(FormatUtils.LeaderboardIntFormat)</div>
+		</div>
+	</div>
+
+	<h2>History</h2>
+	<div class="row">
+		@*Past usernames, highest rank ever*@
+	</div>
+
+	@if (Model.HasValidTop100Graph)
 	{
 		<h2>Top 100 progression</h2>
-		<p>
-			This graph shows the top 100 progression for @username<span style="color: #888">@Model.UsernameAliases</span>.
-		</p>
 		<p>
 			Note that the graph data is based on the <a asp-page="/Leaderboard/History">Leaderboard History</a>, and might therefore be incomplete.
 		</p>
 		<p>
-			Also note that the graph data is only based on a user's highscores; the rank and username do not update until the next top 100 highscore.
+			Also note that the graph data is only based on a player's highscores; the rank and username do not update until the next top 100 highscore.
 		</p>
 
 		<div class="chart" id="user-progression-chart">
@@ -45,7 +99,7 @@
 			</table>
 		</div>
 
-		<h2>User activity</h2>
+		<h2>Activity</h2>
 		<div class="chart" id="user-activity-chart">
 			<table class="highlighter" id="user-activity-highlighter">
 				<tr><td>Period</td><td id="h-activity-date"></td></tr>
@@ -71,6 +125,9 @@
 }
 
 @section Styles {
-	<link rel='stylesheet' href='~/lib/jqPlot/jquery.jqplot.min.css' />
+	<link rel='stylesheet' href='~/styles/leaderboard.css' />
+	<link rel='stylesheet' href='~/styles/leaderboard-player.css' />
+
+	<link rel='stylesheet' href='~/plugins/jqPlot/jquery.jqplot.min.css' />
 	<link rel='stylesheet' href='~/styles/chart.css' />
 }

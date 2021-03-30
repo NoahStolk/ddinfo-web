@@ -1,4 +1,5 @@
-﻿using DevilDaggersWebsite.Clients;
+﻿using DevilDaggersCore.Game;
+using DevilDaggersWebsite.Clients;
 using DevilDaggersWebsite.Dto;
 using DevilDaggersWebsite.Entities;
 using Microsoft.AspNetCore.Hosting;
@@ -16,7 +17,7 @@ namespace DevilDaggersWebsite.Razor.Pages.Leaderboard
 		private readonly IWebHostEnvironment _env;
 		private readonly ApplicationDbContext _dbContext;
 
-		private int _userId;
+		private int _playerId;
 
 		public PlayerModel(IWebHostEnvironment env, ApplicationDbContext dbContext)
 		{
@@ -27,29 +28,31 @@ namespace DevilDaggersWebsite.Razor.Pages.Leaderboard
 		[BindProperty]
 		public Entry? Entry { get; set; }
 
-		public int UserId
+		public int PlayerId
 		{
-			get => _userId;
+			get => _playerId;
 			set
 			{
 				if (value <= 0)
 					return;
-				_userId = value;
+				_playerId = value;
 			}
 		}
 
-		public bool IsValidTop100Graph { get; private set; }
+		public Death? Death { get; private set; }
+		public bool HasValidTop100Graph { get; private set; }
 		public string? UsernameAliases { get; private set; }
 
-		public async Task OnGetAsync(int userId)
+		public async Task OnGetAsync(int id)
 		{
-			UserId = Math.Max(1, userId);
+			PlayerId = Math.Max(1, id);
 
-			Entry = await LeaderboardClient.Instance.GetUserById(UserId);
+			Entry = await LeaderboardClient.Instance.GetUserById(PlayerId);
 
 			if (Entry != null)
 			{
-				IsValidTop100Graph = UserId > 0 && Entry.ExistsInHistory(_env);
+				Death = GameInfo.GetDeathByType(GameVersion.V31, Entry.DeathType);
+				HasValidTop100Graph = Entry.ExistsInHistory(_env);
 				IEnumerable<string> aliases = Entry.GetAllUsernameAliases(_env).Where(s => s != Entry.Username);
 				UsernameAliases = aliases.Any() ? $" (also known as: {string.Join(", ", aliases)})" : string.Empty;
 			}
