@@ -1,5 +1,9 @@
-﻿using System.ComponentModel.DataAnnotations;
+﻿using DevilDaggersWebsite.Dto;
+using System;
+using System.Collections.Generic;
+using System.ComponentModel.DataAnnotations;
 using System.ComponentModel.DataAnnotations.Schema;
+using System.Linq;
 
 namespace DevilDaggersWebsite.Entities
 {
@@ -59,5 +63,60 @@ namespace DevilDaggersWebsite.Entities
 		public byte[] ThornsKilledData { get; set; } = null!;
 		public byte[] GhostpedesKilledData { get; set; } = null!;
 		public byte[] SpiderEggsKilledData { get; set; } = null!;
+
+		public void Populate(List<GameState> gameStates)
+		{
+			// TODO: Add a smart way to compress this data:
+			// If all values are 0, use an empty byte array.
+			// If all values are under 256, write 0x00 header byte, then write all data as bytes.
+			// If all values are under 65536, write 0x01 header byte, then write all data as ushorts.
+			// Otherwise, write 0x02 header byte, then write all data as ints (dd doesn't use uints).
+			GemsCollectedData = gameStates.Select(gs => gs.GemsCollected).SelectMany(BitConverter.GetBytes).ToArray();
+			EnemiesKilledData = gameStates.Select(gs => gs.EnemiesKilled).SelectMany(BitConverter.GetBytes).ToArray();
+			DaggersFiredData = gameStates.Select(gs => gs.DaggersFired).SelectMany(BitConverter.GetBytes).ToArray();
+			DaggersHitData = gameStates.Select(gs => gs.DaggersHit).SelectMany(BitConverter.GetBytes).ToArray();
+			EnemiesAliveData = gameStates.Select(gs => gs.EnemiesAlive).SelectMany(BitConverter.GetBytes).ToArray();
+			HomingDaggersData = gameStates.Select(gs => gs.HomingDaggers).SelectMany(BitConverter.GetBytes).ToArray();
+			HomingDaggersEatenData = gameStates.Select(gs => gs.HomingDaggersEaten).SelectMany(BitConverter.GetBytes).ToArray();
+			GemsDespawnedData = gameStates.Select(gs => gs.GemsDespawned).SelectMany(BitConverter.GetBytes).ToArray();
+			GemsEatenData = gameStates.Select(gs => gs.GemsEaten).SelectMany(BitConverter.GetBytes).ToArray();
+			GemsTotalData = gameStates.Select(gs => gs.GemsTotal).SelectMany(BitConverter.GetBytes).ToArray();
+
+			Skull1sAliveData = gameStates.Select(gs => gs.Skull1sAlive).SelectMany(BitConverter.GetBytes).ToArray();
+			Skull2sAliveData = gameStates.Select(gs => gs.Skull2sAlive).SelectMany(BitConverter.GetBytes).ToArray();
+			Skull3sAliveData = gameStates.Select(gs => gs.Skull3sAlive).SelectMany(BitConverter.GetBytes).ToArray();
+			SpiderlingsAliveData = gameStates.Select(gs => gs.SpiderlingsAlive).SelectMany(BitConverter.GetBytes).ToArray();
+			Skull4sAliveData = gameStates.Select(gs => gs.Skull4sAlive).SelectMany(BitConverter.GetBytes).ToArray();
+			Squid1sAliveData = gameStates.Select(gs => gs.Squid1sAlive).SelectMany(BitConverter.GetBytes).ToArray();
+			Squid2sAliveData = gameStates.Select(gs => gs.Squid2sAlive).SelectMany(BitConverter.GetBytes).ToArray();
+			Squid3sAliveData = gameStates.Select(gs => gs.Squid3sAlive).SelectMany(BitConverter.GetBytes).ToArray();
+			CentipedesAliveData = gameStates.Select(gs => gs.CentipedesAlive).SelectMany(BitConverter.GetBytes).ToArray();
+			GigapedesAliveData = gameStates.Select(gs => gs.GigapedesAlive).SelectMany(BitConverter.GetBytes).ToArray();
+			Spider1sAliveData = gameStates.Select(gs => gs.Spider1sAlive).SelectMany(BitConverter.GetBytes).ToArray();
+			Spider2sAliveData = gameStates.Select(gs => gs.Spider2sAlive).SelectMany(BitConverter.GetBytes).ToArray();
+			LeviathansAliveData = gameStates.Select(gs => gs.LeviathansAlive).SelectMany(BitConverter.GetBytes).ToArray();
+			OrbsAliveData = gameStates.Select(gs => gs.OrbsAlive).SelectMany(BitConverter.GetBytes).ToArray();
+			ThornsAliveData = gameStates.Select(gs => gs.ThornsAlive).SelectMany(BitConverter.GetBytes).ToArray();
+			GhostpedesAliveData = gameStates.Select(gs => gs.GhostpedesAlive).SelectMany(BitConverter.GetBytes).ToArray();
+			SpiderEggsAliveData = gameStates.Select(gs => gs.SpiderEggsAlive).SelectMany(BitConverter.GetBytes).ToArray();
+
+			Skull1sKilledData = gameStates.Select(gs => gs.Skull1sKilled).SelectMany(BitConverter.GetBytes).ToArray();
+			Skull2sKilledData = gameStates.Select(gs => gs.Skull2sKilled).SelectMany(BitConverter.GetBytes).ToArray();
+			Skull3sKilledData = gameStates.Select(gs => gs.Skull3sKilled).SelectMany(BitConverter.GetBytes).ToArray();
+			SpiderlingsKilledData = gameStates.Select(gs => gs.SpiderlingsKilled).SelectMany(BitConverter.GetBytes).ToArray();
+			Skull4sKilledData = gameStates.Select(gs => gs.Skull4sKilled).SelectMany(BitConverter.GetBytes).ToArray();
+			Squid1sKilledData = gameStates.Select(gs => gs.Squid1sKilled).SelectMany(BitConverter.GetBytes).ToArray();
+			Squid2sKilledData = gameStates.Select(gs => gs.Squid2sKilled).SelectMany(BitConverter.GetBytes).ToArray();
+			Squid3sKilledData = gameStates.Select(gs => gs.Squid3sKilled).SelectMany(BitConverter.GetBytes).ToArray();
+			CentipedesKilledData = gameStates.Select(gs => gs.CentipedesKilled).SelectMany(BitConverter.GetBytes).ToArray();
+			GigapedesKilledData = gameStates.Select(gs => gs.GigapedesKilled).SelectMany(BitConverter.GetBytes).ToArray();
+			Spider1sKilledData = gameStates.Select(gs => gs.Spider1sKilled).SelectMany(BitConverter.GetBytes).ToArray();
+			Spider2sKilledData = gameStates.Select(gs => gs.Spider2sKilled).SelectMany(BitConverter.GetBytes).ToArray();
+			LeviathansKilledData = gameStates.Select(gs => gs.LeviathansKilled).SelectMany(BitConverter.GetBytes).ToArray();
+			OrbsKilledData = gameStates.Select(gs => gs.OrbsKilled).SelectMany(BitConverter.GetBytes).ToArray();
+			ThornsKilledData = gameStates.Select(gs => gs.ThornsKilled).SelectMany(BitConverter.GetBytes).ToArray();
+			GhostpedesKilledData = gameStates.Select(gs => gs.GhostpedesKilled).SelectMany(BitConverter.GetBytes).ToArray();
+			SpiderEggsKilledData = gameStates.Select(gs => gs.SpiderEggsKilled).SelectMany(BitConverter.GetBytes).ToArray();
+		}
 	}
 }
