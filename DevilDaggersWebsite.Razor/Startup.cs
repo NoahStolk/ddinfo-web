@@ -119,6 +119,7 @@ namespace DevilDaggersWebsite.Razor
 				.AddRedirect("^Home/Spawns$", "Wiki/Spawns")
 				.AddRedirect("^Wiki/SpawnsetGuide$", "Wiki/Guides/SurvivalEditor")
 				.AddRedirect("^Wiki/AssetGuide$", "Wiki/Guides/AssetEditor")
+				.AddRedirect("^Leaderboard/UserSettings", "Leaderboard/PlayerSettings");
 			app.UseRewriter(options);
 
 			if (env.IsDevelopment())

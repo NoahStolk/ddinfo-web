@@ -9,11 +9,11 @@ using System.Threading.Tasks;
 
 namespace DevilDaggersWebsite.Razor.Pages.Leaderboard
 {
-	public class UserSettingsModel : PageModel
+	public class PlayerSettingsModel : PageModel
 	{
 		private readonly ApplicationDbContext _dbContext;
 
-		public UserSettingsModel(ApplicationDbContext dbContext)
+		public PlayerSettingsModel(ApplicationDbContext dbContext)
 		{
 			_dbContext = dbContext;
 		}
