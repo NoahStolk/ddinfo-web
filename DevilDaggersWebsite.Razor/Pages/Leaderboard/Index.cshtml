@@ -1,6 +1,5 @@
 ﻿@page
 @model DevilDaggersWebsite.Razor.Pages.Leaderboard.IndexModel
-@using DevilDaggersWebsite.Razor.Leaderboards
 @using DevilDaggersWebsite.Razor.Utils
 @{
 	ViewData["Title"] = "Leaderboard";
@@ -13,6 +12,7 @@
 </header>
 
 <main role="main">
+	<a asp-page="/Leaderboard/Search">Search players by username</a>
 	@if (Model.Leaderboard == null)
 	{
 		<p>Failed to retrieve scores from the official Devil Daggers leaderboard servers. Please try again later.</p>
@@ -27,138 +27,38 @@
 					<div class="input-label text-left" style="@RazorUtils.GetCssWidth(widths[0])">Rank:</div>
 					<div style="@RazorUtils.GetCssWidth(widths[1])">@Html.TextBoxFor(m => m.Rank, new { @class = "input" })</div>
 				</div>
-				<div class="flex-container">
-					<div class="input-label text-left" style="@RazorUtils.GetCssWidth(widths[0])">Username:</div>
-					<div style="@RazorUtils.GetCssWidth(widths[1])">@Html.TextBoxFor(m => m.Username, new { @class = "input" })</div>
-				</div>
-				<div class="flex-container">
-					<div class="input-label text-left" style="@RazorUtils.GetCssWidth(widths[0])">User ID:</div>
-					<div style="@RazorUtils.GetCssWidth(widths[1])">@Html.TextBoxFor(m => m.UserId, new { @class = "input" })</div>
-				</div>
 			</div>
 			<div>
-				@{
-					if (Model.LeaderboardSearchType == LeaderboardSearchType.Rank)
-					{
-						<a class="btn" asp-page="/Leaderboard/Index" asp-route-rank="@(Math.Max(1, Model.Rank - 100))" asp-route-search="@Model.Username">&lt;</a>
-					}
-					else
-					{
-						<button class="btn btn-disabled">&lt;</button>
-					}
-				}
+				<a class="btn" asp-page="/Leaderboard/Index" asp-route-rank="@(Math.Max(1, Model.Rank - 100))">&lt;</a>
 				<input class="btn" type="submit" value="Show" />
-				@{
-					if (Model.LeaderboardSearchType == LeaderboardSearchType.Rank)
-					{
-						<a class="btn" asp-page="/Leaderboard/Index" asp-route-rank="@(Math.Min(Model.Leaderboard.Players - 99, Model.Rank + 100))" asp-route-search="@Model.Username">&gt;</a>
-					}
-					else
-					{
-						<button class="btn btn-disabled">&gt;</button>
-					}
-				}
+				<a class="btn" asp-page="/Leaderboard/Index" asp-route-rank="@(Math.Min(Model.Leaderboard.Players - 99, Model.Rank + 100))">&gt;</a>
 			</div>
 		</fieldset>
 	}
 	<p>
-		@switch (Model.LeaderboardSearchType)
-		{
-			case LeaderboardSearchType.Username:
-				@:Showing username search results for "@Model.Username"
-				break;
-			case LeaderboardSearchType.UserId:
-				@:Showing user with ID @Model.UserId
-				break;
-			case LeaderboardSearchType.Rank:
-			default:
-				@:Showing rank @Model.Rank - @(Model.Rank + 99)
-				break;
-		}
+		Showing rank @Model.Rank - @(Model.Rank + 99)
 	</p>
 	<p class="visible-xs visible-sm visible-md">
 		On mobile devices; tap on an entry to expand it.
 	</p>
-	@if (Model.LeaderboardSearchType == LeaderboardSearchType.Rank)
-	{
-		<p>
-			If you'd like to add your nationality (flag) to this leaderboard, let one of the <img src="~/images/Icons/eye3.png" /> <a href="@RazorUtils.DiscordUrl">Discord</a> mods know.
-		</p>
-	}
-	@if (Model.LeaderboardSearchType != LeaderboardSearchType.UserId)
-	{
-		<p>
-			You can sort the leaderboard by clicking the headers.
-		</p>
-	}
-	@if (Model.HasBans)
-	{
-		<p>
-			<span class="ban leaderboard-username">Crossed out entries</span> are runs that are cheated, boosted, submitted on an alternative account, or otherwise considered invalid.
-		</p>
-	}
+	<p>
+		If you'd like to add your nationality (flag) to this leaderboard, let one of the <img src="~/images/Icons/eye3.png" /> <a href="@RazorUtils.DiscordUrl">Discord</a> mods know.
+	</p>
+	<p>
+		You can sort the leaderboard by clicking the headers.
+	</p>
+	<p>
+		<span class="ban leaderboard-username">Crossed out entries</span> are runs that are cheated, boosted, submitted on an alternative account, or otherwise considered invalid.
+	</p>
 	@await Html.PartialAsync("Partials/LeaderboardGlobalPartial")
 	@await Html.PartialAsync("Partials/LeaderboardUserPartial")
-	@if (Model.LeaderboardSearchType == LeaderboardSearchType.UserId)
-	{
-		if (Model.IsValidTop100Graph)
-		{
-			<h2>Top 100 progression</h2>
-			<p>
-				This graph shows the top 100 progression for @Model.Leaderboard.Entries[0].Username<span style="color: #888">@Model.UsernameAliases</span>.
-			</p>
-			<p>
-				Note that the graph data is based on the <a asp-page="/Leaderboard/History">Leaderboard History</a>, and might therefore be incomplete.
-			</p>
-			<p>
-				Also note that the graph data is only based on a user's highscores; the rank and username do not update until the next top 100 highscore.
-			</p>
-
-			<div class="chart" id="user-progression-chart">
-				<table class="highlighter" id="user-progression-highlighter">
-					<tr><td>Date</td><td id="h-date"></td></tr>
-					<tr><td>Rank</td><td id="h-rank"></td></tr>
-					<tr><td>Time</td><td id="h-time"></td></tr>
-					<tr><td>Username</td><td id="h-username"></td></tr>
-					<tr><td>Gems</td><td id="h-gems"></td></tr>
-					<tr><td>Kills</td><td id="h-kills"></td></tr>
-					<tr><td>Accuracy</td><td id="h-accuracy"></td></tr>
-					<tr><td>Death type</td><td id="h-death-type"></td></tr>
-				</table>
-			</div>
-
-			<h2>User activity</h2>
-			<div class="chart" id="user-activity-chart">
-				<table class="highlighter" id="user-activity-highlighter">
-					<tr><td>Period</td><td id="h-activity-date"></td></tr>
-					<tr><td>Approximate deaths per day</td><td id="h-activity-deaths-per-day"></td></tr>
-					<tr><td>Total deaths</td><td id="h-activity-deaths"></td></tr>
-				</table>
-			</div>
-		}
-	}
 </main>
 
 @section Scripts {
 	<script defer src='~/scripts/leaderboard-user.js' asp-append-version='true'></script>
-
-	<script defer src='~/plugins/jqPlot/jquery.jqplot.min.js' asp-append-version='true'></script>
-	<script defer src='~/plugins/jqPlot/jqplot.dateAxisRenderer.js' asp-append-version='true'></script>
-	<script defer src='~/plugins/jqPlot/jqplot.canvasTextRenderer.js' asp-append-version='true'></script>
-	<script defer src='~/plugins/jqPlot/jqplot.canvasAxisLabelRenderer.js' asp-append-version='true'></script>
-	<script defer src='~/plugins/jqPlot/jqplot.canvasAxisTickRenderer.js' asp-append-version='true'></script>
-	<script defer src='~/plugins/jqPlot/jqplot.highlighter.js' asp-append-version='true'></script>
-	<script defer src='~/plugins/jqPlot/jqplot.canvasOverlay.js' asp-append-version='true'></script>
-	<script defer src='~/scripts/charts/chart.js' asp-append-version='true'></script>
-	<script defer src='~/scripts/charts/history/chart-line.js' asp-append-version='true'></script>
-	<script defer src='~/scripts/charts/history/user-progression.js' asp-append-version='true'></script>
-	<script defer src='~/scripts/charts/history/user-activity.js' asp-append-version='true'></script>
 }
 
 @section Styles {
 	<link rel='stylesheet' href='~/styles/leaderboard.css' />
 	<link rel='stylesheet' href='~/styles/leaderboard-rows-general.css' />
-
-	<link rel='stylesheet' href='~/lib/jqPlot/jquery.jqplot.min.css' />
-	<link rel='stylesheet' href='~/styles/chart.css' />
 }

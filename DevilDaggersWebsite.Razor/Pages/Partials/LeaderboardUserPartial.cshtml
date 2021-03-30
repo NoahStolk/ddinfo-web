@@ -29,7 +29,7 @@
 	<div class="leaderboard-body">
 		@{
 			GameVersion gameVersion = GameInfo.GetGameVersionFromDate(Model.Leaderboard?.DateTime ?? DateTime.UtcNow) ?? GameVersion.V1;
-			List<Donation> donations = dbContext.Donations.ToList();
+			IEnumerable<Donation> donations = dbContext.Donations;
 			List<Player> players = dbContext.Players.Include(p => p.PlayerTitles).ThenInclude(pt => pt.Title).ToList();
 			foreach (Dto.Entry entry in Model.Leaderboard?.Entries ?? new())
 			{
@@ -97,16 +97,6 @@
 						<div class="visible-xs visible-sm visible-md">
 							<div class="text-left">Total deaths</div>
 							<div class="text-right">@em.DeathsTotal</div>
-						</div>
-						<div style="padding-top: 1em;">
-							@if (isIndex)
-							{
-								<a asp-route-UserId="@entry.Id">View more info</a>
-							}
-							else
-							{
-								<a asp-page="../Leaderboard/Index" asp-route-UserId="@entry.Id">View more info</a>
-							}
 						</div>
 					</div>
 				</div>

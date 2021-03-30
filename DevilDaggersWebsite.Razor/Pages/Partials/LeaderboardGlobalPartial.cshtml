@@ -1,15 +1,9 @@
 ﻿@model IDefaultLeaderboardPageModel
 @using DevilDaggersCore.Utils
-@using DevilDaggersWebsite.Razor.Leaderboards
 @using DevilDaggersWebsite.Razor.PageModels
 @using DevilDaggersWebsite.Razor.Pages.Leaderboard
 @{
 	Type modelType = Model.GetType();
-	if (Model is IndexModel indexModel && indexModel.LeaderboardSearchType != LeaderboardSearchType.Rank)
-	{
-		return;
-	}
-
 	bool isHistory = modelType == typeof(HistoryModel);
 
 	string players = Model.Leaderboard?.Players.ToString(FormatUtils.LeaderboardIntFormat) ?? "Failed to fetch";

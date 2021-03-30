@@ -1,0 +1,76 @@
+﻿@page
+@model DevilDaggersWebsite.Razor.Pages.Leaderboard.PlayerModel
+@{
+	string? username = Model.Entry?.Username;
+	ViewData["Title"] = string.IsNullOrEmpty(username) ? "Player" : username;
+}
+
+<header>
+	<h1>@ViewData["Title"]</h1>
+</header>
+
+<main role="main">
+	@if (Model.Entry == null)
+	{
+		<p>Failed to retrieve player with ID @Model.UserId.</p>
+		return;
+	}
+	<p>
+		Showing user with ID @Model.UserId
+	</p>
+
+	@if (Model.IsValidTop100Graph)
+	{
+		<h2>Top 100 progression</h2>
+		<p>
+			This graph shows the top 100 progression for @username<span style="color: #888">@Model.UsernameAliases</span>.
+		</p>
+		<p>
+			Note that the graph data is based on the <a asp-page="/Leaderboard/History">Leaderboard History</a>, and might therefore be incomplete.
+		</p>
+		<p>
+			Also note that the graph data is only based on a user's highscores; the rank and username do not update until the next top 100 highscore.
+		</p>
+
+		<div class="chart" id="user-progression-chart">
+			<table class="highlighter" id="user-progression-highlighter">
+				<tr><td>Date</td><td id="h-date"></td></tr>
+				<tr><td>Rank</td><td id="h-rank"></td></tr>
+				<tr><td>Time</td><td id="h-time"></td></tr>
+				<tr><td>Username</td><td id="h-username"></td></tr>
+				<tr><td>Gems</td><td id="h-gems"></td></tr>
+				<tr><td>Kills</td><td id="h-kills"></td></tr>
+				<tr><td>Accuracy</td><td id="h-accuracy"></td></tr>
+				<tr><td>Death type</td><td id="h-death-type"></td></tr>
+			</table>
+		</div>
+
+		<h2>User activity</h2>
+		<div class="chart" id="user-activity-chart">
+			<table class="highlighter" id="user-activity-highlighter">
+				<tr><td>Period</td><td id="h-activity-date"></td></tr>
+				<tr><td>Approximate deaths per day</td><td id="h-activity-deaths-per-day"></td></tr>
+				<tr><td>Total deaths</td><td id="h-activity-deaths"></td></tr>
+			</table>
+		</div>
+	}
+</main>
+
+@section Scripts {
+	<script defer src='~/plugins/jqPlot/jquery.jqplot.min.js' asp-append-version='true'></script>
+	<script defer src='~/plugins/jqPlot/jqplot.dateAxisRenderer.js' asp-append-version='true'></script>
+	<script defer src='~/plugins/jqPlot/jqplot.canvasTextRenderer.js' asp-append-version='true'></script>
+	<script defer src='~/plugins/jqPlot/jqplot.canvasAxisLabelRenderer.js' asp-append-version='true'></script>
+	<script defer src='~/plugins/jqPlot/jqplot.canvasAxisTickRenderer.js' asp-append-version='true'></script>
+	<script defer src='~/plugins/jqPlot/jqplot.highlighter.js' asp-append-version='true'></script>
+	<script defer src='~/plugins/jqPlot/jqplot.canvasOverlay.js' asp-append-version='true'></script>
+	<script defer src='~/scripts/charts/chart.js' asp-append-version='true'></script>
+	<script defer src='~/scripts/charts/history/chart-line.js' asp-append-version='true'></script>
+	<script defer src='~/scripts/charts/history/user-progression.js' asp-append-version='true'></script>
+	<script defer src='~/scripts/charts/history/user-activity.js' asp-append-version='true'></script>
+}
+
+@section Styles {
+	<link rel='stylesheet' href='~/lib/jqPlot/jquery.jqplot.min.css' />
+	<link rel='stylesheet' href='~/styles/chart.css' />
+}
