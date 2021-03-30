@@ -62,7 +62,7 @@
 	</div>
 
 	<h2 id="@Model.TableOfContents[index].ToIdString()">@Model.TableOfContents[index++]</h2>
-	<div class="flex-container flex-center enemy-container">
+	<div class="flex-container enemy-container">
 		@foreach (Enemy enemy in Model.Enemies)
 		{
 			<div class="enemy" id="@(enemy.Name.Replace(" ", string.Empty))" style="-webkit-box-shadow: @boxShadow #@(enemy.ColorCode); -moz-box-shadow: @boxShadow #@(enemy.ColorCode); box-shadow: @boxShadow #@(enemy.ColorCode);">

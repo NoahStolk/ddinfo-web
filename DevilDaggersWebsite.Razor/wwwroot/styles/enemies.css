@@ -73,9 +73,3 @@
 	.enemy-row > div {
 		flex-grow: 1;
 	}
-
-@media (min-width: 1600px) {
-	.enemies-summary {
-		max-width: 80%;
-	}
-}
