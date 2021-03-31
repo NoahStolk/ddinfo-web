@@ -35,7 +35,7 @@
 				labelRenderer: $.jqplot.CanvasAxisLabelRenderer,
 				tickRenderer: $.jqplot.CanvasAxisTickRenderer,
 				tickOptions: {
-					formatString: "%#6d  " // Spaces are a hack to add more margin.
+					formatString: "%#6d"
 				}
 			}
 		},
