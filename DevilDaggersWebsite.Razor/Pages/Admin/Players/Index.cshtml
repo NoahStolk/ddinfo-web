@@ -8,9 +8,13 @@
 
 <h2>@ViewData["Title"]</h2>
 
-<p>
-	<a asp-page="CreateOrEdit">Create New</a>
-</p>
+<p>Notes</p>
+<ul>
+	<li>Player Settings for a player are only displayed when the DPI property is given a value.</li>
+	<li>BanResponsibleId refers to the player who boosted that account, or in case of an alt, who the alt belongs to. Leave empty if unknown.</li>
+</ul>
+
+<a asp-page="CreateOrEdit">Create New</a>
 <table class="table admin-table">
 	<thead>
 		<tr>
