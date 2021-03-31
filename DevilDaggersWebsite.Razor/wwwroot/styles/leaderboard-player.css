@@ -1,8 +1,8 @@
-﻿.icon-list > div {
-	width: 150px;
+﻿.player-section {
+	flex-direction: row;
+	flex-wrap: wrap;
 }
 
-.stat-text {
-	text-align: right;
-	font-size: 32px;
-}
+	.player-section > div {
+		width: 300px;
+	}

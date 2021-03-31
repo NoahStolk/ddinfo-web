@@ -5,10 +5,13 @@ using DevilDaggersWebsite.Entities;
 using Microsoft.AspNetCore.Hosting;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.AspNetCore.Mvc.RazorPages;
+using Newtonsoft.Json;
 using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Threading.Tasks;
+using Io = System.IO;
+using Lb = DevilDaggersWebsite.Dto.Leaderboard;
 
 namespace DevilDaggersWebsite.Razor.Pages.Leaderboard
 {
@@ -40,8 +43,13 @@ namespace DevilDaggersWebsite.Razor.Pages.Leaderboard
 		}
 
 		public Death? Death { get; private set; }
+
+		public int? BestRankRecorded { get; private set; }
+
+		public Player? Player { get; private set; }
+
 		public bool HasValidTop100Graph { get; private set; }
-		public string? UsernameAliases { get; private set; }
+		public List<string> UsernameAliases { get; private set; } = new();
 
 		public async Task OnGetAsync(int id)
 		{
@@ -53,9 +61,18 @@ namespace DevilDaggersWebsite.Razor.Pages.Leaderboard
 			{
 				Death = GameInfo.GetDeathByType(GameVersion.V31, Entry.DeathType);
 				HasValidTop100Graph = Entry.ExistsInHistory(_env);
-				IEnumerable<string> aliases = Entry.GetAllUsernameAliases(_env).Where(s => s != Entry.Username);
-				UsernameAliases = aliases.Any() ? $" (also known as: {string.Join(", ", aliases)})" : string.Empty;
+				UsernameAliases = Entry.GetAllUsernameAliases(_env).Where(s => s != Entry.Username).ToList();
 			}
+
+			foreach (string leaderboardHistoryPath in Io.Directory.GetFiles(Io.Path.Combine(_env.WebRootPath, "leaderboard-history"), "*.json"))
+			{
+				Lb lb = JsonConvert.DeserializeObject<Lb>(Io.File.ReadAllText(leaderboardHistoryPath));
+				Entry? entry = lb.Entries.Find(e => e.Id == PlayerId);
+				if (entry != null && (!BestRankRecorded.HasValue || BestRankRecorded.Value > entry.Rank))
+					BestRankRecorded = entry.Rank;
+			}
+
+			Player = _dbContext.Players.FirstOrDefault(p => p.Id == PlayerId);
 		}
 	}
 }
