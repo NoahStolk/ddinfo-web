@@ -1,6 +1,6 @@
 ﻿const dayLengthInMilliseconds = 1000 * 60 * 60 * 24;
 
-$.getJSON("/api/leaderboard-history/user-activity?UserId=" + getUrlParameter("UserId"), function (data) {
+$.getJSON("/api/leaderboard-history/user-activity?UserId=" + getUrlParameter("id"), function (data) {
 	const activity = [];
 	let activityIndex = 0;
 	let deathsNext = 0;

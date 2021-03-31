@@ -1,6 +1,6 @@
 ﻿const maxDate = Date.now();
 
-$.getJSON("/api/leaderboard-history/user-progression?userId=" + getUrlParameter("UserId"), function (data) {
+$.getJSON("/api/leaderboard-history/user-progression?userId=" + getUrlParameter("id"), function (data) {
 	const pbs = [];
 	let pbIndex = 0;
 	$.each(data, function (key, pb) {
