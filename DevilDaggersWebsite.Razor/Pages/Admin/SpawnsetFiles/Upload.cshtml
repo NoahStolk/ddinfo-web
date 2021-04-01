@@ -8,6 +8,14 @@
 	<h1>@ViewData["Title"]</h1>
 </div>
 
+<p>Notes</p>
+<ul>
+	<li>File name must be unique.</li>
+	<li>File name cannot be over 80 characters in length.</li>
+	<li>File must be a survival file.</li>
+	<li>File must be less than 70 * 1024 bytes in length.</li>
+</ul>
+
 <form method="post" enctype="multipart/form-data">
 	<input asp-for="FormFile" />
 	<input type="submit" />
