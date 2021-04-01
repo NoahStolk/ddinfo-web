@@ -19,17 +19,14 @@
 		return;
 	}
 
-	<div>Currently rank @Model.Entry.Rank</div>
-	<div>Best rank recorded @Model.BestRankRecorded</div>
+	<div>Current rank</div>
+	<div>@Model.Entry.Rank</div>
+	<div>Best rank recorded</div>
+	<div>@Model.BestRankRecorded</div>
 	@if (Model.UsernameAliases.Count > 0)
 	{
-		<div>
-			Past usernames
-			@foreach (string alias in Model.UsernameAliases)
-			{
-				<span>@alias</span>
-			}
-		</div>
+		<div>Past usernames</div>
+		@Html.Raw(string.Join(", ", Model.UsernameAliases.Select(ua => $"<span class=\"white\">{ua}</span>")));
 	}
 
 	<h2>Personal Best</h2>
@@ -74,7 +71,7 @@
 	<div class="flex-container player-section">
 		<div>
 			<div><img class="icon-large" src="~/images/Icons/stopwatchx4.png" /></div>
-			<span class="@daggerCssName">@Model.Entry.TimeTotal.FormatTimeInteger(false)</span>
+			<span class="@daggerCssName">@Model.Entry.TimeTotal.FormatTimeInteger(true)</span>
 			<span class="white">seconds</span>
 		</div>
 		<div>
