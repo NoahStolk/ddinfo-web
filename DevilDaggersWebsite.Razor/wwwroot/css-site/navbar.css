@@ -52,15 +52,21 @@
 @media screen and (max-width: 767px) {
 	.navbar-nav {
 		min-height: unset;
+		margin: 0;
 	}
 
-		.navbar, .navbar-header, .navbar-nav > li {
-			min-height: 50px;
-		}
+	.navbar > .container {
+		padding: 0;
+	}
 
-		.navbar-header, .navbar-nav > li {
-			padding-top: 0;
-		}
+
+	.navbar, .navbar-header, .navbar-nav > li {
+		min-height: 50px;
+	}
+
+	.navbar-header, .navbar-nav > li {
+		padding-top: 0;
+	}
 }
 
 @media (min-width: 768px) {
@@ -73,7 +79,12 @@
 
 @media screen and (max-width: 1199px) {
 	.navbar > .container {
-		margin-left: 0;
 		width: 100%;
+	}
+}
+
+@media screen and (max-width: 767px) {
+	.navbar > .container {
+		padding: 0;
 	}
 }
