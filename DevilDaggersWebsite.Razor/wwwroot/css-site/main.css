@@ -108,6 +108,7 @@ a:hover {
 	margin: 8px 8px 8px 0;
 	border: 2px solid;
 	border-color: #999;
+	border-radius: 0;
 	color: var(--col-red);
 	text-align: center;
 	padding: 6px 12px;
@@ -180,7 +181,6 @@ option {
 	right: 0;
 	background-color: rgba(255, 255, 255, 0.025);
 	border: solid 1px rgba(255, 255, 255, 0.05);
-	border-radius: 4px;
 	padding: 6px;
 }
 
