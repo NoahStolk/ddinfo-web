@@ -138,6 +138,12 @@ namespace DevilDaggersWebsite.Razor.PageModels
 					return Page();
 				}
 
+				if (AdminDto is AdminAssetMod assetMod && (assetMod.PlayerIds == null || assetMod.PlayerIds.Count == 0))
+				{
+					ModelState.AddModelError("AdminDto.PlayerIds", "Mod should have at least one author.");
+					return Page();
+				}
+
 				StringBuilder auditLogger = new($"`CREATE` by `{this.GetIdentity()}` for `{typeof(TEntity).Name}`\n");
 				auditLogger.Append(AdminDto);
 
