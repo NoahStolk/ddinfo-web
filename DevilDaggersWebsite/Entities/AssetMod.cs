@@ -17,6 +17,7 @@ namespace DevilDaggersWebsite.Entities
 		public AssetModFileContents AssetModFileContents { get; set; }
 		public string Name { get; set; } = null!;
 		public string Url { get; set; } = null!;
+		public bool IsHidden { get; set; }
 
 		public void Create(ApplicationDbContext dbContext, AdminAssetMod adminDto)
 		{
@@ -31,6 +32,7 @@ namespace DevilDaggersWebsite.Entities
 			AssetModFileContents = (AssetModFileContents)adminDto.AssetModFileContents.Cast<int>().Sum();
 			Name = adminDto.Name;
 			Url = adminDto.Url;
+			IsHidden = adminDto.IsHidden;
 		}
 
 		public void CreateManyToManyRelations(ApplicationDbContext dbContext, AdminAssetMod adminDto)
@@ -55,6 +57,7 @@ namespace DevilDaggersWebsite.Entities
 				Name = Name,
 				PlayerIds = PlayerAssetMods.ConvertAll(pam => pam.PlayerId),
 				Url = Url,
+				IsHidden = IsHidden,
 			};
 
 			static IEnumerable<T> ToFlagEnumList<T>(T value)
