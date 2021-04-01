@@ -88,10 +88,6 @@
 	background-color: var(--col-nav-background-hover);
 }
 
-.icon-bar {
-	background-color: var(--col-red);
-}
-
 @media (min-width: 768px) {
 	.navbar .navbar-nav {
 		display: inline-block;

@@ -8,7 +8,7 @@
 	-moz-transition: all 0.2s;
 	-webkit-transition: all 0.2s;
 	-o-transition: all 0.2s;
-	background-color: black;
+	background-color: var(--col-red);
 }
 
 .top-bar {
