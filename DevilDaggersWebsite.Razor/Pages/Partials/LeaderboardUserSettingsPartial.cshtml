@@ -50,7 +50,7 @@
 					<div class="leaderboard-expand flex-container" id="@(entry.Rank)-expand">
 						<div class="visible-xs">
 							<div class="text-left">eDPI</div>
-							<div class="text-right">@(player.Edpi != null ? player.Edpi.Value.ToString(FormatUtils.MouseSensitivityFormat) : string.Empty)</div>
+							<div class="text-right">@(player.Edpi.HasValue ? player.Edpi.Value.ToString(FormatUtils.MouseSensitivityFormat) : string.Empty)</div>
 						</div>
 						<div class="visible-xs">
 							<div class="text-left">DPI</div>
@@ -58,7 +58,7 @@
 						</div>
 						<div class="visible-xs">
 							<div class="text-left">In-game sens</div>
-							<div class="text-right">@(player.InGameSens != null ? player.InGameSens.Value.ToString(FormatUtils.MouseSensitivityFormat) : string.Empty)</div>
+							<div class="text-right">@(player.InGameSens.HasValue ? player.InGameSens.Value.ToString(FormatUtils.MouseSensitivityFormat) : string.Empty)</div>
 						</div>
 						<div class="visible-xs">
 							<div class="text-left">FOV</div>

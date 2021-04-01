@@ -106,22 +106,28 @@
 		</div>
 	</div>
 
-	@if (Model.Player != null)
+	@if (Model.Player != null && Model.Player.Dpi.HasValue)
 	{
 		<h2>Settings</h2>
 		<div class="flex-container player-section">
-			<div>
-				<span class="white">eDPI</span>
-				<span class="@daggerCssName">@(Model.Player.Edpi != null ? Model.Player.Edpi.Value.ToString(FormatUtils.MouseSensitivityFormat) : string.Empty)</span>
-			</div>
+			@if (Model.Player.Edpi.HasValue)
+			{
+				<div>
+					<span class="white">eDPI</span>
+					<span class="@daggerCssName">@Model.Player.Edpi.Value.ToString(FormatUtils.MouseSensitivityFormat)</span>
+				</div>
+			}
 			<div>
 				<span class="white">DPI</span>
 				<span class="@daggerCssName">@Model.Player.Dpi</span>
 			</div>
-			<div>
-				<span class="white">In-game sens</span>
-				<span class="@daggerCssName">@Model.Player.InGameSens</span>
-			</div>
+			@if (Model.Player.InGameSens.HasValue)
+			{
+				<div>
+					<span class="white">In-game sens</span>
+					<span class="@daggerCssName">@Model.Player.InGameSens.Value.ToString(FormatUtils.MouseSensitivityFormat)</span>
+				</div>
+			}
 			@if (Model.Player.Fov.HasValue)
 			{
 				<div>
