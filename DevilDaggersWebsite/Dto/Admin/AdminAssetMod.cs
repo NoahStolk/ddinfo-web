@@ -11,6 +11,7 @@ namespace DevilDaggersWebsite.Dto.Admin
 		public List<AssetModFileContents> AssetModFileContents { get; init; } = null!;
 		public string Name { get; init; } = null!;
 		public string Url { get; init; } = null!;
+		public bool IsHidden { get; set; }
 
 		public override string ToString()
 		{
@@ -20,6 +21,7 @@ namespace DevilDaggersWebsite.Dto.Admin
 			sb.AppendFormat("{0,-30}", nameof(AssetModFileContents)).AppendLine(string.Join(", ", AssetModFileContents));
 			sb.AppendFormat("{0,-30}", nameof(Name)).AppendLine(Name);
 			sb.AppendFormat("{0,-30}", nameof(Url)).AppendLine(Url);
+			sb.AppendFormat("{0,-30}", nameof(IsHidden)).AppendLine(IsHidden.ToString());
 			return sb.AppendLine("```").ToString();
 		}
 	}
