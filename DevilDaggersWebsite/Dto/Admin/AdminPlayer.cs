@@ -26,7 +26,6 @@ namespace DevilDaggersWebsite.Dto.Admin
 		public override string ToString()
 		{
 			StringBuilder sb = new("```\n");
-			sb.AppendFormat("{0,-30}", nameof(Id)).AppendLine(Id.ToString());
 			sb.AppendFormat("{0,-30}", nameof(PlayerName)).AppendLine(PlayerName);
 			sb.AppendFormat("{0,-30}", nameof(IsAnonymous)).AppendLine(IsAnonymous.ToString());
 			sb.AppendFormat("{0,-30}", nameof(AssetModIds)).AppendLine(AssetModIds != null ? string.Join(", ", AssetModIds) : "Empty");
