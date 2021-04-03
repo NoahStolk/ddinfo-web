@@ -1,4 +1,5 @@
 ﻿@page
+@model IndexModel
 @using DevilDaggersWebsite.Razor.Utils
 @{
 	ViewData["Title"] = "Home";
@@ -24,6 +25,18 @@
 	<p>
 		I first launched this website in early 2017 as a hobby project. It started as a simple leaderboard page, later I added wiki pages and began hosting <a asp-page="/Spawnsets">custom spawnsets</a>. I developed a <a asp-page="/Tools/DevilDaggersSurvivalEditor">spawnset editor</a> to create spawnsets, and some time later created and began hosting <a asp-page="/CustomLeaderboards/Index">custom leaderboards</a>. The latest addition is the possibility to create <a asp-page="/Mods">mods</a> using the <a asp-page="/Tools/DevilDaggersAssetEditor">asset editor</a>.
 	</p>
+	<div class="row">
+		@foreach ((string text, string imageUrl, string url) in Model.Sections)
+		{
+			<a href="@url">
+				<div class="col-xs-12 col-sm-6 col-md-3 home-section-container">
+					<div class="overlay-block"></div>
+					<div class="home-section-text">@text</div>
+					<img class="img-responsive home-section-image" src="~/images/@imageUrl" />
+				</div>
+			</a>
+		}
+	</div>
 	<p>
 		All of this would not have been possible without such a dedicated and helpful community. Thank you.
 	</p>
