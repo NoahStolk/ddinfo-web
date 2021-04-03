@@ -1,10 +1,10 @@
 ﻿using DevilDaggersWebsite.Enumerators;
 using System.Collections.Generic;
-using System.Text;
+using System.Linq;
 
 namespace DevilDaggersWebsite.Dto.Admin
 {
-	public class AdminAssetMod
+	public class AdminAssetMod : IAdminDto
 	{
 		public List<int>? PlayerIds { get; init; }
 		public List<AssetModTypes> AssetModTypes { get; init; } = null!;
@@ -13,16 +13,16 @@ namespace DevilDaggersWebsite.Dto.Admin
 		public string Url { get; init; } = null!;
 		public bool IsHidden { get; set; }
 
-		public override string ToString()
+		public Dictionary<string, string> Log()
 		{
-			StringBuilder sb = new("```\n");
-			sb.AppendFormat("{0,-30}", nameof(PlayerIds)).AppendLine(PlayerIds != null ? string.Join(", ", PlayerIds) : "Empty");
-			sb.AppendFormat("{0,-30}", nameof(AssetModTypes)).AppendLine(string.Join(", ", AssetModTypes));
-			sb.AppendFormat("{0,-30}", nameof(AssetModFileContents)).AppendLine(string.Join(", ", AssetModFileContents));
-			sb.AppendFormat("{0,-30}", nameof(Name)).AppendLine(Name);
-			sb.AppendFormat("{0,-30}", nameof(Url)).AppendLine(Url);
-			sb.AppendFormat("{0,-30}", nameof(IsHidden)).AppendLine(IsHidden.ToString());
-			return sb.AppendLine("```").ToString();
+			Dictionary<string, string> dictionary = new();
+			dictionary.Add(nameof(PlayerIds), PlayerIds != null ? string.Join(", ", PlayerIds) : string.Empty);
+			dictionary.Add(nameof(AssetModTypes), string.Join(", ", AssetModTypes.Where(amt => amt != Enumerators.AssetModTypes.None)));
+			dictionary.Add(nameof(AssetModFileContents), string.Join(", ", AssetModFileContents.Where(amfc => amfc != Enumerators.AssetModFileContents.None)));
+			dictionary.Add(nameof(Name), Name);
+			dictionary.Add(nameof(Url), Url);
+			dictionary.Add(nameof(IsHidden), IsHidden.ToString());
+			return dictionary;
 		}
 	}
 }

@@ -1,9 +1,9 @@
 ﻿using System;
-using System.Text;
+using System.Collections.Generic;
 
 namespace DevilDaggersWebsite.Dto.Admin
 {
-	public class AdminCustomEntry
+	public class AdminCustomEntry : IAdminDto
 	{
 		public int PlayerId { get; init; }
 		public int CustomLeaderboardId { get; init; }
@@ -26,29 +26,29 @@ namespace DevilDaggersWebsite.Dto.Admin
 		public DateTime SubmitDate { get; init; }
 		public string ClientVersion { get; init; } = null!;
 
-		public override string ToString()
+		public Dictionary<string, string> Log()
 		{
-			StringBuilder sb = new("```\n");
-			sb.AppendFormat("{0,-30}", nameof(PlayerId)).AppendLine(PlayerId.ToString());
-			sb.AppendFormat("{0,-30}", nameof(CustomLeaderboardId)).AppendLine(CustomLeaderboardId.ToString());
-			sb.AppendFormat("{0,-30}", nameof(Time)).AppendLine(Time.ToString());
-			sb.AppendFormat("{0,-30}", nameof(GemsCollected)).AppendLine(GemsCollected.ToString());
-			sb.AppendFormat("{0,-30}", nameof(EnemiesKilled)).AppendLine(EnemiesKilled.ToString());
-			sb.AppendFormat("{0,-30}", nameof(DaggersFired)).AppendLine(DaggersFired.ToString());
-			sb.AppendFormat("{0,-30}", nameof(DaggersHit)).AppendLine(DaggersHit.ToString());
-			sb.AppendFormat("{0,-30}", nameof(EnemiesAlive)).AppendLine(EnemiesAlive.ToString());
-			sb.AppendFormat("{0,-30}", nameof(HomingDaggers)).AppendLine(HomingDaggers.ToString());
-			sb.AppendFormat("{0,-30}", nameof(HomingDaggersEaten)).AppendLine(HomingDaggersEaten.ToString());
-			sb.AppendFormat("{0,-30}", nameof(GemsDespawned)).AppendLine(GemsDespawned.ToString());
-			sb.AppendFormat("{0,-30}", nameof(GemsEaten)).AppendLine(GemsEaten.ToString());
-			sb.AppendFormat("{0,-30}", nameof(GemsTotal)).AppendLine(GemsTotal.ToString());
-			sb.AppendFormat("{0,-30}", nameof(DeathType)).AppendLine(DeathType.ToString());
-			sb.AppendFormat("{0,-30}", nameof(LevelUpTime2)).AppendLine(LevelUpTime2.ToString());
-			sb.AppendFormat("{0,-30}", nameof(LevelUpTime3)).AppendLine(LevelUpTime3.ToString());
-			sb.AppendFormat("{0,-30}", nameof(LevelUpTime4)).AppendLine(LevelUpTime4.ToString());
-			sb.AppendFormat("{0,-30}", nameof(SubmitDate)).AppendLine(SubmitDate.ToString());
-			sb.AppendFormat("{0,-30}", nameof(ClientVersion)).AppendLine(ClientVersion);
-			return sb.AppendLine("```").ToString();
+			Dictionary<string, string> dictionary = new();
+			dictionary.Add(nameof(PlayerId), PlayerId.ToString());
+			dictionary.Add(nameof(CustomLeaderboardId), CustomLeaderboardId.ToString());
+			dictionary.Add(nameof(Time), Time.ToString());
+			dictionary.Add(nameof(GemsCollected), GemsCollected.ToString());
+			dictionary.Add(nameof(EnemiesKilled), EnemiesKilled.ToString());
+			dictionary.Add(nameof(DaggersFired), DaggersFired.ToString());
+			dictionary.Add(nameof(DaggersHit), DaggersHit.ToString());
+			dictionary.Add(nameof(EnemiesAlive), EnemiesAlive.ToString());
+			dictionary.Add(nameof(HomingDaggers), HomingDaggers.ToString());
+			dictionary.Add(nameof(HomingDaggersEaten), HomingDaggersEaten.ToString());
+			dictionary.Add(nameof(GemsDespawned), GemsDespawned.ToString());
+			dictionary.Add(nameof(GemsEaten), GemsEaten.ToString());
+			dictionary.Add(nameof(GemsTotal), GemsTotal.ToString());
+			dictionary.Add(nameof(DeathType), DeathType.ToString());
+			dictionary.Add(nameof(LevelUpTime2), LevelUpTime2.ToString());
+			dictionary.Add(nameof(LevelUpTime3), LevelUpTime3.ToString());
+			dictionary.Add(nameof(LevelUpTime4), LevelUpTime4.ToString());
+			dictionary.Add(nameof(SubmitDate), SubmitDate.ToString());
+			dictionary.Add(nameof(ClientVersion), ClientVersion);
+			return dictionary;
 		}
 	}
 }

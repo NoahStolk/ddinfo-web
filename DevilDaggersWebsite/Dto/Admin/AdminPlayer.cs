@@ -1,9 +1,8 @@
 ﻿using System.Collections.Generic;
-using System.Text;
 
 namespace DevilDaggersWebsite.Dto.Admin
 {
-	public class AdminPlayer
+	public class AdminPlayer : IAdminDto
 	{
 		public int Id { get; init; }
 		public string PlayerName { get; init; } = null!;
@@ -23,26 +22,26 @@ namespace DevilDaggersWebsite.Dto.Admin
 		public bool? UsesLegacyAudio { get; init; }
 		public bool IsBannedFromDdcl { get; init; }
 
-		public override string ToString()
+		public Dictionary<string, string> Log()
 		{
-			StringBuilder sb = new("```\n");
-			sb.AppendFormat("{0,-30}", nameof(PlayerName)).AppendLine(PlayerName);
-			sb.AppendFormat("{0,-30}", nameof(IsAnonymous)).AppendLine(IsAnonymous.ToString());
-			sb.AppendFormat("{0,-30}", nameof(AssetModIds)).AppendLine(AssetModIds != null ? string.Join(", ", AssetModIds) : "Empty");
-			sb.AppendFormat("{0,-30}", nameof(TitleIds)).AppendLine(TitleIds != null ? string.Join(", ", TitleIds) : "Empty");
-			sb.AppendFormat("{0,-30}", nameof(CountryCode)).AppendLine(CountryCode);
-			sb.AppendFormat("{0,-30}", nameof(Dpi)).AppendLine(Dpi.ToString());
-			sb.AppendFormat("{0,-30}", nameof(InGameSens)).AppendLine(InGameSens.ToString());
-			sb.AppendFormat("{0,-30}", nameof(Fov)).AppendLine(Fov.ToString());
-			sb.AppendFormat("{0,-30}", nameof(RightHanded)).AppendLine(RightHanded.ToString());
-			sb.AppendFormat("{0,-30}", nameof(FlashEnabled)).AppendLine(FlashEnabled.ToString());
-			sb.AppendFormat("{0,-30}", nameof(Gamma)).AppendLine(Gamma.ToString());
-			sb.AppendFormat("{0,-30}", nameof(IsBanned)).AppendLine(IsBanned.ToString());
-			sb.AppendFormat("{0,-30}", nameof(BanDescription)).AppendLine(BanDescription);
-			sb.AppendFormat("{0,-30}", nameof(BanResponsibleId)).AppendLine(BanResponsibleId.ToString());
-			sb.AppendFormat("{0,-30}", nameof(UsesLegacyAudio)).AppendLine(UsesLegacyAudio.ToString());
-			sb.AppendFormat("{0,-30}", nameof(IsBannedFromDdcl)).AppendLine(IsBannedFromDdcl.ToString());
-			return sb.AppendLine("```").ToString();
+			Dictionary<string, string> dictionary = new();
+			dictionary.Add(nameof(PlayerName), PlayerName);
+			dictionary.Add(nameof(IsAnonymous), IsAnonymous.ToString());
+			dictionary.Add(nameof(AssetModIds), AssetModIds != null ? string.Join(", ", AssetModIds) : string.Empty);
+			dictionary.Add(nameof(TitleIds), TitleIds != null ? string.Join(", ", TitleIds) : string.Empty);
+			dictionary.Add(nameof(CountryCode), CountryCode ?? string.Empty);
+			dictionary.Add(nameof(Dpi), Dpi.ToString() ?? string.Empty);
+			dictionary.Add(nameof(InGameSens), InGameSens.ToString() ?? string.Empty);
+			dictionary.Add(nameof(Fov), Fov.ToString() ?? string.Empty);
+			dictionary.Add(nameof(RightHanded), RightHanded.ToString() ?? string.Empty);
+			dictionary.Add(nameof(FlashEnabled), FlashEnabled.ToString() ?? string.Empty);
+			dictionary.Add(nameof(Gamma), Gamma.ToString() ?? string.Empty);
+			dictionary.Add(nameof(IsBanned), IsBanned.ToString());
+			dictionary.Add(nameof(BanDescription), BanDescription ?? string.Empty);
+			dictionary.Add(nameof(BanResponsibleId), BanResponsibleId.ToString() ?? string.Empty);
+			dictionary.Add(nameof(UsesLegacyAudio), UsesLegacyAudio.ToString() ?? string.Empty);
+			dictionary.Add(nameof(IsBannedFromDdcl), IsBannedFromDdcl.ToString() ?? string.Empty);
+			return dictionary;
 		}
 	}
 }

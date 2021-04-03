@@ -1,10 +1,10 @@
 ﻿using DevilDaggersWebsite.Enumerators;
 using System;
-using System.Text;
+using System.Collections.Generic;
 
 namespace DevilDaggersWebsite.Dto.Admin
 {
-	public class AdminDonation
+	public class AdminDonation : IAdminDto
 	{
 		public int PlayerId { get; init; }
 		public int Amount { get; init; }
@@ -14,17 +14,17 @@ namespace DevilDaggersWebsite.Dto.Admin
 		public string? Note { get; init; }
 		public bool IsRefunded { get; init; }
 
-		public override string ToString()
+		public Dictionary<string, string> Log()
 		{
-			StringBuilder sb = new("```\n");
-			sb.AppendFormat("{0,-30}", nameof(PlayerId)).AppendLine(PlayerId.ToString());
-			sb.AppendFormat("{0,-30}", nameof(Amount)).AppendLine(Amount.ToString());
-			sb.AppendFormat("{0,-30}", nameof(Currency)).AppendLine(Currency.ToString());
-			sb.AppendFormat("{0,-30}", nameof(ConvertedEuroCentsReceived)).AppendLine(ConvertedEuroCentsReceived.ToString());
-			sb.AppendFormat("{0,-30}", nameof(DateReceived)).AppendLine(DateReceived.ToString());
-			sb.AppendFormat("{0,-30}", nameof(Note)).AppendLine(Note);
-			sb.AppendFormat("{0,-30}", nameof(IsRefunded)).AppendLine(IsRefunded.ToString());
-			return sb.AppendLine("```").ToString();
+			Dictionary<string, string> dictionary = new();
+			dictionary.Add(nameof(PlayerId), PlayerId.ToString());
+			dictionary.Add(nameof(Amount), Amount.ToString());
+			dictionary.Add(nameof(Currency), Currency.ToString());
+			dictionary.Add(nameof(ConvertedEuroCentsReceived), ConvertedEuroCentsReceived.ToString());
+			dictionary.Add(nameof(DateReceived), DateReceived.ToString());
+			dictionary.Add(nameof(Note), Note?.Substring(0, 50) ?? string.Empty);
+			dictionary.Add(nameof(IsRefunded), IsRefunded.ToString());
+			return dictionary;
 		}
 	}
 }
