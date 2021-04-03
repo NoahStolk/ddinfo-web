@@ -144,15 +144,15 @@ namespace DevilDaggersWebsite.Razor.PageModels
 					return Page();
 				}
 
-				StringBuilder auditLogger = new($"`CREATE` by `{this.GetIdentity()}` for `{typeof(TEntity).Name}`\n");
-				auditLogger.Append(AdminDto);
-
 				_entity = new();
 				_entity.Create(DbContext, AdminDto);
 				DbContext.SaveChanges();
 
 				_entity.CreateManyToManyRelations(DbContext, AdminDto);
 				DbContext.SaveChanges();
+
+				StringBuilder auditLogger = new($"`CREATE` by `{this.GetIdentity()}` for `{typeof(TEntity).Name}` `{_entity.Id}`\n");
+				auditLogger.Append(AdminDto);
 
 				await DiscordLogger.Instance.TryLog(Channel.AuditLogMonitoring, _env.EnvironmentName, $"{auditLogger}");
 			}
