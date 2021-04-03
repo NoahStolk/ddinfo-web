@@ -18,7 +18,7 @@ namespace DevilDaggersWebsite.Razor.PageModels
 {
 	public class AdminEntityCreateOrEditPageModel<TEntity, TAdminDto> : AbstractAdminEntityPageModel<TEntity>
 		where TEntity : class, IAdminUpdatableEntity<TAdminDto>, new()
-		where TAdminDto : class
+		where TAdminDto : class, IAdminDto
 	{
 		private readonly IWebHostEnvironment _env;
 
@@ -65,15 +65,7 @@ namespace DevilDaggersWebsite.Razor.PageModels
 		{
 			Id = id;
 
-			IQueryable<TEntity> query = DbSet.AsQueryable();
-			if (typeof(TEntity) == typeof(Title))
-				query = DbSet.Include(t => (t as Title)!.PlayerTitles);
-			else if (typeof(TEntity) == typeof(AssetMod))
-				query = DbSet.Include(t => (t as AssetMod)!.PlayerAssetMods);
-			else if (typeof(TEntity) == typeof(Player))
-				query = DbSet.Include(t => (t as Player)!.PlayerAssetMods).Include(t => (t as Player)!.PlayerTitles);
-
-			_entity = query.FirstOrDefault(m => m.Id == id) ?? (TEntity?)new();
+			_entity = GetFullQuery().FirstOrDefault(m => m.Id == id) ?? (TEntity?)new();
 
 			AdminDto = _entity.Populate();
 
@@ -94,7 +86,7 @@ namespace DevilDaggersWebsite.Razor.PageModels
 
 			if (IsEditing)
 			{
-				_entity = DbSet.FirstOrDefault(m => m.Id == id);
+				_entity = GetFullQuery().FirstOrDefault(m => m.Id == id);
 				if (_entity == null)
 					return NotFound();
 
@@ -103,7 +95,7 @@ namespace DevilDaggersWebsite.Razor.PageModels
 				try
 				{
 					StringBuilder auditLogger = new($"`EDIT` by `{this.GetIdentity()}` for `{typeof(TEntity).Name}` `{id}`\n");
-					auditLogger.Append(AdminDto);
+					Log(auditLogger, _entity.Populate().Log(), AdminDto.Log());
 
 					_entity.Edit(DbContext, AdminDto);
 					DbContext.SaveChanges();
@@ -111,7 +103,7 @@ namespace DevilDaggersWebsite.Razor.PageModels
 					_entity.CreateManyToManyRelations(DbContext, AdminDto);
 					DbContext.SaveChanges();
 
-					await DiscordLogger.Instance.TryLog(Channel.AuditLogMonitoring, _env.EnvironmentName, $"{auditLogger}");
+					await DiscordLogger.Instance.TryLog(Channel.AuditLogMonitoring, _env.EnvironmentName, auditLogger.ToString());
 				}
 				catch (DbUpdateConcurrencyException) when (!DbSet.Any(e => e.Id == _entity.Id))
 				{
@@ -144,9 +136,6 @@ namespace DevilDaggersWebsite.Razor.PageModels
 					return Page();
 				}
 
-				StringBuilder auditLogger = new($"`CREATE` by `{this.GetIdentity()}` for `{typeof(TEntity).Name}`\n");
-				auditLogger.Append(AdminDto);
-
 				_entity = new();
 				_entity.Create(DbContext, AdminDto);
 				DbContext.SaveChanges();
@@ -154,10 +143,65 @@ namespace DevilDaggersWebsite.Razor.PageModels
 				_entity.CreateManyToManyRelations(DbContext, AdminDto);
 				DbContext.SaveChanges();
 
-				await DiscordLogger.Instance.TryLog(Channel.AuditLogMonitoring, _env.EnvironmentName, $"{auditLogger}");
+				StringBuilder auditLogger = new($"`CREATE` by `{this.GetIdentity()}` for `{typeof(TEntity).Name}` `{_entity.Id}`\n");
+				Log(auditLogger, null, AdminDto.Log());
+
+				await DiscordLogger.Instance.TryLog(Channel.AuditLogMonitoring, _env.EnvironmentName, auditLogger.ToString());
 			}
 
 			return RedirectToPage("./Index");
+
+			static void Log(StringBuilder auditLogger, Dictionary<string, string>? oldLog, Dictionary<string, string> newLog)
+			{
+				auditLogger.AppendLine("```diff");
+
+				const string propertyHeader = "Property";
+				const string oldValueHeader = "Old value";
+				const string newValueHeader = "New value";
+				const int paddingL = 4;
+				const int paddingR = 2;
+
+				int maxL = propertyHeader.Length, maxR = oldValueHeader.Length;
+				foreach (KeyValuePair<string, string> kvp in oldLog ?? newLog)
+				{
+					if (kvp.Key.Length > maxL)
+						maxL = kvp.Key.Length;
+					if (kvp.Value.Length > maxR)
+						maxR = kvp.Value.Length;
+				}
+
+				if (oldLog != null)
+				{
+					auditLogger.AppendFormat($"{{0,-{maxL + paddingL}}}", propertyHeader).AppendFormat($"{{0,-{maxR + paddingR}}}", oldValueHeader).AppendLine(newValueHeader);
+					auditLogger.AppendLine();
+					foreach (KeyValuePair<string, string> kvp in oldLog)
+					{
+						string newValue = newLog[kvp.Key];
+						char diff = kvp.Value == newValue ? '-' : '+';
+						auditLogger.AppendFormat($"{{0,-{maxL + paddingL}}}", $"{diff} {kvp.Key}").AppendFormat($"{{0,-{maxR + paddingR}}}", kvp.Value).AppendLine(newValue);
+					}
+				}
+				else
+				{
+					auditLogger.AppendFormat($"{{0,-{maxL + paddingL}}}", propertyHeader).AppendLine(newValueHeader);
+					auditLogger.AppendLine();
+					foreach (KeyValuePair<string, string> kvp in newLog)
+						auditLogger.AppendFormat($"{{0,-{maxL + paddingL}}}", $"+ {kvp.Key}").AppendLine(kvp.Value);
+				}
+
+				auditLogger.AppendLine("```");
+			}
+		}
+
+		private IQueryable<TEntity> GetFullQuery()
+		{
+			if (typeof(TEntity) == typeof(Title))
+				return DbSet.Include(t => (t as Title)!.PlayerTitles);
+			else if (typeof(TEntity) == typeof(AssetMod))
+				return DbSet.Include(t => (t as AssetMod)!.PlayerAssetMods);
+			else if (typeof(TEntity) == typeof(Player))
+				return DbSet.Include(t => (t as Player)!.PlayerAssetMods).Include(t => (t as Player)!.PlayerTitles);
+			return DbSet.AsQueryable();
 		}
 	}
 }

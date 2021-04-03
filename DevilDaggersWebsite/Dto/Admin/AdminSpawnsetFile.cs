@@ -1,8 +1,8 @@
-﻿using System.Text;
+﻿using System.Collections.Generic;
 
 namespace DevilDaggersWebsite.Dto.Admin
 {
-	public class AdminSpawnsetFile
+	public class AdminSpawnsetFile : IAdminDto
 	{
 		public string Name { get; init; } = null!;
 		public int PlayerId { get; init; }
@@ -10,15 +10,15 @@ namespace DevilDaggersWebsite.Dto.Admin
 		public string? HtmlDescription { get; init; }
 		public bool IsPractice { get; init; }
 
-		public override string ToString()
+		public Dictionary<string, string> Log()
 		{
-			StringBuilder sb = new("```\n");
-			sb.AppendFormat("{0,-30}", nameof(Name)).AppendLine(Name);
-			sb.AppendFormat("{0,-30}", nameof(PlayerId)).AppendLine(PlayerId.ToString());
-			sb.AppendFormat("{0,-30}", nameof(MaxDisplayWaves)).AppendLine(MaxDisplayWaves.ToString());
-			sb.AppendFormat("{0,-30}", nameof(HtmlDescription)).AppendLine(HtmlDescription);
-			sb.AppendFormat("{0,-30}", nameof(IsPractice)).AppendLine(IsPractice.ToString());
-			return sb.AppendLine("```").ToString();
+			Dictionary<string, string> dictionary = new();
+			dictionary.Add(nameof(Name), Name);
+			dictionary.Add(nameof(PlayerId), PlayerId.ToString());
+			dictionary.Add(nameof(MaxDisplayWaves), MaxDisplayWaves.ToString() ?? string.Empty);
+			dictionary.Add(nameof(HtmlDescription), HtmlDescription?.Substring(0, 50) ?? string.Empty);
+			dictionary.Add(nameof(IsPractice), IsPractice.ToString());
+			return dictionary;
 		}
 	}
 }

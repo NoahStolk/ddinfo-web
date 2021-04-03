@@ -1,9 +1,9 @@
 ﻿using DevilDaggersWebsite.Enumerators;
-using System.Text;
+using System.Collections.Generic;
 
 namespace DevilDaggersWebsite.Dto.Admin
 {
-	public class AdminCustomLeaderboard
+	public class AdminCustomLeaderboard : IAdminDto
 	{
 		public CustomLeaderboardCategory Category { get; init; }
 		public int SpawnsetFileId { get; init; }
@@ -14,17 +14,17 @@ namespace DevilDaggersWebsite.Dto.Admin
 		public int TimeDevil { get; init; }
 		public int TimeLeviathan { get; init; }
 
-		public override string ToString()
+		public Dictionary<string, string> Log()
 		{
-			StringBuilder sb = new("```\n");
-			sb.AppendFormat("{0,-30}", nameof(Category)).AppendLine(Category.ToString());
-			sb.AppendFormat("{0,-30}", nameof(SpawnsetFileId)).AppendLine(SpawnsetFileId.ToString());
-			sb.AppendFormat("{0,-30}", nameof(TimeBronze)).AppendLine(TimeBronze.ToString());
-			sb.AppendFormat("{0,-30}", nameof(TimeSilver)).AppendLine(TimeSilver.ToString());
-			sb.AppendFormat("{0,-30}", nameof(TimeGolden)).AppendLine(TimeGolden.ToString());
-			sb.AppendFormat("{0,-30}", nameof(TimeDevil)).AppendLine(TimeDevil.ToString());
-			sb.AppendFormat("{0,-30}", nameof(TimeLeviathan)).AppendLine(TimeLeviathan.ToString());
-			return sb.AppendLine("```").ToString();
+			Dictionary<string, string> dictionary = new();
+			dictionary.Add(nameof(Category), Category.ToString());
+			dictionary.Add(nameof(SpawnsetFileId), SpawnsetFileId.ToString());
+			dictionary.Add(nameof(TimeBronze), TimeBronze.ToString());
+			dictionary.Add(nameof(TimeSilver), TimeSilver.ToString());
+			dictionary.Add(nameof(TimeGolden), TimeGolden.ToString());
+			dictionary.Add(nameof(TimeDevil), TimeDevil.ToString());
+			dictionary.Add(nameof(TimeLeviathan), TimeLeviathan.ToString());
+			return dictionary;
 		}
 	}
 }

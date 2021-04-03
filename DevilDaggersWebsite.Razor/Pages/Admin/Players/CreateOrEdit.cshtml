@@ -18,6 +18,7 @@
 			<div asp-validation-summary="ModelOnly" class="text-danger"></div>
 			@if (!Model.IsEditing)
 			{
+				@*Cannot edit Player.Id since it is used as the primary key.*@
 				<div class="form-group">
 					<label asp-for="AdminDto.Id" class="control-label"></label>
 					<input asp-for="AdminDto.Id" class="form-control" />

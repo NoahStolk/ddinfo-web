@@ -1,19 +1,18 @@
 ﻿using System.Collections.Generic;
-using System.Text;
 
 namespace DevilDaggersWebsite.Dto.Admin
 {
-	public class AdminTitle
+	public class AdminTitle : IAdminDto
 	{
 		public string Name { get; init; } = null!;
 		public List<int>? PlayerIds { get; init; }
 
-		public override string ToString()
+		public Dictionary<string, string> Log()
 		{
-			StringBuilder sb = new("```\n");
-			sb.AppendFormat("{0,-30}", nameof(Name)).AppendLine(Name);
-			sb.AppendFormat("{0,-30}", nameof(PlayerIds)).AppendLine(PlayerIds != null ? string.Join(", ", PlayerIds) : "Empty");
-			return sb.AppendLine("```").ToString();
+			Dictionary<string, string> dictionary = new();
+			dictionary.Add(nameof(Name), Name);
+			dictionary.Add(nameof(PlayerIds), PlayerIds != null ? string.Join(", ", PlayerIds) : string.Empty);
+			return dictionary;
 		}
 	}
 }
