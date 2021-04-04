@@ -19,6 +19,11 @@
 	color: var(--col-red);
 }
 
+.alias-list {
+	max-height: 10em;
+	overflow-y: auto;
+}
+
 .leaderboard-data > div {
 	flex-grow: 1;
 }

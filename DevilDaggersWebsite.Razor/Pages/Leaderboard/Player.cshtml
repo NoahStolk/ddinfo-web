@@ -159,12 +159,18 @@
 							<div>Past usernames</div>
 							@if (Model.UsernameAliases.Count > 0)
 							{
-								<ul>
-									@foreach (string alias in Model.UsernameAliases)
-									{
-										<li>@alias</li>
-									}
-								</ul>
+								<div>
+									<ul class="alias-list">
+										@foreach (string alias in Model.UsernameAliases)
+										{
+											<li>@alias</li>
+										}
+									</ul>
+								</div>
+							}
+							else
+							{
+								<div class="text-right">@RazorUtils.NAString</div>
 							}
 						</div>
 						@*World records?*@
