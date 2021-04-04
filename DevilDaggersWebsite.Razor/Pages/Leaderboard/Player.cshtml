@@ -87,43 +87,46 @@
 					</div>
 				</div>
 			</div>
-			<div class="flex-container player-section">
-				<div class="leaderboard-data-container">
-					<div class="leaderboard-data-header">Settings</div>
-					<div class="flex-container leaderboard-data">
-						<div>eDPI</div>
-						<div class="text-right">@Model.Player?.Edpi?.ToString(FormatUtils.MouseSensitivityFormat)</div>
-					</div>
-					<div class="flex-container leaderboard-data">
-						<div>DPI</div>
-						<div class="text-right">@Model.Player?.Dpi</div>
-					</div>
-					<div class="flex-container leaderboard-data">
-						<div>In-game sens</div>
-						<div class="text-right">@Model.Player?.InGameSens?.ToString(FormatUtils.MouseSensitivityFormat)</div>
-					</div>
-					<div class="flex-container leaderboard-data">
-						<div>FOV</div>
-						<div class="text-right">@Model.Player?.Fov</div>
-					</div>
-					<div class="flex-container leaderboard-data">
-						<div>Gamma</div>
-						<div class="text-right">@Model.Player?.Gamma</div>
-					</div>
-					<div class="flex-container leaderboard-data">
-						<div>Hand orientation</div>
-						<div class="text-right">@Model.Player?.RightHandedString</div>
-					</div>
-					<div class="flex-container leaderboard-data">
-						<div>Hand flash</div>
-						<div class="text-right">@Model.Player?.FlashEnabledString</div>
-					</div>
-					<div class="flex-container leaderboard-data">
-						<div>Legacy audio</div>
-						<div class="text-right">@Model.Player?.UsesLegacyAudioString</div>
+			@if (Model.Player?.Dpi.HasValue == true)
+			{
+				<div class="flex-container player-section">
+					<div class="leaderboard-data-container">
+						<div class="leaderboard-data-header">Settings</div>
+						<div class="flex-container leaderboard-data">
+							<div>eDPI</div>
+							<div class="text-right">@Model.Player?.Edpi?.ToString(FormatUtils.MouseSensitivityFormat)</div>
+						</div>
+						<div class="flex-container leaderboard-data">
+							<div>DPI</div>
+							<div class="text-right">@Model.Player?.Dpi</div>
+						</div>
+						<div class="flex-container leaderboard-data">
+							<div>In-game sens</div>
+							<div class="text-right">@Model.Player?.InGameSens?.ToString(FormatUtils.MouseSensitivityFormat)</div>
+						</div>
+						<div class="flex-container leaderboard-data">
+							<div>FOV</div>
+							<div class="text-right">@Model.Player?.Fov</div>
+						</div>
+						<div class="flex-container leaderboard-data">
+							<div>Gamma</div>
+							<div class="text-right">@Model.Player?.Gamma</div>
+						</div>
+						<div class="flex-container leaderboard-data">
+							<div>Hand orientation</div>
+							<div class="text-right">@Model.Player?.RightHandedString</div>
+						</div>
+						<div class="flex-container leaderboard-data">
+							<div>Hand flash</div>
+							<div class="text-right">@Model.Player?.FlashEnabledString</div>
+						</div>
+						<div class="flex-container leaderboard-data">
+							<div>Legacy audio</div>
+							<div class="text-right">@Model.Player?.UsesLegacyAudioString</div>
+						</div>
 					</div>
 				</div>
-			</div>
+			}
 			<div class="flex-container player-section">
 				<div class="leaderboard-data-container">
 					<div class="leaderboard-data-header">Leaderboard</div>
@@ -142,25 +145,28 @@
 					</div>
 				</div>
 			</div>
-			<div class="flex-container player-section">
-				<div class="leaderboard-data-container">
-					<div class="leaderboard-data-header">Leaderboard History</div>
-					<div class="flex-container leaderboard-data">
-						<div>Best rank recorded</div>
-						<div class="text-right">@Model.BestRankRecorded</div>
+			@if (Model.BestRankRecorded.HasValue)
+			{
+				<div class="flex-container player-section">
+					<div class="leaderboard-data-container">
+						<div class="leaderboard-data-header">Leaderboard History</div>
+						<div class="flex-container leaderboard-data">
+							<div>Best rank recorded</div>
+							<div class="text-right">@Model.BestRankRecorded</div>
+						</div>
+						<div class="flex-container leaderboard-data">
+							<div>Past usernames</div>
+							@if (Model.UsernameAliases.Count > 0)
+							{
+								<div class="text-right">
+									@Html.Raw(string.Join(", ", Model.UsernameAliases.Select(ua => $"<span class=\"white\">{ua}</span>")))
+								</div>
+							}
+						</div>
+						@*World records?*@
 					</div>
-					<div class="flex-container leaderboard-data">
-						<div>Past usernames</div>
-						@if (Model.UsernameAliases.Count > 0)
-						{
-							<div class="text-right">
-								@Html.Raw(string.Join(", ", Model.UsernameAliases.Select(ua => $"<span class=\"white\">{ua}</span>")))
-							</div>
-						}
-					</div>
-					@*World records?*@
 				</div>
-			</div>
+			}
 			<div class="flex-container player-section">
 				<div class="leaderboard-data-container">
 					<div class="leaderboard-data-header">Custom Leaderboard Statistics</div>

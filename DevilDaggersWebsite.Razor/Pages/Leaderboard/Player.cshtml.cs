@@ -70,7 +70,6 @@ namespace DevilDaggersWebsite.Razor.Pages.Leaderboard
 			Player = _dbContext.Players.FirstOrDefault(p => p.Id == PlayerId);
 
 			Entry = await LeaderboardClient.Instance.GetUserById(PlayerId);
-
 			if (Entry != null)
 			{
 				Death = GameInfo.GetDeathByType(GameVersion.V31, Entry.DeathType);
@@ -80,19 +79,25 @@ namespace DevilDaggersWebsite.Razor.Pages.Leaderboard
 				UsernameAliases = Entry.GetAllUsernameAliases(_env).Where(s => s != Entry.Username).ToList();
 			}
 
-			foreach (string leaderboardHistoryPath in Io.Directory.GetFiles(Io.Path.Combine(_env.WebRootPath, "leaderboard-history"), "*.json"))
+			if (HasValidTop100Graph)
 			{
-				Lb lb = JsonConvert.DeserializeObject<Lb>(Io.File.ReadAllText(leaderboardHistoryPath));
-				Entry? entry = lb.Entries.Find(e => e.Id == PlayerId);
-				if (entry != null && (!BestRankRecorded.HasValue || BestRankRecorded.Value > entry.Rank))
-					BestRankRecorded = entry.Rank;
+				foreach (string leaderboardHistoryPath in Io.Directory.GetFiles(Io.Path.Combine(_env.WebRootPath, "leaderboard-history"), "*.json"))
+				{
+					Lb lb = JsonConvert.DeserializeObject<Lb>(Io.File.ReadAllText(leaderboardHistoryPath));
+					Entry? entry = lb.Entries.Find(e => e.Id == PlayerId);
+					if (entry != null && (!BestRankRecorded.HasValue || BestRankRecorded.Value > entry.Rank))
+						BestRankRecorded = entry.Rank;
+				}
 			}
 
-			foreach (Entities.CustomEntry customEntry in _dbContext.CustomEntries.Include(ce => ce.CustomLeaderboard).Where(ce => ce.PlayerId == PlayerId))
+			if (Player != null)
 			{
-				string dagger = customEntry.CustomLeaderboard.GetDagger(customEntry.Time);
-				if (CustomDaggerCounts.ContainsKey(dagger))
-					CustomDaggerCounts[dagger]++;
+				foreach (Entities.CustomEntry customEntry in _dbContext.CustomEntries.Include(ce => ce.CustomLeaderboard).Where(ce => ce.PlayerId == PlayerId))
+				{
+					string dagger = customEntry.CustomLeaderboard.GetDagger(customEntry.Time);
+					if (CustomDaggerCounts.ContainsKey(dagger))
+						CustomDaggerCounts[dagger]++;
+				}
 			}
 		}
 	}
