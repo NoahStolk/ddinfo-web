@@ -159,9 +159,12 @@
 							<div>Past usernames</div>
 							@if (Model.UsernameAliases.Count > 0)
 							{
-								<div class="text-right">
-									@Html.Raw(string.Join(", ", Model.UsernameAliases.Select(ua => $"<span class=\"white\">{ua}</span>")))
-								</div>
+								<ul>
+									@foreach (string alias in Model.UsernameAliases)
+									{
+										<li>@alias</li>
+									}
+								</ul>
 							}
 						</div>
 						@*World records?*@

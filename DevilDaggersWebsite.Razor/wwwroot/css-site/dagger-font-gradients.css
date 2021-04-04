@@ -64,23 +64,11 @@
 	-webkit-text-fill-color: transparent;
 }
 
-.white {
-	background: url('../Images/Fonts/White.png');
-	background-repeat: repeat-x;
-	background-position-y: 4px;
-	-webkit-font-smoothing: antialiased;
-	-webkit-background-clip: text;
-	-moz-background-clip: text;
-	background-clip: text;
-	-webkit-text-fill-color: transparent;
-}
-
 span.leviathan,
 span.devil,
 span.golden,
 span.silver,
 span.bronze,
-span.default,
-span.white {
+span.default {
 	background-position-y: 3px;
 }
