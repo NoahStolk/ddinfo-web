@@ -2,6 +2,7 @@
 using DevilDaggersWebsite.Clients;
 using DevilDaggersWebsite.Dto;
 using DevilDaggersWebsite.Entities;
+using DevilDaggersWebsite.Razor.Utils;
 using Microsoft.AspNetCore.Hosting;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.AspNetCore.Mvc.RazorPages;
@@ -28,9 +29,6 @@ namespace DevilDaggersWebsite.Razor.Pages.Leaderboard
 			_dbContext = dbContext;
 		}
 
-		[BindProperty]
-		public Entry? Entry { get; set; }
-
 		public int PlayerId
 		{
 			get => _playerId;
@@ -42,11 +40,14 @@ namespace DevilDaggersWebsite.Razor.Pages.Leaderboard
 			}
 		}
 
-		public Death? Death { get; private set; }
-
-		public int? BestRankRecorded { get; private set; }
-
 		public Player? Player { get; private set; }
+
+		[BindProperty]
+		public Entry? Entry { get; set; }
+
+		public Death? Death { get; private set; }
+		public string? CountryName { get; private set; }
+		public int? BestRankRecorded { get; private set; }
 
 		public bool HasValidTop100Graph { get; private set; }
 		public List<string> UsernameAliases { get; private set; } = new();
@@ -55,11 +56,14 @@ namespace DevilDaggersWebsite.Razor.Pages.Leaderboard
 		{
 			PlayerId = Math.Max(1, id);
 
+			Player = _dbContext.Players.FirstOrDefault(p => p.Id == PlayerId);
+
 			Entry = await LeaderboardClient.Instance.GetUserById(PlayerId);
 
 			if (Entry != null)
 			{
 				Death = GameInfo.GetDeathByType(GameVersion.V31, Entry.DeathType);
+				CountryName = Player?.CountryCode != null ? UserUtils.CountryNames.ContainsKey(Player.CountryCode) ? UserUtils.CountryNames[Player.CountryCode] : "Invalid country code" : null;
 				HasValidTop100Graph = Entry.ExistsInHistory(_env);
 				UsernameAliases = Entry.GetAllUsernameAliases(_env).Where(s => s != Entry.Username).ToList();
 			}
@@ -71,8 +75,6 @@ namespace DevilDaggersWebsite.Razor.Pages.Leaderboard
 				if (entry != null && (!BestRankRecorded.HasValue || BestRankRecorded.Value > entry.Rank))
 					BestRankRecorded = entry.Rank;
 			}
-
-			Player = _dbContext.Players.FirstOrDefault(p => p.Id == PlayerId);
 		}
 	}
 }
