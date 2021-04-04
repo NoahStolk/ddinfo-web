@@ -16,7 +16,7 @@ namespace DevilDaggersWebsite.Dto.Admin
 			dictionary.Add(nameof(Name), Name);
 			dictionary.Add(nameof(PlayerId), PlayerId.ToString());
 			dictionary.Add(nameof(MaxDisplayWaves), MaxDisplayWaves.ToString() ?? string.Empty);
-			dictionary.Add(nameof(HtmlDescription), HtmlDescription?.Substring(0, 50) ?? string.Empty);
+			dictionary.Add(nameof(HtmlDescription), HtmlDescription ?? string.Empty);
 			dictionary.Add(nameof(IsPractice), IsPractice.ToString());
 			return dictionary;
 		}
