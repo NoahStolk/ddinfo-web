@@ -12,8 +12,6 @@ namespace LeaderboardJsonCreator
 {
 	public partial class MainWindow : Window
 	{
-		public static MainWindow This;
-
 		public Leaderboard _leaderboard = new();
 
 		public MainWindow()
@@ -22,6 +20,8 @@ namespace LeaderboardJsonCreator
 
 			This = this;
 		}
+
+		public static MainWindow This { get; private set; } = null!;
 
 		public void RefreshLeaderboard()
 		{
