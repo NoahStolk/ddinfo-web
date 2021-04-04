@@ -17,41 +17,43 @@
 	{
 		<p>Failed to retrieve scores from the official Devil Daggers leaderboard servers. Please try again later.</p>
 		<p>If the problem persists, try contacting the Devil Daggers developer.</p>
-		return;
 	}
-	@using (Html.BeginForm(FormMethod.Get))
+	else
 	{
-		<fieldset>
-			<div class="flex-container flex-column">
-				<div class="flex-container">
-					<div class="input-label text-left" style="@RazorUtils.GetCssWidth(widths[0])">Rank:</div>
-					<div style="@RazorUtils.GetCssWidth(widths[1])">@Html.TextBoxFor(m => m.Rank, new { @class = "input" })</div>
+		@using (Html.BeginForm(FormMethod.Get))
+		{
+			<fieldset>
+				<div class="flex-container flex-column">
+					<div class="flex-container">
+						<div class="input-label text-left" style="@RazorUtils.GetCssWidth(widths[0])">Rank:</div>
+						<div style="@RazorUtils.GetCssWidth(widths[1])">@Html.TextBoxFor(m => m.Rank, new { @class = "input" })</div>
+					</div>
 				</div>
-			</div>
-			<div>
-				<a class="btn" asp-page="/Leaderboard/Index" asp-route-rank="@(Math.Max(1, Model.Rank - 100))">&lt;</a>
-				<input class="btn" type="submit" value="Show" />
-				<a class="btn" asp-page="/Leaderboard/Index" asp-route-rank="@(Math.Min(Model.Leaderboard.Players - 99, Model.Rank + 100))">&gt;</a>
-			</div>
-		</fieldset>
+				<div>
+					<a class="btn" asp-page="/Leaderboard/Index" asp-route-rank="@(Math.Max(1, Model.Rank - 100))">&lt;</a>
+					<input class="btn" type="submit" value="Show" />
+					<a class="btn" asp-page="/Leaderboard/Index" asp-route-rank="@(Math.Min(Model.Leaderboard.Players - 99, Model.Rank + 100))">&gt;</a>
+				</div>
+			</fieldset>
+		}
+		<p>
+			Showing rank @Model.Rank - @(Model.Rank + 99)
+		</p>
+		<p class="visible-xs visible-sm visible-md">
+			On mobile devices; tap on an entry to expand it.
+		</p>
+		<p>
+			If you'd like to add your nationality (flag) to this leaderboard, let one of the <img src="~/images/Icons/eye3.png" /> <a href="@RazorUtils.DiscordUrl">Discord</a> mods know.
+		</p>
+		<p>
+			You can sort the leaderboard by clicking the headers.
+		</p>
+		<p>
+			<span class="ban leaderboard-username">Crossed out entries</span> are runs that are cheated, boosted, submitted on an alternative account, or otherwise considered invalid.
+		</p>
+		@await Html.PartialAsync("Partials/LeaderboardGlobalPartial")
+		@await Html.PartialAsync("Partials/LeaderboardUserPartial")
 	}
-	<p>
-		Showing rank @Model.Rank - @(Model.Rank + 99)
-	</p>
-	<p class="visible-xs visible-sm visible-md">
-		On mobile devices; tap on an entry to expand it.
-	</p>
-	<p>
-		If you'd like to add your nationality (flag) to this leaderboard, let one of the <img src="~/images/Icons/eye3.png" /> <a href="@RazorUtils.DiscordUrl">Discord</a> mods know.
-	</p>
-	<p>
-		You can sort the leaderboard by clicking the headers.
-	</p>
-	<p>
-		<span class="ban leaderboard-username">Crossed out entries</span> are runs that are cheated, boosted, submitted on an alternative account, or otherwise considered invalid.
-	</p>
-	@await Html.PartialAsync("Partials/LeaderboardGlobalPartial")
-	@await Html.PartialAsync("Partials/LeaderboardUserPartial")
 </main>
 
 @section Scripts {

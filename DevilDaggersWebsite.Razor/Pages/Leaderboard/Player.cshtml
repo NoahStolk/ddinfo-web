@@ -16,187 +16,188 @@
 	@if (Model.Entry == null)
 	{
 		<p>Failed to retrieve player with ID @Model.PlayerId.</p>
-		return;
 	}
-
-	<div>Current rank</div>
-	<div>@Model.Entry.Rank</div>
-	<div>Best rank recorded</div>
-	<div>@Model.BestRankRecorded</div>
-	@if (Model.UsernameAliases.Count > 0)
+	else
 	{
-		<div>Past usernames</div>
-		@Html.Raw(string.Join(", ", Model.UsernameAliases.Select(ua => $"<span class=\"white\">{ua}</span>")));
-	}
+		<div>Current rank</div>
+		<div>@Model.Entry.Rank</div>
+		<div>Best rank recorded</div>
+		<div>@Model.BestRankRecorded</div>
+		@if (Model.UsernameAliases.Count > 0)
+		{
+			<div>Past usernames</div>
+			@Html.Raw(string.Join(", ", Model.UsernameAliases.Select(ua => $"<span class=\"white\">{ua}</span>")));
+		}
 
-	<h2>Personal Best</h2>
-	<div class="flex-container player-section">
-		<div>
-			<div><img class="icon-large" src="~/images/Icons/stopwatchx4.png" /></div>
-			<span class="@daggerCssName">@Model.Entry.Time.FormatTimeInteger(false)</span>
-			<span class="white">seconds</span>
-		</div>
-		<div>
-			<div><img class="icon-large" src="~/images/Icons/daggerx4.png" /></div>
-			<span class="@daggerCssName">@Model.Entry.Kills.ToString(FormatUtils.LeaderboardIntFormat)</span>
-			<span class="white">kills</span>
-		</div>
-		<div>
-			<div><img class="icon-large" src="~/images/Icons/gemx4.png" /></div>
-			<span class="@daggerCssName">@Model.Entry.Gems.ToString(FormatUtils.LeaderboardIntFormat)</span>
-			<span class="white">gems</span>
-		</div>
-		<div>
-			<div><img class="icon-large" src="~/images/Icons/crosshairx4.png" /></div>
-			<span class="@daggerCssName">@Model.Entry.Accuracy.ToString(FormatUtils.AccuracyFormat)</span>
-			<span class="white">accuracy</span>
-		</div>
-		<div>
-			<div><img class="icon-large" src="~/images/Icons/crosshairx4.png" /></div>
-			<span class="@daggerCssName">@Model.Entry.DaggersHit.ToString(FormatUtils.LeaderboardIntFormat)</span>
-			<span class="white">daggers hit</span>
-		</div>
-		<div>
-			<div><img class="icon-large" src="~/images/Icons/crosshairx4.png" /></div>
-			<span class="@daggerCssName">@Model.Entry.DaggersFired.ToString(FormatUtils.LeaderboardIntFormat)</span>
-			<span class="white">daggers fired</span>
-		</div>
-		<div>
-			<div><img class="icon-large" src="~/images/Icons/skullx4.png" /></div>
-			<div style="@deathStyle">@(Model.Death?.Name)</div>
-		</div>
-	</div>
-
-	<h2>Total Statistics</h2>
-	<div class="flex-container player-section">
-		<div>
-			<div><img class="icon-large" src="~/images/Icons/stopwatchx4.png" /></div>
-			<span class="@daggerCssName">@Model.Entry.TimeTotal.FormatTimeInteger(true)</span>
-			<span class="white">seconds</span>
-		</div>
-		<div>
-			<div><img class="icon-large" src="~/images/Icons/daggerx4.png" /></div>
-			<span class="@daggerCssName">@Model.Entry.KillsTotal.ToString(FormatUtils.LeaderboardIntFormat)</span>
-			<span class="white">kills</span>
-		</div>
-		<div>
-			<div><img class="icon-large" src="~/images/Icons/gemx4.png" /></div>
-			<span class="@daggerCssName">@Model.Entry.GemsTotal.ToString(FormatUtils.LeaderboardIntFormat)</span>
-			<span class="white">gems</span>
-		</div>
-		<div>
-			<div><img class="icon-large" src="~/images/Icons/crosshairx4.png" /></div>
-			<span class="@daggerCssName">@Model.Entry.AccuracyTotal.ToString(FormatUtils.AccuracyFormat)</span>
-			<span class="white">accuracy</span>
-		</div>
-		<div>
-			<div><img class="icon-large" src="~/images/Icons/crosshairx4.png" /></div>
-			<span class="@daggerCssName">@Model.Entry.DaggersHitTotal.ToString(FormatUtils.LeaderboardIntFormat)</span>
-			<span class="white">daggers hit</span>
-		</div>
-		<div>
-			<div><img class="icon-large" src="~/images/Icons/crosshairx4.png" /></div>
-			<span class="@daggerCssName">@Model.Entry.DaggersFiredTotal.ToString(FormatUtils.LeaderboardIntFormat)</span>
-			<span class="white">daggers fired</span>
-		</div>
-		<div>
-			<div><img class="icon-large" src="~/images/Icons/skullx4.png" /></div>
-			<span class="@daggerCssName">@Model.Entry.DeathsTotal.ToString(FormatUtils.LeaderboardIntFormat)</span>
-			<span class="white">deaths</span>
-		</div>
-	</div>
-
-	@if (Model.Player != null && Model.Player.Dpi.HasValue)
-	{
-		<h2>Settings</h2>
+		<h2>Personal Best</h2>
 		<div class="flex-container player-section">
-			@if (Model.Player.Edpi.HasValue)
-			{
-				<div>
-					<span class="white">eDPI</span>
-					<span class="@daggerCssName">@Model.Player.Edpi.Value.ToString(FormatUtils.MouseSensitivityFormat)</span>
-				</div>
-			}
 			<div>
-				<span class="white">DPI</span>
-				<span class="@daggerCssName">@Model.Player.Dpi</span>
+				<div><img class="icon-large" src="~/images/Icons/stopwatchx4.png" /></div>
+				<span class="@daggerCssName">@Model.Entry.Time.FormatTimeInteger(false)</span>
+				<span class="white">seconds</span>
 			</div>
-			@if (Model.Player.InGameSens.HasValue)
-			{
-				<div>
-					<span class="white">In-game sens</span>
-					<span class="@daggerCssName">@Model.Player.InGameSens.Value.ToString(FormatUtils.MouseSensitivityFormat)</span>
-				</div>
-			}
-			@if (Model.Player.Fov.HasValue)
-			{
-				<div>
-					<span class="white">FOV</span>
-					<span class="@daggerCssName">@Model.Player.Fov</span>
-				</div>
-			}
-			@if (Model.Player.Gamma.HasValue)
-			{
-				<div>
-					<span class="white">Gamma</span>
-					<span class="@daggerCssName">@Model.Player.Gamma</span>
-				</div>
-			}
-			@if (Model.Player.RightHanded.HasValue)
-			{
-				<div>
-					<span class="white">Hand orientation</span>
-					<span class="@daggerCssName">@Model.Player.RightHandedString</span>
-				</div>
-			}
-			@if (Model.Player.FlashEnabled.HasValue)
-			{
-				<div>
-					<span class="white">Hand flash</span>
-					<span class="@daggerCssName">@Model.Player.FlashEnabledString</span>
-				</div>
-			}
-			@if (Model.Player.UsesLegacyAudio.HasValue)
-			{
-				<div>
-					<span class="white">Legacy audio</span>
-					<span class="@daggerCssName">@Model.Player.UsesLegacyAudioString</span>
-				</div>
-			}
-		</div>
-	}
-
-	@if (Model.HasValidTop100Graph)
-	{
-		<h2>Top 100 progression</h2>
-		<p>
-			Note that the graph data is based on the <a asp-page="/Leaderboard/History">Leaderboard History</a>, and might therefore be incomplete.
-		</p>
-		<p>
-			Also note that the graph data is only based on a player's highscores; the rank and username do not update until the next top 100 highscore.
-		</p>
-
-		<div class="chart" id="user-progression-chart">
-			<table class="highlighter" id="user-progression-highlighter">
-				<tr><td>Date</td><td id="h-date"></td></tr>
-				<tr><td>Rank</td><td id="h-rank"></td></tr>
-				<tr><td>Time</td><td id="h-time"></td></tr>
-				<tr><td>Username</td><td id="h-username"></td></tr>
-				<tr><td>Gems</td><td id="h-gems"></td></tr>
-				<tr><td>Kills</td><td id="h-kills"></td></tr>
-				<tr><td>Accuracy</td><td id="h-accuracy"></td></tr>
-				<tr><td>Death type</td><td id="h-death-type"></td></tr>
-			</table>
+			<div>
+				<div><img class="icon-large" src="~/images/Icons/daggerx4.png" /></div>
+				<span class="@daggerCssName">@Model.Entry.Kills.ToString(FormatUtils.LeaderboardIntFormat)</span>
+				<span class="white">kills</span>
+			</div>
+			<div>
+				<div><img class="icon-large" src="~/images/Icons/gemx4.png" /></div>
+				<span class="@daggerCssName">@Model.Entry.Gems.ToString(FormatUtils.LeaderboardIntFormat)</span>
+				<span class="white">gems</span>
+			</div>
+			<div>
+				<div><img class="icon-large" src="~/images/Icons/crosshairx4.png" /></div>
+				<span class="@daggerCssName">@Model.Entry.Accuracy.ToString(FormatUtils.AccuracyFormat)</span>
+				<span class="white">accuracy</span>
+			</div>
+			<div>
+				<div><img class="icon-large" src="~/images/Icons/crosshairx4.png" /></div>
+				<span class="@daggerCssName">@Model.Entry.DaggersHit.ToString(FormatUtils.LeaderboardIntFormat)</span>
+				<span class="white">daggers hit</span>
+			</div>
+			<div>
+				<div><img class="icon-large" src="~/images/Icons/crosshairx4.png" /></div>
+				<span class="@daggerCssName">@Model.Entry.DaggersFired.ToString(FormatUtils.LeaderboardIntFormat)</span>
+				<span class="white">daggers fired</span>
+			</div>
+			<div>
+				<div><img class="icon-large" src="~/images/Icons/skullx4.png" /></div>
+				<div style="@deathStyle">@(Model.Death?.Name)</div>
+			</div>
 		</div>
 
-		<h2>Activity</h2>
-		<div class="chart" id="user-activity-chart">
-			<table class="highlighter" id="user-activity-highlighter">
-				<tr><td>Period</td><td id="h-activity-date"></td></tr>
-				<tr><td>Approximate deaths per day</td><td id="h-activity-deaths-per-day"></td></tr>
-				<tr><td>Total deaths</td><td id="h-activity-deaths"></td></tr>
-			</table>
+		<h2>Total Statistics</h2>
+		<div class="flex-container player-section">
+			<div>
+				<div><img class="icon-large" src="~/images/Icons/stopwatchx4.png" /></div>
+				<span class="@daggerCssName">@Model.Entry.TimeTotal.FormatTimeInteger(true)</span>
+				<span class="white">seconds</span>
+			</div>
+			<div>
+				<div><img class="icon-large" src="~/images/Icons/daggerx4.png" /></div>
+				<span class="@daggerCssName">@Model.Entry.KillsTotal.ToString(FormatUtils.LeaderboardIntFormat)</span>
+				<span class="white">kills</span>
+			</div>
+			<div>
+				<div><img class="icon-large" src="~/images/Icons/gemx4.png" /></div>
+				<span class="@daggerCssName">@Model.Entry.GemsTotal.ToString(FormatUtils.LeaderboardIntFormat)</span>
+				<span class="white">gems</span>
+			</div>
+			<div>
+				<div><img class="icon-large" src="~/images/Icons/crosshairx4.png" /></div>
+				<span class="@daggerCssName">@Model.Entry.AccuracyTotal.ToString(FormatUtils.AccuracyFormat)</span>
+				<span class="white">accuracy</span>
+			</div>
+			<div>
+				<div><img class="icon-large" src="~/images/Icons/crosshairx4.png" /></div>
+				<span class="@daggerCssName">@Model.Entry.DaggersHitTotal.ToString(FormatUtils.LeaderboardIntFormat)</span>
+				<span class="white">daggers hit</span>
+			</div>
+			<div>
+				<div><img class="icon-large" src="~/images/Icons/crosshairx4.png" /></div>
+				<span class="@daggerCssName">@Model.Entry.DaggersFiredTotal.ToString(FormatUtils.LeaderboardIntFormat)</span>
+				<span class="white">daggers fired</span>
+			</div>
+			<div>
+				<div><img class="icon-large" src="~/images/Icons/skullx4.png" /></div>
+				<span class="@daggerCssName">@Model.Entry.DeathsTotal.ToString(FormatUtils.LeaderboardIntFormat)</span>
+				<span class="white">deaths</span>
+			</div>
 		</div>
+
+		@if (Model.Player != null && Model.Player.Dpi.HasValue)
+		{
+			<h2>Settings</h2>
+			<div class="flex-container player-section">
+				@if (Model.Player.Edpi.HasValue)
+				{
+					<div>
+						<span class="white">eDPI</span>
+						<span class="@daggerCssName">@Model.Player.Edpi.Value.ToString(FormatUtils.MouseSensitivityFormat)</span>
+					</div>
+				}
+				<div>
+					<span class="white">DPI</span>
+					<span class="@daggerCssName">@Model.Player.Dpi</span>
+				</div>
+				@if (Model.Player.InGameSens.HasValue)
+				{
+					<div>
+						<span class="white">In-game sens</span>
+						<span class="@daggerCssName">@Model.Player.InGameSens.Value.ToString(FormatUtils.MouseSensitivityFormat)</span>
+					</div>
+				}
+				@if (Model.Player.Fov.HasValue)
+				{
+					<div>
+						<span class="white">FOV</span>
+						<span class="@daggerCssName">@Model.Player.Fov</span>
+					</div>
+				}
+				@if (Model.Player.Gamma.HasValue)
+				{
+					<div>
+						<span class="white">Gamma</span>
+						<span class="@daggerCssName">@Model.Player.Gamma</span>
+					</div>
+				}
+				@if (Model.Player.RightHanded.HasValue)
+				{
+					<div>
+						<span class="white">Hand orientation</span>
+						<span class="@daggerCssName">@Model.Player.RightHandedString</span>
+					</div>
+				}
+				@if (Model.Player.FlashEnabled.HasValue)
+				{
+					<div>
+						<span class="white">Hand flash</span>
+						<span class="@daggerCssName">@Model.Player.FlashEnabledString</span>
+					</div>
+				}
+				@if (Model.Player.UsesLegacyAudio.HasValue)
+				{
+					<div>
+						<span class="white">Legacy audio</span>
+						<span class="@daggerCssName">@Model.Player.UsesLegacyAudioString</span>
+					</div>
+				}
+			</div>
+		}
+
+		@if (Model.HasValidTop100Graph)
+		{
+			<h2>Top 100 progression</h2>
+			<p>
+				Note that the graph data is based on the <a asp-page="/Leaderboard/History">Leaderboard History</a>, and might therefore be incomplete.
+			</p>
+			<p>
+				Also note that the graph data is only based on a player's highscores; the rank and username do not update until the next top 100 highscore.
+			</p>
+
+			<div class="chart" id="user-progression-chart">
+				<table class="highlighter" id="user-progression-highlighter">
+					<tr><td>Date</td><td id="h-date"></td></tr>
+					<tr><td>Rank</td><td id="h-rank"></td></tr>
+					<tr><td>Time</td><td id="h-time"></td></tr>
+					<tr><td>Username</td><td id="h-username"></td></tr>
+					<tr><td>Gems</td><td id="h-gems"></td></tr>
+					<tr><td>Kills</td><td id="h-kills"></td></tr>
+					<tr><td>Accuracy</td><td id="h-accuracy"></td></tr>
+					<tr><td>Death type</td><td id="h-death-type"></td></tr>
+				</table>
+			</div>
+
+			<h2>Activity</h2>
+			<div class="chart" id="user-activity-chart">
+				<table class="highlighter" id="user-activity-highlighter">
+					<tr><td>Period</td><td id="h-activity-date"></td></tr>
+					<tr><td>Approximate deaths per day</td><td id="h-activity-deaths-per-day"></td></tr>
+					<tr><td>Total deaths</td><td id="h-activity-deaths"></td></tr>
+				</table>
+			</div>
+		}
 	}
 </main>
 
