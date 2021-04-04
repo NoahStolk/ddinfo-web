@@ -64,11 +64,11 @@ namespace DevilDaggersWebsite.Razor.Pages.Leaderboard
 				}
 			}
 
-			Leaderboard = JsonConvert.DeserializeObject<Lb>(Io.File.ReadAllText(Path.Combine(_env.WebRootPath, "leaderboard-history", From), Encoding.UTF8));
+			Leaderboard = JsonConvert.DeserializeObject<Lb>(Io.File.ReadAllText(Path.Combine(_env.WebRootPath, "leaderboard-history", From), Encoding.UTF8)) ?? throw new($"Corrupt leaderboard history file: {From}");
 
 			if (FromNext != null && Leaderboard.DateTime > _fullHistoryDateStart)
 			{
-				LeaderboardPrevious = JsonConvert.DeserializeObject<Lb>(Io.File.ReadAllText(Path.Combine(_env.WebRootPath, "leaderboard-history", FromNext), Encoding.UTF8));
+				LeaderboardPrevious = JsonConvert.DeserializeObject<Lb>(Io.File.ReadAllText(Path.Combine(_env.WebRootPath, "leaderboard-history", FromNext), Encoding.UTF8)) ?? throw new($"Corrupt leaderboard history file: {FromNext}");
 
 				if (LeaderboardPrevious.Players != Leaderboard.Players)
 					ChangesGlobal.Add($"Total players +{Leaderboard.Players - LeaderboardPrevious.Players}");
