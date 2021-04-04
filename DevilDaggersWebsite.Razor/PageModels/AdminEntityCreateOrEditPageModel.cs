@@ -95,7 +95,7 @@ namespace DevilDaggersWebsite.Razor.PageModels
 				try
 				{
 					StringBuilder auditLogger = new($"`EDIT` by `{this.GetIdentity()}` for `{typeof(TEntity).Name}` `{id}`\n");
-					Log(auditLogger, _entity.Populate().Log(), AdminDto.Log());
+					LogCreateOrEdit(auditLogger, _entity.Populate().Log(), AdminDto.Log());
 
 					_entity.Edit(DbContext, AdminDto);
 					DbContext.SaveChanges();
@@ -144,53 +144,12 @@ namespace DevilDaggersWebsite.Razor.PageModels
 				DbContext.SaveChanges();
 
 				StringBuilder auditLogger = new($"`CREATE` by `{this.GetIdentity()}` for `{typeof(TEntity).Name}` `{_entity.Id}`\n");
-				Log(auditLogger, null, AdminDto.Log());
+				LogCreateOrEdit(auditLogger, null, AdminDto.Log());
 
 				await DiscordLogger.Instance.TryLog(Channel.AuditLogMonitoring, _env.EnvironmentName, auditLogger.ToString());
 			}
 
 			return RedirectToPage("./Index");
-
-			static void Log(StringBuilder auditLogger, Dictionary<string, string>? oldLog, Dictionary<string, string> newLog)
-			{
-				auditLogger.AppendLine("```diff");
-
-				const string propertyHeader = "Property";
-				const string oldValueHeader = "Old value";
-				const string newValueHeader = "New value";
-				const int paddingL = 4;
-				const int paddingR = 2;
-
-				int maxL = propertyHeader.Length, maxR = oldValueHeader.Length;
-				foreach (KeyValuePair<string, string> kvp in oldLog ?? newLog)
-				{
-					if (kvp.Key.Length > maxL)
-						maxL = kvp.Key.Length;
-					if (kvp.Value.Length > maxR)
-						maxR = kvp.Value.Length;
-				}
-
-				if (oldLog != null)
-				{
-					auditLogger.AppendFormat($"{{0,-{maxL + paddingL}}}", propertyHeader).AppendFormat($"{{0,-{maxR + paddingR}}}", oldValueHeader).AppendLine(newValueHeader);
-					auditLogger.AppendLine();
-					foreach (KeyValuePair<string, string> kvp in oldLog)
-					{
-						string newValue = newLog[kvp.Key];
-						char diff = kvp.Value == newValue ? '-' : '+';
-						auditLogger.AppendFormat($"{{0,-{maxL + paddingL}}}", $"{diff} {kvp.Key}").AppendFormat($"{{0,-{maxR + paddingR}}}", kvp.Value).AppendLine(newValue);
-					}
-				}
-				else
-				{
-					auditLogger.AppendFormat($"{{0,-{maxL + paddingL}}}", propertyHeader).AppendLine(newValueHeader);
-					auditLogger.AppendLine();
-					foreach (KeyValuePair<string, string> kvp in newLog)
-						auditLogger.AppendFormat($"{{0,-{maxL + paddingL}}}", $"+ {kvp.Key}").AppendLine(kvp.Value);
-				}
-
-				auditLogger.AppendLine("```");
-			}
 		}
 
 		private IQueryable<TEntity> GetFullQuery()
