@@ -13,7 +13,7 @@ namespace DevilDaggersWebsite.Razor.Pages
 			{ ("Check out the asset editor which can be used to mod the game", "Tools/DevilDaggersAssetEditor.png", "/Tools/DevilDaggersAssetEditor") },
 			{ ("Check out the survival editor which can be used to create spawnsets and practice sections of the game", "Tools/DevilDaggersSurvivalEditor.png", "/Tools/DevilDaggersSurvivalEditor") },
 			{ ("Participate in custom leaderboards for spawnsets", "Home/CustomLeaderboard.png", "/CustomLeaderboards") },
-			{ ("Check out the world record progression or other statistics", "Home/Statistics.png", "/Leaderboard/WorldRecordProgression") },
+			{ ("Check out the world record progression and other statistics", "Home/Statistics.png", "/Leaderboard/WorldRecordProgression") },
 			{ ("Check out various wiki pages about the game, such as spawn times, enemy types, or hand upgrades", "Home/Wiki.png", "/Wiki/Enemies") },
 		};
 	}
