@@ -6,6 +6,7 @@ using DevilDaggersWebsite.Razor.Utils;
 using Microsoft.AspNetCore.Hosting;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.AspNetCore.Mvc.RazorPages;
+using Microsoft.EntityFrameworkCore;
 using Newtonsoft.Json;
 using System;
 using System.Collections.Generic;
@@ -46,8 +47,19 @@ namespace DevilDaggersWebsite.Razor.Pages.Leaderboard
 		public Entry? Entry { get; set; }
 
 		public Death? Death { get; private set; }
+		public Dagger? Dagger { get; private set; }
 		public string? CountryName { get; private set; }
 		public int? BestRankRecorded { get; private set; }
+
+		public Dictionary<string, int> CustomDaggerCounts { get; } = new()
+		{
+			{ "leviathan", 0 },
+			{ "devil", 0 },
+			{ "golden", 0 },
+			{ "silver", 0 },
+			{ "bronze", 0 },
+			{ "default", 0 },
+		};
 
 		public bool HasValidTop100Graph { get; private set; }
 		public List<string> UsernameAliases { get; private set; } = new();
@@ -55,7 +67,6 @@ namespace DevilDaggersWebsite.Razor.Pages.Leaderboard
 		public async Task OnGetAsync(int id)
 		{
 			PlayerId = Math.Max(1, id);
-
 			Player = _dbContext.Players.FirstOrDefault(p => p.Id == PlayerId);
 
 			Entry = await LeaderboardClient.Instance.GetUserById(PlayerId);
@@ -63,6 +74,7 @@ namespace DevilDaggersWebsite.Razor.Pages.Leaderboard
 			if (Entry != null)
 			{
 				Death = GameInfo.GetDeathByType(GameVersion.V31, Entry.DeathType);
+				Dagger = GameInfo.GetDaggerFromTime(GameVersion.V31, Entry.Time);
 				CountryName = Player?.CountryCode != null ? UserUtils.CountryNames.ContainsKey(Player.CountryCode) ? UserUtils.CountryNames[Player.CountryCode] : "Invalid country code" : null;
 				HasValidTop100Graph = Entry.ExistsInHistory(_env);
 				UsernameAliases = Entry.GetAllUsernameAliases(_env).Where(s => s != Entry.Username).ToList();
@@ -74,6 +86,13 @@ namespace DevilDaggersWebsite.Razor.Pages.Leaderboard
 				Entry? entry = lb.Entries.Find(e => e.Id == PlayerId);
 				if (entry != null && (!BestRankRecorded.HasValue || BestRankRecorded.Value > entry.Rank))
 					BestRankRecorded = entry.Rank;
+			}
+
+			foreach (Entities.CustomEntry customEntry in _dbContext.CustomEntries.Include(ce => ce.CustomLeaderboard).Where(ce => ce.PlayerId == PlayerId))
+			{
+				string dagger = customEntry.CustomLeaderboard.GetDagger(customEntry.Time);
+				if (CustomDaggerCounts.ContainsKey(dagger))
+					CustomDaggerCounts[dagger]++;
 			}
 		}
 	}

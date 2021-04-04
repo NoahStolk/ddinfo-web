@@ -1,9 +1,32 @@
-﻿.player-section {
+﻿.player-section-container {
 	flex-direction: row;
 	flex-wrap: wrap;
 }
 
+.player-section {
+	flex-direction: row;
+	flex-wrap: wrap;
+	justify-content: space-between;
+}
+
 	.player-section > div {
-		width: 240px;
-		margin: 8px 0;
+		width: 360px;
+	}
+
+.leaderboard-data-header {
+	padding: 8px;
+	font-size: 24px;
+	color: var(--col-red);
+}
+
+.leaderboard-data > div {
+	flex-grow: 1;
+}
+
+	.leaderboard-data > div:nth-child(1) {
+		padding-left: 8px;
+	}
+
+	.leaderboard-data > div:nth-child(2) {
+		padding-right: 8px;
 	}

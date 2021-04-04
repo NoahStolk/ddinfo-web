@@ -2,7 +2,6 @@
 using DevilDaggersCore.Utils;
 using DevilDaggersWebsite.Entities;
 using DevilDaggersWebsite.Enumerators;
-using DevilDaggersWebsite.Razor.Extensions;
 using DevilDaggersWebsite.Razor.Utils;
 using Microsoft.AspNetCore.Html;
 using System;

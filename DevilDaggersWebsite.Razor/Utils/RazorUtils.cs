@@ -130,5 +130,13 @@ namespace DevilDaggersWebsite.Razor.Utils
 				})
 				.ToList();
 		}
+
+		public static string ToUpperFirst(this string str)
+		{
+			if (str.Length == 0)
+				return str;
+
+			return $"{char.ToUpper(str[0])}{str[1..]}";
+		}
 	}
 }
