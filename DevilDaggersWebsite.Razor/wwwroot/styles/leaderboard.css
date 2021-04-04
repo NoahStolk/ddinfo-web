@@ -36,7 +36,8 @@
 	cursor: pointer;
 }
 
-.ban {
+.ban,
+.ban * a {
 	color: var(--col-ban);
 }
 
