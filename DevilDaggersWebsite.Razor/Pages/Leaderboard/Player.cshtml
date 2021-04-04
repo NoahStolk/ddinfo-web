@@ -14,6 +14,7 @@
 </header>
 
 <main role="main">
+	<a asp-page="/Leaderboard/Index" asp-route-rank="@(((Model.Entry?.Rank - 1) / 100 * 100 + 1) ?? 0)">Back to leaderboard</a>
 	@if (Model.Entry == null)
 	{
 		<p>Failed to retrieve player with ID @Model.PlayerId.</p>
