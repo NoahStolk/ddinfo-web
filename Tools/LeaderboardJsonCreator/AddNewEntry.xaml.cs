@@ -9,8 +9,6 @@ namespace LeaderboardJsonCreator
 {
 	public partial class AddNewEntry : UserControl
 	{
-		public static AddNewEntry This;
-
 		public Entry _entry = new() { DeathType = -1 };
 
 		public AddNewEntry()
@@ -19,6 +17,8 @@ namespace LeaderboardJsonCreator
 
 			This = this;
 		}
+
+		public static AddNewEntry This { get; private set; } = null!;
 
 		public void SetEntry(Entry entry)
 		{
