@@ -197,7 +197,7 @@
 		{
 			<h2>Top 100 progression</h2>
 			<p>
-				Note that the graph data is based on the <a asp-page="/Leaderboard/History">Leaderboard History</a>, and might therefore be incomplete.
+				Note that the graph data is based entirely on the <a asp-page="/Leaderboard/History">Leaderboard History</a>, and might therefore be incomplete.
 			</p>
 			<p>
 				Also note that the graph data is only based on a player's highscores; the rank and username do not update until the next top 100 highscore.
@@ -217,6 +217,10 @@
 			</div>
 
 			<h2>Activity</h2>
+			<p>
+				This data is only updated when the player is in top 100.
+			</p>
+
 			<div class="chart" id="user-activity-chart">
 				<table class="highlighter" id="user-activity-highlighter">
 					<tr><td>Period</td><td id="h-activity-date"></td></tr>
