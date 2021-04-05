@@ -35,3 +35,12 @@
 	.leaderboard-data > div:nth-child(2) {
 		padding-right: 8px;
 	}
+
+.player-section-list-link {
+	padding-left: 8px;
+	display: block;
+}
+
+div > .player-section-list-link:nth-child(2n) {
+	background-color: var(--col-gray-11);
+}

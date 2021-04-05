@@ -65,8 +65,8 @@ namespace DevilDaggersWebsite.Razor.Pages.Leaderboard
 			{ "default", 0 },
 		};
 
-		public List<string> ModNames { get; } = new();
-		public List<string> SpawnsetNames { get; } = new();
+		public List<AssetMod>? Mods { get; private set; }
+		public List<Entities.SpawnsetFile>? Spawnsets { get; private set; }
 
 		public async Task OnGetAsync(int id)
 		{
@@ -103,11 +103,8 @@ namespace DevilDaggersWebsite.Razor.Pages.Leaderboard
 						CustomDaggerCounts[dagger]++;
 				}
 
-				foreach (AssetMod assetMod in _dbContext.AssetMods.Include(am => am.PlayerAssetMods).Where(am => am.PlayerAssetMods.Any(pam => pam.PlayerId == PlayerId)))
-					ModNames.Add(assetMod.Name);
-
-				foreach (Entities.SpawnsetFile spawnsetFile in _dbContext.SpawnsetFiles.Where(sf => sf.PlayerId == PlayerId))
-					SpawnsetNames.Add(spawnsetFile.Name);
+				Mods = _dbContext.AssetMods.Include(am => am.PlayerAssetMods).Where(am => am.PlayerAssetMods.Any(pam => pam.PlayerId == PlayerId)).ToList();
+				Spawnsets = _dbContext.SpawnsetFiles.Where(sf => sf.PlayerId == PlayerId).ToList();
 			}
 		}
 	}
