@@ -90,16 +90,7 @@
 		}
 	}
 
-	<p class="visible-xs visible-sm visible-md">
-		On mobile devices; tap on an entry to expand it.
-	</p>
-	<p>
-		You can sort the leaderboard by clicking the headers.
-	</p>
-	<p>
-		<span class="ban leaderboard-username">Crossed out entries</span> are runs that are cheated, boosted, submitted on an alternative account, or otherwise considered invalid.
-	</p>
-
+	@await Html.PartialAsync("Partials/LeaderboardTableInfoPartial")
 	@await Html.PartialAsync("Partials/LeaderboardGlobalPartial")
 	@await Html.PartialAsync("Partials/LeaderboardUserPartial")
 </main>

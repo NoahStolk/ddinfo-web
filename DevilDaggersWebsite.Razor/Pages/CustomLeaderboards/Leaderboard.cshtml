@@ -83,12 +83,7 @@
 		</div>
 	</div>
 
-	<p class="visible-xs visible-sm visible-md">
-		On mobile devices; tap on an entry to expand it.
-	</p>
-	<p>
-		You can sort the leaderboard by clicking the headers.
-	</p>
+	@await Html.PartialAsync("Partials/LeaderboardTableInfoPartial")
 	@await Html.PartialAsync($"Partials/LeaderboardUserCustomPartial")
 </main>
 

@@ -99,3 +99,9 @@
 	max-width: 480px;
 	margin: 12px 0;
 }
+
+.leaderboard-form-container {
+	background-color: var(--col-gray-11);
+	padding: 12px;
+	margin-bottom: 8px;
+}

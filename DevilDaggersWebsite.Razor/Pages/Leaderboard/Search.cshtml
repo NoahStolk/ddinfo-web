@@ -15,7 +15,7 @@
 	<a asp-page="/Leaderboard/Index">Browse leaderboard by rank</a>
 	@using (Html.BeginForm(FormMethod.Get))
 	{
-		<fieldset>
+		<div class="leaderboard-form-container">
 			<div class="flex-container flex-column">
 				<div class="flex-container">
 					<div class="input-label text-left" style="@RazorUtils.GetCssWidth(widths[0])">Username:</div>
@@ -25,7 +25,7 @@
 			<div>
 				<input class="btn" type="submit" value="Search" />
 			</div>
-		</fieldset>
+		</div>
 	}
 	@if (Model.Username.Length < 3)
 	{
@@ -38,16 +38,8 @@
 	}
 	else
 	{
-		<p>
-			Showing username search results for "@Model.Username"
-		</p>
-		<p class="visible-xs visible-sm visible-md">
-			On mobile devices; tap on an entry to expand it.
-		</p>
-
-		<p>
-			<span class="ban leaderboard-username">Crossed out entries</span> are runs that are cheated, boosted, submitted on an alternative account, or otherwise considered invalid.
-		</p>
+		<p>Showing @Model.Leaderboard.Entries.Count username search results for "@Model.Username".</p>
+		@await Html.PartialAsync("Partials/LeaderboardTableInfoPartial")
 		@await Html.PartialAsync("Partials/LeaderboardUserPartial")
 	}
 </main>
