@@ -1,4 +1,10 @@
-﻿.home-title {
+﻿.logo {
+	max-width: 192px;
+	max-height: 192px;
+	margin: 0 0 16px;
+}
+
+.home-title {
 	font-size: 56px;
 }
 
