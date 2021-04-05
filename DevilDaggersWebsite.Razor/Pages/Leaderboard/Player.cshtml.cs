@@ -83,7 +83,7 @@ namespace DevilDaggersWebsite.Razor.Pages.Leaderboard
 			{
 				foreach (string leaderboardHistoryPath in Io.Directory.GetFiles(Io.Path.Combine(_env.WebRootPath, "leaderboard-history"), "*.json"))
 				{
-					Lb lb = JsonConvert.DeserializeObject<Lb>(Io.File.ReadAllText(leaderboardHistoryPath));
+					Lb lb = JsonConvert.DeserializeObject<Lb>(Io.File.ReadAllText(leaderboardHistoryPath)) ?? throw new($"Corrupt leaderboard history file: {Io.Path.GetFileName(leaderboardHistoryPath)}");
 					Entry? entry = lb.Entries.Find(e => e.Id == PlayerId);
 					if (entry != null && (!BestRankRecorded.HasValue || BestRankRecorded.Value > entry.Rank))
 						BestRankRecorded = entry.Rank;
