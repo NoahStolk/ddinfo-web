@@ -16,8 +16,8 @@
 	@using (Html.BeginForm(FormMethod.Get))
 	{
 		<div class="leaderboard-form-container">
-			<div class="flex-container flex-column">
-				<div class="flex-container">
+			<div>
+				<div>
 					<div class="input-label text-left" style="@RazorUtils.GetCssWidth(widths[0])">Username:</div>
 					<div style="@RazorUtils.GetCssWidth(widths[1])">@Html.TextBoxFor(m => m.Username, new { @class = "input" })</div>
 				</div>
