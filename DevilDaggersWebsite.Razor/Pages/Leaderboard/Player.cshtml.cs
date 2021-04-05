@@ -49,6 +49,10 @@ namespace DevilDaggersWebsite.Razor.Pages.Leaderboard
 		public Death? Death { get; private set; }
 		public Dagger? Dagger { get; private set; }
 		public string? CountryName { get; private set; }
+
+		public bool HasValidTop100Graph { get; private set; }
+		public List<string> UsernameAliases { get; private set; } = new();
+
 		public int? BestRankRecorded { get; private set; }
 
 		public Dictionary<string, int> CustomDaggerCounts { get; } = new()
@@ -61,8 +65,8 @@ namespace DevilDaggersWebsite.Razor.Pages.Leaderboard
 			{ "default", 0 },
 		};
 
-		public bool HasValidTop100Graph { get; private set; }
-		public List<string> UsernameAliases { get; private set; } = new();
+		public List<string> ModNames { get; } = new();
+		public List<string> SpawnsetNames { get; } = new();
 
 		public async Task OnGetAsync(int id)
 		{
@@ -75,7 +79,7 @@ namespace DevilDaggersWebsite.Razor.Pages.Leaderboard
 				Death = GameInfo.GetDeathByType(GameVersion.V31, Entry.DeathType);
 				Dagger = GameInfo.GetDaggerFromTime(GameVersion.V31, Entry.Time);
 				CountryName = Player?.CountryCode != null ? UserUtils.CountryNames.ContainsKey(Player.CountryCode) ? UserUtils.CountryNames[Player.CountryCode] : "Invalid country code" : null;
-				HasValidTop100Graph = Entry.ExistsInHistory(_env);
+				HasValidTop100Graph = Entry.ExistsInHistory(_env); // TODO: Optimize.
 				UsernameAliases = Entry.GetAllUsernameAliases(_env).Where(s => s != Entry.Username).ToList();
 			}
 
@@ -98,6 +102,12 @@ namespace DevilDaggersWebsite.Razor.Pages.Leaderboard
 					if (CustomDaggerCounts.ContainsKey(dagger))
 						CustomDaggerCounts[dagger]++;
 				}
+
+				foreach (AssetMod assetMod in _dbContext.AssetMods.Include(am => am.PlayerAssetMods).Where(am => am.PlayerAssetMods.Any(pam => pam.PlayerId == PlayerId)))
+					ModNames.Add(assetMod.Name);
+
+				foreach (Entities.SpawnsetFile spawnsetFile in _dbContext.SpawnsetFiles.Where(sf => sf.PlayerId == PlayerId))
+					SpawnsetNames.Add(spawnsetFile.Name);
 			}
 		}
 	}

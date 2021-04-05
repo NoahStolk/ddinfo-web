@@ -19,7 +19,7 @@
 	color: var(--col-red);
 }
 
-.alias-list {
+.player-section-list {
 	max-height: 10em;
 	overflow-y: auto;
 }
