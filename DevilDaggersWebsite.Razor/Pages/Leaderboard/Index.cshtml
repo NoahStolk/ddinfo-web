@@ -5,6 +5,7 @@
 	ViewData["Title"] = "Leaderboard";
 
 	int[] widths = new int[2] { 160, 160 };
+	int maxRank = (Model.Leaderboard?.Players ?? int.MaxValue) - 99;
 }
 
 <header>
@@ -32,8 +33,10 @@
 					Showing rank @Model.Rank - @(Model.Rank + 99)
 				</div>
 				<div>
-					<a class="btn" asp-page="/Leaderboard/Index" asp-route-rank="@(Math.Max(1, Model.Rank - 100))">&lt;</a>
-					<a class="btn" asp-page="/Leaderboard/Index" asp-route-rank="@(Math.Min(Model.Leaderboard.Players - 99, Model.Rank + 100))">&gt;</a>
+					<a class="btn @(Model.Rank <= 1 ? "disabled" : string.Empty)" asp-page="/Leaderboard/Index" asp-route-rank="1">&lt;&lt;</a>
+					<a class="btn @(Model.Rank <= 1 ? "disabled" : string.Empty)" asp-page="/Leaderboard/Index" asp-route-rank="@(Math.Max(1, Model.Rank - 100))">&lt;</a>
+					<a class="btn @(Model.Rank >= maxRank ? "disabled" : string.Empty)" asp-page="/Leaderboard/Index" asp-route-rank="@(Math.Min(Model.Leaderboard.Players - 99, Model.Rank + 100))">&gt;</a>
+					<a class="btn @(Model.Rank >= maxRank ? "disabled" : string.Empty)" asp-page="/Leaderboard/Index" asp-route-rank="@(Model.Leaderboard.Players - 99)">&gt;&gt;</a>
 				</div>
 			</div>
 		}
