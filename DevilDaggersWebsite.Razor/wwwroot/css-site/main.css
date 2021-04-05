@@ -163,10 +163,10 @@ option {
 }
 
 .input {
-	text-align: center;
 	color: var(--col-red);
-	margin-top: 5px;
+	margin-top: 3px;
 	max-width: 160px;
+	padding-left: 5px;
 }
 
 .input-label {
