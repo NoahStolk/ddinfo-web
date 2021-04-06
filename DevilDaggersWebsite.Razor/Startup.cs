@@ -69,7 +69,10 @@ namespace DevilDaggersWebsite.Razor
 				args.SetObserved();
 			});
 
-			services.AddControllers().AddNewtonsoftJson(options => options.SerializerSettings.Converters.Add(new StringEnumConverter()));
+			services
+				.AddControllers()
+				.AddNewtonsoftJson(options => options.SerializerSettings.Converters.Add(new StringEnumConverter()))
+				.AddRazorRuntimeCompilation();
 
 			services.AddAuthorization(options =>
 			{
