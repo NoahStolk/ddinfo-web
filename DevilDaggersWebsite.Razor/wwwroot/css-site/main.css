@@ -106,6 +106,30 @@ a:hover {
 		text-decoration: underline;
 	}
 
+span.leviathan > a {
+	color: var(--col-underline-leviathan);
+}
+
+span.devil > a {
+	color: var(--col-underline-devil);
+}
+
+span.golden > a {
+	color: var(--col-underline-golden);
+}
+
+span.silver > a {
+	color: var(--col-underline-silver);
+}
+
+span.bronze > a {
+	color: var(--col-underline-bronze);
+}
+
+span.default > a {
+	color: var(--col-underline-default);
+}
+
 .btn {
 	margin: 8px 8px 8px 0;
 	border: 2px solid;
