@@ -78,7 +78,7 @@ namespace DevilDaggersWebsite.Razor.Pages.Leaderboard
 			{
 				Death = GameInfo.GetDeathByType(GameVersion.V31, Entry.DeathType);
 				Dagger = GameInfo.GetDaggerFromTime(GameVersion.V31, Entry.Time);
-				CountryName = Player?.CountryCode != null ? UserUtils.CountryNames.ContainsKey(Player.CountryCode) ? UserUtils.CountryNames[Player.CountryCode] : "Invalid country code" : null;
+				CountryName = Player?.CountryCode != null ? UserUtils.CountryNames.ContainsKey(Player.CountryCode) ? UserUtils.CountryNames[Player.CountryCode] : null : null;
 				HasValidTop100Graph = Entry.ExistsInHistory(_env); // TODO: Optimize.
 				UsernameAliases = Entry.GetAllUsernameAliases(_env).Where(s => s != Entry.Username).ToList();
 			}

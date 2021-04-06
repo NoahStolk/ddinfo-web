@@ -22,6 +22,7 @@
 .player-section-list {
 	max-height: 10em;
 	overflow-y: auto;
+	overflow-x: hidden;
 }
 
 .leaderboard-data > div {
