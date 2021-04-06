@@ -27,7 +27,7 @@
 		@foreach ((string text, string imageUrl, string url) in Model.Sections)
 		{
 			<a href="@url">
-				<div class="col-xs-12 col-sm-6 col-md-3 home-section-container">
+				<div class="col-xs-12 col-sm-6 col-md-6 col-lg-3 home-section-container">
 					<div class="overlay-block"></div>
 					<div class="home-section-text">@text</div>
 					<img class="img-responsive home-section-image" src="~/images/@imageUrl" />
