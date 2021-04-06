@@ -17,7 +17,7 @@ namespace DevilDaggersWebsite.Razor.Utils
 		public static HtmlString NAString { get; set; } = new("<span style='color: #444;'>N/A</span>");
 
 		public static HtmlString GetCssList(IWebHostEnvironment env, string subdirectory)
-			=> GetList(env, subdirectory, (sb, href) => sb.Append("<link rel='stylesheet' href='/").Append(href).Append("' />\n"));
+			=> GetList(env, subdirectory, (sb, href) => sb.Append("<link rel='stylesheet' href='/").Append(href).Append("' asp-append-version='true' />\n"));
 
 		public static HtmlString GetJsList(IWebHostEnvironment env, string subdirectory)
 			=> GetList(env, subdirectory, (sb, href) => sb.Append("<script defer src='/").Append(href).Append("' asp-append-version='true'></script>\n"));
