@@ -71,7 +71,7 @@
 				CustomEntryModel cem = new(rank, entry, Model.Leaderboard!, player, donations);
 
 				<div class="sort" @cem.HtmlData>
-					<div class="leaderboard-row pointer flex-container" id="@(rank)-row">
+					<div class="leaderboard-row flex-container" id="@(rank)-row">
 						@await Html.PartialAsync("Partials/EntryIdPartial", cem)
 						@await Html.PartialAsync("Partials/EntryFlagPartial", cem)
 						@await Html.PartialAsync("Partials/EntryUsernamePartial", cem)

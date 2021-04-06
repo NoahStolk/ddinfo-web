@@ -33,7 +33,7 @@
 				SettingsEntryModel sem = new(entry, player, donations);
 
 				<div class="sort" @sem.HtmlData>
-					<div class="leaderboard-row pointer flex-container" id="@(entry.Rank)-row">
+					<div class="leaderboard-row flex-container" id="@(entry.Rank)-row">
 						@await Html.PartialAsync("Partials/EntryIdPartial", sem)
 						@await Html.PartialAsync("Partials/EntryFlagPartial", sem)
 						@await Html.PartialAsync("Partials/EntryUsernamePartial", sem)

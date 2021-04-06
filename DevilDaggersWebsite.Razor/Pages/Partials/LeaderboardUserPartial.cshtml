@@ -38,7 +38,7 @@
 				EntryModel em = new(entry, player, donations, !isIndex, gameVersion);
 
 				<div class="sort @em.BanString" @em.HtmlData>
-					<div class="leaderboard-row pointer flex-container" id="@(entry.Rank)-row">
+					<div class="leaderboard-row flex-container" id="@(entry.Rank)-row">
 						@await Html.PartialAsync("Partials/EntryIdPartial", em)
 						@await Html.PartialAsync("Partials/EntryFlagPartial", em)
 						@await Html.PartialAsync("Partials/EntryUsernamePartial", em)

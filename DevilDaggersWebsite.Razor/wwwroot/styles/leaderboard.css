@@ -18,6 +18,12 @@
 	}
 }
 
+@media (max-width: 1200px) {
+	.leaderboard-row {
+		cursor: pointer;
+	}
+}
+
 .leaderboard-container {
 	flex-direction: column;
 }
@@ -29,10 +35,6 @@
 }
 
 .sorter:hover {
-	cursor: pointer;
-}
-
-.pointer {
 	cursor: pointer;
 }
 
