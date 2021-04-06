@@ -136,8 +136,21 @@
 				<div class="flex-container player-section">
 					<div class="leaderboard-data-container">
 						<div class="leaderboard-data-header">Miscellaneous</div>
+						@if (Model.CountryName != null)
+						{
+							<div class="flex-container leaderboard-data">
+								<div>Flag</div>
+								<div class="text-right">
+									<img src="/images/Flags/24x24/@(Model.Player!.CountryCode).png" /> @Model.CountryName
+								</div>
+							</div>
+						}
 						@if (Model.BestRankRecorded.HasValue)
 						{
+							<div class="flex-container leaderboard-data">
+								<div>Best rank recorded</div>
+								<div class="text-right">@Model.BestRankRecorded</div>
+							</div>
 							<div class="flex-container leaderboard-data">
 								<div>Past usernames</div>
 								@if (Model.UsernameAliases.Count > 0)
@@ -155,19 +168,6 @@
 								{
 									<div class="text-right">@RazorUtils.NAString</div>
 								}
-							</div>
-							<div class="flex-container leaderboard-data">
-								<div>Best rank recorded</div>
-								<div class="text-right">@Model.BestRankRecorded</div>
-							</div>
-						}
-						@if (Model.CountryName != null)
-						{
-							<div class="flex-container leaderboard-data">
-								<div>Flag</div>
-								<div class="text-right">
-									<img src="/images/Flags/24x24/@(Model.Player!.CountryCode).png" /> @Model.CountryName
-								</div>
 							</div>
 						}
 					</div>
@@ -187,42 +187,35 @@
 					}
 				</div>
 			</div>
-			<div class="flex-container player-section">
-				<div class="leaderboard-data-container">
-					<div class="leaderboard-data-header">Spawnsets</div>
-					<div class="player-section-list">
-						@if (Model.Spawnsets?.Count > 0)
-						{
+			@if (Model.Spawnsets?.Count > 0)
+			{
+				<div class="flex-container player-section">
+					<div class="leaderboard-data-container">
+						<div class="leaderboard-data-header">Spawnsets</div>
+						<div class="player-section-list">
 							@foreach (Entities.SpawnsetFile spawnset in Model.Spawnsets)
 							{
 								<a class="player-section-list-link" asp-page="/Spawnset" asp-route-spawnset="@spawnset.Name">@spawnset.Name</a>
 							}
-						}
-						else
-						{
-							<div class="text-right">@RazorUtils.NAString</div>
-						}
+						</div>
 					</div>
 				</div>
-			</div>
-			<div class="flex-container player-section">
-				<div class="leaderboard-data-container">
-					<div class="leaderboard-data-header">Mods</div>
-					<div class="player-section-list">
-						@if (Model.Mods?.Count > 0)
-						{
+			}
+			@if (Model.Mods?.Count > 0)
+			{
+				<div class="flex-container player-section">
+					<div class="leaderboard-data-container">
+						<div class="leaderboard-data-header">Mods</div>
+						<div class="player-section-list">
 							@foreach (Entities.AssetMod mod in Model.Mods)
 							{
 								<a class="player-section-list-link" href="@mod.Url">@mod.Name</a>
 							}
-						}
-						else
-						{
 							<div class="text-right">@RazorUtils.NAString</div>
-						}
+						</div>
 					</div>
 				</div>
-			</div>
+			}
 		</div>
 
 		@if (Model.HasValidTop100Graph)
