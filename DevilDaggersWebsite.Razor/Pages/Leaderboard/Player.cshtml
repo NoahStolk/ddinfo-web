@@ -155,14 +155,21 @@
 								<div>Past usernames</div>
 								@if (Model.UsernameAliases.Count > 0)
 								{
-									<div>
-										<ul class="player-section-list">
-											@foreach (string alias in Model.UsernameAliases)
-											{
-												<li>@alias</li>
-											}
-										</ul>
-									</div>
+									@if (Model.UsernameAliases.Count > 1)
+									{
+										<div>
+											<ul class="player-section-list">
+												@foreach (string alias in Model.UsernameAliases)
+												{
+													<li>@alias</li>
+												}
+											</ul>
+										</div>
+									}
+									else
+									{
+										<div class="text-right">@Model.UsernameAliases[0]</div>
+									}
 								}
 								else
 								{
