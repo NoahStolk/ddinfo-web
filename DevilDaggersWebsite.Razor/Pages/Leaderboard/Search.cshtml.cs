@@ -4,6 +4,7 @@ using DevilDaggersWebsite.Razor.PageModels;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.AspNetCore.Mvc.RazorPages;
 using System.Collections.Generic;
+using System.Linq;
 using System.Threading.Tasks;
 using Lb = DevilDaggersWebsite.Dto.Leaderboard;
 
@@ -32,7 +33,7 @@ namespace DevilDaggersWebsite.Razor.Pages.Leaderboard
 			Username = username;
 
 			List<Entry>? entries = await LeaderboardClient.Instance.GetUserSearch(Username);
-			Leaderboard = entries == null ? null : new() { Entries = entries };
+			Leaderboard = entries == null ? null : new() { Entries = entries.OrderBy(e => e.Rank).ToList() };
 		}
 	}
 }
