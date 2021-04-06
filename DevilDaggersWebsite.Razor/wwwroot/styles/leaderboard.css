@@ -1,24 +1,4 @@
-﻿@media (min-width: 3600px) {
-	.hidden-xl {
-		display: none;
-	}
-
-	.visible-xl {
-		display: block;
-	}
-}
-
-@media (max-width: 3599px) {
-	.hidden-xl {
-		display: block;
-	}
-
-	.visible-xl {
-		display: none;
-	}
-}
-
-@media (max-width: 1200px) {
+﻿@media (max-width: 1200px) {
 	.leaderboard-row {
 		cursor: pointer;
 	}
