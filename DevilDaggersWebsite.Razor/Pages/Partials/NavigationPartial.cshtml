@@ -19,21 +19,13 @@
 
 			@if (Model.TotalResults > 0)
 			{
-				<div>
-					Page @Model.PageIndex of @Model.TotalPages
-				</div>
-				<div>
-					Showing @((Model.PageIndex - 1) * Model.PageSize + 1) - @(Math.Min(Model.TotalResults, Model.PageIndex * Model.PageSize)) of @Model.TotalResults results
-				</div>
+				<div>Page @Model.PageIndex of @Model.TotalPages</div>
+				<div>Showing @((Model.PageIndex - 1) * Model.PageSize + 1) - @(Math.Min(Model.TotalResults, Model.PageIndex * Model.PageSize)) of @Model.TotalResults results</div>
 			}
 			else
 			{
-				<div>
-					Page 0 of 0
-				</div>
-				<div>
-					Showing 0 - 0 of 0 results
-				</div>
+				<div>Page 0 of 0</div>
+				<div>Showing 0 - 0 of 0 results</div>
 			}
 
 			@{
