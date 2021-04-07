@@ -282,3 +282,7 @@ option {
 	width: 40px;
 	height: 40px;
 }
+
+.pointer {
+	cursor: pointer;
+}
