@@ -11,6 +11,7 @@ using Newtonsoft.Json;
 using System;
 using System.Collections.Generic;
 using System.Linq;
+using System.Text;
 using System.Threading.Tasks;
 using Io = System.IO;
 using Lb = DevilDaggersWebsite.Dto.Leaderboard;
@@ -79,19 +80,30 @@ namespace DevilDaggersWebsite.Razor.Pages.Leaderboard
 				Death = GameInfo.GetDeathByType(GameVersion.V31, Entry.DeathType);
 				Dagger = GameInfo.GetDaggerFromTime(GameVersion.V31, Entry.Time);
 				CountryName = Player?.CountryCode != null ? UserUtils.CountryNames.ContainsKey(Player.CountryCode) ? UserUtils.CountryNames[Player.CountryCode] : null : null;
-				HasValidTop100Graph = Entry.ExistsInHistory(_env); // TODO: Optimize.
-				UsernameAliases = Entry.GetAllUsernameAliases(_env).Where(s => s != Entry.Username).ToList();
-			}
 
-			if (HasValidTop100Graph)
-			{
+				Dictionary<string, int> aliases = new();
 				foreach (string leaderboardHistoryPath in Io.Directory.GetFiles(Io.Path.Combine(_env.WebRootPath, "leaderboard-history"), "*.json"))
 				{
-					Lb lb = JsonConvert.DeserializeObject<Lb>(Io.File.ReadAllText(leaderboardHistoryPath)) ?? throw new($"Corrupt leaderboard history file: {Io.Path.GetFileName(leaderboardHistoryPath)}");
-					Entry? entry = lb.Entries.Find(e => e.Id == PlayerId);
-					if (entry != null && (!BestRankRecorded.HasValue || BestRankRecorded.Value > entry.Rank))
-						BestRankRecorded = entry.Rank;
+					Lb leaderboard = JsonConvert.DeserializeObject<Lb>(Io.File.ReadAllText(leaderboardHistoryPath, Encoding.UTF8)) ?? throw new($"Corrupt leaderboard history file: {Io.Path.GetFileName(leaderboardHistoryPath)}");
+					Entry? historyEntry = leaderboard.Entries.Find(e => e.Id == PlayerId);
+					if (historyEntry != null)
+					{
+						HasValidTop100Graph = true;
+
+						if (!BestRankRecorded.HasValue || BestRankRecorded.Value > historyEntry.Rank)
+							BestRankRecorded = historyEntry.Rank;
+
+						if (!string.IsNullOrWhiteSpace(historyEntry.Username))
+						{
+							if (aliases.ContainsKey(historyEntry.Username))
+								aliases[historyEntry.Username]++;
+							else
+								aliases.Add(historyEntry.Username, 1);
+						}
+					}
 				}
+
+				UsernameAliases = aliases.OrderByDescending(kvp => kvp.Value).Select(kvp => kvp.Key).ToList();
 			}
 
 			if (Player != null)
