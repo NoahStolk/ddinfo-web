@@ -58,31 +58,6 @@ namespace DevilDaggersWebsite.Api
 		public List<WorldRecord> GetWorldRecords()
 			=> _leaderboardHistoryHelper.GetWorldRecords();
 
-		[HttpGet("latest-date-played")]
-		[ProducesResponseType(StatusCodes.Status200OK)]
-		[ProducesResponseType(StatusCodes.Status400BadRequest)]
-		public (DateTime From, DateTime To) GetLatestDatePlayed([Required] int userId)
-		{
-			List<(DateTime DateTime, Entry Entry)> entries = new();
-			foreach (string leaderboardHistoryPath in Io.Directory.GetFiles(Io.Path.Combine(_env.WebRootPath, "leaderboard-history"), "*.json"))
-			{
-				Leaderboard lb = JsonConvert.DeserializeObject<Leaderboard>(Io.File.ReadAllText(leaderboardHistoryPath, Encoding.UTF8));
-				Entry? entry = lb.Entries.Find(e => e.Id == userId);
-				if (entry != null)
-					entries.Add((lb.DateTime, entry));
-			}
-
-			entries = entries.OrderByDescending(l => l.DateTime).ToList();
-			ulong deaths = entries[0].Entry.DeathsTotal;
-			for (int i = 1; i < entries.Count; i++)
-			{
-				if (entries[i].Entry.DeathsTotal < deaths)
-					return (entries[i].DateTime, entries[i - 1].DateTime);
-			}
-
-			return (DateTime.UtcNow, DateTime.UtcNow);
-		}
-
 		[HttpGet("user-activity")]
 		[ProducesResponseType(StatusCodes.Status200OK)]
 		[ProducesResponseType(StatusCodes.Status400BadRequest)]
