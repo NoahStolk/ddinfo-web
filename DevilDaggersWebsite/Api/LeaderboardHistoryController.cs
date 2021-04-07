@@ -1,4 +1,5 @@
-﻿using DevilDaggersWebsite.Dto;
+﻿using DevilDaggersWebsite.Caches;
+using DevilDaggersWebsite.Dto;
 using DevilDaggersWebsite.Transients;
 using Microsoft.AspNetCore.Hosting;
 using Microsoft.AspNetCore.Http;
@@ -8,7 +9,6 @@ using System;
 using System.Collections.Generic;
 using System.ComponentModel.DataAnnotations;
 using System.Linq;
-using System.Text;
 using Io = System.IO;
 
 namespace DevilDaggersWebsite.Api
@@ -37,7 +37,7 @@ namespace DevilDaggersWebsite.Api
 
 			foreach (string leaderboardHistoryPath in Io.Directory.GetFiles(Io.Path.Combine(_env.WebRootPath, "leaderboard-history"), "*.json"))
 			{
-				Leaderboard leaderboard = JsonConvert.DeserializeObject<Leaderboard>(Io.File.ReadAllText(leaderboardHistoryPath, Encoding.UTF8));
+				Leaderboard leaderboard = LeaderboardHistoryCache.Instance.GetLeaderboardHistoryByFilePath(leaderboardHistoryPath);
 				Entry? entry = leaderboard.Entries.Find(e => e.Id == userId);
 
 				// + 1 and - 1 are used to fix off-by-one errors in the history based on screenshots and videos. This is due to a rounding error in Devil Daggers itself.
@@ -66,10 +66,10 @@ namespace DevilDaggersWebsite.Api
 			Dictionary<DateTime, ulong> data = new();
 			foreach (string leaderboardHistoryPath in Io.Directory.GetFiles(Io.Path.Combine(_env.WebRootPath, "leaderboard-history"), "*.json"))
 			{
-				Leaderboard lb = JsonConvert.DeserializeObject<Leaderboard>(Io.File.ReadAllText(leaderboardHistoryPath, Encoding.UTF8));
-				Entry? entry = lb.Entries.Find(e => e.Id == userId);
+				Leaderboard leaderboard = LeaderboardHistoryCache.Instance.GetLeaderboardHistoryByFilePath(leaderboardHistoryPath);
+				Entry? entry = leaderboard.Entries.Find(e => e.Id == userId);
 				if (entry?.DeathsTotal > 0)
-					data.Add(lb.DateTime, entry.DeathsTotal);
+					data.Add(leaderboard.DateTime, entry.DeathsTotal);
 			}
 
 			return data;
