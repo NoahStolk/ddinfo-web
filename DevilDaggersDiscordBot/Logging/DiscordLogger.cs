@@ -2,6 +2,8 @@
 using DSharpPlus.Entities;
 using System;
 using System.Collections;
+using System.Diagnostics;
+using System.Runtime.CompilerServices;
 using System.Threading.Tasks;
 
 namespace DevilDaggersDiscordBot.Logging
@@ -46,6 +48,11 @@ namespace DevilDaggersDiscordBot.Logging
 			{
 				await TryLog(Channel.ErrorMonitoring, environmentName, $"Error report '{nameof(TryLogException)}' failed! {logEx.Message}");
 			}
+		}
+
+		public async Task MeasurePerformance(Stopwatch sw, [CallerMemberName] string methodName = "")
+		{
+			await TryLog(Channel.TestMonitoring, "Development", $"{methodName} took {sw.ElapsedMilliseconds} ms.");
 		}
 
 		public async Task TryLog(Channel loggingChannel, string environmentName, string? message, DiscordEmbed? embed = null)
