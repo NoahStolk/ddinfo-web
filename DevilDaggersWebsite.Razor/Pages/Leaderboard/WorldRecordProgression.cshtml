@@ -7,7 +7,6 @@
 @model DevilDaggersWebsite.Razor.Pages.Leaderboard.WorldRecordProgressionModel
 @{
 	ViewData["Title"] = "World Record Progression";
-	int currentWr = Model.WorldRecords.Max(wr => wr.Key.Entry.Time);
 }
 
 <header>
@@ -51,7 +50,7 @@
 
 			string timeHeld = $"{days} day{days.S()} ({(wrh.TotalTimeHeld / total).ToString("00.00%")})";
 
-			bool isCurrentWr = currentWr == worldRecordHolderEntries?.FirstOrDefault(w => w.Id == wrh.Id)?.Time;
+			bool isCurrentWr = wrh.Id == Model.CurrentWorldRecord?.Id;
 
 			string lastHeld = isCurrentWr ? "Current holder" : Model.GetHistoryDateString(wrh.LastHeld);
 			string firstHeld = Model.GetHistoryDateString(wrh.FirstHeld);
@@ -78,7 +77,7 @@
 	@{
 		foreach (KeyValuePair<WorldRecord, TimeSpan> kvp in Model.WorldRecords.OrderByDescending(w => w.Value))
 		{
-			bool isCurrentWr = kvp.Key.Entry.Time == currentWr;
+			bool isCurrentWr = kvp.Key.Entry.Time == Model.CurrentWorldRecord?.Time;
 			int days = (int)Math.Round(kvp.Value.TotalDays);
 			string daysString = days == 0 ? "Less than 1 day" : days == 1 ? "1 day" : $"{days} days";
 			<div class="row" style="background-color: @(isCurrentWr ? "#800" : "#000")">
