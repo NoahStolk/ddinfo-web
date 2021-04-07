@@ -242,7 +242,7 @@ option {
 }
 
 /* https://css-tricks.com/snippets/css/prevent-long-urls-from-breaking-out-of-container/ */
-.dont-break-out {
+.prevent-break-out {
 	overflow-wrap: break-word;
 	word-wrap: break-word;
 	-ms-word-break: break-all;
