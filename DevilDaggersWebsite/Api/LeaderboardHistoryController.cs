@@ -32,22 +32,21 @@ namespace DevilDaggersWebsite.Api
 		public SortedDictionary<DateTime, Entry> GetUserProgressionById([Required] int userId)
 		{
 			SortedDictionary<DateTime, Entry> data = new();
+			if (userId < 1)
+				return data;
 
-			if (userId != 0)
+			foreach (string leaderboardHistoryPath in Io.Directory.GetFiles(Io.Path.Combine(_env.WebRootPath, "leaderboard-history"), "*.json"))
 			{
-				foreach (string leaderboardHistoryPath in Io.Directory.GetFiles(Io.Path.Combine(_env.WebRootPath, "leaderboard-history"), "*.json"))
-				{
-					Leaderboard leaderboard = JsonConvert.DeserializeObject<Leaderboard>(Io.File.ReadAllText(leaderboardHistoryPath, Encoding.UTF8));
-					Entry? entry = leaderboard.Entries.Find(e => e.Id == userId);
+				Leaderboard leaderboard = JsonConvert.DeserializeObject<Leaderboard>(Io.File.ReadAllText(leaderboardHistoryPath, Encoding.UTF8));
+				Entry? entry = leaderboard.Entries.Find(e => e.Id == userId);
 
-					// + 1 and - 1 are used to fix off-by-one errors in the history based on screenshots and videos. This is due to a rounding error in Devil Daggers itself.
-					if (entry != null && !data.Values.Any(e =>
-						e.Time == entry.Time ||
-						e.Time == entry.Time + 1 ||
-						e.Time == entry.Time - 1))
-					{
-						data[leaderboard.DateTime] = entry;
-					}
+				// + 1 and - 1 are used to fix off-by-one errors in the history based on screenshots and videos. This is due to a rounding error in Devil Daggers itself.
+				if (entry != null && !data.Values.Any(e =>
+					e.Time == entry.Time ||
+					e.Time == entry.Time + 1 ||
+					e.Time == entry.Time - 1))
+				{
+					data[leaderboard.DateTime] = entry;
 				}
 			}
 
