@@ -14,7 +14,7 @@ namespace DevilDaggersWebsite.Razor.Utils
 	{
 		public const string DiscordUrl = "https://discord.gg/NF32j8S";
 
-		public static HtmlString NAString { get; set; } = new("<span style='color: #444;'>N/A</span>");
+		public static HtmlString NAString { get; } = new("<span style='color: #444;'>N/A</span>");
 
 		public static HtmlString GetCssList(IWebHostEnvironment env, string subdirectory)
 			=> GetList(env, subdirectory, (sb, href) => sb.Append("<link rel='stylesheet' href='/").Append(href).Append("' asp-append-version='true' />\n"));
@@ -30,7 +30,7 @@ namespace DevilDaggersWebsite.Razor.Utils
 			foreach (string path in Directory.GetFiles(directory))
 				appendAction(sb, Path.Combine(subdirectory, Path.GetFileName(path)));
 
-			return new HtmlString(sb.ToString());
+			return new(sb.ToString());
 		}
 
 		public static HtmlString GetCopyrightString(string name, int startYear)
