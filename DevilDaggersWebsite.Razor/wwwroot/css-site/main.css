@@ -87,6 +87,7 @@ p {
 
 footer {
 	padding: 20px 20px 0px 20px;
+	margin-top: 24px;
 	background-color: var(--col-nav-background);
 }
 
