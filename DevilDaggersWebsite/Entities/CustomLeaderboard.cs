@@ -37,6 +37,41 @@ namespace DevilDaggersWebsite.Entities
 		public bool IsAscending()
 			=> Category == CustomLeaderboardCategory.Challenge || Category == CustomLeaderboardCategory.Speedrun;
 
+		/// <summary>
+		/// Returns the CSS class name corresponding to the time in seconds.
+		/// </summary>
+		/// <param name="time">The time in tenths of milliseconds.</param>
+		/// <returns>The CSS class name for the dagger.</returns>
+		public string GetDagger(int time)
+		{
+			if (IsAscending())
+			{
+				if (time <= TimeLeviathan && TimeLeviathan > 0)
+					return "leviathan";
+				if (time <= TimeDevil && TimeDevil > 0)
+					return "devil";
+				if (time <= TimeGolden && TimeGolden > 0)
+					return "golden";
+				if (time <= TimeSilver && TimeSilver > 0)
+					return "silver";
+				if (time <= TimeBronze && TimeBronze > 0)
+					return "bronze";
+				return "default";
+			}
+
+			if (time >= TimeLeviathan && TimeLeviathan > 0)
+				return "leviathan";
+			if (time >= TimeDevil && TimeDevil > 0)
+				return "devil";
+			if (time >= TimeGolden && TimeGolden > 0)
+				return "golden";
+			if (time >= TimeSilver && TimeSilver > 0)
+				return "silver";
+			if (time >= TimeBronze && TimeBronze > 0)
+				return "bronze";
+			return "default";
+		}
+
 		public void Create(ApplicationDbContext dbContext, AdminCustomLeaderboard adminDto)
 		{
 			DateCreated = DateTime.UtcNow;

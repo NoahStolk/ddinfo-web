@@ -1,11 +1,10 @@
-﻿using DevilDaggersWebsite.Dto;
+﻿using DevilDaggersWebsite.Caches;
+using DevilDaggersWebsite.Dto;
 using Microsoft.AspNetCore.Hosting;
-using Newtonsoft.Json;
 using System;
 using System.Collections.Generic;
 using System.IO;
 using System.Linq;
-using System.Text;
 
 namespace DevilDaggersWebsite.Transients
 {
@@ -27,7 +26,7 @@ namespace DevilDaggersWebsite.Transients
 			int worldRecord = 0;
 			foreach (string leaderboardHistoryPath in Directory.GetFiles(Path.Combine(_env.WebRootPath, "leaderboard-history"), "*.json"))
 			{
-				Leaderboard leaderboard = JsonConvert.DeserializeObject<Leaderboard>(File.ReadAllText(leaderboardHistoryPath, Encoding.UTF8));
+				Leaderboard leaderboard = LeaderboardHistoryCache.Instance.GetLeaderboardHistoryByFilePath(leaderboardHistoryPath);
 				Entry? firstPlace = leaderboard.Entries.Find(e => e.Rank == 1);
 				if (firstPlace == null)
 					continue;

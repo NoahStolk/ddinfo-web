@@ -2,7 +2,7 @@
 using DevilDaggersDiscordBot.Logging;
 using Microsoft.AspNetCore.Hosting;
 using System;
-using System.Collections.Generic;
+using System.Collections.Concurrent;
 using System.IO;
 using System.Linq;
 using System.Security.Cryptography;
@@ -12,7 +12,7 @@ namespace DevilDaggersWebsite.Caches
 {
 	public sealed class SpawnsetHashCache
 	{
-		private readonly List<SpawnsetCacheData> _cache = new();
+		private readonly ConcurrentBag<SpawnsetCacheData> _cache = new();
 
 		private static readonly Lazy<SpawnsetHashCache> _lazy = new(() => new());
 
@@ -24,7 +24,7 @@ namespace DevilDaggersWebsite.Caches
 
 		public async Task<SpawnsetCacheData?> GetSpawnset(IWebHostEnvironment env, byte[] hash)
 		{
-			SpawnsetCacheData? spawnsetCacheData = _cache.Find(scd => MatchHashes(scd.Hash, hash));
+			SpawnsetCacheData? spawnsetCacheData = _cache.FirstOrDefault(scd => MatchHashes(scd.Hash, hash));
 			if (spawnsetCacheData != null)
 				return spawnsetCacheData;
 

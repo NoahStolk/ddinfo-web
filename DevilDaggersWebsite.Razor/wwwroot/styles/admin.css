@@ -21,5 +21,5 @@
 }
 
 .admin-table > tbody > tr:nth-child(odd) {
-	background-color: #111;
+	background-color: var(--col-gray-11);
 }

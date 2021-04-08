@@ -25,5 +25,11 @@ namespace DevilDaggersWebsite.Razor.Pages.Admin.AdminTests
 
 		public void OnPostClearSpawnsetHashCache()
 			=> SpawnsetHashCache.Instance.Clear();
+
+		public void OnPostClearLeaderboardHistoryCache()
+			=> LeaderboardHistoryCache.Instance.Clear();
+
+		public void OnPostClearSpawnsetDataCache()
+			=> SpawnsetDataCache.Instance.Clear();
 	}
 }

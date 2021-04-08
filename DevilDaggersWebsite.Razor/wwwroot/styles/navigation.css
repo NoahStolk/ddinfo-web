@@ -1,25 +1,11 @@
 ﻿.navigation-wrapper {
-	background-color: #111;
-	max-width: 1160px;
+	background-color: var(--col-gray-11);
 	padding: 12px;
-	margin: 12px 0;
 }
 
 .navigation-sort > th > a {
 	color: #ddd;
 	text-decoration: none;
-}
-
-.navigation-page-nav {
-	padding: 0;
-	margin-bottom: 10px;
-}
-
-.btn-page {
-	margin-right: 8px;
-	padding: 3px;
-	width: 40px;
-	height: 38px;
 }
 
 .page-separator {
@@ -28,5 +14,10 @@
 }
 
 tbody > tr:nth-child(2n+1) {
-	background-color: var(--col-nav-background);
+	background-color: var(--col-gray-11);
+}
+
+.navigation-result-wrapper {
+	background-color: var(--col-gray-0B);
+	padding: 12px;
 }

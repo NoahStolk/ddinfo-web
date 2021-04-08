@@ -1,15 +1,9 @@
 ﻿@model IDefaultLeaderboardPageModel
 @using DevilDaggersCore.Utils
-@using DevilDaggersWebsite.Razor.Leaderboards
 @using DevilDaggersWebsite.Razor.PageModels
 @using DevilDaggersWebsite.Razor.Pages.Leaderboard
 @{
 	Type modelType = Model.GetType();
-	if (Model is IndexModel indexModel && indexModel.LeaderboardSearchType != LeaderboardSearchType.Rank)
-	{
-		return;
-	}
-
 	bool isHistory = modelType == typeof(HistoryModel);
 
 	string players = Model.Leaderboard?.Players.ToString(FormatUtils.LeaderboardIntFormat) ?? "Failed to fetch";
@@ -20,55 +14,62 @@
 	string daggers = Model.Leaderboard == null ? "Failed to fetch" : FormatUtils.FormatDaggersUInt64(Model.Leaderboard.DaggersHitGlobal, Model.Leaderboard.DaggersFiredGlobal, isHistory);
 	string accuracy = Model.Leaderboard?.AccuracyGlobal.ToString(FormatUtils.AccuracyFormat) ?? "Failed to fetch";
 }
-<div class="hidden-xs text-center">
-	<div class="flex-container leaderboard-flex flex-center flex-space-evenly">
-		<div>
-			<div>Total players</div>
-			<div class="text-center devil">@players</div>
+<div class="leaderboard-data-container visible-xs">
+	<div class="row">
+		<div class="col-xs-6">Total players</div>
+		<div class="col-xs-6 devil text-right">@players</div>
+	</div>
+	<div class="row">
+		<div class="col-xs-6">Global time</div>
+		<div class="col-xs-6 devil text-right">@time</div>
+	</div>
+	<div class="row">
+		<div class="col-xs-6">Global kills</div>
+		<div class="col-xs-6 devil text-right">@kills</div>
+	</div>
+	<div class="row">
+		<div class="col-xs-6">Global gems</div>
+		<div class="col-xs-6 devil text-right">@gems</div>
+	</div>
+	<div class="row">
+		<div class="col-xs-6">Global accuracy</div>
+		<div class="col-xs-6 text-right">
+			<span data-toggle="tooltip" title="@daggers" class="leaderboard-tooltip"><span class="devil">@accuracy</span></span>
 		</div>
 	</div>
-	<div class="flex-container leaderboard-flex flex-center flex-space-evenly">
-		<div>
-			<div>Global time</div>
-			<div class="text-center devil">@time</div>
-		</div>
-		<div>
-			<div>Global kills</div>
-			<div class="text-center devil">@kills</div>
-		</div>
-		<div>
-			<div>Global gems</div>
-			<div class="text-center devil">@gems</div>
-		</div>
-		<div>
-			<div>Global accuracy</div>
-			<span data-toggle="tooltip" data-placement="bottom" title="@daggers" class="leaderboard-tooltip"><span class="text-center devil">@accuracy</span></span>
-		</div>
-		<div>
-			<div>Global deaths</div>
-			<div class="text-center devil">@deaths</div>
-		</div>
+	<div class="row">
+		<div class="col-xs-6">Global deaths</div>
+		<div class="col-xs-6 devil text-right">@deaths</div>
 	</div>
 </div>
-<div class="visible-xs">
-	<div class="flex-container flex-center">
+
+<div class="hidden-xs text-center">
+	<div class="flex-container flex-center flex-space-evenly icon-list">
 		<div>
-			<div>Total players</div>
-			<div>Global time</div>
-			<div>Global kills</div>
-			<div>Global gems</div>
-			<div>Global accuracy</div>
-			<div>Global deaths</div>
+			<div class="icon-large pointer" data-toggle='tooltip' title='Total players'><img src="~/images/Icons/eye4x4.png" /></div>
+			<div class="devil text-center">@players</div>
 		</div>
 		<div>
-			<div class="devil text-right">@players</div>
-			<div class="devil text-right">@time</div>
-			<div class="devil text-right">@kills</div>
-			<div class="devil text-right">@gems</div>
-			<div class="text-right">
+			<div class="icon-large pointer" data-toggle='tooltip' title='Global time'><img src="~/images/Icons/stopwatchx4.png" /></div>
+			<div class="devil text-center">@time</div>
+		</div>
+		<div>
+			<div class="icon-large pointer" data-toggle='tooltip' title='Global kills'><img src="~/images/Icons/daggerx4.png" /></div>
+			<div class="devil text-center">@kills</div>
+		</div>
+		<div>
+			<div class="icon-large pointer" data-toggle='tooltip' title='Global gems'><img src="~/images/Icons/gemx4.png" /></div>
+			<div class="devil text-center">@gems</div>
+		</div>
+		<div>
+			<div class="icon-large pointer" data-toggle='tooltip' title='Global accuracy'><img src="~/images/Icons/crosshairx4.png" /></div>
+			<div class="text-center">
 				<span data-toggle="tooltip" title="@daggers" class="leaderboard-tooltip"><span class="devil">@accuracy</span></span>
 			</div>
-			<div class="devil text-right">@deaths</div>
+		</div>
+		<div>
+			<div class="icon-large pointer" data-toggle='tooltip' title='Global deaths'><img src="~/images/Icons/skullx4.png" /></div>
+			<div class="devil text-center">@deaths</div>
 		</div>
 	</div>
 </div>

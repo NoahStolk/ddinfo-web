@@ -85,7 +85,7 @@ function createChart(chartName, data, minDate, maxDate, minTime, maxTime, yNumbe
 				labelRenderer: $.jqplot.CanvasAxisLabelRenderer,
 				tickRenderer: $.jqplot.CanvasAxisTickRenderer,
 				tickOptions: {
-					formatString: "%#4d  " // Spaces are a hack to add more margin.
+					formatString: "%#4d"
 				}
 			}
 		},
@@ -94,7 +94,8 @@ function createChart(chartName, data, minDate, maxDate, minTime, maxTime, yNumbe
 			rendererOptions: {
 				smooth: true,
 				animation: {
-					show: true
+					show: true,
+					speed: 1250
 				}
 			},
 			markerOptions: {

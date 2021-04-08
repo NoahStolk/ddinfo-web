@@ -1,4 +1,4 @@
-﻿@model UserSettingsModel
+﻿@model PlayerSettingsModel
 @using DevilDaggersCore.Utils
 @using DevilDaggersWebsite.Dto
 @using DevilDaggersWebsite.Entities
@@ -33,7 +33,7 @@
 				SettingsEntryModel sem = new(entry, player, donations);
 
 				<div class="sort" @sem.HtmlData>
-					<div class="leaderboard-row pointer flex-container" id="@(entry.Rank)-row">
+					<div class="leaderboard-row flex-container" id="@(entry.Rank)-row">
 						@await Html.PartialAsync("Partials/EntryIdPartial", sem)
 						@await Html.PartialAsync("Partials/EntryFlagPartial", sem)
 						@await Html.PartialAsync("Partials/EntryUsernamePartial", sem)
@@ -50,7 +50,7 @@
 					<div class="leaderboard-expand flex-container" id="@(entry.Rank)-expand">
 						<div class="visible-xs">
 							<div class="text-left">eDPI</div>
-							<div class="text-right">@(player.Edpi != null ? player.Edpi.Value.ToString(FormatUtils.MouseSensitivityFormat) : string.Empty)</div>
+							<div class="text-right">@(player.Edpi.HasValue ? player.Edpi.Value.ToString(FormatUtils.MouseSensitivityFormat) : string.Empty)</div>
 						</div>
 						<div class="visible-xs">
 							<div class="text-left">DPI</div>
@@ -58,7 +58,7 @@
 						</div>
 						<div class="visible-xs">
 							<div class="text-left">In-game sens</div>
-							<div class="text-right">@(player.InGameSens != null ? player.InGameSens.Value.ToString(FormatUtils.MouseSensitivityFormat) : string.Empty)</div>
+							<div class="text-right">@(player.InGameSens.HasValue ? player.InGameSens.Value.ToString(FormatUtils.MouseSensitivityFormat) : string.Empty)</div>
 						</div>
 						<div class="visible-xs">
 							<div class="text-left">FOV</div>
@@ -79,9 +79,6 @@
 						<div class="visible-xs visible-sm visible-md">
 							<div class="text-left">Legacy audio</div>
 							<div class="text-right">@player.UsesLegacyAudioString</div>
-						</div>
-						<div style="padding-top: 1em;">
-							<a asp-page="../Leaderboard/Index" asp-route-UserId="@entry.Id">View more info</a>
 						</div>
 					</div>
 				</div>

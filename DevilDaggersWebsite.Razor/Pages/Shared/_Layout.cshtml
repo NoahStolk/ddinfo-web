@@ -50,7 +50,7 @@
 							<li><a asp-page="/Leaderboard/WorldRecordProgression">World Record Progression</a></li>
 							<li><a asp-page="/Leaderboard/Statistics">Statistics</a></li>
 							<li role="separator" class="divider"></li>
-							<li><a asp-page="/Leaderboard/UserSettings">User Settings</a></li>
+							<li><a asp-page="/Leaderboard/PlayerSettings">Player Settings</a></li>
 						</ul>
 					</li>
 					<li><a asp-page="/Spawnsets">Spawnsets</a></li>
@@ -93,16 +93,14 @@
 		</a>
 		<div class="spacer"></div>
 		<footer>
-			<div class="row">
-				<div class="col-lg-4 col-lg-offset-2 text-center">
-					@(RazorUtils.GetCopyrightString("", 2017))<br />
-					<a href="@RazorUtils.DiscordUrl">Discord server</a>
-				</div>
-				<div class="col-lg-4 text-center">
-					Website created by Noah Stolk<br />
-					<a href="//noahstolk.com/">www.noahstolk.com</a>
-				</div>
-			</div>
+			<p>
+				@(RazorUtils.GetCopyrightString("", 2017))<br />
+				<a href="@RazorUtils.DiscordUrl">Discord server</a>
+			</p>
+			<p>
+				Website created by Noah Stolk<br />
+				<a href="//noahstolk.com/">www.noahstolk.com</a>
+			</p>
 		</footer>
 	</div>
 

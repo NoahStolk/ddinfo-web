@@ -4,7 +4,7 @@
 @model DevilDaggersWebsite.Razor.Pages.CustomLeaderboards.LeaderboardModel
 @{
 	string spawnsetName = Model.SpawnsetFile?.Name ?? throw new("Spawnset was null in CustomLeaderboards/Leaderboard page.");
-	ViewData["Title"] = $"Leaderboard for {spawnsetName} by {Model.SpawnsetFile.Player.PlayerName}";
+	ViewData["Title"] = $"Custom Leaderboard - {spawnsetName}";
 
 	List<(string DaggerName, string DisplaySeconds)> daggerInfo = new();
 	for (int i = 0; i < 5; i++)
@@ -14,67 +14,76 @@
 }
 
 <header>
-	<h1 class="dont-break-out">@ViewData["Title"]</h1>
+	<h1 class="prevent-break-out">@ViewData["Title"]</h1>
 </header>
 
 <main role="main">
 	<div>
-		<p class="text-center">
-			<a asp-page="/Spawnset" asp-route-spawnset="@Model.SpawnsetFile.Name">Spawnset page for @spawnsetName</a>
-		</p>
-
-		<div class="description">
-			@if (!string.IsNullOrEmpty(Model.SpawnsetFile.HtmlDescription))
-			{
-				@RazorUtils.GetLayout(Model.SpawnsetFile.HtmlDescription, GameVersion.V31)
-			}
-			else
-			{
-				@:(No description.)
-			}
+		<div class="section-container">
+			<div class="spawns-header-container">
+				<div class="row">
+					<div class="col-xs-6">Author</div>
+					<div class="col-xs-6"><a asp-page="/Spawnsets" asp-route-SearchAuthor="@Model.SpawnsetFile.Player.PlayerName">@Model.SpawnsetFile.Player.PlayerName</a></div>
+				</div>
+				<div class="row">
+					<div class="col-xs-6">Last updated</div>
+					<div class="col-xs-6">@Model.SpawnsetFile.LastUpdated.ToString("dd MMM yyyy")</div>
+				</div>
+				<div class="row">
+					<div class="col-xs-6">Description</div>
+					@if (!string.IsNullOrEmpty(Model.SpawnsetFile.HtmlDescription))
+					{
+						<div class="col-xs-6 spawnset-description">
+							@RazorUtils.GetLayout(Model.SpawnsetFile.HtmlDescription, GameVersion.V31)
+						</div>
+					}
+					else
+					{
+						<div class="col-xs-6">
+							@RazorUtils.NAString
+						</div>
+					}
+				</div>
+			</div>
 		</div>
-
-		<div class="hidden-xs text-center">
-			<div class="flex-container flex-center flex-space-evenly" style="margin: 12px;">
+		<div class="section-container">
+			<div class="spawns-header-container">
+				<div class="row">
+					<div class="col-xs-6"><a href="/api/spawnsets/@Model.SpawnsetFile.Name/file">Download spawnset</a></div>
+					<div class="col-xs-6"><a asp-page="/Spawnset" asp-route-spawnset="@Model.SpawnsetFile.Name">View spawnset</a></div>
+				</div>
+			</div>
+		</div>
+		<div class="section-container visible-xs">
+			<div class="spawns-header-container">
 				@for (int i = 0; i < 5; i++)
 				{
-					(string daggerName, string seconds) = daggerInfo[i];
+					(string daggerName, string displaySeconds) = daggerInfo[i];
 
-					<div>
-						<div><img src="~/Images/Daggers/@(daggerName)Small.png" /></div>
-						<div class="@daggerName.ToLower() text-center" style="width: 100%;">@seconds</div>
+					<div class="row">
+						<div class="col-xs-6">@daggerName</div>
+						<div class="col-xs-6 @daggerName.ToLower() text-right">@displaySeconds</div>
 					</div>
 				}
 			</div>
 		</div>
-		<div class="visible-xs">
-			<div class="flex-container flex-center">
-				<div style="padding-right: 8px;">
-					@for (int i = 0; i < 5; i++)
-					{
-						(string daggerName, _) = daggerInfo[i];
-
-						<div>@daggerName</div>
-					}
-				</div>
-				<div style="padding-left: 8px;">
-					@for (int i = 0; i < 5; i++)
-					{
-						(string daggerName, string displaySeconds) = daggerInfo[i];
-
-						<div class="@daggerName.ToLower() text-right">@displaySeconds</div>
-					}
-				</div>
-			</div>
-		</div>
-
-		<p class="visible-xs visible-sm visible-md text-center">
-			On mobile devices; tap on an entry to expand it.
-		</p>
-		<p class="text-center">
-			You can sort the leaderboard by clicking the headers.
-		</p>
 	</div>
+
+	<div class="hidden-xs text-center">
+		<div class="flex-container flex-center flex-space-evenly icon-list">
+			@for (int i = 0; i < 5; i++)
+			{
+				(string daggerName, string seconds) = daggerInfo[i];
+
+				<div>
+					<div><img src="~/Images/Daggers/@(daggerName)Small.png" /></div>
+					<div class="@daggerName.ToLower() text-center" style="width: 100%;">@seconds</div>
+				</div>
+			}
+		</div>
+	</div>
+
+	@await Html.PartialAsync("Partials/LeaderboardTableInfoPartial")
 	@await Html.PartialAsync($"Partials/LeaderboardUserCustomPartial")
 </main>
 
@@ -85,4 +94,5 @@
 @section Styles {
 	<link rel='stylesheet' href='~/styles/leaderboard.css' asp-append-version="true" />
 	<link rel='stylesheet' href='~/styles/leaderboard-rows-custom-default.css' asp-append-version="true" />
+	<link rel='stylesheet' href='~/styles/spawnset.css' asp-append-version="true" />
 }

@@ -1,13 +1,6 @@
-﻿.upgrade-container {
-	flex-direction: row;
-	flex-wrap: wrap;
-}
-
-.upgrade {
-	width: 380px;
+﻿.upgrade {
 	padding: 8px;
-	margin: 8px;
-	border-radius: 2px;
+	margin: 8px 0;
 }
 
 .upgrade-row {

@@ -17,8 +17,8 @@
 		Select a leaderboard category to view leaderboards:
 	</p>
 
-	<form method="get" class="left">
-		<select class="select form-control" asp-for="Category" asp-items="Model.CategoryListItems" onchange="this.form.submit()"></select>
+	<form method="get">
+		<select class="select form-control select-small" asp-for="Category" asp-items="Model.CategoryListItems" onchange="this.form.submit()"></select>
 	</form>
 
 	<h2>@Model.Category category</h2>
@@ -39,7 +39,7 @@
 
 	<div class="faq-question">How do I get my spawnset a leaderboard?</div>
 	<div class="faq-answer">
-		If you think your spawnset should have a leaderboard, let us know in the <a href="@RazorUtils.DiscordUrl">Discord server</a>.
+		If you think your spawnset should have a leaderboard, let us know on <a href="@RazorUtils.DiscordUrl">Discord</a>.
 	</div>
 </main>
 

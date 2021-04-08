@@ -10,8 +10,6 @@
 @using DevilDaggersWebsite.Razor.Utils
 @using System.IO
 @{
-	int[] widths = new int[4] { 160, 160, 144, 128 };
-
 	SpawnsetFile? sf = dbContext.SpawnsetFiles.FirstOrDefault(sf => sf.Name == Model);
 	if (sf == null || !Spawnset.TryParse(File.ReadAllBytes(System.IO.Path.Combine(env.WebRootPath, "spawnsets", Model)), out Spawnset spawnset))
 	{
@@ -27,15 +25,38 @@
 		maxWaves = parsed;
 	}
 
-	<div class="flex-container flex-center flex-column text-center">
-		<div style="padding: 8px;">Timer starts at @spawnset.TimerStart.ToString(FormatUtils.SpawnTimeFormat)</div>
+	int endLoopIndex = spawnset.GetEndLoopStartIndex();
+	IEnumerable<Spawn> preLoopSpawns = spawnset.Spawns.Values.SkipLast(spawnset.Spawns.Count - endLoopIndex);
+	List<Spawn> loopSpawns = spawnset.Spawns.Values.Skip(endLoopIndex).ToList();
+	bool hasEndLoop = loopSpawns.Any(s => s.Enemy != null);
+
+	Upgrade? hand = GameInfo.GetUpgrades(GameVersion.V31).FirstOrDefault(u => u.Name == $"Level {spawnset.Hand}") ?? GameInfo.V31Level1;
+
+	<div class="flex-container flex-column section-container">
+		<div class="spawns-header-container">
+			<div class="flex-container flex-space-evenly spawns-flex-container">
+				<div>Timer start</div>
+				<div>Hand</div>
+				<div>Additional gems</div>
+			</div>
+			<div class="flex-container flex-space-evenly spawns-flex-container">
+				<div>@spawnset.TimerStart.ToString(FormatUtils.SpawnTimeFormat)</div>
+				<div>@hand.GetLayoutAnchor()</div>
+				<div>@spawnset.AdditionalGems</div>
+			</div>
+		</div>
+
 		@if (spawnset.HasSpawns())
 		{
-			<div class="flex-container flex-center">
-				<div style="@RazorUtils.GetCssWidth(widths[0])">Time</div>
-				<div style="@RazorUtils.GetCssWidth(widths[1])">Enemy</div>
-				<div style="@RazorUtils.GetCssWidth(widths[2])">Gems (no farm)</div>
-				<div style="@RazorUtils.GetCssWidth(widths[3])">Total gems</div>
+			<div class="flex-container flex-space-evenly spawns-flex-container">
+				@if (hasEndLoop)
+				{
+					<div>Section</div>
+				}
+				<div class="text-right">Time</div>
+				<div>Enemy</div>
+				<div class="text-right">Gems (no farm)</div>
+				<div class="text-right">Total gems</div>
 			</div>
 
 			double totalSeconds = spawnset.TimerStart;
@@ -48,27 +69,27 @@
 			};
 			totalGems += spawnset.AdditionalGems;
 
-			int endLoopIndex = spawnset.GetEndLoopStartIndex();
-
-			foreach (Spawn spawn in spawnset.Spawns.Values.SkipLast(spawnset.Spawns.Count - endLoopIndex))
+			foreach (Spawn spawn in preLoopSpawns)
 			{
 				totalSeconds += spawn.Delay;
 				if (spawn.Enemy != null)
 				{
 					totalGems += spawn.Enemy.NoFarmGems;
 
-					<div class="flex-container flex-center">
-						<div style="@RazorUtils.GetCssWidth(widths[0])" class="text-right">@totalSeconds.ToString(FormatUtils.SpawnTimeFormat)</div>
-						<div style="@RazorUtils.GetCssWidth(widths[1])">@(spawn.Enemy.GetLayoutAnchor(false, gameVersion))</div>
-						<div style="@RazorUtils.GetCssWidth(widths[2])" class="text-right">@spawn.Enemy.NoFarmGems</div>
-						<div style="@RazorUtils.GetCssWidth(widths[3])" class="text-right">@totalGems</div>
+					<div class="flex-container flex-space-evenly spawns-flex-container">
+						@if (hasEndLoop)
+						{
+							<div></div>
+						}
+						<div class="text-right">@totalSeconds.ToString(FormatUtils.SpawnTimeFormat)</div>
+						<div>@(spawn.Enemy.GetLayoutAnchor(false, gameVersion))</div>
+						<div class="text-right">@spawn.Enemy.NoFarmGems</div>
+						<div class="text-right">@totalGems</div>
 					</div>
 				}
 			}
 
-			List<Spawn> endLoop = spawnset.Spawns.Values.Skip(endLoopIndex).ToList();
-
-			if (endLoop.Any(s => s.Enemy != null))
+			if (loopSpawns.Any(s => s.Enemy != null))
 			{
 				int spawns = spawnset.Spawns.Count(s => s.Value.Enemy != null);
 
@@ -80,13 +101,11 @@
 						break;
 					}
 
-					<div class="text-left end-wave-separator">
-						<div style="background-color: red; height: 2px; width: auto;"></div>
-						<div class="hidden-xs">End wave @(i + 1)</div>
-					</div>
+					<div class="text-left end-wave-separator"></div>
 					double enemyTimer = 0;
 					double delay = 0;
-					foreach (Spawn spawn in endLoop)
+					bool firstSpawnDone = false;
+					foreach (Spawn spawn in loopSpawns)
 					{
 						if (spawn.Enemy != null)
 						{
@@ -103,27 +122,33 @@
 						if (spawn.Enemy != null)
 						{
 							Enemy finalEnemy = spawn.Enemy;
-							// Change the third Gigapede into a Ghostpede.
 							if (i % 3 == 2 && gameVersion >= GameVersion.V3 && finalEnemy.SpawnsetType == GameInfo.V3Gigapede.SpawnsetType)
 							{
+								// Change the third Gigapede into a Ghostpede.
 								finalEnemy = GameInfo.V3Ghostpede;
 							}
 
 							int gems = finalEnemy.NoFarmGems;
 							totalGems += gems;
 
-							<div class="flex-container flex-center">
-								<div style="@RazorUtils.GetCssWidth(widths[0])" class="text-right">@((Math.Floor(endGameSecond * 60) / 60).ToString(FormatUtils.SpawnTimeFormat))</div>
-								<div style="@RazorUtils.GetCssWidth(widths[1])">@(finalEnemy.GetLayoutAnchor(false, gameVersion))</div>
-								<div style="@RazorUtils.GetCssWidth(widths[2])" class="text-right">@gems</div>
-								<div style="@RazorUtils.GetCssWidth(widths[3])" class="text-right">@totalGems</div>
+							<div class="flex-container flex-space-evenly spawns-flex-container">
+								@if (hasEndLoop)
+								{
+									<div>@(!firstSpawnDone ? $"Wave {i + 1}" : string.Empty)</div>
+								}
+								<div class="text-right">@((Math.Floor(endGameSecond * 60) / 60).ToString(FormatUtils.SpawnTimeFormat))</div>
+								<div>@(finalEnemy.GetLayoutAnchor(false, gameVersion))</div>
+								<div class="text-right">@gems</div>
+								<div class="text-right">@totalGems</div>
 							</div>
+
+							firstSpawnDone = true;
 						}
 					}
 				}
 			}
 
-			<div style="color: var(--col-red); font-size: 24px;">@(endLoop.Count != 1 || (endLoop.Count == 1 && endLoop[0].Enemy != null) ? "Goes on eternally..." : "End of spawnset")</div>
+			<div style="color: var(--col-red); font-size: 24px;">@(hasEndLoop ? "Goes on eternally..." : "End of spawnset")</div>
 		}
 	</div>
 }

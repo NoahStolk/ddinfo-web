@@ -14,13 +14,15 @@ namespace DevilDaggersWebsite.Razor.Utils
 	{
 		public const string DiscordUrl = "https://discord.gg/NF32j8S";
 
-		public static HtmlString NAString { get; set; } = new("<span style='color: #444;'>N/A</span>");
+		public static HtmlString NAString { get; } = new("<span style='color: #444;'>N/A</span>");
 
+		// TODO: Figure out how to properly add "asp-append-version".
 		public static HtmlString GetCssList(IWebHostEnvironment env, string subdirectory)
-			=> GetList(env, subdirectory, (sb, href) => sb.Append("<link rel='stylesheet' href='/").Append(href).Append("' asp-append-version='true' />\n"));
+			=> GetList(env, subdirectory, (sb, href) => sb.Append("<link rel='stylesheet' href='/").Append(href).Append("' />\n"));
 
+		// TODO: Figure out how to properly add "asp-append-version".
 		public static HtmlString GetJsList(IWebHostEnvironment env, string subdirectory)
-			=> GetList(env, subdirectory, (sb, href) => sb.Append("<script defer src='/").Append(href).Append("' asp-append-version='true'></script>\n"));
+			=> GetList(env, subdirectory, (sb, href) => sb.Append("<script defer src='/").Append(href).Append("'></script>\n"));
 
 		private static HtmlString GetList(IWebHostEnvironment env, string subdirectory, Action<StringBuilder, string> appendAction)
 		{
@@ -30,7 +32,7 @@ namespace DevilDaggersWebsite.Razor.Utils
 			foreach (string path in Directory.GetFiles(directory))
 				appendAction(sb, Path.Combine(subdirectory, Path.GetFileName(path)));
 
-			return new HtmlString(sb.ToString());
+			return new(sb.ToString());
 		}
 
 		public static HtmlString GetCopyrightString(string name, int startYear)
@@ -129,6 +131,14 @@ namespace DevilDaggersWebsite.Razor.Utils
 					Value = ((int)(object)c).ToString(),
 				})
 				.ToList();
+		}
+
+		public static string ToUpperFirst(this string str)
+		{
+			if (str.Length == 0)
+				return str;
+
+			return $"{char.ToUpper(str[0])}{str[1..]}";
 		}
 	}
 }

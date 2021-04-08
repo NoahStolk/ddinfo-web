@@ -1,4 +1,5 @@
 ﻿using DevilDaggersCore.Spawnsets;
+using DevilDaggersWebsite.Caches;
 using DevilDaggersWebsite.Entities;
 using DevilDaggersWebsite.Enumerators;
 using DevilDaggersWebsite.Extensions;
@@ -47,9 +48,7 @@ namespace DevilDaggersWebsite.Transients
 
 		private Dto.SpawnsetFile Map(SpawnsetFile spawnsetFile)
 		{
-			if (!Spawnset.TryGetSpawnsetData(File.ReadAllBytes(Path.Combine(_env.WebRootPath, "spawnsets", spawnsetFile.Name)), out SpawnsetData spawnsetData))
-				throw new($"Failed to get spawn data from spawnset file: '{spawnsetFile.Name}'.");
-
+			SpawnsetData spawnsetData = SpawnsetDataCache.Instance.GetSpawnsetDataByFilePath(Path.Combine(_env.WebRootPath, "spawnsets", spawnsetFile.Name));
 			return spawnsetFile.ToDto(spawnsetData, _spawnsetsWithCustomLeaderboardIds.Contains(spawnsetFile.Id));
 		}
 	}

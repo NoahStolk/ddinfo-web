@@ -62,7 +62,6 @@
 	width: 380px;
 	padding: 8px;
 	margin: 8px;
-	border-radius: 2px;
 }
 
 .enemy-row {
@@ -73,9 +72,3 @@
 	.enemy-row > div {
 		flex-grow: 1;
 	}
-
-@media (min-width: 1600px) {
-	.enemies-summary {
-		max-width: 80%;
-	}
-}

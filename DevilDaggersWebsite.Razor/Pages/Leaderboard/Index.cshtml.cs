@@ -1,14 +1,8 @@
 ﻿using DevilDaggersWebsite.Clients;
-using DevilDaggersWebsite.Dto;
-using DevilDaggersWebsite.Entities;
-using DevilDaggersWebsite.Razor.Leaderboards;
 using DevilDaggersWebsite.Razor.PageModels;
-using Microsoft.AspNetCore.Hosting;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.AspNetCore.Mvc.RazorPages;
 using System;
-using System.Collections.Generic;
-using System.Linq;
 using System.Threading.Tasks;
 using Lb = DevilDaggersWebsite.Dto.Leaderboard;
 
@@ -16,90 +10,21 @@ namespace DevilDaggersWebsite.Razor.Pages.Leaderboard
 {
 	public class IndexModel : PageModel, IDefaultLeaderboardPageModel
 	{
-		private readonly IWebHostEnvironment _env;
-		private readonly ApplicationDbContext _dbContext;
-
-		private string _username = string.Empty;
-		private int _userId;
-
-		public IndexModel(IWebHostEnvironment env, ApplicationDbContext dbContext)
-		{
-			_env = env;
-			_dbContext = dbContext;
-		}
-
 		[BindProperty]
 		public Lb? Leaderboard { get; set; }
 
 		public int Rank { get; set; }
 
-		public string Username
-		{
-			get => _username;
-			set
-			{
-				if (string.IsNullOrEmpty(value))
-					return;
-				_username = value.Length > 16 ? value.Substring(0, 16) : value;
-			}
-		}
-
-		public int UserId
-		{
-			get => _userId;
-			set
-			{
-				if (value <= 0)
-					return;
-				_userId = value;
-			}
-		}
-
-		public bool HasBans { get; private set; }
-		public bool IsValidTop100Graph { get; private set; }
-		public string? UsernameAliases { get; private set; }
-
-		public LeaderboardSearchType LeaderboardSearchType => !string.IsNullOrEmpty(Username) && Username.Length >= 3 ? LeaderboardSearchType.Username : UserId != 0 ? LeaderboardSearchType.UserId : LeaderboardSearchType.Rank;
-
-		public async Task OnGetAsync(int rank, string username, int userId)
+		public async Task OnGetAsync(int rank)
 		{
 			Rank = Math.Max(rank, 1);
-			Username = username;
-			UserId = userId;
 
-			switch (LeaderboardSearchType)
+			Leaderboard = await LeaderboardClient.Instance.GetScores(Rank);
+			if (Leaderboard != null && Rank > Leaderboard.Players - 99)
 			{
-				case LeaderboardSearchType.Username:
-					List<Entry>? entries = await LeaderboardClient.Instance.GetUserSearch(Username);
-					Leaderboard = entries == null ? null : new() { Entries = entries };
-					break;
-				case LeaderboardSearchType.UserId:
-					Entry? entry = await LeaderboardClient.Instance.GetUserById(UserId);
-					Leaderboard = entry == null ? null : new Lb { Entries = new() { entry } };
-					break;
-				default:
-					Leaderboard = await LeaderboardClient.Instance.GetScores(Rank);
-					if (Leaderboard != null && Rank > Leaderboard.Players - 99)
-					{
-						Rank = Leaderboard.Players - 99;
-						Leaderboard.Entries.Clear();
-						Leaderboard = await LeaderboardClient.Instance.GetScores(Rank);
-					}
-
-					break;
-			}
-
-			if (Leaderboard != null)
-			{
-				IEnumerable<int> playerIds = Leaderboard.Entries.Select(p => p.Id);
-				HasBans = _dbContext.Players.Where(p => playerIds.Contains(p.Id)).Any(p => p.IsBanned);
-				if (LeaderboardSearchType == LeaderboardSearchType.UserId)
-				{
-					Entry entry = Leaderboard.Entries[0];
-					IsValidTop100Graph = UserId > 0 && entry.ExistsInHistory(_env);
-					IEnumerable<string> aliases = entry.GetAllUsernameAliases(_env).Where(s => s != entry.Username);
-					UsernameAliases = aliases.Any() ? $" (also known as: {string.Join(", ", aliases)})" : string.Empty;
-				}
+				Rank = Leaderboard.Players - 99;
+				Leaderboard.Entries.Clear();
+				Leaderboard = await LeaderboardClient.Instance.GetScores(Rank);
 			}
 		}
 	}

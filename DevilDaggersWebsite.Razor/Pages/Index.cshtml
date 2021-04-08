@@ -1,29 +1,40 @@
 ﻿@page
+@model IndexModel
 @using DevilDaggersWebsite.Razor.Utils
 @{
 	ViewData["Title"] = "Home";
 }
 
 <header>
-	<h1>Devil Daggers Info</h1>
+	<h1 class="home-title">DevilDaggers.info</h1>
 </header>
 
 <main role="main">
-	<img class="img-responsive" style="margin: auto;" src="~/images/home-logo.gif" />
 	<p>
-		Accurate and up-to-date information about the game <a href="//store.steampowered.com/app/422970/Devil_Daggers/">Devil Daggers</a>.
+		Welcome to DevilDaggers.info, a website specifically made for the game <a href="//store.steampowered.com/app/422970/Devil_Daggers/">Devil Daggers</a>.
+	</p>
+	<img class="img-responsive logo" src="~/images/home-logo.gif" />
+	<p>
+		This is a fan-made website; the creator of this website is not related to the developers of Devil Daggers. Devil Daggers is a game created by Sorath, and <a href="//devildaggers.com/">devildaggers.com</a> is the official website for the game.
 	</p>
 	<p>
-		This is a fan-made website; the creator of this website is not related to the developers of Devil Daggers.<br />
-		Devil Daggers is a game created by Sorath.<br />
-		<a href="//devildaggers.com/">devildaggers.com</a> is the official website for Devil Daggers.
+		I first launched this website in early 2017 as a small hobby project. It started as a simple leaderboard page, so people could view the leaderboard without opening the game. Later I added wiki pages for spawns, hand upgrades, enemy types, and dagger types. After that I began hosting custom spawnsets, which allow modifications of the enemy spawns and arena of the main game. I developed a <a asp-page="/Tools/DevilDaggersSurvivalEditor">spawnset editor</a> to create spawnsets more easily, and some time later created and began hosting <a asp-page="/CustomLeaderboards/Index">custom leaderboards</a> for them.
 	</p>
 	<p>
-		The main purpose of this website is to help players find more accurate information about the game, like enemy types, hand upgrades, and spawn times. It also comes with a complete leaderboard where you can view any score without having to open the game, as well as a history database of the leaderboard, a world record progression graph, and a lot more. There is also a bunch of custom spawnsets created and shared by the community that you can play.
+		Since then, I've expanded the project quite a bit, adding leaderboard history, world record progression, statistics, the possibility to mod the assets of the game, and much more.
 	</p>
-	<p>
-		I first launched this website in early 2017 as a hobby project. It started as a simple leaderboard page, later I added wiki pages and began hosting <a asp-page="/Spawnsets">custom spawnsets</a>. I developed a <a asp-page="/Tools/DevilDaggersSurvivalEditor">spawnset editor</a> to create spawnsets, and some time later created and began hosting <a asp-page="/CustomLeaderboards/Index">custom leaderboards</a>. The latest addition is the possibility to create <a asp-page="/Mods">mods</a> using the <a asp-page="/Tools/DevilDaggersAssetEditor">asset editor</a>.
-	</p>
+	<div class="row">
+		@foreach ((string text, string imageUrl, string url) in Model.Sections)
+		{
+			<a href="@url">
+				<div class="col-xs-12 col-sm-6 col-md-6 col-lg-3 home-section-container">
+					<div class="overlay-block"></div>
+					<div class="home-section-text">@text</div>
+					<img class="img-responsive home-section-image" src="~/images/@imageUrl" />
+				</div>
+			</a>
+		}
+	</div>
 	<p>
 		All of this would not have been possible without such a dedicated and helpful community. Thank you.
 	</p>
@@ -31,3 +42,7 @@
 		Feel free to join the <a href="@RazorUtils.DiscordUrl" target="_blank">Discord server</a>.
 	</p>
 </main>
+
+@section Styles {
+	<link rel='stylesheet' href='~/styles/index.css' asp-append-version="true" />
+}

@@ -12,42 +12,47 @@
 	<h1>@ViewData["Title"]</h1>
 </header>
 
-<form method="get">
-	<select class="select form-control" asp-for="GameVersion" asp-items="Model.GameVersionListItems" onchange="this.form.submit()"></select>
-</form>
-
 <main role="main">
-	<div class="flex-container flex-center upgrade-container">
+	<form method="get">
+		<select class="select form-control select-small" asp-for="GameVersion" asp-items="Model.GameVersionListItems" onchange="this.form.submit()"></select>
+	</form>
+
+	<p>
+		There are @Model.Upgrades.Count different types of hand upgrades in Devil Daggers @Model.GetGameVersionName(Model.GameVersion). You unlock these upgrades by collecting gems. Each upgrades makes the player significantly more powerful.
+	</p>
+
+	<div class="row">
 		@foreach (Upgrade upgrade in Model.Upgrades)
 		{
-			<div class="upgrade" id="@upgrade.Name" style="-webkit-box-shadow: @boxShadow #@(upgrade.ColorCode); -moz-box-shadow: @boxShadow #@(upgrade.ColorCode); box-shadow: @boxShadow #@(upgrade.ColorCode);">
-				<div class="upgrade-row flex-container">
-					<div>Name</div>
-					<div class="text-right" style="color: #@upgrade.ColorCode;">@upgrade.Name</div>
-				</div>
-				<div class="upgrade-row flex-container">
-					<div>Image</div>
-					<div class="text-right"><img class="pull-right img-responsive" src="~/images/Upgrades/@(upgrade.Name).png" /></div>
-				</div>
-				<div class="upgrade-row flex-container">
-					<div>Unlocks at</div>
-					<div class="text-right">@upgrade.UnlocksAt</div>
-				</div>
-				<div class="upgrade-row flex-container">
-					<div>Default spray</div>
-					<div class="text-right">@upgrade.DefaultSprayPerSecond.ToString("0.##") daggers per second</div>
-				</div>
-				<div class="upgrade-row flex-container">
-					<div>Default shot</div>
-					<div class="text-right">@upgrade.DefaultShot daggers per shot</div>
-				</div>
-				<div class="upgrade-row flex-container">
-					<div>Homing spray</div>
-					<div class="text-right">@((upgrade.HomingSprayPerSecond.HasValue) ? Html.Raw(upgrade.HomingSprayPerSecond.Value.ToString("0.##") + " daggers per second") : RazorUtils.NAString)</div>
-				</div>
-				<div class="upgrade-row flex-container">
-					<div>Homing shot</div>
-					<div class="text-right">@((upgrade.HomingShot.HasValue) ? Html.Raw(upgrade.HomingShot.Value + " daggers per shot") : RazorUtils.NAString)</div>
+			<div class="col-xs-12 col-sm-6 col-md-6 col-lg-3">
+				<div class="upgrade" id="@upgrade.Name" style="-webkit-box-shadow: @boxShadow #@(upgrade.ColorCode); -moz-box-shadow: @boxShadow #@(upgrade.ColorCode); box-shadow: @boxShadow #@(upgrade.ColorCode);">
+					<div class="upgrade-row flex-container">
+						<div>Name</div>
+						<div class="text-right" style="color: #@upgrade.ColorCode;">@upgrade.Name</div>
+					</div>
+					<div class="upgrade-row flex-container">
+						<img class="pull-right img-responsive" src="~/images/Upgrades/@(upgrade.Name).png" />
+					</div>
+					<div class="upgrade-row flex-container">
+						<div>Unlocks at</div>
+						<div class="text-right">@upgrade.UnlocksAt</div>
+					</div>
+					<div class="upgrade-row flex-container">
+						<div>Default spray</div>
+						<div class="text-right">@upgrade.DefaultSprayPerSecond.ToString("0.##") daggers per second</div>
+					</div>
+					<div class="upgrade-row flex-container">
+						<div>Default shot</div>
+						<div class="text-right">@upgrade.DefaultShot daggers per shot</div>
+					</div>
+					<div class="upgrade-row flex-container">
+						<div>Homing spray</div>
+						<div class="text-right">@((upgrade.HomingSprayPerSecond.HasValue) ? Html.Raw(upgrade.HomingSprayPerSecond.Value.ToString("0.##") + " daggers per second") : RazorUtils.NAString)</div>
+					</div>
+					<div class="upgrade-row flex-container">
+						<div>Homing shot</div>
+						<div class="text-right">@((upgrade.HomingShot.HasValue) ? Html.Raw(upgrade.HomingShot.Value + " daggers per shot") : RazorUtils.NAString)</div>
+					</div>
 				</div>
 			</div>
 		}

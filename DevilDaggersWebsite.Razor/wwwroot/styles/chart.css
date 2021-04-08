@@ -31,3 +31,14 @@
 #user-activity-highlighter {
 	width: 448px;
 }
+
+.jqplot-target {
+	font-family: unset;
+	color: unset;
+}
+
+.jqplot-canvasOverlay-tooltip {
+	font-size: unset;
+	border: unset;
+	background: unset;
+}

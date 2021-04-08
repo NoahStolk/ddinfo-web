@@ -69,7 +69,7 @@ namespace DevilDaggersWebsite.Api
 		[ProducesResponseType(StatusCodes.Status200OK)]
 		public ActionResult<DdclSettings> GetDdclSettings()
 		{
-			return JsonConvert.DeserializeObject<DdclSettings>(Io.File.ReadAllText(Path.Combine(_env.WebRootPath, "tools", "DevilDaggersCustomLeaderboards", "Settings.json")));
+			return JsonConvert.DeserializeObject<DdclSettings?>(Io.File.ReadAllText(Path.Combine(_env.WebRootPath, "tools", "DevilDaggersCustomLeaderboards", "Settings.json"))) ?? throw new("Could not deserialize DDCL settings JSON.");
 		}
 	}
 }

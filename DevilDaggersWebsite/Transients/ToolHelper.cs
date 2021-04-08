@@ -11,7 +11,7 @@ namespace DevilDaggersWebsite.Transients
 		public ToolHelper(IWebHostEnvironment env)
 		{
 			if (env.EnvironmentName != "Hosting:UnitTestEnvironment")
-				Tools = JsonConvert.DeserializeObject<List<Tool>>(File.ReadAllText(Path.Combine(env.WebRootPath, "tools", "Tools.json")));
+				Tools = JsonConvert.DeserializeObject<List<Tool>?>(File.ReadAllText(Path.Combine(env.WebRootPath, "tools", "Tools.json"))) ?? throw new("Could not deserialize tools JSON.");
 		}
 
 		public List<Tool> Tools { get; } = new();

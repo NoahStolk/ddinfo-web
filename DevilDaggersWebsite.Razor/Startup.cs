@@ -118,15 +118,11 @@ namespace DevilDaggersWebsite.Razor
 				.AddRedirect("^Upgrades$", "Wiki/Upgrades")
 				.AddRedirect("^Enemies$", "Wiki/Enemies")
 				.AddRedirect("^Daggers$", "Wiki/Daggers")
-				.AddRedirect("^GetSpawnsets$", "Api/GetSpawnsets")
-				.AddRedirect("^GetToolVersions$", "Api/GetToolVersions")
-				.AddRedirect("^LeaderboardJson$", "Api/LeaderboardJson")
 				.AddRedirect("^Spawns$", "Wiki/Spawns")
 				.AddRedirect("^Home/Spawns$", "Wiki/Spawns")
 				.AddRedirect("^Wiki/SpawnsetGuide$", "Wiki/Guides/SurvivalEditor")
 				.AddRedirect("^Wiki/AssetGuide$", "Wiki/Guides/AssetEditor")
-				.AddRedirect("^DownloadSpawnset", "Api/DownloadSpawnset")
-				.AddRedirect("^DownloadSpawnset?file=(.*)", "Api/DownloadSpawnset?file=$1");
+				.AddRedirect("^Leaderboard/UserSettings", "Leaderboard/PlayerSettings");
 			app.UseRewriter(options);
 
 			if (env.IsDevelopment())

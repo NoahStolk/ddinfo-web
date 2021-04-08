@@ -18,7 +18,7 @@ namespace DevilDaggersWebsite.Razor.Pages
 			_dbContext = dbContext;
 		}
 
-		public PaginatedList<Mod>? PaginatedList { get; private set; }
+		public PaginatedList<Mod> PaginatedList { get; private set; } = null!;
 
 		public string? SearchAuthor { get; set; }
 		public string? SearchName { get; set; }
@@ -30,13 +30,12 @@ namespace DevilDaggersWebsite.Razor.Pages
 
 		public string? SortOrder { get; set; }
 
-		public int PageSize { get; set; } = 10;
+		public int PageSize { get; set; } = 20;
 		public int PageIndex { get; private set; }
+		public int TotalPages { get; private set; }
 		public int TotalResults { get; private set; }
 
 		public string PageName => "Mods";
-
-		IPaginatedList? IPaginationModel.PaginatedList => PaginatedList;
 
 		public void OnGet(string searchAuthor, string searchName, string sortOrder, int? pageIndex)
 		{
@@ -72,10 +71,8 @@ namespace DevilDaggersWebsite.Razor.Pages
 				_ => sortedMods.OrderBy(s => s.Name).ThenByDescending(s => s.Authors[0]).ToList(),
 			};
 			TotalResults = sortedMods.Count;
-			if (TotalResults == 0)
-				return;
-
-			PageIndex = Math.Clamp(PageIndex, 1, (int)Math.Ceiling(TotalResults / (double)PageSize));
+			TotalPages = Math.Max(1, (int)Math.Ceiling(TotalResults / (double)PageSize));
+			PageIndex = Math.Clamp(PageIndex, 1, TotalPages);
 			PaginatedList = new(sortedMods, PageIndex, PageSize);
 		}
 	}
