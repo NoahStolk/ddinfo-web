@@ -72,3 +72,15 @@ span.bronze,
 span.default {
 	background-position-y: 3px;
 }
+
+.highlight.leviathan:hover,
+.highlight.bronze:hover,
+.highlight.default:hover {
+	filter: brightness(150%) saturate(150%);
+}
+
+.highlight.devil:hover,
+.highlight.golden:hover,
+.highlight.silver:hover {
+	filter: brightness(200%) saturate(200%);
+}
