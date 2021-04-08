@@ -1,16 +1,15 @@
 ﻿using DevilDaggersCore.Utils;
+using DevilDaggersWebsite.Caches;
 using DevilDaggersWebsite.Dto;
 using DevilDaggersWebsite.Razor.PageModels;
 using DevilDaggersWebsite.Razor.Utils;
 using Microsoft.AspNetCore.Hosting;
 using Microsoft.AspNetCore.Mvc.RazorPages;
 using Microsoft.AspNetCore.Mvc.Rendering;
-using Newtonsoft.Json;
 using System;
 using System.Collections.Generic;
 using System.IO;
 using System.Linq;
-using System.Text;
 using Io = System.IO;
 using Lb = DevilDaggersWebsite.Dto.Leaderboard;
 
@@ -64,11 +63,11 @@ namespace DevilDaggersWebsite.Razor.Pages.Leaderboard
 				}
 			}
 
-			Leaderboard = JsonConvert.DeserializeObject<Lb>(Io.File.ReadAllText(Path.Combine(_env.WebRootPath, "leaderboard-history", From), Encoding.UTF8)) ?? throw new($"Corrupt leaderboard history file: {From}");
+			Leaderboard = LeaderboardHistoryCache.Instance.GetLeaderboardHistoryByFilePath(Path.Combine(_env.WebRootPath, "leaderboard-history", From));
 
 			if (FromNext != null && Leaderboard.DateTime > _fullHistoryDateStart)
 			{
-				LeaderboardPrevious = JsonConvert.DeserializeObject<Lb>(Io.File.ReadAllText(Path.Combine(_env.WebRootPath, "leaderboard-history", FromNext), Encoding.UTF8)) ?? throw new($"Corrupt leaderboard history file: {FromNext}");
+				LeaderboardPrevious = LeaderboardHistoryCache.Instance.GetLeaderboardHistoryByFilePath(Path.Combine(_env.WebRootPath, "leaderboard-history", FromNext));
 
 				if (LeaderboardPrevious.Players != Leaderboard.Players)
 					ChangesGlobal.Add($"Total players +{Leaderboard.Players - LeaderboardPrevious.Players}");

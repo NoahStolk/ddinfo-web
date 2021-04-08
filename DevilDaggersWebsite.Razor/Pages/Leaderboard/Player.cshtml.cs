@@ -1,4 +1,5 @@
 ﻿using DevilDaggersCore.Game;
+using DevilDaggersWebsite.Caches;
 using DevilDaggersWebsite.Clients;
 using DevilDaggersWebsite.Dto;
 using DevilDaggersWebsite.Entities;
@@ -7,11 +8,9 @@ using Microsoft.AspNetCore.Hosting;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.AspNetCore.Mvc.RazorPages;
 using Microsoft.EntityFrameworkCore;
-using Newtonsoft.Json;
 using System;
 using System.Collections.Generic;
 using System.Linq;
-using System.Text;
 using System.Threading.Tasks;
 using Io = System.IO;
 using Lb = DevilDaggersWebsite.Dto.Leaderboard;
@@ -84,7 +83,7 @@ namespace DevilDaggersWebsite.Razor.Pages.Leaderboard
 				Dictionary<string, int> aliases = new();
 				foreach (string leaderboardHistoryPath in Io.Directory.GetFiles(Io.Path.Combine(_env.WebRootPath, "leaderboard-history"), "*.json"))
 				{
-					Lb leaderboard = JsonConvert.DeserializeObject<Lb>(Io.File.ReadAllText(leaderboardHistoryPath, Encoding.UTF8)) ?? throw new($"Corrupt leaderboard history file: {Io.Path.GetFileName(leaderboardHistoryPath)}");
+					Lb leaderboard = LeaderboardHistoryCache.Instance.GetLeaderboardHistoryByFilePath(leaderboardHistoryPath);
 					Entry? historyEntry = leaderboard.Entries.Find(e => e.Id == PlayerId);
 					if (historyEntry != null)
 					{
