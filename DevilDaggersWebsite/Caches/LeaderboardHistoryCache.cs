@@ -25,7 +25,7 @@ namespace DevilDaggersWebsite.Caches
 			if (_cache.ContainsKey(name))
 				return _cache[name];
 
-			Leaderboard lb = JsonConvert.DeserializeObject<Leaderboard>(File.ReadAllText(filePath, Encoding.UTF8));
+			Leaderboard lb = JsonConvert.DeserializeObject<Leaderboard?>(File.ReadAllText(filePath, Encoding.UTF8)) ?? throw new($"Corrupt leaderboard history file: {name}");
 			_cache.TryAdd(name, lb);
 			return lb;
 		}
