@@ -1,13 +1,13 @@
 ﻿using DevilDaggersCore.Spawnsets;
 using System;
-using System.Collections.Generic;
+using System.Collections.Concurrent;
 using System.IO;
 
 namespace DevilDaggersWebsite.Caches
 {
 	public sealed class SpawnsetDataCache
 	{
-		private readonly Dictionary<string, SpawnsetData> _cache = new();
+		private readonly ConcurrentDictionary<string, SpawnsetData> _cache = new();
 
 		private static readonly Lazy<SpawnsetDataCache> _lazy = new(() => new());
 
@@ -26,7 +26,7 @@ namespace DevilDaggersWebsite.Caches
 			if (!Spawnset.TryGetSpawnsetData(File.ReadAllBytes(filePath), out SpawnsetData spawnsetData))
 				throw new($"Failed to get spawn data from spawnset file: '{name}'.");
 
-			_cache.Add(name, spawnsetData);
+			_cache.TryAdd(name, spawnsetData);
 			return spawnsetData;
 		}
 

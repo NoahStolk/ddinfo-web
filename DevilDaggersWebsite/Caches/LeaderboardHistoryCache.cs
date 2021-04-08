@@ -1,7 +1,7 @@
 ﻿using DevilDaggersWebsite.Dto;
 using Newtonsoft.Json;
 using System;
-using System.Collections.Generic;
+using System.Collections.Concurrent;
 using System.IO;
 using System.Text;
 
@@ -9,7 +9,7 @@ namespace DevilDaggersWebsite.Caches
 {
 	public sealed class LeaderboardHistoryCache
 	{
-		private readonly Dictionary<string, Leaderboard> _cache = new();
+		private readonly ConcurrentDictionary<string, Leaderboard> _cache = new();
 
 		private static readonly Lazy<LeaderboardHistoryCache> _lazy = new(() => new());
 
@@ -26,7 +26,7 @@ namespace DevilDaggersWebsite.Caches
 				return _cache[name];
 
 			Leaderboard lb = JsonConvert.DeserializeObject<Leaderboard>(File.ReadAllText(filePath, Encoding.UTF8));
-			_cache.Add(name, lb);
+			_cache.TryAdd(name, lb);
 			return lb;
 		}
 
