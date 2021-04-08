@@ -24,8 +24,8 @@
 		@using (Html.BeginForm(FormMethod.Get))
 		{
 			<div class="leaderboard-form-container">
-					<div class="input-label text-left" style="@RazorUtils.GetCssWidth(widths[0])">Rank:</div>
-					<div style="@RazorUtils.GetCssWidth(widths[1])">@Html.TextBoxFor(m => m.Rank, new { @class = "input" })</div>
+				<div class="input-label text-left" style="@RazorUtils.GetCssWidth(widths[0])">Rank:</div>
+				<div style="@RazorUtils.GetCssWidth(widths[1])">@Html.TextBoxFor(m => m.Rank, new { @class = "input" })</div>
 				<input class="btn" type="submit" value="Show" />
 				<div>
 					Showing rank @Model.Rank - @(Model.Rank + 99)
