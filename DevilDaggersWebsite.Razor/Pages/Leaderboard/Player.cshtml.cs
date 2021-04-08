@@ -55,6 +55,8 @@ namespace DevilDaggersWebsite.Razor.Pages.Leaderboard
 
 		public int? BestRankRecorded { get; private set; }
 
+		public bool HasCustomEntries { get; private set; }
+
 		public Dictionary<string, int> CustomDaggerCounts { get; } = new()
 		{
 			{ "leviathan", 0 },
@@ -107,11 +109,15 @@ namespace DevilDaggersWebsite.Razor.Pages.Leaderboard
 
 			if (Player != null)
 			{
-				foreach (Entities.CustomEntry customEntry in _dbContext.CustomEntries.Include(ce => ce.CustomLeaderboard).Where(ce => ce.PlayerId == PlayerId))
+				if (_dbContext.CustomEntries.Any(ce => ce.PlayerId == PlayerId))
 				{
-					string dagger = customEntry.CustomLeaderboard.GetDagger(customEntry.Time);
-					if (CustomDaggerCounts.ContainsKey(dagger))
-						CustomDaggerCounts[dagger]++;
+					HasCustomEntries = true;
+					foreach (Entities.CustomEntry customEntry in _dbContext.CustomEntries.Include(ce => ce.CustomLeaderboard).Where(ce => ce.PlayerId == PlayerId))
+					{
+						string dagger = customEntry.CustomLeaderboard.GetDagger(customEntry.Time);
+						if (CustomDaggerCounts.ContainsKey(dagger))
+							CustomDaggerCounts[dagger]++;
+					}
 				}
 
 				Mods = _dbContext.AssetMods.Include(am => am.PlayerAssetMods).Where(am => am.PlayerAssetMods.Any(pam => pam.PlayerId == PlayerId)).ToList();
