@@ -12,7 +12,7 @@
 }
 
 .top-bar {
-	transform: rotate(45deg);
+	transform: translate(3px, 0px) rotate(45deg);
 	transform-origin: 10% 10%;
 }
 
@@ -21,7 +21,7 @@
 }
 
 .bottom-bar {
-	transform: rotate(-45deg);
+	transform: translate(3px, 0px) rotate(-45deg);
 	transform-origin: 10% 90%;
 }
 
