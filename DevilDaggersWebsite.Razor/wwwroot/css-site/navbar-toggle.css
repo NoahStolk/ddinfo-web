@@ -1,9 +1,9 @@
 ﻿.navbar-toggle {
 	border: none;
+	margin-right: 24px;
 }
 
 .icon-bar {
-	width: 22px;
 	transition: all 0.2s;
 	-moz-transition: all 0.2s;
 	-webkit-transition: all 0.2s;
