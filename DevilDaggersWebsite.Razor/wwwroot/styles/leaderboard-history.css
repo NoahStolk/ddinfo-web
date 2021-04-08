@@ -17,11 +17,6 @@
 	border-color: var(--col-dark-orange);
 }
 
-.leaderboard-history-form-container {
-	max-width: 480px;
-	margin: 12px 0;
-}
-
 select {
 	max-width: 480px;
 	width: 480px;

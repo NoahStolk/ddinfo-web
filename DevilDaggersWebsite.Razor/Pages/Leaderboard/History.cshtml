@@ -13,15 +13,16 @@
 </header>
 
 <main role="main">
-	<div class="leaderboard-history-form-container">
-		<form method="get">
-			<select class="select form-control" asp-for="From" asp-items="Model.JsonFiles" onchange="this.form.submit()"></select>
-		</form>
-		<div>
-			<a class="btn btn-default btn-page @(Model.FromNext == null ? "disabled" : string.Empty)" asp-page="/Leaderboard/History" asp-route-from="@(Model.FromNext)">&lt;</a>
-			<a class="btn btn-default btn-page @(Model.FromPrevious == null ? "disabled" : string.Empty)" asp-page="/Leaderboard/History" asp-route-from="@(Model.FromPrevious)">&gt;</a>
+	@using (Html.BeginForm(FormMethod.Get))
+	{
+		<div class="leaderboard-form-container">
+			<select class="select form-control" asp-for="From" asp-items="Model.JsonFiles" onchange="this.form.submit()" style="margin-top: 8px;"></select>
+			<div>
+				<a class="btn btn-default btn-page @(Model.FromNext == null ? "disabled" : string.Empty)" asp-page="/Leaderboard/History" asp-route-from="@(Model.FromNext)">&lt;</a>
+				<a class="btn btn-default btn-page @(Model.FromPrevious == null ? "disabled" : string.Empty)" asp-page="/Leaderboard/History" asp-route-from="@(Model.FromPrevious)">&gt;</a>
+			</div>
 		</div>
-	</div>
+	}
 
 	@{
 		List<string> changesGlobal = Model.ChangesGlobal;
