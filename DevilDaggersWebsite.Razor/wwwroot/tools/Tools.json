@@ -419,13 +419,13 @@
 				"Date": "2019-07-07T00:00:00",
 				"Changes": [
 					{
-						"Description": "The application now keeps track of whether or not you have any unsaved changes and will ask you whether or not you want to to save it before proceeding to overwrite it by opening an existing spawnset or creating a new one."
+						"Description": "The application now keeps track of whether or not you have any unsaved changes and will ask you if you want to save the spawnset before proceeding to overwrite it by opening an existing spawnset, creating a new one, or closing the application."
 					},
 					{
 						"Description": "The application window title now displays the current spawnset's name if it has one."
 					},
 					{
-						"Description": "Added Save As menu item."
+						"Description": "Added 'File > Save as' menu item."
 					},
 					{
 						"Description": "Added shortcut keys:",
@@ -1152,7 +1152,7 @@
 						"Description": "Added CheckBox to include sub-directories when importing assets."
 					},
 					{
-						"Description": "Added 'New mod' menu item to easily clear the list of specified paths and start a new mod."
+						"Description": "Added 'File > New' menu item to easily clear the list of specified paths and start a new mod."
 					},
 					{
 						"Description": "Made the previewer and asset lists adjust better to the window size so the application works much better on smaller screen resolutions."
