@@ -31,10 +31,12 @@
 					Showing rank @Model.Rank - @(Model.Rank + 99)
 				</div>
 				<div>
-					<a class="btn btn-default btn-page @(Model.Rank <= 1 ? "disabled" : string.Empty)" asp-page="/Leaderboard/Index" asp-route-rank="1">&lt;&lt;</a>
+					<a class="btn btn-default btn-page @(Model.Rank <= 1 ? "disabled" : string.Empty)" asp-page="/Leaderboard/Index" asp-route-rank="1">|&lt;</a>
+					<a class="btn btn-default btn-page @(Model.Rank <= 1 ? "disabled" : string.Empty)" asp-page="/Leaderboard/Index" asp-route-rank="@(Math.Max(1, Model.Rank - 1000))">&lt;&lt;</a>
 					<a class="btn btn-default btn-page @(Model.Rank <= 1 ? "disabled" : string.Empty)" asp-page="/Leaderboard/Index" asp-route-rank="@(Math.Max(1, Model.Rank - 100))">&lt;</a>
 					<a class="btn btn-default btn-page @(Model.Rank >= maxRank ? "disabled" : string.Empty)" asp-page="/Leaderboard/Index" asp-route-rank="@(Math.Min(Model.Leaderboard.Players - 99, Model.Rank + 100))">&gt;</a>
-					<a class="btn btn-default btn-page @(Model.Rank >= maxRank ? "disabled" : string.Empty)" asp-page="/Leaderboard/Index" asp-route-rank="@(Model.Leaderboard.Players - 99)">&gt;&gt;</a>
+					<a class="btn btn-default btn-page @(Model.Rank >= maxRank ? "disabled" : string.Empty)" asp-page="/Leaderboard/Index" asp-route-rank="@(Math.Min(Model.Leaderboard.Players - 99, Model.Rank + 1000))">&gt;&gt;</a>
+					<a class="btn btn-default btn-page @(Model.Rank >= maxRank ? "disabled" : string.Empty)" asp-page="/Leaderboard/Index" asp-route-rank="@(Model.Leaderboard.Players - 99)">&gt;|</a>
 				</div>
 			</div>
 		}
