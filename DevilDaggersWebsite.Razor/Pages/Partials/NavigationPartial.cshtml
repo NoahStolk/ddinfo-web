@@ -30,7 +30,7 @@
 
 			@{
 				List<int> pages = new[] { 1, Model.PageIndex - 1, Model.PageIndex + 1, Model.TotalPages }.Select(i => Math.Clamp(i, 1, Model.TotalPages)).ToList();
-				string[] buttons = new[] { "<<", "<", ">", ">>" };
+				string[] buttons = new[] { "|<", "<", ">", ">|" };
 				for (int i = 0; i < pages.Count; i++)
 				{
 					<a asp-page="./@(Model.PageName)"
