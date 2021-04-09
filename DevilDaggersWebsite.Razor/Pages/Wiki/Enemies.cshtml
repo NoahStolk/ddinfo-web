@@ -22,7 +22,8 @@
 	<ul class="table-of-contents">
 		@for (int i = 0; i < Model.TableOfContents.Count; i++)
 		{
-			<li><a href="#@Model.TableOfContents[i].ToIdString()">@Model.TableOfContents[i]</a></li>
+			string item = @Model.TableOfContents[i];
+			<li class="@(item == "Summary" ? "hidden-xs" : string.Empty)"><a href="#@item.ToIdString()">@item</a></li>
 		}
 	</ul>
 
