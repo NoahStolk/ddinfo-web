@@ -17,6 +17,10 @@
 }
 
 /*Spawns*/
+.spawns-container {
+	background-color: var(--col-gray-08);
+}
+
 .end-wave-separator {
 	padding-right: 40px;
 	background-color: red;
@@ -41,6 +45,12 @@
 
 .spawns-flex-container > div {
 	padding: 0 4px;
+}
+
+.spawns-end {
+	color: var(--col-red);
+	font-size: 24px;
+	padding: 8px;
 }
 
 /*Arena*/
