@@ -16,6 +16,12 @@
 		return;
 	}
 
+	if (spawnset.Spawns.Count == 0 || spawnset.Spawns.All(s => s.Value.Enemy == null))
+	{
+		<p>This spawnset has no spawns.</p>
+		return;
+	}
+
 	// TODO: Don't use V1 or V2 layout/Ghostpede pattern when viewing in Spawnset page. This should only be done for the wiki.
 	GameVersion gameVersion = sf.Name == "V1" ? GameVersion.V1 : sf.Name == "V2" ? GameVersion.V2 : GameVersion.V31;
 	int maxWaves = sf.MaxDisplayWaves ?? SpawnsetUtils.DefaultMaxWaves;
