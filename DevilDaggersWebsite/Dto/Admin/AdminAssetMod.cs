@@ -1,4 +1,5 @@
 ﻿using DevilDaggersWebsite.Enumerators;
+using System;
 using System.Collections.Generic;
 using System.Linq;
 
@@ -12,6 +13,8 @@ namespace DevilDaggersWebsite.Dto.Admin
 		public string Name { get; init; } = null!;
 		public string Url { get; init; } = null!;
 		public bool IsHidden { get; set; }
+		public DateTime LastUpdated { get; set; }
+		public string? TrailerUrl { get; set; }
 
 		public Dictionary<string, string> Log()
 		{
@@ -22,6 +25,8 @@ namespace DevilDaggersWebsite.Dto.Admin
 			dictionary.Add(nameof(Name), Name);
 			dictionary.Add(nameof(Url), Url);
 			dictionary.Add(nameof(IsHidden), IsHidden.ToString());
+			dictionary.Add(nameof(LastUpdated), LastUpdated.ToString());
+			dictionary.Add(nameof(TrailerUrl), TrailerUrl ?? string.Empty);
 			return dictionary;
 		}
 	}

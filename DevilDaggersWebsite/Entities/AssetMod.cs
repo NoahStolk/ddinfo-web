@@ -35,6 +35,8 @@ namespace DevilDaggersWebsite.Entities
 			Name = adminDto.Name;
 			Url = adminDto.Url;
 			IsHidden = adminDto.IsHidden;
+			LastUpdated = adminDto.LastUpdated;
+			TrailerUrl = adminDto.TrailerUrl;
 		}
 
 		public void CreateManyToManyRelations(ApplicationDbContext dbContext, AdminAssetMod adminDto)
@@ -60,6 +62,8 @@ namespace DevilDaggersWebsite.Entities
 				PlayerIds = PlayerAssetMods.ConvertAll(pam => pam.PlayerId),
 				Url = Url,
 				IsHidden = IsHidden,
+				LastUpdated = LastUpdated,
+				TrailerUrl = TrailerUrl,
 			};
 
 			static IEnumerable<T> ToFlagEnumList<T>(T value)
