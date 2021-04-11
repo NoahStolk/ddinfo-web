@@ -38,7 +38,7 @@
 
 	Upgrade? hand = GameInfo.GetUpgrades(GameVersion.V31).FirstOrDefault(u => u.Name == $"Level {spawnset.Hand}") ?? GameInfo.V31Level1;
 
-	<div class="flex-container flex-column section-container spawns-container">
+	<div class="flex-container flex-column section-container spawns-main-container">
 		<div class="spawns-header-container">
 			<div class="flex-container flex-space-evenly spawns-flex-container">
 				<div>Timer start</div>
@@ -54,107 +54,111 @@
 
 		@if (spawnset.HasSpawns())
 		{
-			<div class="flex-container flex-space-evenly spawns-flex-container">
-				@if (hasEndLoop)
-				{
-					<div>Section</div>
-				}
-				<div class="text-right">Time</div>
-				<div>Enemy</div>
-				<div class="text-right">Gems (no farm)</div>
-				<div class="text-right">Total gems</div>
-			</div>
-
-			double totalSeconds = spawnset.TimerStart;
-			int totalGems = spawnset.Hand switch
-			{
-				2 => 10,
-				3 => 70,
-				4 => 220,
-				_ => 0,
-			};
-			totalGems += spawnset.AdditionalGems;
-
-			foreach (Spawn spawn in preLoopSpawns)
-			{
-				totalSeconds += spawn.Delay;
-				if (spawn.Enemy != null)
-				{
-					totalGems += spawn.Enemy.NoFarmGems;
-
-					<div class="flex-container flex-space-evenly spawns-flex-container">
-						@if (hasEndLoop)
-						{
-							<div></div>
-						}
-						<div class="text-right">@totalSeconds.ToString(FormatUtils.SpawnTimeFormat)</div>
-						<div>@(spawn.Enemy.GetLayoutAnchor(false, gameVersion))</div>
-						<div class="text-right">@spawn.Enemy.NoFarmGems</div>
-						<div class="text-right">@totalGems</div>
-					</div>
-				}
-			}
-
-			if (loopSpawns.Any(s => s.Enemy != null))
-			{
-				int spawns = spawnset.Spawns.Count(s => s.Value.Enemy != null);
-
-				double endGameSecond = totalSeconds;
-				for (int i = 0; i < maxWaves; i++)
-				{
-					if (spawns > SpawnsetUtils.MaxSpawns)
+			<div class="spawns-container">
+				<div class="flex-container flex-space-evenly spawns-flex-container">
+					@if (hasEndLoop)
 					{
-						break;
+						<div>Section</div>
 					}
+					<div class="text-right">Time</div>
+					<div>Enemy</div>
+					<div class="text-right">Gems (no farm)</div>
+					<div class="text-right">Total gems</div>
+				</div>
 
-					<div class="text-left end-wave-separator"></div>
-					double enemyTimer = 0;
-					double delay = 0;
-					bool firstSpawnDone = false;
-					foreach (Spawn spawn in loopSpawns)
+				@{
+					double totalSeconds = spawnset.TimerStart;
+					int totalGems = spawnset.Hand switch
 					{
+						2 => 10,
+						3 => 70,
+						4 => 220,
+						_ => 0,
+					};
+					totalGems += spawnset.AdditionalGems;
+
+					foreach (Spawn spawn in preLoopSpawns)
+					{
+						totalSeconds += spawn.Delay;
 						if (spawn.Enemy != null)
 						{
-							spawns++;
-						}
-
-						delay += spawn.Delay;
-						while (enemyTimer < delay)
-						{
-							endGameSecond += 1f / 60f;
-							enemyTimer += (1f / 60f) + (1f / 60f / 8f * i);
-						}
-
-						if (spawn.Enemy != null)
-						{
-							Enemy finalEnemy = spawn.Enemy;
-							if (i % 3 == 2 && gameVersion >= GameVersion.V3 && finalEnemy.SpawnsetType == GameInfo.V3Gigapede.SpawnsetType)
-							{
-								// Change the third Gigapede into a Ghostpede.
-								finalEnemy = GameInfo.V3Ghostpede;
-							}
-
-							int gems = finalEnemy.NoFarmGems;
-							totalGems += gems;
+							totalGems += spawn.Enemy.NoFarmGems;
 
 							<div class="flex-container flex-space-evenly spawns-flex-container">
 								@if (hasEndLoop)
 								{
-									<div>@(!firstSpawnDone ? $"Wave {i + 1}" : string.Empty)</div>
+									<div></div>
 								}
-								<div class="text-right">@((Math.Floor(endGameSecond * 60) / 60).ToString(FormatUtils.SpawnTimeFormat))</div>
-								<div>@(finalEnemy.GetLayoutAnchor(false, gameVersion))</div>
-								<div class="text-right">@gems</div>
+								<div class="text-right">@totalSeconds.ToString(FormatUtils.SpawnTimeFormat)</div>
+								<div>@(spawn.Enemy.GetLayoutAnchor(false, gameVersion))</div>
+								<div class="text-right">@spawn.Enemy.NoFarmGems</div>
 								<div class="text-right">@totalGems</div>
 							</div>
-
-							firstSpawnDone = true;
 						}
 					}
-				}
-			}
 
-			<div class="spawns-end">@(hasEndLoop ? "Goes on eternally..." : "End of spawnset")</div>
+					if (loopSpawns.Any(s => s.Enemy != null))
+					{
+						int spawns = spawnset.Spawns.Count(s => s.Value.Enemy != null);
+
+						double endGameSecond = totalSeconds;
+						for (int i = 0; i < maxWaves; i++)
+						{
+							if (spawns > SpawnsetUtils.MaxSpawns)
+							{
+								break;
+							}
+
+							<div class="text-left end-wave-separator"></div>
+							double enemyTimer = 0;
+							double delay = 0;
+							bool firstSpawnDone = false;
+							foreach (Spawn spawn in loopSpawns)
+							{
+								if (spawn.Enemy != null)
+								{
+									spawns++;
+								}
+
+								delay += spawn.Delay;
+								while (enemyTimer < delay)
+								{
+									endGameSecond += 1f / 60f;
+									enemyTimer += (1f / 60f) + (1f / 60f / 8f * i);
+								}
+
+								if (spawn.Enemy != null)
+								{
+									Enemy finalEnemy = spawn.Enemy;
+									if (i % 3 == 2 && gameVersion >= GameVersion.V3 && finalEnemy.SpawnsetType == GameInfo.V3Gigapede.SpawnsetType)
+									{
+										// Change the third Gigapede into a Ghostpede.
+										finalEnemy = GameInfo.V3Ghostpede;
+									}
+
+									int gems = finalEnemy.NoFarmGems;
+									totalGems += gems;
+
+									<div class="flex-container flex-space-evenly spawns-flex-container">
+										@if (hasEndLoop)
+										{
+											<div>@(!firstSpawnDone ? $"Wave {i + 1}" : string.Empty)</div>
+										}
+										<div class="text-right">@((Math.Floor(endGameSecond * 60) / 60).ToString(FormatUtils.SpawnTimeFormat))</div>
+										<div>@(finalEnemy.GetLayoutAnchor(false, gameVersion))</div>
+										<div class="text-right">@gems</div>
+										<div class="text-right">@totalGems</div>
+									</div>
+
+									firstSpawnDone = true;
+								}
+							}
+						}
+					}
+
+					<div class="spawns-end">@(hasEndLoop ? "Goes on eternally..." : "End of spawnset")</div>
+				}
+			</div>
 		}
 	</div>
 }

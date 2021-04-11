@@ -17,8 +17,12 @@
 }
 
 /*Spawns*/
-.spawns-container {
+.spawns-main-container {
 	background-color: var(--col-gray-08);
+}
+
+.spawns-container {
+	padding: 8px;
 }
 
 .end-wave-separator {
