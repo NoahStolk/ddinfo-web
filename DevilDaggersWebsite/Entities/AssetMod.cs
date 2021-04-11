@@ -18,6 +18,8 @@ namespace DevilDaggersWebsite.Entities
 		public string Name { get; set; } = null!;
 		public string Url { get; set; } = null!;
 		public bool IsHidden { get; set; }
+		public DateTime LastUpdated { get; set; }
+		public string? TrailerUrl { get; set; }
 
 		public void Create(ApplicationDbContext dbContext, AdminAssetMod adminDto)
 		{
