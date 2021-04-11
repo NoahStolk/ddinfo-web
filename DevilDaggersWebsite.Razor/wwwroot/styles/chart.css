@@ -18,6 +18,7 @@
 
 .chart {
 	height: 65vh;
+	overflow-x: hidden;
 }
 
 #world-record-progression-highlighter,
