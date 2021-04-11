@@ -48,7 +48,7 @@
 			<div class="flex-container flex-space-evenly spawns-flex-container">
 				<div>@spawnset.TimerStart.ToString(FormatUtils.SpawnTimeFormat)</div>
 				<div>@hand.GetLayoutAnchor()</div>
-				<div>@spawnset.AdditionalGems</div>
+				<div>@(spawnset.AdditionalGems == int.MinValue ? "Disabled" : spawnset.AdditionalGems)</div>
 			</div>
 		</div>
 
@@ -75,7 +75,7 @@
 						4 => 220,
 						_ => 0,
 					};
-					totalGems += spawnset.AdditionalGems;
+					totalGems += Math.Clamp(spawnset.AdditionalGems, 0, 1000000);
 
 					foreach (Spawn spawn in preLoopSpawns)
 					{
