@@ -4,7 +4,6 @@ using Microsoft.AspNetCore.Hosting;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.AspNetCore.Mvc.RazorPages;
 using Microsoft.EntityFrameworkCore;
-using System;
 using System.Linq;
 using Io = System.IO;
 
@@ -25,6 +24,8 @@ namespace DevilDaggersWebsite.Razor.Pages
 		public SpawnsetFile? SpawnsetFile { get; private set; }
 		public Spawnset? Spawnset { get; private set; }
 
+		public bool HasCustomLeaderboard { get; private set; }
+
 		public ActionResult? OnGet()
 		{
 			SpawnsetFile = _dbContext.SpawnsetFiles.Include(sf => sf.Player).FirstOrDefault(sf => sf.Name == HttpContext.Request.Query["spawnset"].ToString());
@@ -36,9 +37,11 @@ namespace DevilDaggersWebsite.Razor.Pages
 				return RedirectToPage("Spawnsets");
 
 			if (!Spawnset.TryParse(Io.File.ReadAllBytes(path), out Spawnset spawnset))
-				throw new Exception($"Could not parse spawnset '{SpawnsetFile.Name}'.");
+				throw new($"Could not parse spawnset '{SpawnsetFile.Name}'.");
 
 			Spawnset = spawnset;
+
+			HasCustomLeaderboard = _dbContext.CustomLeaderboards.Any(cl => cl.SpawnsetFileId == SpawnsetFile.Id);
 
 			return null;
 		}

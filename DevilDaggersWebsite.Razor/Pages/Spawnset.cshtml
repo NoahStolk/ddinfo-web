@@ -1,8 +1,7 @@
 ﻿@page
 @using DevilDaggersWebsite.Razor.Utils
 @using DevilDaggersCore.Game
-@inject DevilDaggersWebsite.Entities.ApplicationDbContext dbContext
-@model DevilDaggersWebsite.Razor.Pages.SpawnsetModel
+@model SpawnsetModel
 @{
 	if (Model.SpawnsetFile == null || Model.Spawnset == null)
 		return;
@@ -10,7 +9,6 @@
 	ViewData["Title"] = $"Spawnset - {Model.SpawnsetFile.Name}";
 
 	Upgrade? hand = GameInfo.GetUpgrades(GameVersion.V31).FirstOrDefault(u => u.Name == $"Level {Model.Spawnset.Hand}") ?? GameInfo.V31Level1;
-	bool hasCustomLeaderboard = dbContext.CustomLeaderboards.Any(cl => cl.SpawnsetFileId == Model.SpawnsetFile.Id);
 }
 
 <header>
@@ -53,7 +51,7 @@
 		<div class="spawns-header-container">
 			<div class="row">
 				<div class="col-xs-6"><a href="api/spawnsets/@Model.SpawnsetFile.Name/file">Download spawnset</a></div>
-				@if (hasCustomLeaderboard)
+				@if (Model.HasCustomLeaderboard)
 				{
 					<div class="col-xs-6">
 						<a asp-page="/CustomLeaderboards/Leaderboard" asp-route-spawnsetName="@Model.SpawnsetFile.Name">View custom leaderboard</a>
