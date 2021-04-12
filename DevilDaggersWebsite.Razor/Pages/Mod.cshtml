@@ -42,6 +42,19 @@
 			</div>
 		</div>
 	</div>
+
+	@if (!string.IsNullOrWhiteSpace(Model.AssetMod.TrailerUrl))
+	{
+		<h2>Trailer</h2>
+		<div class="col">
+			<div class="col-md-12 col-lg-6">
+				<div class="iframe-wrapper">
+					<img class="ratio" src="~/images/Misc/16x9.png" />
+					<iframe src="@Model.AssetMod.TrailerUrl" frameborder="0" allowfullscreen></iframe>
+				</div>
+			</div>
+		</div>
+	}
 </main>
 
 @section Styles {
