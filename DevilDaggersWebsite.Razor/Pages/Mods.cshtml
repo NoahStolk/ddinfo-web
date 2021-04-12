@@ -61,7 +61,7 @@
 						@foreach (Mod mod in Model.PaginatedList)
 						{
 							<tr>
-								<td><a href="@mod.Url">@mod.Name</a></td>
+								<td><a asp-page="Mod" asp-route-mod="@mod.Name">@mod.Name</a></td>
 								<td>
 									@foreach (string author in mod.Authors)
 									{

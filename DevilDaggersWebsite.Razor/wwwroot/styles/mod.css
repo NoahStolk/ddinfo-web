@@ -1,0 +1,9 @@
+﻿.header-container {
+	background-color: var(--col-gray-11);
+	padding: 8px;
+	margin-bottom: 8px;
+}
+
+.section-container {
+	max-width: 640px;
+}
