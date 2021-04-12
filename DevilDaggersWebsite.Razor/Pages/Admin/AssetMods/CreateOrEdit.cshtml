@@ -6,6 +6,11 @@
 
 @{
 	ViewData["Title"] = Model.IsEditing ? "Edit" : "Create";
+
+	if (!Model.IsEditing)
+	{
+		Model.AdminDto.LastUpdated = DateTime.UtcNow;
+	}
 }
 
 <h2>@ViewData["Title"]</h2>
