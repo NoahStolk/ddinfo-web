@@ -1144,9 +1144,54 @@
 	{
 		"Name": "DevilDaggersAssetEditor",
 		"DisplayName": "Devil Daggers Asset Editor",
-		"VersionNumber": "0.46.0.0",
+		"VersionNumber": "0.56.5.0",
 		"VersionNumberRequired": "0.46.0.0",
 		"Changelog": [
+			{
+				"VersionNumber": "0.56.5.0",
+				"Date": "2021-04-12T00:00:00",
+				"Changes": [
+					{
+						"Description": "The application now keeps track of whether or not you have any unsaved changes and will ask you if you want to save the mod before proceeding to overwrite it by opening an existing mod, creating a new one, or closing the application."
+					},
+					{
+						"Description": "The application window title now displays the name of the currently opened mod."
+					},
+					{
+						"Description": "Added 'File > Save as' menu item."
+					},
+					{
+						"Description": "Added cancellation to confirmation windows. Clicking [X] on a confirmation window now cancels the operation properly."
+					},
+					{
+						"Description": "Implemented functionality to trim binaries. This is particularly useful for binaries that were compiled before Devil Daggers V3.1 came out. Back then, partial mods were not supported. With this tool you can make your old binary file a lot smaller by leaving out all the unchanged assets, which can be done by comparing it against the original binary. The tool can be found under Tools > Trim binary file."
+					},
+					{
+						"Description": "User settings are now saved as settings.json in the local application data Windows folder (access by pressing Windows R and typing %localappdata%)."
+					},
+					{
+						"Description": "Added keyboard shortcuts for most menu items under 'File'."
+					},
+					{
+						"Description": "Implemented caching for the 'Make binaries' window. The application will remember the input values after closing the window or the application entirely."
+					},
+					{
+						"Description": "Added [X] button to Settings window."
+					},
+					{
+						"Description": "Fixed empty settings or cache files crashing the application."
+					},
+					{
+						"Description": "Removed functionality to mod the particle file."
+					},
+					{
+						"Description": "Removed Help window. The Help menu item now navigates to the Asset Editor Guide on the website."
+					},
+					{
+						"Description": "Improved logo."
+					}
+				]
+			},
 			{
 				"VersionNumber": "0.46.0.0",
 				"Date": "2021-02-26T00:00:00",
