@@ -63,9 +63,14 @@
 							<tr>
 								<td><a asp-page="Mod" asp-route-mod="@mod.Name">@mod.Name</a></td>
 								<td>
-									@foreach (string author in mod.Authors)
+									@for (int i = 0; i < mod.Authors.Count; i++)
 									{
+										string author = mod.Authors[i];
 										<a asp-page="/Mods" asp-route-SearchAuthor="@author">@author</a>
+										if (i < mod.Authors.Count - 1)
+										{
+											<span>&amp;</span>
+										}
 									}
 								</td>
 								<td class="hidden-xs">
