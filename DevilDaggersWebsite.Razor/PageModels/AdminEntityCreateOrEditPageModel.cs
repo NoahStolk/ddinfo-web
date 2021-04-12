@@ -130,10 +130,19 @@ namespace DevilDaggersWebsite.Razor.PageModels
 					return Page();
 				}
 
-				if (AdminDto is AdminAssetMod assetMod && (assetMod.PlayerIds == null || assetMod.PlayerIds.Count == 0))
+				if (AdminDto is AdminAssetMod assetMod)
 				{
-					ModelState.AddModelError("AdminDto.PlayerIds", "Mod should have at least one author.");
-					return Page();
+					if (DbContext.AssetMods.Any(am => am.Name == assetMod.Name))
+					{
+						ModelState.AddModelError("AdminDto.Name", $"AssetMod with {nameof(AssetMod.Name)} '{assetMod.Name}' already exists.");
+						return Page();
+					}
+
+					if (assetMod.PlayerIds == null || assetMod.PlayerIds.Count == 0)
+					{
+						ModelState.AddModelError("AdminDto.PlayerIds", "Mod should have at least one author.");
+						return Page();
+					}
 				}
 
 				_entity = new();
