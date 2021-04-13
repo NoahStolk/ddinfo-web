@@ -55,6 +55,25 @@
 			</div>
 		</div>
 	}
+
+	@if (Model.Binaries.Count > 0)
+	{
+		<h2>Mod contents</h2>
+		<ul>
+			@foreach (var binary in Model.Binaries)
+			{
+				<li>@binary.Name</li>
+				<li>
+					<ul>
+						@foreach (var asset in binary.ModAssetData)
+						{
+							<li>@asset.ModAssetType - @asset.Name</li>
+						}
+					</ul>
+				</li>
+			}
+		</ul>
+	}
 </main>
 
 @section Styles {

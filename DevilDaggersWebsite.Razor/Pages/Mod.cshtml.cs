@@ -1,9 +1,15 @@
-﻿using DevilDaggersWebsite.Entities;
+﻿using DevilDaggersWebsite.Dto;
+using DevilDaggersWebsite.Entities;
 using Microsoft.AspNetCore.Hosting;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.AspNetCore.Mvc.RazorPages;
 using Microsoft.EntityFrameworkCore;
+using System.Collections.Generic;
+using System.Diagnostics;
+using System.IO;
+using System.IO.Compression;
 using System.Linq;
+using Io = System.IO;
 
 namespace DevilDaggersWebsite.Razor.Pages
 {
@@ -23,6 +29,8 @@ namespace DevilDaggersWebsite.Razor.Pages
 
 		public bool IsSelfHosted { get; private set; }
 
+		public List<ModData> Binaries { get; } = new();
+
 		public ActionResult? OnGet()
 		{
 			AssetMod = _dbContext.AssetMods
@@ -33,6 +41,25 @@ namespace DevilDaggersWebsite.Razor.Pages
 				return RedirectToPage("Mods");
 
 			IsSelfHosted = string.IsNullOrWhiteSpace(AssetMod.Url);
+
+			if (IsSelfHosted)
+			{
+				string zipPath = Path.Combine(_env.WebRootPath, "mods", $"{AssetMod.Name}.zip");
+				if (!Io.File.Exists(zipPath))
+					return RedirectToPage("Mods");
+
+				using FileStream fs = new(zipPath, FileMode.Open);
+				using ZipArchive archive = new(fs);
+				foreach (ZipArchiveEntry entry in archive.Entries)
+				{
+					byte[] extractedContents = new byte[entry.Length];
+
+					using Stream stream = entry.Open();
+					stream.Read(extractedContents, 0, extractedContents.Length);
+
+					Binaries.Add(ModData.CreateFromFile(entry.Name, extractedContents));
+				}
+			}
 
 			return null;
 		}
