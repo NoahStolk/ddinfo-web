@@ -1,4 +1,5 @@
-﻿using System;
+﻿using DevilDaggersWebsite.Exceptions;
+using System;
 using System.Collections.Generic;
 using System.Text;
 
@@ -33,12 +34,12 @@ namespace DevilDaggersWebsite.Dto
 			else if (fileName.StartsWith("dd"))
 				modBinaryType = ModBinaryType.Dd;
 			else
-				throw new($"File '{fileName}' must start with 'audio', 'core', or 'dd'.");
+				throw new InvalidModBinaryException($"File '{fileName}' must start with 'audio', 'core', or 'dd'.");
 
 			uint magic1FromFile = BitConverter.ToUInt32(fileContents, 0);
 			uint magic2FromFile = BitConverter.ToUInt32(fileContents, 4);
 			if (magic1FromFile != Magic1 || magic2FromFile != Magic2)
-				throw new($"File '{fileName}' is not a valid binary.");
+				throw new InvalidModBinaryException($"File '{fileName}' is not a valid binary.");
 
 			uint tocSize = BitConverter.ToUInt32(fileContents, 8);
 			byte[] tocBuffer = new byte[tocSize];
@@ -58,14 +59,14 @@ namespace DevilDaggersWebsite.Dto
 					0x10 => ModAssetType.Shader,
 					0x20 => ModAssetType.Audio,
 					0x80 => ModAssetType.ModelBinding,
-					_ => throw new NotSupportedException($"Byte '{type}' has no asset type."),
+					_ => throw new InvalidModBinaryException($"File '{fileName}' contains an unknown asset type '{type}'. Valid types are {0x01}, {0x02}, {0x10}, {0x20}, and {0x80}."),
 				};
 				chunks.Add(new(name, assetType));
 			}
 
 			return new(fileName, modBinaryType, chunks);
 
-			static string ReadNullTerminatedString(byte[] buffer, int offset)
+			string ReadNullTerminatedString(byte[] buffer, int offset)
 			{
 				StringBuilder sb = new();
 				for (int i = offset; i < buffer.Length; i++)
@@ -76,7 +77,7 @@ namespace DevilDaggersWebsite.Dto
 					sb.Append(c);
 				}
 
-				throw new($"Null terminator not observed in buffer with length {buffer.Length} starting from offset {offset}.");
+				throw new InvalidModBinaryException($"Null terminator not observed in buffer with length {buffer.Length} starting from offset {offset} in file '{fileName}'.");
 			}
 		}
 	}
