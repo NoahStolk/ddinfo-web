@@ -23,7 +23,7 @@ namespace DevilDaggersWebsite.Razor.Pages
 		public string? Query { get; }
 		public SpawnsetFile? SpawnsetFile { get; private set; }
 		public Spawnset? Spawnset { get; private set; }
-
+		public int FileSize { get; private set; }
 		public bool HasCustomLeaderboard { get; private set; }
 
 		public ActionResult? OnGet()
@@ -36,11 +36,12 @@ namespace DevilDaggersWebsite.Razor.Pages
 			if (!Io.File.Exists(path))
 				return RedirectToPage("Spawnsets");
 
-			if (!Spawnset.TryParse(Io.File.ReadAllBytes(path), out Spawnset spawnset))
+			byte[] fileBytes = Io.File.ReadAllBytes(path);
+			if (!Spawnset.TryParse(fileBytes, out Spawnset spawnset))
 				throw new($"Could not parse spawnset '{SpawnsetFile.Name}'.");
 
 			Spawnset = spawnset;
-
+			FileSize = fileBytes.Length;
 			HasCustomLeaderboard = _dbContext.CustomLeaderboards.Any(cl => cl.SpawnsetFileId == SpawnsetFile.Id);
 
 			return null;
