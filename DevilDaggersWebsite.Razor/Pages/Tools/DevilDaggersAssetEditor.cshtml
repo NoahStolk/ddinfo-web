@@ -1,7 +1,6 @@
 ﻿@page
 @inject Microsoft.AspNetCore.Hosting.IWebHostEnvironment env
-@inject DevilDaggersWebsite.Transients.ToolHelper toolHelper
-@using DevilDaggersCore.Utils
+@inject Transients.ToolHelper toolHelper
 @using DevilDaggersWebsite.Dto
 @using DevilDaggersWebsite.Razor.Utils
 @using System.IO
@@ -22,11 +21,11 @@
 		Devil Daggers Asset Editor is a tool that can be used to create asset mods for Devil Daggers.
 	</p>
 
+	@await Html.PartialAsync("Partials/ToolInfoPartial", (tool, downloadFileInfo))
+
 	<p>
 		<img class="img-responsive image-narrow" src="~/images/Tools/@(tool.Name).png" />
 	</p>
-
-	@await Html.PartialAsync("Partials/ToolInfoPartial", (tool, downloadFileInfo))
 
 	<h2>Main features</h2>
 	<ul>

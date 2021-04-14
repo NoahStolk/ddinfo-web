@@ -21,11 +21,11 @@
 		Devil Daggers Survival Editor is a tool that lets you create, view, and edit spawnsets.
 	</p>
 
+	@await Html.PartialAsync("Partials/ToolInfoPartial", (tool, downloadFileInfo))
+
 	<p>
 		<img class="img-responsive image-narrow" src="~/images/Tools/@(tool.Name).png" />
 	</p>
-
-	@await Html.PartialAsync("Partials/ToolInfoPartial", (tool, downloadFileInfo))
 
 	<h2>Main features</h2>
 	<ul>
