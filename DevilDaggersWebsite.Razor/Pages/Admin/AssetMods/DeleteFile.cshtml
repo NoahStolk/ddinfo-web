@@ -1,0 +1,19 @@
+﻿@page
+@model DeleteFileModel
+@{
+	ViewData["Title"] = "Delete AssetMod File";
+}
+
+<h2>@ViewData["Title"]</h2>
+<p>Please type the name of the mod file you want to delete:</p>
+<form method="post">
+	<input name="fileName" />
+	<input type="submit" />
+</form>
+<p>The following files exist in the file system:</p>
+<ul>
+	@foreach (string fileName in Model.ModFileNames)
+	{
+		<li>@fileName</li>
+	}
+</ul>
