@@ -1,0 +1,19 @@
+﻿@page
+@model DeleteFileModel
+@{
+	ViewData["Title"] = "Delete Spawnset File";
+}
+
+<h2>@ViewData["Title"]</h2>
+<p>Please type the name of the spawnset file you want to delete:</p>
+<form method="post">
+	<input name="fileName" />
+	<input type="submit" />
+</form>
+<p>The following files exist in the file system:</p>
+<ul>
+	@foreach (string fileName in Model.SpawnsetFileNames)
+	{
+		<li>@fileName</li>
+	}
+</ul>
