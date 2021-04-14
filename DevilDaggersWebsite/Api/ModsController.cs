@@ -34,13 +34,10 @@ namespace DevilDaggersWebsite.Api
 			if (assetMod == null)
 				return new NotFoundObjectResult(new ProblemDetails { Title = $"Mod '{modName}' was not found." });
 
-			if (!string.IsNullOrWhiteSpace(assetMod.Url))
-				return Redirect(assetMod.Url);
-
 			string fileName = $"{assetMod.Name}.zip";
 			string path = Path.Combine("mods", fileName);
 			if (!Io.File.Exists(Path.Combine(_env.WebRootPath, path)))
-				return new BadRequestObjectResult(new ProblemDetails { Title = $"Mod file '{path}' does not exist." });
+				return new BadRequestObjectResult(new ProblemDetails { Title = $"Mod file '{fileName}' does not exist." });
 
 			return File(Io.File.ReadAllBytes(Path.Combine(_env.WebRootPath, path)), MediaTypeNames.Application.Zip, fileName);
 		}
