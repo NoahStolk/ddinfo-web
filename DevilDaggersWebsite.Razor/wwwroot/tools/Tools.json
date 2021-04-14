@@ -2,9 +2,24 @@
 	{
 		"Name": "DevilDaggersSurvivalEditor",
 		"DisplayName": "Devil Daggers Survival Editor",
-		"VersionNumber": "2.31.2.0",
+		"VersionNumber": "2.31.6.0",
 		"VersionNumberRequired": "2.31.2.0",
 		"Changelog": [
+			{
+				"VersionNumber": "2.31.6.0",
+				"Date": "2021-04-14T00:00:00",
+				"Changes": [
+					{
+						"Description": "Fixed UI lag for additional gems and timer start."
+					},
+					{
+						"Description": "Fixed occasionally overwriting internal spawnset values caused by programmatic UI updates."
+					},
+					{
+						"Description": "Added warning for disabling gem collection and setting hand to Level 2."
+					}
+				]
+			},
 			{
 				"VersionNumber": "2.31.2.0",
 				"Date": "2021-04-11T00:00:00",
