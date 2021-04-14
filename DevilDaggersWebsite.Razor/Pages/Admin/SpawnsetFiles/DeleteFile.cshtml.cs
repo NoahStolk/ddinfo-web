@@ -1,4 +1,5 @@
 ﻿using DevilDaggersDiscordBot.Logging;
+using DevilDaggersWebsite.Caches;
 using DevilDaggersWebsite.Razor.Extensions;
 using Microsoft.AspNetCore.Hosting;
 using Microsoft.AspNetCore.Mvc;
@@ -31,6 +32,8 @@ namespace DevilDaggersWebsite.Razor.Pages.Admin.SpawnsetFiles
 			System.IO.File.Delete(Path.Combine(_env.WebRootPath, "spawnsets", fileName));
 
 			await DiscordLogger.Instance.TryLog(Channel.AuditLogMonitoring, _env.EnvironmentName, $"`{this.GetIdentity()}` deleted SPAWNSET file `{fileName}`");
+
+			SpawnsetHashCache.Instance.Clear();
 
 			return RedirectToPage("Index");
 		}
