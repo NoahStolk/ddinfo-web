@@ -58,7 +58,7 @@ namespace DevilDaggersWebsite.Caches
 			async Task LogCacheInfo()
 			{
 				if (_cache.Count > cacheCount)
-					await DiscordLogger.Instance.TryLog(Channel.CustomLeaderboardMonitoring, env.EnvironmentName, $"Successfully updated `{nameof(SpawnsetHashCache)}`. (`{_cache.Count}` (`+{_cache.Count - cacheCount}`) instances in memory).");
+					await DiscordLogger.Instance.TryLog(Channel.CacheMonitoring, env.EnvironmentName, $"Successfully updated `{nameof(SpawnsetHashCache)}`. (`{_cache.Count}` (`+{_cache.Count - cacheCount}`) instances in memory.)");
 			}
 		}
 
