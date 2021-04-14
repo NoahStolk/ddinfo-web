@@ -1,5 +1,5 @@
 ﻿@page
-@model DevilDaggersWebsite.Razor.Pages.Admin.SpawnsetFiles.UploadModel
+@model UploadModel
 @{
 	ViewData["Title"] = "Upload Spawnset File";
 }
@@ -10,10 +10,10 @@
 
 <p>Notes</p>
 <ul>
+	<li>File must not be larger than 70 * 1024 bytes in length.</li>
+	<li>File name must not be over 80 characters in length.</li>
 	<li>File name must be unique.</li>
-	<li>File name cannot be over 80 characters in length.</li>
 	<li>File must be a survival file.</li>
-	<li>File must be less than 70 * 1024 bytes in length.</li>
 </ul>
 
 <form method="post" enctype="multipart/form-data">
