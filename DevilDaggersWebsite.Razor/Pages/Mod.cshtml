@@ -33,12 +33,26 @@
 				<div class="col-xs-6">Last updated</div>
 				<div class="col-xs-6">@(Model.AssetMod.LastUpdated == DateTime.MinValue ? "Unknown" : Model.AssetMod.LastUpdated.ToString("dd MMM yyyy"))</div>
 			</div>
+			@if (Model.IsHostedOnDdInfo)
+			{
+				<div class="row">
+					<div class="col-xs-6">File size</div>
+					<div class="col-xs-6">@(Math.Round(Model.FileSize / 1024f).ToString()) KiB</div>
+				</div>
+			}
 		</div>
 	</div>
 	<div class="section-container">
 		<div class="header-container">
 			<div class="row">
-				<div class="col-xs-6"><a @(Model.IsSelfHosted ? string.Empty : "target='_blank'") href="api/mods/@Model.AssetMod.Name/file">Download mod</a></div>
+				@if (Model.IsHostedOnDdInfo)
+				{
+					<div class="col-xs-6"><a href="api/mods/@Model.AssetMod.Name/file">Download mod</a></div>
+				}
+				else
+				{
+					<div class="col-xs-6"><a target='_blank' href="@Model.AssetMod.Url">Download mod (external)</a></div>
+				}
 			</div>
 		</div>
 	</div>

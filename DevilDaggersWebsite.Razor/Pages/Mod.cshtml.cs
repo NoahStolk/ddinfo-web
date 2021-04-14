@@ -5,7 +5,6 @@ using Microsoft.AspNetCore.Mvc;
 using Microsoft.AspNetCore.Mvc.RazorPages;
 using Microsoft.EntityFrameworkCore;
 using System.Collections.Generic;
-using System.Diagnostics;
 using System.IO;
 using System.IO.Compression;
 using System.Linq;
@@ -27,9 +26,11 @@ namespace DevilDaggersWebsite.Razor.Pages
 		public string? Query { get; }
 		public AssetMod? AssetMod { get; private set; }
 
-		public bool IsSelfHosted { get; private set; }
+		public bool IsHostedOnDdInfo { get; private set; }
 
 		public List<ModData> Binaries { get; } = new();
+
+		public long FileSize { get; private set; }
 
 		public ActionResult? OnGet()
 		{
@@ -40,9 +41,9 @@ namespace DevilDaggersWebsite.Razor.Pages
 			if (AssetMod == null)
 				return RedirectToPage("Mods");
 
-			IsSelfHosted = string.IsNullOrWhiteSpace(AssetMod.Url);
+			IsHostedOnDdInfo = string.IsNullOrWhiteSpace(AssetMod.Url);
 
-			if (IsSelfHosted)
+			if (IsHostedOnDdInfo)
 			{
 				string zipPath = Path.Combine(_env.WebRootPath, "mods", $"{AssetMod.Name}.zip");
 				if (!Io.File.Exists(zipPath))
@@ -59,6 +60,8 @@ namespace DevilDaggersWebsite.Razor.Pages
 
 					Binaries.Add(ModData.CreateFromFile(entry.Name, extractedContents));
 				}
+
+				FileSize = fs.Length;
 			}
 
 			return null;
