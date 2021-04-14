@@ -4,6 +4,6 @@
 <p>
 	Current version: @(Model.Tool.VersionNumber)<br />
 	Oldest supported version: @(Model.Tool.VersionNumberRequired)<br />
-	File size: @(Math.Round(Model.FileInfo.Length / 1024f).ToString()) KB<br />
+	File size: @(Math.Round(Model.FileInfo.Length / 1024f).ToString()) KiB<br />
 	<a class="btn prevent-break-out" href="/api/tools/@Model.Tool.Name/file">Download</a>
 </p>
