@@ -9,7 +9,7 @@
 
 <main role="main">
 	<p>
-		This page will guide you through the creation of custom asset mods for Devil Daggers. This guide is aimed at Devil Daggers Asset Editor 0.46.0.0+, and will be inaccurate for any older versions. If you are not running the latest version, it is highly recommended to <a asp-page="/Tools/DevilDaggersAssetEditor">download the latest version</a>.
+		This page will guide you through the creation of custom asset mods for Devil Daggers. This guide is aimed at Devil Daggers Asset Editor 0.56.5.0, and will be inaccurate for any older versions. If you are not running the latest version, it is highly recommended to <a asp-page="/Tools/DevilDaggersAssetEditor">download the latest version</a>.
 	</p>
 
 	<h2>Basic information</h2>
@@ -20,13 +20,12 @@
 
 	<h3>Binaries</h3>
 	<p>
-		Devil Daggers uses custom binary formats to read asset data from asset files. There are 4 of these files that contain assets:
+		Devil Daggers uses custom binary formats to read asset data from asset files. There are 3 of these files that contain assets:
 	</p>
 	<ul>
 		<li><span class="path">devildaggers\res\audio</span> contains all audio</li>
 		<li><span class="path">devildaggers\res\dd</span> contains all textures, all models, and most shaders</li>
 		<li><span class="path">devildaggers\core\core</span> contains UI-related shaders</li>
-		<li><span class="path">devildaggers\dd\particle</span> contains all particle effects</li>
 	</ul>
 	<p>
 		Where <span class="path">devildaggers</span> is the installation folder for Devil Daggers. The default location for this folder is <span class="path">C:\Program Files (x86)\Steam\steamapps\common\devildaggers</span>.
@@ -35,18 +34,17 @@
 		All of these files can be modded using <a asp-page="/Tools/DevilDaggersAssetEditor">Devil Daggers Asset Editor</a> (also known as DDAE). These files are referred to as "binaries" in the application. If you're interested how these files are structured and how DDAE operates with them, I've documented how they work <a href="//github.com/NoahStolk/DevilDaggersAssetEditor/blob/master/DOCUMENTATION.md">here</a>.
 	</p>
 	<p>
-		As of the V3.1 update, Devil Daggers allows partial mods. This means that you don't need to create the entire binary anymore, but can make a "partial" binary containing only the modded assets. This is useful because it makes the files much smaller. These partial mods are saved in the <span class="path">devildaggers\mods</span> folder and their file name must be begin with the binary file type they are targetting, for example "dd_blue_gem", or "audio_trumpet_gigapedes". This feature also allows you to stack multiple partial mods and play them at once. The mods are loaded alphabetically, so if you have two partial mods replacing the same assets, the last one will actually replace the asset. For example, if you have two texture mods named "dd_blue_gem" and "dd_yellow_gem", which both change the color of the gem texture, "dd_yellow_gem" will be the effective one. Note that this does not apply to particle mods; partial particle mods are not supported by the game.
+		As of the V3.1 update, Devil Daggers allows partial mods. This means that you don't need to create the entire binary anymore, but can make a "partial" binary containing only the modded assets. This is useful because it makes the files much smaller. These partial mods are saved in the <span class="path">devildaggers\mods</span> folder and their file name must be begin with the binary file type they are targetting, for example "dd_blue_gem", or "audio_trumpet_gigapedes". This feature also allows you to stack multiple partial mods and play them at once. The mods are loaded alphabetically, so if you have two partial mods replacing the same assets, the last one will actually replace the asset. For example, if you have two texture mods named "dd_blue_gem" and "dd_yellow_gem", which both change the color of the gem texture, "dd_yellow_gem" will be the effective one.
 	</p>
 
 	<h3>Asset types</h3>
 	<p>
-		There are 6 types of assets that Devil Daggers uses:
+		There are 5 types of assets that Devil Daggers uses:
 	</p>
 	<ul>
 		<li>Audio (.wav)</li>
 		<li>Model bindings (.txt)</li>
 		<li>Models (.obj)</li>
-		<li>Particles (binary)</li>
 		<li>Shaders (.glsl)</li>
 		<li>Textures (.png)</li>
 	</ul>
@@ -62,7 +60,7 @@
 	</p>
 
 	<p>
-		The first thing you will see when you open DDAE is a list of assets. These are all the default assets present in the binaries. Note that there are 7 different tabs at the top:
+		The first thing you will see when you open DDAE is a list of assets. These are all the default assets present in the binaries. Note that there are 6 different tabs at the top:
 	</p>
 	<p>
 		<ul>
@@ -72,7 +70,6 @@
 			<li>dd/Model Bindings</li>
 			<li>dd/Shaders</li>
 			<li>dd/Textures</li>
-			<li>particle/Particles</li>
 		</ul>
 	</p>
 	<p>
@@ -145,7 +142,6 @@
 		<li>You have replaced one of the original files instead of created a new one in the "mods" folder. It is never recommended to modify the original files and it will most likely crash the game on start up.</li>
 		<li>There might be something wrong with one of your custom audio asset. Be sure to check if all files are compatible under <a href="#compatibility">Compatibility</a>.</li>
 		<li>Your custom shader asset might not compile.</li>
-		<li>Your particle asset might not be 188 bytes long. Particles have a fixed byte length of 188.</li>
 	</ul>
 	<p>
 		Future versions of DDAE should include more warnings and error messages for these issues.
