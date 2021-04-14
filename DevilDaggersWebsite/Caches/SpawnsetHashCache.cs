@@ -62,8 +62,12 @@ namespace DevilDaggersWebsite.Caches
 			}
 		}
 
-		public void Clear()
-			=> _cache.Clear();
+		public async Task Clear(IWebHostEnvironment env)
+		{
+			int cacheCount = _cache.Count;
+			_cache.Clear();
+			await DiscordLogger.Instance.TryLog(Channel.CacheMonitoring, env.EnvironmentName, $"Successfully cleared `{nameof(SpawnsetHashCache)}`. (Removed `{cacheCount}` instances.)");
+		}
 
 		private static bool MatchHashes(byte[] a, byte[] b)
 		{

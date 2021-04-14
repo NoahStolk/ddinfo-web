@@ -23,8 +23,8 @@ namespace DevilDaggersWebsite.Razor.Pages.Admin.AdminTests
 		public void OnPostUpdateStatisticsDataHolder()
 			=> StatisticsDataHolder.Instance.Update(_env);
 
-		public void OnPostClearSpawnsetHashCache()
-			=> SpawnsetHashCache.Instance.Clear();
+		public async Task OnPostClearSpawnsetHashCache()
+			=> await SpawnsetHashCache.Instance.Clear(_env);
 
 		public void OnPostClearLeaderboardHistoryCache()
 			=> LeaderboardHistoryCache.Instance.Clear();
