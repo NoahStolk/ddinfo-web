@@ -10,11 +10,15 @@
 
 <p>Notes</p>
 <ul>
+	<li>It is possible to host mod files on the website. The fields "Url", "AssetModTypes", and "AssetModFileContents" are ignored for these mods.</li>
 	<li>The "LastUpdated" field is specified in Coordinated Universal Time (UTC). However, it's not necessary to fill in the exact time. A date would be nice though.</li>
 </ul>
 
 <p>
 	<a asp-page="CreateOrEdit">Create New</a>
+</p>
+<p>
+	<a asp-page="Upload">Upload File</a>
 </p>
 <table class="table admin-table">
 	<thead>

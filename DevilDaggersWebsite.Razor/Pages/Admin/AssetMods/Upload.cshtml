@@ -1,0 +1,26 @@
+﻿@page
+@model UploadModel
+@{
+	ViewData["Title"] = "Upload AssetMod File";
+}
+
+<h1>@ViewData["Title"]</h1>
+
+<p>Notes</p>
+<ul>
+	<li>File must not be larger than 64 * 1024 * 1024 bytes in length.</li>
+	<li>File name must not be over 80 characters in length.</li>
+	<li>File must be a .zip file.</li>
+	<li>File name must be unique.</li>
+	<li>All files within the zip archive must be valid Devil Daggers binaries.</li>
+	<li>All Devil Daggers binaries within the zip archive must contain assets.</li>
+</ul>
+
+<form method="post" enctype="multipart/form-data">
+	<input asp-for="FormFile" />
+	<input type="submit" />
+</form>
+
+@section Styles {
+	<link rel='stylesheet' href='~/styles/admin.css' asp-append-version="true" />
+}
