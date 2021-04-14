@@ -18,7 +18,7 @@ namespace DevilDaggersDiscordBot.Extensions
 			if (message?.Length >= 2000)
 				message = $"{message.Substring(0, 1996)}...";
 
-			await channel.SendMessageAsync(message, false, embed);
+			await channel.SendMessageAsync(message, embed);
 		}
 
 		public static DiscordEmbedBuilder AddFieldObject(this DiscordEmbedBuilder builder, string name, object? value, bool inline = false)
