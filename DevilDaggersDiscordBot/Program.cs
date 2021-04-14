@@ -24,6 +24,7 @@ namespace DevilDaggersDiscordBot
 				});
 
 				DiscordLogger.Instance.AuditLogMonitoringChannel = await client.GetChannelAsync(ServerConstants.AuditLogMonitoringChannelId);
+				DiscordLogger.Instance.CacheMonitoringChannel = await client.GetChannelAsync(ServerConstants.CacheMonitoringChannelId);
 				DiscordLogger.Instance.CustomLeaderboardMonitoringChannel = await client.GetChannelAsync(ServerConstants.CustomLeaderboardMonitoringChannelId);
 				DiscordLogger.Instance.ErrorMonitoringChannel = await client.GetChannelAsync(ServerConstants.ErrorMonitoringChannelId);
 				DiscordLogger.Instance.TaskMonitoringChannel = await client.GetChannelAsync(ServerConstants.TaskMonitoringChannelId);

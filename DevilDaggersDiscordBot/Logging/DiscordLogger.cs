@@ -19,6 +19,7 @@ namespace DevilDaggersDiscordBot.Logging
 		public static DiscordLogger Instance => _lazy.Value;
 
 		internal DiscordChannel? AuditLogMonitoringChannel { get; set; }
+		internal DiscordChannel? CacheMonitoringChannel { get; set; }
 		internal DiscordChannel? CustomLeaderboardMonitoringChannel { get; set; }
 		internal DiscordChannel? ErrorMonitoringChannel { get; set; }
 		internal DiscordChannel? TaskMonitoringChannel { get; set; }
