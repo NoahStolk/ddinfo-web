@@ -1,4 +1,5 @@
 ﻿@page
+@using DevilDaggersWebsite.Dto;
 @using DevilDaggersWebsite.Entities
 @model ModModel
 @{
@@ -37,7 +38,7 @@
 			{
 				<div class="row">
 					<div class="col-xs-6">File size</div>
-					<div class="col-xs-6">@(Math.Round(Model.FileSize / 1000f).ToString()) KB</div>
+					<div class="col-xs-6">@Math.Round(Model.FileSize / 1000f) KB</div>
 				</div>
 			}
 		</div>
@@ -74,12 +75,12 @@
 	{
 		<h2>Mod contents</h2>
 		<ul>
-			@foreach (var binary in Model.Binaries)
+			@foreach (ModData binary in Model.Binaries)
 			{
 				<li>@binary.Name</li>
 				<li>
 					<ul>
-						@foreach (var asset in binary.ModAssetData)
+						@foreach (ModAssetData asset in binary.ModAssetData)
 						{
 							<li>@asset.ModAssetType - @asset.Name</li>
 						}
