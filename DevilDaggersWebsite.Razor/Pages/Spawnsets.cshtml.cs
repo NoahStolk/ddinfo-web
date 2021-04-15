@@ -11,6 +11,23 @@ namespace DevilDaggersWebsite.Razor.Pages
 {
 	public class SpawnsetsModel : PageModel, IPaginationModel
 	{
+		private const string _ascendingSuffix = "_asc";
+
+		public const string NameDesc = nameof(Name);
+		public const string AuthorDesc = nameof(Author);
+		public const string LastUpdatedDesc = nameof(LastUpdated);
+		public const string NonLoopLengthDesc = nameof(NonLoopLength);
+		public const string NonLoopSpawnsDesc = nameof(NonLoopSpawns);
+		public const string LoopLengthDesc = nameof(LoopLength);
+		public const string LoopSpawnsDesc = nameof(LoopSpawns);
+		public const string NameAsc = nameof(Name) + _ascendingSuffix;
+		public const string AuthorAsc = nameof(Author) + _ascendingSuffix;
+		public const string LastUpdatedAsc = nameof(LastUpdated) + _ascendingSuffix;
+		public const string NonLoopLengthAsc = nameof(NonLoopLength) + _ascendingSuffix;
+		public const string NonLoopSpawnsAsc = nameof(NonLoopSpawns) + _ascendingSuffix;
+		public const string LoopLengthAsc = nameof(LoopLength) + _ascendingSuffix;
+		public const string LoopSpawnsAsc = nameof(LoopSpawns) + _ascendingSuffix;
+
 		private readonly SpawnsetHelper _spawnsetHelper;
 
 		public SpawnsetsModel(SpawnsetHelper spawnsetHelper)
@@ -23,13 +40,13 @@ namespace DevilDaggersWebsite.Razor.Pages
 		public string? SearchAuthor { get; set; }
 		public string? SearchName { get; set; }
 
-		public string? NameSort { get; set; }
-		public string? AuthorSort { get; set; }
-		public string? LastUpdatedSort { get; set; }
-		public string? NonLoopLengthSort { get; set; }
-		public string? NonLoopSpawnsSort { get; set; }
-		public string? LoopLengthSort { get; set; }
-		public string? LoopSpawnsSort { get; set; }
+		public string? Name { get; set; }
+		public string? Author { get; set; }
+		public string? LastUpdated { get; set; }
+		public string? NonLoopLength { get; set; }
+		public string? NonLoopSpawns { get; set; }
+		public string? LoopLength { get; set; }
+		public string? LoopSpawns { get; set; }
 
 		public string? SortOrder { get; set; }
 
@@ -47,30 +64,30 @@ namespace DevilDaggersWebsite.Razor.Pages
 			SortOrder = sortOrder;
 			PageIndex = pageIndex ?? 1;
 
-			NameSort = sortOrder == "Name" ? "Name_asc" : "Name";
-			AuthorSort = sortOrder == "Author_asc" ? "Author" : "Author_asc";
-			LastUpdatedSort = sortOrder == "LastUpdated_asc" ? "LastUpdated" : "LastUpdated_asc";
-			NonLoopLengthSort = sortOrder == "NonLoopLength_asc" ? "NonLoopLength" : "NonLoopLength_asc";
-			NonLoopSpawnsSort = sortOrder == "NonLoopSpawns_asc" ? "NonLoopSpawns" : "NonLoopSpawns_asc";
-			LoopLengthSort = sortOrder == "LoopLength_asc" ? "LoopLength" : "LoopLength_asc";
-			LoopSpawnsSort = sortOrder == "LoopSpawns_asc" ? "LoopSpawns" : "LoopSpawns_asc";
+			Name = sortOrder == NameDesc ? NameAsc : NameDesc;
+			Author = sortOrder == AuthorAsc ? AuthorDesc : AuthorAsc;
+			LastUpdated = sortOrder == LastUpdatedAsc ? LastUpdatedDesc : LastUpdatedAsc;
+			NonLoopLength = sortOrder == NonLoopLengthAsc ? NonLoopLengthDesc : NonLoopLengthAsc;
+			NonLoopSpawns = sortOrder == NonLoopSpawnsAsc ? NonLoopSpawnsDesc : NonLoopSpawnsAsc;
+			LoopLength = sortOrder == LoopLengthAsc ? LoopLengthDesc : LoopLengthAsc;
+			LoopSpawns = sortOrder == LoopSpawnsAsc ? LoopSpawnsDesc : LoopSpawnsAsc;
 
 			List<SpawnsetFile> spawnsetFiles = _spawnsetHelper.GetSpawnsets(SearchAuthor, SearchName);
 			spawnsetFiles = sortOrder switch
 			{
-				"Name_asc" => spawnsetFiles.OrderBy(s => s.Name).ThenByDescending(s => s.AuthorName).ToList(),
-				"Name" => spawnsetFiles.OrderByDescending(s => s.Name).ThenBy(s => s.AuthorName).ToList(),
-				"Author_asc" => spawnsetFiles.OrderBy(s => s.AuthorName).ThenByDescending(s => s.Name).ToList(),
-				"Author" => spawnsetFiles.OrderByDescending(s => s.AuthorName).ThenBy(s => s.Name).ToList(),
-				"LastUpdated_asc" => spawnsetFiles.OrderBy(s => s.LastUpdated).ThenByDescending(s => s.Name).ToList(),
-				"NonLoopLength_asc" => spawnsetFiles.OrderBy(s => s.SpawnsetData.NonLoopLength).ThenBy(s => s.SpawnsetData.NonLoopSpawnCount).ToList(),
-				"NonLoopLength" => spawnsetFiles.OrderByDescending(s => s.SpawnsetData.NonLoopLength).ThenByDescending(s => s.SpawnsetData.NonLoopSpawnCount).ToList(),
-				"NonLoopSpawns_asc" => spawnsetFiles.OrderBy(s => s.SpawnsetData.NonLoopSpawnCount).ToList(),
-				"NonLoopSpawns" => spawnsetFiles.OrderByDescending(s => s.SpawnsetData.NonLoopSpawnCount).ToList(),
-				"LoopLength_asc" => spawnsetFiles.OrderBy(s => s.SpawnsetData.LoopLength).ThenBy(s => s.SpawnsetData.LoopSpawnCount).ToList(),
-				"LoopLength" => spawnsetFiles.OrderByDescending(s => s.SpawnsetData.LoopLength).ThenByDescending(s => s.SpawnsetData.LoopSpawnCount).ToList(),
-				"LoopSpawns_asc" => spawnsetFiles.OrderBy(s => s.SpawnsetData.LoopSpawnCount).ToList(),
-				"LoopSpawns" => spawnsetFiles.OrderByDescending(s => s.SpawnsetData.LoopSpawnCount).ToList(),
+				NameAsc => spawnsetFiles.OrderBy(s => s.Name).ThenByDescending(s => s.AuthorName).ToList(),
+				NameDesc => spawnsetFiles.OrderByDescending(s => s.Name).ThenBy(s => s.AuthorName).ToList(),
+				AuthorAsc => spawnsetFiles.OrderBy(s => s.AuthorName).ThenByDescending(s => s.Name).ToList(),
+				AuthorDesc => spawnsetFiles.OrderByDescending(s => s.AuthorName).ThenBy(s => s.Name).ToList(),
+				LastUpdatedAsc => spawnsetFiles.OrderBy(s => s.LastUpdated).ThenByDescending(s => s.Name).ToList(),
+				NonLoopLengthAsc => spawnsetFiles.OrderBy(s => s.SpawnsetData.NonLoopLength).ThenBy(s => s.SpawnsetData.NonLoopSpawnCount).ToList(),
+				NonLoopLengthDesc => spawnsetFiles.OrderByDescending(s => s.SpawnsetData.NonLoopLength).ThenByDescending(s => s.SpawnsetData.NonLoopSpawnCount).ToList(),
+				NonLoopSpawnsAsc => spawnsetFiles.OrderBy(s => s.SpawnsetData.NonLoopSpawnCount).ToList(),
+				NonLoopSpawnsDesc => spawnsetFiles.OrderByDescending(s => s.SpawnsetData.NonLoopSpawnCount).ToList(),
+				LoopLengthAsc => spawnsetFiles.OrderBy(s => s.SpawnsetData.LoopLength).ThenBy(s => s.SpawnsetData.LoopSpawnCount).ToList(),
+				LoopLengthDesc => spawnsetFiles.OrderByDescending(s => s.SpawnsetData.LoopLength).ThenByDescending(s => s.SpawnsetData.LoopSpawnCount).ToList(),
+				LoopSpawnsAsc => spawnsetFiles.OrderBy(s => s.SpawnsetData.LoopSpawnCount).ToList(),
+				LoopSpawnsDesc => spawnsetFiles.OrderByDescending(s => s.SpawnsetData.LoopSpawnCount).ToList(),
 				_ => spawnsetFiles.OrderByDescending(s => s.LastUpdated).ThenBy(s => s.Name).ToList(),
 			};
 			TotalResults = spawnsetFiles.Count;
