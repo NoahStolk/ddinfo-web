@@ -94,7 +94,7 @@
 									@(mod.IsHostedOnDdInfo ? "Yes" : "No")
 								</td>
 								<td class="hidden-xs">
-									@(mod.ContainsAnyProhibitedAssets.HasValue ? mod.ContainsAnyProhibitedAssets.Value ? "Yes" : "No" : "Unknown")
+									@(mod.ContainsProhibitedAssets.HasValue ? mod.ContainsProhibitedAssets.Value ? "Yes" : "No" : "Unknown")
 								</td>
 							</tr>
 						}

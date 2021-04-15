@@ -54,6 +54,10 @@
 			@if (Model.IsHostedOnDdInfo)
 			{
 				<div class="row">
+					<div class="col-xs-6">Prohibited assets</div>
+					<div class="col-xs-6">@(Model.ContainsProhibitedAssets ? "Yes" : "No")</div>
+				</div>
+				<div class="row">
 					<div class="col-xs-6">File size</div>
 					<div class="col-xs-6">@await Html.PartialAsync("Partials/FileSizePartial", Model.FileSize)</div>
 				</div>

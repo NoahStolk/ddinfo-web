@@ -29,7 +29,7 @@ namespace DevilDaggersWebsite.Razor.Pages
 		public bool IsHostedOnDdInfo { get; private set; }
 
 		public List<ModData> Binaries { get; private set; } = new();
-
+		public bool ContainsProhibitedAssets { get; private set; }
 		public long FileSize { get; private set; }
 
 		public ActionResult? OnGet()
@@ -46,6 +46,7 @@ namespace DevilDaggersWebsite.Razor.Pages
 			if (IsHostedOnDdInfo)
 			{
 				Binaries = ModDataCache.Instance.GetModDataByFilePath(zipPath);
+				ContainsProhibitedAssets = Binaries.Any(md => md.ModAssetData.Any(mad => mad.IsProhibited));
 				FileSize = new FileInfo(zipPath).Length;
 			}
 

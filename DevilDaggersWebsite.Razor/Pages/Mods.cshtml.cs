@@ -81,12 +81,12 @@ namespace DevilDaggersWebsite.Razor.Pages
 			{
 				string filePath = Path.Combine(_env.WebRootPath, "mods", $"{assetMod.Name}.zip");
 				bool isHostedOnDdInfo = Io.File.Exists(filePath);
-				bool? containsAnyProhibitedAssets = null;
+				bool? containsProhibitedAssets = null;
 				AssetModTypes assetModTypes;
 				if (isHostedOnDdInfo)
 				{
 					List<Dto.ModData> modData = ModDataCache.Instance.GetModDataByFilePath(filePath);
-					containsAnyProhibitedAssets = modData.Any(md => md.ModAssetData.Any(mad => mad.IsProhibited));
+					containsProhibitedAssets = modData.Any(md => md.ModAssetData.Any(mad => mad.IsProhibited));
 
 					Dto.ModData? ddBinary = modData.Find(md => md.ModBinaryType == Dto.ModBinaryType.Dd);
 
@@ -105,7 +105,7 @@ namespace DevilDaggersWebsite.Razor.Pages
 					assetModTypes = assetMod.AssetModTypes;
 				}
 
-				mods.Add(new(assetMod.Name, assetMod.PlayerAssetMods.Select(pam => pam.Player.PlayerName).OrderBy(s => s).ToList(), assetMod.LastUpdated, assetModTypes, isHostedOnDdInfo, containsAnyProhibitedAssets));
+				mods.Add(new(assetMod.Name, assetMod.PlayerAssetMods.Select(pam => pam.Player.PlayerName).OrderBy(s => s).ToList(), assetMod.LastUpdated, assetModTypes, isHostedOnDdInfo, containsProhibitedAssets));
 			}
 
 			if (!string.IsNullOrWhiteSpace(SearchAuthor))
@@ -125,8 +125,8 @@ namespace DevilDaggersWebsite.Razor.Pages
 				TypeDesc => mods.OrderByDescending(m => m.AssetModTypes).ThenBy(m => m.Name).ToList(),
 				HostedAsc => mods.OrderBy(m => m.IsHostedOnDdInfo).ThenByDescending(m => m.Name).ToList(),
 				HostedDesc => mods.OrderByDescending(m => m.IsHostedOnDdInfo).ThenBy(m => m.Name).ToList(),
-				ProhibitedAsc => mods.OrderBy(m => m.ContainsAnyProhibitedAssets).ThenByDescending(m => m.Name).ToList(),
-				ProhibitedDesc => mods.OrderByDescending(m => m.ContainsAnyProhibitedAssets).ThenBy(m => m.Name).ToList(),
+				ProhibitedAsc => mods.OrderBy(m => m.ContainsProhibitedAssets).ThenByDescending(m => m.Name).ToList(),
+				ProhibitedDesc => mods.OrderByDescending(m => m.ContainsProhibitedAssets).ThenBy(m => m.Name).ToList(),
 				_ => mods.OrderByDescending(s => s.LastUpdated).ThenBy(s => s.Name).ToList(),
 			};
 			TotalResults = mods.Count;
