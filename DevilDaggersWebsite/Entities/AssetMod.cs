@@ -14,7 +14,6 @@ namespace DevilDaggersWebsite.Entities
 
 		public List<PlayerAssetMod> PlayerAssetMods { get; set; } = new();
 		public AssetModTypes AssetModTypes { get; set; }
-		public AssetModFileContents AssetModFileContents { get; set; }
 		public string Name { get; set; } = null!;
 		public string Url { get; set; } = null!;
 		public bool IsHidden { get; set; }
@@ -31,7 +30,6 @@ namespace DevilDaggersWebsite.Entities
 		public void Edit(ApplicationDbContext dbContext, AdminAssetMod adminDto)
 		{
 			AssetModTypes = adminDto.AssetModTypes == null ? AssetModTypes.None : (AssetModTypes)adminDto.AssetModTypes.Cast<int>().Sum();
-			AssetModFileContents = adminDto.AssetModFileContents == null ? AssetModFileContents.None : (AssetModFileContents)adminDto.AssetModFileContents.Cast<int>().Sum();
 			Name = adminDto.Name;
 			Url = adminDto.Url ?? string.Empty;
 			IsHidden = adminDto.IsHidden;
@@ -57,7 +55,6 @@ namespace DevilDaggersWebsite.Entities
 			return new()
 			{
 				AssetModTypes = ToFlagEnumList(AssetModTypes).ToList(),
-				AssetModFileContents = ToFlagEnumList(AssetModFileContents).ToList(),
 				Name = Name,
 				PlayerIds = PlayerAssetMods.ConvertAll(pam => pam.PlayerId),
 				Url = Url,

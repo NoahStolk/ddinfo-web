@@ -45,13 +45,6 @@
 								   asp-route-sortOrder="@Model.TypeSort"
 								   asp-route-pageIndex="@Model.PageIndex">Type</a>
 							</th>
-							<th class="hidden-xs hidden-sm hidden-md" width="220">
-								<a asp-page="./Mods"
-								   asp-route-searchAuthor="@Model.SearchAuthor"
-								   asp-route-searchName="@Model.SearchName"
-								   asp-route-sortOrder="@Model.FileContentsSort"
-								   asp-route-pageIndex="@Model.PageIndex">Contents</a>
-							</th>
 						</tr>
 					</thead>
 					<tbody>
@@ -72,9 +65,6 @@
 								</td>
 								<td class="hidden-xs">
 									@(mod.AssetModTypes)
-								</td>
-								<td class="hidden-xs">
-									@(mod.AssetModFileContents)
 								</td>
 							</tr>
 						}

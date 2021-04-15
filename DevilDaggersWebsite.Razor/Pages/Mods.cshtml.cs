@@ -26,7 +26,6 @@ namespace DevilDaggersWebsite.Razor.Pages
 		public string? NameSort { get; set; }
 		public string? AuthorSort { get; set; }
 		public string? TypeSort { get; set; }
-		public string? FileContentsSort { get; set; }
 
 		public string? SortOrder { get; set; }
 
@@ -47,11 +46,10 @@ namespace DevilDaggersWebsite.Razor.Pages
 			NameSort = sortOrder == "Name" ? "Name_asc" : "Name";
 			AuthorSort = sortOrder == "Author_asc" ? "Author" : "Author_asc";
 			TypeSort = sortOrder == "TypeSort_asc" ? "TypeSort" : "TypeSort_asc";
-			FileContentsSort = sortOrder == "FileContents_asc" ? "FileContents" : "FileContents_asc";
 
 			List<Mod> sortedMods = new();
 			foreach (AssetMod assetMod in _dbContext.AssetMods.Include(am => am.PlayerAssetMods).ThenInclude(pam => pam.Player).Where(am => !am.IsHidden))
-				sortedMods.Add(new(assetMod.AssetModTypes, assetMod.AssetModFileContents, assetMod.Name, assetMod.Url, assetMod.PlayerAssetMods.Select(pam => pam.Player.PlayerName).OrderBy(s => s).ToList()));
+				sortedMods.Add(new(assetMod.AssetModTypes, assetMod.Name, assetMod.Url, assetMod.PlayerAssetMods.Select(pam => pam.Player.PlayerName).OrderBy(s => s).ToList()));
 
 			if (!string.IsNullOrWhiteSpace(SearchAuthor))
 				sortedMods = sortedMods.Where(am => am.Authors.Any(a => a.Contains(SearchAuthor, StringComparison.InvariantCultureIgnoreCase))).ToList();
@@ -66,8 +64,6 @@ namespace DevilDaggersWebsite.Razor.Pages
 				"Author" => sortedMods.OrderByDescending(s => s.Authors[0]).ThenBy(s => s.Name).ToList(),
 				"TypeSort_asc" => sortedMods.OrderBy(s => s.AssetModTypes).ThenByDescending(s => s.Name).ToList(),
 				"TypeSort" => sortedMods.OrderByDescending(s => s.AssetModTypes).ThenBy(s => s.Name).ToList(),
-				"FileContents_asc" => sortedMods.OrderBy(s => s.AssetModFileContents).ThenBy(s => s.Name).ToList(),
-				"FileContents" => sortedMods.OrderByDescending(s => s.AssetModFileContents).ThenByDescending(s => s.Name).ToList(),
 				_ => sortedMods.OrderBy(s => s.Name).ThenByDescending(s => s.Authors[0]).ToList(),
 			};
 			TotalResults = sortedMods.Count;
