@@ -28,22 +28,36 @@
 								<a asp-page="./Mods"
 								   asp-route-searchAuthor="@Model.SearchAuthor"
 								   asp-route-searchName="@Model.SearchName"
-								   asp-route-sortOrder="@Model.NameSort"
+								   asp-route-sortOrder="@Model.Name"
 								   asp-route-pageIndex="@Model.PageIndex">Name</a>
 							</th>
 							<th width="260">
 								<a asp-page="./Mods"
 								   asp-route-searchAuthor="@Model.SearchAuthor"
 								   asp-route-searchName="@Model.SearchName"
-								   asp-route-sortOrder="@Model.AuthorSort"
+								   asp-route-sortOrder="@Model.Author"
 								   asp-route-pageIndex="@Model.PageIndex">Author(s)</a>
 							</th>
 							<th class="hidden-xs" width="220">
 								<a asp-page="./Mods"
 								   asp-route-searchAuthor="@Model.SearchAuthor"
 								   asp-route-searchName="@Model.SearchName"
-								   asp-route-sortOrder="@Model.TypeSort"
+								   asp-route-sortOrder="@Model.Type"
 								   asp-route-pageIndex="@Model.PageIndex">Type</a>
+							</th>
+							<th class="hidden-xs" width="220">
+								<a asp-page="./Mods"
+								   asp-route-searchAuthor="@Model.SearchAuthor"
+								   asp-route-searchName="@Model.SearchName"
+								   asp-route-sortOrder="@Model.Hosted"
+								   asp-route-pageIndex="@Model.PageIndex">Hosted</a>
+							</th>
+							<th class="hidden-xs" width="220">
+								<a asp-page="./Mods"
+								   asp-route-searchAuthor="@Model.SearchAuthor"
+								   asp-route-searchName="@Model.SearchName"
+								   asp-route-sortOrder="@Model.Prohibited"
+								   asp-route-pageIndex="@Model.PageIndex">Prohibited assets</a>
 							</th>
 						</tr>
 					</thead>
@@ -64,7 +78,13 @@
 									}
 								</td>
 								<td class="hidden-xs">
-									@(mod.AssetModTypes)
+									@mod.AssetModTypes
+								</td>
+								<td class="hidden-xs">
+									@(mod.IsHostedOnDdInfo ? "Yes" : "No")
+								</td>
+								<td class="hidden-xs">
+									@(mod.ContainsAnyProhibitedAssets.HasValue ? mod.ContainsAnyProhibitedAssets.Value ? "Yes" : "No" : "Unknown")
 								</td>
 							</tr>
 						}
