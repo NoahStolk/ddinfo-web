@@ -19,7 +19,7 @@ namespace DevilDaggersWebsite.Entities
 		public bool IsHidden { get; set; }
 		public DateTime LastUpdated { get; set; }
 		public string? TrailerUrl { get; set; }
-		public string? Description { get; set; }
+		public string? HtmlDescription { get; set; }
 
 		public void Create(ApplicationDbContext dbContext, AdminAssetMod adminDto)
 		{
@@ -36,7 +36,7 @@ namespace DevilDaggersWebsite.Entities
 			IsHidden = adminDto.IsHidden;
 			LastUpdated = adminDto.LastUpdated;
 			TrailerUrl = adminDto.TrailerUrl;
-			Description = adminDto.HtmlDescription;
+			HtmlDescription = adminDto.HtmlDescription;
 		}
 
 		public void CreateManyToManyRelations(ApplicationDbContext dbContext, AdminAssetMod adminDto)
@@ -63,7 +63,7 @@ namespace DevilDaggersWebsite.Entities
 				IsHidden = IsHidden,
 				LastUpdated = LastUpdated,
 				TrailerUrl = TrailerUrl,
-				HtmlDescription = Description,
+				HtmlDescription = HtmlDescription,
 			};
 
 			static IEnumerable<T> ToFlagEnumList<T>(T value)
