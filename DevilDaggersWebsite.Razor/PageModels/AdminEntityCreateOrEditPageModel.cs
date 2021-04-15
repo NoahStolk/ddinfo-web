@@ -29,7 +29,6 @@ namespace DevilDaggersWebsite.Razor.PageModels
 		{
 			_env = env;
 
-			AssetModFileContentsList = RazorUtils.EnumToSelectList<AssetModFileContents>(true);
 			AssetModTypesList = RazorUtils.EnumToSelectList<AssetModTypes>(true);
 
 			CategoryList = RazorUtils.EnumToSelectList<CustomLeaderboardCategory>(true);
@@ -42,7 +41,6 @@ namespace DevilDaggersWebsite.Razor.PageModels
 			TitleList = DbContext.Titles.Select(t => new SelectListItem(t.Name, t.Id.ToString())).ToList();
 		}
 
-		public List<SelectListItem> AssetModFileContentsList { get; }
 		public List<SelectListItem> AssetModTypesList { get; }
 
 		public List<SelectListItem> CategoryList { get; }
@@ -165,9 +163,9 @@ namespace DevilDaggersWebsite.Razor.PageModels
 		{
 			if (typeof(TEntity) == typeof(Title))
 				return DbSet.Include(t => (t as Title)!.PlayerTitles);
-			else if (typeof(TEntity) == typeof(AssetMod))
+			if (typeof(TEntity) == typeof(AssetMod))
 				return DbSet.Include(t => (t as AssetMod)!.PlayerAssetMods);
-			else if (typeof(TEntity) == typeof(Player))
+			if (typeof(TEntity) == typeof(Player))
 				return DbSet.Include(t => (t as Player)!.PlayerAssetMods).Include(t => (t as Player)!.PlayerTitles);
 			return DbSet.AsQueryable();
 		}
