@@ -1,4 +1,5 @@
-﻿using DevilDaggersWebsite.Dto;
+﻿using DevilDaggersWebsite.Caches;
+using DevilDaggersWebsite.Dto;
 using DevilDaggersWebsite.Entities;
 using Microsoft.AspNetCore.Hosting;
 using Microsoft.AspNetCore.Mvc;
@@ -6,7 +7,6 @@ using Microsoft.AspNetCore.Mvc.RazorPages;
 using Microsoft.EntityFrameworkCore;
 using System.Collections.Generic;
 using System.IO;
-using System.IO.Compression;
 using System.Linq;
 using Io = System.IO;
 
@@ -28,7 +28,7 @@ namespace DevilDaggersWebsite.Razor.Pages
 
 		public bool IsHostedOnDdInfo { get; private set; }
 
-		public List<ModData> Binaries { get; } = new();
+		public List<ModData> Binaries { get; private set; } = new();
 
 		public long FileSize { get; private set; }
 
@@ -46,19 +46,8 @@ namespace DevilDaggersWebsite.Razor.Pages
 
 			if (IsHostedOnDdInfo)
 			{
-				using FileStream fs = new(zipPath, FileMode.Open);
-				using ZipArchive archive = new(fs);
-				foreach (ZipArchiveEntry entry in archive.Entries)
-				{
-					byte[] extractedContents = new byte[entry.Length];
-
-					using Stream stream = entry.Open();
-					stream.Read(extractedContents, 0, extractedContents.Length);
-
-					Binaries.Add(ModData.CreateFromFile(entry.Name, extractedContents));
-				}
-
-				FileSize = fs.Length;
+				Binaries = ModDataCache.Instance.GetModDataByFilePath(zipPath);
+				FileSize = new FileInfo(zipPath).Length;
 			}
 
 			return null;

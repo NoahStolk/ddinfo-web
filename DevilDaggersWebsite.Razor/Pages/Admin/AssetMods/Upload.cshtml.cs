@@ -1,4 +1,5 @@
 ﻿using DevilDaggersDiscordBot.Logging;
+using DevilDaggersWebsite.Caches;
 using DevilDaggersWebsite.Dto;
 using DevilDaggersWebsite.Exceptions;
 using DevilDaggersWebsite.Razor.Extensions;
@@ -8,7 +9,6 @@ using Microsoft.AspNetCore.Mvc;
 using Microsoft.AspNetCore.Mvc.RazorPages;
 using System;
 using System.IO;
-using System.IO.Compression;
 using System.Threading.Tasks;
 using Io = System.IO;
 
@@ -73,18 +73,10 @@ namespace DevilDaggersWebsite.Razor.Pages.Admin.AssetMods
 					formFileBytes = ms.ToArray();
 				}
 
-				using FileStream fs = new(filePath, FileMode.Open);
-				using ZipArchive archive = new(fs);
-				foreach (ZipArchiveEntry entry in archive.Entries)
+				foreach (ModData modData in ModDataCache.Instance.GetModDataByFilePath(filePath))
 				{
-					byte[] extractedContents = new byte[entry.Length];
-
-					using Stream stream = entry.Open();
-					stream.Read(extractedContents, 0, extractedContents.Length);
-
-					ModData modData = ModData.CreateFromFile(entry.Name, extractedContents);
 					if (modData.ModAssetData.Count == 0)
-						throw new InvalidModBinaryException($"File '{entry.Name}' does not contain any assets.");
+						throw new InvalidModBinaryException($"File '{modData.Name}' does not contain any assets.");
 				}
 
 				Io.File.WriteAllBytes(filePath, formFileBytes);
