@@ -10,11 +10,5 @@ namespace DevilDaggersWebsite.Enumerators
 		Texture = 2,
 		Model = 4,
 		Shader = 8,
-
-		[Obsolete("Remove from database.")]
-		Particle = 16,
-
-		[Obsolete("Remove from database.")]
-		Spawnset = 32,
 	}
 }
