@@ -38,7 +38,7 @@
 			{
 				<div class="row">
 					<div class="col-xs-6">File size</div>
-					<div class="col-xs-6">@Math.Round(Model.FileSize / 1000f) KB</div>
+					<div class="col-xs-6">@await Html.PartialAsync("Partials/FileSizePartial", Model.FileSize)</div>
 				</div>
 			}
 		</div>
@@ -81,7 +81,7 @@
 						<ul>
 							@foreach (ModAssetData asset in binary.ModAssetData)
 							{
-								<li style="@(asset.IsProhibited ? "color: red;" : string.Empty))">@asset.ModAssetType - @asset.Name</li>
+								<li style="@(asset.IsProhibited ? "color: red;" : string.Empty)">@asset.ModAssetType - @asset.Name</li>
 							}
 						</ul>
 					</div>
