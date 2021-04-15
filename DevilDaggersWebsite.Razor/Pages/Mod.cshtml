@@ -60,34 +60,34 @@
 
 	@if (!string.IsNullOrWhiteSpace(Model.AssetMod.TrailerUrl))
 	{
-		<h2>Trailer</h2>
-		<div class="col">
+		<div class="row">
 			<div class="col-md-12 col-lg-6">
 				<div class="iframe-wrapper">
 					<img class="ratio" src="~/images/Misc/16x9.png" />
-					<iframe src="@Model.AssetMod.TrailerUrl" frameborder="0" allowfullscreen></iframe>
+					<iframe src="@Model.AssetMod.TrailerUrl" title="@Model.AssetMod.Name" frameborder="0" allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture" allowfullscreen></iframe>
 				</div>
 			</div>
 		</div>
 	}
-
 	@if (Model.Binaries.Count > 0)
 	{
-		<h2>Mod contents</h2>
-		<ul>
+		<div class="row">
 			@foreach (ModData binary in Model.Binaries)
 			{
-				<li>@binary.Name</li>
-				<li>
-					<ul>
-						@foreach (ModAssetData asset in binary.ModAssetData)
-						{
-							<li>@asset.ModAssetType - @asset.Name</li>
-						}
-					</ul>
-				</li>
+				<div class="col-md-12 col-lg-6">
+					<p>@binary.Name</p>
+
+					<div class="col-xs-12">
+						<ul>
+							@foreach (ModAssetData asset in binary.ModAssetData)
+							{
+								<li>@asset.ModAssetType - @asset.Name</li>
+							}
+						</ul>
+					</div>
+				</div>
 			}
-		</ul>
+		</div>
 	}
 </main>
 
