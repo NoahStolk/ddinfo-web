@@ -33,7 +33,7 @@ namespace DevilDaggersWebsite.Entities
 			AssetModTypes = (AssetModTypes)adminDto.AssetModTypes.Cast<int>().Sum();
 			AssetModFileContents = (AssetModFileContents)adminDto.AssetModFileContents.Cast<int>().Sum();
 			Name = adminDto.Name;
-			Url = adminDto.Url;
+			Url = adminDto.Url ?? string.Empty;
 			IsHidden = adminDto.IsHidden;
 			LastUpdated = adminDto.LastUpdated;
 			TrailerUrl = adminDto.TrailerUrl;
