@@ -20,24 +20,9 @@
 		<form method="post">
 			<div asp-validation-summary="ModelOnly" class="text-danger"></div>
 			<div class="form-group">
-				<label class="control-label">AssetModTypes (CTRL+click for multiple)</label>
-				<select asp-for="AdminDto.AssetModTypes" class="admin-select form-control" asp-items="Model.AssetModTypesList" style="height: 192px;"></select>
-				<span asp-validation-for="AdminDto.AssetModTypes" class="text-danger"></span>
-			</div>
-			<div class="form-group">
-				<label class="control-label">AssetModFileContents (CTRL+click for multiple)</label>
-				<select asp-for="AdminDto.AssetModFileContents" class="admin-select form-control" asp-items="Model.AssetModFileContentsList"></select>
-				<span asp-validation-for="AdminDto.AssetModFileContents" class="text-danger"></span>
-			</div>
-			<div class="form-group">
 				<label asp-for="AdminDto.Name" class="control-label"></label>
 				<input asp-for="AdminDto.Name" class="form-control" />
 				<span asp-validation-for="AdminDto.Name" class="text-danger"></span>
-			</div>
-			<div class="form-group">
-				<label asp-for="AdminDto.Url" class="control-label"></label>
-				<input asp-for="AdminDto.Url" class="form-control" />
-				<span asp-validation-for="AdminDto.Url" class="text-danger"></span>
 			</div>
 			<div class="form-group">
 				<label class="control-label">Players (CTRL+click for multiple)</label>
@@ -58,6 +43,23 @@
 				<label asp-for="AdminDto.TrailerUrl" class="control-label"></label>
 				<input asp-for="AdminDto.TrailerUrl" class="form-control" />
 				<span asp-validation-for="AdminDto.TrailerUrl" class="text-danger"></span>
+			</div>
+			<hr />
+			<h3>The following fields are only used when the mod is hosted externally</h3>
+			<div class="form-group">
+				<label class="control-label">AssetModTypes (CTRL+click for multiple)</label>
+				<select asp-for="AdminDto.AssetModTypes" class="admin-select form-control" asp-items="Model.AssetModTypesList" style="height: 192px;"></select>
+				<span asp-validation-for="AdminDto.AssetModTypes" class="text-danger"></span>
+			</div>
+			<div class="form-group">
+				<label class="control-label">AssetModFileContents (CTRL+click for multiple)</label>
+				<select asp-for="AdminDto.AssetModFileContents" class="admin-select form-control" asp-items="Model.AssetModFileContentsList"></select>
+				<span asp-validation-for="AdminDto.AssetModFileContents" class="text-danger"></span>
+			</div>
+			<div class="form-group">
+				<label asp-for="AdminDto.Url" class="control-label"></label>
+				<input asp-for="AdminDto.Url" class="form-control" />
+				<span asp-validation-for="AdminDto.Url" class="text-danger"></span>
 			</div>
 			<div class="form-group">
 				<input type="submit" value="Save" class="btn btn-default" />

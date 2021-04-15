@@ -30,8 +30,8 @@ namespace DevilDaggersWebsite.Entities
 
 		public void Edit(ApplicationDbContext dbContext, AdminAssetMod adminDto)
 		{
-			AssetModTypes = (AssetModTypes)adminDto.AssetModTypes.Cast<int>().Sum();
-			AssetModFileContents = (AssetModFileContents)adminDto.AssetModFileContents.Cast<int>().Sum();
+			AssetModTypes = adminDto.AssetModTypes == null ? AssetModTypes.None : (AssetModTypes)adminDto.AssetModTypes.Cast<int>().Sum();
+			AssetModFileContents = adminDto.AssetModFileContents == null ? AssetModFileContents.None : (AssetModFileContents)adminDto.AssetModFileContents.Cast<int>().Sum();
 			Name = adminDto.Name;
 			Url = adminDto.Url ?? string.Empty;
 			IsHidden = adminDto.IsHidden;
