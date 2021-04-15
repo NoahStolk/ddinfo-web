@@ -14,6 +14,7 @@ namespace DevilDaggersWebsite.Dto.Admin
 		public bool IsHidden { get; set; }
 		public DateTime LastUpdated { get; set; }
 		public string? TrailerUrl { get; set; }
+		public string? Description { get; set; }
 
 		public Dictionary<string, string> Log()
 		{
@@ -25,6 +26,7 @@ namespace DevilDaggersWebsite.Dto.Admin
 			dictionary.Add(nameof(IsHidden), IsHidden.ToString());
 			dictionary.Add(nameof(LastUpdated), LastUpdated.ToString());
 			dictionary.Add(nameof(TrailerUrl), TrailerUrl ?? string.Empty);
+			dictionary.Add(nameof(Description), Description ?? string.Empty);
 			return dictionary;
 		}
 	}
