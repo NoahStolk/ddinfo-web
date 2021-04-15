@@ -45,7 +45,9 @@
 				<span asp-validation-for="AdminDto.TrailerUrl" class="text-danger"></span>
 			</div>
 			<hr />
-			<h3>The following fields are only used when the mod is hosted externally</h3>
+			<p>The following fields are only used when the mod is hosted externally.</p>
+			<p>I plan to remove these fields when all (or most) mods have been migrated.</p>
+			<hr />
 			<div class="form-group">
 				<label class="control-label">AssetModTypes (CTRL+click for multiple)</label>
 				<select asp-for="AdminDto.AssetModTypes" class="admin-select form-control" asp-items="Model.AssetModTypesList" style="height: 192px;"></select>
