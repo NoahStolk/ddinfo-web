@@ -38,28 +38,28 @@
 								   asp-route-sortOrder="@Model.Author"
 								   asp-route-pageIndex="@Model.PageIndex">Author(s)</a>
 							</th>
-							<th width="260">
+							<th class="hidden-xs" width="160">
 								<a asp-page="./Mods"
 								   asp-route-searchAuthor="@Model.SearchAuthor"
 								   asp-route-searchName="@Model.SearchName"
 								   asp-route-sortOrder="@Model.LastUpdated"
 								   asp-route-pageIndex="@Model.PageIndex">Last updated</a>
 							</th>
-							<th class="hidden-xs" width="220">
+							<th class="hidden-xs hidden-sm hidden-md" width="320">
 								<a asp-page="./Mods"
 								   asp-route-searchAuthor="@Model.SearchAuthor"
 								   asp-route-searchName="@Model.SearchName"
 								   asp-route-sortOrder="@Model.Type"
 								   asp-route-pageIndex="@Model.PageIndex">Type</a>
 							</th>
-							<th class="hidden-xs" width="220">
+							<th class="hidden-xs hidden-sm hidden-md" width="160">
 								<a asp-page="./Mods"
 								   asp-route-searchAuthor="@Model.SearchAuthor"
 								   asp-route-searchName="@Model.SearchName"
 								   asp-route-sortOrder="@Model.Hosted"
 								   asp-route-pageIndex="@Model.PageIndex">Hosted</a>
 							</th>
-							<th class="hidden-xs" width="220">
+							<th class="hidden-xs hidden-sm hidden-md" width="160">
 								<a asp-page="./Mods"
 								   asp-route-searchAuthor="@Model.SearchAuthor"
 								   asp-route-searchName="@Model.SearchName"
@@ -85,7 +85,7 @@
 									}
 								</td>
 								<td class="hidden-xs">
-									@mod.LastUpdated.ToString("dd MMM yyyy")
+									@(mod.LastUpdated == DateTime.MinValue ? "Unknown" : mod.LastUpdated.ToString("dd MMM yyyy"))
 								</td>
 								<td class="hidden-xs">
 									@mod.AssetModTypes
