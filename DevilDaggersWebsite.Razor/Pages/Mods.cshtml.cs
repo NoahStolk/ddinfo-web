@@ -1,5 +1,7 @@
-﻿using DevilDaggersWebsite.Caches;
+﻿using DevilDaggersCore.Mods;
+using DevilDaggersWebsite.Caches;
 using DevilDaggersWebsite.Entities;
+using DevilDaggersWebsite.Enumerators;
 using DevilDaggersWebsite.Razor.PageModels;
 using DevilDaggersWebsite.Razor.Pagination;
 using Microsoft.AspNetCore.Hosting;
@@ -80,9 +82,30 @@ namespace DevilDaggersWebsite.Razor.Pages
 				string filePath = Path.Combine(_env.WebRootPath, "mods", $"{assetMod.Name}.zip");
 				bool isHostedOnDdInfo = Io.File.Exists(filePath);
 				bool? containsAnyProhibitedAssets = null;
+				AssetModTypes assetModTypes;
 				if (isHostedOnDdInfo)
-					containsAnyProhibitedAssets = ModDataCache.Instance.GetModDataByFilePath(filePath).Any(md => md.ModAssetData.Any(mad => mad.IsProhibited));
-				mods.Add(new(assetMod.Name, assetMod.PlayerAssetMods.Select(pam => pam.Player.PlayerName).OrderBy(s => s).ToList(), assetMod.LastUpdated, assetMod.AssetModTypes, isHostedOnDdInfo, containsAnyProhibitedAssets));
+				{
+					List<Dto.ModData> modData = ModDataCache.Instance.GetModDataByFilePath(filePath);
+					containsAnyProhibitedAssets = modData.Any(md => md.ModAssetData.Any(mad => mad.IsProhibited));
+
+					Dto.ModData? ddBinary = modData.Find(md => md.ModBinaryType == Dto.ModBinaryType.Dd);
+
+					assetModTypes = AssetModTypes.None;
+					if (modData.Any(md => md.ModBinaryType == Dto.ModBinaryType.Audio))
+						assetModTypes |= AssetModTypes.Audio;
+					if (modData.Any(md => md.ModBinaryType == Dto.ModBinaryType.Core) || ddBinary?.ModAssetData.Any(mad => mad.ModAssetType == AssetType.Shader) == true)
+						assetModTypes |= AssetModTypes.Shader;
+					if (ddBinary?.ModAssetData.Any(mad => mad.ModAssetType == AssetType.ModelBinding || mad.ModAssetType == AssetType.Model) == true)
+						assetModTypes |= AssetModTypes.Model;
+					if (ddBinary?.ModAssetData.Any(mad => mad.ModAssetType == AssetType.Texture) == true)
+						assetModTypes |= AssetModTypes.Texture;
+				}
+				else
+				{
+					assetModTypes = assetMod.AssetModTypes;
+				}
+
+				mods.Add(new(assetMod.Name, assetMod.PlayerAssetMods.Select(pam => pam.Player.PlayerName).OrderBy(s => s).ToList(), assetMod.LastUpdated, assetModTypes, isHostedOnDdInfo, containsAnyProhibitedAssets));
 			}
 
 			if (!string.IsNullOrWhiteSpace(SearchAuthor))
