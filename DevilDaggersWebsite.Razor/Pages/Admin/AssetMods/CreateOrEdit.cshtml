@@ -44,6 +44,11 @@
 				<input asp-for="AdminDto.TrailerUrl" class="form-control" />
 				<span asp-validation-for="AdminDto.TrailerUrl" class="text-danger"></span>
 			</div>
+			<div class="form-group">
+				<label asp-for="AdminDto.HtmlDescription" class="control-label"></label>
+				<input asp-for="AdminDto.HtmlDescription" class="form-control" />
+				<span asp-validation-for="AdminDto.HtmlDescription" class="text-danger"></span>
+			</div>
 			<hr />
 			<p>The following fields are only used when the mod is hosted externally.</p>
 			<p>I plan to remove these fields when all (or most) mods have been migrated.</p>
