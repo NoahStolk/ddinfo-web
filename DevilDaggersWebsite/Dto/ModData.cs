@@ -1,4 +1,5 @@
-﻿using DevilDaggersWebsite.Exceptions;
+﻿using DevilDaggersCore.Mods;
+using DevilDaggersWebsite.Exceptions;
 using System;
 using System.Collections.Generic;
 using System.Text;
@@ -52,16 +53,32 @@ namespace DevilDaggersWebsite.Dto
 				byte type = tocBuffer[i];
 				string name = ReadNullTerminatedString(tocBuffer, i + 2);
 				i += name.Length + 15;
-				ModAssetType assetType = type switch
+				AssetType assetType = type switch
 				{
-					0x01 => ModAssetType.Model,
-					0x02 => ModAssetType.Texture,
-					0x10 => ModAssetType.Shader,
-					0x20 => ModAssetType.Audio,
-					0x80 => ModAssetType.ModelBinding,
+					0x01 => AssetType.Model,
+					0x02 => AssetType.Texture,
+					0x10 => AssetType.Shader,
+					0x20 => AssetType.Audio,
+					0x80 => AssetType.ModelBinding,
 					_ => throw new InvalidModBinaryException($"File '{fileName}' contains an unknown asset type '{type}'. Valid types are {0x01}, {0x02}, {0x10}, {0x20}, and {0x80}."),
 				};
-				chunks.Add(new(name, assetType));
+
+				bool isProhibited = modBinaryType switch
+				{
+					ModBinaryType.Audio => AssetHandler.Instance.AudioAudioAssets.Find(a => a.AssetName == name)?.IsProhibited ?? false,
+					ModBinaryType.Core => AssetHandler.Instance.CoreShadersAssets.Find(a => a.AssetName == name)?.IsProhibited ?? false,
+					ModBinaryType.Dd => assetType switch
+					{
+						AssetType.ModelBinding => AssetHandler.Instance.DdModelBindingsAssets.Find(a => a.AssetName == name)?.IsProhibited ?? false,
+						AssetType.Model => AssetHandler.Instance.DdModelsAssets.Find(a => a.AssetName == name)?.IsProhibited ?? false,
+						AssetType.Shader => AssetHandler.Instance.DdShadersAssets.Find(a => a.AssetName == name)?.IsProhibited ?? false,
+						AssetType.Texture => AssetHandler.Instance.DdTexturesAssets.Find(a => a.AssetName == name)?.IsProhibited ?? false,
+						_ => throw new InvalidModBinaryException($"File '{fileName}', which is a '{modBinaryType}' binary file, contains an asset of type '{assetType}', which is not supported."),
+					},
+					_ => throw new InvalidModBinaryException($"Unknown binary type '{modBinaryType}'."),
+				};
+
+				chunks.Add(new(name, assetType, isProhibited));
 			}
 
 			return new(fileName, modBinaryType, chunks);

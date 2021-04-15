@@ -81,7 +81,7 @@
 						<ul>
 							@foreach (ModAssetData asset in binary.ModAssetData)
 							{
-								<li>@asset.ModAssetType - @asset.Name</li>
+								<li style="@(asset.IsProhibited ? "color: red;" : string.Empty))">@asset.ModAssetType - @asset.Name</li>
 							}
 						</ul>
 					</div>
