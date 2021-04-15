@@ -8,6 +8,12 @@
 	max-width: 640px;
 }
 
+.mod-description {
+	background-color: var(--col-gray-22);
+	padding: 8px 15px;
+	margin: 4px 0;
+}
+
 .iframe-wrapper {
 	position: relative;
 }
