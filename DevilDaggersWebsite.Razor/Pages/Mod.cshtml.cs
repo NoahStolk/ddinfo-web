@@ -43,7 +43,6 @@ namespace DevilDaggersWebsite.Razor.Pages
 
 			string zipPath = Path.Combine(_env.WebRootPath, "mods", $"{AssetMod.Name}.zip");
 			IsHostedOnDdInfo = Io.File.Exists(zipPath);
-
 			if (IsHostedOnDdInfo)
 			{
 				Binaries = ModDataCache.Instance.GetModDataByFilePath(zipPath);

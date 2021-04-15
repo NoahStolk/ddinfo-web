@@ -38,6 +38,13 @@
 								   asp-route-sortOrder="@Model.Author"
 								   asp-route-pageIndex="@Model.PageIndex">Author(s)</a>
 							</th>
+							<th width="260">
+								<a asp-page="./Mods"
+								   asp-route-searchAuthor="@Model.SearchAuthor"
+								   asp-route-searchName="@Model.SearchName"
+								   asp-route-sortOrder="@Model.LastUpdated"
+								   asp-route-pageIndex="@Model.PageIndex">Last updated</a>
+							</th>
 							<th class="hidden-xs" width="220">
 								<a asp-page="./Mods"
 								   asp-route-searchAuthor="@Model.SearchAuthor"
@@ -76,6 +83,9 @@
 											<span>&amp;</span>
 										}
 									}
+								</td>
+								<td class="hidden-xs">
+									@mod.LastUpdated.ToString("dd MMM yyyy")
 								</td>
 								<td class="hidden-xs">
 									@mod.AssetModTypes

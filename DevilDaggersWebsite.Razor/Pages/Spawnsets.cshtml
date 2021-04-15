@@ -88,7 +88,7 @@
 								<td><a asp-page="Spawnset" asp-route-spawnset="@spawnsetFile.Name">@spawnsetFile.Name</a></td>
 								<td><a asp-page="/Spawnsets" asp-route-SearchAuthor="@spawnsetFile.AuthorName">@spawnsetFile.AuthorName</a></td>
 								<td class="hidden-xs">
-									@(spawnsetFile.LastUpdated.ToString("dd MMM yyyy"))
+									@spawnsetFile.LastUpdated.ToString("dd MMM yyyy")
 								</td>
 								<td class="hidden-xs hidden-sm hidden-md">
 									@(!spawnsetFile.SpawnsetData.NonLoopLength.HasValue ? RazorUtils.NAString : Html.Raw(spawnsetFile.SpawnsetData.NonLoopLength.Value.ToString(FormatUtils.SpawnTimeFormat)))

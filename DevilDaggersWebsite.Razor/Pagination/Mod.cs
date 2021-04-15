@@ -1,22 +1,25 @@
 ﻿using DevilDaggersWebsite.Enumerators;
+using System;
 using System.Collections.Generic;
 
 namespace DevilDaggersWebsite.Razor.Pagination
 {
 	public class Mod
 	{
-		public Mod(AssetModTypes assetModTypes, string name, List<string> authors, bool isHostedOnDdInfo, bool? containsAnyProhibitedAssets)
+		public Mod(string name, List<string> authors, DateTime lastUpdated, AssetModTypes assetModTypes, bool isHostedOnDdInfo, bool? containsAnyProhibitedAssets)
 		{
-			AssetModTypes = assetModTypes;
 			Name = name;
 			Authors = authors;
+			LastUpdated = lastUpdated;
+			AssetModTypes = assetModTypes;
 			IsHostedOnDdInfo = isHostedOnDdInfo;
 			ContainsAnyProhibitedAssets = containsAnyProhibitedAssets;
 		}
 
-		public AssetModTypes AssetModTypes { get; set; }
 		public string Name { get; set; }
 		public List<string> Authors { get; set; }
+		public DateTime LastUpdated { get; set; }
+		public AssetModTypes AssetModTypes { get; set; }
 		public bool IsHostedOnDdInfo { get; set; }
 		public bool? ContainsAnyProhibitedAssets { get; set; }
 	}

@@ -19,11 +19,13 @@ namespace DevilDaggersWebsite.Razor.Pages
 
 		public const string NameDesc = nameof(Name);
 		public const string AuthorDesc = nameof(Author);
+		public const string LastUpdatedDesc = nameof(LastUpdated);
 		public const string TypeDesc = nameof(Type);
 		public const string HostedDesc = nameof(Hosted);
 		public const string ProhibitedDesc = nameof(Prohibited);
 		public const string NameAsc = nameof(Name) + _ascendingSuffix;
 		public const string AuthorAsc = nameof(Author) + _ascendingSuffix;
+		public const string LastUpdatedAsc = nameof(LastUpdated) + _ascendingSuffix;
 		public const string TypeAsc = nameof(Type) + _ascendingSuffix;
 		public const string HostedAsc = nameof(Hosted) + _ascendingSuffix;
 		public const string ProhibitedAsc = nameof(Prohibited) + _ascendingSuffix;
@@ -44,6 +46,7 @@ namespace DevilDaggersWebsite.Razor.Pages
 
 		public string? Name { get; set; }
 		public string? Author { get; set; }
+		public string? LastUpdated { get; set; }
 		public string? Type { get; set; }
 		public string? Hosted { get; set; }
 		public string? Prohibited { get; set; }
@@ -66,6 +69,7 @@ namespace DevilDaggersWebsite.Razor.Pages
 
 			Name = sortOrder == NameDesc ? NameAsc : NameDesc;
 			Author = sortOrder == AuthorAsc ? AuthorDesc : AuthorAsc;
+			LastUpdated = sortOrder == LastUpdatedAsc ? LastUpdatedDesc : LastUpdatedAsc;
 			Type = sortOrder == TypeAsc ? TypeDesc : TypeAsc;
 			Hosted = sortOrder == HostedAsc ? HostedDesc : HostedAsc;
 			Prohibited = sortOrder == ProhibitedAsc ? ProhibitedDesc : ProhibitedAsc;
@@ -78,7 +82,7 @@ namespace DevilDaggersWebsite.Razor.Pages
 				bool? containsAnyProhibitedAssets = null;
 				if (isHostedOnDdInfo)
 					containsAnyProhibitedAssets = ModDataCache.Instance.GetModDataByFilePath(filePath).Any(md => md.ModAssetData.Any(mad => mad.IsProhibited));
-				mods.Add(new(assetMod.AssetModTypes, assetMod.Name, assetMod.PlayerAssetMods.Select(pam => pam.Player.PlayerName).OrderBy(s => s).ToList(), isHostedOnDdInfo, containsAnyProhibitedAssets));
+				mods.Add(new(assetMod.Name, assetMod.PlayerAssetMods.Select(pam => pam.Player.PlayerName).OrderBy(s => s).ToList(), assetMod.LastUpdated, assetMod.AssetModTypes, isHostedOnDdInfo, containsAnyProhibitedAssets));
 			}
 
 			if (!string.IsNullOrWhiteSpace(SearchAuthor))
@@ -89,16 +93,18 @@ namespace DevilDaggersWebsite.Razor.Pages
 
 			mods = sortOrder switch
 			{
+				NameAsc => mods.OrderBy(m => m.Name).ThenByDescending(m => m.Authors[0]).ToList(),
 				NameDesc => mods.OrderByDescending(m => m.Name).ThenBy(m => m.Authors[0]).ToList(),
 				AuthorAsc => mods.OrderBy(m => m.Authors[0]).ThenByDescending(m => m.Name).ToList(),
 				AuthorDesc => mods.OrderByDescending(m => m.Authors[0]).ThenBy(m => m.Name).ToList(),
+				LastUpdatedAsc => mods.OrderBy(s => s.LastUpdated).ThenByDescending(s => s.Name).ToList(),
 				TypeAsc => mods.OrderBy(m => m.AssetModTypes).ThenByDescending(m => m.Name).ToList(),
 				TypeDesc => mods.OrderByDescending(m => m.AssetModTypes).ThenBy(m => m.Name).ToList(),
 				HostedAsc => mods.OrderBy(m => m.IsHostedOnDdInfo).ThenByDescending(m => m.Name).ToList(),
 				HostedDesc => mods.OrderByDescending(m => m.IsHostedOnDdInfo).ThenBy(m => m.Name).ToList(),
 				ProhibitedAsc => mods.OrderBy(m => m.ContainsAnyProhibitedAssets).ThenByDescending(m => m.Name).ToList(),
 				ProhibitedDesc => mods.OrderByDescending(m => m.ContainsAnyProhibitedAssets).ThenBy(m => m.Name).ToList(),
-				_ => mods.OrderBy(m => m.Name).ThenByDescending(m => m.Authors[0]).ToList(),
+				_ => mods.OrderByDescending(s => s.LastUpdated).ThenBy(s => s.Name).ToList(),
 			};
 			TotalResults = mods.Count;
 			TotalPages = Math.Max(1, (int)Math.Ceiling(TotalResults / (double)PageSize));
