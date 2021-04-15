@@ -41,14 +41,11 @@ namespace DevilDaggersWebsite.Razor.Pages
 			if (AssetMod == null)
 				return RedirectToPage("Mods");
 
-			IsHostedOnDdInfo = string.IsNullOrWhiteSpace(AssetMod.Url);
+			string zipPath = Path.Combine(_env.WebRootPath, "mods", $"{AssetMod.Name}.zip");
+			IsHostedOnDdInfo = Io.File.Exists(zipPath);
 
 			if (IsHostedOnDdInfo)
 			{
-				string zipPath = Path.Combine(_env.WebRootPath, "mods", $"{AssetMod.Name}.zip");
-				if (!Io.File.Exists(zipPath))
-					return RedirectToPage("Mods");
-
 				using FileStream fs = new(zipPath, FileMode.Open);
 				using ZipArchive archive = new(fs);
 				foreach (ZipArchiveEntry entry in archive.Entries)
