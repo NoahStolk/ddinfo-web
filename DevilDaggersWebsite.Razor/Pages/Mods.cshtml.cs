@@ -114,21 +114,21 @@ namespace DevilDaggersWebsite.Razor.Pages
 			if (!string.IsNullOrWhiteSpace(SearchName))
 				mods = mods.Where(am => am.Name.Contains(SearchName, StringComparison.InvariantCultureIgnoreCase)).ToList();
 
-			mods = sortOrder switch
+			mods = (sortOrder switch
 			{
-				NameAsc => mods.OrderBy(m => m.Name).ThenByDescending(m => m.Authors[0]).ToList(),
-				NameDesc => mods.OrderByDescending(m => m.Name).ThenBy(m => m.Authors[0]).ToList(),
-				AuthorAsc => mods.OrderBy(m => m.Authors[0]).ThenByDescending(m => m.Name).ToList(),
-				AuthorDesc => mods.OrderByDescending(m => m.Authors[0]).ThenBy(m => m.Name).ToList(),
-				LastUpdatedAsc => mods.OrderBy(s => s.LastUpdated).ThenByDescending(s => s.Name).ToList(),
-				TypeAsc => mods.OrderBy(m => m.AssetModTypes).ThenByDescending(m => m.Name).ToList(),
-				TypeDesc => mods.OrderByDescending(m => m.AssetModTypes).ThenBy(m => m.Name).ToList(),
-				HostedAsc => mods.OrderBy(m => m.IsHostedOnDdInfo).ThenByDescending(m => m.Name).ToList(),
-				HostedDesc => mods.OrderByDescending(m => m.IsHostedOnDdInfo).ThenBy(m => m.Name).ToList(),
-				ProhibitedAsc => mods.OrderBy(m => m.ContainsProhibitedAssets).ThenByDescending(m => m.Name).ToList(),
-				ProhibitedDesc => mods.OrderByDescending(m => m.ContainsProhibitedAssets).ThenBy(m => m.Name).ToList(),
-				_ => mods.OrderByDescending(s => s.LastUpdated).ThenBy(s => s.Name).ToList(),
-			};
+				NameAsc => mods.OrderBy(m => m.Name).ThenByDescending(m => m.Authors[0]),
+				NameDesc => mods.OrderByDescending(m => m.Name).ThenBy(m => m.Authors[0]),
+				AuthorAsc => mods.OrderBy(m => m.Authors[0]).ThenByDescending(m => m.Name),
+				AuthorDesc => mods.OrderByDescending(m => m.Authors[0]).ThenBy(m => m.Name),
+				LastUpdatedAsc => mods.OrderBy(s => s.LastUpdated).ThenByDescending(s => s.Name),
+				TypeAsc => mods.OrderBy(m => m.AssetModTypes).ThenByDescending(m => m.Name),
+				TypeDesc => mods.OrderByDescending(m => m.AssetModTypes).ThenBy(m => m.Name),
+				HostedAsc => mods.OrderBy(m => m.IsHostedOnDdInfo).ThenByDescending(m => m.Name),
+				HostedDesc => mods.OrderByDescending(m => m.IsHostedOnDdInfo).ThenBy(m => m.Name),
+				ProhibitedAsc => mods.OrderBy(m => m.ContainsProhibitedAssets).ThenByDescending(m => m.Name),
+				ProhibitedDesc => mods.OrderByDescending(m => m.ContainsProhibitedAssets).ThenBy(m => m.Name),
+				_ => mods.OrderByDescending(s => s.LastUpdated).ThenBy(s => s.Name),
+			}).ToList();
 			TotalResults = mods.Count;
 			TotalPages = Math.Max(1, (int)Math.Ceiling(TotalResults / (double)PageSize));
 			PageIndex = Math.Clamp(PageIndex, 1, TotalPages);
