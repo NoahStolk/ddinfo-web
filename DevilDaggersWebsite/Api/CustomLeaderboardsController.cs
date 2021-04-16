@@ -180,8 +180,8 @@ namespace DevilDaggersWebsite.Api
 			else if (!isAscending)
 			{
 				// Due to a bug in the game, we need to subtract a couple ticks if the run is a replay, so replays don't overwrite the actual score if submitted twice.
-				// The amount of overflowing ticks varies between 0 and 3 (the longer the run the higher the amount), so subtract 6 ticks for now.
-				uploadRequest.Time -= 1000;
+				// The amount of overflowing ticks varies between 0 and 3 (the longer the run the higher the amount), so subtract 4 ticks for now.
+				uploadRequest.Time -= 667;
 			}
 
 			// Make sure HomingDaggers is not negative (happens rarely).
