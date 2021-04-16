@@ -31,5 +31,8 @@ namespace DevilDaggersWebsite.Razor.Pages.Admin.AdminTests
 
 		public void OnPostClearSpawnsetDataCache()
 			=> SpawnsetDataCache.Instance.Clear();
+
+		public async Task OnPostClearModDataCache()
+			=> await ModDataCache.Instance.Clear(_env);
 	}
 }
