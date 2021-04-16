@@ -1,9 +1,12 @@
-﻿using DevilDaggersWebsite.Dto;
+﻿using DevilDaggersDiscordBot.Logging;
+using DevilDaggersWebsite.Dto;
+using Microsoft.AspNetCore.Hosting;
 using System;
 using System.Collections.Concurrent;
 using System.Collections.Generic;
 using System.IO;
 using System.IO.Compression;
+using System.Threading.Tasks;
 
 namespace DevilDaggersWebsite.Caches
 {
@@ -42,7 +45,11 @@ namespace DevilDaggersWebsite.Caches
 			return modData;
 		}
 
-		public void Clear()
-			=> _cache.Clear();
+		public async Task Clear(IWebHostEnvironment env)
+		{
+			int cacheCount = _cache.Count;
+			_cache.Clear();
+			await DiscordLogger.Instance.TryLog(Channel.CacheMonitoring, env.EnvironmentName, $"Successfully cleared `{nameof(ModDataCache)}`. (Removed `{cacheCount}` instances.)");
+		}
 	}
 }
