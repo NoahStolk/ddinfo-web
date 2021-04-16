@@ -73,13 +73,14 @@ namespace DevilDaggersWebsite.Razor.Pages.Admin.AssetMods
 					formFileBytes = ms.ToArray();
 				}
 
+				Io.File.WriteAllBytes(filePath, formFileBytes);
+
 				foreach (ModData modData in ModDataCache.Instance.GetModDataByFilePath(filePath))
 				{
 					if (modData.ModAssetData.Count == 0)
 						throw new InvalidModBinaryException($"File '{modData.Name}' does not contain any assets.");
 				}
 
-				Io.File.WriteAllBytes(filePath, formFileBytes);
 				await DiscordLogger.Instance.TryLog(Channel.AuditLogMonitoring, _env.EnvironmentName, $"`{this.GetIdentity()}` uploaded new ASSETMOD file `{FormFile.FileName}`");
 			}
 			catch (InvalidModBinaryException ex)
