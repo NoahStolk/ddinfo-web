@@ -61,6 +61,7 @@ namespace DevilDaggersDiscordBot.Logging
 			DiscordChannel? channel = loggingChannel switch
 			{
 				Channel.AuditLogMonitoring => AuditLogMonitoringChannel,
+				Channel.CacheMonitoring => CacheMonitoringChannel,
 				Channel.CustomLeaderboardMonitoring => CustomLeaderboardMonitoringChannel,
 				Channel.TaskMonitoring => TaskMonitoringChannel,
 				Channel.TestMonitoring => TestMonitoringChannel,
