@@ -52,7 +52,9 @@ namespace DevilDaggersWebsite.Dto
 			{
 				byte type = tocBuffer[i];
 				string name = ReadNullTerminatedString(tocBuffer, i + 2);
-				i += name.Length + 15;
+				i += name.Length + 1; // + 1 to include null terminator.
+				uint size = BitConverter.ToUInt32(tocBuffer, i + 6);
+				i += 14;
 				AssetType assetType = type switch
 				{
 					0x01 => AssetType.Model,
@@ -78,7 +80,7 @@ namespace DevilDaggersWebsite.Dto
 					_ => throw new InvalidModBinaryException($"Unknown binary type '{modBinaryType}'."),
 				};
 
-				chunks.Add(new(name, assetType, isProhibited));
+				chunks.Add(new(name, size, assetType, isProhibited));
 			}
 
 			return new(fileName, modBinaryType, chunks);

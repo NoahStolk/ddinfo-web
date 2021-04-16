@@ -111,7 +111,7 @@
 							<div class="asset-list">
 								@foreach (ModAssetData asset in assetGroup)
 								{
-									<div class="@(asset.IsProhibited ? "prohibited" : string.Empty)">@asset.Name</div>
+									<div class="@(asset.IsProhibited ? "prohibited" : string.Empty)">@asset.Name (@await Html.PartialAsync("Partials/FileSizePartial", (long)asset.Size))</div>
 								}
 							</div>
 						</div>
