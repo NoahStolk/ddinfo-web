@@ -1,4 +1,5 @@
-﻿.header-container {
+﻿/*Info*/
+.header-container {
 	background-color: var(--col-gray-11);
 	padding: 8px;
 	margin-bottom: 8px;
@@ -14,6 +15,7 @@
 	margin: 4px 0;
 }
 
+/*Trailer*/
 .iframe-wrapper {
 	position: relative;
 }
@@ -31,3 +33,35 @@
 		width: 100%;
 		height: 100%;
 	}
+
+/*Assets*/
+.prohibited {
+	color: var(--col-red);
+}
+
+.binary-container {
+	background-color: var(--col-gray-11);
+}
+
+.binary-title-container {
+	background-color: var(--col-gray-18);
+	font-size: 24px;
+	padding: 16px;
+}
+
+.asset-container {
+	padding: 8px;
+}
+
+.asset-title-container {
+	padding: 8px;
+	min-height: calc(3em + 2px);
+}
+
+.asset-list {
+	padding: 8px;
+	min-height: 320px;
+	max-height: 320px;
+	overflow-y: scroll;
+	background-color: var(--col-gray-08);
+}
