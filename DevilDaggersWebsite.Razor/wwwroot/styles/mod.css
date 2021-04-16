@@ -60,7 +60,8 @@
 
 .asset-list {
 	padding: 8px;
-	min-height: 320px;
+	min-height: 128px;
+	height: 30vh;
 	max-height: 320px;
 	overflow-y: scroll;
 	background-color: var(--col-gray-08);
