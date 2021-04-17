@@ -35,6 +35,8 @@ namespace DevilDaggersWebsite.Entities
 
 		public int TotalRunsSubmitted { get; set; }
 
+		public bool IsArchived { get; set; }
+
 		/// <summary>
 		/// Returns the CSS class name corresponding to the time in seconds.
 		/// </summary>
@@ -88,6 +90,7 @@ namespace DevilDaggersWebsite.Entities
 			TimeGolden = adminDto.TimeGolden;
 			TimeDevil = adminDto.TimeDevil;
 			TimeLeviathan = adminDto.TimeLeviathan;
+			IsArchived = adminDto.IsArchived;
 		}
 
 		public AdminCustomLeaderboard Populate()
@@ -101,6 +104,7 @@ namespace DevilDaggersWebsite.Entities
 				TimeGolden = TimeGolden,
 				TimeLeviathan = TimeLeviathan,
 				TimeSilver = TimeSilver,
+				IsArchived = IsArchived,
 			};
 		}
 	}

@@ -114,6 +114,9 @@ namespace DevilDaggersWebsite.Razor.Pages.Leaderboard
 					HasCustomEntries = true;
 					foreach (Entities.CustomEntry customEntry in _dbContext.CustomEntries.Include(ce => ce.CustomLeaderboard).Where(ce => ce.PlayerId == PlayerId))
 					{
+						if (customEntry.CustomLeaderboard.IsArchived)
+							continue;
+
 						string dagger = customEntry.CustomLeaderboard.GetDagger(customEntry.Time);
 						if (CustomDaggerCounts.ContainsKey(dagger))
 							CustomDaggerCounts[dagger]++;

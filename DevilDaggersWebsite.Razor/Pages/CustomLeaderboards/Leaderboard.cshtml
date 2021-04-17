@@ -23,7 +23,7 @@
 			<div class="spawns-header-container">
 				<div class="row">
 					<div class="col-xs-6">Author</div>
-					<div class="col-xs-6"><a asp-page="/Spawnsets" asp-route-SearchAuthor="@Model.SpawnsetFile.Player.PlayerName">@Model.SpawnsetFile.Player.PlayerName</a></div>
+					<div class="col-xs-6"><a asp-page="/Spawnsets" asp-route-searchAuthor="@Model.SpawnsetFile.Player.PlayerName">@Model.SpawnsetFile.Player.PlayerName</a></div>
 				</div>
 				<div class="row">
 					<div class="col-xs-6">Last updated</div>
@@ -84,7 +84,7 @@
 	</div>
 
 	@await Html.PartialAsync("Partials/LeaderboardTableInfoPartial")
-	@await Html.PartialAsync($"Partials/LeaderboardUserCustomPartial")
+	@await Html.PartialAsync("Partials/LeaderboardUserCustomPartial")
 </main>
 
 @section Scripts {

@@ -25,7 +25,7 @@ namespace DevilDaggersWebsite.Transients
 			_dbContext = dbContext;
 
 			_spawnsetsWithCustomLeaderboardIds = dbContext.CustomLeaderboards
-				.Where(cl => cl.Category != CustomLeaderboardCategory.Challenge)
+				.Where(cl => cl.Category != CustomLeaderboardCategory.Challenge && !cl.IsArchived)
 				.Select(cl => cl.SpawnsetFileId)
 				.ToList();
 		}

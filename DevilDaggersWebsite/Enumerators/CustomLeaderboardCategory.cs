@@ -6,6 +6,5 @@
 		Default = 1,
 		Challenge = 2,
 		Speedrun = 3,
-		Archive = 4,
 	}
 }

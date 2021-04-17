@@ -24,6 +24,8 @@ namespace DevilDaggersWebsite.Dto.Admin
 		[Range(10000, 15000000)]
 		public int TimeLeviathan { get; init; }
 
+		public bool IsArchived { get; init; }
+
 		public Dictionary<string, string> Log()
 		{
 			Dictionary<string, string> dictionary = new();
@@ -34,6 +36,7 @@ namespace DevilDaggersWebsite.Dto.Admin
 			dictionary.Add(nameof(TimeGolden), TimeGolden.ToString());
 			dictionary.Add(nameof(TimeDevil), TimeDevil.ToString());
 			dictionary.Add(nameof(TimeLeviathan), TimeLeviathan.ToString());
+			dictionary.Add(nameof(IsArchived), IsArchived.ToString());
 			return dictionary;
 		}
 	}

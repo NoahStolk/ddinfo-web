@@ -43,7 +43,7 @@ namespace DevilDaggersWebsite.Api
 		{
 			return _dbContext.CustomLeaderboards
 				.AsNoTracking()
-				.Where(cl => cl.Category != CustomLeaderboardCategory.Challenge)
+				.Where(cl => cl.Category != CustomLeaderboardCategory.Challenge && !cl.IsArchived)
 				.Include(cl => cl.SpawnsetFile)
 					.ThenInclude(sf => sf.Player)
 				.Select(cl => cl.ToDto())
@@ -57,7 +57,7 @@ namespace DevilDaggersWebsite.Api
 		{
 			CustomLeaderboard? customLeaderboard = _dbContext.CustomLeaderboards
 				.AsNoTracking()
-				.Where(cl => cl.Category != CustomLeaderboardCategory.Challenge)
+				.Where(cl => cl.Category != CustomLeaderboardCategory.Challenge && !cl.IsArchived)
 				.Include(cl => cl.SpawnsetFile)
 					.ThenInclude(sf => sf.Player)
 				.FirstOrDefault(cl => cl.Id == id);

@@ -42,7 +42,7 @@ namespace DevilDaggersWebsite.Razor.Pages
 
 			Spawnset = spawnset;
 			FileSize = fileBytes.Length;
-			HasCustomLeaderboard = _dbContext.CustomLeaderboards.Any(cl => cl.SpawnsetFileId == SpawnsetFile.Id);
+			HasCustomLeaderboard = _dbContext.CustomLeaderboards.Any(cl => cl.SpawnsetFileId == SpawnsetFile.Id && !cl.IsArchived);
 
 			return null;
 		}
