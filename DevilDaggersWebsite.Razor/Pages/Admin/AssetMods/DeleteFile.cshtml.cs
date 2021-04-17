@@ -33,7 +33,7 @@ namespace DevilDaggersWebsite.Razor.Pages.Admin.AssetMods
 
 			await DiscordLogger.Instance.TryLog(Channel.AuditLogMonitoring, _env.EnvironmentName, $"`{this.GetIdentity()}` deleted ASSETMOD file `{fileName}`");
 
-			await ModCache.Instance.Clear(_env);
+			await ModArchiveCache.Instance.Clear(_env);
 
 			return RedirectToPage("Index");
 		}

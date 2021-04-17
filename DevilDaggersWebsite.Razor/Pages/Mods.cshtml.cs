@@ -85,15 +85,15 @@ namespace DevilDaggersWebsite.Razor.Pages
 				AssetModTypes assetModTypes;
 				if (isHostedOnDdInfo)
 				{
-					List<Dto.ModData> modData = ModCache.Instance.GetModDataByFilePath(filePath);
-					containsProhibitedAssets = modData.Any(md => md.ModAssetData.Any(mad => mad.IsProhibited));
+					ModArchiveCacheData archiveData = ModArchiveCache.Instance.GetArchiveDataByFilePath(filePath);
+					containsProhibitedAssets = archiveData.ModData.Any(md => md.ModAssetData.Any(mad => mad.IsProhibited));
 
-					Dto.ModData? ddBinary = modData.Find(md => md.ModBinaryType == Dto.ModBinaryType.Dd);
+					Dto.ModData? ddBinary = archiveData.ModData.Find(md => md.ModBinaryType == Dto.ModBinaryType.Dd);
 
 					assetModTypes = AssetModTypes.None;
-					if (modData.Any(md => md.ModBinaryType == Dto.ModBinaryType.Audio))
+					if (archiveData.ModData.Any(md => md.ModBinaryType == Dto.ModBinaryType.Audio))
 						assetModTypes |= AssetModTypes.Audio;
-					if (modData.Any(md => md.ModBinaryType == Dto.ModBinaryType.Core) || ddBinary?.ModAssetData.Any(mad => mad.ModAssetType == AssetType.Shader) == true)
+					if (archiveData.ModData.Any(md => md.ModBinaryType == Dto.ModBinaryType.Core) || ddBinary?.ModAssetData.Any(mad => mad.ModAssetType == AssetType.Shader) == true)
 						assetModTypes |= AssetModTypes.Shader;
 					if (ddBinary?.ModAssetData.Any(mad => mad.ModAssetType == AssetType.ModelBinding || mad.ModAssetType == AssetType.Model) == true)
 						assetModTypes |= AssetModTypes.Model;

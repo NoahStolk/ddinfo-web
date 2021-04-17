@@ -1,11 +1,9 @@
-﻿using DevilDaggersWebsite.Caches.ModData;
-using DevilDaggersWebsite.Dto;
+﻿using DevilDaggersWebsite.Caches.Mod;
 using DevilDaggersWebsite.Entities;
 using Microsoft.AspNetCore.Hosting;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.AspNetCore.Mvc.RazorPages;
 using Microsoft.EntityFrameworkCore;
-using System.Collections.Generic;
 using System.IO;
 using System.Linq;
 using Io = System.IO;
@@ -28,9 +26,8 @@ namespace DevilDaggersWebsite.Razor.Pages
 
 		public bool IsHostedOnDdInfo { get; private set; }
 
-		public List<ModData> Binaries { get; private set; } = new();
+		public ModArchiveCacheData ArchiveData { get; private set; } = new();
 		public bool ContainsProhibitedAssets { get; private set; }
-		public long FileSize { get; private set; }
 
 		public ActionResult? OnGet()
 		{
@@ -45,9 +42,8 @@ namespace DevilDaggersWebsite.Razor.Pages
 			IsHostedOnDdInfo = Io.File.Exists(zipPath);
 			if (IsHostedOnDdInfo)
 			{
-				Binaries = ModDataCache.Instance.GetModDataByFilePath(zipPath);
-				ContainsProhibitedAssets = Binaries.Any(md => md.ModAssetData.Any(mad => mad.IsProhibited));
-				FileSize = new FileInfo(zipPath).Length;
+				ArchiveData = ModArchiveCache.Instance.GetArchiveDataByFilePath(zipPath);
+				ContainsProhibitedAssets = ArchiveData.ModData.Any(md => md.ModAssetData.Any(mad => mad.IsProhibited));
 			}
 
 			return null;

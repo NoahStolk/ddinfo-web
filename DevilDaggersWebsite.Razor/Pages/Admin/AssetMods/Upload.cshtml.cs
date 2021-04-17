@@ -75,7 +75,7 @@ namespace DevilDaggersWebsite.Razor.Pages.Admin.AssetMods
 
 				Io.File.WriteAllBytes(filePath, formFileBytes);
 
-				foreach (ModData modData in ModCache.Instance.GetModDataByFilePath(filePath))
+				foreach (ModData modData in ModArchiveCache.Instance.GetArchiveDataByFilePath(filePath).ModData)
 				{
 					if (modData.ModAssetData.Count == 0)
 						throw new InvalidModBinaryException($"File '{modData.Name}' does not contain any assets.");

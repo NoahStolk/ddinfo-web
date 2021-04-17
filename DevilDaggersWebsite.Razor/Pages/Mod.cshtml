@@ -60,7 +60,11 @@
 				</div>
 				<div class="row">
 					<div class="col-xs-6">File size</div>
-					<div class="col-xs-6">@await Html.PartialAsync("Partials/FileSizePartial", Model.FileSize)</div>
+					<div class="col-xs-6">@await Html.PartialAsync("Partials/FileSizePartial", Model.ArchiveData.FileSize)</div>
+				</div>
+				<div class="row">
+					<div class="col-xs-6">File size (extracted)</div>
+					<div class="col-xs-6">@await Html.PartialAsync("Partials/FileSizePartial", Model.ArchiveData.FileSizeExtracted)</div>
 				</div>
 			}
 		</div>
@@ -92,10 +96,10 @@
 			</div>
 		</div>
 	}
-	@if (Model.Binaries.Count > 0)
+	@if (Model.ArchiveData.ModData.Count > 0)
 	{
 		<h2>Binaries</h2>
-		@foreach (ModData binary in Model.Binaries)
+		@foreach (ModData binary in Model.ArchiveData.ModData)
 		{
 			<div class="binary-container">
 				<div class="binary-title-container">
