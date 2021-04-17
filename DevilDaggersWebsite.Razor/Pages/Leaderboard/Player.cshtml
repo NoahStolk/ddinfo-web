@@ -244,7 +244,7 @@
 						<div class="player-section-list">
 							@foreach (Entities.AssetMod mod in Model.Mods)
 							{
-								<a class="player-section-list-link" href="@mod.Url">@mod.Name</a>
+								<a class="player-section-list-link" asp-page="/Mod" asp-route-mod="@mod.Name">@mod.Name</a>
 							}
 						</div>
 					</div>
