@@ -1,5 +1,4 @@
 ﻿using DevilDaggersDiscordBot.Logging;
-using DevilDaggersWebsite.Dto;
 using Microsoft.AspNetCore.Hosting;
 using System;
 using System.Collections.Concurrent;
@@ -8,11 +7,11 @@ using System.IO;
 using System.IO.Compression;
 using System.Threading.Tasks;
 
-namespace DevilDaggersWebsite.Caches
+namespace DevilDaggersWebsite.Caches.ModData
 {
 	public sealed class ModDataCache
 	{
-		private readonly ConcurrentDictionary<string, List<ModData>> _cache = new();
+		private readonly ConcurrentDictionary<string, List<Dto.ModData>> _cache = new();
 
 		private static readonly Lazy<ModDataCache> _lazy = new(() => new());
 
@@ -22,13 +21,13 @@ namespace DevilDaggersWebsite.Caches
 
 		public static ModDataCache Instance => _lazy.Value;
 
-		public List<ModData> GetModDataByFilePath(string filePath)
+		public List<Dto.ModData> GetModDataByFilePath(string filePath)
 		{
 			string name = Path.GetFileNameWithoutExtension(filePath);
 			if (_cache.ContainsKey(name))
 				return _cache[name];
 
-			List<ModData> modData = new();
+			List<Dto.ModData> modData = new();
 			using FileStream fs = new(filePath, FileMode.Open);
 			using ZipArchive archive = new(fs);
 			foreach (ZipArchiveEntry entry in archive.Entries)
@@ -38,7 +37,7 @@ namespace DevilDaggersWebsite.Caches
 				using Stream stream = entry.Open();
 				stream.Read(extractedContents, 0, extractedContents.Length);
 
-				modData.Add(ModData.CreateFromFile(entry.Name, extractedContents));
+				modData.Add(Dto.ModData.CreateFromFile(entry.Name, extractedContents));
 			}
 
 			_cache.TryAdd(name, modData);

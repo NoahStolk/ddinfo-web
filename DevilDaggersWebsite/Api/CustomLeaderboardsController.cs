@@ -1,6 +1,6 @@
 ﻿using DevilDaggersDiscordBot.Extensions;
 using DevilDaggersDiscordBot.Logging;
-using DevilDaggersWebsite.Caches;
+using DevilDaggersWebsite.Caches.SpawnsetHash;
 using DevilDaggersWebsite.Entities;
 using DevilDaggersWebsite.Enumerators;
 using DevilDaggersWebsite.Extensions;
@@ -22,9 +22,9 @@ namespace DevilDaggersWebsite.Api
 	[ApiController]
 	public class CustomLeaderboardsController : ControllerBase
 	{
-#pragma warning disable S3459 // Unassigned members should be removed
+#pragma warning disable CS0649, S3459 // Unassigned members should be removed
 		private static readonly bool _enableData;
-#pragma warning restore S3459 // Unassigned members should be removed
+#pragma warning restore CS0649, S3459 // Unassigned members should be removed
 
 		private readonly ApplicationDbContext _dbContext;
 		private readonly IWebHostEnvironment _env;
@@ -150,8 +150,8 @@ namespace DevilDaggersWebsite.Api
 			}
 
 			// Check for existing spawnset.
-			SpawnsetCacheData? spawnsetCacheData = await SpawnsetHashCache.Instance.GetSpawnset(_env, uploadRequest.SurvivalHashMd5);
-			string? spawnsetName = spawnsetCacheData?.Name;
+			SpawnsetHashData? spawnsetHashData = await SpawnsetHashCache.Instance.GetSpawnset(_env, uploadRequest.SurvivalHashMd5);
+			string? spawnsetName = spawnsetHashData?.Name;
 			if (string.IsNullOrEmpty(spawnsetName))
 			{
 				const string errorMessage = "This spawnset doesn't exist on DevilDaggers.info.";

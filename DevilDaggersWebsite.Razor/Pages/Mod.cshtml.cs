@@ -1,4 +1,4 @@
-﻿using DevilDaggersWebsite.Caches;
+﻿using DevilDaggersWebsite.Caches.ModData;
 using DevilDaggersWebsite.Dto;
 using DevilDaggersWebsite.Entities;
 using Microsoft.AspNetCore.Hosting;

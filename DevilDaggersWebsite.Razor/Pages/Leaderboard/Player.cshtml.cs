@@ -1,5 +1,5 @@
 ﻿using DevilDaggersCore.Game;
-using DevilDaggersWebsite.Caches;
+using DevilDaggersWebsite.Caches.LeaderboardHistory;
 using DevilDaggersWebsite.Clients;
 using DevilDaggersWebsite.Dto;
 using DevilDaggersWebsite.Entities;

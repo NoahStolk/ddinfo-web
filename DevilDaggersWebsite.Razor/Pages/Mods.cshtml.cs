@@ -1,5 +1,5 @@
 ﻿using DevilDaggersCore.Mods;
-using DevilDaggersWebsite.Caches;
+using DevilDaggersWebsite.Caches.ModData;
 using DevilDaggersWebsite.Entities;
 using DevilDaggersWebsite.Enumerators;
 using DevilDaggersWebsite.Razor.PageModels;

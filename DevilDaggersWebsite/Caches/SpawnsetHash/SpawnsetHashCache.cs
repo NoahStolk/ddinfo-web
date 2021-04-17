@@ -8,11 +8,11 @@ using System.Linq;
 using System.Security.Cryptography;
 using System.Threading.Tasks;
 
-namespace DevilDaggersWebsite.Caches
+namespace DevilDaggersWebsite.Caches.SpawnsetHash
 {
 	public sealed class SpawnsetHashCache
 	{
-		private readonly ConcurrentBag<SpawnsetCacheData> _cache = new();
+		private readonly ConcurrentBag<SpawnsetHashData> _cache = new();
 
 		private static readonly Lazy<SpawnsetHashCache> _lazy = new(() => new());
 
@@ -22,9 +22,9 @@ namespace DevilDaggersWebsite.Caches
 
 		public static SpawnsetHashCache Instance => _lazy.Value;
 
-		public async Task<SpawnsetCacheData?> GetSpawnset(IWebHostEnvironment env, byte[] hash)
+		public async Task<SpawnsetHashData?> GetSpawnset(IWebHostEnvironment env, byte[] hash)
 		{
-			SpawnsetCacheData? spawnsetCacheData = _cache.FirstOrDefault(scd => MatchHashes(scd.Hash, hash));
+			SpawnsetHashData? spawnsetCacheData = _cache.FirstOrDefault(scd => MatchHashes(scd.Hash, hash));
 			if (spawnsetCacheData != null)
 				return spawnsetCacheData;
 

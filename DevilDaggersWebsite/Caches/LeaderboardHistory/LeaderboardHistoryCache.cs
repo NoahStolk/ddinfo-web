@@ -5,7 +5,7 @@ using System.Collections.Concurrent;
 using System.IO;
 using System.Text;
 
-namespace DevilDaggersWebsite.Caches
+namespace DevilDaggersWebsite.Caches.LeaderboardHistory
 {
 	public sealed class LeaderboardHistoryCache
 	{

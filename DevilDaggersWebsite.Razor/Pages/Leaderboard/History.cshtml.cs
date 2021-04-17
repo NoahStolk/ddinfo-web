@@ -1,5 +1,5 @@
 ﻿using DevilDaggersCore.Utils;
-using DevilDaggersWebsite.Caches;
+using DevilDaggersWebsite.Caches.LeaderboardHistory;
 using DevilDaggersWebsite.Dto;
 using DevilDaggersWebsite.Razor.PageModels;
 using DevilDaggersWebsite.Razor.Utils;

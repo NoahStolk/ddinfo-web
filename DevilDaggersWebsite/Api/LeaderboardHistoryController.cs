@@ -1,4 +1,4 @@
-﻿using DevilDaggersWebsite.Caches;
+﻿using DevilDaggersWebsite.Caches.LeaderboardHistory;
 using DevilDaggersWebsite.Dto;
 using DevilDaggersWebsite.Transients;
 using Microsoft.AspNetCore.Hosting;

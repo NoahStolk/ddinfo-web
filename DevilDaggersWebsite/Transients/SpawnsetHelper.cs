@@ -1,5 +1,5 @@
 ﻿using DevilDaggersCore.Spawnsets;
-using DevilDaggersWebsite.Caches;
+using DevilDaggersWebsite.Caches.SpawnsetData;
 using DevilDaggersWebsite.Entities;
 using DevilDaggersWebsite.Enumerators;
 using DevilDaggersWebsite.Extensions;
