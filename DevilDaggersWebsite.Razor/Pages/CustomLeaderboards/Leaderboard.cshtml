@@ -69,7 +69,10 @@
 		</div>
 	</div>
 
-	<span class="archive-note">This leaderboard is archived. You can still submit scores to it, but it won't show up in the list of leaderboards or player statistics.</span>
+	@if (Model.Leaderboard.IsArchived)
+	{
+		<span class="archive-note">This leaderboard is archived. You can still submit scores to it, but it won't show up in the list of leaderboards or player statistics.</span>
+	}
 
 	<div class="hidden-xs text-center">
 		<div class="flex-container flex-center flex-space-evenly icon-list">
