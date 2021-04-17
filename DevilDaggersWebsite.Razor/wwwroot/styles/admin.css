@@ -23,3 +23,20 @@
 .admin-table > tbody > tr:nth-child(odd) {
 	background-color: var(--col-gray-11);
 }
+
+div.form-group > .text-danger {
+	background-color: red;
+	color: white;
+	font-size: 26px;
+}
+
+.delete-warning {
+	background-color: #b00;
+	color: white;
+	font-size: 22px;
+	padding: 8px;
+}
+
+h3 {
+	text-transform: uppercase;
+}

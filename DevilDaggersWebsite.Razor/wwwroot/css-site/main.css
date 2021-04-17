@@ -176,12 +176,6 @@ input {
 	margin: 12px 0;
 }
 
-div.form-group > .text-danger {
-	background-color: red;
-	color: white;
-	font-size: 26px;
-}
-
 option {
 	color: var(--col-red);
 	background-color: var(--col-black);
