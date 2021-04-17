@@ -13,5 +13,8 @@ namespace DevilDaggersWebsite.Extensions
 			Currency.Sgd => '$',
 			_ => '?',
 		};
+
+		public static bool IsAscending(this CustomLeaderboardCategory category)
+			=> category == CustomLeaderboardCategory.Challenge || category == CustomLeaderboardCategory.Speedrun;
 	}
 }

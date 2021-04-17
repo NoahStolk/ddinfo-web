@@ -168,7 +168,7 @@ namespace DevilDaggersWebsite.Api
 				return new BadRequestObjectResult(new ProblemDetails { Title = errorMessage });
 			}
 
-			bool isAscending = customLeaderboard.IsAscending();
+			bool isAscending = customLeaderboard.Category.IsAscending();
 
 			// At this point, the submission is accepted.
 			if (!uploadRequest.IsReplay)
@@ -384,7 +384,7 @@ namespace DevilDaggersWebsite.Api
 			{
 				DiscordColor color = DiscordColor.Gray;
 
-				if (customLeaderboard.IsAscending())
+				if (customLeaderboard.Category.IsAscending())
 				{
 					if (time < customLeaderboard.TimeLeviathan)
 						color = DiscordColor.DarkRed;

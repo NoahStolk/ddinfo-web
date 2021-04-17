@@ -43,7 +43,7 @@ namespace DevilDaggersWebsite.Razor.Pages.CustomLeaderboards
 
 			Entries = _dbContext.CustomEntries
 				.Where(e => e.CustomLeaderboard == Leaderboard)
-				.OrderByMember(nameof(CustomEntry.Time), Leaderboard.IsAscending())
+				.OrderByMember(nameof(CustomEntry.Time), Leaderboard.Category.IsAscending())
 				.ThenByMember(nameof(CustomEntry.SubmitDate), true)
 				.ToList();
 

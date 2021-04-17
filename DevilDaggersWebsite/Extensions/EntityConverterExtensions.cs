@@ -19,7 +19,7 @@ namespace DevilDaggersWebsite.Extensions
 				DateLastPlayed = customLeaderboard.DateLastPlayed,
 				DateCreated = customLeaderboard.DateCreated,
 				Category = customLeaderboard.Category,
-				IsAscending = customLeaderboard.IsAscending(),
+				IsAscending = customLeaderboard.Category.IsAscending(),
 			};
 		}
 

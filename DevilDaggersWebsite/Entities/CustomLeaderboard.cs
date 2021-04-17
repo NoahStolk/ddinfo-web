@@ -1,5 +1,6 @@
 ﻿using DevilDaggersWebsite.Dto.Admin;
 using DevilDaggersWebsite.Enumerators;
+using DevilDaggersWebsite.Extensions;
 using System;
 using System.ComponentModel.DataAnnotations;
 using System.ComponentModel.DataAnnotations.Schema;
@@ -34,9 +35,6 @@ namespace DevilDaggersWebsite.Entities
 
 		public int TotalRunsSubmitted { get; set; }
 
-		public bool IsAscending()
-			=> Category == CustomLeaderboardCategory.Challenge || Category == CustomLeaderboardCategory.Speedrun;
-
 		/// <summary>
 		/// Returns the CSS class name corresponding to the time in seconds.
 		/// </summary>
@@ -44,7 +42,7 @@ namespace DevilDaggersWebsite.Entities
 		/// <returns>The CSS class name for the dagger.</returns>
 		public string GetDagger(int time)
 		{
-			if (IsAscending())
+			if (Category.IsAscending())
 			{
 				if (time <= TimeLeviathan && TimeLeviathan > 0)
 					return "leviathan";
