@@ -46,28 +46,28 @@ namespace DevilDaggersWebsite.Entities
 		{
 			if (Category.IsAscending())
 			{
-				if (time <= TimeLeviathan && TimeLeviathan > 0)
+				if (time <= TimeLeviathan)
 					return "leviathan";
-				if (time <= TimeDevil && TimeDevil > 0)
+				if (time <= TimeDevil)
 					return "devil";
-				if (time <= TimeGolden && TimeGolden > 0)
+				if (time <= TimeGolden)
 					return "golden";
-				if (time <= TimeSilver && TimeSilver > 0)
+				if (time <= TimeSilver)
 					return "silver";
-				if (time <= TimeBronze && TimeBronze > 0)
+				if (time <= TimeBronze)
 					return "bronze";
 				return "default";
 			}
 
-			if (time >= TimeLeviathan && TimeLeviathan > 0)
+			if (time >= TimeLeviathan)
 				return "leviathan";
-			if (time >= TimeDevil && TimeDevil > 0)
+			if (time >= TimeDevil)
 				return "devil";
-			if (time >= TimeGolden && TimeGolden > 0)
+			if (time >= TimeGolden)
 				return "golden";
-			if (time >= TimeSilver && TimeSilver > 0)
+			if (time >= TimeSilver)
 				return "silver";
-			if (time >= TimeBronze && TimeBronze > 0)
+			if (time >= TimeBronze)
 				return "bronze";
 			return "default";
 		}
