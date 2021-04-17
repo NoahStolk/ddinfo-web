@@ -1,5 +1,6 @@
 ﻿using DevilDaggersWebsite.Enumerators;
 using System.Collections.Generic;
+using System.ComponentModel.DataAnnotations;
 
 namespace DevilDaggersWebsite.Dto.Admin
 {
@@ -8,10 +9,19 @@ namespace DevilDaggersWebsite.Dto.Admin
 		public CustomLeaderboardCategory Category { get; init; }
 		public int SpawnsetFileId { get; init; }
 
+		[Range(10000, 15000000)]
 		public int TimeBronze { get; init; }
+
+		[Range(10000, 15000000)]
 		public int TimeSilver { get; init; }
+
+		[Range(10000, 15000000)]
 		public int TimeGolden { get; init; }
+
+		[Range(10000, 15000000)]
 		public int TimeDevil { get; init; }
+
+		[Range(10000, 15000000)]
 		public int TimeLeviathan { get; init; }
 
 		public Dictionary<string, string> Log()
