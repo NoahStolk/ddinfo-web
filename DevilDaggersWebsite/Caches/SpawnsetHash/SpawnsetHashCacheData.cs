@@ -1,8 +1,8 @@
 ﻿namespace DevilDaggersWebsite.Caches.SpawnsetHash
 {
-	public class SpawnsetHashData
+	public class SpawnsetHashCacheData
 	{
-		public SpawnsetHashData(string name, byte[] hash)
+		public SpawnsetHashCacheData(string name, byte[] hash)
 		{
 			Name = name;
 			Hash = hash;

@@ -150,7 +150,7 @@ namespace DevilDaggersWebsite.Api
 			}
 
 			// Check for existing spawnset.
-			SpawnsetHashData? spawnsetHashData = await SpawnsetHashCache.Instance.GetSpawnset(_env, uploadRequest.SurvivalHashMd5);
+			SpawnsetHashCacheData? spawnsetHashData = await SpawnsetHashCache.Instance.GetSpawnset(_env, uploadRequest.SurvivalHashMd5);
 			string? spawnsetName = spawnsetHashData?.Name;
 			if (string.IsNullOrEmpty(spawnsetName))
 			{

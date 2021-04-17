@@ -12,7 +12,7 @@ namespace DevilDaggersWebsite.Caches.SpawnsetHash
 {
 	public sealed class SpawnsetHashCache
 	{
-		private readonly ConcurrentBag<SpawnsetHashData> _cache = new();
+		private readonly ConcurrentBag<SpawnsetHashCacheData> _cache = new();
 
 		private static readonly Lazy<SpawnsetHashCache> _lazy = new(() => new());
 
@@ -22,9 +22,9 @@ namespace DevilDaggersWebsite.Caches.SpawnsetHash
 
 		public static SpawnsetHashCache Instance => _lazy.Value;
 
-		public async Task<SpawnsetHashData?> GetSpawnset(IWebHostEnvironment env, byte[] hash)
+		public async Task<SpawnsetHashCacheData?> GetSpawnset(IWebHostEnvironment env, byte[] hash)
 		{
-			SpawnsetHashData? spawnsetCacheData = _cache.FirstOrDefault(scd => MatchHashes(scd.Hash, hash));
+			SpawnsetHashCacheData? spawnsetCacheData = _cache.FirstOrDefault(scd => MatchHashes(scd.Hash, hash));
 			if (spawnsetCacheData != null)
 				return spawnsetCacheData;
 
