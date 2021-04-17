@@ -7,19 +7,19 @@ using System.IO;
 using System.IO.Compression;
 using System.Threading.Tasks;
 
-namespace DevilDaggersWebsite.Caches.ModData
+namespace DevilDaggersWebsite.Caches.Mod
 {
-	public sealed class ModDataCache
+	public sealed class ModCache
 	{
 		private readonly ConcurrentDictionary<string, List<Dto.ModData>> _cache = new();
 
-		private static readonly Lazy<ModDataCache> _lazy = new(() => new());
+		private static readonly Lazy<ModCache> _lazy = new(() => new());
 
-		private ModDataCache()
+		private ModCache()
 		{
 		}
 
-		public static ModDataCache Instance => _lazy.Value;
+		public static ModCache Instance => _lazy.Value;
 
 		public List<Dto.ModData> GetModDataByFilePath(string filePath)
 		{
@@ -48,7 +48,7 @@ namespace DevilDaggersWebsite.Caches.ModData
 		{
 			int cacheCount = _cache.Count;
 			_cache.Clear();
-			await DiscordLogger.Instance.TryLog(Channel.CacheMonitoring, env.EnvironmentName, $"Successfully cleared `{nameof(ModDataCache)}`. (Removed `{cacheCount}` instances.)");
+			await DiscordLogger.Instance.TryLog(Channel.CacheMonitoring, env.EnvironmentName, $"Successfully cleared `{nameof(ModCache)}`. (Removed `{cacheCount}` instances.)");
 		}
 	}
 }

@@ -1,5 +1,5 @@
 ﻿using DevilDaggersCore.Mods;
-using DevilDaggersWebsite.Caches.ModData;
+using DevilDaggersWebsite.Caches.Mod;
 using DevilDaggersWebsite.Entities;
 using DevilDaggersWebsite.Enumerators;
 using DevilDaggersWebsite.Razor.PageModels;
@@ -85,7 +85,7 @@ namespace DevilDaggersWebsite.Razor.Pages
 				AssetModTypes assetModTypes;
 				if (isHostedOnDdInfo)
 				{
-					List<Dto.ModData> modData = ModDataCache.Instance.GetModDataByFilePath(filePath);
+					List<Dto.ModData> modData = ModCache.Instance.GetModDataByFilePath(filePath);
 					containsProhibitedAssets = modData.Any(md => md.ModAssetData.Any(mad => mad.IsProhibited));
 
 					Dto.ModData? ddBinary = modData.Find(md => md.ModBinaryType == Dto.ModBinaryType.Dd);

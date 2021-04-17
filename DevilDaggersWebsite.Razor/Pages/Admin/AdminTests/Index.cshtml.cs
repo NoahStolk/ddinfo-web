@@ -1,6 +1,6 @@
 ﻿using DevilDaggersDiscordBot.Logging;
 using DevilDaggersWebsite.Caches.LeaderboardHistory;
-using DevilDaggersWebsite.Caches.ModData;
+using DevilDaggersWebsite.Caches.Mod;
 using DevilDaggersWebsite.Caches.SpawnsetData;
 using DevilDaggersWebsite.Caches.SpawnsetHash;
 using DevilDaggersWebsite.LeaderboardStatistics;
@@ -36,6 +36,6 @@ namespace DevilDaggersWebsite.Razor.Pages.Admin.AdminTests
 			=> SpawnsetDataCache.Instance.Clear();
 
 		public async Task OnPostClearModDataCache()
-			=> await ModDataCache.Instance.Clear(_env);
+			=> await ModCache.Instance.Clear(_env);
 	}
 }

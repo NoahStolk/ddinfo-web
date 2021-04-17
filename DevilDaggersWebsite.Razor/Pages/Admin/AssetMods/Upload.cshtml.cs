@@ -1,5 +1,5 @@
 ﻿using DevilDaggersDiscordBot.Logging;
-using DevilDaggersWebsite.Caches.ModData;
+using DevilDaggersWebsite.Caches.Mod;
 using DevilDaggersWebsite.Dto;
 using DevilDaggersWebsite.Exceptions;
 using DevilDaggersWebsite.Razor.Extensions;
@@ -75,7 +75,7 @@ namespace DevilDaggersWebsite.Razor.Pages.Admin.AssetMods
 
 				Io.File.WriteAllBytes(filePath, formFileBytes);
 
-				foreach (ModData modData in ModDataCache.Instance.GetModDataByFilePath(filePath))
+				foreach (ModData modData in ModCache.Instance.GetModDataByFilePath(filePath))
 				{
 					if (modData.ModAssetData.Count == 0)
 						throw new InvalidModBinaryException($"File '{modData.Name}' does not contain any assets.");
