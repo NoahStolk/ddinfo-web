@@ -26,7 +26,6 @@ namespace DevilDaggersWebsite.Razor.Pages
 
 			SitemapUtils.ExcludePage("CustomLeaderboards_Leaderboard");
 			SitemapUtils.ExcludePage("Error_404");
-			SitemapUtils.ExcludePage("Spawnset");
 
 			XmlResult = SitemapUtils.GetSitemap(_httpContextAccessor, typeof(Page), true);
 		}
