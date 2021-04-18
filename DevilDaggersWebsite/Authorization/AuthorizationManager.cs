@@ -40,6 +40,7 @@ namespace DevilDaggersWebsite.Authorization
 		public static readonly Dictionary<string, string> FolderToPolicyMapper = new()
 		{
 			{ "/Admin/AdminTests", AdminPolicy },
+			{ "/Admin/FileSystem", AdminPolicy },
 			{ "/Admin/AssetMods", AssetModsPolicy },
 			{ "/Admin/CustomEntries", AdminPolicy },
 			{ "/Admin/CustomLeaderboards", CustomLeaderboardsPolicy },
