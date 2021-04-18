@@ -4,6 +4,10 @@
 @model DevilDaggersWebsite.Razor.Pages.CustomLeaderboards.LeaderboardModel
 @{
 	string spawnsetName = Model.SpawnsetFile?.Name ?? throw new("Spawnset was null in CustomLeaderboards/Leaderboard page.");
+
+	if (Model.Leaderboard == null)
+		throw new("Leaderboard was null in CustomLeaderboards/Leaderboard page.");
+
 	ViewData["Title"] = $"Custom Leaderboard - {spawnsetName}";
 
 	List<(string DaggerName, string DisplaySeconds)> daggerInfo = new();
