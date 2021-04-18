@@ -11,7 +11,7 @@ namespace DevilDaggersWebsite.Razor.PageModels
 		{
 		}
 
-		public string GetString(PropertyInfo pi, TEntity entity)
+		public string GetPropertyValueString(PropertyInfo pi, TEntity entity)
 			=> pi.GetValue(entity)?.ToString() ?? string.Empty;
 	}
 }
