@@ -1,7 +1,15 @@
 ﻿@model long
 @{
 	string value;
-	if (Model > 1_000_000)
+	if (Model > 1_000_000_000_000)
+	{
+		value = $"{(Model / 1_000_000_000_000f):0} TB";
+	}
+	else if (Model > 1_000_000_000)
+	{
+		value = $"{(Model / 1_000_000_000f):0} GB";
+	}
+	else if (Model > 1_000_000)
 	{
 		value = $"{(Model / 1_000_000f):0} MB";
 	}
