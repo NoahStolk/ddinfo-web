@@ -1,21 +1,28 @@
 ﻿@page
-@using DevilDaggersWebsite.Razor.PageModels
-@using DevilDaggersWebsite.Entities
-@model AdminEntityIndexPageModel<AssetMod>
+@model IndexModel
 @{
 	ViewData["Title"] = "AssetMods";
 }
 
 <h1>@ViewData["Title"]</h1>
 
-<p>Notes</p>
+<h2>Notes</h2>
 <ul>
 	<li>It is possible to host mod files on the website. The fields "Url" and "AssetModTypes" are ignored for these mods. The file name must match the mod name (case sensitive).</li>
 	<li>The "LastUpdated" field is specified in Coordinated Universal Time (UTC). However, it's not necessary to fill in the exact time. A date would be nice though. The date should represent when the mod was last updated in terms of what's being changed in the game. Don't update the date if the binary got trimmed, or when a trailer for it was released.</li>
 	<li>The "TrailerUrl" field must link to embedded content. For example, a normal YouTube link (<span class="path">youtube.com/watch?v=...</span>) won't work; it must be a YouTube <i>embed</i> (<span class="path">youtube.com/embed/...</span>).</li>
 	<li>If you want to edit or rename a mod file, you will need to delete and re-upload it.</li>
 </ul>
-
+@if (Model.DeadFiles.Count > 0)
+{
+	<h2>Dead files</h2>
+	<ul>
+		@foreach (string fileName in Model.DeadFiles)
+		{
+			<li>@fileName</li>
+		}
+	</ul>
+}
 <p><a asp-page="CreateOrEdit">Create New</a></p>
 <p><a asp-page="UploadFile">Upload File</a></p>
 <p><a asp-page="DeleteFile">Delete File</a></p>

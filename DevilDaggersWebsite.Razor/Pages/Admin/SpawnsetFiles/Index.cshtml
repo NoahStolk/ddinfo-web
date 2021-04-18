@@ -1,29 +1,32 @@
 ﻿@page
-@using DevilDaggersWebsite.Razor.PageModels
-@using DevilDaggersWebsite.Entities
-@model AdminEntityIndexPageModel<SpawnsetFile>
+@model IndexModel
 @{
 	ViewData["Title"] = "SpawnsetFiles";
 }
 
 <h1>@ViewData["Title"]</h1>
 
-<p>
-	In order to add spawnsets you'll need to do two things:
-</p>
+<p>In order to add spawnsets you'll need to do two things. Both of these need to be done. The site ignores files without a database record and vice versa.</p>
 <ul>
 	<li>Upload a file to the file system.</li>
 	<li>Add a record to the database.</li>
 </ul>
-<p>
-	Both of these need to be done. The site ignores files without a database record and vice versa.
-</p>
-<p>Notes</p>
+<h2>Notes</h2>
 <ul>
 	<li>The file name must match the spawnset name (case sensitive).</li>
 	<li>Make sure the author of the spawnset is added as a <a asp-page="../Players/Index">player</a>. If the user ID is unknown, use the blank name (999999) until the author gets back to you.</li>
 	<li>If you want to edit or rename a spawnset file, you will need to delete and re-upload it.</li>
 </ul>
+@if (Model.DeadFiles.Count > 0)
+{
+	<h2>Dead files</h2>
+	<ul>
+		@foreach (string fileName in Model.DeadFiles)
+		{
+			<li>@fileName</li>
+		}
+	</ul>
+}
 <p><a asp-page="CreateOrEdit">Create New</a></p>
 <p><a asp-page="UploadFile">Upload File</a></p>
 <p><a asp-page="DeleteFile">Delete File</a></p>
