@@ -1,6 +1,5 @@
 ﻿using Microsoft.AspNetCore.Hosting;
 using Microsoft.AspNetCore.Mvc.RazorPages;
-using System;
 using System.Collections.Generic;
 using System.IO;
 using System.Linq;
@@ -23,14 +22,10 @@ namespace DevilDaggersWebsite.Razor.Pages.Admin.FileSystem
 
 		public void OnGet()
 		{
-			try
+			foreach (DriveInfo di in DriveInfo.GetDrives())
 			{
-				foreach (DriveInfo di in DriveInfo.GetDrives())
+				if (di.IsReady)
 					TotalSpaceInBytesPerDrive.Add(di.Name, di.TotalFreeSpace);
-			}
-			catch (Exception ex)
-			{
-				TotalSpaceInBytesPerDrive.Add(ex.Message, 0);
 			}
 
 			foreach (string path in Directory.GetFiles(Path.Combine(_env.WebRootPath, "mods")))
