@@ -65,6 +65,10 @@ namespace DevilDaggersWebsite.Dto
 					_ => throw new InvalidModBinaryException($"File '{fileName}' contains an unknown asset type '{type}'. Valid types are {0x01}, {0x02}, {0x10}, {0x20}, and {0x80}."),
 				};
 
+				// TODO: Check if loudness contains any prohibited assets.
+				if (assetType == AssetType.Audio && name == "loudness")
+					continue;
+
 				bool isProhibited = modBinaryType switch
 				{
 					ModBinaryType.Audio => AssetHandler.Instance.AudioAudioAssets.Find(a => a.AssetName == name)?.IsProhibited ?? false,
