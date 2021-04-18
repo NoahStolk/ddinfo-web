@@ -11,11 +11,11 @@ using Io = System.IO;
 
 namespace DevilDaggersWebsite.Razor.Pages.Admin.SpawnsetFiles
 {
-	public class UploadModel : PageModel
+	public class UploadFileModel : PageModel
 	{
 		private readonly IWebHostEnvironment _env;
 
-		public UploadModel(IWebHostEnvironment env)
+		public UploadFileModel(IWebHostEnvironment env)
 		{
 			_env = env;
 		}
