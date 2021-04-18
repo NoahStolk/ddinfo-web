@@ -26,7 +26,7 @@ namespace DevilDaggersWebsite.Razor.Pages.Admin.SpawnsetFiles
 
 			foreach (string path in Directory.GetFiles(Path.Combine(_env.WebRootPath, "spawnsets")))
 			{
-				string fileName = Path.GetFileNameWithoutExtension(path);
+				string fileName = Path.GetFileName(path);
 				if (!allDbSpawnsetFileNames.Contains(fileName))
 					DeadFiles.Add(fileName);
 			}
