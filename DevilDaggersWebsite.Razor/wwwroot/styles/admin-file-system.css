@@ -1,0 +1,6 @@
+﻿.list {
+	max-height: 320px;
+	overflow-y: scroll;
+	max-width: 512px;
+	background-color: var(--col-gray-11);
+}
