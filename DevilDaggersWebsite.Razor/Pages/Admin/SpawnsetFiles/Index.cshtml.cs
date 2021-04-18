@@ -18,14 +18,23 @@ namespace DevilDaggersWebsite.Razor.Pages.Admin.SpawnsetFiles
 		}
 
 		public List<string> DeadFiles { get; } = new();
+		public List<string> MissingFiles { get; } = new();
 
 		public void OnGet()
 		{
+			List<string> allDbSpawnsetFileNames = DbContext.SpawnsetFiles.Select(sf => sf.Name).ToList();
+
 			foreach (string path in Directory.GetFiles(Path.Combine(_env.WebRootPath, "spawnsets")))
 			{
 				string fileName = Path.GetFileNameWithoutExtension(path);
-				if (!DbContext.SpawnsetFiles.Any(sf => sf.Name == fileName))
+				if (!allDbSpawnsetFileNames.Contains(fileName))
 					DeadFiles.Add(fileName);
+			}
+
+			foreach (string dbSpawnsetFileName in allDbSpawnsetFileNames)
+			{
+				if (!System.IO.File.Exists(Path.Combine(_env.WebRootPath, "spawnsets", dbSpawnsetFileName)))
+					MissingFiles.Add(dbSpawnsetFileName);
 			}
 		}
 	}
