@@ -4,7 +4,7 @@
 	margin: 0 0 16px;
 }
 
-.home-title {
+.home-title > h1 {
 	font-size: 52px;
 }
 
