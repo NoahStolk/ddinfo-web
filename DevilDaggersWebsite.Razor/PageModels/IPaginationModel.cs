@@ -2,7 +2,6 @@
 {
 	public interface IPaginationModel
 	{
-		public string PageName { get; }
 		public string? SearchAuthor { get; set; }
 		public string? SearchName { get; set; }
 

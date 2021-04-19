@@ -33,8 +33,7 @@
 				string[] buttons = new[] { "|<", "<", ">", ">|" };
 				for (int i = 0; i < pages.Count; i++)
 				{
-					<a asp-page="./@(Model.PageName)"
-					   asp-route-searchAuthor="@Model.SearchAuthor"
+					<a asp-route-searchAuthor="@Model.SearchAuthor"
 					   asp-route-searchName="@Model.SearchName"
 					   asp-route-sortOrder="@Model.SortOrder"
 					   asp-route-pageIndex="@pages[i]"

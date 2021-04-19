@@ -55,8 +55,6 @@ namespace DevilDaggersWebsite.Razor.Pages
 		public int TotalPages { get; private set; }
 		public int TotalResults { get; private set; }
 
-		public string PageName => "Spawnsets";
-
 		public void OnGet(string searchAuthor, string searchName, string sortOrder, int? pageIndex)
 		{
 			SearchAuthor = searchAuthor;
