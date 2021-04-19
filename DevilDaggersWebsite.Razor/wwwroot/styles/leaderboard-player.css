@@ -32,6 +32,11 @@
 	overflow-x: hidden;
 }
 
+.username-list {
+	max-height: 7.5em;
+	background-color: var(--col-gray-18);
+}
+
 .leaderboard-data > div {
 	flex-grow: 1;
 }
