@@ -4,9 +4,11 @@
 @model DevilDaggersWebsite.Razor.Pages.CustomLeaderboards.LeaderboardModel
 @{
 	string spawnsetName = Model.SpawnsetFile?.Name ?? throw new("Spawnset was null in CustomLeaderboards/Leaderboard page.");
-
 	if (Model.Leaderboard == null)
 		throw new("Leaderboard was null in CustomLeaderboards/Leaderboard page.");
+
+	DateTime submitCountCollectionStart = new(2020, 8, 25);
+	bool possibleMissingSubmitCounts = Model.Leaderboard.DateCreated < submitCountCollectionStart;
 
 	ViewData["Title"] = $"Custom Leaderboard - {spawnsetName}";
 
@@ -47,6 +49,14 @@
 							@RazorUtils.NAString
 						</div>
 					}
+				</div>
+				<div class="row">
+					<div class="col-xs-6">Category</div>
+					<div class="col-xs-6">@Model.Leaderboard.Category</div>
+				</div>
+				<div class="row">
+					<div class="col-xs-6">Submits</div>
+					<div class="col-xs-6">@Model.Leaderboard.TotalRunsSubmitted@(possibleMissingSubmitCounts ? "+" : string.Empty)</div>
 				</div>
 			</div>
 		</div>
