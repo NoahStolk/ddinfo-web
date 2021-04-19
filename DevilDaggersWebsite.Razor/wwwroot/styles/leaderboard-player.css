@@ -65,3 +65,7 @@ div > .player-section-list-link:nth-child(2n) {
 	-webkit-hyphens: auto;
 	hyphens: auto;
 }
+
+.dagger-bar {
+	position: absolute;
+}
