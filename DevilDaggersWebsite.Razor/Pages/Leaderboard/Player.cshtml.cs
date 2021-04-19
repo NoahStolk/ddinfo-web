@@ -3,6 +3,7 @@ using DevilDaggersWebsite.Caches.LeaderboardHistory;
 using DevilDaggersWebsite.Clients;
 using DevilDaggersWebsite.Dto;
 using DevilDaggersWebsite.Entities;
+using DevilDaggersWebsite.Enumerators;
 using DevilDaggersWebsite.Razor.Utils;
 using Microsoft.AspNetCore.Hosting;
 using Microsoft.AspNetCore.Mvc;
@@ -30,6 +31,8 @@ namespace DevilDaggersWebsite.Razor.Pages.Leaderboard
 			_dbContext = dbContext;
 		}
 
+		public static string[] DaggerNames { get; } = new string[] { "leviathan", "devil", "golden", "silver", "bronze", "default" };
+
 		public int PlayerId
 		{
 			get => _playerId;
@@ -55,17 +58,10 @@ namespace DevilDaggersWebsite.Razor.Pages.Leaderboard
 
 		public int? BestRankRecorded { get; private set; }
 
-		public bool HasCustomEntries { get; private set; }
-
-		public Dictionary<string, int> CustomDaggerCounts { get; } = new()
-		{
-			{ "leviathan", 0 },
-			{ "devil", 0 },
-			{ "golden", 0 },
-			{ "silver", 0 },
-			{ "bronze", 0 },
-			{ "default", 0 },
-		};
+		public int[] CustomDaggerCountsDefault { get; } = new int[DaggerNames.Length];
+		public int[] CustomDaggerCountsSpeedrun { get; } = new int[DaggerNames.Length];
+		public int TotalDefaultCustomLeaderboards { get; private set; }
+		public int TotalSpeedrunCustomLeaderboards { get; private set; }
 
 		public List<AssetMod>? Mods { get; private set; }
 		public List<Entities.SpawnsetFile>? Spawnsets { get; private set; }
@@ -107,22 +103,48 @@ namespace DevilDaggersWebsite.Razor.Pages.Leaderboard
 				UsernameAliases = aliases.OrderByDescending(kvp => kvp.Value).Select(kvp => kvp.Key).ToList();
 			}
 
-			if (Player != null)
+			if (Player != null && _dbContext.CustomEntries.Any(ce => ce.PlayerId == PlayerId))
 			{
-				if (_dbContext.CustomEntries.Any(ce => ce.PlayerId == PlayerId))
+				foreach (Entities.CustomEntry customEntry in _dbContext.CustomEntries.Include(ce => ce.CustomLeaderboard).Where(ce => ce.PlayerId == PlayerId))
 				{
-					HasCustomEntries = true;
-					foreach (Entities.CustomEntry customEntry in _dbContext.CustomEntries.Include(ce => ce.CustomLeaderboard).Where(ce => ce.PlayerId == PlayerId))
-					{
-						if (customEntry.CustomLeaderboard.IsArchived || customEntry.CustomLeaderboard.Category == Enumerators.CustomLeaderboardCategory.Challenge)
-							continue;
+					if (customEntry.CustomLeaderboard.IsArchived)
+						continue;
 
-						string dagger = customEntry.CustomLeaderboard.GetDagger(customEntry.Time);
-						if (CustomDaggerCounts.ContainsKey(dagger))
-							CustomDaggerCounts[dagger]++;
+					switch (customEntry.CustomLeaderboard.Category)
+					{
+						case CustomLeaderboardCategory.Default:
+							if (customEntry.Time >= customEntry.CustomLeaderboard.TimeLeviathan)
+								CustomDaggerCountsDefault[0]++;
+							else if (customEntry.Time >= customEntry.CustomLeaderboard.TimeDevil)
+								CustomDaggerCountsDefault[1]++;
+							else if (customEntry.Time >= customEntry.CustomLeaderboard.TimeGolden)
+								CustomDaggerCountsDefault[2]++;
+							else if (customEntry.Time >= customEntry.CustomLeaderboard.TimeSilver)
+								CustomDaggerCountsDefault[3]++;
+							else if (customEntry.Time >= customEntry.CustomLeaderboard.TimeBronze)
+								CustomDaggerCountsDefault[4]++;
+							else
+								CustomDaggerCountsDefault[5]++;
+							break;
+						case CustomLeaderboardCategory.Speedrun:
+							if (customEntry.Time <= customEntry.CustomLeaderboard.TimeLeviathan)
+								CustomDaggerCountsSpeedrun[0]++;
+							else if (customEntry.Time <= customEntry.CustomLeaderboard.TimeDevil)
+								CustomDaggerCountsSpeedrun[1]++;
+							else if (customEntry.Time <= customEntry.CustomLeaderboard.TimeGolden)
+								CustomDaggerCountsSpeedrun[2]++;
+							else if (customEntry.Time <= customEntry.CustomLeaderboard.TimeSilver)
+								CustomDaggerCountsSpeedrun[3]++;
+							else if (customEntry.Time <= customEntry.CustomLeaderboard.TimeBronze)
+								CustomDaggerCountsSpeedrun[4]++;
+							else
+								CustomDaggerCountsSpeedrun[5]++;
+							break;
 					}
 				}
 
+				TotalDefaultCustomLeaderboards = _dbContext.CustomLeaderboards.Count(cl => cl.Category == CustomLeaderboardCategory.Default);
+				TotalSpeedrunCustomLeaderboards = _dbContext.CustomLeaderboards.Count(cl => cl.Category == CustomLeaderboardCategory.Speedrun);
 				Mods = _dbContext.AssetMods.Include(am => am.PlayerAssetMods).Where(am => am.PlayerAssetMods.Any(pam => pam.PlayerId == PlayerId)).OrderByDescending(am => am.LastUpdated).ToList();
 				Spawnsets = _dbContext.SpawnsetFiles.Where(sf => sf.PlayerId == PlayerId).OrderByDescending(sf => sf.LastUpdated).ToList();
 			}

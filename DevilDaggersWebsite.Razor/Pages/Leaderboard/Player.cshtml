@@ -205,20 +205,47 @@
 					</div>
 				</div>
 			}
-			@if (Model.HasCustomEntries)
+			@if (Model.CustomDaggerCountsDefault.Any(i => i > 0))
 			{
 				<div class="flex-container player-section">
 					<div class="leaderboard-data-container">
 						<div class="leaderboard-data-header">Custom Leaderboard Statistics</div>
-						@{
-							foreach (KeyValuePair<string, int> kvp in Model.CustomDaggerCounts)
-							{
-								<div class="flex-container leaderboard-data">
-									<div>@kvp.Key.ToUpperFirst() daggers</div>
-									<div class="text-right @kvp.Key">@kvp.Value</div>
-								</div>
-							}
+						@for (int i = 0; i < 5; i++)
+						{
+							int count = Model.CustomDaggerCountsDefault[i];
+							string daggerName = PlayerModel.DaggerNames[i];
+
+							<div class="flex-container leaderboard-data">
+								<div>@daggerName.ToUpperFirst() daggers</div>
+								<div class="text-right @daggerName">@count</div>
+							</div>
 						}
+						<div class="flex-container leaderboard-data">
+							<div>Total</div>
+							<div class="text-right">@Model.TotalDefaultCustomLeaderboards</div>
+						</div>
+					</div>
+				</div>
+			}
+			@if (Model.CustomDaggerCountsSpeedrun.Any(i => i > 0))
+			{
+				<div class="flex-container player-section">
+					<div class="leaderboard-data-container">
+						<div class="leaderboard-data-header">Custom Leaderboard Statistics (Speedrun)</div>
+						@for (int i = 0; i < 5; i++)
+						{
+							int count = Model.CustomDaggerCountsSpeedrun[i];
+							string daggerName = PlayerModel.DaggerNames[i];
+
+							<div class="flex-container leaderboard-data">
+								<div>@daggerName.ToUpperFirst() daggers</div>
+								<div class="text-right @daggerName">@count</div>
+							</div>
+						}
+						<div class="flex-container leaderboard-data">
+							<div>Total</div>
+							<div class="text-right">@Model.TotalSpeedrunCustomLeaderboards</div>
+						</div>
 					</div>
 				</div>
 			}
