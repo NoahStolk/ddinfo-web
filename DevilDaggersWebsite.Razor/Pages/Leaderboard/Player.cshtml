@@ -224,6 +224,34 @@
 							<div>Total</div>
 							<div class="text-right">@Model.TotalDefaultCustomLeaderboards</div>
 						</div>
+
+						@{
+							float total = (float)Model.TotalDefaultCustomLeaderboards;
+							int daggersDone = 0;
+							int daggersRemaining = Model.TotalDefaultCustomLeaderboards;
+
+							float donePercentage = 0;
+
+							for (int i = 4; i >= 0; i--)
+							{
+								int daggers = Model.CustomDaggerCountsDefault[i];
+
+								donePercentage = daggersDone / total;
+								daggersRemaining -= daggers;
+
+								float remainingPercentage = daggersRemaining / total;
+								daggersDone += daggers;
+
+								<img class="dagger-bar" style="clip-path: inset(@(donePercentage * 128)px 0px @(remainingPercentage * 128)px 0px);" src="~/images/Daggers/@(PlayerModel.DaggerNames[i].ToUpperFirst())Small.png" />
+								<br />
+
+								if (i == 0)
+								{
+									donePercentage = daggersDone / total;
+								}
+							}
+							<img class="dagger-bar" style="clip-path: inset(@(donePercentage * 128)px 0px 0px 0px);" src="~/images/Daggers/DefaultSmall.png" />
+						}
 					</div>
 				</div>
 			}
