@@ -28,6 +28,7 @@ namespace DevilDaggersWebsite.Razor.Pages.CustomLeaderboards
 		public const string DevilDesc = nameof(Devil);
 		public const string LeviathanDesc = nameof(Leviathan);
 		public const string WorldRecordDesc = nameof(WorldRecord);
+		public const string WorldRecordHolderDesc = nameof(WorldRecordHolder);
 		public const string NameAsc = nameof(Name) + _ascendingSuffix;
 		public const string AuthorAsc = nameof(Author) + _ascendingSuffix;
 		public const string CategoryAsc = nameof(Category) + _ascendingSuffix;
@@ -41,6 +42,7 @@ namespace DevilDaggersWebsite.Razor.Pages.CustomLeaderboards
 		public const string DevilAsc = nameof(Devil) + _ascendingSuffix;
 		public const string LeviathanAsc = nameof(Leviathan) + _ascendingSuffix;
 		public const string WorldRecordAsc = nameof(WorldRecord) + _ascendingSuffix;
+		public const string WorldRecordHolderAsc = nameof(WorldRecordHolder) + _ascendingSuffix;
 
 		private readonly Entities.ApplicationDbContext _dbContext;
 
@@ -67,6 +69,7 @@ namespace DevilDaggersWebsite.Razor.Pages.CustomLeaderboards
 		public string? Devil { get; set; }
 		public string? Leviathan { get; set; }
 		public string? WorldRecord { get; set; }
+		public string? WorldRecordHolder { get; set; }
 
 		public string? SortOrder { get; set; }
 
@@ -95,6 +98,7 @@ namespace DevilDaggersWebsite.Razor.Pages.CustomLeaderboards
 			Devil = sortOrder == DevilDesc ? DevilAsc : DevilDesc;
 			Leviathan = sortOrder == LeviathanDesc ? LeviathanAsc : LeviathanDesc;
 			WorldRecord = sortOrder == WorldRecordDesc ? WorldRecordAsc : WorldRecordDesc;
+			WorldRecordHolder = sortOrder == WorldRecordHolderAsc ? WorldRecordHolderDesc : WorldRecordHolderAsc;
 
 			IIncludableQueryable<Entities.CustomLeaderboard, Entities.Player> customLeaderboardQuery = _dbContext.CustomLeaderboards
 				.Where(cl => cl.Category != CustomLeaderboardCategory.Challenge && !cl.IsArchived)
@@ -111,14 +115,15 @@ namespace DevilDaggersWebsite.Razor.Pages.CustomLeaderboards
 					continue;
 
 				List<Entities.CustomEntry> entries = _dbContext.CustomEntries
-					.Where(e => e.CustomLeaderboard == cl)
+					.Include(ce => ce.Player)
+					.Where(ce => ce.CustomLeaderboard == cl)
 					.OrderByMember(nameof(Entities.CustomEntry.Time), cl.Category.IsAscending())
 					.ThenByMember(nameof(Entities.CustomEntry.SubmitDate), true)
 					.ToList();
 
-				int worldRecord = entries.Count == 0 ? 0 : entries[0].Time;
-				string? wrDaggerName = worldRecord == 0 ? null : cl.GetDagger(worldRecord);
-				customLeaderboards.Add(new(cl.Category, cl.SpawnsetFile.Name, cl.SpawnsetFile.Player.PlayerName, cl.TimeBronze, cl.TimeSilver, cl.TimeGolden, cl.TimeDevil, cl.TimeLeviathan, worldRecord, cl.DateLastPlayed, cl.DateCreated, cl.TotalRunsSubmitted, entries.Count, wrDaggerName));
+				Entities.CustomEntry? worldRecord = entries.Count == 0 ? null : entries[0];
+				string? worldRecordDaggerName = worldRecord == null ? null : cl.GetDagger(worldRecord.Time);
+				customLeaderboards.Add(new(cl.Category, cl.SpawnsetFile.Name, cl.SpawnsetFile.Player.PlayerName, cl.TimeBronze, cl.TimeSilver, cl.TimeGolden, cl.TimeDevil, cl.TimeLeviathan, worldRecord, worldRecordDaggerName, cl.DateLastPlayed, cl.DateCreated, cl.TotalRunsSubmitted, entries.Count));
 			}
 
 			customLeaderboards = (sortOrder switch
@@ -146,8 +151,10 @@ namespace DevilDaggersWebsite.Razor.Pages.CustomLeaderboards
 				DevilDesc => customLeaderboards.OrderByDescending(cl => cl.TimeDevil).ThenBy(cl => cl.SpawnsetName),
 				LeviathanAsc => customLeaderboards.OrderBy(cl => cl.TimeLeviathan).ThenByDescending(cl => cl.SpawnsetName),
 				LeviathanDesc => customLeaderboards.OrderByDescending(cl => cl.TimeLeviathan).ThenBy(cl => cl.SpawnsetName),
-				WorldRecordAsc => customLeaderboards.OrderBy(cl => cl.WorldRecord).ThenByDescending(cl => cl.SpawnsetName),
-				WorldRecordDesc => customLeaderboards.OrderByDescending(cl => cl.WorldRecord).ThenBy(cl => cl.SpawnsetName),
+				WorldRecordAsc => customLeaderboards.OrderBy(cl => cl.WorldRecord?.Time).ThenByDescending(cl => cl.SpawnsetName),
+				WorldRecordDesc => customLeaderboards.OrderByDescending(cl => cl.WorldRecord?.Time).ThenBy(cl => cl.SpawnsetName),
+				WorldRecordHolderAsc => customLeaderboards.OrderBy(cl => cl.WorldRecord?.Player.PlayerName).ThenByDescending(cl => cl.SpawnsetName),
+				WorldRecordHolderDesc => customLeaderboards.OrderByDescending(cl => cl.WorldRecord?.Player.PlayerName).ThenBy(cl => cl.SpawnsetName),
 				_ => customLeaderboards.OrderByDescending(cl => cl.DateLastPlayed).ThenBy(cl => cl.SpawnsetName),
 			}).ToList();
 

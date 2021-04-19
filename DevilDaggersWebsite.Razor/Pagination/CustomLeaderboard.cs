@@ -1,11 +1,12 @@
-﻿using DevilDaggersWebsite.Enumerators;
+﻿using DevilDaggersWebsite.Entities;
+using DevilDaggersWebsite.Enumerators;
 using System;
 
 namespace DevilDaggersWebsite.Razor.Pagination
 {
 	public class CustomLeaderboard
 	{
-		public CustomLeaderboard(CustomLeaderboardCategory category, string spawnsetName, string authorName, int timeBronze, int timeSilver, int timeGolden, int timeDevil, int timeLeviathan, int worldRecord, DateTime? dateLastPlayed, DateTime? dateCreated, int totalRunsSubmitted, int totalPlayers, string? wrDaggerName)
+		public CustomLeaderboard(CustomLeaderboardCategory category, string spawnsetName, string authorName, int timeBronze, int timeSilver, int timeGolden, int timeDevil, int timeLeviathan, CustomEntry? worldRecord, string? worldRecordDaggerName, DateTime? dateLastPlayed, DateTime? dateCreated, int totalRunsSubmitted, int totalPlayers)
 		{
 			Category = category;
 			SpawnsetName = spawnsetName;
@@ -16,11 +17,11 @@ namespace DevilDaggersWebsite.Razor.Pagination
 			TimeDevil = timeDevil;
 			TimeLeviathan = timeLeviathan;
 			WorldRecord = worldRecord;
+			WorldRecordDaggerName = worldRecordDaggerName;
 			DateLastPlayed = dateLastPlayed;
 			DateCreated = dateCreated;
 			TotalRunsSubmitted = totalRunsSubmitted;
 			TotalPlayers = totalPlayers;
-			WrDaggerName = wrDaggerName;
 		}
 
 		public CustomLeaderboardCategory Category { get; }
@@ -33,13 +34,12 @@ namespace DevilDaggersWebsite.Razor.Pagination
 		public int TimeGolden { get; }
 		public int TimeDevil { get; }
 		public int TimeLeviathan { get; }
-		public int WorldRecord { get; }
+		public CustomEntry? WorldRecord { get; }
+		public string? WorldRecordDaggerName { get; }
 
 		public DateTime? DateLastPlayed { get; }
 		public DateTime? DateCreated { get; }
 		public int TotalRunsSubmitted { get; }
 		public int TotalPlayers { get; }
-
-		public string? WrDaggerName { get; }
 	}
 }
