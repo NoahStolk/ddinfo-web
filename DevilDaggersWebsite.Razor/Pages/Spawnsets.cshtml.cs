@@ -62,13 +62,13 @@ namespace DevilDaggersWebsite.Razor.Pages
 			SortOrder = sortOrder;
 			PageIndex = pageIndex ?? 1;
 
-			Name = sortOrder == NameDesc ? NameAsc : NameDesc;
+			Name = sortOrder == NameAsc ? NameDesc : NameAsc;
 			Author = sortOrder == AuthorAsc ? AuthorDesc : AuthorAsc;
 			LastUpdated = sortOrder == LastUpdatedAsc ? LastUpdatedDesc : LastUpdatedAsc;
-			NonLoopLength = sortOrder == NonLoopLengthAsc ? NonLoopLengthDesc : NonLoopLengthAsc;
-			NonLoopSpawns = sortOrder == NonLoopSpawnsAsc ? NonLoopSpawnsDesc : NonLoopSpawnsAsc;
-			LoopLength = sortOrder == LoopLengthAsc ? LoopLengthDesc : LoopLengthAsc;
-			LoopSpawns = sortOrder == LoopSpawnsAsc ? LoopSpawnsDesc : LoopSpawnsAsc;
+			NonLoopLength = sortOrder == NonLoopLengthDesc ? NonLoopLengthAsc : NonLoopLengthDesc;
+			NonLoopSpawns = sortOrder == NonLoopSpawnsDesc ? NonLoopSpawnsAsc : NonLoopSpawnsDesc;
+			LoopLength = sortOrder == LoopLengthDesc ? LoopLengthAsc : LoopLengthDesc;
+			LoopSpawns = sortOrder == LoopSpawnsDesc ? LoopSpawnsAsc : LoopSpawnsDesc;
 
 			List<SpawnsetFile> spawnsetFiles = _spawnsetHelper.GetSpawnsets(SearchAuthor, SearchName);
 			spawnsetFiles = (sortOrder switch

@@ -67,12 +67,12 @@ namespace DevilDaggersWebsite.Razor.Pages
 			SortOrder = sortOrder;
 			PageIndex = pageIndex ?? 1;
 
-			Name = sortOrder == NameDesc ? NameAsc : NameDesc;
+			Name = sortOrder == NameAsc ? NameDesc : NameAsc;
 			Author = sortOrder == AuthorAsc ? AuthorDesc : AuthorAsc;
 			LastUpdated = sortOrder == LastUpdatedAsc ? LastUpdatedDesc : LastUpdatedAsc;
 			Type = sortOrder == TypeAsc ? TypeDesc : TypeAsc;
-			Hosted = sortOrder == HostedAsc ? HostedDesc : HostedAsc;
-			Prohibited = sortOrder == ProhibitedAsc ? ProhibitedDesc : ProhibitedAsc;
+			Hosted = sortOrder == HostedDesc ? HostedAsc : HostedDesc;
+			Prohibited = sortOrder == ProhibitedDesc ? ProhibitedAsc : ProhibitedDesc;
 
 			List<Mod> mods = new();
 			foreach (AssetMod assetMod in _dbContext.AssetMods.Include(am => am.PlayerAssetMods).ThenInclude(pam => pam.Player).Where(am => !am.IsHidden))
