@@ -18,7 +18,12 @@
 
 .chart {
 	height: 65vh;
-	overflow-x: hidden;
+}
+
+@media (max-width: 767px) {
+	.chart {
+		overflow-x: hidden;
+	}
 }
 
 #world-record-progression-highlighter,
