@@ -224,22 +224,6 @@
 							<div>Played</div>
 							<div class="text-right">@Model.CustomDaggerCountsDefault.Sum() / @Model.TotalDefaultCustomLeaderboards</div>
 						</div>
-
-						@{
-							float total = (float)Model.TotalDefaultCustomLeaderboards;
-							int unplayed = Model.TotalDefaultCustomLeaderboards - Model.CustomDaggerCountsDefault.Sum();
-							int max = Model.CustomDaggerCountsDefault.Length - 1;
-
-							int daggersDone = unplayed;
-							for (int i = max; i >= 0; i--)
-							{
-								float donePercentage = daggersDone / total;
-
-								<img class="dagger-bar" style="background-color: transparent; clip-path: inset(@(donePercentage * 128)px 0px 0px 0px);" src="~/images/Daggers/@(PlayerModel.DaggerNames[i].ToUpperFirst())Small.png" />
-
-								daggersDone += Model.CustomDaggerCountsDefault[i];
-							}
-						}
 					</div>
 				</div>
 			}
