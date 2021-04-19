@@ -1,5 +1,6 @@
 ﻿@page
 @model IndexModel
+@using DevilDaggersCore.Utils
 @using DevilDaggersWebsite.Razor.Pagination
 @using DevilDaggersWebsite.Razor.Utils
 @using Microsoft.AspNetCore.Html
@@ -45,61 +46,61 @@
 							   asp-route-sortOrder="@Model.Category"
 							   asp-route-pageIndex="@Model.PageIndex">Category</a>
 						</th>
-						<th class="hidden-xs hidden-sm hidden-md" width="160">
+						<th class="text-right hidden-xs hidden-sm hidden-md" width="160">
 							<a asp-route-searchAuthor="@Model.SearchAuthor"
 							   asp-route-searchName="@Model.SearchName"
 							   asp-route-sortOrder="@Model.LastPlayed"
 							   asp-route-pageIndex="@Model.PageIndex">Last played</a>
 						</th>
-						<th class="hidden-xs hidden-sm hidden-md" width="160">
+						<th class="text-right hidden-xs hidden-sm hidden-md" width="160">
 							<a asp-route-searchAuthor="@Model.SearchAuthor"
 							   asp-route-searchName="@Model.SearchName"
 							   asp-route-sortOrder="@Model.Created"
 							   asp-route-pageIndex="@Model.PageIndex">Created</a>
 						</th>
-						<th class="hidden-xs hidden-sm hidden-md" width="160">
+						<th class="text-right hidden-xs hidden-sm hidden-md" width="160">
 							<a asp-route-searchAuthor="@Model.SearchAuthor"
 							   asp-route-searchName="@Model.SearchName"
 							   asp-route-sortOrder="@Model.Submits"
 							   asp-route-pageIndex="@Model.PageIndex">Submits <span style="cursor: pointer;" class="text-right devil" data-toggle="tooltip" data-placement="top" title="Data has only been collected since @submitCountCollectionStart.ToString("dd MMM yyyy"), and will not be correct for leaderboards that were created prior to this date (hence the +).">?</span></a>
 						</th>
-						<th class="hidden-xs hidden-sm hidden-md" width="160">
+						<th class="text-right hidden-xs hidden-sm hidden-md" width="160">
 							<a asp-route-searchAuthor="@Model.SearchAuthor"
 							   asp-route-searchName="@Model.SearchName"
 							   asp-route-sortOrder="@Model.Players"
 							   asp-route-pageIndex="@Model.PageIndex">Players</a>
 						</th>
-						<th class="hidden-xs hidden-sm hidden-md" width="160">
+						<th class="text-right hidden-xs hidden-sm hidden-md" width="160">
 							<a asp-route-searchAuthor="@Model.SearchAuthor"
 							   asp-route-searchName="@Model.SearchName"
 							   asp-route-sortOrder="@Model.Bronze"
 							   asp-route-pageIndex="@Model.PageIndex">Bronze</a>
 						</th>
-						<th class="hidden-xs hidden-sm hidden-md" width="160">
+						<th class="text-right hidden-xs hidden-sm hidden-md" width="160">
 							<a asp-route-searchAuthor="@Model.SearchAuthor"
 							   asp-route-searchName="@Model.SearchName"
 							   asp-route-sortOrder="@Model.Silver"
 							   asp-route-pageIndex="@Model.PageIndex">Silver</a>
 						</th>
-						<th class="hidden-xs hidden-sm hidden-md" width="160">
+						<th class="text-right hidden-xs hidden-sm hidden-md" width="160">
 							<a asp-route-searchAuthor="@Model.SearchAuthor"
 							   asp-route-searchName="@Model.SearchName"
 							   asp-route-sortOrder="@Model.Golden"
 							   asp-route-pageIndex="@Model.PageIndex">Golden</a>
 						</th>
-						<th class="hidden-xs hidden-sm hidden-md" width="160">
+						<th class="text-right hidden-xs hidden-sm hidden-md" width="160">
 							<a asp-route-searchAuthor="@Model.SearchAuthor"
 							   asp-route-searchName="@Model.SearchName"
 							   asp-route-sortOrder="@Model.Devil"
 							   asp-route-pageIndex="@Model.PageIndex">Devil</a>
 						</th>
-						<th class="hidden-xs hidden-sm hidden-md" width="160">
+						<th class="text-right hidden-xs hidden-sm hidden-md" width="160">
 							<a asp-route-searchAuthor="@Model.SearchAuthor"
 							   asp-route-searchName="@Model.SearchName"
 							   asp-route-sortOrder="@Model.Leviathan"
 							   asp-route-pageIndex="@Model.PageIndex">Leviathan</a>
 						</th>
-						<th class="hidden-xs hidden-sm hidden-md" width="160">
+						<th class="text-right hidden-xs hidden-sm hidden-md" width="160">
 							<a asp-route-searchAuthor="@Model.SearchAuthor"
 							   asp-route-searchName="@Model.SearchName"
 							   asp-route-sortOrder="@Model.WorldRecord"
@@ -114,16 +115,16 @@
 							<td><a asp-page="/CustomLeaderboards/Leaderboard" asp-route-spawnsetName="@cl.SpawnsetName">@cl.SpawnsetName</a></td>
 							<td><a asp-route-searchAuthor="@cl.AuthorName">@cl.AuthorName</a></td>
 							<td class="hidden-xs">@cl.Category</td>
-							<td class="hidden-xs hidden-sm hidden-md">@(new HtmlString(cl.DateLastPlayed?.ToString("dd MMM yyyy")) ?? RazorUtils.NAString)</td>
-							<td class="hidden-xs hidden-sm hidden-md">@(new HtmlString(cl.DateCreated?.ToString("dd MMM yyyy")) ?? RazorUtils.NAString)</td>
-							<td class="hidden-xs hidden-sm hidden-md">@cl.TotalRunsSubmitted</td>
-							<td class="hidden-xs hidden-sm hidden-md">@cl.TotalPlayers</td>
-							<td class="hidden-xs hidden-sm hidden-md">@cl.TimeBronze</td>
-							<td class="hidden-xs hidden-sm hidden-md">@cl.TimeSilver</td>
-							<td class="hidden-xs hidden-sm hidden-md">@cl.TimeGolden</td>
-							<td class="hidden-xs hidden-sm hidden-md">@cl.TimeDevil</td>
-							<td class="hidden-xs hidden-sm hidden-md">@cl.TimeLeviathan</td>
-							<td class="hidden-xs hidden-sm hidden-md">@cl.WorldRecord</td>
+							<td class="text-right hidden-xs hidden-sm hidden-md">@(new HtmlString(cl.DateLastPlayed?.ToString("dd MMM yyyy")) ?? RazorUtils.NAString)</td>
+							<td class="text-right hidden-xs hidden-sm hidden-md">@(new HtmlString(cl.DateCreated?.ToString("dd MMM yyyy")) ?? RazorUtils.NAString)</td>
+							<td class="text-right hidden-xs hidden-sm hidden-md">@cl.TotalRunsSubmitted</td>
+							<td class="text-right hidden-xs hidden-sm hidden-md">@cl.TotalPlayers</td>
+							<td class="text-right hidden-xs hidden-sm hidden-md bronze">@cl.TimeBronze.FormatTimeInteger()</td>
+							<td class="text-right hidden-xs hidden-sm hidden-md silver">@cl.TimeSilver.FormatTimeInteger()</td>
+							<td class="text-right hidden-xs hidden-sm hidden-md golden">@cl.TimeGolden.FormatTimeInteger()</td>
+							<td class="text-right hidden-xs hidden-sm hidden-md devil">@cl.TimeDevil.FormatTimeInteger()</td>
+							<td class="text-right hidden-xs hidden-sm hidden-md leviathan">@cl.TimeLeviathan.FormatTimeInteger()</td>
+							<td class="text-right hidden-xs hidden-sm hidden-md @cl.WrDaggerName">@(cl.WorldRecord == 0 ? RazorUtils.NAString : new HtmlString(cl.WorldRecord.FormatTimeInteger()))</td>
 						</tr>
 					}
 				</tbody>

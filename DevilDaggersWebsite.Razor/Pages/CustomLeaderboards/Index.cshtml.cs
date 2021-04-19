@@ -117,7 +117,8 @@ namespace DevilDaggersWebsite.Razor.Pages.CustomLeaderboards
 					.ToList();
 
 				int worldRecord = entries.Count == 0 ? 0 : entries[0].Time;
-				customLeaderboards.Add(new(cl.Category, cl.SpawnsetFile.Name, cl.SpawnsetFile.Player.PlayerName, cl.TimeBronze, cl.TimeSilver, cl.TimeGolden, cl.TimeDevil, cl.TimeLeviathan, worldRecord, cl.DateLastPlayed, cl.DateCreated, cl.TotalRunsSubmitted, entries.Count));
+				string? wrDaggerName = worldRecord == 0 ? null : cl.GetDagger(worldRecord);
+				customLeaderboards.Add(new(cl.Category, cl.SpawnsetFile.Name, cl.SpawnsetFile.Player.PlayerName, cl.TimeBronze, cl.TimeSilver, cl.TimeGolden, cl.TimeDevil, cl.TimeLeviathan, worldRecord, cl.DateLastPlayed, cl.DateCreated, cl.TotalRunsSubmitted, entries.Count, wrDaggerName));
 			}
 
 			customLeaderboards = (sortOrder switch

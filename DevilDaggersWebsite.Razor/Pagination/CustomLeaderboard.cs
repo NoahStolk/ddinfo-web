@@ -5,7 +5,7 @@ namespace DevilDaggersWebsite.Razor.Pagination
 {
 	public class CustomLeaderboard
 	{
-		public CustomLeaderboard(CustomLeaderboardCategory category, string spawnsetName, string authorName, int timeBronze, int timeSilver, int timeGolden, int timeDevil, int timeLeviathan, int worldRecord, DateTime? dateLastPlayed, DateTime? dateCreated, int totalRunsSubmitted, int totalPlayers)
+		public CustomLeaderboard(CustomLeaderboardCategory category, string spawnsetName, string authorName, int timeBronze, int timeSilver, int timeGolden, int timeDevil, int timeLeviathan, int worldRecord, DateTime? dateLastPlayed, DateTime? dateCreated, int totalRunsSubmitted, int totalPlayers, string? wrDaggerName)
 		{
 			Category = category;
 			SpawnsetName = spawnsetName;
@@ -20,23 +20,26 @@ namespace DevilDaggersWebsite.Razor.Pagination
 			DateCreated = dateCreated;
 			TotalRunsSubmitted = totalRunsSubmitted;
 			TotalPlayers = totalPlayers;
+			WrDaggerName = wrDaggerName;
 		}
 
-		public CustomLeaderboardCategory Category { get; set; }
+		public CustomLeaderboardCategory Category { get; }
 
-		public string SpawnsetName { get; set; }
-		public string AuthorName { get; set; }
+		public string SpawnsetName { get; }
+		public string AuthorName { get; }
 
-		public int TimeBronze { get; set; }
-		public int TimeSilver { get; set; }
-		public int TimeGolden { get; set; }
-		public int TimeDevil { get; set; }
-		public int TimeLeviathan { get; set; }
-		public int WorldRecord { get; set; }
+		public int TimeBronze { get; }
+		public int TimeSilver { get; }
+		public int TimeGolden { get; }
+		public int TimeDevil { get; }
+		public int TimeLeviathan { get; }
+		public int WorldRecord { get; }
 
-		public DateTime? DateLastPlayed { get; set; }
-		public DateTime? DateCreated { get; set; }
-		public int TotalRunsSubmitted { get; set; }
-		public int TotalPlayers { get; set; }
+		public DateTime? DateLastPlayed { get; }
+		public DateTime? DateCreated { get; }
+		public int TotalRunsSubmitted { get; }
+		public int TotalPlayers { get; }
+
+		public string? WrDaggerName { get; }
 	}
 }
