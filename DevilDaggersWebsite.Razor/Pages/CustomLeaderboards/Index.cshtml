@@ -104,20 +104,22 @@
 							<a asp-route-searchAuthor="@Model.SearchAuthor"
 							   asp-route-searchName="@Model.SearchName"
 							   asp-route-sortOrder="@Model.WorldRecord"
-							   asp-route-pageIndex="@Model.PageIndex">World record</a>
+							   asp-route-pageIndex="@Model.PageIndex">WR</a>
 						</th>
 					</tr>
 				</thead>
 				<tbody>
 					@foreach (CustomLeaderboard cl in Model.PaginatedList)
 					{
+						bool possibleMissingSubmitCounts = cl.DateCreated < submitCountCollectionStart;
+
 						<tr>
 							<td><a asp-page="/CustomLeaderboards/Leaderboard" asp-route-spawnsetName="@cl.SpawnsetName">@cl.SpawnsetName</a></td>
 							<td><a asp-route-searchAuthor="@cl.AuthorName">@cl.AuthorName</a></td>
 							<td class="hidden-xs">@cl.Category</td>
 							<td class="text-right hidden-xs hidden-sm hidden-md">@(new HtmlString(cl.DateLastPlayed?.ToString("dd MMM yyyy")) ?? RazorUtils.NAString)</td>
 							<td class="text-right hidden-xs hidden-sm hidden-md">@(new HtmlString(cl.DateCreated?.ToString("dd MMM yyyy")) ?? RazorUtils.NAString)</td>
-							<td class="text-right hidden-xs hidden-sm hidden-md">@cl.TotalRunsSubmitted</td>
+							<td class="text-right hidden-xs hidden-sm hidden-md">@(possibleMissingSubmitCounts ? "+" : string.Empty)@cl.TotalRunsSubmitted</td>
 							<td class="text-right hidden-xs hidden-sm hidden-md">@cl.TotalPlayers</td>
 							<td class="text-right hidden-xs hidden-sm hidden-md bronze">@cl.TimeBronze.FormatTimeInteger()</td>
 							<td class="text-right hidden-xs hidden-sm hidden-md silver">@cl.TimeSilver.FormatTimeInteger()</td>
