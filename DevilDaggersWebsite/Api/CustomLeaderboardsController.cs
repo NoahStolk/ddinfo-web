@@ -189,9 +189,7 @@ namespace DevilDaggersWebsite.Api
 
 			// Calculate the new rank.
 			List<CustomEntry> entries = FetchEntriesFromDatabase(customLeaderboard, isAscending);
-
-			// TODO: This isn't correct when the new score has the same value as an existing score (needs to be sorted by submit date).
-			int rank = isAscending ? entries.Count(e => e.Time < uploadRequest.Time) + 1 : entries.Count(e => e.Time > uploadRequest.Time) + 1;
+			int rank = isAscending ? entries.Count(e => e.Time <= uploadRequest.Time) + 1 : entries.Count(e => e.Time >= uploadRequest.Time) + 1;
 			int totalPlayers = entries.Count;
 
 			CustomEntry? customEntry = entries.Find(e => e.PlayerId == uploadRequest.PlayerId);
