@@ -28,6 +28,8 @@ namespace DevilDaggersWebsite.Razor.Pages.Admin.AssetMods
 			ModNames = _dbContext.AssetMods.Select(am => new SelectListItem(am.Name, am.Name)).ToList();
 		}
 
+		public static int MaxScreenshots { get; } = 10;
+
 		[BindProperty]
 		public IFormFile? FormFile { get; set; }
 
@@ -89,9 +91,9 @@ namespace DevilDaggersWebsite.Razor.Pages.Admin.AssetMods
 					return;
 				}
 
-				if (Directory.Exists(fileDirectory) && Directory.GetFiles(fileDirectory).Length >= 5)
+				if (Directory.Exists(fileDirectory) && Directory.GetFiles(fileDirectory).Length >= MaxScreenshots)
 				{
-					await DiscordLogger.Instance.TryLog(Channel.AuditLogMonitoring, _env.EnvironmentName, $"{failedAttemptMessage}: Mod `{ModName}` already has 5 screenshots.");
+					await DiscordLogger.Instance.TryLog(Channel.AuditLogMonitoring, _env.EnvironmentName, $"{failedAttemptMessage}: Mod `{ModName}` already has {MaxScreenshots} screenshots.");
 					return;
 				}
 
