@@ -43,7 +43,7 @@ namespace DevilDaggersWebsite.Razor.Pages.Admin.AssetMods
 
 				if (FormFile.Length > maxFileSize)
 				{
-					await DiscordLogger.Instance.TryLog(Channel.AuditLogMonitoring, _env.EnvironmentName, $"{failedAttemptMessage}: File too large (`{FormFile.Length}` / max `{maxFileSize}` bytes).");
+					await DiscordLogger.Instance.TryLog(Channel.AuditLogMonitoring, _env.EnvironmentName, $"{failedAttemptMessage}: File too large (`{FormFile.Length:n0}` / max `{maxFileSize:n0}` bytes).");
 					return;
 				}
 
