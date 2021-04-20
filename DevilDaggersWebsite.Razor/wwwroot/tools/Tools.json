@@ -1168,9 +1168,33 @@
 	{
 		"Name": "DevilDaggersAssetEditor",
 		"DisplayName": "Devil Daggers Asset Editor",
-		"VersionNumber": "0.56.5.0",
+		"VersionNumber": "0.60.2.0",
 		"VersionNumberRequired": "0.46.0.0",
 		"Changelog": [
+			{
+				"VersionNumber": "0.60.2.0",
+				"Date": "2021-04-20T00:00:00",
+				"Changes": [
+					{
+						"Description": "Added missing 'core' shader asset, which fixes creating 'core' mods."
+					},
+					{
+						"Description": "When making a binary, the 'core' path is set to the original file, since it does not support partial mods."
+					},
+					{
+						"Description": "Added 'Loading UI...' to initial MainWindow start up instead of blocking GUI thread which results in the entire window being white."
+					},
+					{
+						"Description": "Added descriptions and tags to most model bindings."
+					},
+					{
+						"Description": "Fixed feather assets not being listed as blocked."
+					},
+					{
+						"Description": "Minor UI improvements."
+					}
+				]
+			},
 			{
 				"VersionNumber": "0.56.5.0",
 				"Date": "2021-04-12T00:00:00",
