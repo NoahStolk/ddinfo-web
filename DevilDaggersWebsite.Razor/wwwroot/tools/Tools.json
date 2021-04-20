@@ -2,9 +2,18 @@
 	{
 		"Name": "DevilDaggersSurvivalEditor",
 		"DisplayName": "Devil Daggers Survival Editor",
-		"VersionNumber": "2.31.6.0",
+		"VersionNumber": "2.31.9.0",
 		"VersionNumberRequired": "2.31.2.0",
 		"Changelog": [
+			{
+				"VersionNumber": "2.31.9.0",
+				"Date": "2021-04-20T00:00:00",
+				"Changes": [
+					{
+						"Description": "Minor fixes for 'Download spawnset' window."
+					}
+				]
+			},
 			{
 				"VersionNumber": "2.31.6.0",
 				"Date": "2021-04-14T00:00:00",
