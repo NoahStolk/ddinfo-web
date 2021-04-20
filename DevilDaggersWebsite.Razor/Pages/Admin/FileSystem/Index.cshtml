@@ -23,6 +23,15 @@
 	}
 </ul>
 
+<h2>Mod Screenshots</h2>
+<p>@await Html.PartialAsync("Partials/FileSizePartial", Model.ModScreenshotFileSizes.Select(kvp => kvp.Value).Sum())</p>
+<ul class="list">
+	@foreach (var kvp in Model.ModScreenshotFileSizes)
+	{
+		<li>@kvp.Key - @await Html.PartialAsync("Partials/FileSizePartial", kvp.Value)</li>
+	}
+</ul>
+
 <h2>Spawnsets</h2>
 <p>@await Html.PartialAsync("Partials/FileSizePartial", Model.SpawnsetFileSizes.Select(kvp => kvp.Value).Sum())</p>
 <ul class="list">
