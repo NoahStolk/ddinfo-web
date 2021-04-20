@@ -24,6 +24,16 @@
 		}
 	</ul>
 }
+@if (Model.DeadScreenshots.Count > 0)
+{
+	<h2>Dead screenshots</h2>
+	<ul>
+		@foreach (string fileName in Model.DeadScreenshots)
+		{
+			<li>@fileName</li>
+		}
+	</ul>
+}
 <p><a asp-page="CreateOrEdit">Create New</a></p>
 <p><a asp-page="UploadFile">Upload File</a></p>
 <p><a asp-page="DeleteFile">Delete File</a></p>
