@@ -31,7 +31,7 @@ namespace DevilDaggersWebsite.Razor.Pages.Admin.AssetMods
 
 		public async Task<ActionResult?> OnPost(string fileName)
 		{
-			string failedAttemptMessage = $"Failed attempt from `{this.GetIdentity()}` to delete ASSETMOD screenshot";
+			string failedAttemptMessage = $":x: Failed attempt from `{this.GetIdentity()}` to delete ASSETMOD screenshot";
 
 			string path = Path.Combine(_env.WebRootPath, "mod-screenshots", fileName);
 			if (!System.IO.File.Exists(path))
@@ -42,7 +42,7 @@ namespace DevilDaggersWebsite.Razor.Pages.Admin.AssetMods
 
 			System.IO.File.Delete(path);
 
-			await DiscordLogger.Instance.TryLog(Channel.AuditLogMonitoring, _env.EnvironmentName, $"`{this.GetIdentity()}` deleted ASSETMOD screenshot `{fileName}`");
+			await DiscordLogger.Instance.TryLog(Channel.AuditLogMonitoring, _env.EnvironmentName, $":white_check_mark: `{this.GetIdentity()}` deleted ASSETMOD screenshot `{fileName}`");
 
 			return RedirectToPage("Index");
 		}

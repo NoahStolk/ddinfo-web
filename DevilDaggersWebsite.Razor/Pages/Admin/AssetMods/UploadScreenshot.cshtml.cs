@@ -38,7 +38,7 @@ namespace DevilDaggersWebsite.Razor.Pages.Admin.AssetMods
 
 		public async Task OnPostAsync()
 		{
-			string failedAttemptMessage = $"Failed attempt from `{this.GetIdentity()}` to upload new ASSETMOD screenshot";
+			string failedAttemptMessage = $":x: Failed attempt from `{this.GetIdentity()}` to upload new ASSETMOD screenshot";
 
 			try
 			{
@@ -105,7 +105,7 @@ namespace DevilDaggersWebsite.Razor.Pages.Admin.AssetMods
 				Directory.CreateDirectory(fileDirectory);
 				Io.File.WriteAllBytes(filePath, formFileBytes);
 
-				await DiscordLogger.Instance.TryLog(Channel.AuditLogMonitoring, _env.EnvironmentName, $"`{this.GetIdentity()}` uploaded new ASSETMOD screenshot `{FormFile.FileName}` for mod `{ModName}` (`{formFileBytes.Length:n0}` bytes)");
+				await DiscordLogger.Instance.TryLog(Channel.AuditLogMonitoring, _env.EnvironmentName, $":white_check_mark: `{this.GetIdentity()}` uploaded new ASSETMOD screenshot `{FormFile.FileName}` for mod `{ModName}` (`{formFileBytes.Length:n0}` bytes)");
 			}
 			catch (Exception ex)
 			{

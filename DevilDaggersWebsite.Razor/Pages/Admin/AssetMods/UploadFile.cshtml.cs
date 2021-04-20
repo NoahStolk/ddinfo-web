@@ -28,7 +28,7 @@ namespace DevilDaggersWebsite.Razor.Pages.Admin.AssetMods
 
 		public async Task OnPostAsync()
 		{
-			string failedAttemptMessage = $"Failed attempt from `{this.GetIdentity()}` to upload new ASSETMOD file";
+			string failedAttemptMessage = $":x: Failed attempt from `{this.GetIdentity()}` to upload new ASSETMOD file";
 
 			try
 			{
@@ -81,7 +81,7 @@ namespace DevilDaggersWebsite.Razor.Pages.Admin.AssetMods
 						throw new InvalidModBinaryException($"File '{modData.Name}' does not contain any assets.");
 				}
 
-				await DiscordLogger.Instance.TryLog(Channel.AuditLogMonitoring, _env.EnvironmentName, $"`{this.GetIdentity()}` uploaded new ASSETMOD file `{FormFile.FileName}` (`{formFileBytes.Length:n0}` bytes)");
+				await DiscordLogger.Instance.TryLog(Channel.AuditLogMonitoring, _env.EnvironmentName, $":white_check_mark: `{this.GetIdentity()}` uploaded new ASSETMOD file `{FormFile.FileName}` (`{formFileBytes.Length:n0}` bytes)");
 			}
 			catch (InvalidModBinaryException ex)
 			{

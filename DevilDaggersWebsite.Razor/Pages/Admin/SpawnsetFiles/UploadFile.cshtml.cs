@@ -25,7 +25,7 @@ namespace DevilDaggersWebsite.Razor.Pages.Admin.SpawnsetFiles
 
 		public async Task OnPostAsync()
 		{
-			string failedAttemptMessage = $"Failed attempt from `{this.GetIdentity()}` to upload new SPAWNSET file";
+			string failedAttemptMessage = $":x: Failed attempt from `{this.GetIdentity()}` to upload new SPAWNSET file";
 
 			try
 			{
@@ -71,7 +71,7 @@ namespace DevilDaggersWebsite.Razor.Pages.Admin.SpawnsetFiles
 				}
 
 				Io.File.WriteAllBytes(filePath, formFileBytes);
-				await DiscordLogger.Instance.TryLog(Channel.AuditLogMonitoring, _env.EnvironmentName, $"`{this.GetIdentity()}` uploaded new SPAWNSET file `{FormFile.FileName}` (`{formFileBytes.Length:n0}` bytes)");
+				await DiscordLogger.Instance.TryLog(Channel.AuditLogMonitoring, _env.EnvironmentName, $":white_check_mark: `{this.GetIdentity()}` uploaded new SPAWNSET file `{FormFile.FileName}` (`{formFileBytes.Length:n0}` bytes)");
 			}
 			catch (Exception ex)
 			{

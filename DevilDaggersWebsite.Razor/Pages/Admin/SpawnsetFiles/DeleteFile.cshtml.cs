@@ -29,7 +29,7 @@ namespace DevilDaggersWebsite.Razor.Pages.Admin.SpawnsetFiles
 
 		public async Task<ActionResult?> OnPost(string fileName)
 		{
-			string failedAttemptMessage = $"Failed attempt from `{this.GetIdentity()}` to delete SPAWNSET file";
+			string failedAttemptMessage = $":x: Failed attempt from `{this.GetIdentity()}` to delete SPAWNSET file";
 
 			string path = Path.Combine(_env.WebRootPath, "spawnsets", fileName);
 			if (!System.IO.File.Exists(path))
@@ -40,7 +40,7 @@ namespace DevilDaggersWebsite.Razor.Pages.Admin.SpawnsetFiles
 
 			System.IO.File.Delete(path);
 
-			await DiscordLogger.Instance.TryLog(Channel.AuditLogMonitoring, _env.EnvironmentName, $"`{this.GetIdentity()}` deleted SPAWNSET file `{fileName}`");
+			await DiscordLogger.Instance.TryLog(Channel.AuditLogMonitoring, _env.EnvironmentName, $":white_check_mark: `{this.GetIdentity()}` deleted SPAWNSET file `{fileName}`");
 
 			await SpawnsetHashCache.Instance.Clear(_env);
 

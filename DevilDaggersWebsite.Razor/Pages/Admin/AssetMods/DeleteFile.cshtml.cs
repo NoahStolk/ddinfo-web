@@ -29,7 +29,7 @@ namespace DevilDaggersWebsite.Razor.Pages.Admin.AssetMods
 
 		public async Task<ActionResult?> OnPost(string fileName)
 		{
-			string failedAttemptMessage = $"Failed attempt from `{this.GetIdentity()}` to delete ASSETMOD file";
+			string failedAttemptMessage = $":x: Failed attempt from `{this.GetIdentity()}` to delete ASSETMOD file";
 
 			string path = Path.Combine(_env.WebRootPath, "mods", fileName);
 			if (!System.IO.File.Exists(path))
@@ -40,7 +40,7 @@ namespace DevilDaggersWebsite.Razor.Pages.Admin.AssetMods
 
 			System.IO.File.Delete(path);
 
-			await DiscordLogger.Instance.TryLog(Channel.AuditLogMonitoring, _env.EnvironmentName, $"`{this.GetIdentity()}` deleted ASSETMOD file `{fileName}`");
+			await DiscordLogger.Instance.TryLog(Channel.AuditLogMonitoring, _env.EnvironmentName, $":white_check_mark: `{this.GetIdentity()}` deleted ASSETMOD file `{fileName}`");
 
 			await ModArchiveCache.Instance.Clear(_env);
 
