@@ -108,10 +108,10 @@ namespace DevilDaggersWebsite.Razor.Pages.CustomLeaderboards
 			List<CustomLeaderboard> customLeaderboards = new();
 			foreach (Entities.CustomLeaderboard cl in customLeaderboardQuery)
 			{
-				if (!string.IsNullOrWhiteSpace(SearchAuthor) && !cl.SpawnsetFile.Player.PlayerName.Contains(SearchAuthor))
+				if (!string.IsNullOrWhiteSpace(SearchAuthor) && !cl.SpawnsetFile.Player.PlayerName.Contains(SearchAuthor, StringComparison.InvariantCultureIgnoreCase))
 					continue;
 
-				if (!string.IsNullOrWhiteSpace(SearchName) && !cl.SpawnsetFile.Name.Contains(SearchName))
+				if (!string.IsNullOrWhiteSpace(SearchName) && !cl.SpawnsetFile.Name.Contains(SearchName, StringComparison.InvariantCultureIgnoreCase))
 					continue;
 
 				List<Entities.CustomEntry> entries = _dbContext.CustomEntries
