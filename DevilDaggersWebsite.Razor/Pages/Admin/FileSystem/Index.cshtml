@@ -6,14 +6,6 @@
 
 <h1>@ViewData["Title"]</h1>
 
-<h2>Drives</h2>
-<ul class="list">
-	@foreach (var kvp in Model.TotalSpaceInBytesPerDrive)
-	{
-		<li>@kvp.Key - @await Html.PartialAsync("Partials/FileSizePartial", kvp.Value) available</li>
-	}
-</ul>
-
 <h2>Mods</h2>
 <p>@await Html.PartialAsync("Partials/FileSizePartial", Model.ModFileSizes.Select(kvp => kvp.Value).Sum())</p>
 <ul class="list">

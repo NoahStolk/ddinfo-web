@@ -15,7 +15,6 @@ namespace DevilDaggersWebsite.Razor.Pages.Admin.FileSystem
 			_env = env;
 		}
 
-		public Dictionary<string, long> TotalSpaceInBytesPerDrive { get; private set; } = new();
 		public Dictionary<string, long> ModFileSizes { get; private set; } = new();
 		public Dictionary<string, long> ModScreenshotFileSizes { get; private set; } = new();
 		public Dictionary<string, long> SpawnsetFileSizes { get; private set; } = new();
@@ -23,12 +22,6 @@ namespace DevilDaggersWebsite.Razor.Pages.Admin.FileSystem
 
 		public void OnGet()
 		{
-			foreach (DriveInfo di in DriveInfo.GetDrives())
-			{
-				if (di.IsReady)
-					TotalSpaceInBytesPerDrive.Add(di.Name, di.TotalFreeSpace);
-			}
-
 			foreach (string path in Directory.GetFiles(Path.Combine(_env.WebRootPath, "mods")))
 				ModFileSizes.Add(Path.GetFileName(path), new FileInfo(path).Length);
 
@@ -44,7 +37,6 @@ namespace DevilDaggersWebsite.Razor.Pages.Admin.FileSystem
 			foreach (string path in Directory.GetFiles(Path.Combine(_env.WebRootPath, "leaderboard-history")))
 				LeaderboardHistoryFileSizes.Add(Path.GetFileName(path), new FileInfo(path).Length);
 
-			TotalSpaceInBytesPerDrive = TotalSpaceInBytesPerDrive.OrderByDescending(kvp => kvp.Value).ToDictionary(kvp => kvp.Key, kvp => kvp.Value);
 			ModFileSizes = ModFileSizes.OrderByDescending(kvp => kvp.Value).ToDictionary(kvp => kvp.Key, kvp => kvp.Value);
 			ModScreenshotFileSizes = ModScreenshotFileSizes.OrderByDescending(kvp => kvp.Value).ToDictionary(kvp => kvp.Key, kvp => kvp.Value);
 			SpawnsetFileSizes = SpawnsetFileSizes.OrderByDescending(kvp => kvp.Value).ToDictionary(kvp => kvp.Key, kvp => kvp.Value);
