@@ -10,6 +10,9 @@
 		return;
 
 	ViewData["Title"] = $"Mod - {Model.AssetMod.Name}";
+
+	bool hasTrailer = !string.IsNullOrWhiteSpace(Model.AssetMod.TrailerUrl);
+	bool hasScreenshots = Model.Images.Count > 0;
 }
 
 <header>
@@ -84,18 +87,59 @@
 		</div>
 	</div>
 
-	@if (!string.IsNullOrWhiteSpace(Model.AssetMod.TrailerUrl))
+	@if (hasTrailer || hasScreenshots)
 	{
-		<h2>Trailer</h2>
 		<div class="row">
-			<div class="col-md-12 col-lg-6">
-				<div class="iframe-wrapper">
-					<img class="ratio" src="~/images/Misc/16x9.png" />
-					<iframe src="@Model.AssetMod.TrailerUrl" title="@Model.AssetMod.Name" frameborder="0" allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture" allowfullscreen></iframe>
+			@if (hasTrailer)
+			{
+				<div class="col-md-12 col-lg-6">
+					<div class="iframe-wrapper">
+						<img class="ratio" src="~/images/Misc/16x9.png" />
+						<iframe src="@Model.AssetMod.TrailerUrl" title="@Model.AssetMod.Name" frameborder="0" allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture" allowfullscreen></iframe>
+					</div>
 				</div>
-			</div>
+			}
+			@if (hasScreenshots)
+			{
+				<div class="col-md-12 col-lg-6">
+					@if (Model.Images.Count == 1)
+					{
+						<img class="carousel-img" src="/mod-screenshots/@Model.AssetMod.Name/@Model.Images[0]" />
+					}
+					else
+					{
+						<div id="image-carousel" class="carousel slide" data-ride="carousel">
+							<ol class="carousel-indicators">
+								@for (int i = 0; i < Model.Images.Count; i++)
+								{
+									<li data-target="#image-carousel" data-slide-to="@i" class="@(i == 0 ? "active" : "")"></li>
+								}
+							</ol>
+
+							<div class="carousel-inner">
+								@for (int i = 0; i < Model.Images.Count; i++)
+								{
+									<div class="item@(i == 0 ? " active" : "")">
+										<img class="carousel-img" src="/mod-screenshots/@Model.AssetMod.Name/@Model.Images[i]" />
+									</div>
+								}
+							</div>
+
+							<a class="left carousel-control" href="#image-carousel" data-slide="prev">
+								<span class="glyphicon glyphicon-chevron-left"></span>
+								<span class="sr-only">Previous</span>
+							</a>
+							<a class="right carousel-control" href="#image-carousel" data-slide="next">
+								<span class="glyphicon glyphicon-chevron-right"></span>
+								<span class="sr-only">Next</span>
+							</a>
+						</div>
+					}
+				</div>
+			}
 		</div>
 	}
+
 	@if (Model.ArchiveData.ModData.Count > 0)
 	{
 		<h2>Binaries</h2>

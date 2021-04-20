@@ -4,6 +4,7 @@ using Microsoft.AspNetCore.Hosting;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.AspNetCore.Mvc.RazorPages;
 using Microsoft.EntityFrameworkCore;
+using System.Collections.Generic;
 using System.IO;
 using System.Linq;
 using Io = System.IO;
@@ -29,6 +30,8 @@ namespace DevilDaggersWebsite.Razor.Pages
 		public ModArchiveCacheData ArchiveData { get; private set; } = new();
 		public bool ContainsProhibitedAssets { get; private set; }
 
+		public List<string> Images { get; private set; } = new();
+
 		public ActionResult? OnGet()
 		{
 			AssetMod = _dbContext.AssetMods
@@ -37,6 +40,10 @@ namespace DevilDaggersWebsite.Razor.Pages
 				.FirstOrDefault(am => am.Name == HttpContext.Request.Query["mod"].ToString());
 			if (AssetMod == null)
 				return RedirectToPage("Mods");
+
+			string screenshotsPath = Path.Combine(_env.WebRootPath, "mod-screenshots", AssetMod.Name);
+			if (Directory.Exists(screenshotsPath))
+				Images = Directory.GetFiles(screenshotsPath).Select(p => Path.GetFileName(p)).ToList();
 
 			string zipPath = Path.Combine(_env.WebRootPath, "mods", $"{AssetMod.Name}.zip");
 			IsHostedOnDdInfo = Io.File.Exists(zipPath);

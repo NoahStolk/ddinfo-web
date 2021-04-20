@@ -9,6 +9,10 @@ $('a[href*="#"]')
 	// Remove links that don't actually link to anything
 	.not('[href="#"]')
 	.not('[href="#0"]')
+
+	// Remove image-carousel
+	.not('[href="#image-carousel"]')
+
 	.click(function (event) {
 		// Figure out element to scroll to
 		var target = $(this.hash);
