@@ -71,7 +71,7 @@ namespace DevilDaggersWebsite.Razor.Pages.Admin.SpawnsetFiles
 				}
 
 				Io.File.WriteAllBytes(filePath, formFileBytes);
-				await DiscordLogger.Instance.TryLog(Channel.AuditLogMonitoring, _env.EnvironmentName, $"`{this.GetIdentity()}` uploaded new SPAWNSET file `{FormFile.FileName}`");
+				await DiscordLogger.Instance.TryLog(Channel.AuditLogMonitoring, _env.EnvironmentName, $"`{this.GetIdentity()}` uploaded new SPAWNSET file `{FormFile.FileName}` (`{formFileBytes.Length:n0}` bytes)");
 			}
 			catch (Exception ex)
 			{
