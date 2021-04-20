@@ -27,9 +27,18 @@ namespace DevilDaggersWebsite.Razor.Pages.Admin.SpawnsetFiles
 			SpawnsetFileNames = Directory.GetFiles(Path.Combine(_env.WebRootPath, "spawnsets")).Select(p => Path.GetFileName(p));
 		}
 
-		public async Task<ActionResult> OnPost(string fileName)
+		public async Task<ActionResult?> OnPost(string fileName)
 		{
-			System.IO.File.Delete(Path.Combine(_env.WebRootPath, "spawnsets", fileName));
+			string failedAttemptMessage = $"Failed attempt from `{this.GetIdentity()}` to delete SPAWNSET file";
+
+			string path = Path.Combine(_env.WebRootPath, "spawnsets", fileName);
+			if (!System.IO.File.Exists(path))
+			{
+				await DiscordLogger.Instance.TryLog(Channel.AuditLogMonitoring, _env.EnvironmentName, $"{failedAttemptMessage}: File with name '{fileName}' does not exist.");
+				return null;
+			}
+
+			System.IO.File.Delete(path);
 
 			await DiscordLogger.Instance.TryLog(Channel.AuditLogMonitoring, _env.EnvironmentName, $"`{this.GetIdentity()}` deleted SPAWNSET file `{fileName}`");
 
