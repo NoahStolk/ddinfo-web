@@ -32,7 +32,7 @@ namespace DevilDaggersWebsite.Razor.Pages.Admin.AssetMods
 			List<string> directoriesScanned = new();
 			foreach (string path in Directory.GetFiles(Path.Combine(_env.WebRootPath, "mod-screenshots"), "*.png", SearchOption.AllDirectories))
 			{
-				string directoryName = new DirectoryInfo(path).Name;
+				string directoryName = new DirectoryInfo(path).Parent?.Name ?? throw new($"Invalid path '{path}' while scanning for dead mod screenshots.");
 
 				if (directoriesScanned.Contains(directoryName))
 					continue;
