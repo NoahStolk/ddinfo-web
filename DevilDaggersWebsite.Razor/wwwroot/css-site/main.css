@@ -131,6 +131,10 @@ span.default > a {
 	color: var(--col-underline-default);
 }
 
+a.carousel-control {
+	color: var(--col-text);
+}
+
 .btn {
 	margin: 8px 8px 8px 0;
 	border: 2px solid;
