@@ -34,7 +34,10 @@
 		All of these files can be modded using <a asp-page="/Tools/DevilDaggersAssetEditor">Devil Daggers Asset Editor</a> (also known as DDAE). These files are referred to as "binaries" in the application. If you're interested how these files are structured and how DDAE operates with them, I've documented how they work <a href="//github.com/NoahStolk/DevilDaggersAssetEditor/blob/master/DOCUMENTATION.md">here</a>.
 	</p>
 	<p>
-		As of the V3.1 update, Devil Daggers allows partial mods. This means that you don't need to create the entire binary anymore, but can make a "partial" binary containing only the modded assets. This is useful because it makes the files much smaller. These partial mods are saved in the <span class="path">devildaggers\mods</span> folder and their file name must be begin with the binary file type they are targetting, for example "dd_blue_gem", or "audio_trumpet_gigapedes". This feature also allows you to stack multiple partial mods and play them at once. The mods are loaded alphabetically, so if you have two partial mods replacing the same assets, the last one will actually replace the asset. For example, if you have two texture mods named "dd_blue_gem" and "dd_yellow_gem", which both change the color of the gem texture, "dd_yellow_gem" will be the effective one.
+		As of the V3.1 update, Devil Daggers allows partial mods for the "audio" and "dd" binaries. This means that you don't need to create these entire binary anymore, but can instead create a "partial" binary containing only the modded assets. This is useful because it makes the files much smaller. The partial mods are saved in the <span class="path">devildaggers\mods</span> folder and their file name must be begin with the binary file type they are targetting, for example "dd_blue_gem", or "audio_trumpet_gigapedes". This feature also allows you to stack multiple partial mods and play them at once. The mods are loaded alphabetically, so if you have two partial mods replacing the same assets, the last one will actually replace the asset. For example, if you have two texture mods named "dd_blue_gem" and "dd_yellow_gem", which both change the color of the gem texture, "dd_yellow_gem" will be the effective one.
+	</p>
+	<p>
+		Note that partial mods are not supported for "core" mods.
 	</p>
 
 	<h3>Asset types</h3>
