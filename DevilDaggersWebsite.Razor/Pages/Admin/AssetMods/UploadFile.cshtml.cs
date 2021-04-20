@@ -81,7 +81,7 @@ namespace DevilDaggersWebsite.Razor.Pages.Admin.AssetMods
 						throw new InvalidModBinaryException($"File '{modData.Name}' does not contain any assets.");
 				}
 
-				await DiscordLogger.Instance.TryLog(Channel.AuditLogMonitoring, _env.EnvironmentName, $"`{this.GetIdentity()}` uploaded new ASSETMOD file `{FormFile.FileName}`");
+				await DiscordLogger.Instance.TryLog(Channel.AuditLogMonitoring, _env.EnvironmentName, $"`{this.GetIdentity()}` uploaded new ASSETMOD file `{FormFile.FileName}` (`{formFileBytes.Length:n0}` bytes)");
 			}
 			catch (InvalidModBinaryException ex)
 			{
