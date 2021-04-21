@@ -44,12 +44,12 @@ namespace DevilDaggersWebsite.Transients
 				.Where(sf => File.Exists(Path.Combine(_env.WebRootPath, "spawnsets", sf.Name)))
 				.Select(sf => Map(sf))
 				.ToList();
-		}
 
-		private Dto.SpawnsetFile Map(SpawnsetFile spawnsetFile)
-		{
-			SpawnsetData spawnsetData = SpawnsetDataCache.Instance.GetSpawnsetDataByFilePath(Path.Combine(_env.WebRootPath, "spawnsets", spawnsetFile.Name));
-			return spawnsetFile.ToDto(spawnsetData, _spawnsetsWithCustomLeaderboardIds.Contains(spawnsetFile.Id));
+			Dto.SpawnsetFile Map(SpawnsetFile spawnsetFile)
+			{
+				SpawnsetData spawnsetData = SpawnsetDataCache.Instance.GetSpawnsetDataByFilePath(Path.Combine(_env.WebRootPath, "spawnsets", spawnsetFile.Name));
+				return spawnsetFile.ToDto(spawnsetData, _spawnsetsWithCustomLeaderboardIds.Contains(spawnsetFile.Id));
+			}
 		}
 	}
 }
