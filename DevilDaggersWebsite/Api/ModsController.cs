@@ -1,8 +1,11 @@
-﻿using DevilDaggersWebsite.Entities;
+﻿using DevilDaggersWebsite.Dto;
+using DevilDaggersWebsite.Entities;
+using DevilDaggersWebsite.Transients;
 using Microsoft.AspNetCore.Hosting;
 using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
 using Newtonsoft.Json;
+using System.Collections.Generic;
 using System.ComponentModel.DataAnnotations;
 using System.IO;
 using System.Linq;
@@ -17,12 +20,19 @@ namespace DevilDaggersWebsite.Api
 	{
 		private readonly IWebHostEnvironment _env;
 		private readonly ApplicationDbContext _dbContext;
+		private readonly ModHelper _modHelper;
 
-		public ModsController(IWebHostEnvironment env, ApplicationDbContext dbContext)
+		public ModsController(IWebHostEnvironment env, ApplicationDbContext dbContext, ModHelper modHelper)
 		{
 			_env = env;
 			_dbContext = dbContext;
+			_modHelper = modHelper;
 		}
+
+		[HttpGet]
+		[ProducesResponseType(StatusCodes.Status200OK)]
+		public List<Mod> GetMods(string? authorFilter = null, string? nameFilter = null, bool? isHostedFilter = null)
+			=> _modHelper.GetMods(authorFilter, nameFilter, isHostedFilter);
 
 		[HttpGet("{modName}/file")]
 		[ProducesResponseType(typeof(FileContentResult), StatusCodes.Status200OK)]
@@ -41,7 +51,5 @@ namespace DevilDaggersWebsite.Api
 
 			return File(Io.File.ReadAllBytes(Path.Combine(_env.WebRootPath, path)), MediaTypeNames.Application.Zip, fileName);
 		}
-
-		// TODO: Implement endpoints for retrieving all ModData DTOs.
 	}
 }
