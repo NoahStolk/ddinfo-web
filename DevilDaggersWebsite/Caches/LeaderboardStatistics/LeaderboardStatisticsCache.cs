@@ -45,7 +45,7 @@ namespace DevilDaggersWebsite.Caches.LeaderboardStatistics
 			if (paths.Length > 1)
 				throw new("Multiple statistics files found.");
 
-			FileName = paths[0];
+			FileName = Path.GetFileNameWithoutExtension(paths[0]);
 			Update(paths[0]);
 		}
 
