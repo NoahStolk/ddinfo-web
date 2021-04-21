@@ -8,7 +8,7 @@ using System.Threading.Tasks;
 
 namespace DevilDaggersWebsite.Caches.ModArchive
 {
-	public sealed class ModArchiveCache : ICache
+	public sealed class ModArchiveCache : IDynamicCache
 	{
 		private readonly ConcurrentDictionary<string, ModArchiveCacheData> _cache = new();
 

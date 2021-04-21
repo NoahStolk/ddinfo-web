@@ -3,7 +3,7 @@ using System.Threading.Tasks;
 
 namespace DevilDaggersWebsite.Caches
 {
-	public interface ICache
+	public interface IDynamicCache
 	{
 		Task Clear(IWebHostEnvironment env);
 	}

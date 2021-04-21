@@ -10,7 +10,7 @@ using System.Threading.Tasks;
 
 namespace DevilDaggersWebsite.Caches.SpawnsetHash
 {
-	public sealed class SpawnsetHashCache : ICache
+	public sealed class SpawnsetHashCache : IDynamicCache
 	{
 		private readonly ConcurrentBag<SpawnsetHashCacheData> _cache = new();
 

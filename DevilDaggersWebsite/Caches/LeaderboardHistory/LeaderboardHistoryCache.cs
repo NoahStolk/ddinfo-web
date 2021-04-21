@@ -10,7 +10,7 @@ using System.Threading.Tasks;
 
 namespace DevilDaggersWebsite.Caches.LeaderboardHistory
 {
-	public sealed class LeaderboardHistoryCache : ICache
+	public sealed class LeaderboardHistoryCache : IDynamicCache
 	{
 		private readonly ConcurrentDictionary<string, Leaderboard> _cache = new();
 

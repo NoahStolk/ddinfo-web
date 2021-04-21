@@ -8,7 +8,7 @@ using Core = DevilDaggersCore.Spawnsets;
 
 namespace DevilDaggersWebsite.Caches.SpawnsetData
 {
-	public sealed class SpawnsetDataCache : ICache
+	public sealed class SpawnsetDataCache : IDynamicCache
 	{
 		private readonly ConcurrentDictionary<string, Core.SpawnsetData> _cache = new();
 
