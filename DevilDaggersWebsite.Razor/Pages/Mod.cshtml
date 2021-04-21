@@ -166,6 +166,20 @@
 							</div>
 						</div>
 					}
+					@if (binary.LoudnessAssets?.Count > 0)
+					{
+						<div class="col-sm-12 col-md-6 col-lg-3 asset-container">
+							<div class="asset-title-container">
+								Modified loudness values (@binary.LoudnessAssets.Count assets, @binary.LoudnessAssets.Count(t => t.IsProhibited) <span class="prohibited">prohibited</span>)
+							</div>
+							<div class="asset-list">
+								@foreach ((string Name, bool IsProhibited) in binary.LoudnessAssets)
+								{
+									<div class="@(IsProhibited ? "prohibited" : string.Empty)">@Name</div>
+								}
+							</div>
+						</div>
+					}
 				</div>
 			</div>
 		}
