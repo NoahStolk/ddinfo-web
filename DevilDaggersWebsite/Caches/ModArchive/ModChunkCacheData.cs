@@ -1,14 +1,14 @@
 ﻿using DevilDaggersCore.Mods;
 
-namespace DevilDaggersWebsite.Dto
+namespace DevilDaggersWebsite.Caches.ModArchive
 {
-	public class ModAssetData
+	public class ModChunkCacheData
 	{
-		public ModAssetData(string name, uint size, AssetType modAssetType, bool isProhibited)
+		public ModChunkCacheData(string name, uint size, AssetType assetType, bool isProhibited)
 		{
 			Name = name;
 			Size = size;
-			ModAssetType = modAssetType;
+			ModAssetType = assetType;
 			IsProhibited = isProhibited;
 		}
 

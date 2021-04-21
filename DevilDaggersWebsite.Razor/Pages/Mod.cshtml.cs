@@ -50,7 +50,7 @@ namespace DevilDaggersWebsite.Razor.Pages
 			if (IsHostedOnDdInfo)
 			{
 				ArchiveData = ModArchiveCache.Instance.GetArchiveDataByFilePath(zipPath);
-				ContainsProhibitedAssets = ArchiveData.ModData.Any(md => md.ModAssetData.Any(mad => mad.IsProhibited));
+				ContainsProhibitedAssets = ArchiveData.Binaries.Any(md => md.Chunks.Any(mad => mad.IsProhibited));
 			}
 
 			return null;

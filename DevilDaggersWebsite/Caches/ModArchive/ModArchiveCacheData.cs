@@ -1,4 +1,5 @@
-﻿using System.Collections.Generic;
+﻿using DevilDaggersWebsite.Caches.ModArchive;
+using System.Collections.Generic;
 
 namespace DevilDaggersWebsite.Caches.Mod
 {
@@ -6,6 +7,6 @@ namespace DevilDaggersWebsite.Caches.Mod
 	{
 		public long FileSize { get; set; }
 		public long FileSizeExtracted { get; set; }
-		public List<Dto.ModData> ModData { get; set; } = new();
+		public List<ModBinaryCacheData> Binaries { get; set; } = new();
 	}
 }

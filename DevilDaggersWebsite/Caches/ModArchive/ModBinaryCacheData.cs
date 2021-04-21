@@ -5,28 +5,28 @@ using System;
 using System.Collections.Generic;
 using System.Text;
 
-namespace DevilDaggersWebsite.Dto
+namespace DevilDaggersWebsite.Caches.ModArchive
 {
-	public class ModData
+	public class ModBinaryCacheData
 	{
 		public static readonly ulong Magic1 = MakeMagic(0x3AUL, 0x68UL, 0x78UL, 0x3AUL);
 		public static readonly ulong Magic2 = MakeMagic(0x72UL, 0x67UL, 0x3AUL, 0x01UL);
 
-		public ModData(string name, ModBinaryType modBinaryType, List<ModAssetData> modAssetData)
+		public ModBinaryCacheData(string name, ModBinaryType modBinaryType, List<ModChunkCacheData> chunks)
 		{
 			Name = name;
 			ModBinaryType = modBinaryType;
-			ModAssetData = modAssetData;
+			Chunks = chunks;
 		}
 
 		public string Name { get; }
 		public ModBinaryType ModBinaryType { get; }
-		public List<ModAssetData> ModAssetData { get; }
+		public List<ModChunkCacheData> Chunks { get; }
 
 		private static ulong MakeMagic(ulong a, ulong b, ulong c, ulong d)
 			=> a | b << 8 | c << 16 | d << 24;
 
-		public static ModData CreateFromFile(string fileName, byte[] fileContents)
+		public static ModBinaryCacheData CreateFromFile(string fileName, byte[] fileContents)
 		{
 			ModBinaryType modBinaryType;
 			if (fileName.StartsWith("audio"))
@@ -47,7 +47,7 @@ namespace DevilDaggersWebsite.Dto
 			byte[] tocBuffer = new byte[tocSize];
 			Buffer.BlockCopy(fileContents, 12, tocBuffer, 0, (int)tocSize);
 
-			List<ModAssetData> chunks = new();
+			List<ModChunkCacheData> chunks = new();
 			int i = 0;
 			while (i < tocBuffer.Length - 14)
 			{

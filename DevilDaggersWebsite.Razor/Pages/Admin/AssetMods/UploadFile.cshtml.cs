@@ -1,6 +1,6 @@
 ﻿using DevilDaggersDiscordBot.Logging;
 using DevilDaggersWebsite.Caches.Mod;
-using DevilDaggersWebsite.Dto;
+using DevilDaggersWebsite.Caches.ModArchive;
 using DevilDaggersWebsite.Exceptions;
 using DevilDaggersWebsite.Razor.Extensions;
 using Microsoft.AspNetCore.Hosting;
@@ -75,10 +75,10 @@ namespace DevilDaggersWebsite.Razor.Pages.Admin.AssetMods
 
 				Io.File.WriteAllBytes(filePath, formFileBytes);
 
-				foreach (ModData modData in ModArchiveCache.Instance.GetArchiveDataByFilePath(filePath).ModData)
+				foreach (ModBinaryCacheData binary in ModArchiveCache.Instance.GetArchiveDataByFilePath(filePath).Binaries)
 				{
-					if (modData.ModAssetData.Count == 0)
-						throw new InvalidModBinaryException($"File '{modData.Name}' does not contain any assets.");
+					if (binary.Chunks.Count == 0)
+						throw new InvalidModBinaryException($"File '{binary.Name}' does not contain any assets.");
 				}
 
 				await DiscordLogger.Instance.TryLog(Channel.AuditLogMonitoring, _env.EnvironmentName, $":white_check_mark: `{this.GetIdentity()}` uploaded new ASSETMOD file `{FormFile.FileName}` (`{formFileBytes.Length:n0}` bytes)");

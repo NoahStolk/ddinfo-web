@@ -1,5 +1,6 @@
 ﻿using DevilDaggersCore.Mods;
 using DevilDaggersWebsite.Caches.Mod;
+using DevilDaggersWebsite.Caches.ModArchive;
 using DevilDaggersWebsite.Entities;
 using DevilDaggersWebsite.Enumerators;
 using DevilDaggersWebsite.Razor.PageModels;
@@ -84,18 +85,18 @@ namespace DevilDaggersWebsite.Razor.Pages
 				if (isHostedOnDdInfo)
 				{
 					ModArchiveCacheData archiveData = ModArchiveCache.Instance.GetArchiveDataByFilePath(filePath);
-					containsProhibitedAssets = archiveData.ModData.Any(md => md.ModAssetData.Any(mad => mad.IsProhibited));
+					containsProhibitedAssets = archiveData.Binaries.Any(md => md.Chunks.Any(mad => mad.IsProhibited));
 
-					Dto.ModData? ddBinary = archiveData.ModData.Find(md => md.ModBinaryType == ModBinaryType.Dd);
+					ModBinaryCacheData? ddBinary = archiveData.Binaries.Find(md => md.ModBinaryType == ModBinaryType.Dd);
 
 					assetModTypes = AssetModTypes.None;
-					if (archiveData.ModData.Any(md => md.ModBinaryType == ModBinaryType.Audio))
+					if (archiveData.Binaries.Any(md => md.ModBinaryType == ModBinaryType.Audio))
 						assetModTypes |= AssetModTypes.Audio;
-					if (archiveData.ModData.Any(md => md.ModBinaryType == ModBinaryType.Core) || ddBinary?.ModAssetData.Any(mad => mad.ModAssetType == AssetType.Shader) == true)
+					if (archiveData.Binaries.Any(md => md.ModBinaryType == ModBinaryType.Core) || ddBinary?.Chunks.Any(mad => mad.ModAssetType == AssetType.Shader) == true)
 						assetModTypes |= AssetModTypes.Shader;
-					if (ddBinary?.ModAssetData.Any(mad => mad.ModAssetType == AssetType.ModelBinding || mad.ModAssetType == AssetType.Model) == true)
+					if (ddBinary?.Chunks.Any(mad => mad.ModAssetType == AssetType.ModelBinding || mad.ModAssetType == AssetType.Model) == true)
 						assetModTypes |= AssetModTypes.Model;
-					if (ddBinary?.ModAssetData.Any(mad => mad.ModAssetType == AssetType.Texture) == true)
+					if (ddBinary?.Chunks.Any(mad => mad.ModAssetType == AssetType.Texture) == true)
 						assetModTypes |= AssetModTypes.Texture;
 				}
 				else

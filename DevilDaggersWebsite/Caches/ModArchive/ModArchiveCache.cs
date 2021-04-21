@@ -1,4 +1,5 @@
 ﻿using DevilDaggersDiscordBot.Logging;
+using DevilDaggersWebsite.Caches.ModArchive;
 using Microsoft.AspNetCore.Hosting;
 using System;
 using System.Collections.Concurrent;
@@ -39,7 +40,7 @@ namespace DevilDaggersWebsite.Caches.Mod
 				using Stream stream = entry.Open();
 				stream.Read(extractedContents, 0, extractedContents.Length);
 
-				archiveData.ModData.Add(Dto.ModData.CreateFromFile(entry.Name, extractedContents));
+				archiveData.Binaries.Add(ModBinaryCacheData.CreateFromFile(entry.Name, extractedContents));
 				archiveData.FileSizeExtracted += entry.Length;
 			}
 
