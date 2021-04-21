@@ -60,6 +60,7 @@ namespace DevilDaggersWebsite.Razor
 				services.AddSingleton<IScheduledTask, CreateLeaderboardHistoryFileTask>();
 
 			services.AddTransient<LeaderboardHistoryHelper>();
+			services.AddTransient<ModHelper>();
 			services.AddTransient<SpawnsetHelper>();
 			services.AddTransient<ToolHelper>();
 

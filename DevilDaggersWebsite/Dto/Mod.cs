@@ -2,7 +2,7 @@
 using System;
 using System.Collections.Generic;
 
-namespace DevilDaggersWebsite.Razor.Pagination
+namespace DevilDaggersWebsite.Dto
 {
 	public class Mod
 	{

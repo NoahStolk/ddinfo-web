@@ -1,17 +1,11 @@
-﻿using DevilDaggersCore.Mods;
-using DevilDaggersWebsite.Caches.ModArchive;
-using DevilDaggersWebsite.Entities;
-using DevilDaggersWebsite.Enumerators;
+﻿using DevilDaggersWebsite.Dto;
 using DevilDaggersWebsite.Razor.PageModels;
 using DevilDaggersWebsite.Razor.Pagination;
-using Microsoft.AspNetCore.Hosting;
+using DevilDaggersWebsite.Transients;
 using Microsoft.AspNetCore.Mvc.RazorPages;
-using Microsoft.EntityFrameworkCore;
 using System;
 using System.Collections.Generic;
-using System.IO;
 using System.Linq;
-using Io = System.IO;
 
 namespace DevilDaggersWebsite.Razor.Pages
 {
@@ -32,13 +26,11 @@ namespace DevilDaggersWebsite.Razor.Pages
 		public const string HostedAsc = nameof(Hosted) + _ascendingSuffix;
 		public const string ProhibitedAsc = nameof(Prohibited) + _ascendingSuffix;
 
-		private readonly ApplicationDbContext _dbContext;
-		private readonly IWebHostEnvironment _env;
+		private readonly ModHelper _modHelper;
 
-		public ModsModel(ApplicationDbContext dbContext, IWebHostEnvironment env)
+		public ModsModel(ModHelper modHelper)
 		{
-			_dbContext = dbContext;
-			_env = env;
+			_modHelper = modHelper;
 		}
 
 		public PaginatedList<Mod> PaginatedList { get; private set; } = null!;
@@ -74,44 +66,7 @@ namespace DevilDaggersWebsite.Razor.Pages
 			Hosted = sortOrder == HostedDesc ? HostedAsc : HostedDesc;
 			Prohibited = sortOrder == ProhibitedDesc ? ProhibitedAsc : ProhibitedDesc;
 
-			List<Mod> mods = new();
-			foreach (AssetMod assetMod in _dbContext.AssetMods.Include(am => am.PlayerAssetMods).ThenInclude(pam => pam.Player).Where(am => !am.IsHidden))
-			{
-				string filePath = Path.Combine(_env.WebRootPath, "mods", $"{assetMod.Name}.zip");
-				bool isHostedOnDdInfo = Io.File.Exists(filePath);
-				bool? containsProhibitedAssets = null;
-				AssetModTypes assetModTypes;
-				if (isHostedOnDdInfo)
-				{
-					ModArchiveCacheData archiveData = ModArchiveCache.Instance.GetArchiveDataByFilePath(filePath);
-					containsProhibitedAssets = archiveData.Binaries.Any(md => md.Chunks.Any(mad => mad.IsProhibited));
-
-					ModBinaryCacheData? ddBinary = archiveData.Binaries.Find(md => md.ModBinaryType == ModBinaryType.Dd);
-
-					assetModTypes = AssetModTypes.None;
-					if (archiveData.Binaries.Any(md => md.ModBinaryType == ModBinaryType.Audio))
-						assetModTypes |= AssetModTypes.Audio;
-					if (archiveData.Binaries.Any(md => md.ModBinaryType == ModBinaryType.Core) || ddBinary?.Chunks.Any(mad => mad.ModAssetType == AssetType.Shader) == true)
-						assetModTypes |= AssetModTypes.Shader;
-					if (ddBinary?.Chunks.Any(mad => mad.ModAssetType == AssetType.ModelBinding || mad.ModAssetType == AssetType.Model) == true)
-						assetModTypes |= AssetModTypes.Model;
-					if (ddBinary?.Chunks.Any(mad => mad.ModAssetType == AssetType.Texture) == true)
-						assetModTypes |= AssetModTypes.Texture;
-				}
-				else
-				{
-					assetModTypes = assetMod.AssetModTypes;
-				}
-
-				mods.Add(new(assetMod.Name, assetMod.PlayerAssetMods.Select(pam => pam.Player.PlayerName).OrderBy(s => s).ToList(), assetMod.LastUpdated, assetModTypes, isHostedOnDdInfo, containsProhibitedAssets));
-			}
-
-			if (!string.IsNullOrWhiteSpace(SearchAuthor))
-				mods = mods.Where(am => am.Authors.Any(a => a.Contains(SearchAuthor, StringComparison.InvariantCultureIgnoreCase))).ToList();
-
-			if (!string.IsNullOrWhiteSpace(SearchName))
-				mods = mods.Where(am => am.Name.Contains(SearchName, StringComparison.InvariantCultureIgnoreCase)).ToList();
-
+			List<Mod> mods = _modHelper.GetMods(searchAuthor, searchName);
 			mods = (sortOrder switch
 			{
 				NameAsc => mods.OrderBy(m => m.Name).ThenByDescending(m => m.Authors[0]),
