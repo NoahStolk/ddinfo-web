@@ -1,6 +1,6 @@
 ﻿@page
 @using DevilDaggersCore.Utils
-@using DevilDaggersWebsite.LeaderboardStatistics
+@using DevilDaggersWebsite.Caches.LeaderboardStatistics
 @model DevilDaggersWebsite.Razor.Pages.Leaderboard.StatisticsModel
 @{
 	ViewData["Title"] = "Leaderboard Statistics";
@@ -14,9 +14,9 @@
 	<p>
 		This page contains some global statistics from the leaderboard.
 	</p>
-	@if (StatisticsDataHolder.Instance.IsFetched)
+	@if (LeaderboardStatisticsCache.Instance.IsFetched)
 	{
-		<p>Statistics were last fetched on @HistoryUtils.HistoryJsonFileNameToDateTime(StatisticsDataHolder.Instance.FileName).ToString(FormatUtils.DateTimeUtcFormat).</p>
+		<p>Statistics were last fetched on @HistoryUtils.HistoryJsonFileNameToDateTime(LeaderboardStatisticsCache.Instance.FileName).ToString(FormatUtils.DateTimeUtcFormat).</p>
 
 		<h2>Scores</h2>
 		<div class="chart" id="scores-chart">

@@ -1,42 +1,58 @@
 ﻿using DevilDaggersCore.Game;
+using DevilDaggersDiscordBot.Logging;
 using Microsoft.AspNetCore.Hosting;
 using System;
 using System.Collections.Generic;
 using System.IO;
 using System.Linq;
+using System.Threading.Tasks;
 
-namespace DevilDaggersWebsite.LeaderboardStatistics
+namespace DevilDaggersWebsite.Caches.LeaderboardStatistics
 {
-	public sealed class StatisticsDataHolder
+	public sealed class LeaderboardStatisticsCache : IStaticCache
 	{
 		private readonly int _timeStep = 100000; // 10 seconds
 
 		private readonly List<CompressedEntry> _entries = new();
 
-		private static readonly Lazy<StatisticsDataHolder> _lazy = new(() => new());
+		private static readonly Lazy<LeaderboardStatisticsCache> _lazy = new(() => new());
 
-		private StatisticsDataHolder()
+		private LeaderboardStatisticsCache()
 		{
 		}
 
-		public static StatisticsDataHolder Instance => _lazy.Value;
+		public static LeaderboardStatisticsCache Instance => _lazy.Value;
 
 		public string FileName { get; private set; } = string.Empty;
-
 		public bool IsFetched { get; private set; }
 
 		public Dictionary<Dagger, int> DaggerStats { get; } = new();
 		public Dictionary<Death, int> DeathStats { get; } = new();
 		public Dictionary<int, int> TimeStats { get; private set; } = new();
 
-		public void Update(IWebHostEnvironment env)
+		public async Task Refresh(IWebHostEnvironment env)
 		{
-			FileName = Path.GetFileName(Directory.GetFiles(Path.Combine(env.WebRootPath, "leaderboard-statistics"))[0]);
-			Update(Path.Combine(env.WebRootPath, "leaderboard-statistics", FileName));
+			Initiate(env);
+
+			await DiscordLogger.Instance.TryLog(Channel.CacheMonitoring, env.EnvironmentName, $"Successfully refreshed `{nameof(LeaderboardStatisticsCache)}`.");
 		}
 
-		public void Update(string fileName)
+		public void Initiate(IWebHostEnvironment env)
 		{
+			string[] paths = Directory.GetFiles(Path.Combine(env.WebRootPath, "leaderboard-statistics"));
+			if (paths.Length == 0)
+				throw new("Statistics file not found.");
+			if (paths.Length > 1)
+				throw new("Multiple statistics files found.");
+
+			FileName = paths[0];
+			Update(paths[0]);
+		}
+
+		private void Update(string fileName)
+		{
+			IsFetched = false;
+
 			_entries.Clear();
 			DaggerStats.Clear();
 			DeathStats.Clear();

@@ -1,6 +1,6 @@
 ﻿using System;
 
-namespace DevilDaggersWebsite.LeaderboardStatistics
+namespace DevilDaggersWebsite.Caches.LeaderboardStatistics
 {
 	public class CompressedEntry
 	{
@@ -23,7 +23,7 @@ namespace DevilDaggersWebsite.LeaderboardStatistics
 			return bytes;
 		}
 
-		public static CompressedEntry FromBytes(byte[] bytes) => new CompressedEntry
+		public static CompressedEntry FromBytes(byte[] bytes) => new()
 		{
 			Time = BitConverter.ToUInt32(bytes, 0),
 			Kills = BitConverter.ToUInt16(bytes, 4),
