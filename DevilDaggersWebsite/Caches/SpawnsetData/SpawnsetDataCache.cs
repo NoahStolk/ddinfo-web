@@ -1,11 +1,14 @@
-﻿using System;
+﻿using DevilDaggersDiscordBot.Logging;
+using Microsoft.AspNetCore.Hosting;
+using System;
 using System.Collections.Concurrent;
 using System.IO;
+using System.Threading.Tasks;
 using Core = DevilDaggersCore.Spawnsets;
 
 namespace DevilDaggersWebsite.Caches.SpawnsetData
 {
-	public sealed class SpawnsetDataCache
+	public sealed class SpawnsetDataCache : ICache
 	{
 		private readonly ConcurrentDictionary<string, Core.SpawnsetData> _cache = new();
 
@@ -30,7 +33,11 @@ namespace DevilDaggersWebsite.Caches.SpawnsetData
 			return spawnsetData;
 		}
 
-		public void Clear()
-			=> _cache.Clear();
+		public async Task Clear(IWebHostEnvironment env)
+		{
+			int cacheCount = _cache.Count;
+			_cache.Clear();
+			await DiscordLogger.Instance.TryLog(Channel.CacheMonitoring, env.EnvironmentName, $"Successfully cleared `{nameof(SpawnsetDataCache)}`. (Removed `{cacheCount}` instances.)");
+		}
 	}
 }

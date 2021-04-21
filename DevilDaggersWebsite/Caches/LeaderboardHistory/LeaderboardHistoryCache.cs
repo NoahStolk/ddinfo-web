@@ -1,13 +1,16 @@
-﻿using DevilDaggersWebsite.Dto;
+﻿using DevilDaggersDiscordBot.Logging;
+using DevilDaggersWebsite.Dto;
+using Microsoft.AspNetCore.Hosting;
 using Newtonsoft.Json;
 using System;
 using System.Collections.Concurrent;
 using System.IO;
 using System.Text;
+using System.Threading.Tasks;
 
 namespace DevilDaggersWebsite.Caches.LeaderboardHistory
 {
-	public sealed class LeaderboardHistoryCache
+	public sealed class LeaderboardHistoryCache : ICache
 	{
 		private readonly ConcurrentDictionary<string, Leaderboard> _cache = new();
 
@@ -30,7 +33,11 @@ namespace DevilDaggersWebsite.Caches.LeaderboardHistory
 			return lb;
 		}
 
-		public void Clear()
-			=> _cache.Clear();
+		public async Task Clear(IWebHostEnvironment env)
+		{
+			int cacheCount = _cache.Count;
+			_cache.Clear();
+			await DiscordLogger.Instance.TryLog(Channel.CacheMonitoring, env.EnvironmentName, $"Successfully cleared `{nameof(LeaderboardHistoryCache)}`. (Removed `{cacheCount}` instances.)");
+		}
 	}
 }

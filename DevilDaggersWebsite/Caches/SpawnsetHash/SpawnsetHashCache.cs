@@ -10,7 +10,7 @@ using System.Threading.Tasks;
 
 namespace DevilDaggersWebsite.Caches.SpawnsetHash
 {
-	public sealed class SpawnsetHashCache
+	public sealed class SpawnsetHashCache : ICache
 	{
 		private readonly ConcurrentBag<SpawnsetHashCacheData> _cache = new();
 
@@ -60,6 +60,20 @@ namespace DevilDaggersWebsite.Caches.SpawnsetHash
 				if (_cache.Count > cacheCount)
 					await DiscordLogger.Instance.TryLog(Channel.CacheMonitoring, env.EnvironmentName, $"Successfully updated `{nameof(SpawnsetHashCache)}`. (`{_cache.Count}` (`+{_cache.Count - cacheCount}`) instances in memory.)");
 			}
+
+			static bool MatchHashes(byte[] a, byte[] b)
+			{
+				if (a.Length != b.Length)
+					return false;
+
+				for (int i = 0; i < a.Length; i++)
+				{
+					if (a[i] != b[i])
+						return false;
+				}
+
+				return true;
+			}
 		}
 
 		public async Task Clear(IWebHostEnvironment env)
@@ -67,20 +81,6 @@ namespace DevilDaggersWebsite.Caches.SpawnsetHash
 			int cacheCount = _cache.Count;
 			_cache.Clear();
 			await DiscordLogger.Instance.TryLog(Channel.CacheMonitoring, env.EnvironmentName, $"Successfully cleared `{nameof(SpawnsetHashCache)}`. (Removed `{cacheCount}` instances.)");
-		}
-
-		private static bool MatchHashes(byte[] a, byte[] b)
-		{
-			if (a.Length != b.Length)
-				return false;
-
-			for (int i = 0; i < a.Length; i++)
-			{
-				if (a[i] != b[i])
-					return false;
-			}
-
-			return true;
 		}
 	}
 }
