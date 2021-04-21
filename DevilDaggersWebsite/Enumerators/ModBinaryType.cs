@@ -1,4 +1,4 @@
-﻿namespace DevilDaggersWebsite.Dto
+﻿namespace DevilDaggersWebsite.Enumerators
 {
 	public enum ModBinaryType
 	{
