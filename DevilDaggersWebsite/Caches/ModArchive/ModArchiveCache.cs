@@ -1,5 +1,4 @@
 ﻿using DevilDaggersDiscordBot.Logging;
-using DevilDaggersWebsite.Caches.ModArchive;
 using Microsoft.AspNetCore.Hosting;
 using System;
 using System.Collections.Concurrent;
@@ -7,7 +6,7 @@ using System.IO;
 using System.IO.Compression;
 using System.Threading.Tasks;
 
-namespace DevilDaggersWebsite.Caches.Mod
+namespace DevilDaggersWebsite.Caches.ModArchive
 {
 	public sealed class ModArchiveCache
 	{

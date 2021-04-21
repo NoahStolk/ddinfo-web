@@ -1,7 +1,7 @@
 ﻿@page
 @using DevilDaggersCore.Game
 @using DevilDaggersCore.Mods
-@using DevilDaggersWebsite.Dto;
+@using DevilDaggersWebsite.Caches.ModArchive;
 @using DevilDaggersWebsite.Entities
 @using DevilDaggersWebsite.Razor.Utils
 @model ModModel
@@ -140,24 +140,24 @@
 		</div>
 	}
 
-	@if (Model.ArchiveData.ModData.Count > 0)
+	@if (Model.ArchiveData.Binaries.Count > 0)
 	{
 		<h2>Binaries</h2>
-		@foreach (ModData binary in Model.ArchiveData.ModData)
+		@foreach (ModBinaryCacheData binary in Model.ArchiveData.Binaries)
 		{
 			<div class="binary-container">
 				<div class="binary-title-container">
-					@binary.Name (@binary.ModAssetData.Count assets, @binary.ModAssetData.Count(mad => mad.IsProhibited) <span class="prohibited">prohibited</span>)
+					@binary.Name (@binary.Chunks.Count assets, @binary.Chunks.Count(mad => mad.IsProhibited) <span class="prohibited">prohibited</span>)
 				</div>
 				<div class="row">
-					@foreach (IGrouping<AssetType, ModAssetData> assetGroup in binary.ModAssetData.GroupBy(mad => mad.ModAssetType))
+					@foreach (IGrouping<AssetType, ModChunkCacheData> assetGroup in binary.Chunks.GroupBy(mad => mad.ModAssetType))
 					{
 						<div class="col-sm-12 col-md-6 col-lg-3 asset-container">
 							<div class="asset-title-container">
 								@assetGroup.Key assets (@assetGroup.Count() assets, @assetGroup.Count(mad => mad.IsProhibited) <span class="prohibited">prohibited</span>)
 							</div>
 							<div class="asset-list">
-								@foreach (ModAssetData asset in assetGroup)
+								@foreach (ModChunkCacheData asset in assetGroup)
 								{
 									<div class="@(asset.IsProhibited ? "prohibited" : string.Empty)">
 										@asset.Name@* (@await Html.PartialAsync("Partials/FileSizePartial", (long)asset.Size))*@

@@ -1,7 +1,6 @@
-﻿using DevilDaggersWebsite.Caches.ModArchive;
-using System.Collections.Generic;
+﻿using System.Collections.Generic;
 
-namespace DevilDaggersWebsite.Caches.Mod
+namespace DevilDaggersWebsite.Caches.ModArchive
 {
 	public class ModArchiveCacheData
 	{

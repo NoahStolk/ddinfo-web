@@ -1,6 +1,6 @@
 ﻿using DevilDaggersDiscordBot.Logging;
 using DevilDaggersWebsite.Caches.LeaderboardHistory;
-using DevilDaggersWebsite.Caches.Mod;
+using DevilDaggersWebsite.Caches.ModArchive;
 using DevilDaggersWebsite.Caches.SpawnsetData;
 using DevilDaggersWebsite.Caches.SpawnsetHash;
 using DevilDaggersWebsite.LeaderboardStatistics;
