@@ -51,11 +51,13 @@ namespace DevilDaggersWebsite.Transients
 				.Select(amwfi =>
 				{
 					bool? containsProhibitedAssets = null;
+					ModArchive? modArchive = null;
 					AssetModTypes assetModTypes;
 					if (amwfi.Value.FileExists)
 					{
 						ModArchiveCacheData archiveData = ModArchiveCache.Instance.GetArchiveDataByFilePath(amwfi.Value.Path!);
 						containsProhibitedAssets = archiveData.Binaries.Any(md => md.Chunks.Any(mad => mad.IsProhibited));
+						modArchive = new(archiveData.FileSize, archiveData.FileSizeExtracted, archiveData.Binaries.ConvertAll(b => new ModBinary(b.Name, b.ModBinaryType)));
 
 						ModBinaryCacheData? ddBinary = archiveData.Binaries.Find(md => md.ModBinaryType == ModBinaryType.Dd);
 
@@ -80,7 +82,8 @@ namespace DevilDaggersWebsite.Transients
 						lastUpdated: amwfi.Key.LastUpdated,
 						assetModTypes: assetModTypes,
 						isHostedOnDdInfo: amwfi.Value.FileExists,
-						containsProhibitedAssets: containsProhibitedAssets);
+						containsProhibitedAssets: containsProhibitedAssets,
+						modArchive: modArchive);
 				})
 				.ToList();
 		}
