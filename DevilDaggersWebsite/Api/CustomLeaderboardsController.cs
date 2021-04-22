@@ -386,28 +386,28 @@ namespace DevilDaggersWebsite.Api
 
 				if (customLeaderboard.Category.IsAscending())
 				{
-					if (time < customLeaderboard.TimeLeviathan)
+					if (time <= customLeaderboard.TimeLeviathan)
 						color = DiscordColor.DarkRed;
-					else if (time < customLeaderboard.TimeDevil)
+					else if (time <= customLeaderboard.TimeDevil)
 						color = DiscordColor.Red;
-					else if (time < customLeaderboard.TimeGolden)
+					else if (time <= customLeaderboard.TimeGolden)
 						color = DiscordColor.Gold;
-					else if (time < customLeaderboard.TimeSilver)
+					else if (time <= customLeaderboard.TimeSilver)
 						color = DiscordColor.LightGray;
-					else if (time < customLeaderboard.TimeBronze)
+					else if (time <= customLeaderboard.TimeBronze)
 						color = DiscordColor.Orange;
 				}
 				else
 				{
-					if (time > customLeaderboard.TimeLeviathan)
+					if (time >= customLeaderboard.TimeLeviathan)
 						color = DiscordColor.DarkRed;
-					else if (time > customLeaderboard.TimeDevil)
+					else if (time >= customLeaderboard.TimeDevil)
 						color = DiscordColor.Red;
-					else if (time > customLeaderboard.TimeGolden)
+					else if (time >= customLeaderboard.TimeGolden)
 						color = DiscordColor.Gold;
-					else if (time > customLeaderboard.TimeSilver)
+					else if (time >= customLeaderboard.TimeSilver)
 						color = DiscordColor.LightGray;
-					else if (time > customLeaderboard.TimeBronze)
+					else if (time >= customLeaderboard.TimeBronze)
 						color = DiscordColor.Orange;
 				}
 
