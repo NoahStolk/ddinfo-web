@@ -35,21 +35,21 @@ namespace DevilDaggersWebsite.Tasks
 					{
 						string fileName = $"{DateTime.UtcNow:yyyyMMddHHmm}.json";
 						File.WriteAllText(Path.Combine(_env.WebRootPath, "leaderboard-history", fileName), JsonConvert.SerializeObject(lb));
-						await BotLogger.Instance.TryLog(Channel.TaskMonitoring, _env.EnvironmentName, $"`{nameof(CreateLeaderboardHistoryFileTask)}` succeeded. `{fileName}` was created.");
+						await BotLogger.Instance.TryLog(Channel.TaskMonitoring, _env.EnvironmentName, $":white_check_mark: `{nameof(CreateLeaderboardHistoryFileTask)}` succeeded. `{fileName}` was created.");
 					}
 					else
 					{
-						await BotLogger.Instance.TryLog(Channel.TaskMonitoring, _env.EnvironmentName, $"`{nameof(CreateLeaderboardHistoryFileTask)}` failed because the Devil Daggers servers didn't return a leaderboard.");
+						await BotLogger.Instance.TryLog(Channel.TaskMonitoring, _env.EnvironmentName, $":x: `{nameof(CreateLeaderboardHistoryFileTask)}` failed because the Devil Daggers servers didn't return a leaderboard.");
 					}
 				}
 				else
 				{
-					await BotLogger.Instance.TryLog(Channel.TaskMonitoring, _env.EnvironmentName, $"`{nameof(CreateLeaderboardHistoryFileTask)}` skipped because a file for today's history already exists ({historyFileName}).");
+					await BotLogger.Instance.TryLog(Channel.TaskMonitoring, _env.EnvironmentName, $":information_source: `{nameof(CreateLeaderboardHistoryFileTask)}` skipped because a file for today's history already exists ({historyFileName}).");
 				}
 			}
 			catch (Exception ex)
 			{
-				await BotLogger.Instance.TryLog(Channel.TaskMonitoring, _env.EnvironmentName, $"`{nameof(CreateLeaderboardHistoryFileTask)}` failed with exception: `{ex.Message}`");
+				await BotLogger.Instance.TryLog(Channel.TaskMonitoring, _env.EnvironmentName, $":x: `{nameof(CreateLeaderboardHistoryFileTask)}` failed with exception: `{ex.Message}`");
 			}
 		}
 
