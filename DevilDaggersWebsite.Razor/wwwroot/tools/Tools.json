@@ -1168,9 +1168,18 @@
 	{
 		"Name": "DevilDaggersAssetEditor",
 		"DisplayName": "Devil Daggers Asset Editor",
-		"VersionNumber": "0.60.2.0",
+		"VersionNumber": "0.60.2.1",
 		"VersionNumberRequired": "0.46.0.0",
 		"Changelog": [
+			{
+				"VersionNumber": "0.60.2.1",
+				"Date": "2021-04-22T00:00:00",
+				"Changes": [
+					{
+						"Description": "Rebuilt application to fix missing dependency."
+					}
+				]
+			},
 			{
 				"VersionNumber": "0.60.2.0",
 				"Date": "2021-04-20T00:00:00",
