@@ -291,6 +291,7 @@ namespace DevilDaggersWebsite.Api
 			customEntry.HomingDaggersEaten = uploadRequest.HomingDaggersEaten;
 			customEntry.GemsDespawned = uploadRequest.GemsDespawned;
 			customEntry.GemsEaten = uploadRequest.GemsEaten;
+			customEntry.GemsTotal = uploadRequest.GemsTotal;
 			customEntry.DeathType = uploadRequest.DeathType;
 			customEntry.LevelUpTime2 = uploadRequest.LevelUpTime2;
 			customEntry.LevelUpTime3 = uploadRequest.LevelUpTime3;

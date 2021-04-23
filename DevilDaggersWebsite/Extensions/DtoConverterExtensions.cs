@@ -14,6 +14,7 @@ namespace DevilDaggersWebsite.Extensions
 				GemsCollected = uploadRequest.GemsCollected,
 				GemsDespawned = uploadRequest.GemsDespawned,
 				GemsEaten = uploadRequest.GemsEaten,
+				GemsTotal = uploadRequest.GemsTotal,
 				EnemiesKilled = uploadRequest.EnemiesKilled,
 				DeathType = uploadRequest.DeathType,
 				DaggersHit = uploadRequest.DaggersHit,
