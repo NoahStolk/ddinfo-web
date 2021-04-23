@@ -89,6 +89,21 @@
 
 	@if (hasTrailer || hasScreenshots)
 	{
+		@if (hasTrailer)
+		{
+			@if (hasScreenshots)
+			{
+				<h2>Trailer &amp; Screenshots</h2>
+			}
+			else
+			{
+				<h2>Trailer</h2>
+			}
+		}
+		else
+		{
+			<h2>Screenshots</h2>
+		}
 		<div class="row">
 			@if (hasTrailer)
 			{
