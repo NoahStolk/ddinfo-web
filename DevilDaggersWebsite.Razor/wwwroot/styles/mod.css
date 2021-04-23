@@ -45,7 +45,6 @@
 
 .binary-container {
 	background-color: var(--col-gray-11);
-	margin-bottom: 8px;
 }
 
 .binary-summary-container > div:nth-child(2n+1) {
