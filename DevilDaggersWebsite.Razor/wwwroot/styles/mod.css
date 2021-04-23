@@ -39,14 +39,21 @@
 	color: var(--col-red);
 }
 
+.mod-binary-type {
+	text-transform: lowercase;
+}
+
 .binary-container {
+	background-color: var(--col-gray-11);
+	margin-bottom: 8px;
+}
+
+.binary-summary-container > div:nth-child(2n+1) {
 	background-color: var(--col-gray-11);
 }
 
-.binary-title-container {
-	background-color: var(--col-gray-18);
-	font-size: 24px;
-	padding: 16px;
+.binary-summary-container > div:nth-child(2n) {
+	background-color: var(--col-gray-08);
 }
 
 .asset-container {
@@ -55,14 +62,11 @@
 
 .asset-title-container {
 	padding: 8px;
-	min-height: calc(3em + 2px);
 }
 
 .asset-list {
 	padding: 8px;
-	min-height: 128px;
-	height: 30vh;
-	max-height: 320px;
+	height: 256px;
 	overflow-y: scroll;
 	background-color: var(--col-gray-08);
 }
