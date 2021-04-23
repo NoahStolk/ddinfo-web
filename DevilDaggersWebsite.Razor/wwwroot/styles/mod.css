@@ -65,7 +65,7 @@
 
 .asset-list {
 	padding: 8px;
-	height: 256px;
+	height: 260px;
 	overflow-y: scroll;
 	background-color: var(--col-gray-08);
 }
