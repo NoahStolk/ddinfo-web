@@ -32,8 +32,8 @@
 					<div class="col-xs-6"><a asp-page="/Spawnsets" asp-route-searchAuthor="@Model.SpawnsetFile.Player.PlayerName">@Model.SpawnsetFile.Player.PlayerName</a></div>
 				</div>
 				<div class="row">
-					<div class="col-xs-6">Last updated</div>
-					<div class="col-xs-6">@Model.SpawnsetFile.LastUpdated.ToString("dd MMM yyyy")</div>
+					<div class="col-xs-6">Created</div>
+					<div class="col-xs-6">@Model.Leaderboard.DateCreated?.ToString("dd MMM yyyy")</div>
 				</div>
 				<div class="row">
 					<div class="col-xs-6">Description</div>
