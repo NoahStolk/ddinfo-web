@@ -12,15 +12,17 @@ namespace DevilDaggersWebsite.Caches.ModArchive
 		public static readonly ulong Magic1 = MakeMagic(0x3AUL, 0x68UL, 0x78UL, 0x3AUL);
 		public static readonly ulong Magic2 = MakeMagic(0x72UL, 0x67UL, 0x3AUL, 0x01UL);
 
-		public ModBinaryCacheData(string name, ModBinaryType modBinaryType, List<ModChunkCacheData> chunks, List<(string Name, bool IsProhibited)>? loudnessAssets)
+		public ModBinaryCacheData(string name, long size, ModBinaryType modBinaryType, List<ModChunkCacheData> chunks, List<(string Name, bool IsProhibited)>? loudnessAssets)
 		{
 			Name = name;
+			Size = size;
 			ModBinaryType = modBinaryType;
 			Chunks = chunks;
 			LoudnessAssets = loudnessAssets;
 		}
 
 		public string Name { get; }
+		public long Size { get; }
 		public ModBinaryType ModBinaryType { get; }
 		public List<ModChunkCacheData> Chunks { get; }
 		public List<(string Name, bool IsProhibited)>? LoudnessAssets { get; }
@@ -111,7 +113,7 @@ namespace DevilDaggersWebsite.Caches.ModArchive
 				}
 			}
 
-			return new(fileName, modBinaryType, chunks, loudnessAssets);
+			return new(fileName, fileContents.Length, modBinaryType, chunks, loudnessAssets);
 
 			string ReadNullTerminatedString(byte[] buffer, int offset)
 			{

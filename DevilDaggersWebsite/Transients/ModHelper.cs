@@ -57,7 +57,7 @@ namespace DevilDaggersWebsite.Transients
 					{
 						ModArchiveCacheData archiveData = ModArchiveCache.Instance.GetArchiveDataByFilePath(amwfi.Value.Path!);
 						containsProhibitedAssets = archiveData.Binaries.Any(md => md.Chunks.Any(mad => mad.IsProhibited));
-						modArchive = new(archiveData.FileSize, archiveData.FileSizeExtracted, archiveData.Binaries.ConvertAll(b => new ModBinary(b.Name, b.ModBinaryType)));
+						modArchive = new(archiveData.FileSize, archiveData.FileSizeExtracted, archiveData.Binaries.ConvertAll(b => new ModBinary(b.Name, b.Size, b.ModBinaryType)));
 
 						ModBinaryCacheData? ddBinary = archiveData.Binaries.Find(md => md.ModBinaryType == ModBinaryType.Dd);
 
