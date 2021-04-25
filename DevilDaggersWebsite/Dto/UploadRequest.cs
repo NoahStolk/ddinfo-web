@@ -26,8 +26,9 @@ namespace DevilDaggersWebsite.Dto
 		public string ClientVersion { get; init; } = null!;
 		public OperatingSystem OperatingSystem { get; init; }
 		public BuildMode BuildMode { get; init; }
-		public string Validation { get; set; } = null!;
-		public bool IsReplay { get; set; }
+		public string Validation { get; init; } = null!;
+		public bool IsReplay { get; init; }
+		public bool ProhibitedMods { get; init; }
 		public List<GameState> GameStates { get; init; } = new();
 	}
 }
