@@ -31,7 +31,7 @@ namespace DevilDaggersWebsite.Razor.Pages.Admin.AssetMods
 
 			try
 			{
-				const int maxFileSize = 64 * 1024 * 1024;
+				const int maxFileSize = 256 * 1024 * 1024;
 				const int maxFileNameLength = 80;
 
 				if (FormFile == null)
