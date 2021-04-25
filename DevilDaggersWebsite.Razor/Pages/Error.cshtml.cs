@@ -1,4 +1,4 @@
-using DevilDaggersCore.Utils;
+﻿using DevilDaggersCore.Utils;
 using DevilDaggersDiscordBot.Extensions;
 using DevilDaggersDiscordBot.Logging;
 using DSharpPlus.Entities;
@@ -25,22 +25,32 @@ namespace DevilDaggersWebsite.Razor.Pages
 			{
 				DiscordEmbedBuilder builder = new()
 				{
-					Title = "INTERNAL SERVER ERROR",
+					Title = "Internal Server Error",
 					Color = DiscordColor.Red,
 				};
 
-				IExceptionHandlerPathFeature? exceptionFeature = HttpContext.Features?.Get<IExceptionHandlerPathFeature>();
+				IExceptionHandlerPathFeature? exceptionFeature = HttpContext?.Features?.Get<IExceptionHandlerPathFeature>();
+				builder.AddFieldObject("Environment", _env.EnvironmentName, true);
 				builder.AddFieldObject("Timestamp", DateTime.UtcNow.ToString(FormatUtils.DateTimeFullFormat), true);
-				builder.AddFieldObject("Route", exceptionFeature?.Path, true);
-				builder.AddFieldObject("Request query string", HttpContext.Request?.QueryString, true);
+				builder.AddFieldObject("Request query string", HttpContext?.Request?.QueryString, true);
+
 				if (exceptionFeature != null)
+				{
+					builder.AddFieldObject("Route", exceptionFeature.Path, true);
+					if (exceptionFeature.Error.StackTrace != null)
+					{
+						string stackTrace = exceptionFeature.Error.StackTrace;
+						builder.AddFieldObject("Stack trace", stackTrace.Substring(0, Math.Min(100, stackTrace.Length)));
+					}
+
 					builder.AddError(exceptionFeature.Error);
+				}
 
 				await DiscordLogger.Instance.TryLog(Channel.ErrorMonitoring, _env.EnvironmentName, null, builder.Build());
 			}
 			catch (Exception ex)
 			{
-				await DiscordLogger.Instance.TryLog(Channel.ErrorMonitoring, _env.EnvironmentName, $"Error report '{nameof(ErrorModel)}' failed! {ex.Message}");
+				await DiscordLogger.Instance.TryLog(Channel.ErrorMonitoring, _env.EnvironmentName, $"Error report on {nameof(ErrorModel)} failed: {ex.Message}");
 			}
 		}
 	}
