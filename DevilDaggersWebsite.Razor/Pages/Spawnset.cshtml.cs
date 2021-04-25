@@ -25,6 +25,7 @@ namespace DevilDaggersWebsite.Razor.Pages
 		public Spawnset? Spawnset { get; private set; }
 		public int FileSize { get; private set; }
 		public bool HasCustomLeaderboard { get; private set; }
+		public string GameVersion { get; private set; } = string.Empty;
 
 		public ActionResult? OnGet()
 		{
@@ -43,6 +44,8 @@ namespace DevilDaggersWebsite.Razor.Pages
 			Spawnset = spawnset;
 			FileSize = fileBytes.Length;
 			HasCustomLeaderboard = _dbContext.CustomLeaderboards.Any(cl => cl.SpawnsetFileId == SpawnsetFile.Id && !cl.IsArchived);
+
+			GameVersion = Spawnset.WorldVersion == 8 ? "Pre-release / V1" : Spawnset.SpawnVersion == 4 ? "V2 / V3" : "V3.1";
 
 			return null;
 		}
