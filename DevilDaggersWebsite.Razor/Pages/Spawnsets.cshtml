@@ -1,5 +1,6 @@
 ﻿@page
 @model SpawnsetsModel
+@using DevilDaggersCore.Spawnsets
 @using DevilDaggersCore.Utils
 @using DevilDaggersWebsite.Razor.Utils
 @using DevilDaggersWebsite.Dto
@@ -25,19 +26,19 @@
 				<table>
 					<thead>
 						<tr>
-							<th class="hidden-xs" colspan="3"></th>
+							<th class="hidden-xs" colspan="5"></th>
 							<th class="hidden-xs hidden-sm hidden-md" colspan="2">Non-loop</th>
 							<th class="hidden-xs hidden-sm hidden-md" colspan="3">Loop</th>
 						</tr>
 						<tr class="navigation-sort">
-							<th width="500">
+							<th width="360">
 								<a asp-page="./Spawnsets"
 								   asp-route-searchAuthor="@Model.SearchAuthor"
 								   asp-route-searchName="@Model.SearchName"
 								   asp-route-sortOrder="@Model.Name"
 								   asp-route-pageIndex="@Model.PageIndex">Name</a>
 							</th>
-							<th width="260">
+							<th width="200">
 								<a asp-page="./Spawnsets"
 								   asp-route-searchAuthor="@Model.SearchAuthor"
 								   asp-route-searchName="@Model.SearchName"
@@ -51,28 +52,42 @@
 								   asp-route-sortOrder="@Model.LastUpdated"
 								   asp-route-pageIndex="@Model.PageIndex">Last updated</a>
 							</th>
-							<th class="hidden-xs hidden-sm hidden-md" width="160">
+							<th class="hidden-xs hidden-sm hidden-md" width="140">
+								<a asp-page="./Spawnsets"
+								   asp-route-searchAuthor="@Model.SearchAuthor"
+								   asp-route-searchName="@Model.SearchName"
+								   asp-route-sortOrder="@Model.GameVersion"
+								   asp-route-pageIndex="@Model.PageIndex">Game version</a>
+							</th>
+							<th class="hidden-xs" width="140">
+								<a asp-page="./Spawnsets"
+								   asp-route-searchAuthor="@Model.SearchAuthor"
+								   asp-route-searchName="@Model.SearchName"
+								   asp-route-sortOrder="@Model.GameMode"
+								   asp-route-pageIndex="@Model.PageIndex">Game mode</a>
+							</th>
+							<th class="hidden-xs hidden-sm hidden-md" width="140">
 								<a asp-page="./Spawnsets"
 								   asp-route-searchAuthor="@Model.SearchAuthor"
 								   asp-route-searchName="@Model.SearchName"
 								   asp-route-sortOrder="@Model.NonLoopLength"
 								   asp-route-pageIndex="@Model.PageIndex">Length</a>
 							</th>
-							<th class="hidden-xs hidden-sm hidden-md" width="160">
+							<th class="hidden-xs hidden-sm hidden-md" width="80">
 								<a asp-page="./Spawnsets"
 								   asp-route-searchAuthor="@Model.SearchAuthor"
 								   asp-route-searchName="@Model.SearchName"
 								   asp-route-sortOrder="@Model.NonLoopSpawns"
 								   asp-route-pageIndex="@Model.PageIndex">Spawns</a>
 							</th>
-							<th class="hidden-xs hidden-sm hidden-md" width="160">
+							<th class="hidden-xs hidden-sm hidden-md" width="140">
 								<a asp-page="./Spawnsets"
 								   asp-route-searchAuthor="@Model.SearchAuthor"
 								   asp-route-searchName="@Model.SearchName"
 								   asp-route-sortOrder="@Model.LoopLength"
 								   asp-route-pageIndex="@Model.PageIndex">Length (wave 1)</a>
 							</th>
-							<th class="hidden-xs hidden-sm hidden-md" width="160">
+							<th class="hidden-xs hidden-sm hidden-md" width="80">
 								<a asp-page="./Spawnsets"
 								   asp-route-searchAuthor="@Model.SearchAuthor"
 								   asp-route-searchName="@Model.SearchName"
@@ -85,10 +100,16 @@
 						@foreach (SpawnsetFile spawnsetFile in Model.PaginatedList)
 						{
 							<tr>
-								<td><a asp-page="Spawnset" asp-route-spawnset="@spawnsetFile.Name">@spawnsetFile.Name</a></td>
-								<td><a asp-page="/Spawnsets" asp-route-searchAuthor="@spawnsetFile.AuthorName">@spawnsetFile.AuthorName</a></td>
+								<td><a class="prevent-break-out" asp-page="Spawnset" asp-route-spawnset="@spawnsetFile.Name">@spawnsetFile.Name</a></td>
+								<td><a class="prevent-break-out" asp-page="/Spawnsets" asp-route-searchAuthor="@spawnsetFile.AuthorName">@spawnsetFile.AuthorName</a></td>
 								<td class="hidden-xs">
 									@spawnsetFile.LastUpdated.ToString("dd MMM yyyy")
+								</td>
+								<td class="hidden-xs hidden-sm hidden-md">
+									@Spawnset.GetGameVersionString(spawnsetFile.SpawnsetData.WorldVersion, spawnsetFile.SpawnsetData.SpawnVersion)
+								</td>
+								<td class="hidden-xs">
+									@spawnsetFile.SpawnsetData.GameMode
 								</td>
 								<td class="hidden-xs hidden-sm hidden-md">
 									@(!spawnsetFile.SpawnsetData.NonLoopLength.HasValue ? RazorUtils.NAString : Html.Raw(spawnsetFile.SpawnsetData.NonLoopLength.Value.ToString(FormatUtils.SpawnTimeFormat)))

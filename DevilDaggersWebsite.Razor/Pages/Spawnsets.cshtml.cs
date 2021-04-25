@@ -16,6 +16,8 @@ namespace DevilDaggersWebsite.Razor.Pages
 		public const string NameDesc = nameof(Name);
 		public const string AuthorDesc = nameof(Author);
 		public const string LastUpdatedDesc = nameof(LastUpdated);
+		public const string GameVersionDesc = nameof(GameVersion);
+		public const string GameModeDesc = nameof(GameMode);
 		public const string NonLoopLengthDesc = nameof(NonLoopLength);
 		public const string NonLoopSpawnsDesc = nameof(NonLoopSpawns);
 		public const string LoopLengthDesc = nameof(LoopLength);
@@ -23,6 +25,8 @@ namespace DevilDaggersWebsite.Razor.Pages
 		public const string NameAsc = nameof(Name) + _ascendingSuffix;
 		public const string AuthorAsc = nameof(Author) + _ascendingSuffix;
 		public const string LastUpdatedAsc = nameof(LastUpdated) + _ascendingSuffix;
+		public const string GameVersionAsc = nameof(GameVersion) + _ascendingSuffix;
+		public const string GameModeAsc = nameof(GameMode) + _ascendingSuffix;
 		public const string NonLoopLengthAsc = nameof(NonLoopLength) + _ascendingSuffix;
 		public const string NonLoopSpawnsAsc = nameof(NonLoopSpawns) + _ascendingSuffix;
 		public const string LoopLengthAsc = nameof(LoopLength) + _ascendingSuffix;
@@ -43,6 +47,8 @@ namespace DevilDaggersWebsite.Razor.Pages
 		public string? Name { get; set; }
 		public string? Author { get; set; }
 		public string? LastUpdated { get; set; }
+		public string? GameVersion { get; set; }
+		public string? GameMode { get; set; }
 		public string? NonLoopLength { get; set; }
 		public string? NonLoopSpawns { get; set; }
 		public string? LoopLength { get; set; }
@@ -65,6 +71,8 @@ namespace DevilDaggersWebsite.Razor.Pages
 			Name = sortOrder == NameAsc ? NameDesc : NameAsc;
 			Author = sortOrder == AuthorAsc ? AuthorDesc : AuthorAsc;
 			LastUpdated = sortOrder == LastUpdatedAsc ? LastUpdatedDesc : LastUpdatedAsc;
+			GameVersion = sortOrder == GameVersionAsc ? GameVersionDesc : GameVersionAsc;
+			GameMode = sortOrder == GameModeAsc ? GameModeDesc : GameModeAsc;
 			NonLoopLength = sortOrder == NonLoopLengthDesc ? NonLoopLengthAsc : NonLoopLengthDesc;
 			NonLoopSpawns = sortOrder == NonLoopSpawnsDesc ? NonLoopSpawnsAsc : NonLoopSpawnsDesc;
 			LoopLength = sortOrder == LoopLengthDesc ? LoopLengthAsc : LoopLengthDesc;
@@ -78,6 +86,10 @@ namespace DevilDaggersWebsite.Razor.Pages
 				AuthorAsc => spawnsetFiles.OrderBy(s => s.AuthorName).ThenByDescending(s => s.Name),
 				AuthorDesc => spawnsetFiles.OrderByDescending(s => s.AuthorName).ThenBy(s => s.Name),
 				LastUpdatedAsc => spawnsetFiles.OrderBy(s => s.LastUpdated).ThenByDescending(s => s.Name),
+				GameVersionAsc => spawnsetFiles.OrderBy(s => s.SpawnsetData.SpawnVersion + s.SpawnsetData.WorldVersion).ThenByDescending(s => s.Name),
+				GameVersionDesc => spawnsetFiles.OrderByDescending(s => s.SpawnsetData.SpawnVersion + s.SpawnsetData.WorldVersion).ThenBy(s => s.Name),
+				GameModeAsc => spawnsetFiles.OrderBy(s => s.SpawnsetData.GameMode).ThenByDescending(s => s.Name),
+				GameModeDesc => spawnsetFiles.OrderByDescending(s => s.SpawnsetData.GameMode).ThenBy(s => s.Name),
 				NonLoopLengthAsc => spawnsetFiles.OrderBy(s => s.SpawnsetData.NonLoopLength).ThenBy(s => s.SpawnsetData.NonLoopSpawnCount),
 				NonLoopLengthDesc => spawnsetFiles.OrderByDescending(s => s.SpawnsetData.NonLoopLength).ThenByDescending(s => s.SpawnsetData.NonLoopSpawnCount),
 				NonLoopSpawnsAsc => spawnsetFiles.OrderBy(s => s.SpawnsetData.NonLoopSpawnCount),
