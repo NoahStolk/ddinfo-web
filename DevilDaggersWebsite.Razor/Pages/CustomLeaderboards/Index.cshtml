@@ -123,8 +123,8 @@
 							<td class="prevent-break-out"><a asp-page="/CustomLeaderboards/Leaderboard" asp-route-spawnsetName="@cl.SpawnsetName">@cl.SpawnsetName</a></td>
 							<td class="prevent-break-out"><a asp-route-searchAuthor="@cl.AuthorName">@cl.AuthorName</a></td>
 							<td class="hidden-xs">@cl.Category</td>
-							<td class="text-right hidden-xs hidden-sm hidden-md">@(new HtmlString(cl.DateLastPlayed?.ToString("dd MMM yyyy")) ?? RazorUtils.NAString)</td>
-							<td class="text-right hidden-xs hidden-sm hidden-md">@(new HtmlString(cl.DateCreated?.ToString("dd MMM yyyy")) ?? RazorUtils.NAString)</td>
+							<td class="text-right hidden-xs hidden-sm hidden-md">@(cl.DateLastPlayed != null ? new HtmlString(cl.DateLastPlayed.Value.ToString("dd MMM yyyy")) : RazorUtils.NAString)</td>
+							<td class="text-right hidden-xs hidden-sm hidden-md">@(cl.DateCreated != null ? new HtmlString(cl.DateCreated.Value.ToString("dd MMM yyyy")) : RazorUtils.NAString)</td>
 							<td class="text-right hidden-xs hidden-sm hidden-md">@(possibleMissingSubmitCounts ? "+" : string.Empty)@cl.TotalRunsSubmitted</td>
 							<td class="text-right hidden-xs hidden-sm hidden-md">@cl.TotalPlayers</td>
 							<td class="text-right hidden-xs hidden-sm hidden-md dagger-time bronze">@cl.TimeBronze.FormatTimeInteger()</td>
