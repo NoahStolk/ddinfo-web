@@ -8,6 +8,7 @@ using Microsoft.AspNetCore.Mvc;
 using Microsoft.AspNetCore.Mvc.RazorPages;
 using System;
 using System.IO;
+using System.Linq;
 using System.Threading.Tasks;
 using Io = System.IO;
 
@@ -17,6 +18,8 @@ namespace DevilDaggersWebsite.Razor.Pages.Admin.AssetMods
 	{
 		public const int MaxFileSize = 256 * 1024 * 1024;
 		public const int MaxFileNameLength = 80;
+
+		public const long MaxHostingSpace = 5L * 1024 * 1024 * 1024;
 
 		private readonly IWebHostEnvironment _env;
 
@@ -32,6 +35,8 @@ namespace DevilDaggersWebsite.Razor.Pages.Admin.AssetMods
 		{
 			string failedAttemptMessage = $":x: Failed attempt from `{this.GetIdentity()}` to upload new ASSETMOD file";
 
+			string modsDirectory = Path.Combine(_env.WebRootPath, "mods");
+
 			try
 			{
 				if (FormFile == null)
@@ -43,6 +48,14 @@ namespace DevilDaggersWebsite.Razor.Pages.Admin.AssetMods
 				if (FormFile.Length > MaxFileSize)
 				{
 					await DiscordLogger.Instance.TryLog(Channel.AuditLogMonitoring, _env.EnvironmentName, $"{failedAttemptMessage}: File too large (`{FormFile.Length:n0}` / max `{MaxFileSize:n0}` bytes).");
+					return;
+				}
+
+				DirectoryInfo di = new(modsDirectory);
+				long usedSpace = di.EnumerateFiles("*.*", SearchOption.AllDirectories).Sum(fi => fi.Length);
+				if (FormFile.Length + usedSpace > MaxHostingSpace)
+				{
+					await DiscordLogger.Instance.TryLog(Channel.AuditLogMonitoring, _env.EnvironmentName, $"{failedAttemptMessage}: This file is {FormFile.Length:n0} bytes in size, but only {MaxHostingSpace - usedSpace:n0} bytes of free space is available.");
 					return;
 				}
 
@@ -58,7 +71,7 @@ namespace DevilDaggersWebsite.Razor.Pages.Admin.AssetMods
 					return;
 				}
 
-				string filePath = Path.Combine(_env.WebRootPath, "mods", FormFile.FileName);
+				string filePath = Path.Combine(modsDirectory, FormFile.FileName);
 				if (Io.File.Exists(filePath))
 				{
 					await DiscordLogger.Instance.TryLog(Channel.AuditLogMonitoring, _env.EnvironmentName, $"{failedAttemptMessage}: File `{FormFile.FileName}` already exists.");
