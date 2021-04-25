@@ -88,6 +88,11 @@
 		<span class="archive-note">This leaderboard is archived. You can still submit scores to it, but it won't show up in the list of leaderboards or player statistics.</span>
 	}
 
+	@if (Model.Leaderboard.Category == Enumerators.CustomLeaderboardCategory.TimeAttack)
+	{
+		<span class="time-attack-note">TimeAttack leaderboards are in development and not yet supported.</span>
+	}
+
 	<div class="hidden-xs text-center">
 		<div class="flex-container flex-center flex-space-evenly icon-list">
 			@for (int i = 0; i < 5; i++)
