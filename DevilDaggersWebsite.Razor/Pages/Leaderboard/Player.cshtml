@@ -227,6 +227,28 @@
 					</div>
 				</div>
 			}
+			@if (Model.CustomDaggerCountsTimeAttack.Any(i => i > 0))
+			{
+				<div class="flex-container player-section">
+					<div class="leaderboard-data-container">
+						<div class="leaderboard-data-header">Custom Leaderboard Statistics (Time Attack)</div>
+						@for (int i = 0; i < Model.CustomDaggerCountsTimeAttack.Length; i++)
+						{
+							int count = Model.CustomDaggerCountsTimeAttack[i];
+							string daggerName = PlayerModel.DaggerNames[i];
+
+							<div class="flex-container leaderboard-data">
+								<div>@daggerName.ToUpperFirst() daggers</div>
+								<div class="text-right @daggerName">@count</div>
+							</div>
+						}
+						<div class="flex-container leaderboard-data">
+							<div>Played</div>
+							<div class="text-right">@Model.CustomDaggerCountsTimeAttack.Sum() / @Model.TotalTimeAttackCustomLeaderboards</div>
+						</div>
+					</div>
+				</div>
+			}
 			@if (Model.CustomDaggerCountsSpeedrun.Any(i => i > 0))
 			{
 				<div class="flex-container player-section">
