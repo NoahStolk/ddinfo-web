@@ -39,7 +39,7 @@ namespace ToolsShared
 			foreach (string path in Directory.GetFiles(@"C:\Users\NOAH\source\repos\DevilDaggersWebsite\DevilDaggersWebsite.Razor\wwwroot\leaderboard-history", "*.json"))
 			{
 				string jsonString = File.ReadAllText(path, Encoding.UTF8);
-				leaderboards.Add(path, JsonConvert.DeserializeObject<Leaderboard>(jsonString));
+				leaderboards.Add(path, JsonConvert.DeserializeObject<Leaderboard>(jsonString) ?? throw new("Could not deserialize leaderboard."));
 			}
 
 			return leaderboards;

@@ -15,7 +15,7 @@ namespace LeaderboardJsonFormatter
 			{
 				try
 				{
-					Leaderboard leaderboard = JsonConvert.DeserializeObject<Leaderboard>(File.ReadAllText(path));
+					Leaderboard leaderboard = JsonConvert.DeserializeObject<Leaderboard>(File.ReadAllText(path)) ?? throw new("Could not deserialize leaderboard.");
 					Formatting formatting = leaderboard.DateTime > fullHistoryDateStart ? Formatting.None : Formatting.Indented;
 					File.WriteAllText(path, JsonConvert.SerializeObject(leaderboard, formatting));
 

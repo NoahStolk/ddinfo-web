@@ -56,7 +56,7 @@ namespace LeaderboardJsonCreator
 
 			if (result.HasValue && result.Value)
 			{
-				_leaderboard = JsonConvert.DeserializeObject<Leaderboard>(File.ReadAllText(dialog.FileName));
+				_leaderboard = JsonConvert.DeserializeObject<Leaderboard>(File.ReadAllText(dialog.FileName)) ?? throw new("Could not deserialize leaderboard.");
 				_leaderboard.Entries = _leaderboard.Entries.OrderBy(en => en.Rank).ToList();
 				RefreshLeaderboard();
 				RefreshEntryList();
