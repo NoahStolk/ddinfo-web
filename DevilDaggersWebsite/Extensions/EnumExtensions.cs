@@ -15,6 +15,6 @@ namespace DevilDaggersWebsite.Extensions
 		};
 
 		public static bool IsAscending(this CustomLeaderboardCategory category)
-			=> category == CustomLeaderboardCategory.Challenge || category == CustomLeaderboardCategory.Speedrun;
+			=> category == CustomLeaderboardCategory.TimeAttack || category == CustomLeaderboardCategory.Speedrun;
 	}
 }

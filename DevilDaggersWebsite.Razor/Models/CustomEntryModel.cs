@@ -42,7 +42,7 @@ namespace DevilDaggersWebsite.Razor.Models
 
 			DaggerColor = IsBanned ? "ban" : customLeaderboard.GetDagger(Time);
 
-			if (customLeaderboard.Category == CustomLeaderboardCategory.Challenge)
+			if (customLeaderboard.Category == CustomLeaderboardCategory.TimeAttack)
 			{
 				DeathStyle = "color: #ff4400;";
 				DeathName = "IMMORTAL";

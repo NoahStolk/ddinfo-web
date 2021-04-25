@@ -4,7 +4,7 @@
 	{
 		None = 0,
 		Default = 1,
-		Challenge = 2,
+		TimeAttack = 2,
 		Speedrun = 3,
 	}
 }

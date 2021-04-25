@@ -1,4 +1,6 @@
 ﻿using DevilDaggersWebsite.Enumerators;
+using DevilDaggersWebsite.Extensions;
+using System;
 using System.Collections.Generic;
 using System.ComponentModel.DataAnnotations;
 
@@ -38,6 +40,32 @@ namespace DevilDaggersWebsite.Dto.Admin
 			dictionary.Add(nameof(TimeLeviathan), TimeLeviathan.ToString());
 			dictionary.Add(nameof(IsArchived), IsArchived.ToString());
 			return dictionary;
+		}
+
+		public string? ValidateTimes()
+		{
+			if (Category.IsAscending())
+			{
+				if (TimeLeviathan >= TimeDevil)
+					return nameof(TimeLeviathan);
+				if (TimeDevil >= TimeGolden)
+					return nameof(TimeDevil);
+				if (TimeGolden >= TimeSilver)
+					return nameof(TimeGolden);
+				if (TimeSilver >= TimeBronze)
+					return nameof(TimeSilver);
+			}
+
+			if (TimeLeviathan <= TimeDevil)
+				return nameof(TimeLeviathan);
+			if (TimeDevil <= TimeGolden)
+				return nameof(TimeDevil);
+			if (TimeGolden <= TimeSilver)
+				return nameof(TimeGolden);
+			if (TimeSilver <= TimeBronze)
+				return nameof(TimeSilver);
+
+			return null;
 		}
 	}
 }

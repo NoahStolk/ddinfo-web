@@ -59,8 +59,10 @@ namespace DevilDaggersWebsite.Razor.Pages.Leaderboard
 		public int? BestRankRecorded { get; private set; }
 
 		public int[] CustomDaggerCountsDefault { get; } = new int[DaggerNames.Length];
+		public int[] CustomDaggerCountsTimeAttack { get; } = new int[DaggerNames.Length];
 		public int[] CustomDaggerCountsSpeedrun { get; } = new int[DaggerNames.Length];
 		public int TotalDefaultCustomLeaderboards { get; private set; }
+		public int TotalTimeAttackCustomLeaderboards { get; private set; }
 		public int TotalSpeedrunCustomLeaderboards { get; private set; }
 
 		public List<AssetMod>? Mods { get; private set; }
@@ -126,6 +128,20 @@ namespace DevilDaggersWebsite.Razor.Pages.Leaderboard
 							else
 								CustomDaggerCountsDefault[5]++;
 							break;
+						case CustomLeaderboardCategory.TimeAttack:
+							if (customEntry.Time <= customEntry.CustomLeaderboard.TimeLeviathan)
+								CustomDaggerCountsTimeAttack[0]++;
+							else if (customEntry.Time <= customEntry.CustomLeaderboard.TimeDevil)
+								CustomDaggerCountsTimeAttack[1]++;
+							else if (customEntry.Time <= customEntry.CustomLeaderboard.TimeGolden)
+								CustomDaggerCountsTimeAttack[2]++;
+							else if (customEntry.Time <= customEntry.CustomLeaderboard.TimeSilver)
+								CustomDaggerCountsTimeAttack[3]++;
+							else if (customEntry.Time <= customEntry.CustomLeaderboard.TimeBronze)
+								CustomDaggerCountsTimeAttack[4]++;
+							else
+								CustomDaggerCountsTimeAttack[5]++;
+							break;
 						case CustomLeaderboardCategory.Speedrun:
 							if (customEntry.Time <= customEntry.CustomLeaderboard.TimeLeviathan)
 								CustomDaggerCountsSpeedrun[0]++;
@@ -144,6 +160,7 @@ namespace DevilDaggersWebsite.Razor.Pages.Leaderboard
 				}
 
 				TotalDefaultCustomLeaderboards = _dbContext.CustomLeaderboards.Count(cl => cl.Category == CustomLeaderboardCategory.Default && !cl.IsArchived);
+				TotalTimeAttackCustomLeaderboards = _dbContext.CustomLeaderboards.Count(cl => cl.Category == CustomLeaderboardCategory.TimeAttack && !cl.IsArchived);
 				TotalSpeedrunCustomLeaderboards = _dbContext.CustomLeaderboards.Count(cl => cl.Category == CustomLeaderboardCategory.Speedrun && !cl.IsArchived);
 				Mods = _dbContext.AssetMods.Include(am => am.PlayerAssetMods).Where(am => am.PlayerAssetMods.Any(pam => pam.PlayerId == PlayerId)).OrderByDescending(am => am.LastUpdated).ToList();
 				Spawnsets = _dbContext.SpawnsetFiles.Where(sf => sf.PlayerId == PlayerId).OrderByDescending(sf => sf.LastUpdated).ToList();

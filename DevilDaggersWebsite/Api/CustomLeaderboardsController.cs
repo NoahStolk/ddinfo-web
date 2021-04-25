@@ -2,7 +2,6 @@
 using DevilDaggersDiscordBot.Logging;
 using DevilDaggersWebsite.Caches.SpawnsetHash;
 using DevilDaggersWebsite.Entities;
-using DevilDaggersWebsite.Enumerators;
 using DevilDaggersWebsite.Extensions;
 using DevilDaggersWebsite.Transients;
 using DSharpPlus.Entities;
@@ -43,7 +42,7 @@ namespace DevilDaggersWebsite.Api
 		{
 			return _dbContext.CustomLeaderboards
 				.AsNoTracking()
-				.Where(cl => cl.Category != CustomLeaderboardCategory.Challenge && !cl.IsArchived)
+				.Where(cl => !cl.IsArchived)
 				.Include(cl => cl.SpawnsetFile)
 					.ThenInclude(sf => sf.Player)
 				.Select(cl => cl.ToDto())
@@ -57,7 +56,7 @@ namespace DevilDaggersWebsite.Api
 		{
 			CustomLeaderboard? customLeaderboard = _dbContext.CustomLeaderboards
 				.AsNoTracking()
-				.Where(cl => cl.Category != CustomLeaderboardCategory.Challenge && !cl.IsArchived)
+				.Where(cl => !cl.IsArchived)
 				.Include(cl => cl.SpawnsetFile)
 					.ThenInclude(sf => sf.Player)
 				.FirstOrDefault(cl => cl.Id == id);
@@ -161,9 +160,17 @@ namespace DevilDaggersWebsite.Api
 
 			// Check for existing leaderboard.
 			CustomLeaderboard? customLeaderboard = _dbContext.CustomLeaderboards.Include(cl => cl.SpawnsetFile).ThenInclude(sf => sf.Player).FirstOrDefault(cl => cl.SpawnsetFile.Name == spawnsetName);
-			if (customLeaderboard == null || customLeaderboard.Category == CustomLeaderboardCategory.Challenge)
+			if (customLeaderboard == null)
 			{
 				const string errorMessage = "This spawnset exists on DevilDaggers.info, but doesn't have a leaderboard.";
+				await TryLog(uploadRequest, spawnsetName, errorMessage);
+				return new BadRequestObjectResult(new ProblemDetails { Title = errorMessage });
+			}
+
+			// Temporary workaround until TimeAttack works in DDCL.
+			if (customLeaderboard.Category == Enumerators.CustomLeaderboardCategory.TimeAttack && clientVersionParsed <= new Version(1, 0, 0, 0))
+			{
+				const string errorMessage = "TimeAttack leaderboards are in development and not yet supported.";
 				await TryLog(uploadRequest, spawnsetName, errorMessage);
 				return new BadRequestObjectResult(new ProblemDetails { Title = errorMessage });
 			}

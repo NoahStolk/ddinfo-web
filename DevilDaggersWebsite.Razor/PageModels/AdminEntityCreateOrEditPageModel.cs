@@ -1,4 +1,5 @@
-﻿using DevilDaggersDiscordBot.Logging;
+﻿using DevilDaggersCore.Spawnsets;
+using DevilDaggersDiscordBot.Logging;
 using DevilDaggersWebsite.Dto.Admin;
 using DevilDaggersWebsite.Entities;
 using DevilDaggersWebsite.Enumerators;
@@ -10,6 +11,7 @@ using Microsoft.AspNetCore.Mvc.ModelBinding;
 using Microsoft.AspNetCore.Mvc.Rendering;
 using Microsoft.EntityFrameworkCore;
 using System.Collections.Generic;
+using System.IO;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
@@ -112,33 +114,60 @@ namespace DevilDaggersWebsite.Razor.PageModels
 			{
 				if (AdminDto is AdminPlayer player && DbContext.Players.Any(p => p.Id == player.Id))
 				{
-					ModelState.AddModelError("AdminDto.Id", $"Player with {nameof(AdminPlayer.Id)} '{player.Id}' already exists.");
+					ModelState.AddModelError($"AdminDto.{nameof(AdminPlayer.Id)}", $"Player with {nameof(AdminPlayer.Id)} '{player.Id}' already exists.");
 					return Page();
 				}
 
 				if (AdminDto is AdminSpawnsetFile spawnsetFile && DbContext.SpawnsetFiles.Any(sf => sf.Name == spawnsetFile.Name))
 				{
-					ModelState.AddModelError("AdminDto.Name", $"SpawnsetFile with {nameof(AdminSpawnsetFile.Name)} '{spawnsetFile.Name}' already exists.");
+					ModelState.AddModelError($"AdminDto.{nameof(AdminSpawnsetFile.Name)}", $"SpawnsetFile with {nameof(AdminSpawnsetFile.Name)} '{spawnsetFile.Name}' already exists.");
 					return Page();
 				}
 
-				if (AdminDto is AdminCustomLeaderboard customLeaderboard && DbContext.CustomLeaderboards.Any(cl => cl.SpawnsetFileId == customLeaderboard.SpawnsetFileId))
+				if (AdminDto is AdminCustomLeaderboard customLeaderboard)
 				{
-					ModelState.AddModelError("AdminDto.SpawnsetFileId", "A leaderboard for this spawnset already exists.");
-					return Page();
+					if (DbContext.CustomLeaderboards.Any(cl => cl.SpawnsetFileId == customLeaderboard.SpawnsetFileId))
+					{
+						ModelState.AddModelError($"AdminDto.{nameof(AdminCustomLeaderboard.SpawnsetFileId)}", "A leaderboard for this spawnset already exists.");
+						return Page();
+					}
+
+					string? invalidDaggerTime = customLeaderboard.ValidateTimes();
+					if (invalidDaggerTime != null)
+					{
+						ModelState.AddModelError($"AdminDto.{invalidDaggerTime}", "The dagger times are incorrect.");
+						return Page();
+					}
+
+					SpawnsetFile? clSpawnsetFile = DbContext.SpawnsetFiles.FirstOrDefault(sf => sf.Id == customLeaderboard.SpawnsetFileId);
+					if (clSpawnsetFile == null)
+					{
+						ModelState.AddModelError($"AdminDto.{nameof(AdminCustomLeaderboard.SpawnsetFileId)}", $"A spawnset with ID '{customLeaderboard.SpawnsetFileId}' does not exist.");
+						return Page();
+					}
+
+					if (!Spawnset.TryParse(System.IO.File.ReadAllBytes(Path.Combine(_env.WebRootPath, "spawnsets", clSpawnsetFile.Name)), out Spawnset spawnset))
+						throw new($"Could not parse survival file '{clSpawnsetFile.Name}'. Please review the file. Also review how this file ended up in the 'spawnsets' directory, as it is not possible to upload non-survival files from within the Admin pages.");
+
+					if (customLeaderboard.Category == CustomLeaderboardCategory.TimeAttack && spawnset.GameMode != GameMode.TimeAttack
+					 || customLeaderboard.Category != CustomLeaderboardCategory.TimeAttack && spawnset.GameMode == GameMode.TimeAttack)
+					{
+						ModelState.AddModelError($"AdminDto.{nameof(AdminCustomLeaderboard.Category)}", $"Spawnset game mode is {spawnset.GameMode} while custom leaderboard category is {customLeaderboard.Category}.");
+						return Page();
+					}
 				}
 
 				if (AdminDto is AdminAssetMod assetMod)
 				{
 					if (DbContext.AssetMods.Any(am => am.Name == assetMod.Name))
 					{
-						ModelState.AddModelError("AdminDto.Name", $"AssetMod with {nameof(AssetMod.Name)} '{assetMod.Name}' already exists.");
+						ModelState.AddModelError($"AdminDto.{nameof(AdminAssetMod.Name)}", $"AssetMod with {nameof(AssetMod.Name)} '{assetMod.Name}' already exists.");
 						return Page();
 					}
 
 					if (assetMod.PlayerIds == null || assetMod.PlayerIds.Count == 0)
 					{
-						ModelState.AddModelError("AdminDto.PlayerIds", "Mod should have at least one author.");
+						ModelState.AddModelError($"AdminDto.{nameof(AdminAssetMod.PlayerIds)}", "Mod should have at least one author.");
 						return Page();
 					}
 				}

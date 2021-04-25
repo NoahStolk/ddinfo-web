@@ -1,5 +1,4 @@
-﻿using DevilDaggersWebsite.Enumerators;
-using DevilDaggersWebsite.Extensions;
+﻿using DevilDaggersWebsite.Extensions;
 using DevilDaggersWebsite.Razor.PageModels;
 using DevilDaggersWebsite.Razor.Pagination;
 using Microsoft.AspNetCore.Mvc.RazorPages;
@@ -101,7 +100,7 @@ namespace DevilDaggersWebsite.Razor.Pages.CustomLeaderboards
 			WorldRecordHolder = sortOrder == WorldRecordHolderAsc ? WorldRecordHolderDesc : WorldRecordHolderAsc;
 
 			IIncludableQueryable<Entities.CustomLeaderboard, Entities.Player> customLeaderboardQuery = _dbContext.CustomLeaderboards
-				.Where(cl => cl.Category != CustomLeaderboardCategory.Challenge && !cl.IsArchived)
+				.Where(cl => !cl.IsArchived)
 				.Include(cl => cl.SpawnsetFile)
 					.ThenInclude(sf => sf.Player);
 
