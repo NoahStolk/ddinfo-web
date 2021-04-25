@@ -1,7 +1,6 @@
 ﻿using DevilDaggersCore.Spawnsets;
 using DevilDaggersWebsite.Caches.SpawnsetData;
 using DevilDaggersWebsite.Entities;
-using DevilDaggersWebsite.Enumerators;
 using DevilDaggersWebsite.Extensions;
 using Microsoft.AspNetCore.Hosting;
 using Microsoft.EntityFrameworkCore;
@@ -25,7 +24,7 @@ namespace DevilDaggersWebsite.Transients
 			_dbContext = dbContext;
 
 			_spawnsetsWithCustomLeaderboardIds = dbContext.CustomLeaderboards
-				.Where(cl => cl.Category != CustomLeaderboardCategory.Challenge && !cl.IsArchived)
+				.Where(cl => !cl.IsArchived)
 				.Select(cl => cl.SpawnsetFileId)
 				.ToList();
 		}
