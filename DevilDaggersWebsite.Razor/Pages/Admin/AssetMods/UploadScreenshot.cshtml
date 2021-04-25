@@ -8,8 +8,8 @@
 
 <p>Notes</p>
 <ul>
-	<li>File must not be larger than 1024 * 1024 bytes in length.</li>
-	<li>File name must not be over 30 characters in length.</li>
+	<li>File must not be larger than 1 MiB (@($"{UploadScreenshotModel.MaxFileSize:n0}") bytes) in length.</li>
+	<li>File name must not be over @UploadScreenshotModel.MaxFileNameLength characters in length.</li>
 	<li>File must be a .png file.</li>
 	<li>File name must be unique.</li>
 	<li>No NSFW screenshots.</li>

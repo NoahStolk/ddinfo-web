@@ -13,6 +13,9 @@ namespace DevilDaggersWebsite.Razor.Pages.Admin.SpawnsetFiles
 {
 	public class UploadFileModel : PageModel
 	{
+		public const int MaxFileSize = 70 * 1024;
+		public const int MaxFileNameLength = 80;
+
 		private readonly IWebHostEnvironment _env;
 
 		public UploadFileModel(IWebHostEnvironment env)
@@ -29,24 +32,21 @@ namespace DevilDaggersWebsite.Razor.Pages.Admin.SpawnsetFiles
 
 			try
 			{
-				const int maxFileSize = 70 * 1024;
-				const int maxFileNameLength = 80;
-
 				if (FormFile == null)
 				{
 					await DiscordLogger.Instance.TryLog(Channel.AuditLogMonitoring, _env.EnvironmentName, $"{failedAttemptMessage}: No file.");
 					return;
 				}
 
-				if (FormFile.Length > maxFileSize)
+				if (FormFile.Length > MaxFileSize)
 				{
-					await DiscordLogger.Instance.TryLog(Channel.AuditLogMonitoring, _env.EnvironmentName, $"{failedAttemptMessage}: File too large (`{FormFile.Length:n0}` / max `{maxFileSize:n0}` bytes).");
+					await DiscordLogger.Instance.TryLog(Channel.AuditLogMonitoring, _env.EnvironmentName, $"{failedAttemptMessage}: File too large (`{FormFile.Length:n0}` / max `{MaxFileSize:n0}` bytes).");
 					return;
 				}
 
-				if (FormFile.FileName.Length > maxFileNameLength)
+				if (FormFile.FileName.Length > MaxFileNameLength)
 				{
-					await DiscordLogger.Instance.TryLog(Channel.AuditLogMonitoring, _env.EnvironmentName, $"{failedAttemptMessage}: File name too long (`{FormFile.FileName.Length}` / max `{maxFileNameLength}` characters).");
+					await DiscordLogger.Instance.TryLog(Channel.AuditLogMonitoring, _env.EnvironmentName, $"{failedAttemptMessage}: File name too long (`{FormFile.FileName.Length}` / max `{MaxFileNameLength}` characters).");
 					return;
 				}
 
