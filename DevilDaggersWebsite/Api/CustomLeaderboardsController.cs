@@ -170,7 +170,7 @@ namespace DevilDaggersWebsite.Api
 			// Temporary workaround until TimeAttack works in DDCL.
 			if (customLeaderboard.Category == Enumerators.CustomLeaderboardCategory.TimeAttack && clientVersionParsed <= new Version(1, 0, 0, 0))
 			{
-				const string errorMessage = "TimeAttack leaderboards are in development and not yet supported.";
+				const string errorMessage = "TimeAttack leaderboards are not supported right now. For these leaderboards to function reliably, a change in Devil Daggers itself is required. Maybe in the future this will get updated.";
 				await TryLog(uploadRequest, spawnsetName, errorMessage);
 				return new BadRequestObjectResult(new ProblemDetails { Title = errorMessage });
 			}
