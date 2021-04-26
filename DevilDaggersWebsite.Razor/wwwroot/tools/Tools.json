@@ -2,9 +2,24 @@
 	{
 		"Name": "DevilDaggersSurvivalEditor",
 		"DisplayName": "Devil Daggers Survival Editor",
-		"VersionNumber": "2.33.0.0",
-		"VersionNumberRequired": "2.31.2.0",
+		"VersionNumber": "2.34.0.0",
+		"VersionNumberRequired": "2.34.0.0",
 		"Changelog": [
+			{
+				"VersionNumber": "2.34.0.0",
+				"Date": "2021-04-26T00:00:00",
+				"Changes": [
+					{
+						"Description": "Added game version and game mode to the 'Download spawnset' window."
+					},
+					{
+						"Description": "Fixed loading TimeAttack spawnsets from site when end loop preview was enabled."
+					},
+					{
+						"Description": "Spawns are no longer bold (indicating end loop) for TimeAttack spawnsets."
+					}
+				]
+			},
 			{
 				"VersionNumber": "2.33.0.0",
 				"Date": "2021-04-25T00:00:00",
