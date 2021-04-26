@@ -36,6 +36,13 @@
 	List<Spawn> loopSpawns = spawnset.Spawns.Values.Skip(endLoopIndex).ToList();
 	bool hasEndLoop = loopSpawns.Any(s => s.Enemy != null);
 
+	if (spawnset.GameMode == GameMode.TimeAttack)
+	{
+		hasEndLoop = false;
+		preLoopSpawns = new List<Spawn>(loopSpawns);
+		loopSpawns.Clear();
+	}
+
 	Upgrade? hand = GameInfo.GetUpgrades(GameVersion.V31).FirstOrDefault(u => u.Name == $"Level {spawnset.Hand}") ?? GameInfo.V31Level1;
 
 	<div class="flex-container flex-column section-container spawns-main-container">
