@@ -1281,13 +1281,13 @@
 				"Date": "2021-02-26T00:00:00",
 				"Changes": [
 					{
-						"Description": "Application is now compatible with the latest version of Devil Daggers. The new shader assets have been added, and the program will display which assets are \"blocked\" (meaning you cannot submit 1000+ scores if these assets are modified)."
+						"Description": "Application is now compatible with the latest version of Devil Daggers. The new shader assets have been added, and the program will display which assets are prohibited (meaning you cannot submit 1000+ scores if these assets are modified)."
 					},
 					{
 						"Description": "Application now runs on .NET 5.0. You will need to install .NET Desktop Runtime 5.0.x to run this version."
 					},
 					{
-						"Description": "Application now allows creation of partial mods. These are mods that only specify assets that have been modified. It is no longer required to create a binary file containing all assets. It also allows you to load multiple partial mods simultaneously. You can, for instance, load a partial mod that only changes the texture for Skull 1, and then load another mod that changes the texture for the arena tiles."
+						"Description": "Application now allows creation of partial mods. These are mods that only specify assets that have been modified. It is no longer required to create a binary file containing all assets. It also allows you to load multiple partial mods simultaneously. You can, for instance, load a partial mod that only changes the texture for Skull I, and then load another mod that changes the texture for the arena tiles."
 					},
 					{
 						"Description": "Added CheckBox to include sub-directories when importing assets."
