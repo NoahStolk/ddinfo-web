@@ -64,8 +64,8 @@ namespace DevilDaggersWebsite.Tests
 				SurvivalHashMd5 = GetSpawnsetHash(emptySpawnset),
 				GameStates = new(),
 				PlayerName = "TestPlayer1",
+				// TODO: Validation.
 			};
-			uploadRequest.Validation = GetValidation(uploadRequest);
 
 			Dto.UploadSuccess uploadSuccess = (await _customLeaderboardsController.ProcessUploadRequest(uploadRequest)).Value;
 
@@ -86,8 +86,8 @@ namespace DevilDaggersWebsite.Tests
 				SurvivalHashMd5 = GetSpawnsetHash(emptySpawnset),
 				GameStates = new(),
 				PlayerName = "TestPlayer1",
+				// TODO: Validation.
 			};
-			uploadRequest.Validation = GetValidation(uploadRequest);
 
 			Dto.UploadSuccess uploadSuccess = (await _customLeaderboardsController.ProcessUploadRequest(uploadRequest)).Value;
 
@@ -108,8 +108,8 @@ namespace DevilDaggersWebsite.Tests
 				SurvivalHashMd5 = GetSpawnsetHash(emptySpawnset),
 				GameStates = new(),
 				PlayerName = "TestPlayer2",
+				// TODO: Validation.
 			};
-			uploadRequest.Validation = GetValidation(uploadRequest);
 
 			Dto.UploadSuccess uploadSuccess = (await _customLeaderboardsController.ProcessUploadRequest(uploadRequest)).Value;
 
@@ -130,8 +130,8 @@ namespace DevilDaggersWebsite.Tests
 				SurvivalHashMd5 = GetSpawnsetHash(emptySpawnset),
 				GameStates = new(),
 				PlayerName = "TestPlayer3",
+				// TODO: Validation.
 			};
-			uploadRequest.Validation = GetValidation(uploadRequest);
 
 			Dto.UploadSuccess uploadSuccess = (await _customLeaderboardsController.ProcessUploadRequest(uploadRequest)).Value;
 
@@ -153,8 +153,8 @@ namespace DevilDaggersWebsite.Tests
 				SurvivalHashMd5 = GetSpawnsetHash(emptySpawnset),
 				GameStates = new(),
 				PlayerName = "TestPlayer1",
+				// TODO: Validation.
 			};
-			uploadRequest.Validation = GetValidation(uploadRequest);
 
 			ActionResult<Dto.UploadSuccess> response = await _customLeaderboardsController.ProcessUploadRequest(uploadRequest);
 
