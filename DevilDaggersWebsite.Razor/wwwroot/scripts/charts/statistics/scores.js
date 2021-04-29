@@ -19,7 +19,7 @@
 	let chartId = "#" + chartName;
 	let highlighterName = "scores-pre500-highlighter";
 	let highlighterId = "#" + highlighterName;
-	setChart(chartName, chartId, highlighterName, highlighterId, 'h-pre500', pre500ScoreCounts, pre500TotalScores, 0, 500, 10, 5000);
+	setChart(chartName, chartId, highlighterName, highlighterId, 'h-pre500', pre500ScoreCounts, pre500TotalScores, 0, 500, 10, 10000);
 
 	chartName = "scores-post500-chart";
 	chartId = "#" + chartName;
@@ -43,7 +43,7 @@ function setChart(chartName, chartId, highlighterName, highlighterId, tablePrefi
 		axes: {
 			xaxis: {
 				renderer: $.jqplot.CategoryAxisRenderer,
-				ticks: range(minScore, maxScore, stepScore),
+				ticks: range(minScore, maxScore, stepScore).map(i => i.toString()), // Must be strings or the plugin turns 0 into 1.
 				labelRenderer: $.jqplot.CanvasAxisLabelRenderer,
 				tickRenderer: $.jqplot.CanvasAxisTickRenderer,
 				tickOptions: {
