@@ -1,4 +1,5 @@
-﻿using System.Collections.Generic;
+﻿using System;
+using System.Collections.Generic;
 
 namespace DevilDaggersWebsite.Dto.Admin
 {
@@ -8,6 +9,7 @@ namespace DevilDaggersWebsite.Dto.Admin
 		public int PlayerId { get; init; }
 		public int? MaxDisplayWaves { get; init; }
 		public string? HtmlDescription { get; init; }
+		public DateTime LastUpdated { get; set; }
 		public bool IsPractice { get; init; }
 
 		public Dictionary<string, string> Log()
@@ -17,6 +19,7 @@ namespace DevilDaggersWebsite.Dto.Admin
 			dictionary.Add(nameof(PlayerId), PlayerId.ToString());
 			dictionary.Add(nameof(MaxDisplayWaves), MaxDisplayWaves.ToString() ?? string.Empty);
 			dictionary.Add(nameof(HtmlDescription), HtmlDescription ?? string.Empty);
+			dictionary.Add(nameof(LastUpdated), LastUpdated.ToString());
 			dictionary.Add(nameof(IsPractice), IsPractice.ToString());
 			return dictionary;
 		}

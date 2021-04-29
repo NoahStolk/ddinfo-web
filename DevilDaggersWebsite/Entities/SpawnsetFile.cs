@@ -39,9 +39,7 @@ namespace DevilDaggersWebsite.Entities
 			IsPractice = adminDto.IsPractice;
 			MaxDisplayWaves = adminDto.MaxDisplayWaves;
 			PlayerId = adminDto.PlayerId;
-
-			if (LastUpdated == default)
-				LastUpdated = DateTime.UtcNow;
+			LastUpdated = adminDto.LastUpdated;
 		}
 
 		public AdminSpawnsetFile Populate()
@@ -53,6 +51,7 @@ namespace DevilDaggersWebsite.Entities
 				IsPractice = IsPractice,
 				MaxDisplayWaves = MaxDisplayWaves,
 				PlayerId = PlayerId,
+				LastUpdated = LastUpdated,
 			};
 		}
 	}
