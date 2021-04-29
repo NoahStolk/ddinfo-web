@@ -84,6 +84,42 @@ namespace DevilDaggersWebsite.Razor.PageModels
 
 			Id = id;
 
+			AdminCustomLeaderboard? customLeaderboard = AdminDto as AdminCustomLeaderboard;
+			AdminAssetMod? assetMod = AdminDto as AdminAssetMod;
+
+			if (customLeaderboard != null)
+			{
+				string? invalidDaggerTime = customLeaderboard.ValidateTimes();
+				if (invalidDaggerTime != null)
+				{
+					ModelState.AddModelError($"AdminDto.{invalidDaggerTime}", "The dagger times are incorrect.");
+					return Page();
+				}
+
+				SpawnsetFile? clSpawnsetFile = DbContext.SpawnsetFiles.FirstOrDefault(sf => sf.Id == customLeaderboard.SpawnsetFileId);
+				if (clSpawnsetFile == null)
+				{
+					ModelState.AddModelError($"AdminDto.{nameof(AdminCustomLeaderboard.SpawnsetFileId)}", $"A spawnset with ID '{customLeaderboard.SpawnsetFileId}' does not exist.");
+					return Page();
+				}
+
+				if (!Spawnset.TryParse(System.IO.File.ReadAllBytes(Path.Combine(_env.WebRootPath, "spawnsets", clSpawnsetFile.Name)), out Spawnset spawnset))
+					throw new($"Could not parse survival file '{clSpawnsetFile.Name}'. Please review the file. Also review how this file ended up in the 'spawnsets' directory, as it is not possible to upload non-survival files from within the Admin pages.");
+
+				if (customLeaderboard.Category == CustomLeaderboardCategory.TimeAttack && spawnset.GameMode != GameMode.TimeAttack
+				 || customLeaderboard.Category != CustomLeaderboardCategory.TimeAttack && spawnset.GameMode == GameMode.TimeAttack)
+				{
+					ModelState.AddModelError($"AdminDto.{nameof(AdminCustomLeaderboard.Category)}", $"Spawnset game mode is {spawnset.GameMode} while custom leaderboard category is {customLeaderboard.Category}.");
+					return Page();
+				}
+			}
+
+			if (assetMod != null && (assetMod.PlayerIds == null || assetMod.PlayerIds.Count == 0))
+			{
+				ModelState.AddModelError($"AdminDto.{nameof(AdminAssetMod.PlayerIds)}", "Mod should have at least one author.");
+				return Page();
+			}
+
 			if (IsEditing)
 			{
 				_entity = GetFullQuery().FirstOrDefault(m => m.Id == id);
@@ -124,52 +160,16 @@ namespace DevilDaggersWebsite.Razor.PageModels
 					return Page();
 				}
 
-				if (AdminDto is AdminCustomLeaderboard customLeaderboard)
+				if (customLeaderboard != null && DbContext.CustomLeaderboards.Any(cl => cl.SpawnsetFileId == customLeaderboard.SpawnsetFileId))
 				{
-					if (DbContext.CustomLeaderboards.Any(cl => cl.SpawnsetFileId == customLeaderboard.SpawnsetFileId))
-					{
-						ModelState.AddModelError($"AdminDto.{nameof(AdminCustomLeaderboard.SpawnsetFileId)}", "A leaderboard for this spawnset already exists.");
-						return Page();
-					}
-
-					string? invalidDaggerTime = customLeaderboard.ValidateTimes();
-					if (invalidDaggerTime != null)
-					{
-						ModelState.AddModelError($"AdminDto.{invalidDaggerTime}", "The dagger times are incorrect.");
-						return Page();
-					}
-
-					SpawnsetFile? clSpawnsetFile = DbContext.SpawnsetFiles.FirstOrDefault(sf => sf.Id == customLeaderboard.SpawnsetFileId);
-					if (clSpawnsetFile == null)
-					{
-						ModelState.AddModelError($"AdminDto.{nameof(AdminCustomLeaderboard.SpawnsetFileId)}", $"A spawnset with ID '{customLeaderboard.SpawnsetFileId}' does not exist.");
-						return Page();
-					}
-
-					if (!Spawnset.TryParse(System.IO.File.ReadAllBytes(Path.Combine(_env.WebRootPath, "spawnsets", clSpawnsetFile.Name)), out Spawnset spawnset))
-						throw new($"Could not parse survival file '{clSpawnsetFile.Name}'. Please review the file. Also review how this file ended up in the 'spawnsets' directory, as it is not possible to upload non-survival files from within the Admin pages.");
-
-					if (customLeaderboard.Category == CustomLeaderboardCategory.TimeAttack && spawnset.GameMode != GameMode.TimeAttack
-					 || customLeaderboard.Category != CustomLeaderboardCategory.TimeAttack && spawnset.GameMode == GameMode.TimeAttack)
-					{
-						ModelState.AddModelError($"AdminDto.{nameof(AdminCustomLeaderboard.Category)}", $"Spawnset game mode is {spawnset.GameMode} while custom leaderboard category is {customLeaderboard.Category}.");
-						return Page();
-					}
+					ModelState.AddModelError($"AdminDto.{nameof(AdminCustomLeaderboard.SpawnsetFileId)}", "A leaderboard for this spawnset already exists.");
+					return Page();
 				}
 
-				if (AdminDto is AdminAssetMod assetMod)
+				if (assetMod != null && DbContext.AssetMods.Any(am => am.Name == assetMod.Name))
 				{
-					if (DbContext.AssetMods.Any(am => am.Name == assetMod.Name))
-					{
-						ModelState.AddModelError($"AdminDto.{nameof(AdminAssetMod.Name)}", $"AssetMod with {nameof(AssetMod.Name)} '{assetMod.Name}' already exists.");
-						return Page();
-					}
-
-					if (assetMod.PlayerIds == null || assetMod.PlayerIds.Count == 0)
-					{
-						ModelState.AddModelError($"AdminDto.{nameof(AdminAssetMod.PlayerIds)}", "Mod should have at least one author.");
-						return Page();
-					}
+					ModelState.AddModelError($"AdminDto.{nameof(AdminAssetMod.Name)}", $"AssetMod with {nameof(AssetMod.Name)} '{assetMod.Name}' already exists.");
+					return Page();
 				}
 
 				_entity = new();
