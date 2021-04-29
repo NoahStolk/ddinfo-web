@@ -18,12 +18,21 @@
 	{
 		<p>Statistics were last fetched on @HistoryUtils.HistoryJsonFileNameToDateTime(LeaderboardStatisticsCache.Instance.FileName).ToString(FormatUtils.DateTimeUtcFormat).</p>
 
-		<h2>Scores</h2>
-		<div class="chart" id="scores-chart">
-			<table class="highlighter" id="scores-highlighter">
-				<tr><td>Score</td><td id="h-score"></td></tr>
-				<tr><td>Amount</td><td id="h-score-count"></td></tr>
-				<tr><td>Percentage</td><td id="h-score-percentage"></td></tr>
+		<h2>Sub 500 Scores</h2>
+		<div class="chart" id="scores-pre500-chart">
+			<table class="highlighter" id="scores-pre500-highlighter">
+				<tr><td>Score</td><td id="h-pre500-score"></td></tr>
+				<tr><td>Amount</td><td id="h-pre500-score-count"></td></tr>
+				<tr><td>Percentage</td><td id="h-pre500-score-percentage"></td></tr>
+			</table>
+		</div>
+
+		<h2>500+ Scores</h2>
+		<div class="chart" id="scores-post500-chart">
+			<table class="highlighter" id="scores-post500-highlighter">
+				<tr><td>Score</td><td id="h-post500-score"></td></tr>
+				<tr><td>Amount</td><td id="h-post500-score-count"></td></tr>
+				<tr><td>Percentage</td><td id="h-post500-score-percentage"></td></tr>
 			</table>
 		</div>
 

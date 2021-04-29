@@ -1,24 +1,42 @@
 ﻿$.getJSON("/api/leaderboard-statistics/times", function (data) {
-	const scoreCounts = [];
-	$.each(data, function (_, scoreCount) {
-		scoreCounts.push(scoreCount);
+	const pre500ScoreCounts = [];
+	const post500ScoreCounts = [];
+	$.each(data, function (key, scoreCount) {
+		if (key < 500)
+			pre500ScoreCounts.push(scoreCount);
+		else
+			post500ScoreCounts.push(scoreCount);
 	});
 
-	let sum = scoreCounts.reduce(function (a, b) {
+	let pre500TotalScores = pre500ScoreCounts.reduce(function (a, b) {
+		return a + b;
+	});
+	let post500TotalScores = post500ScoreCounts.reduce(function (a, b) {
 		return a + b;
 	});
 
-	const chartName = "scores-chart";
-	const chartId = "#" + chartName;
-	const highlighterName = "scores-highlighter";
-	const highlighterId = "#" + highlighterName;
+	let chartName = "scores-pre500-chart";
+	let chartId = "#" + chartName;
+	let highlighterName = "scores-pre500-highlighter";
+	let highlighterId = "#" + highlighterName;
+	setChart(chartName, chartId, highlighterName, highlighterId, 'h-pre500', pre500ScoreCounts, pre500TotalScores, 0, 500, 10, 50000);
+
+	chartName = "scores-post500-chart";
+	chartId = "#" + chartName;
+	highlighterName = "scores-post500-highlighter";
+	highlighterId = "#" + highlighterName;
+	setChart(chartName, chartId, highlighterName, highlighterId, 'h-post500', post500ScoreCounts, post500TotalScores, 500, 1200, 10, 100);
+});
+
+function setChart(chartName, chartId, highlighterName, highlighterId, tablePrefix, scoreCounts, totalScores, minScore, maxScore, stepScore, maxCount) {
+	const barCount = (maxScore - minScore) / stepScore;
 
 	const chart = $.jqplot(chartName, [scoreCounts], {
 		animate: !$.jqplot.use_excanvas,
 		axes: {
 			xaxis: {
 				renderer: $.jqplot.CategoryAxisRenderer,
-				ticks: range(0, 1200, 10),
+				ticks: range(minScore, maxScore, stepScore),
 				labelRenderer: $.jqplot.CanvasAxisLabelRenderer,
 				tickRenderer: $.jqplot.CanvasAxisTickRenderer,
 				tickOptions: {
@@ -29,7 +47,7 @@
 			yaxis: {
 				mark: 'outside',
 				min: 0,
-				max: 50000,
+				max: maxCount,
 				numberTicks: 11,
 				labelRenderer: $.jqplot.CanvasAxisLabelRenderer,
 				tickRenderer: $.jqplot.CanvasAxisTickRenderer,
@@ -52,7 +70,7 @@
 	});
 
 	$(chartId).bind('jqplotMouseMove', function (_event, xy, _axesData, _neighbor, plot) {
-		const closestData = getDataBasedOnMouseXPositionBar(chart, xy, plot, 0, 120);
+		const closestData = getDataBasedOnMouseXPositionBar(chart, xy, plot, 0, barCount);
 
 		if (!closestData)
 			$().hide();
@@ -68,9 +86,9 @@
 
 		$(chartId).append('<table class="highlighter" id="' + highlighterName + '">');
 		$(highlighterId).append('<tbody>');
-		$(highlighterId).append('<tr><td>Score</td><td id="h-score"></td></tr>');
-		$(highlighterId).append('<tr><td>Amount</td><td id="h-score-count"></td></tr>');
-		$(highlighterId).append('<tr><td>Percentage</td><td id="h-score-percentage"></td></tr>');
+		$(highlighterId).append('<tr><td>Score</td><td id="' + tablePrefix + '-score"></td></tr>');
+		$(highlighterId).append('<tr><td>Amount</td><td id="' + tablePrefix + '-count"></td></tr>');
+		$(highlighterId).append('<tr><td>Percentage</td><td id="' + tablePrefix + '-percentage"></td></tr>');
 		$(highlighterId).append('</tbody>');
 		$(chartId).append('</table>');
 	});
@@ -79,13 +97,13 @@
 		setHighlighterPosition(chart, highlighterId, data, xy, 0, 100000, true);
 
 		const index = data[0] - 1;
-		$('#h-score').html(index * 10);
-		$('#h-score-count').html(data[1]);
-		$('#h-score-percentage').html((data[1] / sum * 100).toFixed(2) + '%');
+		$('#' + tablePrefix + '-score').html(minScore + index * 10);
+		$('#' + tablePrefix + '-score-count').html(data[1]);
+		$('#' + tablePrefix + '-score-percentage').html((data[1] / totalScores * 100).toFixed(2) + '%');
 
 		$(highlighterId).show();
 	}
-});
+}
 
 function range(start, stop, step = 1) {
 	return Array(Math.ceil((stop - start) / step)).fill(start).map((x, y) => x + y * step);
