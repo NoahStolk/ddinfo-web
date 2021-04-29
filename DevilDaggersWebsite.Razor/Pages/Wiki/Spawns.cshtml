@@ -1,5 +1,6 @@
 ﻿@page
-@model DevilDaggersWebsite.Razor.Pages.Wiki.SpawnsModel
+@model SpawnsModel
+@using DevilDaggersWebsite.Razor.Models
 @using DevilDaggersWebsite.Razor.Utils
 @{
 	ViewData["Title"] = "Spawns";
@@ -21,7 +22,7 @@
 		@RazorUtils.GetLayout($"Note that {Model.EmergeEnemies} emerge around 3 seconds later than their actual spawn time.", Model.GameVersion)
 	</p>
 
-	@await Html.PartialAsync("Partials/SpawnsPartial", Model.SpawnsetPath)
+	@await Html.PartialAsync("Partials/SpawnsPartial", new SpawnsPartialModel(Model.SpawnsetPath, true))
 </main>
 
 @section Styles {

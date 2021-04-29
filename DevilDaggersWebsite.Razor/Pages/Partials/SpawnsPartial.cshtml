@@ -1,4 +1,4 @@
-﻿@model string
+﻿@model SpawnsPartialModel
 @inject Microsoft.AspNetCore.Http.IHttpContextAccessor httpContextAccessor
 @inject Microsoft.AspNetCore.Hosting.IWebHostEnvironment env
 @inject DevilDaggersWebsite.Transients.SpawnsetHelper spawnsetHelper
@@ -7,11 +7,12 @@
 @using DevilDaggersCore.Utils
 @using DevilDaggersCore.Spawnsets
 @using DevilDaggersWebsite.Entities
+@using DevilDaggersWebsite.Razor.Models
 @using DevilDaggersWebsite.Razor.Utils
 @using System.IO
 @{
-	SpawnsetFile? sf = dbContext.SpawnsetFiles.FirstOrDefault(sf => sf.Name == Model);
-	if (sf == null || !Spawnset.TryParse(File.ReadAllBytes(System.IO.Path.Combine(env.WebRootPath, "spawnsets", Model)), out Spawnset spawnset))
+	SpawnsetFile? sf = dbContext.SpawnsetFiles.FirstOrDefault(sf => sf.Name == Model.SpawnsetName);
+	if (sf == null || !Spawnset.TryParse(File.ReadAllBytes(System.IO.Path.Combine(env.WebRootPath, "spawnsets", Model.SpawnsetName)), out Spawnset spawnset))
 	{
 		return;
 	}
@@ -22,8 +23,12 @@
 		return;
 	}
 
-	// TODO: Don't use V1 or V2 layout/Ghostpede pattern when viewing in Spawnset page. This should only be done for the wiki.
-	GameVersion gameVersion = sf.Name == "V1" ? GameVersion.V1 : sf.Name == "V2" ? GameVersion.V2 : GameVersion.V31;
+	GameVersion gameVersion = GameVersion.V31;
+	if (Model.IsWikiPage)
+	{
+		gameVersion = sf.Name == "V1" ? GameVersion.V1 : sf.Name == "V2" ? GameVersion.V2 : GameVersion.V31;
+	}
+
 	int maxWaves = sf.MaxDisplayWaves ?? SpawnsetUtils.DefaultMaxWaves;
 	string wavesQuery = httpContextAccessor.HttpContext!.Request.Query["waves"];
 	if (int.TryParse(wavesQuery, out int parsed) && parsed > 0)
@@ -46,18 +51,21 @@
 	Upgrade? hand = GameInfo.GetUpgrades(GameVersion.V31).FirstOrDefault(u => u.Name == $"Level {spawnset.Hand}") ?? GameInfo.V31Level1;
 
 	<div class="flex-container flex-column section-container spawns-main-container">
-		<div class="spawns-header-container">
-			<div class="flex-container flex-space-evenly spawns-flex-container">
-				<div>Timer start</div>
-				<div>Hand</div>
-				<div>Additional gems</div>
+		@if (!Model.IsWikiPage)
+		{
+			<div class="spawns-header-container">
+				<div class="flex-container flex-space-evenly spawns-flex-container">
+					<div>Timer start</div>
+					<div>Hand</div>
+					<div>Additional gems</div>
+				</div>
+				<div class="flex-container flex-space-evenly spawns-flex-container">
+					<div>@spawnset.TimerStart.ToString(FormatUtils.SpawnTimeFormat)</div>
+					<div>@hand.GetLayoutAnchor()</div>
+					<div>@(spawnset.AdditionalGems == int.MinValue ? "Disabled" : spawnset.AdditionalGems)</div>
+				</div>
 			</div>
-			<div class="flex-container flex-space-evenly spawns-flex-container">
-				<div>@spawnset.TimerStart.ToString(FormatUtils.SpawnTimeFormat)</div>
-				<div>@hand.GetLayoutAnchor()</div>
-				<div>@(spawnset.AdditionalGems == int.MinValue ? "Disabled" : spawnset.AdditionalGems)</div>
-			</div>
-		</div>
+		}
 
 		@if (spawnset.HasSpawns())
 		{

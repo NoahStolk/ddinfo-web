@@ -1,5 +1,6 @@
 ﻿@page
 @using DevilDaggersCore.Game
+@using DevilDaggersWebsite.Razor.Models
 @using DevilDaggersWebsite.Razor.Utils
 @model SpawnsetModel
 @{
@@ -117,7 +118,7 @@
 
 	<h2>Spawns</h2>
 
-	@await Html.PartialAsync("Partials/SpawnsPartial", Model.SpawnsetFile.Name)
+	@await Html.PartialAsync("Partials/SpawnsPartial", new SpawnsPartialModel(Model.SpawnsetFile.Name, false))
 </main>
 
 @section Styles {
