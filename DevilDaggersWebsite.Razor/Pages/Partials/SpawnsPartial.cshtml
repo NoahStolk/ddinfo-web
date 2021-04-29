@@ -37,16 +37,19 @@
 	}
 
 	int endLoopIndex = spawnset.GetEndLoopStartIndex();
-	IEnumerable<Spawn> preLoopSpawns = spawnset.Spawns.Values.SkipLast(spawnset.Spawns.Count - endLoopIndex);
-	List<Spawn> loopSpawns = spawnset.Spawns.Values.Skip(endLoopIndex).ToList();
-	bool hasEndLoop = loopSpawns.Any(s => s.Enemy != null);
-
+	List<Spawn> preLoopSpawns, loopSpawns;
 	if (spawnset.GameMode == GameMode.TimeAttack)
 	{
-		hasEndLoop = false;
-		preLoopSpawns = new List<Spawn>(loopSpawns);
-		loopSpawns.Clear();
+		preLoopSpawns = spawnset.Spawns.Values.ToList();
+		loopSpawns = new();
 	}
+	else
+	{
+		preLoopSpawns = spawnset.Spawns.Values.SkipLast(spawnset.Spawns.Count - endLoopIndex).ToList();
+		loopSpawns = spawnset.Spawns.Values.Skip(endLoopIndex).ToList();
+	}
+
+	bool hasEndLoop = loopSpawns.Any(s => s.Enemy != null);
 
 	Upgrade? hand = GameInfo.GetUpgrades(GameVersion.V31).FirstOrDefault(u => u.Name == $"Level {spawnset.Hand}") ?? GameInfo.V31Level1;
 
