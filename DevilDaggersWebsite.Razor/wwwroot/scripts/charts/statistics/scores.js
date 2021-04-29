@@ -94,8 +94,8 @@ function setChart(chartName, chartId, highlighterName, highlighterId, tablePrefi
 		$(chartId).append('<table class="highlighter" id="' + highlighterName + '">');
 		$(highlighterId).append('<tbody>');
 		$(highlighterId).append('<tr><td>Score</td><td id="' + tablePrefix + '-score"></td></tr>');
-		$(highlighterId).append('<tr><td>Amount</td><td id="' + tablePrefix + '-count"></td></tr>');
-		$(highlighterId).append('<tr><td>Percentage</td><td id="' + tablePrefix + '-percentage"></td></tr>');
+		$(highlighterId).append('<tr><td>Amount</td><td id="' + tablePrefix + '-score-count"></td></tr>');
+		$(highlighterId).append('<tr><td>Percentage</td><td id="' + tablePrefix + '-score-percentage"></td></tr>');
 		$(highlighterId).append('</tbody>');
 		$(chartId).append('</table>');
 	});
