@@ -43,7 +43,8 @@
 			renderer: $.jqplot.BarRenderer,
 			rendererOptions: {
 				highlightMouseDown: true,
-				varyBarColor: true
+				varyBarColor: true,
+				barMargin: 6
 			},
 			pointLabels: { show: true }
 		},

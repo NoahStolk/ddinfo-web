@@ -66,7 +66,8 @@ function setChart(chartName, chartId, highlighterName, highlighterId, tablePrefi
 		seriesDefaults: {
 			renderer: $.jqplot.BarRenderer,
 			rendererOptions: {
-				highlightMouseDown: true
+				highlightMouseDown: true,
+				barMargin: 6
 			},
 			pointLabels: { show: true }
 		},
