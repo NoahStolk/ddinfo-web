@@ -19,17 +19,24 @@
 	let chartId = "#" + chartName;
 	let highlighterName = "scores-pre500-highlighter";
 	let highlighterId = "#" + highlighterName;
-	setChart(chartName, chartId, highlighterName, highlighterId, 'h-pre500', pre500ScoreCounts, pre500TotalScores, 0, 500, 10, 50000);
+	setChart(chartName, chartId, highlighterName, highlighterId, 'h-pre500', pre500ScoreCounts, pre500TotalScores, 0, 500, 10, 5000);
 
 	chartName = "scores-post500-chart";
 	chartId = "#" + chartName;
 	highlighterName = "scores-post500-highlighter";
 	highlighterId = "#" + highlighterName;
-	setChart(chartName, chartId, highlighterName, highlighterId, 'h-post500', post500ScoreCounts, post500TotalScores, 500, 1200, 10, 100);
+	setChart(chartName, chartId, highlighterName, highlighterId, 'h-post500', post500ScoreCounts, post500TotalScores, 500, 1200, 10, 50);
 });
 
-function setChart(chartName, chartId, highlighterName, highlighterId, tablePrefix, scoreCounts, totalScores, minScore, maxScore, stepScore, maxCount) {
+function setChart(chartName, chartId, highlighterName, highlighterId, tablePrefix, scoreCounts, totalScores, minScore, maxScore, stepScore, maxCountRounder) {
 	const barCount = (maxScore - minScore) / stepScore;
+	let maxCount = 0;
+	for (let i = 0; i < scoreCounts.length; i++) {
+		const scores = scoreCounts[i];
+		if (maxCount < scores)
+			maxCount = scores;
+	}
+	maxCount = Math.ceil(maxCount / maxCountRounder) * maxCountRounder;
 
 	const chart = $.jqplot(chartName, [scoreCounts], {
 		animate: !$.jqplot.use_excanvas,
