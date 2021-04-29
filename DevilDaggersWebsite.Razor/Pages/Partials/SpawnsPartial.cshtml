@@ -73,7 +73,7 @@
 		@if (spawnset.HasSpawns())
 		{
 			<div class="spawns-container">
-				<div class="flex-container flex-space-evenly spawns-flex-container">
+				<div class="flex-container spawns-flex-container @(hasEndLoop ? "loop" : "no-loop")">
 					@if (hasEndLoop)
 					{
 						<div>Section</div>
@@ -102,7 +102,7 @@
 						{
 							totalGems += spawn.Enemy.NoFarmGems;
 
-							<div class="flex-container flex-space-evenly spawns-flex-container">
+							<div class="flex-container spawns-flex-container @(hasEndLoop ? "loop" : "no-loop")">
 								@if (hasEndLoop)
 								{
 									<div></div>
@@ -157,7 +157,7 @@
 									int gems = finalEnemy.NoFarmGems;
 									totalGems += gems;
 
-									<div class="flex-container flex-space-evenly spawns-flex-container">
+									<div class="flex-container spawns-flex-container @(hasEndLoop ? "loop" : "no-loop")">
 										@if (hasEndLoop)
 										{
 											<div>@(!firstSpawnDone ? $"Wave {i + 1}" : string.Empty)</div>
