@@ -55,15 +55,17 @@ namespace DevilDaggersWebsite.Dto.Admin
 				if (TimeSilver >= TimeBronze)
 					return nameof(TimeSilver);
 			}
-
-			if (TimeLeviathan <= TimeDevil)
-				return nameof(TimeLeviathan);
-			if (TimeDevil <= TimeGolden)
-				return nameof(TimeDevil);
-			if (TimeGolden <= TimeSilver)
-				return nameof(TimeGolden);
-			if (TimeSilver <= TimeBronze)
-				return nameof(TimeSilver);
+			else
+			{
+				if (TimeLeviathan <= TimeDevil)
+					return nameof(TimeLeviathan);
+				if (TimeDevil <= TimeGolden)
+					return nameof(TimeDevil);
+				if (TimeGolden <= TimeSilver)
+					return nameof(TimeGolden);
+				if (TimeSilver <= TimeBronze)
+					return nameof(TimeSilver);
+			}
 
 			return null;
 		}

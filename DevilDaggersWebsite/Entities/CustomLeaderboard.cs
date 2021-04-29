@@ -100,10 +100,10 @@ namespace DevilDaggersWebsite.Entities
 				Category = Category,
 				SpawnsetFileId = SpawnsetFileId,
 				TimeBronze = TimeBronze,
-				TimeDevil = TimeDevil,
-				TimeGolden = TimeGolden,
-				TimeLeviathan = TimeLeviathan,
 				TimeSilver = TimeSilver,
+				TimeGolden = TimeGolden,
+				TimeDevil = TimeDevil,
+				TimeLeviathan = TimeLeviathan,
 				IsArchived = IsArchived,
 			};
 		}
