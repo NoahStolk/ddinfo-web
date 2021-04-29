@@ -16,8 +16,9 @@
 	<li>The file name must match the spawnset name (case sensitive).</li>
 	<li>Make sure the author of the spawnset is added as a <a asp-page="../Players/Index">player</a>. If the user ID is unknown, use the blank name (999999) until the author gets back to you.</li>
 	<li>If you want to edit or rename a spawnset file, you will need to delete and re-upload it.</li>
-	<li>Please don't change spawnset files in the file system that have an existing custom leaderboard, as that will invalidate all the current scores. You should probably make a new spawnset instead.</li>
-	<li>Don't upload spawnsets with swastika arenas or anything of the sort.</li>
+	<li>Do not change spawnset files in the file system that have an existing custom leaderboard, as that will invalidate all the current scores. You should probably make a new spawnset instead.</li>
+	<li>The "LastUpdated" field is specified in Coordinated Universal Time (UTC). You should always leave this as default unless the actual spawnset got updated. The date should represent when the spawnset was last updated in terms of what's being changed in the game. Don't update the "LastUpdated" field if the description was edited.</li>
+	<li>Do not upload spawnsets with swastika arenas or anything of the sort.</li>
 </ul>
 @if (Model.DeadFiles.Count > 0)
 {
