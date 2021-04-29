@@ -2,6 +2,9 @@
 using DevilDaggersDiscordBot.Logging;
 using DSharpPlus;
 using DSharpPlus.Entities;
+using DSharpPlus.EventArgs;
+using System;
+using System.Collections.Generic;
 using System.IO;
 using System.Threading.Tasks;
 
@@ -42,8 +45,19 @@ namespace DevilDaggersDiscordBot
 					if (msg.Contains($"@!{ServerConstants.BotUserId}"))
 						await e.Message.CreateReactionAsync(DiscordEmoji.FromName(client, ":eye_in_speech_bubble:"));
 
-					if (e.Channel.Id == ServerConstants.TestMonitoringChannelId && msg.StartsWith(".bot"))
-						await e.Channel.SendMessageAsyncSafe("Hi.");
+					if (e.Channel.Id == ServerConstants.TestMonitoringChannelId && msg.StartsWith("."))
+					{
+						foreach (KeyValuePair<string, Action<MessageCreateEventArgs>> action in Commands.Actions)
+						{
+							if (msg.StartsWith(action.Key))
+							{
+								action.Value.Invoke(e);
+								return;
+							}
+						}
+
+						await e.Channel.SendMessageAsyncSafe($"Command '{msg}' does not exist.");
+					}
 				};
 
 				await client.ConnectAsync();
