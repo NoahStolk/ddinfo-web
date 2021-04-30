@@ -68,9 +68,12 @@ namespace DevilDaggersWebsite.Entities
 		{
 			// TODO: Add a smart way to compress this data:
 			// If all values are 0, use an empty byte array.
-			// If all values are under 256, write 0x00 header byte, then write all data as bytes.
-			// If all values are under 65536, write 0x01 header byte, then write all data as ushorts.
-			// Otherwise, write 0x02 header byte, then write all data as ints (dd doesn't use uints).
+			// If all values are under 2, write 0x00 header byte, then write all data as 1-bit numbers (8 values squashed into a single byte).
+			// If all values are under 4, write 0x01 header byte, then write all data as 2-bit numbers (4 values squashed into a single byte).
+			// If all values are under 16, write 0x02 header byte, then write all data as as 4-bit numbers (2 values squashed into a single byte).
+			// If all values are under 256, write 0x03 header byte, then write all data as bytes.
+			// If all values are under 65536, write 0x04 header byte, then write all data as ushorts.
+			// Otherwise, write 0x05 header byte, then write all data as ints (dd doesn't use uints).
 			GemsCollectedData = gameStates.Select(gs => gs.GemsCollected).SelectMany(BitConverter.GetBytes).ToArray();
 			EnemiesKilledData = gameStates.Select(gs => gs.EnemiesKilled).SelectMany(BitConverter.GetBytes).ToArray();
 			DaggersFiredData = gameStates.Select(gs => gs.DaggersFired).SelectMany(BitConverter.GetBytes).ToArray();
