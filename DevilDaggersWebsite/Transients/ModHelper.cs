@@ -76,6 +76,13 @@ namespace DevilDaggersWebsite.Transients
 						assetModTypes = amwfi.Key.AssetModTypes;
 					}
 
+					string modScreenshotsDirectory = Path.Combine(_env.WebRootPath, "mod-screenshots", amwfi.Key.Name);
+					List<string> screenshotFileNames;
+					if (Directory.Exists(modScreenshotsDirectory))
+						screenshotFileNames = Directory.GetFiles(modScreenshotsDirectory).Select(p => Path.GetFileName(p)).ToList();
+					else
+						screenshotFileNames = new();
+
 					return new Mod(
 						name: amwfi.Key.Name,
 						authors: amwfi.Key.PlayerAssetMods.Select(pam => pam.Player.PlayerName).OrderBy(s => s).ToList(),
@@ -83,7 +90,8 @@ namespace DevilDaggersWebsite.Transients
 						assetModTypes: assetModTypes,
 						isHostedOnDdInfo: amwfi.Value.FileExists,
 						containsProhibitedAssets: containsProhibitedAssets,
-						modArchive: modArchive);
+						modArchive: modArchive,
+						screenshotFileNames: screenshotFileNames);
 				})
 				.ToList();
 		}

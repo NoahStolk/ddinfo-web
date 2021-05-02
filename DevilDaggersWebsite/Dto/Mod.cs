@@ -6,7 +6,7 @@ namespace DevilDaggersWebsite.Dto
 {
 	public class Mod
 	{
-		public Mod(string name, List<string> authors, DateTime lastUpdated, AssetModTypes assetModTypes, bool isHostedOnDdInfo, bool? containsProhibitedAssets, ModArchive? modArchive)
+		public Mod(string name, List<string> authors, DateTime lastUpdated, AssetModTypes assetModTypes, bool isHostedOnDdInfo, bool? containsProhibitedAssets, ModArchive? modArchive, List<string> screenshotFileNames)
 		{
 			Name = name;
 			Authors = authors;
@@ -15,6 +15,7 @@ namespace DevilDaggersWebsite.Dto
 			IsHostedOnDdInfo = isHostedOnDdInfo;
 			ContainsProhibitedAssets = containsProhibitedAssets;
 			ModArchive = modArchive;
+			ScreenshotFileNames = screenshotFileNames;
 		}
 
 		public string Name { get; }
@@ -24,5 +25,6 @@ namespace DevilDaggersWebsite.Dto
 		public bool IsHostedOnDdInfo { get; }
 		public bool? ContainsProhibitedAssets { get; }
 		public ModArchive? ModArchive { get; }
+		public List<string> ScreenshotFileNames { get; }
 	}
 }
