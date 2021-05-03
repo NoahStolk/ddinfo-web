@@ -30,6 +30,8 @@ namespace DevilDaggersWebsite.Caches.LeaderboardStatistics
 		public Dictionary<Death, int> DeathStats { get; } = new();
 		public Dictionary<int, int> TimeStats { get; private set; } = new();
 
+		public IReadOnlyList<CompressedEntry> Entries => _entries;
+
 		public async Task Refresh(IWebHostEnvironment env)
 		{
 			Initiate(env);
