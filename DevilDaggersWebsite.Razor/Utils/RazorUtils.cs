@@ -47,11 +47,15 @@ namespace DevilDaggersWebsite.Razor.Utils
 
 		public static HtmlString GetLayoutAnchor(this Enemy enemy, bool plural = false, GameVersion? gameVersionOverride = null)
 		{
+			GameVersion gameVersion = enemy.GameVersion;
 			string colorCode = enemy.ColorCode;
 			if (gameVersionOverride.HasValue)
+			{
+				gameVersion = gameVersionOverride.Value;
 				colorCode = GameInfo.GetEnemies(gameVersionOverride.Value).First(e => e.Name == enemy.Name).ColorCode;
+			}
 
-			return new($"<a style='color: #{colorCode};' href='/Wiki/Enemies{(gameVersionOverride == null ? string.Empty : $"?GameVersion={gameVersionOverride}")}#{enemy.Name.Replace(" ", string.Empty)}'>{enemy.Name}{(plural ? "s" : string.Empty)}</a>");
+			return new($"<a style='color: #{colorCode};' href='/Wiki/Enemies?GameVersion={gameVersion}#{enemy.Name.Replace(" ", string.Empty)}'>{enemy.Name}{(plural ? "s" : string.Empty)}</a>");
 		}
 
 		public static HtmlString GetLayoutAnchor(this Upgrade upgrade)
