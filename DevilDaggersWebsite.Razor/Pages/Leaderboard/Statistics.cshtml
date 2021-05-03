@@ -1,6 +1,8 @@
 ﻿@page
+@using DevilDaggersCore.Game
 @using DevilDaggersCore.Utils
 @using DevilDaggersWebsite.Caches.LeaderboardStatistics
+@using DevilDaggersWebsite.Razor.Utils
 @model DevilDaggersWebsite.Razor.Pages.Leaderboard.StatisticsModel
 @{
 	ViewData["Title"] = "Leaderboard Statistics";
@@ -18,7 +20,17 @@
 	{
 		<p>Statistics were last fetched on @HistoryUtils.HistoryJsonFileNameToDateTime(LeaderboardStatisticsCache.Instance.FileName).ToString(FormatUtils.DateTimeUtcFormat).</p>
 
-		<h2>Sub 500 Scores</h2>
+		<h2>Scores</h2>
+		<ul>
+			@foreach (KeyValuePair<Enemy, (int Time, string DaggerColorCode)> kvp in StatisticsModel.EnemyTimes.OrderBy(kvp => kvp.Value.Time))
+			{
+				int count = LeaderboardStatisticsCache.Instance.Entries.Count(e => e.Time > kvp.Value.Time);
+				int total = LeaderboardStatisticsCache.Instance.Entries.Count;
+				<li><span style="color: #@kvp.Value.DaggerColorCode;">@count</span> out of @total players (@((count / (float)total).ToString("0.00%"))) have seen @RazorUtils.GetLayoutAnchor(kvp.Key).</li>
+			}
+		</ul>
+
+		<h3>Sub 500 Scores</h3>
 		<div class="chart" id="scores-pre500-chart">
 			<table class="highlighter" id="scores-pre500-highlighter">
 				<tr><td>Score</td><td id="h-pre500-score"></td></tr>
@@ -27,7 +39,7 @@
 			</table>
 		</div>
 
-		<h2>500+ Scores</h2>
+		<h3>500+ Scores</h3>
 		<div class="chart" id="scores-post500-chart">
 			<table class="highlighter" id="scores-post500-highlighter">
 				<tr><td>Score</td><td id="h-post500-score"></td></tr>
