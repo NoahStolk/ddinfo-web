@@ -6,6 +6,18 @@
 @model DevilDaggersWebsite.Razor.Pages.Leaderboard.StatisticsModel
 @{
 	ViewData["Title"] = "Leaderboard Statistics";
+	ulong allTime = 0;
+	ulong allKills = 0;
+	ulong allGems = 0;
+	foreach (CompressedEntry ce in LeaderboardStatisticsCache.Instance.Entries)
+	{
+		allTime += ce.Time;
+		allKills += ce.Kills;
+		allGems += ce.Gems;
+	}
+	int avgTime = (int)(allTime / (float)LeaderboardStatisticsCache.Instance.Entries.Count);
+	float avgKills = allKills / (float)LeaderboardStatisticsCache.Instance.Entries.Count;
+	float avgGems = allGems / (float)LeaderboardStatisticsCache.Instance.Entries.Count;
 }
 
 <header>
@@ -22,14 +34,17 @@
 
 		<h2>Scores</h2>
 		<ul>
-			@foreach (KeyValuePair<Enemy, (int Time, Dagger Dagger)> kvp in StatisticsModel.EnemyTimes.OrderBy(kvp => kvp.Value.Time))
+			@foreach (KeyValuePair<Enemy[], (int Time, Dagger Dagger)> kvp in StatisticsModel.EnemyTimes.OrderBy(kvp => kvp.Value.Time))
 			{
 				int count = LeaderboardStatisticsCache.Instance.Entries.Count(e => e.Time > kvp.Value.Time);
 				int total = LeaderboardStatisticsCache.Instance.Entries.Count;
 				string daggerStyle = kvp.Value.Dagger.Name.ToLower();
 				string daggerTimeStyle = GameInfo.GetDaggerFromTime(GameVersion.V31, kvp.Value.Time).Name.ToLower();
-				<li><span class="@daggerStyle">@count</span> out of @total players (<span class="@daggerStyle">@((count / (float)total).ToString("0.00%"))</span>) have seen @RazorUtils.GetLayoutAnchor(kvp.Key) (<span class="@daggerTimeStyle">@(kvp.Value.Time > 10000000 ? "???" : (kvp.Value.Time / 10000).ToString("0.0000"))</span> seconds).</li>
+				<li><span class="@daggerStyle">@count</span> out of @total players (<span class="@daggerStyle">@((count / (float)total).ToString("0.00%"))</span>) have seen @Html.Raw(string.Join(" and ", kvp.Key.Select(e => RazorUtils.GetLayoutAnchor(e)))) (<span class="@daggerTimeStyle">@(kvp.Value.Time > 10000000 ? "???" : (kvp.Value.Time / 10000).ToString("0.0000"))</span> seconds).</li>
 			}
+			<li>The average time survived for all players is <span class="@GameInfo.GetDaggerFromTime(GameVersion.V31, avgTime).Name.ToLower()">@(FormatUtils.FormatTimeInteger(avgTime / 10000f))</span> seconds.</li>
+			<li>The average kills for all players is @(avgKills.ToString(FormatUtils.LeaderboardIntAverageFormat)).</li>
+			<li>The average gems for all players is @(avgGems.ToString(FormatUtils.LeaderboardIntAverageFormat)).</li>
 		</ul>
 
 		<h3>Sub 500 Scores</h3>
