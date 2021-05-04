@@ -13,7 +13,6 @@
 </header>
 
 <main role="main">
-	<a asp-page="/Leaderboard/Search">Search players by username</a>
 	@if (Model.Leaderboard == null)
 	{
 		<p>Failed to retrieve scores from the official Devil Daggers leaderboard servers. Please try again later.</p>
@@ -24,6 +23,7 @@
 		@using (Html.BeginForm(FormMethod.Get))
 		{
 			<div class="leaderboard-form-container">
+				<a asp-page="/Leaderboard/Search">Search players by username</a>
 				<div class="input-label text-left" style="@RazorUtils.GetCssWidth(widths[0])">Rank:</div>
 				<div style="@RazorUtils.GetCssWidth(widths[1])">@Html.TextBoxFor(m => m.Rank, new { @class = "input" })</div>
 				<input class="btn" type="submit" value="Show" />

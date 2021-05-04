@@ -12,10 +12,10 @@
 </header>
 
 <main role="main">
-	<a asp-page="/Leaderboard/Index">Browse leaderboard by rank</a>
 	@using (Html.BeginForm(FormMethod.Get))
 	{
 		<div class="leaderboard-form-container">
+			<a asp-page="/Leaderboard/Index">Browse leaderboard by rank</a>
 			<div>
 				<div>
 					<div class="input-label text-left" style="@RazorUtils.GetCssWidth(widths[0])">Username:</div>
