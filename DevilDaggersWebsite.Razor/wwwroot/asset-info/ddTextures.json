@@ -1,0 +1,2364 @@
+[
+	{
+		"Name": "blood",
+		"Description": "Blood decals",
+		"Tags": [
+			"Particles"
+		]
+	},
+	{
+		"Name": "boid",
+		"Description": "Skull I base texture",
+		"Tags": [
+			"Enemy",
+			"Skull I"
+		]
+	},
+	{
+		"Name": "boid2",
+		"Description": "Skull II base texture",
+		"Tags": [
+			"Enemy",
+			"Skull II"
+		]
+	},
+	{
+		"Name": "boid2gib",
+		"Description": "Skull II death",
+		"Tags": [
+			"Death",
+			"Enemy",
+			"Skull II"
+		]
+	},
+	{
+		"Name": "boid2hit",
+		"Description": "Skull II damage",
+		"Tags": [
+			"Damage",
+			"Enemy",
+			"Skull II"
+		]
+	},
+	{
+		"Name": "boid2horns",
+		"Description": "Skull II horns",
+		"Tags": [
+			"Enemy",
+			"Skull II"
+		]
+	},
+	{
+		"Name": "boid2hornsgib",
+		"Description": "Skull II horns death",
+		"Tags": [
+			"Death",
+			"Enemy",
+			"Skull II"
+		]
+	},
+	{
+		"Name": "boid2hornshit",
+		"Description": "Skull II horns damage",
+		"Tags": [
+			"Damage",
+			"Enemy",
+			"Skull II"
+		]
+	},
+	{
+		"Name": "boid2hornslev",
+		"Description": "Transmuted Skull II horns",
+		"Tags": [
+			"Enemy",
+			"Transmuted Skull II"
+		]
+	},
+	{
+		"Name": "boid2lev",
+		"Description": "Transmuted Skull II base texture",
+		"Tags": [
+			"Enemy",
+			"Transmuted Skull II"
+		]
+	},
+	{
+		"Name": "boid2levgib",
+		"Description": "Transmuted Skull II death",
+		"Tags": [
+			"Death",
+			"Enemy",
+			"Transmuted Skull II"
+		]
+	},
+	{
+		"Name": "boid3",
+		"Description": "Skull III base texture",
+		"Tags": [
+			"Enemy",
+			"Skull III"
+		]
+	},
+	{
+		"Name": "boid3gib",
+		"Description": "Skull III death",
+		"Tags": [
+			"Death",
+			"Enemy",
+			"Skull III"
+		]
+	},
+	{
+		"Name": "boid3hit",
+		"Description": "Skull III damage",
+		"Tags": [
+			"Damage",
+			"Enemy",
+			"Skull III"
+		]
+	},
+	{
+		"Name": "boid3horns",
+		"Description": "Skull III horns",
+		"Tags": [
+			"Enemy",
+			"Skull III"
+		]
+	},
+	{
+		"Name": "boid3hornsgib",
+		"Description": "Skull III horns death",
+		"Tags": [
+			"Death",
+			"Enemy",
+			"Skull III"
+		]
+	},
+	{
+		"Name": "boid3hornshit",
+		"Description": "Skull III horns damage",
+		"Tags": [
+			"Damage",
+			"Enemy",
+			"Skull III"
+		]
+	},
+	{
+		"Name": "boid3hornslev",
+		"Description": "Transmuted Skull III horns",
+		"Tags": [
+			"Enemy",
+			"Transmuted Skull III"
+		]
+	},
+	{
+		"Name": "boid3jaw",
+		"Description": "Skull III jaw",
+		"Tags": [
+			"Enemy",
+			"Skull III"
+		]
+	},
+	{
+		"Name": "boid3jawgib",
+		"Description": "Skull III jaw death",
+		"Tags": [
+			"Death",
+			"Enemy",
+			"Skull III"
+		]
+	},
+	{
+		"Name": "boid3jawhit",
+		"Description": "Skull III jaw damage",
+		"Tags": [
+			"Damage",
+			"Enemy",
+			"Skull III"
+		]
+	},
+	{
+		"Name": "boid3jawlev",
+		"Description": "Transmuted Skull III jaw",
+		"Tags": [
+			"Enemy",
+			"Transmuted Skull III"
+		]
+	},
+	{
+		"Name": "boid3lev",
+		"Description": "Transmuted Skull III base texture",
+		"Tags": [
+			"Enemy",
+			"Transmuted Skull III"
+		]
+	},
+	{
+		"Name": "boid4",
+		"Description": "Skull IV base texture",
+		"Tags": [
+			"Enemy",
+			"Skull IV"
+		]
+	},
+	{
+		"Name": "boid4gib",
+		"Description": "Skull IV death",
+		"Tags": [
+			"Death",
+			"Enemy",
+			"Skull IV"
+		]
+	},
+	{
+		"Name": "boid4hit",
+		"Description": "Skull IV damage",
+		"Tags": [
+			"Damage",
+			"Enemy",
+			"Skull IV"
+		]
+	},
+	{
+		"Name": "boid4jaw",
+		"Description": "Skull IV jaw",
+		"Tags": [
+			"Enemy",
+			"Skull IV"
+		]
+	},
+	{
+		"Name": "boid4jawgib",
+		"Description": "Skull IV jaw death",
+		"Tags": [
+			"Death",
+			"Enemy",
+			"Skull IV"
+		]
+	},
+	{
+		"Name": "boid4jawhit",
+		"Description": "Skull IV jaw damage",
+		"Tags": [
+			"Damage",
+			"Enemy",
+			"Skull IV"
+		]
+	},
+	{
+		"Name": "boid4jawlev",
+		"Description": "Transmuted Skull IV jaw",
+		"Tags": [
+			"Enemy",
+			"Transmuted Skull IV"
+		]
+	},
+	{
+		"Name": "boid4lev",
+		"Description": "Transmuted Skull IV base texture",
+		"Tags": [
+			"Enemy",
+			"Transmuted Skull IV"
+		]
+	},
+	{
+		"Name": "boidgib",
+		"Description": "Skull I death",
+		"Tags": [
+			"Death",
+			"Enemy",
+			"Skull I"
+		]
+	},
+	{
+		"Name": "boidhit",
+		"Description": "Skull I damage",
+		"Tags": [
+			"Damage",
+			"Enemy",
+			"Skull I"
+		]
+	},
+	{
+		"Name": "boidlev",
+		"Description": "Transmuted Skull I",
+		"Tags": [
+			"Enemy",
+			"Transmuted Skull I"
+		]
+	},
+	{
+		"Name": "bottom",
+		"Description": "Tile bottom?",
+		"Tags": [
+			"Arena"
+		]
+	},
+	{
+		"Name": "crystal",
+		"Description": "Unused",
+		"Tags": [
+			"Unused"
+		]
+	},
+	{
+		"Name": "dagger",
+		"Description": "Level 1 Dagger",
+		"Tags": [
+			"Dagger"
+		]
+	},
+	{
+		"Name": "dagger0",
+		"Description": "Pleb Lobby Dagger",
+		"Tags": [
+			"Dagger",
+			"Pleb"
+		]
+	},
+	{
+		"Name": "dagger2",
+		"Description": "Level 2 Dagger",
+		"Tags": [
+			"Dagger"
+		]
+	},
+	{
+		"Name": "dagger3",
+		"Description": "Level 3 Dagger / Devil Lobby Dagger",
+		"Tags": [
+			"Dagger",
+			"Devil"
+		]
+	},
+	{
+		"Name": "dagger4",
+		"Description": "Level 3 Homing Dagger",
+		"Tags": [
+			"Dagger"
+		]
+	},
+	{
+		"Name": "dagger5",
+		"Description": "Level 4 Dagger",
+		"Tags": [
+			"Dagger"
+		]
+	},
+	{
+		"Name": "dagger6",
+		"Description": "Level 4 Homing Dagger",
+		"Tags": [
+			"Dagger"
+		]
+	},
+	{
+		"Name": "daggerbronze",
+		"Description": "Bronze Lobby Dagger",
+		"Tags": [
+			"Bronze",
+			"Dagger"
+		]
+	},
+	{
+		"Name": "daggergold",
+		"Description": "Golden Lobby Dagger",
+		"Tags": [
+			"Dagger",
+			"Golden"
+		]
+	},
+	{
+		"Name": "daggersilver",
+		"Description": "Silver Lobby Dagger",
+		"Tags": [
+			"Dagger",
+			"Silver"
+		]
+	},
+	{
+		"Name": "emberflame",
+		"Description": "Primary fire after-embers / Decals base texture",
+		"Tags": [
+			"Particles"
+		]
+	},
+	{
+		"Name": "feather",
+		"Description": "Unused",
+		"Tags": [
+			"Unused"
+		]
+	},
+	{
+		"Name": "fontbronze",
+		"Description": "Bronze font",
+		"Tags": [
+			"Bronze",
+			"Font",
+			"UI"
+		]
+	},
+	{
+		"Name": "fontbronzeover",
+		"Description": "Bronze font hover",
+		"Tags": [
+			"Bronze",
+			"Font",
+			"Hover",
+			"UI"
+		]
+	},
+	{
+		"Name": "fontdevil",
+		"Description": "Devil font",
+		"Tags": [
+			"Devil",
+			"Font",
+			"UI"
+		]
+	},
+	{
+		"Name": "fontdevilover",
+		"Description": "Devil font hover",
+		"Tags": [
+			"Devil",
+			"Font",
+			"Hover",
+			"UI"
+		]
+	},
+	{
+		"Name": "fontgold",
+		"Description": "Golden font",
+		"Tags": [
+			"Font",
+			"Golden",
+			"UI"
+		]
+	},
+	{
+		"Name": "fontgoldover",
+		"Description": "Golden font hover",
+		"Tags": [
+			"Font",
+			"Golden",
+			"Hover",
+			"UI"
+		]
+	},
+	{
+		"Name": "fontgrad",
+		"Description": "Default UI font",
+		"Tags": [
+			"Font",
+			"UI"
+		]
+	},
+	{
+		"Name": "fontgrad2",
+		"Description": "Default UI colored font",
+		"Tags": [
+			"Font",
+			"UI"
+		]
+	},
+	{
+		"Name": "fontgrad3",
+		"Description": "Default UI colored font over",
+		"Tags": [
+			"Font",
+			"Hover",
+			"UI"
+		]
+	},
+	{
+		"Name": "fontlevi",
+		"Description": "Leviathan font",
+		"Tags": [
+			"Font",
+			"UI"
+		]
+	},
+	{
+		"Name": "fontlevibg",
+		"Description": "Leviathan font mask",
+		"Tags": [
+			"Font",
+			"Hover",
+			"UI"
+		]
+	},
+	{
+		"Name": "fontleviover",
+		"Description": "Leviathan font over",
+		"Tags": [
+			"Font",
+			"Hover",
+			"UI"
+		]
+	},
+	{
+		"Name": "fontpleb",
+		"Description": "Pleb font",
+		"Tags": [
+			"Font",
+			"Pleb",
+			"UI"
+		]
+	},
+	{
+		"Name": "fontplebover",
+		"Description": "Pleb font hover",
+		"Tags": [
+			"Font",
+			"Hover",
+			"Pleb",
+			"UI"
+		]
+	},
+	{
+		"Name": "fontsilver",
+		"Description": "Silver font",
+		"Tags": [
+			"Font",
+			"Silver",
+			"UI"
+		]
+	},
+	{
+		"Name": "fontsilverover",
+		"Description": "Silver font hover",
+		"Tags": [
+			"Font",
+			"Hover",
+			"Silver",
+			"UI"
+		]
+	},
+	{
+		"Name": "gib",
+		"Description": "Gem (including gems in Squids)",
+		"Tags": [
+			"Gem"
+		]
+	},
+	{
+		"Name": "gib1a",
+		"Description": "Meat piece base texture",
+		"Tags": [
+			"Gore"
+		]
+	},
+	{
+		"Name": "gib1b",
+		"Description": "Meat piece base texture",
+		"Tags": [
+			"Gore"
+		]
+	},
+	{
+		"Name": "gib1c",
+		"Description": "Meat piece base texture",
+		"Tags": [
+			"Gore"
+		]
+	},
+	{
+		"Name": "gib1d",
+		"Description": "Meat piece base texture",
+		"Tags": [
+			"Gore"
+		]
+	},
+	{
+		"Name": "gib2",
+		"Description": "Alternate Gem (unused)",
+		"Tags": [
+			"Gem"
+		]
+	},
+	{
+		"Name": "gib2a",
+		"Description": "Meat piece base texture",
+		"Tags": [
+			"Gore"
+		]
+	},
+	{
+		"Name": "gib2b",
+		"Description": "Meat piece base texture",
+		"Tags": [
+			"Gore"
+		]
+	},
+	{
+		"Name": "gib2c",
+		"Description": "Meat piece base texture",
+		"Tags": [
+			"Gore"
+		]
+	},
+	{
+		"Name": "gib2d",
+		"Description": "Meat piece base texture",
+		"Tags": [
+			"Gore"
+		]
+	},
+	{
+		"Name": "gib3a",
+		"Description": "Meat piece base texture",
+		"Tags": [
+			"Gore"
+		]
+	},
+	{
+		"Name": "gib3b",
+		"Description": "Meat piece base texture",
+		"Tags": [
+			"Gore"
+		]
+	},
+	{
+		"Name": "gib3c",
+		"Description": "Meat piece base texture",
+		"Tags": [
+			"Gore"
+		]
+	},
+	{
+		"Name": "gib3d",
+		"Description": "Meat piece base texture",
+		"Tags": [
+			"Gore"
+		]
+	},
+	{
+		"Name": "gigaegg",
+		"Description": "Spider Egg II base texture",
+		"Tags": [
+			"Enemy",
+			"Spider Egg II"
+		]
+	},
+	{
+		"Name": "gigaspiderbody",
+		"Description": "Spider II",
+		"Tags": [
+			"Enemy",
+			"Spider II"
+		]
+	},
+	{
+		"Name": "gigaspidercrest",
+		"Description": "?",
+		"Tags": [
+			"Enemy",
+			"Spider II"
+		]
+	},
+	{
+		"Name": "gigaspidercrestgib",
+		"Description": "Spider II death",
+		"Tags": [
+			"Death",
+			"Enemy",
+			"Spider II"
+		]
+	},
+	{
+		"Name": "gigaspidercresthit",
+		"Description": "Spider II damage",
+		"Tags": [
+			"Damage",
+			"Enemy",
+			"Spider II"
+		]
+	},
+	{
+		"Name": "gigaspiderfangs",
+		"Description": "Spider II Primary Fangs",
+		"Tags": [
+			"Enemy",
+			"Spider II"
+		]
+	},
+	{
+		"Name": "gigaspiderfangs2",
+		"Description": "Spider II Secondary Fangs",
+		"Tags": [
+			"Enemy",
+			"Spider II"
+		]
+	},
+	{
+		"Name": "gigaspiderfangs2gib",
+		"Description": "Spider II Fangs death",
+		"Tags": [
+			"Death",
+			"Enemy",
+			"Spider II"
+		]
+	},
+	{
+		"Name": "gigaspiderfangs2hit",
+		"Description": "Spider II Fangs damage",
+		"Tags": [
+			"Damage",
+			"Enemy",
+			"Spider II"
+		]
+	},
+	{
+		"Name": "gigaspiderhead",
+		"Description": "Spider II Gem Holder",
+		"Tags": [
+			"Enemy",
+			"Spider II"
+		]
+	},
+	{
+		"Name": "gigaspiderhorns",
+		"Description": "Spider II Horns",
+		"Tags": [
+			"Enemy",
+			"Spider II"
+		]
+	},
+	{
+		"Name": "gigaspiderhornsgib",
+		"Description": "Spider II Horns death",
+		"Tags": [
+			"Death",
+			"Enemy",
+			"Spider II"
+		]
+	},
+	{
+		"Name": "gigaspiderhornshit",
+		"Description": "Spider II Horns damage",
+		"Tags": [
+			"Damage",
+			"Enemy",
+			"Spider II"
+		]
+	},
+	{
+		"Name": "gigaspiderjaw",
+		"Description": "Spider II Mouth",
+		"Tags": [
+			"Enemy",
+			"Spider II"
+		]
+	},
+	{
+		"Name": "gigaspiderleg1",
+		"Description": "Spider II Leg 1",
+		"Tags": [
+			"Enemy",
+			"Spider II"
+		]
+	},
+	{
+		"Name": "gigaspiderleg2",
+		"Description": "Spider II Leg 2",
+		"Tags": [
+			"Enemy",
+			"Spider II"
+		]
+	},
+	{
+		"Name": "gigaspiderleg3",
+		"Description": "Spider II Leg 3",
+		"Tags": [
+			"Enemy",
+			"Spider II"
+		]
+	},
+	{
+		"Name": "gigaspiderpalm",
+		"Description": "Spider II Palm",
+		"Tags": [
+			"Enemy",
+			"Spider II"
+		]
+	},
+	{
+		"Name": "hand",
+		"Description": "Level 1 Hand",
+		"Tags": [
+			"Player"
+		]
+	},
+	{
+		"Name": "hand0",
+		"Description": "Lobby Hand",
+		"Tags": [
+			"Player"
+		]
+	},
+	{
+		"Name": "hand2",
+		"Description": "Level 2 Hand",
+		"Tags": [
+			"Player"
+		]
+	},
+	{
+		"Name": "hand3",
+		"Description": "Level 3 Hand",
+		"Tags": [
+			"Player"
+		]
+	},
+	{
+		"Name": "hand4",
+		"Description": "Level 3 Hand Flash",
+		"Tags": [
+			"Player"
+		]
+	},
+	{
+		"Name": "hand5",
+		"Description": "Level 4 Hand",
+		"Tags": [
+			"Player"
+		]
+	},
+	{
+		"Name": "hand6",
+		"Description": "Level 4 Hand Flash",
+		"Tags": [
+			"Player"
+		]
+	},
+	{
+		"Name": "iconcrosshair",
+		"Description": "Accuracy Icon",
+		"Tags": [
+			"Icon",
+			"UI"
+		]
+	},
+	{
+		"Name": "icondagger",
+		"Description": "Enemies Killed Icon",
+		"Tags": [
+			"Icon",
+			"UI"
+		]
+	},
+	{
+		"Name": "icondd",
+		"Description": "Application Icon",
+		"Tags": [
+			"Icon"
+		]
+	},
+	{
+		"Name": "iconeye",
+		"Description": "Replay Recorded Run Icon",
+		"Tags": [
+			"Icon",
+			"UI"
+		]
+	},
+	{
+		"Name": "iconeye2",
+		"Description": "Replay Recorded Run Icon hover",
+		"Tags": [
+			"Hover",
+			"Icon",
+			"UI"
+		]
+	},
+	{
+		"Name": "icongem",
+		"Description": "Gems Collected Icon",
+		"Tags": [
+			"Icon",
+			"UI"
+		]
+	},
+	{
+		"Name": "iconmaskcrosshair",
+		"Description": "Accuracy Timeline Icon",
+		"Tags": [
+			"Icon",
+			"UI"
+		]
+	},
+	{
+		"Name": "iconmaskdagger",
+		"Description": "Enemies Killed Timeline Icon",
+		"Tags": [
+			"Icon",
+			"UI"
+		]
+	},
+	{
+		"Name": "iconmaskgem",
+		"Description": "Gems Collected Timeline Icon",
+		"Tags": [
+			"Icon",
+			"UI"
+		]
+	},
+	{
+		"Name": "iconmaskhoming",
+		"Description": "Homing Daggers Timeline Icon",
+		"Tags": [
+			"Icon",
+			"UI"
+		]
+	},
+	{
+		"Name": "iconmaskskull",
+		"Description": "Enemies Alive Timeline Icon",
+		"Tags": [
+			"Icon",
+			"UI"
+		]
+	},
+	{
+		"Name": "iconmaskstopwatch",
+		"Description": "Scrubber Time Mark Icon",
+		"Tags": [
+			"Icon",
+			"UI"
+		]
+	},
+	{
+		"Name": "iconreplay",
+		"Description": "Unused icon",
+		"Tags": [
+			"Icon",
+			"UI",
+			"Unused"
+		]
+	},
+	{
+		"Name": "iconreplay2",
+		"Description": "Unused icon",
+		"Tags": [
+			"Icon",
+			"UI",
+			"Unused"
+		]
+	},
+	{
+		"Name": "iconskull",
+		"Description": "Death Type / Total Deaths Icon",
+		"Tags": [
+			"Icon",
+			"UI"
+		]
+	},
+	{
+		"Name": "iconstopwatch",
+		"Description": "Run Time Icon",
+		"Tags": [
+			"Icon",
+			"UI"
+		]
+	},
+	{
+		"Name": "levicrown",
+		"Description": "?",
+		"Tags": [
+			"Enemy",
+			"Leviathan"
+		]
+	},
+	{
+		"Name": "levicrown2",
+		"Description": "?",
+		"Tags": [
+			"Enemy",
+			"Leviathan"
+		]
+	},
+	{
+		"Name": "levicrown2jaw",
+		"Description": "?",
+		"Tags": [
+			"Enemy",
+			"Leviathan"
+		]
+	},
+	{
+		"Name": "levicrownjaw",
+		"Description": "?",
+		"Tags": [
+			"Enemy",
+			"Leviathan"
+		]
+	},
+	{
+		"Name": "levideath",
+		"Description": "?",
+		"Tags": [
+			"Death",
+			"Enemy",
+			"Leviathan"
+		]
+	},
+	{
+		"Name": "levidividerskull",
+		"Description": "?",
+		"Tags": [
+			"Enemy",
+			"Leviathan"
+		]
+	},
+	{
+		"Name": "levileg1",
+		"Description": "?",
+		"Tags": [
+			"Enemy",
+			"Leviathan"
+		]
+	},
+	{
+		"Name": "levileg2",
+		"Description": "?",
+		"Tags": [
+			"Enemy",
+			"Leviathan"
+		]
+	},
+	{
+		"Name": "levileg3",
+		"Description": "?",
+		"Tags": [
+			"Enemy",
+			"Leviathan"
+		]
+	},
+	{
+		"Name": "leviskull",
+		"Description": "?",
+		"Tags": [
+			"Enemy",
+			"Leviathan"
+		]
+	},
+	{
+		"Name": "leviskull2",
+		"Description": "?",
+		"Tags": [
+			"Enemy",
+			"Leviathan"
+		]
+	},
+	{
+		"Name": "leviskulljaw",
+		"Description": "?",
+		"Tags": [
+			"Enemy",
+			"Leviathan"
+		]
+	},
+	{
+		"Name": "levitent",
+		"Description": "?",
+		"Tags": [
+			"Enemy",
+			"Leviathan"
+		]
+	},
+	{
+		"Name": "levitent2",
+		"Description": "?",
+		"Tags": [
+			"Enemy",
+			"Leviathan"
+		]
+	},
+	{
+		"Name": "levitentgib",
+		"Description": "?",
+		"Tags": [
+			"Death",
+			"Enemy",
+			"Leviathan"
+		]
+	},
+	{
+		"Name": "levitenthit",
+		"Description": "?",
+		"Tags": [
+			"Damage",
+			"Enemy",
+			"Leviathan"
+		]
+	},
+	{
+		"Name": "leviwarp",
+		"Description": "Leviathan Secondary Dome effect",
+		"Tags": [
+			"Enemy",
+			"Leviathan"
+		]
+	},
+	{
+		"Name": "leviwarpover",
+		"Description": "Leviathan Dome effect / Beckoned Skulls override",
+		"Tags": [
+			"Enemy",
+			"Leviathan"
+		]
+	},
+	{
+		"Name": "logodagger",
+		"Description": "Splash Screen Dagger",
+		"Tags": [
+			"UI"
+		]
+	},
+	{
+		"Name": "logodagger2",
+		"Description": "Unused",
+		"Tags": [
+			"UI"
+		]
+	},
+	{
+		"Name": "logohand",
+		"Description": "Splash Screen Hand",
+		"Tags": [
+			"UI"
+		]
+	},
+	{
+		"Name": "logotext",
+		"Description": "Splash Screen Text",
+		"Tags": [
+			"UI"
+		]
+	},
+	{
+		"Name": "lut",
+		"Description": "Unused post filter",
+		"Tags": [
+			"Post-processing",
+			"Unused"
+		]
+	},
+	{
+		"Name": "minisquidarm",
+		"Description": "Squid I Tentacle",
+		"Tags": [
+			"Enemy",
+			"Squid I"
+		]
+	},
+	{
+		"Name": "minisquidcrest",
+		"Description": "Squid I Body texture",
+		"Tags": [
+			"Enemy",
+			"Squid I"
+		]
+	},
+	{
+		"Name": "minisquidcrestskull",
+		"Description": "Squid I Gem Holder",
+		"Tags": [
+			"Enemy",
+			"Squid I"
+		]
+	},
+	{
+		"Name": "minisquidhorns",
+		"Description": "Squid I Gem Holder Horns",
+		"Tags": [
+			"Enemy",
+			"Squid I"
+		]
+	},
+	{
+		"Name": "minisquidjaw",
+		"Description": "Squid I Gem Holder Skull Jaw",
+		"Tags": [
+			"Enemy",
+			"Squid I"
+		]
+	},
+	{
+		"Name": "minisquidjawskull",
+		"Description": "Squid I Gem Holder Skull",
+		"Tags": [
+			"Enemy",
+			"Squid I"
+		]
+	},
+	{
+		"Name": "pedeblackbody",
+		"Description": "Gigapede Segment texture",
+		"Tags": [
+			"Enemy",
+			"Gigapede"
+		]
+	},
+	{
+		"Name": "pedeblackhead",
+		"Description": "Gigapede Head texture",
+		"Tags": [
+			"Enemy",
+			"Gigapede"
+		]
+	},
+	{
+		"Name": "pedeblackjaw",
+		"Description": "Gigapede Jaw",
+		"Tags": [
+			"Enemy",
+			"Gigapede"
+		]
+	},
+	{
+		"Name": "pedeblackleg1",
+		"Description": "Gigapede Leg 1",
+		"Tags": [
+			"Enemy",
+			"Gigapede"
+		]
+	},
+	{
+		"Name": "pedeblackleg2",
+		"Description": "Gigapede Leg 2",
+		"Tags": [
+			"Enemy",
+			"Gigapede"
+		]
+	},
+	{
+		"Name": "pedeblackleg3",
+		"Description": "Gigapede Leg 3",
+		"Tags": [
+			"Enemy",
+			"Gigapede"
+		]
+	},
+	{
+		"Name": "pedeblacktail",
+		"Description": "Gigapede Tail",
+		"Tags": [
+			"Enemy",
+			"Gigapede"
+		]
+	},
+	{
+		"Name": "pedeblacktaillegs",
+		"Description": "Gigapede Tail Legs",
+		"Tags": [
+			"Enemy",
+			"Gigapede"
+		]
+	},
+	{
+		"Name": "pedebody",
+		"Description": "Centipede Body",
+		"Tags": [
+			"Centipede",
+			"Enemy"
+		]
+	},
+	{
+		"Name": "pedebodyfragged",
+		"Description": "Centipede / Gigapede / Ghostpede Segment without gem",
+		"Tags": [
+			"Centipede",
+			"Enemy",
+			"Ghostpede",
+			"Gigapede"
+		]
+	},
+	{
+		"Name": "pedebodygib",
+		"Description": "Centipede / Gigapede / Ghostpede Segment death",
+		"Tags": [
+			"Centipede",
+			"Death",
+			"Enemy",
+			"Ghostpede",
+			"Gigapede"
+		]
+	},
+	{
+		"Name": "pedebodyhit",
+		"Description": "Centipede / Gigapede / Ghostpede Segment damage",
+		"Tags": [
+			"Centipede",
+			"Damage",
+			"Enemy",
+			"Ghostpede",
+			"Gigapede"
+		]
+	},
+	{
+		"Name": "pedehead",
+		"Description": "Centipede Head texture",
+		"Tags": [
+			"Centipede",
+			"Enemy"
+		]
+	},
+	{
+		"Name": "pedeheadgib",
+		"Description": "Centipede / Gigapede / Ghostpede Head death",
+		"Tags": [
+			"Centipede",
+			"Death",
+			"Enemy",
+			"Ghostpede",
+			"Gigapede"
+		]
+	},
+	{
+		"Name": "pedeheadhit",
+		"Description": "Centipede / Gigapede / Ghostpede Head damage",
+		"Tags": [
+			"Centipede",
+			"Damage",
+			"Enemy",
+			"Ghostpede",
+			"Gigapede"
+		]
+	},
+	{
+		"Name": "pedejaw",
+		"Description": "Centipede Jaw",
+		"Tags": [
+			"Centipede",
+			"Enemy"
+		]
+	},
+	{
+		"Name": "pedejawgib",
+		"Description": "Centipede / Gigapede / Ghostpede Jaw death",
+		"Tags": [
+			"Centipede",
+			"Death",
+			"Enemy",
+			"Ghostpede",
+			"Gigapede"
+		]
+	},
+	{
+		"Name": "pedejawhit",
+		"Description": "Centipede / Gigapede / Ghostpede Jaw damage",
+		"Tags": [
+			"Centipede",
+			"Damage",
+			"Enemy",
+			"Ghostpede",
+			"Gigapede"
+		]
+	},
+	{
+		"Name": "pedeleg1",
+		"Description": "Centipede Leg 1",
+		"Tags": [
+			"Centipede",
+			"Enemy"
+		]
+	},
+	{
+		"Name": "pedeleg1gib",
+		"Description": "Centipede / Gigapede / Ghostpede Leg 1 death",
+		"Tags": [
+			"Centipede",
+			"Death",
+			"Enemy",
+			"Ghostpede",
+			"Gigapede"
+		]
+	},
+	{
+		"Name": "pedeleg1hit",
+		"Description": "Centipede / Gigapede / Ghostpede Leg 1 damage",
+		"Tags": [
+			"Centipede",
+			"Damage",
+			"Enemy",
+			"Ghostpede",
+			"Gigapede"
+		]
+	},
+	{
+		"Name": "pedeleg2",
+		"Description": "Centipede Leg 2",
+		"Tags": [
+			"Centipede",
+			"Enemy"
+		]
+	},
+	{
+		"Name": "pedeleg2gib",
+		"Description": "Centipede / Gigapede / Ghostpede Leg 2 death",
+		"Tags": [
+			"Centipede",
+			"Death",
+			"Enemy",
+			"Ghostpede",
+			"Gigapede"
+		]
+	},
+	{
+		"Name": "pedeleg2hit",
+		"Description": "Centipede / Gigapede / Ghostpede Leg 2 damage",
+		"Tags": [
+			"Centipede",
+			"Damage",
+			"Enemy",
+			"Ghostpede",
+			"Gigapede"
+		]
+	},
+	{
+		"Name": "pedeleg3",
+		"Description": "Centipede Leg 3",
+		"Tags": [
+			"Centipede",
+			"Enemy"
+		]
+	},
+	{
+		"Name": "pedeleg3gib",
+		"Description": "Centipede / Gigapede / Ghostpede Leg 3 death",
+		"Tags": [
+			"Centipede",
+			"Death",
+			"Enemy",
+			"Ghostpede",
+			"Gigapede"
+		]
+	},
+	{
+		"Name": "pedeleg3hit",
+		"Description": "Centipede / Gigapede / Ghostpede Leg 3 damage",
+		"Tags": [
+			"Centipede",
+			"Damage",
+			"Enemy",
+			"Ghostpede",
+			"Gigapede"
+		]
+	},
+	{
+		"Name": "pedetail",
+		"Description": "Centipede Tail",
+		"Tags": [
+			"Centipede",
+			"Enemy"
+		]
+	},
+	{
+		"Name": "pedetailgib",
+		"Description": "Centipede / Gigapede / Ghostpede Tail death",
+		"Tags": [
+			"Centipede",
+			"Death",
+			"Enemy",
+			"Ghostpede",
+			"Gigapede"
+		]
+	},
+	{
+		"Name": "pedetailhit",
+		"Description": "Centipede / Gigapede / Ghostpede Tail damage",
+		"Tags": [
+			"Centipede",
+			"Damage",
+			"Enemy",
+			"Ghostpede",
+			"Gigapede"
+		]
+	},
+	{
+		"Name": "pedetaillegs",
+		"Description": "Centipede Tail Legs",
+		"Tags": [
+			"Centipede",
+			"Enemy"
+		]
+	},
+	{
+		"Name": "pedetaillegsgib",
+		"Description": "Centipede / Gigapede / Ghostpede Tail Leg death",
+		"Tags": [
+			"Centipede",
+			"Death",
+			"Enemy",
+			"Ghostpede",
+			"Gigapede"
+		]
+	},
+	{
+		"Name": "pedetaillegshit",
+		"Description": "Centipede / Gigapede / Ghostpede Tail Leg damage",
+		"Tags": [
+			"Centipede",
+			"Damage",
+			"Enemy",
+			"Ghostpede",
+			"Gigapede"
+		]
+	},
+	{
+		"Name": "pillar",
+		"Description": "Tile sides texture",
+		"Tags": [
+			"Arena"
+		]
+	},
+	{
+		"Name": "post_lut",
+		"Description": "Arena In-game post filter",
+		"Tags": [
+			"Post-processing"
+		]
+	},
+	{
+		"Name": "post_lut_bronzeflash",
+		"Description": "Bronze Score post filter",
+		"Tags": [
+			"Bronze",
+			"Post-processing"
+		]
+	},
+	{
+		"Name": "post_lut_collect",
+		"Description": "Gem Collected post filter",
+		"Tags": [
+			"Post-processing"
+		]
+	},
+	{
+		"Name": "post_lut_dagger",
+		"Description": "Lobby post filter",
+		"Tags": [
+			"Post-processing"
+		]
+	},
+	{
+		"Name": "post_lut_death",
+		"Description": "Post Death post filter",
+		"Tags": [
+			"Post-processing"
+		]
+	},
+	{
+		"Name": "post_lut_devilflash",
+		"Description": "Devil Score post filter",
+		"Tags": [
+			"Devil",
+			"Post-processing"
+		]
+	},
+	{
+		"Name": "post_lut_goldflash",
+		"Description": "Golden Score post filter",
+		"Tags": [
+			"Golden",
+			"Post-processing"
+		]
+	},
+	{
+		"Name": "post_lut_leveldown",
+		"Description": "Death fade out/flash post filter",
+		"Tags": [
+			"Death",
+			"Post-processing"
+		]
+	},
+	{
+		"Name": "post_lut_levelup",
+		"Description": "Level Up post filter",
+		"Tags": [
+			"Post-processing"
+		]
+	},
+	{
+		"Name": "post_lut_levi",
+		"Description": "Leviathan Spawn post filter",
+		"Tags": [
+			"Post-processing"
+		]
+	},
+	{
+		"Name": "post_lut_silverflash",
+		"Description": "Silver Score post filter",
+		"Tags": [
+			"Post-processing",
+			"Silver"
+		]
+	},
+	{
+		"Name": "rubble",
+		"Description": "Thorn Tile Destruction texture",
+		"Tags": [
+			"Enemy",
+			"Thorn"
+		]
+	},
+	{
+		"Name": "skulltile",
+		"Description": "Unused",
+		"Tags": [
+			"Unused"
+		]
+	},
+	{
+		"Name": "smokeblob",
+		"Description": "Emerging Enemies texture",
+		"Tags": [
+			"Particles"
+		]
+	},
+	{
+		"Name": "sorathmask",
+		"Description": "Sorath Logo texture mask",
+		"Tags": [
+			"Splash Screen"
+		]
+	},
+	{
+		"Name": "sorathstone",
+		"Description": "Sorath Stone base texture",
+		"Tags": [
+			"Easter Egg"
+		]
+	},
+	{
+		"Name": "sorathtexture",
+		"Description": "Sorath Logo base texture",
+		"Tags": [
+			"Splash Screen"
+		]
+	},
+	{
+		"Name": "sorathvector",
+		"Description": "Sorath Logo texture filter",
+		"Tags": [
+			"Splash Screen"
+		]
+	},
+	{
+		"Name": "spiderbody",
+		"Description": "?",
+		"Tags": [
+			"Enemy",
+			"Spider I"
+		]
+	},
+	{
+		"Name": "spiderbodygib",
+		"Description": "?",
+		"Tags": [
+			"Enemy",
+			"Spider I"
+		]
+	},
+	{
+		"Name": "spiderbodyhit",
+		"Description": "?",
+		"Tags": [
+			"Enemy",
+			"Spider I"
+		]
+	},
+	{
+		"Name": "spideregg1",
+		"Description": "Spider Egg I Goo base texture",
+		"Tags": [
+			"Enemy",
+			"Spider Egg I"
+		]
+	},
+	{
+		"Name": "spideregg2",
+		"Description": "Spider Egg I base texture",
+		"Tags": [
+			"Enemy",
+			"Spider Egg I"
+		]
+	},
+	{
+		"Name": "spidereggflash",
+		"Description": "Spider Egg I flashing texture",
+		"Tags": [
+			"Enemy",
+			"Spider Egg I"
+		]
+	},
+	{
+		"Name": "spiderfangs",
+		"Description": "?",
+		"Tags": [
+			"Enemy",
+			"Spider I"
+		]
+	},
+	{
+		"Name": "spiderfangsgib",
+		"Description": "?",
+		"Tags": [
+			"Death",
+			"Enemy",
+			"Spider I"
+		]
+	},
+	{
+		"Name": "spiderfangshit",
+		"Description": "?",
+		"Tags": [
+			"Damage",
+			"Enemy",
+			"Spider I"
+		]
+	},
+	{
+		"Name": "spiderhead",
+		"Description": "?",
+		"Tags": [
+			"Enemy",
+			"Spider I"
+		]
+	},
+	{
+		"Name": "spiderheadgib",
+		"Description": "?",
+		"Tags": [
+			"Death",
+			"Enemy",
+			"Spider I"
+		]
+	},
+	{
+		"Name": "spiderheadhit",
+		"Description": "?",
+		"Tags": [
+			"Damage",
+			"Enemy",
+			"Spider I"
+		]
+	},
+	{
+		"Name": "spiderjaw",
+		"Description": "?",
+		"Tags": [
+			"Enemy",
+			"Spider I"
+		]
+	},
+	{
+		"Name": "spiderjawgib",
+		"Description": "?",
+		"Tags": [
+			"Death",
+			"Enemy",
+			"Spider I"
+		]
+	},
+	{
+		"Name": "spiderjawhit",
+		"Description": "?",
+		"Tags": [
+			"Damage",
+			"Enemy",
+			"Spider I"
+		]
+	},
+	{
+		"Name": "spiderleg1",
+		"Description": "?",
+		"Tags": [
+			"Enemy",
+			"Spider I"
+		]
+	},
+	{
+		"Name": "spiderleg1gib",
+		"Description": "?",
+		"Tags": [
+			"Death",
+			"Enemy",
+			"Spider I"
+		]
+	},
+	{
+		"Name": "spiderleg1hit",
+		"Description": "?",
+		"Tags": [
+			"Damage",
+			"Enemy",
+			"Spider I"
+		]
+	},
+	{
+		"Name": "spiderleg2",
+		"Description": "?",
+		"Tags": [
+			"Enemy",
+			"Spider I"
+		]
+	},
+	{
+		"Name": "spiderleg2gib",
+		"Description": "?",
+		"Tags": [
+			"Death",
+			"Enemy",
+			"Spider I"
+		]
+	},
+	{
+		"Name": "spiderleg2hit",
+		"Description": "?",
+		"Tags": [
+			"Damage",
+			"Enemy",
+			"Spider I"
+		]
+	},
+	{
+		"Name": "spiderleg3",
+		"Description": "?",
+		"Tags": [
+			"Enemy",
+			"Spider I"
+		]
+	},
+	{
+		"Name": "spiderleg3gib",
+		"Description": "?",
+		"Tags": [
+			"Death",
+			"Enemy",
+			"Spider I"
+		]
+	},
+	{
+		"Name": "spiderleg3hit",
+		"Description": "?",
+		"Tags": [
+			"Damage",
+			"Enemy",
+			"Spider I"
+		]
+	},
+	{
+		"Name": "spiderling",
+		"Description": "Spiderling Body base texture",
+		"Tags": [
+			"Enemy",
+			"Spiderling"
+		]
+	},
+	{
+		"Name": "spiderlinggib",
+		"Description": "Spiderling Body death",
+		"Tags": [
+			"Death",
+			"Enemy",
+			"Spiderling"
+		]
+	},
+	{
+		"Name": "spiderlinghit",
+		"Description": "Spiderling Body damage",
+		"Tags": [
+			"Damage",
+			"Enemy",
+			"Spiderling"
+		]
+	},
+	{
+		"Name": "spiderlingleg1",
+		"Description": "Spiderling Leg 1",
+		"Tags": [
+			"Enemy",
+			"Spiderling"
+		]
+	},
+	{
+		"Name": "spiderlingleg1gib",
+		"Description": "Spiderling Leg 1 death",
+		"Tags": [
+			"Death",
+			"Enemy",
+			"Spiderling"
+		]
+	},
+	{
+		"Name": "spiderlingleg1hit",
+		"Description": "Spiderling Leg 1",
+		"Tags": [
+			"Enemy",
+			"Spiderling"
+		]
+	},
+	{
+		"Name": "spiderlingleg2",
+		"Description": "Spiderling Leg 2",
+		"Tags": [
+			"Enemy",
+			"Spiderling"
+		]
+	},
+	{
+		"Name": "spiderlingleg2gib",
+		"Description": "Spiderling Leg 2 death",
+		"Tags": [
+			"Death",
+			"Enemy",
+			"Spiderling"
+		]
+	},
+	{
+		"Name": "spiderlingleg2hit",
+		"Description": "Spiderling Leg 2 damage",
+		"Tags": [
+			"Damage",
+			"Enemy",
+			"Spiderling"
+		]
+	},
+	{
+		"Name": "spiderlingleg3",
+		"Description": "Spiderling Leg 3",
+		"Tags": [
+			"Enemy",
+			"Spiderling"
+		]
+	},
+	{
+		"Name": "spiderlingleg3gib",
+		"Description": "Spiderling Leg 3 death",
+		"Tags": [
+			"Death",
+			"Enemy",
+			"Spiderling"
+		]
+	},
+	{
+		"Name": "spiderlingleg3hit",
+		"Description": "Spiderling Leg 3 damage",
+		"Tags": [
+			"Damage",
+			"Enemy",
+			"Spiderling"
+		]
+	},
+	{
+		"Name": "spiderlingpalm",
+		"Description": "Spiderling Palm",
+		"Tags": [
+			"Enemy",
+			"Spiderling"
+		]
+	},
+	{
+		"Name": "spiderlingpalmgib",
+		"Description": "Spiderling Palm death",
+		"Tags": [
+			"Death",
+			"Enemy",
+			"Spiderling"
+		]
+	},
+	{
+		"Name": "spiderlingpalmhit",
+		"Description": "Spiderling Palm damage",
+		"Tags": [
+			"Damage",
+			"Enemy",
+			"Spiderling"
+		]
+	},
+	{
+		"Name": "spiderpalm",
+		"Description": "Spider I Palm",
+		"Tags": [
+			"Enemy",
+			"Spider I"
+		]
+	},
+	{
+		"Name": "spiderpalmgib",
+		"Description": "Spider I Palm death",
+		"Tags": [
+			"Death",
+			"Enemy",
+			"Spider I"
+		]
+	},
+	{
+		"Name": "spiderpalmhit",
+		"Description": "Spider I Palm damage",
+		"Tags": [
+			"Damage",
+			"Enemy",
+			"Spider I"
+		]
+	},
+	{
+		"Name": "squidarm",
+		"Description": "Squid II Tentacle",
+		"Tags": [
+			"Enemy",
+			"Squid II"
+		]
+	},
+	{
+		"Name": "squidarmgib",
+		"Description": "Squid II Tentacle death",
+		"Tags": [
+			"Death",
+			"Enemy",
+			"Squid II"
+		]
+	},
+	{
+		"Name": "squidarmhit",
+		"Description": "Squid II Tentacle damage",
+		"Tags": [
+			"Damage",
+			"Enemy",
+			"Squid II"
+		]
+	},
+	{
+		"Name": "squidcrest",
+		"Description": "Squid II Body texture",
+		"Tags": [
+			"Enemy",
+			"Squid II"
+		]
+	},
+	{
+		"Name": "squidcrestgib",
+		"Description": "Squid II Body damage",
+		"Tags": [
+			"Damage",
+			"Enemy",
+			"Squid II"
+		]
+	},
+	{
+		"Name": "squidcresthit",
+		"Description": "Squid II Body death",
+		"Tags": [
+			"Death",
+			"Enemy",
+			"Squid II"
+		]
+	},
+	{
+		"Name": "squidcrestskull",
+		"Description": "Squid II Gem Holder Skull",
+		"Tags": [
+			"Enemy",
+			"Squid II"
+		]
+	},
+	{
+		"Name": "squidcrestskullgib",
+		"Description": "Squid II Gem Holder Skull death",
+		"Tags": [
+			"Death",
+			"Enemy",
+			"Squid II"
+		]
+	},
+	{
+		"Name": "squidcrestskullhit",
+		"Description": "Squid II Gem Holder Skull damage",
+		"Tags": [
+			"Damage",
+			"Enemy",
+			"Squid II"
+		]
+	},
+	{
+		"Name": "squidhorns",
+		"Description": "Squid II Horns",
+		"Tags": [
+			"Enemy",
+			"Squid II"
+		]
+	},
+	{
+		"Name": "squidjaws",
+		"Description": "Squid II Gem Holder Skull Jaw",
+		"Tags": [
+			"Enemy",
+			"Squid II"
+		]
+	},
+	{
+		"Name": "squidjawsgib",
+		"Description": "Squid II Gem Holder Skull Jaw death",
+		"Tags": [
+			"Death",
+			"Enemy",
+			"Squid II"
+		]
+	},
+	{
+		"Name": "squidjawshit",
+		"Description": "Squid II Gem Holder Skull Jaw damage",
+		"Tags": [
+			"Damage",
+			"Enemy",
+			"Squid II"
+		]
+	},
+	{
+		"Name": "squidjawskull",
+		"Description": "Squid II",
+		"Tags": [
+			"Enemy",
+			"Squid II"
+		]
+	},
+	{
+		"Name": "squidjawskullfragged",
+		"Description": "Squid II Gem Holder Without Gem",
+		"Tags": [
+			"Enemy",
+			"Squid II"
+		]
+	},
+	{
+		"Name": "squidjawskullgib",
+		"Description": "Squid II Gem Holder Skull Jaw",
+		"Tags": [
+			"Enemy",
+			"Squid II"
+		]
+	},
+	{
+		"Name": "squidjawskullhit",
+		"Description": "Squid II Gem Holder Skull Jaw death",
+		"Tags": [
+			"Death",
+			"Enemy",
+			"Squid II"
+		]
+	},
+	{
+		"Name": "squidteeth",
+		"Description": "Squid II Bottom Teeth",
+		"Tags": [
+			"Enemy",
+			"Squid II"
+		]
+	},
+	{
+		"Name": "squidteethgib",
+		"Description": "Squid II Bottom Teeth death",
+		"Tags": [
+			"Death",
+			"Enemy",
+			"Squid II"
+		]
+	},
+	{
+		"Name": "squidteethhit",
+		"Description": "Squid II Bottom Teeth damage",
+		"Tags": [
+			"Damage",
+			"Enemy",
+			"Squid II"
+		]
+	},
+	{
+		"Name": "statue1",
+		"Description": "Player Number 3",
+		"Tags": [
+			"Easter Egg"
+		]
+	},
+	{
+		"Name": "statue2",
+		"Description": "Player Number 2",
+		"Tags": [
+			"Easter Egg"
+		]
+	},
+	{
+		"Name": "statue3",
+		"Description": "Player Number 1",
+		"Tags": [
+			"Easter Egg"
+		]
+	},
+	{
+		"Name": "thorn",
+		"Description": "Thorn Body base texture",
+		"Tags": [
+			"Enemy",
+			"Thorn"
+		]
+	},
+	{
+		"Name": "thorngib",
+		"Description": "Thorn Body death",
+		"Tags": [
+			"Death",
+			"Enemy",
+			"Thorn"
+		]
+	},
+	{
+		"Name": "thornhit",
+		"Description": "Thorn Body damage",
+		"Tags": [
+			"Damage",
+			"Enemy",
+			"Thorn"
+		]
+	},
+	{
+		"Name": "tile",
+		"Description": "Floor texture",
+		"Tags": [
+			"Arena"
+		]
+	},
+	{
+		"Name": "ultrapedebody",
+		"Description": "Ghostpede segment",
+		"Tags": [
+			"Enemy",
+			"Ghostpede"
+		]
+	},
+	{
+		"Name": "ultrapedebodyfragged",
+		"Description": "Ghostpede segment without gem",
+		"Tags": [
+			"Enemy",
+			"Ghostpede"
+		]
+	},
+	{
+		"Name": "ultrapedecrown",
+		"Description": "Ghostpede extra horns",
+		"Tags": [
+			"Enemy",
+			"Ghostpede"
+		]
+	},
+	{
+		"Name": "ultrapedecrowngib",
+		"Description": "Ghostpede extra horns death",
+		"Tags": [
+			"Death",
+			"Enemy",
+			"Ghostpede"
+		]
+	},
+	{
+		"Name": "ultrapedecrownhit",
+		"Description": "Ghostpede extra horns damage",
+		"Tags": [
+			"Damage",
+			"Enemy",
+			"Ghostpede"
+		]
+	},
+	{
+		"Name": "ultrapedehead",
+		"Description": "Ghostpede head",
+		"Tags": [
+			"Enemy",
+			"Ghostpede"
+		]
+	},
+	{
+		"Name": "ultrapedejaw",
+		"Description": "Ghostpede jaw",
+		"Tags": [
+			"Enemy",
+			"Ghostpede"
+		]
+	},
+	{
+		"Name": "ultrapedeleg1",
+		"Description": "Ghostpede leg texture?",
+		"Tags": [
+			"Enemy",
+			"Ghostpede"
+		]
+	},
+	{
+		"Name": "ultrapedeleg2",
+		"Description": "Ghostpede leg texture?",
+		"Tags": [
+			"Enemy",
+			"Ghostpede"
+		]
+	},
+	{
+		"Name": "ultrapedeleg3",
+		"Description": "Ghostpede leg texture?",
+		"Tags": [
+			"Enemy",
+			"Ghostpede"
+		]
+	},
+	{
+		"Name": "ultrapedetail",
+		"Description": "Ghostpede tail texture",
+		"Tags": [
+			"Enemy",
+			"Ghostpede"
+		]
+	},
+	{
+		"Name": "ultrasquidcrest",
+		"Description": "Squid III body",
+		"Tags": [
+			"Enemy",
+			"Squid III"
+		]
+	},
+	{
+		"Name": "ultrasquidcrestskull",
+		"Description": "Squid III body skull",
+		"Tags": [
+			"Enemy",
+			"Squid III"
+		]
+	},
+	{
+		"Name": "ultrasquidhorns",
+		"Description": "Squid III skull gem holder horns",
+		"Tags": [
+			"Enemy",
+			"Squid III"
+		]
+	},
+	{
+		"Name": "ultrasquidjaw",
+		"Description": "Squid III skull jaw gem holder",
+		"Tags": [
+			"Enemy",
+			"Squid III"
+		]
+	},
+	{
+		"Name": "ultrasquidjawskull",
+		"Description": "Squid III skull gem holder",
+		"Tags": [
+			"Enemy",
+			"Squid III"
+		]
+	}
+]

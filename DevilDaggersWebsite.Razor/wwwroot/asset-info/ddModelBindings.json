@@ -1,0 +1,474 @@
+[
+	{
+		"Name": "bat",
+		"Description": "Unused",
+		"Tags": [
+			"?"
+		]
+	},
+	{
+		"Name": "boid",
+		"Description": "Pede heads and tail / Spiders pedipalps",
+		"Tags": [
+			"Spider I",
+			"Spider II",
+			"Centipede",
+			"Gigapede",
+			"Ghostpede"
+		]
+	},
+	{
+		"Name": "boid_pop",
+		"Description": "Unused?",
+		"Tags": [
+			"?"
+		]
+	},
+	{
+		"Name": "dagger",
+		"Description": "Pleb lobby dagger",
+		"Tags": [
+			"Dagger",
+			"Pleb"
+		]
+	},
+	{
+		"Name": "dagger1",
+		"Description": "Level 1 dagger",
+		"Tags": [
+			"Dagger",
+			"Level 1"
+		]
+	},
+	{
+		"Name": "dagger2",
+		"Description": "Level 2 dagger",
+		"Tags": [
+			"Dagger",
+			"Level 2"
+		]
+	},
+	{
+		"Name": "dagger3",
+		"Description": "Level 3 regular dagger",
+		"Tags": [
+			"Dagger",
+			"Level 3"
+		]
+	},
+	{
+		"Name": "dagger4",
+		"Description": "Level 3 homing dagger",
+		"Tags": [
+			"Dagger",
+			"Level 3",
+			"Homing"
+		]
+	},
+	{
+		"Name": "dagger5",
+		"Description": "Level 4 regular dagger",
+		"Tags": [
+			"Dagger",
+			"Level 4"
+		]
+	},
+	{
+		"Name": "dagger6",
+		"Description": "Level 4 homing dagger",
+		"Tags": [
+			"Dagger",
+			"Level 4",
+			"Homing"
+		]
+	},
+	{
+		"Name": "daggerbronze",
+		"Description": "Bronze lobby dagger",
+		"Tags": [
+			"Dagger",
+			"Bronze"
+		]
+	},
+	{
+		"Name": "daggerdevil",
+		"Description": "Devil lobby dagger",
+		"Tags": [
+			"Dagger",
+			"Devil"
+		]
+	},
+	{
+		"Name": "daggergold",
+		"Description": "Golden lobby dagger",
+		"Tags": [
+			"Dagger",
+			"Golden"
+		]
+	},
+	{
+		"Name": "daggerlevi",
+		"Description": "Leviathan lobby dagger",
+		"Tags": [
+			"Dagger",
+			"Leviathan"
+		]
+	},
+	{
+		"Name": "daggersilver",
+		"Description": "Silver lobby dagger",
+		"Tags": [
+			"Dagger",
+			"Silver"
+		]
+	},
+	{
+		"Name": "gib",
+		"Description": "Gems (including gems on enemies)",
+		"Tags": [
+			"Gem"
+		]
+	},
+	{
+		"Name": "gibegg",
+		"Description": "Blinking effect of gems close to active spiders",
+		"Tags": [
+			"Gem"
+		]
+	},
+	{
+		"Name": "gigaegg",
+		"Description": "Spider II egg goo",
+		"Tags": [
+			"Spider Egg II",
+			"Goo"
+		]
+	},
+	{
+		"Name": "hand",
+		"Description": "Level 1 hand",
+		"Tags": [
+			"Hand",
+			"Level 1"
+		]
+	},
+	{
+		"Name": "hand0",
+		"Description": "Lobby hand",
+		"Tags": [
+			"Hand"
+		]
+	},
+	{
+		"Name": "hand2",
+		"Description": "Level 2 hand",
+		"Tags": [
+			"Hand",
+			"Level 2"
+		]
+	},
+	{
+		"Name": "hand3",
+		"Description": "Level 3 hand",
+		"Tags": [
+			"Hand",
+			"Level 3"
+		]
+	},
+	{
+		"Name": "hand4",
+		"Description": "Level 3 hand flash",
+		"Tags": [
+			"Hand",
+			"Level 3"
+		]
+	},
+	{
+		"Name": "hand5",
+		"Description": "Level 4 hand",
+		"Tags": [
+			"Hand",
+			"Level 4"
+		]
+	},
+	{
+		"Name": "hand6",
+		"Description": "Level 4 hand flash",
+		"Tags": [
+			"Hand",
+			"Level 4"
+		]
+	},
+	{
+		"Name": "immortaleye",
+		"Description": "Orb",
+		"Tags": [
+			"Orb"
+		]
+	},
+	{
+		"Name": "immortaleyehit",
+		"Description": "Orb damage",
+		"Tags": [
+			"Orb",
+			"Damage"
+		]
+	},
+	{
+		"Name": "levitent",
+		"Description": "Leviathan antlers",
+		"Tags": [
+			"Leviathan"
+		]
+	},
+	{
+		"Name": "levitentgib",
+		"Description": "Leviathan antlers death",
+		"Tags": [
+			"Leviathan",
+			"Death"
+		]
+	},
+	{
+		"Name": "levitenthit",
+		"Description": "Leviathan antlers damage",
+		"Tags": [
+			"Leviathan",
+			"Damage"
+		]
+	},
+	{
+		"Name": "leviwarp",
+		"Description": "Leviathan antlers and divider skulls spawn effect",
+		"Tags": [
+			"Leviathan"
+		]
+	},
+	{
+		"Name": "leviwarp2",
+		"Description": "Leviathan skybox effect",
+		"Tags": [
+			"Leviathan"
+		]
+	},
+	{
+		"Name": "leviwarp3",
+		"Description": "Unused?",
+		"Tags": [
+			"?"
+		]
+	},
+	{
+		"Name": "logodagger",
+		"Description": "Title screen dagger",
+		"Tags": [
+			"Title"
+		]
+	},
+	{
+		"Name": "logohand",
+		"Description": "Title screen hand",
+		"Tags": [
+			"Title"
+		]
+	},
+	{
+		"Name": "logotext",
+		"Description": "Title",
+		"Tags": [
+			"Title"
+		]
+	},
+	{
+		"Name": "minisquidarm",
+		"Description": "Unused",
+		"Tags": [
+			"?"
+		]
+	},
+	{
+		"Name": "particle",
+		"Description": "Unused",
+		"Tags": [
+			"?"
+		]
+	},
+	{
+		"Name": "particle2",
+		"Description": "Unused",
+		"Tags": [
+			"?"
+		]
+	},
+	{
+		"Name": "particle_decal",
+		"Description": "Unused",
+		"Tags": [
+			"?"
+		]
+	},
+	{
+		"Name": "pedebody",
+		"Description": "Unused",
+		"Tags": [
+			"?"
+		]
+	},
+	{
+		"Name": "pedehead",
+		"Description": "Unused",
+		"Tags": [
+			"?"
+		]
+	},
+	{
+		"Name": "pedejaw",
+		"Description": "Unused",
+		"Tags": [
+			"?"
+		]
+	},
+	{
+		"Name": "pedeleg1",
+		"Description": "Unused",
+		"Tags": [
+			"?"
+		]
+	},
+	{
+		"Name": "pedeleg2",
+		"Description": "Unused",
+		"Tags": [
+			"?"
+		]
+	},
+	{
+		"Name": "pedeleg3",
+		"Description": "Unused",
+		"Tags": [
+			"?"
+		]
+	},
+	{
+		"Name": "pedetail",
+		"Description": "Unused",
+		"Tags": [
+			"?"
+		]
+	},
+	{
+		"Name": "skullscroll",
+		"Description": "?",
+		"Tags": [
+			"?"
+		]
+	},
+	{
+		"Name": "skullwarp",
+		"Description": "Unused",
+		"Tags": [
+			"?"
+		]
+	},
+	{
+		"Name": "sorathlogo",
+		"Description": "Splash screen logo",
+		"Tags": [
+			"Splash screen"
+		]
+	},
+	{
+		"Name": "spideregg1",
+		"Description": "Spider I egg goo",
+		"Tags": [
+			"Spider Egg I",
+			"Goo"
+		]
+	},
+	{
+		"Name": "spideregg2",
+		"Description": "Spider I and II egg",
+		"Tags": [
+			"Spider Egg I",
+			"Spider Egg II"
+		]
+	},
+	{
+		"Name": "spidereggflash",
+		"Description": "Flashing effect of spider eggs near hatching",
+		"Tags": [
+			"Spider Egg I",
+			"Spider Egg II"
+		]
+	},
+	{
+		"Name": "squidarm",
+		"Description": "Unused",
+		"Tags": [
+			"?"
+		]
+	},
+	{
+		"Name": "squidarmgib",
+		"Description": "Unused",
+		"Tags": [
+			"?"
+		]
+	},
+	{
+		"Name": "squidarmhit",
+		"Description": "Unused",
+		"Tags": [
+			"?"
+		]
+	},
+	{
+		"Name": "squidteeth",
+		"Description": "Unused",
+		"Tags": [
+			"?"
+		]
+	},
+	{
+		"Name": "squidteethgib",
+		"Description": "Unused",
+		"Tags": [
+			"?"
+		]
+	},
+	{
+		"Name": "squidteethhit",
+		"Description": "Unused",
+		"Tags": [
+			"?"
+		]
+	},
+	{
+		"Name": "thorn",
+		"Description": "Thorn (excluding rubble)",
+		"Tags": [
+			"Thorn"
+		]
+	},
+	{
+		"Name": "thornhit",
+		"Description": "Thorn damage (excluding rubble)",
+		"Tags": [
+			"Thorn"
+		]
+	},
+	{
+		"Name": "tile",
+		"Description": "Unused",
+		"Tags": [
+			"?"
+		]
+	},
+	{
+		"Name": "tile2",
+		"Description": "Unused",
+		"Tags": [
+			"?"
+		]
+	}
+]

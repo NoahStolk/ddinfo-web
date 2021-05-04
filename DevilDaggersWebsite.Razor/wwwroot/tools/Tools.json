@@ -1198,6 +1198,9 @@
 		"VersionNumber": "0.60.2.1",
 		"VersionNumberRequired": "0.46.0.0",
 		"Changelog": [
+			/*
+			You can now search/preview/download&install mods hosted on the website from within the app.
+			*/
 			{
 				"VersionNumber": "0.60.2.1",
 				"Date": "2021-04-22T00:00:00",
