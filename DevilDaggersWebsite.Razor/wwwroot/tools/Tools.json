@@ -1200,6 +1200,7 @@
 		"Changelog": [
 			/*
 			You can now search/preview/download&install mods hosted on the website from within the app.
+			Descriptions and tags for assets are now retrieved from the DevilDaggers.info API, so changes to descriptions or tags do not require an update for DDAE anymore. The asset list itself is still stored in the application so it doesn't break when the website is down.
 			*/
 			{
 				"VersionNumber": "0.60.2.1",
