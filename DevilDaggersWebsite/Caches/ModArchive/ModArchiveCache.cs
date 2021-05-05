@@ -1,4 +1,5 @@
 ﻿using DevilDaggersDiscordBot.Logging;
+using DevilDaggersWebsite.Exceptions;
 using Microsoft.AspNetCore.Hosting;
 using System;
 using System.Collections.Concurrent;
@@ -34,6 +35,9 @@ namespace DevilDaggersWebsite.Caches.ModArchive
 			};
 			foreach (ZipArchiveEntry entry in archive.Entries)
 			{
+				if (string.IsNullOrEmpty(entry.Name))
+					throw new InvalidModBinaryException("Zip archive must not contain any folders.");
+
 				byte[] extractedContents = new byte[entry.Length];
 
 				using Stream stream = entry.Open();

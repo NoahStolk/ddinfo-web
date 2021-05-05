@@ -7,6 +7,7 @@ using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.AspNetCore.Mvc.RazorPages;
 using System;
+using System.Collections.Generic;
 using System.IO;
 using System.Linq;
 using System.Threading.Tasks;
@@ -87,10 +88,14 @@ namespace DevilDaggersWebsite.Razor.Pages.Admin.AssetMods
 
 				Io.File.WriteAllBytes(filePath, formFileBytes);
 
-				foreach (ModBinaryCacheData binary in ModArchiveCache.Instance.GetArchiveDataByFilePath(filePath).Binaries)
+				List<ModBinaryCacheData> archive = ModArchiveCache.Instance.GetArchiveDataByFilePath(filePath).Binaries;
+				if (archive.Count == 0)
+					throw new InvalidModBinaryException($"File '{FormFile.FileName}' does not contain any binaries.");
+
+				foreach (ModBinaryCacheData binary in archive)
 				{
 					if (binary.Chunks.Count == 0)
-						throw new InvalidModBinaryException($"File '{binary.Name}' does not contain any assets.");
+						throw new InvalidModBinaryException($"Binary '{binary.Name}' does not contain any assets.");
 				}
 
 				await DiscordLogger.Instance.TryLog(Channel.AuditLogMonitoring, _env.EnvironmentName, $":white_check_mark: `{this.GetIdentity()}` uploaded new ASSETMOD file `{FormFile.FileName}` (`{formFileBytes.Length:n0}` bytes)");
