@@ -93,6 +93,9 @@ namespace DevilDaggersWebsite.Razor.PageModels
 			if (customLeaderboard?.ValidateGlobal(ModelState, DbContext, _env) == false)
 				return Page();
 
+			if (player?.ValidateGlobal(ModelState) == false)
+				return Page();
+
 			if (IsEditing)
 			{
 				_entity = GetFullQuery().FirstOrDefault(m => m.Id == id);

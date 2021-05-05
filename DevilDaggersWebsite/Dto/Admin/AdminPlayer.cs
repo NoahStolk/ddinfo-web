@@ -1,4 +1,5 @@
-﻿using System.Collections.Generic;
+﻿using Microsoft.AspNetCore.Mvc.ModelBinding;
+using System.Collections.Generic;
 
 namespace DevilDaggersWebsite.Dto.Admin
 {
@@ -42,6 +43,38 @@ namespace DevilDaggersWebsite.Dto.Admin
 			dictionary.Add(nameof(UsesLegacyAudio), UsesLegacyAudio.ToString() ?? string.Empty);
 			dictionary.Add(nameof(IsBannedFromDdcl), IsBannedFromDdcl.ToString() ?? string.Empty);
 			return dictionary;
+		}
+
+		public bool ValidateGlobal(ModelStateDictionary modelState)
+		{
+			if (IsBanned)
+			{
+				if (!string.IsNullOrWhiteSpace(CountryCode))
+				{
+					modelState.AddModelError($"AdminDto.{nameof(CountryCode)}", "Banned players should not have a country code.");
+					return false;
+				}
+
+				foreach (KeyValuePair<string, bool> kvp in new Dictionary<string, bool>()
+				{
+					{ nameof(Dpi), Dpi.HasValue },
+					{ nameof(InGameSens), InGameSens.HasValue },
+					{ nameof(Fov), Fov.HasValue },
+					{ nameof(RightHanded), RightHanded.HasValue },
+					{ nameof(FlashEnabled), FlashEnabled.HasValue },
+					{ nameof(Gamma), Gamma.HasValue },
+					{ nameof(UsesLegacyAudio), UsesLegacyAudio.HasValue },
+				})
+				{
+					if (kvp.Value)
+					{
+						modelState.AddModelError($"AdminDto.{kvp.Key}", "Banned players should not have settings.");
+						return false;
+					}
+				}
+			}
+
+			return true;
 		}
 	}
 }
