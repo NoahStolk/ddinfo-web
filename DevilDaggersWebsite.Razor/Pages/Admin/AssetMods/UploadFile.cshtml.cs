@@ -34,6 +34,9 @@ namespace DevilDaggersWebsite.Razor.Pages.Admin.AssetMods
 
 		public async Task OnPostAsync()
 		{
+			bool uploaded = false;
+			string? filePath = null;
+
 			string failedAttemptMessage = $":x: Failed attempt from `{this.GetIdentity()}` to upload new ASSETMOD file";
 
 			string modsDirectory = Path.Combine(_env.WebRootPath, "mods");
@@ -72,7 +75,7 @@ namespace DevilDaggersWebsite.Razor.Pages.Admin.AssetMods
 					return;
 				}
 
-				string filePath = Path.Combine(modsDirectory, FormFile.FileName);
+				filePath = Path.Combine(modsDirectory, FormFile.FileName);
 				if (Io.File.Exists(filePath))
 				{
 					await DiscordLogger.Instance.TryLog(Channel.AuditLogMonitoring, _env.EnvironmentName, $"{failedAttemptMessage}: File `{FormFile.FileName}` already exists.");
@@ -87,6 +90,8 @@ namespace DevilDaggersWebsite.Razor.Pages.Admin.AssetMods
 				}
 
 				Io.File.WriteAllBytes(filePath, formFileBytes);
+				uploaded = true;
+				await DiscordLogger.Instance.TryLog(Channel.AuditLogMonitoring, _env.EnvironmentName, $"Uploaded `{FormFile.FileName}`.");
 
 				List<ModBinaryCacheData> archive = ModArchiveCache.Instance.GetArchiveDataByFilePath(filePath).Binaries;
 				if (archive.Count == 0)
@@ -103,10 +108,24 @@ namespace DevilDaggersWebsite.Razor.Pages.Admin.AssetMods
 			catch (InvalidModBinaryException ex)
 			{
 				await DiscordLogger.Instance.TryLog(Channel.AuditLogMonitoring, _env.EnvironmentName, $"{failedAttemptMessage}: A binary file inside the file `{FormFile?.FileName}` is invalid. {ex.Message}");
+
+				await DeleteFile(uploaded, filePath);
 			}
 			catch (Exception ex)
 			{
 				await DiscordLogger.Instance.TryLog(Channel.AuditLogMonitoring, _env.EnvironmentName, $"{failedAttemptMessage}: Fatal error: `{ex.Message}`");
+
+				await DeleteFile(uploaded, filePath);
+			}
+		}
+
+		private async Task DeleteFile(bool uploaded, string? filePath)
+		{
+			if (uploaded && !string.IsNullOrWhiteSpace(filePath) && Io.File.Exists(filePath))
+			{
+				Io.File.Delete(filePath);
+				string fileName = Path.GetFileName(filePath);
+				await DiscordLogger.Instance.TryLog(Channel.AuditLogMonitoring, _env.EnvironmentName, $"Deleted `{fileName}`.");
 			}
 		}
 	}
