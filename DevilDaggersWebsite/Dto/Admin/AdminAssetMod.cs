@@ -1,4 +1,5 @@
 ﻿using DevilDaggersWebsite.Enumerators;
+using Microsoft.AspNetCore.Mvc.ModelBinding;
 using System;
 using System.Collections.Generic;
 using System.Linq;
@@ -28,6 +29,17 @@ namespace DevilDaggersWebsite.Dto.Admin
 			dictionary.Add(nameof(TrailerUrl), TrailerUrl ?? string.Empty);
 			dictionary.Add(nameof(HtmlDescription), HtmlDescription ?? string.Empty);
 			return dictionary;
+		}
+
+		public bool ValidateGlobal(ModelStateDictionary modelState)
+		{
+			if (PlayerIds == null || PlayerIds.Count == 0)
+			{
+				modelState.AddModelError($"AdminDto.{nameof(PlayerIds)}", "Mod should have at least one author.");
+				return false;
+			}
+
+			return true;
 		}
 	}
 }
