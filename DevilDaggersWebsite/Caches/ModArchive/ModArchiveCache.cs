@@ -11,6 +11,8 @@ namespace DevilDaggersWebsite.Caches.ModArchive
 {
 	public sealed class ModArchiveCache : IDynamicCache
 	{
+		private readonly object _fileStreamLock = new();
+
 		private readonly ConcurrentDictionary<string, ModArchiveCacheData> _cache = new();
 
 		private static readonly Lazy<ModArchiveCache> _lazy = new(() => new());
@@ -27,28 +29,31 @@ namespace DevilDaggersWebsite.Caches.ModArchive
 			if (_cache.ContainsKey(name))
 				return _cache[name];
 
-			using FileStream fs = new(filePath, FileMode.Open);
-			using ZipArchive archive = new(fs);
-			ModArchiveCacheData archiveData = new()
+			lock (_fileStreamLock)
 			{
-				FileSize = fs.Length,
-			};
-			foreach (ZipArchiveEntry entry in archive.Entries)
-			{
-				if (string.IsNullOrEmpty(entry.Name))
-					throw new InvalidModBinaryException("Zip archive must not contain any folders.");
+				using FileStream fs = new(filePath, FileMode.Open);
+				using ZipArchive archive = new(fs);
+				ModArchiveCacheData archiveData = new()
+				{
+					FileSize = fs.Length,
+				};
+				foreach (ZipArchiveEntry entry in archive.Entries)
+				{
+					if (string.IsNullOrEmpty(entry.Name))
+						throw new InvalidModBinaryException("Zip archive must not contain any folders.");
 
-				byte[] extractedContents = new byte[entry.Length];
+					byte[] extractedContents = new byte[entry.Length];
 
-				using Stream stream = entry.Open();
-				stream.Read(extractedContents, 0, extractedContents.Length);
+					using Stream stream = entry.Open();
+					stream.Read(extractedContents, 0, extractedContents.Length);
 
-				archiveData.Binaries.Add(ModBinaryCacheData.CreateFromFile(entry.Name, extractedContents));
-				archiveData.FileSizeExtracted += entry.Length;
+					archiveData.Binaries.Add(ModBinaryCacheData.CreateFromFile(entry.Name, extractedContents));
+					archiveData.FileSizeExtracted += entry.Length;
+				}
+
+				_cache.TryAdd(name, archiveData);
+				return archiveData;
 			}
-
-			_cache.TryAdd(name, archiveData);
-			return archiveData;
 		}
 
 		public async Task Clear(IWebHostEnvironment env)
