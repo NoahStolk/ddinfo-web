@@ -6,7 +6,7 @@ namespace DevilDaggersWebsite.Dto.Admin
 {
 	public class AdminPlayer : IAdminDto
 	{
-		[Range(1, 9999999)]
+		[Range(1, int.MaxValue)]
 		public int Id { get; init; }
 		public string? PlayerName { get; init; }
 		public bool IsAnonymous { get; init; }
