@@ -34,13 +34,13 @@
 
 		<h2>Scores</h2>
 		<ul>
-			@foreach (KeyValuePair<Enemy[], (int Time, Dagger Dagger)> kvp in StatisticsModel.EnemyTimes.OrderBy(kvp => kvp.Value.Time))
+			@foreach (KeyValuePair<Enemy[], (int? Time, Dagger Dagger)> kvp in StatisticsModel.EnemyTimes.OrderByDescending(kvp => kvp.Value.Time.HasValue).ThenBy(kvp => kvp.Value.Time))
 			{
 				int count = LeaderboardStatisticsCache.Instance.Entries.Count(e => e.Time > kvp.Value.Time);
 				int total = LeaderboardStatisticsCache.Instance.Entries.Count;
 				string daggerStyle = kvp.Value.Dagger.Name.ToLower();
-				string daggerTimeStyle = GameInfo.GetDaggerFromTime(GameVersion.V31, kvp.Value.Time).Name.ToLower();
-				<li><span class="@daggerStyle">@count</span> out of @total players (<span class="@daggerStyle">@((count / (float)total).ToString("0.00%"))</span>) have seen @Html.Raw(string.Join(" and ", kvp.Key.Select(e => RazorUtils.GetLayoutAnchor(e)))) (<span class="@daggerTimeStyle">@(kvp.Value.Time > 10000000 ? "???" : (kvp.Value.Time / 10000).ToString("0.0000"))</span> seconds).</li>
+				string daggerTimeStyle = GameInfo.GetDaggerFromTime(GameVersion.V31, kvp.Value.Time ?? int.MaxValue).Name.ToLower();
+				<li><span class="@daggerStyle">@count</span> out of @total players (<span class="@daggerStyle">@((count / (float)total).ToString("0.00%"))</span>) have seen @Html.Raw(string.Join(" and ", kvp.Key.Select(e => RazorUtils.GetLayoutAnchor(e)))) (<span class="@daggerTimeStyle">@(!kvp.Value.Time.HasValue ? "???" : (kvp.Value.Time.Value / 10000).ToString("0.0000"))</span> seconds).</li>
 			}
 			<li>The average time survived for all players is <span class="@GameInfo.GetDaggerFromTime(GameVersion.V31, avgTime).Name.ToLower()">@(FormatUtils.FormatTimeInteger(avgTime / 10000f))</span> seconds.</li>
 			<li>The average kills for all players is @(avgKills.ToString(FormatUtils.LeaderboardIntAverageFormat)).</li>

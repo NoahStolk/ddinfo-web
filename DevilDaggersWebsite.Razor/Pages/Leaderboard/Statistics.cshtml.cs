@@ -6,9 +6,9 @@ namespace DevilDaggersWebsite.Razor.Pages.Leaderboard
 {
 	public class StatisticsModel : PageModel
 	{
-		public static Dictionary<Enemy[], (int Time, Dagger Dagger)> EnemyTimes { get; } = new()
+		public static Dictionary<Enemy[], (int? Time, Dagger Dagger)> EnemyTimes { get; } = new()
 		{
-			{ new[] { GameInfo.V2Andras }, (20000000, GameInfo.V31LeviathanDagger) },
+			{ new[] { GameInfo.V2Andras }, (null, GameInfo.V31LeviathanDagger) },
 			{ new[] { GameInfo.V31Thorn }, (4470000, GameInfo.V31LeviathanDagger) },
 			{ new[] { GameInfo.V31Ghostpede }, (4420000, GameInfo.V31LeviathanDagger) },
 			{ new[] { GameInfo.V31Leviathan }, (3500000, GameInfo.V31Devil) },
