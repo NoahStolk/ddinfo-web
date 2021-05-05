@@ -1,10 +1,12 @@
 ﻿using Microsoft.AspNetCore.Mvc.ModelBinding;
 using System.Collections.Generic;
+using System.ComponentModel.DataAnnotations;
 
 namespace DevilDaggersWebsite.Dto.Admin
 {
 	public class AdminPlayer : IAdminDto
 	{
+		[Range(1, 9999999)]
 		public int Id { get; init; }
 		public string? PlayerName { get; init; }
 		public bool IsAnonymous { get; init; }
