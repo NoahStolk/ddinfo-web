@@ -1,4 +1,5 @@
-﻿using DevilDaggersWebsite.Dto.Admin;
+﻿using DevilDaggersWebsite.Clients;
+using DevilDaggersWebsite.Dto.Admin;
 using System.Collections.Generic;
 using System.ComponentModel.DataAnnotations;
 using System.Linq;
@@ -46,7 +47,7 @@ namespace DevilDaggersWebsite.Entities
 
 		public void Edit(ApplicationDbContext dbContext, AdminPlayer adminDto)
 		{
-			PlayerName = adminDto.PlayerName;
+			PlayerName = string.IsNullOrWhiteSpace(adminDto.PlayerName) ? (LeaderboardClient.Instance.GetUserById(Id).Result?.Username ?? string.Empty) : adminDto.PlayerName;
 			IsAnonymous = adminDto.IsAnonymous;
 			CountryCode = adminDto.CountryCode;
 			Dpi = adminDto.Dpi;

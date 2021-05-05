@@ -6,7 +6,7 @@ namespace DevilDaggersWebsite.Dto.Admin
 	public class AdminPlayer : IAdminDto
 	{
 		public int Id { get; init; }
-		public string PlayerName { get; init; } = null!;
+		public string? PlayerName { get; init; }
 		public bool IsAnonymous { get; init; }
 		public List<int>? AssetModIds { get; init; }
 		public List<int>? TitleIds { get; init; }
@@ -26,7 +26,7 @@ namespace DevilDaggersWebsite.Dto.Admin
 		public Dictionary<string, string> Log()
 		{
 			Dictionary<string, string> dictionary = new();
-			dictionary.Add(nameof(PlayerName), PlayerName);
+			dictionary.Add(nameof(PlayerName), PlayerName ?? string.Empty);
 			dictionary.Add(nameof(IsAnonymous), IsAnonymous.ToString());
 			dictionary.Add(nameof(AssetModIds), AssetModIds != null ? string.Join(", ", AssetModIds) : string.Empty);
 			dictionary.Add(nameof(TitleIds), TitleIds != null ? string.Join(", ", TitleIds) : string.Empty);
