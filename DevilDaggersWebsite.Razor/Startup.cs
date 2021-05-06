@@ -168,9 +168,11 @@ namespace DevilDaggersWebsite.Razor
 			task.Wait();
 
 			// Initiate dynamic caches.
-			// LeaderboardHistoryCache does not need to be initiated as it never returns all history at once, and is probably fast enough.
+
 			// SpawnsetDataCache does not need to be initiated as it is fast enough.
 			// SpawnsetHashCache does not need to be initiated as it is fast enough.
+
+			// TODO: LeaderboardHistoryCache might need to be initiated as the initial world record progression load is a little slow.
 
 			/* TODO: ModArchiveData is very slow because it requires unzipping huge mod archive zip files.
 			 * The idea to fix this; when adding data (based on a mod archive) to the ConcurrentBag, write this data to a JSON file as well, so it is not lost when the site shuts down.
