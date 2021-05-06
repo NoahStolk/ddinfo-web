@@ -78,7 +78,7 @@ namespace DevilDaggersWebsite.Caches.LeaderboardStatistics
 
 			IsFetched = true;
 
-			await DiscordLogger.Instance.TryLog(Channel.CacheMonitoring, env.EnvironmentName, $":{_emote}: Successfully initiated `{nameof(LeaderboardStatisticsCache)}`.");
+			await DiscordLogger.Instance.TryLog(Channel.CacheMonitoring, env.EnvironmentName, $":{_emote}: Successfully initiated static `{nameof(LeaderboardStatisticsCache)}`.");
 		}
 	}
 }

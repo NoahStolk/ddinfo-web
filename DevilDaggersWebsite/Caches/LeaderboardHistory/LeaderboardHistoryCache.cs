@@ -39,7 +39,7 @@ namespace DevilDaggersWebsite.Caches.LeaderboardHistory
 		{
 			int cacheCount = _cache.Count;
 			_cache.Clear();
-			await DiscordLogger.Instance.TryLog(Channel.CacheMonitoring, env.EnvironmentName, $":{_emote}: Successfully cleared `{nameof(LeaderboardHistoryCache)}`. (Removed `{cacheCount}` instances.)");
+			await DiscordLogger.Instance.TryLog(Channel.CacheMonitoring, env.EnvironmentName, $":{_emote}: Successfully cleared dynamic `{nameof(LeaderboardHistoryCache)}`. (Removed `{cacheCount}` instances.)");
 		}
 	}
 }
