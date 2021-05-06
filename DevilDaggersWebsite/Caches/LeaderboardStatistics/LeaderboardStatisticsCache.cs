@@ -38,9 +38,10 @@ namespace DevilDaggersWebsite.Caches.LeaderboardStatistics
 		{
 			string[] paths = Directory.GetFiles(Path.Combine(env.WebRootPath, "leaderboard-statistics"));
 			if (paths.Length == 0)
-				throw new("Statistics file not found.");
-			if (paths.Length > 1)
-				throw new("Multiple statistics files found.");
+			{
+				await DiscordLogger.Instance.TryLog(Channel.ErrorMonitoring, env.EnvironmentName, ":x: No files found in leaderboard-statistics.");
+				return;
+			}
 
 			FileName = Path.GetFileNameWithoutExtension(paths[0]);
 
@@ -67,8 +68,10 @@ namespace DevilDaggersWebsite.Caches.LeaderboardStatistics
 				if (DaggerStats.ContainsKey(dagger))
 					DaggerStats[dagger]++;
 
-				Death death = GameInfo.GetDeathByType(GameVersion.V31, entry.DeathType) ?? throw new($"Invalid death type for entry with time {entry.Time}.");
-				if (DeathStats.ContainsKey(death))
+				Death? death = GameInfo.GetDeathByType(GameVersion.V31, entry.DeathType);
+				if (death == null)
+					await DiscordLogger.Instance.TryLog(Channel.ErrorMonitoring, env.EnvironmentName, $":x: Invalid death type 0x{entry.DeathType:X} for entry with time {entry.Time} in leaderboard-statistics.");
+				else if (DeathStats.ContainsKey(death))
 					DeathStats[death]++;
 
 				int step = (int)(entry.Time / _timeStep * 10);
