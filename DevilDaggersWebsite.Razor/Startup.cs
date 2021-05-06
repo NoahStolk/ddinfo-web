@@ -163,9 +163,18 @@ namespace DevilDaggersWebsite.Razor
 			Task task = serviceProvider.CreateRolesAndAdminUser(Configuration.GetSection("AdminUser")["Email"]);
 			task.Wait();
 
-			// Initiate caches.
+			// Initiate static caches.
 			task = LeaderboardStatisticsCache.Instance.Initiate(env);
 			task.Wait();
+
+			// Initiate dynamic caches.
+			// LeaderboardHistoryCache does not need to be initiated as it never returns all history at once, and is probably fast enough.
+			// SpawnsetDataCache does not need to be initiated as it is fast enough.
+			// SpawnsetHashCache does not need to be initiated as it is fast enough.
+
+			/* TODO: ModArchiveData is very slow because it requires unzipping huge mod archive zip files.
+			 * The idea to fix this; when adding data (based on a mod archive) to the ConcurrentBag, write this data to a JSON file as well, so it is not lost when the site shuts down.
+			 * The cache then needs to be initiated here, by reading the JSON file and populating the ConcurrentBag on start up.*/
 		}
 	}
 }
