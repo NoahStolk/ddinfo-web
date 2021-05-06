@@ -176,7 +176,7 @@ namespace DevilDaggersWebsite.Razor
 
 			/* TODO: ModArchiveData is very slow because it requires unzipping huge mod archive zip files.
 			 * The idea to fix this; when adding data (based on a mod archive) to the ConcurrentBag, write this data to a JSON file as well, so it is not lost when the site shuts down.
-			 * The cache then needs to be initiated here, by reading the JSON file and populating the ConcurrentBag on start up.*/
+			 * The cache then needs to be initiated here, by reading the JSON files and populating the ConcurrentBag on start up. Effectively this is caching the cache.*/
 		}
 	}
 }
