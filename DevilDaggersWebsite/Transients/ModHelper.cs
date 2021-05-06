@@ -85,6 +85,8 @@ namespace DevilDaggersWebsite.Transients
 
 					return new Mod(
 						name: amwfi.Key.Name,
+						htmlDescription: amwfi.Key.HtmlDescription,
+						trailerUrl: amwfi.Key.TrailerUrl,
 						authors: amwfi.Key.PlayerAssetMods.Select(pam => pam.Player.PlayerName).OrderBy(s => s).ToList(),
 						lastUpdated: amwfi.Key.LastUpdated,
 						assetModTypes: assetModTypes,
