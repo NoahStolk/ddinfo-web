@@ -3,7 +3,7 @@ using System.Threading.Tasks;
 
 namespace DevilDaggersWebsite.Caches
 {
-	public interface IStaticCache
+	public interface IStaticCache : ICache
 	{
 		Task Initiate(IWebHostEnvironment env);
 	}
