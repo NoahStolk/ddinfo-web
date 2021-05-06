@@ -21,7 +21,7 @@ namespace DevilDaggersWebsite.Dto.Admin
 			dictionary.Add(nameof(Amount), Amount.ToString());
 			dictionary.Add(nameof(Currency), Currency.ToString());
 			dictionary.Add(nameof(ConvertedEuroCentsReceived), ConvertedEuroCentsReceived.ToString());
-			dictionary.Add(nameof(DateReceived), DateReceived.ToString());
+			dictionary.Add(nameof(DateReceived), DateReceived.ToString("dd MMM yyyy"));
 			dictionary.Add(nameof(Note), Note ?? string.Empty);
 			dictionary.Add(nameof(IsRefunded), IsRefunded.ToString());
 			return dictionary;

@@ -19,7 +19,7 @@ namespace DevilDaggersWebsite.Dto.Admin
 			dictionary.Add(nameof(PlayerId), PlayerId.ToString());
 			dictionary.Add(nameof(MaxDisplayWaves), MaxDisplayWaves.ToString() ?? string.Empty);
 			dictionary.Add(nameof(HtmlDescription), HtmlDescription ?? string.Empty);
-			dictionary.Add(nameof(LastUpdated), LastUpdated.ToString());
+			dictionary.Add(nameof(LastUpdated), LastUpdated.ToString("dd MMM yyyy"));
 			dictionary.Add(nameof(IsPractice), IsPractice.ToString());
 			return dictionary;
 		}

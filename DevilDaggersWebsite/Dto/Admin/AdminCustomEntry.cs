@@ -46,7 +46,7 @@ namespace DevilDaggersWebsite.Dto.Admin
 			dictionary.Add(nameof(LevelUpTime2), LevelUpTime2.ToString());
 			dictionary.Add(nameof(LevelUpTime3), LevelUpTime3.ToString());
 			dictionary.Add(nameof(LevelUpTime4), LevelUpTime4.ToString());
-			dictionary.Add(nameof(SubmitDate), SubmitDate.ToString());
+			dictionary.Add(nameof(SubmitDate), SubmitDate.ToString("dd MMM yyyy"));
 			dictionary.Add(nameof(ClientVersion), ClientVersion);
 			return dictionary;
 		}

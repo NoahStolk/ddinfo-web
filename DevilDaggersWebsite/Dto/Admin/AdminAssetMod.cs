@@ -25,7 +25,7 @@ namespace DevilDaggersWebsite.Dto.Admin
 			dictionary.Add(nameof(Name), Name);
 			dictionary.Add(nameof(Url), Url ?? string.Empty);
 			dictionary.Add(nameof(IsHidden), IsHidden.ToString());
-			dictionary.Add(nameof(LastUpdated), LastUpdated.ToString());
+			dictionary.Add(nameof(LastUpdated), LastUpdated.ToString("dd MMM yyyy"));
 			dictionary.Add(nameof(TrailerUrl), TrailerUrl ?? string.Empty);
 			dictionary.Add(nameof(HtmlDescription), HtmlDescription ?? string.Empty);
 			return dictionary;
