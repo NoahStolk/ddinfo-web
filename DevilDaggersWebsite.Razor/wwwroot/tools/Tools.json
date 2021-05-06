@@ -1195,13 +1195,33 @@
 	{
 		"Name": "DevilDaggersAssetEditor",
 		"DisplayName": "Devil Daggers Asset Editor",
-		"VersionNumber": "0.60.2.1",
+		"VersionNumber": "0.65.4.0",
 		"VersionNumberRequired": "0.46.0.0",
 		"Changelog": [
 			/*
 			You can now search/preview/download&install mods hosted on the website from within the app.
-			Descriptions and tags for assets are now retrieved from the DevilDaggers.info API, so changes to descriptions or tags do not require an update for DDAE anymore. The asset list itself is still stored in the application so everything still works when you are not connected to the internet.
 			*/
+			{
+				"VersionNumber": "0.65.4.0",
+				"Date": "2021-05-06T00:00:00",
+				"Changes": [
+					{
+						"Description": "Improved shader trimming."
+					},
+					{
+						"Description": "Added progress bar and log to 'Trim binary' window."
+					},
+					{
+						"Description": "Descriptions and tags for assets are now retrieved from the DevilDaggers.info API, so changes to descriptions or tags do not require an update for DDAE anymore. The asset list itself is still stored in the application so everything still works when you are not connected to the internet."
+					},
+					{
+						"Description": "Improved validating binaries."
+					},
+					{
+						"Description": "Small layout improvements and fixes."
+					}
+				]
+			},
 			{
 				"VersionNumber": "0.60.2.1",
 				"Date": "2021-04-22T00:00:00",
