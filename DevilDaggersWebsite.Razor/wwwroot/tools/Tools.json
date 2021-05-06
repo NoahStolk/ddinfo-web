@@ -296,7 +296,7 @@
 						"Description": "Removed dependencies."
 					},
 					{
-						"Description": "Ported to .NET Core. Application is no longer dependent on .NET Framework and does not require .NET Framework 4.6.1."
+						"Description": "Ported to .NET Core. The application is no longer dependent on .NET Framework and does not require .NET Framework 4.6.1."
 					},
 					{
 						"Description": "Fixed 'No survival file' warning not updating after restoring V3."
@@ -988,7 +988,7 @@
 						"Description": "Removed dependencies."
 					},
 					{
-						"Description": "Ported to .NET Core. Application is no longer dependent on .NET Framework and does not require .NET Framework 4.6.1."
+						"Description": "Ported to .NET Core. The application is no longer dependent on .NET Framework and does not require .NET Framework 4.6.1."
 					},
 					{
 						"Description": "Fixed crash that occurred when setting a very large custom font size."
@@ -1153,7 +1153,7 @@
 				"Date": "2019-05-18T00:00:00",
 				"Changes": [
 					{
-						"Description": "Application now uses .NET Framework 4.6.1 rather than 4.7.2."
+						"Description": "The application now uses .NET Framework 4.6.1 rather than 4.7.2."
 					},
 					{
 						"Description": "Fixed bug where level up values don't reset when you restart a run."
@@ -1305,13 +1305,13 @@
 				"Date": "2021-02-26T00:00:00",
 				"Changes": [
 					{
-						"Description": "Application is now compatible with the latest version of Devil Daggers. The new shader assets have been added, and the program will display which assets are prohibited (meaning you cannot submit 1000+ scores if these assets are modified)."
+						"Description": "The application is now compatible with the latest version of Devil Daggers. The new shader assets have been added, and the program will display which assets are prohibited (meaning you cannot submit 1000+ scores if these assets are modified)."
 					},
 					{
-						"Description": "Application now runs on .NET 5.0. You will need to install .NET Desktop Runtime 5.0.x to run this version."
+						"Description": "The application now runs on .NET 5.0. You will need to install .NET Desktop Runtime 5.0.x to run this version."
 					},
 					{
-						"Description": "Application now allows creation of partial mods. These are mods that only specify assets that have been modified. It is no longer required to create a binary file containing all assets. It also allows you to load multiple partial mods simultaneously. You can, for instance, load a partial mod that only changes the texture for Skull I, and then load another mod that changes the texture for the arena tiles."
+						"Description": "The application now allows creation of partial mods. These are mods that only specify assets that have been modified. It is no longer required to create a binary file containing all assets. It also allows you to load multiple partial mods simultaneously. You can, for instance, load a partial mod that only changes the texture for Skull I, and then load another mod that changes the texture for the arena tiles."
 					},
 					{
 						"Description": "Added CheckBox to include sub-directories when importing assets."
@@ -1449,7 +1449,7 @@
 						"Description": "Removed dependencies."
 					},
 					{
-						"Description": "Ported to .NET Core. Application is no longer dependent on .NET Framework and does not require .NET Framework 4.6.1."
+						"Description": "Ported to .NET Core. The application is no longer dependent on .NET Framework and does not require .NET Framework 4.6.1."
 					},
 					{
 						"Description": "Added loading screen."
