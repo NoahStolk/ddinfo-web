@@ -12,6 +12,8 @@ namespace DevilDaggersWebsite.Caches.SpawnsetHash
 {
 	public sealed class SpawnsetHashCache : IDynamicCache
 	{
+		private const string _emote = "red_circle";
+
 		private readonly ConcurrentBag<SpawnsetHashCacheData> _cache = new();
 
 		private static readonly Lazy<SpawnsetHashCache> _lazy = new(() => new());
@@ -58,7 +60,7 @@ namespace DevilDaggersWebsite.Caches.SpawnsetHash
 			async Task LogCacheInfo()
 			{
 				if (_cache.Count > cacheCount)
-					await DiscordLogger.Instance.TryLog(Channel.CacheMonitoring, env.EnvironmentName, $"Successfully updated `{nameof(SpawnsetHashCache)}`. (`{_cache.Count}` (`+{_cache.Count - cacheCount}`) instances in memory.)");
+					await DiscordLogger.Instance.TryLog(Channel.CacheMonitoring, env.EnvironmentName, $":{_emote}: Successfully updated `{nameof(SpawnsetHashCache)}`. (`{_cache.Count}` (`+{_cache.Count - cacheCount}`) instances in memory.)");
 			}
 
 			static bool MatchHashes(byte[] a, byte[] b)
@@ -80,7 +82,7 @@ namespace DevilDaggersWebsite.Caches.SpawnsetHash
 		{
 			int cacheCount = _cache.Count;
 			_cache.Clear();
-			await DiscordLogger.Instance.TryLog(Channel.CacheMonitoring, env.EnvironmentName, $"Successfully cleared `{nameof(SpawnsetHashCache)}`. (Removed `{cacheCount}` instances.)");
+			await DiscordLogger.Instance.TryLog(Channel.CacheMonitoring, env.EnvironmentName, $":{_emote}: Successfully cleared `{nameof(SpawnsetHashCache)}`. (Removed `{cacheCount}` instances.)");
 		}
 	}
 }

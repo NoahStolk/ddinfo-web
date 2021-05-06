@@ -11,6 +11,8 @@ namespace DevilDaggersWebsite.Caches.ModArchive
 {
 	public sealed class ModArchiveCache : IDynamicCache
 	{
+		private const string _emote = "green_circle";
+
 		private readonly object _fileStreamLock = new();
 
 		private readonly ConcurrentDictionary<string, ModArchiveCacheData> _cache = new();
@@ -60,7 +62,7 @@ namespace DevilDaggersWebsite.Caches.ModArchive
 		{
 			int cacheCount = _cache.Count;
 			_cache.Clear();
-			await DiscordLogger.Instance.TryLog(Channel.CacheMonitoring, env.EnvironmentName, $"Successfully cleared `{nameof(ModArchiveCache)}`. (Removed `{cacheCount}` instances.)");
+			await DiscordLogger.Instance.TryLog(Channel.CacheMonitoring, env.EnvironmentName, $":{_emote}: Successfully cleared `{nameof(ModArchiveCache)}`. (Removed `{cacheCount}` instances.)");
 		}
 	}
 }

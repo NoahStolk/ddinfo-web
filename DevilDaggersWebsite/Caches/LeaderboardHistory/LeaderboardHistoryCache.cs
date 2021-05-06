@@ -12,6 +12,8 @@ namespace DevilDaggersWebsite.Caches.LeaderboardHistory
 {
 	public sealed class LeaderboardHistoryCache : IDynamicCache
 	{
+		private const string _emote = "yellow_circle";
+
 		private readonly ConcurrentDictionary<string, Leaderboard> _cache = new();
 
 		private static readonly Lazy<LeaderboardHistoryCache> _lazy = new(() => new());
@@ -37,7 +39,7 @@ namespace DevilDaggersWebsite.Caches.LeaderboardHistory
 		{
 			int cacheCount = _cache.Count;
 			_cache.Clear();
-			await DiscordLogger.Instance.TryLog(Channel.CacheMonitoring, env.EnvironmentName, $"Successfully cleared `{nameof(LeaderboardHistoryCache)}`. (Removed `{cacheCount}` instances.)");
+			await DiscordLogger.Instance.TryLog(Channel.CacheMonitoring, env.EnvironmentName, $":{_emote}: Successfully cleared `{nameof(LeaderboardHistoryCache)}`. (Removed `{cacheCount}` instances.)");
 		}
 	}
 }

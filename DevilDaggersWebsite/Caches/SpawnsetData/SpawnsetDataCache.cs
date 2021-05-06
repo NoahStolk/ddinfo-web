@@ -10,6 +10,8 @@ namespace DevilDaggersWebsite.Caches.SpawnsetData
 {
 	public sealed class SpawnsetDataCache : IDynamicCache
 	{
+		private const string _emote = "purple_circle";
+
 		private readonly ConcurrentDictionary<string, Core.SpawnsetData> _cache = new();
 
 		private static readonly Lazy<SpawnsetDataCache> _lazy = new(() => new());
@@ -37,7 +39,7 @@ namespace DevilDaggersWebsite.Caches.SpawnsetData
 		{
 			int cacheCount = _cache.Count;
 			_cache.Clear();
-			await DiscordLogger.Instance.TryLog(Channel.CacheMonitoring, env.EnvironmentName, $"Successfully cleared `{nameof(SpawnsetDataCache)}`. (Removed `{cacheCount}` instances.)");
+			await DiscordLogger.Instance.TryLog(Channel.CacheMonitoring, env.EnvironmentName, $":{_emote}: Successfully cleared `{nameof(SpawnsetDataCache)}`. (Removed `{cacheCount}` instances.)");
 		}
 	}
 }

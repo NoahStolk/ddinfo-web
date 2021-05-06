@@ -11,6 +11,8 @@ namespace DevilDaggersWebsite.Caches.LeaderboardStatistics
 {
 	public sealed class LeaderboardStatisticsCache : IStaticCache
 	{
+		private const string _emote = "orange_circle";
+
 		private readonly int _timeStep = 100000; // 10 seconds
 
 		private readonly List<CompressedEntry> _entries = new();
@@ -36,7 +38,7 @@ namespace DevilDaggersWebsite.Caches.LeaderboardStatistics
 		{
 			Initiate(env);
 
-			await DiscordLogger.Instance.TryLog(Channel.CacheMonitoring, env.EnvironmentName, $"Successfully refreshed `{nameof(LeaderboardStatisticsCache)}`.");
+			await DiscordLogger.Instance.TryLog(Channel.CacheMonitoring, env.EnvironmentName, $":{_emote}: Successfully refreshed `{nameof(LeaderboardStatisticsCache)}`.");
 		}
 
 		public void Initiate(IWebHostEnvironment env)
