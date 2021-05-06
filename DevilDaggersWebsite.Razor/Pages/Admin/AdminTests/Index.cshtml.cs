@@ -24,7 +24,7 @@ namespace DevilDaggersWebsite.Razor.Pages.Admin.AdminTests
 			=> throw new("TEST EXCEPTION with 3 inner exceptions", new("Inner exception message", new("Another inner exception message", new("Big Discord embed"))));
 
 		public async Task OnPostUpdateStatisticsDataHolder()
-			=> await LeaderboardStatisticsCache.Instance.Refresh(_env);
+			=> await LeaderboardStatisticsCache.Instance.Initiate(_env);
 
 		public async Task OnPostClearSpawnsetHashCache()
 			=> await SpawnsetHashCache.Instance.Clear(_env);

@@ -5,6 +5,6 @@ namespace DevilDaggersWebsite.Caches
 {
 	public interface IStaticCache
 	{
-		Task Refresh(IWebHostEnvironment env);
+		Task Initiate(IWebHostEnvironment env);
 	}
 }

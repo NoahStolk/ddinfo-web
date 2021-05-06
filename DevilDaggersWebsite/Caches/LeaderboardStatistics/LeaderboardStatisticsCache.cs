@@ -34,14 +34,7 @@ namespace DevilDaggersWebsite.Caches.LeaderboardStatistics
 
 		public IReadOnlyList<CompressedEntry> Entries => _entries;
 
-		public async Task Refresh(IWebHostEnvironment env)
-		{
-			Initiate(env);
-
-			await DiscordLogger.Instance.TryLog(Channel.CacheMonitoring, env.EnvironmentName, $":{_emote}: Successfully refreshed `{nameof(LeaderboardStatisticsCache)}`.");
-		}
-
-		public void Initiate(IWebHostEnvironment env)
+		public async Task Initiate(IWebHostEnvironment env)
 		{
 			string[] paths = Directory.GetFiles(Path.Combine(env.WebRootPath, "leaderboard-statistics"));
 			if (paths.Length == 0)
@@ -50,11 +43,7 @@ namespace DevilDaggersWebsite.Caches.LeaderboardStatistics
 				throw new("Multiple statistics files found.");
 
 			FileName = Path.GetFileNameWithoutExtension(paths[0]);
-			Update(paths[0]);
-		}
 
-		private void Update(string fileName)
-		{
 			IsFetched = false;
 
 			_entries.Clear();
@@ -62,7 +51,7 @@ namespace DevilDaggersWebsite.Caches.LeaderboardStatistics
 			DeathStats.Clear();
 			TimeStats = Enumerable.Range(0, 120).ToDictionary(i => i * 10, _ => 0);
 
-			byte[] bytes = File.ReadAllBytes(fileName);
+			byte[] bytes = File.ReadAllBytes(paths[0]);
 			for (int i = 0; i < bytes.Length / 15; i++)
 				_entries.Add(CompressedEntry.FromBytes(bytes[(i * 15)..((i + 1) * 15)]));
 
@@ -88,6 +77,8 @@ namespace DevilDaggersWebsite.Caches.LeaderboardStatistics
 			}
 
 			IsFetched = true;
+
+			await DiscordLogger.Instance.TryLog(Channel.CacheMonitoring, env.EnvironmentName, $":{_emote}: Successfully initiated `{nameof(LeaderboardStatisticsCache)}`.");
 		}
 	}
 }
