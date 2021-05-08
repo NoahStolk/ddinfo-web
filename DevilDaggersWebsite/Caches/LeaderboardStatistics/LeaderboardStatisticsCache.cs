@@ -84,7 +84,7 @@ namespace DevilDaggersWebsite.Caches.LeaderboardStatistics
 			await DiscordLogger.Instance.TryLog(Channel.CacheMonitoring, env.EnvironmentName, $":{_emote}: Successfully initiated static `{nameof(LeaderboardStatisticsCache)}`.");
 		}
 
-		public string LogState()
+		public string LogState(IWebHostEnvironment env)
 			=> $":{_emote}: `{nameof(LeaderboardStatisticsCache)}` has `{_entries.Count}` instances in memory.";
 	}
 }

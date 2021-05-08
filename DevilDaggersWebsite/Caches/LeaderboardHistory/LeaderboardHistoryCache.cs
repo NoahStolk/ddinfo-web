@@ -42,7 +42,7 @@ namespace DevilDaggersWebsite.Caches.LeaderboardHistory
 			await DiscordLogger.Instance.TryLog(Channel.CacheMonitoring, env.EnvironmentName, $":{_emote}: Successfully cleared dynamic `{nameof(LeaderboardHistoryCache)}`. (Removed `{cacheCount}` instances.)");
 		}
 
-		public string LogState()
+		public string LogState(IWebHostEnvironment env)
 			=> $":{_emote}: `{nameof(LeaderboardHistoryCache)}` has `{_cache.Count}` instances in memory.";
 	}
 }

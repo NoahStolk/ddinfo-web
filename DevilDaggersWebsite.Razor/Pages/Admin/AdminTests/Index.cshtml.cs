@@ -43,12 +43,12 @@ namespace DevilDaggersWebsite.Razor.Pages.Admin.AdminTests
 		{
 			StringBuilder sb = new("\n");
 			sb.AppendLine("**Static caches:**");
-			sb.AppendLine(LeaderboardStatisticsCache.Instance.LogState());
+			sb.AppendLine(LeaderboardStatisticsCache.Instance.LogState(_env));
 			sb.AppendLine("**Dynamic caches:**");
-			sb.AppendLine(LeaderboardHistoryCache.Instance.LogState());
-			sb.AppendLine(ModArchiveCache.Instance.LogState());
-			sb.AppendLine(SpawnsetDataCache.Instance.LogState());
-			sb.AppendLine(SpawnsetHashCache.Instance.LogState());
+			sb.AppendLine(LeaderboardHistoryCache.Instance.LogState(_env));
+			sb.AppendLine(ModArchiveCache.Instance.LogState(_env));
+			sb.AppendLine(SpawnsetDataCache.Instance.LogState(_env));
+			sb.AppendLine(SpawnsetHashCache.Instance.LogState(_env));
 			await DiscordLogger.Instance.TryLog(Channel.CacheMonitoring, _env.EnvironmentName, sb.ToString());
 		}
 	}

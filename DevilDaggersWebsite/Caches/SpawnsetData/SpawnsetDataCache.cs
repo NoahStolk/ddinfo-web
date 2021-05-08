@@ -42,7 +42,7 @@ namespace DevilDaggersWebsite.Caches.SpawnsetData
 			await DiscordLogger.Instance.TryLog(Channel.CacheMonitoring, env.EnvironmentName, $":{_emote}: Successfully cleared dynamic `{nameof(SpawnsetDataCache)}`. (Removed `{cacheCount}` instances.)");
 		}
 
-		public string LogState()
+		public string LogState(IWebHostEnvironment env)
 			=> $":{_emote}: `{nameof(SpawnsetDataCache)}` has `{_cache.Count}` instances in memory.";
 	}
 }

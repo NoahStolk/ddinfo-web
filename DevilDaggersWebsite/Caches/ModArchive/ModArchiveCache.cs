@@ -114,10 +114,14 @@ namespace DevilDaggersWebsite.Caches.ModArchive
 		{
 			int cacheCount = _cache.Count;
 			_cache.Clear();
-			await DiscordLogger.Instance.TryLog(Channel.CacheMonitoring, env.EnvironmentName, $":{_emote}: Successfully cleared dynamic `{nameof(ModArchiveCache)}`. (Removed `{cacheCount}` instances.)");
+			await DiscordLogger.Instance.TryLog(Channel.CacheMonitoring, env.EnvironmentName, $":{_emote}: Successfully cleared dynamic `{nameof(ModArchiveCache)}`. (Removed `{cacheCount}` instances. File cache is not affected.)");
 		}
 
-		public string LogState()
-			=> $":{_emote}: `{nameof(ModArchiveCache)}` has `{_cache.Count}` instances in memory.";
+		public string LogState(IWebHostEnvironment env)
+		{
+			int fileCaches = Directory.GetFiles(Path.Combine(env.WebRootPath, "mod-archive-cache")).Length;
+
+			return $":{_emote}: `{nameof(ModArchiveCache)}` has `{_cache.Count}` instances in memory and `{fileCaches}` instances in file system.";
+		}
 	}
 }
