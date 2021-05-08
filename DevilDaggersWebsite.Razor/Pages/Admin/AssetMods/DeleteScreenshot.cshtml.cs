@@ -24,7 +24,7 @@ namespace DevilDaggersWebsite.Razor.Pages.Admin.AssetMods
 		{
 			foreach (string path in Directory.GetFiles(Path.Combine(_env.WebRootPath, "mod-screenshots"), "*.png", SearchOption.AllDirectories))
 			{
-				string directoryName = new DirectoryInfo(path).Parent?.Name ?? throw new($"Invalid path '{path}' while scanning mod screenshot file sizes.");
+				string directoryName = new DirectoryInfo(path).Parent?.Name ?? throw new($"Invalid path `{path}` while scanning mod screenshot file sizes.");
 				ModFileNames.Add(Path.Combine(directoryName, Path.GetFileName(path)));
 			}
 		}
@@ -36,13 +36,13 @@ namespace DevilDaggersWebsite.Razor.Pages.Admin.AssetMods
 			string path = Path.Combine(_env.WebRootPath, "mod-screenshots", fileName);
 			if (!System.IO.File.Exists(path))
 			{
-				await DiscordLogger.Instance.TryLog(Channel.AuditLogMonitoring, _env.EnvironmentName, $"{failedAttemptMessage}: File '{fileName}' does not exist.");
+				await DiscordLogger.Instance.TryLog(Channel.AuditLogMonitoring, _env.EnvironmentName, $"{failedAttemptMessage}: File `{fileName}` does not exist.");
 				return null;
 			}
 
 			System.IO.File.Delete(path);
 
-			await DiscordLogger.Instance.TryLog(Channel.AuditLogMonitoring, _env.EnvironmentName, $":white_check_mark: `{this.GetIdentity()}` deleted ASSETMOD screenshot `{fileName}`");
+			await DiscordLogger.Instance.TryLog(Channel.AuditLogMonitoring, _env.EnvironmentName, $":white_check_mark: `{this.GetIdentity()}` deleted ASSETMOD screenshot :frame_photo: `{fileName}`");
 
 			return RedirectToPage("Index");
 		}

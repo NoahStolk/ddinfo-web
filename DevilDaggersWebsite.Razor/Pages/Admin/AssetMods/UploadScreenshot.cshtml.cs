@@ -73,7 +73,7 @@ namespace DevilDaggersWebsite.Razor.Pages.Admin.AssetMods
 
 				if (!FormFile.FileName.EndsWith(".png"))
 				{
-					await DiscordLogger.Instance.TryLog(Channel.AuditLogMonitoring, _env.EnvironmentName, $"{failedAttemptMessage}: File name must have the '.png' extension.");
+					await DiscordLogger.Instance.TryLog(Channel.AuditLogMonitoring, _env.EnvironmentName, $"{failedAttemptMessage}: File name must have the `.png` extension.");
 					return;
 				}
 
@@ -93,7 +93,7 @@ namespace DevilDaggersWebsite.Razor.Pages.Admin.AssetMods
 
 				if (Directory.Exists(fileDirectory) && Directory.GetFiles(fileDirectory).Length >= MaxScreenshots)
 				{
-					await DiscordLogger.Instance.TryLog(Channel.AuditLogMonitoring, _env.EnvironmentName, $"{failedAttemptMessage}: Mod `{ModName}` already has {MaxScreenshots} screenshots.");
+					await DiscordLogger.Instance.TryLog(Channel.AuditLogMonitoring, _env.EnvironmentName, $"{failedAttemptMessage}: Mod `{ModName}` already has `{MaxScreenshots}` screenshots.");
 					return;
 				}
 
@@ -107,7 +107,7 @@ namespace DevilDaggersWebsite.Razor.Pages.Admin.AssetMods
 				Directory.CreateDirectory(fileDirectory);
 				Io.File.WriteAllBytes(filePath, formFileBytes);
 
-				await DiscordLogger.Instance.TryLog(Channel.AuditLogMonitoring, _env.EnvironmentName, $":white_check_mark: `{this.GetIdentity()}` uploaded new ASSETMOD screenshot `{FormFile.FileName}` for mod `{ModName}` (`{formFileBytes.Length:n0}` bytes)");
+				await DiscordLogger.Instance.TryLog(Channel.AuditLogMonitoring, _env.EnvironmentName, $":white_check_mark: `{this.GetIdentity()}` uploaded new ASSETMOD screenshot :frame_photo: `{FormFile.FileName}` for mod `{ModName}` (`{formFileBytes.Length:n0}` bytes)");
 			}
 			catch (Exception ex)
 			{
