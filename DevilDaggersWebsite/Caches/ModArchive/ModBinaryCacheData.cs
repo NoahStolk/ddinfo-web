@@ -40,12 +40,12 @@ namespace DevilDaggersWebsite.Caches.ModArchive
 			else if (fileName.StartsWith("dd"))
 				modBinaryType = ModBinaryType.Dd;
 			else
-				throw new InvalidModBinaryException($"File '{fileName}' must start with 'audio', 'core', or 'dd'.");
+				throw new InvalidModBinaryException($"File `{fileName}` must start with `audio`, `core`, or `dd`.");
 
 			uint magic1FromFile = BitConverter.ToUInt32(fileContents, 0);
 			uint magic2FromFile = BitConverter.ToUInt32(fileContents, 4);
 			if (magic1FromFile != Magic1 || magic2FromFile != Magic2)
-				throw new InvalidModBinaryException($"File '{fileName}' is not a valid binary.");
+				throw new InvalidModBinaryException($"File `{fileName}` is not a valid binary.");
 
 			uint tocSize = BitConverter.ToUInt32(fileContents, 8);
 			byte[] tocBuffer = new byte[tocSize];
@@ -70,7 +70,7 @@ namespace DevilDaggersWebsite.Caches.ModArchive
 					0x10 => AssetType.Shader,
 					0x20 => AssetType.Audio,
 					0x80 => AssetType.ModelBinding,
-					_ => throw new InvalidModBinaryException($"File '{fileName}' contains an unknown asset type '{type}'. Valid types are {0x01}, {0x02}, {0x10}, {0x20}, and {0x80}."),
+					_ => throw new InvalidModBinaryException($"File `{fileName}` contains an unknown asset type `{type}`. Valid types are {0x01}, {0x02}, {0x10}, {0x20}, and {0x80}."),
 				};
 
 				if (assetType == AssetType.Audio && name == "loudness")
@@ -104,9 +104,9 @@ namespace DevilDaggersWebsite.Caches.ModArchive
 							AssetType.Model => AssetHandler.Instance.DdModelsAssets.Find(a => a.AssetName == name)?.IsProhibited ?? false,
 							AssetType.Shader => AssetHandler.Instance.DdShadersAssets.Find(a => a.AssetName == name)?.IsProhibited ?? false,
 							AssetType.Texture => AssetHandler.Instance.DdTexturesAssets.Find(a => a.AssetName == name)?.IsProhibited ?? false,
-							_ => throw new InvalidModBinaryException($"File '{fileName}', which is a '{modBinaryType}' binary file, contains an asset of type '{assetType}', which is not supported."),
+							_ => throw new InvalidModBinaryException($"File `{fileName}`, which is a `{modBinaryType}` binary file, contains an asset of type `{assetType}`, which is not supported."),
 						},
-						_ => throw new InvalidModBinaryException($"Unknown binary type '{modBinaryType}'."),
+						_ => throw new InvalidModBinaryException($"Unknown binary type `{modBinaryType}`."),
 					};
 
 					chunks.Add(new(name, size, assetType, isProhibited));
@@ -126,7 +126,7 @@ namespace DevilDaggersWebsite.Caches.ModArchive
 					sb.Append(c);
 				}
 
-				throw new InvalidModBinaryException($"Null terminator not observed in buffer with length {buffer.Length} starting from offset {offset} in file '{fileName}'.");
+				throw new InvalidModBinaryException($"Null terminator not observed in buffer with length `{buffer.Length}` starting from offset `{offset}` in file `{fileName}`.");
 			}
 
 			static bool TryReadLoudnessLine(string line, out string? assetName, out float loudness)

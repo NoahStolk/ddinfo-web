@@ -34,7 +34,6 @@ namespace DevilDaggersWebsite.Razor.Pages.Admin.AssetMods
 
 		public async Task OnPostAsync()
 		{
-			bool uploaded = false;
 			string? filePath = null;
 
 			string failedAttemptMessage = $":x: Failed attempt from `{this.GetIdentity()}` to upload new ASSETMOD file";
@@ -71,7 +70,7 @@ namespace DevilDaggersWebsite.Razor.Pages.Admin.AssetMods
 
 				if (!FormFile.FileName.EndsWith(".zip"))
 				{
-					await DiscordLogger.Instance.TryLog(Channel.AuditLogMonitoring, _env.EnvironmentName, $"{failedAttemptMessage}: File name must have the '.zip' extension.");
+					await DiscordLogger.Instance.TryLog(Channel.AuditLogMonitoring, _env.EnvironmentName, $"{failedAttemptMessage}: File name must have the `.zip` extension.");
 					return;
 				}
 
@@ -89,43 +88,26 @@ namespace DevilDaggersWebsite.Razor.Pages.Admin.AssetMods
 					formFileBytes = ms.ToArray();
 				}
 
-				Io.File.WriteAllBytes(filePath, formFileBytes);
-				uploaded = true;
-				await DiscordLogger.Instance.TryLog(Channel.AuditLogMonitoring, _env.EnvironmentName, $"Uploaded `{FormFile.FileName}`.");
-
-				List<ModBinaryCacheData> archive = ModArchiveCache.Instance.GetArchiveDataByFilePath(filePath).Binaries;
+				List<ModBinaryCacheData> archive = ModArchiveCache.Instance.GetArchiveDataByBytes(FormFile.FileName, formFileBytes).Binaries;
 				if (archive.Count == 0)
-					throw new InvalidModBinaryException($"File '{FormFile.FileName}' does not contain any binaries.");
+					throw new InvalidModBinaryException($"File `{FormFile.FileName}` does not contain any binaries.");
 
 				foreach (ModBinaryCacheData binary in archive)
 				{
 					if (binary.Chunks.Count == 0)
-						throw new InvalidModBinaryException($"Binary '{binary.Name}' does not contain any assets.");
+						throw new InvalidModBinaryException($"Binary `{binary.Name}` does not contain any assets.");
 				}
 
+				Io.File.WriteAllBytes(filePath, formFileBytes);
 				await DiscordLogger.Instance.TryLog(Channel.AuditLogMonitoring, _env.EnvironmentName, $":white_check_mark: `{this.GetIdentity()}` uploaded new ASSETMOD file `{FormFile.FileName}` (`{formFileBytes.Length:n0}` bytes)");
 			}
 			catch (InvalidModBinaryException ex)
 			{
 				await DiscordLogger.Instance.TryLog(Channel.AuditLogMonitoring, _env.EnvironmentName, $"{failedAttemptMessage}: A binary file inside the file `{FormFile?.FileName}` is invalid. {ex.Message}");
-
-				await DeleteFile(uploaded, filePath);
 			}
 			catch (Exception ex)
 			{
 				await DiscordLogger.Instance.TryLog(Channel.AuditLogMonitoring, _env.EnvironmentName, $"{failedAttemptMessage}: Fatal error: `{ex.Message}`");
-
-				await DeleteFile(uploaded, filePath);
-			}
-		}
-
-		private async Task DeleteFile(bool uploaded, string? filePath)
-		{
-			if (uploaded && !string.IsNullOrWhiteSpace(filePath) && Io.File.Exists(filePath))
-			{
-				Io.File.Delete(filePath);
-				string fileName = Path.GetFileName(filePath);
-				await DiscordLogger.Instance.TryLog(Channel.AuditLogMonitoring, _env.EnvironmentName, $"Deleted `{fileName}`.");
 			}
 		}
 	}

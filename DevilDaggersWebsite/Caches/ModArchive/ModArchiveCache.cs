@@ -25,6 +25,18 @@ namespace DevilDaggersWebsite.Caches.ModArchive
 
 		public static ModArchiveCache Instance => _lazy.Value;
 
+		public ModArchiveCacheData GetArchiveDataByBytes(string name, byte[] bytes)
+		{
+			if (_cache.ContainsKey(name))
+				return _cache[name];
+
+			using MemoryStream ms = new(bytes);
+			ModArchiveCacheData archiveData = CreateModArchiveCacheDataFromStream(ms);
+
+			_cache.TryAdd(name, archiveData);
+			return archiveData;
+		}
+
 		public ModArchiveCacheData GetArchiveDataByFilePath(string filePath)
 		{
 			string name = Path.GetFileNameWithoutExtension(filePath);
@@ -34,28 +46,32 @@ namespace DevilDaggersWebsite.Caches.ModArchive
 			lock (_fileStreamLock)
 			{
 				using FileStream fs = new(filePath, FileMode.Open);
-				using ZipArchive archive = new(fs);
-				ModArchiveCacheData archiveData = new()
-				{
-					FileSize = fs.Length,
-				};
-				foreach (ZipArchiveEntry entry in archive.Entries)
-				{
-					if (string.IsNullOrEmpty(entry.Name))
-						throw new InvalidModBinaryException("Zip archive must not contain any folders.");
-
-					byte[] extractedContents = new byte[entry.Length];
-
-					using Stream stream = entry.Open();
-					stream.Read(extractedContents, 0, extractedContents.Length);
-
-					archiveData.Binaries.Add(ModBinaryCacheData.CreateFromFile(entry.Name, extractedContents));
-					archiveData.FileSizeExtracted += entry.Length;
-				}
+				ModArchiveCacheData archiveData = CreateModArchiveCacheDataFromStream(fs);
 
 				_cache.TryAdd(name, archiveData);
 				return archiveData;
 			}
+		}
+
+		private static ModArchiveCacheData CreateModArchiveCacheDataFromStream(Stream stream)
+		{
+			using ZipArchive archive = new(stream);
+			ModArchiveCacheData archiveData = new() { FileSize = stream.Length };
+			foreach (ZipArchiveEntry entry in archive.Entries)
+			{
+				if (string.IsNullOrEmpty(entry.Name))
+					throw new InvalidModBinaryException("Zip archive must not contain any folders.");
+
+				byte[] extractedContents = new byte[entry.Length];
+
+				using Stream entryStream = entry.Open();
+				entryStream.Read(extractedContents, 0, extractedContents.Length);
+
+				archiveData.Binaries.Add(ModBinaryCacheData.CreateFromFile(entry.Name, extractedContents));
+				archiveData.FileSizeExtracted += entry.Length;
+			}
+
+			return archiveData;
 		}
 
 		public async Task Clear(IWebHostEnvironment env)
