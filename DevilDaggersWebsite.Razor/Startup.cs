@@ -1,6 +1,7 @@
 ﻿// #define TEST_EXCEPTION_HANDLER
 using DevilDaggersWebsite.Authorization;
 using DevilDaggersWebsite.Caches.LeaderboardStatistics;
+using DevilDaggersWebsite.Caches.ModArchive;
 using DevilDaggersWebsite.Entities;
 using DevilDaggersWebsite.Tasks;
 using DevilDaggersWebsite.Tasks.Scheduling;
@@ -174,9 +175,10 @@ namespace DevilDaggersWebsite.Razor
 
 			// TODO: LeaderboardHistoryCache might need to be initiated as the initial world record progression load is a little slow.
 
-			/* TODO: ModArchiveData is very slow because it requires unzipping huge mod archive zip files.
+			/* The ModArchiveCache is initially very slow because it requires unzipping huge mod archive zip files.
 			 * The idea to fix this; when adding data (based on a mod archive) to the ConcurrentBag, write this data to a JSON file as well, so it is not lost when the site shuts down.
-			 * The cache then needs to be initiated here, by reading the JSON files and populating the ConcurrentBag on start up. Effectively this is caching the cache.*/
+			 * The cache then needs to be initiated here, by reading all the JSON files and populating the ConcurrentBag on start up. Effectively this is caching the cache.*/
+			ModArchiveCache.Instance.LoadEntireFileCache(env);
 		}
 	}
 }

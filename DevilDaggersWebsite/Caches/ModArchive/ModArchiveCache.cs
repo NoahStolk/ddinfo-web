@@ -1,6 +1,7 @@
 ﻿using DevilDaggersDiscordBot.Logging;
 using DevilDaggersWebsite.Exceptions;
 using Microsoft.AspNetCore.Hosting;
+using Newtonsoft.Json;
 using System;
 using System.Collections.Concurrent;
 using System.IO;
@@ -25,7 +26,7 @@ namespace DevilDaggersWebsite.Caches.ModArchive
 
 		public static ModArchiveCache Instance => _lazy.Value;
 
-		public ModArchiveCacheData GetArchiveDataByBytes(string name, byte[] bytes)
+		public ModArchiveCacheData GetArchiveDataByBytes(IWebHostEnvironment env, string name, byte[] bytes)
 		{
 			if (_cache.ContainsKey(name))
 				return _cache[name];
@@ -34,10 +35,11 @@ namespace DevilDaggersWebsite.Caches.ModArchive
 			ModArchiveCacheData archiveData = CreateModArchiveCacheDataFromStream(ms);
 
 			_cache.TryAdd(name, archiveData);
+			WriteToFileCache(env, name, archiveData);
 			return archiveData;
 		}
 
-		public ModArchiveCacheData GetArchiveDataByFilePath(string filePath)
+		public ModArchiveCacheData GetArchiveDataByFilePath(IWebHostEnvironment env, string filePath)
 		{
 			string name = Path.GetFileNameWithoutExtension(filePath);
 			if (_cache.ContainsKey(name))
@@ -49,6 +51,7 @@ namespace DevilDaggersWebsite.Caches.ModArchive
 				ModArchiveCacheData archiveData = CreateModArchiveCacheDataFromStream(fs);
 
 				_cache.TryAdd(name, archiveData);
+				WriteToFileCache(env, name, archiveData);
 				return archiveData;
 			}
 		}
@@ -72,6 +75,39 @@ namespace DevilDaggersWebsite.Caches.ModArchive
 			}
 
 			return archiveData;
+		}
+
+		public void LoadEntireFileCache(IWebHostEnvironment env)
+		{
+			string fileCacheDirectory = Path.Combine(env.WebRootPath, "mod-archive-cache");
+			if (!Directory.Exists(fileCacheDirectory))
+				Directory.CreateDirectory(fileCacheDirectory);
+
+			foreach (string path in Directory.GetFiles(fileCacheDirectory, "*.json"))
+			{
+				ModArchiveCacheData? archiveData = JsonConvert.DeserializeObject<ModArchiveCacheData>(File.ReadAllText(path));
+				if (archiveData == null)
+					continue;
+
+				string name = Path.GetFileNameWithoutExtension(path);
+				_cache.TryAdd(name, archiveData);
+			}
+		}
+
+		private static void WriteToFileCache(IWebHostEnvironment env, string name, ModArchiveCacheData archiveData)
+		{
+			try
+			{
+				string fileCacheDirectory = Path.Combine(env.WebRootPath, "mod-archive-cache");
+				if (!Directory.Exists(fileCacheDirectory))
+					Directory.CreateDirectory(fileCacheDirectory);
+
+				File.WriteAllText(Path.Combine(fileCacheDirectory, $"{name}.json"), JsonConvert.SerializeObject(archiveData));
+			}
+			catch
+			{
+				// Ignore exceptions.
+			}
 		}
 
 		public async Task Clear(IWebHostEnvironment env)

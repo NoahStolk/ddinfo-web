@@ -49,7 +49,7 @@ namespace DevilDaggersWebsite.Razor.Pages
 			IsHostedOnDdInfo = Io.File.Exists(zipPath);
 			if (IsHostedOnDdInfo)
 			{
-				ArchiveData = ModArchiveCache.Instance.GetArchiveDataByFilePath(zipPath);
+				ArchiveData = ModArchiveCache.Instance.GetArchiveDataByFilePath(_env, zipPath);
 				ContainsProhibitedAssets = ArchiveData.Binaries.Any(md => md.Chunks.Any(mad => mad.IsProhibited));
 			}
 
