@@ -87,13 +87,13 @@
 								<td class="hidden-xs">
 									@(mod.LastUpdated == DateTime.MinValue ? "Unknown" : mod.LastUpdated.ToString("dd MMM yyyy"))
 								</td>
-								<td class="hidden-xs">
+								<td class="hidden-xs hidden-sm hidden-md">
 									@mod.AssetModTypes
 								</td>
-								<td class="hidden-xs">
+								<td class="hidden-xs hidden-sm hidden-md">
 									@(mod.IsHostedOnDdInfo ? "Yes" : "No")
 								</td>
-								<td class="hidden-xs">
+								<td class="hidden-xs hidden-sm hidden-md">
 									@(mod.ContainsProhibitedAssets.HasValue ? mod.ContainsProhibitedAssets.Value ? "Yes" : "No" : "Unknown")
 								</td>
 							</tr>
