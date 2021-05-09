@@ -192,7 +192,7 @@
 			<h3>@binary.Name</h3>
 			<div class="binary-container">
 				<div class="row">
-					@foreach (IGrouping<AssetType, ModChunkCacheData> assetGroup in binary.Chunks.GroupBy(mad => mad.ModAssetType))
+					@foreach (IGrouping<AssetType, ModChunkCacheData> assetGroup in binary.Chunks.GroupBy(mad => mad.AssetType))
 					{
 						<div class="col-sm-12 col-md-6 col-lg-3 asset-container">
 							<div class="asset-title-container">@assetGroup.Key assets</div>

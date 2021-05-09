@@ -8,13 +8,13 @@ namespace DevilDaggersWebsite.Caches.ModArchive
 		{
 			Name = name;
 			Size = size;
-			ModAssetType = assetType;
+			AssetType = assetType;
 			IsProhibited = isProhibited;
 		}
 
 		public string Name { get; }
 		public uint Size { get; }
-		public AssetType ModAssetType { get; }
+		public AssetType AssetType { get; }
 		public bool IsProhibited { get; }
 	}
 }

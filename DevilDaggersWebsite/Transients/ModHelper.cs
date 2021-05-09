@@ -64,11 +64,11 @@ namespace DevilDaggersWebsite.Transients
 						assetModTypes = AssetModTypes.None;
 						if (archiveData.Binaries.Any(md => md.ModBinaryType == ModBinaryType.Audio))
 							assetModTypes |= AssetModTypes.Audio;
-						if (archiveData.Binaries.Any(md => md.ModBinaryType == ModBinaryType.Core) || ddBinary?.Chunks.Any(mad => mad.ModAssetType == AssetType.Shader) == true)
+						if (archiveData.Binaries.Any(md => md.ModBinaryType == ModBinaryType.Core) || ddBinary?.Chunks.Any(mad => mad.AssetType == AssetType.Shader) == true)
 							assetModTypes |= AssetModTypes.Shader;
-						if (ddBinary?.Chunks.Any(mad => mad.ModAssetType == AssetType.ModelBinding || mad.ModAssetType == AssetType.Model) == true)
+						if (ddBinary?.Chunks.Any(mad => mad.AssetType == AssetType.ModelBinding || mad.AssetType == AssetType.Model) == true)
 							assetModTypes |= AssetModTypes.Model;
-						if (ddBinary?.Chunks.Any(mad => mad.ModAssetType == AssetType.Texture) == true)
+						if (ddBinary?.Chunks.Any(mad => mad.AssetType == AssetType.Texture) == true)
 							assetModTypes |= AssetModTypes.Texture;
 					}
 					else
