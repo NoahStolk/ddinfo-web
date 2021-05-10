@@ -8,7 +8,7 @@
 @{
 	ViewData["Title"] = "World Record Progression";
 
-	TimeSpan totalTimeSinceGraphStart = DateTime.UtcNow - Model.WorldRecords.OrderBy(wr => wr.Key.DateTime).First().Key.DateTime;
+	TimeSpan totalTimeSinceFirstRecord = DateTime.UtcNow - Model.WorldRecords.OrderBy(wr => wr.Key.DateTime).First().Key.DateTime;
 }
 
 <header>
@@ -46,7 +46,7 @@
 		int days = (int)Math.Round(wrh.TotalTimeHeld.TotalDays);
 		int daysConsecutively = (int)Math.Round(wrh.LongestTimeHeldConsecutively.TotalDays);
 
-		string timeHeld = $"{days} day{days.S()} ({(wrh.TotalTimeHeld / totalTimeSinceGraphStart).ToString("00.00%")})";
+		string timeHeld = $"{days} day{days.S()} ({(wrh.TotalTimeHeld / totalTimeSinceFirstRecord).ToString("00.00%")})";
 
 		bool isCurrentWr = wrh.Id == Model.CurrentWorldRecord?.Id;
 
