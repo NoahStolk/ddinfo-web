@@ -72,8 +72,8 @@
 		<div class="text-bold col-lg-2 col-md-3 col-sm-4 col-xs-4">Username</div>
 		<div class="text-bold col-lg-2 col-md-3 col-sm-4 col-xs-4">Time</div>
 		<div class="text-bold col-lg-2 col-md-3 col-sm-4 col-xs-4">Lasted</div>
-		<div class="text-bold col-lg-2 col-md-3 col-sm-4 col-xs-4">Improvement</div>
-		<div class="text-bold col-lg-2 col-md-3 col-sm-4 col-xs-4">Game version</div>
+		<div class="text-bold col-lg-2 hidden-md hidden-sm hidden-xs">Improvement</div>
+		<div class="text-bold col-lg-2 hidden-md hidden-sm hidden-xs">Game version</div>
 	</div>
 	@{
 		foreach (KeyValuePair<WorldRecord, TimeSpan> kvp in Model.WorldRecords.OrderByDescending(w => w.Value))
