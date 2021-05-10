@@ -1,5 +1,7 @@
-﻿using DevilDaggersWebsite.Caches.LeaderboardHistory;
+﻿using DevilDaggersCore.Game;
+using DevilDaggersWebsite.Caches.LeaderboardHistory;
 using DevilDaggersWebsite.Dto;
+using DevilDaggersWebsite.WorldRecords;
 using Microsoft.AspNetCore.Hosting;
 using System;
 using System.Collections.Generic;
@@ -8,13 +10,13 @@ using System.Linq;
 
 namespace DevilDaggersWebsite.Transients
 {
-	public class LeaderboardHistoryHelper
+	public class WorldRecordsHelper
 	{
 		private static readonly DateTime _automationStart = new(2019, 10, 26);
 
 		private readonly IWebHostEnvironment _env;
 
-		public LeaderboardHistoryHelper(IWebHostEnvironment env)
+		public WorldRecordsHelper(IWebHostEnvironment env)
 		{
 			_env = env;
 		}
@@ -45,7 +47,7 @@ namespace DevilDaggersWebsite.Transients
 					else
 						date = leaderboard.DateTime;
 
-					worldRecords.Add(new(date, firstPlace));
+					worldRecords.Add(new(date, firstPlace, GameInfo.GetGameVersionFromDate(date)));
 				}
 
 				previousDate = leaderboard.DateTime;

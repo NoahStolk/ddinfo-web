@@ -18,12 +18,12 @@ namespace DevilDaggersWebsite.Api
 	public class LeaderboardHistoryController : ControllerBase
 	{
 		private readonly IWebHostEnvironment _env;
-		private readonly LeaderboardHistoryHelper _leaderboardHistoryHelper;
+		private readonly WorldRecordsHelper _worldRecordsHelper;
 
-		public LeaderboardHistoryController(IWebHostEnvironment env, LeaderboardHistoryHelper leaderboardHistoryHelper)
+		public LeaderboardHistoryController(IWebHostEnvironment env, WorldRecordsHelper worldRecordsHelper)
 		{
 			_env = env;
-			_leaderboardHistoryHelper = leaderboardHistoryHelper;
+			_worldRecordsHelper = worldRecordsHelper;
 		}
 
 		[HttpGet("user-progression")]
@@ -56,7 +56,7 @@ namespace DevilDaggersWebsite.Api
 		[HttpGet("world-records")]
 		[ProducesResponseType(StatusCodes.Status200OK)]
 		public List<WorldRecord> GetWorldRecords()
-			=> _leaderboardHistoryHelper.GetWorldRecords();
+			=> _worldRecordsHelper.GetWorldRecords();
 
 		[HttpGet("user-activity")]
 		[ProducesResponseType(StatusCodes.Status200OK)]

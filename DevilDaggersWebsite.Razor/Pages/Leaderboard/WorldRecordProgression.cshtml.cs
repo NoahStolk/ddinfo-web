@@ -2,6 +2,7 @@
 using DevilDaggersWebsite.Dto;
 using DevilDaggersWebsite.Razor.Utils;
 using DevilDaggersWebsite.Transients;
+using DevilDaggersWebsite.WorldRecords;
 using Microsoft.AspNetCore.Mvc.RazorPages;
 using System;
 using System.Collections.Generic;
@@ -12,9 +13,9 @@ namespace DevilDaggersWebsite.Razor.Pages.Leaderboard
 {
 	public class WorldRecordProgressionModel : PageModel
 	{
-		private readonly LeaderboardHistoryHelper _leaderboardHistoryHelper;
+		private readonly WorldRecordsHelper _leaderboardHistoryHelper;
 
-		public WorldRecordProgressionModel(LeaderboardHistoryHelper leaderboardHistoryHelper)
+		public WorldRecordProgressionModel(WorldRecordsHelper leaderboardHistoryHelper)
 		{
 			_leaderboardHistoryHelper = leaderboardHistoryHelper;
 		}
