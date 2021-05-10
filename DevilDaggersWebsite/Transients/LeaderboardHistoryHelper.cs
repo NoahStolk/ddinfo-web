@@ -21,7 +21,7 @@ namespace DevilDaggersWebsite.Transients
 
 		public List<WorldRecord> GetWorldRecords()
 		{
-			DateTime? previous = null;
+			DateTime? previousDate = null;
 			List<WorldRecord> worldRecords = new();
 			int worldRecord = 0;
 			foreach (string leaderboardHistoryPath in Directory.GetFiles(Path.Combine(_env.WebRootPath, "leaderboard-history"), "*.json"))
@@ -40,15 +40,15 @@ namespace DevilDaggersWebsite.Transients
 					// If history dates are only one day apart (which is assumed to be every day after _automationStart), use the average of the previous and the current date.
 					// This is because leaderboard history is recorded exactly at 00:00 UTC, and the date will therefore be one day ahead in all cases.
 					// For older history, use the literal leaderboard DateTime.
-					if (previous.HasValue && leaderboard.DateTime >= _automationStart)
-						date = GetAverage(previous.Value, leaderboard.DateTime);
+					if (previousDate.HasValue && leaderboard.DateTime >= _automationStart)
+						date = GetAverage(previousDate.Value, leaderboard.DateTime);
 					else
 						date = leaderboard.DateTime;
 
 					worldRecords.Add(new(date, firstPlace));
 				}
 
-				previous = leaderboard.DateTime;
+				previousDate = leaderboard.DateTime;
 			}
 
 			return worldRecords;
