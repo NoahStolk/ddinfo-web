@@ -4,9 +4,9 @@ using Microsoft.AspNetCore.Hosting;
 using Newtonsoft.Json;
 using System;
 using System.Collections.Concurrent;
+using System.Collections.Generic;
 using System.IO;
 using System.IO.Compression;
-using System.Linq;
 using System.Threading.Tasks;
 
 namespace DevilDaggersWebsite.Caches.ModArchive
@@ -133,10 +133,16 @@ namespace DevilDaggersWebsite.Caches.ModArchive
 			}
 		}
 
-		public bool BinaryNameExistsInCache(string binaryName, out string? conflictedModArchiveName)
+		public List<(string ArchiveName, string BinaryName)> GetExistingBinaryNames()
 		{
-			conflictedModArchiveName = _cache.FirstOrDefault(c => c.Value.Binaries.Any(b => string.Equals(b.Name, binaryName, StringComparison.InvariantCultureIgnoreCase))).Key;
-			return conflictedModArchiveName != null;
+			List<(string ArchiveName, string BinaryName)> binaryNames = new();
+			foreach (KeyValuePair<string, ModArchiveCacheData> c in _cache)
+			{
+				foreach (ModBinaryCacheData b in c.Value.Binaries)
+					binaryNames.Add((c.Key, b.Name));
+			}
+
+			return binaryNames;
 		}
 
 		public async Task Clear(IWebHostEnvironment env)
