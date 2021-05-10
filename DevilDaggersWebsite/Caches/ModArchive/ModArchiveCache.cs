@@ -6,6 +6,7 @@ using System;
 using System.Collections.Concurrent;
 using System.IO;
 using System.IO.Compression;
+using System.Linq;
 using System.Threading.Tasks;
 
 namespace DevilDaggersWebsite.Caches.ModArchive
@@ -130,6 +131,12 @@ namespace DevilDaggersWebsite.Caches.ModArchive
 				string name = Path.GetFileNameWithoutExtension(path);
 				LoadFromFileCache(env, name);
 			}
+		}
+
+		public bool BinaryNameExistsInCache(string binaryName, out string? conflictedModArchiveName)
+		{
+			conflictedModArchiveName = _cache.FirstOrDefault(c => c.Value.Binaries.Any(b => string.Equals(b.Name, binaryName, StringComparison.InvariantCultureIgnoreCase))).Key;
+			return conflictedModArchiveName != null;
 		}
 
 		public async Task Clear(IWebHostEnvironment env)
