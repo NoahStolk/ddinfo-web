@@ -1,8 +1,8 @@
 ﻿@page
 @using DevilDaggersCore.Game
 @using DevilDaggersCore.Utils
-@using DevilDaggersWebsite.Razor.Utils
 @using DevilDaggersWebsite.Dto
+@using DevilDaggersWebsite.Razor.Utils
 @using DevilDaggersWebsite.WorldRecords
 @model DevilDaggersWebsite.Razor.Pages.Leaderboard.WorldRecordProgressionModel
 @{
@@ -72,6 +72,8 @@
 		<div class="text-bold col-lg-2 col-md-3 col-sm-4 col-xs-4">Username</div>
 		<div class="text-bold col-lg-2 col-md-3 col-sm-4 col-xs-4">Time</div>
 		<div class="text-bold col-lg-2 col-md-3 col-sm-4 col-xs-4">Lasted</div>
+		<div class="text-bold col-lg-2 col-md-3 col-sm-4 col-xs-4">Improvement</div>
+		<div class="text-bold col-lg-2 col-md-3 col-sm-4 col-xs-4">Game version</div>
 	</div>
 	@{
 		foreach (KeyValuePair<WorldRecord, TimeSpan> kvp in Model.WorldRecords.OrderByDescending(w => w.Value))
@@ -83,6 +85,8 @@
 				<div class="col-lg-2 col-md-3 col-sm-4 col-xs-4">@kvp.Key.Entry.Username</div>
 				<div class="col-lg-2 col-md-3 col-sm-4 col-xs-4">@kvp.Key.Entry.Time.FormatTimeInteger() @(isCurrentWr ? "(Current WR)" : string.Empty)</div>
 				<div class="col-lg-2 col-md-3 col-sm-4 col-xs-4">@daysString</div>
+				<div class="col-lg-2 hidden-md hidden-sm hidden-xs"></div>
+				<div class="col-lg-2 hidden-md hidden-sm hidden-xs">@Model.GetGameVersionString(kvp.Key.GameVersion)</div>
 			</div>
 		}
 	}

@@ -1,4 +1,5 @@
-﻿using DevilDaggersWebsite.Clients;
+﻿using DevilDaggersCore.Game;
+using DevilDaggersWebsite.Clients;
 using DevilDaggersWebsite.Dto;
 using DevilDaggersWebsite.Razor.Utils;
 using DevilDaggersWebsite.Transients;
@@ -39,6 +40,17 @@ namespace DevilDaggersWebsite.Razor.Pages.Leaderboard
 		{
 			int daysAgo = (int)Math.Round((DateTime.UtcNow - dateTime).TotalDays);
 			return $"{dateTime:MMM dd} '{dateTime:yy} ({daysAgo} day{daysAgo.S()} ago)";
+		}
+
+		public string GetGameVersionString(GameVersion? gameVersion)
+		{
+			if (!gameVersion.HasValue)
+				return "Pre-release";
+
+			if (gameVersion == GameVersion.V31)
+				return "V3.1";
+
+			return gameVersion.ToString() ?? string.Empty;
 		}
 	}
 }
