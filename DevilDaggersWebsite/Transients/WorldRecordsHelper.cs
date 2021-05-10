@@ -71,6 +71,8 @@ namespace DevilDaggersWebsite.Transients
 			{
 				WorldRecord wr = worldRecords[i];
 
+				WorldRecord? previousWr = worldRecords.OrderByDescending(w => w.Entry.Time).FirstOrDefault(w => w.Entry.Time < wr.Entry.Time && GetMajorGameVersion(w.GameVersion) == GetMajorGameVersion(wr.GameVersion));
+
 				TimeSpan duration;
 				DateTime firstHeld;
 				DateTime lastHeld;
@@ -92,7 +94,7 @@ namespace DevilDaggersWebsite.Transients
 					heldConsecutively = default;
 
 				heldConsecutively += duration;
-				worldRecordData.Add(wr, new(duration, 0));
+				worldRecordData.Add(wr, new(duration, previousWr == null ? null : wr.Entry.Time - previousWr.Entry.Time));
 
 				WorldRecordHolder? holder = worldRecordHolders.Find(wrh => wrh.Id == wr.Entry.Id);
 				if (holder == null)
@@ -117,6 +119,19 @@ namespace DevilDaggersWebsite.Transients
 			}
 
 			return (worldRecordHolders.OrderByDescending(wrh => wrh.TotalTimeHeld).ToList(), worldRecordData);
+
+			// Used for determining when the leaderboard was reset.
+			static int GetMajorGameVersion(GameVersion? gameVersion)
+			{
+				return gameVersion switch
+				{
+					GameVersion.V1 => 1,
+					GameVersion.V2 => 2,
+					GameVersion.V3 => 3,
+					GameVersion.V31 => 3,
+					_ => 0,
+				};
+			}
 		}
 	}
 }
