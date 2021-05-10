@@ -42,7 +42,6 @@
 	@{
 		TimeSpan total = DateTime.UtcNow - (GameInfo.GetReleaseDate(GameVersion.V1) ?? throw new("Could not retrieve release version from V1."));
 
-		List<Entry>? worldRecordHolderEntries = await LeaderboardClient.Instance.GetUsersByIds(Model.WorldRecordHolders.Select(wrh => wrh.Id));
 		foreach (WorldRecordHolder wrh in Model.WorldRecordHolders)
 		{
 			int days = (int)Math.Round(wrh.TotalTimeHeld.TotalDays);
