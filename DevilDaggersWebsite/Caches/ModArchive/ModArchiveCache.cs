@@ -40,7 +40,7 @@ namespace DevilDaggersWebsite.Caches.ModArchive
 
 			// Unzip zip file bytes.
 			using MemoryStream ms = new(bytes);
-			return CreateModArchiveCacheDataFromStream(env, name, ms);
+			return CreateModArchiveCacheDataFromStream(env, name, ms, false); // Do not add this to the cache because it is not yet validated.
 		}
 
 		public ModArchiveCacheData GetArchiveDataByFilePath(IWebHostEnvironment env, string filePath)
@@ -59,7 +59,7 @@ namespace DevilDaggersWebsite.Caches.ModArchive
 			lock (_fileStreamLock)
 			{
 				using FileStream fs = new(filePath, FileMode.Open);
-				return CreateModArchiveCacheDataFromStream(env, name, fs);
+				return CreateModArchiveCacheDataFromStream(env, name, fs, true);
 			}
 		}
 
@@ -79,7 +79,7 @@ namespace DevilDaggersWebsite.Caches.ModArchive
 			return fileCacheArchiveData;
 		}
 
-		private ModArchiveCacheData CreateModArchiveCacheDataFromStream(IWebHostEnvironment env, string name, Stream stream)
+		private ModArchiveCacheData CreateModArchiveCacheDataFromStream(IWebHostEnvironment env, string name, Stream stream, bool addToCache)
 		{
 			using ZipArchive archive = new(stream);
 			ModArchiveCacheData archiveData = new() { FileSize = stream.Length };
@@ -97,9 +97,12 @@ namespace DevilDaggersWebsite.Caches.ModArchive
 				archiveData.FileSizeExtracted += entry.Length;
 			}
 
-			// Add to memory cache and file cache.
-			_cache.TryAdd(name, archiveData);
-			WriteToFileCache(env, name, archiveData);
+			if (addToCache)
+			{
+				// Add to memory cache and file cache.
+				_cache.TryAdd(name, archiveData);
+				WriteToFileCache(env, name, archiveData);
+			}
 
 			return archiveData;
 		}

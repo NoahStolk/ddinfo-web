@@ -88,7 +88,7 @@ namespace DevilDaggersWebsite.Razor.Pages.Admin.AssetMods
 					formFileBytes = ms.ToArray();
 				}
 
-				List<ModBinaryCacheData> archive = ModArchiveCache.Instance.GetArchiveDataByBytes(_env, FormFile.FileName, formFileBytes).Binaries;
+				List<ModBinaryCacheData> archive = ModArchiveCache.Instance.GetArchiveDataByBytes(_env, Path.GetFileNameWithoutExtension(FormFile.FileName), formFileBytes).Binaries;
 				if (archive.Count == 0)
 					throw new InvalidModBinaryException($"File `{FormFile.FileName}` does not contain any binaries.");
 
