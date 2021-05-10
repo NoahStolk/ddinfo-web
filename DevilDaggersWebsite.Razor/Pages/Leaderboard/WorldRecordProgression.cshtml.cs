@@ -23,7 +23,7 @@ namespace DevilDaggersWebsite.Razor.Pages.Leaderboard
 
 		public List<WorldRecordHolder> WorldRecordHolders { get; private set; } = new();
 
-		public Dictionary<WorldRecord, TimeSpan> WorldRecords { get; private set; } = new();
+		public Dictionary<WorldRecord, WorldRecordData> WorldRecords { get; private set; } = new();
 
 		public Entry? CurrentWorldRecord { get; private set; }
 

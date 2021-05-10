@@ -54,10 +54,10 @@
 			string lastHeld = isCurrentWr ? "Current holder" : Model.GetHistoryDateString(wrh.LastHeld);
 			string firstHeld = Model.GetHistoryDateString(wrh.FirstHeld);
 			string heldConsecutively = $"{daysConsecutively} day{daysConsecutively.S()}";
-			IEnumerable<string> aliases = wrh.Usernames.Where(s => s != wrh.MostRecentUsername);
+			List<string> aliases = wrh.Usernames.Where(s => s != wrh.MostRecentUsername).ToList();
 
-			<div class="row" style="background-color: @(isCurrentWr ? "#800" : "#000")">
-				<div class="col-lg-2 col-md-3 col-sm-4 col-xs-6">@wrh.MostRecentUsername @(aliases.Count() != 0 ? $"({string.Join(", ", aliases)})" : "")</div>
+			<div class="row" style="background-color: @(isCurrentWr ? "#400" : "#000")">
+				<div class="col-lg-2 col-md-3 col-sm-4 col-xs-6">@wrh.MostRecentUsername @(aliases.Count != 0 ? $"({string.Join(", ", aliases)})" : "")</div>
 				<div class="col-lg-2 col-md-3 col-sm-4 col-xs-6">@timeHeld</div>
 				<div class="col-lg-2 col-md-3 col-sm-2 hidden-xs">@heldConsecutively</div>
 				<div class="col-lg-2 col-md-3 col-sm-2 hidden-xs">@wrh.WorldRecordCount</div>
@@ -71,21 +71,21 @@
 	<div class="row">
 		<div class="text-bold col-lg-2 col-md-3 col-sm-4 col-xs-4">Username</div>
 		<div class="text-bold col-lg-2 col-md-3 col-sm-4 col-xs-4">Time</div>
-		<div class="text-bold col-lg-2 col-md-3 col-sm-4 col-xs-4">Lasted</div>
+		<div class="text-bold col-lg-2 col-md-3 col-sm-4 col-xs-4">Duration</div>
 		<div class="text-bold col-lg-2 hidden-md hidden-sm hidden-xs">Improvement</div>
 		<div class="text-bold col-lg-2 hidden-md hidden-sm hidden-xs">Game version</div>
 	</div>
 	@{
-		foreach (KeyValuePair<WorldRecord, TimeSpan> kvp in Model.WorldRecords.OrderByDescending(w => w.Value))
+		foreach (KeyValuePair<WorldRecord, WorldRecordData> kvp in Model.WorldRecords.OrderByDescending(w => w.Value.WorldRecordDuration))
 		{
 			bool isCurrentWr = kvp.Key.Entry.Time == Model.CurrentWorldRecord?.Time;
-			int days = (int)Math.Round(kvp.Value.TotalDays);
+			int days = (int)Math.Round(kvp.Value.WorldRecordDuration.TotalDays);
 			string daysString = days == 0 ? "Less than 1 day" : days == 1 ? "1 day" : $"{days} days";
-			<div class="row" style="background-color: @(isCurrentWr ? "#800" : "#000")">
+			<div class="row" style="background-color: @(isCurrentWr ? "#400" : "#000")">
 				<div class="col-lg-2 col-md-3 col-sm-4 col-xs-4">@kvp.Key.Entry.Username</div>
-				<div class="col-lg-2 col-md-3 col-sm-4 col-xs-4">@kvp.Key.Entry.Time.FormatTimeInteger() @(isCurrentWr ? "(Current WR)" : string.Empty)</div>
+				<div class="col-lg-2 col-md-3 col-sm-4 col-xs-4 @(GameInfo.GetDaggerFromTime(kvp.Key.GameVersion ?? GameVersion.V1, kvp.Key.Entry.Time).Name.ToLower())">@kvp.Key.Entry.Time.FormatTimeInteger() @(isCurrentWr ? "(Current WR)" : string.Empty)</div>
 				<div class="col-lg-2 col-md-3 col-sm-4 col-xs-4">@daysString</div>
-				<div class="col-lg-2 hidden-md hidden-sm hidden-xs"></div>
+				<div class="col-lg-2 hidden-md hidden-sm hidden-xs">@kvp.Value.WorldRecordImprovement.FormatTimeInteger()</div>
 				<div class="col-lg-2 hidden-md hidden-sm hidden-xs">@Model.GetGameVersionString(kvp.Key.GameVersion)</div>
 			</div>
 		}

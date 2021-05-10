@@ -59,30 +59,31 @@ namespace DevilDaggersWebsite.Transients
 				=> new((a.Ticks + b.Ticks) / 2);
 		}
 
-		public (List<WorldRecordHolder> WorldRecordHolders, Dictionary<WorldRecord, TimeSpan> WorldRecordsByTimeLasted) GetWorldRecordData()
+		public (List<WorldRecordHolder> WorldRecordHolders, Dictionary<WorldRecord, WorldRecordData> WorldRecordData) GetWorldRecordData()
 		{
 			List<WorldRecord> worldRecords = GetWorldRecords();
-			Dictionary<WorldRecord, TimeSpan> worldRecordsByTimeLasted = new();
+
 			List<WorldRecordHolder> worldRecordHolders = new();
+			Dictionary<WorldRecord, WorldRecordData> worldRecordData = new();
 
 			TimeSpan heldConsecutively = default;
 			for (int i = 0; i < worldRecords.Count; i++)
 			{
 				WorldRecord wr = worldRecords[i];
 
-				TimeSpan difference;
+				TimeSpan duration;
 				DateTime firstHeld;
 				DateTime lastHeld;
 				if (i == worldRecords.Count - 1)
 				{
-					difference = DateTime.UtcNow - wr.DateTime;
+					duration = DateTime.UtcNow - wr.DateTime;
 					firstHeld = wr.DateTime;
 					lastHeld = DateTime.UtcNow;
 				}
 				else
 				{
 					WorldRecord nextWr = worldRecords[i + 1];
-					difference = nextWr.DateTime - wr.DateTime;
+					duration = nextWr.DateTime - wr.DateTime;
 					firstHeld = wr.DateTime;
 					lastHeld = nextWr.DateTime;
 				}
@@ -90,13 +91,13 @@ namespace DevilDaggersWebsite.Transients
 				if (i != 0 && wr.Entry.Id != worldRecords[i - 1].Entry.Id)
 					heldConsecutively = default;
 
-				heldConsecutively += difference;
-				worldRecordsByTimeLasted[wr] = difference;
+				heldConsecutively += duration;
+				worldRecordData.Add(wr, new(duration, 0));
 
 				WorldRecordHolder? holder = worldRecordHolders.Find(wrh => wrh.Id == wr.Entry.Id);
 				if (holder == null)
 				{
-					worldRecordHolders.Add(new(wr.Entry.Id, wr.Entry.Username, difference, heldConsecutively, 1, firstHeld, lastHeld));
+					worldRecordHolders.Add(new(wr.Entry.Id, wr.Entry.Username, duration, heldConsecutively, 1, firstHeld, lastHeld));
 				}
 				else
 				{
@@ -107,7 +108,7 @@ namespace DevilDaggersWebsite.Transients
 					if (heldConsecutively > holder.LongestTimeHeldConsecutively)
 						holder.LongestTimeHeldConsecutively = heldConsecutively;
 
-					holder.TotalTimeHeld += difference;
+					holder.TotalTimeHeld += duration;
 					holder.WorldRecordCount++;
 					if (firstHeld < holder.FirstHeld)
 						holder.FirstHeld = firstHeld;
@@ -115,7 +116,7 @@ namespace DevilDaggersWebsite.Transients
 				}
 			}
 
-			return (worldRecordHolders.OrderByDescending(wrh => wrh.TotalTimeHeld).ToList(), worldRecordsByTimeLasted);
+			return (worldRecordHolders.OrderByDescending(wrh => wrh.TotalTimeHeld).ToList(), worldRecordData);
 		}
 	}
 }
