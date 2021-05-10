@@ -91,33 +91,28 @@ namespace DevilDaggersWebsite.Transients
 					heldConsecutively = default;
 
 				heldConsecutively += difference;
-
 				worldRecordsByTimeLasted[wr] = difference;
 
-				bool added = false;
-				foreach (WorldRecordHolder wrh in worldRecordHolders)
+				WorldRecordHolder? holder = worldRecordHolders.Find(wrh => wrh.Id == wr.Entry.Id);
+				if (holder == null)
 				{
-					if (wrh.Id == wr.Entry.Id)
-					{
-						wrh.MostRecentUsername = wr.Entry.Username;
-						if (!wrh.Usernames.Contains(wr.Entry.Username))
-							wrh.Usernames.Add(wr.Entry.Username);
-
-						if (heldConsecutively > wrh.LongestTimeHeldConsecutively)
-							wrh.LongestTimeHeldConsecutively = heldConsecutively;
-
-						wrh.TotalTimeHeld += difference;
-						wrh.WorldRecordCount++;
-						if (firstHeld < wrh.FirstHeld)
-							wrh.FirstHeld = firstHeld;
-						wrh.LastHeld = lastHeld;
-						added = true;
-						break;
-					}
-				}
-
-				if (!added)
 					worldRecordHolders.Add(new(wr.Entry.Id, wr.Entry.Username, difference, heldConsecutively, 1, firstHeld, lastHeld));
+				}
+				else
+				{
+					holder.MostRecentUsername = wr.Entry.Username;
+					if (!holder.Usernames.Contains(wr.Entry.Username))
+						holder.Usernames.Add(wr.Entry.Username);
+
+					if (heldConsecutively > holder.LongestTimeHeldConsecutively)
+						holder.LongestTimeHeldConsecutively = heldConsecutively;
+
+					holder.TotalTimeHeld += difference;
+					holder.WorldRecordCount++;
+					if (firstHeld < holder.FirstHeld)
+						holder.FirstHeld = firstHeld;
+					holder.LastHeld = lastHeld;
+				}
 			}
 
 			return (worldRecordHolders.OrderByDescending(wrh => wrh.TotalTimeHeld).ToList(), worldRecordsByTimeLasted);
