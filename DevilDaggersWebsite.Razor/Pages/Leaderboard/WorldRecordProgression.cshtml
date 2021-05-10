@@ -67,13 +67,13 @@
 
 	<h2>World records</h2>
 	<div class="row">
-		<div class="sorter text-bold col-lg-2 col-md-3 col-sm-4 col-xs-4" sort="username">Username</div>
-		<div class="sorter text-bold col-lg-2 col-md-3 col-sm-4 col-xs-4" sort="time">Time</div>
-		<div class="sorter text-bold col-lg-2 col-md-3 col-sm-4 col-xs-4" sort="duration">Duration</div>
-		<div class="sorter text-bold col-lg-2 hidden-md hidden-sm hidden-xs" sort="improvement">Improvement</div>
-		<div class="sorter text-bold col-lg-2 hidden-md hidden-sm hidden-xs" sort="game-version">Game version</div>
+		<div class="world-record-sorter sorter text-bold col-lg-2 col-md-3 col-sm-4 col-xs-4" sort="username">Username</div>
+		<div class="world-record-sorter sorter text-bold col-lg-2 col-md-3 col-sm-4 col-xs-4" sort="time">Time</div>
+		<div class="world-record-sorter sorter text-bold col-lg-2 col-md-3 col-sm-4 col-xs-4" sort="duration">Duration</div>
+		<div class="world-record-sorter sorter text-bold col-lg-2 hidden-md hidden-sm hidden-xs" sort="improvement">Improvement</div>
+		<div class="world-record-sorter sorter text-bold col-lg-2 hidden-md hidden-sm hidden-xs" sort="game-version">Game version</div>
 	</div>
-	<div class="sort-body">
+	<div class="world-record-sort-body">
 		@foreach (KeyValuePair<WorldRecord, WorldRecordData> kvp in Model.WorldRecords.OrderByDescending(w => w.Value.WorldRecordDuration))
 		{
 			bool isCurrentWr = kvp.Key.Entry.Time == Model.CurrentWorldRecord?.Time;

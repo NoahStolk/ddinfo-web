@@ -1,5 +1,5 @@
 ﻿$(document).ready(function () {
-	var directions = {
+	const worldRecordSortDirections = {
 		"username": 1,
 		"time": -1,
 		"duration": -1,
@@ -7,7 +7,7 @@
 		"game-version": 1
 	};
 
-	$(document).on("click", ".sorter", function () {
+	$(document).on("click", ".world-record-sorter", function () {
 		var sorter = $(this);
 		var sortValue = sorter.attr('sort');
 
@@ -21,10 +21,10 @@
 				contentB = parseInt($(b).attr(sortValue));
 			}
 
-			return (contentA < contentB ? -1 : contentA > contentB ? 1 : 0) * directions[sortValue];
+			return (contentA < contentB ? -1 : contentA > contentB ? 1 : 0) * worldRecordSortDirections[sortValue];
 		});
 
-		directions[sortValue] *= -1;
-		$(".sort-body").html(sort);
+		worldRecordSortDirections[sortValue] *= -1;
+		$(".world-record-sort-body").html(sort);
 	});
 });
