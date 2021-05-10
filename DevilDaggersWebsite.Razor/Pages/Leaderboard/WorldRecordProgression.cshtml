@@ -34,36 +34,38 @@
 
 	<h2>World record holders</h2>
 	<div class="row">
-		<div class="text-bold col-lg-2 col-md-3 col-sm-4 col-xs-6">Username (and aliases)</div>
-		<div class="text-bold col-lg-2 col-md-3 col-sm-4 col-xs-6">Total time held</div>
-		<div class="text-bold col-lg-2 col-md-3 col-sm-2 hidden-xs">Longest time held consecutively</div>
-		<div class="text-bold col-lg-2 col-md-3 col-sm-2 hidden-xs">World records</div>
-		<div class="text-bold col-lg-2 hidden-md hidden-sm hidden-xs">First held</div>
-		<div class="text-bold col-lg-2 hidden-md hidden-sm hidden-xs">Last held</div>
+		<div class="world-record-holder-sorter sorter text-bold col-lg-2 col-md-3 col-sm-4 col-xs-6" sort="username">Username (and aliases)</div>
+		<div class="world-record-holder-sorter sorter text-bold col-lg-2 col-md-3 col-sm-4 col-xs-6" sort="total-time-held">Total time held</div>
+		<div class="world-record-holder-sorter sorter text-bold col-lg-2 col-md-3 col-sm-2 hidden-xs" sort="longest-time-held">Longest time held consecutively</div>
+		<div class="world-record-holder-sorter sorter text-bold col-lg-2 col-md-3 col-sm-2 hidden-xs" sort="world-record-count">World records</div>
+		<div class="world-record-holder-sorter sorter text-bold col-lg-2 hidden-md hidden-sm hidden-xs" sort="first-held">First held</div>
+		<div class="world-record-holder-sorter sorter text-bold col-lg-2 hidden-md hidden-sm hidden-xs" sort="last-held">Last held</div>
 	</div>
-	@foreach (WorldRecordHolder wrh in Model.WorldRecordHolders)
-	{
-		int days = (int)Math.Round(wrh.TotalTimeHeld.TotalDays);
-		int daysConsecutively = (int)Math.Round(wrh.LongestTimeHeldConsecutively.TotalDays);
+	<div class="world-record-holder-sort-body">
+		@foreach (WorldRecordHolder wrh in Model.WorldRecordHolders)
+		{
+			int days = (int)Math.Round(wrh.TotalTimeHeld.TotalDays);
+			int daysConsecutively = (int)Math.Round(wrh.LongestTimeHeldConsecutively.TotalDays);
 
-		string timeHeld = $"{days} day{days.S()} ({(wrh.TotalTimeHeld / totalTimeSinceFirstRecord).ToString("00.00%")})";
+			string timeHeld = $"{days} day{days.S()} ({(wrh.TotalTimeHeld / totalTimeSinceFirstRecord).ToString("00.00%")})";
 
-		bool isCurrentWr = wrh.Id == Model.CurrentWorldRecord?.Id;
+			bool isCurrentWr = wrh.Id == Model.CurrentWorldRecord?.Id;
 
-		string lastHeld = isCurrentWr ? "Current holder" : Model.GetHistoryDateString(wrh.LastHeld);
-		string firstHeld = Model.GetHistoryDateString(wrh.FirstHeld);
-		string heldConsecutively = $"{daysConsecutively} day{daysConsecutively.S()}";
-		List<string> aliases = wrh.Usernames.Where(s => s != wrh.MostRecentUsername).ToList();
+			string lastHeld = isCurrentWr ? "Current holder" : Model.GetHistoryDateString(wrh.LastHeld);
+			string firstHeld = Model.GetHistoryDateString(wrh.FirstHeld);
+			string heldConsecutively = $"{daysConsecutively} day{daysConsecutively.S()}";
+			List<string> aliases = wrh.Usernames.Where(s => s != wrh.MostRecentUsername).ToList();
 
-		<div class="row" style="background-color: @(isCurrentWr ? "#800" : "#000")">
-			<div class="col-lg-2 col-md-3 col-sm-4 col-xs-6">@wrh.MostRecentUsername @(aliases.Count != 0 ? $"({string.Join(", ", aliases)})" : "")</div>
-			<div class="col-lg-2 col-md-3 col-sm-4 col-xs-6">@timeHeld</div>
-			<div class="col-lg-2 col-md-3 col-sm-2 hidden-xs">@heldConsecutively</div>
-			<div class="col-lg-2 col-md-3 col-sm-2 hidden-xs">@wrh.WorldRecordCount</div>
-			<div class="col-lg-2 hidden-md hidden-sm hidden-xs">@firstHeld</div>
-			<div class="col-lg-2 hidden-md hidden-sm hidden-xs">@lastHeld</div>
-		</div>
-	}
+			<div class="row world-record-holder-sort" @Model.GetWorldRecordHolderSort(wrh) style="background-color: @(isCurrentWr ? "#800" : "#000")">
+				<div class="col-lg-2 col-md-3 col-sm-4 col-xs-6">@wrh.MostRecentUsername @(aliases.Count != 0 ? $"({string.Join(", ", aliases)})" : "")</div>
+				<div class="col-lg-2 col-md-3 col-sm-4 col-xs-6">@timeHeld</div>
+				<div class="col-lg-2 col-md-3 col-sm-2 hidden-xs">@heldConsecutively</div>
+				<div class="col-lg-2 col-md-3 col-sm-2 hidden-xs">@wrh.WorldRecordCount</div>
+				<div class="col-lg-2 hidden-md hidden-sm hidden-xs">@firstHeld</div>
+				<div class="col-lg-2 hidden-md hidden-sm hidden-xs">@lastHeld</div>
+			</div>
+		}
+	</div>
 
 	<h2>World records</h2>
 	<div class="row">
@@ -80,7 +82,7 @@
 			int days = (int)Math.Round(kvp.Value.WorldRecordDuration.TotalDays);
 			string daysString = days == 0 ? "Less than 1 day" : days == 1 ? "1 day" : $"{days} days";
 
-			<div class="row sort" @Model.GetSort(kvp.Key, kvp.Value) style="background-color: @(isCurrentWr ? "#800" : "#000")">
+			<div class="row world-record-sort" @Model.GetWorldRecordSort(kvp.Key, kvp.Value) style="background-color: @(isCurrentWr ? "#800" : "#000")">
 				<div class="col-lg-2 col-md-3 col-sm-4 col-xs-4">@kvp.Key.Entry.Username</div>
 				<div class="col-lg-2 col-md-3 col-sm-4 col-xs-4">@kvp.Key.Entry.Time.FormatTimeInteger() @(isCurrentWr ? "(Current WR)" : string.Empty)</div>
 				<div class="col-lg-2 col-md-3 col-sm-4 col-xs-4">@daysString</div>

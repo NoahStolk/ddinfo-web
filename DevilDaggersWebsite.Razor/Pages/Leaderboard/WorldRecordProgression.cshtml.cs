@@ -55,11 +55,19 @@ namespace DevilDaggersWebsite.Razor.Pages.Leaderboard
 			return gameVersion.ToString() ?? string.Empty;
 		}
 
-		public HtmlString GetSort(WorldRecord worldRecord, WorldRecordData worldRecordData) => new($@"
+		public HtmlString GetWorldRecordSort(WorldRecord worldRecord, WorldRecordData worldRecordData) => new($@"
 username='{HttpUtility.HtmlEncode(worldRecord.Entry.Username)}'
 time='{worldRecord.Entry.Time}'
-duration='{worldRecordData.WorldRecordDuration.TotalHours}'
+duration='{(int)worldRecordData.WorldRecordDuration.TotalHours}'
 improvement='{worldRecordData.WorldRecordImprovement ?? 0}'
 game-version='{GetGameVersionString(worldRecord.GameVersion)}'");
+
+		public HtmlString GetWorldRecordHolderSort(WorldRecordHolder worldRecordHolder) => new($@"
+username='{HttpUtility.HtmlEncode(worldRecordHolder.MostRecentUsername)}'
+total-time-held='{(int)worldRecordHolder.TotalTimeHeld.TotalHours}'
+longest-time-held='{(int)worldRecordHolder.LongestTimeHeldConsecutively.TotalHours}'
+world-record-count='{worldRecordHolder.WorldRecordCount}'
+first-held='{worldRecordHolder.FirstHeld:yyyyMMddHHmm}'
+last-held='{worldRecordHolder.LastHeld:yyyyMMddHHmm}'");
 	}
 }
