@@ -1,14 +1,14 @@
 ﻿@page
-@using DevilDaggersCore.Game
 @using DevilDaggersCore.Utils
 @using DevilDaggersWebsite.Dto
 @using DevilDaggersWebsite.Razor.Utils
 @using DevilDaggersWebsite.WorldRecords
 @using Microsoft.AspNetCore.Html
-@using System.Web
 @model DevilDaggersWebsite.Razor.Pages.Leaderboard.WorldRecordProgressionModel
 @{
 	ViewData["Title"] = "World Record Progression";
+
+	TimeSpan totalTimeSinceGraphStart = DateTime.UtcNow - Model.WorldRecords.OrderBy(wr => wr.Key.DateTime).First().Key.DateTime;
 }
 
 <header>
@@ -41,32 +41,28 @@
 		<div class="text-bold col-lg-2 hidden-md hidden-sm hidden-xs">First held</div>
 		<div class="text-bold col-lg-2 hidden-md hidden-sm hidden-xs">Last held</div>
 	</div>
-	@{
-		TimeSpan total = DateTime.UtcNow - (GameInfo.GetReleaseDate(GameVersion.V1) ?? throw new("Could not retrieve release version from V1."));
+	@foreach (WorldRecordHolder wrh in Model.WorldRecordHolders)
+	{
+		int days = (int)Math.Round(wrh.TotalTimeHeld.TotalDays);
+		int daysConsecutively = (int)Math.Round(wrh.LongestTimeHeldConsecutively.TotalDays);
 
-		foreach (WorldRecordHolder wrh in Model.WorldRecordHolders)
-		{
-			int days = (int)Math.Round(wrh.TotalTimeHeld.TotalDays);
-			int daysConsecutively = (int)Math.Round(wrh.LongestTimeHeldConsecutively.TotalDays);
+		string timeHeld = $"{days} day{days.S()} ({(wrh.TotalTimeHeld / totalTimeSinceGraphStart).ToString("00.00%")})";
 
-			string timeHeld = $"{days} day{days.S()} ({(wrh.TotalTimeHeld / total).ToString("00.00%")})";
+		bool isCurrentWr = wrh.Id == Model.CurrentWorldRecord?.Id;
 
-			bool isCurrentWr = wrh.Id == Model.CurrentWorldRecord?.Id;
+		string lastHeld = isCurrentWr ? "Current holder" : Model.GetHistoryDateString(wrh.LastHeld);
+		string firstHeld = Model.GetHistoryDateString(wrh.FirstHeld);
+		string heldConsecutively = $"{daysConsecutively} day{daysConsecutively.S()}";
+		List<string> aliases = wrh.Usernames.Where(s => s != wrh.MostRecentUsername).ToList();
 
-			string lastHeld = isCurrentWr ? "Current holder" : Model.GetHistoryDateString(wrh.LastHeld);
-			string firstHeld = Model.GetHistoryDateString(wrh.FirstHeld);
-			string heldConsecutively = $"{daysConsecutively} day{daysConsecutively.S()}";
-			List<string> aliases = wrh.Usernames.Where(s => s != wrh.MostRecentUsername).ToList();
-
-			<div class="row" style="background-color: @(isCurrentWr ? "#800" : "#000")">
-				<div class="col-lg-2 col-md-3 col-sm-4 col-xs-6">@wrh.MostRecentUsername @(aliases.Count != 0 ? $"({string.Join(", ", aliases)})" : "")</div>
-				<div class="col-lg-2 col-md-3 col-sm-4 col-xs-6">@timeHeld</div>
-				<div class="col-lg-2 col-md-3 col-sm-2 hidden-xs">@heldConsecutively</div>
-				<div class="col-lg-2 col-md-3 col-sm-2 hidden-xs">@wrh.WorldRecordCount</div>
-				<div class="col-lg-2 hidden-md hidden-sm hidden-xs">@firstHeld</div>
-				<div class="col-lg-2 hidden-md hidden-sm hidden-xs">@lastHeld</div>
-			</div>
-		}
+		<div class="row" style="background-color: @(isCurrentWr ? "#800" : "#000")">
+			<div class="col-lg-2 col-md-3 col-sm-4 col-xs-6">@wrh.MostRecentUsername @(aliases.Count != 0 ? $"({string.Join(", ", aliases)})" : "")</div>
+			<div class="col-lg-2 col-md-3 col-sm-4 col-xs-6">@timeHeld</div>
+			<div class="col-lg-2 col-md-3 col-sm-2 hidden-xs">@heldConsecutively</div>
+			<div class="col-lg-2 col-md-3 col-sm-2 hidden-xs">@wrh.WorldRecordCount</div>
+			<div class="col-lg-2 hidden-md hidden-sm hidden-xs">@firstHeld</div>
+			<div class="col-lg-2 hidden-md hidden-sm hidden-xs">@lastHeld</div>
+		</div>
 	}
 
 	<h2>World records</h2>
