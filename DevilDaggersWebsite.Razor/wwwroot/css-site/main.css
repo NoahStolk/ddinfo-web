@@ -285,3 +285,7 @@ option {
 .pointer {
 	cursor: pointer;
 }
+
+.sorter:hover {
+	cursor: pointer;
+}

@@ -14,10 +14,6 @@
 	overflow: hidden;
 }
 
-.sorter:hover {
-	cursor: pointer;
-}
-
 .ban,
 .ban * a {
 	color: var(--col-ban);
