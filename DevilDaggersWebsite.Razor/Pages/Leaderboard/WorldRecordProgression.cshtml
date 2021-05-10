@@ -4,7 +4,8 @@
 @using DevilDaggersWebsite.Dto
 @using DevilDaggersWebsite.Razor.Utils
 @using DevilDaggersWebsite.WorldRecords
-@using Microsoft.AspNetCore.Html;
+@using Microsoft.AspNetCore.Html
+@using System.Web
 @model DevilDaggersWebsite.Razor.Pages.Leaderboard.WorldRecordProgressionModel
 @{
 	ViewData["Title"] = "World Record Progression";
@@ -70,19 +71,20 @@
 
 	<h2>World records</h2>
 	<div class="row">
-		<div class="text-bold col-lg-2 col-md-3 col-sm-4 col-xs-4">Username</div>
-		<div class="text-bold col-lg-2 col-md-3 col-sm-4 col-xs-4">Time</div>
-		<div class="text-bold col-lg-2 col-md-3 col-sm-4 col-xs-4">Duration</div>
-		<div class="text-bold col-lg-2 hidden-md hidden-sm hidden-xs">Improvement</div>
-		<div class="text-bold col-lg-2 hidden-md hidden-sm hidden-xs">Game version</div>
+		<div class="sorter text-bold col-lg-2 col-md-3 col-sm-4 col-xs-4" sort="username">Username</div>
+		<div class="sorter text-bold col-lg-2 col-md-3 col-sm-4 col-xs-4" sort="time">Time</div>
+		<div class="sorter text-bold col-lg-2 col-md-3 col-sm-4 col-xs-4" sort="duration">Duration</div>
+		<div class="sorter text-bold col-lg-2 hidden-md hidden-sm hidden-xs" sort="improvement">Improvement</div>
+		<div class="sorter text-bold col-lg-2 hidden-md hidden-sm hidden-xs" sort="game-version">Game version</div>
 	</div>
-	@{
-		foreach (KeyValuePair<WorldRecord, WorldRecordData> kvp in Model.WorldRecords.OrderByDescending(w => w.Value.WorldRecordDuration))
+	<div class="sort-body">
+		@foreach (KeyValuePair<WorldRecord, WorldRecordData> kvp in Model.WorldRecords.OrderByDescending(w => w.Value.WorldRecordDuration))
 		{
 			bool isCurrentWr = kvp.Key.Entry.Time == Model.CurrentWorldRecord?.Time;
 			int days = (int)Math.Round(kvp.Value.WorldRecordDuration.TotalDays);
 			string daysString = days == 0 ? "Less than 1 day" : days == 1 ? "1 day" : $"{days} days";
-			<div class="row" style="background-color: @(isCurrentWr ? "#800" : "#000")">
+
+			<div class="row sort" @Model.GetSort(kvp.Key, kvp.Value) style="background-color: @(isCurrentWr ? "#800" : "#000")">
 				<div class="col-lg-2 col-md-3 col-sm-4 col-xs-4">@kvp.Key.Entry.Username</div>
 				<div class="col-lg-2 col-md-3 col-sm-4 col-xs-4">@kvp.Key.Entry.Time.FormatTimeInteger() @(isCurrentWr ? "(Current WR)" : string.Empty)</div>
 				<div class="col-lg-2 col-md-3 col-sm-4 col-xs-4">@daysString</div>
@@ -90,7 +92,7 @@
 				<div class="col-lg-2 hidden-md hidden-sm hidden-xs">@Model.GetGameVersionString(kvp.Key.GameVersion)</div>
 			</div>
 		}
-	}
+	</div>
 </main>
 
 @section Scripts {
@@ -104,6 +106,8 @@
 	<script defer src='~/scripts/charts/chart.js' asp-append-version='true'></script>
 	<script defer src='~/scripts/charts/history/chart-line.js' asp-append-version='true'></script>
 	<script defer src='~/scripts/charts/history/world-record-progression.js' asp-append-version='true'></script>
+
+	<script defer src='~/scripts/world-record-progression-sort.js' asp-append-version='true'></script>
 }
 
 @section Styles {

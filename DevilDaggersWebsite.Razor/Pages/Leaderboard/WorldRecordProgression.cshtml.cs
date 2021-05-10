@@ -4,10 +4,12 @@ using DevilDaggersWebsite.Dto;
 using DevilDaggersWebsite.Razor.Utils;
 using DevilDaggersWebsite.Transients;
 using DevilDaggersWebsite.WorldRecords;
+using Microsoft.AspNetCore.Html;
 using Microsoft.AspNetCore.Mvc.RazorPages;
 using System;
 using System.Collections.Generic;
 using System.Threading.Tasks;
+using System.Web;
 using Lb = DevilDaggersWebsite.Dto.Leaderboard;
 
 namespace DevilDaggersWebsite.Razor.Pages.Leaderboard
@@ -52,5 +54,12 @@ namespace DevilDaggersWebsite.Razor.Pages.Leaderboard
 
 			return gameVersion.ToString() ?? string.Empty;
 		}
+
+		public HtmlString GetSort(WorldRecord worldRecord, WorldRecordData worldRecordData) => new($@"
+username='{HttpUtility.HtmlEncode(worldRecord.Entry.Username)}'
+time='{worldRecord.Entry.Time}'
+duration='{worldRecordData.WorldRecordDuration.TotalHours}'
+improvement='{worldRecordData.WorldRecordImprovement ?? 0}'
+game-version='{GetGameVersionString(worldRecord.GameVersion)}'");
 	}
 }
