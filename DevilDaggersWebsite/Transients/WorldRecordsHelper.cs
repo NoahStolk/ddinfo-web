@@ -71,7 +71,7 @@ namespace DevilDaggersWebsite.Transients
 			{
 				WorldRecord wr = worldRecords[i];
 
-				WorldRecord? previousWr = worldRecords.OrderByDescending(w => w.Entry.Time).FirstOrDefault(w => w.Entry.Time < wr.Entry.Time && GetMajorGameVersion(w.GameVersion) == GetMajorGameVersion(wr.GameVersion));
+				WorldRecord? previousWrSameLeaderboard = worldRecords.OrderByDescending(w => w.Entry.Time).FirstOrDefault(w => w.Entry.Time < wr.Entry.Time && GetMajorGameVersion(w.GameVersion) == GetMajorGameVersion(wr.GameVersion));
 
 				TimeSpan duration;
 				DateTime firstHeld;
@@ -94,7 +94,7 @@ namespace DevilDaggersWebsite.Transients
 					heldConsecutively = default;
 
 				heldConsecutively += duration;
-				worldRecordData.Add(wr, new(duration, previousWr == null ? null : wr.Entry.Time - previousWr.Entry.Time));
+				worldRecordData.Add(wr, new(duration, previousWrSameLeaderboard == null ? null : wr.Entry.Time - previousWrSameLeaderboard.Entry.Time));
 
 				WorldRecordHolder? holder = worldRecordHolders.Find(wrh => wrh.Id == wr.Entry.Id);
 				if (holder == null)

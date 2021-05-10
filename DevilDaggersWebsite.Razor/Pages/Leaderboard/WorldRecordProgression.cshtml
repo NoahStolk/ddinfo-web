@@ -57,7 +57,7 @@
 			string heldConsecutively = $"{daysConsecutively} day{daysConsecutively.S()}";
 			List<string> aliases = wrh.Usernames.Where(s => s != wrh.MostRecentUsername).ToList();
 
-			<div class="row" style="background-color: @(isCurrentWr ? "#400" : "#000")">
+			<div class="row" style="background-color: @(isCurrentWr ? "#800" : "#000")">
 				<div class="col-lg-2 col-md-3 col-sm-4 col-xs-6">@wrh.MostRecentUsername @(aliases.Count != 0 ? $"({string.Join(", ", aliases)})" : "")</div>
 				<div class="col-lg-2 col-md-3 col-sm-4 col-xs-6">@timeHeld</div>
 				<div class="col-lg-2 col-md-3 col-sm-2 hidden-xs">@heldConsecutively</div>
@@ -68,7 +68,7 @@
 		}
 	}
 
-	<h2>World records by time lasted</h2>
+	<h2>World records</h2>
 	<div class="row">
 		<div class="text-bold col-lg-2 col-md-3 col-sm-4 col-xs-4">Username</div>
 		<div class="text-bold col-lg-2 col-md-3 col-sm-4 col-xs-4">Time</div>
@@ -82,9 +82,9 @@
 			bool isCurrentWr = kvp.Key.Entry.Time == Model.CurrentWorldRecord?.Time;
 			int days = (int)Math.Round(kvp.Value.WorldRecordDuration.TotalDays);
 			string daysString = days == 0 ? "Less than 1 day" : days == 1 ? "1 day" : $"{days} days";
-			<div class="row" style="background-color: @(isCurrentWr ? "#400" : "#000")">
+			<div class="row" style="background-color: @(isCurrentWr ? "#800" : "#000")">
 				<div class="col-lg-2 col-md-3 col-sm-4 col-xs-4">@kvp.Key.Entry.Username</div>
-				<div class="col-lg-2 col-md-3 col-sm-4 col-xs-4 @(GameInfo.GetDaggerFromTime(kvp.Key.GameVersion ?? GameVersion.V1, kvp.Key.Entry.Time).Name.ToLower())">@kvp.Key.Entry.Time.FormatTimeInteger() @(isCurrentWr ? "(Current WR)" : string.Empty)</div>
+				<div class="col-lg-2 col-md-3 col-sm-4 col-xs-4">@kvp.Key.Entry.Time.FormatTimeInteger() @(isCurrentWr ? "(Current WR)" : string.Empty)</div>
 				<div class="col-lg-2 col-md-3 col-sm-4 col-xs-4">@daysString</div>
 				<div class="col-lg-2 hidden-md hidden-sm hidden-xs">@(kvp.Value.WorldRecordImprovement.HasValue ? new HtmlString(kvp.Value.WorldRecordImprovement.Value.FormatTimeInteger()) : RazorUtils.NAString)</div>
 				<div class="col-lg-2 hidden-md hidden-sm hidden-xs">@Model.GetGameVersionString(kvp.Key.GameVersion)</div>
