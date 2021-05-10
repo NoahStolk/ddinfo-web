@@ -42,6 +42,9 @@ $.getJSON("/api/leaderboard-history/user-activity?UserId=" + getUrlParameter("id
 		i++;
 	});
 
+	if (activity.length === 0)
+		activity.push([new Date(2016, 0, 1), 0]);
+
 	const minDate = activity[0][0];
 
 	const chartName = "user-activity-chart";
