@@ -93,13 +93,36 @@ namespace DevilDaggersWebsite.Razor.Pages.Admin.AssetMods
 				if (archive.Count == 0)
 					throw new InvalidModBinaryException($"File `{FormFile.FileName}` does not contain any binaries.");
 
+				string archiveNameWithoutExtension = Path.GetFileNameWithoutExtension(FormFile.FileName);
+
 				foreach (ModBinaryCacheData binary in archive)
 				{
 					if (binary.Chunks.Count == 0)
 						throw new InvalidModBinaryException($"Binary `{binary.Name}` does not contain any assets.");
 
-					if (binary.ModBinaryType == ModBinaryType.Core)
-						throw new InvalidModBinaryException($"Binary `{binary.Name}` is a `core` mod which is not allowed.");
+					switch (binary.ModBinaryType)
+					{
+						case ModBinaryType.Core:
+							throw new InvalidModBinaryException($"Binary `{binary.Name}` is a `core` mod which is not allowed.");
+						case ModBinaryType.Audio:
+							string expectedAudioPrefix = $"audio-{archiveNameWithoutExtension}-";
+							if (!binary.Name.StartsWith(expectedAudioPrefix))
+								throw new InvalidModBinaryException($"Name of binary `{binary.Name}` must start with `{expectedAudioPrefix}`.");
+
+							if (binary.Name.Length == expectedAudioPrefix.Length)
+								throw new InvalidModBinaryException($"Name of binary `{binary.Name}` must not be equal to `{expectedAudioPrefix}`.");
+
+							break;
+						case ModBinaryType.Dd:
+							string expectedDdPrefix = $"dd-{archiveNameWithoutExtension}-";
+							if (!binary.Name.StartsWith(expectedDdPrefix))
+								throw new InvalidModBinaryException($"Name of binary `{binary.Name}` must start with `{expectedDdPrefix}`.");
+
+							if (binary.Name.Length == expectedDdPrefix.Length)
+								throw new InvalidModBinaryException($"Name of binary `{binary.Name}` must not be equal to `{expectedDdPrefix}`.");
+
+							break;
+					}
 				}
 
 				Io.File.WriteAllBytes(filePath, formFileBytes);
