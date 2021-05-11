@@ -34,13 +34,13 @@ namespace DevilDaggersWebsite.Razor.Pages.Admin.AssetMods
 			string path = Path.Combine(_env.WebRootPath, "mods", fileName);
 			if (!System.IO.File.Exists(path))
 			{
-				await DiscordLogger.Instance.TryLog(Channel.AuditLogMonitoring, _env.EnvironmentName, $"{failedAttemptMessage}: File '{fileName}' does not exist.");
+				await DiscordLogger.Instance.TryLog(Channel.AuditLogMonitoring, _env.EnvironmentName, $"{failedAttemptMessage}: File `{fileName}` does not exist.");
 				return null;
 			}
 
 			System.IO.File.Delete(path);
 
-			await DiscordLogger.Instance.TryLog(Channel.AuditLogMonitoring, _env.EnvironmentName, $":white_check_mark: `{this.GetIdentity()}` deleted ASSETMOD file :file_folder: `{fileName}`");
+			await DiscordLogger.Instance.TryLog(Channel.AuditLogMonitoring, _env.EnvironmentName, $":white_check_mark: `{this.GetIdentity()}` deleted ASSETMOD file :file_folder: `{fileName}`.");
 
 			await ModArchiveCache.Instance.Clear(_env);
 

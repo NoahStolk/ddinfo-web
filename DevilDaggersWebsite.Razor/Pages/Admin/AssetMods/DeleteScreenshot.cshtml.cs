@@ -42,7 +42,7 @@ namespace DevilDaggersWebsite.Razor.Pages.Admin.AssetMods
 
 			System.IO.File.Delete(path);
 
-			await DiscordLogger.Instance.TryLog(Channel.AuditLogMonitoring, _env.EnvironmentName, $":white_check_mark: `{this.GetIdentity()}` deleted ASSETMOD screenshot :frame_photo: `{fileName}`");
+			await DiscordLogger.Instance.TryLog(Channel.AuditLogMonitoring, _env.EnvironmentName, $":white_check_mark: `{this.GetIdentity()}` deleted ASSETMOD screenshot :frame_photo: `{fileName}`.");
 
 			return RedirectToPage("Index");
 		}

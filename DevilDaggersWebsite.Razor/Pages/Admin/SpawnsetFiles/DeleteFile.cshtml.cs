@@ -34,7 +34,7 @@ namespace DevilDaggersWebsite.Razor.Pages.Admin.SpawnsetFiles
 			string path = Path.Combine(_env.WebRootPath, "spawnsets", fileName);
 			if (!System.IO.File.Exists(path))
 			{
-				await DiscordLogger.Instance.TryLog(Channel.AuditLogMonitoring, _env.EnvironmentName, $"{failedAttemptMessage}: File '{fileName}' does not exist.");
+				await DiscordLogger.Instance.TryLog(Channel.AuditLogMonitoring, _env.EnvironmentName, $"{failedAttemptMessage}: File `{fileName}` does not exist.");
 				return null;
 			}
 
