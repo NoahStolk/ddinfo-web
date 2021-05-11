@@ -18,7 +18,7 @@ namespace DevilDaggersWebsite.Razor.Pages.Admin.AssetMods
 	public class UploadScreenshotModel : PageModel
 	{
 		public const int MaxFileSize = 1024 * 1024;
-		public const int MaxFileNameLength = 30;
+		public const int MaxFileNameLength = 50;
 
 		private readonly IWebHostEnvironment _env;
 		private readonly ApplicationDbContext _dbContext;
