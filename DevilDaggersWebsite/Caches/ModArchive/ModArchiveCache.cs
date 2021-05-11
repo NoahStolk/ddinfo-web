@@ -4,7 +4,6 @@ using Microsoft.AspNetCore.Hosting;
 using Newtonsoft.Json;
 using System;
 using System.Collections.Concurrent;
-using System.Collections.Generic;
 using System.IO;
 using System.IO.Compression;
 using System.Threading.Tasks;
@@ -134,18 +133,6 @@ namespace DevilDaggersWebsite.Caches.ModArchive
 				string name = Path.GetFileNameWithoutExtension(path);
 				LoadFromFileCache(env, name);
 			}
-		}
-
-		public List<(string ArchiveName, string BinaryName)> GetExistingBinaryNames()
-		{
-			List<(string ArchiveName, string BinaryName)> binaryNames = new();
-			foreach (KeyValuePair<string, ModArchiveCacheData> c in _cache)
-			{
-				foreach (ModBinaryCacheData b in c.Value.Binaries)
-					binaryNames.Add((c.Key, b.Name));
-			}
-
-			return binaryNames;
 		}
 
 		public async Task Clear(IWebHostEnvironment env)

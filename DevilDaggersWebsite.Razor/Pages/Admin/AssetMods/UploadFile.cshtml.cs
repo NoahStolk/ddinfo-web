@@ -96,11 +96,6 @@ namespace DevilDaggersWebsite.Razor.Pages.Admin.AssetMods
 				{
 					if (binary.Chunks.Count == 0)
 						throw new InvalidModBinaryException($"Binary `{binary.Name}` does not contain any assets.");
-
-					// Only check cache, which should always be populated unless manually cleared. We don't care about the one rare case where a conflict might happen while the cache is not populated.
-					string conflictingModArchiveName = ModArchiveCache.Instance.GetExistingBinaryNames().Find(t => string.Equals(t.BinaryName, binary.Name, StringComparison.OrdinalIgnoreCase)).ArchiveName;
-					if (conflictingModArchiveName != null)
-						throw new InvalidModBinaryException($"A binary with the name `{binary.Name}` already exists in a different mod archive (`{conflictingModArchiveName}`).");
 				}
 
 				Io.File.WriteAllBytes(filePath, formFileBytes);
