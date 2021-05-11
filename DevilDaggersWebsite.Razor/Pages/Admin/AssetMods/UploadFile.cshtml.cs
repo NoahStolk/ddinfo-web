@@ -100,29 +100,18 @@ namespace DevilDaggersWebsite.Razor.Pages.Admin.AssetMods
 					if (binary.Chunks.Count == 0)
 						throw new InvalidModBinaryException($"Binary `{binary.Name}` does not contain any assets.");
 
-					switch (binary.ModBinaryType)
+					string expectedPrefix = binary.ModBinaryType switch
 					{
-						case ModBinaryType.Core:
-							throw new InvalidModBinaryException($"Binary `{binary.Name}` is a `core` mod which is not allowed.");
-						case ModBinaryType.Audio:
-							string expectedAudioPrefix = $"audio-{archiveNameWithoutExtension}-";
-							if (!binary.Name.StartsWith(expectedAudioPrefix))
-								throw new InvalidModBinaryException($"Name of binary `{binary.Name}` must start with `{expectedAudioPrefix}`.");
+						ModBinaryType.Audio => $"audio-{archiveNameWithoutExtension}-",
+						ModBinaryType.Dd => $"dd-{archiveNameWithoutExtension}-",
+						_ => throw new InvalidModBinaryException($"Binary `{binary.Name}` is a `{binary.ModBinaryType}` mod which is not allowed."),
+					};
 
-							if (binary.Name.Length == expectedAudioPrefix.Length)
-								throw new InvalidModBinaryException($"Name of binary `{binary.Name}` must not be equal to `{expectedAudioPrefix}`.");
+					if (!binary.Name.StartsWith(expectedPrefix))
+						throw new InvalidModBinaryException($"Name of binary `{binary.Name}` must start with `{expectedPrefix}`.");
 
-							break;
-						case ModBinaryType.Dd:
-							string expectedDdPrefix = $"dd-{archiveNameWithoutExtension}-";
-							if (!binary.Name.StartsWith(expectedDdPrefix))
-								throw new InvalidModBinaryException($"Name of binary `{binary.Name}` must start with `{expectedDdPrefix}`.");
-
-							if (binary.Name.Length == expectedDdPrefix.Length)
-								throw new InvalidModBinaryException($"Name of binary `{binary.Name}` must not be equal to `{expectedDdPrefix}`.");
-
-							break;
-					}
+					if (binary.Name.Length == expectedPrefix.Length)
+						throw new InvalidModBinaryException($"Name of binary `{binary.Name}` must not be equal to `{expectedPrefix}`.");
 				}
 
 				Io.File.WriteAllBytes(filePath, formFileBytes);
