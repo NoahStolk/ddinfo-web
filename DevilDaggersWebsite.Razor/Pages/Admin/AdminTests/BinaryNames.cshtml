@@ -1,0 +1,30 @@
+﻿@page
+@model BinaryNamesModel
+@{
+	ViewData["Title"] = "AdminTests - BinaryNames";
+}
+
+<div class="row">
+	<div class="col-xs-6">
+		<h2>By mod</h2>
+		@foreach (var group in Model.Names.GroupBy(t => t.ModName))
+		{
+			<h3>@group.Key</h3>
+			<ul>
+				@foreach (var tuple in group)
+				{
+					<li>@tuple.BinaryName</li>
+				}
+			</ul>
+		}
+	</div>
+	<div class="col-xs-6">
+		<h2>Name only</h2>
+		<ul>
+			@foreach ((_, string BinaryName) in Model.Names)
+			{
+				<li>@BinaryName</li>
+			}
+		</ul>
+	</div>
+</div>
