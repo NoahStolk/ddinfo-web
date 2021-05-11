@@ -1,5 +1,6 @@
 ﻿using DevilDaggersDiscordBot.Logging;
 using DevilDaggersWebsite.Caches.ModArchive;
+using DevilDaggersWebsite.Enumerators;
 using DevilDaggersWebsite.Exceptions;
 using DevilDaggersWebsite.Razor.Extensions;
 using Microsoft.AspNetCore.Hosting;
@@ -96,6 +97,9 @@ namespace DevilDaggersWebsite.Razor.Pages.Admin.AssetMods
 				{
 					if (binary.Chunks.Count == 0)
 						throw new InvalidModBinaryException($"Binary `{binary.Name}` does not contain any assets.");
+
+					if (binary.ModBinaryType == ModBinaryType.Core)
+						throw new InvalidModBinaryException($"Binary `{binary.Name}` is a `core` mod which is not allowed.");
 				}
 
 				Io.File.WriteAllBytes(filePath, formFileBytes);
