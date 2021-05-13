@@ -1195,12 +1195,60 @@
 	{
 		"Name": "DevilDaggersAssetEditor",
 		"DisplayName": "Devil Daggers Asset Editor",
-		"VersionNumber": "0.65.4.0",
+		"VersionNumber": "1.0.0.0",
 		"VersionNumberRequired": "0.46.0.0",
 		"Changelog": [
-			/*
-			You can now search/preview/download&install mods hosted on the website from within the app.
-			*/
+			{
+				"VersionNumber": "1.0.0.0",
+				"Date": "2021-05-13T00:00:00",
+				"Changes": [
+					{
+						"Description": "You can now download and install mods hosted on the website from within the application, using the new 'Mod manager' window which can be opened by pressing CTRL I or selecting it from the menu."
+					},
+					{
+						"Description": "You can also manage local binaries in the mods folder now. This includes easily enabling or disabling installed mods with a single button."
+					},
+					{
+						"Description": "You can also enable or disable prohibited assets per binary. This means it is no longer necessary to create separate binaries for prohibited and allowed assets, as you can now just enable or disable prohibited assets with a single button."
+					},
+					{
+						"Description": "You can see which custom assets will be loaded into the game based on the currently installed mods. This also takes alphabetic partial mod loading into account."
+					},
+					{
+						"Description": "Improved model trimming. Vertex and index data is now parsed and additional processing is implemented to prevent the occurrence of vertex rounding errors that result in marking the underlying binary chunk as non-identical to the original one. This was caused by the fact that compiled model chunks differ very slightly between different people's computers."
+					},
+					{
+						"Description": "Changed UI for shader assets so you cannot set only 1 out of 2 required shader paths."
+					},
+					{
+						"Description": "Incomplete shader assets are ignored when creating a binary."
+					},
+					{
+						"Description": "Performance for reading large binaries has been improved significantly."
+					},
+					{
+						"Description": "Added new section to 'Extract binaries' window for creating a mod file based on the extracted assets."
+					},
+					{
+						"Description": "Removed the 'Automatically create mod file when extracting binaries' setting as this is no longer useful."
+					},
+					{
+						"Description": "Fixed not always re-initializing asset previewer when changing paths for the currently selected asset."
+					},
+					{
+						"Description": "Fixed setting window title to cached mod path even when the file was not found on launch."
+					},
+					{
+						"Description": "Fixed not resetting cached mod path after creating new mod."
+					},
+					{
+						"Description": "Various other small bug fixes and layout improvements."
+					},
+					{
+						"Description": "Some UI performance improvements."
+					}
+				]
+			},
 			{
 				"VersionNumber": "0.65.4.0",
 				"Date": "2021-05-06T00:00:00",
