@@ -1203,13 +1203,13 @@
 				"Date": "2021-05-13T00:00:00",
 				"Changes": [
 					{
-						"Description": "You can now download and install mods hosted on the website from within the application, using the new 'Mod manager' window which can be opened by pressing CTRL I or selecting it from the menu."
+						"Description": "You can now download and install mods hosted on the website from within the application using the new 'Mod manager' window which can be opened by pressing CTRL I or selecting it from the menu."
 					},
 					{
-						"Description": "You can also manage local binaries in the mods folder now. This includes easily enabling or disabling installed mods with a single button."
+						"Description": "You can manage local binaries in the mods folder now. This includes easily enabling or disabling installed mods with a single button."
 					},
 					{
-						"Description": "You can also enable or disable prohibited assets per binary. This means it is no longer necessary to create separate binaries for prohibited and allowed assets, as you can now just enable or disable prohibited assets with a single button."
+						"Description": "You can enable or disable prohibited assets per binary. This means it is no longer necessary to create separate binaries for prohibited assets, as you can now just enable or disable prohibited assets with a single button."
 					},
 					{
 						"Description": "You can see which custom assets will be loaded into the game based on the currently installed mods. This also takes alphabetic partial mod loading into account."
