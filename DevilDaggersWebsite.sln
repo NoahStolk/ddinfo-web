@@ -31,6 +31,8 @@ Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "SpawnsetHashes", "Tools\Spa
 EndProject
 Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "LeaderboardJsonFormatter", "Tools\LeaderboardJsonFormatter\LeaderboardJsonFormatter.csproj", "{FDB16A56-8156-4D82-9C01-3507E756E431}"
 EndProject
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "LeaderboardFetcher", "Tools\LeaderboardFetcher\LeaderboardFetcher.csproj", "{2215FEC4-031A-4A2F-B1F8-5BC8453C1A9B}"
+EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
 		Debug|Any CPU = Debug|Any CPU
@@ -85,6 +87,10 @@ Global
 		{FDB16A56-8156-4D82-9C01-3507E756E431}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{FDB16A56-8156-4D82-9C01-3507E756E431}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{FDB16A56-8156-4D82-9C01-3507E756E431}.Release|Any CPU.Build.0 = Release|Any CPU
+		{2215FEC4-031A-4A2F-B1F8-5BC8453C1A9B}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{2215FEC4-031A-4A2F-B1F8-5BC8453C1A9B}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{2215FEC4-031A-4A2F-B1F8-5BC8453C1A9B}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{2215FEC4-031A-4A2F-B1F8-5BC8453C1A9B}.Release|Any CPU.Build.0 = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE
@@ -99,6 +105,7 @@ Global
 		{FCDDD536-D37A-403C-AC2F-51E3B346ECB6} = {A682E0EF-9B0E-4113-8BED-4534C64A9BDE}
 		{ECD2B92B-F21E-49A4-900F-797C9243BCAC} = {A682E0EF-9B0E-4113-8BED-4534C64A9BDE}
 		{FDB16A56-8156-4D82-9C01-3507E756E431} = {A682E0EF-9B0E-4113-8BED-4534C64A9BDE}
+		{2215FEC4-031A-4A2F-B1F8-5BC8453C1A9B} = {A682E0EF-9B0E-4113-8BED-4534C64A9BDE}
 	EndGlobalSection
 	GlobalSection(ExtensibilityGlobals) = postSolution
 		SolutionGuid = {E27EC676-81BF-4099-BFC9-20E860CE83A5}
