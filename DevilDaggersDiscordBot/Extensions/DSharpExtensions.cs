@@ -24,6 +24,10 @@ namespace DevilDaggersDiscordBot.Extensions
 		public static DiscordEmbedBuilder AddFieldObject(this DiscordEmbedBuilder builder, string name, object? value, bool inline = false)
 		{
 			string? valueString = value?.ToString();
+
+			if (valueString?.Length > 1024)
+				valueString = valueString.Substring(0, 1024);
+
 			return builder.AddField(name, string.IsNullOrWhiteSpace(valueString) ? "null" : valueString, inline);
 		}
 	}
