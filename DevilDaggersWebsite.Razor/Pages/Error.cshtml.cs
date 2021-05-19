@@ -45,6 +45,10 @@ namespace DevilDaggersWebsite.Razor.Pages
 
 					builder.AddError(exceptionFeature.Error);
 				}
+				else
+				{
+					builder.AddError(new("TEST EXCEPTION with 3 inner exceptions", new("Inner exception message", new("Another inner exception message", new("Big Discord embed")))));
+				}
 
 				await DiscordLogger.Instance.TryLog(Channel.ErrorMonitoring, _env.EnvironmentName, null, builder.Build());
 			}
