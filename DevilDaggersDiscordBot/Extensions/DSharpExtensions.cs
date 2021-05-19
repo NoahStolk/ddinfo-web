@@ -8,6 +8,9 @@ namespace DevilDaggersDiscordBot.Extensions
 	{
 		public static void AddError(this DiscordEmbedBuilder builder, Exception exception, int level = 0)
 		{
+			if (level > 5)
+				return;
+
 			builder.AddField(level == 0 ? "Exception message" : $"Inner exception message {level}", exception.Message.Trim1024());
 			if (exception.InnerException != null)
 				builder.AddError(exception.InnerException, ++level);
