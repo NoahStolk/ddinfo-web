@@ -1,4 +1,5 @@
-﻿using DevilDaggersDiscordBot.Extensions;
+﻿using DevilDaggersDiscordBot;
+using DevilDaggersDiscordBot.Extensions;
 using DevilDaggersDiscordBot.Logging;
 using DevilDaggersWebsite.Caches.SpawnsetHash;
 using DevilDaggersWebsite.Entities;
@@ -390,33 +391,33 @@ namespace DevilDaggersWebsite.Api
 
 			try
 			{
-				DiscordColor color = DiscordColor.Gray;
+				DiscordColor color = DiscordColors.Default;
 
 				if (customLeaderboard.Category.IsAscending())
 				{
 					if (time <= customLeaderboard.TimeLeviathan)
-						color = DiscordColor.DarkRed;
+						color = DiscordColors.Leviathan;
 					else if (time <= customLeaderboard.TimeDevil)
-						color = DiscordColor.Red;
+						color = DiscordColors.Devil;
 					else if (time <= customLeaderboard.TimeGolden)
-						color = DiscordColor.Gold;
+						color = DiscordColors.Golden;
 					else if (time <= customLeaderboard.TimeSilver)
-						color = DiscordColor.LightGray;
+						color = DiscordColors.Silver;
 					else if (time <= customLeaderboard.TimeBronze)
-						color = DiscordColor.Orange;
+						color = DiscordColors.Bronze;
 				}
 				else
 				{
 					if (time >= customLeaderboard.TimeLeviathan)
-						color = DiscordColor.DarkRed;
+						color = DiscordColors.Leviathan;
 					else if (time >= customLeaderboard.TimeDevil)
-						color = DiscordColor.Red;
+						color = DiscordColors.Devil;
 					else if (time >= customLeaderboard.TimeGolden)
-						color = DiscordColor.Gold;
+						color = DiscordColors.Golden;
 					else if (time >= customLeaderboard.TimeSilver)
-						color = DiscordColor.LightGray;
+						color = DiscordColors.Silver;
 					else if (time >= customLeaderboard.TimeBronze)
-						color = DiscordColor.Orange;
+						color = DiscordColors.Bronze;
 				}
 
 				DiscordEmbedBuilder builder = new()

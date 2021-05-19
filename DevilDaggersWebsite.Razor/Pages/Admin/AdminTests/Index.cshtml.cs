@@ -1,9 +1,11 @@
-﻿using DevilDaggersDiscordBot.Logging;
+﻿using DevilDaggersDiscordBot;
+using DevilDaggersDiscordBot.Logging;
 using DevilDaggersWebsite.Caches.LeaderboardHistory;
 using DevilDaggersWebsite.Caches.LeaderboardStatistics;
 using DevilDaggersWebsite.Caches.ModArchive;
 using DevilDaggersWebsite.Caches.SpawnsetData;
 using DevilDaggersWebsite.Caches.SpawnsetHash;
+using DSharpPlus.Entities;
 using Microsoft.AspNetCore.Hosting;
 using Microsoft.AspNetCore.Mvc.RazorPages;
 using System.Text;
@@ -50,6 +52,32 @@ namespace DevilDaggersWebsite.Razor.Pages.Admin.AdminTests
 			sb.AppendLine(SpawnsetDataCache.Instance.LogState(_env));
 			sb.AppendLine(SpawnsetHashCache.Instance.LogState(_env));
 			await DiscordLogger.Instance.TryLog(Channel.CacheMonitoring, _env.EnvironmentName, sb.ToString());
+		}
+
+		public async Task OnPostTestColors()
+		{
+			for (int i = 0; i < 7; i++)
+			{
+				DiscordColor color = DiscordColors.Default;
+				int time = i * 10000;
+				if (time >= 50000)
+					color = DiscordColors.Leviathan;
+				else if (time >= 40000)
+					color = DiscordColors.Devil;
+				else if (time >= 30000)
+					color = DiscordColors.Golden;
+				else if (time >= 20000)
+					color = DiscordColors.Silver;
+				else if (time >= 10000)
+					color = DiscordColors.Bronze;
+
+				DiscordEmbedBuilder builder = new()
+				{
+					Title = "hot reload",
+					Color = color,
+				};
+				await DiscordLogger.Instance.TryLog(Channel.TestMonitoring, _env.EnvironmentName, null, builder.Build());
+			}
 		}
 	}
 }
