@@ -25,7 +25,7 @@ namespace DevilDaggersWebsite.Transients
 
 		public List<Mod> GetMods(string? authorFilter = null, string? nameFilter = null, bool? isHostedFilter = null)
 		{
-			IQueryable<AssetMod> assetModsQuery = _dbContext.AssetMods
+			IEnumerable<AssetMod> assetModsQuery = _dbContext.AssetMods
 				.Include(am => am.PlayerAssetMods)
 					.ThenInclude(pam => pam.Player)
 				.Where(am => !am.IsHidden);
