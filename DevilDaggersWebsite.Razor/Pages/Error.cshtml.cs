@@ -47,7 +47,7 @@ namespace DevilDaggersWebsite.Razor.Pages
 				}
 				else
 				{
-					builder.AddError(new("TEST EXCEPTION with 3 inner exceptions", new("Inner exception message", new("Another inner exception message", new("Big Discord embed")))));
+					builder.AddError(new($"{nameof(IExceptionHandlerPathFeature)} is not available in the current HTTP context."));
 				}
 
 				await DiscordLogger.Instance.TryLog(Channel.ErrorMonitoring, _env.EnvironmentName, null, builder.Build());
