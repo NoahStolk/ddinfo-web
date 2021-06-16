@@ -5,23 +5,27 @@ namespace DevilDaggersWebsite.Entities
 {
 	public class ApplicationDbContext : IdentityDbContext
 	{
+		public ApplicationDbContext()
+		{
+		}
+
 		public ApplicationDbContext(DbContextOptions<ApplicationDbContext> options)
 			: base(options)
 		{
 		}
 
-		public DbSet<AssetMod> AssetMods => Set<AssetMod>();
-		public DbSet<CustomEntry> CustomEntries => Set<CustomEntry>();
-		public DbSet<CustomEntryData> CustomEntryData => Set<CustomEntryData>();
-		public DbSet<CustomLeaderboard> CustomLeaderboards => Set<CustomLeaderboard>();
-		public DbSet<Donation> Donations => Set<Donation>();
-		public DbSet<Player> Players => Set<Player>();
-		public DbSet<SpawnsetFile> SpawnsetFiles => Set<SpawnsetFile>();
-		public DbSet<Title> Titles => Set<Title>();
-		public DbSet<ToolStatistic> ToolStatistics => Set<ToolStatistic>();
+		public virtual DbSet<AssetMod> AssetMods => Set<AssetMod>();
+		public virtual DbSet<CustomEntry> CustomEntries => Set<CustomEntry>();
+		public virtual DbSet<CustomEntryData> CustomEntryData => Set<CustomEntryData>();
+		public virtual DbSet<CustomLeaderboard> CustomLeaderboards => Set<CustomLeaderboard>();
+		public virtual DbSet<Donation> Donations => Set<Donation>();
+		public virtual DbSet<Player> Players => Set<Player>();
+		public virtual DbSet<SpawnsetFile> SpawnsetFiles => Set<SpawnsetFile>();
+		public virtual DbSet<Title> Titles => Set<Title>();
+		public virtual DbSet<ToolStatistic> ToolStatistics => Set<ToolStatistic>();
 
-		public DbSet<PlayerAssetMod> PlayerAssetMods => Set<PlayerAssetMod>();
-		public DbSet<PlayerTitle> PlayerTitles => Set<PlayerTitle>();
+		public virtual DbSet<PlayerAssetMod> PlayerAssetMods => Set<PlayerAssetMod>();
+		public virtual DbSet<PlayerTitle> PlayerTitles => Set<PlayerTitle>();
 
 		protected override void OnModelCreating(ModelBuilder builder)
 		{
