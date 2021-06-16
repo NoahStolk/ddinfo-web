@@ -60,8 +60,8 @@
 	</div>
 	<div class="leaderboard-body">
 		@{
-			List<Donation> donations = dbContext.Donations.ToList();
-			List<Player> players = dbContext.Players.Include(p => p.PlayerTitles).ThenInclude(pt => pt.Title).ToList();
+			List<Donation> donations = dbContext.Donations.AsNoTracking().ToList();
+			List<Player> players = dbContext.Players.AsNoTracking().Include(p => p.PlayerTitles).ThenInclude(pt => pt.Title).ToList();
 			int rank = 0;
 			foreach (CustomEntry entry in Model.Entries!)
 			{

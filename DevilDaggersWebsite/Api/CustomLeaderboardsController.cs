@@ -377,6 +377,7 @@ namespace DevilDaggersWebsite.Api
 		private List<CustomEntry> FetchEntriesFromDatabase(CustomLeaderboard? customLeaderboard, bool isAscending)
 		{
 			return _dbContext.CustomEntries
+				.AsNoTracking()
 				.Include(ce => ce.Player)
 				.Where(e => e.CustomLeaderboard == customLeaderboard)
 				.OrderByMember(nameof(CustomEntry.Time), isAscending)

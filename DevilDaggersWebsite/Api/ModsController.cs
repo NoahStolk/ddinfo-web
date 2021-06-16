@@ -40,11 +40,10 @@ namespace DevilDaggersWebsite.Api
 		[ProducesResponseType(StatusCodes.Status404NotFound)]
 		public ActionResult GetModFile([Required] string modName)
 		{
-			AssetMod? assetMod = _dbContext.AssetMods.FirstOrDefault(am => am.Name == modName);
-			if (assetMod == null)
+			if (!_dbContext.AssetMods.Any(am => am.Name == modName))
 				return new NotFoundObjectResult(new ProblemDetails { Title = $"Mod '{modName}' was not found." });
 
-			string fileName = $"{assetMod.Name}.zip";
+			string fileName = $"{modName}.zip";
 			string path = Path.Combine("mods", fileName);
 			if (!Io.File.Exists(Path.Combine(_env.WebRootPath, path)))
 				return new BadRequestObjectResult(new ProblemDetails { Title = $"Mod file '{fileName}' does not exist." });

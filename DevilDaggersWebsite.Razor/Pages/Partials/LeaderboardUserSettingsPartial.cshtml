@@ -4,6 +4,7 @@
 @using DevilDaggersWebsite.Entities
 @using DevilDaggersWebsite.Razor.Models
 @using DevilDaggersWebsite.Razor.Pages.Leaderboard
+@using Microsoft.EntityFrameworkCore
 @inject DevilDaggersWebsite.Entities.ApplicationDbContext dbContext
 
 <div class="leaderboard-container flex-container flex-center">
@@ -25,7 +26,7 @@
 	</div>
 	<div class="leaderboard-body">
 		@{
-			List<Donation> donations = dbContext.Donations.ToList();
+			List<Donation> donations = dbContext.Donations.AsNoTracking().ToList();
 			foreach (Entry entry in Model.Entries ?? new())
 			{
 				Player player = Model.Players.First(p => p.Id == entry.Id);

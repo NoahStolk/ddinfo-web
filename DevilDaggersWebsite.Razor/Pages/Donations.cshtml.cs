@@ -1,5 +1,6 @@
 ﻿using DevilDaggersWebsite.Entities;
 using Microsoft.AspNetCore.Mvc.RazorPages;
+using Microsoft.EntityFrameworkCore;
 using System.Collections.Generic;
 using System.Linq;
 
@@ -9,7 +10,7 @@ namespace DevilDaggersWebsite.Razor.Pages
 	{
 		public DonationsModel(ApplicationDbContext dbContext)
 		{
-			Donations = dbContext.Donations.ToList();
+			Donations = dbContext.Donations.AsNoTracking().ToList();
 
 			foreach (Donation donation in Donations.Where(d => !d.IsRefunded && d.ConvertedEuroCentsReceived > 0))
 			{

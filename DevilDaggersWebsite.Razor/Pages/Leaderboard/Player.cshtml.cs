@@ -71,7 +71,7 @@ namespace DevilDaggersWebsite.Razor.Pages.Leaderboard
 		public async Task OnGetAsync(int id)
 		{
 			PlayerId = Math.Max(1, id);
-			Player = _dbContext.Players.FirstOrDefault(p => p.Id == PlayerId);
+			Player = _dbContext.Players.AsNoTracking().FirstOrDefault(p => p.Id == PlayerId);
 
 			Entry = await LeaderboardClient.Instance.GetUserById(PlayerId);
 			if (Entry != null)
@@ -107,7 +107,7 @@ namespace DevilDaggersWebsite.Razor.Pages.Leaderboard
 
 			if (Player != null && _dbContext.CustomEntries.Any(ce => ce.PlayerId == PlayerId))
 			{
-				foreach (Entities.CustomEntry customEntry in _dbContext.CustomEntries.Include(ce => ce.CustomLeaderboard).Where(ce => ce.PlayerId == PlayerId))
+				foreach (Entities.CustomEntry customEntry in _dbContext.CustomEntries.AsNoTracking().Include(ce => ce.CustomLeaderboard).Where(ce => ce.PlayerId == PlayerId))
 				{
 					if (customEntry.CustomLeaderboard.IsArchived)
 						continue;
@@ -159,11 +159,11 @@ namespace DevilDaggersWebsite.Razor.Pages.Leaderboard
 					}
 				}
 
-				TotalDefaultCustomLeaderboards = _dbContext.CustomLeaderboards.Count(cl => cl.Category == CustomLeaderboardCategory.Default && !cl.IsArchived);
-				TotalTimeAttackCustomLeaderboards = _dbContext.CustomLeaderboards.Count(cl => cl.Category == CustomLeaderboardCategory.TimeAttack && !cl.IsArchived);
-				TotalSpeedrunCustomLeaderboards = _dbContext.CustomLeaderboards.Count(cl => cl.Category == CustomLeaderboardCategory.Speedrun && !cl.IsArchived);
-				Mods = _dbContext.AssetMods.Include(am => am.PlayerAssetMods).Where(am => am.PlayerAssetMods.Any(pam => pam.PlayerId == PlayerId)).OrderByDescending(am => am.LastUpdated).ToList();
-				Spawnsets = _dbContext.SpawnsetFiles.Where(sf => sf.PlayerId == PlayerId).OrderByDescending(sf => sf.LastUpdated).ToList();
+				TotalDefaultCustomLeaderboards = _dbContext.CustomLeaderboards.AsNoTracking().Count(cl => cl.Category == CustomLeaderboardCategory.Default && !cl.IsArchived);
+				TotalTimeAttackCustomLeaderboards = _dbContext.CustomLeaderboards.AsNoTracking().Count(cl => cl.Category == CustomLeaderboardCategory.TimeAttack && !cl.IsArchived);
+				TotalSpeedrunCustomLeaderboards = _dbContext.CustomLeaderboards.AsNoTracking().Count(cl => cl.Category == CustomLeaderboardCategory.Speedrun && !cl.IsArchived);
+				Mods = _dbContext.AssetMods.AsNoTracking().Include(am => am.PlayerAssetMods).Where(am => am.PlayerAssetMods.Any(pam => pam.PlayerId == PlayerId)).OrderByDescending(am => am.LastUpdated).ToList();
+				Spawnsets = _dbContext.SpawnsetFiles.AsNoTracking().Where(sf => sf.PlayerId == PlayerId).OrderByDescending(sf => sf.LastUpdated).ToList();
 			}
 		}
 	}

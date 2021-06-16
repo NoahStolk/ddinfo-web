@@ -4,6 +4,7 @@
 @using DevilDaggersWebsite.Entities
 @using DevilDaggersWebsite.Enumerators
 @using DevilDaggersWebsite.Extensions
+@using Microsoft.EntityFrameworkCore
 @model DonationsModel
 @{
 	ViewData["Title"] = "Donations";
@@ -42,7 +43,7 @@
 					@{
 						foreach (KeyValuePair<int, int> kvp in donators.Skip(i).Take(interval))
 						{
-							Player donator = dbContext.Players.First(d => d.Id == kvp.Key);
+							var donator = dbContext.Players.AsNoTracking().Select(p => new { p.PlayerName, p.Id, p.IsAnonymous }).First(d => d.Id == kvp.Key);
 							string username = donator.IsAnonymous ? "(anonymous)" : donator.PlayerName;
 
 							List<string> donationsGroupedByCurrency = new();

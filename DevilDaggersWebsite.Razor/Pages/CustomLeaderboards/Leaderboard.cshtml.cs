@@ -32,15 +32,16 @@ namespace DevilDaggersWebsite.Razor.Pages.CustomLeaderboards
 			if (string.IsNullOrEmpty(spawnsetName))
 				return RedirectToPage("Index");
 
-			SpawnsetFile = _dbContext.SpawnsetFiles.Include(sf => sf.Player).FirstOrDefault(sf => sf.Name == spawnsetName);
+			SpawnsetFile = _dbContext.SpawnsetFiles.AsNoTracking().Include(sf => sf.Player).FirstOrDefault(sf => sf.Name == spawnsetName);
 			if (SpawnsetFile == null)
 				return RedirectToPage("Index");
 
-			Leaderboard = _dbContext.CustomLeaderboards.FirstOrDefault(l => l.SpawnsetFileId == SpawnsetFile.Id);
+			Leaderboard = _dbContext.CustomLeaderboards.AsNoTracking().FirstOrDefault(l => l.SpawnsetFileId == SpawnsetFile.Id);
 			if (Leaderboard == null)
 				return RedirectToPage("Index");
 
 			Entries = _dbContext.CustomEntries
+				.AsNoTracking()
 				.Where(e => e.CustomLeaderboard == Leaderboard)
 				.OrderByMember(nameof(CustomEntry.Time), Leaderboard.Category.IsAscending())
 				.ThenByMember(nameof(CustomEntry.SubmitDate), true)

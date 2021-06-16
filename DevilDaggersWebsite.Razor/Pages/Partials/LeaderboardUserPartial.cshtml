@@ -29,8 +29,8 @@
 	<div class="leaderboard-body">
 		@{
 			GameVersion gameVersion = GameInfo.GetGameVersionFromDate(Model.Leaderboard?.DateTime ?? DateTime.UtcNow) ?? GameVersion.V1;
-			IEnumerable<Donation> donations = dbContext.Donations;
-			List<Player> players = dbContext.Players.Include(p => p.PlayerTitles).ThenInclude(pt => pt.Title).ToList();
+			IEnumerable<Donation> donations = dbContext.Donations.AsNoTracking();
+			List<Player> players = dbContext.Players.AsNoTracking().Include(p => p.PlayerTitles).ThenInclude(pt => pt.Title).ToList();
 			foreach (Dto.Entry entry in Model.Leaderboard?.Entries ?? new())
 			{
 				Player? player = players.FirstOrDefault(p => p.Id == entry.Id);

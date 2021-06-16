@@ -6,6 +6,7 @@ using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.AspNetCore.Mvc.RazorPages;
 using Microsoft.AspNetCore.Mvc.Rendering;
+using Microsoft.EntityFrameworkCore;
 using System;
 using System.Collections.Generic;
 using System.IO;
@@ -28,7 +29,7 @@ namespace DevilDaggersWebsite.Razor.Pages.Admin.AssetMods
 			_env = env;
 			_dbContext = dbContext;
 
-			ModNames = _dbContext.AssetMods.Select(am => new SelectListItem(am.Name, am.Name)).ToList();
+			ModNames = _dbContext.AssetMods.AsNoTracking().Select(am => new SelectListItem(am.Name, am.Name)).ToList();
 		}
 
 		public static int MaxScreenshots { get; } = 10;
