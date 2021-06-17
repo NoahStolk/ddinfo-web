@@ -55,7 +55,7 @@ namespace DevilDaggersWebsite.Razor
 			services.AddSingleton<IActionContextAccessor, ActionContextAccessor>();
 
 			if (!WebHostEnvironment.IsDevelopment())
-				services.AddHostedService<CreateLeaderboardHistoryFileTask>();
+				services.AddHostedService<LeaderboardHistoryBackgroundService>();
 
 			services.AddTransient<WorldRecordsHelper>();
 			services.AddTransient<ModHelper>();

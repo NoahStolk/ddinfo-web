@@ -11,11 +11,11 @@ using BotLogger = DevilDaggersDiscordBot.Logging.DiscordLogger;
 
 namespace DevilDaggersWebsite.Tasks
 {
-	public class CreateLeaderboardHistoryFileTask : AbstractBackgroundService
+	public class LeaderboardHistoryBackgroundService : AbstractBackgroundService
 	{
 		private readonly IWebHostEnvironment _env;
 
-		public CreateLeaderboardHistoryFileTask(IWebHostEnvironment env)
+		public LeaderboardHistoryBackgroundService(IWebHostEnvironment env)
 		{
 			_env = env;
 		}
@@ -35,16 +35,16 @@ namespace DevilDaggersWebsite.Tasks
 				{
 					string fileName = $"{DateTime.UtcNow:yyyyMMddHHmm}.json";
 					File.WriteAllText(Path.Combine(_env.WebRootPath, "leaderboard-history", fileName), JsonConvert.SerializeObject(lb));
-					await BotLogger.Instance.TryLog(Channel.TaskMonitoring, _env.EnvironmentName, $":white_check_mark: `{nameof(CreateLeaderboardHistoryFileTask)}` succeeded. `{fileName}` was created.");
+					await BotLogger.Instance.TryLog(Channel.TaskMonitoring, _env.EnvironmentName, $":white_check_mark: `{nameof(LeaderboardHistoryBackgroundService)}` succeeded. `{fileName}` was created.");
 				}
 				else
 				{
-					await BotLogger.Instance.TryLog(Channel.TaskMonitoring, _env.EnvironmentName, $":x: `{nameof(CreateLeaderboardHistoryFileTask)}` failed because the Devil Daggers servers didn't return a leaderboard.");
+					await BotLogger.Instance.TryLog(Channel.TaskMonitoring, _env.EnvironmentName, $":x: `{nameof(LeaderboardHistoryBackgroundService)}` failed because the Devil Daggers servers didn't return a leaderboard.");
 				}
 			}
 			catch (Exception ex)
 			{
-				await BotLogger.Instance.TryLog(Channel.TaskMonitoring, _env.EnvironmentName, $":x: `{nameof(CreateLeaderboardHistoryFileTask)}` failed with exception: `{ex.Message}`");
+				await BotLogger.Instance.TryLog(Channel.TaskMonitoring, _env.EnvironmentName, $":x: `{nameof(LeaderboardHistoryBackgroundService)}` failed with exception: `{ex.Message}`");
 			}
 		}
 
