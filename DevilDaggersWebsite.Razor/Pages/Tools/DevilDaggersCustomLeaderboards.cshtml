@@ -1,8 +1,9 @@
 ﻿@page
 @inject Microsoft.AspNetCore.Hosting.IWebHostEnvironment env
-@inject Transients.ToolHelper toolHelper
+@inject IToolHelper toolHelper
 @using DevilDaggersWebsite.Dto
 @using DevilDaggersWebsite.Razor.Utils
+@using DevilDaggersWebsite.Transients
 @using System.IO
 @{
 	Tool tool = toolHelper.GetToolByName("DevilDaggersCustomLeaderboards");

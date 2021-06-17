@@ -181,7 +181,11 @@
 							</div>
 							<div class="flex-container leaderboard-data">
 								<div>Past usernames <span style="cursor: pointer;" class="text-right devil" data-toggle="tooltip" data-placement="top" title="Data is based on the top 100 history.">?</span></div>
-								@if (Model.UsernameAliases.Count > 0)
+								@if (Model.Player?.HidePastUsernames == true)
+								{
+									<div class="text-right" style='color: #444;'>Hidden</div>
+								}
+								else if (Model.UsernameAliases.Count > 0)
 								{
 									@if (Model.UsernameAliases.Count > 1)
 									{

@@ -63,7 +63,7 @@ namespace DevilDaggersWebsite.Razor
 			services.AddTransient<WorldRecordsHelper>();
 			services.AddTransient<ModHelper>();
 			services.AddTransient<SpawnsetHelper>();
-			services.AddTransient<ToolHelper>();
+			services.AddTransient<IToolHelper, ToolHelper>();
 
 			services.AddScheduler((sender, args) =>
 			{

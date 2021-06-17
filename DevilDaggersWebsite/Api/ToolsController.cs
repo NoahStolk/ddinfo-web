@@ -21,9 +21,9 @@ namespace DevilDaggersWebsite.Api
 	{
 		private readonly IWebHostEnvironment _env;
 		private readonly ApplicationDbContext _dbContext;
-		private readonly ToolHelper _toolHelper;
+		private readonly IToolHelper _toolHelper;
 
-		public ToolsController(IWebHostEnvironment env, ApplicationDbContext dbContext, ToolHelper toolHelper)
+		public ToolsController(IWebHostEnvironment env, ApplicationDbContext dbContext, IToolHelper toolHelper)
 		{
 			_env = env;
 			_dbContext = dbContext;

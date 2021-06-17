@@ -22,6 +22,7 @@ namespace DevilDaggersWebsite.Dto.Admin
 		public int? BanResponsibleId { get; init; }
 		public bool? UsesLegacyAudio { get; init; }
 		public bool IsBannedFromDdcl { get; init; }
+		public bool HidePastUsernames { get; init; }
 
 		public Dictionary<string, string> Log()
 		{
@@ -42,6 +43,7 @@ namespace DevilDaggersWebsite.Dto.Admin
 			dictionary.Add(nameof(BanResponsibleId), BanResponsibleId.ToString() ?? string.Empty);
 			dictionary.Add(nameof(UsesLegacyAudio), UsesLegacyAudio.ToString() ?? string.Empty);
 			dictionary.Add(nameof(IsBannedFromDdcl), IsBannedFromDdcl.ToString() ?? string.Empty);
+			dictionary.Add(nameof(HidePastUsernames), HidePastUsernames.ToString() ?? string.Empty);
 			return dictionary;
 		}
 

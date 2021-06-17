@@ -1,17 +1,18 @@
 ﻿using DevilDaggersCore.Spawnsets;
 using DevilDaggersWebsite.Api;
 using DevilDaggersWebsite.Entities;
-using DevilDaggersWebsite.Enumerators;
 using DevilDaggersWebsite.Extensions;
+using DevilDaggersWebsite.Tests.Data;
+using DevilDaggersWebsite.Tests.Extensions;
 using DevilDaggersWebsite.Transients;
 using Microsoft.AspNetCore.Hosting;
 using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
-using Microsoft.EntityFrameworkCore;
+using Microsoft.Extensions.Hosting;
 using Microsoft.VisualStudio.TestTools.UnitTesting;
 using Moq;
-using System;
 using System.Collections.Generic;
+using System.IO;
 using System.Linq;
 using System.Security.Cryptography;
 using System.Threading.Tasks;
@@ -22,141 +23,152 @@ namespace DevilDaggersWebsite.Tests
 	[TestClass]
 	public class CustomLeaderboardTests
 	{
-		private const string _ddclClientVersion = "0.14.2.0";
+		private readonly Mock<ApplicationDbContext> _dbContext;
+		private readonly CustomLeaderboardsController _customLeaderboardsController;
+		private readonly Spawnset _spawnset;
 
-		private static readonly ApplicationDbContext _dbContext;
-		private static readonly CustomLeaderboardsController _customLeaderboardsController;
-
-#pragma warning disable S3963 // "static" fields should be initialized inline
-		static CustomLeaderboardTests()
+		public CustomLeaderboardTests()
 		{
-			DbContextOptions<ApplicationDbContext> options = new DbContextOptionsBuilder<ApplicationDbContext>().UseInMemoryDatabase(databaseName: "TestDatabase").Options;
-			SetUpInMemoryDatabase(options);
-			_dbContext = new ApplicationDbContext(options);
+			const string wwwroot = @"C:\Users\NOAH\source\repos\DevilDaggersWebsite\DevilDaggersWebsite.Razor\wwwroot";
+
+			MockEntities mockEntities = new();
+
+			_dbContext = new Mock<ApplicationDbContext>()
+				.SetUpDbSet(db => db.Players, mockEntities.MockDbSetPlayers)
+				.SetUpDbSet(db => db.SpawnsetFiles, mockEntities.MockDbSetSpawnsetFiles)
+				.SetUpDbSet(db => db.CustomLeaderboards, mockEntities.MockDbSetCustomLeaderboards)
+				.SetUpDbSet(db => db.CustomEntries, mockEntities.MockDbSetCustomEntries);
 
 			Mock<IWebHostEnvironment> mockEnvironment = new();
-			mockEnvironment.Setup(m => m.EnvironmentName).Returns("Hosting:UnitTestEnvironment");
+			mockEnvironment.Setup(m => m.EnvironmentName).Returns(Environments.Development);
+			mockEnvironment.Setup(m => m.WebRootPath).Returns(wwwroot);
 
-			Mock<ToolHelper> toolHelper = new(mockEnvironment.Object);
-			_customLeaderboardsController = new CustomLeaderboardsController(_dbContext, mockEnvironment.Object, toolHelper.Object);
+			Mock<IToolHelper> toolHelper = new();
+			toolHelper.Setup(m => m.GetToolByName(It.IsAny<string>())).Returns(new Dto.Tool
+			{
+				Name = "DevilDaggersCustomLeaderboards",
+				VersionNumber = new(1, 0, 0, 0),
+				VersionNumberRequired = new(1, 0, 0, 0),
+			});
+
+			_customLeaderboardsController = new CustomLeaderboardsController(_dbContext.Object, mockEnvironment.Object, toolHelper.Object);
+
+			if (!Spawnset.TryParse(File.ReadAllBytes(Path.Combine(wwwroot, "spawnsets", "V3")), out _spawnset))
+				Assert.Fail("Spawnset could not be parsed.");
 		}
-#pragma warning restore S3963 // "static" fields should be initialized inline
 
 		[TestMethod]
 		public void GetCustomLeaderboards()
 		{
 			List<Dto.CustomLeaderboard> customLeaderboards = _customLeaderboardsController.GetCustomLeaderboards().Value;
 
+			_dbContext.Verify(db => db.SaveChanges(), Times.Never);
 			Assert.AreEqual(1, customLeaderboards.Count);
-			Assert.IsTrue(customLeaderboards.Any(cl => cl.TimeBronze == 60));
+			Assert.IsTrue(customLeaderboards.Any(cl => cl.TimeBronze == 600000));
 		}
 
 		[TestMethod]
-		public async Task PostUploadRequestExistingPlayerExistingEntryNoHighscore()
+		public async Task PostUploadRequest_ExistingPlayer_ExistingEntry_NoHighscore()
 		{
-			Spawnset emptySpawnset = new();
-
 			Dto.UploadRequest uploadRequest = new()
 			{
 				Time = 100000,
 				PlayerId = 1,
-				ClientVersion = _ddclClientVersion,
-				SurvivalHashMd5 = GetSpawnsetHash(emptySpawnset),
+				ClientVersion = Constants.DdclVersion,
+				SurvivalHashMd5 = GetSpawnsetHash(_spawnset),
 				GameStates = new(),
 				PlayerName = "TestPlayer1",
-				// TODO: Validation.
 			};
+			uploadRequest.Validation = GetValidation(uploadRequest);
 
 			Dto.UploadSuccess uploadSuccess = (await _customLeaderboardsController.ProcessUploadRequest(uploadRequest)).Value;
 
+			_dbContext.Verify(db => db.SaveChanges(), Times.AtLeastOnce);
 			Assert.AreEqual(1, uploadSuccess.TotalPlayers);
 			Assert.IsTrue(uploadSuccess.Message.StartsWith("No new highscore"));
 		}
 
 		[TestMethod]
-		public async Task PostUploadRequestExistingPlayerExistingEntryNewHighscore()
+		public async Task PostUploadRequest_ExistingPlayer_ExistingEntry_NewHighscore()
 		{
-			Spawnset emptySpawnset = new();
-
 			Dto.UploadRequest uploadRequest = new()
 			{
 				Time = 200000,
 				PlayerId = 1,
-				ClientVersion = _ddclClientVersion,
-				SurvivalHashMd5 = GetSpawnsetHash(emptySpawnset),
+				ClientVersion = Constants.DdclVersion,
+				SurvivalHashMd5 = GetSpawnsetHash(_spawnset),
 				GameStates = new(),
 				PlayerName = "TestPlayer1",
-				// TODO: Validation.
 			};
+			uploadRequest.Validation = GetValidation(uploadRequest);
 
 			Dto.UploadSuccess uploadSuccess = (await _customLeaderboardsController.ProcessUploadRequest(uploadRequest)).Value;
 
+			_dbContext.Verify(db => db.SaveChanges(), Times.AtLeastOnce);
 			Assert.AreEqual(1, uploadSuccess.TotalPlayers);
 			Assert.IsTrue(uploadSuccess.Message.StartsWith("NEW HIGHSCORE"));
 		}
 
 		[TestMethod]
-		public async Task PostUploadRequestExistingPlayerNewEntry()
+		public async Task PostUploadRequest_ExistingPlayer_NewEntry()
 		{
-			Spawnset emptySpawnset = new();
-
 			Dto.UploadRequest uploadRequest = new()
 			{
 				Time = 200000,
 				PlayerId = 2,
-				ClientVersion = _ddclClientVersion,
-				SurvivalHashMd5 = GetSpawnsetHash(emptySpawnset),
+				ClientVersion = Constants.DdclVersion,
+				SurvivalHashMd5 = GetSpawnsetHash(_spawnset),
 				GameStates = new(),
 				PlayerName = "TestPlayer2",
-				// TODO: Validation.
 			};
+			uploadRequest.Validation = GetValidation(uploadRequest);
 
 			Dto.UploadSuccess uploadSuccess = (await _customLeaderboardsController.ProcessUploadRequest(uploadRequest)).Value;
 
-			Assert.AreEqual(2, uploadSuccess.TotalPlayers);
+			_dbContext.Verify(db => db.CustomEntries.Add(It.Is<CustomEntry>(ce => ce.PlayerId == 2 && ce.Time == 200000)), Times.Once);
+			_dbContext.Verify(db => db.SaveChanges(), Times.AtLeastOnce);
 			Assert.IsTrue(uploadSuccess.Message.StartsWith("Welcome"));
 		}
 
 		[TestMethod]
-		public async Task PostUploadRequestNewPlayer()
+		public async Task PostUploadRequest_NewPlayer()
 		{
-			Spawnset emptySpawnset = new();
-
 			Dto.UploadRequest uploadRequest = new()
 			{
 				Time = 300000,
 				PlayerId = 3,
-				ClientVersion = _ddclClientVersion,
-				SurvivalHashMd5 = GetSpawnsetHash(emptySpawnset),
+				ClientVersion = Constants.DdclVersion,
+				SurvivalHashMd5 = GetSpawnsetHash(_spawnset),
 				GameStates = new(),
 				PlayerName = "TestPlayer3",
-				// TODO: Validation.
 			};
+			uploadRequest.Validation = GetValidation(uploadRequest);
 
 			Dto.UploadSuccess uploadSuccess = (await _customLeaderboardsController.ProcessUploadRequest(uploadRequest)).Value;
 
-			// TODO: Clear the database before running this test.
-			// Assert.AreEqual(2, uploadSuccess.TotalPlayers);
+			_dbContext.Verify(db => db.SaveChanges(), Times.AtLeastOnce);
+			_dbContext.Verify(db => db.Players.Add(It.Is<Player>(p => p.Id == 3 && p.PlayerName == "TestPlayer3")), Times.Once);
+			_dbContext.Verify(db => db.CustomEntries.Add(It.Is<CustomEntry>(ce => ce.PlayerId == 3 && ce.Time == 300000)), Times.Once);
 			Assert.IsTrue(uploadSuccess.Message.StartsWith("Welcome"));
 		}
 
 		[TestMethod]
-		public async Task PostUploadRequestOutdated()
+		public async Task PostUploadRequest_Outdated()
 		{
-			Spawnset emptySpawnset = new();
-
 			Dto.UploadRequest uploadRequest = new()
 			{
 				Time = 100000,
 				PlayerId = 1,
 				ClientVersion = "0.0.0.0",
-				SurvivalHashMd5 = GetSpawnsetHash(emptySpawnset),
+				SurvivalHashMd5 = GetSpawnsetHash(_spawnset),
 				GameStates = new(),
 				PlayerName = "TestPlayer1",
-				// TODO: Validation.
 			};
+			uploadRequest.Validation = GetValidation(uploadRequest);
 
 			ActionResult<Dto.UploadSuccess> response = await _customLeaderboardsController.ProcessUploadRequest(uploadRequest);
+
+			_dbContext.Verify(db => db.SaveChanges(), Times.Never);
 
 			Assert.IsInstanceOfType(response.Result, typeof(BadRequestObjectResult));
 			BadRequestObjectResult badRequest = (BadRequestObjectResult)response.Result;
@@ -168,22 +180,22 @@ namespace DevilDaggersWebsite.Tests
 		}
 
 		[TestMethod]
-		public async Task PostUploadRequestInvalidValidation()
+		public async Task PostUploadRequest_InvalidValidation()
 		{
-			Spawnset emptySpawnset = new();
-
 			Dto.UploadRequest uploadRequest = new()
 			{
 				Time = 100000,
 				PlayerId = 1,
-				ClientVersion = _ddclClientVersion,
-				SurvivalHashMd5 = GetSpawnsetHash(emptySpawnset),
+				ClientVersion = Constants.DdclVersion,
+				SurvivalHashMd5 = GetSpawnsetHash(_spawnset),
 				GameStates = new(),
 				PlayerName = "TestPlayer1",
 				Validation = "Malformed validation",
 			};
 
 			ActionResult<Dto.UploadSuccess> response = await _customLeaderboardsController.ProcessUploadRequest(uploadRequest);
+
+			_dbContext.Verify(db => db.SaveChanges(), Times.Never);
 
 			Assert.IsInstanceOfType(response.Result, typeof(BadRequestObjectResult));
 			BadRequestObjectResult badRequest = (BadRequestObjectResult)response.Result;
@@ -211,77 +223,10 @@ namespace DevilDaggersWebsite.Tests
 				uploadRequest.EnemiesAlive,
 				uploadRequest.HomingDaggers,
 				uploadRequest.HomingDaggersEaten,
+				uploadRequest.IsReplay ? 1 : 0,
 				uploadRequest.SurvivalHashMd5.ByteArrayToHexString(),
 				string.Join(",", new int[3] { uploadRequest.LevelUpTime2, uploadRequest.LevelUpTime3, uploadRequest.LevelUpTime4 }));
 			return HttpUtility.HtmlEncode(Secrets.EncryptionWrapper.EncryptAndEncode(toEncrypt));
-		}
-
-		private static void SetUpInMemoryDatabase(DbContextOptions<ApplicationDbContext> options)
-		{
-			using ApplicationDbContext dbContext = new(options);
-			Player testPlayer1 = new()
-			{
-				Id = 1,
-				PlayerName = "TestPlayer1",
-			};
-			Player testPlayer2 = new()
-			{
-				Id = 2,
-				PlayerName = "TestPlayer2",
-			};
-			SpawnsetFile spawnsetFile = new()
-			{
-				Id = 1,
-				LastUpdated = DateTime.UtcNow,
-				Name = "Empty",
-				PlayerId = 0,
-				Player = testPlayer1,
-				HtmlDescription = string.Empty,
-				MaxDisplayWaves = 5,
-			};
-			CustomLeaderboard customLeaderboard = new()
-			{
-				Id = 1,
-				TimeBronze = 60,
-				TimeSilver = 120,
-				TimeGolden = 250,
-				TimeDevil = 500,
-				TimeLeviathan = 1000,
-				Category = CustomLeaderboardCategory.Default,
-				DateCreated = DateTime.UtcNow,
-				DateLastPlayed = DateTime.UtcNow,
-				SpawnsetFileId = 1,
-				TotalRunsSubmitted = 666,
-				SpawnsetFile = spawnsetFile,
-			};
-			CustomEntry customEntry = new()
-			{
-				Id = 1,
-				ClientVersion = _ddclClientVersion,
-				CustomLeaderboardId = 1,
-				DaggersFired = 15,
-				DaggersHit = 6,
-				DeathType = 1,
-				EnemiesAlive = 6,
-				GemsCollected = 3,
-				HomingDaggers = 0,
-				EnemiesKilled = 2,
-				PlayerId = 0,
-				Time = 166666,
-				CustomLeaderboard = customLeaderboard,
-				Player = testPlayer1,
-				LevelUpTime2 = 0,
-				LevelUpTime3 = 0,
-				LevelUpTime4 = 0,
-				SubmitDate = DateTime.UtcNow,
-			};
-
-			_dbContext.Players.Add(testPlayer1);
-			_dbContext.Players.Add(testPlayer2);
-			_dbContext.SpawnsetFiles.Add(spawnsetFile);
-			_dbContext.CustomLeaderboards.Add(customLeaderboard);
-			_dbContext.CustomEntries.Add(customEntry);
-			_dbContext.SaveChanges();
 		}
 
 		private static byte[] GetSpawnsetHash(Spawnset spawnset)
