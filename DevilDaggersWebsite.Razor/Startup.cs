@@ -4,7 +4,6 @@ using DevilDaggersWebsite.Caches.LeaderboardStatistics;
 using DevilDaggersWebsite.Caches.ModArchive;
 using DevilDaggersWebsite.Entities;
 using DevilDaggersWebsite.Tasks;
-using DevilDaggersWebsite.Tasks.Scheduling;
 using DevilDaggersWebsite.Transients;
 using Microsoft.AspNetCore.Builder;
 using Microsoft.AspNetCore.Hosting;
@@ -56,18 +55,12 @@ namespace DevilDaggersWebsite.Razor
 			services.AddSingleton<IActionContextAccessor, ActionContextAccessor>();
 
 			if (!WebHostEnvironment.IsDevelopment())
-				services.AddSingleton<IScheduledTask, CreateLeaderboardHistoryFileTask>();
+				services.AddHostedService<CreateLeaderboardHistoryFileTask>();
 
 			services.AddTransient<WorldRecordsHelper>();
 			services.AddTransient<ModHelper>();
 			services.AddTransient<SpawnsetHelper>();
 			services.AddTransient<IToolHelper, ToolHelper>();
-
-			services.AddScheduler((sender, args) =>
-			{
-				Console.Write(args.Exception?.Message);
-				args.SetObserved();
-			});
 
 			services
 				.AddControllers()

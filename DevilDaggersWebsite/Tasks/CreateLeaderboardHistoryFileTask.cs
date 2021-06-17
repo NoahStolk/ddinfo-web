@@ -5,12 +5,13 @@ using Microsoft.AspNetCore.Hosting;
 using Newtonsoft.Json;
 using System;
 using System.IO;
+using System.Threading;
 using System.Threading.Tasks;
 using BotLogger = DevilDaggersDiscordBot.Logging.DiscordLogger;
 
 namespace DevilDaggersWebsite.Tasks
 {
-	public class CreateLeaderboardHistoryFileTask : AbstractTask
+	public class CreateLeaderboardHistoryFileTask : AbstractBackgroundService
 	{
 		private readonly IWebHostEnvironment _env;
 
@@ -19,32 +20,26 @@ namespace DevilDaggersWebsite.Tasks
 			_env = env;
 		}
 
-		public override string Schedule => "0 0 * * *";
+		protected override TimeSpan Interval => TimeSpan.FromMinutes(1);
 
-		protected override async Task Execute()
+		protected override async Task ExecuteTaskAsync(CancellationToken stoppingToken)
 		{
-			await BotLogger.Instance.TryLog(Channel.TaskMonitoring, _env.EnvironmentName, $"`{nameof(CreateLeaderboardHistoryFileTask)}` starting... Triggered: `{LastTriggered:yyyy-MM-dd HH:mm:ss}`");
-
 			try
 			{
-				string? historyFileName = GetHistoryFileNameFromDate(LastTriggered);
-				if (historyFileName == null)
+				string? historyFileName = GetHistoryFileNameFromDate(DateTime.UtcNow);
+				if (historyFileName != null)
+					return;
+
+				Dto.Leaderboard? lb = await LeaderboardClient.Instance.GetScores(1);
+				if (lb != null)
 				{
-					Dto.Leaderboard? lb = await LeaderboardClient.Instance.GetScores(1);
-					if (lb != null)
-					{
-						string fileName = $"{DateTime.UtcNow:yyyyMMddHHmm}.json";
-						File.WriteAllText(Path.Combine(_env.WebRootPath, "leaderboard-history", fileName), JsonConvert.SerializeObject(lb));
-						await BotLogger.Instance.TryLog(Channel.TaskMonitoring, _env.EnvironmentName, $":white_check_mark: `{nameof(CreateLeaderboardHistoryFileTask)}` succeeded. `{fileName}` was created.");
-					}
-					else
-					{
-						await BotLogger.Instance.TryLog(Channel.TaskMonitoring, _env.EnvironmentName, $":x: `{nameof(CreateLeaderboardHistoryFileTask)}` failed because the Devil Daggers servers didn't return a leaderboard.");
-					}
+					string fileName = $"{DateTime.UtcNow:yyyyMMddHHmm}.json";
+					File.WriteAllText(Path.Combine(_env.WebRootPath, "leaderboard-history", fileName), JsonConvert.SerializeObject(lb));
+					await BotLogger.Instance.TryLog(Channel.TaskMonitoring, _env.EnvironmentName, $":white_check_mark: `{nameof(CreateLeaderboardHistoryFileTask)}` succeeded. `{fileName}` was created.");
 				}
 				else
 				{
-					await BotLogger.Instance.TryLog(Channel.TaskMonitoring, _env.EnvironmentName, $":information_source: `{nameof(CreateLeaderboardHistoryFileTask)}` skipped because a file for today's history already exists ({historyFileName}).");
+					await BotLogger.Instance.TryLog(Channel.TaskMonitoring, _env.EnvironmentName, $":x: `{nameof(CreateLeaderboardHistoryFileTask)}` failed because the Devil Daggers servers didn't return a leaderboard.");
 				}
 			}
 			catch (Exception ex)
