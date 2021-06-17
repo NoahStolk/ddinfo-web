@@ -6,7 +6,6 @@ using DevilDaggersWebsite.Entities;
 using DevilDaggersWebsite.Middleware;
 using DevilDaggersWebsite.Singletons;
 using DevilDaggersWebsite.Tasks;
-using DevilDaggersWebsite.Tasks.Scheduling;
 using DevilDaggersWebsite.Transients;
 using Microsoft.AspNetCore.Builder;
 using Microsoft.AspNetCore.Hosting;
@@ -58,21 +57,13 @@ namespace DevilDaggersWebsite.Razor
 			services.AddSingleton<IActionContextAccessor, ActionContextAccessor>();
 			services.AddSingleton<ResponseTimeLogger>();
 
-			if (WebHostEnvironment.IsDevelopment())
-				services.AddSingleton<IScheduledTask, CreateLeaderboardHistoryFileTaskDummy>();
-			else
-				services.AddSingleton<IScheduledTask, CreateLeaderboardHistoryFileTask>();
+			if (!WebHostEnvironment.IsDevelopment())
+				services.AddHostedService<LeaderboardHistoryBackgroundService>();
 
 			services.AddTransient<WorldRecordsHelper>();
 			services.AddTransient<ModHelper>();
 			services.AddTransient<SpawnsetHelper>();
 			services.AddTransient<IToolHelper, ToolHelper>();
-
-			services.AddScheduler((sender, args) =>
-			{
-				Console.Write(args.Exception?.Message);
-				args.SetObserved();
-			});
 
 			services
 				.AddControllers()
