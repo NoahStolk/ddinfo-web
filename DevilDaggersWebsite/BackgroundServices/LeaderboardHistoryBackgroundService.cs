@@ -9,7 +9,7 @@ using System.Threading;
 using System.Threading.Tasks;
 using BotLogger = DevilDaggersDiscordBot.Logging.DiscordLogger;
 
-namespace DevilDaggersWebsite.Tasks
+namespace DevilDaggersWebsite.BackgroundServices
 {
 	public class LeaderboardHistoryBackgroundService : AbstractBackgroundService
 	{
