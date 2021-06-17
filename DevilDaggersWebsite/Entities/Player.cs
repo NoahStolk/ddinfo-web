@@ -27,6 +27,7 @@ namespace DevilDaggersWebsite.Entities
 		public int? BanResponsibleId { get; set; }
 		public bool? UsesLegacyAudio { get; set; }
 		public bool IsBannedFromDdcl { get; set; }
+		public bool HidePastUsernames { get; set; }
 
 		public float? Edpi => Dpi * InGameSens;
 		public string RightHandedString => !RightHanded.HasValue ? string.Empty : RightHanded.Value ? "Right" : "Left";
@@ -61,6 +62,7 @@ namespace DevilDaggersWebsite.Entities
 			BanResponsibleId = adminDto.BanResponsibleId;
 			UsesLegacyAudio = adminDto.UsesLegacyAudio;
 			IsBannedFromDdcl = adminDto.IsBannedFromDdcl;
+			HidePastUsernames = adminDto.HidePastUsernames;
 		}
 
 		public void CreateManyToManyRelations(ApplicationDbContext dbContext, AdminPlayer adminDto)
@@ -105,8 +107,9 @@ namespace DevilDaggersWebsite.Entities
 				PlayerName = PlayerName,
 				RightHanded = RightHanded,
 				TitleIds = PlayerTitles.ConvertAll(pt => pt.TitleId),
-				IsBannedFromDdcl = IsBannedFromDdcl,
 				UsesLegacyAudio = UsesLegacyAudio,
+				IsBannedFromDdcl = IsBannedFromDdcl,
+				HidePastUsernames = HidePastUsernames,
 			};
 		}
 

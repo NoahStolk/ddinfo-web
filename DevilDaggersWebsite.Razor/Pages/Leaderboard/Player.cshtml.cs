@@ -92,7 +92,7 @@ namespace DevilDaggersWebsite.Razor.Pages.Leaderboard
 						if (!BestRankRecorded.HasValue || BestRankRecorded.Value > historyEntry.Rank)
 							BestRankRecorded = historyEntry.Rank;
 
-						if (!string.IsNullOrWhiteSpace(historyEntry.Username) && historyEntry.Username != Entry.Username)
+						if (Player?.HidePastUsernames != true && !string.IsNullOrWhiteSpace(historyEntry.Username) && historyEntry.Username != Entry.Username)
 						{
 							if (aliases.ContainsKey(historyEntry.Username))
 								aliases[historyEntry.Username]++;
