@@ -36,6 +36,8 @@ namespace DevilDaggersWebsite.Entities
 		public int LevelUpTime3 { get; set; }
 		public int LevelUpTime4 { get; set; }
 		public DateTime SubmitDate { get; set; }
+
+		[StringLength(16)]
 		public string ClientVersion { get; set; } = null!;
 
 		public double Accuracy => DaggersFired == 0 ? 0 : DaggersHit / (double)DaggersFired;

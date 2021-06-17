@@ -10,6 +10,7 @@ namespace DevilDaggersWebsite.Entities
 		[Key]
 		public int Id { get; set; }
 
+		[StringLength(64)]
 		public string Name { get; set; } = null!;
 
 		public int PlayerId { get; set; }
@@ -19,6 +20,7 @@ namespace DevilDaggersWebsite.Entities
 
 		public int? MaxDisplayWaves { get; set; }
 
+		[StringLength(2048)]
 		public string? HtmlDescription { get; set; }
 
 		public DateTime LastUpdated { get; set; }
