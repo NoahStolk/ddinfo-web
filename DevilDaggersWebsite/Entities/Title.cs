@@ -10,7 +10,9 @@ namespace DevilDaggersWebsite.Entities
 		[Key]
 		public int Id { get; set; }
 
+		[StringLength(16)]
 		public string Name { get; set; } = null!;
+
 		public List<PlayerTitle> PlayerTitles { get; set; } = new();
 
 		public void Create(ApplicationDbContext dbContext, AdminTitle adminDto)
