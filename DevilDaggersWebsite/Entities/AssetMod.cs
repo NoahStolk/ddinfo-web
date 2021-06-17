@@ -13,12 +13,23 @@ namespace DevilDaggersWebsite.Entities
 		public int Id { get; set; }
 
 		public List<PlayerAssetMod> PlayerAssetMods { get; set; } = new();
+
 		public AssetModTypes AssetModTypes { get; set; }
+
+		[StringLength(64)]
 		public string Name { get; set; } = null!;
+
+		[StringLength(128)]
 		public string Url { get; set; } = null!;
+
 		public bool IsHidden { get; set; }
+
 		public DateTime LastUpdated { get; set; }
+
+		[StringLength(64)]
 		public string? TrailerUrl { get; set; }
+
+		[StringLength(2048)]
 		public string? HtmlDescription { get; set; }
 
 		public void Create(ApplicationDbContext dbContext, AdminAssetMod adminDto)

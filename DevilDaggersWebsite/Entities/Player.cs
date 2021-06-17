@@ -11,22 +11,41 @@ namespace DevilDaggersWebsite.Entities
 		[Key]
 		public int Id { get; set; }
 
+		[StringLength(32)]
 		public string PlayerName { get; set; } = null!;
+
 		public bool IsAnonymous { get; set; }
+
 		public List<PlayerAssetMod> PlayerAssetMods { get; set; } = new();
+
 		public List<PlayerTitle> PlayerTitles { get; set; } = new();
+
+		[StringLength(2)]
 		public string? CountryCode { get; set; }
+
 		public int? Dpi { get; set; }
+
 		public float? InGameSens { get; set; }
+
 		public int? Fov { get; set; }
+
 		public bool? RightHanded { get; set; }
+
 		public bool? FlashEnabled { get; set; }
+
 		public float? Gamma { get; set; }
+
 		public bool IsBanned { get; set; }
+
+		[StringLength(64)]
 		public string? BanDescription { get; set; }
+
 		public int? BanResponsibleId { get; set; }
+
 		public bool? UsesLegacyAudio { get; set; }
+
 		public bool IsBannedFromDdcl { get; set; }
+
 		public bool HidePastUsernames { get; set; }
 
 		public float? Edpi => Dpi * InGameSens;
