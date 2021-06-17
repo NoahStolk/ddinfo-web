@@ -38,7 +38,7 @@ namespace DevilDaggersWebsite.Middleware
 				{
 					DateTime = DateTime.UtcNow,
 					Path = pathString.Substring(0, Math.Min(63, pathString.Length)),
-					ResponseTimeMicroseconds = responseTimeMicroseconds,
+					ResponseTimeMicroseconds = responseTimeMicroseconds > int.MaxValue ? int.MaxValue : (int)responseTimeMicroseconds,
 				});
 
 				return Task.CompletedTask;
