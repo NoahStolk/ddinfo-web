@@ -8,7 +8,7 @@ namespace DevilDaggersWebsite.Entities
 		[Key]
 		public int Id { get; set; }
 
-		[StringLength(63)]
+		[StringLength(64)]
 		public string Path { get; set; } = null!;
 
 		public int ResponseTimeMicroseconds { get; set; }

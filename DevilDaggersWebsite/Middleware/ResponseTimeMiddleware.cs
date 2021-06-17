@@ -37,7 +37,7 @@ namespace DevilDaggersWebsite.Middleware
 				_responseTimeLogger.Log(new()
 				{
 					DateTime = DateTime.UtcNow,
-					Path = pathString.Substring(0, Math.Min(63, pathString.Length)),
+					Path = pathString.Substring(0, Math.Min(64, pathString.Length)),
 					ResponseTimeMicroseconds = responseTimeMicroseconds > int.MaxValue ? int.MaxValue : (int)responseTimeMicroseconds,
 				});
 
