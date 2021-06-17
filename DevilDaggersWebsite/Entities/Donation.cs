@@ -17,10 +17,16 @@ namespace DevilDaggersWebsite.Entities
 		public Player Player { get; set; } = null!;
 
 		public int Amount { get; set; }
+
 		public Currency Currency { get; set; }
+
 		public int ConvertedEuroCentsReceived { get; set; }
+
 		public DateTime DateReceived { get; set; }
+
+		[StringLength(64)]
 		public string? Note { get; set; }
+
 		public bool IsRefunded { get; set; }
 
 		public void Create(ApplicationDbContext dbContext, AdminDonation adminDto)
