@@ -84,7 +84,7 @@ namespace DevilDaggersWebsite.Razor.PageModels
 				{
 					foreach (KeyValuePair<string, string> oldKvp in oldLog)
 					{
-						string newStr = newLog[oldKvp.Key];
+						string? newStr = newLog.ContainsKey(oldKvp.Key) ? newLog[oldKvp.Key] : null;
 						if (newStr != oldKvp.Value)
 							return false;
 					}
