@@ -25,7 +25,7 @@ namespace DevilDaggersWebsite.BackgroundServices
 
 		protected override async Task ExecuteTaskAsync(CancellationToken stoppingToken)
 		{
-			await DiscordLogger.TryLog(Channel.MonitoringTest, _environment.EnvironmentName, _responseTimeContainer.CreateLog(_measurementStart, DateTime.UtcNow));
+			await DiscordLogger.TryLog(Channel.MonitoringTask, _environment.EnvironmentName, _responseTimeContainer.CreateLog(_measurementStart, DateTime.UtcNow));
 
 			_responseTimeContainer.Clear();
 
