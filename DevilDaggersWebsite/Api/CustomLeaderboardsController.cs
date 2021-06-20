@@ -81,7 +81,7 @@ namespace DevilDaggersWebsite.Api
 				ex.Data[nameof(uploadRequest.ClientVersion)] = uploadRequest.ClientVersion;
 				ex.Data[nameof(uploadRequest.OperatingSystem)] = uploadRequest.OperatingSystem;
 				ex.Data[nameof(uploadRequest.BuildMode)] = uploadRequest.BuildMode;
-				await DiscordLogger.Instance.TryLogException($"Upload failed for user `{uploadRequest.PlayerName}` (`{uploadRequest.PlayerId}`) for `{GetSpawnsetHashOrName(uploadRequest.SurvivalHashMd5, null)}`.", _env.EnvironmentName, ex);
+				await DiscordLogger.TryLogException($"Upload failed for user `{uploadRequest.PlayerName}` (`{uploadRequest.PlayerId}`) for `{GetSpawnsetHashOrName(uploadRequest.SurvivalHashMd5, null)}`.", _env.EnvironmentName, ex);
 				throw;
 			}
 		}
@@ -427,11 +427,11 @@ namespace DevilDaggersWebsite.Api
 				};
 				builder.AddFieldObject("Score", FormatTimeString(time), true);
 				builder.AddFieldObject("Rank", $"{rank}/{totalPlayers}", true);
-				await DiscordLogger.Instance.TryLog(Channel.CustomLeaderboards, _env.EnvironmentName, null, builder.Build());
+				await DiscordLogger.TryLog(Channel.CustomLeaderboards, _env.EnvironmentName, null, builder.Build());
 			}
 			catch (Exception ex)
 			{
-				await DiscordLogger.Instance.TryLogException("Error while attempting to send leaderboard message.", _env.EnvironmentName, ex);
+				await DiscordLogger.TryLogException("Error while attempting to send leaderboard message.", _env.EnvironmentName, ex);
 			}
 		}
 
@@ -449,7 +449,7 @@ namespace DevilDaggersWebsite.Api
 			}
 			catch (Exception ex)
 			{
-				await DiscordLogger.Instance.TryLogException($"Could not decrypt validation: `{validation}`", _env.EnvironmentName, ex);
+				await DiscordLogger.TryLogException($"Could not decrypt validation: `{validation}`", _env.EnvironmentName, ex);
 
 				return string.Empty;
 			}
@@ -465,9 +465,9 @@ namespace DevilDaggersWebsite.Api
 				string ddclInfo = $"(`{uploadRequest.ClientVersion}` | `{uploadRequest.OperatingSystem}` | `{uploadRequest.BuildMode}`{replayString})";
 
 				if (!string.IsNullOrEmpty(errorMessage))
-					await DiscordLogger.Instance.TryLog(Channel.CustomLeaderboardMonitoring, _env.EnvironmentName, $":{errorEmoteNameOverride ?? "warning"}: Upload failed for user `{uploadRequest.PlayerName}` (`{uploadRequest.PlayerId}`) for `{spawnsetIdentification}`. {ddclInfo}\n**{errorMessage}**");
+					await DiscordLogger.TryLog(Channel.MonitoringCustomLeaderboard, _env.EnvironmentName, $":{errorEmoteNameOverride ?? "warning"}: Upload failed for user `{uploadRequest.PlayerName}` (`{uploadRequest.PlayerId}`) for `{spawnsetIdentification}`. {ddclInfo}\n**{errorMessage}**");
 				else
-					await DiscordLogger.Instance.TryLog(Channel.CustomLeaderboardMonitoring, _env.EnvironmentName, $":white_check_mark: `{uploadRequest.PlayerName}` just submitted a score of `{uploadRequest.Time / 10000f:0.0000}` to `{spawnsetIdentification}`. {ddclInfo}");
+					await DiscordLogger.TryLog(Channel.MonitoringCustomLeaderboard, _env.EnvironmentName, $":white_check_mark: `{uploadRequest.PlayerName}` just submitted a score of `{uploadRequest.Time / 10000f:0.0000}` to `{spawnsetIdentification}`. {ddclInfo}");
 			}
 			catch
 			{

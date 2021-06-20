@@ -20,7 +20,7 @@ namespace DevilDaggersWebsite.Razor.Pages.Admin.AdminTests
 			=> _env = env;
 
 		public async Task OnPostTestBotAsync()
-			=> await DiscordLogger.Instance.TryLog(Channel.TestMonitoring, _env.EnvironmentName, "Hello, this is a test message sent from an external environment.");
+			=> await DiscordLogger.TryLog(Channel.MonitoringTest, _env.EnvironmentName, "Hello, this is a test message sent from an external environment.");
 
 		public void OnPostTestException()
 			=> throw new("TEST EXCEPTION with 3 inner exceptions", new("Inner exception message", new("Another inner exception message", new("Big Discord embed"))));
@@ -50,7 +50,7 @@ namespace DevilDaggersWebsite.Razor.Pages.Admin.AdminTests
 			sb.AppendLine(ModArchiveCache.Instance.LogState(_env));
 			sb.AppendLine(SpawnsetDataCache.Instance.LogState(_env));
 			sb.AppendLine(SpawnsetHashCache.Instance.LogState(_env));
-			await DiscordLogger.Instance.TryLog(Channel.CacheMonitoring, _env.EnvironmentName, sb.ToString());
+			await DiscordLogger.TryLog(Channel.MonitoringCache, _env.EnvironmentName, sb.ToString());
 		}
 
 		public async Task OnPostTestColors()
@@ -72,10 +72,10 @@ namespace DevilDaggersWebsite.Razor.Pages.Admin.AdminTests
 
 				DiscordEmbedBuilder builder = new()
 				{
-					Title = "hot reload",
+					Title = "Test colors",
 					Color = color,
 				};
-				await DiscordLogger.Instance.TryLog(Channel.TestMonitoring, _env.EnvironmentName, null, builder.Build());
+				await DiscordLogger.TryLog(Channel.MonitoringTest, _env.EnvironmentName, null, builder.Build());
 			}
 		}
 	}

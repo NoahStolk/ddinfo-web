@@ -36,7 +36,7 @@ namespace DevilDaggersWebsite.Caches.SpawnsetHash
 				byte[] spawnsetBytes = File.ReadAllBytes(spawnsetPath);
 				if (!Spawnset.TryParse(spawnsetBytes, out _))
 				{
-					await DiscordLogger.Instance.TryLog(Channel.ErrorMonitoring, env.EnvironmentName, $":x: Could not parse file at `{spawnsetPath}` to a spawnset. Skipping file for cache.");
+					await DiscordLogger.TryLog(Channel.MonitoringError, env.EnvironmentName, $":x: Could not parse file at `{spawnsetPath}` to a spawnset. Skipping file for cache.");
 					continue;
 				}
 
@@ -60,7 +60,7 @@ namespace DevilDaggersWebsite.Caches.SpawnsetHash
 			async Task LogCacheInfo()
 			{
 				if (_cache.Count > cacheCount)
-					await DiscordLogger.Instance.TryLog(Channel.CacheMonitoring, env.EnvironmentName, $":{_emote}: Successfully updated dynamic `{nameof(SpawnsetHashCache)}`. (`{_cache.Count}` (`+{_cache.Count - cacheCount}`) instances in memory.)");
+					await DiscordLogger.TryLog(Channel.MonitoringCache, env.EnvironmentName, $":{_emote}: Successfully updated dynamic `{nameof(SpawnsetHashCache)}`. (`{_cache.Count}` (`+{_cache.Count - cacheCount}`) instances in memory.)");
 			}
 
 			static bool MatchHashes(byte[] a, byte[] b)
@@ -82,7 +82,7 @@ namespace DevilDaggersWebsite.Caches.SpawnsetHash
 		{
 			int cacheCount = _cache.Count;
 			_cache.Clear();
-			await DiscordLogger.Instance.TryLog(Channel.CacheMonitoring, env.EnvironmentName, $":{_emote}: Successfully cleared dynamic `{nameof(SpawnsetHashCache)}`. (Removed `{cacheCount}` instances.)");
+			await DiscordLogger.TryLog(Channel.MonitoringCache, env.EnvironmentName, $":{_emote}: Successfully cleared dynamic `{nameof(SpawnsetHashCache)}`. (Removed `{cacheCount}` instances.)");
 		}
 
 		public string LogState(IWebHostEnvironment env)

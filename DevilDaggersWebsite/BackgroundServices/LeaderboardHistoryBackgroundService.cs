@@ -7,7 +7,6 @@ using System;
 using System.IO;
 using System.Threading;
 using System.Threading.Tasks;
-using BotLogger = DevilDaggersDiscordBot.DiscordLogger;
 
 namespace DevilDaggersWebsite.BackgroundServices
 {
@@ -34,16 +33,16 @@ namespace DevilDaggersWebsite.BackgroundServices
 				{
 					string fileName = $"{DateTime.UtcNow:yyyyMMddHHmm}.json";
 					File.WriteAllText(Path.Combine(_env.WebRootPath, "leaderboard-history", fileName), JsonConvert.SerializeObject(lb));
-					await BotLogger.Instance.TryLog(Channel.TaskMonitoring, _env.EnvironmentName, $":white_check_mark: `{nameof(LeaderboardHistoryBackgroundService)}` succeeded. `{fileName}` was created.");
+					await DiscordLogger.TryLog(Channel.MonitoringTask, _env.EnvironmentName, $":white_check_mark: `{nameof(LeaderboardHistoryBackgroundService)}` succeeded. `{fileName}` was created.");
 				}
 				else
 				{
-					await BotLogger.Instance.TryLog(Channel.TaskMonitoring, _env.EnvironmentName, $":x: `{nameof(LeaderboardHistoryBackgroundService)}` failed because the Devil Daggers servers didn't return a leaderboard.");
+					await DiscordLogger.TryLog(Channel.MonitoringTask, _env.EnvironmentName, $":x: `{nameof(LeaderboardHistoryBackgroundService)}` failed because the Devil Daggers servers didn't return a leaderboard.");
 				}
 			}
 			catch (Exception ex)
 			{
-				await BotLogger.Instance.TryLog(Channel.TaskMonitoring, _env.EnvironmentName, $":x: `{nameof(LeaderboardHistoryBackgroundService)}` failed with exception: `{ex.Message}`");
+				await DiscordLogger.TryLog(Channel.MonitoringTask, _env.EnvironmentName, $":x: `{nameof(LeaderboardHistoryBackgroundService)}` failed with exception: `{ex.Message}`");
 			}
 		}
 

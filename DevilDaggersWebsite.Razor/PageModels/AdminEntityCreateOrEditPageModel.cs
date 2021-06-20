@@ -115,7 +115,7 @@ namespace DevilDaggersWebsite.Razor.PageModels
 					_entity.CreateManyToManyRelations(DbContext, AdminDto);
 					DbContext.SaveChanges();
 
-					await DiscordLogger.Instance.TryLog(Channel.AuditLogMonitoring, _env.EnvironmentName, auditLogger.ToString());
+					await DiscordLogger.TryLog(Channel.MonitoringAuditLog, _env.EnvironmentName, auditLogger.ToString());
 				}
 				catch (DbUpdateConcurrencyException) when (!DbSet.Any(e => e.Id == _entity.Id))
 				{
@@ -158,7 +158,7 @@ namespace DevilDaggersWebsite.Razor.PageModels
 				StringBuilder auditLogger = new($"`CREATE` by `{this.GetIdentity()}` for `{typeof(TEntity).Name}` `{_entity.Id}`\n");
 				LogCreateOrEdit(auditLogger, null, AdminDto.Log());
 
-				await DiscordLogger.Instance.TryLog(Channel.AuditLogMonitoring, _env.EnvironmentName, auditLogger.ToString());
+				await DiscordLogger.TryLog(Channel.MonitoringAuditLog, _env.EnvironmentName, auditLogger.ToString());
 			}
 
 			return RedirectToPage("./Index");

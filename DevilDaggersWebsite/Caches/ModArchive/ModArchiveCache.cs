@@ -139,7 +139,7 @@ namespace DevilDaggersWebsite.Caches.ModArchive
 		{
 			int cacheCount = _cache.Count;
 			_cache.Clear();
-			await DiscordLogger.Instance.TryLog(Channel.CacheMonitoring, env.EnvironmentName, $":{_emote}: Successfully cleared dynamic `{nameof(ModArchiveCache)}`. (Removed `{cacheCount}` instances. File cache is not affected.)");
+			await DiscordLogger.TryLog(Channel.MonitoringCache, env.EnvironmentName, $":{_emote}: Successfully cleared dynamic `{nameof(ModArchiveCache)}`. (Removed `{cacheCount}` instances. File cache is not affected.)");
 		}
 
 		public string LogState(IWebHostEnvironment env)

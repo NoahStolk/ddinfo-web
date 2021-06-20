@@ -2,12 +2,12 @@
 {
 	public enum Channel
 	{
-		AuditLogMonitoring,
-		CacheMonitoring,
-		CustomLeaderboardMonitoring,
-		ErrorMonitoring,
-		TaskMonitoring,
-		TestMonitoring,
+		MonitoringAuditLog,
+		MonitoringCache,
+		MonitoringCustomLeaderboard,
+		MonitoringError,
+		MonitoringTask,
+		MonitoringTest,
 		CustomLeaderboards,
 	}
 }
