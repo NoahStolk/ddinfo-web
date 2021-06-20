@@ -21,7 +21,7 @@ namespace DevilDaggersWebsite.BackgroundServices
 			_responseTimeContainer = responseTimeContainer;
 		}
 
-		protected override TimeSpan Interval => TimeSpan.FromSeconds(15); // TimeSpan.FromHours(1);
+		protected override TimeSpan Interval => TimeSpan.FromHours(1);
 
 		protected override async Task ExecuteTaskAsync(CancellationToken stoppingToken)
 		{
