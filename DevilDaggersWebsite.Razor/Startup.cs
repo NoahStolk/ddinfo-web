@@ -1,10 +1,9 @@
 ﻿// #define TEST_EXCEPTION_HANDLER
 using DevilDaggersWebsite.Authorization;
+using DevilDaggersWebsite.BackgroundServices;
 using DevilDaggersWebsite.Caches.LeaderboardStatistics;
 using DevilDaggersWebsite.Caches.ModArchive;
 using DevilDaggersWebsite.Entities;
-using DevilDaggersWebsite.Tasks;
-using DevilDaggersWebsite.Tasks.Scheduling;
 using DevilDaggersWebsite.Transients;
 using Microsoft.AspNetCore.Builder;
 using Microsoft.AspNetCore.Hosting;
@@ -55,21 +54,13 @@ namespace DevilDaggersWebsite.Razor
 			services.AddSingleton<IHttpContextAccessor, HttpContextAccessor>();
 			services.AddSingleton<IActionContextAccessor, ActionContextAccessor>();
 
-			if (WebHostEnvironment.IsDevelopment())
-				services.AddSingleton<IScheduledTask, CreateLeaderboardHistoryFileTaskDummy>();
-			else
-				services.AddSingleton<IScheduledTask, CreateLeaderboardHistoryFileTask>();
+			if (!WebHostEnvironment.IsDevelopment())
+				services.AddHostedService<LeaderboardHistoryBackgroundService>();
 
 			services.AddTransient<WorldRecordsHelper>();
 			services.AddTransient<ModHelper>();
 			services.AddTransient<SpawnsetHelper>();
 			services.AddTransient<IToolHelper, ToolHelper>();
-
-			services.AddScheduler((sender, args) =>
-			{
-				Console.Write(args.Exception?.Message);
-				args.SetObserved();
-			});
 
 			services
 				.AddControllers()
