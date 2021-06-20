@@ -26,6 +26,8 @@ namespace DevilDaggersWebsite.BackgroundServices
 
 		protected override async Task ExecuteAsync(CancellationToken stoppingToken)
 		{
+			Begin();
+
 			while (!stoppingToken.IsCancellationRequested)
 			{
 				await ExecuteTaskAsync(stoppingToken);
@@ -34,6 +36,15 @@ namespace DevilDaggersWebsite.BackgroundServices
 					await Task.Delay(Interval, stoppingToken);
 			}
 
+			await End();
+		}
+
+		protected virtual void Begin()
+		{
+		}
+
+		protected virtual async Task End()
+		{
 			await DiscordLogger.TryLog(Channel.MonitoringTask, _environment.EnvironmentName, $":x: Cancellation for `{BackgroundServiceName}` was requested.");
 		}
 	}
