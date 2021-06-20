@@ -36,7 +36,7 @@ namespace DevilDaggersDiscordBot
 
 			DiscordChannel? cacheChannel = _channels[Channel.MonitoringCache].DiscordChannel;
 			if (cacheChannel != null)
-				CacheMessage = await cacheChannel.GetMessageAsync(856151636368031785);
+				CacheMessage = await cacheChannel.GetMessageAsync(CacheMessageId);
 		}
 
 		internal class ChannelWrapper
