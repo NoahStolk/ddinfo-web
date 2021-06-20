@@ -36,7 +36,8 @@ namespace DevilDaggersWebsite.BackgroundServices
 				}
 				catch (Exception ex)
 				{
-					await DiscordLogger.TryLog(Channel.MonitoringTask, _environment.EnvironmentName, $":x: Task execution for `{BackgroundServiceName}` failed with exception: `{ex.Message}`");
+					Channel channel = _environment.IsDevelopment() ? Channel.MonitoringTest : Channel.MonitoringTask;
+					await DiscordLogger.TryLog(channel, _environment.EnvironmentName, $":x: Task execution for `{BackgroundServiceName}` failed with exception: `{ex.Message}`");
 				}
 
 				if (Interval.TotalMilliseconds > 0)
