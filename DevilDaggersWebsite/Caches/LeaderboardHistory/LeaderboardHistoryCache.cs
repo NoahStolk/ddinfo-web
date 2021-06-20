@@ -37,6 +37,6 @@ namespace DevilDaggersWebsite.Caches.LeaderboardHistory
 			=> _cache.Clear();
 
 		public string LogState(IWebHostEnvironment env)
-			=> $":{_emote}: `{nameof(LeaderboardHistoryCache)}` has `{_cache.Count}` instances in memory.";
+			=> $":{_emote}: `{_cache.Count}` in memory";
 	}
 }

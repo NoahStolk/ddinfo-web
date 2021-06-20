@@ -71,6 +71,6 @@ namespace DevilDaggersWebsite.Caches.SpawnsetHash
 			=> _cache.Clear();
 
 		public string LogState(IWebHostEnvironment env)
-			=> $":{_emote}: `{nameof(SpawnsetHashCache)}` has `{_cache.Count}` instances in memory.";
+			=> $":{_emote}: `{_cache.Count}` in memory";
 	}
 }

@@ -83,6 +83,6 @@ namespace DevilDaggersWebsite.Caches.LeaderboardStatistics
 		}
 
 		public string LogState(IWebHostEnvironment env)
-			=> $":{_emote}: `{nameof(LeaderboardStatisticsCache)}` has `{_entries.Count}` instances in memory.";
+			=> $":{_emote}: `{_entries.Count}` in memory";
 	}
 }
