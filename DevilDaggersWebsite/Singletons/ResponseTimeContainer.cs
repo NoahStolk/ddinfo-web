@@ -15,12 +15,24 @@ namespace DevilDaggersWebsite.Singletons
 		public string CreateLog()
 		{
 			StringBuilder sb = new("```");
-			sb.AppendFormat("{0,-50}", "Path").AppendFormat("{0,-20}", "Requests").AppendFormat("{0,-20}", "Average response time").AppendLine();
+			sb.AppendFormat("{0,-50}", "Path")
+				.AppendFormat("{0,-10}", "Requests")
+				.AppendFormat("{0,-30}", "Average response time")
+				.AppendFormat("{0,-20}", "Min time")
+				.AppendFormat("{0,-20}", "Max time")
+				.AppendLine();
 			foreach (IGrouping<string, ResponseLog> group in _responseLogs.GroupBy(rl => rl.Path))
 			{
 				int count = group.Count();
-				long averageResponseTimeTicks = group.Sum(rl => rl.ResponseTimeTicks) / count;
-				sb.AppendFormat("{0,-50}", group.Key).AppendFormat("{0,-20}", count).AppendFormat("{0,-20}", GetFormattedTime(averageResponseTimeTicks)).AppendLine();
+				double averageResponseTimeTicks = group.Average(rl => rl.ResponseTimeTicks);
+				long minResponseTimeTicks = group.Min(rl => rl.ResponseTimeTicks);
+				long maxResponseTimeTicks = group.Max(rl => rl.ResponseTimeTicks);
+				sb.AppendFormat("{0,-50}", group.Key)
+					.AppendFormat("{0,-10}", count)
+					.AppendFormat("{0,-30}", GetFormattedTime(averageResponseTimeTicks))
+					.AppendFormat("{0,-20}", GetFormattedTime(minResponseTimeTicks))
+					.AppendFormat("{0,-20}", GetFormattedTime(maxResponseTimeTicks))
+					.AppendLine();
 			}
 
 			sb.AppendLine("```");
@@ -31,6 +43,17 @@ namespace DevilDaggersWebsite.Singletons
 		public void Clear()
 			=> _responseLogs.Clear();
 
+		private static string GetFormattedTime(double ticks)
+		{
+			if (ticks >= TimeSpan.TicksPerSecond)
+				return $"{ticks / (float)TimeSpan.TicksPerSecond:0.00} s";
+
+			if (ticks >= TimeSpan.TicksPerMillisecond)
+				return $"{ticks / (float)TimeSpan.TicksPerMillisecond:0.0} ms";
+
+			return $"{ticks / 10f:0} μs";
+		}
+
 		private static string GetFormattedTime(long ticks)
 		{
 			if (ticks >= TimeSpan.TicksPerSecond)
@@ -39,7 +62,7 @@ namespace DevilDaggersWebsite.Singletons
 			if (ticks >= TimeSpan.TicksPerMillisecond)
 				return $"{ticks / (float)TimeSpan.TicksPerMillisecond:0.0} ms";
 
-			return $"{ticks / (TimeSpan.TicksPerMillisecond * 1000f):0} μs";
+			return $"{ticks / 10f:0} μs";
 		}
 
 		private class ResponseLog
