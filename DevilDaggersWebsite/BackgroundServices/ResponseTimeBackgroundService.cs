@@ -21,15 +21,20 @@ namespace DevilDaggersWebsite.BackgroundServices
 			_responseTimeContainer = responseTimeContainer;
 		}
 
-		protected override TimeSpan Interval => TimeSpan.FromHours(1);
+		protected override TimeSpan Interval => TimeSpan.FromMinutes(1);
 
 		protected override async Task ExecuteTaskAsync(CancellationToken stoppingToken)
 		{
-			await DiscordLogger.TryLog(Channel.MonitoringTask, _environment.EnvironmentName, _responseTimeContainer.CreateLog(_measurementStart, DateTime.UtcNow));
+			DateTime now = DateTime.UtcNow;
+			if (now.Minute != 0)
+				return;
+
+			foreach (string log in _responseTimeContainer.CreateLogs(_measurementStart, now))
+				await DiscordLogger.TryLog(Channel.MonitoringTest, _environment.EnvironmentName, log);
 
 			_responseTimeContainer.Clear();
 
-			_measurementStart = DateTime.UtcNow;
+			_measurementStart = DateTime.UtcNow; // Get UtcNow again. Logging takes time.
 		}
 
 		protected override void Begin()
