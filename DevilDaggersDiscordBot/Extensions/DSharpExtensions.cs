@@ -11,7 +11,7 @@ namespace DevilDaggersDiscordBot.Extensions
 			if (level > 5)
 				return;
 
-			builder.AddField(level == 0 ? "Exception message" : $"Inner exception message {level}", exception.Message.TrimAfter());
+			builder.AddField(level == 0 ? "Exception message" : $"Inner exception message {level}", exception.Message.TrimAfter(1024));
 			if (exception.InnerException != null)
 				builder.AddError(exception.InnerException, ++level);
 		}
@@ -26,12 +26,9 @@ namespace DevilDaggersDiscordBot.Extensions
 
 		public static DiscordEmbedBuilder AddFieldObject(this DiscordEmbedBuilder builder, string name, object? value, bool inline = false)
 		{
-			string? valueString = value?.ToString()?.TrimAfter();
+			string? valueString = value?.ToString()?.TrimAfter(1024);
 
 			return builder.AddField(name, string.IsNullOrWhiteSpace(valueString) ? "null" : valueString, inline);
 		}
-
-		private static string TrimAfter(this string s, int count = 1024)
-			=> s.Length > count ? s.Substring(0, count) : s;
 	}
 }

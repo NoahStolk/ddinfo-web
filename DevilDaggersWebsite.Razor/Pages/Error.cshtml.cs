@@ -40,7 +40,7 @@ namespace DevilDaggersWebsite.Razor.Pages
 					if (exceptionFeature.Error.StackTrace != null)
 					{
 						string stackTrace = exceptionFeature.Error.StackTrace;
-						builder.AddFieldObject("Stack trace", stackTrace.Substring(0, Math.Min(100, stackTrace.Length)));
+						builder.AddFieldObject("Stack trace", stackTrace.TrimAfter(100));
 					}
 
 					builder.AddError(exceptionFeature.Error);

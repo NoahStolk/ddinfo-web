@@ -1,4 +1,5 @@
-﻿using System;
+﻿using DevilDaggersDiscordBot.Extensions;
+using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Text;
@@ -39,7 +40,7 @@ namespace DevilDaggersWebsite.Singletons
 				double averageResponseTimeTicks = group.Average(rl => rl.ResponseTimeTicks);
 				long minResponseTimeTicks = group.Min(rl => rl.ResponseTimeTicks);
 				long maxResponseTimeTicks = group.Max(rl => rl.ResponseTimeTicks);
-				sb.AppendFormat("{0,-50}", group.Key)
+				sb.AppendFormat("{0,-50}", group.Key.TrimAfter(50))
 					.AppendFormat("{0,10}", count)
 					.AppendFormat("{0,30}", GetFormattedTime(averageResponseTimeTicks))
 					.AppendFormat("{0,20}", GetFormattedTime(minResponseTimeTicks))
