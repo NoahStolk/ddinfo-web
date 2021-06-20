@@ -1,4 +1,5 @@
 ﻿using DSharpPlus;
+using DSharpPlus.Entities;
 using System.Collections.Generic;
 using System.Threading.Tasks;
 
@@ -6,7 +7,7 @@ namespace DevilDaggersDiscordBot
 {
 	public static class ServerConstants
 	{
-		public const ulong BotUserId = 645209987949395969;
+		internal const ulong BotUserId = 645209987949395969;
 
 		private static readonly Dictionary<Channel, ChannelWrapper> _channels = new()
 		{
@@ -19,7 +20,7 @@ namespace DevilDaggersDiscordBot
 			{ Channel.CustomLeaderboards, new(578316107836817418) },
 		};
 
-		public static IReadOnlyDictionary<Channel, ChannelWrapper> Channels => _channels;
+		internal static IReadOnlyDictionary<Channel, ChannelWrapper> Channels => _channels;
 
 		internal static async Task LoadChannels(DiscordClient client)
 		{
@@ -28,6 +29,18 @@ namespace DevilDaggersDiscordBot
 				if (kvp.Value.DiscordChannel == null)
 					kvp.Value.DiscordChannel = await client.GetChannelAsync(kvp.Value.ChannelId);
 			}
+		}
+
+		internal class ChannelWrapper
+		{
+			internal ChannelWrapper(ulong channelId)
+			{
+				ChannelId = channelId;
+			}
+
+			internal ulong ChannelId { get; }
+
+			internal DiscordChannel? DiscordChannel { get; set; }
 		}
 	}
 }
