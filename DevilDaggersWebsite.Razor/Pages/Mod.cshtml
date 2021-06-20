@@ -42,7 +42,7 @@
 			</div>
 			<div class="row">
 				<div class="col-xs-6">Description</div>
-				@if (!string.IsNullOrEmpty(Model.AssetMod.HtmlDescription))
+				@if (!string.IsNullOrWhiteSpace(Model.AssetMod.HtmlDescription))
 				{
 					<div class="col-xs-6 mod-description">
 						@RazorUtils.GetLayout(Model.AssetMod.HtmlDescription, GameVersion.V31)
@@ -171,7 +171,7 @@
 				int prohibited = binary.Chunks.Count(mad => mad.IsProhibited);
 				<div class="row">
 					<div class="col-xs-4 col-sm-2 col-md-2 mod-binary-type">@binary.ModBinaryType</div>
-					<div class="col-xs-8 col-sm-6 col-md-5">@binary.Name</div>
+					<div class="col-xs-8 col-sm-6 col-md-5 prevent-break-out">@binary.Name</div>
 					<div class="hidden-xs col-sm-2 col-md-2 text-right">@await Html.PartialAsync("Partials/FileSizePartial", binary.Size)</div>
 					<div class="hidden-xs col-sm-2 col-md-1 text-right">@binary.Chunks.Count</div>
 					@if (prohibited == 0)
@@ -189,7 +189,7 @@
 		<h2>Assets</h2>
 		@foreach (ModBinaryCacheData binary in Model.ArchiveData.Binaries.OrderBy(b => b.Name))
 		{
-			<h3>@binary.Name</h3>
+			<h3 class="prevent-break-out">@binary.Name</h3>
 			<div class="binary-container">
 				<div class="row">
 					@foreach (IGrouping<AssetType, ModChunkCacheData> assetGroup in binary.Chunks.GroupBy(mad => mad.AssetType))
