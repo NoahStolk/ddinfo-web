@@ -29,8 +29,12 @@ namespace DevilDaggersWebsite.BackgroundServices
 			if (now.Minute != 0)
 				return;
 
+			bool includeEnvironmentName = true;
 			foreach (string log in _responseTimeContainer.CreateLogs(_measurementStart, now))
-				await DiscordLogger.TryLog(Channel.MonitoringTest, _environment.EnvironmentName, log);
+			{
+				await DiscordLogger.TryLog(Channel.MonitoringTest, _environment.EnvironmentName, log, null, includeEnvironmentName);
+				includeEnvironmentName = false;
+			}
 
 			_responseTimeContainer.Clear();
 
