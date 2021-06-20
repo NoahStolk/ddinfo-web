@@ -22,7 +22,7 @@ namespace DevilDaggersDiscordBot
 
 		internal static IReadOnlyDictionary<Channel, ChannelWrapper> Channels => _channels;
 
-		internal static async Task LoadChannels(DiscordClient client)
+		internal static async Task LoadServerChannelsAndMessages(DiscordClient client)
 		{
 			foreach (KeyValuePair<Channel, ChannelWrapper> kvp in _channels)
 			{
