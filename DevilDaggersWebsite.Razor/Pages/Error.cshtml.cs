@@ -1,6 +1,6 @@
 ﻿using DevilDaggersCore.Utils;
+using DevilDaggersDiscordBot;
 using DevilDaggersDiscordBot.Extensions;
-using DevilDaggersDiscordBot.Logging;
 using DSharpPlus.Entities;
 using Microsoft.AspNetCore.Diagnostics;
 using Microsoft.AspNetCore.Hosting;
@@ -50,11 +50,11 @@ namespace DevilDaggersWebsite.Razor.Pages
 					builder.AddError(new($"{nameof(IExceptionHandlerPathFeature)} is not available in the current HTTP context."));
 				}
 
-				await DiscordLogger.Instance.TryLog(Channel.ErrorMonitoring, _env.EnvironmentName, null, builder.Build());
+				await DiscordLogger.TryLog(Channel.MonitoringError, _env.EnvironmentName, null, builder.Build());
 			}
 			catch (Exception ex)
 			{
-				await DiscordLogger.Instance.TryLog(Channel.ErrorMonitoring, _env.EnvironmentName, $"Error report on {nameof(ErrorModel)} failed: {ex.Message}");
+				await DiscordLogger.TryLog(Channel.MonitoringError, _env.EnvironmentName, $"Error report on {nameof(ErrorModel)} failed: {ex.Message}");
 			}
 		}
 	}

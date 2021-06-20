@@ -4,6 +4,8 @@ using DevilDaggersWebsite.BackgroundServices;
 using DevilDaggersWebsite.Caches.LeaderboardStatistics;
 using DevilDaggersWebsite.Caches.ModArchive;
 using DevilDaggersWebsite.Entities;
+using DevilDaggersWebsite.Middleware;
+using DevilDaggersWebsite.Singletons;
 using DevilDaggersWebsite.Transients;
 using Microsoft.AspNetCore.Builder;
 using Microsoft.AspNetCore.Hosting;
@@ -53,7 +55,9 @@ namespace DevilDaggersWebsite.Razor
 
 			services.AddSingleton<IHttpContextAccessor, HttpContextAccessor>();
 			services.AddSingleton<IActionContextAccessor, ActionContextAccessor>();
+			services.AddSingleton<ResponseTimeContainer>();
 
+			services.AddHostedService<ResponseTimeBackgroundService>();
 			if (!WebHostEnvironment.IsDevelopment())
 				services.AddHostedService<LeaderboardHistoryBackgroundService>();
 
@@ -94,6 +98,8 @@ namespace DevilDaggersWebsite.Razor
 		{
 			CultureInfo.DefaultThreadCurrentCulture = CultureInfo.InvariantCulture;
 			CultureInfo.DefaultThreadCurrentUICulture = CultureInfo.InvariantCulture;
+
+			app.UseMiddleware<ResponseTimeMiddleware>();
 
 			// Do not change order of redirects.
 			RewriteOptions options = new RewriteOptions()

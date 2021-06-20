@@ -1,4 +1,4 @@
-﻿using DevilDaggersDiscordBot.Logging;
+﻿using DevilDaggersDiscordBot;
 using DevilDaggersWebsite.Dto.Admin;
 using DevilDaggersWebsite.Entities;
 using DevilDaggersWebsite.Razor.Extensions;
@@ -50,7 +50,7 @@ namespace DevilDaggersWebsite.Razor.PageModels
 
 				StringBuilder auditLogger = new($"`DELETE` by `{this.GetIdentity()}` for `{typeof(TEntity).Name}` `{id}`\n");
 				LogDelete(auditLogger, Entity.Populate().Log());
-				await DiscordLogger.Instance.TryLog(Channel.AuditLogMonitoring, _env.EnvironmentName, auditLogger.ToString());
+				await DiscordLogger.TryLog(Channel.MonitoringAuditLog, _env.EnvironmentName, auditLogger.ToString());
 			}
 
 			return RedirectToPage("./Index");

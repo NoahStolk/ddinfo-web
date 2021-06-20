@@ -31,6 +31,12 @@ namespace DevilDaggersWebsite.Razor.PageModels
 
 		protected void LogCreateOrEdit(StringBuilder auditLogger, Dictionary<string, string>? oldLog, Dictionary<string, string> newLog)
 		{
+			if (AreLogsEqual(oldLog, newLog))
+			{
+				auditLogger.AppendLine("`No changes.`");
+				return;
+			}
+
 			auditLogger.AppendLine("```diff");
 
 			const string propertyHeader = "Property";
@@ -71,6 +77,21 @@ namespace DevilDaggersWebsite.Razor.PageModels
 			}
 
 			auditLogger.AppendLine("```");
+
+			static bool AreLogsEqual(Dictionary<string, string>? oldLog, Dictionary<string, string> newLog)
+			{
+				if (oldLog != null && oldLog.Count == newLog.Count)
+				{
+					foreach (KeyValuePair<string, string> oldKvp in oldLog)
+					{
+						string? newStr = newLog.ContainsKey(oldKvp.Key) ? newLog[oldKvp.Key] : null;
+						if (newStr != oldKvp.Value)
+							return false;
+					}
+				}
+
+				return true;
+			}
 		}
 
 		protected void LogDelete(StringBuilder auditLogger, Dictionary<string, string> log)

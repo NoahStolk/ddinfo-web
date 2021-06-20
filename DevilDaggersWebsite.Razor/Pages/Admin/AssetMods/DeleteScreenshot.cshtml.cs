@@ -1,4 +1,4 @@
-﻿using DevilDaggersDiscordBot.Logging;
+﻿using DevilDaggersDiscordBot;
 using DevilDaggersWebsite.Razor.Extensions;
 using Microsoft.AspNetCore.Hosting;
 using Microsoft.AspNetCore.Mvc;
@@ -36,13 +36,13 @@ namespace DevilDaggersWebsite.Razor.Pages.Admin.AssetMods
 			string path = Path.Combine(_env.WebRootPath, "mod-screenshots", fileName);
 			if (!System.IO.File.Exists(path))
 			{
-				await DiscordLogger.Instance.TryLog(Channel.AuditLogMonitoring, _env.EnvironmentName, $"{failedAttemptMessage}: File `{fileName}` does not exist.");
+				await DiscordLogger.TryLog(Channel.MonitoringAuditLog, _env.EnvironmentName, $"{failedAttemptMessage}: File `{fileName}` does not exist.");
 				return null;
 			}
 
 			System.IO.File.Delete(path);
 
-			await DiscordLogger.Instance.TryLog(Channel.AuditLogMonitoring, _env.EnvironmentName, $":white_check_mark: `{this.GetIdentity()}` deleted ASSETMOD screenshot :frame_photo: `{fileName}`.");
+			await DiscordLogger.TryLog(Channel.MonitoringAuditLog, _env.EnvironmentName, $":white_check_mark: `{this.GetIdentity()}` deleted ASSETMOD screenshot :frame_photo: `{fileName}`.");
 
 			return RedirectToPage("Index");
 		}

@@ -1,4 +1,4 @@
-﻿using DevilDaggersDiscordBot.Logging;
+﻿using DevilDaggersDiscordBot;
 using DevilDaggersWebsite.Caches.ModArchive;
 using DevilDaggersWebsite.Razor.Extensions;
 using Microsoft.AspNetCore.Hosting;
@@ -34,13 +34,13 @@ namespace DevilDaggersWebsite.Razor.Pages.Admin.AssetMods
 			string path = Path.Combine(_env.WebRootPath, "mods", fileName);
 			if (!System.IO.File.Exists(path))
 			{
-				await DiscordLogger.Instance.TryLog(Channel.AuditLogMonitoring, _env.EnvironmentName, $"{failedAttemptMessage}: File `{fileName}` does not exist.");
+				await DiscordLogger.TryLog(Channel.MonitoringAuditLog, _env.EnvironmentName, $"{failedAttemptMessage}: File `{fileName}` does not exist.");
 				return null;
 			}
 
 			System.IO.File.Delete(path);
 
-			await DiscordLogger.Instance.TryLog(Channel.AuditLogMonitoring, _env.EnvironmentName, $":white_check_mark: `{this.GetIdentity()}` deleted ASSETMOD file :file_folder: `{fileName}`.");
+			await DiscordLogger.TryLog(Channel.MonitoringAuditLog, _env.EnvironmentName, $":white_check_mark: `{this.GetIdentity()}` deleted ASSETMOD file :file_folder: `{fileName}`.");
 
 			// Clear entire memory cache (can't clear individual entries).
 			await ModArchiveCache.Instance.Clear(_env);
@@ -50,7 +50,7 @@ namespace DevilDaggersWebsite.Razor.Pages.Admin.AssetMods
 			if (System.IO.File.Exists(cacheFilePath))
 			{
 				System.IO.File.Delete(cacheFilePath);
-				await DiscordLogger.Instance.TryLog(Channel.CacheMonitoring, _env.EnvironmentName, $"Deleted mod archive cache file `{Path.GetFileName(cacheFilePath)}`.");
+				await DiscordLogger.TryLog(Channel.MonitoringCache, _env.EnvironmentName, $"Deleted mod archive cache file `{Path.GetFileName(cacheFilePath)}`.");
 			}
 
 			return RedirectToPage("Index");

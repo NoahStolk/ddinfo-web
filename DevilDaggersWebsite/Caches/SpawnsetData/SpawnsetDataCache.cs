@@ -1,4 +1,4 @@
-﻿using DevilDaggersDiscordBot.Logging;
+﻿using DevilDaggersDiscordBot;
 using Microsoft.AspNetCore.Hosting;
 using System;
 using System.Collections.Concurrent;
@@ -39,7 +39,7 @@ namespace DevilDaggersWebsite.Caches.SpawnsetData
 		{
 			int cacheCount = _cache.Count;
 			_cache.Clear();
-			await DiscordLogger.Instance.TryLog(Channel.CacheMonitoring, env.EnvironmentName, $":{_emote}: Successfully cleared dynamic `{nameof(SpawnsetDataCache)}`. (Removed `{cacheCount}` instances.)");
+			await DiscordLogger.TryLog(Channel.MonitoringCache, env.EnvironmentName, $":{_emote}: Successfully cleared dynamic `{nameof(SpawnsetDataCache)}`. (Removed `{cacheCount}` instances.)");
 		}
 
 		public string LogState(IWebHostEnvironment env)

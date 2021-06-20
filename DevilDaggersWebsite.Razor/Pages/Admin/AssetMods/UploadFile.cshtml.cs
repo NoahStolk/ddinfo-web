@@ -1,4 +1,4 @@
-﻿using DevilDaggersDiscordBot.Logging;
+﻿using DevilDaggersDiscordBot;
 using DevilDaggersWebsite.Caches.ModArchive;
 using DevilDaggersWebsite.Enumerators;
 using DevilDaggersWebsite.Exceptions;
@@ -45,13 +45,13 @@ namespace DevilDaggersWebsite.Razor.Pages.Admin.AssetMods
 			{
 				if (FormFile == null)
 				{
-					await DiscordLogger.Instance.TryLog(Channel.AuditLogMonitoring, _env.EnvironmentName, $"{failedAttemptMessage}: No file.");
+					await DiscordLogger.TryLog(Channel.MonitoringAuditLog, _env.EnvironmentName, $"{failedAttemptMessage}: No file.");
 					return;
 				}
 
 				if (FormFile.Length > MaxFileSize)
 				{
-					await DiscordLogger.Instance.TryLog(Channel.AuditLogMonitoring, _env.EnvironmentName, $"{failedAttemptMessage}: File too large (`{FormFile.Length:n0}` / max `{MaxFileSize:n0}` bytes).");
+					await DiscordLogger.TryLog(Channel.MonitoringAuditLog, _env.EnvironmentName, $"{failedAttemptMessage}: File too large (`{FormFile.Length:n0}` / max `{MaxFileSize:n0}` bytes).");
 					return;
 				}
 
@@ -59,26 +59,26 @@ namespace DevilDaggersWebsite.Razor.Pages.Admin.AssetMods
 				long usedSpace = di.EnumerateFiles("*.*", SearchOption.AllDirectories).Sum(fi => fi.Length);
 				if (FormFile.Length + usedSpace > MaxHostingSpace)
 				{
-					await DiscordLogger.Instance.TryLog(Channel.AuditLogMonitoring, _env.EnvironmentName, $"{failedAttemptMessage}: This file is {FormFile.Length:n0} bytes in size, but only {MaxHostingSpace - usedSpace:n0} bytes of free space is available.");
+					await DiscordLogger.TryLog(Channel.MonitoringAuditLog, _env.EnvironmentName, $"{failedAttemptMessage}: This file is {FormFile.Length:n0} bytes in size, but only {MaxHostingSpace - usedSpace:n0} bytes of free space is available.");
 					return;
 				}
 
 				if (FormFile.FileName.Length > MaxFileNameLength)
 				{
-					await DiscordLogger.Instance.TryLog(Channel.AuditLogMonitoring, _env.EnvironmentName, $"{failedAttemptMessage}: File name too long (`{FormFile.FileName.Length}` / max `{MaxFileNameLength}` characters).");
+					await DiscordLogger.TryLog(Channel.MonitoringAuditLog, _env.EnvironmentName, $"{failedAttemptMessage}: File name too long (`{FormFile.FileName.Length}` / max `{MaxFileNameLength}` characters).");
 					return;
 				}
 
 				if (!FormFile.FileName.EndsWith(".zip"))
 				{
-					await DiscordLogger.Instance.TryLog(Channel.AuditLogMonitoring, _env.EnvironmentName, $"{failedAttemptMessage}: File name must have the `.zip` extension.");
+					await DiscordLogger.TryLog(Channel.MonitoringAuditLog, _env.EnvironmentName, $"{failedAttemptMessage}: File name must have the `.zip` extension.");
 					return;
 				}
 
 				filePath = Path.Combine(modsDirectory, FormFile.FileName);
 				if (Io.File.Exists(filePath))
 				{
-					await DiscordLogger.Instance.TryLog(Channel.AuditLogMonitoring, _env.EnvironmentName, $"{failedAttemptMessage}: File `{FormFile.FileName}` already exists.");
+					await DiscordLogger.TryLog(Channel.MonitoringAuditLog, _env.EnvironmentName, $"{failedAttemptMessage}: File `{FormFile.FileName}` already exists.");
 					return;
 				}
 
@@ -115,15 +115,15 @@ namespace DevilDaggersWebsite.Razor.Pages.Admin.AssetMods
 				}
 
 				Io.File.WriteAllBytes(filePath, formFileBytes);
-				await DiscordLogger.Instance.TryLog(Channel.AuditLogMonitoring, _env.EnvironmentName, $":white_check_mark: `{this.GetIdentity()}` uploaded new ASSETMOD file :file_folder: `{FormFile.FileName}` (`{formFileBytes.Length:n0}` bytes)");
+				await DiscordLogger.TryLog(Channel.MonitoringAuditLog, _env.EnvironmentName, $":white_check_mark: `{this.GetIdentity()}` uploaded new ASSETMOD file :file_folder: `{FormFile.FileName}` (`{formFileBytes.Length:n0}` bytes)");
 			}
 			catch (InvalidModBinaryException ex)
 			{
-				await DiscordLogger.Instance.TryLog(Channel.AuditLogMonitoring, _env.EnvironmentName, $"{failedAttemptMessage}: A binary file inside the file `{FormFile?.FileName}` is invalid. {ex.Message}");
+				await DiscordLogger.TryLog(Channel.MonitoringAuditLog, _env.EnvironmentName, $"{failedAttemptMessage}: A binary file inside the file `{FormFile?.FileName}` is invalid. {ex.Message}");
 			}
 			catch (Exception ex)
 			{
-				await DiscordLogger.Instance.TryLog(Channel.AuditLogMonitoring, _env.EnvironmentName, $"{failedAttemptMessage}: Fatal error: `{ex.Message}`");
+				await DiscordLogger.TryLog(Channel.MonitoringAuditLog, _env.EnvironmentName, $"{failedAttemptMessage}: Fatal error: `{ex.Message}`");
 			}
 		}
 	}
