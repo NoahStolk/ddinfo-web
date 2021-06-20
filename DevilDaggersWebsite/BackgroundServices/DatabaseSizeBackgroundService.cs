@@ -5,6 +5,7 @@ using Microsoft.EntityFrameworkCore;
 using Microsoft.Extensions.DependencyInjection;
 using System;
 using System.Linq;
+using System.Text;
 using System.Threading;
 using System.Threading.Tasks;
 
@@ -22,35 +23,43 @@ namespace DevilDaggersWebsite.BackgroundServices
 			_serviceScopeFactory = serviceScopeFactory;
 		}
 
-		protected override TimeSpan Interval => default;// TimeSpan.FromHours(1);
+		protected override TimeSpan Interval => TimeSpan.FromSeconds(5); // TODO: 1 hour
 
 		protected override async Task ExecuteTaskAsync(CancellationToken stoppingToken)
 		{
-			try
+			ApplicationDbContext dbContext = _serviceScopeFactory.CreateScope().ServiceProvider.GetRequiredService<ApplicationDbContext>();
+
+			IQueryable<InformationSchemaTable> tables = dbContext.InformationSchemaTables.FromSqlRaw(@"SELECT
+	table_name AS `Table`,
+	data_length `DataSize`,
+	index_length `IndexSize`,
+	avg_row_length `AverageRowLength`,
+	table_rows `TableRows`
+FROM information_schema.TABLES
+WHERE table_schema = 'devildaggers'
+ORDER BY table_name ASC;");
+
+			StringBuilder sb = new("```");
+			sb.AppendFormat("{0,-21}", "Table")
+				.AppendFormat("{0,12}", "Data size")
+				.AppendFormat("{0,12}", "Index size")
+				.AppendFormat("{0,20}", "Average row length")
+				.AppendFormat("{0,12}", "Table rows")
+				.AppendLine();
+			foreach (InformationSchemaTable ist in tables)
 			{
-				ApplicationDbContext dbContext = _serviceScopeFactory.CreateScope().ServiceProvider.GetRequiredService<ApplicationDbContext>();
-
-				IQueryable<InformationSchemaTable> tables = dbContext.InformationSchemaTables.FromSqlRaw("SELECT * FROM INFORMATION_SCHEMA.COLUMNS where TABLE_SCHEMA = 'devildaggers';");
-				foreach (var ist in tables)
-				{
-
-				}
-			}
-			catch (Exception ex)
-			{
-				await DiscordLogger.TryLogException(ex.Message, _environment.EnvironmentName, ex);
+				sb.AppendFormat("{0,-21}", ist.Table)
+					.AppendFormat("{0,12}", ist.DataSize)
+					.AppendFormat("{0,12}", ist.IndexSize)
+					.AppendFormat("{0,20}", ist.AverageRowLength)
+					.AppendFormat("{0,12}", ist.TableRows)
+					.AppendLine();
 			}
 
-			//dbContext.Database.Select(db => new { db.index_length});
-			//			dbContext.Database.ExecuteSqlRaw(@"SELECT 
-			//    table_schema AS `Database`, 
-			//    table_name AS `Table`, 
-			//    data_length `Data size`,
-			//    index_length `Index size`,
-			//    data_length + index_length `Total size`
-			//FROM information_schema.TABLES 
-			//WHERE table_schema = 'devildaggers'
-			//ORDER BY (data_length + index_length) DESC;");
+			sb.AppendLine("```");
+
+			// TODO: Edit Discord message.
+			await DiscordLogger.TryLog(Channel.MonitoringTest, _environment.EnvironmentName, sb.ToString());
 		}
 	}
 }

@@ -1,30 +1,18 @@
-﻿using System.ComponentModel.DataAnnotations;
-using System.ComponentModel.DataAnnotations.Schema;
+﻿using Microsoft.EntityFrameworkCore;
 
 namespace DevilDaggersWebsite.Entities
 {
+	[Keyless]
 	public class InformationSchemaTable
 	{
-		[Column("TABLE_CATALOG")]
-		public string TableCatalog { get; set; } = null!;
+		public string? Table { get; set; }
 
-		[Key]
-		[Column("TABLE_NAME")]
-		public string TableName { get; set; } = null!;
+		public int DataSize { get; set; }
 
-		[Column("TABLE_SCHEMA")]
-		public string TableSchema { get; set; } = null!;
+		public int IndexSize { get; set; }
 
-		//[Column("TABLE_ROWS")]
-		//public ulong TableRows { get; set; }
+		public int AverageRowLength { get; set; }
 
-		//[Column("avg_row_length")]
-		//public int AverageRowLength { get; set; }
-
-		//[Column("data_length")]
-		//public int DataLength { get; set; }
-
-		//[Column("index_length")]
-		//public int IndexLength { get; set; }
+		public int TableRows { get; set; }
 	}
 }
