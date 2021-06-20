@@ -9,7 +9,7 @@ using System.Threading;
 using System.Threading.Tasks;
 using BotLogger = DevilDaggersDiscordBot.Logging.DiscordLogger;
 
-namespace DevilDaggersWebsite.Tasks
+namespace DevilDaggersWebsite.BackgroundServices
 {
 	public class LeaderboardHistoryBackgroundService : AbstractBackgroundService
 	{
@@ -26,8 +26,7 @@ namespace DevilDaggersWebsite.Tasks
 		{
 			try
 			{
-				string? historyFileName = GetHistoryFileNameFromDate(DateTime.UtcNow);
-				if (historyFileName != null)
+				if (HistoryFileExistsForDate(DateTime.UtcNow))
 					return;
 
 				Dto.Leaderboard? lb = await LeaderboardClient.Instance.GetScores(1);
@@ -48,16 +47,16 @@ namespace DevilDaggersWebsite.Tasks
 			}
 		}
 
-		private string? GetHistoryFileNameFromDate(DateTime dateTime)
+		private bool HistoryFileExistsForDate(DateTime dateTime)
 		{
 			foreach (string path in Directory.GetFiles(Path.Combine(_env.WebRootPath, "leaderboard-history"), "*.json"))
 			{
 				string fileName = Path.GetFileNameWithoutExtension(path);
 				if (HistoryUtils.HistoryJsonFileNameToDateTime(fileName).Date == dateTime.Date)
-					return fileName;
+					return true;
 			}
 
-			return null;
+			return false;
 		}
 	}
 }

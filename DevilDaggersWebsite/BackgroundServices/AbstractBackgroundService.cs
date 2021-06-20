@@ -3,7 +3,7 @@ using System;
 using System.Threading;
 using System.Threading.Tasks;
 
-namespace DevilDaggersWebsite.Tasks
+namespace DevilDaggersWebsite.BackgroundServices
 {
 	public abstract class AbstractBackgroundService : BackgroundService
 	{

@@ -1,6 +1,7 @@
 ﻿using DevilDaggersCore.Spawnsets;
 using DevilDaggersWebsite.Api;
 using DevilDaggersWebsite.Entities;
+using DevilDaggersWebsite.Enumerators;
 using DevilDaggersWebsite.Extensions;
 using DevilDaggersWebsite.Tests.Data;
 using DevilDaggersWebsite.Tests.Extensions;
@@ -55,6 +56,14 @@ namespace DevilDaggersWebsite.Tests
 
 			if (!Spawnset.TryParse(File.ReadAllBytes(Path.Combine(wwwroot, "spawnsets", "V3")), out _spawnset))
 				Assert.Fail("Spawnset could not be parsed.");
+		}
+
+		[TestMethod]
+		public void TestIsAscending()
+		{
+			Assert.IsFalse(CustomLeaderboardCategory.Default.IsAscending());
+			Assert.IsTrue(CustomLeaderboardCategory.TimeAttack.IsAscending());
+			Assert.IsTrue(CustomLeaderboardCategory.Speedrun.IsAscending());
 		}
 
 		[TestMethod]
