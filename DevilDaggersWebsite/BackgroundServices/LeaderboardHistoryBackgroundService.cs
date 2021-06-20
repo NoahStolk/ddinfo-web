@@ -24,6 +24,7 @@ namespace DevilDaggersWebsite.BackgroundServices
 
 		protected override async Task ExecuteTaskAsync(CancellationToken stoppingToken)
 		{
+			// We want to retry until the file exists. We cannot just check the date, because in case the task fails, we want to try again the next minute.
 			if (HistoryFileExistsForDate(DateTime.UtcNow))
 				return;
 
