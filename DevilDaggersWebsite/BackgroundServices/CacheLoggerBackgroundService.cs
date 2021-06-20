@@ -27,6 +27,9 @@ namespace DevilDaggersWebsite.BackgroundServices
 
 		protected override async Task ExecuteTaskAsync(CancellationToken stoppingToken)
 		{
+			if (ServerConstants.CacheMessage == null)
+				return;
+
 			DiscordEmbedBuilder builder = new()
 			{
 				Title = $"Cache {DateTime.UtcNow:yyyy-MM-dd HH:mm:ss}",
@@ -38,7 +41,7 @@ namespace DevilDaggersWebsite.BackgroundServices
 			builder.AddFieldObject(nameof(SpawnsetDataCache), SpawnsetDataCache.Instance.LogState(_environment));
 			builder.AddFieldObject(nameof(SpawnsetHashCache), SpawnsetHashCache.Instance.LogState(_environment));
 
-			await DiscordLogger.EditCacheMessage(builder.Build());
+			await DiscordLogger.EditMessage(ServerConstants.CacheMessage, builder.Build());
 		}
 	}
 }

@@ -57,14 +57,10 @@ namespace DevilDaggersDiscordBot
 			}
 		}
 
-		public static async Task EditCacheMessage(DiscordEmbed embed)
+		public static async Task EditMessage(DiscordMessage message, DiscordEmbed embed)
 		{
-			DiscordMessage? message = ServerConstants.CacheMessage;
-			if (message != null)
-			{
-				await message.ModifyAsync(string.Empty);
-				await message.ModifyAsync(embed);
-			}
+			await message.ModifyAsync(" ");
+			await message.ModifyAsync(embed);
 		}
 	}
 }
