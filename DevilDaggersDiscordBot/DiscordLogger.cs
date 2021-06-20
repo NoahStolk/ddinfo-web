@@ -40,7 +40,7 @@ namespace DevilDaggersDiscordBot
 			await TryLog(Channel.MonitoringTest, "Development", $"{methodName} took {sw.ElapsedMilliseconds} ms.");
 		}
 
-		public static async Task TryLog(Channel loggingChannel, string environmentName, string? message, DiscordEmbed? embed = null)
+		public static async Task TryLog(Channel loggingChannel, string environmentName, string? message, DiscordEmbed? embed = null, bool includeEnvironmentName = true)
 		{
 			DiscordChannel? channel = ServerConstants.Channels[loggingChannel].DiscordChannel;
 			if (channel == null)
@@ -48,7 +48,7 @@ namespace DevilDaggersDiscordBot
 
 			try
 			{
-				string? composedMessage = embed == null ? $"[`{environmentName}`]: {message}" : null;
+				string? composedMessage = embed == null ? includeEnvironmentName ? $"[`{environmentName}`]: {message}" : message : null;
 				await channel.SendMessageAsyncSafe(composedMessage, embed);
 			}
 			catch
