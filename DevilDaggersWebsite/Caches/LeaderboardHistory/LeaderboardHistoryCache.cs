@@ -1,12 +1,10 @@
-﻿using DevilDaggersDiscordBot;
-using DevilDaggersWebsite.Dto;
+﻿using DevilDaggersWebsite.Dto;
 using Microsoft.AspNetCore.Hosting;
 using Newtonsoft.Json;
 using System;
 using System.Collections.Concurrent;
 using System.IO;
 using System.Text;
-using System.Threading.Tasks;
 
 namespace DevilDaggersWebsite.Caches.LeaderboardHistory
 {
@@ -35,12 +33,8 @@ namespace DevilDaggersWebsite.Caches.LeaderboardHistory
 			return lb;
 		}
 
-		public async Task Clear(IWebHostEnvironment env)
-		{
-			int cacheCount = _cache.Count;
-			_cache.Clear();
-			await DiscordLogger.TryLog(Channel.MonitoringCache, env.EnvironmentName, $":{_emote}: Successfully cleared dynamic `{nameof(LeaderboardHistoryCache)}`. (Removed `{cacheCount}` instances.)");
-		}
+		public void Clear()
+			=> _cache.Clear();
 
 		public string LogState(IWebHostEnvironment env)
 			=> $":{_emote}: `{nameof(LeaderboardHistoryCache)}` has `{_cache.Count}` instances in memory.";

@@ -30,7 +30,6 @@ namespace DevilDaggersWebsite.Caches.SpawnsetHash
 			if (spawnsetCacheData != null)
 				return spawnsetCacheData;
 
-			int cacheCount = _cache.Count;
 			foreach (string spawnsetPath in Directory.GetFiles(Path.Combine(env.WebRootPath, "spawnsets")))
 			{
 				byte[] spawnsetBytes = File.ReadAllBytes(spawnsetPath);
@@ -48,20 +47,10 @@ namespace DevilDaggersWebsite.Caches.SpawnsetHash
 					_cache.Add(spawnsetCacheData);
 
 				if (MatchHashes(spawnsetHash, hash))
-				{
-					await LogCacheInfo();
 					return spawnsetCacheData;
-				}
 			}
 
-			await LogCacheInfo();
 			return null;
-
-			async Task LogCacheInfo()
-			{
-				if (_cache.Count > cacheCount)
-					await DiscordLogger.TryLog(Channel.MonitoringCache, env.EnvironmentName, $":{_emote}: Successfully updated dynamic `{nameof(SpawnsetHashCache)}`. (`{_cache.Count}` (`+{_cache.Count - cacheCount}`) instances in memory.)");
-			}
 
 			static bool MatchHashes(byte[] a, byte[] b)
 			{
@@ -78,12 +67,8 @@ namespace DevilDaggersWebsite.Caches.SpawnsetHash
 			}
 		}
 
-		public async Task Clear(IWebHostEnvironment env)
-		{
-			int cacheCount = _cache.Count;
-			_cache.Clear();
-			await DiscordLogger.TryLog(Channel.MonitoringCache, env.EnvironmentName, $":{_emote}: Successfully cleared dynamic `{nameof(SpawnsetHashCache)}`. (Removed `{cacheCount}` instances.)");
-		}
+		public void Clear()
+			=> _cache.Clear();
 
 		public string LogState(IWebHostEnvironment env)
 			=> $":{_emote}: `{nameof(SpawnsetHashCache)}` has `{_cache.Count}` instances in memory.";

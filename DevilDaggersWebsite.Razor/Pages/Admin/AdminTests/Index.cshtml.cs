@@ -28,17 +28,17 @@ namespace DevilDaggersWebsite.Razor.Pages.Admin.AdminTests
 		public async Task OnPostInitiateLeaderboardStatisticsCache()
 			=> await LeaderboardStatisticsCache.Instance.Initiate(_env);
 
-		public async Task OnPostClearSpawnsetHashCache()
-			=> await SpawnsetHashCache.Instance.Clear(_env);
+		public void OnPostClearSpawnsetHashCache()
+			=> SpawnsetHashCache.Instance.Clear();
 
-		public async Task OnPostClearLeaderboardHistoryCache()
-			=> await LeaderboardHistoryCache.Instance.Clear(_env);
+		public void OnPostClearLeaderboardHistoryCache()
+			=> LeaderboardHistoryCache.Instance.Clear();
 
-		public async Task OnPostClearSpawnsetDataCache()
-			=> await SpawnsetDataCache.Instance.Clear(_env);
+		public void OnPostClearSpawnsetDataCache()
+			=> SpawnsetDataCache.Instance.Clear();
 
-		public async Task OnPostClearModDataCache()
-			=> await ModArchiveCache.Instance.Clear(_env);
+		public void OnPostClearModDataCache()
+			=> ModArchiveCache.Instance.Clear();
 
 		public async Task OnPostLogCaches()
 		{

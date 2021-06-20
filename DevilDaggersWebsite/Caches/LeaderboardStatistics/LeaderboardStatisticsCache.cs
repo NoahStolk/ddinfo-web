@@ -80,8 +80,6 @@ namespace DevilDaggersWebsite.Caches.LeaderboardStatistics
 			}
 
 			IsFetched = true;
-
-			await DiscordLogger.TryLog(Channel.MonitoringCache, env.EnvironmentName, $":{_emote}: Successfully initiated static `{nameof(LeaderboardStatisticsCache)}`.");
 		}
 
 		public string LogState(IWebHostEnvironment env)
