@@ -7,14 +7,14 @@ using System.Threading.Tasks;
 
 namespace DevilDaggersWebsite.BackgroundServices
 {
-	public class ResponseTimeBackgroundService : AbstractBackgroundService
+	public class ResponseTimeLoggerBackgroundService : AbstractBackgroundService
 	{
 		private readonly IWebHostEnvironment _environment;
 		private readonly ResponseTimeContainer _responseTimeContainer;
 
 		private DateTime _measurementStart;
 
-		public ResponseTimeBackgroundService(IWebHostEnvironment environment, ResponseTimeContainer responseTimeContainer)
+		public ResponseTimeLoggerBackgroundService(IWebHostEnvironment environment, ResponseTimeContainer responseTimeContainer)
 			: base(environment)
 		{
 			_environment = environment;
