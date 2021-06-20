@@ -33,7 +33,7 @@ namespace DevilDaggersWebsite.Singletons
 				.AppendFormat("{0,20}", "Max time")
 				.AppendLine();
 			int i = 0;
-			foreach (IGrouping<string, ResponseLog> group in _responseLogs.GroupBy(rl => rl.Path))
+			foreach (IGrouping<string, ResponseLog> group in _responseLogs.GroupBy(rl => rl.Path.ToLower()).OrderBy(rl => rl.Key))
 			{
 				int count = group.Count();
 				double averageResponseTimeTicks = group.Average(rl => rl.ResponseTimeTicks);
