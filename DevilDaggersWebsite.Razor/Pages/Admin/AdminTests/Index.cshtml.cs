@@ -7,7 +7,6 @@ using DevilDaggersWebsite.Caches.SpawnsetHash;
 using DSharpPlus.Entities;
 using Microsoft.AspNetCore.Hosting;
 using Microsoft.AspNetCore.Mvc.RazorPages;
-using System.Text;
 using System.Threading.Tasks;
 
 namespace DevilDaggersWebsite.Razor.Pages.Admin.AdminTests
@@ -39,19 +38,6 @@ namespace DevilDaggersWebsite.Razor.Pages.Admin.AdminTests
 
 		public void OnPostClearModDataCache()
 			=> ModArchiveCache.Instance.Clear();
-
-		public async Task OnPostLogCaches()
-		{
-			StringBuilder sb = new("\n");
-			sb.AppendLine("**Static caches:**");
-			sb.AppendLine(LeaderboardStatisticsCache.Instance.LogState(_env));
-			sb.AppendLine("**Dynamic caches:**");
-			sb.AppendLine(LeaderboardHistoryCache.Instance.LogState(_env));
-			sb.AppendLine(ModArchiveCache.Instance.LogState(_env));
-			sb.AppendLine(SpawnsetDataCache.Instance.LogState(_env));
-			sb.AppendLine(SpawnsetHashCache.Instance.LogState(_env));
-			await DiscordLogger.TryLog(Channel.MonitoringCache, _env.EnvironmentName, sb.ToString());
-		}
 
 		public async Task OnPostTestColors()
 		{
