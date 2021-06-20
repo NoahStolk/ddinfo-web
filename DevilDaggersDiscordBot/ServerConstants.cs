@@ -9,6 +9,8 @@ namespace DevilDaggersDiscordBot
 	{
 		internal const ulong BotUserId = 645209987949395969;
 
+		internal const ulong CacheMessageId = 856151636368031785;
+
 		private static readonly Dictionary<Channel, ChannelWrapper> _channels = new()
 		{
 			{ Channel.MonitoringAuditLog, new(821489129615130684) },
@@ -22,6 +24,8 @@ namespace DevilDaggersDiscordBot
 
 		internal static IReadOnlyDictionary<Channel, ChannelWrapper> Channels => _channels;
 
+		internal static DiscordMessage? CacheMessage { get; private set; }
+
 		internal static async Task LoadServerChannelsAndMessages(DiscordClient client)
 		{
 			foreach (KeyValuePair<Channel, ChannelWrapper> kvp in _channels)
@@ -29,6 +33,10 @@ namespace DevilDaggersDiscordBot
 				if (kvp.Value.DiscordChannel == null)
 					kvp.Value.DiscordChannel = await client.GetChannelAsync(kvp.Value.ChannelId);
 			}
+
+			DiscordChannel? cacheChannel = _channels[Channel.MonitoringCache].DiscordChannel;
+			if (cacheChannel != null)
+				CacheMessage = await cacheChannel.GetMessageAsync(856151636368031785);
 		}
 
 		internal class ChannelWrapper

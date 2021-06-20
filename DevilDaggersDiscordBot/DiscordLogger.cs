@@ -56,5 +56,15 @@ namespace DevilDaggersDiscordBot
 				// Ignore exceptions that occurred while attempting to log.
 			}
 		}
+
+		public static async Task EditCacheMessage(DiscordEmbed embed)
+		{
+			DiscordMessage? message = ServerConstants.CacheMessage;
+			if (message != null)
+			{
+				await message.ModifyAsync(string.Empty);
+				await message.ModifyAsync(embed);
+			}
+		}
 	}
 }
