@@ -42,7 +42,7 @@ namespace DevilDaggersWebsite.Razor.Pages.Admin.SpawnsetFiles
 
 			await DiscordLogger.TryLog(Channel.MonitoringAuditLog, _env.EnvironmentName, $":white_check_mark: `{this.GetIdentity()}` deleted SPAWNSET file :file_folder: `{fileName}`");
 
-			await SpawnsetHashCache.Instance.Clear(_env);
+			SpawnsetHashCache.Instance.Clear();
 
 			return RedirectToPage("Index");
 		}

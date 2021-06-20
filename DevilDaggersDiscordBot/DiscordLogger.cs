@@ -56,5 +56,11 @@ namespace DevilDaggersDiscordBot
 				// Ignore exceptions that occurred while attempting to log.
 			}
 		}
+
+		public static async Task EditMessage(DiscordMessage message, DiscordEmbed embed)
+		{
+			await message.ModifyAsync(" ");
+			await message.ModifyAsync(embed);
+		}
 	}
 }
