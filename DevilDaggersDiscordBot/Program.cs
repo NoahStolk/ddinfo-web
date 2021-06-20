@@ -1,5 +1,4 @@
 ﻿using DevilDaggersDiscordBot.Extensions;
-using DevilDaggersDiscordBot.Logging;
 using DSharpPlus;
 using DSharpPlus.Entities;
 using DSharpPlus.EventArgs;
@@ -26,14 +25,7 @@ namespace DevilDaggersDiscordBot
 					TokenType = TokenType.Bot,
 				});
 
-				DiscordLogger.Instance.AuditLogMonitoringChannel = await client.GetChannelAsync(ServerConstants.AuditLogMonitoringChannelId);
-				DiscordLogger.Instance.CacheMonitoringChannel = await client.GetChannelAsync(ServerConstants.CacheMonitoringChannelId);
-				DiscordLogger.Instance.CustomLeaderboardMonitoringChannel = await client.GetChannelAsync(ServerConstants.CustomLeaderboardMonitoringChannelId);
-				DiscordLogger.Instance.ErrorMonitoringChannel = await client.GetChannelAsync(ServerConstants.ErrorMonitoringChannelId);
-				DiscordLogger.Instance.TaskMonitoringChannel = await client.GetChannelAsync(ServerConstants.TaskMonitoringChannelId);
-				DiscordLogger.Instance.TestMonitoringChannel = await client.GetChannelAsync(ServerConstants.TestMonitoringChannelId);
-
-				DiscordLogger.Instance.CustomLeaderboardsChannel = await client.GetChannelAsync(ServerConstants.CustomLeaderboardsChannelId);
+				await ServerConstants.LoadChannels(client);
 
 				client.MessageCreated += async (client, e) =>
 				{
@@ -45,7 +37,7 @@ namespace DevilDaggersDiscordBot
 					if (msg.Contains($"@!{ServerConstants.BotUserId}"))
 						await e.Message.CreateReactionAsync(DiscordEmoji.FromName(client, ":eye_in_speech_bubble:"));
 
-					if (e.Channel.Id == ServerConstants.TestMonitoringChannelId && msg.StartsWith("."))
+					if (e.Channel.Id == ServerConstants.Channels[Channel.MonitoringTest].ChannelId && msg.StartsWith("."))
 					{
 						foreach (KeyValuePair<string, Action<MessageCreateEventArgs>> action in Commands.Actions)
 						{

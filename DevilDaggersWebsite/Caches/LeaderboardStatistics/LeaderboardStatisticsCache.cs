@@ -1,5 +1,5 @@
 ﻿using DevilDaggersCore.Game;
-using DevilDaggersDiscordBot.Logging;
+using DevilDaggersDiscordBot;
 using Microsoft.AspNetCore.Hosting;
 using System;
 using System.Collections.Generic;
@@ -39,7 +39,7 @@ namespace DevilDaggersWebsite.Caches.LeaderboardStatistics
 			string[] paths = Directory.GetFiles(Path.Combine(env.WebRootPath, "leaderboard-statistics"));
 			if (paths.Length == 0)
 			{
-				await DiscordLogger.Instance.TryLog(Channel.ErrorMonitoring, env.EnvironmentName, ":x: No files found in leaderboard-statistics.");
+				await DiscordLogger.TryLog(Channel.MonitoringError, env.EnvironmentName, ":x: No files found in leaderboard-statistics.");
 				return;
 			}
 
@@ -70,7 +70,7 @@ namespace DevilDaggersWebsite.Caches.LeaderboardStatistics
 
 				Death? death = GameInfo.GetDeathByType(GameVersion.V31, entry.DeathType);
 				if (death == null)
-					await DiscordLogger.Instance.TryLog(Channel.ErrorMonitoring, env.EnvironmentName, $":x: Invalid death type 0x{entry.DeathType:X} for entry with time {entry.Time} in leaderboard-statistics.");
+					await DiscordLogger.TryLog(Channel.MonitoringError, env.EnvironmentName, $":x: Invalid death type 0x{entry.DeathType:X} for entry with time {entry.Time} in leaderboard-statistics.");
 				else if (DeathStats.ContainsKey(death))
 					DeathStats[death]++;
 
@@ -81,7 +81,7 @@ namespace DevilDaggersWebsite.Caches.LeaderboardStatistics
 
 			IsFetched = true;
 
-			await DiscordLogger.Instance.TryLog(Channel.CacheMonitoring, env.EnvironmentName, $":{_emote}: Successfully initiated static `{nameof(LeaderboardStatisticsCache)}`.");
+			await DiscordLogger.TryLog(Channel.MonitoringCache, env.EnvironmentName, $":{_emote}: Successfully initiated static `{nameof(LeaderboardStatisticsCache)}`.");
 		}
 
 		public string LogState(IWebHostEnvironment env)

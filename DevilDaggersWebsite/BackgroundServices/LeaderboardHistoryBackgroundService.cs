@@ -1,5 +1,5 @@
 ﻿using DevilDaggersCore.Utils;
-using DevilDaggersDiscordBot.Logging;
+using DevilDaggersDiscordBot;
 using DevilDaggersWebsite.Clients;
 using Microsoft.AspNetCore.Hosting;
 using Newtonsoft.Json;
@@ -7,17 +7,17 @@ using System;
 using System.IO;
 using System.Threading;
 using System.Threading.Tasks;
-using BotLogger = DevilDaggersDiscordBot.Logging.DiscordLogger;
 
 namespace DevilDaggersWebsite.BackgroundServices
 {
 	public class LeaderboardHistoryBackgroundService : AbstractBackgroundService
 	{
-		private readonly IWebHostEnvironment _env;
+		private readonly IWebHostEnvironment _environment;
 
-		public LeaderboardHistoryBackgroundService(IWebHostEnvironment env)
+		public LeaderboardHistoryBackgroundService(IWebHostEnvironment environment)
+			: base(environment)
 		{
-			_env = env;
+			_environment = environment;
 		}
 
 		protected override TimeSpan Interval => TimeSpan.FromMinutes(1);
@@ -33,23 +33,23 @@ namespace DevilDaggersWebsite.BackgroundServices
 				if (lb != null)
 				{
 					string fileName = $"{DateTime.UtcNow:yyyyMMddHHmm}.json";
-					File.WriteAllText(Path.Combine(_env.WebRootPath, "leaderboard-history", fileName), JsonConvert.SerializeObject(lb));
-					await BotLogger.Instance.TryLog(Channel.TaskMonitoring, _env.EnvironmentName, $":white_check_mark: `{nameof(LeaderboardHistoryBackgroundService)}` succeeded. `{fileName}` was created.");
+					File.WriteAllText(Path.Combine(_environment.WebRootPath, "leaderboard-history", fileName), JsonConvert.SerializeObject(lb));
+					await DiscordLogger.TryLog(Channel.MonitoringTask, _environment.EnvironmentName, $":white_check_mark: Task execution for `{nameof(LeaderboardHistoryBackgroundService)}` succeeded. `{fileName}` was created.");
 				}
 				else
 				{
-					await BotLogger.Instance.TryLog(Channel.TaskMonitoring, _env.EnvironmentName, $":x: `{nameof(LeaderboardHistoryBackgroundService)}` failed because the Devil Daggers servers didn't return a leaderboard.");
+					await DiscordLogger.TryLog(Channel.MonitoringTask, _environment.EnvironmentName, $":x: Task execution for `{nameof(LeaderboardHistoryBackgroundService)}` failed because the Devil Daggers servers didn't return a leaderboard.");
 				}
 			}
 			catch (Exception ex)
 			{
-				await BotLogger.Instance.TryLog(Channel.TaskMonitoring, _env.EnvironmentName, $":x: `{nameof(LeaderboardHistoryBackgroundService)}` failed with exception: `{ex.Message}`");
+				await DiscordLogger.TryLog(Channel.MonitoringTask, _environment.EnvironmentName, $":x: Task execution for `{nameof(LeaderboardHistoryBackgroundService)}` failed with exception: `{ex.Message}`");
 			}
 		}
 
 		private bool HistoryFileExistsForDate(DateTime dateTime)
 		{
-			foreach (string path in Directory.GetFiles(Path.Combine(_env.WebRootPath, "leaderboard-history"), "*.json"))
+			foreach (string path in Directory.GetFiles(Path.Combine(_environment.WebRootPath, "leaderboard-history"), "*.json"))
 			{
 				string fileName = Path.GetFileNameWithoutExtension(path);
 				if (HistoryUtils.HistoryJsonFileNameToDateTime(fileName).Date == dateTime.Date)

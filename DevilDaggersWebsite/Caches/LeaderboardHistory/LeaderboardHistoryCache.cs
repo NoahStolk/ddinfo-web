@@ -1,4 +1,4 @@
-﻿using DevilDaggersDiscordBot.Logging;
+﻿using DevilDaggersDiscordBot;
 using DevilDaggersWebsite.Dto;
 using Microsoft.AspNetCore.Hosting;
 using Newtonsoft.Json;
@@ -39,7 +39,7 @@ namespace DevilDaggersWebsite.Caches.LeaderboardHistory
 		{
 			int cacheCount = _cache.Count;
 			_cache.Clear();
-			await DiscordLogger.Instance.TryLog(Channel.CacheMonitoring, env.EnvironmentName, $":{_emote}: Successfully cleared dynamic `{nameof(LeaderboardHistoryCache)}`. (Removed `{cacheCount}` instances.)");
+			await DiscordLogger.TryLog(Channel.MonitoringCache, env.EnvironmentName, $":{_emote}: Successfully cleared dynamic `{nameof(LeaderboardHistoryCache)}`. (Removed `{cacheCount}` instances.)");
 		}
 
 		public string LogState(IWebHostEnvironment env)

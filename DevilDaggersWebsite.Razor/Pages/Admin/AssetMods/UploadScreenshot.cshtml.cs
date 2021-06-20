@@ -1,4 +1,4 @@
-﻿using DevilDaggersDiscordBot.Logging;
+﻿using DevilDaggersDiscordBot;
 using DevilDaggersWebsite.Entities;
 using DevilDaggersWebsite.Razor.Extensions;
 using Microsoft.AspNetCore.Hosting;
@@ -49,31 +49,31 @@ namespace DevilDaggersWebsite.Razor.Pages.Admin.AssetMods
 			{
 				if (string.IsNullOrEmpty(ModName))
 				{
-					await DiscordLogger.Instance.TryLog(Channel.AuditLogMonitoring, _env.EnvironmentName, $"{failedAttemptMessage}: No mod selected.");
+					await DiscordLogger.TryLog(Channel.MonitoringAuditLog, _env.EnvironmentName, $"{failedAttemptMessage}: No mod selected.");
 					return;
 				}
 
 				if (FormFile == null)
 				{
-					await DiscordLogger.Instance.TryLog(Channel.AuditLogMonitoring, _env.EnvironmentName, $"{failedAttemptMessage}: No file.");
+					await DiscordLogger.TryLog(Channel.MonitoringAuditLog, _env.EnvironmentName, $"{failedAttemptMessage}: No file.");
 					return;
 				}
 
 				if (FormFile.Length > MaxFileSize)
 				{
-					await DiscordLogger.Instance.TryLog(Channel.AuditLogMonitoring, _env.EnvironmentName, $"{failedAttemptMessage}: File too large (`{FormFile.Length:n0}` / max `{MaxFileSize:n0}` bytes).");
+					await DiscordLogger.TryLog(Channel.MonitoringAuditLog, _env.EnvironmentName, $"{failedAttemptMessage}: File too large (`{FormFile.Length:n0}` / max `{MaxFileSize:n0}` bytes).");
 					return;
 				}
 
 				if (FormFile.FileName.Length > MaxFileNameLength)
 				{
-					await DiscordLogger.Instance.TryLog(Channel.AuditLogMonitoring, _env.EnvironmentName, $"{failedAttemptMessage}: File name too long (`{FormFile.FileName.Length}` / max `{MaxFileNameLength}` characters).");
+					await DiscordLogger.TryLog(Channel.MonitoringAuditLog, _env.EnvironmentName, $"{failedAttemptMessage}: File name too long (`{FormFile.FileName.Length}` / max `{MaxFileNameLength}` characters).");
 					return;
 				}
 
 				if (!FormFile.FileName.EndsWith(".png"))
 				{
-					await DiscordLogger.Instance.TryLog(Channel.AuditLogMonitoring, _env.EnvironmentName, $"{failedAttemptMessage}: File name must have the `.png` extension.");
+					await DiscordLogger.TryLog(Channel.MonitoringAuditLog, _env.EnvironmentName, $"{failedAttemptMessage}: File name must have the `.png` extension.");
 					return;
 				}
 
@@ -81,19 +81,19 @@ namespace DevilDaggersWebsite.Razor.Pages.Admin.AssetMods
 				string filePath = Path.Combine(fileDirectory, FormFile.FileName);
 				if (Io.File.Exists(filePath))
 				{
-					await DiscordLogger.Instance.TryLog(Channel.AuditLogMonitoring, _env.EnvironmentName, $"{failedAttemptMessage}: File `{FormFile.FileName}` already exists.");
+					await DiscordLogger.TryLog(Channel.MonitoringAuditLog, _env.EnvironmentName, $"{failedAttemptMessage}: File `{FormFile.FileName}` already exists.");
 					return;
 				}
 
 				if (!_dbContext.AssetMods.Any(am => am.Name == ModName))
 				{
-					await DiscordLogger.Instance.TryLog(Channel.AuditLogMonitoring, _env.EnvironmentName, $"{failedAttemptMessage}: Mod `{ModName}` does not exist.");
+					await DiscordLogger.TryLog(Channel.MonitoringAuditLog, _env.EnvironmentName, $"{failedAttemptMessage}: Mod `{ModName}` does not exist.");
 					return;
 				}
 
 				if (Directory.Exists(fileDirectory) && Directory.GetFiles(fileDirectory).Length >= MaxScreenshots)
 				{
-					await DiscordLogger.Instance.TryLog(Channel.AuditLogMonitoring, _env.EnvironmentName, $"{failedAttemptMessage}: Mod `{ModName}` already has `{MaxScreenshots}` screenshots.");
+					await DiscordLogger.TryLog(Channel.MonitoringAuditLog, _env.EnvironmentName, $"{failedAttemptMessage}: Mod `{ModName}` already has `{MaxScreenshots}` screenshots.");
 					return;
 				}
 
@@ -107,11 +107,11 @@ namespace DevilDaggersWebsite.Razor.Pages.Admin.AssetMods
 				Directory.CreateDirectory(fileDirectory);
 				Io.File.WriteAllBytes(filePath, formFileBytes);
 
-				await DiscordLogger.Instance.TryLog(Channel.AuditLogMonitoring, _env.EnvironmentName, $":white_check_mark: `{this.GetIdentity()}` uploaded new ASSETMOD screenshot :frame_photo: `{FormFile.FileName}` for mod `{ModName}` (`{formFileBytes.Length:n0}` bytes)");
+				await DiscordLogger.TryLog(Channel.MonitoringAuditLog, _env.EnvironmentName, $":white_check_mark: `{this.GetIdentity()}` uploaded new ASSETMOD screenshot :frame_photo: `{FormFile.FileName}` for mod `{ModName}` (`{formFileBytes.Length:n0}` bytes)");
 			}
 			catch (Exception ex)
 			{
-				await DiscordLogger.Instance.TryLog(Channel.AuditLogMonitoring, _env.EnvironmentName, $"{failedAttemptMessage}: Fatal error: `{ex.Message}`");
+				await DiscordLogger.TryLog(Channel.MonitoringAuditLog, _env.EnvironmentName, $"{failedAttemptMessage}: Fatal error: `{ex.Message}`");
 			}
 		}
 	}
