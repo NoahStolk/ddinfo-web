@@ -12,9 +12,16 @@ namespace DevilDaggersWebsite.Singletons
 		public void Add(string path, long responseTimeTicks, DateTime dateTime)
 			=> _responseLogs.Add(new(path, responseTimeTicks, dateTime));
 
-		public string CreateLog()
+		public string CreateLog(DateTime startDateTime, DateTime endDateTime)
 		{
-			StringBuilder sb = new("```");
+			StringBuilder sb = new($"```Response times\n{startDateTime:yyyy-MM-dd HH:mm:ss}\n{endDateTime:yyyy-MM-dd HH:mm:ss}\n\n");
+
+			if (_responseLogs.Count == 0)
+			{
+				sb.Append("Nobody accessed the website during this period.```");
+				return sb.ToString();
+			}
+
 			sb.AppendFormat("{0,-50}", "Path")
 				.AppendFormat("{0,-10}", "Requests")
 				.AppendFormat("{0,-30}", "Average response time")
