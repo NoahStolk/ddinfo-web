@@ -8,7 +8,7 @@ namespace DevilDaggersWebsite.Singletons
 {
 	public class ResponseTimeContainer
 	{
-		private const int _maxLinesPerMessage = 5;
+		private const int _maxLinesPerMessage = 10;
 
 		private readonly List<ResponseLog> _responseLogs = new();
 
@@ -29,9 +29,9 @@ namespace DevilDaggersWebsite.Singletons
 
 			sb.AppendFormat("{0,-50}", "Path")
 				.AppendFormat("{0,10}", "Requests")
-				.AppendFormat("{0,30}", "Average response time")
-				.AppendFormat("{0,20}", "Min time")
-				.AppendFormat("{0,20}", "Max time")
+				.AppendFormat("{0,25}", "Average response time")
+				.AppendFormat("{0,12}", "Min time")
+				.AppendFormat("{0,12}", "Max time")
 				.AppendLine();
 			int i = 0;
 			foreach (IGrouping<string, ResponseLog> group in _responseLogs.GroupBy(rl => rl.Path.ToLower()).OrderBy(rl => rl.Key))
@@ -42,9 +42,9 @@ namespace DevilDaggersWebsite.Singletons
 				long maxResponseTimeTicks = group.Max(rl => rl.ResponseTimeTicks);
 				sb.AppendFormat("{0,-50}", group.Key.TrimAfter(50))
 					.AppendFormat("{0,10}", count)
-					.AppendFormat("{0,30}", GetFormattedTime(averageResponseTimeTicks))
-					.AppendFormat("{0,20}", GetFormattedTime(minResponseTimeTicks))
-					.AppendFormat("{0,20}", GetFormattedTime(maxResponseTimeTicks))
+					.AppendFormat("{0,25}", GetFormattedTime(averageResponseTimeTicks))
+					.AppendFormat("{0,12}", GetFormattedTime(minResponseTimeTicks))
+					.AppendFormat("{0,12}", GetFormattedTime(maxResponseTimeTicks))
 					.AppendLine();
 
 				i++;
