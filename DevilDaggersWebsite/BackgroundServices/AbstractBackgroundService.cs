@@ -30,7 +30,14 @@ namespace DevilDaggersWebsite.BackgroundServices
 
 			while (!stoppingToken.IsCancellationRequested)
 			{
-				await ExecuteTaskAsync(stoppingToken);
+				try
+				{
+					await ExecuteTaskAsync(stoppingToken);
+				}
+				catch (Exception ex)
+				{
+					await DiscordLogger.TryLog(Channel.MonitoringTask, _environment.EnvironmentName, $":x: Task execution for `{BackgroundServiceName}` failed with exception: `{ex.Message}`");
+				}
 
 				if (Interval.TotalMilliseconds > 0)
 					await Task.Delay(Interval, stoppingToken);

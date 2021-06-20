@@ -24,26 +24,19 @@ namespace DevilDaggersWebsite.BackgroundServices
 
 		protected override async Task ExecuteTaskAsync(CancellationToken stoppingToken)
 		{
-			try
-			{
-				if (HistoryFileExistsForDate(DateTime.UtcNow))
-					return;
+			if (HistoryFileExistsForDate(DateTime.UtcNow))
+				return;
 
-				Dto.Leaderboard? lb = await LeaderboardClient.Instance.GetScores(1);
-				if (lb != null)
-				{
-					string fileName = $"{DateTime.UtcNow:yyyyMMddHHmm}.json";
-					File.WriteAllText(Path.Combine(_environment.WebRootPath, "leaderboard-history", fileName), JsonConvert.SerializeObject(lb));
-					await DiscordLogger.TryLog(Channel.MonitoringTask, _environment.EnvironmentName, $":white_check_mark: Task execution for `{nameof(LeaderboardHistoryBackgroundService)}` succeeded. `{fileName}` was created.");
-				}
-				else
-				{
-					await DiscordLogger.TryLog(Channel.MonitoringTask, _environment.EnvironmentName, $":x: Task execution for `{nameof(LeaderboardHistoryBackgroundService)}` failed because the Devil Daggers servers didn't return a leaderboard.");
-				}
-			}
-			catch (Exception ex)
+			Dto.Leaderboard? lb = await LeaderboardClient.Instance.GetScores(1);
+			if (lb != null)
 			{
-				await DiscordLogger.TryLog(Channel.MonitoringTask, _environment.EnvironmentName, $":x: Task execution for `{nameof(LeaderboardHistoryBackgroundService)}` failed with exception: `{ex.Message}`");
+				string fileName = $"{DateTime.UtcNow:yyyyMMddHHmm}.json";
+				File.WriteAllText(Path.Combine(_environment.WebRootPath, "leaderboard-history", fileName), JsonConvert.SerializeObject(lb));
+				await DiscordLogger.TryLog(Channel.MonitoringTask, _environment.EnvironmentName, $":white_check_mark: Task execution for `{nameof(LeaderboardHistoryBackgroundService)}` succeeded. `{fileName}` was created.");
+			}
+			else
+			{
+				await DiscordLogger.TryLog(Channel.MonitoringTask, _environment.EnvironmentName, $":x: Task execution for `{nameof(LeaderboardHistoryBackgroundService)}` failed because the Devil Daggers servers didn't return a leaderboard.");
 			}
 		}
 
