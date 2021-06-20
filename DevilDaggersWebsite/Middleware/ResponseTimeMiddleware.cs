@@ -1,6 +1,5 @@
 ﻿using DevilDaggersWebsite.Singletons;
 using Microsoft.AspNetCore.Http;
-using Microsoft.Extensions.Logging;
 using System;
 using System.Diagnostics;
 using System.Threading.Tasks;
@@ -10,14 +9,12 @@ namespace DevilDaggersWebsite.Middleware
 	public class ResponseTimeMiddleware
 	{
 		private readonly RequestDelegate _next;
-		private readonly ILogger<ResponseTimeMiddleware> _logger;
-		private readonly ResponseTimeLogger _responseTimeLogger;
+		private readonly ResponseTimeContainer _responseTimeContainer;
 
-		public ResponseTimeMiddleware(RequestDelegate next, ILogger<ResponseTimeMiddleware> logger, ResponseTimeLogger responseTimeLogger)
+		public ResponseTimeMiddleware(RequestDelegate next, ResponseTimeContainer responseTimeContainer)
 		{
 			_next = next;
-			_logger = logger;
-			_responseTimeLogger = responseTimeLogger;
+			_responseTimeContainer = responseTimeContainer;
 		}
 
 		public Task InvokeAsync(HttpContext context)
@@ -32,14 +29,7 @@ namespace DevilDaggersWebsite.Middleware
 			{
 				sw.Stop();
 
-				long responseTimeMicroseconds = sw.ElapsedTicks / 10; // There are 10 ticks in a microsecond.
-				_logger.LogDebug($"Response time (μs) for {context.Request.Path}: {responseTimeMicroseconds}");
-				_responseTimeLogger.Log(new()
-				{
-					DateTime = DateTime.UtcNow,
-					Path = pathString.Substring(0, Math.Min(64, pathString.Length)),
-					ResponseTimeMicroseconds = responseTimeMicroseconds > int.MaxValue ? int.MaxValue : (int)responseTimeMicroseconds,
-				});
+				_responseTimeContainer.Add(pathString, sw.ElapsedTicks, DateTime.UtcNow);
 
 				return Task.CompletedTask;
 			});

@@ -21,7 +21,6 @@ namespace DevilDaggersWebsite.Entities
 		public virtual DbSet<Donation> Donations => Set<Donation>();
 		public virtual DbSet<Player> Players => Set<Player>();
 		public virtual DbSet<SpawnsetFile> SpawnsetFiles => Set<SpawnsetFile>();
-		public virtual DbSet<ResponseLog> ResponseLogs => Set<ResponseLog>();
 		public virtual DbSet<Title> Titles => Set<Title>();
 		public virtual DbSet<ToolStatistic> ToolStatistics => Set<ToolStatistic>();
 
