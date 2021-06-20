@@ -1,6 +1,5 @@
 ﻿using DevilDaggersDiscordBot;
 using DevilDaggersDiscordBot.Extensions;
-using DevilDaggersDiscordBot.Logging;
 using DevilDaggersWebsite.Caches.SpawnsetHash;
 using DevilDaggersWebsite.Entities;
 using DevilDaggersWebsite.Extensions;

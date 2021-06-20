@@ -1,6 +1,5 @@
 ﻿using DevilDaggersCore.Spawnsets;
 using DevilDaggersDiscordBot;
-using DevilDaggersDiscordBot.Logging;
 using DevilDaggersWebsite.Razor.Extensions;
 using Microsoft.AspNetCore.Hosting;
 using Microsoft.AspNetCore.Http;

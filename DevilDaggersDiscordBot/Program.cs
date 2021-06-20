@@ -1,5 +1,4 @@
 ﻿using DevilDaggersDiscordBot.Extensions;
-using DevilDaggersDiscordBot.Logging;
 using DSharpPlus;
 using DSharpPlus.Entities;
 using DSharpPlus.EventArgs;

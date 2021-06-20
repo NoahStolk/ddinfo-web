@@ -6,7 +6,7 @@ using System.Diagnostics;
 using System.Runtime.CompilerServices;
 using System.Threading.Tasks;
 
-namespace DevilDaggersDiscordBot.Logging
+namespace DevilDaggersDiscordBot
 {
 	public sealed class DiscordLogger
 	{
@@ -78,7 +78,6 @@ namespace DevilDaggersDiscordBot.Logging
 			{
 				string? composedMessage = embed == null ? $"[`{environmentName}`]: {message}" : null;
 				await channel.SendMessageAsyncSafe(composedMessage, embed);
-
 			}
 			catch
 			{

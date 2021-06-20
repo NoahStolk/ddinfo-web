@@ -1,5 +1,4 @@
 ﻿using DevilDaggersDiscordBot;
-using DevilDaggersDiscordBot.Logging;
 using DevilDaggersWebsite.Caches.LeaderboardHistory;
 using DevilDaggersWebsite.Caches.LeaderboardStatistics;
 using DevilDaggersWebsite.Caches.ModArchive;
