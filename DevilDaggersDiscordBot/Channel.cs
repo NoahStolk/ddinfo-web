@@ -6,6 +6,7 @@
 		MonitoringCache,
 		MonitoringCustomLeaderboard,
 		MonitoringError,
+		MonitoringFile,
 		MonitoringTask,
 		MonitoringTest,
 		CustomLeaderboards,

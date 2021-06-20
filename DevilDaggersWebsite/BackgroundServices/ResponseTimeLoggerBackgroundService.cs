@@ -7,14 +7,14 @@ using System.Threading.Tasks;
 
 namespace DevilDaggersWebsite.BackgroundServices
 {
-	public class ResponseTimeBackgroundService : AbstractBackgroundService
+	public class ResponseTimeLoggerBackgroundService : AbstractBackgroundService
 	{
 		private readonly IWebHostEnvironment _environment;
 		private readonly ResponseTimeContainer _responseTimeContainer;
 
 		private DateTime _measurementStart;
 
-		public ResponseTimeBackgroundService(IWebHostEnvironment environment, ResponseTimeContainer responseTimeContainer)
+		public ResponseTimeLoggerBackgroundService(IWebHostEnvironment environment, ResponseTimeContainer responseTimeContainer)
 			: base(environment)
 		{
 			_environment = environment;
@@ -26,7 +26,7 @@ namespace DevilDaggersWebsite.BackgroundServices
 		protected override async Task ExecuteTaskAsync(CancellationToken stoppingToken)
 		{
 			DateTime now = DateTime.UtcNow;
-			if (now.Minute != 0)
+			if (now.Hour != 12 || now.Minute != 0)
 				return;
 
 			bool includeEnvironmentName = true;

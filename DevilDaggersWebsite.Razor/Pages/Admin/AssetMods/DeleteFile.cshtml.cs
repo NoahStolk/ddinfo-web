@@ -43,15 +43,12 @@ namespace DevilDaggersWebsite.Razor.Pages.Admin.AssetMods
 			await DiscordLogger.TryLog(Channel.MonitoringAuditLog, _env.EnvironmentName, $":white_check_mark: `{this.GetIdentity()}` deleted ASSETMOD file :file_folder: `{fileName}`.");
 
 			// Clear entire memory cache (can't clear individual entries).
-			await ModArchiveCache.Instance.Clear(_env);
+			ModArchiveCache.Instance.Clear();
 
 			// Clear file cache for this mod.
 			string cacheFilePath = Path.Combine(_env.WebRootPath, "mod-archive-cache", $"{Path.GetFileNameWithoutExtension(fileName)}.json");
 			if (System.IO.File.Exists(cacheFilePath))
-			{
 				System.IO.File.Delete(cacheFilePath);
-				await DiscordLogger.TryLog(Channel.MonitoringCache, _env.EnvironmentName, $"Deleted mod archive cache file `{Path.GetFileName(cacheFilePath)}`.");
-			}
 
 			return RedirectToPage("Index");
 		}

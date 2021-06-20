@@ -25,7 +25,7 @@ namespace DevilDaggersDiscordBot
 					TokenType = TokenType.Bot,
 				});
 
-				await ServerConstants.LoadChannels(client);
+				await ServerConstants.LoadServerChannelsAndMessages(client);
 
 				client.MessageCreated += async (client, e) =>
 				{

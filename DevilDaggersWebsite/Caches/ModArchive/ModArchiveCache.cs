@@ -1,12 +1,10 @@
-﻿using DevilDaggersDiscordBot;
-using DevilDaggersWebsite.Exceptions;
+﻿using DevilDaggersWebsite.Exceptions;
 using Microsoft.AspNetCore.Hosting;
 using Newtonsoft.Json;
 using System;
 using System.Collections.Concurrent;
 using System.IO;
 using System.IO.Compression;
-using System.Threading.Tasks;
 
 namespace DevilDaggersWebsite.Caches.ModArchive
 {
@@ -135,18 +133,14 @@ namespace DevilDaggersWebsite.Caches.ModArchive
 			}
 		}
 
-		public async Task Clear(IWebHostEnvironment env)
-		{
-			int cacheCount = _cache.Count;
-			_cache.Clear();
-			await DiscordLogger.TryLog(Channel.MonitoringCache, env.EnvironmentName, $":{_emote}: Successfully cleared dynamic `{nameof(ModArchiveCache)}`. (Removed `{cacheCount}` instances. File cache is not affected.)");
-		}
+		public void Clear()
+			=> _cache.Clear();
 
 		public string LogState(IWebHostEnvironment env)
 		{
 			int fileCaches = Directory.GetFiles(Path.Combine(env.WebRootPath, "mod-archive-cache")).Length;
 
-			return $":{_emote}: `{nameof(ModArchiveCache)}` has `{_cache.Count}` instances in memory and `{fileCaches}` instances in file system.";
+			return $":{_emote}: `{_cache.Count}` in memory | `{fileCaches}` in file system";
 		}
 	}
 }
