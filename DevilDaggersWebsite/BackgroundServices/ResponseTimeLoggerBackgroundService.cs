@@ -26,7 +26,7 @@ namespace DevilDaggersWebsite.BackgroundServices
 		protected override async Task ExecuteTaskAsync(CancellationToken stoppingToken)
 		{
 			DateTime now = DateTime.UtcNow;
-			if (now.Hour != 0 || now.Minute != 0)
+			if (now.Hour != 12 || now.Minute != 0)
 				return;
 
 			bool includeEnvironmentName = true;
