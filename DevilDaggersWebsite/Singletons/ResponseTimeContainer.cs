@@ -27,11 +27,11 @@ namespace DevilDaggersWebsite.Singletons
 
 			List<string> logs = new();
 
-			sb.AppendFormat("{0,-50}", "Path")
+			sb.AppendFormat("{0,-50}", nameof(ResponseLog.Path))
 				.AppendFormat("{0,10}", "Requests")
-				.AppendFormat("{0,25}", "Average response time")
-				.AppendFormat("{0,12}", "Min time")
-				.AppendFormat("{0,12}", "Max time")
+				.AppendFormat("{0,25}", "AverageResponseTime")
+				.AppendFormat("{0,12}", "MinTime")
+				.AppendFormat("{0,12}", "MaxTime")
 				.AppendLine();
 			int i = 0;
 			foreach (IGrouping<string, ResponseLog> group in _responseLogs.GroupBy(rl => rl.Path.ToLower()).OrderBy(rl => rl.Key))

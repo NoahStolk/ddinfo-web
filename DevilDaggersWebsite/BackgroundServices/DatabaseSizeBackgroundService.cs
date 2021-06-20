@@ -29,22 +29,22 @@ namespace DevilDaggersWebsite.BackgroundServices
 		{
 			ApplicationDbContext dbContext = _serviceScopeFactory.CreateScope().ServiceProvider.GetRequiredService<ApplicationDbContext>();
 
-			IQueryable<InformationSchemaTable> tables = dbContext.InformationSchemaTables.FromSqlRaw(@"SELECT
-	table_name AS `Table`,
-	data_length `DataSize`,
-	index_length `IndexSize`,
-	avg_row_length `AverageRowLength`,
-	table_rows `TableRows`
+			IQueryable<InformationSchemaTable> tables = dbContext.InformationSchemaTables.FromSqlRaw($@"SELECT
+	table_name AS `{nameof(InformationSchemaTable.Table)}`,
+	data_length `{nameof(InformationSchemaTable.DataSize)}`,
+	index_length `{nameof(InformationSchemaTable.IndexSize)}`,
+	avg_row_length `{nameof(InformationSchemaTable.AverageRowLength)}`,
+	table_rows `{nameof(InformationSchemaTable.TableRows)}`
 FROM information_schema.TABLES
 WHERE table_schema = 'devildaggers'
 ORDER BY table_name ASC;");
 
 			StringBuilder sb = new("```");
-			sb.AppendFormat("{0,-21}", "Table")
-				.AppendFormat("{0,12}", "Data size")
-				.AppendFormat("{0,12}", "Index size")
-				.AppendFormat("{0,20}", "Average row length")
-				.AppendFormat("{0,12}", "Table rows")
+			sb.AppendFormat("{0,-21}", nameof(InformationSchemaTable.Table))
+				.AppendFormat("{0,12}", nameof(InformationSchemaTable.DataSize))
+				.AppendFormat("{0,12}", nameof(InformationSchemaTable.IndexSize))
+				.AppendFormat("{0,20}", nameof(InformationSchemaTable.AverageRowLength))
+				.AppendFormat("{0,12}", nameof(InformationSchemaTable.TableRows))
 				.AppendLine();
 			foreach (InformationSchemaTable ist in tables)
 			{
