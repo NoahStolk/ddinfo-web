@@ -35,15 +35,8 @@ namespace DevilDaggersWebsite.Razor.Utils
 			return new(sb.ToString());
 		}
 
-		public static HtmlString GetCopyrightString(string name, int startYear)
-			=> GetCopyrightString(name, startYear, DateTime.UtcNow.Year);
-
-		public static HtmlString GetCopyrightString(string name, int startYear, int endYear)
-		{
-			string year = startYear == endYear ? startYear.ToString() : $"{startYear}-{endYear}";
-
-			return new($"&copy; DevilDaggers.info {year} {name}");
-		}
+		public static HtmlString GetCopyrightString(int startYear)
+			=> new($"&copy; DevilDaggers.info {startYear}-{DateTime.UtcNow.Year}");
 
 		public static HtmlString GetLayoutAnchor(this Enemy enemy, bool plural = false, GameVersion? gameVersionOverride = null)
 		{
