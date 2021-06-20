@@ -1,4 +1,5 @@
-﻿using DevilDaggersDiscordBot.Logging;
+﻿using DevilDaggersDiscordBot;
+using DevilDaggersDiscordBot.Logging;
 using DevilDaggersWebsite.Dto.Admin;
 using DevilDaggersWebsite.Entities;
 using DevilDaggersWebsite.Enumerators;

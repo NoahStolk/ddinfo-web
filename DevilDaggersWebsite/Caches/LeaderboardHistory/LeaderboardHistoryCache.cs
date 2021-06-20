@@ -1,4 +1,5 @@
-﻿using DevilDaggersDiscordBot.Logging;
+﻿using DevilDaggersDiscordBot;
+using DevilDaggersDiscordBot.Logging;
 using DevilDaggersWebsite.Dto;
 using Microsoft.AspNetCore.Hosting;
 using Newtonsoft.Json;

@@ -1,4 +1,4 @@
-﻿namespace DevilDaggersDiscordBot.Logging
+﻿namespace DevilDaggersDiscordBot
 {
 	public enum Channel
 	{

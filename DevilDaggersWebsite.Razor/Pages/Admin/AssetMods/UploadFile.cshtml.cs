@@ -1,4 +1,5 @@
-﻿using DevilDaggersDiscordBot.Logging;
+﻿using DevilDaggersDiscordBot;
+using DevilDaggersDiscordBot.Logging;
 using DevilDaggersWebsite.Caches.ModArchive;
 using DevilDaggersWebsite.Enumerators;
 using DevilDaggersWebsite.Exceptions;

@@ -1,5 +1,5 @@
 ﻿using DevilDaggersCore.Utils;
-using DevilDaggersDiscordBot.Logging;
+using DevilDaggersDiscordBot;
 using DevilDaggersWebsite.Clients;
 using Microsoft.AspNetCore.Hosting;
 using Newtonsoft.Json;

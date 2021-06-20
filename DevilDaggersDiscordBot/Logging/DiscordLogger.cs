@@ -51,7 +51,7 @@ namespace DevilDaggersDiscordBot.Logging
 			}
 		}
 
-		public async Task MeasurePerformance(Stopwatch sw, [CallerMemberName] string methodName = "")
+		public async Task LogElapsedMilliseconds(Stopwatch sw, [CallerMemberName] string methodName = "")
 		{
 			await TryLog(Channel.TestMonitoring, "Development", $"{methodName} took {sw.ElapsedMilliseconds} ms.");
 		}
@@ -71,13 +71,14 @@ namespace DevilDaggersDiscordBot.Logging
 				_ => ErrorMonitoringChannel,
 			};
 
+			if (channel == null)
+				return;
+
 			try
 			{
-				if (channel != null)
-				{
-					string? composedMessage = embed == null ? $"[`{environmentName}`]: {message}" : null;
-					await channel.SendMessageAsyncSafe(composedMessage, embed);
-				}
+				string? composedMessage = embed == null ? $"[`{environmentName}`]: {message}" : null;
+				await channel.SendMessageAsyncSafe(composedMessage, embed);
+
 			}
 			catch
 			{

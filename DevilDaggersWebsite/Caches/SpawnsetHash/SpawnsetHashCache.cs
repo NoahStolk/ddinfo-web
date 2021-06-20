@@ -1,4 +1,5 @@
 ﻿using DevilDaggersCore.Spawnsets;
+using DevilDaggersDiscordBot;
 using DevilDaggersDiscordBot.Logging;
 using Microsoft.AspNetCore.Hosting;
 using System;

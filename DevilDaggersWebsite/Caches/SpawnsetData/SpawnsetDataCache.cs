@@ -1,4 +1,5 @@
-﻿using DevilDaggersDiscordBot.Logging;
+﻿using DevilDaggersDiscordBot;
+using DevilDaggersDiscordBot.Logging;
 using Microsoft.AspNetCore.Hosting;
 using System;
 using System.Collections.Concurrent;
