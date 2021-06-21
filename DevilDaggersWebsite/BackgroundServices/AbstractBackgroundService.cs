@@ -33,6 +33,8 @@ namespace DevilDaggersWebsite.BackgroundServices
 
 			while (!stoppingToken.IsCancellationRequested)
 			{
+				BackgroundServiceMonitor.Update(Name, DateTime.UtcNow);
+
 				try
 				{
 					await ExecuteTaskAsync(stoppingToken);
@@ -42,8 +44,6 @@ namespace DevilDaggersWebsite.BackgroundServices
 					Channel channel = Environment.IsDevelopment() ? Channel.MonitoringTest : Channel.MonitoringTask;
 					await DiscordLogger.TryLog(channel, Environment.EnvironmentName, $":x: Task execution for `{Name}` failed with exception: `{ex.Message}`");
 				}
-
-				BackgroundServiceMonitor.Update(Name, DateTime.UtcNow);
 
 				if (Interval.TotalMilliseconds > 0)
 					await Task.Delay(Interval, stoppingToken);
