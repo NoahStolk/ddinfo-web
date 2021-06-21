@@ -6,7 +6,7 @@ using System.Text;
 
 namespace DevilDaggersWebsite.Singletons
 {
-	public class ResponseTimeContainer
+	public class ResponseTimeMonitor
 	{
 		private const int _maxLinesPerMessage = 10;
 

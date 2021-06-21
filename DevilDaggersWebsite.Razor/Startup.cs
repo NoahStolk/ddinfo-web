@@ -55,7 +55,7 @@ namespace DevilDaggersWebsite.Razor
 
 			services.AddSingleton<IHttpContextAccessor, HttpContextAccessor>();
 			services.AddSingleton<IActionContextAccessor, ActionContextAccessor>();
-			services.AddSingleton<ResponseTimeContainer>();
+			services.AddSingleton<ResponseTimeMonitor>();
 
 			if (!WebHostEnvironment.IsDevelopment())
 			{

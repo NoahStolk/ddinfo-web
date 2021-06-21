@@ -9,12 +9,12 @@ namespace DevilDaggersWebsite.Middleware
 	public class ResponseTimeMiddleware
 	{
 		private readonly RequestDelegate _next;
-		private readonly ResponseTimeContainer _responseTimeContainer;
+		private readonly ResponseTimeMonitor _responseTimeMonitor;
 
-		public ResponseTimeMiddleware(RequestDelegate next, ResponseTimeContainer responseTimeContainer)
+		public ResponseTimeMiddleware(RequestDelegate next, ResponseTimeMonitor responseTimeMonitor)
 		{
 			_next = next;
-			_responseTimeContainer = responseTimeContainer;
+			_responseTimeMonitor = responseTimeMonitor;
 		}
 
 		public Task InvokeAsync(HttpContext context)
@@ -38,7 +38,7 @@ namespace DevilDaggersWebsite.Middleware
 			{
 				sw.Stop();
 
-				_responseTimeContainer.Add(pathString, sw.ElapsedTicks, DateTime.UtcNow);
+				_responseTimeMonitor.Add(pathString, sw.ElapsedTicks, DateTime.UtcNow);
 
 				return Task.CompletedTask;
 			});

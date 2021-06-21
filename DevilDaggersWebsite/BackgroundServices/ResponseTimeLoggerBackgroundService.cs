@@ -9,14 +9,14 @@ namespace DevilDaggersWebsite.BackgroundServices
 {
 	public class ResponseTimeLoggerBackgroundService : AbstractBackgroundService
 	{
-		private readonly ResponseTimeContainer _responseTimeContainer;
+		private readonly ResponseTimeMonitor _responseTimeMonitor;
 
 		private DateTime _measurementStart;
 
-		public ResponseTimeLoggerBackgroundService(IWebHostEnvironment environment, ResponseTimeContainer responseTimeContainer)
+		public ResponseTimeLoggerBackgroundService(IWebHostEnvironment environment, ResponseTimeMonitor responseTimeMonitor)
 			: base(environment)
 		{
-			_responseTimeContainer = responseTimeContainer;
+			_responseTimeMonitor = responseTimeMonitor;
 		}
 
 		protected override TimeSpan Interval => TimeSpan.FromMinutes(1);
@@ -28,13 +28,13 @@ namespace DevilDaggersWebsite.BackgroundServices
 				return;
 
 			bool includeEnvironmentName = true;
-			foreach (string log in _responseTimeContainer.CreateLogs(_measurementStart, now))
+			foreach (string log in _responseTimeMonitor.CreateLogs(_measurementStart, now))
 			{
 				await DiscordLogger.TryLog(Channel.MonitoringTask, Environment.EnvironmentName, log, null, includeEnvironmentName);
 				includeEnvironmentName = false;
 			}
 
-			_responseTimeContainer.Clear();
+			_responseTimeMonitor.Clear();
 
 			_measurementStart = DateTime.UtcNow; // Get UtcNow again. Logging takes time.
 		}
