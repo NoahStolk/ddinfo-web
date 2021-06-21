@@ -57,10 +57,10 @@ namespace DevilDaggersWebsite.Razor
 			services.AddSingleton<IActionContextAccessor, ActionContextAccessor>();
 			services.AddSingleton<ResponseTimeContainer>();
 
-			services.AddHostedService<DatabaseLoggerBackgroundService>();
 			if (!WebHostEnvironment.IsDevelopment())
 			{
 				services.AddHostedService<CacheLoggerBackgroundService>();
+				services.AddHostedService<DatabaseLoggerBackgroundService>();
 				services.AddHostedService<FileSystemLoggerBackgroundService>();
 				services.AddHostedService<LeaderboardHistoryBackgroundService>();
 				services.AddHostedService<ResponseTimeLoggerBackgroundService>();
