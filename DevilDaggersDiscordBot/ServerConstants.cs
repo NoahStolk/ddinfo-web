@@ -10,6 +10,7 @@ namespace DevilDaggersDiscordBot
 		internal const ulong BotUserId = 645209987949395969;
 
 		internal const ulong CacheMessageId = 856151636368031785;
+		internal const ulong DatabaseMessageId = 856491602675236894;
 		internal const ulong FileMessageId = 856265036486148146;
 
 		private static readonly Dictionary<Channel, ChannelWrapper> _channels = new()
@@ -17,6 +18,7 @@ namespace DevilDaggersDiscordBot
 			{ Channel.MonitoringAuditLog, new(821489129615130684) },
 			{ Channel.MonitoringCache, new(831981757200859206) },
 			{ Channel.MonitoringCustomLeaderboard, new(813506112670007306) },
+			{ Channel.MonitoringDatabase, new(856490882371289098) },
 			{ Channel.MonitoringError, new(727227801664618607) },
 			{ Channel.MonitoringFile, new(856263861372321823) },
 			{ Channel.MonitoringTask, new(813506034970787880) },
@@ -27,6 +29,7 @@ namespace DevilDaggersDiscordBot
 		internal static IReadOnlyDictionary<Channel, ChannelWrapper> Channels => _channels;
 
 		public static DiscordMessage? CacheMessage { get; private set; }
+		public static DiscordMessage? DatabaseMessage { get; private set; }
 		public static DiscordMessage? FileMessage { get; private set; }
 
 		internal static async Task LoadServerChannelsAndMessages(DiscordClient client)
@@ -40,6 +43,10 @@ namespace DevilDaggersDiscordBot
 			DiscordChannel? cacheChannel = _channels[Channel.MonitoringCache].DiscordChannel;
 			if (cacheChannel != null)
 				CacheMessage = await cacheChannel.GetMessageAsync(CacheMessageId);
+
+			DiscordChannel? databaseChannel = _channels[Channel.MonitoringDatabase].DiscordChannel;
+			if (databaseChannel != null)
+				DatabaseMessage = await databaseChannel.GetMessageAsync(DatabaseMessageId);
 
 			DiscordChannel? fileChannel = _channels[Channel.MonitoringFile].DiscordChannel;
 			if (fileChannel != null)

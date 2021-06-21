@@ -11,12 +11,12 @@ using System.Threading.Tasks;
 
 namespace DevilDaggersWebsite.BackgroundServices
 {
-	public class DatabaseSizeBackgroundService : AbstractBackgroundService
+	public class DatabaseLoggerBackgroundService : AbstractBackgroundService
 	{
 		private readonly IWebHostEnvironment _environment;
 		private readonly IServiceScopeFactory _serviceScopeFactory;
 
-		public DatabaseSizeBackgroundService(IWebHostEnvironment environment, IServiceScopeFactory serviceScopeFactory)
+		public DatabaseLoggerBackgroundService(IWebHostEnvironment environment, IServiceScopeFactory serviceScopeFactory)
 			: base(environment)
 		{
 			_environment = environment;
@@ -58,8 +58,10 @@ ORDER BY table_name ASC;");
 
 			sb.AppendLine("```");
 
-			// TODO: Edit Discord message.
-			await DiscordLogger.TryLog(Channel.MonitoringTest, _environment.EnvironmentName, sb.ToString());
+			if (ServerConstants.DatabaseMessage == null)
+				return;
+
+			await DiscordLogger.EditMessage(ServerConstants.DatabaseMessage, sb.ToString());
 		}
 	}
 }
