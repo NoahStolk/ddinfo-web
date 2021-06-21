@@ -60,6 +60,7 @@ namespace DevilDaggersWebsite.Razor
 			if (!WebHostEnvironment.IsDevelopment())
 			{
 				services.AddHostedService<CacheLoggerBackgroundService>();
+				services.AddHostedService<DatabaseLoggerBackgroundService>();
 				services.AddHostedService<FileSystemLoggerBackgroundService>();
 				services.AddHostedService<LeaderboardHistoryBackgroundService>();
 				services.AddHostedService<ResponseTimeLoggerBackgroundService>();

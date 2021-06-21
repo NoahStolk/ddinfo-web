@@ -27,6 +27,8 @@ namespace DevilDaggersWebsite.Entities
 		public virtual DbSet<PlayerAssetMod> PlayerAssetMods => Set<PlayerAssetMod>();
 		public virtual DbSet<PlayerTitle> PlayerTitles => Set<PlayerTitle>();
 
+		public virtual DbSet<InformationSchemaTable> InformationSchemaTables => Set<InformationSchemaTable>();
+
 		protected override void OnModelCreating(ModelBuilder builder)
 		{
 			builder.Entity<PlayerAssetMod>()

@@ -5,6 +5,7 @@
 		MonitoringAuditLog,
 		MonitoringCache,
 		MonitoringCustomLeaderboard,
+		MonitoringDatabase,
 		MonitoringError,
 		MonitoringFile,
 		MonitoringTask,

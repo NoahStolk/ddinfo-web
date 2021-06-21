@@ -62,5 +62,11 @@ namespace DevilDaggersDiscordBot
 			await message.ModifyAsync(" ");
 			await message.ModifyAsync(embed);
 		}
+
+		public static async Task EditMessage(DiscordMessage message, string contents)
+		{
+			if (!string.IsNullOrEmpty(contents))
+				await message.ModifyAsync(contents);
+		}
 	}
 }
