@@ -1,4 +1,5 @@
 ﻿using DevilDaggersDiscordBot;
+using DevilDaggersWebsite.Singletons;
 using Microsoft.AspNetCore.Hosting;
 using Microsoft.Extensions.Hosting;
 using System;
@@ -9,16 +10,18 @@ namespace DevilDaggersWebsite.BackgroundServices
 {
 	public abstract class AbstractBackgroundService : BackgroundService
 	{
-		protected AbstractBackgroundService(IWebHostEnvironment environment)
+		protected AbstractBackgroundService(IWebHostEnvironment environment, BackgroundServiceMonitor backgroundServiceMonitor)
 		{
 			Environment = environment;
+			BackgroundServiceMonitor = backgroundServiceMonitor;
 
-			BackgroundServiceName = GetType().Name;
+			Name = GetType().Name;
 		}
 
 		protected IWebHostEnvironment Environment { get; }
+		protected BackgroundServiceMonitor BackgroundServiceMonitor { get; }
 
-		protected string BackgroundServiceName { get; }
+		protected string Name { get; }
 
 		protected abstract TimeSpan Interval { get; }
 
@@ -37,7 +40,7 @@ namespace DevilDaggersWebsite.BackgroundServices
 				catch (Exception ex)
 				{
 					Channel channel = Environment.IsDevelopment() ? Channel.MonitoringTest : Channel.MonitoringTask;
-					await DiscordLogger.TryLog(channel, Environment.EnvironmentName, $":x: Task execution for `{BackgroundServiceName}` failed with exception: `{ex.Message}`");
+					await DiscordLogger.TryLog(channel, Environment.EnvironmentName, $":x: Task execution for `{Name}` failed with exception: `{ex.Message}`");
 				}
 
 				if (Interval.TotalMilliseconds > 0)
@@ -48,12 +51,9 @@ namespace DevilDaggersWebsite.BackgroundServices
 		}
 
 		protected virtual void Begin()
-		{
-		}
+			=> BackgroundServiceMonitor.Register(Name, Interval);
 
 		protected virtual async Task End()
-		{
-			await DiscordLogger.TryLog(Channel.MonitoringTask, Environment.EnvironmentName, $":x: Cancellation for `{BackgroundServiceName}` was requested.");
-		}
+			=> await DiscordLogger.TryLog(Channel.MonitoringTask, Environment.EnvironmentName, $":x: Cancellation for `{Name}` was requested.");
 	}
 }

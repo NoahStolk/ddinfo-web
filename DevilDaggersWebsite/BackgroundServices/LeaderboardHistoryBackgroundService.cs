@@ -1,6 +1,7 @@
 ﻿using DevilDaggersCore.Utils;
 using DevilDaggersDiscordBot;
 using DevilDaggersWebsite.Clients;
+using DevilDaggersWebsite.Singletons;
 using Microsoft.AspNetCore.Hosting;
 using Newtonsoft.Json;
 using System;
@@ -12,8 +13,8 @@ namespace DevilDaggersWebsite.BackgroundServices
 {
 	public class LeaderboardHistoryBackgroundService : AbstractBackgroundService
 	{
-		public LeaderboardHistoryBackgroundService(IWebHostEnvironment environment)
-			: base(environment)
+		public LeaderboardHistoryBackgroundService(IWebHostEnvironment environment, BackgroundServiceMonitor backgroundServiceMonitor)
+			: base(environment, backgroundServiceMonitor)
 		{
 		}
 

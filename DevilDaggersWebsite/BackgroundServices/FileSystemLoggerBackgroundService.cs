@@ -1,5 +1,6 @@
 ﻿using DevilDaggersDiscordBot;
 using DevilDaggersDiscordBot.Extensions;
+using DevilDaggersWebsite.Singletons;
 using DSharpPlus.Entities;
 using Microsoft.AspNetCore.Hosting;
 using System;
@@ -12,8 +13,8 @@ namespace DevilDaggersWebsite.BackgroundServices
 {
 	public class FileSystemLoggerBackgroundService : AbstractBackgroundService
 	{
-		public FileSystemLoggerBackgroundService(IWebHostEnvironment environment)
-			: base(environment)
+		public FileSystemLoggerBackgroundService(IWebHostEnvironment environment, BackgroundServiceMonitor backgroundServiceMonitor)
+			: base(environment, backgroundServiceMonitor)
 		{
 		}
 

@@ -1,5 +1,6 @@
 ﻿using DevilDaggersDiscordBot;
 using DevilDaggersWebsite.Entities;
+using DevilDaggersWebsite.Singletons;
 using Microsoft.AspNetCore.Hosting;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.Extensions.DependencyInjection;
@@ -15,8 +16,8 @@ namespace DevilDaggersWebsite.BackgroundServices
 	{
 		private readonly IServiceScopeFactory _serviceScopeFactory;
 
-		public DatabaseLoggerBackgroundService(IWebHostEnvironment environment, IServiceScopeFactory serviceScopeFactory)
-			: base(environment)
+		public DatabaseLoggerBackgroundService(IWebHostEnvironment environment, BackgroundServiceMonitor backgroundServiceMonitor, IServiceScopeFactory serviceScopeFactory)
+			: base(environment, backgroundServiceMonitor)
 		{
 			_serviceScopeFactory = serviceScopeFactory;
 		}
