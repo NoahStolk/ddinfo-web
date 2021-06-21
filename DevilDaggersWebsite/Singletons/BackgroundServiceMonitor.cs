@@ -1,20 +1,21 @@
 ﻿using DevilDaggersDiscordBot.Extensions;
 using DSharpPlus.Entities;
 using System;
-using System.Collections.Generic;
+using System.Collections.Concurrent;
+using System.Linq;
 
 namespace DevilDaggersWebsite.Singletons
 {
 	public class BackgroundServiceMonitor
 	{
-		private readonly List<BackgroundServiceLog> _backgroundServiceLogs = new();
+		private readonly ConcurrentBag<BackgroundServiceLog> _backgroundServiceLogs = new();
 
 		public void Register(string name, TimeSpan interval)
 			=> _backgroundServiceLogs.Add(new(name, interval));
 
 		public void Update(string name, DateTime lastExecuted)
 		{
-			BackgroundServiceLog? backgroundServiceLog = _backgroundServiceLogs.Find(bsl => bsl.Name == name);
+			BackgroundServiceLog? backgroundServiceLog = _backgroundServiceLogs.FirstOrDefault(bsl => bsl.Name == name);
 			if (backgroundServiceLog != null)
 				backgroundServiceLog.LastExecuted = lastExecuted;
 		}
