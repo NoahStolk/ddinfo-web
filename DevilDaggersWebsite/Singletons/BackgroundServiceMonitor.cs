@@ -15,10 +15,8 @@ namespace DevilDaggersWebsite.Singletons
 		public void Update(string name, DateTime lastExecuted)
 		{
 			BackgroundServiceLog? backgroundServiceLog = _backgroundServiceLogs.Find(bsl => bsl.Name == name);
-			if (backgroundServiceLog == null)
-				return;
-
-			backgroundServiceLog.LastExecuted = lastExecuted;
+			if (backgroundServiceLog != null)
+				backgroundServiceLog.LastExecuted = lastExecuted;
 		}
 
 		public DiscordEmbed? BuildDiscordEmbed()
@@ -46,7 +44,6 @@ namespace DevilDaggersWebsite.Singletons
 			}
 
 			public string Name { get; }
-
 			public TimeSpan Interval { get; }
 
 			public DateTime LastExecuted { get; set; }
