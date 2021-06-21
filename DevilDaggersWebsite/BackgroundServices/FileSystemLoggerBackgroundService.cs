@@ -35,10 +35,10 @@ namespace DevilDaggersWebsite.BackgroundServices
 				Title = $"File {DateTime.UtcNow:yyyy-MM-dd HH:mm:ss}",
 				Color = DiscordColor.White,
 			};
-			builder.AddFieldObject("leaderboard-history", $"{leaderboardHistorySize:n0} bytes");
-			builder.AddFieldObject("mod-screenshots", $"{modScreenshotsSize:n0} bytes");
-			builder.AddFieldObject("mods", $"{modsSize:n0} bytes");
-			builder.AddFieldObject("spawnsets", $"{spawnsetsSize:n0} bytes");
+			builder.AddFieldObject("leaderboard-history", $"`{leaderboardHistorySize:n0}` bytes");
+			builder.AddFieldObject("mod-screenshots", $"`{modScreenshotsSize:n0}` bytes");
+			builder.AddFieldObject("mods", $"`{modsSize:n0}` bytes");
+			builder.AddFieldObject("spawnsets", $"`{spawnsetsSize:n0}` bytes");
 
 			await DiscordLogger.EditMessage(ServerConstants.FileMessage, builder.Build());
 		}

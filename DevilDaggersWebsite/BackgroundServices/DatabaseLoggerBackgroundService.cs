@@ -41,7 +41,7 @@ FROM information_schema.TABLES
 WHERE table_schema = 'devildaggers'
 ORDER BY table_name ASC;");
 
-			StringBuilder sb = new("```");
+			StringBuilder sb = new($"```Database\n{DateTime.UtcNow:yyyy-MM-dd HH:mm:ss}\n\n");
 			sb.AppendFormat("{0,-21}", nameof(InformationSchemaTable.Table))
 				.AppendFormat("{0,12}", nameof(InformationSchemaTable.DataSize))
 				.AppendFormat("{0,12}", nameof(InformationSchemaTable.IndexSize))
