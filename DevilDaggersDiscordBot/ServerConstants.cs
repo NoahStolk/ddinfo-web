@@ -9,6 +9,7 @@ namespace DevilDaggersDiscordBot
 	{
 		internal const ulong BotUserId = 645209987949395969;
 
+		internal const ulong BackgroundServiceMessageId = 856557628816490537;
 		internal const ulong CacheMessageId = 856151636368031785;
 		internal const ulong DatabaseMessageId = 856491602675236894;
 		internal const ulong FileMessageId = 856265036486148146;
@@ -16,6 +17,7 @@ namespace DevilDaggersDiscordBot
 		private static readonly Dictionary<Channel, ChannelWrapper> _channels = new()
 		{
 			{ Channel.MonitoringAuditLog, new(821489129615130684) },
+			{ Channel.MonitoringBackgroundService, new(856553635206266911) },
 			{ Channel.MonitoringCache, new(831981757200859206) },
 			{ Channel.MonitoringCustomLeaderboard, new(813506112670007306) },
 			{ Channel.MonitoringDatabase, new(856490882371289098) },
@@ -28,6 +30,7 @@ namespace DevilDaggersDiscordBot
 
 		internal static IReadOnlyDictionary<Channel, ChannelWrapper> Channels => _channels;
 
+		public static DiscordMessage? BackgroundServiceMessage { get; private set; }
 		public static DiscordMessage? CacheMessage { get; private set; }
 		public static DiscordMessage? DatabaseMessage { get; private set; }
 		public static DiscordMessage? FileMessage { get; private set; }
@@ -39,6 +42,10 @@ namespace DevilDaggersDiscordBot
 				if (kvp.Value.DiscordChannel == null)
 					kvp.Value.DiscordChannel = await client.GetChannelAsync(kvp.Value.ChannelId);
 			}
+
+			DiscordChannel? backgroundServiceChannel = _channels[Channel.MonitoringBackgroundService].DiscordChannel;
+			if (backgroundServiceChannel != null)
+				BackgroundServiceMessage = await backgroundServiceChannel.GetMessageAsync(BackgroundServiceMessageId);
 
 			DiscordChannel? cacheChannel = _channels[Channel.MonitoringCache].DiscordChannel;
 			if (cacheChannel != null)
