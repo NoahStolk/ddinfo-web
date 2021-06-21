@@ -12,12 +12,9 @@ namespace DevilDaggersWebsite.BackgroundServices
 {
 	public class FileSystemLoggerBackgroundService : AbstractBackgroundService
 	{
-		private readonly IWebHostEnvironment _environment;
-
 		public FileSystemLoggerBackgroundService(IWebHostEnvironment environment)
 			: base(environment)
 		{
-			_environment = environment;
 		}
 
 		protected override TimeSpan Interval => TimeSpan.FromMinutes(5);
@@ -27,10 +24,10 @@ namespace DevilDaggersWebsite.BackgroundServices
 			if (ServerConstants.FileMessage == null)
 				return;
 
-			long leaderboardHistorySize = GetDirectorySize(Path.Combine(_environment.WebRootPath, "leaderboard-history"));
-			long modScreenshotsSize = GetDirectorySize(Path.Combine(_environment.WebRootPath, "mod-screenshots"));
-			long modsSize = GetDirectorySize(Path.Combine(_environment.WebRootPath, "mods"));
-			long spawnsetsSize = GetDirectorySize(Path.Combine(_environment.WebRootPath, "spawnsets"));
+			long leaderboardHistorySize = GetDirectorySize(Path.Combine(Environment.WebRootPath, "leaderboard-history"));
+			long modScreenshotsSize = GetDirectorySize(Path.Combine(Environment.WebRootPath, "mod-screenshots"));
+			long modsSize = GetDirectorySize(Path.Combine(Environment.WebRootPath, "mods"));
+			long spawnsetsSize = GetDirectorySize(Path.Combine(Environment.WebRootPath, "spawnsets"));
 
 			DiscordEmbedBuilder builder = new()
 			{

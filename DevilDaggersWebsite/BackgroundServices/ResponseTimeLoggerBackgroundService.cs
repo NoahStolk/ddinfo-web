@@ -9,7 +9,6 @@ namespace DevilDaggersWebsite.BackgroundServices
 {
 	public class ResponseTimeLoggerBackgroundService : AbstractBackgroundService
 	{
-		private readonly IWebHostEnvironment _environment;
 		private readonly ResponseTimeContainer _responseTimeContainer;
 
 		private DateTime _measurementStart;
@@ -17,7 +16,6 @@ namespace DevilDaggersWebsite.BackgroundServices
 		public ResponseTimeLoggerBackgroundService(IWebHostEnvironment environment, ResponseTimeContainer responseTimeContainer)
 			: base(environment)
 		{
-			_environment = environment;
 			_responseTimeContainer = responseTimeContainer;
 		}
 
@@ -32,7 +30,7 @@ namespace DevilDaggersWebsite.BackgroundServices
 			bool includeEnvironmentName = true;
 			foreach (string log in _responseTimeContainer.CreateLogs(_measurementStart, now))
 			{
-				await DiscordLogger.TryLog(Channel.MonitoringTask, _environment.EnvironmentName, log, null, includeEnvironmentName);
+				await DiscordLogger.TryLog(Channel.MonitoringTask, Environment.EnvironmentName, log, null, includeEnvironmentName);
 				includeEnvironmentName = false;
 			}
 

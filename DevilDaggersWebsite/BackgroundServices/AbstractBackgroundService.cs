@@ -9,14 +9,14 @@ namespace DevilDaggersWebsite.BackgroundServices
 {
 	public abstract class AbstractBackgroundService : BackgroundService
 	{
-		private readonly IWebHostEnvironment _environment;
-
 		protected AbstractBackgroundService(IWebHostEnvironment environment)
 		{
-			_environment = environment;
+			Environment = environment;
 
 			BackgroundServiceName = GetType().Name;
 		}
+
+		protected IWebHostEnvironment Environment { get; }
 
 		protected string BackgroundServiceName { get; }
 
@@ -36,8 +36,8 @@ namespace DevilDaggersWebsite.BackgroundServices
 				}
 				catch (Exception ex)
 				{
-					Channel channel = _environment.IsDevelopment() ? Channel.MonitoringTest : Channel.MonitoringTask;
-					await DiscordLogger.TryLog(channel, _environment.EnvironmentName, $":x: Task execution for `{BackgroundServiceName}` failed with exception: `{ex.Message}`");
+					Channel channel = Environment.IsDevelopment() ? Channel.MonitoringTest : Channel.MonitoringTask;
+					await DiscordLogger.TryLog(channel, Environment.EnvironmentName, $":x: Task execution for `{BackgroundServiceName}` failed with exception: `{ex.Message}`");
 				}
 
 				if (Interval.TotalMilliseconds > 0)
@@ -53,7 +53,7 @@ namespace DevilDaggersWebsite.BackgroundServices
 
 		protected virtual async Task End()
 		{
-			await DiscordLogger.TryLog(Channel.MonitoringTask, _environment.EnvironmentName, $":x: Cancellation for `{BackgroundServiceName}` was requested.");
+			await DiscordLogger.TryLog(Channel.MonitoringTask, Environment.EnvironmentName, $":x: Cancellation for `{BackgroundServiceName}` was requested.");
 		}
 	}
 }
