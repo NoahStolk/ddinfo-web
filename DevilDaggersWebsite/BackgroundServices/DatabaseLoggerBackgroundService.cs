@@ -13,17 +13,15 @@ namespace DevilDaggersWebsite.BackgroundServices
 {
 	public class DatabaseLoggerBackgroundService : AbstractBackgroundService
 	{
-		private readonly IWebHostEnvironment _environment;
 		private readonly IServiceScopeFactory _serviceScopeFactory;
 
 		public DatabaseLoggerBackgroundService(IWebHostEnvironment environment, IServiceScopeFactory serviceScopeFactory)
 			: base(environment)
 		{
-			_environment = environment;
 			_serviceScopeFactory = serviceScopeFactory;
 		}
 
-		protected override TimeSpan Interval => TimeSpan.FromSeconds(5); // TODO: 1 hour
+		protected override TimeSpan Interval => TimeSpan.FromHours(1);
 
 		protected override async Task ExecuteTaskAsync(CancellationToken stoppingToken)
 		{
