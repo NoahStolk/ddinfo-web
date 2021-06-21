@@ -62,11 +62,5 @@ namespace DevilDaggersDiscordBot
 			await message.ModifyAsync(":eye_in_speech_bubble:");
 			await message.ModifyAsync(embed);
 		}
-
-		public static async Task EditMessage(DiscordMessage message, string contents)
-		{
-			if (!string.IsNullOrEmpty(contents))
-				await message.ModifyAsync(contents);
-		}
 	}
 }

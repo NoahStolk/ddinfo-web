@@ -1,12 +1,13 @@
 ﻿using DevilDaggersDiscordBot;
+using DevilDaggersDiscordBot.Extensions;
 using DevilDaggersWebsite.Entities;
 using DevilDaggersWebsite.Singletons;
+using DSharpPlus.Entities;
 using Microsoft.AspNetCore.Hosting;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.Extensions.DependencyInjection;
 using System;
 using System.Linq;
-using System.Text;
 using System.Threading;
 using System.Threading.Tasks;
 
@@ -41,26 +42,21 @@ FROM information_schema.TABLES
 WHERE table_schema = 'devildaggers'
 ORDER BY table_name ASC;");
 
-			StringBuilder sb = new($"```Database\n{DateTime.UtcNow:yyyy-MM-dd HH:mm:ss}\n\n");
-			sb.AppendFormat("{0,-21}", nameof(InformationSchemaTable.Table))
-				.AppendFormat("{0,12}", nameof(InformationSchemaTable.DataSize))
-				.AppendFormat("{0,12}", nameof(InformationSchemaTable.IndexSize))
-				.AppendFormat("{0,20}", nameof(InformationSchemaTable.AverageRowLength))
-				.AppendFormat("{0,12}", nameof(InformationSchemaTable.TableRows))
-				.AppendLine();
-			foreach (InformationSchemaTable ist in tables)
+			DiscordEmbedBuilder builder = new()
 			{
-				sb.AppendFormat("{0,-21}", ist.Table)
-					.AppendFormat("{0,12}", ist.DataSize)
-					.AppendFormat("{0,12}", ist.IndexSize)
-					.AppendFormat("{0,20}", ist.AverageRowLength)
-					.AppendFormat("{0,12}", ist.TableRows)
-					.AppendLine();
+				Title = $"Database {DateTime.UtcNow:yyyy-MM-dd HH:mm:ss}",
+				Color = DiscordColor.White,
+			};
+			foreach (InformationSchemaTable table in tables)
+			{
+				string value = @$"`{"DataSize",-10}{table.DataSize,7}`
+`{"IxSize",-10}{table.IndexSize,7}`
+`{"AvgRL",-10}{table.AverageRowLength,7}`
+`{"Count",-10}{table.TableRows,7}`";
+				builder.AddFieldObject(table.Table ?? "Null", value, true);
 			}
 
-			sb.AppendLine("```");
-
-			await DiscordLogger.EditMessage(ServerConstants.DatabaseMessage, sb.ToString());
+			await DiscordLogger.EditMessage(ServerConstants.DatabaseMessage, builder.Build());
 		}
 	}
 }
