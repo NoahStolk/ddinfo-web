@@ -65,7 +65,7 @@ namespace DevilDaggersWebsite.Razor
 				services.AddHostedService<DatabaseLoggerBackgroundService>();
 				services.AddHostedService<FileSystemLoggerBackgroundService>();
 				services.AddHostedService<LeaderboardHistoryBackgroundService>();
-				services.AddHostedService<ResponseTimeLoggerBackgroundService>();
+				//services.AddHostedService<ResponseTimeLoggerBackgroundService>();
 			}
 
 			services.AddTransient<WorldRecordsHelper>();
