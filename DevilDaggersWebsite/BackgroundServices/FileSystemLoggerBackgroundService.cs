@@ -1,5 +1,6 @@
 ﻿using DevilDaggersDiscordBot;
 using DevilDaggersDiscordBot.Extensions;
+using DevilDaggersWebsite.Singletons;
 using DSharpPlus.Entities;
 using Microsoft.AspNetCore.Hosting;
 using System;
@@ -12,12 +13,9 @@ namespace DevilDaggersWebsite.BackgroundServices
 {
 	public class FileSystemLoggerBackgroundService : AbstractBackgroundService
 	{
-		private readonly IWebHostEnvironment _environment;
-
-		public FileSystemLoggerBackgroundService(IWebHostEnvironment environment)
-			: base(environment)
+		public FileSystemLoggerBackgroundService(IWebHostEnvironment environment, BackgroundServiceMonitor backgroundServiceMonitor)
+			: base(environment, backgroundServiceMonitor)
 		{
-			_environment = environment;
 		}
 
 		protected override TimeSpan Interval => TimeSpan.FromMinutes(5);
@@ -27,20 +25,20 @@ namespace DevilDaggersWebsite.BackgroundServices
 			if (ServerConstants.FileMessage == null)
 				return;
 
-			long leaderboardHistorySize = GetDirectorySize(Path.Combine(_environment.WebRootPath, "leaderboard-history"));
-			long modScreenshotsSize = GetDirectorySize(Path.Combine(_environment.WebRootPath, "mod-screenshots"));
-			long modsSize = GetDirectorySize(Path.Combine(_environment.WebRootPath, "mods"));
-			long spawnsetsSize = GetDirectorySize(Path.Combine(_environment.WebRootPath, "spawnsets"));
+			long leaderboardHistorySize = GetDirectorySize(Path.Combine(Environment.WebRootPath, "leaderboard-history"));
+			long modScreenshotsSize = GetDirectorySize(Path.Combine(Environment.WebRootPath, "mod-screenshots"));
+			long modsSize = GetDirectorySize(Path.Combine(Environment.WebRootPath, "mods"));
+			long spawnsetsSize = GetDirectorySize(Path.Combine(Environment.WebRootPath, "spawnsets"));
 
 			DiscordEmbedBuilder builder = new()
 			{
 				Title = $"File {DateTime.UtcNow:yyyy-MM-dd HH:mm:ss}",
 				Color = DiscordColor.White,
 			};
-			builder.AddFieldObject("leaderboard-history", $"{leaderboardHistorySize:n0} bytes");
-			builder.AddFieldObject("mod-screenshots", $"{modScreenshotsSize:n0} bytes");
-			builder.AddFieldObject("mods", $"{modsSize:n0} bytes");
-			builder.AddFieldObject("spawnsets", $"{spawnsetsSize:n0} bytes");
+			builder.AddFieldObject("leaderboard-history", $"`{leaderboardHistorySize:n0}` bytes");
+			builder.AddFieldObject("mod-screenshots", $"`{modScreenshotsSize:n0}` bytes");
+			builder.AddFieldObject("mods", $"`{modsSize:n0}` bytes");
+			builder.AddFieldObject("spawnsets", $"`{spawnsetsSize:n0}` bytes");
 
 			await DiscordLogger.EditMessage(ServerConstants.FileMessage, builder.Build());
 		}

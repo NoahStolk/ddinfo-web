@@ -59,7 +59,7 @@ namespace DevilDaggersDiscordBot
 
 		public static async Task EditMessage(DiscordMessage message, DiscordEmbed embed)
 		{
-			await message.ModifyAsync(" ");
+			await message.ModifyAsync(":eye_in_speech_bubble:");
 			await message.ModifyAsync(embed);
 		}
 	}
