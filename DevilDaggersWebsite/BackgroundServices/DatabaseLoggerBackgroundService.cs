@@ -25,6 +25,9 @@ namespace DevilDaggersWebsite.BackgroundServices
 
 		protected override async Task ExecuteTaskAsync(CancellationToken stoppingToken)
 		{
+			if (ServerConstants.DatabaseMessage == null)
+				return;
+
 			ApplicationDbContext dbContext = _serviceScopeFactory.CreateScope().ServiceProvider.GetRequiredService<ApplicationDbContext>();
 
 			IQueryable<InformationSchemaTable> tables = dbContext.InformationSchemaTables.FromSqlRaw($@"SELECT
@@ -55,9 +58,6 @@ ORDER BY table_name ASC;");
 			}
 
 			sb.AppendLine("```");
-
-			if (ServerConstants.DatabaseMessage == null)
-				return;
 
 			await DiscordLogger.EditMessage(ServerConstants.DatabaseMessage, sb.ToString());
 		}
