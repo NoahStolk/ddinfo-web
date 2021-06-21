@@ -30,7 +30,7 @@ namespace DevilDaggersWebsite.Singletons
 				Title = $"Background service {DateTime.UtcNow:yyyy-MM-dd HH:mm:ss}",
 				Color = DiscordColor.White,
 			};
-			foreach (BackgroundServiceLog bsl in _backgroundServiceLogs)
+			foreach (BackgroundServiceLog bsl in _backgroundServiceLogs.OrderBy(bsl => bsl.Name))
 				builder.AddFieldObject(bsl.Name, $"{nameof(BackgroundServiceLog.LastExecuted)} {bsl.LastExecuted:yyyy-MM-dd HH:mm:ss} | {nameof(BackgroundServiceLog.Interval)} {bsl.Interval:T}");
 
 			return builder.Build();
