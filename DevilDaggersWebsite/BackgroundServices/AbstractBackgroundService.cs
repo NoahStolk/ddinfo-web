@@ -43,6 +43,8 @@ namespace DevilDaggersWebsite.BackgroundServices
 					await DiscordLogger.TryLog(channel, Environment.EnvironmentName, $":x: Task execution for `{Name}` failed with exception: `{ex.Message}`");
 				}
 
+				BackgroundServiceMonitor.Update(Name, DateTime.UtcNow);
+
 				if (Interval.TotalMilliseconds > 0)
 					await Task.Delay(Interval, stoppingToken);
 			}
