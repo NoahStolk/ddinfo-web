@@ -31,7 +31,7 @@ namespace DevilDaggersWebsite.Razor.PageModels
 
 		protected void LogCreateOrEdit(StringBuilder auditLogger, Dictionary<string, string>? oldLog, Dictionary<string, string> newLog)
 		{
-			if (AreLogsEqual(oldLog, newLog))
+			if (oldLog != null && AreLogsEqual(oldLog, newLog))
 			{
 				auditLogger.AppendLine("`No changes.`");
 				return;
@@ -78,9 +78,9 @@ namespace DevilDaggersWebsite.Razor.PageModels
 
 			auditLogger.AppendLine("```");
 
-			static bool AreLogsEqual(Dictionary<string, string>? oldLog, Dictionary<string, string> newLog)
+			static bool AreLogsEqual(Dictionary<string, string> oldLog, Dictionary<string, string> newLog)
 			{
-				if (oldLog != null && oldLog.Count == newLog.Count)
+				if (oldLog.Count == newLog.Count)
 				{
 					foreach (KeyValuePair<string, string> oldKvp in oldLog)
 					{
