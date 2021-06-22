@@ -53,10 +53,10 @@ namespace DevilDaggersWebsite.Entities
 
 		public float? Edpi => Dpi * InGameSens;
 
-		public string EdpiString => Edpi.HasValue ? Edpi.Value.ToString(FormatUtils.MouseSensitivityFormat) : string.Empty;
-		public string DpiString => Dpi.HasValue ? Dpi.Value.ToString(FormatUtils.MouseSensitivityFormat) : string.Empty;
-		public string InGameSensString => InGameSens.HasValue ? InGameSens.Value.ToString(FormatUtils.MouseSensitivityFormat) : string.Empty;
-		public string GammaString => Gamma.HasValue ? Gamma.Value.ToString("0.00") : string.Empty;
+		public string EdpiString => Edpi.HasValue ? Edpi.Value.ToString(FormatUtils.InGameSensFormat) : string.Empty;
+		public string DpiString => Dpi.HasValue ? Dpi.Value.ToString() : string.Empty;
+		public string InGameSensString => InGameSens.HasValue ? InGameSens.Value.ToString(FormatUtils.InGameSensFormat) : string.Empty;
+		public string GammaString => Gamma.HasValue ? Gamma.Value.ToString(FormatUtils.GammaFormat) : string.Empty;
 		public string RightHandedString => IsRightHanded.HasValue ? IsRightHanded.Value ? "Right" : "Left" : string.Empty;
 		public string FlashEnabledString => HasFlashHandEnabled.HasValue ? HasFlashHandEnabled.Value ? "On" : "Off" : string.Empty;
 		public string UsesLegacyAudioString => UsesLegacyAudio.HasValue ? UsesLegacyAudio.Value ? "On" : "Off" : string.Empty;
