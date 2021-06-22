@@ -5,20 +5,20 @@ namespace DevilDaggersWebsite.Dto
 {
 	public class SpawnsetFile
 	{
-		public int? MaxDisplayWaves { get; set; }
+		public int? MaxDisplayWaves { get; init; }
 
-		public string? HtmlDescription { get; set; }
+		public string? HtmlDescription { get; init; }
 
-		public DateTime LastUpdated { get; set; }
+		public DateTime LastUpdated { get; init; }
 
-		public SpawnsetData SpawnsetData { get; set; } = null!;
+		public SpawnsetData SpawnsetData { get; init; } = null!;
 
-		public string Name { get; set; } = null!;
+		public string Name { get; init; } = null!;
 
-		public string AuthorName { get; set; } = null!;
+		public string AuthorName { get; init; } = null!;
 
-		public bool HasCustomLeaderboard { get; set; }
+		public bool HasCustomLeaderboard { get; init; }
 
-		public bool IsPractice { get; set; }
+		public bool IsPractice { get; init; }
 	}
 }

@@ -8,13 +8,13 @@ namespace DevilDaggersWebsite.Dto
 		public byte[] SurvivalHashMd5 { get; init; } = null!;
 		public int PlayerId { get; init; }
 		public string PlayerName { get; init; } = null!;
-		public int Time { get; set; }
+		public int Time { get; set; } // Use set to fix replay times.
 		public int GemsCollected { get; init; }
 		public int EnemiesKilled { get; init; }
 		public int DaggersFired { get; init; }
 		public int DaggersHit { get; init; }
 		public int EnemiesAlive { get; init; }
-		public int HomingDaggers { get; set; }
+		public int HomingDaggers { get; set; } // Use set to fix negative values.
 		public int HomingDaggersEaten { get; init; }
 		public int GemsDespawned { get; init; }
 		public int GemsEaten { get; init; }

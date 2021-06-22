@@ -19,15 +19,15 @@ namespace DevilDaggersWebsite.Dto.Admin
 		[StringLength(128)]
 		public string? Url { get; init; }
 
-		public bool IsHidden { get; set; }
+		public bool IsHidden { get; init; }
 
-		public DateTime LastUpdated { get; set; }
+		public DateTime LastUpdated { get; set; } // Use set to default to UtcNow.
 
 		[StringLength(64)]
-		public string? TrailerUrl { get; set; }
+		public string? TrailerUrl { get; init; }
 
 		[StringLength(2048)]
-		public string? HtmlDescription { get; set; }
+		public string? HtmlDescription { get; init; }
 
 		public Dictionary<string, string> Log()
 		{

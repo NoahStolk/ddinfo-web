@@ -5,10 +5,10 @@ namespace DevilDaggersWebsite.Dto
 {
 	public class ChangelogEntry
 	{
-		public Version VersionNumber { get; set; } = null!;
+		public Version VersionNumber { get; init; } = null!;
 
-		public DateTime Date { get; set; }
+		public DateTime Date { get; init; }
 
-		public IReadOnlyList<Change> Changes { get; set; } = new List<Change>();
+		public IReadOnlyList<Change> Changes { get; init; } = new List<Change>();
 	}
 }

@@ -16,7 +16,7 @@ namespace DevilDaggersWebsite.Dto.Admin
 		[StringLength(2048)]
 		public string? HtmlDescription { get; init; }
 
-		public DateTime LastUpdated { get; set; }
+		public DateTime LastUpdated { get; set; } // Use set to default to UtcNow.
 
 		public bool IsPractice { get; init; }
 
