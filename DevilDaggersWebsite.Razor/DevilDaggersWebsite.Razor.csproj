@@ -1,13 +1,9 @@
 ﻿<Project Sdk="Microsoft.NET.Sdk.Web">
   <PropertyGroup>
-    <TargetFramework>net5.0</TargetFramework>
     <Company />
     <Authors>Noah Stolk</Authors>
     <Copyright>Copyright © Noah Stolk 2017 - 2021</Copyright>
-    <GenerateDocumentationFile>true</GenerateDocumentationFile>
-    <Nullable>enable</Nullable>
     <UserSecretsId>e10f71ca-9d53-4d2f-b775-21049b1ac8ca</UserSecretsId>
-    <RunAnalyzersDuringBuild>false</RunAnalyzersDuringBuild>
   </PropertyGroup>
   <ItemGroup>
     <PackageReference Include="BuildBundlerMinifier" Version="3.2.449" />
