@@ -56,7 +56,6 @@ namespace DevilDaggersWebsite.Razor.Models
 			DaggersTotal = FormatUtils.FormatDaggersUInt64(entry.DaggersHitTotal, entry.DaggersFiredTotal, isHistory);
 			AccuracyTotal = entry.AccuracyTotal.ToString(FormatUtils.AccuracyFormat);
 
-			ulong deathsTotal = entry.DeathsTotal == 0 ? 1 : entry.DeathsTotal;
 			HtmlData = new($@"
 rank='{entry.Rank}'
 flag='{FlagCode}'

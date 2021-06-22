@@ -57,7 +57,6 @@ namespace DevilDaggersWebsite.Razor.Models
 			LevelUpTime2 = customEntry.LevelUpTime2 == 0 ? RazorUtils.NAString : new(customEntry.LevelUpTime2.FormatTimeInteger());
 			LevelUpTime3 = customEntry.LevelUpTime3 == 0 ? RazorUtils.NAString : new(customEntry.LevelUpTime3.FormatTimeInteger());
 			LevelUpTime4 = customEntry.LevelUpTime4 == 0 ? RazorUtils.NAString : new(customEntry.LevelUpTime4.FormatTimeInteger());
-			string submitDate = customEntry.SubmitDate.ToString("dd MMM yyyy, HH:mm");
 			bool v31 = false;
 			bool homingEaten = false;
 			if (Version.TryParse(customEntry.ClientVersion, out Version? version) && version != null)

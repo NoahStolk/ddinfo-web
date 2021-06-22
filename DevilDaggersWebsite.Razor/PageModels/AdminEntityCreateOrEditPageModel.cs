@@ -6,7 +6,6 @@ using DevilDaggersWebsite.Razor.Extensions;
 using DevilDaggersWebsite.Razor.Utils;
 using Microsoft.AspNetCore.Hosting;
 using Microsoft.AspNetCore.Mvc;
-using Microsoft.AspNetCore.Mvc.ModelBinding;
 using Microsoft.AspNetCore.Mvc.Rendering;
 using Microsoft.EntityFrameworkCore;
 using System.Collections.Generic;
@@ -59,7 +58,7 @@ namespace DevilDaggersWebsite.Razor.PageModels
 		{
 			Id = id;
 
-			_entity = GetFullQuery().FirstOrDefault(m => m.Id == id) ?? (TEntity?)new();
+			_entity = GetFullQuery().FirstOrDefault(m => m.Id == id) ?? new();
 
 			AdminDto = _entity.Populate();
 
@@ -68,8 +67,6 @@ namespace DevilDaggersWebsite.Razor.PageModels
 
 		public async Task<IActionResult> OnPostAsync(int? id)
 		{
-			IEnumerable<ModelError> allErrors = ModelState.Values.SelectMany(v => v.Errors);
-
 			if (!ModelState.IsValid)
 				return Page();
 
