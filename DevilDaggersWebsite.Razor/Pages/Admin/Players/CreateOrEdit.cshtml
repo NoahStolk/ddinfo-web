@@ -49,14 +49,14 @@
 				<span asp-validation-for="AdminDto.Fov" class="text-danger"></span>
 			</div>
 			<div class="form-group">
-				<label asp-for="AdminDto.RightHanded" class="control-label"></label>
-				<input asp-for="AdminDto.RightHanded" class="form-control" />
-				<span asp-validation-for="AdminDto.RightHanded" class="text-danger"></span>
+				<label asp-for="AdminDto.IsRightHanded" class="control-label"></label>
+				<input asp-for="AdminDto.IsRightHanded" class="form-control" />
+				<span asp-validation-for="AdminDto.IsRightHanded" class="text-danger"></span>
 			</div>
 			<div class="form-group">
-				<label asp-for="AdminDto.FlashEnabled" class="control-label"></label>
-				<input asp-for="AdminDto.FlashEnabled" class="form-control" />
-				<span asp-validation-for="AdminDto.FlashEnabled" class="text-danger"></span>
+				<label asp-for="AdminDto.HasFlashHandEnabled" class="control-label"></label>
+				<input asp-for="AdminDto.HasFlashHandEnabled" class="form-control" />
+				<span asp-validation-for="AdminDto.HasFlashHandEnabled" class="text-danger"></span>
 			</div>
 			<div class="form-group">
 				<label asp-for="AdminDto.Gamma" class="control-label"></label>
@@ -95,7 +95,7 @@
 			<div class="form-group">
 				<div class="checkbox">
 					<label>
-						<input asp-for="AdminDto.IsAnonymous" /> @Html.DisplayNameFor(model => model.AdminDto.IsAnonymous)
+						<input asp-for="AdminDto.HideDonations" /> @Html.DisplayNameFor(model => model.AdminDto.HideDonations)
 					</label>
 				</div>
 			</div>
