@@ -19,7 +19,11 @@ namespace DevilDaggersWebsite.Razor.PageModels
 		{
 			DbContext = dbContext;
 
-			DbSet = ((Array.Find(typeof(ApplicationDbContext).GetProperties(), pi => pi.PropertyType == typeof(DbSet<TEntity>)) ?? throw new("Could not retrieve DbSet of TEntity.")).GetValue(DbContext) as DbSet<TEntity>)!;
+			PropertyInfo? dbSetPropertyInfo = Array.Find(typeof(ApplicationDbContext).GetProperties(), pi => pi.PropertyType == typeof(DbSet<TEntity>));
+			if (dbSetPropertyInfo == null)
+				throw new($"DbSet with type {typeof(TEntity).Name} does not exist in {nameof(ApplicationDbContext)}.");
+
+			DbSet = (dbSetPropertyInfo.GetValue(DbContext) as DbSet<TEntity>)!;
 
 			EntityDisplayProperties = typeof(TEntity).GetProperties().Where(pi => pi.CanWrite && (pi.PropertyType.IsValueType || pi.PropertyType == typeof(string))).ToArray();
 		}
