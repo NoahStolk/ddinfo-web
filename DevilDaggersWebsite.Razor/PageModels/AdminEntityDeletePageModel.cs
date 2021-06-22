@@ -14,12 +14,9 @@ namespace DevilDaggersWebsite.Razor.PageModels
 		where TEntity : class, IAdminUpdatableEntity<TAdminDto>, new()
 		where TAdminDto : class, IAdminDto
 	{
-		private readonly IWebHostEnvironment _env;
-
-		public AdminEntityDeletePageModel(IWebHostEnvironment env, ApplicationDbContext dbContext)
-			: base(dbContext)
+		public AdminEntityDeletePageModel(ApplicationDbContext dbContext, IWebHostEnvironment environment)
+			: base(dbContext, environment)
 		{
-			_env = env;
 		}
 
 		[BindProperty]
@@ -50,7 +47,7 @@ namespace DevilDaggersWebsite.Razor.PageModels
 
 				StringBuilder auditLogger = new($"`DELETE` by `{this.GetIdentity()}` for `{typeof(TEntity).Name}` `{id}`\n");
 				LogDelete(auditLogger, Entity.Populate().Log());
-				await DiscordLogger.TryLog(Channel.MonitoringAuditLog, _env.EnvironmentName, auditLogger.ToString());
+				await DiscordLogger.TryLog(LoggingChannel, Environment.EnvironmentName, auditLogger.ToString());
 			}
 
 			return RedirectToPage("./Index");

@@ -1,5 +1,6 @@
 ﻿using DevilDaggersWebsite.Entities;
 using DevilDaggersWebsite.Extensions;
+using Microsoft.AspNetCore.Hosting;
 using Microsoft.AspNetCore.Mvc;
 using System.Linq;
 using System.Reflection;
@@ -9,8 +10,8 @@ namespace DevilDaggersWebsite.Razor.PageModels
 	public class AdminEntityIndexPageModel<TEntity> : AbstractAdminEntityPageModel<TEntity>
 		where TEntity : class, IEntity
 	{
-		public AdminEntityIndexPageModel(ApplicationDbContext dbContext)
-			: base(dbContext)
+		public AdminEntityIndexPageModel(ApplicationDbContext dbContext, IWebHostEnvironment environment)
+			: base(dbContext, environment)
 		{
 		}
 

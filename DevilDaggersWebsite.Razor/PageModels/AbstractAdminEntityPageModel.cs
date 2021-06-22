@@ -1,7 +1,10 @@
-﻿using DevilDaggersDiscordBot.Extensions;
+﻿using DevilDaggersDiscordBot;
+using DevilDaggersDiscordBot.Extensions;
 using DevilDaggersWebsite.Entities;
+using Microsoft.AspNetCore.Hosting;
 using Microsoft.AspNetCore.Mvc.RazorPages;
 using Microsoft.EntityFrameworkCore;
+using Microsoft.Extensions.Hosting;
 using System;
 using System.Collections.Generic;
 using System.Linq;
@@ -15,9 +18,10 @@ namespace DevilDaggersWebsite.Razor.PageModels
 	{
 		private const int _loggingMax = 60;
 
-		protected AbstractAdminEntityPageModel(ApplicationDbContext dbContext)
+		protected AbstractAdminEntityPageModel(ApplicationDbContext dbContext, IWebHostEnvironment environment)
 		{
 			DbContext = dbContext;
+			Environment = environment;
 
 			PropertyInfo? dbSetPropertyInfo = Array.Find(typeof(ApplicationDbContext).GetProperties(), pi => pi.PropertyType == typeof(DbSet<TEntity>));
 			if (dbSetPropertyInfo == null)
@@ -29,10 +33,13 @@ namespace DevilDaggersWebsite.Razor.PageModels
 		}
 
 		protected ApplicationDbContext DbContext { get; }
+		protected IWebHostEnvironment Environment { get; }
 
 		public DbSet<TEntity> DbSet { get; }
 
 		public PropertyInfo[] EntityDisplayProperties { get; }
+
+		protected Channel LoggingChannel => Environment.IsDevelopment() ? Channel.MonitoringTest : Channel.MonitoringAuditLog;
 
 		protected void LogCreateOrEdit(StringBuilder auditLogger, Dictionary<string, string>? oldLog, Dictionary<string, string> newLog)
 		{

@@ -20,15 +20,11 @@ namespace DevilDaggersWebsite.Razor.PageModels
 		where TEntity : class, IAdminUpdatableEntity<TAdminDto>, new()
 		where TAdminDto : class, IAdminDto
 	{
-		private readonly IWebHostEnvironment _env;
-
 		private TEntity? _entity;
 
-		public AdminEntityCreateOrEditPageModel(IWebHostEnvironment env, ApplicationDbContext dbContext)
-			: base(dbContext)
+		public AdminEntityCreateOrEditPageModel(ApplicationDbContext dbContext, IWebHostEnvironment environment)
+			: base(dbContext, environment)
 		{
-			_env = env;
-
 			AssetModTypesList = RazorUtils.EnumToSelectList<AssetModTypes>(true);
 
 			CategoryList = RazorUtils.EnumToSelectList<CustomLeaderboardCategory>(true);
@@ -90,7 +86,7 @@ namespace DevilDaggersWebsite.Razor.PageModels
 			if (assetMod?.ValidateGlobal(ModelState) == false)
 				return Page();
 
-			if (customLeaderboard?.ValidateGlobal(ModelState, DbContext, _env) == false)
+			if (customLeaderboard?.ValidateGlobal(ModelState, DbContext, Environment) == false)
 				return Page();
 
 			if (player?.ValidateGlobal(ModelState) == false)
@@ -115,7 +111,7 @@ namespace DevilDaggersWebsite.Razor.PageModels
 					_entity.CreateManyToManyRelations(DbContext, AdminDto);
 					DbContext.SaveChanges();
 
-					await DiscordLogger.TryLog(Channel.MonitoringAuditLog, _env.EnvironmentName, auditLogger.ToString());
+					await DiscordLogger.TryLog(LoggingChannel, Environment.EnvironmentName, auditLogger.ToString());
 				}
 				catch (DbUpdateConcurrencyException) when (!DbSet.Any(e => e.Id == _entity.Id))
 				{
@@ -158,7 +154,7 @@ namespace DevilDaggersWebsite.Razor.PageModels
 				StringBuilder auditLogger = new($"`CREATE` by `{this.GetIdentity()}` for `{typeof(TEntity).Name}` `{_entity.Id}`\n");
 				LogCreateOrEdit(auditLogger, null, AdminDto.Log());
 
-				await DiscordLogger.TryLog(Channel.MonitoringAuditLog, _env.EnvironmentName, auditLogger.ToString());
+				await DiscordLogger.TryLog(LoggingChannel, Environment.EnvironmentName, auditLogger.ToString());
 			}
 
 			return RedirectToPage("./Index");

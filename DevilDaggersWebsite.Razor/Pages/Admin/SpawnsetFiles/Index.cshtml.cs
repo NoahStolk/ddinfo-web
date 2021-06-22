@@ -9,12 +9,9 @@ namespace DevilDaggersWebsite.Razor.Pages.Admin.SpawnsetFiles
 {
 	public class IndexModel : AdminEntityIndexPageModel<SpawnsetFile>
 	{
-		private readonly IWebHostEnvironment _env;
-
-		public IndexModel(ApplicationDbContext dbContext, IWebHostEnvironment env)
-			: base(dbContext)
+		public IndexModel(ApplicationDbContext dbContext, IWebHostEnvironment environment)
+			: base(dbContext, environment)
 		{
-			_env = env;
 		}
 
 		public List<string> DeadFiles { get; } = new();
@@ -24,7 +21,7 @@ namespace DevilDaggersWebsite.Razor.Pages.Admin.SpawnsetFiles
 		{
 			List<string> allDbSpawnsetFileNames = DbContext.SpawnsetFiles.Select(sf => sf.Name).ToList();
 
-			foreach (string path in Directory.GetFiles(Path.Combine(_env.WebRootPath, "spawnsets")))
+			foreach (string path in Directory.GetFiles(Path.Combine(Environment.WebRootPath, "spawnsets")))
 			{
 				string fileName = Path.GetFileName(path);
 				if (!allDbSpawnsetFileNames.Contains(fileName))
@@ -33,7 +30,7 @@ namespace DevilDaggersWebsite.Razor.Pages.Admin.SpawnsetFiles
 
 			foreach (string dbSpawnsetFileName in allDbSpawnsetFileNames)
 			{
-				if (!System.IO.File.Exists(Path.Combine(_env.WebRootPath, "spawnsets", dbSpawnsetFileName)))
+				if (!System.IO.File.Exists(Path.Combine(Environment.WebRootPath, "spawnsets", dbSpawnsetFileName)))
 					MissingFiles.Add(dbSpawnsetFileName);
 			}
 		}
