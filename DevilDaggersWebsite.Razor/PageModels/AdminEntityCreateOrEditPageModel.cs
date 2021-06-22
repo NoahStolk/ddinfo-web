@@ -1,5 +1,5 @@
 ﻿using DevilDaggersDiscordBot;
-using DevilDaggersWebsite.Dto.Admin;
+using DevilDaggersWebsite.Dto;
 using DevilDaggersWebsite.Entities;
 using DevilDaggersWebsite.Enumerators;
 using DevilDaggersWebsite.Razor.Extensions;

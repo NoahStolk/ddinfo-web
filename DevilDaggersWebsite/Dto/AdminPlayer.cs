@@ -2,7 +2,7 @@
 using System.Collections.Generic;
 using System.ComponentModel.DataAnnotations;
 
-namespace DevilDaggersWebsite.Dto.Admin
+namespace DevilDaggersWebsite.Dto
 {
 	public class AdminPlayer : IAdminDto
 	{

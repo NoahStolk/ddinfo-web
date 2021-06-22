@@ -1,5 +1,5 @@
 ﻿using DevilDaggersWebsite.Clients;
-using DevilDaggersWebsite.Dto.Admin;
+using DevilDaggersWebsite.Dto;
 using System.Collections.Generic;
 using System.ComponentModel.DataAnnotations;
 using System.Linq;

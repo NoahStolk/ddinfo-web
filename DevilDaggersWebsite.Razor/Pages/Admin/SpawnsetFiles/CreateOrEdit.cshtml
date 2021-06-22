@@ -1,8 +1,8 @@
 ﻿@page
-@using DevilDaggersWebsite.Dto.Admin
 @using DevilDaggersWebsite.Entities
 @using DevilDaggersWebsite.Razor.PageModels
-@model AdminEntityCreateOrEditPageModel<SpawnsetFile, AdminSpawnsetFile>
+@using Dto = DevilDaggersWebsite.Dto
+@model AdminEntityCreateOrEditPageModel<SpawnsetFile, Dto.AdminSpawnsetFile>
 
 @{
 	ViewData["Title"] = Model.IsEditing ? "Edit" : "Create";

@@ -1,6 +1,6 @@
 ﻿using System.Collections.Generic;
 
-namespace DevilDaggersWebsite.Dto.Admin
+namespace DevilDaggersWebsite.Dto
 {
 	public interface IAdminDto
 	{

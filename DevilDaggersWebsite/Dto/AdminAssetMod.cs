@@ -5,7 +5,7 @@ using System.Collections.Generic;
 using System.ComponentModel.DataAnnotations;
 using System.Linq;
 
-namespace DevilDaggersWebsite.Dto.Admin
+namespace DevilDaggersWebsite.Dto
 {
 	public class AdminAssetMod : IAdminDto
 	{

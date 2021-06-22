@@ -1,5 +1,5 @@
 ﻿using DevilDaggersDiscordBot;
-using DevilDaggersWebsite.Dto.Admin;
+using DevilDaggersWebsite.Dto;
 using DevilDaggersWebsite.Entities;
 using DevilDaggersWebsite.Razor.Extensions;
 using Microsoft.AspNetCore.Hosting;

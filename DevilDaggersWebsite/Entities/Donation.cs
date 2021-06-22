@@ -1,4 +1,4 @@
-﻿using DevilDaggersWebsite.Dto.Admin;
+﻿using DevilDaggersWebsite.Dto;
 using DevilDaggersWebsite.Enumerators;
 using System;
 using System.ComponentModel.DataAnnotations;
