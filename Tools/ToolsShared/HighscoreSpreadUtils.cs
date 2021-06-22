@@ -66,11 +66,11 @@ namespace ToolsShared
 				_log.AppendLine(leaderboard.DateTime.ToString());
 				foreach (Entry entry in changes)
 				{
-					_log.AppendLine($"\tSet missing stats for {entry.Username} {entry.Time.FormatTimeInteger()}");
-					_log.AppendLine($"\t\tGems: {entry.Gems}");
-					_log.AppendLine($"\t\tKills: {entry.Kills}");
-					_log.AppendLine($"\t\tDeathType: {GameInfo.GetDeathByType(GameInfo.GetGameVersionFromDate(leaderboard.DateTime) ?? GameVersion.V1, entry.DeathType)?.Name ?? "Unknown"}");
-					_log.AppendLine($"\t\tAccuracy: {entry.DaggersHit / (float)entry.DaggersFired:00.00%}");
+					_log.Append("\tSet missing stats for ").Append(entry.Username).Append(' ').AppendLine(entry.Time.FormatTimeInteger());
+					_log.Append("\t\tGems: ").Append(entry.Gems).AppendLine();
+					_log.Append("\t\tKills: ").Append(entry.Kills).AppendLine();
+					_log.Append("\t\tDeathType: ").AppendLine(GameInfo.GetDeathByType(GameInfo.GetGameVersionFromDate(leaderboard.DateTime) ?? GameVersion.V1, entry.DeathType)?.Name ?? "Unknown");
+					_log.Append("\t\tAccuracy: ").AppendFormat("{0:00.00%}", entry.DaggersHit / (float)entry.DaggersFired).AppendLine();
 				}
 
 				_log.AppendLine();

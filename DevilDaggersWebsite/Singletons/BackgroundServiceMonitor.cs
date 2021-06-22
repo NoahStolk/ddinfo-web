@@ -22,7 +22,7 @@ namespace DevilDaggersWebsite.Singletons
 
 		public DiscordEmbed? BuildDiscordEmbed()
 		{
-			if (_backgroundServiceLogs.Count == 0)
+			if (_backgroundServiceLogs.IsEmpty)
 				return null;
 
 			DiscordEmbedBuilder builder = new()
