@@ -37,6 +37,8 @@ namespace DevilDaggersWebsite.Dto
 
 		public bool IsBannedFromDdcl { get; init; }
 
+		public bool HideSettings { get; init; }
+
 		public bool HideDonations { get; init; }
 
 		public bool HidePastUsernames { get; init; }
@@ -61,6 +63,7 @@ namespace DevilDaggersWebsite.Dto
 			dictionary.Add(nameof(BanDescription), BanDescription ?? string.Empty);
 			dictionary.Add(nameof(BanResponsibleId), BanResponsibleId.ToString() ?? string.Empty);
 			dictionary.Add(nameof(IsBannedFromDdcl), IsBannedFromDdcl.ToString() ?? string.Empty);
+			dictionary.Add(nameof(HideSettings), HideSettings.ToString());
 			dictionary.Add(nameof(HideDonations), HideDonations.ToString());
 			dictionary.Add(nameof(HidePastUsernames), HidePastUsernames.ToString() ?? string.Empty);
 			dictionary.Add(nameof(AssetModIds), AssetModIds != null ? string.Join(", ", AssetModIds) : string.Empty);

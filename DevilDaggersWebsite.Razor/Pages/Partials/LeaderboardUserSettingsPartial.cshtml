@@ -38,11 +38,11 @@
 						@await Html.PartialAsync("Partials/EntryFlagPartial", sem)
 						@await Html.PartialAsync("Partials/EntryUsernamePartial", sem)
 						<div class="text-right @sem.DaggerColor">@(entry.Time.FormatTimeInteger())</div>
-						<div class="hidden-xs text-right">@(player.Edpi != null ? player.Edpi.Value.ToString(FormatUtils.MouseSensitivityFormat) : string.Empty)</div>
-						<div class="hidden-xs text-right">@player.Dpi</div>
-						<div class="hidden-xs text-right">@(player.InGameSens != null ? player.InGameSens.Value.ToString(FormatUtils.MouseSensitivityFormat) : string.Empty)</div>
+						<div class="hidden-xs text-right">@player.EdpiString</div>
+						<div class="hidden-xs text-right">@player.DpiString</div>
+						<div class="hidden-xs text-right">@player.InGameSensString</div>
 						<div class="hidden-xs text-right">@player.Fov</div>
-						<div class="hidden-xs hidden-sm hidden-md text-right">@player.Gamma</div>
+						<div class="hidden-xs hidden-sm hidden-md text-right">@player.GammaString</div>
 						<div class="hidden-xs hidden-sm hidden-md text-left">@player.RightHandedString</div>
 						<div class="hidden-xs hidden-sm hidden-md text-left">@player.FlashEnabledString</div>
 						<div class="hidden-xs hidden-sm hidden-md text-left">@player.UsesLegacyAudioString</div>
@@ -50,15 +50,15 @@
 					<div class="leaderboard-expand flex-container" id="@(entry.Rank)-expand">
 						<div class="visible-xs">
 							<div class="text-left">eDPI</div>
-							<div class="text-right">@(player.Edpi.HasValue ? player.Edpi.Value.ToString(FormatUtils.MouseSensitivityFormat) : string.Empty)</div>
+							<div class="text-right">@player.EdpiString</div>
 						</div>
 						<div class="visible-xs">
 							<div class="text-left">DPI</div>
-							<div class="text-right">@player.Dpi</div>
+							<div class="text-right">@player.DpiString</div>
 						</div>
 						<div class="visible-xs">
 							<div class="text-left">In-game sens</div>
-							<div class="text-right">@(player.InGameSens.HasValue ? player.InGameSens.Value.ToString(FormatUtils.MouseSensitivityFormat) : string.Empty)</div>
+							<div class="text-right">@player.InGameSensString</div>
 						</div>
 						<div class="visible-xs">
 							<div class="text-left">FOV</div>
@@ -66,7 +66,7 @@
 						</div>
 						<div class="visible-xs visible-sm visible-md">
 							<div class="text-left">Gamma</div>
-							<div class="text-right">@player.Gamma</div>
+							<div class="text-right">@player.GammaString</div>
 						</div>
 						<div class="visible-xs visible-sm visible-md">
 							<div class="text-left">Hand orientation</div>
