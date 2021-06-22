@@ -92,25 +92,25 @@ namespace DevilDaggersWebsite.Entities
 		{
 			return new()
 			{
-				ClientVersion = ClientVersion,
 				CustomLeaderboardId = CustomLeaderboardId,
+				PlayerId = PlayerId,
+				Time = Time,
+				GemsCollected = GemsCollected,
+				EnemiesKilled = EnemiesKilled,
 				DaggersFired = DaggersFired,
 				DaggersHit = DaggersHit,
-				DeathType = DeathType,
 				EnemiesAlive = EnemiesAlive,
-				EnemiesKilled = EnemiesKilled,
-				GemsCollected = GemsCollected,
+				HomingDaggers = HomingDaggers,
+				HomingDaggersEaten = HomingDaggersEaten,
 				GemsDespawned = GemsDespawned,
 				GemsEaten = GemsEaten,
 				GemsTotal = GemsTotal,
-				HomingDaggers = HomingDaggers,
-				HomingDaggersEaten = HomingDaggersEaten,
+				DeathType = DeathType,
 				LevelUpTime2 = LevelUpTime2,
 				LevelUpTime3 = LevelUpTime3,
 				LevelUpTime4 = LevelUpTime4,
-				PlayerId = PlayerId,
 				SubmitDate = SubmitDate,
-				Time = Time,
+				ClientVersion = ClientVersion,
 			};
 		}
 	}

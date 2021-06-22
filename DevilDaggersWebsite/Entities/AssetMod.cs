@@ -10,9 +10,7 @@ namespace DevilDaggersWebsite.Entities
 	public class AssetMod : IAdminUpdatableEntity<AdminAssetMod>
 	{
 		[Key]
-		public int Id { get; set; }
-
-		public List<PlayerAssetMod> PlayerAssetMods { get; set; } = new();
+		public int Id { get; init; }
 
 		public AssetModTypes AssetModTypes { get; set; }
 
@@ -31,6 +29,8 @@ namespace DevilDaggersWebsite.Entities
 
 		[StringLength(2048)]
 		public string? HtmlDescription { get; set; }
+
+		public List<PlayerAssetMod> PlayerAssetMods { get; set; } = new();
 
 		public void Create(ApplicationDbContext dbContext, AdminAssetMod adminDto)
 		{
@@ -69,12 +69,12 @@ namespace DevilDaggersWebsite.Entities
 			{
 				AssetModTypes = ToFlagEnumList(AssetModTypes).ToList(),
 				Name = Name,
-				PlayerIds = PlayerAssetMods.ConvertAll(pam => pam.PlayerId),
 				Url = Url,
 				IsHidden = IsHidden,
 				LastUpdated = LastUpdated,
 				TrailerUrl = TrailerUrl,
 				HtmlDescription = HtmlDescription,
+				PlayerIds = PlayerAssetMods.ConvertAll(pam => pam.PlayerId),
 			};
 
 			static IEnumerable<T> ToFlagEnumList<T>(T value)

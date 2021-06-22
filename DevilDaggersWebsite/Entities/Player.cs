@@ -14,12 +14,6 @@ namespace DevilDaggersWebsite.Entities
 		[StringLength(32)]
 		public string PlayerName { get; set; } = null!;
 
-		public bool IsAnonymous { get; set; }
-
-		public List<PlayerAssetMod> PlayerAssetMods { get; set; } = new();
-
-		public List<PlayerTitle> PlayerTitles { get; set; } = new();
-
 		[StringLength(2)]
 		public string? CountryCode { get; set; }
 
@@ -29,11 +23,13 @@ namespace DevilDaggersWebsite.Entities
 
 		public int? Fov { get; set; }
 
-		public bool? RightHanded { get; set; }
+		public bool? RightHanded { get; set; } // TODO: Rename to IsRightHanded.
 
-		public bool? FlashEnabled { get; set; }
+		public bool? FlashEnabled { get; set; } // TODO: Rename to HasFlashEnabled.
 
 		public float? Gamma { get; set; }
+
+		public bool? UsesLegacyAudio { get; set; }
 
 		public bool IsBanned { get; set; }
 
@@ -42,11 +38,15 @@ namespace DevilDaggersWebsite.Entities
 
 		public int? BanResponsibleId { get; set; }
 
-		public bool? UsesLegacyAudio { get; set; }
-
 		public bool IsBannedFromDdcl { get; set; }
 
+		public bool IsAnonymous { get; set; } // TODO: Rename to HideDonations.
+
 		public bool HidePastUsernames { get; set; }
+
+		public List<PlayerAssetMod> PlayerAssetMods { get; set; } = new();
+
+		public List<PlayerTitle> PlayerTitles { get; set; } = new();
 
 		public float? Edpi => Dpi * InGameSens;
 		public string RightHandedString => !RightHanded.HasValue ? string.Empty : RightHanded.Value ? "Right" : "Left";
@@ -68,7 +68,6 @@ namespace DevilDaggersWebsite.Entities
 		public void Edit(ApplicationDbContext dbContext, AdminPlayer adminDto)
 		{
 			PlayerName = string.IsNullOrWhiteSpace(adminDto.PlayerName) ? (LeaderboardClient.Instance.GetUserById(Id).Result?.Username ?? string.Empty) : adminDto.PlayerName;
-			IsAnonymous = adminDto.IsAnonymous;
 			CountryCode = adminDto.CountryCode;
 			Dpi = adminDto.Dpi;
 			InGameSens = adminDto.InGameSens;
@@ -76,11 +75,12 @@ namespace DevilDaggersWebsite.Entities
 			RightHanded = adminDto.RightHanded;
 			FlashEnabled = adminDto.FlashEnabled;
 			Gamma = adminDto.Gamma;
+			UsesLegacyAudio = adminDto.UsesLegacyAudio;
 			IsBanned = adminDto.IsBanned;
 			BanDescription = adminDto.BanDescription;
 			BanResponsibleId = adminDto.BanResponsibleId;
-			UsesLegacyAudio = adminDto.UsesLegacyAudio;
 			IsBannedFromDdcl = adminDto.IsBannedFromDdcl;
+			IsAnonymous = adminDto.IsAnonymous;
 			HidePastUsernames = adminDto.HidePastUsernames;
 		}
 
@@ -111,24 +111,24 @@ namespace DevilDaggersWebsite.Entities
 		{
 			return new()
 			{
-				AssetModIds = PlayerAssetMods.ConvertAll(pam => pam.AssetModId),
-				BanDescription = BanDescription,
-				BanResponsibleId = BanResponsibleId,
+				Id = Id,
+				PlayerName = PlayerName,
 				CountryCode = CountryCode,
 				Dpi = Dpi,
-				FlashEnabled = FlashEnabled,
-				Fov = Fov,
-				Gamma = Gamma,
-				Id = Id,
 				InGameSens = InGameSens,
-				IsAnonymous = IsAnonymous,
-				IsBanned = IsBanned,
-				PlayerName = PlayerName,
+				Fov = Fov,
 				RightHanded = RightHanded,
-				TitleIds = PlayerTitles.ConvertAll(pt => pt.TitleId),
+				FlashEnabled = FlashEnabled,
+				Gamma = Gamma,
 				UsesLegacyAudio = UsesLegacyAudio,
+				IsBanned = IsBanned,
+				BanDescription = BanDescription,
+				BanResponsibleId = BanResponsibleId,
 				IsBannedFromDdcl = IsBannedFromDdcl,
+				IsAnonymous = IsAnonymous,
 				HidePastUsernames = HidePastUsernames,
+				AssetModIds = PlayerAssetMods.ConvertAll(pam => pam.AssetModId),
+				TitleIds = PlayerTitles.ConvertAll(pt => pt.TitleId),
 			};
 		}
 

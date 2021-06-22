@@ -51,13 +51,13 @@ namespace DevilDaggersWebsite.Entities
 		{
 			return new()
 			{
-				Amount = Amount,
-				ConvertedEuroCentsReceived = ConvertedEuroCentsReceived,
-				Currency = Currency,
-				DateReceived = DateReceived,
-				IsRefunded = IsRefunded,
-				Note = Note,
 				PlayerId = PlayerId,
+				Amount = Amount,
+				Currency = Currency,
+				ConvertedEuroCentsReceived = ConvertedEuroCentsReceived,
+				DateReceived = DateReceived,
+				Note = Note,
+				IsRefunded = IsRefunded,
 			};
 		}
 	}
