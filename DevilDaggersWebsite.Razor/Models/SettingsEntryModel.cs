@@ -43,8 +43,8 @@ e-dpi='{player.Edpi * 1000 ?? 0}'
 dpi='{player.Dpi ?? 0}'
 in-game-sens='{player.InGameSens * 1000 ?? 0}'
 fov='{player.Fov ?? 0}'
-hand='{(!player.RightHanded.HasValue ? -1 : player.RightHanded.Value ? 1 : 0)}'
-flash='{(!player.FlashEnabled.HasValue ? -1 : player.FlashEnabled.Value ? 1 : 0)}'
+hand='{(!player.IsRightHanded.HasValue ? -1 : player.IsRightHanded.Value ? 1 : 0)}'
+flash='{(!player.HasFlashHandEnabled.HasValue ? -1 : player.HasFlashHandEnabled.Value ? 1 : 0)}'
 legacy-audio='{(!player.UsesLegacyAudio.HasValue ? -1 : player.UsesLegacyAudio.Value ? 1 : 0)}'
 gamma='{player.Gamma * 1000 ?? 0}'");
 		}

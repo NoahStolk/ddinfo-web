@@ -1,6 +1,6 @@
 ﻿@page
-@using DevilDaggersWebsite.Razor.PageModels
 @using DevilDaggersWebsite.Entities
+@using DevilDaggersWebsite.Razor.PageModels
 @model AdminEntityIndexPageModel<Donation>
 @{
 	ViewData["Title"] = "Donations";
@@ -16,14 +16,14 @@
 		<tr>
 			@foreach (var pi in Model.EntityDisplayProperties)
 			{
-				<th>@pi.Name</th>
+				<th><a asp-route-sortOrder="@pi.Name">@pi.Name</a></th>
 			}
 			<th></th>
 			<th></th>
 		</tr>
 	</thead>
 	<tbody>
-		@foreach (var entity in Model.DbSet)
+		@foreach (var entity in Model.GetOrderedQuery())
 		{
 			<tr>
 				@foreach (var pi in Model.EntityDisplayProperties)

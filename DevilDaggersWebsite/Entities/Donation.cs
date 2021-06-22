@@ -1,4 +1,4 @@
-﻿using DevilDaggersWebsite.Dto.Admin;
+﻿using DevilDaggersWebsite.Dto;
 using DevilDaggersWebsite.Enumerators;
 using System;
 using System.ComponentModel.DataAnnotations;
@@ -9,7 +9,7 @@ namespace DevilDaggersWebsite.Entities
 	public class Donation : IAdminUpdatableEntity<AdminDonation>
 	{
 		[Key]
-		public int Id { get; set; }
+		public int Id { get; init; }
 
 		public int PlayerId { get; set; }
 
@@ -51,13 +51,13 @@ namespace DevilDaggersWebsite.Entities
 		{
 			return new()
 			{
-				Amount = Amount,
-				ConvertedEuroCentsReceived = ConvertedEuroCentsReceived,
-				Currency = Currency,
-				DateReceived = DateReceived,
-				IsRefunded = IsRefunded,
-				Note = Note,
 				PlayerId = PlayerId,
+				Amount = Amount,
+				Currency = Currency,
+				ConvertedEuroCentsReceived = ConvertedEuroCentsReceived,
+				DateReceived = DateReceived,
+				Note = Note,
+				IsRefunded = IsRefunded,
 			};
 		}
 	}

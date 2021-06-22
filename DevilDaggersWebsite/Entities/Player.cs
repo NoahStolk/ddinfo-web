@@ -1,5 +1,6 @@
-﻿using DevilDaggersWebsite.Clients;
-using DevilDaggersWebsite.Dto.Admin;
+﻿using DevilDaggersCore.Utils;
+using DevilDaggersWebsite.Clients;
+using DevilDaggersWebsite.Dto;
 using System.Collections.Generic;
 using System.ComponentModel.DataAnnotations;
 using System.Linq;
@@ -14,12 +15,6 @@ namespace DevilDaggersWebsite.Entities
 		[StringLength(32)]
 		public string PlayerName { get; set; } = null!;
 
-		public bool IsAnonymous { get; set; }
-
-		public List<PlayerAssetMod> PlayerAssetMods { get; set; } = new();
-
-		public List<PlayerTitle> PlayerTitles { get; set; } = new();
-
 		[StringLength(2)]
 		public string? CountryCode { get; set; }
 
@@ -29,11 +24,13 @@ namespace DevilDaggersWebsite.Entities
 
 		public int? Fov { get; set; }
 
-		public bool? RightHanded { get; set; }
+		public bool? IsRightHanded { get; set; }
 
-		public bool? FlashEnabled { get; set; }
+		public bool? HasFlashHandEnabled { get; set; }
 
 		public float? Gamma { get; set; }
+
+		public bool? UsesLegacyAudio { get; set; }
 
 		public bool IsBanned { get; set; }
 
@@ -42,16 +39,27 @@ namespace DevilDaggersWebsite.Entities
 
 		public int? BanResponsibleId { get; set; }
 
-		public bool? UsesLegacyAudio { get; set; }
-
 		public bool IsBannedFromDdcl { get; set; }
+
+		public bool HideSettings { get; set; }
+
+		public bool HideDonations { get; set; }
 
 		public bool HidePastUsernames { get; set; }
 
+		public List<PlayerAssetMod> PlayerAssetMods { get; set; } = new();
+
+		public List<PlayerTitle> PlayerTitles { get; set; } = new();
+
 		public float? Edpi => Dpi * InGameSens;
-		public string RightHandedString => !RightHanded.HasValue ? string.Empty : RightHanded.Value ? "Right" : "Left";
-		public string FlashEnabledString => !FlashEnabled.HasValue ? string.Empty : FlashEnabled.Value ? "On" : "Off";
-		public string UsesLegacyAudioString => !UsesLegacyAudio.HasValue ? string.Empty : UsesLegacyAudio.Value ? "On" : "Off";
+
+		public string EdpiString => Edpi.HasValue ? Edpi.Value.ToString(FormatUtils.InGameSensFormat) : string.Empty;
+		public string DpiString => Dpi.HasValue ? Dpi.Value.ToString() : string.Empty;
+		public string InGameSensString => InGameSens.HasValue ? InGameSens.Value.ToString(FormatUtils.InGameSensFormat) : string.Empty;
+		public string GammaString => Gamma.HasValue ? Gamma.Value.ToString(FormatUtils.GammaFormat) : string.Empty;
+		public string RightHandedString => IsRightHanded.HasValue ? IsRightHanded.Value ? "Right" : "Left" : string.Empty;
+		public string FlashEnabledString => HasFlashHandEnabled.HasValue ? HasFlashHandEnabled.Value ? "On" : "Off" : string.Empty;
+		public string UsesLegacyAudioString => UsesLegacyAudio.HasValue ? UsesLegacyAudio.Value ? "On" : "Off" : string.Empty;
 
 		public override string ToString()
 			=> $"{PlayerName} ({Id})";
@@ -68,19 +76,20 @@ namespace DevilDaggersWebsite.Entities
 		public void Edit(ApplicationDbContext dbContext, AdminPlayer adminDto)
 		{
 			PlayerName = string.IsNullOrWhiteSpace(adminDto.PlayerName) ? (LeaderboardClient.Instance.GetUserById(Id).Result?.Username ?? string.Empty) : adminDto.PlayerName;
-			IsAnonymous = adminDto.IsAnonymous;
 			CountryCode = adminDto.CountryCode;
 			Dpi = adminDto.Dpi;
 			InGameSens = adminDto.InGameSens;
 			Fov = adminDto.Fov;
-			RightHanded = adminDto.RightHanded;
-			FlashEnabled = adminDto.FlashEnabled;
+			IsRightHanded = adminDto.IsRightHanded;
+			HasFlashHandEnabled = adminDto.HasFlashHandEnabled;
 			Gamma = adminDto.Gamma;
+			UsesLegacyAudio = adminDto.UsesLegacyAudio;
 			IsBanned = adminDto.IsBanned;
 			BanDescription = adminDto.BanDescription;
 			BanResponsibleId = adminDto.BanResponsibleId;
-			UsesLegacyAudio = adminDto.UsesLegacyAudio;
 			IsBannedFromDdcl = adminDto.IsBannedFromDdcl;
+			HideSettings = adminDto.HideSettings;
+			HideDonations = adminDto.HideDonations;
 			HidePastUsernames = adminDto.HidePastUsernames;
 		}
 
@@ -111,28 +120,32 @@ namespace DevilDaggersWebsite.Entities
 		{
 			return new()
 			{
-				AssetModIds = PlayerAssetMods.ConvertAll(pam => pam.AssetModId),
-				BanDescription = BanDescription,
-				BanResponsibleId = BanResponsibleId,
+				Id = Id,
+				PlayerName = PlayerName,
 				CountryCode = CountryCode,
 				Dpi = Dpi,
-				FlashEnabled = FlashEnabled,
-				Fov = Fov,
-				Gamma = Gamma,
-				Id = Id,
 				InGameSens = InGameSens,
-				IsAnonymous = IsAnonymous,
-				IsBanned = IsBanned,
-				PlayerName = PlayerName,
-				RightHanded = RightHanded,
-				TitleIds = PlayerTitles.ConvertAll(pt => pt.TitleId),
+				Fov = Fov,
+				IsRightHanded = IsRightHanded,
+				HasFlashHandEnabled = HasFlashHandEnabled,
+				Gamma = Gamma,
 				UsesLegacyAudio = UsesLegacyAudio,
+				IsBanned = IsBanned,
+				BanDescription = BanDescription,
+				BanResponsibleId = BanResponsibleId,
 				IsBannedFromDdcl = IsBannedFromDdcl,
+				HideSettings = HideSettings,
+				HideDonations = HideDonations,
 				HidePastUsernames = HidePastUsernames,
+				AssetModIds = PlayerAssetMods.ConvertAll(pam => pam.AssetModId),
+				TitleIds = PlayerTitles.ConvertAll(pt => pt.TitleId),
 			};
 		}
 
 		public bool IsPublicDonator(IEnumerable<Donation> donations)
-			=> !IsAnonymous && donations.Any(d => d.PlayerId == Id && !d.IsRefunded && d.ConvertedEuroCentsReceived > 0);
+			=> !HideDonations && donations.Any(d => d.PlayerId == Id && !d.IsRefunded && d.ConvertedEuroCentsReceived > 0);
+
+		public bool HasSettings()
+			=> Dpi.HasValue || InGameSens.HasValue || Fov.HasValue || IsRightHanded.HasValue || HasFlashHandEnabled.HasValue || Gamma.HasValue || UsesLegacyAudio.HasValue;
 	}
 }

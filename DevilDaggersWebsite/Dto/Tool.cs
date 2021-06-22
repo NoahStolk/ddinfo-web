@@ -7,21 +7,21 @@ namespace DevilDaggersWebsite.Dto
 {
 	public class Tool
 	{
-		public string Name { get; set; } = null!;
+		public string Name { get; init; } = null!;
 
-		public string DisplayName { get; set; } = null!;
+		public string DisplayName { get; init; } = null!;
 
 		/// <summary>
 		/// Indicates the current version of the tool on the website.
 		/// </summary>
-		public Version VersionNumber { get; set; } = null!;
+		public Version VersionNumber { get; init; } = null!;
 
 		/// <summary>
 		/// Indicates the oldest version of the tool which is still fully compatible with the website.
 		/// </summary>
-		public Version VersionNumberRequired { get; set; } = null!;
+		public Version VersionNumberRequired { get; init; } = null!;
 
-		public IReadOnlyList<ChangelogEntry> Changelog { get; set; } = null!;
+		public IReadOnlyList<ChangelogEntry> Changelog { get; init; } = null!;
 
 		public HtmlString ToChangelogHtmlString()
 		{

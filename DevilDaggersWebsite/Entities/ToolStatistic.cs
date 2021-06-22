@@ -5,7 +5,7 @@ namespace DevilDaggersWebsite.Entities
 	public class ToolStatistic : IEntity
 	{
 		[Key]
-		public int Id { get; set; }
+		public int Id { get; init; }
 
 		[StringLength(64)]
 		public string ToolName { get; set; } = null!;

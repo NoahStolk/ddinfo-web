@@ -24,7 +24,14 @@ namespace DevilDaggersWebsite.Razor.Pages.Leaderboard
 
 		public async Task OnGetAsync()
 		{
-			Players = _dbContext.Players.AsNoTracking().Include(p => p.PlayerTitles).ThenInclude(pt => pt.Title).Where(p => p.Dpi != null).ToList();
+			List<Player> playersWithVisibleSettings = _dbContext.Players
+				.AsNoTracking()
+				.Include(p => p.PlayerTitles)
+					.ThenInclude(pt => pt.Title)
+				.Where(p => !p.HideSettings)
+				.ToList();
+
+			Players = playersWithVisibleSettings.Where(p => p.HasSettings()).ToList();
 
 			Entries = await LeaderboardClient.Instance.GetUsersByIds(Players.Select(p => p.Id));
 			if (Entries != null)

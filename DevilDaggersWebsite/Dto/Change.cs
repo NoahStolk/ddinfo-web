@@ -11,9 +11,9 @@ namespace DevilDaggersWebsite.Dto
 			Description = description;
 		}
 
-		public string Description { get; set; }
+		public string Description { get; }
 
-		public IReadOnlyList<Change>? SubChanges { get; set; }
+		public IReadOnlyList<Change>? SubChanges { get; init; }
 
 		public HtmlString ToHtmlString()
 		{

@@ -10,7 +10,7 @@ namespace DevilDaggersWebsite.Entities
 	public class CustomEntryData : IEntity
 	{
 		[Key]
-		public int Id { get; set; }
+		public int Id { get; init; }
 
 		public int CustomEntryId { get; set; }
 

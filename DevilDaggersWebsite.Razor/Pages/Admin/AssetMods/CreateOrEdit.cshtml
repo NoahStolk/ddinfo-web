@@ -1,5 +1,5 @@
 ﻿@page
-@using DevilDaggersWebsite.Dto.Admin
+@using DevilDaggersWebsite.Dto
 @using DevilDaggersWebsite.Entities
 @using DevilDaggersWebsite.Razor.PageModels
 @model AdminEntityCreateOrEditPageModel<AssetMod, AdminAssetMod>
@@ -25,14 +25,11 @@
 				<span asp-validation-for="AdminDto.Name" class="text-danger"></span>
 			</div>
 			<div class="form-group">
-				<label class="control-label">Players (CTRL+click for multiple)</label>
-				<select asp-for="AdminDto.PlayerIds" class="admin-select form-control" asp-items="Model.PlayerList" style="height: 640px;"></select>
-				<span asp-validation-for="AdminDto.PlayerIds" class="text-danger"></span>
-			</div>
-			<div class="form-group">
-				<label asp-for="AdminDto.IsHidden" class="control-label"></label>
-				<input asp-for="AdminDto.IsHidden" class="form-control" />
-				<span asp-validation-for="AdminDto.IsHidden" class="text-danger"></span>
+				<div class="checkbox">
+					<label>
+						<input asp-for="AdminDto.IsHidden" /> @Html.DisplayNameFor(model => model.AdminDto.IsHidden)
+					</label>
+				</div>
 			</div>
 			<div class="form-group">
 				<label asp-for="AdminDto.LastUpdated" class="control-label"></label>
@@ -49,10 +46,6 @@
 				<input asp-for="AdminDto.HtmlDescription" class="form-control" />
 				<span asp-validation-for="AdminDto.HtmlDescription" class="text-danger"></span>
 			</div>
-			<hr />
-			<p>The following fields are only used when the mod is hosted externally.</p>
-			<p>I plan to remove these fields when all (or most) mods have been migrated.</p>
-			<hr />
 			<div class="form-group">
 				<label class="control-label">AssetModTypes (CTRL+click for multiple)</label>
 				<select asp-for="AdminDto.AssetModTypes" class="admin-select form-control" asp-items="Model.AssetModTypesList" style="height: 192px;"></select>
@@ -62,6 +55,11 @@
 				<label asp-for="AdminDto.Url" class="control-label"></label>
 				<input asp-for="AdminDto.Url" class="form-control" />
 				<span asp-validation-for="AdminDto.Url" class="text-danger"></span>
+			</div>
+			<div class="form-group">
+				<label class="control-label">Players (CTRL+click for multiple)</label>
+				<select asp-for="AdminDto.PlayerIds" class="admin-select form-control" asp-items="Model.PlayerList" style="height: 640px;"></select>
+				<span asp-validation-for="AdminDto.PlayerIds" class="text-danger"></span>
 			</div>
 			<div class="form-group">
 				<input type="submit" value="Save" class="btn btn-default" />

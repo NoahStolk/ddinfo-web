@@ -1,4 +1,4 @@
-﻿using DevilDaggersWebsite.Dto.Admin;
+﻿using DevilDaggersWebsite.Dto;
 using DevilDaggersWebsite.Enumerators;
 using DevilDaggersWebsite.Extensions;
 using System;
@@ -10,14 +10,14 @@ namespace DevilDaggersWebsite.Entities
 	public class CustomLeaderboard : IAdminUpdatableEntity<AdminCustomLeaderboard>
 	{
 		[Key]
-		public int Id { get; set; }
-
-		public CustomLeaderboardCategory Category { get; set; }
+		public int Id { get; init; }
 
 		public int SpawnsetFileId { get; set; }
 
 		[ForeignKey(nameof(SpawnsetFileId))]
 		public SpawnsetFile SpawnsetFile { get; set; } = null!;
+
+		public CustomLeaderboardCategory Category { get; set; }
 
 		public int TimeBronze { get; set; }
 
@@ -83,8 +83,8 @@ namespace DevilDaggersWebsite.Entities
 
 		public void Edit(ApplicationDbContext dbContext, AdminCustomLeaderboard adminDto)
 		{
-			Category = adminDto.Category;
 			SpawnsetFileId = adminDto.SpawnsetFileId;
+			Category = adminDto.Category;
 			TimeBronze = adminDto.TimeBronze;
 			TimeSilver = adminDto.TimeSilver;
 			TimeGolden = adminDto.TimeGolden;
@@ -97,8 +97,8 @@ namespace DevilDaggersWebsite.Entities
 		{
 			return new()
 			{
-				Category = Category,
 				SpawnsetFileId = SpawnsetFileId,
+				Category = Category,
 				TimeBronze = TimeBronze,
 				TimeSilver = TimeSilver,
 				TimeGolden = TimeGolden,

@@ -9,12 +9,9 @@ namespace DevilDaggersWebsite.Razor.Pages.Admin.AssetMods
 {
 	public class IndexModel : AdminEntityIndexPageModel<AssetMod>
 	{
-		private readonly IWebHostEnvironment _env;
-
-		public IndexModel(ApplicationDbContext dbContext, IWebHostEnvironment env)
-			: base(dbContext)
+		public IndexModel(ApplicationDbContext dbContext, IWebHostEnvironment environment)
+			: base(dbContext, environment)
 		{
-			_env = env;
 		}
 
 		public List<string> DeadFiles { get; } = new();
@@ -22,7 +19,7 @@ namespace DevilDaggersWebsite.Razor.Pages.Admin.AssetMods
 
 		public void OnGet()
 		{
-			foreach (string path in Directory.GetFiles(Path.Combine(_env.WebRootPath, "mods")))
+			foreach (string path in Directory.GetFiles(Path.Combine(Environment.WebRootPath, "mods")))
 			{
 				string fileName = Path.GetFileNameWithoutExtension(path);
 				if (!DbContext.AssetMods.Any(am => am.Name == fileName))
@@ -30,7 +27,7 @@ namespace DevilDaggersWebsite.Razor.Pages.Admin.AssetMods
 			}
 
 			List<string> directoriesScanned = new();
-			foreach (string path in Directory.GetFiles(Path.Combine(_env.WebRootPath, "mod-screenshots"), "*.png", SearchOption.AllDirectories))
+			foreach (string path in Directory.GetFiles(Path.Combine(Environment.WebRootPath, "mod-screenshots"), "*.png", SearchOption.AllDirectories))
 			{
 				string directoryName = new DirectoryInfo(path).Parent?.Name ?? throw new($"Invalid path '{path}' while scanning for dead mod screenshots.");
 

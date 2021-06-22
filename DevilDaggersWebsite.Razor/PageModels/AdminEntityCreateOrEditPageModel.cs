@@ -1,12 +1,11 @@
 ﻿using DevilDaggersDiscordBot;
-using DevilDaggersWebsite.Dto.Admin;
+using DevilDaggersWebsite.Dto;
 using DevilDaggersWebsite.Entities;
 using DevilDaggersWebsite.Enumerators;
 using DevilDaggersWebsite.Razor.Extensions;
 using DevilDaggersWebsite.Razor.Utils;
 using Microsoft.AspNetCore.Hosting;
 using Microsoft.AspNetCore.Mvc;
-using Microsoft.AspNetCore.Mvc.ModelBinding;
 using Microsoft.AspNetCore.Mvc.Rendering;
 using Microsoft.EntityFrameworkCore;
 using System.Collections.Generic;
@@ -20,15 +19,11 @@ namespace DevilDaggersWebsite.Razor.PageModels
 		where TEntity : class, IAdminUpdatableEntity<TAdminDto>, new()
 		where TAdminDto : class, IAdminDto
 	{
-		private readonly IWebHostEnvironment _env;
-
 		private TEntity? _entity;
 
-		public AdminEntityCreateOrEditPageModel(IWebHostEnvironment env, ApplicationDbContext dbContext)
-			: base(dbContext)
+		public AdminEntityCreateOrEditPageModel(ApplicationDbContext dbContext, IWebHostEnvironment environment)
+			: base(dbContext, environment)
 		{
-			_env = env;
-
 			AssetModTypesList = RazorUtils.EnumToSelectList<AssetModTypes>(true);
 
 			CategoryList = RazorUtils.EnumToSelectList<CustomLeaderboardCategory>(true);
@@ -63,7 +58,7 @@ namespace DevilDaggersWebsite.Razor.PageModels
 		{
 			Id = id;
 
-			_entity = GetFullQuery().FirstOrDefault(m => m.Id == id) ?? (TEntity?)new();
+			_entity = GetFullQuery().FirstOrDefault(m => m.Id == id) ?? new();
 
 			AdminDto = _entity.Populate();
 
@@ -72,8 +67,6 @@ namespace DevilDaggersWebsite.Razor.PageModels
 
 		public async Task<IActionResult> OnPostAsync(int? id)
 		{
-			IEnumerable<ModelError> allErrors = ModelState.Values.SelectMany(v => v.Errors);
-
 			if (!ModelState.IsValid)
 				return Page();
 
@@ -90,7 +83,7 @@ namespace DevilDaggersWebsite.Razor.PageModels
 			if (assetMod?.ValidateGlobal(ModelState) == false)
 				return Page();
 
-			if (customLeaderboard?.ValidateGlobal(ModelState, DbContext, _env) == false)
+			if (customLeaderboard?.ValidateGlobal(ModelState, DbContext, Environment) == false)
 				return Page();
 
 			if (player?.ValidateGlobal(ModelState) == false)
@@ -115,7 +108,7 @@ namespace DevilDaggersWebsite.Razor.PageModels
 					_entity.CreateManyToManyRelations(DbContext, AdminDto);
 					DbContext.SaveChanges();
 
-					await DiscordLogger.TryLog(Channel.MonitoringAuditLog, _env.EnvironmentName, auditLogger.ToString());
+					await DiscordLogger.TryLog(LoggingChannel, Environment.EnvironmentName, auditLogger.ToString());
 				}
 				catch (DbUpdateConcurrencyException) when (!DbSet.Any(e => e.Id == _entity.Id))
 				{
@@ -158,7 +151,7 @@ namespace DevilDaggersWebsite.Razor.PageModels
 				StringBuilder auditLogger = new($"`CREATE` by `{this.GetIdentity()}` for `{typeof(TEntity).Name}` `{_entity.Id}`\n");
 				LogCreateOrEdit(auditLogger, null, AdminDto.Log());
 
-				await DiscordLogger.TryLog(Channel.MonitoringAuditLog, _env.EnvironmentName, auditLogger.ToString());
+				await DiscordLogger.TryLog(LoggingChannel, Environment.EnvironmentName, auditLogger.ToString());
 			}
 
 			return RedirectToPage("./Index");

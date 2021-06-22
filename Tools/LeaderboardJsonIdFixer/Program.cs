@@ -4,7 +4,6 @@ using Newtonsoft.Json;
 using System;
 using System.Collections.Generic;
 using System.IO;
-using System.Linq;
 using System.Text;
 using ToolsShared;
 
@@ -12,6 +11,8 @@ namespace LeaderboardJsonIdFixer
 {
 	public static class Program
 	{
+		private const string _leaderboardHistoryPath = @"C:\Users\NOAH\source\repos\DevilDaggersWebsite\DevilDaggersWebsite.Razor\wwwroot\leaderboard-history";
+
 		public static void Main()
 		{
 			// Raven fix
@@ -32,15 +33,15 @@ namespace LeaderboardJsonIdFixer
 		/// <param name="id2">The second Id to swap.</param>
 		public static void SwapIds(DateTime dateStart, DateTime dateEnd, int id1, int id2)
 		{
-			foreach (string leaderboardHistoryPath in Directory.GetFiles(@"C:\Users\NOAH\source\repos\DevilDaggersWebsite\DevilDaggersWebsite.Razor\wwwroot\leaderboard-history", "*.json"))
+			foreach (string leaderboardHistoryPath in Directory.GetFiles(_leaderboardHistoryPath, "*.json"))
 			{
 				string fileName = Path.GetFileNameWithoutExtension(leaderboardHistoryPath);
-				Leaderboard leaderboard = JsonConvert.DeserializeObject<Leaderboard>(File.ReadAllText(leaderboardHistoryPath, Encoding.UTF8));
+				Leaderboard leaderboard = JsonConvert.DeserializeObject<Leaderboard>(File.ReadAllText(leaderboardHistoryPath, Encoding.UTF8)) ?? throw new("Could not deserialize leaderboard.");
 				if (leaderboard.DateTime < dateStart || leaderboard.DateTime > dateEnd)
 					continue;
 
-				Entry entry1 = leaderboard.Entries.FirstOrDefault(e => e.Id == id1);
-				Entry entry2 = leaderboard.Entries.FirstOrDefault(e => e.Id == id2);
+				Entry? entry1 = leaderboard.Entries.Find(e => e.Id == id1);
+				Entry? entry2 = leaderboard.Entries.Find(e => e.Id == id2);
 
 				if (entry1 != null)
 					entry1.Id = id2;
@@ -54,10 +55,10 @@ namespace LeaderboardJsonIdFixer
 
 		private static void ApplyNameTable()
 		{
-			foreach (string path in Directory.GetFiles(@"C:\Users\NOAH\source\repos\DevilDaggersWebsite\DevilDaggersWebsite.Razor\wwwroot\leaderboard-history", "*.json"))
+			foreach (string path in Directory.GetFiles(_leaderboardHistoryPath, "*.json"))
 			{
 				string jsonString = File.ReadAllText(path, Encoding.UTF8);
-				Leaderboard leaderboard = JsonConvert.DeserializeObject<Leaderboard>(jsonString);
+				Leaderboard leaderboard = JsonConvert.DeserializeObject<Leaderboard>(jsonString) ?? throw new("Could not deserialize leaderboard.");
 
 				List<Entry> changes = new();
 				foreach (Entry entry in leaderboard.Entries)

@@ -119,22 +119,22 @@
 					</div>
 				</div>
 			}
-			@if (Model.Player?.Dpi.HasValue == true)
+			@if (Model.Player?.HideSettings == false)
 			{
 				<div class="flex-container player-section">
 					<div class="leaderboard-data-container">
 						<div class="leaderboard-data-header">Settings</div>
 						<div class="flex-container leaderboard-data">
 							<div>eDPI</div>
-							<div class="text-right">@Model.Player?.Edpi?.ToString(FormatUtils.MouseSensitivityFormat)</div>
+							<div class="text-right">@Model.Player?.EdpiString</div>
 						</div>
 						<div class="flex-container leaderboard-data">
 							<div>DPI</div>
-							<div class="text-right">@Model.Player?.Dpi</div>
+							<div class="text-right">@Model.Player?.DpiString</div>
 						</div>
 						<div class="flex-container leaderboard-data">
 							<div>In-game sens</div>
-							<div class="text-right">@Model.Player?.InGameSens?.ToString(FormatUtils.MouseSensitivityFormat)</div>
+							<div class="text-right">@Model.Player?.InGameSensString</div>
 						</div>
 						<div class="flex-container leaderboard-data">
 							<div>FOV</div>
@@ -142,7 +142,7 @@
 						</div>
 						<div class="flex-container leaderboard-data">
 							<div>Gamma</div>
-							<div class="text-right">@Model.Player?.Gamma</div>
+							<div class="text-right">@Model.Player?.GammaString</div>
 						</div>
 						<div class="flex-container leaderboard-data">
 							<div>Hand orientation</div>

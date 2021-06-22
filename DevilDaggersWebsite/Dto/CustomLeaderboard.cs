@@ -5,16 +5,16 @@ namespace DevilDaggersWebsite.Dto
 {
 	public class CustomLeaderboard
 	{
-		public string SpawnsetName { get; set; } = null!;
-		public string SpawnsetAuthorName { get; set; } = null!;
-		public int TimeBronze { get; set; }
-		public int TimeSilver { get; set; }
-		public int TimeGolden { get; set; }
-		public int TimeDevil { get; set; }
-		public int TimeLeviathan { get; set; }
-		public DateTime? DateLastPlayed { get; set; }
-		public DateTime? DateCreated { get; set; }
-		public CustomLeaderboardCategory Category { get; set; }
-		public bool IsAscending { get; set; }
+		public string SpawnsetName { get; init; } = null!;
+		public string SpawnsetAuthorName { get; init; } = null!;
+		public int TimeBronze { get; init; }
+		public int TimeSilver { get; init; }
+		public int TimeGolden { get; init; }
+		public int TimeDevil { get; init; }
+		public int TimeLeviathan { get; init; }
+		public DateTime? DateLastPlayed { get; init; }
+		public DateTime? DateCreated { get; init; }
+		public CustomLeaderboardCategory Category { get; init; }
+		public bool IsAscending { get; init; }
 	}
 }

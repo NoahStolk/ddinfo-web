@@ -135,7 +135,7 @@ namespace LeaderboardCsvToJson
 
 		private static float GetAccuracyFromPercentageString(string accuracyString)
 		{
-			float.TryParse(accuracyString.Replace("%", ""), out float percentage);
+			_ = float.TryParse(accuracyString.Replace("%", ""), out float percentage);
 			return percentage * 100;
 		}
 	}

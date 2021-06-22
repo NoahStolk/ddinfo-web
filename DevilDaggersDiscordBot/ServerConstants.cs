@@ -28,12 +28,12 @@ namespace DevilDaggersDiscordBot
 			{ Channel.CustomLeaderboards, new(578316107836817418) },
 		};
 
-		internal static IReadOnlyDictionary<Channel, ChannelWrapper> Channels => _channels;
-
 		public static DiscordMessage? BackgroundServiceMessage { get; private set; }
 		public static DiscordMessage? CacheMessage { get; private set; }
 		public static DiscordMessage? DatabaseMessage { get; private set; }
 		public static DiscordMessage? FileMessage { get; private set; }
+
+		internal static IReadOnlyDictionary<Channel, ChannelWrapper> Channels => _channels;
 
 		internal static async Task LoadServerChannelsAndMessages(DiscordClient client)
 		{

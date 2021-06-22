@@ -43,8 +43,8 @@
 					@{
 						foreach (KeyValuePair<int, int> kvp in donators.Skip(i).Take(interval))
 						{
-							var donator = dbContext.Players.AsNoTracking().Select(p => new { p.PlayerName, p.Id, p.IsAnonymous }).First(d => d.Id == kvp.Key);
-							string username = donator.IsAnonymous ? "(anonymous)" : donator.PlayerName;
+							var donator = dbContext.Players.AsNoTracking().Select(p => new { p.PlayerName, p.Id, p.HideDonations }).First(d => d.Id == kvp.Key);
+							string username = donator.HideDonations ? "(anonymous)" : donator.PlayerName;
 
 							List<string> donationsGroupedByCurrency = new();
 							foreach (var donations in Model.Donations.Where(d => !d.IsRefunded && d.PlayerId == kvp.Key).GroupBy(d => d.Currency))

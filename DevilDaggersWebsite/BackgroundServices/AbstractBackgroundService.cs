@@ -23,6 +23,8 @@ namespace DevilDaggersWebsite.BackgroundServices
 
 		protected string Name { get; }
 
+		protected virtual bool LogExceptions => true;
+
 		protected abstract TimeSpan Interval { get; }
 
 		protected abstract Task ExecuteTaskAsync(CancellationToken stoppingToken);
@@ -41,8 +43,11 @@ namespace DevilDaggersWebsite.BackgroundServices
 				}
 				catch (Exception ex)
 				{
-					Channel channel = Environment.IsDevelopment() ? Channel.MonitoringTest : Channel.MonitoringTask;
-					await DiscordLogger.TryLog(channel, Environment.EnvironmentName, $":x: Task execution for `{Name}` failed with exception: `{ex.Message}`");
+					if (LogExceptions)
+					{
+						Channel channel = Environment.IsDevelopment() ? Channel.MonitoringTest : Channel.MonitoringTask;
+						await DiscordLogger.TryLog(channel, Environment.EnvironmentName, $":x: Task execution for `{Name}` failed with exception: `{ex.Message}`");
+					}
 				}
 
 				if (Interval.TotalMilliseconds > 0)

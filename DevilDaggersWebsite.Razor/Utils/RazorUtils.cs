@@ -71,12 +71,10 @@ namespace DevilDaggersWebsite.Razor.Utils
 					foreach (char end in endSeparators)
 					{
 						string enemyString = $"{begin}{enemy.Name}{end}";
-						if (str.Contains(enemyString))
-						{
-							// Enemy string should not be inside an <a> element.
-							if (str.Length < str.IndexOf(enemyString) + enemyString.Length + "</a>".Length || str.Substring(str.IndexOf(enemyString) + enemyString.Length, "</a>".Length) != "</a>")
-								str = str.Replace(enemyString, $"{begin}{enemy.GetLayoutAnchor(end == 's')}{(end == 's' ? string.Empty : end.ToString())}");
-						}
+
+						// Enemy string should not be inside an <a> element.
+						if (str.Contains(enemyString) && (str.Length < str.IndexOf(enemyString) + enemyString.Length + "</a>".Length || str.Substring(str.IndexOf(enemyString) + enemyString.Length, "</a>".Length) != "</a>"))
+							str = str.Replace(enemyString, $"{begin}{enemy.GetLayoutAnchor(end == 's')}{(end == 's' ? string.Empty : end.ToString())}");
 					}
 				}
 			}
