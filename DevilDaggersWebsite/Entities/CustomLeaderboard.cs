@@ -10,7 +10,7 @@ namespace DevilDaggersWebsite.Entities
 	public class CustomLeaderboard : IAdminUpdatableEntity<AdminCustomLeaderboard>
 	{
 		[Key]
-		public int Id { get; set; }
+		public int Id { get; init; }
 
 		public int SpawnsetFileId { get; set; }
 

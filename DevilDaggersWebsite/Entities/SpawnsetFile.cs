@@ -8,7 +8,7 @@ namespace DevilDaggersWebsite.Entities
 	public class SpawnsetFile : IAdminUpdatableEntity<AdminSpawnsetFile>
 	{
 		[Key]
-		public int Id { get; set; }
+		public int Id { get; init; }
 
 		public int PlayerId { get; set; }
 

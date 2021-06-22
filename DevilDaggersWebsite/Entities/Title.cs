@@ -8,7 +8,7 @@ namespace DevilDaggersWebsite.Entities
 	public class Title : IAdminUpdatableEntity<AdminTitle>
 	{
 		[Key]
-		public int Id { get; set; }
+		public int Id { get; init; }
 
 		[StringLength(16)]
 		public string Name { get; set; } = null!;

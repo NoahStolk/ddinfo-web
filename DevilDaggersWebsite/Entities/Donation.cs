@@ -9,7 +9,7 @@ namespace DevilDaggersWebsite.Entities
 	public class Donation : IAdminUpdatableEntity<AdminDonation>
 	{
 		[Key]
-		public int Id { get; set; }
+		public int Id { get; init; }
 
 		public int PlayerId { get; set; }
 

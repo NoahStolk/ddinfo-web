@@ -8,7 +8,7 @@ namespace DevilDaggersWebsite.Entities
 	public class CustomEntry : IAdminUpdatableEntity<AdminCustomEntry>
 	{
 		[Key]
-		public int Id { get; set; }
+		public int Id { get; init; }
 
 		public int CustomLeaderboardId { get; set; }
 
