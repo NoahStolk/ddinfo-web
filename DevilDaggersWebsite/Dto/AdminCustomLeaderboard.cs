@@ -14,8 +14,9 @@ namespace DevilDaggersWebsite.Dto
 {
 	public class AdminCustomLeaderboard : IAdminDto
 	{
-		public CustomLeaderboardCategory Category { get; init; }
 		public int SpawnsetFileId { get; init; }
+
+		public CustomLeaderboardCategory Category { get; init; }
 
 		[Range(10000, 15000000)]
 		public int TimeBronze { get; init; }
@@ -37,8 +38,8 @@ namespace DevilDaggersWebsite.Dto
 		public Dictionary<string, string> Log()
 		{
 			Dictionary<string, string> dictionary = new();
-			dictionary.Add(nameof(Category), Category.ToString());
 			dictionary.Add(nameof(SpawnsetFileId), SpawnsetFileId.ToString());
+			dictionary.Add(nameof(Category), Category.ToString());
 			dictionary.Add(nameof(TimeBronze), TimeBronze.ToString());
 			dictionary.Add(nameof(TimeSilver), TimeSilver.ToString());
 			dictionary.Add(nameof(TimeGolden), TimeGolden.ToString());

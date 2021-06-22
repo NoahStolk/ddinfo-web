@@ -6,9 +6,9 @@ namespace DevilDaggersWebsite.Dto
 {
 	public class AdminCustomEntry : IAdminDto
 	{
-		public int PlayerId { get; init; }
-
 		public int CustomLeaderboardId { get; init; }
+
+		public int PlayerId { get; init; }
 
 		public int Time { get; init; }
 
@@ -48,8 +48,8 @@ namespace DevilDaggersWebsite.Dto
 		public Dictionary<string, string> Log()
 		{
 			Dictionary<string, string> dictionary = new();
-			dictionary.Add(nameof(PlayerId), PlayerId.ToString());
 			dictionary.Add(nameof(CustomLeaderboardId), CustomLeaderboardId.ToString());
+			dictionary.Add(nameof(PlayerId), PlayerId.ToString());
 			dictionary.Add(nameof(Time), Time.ToString());
 			dictionary.Add(nameof(GemsCollected), GemsCollected.ToString());
 			dictionary.Add(nameof(EnemiesKilled), EnemiesKilled.ToString());

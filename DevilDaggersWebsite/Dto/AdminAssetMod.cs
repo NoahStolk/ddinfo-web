@@ -9,8 +9,6 @@ namespace DevilDaggersWebsite.Dto
 {
 	public class AdminAssetMod : IAdminDto
 	{
-		public List<int>? PlayerIds { get; init; }
-
 		public List<AssetModTypes>? AssetModTypes { get; init; }
 
 		[StringLength(64)]
@@ -29,10 +27,11 @@ namespace DevilDaggersWebsite.Dto
 		[StringLength(2048)]
 		public string? HtmlDescription { get; init; }
 
+		public List<int>? PlayerIds { get; init; }
+
 		public Dictionary<string, string> Log()
 		{
 			Dictionary<string, string> dictionary = new();
-			dictionary.Add(nameof(PlayerIds), PlayerIds != null ? string.Join(", ", PlayerIds) : string.Empty);
 			dictionary.Add(nameof(AssetModTypes), AssetModTypes != null ? string.Join(", ", AssetModTypes.Where(amt => amt != Enumerators.AssetModTypes.None)) : string.Empty);
 			dictionary.Add(nameof(Name), Name);
 			dictionary.Add(nameof(Url), Url ?? string.Empty);
@@ -40,6 +39,7 @@ namespace DevilDaggersWebsite.Dto
 			dictionary.Add(nameof(LastUpdated), LastUpdated.ToString("dd MMM yyyy"));
 			dictionary.Add(nameof(TrailerUrl), TrailerUrl ?? string.Empty);
 			dictionary.Add(nameof(HtmlDescription), HtmlDescription ?? string.Empty);
+			dictionary.Add(nameof(PlayerIds), PlayerIds != null ? string.Join(", ", PlayerIds) : string.Empty);
 			return dictionary;
 		}
 

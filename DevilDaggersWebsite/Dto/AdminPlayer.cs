@@ -11,12 +11,6 @@ namespace DevilDaggersWebsite.Dto
 		[StringLength(32)]
 		public string? PlayerName { get; init; }
 
-		public bool IsAnonymous { get; init; }
-
-		public List<int>? AssetModIds { get; init; }
-
-		public List<int>? TitleIds { get; init; }
-
 		[StringLength(2)]
 		public string? CountryCode { get; init; }
 
@@ -32,6 +26,8 @@ namespace DevilDaggersWebsite.Dto
 
 		public float? Gamma { get; init; }
 
+		public bool? UsesLegacyAudio { get; init; }
+
 		public bool IsBanned { get; init; }
 
 		[StringLength(64)]
@@ -39,19 +35,20 @@ namespace DevilDaggersWebsite.Dto
 
 		public int? BanResponsibleId { get; init; }
 
-		public bool? UsesLegacyAudio { get; init; }
-
 		public bool IsBannedFromDdcl { get; init; }
 
+		public bool IsAnonymous { get; init; }
+
 		public bool HidePastUsernames { get; init; }
+
+		public List<int>? AssetModIds { get; init; }
+
+		public List<int>? TitleIds { get; init; }
 
 		public Dictionary<string, string> Log()
 		{
 			Dictionary<string, string> dictionary = new();
 			dictionary.Add(nameof(PlayerName), PlayerName ?? string.Empty);
-			dictionary.Add(nameof(IsAnonymous), IsAnonymous.ToString());
-			dictionary.Add(nameof(AssetModIds), AssetModIds != null ? string.Join(", ", AssetModIds) : string.Empty);
-			dictionary.Add(nameof(TitleIds), TitleIds != null ? string.Join(", ", TitleIds) : string.Empty);
 			dictionary.Add(nameof(CountryCode), CountryCode ?? string.Empty);
 			dictionary.Add(nameof(Dpi), Dpi.ToString() ?? string.Empty);
 			dictionary.Add(nameof(InGameSens), InGameSens.ToString() ?? string.Empty);
@@ -59,12 +56,15 @@ namespace DevilDaggersWebsite.Dto
 			dictionary.Add(nameof(RightHanded), RightHanded.ToString() ?? string.Empty);
 			dictionary.Add(nameof(FlashEnabled), FlashEnabled.ToString() ?? string.Empty);
 			dictionary.Add(nameof(Gamma), Gamma.ToString() ?? string.Empty);
+			dictionary.Add(nameof(UsesLegacyAudio), UsesLegacyAudio.ToString() ?? string.Empty);
 			dictionary.Add(nameof(IsBanned), IsBanned.ToString());
 			dictionary.Add(nameof(BanDescription), BanDescription ?? string.Empty);
 			dictionary.Add(nameof(BanResponsibleId), BanResponsibleId.ToString() ?? string.Empty);
-			dictionary.Add(nameof(UsesLegacyAudio), UsesLegacyAudio.ToString() ?? string.Empty);
 			dictionary.Add(nameof(IsBannedFromDdcl), IsBannedFromDdcl.ToString() ?? string.Empty);
+			dictionary.Add(nameof(IsAnonymous), IsAnonymous.ToString());
 			dictionary.Add(nameof(HidePastUsernames), HidePastUsernames.ToString() ?? string.Empty);
+			dictionary.Add(nameof(AssetModIds), AssetModIds != null ? string.Join(", ", AssetModIds) : string.Empty);
+			dictionary.Add(nameof(TitleIds), TitleIds != null ? string.Join(", ", TitleIds) : string.Empty);
 			return dictionary;
 		}
 

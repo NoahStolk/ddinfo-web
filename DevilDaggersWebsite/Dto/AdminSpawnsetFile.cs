@@ -6,10 +6,10 @@ namespace DevilDaggersWebsite.Dto
 {
 	public class AdminSpawnsetFile : IAdminDto
 	{
+		public int PlayerId { get; init; }
+
 		[StringLength(64)]
 		public string Name { get; init; } = null!;
-
-		public int PlayerId { get; init; }
 
 		public int? MaxDisplayWaves { get; init; }
 
@@ -23,8 +23,8 @@ namespace DevilDaggersWebsite.Dto
 		public Dictionary<string, string> Log()
 		{
 			Dictionary<string, string> dictionary = new();
-			dictionary.Add(nameof(Name), Name);
 			dictionary.Add(nameof(PlayerId), PlayerId.ToString());
+			dictionary.Add(nameof(Name), Name);
 			dictionary.Add(nameof(MaxDisplayWaves), MaxDisplayWaves.ToString() ?? string.Empty);
 			dictionary.Add(nameof(HtmlDescription), HtmlDescription ?? string.Empty);
 			dictionary.Add(nameof(LastUpdated), LastUpdated.ToString("dd MMM yyyy"));
