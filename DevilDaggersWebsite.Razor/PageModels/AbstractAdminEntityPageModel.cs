@@ -1,4 +1,5 @@
-﻿using DevilDaggersWebsite.Entities;
+﻿using DevilDaggersDiscordBot.Extensions;
+using DevilDaggersWebsite.Entities;
 using Microsoft.AspNetCore.Mvc.RazorPages;
 using Microsoft.EntityFrameworkCore;
 using System;
@@ -31,7 +32,7 @@ namespace DevilDaggersWebsite.Razor.PageModels
 
 		protected void LogCreateOrEdit(StringBuilder auditLogger, Dictionary<string, string>? oldLog, Dictionary<string, string> newLog)
 		{
-			if (oldLog != null && AreLogsEqual(oldLog, newLog))
+			if (oldLog != null && AreEditLogsEqual(oldLog, newLog))
 			{
 				auditLogger.AppendLine("`No changes.`");
 				return;
@@ -48,8 +49,8 @@ namespace DevilDaggersWebsite.Razor.PageModels
 			int maxL = propertyHeader.Length, maxR = oldValueHeader.Length;
 			foreach (KeyValuePair<string, string> kvp in oldLog ?? newLog)
 			{
-				string trimmedKey = TrimAfter(kvp.Key, _loggingMax);
-				string trimmedValue = TrimAfter(kvp.Value, _loggingMax);
+				string trimmedKey = kvp.Key.TrimAfter(_loggingMax, true);
+				string trimmedValue = kvp.Value.TrimAfter(_loggingMax, true);
 
 				if (trimmedKey.Length > maxL)
 					maxL = trimmedKey.Length;
@@ -65,7 +66,7 @@ namespace DevilDaggersWebsite.Razor.PageModels
 				{
 					string newValue = newLog[kvp.Key];
 					char diff = kvp.Value == newValue ? '=' : '+';
-					auditLogger.AppendFormat($"{{0,-{maxL + paddingL}}}", $"{diff} {kvp.Key}").AppendFormat($"{{0,-{maxR + paddingR}}}", TrimAfter(kvp.Value, _loggingMax)).AppendLine(TrimAfter(newValue, _loggingMax));
+					auditLogger.AppendFormat($"{{0,-{maxL + paddingL}}}", $"{diff} {kvp.Key}").AppendFormat($"{{0,-{maxR + paddingR}}}", kvp.Value.TrimAfter(_loggingMax, true)).AppendLine(newValue.TrimAfter(_loggingMax, true));
 				}
 			}
 			else
@@ -73,12 +74,12 @@ namespace DevilDaggersWebsite.Razor.PageModels
 				auditLogger.AppendFormat($"{{0,-{maxL + paddingL}}}", propertyHeader).AppendLine(newValueHeader);
 				auditLogger.AppendLine();
 				foreach (KeyValuePair<string, string> kvp in newLog)
-					auditLogger.AppendFormat($"{{0,-{maxL + paddingL}}}", $"+ {TrimAfter(kvp.Key, _loggingMax)}").AppendLine(TrimAfter(kvp.Value, _loggingMax));
+					auditLogger.AppendFormat($"{{0,-{maxL + paddingL}}}", $"+ {kvp.Key.TrimAfter(_loggingMax, true)}").AppendLine(kvp.Value.TrimAfter(_loggingMax, true));
 			}
 
 			auditLogger.AppendLine("```");
 
-			static bool AreLogsEqual(Dictionary<string, string> oldLog, Dictionary<string, string> newLog)
+			static bool AreEditLogsEqual(Dictionary<string, string> oldLog, Dictionary<string, string> newLog)
 			{
 				if (oldLog.Count == newLog.Count)
 				{
@@ -105,7 +106,7 @@ namespace DevilDaggersWebsite.Razor.PageModels
 			int maxL = propertyHeader.Length;
 			foreach (KeyValuePair<string, string> kvp in log)
 			{
-				string trimmedKey = TrimAfter(kvp.Key, _loggingMax);
+				string trimmedKey = kvp.Key.TrimAfter(_loggingMax, true);
 				if (trimmedKey.Length > maxL)
 					maxL = trimmedKey.Length;
 			}
@@ -113,12 +114,9 @@ namespace DevilDaggersWebsite.Razor.PageModels
 			auditLogger.AppendFormat($"{{0,-{maxL + paddingL}}}", propertyHeader).AppendLine(valueHeader);
 			auditLogger.AppendLine();
 			foreach (KeyValuePair<string, string> kvp in log)
-				auditLogger.AppendFormat($"{{0,-{maxL + paddingL}}}", $"- {TrimAfter(kvp.Key, _loggingMax)}").AppendLine(TrimAfter(kvp.Value, _loggingMax));
+				auditLogger.AppendFormat($"{{0,-{maxL + paddingL}}}", $"- {kvp.Key.TrimAfter(_loggingMax, true)}").AppendLine(kvp.Value.TrimAfter(_loggingMax, true));
 
 			auditLogger.AppendLine("```");
 		}
-
-		private static string TrimAfter(string str, int length)
-			=> str.Length > length ? $"{str.Substring(0, length)}..." : str;
 	}
 }
