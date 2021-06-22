@@ -50,9 +50,11 @@
 				<span asp-validation-for="AdminDto.TimeLeviathan" class="text-danger"></span>
 			</div>
 			<div class="form-group">
-				<label asp-for="AdminDto.IsArchived" class="control-label"></label>
-				<input asp-for="AdminDto.IsArchived" class="form-control" />
-				<span asp-validation-for="AdminDto.IsArchived" class="text-danger"></span>
+				<div class="checkbox">
+					<label>
+						<input asp-for="AdminDto.IsArchived" /> @Html.DisplayNameFor(model => model.AdminDto.IsArchived)
+					</label>
+				</div>
 			</div>
 			<div class="form-group">
 				<input type="submit" value="Save" class="btn btn-default" />
