@@ -29,13 +29,6 @@
 				<span asp-validation-for="AdminDto.PlayerName" class="text-danger"></span>
 			</div>
 			<div class="form-group">
-				<div class="checkbox">
-					<label>
-						<input asp-for="AdminDto.IsAnonymous" /> @Html.DisplayNameFor(model => model.AdminDto.IsAnonymous)
-					</label>
-				</div>
-			</div>
-			<div class="form-group">
 				<label asp-for="AdminDto.CountryCode" class="control-label"></label>
 				<input asp-for="AdminDto.CountryCode" class="form-control" />
 				<span asp-validation-for="AdminDto.CountryCode" class="text-danger"></span>
@@ -71,6 +64,11 @@
 				<span asp-validation-for="AdminDto.Gamma" class="text-danger"></span>
 			</div>
 			<div class="form-group">
+				<label asp-for="AdminDto.UsesLegacyAudio" class="control-label"></label>
+				<input asp-for="AdminDto.UsesLegacyAudio" class="form-control" />
+				<span asp-validation-for="AdminDto.UsesLegacyAudio" class="text-danger"></span>
+			</div>
+			<div class="form-group">
 				<div class="checkbox">
 					<label>
 						<input asp-for="AdminDto.IsBanned" /> @Html.DisplayNameFor(model => model.AdminDto.IsBanned)
@@ -88,14 +86,16 @@
 				<span asp-validation-for="AdminDto.BanResponsibleId" class="text-danger"></span>
 			</div>
 			<div class="form-group">
-				<label asp-for="AdminDto.UsesLegacyAudio" class="control-label"></label>
-				<input asp-for="AdminDto.UsesLegacyAudio" class="form-control" />
-				<span asp-validation-for="AdminDto.UsesLegacyAudio" class="text-danger"></span>
+				<div class="checkbox">
+					<label>
+						<input asp-for="AdminDto.IsBannedFromDdcl" /> @Html.DisplayNameFor(model => model.AdminDto.IsBannedFromDdcl)
+					</label>
+				</div>
 			</div>
 			<div class="form-group">
 				<div class="checkbox">
 					<label>
-						<input asp-for="AdminDto.IsBannedFromDdcl" /> @Html.DisplayNameFor(model => model.AdminDto.IsBannedFromDdcl)
+						<input asp-for="AdminDto.IsAnonymous" /> @Html.DisplayNameFor(model => model.AdminDto.IsAnonymous)
 					</label>
 				</div>
 			</div>

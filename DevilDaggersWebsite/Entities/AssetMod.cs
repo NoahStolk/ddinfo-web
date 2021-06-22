@@ -12,13 +12,8 @@ namespace DevilDaggersWebsite.Entities
 		[Key]
 		public int Id { get; init; }
 
-		public AssetModTypes AssetModTypes { get; set; }
-
 		[StringLength(64)]
 		public string Name { get; set; } = null!;
-
-		[StringLength(128)]
-		public string Url { get; set; } = null!;
 
 		public bool IsHidden { get; set; }
 
@@ -29,6 +24,11 @@ namespace DevilDaggersWebsite.Entities
 
 		[StringLength(2048)]
 		public string? HtmlDescription { get; set; }
+
+		public AssetModTypes AssetModTypes { get; set; }
+
+		[StringLength(128)]
+		public string Url { get; set; } = null!;
 
 		public List<PlayerAssetMod> PlayerAssetMods { get; set; } = new();
 
