@@ -140,7 +140,7 @@ namespace DevilDaggersWebsite.Caches.ModArchive
 		{
 			int fileCaches = Directory.GetFiles(Path.Combine(env.WebRootPath, "mod-archive-cache")).Length;
 
-			return $":{_emote}: `{_cache.Count}` in memory | `{fileCaches}` in file system";
+			return $":{_emote}: `{_cache.Count}` in memory\n`{fileCaches}` in file system";
 		}
 	}
 }
