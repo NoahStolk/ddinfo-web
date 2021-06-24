@@ -10,7 +10,7 @@ using System.Linq;
 using System.Threading;
 using System.Threading.Tasks;
 
-namespace DevilDaggersWebsite.BackgroundServices
+namespace DevilDaggersWebsite.HostedServices
 {
 	public class FileSystemLoggerBackgroundService : AbstractBackgroundService
 	{

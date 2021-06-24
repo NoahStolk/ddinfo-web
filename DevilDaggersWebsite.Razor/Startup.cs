@@ -1,9 +1,9 @@
 ﻿// #define TEST_EXCEPTION_HANDLER
 using DevilDaggersWebsite.Authorization;
-using DevilDaggersWebsite.BackgroundServices;
 using DevilDaggersWebsite.Caches.LeaderboardStatistics;
 using DevilDaggersWebsite.Caches.ModArchive;
 using DevilDaggersWebsite.Entities;
+using DevilDaggersWebsite.HostedServices;
 using DevilDaggersWebsite.Middleware;
 using DevilDaggersWebsite.Singletons;
 using DevilDaggersWebsite.Transients;

@@ -1,4 +1,4 @@
-﻿using DevilDaggersWebsite.Razor.Bots;
+﻿using DevilDaggersWebsite.HostedServices;
 using Microsoft.AspNetCore.Hosting;
 using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Extensions.Hosting;
