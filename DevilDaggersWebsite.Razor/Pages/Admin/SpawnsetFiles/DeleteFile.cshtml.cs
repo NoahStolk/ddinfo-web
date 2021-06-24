@@ -1,9 +1,8 @@
 ﻿using DevilDaggersDiscordBot;
 using DevilDaggersWebsite.Caches.SpawnsetHash;
-using DevilDaggersWebsite.Razor.Extensions;
+using DevilDaggersWebsite.Razor.PageModels;
 using Microsoft.AspNetCore.Hosting;
 using Microsoft.AspNetCore.Mvc;
-using Microsoft.AspNetCore.Mvc.RazorPages;
 using System.Collections.Generic;
 using System.IO;
 using System.Linq;
@@ -11,7 +10,7 @@ using System.Threading.Tasks;
 
 namespace DevilDaggersWebsite.Razor.Pages.Admin.SpawnsetFiles
 {
-	public class DeleteFileModel : PageModel
+	public class DeleteFileModel : AbstractAdminPageModel
 	{
 		private readonly IWebHostEnvironment _env;
 
@@ -29,7 +28,7 @@ namespace DevilDaggersWebsite.Razor.Pages.Admin.SpawnsetFiles
 
 		public async Task<ActionResult?> OnPost(string fileName)
 		{
-			string failedAttemptMessage = $":x: Failed attempt from `{this.GetIdentity()}` to delete SPAWNSET file";
+			string failedAttemptMessage = $":x: Failed attempt from `{GetIdentity()}` to delete SPAWNSET file";
 
 			string path = Path.Combine(_env.WebRootPath, "spawnsets", fileName);
 			if (!System.IO.File.Exists(path))
@@ -40,7 +39,7 @@ namespace DevilDaggersWebsite.Razor.Pages.Admin.SpawnsetFiles
 
 			System.IO.File.Delete(path);
 
-			await DiscordLogger.TryLog(Channel.MonitoringAuditLog, _env.EnvironmentName, $":white_check_mark: `{this.GetIdentity()}` deleted SPAWNSET file :file_folder: `{fileName}`");
+			await DiscordLogger.TryLog(Channel.MonitoringAuditLog, _env.EnvironmentName, $":white_check_mark: `{GetIdentity()}` deleted SPAWNSET file :file_folder: `{fileName}`");
 
 			SpawnsetHashCache.Instance.Clear();
 

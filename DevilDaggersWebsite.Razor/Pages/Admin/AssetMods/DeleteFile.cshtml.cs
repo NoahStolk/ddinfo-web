@@ -1,9 +1,8 @@
 ﻿using DevilDaggersDiscordBot;
 using DevilDaggersWebsite.Caches.ModArchive;
-using DevilDaggersWebsite.Razor.Extensions;
+using DevilDaggersWebsite.Razor.PageModels;
 using Microsoft.AspNetCore.Hosting;
 using Microsoft.AspNetCore.Mvc;
-using Microsoft.AspNetCore.Mvc.RazorPages;
 using System.Collections.Generic;
 using System.IO;
 using System.Linq;
@@ -11,7 +10,7 @@ using System.Threading.Tasks;
 
 namespace DevilDaggersWebsite.Razor.Pages.Admin.AssetMods
 {
-	public class DeleteFileModel : PageModel
+	public class DeleteFileModel : AbstractAdminPageModel
 	{
 		private readonly IWebHostEnvironment _env;
 
@@ -29,7 +28,7 @@ namespace DevilDaggersWebsite.Razor.Pages.Admin.AssetMods
 
 		public async Task<ActionResult?> OnPost(string fileName)
 		{
-			string failedAttemptMessage = $":x: Failed attempt from `{this.GetIdentity()}` to delete ASSETMOD file";
+			string failedAttemptMessage = $":x: Failed attempt from `{GetIdentity()}` to delete ASSETMOD file";
 
 			string path = Path.Combine(_env.WebRootPath, "mods", fileName);
 			if (!System.IO.File.Exists(path))
@@ -40,7 +39,7 @@ namespace DevilDaggersWebsite.Razor.Pages.Admin.AssetMods
 
 			System.IO.File.Delete(path);
 
-			await DiscordLogger.TryLog(Channel.MonitoringAuditLog, _env.EnvironmentName, $":white_check_mark: `{this.GetIdentity()}` deleted ASSETMOD file :file_folder: `{fileName}`.");
+			await DiscordLogger.TryLog(Channel.MonitoringAuditLog, _env.EnvironmentName, $":white_check_mark: `{GetIdentity()}` deleted ASSETMOD file :file_folder: `{fileName}`.");
 
 			// Clear entire memory cache (can't clear individual entries).
 			ModArchiveCache.Instance.Clear();

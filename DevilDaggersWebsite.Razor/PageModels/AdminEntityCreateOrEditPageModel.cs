@@ -2,7 +2,6 @@
 using DevilDaggersWebsite.Dto;
 using DevilDaggersWebsite.Entities;
 using DevilDaggersWebsite.Enumerators;
-using DevilDaggersWebsite.Razor.Extensions;
 using DevilDaggersWebsite.Razor.Utils;
 using Microsoft.AspNetCore.Hosting;
 using Microsoft.AspNetCore.Mvc;
@@ -99,7 +98,7 @@ namespace DevilDaggersWebsite.Razor.PageModels
 
 				try
 				{
-					StringBuilder auditLogger = new($"`EDIT` by `{this.GetIdentity()}` for `{typeof(TEntity).Name}` `{id}`\n");
+					StringBuilder auditLogger = new($"`EDIT` by `{GetIdentity()}` for `{typeof(TEntity).Name}` `{id}`\n");
 					LogCreateOrEdit(auditLogger, _entity.Populate().Log(), AdminDto.Log());
 
 					_entity.Edit(DbContext, AdminDto);
@@ -148,7 +147,7 @@ namespace DevilDaggersWebsite.Razor.PageModels
 				_entity.CreateManyToManyRelations(DbContext, AdminDto);
 				DbContext.SaveChanges();
 
-				StringBuilder auditLogger = new($"`CREATE` by `{this.GetIdentity()}` for `{typeof(TEntity).Name}` `{_entity.Id}`\n");
+				StringBuilder auditLogger = new($"`CREATE` by `{GetIdentity()}` for `{typeof(TEntity).Name}` `{_entity.Id}`\n");
 				LogCreateOrEdit(auditLogger, null, AdminDto.Log());
 
 				await DiscordLogger.TryLog(LoggingChannel, Environment.EnvironmentName, auditLogger.ToString());

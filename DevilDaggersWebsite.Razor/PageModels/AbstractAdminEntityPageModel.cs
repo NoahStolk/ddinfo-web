@@ -2,7 +2,6 @@
 using DevilDaggersDiscordBot.Extensions;
 using DevilDaggersWebsite.Entities;
 using Microsoft.AspNetCore.Hosting;
-using Microsoft.AspNetCore.Mvc.RazorPages;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.Extensions.Hosting;
 using System;
@@ -13,7 +12,7 @@ using System.Text;
 
 namespace DevilDaggersWebsite.Razor.PageModels
 {
-	public abstract class AbstractAdminEntityPageModel<TEntity> : PageModel
+	public abstract class AbstractAdminEntityPageModel<TEntity> : AbstractAdminPageModel
 		where TEntity : class, IEntity
 	{
 		private const int _loggingMax = 60;
