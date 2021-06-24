@@ -4,6 +4,7 @@ using DevilDaggersWebsite.Singletons;
 using DSharpPlus.Entities;
 using Microsoft.AspNetCore.Hosting;
 using System;
+using System.Collections.Generic;
 using System.IO;
 using System.Linq;
 using System.Threading;
@@ -25,28 +26,43 @@ namespace DevilDaggersWebsite.BackgroundServices
 			if (ServerConstants.FileMessage == null)
 				return;
 
-			long leaderboardHistorySize = GetDirectorySize(Path.Combine(Environment.WebRootPath, "leaderboard-history"));
-			long modScreenshotsSize = GetDirectorySize(Path.Combine(Environment.WebRootPath, "mod-screenshots"));
-			long modsSize = GetDirectorySize(Path.Combine(Environment.WebRootPath, "mods"));
-			long spawnsetsSize = GetDirectorySize(Path.Combine(Environment.WebRootPath, "spawnsets"));
+			DirectoryStatistics leaderboardHistory = GetDirectorySize(Path.Combine(Environment.WebRootPath, "leaderboard-history"));
+			DirectoryStatistics modScreenshots = GetDirectorySize(Path.Combine(Environment.WebRootPath, "mod-screenshots"));
+			DirectoryStatistics mods = GetDirectorySize(Path.Combine(Environment.WebRootPath, "mods"));
+			DirectoryStatistics spawnsets = GetDirectorySize(Path.Combine(Environment.WebRootPath, "spawnsets"));
 
 			DiscordEmbedBuilder builder = new()
 			{
 				Title = $"File {DateTime.UtcNow:yyyy-MM-dd HH:mm:ss}",
 				Color = DiscordColor.White,
 			};
-			builder.AddFieldObject("leaderboard-history", $"`{leaderboardHistorySize:n0}` bytes");
-			builder.AddFieldObject("mod-screenshots", $"`{modScreenshotsSize:n0}` bytes");
-			builder.AddFieldObject("mods", $"`{modsSize:n0}` bytes");
-			builder.AddFieldObject("spawnsets", $"`{spawnsetsSize:n0}` bytes");
+			AddFieldObject("leaderboard-history", leaderboardHistory);
+			AddFieldObject("mod-screenshots", modScreenshots);
+			AddFieldObject("mods", mods);
+			AddFieldObject("spawnsets", spawnsets);
 
 			await DiscordLogger.EditMessage(ServerConstants.FileMessage, builder.Build());
+
+			void AddFieldObject(string name, DirectoryStatistics value)
+				=> builder.AddFieldObject(name, $"`{value.Size:n0}` bytes\n`{value.FileCount}` files");
 		}
 
-		private static long GetDirectorySize(string folderPath)
+		private static DirectoryStatistics GetDirectorySize(string folderPath)
 		{
 			DirectoryInfo di = new(folderPath);
-			return di.EnumerateFiles("*.*", SearchOption.AllDirectories).Sum(fi => fi.Length);
+			IEnumerable<FileInfo> allFiles = di.EnumerateFiles("*.*", SearchOption.AllDirectories);
+			return new()
+			{
+				Size = allFiles.Sum(fi => fi.Length),
+				FileCount = allFiles.Count(),
+			};
+		}
+
+		// TODO: Use .NET 6 record struct.
+		private struct DirectoryStatistics
+		{
+			public long Size { get; init; }
+			public int FileCount { get; init; }
 		}
 	}
 }

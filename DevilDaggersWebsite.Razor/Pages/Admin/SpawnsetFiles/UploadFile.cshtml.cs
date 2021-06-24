@@ -1,11 +1,13 @@
 ﻿using DevilDaggersCore.Spawnsets;
 using DevilDaggersDiscordBot;
+using DevilDaggersWebsite.Caches.SpawnsetHash;
 using DevilDaggersWebsite.Razor.Extensions;
 using Microsoft.AspNetCore.Hosting;
 using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.AspNetCore.Mvc.RazorPages;
 using System;
+using System.Security.Cryptography;
 using System.Threading.Tasks;
 using Io = System.IO;
 
@@ -67,6 +69,14 @@ namespace DevilDaggersWebsite.Razor.Pages.Admin.SpawnsetFiles
 				if (!Spawnset.TryParse(formFileBytes, out _))
 				{
 					await DiscordLogger.TryLog(Channel.MonitoringAuditLog, _env.EnvironmentName, $"`{failedAttemptMessage}: File could not be parsed to a proper survival file.`");
+					return;
+				}
+
+				byte[] spawnsetHash = MD5.HashData(formFileBytes);
+				SpawnsetHashCacheData? existingSpawnset = await SpawnsetHashCache.Instance.GetSpawnset(_env, spawnsetHash);
+				if (existingSpawnset != null)
+				{
+					await DiscordLogger.TryLog(Channel.MonitoringAuditLog, _env.EnvironmentName, $"`{failedAttemptMessage}: Spawnset is exactly the same as an already existing spawnset named '{existingSpawnset.Name}'.`");
 					return;
 				}
 
