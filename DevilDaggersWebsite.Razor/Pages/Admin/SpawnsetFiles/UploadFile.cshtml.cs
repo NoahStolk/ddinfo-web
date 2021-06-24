@@ -1,11 +1,10 @@
 ﻿using DevilDaggersCore.Spawnsets;
 using DevilDaggersDiscordBot;
 using DevilDaggersWebsite.Caches.SpawnsetHash;
-using DevilDaggersWebsite.Razor.Extensions;
+using DevilDaggersWebsite.Razor.PageModels;
 using Microsoft.AspNetCore.Hosting;
 using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
-using Microsoft.AspNetCore.Mvc.RazorPages;
 using System;
 using System.Security.Cryptography;
 using System.Threading.Tasks;
@@ -13,7 +12,7 @@ using Io = System.IO;
 
 namespace DevilDaggersWebsite.Razor.Pages.Admin.SpawnsetFiles
 {
-	public class UploadFileModel : PageModel
+	public class UploadFileModel : AbstractAdminPageModel
 	{
 		public const int MaxFileSize = 70 * 1024;
 		public const int MaxFileNameLength = 80;
@@ -30,7 +29,7 @@ namespace DevilDaggersWebsite.Razor.Pages.Admin.SpawnsetFiles
 
 		public async Task OnPostAsync()
 		{
-			string failedAttemptMessage = $":x: Failed attempt from `{this.GetIdentity()}` to upload new SPAWNSET file";
+			string failedAttemptMessage = $":x: Failed attempt from `{GetIdentity()}` to upload new SPAWNSET file";
 
 			try
 			{
@@ -81,7 +80,7 @@ namespace DevilDaggersWebsite.Razor.Pages.Admin.SpawnsetFiles
 				}
 
 				Io.File.WriteAllBytes(filePath, formFileBytes);
-				await DiscordLogger.TryLog(Channel.MonitoringAuditLog, _env.EnvironmentName, $":white_check_mark: `{this.GetIdentity()}` uploaded new SPAWNSET file :file_folder: `{FormFile.FileName}` (`{formFileBytes.Length:n0}` bytes).");
+				await DiscordLogger.TryLog(Channel.MonitoringAuditLog, _env.EnvironmentName, $":white_check_mark: `{GetIdentity()}` uploaded new SPAWNSET file :file_folder: `{FormFile.FileName}` (`{formFileBytes.Length:n0}` bytes).");
 			}
 			catch (Exception ex)
 			{

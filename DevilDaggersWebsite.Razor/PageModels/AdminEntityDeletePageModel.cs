@@ -1,7 +1,6 @@
 ﻿using DevilDaggersDiscordBot;
 using DevilDaggersWebsite.Dto;
 using DevilDaggersWebsite.Entities;
-using DevilDaggersWebsite.Razor.Extensions;
 using Microsoft.AspNetCore.Hosting;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.EntityFrameworkCore;
@@ -45,7 +44,7 @@ namespace DevilDaggersWebsite.Razor.PageModels
 				DbSet.Remove(Entity);
 				await DbContext.SaveChangesAsync();
 
-				StringBuilder auditLogger = new($"`DELETE` by `{this.GetIdentity()}` for `{typeof(TEntity).Name}` `{id}`\n");
+				StringBuilder auditLogger = new($"`DELETE` by `{GetIdentity()}` for `{typeof(TEntity).Name}` `{id}`\n");
 				LogDelete(auditLogger, Entity.Populate().Log());
 				await DiscordLogger.TryLog(LoggingChannel, Environment.EnvironmentName, auditLogger.ToString());
 			}

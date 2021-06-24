@@ -1,10 +1,9 @@
 ﻿using DevilDaggersDiscordBot;
 using DevilDaggersWebsite.Entities;
-using DevilDaggersWebsite.Razor.Extensions;
+using DevilDaggersWebsite.Razor.PageModels;
 using Microsoft.AspNetCore.Hosting;
 using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
-using Microsoft.AspNetCore.Mvc.RazorPages;
 using Microsoft.AspNetCore.Mvc.Rendering;
 using System;
 using System.Collections.Generic;
@@ -15,7 +14,7 @@ using Io = System.IO;
 
 namespace DevilDaggersWebsite.Razor.Pages.Admin.AssetMods
 {
-	public class UploadScreenshotModel : PageModel
+	public class UploadScreenshotModel : AbstractAdminPageModel
 	{
 		public const int MaxFileSize = 1024 * 1024;
 		public const int MaxFileNameLength = 50;
@@ -43,7 +42,7 @@ namespace DevilDaggersWebsite.Razor.Pages.Admin.AssetMods
 
 		public async Task OnPostAsync()
 		{
-			string failedAttemptMessage = $":x: Failed attempt from `{this.GetIdentity()}` to upload new ASSETMOD screenshot";
+			string failedAttemptMessage = $":x: Failed attempt from `{GetIdentity()}` to upload new ASSETMOD screenshot";
 
 			try
 			{
@@ -107,7 +106,7 @@ namespace DevilDaggersWebsite.Razor.Pages.Admin.AssetMods
 				Directory.CreateDirectory(fileDirectory);
 				Io.File.WriteAllBytes(filePath, formFileBytes);
 
-				await DiscordLogger.TryLog(Channel.MonitoringAuditLog, _env.EnvironmentName, $":white_check_mark: `{this.GetIdentity()}` uploaded new ASSETMOD screenshot :frame_photo: `{FormFile.FileName}` for mod `{ModName}` (`{formFileBytes.Length:n0}` bytes)");
+				await DiscordLogger.TryLog(Channel.MonitoringAuditLog, _env.EnvironmentName, $":white_check_mark: `{GetIdentity()}` uploaded new ASSETMOD screenshot :frame_photo: `{FormFile.FileName}` for mod `{ModName}` (`{formFileBytes.Length:n0}` bytes)");
 			}
 			catch (Exception ex)
 			{

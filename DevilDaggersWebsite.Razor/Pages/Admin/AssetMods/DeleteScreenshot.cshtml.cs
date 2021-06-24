@@ -1,15 +1,14 @@
 ﻿using DevilDaggersDiscordBot;
-using DevilDaggersWebsite.Razor.Extensions;
+using DevilDaggersWebsite.Razor.PageModels;
 using Microsoft.AspNetCore.Hosting;
 using Microsoft.AspNetCore.Mvc;
-using Microsoft.AspNetCore.Mvc.RazorPages;
 using System.Collections.Generic;
 using System.IO;
 using System.Threading.Tasks;
 
 namespace DevilDaggersWebsite.Razor.Pages.Admin.AssetMods
 {
-	public class DeleteScreenshotModel : PageModel
+	public class DeleteScreenshotModel : AbstractAdminPageModel
 	{
 		private readonly IWebHostEnvironment _env;
 
@@ -31,7 +30,7 @@ namespace DevilDaggersWebsite.Razor.Pages.Admin.AssetMods
 
 		public async Task<ActionResult?> OnPost(string fileName)
 		{
-			string failedAttemptMessage = $":x: Failed attempt from `{this.GetIdentity()}` to delete ASSETMOD screenshot";
+			string failedAttemptMessage = $":x: Failed attempt from `{GetIdentity()}` to delete ASSETMOD screenshot";
 
 			string path = Path.Combine(_env.WebRootPath, "mod-screenshots", fileName);
 			if (!System.IO.File.Exists(path))
@@ -42,7 +41,7 @@ namespace DevilDaggersWebsite.Razor.Pages.Admin.AssetMods
 
 			System.IO.File.Delete(path);
 
-			await DiscordLogger.TryLog(Channel.MonitoringAuditLog, _env.EnvironmentName, $":white_check_mark: `{this.GetIdentity()}` deleted ASSETMOD screenshot :frame_photo: `{fileName}`.");
+			await DiscordLogger.TryLog(Channel.MonitoringAuditLog, _env.EnvironmentName, $":white_check_mark: `{GetIdentity()}` deleted ASSETMOD screenshot :frame_photo: `{fileName}`.");
 
 			return RedirectToPage("Index");
 		}

@@ -2,11 +2,10 @@
 using DevilDaggersWebsite.Caches.ModArchive;
 using DevilDaggersWebsite.Enumerators;
 using DevilDaggersWebsite.Exceptions;
-using DevilDaggersWebsite.Razor.Extensions;
+using DevilDaggersWebsite.Razor.PageModels;
 using Microsoft.AspNetCore.Hosting;
 using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
-using Microsoft.AspNetCore.Mvc.RazorPages;
 using System;
 using System.Collections.Generic;
 using System.IO;
@@ -16,7 +15,7 @@ using Io = System.IO;
 
 namespace DevilDaggersWebsite.Razor.Pages.Admin.AssetMods
 {
-	public class UploadFileModel : PageModel
+	public class UploadFileModel : AbstractAdminPageModel
 	{
 		public const int MaxFileSize = 256 * 1024 * 1024;
 		public const int MaxFileNameLength = 80;
@@ -37,7 +36,7 @@ namespace DevilDaggersWebsite.Razor.Pages.Admin.AssetMods
 		{
 			string? filePath = null;
 
-			string failedAttemptMessage = $":x: Failed attempt from `{this.GetIdentity()}` to upload new ASSETMOD file";
+			string failedAttemptMessage = $":x: Failed attempt from `{GetIdentity()}` to upload new ASSETMOD file";
 
 			string modsDirectory = Path.Combine(_env.WebRootPath, "mods");
 
@@ -115,7 +114,7 @@ namespace DevilDaggersWebsite.Razor.Pages.Admin.AssetMods
 				}
 
 				Io.File.WriteAllBytes(filePath, formFileBytes);
-				await DiscordLogger.TryLog(Channel.MonitoringAuditLog, _env.EnvironmentName, $":white_check_mark: `{this.GetIdentity()}` uploaded new ASSETMOD file :file_folder: `{FormFile.FileName}` (`{formFileBytes.Length:n0}` bytes)");
+				await DiscordLogger.TryLog(Channel.MonitoringAuditLog, _env.EnvironmentName, $":white_check_mark: `{GetIdentity()}` uploaded new ASSETMOD file :file_folder: `{FormFile.FileName}` (`{formFileBytes.Length:n0}` bytes)");
 			}
 			catch (InvalidModBinaryException ex)
 			{
