@@ -2,7 +2,7 @@
 using System.Threading;
 using System.Threading.Tasks;
 
-namespace DevilDaggersWebsite.Razor.Bots
+namespace DevilDaggersWebsite.HostedServices
 {
 	public class DevilDaggersDiscordBotService : IHostedService
 	{

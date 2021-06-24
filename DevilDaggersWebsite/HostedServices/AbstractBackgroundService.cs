@@ -6,7 +6,7 @@ using System;
 using System.Threading;
 using System.Threading.Tasks;
 
-namespace DevilDaggersWebsite.BackgroundServices
+namespace DevilDaggersWebsite.HostedServices
 {
 	public abstract class AbstractBackgroundService : BackgroundService
 	{
