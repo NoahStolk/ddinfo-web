@@ -123,7 +123,7 @@ namespace DevilDaggersWebsite.Razor.Pages.CustomLeaderboards
 					.ToList();
 
 				Entities.CustomEntry? worldRecord = entries.Count == 0 ? null : entries[0];
-				string? worldRecordDaggerName = worldRecord == null ? null : cl.GetDagger(worldRecord.Time);
+				string? worldRecordDaggerName = worldRecord == null ? null : cl.GetDaggerFromTime(worldRecord.Time).ToString().ToLower();
 				customLeaderboards.Add(new()
 				{
 					Category = cl.Category,

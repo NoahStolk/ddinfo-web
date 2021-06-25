@@ -37,41 +37,6 @@ namespace DevilDaggersWebsite.Entities
 
 		public bool IsArchived { get; set; }
 
-		/// <summary>
-		/// Returns the CSS class name corresponding to the time in seconds.
-		/// </summary>
-		/// <param name="time">The time in tenths of milliseconds.</param>
-		/// <returns>The CSS class name for the dagger.</returns>
-		public string GetDagger(int time)
-		{
-			if (Category.IsAscending())
-			{
-				if (time <= TimeLeviathan)
-					return "leviathan";
-				if (time <= TimeDevil)
-					return "devil";
-				if (time <= TimeGolden)
-					return "golden";
-				if (time <= TimeSilver)
-					return "silver";
-				if (time <= TimeBronze)
-					return "bronze";
-				return "default";
-			}
-
-			if (time >= TimeLeviathan)
-				return "leviathan";
-			if (time >= TimeDevil)
-				return "devil";
-			if (time >= TimeGolden)
-				return "golden";
-			if (time >= TimeSilver)
-				return "silver";
-			if (time >= TimeBronze)
-				return "bronze";
-			return "default";
-		}
-
 		public void Create(ApplicationDbContext dbContext, AdminCustomLeaderboard adminDto)
 		{
 			DateCreated = DateTime.UtcNow;
@@ -106,6 +71,38 @@ namespace DevilDaggersWebsite.Entities
 				TimeLeviathan = TimeLeviathan,
 				IsArchived = IsArchived,
 			};
+		}
+
+		public CustomLeaderboardDagger GetDaggerFromTime(int time)
+		{
+			if (Category.IsAscending())
+			{
+				if (time <= TimeLeviathan)
+					return CustomLeaderboardDagger.Leviathan;
+				if (time <= TimeDevil)
+					return CustomLeaderboardDagger.Devil;
+				if (time <= TimeGolden)
+					return CustomLeaderboardDagger.Golden;
+				if (time <= TimeSilver)
+					return CustomLeaderboardDagger.Silver;
+				if (time <= TimeBronze)
+					return CustomLeaderboardDagger.Bronze;
+
+				return CustomLeaderboardDagger.Default;
+			}
+
+			if (time >= TimeLeviathan)
+				return CustomLeaderboardDagger.Leviathan;
+			if (time >= TimeDevil)
+				return CustomLeaderboardDagger.Devil;
+			if (time >= TimeGolden)
+				return CustomLeaderboardDagger.Golden;
+			if (time >= TimeSilver)
+				return CustomLeaderboardDagger.Silver;
+			if (time >= TimeBronze)
+				return CustomLeaderboardDagger.Bronze;
+
+			return CustomLeaderboardDagger.Default;
 		}
 	}
 }

@@ -391,39 +391,10 @@ namespace DevilDaggersWebsite.Api
 
 			try
 			{
-				DiscordColor color = DiscordColors.Default;
-
-				if (customLeaderboard.Category.IsAscending())
-				{
-					if (time <= customLeaderboard.TimeLeviathan)
-						color = DiscordColors.Leviathan;
-					else if (time <= customLeaderboard.TimeDevil)
-						color = DiscordColors.Devil;
-					else if (time <= customLeaderboard.TimeGolden)
-						color = DiscordColors.Golden;
-					else if (time <= customLeaderboard.TimeSilver)
-						color = DiscordColors.Silver;
-					else if (time <= customLeaderboard.TimeBronze)
-						color = DiscordColors.Bronze;
-				}
-				else
-				{
-					if (time >= customLeaderboard.TimeLeviathan)
-						color = DiscordColors.Leviathan;
-					else if (time >= customLeaderboard.TimeDevil)
-						color = DiscordColors.Devil;
-					else if (time >= customLeaderboard.TimeGolden)
-						color = DiscordColors.Golden;
-					else if (time >= customLeaderboard.TimeSilver)
-						color = DiscordColors.Silver;
-					else if (time >= customLeaderboard.TimeBronze)
-						color = DiscordColors.Bronze;
-				}
-
 				DiscordEmbedBuilder builder = new()
 				{
 					Title = message,
-					Color = color,
+					Color = customLeaderboard.GetDaggerFromTime(time).GetDiscordColor(),
 					Url = Uri.EscapeUriString($"https://devildaggers.info/CustomLeaderboards/Leaderboard?spawnsetName={customLeaderboard.SpawnsetFile.Name}"),
 				};
 				builder.AddFieldObject("Score", FormatTimeString(time), true);

@@ -1,4 +1,6 @@
-﻿using DevilDaggersWebsite.Enumerators;
+﻿using DevilDaggersDiscordBot;
+using DevilDaggersWebsite.Enumerators;
+using DSharpPlus.Entities;
 
 namespace DevilDaggersWebsite.Extensions
 {
@@ -16,5 +18,15 @@ namespace DevilDaggersWebsite.Extensions
 
 		public static bool IsAscending(this CustomLeaderboardCategory category)
 			=> category is CustomLeaderboardCategory.TimeAttack or CustomLeaderboardCategory.Speedrun;
+
+		public static DiscordColor GetDiscordColor(this CustomLeaderboardDagger dagger) => dagger switch
+		{
+			CustomLeaderboardDagger.Leviathan => DiscordColors.Leviathan,
+			CustomLeaderboardDagger.Devil => DiscordColors.Devil,
+			CustomLeaderboardDagger.Golden => DiscordColors.Golden,
+			CustomLeaderboardDagger.Silver => DiscordColors.Silver,
+			CustomLeaderboardDagger.Bronze => DiscordColors.Bronze,
+			_ => DiscordColors.Default,
+		};
 	}
 }

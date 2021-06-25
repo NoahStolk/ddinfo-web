@@ -40,7 +40,7 @@ namespace DevilDaggersWebsite.Razor.Models
 			SubmitDate = customEntry.SubmitDate;
 			ClientVersion = customEntry.ClientVersion;
 
-			DaggerColor = IsBanned ? "ban" : customLeaderboard.GetDagger(Time);
+			DaggerColor = IsBanned ? "ban" : customLeaderboard.GetDaggerFromTime(Time).ToString().ToLower();
 
 			if (customLeaderboard.Category == CustomLeaderboardCategory.TimeAttack)
 			{
