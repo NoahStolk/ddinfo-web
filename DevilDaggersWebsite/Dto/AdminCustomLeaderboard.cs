@@ -4,6 +4,7 @@ using DevilDaggersWebsite.Enumerators;
 using DevilDaggersWebsite.Extensions;
 using Microsoft.AspNetCore.Hosting;
 using Microsoft.AspNetCore.Mvc.ModelBinding;
+using Microsoft.EntityFrameworkCore;
 using System;
 using System.Collections.Generic;
 using System.ComponentModel.DataAnnotations;
@@ -58,7 +59,10 @@ namespace DevilDaggersWebsite.Dto
 				return false;
 			}
 
-			Entities.SpawnsetFile? spawnsetFile = dbContext.SpawnsetFiles.FirstOrDefault(sf => sf.Id == SpawnsetFileId);
+			var spawnsetFile = dbContext.SpawnsetFiles
+				.AsNoTracking()
+				.Select(sf => new { sf.Id, sf.Name })
+				.FirstOrDefault(sf => sf.Id == SpawnsetFileId);
 			if (spawnsetFile == null)
 			{
 				modelState.AddModelError($"AdminDto.{nameof(SpawnsetFileId)}", $"A spawnset with ID '{SpawnsetFileId}' does not exist.");

@@ -24,7 +24,12 @@ namespace DevilDaggersWebsite.Razor.Pages.Leaderboard
 
 		public async Task OnGetAsync()
 		{
-			List<Player> playersWithVisibleSettings = _dbContext.Players.Include(p => p.PlayerTitles).ThenInclude(pt => pt.Title).Where(p => !p.HideSettings).ToList();
+			List<Player> playersWithVisibleSettings = _dbContext.Players
+				.AsNoTracking()
+				.Include(p => p.PlayerTitles)
+					.ThenInclude(pt => pt.Title)
+				.Where(p => !p.HideSettings)
+				.ToList();
 
 			Players = playersWithVisibleSettings.Where(p => p.HasSettings()).ToList();
 

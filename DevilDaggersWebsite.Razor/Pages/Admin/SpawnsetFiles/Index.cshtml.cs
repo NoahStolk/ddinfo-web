@@ -1,6 +1,7 @@
 ﻿using DevilDaggersWebsite.Entities;
 using DevilDaggersWebsite.Razor.PageModels;
 using Microsoft.AspNetCore.Hosting;
+using Microsoft.EntityFrameworkCore;
 using System.Collections.Generic;
 using System.IO;
 using System.Linq;
@@ -19,7 +20,7 @@ namespace DevilDaggersWebsite.Razor.Pages.Admin.SpawnsetFiles
 
 		public void OnGet()
 		{
-			List<string> allDbSpawnsetFileNames = DbContext.SpawnsetFiles.Select(sf => sf.Name).ToList();
+			List<string> allDbSpawnsetFileNames = DbContext.SpawnsetFiles.AsNoTracking().Select(sf => sf.Name).ToList();
 
 			foreach (string path in Directory.GetFiles(Path.Combine(Environment.WebRootPath, "spawnsets")))
 			{

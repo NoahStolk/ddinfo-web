@@ -35,6 +35,7 @@ namespace DevilDaggersWebsite.Razor.Pages
 		public ActionResult? OnGet()
 		{
 			AssetMod = _dbContext.AssetMods
+				.AsNoTracking()
 				.Include(am => am.PlayerAssetMods)
 					.ThenInclude(pam => pam.Player)
 				.FirstOrDefault(am => am.Name == HttpContext.Request.Query["mod"].ToString());

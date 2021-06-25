@@ -29,7 +29,7 @@ namespace DevilDaggersWebsite.Razor.Pages
 
 		public ActionResult? OnGet()
 		{
-			SpawnsetFile = _dbContext.SpawnsetFiles.Include(sf => sf.Player).FirstOrDefault(sf => sf.Name == HttpContext.Request.Query["spawnset"].ToString());
+			SpawnsetFile = _dbContext.SpawnsetFiles.AsNoTracking().Include(sf => sf.Player).FirstOrDefault(sf => sf.Name == HttpContext.Request.Query["spawnset"].ToString());
 			if (SpawnsetFile == null)
 				return RedirectToPage("Spawnsets");
 

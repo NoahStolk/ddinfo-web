@@ -26,6 +26,7 @@ namespace DevilDaggersWebsite.Transients
 		public List<Mod> GetMods(string? authorFilter = null, string? nameFilter = null, bool? isHostedFilter = null)
 		{
 			IEnumerable<AssetMod> assetModsQuery = _dbContext.AssetMods
+				.AsNoTracking()
 				.Include(am => am.PlayerAssetMods)
 					.ThenInclude(pam => pam.Player)
 				.Where(am => !am.IsHidden);

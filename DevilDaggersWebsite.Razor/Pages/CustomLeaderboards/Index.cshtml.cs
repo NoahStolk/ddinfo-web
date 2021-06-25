@@ -100,6 +100,7 @@ namespace DevilDaggersWebsite.Razor.Pages.CustomLeaderboards
 			WorldRecordHolder = sortOrder == WorldRecordHolderAsc ? WorldRecordHolderDesc : WorldRecordHolderAsc;
 
 			IIncludableQueryable<Entities.CustomLeaderboard, Entities.Player> customLeaderboardQuery = _dbContext.CustomLeaderboards
+				.AsNoTracking()
 				.Where(cl => !cl.IsArchived)
 				.Include(cl => cl.SpawnsetFile)
 					.ThenInclude(sf => sf.Player);
@@ -114,6 +115,7 @@ namespace DevilDaggersWebsite.Razor.Pages.CustomLeaderboards
 					continue;
 
 				List<Entities.CustomEntry> entries = _dbContext.CustomEntries
+					.AsNoTracking()
 					.Include(ce => ce.Player)
 					.Where(ce => ce.CustomLeaderboard == cl)
 					.OrderByMember(nameof(Entities.CustomEntry.Time), cl.Category.IsAscending())
@@ -121,7 +123,7 @@ namespace DevilDaggersWebsite.Razor.Pages.CustomLeaderboards
 					.ToList();
 
 				Entities.CustomEntry? worldRecord = entries.Count == 0 ? null : entries[0];
-				string? worldRecordDaggerName = worldRecord == null ? null : cl.GetDagger(worldRecord.Time);
+				string? worldRecordDaggerName = worldRecord == null ? null : cl.GetDaggerFromTime(worldRecord.Time).ToString().ToLower();
 				customLeaderboards.Add(new()
 				{
 					Category = cl.Category,

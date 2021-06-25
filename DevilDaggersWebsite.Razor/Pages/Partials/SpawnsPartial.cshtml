@@ -9,9 +9,10 @@
 @using DevilDaggersWebsite.Entities
 @using DevilDaggersWebsite.Razor.Models
 @using DevilDaggersWebsite.Razor.Utils
+@using Microsoft.EntityFrameworkCore
 @using System.IO
 @{
-	SpawnsetFile? sf = dbContext.SpawnsetFiles.FirstOrDefault(sf => sf.Name == Model.SpawnsetName);
+	var sf = dbContext.SpawnsetFiles.AsNoTracking().Select(sf => new { sf.Name, sf.MaxDisplayWaves }).FirstOrDefault(sf => sf.Name == Model.SpawnsetName);
 	if (sf == null || !Spawnset.TryParse(File.ReadAllBytes(System.IO.Path.Combine(env.WebRootPath, "spawnsets", Model.SpawnsetName)), out Spawnset spawnset))
 	{
 		return;

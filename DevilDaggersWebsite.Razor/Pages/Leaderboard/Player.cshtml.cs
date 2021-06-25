@@ -31,7 +31,7 @@ namespace DevilDaggersWebsite.Razor.Pages.Leaderboard
 			_dbContext = dbContext;
 		}
 
-		public static string[] DaggerNames { get; } = new string[] { "leviathan", "devil", "golden", "silver", "bronze", "default" };
+		public static string[] DaggerNames { get; } = new[] { "leviathan", "devil", "golden", "silver", "bronze", "default" };
 
 		public int PlayerId
 		{
@@ -71,7 +71,7 @@ namespace DevilDaggersWebsite.Razor.Pages.Leaderboard
 		public async Task OnGetAsync(int id)
 		{
 			PlayerId = Math.Max(1, id);
-			Player = _dbContext.Players.FirstOrDefault(p => p.Id == PlayerId);
+			Player = _dbContext.Players.AsNoTracking().FirstOrDefault(p => p.Id == PlayerId);
 
 			Entry = await LeaderboardClient.Instance.GetUserById(PlayerId);
 			if (Entry != null)
@@ -107,63 +107,44 @@ namespace DevilDaggersWebsite.Razor.Pages.Leaderboard
 
 			if (Player != null && _dbContext.CustomEntries.Any(ce => ce.PlayerId == PlayerId))
 			{
-				foreach (Entities.CustomEntry customEntry in _dbContext.CustomEntries.Include(ce => ce.CustomLeaderboard).Where(ce => ce.PlayerId == PlayerId))
-				{
-					if (customEntry.CustomLeaderboard.IsArchived)
-						continue;
+				var customEntriesQuery = _dbContext.CustomEntries
+					.AsNoTracking()
+					.Include(ce => ce.CustomLeaderboard)
+					.Select(ce => new { ce.Time, ce.CustomLeaderboard, ce.PlayerId })
+					.Where(ce => ce.PlayerId == PlayerId && !ce.CustomLeaderboard.IsArchived);
 
-					switch (customEntry.CustomLeaderboard.Category)
+				foreach (var customEntry in customEntriesQuery)
+				{
+					int daggerIndex = (int)customEntry.CustomLeaderboard.GetDaggerFromTime(customEntry.Time);
+					int[] daggerCounts = customEntry.CustomLeaderboard.Category switch
 					{
-						case CustomLeaderboardCategory.Default:
-							if (customEntry.Time >= customEntry.CustomLeaderboard.TimeLeviathan)
-								CustomDaggerCountsDefault[0]++;
-							else if (customEntry.Time >= customEntry.CustomLeaderboard.TimeDevil)
-								CustomDaggerCountsDefault[1]++;
-							else if (customEntry.Time >= customEntry.CustomLeaderboard.TimeGolden)
-								CustomDaggerCountsDefault[2]++;
-							else if (customEntry.Time >= customEntry.CustomLeaderboard.TimeSilver)
-								CustomDaggerCountsDefault[3]++;
-							else if (customEntry.Time >= customEntry.CustomLeaderboard.TimeBronze)
-								CustomDaggerCountsDefault[4]++;
-							else
-								CustomDaggerCountsDefault[5]++;
-							break;
-						case CustomLeaderboardCategory.TimeAttack:
-							if (customEntry.Time <= customEntry.CustomLeaderboard.TimeLeviathan)
-								CustomDaggerCountsTimeAttack[0]++;
-							else if (customEntry.Time <= customEntry.CustomLeaderboard.TimeDevil)
-								CustomDaggerCountsTimeAttack[1]++;
-							else if (customEntry.Time <= customEntry.CustomLeaderboard.TimeGolden)
-								CustomDaggerCountsTimeAttack[2]++;
-							else if (customEntry.Time <= customEntry.CustomLeaderboard.TimeSilver)
-								CustomDaggerCountsTimeAttack[3]++;
-							else if (customEntry.Time <= customEntry.CustomLeaderboard.TimeBronze)
-								CustomDaggerCountsTimeAttack[4]++;
-							else
-								CustomDaggerCountsTimeAttack[5]++;
-							break;
-						case CustomLeaderboardCategory.Speedrun:
-							if (customEntry.Time <= customEntry.CustomLeaderboard.TimeLeviathan)
-								CustomDaggerCountsSpeedrun[0]++;
-							else if (customEntry.Time <= customEntry.CustomLeaderboard.TimeDevil)
-								CustomDaggerCountsSpeedrun[1]++;
-							else if (customEntry.Time <= customEntry.CustomLeaderboard.TimeGolden)
-								CustomDaggerCountsSpeedrun[2]++;
-							else if (customEntry.Time <= customEntry.CustomLeaderboard.TimeSilver)
-								CustomDaggerCountsSpeedrun[3]++;
-							else if (customEntry.Time <= customEntry.CustomLeaderboard.TimeBronze)
-								CustomDaggerCountsSpeedrun[4]++;
-							else
-								CustomDaggerCountsSpeedrun[5]++;
-							break;
-					}
+						CustomLeaderboardCategory.Default => CustomDaggerCountsDefault,
+						CustomLeaderboardCategory.TimeAttack => CustomDaggerCountsTimeAttack,
+						CustomLeaderboardCategory.Speedrun => CustomDaggerCountsSpeedrun,
+						_ => throw new NotSupportedException($"Dagger count for custom leaderboard category '{customEntry.CustomLeaderboard.Category}' is not supported."),
+					};
+					daggerCounts[daggerIndex]++;
 				}
 
-				TotalDefaultCustomLeaderboards = _dbContext.CustomLeaderboards.Count(cl => cl.Category == CustomLeaderboardCategory.Default && !cl.IsArchived);
-				TotalTimeAttackCustomLeaderboards = _dbContext.CustomLeaderboards.Count(cl => cl.Category == CustomLeaderboardCategory.TimeAttack && !cl.IsArchived);
-				TotalSpeedrunCustomLeaderboards = _dbContext.CustomLeaderboards.Count(cl => cl.Category == CustomLeaderboardCategory.Speedrun && !cl.IsArchived);
-				Mods = _dbContext.AssetMods.Include(am => am.PlayerAssetMods).Where(am => am.PlayerAssetMods.Any(pam => pam.PlayerId == PlayerId)).OrderByDescending(am => am.LastUpdated).ToList();
-				Spawnsets = _dbContext.SpawnsetFiles.Where(sf => sf.PlayerId == PlayerId).OrderByDescending(sf => sf.LastUpdated).ToList();
+				var customLeaderboardsQuery = _dbContext.CustomLeaderboards
+					.AsNoTracking()
+					.Where(cl => !cl.IsArchived)
+					.Select(cl => new { cl.Category });
+
+				TotalDefaultCustomLeaderboards = customLeaderboardsQuery.Count(cl => cl.Category == CustomLeaderboardCategory.Default);
+				TotalTimeAttackCustomLeaderboards = customLeaderboardsQuery.Count(cl => cl.Category == CustomLeaderboardCategory.TimeAttack);
+				TotalSpeedrunCustomLeaderboards = customLeaderboardsQuery.Count(cl => cl.Category == CustomLeaderboardCategory.Speedrun);
+				Mods = _dbContext.AssetMods
+					.AsNoTracking()
+					.Include(am => am.PlayerAssetMods)
+					.Where(am => am.PlayerAssetMods.Any(pam => pam.PlayerId == PlayerId) && !am.IsHidden)
+					.OrderByDescending(am => am.LastUpdated)
+					.ToList();
+				Spawnsets = _dbContext.SpawnsetFiles
+					.AsNoTracking()
+					.Where(sf => sf.PlayerId == PlayerId)
+					.OrderByDescending(sf => sf.LastUpdated)
+					.ToList();
 			}
 		}
 	}

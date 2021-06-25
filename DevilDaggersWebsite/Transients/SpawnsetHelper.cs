@@ -24,6 +24,7 @@ namespace DevilDaggersWebsite.Transients
 			_dbContext = dbContext;
 
 			_spawnsetsWithCustomLeaderboardIds = dbContext.CustomLeaderboards
+				.AsNoTracking()
 				.Where(cl => !cl.IsArchived)
 				.Select(cl => cl.SpawnsetFileId)
 				.ToList();
@@ -31,7 +32,7 @@ namespace DevilDaggersWebsite.Transients
 
 		public List<Dto.SpawnsetFile> GetSpawnsets(string? authorFilter = null, string? nameFilter = null)
 		{
-			IEnumerable<SpawnsetFile> query = _dbContext.SpawnsetFiles.Include(sf => sf.Player);
+			IEnumerable<SpawnsetFile> query = _dbContext.SpawnsetFiles.AsNoTracking().Include(sf => sf.Player);
 
 			if (!string.IsNullOrWhiteSpace(authorFilter))
 				query = query.Where(sf => sf.Player.PlayerName.Contains(authorFilter, StringComparison.InvariantCultureIgnoreCase));
