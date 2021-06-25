@@ -28,7 +28,11 @@ namespace DevilDaggersWebsite.Razor.Pages.Admin.AssetMods
 			_env = env;
 			_dbContext = dbContext;
 
-			ModNames = _dbContext.AssetMods.AsNoTracking().Select(am => new SelectListItem(am.Name, am.Name)).ToList();
+			ModNames = _dbContext.AssetMods
+				.AsNoTracking()
+				.Select(am => am.Name)
+				.ToList()
+				.ConvertAll(n => new SelectListItem(n, n));
 		}
 
 		public static int MaxScreenshots { get; } = 10;
