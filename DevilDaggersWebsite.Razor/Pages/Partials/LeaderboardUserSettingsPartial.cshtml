@@ -28,7 +28,7 @@
 	</div>
 	<div class="leaderboard-body">
 		@{
-			List<Donation> donations = dbContext.Donations.AsNoTracking().ToList();
+			IEnumerable<Donation> donations = dbContext.Donations.AsNoTracking();
 			foreach (Entry entry in Model.Entries ?? new())
 			{
 				Player player = Model.Players.First(p => p.Id == entry.Id);
