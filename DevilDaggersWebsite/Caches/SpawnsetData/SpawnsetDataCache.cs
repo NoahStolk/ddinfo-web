@@ -8,8 +8,6 @@ namespace DevilDaggersWebsite.Caches.SpawnsetData
 {
 	public sealed class SpawnsetDataCache : IDynamicCache
 	{
-		private const string _emote = "purple_circle";
-
 		private readonly ConcurrentDictionary<string, Core.SpawnsetData> _cache = new();
 
 		private static readonly Lazy<SpawnsetDataCache> _lazy = new(() => new());
@@ -37,6 +35,6 @@ namespace DevilDaggersWebsite.Caches.SpawnsetData
 			=> _cache.Clear();
 
 		public string LogState(IWebHostEnvironment env)
-			=> $":{_emote}: `{_cache.Count}` in memory";
+			=> $"`{_cache.Count}` in memory";
 	}
 }

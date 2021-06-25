@@ -11,8 +11,6 @@ namespace DevilDaggersWebsite.Caches.LeaderboardStatistics
 {
 	public sealed class LeaderboardStatisticsCache : IStaticCache
 	{
-		private const string _emote = "orange_circle";
-
 		private readonly int _timeStep = 100000; // 10 seconds
 
 		private readonly List<CompressedEntry> _entries = new();
@@ -83,6 +81,6 @@ namespace DevilDaggersWebsite.Caches.LeaderboardStatistics
 		}
 
 		public string LogState(IWebHostEnvironment env)
-			=> $":{_emote}: `{_entries.Count}` in memory";
+			=> $"`{_entries.Count}` in memory";
 	}
 }

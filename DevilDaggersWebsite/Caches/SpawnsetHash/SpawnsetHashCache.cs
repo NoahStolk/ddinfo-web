@@ -12,8 +12,6 @@ namespace DevilDaggersWebsite.Caches.SpawnsetHash
 {
 	public sealed class SpawnsetHashCache : IDynamicCache
 	{
-		private const string _emote = "red_circle";
-
 		private readonly ConcurrentBag<SpawnsetHashCacheData> _cache = new();
 
 		private static readonly Lazy<SpawnsetHashCache> _lazy = new(() => new());
@@ -71,6 +69,6 @@ namespace DevilDaggersWebsite.Caches.SpawnsetHash
 			=> _cache.Clear();
 
 		public string LogState(IWebHostEnvironment env)
-			=> $":{_emote}: `{_cache.Count}` in memory";
+			=> $"`{_cache.Count}` in memory";
 	}
 }

@@ -10,8 +10,6 @@ namespace DevilDaggersWebsite.Caches.LeaderboardHistory
 {
 	public sealed class LeaderboardHistoryCache : IDynamicCache
 	{
-		private const string _emote = "yellow_circle";
-
 		private readonly ConcurrentDictionary<string, Leaderboard> _cache = new();
 
 		private static readonly Lazy<LeaderboardHistoryCache> _lazy = new(() => new());
@@ -37,6 +35,6 @@ namespace DevilDaggersWebsite.Caches.LeaderboardHistory
 			=> _cache.Clear();
 
 		public string LogState(IWebHostEnvironment env)
-			=> $":{_emote}: `{_cache.Count}` in memory";
+			=> $"`{_cache.Count}` in memory";
 	}
 }

@@ -10,8 +10,6 @@ namespace DevilDaggersWebsite.Caches.ModArchive
 {
 	public sealed class ModArchiveCache : IDynamicCache
 	{
-		private const string _emote = "green_circle";
-
 		private readonly object _fileStreamLock = new();
 
 		private readonly ConcurrentDictionary<string, ModArchiveCacheData> _cache = new();
@@ -140,7 +138,7 @@ namespace DevilDaggersWebsite.Caches.ModArchive
 		{
 			int fileCaches = Directory.GetFiles(Path.Combine(env.WebRootPath, "mod-archive-cache")).Length;
 
-			return $":{_emote}: `{_cache.Count}` in memory\n`{fileCaches}` in file system";
+			return $"`{_cache.Count}` in memory\n`{fileCaches}` in file system";
 		}
 	}
 }
