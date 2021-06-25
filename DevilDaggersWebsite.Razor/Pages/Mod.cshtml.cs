@@ -38,7 +38,7 @@ namespace DevilDaggersWebsite.Razor.Pages
 				.AsNoTracking()
 				.Include(am => am.PlayerAssetMods)
 					.ThenInclude(pam => pam.Player)
-				.FirstOrDefault(am => am.Name == HttpContext.Request.Query["mod"].ToString());
+				.FirstOrDefault(am => am.Name == HttpContext.Request.Query["mod"].ToString() && !am.IsHidden);
 			if (AssetMod == null)
 				return RedirectToPage("Mods");
 
