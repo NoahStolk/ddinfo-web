@@ -137,7 +137,7 @@ namespace DevilDaggersWebsite.Razor.Pages.Leaderboard
 				Mods = _dbContext.AssetMods
 					.AsNoTracking()
 					.Include(am => am.PlayerAssetMods)
-					.Where(am => am.PlayerAssetMods.Any(pam => pam.PlayerId == PlayerId))
+					.Where(am => am.PlayerAssetMods.Any(pam => pam.PlayerId == PlayerId) && !am.IsHidden)
 					.OrderByDescending(am => am.LastUpdated)
 					.ToList();
 				Spawnsets = _dbContext.SpawnsetFiles
