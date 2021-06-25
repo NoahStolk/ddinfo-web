@@ -4,13 +4,13 @@
 @using DevilDaggersWebsite.Entities
 @using DevilDaggersWebsite.Enumerators
 @using DevilDaggersWebsite.Extensions
+@using DevilDaggersWebsite.Razor.Models
 @using Microsoft.EntityFrameworkCore
 @model DonationsModel
 @{
 	ViewData["Title"] = "Donations";
 
-	IOrderedEnumerable<KeyValuePair<int, int>> donators = Model.DonatorsWithReceivedEuroAmounts.OrderByDescending(kvp => kvp.Value);
-	int total = donators.Count();
+	int total = Model.Donators.Count;
 }
 
 <header>
@@ -41,23 +41,18 @@
 			{
 				<div class="col-lg-4 col-md-12 col-sm-12 col-xs-12">
 					@{
-						foreach (KeyValuePair<int, int> kvp in donators.Skip(i).Take(interval))
+						foreach (KeyValuePair<DonatorModel, List<DonationModel>> kvp in Model.Donators.Skip(i).Take(interval))
 						{
-							var donator = dbContext.Players.AsNoTracking().Select(p => new { p.PlayerName, p.Id, p.HideDonations }).First(d => d.Id == kvp.Key);
-							string username = donator.HideDonations ? "(anonymous)" : donator.PlayerName;
+							string username = kvp.Key.HideDonations ? "(anonymous)" : kvp.Key.PlayerName;
 
-							List<string> donationsGroupedByCurrency = new();
-							foreach (var donations in Model.Donations.Where(d => !d.IsRefunded && d.PlayerId == kvp.Key).GroupBy(d => d.Currency))
-							{
-								donationsGroupedByCurrency.Add($"{donations.Key.GetChar()} {(donations.Sum(d => d.Amount) / 100.0).ToString("0.00")} {(donations.Key.ToString().ToUpper())}");
-							}
-							string tooltipText = string.Join(" + ", donationsGroupedByCurrency);
+							string tooltipText = string.Join(" + ", kvp.Value
+								.GroupBy(d => d.Currency)
+								.Select(g => $"{g.Key.GetChar()} {(g.Sum(d => d.Amount) / 100.0).ToString("0.00")} {(g.Key.ToString().ToUpper())}"));
 
 							<div class="donator flex-container">
 								<div style="white-space: nowrap; flex-grow: 4;" class="text-left devil">@username</div>
-								<div class="text-right devil donation-tooltip" data-toggle="tooltip" data-placement="left" title="@tooltipText">
-									@(Currency.Eur.GetChar())
-									@((kvp.Value / 100.0).ToString("0.00"))
+								<div class="devil donation-tooltip" data-toggle="tooltip" data-placement="left" title="@tooltipText">
+									€ @((kvp.Value.Sum(d => d.ConvertedEuroCentsReceived) / 100.0).ToString("0.00"))
 								</div>
 							</div>
 						}
