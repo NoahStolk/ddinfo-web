@@ -142,14 +142,14 @@
 									<span class="@cl.WorldRecordDaggerName">@cl.WorldRecord.Time.FormatTimeInteger()</span>
 								}
 							</td>
-							<td class="hidden-xs hidden-sm hidden-md world-record-holder leaderboard-username">
+							<td class="hidden-xs hidden-sm hidden-md world-record-holder">
 								@if (cl.WorldRecord == null)
 								{
 									@:@RazorUtils.NAString
 								}
 								else
 								{
-									<span class="@cl.WorldRecordDaggerName highlight"><a asp-route-page="/Leaderboard/Player" asp-route-id="@cl.WorldRecord.PlayerId">@cl.WorldRecord.Player.PlayerName</a></span>
+									<span class="@cl.WorldRecordDaggerName highlight leaderboard-username" style="display: block;"><a asp-route-page="/Leaderboard/Player" asp-route-id="@cl.WorldRecord.PlayerId">@cl.WorldRecord.Player.PlayerName</a></span>
 								}
 							</td>
 						</tr>
