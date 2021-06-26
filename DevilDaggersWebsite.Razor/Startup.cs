@@ -165,7 +165,7 @@ namespace DevilDaggersWebsite.Razor
 			app.UseOpenApi();
 			app.UseSwaggerUi3();
 
-			Task task = serviceProvider.CreateRolesAndAdminUser(Configuration.GetSection("AdminUser")["Email"]);
+			Task task = serviceProvider.CreateRolesAndAdminUser();
 			task.Wait();
 
 			// Initiate static caches.

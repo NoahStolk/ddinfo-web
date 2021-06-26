@@ -8,6 +8,8 @@ namespace DevilDaggersWebsite.Authorization
 {
 	public static class AuthorizationManager
 	{
+		private const string _adminUserEmail = "noah.stolk@gmail.com";
+
 		public static readonly IReadOnlyDictionary<string, string> FolderToPolicyMapper = new Dictionary<string, string>()
 		{
 			{ "/Admin/AdminTests", Policies.AdminPolicy },
@@ -20,23 +22,23 @@ namespace DevilDaggersWebsite.Authorization
 			{ "/Admin/Titles", Policies.AdminPolicy },
 		};
 
-		public static async Task CreateRolesAndAdminUser(this IServiceProvider serviceProvider, string adminUserEmail)
+		public static async Task CreateRolesAndAdminUser(this IServiceProvider serviceProvider)
 		{
 			RoleManager<IdentityRole>? roleManager = serviceProvider.GetRequiredService<RoleManager<IdentityRole>>();
 			UserManager<IdentityUser>? userManager = serviceProvider.GetRequiredService<UserManager<IdentityUser>>();
 
-			foreach (string roleName in Policies.All)
+			foreach (string policy in Policies.All)
 			{
-				bool roleExist = await roleManager.RoleExistsAsync(roleName);
-				if (!roleExist)
-					await roleManager.CreateAsync(new IdentityRole(roleName));
+				bool policyExists = await roleManager.RoleExistsAsync(policy);
+				if (!policyExists)
+					await roleManager.CreateAsync(new IdentityRole(policy));
 			}
 
-			IdentityUser? admin = await userManager.FindByEmailAsync(adminUserEmail);
+			IdentityUser? admin = await userManager.FindByEmailAsync(_adminUserEmail);
 			if (admin != null)
 			{
-				foreach (string role in Policies.All)
-					await userManager.AddToRoleAsync(admin, role);
+				foreach (string policy in Policies.All)
+					await userManager.AddToRoleAsync(admin, policy);
 			}
 		}
 	}
