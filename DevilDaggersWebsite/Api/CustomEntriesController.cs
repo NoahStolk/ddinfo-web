@@ -37,10 +37,10 @@ namespace DevilDaggersWebsite.Api
 			_toolHelper = toolHelper;
 		}
 
-		[HttpPost]
+		[HttpPost("submit")]
 		[ProducesResponseType(StatusCodes.Status200OK)]
 		[ProducesResponseType(StatusCodes.Status400BadRequest)]
-		public async Task<ActionResult<Dto.UploadSuccess>> UploadScore([FromBody] Dto.UploadRequest uploadRequest)
+		public async Task<ActionResult<Dto.UploadSuccess>> SubmitScore([FromBody] Dto.UploadRequest uploadRequest)
 		{
 			try
 			{
