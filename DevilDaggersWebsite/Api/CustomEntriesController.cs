@@ -22,10 +22,6 @@ namespace DevilDaggersWebsite.Api
 	[ApiController]
 	public class CustomEntriesController : ControllerBase
 	{
-#pragma warning disable CS0649, S3459 // Unassigned members should be removed
-		private static readonly bool _enableData;
-#pragma warning restore CS0649, S3459 // Unassigned members should be removed
-
 		private readonly ApplicationDbContext _dbContext;
 		private readonly IWebHostEnvironment _env;
 		private readonly IToolHelper _toolHelper;
@@ -176,12 +172,9 @@ namespace DevilDaggersWebsite.Api
 				CustomEntry newCustomEntry = uploadRequest.ToCustomEntryEntity(customLeaderboard);
 				_dbContext.CustomEntries.Add(newCustomEntry);
 
-				if (_enableData)
-				{
-					CustomEntryData newCustomEntryData = new() { CustomEntryId = newCustomEntry.Id };
-					newCustomEntryData.Populate(uploadRequest.GameStates);
-					_dbContext.CustomEntryData.Add(newCustomEntryData);
-				}
+				CustomEntryData newCustomEntryData = new() { CustomEntryId = newCustomEntry.Id };
+				newCustomEntryData.Populate(uploadRequest.GameStates);
+				_dbContext.CustomEntryData.Add(newCustomEntryData);
 
 				_dbContext.SaveChanges();
 
@@ -277,22 +270,19 @@ namespace DevilDaggersWebsite.Api
 			customEntry.ClientVersion = uploadRequest.ClientVersion;
 
 			// Update the entry data.
-			if (_enableData)
+			CustomEntryData? customEntryData = _dbContext.CustomEntryData.FirstOrDefault(ced => ced.CustomEntryId == customEntry.Id);
+			if (customEntryData == null)
 			{
-				CustomEntryData? customEntryData = _dbContext.CustomEntryData.FirstOrDefault(ced => ced.CustomEntryId == customEntry.Id);
-				if (customEntryData == null)
+				customEntryData = new()
 				{
-					customEntryData = new()
-					{
-						CustomEntryId = customEntry.Id,
-					};
-					customEntryData.Populate(uploadRequest.GameStates);
-					_dbContext.CustomEntryData.Add(customEntryData);
-				}
-				else
-				{
-					customEntryData.Populate(uploadRequest.GameStates);
-				}
+					CustomEntryId = customEntry.Id,
+				};
+				customEntryData.Populate(uploadRequest.GameStates);
+				_dbContext.CustomEntryData.Add(customEntryData);
+			}
+			else
+			{
+				customEntryData.Populate(uploadRequest.GameStates);
 			}
 
 			_dbContext.SaveChanges();
