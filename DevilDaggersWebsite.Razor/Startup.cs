@@ -80,8 +80,8 @@ namespace DevilDaggersWebsite.Razor
 
 			services.AddAuthorization(options =>
 			{
-				foreach (KeyValuePair<string, string> kvp in AuthorizationManager.PolicyToRoleMapper)
-					options.AddPolicy(kvp.Key, policy => policy.RequireRole(kvp.Value));
+				foreach (string policy in Policies.All)
+					options.AddPolicy(policy, apb => apb.RequireRole(policy));
 			});
 
 			services.AddRazorPages().AddRazorPagesOptions(options =>

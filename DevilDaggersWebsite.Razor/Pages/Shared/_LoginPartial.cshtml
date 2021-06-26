@@ -20,9 +20,8 @@
 				{
 					string pageName = kvp.Key.Replace("/Admin/", string.Empty);
 					string adminRoute = $"{kvp.Key}/Index";
-					string role = AuthorizationManager.PolicyToRoleMapper[kvp.Value];
 
-					@if (identityUser != null && await UserManager.IsInRoleAsync(identityUser, role))
+					@if (identityUser != null && await UserManager.IsInRoleAsync(identityUser, kvp.Value))
 					{
 						<li class="nav-item">
 							<a class="nav-link text-dark" asp-page="@adminRoute">@pageName</a>
