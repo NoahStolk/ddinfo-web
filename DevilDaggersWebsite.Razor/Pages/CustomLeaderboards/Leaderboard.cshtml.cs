@@ -1,6 +1,6 @@
-﻿using DevilDaggersCore.Utils;
-using DevilDaggersWebsite.Entities;
+﻿using DevilDaggersWebsite.Entities;
 using DevilDaggersWebsite.Extensions;
+using DevilDaggersWebsite.Utils;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.AspNetCore.Mvc.RazorPages;
 using Microsoft.EntityFrameworkCore;

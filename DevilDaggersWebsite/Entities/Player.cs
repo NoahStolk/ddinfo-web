@@ -1,6 +1,6 @@
-﻿using DevilDaggersCore.Utils;
-using DevilDaggersWebsite.Clients;
+﻿using DevilDaggersWebsite.Clients;
 using DevilDaggersWebsite.Dto;
+using DevilDaggersWebsite.Utils;
 using System.Collections.Generic;
 using System.ComponentModel.DataAnnotations;
 using System.Linq;

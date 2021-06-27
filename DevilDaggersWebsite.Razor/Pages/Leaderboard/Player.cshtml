@@ -1,7 +1,7 @@
 ﻿@page
-@using DevilDaggersCore.Utils
 @using DevilDaggersWebsite.Razor.Utils
-@model DevilDaggersWebsite.Razor.Pages.Leaderboard.PlayerModel
+@using DevilDaggersWebsite.Utils
+@model PlayerModel
 @{
 	string? username = Model.Entry?.Username;
 	ViewData["Title"] = string.IsNullOrEmpty(username) ? "Player" : username;

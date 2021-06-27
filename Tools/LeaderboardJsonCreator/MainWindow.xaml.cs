@@ -1,5 +1,5 @@
-﻿using DevilDaggersCore.Utils;
-using DevilDaggersWebsite.Dto;
+﻿using DevilDaggersWebsite.Dto;
+using DevilDaggersWebsite.Utils;
 using Microsoft.Win32;
 using Newtonsoft.Json;
 using System;
@@ -54,7 +54,7 @@ namespace LeaderboardJsonCreator
 			OpenFileDialog dialog = new();
 			bool? result = dialog.ShowDialog();
 
-			if (result.HasValue && result.Value)
+			if (result == true)
 			{
 				_leaderboard = JsonConvert.DeserializeObject<Leaderboard>(File.ReadAllText(dialog.FileName)) ?? throw new("Could not deserialize leaderboard.");
 				_leaderboard.Entries = _leaderboard.Entries.OrderBy(en => en.Rank).ToList();

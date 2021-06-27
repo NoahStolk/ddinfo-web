@@ -1,8 +1,8 @@
-﻿using DevilDaggersCore.Utils;
-using DevilDaggersWebsite.Caches.LeaderboardHistory;
+﻿using DevilDaggersWebsite.Caches.LeaderboardHistory;
 using DevilDaggersWebsite.Dto;
 using DevilDaggersWebsite.Razor.PageModels;
 using DevilDaggersWebsite.Razor.Utils;
+using DevilDaggersWebsite.Utils;
 using Microsoft.AspNetCore.Hosting;
 using Microsoft.AspNetCore.Mvc.RazorPages;
 using Microsoft.AspNetCore.Mvc.Rendering;

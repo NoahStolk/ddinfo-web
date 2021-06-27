@@ -1,7 +1,7 @@
 ﻿@page
-@model DevilDaggersWebsite.Razor.Pages.Wiki.EnemiesModel
 @using DevilDaggersWebsite.Razor.Utils
 @using DevilDaggersCore.Game
+@model EnemiesModel
 @{
 	string boxShadow = "0 0px 2px 2px";
 	ViewData["Title"] = "Enemies";
@@ -46,7 +46,7 @@
 				<div style='color: #@(enemy.Death?.ColorCode ?? "444")'>@(enemy.Death?.Name ?? "None")</div>
 				<div class="hidden-sm hidden-md">@string.Join(", ", GameInfo.GetAppearances(enemy.Name))</div>
 				<div>
-					@if (enemy.SpawnedBy.Count == 0)
+					@if (enemy.SpawnedBy.Length == 0)
 					{
 						@:Game
 					}
@@ -126,16 +126,18 @@
 
 	@{
 		// Add "gem" enemies to make regenerating the table easier
-		Dictionary<Enemy, bool> enemies = new Dictionary<Enemy, bool>();
+		Dictionary<Enemy, bool> enemies = new();
 		foreach (Enemy enemy in Model.Enemies)
 		{
 			enemies.Add(enemy, false);
 			if (enemy.Gems > 1)
 			{
-				Enemy enemyGem = enemy.Copy();
-				enemyGem.Hp = enemy.GemHp;
-				enemyGem.Homing3 = enemy.Homing3 / enemy.Gems;
-				enemyGem.Homing4 = enemy.Homing4 / enemy.Gems;
+				Enemy enemyGem = enemy with
+				{
+					Hp = enemy.GemHp,
+					Homing3 = enemy.Homing3 / enemy.Gems,
+					Homing4 = enemy.Homing4 / enemy.Gems,
+				};
 				enemies.Add(enemyGem, true);
 			}
 		}
@@ -180,7 +182,7 @@
 								switch (i)
 								{
 									case 0:
-										<td class="text-right">@((kvp.Key.Hp / upgrade.DefaultSprayPerSecond).ToString("0.000"))</td>
+										<td class="text-right">@((kvp.Key.Hp / upgrade.DefaultSpray).ToString("0.000"))</td>
 										break;
 									case 1:
 										<td class="text-right">@Math.Ceiling(kvp.Key.Hp / (double)upgrade.DefaultShot)</td>
@@ -233,7 +235,7 @@
 									<td></td>
 									foreach (Upgrade upgrade in Model.Upgrades)
 									{
-										<td class="text-right">@((kvp.Key.Hp / upgrade.DefaultSprayPerSecond).ToString("0.000"))</td>
+										<td class="text-right">@((kvp.Key.Hp / upgrade.DefaultSpray).ToString("0.000"))</td>
 									}
 									break;
 								case 2:
@@ -294,7 +296,7 @@
 								{
 									<tr>
 										<td>@upgrade.GetLayoutAnchor() spray (seconds)</td>
-										<td class="text-right">@((kvp.Key.Hp / upgrade.DefaultSprayPerSecond).ToString("0.000"))</td>
+										<td class="text-right">@((kvp.Key.Hp / upgrade.DefaultSpray).ToString("0.000"))</td>
 									</tr>
 								}
 								break;
