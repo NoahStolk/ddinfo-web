@@ -1,4 +1,5 @@
 ﻿using DevilDaggersWebsite.Dto;
+using DevilDaggersWebsite.Utils;
 using System;
 using System.Collections.Generic;
 using System.ComponentModel.DataAnnotations;
@@ -66,60 +67,55 @@ namespace DevilDaggersWebsite.Entities
 
 		public void Populate(List<GameState> gameStates)
 		{
-			// TODO: Add a smart way to compress this data:
-			// If all values are 0, use an empty byte array.
-			// If all values are under 2, write 0x00 header byte, then write all data as 1-bit numbers (8 values squashed into a single byte).
-			// If all values are under 4, write 0x01 header byte, then write all data as 2-bit numbers (4 values squashed into a single byte).
-			// If all values are under 16, write 0x02 header byte, then write all data as as 4-bit numbers (2 values squashed into a single byte).
-			// If all values are under 256, write 0x03 header byte, then write all data as bytes.
-			// If all values are under 65536, write 0x04 header byte, then write all data as ushorts.
-			// Otherwise, write 0x05 header byte, then write all data as ints (dd doesn't use uints).
-			GemsCollectedData = gameStates.Select(gs => gs.GemsCollected).SelectMany(BitConverter.GetBytes).ToArray();
-			EnemiesKilledData = gameStates.Select(gs => gs.EnemiesKilled).SelectMany(BitConverter.GetBytes).ToArray();
-			DaggersFiredData = gameStates.Select(gs => gs.DaggersFired).SelectMany(BitConverter.GetBytes).ToArray();
-			DaggersHitData = gameStates.Select(gs => gs.DaggersHit).SelectMany(BitConverter.GetBytes).ToArray();
-			EnemiesAliveData = gameStates.Select(gs => gs.EnemiesAlive).SelectMany(BitConverter.GetBytes).ToArray();
-			HomingDaggersData = gameStates.Select(gs => gs.HomingDaggers).SelectMany(BitConverter.GetBytes).ToArray();
-			HomingDaggersEatenData = gameStates.Select(gs => gs.HomingDaggersEaten).SelectMany(BitConverter.GetBytes).ToArray();
-			GemsDespawnedData = gameStates.Select(gs => gs.GemsDespawned).SelectMany(BitConverter.GetBytes).ToArray();
-			GemsEatenData = gameStates.Select(gs => gs.GemsEaten).SelectMany(BitConverter.GetBytes).ToArray();
-			GemsTotalData = gameStates.Select(gs => gs.GemsTotal).SelectMany(BitConverter.GetBytes).ToArray();
+			GemsCollectedData = CompressProperty(gs => gs.GemsCollected);
+			EnemiesKilledData = CompressProperty(gs => gs.EnemiesKilled);
+			DaggersFiredData = CompressProperty(gs => gs.DaggersFired);
+			DaggersHitData = CompressProperty(gs => gs.DaggersHit);
+			EnemiesAliveData = CompressProperty(gs => gs.EnemiesAlive);
+			HomingDaggersData = CompressProperty(gs => gs.HomingDaggers);
+			HomingDaggersEatenData = CompressProperty(gs => gs.HomingDaggersEaten);
+			GemsDespawnedData = CompressProperty(gs => gs.GemsDespawned);
+			GemsEatenData = CompressProperty(gs => gs.GemsEaten);
+			GemsTotalData = CompressProperty(gs => gs.GemsTotal);
 
-			Skull1sAliveData = gameStates.Select(gs => gs.Skull1sAlive).SelectMany(BitConverter.GetBytes).ToArray();
-			Skull2sAliveData = gameStates.Select(gs => gs.Skull2sAlive).SelectMany(BitConverter.GetBytes).ToArray();
-			Skull3sAliveData = gameStates.Select(gs => gs.Skull3sAlive).SelectMany(BitConverter.GetBytes).ToArray();
-			SpiderlingsAliveData = gameStates.Select(gs => gs.SpiderlingsAlive).SelectMany(BitConverter.GetBytes).ToArray();
-			Skull4sAliveData = gameStates.Select(gs => gs.Skull4sAlive).SelectMany(BitConverter.GetBytes).ToArray();
-			Squid1sAliveData = gameStates.Select(gs => gs.Squid1sAlive).SelectMany(BitConverter.GetBytes).ToArray();
-			Squid2sAliveData = gameStates.Select(gs => gs.Squid2sAlive).SelectMany(BitConverter.GetBytes).ToArray();
-			Squid3sAliveData = gameStates.Select(gs => gs.Squid3sAlive).SelectMany(BitConverter.GetBytes).ToArray();
-			CentipedesAliveData = gameStates.Select(gs => gs.CentipedesAlive).SelectMany(BitConverter.GetBytes).ToArray();
-			GigapedesAliveData = gameStates.Select(gs => gs.GigapedesAlive).SelectMany(BitConverter.GetBytes).ToArray();
-			Spider1sAliveData = gameStates.Select(gs => gs.Spider1sAlive).SelectMany(BitConverter.GetBytes).ToArray();
-			Spider2sAliveData = gameStates.Select(gs => gs.Spider2sAlive).SelectMany(BitConverter.GetBytes).ToArray();
-			LeviathansAliveData = gameStates.Select(gs => gs.LeviathansAlive).SelectMany(BitConverter.GetBytes).ToArray();
-			OrbsAliveData = gameStates.Select(gs => gs.OrbsAlive).SelectMany(BitConverter.GetBytes).ToArray();
-			ThornsAliveData = gameStates.Select(gs => gs.ThornsAlive).SelectMany(BitConverter.GetBytes).ToArray();
-			GhostpedesAliveData = gameStates.Select(gs => gs.GhostpedesAlive).SelectMany(BitConverter.GetBytes).ToArray();
-			SpiderEggsAliveData = gameStates.Select(gs => gs.SpiderEggsAlive).SelectMany(BitConverter.GetBytes).ToArray();
+			Skull1sAliveData = CompressProperty(gs => gs.Skull1sAlive);
+			Skull2sAliveData = CompressProperty(gs => gs.Skull2sAlive);
+			Skull3sAliveData = CompressProperty(gs => gs.Skull3sAlive);
+			SpiderlingsAliveData = CompressProperty(gs => gs.SpiderlingsAlive);
+			Skull4sAliveData = CompressProperty(gs => gs.Skull4sAlive);
+			Squid1sAliveData = CompressProperty(gs => gs.Squid1sAlive);
+			Squid2sAliveData = CompressProperty(gs => gs.Squid2sAlive);
+			Squid3sAliveData = CompressProperty(gs => gs.Squid3sAlive);
+			CentipedesAliveData = CompressProperty(gs => gs.CentipedesAlive);
+			GigapedesAliveData = CompressProperty(gs => gs.GigapedesAlive);
+			Spider1sAliveData = CompressProperty(gs => gs.Spider1sAlive);
+			Spider2sAliveData = CompressProperty(gs => gs.Spider2sAlive);
+			LeviathansAliveData = CompressProperty(gs => gs.LeviathansAlive);
+			OrbsAliveData = CompressProperty(gs => gs.OrbsAlive);
+			ThornsAliveData = CompressProperty(gs => gs.ThornsAlive);
+			GhostpedesAliveData = CompressProperty(gs => gs.GhostpedesAlive);
+			SpiderEggsAliveData = CompressProperty(gs => gs.SpiderEggsAlive);
 
-			Skull1sKilledData = gameStates.Select(gs => gs.Skull1sKilled).SelectMany(BitConverter.GetBytes).ToArray();
-			Skull2sKilledData = gameStates.Select(gs => gs.Skull2sKilled).SelectMany(BitConverter.GetBytes).ToArray();
-			Skull3sKilledData = gameStates.Select(gs => gs.Skull3sKilled).SelectMany(BitConverter.GetBytes).ToArray();
-			SpiderlingsKilledData = gameStates.Select(gs => gs.SpiderlingsKilled).SelectMany(BitConverter.GetBytes).ToArray();
-			Skull4sKilledData = gameStates.Select(gs => gs.Skull4sKilled).SelectMany(BitConverter.GetBytes).ToArray();
-			Squid1sKilledData = gameStates.Select(gs => gs.Squid1sKilled).SelectMany(BitConverter.GetBytes).ToArray();
-			Squid2sKilledData = gameStates.Select(gs => gs.Squid2sKilled).SelectMany(BitConverter.GetBytes).ToArray();
-			Squid3sKilledData = gameStates.Select(gs => gs.Squid3sKilled).SelectMany(BitConverter.GetBytes).ToArray();
-			CentipedesKilledData = gameStates.Select(gs => gs.CentipedesKilled).SelectMany(BitConverter.GetBytes).ToArray();
-			GigapedesKilledData = gameStates.Select(gs => gs.GigapedesKilled).SelectMany(BitConverter.GetBytes).ToArray();
-			Spider1sKilledData = gameStates.Select(gs => gs.Spider1sKilled).SelectMany(BitConverter.GetBytes).ToArray();
-			Spider2sKilledData = gameStates.Select(gs => gs.Spider2sKilled).SelectMany(BitConverter.GetBytes).ToArray();
-			LeviathansKilledData = gameStates.Select(gs => gs.LeviathansKilled).SelectMany(BitConverter.GetBytes).ToArray();
-			OrbsKilledData = gameStates.Select(gs => gs.OrbsKilled).SelectMany(BitConverter.GetBytes).ToArray();
-			ThornsKilledData = gameStates.Select(gs => gs.ThornsKilled).SelectMany(BitConverter.GetBytes).ToArray();
-			GhostpedesKilledData = gameStates.Select(gs => gs.GhostpedesKilled).SelectMany(BitConverter.GetBytes).ToArray();
-			SpiderEggsKilledData = gameStates.Select(gs => gs.SpiderEggsKilled).SelectMany(BitConverter.GetBytes).ToArray();
+			Skull1sKilledData = CompressProperty(gs => gs.Skull1sKilled);
+			Skull2sKilledData = CompressProperty(gs => gs.Skull2sKilled);
+			Skull3sKilledData = CompressProperty(gs => gs.Skull3sKilled);
+			SpiderlingsKilledData = CompressProperty(gs => gs.SpiderlingsKilled);
+			Skull4sKilledData = CompressProperty(gs => gs.Skull4sKilled);
+			Squid1sKilledData = CompressProperty(gs => gs.Squid1sKilled);
+			Squid2sKilledData = CompressProperty(gs => gs.Squid2sKilled);
+			Squid3sKilledData = CompressProperty(gs => gs.Squid3sKilled);
+			CentipedesKilledData = CompressProperty(gs => gs.CentipedesKilled);
+			GigapedesKilledData = CompressProperty(gs => gs.GigapedesKilled);
+			Spider1sKilledData = CompressProperty(gs => gs.Spider1sKilled);
+			Spider2sKilledData = CompressProperty(gs => gs.Spider2sKilled);
+			LeviathansKilledData = CompressProperty(gs => gs.LeviathansKilled);
+			OrbsKilledData = CompressProperty(gs => gs.OrbsKilled);
+			ThornsKilledData = CompressProperty(gs => gs.ThornsKilled);
+			GhostpedesKilledData = CompressProperty(gs => gs.GhostpedesKilled);
+			SpiderEggsKilledData = CompressProperty(gs => gs.SpiderEggsKilled);
+
+			byte[] CompressProperty(Func<GameState, int> propertySelector)
+				=> IntegerArrayCompressor.CompressData(gameStates.Select(propertySelector).ToArray());
 		}
 	}
 }
