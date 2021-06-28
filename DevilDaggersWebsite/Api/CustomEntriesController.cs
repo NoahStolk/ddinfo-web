@@ -106,8 +106,9 @@ namespace DevilDaggersWebsite.Api
 			}
 
 			// Check for required version.
+			Dto.Tool tool = _toolHelper.GetToolByName("DevilDaggersCustomLeaderboards");
 			Version clientVersionParsed = Version.Parse(uploadRequest.ClientVersion);
-			if (clientVersionParsed < _toolHelper.GetToolByName("DevilDaggersCustomLeaderboards").VersionNumberRequired)
+			if (clientVersionParsed < tool.VersionNumberRequired)
 			{
 				const string errorMessage = "You are using an unsupported and outdated version of DDCL. Please update the program.";
 				await TryLog(uploadRequest, null, errorMessage);
@@ -134,7 +135,7 @@ namespace DevilDaggersWebsite.Api
 			}
 
 			// Temporary workaround until TimeAttack works in DDCL.
-			if (customLeaderboard.Category == Enumerators.CustomLeaderboardCategory.TimeAttack && clientVersionParsed <= new Version(1, 0, 0, 0))
+			if (customLeaderboard.Category == Enumerators.CustomLeaderboardCategory.TimeAttack)
 			{
 				const string errorMessage = "TimeAttack leaderboards are not supported right now.";
 				await TryLog(uploadRequest, spawnsetName, errorMessage);
