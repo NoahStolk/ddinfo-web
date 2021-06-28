@@ -41,8 +41,8 @@ namespace DevilDaggersWebsite.Tests
 			bool[] binary0 = new[] { false };
 			bool[] binary1 = new[] { true };
 
-			AssertArraysEqual(binary0, IntegerArrayCompressor.GetBitsFromValue(0, bitCount));
-			AssertArraysEqual(binary1, IntegerArrayCompressor.GetBitsFromValue(1, bitCount));
+			AssertArrayContentsEqual(binary0, IntegerArrayCompressor.GetBitsFromValue(0, bitCount));
+			AssertArrayContentsEqual(binary1, IntegerArrayCompressor.GetBitsFromValue(1, bitCount));
 
 			Assert.AreEqual(0, IntegerArrayCompressor.GetValueFromBits(binary0));
 			Assert.AreEqual(1, IntegerArrayCompressor.GetValueFromBits(binary1));
@@ -57,10 +57,10 @@ namespace DevilDaggersWebsite.Tests
 			bool[] binary2 = new[] { true, false };
 			bool[] binary3 = new[] { true, true };
 
-			AssertArraysEqual(binary0, IntegerArrayCompressor.GetBitsFromValue(0, bitCount));
-			AssertArraysEqual(binary1, IntegerArrayCompressor.GetBitsFromValue(1, bitCount));
-			AssertArraysEqual(binary2, IntegerArrayCompressor.GetBitsFromValue(2, bitCount));
-			AssertArraysEqual(binary3, IntegerArrayCompressor.GetBitsFromValue(3, bitCount));
+			AssertArrayContentsEqual(binary0, IntegerArrayCompressor.GetBitsFromValue(0, bitCount));
+			AssertArrayContentsEqual(binary1, IntegerArrayCompressor.GetBitsFromValue(1, bitCount));
+			AssertArrayContentsEqual(binary2, IntegerArrayCompressor.GetBitsFromValue(2, bitCount));
+			AssertArrayContentsEqual(binary3, IntegerArrayCompressor.GetBitsFromValue(3, bitCount));
 
 			Assert.AreEqual(0, IntegerArrayCompressor.GetValueFromBits(binary0));
 			Assert.AreEqual(1, IntegerArrayCompressor.GetValueFromBits(binary1));
@@ -81,14 +81,14 @@ namespace DevilDaggersWebsite.Tests
 			bool[] binary6 = new[] { true, true, false };
 			bool[] binary7 = new[] { true, true, true };
 
-			AssertArraysEqual(binary0, IntegerArrayCompressor.GetBitsFromValue(0, bitCount));
-			AssertArraysEqual(binary1, IntegerArrayCompressor.GetBitsFromValue(1, bitCount));
-			AssertArraysEqual(binary2, IntegerArrayCompressor.GetBitsFromValue(2, bitCount));
-			AssertArraysEqual(binary3, IntegerArrayCompressor.GetBitsFromValue(3, bitCount));
-			AssertArraysEqual(binary4, IntegerArrayCompressor.GetBitsFromValue(4, bitCount));
-			AssertArraysEqual(binary5, IntegerArrayCompressor.GetBitsFromValue(5, bitCount));
-			AssertArraysEqual(binary6, IntegerArrayCompressor.GetBitsFromValue(6, bitCount));
-			AssertArraysEqual(binary7, IntegerArrayCompressor.GetBitsFromValue(7, bitCount));
+			AssertArrayContentsEqual(binary0, IntegerArrayCompressor.GetBitsFromValue(0, bitCount));
+			AssertArrayContentsEqual(binary1, IntegerArrayCompressor.GetBitsFromValue(1, bitCount));
+			AssertArrayContentsEqual(binary2, IntegerArrayCompressor.GetBitsFromValue(2, bitCount));
+			AssertArrayContentsEqual(binary3, IntegerArrayCompressor.GetBitsFromValue(3, bitCount));
+			AssertArrayContentsEqual(binary4, IntegerArrayCompressor.GetBitsFromValue(4, bitCount));
+			AssertArrayContentsEqual(binary5, IntegerArrayCompressor.GetBitsFromValue(5, bitCount));
+			AssertArrayContentsEqual(binary6, IntegerArrayCompressor.GetBitsFromValue(6, bitCount));
+			AssertArrayContentsEqual(binary7, IntegerArrayCompressor.GetBitsFromValue(7, bitCount));
 
 			Assert.AreEqual(0, IntegerArrayCompressor.GetValueFromBits(binary0));
 			Assert.AreEqual(1, IntegerArrayCompressor.GetValueFromBits(binary1));
@@ -110,11 +110,11 @@ namespace DevilDaggersWebsite.Tests
 			bool[] binary75 = new[] { false, true, false, false, true, false, true, true };
 			bool[] binary255 = new[] { true, true, true, true, true, true, true, true };
 
-			AssertArraysEqual(binary0, IntegerArrayCompressor.GetBitsFromValue(0, bitCount));
-			AssertArraysEqual(binary16, IntegerArrayCompressor.GetBitsFromValue(16, bitCount));
-			AssertArraysEqual(binary72, IntegerArrayCompressor.GetBitsFromValue(72, bitCount));
-			AssertArraysEqual(binary75, IntegerArrayCompressor.GetBitsFromValue(75, bitCount));
-			AssertArraysEqual(binary255, IntegerArrayCompressor.GetBitsFromValue(255, bitCount));
+			AssertArrayContentsEqual(binary0, IntegerArrayCompressor.GetBitsFromValue(0, bitCount));
+			AssertArrayContentsEqual(binary16, IntegerArrayCompressor.GetBitsFromValue(16, bitCount));
+			AssertArrayContentsEqual(binary72, IntegerArrayCompressor.GetBitsFromValue(72, bitCount));
+			AssertArrayContentsEqual(binary75, IntegerArrayCompressor.GetBitsFromValue(75, bitCount));
+			AssertArrayContentsEqual(binary255, IntegerArrayCompressor.GetBitsFromValue(255, bitCount));
 
 			Assert.AreEqual(0, IntegerArrayCompressor.GetValueFromBits(binary0));
 			Assert.AreEqual(16, IntegerArrayCompressor.GetValueFromBits(binary16));
@@ -134,12 +134,12 @@ namespace DevilDaggersWebsite.Tests
 			bool[] binary255 = new[] { false, true, true, true, true, true, true, true, true };
 			bool[] binary511 = new[] { true, true, true, true, true, true, true, true, true };
 
-			AssertArraysEqual(binary0, IntegerArrayCompressor.GetBitsFromValue(0, bitCount));
-			AssertArraysEqual(binary16, IntegerArrayCompressor.GetBitsFromValue(16, bitCount));
-			AssertArraysEqual(binary72, IntegerArrayCompressor.GetBitsFromValue(72, bitCount));
-			AssertArraysEqual(binary75, IntegerArrayCompressor.GetBitsFromValue(75, bitCount));
-			AssertArraysEqual(binary255, IntegerArrayCompressor.GetBitsFromValue(255, bitCount));
-			AssertArraysEqual(binary511, IntegerArrayCompressor.GetBitsFromValue(511, bitCount));
+			AssertArrayContentsEqual(binary0, IntegerArrayCompressor.GetBitsFromValue(0, bitCount));
+			AssertArrayContentsEqual(binary16, IntegerArrayCompressor.GetBitsFromValue(16, bitCount));
+			AssertArrayContentsEqual(binary72, IntegerArrayCompressor.GetBitsFromValue(72, bitCount));
+			AssertArrayContentsEqual(binary75, IntegerArrayCompressor.GetBitsFromValue(75, bitCount));
+			AssertArrayContentsEqual(binary255, IntegerArrayCompressor.GetBitsFromValue(255, bitCount));
+			AssertArrayContentsEqual(binary511, IntegerArrayCompressor.GetBitsFromValue(511, bitCount));
 
 			Assert.AreEqual(0, IntegerArrayCompressor.GetValueFromBits(binary0));
 			Assert.AreEqual(16, IntegerArrayCompressor.GetValueFromBits(binary16));
@@ -162,14 +162,14 @@ namespace DevilDaggersWebsite.Tests
 			bool[] binary32767 = new[] { false, true, true, true, true, true, true, true, true, true, true, true, true, true, true, true };
 			bool[] binary65535 = new[] { true, true, true, true, true, true, true, true, true, true, true, true, true, true, true, true };
 
-			AssertArraysEqual(binary0, IntegerArrayCompressor.GetBitsFromValue(0, bitCount));
-			AssertArraysEqual(binary16, IntegerArrayCompressor.GetBitsFromValue(16, bitCount));
-			AssertArraysEqual(binary72, IntegerArrayCompressor.GetBitsFromValue(72, bitCount));
-			AssertArraysEqual(binary75, IntegerArrayCompressor.GetBitsFromValue(75, bitCount));
-			AssertArraysEqual(binary255, IntegerArrayCompressor.GetBitsFromValue(255, bitCount));
-			AssertArraysEqual(binary511, IntegerArrayCompressor.GetBitsFromValue(511, bitCount));
-			AssertArraysEqual(binary32767, IntegerArrayCompressor.GetBitsFromValue(32767, bitCount));
-			AssertArraysEqual(binary65535, IntegerArrayCompressor.GetBitsFromValue(65535, bitCount));
+			AssertArrayContentsEqual(binary0, IntegerArrayCompressor.GetBitsFromValue(0, bitCount));
+			AssertArrayContentsEqual(binary16, IntegerArrayCompressor.GetBitsFromValue(16, bitCount));
+			AssertArrayContentsEqual(binary72, IntegerArrayCompressor.GetBitsFromValue(72, bitCount));
+			AssertArrayContentsEqual(binary75, IntegerArrayCompressor.GetBitsFromValue(75, bitCount));
+			AssertArrayContentsEqual(binary255, IntegerArrayCompressor.GetBitsFromValue(255, bitCount));
+			AssertArrayContentsEqual(binary511, IntegerArrayCompressor.GetBitsFromValue(511, bitCount));
+			AssertArrayContentsEqual(binary32767, IntegerArrayCompressor.GetBitsFromValue(32767, bitCount));
+			AssertArrayContentsEqual(binary65535, IntegerArrayCompressor.GetBitsFromValue(65535, bitCount));
 
 			Assert.AreEqual(0, IntegerArrayCompressor.GetValueFromBits(binary0));
 			Assert.AreEqual(16, IntegerArrayCompressor.GetValueFromBits(binary16));
@@ -228,21 +228,15 @@ namespace DevilDaggersWebsite.Tests
 			Assert.AreEqual(expectedCompressedByteLength, compressedData.Length - 1);
 
 			int[] extractedData = IntegerArrayCompressor.ExtractData(compressedData);
-			AssertArraysEqual(values, extractedData[..values.Length]);
+			AssertArrayContentsEqual(values, extractedData[..values.Length]);
 		}
 
 		[AssertionMethod]
-		private static void AssertArraysEqual<T>(T[] expected, T[] actual)
-			where T : IComparable<T>
+		private static void AssertArrayContentsEqual<T>(T[] expected, T[] actual)
 		{
-			if (expected.Length != actual.Length)
-				throw new AssertFailedException("Arrays are not equal in length.");
-
+			Assert.AreEqual(expected.Length, actual.Length);
 			for (int i = 0; i < expected.Length; i++)
-			{
-				if (expected[i].CompareTo(actual[i]) != 0)
-					throw new AssertFailedException($"Arrays do not contain the same value at position {i}.");
-			}
+				Assert.AreEqual(expected[i], actual[i]);
 		}
 	}
 }
