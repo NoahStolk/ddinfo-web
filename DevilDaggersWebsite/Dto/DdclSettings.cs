@@ -2,6 +2,6 @@
 {
 	public class DdclSettings
 	{
-		public long Marker { get; init; }
+		public long MarkerWindowsSteam { get; init; }
 	}
 }
