@@ -2,8 +2,8 @@
 #if !COOKLE
 using DevilDaggersCore.Game;
 #endif
-using DevilDaggersCore.Utils;
 using DevilDaggersWebsite.Dto;
+using DevilDaggersWebsite.Utils;
 using Microsoft.Win32;
 using Newtonsoft.Json;
 using System;
@@ -25,15 +25,15 @@ namespace LeaderboardCsvToJson
 			OpenFileDialog dlg = new()
 			{
 				DefaultExt = ".csv",
-				InitialDirectory = @"C:\Users\NOAH\source\repos\DevilDaggersWebsite\LeaderboardCsvToJson\Content"
+				InitialDirectory = @"C:\Users\NOAH\source\repos\DevilDaggersWebsite\LeaderboardCsvToJson\Content",
 			};
 
 			bool? result = dlg.ShowDialog();
-			if (result.HasValue && result.Value)
+			if (result == true)
 			{
 				Leaderboard leaderboard = new()
 				{
-					DateTime = HistoryUtils.HistoryJsonFileNameToDateTime(Path.GetFileNameWithoutExtension(dlg.FileName))
+					DateTime = HistoryUtils.HistoryJsonFileNameToDateTime(Path.GetFileNameWithoutExtension(dlg.FileName)),
 				};
 
 				using (StreamReader reader = new(dlg.FileName))
@@ -53,7 +53,7 @@ namespace LeaderboardCsvToJson
 									leaderboard.Players = players;
 								break;
 							case 2:
-								if (ulong.TryParse(values[1].Replace(".", ""), out ulong timeTotal))
+								if (ulong.TryParse(values[1].Replace(".", string.Empty), out ulong timeTotal))
 									leaderboard.TimeGlobal = timeTotal;
 								break;
 							case 3:
@@ -135,7 +135,7 @@ namespace LeaderboardCsvToJson
 
 		private static float GetAccuracyFromPercentageString(string accuracyString)
 		{
-			_ = float.TryParse(accuracyString.Replace("%", ""), out float percentage);
+			_ = float.TryParse(accuracyString.Replace("%", string.Empty), out float percentage);
 			return percentage * 100;
 		}
 	}

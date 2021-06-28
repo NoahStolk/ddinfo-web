@@ -82,7 +82,7 @@ namespace ToolsShared
 			{ "ohsnaplol", 1029 },
 			{ "pmcc", 2144 },
 			{ "kudemizu", 2049 },
-			{ "", 999999 },
+			{ string.Empty, 999999 },
 			{ "L0s Blizt0r", 27510 },
 			{ "Absolutely Not a Terrorist :))))", 27510 },
 			{ "Moz", 4795 },

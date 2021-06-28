@@ -1,14 +1,13 @@
 ﻿@model SpawnsPartialModel
 @inject Microsoft.AspNetCore.Http.IHttpContextAccessor httpContextAccessor
 @inject Microsoft.AspNetCore.Hosting.IWebHostEnvironment env
-@inject DevilDaggersWebsite.Transients.SpawnsetHelper spawnsetHelper
 @inject ApplicationDbContext dbContext
 @using DevilDaggersCore.Game
-@using DevilDaggersCore.Utils
 @using DevilDaggersCore.Spawnsets
 @using DevilDaggersWebsite.Entities
 @using DevilDaggersWebsite.Razor.Models
 @using DevilDaggersWebsite.Razor.Utils
+@using DevilDaggersWebsite.Utils
 @using Microsoft.EntityFrameworkCore
 @using System.IO
 @{

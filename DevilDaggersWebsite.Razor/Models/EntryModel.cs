@@ -1,8 +1,8 @@
 ﻿using DevilDaggersCore.Game;
-using DevilDaggersCore.Utils;
 using DevilDaggersWebsite.Dto;
 using DevilDaggersWebsite.Entities;
 using DevilDaggersWebsite.Razor.Utils;
+using DevilDaggersWebsite.Utils;
 using Microsoft.AspNetCore.Html;
 using System;
 using System.Collections.Generic;

@@ -1,4 +1,5 @@
-﻿using DSharpPlus.Entities;
+﻿using DevilDaggersCore.Extensions;
+using DSharpPlus.Entities;
 using System;
 using System.Threading.Tasks;
 

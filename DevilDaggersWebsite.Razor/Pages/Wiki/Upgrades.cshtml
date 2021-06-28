@@ -1,12 +1,11 @@
 ﻿@page
-@model DevilDaggersWebsite.Razor.Pages.Wiki.UpgradesModel
+@using DevilDaggersCore.Game
+@using DevilDaggersWebsite.Razor.Utils
+@model UpgradesModel
 @{
 	ViewData["Title"] = "Upgrades";
 	string boxShadow = "0 0px 2px 2px";
 }
-
-@using DevilDaggersCore.Game
-@using DevilDaggersWebsite.Razor.Utils
 
 <header>
 	<h1>@ViewData["Title"]</h1>
@@ -39,7 +38,7 @@
 					</div>
 					<div class="upgrade-row flex-container">
 						<div>Default spray</div>
-						<div class="text-right">@upgrade.DefaultSprayPerSecond.ToString("0.##") daggers per second</div>
+						<div class="text-right">@upgrade.DefaultSpray.ToString("0.##") daggers per second</div>
 					</div>
 					<div class="upgrade-row flex-container">
 						<div>Default shot</div>
@@ -47,7 +46,7 @@
 					</div>
 					<div class="upgrade-row flex-container">
 						<div>Homing spray</div>
-						<div class="text-right">@((upgrade.HomingSprayPerSecond.HasValue) ? Html.Raw(upgrade.HomingSprayPerSecond.Value.ToString("0.##") + " daggers per second") : RazorUtils.NAString)</div>
+						<div class="text-right">@((upgrade.HomingSpray.HasValue) ? Html.Raw(upgrade.HomingSpray.Value.ToString("0.##") + " daggers per second") : RazorUtils.NAString)</div>
 					</div>
 					<div class="upgrade-row flex-container">
 						<div>Homing shot</div>
