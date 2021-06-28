@@ -1,8 +1,8 @@
 ﻿@page
+@using DevilDaggersWebsite.Dto.Titles
 @using DevilDaggersWebsite.Entities
 @using DevilDaggersWebsite.Razor.PageModels
-@using Dto = DevilDaggersWebsite.Dto
-@model AdminEntityCreateOrEditPageModel<Title, Dto.AdminTitle>
+@model AdminEntityCreateOrEditPageModel<Title, AddTitleDto>
 
 @{
 	ViewData["Title"] = Model.IsEditing ? "Edit" : "Create";
