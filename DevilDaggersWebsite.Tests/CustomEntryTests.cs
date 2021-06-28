@@ -35,7 +35,8 @@ namespace DevilDaggersWebsite.Tests
 				.SetUpDbSet(db => db.Players, mockEntities.MockDbSetPlayers)
 				.SetUpDbSet(db => db.SpawnsetFiles, mockEntities.MockDbSetSpawnsetFiles)
 				.SetUpDbSet(db => db.CustomLeaderboards, mockEntities.MockDbSetCustomLeaderboards)
-				.SetUpDbSet(db => db.CustomEntries, mockEntities.MockDbSetCustomEntries);
+				.SetUpDbSet(db => db.CustomEntries, mockEntities.MockDbSetCustomEntries)
+				.SetUpDbSet(db => db.CustomEntryData, mockEntities.MockDbSetCustomEntryData);
 
 			Mock<IWebHostEnvironment> mockEnvironment = new();
 			mockEnvironment.Setup(m => m.EnvironmentName).Returns(Environments.Development);

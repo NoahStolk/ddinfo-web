@@ -24,6 +24,7 @@ namespace DevilDaggersWebsite.Tests.Data
 			MockDbSetSpawnsetFiles = new Mock<DbSet<SpawnsetFile>>().SetUpDbSet(GetEntities<SpawnsetFile>());
 			MockDbSetCustomLeaderboards = new Mock<DbSet<CustomLeaderboard>>().SetUpDbSet(GetEntities<CustomLeaderboard>());
 			MockDbSetCustomEntries = new Mock<DbSet<CustomEntry>>().SetUpDbSet(GetEntities<CustomEntry>());
+			MockDbSetCustomEntryData = new Mock<DbSet<CustomEntryData>>().SetUpDbSet(GetEntities<CustomEntryData>());
 
 			T[] GetEntities<T>() => properties
 				.Where(pi => pi.PropertyType == typeof(T))
@@ -35,6 +36,7 @@ namespace DevilDaggersWebsite.Tests.Data
 		public Mock<DbSet<SpawnsetFile>> MockDbSetSpawnsetFiles { get; }
 		public Mock<DbSet<CustomLeaderboard>> MockDbSetCustomLeaderboards { get; }
 		public Mock<DbSet<CustomEntry>> MockDbSetCustomEntries { get; }
+		public Mock<DbSet<CustomEntryData>> MockDbSetCustomEntryData { get; }
 
 		public Player TestPlayer1 { get; } = new()
 		{
