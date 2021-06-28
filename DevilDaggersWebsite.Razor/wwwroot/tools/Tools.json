@@ -851,9 +851,21 @@
 	{
 		"Name": "DevilDaggersCustomLeaderboards",
 		"DisplayName": "Devil Daggers Custom Leaderboards",
-		"VersionNumber": "1.0.0.0",
-		"VersionNumberRequired": "1.0.0.0",
+		"VersionNumber": "1.2.0.0",
+		"VersionNumberRequired": "1.2.0.0",
 		"Changelog": [
+			{
+				"VersionNumber": "1.2.0.0",
+				"Date": "2021-06-28T00:00:00",
+				"Changes": [
+					{
+						"Description": "The application now detects V3.1 graph data and sends it to the server. Graphs will be supported on the website later."
+					},
+					{
+						"Description": "The application now detects if prohibited mods are used. Submitting runs with prohibited mods is still allowed, but this opens the possibility to disallow it for certain leaderboards in the future."
+					}
+				]
+			},
 			{
 				"VersionNumber": "1.0.0.0",
 				"Date": "2021-03-16T00:00:00",
