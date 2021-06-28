@@ -173,7 +173,7 @@ namespace DevilDaggersWebsite.Api
 				CustomEntry newCustomEntry = uploadRequest.ToCustomEntryEntity(customLeaderboard);
 				_dbContext.CustomEntries.Add(newCustomEntry);
 
-				CustomEntryData newCustomEntryData = new() { CustomEntryId = newCustomEntry.Id };
+				CustomEntryData newCustomEntryData = new() { CustomEntry = newCustomEntry };
 				newCustomEntryData.Populate(uploadRequest.GameStates);
 				_dbContext.CustomEntryData.Add(newCustomEntryData);
 
