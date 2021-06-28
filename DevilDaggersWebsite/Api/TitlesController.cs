@@ -5,7 +5,6 @@ using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.EntityFrameworkCore;
-using Microsoft.EntityFrameworkCore.Query;
 using System.Collections.Generic;
 using System.Linq;
 
@@ -27,18 +26,17 @@ namespace DevilDaggersWebsite.Api
 		[ProducesResponseType(StatusCodes.Status200OK)]
 		public ActionResult<List<GetTitleDto>> GetTitles()
 		{
-			IIncludableQueryable<Title, List<PlayerTitle>> titlesQuery = _dbContext.Titles
+			List<Title> titles = _dbContext.Titles
 				.AsNoTracking()
-				.Include(t => t.PlayerTitles);
-
-			return titlesQuery
-				.Select(t => new GetTitleDto
-				{
-					Id = t.Id,
-					Name = t.Name,
-					PlayerIds = t.PlayerTitles.ConvertAll(pt => pt.PlayerId),
-				})
+				.Include(t => t.PlayerTitles)
 				.ToList();
+
+			return titles.ConvertAll(t => new GetTitleDto
+			{
+				Id = t.Id,
+				Name = t.Name,
+				PlayerIds = t.PlayerTitles.ConvertAll(pt => pt.PlayerId),
+			});
 		}
 
 		[HttpPost]
