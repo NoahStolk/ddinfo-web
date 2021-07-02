@@ -1,5 +1,4 @@
-﻿using DevilDaggersCore.Utils;
-using DevilDaggersDiscordBot;
+﻿using DevilDaggersDiscordBot;
 using DevilDaggersWebsite.Clients;
 using DevilDaggersWebsite.Singletons;
 using DevilDaggersWebsite.Utils;
