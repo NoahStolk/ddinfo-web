@@ -26,7 +26,7 @@ namespace DevilDaggersWebsite.HostedServices
 
 			DiscordEmbed? embed = BackgroundServiceMonitor.BuildDiscordEmbed();
 			if (embed != null)
-				await DiscordLogger.EditMessage(ServerConstants.BackgroundServiceMessage, embed);
+				await DiscordLogger.TryEditMessage(ServerConstants.BackgroundServiceMessage, embed);
 		}
 	}
 }

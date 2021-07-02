@@ -56,7 +56,7 @@ ORDER BY table_name ASC;");
 				builder.AddFieldObject(table.Table ?? "Null", value, true);
 			}
 
-			await DiscordLogger.EditMessage(ServerConstants.DatabaseMessage, builder.Build());
+			await DiscordLogger.TryEditMessage(ServerConstants.DatabaseMessage, builder.Build());
 		}
 	}
 }

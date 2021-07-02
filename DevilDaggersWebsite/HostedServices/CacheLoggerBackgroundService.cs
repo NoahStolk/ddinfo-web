@@ -41,7 +41,7 @@ namespace DevilDaggersWebsite.HostedServices
 			builder.AddFieldObject(nameof(SpawnsetDataCache), SpawnsetDataCache.Instance.LogState(Environment));
 			builder.AddFieldObject(nameof(SpawnsetHashCache), SpawnsetHashCache.Instance.LogState(Environment));
 
-			await DiscordLogger.EditMessage(ServerConstants.CacheMessage, builder.Build());
+			await DiscordLogger.TryEditMessage(ServerConstants.CacheMessage, builder.Build());
 		}
 	}
 }

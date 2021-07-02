@@ -57,10 +57,17 @@ namespace DevilDaggersDiscordBot
 			}
 		}
 
-		public static async Task EditMessage(DiscordMessage message, DiscordEmbed embed)
+		public static async Task TryEditMessage(DiscordMessage message, DiscordEmbed embed)
 		{
-			await message.ModifyAsync(":eye_in_speech_bubble:");
-			await message.ModifyAsync(embed);
+			try
+			{
+				await message.ModifyAsync(":eye_in_speech_bubble:");
+				await message.ModifyAsync(embed);
+			}
+			catch
+			{
+				// Ignore exceptions that occurred while attempting to edit message.
+			}
 		}
 	}
 }

@@ -41,7 +41,7 @@ namespace DevilDaggersWebsite.HostedServices
 			AddFieldObject("mods", mods);
 			AddFieldObject("spawnsets", spawnsets);
 
-			await DiscordLogger.EditMessage(ServerConstants.FileMessage, builder.Build());
+			await DiscordLogger.TryEditMessage(ServerConstants.FileMessage, builder.Build());
 
 			void AddFieldObject(string name, DirectoryStatistics value)
 				=> builder.AddFieldObject(name, $"`{value.Size:n0}` bytes\n`{value.FileCount}` files");
