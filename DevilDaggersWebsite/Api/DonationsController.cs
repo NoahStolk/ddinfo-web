@@ -75,7 +75,7 @@ namespace DevilDaggersWebsite.Api
 		[ProducesResponseType(StatusCodes.Status200OK)]
 		[ProducesResponseType(typeof(ValidationProblemDetails), StatusCodes.Status400BadRequest)]
 		[ProducesResponseType(StatusCodes.Status404NotFound)]
-		public ActionResult EditTitle(int id, EditDonationDto editDonation)
+		public ActionResult EditDonation(int id, EditDonationDto editDonation)
 		{
 			if (!_dbContext.Players.Any(p => p.Id == editDonation.PlayerId))
 				return BadRequest($"Player with ID {editDonation.PlayerId} does not exist.");
@@ -100,7 +100,7 @@ namespace DevilDaggersWebsite.Api
 		[Authorize(Policies.AdminPolicy)]
 		[ProducesResponseType(StatusCodes.Status200OK)]
 		[ProducesResponseType(StatusCodes.Status404NotFound)]
-		public ActionResult DeleteTitle(int id)
+		public ActionResult DeleteDonation(int id)
 		{
 			Donation? donation = _dbContext.Donations.FirstOrDefault(d => d.Id == id);
 			if (donation == null)

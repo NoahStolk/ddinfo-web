@@ -70,7 +70,7 @@ namespace DevilDaggersWebsite.Api
 		[Authorize(Policies.AdminPolicy)]
 		[ProducesResponseType(StatusCodes.Status200OK)]
 		[ProducesResponseType(typeof(ValidationProblemDetails), StatusCodes.Status400BadRequest)]
-		public ActionResult AddDonation(AddCustomEntry addCustomEntry)
+		public ActionResult AddCustomEntry(AddCustomEntry addCustomEntry)
 		{
 			if (!_dbContext.Players.Any(p => p.Id == addCustomEntry.PlayerId))
 				return BadRequest($"Player with ID {addCustomEntry.PlayerId} does not exist.");
@@ -106,7 +106,46 @@ namespace DevilDaggersWebsite.Api
 			return Ok();
 		}
 
-		// TODO: Add PUT.
+		[HttpPut("{id}")]
+		[Authorize(Policies.AdminPolicy)]
+		[ProducesResponseType(StatusCodes.Status200OK)]
+		[ProducesResponseType(typeof(ValidationProblemDetails), StatusCodes.Status400BadRequest)]
+		[ProducesResponseType(StatusCodes.Status404NotFound)]
+		public ActionResult EditCustomEntry(int id, EditCustomEntry editCustomEntry)
+		{
+			if (!_dbContext.Players.Any(p => p.Id == editCustomEntry.PlayerId))
+				return BadRequest($"Player with ID {editCustomEntry.PlayerId} does not exist.");
+
+			if (!_dbContext.CustomLeaderboards.Any(cl => cl.Id == editCustomEntry.CustomLeaderboardId))
+				return BadRequest($"Custom leaderboard with ID {editCustomEntry.CustomLeaderboardId} does not exist.");
+
+			CustomEntry? customEntry = _dbContext.CustomEntries.FirstOrDefault(ce => ce.Id == id);
+			if (customEntry == null)
+				return NotFound();
+
+			customEntry.ClientVersion = editCustomEntry.ClientVersion;
+			customEntry.CustomLeaderboardId = editCustomEntry.CustomLeaderboardId;
+			customEntry.DaggersFired = editCustomEntry.DaggersFired;
+			customEntry.DaggersHit = editCustomEntry.DaggersHit;
+			customEntry.DeathType = editCustomEntry.DeathType;
+			customEntry.EnemiesAlive = editCustomEntry.EnemiesAlive;
+			customEntry.EnemiesKilled = editCustomEntry.EnemiesKilled;
+			customEntry.GemsCollected = editCustomEntry.GemsCollected;
+			customEntry.GemsDespawned = editCustomEntry.GemsDespawned;
+			customEntry.GemsEaten = editCustomEntry.GemsEaten;
+			customEntry.GemsTotal = editCustomEntry.GemsTotal;
+			customEntry.HomingDaggers = editCustomEntry.HomingDaggers;
+			customEntry.HomingDaggersEaten = editCustomEntry.HomingDaggersEaten;
+			customEntry.LevelUpTime2 = editCustomEntry.LevelUpTime2;
+			customEntry.LevelUpTime3 = editCustomEntry.LevelUpTime3;
+			customEntry.LevelUpTime4 = editCustomEntry.LevelUpTime4;
+			customEntry.PlayerId = editCustomEntry.PlayerId;
+			customEntry.SubmitDate = editCustomEntry.SubmitDate;
+			customEntry.Time = editCustomEntry.Time;
+			_dbContext.SaveChanges();
+
+			return Ok();
+		}
 
 		[HttpDelete("{id}")]
 		[Authorize(Policies.AdminPolicy)]
