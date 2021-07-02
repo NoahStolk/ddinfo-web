@@ -50,7 +50,7 @@ namespace DevilDaggersWebsite.Api
 				Name = addTitle.Name,
 			};
 			_dbContext.Titles.Add(title);
-			_dbContext.SaveChanges();
+			_dbContext.SaveChanges(); // Save changes here so PlayerTitle entities can be assigned properly.
 
 			UpdatePlayerTitles(addTitle.PlayerIds ?? new(), title.Id);
 			_dbContext.SaveChanges();
@@ -58,26 +58,26 @@ namespace DevilDaggersWebsite.Api
 			return Ok();
 		}
 
-		[HttpPut]
+		[HttpPut("{id}")]
 		[Authorize(Policies.AdminPolicy)]
 		[ProducesResponseType(StatusCodes.Status200OK)]
 		[ProducesResponseType(typeof(ValidationProblemDetails), StatusCodes.Status400BadRequest)]
 		[ProducesResponseType(StatusCodes.Status404NotFound)]
-		public ActionResult EditTitle(EditTitleDto editTitle)
+		public ActionResult EditTitle(int id, EditTitleDto editTitle)
 		{
-			Title? title = _dbContext.Titles.FirstOrDefault(t => t.Id == editTitle.Id);
+			Title? title = _dbContext.Titles.FirstOrDefault(t => t.Id == id);
 			if (title == null)
 				return NotFound();
 
 			title.Name = editTitle.Name;
-			UpdatePlayerTitles(editTitle.PlayerIds ?? new(), title.Id);
 
+			UpdatePlayerTitles(editTitle.PlayerIds ?? new(), title.Id);
 			_dbContext.SaveChanges();
 
 			return Ok();
 		}
 
-		[HttpDelete]
+		[HttpDelete("{id}")]
 		[Authorize(Policies.AdminPolicy)]
 		[ProducesResponseType(StatusCodes.Status200OK)]
 		[ProducesResponseType(StatusCodes.Status404NotFound)]

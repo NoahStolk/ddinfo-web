@@ -5,8 +5,6 @@ namespace DevilDaggersWebsite.Dto.Titles
 {
 	public class EditTitleDto : IAdminDto
 	{
-		public int Id { get; init; }
-
 		[StringLength(16)]
 		public string Name { get; init; } = null!;
 
