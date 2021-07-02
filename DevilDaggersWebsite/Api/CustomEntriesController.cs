@@ -1,9 +1,12 @@
-﻿using DevilDaggersWebsite.Caches.SpawnsetHash;
+﻿using DevilDaggersWebsite.Authorization;
+using DevilDaggersWebsite.Caches.SpawnsetHash;
+using DevilDaggersWebsite.Dto.CustomEntries;
 using DevilDaggersWebsite.Entities;
 using DevilDaggersWebsite.Extensions;
 using DevilDaggersWebsite.HostedServices.DdInfoDiscordBot;
 using DevilDaggersWebsite.Transients;
 using DSharpPlus.Entities;
+using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Hosting;
 using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
@@ -30,6 +33,99 @@ namespace DevilDaggersWebsite.Api
 			_dbContext = dbContext;
 			_env = env;
 			_toolHelper = toolHelper;
+		}
+
+		[HttpGet]
+		[Authorize(Policies.AdminPolicy)]
+		[ProducesResponseType(StatusCodes.Status200OK)]
+		public ActionResult<List<GetBaseCustomEntry>> GetCustomEntries()
+		{
+			List<CustomEntry> customEntries = _dbContext.CustomEntries.AsNoTracking().ToList();
+
+			return customEntries.ConvertAll(ce => new GetBaseCustomEntry
+			{
+				Id = ce.Id,
+				ClientVersion = ce.ClientVersion,
+				DaggersFired = ce.DaggersFired,
+				DaggersHit = ce.DaggersHit,
+				DeathType = ce.DeathType,
+				EnemiesAlive = ce.EnemiesAlive,
+				EnemiesKilled = ce.EnemiesKilled,
+				GemsCollected = ce.GemsCollected,
+				GemsDespawned = ce.GemsDespawned,
+				GemsEaten = ce.GemsEaten,
+				GemsTotal = ce.GemsTotal,
+				HomingDaggers = ce.HomingDaggers,
+				HomingDaggersEaten = ce.HomingDaggersEaten,
+				LevelUpTime2 = ce.LevelUpTime2,
+				LevelUpTime3 = ce.LevelUpTime3,
+				LevelUpTime4 = ce.LevelUpTime4,
+				PlayerId = ce.PlayerId,
+				SubmitDate = ce.SubmitDate,
+				Time = ce.Time,
+			});
+		}
+
+		[HttpPost]
+		[Authorize(Policies.AdminPolicy)]
+		[ProducesResponseType(StatusCodes.Status200OK)]
+		[ProducesResponseType(typeof(ValidationProblemDetails), StatusCodes.Status400BadRequest)]
+		public ActionResult AddDonation(AddCustomEntry addCustomEntry)
+		{
+			if (!_dbContext.Players.Any(p => p.Id == addCustomEntry.PlayerId))
+				return BadRequest($"Player with ID {addCustomEntry.PlayerId} does not exist.");
+
+			if (!_dbContext.CustomLeaderboards.Any(cl => cl.Id == addCustomEntry.CustomLeaderboardId))
+				return BadRequest($"Custom leaderboard with ID {addCustomEntry.CustomLeaderboardId} does not exist.");
+
+			CustomEntry customEntry = new()
+			{
+				ClientVersion = addCustomEntry.ClientVersion,
+				CustomLeaderboardId = addCustomEntry.CustomLeaderboardId,
+				DaggersFired = addCustomEntry.DaggersFired,
+				DaggersHit = addCustomEntry.DaggersHit,
+				DeathType = addCustomEntry.DeathType,
+				EnemiesAlive = addCustomEntry.EnemiesAlive,
+				EnemiesKilled = addCustomEntry.EnemiesKilled,
+				GemsCollected = addCustomEntry.GemsCollected,
+				GemsDespawned = addCustomEntry.GemsDespawned,
+				GemsEaten = addCustomEntry.GemsEaten,
+				GemsTotal = addCustomEntry.GemsTotal,
+				HomingDaggers = addCustomEntry.HomingDaggers,
+				HomingDaggersEaten = addCustomEntry.HomingDaggersEaten,
+				LevelUpTime2 = addCustomEntry.LevelUpTime2,
+				LevelUpTime3 = addCustomEntry.LevelUpTime3,
+				LevelUpTime4 = addCustomEntry.LevelUpTime4,
+				PlayerId = addCustomEntry.PlayerId,
+				SubmitDate = addCustomEntry.SubmitDate,
+				Time = addCustomEntry.Time,
+			};
+			_dbContext.CustomEntries.Add(customEntry);
+			_dbContext.SaveChanges();
+
+			return Ok();
+		}
+
+		// TODO: Add PUT.
+
+		[HttpDelete("{id}")]
+		[Authorize(Policies.AdminPolicy)]
+		[ProducesResponseType(StatusCodes.Status200OK)]
+		[ProducesResponseType(StatusCodes.Status404NotFound)]
+		public ActionResult DeleteCustomEntry(int id)
+		{
+			CustomEntry? customEntry = _dbContext.CustomEntries.FirstOrDefault(ced => ced.Id == id);
+			if (customEntry == null)
+				return NotFound();
+
+			CustomEntryData? customEntryData = _dbContext.CustomEntryData.FirstOrDefault(ced => ced.CustomEntryId == id);
+			if (customEntryData != null)
+				_dbContext.CustomEntryData.Remove(customEntryData);
+
+			_dbContext.CustomEntries.Remove(customEntry);
+			_dbContext.SaveChanges();
+
+			return Ok();
 		}
 
 		[HttpPost("submit")]
