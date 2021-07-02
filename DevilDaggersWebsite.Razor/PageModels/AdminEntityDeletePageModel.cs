@@ -1,6 +1,6 @@
-﻿using DevilDaggersDiscordBot;
-using DevilDaggersWebsite.Dto;
+﻿using DevilDaggersWebsite.Dto;
 using DevilDaggersWebsite.Entities;
+using DevilDaggersWebsite.HostedServices.DdInfoDiscordBot;
 using Microsoft.AspNetCore.Hosting;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.EntityFrameworkCore;

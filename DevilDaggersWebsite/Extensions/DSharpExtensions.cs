@@ -3,7 +3,7 @@ using DSharpPlus.Entities;
 using System;
 using System.Threading.Tasks;
 
-namespace DevilDaggersDiscordBot.Extensions
+namespace DevilDaggersWebsite.Extensions
 {
 	public static class DSharpExtensions
 	{

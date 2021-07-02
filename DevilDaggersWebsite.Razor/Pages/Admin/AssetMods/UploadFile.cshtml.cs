@@ -1,7 +1,7 @@
-﻿using DevilDaggersDiscordBot;
-using DevilDaggersWebsite.Caches.ModArchive;
+﻿using DevilDaggersWebsite.Caches.ModArchive;
 using DevilDaggersWebsite.Enumerators;
 using DevilDaggersWebsite.Exceptions;
+using DevilDaggersWebsite.HostedServices.DdInfoDiscordBot;
 using DevilDaggersWebsite.Razor.PageModels;
 using Microsoft.AspNetCore.Hosting;
 using Microsoft.AspNetCore.Http;

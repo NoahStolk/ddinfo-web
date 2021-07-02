@@ -1,9 +1,9 @@
-﻿using DevilDaggersDiscordBot.Extensions;
+﻿using DevilDaggersWebsite.Extensions;
 using DSharpPlus.EventArgs;
 using System;
 using System.Collections.Generic;
 
-namespace DevilDaggersDiscordBot
+namespace DevilDaggersWebsite.HostedServices.DdInfoDiscordBot
 {
 	public static class Commands
 	{

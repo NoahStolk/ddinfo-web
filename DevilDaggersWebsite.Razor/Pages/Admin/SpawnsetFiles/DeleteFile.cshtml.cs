@@ -1,5 +1,5 @@
-﻿using DevilDaggersDiscordBot;
-using DevilDaggersWebsite.Caches.SpawnsetHash;
+﻿using DevilDaggersWebsite.Caches.SpawnsetHash;
+using DevilDaggersWebsite.HostedServices.DdInfoDiscordBot;
 using DevilDaggersWebsite.Razor.PageModels;
 using Microsoft.AspNetCore.Hosting;
 using Microsoft.AspNetCore.Mvc;

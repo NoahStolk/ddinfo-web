@@ -1,4 +1,4 @@
-﻿using DevilDaggersDiscordBot;
+﻿using DevilDaggersWebsite.HostedServices.DdInfoDiscordBot;
 using DevilDaggersWebsite.Singletons;
 using Microsoft.AspNetCore.Hosting;
 using Microsoft.Extensions.Hosting;

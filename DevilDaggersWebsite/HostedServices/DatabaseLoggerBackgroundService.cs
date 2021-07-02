@@ -1,6 +1,6 @@
-﻿using DevilDaggersDiscordBot;
-using DevilDaggersDiscordBot.Extensions;
-using DevilDaggersWebsite.Entities;
+﻿using DevilDaggersWebsite.Entities;
+using DevilDaggersWebsite.Extensions;
+using DevilDaggersWebsite.HostedServices.DdInfoDiscordBot;
 using DevilDaggersWebsite.Singletons;
 using DSharpPlus.Entities;
 using Microsoft.AspNetCore.Hosting;
@@ -27,7 +27,7 @@ namespace DevilDaggersWebsite.HostedServices
 
 		protected override async Task ExecuteTaskAsync(CancellationToken stoppingToken)
 		{
-			if (ServerConstants.DatabaseMessage == null)
+			if (DevilDaggersInfoServerConstants.DatabaseMessage == null)
 				return;
 
 			ApplicationDbContext dbContext = _serviceScopeFactory.CreateScope().ServiceProvider.GetRequiredService<ApplicationDbContext>();
@@ -58,7 +58,7 @@ ORDER BY table_name ASC;")
 				builder.AddFieldObject(table.Table ?? "Null", value, true);
 			}
 
-			await DiscordLogger.TryEditMessage(ServerConstants.DatabaseMessage, builder.Build());
+			await DiscordLogger.TryEditMessage(DevilDaggersInfoServerConstants.DatabaseMessage, builder.Build());
 		}
 	}
 }
