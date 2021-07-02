@@ -45,6 +45,12 @@ namespace DevilDaggersWebsite.Api
 		[ProducesResponseType(typeof(ValidationProblemDetails), StatusCodes.Status400BadRequest)]
 		public ActionResult AddTitle(AddTitleDto addTitle)
 		{
+			foreach (int playerId in addTitle.PlayerIds ?? new())
+			{
+				if (!_dbContext.Players.Any(p => p.Id == playerId))
+					return BadRequest($"Cannot add non-existing player to title. Player with ID {playerId} does not exist.");
+			}
+
 			Title title = new()
 			{
 				Name = addTitle.Name,
@@ -65,6 +71,12 @@ namespace DevilDaggersWebsite.Api
 		[ProducesResponseType(StatusCodes.Status404NotFound)]
 		public ActionResult EditTitle(int id, EditTitleDto editTitle)
 		{
+			foreach (int playerId in editTitle.PlayerIds ?? new())
+			{
+				if (!_dbContext.Players.Any(p => p.Id == playerId))
+					return BadRequest($"Cannot add non-existing player to title. Player with ID {playerId} does not exist.");
+			}
+
 			Title? title = _dbContext.Titles.FirstOrDefault(t => t.Id == id);
 			if (title == null)
 				return NotFound();
