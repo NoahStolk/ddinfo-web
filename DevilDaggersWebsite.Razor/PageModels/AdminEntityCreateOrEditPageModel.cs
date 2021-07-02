@@ -158,8 +158,6 @@ namespace DevilDaggersWebsite.Razor.PageModels
 
 		private IQueryable<TEntity> GetFullQuery()
 		{
-			if (typeof(TEntity) == typeof(Title))
-				return DbSet.Include(t => (t as Title)!.PlayerTitles);
 			if (typeof(TEntity) == typeof(AssetMod))
 				return DbSet.Include(t => (t as AssetMod)!.PlayerAssetMods);
 			if (typeof(TEntity) == typeof(Player))

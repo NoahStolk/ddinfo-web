@@ -14,12 +14,9 @@ namespace DevilDaggersWebsite.Authorization
 		{
 			{ "/Admin/AdminTests", Policies.AdminPolicy },
 			{ "/Admin/AssetMods", Policies.AssetModsPolicy },
-			{ "/Admin/CustomEntries", Policies.AdminPolicy },
 			{ "/Admin/CustomLeaderboards", Policies.CustomLeaderboardsPolicy },
-			{ "/Admin/Donations", Policies.DonationsPolicy },
 			{ "/Admin/Players", Policies.PlayersPolicy },
 			{ "/Admin/SpawnsetFiles", Policies.SpawnsetsPolicy },
-			{ "/Admin/Titles", Policies.AdminPolicy },
 		};
 
 		public static async Task CreateRolesAndAdminUser(this IServiceProvider serviceProvider)
