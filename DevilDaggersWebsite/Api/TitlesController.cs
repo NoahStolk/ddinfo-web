@@ -48,7 +48,7 @@ namespace DevilDaggersWebsite.Api
 			foreach (int playerId in addTitle.PlayerIds ?? new())
 			{
 				if (!_dbContext.Players.Any(p => p.Id == playerId))
-					return BadRequest($"Cannot add non-existing player to title. Player with ID {playerId} does not exist.");
+					return BadRequest($"Player with ID {playerId} does not exist.");
 			}
 
 			Title title = new()
@@ -74,7 +74,7 @@ namespace DevilDaggersWebsite.Api
 			foreach (int playerId in editTitle.PlayerIds ?? new())
 			{
 				if (!_dbContext.Players.Any(p => p.Id == playerId))
-					return BadRequest($"Cannot add non-existing player to title. Player with ID {playerId} does not exist.");
+					return BadRequest($"Player with ID {playerId} does not exist.");
 			}
 
 			Title? title = _dbContext.Titles.FirstOrDefault(t => t.Id == id);

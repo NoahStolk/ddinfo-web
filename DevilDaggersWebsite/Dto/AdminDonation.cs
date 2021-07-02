@@ -5,6 +5,7 @@ using System.ComponentModel.DataAnnotations;
 
 namespace DevilDaggersWebsite.Dto
 {
+	// TODO: Remove when API endpoints are used.
 	public class AdminDonation : IAdminDto
 	{
 		public int PlayerId { get; init; }
