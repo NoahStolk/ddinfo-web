@@ -1,4 +1,4 @@
-﻿using DevilDaggersDiscordBot.Extensions;
+﻿using DevilDaggersWebsite.Extensions;
 using DSharpPlus.Entities;
 using System;
 using System.Collections;
@@ -6,7 +6,7 @@ using System.Diagnostics;
 using System.Runtime.CompilerServices;
 using System.Threading.Tasks;
 
-namespace DevilDaggersDiscordBot
+namespace DevilDaggersWebsite.HostedServices.DdInfoDiscordBot
 {
 	public static class DiscordLogger
 	{
@@ -14,7 +14,7 @@ namespace DevilDaggersDiscordBot
 		{
 			try
 			{
-				DiscordChannel? channel = ServerConstants.Channels[Channel.MonitoringError].DiscordChannel;
+				DiscordChannel? channel = DevilDaggersInfoServerConstants.Channels[Channel.MonitoringError].DiscordChannel;
 				if (channel == null)
 					return;
 
@@ -42,7 +42,7 @@ namespace DevilDaggersDiscordBot
 
 		public static async Task TryLog(Channel loggingChannel, string environmentName, string? message, DiscordEmbed? embed = null, bool includeEnvironmentName = true)
 		{
-			DiscordChannel? channel = ServerConstants.Channels[loggingChannel].DiscordChannel;
+			DiscordChannel? channel = DevilDaggersInfoServerConstants.Channels[loggingChannel].DiscordChannel;
 			if (channel == null)
 				return;
 
@@ -57,10 +57,17 @@ namespace DevilDaggersDiscordBot
 			}
 		}
 
-		public static async Task EditMessage(DiscordMessage message, DiscordEmbed embed)
+		public static async Task TryEditMessage(DiscordMessage message, DiscordEmbed embed)
 		{
-			await message.ModifyAsync(":eye_in_speech_bubble:");
-			await message.ModifyAsync(embed);
+			try
+			{
+				await message.ModifyAsync(":eye_in_speech_bubble:");
+				await message.ModifyAsync(embed);
+			}
+			catch
+			{
+				// Ignore exceptions that occurred while attempting to edit message.
+			}
 		}
 	}
 }

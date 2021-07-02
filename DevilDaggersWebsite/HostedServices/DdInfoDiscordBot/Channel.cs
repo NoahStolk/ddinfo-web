@@ -1,4 +1,4 @@
-﻿namespace DevilDaggersDiscordBot
+﻿namespace DevilDaggersWebsite.HostedServices.DdInfoDiscordBot
 {
 	public enum Channel
 	{

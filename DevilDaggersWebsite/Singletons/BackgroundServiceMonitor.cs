@@ -1,4 +1,4 @@
-﻿using DevilDaggersDiscordBot.Extensions;
+﻿using DevilDaggersWebsite.Extensions;
 using DSharpPlus.Entities;
 using System;
 using System.Collections.Concurrent;

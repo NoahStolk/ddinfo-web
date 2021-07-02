@@ -1,5 +1,5 @@
-﻿using DevilDaggersDiscordBot;
-using DevilDaggersWebsite.Enumerators;
+﻿using DevilDaggersWebsite.Enumerators;
+using DevilDaggersWebsite.HostedServices.DdInfoDiscordBot;
 using DSharpPlus.Entities;
 
 namespace DevilDaggersWebsite.Extensions

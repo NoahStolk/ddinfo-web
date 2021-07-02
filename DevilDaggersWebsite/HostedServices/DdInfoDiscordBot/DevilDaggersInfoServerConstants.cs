@@ -3,9 +3,9 @@ using DSharpPlus.Entities;
 using System.Collections.Generic;
 using System.Threading.Tasks;
 
-namespace DevilDaggersDiscordBot
+namespace DevilDaggersWebsite.HostedServices.DdInfoDiscordBot
 {
-	public static class ServerConstants
+	public static class DevilDaggersInfoServerConstants
 	{
 		internal const ulong BotUserId = 645209987949395969;
 

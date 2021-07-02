@@ -1,10 +1,10 @@
-﻿using DevilDaggersDiscordBot;
-using DevilDaggersDiscordBot.Extensions;
-using DevilDaggersWebsite.Caches.LeaderboardHistory;
+﻿using DevilDaggersWebsite.Caches.LeaderboardHistory;
 using DevilDaggersWebsite.Caches.LeaderboardStatistics;
 using DevilDaggersWebsite.Caches.ModArchive;
 using DevilDaggersWebsite.Caches.SpawnsetData;
 using DevilDaggersWebsite.Caches.SpawnsetHash;
+using DevilDaggersWebsite.Extensions;
+using DevilDaggersWebsite.HostedServices.DdInfoDiscordBot;
 using DevilDaggersWebsite.Singletons;
 using DSharpPlus.Entities;
 using Microsoft.AspNetCore.Hosting;
@@ -27,7 +27,7 @@ namespace DevilDaggersWebsite.HostedServices
 
 		protected override async Task ExecuteTaskAsync(CancellationToken stoppingToken)
 		{
-			if (ServerConstants.CacheMessage == null)
+			if (DevilDaggersInfoServerConstants.CacheMessage == null)
 				return;
 
 			DiscordEmbedBuilder builder = new()
@@ -41,7 +41,7 @@ namespace DevilDaggersWebsite.HostedServices
 			builder.AddFieldObject(nameof(SpawnsetDataCache), SpawnsetDataCache.Instance.LogState(Environment));
 			builder.AddFieldObject(nameof(SpawnsetHashCache), SpawnsetHashCache.Instance.LogState(Environment));
 
-			await DiscordLogger.EditMessage(ServerConstants.CacheMessage, builder.Build());
+			await DiscordLogger.TryEditMessage(DevilDaggersInfoServerConstants.CacheMessage, builder.Build());
 		}
 	}
 }

@@ -1,5 +1,5 @@
 ﻿using DevilDaggersCore.Spawnsets;
-using DevilDaggersDiscordBot;
+using DevilDaggersWebsite.HostedServices.DdInfoDiscordBot;
 using Microsoft.AspNetCore.Hosting;
 using System;
 using System.Collections.Concurrent;

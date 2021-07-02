@@ -1,13 +1,13 @@
-﻿using DevilDaggersDiscordBot;
-using DevilDaggersDiscordBot.Extensions;
-using DevilDaggersWebsite.Entities;
+﻿using DevilDaggersWebsite.Entities;
+using DevilDaggersWebsite.Extensions;
+using DevilDaggersWebsite.HostedServices.DdInfoDiscordBot;
 using DevilDaggersWebsite.Singletons;
 using DSharpPlus.Entities;
 using Microsoft.AspNetCore.Hosting;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.Extensions.DependencyInjection;
 using System;
-using System.Linq;
+using System.Collections.Generic;
 using System.Threading;
 using System.Threading.Tasks;
 
@@ -27,12 +27,13 @@ namespace DevilDaggersWebsite.HostedServices
 
 		protected override async Task ExecuteTaskAsync(CancellationToken stoppingToken)
 		{
-			if (ServerConstants.DatabaseMessage == null)
+			if (DevilDaggersInfoServerConstants.DatabaseMessage == null)
 				return;
 
 			ApplicationDbContext dbContext = _serviceScopeFactory.CreateScope().ServiceProvider.GetRequiredService<ApplicationDbContext>();
 
-			IQueryable<InformationSchemaTable> tables = dbContext.InformationSchemaTables.FromSqlRaw($@"SELECT
+			List<InformationSchemaTable> tables = await dbContext.InformationSchemaTables
+				.FromSqlRaw($@"SELECT
 	table_name AS `{nameof(InformationSchemaTable.Table)}`,
 	data_length `{nameof(InformationSchemaTable.DataSize)}`,
 	index_length `{nameof(InformationSchemaTable.IndexSize)}`,
@@ -40,7 +41,8 @@ namespace DevilDaggersWebsite.HostedServices
 	table_rows `{nameof(InformationSchemaTable.TableRows)}`
 FROM information_schema.TABLES
 WHERE table_schema = 'devildaggers'
-ORDER BY table_name ASC;");
+ORDER BY table_name ASC;")
+				.ToListAsync(stoppingToken);
 
 			DiscordEmbedBuilder builder = new()
 			{
@@ -56,7 +58,7 @@ ORDER BY table_name ASC;");
 				builder.AddFieldObject(table.Table ?? "Null", value, true);
 			}
 
-			await DiscordLogger.EditMessage(ServerConstants.DatabaseMessage, builder.Build());
+			await DiscordLogger.TryEditMessage(DevilDaggersInfoServerConstants.DatabaseMessage, builder.Build());
 		}
 	}
 }

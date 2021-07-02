@@ -1,4 +1,4 @@
-﻿using DevilDaggersDiscordBot;
+﻿using DevilDaggersWebsite.HostedServices.DdInfoDiscordBot;
 using DevilDaggersWebsite.Singletons;
 using DSharpPlus.Entities;
 using Microsoft.AspNetCore.Hosting;
@@ -21,12 +21,12 @@ namespace DevilDaggersWebsite.HostedServices
 
 		protected override async Task ExecuteTaskAsync(CancellationToken stoppingToken)
 		{
-			if (ServerConstants.BackgroundServiceMessage == null)
+			if (DevilDaggersInfoServerConstants.BackgroundServiceMessage == null)
 				return;
 
 			DiscordEmbed? embed = BackgroundServiceMonitor.BuildDiscordEmbed();
 			if (embed != null)
-				await DiscordLogger.EditMessage(ServerConstants.BackgroundServiceMessage, embed);
+				await DiscordLogger.TryEditMessage(DevilDaggersInfoServerConstants.BackgroundServiceMessage, embed);
 		}
 	}
 }

@@ -1,5 +1,5 @@
-﻿using DevilDaggersDiscordBot;
-using DevilDaggersDiscordBot.Extensions;
+﻿using DevilDaggersWebsite.Extensions;
+using DevilDaggersWebsite.HostedServices.DdInfoDiscordBot;
 using DevilDaggersWebsite.Singletons;
 using DSharpPlus.Entities;
 using Microsoft.AspNetCore.Hosting;
@@ -23,7 +23,7 @@ namespace DevilDaggersWebsite.HostedServices
 
 		protected override async Task ExecuteTaskAsync(CancellationToken stoppingToken)
 		{
-			if (ServerConstants.FileMessage == null)
+			if (DevilDaggersInfoServerConstants.FileMessage == null)
 				return;
 
 			DirectoryStatistics leaderboardHistory = GetDirectorySize(Path.Combine(Environment.WebRootPath, "leaderboard-history"));
@@ -41,7 +41,7 @@ namespace DevilDaggersWebsite.HostedServices
 			AddFieldObject("mods", mods);
 			AddFieldObject("spawnsets", spawnsets);
 
-			await DiscordLogger.EditMessage(ServerConstants.FileMessage, builder.Build());
+			await DiscordLogger.TryEditMessage(DevilDaggersInfoServerConstants.FileMessage, builder.Build());
 
 			void AddFieldObject(string name, DirectoryStatistics value)
 				=> builder.AddFieldObject(name, $"`{value.Size:n0}` bytes\n`{value.FileCount}` files");

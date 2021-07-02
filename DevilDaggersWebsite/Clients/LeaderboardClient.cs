@@ -202,7 +202,7 @@ namespace DevilDaggersWebsite.Clients
 			}
 		}
 
-		public static string GetUsername(byte[] data, ref int bytePos)
+		private static string GetUsername(byte[] data, ref int bytePos)
 		{
 			short usernameLength = BitConverter.ToInt16(data, bytePos);
 			bytePos += 2;

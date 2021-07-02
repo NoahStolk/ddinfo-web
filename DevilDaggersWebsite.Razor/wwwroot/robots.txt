@@ -1,1 +1,1 @@
-﻿Sitemap: https://devildaggers.info/GenerateSitemap
+﻿Sitemap: https://devildaggers.info/sitemap.xml
