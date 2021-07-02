@@ -1,11 +1,11 @@
-﻿using DevilDaggersWebsite.Dto;
+﻿using DevilDaggersWebsite.Dto.Titles;
 using System.Collections.Generic;
 using System.ComponentModel.DataAnnotations;
 using System.Linq;
 
 namespace DevilDaggersWebsite.Entities
 {
-	public class Title : IAdminUpdatableEntity<AdminTitle>
+	public class Title : IAdminUpdatableEntity<AddTitleDto>
 	{
 		[Key]
 		public int Id { get; init; }
@@ -15,19 +15,19 @@ namespace DevilDaggersWebsite.Entities
 
 		public List<PlayerTitle> PlayerTitles { get; set; } = new();
 
-		public void Create(ApplicationDbContext dbContext, AdminTitle adminDto)
+		public void Create(ApplicationDbContext dbContext, AddTitleDto adminDto)
 		{
 			Edit(dbContext, adminDto);
 
 			dbContext.Titles.Add(this);
 		}
 
-		public void Edit(ApplicationDbContext dbContext, AdminTitle adminDto)
+		public void Edit(ApplicationDbContext dbContext, AddTitleDto adminDto)
 		{
 			Name = adminDto.Name;
 		}
 
-		public void CreateManyToManyRelations(ApplicationDbContext dbContext, AdminTitle adminDto)
+		public void CreateManyToManyRelations(ApplicationDbContext dbContext, AddTitleDto adminDto)
 		{
 			List<int> playerIds = adminDto.PlayerIds ?? new();
 			foreach (PlayerTitle newEntity in playerIds.ConvertAll(pi => new PlayerTitle { TitleId = Id, PlayerId = pi }))
@@ -40,7 +40,7 @@ namespace DevilDaggersWebsite.Entities
 				dbContext.PlayerTitles.Remove(entityToRemove);
 		}
 
-		public AdminTitle Populate()
+		public AddTitleDto Populate()
 		{
 			return new()
 			{
