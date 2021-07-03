@@ -16,9 +16,28 @@ namespace DevilDaggersWebsite.HostedServices
 {
 	public class CacheLoggerBackgroundService : AbstractBackgroundService
 	{
-		public CacheLoggerBackgroundService(IWebHostEnvironment environment, BackgroundServiceMonitor backgroundServiceMonitor, DiscordLogger discordLogger)
+		private readonly LeaderboardStatisticsCache _leaderboardStatisticsCache;
+		private readonly LeaderboardHistoryCache _leaderboardHistoryCache;
+		private readonly ModArchiveCache _modArchiveCache;
+		private readonly SpawnsetDataCache _spawnsetDataCache;
+		private readonly SpawnsetHashCache _spawnsetHashCache;
+
+		public CacheLoggerBackgroundService(
+			IWebHostEnvironment environment,
+			BackgroundServiceMonitor backgroundServiceMonitor,
+			DiscordLogger discordLogger,
+			LeaderboardStatisticsCache leaderboardStatisticsCache,
+			LeaderboardHistoryCache leaderboardHistoryCache,
+			ModArchiveCache modArchiveCache,
+			SpawnsetDataCache spawnsetDataCache,
+			SpawnsetHashCache spawnsetHashCache)
 			: base(environment, backgroundServiceMonitor, discordLogger)
 		{
+			_leaderboardStatisticsCache = leaderboardStatisticsCache;
+			_leaderboardHistoryCache = leaderboardHistoryCache;
+			_modArchiveCache = modArchiveCache;
+			_spawnsetDataCache = spawnsetDataCache;
+			_spawnsetHashCache = spawnsetHashCache;
 		}
 
 		protected override bool LogExceptions => false;
@@ -35,11 +54,11 @@ namespace DevilDaggersWebsite.HostedServices
 				Title = $"Cache {DateTime.UtcNow:yyyy-MM-dd HH:mm:ss}",
 				Color = DiscordColor.White,
 			};
-			builder.AddFieldObject(nameof(LeaderboardStatisticsCache), LeaderboardStatisticsCache.Instance.LogState(Environment));
-			builder.AddFieldObject(nameof(LeaderboardHistoryCache), LeaderboardHistoryCache.Instance.LogState(Environment));
-			builder.AddFieldObject(nameof(ModArchiveCache), ModArchiveCache.Instance.LogState(Environment));
-			builder.AddFieldObject(nameof(SpawnsetDataCache), SpawnsetDataCache.Instance.LogState(Environment));
-			builder.AddFieldObject(nameof(SpawnsetHashCache), SpawnsetHashCache.Instance.LogState(Environment));
+			builder.AddFieldObject(nameof(LeaderboardStatisticsCache), _leaderboardStatisticsCache.LogState());
+			builder.AddFieldObject(nameof(LeaderboardHistoryCache), _leaderboardHistoryCache.LogState());
+			builder.AddFieldObject(nameof(ModArchiveCache), _modArchiveCache.LogState());
+			builder.AddFieldObject(nameof(SpawnsetDataCache), _spawnsetDataCache.LogState());
+			builder.AddFieldObject(nameof(SpawnsetHashCache), _spawnsetHashCache.LogState());
 
 			await DiscordLogger.TryEditMessage(DevilDaggersInfoServerConstants.CacheMessage, builder.Build());
 		}

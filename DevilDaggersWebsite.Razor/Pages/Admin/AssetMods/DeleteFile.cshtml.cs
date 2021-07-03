@@ -13,40 +13,44 @@ namespace DevilDaggersWebsite.Razor.Pages.Admin.AssetMods
 {
 	public class DeleteFileModel : AbstractAdminPageModel
 	{
-		private readonly IWebHostEnvironment _env;
+		private readonly IWebHostEnvironment _environment;
+		private readonly DiscordLogger _discordLogger;
+		private readonly ModArchiveCache _modArchiveCache;
 
-		public DeleteFileModel(IWebHostEnvironment env)
+		public DeleteFileModel(IWebHostEnvironment environment, DiscordLogger discordLogger, ModArchiveCache modArchiveCache)
 		{
-			_env = env;
+			_environment = environment;
+			_discordLogger = discordLogger;
+			_modArchiveCache = modArchiveCache;
 		}
 
 		public IEnumerable<string> ModFileNames { get; private set; } = Enumerable.Empty<string>();
 
 		public void OnGet()
 		{
-			ModFileNames = Directory.GetFiles(Path.Combine(_env.WebRootPath, "mods")).Select(p => Path.GetFileName(p));
+			ModFileNames = Directory.GetFiles(Path.Combine(_environment.WebRootPath, "mods")).Select(p => Path.GetFileName(p));
 		}
 
 		public async Task<ActionResult?> OnPost(string fileName)
 		{
 			string failedAttemptMessage = $":x: Failed attempt from `{GetIdentity()}` to delete ASSETMOD file";
 
-			string path = Path.Combine(_env.WebRootPath, "mods", fileName);
+			string path = Path.Combine(_environment.WebRootPath, "mods", fileName);
 			if (!System.IO.File.Exists(path))
 			{
-				await DiscordLogger.TryLog(Channel.MonitoringAuditLog, _env.EnvironmentName, $"{failedAttemptMessage}: File `{fileName}` does not exist.");
+				await _discordLogger.TryLog(Channel.MonitoringAuditLog, _environment.EnvironmentName, $"{failedAttemptMessage}: File `{fileName}` does not exist.");
 				return null;
 			}
 
 			System.IO.File.Delete(path);
 
-			await DiscordLogger.TryLog(Channel.MonitoringAuditLog, _env.EnvironmentName, $":white_check_mark: `{GetIdentity()}` deleted ASSETMOD file :file_folder: `{fileName}`.");
+			await _discordLogger.TryLog(Channel.MonitoringAuditLog, _environment.EnvironmentName, $":white_check_mark: `{GetIdentity()}` deleted ASSETMOD file :file_folder: `{fileName}`.");
 
 			// Clear entire memory cache (can't clear individual entries).
-			ModArchiveCache.Instance.Clear();
+			_modArchiveCache.Clear();
 
 			// Clear file cache for this mod.
-			string cacheFilePath = Path.Combine(_env.WebRootPath, "mod-archive-cache", $"{Path.GetFileNameWithoutExtension(fileName)}.json");
+			string cacheFilePath = Path.Combine(_environment.WebRootPath, "mod-archive-cache", $"{Path.GetFileNameWithoutExtension(fileName)}.json");
 			if (System.IO.File.Exists(cacheFilePath))
 				System.IO.File.Delete(cacheFilePath);
 

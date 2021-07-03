@@ -19,13 +19,15 @@ namespace DevilDaggersWebsite.Razor.Pages.Leaderboard
 	{
 		private static readonly DateTime _fullHistoryDateStart = new(2018, 10, 1);
 
-		private readonly IWebHostEnvironment _env;
+		private readonly IWebHostEnvironment _environment;
+		private readonly LeaderboardHistoryCache _leaderboardHistoryCache;
 
-		public HistoryModel(IWebHostEnvironment env)
+		public HistoryModel(IWebHostEnvironment environment, LeaderboardHistoryCache leaderboardHistoryCache)
 		{
-			_env = env;
+			_environment = environment;
+			_leaderboardHistoryCache = leaderboardHistoryCache;
 
-			foreach (string leaderboardHistoryPath in Directory.GetFiles(Path.Combine(_env.WebRootPath, "leaderboard-history"), "*.json"))
+			foreach (string leaderboardHistoryPath in Directory.GetFiles(Path.Combine(_environment.WebRootPath, "leaderboard-history"), "*.json"))
 			{
 				string listItemText = HistoryUtils.HistoryJsonFileNameToDateTime(Path.GetFileNameWithoutExtension(leaderboardHistoryPath)).ToString(FormatUtils.DateTimeUtcFormat);
 				JsonFiles.Add(new SelectListItem(listItemText, Path.GetFileName(leaderboardHistoryPath)));
@@ -47,7 +49,7 @@ namespace DevilDaggersWebsite.Razor.Pages.Leaderboard
 		public void OnGet(string from)
 		{
 			From = from;
-			if (string.IsNullOrEmpty(From) || !Io.File.Exists(Path.Combine(_env.WebRootPath, "leaderboard-history", From)))
+			if (string.IsNullOrEmpty(From) || !Io.File.Exists(Path.Combine(_environment.WebRootPath, "leaderboard-history", From)))
 				From = JsonFiles[0].Value;
 
 			for (int i = 0; i < JsonFiles.Count; i++)
@@ -63,11 +65,11 @@ namespace DevilDaggersWebsite.Razor.Pages.Leaderboard
 				}
 			}
 
-			Leaderboard = LeaderboardHistoryCache.Instance.GetLeaderboardHistoryByFilePath(Path.Combine(_env.WebRootPath, "leaderboard-history", From));
+			Leaderboard = _leaderboardHistoryCache.GetLeaderboardHistoryByFilePath(Path.Combine(_environment.WebRootPath, "leaderboard-history", From));
 
 			if (FromNext != null && Leaderboard.DateTime > _fullHistoryDateStart)
 			{
-				LeaderboardPrevious = LeaderboardHistoryCache.Instance.GetLeaderboardHistoryByFilePath(Path.Combine(_env.WebRootPath, "leaderboard-history", FromNext));
+				LeaderboardPrevious = _leaderboardHistoryCache.GetLeaderboardHistoryByFilePath(Path.Combine(_environment.WebRootPath, "leaderboard-history", FromNext));
 
 				if (LeaderboardPrevious.Players != Leaderboard.Players)
 					ChangesGlobal.Add($"Total players +{Leaderboard.Players - LeaderboardPrevious.Players}");

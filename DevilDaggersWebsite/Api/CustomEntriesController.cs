@@ -28,13 +28,15 @@ namespace DevilDaggersWebsite.Api
 		private readonly IWebHostEnvironment _env;
 		private readonly IToolHelper _toolHelper;
 		private readonly DiscordLogger _discordLogger;
+		private readonly SpawnsetHashCache _spawnsetHashCache;
 
-		public CustomEntriesController(ApplicationDbContext dbContext, IWebHostEnvironment env, IToolHelper toolHelper, DiscordLogger discordLogger)
+		public CustomEntriesController(ApplicationDbContext dbContext, IWebHostEnvironment env, IToolHelper toolHelper, DiscordLogger discordLogger, SpawnsetHashCache spawnsetHashCache)
 		{
 			_dbContext = dbContext;
 			_env = env;
 			_toolHelper = toolHelper;
 			_discordLogger = discordLogger;
+			_spawnsetHashCache = spawnsetHashCache;
 		}
 
 		[HttpGet]
@@ -252,7 +254,7 @@ namespace DevilDaggersWebsite.Api
 			}
 
 			// Check for existing spawnset.
-			SpawnsetHashCacheData? spawnsetHashData = await SpawnsetHashCache.Instance.GetSpawnset(_env, uploadRequest.SurvivalHashMd5);
+			SpawnsetHashCacheData? spawnsetHashData = await _spawnsetHashCache.GetSpawnset(_env, uploadRequest.SurvivalHashMd5);
 			string? spawnsetName = spawnsetHashData?.Name;
 			if (string.IsNullOrEmpty(spawnsetName))
 			{

@@ -3,21 +3,22 @@
 @using DevilDaggersWebsite.Caches.LeaderboardStatistics
 @using DevilDaggersWebsite.Razor.Utils
 @using DevilDaggersWebsite.Utils
+@inject LeaderboardStatisticsCache LeaderboardStatisticsCache
 @model StatisticsModel
 @{
 	ViewData["Title"] = "Leaderboard Statistics";
 	ulong allTime = 0;
 	ulong allKills = 0;
 	ulong allGems = 0;
-	foreach (CompressedEntry ce in LeaderboardStatisticsCache.Instance.Entries)
+	foreach (CompressedEntry ce in LeaderboardStatisticsCache.Entries)
 	{
 		allTime += ce.Time;
 		allKills += ce.Kills;
 		allGems += ce.Gems;
 	}
-	int avgTime = (int)(allTime / (float)LeaderboardStatisticsCache.Instance.Entries.Count);
-	float avgKills = allKills / (float)LeaderboardStatisticsCache.Instance.Entries.Count;
-	float avgGems = allGems / (float)LeaderboardStatisticsCache.Instance.Entries.Count;
+	int avgTime = (int)(allTime / (float)LeaderboardStatisticsCache.Entries.Count);
+	float avgKills = allKills / (float)LeaderboardStatisticsCache.Entries.Count;
+	float avgGems = allGems / (float)LeaderboardStatisticsCache.Entries.Count;
 }
 
 <header>
@@ -28,16 +29,16 @@
 	<p>
 		This page contains some global statistics from the leaderboard.
 	</p>
-	@if (LeaderboardStatisticsCache.Instance.IsFetched)
+	@if (LeaderboardStatisticsCache.IsFetched)
 	{
-		<p>Statistics were last fetched on @HistoryUtils.HistoryJsonFileNameToDateTime(LeaderboardStatisticsCache.Instance.FileName).ToString(FormatUtils.DateTimeUtcFormat).</p>
+		<p>Statistics were last fetched on @HistoryUtils.HistoryJsonFileNameToDateTime(LeaderboardStatisticsCache.FileName).ToString(FormatUtils.DateTimeUtcFormat).</p>
 
 		<h2>Scores</h2>
 		<ul>
 			@foreach (KeyValuePair<Enemy[], (int? Time, Dagger Dagger)> kvp in StatisticsModel.EnemyTimes.OrderByDescending(kvp => kvp.Value.Time.HasValue).ThenBy(kvp => kvp.Value.Time))
 			{
-				int count = LeaderboardStatisticsCache.Instance.Entries.Count(e => e.Time > kvp.Value.Time);
-				int total = LeaderboardStatisticsCache.Instance.Entries.Count;
+				int count = LeaderboardStatisticsCache.Entries.Count(e => e.Time > kvp.Value.Time);
+				int total = LeaderboardStatisticsCache.Entries.Count;
 				string daggerStyle = kvp.Value.Dagger.Name.ToLower();
 				string daggerTimeStyle = GameInfo.GetDaggerFromTime(GameVersion.V31, kvp.Value.Time ?? int.MaxValue).Name.ToLower();
 				<li><span class="@daggerStyle">@count</span> out of @total players (<span class="@daggerStyle">@((count / (float)total).ToString("0.00%"))</span>) have seen @Html.Raw(string.Join(" and ", kvp.Key.Select(e => RazorUtils.GetLayoutAnchor(e)))) (<span class="@daggerTimeStyle">@(!kvp.Value.Time.HasValue ? "???" : (kvp.Value.Time.Value / 10000).ToString("0.0000"))</span> seconds).</li>

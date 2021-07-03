@@ -20,15 +20,17 @@ namespace DevilDaggersWebsite.Razor.Pages.Leaderboard
 {
 	public class PlayerModel : PageModel
 	{
-		private readonly IWebHostEnvironment _env;
+		private readonly IWebHostEnvironment _environment;
 		private readonly ApplicationDbContext _dbContext;
+		private readonly LeaderboardHistoryCache _leaderboardHistoryCache;
 
 		private int _playerId;
 
-		public PlayerModel(IWebHostEnvironment env, ApplicationDbContext dbContext)
+		public PlayerModel(IWebHostEnvironment environment, ApplicationDbContext dbContext, LeaderboardHistoryCache leaderboardHistoryCache)
 		{
-			_env = env;
+			_environment = environment;
 			_dbContext = dbContext;
+			_leaderboardHistoryCache = leaderboardHistoryCache;
 		}
 
 		public static string[] DaggerNames { get; } = new[] { "leviathan", "devil", "golden", "silver", "bronze", "default" };
@@ -81,9 +83,9 @@ namespace DevilDaggersWebsite.Razor.Pages.Leaderboard
 				CountryName = Player?.CountryCode != null ? UserUtils.CountryNames.ContainsKey(Player.CountryCode) ? UserUtils.CountryNames[Player.CountryCode] : null : null;
 
 				Dictionary<string, int> aliases = new();
-				foreach (string leaderboardHistoryPath in Io.Directory.GetFiles(Io.Path.Combine(_env.WebRootPath, "leaderboard-history"), "*.json"))
+				foreach (string leaderboardHistoryPath in Io.Directory.GetFiles(Io.Path.Combine(_environment.WebRootPath, "leaderboard-history"), "*.json"))
 				{
-					Lb leaderboard = LeaderboardHistoryCache.Instance.GetLeaderboardHistoryByFilePath(leaderboardHistoryPath);
+					Lb leaderboard = _leaderboardHistoryCache.GetLeaderboardHistoryByFilePath(leaderboardHistoryPath);
 					Entry? historyEntry = leaderboard.Entries.Find(e => e.Id == PlayerId);
 					if (historyEntry != null)
 					{

@@ -1,5 +1,6 @@
 ﻿using DevilDaggersWebsite.Entities;
 using DevilDaggersWebsite.Extensions;
+using DevilDaggersWebsite.Singletons;
 using Microsoft.AspNetCore.Hosting;
 using Microsoft.AspNetCore.Mvc;
 using System.Linq;
@@ -10,8 +11,8 @@ namespace DevilDaggersWebsite.Razor.PageModels
 	public class AdminEntityIndexPageModel<TEntity> : AbstractAdminEntityPageModel<TEntity>
 		where TEntity : class, IEntity
 	{
-		public AdminEntityIndexPageModel(ApplicationDbContext dbContext, IWebHostEnvironment environment)
-			: base(dbContext, environment)
+		public AdminEntityIndexPageModel(ApplicationDbContext dbContext, IWebHostEnvironment environment, DiscordLogger discordLogger)
+			: base(dbContext, environment, discordLogger)
 		{
 		}
 

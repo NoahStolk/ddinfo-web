@@ -19,11 +19,13 @@ namespace DevilDaggersWebsite.Api
 	{
 		private readonly IWebHostEnvironment _env;
 		private readonly WorldRecordsHelper _worldRecordsHelper;
+		private readonly LeaderboardHistoryCache _leaderboardHistoryCache;
 
-		public LeaderboardHistoryController(IWebHostEnvironment env, WorldRecordsHelper worldRecordsHelper)
+		public LeaderboardHistoryController(IWebHostEnvironment env, WorldRecordsHelper worldRecordsHelper, LeaderboardHistoryCache leaderboardHistoryCache)
 		{
 			_env = env;
 			_worldRecordsHelper = worldRecordsHelper;
+			_leaderboardHistoryCache = leaderboardHistoryCache;
 		}
 
 		[HttpGet("user-progression")]
@@ -37,7 +39,7 @@ namespace DevilDaggersWebsite.Api
 
 			foreach (string leaderboardHistoryPath in Io.Directory.GetFiles(Io.Path.Combine(_env.WebRootPath, "leaderboard-history"), "*.json"))
 			{
-				Leaderboard leaderboard = LeaderboardHistoryCache.Instance.GetLeaderboardHistoryByFilePath(leaderboardHistoryPath);
+				Leaderboard leaderboard = _leaderboardHistoryCache.GetLeaderboardHistoryByFilePath(leaderboardHistoryPath);
 				Entry? entry = leaderboard.Entries.Find(e => e.Id == userId);
 
 				// + 1 and - 1 are used to fix off-by-one errors in the history based on screenshots and videos. This is due to a rounding error in Devil Daggers itself.
@@ -66,7 +68,7 @@ namespace DevilDaggersWebsite.Api
 			Dictionary<DateTime, ulong> data = new();
 			foreach (string leaderboardHistoryPath in Io.Directory.GetFiles(Io.Path.Combine(_env.WebRootPath, "leaderboard-history"), "*.json"))
 			{
-				Leaderboard leaderboard = LeaderboardHistoryCache.Instance.GetLeaderboardHistoryByFilePath(leaderboardHistoryPath);
+				Leaderboard leaderboard = _leaderboardHistoryCache.GetLeaderboardHistoryByFilePath(leaderboardHistoryPath);
 				Entry? entry = leaderboard.Entries.Find(e => e.Id == userId);
 				if (entry?.DeathsTotal > 0)
 					data.Add(leaderboard.DateTime, entry.DeathsTotal);

@@ -15,13 +15,15 @@ namespace DevilDaggersWebsite.Transients
 	{
 		private readonly IWebHostEnvironment _env;
 		private readonly ApplicationDbContext _dbContext;
+		private readonly SpawnsetDataCache _spawnsetDataCache;
 
 		private readonly List<int> _spawnsetsWithCustomLeaderboardIds;
 
-		public SpawnsetHelper(IWebHostEnvironment env, ApplicationDbContext dbContext)
+		public SpawnsetHelper(IWebHostEnvironment env, ApplicationDbContext dbContext, SpawnsetDataCache spawnsetDataCache)
 		{
 			_env = env;
 			_dbContext = dbContext;
+			_spawnsetDataCache = spawnsetDataCache;
 
 			_spawnsetsWithCustomLeaderboardIds = dbContext.CustomLeaderboards
 				.AsNoTracking()
@@ -47,7 +49,7 @@ namespace DevilDaggersWebsite.Transients
 
 			Dto.SpawnsetFile Map(SpawnsetFile spawnsetFile)
 			{
-				SpawnsetData spawnsetData = SpawnsetDataCache.Instance.GetSpawnsetDataByFilePath(Path.Combine(_env.WebRootPath, "spawnsets", spawnsetFile.Name));
+				SpawnsetData spawnsetData = _spawnsetDataCache.GetSpawnsetDataByFilePath(Path.Combine(_env.WebRootPath, "spawnsets", spawnsetFile.Name));
 				return spawnsetFile.ToDto(spawnsetData, _spawnsetsWithCustomLeaderboardIds.Contains(spawnsetFile.Id));
 			}
 		}

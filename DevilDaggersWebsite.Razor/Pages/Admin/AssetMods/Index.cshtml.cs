@@ -1,5 +1,6 @@
 ﻿using DevilDaggersWebsite.Entities;
 using DevilDaggersWebsite.Razor.PageModels;
+using DevilDaggersWebsite.Singletons;
 using Microsoft.AspNetCore.Hosting;
 using System.Collections.Generic;
 using System.IO;
@@ -9,8 +10,8 @@ namespace DevilDaggersWebsite.Razor.Pages.Admin.AssetMods
 {
 	public class IndexModel : AdminEntityIndexPageModel<AssetMod>
 	{
-		public IndexModel(ApplicationDbContext dbContext, IWebHostEnvironment environment)
-			: base(dbContext, environment)
+		public IndexModel(ApplicationDbContext dbContext, IWebHostEnvironment environment, DiscordLogger discordLogger)
+			: base(dbContext, environment, discordLogger)
 		{
 		}
 

@@ -11,18 +11,20 @@ namespace DevilDaggersWebsite.Razor.Pages.Admin.AssetMods
 {
 	public class DeleteScreenshotModel : AbstractAdminPageModel
 	{
-		private readonly IWebHostEnvironment _env;
+		private readonly IWebHostEnvironment _environment;
+		private readonly DiscordLogger _discordLogger;
 
-		public DeleteScreenshotModel(IWebHostEnvironment env)
+		public DeleteScreenshotModel(IWebHostEnvironment environment, DiscordLogger discordLogger)
 		{
-			_env = env;
+			_environment = environment;
+			_discordLogger = discordLogger;
 		}
 
 		public List<string> ModFileNames { get; } = new();
 
 		public void OnGet()
 		{
-			foreach (string path in Directory.GetFiles(Path.Combine(_env.WebRootPath, "mod-screenshots"), "*.png", SearchOption.AllDirectories))
+			foreach (string path in Directory.GetFiles(Path.Combine(_environment.WebRootPath, "mod-screenshots"), "*.png", SearchOption.AllDirectories))
 			{
 				string directoryName = new DirectoryInfo(path).Parent?.Name ?? throw new($"Invalid path `{path}` while scanning mod screenshot file sizes.");
 				ModFileNames.Add(Path.Combine(directoryName, Path.GetFileName(path)));
@@ -33,16 +35,16 @@ namespace DevilDaggersWebsite.Razor.Pages.Admin.AssetMods
 		{
 			string failedAttemptMessage = $":x: Failed attempt from `{GetIdentity()}` to delete ASSETMOD screenshot";
 
-			string path = Path.Combine(_env.WebRootPath, "mod-screenshots", fileName);
+			string path = Path.Combine(_environment.WebRootPath, "mod-screenshots", fileName);
 			if (!System.IO.File.Exists(path))
 			{
-				await DiscordLogger.TryLog(Channel.MonitoringAuditLog, _env.EnvironmentName, $"{failedAttemptMessage}: File `{fileName}` does not exist.");
+				await _discordLogger.TryLog(Channel.MonitoringAuditLog, _environment.EnvironmentName, $"{failedAttemptMessage}: File `{fileName}` does not exist.");
 				return null;
 			}
 
 			System.IO.File.Delete(path);
 
-			await DiscordLogger.TryLog(Channel.MonitoringAuditLog, _env.EnvironmentName, $":white_check_mark: `{GetIdentity()}` deleted ASSETMOD screenshot :frame_photo: `{fileName}`.");
+			await _discordLogger.TryLog(Channel.MonitoringAuditLog, _environment.EnvironmentName, $":white_check_mark: `{GetIdentity()}` deleted ASSETMOD screenshot :frame_photo: `{fileName}`.");
 
 			return RedirectToPage("Index");
 		}

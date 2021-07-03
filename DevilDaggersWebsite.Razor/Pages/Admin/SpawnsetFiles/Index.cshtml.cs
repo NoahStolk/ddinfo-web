@@ -1,5 +1,6 @@
 ﻿using DevilDaggersWebsite.Entities;
 using DevilDaggersWebsite.Razor.PageModels;
+using DevilDaggersWebsite.Singletons;
 using Microsoft.AspNetCore.Hosting;
 using Microsoft.EntityFrameworkCore;
 using System.Collections.Generic;
@@ -10,8 +11,8 @@ namespace DevilDaggersWebsite.Razor.Pages.Admin.SpawnsetFiles
 {
 	public class IndexModel : AdminEntityIndexPageModel<SpawnsetFile>
 	{
-		public IndexModel(ApplicationDbContext dbContext, IWebHostEnvironment environment)
-			: base(dbContext, environment)
+		public IndexModel(ApplicationDbContext dbContext, IWebHostEnvironment environment, DiscordLogger discordLogger)
+			: base(dbContext, environment, discordLogger)
 		{
 		}
 

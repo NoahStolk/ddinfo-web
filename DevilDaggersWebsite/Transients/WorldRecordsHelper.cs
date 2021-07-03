@@ -14,11 +14,13 @@ namespace DevilDaggersWebsite.Transients
 	{
 		private static readonly DateTime _automationStart = new(2019, 10, 26);
 
-		private readonly IWebHostEnvironment _env;
+		private readonly IWebHostEnvironment _environment;
+		private readonly LeaderboardHistoryCache _leaderboardHistoryCache;
 
-		public WorldRecordsHelper(IWebHostEnvironment env)
+		public WorldRecordsHelper(IWebHostEnvironment environment, LeaderboardHistoryCache leaderboardHistoryCache)
 		{
-			_env = env;
+			_environment = environment;
+			_leaderboardHistoryCache = leaderboardHistoryCache;
 		}
 
 		public List<WorldRecord> GetWorldRecords()
@@ -26,9 +28,9 @@ namespace DevilDaggersWebsite.Transients
 			DateTime? previousDate = null;
 			List<WorldRecord> worldRecords = new();
 			int worldRecord = 0;
-			foreach (string leaderboardHistoryPath in Directory.GetFiles(Path.Combine(_env.WebRootPath, "leaderboard-history"), "*.json"))
+			foreach (string leaderboardHistoryPath in Directory.GetFiles(Path.Combine(_environment.WebRootPath, "leaderboard-history"), "*.json"))
 			{
-				Leaderboard leaderboard = LeaderboardHistoryCache.Instance.GetLeaderboardHistoryByFilePath(leaderboardHistoryPath);
+				Leaderboard leaderboard = _leaderboardHistoryCache.GetLeaderboardHistoryByFilePath(leaderboardHistoryPath);
 				Entry? firstPlace = leaderboard.Entries.Find(e => e.Rank == 1);
 				if (firstPlace == null)
 					continue;

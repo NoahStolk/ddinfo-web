@@ -14,12 +14,14 @@ namespace DevilDaggersWebsite.Razor.Pages
 	public class ModModel : PageModel
 	{
 		private readonly ApplicationDbContext _dbContext;
-		private readonly IWebHostEnvironment _env;
+		private readonly IWebHostEnvironment _environment;
+		private readonly ModArchiveCache _modArchiveCache;
 
-		public ModModel(ApplicationDbContext dbContext, IWebHostEnvironment env)
+		public ModModel(ApplicationDbContext dbContext, IWebHostEnvironment environment, ModArchiveCache modArchiveCache)
 		{
 			_dbContext = dbContext;
-			_env = env;
+			_environment = environment;
+			_modArchiveCache = modArchiveCache;
 		}
 
 		public string? Query { get; }
@@ -42,15 +44,15 @@ namespace DevilDaggersWebsite.Razor.Pages
 			if (AssetMod == null)
 				return RedirectToPage("Mods");
 
-			string screenshotsPath = Path.Combine(_env.WebRootPath, "mod-screenshots", AssetMod.Name);
+			string screenshotsPath = Path.Combine(_environment.WebRootPath, "mod-screenshots", AssetMod.Name);
 			if (Directory.Exists(screenshotsPath))
 				Images = Directory.GetFiles(screenshotsPath).Select(p => Path.GetFileName(p)).ToList();
 
-			string zipPath = Path.Combine(_env.WebRootPath, "mods", $"{AssetMod.Name}.zip");
+			string zipPath = Path.Combine(_environment.WebRootPath, "mods", $"{AssetMod.Name}.zip");
 			IsHostedOnDdInfo = Io.File.Exists(zipPath);
 			if (IsHostedOnDdInfo)
 			{
-				ArchiveData = ModArchiveCache.Instance.GetArchiveDataByFilePath(_env, zipPath);
+				ArchiveData = _modArchiveCache.GetArchiveDataByFilePath(zipPath);
 				ContainsProhibitedAssets = ArchiveData.Binaries.Any(md => md.Chunks.Any(mad => mad.IsProhibited));
 			}
 
