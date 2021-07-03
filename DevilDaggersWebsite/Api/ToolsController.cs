@@ -19,13 +19,13 @@ namespace DevilDaggersWebsite.Api
 	[ApiController]
 	public class ToolsController : ControllerBase
 	{
-		private readonly IWebHostEnvironment _env;
+		private readonly IWebHostEnvironment _environment;
 		private readonly ApplicationDbContext _dbContext;
 		private readonly IToolHelper _toolHelper;
 
-		public ToolsController(IWebHostEnvironment env, ApplicationDbContext dbContext, IToolHelper toolHelper)
+		public ToolsController(IWebHostEnvironment environment, ApplicationDbContext dbContext, IToolHelper toolHelper)
 		{
-			_env = env;
+			_environment = environment;
 			_dbContext = dbContext;
 			_toolHelper = toolHelper;
 		}
@@ -51,7 +51,7 @@ namespace DevilDaggersWebsite.Api
 				return new NotFoundObjectResult(new ProblemDetails { Title = $"Tool '{toolName}' was not found." });
 
 			string path = Path.Combine("tools", tool.Name, $"{tool.Name}{tool.VersionNumber}.zip");
-			if (!Io.File.Exists(Path.Combine(_env.WebRootPath, path)))
+			if (!Io.File.Exists(Path.Combine(_environment.WebRootPath, path)))
 				throw new Exception($"Tool file '{path}' does not exist.");
 
 			ToolStatistic? toolStatistic = _dbContext.ToolStatistics.FirstOrDefault(ts => ts.ToolName == tool.Name && ts.VersionNumber == tool.VersionNumber.ToString());
@@ -62,14 +62,14 @@ namespace DevilDaggersWebsite.Api
 
 			_dbContext.SaveChanges();
 
-			return File(Io.File.ReadAllBytes(Path.Combine(_env.WebRootPath, path)), MediaTypeNames.Application.Zip, $"{toolName}{tool.VersionNumber}.zip");
+			return File(Io.File.ReadAllBytes(Path.Combine(_environment.WebRootPath, path)), MediaTypeNames.Application.Zip, $"{toolName}{tool.VersionNumber}.zip");
 		}
 
 		[HttpGet("devildaggerscustomleaderboards/settings")]
 		[ProducesResponseType(StatusCodes.Status200OK)]
 		public ActionResult<DdclSettings> GetDdclSettings()
 		{
-			return JsonConvert.DeserializeObject<DdclSettings?>(Io.File.ReadAllText(Path.Combine(_env.WebRootPath, "tools", "DevilDaggersCustomLeaderboards", "Settings.json"))) ?? throw new("Could not deserialize DDCL settings JSON.");
+			return JsonConvert.DeserializeObject<DdclSettings?>(Io.File.ReadAllText(Path.Combine(_environment.WebRootPath, "tools", "DevilDaggersCustomLeaderboards", "Settings.json"))) ?? throw new("Could not deserialize DDCL settings JSON.");
 		}
 	}
 }

@@ -18,13 +18,13 @@ namespace DevilDaggersWebsite.Api
 	[ApiController]
 	public class ModsController : ControllerBase
 	{
-		private readonly IWebHostEnvironment _env;
+		private readonly IWebHostEnvironment _environment;
 		private readonly ApplicationDbContext _dbContext;
 		private readonly ModHelper _modHelper;
 
-		public ModsController(IWebHostEnvironment env, ApplicationDbContext dbContext, ModHelper modHelper)
+		public ModsController(IWebHostEnvironment environment, ApplicationDbContext dbContext, ModHelper modHelper)
 		{
-			_env = env;
+			_environment = environment;
 			_dbContext = dbContext;
 			_modHelper = modHelper;
 		}
@@ -45,10 +45,10 @@ namespace DevilDaggersWebsite.Api
 
 			string fileName = $"{modName}.zip";
 			string path = Path.Combine("mods", fileName);
-			if (!Io.File.Exists(Path.Combine(_env.WebRootPath, path)))
+			if (!Io.File.Exists(Path.Combine(_environment.WebRootPath, path)))
 				return new BadRequestObjectResult(new ProblemDetails { Title = $"Mod file '{fileName}' does not exist." });
 
-			return File(Io.File.ReadAllBytes(Path.Combine(_env.WebRootPath, path)), MediaTypeNames.Application.Zip, fileName);
+			return File(Io.File.ReadAllBytes(Path.Combine(_environment.WebRootPath, path)), MediaTypeNames.Application.Zip, fileName);
 		}
 	}
 }

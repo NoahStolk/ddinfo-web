@@ -8,16 +8,16 @@ namespace DevilDaggersWebsite.Razor.Pages.Admin.AdminTests
 {
 	public class BinaryNamesModel : PageModel
 	{
-		private readonly IWebHostEnvironment _env;
+		private readonly IWebHostEnvironment _environment;
 
 		public BinaryNamesModel(IWebHostEnvironment env)
-			=> _env = env;
+			=> _environment = env;
 
 		public List<(string ModName, string BinaryName)> Names { get; set; } = new();
 
 		public void OnGet()
 		{
-			foreach (string path in Directory.GetFiles(Path.Combine(_env.WebRootPath, "mods"), "*.zip"))
+			foreach (string path in Directory.GetFiles(Path.Combine(_environment.WebRootPath, "mods"), "*.zip"))
 			{
 				string modName = Path.GetFileNameWithoutExtension(path);
 

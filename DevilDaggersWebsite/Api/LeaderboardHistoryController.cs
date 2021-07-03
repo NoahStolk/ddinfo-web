@@ -17,13 +17,13 @@ namespace DevilDaggersWebsite.Api
 	[ApiController]
 	public class LeaderboardHistoryController : ControllerBase
 	{
-		private readonly IWebHostEnvironment _env;
+		private readonly IWebHostEnvironment _environment;
 		private readonly WorldRecordsHelper _worldRecordsHelper;
 		private readonly LeaderboardHistoryCache _leaderboardHistoryCache;
 
-		public LeaderboardHistoryController(IWebHostEnvironment env, WorldRecordsHelper worldRecordsHelper, LeaderboardHistoryCache leaderboardHistoryCache)
+		public LeaderboardHistoryController(IWebHostEnvironment environment, WorldRecordsHelper worldRecordsHelper, LeaderboardHistoryCache leaderboardHistoryCache)
 		{
-			_env = env;
+			_environment = environment;
 			_worldRecordsHelper = worldRecordsHelper;
 			_leaderboardHistoryCache = leaderboardHistoryCache;
 		}
@@ -37,7 +37,7 @@ namespace DevilDaggersWebsite.Api
 			if (userId < 1)
 				return data;
 
-			foreach (string leaderboardHistoryPath in Io.Directory.GetFiles(Io.Path.Combine(_env.WebRootPath, "leaderboard-history"), "*.json"))
+			foreach (string leaderboardHistoryPath in Io.Directory.GetFiles(Io.Path.Combine(_environment.WebRootPath, "leaderboard-history"), "*.json"))
 			{
 				Leaderboard leaderboard = _leaderboardHistoryCache.GetLeaderboardHistoryByFilePath(leaderboardHistoryPath);
 				Entry? entry = leaderboard.Entries.Find(e => e.Id == userId);
@@ -66,7 +66,7 @@ namespace DevilDaggersWebsite.Api
 		public Dictionary<DateTime, ulong> GetUserActivity([Required] int userId)
 		{
 			Dictionary<DateTime, ulong> data = new();
-			foreach (string leaderboardHistoryPath in Io.Directory.GetFiles(Io.Path.Combine(_env.WebRootPath, "leaderboard-history"), "*.json"))
+			foreach (string leaderboardHistoryPath in Io.Directory.GetFiles(Io.Path.Combine(_environment.WebRootPath, "leaderboard-history"), "*.json"))
 			{
 				Leaderboard leaderboard = _leaderboardHistoryCache.GetLeaderboardHistoryByFilePath(leaderboardHistoryPath);
 				Entry? entry = leaderboard.Entries.Find(e => e.Id == userId);

@@ -12,18 +12,18 @@ namespace DevilDaggersWebsite.Api
 	[ApiController]
 	public class AssetsController : ControllerBase
 	{
-		private readonly IWebHostEnvironment _env;
+		private readonly IWebHostEnvironment _environment;
 
-		public AssetsController(IWebHostEnvironment env)
+		public AssetsController(IWebHostEnvironment environment)
 		{
-			_env = env;
+			_environment = environment;
 		}
 
 		[HttpGet("info")]
 		[ProducesResponseType(StatusCodes.Status200OK)]
 		public ActionResult<Dictionary<string, List<Dto.AssetInfo>>> GetAssetInfo()
 		{
-			return Io.Directory.GetFiles(Io.Path.Combine(_env.WebRootPath, "asset-info"))
+			return Io.Directory.GetFiles(Io.Path.Combine(_environment.WebRootPath, "asset-info"))
 				.Select(p =>
 				{
 					string fileName = Io.Path.GetFileNameWithoutExtension(p);

@@ -13,15 +13,15 @@ namespace DevilDaggersWebsite.Transients
 {
 	public class SpawnsetHelper
 	{
-		private readonly IWebHostEnvironment _env;
+		private readonly IWebHostEnvironment _environment;
 		private readonly ApplicationDbContext _dbContext;
 		private readonly SpawnsetDataCache _spawnsetDataCache;
 
 		private readonly List<int> _spawnsetsWithCustomLeaderboardIds;
 
-		public SpawnsetHelper(IWebHostEnvironment env, ApplicationDbContext dbContext, SpawnsetDataCache spawnsetDataCache)
+		public SpawnsetHelper(IWebHostEnvironment environment, ApplicationDbContext dbContext, SpawnsetDataCache spawnsetDataCache)
 		{
-			_env = env;
+			_environment = environment;
 			_dbContext = dbContext;
 			_spawnsetDataCache = spawnsetDataCache;
 
@@ -43,13 +43,13 @@ namespace DevilDaggersWebsite.Transients
 				query = query.Where(sf => sf.Name.Contains(nameFilter, StringComparison.InvariantCultureIgnoreCase));
 
 			return query
-				.Where(sf => File.Exists(Path.Combine(_env.WebRootPath, "spawnsets", sf.Name)))
+				.Where(sf => File.Exists(Path.Combine(_environment.WebRootPath, "spawnsets", sf.Name)))
 				.Select(sf => Map(sf))
 				.ToList();
 
 			Dto.SpawnsetFile Map(SpawnsetFile spawnsetFile)
 			{
-				SpawnsetData spawnsetData = _spawnsetDataCache.GetSpawnsetDataByFilePath(Path.Combine(_env.WebRootPath, "spawnsets", spawnsetFile.Name));
+				SpawnsetData spawnsetData = _spawnsetDataCache.GetSpawnsetDataByFilePath(Path.Combine(_environment.WebRootPath, "spawnsets", spawnsetFile.Name));
 				return spawnsetFile.ToDto(spawnsetData, _spawnsetsWithCustomLeaderboardIds.Contains(spawnsetFile.Id));
 			}
 		}

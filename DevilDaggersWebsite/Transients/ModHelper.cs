@@ -14,13 +14,13 @@ namespace DevilDaggersWebsite.Transients
 {
 	public class ModHelper
 	{
-		private readonly IWebHostEnvironment _env;
+		private readonly IWebHostEnvironment _environment;
 		private readonly ApplicationDbContext _dbContext;
 		private readonly ModArchiveCache _modArchiveCache;
 
-		public ModHelper(IWebHostEnvironment env, ApplicationDbContext dbContext, ModArchiveCache modArchiveCache)
+		public ModHelper(IWebHostEnvironment environment, ApplicationDbContext dbContext, ModArchiveCache modArchiveCache)
 		{
-			_env = env;
+			_environment = environment;
 			_dbContext = dbContext;
 			_modArchiveCache = modArchiveCache;
 		}
@@ -42,7 +42,7 @@ namespace DevilDaggersWebsite.Transients
 
 			Dictionary<AssetMod, (bool FileExists, string? Path)> assetModsWithFileInfo = assetMods.ToDictionary(am => am, am =>
 			{
-				string filePath = Path.Combine(_env.WebRootPath, "mods", $"{am.Name}.zip");
+				string filePath = Path.Combine(_environment.WebRootPath, "mods", $"{am.Name}.zip");
 				bool fileExists = File.Exists(filePath);
 				return (fileExists, fileExists ? filePath : null);
 			});
@@ -79,7 +79,7 @@ namespace DevilDaggersWebsite.Transients
 						assetModTypes = amwfi.Key.AssetModTypes;
 					}
 
-					string modScreenshotsDirectory = Path.Combine(_env.WebRootPath, "mod-screenshots", amwfi.Key.Name);
+					string modScreenshotsDirectory = Path.Combine(_environment.WebRootPath, "mod-screenshots", amwfi.Key.Name);
 					List<string> screenshotFileNames;
 					if (Directory.Exists(modScreenshotsDirectory))
 						screenshotFileNames = Directory.GetFiles(modScreenshotsDirectory).Select(p => Path.GetFileName(p)).ToList();

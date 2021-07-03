@@ -16,12 +16,12 @@ namespace DevilDaggersWebsite.Api
 	public class SpawnsetsController : ControllerBase
 	{
 		private readonly SpawnsetHelper _spawnsetHelper;
-		private readonly IWebHostEnvironment _env;
+		private readonly IWebHostEnvironment _environment;
 
-		public SpawnsetsController(SpawnsetHelper spawnsetHelper, IWebHostEnvironment env)
+		public SpawnsetsController(SpawnsetHelper spawnsetHelper, IWebHostEnvironment environment)
 		{
 			_spawnsetHelper = spawnsetHelper;
-			_env = env;
+			_environment = environment;
 		}
 
 		[HttpGet]
@@ -35,10 +35,10 @@ namespace DevilDaggersWebsite.Api
 		[ProducesResponseType(StatusCodes.Status404NotFound)]
 		public ActionResult GetSpawnsetFile([Required] string fileName)
 		{
-			if (!Io.File.Exists(Path.Combine(_env.WebRootPath, "spawnsets", fileName)))
+			if (!Io.File.Exists(Path.Combine(_environment.WebRootPath, "spawnsets", fileName)))
 				return new NotFoundObjectResult(new ProblemDetails { Title = $"Spawnset '{fileName}' was not found." });
 
-			return File(Io.File.ReadAllBytes(Path.Combine(_env.WebRootPath, "spawnsets", fileName)), MediaTypeNames.Application.Octet, fileName);
+			return File(Io.File.ReadAllBytes(Path.Combine(_environment.WebRootPath, "spawnsets", fileName)), MediaTypeNames.Application.Octet, fileName);
 		}
 	}
 }

@@ -12,12 +12,12 @@ namespace DevilDaggersWebsite.Razor.Pages
 	public class SpawnsetModel : PageModel
 	{
 		private readonly ApplicationDbContext _dbContext;
-		private readonly IWebHostEnvironment _env;
+		private readonly IWebHostEnvironment _environment;
 
 		public SpawnsetModel(ApplicationDbContext dbContext, IWebHostEnvironment env)
 		{
 			_dbContext = dbContext;
-			_env = env;
+			_environment = env;
 		}
 
 		public string? Query { get; }
@@ -33,7 +33,7 @@ namespace DevilDaggersWebsite.Razor.Pages
 			if (SpawnsetFile == null)
 				return RedirectToPage("Spawnsets");
 
-			string path = Io.Path.Combine(_env.WebRootPath, "spawnsets", SpawnsetFile.Name);
+			string path = Io.Path.Combine(_environment.WebRootPath, "spawnsets", SpawnsetFile.Name);
 			if (!Io.File.Exists(path))
 				return RedirectToPage("Spawnsets");
 
