@@ -1,6 +1,7 @@
 ﻿using DevilDaggersCore.Extensions;
 using DevilDaggersWebsite.Extensions;
 using DevilDaggersWebsite.HostedServices.DdInfoDiscordBot;
+using DevilDaggersWebsite.Singletons;
 using DevilDaggersWebsite.Utils;
 using DSharpPlus.Entities;
 using Microsoft.AspNetCore.Diagnostics;

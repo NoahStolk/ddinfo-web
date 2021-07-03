@@ -4,6 +4,7 @@ using DevilDaggersWebsite.Caches.ModArchive;
 using DevilDaggersWebsite.Caches.SpawnsetData;
 using DevilDaggersWebsite.Caches.SpawnsetHash;
 using DevilDaggersWebsite.HostedServices.DdInfoDiscordBot;
+using DevilDaggersWebsite.Singletons;
 using DSharpPlus.Entities;
 using Microsoft.AspNetCore.Hosting;
 using Microsoft.AspNetCore.Mvc.RazorPages;

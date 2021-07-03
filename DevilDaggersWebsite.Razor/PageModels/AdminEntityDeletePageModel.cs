@@ -1,6 +1,7 @@
 ﻿using DevilDaggersWebsite.Dto;
 using DevilDaggersWebsite.Entities;
 using DevilDaggersWebsite.HostedServices.DdInfoDiscordBot;
+using DevilDaggersWebsite.Singletons;
 using Microsoft.AspNetCore.Hosting;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.EntityFrameworkCore;
@@ -13,8 +14,8 @@ namespace DevilDaggersWebsite.Razor.PageModels
 		where TEntity : class, IAdminUpdatableEntity<TAdminDto>, new()
 		where TAdminDto : class, IAdminDto
 	{
-		public AdminEntityDeletePageModel(ApplicationDbContext dbContext, IWebHostEnvironment environment)
-			: base(dbContext, environment)
+		public AdminEntityDeletePageModel(ApplicationDbContext dbContext, IWebHostEnvironment environment, DiscordLogger discordLogger)
+			: base(dbContext, environment, discordLogger)
 		{
 		}
 

@@ -16,8 +16,8 @@ namespace DevilDaggersWebsite.HostedServices
 {
 	public class CacheLoggerBackgroundService : AbstractBackgroundService
 	{
-		public CacheLoggerBackgroundService(IWebHostEnvironment environment, BackgroundServiceMonitor backgroundServiceMonitor)
-			: base(environment, backgroundServiceMonitor)
+		public CacheLoggerBackgroundService(IWebHostEnvironment environment, BackgroundServiceMonitor backgroundServiceMonitor, DiscordLogger discordLogger)
+			: base(environment, backgroundServiceMonitor, discordLogger)
 		{
 		}
 

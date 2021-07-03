@@ -3,6 +3,7 @@ using DevilDaggersWebsite.Entities;
 using DevilDaggersWebsite.Enumerators;
 using DevilDaggersWebsite.HostedServices.DdInfoDiscordBot;
 using DevilDaggersWebsite.Razor.Utils;
+using DevilDaggersWebsite.Singletons;
 using Microsoft.AspNetCore.Hosting;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.AspNetCore.Mvc.Rendering;
@@ -20,8 +21,8 @@ namespace DevilDaggersWebsite.Razor.PageModels
 	{
 		private TEntity? _entity;
 
-		public AdminEntityCreateOrEditPageModel(ApplicationDbContext dbContext, IWebHostEnvironment environment)
-			: base(dbContext, environment)
+		public AdminEntityCreateOrEditPageModel(ApplicationDbContext dbContext, IWebHostEnvironment environment, DiscordLogger discordLogger)
+			: base(dbContext, environment, discordLogger)
 		{
 			AssetModTypesList = RazorUtils.EnumToSelectList<AssetModTypes>(true);
 

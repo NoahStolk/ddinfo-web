@@ -10,16 +10,18 @@ namespace DevilDaggersWebsite.HostedServices
 {
 	public abstract class AbstractBackgroundService : BackgroundService
 	{
-		protected AbstractBackgroundService(IWebHostEnvironment environment, BackgroundServiceMonitor backgroundServiceMonitor)
+		protected AbstractBackgroundService(IWebHostEnvironment environment, BackgroundServiceMonitor backgroundServiceMonitor, DiscordLogger discordLogger)
 		{
 			Environment = environment;
 			BackgroundServiceMonitor = backgroundServiceMonitor;
+			DiscordLogger = discordLogger;
 
 			Name = GetType().Name;
 		}
 
 		protected IWebHostEnvironment Environment { get; }
 		protected BackgroundServiceMonitor BackgroundServiceMonitor { get; }
+		protected DiscordLogger DiscordLogger { get; }
 
 		protected string Name { get; }
 

@@ -13,8 +13,8 @@ namespace DevilDaggersWebsite.HostedServices
 {
 	public class LeaderboardHistoryBackgroundService : AbstractBackgroundService
 	{
-		public LeaderboardHistoryBackgroundService(IWebHostEnvironment environment, BackgroundServiceMonitor backgroundServiceMonitor)
-			: base(environment, backgroundServiceMonitor)
+		public LeaderboardHistoryBackgroundService(IWebHostEnvironment environment, BackgroundServiceMonitor backgroundServiceMonitor, DiscordLogger discordLogger)
+			: base(environment, backgroundServiceMonitor, discordLogger)
 		{
 		}
 

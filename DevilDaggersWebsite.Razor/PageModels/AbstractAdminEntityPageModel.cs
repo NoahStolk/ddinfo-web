@@ -1,5 +1,6 @@
 ﻿using DevilDaggersCore.Extensions;
 using DevilDaggersWebsite.Entities;
+using DevilDaggersWebsite.Singletons;
 using Microsoft.AspNetCore.Hosting;
 using Microsoft.EntityFrameworkCore;
 using System;
@@ -15,10 +16,11 @@ namespace DevilDaggersWebsite.Razor.PageModels
 	{
 		private const int _loggingMax = 60;
 
-		protected AbstractAdminEntityPageModel(ApplicationDbContext dbContext, IWebHostEnvironment environment)
+		protected AbstractAdminEntityPageModel(ApplicationDbContext dbContext, IWebHostEnvironment environment, DiscordLogger discordLogger)
 		{
 			DbContext = dbContext;
 			Environment = environment;
+			DiscordLogger = discordLogger;
 
 			PropertyInfo? dbSetPropertyInfo = Array.Find(typeof(ApplicationDbContext).GetProperties(), pi => pi.PropertyType == typeof(DbSet<TEntity>));
 			if (dbSetPropertyInfo == null)
@@ -31,6 +33,7 @@ namespace DevilDaggersWebsite.Razor.PageModels
 
 		protected ApplicationDbContext DbContext { get; }
 		protected IWebHostEnvironment Environment { get; }
+		protected DiscordLogger DiscordLogger { get; }
 
 		public DbSet<TEntity> DbSet { get; }
 
