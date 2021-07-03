@@ -46,7 +46,7 @@ namespace DevilDaggersWebsite.Razor.PageModels
 
 				StringBuilder auditLogger = new($"`DELETE` by `{GetIdentity()}` for `{typeof(TEntity).Name}` `{id}`\n");
 				LogDelete(auditLogger, Entity.Populate().Log());
-				await DiscordLogger.TryLog(LoggingChannel, Environment.EnvironmentName, auditLogger.ToString());
+				await DiscordLogger.TryLog(Channel.MonitoringAuditLog, Environment.EnvironmentName, auditLogger.ToString());
 			}
 
 			return RedirectToPage("./Index");

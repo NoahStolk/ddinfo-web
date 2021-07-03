@@ -44,10 +44,7 @@ namespace DevilDaggersWebsite.HostedServices
 				catch (Exception ex)
 				{
 					if (LogExceptions)
-					{
-						Channel channel = Environment.IsDevelopment() ? Channel.MonitoringTest : Channel.MonitoringTask;
-						await DiscordLogger.TryLog(channel, Environment.EnvironmentName, $":x: Task execution for `{Name}` failed with exception: `{ex.Message}`");
-					}
+						await DiscordLogger.TryLog(Channel.MonitoringTask, Environment.EnvironmentName, $":x: Task execution for `{Name}` failed with exception: `{ex.Message}`");
 				}
 
 				if (Interval.TotalMilliseconds > 0)

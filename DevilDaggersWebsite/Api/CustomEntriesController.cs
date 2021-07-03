@@ -11,7 +11,6 @@ using Microsoft.AspNetCore.Hosting;
 using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.EntityFrameworkCore;
-using Microsoft.Extensions.Hosting;
 using System;
 using System.Collections.Generic;
 using System.Linq;
@@ -481,8 +480,6 @@ namespace DevilDaggersWebsite.Api
 
 		private async Task TrySendLeaderboardMessage(CustomLeaderboard customLeaderboard, string message, int rank, int totalPlayers, int time)
 		{
-			Channel loggingChannel = _env.IsDevelopment() ? Channel.MonitoringTest : Channel.CustomLeaderboards;
-
 			try
 			{
 				DiscordEmbedBuilder builder = new()
@@ -493,7 +490,7 @@ namespace DevilDaggersWebsite.Api
 				};
 				builder.AddFieldObject("Score", FormatTimeString(time), true);
 				builder.AddFieldObject("Rank", $"{rank}/{totalPlayers}", true);
-				await DiscordLogger.TryLog(loggingChannel, _env.EnvironmentName, null, builder.Build());
+				await DiscordLogger.TryLog(Channel.CustomLeaderboards, _env.EnvironmentName, null, builder.Build());
 			}
 			catch (Exception ex)
 			{

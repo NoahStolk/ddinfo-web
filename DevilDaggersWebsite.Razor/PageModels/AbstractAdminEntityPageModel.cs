@@ -1,9 +1,7 @@
 ﻿using DevilDaggersCore.Extensions;
 using DevilDaggersWebsite.Entities;
-using DevilDaggersWebsite.HostedServices.DdInfoDiscordBot;
 using Microsoft.AspNetCore.Hosting;
 using Microsoft.EntityFrameworkCore;
-using Microsoft.Extensions.Hosting;
 using System;
 using System.Collections.Generic;
 using System.Linq;
@@ -37,8 +35,6 @@ namespace DevilDaggersWebsite.Razor.PageModels
 		public DbSet<TEntity> DbSet { get; }
 
 		public PropertyInfo[] EntityDisplayProperties { get; }
-
-		protected Channel LoggingChannel => Environment.IsDevelopment() ? Channel.MonitoringTest : Channel.MonitoringAuditLog;
 
 		protected void LogCreateOrEdit(StringBuilder auditLogger, Dictionary<string, string>? oldLog, Dictionary<string, string> newLog)
 		{
