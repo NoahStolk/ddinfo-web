@@ -1,9 +1,9 @@
 ﻿@using DevilDaggersWebsite.Razor.Utils
-@inject Microsoft.AspNetCore.Hosting.IWebHostEnvironment env
+@inject Microsoft.AspNetCore.Hosting.IWebHostEnvironment environment
 <environment include="Development" exclude="Production">
 	<script defer src="~/lib/jquery/dist/jquery.js"></script>
 	<script defer src="~/lib/bootstrap/dist/js/bootstrap.js"></script>
-	@RazorUtils.GetJsList(env, "js-site")
+	@RazorUtils.GetJsList(environment, "js-site")
 </environment>
 <environment exclude="Development">
 	<script defer src="https://ajax.aspnetcdn.com/ajax/jquery/jquery-2.2.0.min.js">

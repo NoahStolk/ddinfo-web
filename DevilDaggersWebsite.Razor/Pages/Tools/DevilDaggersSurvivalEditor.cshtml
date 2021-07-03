@@ -1,5 +1,5 @@
 ﻿@page
-@inject Microsoft.AspNetCore.Hosting.IWebHostEnvironment env
+@inject Microsoft.AspNetCore.Hosting.IWebHostEnvironment environment
 @inject IToolHelper toolHelper
 @using DevilDaggersWebsite.Dto
 @using DevilDaggersWebsite.Razor.Utils
@@ -9,7 +9,7 @@
 	Tool tool = toolHelper.GetToolByName("DevilDaggersSurvivalEditor");
 	ViewData["Title"] = tool.DisplayName;
 	string downloadFileName = $"{tool.Name}{tool.VersionNumber}.zip";
-	FileInfo downloadFileInfo = new(System.IO.Path.Combine(env.WebRootPath, "tools", tool.Name, downloadFileName));
+	FileInfo downloadFileInfo = new(System.IO.Path.Combine(environment.WebRootPath, "tools", tool.Name, downloadFileName));
 	string runtimeUrl = ToolRuntimeUtils.GetRuntimeUrl("5.0");
 }
 

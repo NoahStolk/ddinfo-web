@@ -14,10 +14,10 @@ namespace DevilDaggersWebsite.Razor.Pages
 		private readonly ApplicationDbContext _dbContext;
 		private readonly IWebHostEnvironment _environment;
 
-		public SpawnsetModel(ApplicationDbContext dbContext, IWebHostEnvironment env)
+		public SpawnsetModel(ApplicationDbContext dbContext, IWebHostEnvironment environment)
 		{
 			_dbContext = dbContext;
-			_environment = env;
+			_environment = environment;
 		}
 
 		public string? Query { get; }

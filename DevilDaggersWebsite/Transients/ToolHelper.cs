@@ -8,9 +8,9 @@ namespace DevilDaggersWebsite.Transients
 {
 	public class ToolHelper : IToolHelper
 	{
-		public ToolHelper(IWebHostEnvironment env)
+		public ToolHelper(IWebHostEnvironment environment)
 		{
-			Tools = JsonConvert.DeserializeObject<List<Tool>?>(File.ReadAllText(Path.Combine(env.WebRootPath, "tools", "Tools.json"))) ?? throw new("Could not deserialize tools JSON.");
+			Tools = JsonConvert.DeserializeObject<List<Tool>?>(File.ReadAllText(Path.Combine(environment.WebRootPath, "tools", "Tools.json"))) ?? throw new("Could not deserialize tools JSON.");
 		}
 
 		public List<Tool> Tools { get; } = new();

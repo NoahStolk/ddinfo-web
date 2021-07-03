@@ -17,16 +17,16 @@ namespace DevilDaggersWebsite.Razor.Utils
 		public static HtmlString NAString { get; } = new("<span style='color: #444;'>N/A</span>");
 
 		// TODO: Figure out how to properly add "asp-append-version".
-		public static HtmlString GetCssList(IWebHostEnvironment env, string subdirectory)
-			=> GetList(env, subdirectory, (sb, href) => sb.Append("<link rel='stylesheet' href='/").Append(href).Append("' />\n"));
+		public static HtmlString GetCssList(IWebHostEnvironment environment, string subdirectory)
+			=> GetList(environment, subdirectory, (sb, href) => sb.Append("<link rel='stylesheet' href='/").Append(href).Append("' />\n"));
 
 		// TODO: Figure out how to properly add "asp-append-version".
-		public static HtmlString GetJsList(IWebHostEnvironment env, string subdirectory)
-			=> GetList(env, subdirectory, (sb, href) => sb.Append("<script defer src='/").Append(href).Append("'></script>\n"));
+		public static HtmlString GetJsList(IWebHostEnvironment environment, string subdirectory)
+			=> GetList(environment, subdirectory, (sb, href) => sb.Append("<script defer src='/").Append(href).Append("'></script>\n"));
 
-		private static HtmlString GetList(IWebHostEnvironment env, string subdirectory, Action<StringBuilder, string> appendAction)
+		private static HtmlString GetList(IWebHostEnvironment environment, string subdirectory, Action<StringBuilder, string> appendAction)
 		{
-			string directory = Path.Combine(env.WebRootPath, subdirectory);
+			string directory = Path.Combine(environment.WebRootPath, subdirectory);
 
 			StringBuilder sb = new();
 			foreach (string path in Directory.GetFiles(directory))

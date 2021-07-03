@@ -25,9 +25,9 @@ namespace DevilDaggersWebsite.Razor.Pages.Admin.AssetMods
 		private readonly ApplicationDbContext _dbContext;
 		private readonly DiscordLogger _discordLogger;
 
-		public UploadScreenshotModel(IWebHostEnvironment env, ApplicationDbContext dbContext, DiscordLogger discordLogger)
+		public UploadScreenshotModel(IWebHostEnvironment environment, ApplicationDbContext dbContext, DiscordLogger discordLogger)
 		{
-			_environment = env;
+			_environment = environment;
 			_dbContext = dbContext;
 			_discordLogger = discordLogger;
 

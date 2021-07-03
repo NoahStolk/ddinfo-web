@@ -10,8 +10,10 @@ namespace DevilDaggersWebsite.Razor.Pages.Admin.AdminTests
 	{
 		private readonly IWebHostEnvironment _environment;
 
-		public BinaryNamesModel(IWebHostEnvironment env)
-			=> _environment = env;
+		public BinaryNamesModel(IWebHostEnvironment environment)
+		{
+			_environment = environment;
+		}
 
 		public List<(string ModName, string BinaryName)> Names { get; set; } = new();
 

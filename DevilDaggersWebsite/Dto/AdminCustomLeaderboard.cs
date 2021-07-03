@@ -50,7 +50,7 @@ namespace DevilDaggersWebsite.Dto
 			return dictionary;
 		}
 
-		public bool ValidateGlobal(ModelStateDictionary modelState, ApplicationDbContext dbContext, IWebHostEnvironment env)
+		public bool ValidateGlobal(ModelStateDictionary modelState, ApplicationDbContext dbContext, IWebHostEnvironment environment)
 		{
 			string? invalidDaggerTime = GetInvalidDaggerTime();
 			if (invalidDaggerTime != null)
@@ -69,7 +69,7 @@ namespace DevilDaggersWebsite.Dto
 				return false;
 			}
 
-			if (!Spawnset.TryParse(File.ReadAllBytes(Path.Combine(env.WebRootPath, "spawnsets", spawnsetFile.Name)), out Spawnset spawnset))
+			if (!Spawnset.TryParse(File.ReadAllBytes(Path.Combine(environment.WebRootPath, "spawnsets", spawnsetFile.Name)), out Spawnset spawnset))
 				throw new($"Could not parse survival file '{spawnsetFile.Name}'. Please review the file. Also review how this file ended up in the 'spawnsets' directory, as it is not possible to upload non-survival files from within the Admin pages.");
 
 			if (Category == CustomLeaderboardCategory.TimeAttack && spawnset.GameMode != GameMode.TimeAttack

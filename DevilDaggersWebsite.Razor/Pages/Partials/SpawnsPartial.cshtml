@@ -1,6 +1,6 @@
 ﻿@model SpawnsPartialModel
 @inject Microsoft.AspNetCore.Http.IHttpContextAccessor httpContextAccessor
-@inject Microsoft.AspNetCore.Hosting.IWebHostEnvironment env
+@inject Microsoft.AspNetCore.Hosting.IWebHostEnvironment environment
 @inject ApplicationDbContext dbContext
 @using DevilDaggersCore.Game
 @using DevilDaggersCore.Spawnsets
@@ -12,7 +12,7 @@
 @using System.IO
 @{
 	var sf = dbContext.SpawnsetFiles.AsNoTracking().Select(sf => new { sf.Name, sf.MaxDisplayWaves }).FirstOrDefault(sf => sf.Name == Model.SpawnsetName);
-	if (sf == null || !Spawnset.TryParse(File.ReadAllBytes(System.IO.Path.Combine(env.WebRootPath, "spawnsets", Model.SpawnsetName)), out Spawnset spawnset))
+	if (sf == null || !Spawnset.TryParse(File.ReadAllBytes(System.IO.Path.Combine(environment.WebRootPath, "spawnsets", Model.SpawnsetName)), out Spawnset spawnset))
 	{
 		return;
 	}
