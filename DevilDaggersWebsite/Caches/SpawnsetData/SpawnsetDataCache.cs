@@ -1,22 +1,12 @@
-﻿using Microsoft.AspNetCore.Hosting;
-using System;
-using System.Collections.Concurrent;
+﻿using System.Collections.Concurrent;
 using System.IO;
 using Core = DevilDaggersCore.Spawnsets;
 
 namespace DevilDaggersWebsite.Caches.SpawnsetData
 {
-	public sealed class SpawnsetDataCache : IDynamicCache
+	public class SpawnsetDataCache : IDynamicCache
 	{
 		private readonly ConcurrentDictionary<string, Core.SpawnsetData> _cache = new();
-
-		private static readonly Lazy<SpawnsetDataCache> _lazy = new(() => new());
-
-		private SpawnsetDataCache()
-		{
-		}
-
-		public static SpawnsetDataCache Instance => _lazy.Value;
 
 		public Core.SpawnsetData GetSpawnsetDataByFilePath(string filePath)
 		{
@@ -34,7 +24,7 @@ namespace DevilDaggersWebsite.Caches.SpawnsetData
 		public void Clear()
 			=> _cache.Clear();
 
-		public string LogState(IWebHostEnvironment env)
+		public string LogState()
 			=> $"`{_cache.Count}` in memory";
 	}
 }

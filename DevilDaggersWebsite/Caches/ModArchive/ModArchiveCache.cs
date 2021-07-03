@@ -1,44 +1,42 @@
 ﻿using DevilDaggersWebsite.Exceptions;
 using Microsoft.AspNetCore.Hosting;
 using Newtonsoft.Json;
-using System;
 using System.Collections.Concurrent;
 using System.IO;
 using System.IO.Compression;
 
 namespace DevilDaggersWebsite.Caches.ModArchive
 {
-	public sealed class ModArchiveCache : IDynamicCache
+	public class ModArchiveCache : IDynamicCache
 	{
 		private readonly object _fileStreamLock = new();
 
 		private readonly ConcurrentDictionary<string, ModArchiveCacheData> _cache = new();
 
-		private static readonly Lazy<ModArchiveCache> _lazy = new(() => new());
+		private readonly IWebHostEnvironment _environment;
 
-		private ModArchiveCache()
+		public ModArchiveCache(IWebHostEnvironment environment)
 		{
+			_environment = environment;
 		}
 
-		public static ModArchiveCache Instance => _lazy.Value;
-
-		public ModArchiveCacheData GetArchiveDataByBytes(IWebHostEnvironment env, string name, byte[] bytes)
+		public ModArchiveCacheData GetArchiveDataByBytes(string name, byte[] bytes)
 		{
 			// Check memory cache.
 			if (_cache.ContainsKey(name))
 				return _cache[name];
 
 			// Check file cache.
-			ModArchiveCacheData? fileCache = LoadFromFileCache(env, name);
+			ModArchiveCacheData? fileCache = LoadFromFileCache(name);
 			if (fileCache != null)
 				return fileCache;
 
 			// Unzip zip file bytes.
 			using MemoryStream ms = new(bytes);
-			return CreateModArchiveCacheDataFromStream(env, name, ms, false); // Do not add this to the cache because it is not yet validated.
+			return CreateModArchiveCacheDataFromStream(name, ms, false); // Do not add this to the cache because it is not yet validated.
 		}
 
-		public ModArchiveCacheData GetArchiveDataByFilePath(IWebHostEnvironment env, string filePath)
+		public ModArchiveCacheData GetArchiveDataByFilePath(string filePath)
 		{
 			// Check memory cache.
 			string name = Path.GetFileNameWithoutExtension(filePath);
@@ -46,7 +44,7 @@ namespace DevilDaggersWebsite.Caches.ModArchive
 				return _cache[name];
 
 			// Check file cache.
-			ModArchiveCacheData? fileCache = LoadFromFileCache(env, name);
+			ModArchiveCacheData? fileCache = LoadFromFileCache(name);
 			if (fileCache != null)
 				return fileCache;
 
@@ -54,13 +52,13 @@ namespace DevilDaggersWebsite.Caches.ModArchive
 			lock (_fileStreamLock)
 			{
 				using FileStream fs = new(filePath, FileMode.Open);
-				return CreateModArchiveCacheDataFromStream(env, name, fs, true);
+				return CreateModArchiveCacheDataFromStream(name, fs, true);
 			}
 		}
 
-		private ModArchiveCacheData? LoadFromFileCache(IWebHostEnvironment env, string name)
+		private ModArchiveCacheData? LoadFromFileCache(string name)
 		{
-			string fileCachePath = Path.Combine(env.WebRootPath, "mod-archive-cache", $"{name}.json");
+			string fileCachePath = Path.Combine(_environment.WebRootPath, "mod-archive-cache", $"{name}.json");
 			if (!File.Exists(fileCachePath))
 				return null;
 
@@ -74,7 +72,7 @@ namespace DevilDaggersWebsite.Caches.ModArchive
 			return fileCacheArchiveData;
 		}
 
-		private ModArchiveCacheData CreateModArchiveCacheDataFromStream(IWebHostEnvironment env, string name, Stream stream, bool addToCache)
+		private ModArchiveCacheData CreateModArchiveCacheDataFromStream(string name, Stream stream, bool addToCache)
 		{
 			using ZipArchive archive = new(stream);
 			ModArchiveCacheData archiveData = new() { FileSize = stream.Length };
@@ -96,17 +94,17 @@ namespace DevilDaggersWebsite.Caches.ModArchive
 			{
 				// Add to memory cache and file cache.
 				_cache.TryAdd(name, archiveData);
-				WriteToFileCache(env, name, archiveData);
+				WriteToFileCache(name, archiveData);
 			}
 
 			return archiveData;
 		}
 
-		private static void WriteToFileCache(IWebHostEnvironment env, string name, ModArchiveCacheData archiveData)
+		private void WriteToFileCache(string name, ModArchiveCacheData archiveData)
 		{
 			try
 			{
-				string fileCacheDirectory = Path.Combine(env.WebRootPath, "mod-archive-cache");
+				string fileCacheDirectory = Path.Combine(_environment.WebRootPath, "mod-archive-cache");
 				if (!Directory.Exists(fileCacheDirectory))
 					Directory.CreateDirectory(fileCacheDirectory);
 
@@ -118,25 +116,25 @@ namespace DevilDaggersWebsite.Caches.ModArchive
 			}
 		}
 
-		public void LoadEntireFileCache(IWebHostEnvironment env)
+		public void LoadEntireFileCache()
 		{
-			string fileCacheDirectory = Path.Combine(env.WebRootPath, "mod-archive-cache");
+			string fileCacheDirectory = Path.Combine(_environment.WebRootPath, "mod-archive-cache");
 			if (!Directory.Exists(fileCacheDirectory))
 				Directory.CreateDirectory(fileCacheDirectory);
 
 			foreach (string path in Directory.GetFiles(fileCacheDirectory, "*.json"))
 			{
 				string name = Path.GetFileNameWithoutExtension(path);
-				LoadFromFileCache(env, name);
+				LoadFromFileCache(name);
 			}
 		}
 
 		public void Clear()
 			=> _cache.Clear();
 
-		public string LogState(IWebHostEnvironment env)
+		public string LogState()
 		{
-			int fileCaches = Directory.GetFiles(Path.Combine(env.WebRootPath, "mod-archive-cache")).Length;
+			int fileCaches = Directory.GetFiles(Path.Combine(_environment.WebRootPath, "mod-archive-cache")).Length;
 
 			return $"`{_cache.Count}` in memory\n`{fileCaches}` in file system";
 		}

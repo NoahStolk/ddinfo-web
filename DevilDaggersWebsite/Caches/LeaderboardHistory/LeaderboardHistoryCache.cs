@@ -1,24 +1,14 @@
 ﻿using DevilDaggersWebsite.Dto;
-using Microsoft.AspNetCore.Hosting;
 using Newtonsoft.Json;
-using System;
 using System.Collections.Concurrent;
 using System.IO;
 using System.Text;
 
 namespace DevilDaggersWebsite.Caches.LeaderboardHistory
 {
-	public sealed class LeaderboardHistoryCache : IDynamicCache
+	public class LeaderboardHistoryCache : IDynamicCache
 	{
 		private readonly ConcurrentDictionary<string, Leaderboard> _cache = new();
-
-		private static readonly Lazy<LeaderboardHistoryCache> _lazy = new(() => new());
-
-		private LeaderboardHistoryCache()
-		{
-		}
-
-		public static LeaderboardHistoryCache Instance => _lazy.Value;
 
 		public Leaderboard GetLeaderboardHistoryByFilePath(string filePath)
 		{
@@ -34,7 +24,7 @@ namespace DevilDaggersWebsite.Caches.LeaderboardHistory
 		public void Clear()
 			=> _cache.Clear();
 
-		public string LogState(IWebHostEnvironment env)
+		public string LogState()
 			=> $"`{_cache.Count}` in memory";
 	}
 }
