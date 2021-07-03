@@ -13,8 +13,8 @@ namespace DevilDaggersWebsite.HostedServices
 
 		private DateTime _measurementStart;
 
-		public ResponseTimeLoggerBackgroundService(IWebHostEnvironment environment, BackgroundServiceMonitor backgroundServiceMonitor, ResponseTimeMonitor responseTimeMonitor)
-			: base(environment, backgroundServiceMonitor)
+		public ResponseTimeLoggerBackgroundService(IWebHostEnvironment environment, BackgroundServiceMonitor backgroundServiceMonitor, DiscordLogger discordLogger, ResponseTimeMonitor responseTimeMonitor)
+			: base(environment, backgroundServiceMonitor, discordLogger)
 		{
 			_responseTimeMonitor = responseTimeMonitor;
 		}

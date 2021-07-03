@@ -4,6 +4,7 @@ using DevilDaggersWebsite.Caches.ModArchive;
 using DevilDaggersWebsite.Caches.SpawnsetData;
 using DevilDaggersWebsite.Caches.SpawnsetHash;
 using DevilDaggersWebsite.HostedServices.DdInfoDiscordBot;
+using DevilDaggersWebsite.Singletons;
 using DSharpPlus.Entities;
 using Microsoft.AspNetCore.Hosting;
 using Microsoft.AspNetCore.Mvc.RazorPages;
@@ -13,31 +14,52 @@ namespace DevilDaggersWebsite.Razor.Pages.Admin.AdminTests
 {
 	public class IndexModel : PageModel
 	{
-		private readonly IWebHostEnvironment _env;
+		private readonly IWebHostEnvironment _environment;
+		private readonly DiscordLogger _discordLogger;
+		private readonly LeaderboardStatisticsCache _leaderboardStatisticsCache;
+		private readonly LeaderboardHistoryCache _leaderboardHistoryCache;
+		private readonly ModArchiveCache _modArchiveCache;
+		private readonly SpawnsetDataCache _spawnsetDataCache;
+		private readonly SpawnsetHashCache _spawnsetHashCache;
 
-		public IndexModel(IWebHostEnvironment env)
-			=> _env = env;
+		public IndexModel(
+			IWebHostEnvironment environment,
+			DiscordLogger discordLogger,
+			LeaderboardStatisticsCache leaderboardStatisticsCache,
+			LeaderboardHistoryCache leaderboardHistoryCache,
+			ModArchiveCache modArchiveCache,
+			SpawnsetDataCache spawnsetDataCache,
+			SpawnsetHashCache spawnsetHashCache)
+		{
+			_environment = environment;
+			_discordLogger = discordLogger;
+			_leaderboardStatisticsCache = leaderboardStatisticsCache;
+			_leaderboardHistoryCache = leaderboardHistoryCache;
+			_modArchiveCache = modArchiveCache;
+			_spawnsetDataCache = spawnsetDataCache;
+			_spawnsetHashCache = spawnsetHashCache;
+		}
 
 		public async Task OnPostTestBotAsync()
-			=> await DiscordLogger.TryLog(Channel.MonitoringTest, _env.EnvironmentName, "Hello, this is a test message sent from an external environment.");
+			=> await _discordLogger.TryLog(Channel.MonitoringTest, _environment.EnvironmentName, "Hello, this is a test message sent from an external environment.");
 
 		public void OnPostTestException()
 			=> throw new("TEST EXCEPTION with 3 inner exceptions", new("Inner exception message", new("Another inner exception message", new("Big Discord embed"))));
 
 		public async Task OnPostInitiateLeaderboardStatisticsCache()
-			=> await LeaderboardStatisticsCache.Instance.Initiate(_env);
-
-		public void OnPostClearSpawnsetHashCache()
-			=> SpawnsetHashCache.Instance.Clear();
+			=> await _leaderboardStatisticsCache.Initiate();
 
 		public void OnPostClearLeaderboardHistoryCache()
-			=> LeaderboardHistoryCache.Instance.Clear();
-
-		public void OnPostClearSpawnsetDataCache()
-			=> SpawnsetDataCache.Instance.Clear();
+			=> _leaderboardHistoryCache.Clear();
 
 		public void OnPostClearModDataCache()
-			=> ModArchiveCache.Instance.Clear();
+			=> _modArchiveCache.Clear();
+
+		public void OnPostClearSpawnsetDataCache()
+			=> _spawnsetDataCache.Clear();
+
+		public void OnPostClearSpawnsetHashCache()
+			=> _spawnsetHashCache.Clear();
 
 		public async Task OnPostTestColors()
 		{
@@ -61,7 +83,7 @@ namespace DevilDaggersWebsite.Razor.Pages.Admin.AdminTests
 					Title = "Test colors",
 					Color = color,
 				};
-				await DiscordLogger.TryLog(Channel.MonitoringTest, _env.EnvironmentName, null, builder.Build());
+				await _discordLogger.TryLog(Channel.MonitoringTest, _environment.EnvironmentName, null, builder.Build());
 			}
 		}
 	}

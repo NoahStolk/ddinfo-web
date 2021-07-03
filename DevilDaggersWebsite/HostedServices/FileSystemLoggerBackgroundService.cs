@@ -14,8 +14,8 @@ namespace DevilDaggersWebsite.HostedServices
 {
 	public class FileSystemLoggerBackgroundService : AbstractBackgroundService
 	{
-		public FileSystemLoggerBackgroundService(IWebHostEnvironment environment, BackgroundServiceMonitor backgroundServiceMonitor)
-			: base(environment, backgroundServiceMonitor)
+		public FileSystemLoggerBackgroundService(IWebHostEnvironment environment, BackgroundServiceMonitor backgroundServiceMonitor, DiscordLogger discordLogger)
+			: base(environment, backgroundServiceMonitor, discordLogger)
 		{
 		}
 

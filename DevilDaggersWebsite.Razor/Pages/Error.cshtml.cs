@@ -1,6 +1,7 @@
 ﻿using DevilDaggersCore.Extensions;
 using DevilDaggersWebsite.Extensions;
 using DevilDaggersWebsite.HostedServices.DdInfoDiscordBot;
+using DevilDaggersWebsite.Singletons;
 using DevilDaggersWebsite.Utils;
 using DSharpPlus.Entities;
 using Microsoft.AspNetCore.Diagnostics;
@@ -13,11 +14,13 @@ namespace DevilDaggersWebsite.Razor.Pages
 {
 	public class ErrorModel : PageModel
 	{
-		private readonly IWebHostEnvironment _env;
+		private readonly IWebHostEnvironment _environment;
+		private readonly DiscordLogger _discordLogger;
 
-		public ErrorModel(IWebHostEnvironment env)
+		public ErrorModel(IWebHostEnvironment environment, DiscordLogger discordLogger)
 		{
-			_env = env;
+			_environment = environment;
+			_discordLogger = discordLogger;
 		}
 
 		public async Task OnGetAsync()
@@ -31,7 +34,7 @@ namespace DevilDaggersWebsite.Razor.Pages
 				};
 
 				IExceptionHandlerPathFeature? exceptionFeature = HttpContext?.Features?.Get<IExceptionHandlerPathFeature>();
-				builder.AddFieldObject("Environment", _env.EnvironmentName, true);
+				builder.AddFieldObject("Environment", _environment.EnvironmentName, true);
 				builder.AddFieldObject("Timestamp", DateTime.UtcNow.ToString(FormatUtils.DateTimeFullFormat), true);
 				builder.AddFieldObject("Request query string", HttpContext?.Request?.QueryString, true);
 
@@ -51,11 +54,11 @@ namespace DevilDaggersWebsite.Razor.Pages
 					builder.AddError(new($"{nameof(IExceptionHandlerPathFeature)} is not available in the current HTTP context."));
 				}
 
-				await DiscordLogger.TryLog(Channel.MonitoringError, _env.EnvironmentName, null, builder.Build());
+				await _discordLogger.TryLog(Channel.MonitoringError, _environment.EnvironmentName, null, builder.Build());
 			}
 			catch (Exception ex)
 			{
-				await DiscordLogger.TryLog(Channel.MonitoringError, _env.EnvironmentName, $"Error report on {nameof(ErrorModel)} failed: {ex.Message}");
+				await _discordLogger.TryLog(Channel.MonitoringError, _environment.EnvironmentName, $"Error report on {nameof(ErrorModel)} failed: {ex.Message}");
 			}
 		}
 	}

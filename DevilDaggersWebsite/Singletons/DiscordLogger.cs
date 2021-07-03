@@ -1,16 +1,26 @@
 ﻿using DevilDaggersWebsite.Extensions;
+using DevilDaggersWebsite.HostedServices.DdInfoDiscordBot;
 using DSharpPlus.Entities;
+using Microsoft.AspNetCore.Hosting;
+using Microsoft.Extensions.Hosting;
 using System;
 using System.Collections;
 using System.Diagnostics;
 using System.Runtime.CompilerServices;
 using System.Threading.Tasks;
 
-namespace DevilDaggersWebsite.HostedServices.DdInfoDiscordBot
+namespace DevilDaggersWebsite.Singletons
 {
-	public static class DiscordLogger
+	public class DiscordLogger
 	{
-		public static async Task TryLogException(string title, string environmentName, Exception ex)
+		private readonly IWebHostEnvironment _environment;
+
+		public DiscordLogger(IWebHostEnvironment environment)
+		{
+			_environment = environment;
+		}
+
+		public async Task TryLogException(string title, string environmentName, Exception ex)
 		{
 			try
 			{
@@ -35,13 +45,16 @@ namespace DevilDaggersWebsite.HostedServices.DdInfoDiscordBot
 			}
 		}
 
-		public static async Task TryLogElapsedMilliseconds(Stopwatch sw, [CallerMemberName] string methodName = "")
+		public async Task TryLogElapsedMilliseconds(Stopwatch sw, [CallerMemberName] string methodName = "")
 		{
 			await TryLog(Channel.MonitoringTest, "Development", $"{methodName} took {sw.ElapsedMilliseconds} ms.");
 		}
 
-		public static async Task TryLog(Channel loggingChannel, string environmentName, string? message, DiscordEmbed? embed = null, bool includeEnvironmentName = true)
+		public async Task TryLog(Channel loggingChannel, string environmentName, string? message, DiscordEmbed? embed = null, bool includeEnvironmentName = true)
 		{
+			if (_environment.IsDevelopment())
+				loggingChannel = Channel.MonitoringTest;
+
 			DiscordChannel? channel = DevilDaggersInfoServerConstants.Channels[loggingChannel].DiscordChannel;
 			if (channel == null)
 				return;

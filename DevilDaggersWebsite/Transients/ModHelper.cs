@@ -16,11 +16,13 @@ namespace DevilDaggersWebsite.Transients
 	{
 		private readonly IWebHostEnvironment _env;
 		private readonly ApplicationDbContext _dbContext;
+		private readonly ModArchiveCache _modArchiveCache;
 
-		public ModHelper(IWebHostEnvironment env, ApplicationDbContext dbContext)
+		public ModHelper(IWebHostEnvironment env, ApplicationDbContext dbContext, ModArchiveCache modArchiveCache)
 		{
 			_env = env;
 			_dbContext = dbContext;
+			_modArchiveCache = modArchiveCache;
 		}
 
 		public List<Mod> GetMods(string? authorFilter = null, string? nameFilter = null, bool? isHostedFilter = null)
@@ -56,7 +58,7 @@ namespace DevilDaggersWebsite.Transients
 					AssetModTypes assetModTypes;
 					if (amwfi.Value.FileExists)
 					{
-						ModArchiveCacheData archiveData = ModArchiveCache.Instance.GetArchiveDataByFilePath(_env, amwfi.Value.Path!);
+						ModArchiveCacheData archiveData = _modArchiveCache.GetArchiveDataByFilePath(amwfi.Value.Path!);
 						containsProhibitedAssets = archiveData.Binaries.Any(md => md.Chunks.Any(mad => mad.IsProhibited));
 						modArchive = new(archiveData.FileSize, archiveData.FileSizeExtracted, archiveData.Binaries.ConvertAll(b => new ModBinary(b.Name, b.Size, b.ModBinaryType)));
 

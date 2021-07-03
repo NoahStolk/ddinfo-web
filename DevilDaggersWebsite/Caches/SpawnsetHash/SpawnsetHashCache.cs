@@ -1,7 +1,7 @@
 ﻿using DevilDaggersCore.Spawnsets;
 using DevilDaggersWebsite.HostedServices.DdInfoDiscordBot;
+using DevilDaggersWebsite.Singletons;
 using Microsoft.AspNetCore.Hosting;
-using System;
 using System.Collections.Concurrent;
 using System.IO;
 using System.Linq;
@@ -10,17 +10,16 @@ using System.Threading.Tasks;
 
 namespace DevilDaggersWebsite.Caches.SpawnsetHash
 {
-	public sealed class SpawnsetHashCache : IDynamicCache
+	public class SpawnsetHashCache : IDynamicCache
 	{
 		private readonly ConcurrentBag<SpawnsetHashCacheData> _cache = new();
 
-		private static readonly Lazy<SpawnsetHashCache> _lazy = new(() => new());
+		private readonly DiscordLogger _discordLogger;
 
-		private SpawnsetHashCache()
+		public SpawnsetHashCache(DiscordLogger discordLogger)
 		{
+			_discordLogger = discordLogger;
 		}
-
-		public static SpawnsetHashCache Instance => _lazy.Value;
 
 		public async Task<SpawnsetHashCacheData?> GetSpawnset(IWebHostEnvironment env, byte[] hash)
 		{
@@ -33,7 +32,7 @@ namespace DevilDaggersWebsite.Caches.SpawnsetHash
 				byte[] spawnsetBytes = File.ReadAllBytes(spawnsetPath);
 				if (!Spawnset.TryParse(spawnsetBytes, out _))
 				{
-					await DiscordLogger.TryLog(Channel.MonitoringError, env.EnvironmentName, $":x: Could not parse file at `{spawnsetPath}` to a spawnset. Skipping file for cache.");
+					await _discordLogger.TryLog(Channel.MonitoringError, env.EnvironmentName, $":x: Could not parse file at `{spawnsetPath}` to a spawnset. Skipping file for cache.");
 					continue;
 				}
 
@@ -68,7 +67,7 @@ namespace DevilDaggersWebsite.Caches.SpawnsetHash
 		public void Clear()
 			=> _cache.Clear();
 
-		public string LogState(IWebHostEnvironment env)
+		public string LogState()
 			=> $"`{_cache.Count}` in memory";
 	}
 }

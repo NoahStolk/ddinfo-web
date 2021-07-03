@@ -17,8 +17,8 @@ namespace DevilDaggersWebsite.HostedServices
 	{
 		private readonly IServiceScopeFactory _serviceScopeFactory;
 
-		public DatabaseLoggerBackgroundService(IWebHostEnvironment environment, BackgroundServiceMonitor backgroundServiceMonitor, IServiceScopeFactory serviceScopeFactory)
-			: base(environment, backgroundServiceMonitor)
+		public DatabaseLoggerBackgroundService(IWebHostEnvironment environment, BackgroundServiceMonitor backgroundServiceMonitor, DiscordLogger discordLogger, IServiceScopeFactory serviceScopeFactory)
+			: base(environment, backgroundServiceMonitor, discordLogger)
 		{
 			_serviceScopeFactory = serviceScopeFactory;
 		}

@@ -1,7 +1,9 @@
 ﻿using DevilDaggersCore.Spawnsets;
 using DevilDaggersWebsite.Api;
+using DevilDaggersWebsite.Caches.SpawnsetHash;
 using DevilDaggersWebsite.Entities;
 using DevilDaggersWebsite.Extensions;
+using DevilDaggersWebsite.Singletons;
 using DevilDaggersWebsite.Tests.Data;
 using DevilDaggersWebsite.Tests.Extensions;
 using DevilDaggersWebsite.Transients;
@@ -50,7 +52,10 @@ namespace DevilDaggersWebsite.Tests
 				VersionNumberRequired = new(1, 0, 0, 0),
 			});
 
-			_customEntriesController = new CustomEntriesController(_dbContext.Object, mockEnvironment.Object, toolHelper.Object);
+			Mock<DiscordLogger> discordLogger = new(mockEnvironment.Object);
+			Mock<SpawnsetHashCache> spawnsetHashCache = new(discordLogger.Object);
+
+			_customEntriesController = new CustomEntriesController(_dbContext.Object, mockEnvironment.Object, toolHelper.Object, discordLogger.Object, spawnsetHashCache.Object);
 
 			if (!Spawnset.TryParse(File.ReadAllBytes(Path.Combine(wwwroot, "spawnsets", "V3")), out _spawnset))
 				Assert.Fail("Spawnset could not be parsed.");

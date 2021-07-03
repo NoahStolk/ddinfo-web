@@ -1,7 +1,7 @@
 ﻿using DevilDaggersCore.Game;
 using DevilDaggersWebsite.HostedServices.DdInfoDiscordBot;
+using DevilDaggersWebsite.Singletons;
 using Microsoft.AspNetCore.Hosting;
-using System;
 using System.Collections.Generic;
 using System.IO;
 using System.Linq;
@@ -9,19 +9,20 @@ using System.Threading.Tasks;
 
 namespace DevilDaggersWebsite.Caches.LeaderboardStatistics
 {
-	public sealed class LeaderboardStatisticsCache : IStaticCache
+	public class LeaderboardStatisticsCache : IStaticCache
 	{
 		private readonly int _timeStep = 100000; // 10 seconds
 
 		private readonly List<CompressedEntry> _entries = new();
 
-		private static readonly Lazy<LeaderboardStatisticsCache> _lazy = new(() => new());
+		private readonly DiscordLogger _discordLogger;
+		private readonly IWebHostEnvironment _environment;
 
-		private LeaderboardStatisticsCache()
+		public LeaderboardStatisticsCache(DiscordLogger discordLogger, IWebHostEnvironment environment)
 		{
+			_discordLogger = discordLogger;
+			_environment = environment;
 		}
-
-		public static LeaderboardStatisticsCache Instance => _lazy.Value;
 
 		public string FileName { get; private set; } = string.Empty;
 		public bool IsFetched { get; private set; }
@@ -32,19 +33,19 @@ namespace DevilDaggersWebsite.Caches.LeaderboardStatistics
 
 		public IReadOnlyList<CompressedEntry> Entries => _entries;
 
-		public async Task Initiate(IWebHostEnvironment env)
+		public async Task Initiate()
 		{
-			string leaderboardStatisticsDirectory = Path.Combine(env.WebRootPath, "leaderboard-statistics");
+			string leaderboardStatisticsDirectory = Path.Combine(_environment.WebRootPath, "leaderboard-statistics");
 			if (!Directory.Exists(leaderboardStatisticsDirectory))
 			{
-				await DiscordLogger.TryLog(Channel.MonitoringError, env.EnvironmentName, ":x: Directory `leaderboard-statistics` does not exist.");
+				await _discordLogger.TryLog(Channel.MonitoringError, _environment.EnvironmentName, ":x: Directory `leaderboard-statistics` does not exist.");
 				return;
 			}
 
 			string[] paths = Directory.GetFiles(leaderboardStatisticsDirectory);
 			if (paths.Length == 0)
 			{
-				await DiscordLogger.TryLog(Channel.MonitoringError, env.EnvironmentName, ":x: No files found in `leaderboard-statistics`.");
+				await _discordLogger.TryLog(Channel.MonitoringError, _environment.EnvironmentName, ":x: No files found in `leaderboard-statistics`.");
 				return;
 			}
 
@@ -75,7 +76,7 @@ namespace DevilDaggersWebsite.Caches.LeaderboardStatistics
 
 				Death? death = GameInfo.GetDeathByType(GameVersion.V31, entry.DeathType);
 				if (death == null)
-					await DiscordLogger.TryLog(Channel.MonitoringError, env.EnvironmentName, $":x: Invalid death type 0x{entry.DeathType:X} for entry with time {entry.Time} in leaderboard-statistics.");
+					await _discordLogger.TryLog(Channel.MonitoringError, _environment.EnvironmentName, $":x: Invalid death type 0x{entry.DeathType:X} for entry with time {entry.Time} in leaderboard-statistics.");
 				else if (DeathStats.ContainsKey(death))
 					DeathStats[death]++;
 
@@ -87,7 +88,7 @@ namespace DevilDaggersWebsite.Caches.LeaderboardStatistics
 			IsFetched = true;
 		}
 
-		public string LogState(IWebHostEnvironment env)
+		public string LogState()
 			=> $"`{_entries.Count}` in memory";
 	}
 }

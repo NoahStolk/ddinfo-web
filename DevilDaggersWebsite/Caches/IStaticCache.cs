@@ -1,10 +1,9 @@
-﻿using Microsoft.AspNetCore.Hosting;
-using System.Threading.Tasks;
+﻿using System.Threading.Tasks;
 
 namespace DevilDaggersWebsite.Caches
 {
 	public interface IStaticCache : ICache
 	{
-		Task Initiate(IWebHostEnvironment env);
+		Task Initiate();
 	}
 }

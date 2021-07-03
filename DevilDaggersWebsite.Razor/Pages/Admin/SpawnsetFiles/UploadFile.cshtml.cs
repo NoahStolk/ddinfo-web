@@ -2,6 +2,7 @@
 using DevilDaggersWebsite.Caches.SpawnsetHash;
 using DevilDaggersWebsite.HostedServices.DdInfoDiscordBot;
 using DevilDaggersWebsite.Razor.PageModels;
+using DevilDaggersWebsite.Singletons;
 using Microsoft.AspNetCore.Hosting;
 using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
@@ -17,11 +18,15 @@ namespace DevilDaggersWebsite.Razor.Pages.Admin.SpawnsetFiles
 		public const int MaxFileSize = 70 * 1024;
 		public const int MaxFileNameLength = 80;
 
-		private readonly IWebHostEnvironment _env;
+		private readonly IWebHostEnvironment _environment;
+		private readonly DiscordLogger _discordLogger;
+		private readonly SpawnsetHashCache _spawnsetHashCache;
 
-		public UploadFileModel(IWebHostEnvironment env)
+		public UploadFileModel(IWebHostEnvironment environment, DiscordLogger discordLogger, SpawnsetHashCache spawnsetHashCache)
 		{
-			_env = env;
+			_environment = environment;
+			_discordLogger = discordLogger;
+			_spawnsetHashCache = spawnsetHashCache;
 		}
 
 		[BindProperty]
@@ -35,26 +40,26 @@ namespace DevilDaggersWebsite.Razor.Pages.Admin.SpawnsetFiles
 			{
 				if (FormFile == null)
 				{
-					await DiscordLogger.TryLog(Channel.MonitoringAuditLog, _env.EnvironmentName, $"{failedAttemptMessage}: No file.");
+					await _discordLogger.TryLog(Channel.MonitoringAuditLog, _environment.EnvironmentName, $"{failedAttemptMessage}: No file.");
 					return;
 				}
 
 				if (FormFile.Length > MaxFileSize)
 				{
-					await DiscordLogger.TryLog(Channel.MonitoringAuditLog, _env.EnvironmentName, $"{failedAttemptMessage}: File too large (`{FormFile.Length:n0}` / max `{MaxFileSize:n0}` bytes).");
+					await _discordLogger.TryLog(Channel.MonitoringAuditLog, _environment.EnvironmentName, $"{failedAttemptMessage}: File too large (`{FormFile.Length:n0}` / max `{MaxFileSize:n0}` bytes).");
 					return;
 				}
 
 				if (FormFile.FileName.Length > MaxFileNameLength)
 				{
-					await DiscordLogger.TryLog(Channel.MonitoringAuditLog, _env.EnvironmentName, $"{failedAttemptMessage}: File name too long (`{FormFile.FileName.Length}` / max `{MaxFileNameLength}` characters).");
+					await _discordLogger.TryLog(Channel.MonitoringAuditLog, _environment.EnvironmentName, $"{failedAttemptMessage}: File name too long (`{FormFile.FileName.Length}` / max `{MaxFileNameLength}` characters).");
 					return;
 				}
 
-				string filePath = Io.Path.Combine(_env.WebRootPath, "spawnsets", FormFile.FileName);
+				string filePath = Io.Path.Combine(_environment.WebRootPath, "spawnsets", FormFile.FileName);
 				if (Io.File.Exists(filePath))
 				{
-					await DiscordLogger.TryLog(Channel.MonitoringAuditLog, _env.EnvironmentName, $"{failedAttemptMessage}: File `{FormFile.FileName}` already exists.");
+					await _discordLogger.TryLog(Channel.MonitoringAuditLog, _environment.EnvironmentName, $"{failedAttemptMessage}: File `{FormFile.FileName}` already exists.");
 					return;
 				}
 
@@ -67,24 +72,24 @@ namespace DevilDaggersWebsite.Razor.Pages.Admin.SpawnsetFiles
 
 				if (!Spawnset.TryParse(formFileBytes, out _))
 				{
-					await DiscordLogger.TryLog(Channel.MonitoringAuditLog, _env.EnvironmentName, $"`{failedAttemptMessage}: File could not be parsed to a proper survival file.`");
+					await _discordLogger.TryLog(Channel.MonitoringAuditLog, _environment.EnvironmentName, $"`{failedAttemptMessage}: File could not be parsed to a proper survival file.`");
 					return;
 				}
 
 				byte[] spawnsetHash = MD5.HashData(formFileBytes);
-				SpawnsetHashCacheData? existingSpawnset = await SpawnsetHashCache.Instance.GetSpawnset(_env, spawnsetHash);
+				SpawnsetHashCacheData? existingSpawnset = await _spawnsetHashCache.GetSpawnset(_environment, spawnsetHash);
 				if (existingSpawnset != null)
 				{
-					await DiscordLogger.TryLog(Channel.MonitoringAuditLog, _env.EnvironmentName, $"`{failedAttemptMessage}: Spawnset is exactly the same as an already existing spawnset named '{existingSpawnset.Name}'.`");
+					await _discordLogger.TryLog(Channel.MonitoringAuditLog, _environment.EnvironmentName, $"`{failedAttemptMessage}: Spawnset is exactly the same as an already existing spawnset named '{existingSpawnset.Name}'.`");
 					return;
 				}
 
 				Io.File.WriteAllBytes(filePath, formFileBytes);
-				await DiscordLogger.TryLog(Channel.MonitoringAuditLog, _env.EnvironmentName, $":white_check_mark: `{GetIdentity()}` uploaded new SPAWNSET file :file_folder: `{FormFile.FileName}` (`{formFileBytes.Length:n0}` bytes).");
+				await _discordLogger.TryLog(Channel.MonitoringAuditLog, _environment.EnvironmentName, $":white_check_mark: `{GetIdentity()}` uploaded new SPAWNSET file :file_folder: `{FormFile.FileName}` (`{formFileBytes.Length:n0}` bytes).");
 			}
 			catch (Exception ex)
 			{
-				await DiscordLogger.TryLog(Channel.MonitoringAuditLog, _env.EnvironmentName, $"{failedAttemptMessage}: Fatal error: `{ex.Message}`");
+				await _discordLogger.TryLog(Channel.MonitoringAuditLog, _environment.EnvironmentName, $"{failedAttemptMessage}: Fatal error: `{ex.Message}`");
 			}
 		}
 	}
