@@ -34,10 +34,17 @@ namespace DevilDaggersWebsite.Caches.LeaderboardStatistics
 
 		public async Task Initiate(IWebHostEnvironment env)
 		{
-			string[] paths = Directory.GetFiles(Path.Combine(env.WebRootPath, "leaderboard-statistics"));
+			string leaderboardStatisticsDirectory = Path.Combine(env.WebRootPath, "leaderboard-statistics");
+			if (!Directory.Exists(leaderboardStatisticsDirectory))
+			{
+				await DiscordLogger.TryLog(Channel.MonitoringError, env.EnvironmentName, ":x: Directory `leaderboard-statistics` does not exist.");
+				return;
+			}
+
+			string[] paths = Directory.GetFiles(leaderboardStatisticsDirectory);
 			if (paths.Length == 0)
 			{
-				await DiscordLogger.TryLog(Channel.MonitoringError, env.EnvironmentName, ":x: No files found in leaderboard-statistics.");
+				await DiscordLogger.TryLog(Channel.MonitoringError, env.EnvironmentName, ":x: No files found in `leaderboard-statistics`.");
 				return;
 			}
 
