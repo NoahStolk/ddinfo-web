@@ -49,13 +49,13 @@ namespace DevilDaggersWebsite.Razor.Pages.Admin.AssetMods
 			{
 				if (FormFile == null)
 				{
-					await _discordLogger.TryLog(Channel.MonitoringAuditLog, _environment.EnvironmentName, $"{failedAttemptMessage}: No file.");
+					await _discordLogger.TryLog(Channel.MonitoringAuditLog, $"{failedAttemptMessage}: No file.");
 					return;
 				}
 
 				if (FormFile.Length > MaxFileSize)
 				{
-					await _discordLogger.TryLog(Channel.MonitoringAuditLog, _environment.EnvironmentName, $"{failedAttemptMessage}: File too large (`{FormFile.Length:n0}` / max `{MaxFileSize:n0}` bytes).");
+					await _discordLogger.TryLog(Channel.MonitoringAuditLog, $"{failedAttemptMessage}: File too large (`{FormFile.Length:n0}` / max `{MaxFileSize:n0}` bytes).");
 					return;
 				}
 
@@ -63,26 +63,26 @@ namespace DevilDaggersWebsite.Razor.Pages.Admin.AssetMods
 				long usedSpace = di.EnumerateFiles("*.*", SearchOption.AllDirectories).Sum(fi => fi.Length);
 				if (FormFile.Length + usedSpace > MaxHostingSpace)
 				{
-					await _discordLogger.TryLog(Channel.MonitoringAuditLog, _environment.EnvironmentName, $"{failedAttemptMessage}: This file is {FormFile.Length:n0} bytes in size, but only {MaxHostingSpace - usedSpace:n0} bytes of free space is available.");
+					await _discordLogger.TryLog(Channel.MonitoringAuditLog, $"{failedAttemptMessage}: This file is {FormFile.Length:n0} bytes in size, but only {MaxHostingSpace - usedSpace:n0} bytes of free space is available.");
 					return;
 				}
 
 				if (FormFile.FileName.Length > MaxFileNameLength)
 				{
-					await _discordLogger.TryLog(Channel.MonitoringAuditLog, _environment.EnvironmentName, $"{failedAttemptMessage}: File name too long (`{FormFile.FileName.Length}` / max `{MaxFileNameLength}` characters).");
+					await _discordLogger.TryLog(Channel.MonitoringAuditLog, $"{failedAttemptMessage}: File name too long (`{FormFile.FileName.Length}` / max `{MaxFileNameLength}` characters).");
 					return;
 				}
 
 				if (!FormFile.FileName.EndsWith(".zip"))
 				{
-					await _discordLogger.TryLog(Channel.MonitoringAuditLog, _environment.EnvironmentName, $"{failedAttemptMessage}: File name must have the `.zip` extension.");
+					await _discordLogger.TryLog(Channel.MonitoringAuditLog, $"{failedAttemptMessage}: File name must have the `.zip` extension.");
 					return;
 				}
 
 				filePath = Path.Combine(modsDirectory, FormFile.FileName);
 				if (Io.File.Exists(filePath))
 				{
-					await _discordLogger.TryLog(Channel.MonitoringAuditLog, _environment.EnvironmentName, $"{failedAttemptMessage}: File `{FormFile.FileName}` already exists.");
+					await _discordLogger.TryLog(Channel.MonitoringAuditLog, $"{failedAttemptMessage}: File `{FormFile.FileName}` already exists.");
 					return;
 				}
 
@@ -119,15 +119,15 @@ namespace DevilDaggersWebsite.Razor.Pages.Admin.AssetMods
 				}
 
 				Io.File.WriteAllBytes(filePath, formFileBytes);
-				await _discordLogger.TryLog(Channel.MonitoringAuditLog, _environment.EnvironmentName, $":white_check_mark: `{GetIdentity()}` uploaded new ASSETMOD file :file_folder: `{FormFile.FileName}` (`{formFileBytes.Length:n0}` bytes)");
+				await _discordLogger.TryLog(Channel.MonitoringAuditLog, $":white_check_mark: `{GetIdentity()}` uploaded new ASSETMOD file :file_folder: `{FormFile.FileName}` (`{formFileBytes.Length:n0}` bytes)");
 			}
 			catch (InvalidModBinaryException ex)
 			{
-				await _discordLogger.TryLog(Channel.MonitoringAuditLog, _environment.EnvironmentName, $"{failedAttemptMessage}: A binary file inside the file `{FormFile?.FileName}` is invalid. {ex.Message}");
+				await _discordLogger.TryLog(Channel.MonitoringAuditLog, $"{failedAttemptMessage}: A binary file inside the file `{FormFile?.FileName}` is invalid. {ex.Message}");
 			}
 			catch (Exception ex)
 			{
-				await _discordLogger.TryLog(Channel.MonitoringAuditLog, _environment.EnvironmentName, $"{failedAttemptMessage}: Fatal error: `{ex.Message}`");
+				await _discordLogger.TryLog(Channel.MonitoringAuditLog, $"{failedAttemptMessage}: Fatal error: `{ex.Message}`");
 			}
 		}
 	}

@@ -185,7 +185,7 @@ namespace DevilDaggersWebsite.Api
 				ex.Data[nameof(uploadRequest.ClientVersion)] = uploadRequest.ClientVersion;
 				ex.Data[nameof(uploadRequest.OperatingSystem)] = uploadRequest.OperatingSystem;
 				ex.Data[nameof(uploadRequest.BuildMode)] = uploadRequest.BuildMode;
-				await _discordLogger.TryLogException($"Upload failed for user `{uploadRequest.PlayerName}` (`{uploadRequest.PlayerId}`) for `{GetSpawnsetHashOrName(uploadRequest.SurvivalHashMd5, null)}`.", _environment.EnvironmentName, ex);
+				await _discordLogger.TryLogException($"Upload failed for user `{uploadRequest.PlayerName}` (`{uploadRequest.PlayerId}`) for `{GetSpawnsetHashOrName(uploadRequest.SurvivalHashMd5, null)}`.", ex);
 				throw;
 			}
 		}
@@ -254,7 +254,7 @@ namespace DevilDaggersWebsite.Api
 			}
 
 			// Check for existing spawnset.
-			SpawnsetHashCacheData? spawnsetHashData = await _spawnsetHashCache.GetSpawnset(_environment, uploadRequest.SurvivalHashMd5);
+			SpawnsetHashCacheData? spawnsetHashData = await _spawnsetHashCache.GetSpawnset(uploadRequest.SurvivalHashMd5);
 			string? spawnsetName = spawnsetHashData?.Name;
 			if (string.IsNullOrEmpty(spawnsetName))
 			{
@@ -495,11 +495,11 @@ namespace DevilDaggersWebsite.Api
 				};
 				builder.AddFieldObject("Score", FormatTimeString(time), true);
 				builder.AddFieldObject("Rank", $"{rank}/{totalPlayers}", true);
-				await _discordLogger.TryLog(Channel.CustomLeaderboards, _environment.EnvironmentName, null, builder.Build());
+				await _discordLogger.TryLog(Channel.CustomLeaderboards, null, builder.Build());
 			}
 			catch (Exception ex)
 			{
-				await _discordLogger.TryLogException("Error while attempting to send leaderboard message.", _environment.EnvironmentName, ex);
+				await _discordLogger.TryLogException("Error while attempting to send leaderboard message.", ex);
 			}
 		}
 
@@ -517,7 +517,7 @@ namespace DevilDaggersWebsite.Api
 			}
 			catch (Exception ex)
 			{
-				await _discordLogger.TryLogException($"Could not decrypt validation: `{validation}`", _environment.EnvironmentName, ex);
+				await _discordLogger.TryLogException($"Could not decrypt validation: `{validation}`", ex);
 
 				return string.Empty;
 			}
@@ -533,9 +533,9 @@ namespace DevilDaggersWebsite.Api
 				string ddclInfo = $"(`{uploadRequest.ClientVersion}` | `{uploadRequest.OperatingSystem}` | `{uploadRequest.BuildMode}`{replayString})";
 
 				if (!string.IsNullOrEmpty(errorMessage))
-					await _discordLogger.TryLog(Channel.MonitoringCustomLeaderboard, _environment.EnvironmentName, $":{errorEmoteNameOverride ?? "warning"}: Upload failed for user `{uploadRequest.PlayerName}` (`{uploadRequest.PlayerId}`) for `{spawnsetIdentification}`. {ddclInfo}\n**{errorMessage}**");
+					await _discordLogger.TryLog(Channel.MonitoringCustomLeaderboard, $":{errorEmoteNameOverride ?? "warning"}: Upload failed for user `{uploadRequest.PlayerName}` (`{uploadRequest.PlayerId}`) for `{spawnsetIdentification}`. {ddclInfo}\n**{errorMessage}**");
 				else
-					await _discordLogger.TryLog(Channel.MonitoringCustomLeaderboard, _environment.EnvironmentName, $":white_check_mark: `{uploadRequest.PlayerName}` just submitted a score of `{uploadRequest.Time / 10000f:0.0000}` to `{spawnsetIdentification}`. {ddclInfo}");
+					await _discordLogger.TryLog(Channel.MonitoringCustomLeaderboard, $":white_check_mark: `{uploadRequest.PlayerName}` just submitted a score of `{uploadRequest.Time / 10000f:0.0000}` to `{spawnsetIdentification}`. {ddclInfo}");
 			}
 			catch
 			{

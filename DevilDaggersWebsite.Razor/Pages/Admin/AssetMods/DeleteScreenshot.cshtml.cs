@@ -38,13 +38,13 @@ namespace DevilDaggersWebsite.Razor.Pages.Admin.AssetMods
 			string path = Path.Combine(_environment.WebRootPath, "mod-screenshots", fileName);
 			if (!System.IO.File.Exists(path))
 			{
-				await _discordLogger.TryLog(Channel.MonitoringAuditLog, _environment.EnvironmentName, $"{failedAttemptMessage}: File `{fileName}` does not exist.");
+				await _discordLogger.TryLog(Channel.MonitoringAuditLog, $"{failedAttemptMessage}: File `{fileName}` does not exist.");
 				return null;
 			}
 
 			System.IO.File.Delete(path);
 
-			await _discordLogger.TryLog(Channel.MonitoringAuditLog, _environment.EnvironmentName, $":white_check_mark: `{GetIdentity()}` deleted ASSETMOD screenshot :frame_photo: `{fileName}`.");
+			await _discordLogger.TryLog(Channel.MonitoringAuditLog, $":white_check_mark: `{GetIdentity()}` deleted ASSETMOD screenshot :frame_photo: `{fileName}`.");
 
 			return RedirectToPage("Index");
 		}

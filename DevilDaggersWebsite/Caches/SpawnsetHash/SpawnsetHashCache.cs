@@ -34,7 +34,7 @@ namespace DevilDaggersWebsite.Caches.SpawnsetHash
 				byte[] spawnsetBytes = File.ReadAllBytes(spawnsetPath);
 				if (!Spawnset.TryParse(spawnsetBytes, out _))
 				{
-					await _discordLogger.TryLog(Channel.MonitoringError, _environment.EnvironmentName, $":x: Could not parse file at `{spawnsetPath}` to a spawnset. Skipping file for cache.");
+					await _discordLogger.TryLog(Channel.MonitoringError, $":x: Could not parse file at `{spawnsetPath}` to a spawnset. Skipping file for cache.");
 					continue;
 				}
 

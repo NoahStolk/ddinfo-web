@@ -1,7 +1,6 @@
 ﻿using DevilDaggersWebsite.HostedServices.DdInfoDiscordBot;
 using DevilDaggersWebsite.Singletons;
 using DSharpPlus.Entities;
-using Microsoft.AspNetCore.Hosting;
 using System;
 using System.Threading;
 using System.Threading.Tasks;
@@ -10,8 +9,8 @@ namespace DevilDaggersWebsite.HostedServices
 {
 	public class BackgroundServiceLoggerBackgroundService : AbstractBackgroundService
 	{
-		public BackgroundServiceLoggerBackgroundService(IWebHostEnvironment environment, BackgroundServiceMonitor backgroundServiceMonitor, DiscordLogger discordLogger)
-			: base(environment, backgroundServiceMonitor, discordLogger)
+		public BackgroundServiceLoggerBackgroundService(BackgroundServiceMonitor backgroundServiceMonitor, DiscordLogger discordLogger)
+			: base(backgroundServiceMonitor, discordLogger)
 		{
 		}
 

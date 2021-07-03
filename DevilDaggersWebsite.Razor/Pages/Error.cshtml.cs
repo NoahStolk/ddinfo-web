@@ -54,11 +54,11 @@ namespace DevilDaggersWebsite.Razor.Pages
 					builder.AddError(new($"{nameof(IExceptionHandlerPathFeature)} is not available in the current HTTP context."));
 				}
 
-				await _discordLogger.TryLog(Channel.MonitoringError, _environment.EnvironmentName, null, builder.Build());
+				await _discordLogger.TryLog(Channel.MonitoringError, null, builder.Build());
 			}
 			catch (Exception ex)
 			{
-				await _discordLogger.TryLog(Channel.MonitoringError, _environment.EnvironmentName, $"Error report on {nameof(ErrorModel)} failed: {ex.Message}");
+				await _discordLogger.TryLog(Channel.MonitoringError, $"Error report on {nameof(ErrorModel)} failed: {ex.Message}");
 			}
 		}
 	}

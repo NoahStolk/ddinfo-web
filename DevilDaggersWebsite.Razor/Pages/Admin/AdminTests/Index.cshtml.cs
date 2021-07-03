@@ -6,7 +6,6 @@ using DevilDaggersWebsite.Caches.SpawnsetHash;
 using DevilDaggersWebsite.HostedServices.DdInfoDiscordBot;
 using DevilDaggersWebsite.Singletons;
 using DSharpPlus.Entities;
-using Microsoft.AspNetCore.Hosting;
 using Microsoft.AspNetCore.Mvc.RazorPages;
 using System.Threading.Tasks;
 
@@ -14,7 +13,6 @@ namespace DevilDaggersWebsite.Razor.Pages.Admin.AdminTests
 {
 	public class IndexModel : PageModel
 	{
-		private readonly IWebHostEnvironment _environment;
 		private readonly DiscordLogger _discordLogger;
 		private readonly LeaderboardStatisticsCache _leaderboardStatisticsCache;
 		private readonly LeaderboardHistoryCache _leaderboardHistoryCache;
@@ -23,7 +21,6 @@ namespace DevilDaggersWebsite.Razor.Pages.Admin.AdminTests
 		private readonly SpawnsetHashCache _spawnsetHashCache;
 
 		public IndexModel(
-			IWebHostEnvironment environment,
 			DiscordLogger discordLogger,
 			LeaderboardStatisticsCache leaderboardStatisticsCache,
 			LeaderboardHistoryCache leaderboardHistoryCache,
@@ -31,7 +28,6 @@ namespace DevilDaggersWebsite.Razor.Pages.Admin.AdminTests
 			SpawnsetDataCache spawnsetDataCache,
 			SpawnsetHashCache spawnsetHashCache)
 		{
-			_environment = environment;
 			_discordLogger = discordLogger;
 			_leaderboardStatisticsCache = leaderboardStatisticsCache;
 			_leaderboardHistoryCache = leaderboardHistoryCache;
@@ -41,7 +37,7 @@ namespace DevilDaggersWebsite.Razor.Pages.Admin.AdminTests
 		}
 
 		public async Task OnPostTestBotAsync()
-			=> await _discordLogger.TryLog(Channel.MonitoringTest, _environment.EnvironmentName, "Hello, this is a test message sent from an external environment.");
+			=> await _discordLogger.TryLog(Channel.MonitoringTest, "Hello, this is a test message sent from an external environment.");
 
 		public void OnPostTestException()
 			=> throw new("TEST EXCEPTION with 3 inner exceptions", new("Inner exception message", new("Another inner exception message", new("Big Discord embed"))));
@@ -83,7 +79,7 @@ namespace DevilDaggersWebsite.Razor.Pages.Admin.AdminTests
 					Title = "Test colors",
 					Color = color,
 				};
-				await _discordLogger.TryLog(Channel.MonitoringTest, _environment.EnvironmentName, null, builder.Build());
+				await _discordLogger.TryLog(Channel.MonitoringTest, null, builder.Build());
 			}
 		}
 	}

@@ -13,9 +13,12 @@ namespace DevilDaggersWebsite.HostedServices
 {
 	public class LeaderboardHistoryBackgroundService : AbstractBackgroundService
 	{
+		private readonly IWebHostEnvironment _environment;
+
 		public LeaderboardHistoryBackgroundService(IWebHostEnvironment environment, BackgroundServiceMonitor backgroundServiceMonitor, DiscordLogger discordLogger)
-			: base(environment, backgroundServiceMonitor, discordLogger)
+			: base(backgroundServiceMonitor, discordLogger)
 		{
+			_environment = environment;
 		}
 
 		protected override TimeSpan Interval => TimeSpan.FromMinutes(1);
@@ -30,18 +33,18 @@ namespace DevilDaggersWebsite.HostedServices
 			if (lb != null)
 			{
 				string fileName = $"{DateTime.UtcNow:yyyyMMddHHmm}.json";
-				File.WriteAllText(Path.Combine(Environment.WebRootPath, "leaderboard-history", fileName), JsonConvert.SerializeObject(lb));
-				await DiscordLogger.TryLog(Channel.MonitoringTask, Environment.EnvironmentName, $":white_check_mark: Task execution for `{nameof(LeaderboardHistoryBackgroundService)}` succeeded. `{fileName}` was created.");
+				File.WriteAllText(Path.Combine(_environment.WebRootPath, "leaderboard-history", fileName), JsonConvert.SerializeObject(lb));
+				await DiscordLogger.TryLog(Channel.MonitoringTask, $":white_check_mark: Task execution for `{nameof(LeaderboardHistoryBackgroundService)}` succeeded. `{fileName}` was created.");
 			}
 			else
 			{
-				await DiscordLogger.TryLog(Channel.MonitoringTask, Environment.EnvironmentName, $":x: Task execution for `{nameof(LeaderboardHistoryBackgroundService)}` failed because the Devil Daggers servers didn't return a leaderboard.");
+				await DiscordLogger.TryLog(Channel.MonitoringTask, $":x: Task execution for `{nameof(LeaderboardHistoryBackgroundService)}` failed because the Devil Daggers servers didn't return a leaderboard.");
 			}
 		}
 
 		private bool HistoryFileExistsForDate(DateTime dateTime)
 		{
-			foreach (string path in Directory.GetFiles(Path.Combine(Environment.WebRootPath, "leaderboard-history"), "*.json"))
+			foreach (string path in Directory.GetFiles(Path.Combine(_environment.WebRootPath, "leaderboard-history"), "*.json"))
 			{
 				string fileName = Path.GetFileNameWithoutExtension(path);
 				if (HistoryUtils.HistoryJsonFileNameToDateTime(fileName).Date == dateTime.Date)

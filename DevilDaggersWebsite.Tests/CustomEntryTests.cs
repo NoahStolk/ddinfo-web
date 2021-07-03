@@ -53,7 +53,7 @@ namespace DevilDaggersWebsite.Tests
 			});
 
 			Mock<DiscordLogger> discordLogger = new(mockEnvironment.Object);
-			Mock<SpawnsetHashCache> spawnsetHashCache = new(discordLogger.Object);
+			Mock<SpawnsetHashCache> spawnsetHashCache = new(discordLogger.Object, mockEnvironment.Object);
 
 			_customEntriesController = new CustomEntriesController(_dbContext.Object, mockEnvironment.Object, toolHelper.Object, discordLogger.Object, spawnsetHashCache.Object);
 

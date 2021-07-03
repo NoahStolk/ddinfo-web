@@ -20,7 +20,7 @@ namespace DevilDaggersWebsite.Singletons
 			_environment = environment;
 		}
 
-		public async Task TryLogException(string title, string environmentName, Exception ex)
+		public async Task TryLogException(string title, Exception ex)
 		{
 			try
 			{
@@ -41,16 +41,16 @@ namespace DevilDaggersWebsite.Singletons
 			}
 			catch (Exception logEx)
 			{
-				await TryLog(Channel.MonitoringError, environmentName, $"{nameof(TryLogException)} failed. {logEx.Message}");
+				await TryLog(Channel.MonitoringError, $"{nameof(TryLogException)} failed. {logEx.Message}");
 			}
 		}
 
 		public async Task TryLogElapsedMilliseconds(Stopwatch sw, [CallerMemberName] string methodName = "")
 		{
-			await TryLog(Channel.MonitoringTest, "Development", $"{methodName} took {sw.ElapsedMilliseconds} ms.");
+			await TryLog(Channel.MonitoringTest, $"{methodName} took {sw.ElapsedMilliseconds} ms.");
 		}
 
-		public async Task TryLog(Channel loggingChannel, string environmentName, string? message, DiscordEmbed? embed = null, bool includeEnvironmentName = true)
+		public async Task TryLog(Channel loggingChannel, string? message, DiscordEmbed? embed = null, bool includeEnvironmentName = true)
 		{
 			if (_environment.IsDevelopment())
 				loggingChannel = Channel.MonitoringTest;
@@ -61,7 +61,7 @@ namespace DevilDaggersWebsite.Singletons
 
 			try
 			{
-				string? composedMessage = embed == null ? includeEnvironmentName ? $"[`{environmentName}`]: {message}" : message : null;
+				string? composedMessage = embed == null ? includeEnvironmentName ? $"[`{_environment.EnvironmentName}`]: {message}" : message : null;
 				await channel.SendMessageAsyncSafe(composedMessage, embed);
 			}
 			catch

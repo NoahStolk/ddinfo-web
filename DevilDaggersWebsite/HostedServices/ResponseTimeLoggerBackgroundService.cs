@@ -1,6 +1,5 @@
 ﻿using DevilDaggersWebsite.HostedServices.DdInfoDiscordBot;
 using DevilDaggersWebsite.Singletons;
-using Microsoft.AspNetCore.Hosting;
 using System;
 using System.Threading;
 using System.Threading.Tasks;
@@ -13,8 +12,8 @@ namespace DevilDaggersWebsite.HostedServices
 
 		private DateTime _measurementStart;
 
-		public ResponseTimeLoggerBackgroundService(IWebHostEnvironment environment, BackgroundServiceMonitor backgroundServiceMonitor, DiscordLogger discordLogger, ResponseTimeMonitor responseTimeMonitor)
-			: base(environment, backgroundServiceMonitor, discordLogger)
+		public ResponseTimeLoggerBackgroundService(BackgroundServiceMonitor backgroundServiceMonitor, DiscordLogger discordLogger, ResponseTimeMonitor responseTimeMonitor)
+			: base(backgroundServiceMonitor, discordLogger)
 		{
 			_responseTimeMonitor = responseTimeMonitor;
 		}
@@ -30,7 +29,7 @@ namespace DevilDaggersWebsite.HostedServices
 			bool includeEnvironmentName = true;
 			foreach (string log in _responseTimeMonitor.CreateLogs(_measurementStart, now))
 			{
-				await DiscordLogger.TryLog(Channel.MonitoringTask, Environment.EnvironmentName, log, null, includeEnvironmentName);
+				await DiscordLogger.TryLog(Channel.MonitoringTask, log, null, includeEnvironmentName);
 				includeEnvironmentName = false;
 			}
 

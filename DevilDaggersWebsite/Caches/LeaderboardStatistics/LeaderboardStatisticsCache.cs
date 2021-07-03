@@ -38,14 +38,14 @@ namespace DevilDaggersWebsite.Caches.LeaderboardStatistics
 			string leaderboardStatisticsDirectory = Path.Combine(_environment.WebRootPath, "leaderboard-statistics");
 			if (!Directory.Exists(leaderboardStatisticsDirectory))
 			{
-				await _discordLogger.TryLog(Channel.MonitoringError, _environment.EnvironmentName, ":x: Directory `leaderboard-statistics` does not exist.");
+				await _discordLogger.TryLog(Channel.MonitoringError, ":x: Directory `leaderboard-statistics` does not exist.");
 				return;
 			}
 
 			string[] paths = Directory.GetFiles(leaderboardStatisticsDirectory);
 			if (paths.Length == 0)
 			{
-				await _discordLogger.TryLog(Channel.MonitoringError, _environment.EnvironmentName, ":x: No files found in `leaderboard-statistics`.");
+				await _discordLogger.TryLog(Channel.MonitoringError, ":x: No files found in `leaderboard-statistics`.");
 				return;
 			}
 
@@ -76,7 +76,7 @@ namespace DevilDaggersWebsite.Caches.LeaderboardStatistics
 
 				Death? death = GameInfo.GetDeathByType(GameVersion.V31, entry.DeathType);
 				if (death == null)
-					await _discordLogger.TryLog(Channel.MonitoringError, _environment.EnvironmentName, $":x: Invalid death type 0x{entry.DeathType:X} for entry with time {entry.Time} in leaderboard-statistics.");
+					await _discordLogger.TryLog(Channel.MonitoringError, $":x: Invalid death type 0x{entry.DeathType:X} for entry with time {entry.Time} in leaderboard-statistics.");
 				else if (DeathStats.ContainsKey(death))
 					DeathStats[death]++;
 

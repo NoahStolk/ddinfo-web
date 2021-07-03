@@ -7,7 +7,6 @@ using DevilDaggersWebsite.Extensions;
 using DevilDaggersWebsite.HostedServices.DdInfoDiscordBot;
 using DevilDaggersWebsite.Singletons;
 using DSharpPlus.Entities;
-using Microsoft.AspNetCore.Hosting;
 using System;
 using System.Threading;
 using System.Threading.Tasks;
@@ -23,7 +22,6 @@ namespace DevilDaggersWebsite.HostedServices
 		private readonly SpawnsetHashCache _spawnsetHashCache;
 
 		public CacheLoggerBackgroundService(
-			IWebHostEnvironment environment,
 			BackgroundServiceMonitor backgroundServiceMonitor,
 			DiscordLogger discordLogger,
 			LeaderboardStatisticsCache leaderboardStatisticsCache,
@@ -31,7 +29,7 @@ namespace DevilDaggersWebsite.HostedServices
 			ModArchiveCache modArchiveCache,
 			SpawnsetDataCache spawnsetDataCache,
 			SpawnsetHashCache spawnsetHashCache)
-			: base(environment, backgroundServiceMonitor, discordLogger)
+			: base(backgroundServiceMonitor, discordLogger)
 		{
 			_leaderboardStatisticsCache = leaderboardStatisticsCache;
 			_leaderboardHistoryCache = leaderboardHistoryCache;
