@@ -1,7 +1,10 @@
 ﻿// #define TEST_EXCEPTION_HANDLER
 using DevilDaggersWebsite.Authorization;
+using DevilDaggersWebsite.Caches.LeaderboardHistory;
 using DevilDaggersWebsite.Caches.LeaderboardStatistics;
 using DevilDaggersWebsite.Caches.ModArchive;
+using DevilDaggersWebsite.Caches.SpawnsetData;
+using DevilDaggersWebsite.Caches.SpawnsetHash;
 using DevilDaggersWebsite.Entities;
 using DevilDaggersWebsite.HostedServices;
 using DevilDaggersWebsite.Middleware;
@@ -57,6 +60,13 @@ namespace DevilDaggersWebsite.Razor
 			services.AddSingleton<IActionContextAccessor, ActionContextAccessor>();
 			services.AddSingleton<BackgroundServiceMonitor>();
 			services.AddSingleton<ResponseTimeMonitor>();
+
+			services.AddSingleton<DiscordLogger>();
+			services.AddSingleton<LeaderboardHistoryCache>();
+			services.AddSingleton<LeaderboardStatisticsCache>();
+			services.AddSingleton<ModArchiveCache>();
+			services.AddSingleton<SpawnsetDataCache>();
+			services.AddSingleton<SpawnsetHashCache>();
 
 			if (!WebHostEnvironment.IsDevelopment())
 			{
