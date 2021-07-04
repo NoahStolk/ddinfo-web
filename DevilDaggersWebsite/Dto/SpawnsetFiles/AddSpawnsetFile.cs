@@ -2,9 +2,9 @@
 using System.Collections.Generic;
 using System.ComponentModel.DataAnnotations;
 
-namespace DevilDaggersWebsite.Dto
+namespace DevilDaggersWebsite.Dto.SpawnsetFiles
 {
-	public class AdminSpawnsetFile : IAdminDto
+	public class AddSpawnsetFile : IAdminDto
 	{
 		public int PlayerId { get; init; }
 
@@ -16,6 +16,7 @@ namespace DevilDaggersWebsite.Dto
 		[StringLength(2048)]
 		public string? HtmlDescription { get; init; }
 
+		// TODO: Remove.
 		public DateTime LastUpdated { get; set; } // Use set to default to UtcNow.
 
 		public bool IsPractice { get; init; }

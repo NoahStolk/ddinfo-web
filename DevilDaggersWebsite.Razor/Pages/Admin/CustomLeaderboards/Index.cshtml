@@ -37,18 +37,18 @@
 		</tr>
 	</thead>
 	<tbody>
-		@foreach (var entity in await Http.GetFromJsonAsync<GetCustomLeaderboard[]>("api/CustomLeaderboards") ?? throw new("API call returned null."))
+		@foreach (var dto in await Http.GetFromJsonAsync<GetCustomLeaderboard[]>("api/CustomLeaderboards") ?? throw new("API call returned null."))
 		{
 			<tr>
 				@foreach (var pi in properties)
 				{
-					<td>@ReflectionUtils.GetDtoPropertyDisplayValue(pi, entity)</td>
+					<td>@ReflectionUtils.GetDtoPropertyDisplayValue(pi, dto)</td>
 				}
 				<td>
-					<a asp-page="CreateOrEdit" asp-route-id="@entity.Id">Edit</a>
+					<a asp-page="CreateOrEdit" asp-route-id="@dto.Id">Edit</a>
 				</td>
 				<td>
-					<a asp-page="Delete" asp-route-id="@entity.Id">Delete</a>
+					<a asp-page="Delete" asp-route-id="@dto.Id">Delete</a>
 				</td>
 			</tr>
 		}

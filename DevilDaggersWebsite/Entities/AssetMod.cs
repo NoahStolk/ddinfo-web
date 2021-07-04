@@ -1,4 +1,4 @@
-﻿using DevilDaggersWebsite.Dto;
+﻿using DevilDaggersWebsite.Dto.AssetMods;
 using DevilDaggersWebsite.Enumerators;
 using System;
 using System.Collections.Generic;
@@ -7,7 +7,7 @@ using System.Linq;
 
 namespace DevilDaggersWebsite.Entities
 {
-	public class AssetMod : IAdminUpdatableEntity<AdminAssetMod>
+	public class AssetMod : IAdminUpdatableEntity<AddAssetMod>
 	{
 		[Key]
 		public int Id { get; init; }
@@ -32,14 +32,14 @@ namespace DevilDaggersWebsite.Entities
 
 		public List<PlayerAssetMod> PlayerAssetMods { get; set; } = new();
 
-		public void Create(ApplicationDbContext dbContext, AdminAssetMod adminDto)
+		public void Create(ApplicationDbContext dbContext, AddAssetMod adminDto)
 		{
 			Edit(dbContext, adminDto);
 
 			dbContext.AssetMods.Add(this);
 		}
 
-		public void Edit(ApplicationDbContext dbContext, AdminAssetMod adminDto)
+		public void Edit(ApplicationDbContext dbContext, AddAssetMod adminDto)
 		{
 			AssetModTypes = adminDto.AssetModTypes == null ? AssetModTypes.None : (AssetModTypes)adminDto.AssetModTypes.Cast<int>().Sum();
 			Name = adminDto.Name;
@@ -50,7 +50,7 @@ namespace DevilDaggersWebsite.Entities
 			HtmlDescription = adminDto.HtmlDescription;
 		}
 
-		public void CreateManyToManyRelations(ApplicationDbContext dbContext, AdminAssetMod adminDto)
+		public void CreateManyToManyRelations(ApplicationDbContext dbContext, AddAssetMod adminDto)
 		{
 			List<int> playerIds = adminDto.PlayerIds ?? new();
 			foreach (PlayerAssetMod newEntity in playerIds.ConvertAll(pi => new PlayerAssetMod { AssetModId = Id, PlayerId = pi }))
@@ -63,7 +63,7 @@ namespace DevilDaggersWebsite.Entities
 				dbContext.PlayerAssetMods.Remove(entityToRemove);
 		}
 
-		public AdminAssetMod Populate()
+		public AddAssetMod Populate()
 		{
 			return new()
 			{

@@ -3,7 +3,7 @@ using System;
 using System.Collections.Generic;
 using System.ComponentModel.DataAnnotations;
 
-namespace DevilDaggersWebsite.Dto
+namespace DevilDaggersWebsite.Dto.CustomLeaderboards
 {
 	public class AddCustomLeaderboard : IAdminDto
 	{

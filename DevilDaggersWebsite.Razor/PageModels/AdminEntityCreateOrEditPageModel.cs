@@ -1,7 +1,6 @@
 ﻿using DevilDaggersWebsite.Dto;
 using DevilDaggersWebsite.Entities;
 using DevilDaggersWebsite.Enumerators;
-using DevilDaggersWebsite.HostedServices.DdInfoDiscordBot;
 using DevilDaggersWebsite.Razor.Utils;
 using DevilDaggersWebsite.Singletons;
 using Microsoft.AspNetCore.Hosting;
@@ -10,16 +9,14 @@ using Microsoft.AspNetCore.Mvc.Rendering;
 using Microsoft.EntityFrameworkCore;
 using System.Collections.Generic;
 using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
 
 namespace DevilDaggersWebsite.Razor.PageModels
 {
 	public class AdminEntityCreateOrEditPageModel<TEntity, TAdminDto> : AbstractAdminEntityPageModel<TEntity>
-		where TEntity : class, IAdminUpdatableEntity<TAdminDto>, new()
+		where TEntity : class, IEntity
 		where TAdminDto : class, IAdminDto
 	{
-		private TEntity? _entity;
+		//private TEntity? _entity;
 
 		public AdminEntityCreateOrEditPageModel(ApplicationDbContext dbContext, IWebHostEnvironment environment, DiscordLogger discordLogger)
 			: base(dbContext, environment, discordLogger)
@@ -54,6 +51,7 @@ namespace DevilDaggersWebsite.Razor.PageModels
 
 		public bool IsEditing => Id.HasValue;
 
+		/*
 		public IActionResult OnGet(int? id)
 		{
 			Id = id;
@@ -76,7 +74,6 @@ namespace DevilDaggersWebsite.Razor.PageModels
 			Id = id;
 
 			AdminAssetMod? assetMod = AdminDto as AdminAssetMod;
-			AddCustomLeaderboard? customLeaderboard = AdminDto as AddCustomLeaderboard;
 			AdminPlayer? player = AdminDto as AdminPlayer;
 			AdminSpawnsetFile? spawnsetFile = AdminDto as AdminSpawnsetFile;
 
@@ -120,12 +117,6 @@ namespace DevilDaggersWebsite.Razor.PageModels
 					return Page();
 				}
 
-				if (customLeaderboard != null && DbContext.CustomLeaderboards.Any(cl => cl.SpawnsetFileId == customLeaderboard.SpawnsetFileId))
-				{
-					ModelState.AddModelError($"AdminDto.{nameof(AddCustomLeaderboard.SpawnsetFileId)}", "A leaderboard for this spawnset already exists.");
-					return Page();
-				}
-
 				if (player != null && DbContext.Players.Any(p => p.Id == player.Id))
 				{
 					ModelState.AddModelError($"AdminDto.{nameof(AdminPlayer.Id)}", $"Player with {nameof(AdminPlayer.Id)} '{player.Id}' already exists.");
@@ -162,5 +153,6 @@ namespace DevilDaggersWebsite.Razor.PageModels
 				return DbSet.Include(t => (t as Player)!.PlayerAssetMods).Include(t => (t as Player)!.PlayerTitles);
 			return DbSet.AsQueryable();
 		}
+		*/
 	}
 }

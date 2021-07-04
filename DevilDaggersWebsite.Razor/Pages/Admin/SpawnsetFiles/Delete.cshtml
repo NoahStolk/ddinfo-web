@@ -1,8 +1,8 @@
 ﻿@page
 @using DevilDaggersWebsite.Entities
 @using DevilDaggersWebsite.Razor.PageModels
-@using Dto = DevilDaggersWebsite.Dto
-@model AdminEntityDeletePageModel<SpawnsetFile, Dto.AdminSpawnsetFile>
+@using DevilDaggersWebsite.Utils
+@model AdminEntityDeletePageModel<SpawnsetFile>
 
 @{
 	ViewData["Title"] = "Delete";
@@ -19,7 +19,7 @@
 </div>
 <div>
 	<dl class="dl-horizontal">
-		@foreach (var pi in Model.EntityDisplayProperties)
+		@foreach (var pi in ReflectionUtils.GetDtoDisplayPropertyInfos<SpawnsetFile>())
 		{
 			<dt>
 				@pi.Name

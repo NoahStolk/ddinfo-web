@@ -1,9 +1,17 @@
 ﻿@page
+@using DevilDaggersWebsite.Dto.Players
 @using DevilDaggersWebsite.Entities
 @using DevilDaggersWebsite.Razor.PageModels
+@using DevilDaggersWebsite.Utils
+@using System.Net.Http
+@using System.Net.Http.Json
+@using System.Reflection
+@inject HttpClient Http
 @model AdminEntityIndexPageModel<Player>
 @{
 	ViewData["Title"] = "Players";
+
+	PropertyInfo[] properties = ReflectionUtils.GetDtoDisplayPropertyInfos<GetPlayer>();
 }
 
 <h1>@ViewData["Title"]</h1>
@@ -17,7 +25,7 @@
 <table class="table admin-table">
 	<thead>
 		<tr>
-			@foreach (var pi in Model.EntityDisplayProperties)
+			@foreach (var pi in properties)
 			{
 				<th><a asp-route-sortOrder="@pi.Name">@pi.Name</a></th>
 			}
@@ -26,18 +34,18 @@
 		</tr>
 	</thead>
 	<tbody>
-		@foreach (var entity in Model.GetOrderedQuery())
+		@foreach (var dto in await Http.GetFromJsonAsync<GetPlayer[]>("api/Players") ?? throw new("API call returned null."))
 		{
 			<tr>
-				@foreach (var pi in Model.EntityDisplayProperties)
+				@foreach (var pi in properties)
 				{
-					<td>@Model.GetPropertyValueString(pi, entity)</td>
+					<td>@ReflectionUtils.GetDtoPropertyDisplayValue(pi, dto)</td>
 				}
 				<td>
-					<a asp-page="CreateOrEdit" asp-route-id="@entity.Id">Edit</a>
+					<a asp-page="CreateOrEdit" asp-route-id="@dto.Id">Edit</a>
 				</td>
 				<td>
-					<a asp-page="Delete" asp-route-id="@entity.Id">Delete</a>
+					<a asp-page="Delete" asp-route-id="@dto.Id">Delete</a>
 				</td>
 			</tr>
 		}

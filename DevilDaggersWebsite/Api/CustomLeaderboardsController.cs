@@ -1,7 +1,6 @@
 ﻿using DevilDaggersCore.Spawnsets;
-﻿using DevilDaggersWebsite.Api.Attributes;
+using DevilDaggersWebsite.Api.Attributes;
 using DevilDaggersWebsite.Authorization;
-using DevilDaggersWebsite.Dto;
 using DevilDaggersWebsite.Dto.CustomLeaderboards;
 using DevilDaggersWebsite.Entities;
 using DevilDaggersWebsite.Enumerators;
@@ -70,6 +69,9 @@ namespace DevilDaggersWebsite.Api
 		[ProducesResponseType(typeof(ValidationProblemDetails), StatusCodes.Status400BadRequest)]
 		public ActionResult AddCustomLeaderboard(AddCustomLeaderboard addCustomLeaderboard)
 		{
+			if (_dbContext.CustomLeaderboards.Any(cl => cl.SpawnsetFileId == addCustomLeaderboard.SpawnsetFileId))
+				return BadRequest("A leaderboard for this spawnset already exists.");
+
 			if (addCustomLeaderboard.Category.IsAscending())
 			{
 				if (addCustomLeaderboard.TimeLeviathan >= addCustomLeaderboard.TimeDevil)

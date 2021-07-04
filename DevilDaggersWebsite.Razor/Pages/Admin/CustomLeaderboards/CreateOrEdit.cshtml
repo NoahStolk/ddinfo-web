@@ -1,8 +1,8 @@
 ﻿@page
+@using DevilDaggersWebsite.Dto.CustomLeaderboards
 @using DevilDaggersWebsite.Entities
 @using DevilDaggersWebsite.Razor.PageModels
-@using Dto = DevilDaggersWebsite.Dto
-@model AdminEntityCreateOrEditPageModel<CustomLeaderboard, Dto.AdminCustomLeaderboard>
+@model AdminEntityCreateOrEditPageModel<CustomLeaderboard, AddCustomLeaderboard>
 
 @{
 	ViewData["Title"] = Model.IsEditing ? "Edit" : "Create";

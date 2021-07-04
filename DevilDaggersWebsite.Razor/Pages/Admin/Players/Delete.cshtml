@@ -1,8 +1,8 @@
 ﻿@page
-@using DevilDaggersWebsite.Dto
 @using DevilDaggersWebsite.Entities
 @using DevilDaggersWebsite.Razor.PageModels
-@model AdminEntityDeletePageModel<Player, AdminPlayer>
+@using DevilDaggersWebsite.Utils
+@model AdminEntityDeletePageModel<Player>
 
 @{
 	ViewData["Title"] = "Delete";
@@ -18,7 +18,7 @@
 </div>
 <div>
 	<dl class="dl-horizontal">
-		@foreach (var pi in Model.EntityDisplayProperties)
+		@foreach (var pi in ReflectionUtils.GetDtoDisplayPropertyInfos<Player>())
 		{
 			<dt>
 				@pi.Name

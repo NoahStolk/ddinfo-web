@@ -1,11 +1,11 @@
-﻿using DevilDaggersWebsite.Dto;
+﻿using DevilDaggersWebsite.Dto.SpawnsetFiles;
 using System;
 using System.ComponentModel.DataAnnotations;
 using System.ComponentModel.DataAnnotations.Schema;
 
 namespace DevilDaggersWebsite.Entities
 {
-	public class SpawnsetFile : IAdminUpdatableEntity<AdminSpawnsetFile>
+	public class SpawnsetFile : IAdminUpdatableEntity<AddSpawnsetFile>
 	{
 		[Key]
 		public int Id { get; init; }
@@ -27,14 +27,14 @@ namespace DevilDaggersWebsite.Entities
 
 		public bool IsPractice { get; set; }
 
-		public void Create(ApplicationDbContext dbContext, AdminSpawnsetFile adminDto)
+		public void Create(ApplicationDbContext dbContext, AddSpawnsetFile adminDto)
 		{
 			Edit(dbContext, adminDto);
 
 			dbContext.SpawnsetFiles.Add(this);
 		}
 
-		public void Edit(ApplicationDbContext dbContext, AdminSpawnsetFile adminDto)
+		public void Edit(ApplicationDbContext dbContext, AddSpawnsetFile adminDto)
 		{
 			PlayerId = adminDto.PlayerId;
 			Name = adminDto.Name;
@@ -44,7 +44,7 @@ namespace DevilDaggersWebsite.Entities
 			IsPractice = adminDto.IsPractice;
 		}
 
-		public AdminSpawnsetFile Populate()
+		public AddSpawnsetFile Populate()
 		{
 			return new()
 			{

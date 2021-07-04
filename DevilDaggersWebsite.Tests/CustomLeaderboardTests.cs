@@ -5,6 +5,7 @@ using DevilDaggersWebsite.Enumerators;
 using DevilDaggersWebsite.Extensions;
 using DevilDaggersWebsite.Tests.Data;
 using DevilDaggersWebsite.Tests.Extensions;
+using Microsoft.AspNetCore.Hosting;
 using Microsoft.VisualStudio.TestTools.UnitTesting;
 using Moq;
 using System.Collections.Generic;
@@ -28,7 +29,7 @@ namespace DevilDaggersWebsite.Tests
 				.SetUpDbSet(db => db.CustomLeaderboards, mockEntities.MockDbSetCustomLeaderboards)
 				.SetUpDbSet(db => db.CustomEntries, mockEntities.MockDbSetCustomEntries);
 
-			_customLeaderboardsController = new CustomLeaderboardsController(_dbContext.Object);
+			_customLeaderboardsController = new CustomLeaderboardsController(_dbContext.Object, new Mock<IWebHostEnvironment>().Object);
 		}
 
 		[TestMethod]

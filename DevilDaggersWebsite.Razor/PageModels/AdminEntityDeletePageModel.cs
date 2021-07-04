@@ -1,18 +1,14 @@
-﻿using DevilDaggersWebsite.Dto;
-using DevilDaggersWebsite.Entities;
-using DevilDaggersWebsite.HostedServices.DdInfoDiscordBot;
+﻿using DevilDaggersWebsite.Entities;
 using DevilDaggersWebsite.Singletons;
 using Microsoft.AspNetCore.Hosting;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.EntityFrameworkCore;
-using System.Text;
 using System.Threading.Tasks;
 
 namespace DevilDaggersWebsite.Razor.PageModels
 {
-	public class AdminEntityDeletePageModel<TEntity, TAdminDto> : AbstractAdminEntityPageModel<TEntity>
-		where TEntity : class, IAdminUpdatableEntity<TAdminDto>, new()
-		where TAdminDto : class, IAdminDto
+	public class AdminEntityDeletePageModel<TEntity> : AbstractAdminEntityPageModel<TEntity>
+		where TEntity : class, IEntity
 	{
 		public AdminEntityDeletePageModel(ApplicationDbContext dbContext, IWebHostEnvironment environment, DiscordLogger discordLogger)
 			: base(dbContext, environment, discordLogger)
@@ -45,9 +41,9 @@ namespace DevilDaggersWebsite.Razor.PageModels
 				DbSet.Remove(Entity);
 				await DbContext.SaveChangesAsync();
 
-				StringBuilder auditLogger = new($"`DELETE` by `{GetIdentity()}` for `{typeof(TEntity).Name}` `{id}`\n");
-				LogDelete(auditLogger, Entity.Populate().Log());
-				await DiscordLogger.TryLog(Channel.MonitoringAuditLog, auditLogger.ToString());
+				//StringBuilder auditLogger = new($"`DELETE` by `{GetIdentity()}` for `{typeof(TEntity).Name}` `{id}`\n");
+				//LogDelete(auditLogger, Entity.Populate().Log());
+				//await DiscordLogger.TryLog(Channel.MonitoringAuditLog, auditLogger.ToString());
 			}
 
 			return RedirectToPage("./Index");

@@ -1,5 +1,5 @@
 ﻿using DevilDaggersWebsite.Clients;
-using DevilDaggersWebsite.Dto;
+using DevilDaggersWebsite.Dto.Players;
 using DevilDaggersWebsite.Utils;
 using System.Collections.Generic;
 using System.ComponentModel.DataAnnotations;
@@ -7,7 +7,7 @@ using System.Linq;
 
 namespace DevilDaggersWebsite.Entities
 {
-	public class Player : IAdminUpdatableEntity<AdminPlayer>
+	public class Player : IAdminUpdatableEntity<AddPlayer>
 	{
 		[Key]
 		public int Id { get; set; }
@@ -64,7 +64,7 @@ namespace DevilDaggersWebsite.Entities
 		public override string ToString()
 			=> $"{PlayerName} ({Id})";
 
-		public void Create(ApplicationDbContext dbContext, AdminPlayer adminDto)
+		public void Create(ApplicationDbContext dbContext, AddPlayer adminDto)
 		{
 			Id = adminDto.Id;
 
@@ -73,7 +73,7 @@ namespace DevilDaggersWebsite.Entities
 			dbContext.Players.Add(this);
 		}
 
-		public void Edit(ApplicationDbContext dbContext, AdminPlayer adminDto)
+		public void Edit(ApplicationDbContext dbContext, AddPlayer adminDto)
 		{
 			PlayerName = string.IsNullOrWhiteSpace(adminDto.PlayerName) ? (LeaderboardClient.Instance.GetUserById(Id).Result?.Username ?? string.Empty) : adminDto.PlayerName;
 			CountryCode = adminDto.CountryCode;
@@ -93,7 +93,7 @@ namespace DevilDaggersWebsite.Entities
 			HidePastUsernames = adminDto.HidePastUsernames;
 		}
 
-		public void CreateManyToManyRelations(ApplicationDbContext dbContext, AdminPlayer adminDto)
+		public void CreateManyToManyRelations(ApplicationDbContext dbContext, AddPlayer adminDto)
 		{
 			List<int> assetModIds = adminDto.AssetModIds ?? new();
 			foreach (PlayerAssetMod newEntity in assetModIds.ConvertAll(ami => new PlayerAssetMod { AssetModId = ami, PlayerId = Id }))
@@ -116,7 +116,7 @@ namespace DevilDaggersWebsite.Entities
 				dbContext.PlayerTitles.Remove(entityToRemove);
 		}
 
-		public AdminPlayer Populate()
+		public AddPlayer Populate()
 		{
 			return new()
 			{

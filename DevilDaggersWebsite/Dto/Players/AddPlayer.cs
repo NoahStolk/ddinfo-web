@@ -2,9 +2,9 @@
 using System.Collections.Generic;
 using System.ComponentModel.DataAnnotations;
 
-namespace DevilDaggersWebsite.Dto
+namespace DevilDaggersWebsite.Dto.Players
 {
-	public class AdminPlayer : IAdminDto
+	public class AddPlayer : IAdminDto
 	{
 		public int Id { get; init; }
 
