@@ -65,6 +65,23 @@ namespace DevilDaggersWebsite.Api
 		[EndpointConsumer(EndpointConsumers.None)]
 		public ActionResult AddTitle(AddPlayer addPlayer)
 		{
+			if (addPlayer.IsBanned)
+			{
+				if (!string.IsNullOrWhiteSpace(addPlayer.CountryCode))
+					return BadRequest("Banned players must not have a country code.");
+
+				if (addPlayer.Dpi.HasValue ||
+					addPlayer.InGameSens.HasValue ||
+					addPlayer.Fov.HasValue ||
+					addPlayer.IsRightHanded.HasValue ||
+					addPlayer.HasFlashHandEnabled.HasValue ||
+					addPlayer.Gamma.HasValue ||
+					addPlayer.UsesLegacyAudio.HasValue)
+				{
+					return BadRequest("Banned players must not have settings.");
+				}
+			}
+
 			if (_dbContext.Players.Any(p => p.Id == addPlayer.Id))
 				return Conflict($"Player with ID {addPlayer.Id} already exists.");
 

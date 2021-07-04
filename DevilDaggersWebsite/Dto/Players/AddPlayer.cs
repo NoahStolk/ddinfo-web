@@ -1,5 +1,4 @@
-﻿using Microsoft.AspNetCore.Mvc.ModelBinding;
-using System.Collections.Generic;
+﻿using System.Collections.Generic;
 using System.ComponentModel.DataAnnotations;
 
 namespace DevilDaggersWebsite.Dto.Players
@@ -46,37 +45,5 @@ namespace DevilDaggersWebsite.Dto.Players
 		public List<int>? AssetModIds { get; init; }
 
 		public List<int>? TitleIds { get; init; }
-
-		public bool ValidateGlobal(ModelStateDictionary modelState)
-		{
-			if (IsBanned)
-			{
-				if (!string.IsNullOrWhiteSpace(CountryCode))
-				{
-					modelState.AddModelError($"AdminDto.{nameof(CountryCode)}", "Banned players should not have a country code.");
-					return false;
-				}
-
-				foreach (KeyValuePair<string, bool> kvp in new Dictionary<string, bool>()
-				{
-					{ nameof(Dpi), Dpi.HasValue },
-					{ nameof(InGameSens), InGameSens.HasValue },
-					{ nameof(Fov), Fov.HasValue },
-					{ nameof(IsRightHanded), IsRightHanded.HasValue },
-					{ nameof(HasFlashHandEnabled), HasFlashHandEnabled.HasValue },
-					{ nameof(Gamma), Gamma.HasValue },
-					{ nameof(UsesLegacyAudio), UsesLegacyAudio.HasValue },
-				})
-				{
-					if (kvp.Value)
-					{
-						modelState.AddModelError($"AdminDto.{kvp.Key}", "Banned players should not have settings.");
-						return false;
-					}
-				}
-			}
-
-			return true;
-		}
 	}
 }
