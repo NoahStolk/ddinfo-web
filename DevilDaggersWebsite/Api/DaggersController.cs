@@ -1,4 +1,5 @@
 ﻿using DevilDaggersCore.Game;
+using DevilDaggersWebsite.Api.Attributes;
 using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
 using System.Collections.Generic;
@@ -12,12 +13,14 @@ namespace DevilDaggersWebsite.Api
 	{
 		[HttpGet]
 		[ProducesResponseType(StatusCodes.Status200OK)]
+		[EndpointConsumer(EndpointConsumers.None)]
 		public ActionResult<List<Dagger>> GetDaggers()
 			=> GameInfo.GetDaggers(GameVersion.V31);
 
 		[HttpGet("at-time")]
 		[ProducesResponseType(StatusCodes.Status200OK)]
 		[ProducesResponseType(StatusCodes.Status400BadRequest)]
+		[EndpointConsumer(EndpointConsumers.None)]
 		public ActionResult<Dagger> GetDaggerAtSeconds([Required] uint seconds)
 			=> GameInfo.GetDaggerFromTime(GameVersion.V31, (int)seconds * 10000);
 	}

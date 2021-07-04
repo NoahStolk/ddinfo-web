@@ -1,4 +1,5 @@
-﻿using DevilDaggersWebsite.Dto;
+﻿using DevilDaggersWebsite.Api.Attributes;
+using DevilDaggersWebsite.Dto;
 using DevilDaggersWebsite.Transients;
 using Microsoft.AspNetCore.Hosting;
 using Microsoft.AspNetCore.Http;
@@ -26,6 +27,7 @@ namespace DevilDaggersWebsite.Api
 
 		[HttpGet]
 		[ProducesResponseType(StatusCodes.Status200OK)]
+		[EndpointConsumer(EndpointConsumers.Ddse)]
 		public List<SpawnsetFile> GetSpawnsets(string? authorFilter = null, string? nameFilter = null)
 			=> _spawnsetHelper.GetSpawnsets(authorFilter, nameFilter);
 
@@ -33,6 +35,7 @@ namespace DevilDaggersWebsite.Api
 		[ProducesResponseType(typeof(FileContentResult), StatusCodes.Status200OK)]
 		[ProducesResponseType(StatusCodes.Status400BadRequest)]
 		[ProducesResponseType(StatusCodes.Status404NotFound)]
+		[EndpointConsumer(EndpointConsumers.Ddse)]
 		public ActionResult GetSpawnsetFile([Required] string fileName)
 		{
 			if (!Io.File.Exists(Path.Combine(_environment.WebRootPath, "spawnsets", fileName)))

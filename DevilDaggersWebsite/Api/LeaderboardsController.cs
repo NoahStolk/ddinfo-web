@@ -1,4 +1,5 @@
-﻿using DevilDaggersWebsite.Clients;
+﻿using DevilDaggersWebsite.Api.Attributes;
+using DevilDaggersWebsite.Clients;
 using DevilDaggersWebsite.Dto;
 using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
@@ -15,6 +16,7 @@ namespace DevilDaggersWebsite.Api
 		[HttpGet]
 		[ProducesResponseType(StatusCodes.Status200OK)]
 		[ProducesResponseType(StatusCodes.Status400BadRequest)]
+		[EndpointConsumer(EndpointConsumers.None)]
 		public async Task<ActionResult<Leaderboard?>> GetLeaderboard(int rankStart = 1)
 		{
 			if (rankStart <= 0)
@@ -25,6 +27,7 @@ namespace DevilDaggersWebsite.Api
 		[HttpGet("user/by-id")]
 		[ProducesResponseType(StatusCodes.Status200OK)]
 		[ProducesResponseType(StatusCodes.Status400BadRequest)]
+		[EndpointConsumer(EndpointConsumers.None)]
 		public async Task<ActionResult<Entry>> GetUserById([Required] int userId)
 		{
 			Entry? entry = await LeaderboardClient.Instance.GetUserById(userId);
@@ -36,6 +39,7 @@ namespace DevilDaggersWebsite.Api
 		[HttpGet("user/by-username")]
 		[ProducesResponseType(StatusCodes.Status200OK)]
 		[ProducesResponseType(StatusCodes.Status400BadRequest)]
+		[EndpointConsumer(EndpointConsumers.None)]
 		public async Task<ActionResult<List<Entry>?>> GetUserByUsername([Required] string username)
 		{
 			if (string.IsNullOrEmpty(username) || username.Length < 3)
@@ -47,6 +51,7 @@ namespace DevilDaggersWebsite.Api
 		[HttpGet("user/by-rank")]
 		[ProducesResponseType(StatusCodes.Status200OK)]
 		[ProducesResponseType(StatusCodes.Status400BadRequest)]
+		[EndpointConsumer(EndpointConsumers.None)]
 		public async Task<ActionResult<Entry>> GetUserByRank([Required] int rank)
 		{
 			List<Entry> entries = (await LeaderboardClient.Instance.GetScores(rank))?.Entries ?? new();
