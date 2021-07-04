@@ -16,7 +16,7 @@ namespace DevilDaggersWebsite.HostedServices
 
 		protected override bool LogExceptions => false;
 
-		protected override TimeSpan Interval => TimeSpan.FromSeconds(5);
+		protected override TimeSpan Interval => TimeSpan.FromSeconds(15);
 
 		protected override async Task ExecuteTaskAsync(CancellationToken stoppingToken)
 		{
