@@ -3,14 +3,8 @@
 @using DevilDaggersWebsite.Entities
 @using DevilDaggersWebsite.Razor.PageModels
 @model AdminEntityCreateOrEditPageModel<SpawnsetFile, AddSpawnset>
-
 @{
 	ViewData["Title"] = Model.IsEditing ? "Edit" : "Create";
-
-	if (!Model.IsEditing)
-	{
-		Model.AdminDto.LastUpdated = DateTime.UtcNow;
-	}
 }
 
 <h1>@ViewData["Title"] SpawnsetFile</h1>
@@ -38,11 +32,6 @@
 				<label asp-for="AdminDto.HtmlDescription" class="control-label"></label>
 				<input asp-for="AdminDto.HtmlDescription" class="form-control" />
 				<span asp-validation-for="AdminDto.HtmlDescription" class="text-danger"></span>
-			</div>
-			<div class="form-group">
-				<label asp-for="AdminDto.LastUpdated" class="control-label"></label>
-				<input asp-for="AdminDto.LastUpdated" class="form-control" />
-				<span asp-validation-for="AdminDto.LastUpdated" class="text-danger"></span>
 			</div>
 			<div class="form-group">
 				<div class="checkbox">

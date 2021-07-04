@@ -3,14 +3,8 @@
 @using DevilDaggersWebsite.Entities
 @using DevilDaggersWebsite.Razor.PageModels
 @model AdminEntityCreateOrEditPageModel<AssetMod, AddMod>
-
 @{
 	ViewData["Title"] = Model.IsEditing ? "Edit" : "Create";
-
-	if (!Model.IsEditing)
-	{
-		Model.AdminDto.LastUpdated = DateTime.UtcNow;
-	}
 }
 
 <h1>@ViewData["Title"] AssetMod</h1>
@@ -30,11 +24,6 @@
 						<input asp-for="AdminDto.IsHidden" /> @Html.DisplayNameFor(model => model.AdminDto.IsHidden)
 					</label>
 				</div>
-			</div>
-			<div class="form-group">
-				<label asp-for="AdminDto.LastUpdated" class="control-label"></label>
-				<input asp-for="AdminDto.LastUpdated" class="form-control" />
-				<span asp-validation-for="AdminDto.LastUpdated" class="text-danger"></span>
 			</div>
 			<div class="form-group">
 				<label asp-for="AdminDto.TrailerUrl" class="control-label"></label>
