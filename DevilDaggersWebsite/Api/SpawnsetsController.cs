@@ -96,5 +96,53 @@ namespace DevilDaggersWebsite.Api
 
 			return Ok();
 		}
+
+		[HttpPut("{id}")]
+		//[Authorize(Policies.SpawnsetsPolicy)]
+		[ProducesResponseType(StatusCodes.Status200OK)]
+		[ProducesResponseType(StatusCodes.Status400BadRequest)]
+		[ProducesResponseType(StatusCodes.Status404NotFound)]
+		[EndpointConsumer(EndpointConsumers.None)]
+		public ActionResult EditSpawnset(int id, EditSpawnset editSpawnset)
+		{
+			if (!_dbContext.Players.Any(p => p.Id == editSpawnset.PlayerId))
+				return BadRequest($"Player with ID {editSpawnset.PlayerId} does not exist.");
+
+			SpawnsetFile? spawnset = _dbContext.SpawnsetFiles.FirstOrDefault(s => s.Id == id);
+			if (spawnset == null)
+				return NotFound();
+
+			// Do not update LastUpdated. Update this value when updating the file only.
+			spawnset.HtmlDescription = editSpawnset.HtmlDescription;
+			spawnset.IsPractice = editSpawnset.IsPractice;
+			spawnset.MaxDisplayWaves = editSpawnset.MaxDisplayWaves;
+			spawnset.Name = editSpawnset.Name;
+			spawnset.PlayerId = editSpawnset.PlayerId;
+			_dbContext.SaveChanges();
+
+			return Ok();
+		}
+
+		[HttpDelete("{id}")]
+		//[Authorize(Policies.SpawnsetsPolicy)]
+		[ProducesResponseType(StatusCodes.Status200OK)]
+		[ProducesResponseType(StatusCodes.Status400BadRequest)]
+		[ProducesResponseType(StatusCodes.Status404NotFound)]
+		[EndpointConsumer(EndpointConsumers.None)]
+		public ActionResult DeleteSpawnset(int id)
+		{
+			SpawnsetFile? spawnset = _dbContext.SpawnsetFiles.FirstOrDefault(s => s.Id == id);
+			if (spawnset == null)
+				return NotFound();
+
+			if (_dbContext.CustomLeaderboards.Any(ce => ce.SpawnsetFileId == id))
+				return BadRequest("Spawnset with custom leaderboard cannot be deleted.");
+
+			_dbContext.SpawnsetFiles.Remove(spawnset);
+			_dbContext.SaveChanges();
+
+			return Ok();
+		}
+
 	}
 }
