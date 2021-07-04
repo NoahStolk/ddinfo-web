@@ -1,13 +1,11 @@
-﻿using DevilDaggersWebsite.Clients;
-using DevilDaggersWebsite.Dto.Players;
-using DevilDaggersWebsite.Utils;
+﻿using DevilDaggersWebsite.Utils;
 using System.Collections.Generic;
 using System.ComponentModel.DataAnnotations;
 using System.Linq;
 
 namespace DevilDaggersWebsite.Entities
 {
-	public class Player : IAdminUpdatableEntity<AddPlayer>
+	public class Player : IEntity
 	{
 		[Key]
 		public int Id { get; set; }
@@ -63,84 +61,6 @@ namespace DevilDaggersWebsite.Entities
 
 		public override string ToString()
 			=> $"{PlayerName} ({Id})";
-
-		public void Create(ApplicationDbContext dbContext, AddPlayer adminDto)
-		{
-			Id = adminDto.Id;
-
-			Edit(dbContext, adminDto);
-
-			dbContext.Players.Add(this);
-		}
-
-		public void Edit(ApplicationDbContext dbContext, AddPlayer adminDto)
-		{
-			PlayerName = string.IsNullOrWhiteSpace(adminDto.PlayerName) ? (LeaderboardClient.Instance.GetUserById(Id).Result?.Username ?? string.Empty) : adminDto.PlayerName;
-			CountryCode = adminDto.CountryCode;
-			Dpi = adminDto.Dpi;
-			InGameSens = adminDto.InGameSens;
-			Fov = adminDto.Fov;
-			IsRightHanded = adminDto.IsRightHanded;
-			HasFlashHandEnabled = adminDto.HasFlashHandEnabled;
-			Gamma = adminDto.Gamma;
-			UsesLegacyAudio = adminDto.UsesLegacyAudio;
-			IsBanned = adminDto.IsBanned;
-			BanDescription = adminDto.BanDescription;
-			BanResponsibleId = adminDto.BanResponsibleId;
-			IsBannedFromDdcl = adminDto.IsBannedFromDdcl;
-			HideSettings = adminDto.HideSettings;
-			HideDonations = adminDto.HideDonations;
-			HidePastUsernames = adminDto.HidePastUsernames;
-		}
-
-		public void CreateManyToManyRelations(ApplicationDbContext dbContext, AddPlayer adminDto)
-		{
-			List<int> assetModIds = adminDto.AssetModIds ?? new();
-			foreach (PlayerAssetMod newEntity in assetModIds.ConvertAll(ami => new PlayerAssetMod { AssetModId = ami, PlayerId = Id }))
-			{
-				if (!dbContext.PlayerAssetMods.Any(pam => pam.AssetModId == newEntity.AssetModId && pam.PlayerId == newEntity.PlayerId))
-					dbContext.PlayerAssetMods.Add(newEntity);
-			}
-
-			foreach (PlayerAssetMod entityToRemove in dbContext.PlayerAssetMods.Where(pam => pam.PlayerId == Id && !assetModIds.Contains(pam.AssetModId)))
-				dbContext.PlayerAssetMods.Remove(entityToRemove);
-
-			List<int> titleIds = adminDto.TitleIds ?? new();
-			foreach (PlayerTitle newEntity in titleIds.ConvertAll(ti => new PlayerTitle { TitleId = ti, PlayerId = Id }))
-			{
-				if (!dbContext.PlayerTitles.Any(pam => pam.TitleId == newEntity.TitleId && pam.PlayerId == newEntity.PlayerId))
-					dbContext.PlayerTitles.Add(newEntity);
-			}
-
-			foreach (PlayerTitle entityToRemove in dbContext.PlayerTitles.Where(pam => pam.PlayerId == Id && !titleIds.Contains(pam.TitleId)))
-				dbContext.PlayerTitles.Remove(entityToRemove);
-		}
-
-		public AddPlayer Populate()
-		{
-			return new()
-			{
-				Id = Id,
-				PlayerName = PlayerName,
-				CountryCode = CountryCode,
-				Dpi = Dpi,
-				InGameSens = InGameSens,
-				Fov = Fov,
-				IsRightHanded = IsRightHanded,
-				HasFlashHandEnabled = HasFlashHandEnabled,
-				Gamma = Gamma,
-				UsesLegacyAudio = UsesLegacyAudio,
-				IsBanned = IsBanned,
-				BanDescription = BanDescription,
-				BanResponsibleId = BanResponsibleId,
-				IsBannedFromDdcl = IsBannedFromDdcl,
-				HideSettings = HideSettings,
-				HideDonations = HideDonations,
-				HidePastUsernames = HidePastUsernames,
-				AssetModIds = PlayerAssetMods.ConvertAll(pam => pam.AssetModId),
-				TitleIds = PlayerTitles.ConvertAll(pt => pt.TitleId),
-			};
-		}
 
 		public bool IsPublicDonator(IEnumerable<Donation> donations)
 			=> !HideDonations && donations.Any(d => d.PlayerId == Id && !d.IsRefunded && d.ConvertedEuroCentsReceived > 0);
