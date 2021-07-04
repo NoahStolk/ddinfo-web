@@ -4,7 +4,7 @@ using System.ComponentModel.DataAnnotations;
 
 namespace DevilDaggersWebsite.Dto.Donations
 {
-	public class AddDonationDto
+	public class AddDonation
 	{
 		public int PlayerId { get; init; }
 

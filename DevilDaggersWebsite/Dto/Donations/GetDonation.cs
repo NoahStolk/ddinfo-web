@@ -1,12 +1,15 @@
 ﻿using DevilDaggersWebsite.Enumerators;
 using System;
-using System.ComponentModel.DataAnnotations;
 
 namespace DevilDaggersWebsite.Dto.Donations
 {
-	public class EditDonationDto
+	public class GetDonation
 	{
+		public int Id { get; init; }
+
 		public int PlayerId { get; init; }
+
+		public string PlayerName { get; init; } = null!;
 
 		public int Amount { get; init; }
 
@@ -16,7 +19,6 @@ namespace DevilDaggersWebsite.Dto.Donations
 
 		public DateTime DateReceived { get; init; }
 
-		[StringLength(64)]
 		public string? Note { get; init; }
 
 		public bool IsRefunded { get; init; }

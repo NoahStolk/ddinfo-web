@@ -24,14 +24,14 @@ namespace DevilDaggersWebsite.Api
 		[HttpGet]
 		[Authorize(Policies.AdminPolicy)]
 		[ProducesResponseType(StatusCodes.Status200OK)]
-		public ActionResult<List<GetTitleDto>> GetTitles()
+		public ActionResult<List<GetTitle>> GetTitles()
 		{
 			List<Title> titles = _dbContext.Titles
 				.AsNoTracking()
 				.Include(t => t.PlayerTitles)
 				.ToList();
 
-			return titles.ConvertAll(t => new GetTitleDto
+			return titles.ConvertAll(t => new GetTitle
 			{
 				Id = t.Id,
 				Name = t.Name,
@@ -43,7 +43,7 @@ namespace DevilDaggersWebsite.Api
 		[Authorize(Policies.AdminPolicy)]
 		[ProducesResponseType(StatusCodes.Status200OK)]
 		[ProducesResponseType(typeof(ValidationProblemDetails), StatusCodes.Status400BadRequest)]
-		public ActionResult AddTitle(AddTitleDto addTitle)
+		public ActionResult AddTitle(AddTitle addTitle)
 		{
 			foreach (int playerId in addTitle.PlayerIds ?? new())
 			{
@@ -69,7 +69,7 @@ namespace DevilDaggersWebsite.Api
 		[ProducesResponseType(StatusCodes.Status200OK)]
 		[ProducesResponseType(typeof(ValidationProblemDetails), StatusCodes.Status400BadRequest)]
 		[ProducesResponseType(StatusCodes.Status404NotFound)]
-		public ActionResult EditTitle(int id, EditTitleDto editTitle)
+		public ActionResult EditTitle(int id, EditTitle editTitle)
 		{
 			foreach (int playerId in editTitle.PlayerIds ?? new())
 			{

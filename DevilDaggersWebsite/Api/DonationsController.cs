@@ -24,14 +24,14 @@ namespace DevilDaggersWebsite.Api
 		[HttpGet]
 		[Authorize(Policies.AdminPolicy)]
 		[ProducesResponseType(StatusCodes.Status200OK)]
-		public ActionResult<List<GetDonationDto>> GetDonations()
+		public ActionResult<List<GetDonation>> GetDonations()
 		{
 			List<Donation> donations = _dbContext.Donations
 				.AsNoTracking()
 				.Include(d => d.Player)
 				.ToList();
 
-			return donations.ConvertAll(d => new GetDonationDto
+			return donations.ConvertAll(d => new GetDonation
 			{
 				Id = d.Id,
 				Amount = d.Amount,
@@ -49,7 +49,7 @@ namespace DevilDaggersWebsite.Api
 		[Authorize(Policies.AdminPolicy)]
 		[ProducesResponseType(StatusCodes.Status200OK)]
 		[ProducesResponseType(typeof(ValidationProblemDetails), StatusCodes.Status400BadRequest)]
-		public ActionResult AddDonation(AddDonationDto addDonation)
+		public ActionResult AddDonation(AddDonation addDonation)
 		{
 			if (!_dbContext.Players.Any(p => p.Id == addDonation.PlayerId))
 				return BadRequest($"Player with ID {addDonation.PlayerId} does not exist.");
@@ -75,7 +75,7 @@ namespace DevilDaggersWebsite.Api
 		[ProducesResponseType(StatusCodes.Status200OK)]
 		[ProducesResponseType(typeof(ValidationProblemDetails), StatusCodes.Status400BadRequest)]
 		[ProducesResponseType(StatusCodes.Status404NotFound)]
-		public ActionResult EditDonation(int id, EditDonationDto editDonation)
+		public ActionResult EditDonation(int id, EditDonation editDonation)
 		{
 			if (!_dbContext.Players.Any(p => p.Id == editDonation.PlayerId))
 				return BadRequest($"Player with ID {editDonation.PlayerId} does not exist.");

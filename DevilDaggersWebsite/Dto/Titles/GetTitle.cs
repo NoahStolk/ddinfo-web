@@ -2,7 +2,7 @@
 
 namespace DevilDaggersWebsite.Dto.Titles
 {
-	public class GetTitleDto
+	public class GetTitle
 	{
 		public int Id { get; init; }
 

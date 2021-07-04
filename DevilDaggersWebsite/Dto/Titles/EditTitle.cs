@@ -3,7 +3,7 @@ using System.ComponentModel.DataAnnotations;
 
 namespace DevilDaggersWebsite.Dto.Titles
 {
-	public class AddTitleDto
+	public class EditTitle
 	{
 		[StringLength(16)]
 		public string Name { get; init; } = null!;
