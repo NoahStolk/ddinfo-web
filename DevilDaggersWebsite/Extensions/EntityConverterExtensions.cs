@@ -1,11 +1,12 @@
 ﻿using DevilDaggersCore.Spawnsets;
+using DevilDaggersWebsite.Dto.CustomLeaderboards;
 using DevilDaggersWebsite.Entities;
 
 namespace DevilDaggersWebsite.Extensions
 {
 	public static class EntityConverterExtensions
 	{
-		public static Dto.CustomLeaderboard ToDto(this CustomLeaderboard customLeaderboard)
+		public static GetCustomLeaderboard ToDto(this CustomLeaderboard customLeaderboard)
 		{
 			return new()
 			{

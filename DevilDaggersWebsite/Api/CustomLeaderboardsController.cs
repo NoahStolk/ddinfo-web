@@ -1,4 +1,5 @@
-﻿using DevilDaggersWebsite.Entities;
+﻿using DevilDaggersWebsite.Dto.CustomLeaderboards;
+using DevilDaggersWebsite.Entities;
 using DevilDaggersWebsite.Extensions;
 using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
@@ -21,7 +22,7 @@ namespace DevilDaggersWebsite.Api
 
 		[HttpGet]
 		[ProducesResponseType(StatusCodes.Status200OK)]
-		public ActionResult<List<Dto.CustomLeaderboard>> GetCustomLeaderboards()
+		public ActionResult<List<GetCustomLeaderboard>> GetCustomLeaderboards()
 		{
 			return _dbContext.CustomLeaderboards
 				.AsNoTracking()
@@ -35,7 +36,7 @@ namespace DevilDaggersWebsite.Api
 		[HttpGet("{id}")]
 		[ProducesResponseType(StatusCodes.Status200OK)]
 		[ProducesResponseType(StatusCodes.Status404NotFound)]
-		public ActionResult<Dto.CustomLeaderboard> GetCustomLeaderboard(int id)
+		public ActionResult<GetCustomLeaderboard> GetCustomLeaderboard(int id)
 		{
 			CustomLeaderboard? customLeaderboard = _dbContext.CustomLeaderboards
 				.AsNoTracking()

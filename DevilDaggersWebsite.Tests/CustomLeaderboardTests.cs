@@ -1,4 +1,5 @@
 ﻿using DevilDaggersWebsite.Api;
+using DevilDaggersWebsite.Dto.CustomLeaderboards;
 using DevilDaggersWebsite.Entities;
 using DevilDaggersWebsite.Enumerators;
 using DevilDaggersWebsite.Extensions;
@@ -41,7 +42,7 @@ namespace DevilDaggersWebsite.Tests
 		[TestMethod]
 		public void GetCustomLeaderboards()
 		{
-			List<Dto.CustomLeaderboard> customLeaderboards = _customLeaderboardsController.GetCustomLeaderboards().Value;
+			List<GetCustomLeaderboard> customLeaderboards = _customLeaderboardsController.GetCustomLeaderboards().Value;
 
 			_dbContext.Verify(db => db.SaveChanges(), Times.Never);
 			Assert.AreEqual(1, customLeaderboards.Count);

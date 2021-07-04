@@ -1,4 +1,5 @@
-﻿using DevilDaggersWebsite.Enumerators;
+﻿using DevilDaggersWebsite.Dto.CustomLeaderboards;
+using DevilDaggersWebsite.Enumerators;
 using System.Collections.Generic;
 
 namespace DevilDaggersWebsite.Dto
@@ -8,7 +9,7 @@ namespace DevilDaggersWebsite.Dto
 		public string Message { get; init; } = string.Empty;
 
 		public int TotalPlayers { get; init; }
-		public CustomLeaderboard Leaderboard { get; init; } = null!;
+		public GetCustomLeaderboard Leaderboard { get; init; } = null!;
 		public CustomLeaderboardCategory Category { get; init; }
 		public List<CustomEntry> Entries { get; init; } = new();
 		public bool IsNewPlayerOnThisLeaderboard { get; init; }
