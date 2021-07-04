@@ -7,6 +7,7 @@ using Microsoft.AspNetCore.Mvc;
 using Microsoft.EntityFrameworkCore;
 using System.Collections.Generic;
 using System.Linq;
+using System.Threading.Tasks;
 
 namespace DevilDaggersWebsite.Api
 {
@@ -62,8 +63,8 @@ namespace DevilDaggersWebsite.Api
 		[ProducesResponseType(StatusCodes.Status200OK)]
 		[ProducesResponseType(StatusCodes.Status400BadRequest)]
 		[ProducesResponseType(StatusCodes.Status409Conflict)]
-		[EndpointConsumer(EndpointConsumers.None)]
-		public ActionResult AddTitle(AddPlayer addPlayer)
+		[EndpointConsumer(EndpointConsumers.Admin)]
+		public async Task<ActionResult> AddPlayer(AddPlayer addPlayer)
 		{
 			if (addPlayer.IsBanned)
 			{
@@ -88,7 +89,7 @@ namespace DevilDaggersWebsite.Api
 			Player player = new()
 			{
 				Id = addPlayer.Id,
-				PlayerName = string.IsNullOrWhiteSpace(addPlayer.PlayerName) ? (LeaderboardClient.Instance.GetUserById(addPlayer.Id).Result?.Username ?? string.Empty) : addPlayer.PlayerName,
+				PlayerName = await GetPlayerName(addPlayer.Id, addPlayer.PlayerName),
 				CountryCode = addPlayer.CountryCode,
 				Dpi = addPlayer.Dpi,
 				InGameSens = addPlayer.InGameSens,
@@ -114,52 +115,156 @@ namespace DevilDaggersWebsite.Api
 			return Ok();
 		}
 
-		/*
 		[HttpPut("{id}")]
-		[Authorize(Policies.PlayersPolicy)]
+		//[Authorize(Policies.PlayersPolicy)]
 		[ProducesResponseType(StatusCodes.Status200OK)]
 		[ProducesResponseType(StatusCodes.Status400BadRequest)]
 		[ProducesResponseType(StatusCodes.Status404NotFound)]
-		[EndpointConsumer(EndpointConsumers.None)]
-		public ActionResult EditTitle(int id, EditTitle editTitle)
+		[EndpointConsumer(EndpointConsumers.Admin)]
+		public async Task<ActionResult> EditPlayer(int id, EditPlayer editPlayer)
 		{
-			foreach (int playerId in editTitle.PlayerIds ?? new())
-			{
-				if (!_dbContext.Players.Any(p => p.Id == playerId))
-					return BadRequest($"Player with ID {playerId} does not exist.");
-			}
-
-			Title? title = _dbContext.Titles.FirstOrDefault(t => t.Id == id);
-			if (title == null)
+			Player? player = _dbContext.Players.FirstOrDefault(p => p.Id == id);
+			if (player == null)
 				return NotFound();
 
-			title.Name = editTitle.Name;
+			player.PlayerName = await GetPlayerName(id, editPlayer.PlayerName);
+			player.CountryCode = editPlayer.CountryCode;
+			player.Dpi = editPlayer.Dpi;
+			player.InGameSens = editPlayer.InGameSens;
+			player.Fov = editPlayer.Fov;
+			player.IsRightHanded = editPlayer.IsRightHanded;
+			player.HasFlashHandEnabled = editPlayer.HasFlashHandEnabled;
+			player.Gamma = editPlayer.Gamma;
+			player.UsesLegacyAudio = editPlayer.UsesLegacyAudio;
+			player.HideSettings = editPlayer.HideSettings;
+			player.HideDonations = editPlayer.HideDonations;
+			player.HidePastUsernames = editPlayer.HidePastUsernames;
 
-			UpdatePlayerTitles(editTitle.PlayerIds ?? new(), title.Id);
+			UpdateManyToManyRelations(editPlayer.TitleIds ?? new(), editPlayer.AssetModIds ?? new(), player.Id);
+			_dbContext.SaveChanges();
+
+			return Ok();
+		}
+
+		[HttpPatch("{id}/ban")]
+		//[Authorize(Policies.PlayersPolicy)]
+		[ProducesResponseType(StatusCodes.Status200OK)]
+		[ProducesResponseType(StatusCodes.Status404NotFound)]
+		[EndpointConsumer(EndpointConsumers.Admin)]
+		public ActionResult BanPlayer(int id, BanPlayer banPlayer)
+		{
+			Player? player = _dbContext.Players.FirstOrDefault(p => p.Id == id);
+			if (player == null)
+				return NotFound();
+
+			player.IsBanned = true;
+			player.BanDescription = banPlayer.BanDescription;
+			player.BanResponsibleId = banPlayer.BanResponsibleId;
+			player.CountryCode = null;
+			player.Dpi = null;
+			player.InGameSens = null;
+			player.Fov = null;
+			player.IsRightHanded = null;
+			player.HasFlashHandEnabled = null;
+			player.Gamma = null;
+			player.UsesLegacyAudio = null;
+			_dbContext.SaveChanges();
+
+			return Ok();
+		}
+
+		[HttpPatch("{id}/ban-ddcl")]
+		//[Authorize(Policies.PlayersPolicy)]
+		[ProducesResponseType(StatusCodes.Status200OK)]
+		[ProducesResponseType(StatusCodes.Status404NotFound)]
+		[EndpointConsumer(EndpointConsumers.Admin)]
+		public ActionResult BanPlayerFromDdcl(int id)
+		{
+			Player? player = _dbContext.Players.FirstOrDefault(p => p.Id == id);
+			if (player == null)
+				return NotFound();
+
+			player.IsBannedFromDdcl = true;
+			_dbContext.SaveChanges();
+
+			return Ok();
+		}
+
+		[HttpPatch("{id}/unban")]
+		//[Authorize(Policies.PlayersPolicy)]
+		[ProducesResponseType(StatusCodes.Status200OK)]
+		[ProducesResponseType(StatusCodes.Status404NotFound)]
+		[EndpointConsumer(EndpointConsumers.Admin)]
+		public ActionResult UnbanPlayer(int id)
+		{
+			Player? player = _dbContext.Players.FirstOrDefault(p => p.Id == id);
+			if (player == null)
+				return NotFound();
+
+			player.IsBanned = false;
+			player.BanDescription = null;
+			player.BanResponsibleId = null;
+			_dbContext.SaveChanges();
+
+			return Ok();
+		}
+
+		[HttpPatch("{id}/unban-ddcl")]
+		//[Authorize(Policies.PlayersPolicy)]
+		[ProducesResponseType(StatusCodes.Status200OK)]
+		[ProducesResponseType(StatusCodes.Status404NotFound)]
+		[EndpointConsumer(EndpointConsumers.Admin)]
+		public ActionResult UnbanPlayerFromDdcl(int id)
+		{
+			Player? player = _dbContext.Players.FirstOrDefault(p => p.Id == id);
+			if (player == null)
+				return NotFound();
+
+			player.IsBannedFromDdcl = false;
 			_dbContext.SaveChanges();
 
 			return Ok();
 		}
 
 		[HttpDelete("{id}")]
-		[Authorize(Policies.PlayersPolicy)]
+		//[Authorize(Policies.PlayersPolicy)]
 		[ProducesResponseType(StatusCodes.Status200OK)]
+		[ProducesResponseType(StatusCodes.Status400BadRequest)]
 		[ProducesResponseType(StatusCodes.Status404NotFound)]
-		[EndpointConsumer(EndpointConsumers.None)]
-		public ActionResult DeleteTitle(int id)
+		[EndpointConsumer(EndpointConsumers.Admin)]
+		public ActionResult DeletePlayer(int id)
 		{
-			Title? title = _dbContext.Titles
-				.Include(t => t.PlayerTitles)
-				.FirstOrDefault(t => t.Id == id);
-			if (title == null)
+			Player? player = _dbContext.Players
+				.Include(p => p.PlayerTitles)
+				.FirstOrDefault(p => p.Id == id);
+			if (player == null)
 				return NotFound();
 
-			_dbContext.Titles.Remove(title);
+			if (_dbContext.CustomEntries.Any(ce => ce.PlayerId == id))
+				return BadRequest("Player with custom leaderboard scores cannot be deleted.");
+
+			if (_dbContext.Donations.Any(d => d.PlayerId == id))
+				return BadRequest("Player with donations cannot be deleted.");
+
+			if (_dbContext.PlayerAssetMods.Any(pam => pam.PlayerId == id))
+				return BadRequest("Player with mods cannot be deleted.");
+
+			if (_dbContext.SpawnsetFiles.Any(sf => sf.PlayerId == id))
+				return BadRequest("Player with spawnsets cannot be deleted.");
+
+			_dbContext.Players.Remove(player);
 			_dbContext.SaveChanges();
 
 			return Ok();
 		}
-		*/
+
+		private async Task<string> GetPlayerName(int id, string? playerName)
+		{
+			if (!string.IsNullOrWhiteSpace(playerName))
+				return playerName;
+
+			return (await LeaderboardClient.Instance.GetUserById(id))?.Username ?? string.Empty;
+		}
 
 		private void UpdateManyToManyRelations(List<int> assetModIds, List<int> titleIds, int playerId)
 		{
