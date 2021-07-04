@@ -259,5 +259,54 @@ namespace DevilDaggersWebsite.Api
 
 			return Ok();
 		}
+
+		[HttpPost("upload-screenshot")]
+		//[Authorize(Policies.AssetModsPolicy)]
+		[ProducesResponseType(StatusCodes.Status200OK)]
+		[ProducesResponseType(StatusCodes.Status400BadRequest)]
+		[EndpointConsumer(EndpointConsumers.Admin)]
+		public async Task<ActionResult> UploadModScreenshot(string modName, IFormFile file)
+		{
+			if (string.IsNullOrEmpty(modName))
+				return BadRequest("No mod selected.");
+
+			if (file == null)
+				return BadRequest("No file.");
+
+			if (file.Length > ModScreenshotConstants.MaxFileSize)
+				return BadRequest($"File too large (`{file.Length:n0}` / max `{ModScreenshotConstants.MaxFileSize:n0}` bytes).");
+
+			if (file.FileName.Length > ModScreenshotConstants.MaxFileNameLength)
+				return BadRequest($"File name too long (`{file.FileName.Length}` / max `{ModScreenshotConstants.MaxFileNameLength}` characters).");
+
+			if (!file.FileName.EndsWith(".png"))
+				return BadRequest("File name must have the `.png` extension.");
+
+			string fileDirectory = Path.Combine(_environment.WebRootPath, "mod-screenshots", modName);
+			string filePath = Path.Combine(fileDirectory, file.FileName);
+			if (Io.File.Exists(filePath))
+				return BadRequest($"File `{file.FileName}` already exists.");
+
+			if (!_dbContext.AssetMods.Any(am => am.Name == modName))
+				return BadRequest($"Mod `{modName}` does not exist.");
+
+			if (Directory.Exists(fileDirectory) && Directory.GetFiles(fileDirectory).Length >= ModScreenshotConstants.MaxScreenshots)
+				return BadRequest($"Mod `{modName}` already has `{ModScreenshotConstants.MaxScreenshots}` screenshots.");
+
+			byte[] formFileBytes = new byte[file.Length];
+			using (MemoryStream ms = new())
+			{
+				file.CopyTo(ms);
+				formFileBytes = ms.ToArray();
+			}
+
+			Directory.CreateDirectory(fileDirectory);
+			Io.File.WriteAllBytes(filePath, formFileBytes);
+
+			//await _discordLogger.TryLog(Channel.MonitoringAuditLog, $":white_check_mark: `{GetIdentity()}` uploaded new ASSETMOD screenshot :frame_photo: `{file.FileName}` for mod `{modName}` (`{formFileBytes.Length:n0}` bytes)");
+			await _discordLogger.TryLog(Channel.MonitoringAuditLog, $":white_check_mark: Uploaded new ASSETMOD screenshot :frame_photo: `{file.FileName}` for mod `{modName}` (`{formFileBytes.Length:n0}` bytes)");
+
+			return Ok();
+		}
 	}
 }
