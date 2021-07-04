@@ -5,6 +5,7 @@ using DevilDaggersWebsite.Caches.LeaderboardStatistics;
 using DevilDaggersWebsite.Caches.ModArchive;
 using DevilDaggersWebsite.Caches.SpawnsetData;
 using DevilDaggersWebsite.Caches.SpawnsetHash;
+using DevilDaggersWebsite.Clients;
 using DevilDaggersWebsite.Entities;
 using DevilDaggersWebsite.HostedServices;
 using DevilDaggersWebsite.Middleware;
@@ -56,6 +57,7 @@ namespace DevilDaggersWebsite.Razor
 				.AddRoles<IdentityRole>()
 				.AddEntityFrameworkStores<ApplicationDbContext>();
 
+			services.AddHttpClient<DevilDaggersInfoClient>(c => c.BaseAddress = new Uri("https://devildaggers.info"));
 			services.AddSingleton<IHttpContextAccessor, HttpContextAccessor>();
 			services.AddSingleton<IActionContextAccessor, ActionContextAccessor>();
 			services.AddSingleton<BackgroundServiceMonitor>();

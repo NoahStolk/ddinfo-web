@@ -1,10 +1,10 @@
 ﻿@page
+@using DevilDaggersWebsite.Clients
 @using DevilDaggersWebsite.Dto.AssetMods
 @using DevilDaggersWebsite.Utils
-@using System.Net.Http
 @using System.Net.Http.Json
 @using System.Reflection
-@inject HttpClient Http
+@inject DevilDaggersInfoClient Http
 @model IndexModel
 @{
 	ViewData["Title"] = "AssetMods";
@@ -59,7 +59,7 @@
 		</tr>
 	</thead>
 	<tbody>
-		@foreach (var dto in await Http.GetFromJsonAsync<GetAssetMod[]>("api/AssetMods") ?? throw new("API call returned null."))
+		@foreach (var dto in await Http.Client.GetFromJsonAsync<GetAssetMod[]>("api/AssetMods") ?? throw new("API call returned null."))
 		{
 			<tr>
 				@foreach (var pi in properties)
