@@ -7,6 +7,7 @@ using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.EntityFrameworkCore;
 using Newtonsoft.Json;
+using System;
 using System.Collections.Generic;
 using System.ComponentModel.DataAnnotations;
 using System.IO;
@@ -77,6 +78,32 @@ namespace DevilDaggersWebsite.Api
 				return new BadRequestObjectResult(new ProblemDetails { Title = $"Mod file '{fileName}' does not exist." });
 
 			return File(Io.File.ReadAllBytes(Path.Combine(_environment.WebRootPath, path)), MediaTypeNames.Application.Zip, fileName);
+		}
+
+		[HttpPost]
+		//[Authorize(Policies.CustomLeaderboardsPolicy)]
+		[ProducesResponseType(StatusCodes.Status200OK)]
+		[ProducesResponseType(StatusCodes.Status400BadRequest)]
+		[EndpointConsumer(EndpointConsumers.Admin)]
+		public ActionResult AddMod(AddMod addMod)
+		{
+			if (addMod.PlayerIds == null || addMod.PlayerIds.Count == 0)
+				return BadRequest("Mod must have at least one author.");
+
+			AssetMod assetMod = new()
+			{
+				LastUpdated = DateTime.UtcNow,
+				AssetModTypes = addMod.AssetModTypes,
+				HtmlDescription = addMod.HtmlDescription,
+				IsHidden = addMod.IsHidden,
+				Name = addMod.Name,
+				TrailerUrl = addMod.TrailerUrl,
+				Url = addMod.Url ?? string.Empty,
+			};
+			_dbContext.AssetMods.Add(assetMod);
+			_dbContext.SaveChanges();
+
+			return Ok();
 		}
 	}
 }
