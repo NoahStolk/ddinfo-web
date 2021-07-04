@@ -6,6 +6,7 @@ using Microsoft.AspNetCore.Hosting;
 using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.EntityFrameworkCore;
+using System;
 using System.Collections.Generic;
 using System.ComponentModel.DataAnnotations;
 using System.IO;
@@ -69,6 +70,31 @@ namespace DevilDaggersWebsite.Api
 				return new NotFoundObjectResult(new ProblemDetails { Title = $"Spawnset '{fileName}' was not found." });
 
 			return File(Io.File.ReadAllBytes(Path.Combine(_environment.WebRootPath, "spawnsets", fileName)), MediaTypeNames.Application.Octet, fileName);
+		}
+
+		[HttpPost]
+		//[Authorize(Policies.SpawnsetsPolicy)]
+		[ProducesResponseType(StatusCodes.Status200OK)]
+		[ProducesResponseType(StatusCodes.Status400BadRequest)]
+		[EndpointConsumer(EndpointConsumers.Admin)]
+		public ActionResult AddSpawnset(AddSpawnset addSpawnset)
+		{
+			if (!_dbContext.Players.Any(p => p.Id == addSpawnset.PlayerId))
+				return BadRequest($"Player with ID {addSpawnset.PlayerId} does not exist.");
+
+			SpawnsetFile spawnset = new()
+			{
+				HtmlDescription = addSpawnset.HtmlDescription,
+				IsPractice = addSpawnset.IsPractice,
+				LastUpdated = DateTime.Now,
+				MaxDisplayWaves = addSpawnset.MaxDisplayWaves,
+				Name = addSpawnset.Name,
+				PlayerId = addSpawnset.PlayerId,
+			};
+			_dbContext.SpawnsetFiles.Add(spawnset);
+			_dbContext.SaveChanges();
+
+			return Ok();
 		}
 	}
 }
