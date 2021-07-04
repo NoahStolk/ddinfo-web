@@ -308,5 +308,24 @@ namespace DevilDaggersWebsite.Api
 
 			return Ok();
 		}
+
+		[HttpDelete("delete-screenshot")]
+		//[Authorize(Policies.AssetModsPolicy)]
+		[ProducesResponseType(StatusCodes.Status200OK)]
+		[ProducesResponseType(StatusCodes.Status400BadRequest)]
+		[EndpointConsumer(EndpointConsumers.Admin)]
+		public async Task<ActionResult> DeleteModScreenshot(string fileName)
+		{
+			string path = Path.Combine(_environment.WebRootPath, "mod-screenshots", fileName);
+			if (!Io.File.Exists(path))
+				return BadRequest($"File `{fileName}` does not exist.");
+
+			Io.File.Delete(path);
+
+			//await _discordLogger.TryLog(Channel.MonitoringAuditLog, $":white_check_mark: `{GetIdentity()}` deleted ASSETMOD screenshot :frame_photo: `{fileName}`.");
+			await _discordLogger.TryLog(Channel.MonitoringAuditLog, $":white_check_mark: Deleted ASSETMOD screenshot :frame_photo: `{fileName}`.");
+
+			return Ok();
+		}
 	}
 }

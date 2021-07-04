@@ -1,7 +1,17 @@
 ﻿@page
-@model DeleteScreenshotModel
+@using Microsoft.AspNetCore.Hosting
+@using System.Collections.Generic
+@using System.IO
+@inject IWebHostEnvironment environment
 @{
 	ViewData["Title"] = "Delete AssetMod Screenshot";
+
+	List<string> modFileNames = new();
+	foreach (string path in Directory.GetFiles(System.IO.Path.Combine(environment.WebRootPath, "mod-screenshots"), "*.png", SearchOption.AllDirectories))
+	{
+		string directoryName = new DirectoryInfo(path).Parent?.Name ?? throw new($"Invalid path `{path}` while scanning mod screenshot file sizes.");
+		modFileNames.Add(System.IO.Path.Combine(directoryName, System.IO.Path.GetFileName(path)));
+	}
 }
 
 <h1>@ViewData["Title"]</h1>
@@ -12,7 +22,7 @@
 </form>
 <p>The following files exist in the file system:</p>
 <ul>
-	@foreach (string fileName in Model.ModFileNames)
+	@foreach (string fileName in modFileNames)
 	{
 		<li>@fileName</li>
 	}
