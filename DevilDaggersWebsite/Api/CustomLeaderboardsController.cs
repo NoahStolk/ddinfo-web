@@ -1,11 +1,9 @@
 ﻿using DevilDaggersCore.Spawnsets;
 using DevilDaggersWebsite.Api.Attributes;
-using DevilDaggersWebsite.Authorization;
 using DevilDaggersWebsite.Dto.CustomLeaderboards;
 using DevilDaggersWebsite.Entities;
 using DevilDaggersWebsite.Enumerators;
 using DevilDaggersWebsite.Extensions;
-using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Hosting;
 using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
@@ -31,8 +29,9 @@ namespace DevilDaggersWebsite.Api
 		}
 
 		[HttpGet]
+		//[Authorize(Policies.CustomLeaderboardsPolicy)]
 		[ProducesResponseType(StatusCodes.Status200OK)]
-		[EndpointConsumer(EndpointConsumers.None)]
+		[EndpointConsumer(EndpointConsumers.Admin)]
 		public ActionResult<List<GetCustomLeaderboard>> GetCustomLeaderboards()
 		{
 			return _dbContext.CustomLeaderboards
@@ -64,9 +63,10 @@ namespace DevilDaggersWebsite.Api
 		}
 
 		[HttpPost]
-		[Authorize(Policies.CustomLeaderboardsPolicy)]
+		//[Authorize(Policies.CustomLeaderboardsPolicy)]
 		[ProducesResponseType(StatusCodes.Status200OK)]
-		[ProducesResponseType(typeof(ValidationProblemDetails), StatusCodes.Status400BadRequest)]
+		[ProducesResponseType(StatusCodes.Status400BadRequest)]
+		[EndpointConsumer(EndpointConsumers.Admin)]
 		public ActionResult AddCustomLeaderboard(AddCustomLeaderboard addCustomLeaderboard)
 		{
 			if (_dbContext.CustomLeaderboards.Any(cl => cl.SpawnsetFileId == addCustomLeaderboard.SpawnsetFileId))

@@ -1,9 +1,7 @@
 ﻿using DevilDaggersWebsite.Api.Attributes;
-using DevilDaggersWebsite.Authorization;
 using DevilDaggersWebsite.Clients;
 using DevilDaggersWebsite.Dto.Players;
 using DevilDaggersWebsite.Entities;
-using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.EntityFrameworkCore;
@@ -24,7 +22,7 @@ namespace DevilDaggersWebsite.Api
 		}
 
 		[HttpGet]
-		[Authorize(Policies.PlayersPolicy)]
+		//[Authorize(Policies.PlayersPolicy)]
 		[ProducesResponseType(StatusCodes.Status200OK)]
 		[EndpointConsumer(EndpointConsumers.Admin)]
 		public ActionResult<List<GetPlayer>> GetPlayers()
@@ -60,7 +58,7 @@ namespace DevilDaggersWebsite.Api
 		}
 
 		[HttpPost]
-		[Authorize(Policies.PlayersPolicy)]
+		//[Authorize(Policies.PlayersPolicy)]
 		[ProducesResponseType(StatusCodes.Status200OK)]
 		[ProducesResponseType(StatusCodes.Status400BadRequest)]
 		[ProducesResponseType(StatusCodes.Status409Conflict)]

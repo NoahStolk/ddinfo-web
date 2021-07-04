@@ -1,9 +1,7 @@
 ﻿using DevilDaggersWebsite.Api.Attributes;
-using DevilDaggersWebsite.Authorization;
 using DevilDaggersWebsite.Dto.Spawnsets;
 using DevilDaggersWebsite.Entities;
 using DevilDaggersWebsite.Transients;
-using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Hosting;
 using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
@@ -41,7 +39,7 @@ namespace DevilDaggersWebsite.Api
 
 		// TODO: Remove private.
 		[HttpGet("private")]
-		[Authorize(Policies.SpawnsetsPolicy)]
+		//[Authorize(Policies.SpawnsetsPolicy)]
 		[ProducesResponseType(StatusCodes.Status200OK)]
 		[EndpointConsumer(EndpointConsumers.Admin)]
 		public List<GetSpawnset> GetSpawnsets()

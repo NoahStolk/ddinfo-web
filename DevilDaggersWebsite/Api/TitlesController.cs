@@ -1,8 +1,6 @@
 ﻿using DevilDaggersWebsite.Api.Attributes;
-using DevilDaggersWebsite.Authorization;
 using DevilDaggersWebsite.Dto.Titles;
 using DevilDaggersWebsite.Entities;
-using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.EntityFrameworkCore;
@@ -23,7 +21,7 @@ namespace DevilDaggersWebsite.Api
 		}
 
 		[HttpGet]
-		[Authorize(Policies.AdminPolicy)]
+		//[Authorize(Policies.AdminPolicy)]
 		[ProducesResponseType(StatusCodes.Status200OK)]
 		[EndpointConsumer(EndpointConsumers.None)]
 		public ActionResult<List<GetTitle>> GetTitles()
@@ -42,7 +40,7 @@ namespace DevilDaggersWebsite.Api
 		}
 
 		[HttpPost]
-		[Authorize(Policies.AdminPolicy)]
+		//[Authorize(Policies.AdminPolicy)]
 		[ProducesResponseType(StatusCodes.Status200OK)]
 		[ProducesResponseType(StatusCodes.Status400BadRequest)]
 		[EndpointConsumer(EndpointConsumers.None)]
@@ -68,7 +66,7 @@ namespace DevilDaggersWebsite.Api
 		}
 
 		[HttpPut("{id}")]
-		[Authorize(Policies.AdminPolicy)]
+		//[Authorize(Policies.AdminPolicy)]
 		[ProducesResponseType(StatusCodes.Status200OK)]
 		[ProducesResponseType(StatusCodes.Status400BadRequest)]
 		[ProducesResponseType(StatusCodes.Status404NotFound)]
@@ -94,7 +92,7 @@ namespace DevilDaggersWebsite.Api
 		}
 
 		[HttpDelete("{id}")]
-		[Authorize(Policies.AdminPolicy)]
+		//[Authorize(Policies.AdminPolicy)]
 		[ProducesResponseType(StatusCodes.Status200OK)]
 		[ProducesResponseType(StatusCodes.Status404NotFound)]
 		[EndpointConsumer(EndpointConsumers.None)]
