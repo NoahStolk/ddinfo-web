@@ -1,7 +1,13 @@
 ﻿@page
-@model DeleteFileModel
+@using Microsoft.AspNetCore.Hosting
+@using System.Collections.Generic
+@using System.IO
+@using System.Linq
+@inject IWebHostEnvironment environment
 @{
 	ViewData["Title"] = "Delete AssetMod File";
+
+	IEnumerable<string> modFileNames = Directory.GetFiles(System.IO.Path.Combine(environment.WebRootPath, "mods")).Select(p => System.IO.Path.GetFileName(p));
 }
 
 <h1>@ViewData["Title"]</h1>
@@ -12,7 +18,7 @@
 </form>
 <p>The following files exist in the file system:</p>
 <ul>
-	@foreach (string fileName in Model.ModFileNames)
+	@foreach (string fileName in modFileNames)
 	{
 		<li>@fileName</li>
 	}
