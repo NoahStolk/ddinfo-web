@@ -111,6 +111,9 @@ namespace DevilDaggersWebsite.Api
 				return BadRequest($"Spawnset game mode is {spawnset.GameMode} while custom leaderboard category is {addCustomLeaderboard.Category}.");
 			}
 
+			if (spawnset.TimerStart != 0)
+				return BadRequest("Cannot create a leaderboard for spawnset that uses the TimerStart value. This value is meant for practice and it is confusing to use it with custom leaderboards, as custom leaderboards always use the 'actual' timer value.");
+
 			CustomLeaderboard customLeaderboard = new()
 			{
 				DateCreated = DateTime.UtcNow,
