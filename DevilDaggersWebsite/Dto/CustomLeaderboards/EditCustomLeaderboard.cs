@@ -4,10 +4,8 @@ using System.ComponentModel.DataAnnotations;
 
 namespace DevilDaggersWebsite.Dto.CustomLeaderboards
 {
-	public class AddCustomLeaderboard
+	public class EditCustomLeaderboard
 	{
-		public int SpawnsetFileId { get; init; }
-
 		public CustomLeaderboardCategory Category { get; init; }
 
 		[Range(10000, 15000000)]
