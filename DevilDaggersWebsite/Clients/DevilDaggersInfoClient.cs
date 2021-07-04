@@ -16,8 +16,9 @@ namespace DevilDaggersWebsite.Clients
 
 		public async Task<TResult> GetAsync<TResult>(string url, CancellationToken cancellationToken = default)
 		{
-			HttpResponseMessage taskResponse = await Client.GetAsync(url, HttpCompletionOption.ResponseHeadersRead, cancellationToken);
-			return JsonConvert.DeserializeObject<TResult>(await taskResponse.Content.ReadAsStringAsync(cancellationToken)) ?? throw new($"Could not deserialize response from '{url}' as '{typeof(TResult).Name}'.");
+			HttpResponseMessage responseMessage = await Client.GetAsync(url, HttpCompletionOption.ResponseHeadersRead, cancellationToken);
+			string jsonResponse = await responseMessage.Content.ReadAsStringAsync(cancellationToken);
+			return JsonConvert.DeserializeObject<TResult>(jsonResponse) ?? throw new($"Could not deserialize response from '{url}' as '{typeof(TResult).Name}'.");
 		}
 	}
 }

@@ -61,7 +61,7 @@ namespace DevilDaggersWebsite.Api
 			_dbContext.Titles.Add(title);
 			_dbContext.SaveChanges(); // Save changes here so PlayerTitle entities can be assigned properly.
 
-			UpdatePlayerTitles(addTitle.PlayerIds ?? new(), title.Id);
+			UpdateManyToManyRelations(addTitle.PlayerIds ?? new(), title.Id);
 			_dbContext.SaveChanges();
 
 			return Ok();
@@ -87,7 +87,7 @@ namespace DevilDaggersWebsite.Api
 
 			title.Name = editTitle.Name;
 
-			UpdatePlayerTitles(editTitle.PlayerIds ?? new(), title.Id);
+			UpdateManyToManyRelations(editTitle.PlayerIds ?? new(), title.Id);
 			_dbContext.SaveChanges();
 
 			return Ok();
@@ -112,7 +112,7 @@ namespace DevilDaggersWebsite.Api
 			return Ok();
 		}
 
-		private void UpdatePlayerTitles(List<int> playerIds, int titleId)
+		private void UpdateManyToManyRelations(List<int> playerIds, int titleId)
 		{
 			foreach (PlayerTitle newEntity in playerIds.ConvertAll(pi => new PlayerTitle { TitleId = titleId, PlayerId = pi }))
 			{
