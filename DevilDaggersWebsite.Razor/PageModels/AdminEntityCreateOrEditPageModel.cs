@@ -1,5 +1,4 @@
-﻿using DevilDaggersWebsite.Dto;
-using DevilDaggersWebsite.Entities;
+﻿using DevilDaggersWebsite.Entities;
 using DevilDaggersWebsite.Enumerators;
 using DevilDaggersWebsite.Razor.Utils;
 using DevilDaggersWebsite.Singletons;
@@ -14,7 +13,7 @@ namespace DevilDaggersWebsite.Razor.PageModels
 {
 	public class AdminEntityCreateOrEditPageModel<TEntity, TAdminDto> : AbstractAdminEntityPageModel<TEntity>
 		where TEntity : class, IEntity
-		where TAdminDto : class, IAdminDto
+		where TAdminDto : class
 	{
 		//private TEntity? _entity;
 
