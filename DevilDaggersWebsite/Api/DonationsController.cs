@@ -1,4 +1,5 @@
-﻿using DevilDaggersWebsite.Authorization;
+﻿using DevilDaggersWebsite.Api.Attributes;
+using DevilDaggersWebsite.Authorization;
 using DevilDaggersWebsite.Dto.Donations;
 using DevilDaggersWebsite.Entities;
 using Microsoft.AspNetCore.Authorization;
@@ -24,6 +25,7 @@ namespace DevilDaggersWebsite.Api
 		[HttpGet]
 		[Authorize(Policies.AdminPolicy)]
 		[ProducesResponseType(StatusCodes.Status200OK)]
+		[EndpointConsumer(EndpointConsumers.None)]
 		public ActionResult<List<GetDonation>> GetDonations()
 		{
 			List<Donation> donations = _dbContext.Donations
@@ -48,7 +50,8 @@ namespace DevilDaggersWebsite.Api
 		[HttpPost]
 		[Authorize(Policies.AdminPolicy)]
 		[ProducesResponseType(StatusCodes.Status200OK)]
-		[ProducesResponseType(typeof(ValidationProblemDetails), StatusCodes.Status400BadRequest)]
+		[ProducesResponseType(StatusCodes.Status400BadRequest)]
+		[EndpointConsumer(EndpointConsumers.None)]
 		public ActionResult AddDonation(AddDonation addDonation)
 		{
 			if (!_dbContext.Players.Any(p => p.Id == addDonation.PlayerId))
@@ -73,8 +76,9 @@ namespace DevilDaggersWebsite.Api
 		[HttpPut("{id}")]
 		[Authorize(Policies.AdminPolicy)]
 		[ProducesResponseType(StatusCodes.Status200OK)]
-		[ProducesResponseType(typeof(ValidationProblemDetails), StatusCodes.Status400BadRequest)]
+		[ProducesResponseType(StatusCodes.Status400BadRequest)]
 		[ProducesResponseType(StatusCodes.Status404NotFound)]
+		[EndpointConsumer(EndpointConsumers.None)]
 		public ActionResult EditDonation(int id, EditDonation editDonation)
 		{
 			if (!_dbContext.Players.Any(p => p.Id == editDonation.PlayerId))
@@ -100,6 +104,7 @@ namespace DevilDaggersWebsite.Api
 		[Authorize(Policies.AdminPolicy)]
 		[ProducesResponseType(StatusCodes.Status200OK)]
 		[ProducesResponseType(StatusCodes.Status404NotFound)]
+		[EndpointConsumer(EndpointConsumers.None)]
 		public ActionResult DeleteDonation(int id)
 		{
 			Donation? donation = _dbContext.Donations.FirstOrDefault(d => d.Id == id);
