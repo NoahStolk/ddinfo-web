@@ -76,14 +76,11 @@ namespace DevilDaggersWebsite.Razor.PageModels
 			Id = id;
 
 			AdminAssetMod? assetMod = AdminDto as AdminAssetMod;
-			AdminCustomLeaderboard? customLeaderboard = AdminDto as AdminCustomLeaderboard;
+			AddCustomLeaderboard? customLeaderboard = AdminDto as AddCustomLeaderboard;
 			AdminPlayer? player = AdminDto as AdminPlayer;
 			AdminSpawnsetFile? spawnsetFile = AdminDto as AdminSpawnsetFile;
 
 			if (assetMod?.ValidateGlobal(ModelState) == false)
-				return Page();
-
-			if (customLeaderboard?.ValidateGlobal(ModelState, DbContext, Environment) == false)
 				return Page();
 
 			if (player?.ValidateGlobal(ModelState) == false)
@@ -125,7 +122,7 @@ namespace DevilDaggersWebsite.Razor.PageModels
 
 				if (customLeaderboard != null && DbContext.CustomLeaderboards.Any(cl => cl.SpawnsetFileId == customLeaderboard.SpawnsetFileId))
 				{
-					ModelState.AddModelError($"AdminDto.{nameof(AdminCustomLeaderboard.SpawnsetFileId)}", "A leaderboard for this spawnset already exists.");
+					ModelState.AddModelError($"AdminDto.{nameof(AddCustomLeaderboard.SpawnsetFileId)}", "A leaderboard for this spawnset already exists.");
 					return Page();
 				}
 

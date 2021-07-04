@@ -5,7 +5,6 @@ using Microsoft.AspNetCore.Hosting;
 using Microsoft.EntityFrameworkCore;
 using System;
 using System.Collections.Generic;
-using System.Linq;
 using System.Reflection;
 using System.Text;
 
@@ -27,8 +26,6 @@ namespace DevilDaggersWebsite.Razor.PageModels
 				throw new($"DbSet with type {typeof(TEntity).Name} does not exist in {nameof(ApplicationDbContext)}.");
 
 			DbSet = (dbSetPropertyInfo.GetValue(DbContext) as DbSet<TEntity>)!;
-
-			EntityDisplayProperties = typeof(TEntity).GetProperties().Where(pi => pi.CanWrite && (pi.PropertyType.IsValueType || pi.PropertyType == typeof(string))).ToArray();
 		}
 
 		protected ApplicationDbContext DbContext { get; }
@@ -36,8 +33,6 @@ namespace DevilDaggersWebsite.Razor.PageModels
 		protected DiscordLogger DiscordLogger { get; }
 
 		public DbSet<TEntity> DbSet { get; }
-
-		public PropertyInfo[] EntityDisplayProperties { get; }
 
 		protected void LogCreateOrEdit(StringBuilder auditLogger, Dictionary<string, string>? oldLog, Dictionary<string, string> newLog)
 		{

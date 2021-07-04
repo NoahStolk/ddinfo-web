@@ -4,7 +4,6 @@ using DevilDaggersWebsite.Singletons;
 using Microsoft.AspNetCore.Hosting;
 using Microsoft.AspNetCore.Mvc;
 using System.Linq;
-using System.Reflection;
 
 namespace DevilDaggersWebsite.Razor.PageModels
 {
@@ -18,9 +17,6 @@ namespace DevilDaggersWebsite.Razor.PageModels
 
 		[FromQuery]
 		public string? SortOrder { get; set; }
-
-		public string GetPropertyValueString(PropertyInfo pi, TEntity entity)
-			=> pi.GetValue(entity)?.ToString() ?? string.Empty;
 
 		public IQueryable<TEntity> GetOrderedQuery()
 			=> SortOrder != null ? DbSet.OrderByMember(SortOrder, true) : DbSet;

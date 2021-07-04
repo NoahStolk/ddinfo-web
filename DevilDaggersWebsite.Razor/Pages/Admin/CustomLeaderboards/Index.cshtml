@@ -1,9 +1,17 @@
 ﻿@page
+@using DevilDaggersWebsite.Dto.CustomLeaderboards
 @using DevilDaggersWebsite.Entities
 @using DevilDaggersWebsite.Razor.PageModels
+@using DevilDaggersWebsite.Utils
+@using System.Net.Http
+@using System.Net.Http.Json
+@using System.Reflection
+@inject HttpClient Http
 @model AdminEntityIndexPageModel<CustomLeaderboard>
 @{
 	ViewData["Title"] = "CustomLeaderboards";
+
+	PropertyInfo[] properties = ReflectionUtils.GetDtoDisplayPropertyInfos<GetCustomLeaderboard>();
 }
 
 <h1>@ViewData["Title"]</h1>
@@ -20,7 +28,7 @@
 <table class="table admin-table">
 	<thead>
 		<tr>
-			@foreach (var pi in Model.EntityDisplayProperties)
+			@foreach (var pi in properties)
 			{
 				<th><a asp-route-sortOrder="@pi.Name">@pi.Name</a></th>
 			}
@@ -29,12 +37,12 @@
 		</tr>
 	</thead>
 	<tbody>
-		@foreach (var entity in Model.GetOrderedQuery())
+		@foreach (var entity in await Http.GetFromJsonAsync<GetCustomLeaderboard[]>("api/CustomLeaderboards") ?? throw new("API call returned null."))
 		{
 			<tr>
-				@foreach (var pi in Model.EntityDisplayProperties)
+				@foreach (var pi in properties)
 				{
-					<td>@Model.GetPropertyValueString(pi, entity)</td>
+					<td>@ReflectionUtils.GetDtoPropertyDisplayValue(pi, entity)</td>
 				}
 				<td>
 					<a asp-page="CreateOrEdit" asp-route-id="@entity.Id">Edit</a>

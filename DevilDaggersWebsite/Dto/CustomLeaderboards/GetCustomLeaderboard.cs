@@ -5,6 +5,8 @@ namespace DevilDaggersWebsite.Dto.CustomLeaderboards
 {
 	public class GetCustomLeaderboard
 	{
+		public int Id { get; init; }
+
 		public string SpawnsetName { get; init; } = null!;
 
 		public string SpawnsetAuthorName { get; init; } = null!;

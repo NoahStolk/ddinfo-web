@@ -1,5 +1,4 @@
-﻿using DevilDaggersWebsite.Dto;
-using DevilDaggersWebsite.Enumerators;
+﻿using DevilDaggersWebsite.Enumerators;
 using DevilDaggersWebsite.Extensions;
 using System;
 using System.ComponentModel.DataAnnotations;
@@ -7,7 +6,7 @@ using System.ComponentModel.DataAnnotations.Schema;
 
 namespace DevilDaggersWebsite.Entities
 {
-	public class CustomLeaderboard : IAdminUpdatableEntity<AdminCustomLeaderboard>
+	public class CustomLeaderboard : IEntity
 	{
 		[Key]
 		public int Id { get; init; }
@@ -36,42 +35,6 @@ namespace DevilDaggersWebsite.Entities
 		public int TotalRunsSubmitted { get; set; }
 
 		public bool IsArchived { get; set; }
-
-		public void Create(ApplicationDbContext dbContext, AdminCustomLeaderboard adminDto)
-		{
-			DateCreated = DateTime.UtcNow;
-
-			Edit(dbContext, adminDto);
-
-			dbContext.CustomLeaderboards.Add(this);
-		}
-
-		public void Edit(ApplicationDbContext dbContext, AdminCustomLeaderboard adminDto)
-		{
-			SpawnsetFileId = adminDto.SpawnsetFileId;
-			Category = adminDto.Category;
-			TimeBronze = adminDto.TimeBronze;
-			TimeSilver = adminDto.TimeSilver;
-			TimeGolden = adminDto.TimeGolden;
-			TimeDevil = adminDto.TimeDevil;
-			TimeLeviathan = adminDto.TimeLeviathan;
-			IsArchived = adminDto.IsArchived;
-		}
-
-		public AdminCustomLeaderboard Populate()
-		{
-			return new()
-			{
-				SpawnsetFileId = SpawnsetFileId,
-				Category = Category,
-				TimeBronze = TimeBronze,
-				TimeSilver = TimeSilver,
-				TimeGolden = TimeGolden,
-				TimeDevil = TimeDevil,
-				TimeLeviathan = TimeLeviathan,
-				IsArchived = IsArchived,
-			};
-		}
 
 		public CustomLeaderboardDagger GetDaggerFromTime(int time)
 		{
