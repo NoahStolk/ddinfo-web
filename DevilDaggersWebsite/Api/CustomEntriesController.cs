@@ -72,7 +72,7 @@ namespace DevilDaggersWebsite.Api
 		[HttpPost]
 		[Authorize(Policies.AdminPolicy)]
 		[ProducesResponseType(StatusCodes.Status200OK)]
-		[ProducesResponseType(typeof(ValidationProblemDetails), StatusCodes.Status400BadRequest)]
+		[ProducesResponseType(StatusCodes.Status400BadRequest)]
 		[EndpointConsumer(EndpointConsumers.None)]
 		public ActionResult AddCustomEntry(AddCustomEntry addCustomEntry)
 		{
@@ -113,7 +113,7 @@ namespace DevilDaggersWebsite.Api
 		[HttpPut("{id}")]
 		[Authorize(Policies.AdminPolicy)]
 		[ProducesResponseType(StatusCodes.Status200OK)]
-		[ProducesResponseType(typeof(ValidationProblemDetails), StatusCodes.Status400BadRequest)]
+		[ProducesResponseType(StatusCodes.Status400BadRequest)]
 		[ProducesResponseType(StatusCodes.Status404NotFound)]
 		[EndpointConsumer(EndpointConsumers.None)]
 		public ActionResult EditCustomEntry(int id, EditCustomEntry editCustomEntry)
