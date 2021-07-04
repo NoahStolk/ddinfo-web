@@ -2,9 +2,9 @@
 using System;
 using System.Collections.Generic;
 
-namespace DevilDaggersWebsite.Dto.AssetMods
+namespace DevilDaggersWebsite.Dto.Mods
 {
-	public class GetAssetMod
+	public class GetMod
 	{
 		public int Id { get; init; }
 
@@ -18,7 +18,7 @@ namespace DevilDaggersWebsite.Dto.AssetMods
 
 		public string? HtmlDescription { get; init; }
 
-		public List<AssetModTypes>? AssetModTypes { get; init; }
+		public AssetModTypes AssetModTypes { get; init; }
 
 		public string? Url { get; init; }
 

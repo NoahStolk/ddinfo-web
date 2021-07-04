@@ -1,6 +1,7 @@
 ﻿using DevilDaggersCore.Mods;
 using DevilDaggersWebsite.Caches.ModArchive;
 using DevilDaggersWebsite.Dto;
+using DevilDaggersWebsite.Dto.Mods;
 using DevilDaggersWebsite.Entities;
 using DevilDaggersWebsite.Enumerators;
 using Microsoft.AspNetCore.Hosting;
@@ -25,7 +26,7 @@ namespace DevilDaggersWebsite.Transients
 			_modArchiveCache = modArchiveCache;
 		}
 
-		public List<Mod> GetMods(string? authorFilter = null, string? nameFilter = null, bool? isHostedFilter = null)
+		public List<GetPublicMod> GetPublicMods(string? authorFilter = null, string? nameFilter = null, bool? isHostedFilter = null)
 		{
 			IEnumerable<AssetMod> assetModsQuery = _dbContext.AssetMods
 				.AsNoTracking()
@@ -86,17 +87,19 @@ namespace DevilDaggersWebsite.Transients
 					else
 						screenshotFileNames = new();
 
-					return new Mod(
-						name: amwfi.Key.Name,
-						htmlDescription: amwfi.Key.HtmlDescription,
-						trailerUrl: amwfi.Key.TrailerUrl,
-						authors: amwfi.Key.PlayerAssetMods.Select(pam => pam.Player.PlayerName).OrderBy(s => s).ToList(),
-						lastUpdated: amwfi.Key.LastUpdated,
-						assetModTypes: assetModTypes,
-						isHostedOnDdInfo: amwfi.Value.FileExists,
-						containsProhibitedAssets: containsProhibitedAssets,
-						modArchive: modArchive,
-						screenshotFileNames: screenshotFileNames);
+					return new GetPublicMod
+					{
+						Name = amwfi.Key.Name,
+						HtmlDescription = amwfi.Key.HtmlDescription,
+						TrailerUrl = amwfi.Key.TrailerUrl,
+						Authors = amwfi.Key.PlayerAssetMods.Select(pam => pam.Player.PlayerName).OrderBy(s => s).ToList(),
+						LastUpdated = amwfi.Key.LastUpdated,
+						AssetModTypes = assetModTypes,
+						IsHostedOnDdInfo = amwfi.Value.FileExists,
+						ContainsProhibitedAssets = containsProhibitedAssets,
+						ModArchive = modArchive,
+						ScreenshotFileNames = screenshotFileNames,
+					};
 				})
 				.ToList();
 		}

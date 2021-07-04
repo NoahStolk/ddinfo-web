@@ -5,9 +5,9 @@ using System.Collections.Generic;
 using System.ComponentModel.DataAnnotations;
 using System.Linq;
 
-namespace DevilDaggersWebsite.Dto.AssetMods
+namespace DevilDaggersWebsite.Dto.Mods
 {
-	public class AddAssetMod : IAdminDto
+	public class AddMod : IAdminDto
 	{
 		[StringLength(64)]
 		public string Name { get; init; } = null!;

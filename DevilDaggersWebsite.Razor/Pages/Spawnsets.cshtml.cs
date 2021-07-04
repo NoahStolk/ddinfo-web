@@ -1,4 +1,4 @@
-﻿using DevilDaggersWebsite.Dto;
+﻿using DevilDaggersWebsite.Dto.Spawnsets;
 using DevilDaggersWebsite.Razor.PageModels;
 using DevilDaggersWebsite.Razor.Pagination;
 using DevilDaggersWebsite.Transients;
@@ -39,7 +39,7 @@ namespace DevilDaggersWebsite.Razor.Pages
 			_spawnsetHelper = spawnsetHelper;
 		}
 
-		public PaginatedList<SpawnsetFile> PaginatedList { get; private set; } = null!;
+		public PaginatedList<GetPublicSpawnset> PaginatedList { get; private set; } = null!;
 
 		public string? SearchAuthor { get; set; }
 		public string? SearchName { get; set; }
@@ -78,7 +78,7 @@ namespace DevilDaggersWebsite.Razor.Pages
 			LoopLength = sortOrder == LoopLengthDesc ? LoopLengthAsc : LoopLengthDesc;
 			LoopSpawns = sortOrder == LoopSpawnsDesc ? LoopSpawnsAsc : LoopSpawnsDesc;
 
-			List<SpawnsetFile> spawnsetFiles = _spawnsetHelper.GetSpawnsets(SearchAuthor, SearchName);
+			List<GetPublicSpawnset> spawnsetFiles = _spawnsetHelper.GetSpawnsets(SearchAuthor, SearchName);
 			spawnsetFiles = (sortOrder switch
 			{
 				NameAsc => spawnsetFiles.OrderBy(s => s.Name).ThenByDescending(s => s.AuthorName),

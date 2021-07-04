@@ -57,7 +57,10 @@ namespace DevilDaggersWebsite.Razor
 				.AddRoles<IdentityRole>()
 				.AddEntityFrameworkStores<ApplicationDbContext>();
 
-			services.AddHttpClient<DevilDaggersInfoClient>(c => c.BaseAddress = new Uri("https://devildaggers.info"));
+			services.AddHttpClient<DevilDaggersInfoClient>(c =>
+			{
+				c.BaseAddress = new Uri(WebHostEnvironment.IsDevelopment() ? "http://localhost:2964" : "https://devildaggers.info");
+			});
 			services.AddSingleton<IHttpContextAccessor, HttpContextAccessor>();
 			services.AddSingleton<IActionContextAccessor, ActionContextAccessor>();
 			services.AddSingleton<BackgroundServiceMonitor>();

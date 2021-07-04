@@ -1,15 +1,14 @@
 ﻿@page
-@using DevilDaggersWebsite.Dto.SpawnsetFiles
+@using DevilDaggersWebsite.Clients
+@using DevilDaggersWebsite.Dto.Spawnsets
 @using DevilDaggersWebsite.Utils
-@using System.Net.Http
-@using System.Net.Http.Json
 @using System.Reflection
-@inject HttpClient Http
+@inject DevilDaggersInfoClient Http
 @model IndexModel
 @{
 	ViewData["Title"] = "SpawnsetFiles";
 
-	PropertyInfo[] properties = ReflectionUtils.GetDtoDisplayPropertyInfos<GetSpawnsetFile>();
+	PropertyInfo[] properties = ReflectionUtils.GetDtoDisplayPropertyInfos<GetSpawnset>();
 }
 
 <h1>@ViewData["Title"]</h1>
@@ -64,7 +63,7 @@
 		</tr>
 	</thead>
 	<tbody>
-		@foreach (var dto in await Http.GetFromJsonAsync<GetSpawnsetFile[]>("api/SpawnsetFiles") ?? throw new("API call returned null."))
+		@foreach (GetSpawnset dto in await Http.GetAsync<GetSpawnset[]>("api/spawnsets/private"))
 		{
 			<tr>
 				@foreach (var pi in properties)

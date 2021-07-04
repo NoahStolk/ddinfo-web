@@ -1,8 +1,8 @@
 ﻿using System;
 
-namespace DevilDaggersWebsite.Dto.SpawnsetFiles
+namespace DevilDaggersWebsite.Dto.Spawnsets
 {
-	public class GetSpawnsetFile
+	public class GetSpawnset
 	{
 		public int Id { get; init; }
 

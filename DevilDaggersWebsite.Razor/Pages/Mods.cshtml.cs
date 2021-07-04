@@ -1,4 +1,4 @@
-﻿using DevilDaggersWebsite.Dto;
+﻿using DevilDaggersWebsite.Dto.Mods;
 using DevilDaggersWebsite.Razor.PageModels;
 using DevilDaggersWebsite.Razor.Pagination;
 using DevilDaggersWebsite.Transients;
@@ -33,7 +33,7 @@ namespace DevilDaggersWebsite.Razor.Pages
 			_modHelper = modHelper;
 		}
 
-		public PaginatedList<Mod> PaginatedList { get; private set; } = null!;
+		public PaginatedList<GetPublicMod> PaginatedList { get; private set; } = null!;
 
 		public string? SearchAuthor { get; set; }
 		public string? SearchName { get; set; }
@@ -66,7 +66,7 @@ namespace DevilDaggersWebsite.Razor.Pages
 			Hosted = sortOrder == HostedDesc ? HostedAsc : HostedDesc;
 			Prohibited = sortOrder == ProhibitedDesc ? ProhibitedAsc : ProhibitedDesc;
 
-			List<Mod> mods = _modHelper.GetMods(searchAuthor, searchName);
+			List<GetPublicMod> mods = _modHelper.GetPublicMods(searchAuthor, searchName);
 			mods = (sortOrder switch
 			{
 				NameAsc => mods.OrderBy(m => m.Name).ThenByDescending(m => m.Authors[0]),

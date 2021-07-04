@@ -1,7 +1,7 @@
 ﻿@page
 @model SpawnsetsModel
 @using DevilDaggersCore.Spawnsets
-@using DevilDaggersWebsite.Dto
+@using DevilDaggersWebsite.Dto.Spawnsets
 @using DevilDaggersWebsite.Razor.Utils
 @using DevilDaggersWebsite.Utils
 @{
@@ -97,7 +97,7 @@
 						</tr>
 					</thead>
 					<tbody>
-						@foreach (SpawnsetFile spawnsetFile in Model.PaginatedList)
+						@foreach (GetPublicSpawnset spawnsetFile in Model.PaginatedList)
 						{
 							<tr>
 								<td><a class="prevent-break-out" asp-page="Spawnset" asp-route-spawnset="@spawnsetFile.Name">@spawnsetFile.Name</a></td>

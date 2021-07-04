@@ -1,11 +1,10 @@
-﻿using DevilDaggersWebsite.Dto.SpawnsetFiles;
-using System;
+﻿using System;
 using System.ComponentModel.DataAnnotations;
 using System.ComponentModel.DataAnnotations.Schema;
 
 namespace DevilDaggersWebsite.Entities
 {
-	public class SpawnsetFile : IAdminUpdatableEntity<AddSpawnsetFile>
+	public class SpawnsetFile : IEntity
 	{
 		[Key]
 		public int Id { get; init; }
@@ -26,35 +25,5 @@ namespace DevilDaggersWebsite.Entities
 		public DateTime LastUpdated { get; set; }
 
 		public bool IsPractice { get; set; }
-
-		public void Create(ApplicationDbContext dbContext, AddSpawnsetFile adminDto)
-		{
-			Edit(dbContext, adminDto);
-
-			dbContext.SpawnsetFiles.Add(this);
-		}
-
-		public void Edit(ApplicationDbContext dbContext, AddSpawnsetFile adminDto)
-		{
-			PlayerId = adminDto.PlayerId;
-			Name = adminDto.Name;
-			MaxDisplayWaves = adminDto.MaxDisplayWaves;
-			HtmlDescription = adminDto.HtmlDescription;
-			LastUpdated = adminDto.LastUpdated;
-			IsPractice = adminDto.IsPractice;
-		}
-
-		public AddSpawnsetFile Populate()
-		{
-			return new()
-			{
-				PlayerId = PlayerId,
-				Name = Name,
-				MaxDisplayWaves = MaxDisplayWaves,
-				HtmlDescription = HtmlDescription,
-				LastUpdated = LastUpdated,
-				IsPractice = IsPractice,
-			};
-		}
 	}
 }

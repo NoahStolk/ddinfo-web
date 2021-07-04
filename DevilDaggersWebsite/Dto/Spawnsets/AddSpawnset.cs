@@ -2,10 +2,11 @@
 using System.Collections.Generic;
 using System.ComponentModel.DataAnnotations;
 
-namespace DevilDaggersWebsite.Dto.SpawnsetFiles
+namespace DevilDaggersWebsite.Dto.Spawnsets
 {
-	public class AddSpawnsetFile : IAdminDto
+	public class AddSpawnset : IAdminDto
 	{
+		[Required]
 		public int PlayerId { get; init; }
 
 		[StringLength(64)]

@@ -1,4 +1,7 @@
-﻿using System.Net.Http;
+﻿using Newtonsoft.Json;
+using System.Net.Http;
+using System.Threading;
+using System.Threading.Tasks;
 
 namespace DevilDaggersWebsite.Clients
 {
@@ -10,5 +13,11 @@ namespace DevilDaggersWebsite.Clients
 		}
 
 		public HttpClient Client { get; }
+
+		public async Task<TResult> GetAsync<TResult>(string url, CancellationToken cancellationToken = default)
+		{
+			HttpResponseMessage taskResponse = await Client.GetAsync(url, HttpCompletionOption.ResponseHeadersRead, cancellationToken);
+			return JsonConvert.DeserializeObject<TResult>(await taskResponse.Content.ReadAsStringAsync(cancellationToken)) ?? throw new($"Could not deserialize response from '{url}' as '{typeof(TResult).Name}'.");
+		}
 	}
 }

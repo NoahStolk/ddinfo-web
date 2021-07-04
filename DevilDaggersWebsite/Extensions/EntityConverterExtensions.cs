@@ -1,5 +1,6 @@
 ﻿using DevilDaggersCore.Spawnsets;
 using DevilDaggersWebsite.Dto.CustomLeaderboards;
+using DevilDaggersWebsite.Dto.Spawnsets;
 using DevilDaggersWebsite.Entities;
 
 namespace DevilDaggersWebsite.Extensions
@@ -10,6 +11,7 @@ namespace DevilDaggersWebsite.Extensions
 		{
 			return new()
 			{
+				Id = customLeaderboard.Id,
 				SpawnsetAuthorName = customLeaderboard.SpawnsetFile.Player.PlayerName,
 				SpawnsetName = customLeaderboard.SpawnsetFile.Name,
 				TimeBronze = customLeaderboard.TimeBronze,
@@ -50,7 +52,7 @@ namespace DevilDaggersWebsite.Extensions
 			};
 		}
 
-		public static Dto.SpawnsetFile ToDto(this SpawnsetFile spawnsetFile, SpawnsetData spawnsetData, bool hasCustomLeaderboard)
+		public static GetPublicSpawnset ToDto(this SpawnsetFile spawnsetFile, SpawnsetData spawnsetData, bool hasCustomLeaderboard)
 		{
 			return new()
 			{

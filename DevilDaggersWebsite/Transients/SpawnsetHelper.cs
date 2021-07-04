@@ -1,5 +1,6 @@
 ﻿using DevilDaggersCore.Spawnsets;
 using DevilDaggersWebsite.Caches.SpawnsetData;
+using DevilDaggersWebsite.Dto.Spawnsets;
 using DevilDaggersWebsite.Entities;
 using DevilDaggersWebsite.Extensions;
 using Microsoft.AspNetCore.Hosting;
@@ -32,7 +33,7 @@ namespace DevilDaggersWebsite.Transients
 				.ToList();
 		}
 
-		public List<Dto.SpawnsetFile> GetSpawnsets(string? authorFilter = null, string? nameFilter = null)
+		public List<GetPublicSpawnset> GetSpawnsets(string? authorFilter = null, string? nameFilter = null)
 		{
 			IEnumerable<SpawnsetFile> query = _dbContext.SpawnsetFiles.AsNoTracking().Include(sf => sf.Player);
 
@@ -47,7 +48,7 @@ namespace DevilDaggersWebsite.Transients
 				.Select(sf => Map(sf))
 				.ToList();
 
-			Dto.SpawnsetFile Map(SpawnsetFile spawnsetFile)
+			GetPublicSpawnset Map(SpawnsetFile spawnsetFile)
 			{
 				SpawnsetData spawnsetData = _spawnsetDataCache.GetSpawnsetDataByFilePath(Path.Combine(_environment.WebRootPath, "spawnsets", spawnsetFile.Name));
 				return spawnsetFile.ToDto(spawnsetData, _spawnsetsWithCustomLeaderboardIds.Contains(spawnsetFile.Id));

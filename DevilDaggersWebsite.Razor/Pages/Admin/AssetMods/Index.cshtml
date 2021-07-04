@@ -1,15 +1,14 @@
 ﻿@page
 @using DevilDaggersWebsite.Clients
-@using DevilDaggersWebsite.Dto.AssetMods
+@using DevilDaggersWebsite.Dto.Mods
 @using DevilDaggersWebsite.Utils
-@using System.Net.Http.Json
 @using System.Reflection
 @inject DevilDaggersInfoClient Http
 @model IndexModel
 @{
 	ViewData["Title"] = "AssetMods";
 
-	PropertyInfo[] properties = ReflectionUtils.GetDtoDisplayPropertyInfos<GetAssetMod>();
+	PropertyInfo[] properties = ReflectionUtils.GetDtoDisplayPropertyInfos<GetMod>();
 }
 
 <h1>@ViewData["Title"]</h1>
@@ -59,7 +58,7 @@
 		</tr>
 	</thead>
 	<tbody>
-		@foreach (var dto in await Http.Client.GetFromJsonAsync<GetAssetMod[]>("api/AssetMods") ?? throw new("API call returned null."))
+		@foreach (GetMod dto in await Http.GetAsync<GetMod[]>("api/mods/private"))
 		{
 			<tr>
 				@foreach (var pi in properties)

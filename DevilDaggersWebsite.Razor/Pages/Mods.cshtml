@@ -1,6 +1,6 @@
 ﻿@page
 @model ModsModel
-@using DevilDaggersWebsite.Dto
+@using DevilDaggersWebsite.Dto.Mods
 @{
 	ViewData["Title"] = "Mods";
 }
@@ -68,7 +68,7 @@
 						</tr>
 					</thead>
 					<tbody>
-						@foreach (Mod mod in Model.PaginatedList)
+						@foreach (GetPublicMod mod in Model.PaginatedList)
 						{
 							<tr>
 								<td><a asp-page="Mod" asp-route-mod="@mod.Name">@mod.Name</a></td>

@@ -1,12 +1,11 @@
 ﻿@page
+@using DevilDaggersWebsite.Clients
 @using DevilDaggersWebsite.Dto.Players
 @using DevilDaggersWebsite.Entities
 @using DevilDaggersWebsite.Razor.PageModels
 @using DevilDaggersWebsite.Utils
-@using System.Net.Http
-@using System.Net.Http.Json
 @using System.Reflection
-@inject HttpClient Http
+@inject DevilDaggersInfoClient Http
 @model AdminEntityIndexPageModel<Player>
 @{
 	ViewData["Title"] = "Players";
@@ -34,7 +33,7 @@
 		</tr>
 	</thead>
 	<tbody>
-		@foreach (var dto in await Http.GetFromJsonAsync<GetPlayer[]>("api/Players") ?? throw new("API call returned null."))
+		@foreach (GetPlayer dto in await Http.GetAsync<GetPlayer[]>("api/players"))
 		{
 			<tr>
 				@foreach (var pi in properties)
