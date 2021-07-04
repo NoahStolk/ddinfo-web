@@ -81,7 +81,7 @@ namespace DevilDaggersWebsite.Api
 		}
 
 		[HttpPost]
-		//[Authorize(Policies.CustomLeaderboardsPolicy)]
+		//[Authorize(Policies.AssetModsPolicy)]
 		[ProducesResponseType(StatusCodes.Status200OK)]
 		[ProducesResponseType(StatusCodes.Status400BadRequest)]
 		[EndpointConsumer(EndpointConsumers.Admin)]
@@ -89,6 +89,12 @@ namespace DevilDaggersWebsite.Api
 		{
 			if (addMod.PlayerIds == null || addMod.PlayerIds.Count == 0)
 				return BadRequest("Mod must have at least one author.");
+
+			foreach (int playerId in addMod.PlayerIds)
+			{
+				if (!_dbContext.Players.Any(p => p.Id == playerId))
+					return BadRequest($"Player with ID {playerId} does not exist.");
+			}
 
 			AssetMod assetMod = new()
 			{
