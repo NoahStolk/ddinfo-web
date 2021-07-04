@@ -143,6 +143,5 @@ namespace DevilDaggersWebsite.Api
 
 			return Ok();
 		}
-
 	}
 }

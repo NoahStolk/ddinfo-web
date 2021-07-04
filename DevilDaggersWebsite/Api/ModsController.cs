@@ -96,17 +96,49 @@ namespace DevilDaggersWebsite.Api
 					return BadRequest($"Player with ID {playerId} does not exist.");
 			}
 
-			AssetMod assetMod = new()
+			AssetMod mod = new()
 			{
-				LastUpdated = DateTime.UtcNow,
 				AssetModTypes = addMod.AssetModTypes,
 				HtmlDescription = addMod.HtmlDescription,
 				IsHidden = addMod.IsHidden,
+				LastUpdated = DateTime.UtcNow,
 				Name = addMod.Name,
 				TrailerUrl = addMod.TrailerUrl,
 				Url = addMod.Url ?? string.Empty,
 			};
-			_dbContext.AssetMods.Add(assetMod);
+			_dbContext.AssetMods.Add(mod);
+			_dbContext.SaveChanges();
+
+			return Ok();
+		}
+
+		[HttpPut("{id}")]
+		//[Authorize(Policies.SpawnsetsPolicy)]
+		[ProducesResponseType(StatusCodes.Status200OK)]
+		[ProducesResponseType(StatusCodes.Status400BadRequest)]
+		[ProducesResponseType(StatusCodes.Status404NotFound)]
+		[EndpointConsumer(EndpointConsumers.None)]
+		public ActionResult EditMod(int id, EditMod editMod)
+		{
+			if (editMod.PlayerIds == null || editMod.PlayerIds.Count == 0)
+				return BadRequest("Mod must have at least one author.");
+
+			foreach (int playerId in editMod.PlayerIds)
+			{
+				if (!_dbContext.Players.Any(p => p.Id == playerId))
+					return BadRequest($"Player with ID {playerId} does not exist.");
+			}
+
+			AssetMod? mod = _dbContext.AssetMods.FirstOrDefault(s => s.Id == id);
+			if (mod == null)
+				return NotFound();
+
+			// Do not update LastUpdated. Update this value when updating the file only.
+			mod.HtmlDescription = editMod.HtmlDescription;
+			mod.IsHidden = editMod.IsHidden;
+			mod.Name = editMod.Name;
+			mod.TrailerUrl = editMod.TrailerUrl;
+			mod.Url = editMod.Url ?? string.Empty;
 			_dbContext.SaveChanges();
 
 			return Ok();
