@@ -4,7 +4,7 @@ using System.ComponentModel.DataAnnotations;
 
 namespace DevilDaggersWebsite.Dto.Players
 {
-	public class AddPlayer : IAdminDto
+	public class AddPlayer
 	{
 		public int Id { get; init; }
 
@@ -46,30 +46,6 @@ namespace DevilDaggersWebsite.Dto.Players
 		public List<int>? AssetModIds { get; init; }
 
 		public List<int>? TitleIds { get; init; }
-
-		public Dictionary<string, string> Log()
-		{
-			Dictionary<string, string> dictionary = new();
-			dictionary.Add(nameof(PlayerName), PlayerName ?? string.Empty);
-			dictionary.Add(nameof(CountryCode), CountryCode ?? string.Empty);
-			dictionary.Add(nameof(Dpi), Dpi.ToString() ?? string.Empty);
-			dictionary.Add(nameof(InGameSens), InGameSens.ToString() ?? string.Empty);
-			dictionary.Add(nameof(Fov), Fov.ToString() ?? string.Empty);
-			dictionary.Add(nameof(IsRightHanded), IsRightHanded.ToString() ?? string.Empty);
-			dictionary.Add(nameof(HasFlashHandEnabled), HasFlashHandEnabled.ToString() ?? string.Empty);
-			dictionary.Add(nameof(Gamma), Gamma.ToString() ?? string.Empty);
-			dictionary.Add(nameof(UsesLegacyAudio), UsesLegacyAudio.ToString() ?? string.Empty);
-			dictionary.Add(nameof(IsBanned), IsBanned.ToString());
-			dictionary.Add(nameof(BanDescription), BanDescription ?? string.Empty);
-			dictionary.Add(nameof(BanResponsibleId), BanResponsibleId.ToString() ?? string.Empty);
-			dictionary.Add(nameof(IsBannedFromDdcl), IsBannedFromDdcl.ToString() ?? string.Empty);
-			dictionary.Add(nameof(HideSettings), HideSettings.ToString());
-			dictionary.Add(nameof(HideDonations), HideDonations.ToString());
-			dictionary.Add(nameof(HidePastUsernames), HidePastUsernames.ToString() ?? string.Empty);
-			dictionary.Add(nameof(AssetModIds), AssetModIds != null ? string.Join(", ", AssetModIds) : string.Empty);
-			dictionary.Add(nameof(TitleIds), TitleIds != null ? string.Join(", ", TitleIds) : string.Empty);
-			return dictionary;
-		}
 
 		public bool ValidateGlobal(ModelStateDictionary modelState)
 		{
