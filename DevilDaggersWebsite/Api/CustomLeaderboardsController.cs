@@ -44,9 +44,10 @@ namespace DevilDaggersWebsite.Api
 		}
 
 		[HttpGet("{id}")]
+		//[Authorize(Policies.CustomLeaderboardsPolicy)]
 		[ProducesResponseType(StatusCodes.Status200OK)]
 		[ProducesResponseType(StatusCodes.Status404NotFound)]
-		[EndpointConsumer(EndpointConsumers.None)]
+		[EndpointConsumer(EndpointConsumers.Admin)]
 		public ActionResult<GetCustomLeaderboard> GetCustomLeaderboard(int id)
 		{
 			CustomLeaderboard? customLeaderboard = _dbContext.CustomLeaderboards
@@ -57,7 +58,7 @@ namespace DevilDaggersWebsite.Api
 				.FirstOrDefault(cl => cl.Id == id);
 
 			if (customLeaderboard == null)
-				return new NotFoundObjectResult(new ProblemDetails { Title = $"Leaderboard with {nameof(id)} '{id}' was not found." });
+				return NotFound($"Leaderboard with {nameof(id)} '{id}' was not found.");
 
 			return customLeaderboard.ToDto();
 		}
