@@ -89,7 +89,7 @@ namespace DevilDaggersWebsite.Api
 			Player player = new()
 			{
 				Id = addPlayer.Id,
-				PlayerName = await GetPlayerName(addPlayer.Id, addPlayer.PlayerName),
+				PlayerName = string.IsNullOrWhiteSpace(addPlayer.PlayerName) ? await GetPlayerNameOrDefault(addPlayer.Id, string.Empty) : addPlayer.PlayerName,
 				CountryCode = addPlayer.CountryCode,
 				Dpi = addPlayer.Dpi,
 				InGameSens = addPlayer.InGameSens,
@@ -127,7 +127,7 @@ namespace DevilDaggersWebsite.Api
 			if (player == null)
 				return NotFound();
 
-			player.PlayerName = await GetPlayerName(id, editPlayer.PlayerName);
+			player.PlayerName = string.IsNullOrWhiteSpace(editPlayer.PlayerName) ? await GetPlayerNameOrDefault(id, player.PlayerName) : editPlayer.PlayerName;
 			player.CountryCode = editPlayer.CountryCode;
 			player.Dpi = editPlayer.Dpi;
 			player.InGameSens = editPlayer.InGameSens;
@@ -258,13 +258,8 @@ namespace DevilDaggersWebsite.Api
 			return Ok();
 		}
 
-		private async Task<string> GetPlayerName(int id, string? playerName)
-		{
-			if (!string.IsNullOrWhiteSpace(playerName))
-				return playerName;
-
-			return (await LeaderboardClient.Instance.GetUserById(id))?.Username ?? string.Empty;
-		}
+		private async Task<string> GetPlayerNameOrDefault(int id, string defaultValue)
+			=> (await LeaderboardClient.Instance.GetUserById(id))?.Username ?? defaultValue;
 
 		private void UpdateManyToManyRelations(List<int> assetModIds, List<int> titleIds, int playerId)
 		{
