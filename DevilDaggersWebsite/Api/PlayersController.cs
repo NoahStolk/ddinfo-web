@@ -146,6 +146,23 @@ namespace DevilDaggersWebsite.Api
 			return Ok();
 		}
 
+		[HttpPatch("{id}/update-name")]
+		//[Authorize(Policies.PlayersPolicy)]
+		[ProducesResponseType(StatusCodes.Status200OK)]
+		[ProducesResponseType(StatusCodes.Status404NotFound)]
+		[EndpointConsumer(EndpointConsumers.Admin)]
+		public async Task<ActionResult> UpdatePlayerName(int id)
+		{
+			Player? player = _dbContext.Players.FirstOrDefault(p => p.Id == id);
+			if (player == null)
+				return NotFound();
+
+			player.PlayerName = await GetPlayerNameOrDefault(id, player.PlayerName);
+			_dbContext.SaveChanges();
+
+			return Ok();
+		}
+
 		[HttpPatch("{id}/ban")]
 		//[Authorize(Policies.PlayersPolicy)]
 		[ProducesResponseType(StatusCodes.Status200OK)]
