@@ -1,5 +1,5 @@
 ﻿@page
-@model UploadFileModel
+@using DevilDaggersWebsite.Constants
 @{
 	ViewData["Title"] = "Upload AssetMod File";
 }
@@ -8,8 +8,8 @@
 
 <p>Notes</p>
 <ul>
-	<li>File must not be larger than 256 MiB (@($"{UploadFileModel.MaxFileSize:n0}") bytes).</li>
-	<li>File name must not be over @UploadFileModel.MaxFileNameLength characters in length.</li>
+	<li>File must not be larger than 256 MiB (@($"{ModFileConstants.MaxFileSize:n0}") bytes).</li>
+	<li>File name must not be over @ModFileConstants.MaxFileNameLength characters in length.</li>
 	<li>File must be a .zip file.</li>
 	<li>File name must be unique.</li>
 	<li>All files within the zip archive must be valid Devil Daggers binaries.</li>
@@ -17,13 +17,13 @@
 	<li>The zip archive must contain at least one Devil Daggers binary.</li>
 	<li>The zip archive must only contain binaries that follow the naming scheme {binaryType}-{archiveName}-{binaryName}, so a binary inside TestMod.zip must be named for example "dd-TestMod-BlueGhostpede".</li>
 	<li>All Devil Daggers binaries within the zip archive must contain assets.</li>
-	<li>I set a limit for the storage I assign to this directory. A mod will not upload if it brings the total directory size to exceed 5 GiB (@($"{UploadFileModel.MaxHostingSpace:n0}") bytes).</li>
+	<li>I set a limit for the storage I assign to this directory. A mod will not upload if it brings the total directory size to exceed 5 GiB (@($"{ModFileConstants.MaxHostingSpace:n0}") bytes).</li>
 	<li>Please don't upload gigantic audio binaries that just contain meme sounds.</li>
 	<li>Please don't use any special Unicode characters inside zip archive entry names. This is a limitation in .NET. (dd-ÆTHEREA will show up as dd-�THEREA.)</li>
 </ul>
 
 <form method="post" enctype="multipart/form-data">
-	<input asp-for="FormFile" />
+	@*<input asp-for="FormFile" />*@
 	<input type="submit" />
 </form>
 
