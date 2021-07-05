@@ -5,6 +5,7 @@ using DevilDaggersWebsite.Dto.CustomLeaderboards;
 using DevilDaggersWebsite.Entities;
 using DevilDaggersWebsite.Enumerators;
 using DevilDaggersWebsite.Extensions;
+using DevilDaggersWebsite.Singletons;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Hosting;
 using Microsoft.AspNetCore.Http;
@@ -14,6 +15,7 @@ using System;
 using System.Collections.Generic;
 using System.IO;
 using System.Linq;
+using System.Threading.Tasks;
 
 namespace DevilDaggersWebsite.Api
 {
@@ -23,11 +25,13 @@ namespace DevilDaggersWebsite.Api
 	{
 		private readonly ApplicationDbContext _dbContext;
 		private readonly IWebHostEnvironment _environment;
+		private readonly AuditLogger _auditLogger;
 
-		public CustomLeaderboardsController(ApplicationDbContext dbContext, IWebHostEnvironment environment)
+		public CustomLeaderboardsController(ApplicationDbContext dbContext, IWebHostEnvironment environment, AuditLogger auditLogger)
 		{
 			_dbContext = dbContext;
 			_environment = environment;
+			_auditLogger = auditLogger;
 		}
 
 		[HttpGet]
@@ -70,7 +74,7 @@ namespace DevilDaggersWebsite.Api
 		[ProducesResponseType(StatusCodes.Status200OK)]
 		[ProducesResponseType(StatusCodes.Status400BadRequest)]
 		[EndpointConsumer(EndpointConsumers.Admin)]
-		public ActionResult AddCustomLeaderboard(AddCustomLeaderboard addCustomLeaderboard)
+		public async Task<ActionResult> AddCustomLeaderboard(AddCustomLeaderboard addCustomLeaderboard)
 		{
 			if (_dbContext.CustomLeaderboards.Any(cl => cl.SpawnsetFileId == addCustomLeaderboard.SpawnsetFileId))
 				return BadRequest("A leaderboard for this spawnset already exists.");
@@ -132,6 +136,8 @@ namespace DevilDaggersWebsite.Api
 			_dbContext.CustomLeaderboards.Add(customLeaderboard);
 			_dbContext.SaveChanges();
 
+			await _auditLogger.LogCreate(User, nameof(CustomLeaderboard), customLeaderboard.Id, addCustomLeaderboard);
+
 			return Ok(customLeaderboard.Id);
 		}
 
@@ -141,7 +147,7 @@ namespace DevilDaggersWebsite.Api
 		[ProducesResponseType(StatusCodes.Status400BadRequest)]
 		[ProducesResponseType(StatusCodes.Status404NotFound)]
 		[EndpointConsumer(EndpointConsumers.Admin)]
-		public ActionResult EditCustomLeaderboard(int id, EditCustomLeaderboard editCustomLeaderboard)
+		public async Task<ActionResult> EditCustomLeaderboard(int id, EditCustomLeaderboard editCustomLeaderboard)
 		{
 			if (editCustomLeaderboard.Category.IsAscending())
 			{
@@ -189,6 +195,17 @@ namespace DevilDaggersWebsite.Api
 			if (spawnset.TimerStart != 0)
 				return BadRequest("Cannot create a leaderboard for spawnset that uses the TimerStart value. This value is meant for practice and it is confusing to use it with custom leaderboards, as custom leaderboards always use the 'actual' timer value.");
 
+			EditCustomLeaderboard logDto = new()
+			{
+				Category = customLeaderboard.Category,
+				TimeBronze = customLeaderboard.TimeBronze,
+				TimeSilver = customLeaderboard.TimeSilver,
+				TimeGolden = customLeaderboard.TimeGolden,
+				TimeDevil = customLeaderboard.TimeDevil,
+				TimeLeviathan = customLeaderboard.TimeLeviathan,
+				IsArchived = customLeaderboard.IsArchived,
+			};
+
 			customLeaderboard.Category = editCustomLeaderboard.Category;
 			customLeaderboard.TimeBronze = editCustomLeaderboard.TimeBronze;
 			customLeaderboard.TimeSilver = editCustomLeaderboard.TimeSilver;
@@ -197,6 +214,8 @@ namespace DevilDaggersWebsite.Api
 			customLeaderboard.TimeLeviathan = editCustomLeaderboard.TimeLeviathan;
 			customLeaderboard.IsArchived = editCustomLeaderboard.IsArchived;
 			_dbContext.SaveChanges();
+
+			await _auditLogger.LogEdit(User, nameof(CustomLeaderboard), customLeaderboard.Id, logDto, editCustomLeaderboard);
 
 			return Ok();
 		}
@@ -207,7 +226,7 @@ namespace DevilDaggersWebsite.Api
 		[ProducesResponseType(StatusCodes.Status400BadRequest)]
 		[ProducesResponseType(StatusCodes.Status404NotFound)]
 		[EndpointConsumer(EndpointConsumers.None)]
-		public ActionResult DeleteSpawnset(int id)
+		public async Task<ActionResult> DeleteSpawnset(int id)
 		{
 			CustomLeaderboard? customLeaderboard = _dbContext.CustomLeaderboards.FirstOrDefault(cl => cl.Id == id);
 			if (customLeaderboard == null)
@@ -218,6 +237,8 @@ namespace DevilDaggersWebsite.Api
 
 			_dbContext.CustomLeaderboards.Remove(customLeaderboard);
 			_dbContext.SaveChanges();
+
+			await _auditLogger.LogDelete(User, nameof(CustomLeaderboard), customLeaderboard.Id, customLeaderboard);
 
 			return Ok();
 		}

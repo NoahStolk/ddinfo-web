@@ -150,7 +150,11 @@ namespace DevilDaggersWebsite.Singletons
 		{
 			Dictionary<string, string> dict = new();
 			foreach (PropertyInfo pi in obj.GetType().GetProperties())
+			{
+				// TODO: For entities; ignore navigation properties by continuing if property has ForeignKey attribute.
 				dict.Add(pi.Name, pi.GetValue(obj)?.ToString() ?? string.Empty);
+			}
+
 			return dict;
 		}
 	}
