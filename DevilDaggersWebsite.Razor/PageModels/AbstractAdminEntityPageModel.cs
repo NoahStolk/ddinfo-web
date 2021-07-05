@@ -2,6 +2,7 @@
 using DevilDaggersWebsite.Entities;
 using DevilDaggersWebsite.Singletons;
 using Microsoft.AspNetCore.Hosting;
+using Microsoft.AspNetCore.Mvc.RazorPages;
 using Microsoft.EntityFrameworkCore;
 using System;
 using System.Collections.Generic;
@@ -10,7 +11,7 @@ using System.Text;
 
 namespace DevilDaggersWebsite.Razor.PageModels
 {
-	public abstract class AbstractAdminEntityPageModel<TEntity> : AbstractAdminPageModel
+	public abstract class AbstractAdminEntityPageModel<TEntity> : PageModel
 		where TEntity : class, IEntity
 	{
 		private const int _loggingMax = 60;
