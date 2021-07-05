@@ -168,6 +168,10 @@ namespace DevilDaggersWebsite.Singletons
 				if (pi.GetCustomAttribute<ForeignKeyAttribute>() != null)
 					continue;
 
+				// Ignore navigation properties by continuing if property is generic List.
+				if (pi.PropertyType.IsGenericType && pi.PropertyType.GetGenericTypeDefinition() == typeof(List<>))
+					continue;
+
 				dict.Add(pi.Name, pi.GetValue(obj)?.ToString() ?? string.Empty);
 			}
 
