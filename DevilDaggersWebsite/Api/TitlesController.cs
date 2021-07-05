@@ -2,12 +2,14 @@
 using DevilDaggersWebsite.Authorization;
 using DevilDaggersWebsite.Dto.Titles;
 using DevilDaggersWebsite.Entities;
+using DevilDaggersWebsite.Singletons;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.EntityFrameworkCore;
 using System.Collections.Generic;
 using System.Linq;
+using System.Threading.Tasks;
 
 namespace DevilDaggersWebsite.Api
 {
@@ -16,10 +18,12 @@ namespace DevilDaggersWebsite.Api
 	public class TitlesController : ControllerBase
 	{
 		private readonly ApplicationDbContext _dbContext;
+		private readonly AuditLogger _auditLogger;
 
-		public TitlesController(ApplicationDbContext dbContext)
+		public TitlesController(ApplicationDbContext dbContext, AuditLogger auditLogger)
 		{
 			_dbContext = dbContext;
+			_auditLogger = auditLogger;
 		}
 
 		[HttpGet]
@@ -46,7 +50,7 @@ namespace DevilDaggersWebsite.Api
 		[ProducesResponseType(StatusCodes.Status200OK)]
 		[ProducesResponseType(StatusCodes.Status400BadRequest)]
 		[EndpointConsumer(EndpointConsumers.None)]
-		public ActionResult AddTitle(AddTitle addTitle)
+		public async Task<ActionResult> AddTitle(AddTitle addTitle)
 		{
 			foreach (int playerId in addTitle.PlayerIds ?? new())
 			{
@@ -64,6 +68,8 @@ namespace DevilDaggersWebsite.Api
 			UpdateManyToManyRelations(addTitle.PlayerIds ?? new(), title.Id);
 			_dbContext.SaveChanges();
 
+			await _auditLogger.LogAdd(addTitle, User, title.Id);
+
 			return Ok(title.Id);
 		}
 
@@ -73,7 +79,7 @@ namespace DevilDaggersWebsite.Api
 		[ProducesResponseType(StatusCodes.Status400BadRequest)]
 		[ProducesResponseType(StatusCodes.Status404NotFound)]
 		[EndpointConsumer(EndpointConsumers.None)]
-		public ActionResult EditTitle(int id, EditTitle editTitle)
+		public async Task<ActionResult> EditTitle(int id, EditTitle editTitle)
 		{
 			foreach (int playerId in editTitle.PlayerIds ?? new())
 			{
@@ -81,14 +87,24 @@ namespace DevilDaggersWebsite.Api
 					return BadRequest($"Player with ID '{playerId}' does not exist.");
 			}
 
-			Title? title = _dbContext.Titles.FirstOrDefault(t => t.Id == id);
+			Title? title = _dbContext.Titles
+				.Include(t => t.PlayerTitles)
+				.FirstOrDefault(t => t.Id == id);
 			if (title == null)
 				return NotFound();
+
+			EditTitle logDto = new()
+			{
+				Name = title.Name,
+				PlayerIds = title.PlayerTitles.ConvertAll(pt => pt.PlayerId),
+			};
 
 			title.Name = editTitle.Name;
 
 			UpdateManyToManyRelations(editTitle.PlayerIds ?? new(), title.Id);
 			_dbContext.SaveChanges();
+
+			await _auditLogger.LogEdit(logDto, editTitle, User, title.Id);
 
 			return Ok();
 		}
@@ -98,7 +114,7 @@ namespace DevilDaggersWebsite.Api
 		[ProducesResponseType(StatusCodes.Status200OK)]
 		[ProducesResponseType(StatusCodes.Status404NotFound)]
 		[EndpointConsumer(EndpointConsumers.None)]
-		public ActionResult DeleteTitle(int id)
+		public async Task<ActionResult> DeleteTitle(int id)
 		{
 			Title? title = _dbContext.Titles
 				.Include(t => t.PlayerTitles)
@@ -108,6 +124,8 @@ namespace DevilDaggersWebsite.Api
 
 			_dbContext.Titles.Remove(title);
 			_dbContext.SaveChanges();
+
+			await _auditLogger.LogDelete(title, User, title.Id);
 
 			return Ok();
 		}
