@@ -36,14 +36,16 @@ namespace DevilDaggersWebsite.Api
 		private readonly ModHelper _modHelper;
 		private readonly ModArchiveCache _modArchiveCache;
 		private readonly DiscordLogger _discordLogger;
+		private readonly AuditLogger _auditLogger;
 
-		public ModsController(IWebHostEnvironment environment, ApplicationDbContext dbContext, ModHelper modHelper, ModArchiveCache modArchiveCache, DiscordLogger discordLogger)
+		public ModsController(IWebHostEnvironment environment, ApplicationDbContext dbContext, ModHelper modHelper, ModArchiveCache modArchiveCache, DiscordLogger discordLogger, AuditLogger auditLogger)
 		{
 			_environment = environment;
 			_dbContext = dbContext;
 			_modHelper = modHelper;
 			_modArchiveCache = modArchiveCache;
 			_discordLogger = discordLogger;
+			_auditLogger = auditLogger;
 		}
 
 		// TODO: Re-route to /public.
@@ -102,7 +104,7 @@ namespace DevilDaggersWebsite.Api
 		[ProducesResponseType(StatusCodes.Status200OK)]
 		[ProducesResponseType(StatusCodes.Status400BadRequest)]
 		[EndpointConsumer(EndpointConsumers.Admin)]
-		public ActionResult AddMod(AddMod addMod)
+		public async Task<ActionResult> AddMod(AddMod addMod)
 		{
 			if (addMod.PlayerIds == null || addMod.PlayerIds.Count == 0)
 				return BadRequest("Mod must have at least one author.");
@@ -128,6 +130,8 @@ namespace DevilDaggersWebsite.Api
 			_dbContext.AssetMods.Add(mod);
 			_dbContext.SaveChanges();
 
+			await _auditLogger.LogCreate(addMod, User, mod.Id);
+
 			return Ok(mod.Id);
 		}
 
@@ -137,7 +141,7 @@ namespace DevilDaggersWebsite.Api
 		[ProducesResponseType(StatusCodes.Status400BadRequest)]
 		[ProducesResponseType(StatusCodes.Status404NotFound)]
 		[EndpointConsumer(EndpointConsumers.None)]
-		public ActionResult EditMod(int id, EditMod editMod)
+		public async Task<ActionResult> EditMod(int id, EditMod editMod)
 		{
 			if (editMod.PlayerIds == null || editMod.PlayerIds.Count == 0)
 				return BadRequest("Mod must have at least one author.");
@@ -155,6 +159,15 @@ namespace DevilDaggersWebsite.Api
 			if (mod == null)
 				return NotFound();
 
+			EditMod logDto = new()
+			{
+				HtmlDescription = mod.HtmlDescription,
+				IsHidden = mod.IsHidden,
+				Name = mod.Name,
+				TrailerUrl = mod.TrailerUrl,
+				Url = mod.Url,
+			};
+
 			// Do not update LastUpdated. Update this value when updating the file only.
 			mod.HtmlDescription = editMod.HtmlDescription;
 			mod.IsHidden = editMod.IsHidden;
@@ -162,6 +175,27 @@ namespace DevilDaggersWebsite.Api
 			mod.TrailerUrl = editMod.TrailerUrl;
 			mod.Url = editMod.Url ?? string.Empty;
 			_dbContext.SaveChanges();
+
+			await _auditLogger.LogEdit(logDto, editMod, User, mod.Id);
+
+			return Ok();
+		}
+
+		[HttpDelete("{id}")]
+		[Authorize(Policies.AdminPolicy)]
+		[ProducesResponseType(StatusCodes.Status200OK)]
+		[ProducesResponseType(StatusCodes.Status404NotFound)]
+		[EndpointConsumer(EndpointConsumers.None)]
+		public async Task<ActionResult> DeleteMod(int id)
+		{
+			AssetMod? assetMod = _dbContext.AssetMods.FirstOrDefault(d => d.Id == id);
+			if (assetMod == null)
+				return NotFound();
+
+			_dbContext.AssetMods.Remove(assetMod);
+			_dbContext.SaveChanges();
+
+			await _auditLogger.LogDelete(assetMod, User, assetMod.Id);
 
 			return Ok();
 		}
