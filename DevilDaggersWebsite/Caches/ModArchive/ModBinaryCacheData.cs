@@ -42,12 +42,18 @@ namespace DevilDaggersWebsite.Caches.ModArchive
 			else
 				throw new InvalidModBinaryException($"Zip entry '{fileName}' must start with 'audio', 'core', or 'dd'.");
 
+			if (fileContents.Length <= 12)
+				throw new InvalidModBinaryException($"Zip entry '{fileName}' is not a valid binary; file must be at least 13 bytes in length.");
+
 			uint magic1FromFile = BitConverter.ToUInt32(fileContents, 0);
 			uint magic2FromFile = BitConverter.ToUInt32(fileContents, 4);
 			if (magic1FromFile != Magic1 || magic2FromFile != Magic2)
-				throw new InvalidModBinaryException($"Zip entry '{fileName}' is not a valid binary.");
+				throw new InvalidModBinaryException($"Zip entry '{fileName}' is not a valid binary; incorrect header values.");
 
 			uint tocSize = BitConverter.ToUInt32(fileContents, 8);
+			if (tocSize > fileContents.Length - 12)
+				throw new InvalidModBinaryException($"Zip entry '{fileName}' is not a valid binary; TOC size is larger than the remaining amount of file bytes.");
+
 			byte[] tocBuffer = new byte[tocSize];
 			Buffer.BlockCopy(fileContents, 12, tocBuffer, 0, (int)tocSize);
 
