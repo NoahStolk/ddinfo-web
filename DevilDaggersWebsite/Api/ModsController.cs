@@ -104,6 +104,9 @@ namespace DevilDaggersWebsite.Api
 			if (addMod.PlayerIds == null || addMod.PlayerIds.Count == 0)
 				return BadRequest("Mod must have at least one author.");
 
+			if (_dbContext.AssetMods.Any(m => m.Name == addMod.Name))
+				return BadRequest($"Mod with name '{addMod.Name}' already exists.");
+
 			foreach (int playerId in addMod.PlayerIds)
 			{
 				if (!_dbContext.Players.Any(p => p.Id == playerId))
@@ -136,6 +139,9 @@ namespace DevilDaggersWebsite.Api
 		{
 			if (editMod.PlayerIds == null || editMod.PlayerIds.Count == 0)
 				return BadRequest("Mod must have at least one author.");
+
+			if (_dbContext.AssetMods.Any(m => m.Name == editMod.Name))
+				return BadRequest($"Mod with name '{editMod.Name}' already exists.");
 
 			foreach (int playerId in editMod.PlayerIds)
 			{

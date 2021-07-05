@@ -96,6 +96,9 @@ namespace DevilDaggersWebsite.Api
 			if (!_dbContext.Players.Any(p => p.Id == addSpawnset.PlayerId))
 				return BadRequest($"Player with ID '{addSpawnset.PlayerId}' does not exist.");
 
+			if (_dbContext.SpawnsetFiles.Any(m => m.Name == addSpawnset.Name))
+				return BadRequest($"Spawnset with name '{addSpawnset.Name}' already exists.");
+
 			SpawnsetFile spawnset = new()
 			{
 				HtmlDescription = addSpawnset.HtmlDescription,
@@ -121,6 +124,9 @@ namespace DevilDaggersWebsite.Api
 		{
 			if (!_dbContext.Players.Any(p => p.Id == editSpawnset.PlayerId))
 				return BadRequest($"Player with ID '{editSpawnset.PlayerId}' does not exist.");
+
+			if (_dbContext.SpawnsetFiles.Any(m => m.Name == editSpawnset.Name))
+				return BadRequest($"Spawnset with name '{editSpawnset.Name}' already exists.");
 
 			SpawnsetFile? spawnset = _dbContext.SpawnsetFiles.FirstOrDefault(s => s.Id == id);
 			if (spawnset == null)
