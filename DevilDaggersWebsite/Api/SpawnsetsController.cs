@@ -110,7 +110,7 @@ namespace DevilDaggersWebsite.Api
 			_dbContext.SpawnsetFiles.Add(spawnset);
 			_dbContext.SaveChanges();
 
-			return Ok();
+			return Ok(spawnset.Id);
 		}
 
 		[HttpPut("{id}")]

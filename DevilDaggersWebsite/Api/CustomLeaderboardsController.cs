@@ -132,7 +132,7 @@ namespace DevilDaggersWebsite.Api
 			_dbContext.CustomLeaderboards.Add(customLeaderboard);
 			_dbContext.SaveChanges();
 
-			return Ok();
+			return Ok(customLeaderboard.Id);
 		}
 
 		[HttpPut("{id}")]

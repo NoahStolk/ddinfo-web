@@ -64,7 +64,7 @@ namespace DevilDaggersWebsite.Api
 			UpdateManyToManyRelations(addTitle.PlayerIds ?? new(), title.Id);
 			_dbContext.SaveChanges();
 
-			return Ok();
+			return Ok(title.Id);
 		}
 
 		[HttpPut("{id}")]

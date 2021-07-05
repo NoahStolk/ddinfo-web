@@ -70,7 +70,7 @@ namespace DevilDaggersWebsite.Api
 			_dbContext.Donations.Add(donation);
 			_dbContext.SaveChanges();
 
-			return Ok();
+			return Ok(donation.Id);
 		}
 
 		[HttpPut("{id}")]

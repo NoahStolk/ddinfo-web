@@ -128,7 +128,7 @@ namespace DevilDaggersWebsite.Api
 			_dbContext.AssetMods.Add(mod);
 			_dbContext.SaveChanges();
 
-			return Ok();
+			return Ok(mod.Id);
 		}
 
 		[HttpPut("{id}")]
