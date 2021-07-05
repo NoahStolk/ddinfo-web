@@ -97,14 +97,16 @@ namespace DevilDaggersWebsite.Singletons
 
 			static bool AreEditLogsEqual(Dictionary<string, string> oldLog, Dictionary<string, string> newLog)
 			{
-				if (oldLog.Count == newLog.Count)
+				if (oldLog.Count != newLog.Count)
+					throw new("Logs are not equal in length which should not be possible.");
+
+				foreach (KeyValuePair<string, string> kvp in oldLog)
 				{
-					foreach (KeyValuePair<string, string> oldKvp in oldLog)
-					{
-						string? newStr = newLog.ContainsKey(oldKvp.Key) ? newLog[oldKvp.Key] : null;
-						if (newStr != oldKvp.Value)
-							return false;
-					}
+					if (!newLog.ContainsKey(kvp.Key))
+						throw new($"New log does not contain property '{kvp.Key}'.");
+
+					if (newLog[kvp.Key] != kvp.Value)
+						return false;
 				}
 
 				return true;
