@@ -91,6 +91,18 @@ namespace DevilDaggersWebsite.Api
 			if (_dbContext.Players.Any(p => p.Id == addPlayer.Id))
 				return Conflict($"Player with ID '{addPlayer.Id}' already exists.");
 
+			foreach (int modId in addPlayer.AssetModIds ?? new())
+			{
+				if (!_dbContext.AssetMods.Any(m => m.Id == modId))
+					return BadRequest($"Mod with ID '{modId}' does not exist.");
+			}
+
+			foreach (int titleId in addPlayer.TitleIds ?? new())
+			{
+				if (!_dbContext.Titles.Any(t => t.Id == titleId))
+					return BadRequest($"Title with ID '{titleId}' does not exist.");
+			}
+
 			Player player = new()
 			{
 				Id = addPlayer.Id,
@@ -136,6 +148,18 @@ namespace DevilDaggersWebsite.Api
 				.FirstOrDefault(p => p.Id == id);
 			if (player == null)
 				return NotFound();
+
+			foreach (int modId in editPlayer.AssetModIds ?? new())
+			{
+				if (!_dbContext.AssetMods.Any(m => m.Id == modId))
+					return BadRequest($"Mod with ID '{modId}' does not exist.");
+			}
+
+			foreach (int titleId in editPlayer.TitleIds ?? new())
+			{
+				if (!_dbContext.Titles.Any(t => t.Id == titleId))
+					return BadRequest($"Title with ID '{titleId}' does not exist.");
+			}
 
 			EditPlayer logDto = new()
 			{
@@ -323,7 +347,7 @@ namespace DevilDaggersWebsite.Api
 
 			foreach (PlayerTitle newEntity in titleIds.ConvertAll(ti => new PlayerTitle { TitleId = ti, PlayerId = playerId }))
 			{
-				if (!_dbContext.PlayerTitles.Any(pam => pam.TitleId == newEntity.TitleId && pam.PlayerId == newEntity.PlayerId))
+				if (!_dbContext.PlayerTitles.Any(pt => pt.TitleId == newEntity.TitleId && pt.PlayerId == newEntity.PlayerId))
 					_dbContext.PlayerTitles.Add(newEntity);
 			}
 
