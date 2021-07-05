@@ -3,6 +3,7 @@ using DevilDaggersWebsite.Authorization;
 using DevilDaggersWebsite.Clients;
 using DevilDaggersWebsite.Dto.Players;
 using DevilDaggersWebsite.Entities;
+using DevilDaggersWebsite.Singletons;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
@@ -18,10 +19,12 @@ namespace DevilDaggersWebsite.Api
 	public class PlayersController : ControllerBase
 	{
 		private readonly ApplicationDbContext _dbContext;
+		private readonly AuditLogger _auditLogger;
 
-		public PlayersController(ApplicationDbContext dbContext)
+		public PlayersController(ApplicationDbContext dbContext, AuditLogger auditLogger)
 		{
 			_dbContext = dbContext;
+			_auditLogger = auditLogger;
 		}
 
 		[HttpGet]
@@ -114,6 +117,8 @@ namespace DevilDaggersWebsite.Api
 			UpdateManyToManyRelations(addPlayer.TitleIds ?? new(), addPlayer.AssetModIds ?? new(), player.Id);
 			_dbContext.SaveChanges();
 
+			await _auditLogger.LogAdd(addPlayer, User, player.Id);
+
 			return Ok(player.Id);
 		}
 
@@ -125,9 +130,30 @@ namespace DevilDaggersWebsite.Api
 		[EndpointConsumer(EndpointConsumers.Admin)]
 		public async Task<ActionResult> EditPlayer(int id, EditPlayer editPlayer)
 		{
-			Player? player = _dbContext.Players.FirstOrDefault(p => p.Id == id);
+			Player? player = _dbContext.Players
+				.Include(p => p.PlayerAssetMods)
+				.Include(p => p.PlayerTitles)
+				.FirstOrDefault(p => p.Id == id);
 			if (player == null)
 				return NotFound();
+
+			EditPlayer logDto = new()
+			{
+				PlayerName = player.PlayerName,
+				CountryCode = player.CountryCode,
+				Dpi = player.Dpi,
+				InGameSens = player.InGameSens,
+				Fov = player.Fov,
+				IsRightHanded = player.IsRightHanded,
+				HasFlashHandEnabled = player.HasFlashHandEnabled,
+				Gamma = player.Gamma,
+				UsesLegacyAudio = player.UsesLegacyAudio,
+				HideSettings = player.HideSettings,
+				HideDonations = player.HideDonations,
+				HidePastUsernames = player.HidePastUsernames,
+				AssetModIds = player.PlayerAssetMods.ConvertAll(pam => pam.AssetModId),
+				TitleIds = player.PlayerTitles.ConvertAll(pt => pt.TitleId),
+			};
 
 			player.PlayerName = string.IsNullOrWhiteSpace(editPlayer.PlayerName) ? await GetPlayerNameOrDefault(id, player.PlayerName) : editPlayer.PlayerName;
 			player.CountryCode = editPlayer.CountryCode;
@@ -144,6 +170,8 @@ namespace DevilDaggersWebsite.Api
 
 			UpdateManyToManyRelations(editPlayer.TitleIds ?? new(), editPlayer.AssetModIds ?? new(), player.Id);
 			_dbContext.SaveChanges();
+
+			await _auditLogger.LogEdit(logDto, editPlayer, User, player.Id);
 
 			return Ok();
 		}
@@ -251,7 +279,7 @@ namespace DevilDaggersWebsite.Api
 		[ProducesResponseType(StatusCodes.Status400BadRequest)]
 		[ProducesResponseType(StatusCodes.Status404NotFound)]
 		[EndpointConsumer(EndpointConsumers.Admin)]
-		public ActionResult DeletePlayer(int id)
+		public async Task<ActionResult> DeletePlayer(int id)
 		{
 			Player? player = _dbContext.Players
 				.Include(p => p.PlayerTitles)
@@ -273,6 +301,8 @@ namespace DevilDaggersWebsite.Api
 
 			_dbContext.Players.Remove(player);
 			_dbContext.SaveChanges();
+
+			await _auditLogger.LogDelete(player, User, player.Id);
 
 			return Ok();
 		}
