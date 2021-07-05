@@ -60,7 +60,7 @@ namespace DevilDaggersWebsite.Api
 		[EndpointConsumer(EndpointConsumers.Ddae | EndpointConsumers.Website)]
 		public ActionResult GetModFile([Required] string modName)
 		{
-			if (!_dbContext.AssetMods.Any(am => am.Name == modName))
+			if (!_dbContext.AssetMods.Any(m => m.Name == modName))
 				return new NotFoundObjectResult(new ProblemDetails { Title = $"Mod '{modName}' was not found." });
 
 			string fileName = $"{modName}.zip";
@@ -78,19 +78,22 @@ namespace DevilDaggersWebsite.Api
 		[EndpointConsumer(EndpointConsumers.Admin)]
 		public List<GetMod> GetMods()
 		{
-			List<AssetMod> mods = _dbContext.AssetMods.AsNoTracking().ToList();
+			List<AssetMod> mods = _dbContext.AssetMods
+				.AsNoTracking()
+				.Include(m => m.PlayerAssetMods)
+				.ToList();
 
-			return mods.ConvertAll(ce => new GetMod
+			return mods.ConvertAll(m => new GetMod
 			{
-				Id = ce.Id,
-				AssetModTypes = ce.AssetModTypes,
-				HtmlDescription = ce.HtmlDescription,
-				IsHidden = ce.IsHidden,
-				LastUpdated = ce.LastUpdated,
-				Name = ce.Name,
-				PlayerIds = ce.PlayerAssetMods.ConvertAll(pam => pam.PlayerId),
-				TrailerUrl = ce.TrailerUrl,
-				Url = ce.Url,
+				Id = m.Id,
+				AssetModTypes = m.AssetModTypes,
+				HtmlDescription = m.HtmlDescription,
+				IsHidden = m.IsHidden,
+				LastUpdated = m.LastUpdated,
+				Name = m.Name,
+				PlayerIds = m.PlayerAssetMods.ConvertAll(pam => pam.PlayerId),
+				TrailerUrl = m.TrailerUrl,
+				Url = m.Url,
 			});
 		}
 
