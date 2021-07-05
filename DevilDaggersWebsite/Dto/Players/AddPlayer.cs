@@ -5,6 +5,7 @@ namespace DevilDaggersWebsite.Dto.Players
 {
 	public class AddPlayer
 	{
+		[Range(1, 9999999)]
 		public int Id { get; init; }
 
 		[StringLength(32)]
