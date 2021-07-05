@@ -73,7 +73,7 @@ namespace DevilDaggersWebsite.Api
 
 		[HttpPost]
 		[Authorize(Policies.AdminPolicy)]
-		[ProducesResponseType(StatusCodes.Status200OK)]
+		[ProducesResponseType(StatusCodes.Status201Created)]
 		[ProducesResponseType(StatusCodes.Status400BadRequest)]
 		[EndpointConsumer(EndpointConsumers.None)]
 		public async Task<ActionResult> AddCustomEntry(AddCustomEntry addCustomEntry)
@@ -111,7 +111,7 @@ namespace DevilDaggersWebsite.Api
 
 			await _auditLogger.LogCreate(User, nameof(CustomEntry), customEntry.Id, addCustomEntry);
 
-			return Ok();
+			return Created(string.Empty, customEntry.Id);
 		}
 
 		[HttpPut("{id}")]
