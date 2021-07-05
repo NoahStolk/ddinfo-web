@@ -20,7 +20,7 @@
 
 <p>Notes</p>
 <ul>
-	<li>File must not be larger than 1 MiB (@($"{ModScreenshotConstants.MaxFileSize:n0}") bytes) in length.</li>
+	<li>File must not be larger than @(ModScreenshotConstants.MaxFileSize / 1024 / 1024) MiB (@($"{ModScreenshotConstants.MaxFileSize:n0}") bytes) in length.</li>
 	<li>File name must not be over @ModScreenshotConstants.MaxFileNameLength characters in length.</li>
 	<li>File must be a .png file.</li>
 	<li>File name must be unique.</li>
