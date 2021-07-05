@@ -1,9 +1,11 @@
 ﻿using DevilDaggersCore.Spawnsets;
 using DevilDaggersWebsite.Api.Attributes;
+using DevilDaggersWebsite.Authorization;
 using DevilDaggersWebsite.Dto.CustomLeaderboards;
 using DevilDaggersWebsite.Entities;
 using DevilDaggersWebsite.Enumerators;
 using DevilDaggersWebsite.Extensions;
+using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Hosting;
 using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
@@ -29,7 +31,7 @@ namespace DevilDaggersWebsite.Api
 		}
 
 		[HttpGet]
-		//[Authorize(Policies.CustomLeaderboardsPolicy)]
+		[Authorize(Policies.CustomLeaderboardsPolicy)]
 		[ProducesResponseType(StatusCodes.Status200OK)]
 		[EndpointConsumer(EndpointConsumers.Admin)]
 		public ActionResult<List<GetCustomLeaderboard>> GetCustomLeaderboards()
@@ -44,7 +46,7 @@ namespace DevilDaggersWebsite.Api
 		}
 
 		[HttpGet("{id}")]
-		//[Authorize(Policies.CustomLeaderboardsPolicy)]
+		[Authorize(Policies.CustomLeaderboardsPolicy)]
 		[ProducesResponseType(StatusCodes.Status200OK)]
 		[ProducesResponseType(StatusCodes.Status404NotFound)]
 		[EndpointConsumer(EndpointConsumers.Admin)]
@@ -64,7 +66,7 @@ namespace DevilDaggersWebsite.Api
 		}
 
 		[HttpPost]
-		//[Authorize(Policies.CustomLeaderboardsPolicy)]
+		[Authorize(Policies.CustomLeaderboardsPolicy)]
 		[ProducesResponseType(StatusCodes.Status200OK)]
 		[ProducesResponseType(StatusCodes.Status400BadRequest)]
 		[EndpointConsumer(EndpointConsumers.Admin)]
@@ -134,7 +136,7 @@ namespace DevilDaggersWebsite.Api
 		}
 
 		[HttpPut("{id}")]
-		//[Authorize(Policies.CustomLeaderboardsPolicy)]
+		[Authorize(Policies.CustomLeaderboardsPolicy)]
 		[ProducesResponseType(StatusCodes.Status200OK)]
 		[ProducesResponseType(StatusCodes.Status400BadRequest)]
 		[ProducesResponseType(StatusCodes.Status404NotFound)]
@@ -200,7 +202,7 @@ namespace DevilDaggersWebsite.Api
 		}
 
 		[HttpDelete("{id}")]
-		//[Authorize(Policies.CustomLeaderboardsPolicy)]
+		[Authorize(Policies.CustomLeaderboardsPolicy)]
 		[ProducesResponseType(StatusCodes.Status200OK)]
 		[ProducesResponseType(StatusCodes.Status400BadRequest)]
 		[ProducesResponseType(StatusCodes.Status404NotFound)]

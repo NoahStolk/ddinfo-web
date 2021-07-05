@@ -1,4 +1,5 @@
 ﻿using DevilDaggersWebsite.Api.Attributes;
+using DevilDaggersWebsite.Authorization;
 using DevilDaggersWebsite.Caches.ModArchive;
 using DevilDaggersWebsite.Constants;
 using DevilDaggersWebsite.Dto.Mods;
@@ -9,6 +10,7 @@ using DevilDaggersWebsite.Extensions;
 using DevilDaggersWebsite.HostedServices.DdInfoDiscordBot;
 using DevilDaggersWebsite.Singletons;
 using DevilDaggersWebsite.Transients;
+using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Hosting;
 using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
@@ -51,9 +53,27 @@ namespace DevilDaggersWebsite.Api
 		public List<GetPublicMod> GetPublicMods(string? authorFilter = null, string? nameFilter = null, bool? isHostedFilter = null)
 			=> _modHelper.GetPublicMods(authorFilter, nameFilter, isHostedFilter);
 
+		[HttpGet("{modName}/file")]
+		[ProducesResponseType(typeof(FileContentResult), StatusCodes.Status200OK)]
+		[ProducesResponseType(StatusCodes.Status400BadRequest)]
+		[ProducesResponseType(StatusCodes.Status404NotFound)]
+		[EndpointConsumer(EndpointConsumers.Ddae | EndpointConsumers.Website)]
+		public ActionResult GetModFile([Required] string modName)
+		{
+			if (!_dbContext.AssetMods.Any(am => am.Name == modName))
+				return new NotFoundObjectResult(new ProblemDetails { Title = $"Mod '{modName}' was not found." });
+
+			string fileName = $"{modName}.zip";
+			string path = Path.Combine("mods", fileName);
+			if (!Io.File.Exists(Path.Combine(_environment.WebRootPath, path)))
+				return new BadRequestObjectResult(new ProblemDetails { Title = $"Mod file '{fileName}' does not exist." });
+
+			return File(Io.File.ReadAllBytes(Path.Combine(_environment.WebRootPath, path)), MediaTypeNames.Application.Zip, fileName);
+		}
+
 		// TODO: Remove private.
 		[HttpGet("private")]
-		//[Authorize(Policies.AssetModsPolicy)]
+		[Authorize(Policies.AssetModsPolicy)]
 		[ProducesResponseType(StatusCodes.Status200OK)]
 		[EndpointConsumer(EndpointConsumers.Admin)]
 		public List<GetMod> GetMods()
@@ -74,26 +94,8 @@ namespace DevilDaggersWebsite.Api
 			});
 		}
 
-		[HttpGet("{modName}/file")]
-		[ProducesResponseType(typeof(FileContentResult), StatusCodes.Status200OK)]
-		[ProducesResponseType(StatusCodes.Status400BadRequest)]
-		[ProducesResponseType(StatusCodes.Status404NotFound)]
-		[EndpointConsumer(EndpointConsumers.Ddae | EndpointConsumers.Website)]
-		public ActionResult GetModFile([Required] string modName)
-		{
-			if (!_dbContext.AssetMods.Any(am => am.Name == modName))
-				return new NotFoundObjectResult(new ProblemDetails { Title = $"Mod '{modName}' was not found." });
-
-			string fileName = $"{modName}.zip";
-			string path = Path.Combine("mods", fileName);
-			if (!Io.File.Exists(Path.Combine(_environment.WebRootPath, path)))
-				return new BadRequestObjectResult(new ProblemDetails { Title = $"Mod file '{fileName}' does not exist." });
-
-			return File(Io.File.ReadAllBytes(Path.Combine(_environment.WebRootPath, path)), MediaTypeNames.Application.Zip, fileName);
-		}
-
 		[HttpPost]
-		//[Authorize(Policies.AssetModsPolicy)]
+		[Authorize(Policies.AssetModsPolicy)]
 		[ProducesResponseType(StatusCodes.Status200OK)]
 		[ProducesResponseType(StatusCodes.Status400BadRequest)]
 		[EndpointConsumer(EndpointConsumers.Admin)]
@@ -125,7 +127,7 @@ namespace DevilDaggersWebsite.Api
 		}
 
 		[HttpPut("{id}")]
-		//[Authorize(Policies.SpawnsetsPolicy)]
+		[Authorize(Policies.AssetModsPolicy)]
 		[ProducesResponseType(StatusCodes.Status200OK)]
 		[ProducesResponseType(StatusCodes.Status400BadRequest)]
 		[ProducesResponseType(StatusCodes.Status404NotFound)]
@@ -157,7 +159,7 @@ namespace DevilDaggersWebsite.Api
 		}
 
 		[HttpPost("upload-file")]
-		//[Authorize(Policies.AssetModsPolicy)]
+		[Authorize(Policies.AssetModsPolicy)]
 		[ProducesResponseType(StatusCodes.Status200OK)]
 		[ProducesResponseType(StatusCodes.Status400BadRequest)]
 		[EndpointConsumer(EndpointConsumers.Admin)]
@@ -234,7 +236,7 @@ namespace DevilDaggersWebsite.Api
 		}
 
 		[HttpDelete("delete-file")]
-		//[Authorize(Policies.AssetModsPolicy)]
+		[Authorize(Policies.AssetModsPolicy)]
 		[ProducesResponseType(StatusCodes.Status200OK)]
 		[ProducesResponseType(StatusCodes.Status400BadRequest)]
 		[EndpointConsumer(EndpointConsumers.Admin)]
@@ -260,7 +262,7 @@ namespace DevilDaggersWebsite.Api
 		}
 
 		[HttpPost("upload-screenshot")]
-		//[Authorize(Policies.AssetModsPolicy)]
+		[Authorize(Policies.AssetModsPolicy)]
 		[ProducesResponseType(StatusCodes.Status200OK)]
 		[ProducesResponseType(StatusCodes.Status400BadRequest)]
 		[EndpointConsumer(EndpointConsumers.Admin)]
@@ -308,7 +310,7 @@ namespace DevilDaggersWebsite.Api
 		}
 
 		[HttpDelete("delete-screenshot")]
-		//[Authorize(Policies.AssetModsPolicy)]
+		[Authorize(Policies.AssetModsPolicy)]
 		[ProducesResponseType(StatusCodes.Status200OK)]
 		[ProducesResponseType(StatusCodes.Status400BadRequest)]
 		[EndpointConsumer(EndpointConsumers.Admin)]

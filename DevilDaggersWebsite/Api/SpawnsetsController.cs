@@ -1,5 +1,6 @@
 ﻿using DevilDaggersCore.Spawnsets;
 using DevilDaggersWebsite.Api.Attributes;
+using DevilDaggersWebsite.Authorization;
 using DevilDaggersWebsite.Caches.SpawnsetHash;
 using DevilDaggersWebsite.Constants;
 using DevilDaggersWebsite.Dto.Spawnsets;
@@ -8,6 +9,7 @@ using DevilDaggersWebsite.Extensions;
 using DevilDaggersWebsite.HostedServices.DdInfoDiscordBot;
 using DevilDaggersWebsite.Singletons;
 using DevilDaggersWebsite.Transients;
+using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Hosting;
 using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
@@ -65,7 +67,7 @@ namespace DevilDaggersWebsite.Api
 
 		// TODO: Remove private.
 		[HttpGet("private")]
-		//[Authorize(Policies.SpawnsetsPolicy)]
+		[Authorize(Policies.SpawnsetsPolicy)]
 		[ProducesResponseType(StatusCodes.Status200OK)]
 		[EndpointConsumer(EndpointConsumers.Admin)]
 		public List<GetSpawnset> GetSpawnsets()
@@ -85,7 +87,7 @@ namespace DevilDaggersWebsite.Api
 		}
 
 		[HttpPost]
-		//[Authorize(Policies.SpawnsetsPolicy)]
+		[Authorize(Policies.SpawnsetsPolicy)]
 		[ProducesResponseType(StatusCodes.Status200OK)]
 		[ProducesResponseType(StatusCodes.Status400BadRequest)]
 		[EndpointConsumer(EndpointConsumers.Admin)]
@@ -110,7 +112,7 @@ namespace DevilDaggersWebsite.Api
 		}
 
 		[HttpPut("{id}")]
-		//[Authorize(Policies.SpawnsetsPolicy)]
+		[Authorize(Policies.SpawnsetsPolicy)]
 		[ProducesResponseType(StatusCodes.Status200OK)]
 		[ProducesResponseType(StatusCodes.Status400BadRequest)]
 		[ProducesResponseType(StatusCodes.Status404NotFound)]
@@ -136,7 +138,7 @@ namespace DevilDaggersWebsite.Api
 		}
 
 		[HttpDelete("{id}")]
-		//[Authorize(Policies.SpawnsetsPolicy)]
+		[Authorize(Policies.SpawnsetsPolicy)]
 		[ProducesResponseType(StatusCodes.Status200OK)]
 		[ProducesResponseType(StatusCodes.Status400BadRequest)]
 		[ProducesResponseType(StatusCodes.Status404NotFound)]
@@ -157,7 +159,7 @@ namespace DevilDaggersWebsite.Api
 		}
 
 		[HttpPost("upload-file")]
-		//[Authorize(Policies.SpawnsetsPolicy)]
+		[Authorize(Policies.SpawnsetsPolicy)]
 		[ProducesResponseType(StatusCodes.Status200OK)]
 		[ProducesResponseType(StatusCodes.Status400BadRequest)]
 		[EndpointConsumer(EndpointConsumers.Admin)]
@@ -198,7 +200,7 @@ namespace DevilDaggersWebsite.Api
 		}
 
 		[HttpDelete("delete-file")]
-		//[Authorize(Policies.AssetModsPolicy)]
+		[Authorize(Policies.SpawnsetsPolicy)]
 		[ProducesResponseType(StatusCodes.Status200OK)]
 		[ProducesResponseType(StatusCodes.Status400BadRequest)]
 		[EndpointConsumer(EndpointConsumers.Admin)]
