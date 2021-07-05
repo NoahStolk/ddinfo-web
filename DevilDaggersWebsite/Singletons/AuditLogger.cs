@@ -2,6 +2,7 @@
 using DevilDaggersWebsite.Extensions;
 using DevilDaggersWebsite.HostedServices.DdInfoDiscordBot;
 using System.Collections.Generic;
+using System.Reflection;
 using System.Security.Claims;
 using System.Text;
 using System.Threading.Tasks;
@@ -131,5 +132,14 @@ namespace DevilDaggersWebsite.Singletons
 
 		private static StringBuilder GetAuditLogger(string action, ClaimsPrincipal claimsPrincipal, string nameOfEntity, int id)
 			=> new($"`{action}` by `{claimsPrincipal.GetShortName()}` for `{nameOfEntity}` `{id}`\n");
+
+		public static Dictionary<string, string> GetLog<T>(T obj)
+			where T : notnull
+		{
+			Dictionary<string, string> dict = new();
+			foreach (PropertyInfo pi in obj.GetType().GetProperties())
+				dict.Add(pi.Name, pi.GetValue(obj)?.ToString() ?? string.Empty);
+			return dict;
+		}
 	}
 }

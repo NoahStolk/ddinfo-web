@@ -28,13 +28,15 @@ namespace DevilDaggersWebsite.Api
 		private readonly IToolHelper _toolHelper;
 		private readonly DiscordLogger _discordLogger;
 		private readonly SpawnsetHashCache _spawnsetHashCache;
+		private readonly AuditLogger _auditLogger;
 
-		public CustomEntriesController(ApplicationDbContext dbContext, IToolHelper toolHelper, DiscordLogger discordLogger, SpawnsetHashCache spawnsetHashCache)
+		public CustomEntriesController(ApplicationDbContext dbContext, IToolHelper toolHelper, DiscordLogger discordLogger, SpawnsetHashCache spawnsetHashCache, AuditLogger auditLogger)
 		{
 			_dbContext = dbContext;
 			_toolHelper = toolHelper;
 			_discordLogger = discordLogger;
 			_spawnsetHashCache = spawnsetHashCache;
+			_auditLogger = auditLogger;
 		}
 
 		[HttpGet]
@@ -74,7 +76,7 @@ namespace DevilDaggersWebsite.Api
 		[ProducesResponseType(StatusCodes.Status200OK)]
 		[ProducesResponseType(StatusCodes.Status400BadRequest)]
 		[EndpointConsumer(EndpointConsumers.None)]
-		public ActionResult AddCustomEntry(AddCustomEntry addCustomEntry)
+		public async Task<ActionResult> AddCustomEntry(AddCustomEntry addCustomEntry)
 		{
 			if (!_dbContext.Players.Any(p => p.Id == addCustomEntry.PlayerId))
 				return BadRequest($"Player with ID '{addCustomEntry.PlayerId}' does not exist.");
@@ -107,6 +109,8 @@ namespace DevilDaggersWebsite.Api
 			_dbContext.CustomEntries.Add(customEntry);
 			_dbContext.SaveChanges();
 
+			await _auditLogger.LogCreate(User, nameof(CustomEntry), customEntry.Id, AuditLogger.GetLog(addCustomEntry));
+
 			return Ok();
 		}
 
@@ -116,7 +120,7 @@ namespace DevilDaggersWebsite.Api
 		[ProducesResponseType(StatusCodes.Status400BadRequest)]
 		[ProducesResponseType(StatusCodes.Status404NotFound)]
 		[EndpointConsumer(EndpointConsumers.None)]
-		public ActionResult EditCustomEntry(int id, EditCustomEntry editCustomEntry)
+		public async Task<ActionResult> EditCustomEntry(int id, EditCustomEntry editCustomEntry)
 		{
 			if (!_dbContext.Players.Any(p => p.Id == editCustomEntry.PlayerId))
 				return BadRequest($"Player with ID '{editCustomEntry.PlayerId}' does not exist.");
@@ -149,6 +153,8 @@ namespace DevilDaggersWebsite.Api
 			customEntry.Time = editCustomEntry.Time;
 			_dbContext.SaveChanges();
 
+			await _auditLogger.LogEdit(User, nameof(CustomEntry), customEntry.Id, AuditLogger.GetLog(customEntry), AuditLogger.GetLog(editCustomEntry));
+
 			return Ok();
 		}
 
@@ -157,7 +163,7 @@ namespace DevilDaggersWebsite.Api
 		[ProducesResponseType(StatusCodes.Status200OK)]
 		[ProducesResponseType(StatusCodes.Status404NotFound)]
 		[EndpointConsumer(EndpointConsumers.None)]
-		public ActionResult DeleteCustomEntry(int id)
+		public async Task<ActionResult> DeleteCustomEntry(int id)
 		{
 			CustomEntry? customEntry = _dbContext.CustomEntries.FirstOrDefault(ced => ced.Id == id);
 			if (customEntry == null)
@@ -169,6 +175,8 @@ namespace DevilDaggersWebsite.Api
 
 			_dbContext.CustomEntries.Remove(customEntry);
 			_dbContext.SaveChanges();
+
+			await _auditLogger.LogDelete(User, nameof(CustomEntry), customEntry.Id, AuditLogger.GetLog(customEntry));
 
 			return Ok();
 		}
