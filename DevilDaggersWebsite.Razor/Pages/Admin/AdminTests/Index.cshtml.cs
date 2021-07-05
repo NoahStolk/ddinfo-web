@@ -5,7 +5,6 @@ using DevilDaggersWebsite.Caches.SpawnsetData;
 using DevilDaggersWebsite.Caches.SpawnsetHash;
 using DevilDaggersWebsite.HostedServices.DdInfoDiscordBot;
 using DevilDaggersWebsite.Singletons;
-using DSharpPlus.Entities;
 using Microsoft.AspNetCore.Mvc.RazorPages;
 using System.Threading.Tasks;
 
@@ -56,31 +55,5 @@ namespace DevilDaggersWebsite.Razor.Pages.Admin.AdminTests
 
 		public void OnPostClearSpawnsetHashCache()
 			=> _spawnsetHashCache.Clear();
-
-		public async Task OnPostTestColors()
-		{
-			for (int i = 0; i < 6; i++)
-			{
-				DiscordColor color = DiscordColors.Default;
-				int time = i * 10000;
-				if (time >= 50000)
-					color = DiscordColors.Leviathan;
-				else if (time >= 40000)
-					color = DiscordColors.Devil;
-				else if (time >= 30000)
-					color = DiscordColors.Golden;
-				else if (time >= 20000)
-					color = DiscordColors.Silver;
-				else if (time >= 10000)
-					color = DiscordColors.Bronze;
-
-				DiscordEmbedBuilder builder = new()
-				{
-					Title = "Test colors",
-					Color = color,
-				};
-				await _discordLogger.TryLog(Channel.MonitoringTest, null, builder.Build());
-			}
-		}
 	}
 }
