@@ -3,12 +3,42 @@
 @using DevilDaggersWebsite.Dto.Mods
 @using DevilDaggersWebsite.Utils
 @using System.Reflection
+@using DevilDaggersWebsite.Entities
+@using Microsoft.AspNetCore.Hosting
+@using System.Collections.Generic
+@using System.IO
+@using System.Linq
 @inject DevilDaggersInfoClient Http
-@model IndexModel
+@inject ApplicationDbContext DbContext
+@inject IWebHostEnvironment Environment
 @{
 	ViewData["Title"] = "AssetMods";
 
 	PropertyInfo[] properties = ReflectionUtils.GetDtoDisplayPropertyInfos<GetMod>();
+
+	List<string> deadFiles = new();
+	List<string> deadScreenshots = new();
+
+	foreach (string path in Directory.GetFiles(System.IO.Path.Combine(Environment.WebRootPath, "mods")))
+	{
+		string fileName = System.IO.Path.GetFileNameWithoutExtension(path);
+		if (!DbContext.AssetMods.Any(am => am.Name == fileName))
+			deadFiles.Add(fileName);
+	}
+
+	List<string> directoriesScanned = new();
+	foreach (string path in Directory.GetFiles(System.IO.Path.Combine(Environment.WebRootPath, "mod-screenshots"), "*.png", SearchOption.AllDirectories))
+	{
+		string directoryName = new DirectoryInfo(path).Parent?.Name ?? throw new($"Invalid path '{path}' while scanning for dead mod screenshots.");
+
+		if (directoriesScanned.Contains(directoryName))
+			continue;
+
+		if (!DbContext.AssetMods.Any(am => am.Name == directoryName))
+			deadScreenshots.Add(System.IO.Path.Combine(directoryName, System.IO.Path.GetFileName(path)));
+
+		directoriesScanned.Add(directoryName);
+	}
 }
 
 <h1>@ViewData["Title"]</h1>
@@ -21,21 +51,21 @@
 	<li>If you want to edit or rename a mod file, you will need to delete and re-upload it.</li>
 	<li>No NSFW mods.</li>
 </ul>
-@if (Model.DeadFiles.Count > 0)
+@if (deadFiles.Count > 0)
 {
 	<h2>Dead files</h2>
 	<ul>
-		@foreach (string fileName in Model.DeadFiles)
+		@foreach (string fileName in deadFiles)
 		{
 			<li>@fileName</li>
 		}
 	</ul>
 }
-@if (Model.DeadScreenshots.Count > 0)
+@if (deadScreenshots.Count > 0)
 {
 	<h2>Dead screenshots</h2>
 	<ul>
-		@foreach (string fileName in Model.DeadScreenshots)
+		@foreach (string fileName in deadScreenshots)
 		{
 			<li>@fileName</li>
 		}
