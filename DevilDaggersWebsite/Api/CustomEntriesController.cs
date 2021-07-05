@@ -84,6 +84,9 @@ namespace DevilDaggersWebsite.Api
 			if (!_dbContext.CustomLeaderboards.Any(cl => cl.Id == addCustomEntry.CustomLeaderboardId))
 				return BadRequest($"Custom leaderboard with ID '{addCustomEntry.CustomLeaderboardId}' does not exist.");
 
+			if (_dbContext.CustomEntries.Any(cl => cl.CustomLeaderboardId == addCustomEntry.CustomLeaderboardId && cl.PlayerId == addCustomEntry.PlayerId))
+				return BadRequest("A score for this player already exists on this custom leaderboard.");
+
 			CustomEntry customEntry = new()
 			{
 				ClientVersion = addCustomEntry.ClientVersion,
