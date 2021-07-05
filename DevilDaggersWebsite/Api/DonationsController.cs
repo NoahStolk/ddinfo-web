@@ -74,7 +74,7 @@ namespace DevilDaggersWebsite.Api
 			_dbContext.Donations.Add(donation);
 			_dbContext.SaveChanges();
 
-			await _auditLogger.LogCreate(addDonation, User, donation.Id);
+			await _auditLogger.LogAdd(addDonation, User, donation.Id);
 
 			return Ok(donation.Id);
 		}

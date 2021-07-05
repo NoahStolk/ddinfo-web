@@ -136,7 +136,7 @@ namespace DevilDaggersWebsite.Api
 			_dbContext.CustomLeaderboards.Add(customLeaderboard);
 			_dbContext.SaveChanges();
 
-			await _auditLogger.LogCreate(addCustomLeaderboard, User, customLeaderboard.Id);
+			await _auditLogger.LogAdd(addCustomLeaderboard, User, customLeaderboard.Id);
 
 			return Ok(customLeaderboard.Id);
 		}

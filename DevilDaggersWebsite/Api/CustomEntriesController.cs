@@ -112,7 +112,7 @@ namespace DevilDaggersWebsite.Api
 			_dbContext.CustomEntries.Add(customEntry);
 			_dbContext.SaveChanges();
 
-			await _auditLogger.LogCreate(addCustomEntry, User, customEntry.Id);
+			await _auditLogger.LogAdd(addCustomEntry, User, customEntry.Id);
 
 			return Ok(customEntry.Id);
 		}

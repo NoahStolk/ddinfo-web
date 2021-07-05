@@ -21,10 +21,10 @@ namespace DevilDaggersWebsite.Singletons
 			_discordLogger = discordLogger;
 		}
 
-		public async Task LogCreate<T>(T obj, ClaimsPrincipal claimsPrincipal, int id, [CallerMemberName] string endpointName = "")
+		public async Task LogAdd<T>(T obj, ClaimsPrincipal claimsPrincipal, int id, [CallerMemberName] string endpointName = "")
 			where T : notnull
 		{
-			StringBuilder auditLogger = GetAuditLogger("CREATE", claimsPrincipal, id, endpointName);
+			StringBuilder auditLogger = GetAuditLogger("ADD", claimsPrincipal, id, endpointName);
 			auditLogger.AppendLine("```diff");
 
 			const string propertyHeader = "Property";

@@ -130,7 +130,7 @@ namespace DevilDaggersWebsite.Api
 			_dbContext.AssetMods.Add(mod);
 			_dbContext.SaveChanges();
 
-			await _auditLogger.LogCreate(addMod, User, mod.Id);
+			await _auditLogger.LogAdd(addMod, User, mod.Id);
 
 			return Ok(mod.Id);
 		}
