@@ -136,7 +136,7 @@ namespace DevilDaggersWebsite.Api
 			_dbContext.CustomLeaderboards.Add(customLeaderboard);
 			_dbContext.SaveChanges();
 
-			await _auditLogger.LogCreate(User, nameof(CustomLeaderboard), customLeaderboard.Id, addCustomLeaderboard);
+			await _auditLogger.LogCreate(addCustomLeaderboard, User, customLeaderboard.Id);
 
 			return Ok(customLeaderboard.Id);
 		}
@@ -215,7 +215,7 @@ namespace DevilDaggersWebsite.Api
 			customLeaderboard.IsArchived = editCustomLeaderboard.IsArchived;
 			_dbContext.SaveChanges();
 
-			await _auditLogger.LogEdit(User, nameof(CustomLeaderboard), customLeaderboard.Id, logDto, editCustomLeaderboard);
+			await _auditLogger.LogEdit(logDto, editCustomLeaderboard, User, customLeaderboard.Id);
 
 			return Ok();
 		}
@@ -238,7 +238,7 @@ namespace DevilDaggersWebsite.Api
 			_dbContext.CustomLeaderboards.Remove(customLeaderboard);
 			_dbContext.SaveChanges();
 
-			await _auditLogger.LogDelete(User, nameof(CustomLeaderboard), customLeaderboard.Id, customLeaderboard);
+			await _auditLogger.LogDelete(customLeaderboard, User, customLeaderboard.Id);
 
 			return Ok();
 		}

@@ -112,7 +112,7 @@ namespace DevilDaggersWebsite.Api
 			_dbContext.CustomEntries.Add(customEntry);
 			_dbContext.SaveChanges();
 
-			await _auditLogger.LogCreate(User, nameof(CustomEntry), customEntry.Id, addCustomEntry);
+			await _auditLogger.LogCreate(addCustomEntry, User, customEntry.Id);
 
 			return Ok(customEntry.Id);
 		}
@@ -179,7 +179,7 @@ namespace DevilDaggersWebsite.Api
 			customEntry.Time = editCustomEntry.Time;
 			_dbContext.SaveChanges();
 
-			await _auditLogger.LogEdit(User, nameof(CustomEntry), customEntry.Id, logDto, editCustomEntry);
+			await _auditLogger.LogEdit(logDto, editCustomEntry, User, customEntry.Id);
 
 			return Ok();
 		}
@@ -202,7 +202,7 @@ namespace DevilDaggersWebsite.Api
 			_dbContext.CustomEntries.Remove(customEntry);
 			_dbContext.SaveChanges();
 
-			await _auditLogger.LogDelete(User, nameof(CustomEntry), customEntry.Id, customEntry);
+			await _auditLogger.LogDelete(customEntry, User, customEntry.Id);
 
 			return Ok();
 		}

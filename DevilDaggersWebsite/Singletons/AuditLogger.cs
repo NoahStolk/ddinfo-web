@@ -3,6 +3,7 @@ using DevilDaggersWebsite.Extensions;
 using DevilDaggersWebsite.HostedServices.DdInfoDiscordBot;
 using System.Collections.Generic;
 using System.Reflection;
+using System.Runtime.CompilerServices;
 using System.Security.Claims;
 using System.Text;
 using System.Threading.Tasks;
@@ -20,10 +21,10 @@ namespace DevilDaggersWebsite.Singletons
 			_discordLogger = discordLogger;
 		}
 
-		public async Task LogCreate<T>(ClaimsPrincipal claimsPrincipal, string nameOfEntity, int id, T obj)
+		public async Task LogCreate<T>(T obj, ClaimsPrincipal claimsPrincipal, int id, [CallerMemberName] string endpointName = "")
 			where T : notnull
 		{
-			StringBuilder auditLogger = GetAuditLogger("CREATE", claimsPrincipal, nameOfEntity, id);
+			StringBuilder auditLogger = GetAuditLogger("CREATE", claimsPrincipal, id, endpointName);
 			auditLogger.AppendLine("```diff");
 
 			const string propertyHeader = "Property";
@@ -49,10 +50,10 @@ namespace DevilDaggersWebsite.Singletons
 			await _discordLogger.TryLog(Channel.MonitoringAuditLog, auditLogger.ToString());
 		}
 
-		public async Task LogEdit<T>(ClaimsPrincipal claimsPrincipal, string nameOfEntity, int id, T oldObj, T newObj)
+		public async Task LogEdit<T>(T oldObj, T newObj, ClaimsPrincipal claimsPrincipal, int id, [CallerMemberName] string endpointName = "")
 			where T : notnull
 		{
-			StringBuilder auditLogger = GetAuditLogger("EDIT", claimsPrincipal, nameOfEntity, id);
+			StringBuilder auditLogger = GetAuditLogger("EDIT", claimsPrincipal, id, endpointName);
 
 			Dictionary<string, string> oldLog = GetLog(oldObj);
 			Dictionary<string, string> newLog = GetLog(newObj);
@@ -113,10 +114,10 @@ namespace DevilDaggersWebsite.Singletons
 			}
 		}
 
-		public async Task LogDelete<T>(ClaimsPrincipal claimsPrincipal, string nameOfEntity, int id, T obj)
+		public async Task LogDelete<T>(T obj, ClaimsPrincipal claimsPrincipal, int id, [CallerMemberName] string endpointName = "")
 			where T : notnull
 		{
-			StringBuilder auditLogger = GetAuditLogger("DELETE", claimsPrincipal, nameOfEntity, id);
+			StringBuilder auditLogger = GetAuditLogger("DELETE", claimsPrincipal, id, endpointName);
 			auditLogger.AppendLine("```diff");
 
 			const string propertyHeader = "Property";
@@ -142,8 +143,19 @@ namespace DevilDaggersWebsite.Singletons
 			await _discordLogger.TryLog(Channel.MonitoringAuditLog, auditLogger.ToString());
 		}
 
-		private static StringBuilder GetAuditLogger(string action, ClaimsPrincipal claimsPrincipal, string nameOfEntity, int id)
-			=> new($"`{action}` by `{claimsPrincipal.GetShortName()}` for `{nameOfEntity}` `{id}`\n");
+		private static StringBuilder GetAuditLogger(string action, ClaimsPrincipal claimsPrincipal, int id, string endpointName)
+			=> new($"`{action}` by `{claimsPrincipal.GetShortName()}` for `{GetEntityFromEndpointName(endpointName)}` `{id}`\n");
+
+		private static string GetEntityFromEndpointName(string endpointName)
+		{
+			if (endpointName.StartsWith("Add"))
+				return endpointName[3..];
+			if (endpointName.StartsWith("Edit"))
+				return endpointName[4..];
+			if (endpointName.StartsWith("Delete"))
+				return endpointName[6..];
+			return endpointName;
+		}
 
 		private static Dictionary<string, string> GetLog<T>(T obj)
 			where T : notnull
