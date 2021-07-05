@@ -2,6 +2,7 @@
 using DevilDaggersWebsite.Extensions;
 using DevilDaggersWebsite.HostedServices.DdInfoDiscordBot;
 using System.Collections.Generic;
+using System.ComponentModel.DataAnnotations.Schema;
 using System.Reflection;
 using System.Runtime.CompilerServices;
 using System.Security.Claims;
@@ -163,7 +164,10 @@ namespace DevilDaggersWebsite.Singletons
 			Dictionary<string, string> dict = new();
 			foreach (PropertyInfo pi in obj.GetType().GetProperties())
 			{
-				// TODO: For entities; ignore navigation properties by continuing if property has ForeignKey attribute.
+				// Ignore navigation properties by continuing if property has ForeignKey attribute.
+				if (pi.GetCustomAttribute<ForeignKeyAttribute>() != null)
+					continue;
+
 				dict.Add(pi.Name, pi.GetValue(obj)?.ToString() ?? string.Empty);
 			}
 
