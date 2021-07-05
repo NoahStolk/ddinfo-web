@@ -109,7 +109,7 @@ namespace DevilDaggersWebsite.Api
 			_dbContext.CustomEntries.Add(customEntry);
 			_dbContext.SaveChanges();
 
-			await _auditLogger.LogCreate(User, nameof(CustomEntry), customEntry.Id, AuditLogger.GetLog(addCustomEntry));
+			await _auditLogger.LogCreate(User, nameof(CustomEntry), customEntry.Id, addCustomEntry);
 
 			return Ok();
 		}
@@ -132,6 +132,29 @@ namespace DevilDaggersWebsite.Api
 			if (customEntry == null)
 				return NotFound();
 
+			EditCustomEntry logDto = new()
+			{
+				ClientVersion = customEntry.ClientVersion,
+				CustomLeaderboardId = customEntry.CustomLeaderboardId,
+				DaggersFired = customEntry.DaggersFired,
+				DaggersHit = customEntry.DaggersHit,
+				DeathType = customEntry.DeathType,
+				EnemiesAlive = customEntry.EnemiesAlive,
+				EnemiesKilled = customEntry.EnemiesKilled,
+				GemsCollected = customEntry.GemsCollected,
+				GemsDespawned = customEntry.GemsDespawned,
+				GemsEaten = customEntry.GemsEaten,
+				GemsTotal = customEntry.GemsTotal,
+				HomingDaggers = customEntry.HomingDaggers,
+				HomingDaggersEaten = customEntry.HomingDaggersEaten,
+				LevelUpTime2 = customEntry.LevelUpTime2,
+				LevelUpTime3 = customEntry.LevelUpTime3,
+				LevelUpTime4 = customEntry.LevelUpTime4,
+				PlayerId = customEntry.PlayerId,
+				SubmitDate = customEntry.SubmitDate,
+				Time = customEntry.Time,
+			};
+
 			customEntry.ClientVersion = editCustomEntry.ClientVersion;
 			customEntry.CustomLeaderboardId = editCustomEntry.CustomLeaderboardId;
 			customEntry.DaggersFired = editCustomEntry.DaggersFired;
@@ -153,7 +176,7 @@ namespace DevilDaggersWebsite.Api
 			customEntry.Time = editCustomEntry.Time;
 			_dbContext.SaveChanges();
 
-			await _auditLogger.LogEdit(User, nameof(CustomEntry), customEntry.Id, AuditLogger.GetLog(customEntry), AuditLogger.GetLog(editCustomEntry));
+			await _auditLogger.LogEdit(User, nameof(CustomEntry), customEntry.Id, logDto, editCustomEntry);
 
 			return Ok();
 		}
@@ -176,7 +199,7 @@ namespace DevilDaggersWebsite.Api
 			_dbContext.CustomEntries.Remove(customEntry);
 			_dbContext.SaveChanges();
 
-			await _auditLogger.LogDelete(User, nameof(CustomEntry), customEntry.Id, AuditLogger.GetLog(customEntry));
+			await _auditLogger.LogDelete(User, nameof(CustomEntry), customEntry.Id, customEntry);
 
 			return Ok();
 		}
