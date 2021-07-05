@@ -204,27 +204,27 @@ namespace DevilDaggersWebsite.Api
 			{
 				List<ModBinaryCacheData> archive = _modArchiveCache.GetArchiveDataByBytes(Path.GetFileNameWithoutExtension(file.FileName), formFileBytes).Binaries;
 				if (archive.Count == 0)
-					return BadRequest($"File '{file.FileName}' does not contain any binaries.");
+					throw new InvalidModArchiveException($"Mod archive '{file.FileName}' does not contain any binaries.");
 
 				string archiveNameWithoutExtension = Path.GetFileNameWithoutExtension(file.FileName);
 
 				foreach (ModBinaryCacheData binary in archive)
 				{
 					if (binary.Chunks.Count == 0)
-						throw new InvalidModBinaryException($"Binary '{binary.Name}' does not contain any assets.");
+						throw new InvalidModBinaryException($"Mod binary '{binary.Name}' does not contain any assets.");
 
 					string expectedPrefix = binary.ModBinaryType switch
 					{
 						ModBinaryType.Audio => $"audio-{archiveNameWithoutExtension}-",
 						ModBinaryType.Dd => $"dd-{archiveNameWithoutExtension}-",
-						_ => throw new InvalidModBinaryException($"Binary '{binary.Name}' is a '{binary.ModBinaryType}' mod which is not allowed."),
+						_ => throw new InvalidModBinaryException($"Mod binary  '{binary.Name}' is a '{binary.ModBinaryType}' mod which is not allowed."),
 					};
 
 					if (!binary.Name.StartsWith(expectedPrefix))
-						throw new InvalidModBinaryException($"Name of binary '{binary.Name}' must start with '{expectedPrefix}'.");
+						throw new InvalidModBinaryException($"Name of mod binary '{binary.Name}' must start with '{expectedPrefix}'.");
 
 					if (binary.Name.Length == expectedPrefix.Length)
-						throw new InvalidModBinaryException($"Name of binary '{binary.Name}' must not be equal to '{expectedPrefix}'.");
+						throw new InvalidModBinaryException($"Name of mod binary '{binary.Name}' must not be equal to '{expectedPrefix}'.");
 				}
 
 				Io.File.WriteAllBytes(filePath, formFileBytes);
@@ -232,9 +232,13 @@ namespace DevilDaggersWebsite.Api
 
 				return Ok();
 			}
+			catch (InvalidModArchiveException ex)
+			{
+				return BadRequest($"The mod archive '{file?.FileName}' is invalid. {ex.Message}");
+			}
 			catch (InvalidModBinaryException ex)
 			{
-				return BadRequest($"A binary file inside the file '{file?.FileName}' is invalid. {ex.Message}");
+				return BadRequest($"A mod binary inside the mod archive '{file?.FileName}' is invalid. {ex.Message}");
 			}
 		}
 
