@@ -103,7 +103,6 @@ namespace DevilDaggersWebsite.Api
 			{
 				HtmlDescription = addSpawnset.HtmlDescription,
 				IsPractice = addSpawnset.IsPractice,
-				LastUpdated = DateTime.Now,
 				MaxDisplayWaves = addSpawnset.MaxDisplayWaves,
 				Name = addSpawnset.Name,
 				PlayerId = addSpawnset.PlayerId,
@@ -183,6 +182,13 @@ namespace DevilDaggersWebsite.Api
 			string filePath = Path.Combine(_environment.WebRootPath, "spawnsets", file.FileName);
 			if (Io.File.Exists(filePath))
 				return BadRequest($"File '{file.FileName}' already exists.");
+
+			SpawnsetFile? spawnset = _dbContext.SpawnsetFiles.FirstOrDefault(m => m.Name == file.FileName);
+			if (spawnset == null)
+				return BadRequest($"There is no spawnset named '{file.FileName}'.");
+
+			spawnset.LastUpdated = DateTime.UtcNow;
+			_dbContext.SaveChanges();
 
 			byte[] formFileBytes = new byte[file.Length];
 			using (MemoryStream ms = new())
