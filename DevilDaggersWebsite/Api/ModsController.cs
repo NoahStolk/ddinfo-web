@@ -171,43 +171,40 @@ namespace DevilDaggersWebsite.Api
 		[EndpointConsumer(EndpointConsumers.Admin)]
 		public async Task<ActionResult> UploadModFile(IFormFile file)
 		{
-			string? filePath = null;
+			if (file == null)
+				return BadRequest("No file.");
+
+			if (file.Length > ModFileConstants.MaxFileSize)
+				return BadRequest($"File too large ({file.Length:n0} / max {ModFileConstants.MaxFileSize:n0} bytes).");
 
 			string modsDirectory = Path.Combine(_environment.WebRootPath, "mods");
+			DirectoryInfo di = new(modsDirectory);
+			long usedSpace = di.EnumerateFiles("*.*", SearchOption.AllDirectories).Sum(fi => fi.Length);
+			if (file.Length + usedSpace > ModFileConstants.MaxHostingSpace)
+				return BadRequest($"This file is {file.Length:n0} bytes in size, but only {ModFileConstants.MaxHostingSpace - usedSpace:n0} bytes of free space is available.");
+
+			if (file.FileName.Length > ModFileConstants.MaxFileNameLength)
+				return BadRequest($"File name too long ({file.FileName.Length} / max {ModFileConstants.MaxFileNameLength} characters).");
+
+			if (!file.FileName.EndsWith(".zip"))
+				return BadRequest("File name must have the .zip extension.");
+
+			string filePath = Path.Combine(modsDirectory, file.FileName);
+			if (Io.File.Exists(filePath))
+				return BadRequest($"File '{file.FileName}' already exists.");
+
+			byte[] formFileBytes = new byte[file.Length];
+			using (MemoryStream ms = new())
+			{
+				file.CopyTo(ms);
+				formFileBytes = ms.ToArray();
+			}
 
 			try
 			{
-				if (file == null)
-					return BadRequest("No file.");
-
-				if (file.Length > ModFileConstants.MaxFileSize)
-					return BadRequest($"File too large ({file.Length:n0} / max {ModFileConstants.MaxFileSize:n0} bytes).");
-
-				DirectoryInfo di = new(modsDirectory);
-				long usedSpace = di.EnumerateFiles("*.*", SearchOption.AllDirectories).Sum(fi => fi.Length);
-				if (file.Length + usedSpace > ModFileConstants.MaxHostingSpace)
-					return BadRequest($"This file is {file.Length:n0} bytes in size, but only {ModFileConstants.MaxHostingSpace - usedSpace:n0} bytes of free space is available.");
-
-				if (file.FileName.Length > ModFileConstants.MaxFileNameLength)
-					return BadRequest($"File name too long ({file.FileName.Length} / max {ModFileConstants.MaxFileNameLength} characters).");
-
-				if (!file.FileName.EndsWith(".zip"))
-					return BadRequest("File name must have the .zip extension.");
-
-				filePath = Path.Combine(modsDirectory, file.FileName);
-				if (Io.File.Exists(filePath))
-					return BadRequest($"File '{file.FileName}' already exists.");
-
-				byte[] formFileBytes = new byte[file.Length];
-				using (MemoryStream ms = new())
-				{
-					file.CopyTo(ms);
-					formFileBytes = ms.ToArray();
-				}
-
 				List<ModBinaryCacheData> archive = _modArchiveCache.GetArchiveDataByBytes(Path.GetFileNameWithoutExtension(file.FileName), formFileBytes).Binaries;
 				if (archive.Count == 0)
-					throw new InvalidModBinaryException($"File '{file.FileName}' does not contain any binaries.");
+					return BadRequest($"File '{file.FileName}' does not contain any binaries.");
 
 				string archiveNameWithoutExtension = Path.GetFileNameWithoutExtension(file.FileName);
 
