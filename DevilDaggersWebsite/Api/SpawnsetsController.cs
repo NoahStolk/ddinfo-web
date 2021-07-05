@@ -35,14 +35,16 @@ namespace DevilDaggersWebsite.Api
 		private readonly ApplicationDbContext _dbContext;
 		private readonly DiscordLogger _discordLogger;
 		private readonly SpawnsetHashCache _spawnsetHashCache;
+		private readonly AuditLogger _auditLogger;
 
-		public SpawnsetsController(SpawnsetHelper spawnsetHelper, IWebHostEnvironment environment, ApplicationDbContext dbContext, DiscordLogger discordLogger, SpawnsetHashCache spawnsetHashCache)
+		public SpawnsetsController(SpawnsetHelper spawnsetHelper, IWebHostEnvironment environment, ApplicationDbContext dbContext, DiscordLogger discordLogger, SpawnsetHashCache spawnsetHashCache, AuditLogger auditLogger)
 		{
 			_spawnsetHelper = spawnsetHelper;
 			_environment = environment;
 			_dbContext = dbContext;
 			_discordLogger = discordLogger;
 			_spawnsetHashCache = spawnsetHashCache;
+			_auditLogger = auditLogger;
 		}
 
 		// TODO: Re-route to /public.
@@ -91,7 +93,7 @@ namespace DevilDaggersWebsite.Api
 		[ProducesResponseType(StatusCodes.Status200OK)]
 		[ProducesResponseType(StatusCodes.Status400BadRequest)]
 		[EndpointConsumer(EndpointConsumers.Admin)]
-		public ActionResult AddSpawnset(AddSpawnset addSpawnset)
+		public async Task<ActionResult> AddSpawnset(AddSpawnset addSpawnset)
 		{
 			if (!_dbContext.Players.Any(p => p.Id == addSpawnset.PlayerId))
 				return BadRequest($"Player with ID '{addSpawnset.PlayerId}' does not exist.");
@@ -110,6 +112,8 @@ namespace DevilDaggersWebsite.Api
 			_dbContext.SpawnsetFiles.Add(spawnset);
 			_dbContext.SaveChanges();
 
+			await _auditLogger.LogAdd(addSpawnset, User, spawnset.Id);
+
 			return Ok(spawnset.Id);
 		}
 
@@ -119,7 +123,7 @@ namespace DevilDaggersWebsite.Api
 		[ProducesResponseType(StatusCodes.Status400BadRequest)]
 		[ProducesResponseType(StatusCodes.Status404NotFound)]
 		[EndpointConsumer(EndpointConsumers.Admin)]
-		public ActionResult EditSpawnset(int id, EditSpawnset editSpawnset)
+		public async Task<ActionResult> EditSpawnset(int id, EditSpawnset editSpawnset)
 		{
 			if (!_dbContext.Players.Any(p => p.Id == editSpawnset.PlayerId))
 				return BadRequest($"Player with ID '{editSpawnset.PlayerId}' does not exist.");
@@ -131,6 +135,15 @@ namespace DevilDaggersWebsite.Api
 			if (spawnset == null)
 				return NotFound();
 
+			EditSpawnset logDto = new()
+			{
+				HtmlDescription = spawnset.HtmlDescription,
+				IsPractice = spawnset.IsPractice,
+				MaxDisplayWaves = spawnset.MaxDisplayWaves,
+				Name = spawnset.Name,
+				PlayerId = spawnset.PlayerId,
+			};
+
 			// Do not update LastUpdated. Update this value when updating the file only.
 			spawnset.HtmlDescription = editSpawnset.HtmlDescription;
 			spawnset.IsPractice = editSpawnset.IsPractice;
@@ -138,6 +151,8 @@ namespace DevilDaggersWebsite.Api
 			spawnset.Name = editSpawnset.Name;
 			spawnset.PlayerId = editSpawnset.PlayerId;
 			_dbContext.SaveChanges();
+
+			await _auditLogger.LogEdit(logDto, editSpawnset, User, spawnset.Id);
 
 			return Ok();
 		}
@@ -148,7 +163,7 @@ namespace DevilDaggersWebsite.Api
 		[ProducesResponseType(StatusCodes.Status400BadRequest)]
 		[ProducesResponseType(StatusCodes.Status404NotFound)]
 		[EndpointConsumer(EndpointConsumers.Admin)]
-		public ActionResult DeleteSpawnset(int id)
+		public async Task<ActionResult> DeleteSpawnset(int id)
 		{
 			SpawnsetFile? spawnset = _dbContext.SpawnsetFiles.FirstOrDefault(s => s.Id == id);
 			if (spawnset == null)
@@ -159,6 +174,8 @@ namespace DevilDaggersWebsite.Api
 
 			_dbContext.SpawnsetFiles.Remove(spawnset);
 			_dbContext.SaveChanges();
+
+			await _auditLogger.LogDelete(spawnset, User, spawnset.Id);
 
 			return Ok();
 		}
