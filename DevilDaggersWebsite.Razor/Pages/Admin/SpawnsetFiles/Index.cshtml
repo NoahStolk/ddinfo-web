@@ -1,14 +1,38 @@
 ﻿@page
 @using DevilDaggersWebsite.Clients
 @using DevilDaggersWebsite.Dto.Spawnsets
+@using DevilDaggersWebsite.Entities
 @using DevilDaggersWebsite.Utils
+@using Microsoft.AspNetCore.Hosting
+@using Microsoft.EntityFrameworkCore
+@using System.IO
 @using System.Reflection
 @inject DevilDaggersInfoClient Http
+@inject ApplicationDbContext DbContext
+@inject IWebHostEnvironment Environment
 @model IndexModel
 @{
 	ViewData["Title"] = "SpawnsetFiles";
 
 	PropertyInfo[] properties = ReflectionUtils.GetDtoDisplayPropertyInfos<GetSpawnset>();
+
+	List<string> deadFiles = new();
+	List<string> missingFiles = new();
+
+	List<string> allDbSpawnsetFileNames = DbContext.SpawnsetFiles.AsNoTracking().Select(sf => sf.Name).ToList();
+
+	foreach (string path in Directory.GetFiles(System.IO.Path.Combine(Environment.WebRootPath, "spawnsets")))
+	{
+		string fileName = System.IO.Path.GetFileName(path);
+		if (!allDbSpawnsetFileNames.Contains(fileName))
+			deadFiles.Add(fileName);
+	}
+
+	foreach (string dbSpawnsetFileName in allDbSpawnsetFileNames)
+	{
+		if (!System.IO.File.Exists(System.IO.Path.Combine(Environment.WebRootPath, "spawnsets", dbSpawnsetFileName)))
+			missingFiles.Add(dbSpawnsetFileName);
+	}
 }
 
 <h1>@ViewData["Title"]</h1>
@@ -28,21 +52,21 @@
 	<li>Do not upload spawnsets with swastika arenas or anything of the sort.</li>
 	<li>Do not upload spawnsets that are incompatible with the website or DDSE in any way.</li>
 </ul>
-@if (Model.DeadFiles.Count > 0)
+@if (deadFiles.Count > 0)
 {
 	<h2>Dead files</h2>
 	<ul>
-		@foreach (string fileName in Model.DeadFiles)
+		@foreach (string fileName in deadFiles)
 		{
 			<li>@fileName</li>
 		}
 	</ul>
 }
-@if (Model.MissingFiles.Count > 0)
+@if (missingFiles.Count > 0)
 {
 	<h2>Missing files</h2>
 	<ul>
-		@foreach (string fileName in Model.MissingFiles)
+		@foreach (string fileName in missingFiles)
 		{
 			<li>@fileName</li>
 		}
