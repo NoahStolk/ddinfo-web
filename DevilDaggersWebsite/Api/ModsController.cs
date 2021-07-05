@@ -155,20 +155,25 @@ namespace DevilDaggersWebsite.Api
 					return BadRequest($"Player with ID '{playerId}' does not exist.");
 			}
 
-			AssetMod? mod = _dbContext.AssetMods.FirstOrDefault(s => s.Id == id);
+			AssetMod? mod = _dbContext.AssetMods
+				.Include(m => m.PlayerAssetMods)
+				.FirstOrDefault(m => m.Id == id);
 			if (mod == null)
 				return NotFound();
 
 			EditMod logDto = new()
 			{
+				AssetModTypes = mod.AssetModTypes,
 				HtmlDescription = mod.HtmlDescription,
 				IsHidden = mod.IsHidden,
 				Name = mod.Name,
 				TrailerUrl = mod.TrailerUrl,
 				Url = mod.Url,
+				PlayerIds = mod.PlayerAssetMods.ConvertAll(pam => pam.PlayerId),
 			};
 
 			// Do not update LastUpdated. Update this value when updating the file only.
+			mod.AssetModTypes = editMod.AssetModTypes;
 			mod.HtmlDescription = editMod.HtmlDescription;
 			mod.IsHidden = editMod.IsHidden;
 			mod.Name = editMod.Name;
