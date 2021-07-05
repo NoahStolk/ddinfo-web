@@ -15,7 +15,7 @@ namespace DevilDaggersWebsite.Api
 {
 	[Route("api/caches")]
 	[ApiController]
-	public class CachesController
+	public class CachesController : ControllerBase
 	{
 		private readonly LeaderboardStatisticsCache _leaderboardStatisticsCache;
 		private readonly LeaderboardHistoryCache _leaderboardHistoryCache;
@@ -41,7 +41,7 @@ namespace DevilDaggersWebsite.Api
 		[Authorize(Policies.AdminPolicy)]
 		[ProducesResponseType(StatusCodes.Status200OK)]
 		[EndpointConsumer(EndpointConsumers.Admin)]
-		public async Task OnPostInitiateLeaderboardStatisticsCache(CacheType cacheType)
+		public async Task<ActionResult> ClearCache(CacheType cacheType)
 		{
 			switch (cacheType)
 			{
@@ -51,6 +51,8 @@ namespace DevilDaggersWebsite.Api
 				case CacheType.SpawnsetData: _spawnsetDataCache.Clear(); break;
 				case CacheType.SpawnsetHash: _spawnsetHashCache.Clear(); break;
 			}
+
+			return Ok();
 		}
 	}
 }
