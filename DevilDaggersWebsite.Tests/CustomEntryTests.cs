@@ -29,8 +29,6 @@ namespace DevilDaggersWebsite.Tests
 
 		public CustomEntryTests()
 		{
-			const string wwwroot = @"C:\Users\NOAH\source\repos\DevilDaggersWebsite\DevilDaggersWebsite.Razor\wwwroot";
-
 			MockEntities mockEntities = new();
 
 			_dbContext = new Mock<ApplicationDbContext>()
@@ -42,7 +40,7 @@ namespace DevilDaggersWebsite.Tests
 
 			Mock<IWebHostEnvironment> mockEnvironment = new();
 			mockEnvironment.Setup(m => m.EnvironmentName).Returns(Environments.Development);
-			mockEnvironment.Setup(m => m.WebRootPath).Returns(wwwroot);
+			mockEnvironment.Setup(m => m.WebRootPath).Returns(TestConstants.WebRoot);
 
 			Mock<IToolHelper> toolHelper = new();
 			toolHelper.Setup(m => m.GetToolByName(It.IsAny<string>())).Returns(new Dto.Tool
@@ -54,10 +52,11 @@ namespace DevilDaggersWebsite.Tests
 
 			Mock<DiscordLogger> discordLogger = new(mockEnvironment.Object);
 			Mock<SpawnsetHashCache> spawnsetHashCache = new(discordLogger.Object, mockEnvironment.Object);
+			Mock<AuditLogger> auditLogger = new(discordLogger.Object);
 
-			_customEntriesController = new CustomEntriesController(_dbContext.Object, toolHelper.Object, discordLogger.Object, spawnsetHashCache.Object);
+			_customEntriesController = new CustomEntriesController(_dbContext.Object, toolHelper.Object, discordLogger.Object, spawnsetHashCache.Object, auditLogger.Object);
 
-			if (!Spawnset.TryParse(File.ReadAllBytes(Path.Combine(wwwroot, "spawnsets", "V3")), out _spawnset))
+			if (!Spawnset.TryParse(File.ReadAllBytes(Path.Combine(TestConstants.WebRoot, "spawnsets", "V3")), out _spawnset))
 				Assert.Fail("Spawnset could not be parsed.");
 		}
 
@@ -68,7 +67,7 @@ namespace DevilDaggersWebsite.Tests
 			{
 				Time = 100000,
 				PlayerId = 1,
-				ClientVersion = Constants.DdclVersion,
+				ClientVersion = TestConstants.DdclVersion,
 				SurvivalHashMd5 = GetSpawnsetHash(_spawnset),
 				GameStates = new(),
 				PlayerName = "TestPlayer1",
@@ -89,7 +88,7 @@ namespace DevilDaggersWebsite.Tests
 			{
 				Time = 200000,
 				PlayerId = 1,
-				ClientVersion = Constants.DdclVersion,
+				ClientVersion = TestConstants.DdclVersion,
 				SurvivalHashMd5 = GetSpawnsetHash(_spawnset),
 				GameStates = new(),
 				PlayerName = "TestPlayer1",
@@ -110,7 +109,7 @@ namespace DevilDaggersWebsite.Tests
 			{
 				Time = 200000,
 				PlayerId = 2,
-				ClientVersion = Constants.DdclVersion,
+				ClientVersion = TestConstants.DdclVersion,
 				SurvivalHashMd5 = GetSpawnsetHash(_spawnset),
 				GameStates = new(),
 				PlayerName = "TestPlayer2",
@@ -131,7 +130,7 @@ namespace DevilDaggersWebsite.Tests
 			{
 				Time = 300000,
 				PlayerId = 3,
-				ClientVersion = Constants.DdclVersion,
+				ClientVersion = TestConstants.DdclVersion,
 				SurvivalHashMd5 = GetSpawnsetHash(_spawnset),
 				GameStates = new(),
 				PlayerName = "TestPlayer3",
@@ -180,7 +179,7 @@ namespace DevilDaggersWebsite.Tests
 			{
 				Time = 100000,
 				PlayerId = 1,
-				ClientVersion = Constants.DdclVersion,
+				ClientVersion = TestConstants.DdclVersion,
 				SurvivalHashMd5 = GetSpawnsetHash(_spawnset),
 				GameStates = new(),
 				PlayerName = "TestPlayer1",

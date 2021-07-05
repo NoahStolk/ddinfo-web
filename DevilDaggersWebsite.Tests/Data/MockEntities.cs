@@ -78,7 +78,7 @@ namespace DevilDaggersWebsite.Tests.Data
 		public CustomEntry CustomEntry { get; } = new()
 		{
 			Id = 1,
-			ClientVersion = Constants.DdclVersion,
+			ClientVersion = TestConstants.DdclVersion,
 			CustomLeaderboardId = 1,
 			DaggersFired = 15,
 			DaggersHit = 6,

@@ -3,9 +3,11 @@ using DevilDaggersWebsite.Dto.CustomLeaderboards;
 using DevilDaggersWebsite.Entities;
 using DevilDaggersWebsite.Enumerators;
 using DevilDaggersWebsite.Extensions;
+using DevilDaggersWebsite.Singletons;
 using DevilDaggersWebsite.Tests.Data;
 using DevilDaggersWebsite.Tests.Extensions;
 using Microsoft.AspNetCore.Hosting;
+using Microsoft.Extensions.Hosting;
 using Microsoft.VisualStudio.TestTools.UnitTesting;
 using Moq;
 using System.Collections.Generic;
@@ -29,7 +31,14 @@ namespace DevilDaggersWebsite.Tests
 				.SetUpDbSet(db => db.CustomLeaderboards, mockEntities.MockDbSetCustomLeaderboards)
 				.SetUpDbSet(db => db.CustomEntries, mockEntities.MockDbSetCustomEntries);
 
-			_customLeaderboardsController = new CustomLeaderboardsController(_dbContext.Object, new Mock<IWebHostEnvironment>().Object);
+			Mock<IWebHostEnvironment> mockEnvironment = new();
+			mockEnvironment.Setup(m => m.EnvironmentName).Returns(Environments.Development);
+			mockEnvironment.Setup(m => m.WebRootPath).Returns(TestConstants.WebRoot);
+
+			Mock<DiscordLogger> discordLogger = new(mockEnvironment.Object);
+			Mock<AuditLogger> auditLogger = new(discordLogger.Object);
+
+			_customLeaderboardsController = new CustomLeaderboardsController(_dbContext.Object, new Mock<IWebHostEnvironment>().Object, auditLogger.Object);
 		}
 
 		[TestMethod]
