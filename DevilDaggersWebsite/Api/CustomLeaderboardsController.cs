@@ -58,7 +58,7 @@ namespace DevilDaggersWebsite.Api
 				.FirstOrDefault(cl => cl.Id == id);
 
 			if (customLeaderboard == null)
-				return NotFound($"Leaderboard with {nameof(id)} '{id}' was not found.");
+				return NotFound($"Leaderboard with ID '{id}' was not found.");
 
 			return customLeaderboard.ToDto();
 		}
@@ -101,7 +101,7 @@ namespace DevilDaggersWebsite.Api
 				.Select(sf => new { sf.Id, sf.Name })
 				.FirstOrDefault(sf => sf.Id == addCustomLeaderboard.SpawnsetFileId);
 			if (spawnsetFile == null)
-				return BadRequest($"Spawnset with ID {addCustomLeaderboard.SpawnsetFileId} does not exist.");
+				return BadRequest($"Spawnset with ID '{addCustomLeaderboard.SpawnsetFileId}' does not exist.");
 
 			if (!Spawnset.TryParse(System.IO.File.ReadAllBytes(Path.Combine(_environment.WebRootPath, "spawnsets", spawnsetFile.Name)), out Spawnset spawnset))
 				throw new($"Could not parse survival file '{spawnsetFile.Name}'. Please review the file. Also review how this file ended up in the 'spawnsets' directory, as it is not possible to upload non-survival files from within the Admin pages.");
@@ -109,7 +109,7 @@ namespace DevilDaggersWebsite.Api
 			if (addCustomLeaderboard.Category == CustomLeaderboardCategory.TimeAttack && spawnset.GameMode != GameMode.TimeAttack
 			 || addCustomLeaderboard.Category != CustomLeaderboardCategory.TimeAttack && spawnset.GameMode == GameMode.TimeAttack)
 			{
-				return BadRequest($"Spawnset game mode is {spawnset.GameMode} while custom leaderboard category is {addCustomLeaderboard.Category}.");
+				return BadRequest($"Spawnset game mode is '{spawnset.GameMode}' while custom leaderboard category is '{addCustomLeaderboard.Category}'.");
 			}
 
 			if (spawnset.TimerStart != 0)
@@ -173,7 +173,7 @@ namespace DevilDaggersWebsite.Api
 				.Select(sf => new { sf.Id, sf.Name })
 				.FirstOrDefault(sf => sf.Id == customLeaderboard.SpawnsetFileId);
 			if (spawnsetFile == null)
-				return BadRequest($"Spawnset with ID {customLeaderboard.SpawnsetFileId} does not exist.");
+				return BadRequest($"Spawnset with ID '{customLeaderboard.SpawnsetFileId}' does not exist.");
 
 			if (!Spawnset.TryParse(System.IO.File.ReadAllBytes(Path.Combine(_environment.WebRootPath, "spawnsets", spawnsetFile.Name)), out Spawnset spawnset))
 				throw new($"Could not parse survival file '{spawnsetFile.Name}'. Please review the file. Also review how this file ended up in the 'spawnsets' directory, as it is not possible to upload non-survival files from within the Admin pages.");
@@ -181,7 +181,7 @@ namespace DevilDaggersWebsite.Api
 			if (editCustomLeaderboard.Category == CustomLeaderboardCategory.TimeAttack && spawnset.GameMode != GameMode.TimeAttack
 			 || editCustomLeaderboard.Category != CustomLeaderboardCategory.TimeAttack && spawnset.GameMode == GameMode.TimeAttack)
 			{
-				return BadRequest($"Spawnset game mode is {spawnset.GameMode} while custom leaderboard category is {editCustomLeaderboard.Category}.");
+				return BadRequest($"Spawnset game mode is '{spawnset.GameMode}' while custom leaderboard category is '{editCustomLeaderboard.Category}'.");
 			}
 
 			if (spawnset.TimerStart != 0)

@@ -4,6 +4,7 @@ using DevilDaggersWebsite.Caches.SpawnsetHash;
 using DevilDaggersWebsite.Constants;
 using DevilDaggersWebsite.Dto.Spawnsets;
 using DevilDaggersWebsite.Entities;
+using DevilDaggersWebsite.Extensions;
 using DevilDaggersWebsite.HostedServices.DdInfoDiscordBot;
 using DevilDaggersWebsite.Singletons;
 using DevilDaggersWebsite.Transients;
@@ -91,7 +92,7 @@ namespace DevilDaggersWebsite.Api
 		public ActionResult AddSpawnset(AddSpawnset addSpawnset)
 		{
 			if (!_dbContext.Players.Any(p => p.Id == addSpawnset.PlayerId))
-				return BadRequest($"Player with ID {addSpawnset.PlayerId} does not exist.");
+				return BadRequest($"Player with ID '{addSpawnset.PlayerId}' does not exist.");
 
 			SpawnsetFile spawnset = new()
 			{
@@ -117,7 +118,7 @@ namespace DevilDaggersWebsite.Api
 		public ActionResult EditSpawnset(int id, EditSpawnset editSpawnset)
 		{
 			if (!_dbContext.Players.Any(p => p.Id == editSpawnset.PlayerId))
-				return BadRequest($"Player with ID {editSpawnset.PlayerId} does not exist.");
+				return BadRequest($"Player with ID '{editSpawnset.PlayerId}' does not exist.");
 
 			SpawnsetFile? spawnset = _dbContext.SpawnsetFiles.FirstOrDefault(s => s.Id == id);
 			if (spawnset == null)
@@ -166,14 +167,14 @@ namespace DevilDaggersWebsite.Api
 				return BadRequest("No file.");
 
 			if (file.Length > SpawnsetFileConstants.MaxFileSize)
-				return BadRequest($"File too large (`{file.Length:n0}` / max `{SpawnsetFileConstants.MaxFileSize:n0}` bytes).");
+				return BadRequest($"File too large ({file.Length:n0} / max {SpawnsetFileConstants.MaxFileSize:n0} bytes).");
 
 			if (file.FileName.Length > SpawnsetFileConstants.MaxFileNameLength)
-				return BadRequest($"File name too long (`{file.FileName.Length}` / max `{SpawnsetFileConstants.MaxFileNameLength}` characters).");
+				return BadRequest($"File name too long ({file.FileName.Length} / max {SpawnsetFileConstants.MaxFileNameLength} characters).");
 
 			string filePath = Path.Combine(_environment.WebRootPath, "spawnsets", file.FileName);
 			if (Io.File.Exists(filePath))
-				return BadRequest($"File `{file.FileName}` already exists.");
+				return BadRequest($"File '{file.FileName}' already exists.");
 
 			byte[] formFileBytes = new byte[file.Length];
 			using (MemoryStream ms = new())
@@ -183,16 +184,15 @@ namespace DevilDaggersWebsite.Api
 			}
 
 			if (!Spawnset.TryParse(formFileBytes, out _))
-				return BadRequest("File could not be parsed to a proper survival file.`");
+				return BadRequest("File could not be parsed to a proper survival file.");
 
 			byte[] spawnsetHash = MD5.HashData(formFileBytes);
 			SpawnsetHashCacheData? existingSpawnset = await _spawnsetHashCache.GetSpawnset(spawnsetHash);
 			if (existingSpawnset != null)
-				return BadRequest($"Spawnset is exactly the same as an already existing spawnset named '{existingSpawnset.Name}'.`");
+				return BadRequest($"Spawnset is exactly the same as an already existing spawnset named '{existingSpawnset.Name}'.");
 
 			Io.File.WriteAllBytes(filePath, formFileBytes);
-			//await _discordLogger.TryLog(Channel.MonitoringAuditLog, $":white_check_mark: `{GetIdentity()}` uploaded new SPAWNSET file :file_folder: `{file.FileName}` (`{formFileBytes.Length:n0}` bytes).");
-			await _discordLogger.TryLog(Channel.MonitoringAuditLog, $":white_check_mark: Uploaded new SPAWNSET file :file_folder: `{file.FileName}` (`{formFileBytes.Length:n0}` bytes).");
+			await _discordLogger.TryLog(Channel.MonitoringAuditLog, $":white_check_mark: `{User.GetShortName()}` uploaded new SPAWNSET file :file_folder: `{file.FileName}` (`{formFileBytes.Length:n0}` bytes).");
 
 			return Ok();
 		}
@@ -206,16 +206,15 @@ namespace DevilDaggersWebsite.Api
 		{
 			string path = Path.Combine(_environment.WebRootPath, "spawnsets", fileName);
 			if (!Io.File.Exists(path))
-				return BadRequest($"File `{fileName}` does not exist.");
+				return BadRequest($"File '{fileName}' does not exist.");
 
 			if (_dbContext.SpawnsetFiles.Any(s => s.Name == fileName))
-				return BadRequest($"File `{fileName}` is linked to an existing spawnset and cannot be deleted.");
+				return BadRequest($"File '{fileName}' is linked to an existing spawnset and cannot be deleted.");
 
 			Io.File.Delete(path);
 			_spawnsetHashCache.Clear();
 
-			//await _discordLogger.TryLog(Channel.MonitoringAuditLog, $":white_check_mark: `{GetIdentity()}` deleted SPAWNSET file :file_folder: `{fileName}`");
-			await _discordLogger.TryLog(Channel.MonitoringAuditLog, $":white_check_mark: Deleted SPAWNSET file :file_folder: `{fileName}`");
+			await _discordLogger.TryLog(Channel.MonitoringAuditLog, $":white_check_mark: `{User.GetShortName()}` deleted SPAWNSET file :file_folder: `{fileName}`");
 
 			return Ok();
 		}

@@ -84,7 +84,7 @@ namespace DevilDaggersWebsite.Api
 			}
 
 			if (_dbContext.Players.Any(p => p.Id == addPlayer.Id))
-				return Conflict($"Player with ID {addPlayer.Id} already exists.");
+				return Conflict($"Player with ID '{addPlayer.Id}' already exists.");
 
 			Player player = new()
 			{

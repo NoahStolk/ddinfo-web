@@ -75,10 +75,10 @@ namespace DevilDaggersWebsite.Api
 		public ActionResult AddCustomEntry(AddCustomEntry addCustomEntry)
 		{
 			if (!_dbContext.Players.Any(p => p.Id == addCustomEntry.PlayerId))
-				return BadRequest($"Player with ID {addCustomEntry.PlayerId} does not exist.");
+				return BadRequest($"Player with ID '{addCustomEntry.PlayerId}' does not exist.");
 
 			if (!_dbContext.CustomLeaderboards.Any(cl => cl.Id == addCustomEntry.CustomLeaderboardId))
-				return BadRequest($"Custom leaderboard with ID {addCustomEntry.CustomLeaderboardId} does not exist.");
+				return BadRequest($"Custom leaderboard with ID '{addCustomEntry.CustomLeaderboardId}' does not exist.");
 
 			CustomEntry customEntry = new()
 			{
@@ -117,10 +117,10 @@ namespace DevilDaggersWebsite.Api
 		public ActionResult EditCustomEntry(int id, EditCustomEntry editCustomEntry)
 		{
 			if (!_dbContext.Players.Any(p => p.Id == editCustomEntry.PlayerId))
-				return BadRequest($"Player with ID {editCustomEntry.PlayerId} does not exist.");
+				return BadRequest($"Player with ID '{editCustomEntry.PlayerId}' does not exist.");
 
 			if (!_dbContext.CustomLeaderboards.Any(cl => cl.Id == editCustomEntry.CustomLeaderboardId))
-				return BadRequest($"Custom leaderboard with ID {editCustomEntry.CustomLeaderboardId} does not exist.");
+				return BadRequest($"Custom leaderboard with ID '{editCustomEntry.CustomLeaderboardId}' does not exist.");
 
 			CustomEntry? customEntry = _dbContext.CustomEntries.FirstOrDefault(ce => ce.Id == id);
 			if (customEntry == null)

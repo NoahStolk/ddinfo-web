@@ -55,7 +55,7 @@ namespace DevilDaggersWebsite.Api
 		public ActionResult AddDonation(AddDonation addDonation)
 		{
 			if (!_dbContext.Players.Any(p => p.Id == addDonation.PlayerId))
-				return BadRequest($"Player with ID {addDonation.PlayerId} does not exist.");
+				return BadRequest($"Player with ID '{addDonation.PlayerId}' does not exist.");
 
 			Donation donation = new()
 			{
@@ -82,7 +82,7 @@ namespace DevilDaggersWebsite.Api
 		public ActionResult EditDonation(int id, EditDonation editDonation)
 		{
 			if (!_dbContext.Players.Any(p => p.Id == editDonation.PlayerId))
-				return BadRequest($"Player with ID {editDonation.PlayerId} does not exist.");
+				return BadRequest($"Player with ID '{editDonation.PlayerId}' does not exist.");
 
 			Donation? donation = _dbContext.Donations.FirstOrDefault(d => d.Id == id);
 			if (donation == null)

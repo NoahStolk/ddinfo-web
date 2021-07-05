@@ -5,6 +5,7 @@ using DevilDaggersWebsite.Dto.Mods;
 using DevilDaggersWebsite.Entities;
 using DevilDaggersWebsite.Enumerators;
 using DevilDaggersWebsite.Exceptions;
+using DevilDaggersWebsite.Extensions;
 using DevilDaggersWebsite.HostedServices.DdInfoDiscordBot;
 using DevilDaggersWebsite.Singletons;
 using DevilDaggersWebsite.Transients;
@@ -104,7 +105,7 @@ namespace DevilDaggersWebsite.Api
 			foreach (int playerId in addMod.PlayerIds)
 			{
 				if (!_dbContext.Players.Any(p => p.Id == playerId))
-					return BadRequest($"Player with ID {playerId} does not exist.");
+					return BadRequest($"Player with ID '{playerId}' does not exist.");
 			}
 
 			AssetMod mod = new()
@@ -137,7 +138,7 @@ namespace DevilDaggersWebsite.Api
 			foreach (int playerId in editMod.PlayerIds)
 			{
 				if (!_dbContext.Players.Any(p => p.Id == playerId))
-					return BadRequest($"Player with ID {playerId} does not exist.");
+					return BadRequest($"Player with ID '{playerId}' does not exist.");
 			}
 
 			AssetMod? mod = _dbContext.AssetMods.FirstOrDefault(s => s.Id == id);
@@ -172,7 +173,7 @@ namespace DevilDaggersWebsite.Api
 					return BadRequest("No file.");
 
 				if (file.Length > ModFileConstants.MaxFileSize)
-					return BadRequest($"File too large (`{file.Length:n0}` / max `{ModFileConstants.MaxFileSize:n0}` bytes).");
+					return BadRequest($"File too large ({file.Length:n0} / max {ModFileConstants.MaxFileSize:n0} bytes).");
 
 				DirectoryInfo di = new(modsDirectory);
 				long usedSpace = di.EnumerateFiles("*.*", SearchOption.AllDirectories).Sum(fi => fi.Length);
@@ -180,14 +181,14 @@ namespace DevilDaggersWebsite.Api
 					return BadRequest($"This file is {file.Length:n0} bytes in size, but only {ModFileConstants.MaxHostingSpace - usedSpace:n0} bytes of free space is available.");
 
 				if (file.FileName.Length > ModFileConstants.MaxFileNameLength)
-					return BadRequest($"File name too long (`{file.FileName.Length}` / max `{ModFileConstants.MaxFileNameLength}` characters).");
+					return BadRequest($"File name too long ({file.FileName.Length} / max {ModFileConstants.MaxFileNameLength} characters).");
 
 				if (!file.FileName.EndsWith(".zip"))
-					return BadRequest("File name must have the `.zip` extension.");
+					return BadRequest("File name must have the .zip extension.");
 
 				filePath = Path.Combine(modsDirectory, file.FileName);
 				if (Io.File.Exists(filePath))
-					return BadRequest($"File `{file.FileName}` already exists.");
+					return BadRequest($"File '{file.FileName}' already exists.");
 
 				byte[] formFileBytes = new byte[file.Length];
 				using (MemoryStream ms = new())
@@ -198,38 +199,37 @@ namespace DevilDaggersWebsite.Api
 
 				List<ModBinaryCacheData> archive = _modArchiveCache.GetArchiveDataByBytes(Path.GetFileNameWithoutExtension(file.FileName), formFileBytes).Binaries;
 				if (archive.Count == 0)
-					throw new InvalidModBinaryException($"File `{file.FileName}` does not contain any binaries.");
+					throw new InvalidModBinaryException($"File '{file.FileName}' does not contain any binaries.");
 
 				string archiveNameWithoutExtension = Path.GetFileNameWithoutExtension(file.FileName);
 
 				foreach (ModBinaryCacheData binary in archive)
 				{
 					if (binary.Chunks.Count == 0)
-						throw new InvalidModBinaryException($"Binary `{binary.Name}` does not contain any assets.");
+						throw new InvalidModBinaryException($"Binary '{binary.Name}' does not contain any assets.");
 
 					string expectedPrefix = binary.ModBinaryType switch
 					{
 						ModBinaryType.Audio => $"audio-{archiveNameWithoutExtension}-",
 						ModBinaryType.Dd => $"dd-{archiveNameWithoutExtension}-",
-						_ => throw new InvalidModBinaryException($"Binary `{binary.Name}` is a `{binary.ModBinaryType}` mod which is not allowed."),
+						_ => throw new InvalidModBinaryException($"Binary '{binary.Name}' is a '{binary.ModBinaryType}' mod which is not allowed."),
 					};
 
 					if (!binary.Name.StartsWith(expectedPrefix))
-						throw new InvalidModBinaryException($"Name of binary `{binary.Name}` must start with `{expectedPrefix}`.");
+						throw new InvalidModBinaryException($"Name of binary '{binary.Name}' must start with '{expectedPrefix}'.");
 
 					if (binary.Name.Length == expectedPrefix.Length)
-						throw new InvalidModBinaryException($"Name of binary `{binary.Name}` must not be equal to `{expectedPrefix}`.");
+						throw new InvalidModBinaryException($"Name of binary '{binary.Name}' must not be equal to '{expectedPrefix}'.");
 				}
 
 				Io.File.WriteAllBytes(filePath, formFileBytes);
-				//await _discordLogger.TryLog(Channel.MonitoringAuditLog, $":white_check_mark: `{GetIdentity()}` uploaded new ASSETMOD file :file_folder: `{file.FileName}` (`{formFileBytes.Length:n0}` bytes)");
-				await _discordLogger.TryLog(Channel.MonitoringAuditLog, $":white_check_mark: Uploaded new ASSETMOD file :file_folder: `{file.FileName}` (`{formFileBytes.Length:n0}` bytes)");
+				await _discordLogger.TryLog(Channel.MonitoringAuditLog, $"`{User.GetShortName()}` uploaded new ASSETMOD file :file_folder: `{file.FileName}` (`{formFileBytes.Length:n0}` bytes)");
 
 				return Ok();
 			}
 			catch (InvalidModBinaryException ex)
 			{
-				return BadRequest($"A binary file inside the file `{file?.FileName}` is invalid. {ex.Message}");
+				return BadRequest($"A binary file inside the file '{file?.FileName}' is invalid. {ex.Message}");
 			}
 		}
 
@@ -242,12 +242,11 @@ namespace DevilDaggersWebsite.Api
 		{
 			string path = Path.Combine(_environment.WebRootPath, "mods", fileName);
 			if (!Io.File.Exists(path))
-				return BadRequest($"File `{fileName}` does not exist.");
+				return BadRequest($"File '{fileName}' does not exist.");
 
 			Io.File.Delete(path);
 
-			//await _discordLogger.TryLog(Channel.MonitoringAuditLog, $":white_check_mark: `{GetIdentity()}` deleted ASSETMOD file :file_folder: `{fileName}`.");
-			await _discordLogger.TryLog(Channel.MonitoringAuditLog, $":white_check_mark: Deleted ASSETMOD file :file_folder: `{fileName}`.");
+			await _discordLogger.TryLog(Channel.MonitoringAuditLog, $"`{User.GetShortName()}` deleted ASSETMOD file :file_folder: `{fileName}`.");
 
 			// Clear entire memory cache (can't clear individual entries).
 			_modArchiveCache.Clear();
@@ -274,24 +273,24 @@ namespace DevilDaggersWebsite.Api
 				return BadRequest("No file.");
 
 			if (file.Length > ModScreenshotConstants.MaxFileSize)
-				return BadRequest($"File too large (`{file.Length:n0}` / max `{ModScreenshotConstants.MaxFileSize:n0}` bytes).");
+				return BadRequest($"File too large ({file.Length:n0} / max {ModScreenshotConstants.MaxFileSize:n0} bytes).");
 
 			if (file.FileName.Length > ModScreenshotConstants.MaxFileNameLength)
-				return BadRequest($"File name too long (`{file.FileName.Length}` / max `{ModScreenshotConstants.MaxFileNameLength}` characters).");
+				return BadRequest($"File name too long ({file.FileName.Length} / max {ModScreenshotConstants.MaxFileNameLength} characters).");
 
 			if (!file.FileName.EndsWith(".png"))
-				return BadRequest("File name must have the `.png` extension.");
+				return BadRequest("File name must have the .png extension.");
 
 			string fileDirectory = Path.Combine(_environment.WebRootPath, "mod-screenshots", modName);
 			string filePath = Path.Combine(fileDirectory, file.FileName);
 			if (Io.File.Exists(filePath))
-				return BadRequest($"File `{file.FileName}` already exists.");
+				return BadRequest($"File '{file.FileName}' already exists.");
 
 			if (!_dbContext.AssetMods.Any(am => am.Name == modName))
-				return BadRequest($"Mod `{modName}` does not exist.");
+				return BadRequest($"Mod '{modName}' does not exist.");
 
 			if (Directory.Exists(fileDirectory) && Directory.GetFiles(fileDirectory).Length >= ModScreenshotConstants.MaxScreenshots)
-				return BadRequest($"Mod `{modName}` already has `{ModScreenshotConstants.MaxScreenshots}` screenshots.");
+				return BadRequest($"Mod '{modName}' already has {ModScreenshotConstants.MaxScreenshots} screenshots.");
 
 			byte[] formFileBytes = new byte[file.Length];
 			using (MemoryStream ms = new())
@@ -303,8 +302,7 @@ namespace DevilDaggersWebsite.Api
 			Directory.CreateDirectory(fileDirectory);
 			Io.File.WriteAllBytes(filePath, formFileBytes);
 
-			//await _discordLogger.TryLog(Channel.MonitoringAuditLog, $":white_check_mark: `{GetIdentity()}` uploaded new ASSETMOD screenshot :frame_photo: `{file.FileName}` for mod `{modName}` (`{formFileBytes.Length:n0}` bytes)");
-			await _discordLogger.TryLog(Channel.MonitoringAuditLog, $":white_check_mark: Uploaded new ASSETMOD screenshot :frame_photo: `{file.FileName}` for mod `{modName}` (`{formFileBytes.Length:n0}` bytes)");
+			await _discordLogger.TryLog(Channel.MonitoringAuditLog, $"`{User.GetShortName()}` uploaded new ASSETMOD screenshot :frame_photo: `{file.FileName}` for mod `{modName}` (`{formFileBytes.Length:n0}` bytes)");
 
 			return Ok();
 		}
@@ -318,12 +316,11 @@ namespace DevilDaggersWebsite.Api
 		{
 			string path = Path.Combine(_environment.WebRootPath, "mod-screenshots", fileName);
 			if (!Io.File.Exists(path))
-				return BadRequest($"File `{fileName}` does not exist.");
+				return BadRequest($"File '{fileName}' does not exist.");
 
 			Io.File.Delete(path);
 
-			//await _discordLogger.TryLog(Channel.MonitoringAuditLog, $":white_check_mark: `{GetIdentity()}` deleted ASSETMOD screenshot :frame_photo: `{fileName}`.");
-			await _discordLogger.TryLog(Channel.MonitoringAuditLog, $":white_check_mark: Deleted ASSETMOD screenshot :frame_photo: `{fileName}`.");
+			await _discordLogger.TryLog(Channel.MonitoringAuditLog, $"`{User.GetShortName()}` deleted ASSETMOD screenshot :frame_photo: `{fileName}`.");
 
 			return Ok();
 		}
