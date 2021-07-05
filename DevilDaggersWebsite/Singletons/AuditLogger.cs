@@ -20,8 +20,8 @@ namespace DevilDaggersWebsite.Singletons
 			_discordLogger = discordLogger;
 		}
 
-		public async Task LogCreate<TDto>(ClaimsPrincipal claimsPrincipal, string nameOfEntity, int id, TDto dto)
-			where TDto : notnull
+		public async Task LogCreate<T>(ClaimsPrincipal claimsPrincipal, string nameOfEntity, int id, T obj)
+			where T : notnull
 		{
 			StringBuilder auditLogger = GetAuditLogger("CREATE", claimsPrincipal, nameOfEntity, id);
 			auditLogger.AppendLine("```diff");
@@ -32,7 +32,7 @@ namespace DevilDaggersWebsite.Singletons
 
 			int maxL = propertyHeader.Length;
 
-			Dictionary<string, string> log = GetLog(dto);
+			Dictionary<string, string> log = GetLog(obj);
 			foreach (KeyValuePair<string, string> kvp in log)
 			{
 				string trimmedKey = kvp.Key.TrimAfter(_loggingMax, true);
@@ -49,13 +49,13 @@ namespace DevilDaggersWebsite.Singletons
 			await _discordLogger.TryLog(Channel.MonitoringAuditLog, auditLogger.ToString());
 		}
 
-		public async Task LogEdit<TDto>(ClaimsPrincipal claimsPrincipal, string nameOfEntity, int id, TDto oldDto, TDto newDto)
-			where TDto : notnull
+		public async Task LogEdit<T>(ClaimsPrincipal claimsPrincipal, string nameOfEntity, int id, T oldObj, T newObj)
+			where T : notnull
 		{
 			StringBuilder auditLogger = GetAuditLogger("EDIT", claimsPrincipal, nameOfEntity, id);
 
-			Dictionary<string, string> oldLog = GetLog(oldDto);
-			Dictionary<string, string> newLog = GetLog(newDto);
+			Dictionary<string, string> oldLog = GetLog(oldObj);
+			Dictionary<string, string> newLog = GetLog(newObj);
 			if (AreEditLogsEqual(oldLog, newLog))
 			{
 				auditLogger.AppendLine("`No changes.`");
@@ -113,8 +113,8 @@ namespace DevilDaggersWebsite.Singletons
 			}
 		}
 
-		public async Task LogDelete<TDto>(ClaimsPrincipal claimsPrincipal, string nameOfEntity, int id, TDto dto)
-			where TDto : notnull
+		public async Task LogDelete<T>(ClaimsPrincipal claimsPrincipal, string nameOfEntity, int id, T obj)
+			where T : notnull
 		{
 			StringBuilder auditLogger = GetAuditLogger("DELETE", claimsPrincipal, nameOfEntity, id);
 			auditLogger.AppendLine("```diff");
@@ -125,7 +125,7 @@ namespace DevilDaggersWebsite.Singletons
 
 			int maxL = propertyHeader.Length;
 
-			Dictionary<string, string> log = GetLog(dto);
+			Dictionary<string, string> log = GetLog(obj);
 			foreach (KeyValuePair<string, string> kvp in log)
 			{
 				string trimmedKey = kvp.Key.TrimAfter(_loggingMax, true);
@@ -145,12 +145,12 @@ namespace DevilDaggersWebsite.Singletons
 		private static StringBuilder GetAuditLogger(string action, ClaimsPrincipal claimsPrincipal, string nameOfEntity, int id)
 			=> new($"`{action}` by `{claimsPrincipal.GetShortName()}` for `{nameOfEntity}` `{id}`\n");
 
-		private static Dictionary<string, string> GetLog<TDto>(TDto dto)
-			where TDto : notnull
+		private static Dictionary<string, string> GetLog<T>(T obj)
+			where T : notnull
 		{
 			Dictionary<string, string> dict = new();
-			foreach (PropertyInfo pi in dto.GetType().GetProperties())
-				dict.Add(pi.Name, pi.GetValue(dto)?.ToString() ?? string.Empty);
+			foreach (PropertyInfo pi in obj.GetType().GetProperties())
+				dict.Add(pi.Name, pi.GetValue(obj)?.ToString() ?? string.Empty);
 			return dict;
 		}
 	}
