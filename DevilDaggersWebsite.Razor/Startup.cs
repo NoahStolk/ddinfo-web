@@ -22,7 +22,6 @@ using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Extensions.Hosting;
 using Newtonsoft.Json.Converters;
 using System;
-using System.Collections.Generic;
 using System.Globalization;
 using System.Threading.Tasks;
 
@@ -95,11 +94,7 @@ namespace DevilDaggersWebsite.Razor
 					options.AddPolicy(policy, apb => apb.RequireRole(policy));
 			});
 
-			services.AddRazorPages().AddRazorPagesOptions(options =>
-			{
-				foreach (KeyValuePair<string, string> kvp in AuthorizationManager.FolderToPolicyMapper)
-					options.Conventions.AuthorizeFolder(kvp.Key, kvp.Value);
-			});
+			services.AddRazorPages();
 
 			services.AddSwaggerDocument(config => config.PostProcess = document =>
 			{
