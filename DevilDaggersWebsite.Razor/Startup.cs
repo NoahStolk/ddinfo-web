@@ -67,6 +67,7 @@ namespace DevilDaggersWebsite.Razor
 			services.AddSingleton<ResponseTimeMonitor>();
 
 			services.AddSingleton<DiscordLogger>();
+			services.AddSingleton<AuditLogger>();
 			services.AddSingleton<LeaderboardHistoryCache>();
 			services.AddSingleton<LeaderboardStatisticsCache>();
 			services.AddSingleton<ModArchiveCache>();
