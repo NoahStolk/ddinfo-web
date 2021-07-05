@@ -121,7 +121,6 @@ namespace DevilDaggersWebsite.Api
 				AssetModTypes = addMod.AssetModTypes,
 				HtmlDescription = addMod.HtmlDescription,
 				IsHidden = addMod.IsHidden,
-				LastUpdated = DateTime.UtcNow,
 				Name = addMod.Name,
 				TrailerUrl = addMod.TrailerUrl,
 				Url = addMod.Url ?? string.Empty,
@@ -196,6 +195,14 @@ namespace DevilDaggersWebsite.Api
 			if (Io.File.Exists(filePath))
 				return BadRequest($"File '{file.FileName}' already exists.");
 
+			string archiveNameWithoutExtension = Path.GetFileNameWithoutExtension(file.FileName);
+			AssetMod? mod = _dbContext.AssetMods.FirstOrDefault(m => m.Name == archiveNameWithoutExtension);
+			if (mod == null)
+				return BadRequest($"There is no mod named '{archiveNameWithoutExtension}'.");
+
+			mod.LastUpdated = DateTime.UtcNow;
+			_dbContext.SaveChanges();
+
 			byte[] formFileBytes = new byte[file.Length];
 			using (MemoryStream ms = new())
 			{
@@ -208,8 +215,6 @@ namespace DevilDaggersWebsite.Api
 				List<ModBinaryCacheData> archive = _modArchiveCache.GetArchiveDataByBytes(Path.GetFileNameWithoutExtension(file.FileName), formFileBytes).Binaries;
 				if (archive.Count == 0)
 					throw new InvalidModArchiveException($"Mod archive '{file.FileName}' does not contain any binaries.");
-
-				string archiveNameWithoutExtension = Path.GetFileNameWithoutExtension(file.FileName);
 
 				foreach (ModBinaryCacheData binary in archive)
 				{
