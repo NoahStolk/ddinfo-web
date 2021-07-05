@@ -38,6 +38,19 @@ namespace DevilDaggersWebsite.Api
 		public List<GetPublicSpawnset> GetPublicSpawnsets(string? authorFilter = null, string? nameFilter = null)
 			=> _spawnsetHelper.GetSpawnsets(authorFilter, nameFilter);
 
+		[HttpGet("{fileName}/file")]
+		[ProducesResponseType(typeof(FileContentResult), StatusCodes.Status200OK)]
+		[ProducesResponseType(StatusCodes.Status400BadRequest)]
+		[ProducesResponseType(StatusCodes.Status404NotFound)]
+		[EndpointConsumer(EndpointConsumers.Ddse | EndpointConsumers.Website)]
+		public ActionResult GetSpawnsetFile([Required] string fileName)
+		{
+			if (!Io.File.Exists(Path.Combine(_environment.WebRootPath, "spawnsets", fileName)))
+				return new NotFoundObjectResult(new ProblemDetails { Title = $"Spawnset '{fileName}' was not found." });
+
+			return File(Io.File.ReadAllBytes(Path.Combine(_environment.WebRootPath, "spawnsets", fileName)), MediaTypeNames.Application.Octet, fileName);
+		}
+
 		// TODO: Remove private.
 		[HttpGet("private")]
 		//[Authorize(Policies.SpawnsetsPolicy)]
@@ -57,19 +70,6 @@ namespace DevilDaggersWebsite.Api
 				LastUpdated = sf.LastUpdated,
 				IsPractice = sf.IsPractice,
 			});
-		}
-
-		[HttpGet("{fileName}/file")]
-		[ProducesResponseType(typeof(FileContentResult), StatusCodes.Status200OK)]
-		[ProducesResponseType(StatusCodes.Status400BadRequest)]
-		[ProducesResponseType(StatusCodes.Status404NotFound)]
-		[EndpointConsumer(EndpointConsumers.Ddse | EndpointConsumers.Website)]
-		public ActionResult GetSpawnsetFile([Required] string fileName)
-		{
-			if (!Io.File.Exists(Path.Combine(_environment.WebRootPath, "spawnsets", fileName)))
-				return new NotFoundObjectResult(new ProblemDetails { Title = $"Spawnset '{fileName}' was not found." });
-
-			return File(Io.File.ReadAllBytes(Path.Combine(_environment.WebRootPath, "spawnsets", fileName)), MediaTypeNames.Application.Octet, fileName);
 		}
 
 		[HttpPost]
@@ -102,7 +102,7 @@ namespace DevilDaggersWebsite.Api
 		[ProducesResponseType(StatusCodes.Status200OK)]
 		[ProducesResponseType(StatusCodes.Status400BadRequest)]
 		[ProducesResponseType(StatusCodes.Status404NotFound)]
-		[EndpointConsumer(EndpointConsumers.None)]
+		[EndpointConsumer(EndpointConsumers.Admin)]
 		public ActionResult EditSpawnset(int id, EditSpawnset editSpawnset)
 		{
 			if (!_dbContext.Players.Any(p => p.Id == editSpawnset.PlayerId))
@@ -128,7 +128,7 @@ namespace DevilDaggersWebsite.Api
 		[ProducesResponseType(StatusCodes.Status200OK)]
 		[ProducesResponseType(StatusCodes.Status400BadRequest)]
 		[ProducesResponseType(StatusCodes.Status404NotFound)]
-		[EndpointConsumer(EndpointConsumers.None)]
+		[EndpointConsumer(EndpointConsumers.Admin)]
 		public ActionResult DeleteSpawnset(int id)
 		{
 			SpawnsetFile? spawnset = _dbContext.SpawnsetFiles.FirstOrDefault(s => s.Id == id);
