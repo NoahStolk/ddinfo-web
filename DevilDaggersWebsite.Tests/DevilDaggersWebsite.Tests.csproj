@@ -28,6 +28,8 @@
     </PackageReference>
   </ItemGroup>
   <ItemGroup>
+    <ProjectReference Include="..\DevilDaggersWebsite.BlazorWasm\Server\DevilDaggersWebsite.BlazorWasm.Server.csproj" />
+    <ProjectReference Include="..\DevilDaggersWebsite.BlazorWasm\Shared\DevilDaggersWebsite.BlazorWasm.Shared.csproj" />
     <ProjectReference Include="..\DevilDaggersWebsite\DevilDaggersWebsite.csproj" />
   </ItemGroup>
 </Project>
