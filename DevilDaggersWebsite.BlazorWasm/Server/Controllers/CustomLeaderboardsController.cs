@@ -35,7 +35,7 @@ namespace DevilDaggersWebsite.BlazorWasm.Server.Controllers
 		}
 
 		[HttpGet]
-		[Authorize(Roles = Policies.CustomLeaderboardsPolicy)]
+		[Authorize(Roles = Roles.CustomLeaderboards)]
 		[ProducesResponseType(StatusCodes.Status200OK)]
 		[EndpointConsumer(EndpointConsumers.Admin)]
 		public ActionResult<List<GetCustomLeaderboard>> GetCustomLeaderboards()
@@ -64,7 +64,7 @@ namespace DevilDaggersWebsite.BlazorWasm.Server.Controllers
 		}
 
 		[HttpGet("{id}")]
-		[Authorize(Roles = Policies.CustomLeaderboardsPolicy)]
+		[Authorize(Roles = Roles.CustomLeaderboards)]
 		[ProducesResponseType(StatusCodes.Status200OK)]
 		[ProducesResponseType(StatusCodes.Status404NotFound)]
 		[EndpointConsumer(EndpointConsumers.Admin)]
@@ -98,7 +98,7 @@ namespace DevilDaggersWebsite.BlazorWasm.Server.Controllers
 		}
 
 		[HttpPost]
-		[Authorize(Roles = Policies.CustomLeaderboardsPolicy)]
+		[Authorize(Roles = Roles.CustomLeaderboards)]
 		[ProducesResponseType(StatusCodes.Status200OK)]
 		[ProducesResponseType(StatusCodes.Status400BadRequest)]
 		[EndpointConsumer(EndpointConsumers.Admin)]
@@ -170,7 +170,7 @@ namespace DevilDaggersWebsite.BlazorWasm.Server.Controllers
 		}
 
 		[HttpPut("{id}")]
-		[Authorize(Roles = Policies.CustomLeaderboardsPolicy)]
+		[Authorize(Roles = Roles.CustomLeaderboards)]
 		[ProducesResponseType(StatusCodes.Status200OK)]
 		[ProducesResponseType(StatusCodes.Status400BadRequest)]
 		[ProducesResponseType(StatusCodes.Status404NotFound)]
@@ -249,7 +249,7 @@ namespace DevilDaggersWebsite.BlazorWasm.Server.Controllers
 		}
 
 		[HttpDelete("{id}")]
-		[Authorize(Roles = Policies.CustomLeaderboardsPolicy)]
+		[Authorize(Roles = Roles.CustomLeaderboards)]
 		[ProducesResponseType(StatusCodes.Status200OK)]
 		[ProducesResponseType(StatusCodes.Status400BadRequest)]
 		[ProducesResponseType(StatusCodes.Status404NotFound)]

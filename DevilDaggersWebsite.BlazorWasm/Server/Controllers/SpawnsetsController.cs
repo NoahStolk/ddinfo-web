@@ -48,7 +48,7 @@ namespace DevilDaggersWebsite.BlazorWasm.Server.Controllers
 
 		// TODO: Remove private.
 		[HttpGet("private")]
-		[Authorize(Roles = Policies.SpawnsetsPolicy)]
+		[Authorize(Roles = Roles.Spawnsets)]
 		[ProducesResponseType(StatusCodes.Status200OK)]
 		[EndpointConsumer(EndpointConsumers.Admin)]
 		public List<GetSpawnset> GetSpawnsets()
@@ -68,7 +68,7 @@ namespace DevilDaggersWebsite.BlazorWasm.Server.Controllers
 		}
 
 		[HttpPost]
-		[Authorize(Roles = Policies.SpawnsetsPolicy)]
+		[Authorize(Roles = Roles.Spawnsets)]
 		[ProducesResponseType(StatusCodes.Status200OK)]
 		[ProducesResponseType(StatusCodes.Status400BadRequest)]
 		[EndpointConsumer(EndpointConsumers.Admin)]
@@ -97,7 +97,7 @@ namespace DevilDaggersWebsite.BlazorWasm.Server.Controllers
 		}
 
 		[HttpPut("{id}")]
-		[Authorize(Roles = Policies.SpawnsetsPolicy)]
+		[Authorize(Roles = Roles.Spawnsets)]
 		[ProducesResponseType(StatusCodes.Status200OK)]
 		[ProducesResponseType(StatusCodes.Status400BadRequest)]
 		[ProducesResponseType(StatusCodes.Status404NotFound)]
@@ -137,7 +137,7 @@ namespace DevilDaggersWebsite.BlazorWasm.Server.Controllers
 		}
 
 		[HttpDelete("{id}")]
-		[Authorize(Roles = Policies.SpawnsetsPolicy)]
+		[Authorize(Roles = Roles.Spawnsets)]
 		[ProducesResponseType(StatusCodes.Status200OK)]
 		[ProducesResponseType(StatusCodes.Status400BadRequest)]
 		[ProducesResponseType(StatusCodes.Status404NotFound)]
@@ -160,7 +160,7 @@ namespace DevilDaggersWebsite.BlazorWasm.Server.Controllers
 		}
 
 		[HttpPost("upload-file")]
-		[Authorize(Roles = Policies.SpawnsetsPolicy)]
+		[Authorize(Roles = Roles.Spawnsets)]
 		[ProducesResponseType(StatusCodes.Status200OK)]
 		[ProducesResponseType(StatusCodes.Status400BadRequest)]
 		[EndpointConsumer(EndpointConsumers.Admin)]
@@ -208,7 +208,7 @@ namespace DevilDaggersWebsite.BlazorWasm.Server.Controllers
 		}
 
 		[HttpDelete("delete-file")]
-		[Authorize(Roles = Policies.SpawnsetsPolicy)]
+		[Authorize(Roles = Roles.Spawnsets)]
 		[ProducesResponseType(StatusCodes.Status200OK)]
 		[ProducesResponseType(StatusCodes.Status400BadRequest)]
 		[EndpointConsumer(EndpointConsumers.Admin)]

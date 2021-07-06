@@ -48,7 +48,7 @@ namespace DevilDaggersWebsite.BlazorWasm.Server.Controllers
 
 		// TODO: Remove private.
 		[HttpGet("private")]
-		[Authorize(Roles = Policies.AssetModsPolicy)]
+		[Authorize(Roles = Roles.AssetMods)]
 		[ProducesResponseType(StatusCodes.Status200OK)]
 		[EndpointConsumer(EndpointConsumers.Admin)]
 		public List<GetMod> GetMods()
@@ -73,7 +73,7 @@ namespace DevilDaggersWebsite.BlazorWasm.Server.Controllers
 		}
 
 		[HttpPost]
-		[Authorize(Roles = Policies.AssetModsPolicy)]
+		[Authorize(Roles = Roles.AssetMods)]
 		[ProducesResponseType(StatusCodes.Status200OK)]
 		[ProducesResponseType(StatusCodes.Status400BadRequest)]
 		[EndpointConsumer(EndpointConsumers.Admin)]
@@ -109,7 +109,7 @@ namespace DevilDaggersWebsite.BlazorWasm.Server.Controllers
 		}
 
 		[HttpPut("{id}")]
-		[Authorize(Roles = Policies.AssetModsPolicy)]
+		[Authorize(Roles = Roles.AssetMods)]
 		[ProducesResponseType(StatusCodes.Status200OK)]
 		[ProducesResponseType(StatusCodes.Status400BadRequest)]
 		[ProducesResponseType(StatusCodes.Status404NotFound)]
@@ -160,7 +160,7 @@ namespace DevilDaggersWebsite.BlazorWasm.Server.Controllers
 		}
 
 		[HttpDelete("{id}")]
-		[Authorize(Roles = Policies.AdminPolicy)]
+		[Authorize(Roles = Roles.Admin)]
 		[ProducesResponseType(StatusCodes.Status200OK)]
 		[ProducesResponseType(StatusCodes.Status404NotFound)]
 		[EndpointConsumer(EndpointConsumers.None)]
@@ -179,7 +179,7 @@ namespace DevilDaggersWebsite.BlazorWasm.Server.Controllers
 		}
 
 		[HttpPost("upload-file")]
-		[Authorize(Roles = Policies.AssetModsPolicy)]
+		[Authorize(Roles = Roles.AssetMods)]
 		[ProducesResponseType(StatusCodes.Status200OK)]
 		[ProducesResponseType(StatusCodes.Status400BadRequest)]
 		[EndpointConsumer(EndpointConsumers.Admin)]
@@ -263,7 +263,7 @@ namespace DevilDaggersWebsite.BlazorWasm.Server.Controllers
 		}
 
 		[HttpDelete("delete-file")]
-		[Authorize(Roles = Policies.AssetModsPolicy)]
+		[Authorize(Roles = Roles.AssetMods)]
 		[ProducesResponseType(StatusCodes.Status200OK)]
 		[ProducesResponseType(StatusCodes.Status400BadRequest)]
 		[EndpointConsumer(EndpointConsumers.Admin)]
@@ -289,7 +289,7 @@ namespace DevilDaggersWebsite.BlazorWasm.Server.Controllers
 		}
 
 		[HttpPost("upload-screenshot")]
-		[Authorize(Roles = Policies.AssetModsPolicy)]
+		[Authorize(Roles = Roles.AssetMods)]
 		[ProducesResponseType(StatusCodes.Status200OK)]
 		[ProducesResponseType(StatusCodes.Status400BadRequest)]
 		[EndpointConsumer(EndpointConsumers.Admin)]
@@ -337,7 +337,7 @@ namespace DevilDaggersWebsite.BlazorWasm.Server.Controllers
 		}
 
 		[HttpDelete("delete-screenshot")]
-		[Authorize(Roles = Policies.AssetModsPolicy)]
+		[Authorize(Roles = Roles.AssetMods)]
 		[ProducesResponseType(StatusCodes.Status200OK)]
 		[ProducesResponseType(StatusCodes.Status400BadRequest)]
 		[EndpointConsumer(EndpointConsumers.Admin)]
