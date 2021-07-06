@@ -28,7 +28,7 @@ namespace DevilDaggersWebsite.Api
 		}
 
 		[HttpGet]
-		[Authorize(Policies.PlayersPolicy)]
+		[Authorize(Roles = Policies.PlayersPolicy)]
 		[ProducesResponseType(StatusCodes.Status200OK)]
 		[EndpointConsumer(EndpointConsumers.Admin)]
 		public ActionResult<List<GetPlayer>> GetPlayers()
@@ -64,7 +64,7 @@ namespace DevilDaggersWebsite.Api
 		}
 
 		[HttpPost]
-		[Authorize(Policies.PlayersPolicy)]
+		[Authorize(Roles = Policies.PlayersPolicy)]
 		[ProducesResponseType(StatusCodes.Status200OK)]
 		[ProducesResponseType(StatusCodes.Status400BadRequest)]
 		[ProducesResponseType(StatusCodes.Status409Conflict)]
@@ -135,7 +135,7 @@ namespace DevilDaggersWebsite.Api
 		}
 
 		[HttpPut("{id}")]
-		[Authorize(Policies.PlayersPolicy)]
+		[Authorize(Roles = Policies.PlayersPolicy)]
 		[ProducesResponseType(StatusCodes.Status200OK)]
 		[ProducesResponseType(StatusCodes.Status400BadRequest)]
 		[ProducesResponseType(StatusCodes.Status404NotFound)]
@@ -201,7 +201,7 @@ namespace DevilDaggersWebsite.Api
 		}
 
 		[HttpPatch("{id}/update-name")]
-		[Authorize(Policies.PlayersPolicy)]
+		[Authorize(Roles = Policies.PlayersPolicy)]
 		[ProducesResponseType(StatusCodes.Status200OK)]
 		[ProducesResponseType(StatusCodes.Status404NotFound)]
 		[EndpointConsumer(EndpointConsumers.Admin)]
@@ -218,7 +218,7 @@ namespace DevilDaggersWebsite.Api
 		}
 
 		[HttpPatch("{id}/ban")]
-		[Authorize(Policies.PlayersPolicy)]
+		[Authorize(Roles = Policies.PlayersPolicy)]
 		[ProducesResponseType(StatusCodes.Status200OK)]
 		[ProducesResponseType(StatusCodes.Status404NotFound)]
 		[EndpointConsumer(EndpointConsumers.Admin)]
@@ -245,7 +245,7 @@ namespace DevilDaggersWebsite.Api
 		}
 
 		[HttpPatch("{id}/ban-ddcl")]
-		[Authorize(Policies.PlayersPolicy)]
+		[Authorize(Roles = Policies.PlayersPolicy)]
 		[ProducesResponseType(StatusCodes.Status200OK)]
 		[ProducesResponseType(StatusCodes.Status404NotFound)]
 		[EndpointConsumer(EndpointConsumers.Admin)]
@@ -262,7 +262,7 @@ namespace DevilDaggersWebsite.Api
 		}
 
 		[HttpPatch("{id}/unban")]
-		[Authorize(Policies.PlayersPolicy)]
+		[Authorize(Roles = Policies.PlayersPolicy)]
 		[ProducesResponseType(StatusCodes.Status200OK)]
 		[ProducesResponseType(StatusCodes.Status404NotFound)]
 		[EndpointConsumer(EndpointConsumers.Admin)]
@@ -281,7 +281,7 @@ namespace DevilDaggersWebsite.Api
 		}
 
 		[HttpPatch("{id}/unban-ddcl")]
-		[Authorize(Policies.PlayersPolicy)]
+		[Authorize(Roles = Policies.PlayersPolicy)]
 		[ProducesResponseType(StatusCodes.Status200OK)]
 		[ProducesResponseType(StatusCodes.Status404NotFound)]
 		[EndpointConsumer(EndpointConsumers.Admin)]
@@ -298,7 +298,7 @@ namespace DevilDaggersWebsite.Api
 		}
 
 		[HttpDelete("{id}")]
-		[Authorize(Policies.PlayersPolicy)]
+		[Authorize(Roles = Policies.PlayersPolicy)]
 		[ProducesResponseType(StatusCodes.Status200OK)]
 		[ProducesResponseType(StatusCodes.Status400BadRequest)]
 		[ProducesResponseType(StatusCodes.Status404NotFound)]

@@ -27,7 +27,7 @@ namespace DevilDaggersWebsite.BlazorWasm.Server.Controllers
 		}
 
 		[HttpGet]
-		[Authorize(Policies.AdminPolicy)]
+		[Authorize(Roles = Policies.AdminPolicy)]
 		[ProducesResponseType(StatusCodes.Status200OK)]
 		[EndpointConsumer(EndpointConsumers.None)]
 		public ActionResult<List<GetBaseCustomEntry>> GetCustomEntries()
@@ -59,7 +59,7 @@ namespace DevilDaggersWebsite.BlazorWasm.Server.Controllers
 		}
 
 		[HttpPost]
-		[Authorize(Policies.AdminPolicy)]
+		[Authorize(Roles = Policies.AdminPolicy)]
 		[ProducesResponseType(StatusCodes.Status200OK)]
 		[ProducesResponseType(StatusCodes.Status400BadRequest)]
 		[EndpointConsumer(EndpointConsumers.None)]
@@ -105,7 +105,7 @@ namespace DevilDaggersWebsite.BlazorWasm.Server.Controllers
 		}
 
 		[HttpPut("{id}")]
-		[Authorize(Policies.AdminPolicy)]
+		[Authorize(Roles = Policies.AdminPolicy)]
 		[ProducesResponseType(StatusCodes.Status200OK)]
 		[ProducesResponseType(StatusCodes.Status400BadRequest)]
 		[ProducesResponseType(StatusCodes.Status404NotFound)]
@@ -172,7 +172,7 @@ namespace DevilDaggersWebsite.BlazorWasm.Server.Controllers
 		}
 
 		[HttpDelete("{id}")]
-		[Authorize(Policies.AdminPolicy)]
+		[Authorize(Roles = Policies.AdminPolicy)]
 		[ProducesResponseType(StatusCodes.Status200OK)]
 		[ProducesResponseType(StatusCodes.Status404NotFound)]
 		[EndpointConsumer(EndpointConsumers.None)]

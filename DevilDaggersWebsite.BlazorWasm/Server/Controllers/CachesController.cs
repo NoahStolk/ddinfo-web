@@ -38,7 +38,7 @@ namespace DevilDaggersWebsite.Api
 		}
 
 		[HttpPost("clear")]
-		[Authorize(Policies.AdminPolicy)]
+		[Authorize(Roles = Policies.AdminPolicy)]
 		[ProducesResponseType(StatusCodes.Status200OK)]
 		[EndpointConsumer(EndpointConsumers.Admin)]
 		public async Task<ActionResult> ClearCache(CacheType cacheType)

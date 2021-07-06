@@ -3,7 +3,7 @@
 @using Microsoft.AspNetCore.Components.WebAssembly.Authentication
 @using DevilDaggersWebsite.BlazorWasm.Shared
 @using DevilDaggersWebsite.BlazorWasm.Shared.Titles
-@attribute [Authorize(Policies.AdminPolicy)]
+@attribute [Authorize(Roles = Policies.AdminPolicy)]
 @inject HttpClient Http
 
 <h1>Weather forecast</h1>
