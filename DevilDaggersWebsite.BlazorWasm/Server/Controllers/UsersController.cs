@@ -32,34 +32,24 @@ namespace DevilDaggersWebsite.Api
 		[EndpointConsumer(EndpointConsumers.None)]
 		public ActionResult<List<GetUser>> GetUsers()
 		{
-			List<ApplicationUser> users = _dbContext.Users
+			var users = _dbContext.Users
 				.AsNoTracking()
+				.Select(u => new { u.Id, u.Email, u.UserName })
 				.ToList();
 
 			List<IdentityUserRole<string>> userRoles = _dbContext.UserRoles
 				.AsNoTracking()
 				.ToList();
 
-			List<IdentityRole> roles = _dbContext.Roles
+			var roles = _dbContext.Roles
 				.AsNoTracking()
+				.Select(r => new { r.Id, r.Name })
 				.ToList();
 
 			return users.ConvertAll(u => new GetUser
 			{
 				Id = u.Id,
-				AccessFailedCount = u.AccessFailedCount,
-				ConcurrencyStamp = u.ConcurrencyStamp,
 				Email = u.Email,
-				EmailConfirmed = u.EmailConfirmed,
-				LockoutEnabled = u.LockoutEnabled,
-				LockoutEnd = u.LockoutEnd,
-				NormalizedEmail = u.NormalizedEmail,
-				NormalizedUserName = u.NormalizedUserName,
-				PasswordHash = u.PasswordHash,
-				PhoneNumber = u.PhoneNumber,
-				PhoneNumberConfirmed = u.PhoneNumberConfirmed,
-				SecurityStamp = u.SecurityStamp,
-				TwoFactorEnabled = u.TwoFactorEnabled,
 				UserName = u.UserName,
 				Roles = userRoles.Where(ur => ur.UserId == u.Id).Select(ur => roles.FirstOrDefault(r => r.Id == ur.RoleId)?.Name ?? string.Empty).ToList(),
 			});
