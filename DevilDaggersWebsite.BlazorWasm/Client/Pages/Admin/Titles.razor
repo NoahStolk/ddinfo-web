@@ -6,9 +6,7 @@
 @attribute [Authorize(Roles = Roles.Admin)]
 @inject HttpClient Http
 
-<h1>Weather forecast</h1>
-
-<p>This component demonstrates fetching data from the server.</p>
+<h1>Titles</h1>
 
 @if (_titles == null)
 {
@@ -19,17 +17,18 @@ else
 	<table class="table">
 		<thead>
 			<tr>
-				<th>Date</th>
-				<th>Temp. (C)</th>
-				<th>Temp. (F)</th>
-				<th>Summary</th>
+				<th>Id</th>
+				<th>Name</th>
+				<th>Players</th>
 			</tr>
 		</thead>
 		<tbody>
 			@foreach (var title in _titles)
 			{
 				<tr>
+					<td>@title.Id</td>
 					<td>@title.Name</td>
+					<td>@string.Join(", ", title.PlayerIds ?? new())</td>
 				</tr>
 			}
 		</tbody>
