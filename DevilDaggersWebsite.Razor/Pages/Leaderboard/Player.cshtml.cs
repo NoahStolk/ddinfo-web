@@ -1,7 +1,6 @@
 ﻿using DevilDaggersCore.Game;
 using DevilDaggersWebsite.Caches.LeaderboardHistory;
 using DevilDaggersWebsite.Clients;
-using DevilDaggersWebsite.Dto;
 using DevilDaggersWebsite.Entities;
 using DevilDaggersWebsite.Enumerators;
 using DevilDaggersWebsite.Razor.Utils;
@@ -14,7 +13,7 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Threading.Tasks;
 using Io = System.IO;
-using Lb = DevilDaggersWebsite.Dto.Leaderboard;
+using Lb = DevilDaggersWebsite.Clients.Leaderboard;
 
 namespace DevilDaggersWebsite.Razor.Pages.Leaderboard
 {

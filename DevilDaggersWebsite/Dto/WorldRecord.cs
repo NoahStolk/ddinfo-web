@@ -1,4 +1,5 @@
 ﻿using DevilDaggersCore.Game;
+using DevilDaggersWebsite.Clients;
 using System;
 
 namespace DevilDaggersWebsite.Dto

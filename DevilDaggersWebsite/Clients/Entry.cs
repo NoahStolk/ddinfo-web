@@ -1,6 +1,6 @@
 ﻿using Newtonsoft.Json;
 
-namespace DevilDaggersWebsite.Dto
+namespace DevilDaggersWebsite.Clients
 {
 	public class Entry
 	{

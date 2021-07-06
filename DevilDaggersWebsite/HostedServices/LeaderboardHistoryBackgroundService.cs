@@ -29,7 +29,7 @@ namespace DevilDaggersWebsite.HostedServices
 			if (HistoryFileExistsForDate(DateTime.UtcNow))
 				return;
 
-			Dto.Leaderboard? lb = await LeaderboardClient.Instance.GetScores(1);
+			Leaderboard? lb = await LeaderboardClient.Instance.GetScores(1);
 			if (lb != null)
 			{
 				string fileName = $"{DateTime.UtcNow:yyyyMMddHHmm}.json";

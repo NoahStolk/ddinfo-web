@@ -1,5 +1,5 @@
 ﻿using DevilDaggersCore.Game;
-using DevilDaggersWebsite.Dto;
+using DevilDaggersWebsite.Clients;
 using System.Windows;
 using System.Windows.Controls;
 

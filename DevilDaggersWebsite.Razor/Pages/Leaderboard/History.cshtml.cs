@@ -1,5 +1,5 @@
 ﻿using DevilDaggersWebsite.Caches.LeaderboardHistory;
-using DevilDaggersWebsite.Dto;
+using DevilDaggersWebsite.Clients;
 using DevilDaggersWebsite.Razor.PageModels;
 using DevilDaggersWebsite.Razor.Utils;
 using DevilDaggersWebsite.Utils;
@@ -11,7 +11,7 @@ using System.Collections.Generic;
 using System.IO;
 using System.Linq;
 using Io = System.IO;
-using Lb = DevilDaggersWebsite.Dto.Leaderboard;
+using Lb = DevilDaggersWebsite.Clients.Leaderboard;
 
 namespace DevilDaggersWebsite.Razor.Pages.Leaderboard
 {

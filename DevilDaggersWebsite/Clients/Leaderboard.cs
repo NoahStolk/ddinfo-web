@@ -2,7 +2,7 @@
 using System;
 using System.Collections.Generic;
 
-namespace DevilDaggersWebsite.Dto
+namespace DevilDaggersWebsite.Clients
 {
 	public class Leaderboard
 	{

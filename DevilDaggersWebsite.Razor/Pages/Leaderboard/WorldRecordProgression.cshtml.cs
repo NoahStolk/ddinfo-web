@@ -10,7 +10,7 @@ using System;
 using System.Collections.Generic;
 using System.Threading.Tasks;
 using System.Web;
-using Lb = DevilDaggersWebsite.Dto.Leaderboard;
+using Lb = DevilDaggersWebsite.Clients.Leaderboard;
 
 namespace DevilDaggersWebsite.Razor.Pages.Leaderboard
 {

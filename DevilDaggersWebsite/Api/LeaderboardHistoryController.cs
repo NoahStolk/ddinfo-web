@@ -1,5 +1,6 @@
 ﻿using DevilDaggersWebsite.Api.Attributes;
 using DevilDaggersWebsite.Caches.LeaderboardHistory;
+using DevilDaggersWebsite.Clients;
 using DevilDaggersWebsite.Dto;
 using DevilDaggersWebsite.Transients;
 using Microsoft.AspNetCore.Hosting;

@@ -1,5 +1,4 @@
 ﻿using DevilDaggersWebsite.Clients;
-using DevilDaggersWebsite.Dto;
 using DevilDaggersWebsite.Entities;
 using Microsoft.AspNetCore.Mvc.RazorPages;
 using Microsoft.EntityFrameworkCore;

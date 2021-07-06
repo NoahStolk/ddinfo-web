@@ -1,4 +1,4 @@
-﻿using DevilDaggersWebsite.Dto;
+﻿using DevilDaggersWebsite.Clients;
 using DevilDaggersWebsite.Utils;
 using Microsoft.Win32;
 using Newtonsoft.Json;

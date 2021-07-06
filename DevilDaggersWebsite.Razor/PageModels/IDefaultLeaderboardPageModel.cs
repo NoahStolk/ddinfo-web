@@ -1,4 +1,4 @@
-﻿using Lb = DevilDaggersWebsite.Dto.Leaderboard;
+﻿using Lb = DevilDaggersWebsite.Clients.Leaderboard;
 
 namespace DevilDaggersWebsite.Razor.PageModels
 {

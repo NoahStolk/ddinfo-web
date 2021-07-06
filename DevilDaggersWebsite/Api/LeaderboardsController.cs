@@ -1,6 +1,5 @@
 ﻿using DevilDaggersWebsite.Api.Attributes;
 using DevilDaggersWebsite.Clients;
-using DevilDaggersWebsite.Dto;
 using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
 using System.Collections.Generic;

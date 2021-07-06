@@ -31,8 +31,6 @@ Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "DevilDaggersWebsite.BlazorW
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "DevilDaggersWebsite.BlazorWasm.Shared", "DevilDaggersWebsite.BlazorWasm\Shared\DevilDaggersWebsite.BlazorWasm.Shared.csproj", "{B73F0FEF-0D3B-4B41-8920-34134012F5C8}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "DevilDaggersWebsite.Entities", "DevilDaggersWebsite.Entities\DevilDaggersWebsite.Entities.csproj", "{774EC8F9-3351-4B83-9DDF-717EF7024A2D}"
-EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
 		Debug|Any CPU = Debug|Any CPU
@@ -87,10 +85,6 @@ Global
 		{B73F0FEF-0D3B-4B41-8920-34134012F5C8}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{B73F0FEF-0D3B-4B41-8920-34134012F5C8}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{B73F0FEF-0D3B-4B41-8920-34134012F5C8}.Release|Any CPU.Build.0 = Release|Any CPU
-		{774EC8F9-3351-4B83-9DDF-717EF7024A2D}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
-		{774EC8F9-3351-4B83-9DDF-717EF7024A2D}.Debug|Any CPU.Build.0 = Debug|Any CPU
-		{774EC8F9-3351-4B83-9DDF-717EF7024A2D}.Release|Any CPU.ActiveCfg = Release|Any CPU
-		{774EC8F9-3351-4B83-9DDF-717EF7024A2D}.Release|Any CPU.Build.0 = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE

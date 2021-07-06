@@ -1,12 +1,11 @@
 ﻿using DevilDaggersWebsite.Clients;
-using DevilDaggersWebsite.Dto;
 using DevilDaggersWebsite.Razor.PageModels;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.AspNetCore.Mvc.RazorPages;
 using System.Collections.Generic;
 using System.Linq;
 using System.Threading.Tasks;
-using Lb = DevilDaggersWebsite.Dto.Leaderboard;
+using Lb = DevilDaggersWebsite.Clients.Leaderboard;
 
 namespace DevilDaggersWebsite.Razor.Pages.Leaderboard
 {

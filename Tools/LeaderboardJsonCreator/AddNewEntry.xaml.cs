@@ -1,4 +1,4 @@
-﻿using DevilDaggersWebsite.Dto;
+﻿using DevilDaggersWebsite.Clients;
 using System.Collections.Generic;
 using System.Linq;
 using System.Windows;

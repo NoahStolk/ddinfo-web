@@ -16,6 +16,9 @@ namespace DevilDaggersWebsite.Extensions
 			_ => '?',
 		};
 
+		public static bool IsAscending(this CustomLeaderboardCategory category)
+			=> category is CustomLeaderboardCategory.TimeAttack or CustomLeaderboardCategory.Speedrun;
+
 		public static DiscordColor GetDiscordColor(this CustomLeaderboardDagger dagger) => dagger switch
 		{
 			CustomLeaderboardDagger.Leviathan => DiscordColors.Leviathan,
