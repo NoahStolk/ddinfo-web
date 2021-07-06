@@ -1,14 +1,12 @@
 ﻿using DevilDaggersWebsite.Api.Attributes;
-using DevilDaggersWebsite.Authorization;
 using DevilDaggersWebsite.Caches.SpawnsetHash;
-using DevilDaggersWebsite.Dto.CustomEntries;
 using DevilDaggersWebsite.Entities;
 using DevilDaggersWebsite.Extensions;
 using DevilDaggersWebsite.HostedServices.DdInfoDiscordBot;
 using DevilDaggersWebsite.Singletons;
 using DevilDaggersWebsite.Transients;
+using DevilDaggersWebsite.Utils;
 using DSharpPlus.Entities;
-using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.EntityFrameworkCore;
@@ -28,183 +26,13 @@ namespace DevilDaggersWebsite.Api
 		private readonly IToolHelper _toolHelper;
 		private readonly DiscordLogger _discordLogger;
 		private readonly SpawnsetHashCache _spawnsetHashCache;
-		private readonly AuditLogger _auditLogger;
 
-		public CustomEntriesController(ApplicationDbContext dbContext, IToolHelper toolHelper, DiscordLogger discordLogger, SpawnsetHashCache spawnsetHashCache, AuditLogger auditLogger)
+		public CustomEntriesController(ApplicationDbContext dbContext, IToolHelper toolHelper, DiscordLogger discordLogger, SpawnsetHashCache spawnsetHashCache)
 		{
 			_dbContext = dbContext;
 			_toolHelper = toolHelper;
 			_discordLogger = discordLogger;
 			_spawnsetHashCache = spawnsetHashCache;
-			_auditLogger = auditLogger;
-		}
-
-		[HttpGet]
-		[Authorize(Policies.AdminPolicy)]
-		[ProducesResponseType(StatusCodes.Status200OK)]
-		[EndpointConsumer(EndpointConsumers.None)]
-		public ActionResult<List<GetBaseCustomEntry>> GetCustomEntries()
-		{
-			List<CustomEntry> customEntries = _dbContext.CustomEntries.AsNoTracking().ToList();
-
-			return customEntries.ConvertAll(ce => new GetBaseCustomEntry
-			{
-				Id = ce.Id,
-				ClientVersion = ce.ClientVersion,
-				DaggersFired = ce.DaggersFired,
-				DaggersHit = ce.DaggersHit,
-				DeathType = ce.DeathType,
-				EnemiesAlive = ce.EnemiesAlive,
-				EnemiesKilled = ce.EnemiesKilled,
-				GemsCollected = ce.GemsCollected,
-				GemsDespawned = ce.GemsDespawned,
-				GemsEaten = ce.GemsEaten,
-				GemsTotal = ce.GemsTotal,
-				HomingDaggers = ce.HomingDaggers,
-				HomingDaggersEaten = ce.HomingDaggersEaten,
-				LevelUpTime2 = ce.LevelUpTime2,
-				LevelUpTime3 = ce.LevelUpTime3,
-				LevelUpTime4 = ce.LevelUpTime4,
-				PlayerId = ce.PlayerId,
-				SubmitDate = ce.SubmitDate,
-				Time = ce.Time,
-			});
-		}
-
-		[HttpPost]
-		[Authorize(Policies.AdminPolicy)]
-		[ProducesResponseType(StatusCodes.Status200OK)]
-		[ProducesResponseType(StatusCodes.Status400BadRequest)]
-		[EndpointConsumer(EndpointConsumers.None)]
-		public async Task<ActionResult> AddCustomEntry(AddCustomEntry addCustomEntry)
-		{
-			if (!_dbContext.Players.Any(p => p.Id == addCustomEntry.PlayerId))
-				return BadRequest($"Player with ID '{addCustomEntry.PlayerId}' does not exist.");
-
-			if (!_dbContext.CustomLeaderboards.Any(cl => cl.Id == addCustomEntry.CustomLeaderboardId))
-				return BadRequest($"Custom leaderboard with ID '{addCustomEntry.CustomLeaderboardId}' does not exist.");
-
-			if (_dbContext.CustomEntries.Any(cl => cl.CustomLeaderboardId == addCustomEntry.CustomLeaderboardId && cl.PlayerId == addCustomEntry.PlayerId))
-				return BadRequest("A score for this player already exists on this custom leaderboard.");
-
-			CustomEntry customEntry = new()
-			{
-				ClientVersion = addCustomEntry.ClientVersion,
-				CustomLeaderboardId = addCustomEntry.CustomLeaderboardId,
-				DaggersFired = addCustomEntry.DaggersFired,
-				DaggersHit = addCustomEntry.DaggersHit,
-				DeathType = addCustomEntry.DeathType,
-				EnemiesAlive = addCustomEntry.EnemiesAlive,
-				EnemiesKilled = addCustomEntry.EnemiesKilled,
-				GemsCollected = addCustomEntry.GemsCollected,
-				GemsDespawned = addCustomEntry.GemsDespawned,
-				GemsEaten = addCustomEntry.GemsEaten,
-				GemsTotal = addCustomEntry.GemsTotal,
-				HomingDaggers = addCustomEntry.HomingDaggers,
-				HomingDaggersEaten = addCustomEntry.HomingDaggersEaten,
-				LevelUpTime2 = addCustomEntry.LevelUpTime2,
-				LevelUpTime3 = addCustomEntry.LevelUpTime3,
-				LevelUpTime4 = addCustomEntry.LevelUpTime4,
-				PlayerId = addCustomEntry.PlayerId,
-				SubmitDate = addCustomEntry.SubmitDate,
-				Time = addCustomEntry.Time,
-			};
-			_dbContext.CustomEntries.Add(customEntry);
-			_dbContext.SaveChanges();
-
-			await _auditLogger.LogAdd(addCustomEntry, User, customEntry.Id);
-
-			return Ok(customEntry.Id);
-		}
-
-		[HttpPut("{id}")]
-		[Authorize(Policies.AdminPolicy)]
-		[ProducesResponseType(StatusCodes.Status200OK)]
-		[ProducesResponseType(StatusCodes.Status400BadRequest)]
-		[ProducesResponseType(StatusCodes.Status404NotFound)]
-		[EndpointConsumer(EndpointConsumers.None)]
-		public async Task<ActionResult> EditCustomEntry(int id, EditCustomEntry editCustomEntry)
-		{
-			if (!_dbContext.Players.Any(p => p.Id == editCustomEntry.PlayerId))
-				return BadRequest($"Player with ID '{editCustomEntry.PlayerId}' does not exist.");
-
-			if (!_dbContext.CustomLeaderboards.Any(cl => cl.Id == editCustomEntry.CustomLeaderboardId))
-				return BadRequest($"Custom leaderboard with ID '{editCustomEntry.CustomLeaderboardId}' does not exist.");
-
-			CustomEntry? customEntry = _dbContext.CustomEntries.FirstOrDefault(ce => ce.Id == id);
-			if (customEntry == null)
-				return NotFound();
-
-			EditCustomEntry logDto = new()
-			{
-				ClientVersion = customEntry.ClientVersion,
-				CustomLeaderboardId = customEntry.CustomLeaderboardId,
-				DaggersFired = customEntry.DaggersFired,
-				DaggersHit = customEntry.DaggersHit,
-				DeathType = customEntry.DeathType,
-				EnemiesAlive = customEntry.EnemiesAlive,
-				EnemiesKilled = customEntry.EnemiesKilled,
-				GemsCollected = customEntry.GemsCollected,
-				GemsDespawned = customEntry.GemsDespawned,
-				GemsEaten = customEntry.GemsEaten,
-				GemsTotal = customEntry.GemsTotal,
-				HomingDaggers = customEntry.HomingDaggers,
-				HomingDaggersEaten = customEntry.HomingDaggersEaten,
-				LevelUpTime2 = customEntry.LevelUpTime2,
-				LevelUpTime3 = customEntry.LevelUpTime3,
-				LevelUpTime4 = customEntry.LevelUpTime4,
-				PlayerId = customEntry.PlayerId,
-				SubmitDate = customEntry.SubmitDate,
-				Time = customEntry.Time,
-			};
-
-			customEntry.ClientVersion = editCustomEntry.ClientVersion;
-			customEntry.CustomLeaderboardId = editCustomEntry.CustomLeaderboardId;
-			customEntry.DaggersFired = editCustomEntry.DaggersFired;
-			customEntry.DaggersHit = editCustomEntry.DaggersHit;
-			customEntry.DeathType = editCustomEntry.DeathType;
-			customEntry.EnemiesAlive = editCustomEntry.EnemiesAlive;
-			customEntry.EnemiesKilled = editCustomEntry.EnemiesKilled;
-			customEntry.GemsCollected = editCustomEntry.GemsCollected;
-			customEntry.GemsDespawned = editCustomEntry.GemsDespawned;
-			customEntry.GemsEaten = editCustomEntry.GemsEaten;
-			customEntry.GemsTotal = editCustomEntry.GemsTotal;
-			customEntry.HomingDaggers = editCustomEntry.HomingDaggers;
-			customEntry.HomingDaggersEaten = editCustomEntry.HomingDaggersEaten;
-			customEntry.LevelUpTime2 = editCustomEntry.LevelUpTime2;
-			customEntry.LevelUpTime3 = editCustomEntry.LevelUpTime3;
-			customEntry.LevelUpTime4 = editCustomEntry.LevelUpTime4;
-			customEntry.PlayerId = editCustomEntry.PlayerId;
-			customEntry.SubmitDate = editCustomEntry.SubmitDate;
-			customEntry.Time = editCustomEntry.Time;
-			_dbContext.SaveChanges();
-
-			await _auditLogger.LogEdit(logDto, editCustomEntry, User, customEntry.Id);
-
-			return Ok();
-		}
-
-		[HttpDelete("{id}")]
-		[Authorize(Policies.AdminPolicy)]
-		[ProducesResponseType(StatusCodes.Status200OK)]
-		[ProducesResponseType(StatusCodes.Status404NotFound)]
-		[EndpointConsumer(EndpointConsumers.None)]
-		public async Task<ActionResult> DeleteCustomEntry(int id)
-		{
-			CustomEntry? customEntry = _dbContext.CustomEntries.FirstOrDefault(ced => ced.Id == id);
-			if (customEntry == null)
-				return NotFound();
-
-			CustomEntryData? customEntryData = _dbContext.CustomEntryData.FirstOrDefault(ced => ced.CustomEntryId == id);
-			if (customEntryData != null)
-				_dbContext.CustomEntryData.Remove(customEntryData);
-
-			_dbContext.CustomEntries.Remove(customEntry);
-			_dbContext.SaveChanges();
-
-			await _auditLogger.LogDelete(customEntry, User, customEntry.Id);
-
-			return Ok();
 		}
 
 		[HttpPost("submit")]
@@ -349,7 +177,7 @@ namespace DevilDaggersWebsite.Api
 				_dbContext.CustomEntries.Add(newCustomEntry);
 
 				CustomEntryData newCustomEntryData = new() { CustomEntry = newCustomEntry };
-				newCustomEntryData.Populate(uploadRequest.GameStates);
+				Populate(newCustomEntryData, uploadRequest.GameStates);
 				_dbContext.CustomEntryData.Add(newCustomEntryData);
 
 				_dbContext.SaveChanges();
@@ -453,12 +281,12 @@ namespace DevilDaggersWebsite.Api
 				{
 					CustomEntryId = customEntry.Id,
 				};
-				customEntryData.Populate(uploadRequest.GameStates);
+				Populate(customEntryData, uploadRequest.GameStates);
 				_dbContext.CustomEntryData.Add(customEntryData);
 			}
 			else
 			{
-				customEntryData.Populate(uploadRequest.GameStates);
+				Populate(customEntryData, uploadRequest.GameStates);
 			}
 
 			_dbContext.SaveChanges();
@@ -578,6 +406,59 @@ namespace DevilDaggersWebsite.Api
 			{
 				// Ignore exceptions that occurred while attempting to log.
 			}
+		}
+
+		private void Populate(CustomEntryData ced, List<Dto.GameState> gameStates)
+		{
+			ced.GemsCollectedData = CompressProperty(gs => gs.GemsCollected);
+			ced.EnemiesKilledData = CompressProperty(gs => gs.EnemiesKilled);
+			ced.DaggersFiredData = CompressProperty(gs => gs.DaggersFired);
+			ced.DaggersHitData = CompressProperty(gs => gs.DaggersHit);
+			ced.EnemiesAliveData = CompressProperty(gs => gs.EnemiesAlive);
+			ced.HomingDaggersData = CompressProperty(gs => gs.HomingDaggers);
+			ced.HomingDaggersEatenData = CompressProperty(gs => gs.HomingDaggersEaten);
+			ced.GemsDespawnedData = CompressProperty(gs => gs.GemsDespawned);
+			ced.GemsEatenData = CompressProperty(gs => gs.GemsEaten);
+			ced.GemsTotalData = CompressProperty(gs => gs.GemsTotal);
+
+			ced.Skull1sAliveData = CompressProperty(gs => gs.Skull1sAlive);
+			ced.Skull2sAliveData = CompressProperty(gs => gs.Skull2sAlive);
+			ced.Skull3sAliveData = CompressProperty(gs => gs.Skull3sAlive);
+			ced.SpiderlingsAliveData = CompressProperty(gs => gs.SpiderlingsAlive);
+			ced.Skull4sAliveData = CompressProperty(gs => gs.Skull4sAlive);
+			ced.Squid1sAliveData = CompressProperty(gs => gs.Squid1sAlive);
+			ced.Squid2sAliveData = CompressProperty(gs => gs.Squid2sAlive);
+			ced.Squid3sAliveData = CompressProperty(gs => gs.Squid3sAlive);
+			ced.CentipedesAliveData = CompressProperty(gs => gs.CentipedesAlive);
+			ced.GigapedesAliveData = CompressProperty(gs => gs.GigapedesAlive);
+			ced.Spider1sAliveData = CompressProperty(gs => gs.Spider1sAlive);
+			ced.Spider2sAliveData = CompressProperty(gs => gs.Spider2sAlive);
+			ced.LeviathansAliveData = CompressProperty(gs => gs.LeviathansAlive);
+			ced.OrbsAliveData = CompressProperty(gs => gs.OrbsAlive);
+			ced.ThornsAliveData = CompressProperty(gs => gs.ThornsAlive);
+			ced.GhostpedesAliveData = CompressProperty(gs => gs.GhostpedesAlive);
+			ced.SpiderEggsAliveData = CompressProperty(gs => gs.SpiderEggsAlive);
+
+			ced.Skull1sKilledData = CompressProperty(gs => gs.Skull1sKilled);
+			ced.Skull2sKilledData = CompressProperty(gs => gs.Skull2sKilled);
+			ced.Skull3sKilledData = CompressProperty(gs => gs.Skull3sKilled);
+			ced.SpiderlingsKilledData = CompressProperty(gs => gs.SpiderlingsKilled);
+			ced.Skull4sKilledData = CompressProperty(gs => gs.Skull4sKilled);
+			ced.Squid1sKilledData = CompressProperty(gs => gs.Squid1sKilled);
+			ced.Squid2sKilledData = CompressProperty(gs => gs.Squid2sKilled);
+			ced.Squid3sKilledData = CompressProperty(gs => gs.Squid3sKilled);
+			ced.CentipedesKilledData = CompressProperty(gs => gs.CentipedesKilled);
+			ced.GigapedesKilledData = CompressProperty(gs => gs.GigapedesKilled);
+			ced.Spider1sKilledData = CompressProperty(gs => gs.Spider1sKilled);
+			ced.Spider2sKilledData = CompressProperty(gs => gs.Spider2sKilled);
+			ced.LeviathansKilledData = CompressProperty(gs => gs.LeviathansKilled);
+			ced.OrbsKilledData = CompressProperty(gs => gs.OrbsKilled);
+			ced.ThornsKilledData = CompressProperty(gs => gs.ThornsKilled);
+			ced.GhostpedesKilledData = CompressProperty(gs => gs.GhostpedesKilled);
+			ced.SpiderEggsKilledData = CompressProperty(gs => gs.SpiderEggsKilled);
+
+			byte[] CompressProperty(Func<Dto.GameState, int> propertySelector)
+				=> IntegerArrayCompressor.CompressData(gameStates.Select(propertySelector).ToArray());
 		}
 	}
 }
