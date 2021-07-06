@@ -12,6 +12,7 @@ using DevilDaggersWebsite.Transients;
 using Microsoft.AspNetCore.Authentication;
 using Microsoft.AspNetCore.Builder;
 using Microsoft.AspNetCore.Hosting;
+using Microsoft.AspNetCore.Identity;
 using Microsoft.AspNetCore.Rewrite;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.Extensions.Configuration;
@@ -45,6 +46,7 @@ namespace DevilDaggersWebsite.BlazorWasm.Server
 			services.AddDatabaseDeveloperPageExceptionFilter();
 
 			services.AddDefaultIdentity<ApplicationUser>(options => options.SignIn.RequireConfirmedAccount = true)
+				.AddRoles<IdentityRole>()
 				.AddEntityFrameworkStores<ApplicationDbContext>();
 
 			services.AddIdentityServer()
@@ -81,6 +83,16 @@ namespace DevilDaggersWebsite.BlazorWasm.Server
 			services.AddTransient<ModHelper>();
 			services.AddTransient<SpawnsetHelper>();
 			services.AddTransient<IToolHelper, ToolHelper>(); // TODO: Singleton?
+
+			services.AddSwaggerDocument(config => config.PostProcess = document =>
+			{
+				document.Info.Title = "DevilDaggers.Info API";
+				document.Info.Contact = new()
+				{
+					Name = "Noah Stolk",
+					Url = "//noahstolk.com/",
+				};
+			});
 		}
 
 		// This method gets called by the runtime. Use this method to configure the HTTP request pipeline.
@@ -145,6 +157,9 @@ namespace DevilDaggersWebsite.BlazorWasm.Server
 				endpoints.MapControllers();
 				endpoints.MapFallbackToFile("index.html");
 			});
+
+			app.UseOpenApi();
+			app.UseSwaggerUi3();
 		}
 	}
 }

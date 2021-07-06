@@ -27,35 +27,35 @@ namespace DevilDaggersWebsite.Entities
 
 		public virtual DbSet<InformationSchemaTable> InformationSchemaTables => Set<InformationSchemaTable>();
 
-		protected override void OnModelCreating(ModelBuilder modelBuilder)
+		protected override void OnModelCreating(ModelBuilder builder)
 		{
-			modelBuilder.Entity<PlayerAssetMod>()
+			builder.Entity<PlayerAssetMod>()
 				.HasKey(pam => new { pam.PlayerId, pam.AssetModId });
 
-			modelBuilder.Entity<PlayerAssetMod>()
+			builder.Entity<PlayerAssetMod>()
 				.HasOne(pam => pam.Player)
 				.WithMany(p => p.PlayerAssetMods)
 				.HasForeignKey(pam => pam.PlayerId);
 
-			modelBuilder.Entity<PlayerAssetMod>()
+			builder.Entity<PlayerAssetMod>()
 				.HasOne(pam => pam.AssetMod)
 				.WithMany(am => am.PlayerAssetMods)
 				.HasForeignKey(pam => pam.AssetModId);
 
-			modelBuilder.Entity<PlayerTitle>()
+			builder.Entity<PlayerTitle>()
 				.HasKey(pt => new { pt.PlayerId, pt.TitleId });
 
-			modelBuilder.Entity<PlayerTitle>()
+			builder.Entity<PlayerTitle>()
 				.HasOne(pt => pt.Player)
 				.WithMany(p => p.PlayerTitles)
 				.HasForeignKey(pt => pt.PlayerId);
 
-			modelBuilder.Entity<PlayerTitle>()
+			builder.Entity<PlayerTitle>()
 				.HasOne(pt => pt.Title)
 				.WithMany(t => t.PlayerTitles)
 				.HasForeignKey(pt => pt.TitleId);
 
-			base.OnModelCreating(modelBuilder);
+			base.OnModelCreating(builder);
 		}
 	}
 }
