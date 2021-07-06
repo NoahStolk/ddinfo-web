@@ -1,15 +1,12 @@
-using DevilDaggersWebsite.BlazorWasm.Server.Data;
+﻿using DevilDaggersWebsite.BlazorWasm.Server.Data;
 using DevilDaggersWebsite.BlazorWasm.Server.Models;
 using Microsoft.AspNetCore.Authentication;
 using Microsoft.AspNetCore.Builder;
 using Microsoft.AspNetCore.Hosting;
-using Microsoft.AspNetCore.HttpsPolicy;
-using Microsoft.AspNetCore.ResponseCompression;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Extensions.Hosting;
-using System.Linq;
 
 namespace DevilDaggersWebsite.BlazorWasm.Server
 {
@@ -27,8 +24,7 @@ namespace DevilDaggersWebsite.BlazorWasm.Server
 		public void ConfigureServices(IServiceCollection services)
 		{
 			services.AddDbContext<ApplicationDbContext>(options =>
-				options.UseSqlServer(
-					Configuration.GetConnectionString("DefaultConnection")));
+				options.UseMySql(Configuration.GetConnectionString("DefaultConnection"), MySqlServerVersion.LatestSupportedServerVersion, providerOptions => providerOptions.EnableRetryOnFailure(1)));
 
 			services.AddDatabaseDeveloperPageExceptionFilter();
 
