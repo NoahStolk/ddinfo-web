@@ -25,6 +25,12 @@ Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "LeaderboardJsonFormatter", 
 EndProject
 Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "LeaderboardFetcher", "Tools\LeaderboardFetcher\LeaderboardFetcher.csproj", "{2215FEC4-031A-4A2F-B1F8-5BC8453C1A9B}"
 EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "DevilDaggersWebsite.BlazorWasm.Server", "DevilDaggersWebsite.BlazorWasm\Server\DevilDaggersWebsite.BlazorWasm.Server.csproj", "{595CAB68-C85D-4AAD-B78F-4CC499921E61}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "DevilDaggersWebsite.BlazorWasm.Client", "DevilDaggersWebsite.BlazorWasm\Client\DevilDaggersWebsite.BlazorWasm.Client.csproj", "{0F9B44AE-52A6-4BCD-8AC1-72FE4235E356}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "DevilDaggersWebsite.BlazorWasm.Shared", "DevilDaggersWebsite.BlazorWasm\Shared\DevilDaggersWebsite.BlazorWasm.Shared.csproj", "{B73F0FEF-0D3B-4B41-8920-34134012F5C8}"
+EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
 		Debug|Any CPU = Debug|Any CPU
@@ -67,6 +73,18 @@ Global
 		{2215FEC4-031A-4A2F-B1F8-5BC8453C1A9B}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{2215FEC4-031A-4A2F-B1F8-5BC8453C1A9B}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{2215FEC4-031A-4A2F-B1F8-5BC8453C1A9B}.Release|Any CPU.Build.0 = Release|Any CPU
+		{595CAB68-C85D-4AAD-B78F-4CC499921E61}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{595CAB68-C85D-4AAD-B78F-4CC499921E61}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{595CAB68-C85D-4AAD-B78F-4CC499921E61}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{595CAB68-C85D-4AAD-B78F-4CC499921E61}.Release|Any CPU.Build.0 = Release|Any CPU
+		{0F9B44AE-52A6-4BCD-8AC1-72FE4235E356}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{0F9B44AE-52A6-4BCD-8AC1-72FE4235E356}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{0F9B44AE-52A6-4BCD-8AC1-72FE4235E356}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{0F9B44AE-52A6-4BCD-8AC1-72FE4235E356}.Release|Any CPU.Build.0 = Release|Any CPU
+		{B73F0FEF-0D3B-4B41-8920-34134012F5C8}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{B73F0FEF-0D3B-4B41-8920-34134012F5C8}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{B73F0FEF-0D3B-4B41-8920-34134012F5C8}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{B73F0FEF-0D3B-4B41-8920-34134012F5C8}.Release|Any CPU.Build.0 = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE
