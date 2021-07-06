@@ -1,5 +1,4 @@
 ﻿// #define TEST_EXCEPTION_HANDLER
-using DevilDaggersWebsite.Authorization;
 using DevilDaggersWebsite.Caches.LeaderboardHistory;
 using DevilDaggersWebsite.Caches.LeaderboardStatistics;
 using DevilDaggersWebsite.Caches.ModArchive;
@@ -13,7 +12,6 @@ using DevilDaggersWebsite.Transients;
 using Microsoft.AspNetCore.Builder;
 using Microsoft.AspNetCore.Hosting;
 using Microsoft.AspNetCore.Http;
-using Microsoft.AspNetCore.Identity;
 using Microsoft.AspNetCore.Mvc.Infrastructure;
 using Microsoft.AspNetCore.Rewrite;
 using Microsoft.EntityFrameworkCore;
@@ -47,13 +45,6 @@ namespace DevilDaggersWebsite.Razor
 			services.AddMvc();
 
 			services.AddDbContext<ApplicationDbContext>(options => options.UseMySql(Configuration.GetConnectionString("DefaultConnection"), MySqlServerVersion.LatestSupportedServerVersion, providerOptions => providerOptions.EnableRetryOnFailure(1)));
-			services.AddDefaultIdentity<IdentityUser>(options =>
-				{
-					options.SignIn.RequireConfirmedAccount = true;
-					options.User.RequireUniqueEmail = true;
-				})
-				.AddRoles<IdentityRole>()
-				.AddEntityFrameworkStores<ApplicationDbContext>();
 
 			services.AddSingleton<IHttpContextAccessor, HttpContextAccessor>();
 			services.AddSingleton<IActionContextAccessor, ActionContextAccessor>();
@@ -61,7 +52,6 @@ namespace DevilDaggersWebsite.Razor
 			services.AddSingleton<ResponseTimeMonitor>();
 
 			services.AddSingleton<DiscordLogger>();
-			services.AddSingleton<AuditLogger>();
 			services.AddSingleton<LeaderboardHistoryCache>();
 			services.AddSingleton<LeaderboardStatisticsCache>();
 			services.AddSingleton<ModArchiveCache>();
@@ -87,12 +77,6 @@ namespace DevilDaggersWebsite.Razor
 				.AddControllers()
 				.AddNewtonsoftJson(options => options.SerializerSettings.Converters.Add(new StringEnumConverter()))
 				.AddRazorRuntimeCompilation();
-
-			services.AddAuthorization(options =>
-			{
-				foreach (string policy in Policies.All)
-					options.AddPolicy(policy, apb => apb.RequireRole(policy));
-			});
 
 			services.AddRazorPages();
 
@@ -159,9 +143,6 @@ namespace DevilDaggersWebsite.Razor
 
 			app.UseCors(_defaultCorsPolicy);
 
-			app.UseAuthentication();
-			app.UseAuthorization();
-
 			app.UseEndpoints(endpoints =>
 			{
 				endpoints.MapRazorPages();
@@ -171,12 +152,9 @@ namespace DevilDaggersWebsite.Razor
 			app.UseOpenApi();
 			app.UseSwaggerUi3();
 
-			Task task = serviceProvider.CreateRolesAndAdminUser();
-			task.Wait();
-
 			// Initiate static caches.
 			LeaderboardStatisticsCache leaderboardStatisticsCache = serviceProvider.GetRequiredService<LeaderboardStatisticsCache>();
-			task = leaderboardStatisticsCache.Initiate();
+			Task task = leaderboardStatisticsCache.Initiate();
 			task.Wait();
 
 			// Initiate dynamic caches.
