@@ -1,0 +1,157 @@
+﻿@page "/admin/players/edit/{Id:int}"
+@inject HttpClient Http
+@using DevilDaggersWebsite.BlazorWasm.Shared.Players
+@using Microsoft.AspNetCore.Components.WebAssembly.Authentication
+
+<h1>Edit</h1>
+
+@if (_editPlayer == null)
+{
+	<p><em>@_uninitializedState</em></p>
+}
+else
+{
+	<EditForm Model="@_editPlayer" OnValidSubmit="@OnValidSubmit">
+		<DataAnnotationsValidator />
+		<ValidationSummary />
+
+		<h2>General</h2>
+		<div class="row">
+			<label class="@_inputColCss">@nameof(EditPlayer.PlayerName)</label>
+			<InputText class="@_inputColCss" @bind-Value="_editPlayer.PlayerName" />
+		</div>
+
+		<div class="row">
+			<label class="@_inputColCss">@nameof(EditPlayer.CountryCode)</label>
+			<InputText class="@_inputColCss" @bind-Value="@_editPlayer.CountryCode" />
+		</div>
+
+		<h2>Settings</h2>
+
+		<div class="row">
+			<label class="@_inputColCss">@nameof(EditPlayer.Dpi)</label>
+			<InputNumber class="@_inputColCss" @bind-Value="@_editPlayer.Dpi" />
+		</div>
+
+		<div class="row">
+			<label class="@_inputColCss">@nameof(EditPlayer.Fov)</label>
+			<InputNumber class="@_inputColCss" @bind-Value="@_editPlayer.Fov" />
+		</div>
+
+		<div class="row">
+			<label class="@_inputColCss">@nameof(EditPlayer.Gamma)</label>
+			<InputNumber class="@_inputColCss" @bind-Value="@_editPlayer.Gamma" />
+		</div>
+
+		<div class="row">
+			<label class="@_inputColCss">@nameof(EditPlayer.HasFlashHandEnabled)</label>
+			<InputNullableCheckbox class="@_inputColCss" @bind-Value="_editPlayer.HasFlashHandEnabled" />
+		</div>
+
+		<div class="row">
+			<label class="@_inputColCss">@nameof(EditPlayer.InGameSens)</label>
+			<InputNumber class="@_inputColCss" @bind-Value="@_editPlayer.InGameSens" />
+		</div>
+
+		<div class="row">
+			<label class="@_inputColCss">@nameof(EditPlayer.IsRightHanded)</label>
+			<InputNullableCheckbox class="@_inputColCss" @bind-Value="_editPlayer.IsRightHanded" />
+		</div>
+
+		<div class="row">
+			<label class="@_inputColCss">@nameof(EditPlayer.UsesLegacyAudio)</label>
+			<InputNullableCheckbox class="@_inputColCss" @bind-Value="_editPlayer.UsesLegacyAudio" />
+		</div>
+
+		<h2>Visibility</h2>
+
+		<div class="row">
+			<label class="@_inputColCss">@nameof(EditPlayer.HideDonations)</label>
+			<InputCheckbox class="@_inputColCss" @bind-Value="@_editPlayer.HideDonations" />
+		</div>
+
+		<div class="row">
+			<label class="@_inputColCss">@nameof(EditPlayer.HidePastUsernames)</label>
+			<InputCheckbox class="@_inputColCss" @bind-Value="@_editPlayer.HidePastUsernames" />
+		</div>
+
+		<div class="row">
+			<label class="@_inputColCss">@nameof(EditPlayer.HideSettings)</label>
+			<InputCheckbox class="@_inputColCss" @bind-Value="@_editPlayer.HideSettings" />
+		</div>
+
+		<h2>Relations</h2>
+
+		<span>TODO</span>
+
+		<button type="submit">Submit</button>
+	</EditForm>
+}
+
+@code
+{
+	private const string _inputColCss = "col-sm-12 col-md-6 col-lg-4 col-xl-3";
+
+	private EditPlayer? _editPlayer;
+	private string? _uninitializedState = "Loading...";
+
+	[Parameter] public int Id { get; set; }
+
+	protected override async Task OnInitializedAsync()
+	{
+		try
+		{
+			GetPlayer getPlayer = await Http.GetFromJsonAsync<GetPlayer>($"api/players/admin/{Id}") ?? throw new($"Response could not be deserialized to {nameof(GetPlayer)}.");
+			_editPlayer = new()
+			{
+				AssetModIds = getPlayer.AssetModIds,
+				CountryCode = getPlayer.CountryCode,
+				Dpi = getPlayer.Dpi,
+				Fov = getPlayer.Fov,
+				Gamma = getPlayer.Gamma,
+				HasFlashHandEnabled = getPlayer.HasFlashHandEnabled,
+				HideDonations = getPlayer.HideDonations,
+				HidePastUsernames = getPlayer.HidePastUsernames,
+				HideSettings = getPlayer.HideSettings,
+				InGameSens = getPlayer.InGameSens,
+				IsRightHanded = getPlayer.IsRightHanded,
+				PlayerName = getPlayer.PlayerName,
+				TitleIds = getPlayer.TitleIds,
+				UsesLegacyAudio = getPlayer.UsesLegacyAudio,
+			};
+		}
+		catch (HttpRequestException ex)
+		{
+			if (ex.StatusCode.HasValue)
+				_uninitializedState = $"Error {(int)ex.StatusCode}: {ex.StatusCode}";
+			else
+				_uninitializedState = "An error occurred while sending the request.";
+		}
+		catch (AccessTokenNotAvailableException exception)
+		{
+			exception.Redirect();
+		}
+	}
+
+	private async Task OnValidSubmit()
+	{
+		if (_editPlayer == null)
+			return;
+
+		try
+		{
+			await Http.PutAsJsonAsync<EditPlayer>($"api/players/admin/{Id}", _editPlayer);
+		}
+		catch (HttpRequestException ex)
+		{
+			if (ex.StatusCode.HasValue)
+				_uninitializedState = $"Error {(int)ex.StatusCode}: {ex.StatusCode}";
+			else
+				_uninitializedState = "An error occurred while sending the request.";
+		}
+		catch (AccessTokenNotAvailableException exception)
+		{
+			exception.Redirect();
+		}
+	}
+}
