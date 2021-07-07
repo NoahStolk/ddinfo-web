@@ -3,6 +3,7 @@
 @using Microsoft.AspNetCore.Components.WebAssembly.Authentication
 @using DevilDaggersWebsite.BlazorWasm.Shared
 @using DevilDaggersWebsite.BlazorWasm.Shared.Titles
+@using System.Net
 @attribute [Authorize(Roles = Roles.Admin)]
 @inject HttpClient Http
 
@@ -10,7 +11,7 @@
 
 @if (_titles == null)
 {
-	<p><em>Loading...</em></p>
+	<p><em>@_uninitializedState</em></p>
 }
 else
 {
@@ -37,12 +38,21 @@ else
 
 @code {
 	private GetTitle[]? _titles;
+	private string? _uninitializedState = "Loading...";
 
 	protected override async Task OnInitializedAsync()
 	{
 		try
 		{
 			_titles = await Http.GetFromJsonAsync<GetTitle[]>("api/titles");
+		}
+		catch (HttpRequestException ex) when (ex.StatusCode == HttpStatusCode.Unauthorized)
+		{
+			_uninitializedState = "Error 401: Unauthorized";
+		}
+		catch (HttpRequestException ex) when (ex.StatusCode == HttpStatusCode.Forbidden)
+		{
+			_uninitializedState = "Error 403: Forbidden";
 		}
 		catch (AccessTokenNotAvailableException exception)
 		{
