@@ -1,8 +1,5 @@
 ﻿@page "/admin/titles"
-@using Microsoft.AspNetCore.Authorization
-@using DevilDaggersWebsite.BlazorWasm.Shared
 @using DevilDaggersWebsite.BlazorWasm.Shared.Titles
-@attribute [Authorize(Roles = Roles.Admin)]
 @inject HttpClient Http
 
 <AdminOverview TGetDto="GetTitle" Title="Titles" ApiRoute="api/titles"></AdminOverview>

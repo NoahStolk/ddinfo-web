@@ -1,8 +1,5 @@
 ﻿@page "/admin/players"
-@using Microsoft.AspNetCore.Authorization
-@using DevilDaggersWebsite.BlazorWasm.Shared
 @using DevilDaggersWebsite.BlazorWasm.Shared.Players
-@attribute [Authorize(Roles = Roles.Players)]
 @inject HttpClient Http
 
 <AdminOverview TGetDto="GetPlayer" Title="Players" ApiRoute="api/players"></AdminOverview>
