@@ -331,7 +331,7 @@ namespace DevilDaggersWebsite.Api
 			return Ok();
 		}
 
-		private async Task<string> GetPlayerNameOrDefault(int id, string defaultValue)
+		private static async Task<string> GetPlayerNameOrDefault(int id, string defaultValue)
 			=> (await LeaderboardClient.Instance.GetUserById(id))?.Username ?? defaultValue;
 
 		private void UpdateManyToManyRelations(List<int> assetModIds, List<int> titleIds, int playerId)

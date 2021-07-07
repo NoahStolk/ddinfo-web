@@ -1,7 +1,7 @@
 ﻿@typeparam TGetDto
 @inject HttpClient Http
+@inject NavigationManager NavigationManager
 @using Microsoft.AspNetCore.Components.WebAssembly.Authentication
-@using System.Net
 @using System.Reflection
 
 <h1>@Title</h1>
@@ -19,6 +19,8 @@ else
 				{
 					<th>@pi.Name</th>
 				}
+				<th></th>
+				<th></th>
 			</tr>
 		</thead>
 		<tbody>
@@ -27,8 +29,10 @@ else
 				<tr>
 					@foreach (PropertyInfo pi in _properties)
 					{
-						<th>@GetDtoPropertyDisplayValue(pi, result)</th>
+						<td>@ReflectionUtils.GetDtoPropertyDisplayValue(pi, result)</td>
 					}
+					<td><a href="@($"{NavigationManager.Uri}/edit/{_idProperty.GetValue(result)}")">Edit</a></td>
+					<td>Delete</td>
 				</tr>
 			}
 		</tbody>
@@ -44,32 +48,27 @@ else
 	private TGetDto[]? results;
 	private string? _uninitializedState = "Loading...";
 	private PropertyInfo[] _properties = Array.Empty<PropertyInfo>();
+	private PropertyInfo _idProperty = null!;
 
 	protected override async Task OnInitializedAsync()
 	{
-		_properties = GetDtoDisplayPropertyInfos<TGetDto>();
+		_properties = ReflectionUtils.GetDtoDisplayPropertyInfos<TGetDto>();
+		_idProperty = _properties.First(pi => pi.Name == "Id"); // TODO: Refactor this when Blazor component type parameters support constraining.
 
 		try
 		{
 			results = await Http.GetFromJsonAsync<TGetDto[]>(ApiRoute);
 		}
-		catch (HttpRequestException ex) when (ex.StatusCode == HttpStatusCode.Unauthorized)
+		catch (HttpRequestException ex)
 		{
-			_uninitializedState = "Error 401: Unauthorized";
-		}
-		catch (HttpRequestException ex) when (ex.StatusCode == HttpStatusCode.Forbidden)
-		{
-			_uninitializedState = "Error 403: Forbidden";
+			if (ex.StatusCode.HasValue)
+				_uninitializedState = $"Error {(int)ex.StatusCode}: {ex.StatusCode}";
+			else
+				_uninitializedState = "An error occurred while sending the request.";
 		}
 		catch (AccessTokenNotAvailableException exception)
 		{
 			exception.Redirect();
 		}
 	}
-
-	public static PropertyInfo[] GetDtoDisplayPropertyInfos<TDto>()
-		=> typeof(TDto).GetProperties().Where(pi => pi.CanWrite && (pi.PropertyType.IsValueType || pi.PropertyType == typeof(string))).ToArray();
-
-	public static string GetDtoPropertyDisplayValue<TDto>(PropertyInfo pi, TDto dto)
-		=> pi.GetValue(dto)?.ToString() ?? string.Empty;
 }
