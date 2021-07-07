@@ -1,15 +1,15 @@
-﻿@page "/admin/titles"
+﻿@page "/admin/players"
 @using Microsoft.AspNetCore.Authorization
 @using Microsoft.AspNetCore.Components.WebAssembly.Authentication
 @using DevilDaggersWebsite.BlazorWasm.Shared
-@using DevilDaggersWebsite.BlazorWasm.Shared.Titles
+@using DevilDaggersWebsite.BlazorWasm.Shared.Players
 @using System.Net
-@attribute [Authorize(Roles = Roles.Admin)]
+@attribute [Authorize(Roles = Roles.Players)]
 @inject HttpClient Http
 
-<h1>Titles</h1>
+<h1>Players</h1>
 
-@if (_titles == null)
+@if (_players == null)
 {
 	<p><em>@_uninitializedState</em></p>
 }
@@ -19,17 +19,17 @@ else
 		<thead>
 			<tr>
 				<th>Id</th>
-				<th>Name</th>
 				<th>Players</th>
+				<th>Country</th>
 			</tr>
 		</thead>
 		<tbody>
-			@foreach (var title in _titles)
+			@foreach (var player in _players)
 			{
 				<tr>
-					<td>@title.Id</td>
-					<td>@title.Name</td>
-					<td>@string.Join(", ", title.PlayerIds ?? new())</td>
+					<td>@player.Id</td>
+					<td>@player.PlayerName</td>
+					<td>@player.CountryCode</td>
 				</tr>
 			}
 		</tbody>
@@ -38,14 +38,14 @@ else
 
 @code
 {
-	private GetTitle[]? _titles;
+	private GetPlayer[]? _players;
 	private string? _uninitializedState = "Loading...";
 
 	protected override async Task OnInitializedAsync()
 	{
 		try
 		{
-			_titles = await Http.GetFromJsonAsync<GetTitle[]>("api/titles");
+			_players = await Http.GetFromJsonAsync<GetPlayer[]>("api/players");
 		}
 		catch (HttpRequestException ex) when (ex.StatusCode == HttpStatusCode.Unauthorized)
 		{
