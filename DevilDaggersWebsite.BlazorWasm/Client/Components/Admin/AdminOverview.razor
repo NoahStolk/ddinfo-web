@@ -12,6 +12,17 @@
 }
 else
 {
+	if (_idToDelete.HasValue)
+	{
+		<p>Are you sure you want to delete entity with ID @_idToDelete?</p>
+		if (_deleteResult != null)
+		{
+			<p class="@_deleteResult.CssClass">@_deleteResult.Response</p>
+		}
+		<button class="btn btn-danger" @onclick="ConfirmDelete">Delete permanently</button>
+		<button class="btn btn-primary" @onclick="() => _idToDelete = null">Cancel</button>
+	}
+
 	<table class="table">
 		<thead>
 			<tr>
@@ -26,13 +37,14 @@ else
 		<tbody>
 			@foreach (TGetDto result in results)
 			{
+				int id = (int)(_idProperty.GetValue(result) ?? throw new($"Player does not contain a value for the property 'Id'."));
 				<tr>
 					@foreach (PropertyInfo pi in _properties)
 					{
 						<td>@ReflectionUtils.GetDtoPropertyDisplayValue(pi, result)</td>
 					}
-					<td><a href="@($"{NavigationManager.Uri}/edit/{_idProperty.GetValue(result)}")">Edit</a></td>
-					<td>Delete</td>
+					<td><a href="@($"{NavigationManager.Uri}/edit/{id}")">Edit</a></td>
+					<td><a href="" @onclick="() => _idToDelete = id" @onclick:preventDefault>Delete</a></td>
 				</tr>
 			}
 		</tbody>
@@ -49,6 +61,14 @@ else
 	private string? _uninitializedState = "Loading...";
 	private PropertyInfo[] _properties = Array.Empty<PropertyInfo>();
 	private PropertyInfo _idProperty = null!;
+	private int? _idToDelete;
+	private DeleteResult? _deleteResult;
+
+	private class DeleteResult
+	{
+		public string? Response { get; set; }
+		public string? CssClass { get; set; }
+	}
 
 	protected override async Task OnInitializedAsync()
 	{
@@ -65,6 +85,21 @@ else
 				_uninitializedState = $"Error {(int)ex.StatusCode}: {ex.StatusCode}";
 			else
 				_uninitializedState = "An error occurred while sending the request.";
+		}
+		catch (AccessTokenNotAvailableException exception)
+		{
+			exception.Redirect();
+		}
+	}
+
+	private async Task ConfirmDelete()
+	{
+		try
+		{
+			HttpResponseMessage hrm = await Http.DeleteAsync($"{ApiRoute}/{_idToDelete}");
+			_deleteResult = new();
+			_deleteResult.Response = await hrm.Content.ReadAsStringAsync();
+			_deleteResult.CssClass = hrm.StatusCode == System.Net.HttpStatusCode.OK ? "bg-success" : "bg-danger";
 		}
 		catch (AccessTokenNotAvailableException exception)
 		{

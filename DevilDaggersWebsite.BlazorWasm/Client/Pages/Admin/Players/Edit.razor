@@ -1,5 +1,6 @@
 ﻿@page "/admin/players/edit/{Id:int}"
 @inject HttpClient Http
+@inject NavigationManager NavigationManager
 @using DevilDaggersWebsite.BlazorWasm.Shared.Players
 @using Microsoft.AspNetCore.Components.WebAssembly.Authentication
 
@@ -141,6 +142,8 @@ else
 		try
 		{
 			await Http.PutAsJsonAsync<EditPlayer>($"api/players/admin/{Id}", _editPlayer);
+
+			NavigationManager.NavigateTo("/admin/players");
 		}
 		catch (HttpRequestException ex)
 		{
