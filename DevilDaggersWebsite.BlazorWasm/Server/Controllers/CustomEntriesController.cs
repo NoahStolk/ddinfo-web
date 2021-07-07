@@ -13,7 +13,7 @@ using System.Threading.Tasks;
 
 namespace DevilDaggersWebsite.BlazorWasm.Server.Controllers
 {
-	[Route("api/custom-entries")]
+	[Route("api/custom-entries/admin")]
 	[ApiController]
 	public class CustomEntriesController : ControllerBase
 	{
@@ -110,7 +110,7 @@ namespace DevilDaggersWebsite.BlazorWasm.Server.Controllers
 		[ProducesResponseType(StatusCodes.Status400BadRequest)]
 		[ProducesResponseType(StatusCodes.Status404NotFound)]
 		[EndpointConsumer(EndpointConsumers.None)]
-		public async Task<ActionResult> EditCustomEntry(int id, EditCustomEntry editCustomEntry)
+		public async Task<ActionResult> EditCustomEntryById(int id, EditCustomEntry editCustomEntry)
 		{
 			if (!_dbContext.Players.Any(p => p.Id == editCustomEntry.PlayerId))
 				return BadRequest($"Player with ID '{editCustomEntry.PlayerId}' does not exist.");
@@ -176,7 +176,7 @@ namespace DevilDaggersWebsite.BlazorWasm.Server.Controllers
 		[ProducesResponseType(StatusCodes.Status200OK)]
 		[ProducesResponseType(StatusCodes.Status404NotFound)]
 		[EndpointConsumer(EndpointConsumers.None)]
-		public async Task<ActionResult> DeleteCustomEntry(int id)
+		public async Task<ActionResult> DeleteCustomEntryById(int id)
 		{
 			CustomEntry? customEntry = _dbContext.CustomEntries.FirstOrDefault(ced => ced.Id == id);
 			if (customEntry == null)

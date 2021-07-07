@@ -46,8 +46,7 @@ namespace DevilDaggersWebsite.BlazorWasm.Server.Controllers
 			_auditLogger = auditLogger;
 		}
 
-		// TODO: Remove private.
-		[HttpGet("private")]
+		[HttpGet("admin")]
 		[Authorize(Roles = Roles.AssetMods)]
 		[ProducesResponseType(StatusCodes.Status200OK)]
 		[EndpointConsumer(EndpointConsumers.Admin)]
@@ -72,7 +71,7 @@ namespace DevilDaggersWebsite.BlazorWasm.Server.Controllers
 			});
 		}
 
-		[HttpPost]
+		[HttpPost("admin")]
 		[Authorize(Roles = Roles.AssetMods)]
 		[ProducesResponseType(StatusCodes.Status200OK)]
 		[ProducesResponseType(StatusCodes.Status400BadRequest)]
@@ -108,13 +107,13 @@ namespace DevilDaggersWebsite.BlazorWasm.Server.Controllers
 			return Ok(mod.Id);
 		}
 
-		[HttpPut("{id}")]
+		[HttpPut("admin/{id}")]
 		[Authorize(Roles = Roles.AssetMods)]
 		[ProducesResponseType(StatusCodes.Status200OK)]
 		[ProducesResponseType(StatusCodes.Status400BadRequest)]
 		[ProducesResponseType(StatusCodes.Status404NotFound)]
 		[EndpointConsumer(EndpointConsumers.None)]
-		public async Task<ActionResult> EditMod(int id, EditMod editMod)
+		public async Task<ActionResult> EditModById(int id, EditMod editMod)
 		{
 			if (editMod.PlayerIds == null || editMod.PlayerIds.Count == 0)
 				return BadRequest("Mod must have at least one author.");
@@ -159,12 +158,12 @@ namespace DevilDaggersWebsite.BlazorWasm.Server.Controllers
 			return Ok();
 		}
 
-		[HttpDelete("{id}")]
+		[HttpDelete("admin/{id}")]
 		[Authorize(Roles = Roles.Admin)]
 		[ProducesResponseType(StatusCodes.Status200OK)]
 		[ProducesResponseType(StatusCodes.Status404NotFound)]
 		[EndpointConsumer(EndpointConsumers.None)]
-		public async Task<ActionResult> DeleteMod(int id)
+		public async Task<ActionResult> DeleteModById(int id)
 		{
 			AssetMod? assetMod = _dbContext.AssetMods.FirstOrDefault(d => d.Id == id);
 			if (assetMod == null)
@@ -178,7 +177,7 @@ namespace DevilDaggersWebsite.BlazorWasm.Server.Controllers
 			return Ok();
 		}
 
-		[HttpPost("upload-file")]
+		[HttpPost("admin/upload-file")]
 		[Authorize(Roles = Roles.AssetMods)]
 		[ProducesResponseType(StatusCodes.Status200OK)]
 		[ProducesResponseType(StatusCodes.Status400BadRequest)]
@@ -262,7 +261,7 @@ namespace DevilDaggersWebsite.BlazorWasm.Server.Controllers
 			}
 		}
 
-		[HttpDelete("delete-file")]
+		[HttpDelete("admin/delete-file")]
 		[Authorize(Roles = Roles.AssetMods)]
 		[ProducesResponseType(StatusCodes.Status200OK)]
 		[ProducesResponseType(StatusCodes.Status400BadRequest)]
@@ -288,7 +287,7 @@ namespace DevilDaggersWebsite.BlazorWasm.Server.Controllers
 			return Ok();
 		}
 
-		[HttpPost("upload-screenshot")]
+		[HttpPost("admin/upload-screenshot")]
 		[Authorize(Roles = Roles.AssetMods)]
 		[ProducesResponseType(StatusCodes.Status200OK)]
 		[ProducesResponseType(StatusCodes.Status400BadRequest)]
@@ -336,7 +335,7 @@ namespace DevilDaggersWebsite.BlazorWasm.Server.Controllers
 			return Ok();
 		}
 
-		[HttpDelete("delete-screenshot")]
+		[HttpDelete("admin/delete-screenshot")]
 		[Authorize(Roles = Roles.AssetMods)]
 		[ProducesResponseType(StatusCodes.Status200OK)]
 		[ProducesResponseType(StatusCodes.Status400BadRequest)]

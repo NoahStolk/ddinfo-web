@@ -13,7 +13,7 @@ using System.Threading.Tasks;
 
 namespace DevilDaggersWebsite.Api
 {
-	[Route("api/caches")]
+	[Route("api/caches/admin")]
 	[ApiController]
 	public class CachesController : ControllerBase
 	{

@@ -19,7 +19,7 @@ using System.Threading.Tasks;
 
 namespace DevilDaggersWebsite.BlazorWasm.Server.Controllers
 {
-	[Route("api/custom-leaderboards")]
+	[Route("api/custom-leaderboards/admin")]
 	[ApiController]
 	public class CustomLeaderboardsController : ControllerBase
 	{
@@ -68,7 +68,7 @@ namespace DevilDaggersWebsite.BlazorWasm.Server.Controllers
 		[ProducesResponseType(StatusCodes.Status200OK)]
 		[ProducesResponseType(StatusCodes.Status404NotFound)]
 		[EndpointConsumer(EndpointConsumers.Admin)]
-		public ActionResult<GetCustomLeaderboard> GetCustomLeaderboard(int id)
+		public ActionResult<GetCustomLeaderboard> GetCustomLeaderboardById(int id)
 		{
 			CustomLeaderboard? customLeaderboard = _dbContext.CustomLeaderboards
 				.AsNoTracking()
@@ -175,7 +175,7 @@ namespace DevilDaggersWebsite.BlazorWasm.Server.Controllers
 		[ProducesResponseType(StatusCodes.Status400BadRequest)]
 		[ProducesResponseType(StatusCodes.Status404NotFound)]
 		[EndpointConsumer(EndpointConsumers.Admin)]
-		public async Task<ActionResult> EditCustomLeaderboard(int id, EditCustomLeaderboard editCustomLeaderboard)
+		public async Task<ActionResult> EditCustomLeaderboardById(int id, EditCustomLeaderboard editCustomLeaderboard)
 		{
 			if (editCustomLeaderboard.Category.IsAscending())
 			{
@@ -254,7 +254,7 @@ namespace DevilDaggersWebsite.BlazorWasm.Server.Controllers
 		[ProducesResponseType(StatusCodes.Status400BadRequest)]
 		[ProducesResponseType(StatusCodes.Status404NotFound)]
 		[EndpointConsumer(EndpointConsumers.None)]
-		public async Task<ActionResult> DeleteSpawnset(int id)
+		public async Task<ActionResult> DeleteCustomLeaderboardById(int id)
 		{
 			CustomLeaderboard? customLeaderboard = _dbContext.CustomLeaderboards.FirstOrDefault(cl => cl.Id == id);
 			if (customLeaderboard == null)

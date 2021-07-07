@@ -14,7 +14,7 @@ using System.Threading.Tasks;
 
 namespace DevilDaggersWebsite.Api
 {
-	[Route("api/players")]
+	[Route("api/players/admin")]
 	[ApiController]
 	public class PlayersController : ControllerBase
 	{
@@ -61,6 +61,44 @@ namespace DevilDaggersWebsite.Api
 				AssetModIds = p.PlayerAssetMods.ConvertAll(pam => pam.AssetModId),
 				TitleIds = p.PlayerTitles.ConvertAll(pt => pt.TitleId),
 			});
+		}
+
+		[HttpGet("{id}")]
+		[Authorize(Roles = Roles.Players)]
+		[ProducesResponseType(StatusCodes.Status200OK)]
+		[EndpointConsumer(EndpointConsumers.Admin)]
+		public ActionResult<GetPlayer> GetPlayerById(int id)
+		{
+			Player? player = _dbContext.Players
+				.AsNoTracking()
+				.Include(p => p.PlayerTitles)
+				.Include(p => p.PlayerAssetMods)
+				.FirstOrDefault(p => p.Id == id);
+			if (player == null)
+				return NotFound();
+
+			return new GetPlayer
+			{
+				Id = player.Id,
+				PlayerName = player.PlayerName,
+				CountryCode = player.CountryCode,
+				Dpi = player.Dpi,
+				InGameSens = player.InGameSens,
+				Fov = player.Fov,
+				IsRightHanded = player.IsRightHanded,
+				HasFlashHandEnabled = player.HasFlashHandEnabled,
+				Gamma = player.Gamma,
+				UsesLegacyAudio = player.UsesLegacyAudio,
+				IsBanned = player.IsBanned,
+				BanDescription = player.BanDescription,
+				BanResponsibleId = player.BanResponsibleId,
+				IsBannedFromDdcl = player.IsBannedFromDdcl,
+				HideSettings = player.HideSettings,
+				HideDonations = player.HideDonations,
+				HidePastUsernames = player.HidePastUsernames,
+				AssetModIds = player.PlayerAssetMods.ConvertAll(pam => pam.AssetModId),
+				TitleIds = player.PlayerTitles.ConvertAll(pt => pt.TitleId),
+			};
 		}
 
 		[HttpPost]
@@ -140,7 +178,7 @@ namespace DevilDaggersWebsite.Api
 		[ProducesResponseType(StatusCodes.Status400BadRequest)]
 		[ProducesResponseType(StatusCodes.Status404NotFound)]
 		[EndpointConsumer(EndpointConsumers.Admin)]
-		public async Task<ActionResult> EditPlayer(int id, EditPlayer editPlayer)
+		public async Task<ActionResult> EditPlayerById(int id, EditPlayer editPlayer)
 		{
 			Player? player = _dbContext.Players
 				.Include(p => p.PlayerAssetMods)
@@ -205,7 +243,7 @@ namespace DevilDaggersWebsite.Api
 		[ProducesResponseType(StatusCodes.Status200OK)]
 		[ProducesResponseType(StatusCodes.Status404NotFound)]
 		[EndpointConsumer(EndpointConsumers.Admin)]
-		public async Task<ActionResult> UpdatePlayerName(int id)
+		public async Task<ActionResult> UpdatePlayerNameById(int id)
 		{
 			Player? player = _dbContext.Players.FirstOrDefault(p => p.Id == id);
 			if (player == null)
@@ -222,7 +260,7 @@ namespace DevilDaggersWebsite.Api
 		[ProducesResponseType(StatusCodes.Status200OK)]
 		[ProducesResponseType(StatusCodes.Status404NotFound)]
 		[EndpointConsumer(EndpointConsumers.Admin)]
-		public ActionResult BanPlayer(int id, BanPlayer banPlayer)
+		public ActionResult BanPlayerById(int id, BanPlayer banPlayer)
 		{
 			Player? player = _dbContext.Players.FirstOrDefault(p => p.Id == id);
 			if (player == null)
@@ -249,7 +287,7 @@ namespace DevilDaggersWebsite.Api
 		[ProducesResponseType(StatusCodes.Status200OK)]
 		[ProducesResponseType(StatusCodes.Status404NotFound)]
 		[EndpointConsumer(EndpointConsumers.Admin)]
-		public ActionResult BanPlayerFromDdcl(int id)
+		public ActionResult BanPlayerFromDdclById(int id)
 		{
 			Player? player = _dbContext.Players.FirstOrDefault(p => p.Id == id);
 			if (player == null)
@@ -266,7 +304,7 @@ namespace DevilDaggersWebsite.Api
 		[ProducesResponseType(StatusCodes.Status200OK)]
 		[ProducesResponseType(StatusCodes.Status404NotFound)]
 		[EndpointConsumer(EndpointConsumers.Admin)]
-		public ActionResult UnbanPlayer(int id)
+		public ActionResult UnbanPlayerById(int id)
 		{
 			Player? player = _dbContext.Players.FirstOrDefault(p => p.Id == id);
 			if (player == null)
@@ -285,7 +323,7 @@ namespace DevilDaggersWebsite.Api
 		[ProducesResponseType(StatusCodes.Status200OK)]
 		[ProducesResponseType(StatusCodes.Status404NotFound)]
 		[EndpointConsumer(EndpointConsumers.Admin)]
-		public ActionResult UnbanPlayerFromDdcl(int id)
+		public ActionResult UnbanPlayerFromDdclById(int id)
 		{
 			Player? player = _dbContext.Players.FirstOrDefault(p => p.Id == id);
 			if (player == null)
@@ -303,7 +341,7 @@ namespace DevilDaggersWebsite.Api
 		[ProducesResponseType(StatusCodes.Status400BadRequest)]
 		[ProducesResponseType(StatusCodes.Status404NotFound)]
 		[EndpointConsumer(EndpointConsumers.Admin)]
-		public async Task<ActionResult> DeletePlayer(int id)
+		public async Task<ActionResult> DeletePlayerById(int id)
 		{
 			Player? player = _dbContext.Players
 				.Include(p => p.PlayerTitles)

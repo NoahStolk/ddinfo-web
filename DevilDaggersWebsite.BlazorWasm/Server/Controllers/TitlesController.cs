@@ -13,7 +13,7 @@ using System.Threading.Tasks;
 
 namespace DevilDaggersWebsite.Api
 {
-	[Route("api/titles")]
+	[Route("api/titles/admin")]
 	[ApiController]
 	public class TitlesController : ControllerBase
 	{
@@ -79,7 +79,7 @@ namespace DevilDaggersWebsite.Api
 		[ProducesResponseType(StatusCodes.Status400BadRequest)]
 		[ProducesResponseType(StatusCodes.Status404NotFound)]
 		[EndpointConsumer(EndpointConsumers.None)]
-		public async Task<ActionResult> EditTitle(int id, EditTitle editTitle)
+		public async Task<ActionResult> EditTitleById(int id, EditTitle editTitle)
 		{
 			foreach (int playerId in editTitle.PlayerIds ?? new())
 			{
@@ -114,7 +114,7 @@ namespace DevilDaggersWebsite.Api
 		[ProducesResponseType(StatusCodes.Status200OK)]
 		[ProducesResponseType(StatusCodes.Status404NotFound)]
 		[EndpointConsumer(EndpointConsumers.None)]
-		public async Task<ActionResult> DeleteTitle(int id)
+		public async Task<ActionResult> DeleteTitleById(int id)
 		{
 			Title? title = _dbContext.Titles
 				.Include(t => t.PlayerTitles)

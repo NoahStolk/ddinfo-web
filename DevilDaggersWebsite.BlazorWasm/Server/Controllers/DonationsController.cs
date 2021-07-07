@@ -13,7 +13,7 @@ using System.Threading.Tasks;
 
 namespace DevilDaggersWebsite.Api
 {
-	[Route("api/donations")]
+	[Route("api/donations/admin")]
 	[ApiController]
 	public class DonationsController : ControllerBase
 	{
@@ -85,7 +85,7 @@ namespace DevilDaggersWebsite.Api
 		[ProducesResponseType(StatusCodes.Status400BadRequest)]
 		[ProducesResponseType(StatusCodes.Status404NotFound)]
 		[EndpointConsumer(EndpointConsumers.None)]
-		public async Task<ActionResult> EditDonation(int id, EditDonation editDonation)
+		public async Task<ActionResult> EditDonationById(int id, EditDonation editDonation)
 		{
 			if (!_dbContext.Players.Any(p => p.Id == editDonation.PlayerId))
 				return BadRequest($"Player with ID '{editDonation.PlayerId}' does not exist.");
@@ -124,7 +124,7 @@ namespace DevilDaggersWebsite.Api
 		[ProducesResponseType(StatusCodes.Status200OK)]
 		[ProducesResponseType(StatusCodes.Status404NotFound)]
 		[EndpointConsumer(EndpointConsumers.None)]
-		public async Task<ActionResult> DeleteDonation(int id)
+		public async Task<ActionResult> DeleteDonationById(int id)
 		{
 			Donation? donation = _dbContext.Donations.FirstOrDefault(d => d.Id == id);
 			if (donation == null)

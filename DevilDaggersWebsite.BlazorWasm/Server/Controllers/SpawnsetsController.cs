@@ -46,8 +46,7 @@ namespace DevilDaggersWebsite.BlazorWasm.Server.Controllers
 			_auditLogger = auditLogger;
 		}
 
-		// TODO: Remove private.
-		[HttpGet("private")]
+		[HttpGet("admin")]
 		[Authorize(Roles = Roles.Spawnsets)]
 		[ProducesResponseType(StatusCodes.Status200OK)]
 		[EndpointConsumer(EndpointConsumers.Admin)]
@@ -67,7 +66,7 @@ namespace DevilDaggersWebsite.BlazorWasm.Server.Controllers
 			});
 		}
 
-		[HttpPost]
+		[HttpPost("admin")]
 		[Authorize(Roles = Roles.Spawnsets)]
 		[ProducesResponseType(StatusCodes.Status200OK)]
 		[ProducesResponseType(StatusCodes.Status400BadRequest)]
@@ -96,13 +95,13 @@ namespace DevilDaggersWebsite.BlazorWasm.Server.Controllers
 			return Ok(spawnset.Id);
 		}
 
-		[HttpPut("{id}")]
+		[HttpPut("admin/{id}")]
 		[Authorize(Roles = Roles.Spawnsets)]
 		[ProducesResponseType(StatusCodes.Status200OK)]
 		[ProducesResponseType(StatusCodes.Status400BadRequest)]
 		[ProducesResponseType(StatusCodes.Status404NotFound)]
 		[EndpointConsumer(EndpointConsumers.Admin)]
-		public async Task<ActionResult> EditSpawnset(int id, EditSpawnset editSpawnset)
+		public async Task<ActionResult> EditSpawnsetById(int id, EditSpawnset editSpawnset)
 		{
 			if (!_dbContext.Players.Any(p => p.Id == editSpawnset.PlayerId))
 				return BadRequest($"Player with ID '{editSpawnset.PlayerId}' does not exist.");
@@ -136,13 +135,13 @@ namespace DevilDaggersWebsite.BlazorWasm.Server.Controllers
 			return Ok();
 		}
 
-		[HttpDelete("{id}")]
+		[HttpDelete("admin/{id}")]
 		[Authorize(Roles = Roles.Spawnsets)]
 		[ProducesResponseType(StatusCodes.Status200OK)]
 		[ProducesResponseType(StatusCodes.Status400BadRequest)]
 		[ProducesResponseType(StatusCodes.Status404NotFound)]
 		[EndpointConsumer(EndpointConsumers.Admin)]
-		public async Task<ActionResult> DeleteSpawnset(int id)
+		public async Task<ActionResult> DeleteSpawnsetById(int id)
 		{
 			SpawnsetFile? spawnset = _dbContext.SpawnsetFiles.FirstOrDefault(s => s.Id == id);
 			if (spawnset == null)
@@ -159,7 +158,7 @@ namespace DevilDaggersWebsite.BlazorWasm.Server.Controllers
 			return Ok();
 		}
 
-		[HttpPost("upload-file")]
+		[HttpPost("admin/upload-file")]
 		[Authorize(Roles = Roles.Spawnsets)]
 		[ProducesResponseType(StatusCodes.Status200OK)]
 		[ProducesResponseType(StatusCodes.Status400BadRequest)]
@@ -207,7 +206,7 @@ namespace DevilDaggersWebsite.BlazorWasm.Server.Controllers
 			return Ok();
 		}
 
-		[HttpDelete("delete-file")]
+		[HttpDelete("admin/delete-file")]
 		[Authorize(Roles = Roles.Spawnsets)]
 		[ProducesResponseType(StatusCodes.Status200OK)]
 		[ProducesResponseType(StatusCodes.Status400BadRequest)]

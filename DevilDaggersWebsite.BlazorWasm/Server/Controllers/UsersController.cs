@@ -13,7 +13,7 @@ using System.Linq;
 
 namespace DevilDaggersWebsite.Api
 {
-	[Route("api/users")]
+	[Route("api/users/admin")]
 	[ApiController]
 	public class UsersController : ControllerBase
 	{
@@ -27,7 +27,7 @@ namespace DevilDaggersWebsite.Api
 		}
 
 		[HttpGet]
-		//[Authorize(Roles = Roles.Admin)]
+		[Authorize(Roles = Roles.Admin)]
 		[ProducesResponseType(StatusCodes.Status200OK)]
 		[EndpointConsumer(EndpointConsumers.None)]
 		public ActionResult<List<GetUser>> GetUsers()
@@ -60,7 +60,7 @@ namespace DevilDaggersWebsite.Api
 		[ProducesResponseType(StatusCodes.Status200OK)]
 		[ProducesResponseType(StatusCodes.Status404NotFound)]
 		[EndpointConsumer(EndpointConsumers.None)]
-		public ActionResult DeleteUser(string id)
+		public ActionResult DeleteUserById(string id)
 		{
 			ApplicationUser? user = _dbContext.Users
 				.FirstOrDefault(t => t.Id == id);
