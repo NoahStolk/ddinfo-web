@@ -1,0 +1,75 @@
+﻿@typeparam TGetDto
+@inject HttpClient Http
+@using Microsoft.AspNetCore.Components.WebAssembly.Authentication
+@using System.Net
+@using System.Reflection
+
+<h1>@Title</h1>
+
+@if (results == null)
+{
+	<p><em>@_uninitializedState</em></p>
+}
+else
+{
+	<table class="table">
+		<thead>
+			<tr>
+				@foreach (PropertyInfo pi in _properties)
+				{
+					<th>@pi.Name</th>
+				}
+			</tr>
+		</thead>
+		<tbody>
+			@foreach (TGetDto result in results)
+			{
+				<tr>
+					@foreach (PropertyInfo pi in _properties)
+					{
+						<th>@GetDtoPropertyDisplayValue(pi, result)</th>
+					}
+				</tr>
+			}
+		</tbody>
+	</table>
+}
+
+@code
+{
+	[Parameter] public string Title { get; set; } = null!;
+
+	[Parameter] public string ApiRoute { get; set; } = null!;
+
+	private TGetDto[]? results;
+	private string? _uninitializedState = "Loading...";
+	private PropertyInfo[] _properties = Array.Empty<PropertyInfo>();
+
+	protected override async Task OnInitializedAsync()
+	{
+		_properties = GetDtoDisplayPropertyInfos<TGetDto>();
+
+		try
+		{
+			results = await Http.GetFromJsonAsync<TGetDto[]>(ApiRoute);
+		}
+		catch (HttpRequestException ex) when (ex.StatusCode == HttpStatusCode.Unauthorized)
+		{
+			_uninitializedState = "Error 401: Unauthorized";
+		}
+		catch (HttpRequestException ex) when (ex.StatusCode == HttpStatusCode.Forbidden)
+		{
+			_uninitializedState = "Error 403: Forbidden";
+		}
+		catch (AccessTokenNotAvailableException exception)
+		{
+			exception.Redirect();
+		}
+	}
+
+	public static PropertyInfo[] GetDtoDisplayPropertyInfos<TDto>()
+		=> typeof(TDto).GetProperties().Where(pi => pi.CanWrite && (pi.PropertyType.IsValueType || pi.PropertyType == typeof(string))).ToArray();
+
+	public static string GetDtoPropertyDisplayValue<TDto>(PropertyInfo pi, TDto dto)
+		=> pi.GetValue(dto)?.ToString() ?? string.Empty;
+}

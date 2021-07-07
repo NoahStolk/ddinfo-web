@@ -25,13 +25,13 @@ Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "LeaderboardJsonFormatter", 
 EndProject
 Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "LeaderboardFetcher", "Tools\LeaderboardFetcher\LeaderboardFetcher.csproj", "{2215FEC4-031A-4A2F-B1F8-5BC8453C1A9B}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "DevilDaggersWebsite.BlazorWasm.Server", "DevilDaggersWebsite.BlazorWasm\Server\DevilDaggersWebsite.BlazorWasm.Server.csproj", "{595CAB68-C85D-4AAD-B78F-4CC499921E61}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "DevilDaggersWebsite.BlazorWasm.Server", "DevilDaggersWebsite.BlazorWasm\Server\DevilDaggersWebsite.BlazorWasm.Server.csproj", "{595CAB68-C85D-4AAD-B78F-4CC499921E61}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "DevilDaggersWebsite.BlazorWasm.Client", "DevilDaggersWebsite.BlazorWasm\Client\DevilDaggersWebsite.BlazorWasm.Client.csproj", "{0F9B44AE-52A6-4BCD-8AC1-72FE4235E356}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "DevilDaggersWebsite.BlazorWasm.Client", "DevilDaggersWebsite.BlazorWasm\Client\DevilDaggersWebsite.BlazorWasm.Client.csproj", "{0F9B44AE-52A6-4BCD-8AC1-72FE4235E356}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "DevilDaggersWebsite.BlazorWasm.Shared", "DevilDaggersWebsite.BlazorWasm\Shared\DevilDaggersWebsite.BlazorWasm.Shared.csproj", "{B73F0FEF-0D3B-4B41-8920-34134012F5C8}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "DevilDaggersWebsite.BlazorWasm.Shared", "DevilDaggersWebsite.BlazorWasm\Shared\DevilDaggersWebsite.BlazorWasm.Shared.csproj", "{B73F0FEF-0D3B-4B41-8920-34134012F5C8}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "DevilDaggersWebsite.Enumerators", "DevilDaggersWebsite.Enumerators\DevilDaggersWebsite.Enumerators.csproj", "{F45B53AB-A603-4018-A51A-39BED9625A41}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "DevilDaggersWebsite.Enumerators", "DevilDaggersWebsite.Enumerators\DevilDaggersWebsite.Enumerators.csproj", "{F45B53AB-A603-4018-A51A-39BED9625A41}"
 EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution

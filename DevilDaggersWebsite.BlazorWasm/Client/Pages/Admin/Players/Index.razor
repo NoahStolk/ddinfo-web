@@ -1,63 +1,8 @@
 ﻿@page "/admin/players"
 @using Microsoft.AspNetCore.Authorization
-@using Microsoft.AspNetCore.Components.WebAssembly.Authentication
 @using DevilDaggersWebsite.BlazorWasm.Shared
 @using DevilDaggersWebsite.BlazorWasm.Shared.Players
-@using System.Net
 @attribute [Authorize(Roles = Roles.Players)]
 @inject HttpClient Http
 
-<h1>Players</h1>
-
-@if (_players == null)
-{
-	<p><em>@_uninitializedState</em></p>
-}
-else
-{
-	<table class="table">
-		<thead>
-			<tr>
-				<th>Id</th>
-				<th>Players</th>
-				<th>Country</th>
-			</tr>
-		</thead>
-		<tbody>
-			@foreach (var player in _players)
-			{
-				<tr>
-					<td>@player.Id</td>
-					<td>@player.PlayerName</td>
-					<td>@player.CountryCode</td>
-				</tr>
-			}
-		</tbody>
-	</table>
-}
-
-@code
-{
-	private GetPlayer[]? _players;
-	private string? _uninitializedState = "Loading...";
-
-	protected override async Task OnInitializedAsync()
-	{
-		try
-		{
-			_players = await Http.GetFromJsonAsync<GetPlayer[]>("api/players");
-		}
-		catch (HttpRequestException ex) when (ex.StatusCode == HttpStatusCode.Unauthorized)
-		{
-			_uninitializedState = "Error 401: Unauthorized";
-		}
-		catch (HttpRequestException ex) when (ex.StatusCode == HttpStatusCode.Forbidden)
-		{
-			_uninitializedState = "Error 403: Forbidden";
-		}
-		catch (AccessTokenNotAvailableException exception)
-		{
-			exception.Redirect();
-		}
-	}
-}
+<AdminOverview TGetDto="GetPlayer" Title="Players" ApiRoute="api/players"></AdminOverview>
