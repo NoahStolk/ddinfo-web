@@ -2,6 +2,7 @@
 @inject HttpClient Http
 @inject NavigationManager NavigationManager
 @using Microsoft.AspNetCore.Components.WebAssembly.Authentication
+@using System.Net
 @using System.Reflection
 
 <h1>@Title</h1>
@@ -99,7 +100,7 @@ else
 			HttpResponseMessage hrm = await Http.DeleteAsync($"{ApiRoute}/{_idToDelete}");
 			_deleteResult = new();
 			_deleteResult.Response = await hrm.Content.ReadAsStringAsync();
-			_deleteResult.CssClass = hrm.StatusCode == System.Net.HttpStatusCode.OK ? "bg-success" : "bg-danger";
+			_deleteResult.CssClass = hrm.StatusCode == HttpStatusCode.OK ? "bg-success" : "bg-danger";
 		}
 		catch (AccessTokenNotAvailableException exception)
 		{

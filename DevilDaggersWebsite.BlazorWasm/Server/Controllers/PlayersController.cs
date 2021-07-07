@@ -31,15 +31,14 @@ namespace DevilDaggersWebsite.Api
 		[Authorize(Roles = Roles.Players)]
 		[ProducesResponseType(StatusCodes.Status200OK)]
 		[EndpointConsumer(EndpointConsumers.Admin)]
-		public ActionResult<List<GetPlayer>> GetPlayers()
+		public ActionResult<List<GetPlayerBase>> GetPlayers()
 		{
-			List<Player> players = _dbContext.Players
+			var players = _dbContext.Players
 				.AsNoTracking()
-				.Include(p => p.PlayerTitles)
-				.Include(p => p.PlayerAssetMods)
+				.Select(p => new { p.Id, p.PlayerName, p.CountryCode, p.Dpi, p.InGameSens, p.Fov, p.IsBanned })
 				.ToList();
 
-			return players.ConvertAll(p => new GetPlayer
+			return players.ConvertAll(p => new GetPlayerBase
 			{
 				Id = p.Id,
 				PlayerName = p.PlayerName,
@@ -47,19 +46,7 @@ namespace DevilDaggersWebsite.Api
 				Dpi = p.Dpi,
 				InGameSens = p.InGameSens,
 				Fov = p.Fov,
-				IsRightHanded = p.IsRightHanded,
-				HasFlashHandEnabled = p.HasFlashHandEnabled,
-				Gamma = p.Gamma,
-				UsesLegacyAudio = p.UsesLegacyAudio,
 				IsBanned = p.IsBanned,
-				BanDescription = p.BanDescription,
-				BanResponsibleId = p.BanResponsibleId,
-				IsBannedFromDdcl = p.IsBannedFromDdcl,
-				HideSettings = p.HideSettings,
-				HideDonations = p.HideDonations,
-				HidePastUsernames = p.HidePastUsernames,
-				AssetModIds = p.PlayerAssetMods.ConvertAll(pam => pam.AssetModId),
-				TitleIds = p.PlayerTitles.ConvertAll(pt => pt.TitleId),
 			});
 		}
 
