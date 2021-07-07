@@ -30,11 +30,11 @@ namespace DevilDaggersWebsite.BlazorWasm.Server.Controllers
 		[Authorize(Roles = Roles.Admin)]
 		[ProducesResponseType(StatusCodes.Status200OK)]
 		[EndpointConsumer(EndpointConsumers.None)]
-		public ActionResult<List<GetBaseCustomEntry>> GetCustomEntries()
+		public ActionResult<List<GetCustomEntryBase>> GetCustomEntries()
 		{
 			List<CustomEntry> customEntries = _dbContext.CustomEntries.AsNoTracking().ToList();
 
-			return customEntries.ConvertAll(ce => new GetBaseCustomEntry
+			return customEntries.ConvertAll(ce => new GetCustomEntryBase
 			{
 				Id = ce.Id,
 				ClientVersion = ce.ClientVersion,
