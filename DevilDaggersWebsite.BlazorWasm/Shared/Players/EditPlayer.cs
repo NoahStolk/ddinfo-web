@@ -29,6 +29,16 @@ namespace DevilDaggersWebsite.BlazorWasm.Shared.Players
 
 		public bool? UsesLegacyAudio { get; set; }
 
+		public bool IsBanned { get; set; }
+
+		[StringLength(64)]
+		public string? BanDescription { get; set; }
+
+		[Range(1, 9999999)]
+		public int? BanResponsibleId { get; set; }
+
+		public bool IsBannedFromDdcl { get; set; }
+
 		public bool HideSettings { get; set; }
 
 		public bool HideDonations { get; set; }

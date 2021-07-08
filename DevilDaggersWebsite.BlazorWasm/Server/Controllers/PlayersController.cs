@@ -168,12 +168,22 @@ namespace DevilDaggersWebsite.Api
 		[EndpointConsumer(EndpointConsumers.Admin)]
 		public async Task<ActionResult> EditPlayerById(int id, EditPlayer editPlayer)
 		{
-			Player? player = _dbContext.Players
-				.Include(p => p.PlayerAssetMods)
-				.Include(p => p.PlayerTitles)
-				.FirstOrDefault(p => p.Id == id);
-			if (player == null)
-				return NotFound();
+			if (editPlayer.IsBanned)
+			{
+				if (!string.IsNullOrWhiteSpace(editPlayer.CountryCode))
+					return BadRequest("Banned players must not have a country code.");
+
+				if (editPlayer.Dpi.HasValue ||
+					editPlayer.InGameSens.HasValue ||
+					editPlayer.Fov.HasValue ||
+					editPlayer.IsRightHanded.HasValue ||
+					editPlayer.HasFlashHandEnabled.HasValue ||
+					editPlayer.Gamma.HasValue ||
+					editPlayer.UsesLegacyAudio.HasValue)
+				{
+					return BadRequest("Banned players must not have settings.");
+				}
+			}
 
 			foreach (int modId in editPlayer.AssetModIds ?? new())
 			{
@@ -186,6 +196,14 @@ namespace DevilDaggersWebsite.Api
 				if (!_dbContext.Titles.Any(t => t.Id == titleId))
 					return BadRequest($"Title with ID '{titleId}' does not exist.");
 			}
+
+			Player? player = _dbContext.Players
+				.AsSingleQuery()
+				.Include(p => p.PlayerAssetMods)
+				.Include(p => p.PlayerTitles)
+				.FirstOrDefault(p => p.Id == id);
+			if (player == null)
+				return NotFound();
 
 			EditPlayer logDto = new()
 			{
@@ -203,6 +221,10 @@ namespace DevilDaggersWebsite.Api
 				HidePastUsernames = player.HidePastUsernames,
 				AssetModIds = player.PlayerAssetMods.ConvertAll(pam => pam.AssetModId),
 				TitleIds = player.PlayerTitles.ConvertAll(pt => pt.TitleId),
+				BanDescription = player.BanDescription,
+				BanResponsibleId = player.BanResponsibleId,
+				IsBanned = player.IsBanned,
+				IsBannedFromDdcl = player.IsBannedFromDdcl,
 			};
 
 			player.PlayerName = string.IsNullOrWhiteSpace(editPlayer.PlayerName) ? await GetPlayerNameOrDefault(id, player.PlayerName) : editPlayer.PlayerName;
@@ -217,108 +239,15 @@ namespace DevilDaggersWebsite.Api
 			player.HideSettings = editPlayer.HideSettings;
 			player.HideDonations = editPlayer.HideDonations;
 			player.HidePastUsernames = editPlayer.HidePastUsernames;
+			player.BanDescription = editPlayer.BanDescription;
+			player.BanResponsibleId = editPlayer.BanResponsibleId;
+			player.IsBanned = editPlayer.IsBanned;
+			player.IsBannedFromDdcl = editPlayer.IsBannedFromDdcl;
 
 			UpdateManyToManyRelations(editPlayer.TitleIds ?? new(), editPlayer.AssetModIds ?? new(), player.Id);
 			_dbContext.SaveChanges();
 
 			await _auditLogger.LogEdit(logDto, editPlayer, User, player.Id);
-
-			return Ok();
-		}
-
-		[HttpPatch("{id}/update-name")]
-		[Authorize(Roles = Roles.Players)]
-		[ProducesResponseType(StatusCodes.Status200OK)]
-		[ProducesResponseType(StatusCodes.Status404NotFound)]
-		[EndpointConsumer(EndpointConsumers.Admin)]
-		public async Task<ActionResult> UpdatePlayerNameById(int id)
-		{
-			Player? player = _dbContext.Players.FirstOrDefault(p => p.Id == id);
-			if (player == null)
-				return NotFound();
-
-			player.PlayerName = await GetPlayerNameOrDefault(id, player.PlayerName);
-			_dbContext.SaveChanges();
-
-			return Ok();
-		}
-
-		[HttpPatch("{id}/ban")]
-		[Authorize(Roles = Roles.Players)]
-		[ProducesResponseType(StatusCodes.Status200OK)]
-		[ProducesResponseType(StatusCodes.Status404NotFound)]
-		[EndpointConsumer(EndpointConsumers.Admin)]
-		public ActionResult BanPlayerById(int id, BanPlayer banPlayer)
-		{
-			Player? player = _dbContext.Players.FirstOrDefault(p => p.Id == id);
-			if (player == null)
-				return NotFound();
-
-			player.IsBanned = true;
-			player.BanDescription = banPlayer.BanDescription;
-			player.BanResponsibleId = banPlayer.BanResponsibleId;
-			player.CountryCode = null;
-			player.Dpi = null;
-			player.InGameSens = null;
-			player.Fov = null;
-			player.IsRightHanded = null;
-			player.HasFlashHandEnabled = null;
-			player.Gamma = null;
-			player.UsesLegacyAudio = null;
-			_dbContext.SaveChanges();
-
-			return Ok();
-		}
-
-		[HttpPatch("{id}/ban-ddcl")]
-		[Authorize(Roles = Roles.Players)]
-		[ProducesResponseType(StatusCodes.Status200OK)]
-		[ProducesResponseType(StatusCodes.Status404NotFound)]
-		[EndpointConsumer(EndpointConsumers.Admin)]
-		public ActionResult BanPlayerFromDdclById(int id)
-		{
-			Player? player = _dbContext.Players.FirstOrDefault(p => p.Id == id);
-			if (player == null)
-				return NotFound();
-
-			player.IsBannedFromDdcl = true;
-			_dbContext.SaveChanges();
-
-			return Ok();
-		}
-
-		[HttpPatch("{id}/unban")]
-		[Authorize(Roles = Roles.Players)]
-		[ProducesResponseType(StatusCodes.Status200OK)]
-		[ProducesResponseType(StatusCodes.Status404NotFound)]
-		[EndpointConsumer(EndpointConsumers.Admin)]
-		public ActionResult UnbanPlayerById(int id)
-		{
-			Player? player = _dbContext.Players.FirstOrDefault(p => p.Id == id);
-			if (player == null)
-				return NotFound();
-
-			player.IsBanned = false;
-			player.BanDescription = null;
-			player.BanResponsibleId = null;
-			_dbContext.SaveChanges();
-
-			return Ok();
-		}
-
-		[HttpPatch("{id}/unban-ddcl")]
-		[Authorize(Roles = Roles.Players)]
-		[ProducesResponseType(StatusCodes.Status200OK)]
-		[ProducesResponseType(StatusCodes.Status404NotFound)]
-		[EndpointConsumer(EndpointConsumers.Admin)]
-		public ActionResult UnbanPlayerFromDdclById(int id)
-		{
-			Player? player = _dbContext.Players.FirstOrDefault(p => p.Id == id);
-			if (player == null)
-				return NotFound();
-
-			player.IsBannedFromDdcl = false;
-			_dbContext.SaveChanges();
 
 			return Ok();
 		}
