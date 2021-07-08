@@ -7,13 +7,15 @@
 
 <h1>@Title</h1>
 
+<ResultBar Title="Failed to retrieve overview" Type="danger" Message="@_errorMessage" />
+
 @if (results == null)
 {
-	<p><em>@_uninitializedState</em></p>
+	<Loading />
 }
 else
 {
-	<a href="@($"{NavigationManager.Uri}/add")">Add</a>
+	<a class="btn btn-primary" href="@($"{NavigationManager.Uri}/add")">Add new</a>
 
 	switch (_deletion.State)
 	{
@@ -26,14 +28,12 @@ else
 			break;
 		case DeleteState.Error:
 			{
-				<p class="bg-danger">@_deletion.ApiResponse</p>
-				<button class="btn btn-primary" @onclick="_deletion.Cancel">OK</button>
+				<ResultBar Title="Delete failed" Type="danger" Message="@_deletion.ApiResponse" DismissEvent="_deletion.Cancel" />
 			}
 			break;
 		case DeleteState.Ok:
 			{
-				<p class="bg-success">Successfully deleted.</p>
-				<button class="btn btn-primary" @onclick="_deletion.Cancel">OK</button>
+				<ResultBar Type="success" Message="Successfully deleted." DismissEvent="_deletion.Cancel" />
 			}
 			break;
 	}
@@ -72,7 +72,7 @@ else
 	[Parameter] public string ApiRoute { get; set; } = null!;
 
 	private TGetDto[]? results;
-	private string? _uninitializedState = "Loading...";
+	private string? _errorMessage;
 	private PropertyInfo[] _properties = Array.Empty<PropertyInfo>();
 
 	private Deletion _deletion = new();
@@ -81,6 +81,11 @@ else
 	{
 		_properties = ReflectionUtils.GetDtoDisplayPropertyInfos<TGetDto>();
 
+		await Fetch();
+	}
+
+	private async Task Fetch()
+	{
 		try
 		{
 			results = await Http.GetFromJsonAsync<TGetDto[]>(ApiRoute);
@@ -88,9 +93,9 @@ else
 		catch (HttpRequestException ex)
 		{
 			if (ex.StatusCode.HasValue)
-				_uninitializedState = $"Error {(int)ex.StatusCode}: {ex.StatusCode}";
+				_errorMessage = $"Error {(int)ex.StatusCode}: {ex.StatusCode}";
 			else
-				_uninitializedState = "An error occurred while sending the request.";
+				_errorMessage = "An error occurred while sending the request.";
 		}
 		catch (AccessTokenNotAvailableException exception)
 		{
@@ -103,8 +108,17 @@ else
 		try
 		{
 			HttpResponseMessage hrm = await Http.DeleteAsync($"{ApiRoute}/{_deletion.IdToDelete}");
-			_deletion.ApiResponse = await hrm.Content.ReadAsStringAsync();
-			_deletion.State = hrm.StatusCode == HttpStatusCode.OK ? DeleteState.Ok : DeleteState.Error;
+			if (hrm.StatusCode == HttpStatusCode.OK)
+			{
+				_deletion.State = DeleteState.Ok;
+
+				await Fetch();
+			}
+			else
+			{
+				_deletion.State = DeleteState.Error;
+				_deletion.ApiResponse = await hrm.Content.ReadAsStringAsync();
+			}
 		}
 		catch (AccessTokenNotAvailableException exception)
 		{

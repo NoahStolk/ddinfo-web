@@ -3,12 +3,15 @@
 @inject NavigationManager NavigationManager
 @using DevilDaggersWebsite.BlazorWasm.Shared.Players
 @using Microsoft.AspNetCore.Components.WebAssembly.Authentication
+@using System.Net
 
 <h1>Edit</h1>
 
+<ResultBar Title="Edit failed" Type="danger" Message="@_errorMessage" />
+
 @if (_editPlayer == null)
 {
-	<p><em>@_uninitializedState</em></p>
+	<Loading />
 }
 else
 {
@@ -116,7 +119,7 @@ else
 	private const string _inputColCss = "col-sm-12 col-md-6 col-lg-4 col-xl-3";
 
 	private EditPlayer? _editPlayer;
-	private string? _uninitializedState = "Loading...";
+	private string? _errorMessage;
 
 	[Parameter] public int Id { get; set; }
 
@@ -146,9 +149,9 @@ else
 		catch (HttpRequestException ex)
 		{
 			if (ex.StatusCode.HasValue)
-				_uninitializedState = $"Error {(int)ex.StatusCode}: {ex.StatusCode}";
+				_errorMessage = $"Error {(int)ex.StatusCode}: {ex.StatusCode}";
 			else
-				_uninitializedState = "An error occurred while sending the request.";
+				_errorMessage = "An error occurred while sending the request.";
 		}
 		catch (AccessTokenNotAvailableException exception)
 		{
@@ -163,16 +166,12 @@ else
 
 		try
 		{
-			await Http.PutAsJsonAsync<EditPlayer>($"api/players/admin/{Id}", _editPlayer);
+			HttpResponseMessage hrm = await Http.PutAsJsonAsync<EditPlayer>($"api/players/admin/{Id}", _editPlayer);
 
-			NavigationManager.NavigateTo("/admin/players");
-		}
-		catch (HttpRequestException ex)
-		{
-			if (ex.StatusCode.HasValue)
-				_uninitializedState = $"Error {(int)ex.StatusCode}: {ex.StatusCode}";
+			if (hrm.StatusCode == HttpStatusCode.OK)
+				NavigationManager.NavigateTo("/admin/players");
 			else
-				_uninitializedState = "An error occurred while sending the request.";
+				_errorMessage = await hrm.Content.ReadAsStringAsync();
 		}
 		catch (AccessTokenNotAvailableException exception)
 		{

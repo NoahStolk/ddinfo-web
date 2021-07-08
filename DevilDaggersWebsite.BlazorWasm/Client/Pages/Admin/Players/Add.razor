@@ -3,118 +3,114 @@
 @inject NavigationManager NavigationManager
 @using DevilDaggersWebsite.BlazorWasm.Shared.Players
 @using Microsoft.AspNetCore.Components.WebAssembly.Authentication
+@using System.Net
 
 <h1>Add</h1>
 
-@if (_errorMessage != null)
-{
-	<p><em>@_errorMessage</em></p>
-}
-else
-{
-	<EditForm Model="@_addPlayer" OnValidSubmit="@OnValidSubmit">
-		<DataAnnotationsValidator />
-		<ValidationSummary />
+<ResultBar Title="Add failed" Type="danger" Message="@_errorMessage" />
 
-		<h2>General</h2>
-		<div class="row">
-			<label class="@_inputColCss">@nameof(AddPlayer.Id)</label>
-			<InputNumber class="@_inputColCss" @bind-Value="_addPlayer.Id" />
-		</div>
+<EditForm Model="@_addPlayer" OnValidSubmit="@OnValidSubmit">
+	<DataAnnotationsValidator />
+	<ValidationSummary />
 
-		<div class="row">
-			<label class="@_inputColCss">@nameof(AddPlayer.PlayerName)</label>
-			<InputText class="@_inputColCss" @bind-Value="_addPlayer.PlayerName" />
-		</div>
+	<h2>General</h2>
+	<div class="row">
+		<label class="@_inputColCss">@nameof(AddPlayer.Id)</label>
+		<InputNumber class="@_inputColCss" @bind-Value="_addPlayer.Id" />
+	</div>
 
-		<div class="row">
-			<label class="@_inputColCss">@nameof(AddPlayer.CountryCode)</label>
-			<InputCountryCode class="@_inputColCss" @bind-Value="@_addPlayer.CountryCode" />
-		</div>
+	<div class="row">
+		<label class="@_inputColCss">@nameof(AddPlayer.PlayerName)</label>
+		<InputText class="@_inputColCss" @bind-Value="_addPlayer.PlayerName" />
+	</div>
 
-		<h2>Settings</h2>
+	<div class="row">
+		<label class="@_inputColCss">@nameof(AddPlayer.CountryCode)</label>
+		<InputCountryCode class="@_inputColCss" @bind-Value="@_addPlayer.CountryCode" />
+	</div>
 
-		<div class="row">
-			<label class="@_inputColCss">@nameof(AddPlayer.Dpi)</label>
-			<InputNumber class="@_inputColCss" @bind-Value="@_addPlayer.Dpi" />
-		</div>
+	<h2>Settings</h2>
 
-		<div class="row">
-			<label class="@_inputColCss">@nameof(AddPlayer.Fov)</label>
-			<InputNumber class="@_inputColCss" @bind-Value="@_addPlayer.Fov" />
-		</div>
+	<div class="row">
+		<label class="@_inputColCss">@nameof(AddPlayer.Dpi)</label>
+		<InputNumber class="@_inputColCss" @bind-Value="@_addPlayer.Dpi" />
+	</div>
 
-		<div class="row">
-			<label class="@_inputColCss">@nameof(AddPlayer.Gamma)</label>
-			<InputNumber class="@_inputColCss" @bind-Value="@_addPlayer.Gamma" />
-		</div>
+	<div class="row">
+		<label class="@_inputColCss">@nameof(AddPlayer.Fov)</label>
+		<InputNumber class="@_inputColCss" @bind-Value="@_addPlayer.Fov" />
+	</div>
 
-		<div class="row">
-			<label class="@_inputColCss">@nameof(AddPlayer.HasFlashHandEnabled)</label>
-			<InputNullableBoolean class="@_inputColCss" @bind-Value="@_addPlayer.HasFlashHandEnabled" />
-		</div>
+	<div class="row">
+		<label class="@_inputColCss">@nameof(AddPlayer.Gamma)</label>
+		<InputNumber class="@_inputColCss" @bind-Value="@_addPlayer.Gamma" />
+	</div>
 
-		<div class="row">
-			<label class="@_inputColCss">@nameof(AddPlayer.InGameSens)</label>
-			<InputNumber class="@_inputColCss" @bind-Value="@_addPlayer.InGameSens" />
-		</div>
+	<div class="row">
+		<label class="@_inputColCss">@nameof(AddPlayer.HasFlashHandEnabled)</label>
+		<InputNullableBoolean class="@_inputColCss" @bind-Value="@_addPlayer.HasFlashHandEnabled" />
+	</div>
 
-		<div class="row">
-			<label class="@_inputColCss">@nameof(AddPlayer.IsRightHanded)</label>
-			<InputNullableBoolean class="@_inputColCss" @bind-Value="@_addPlayer.IsRightHanded" />
-		</div>
+	<div class="row">
+		<label class="@_inputColCss">@nameof(AddPlayer.InGameSens)</label>
+		<InputNumber class="@_inputColCss" @bind-Value="@_addPlayer.InGameSens" />
+	</div>
 
-		<div class="row">
-			<label class="@_inputColCss">@nameof(AddPlayer.UsesLegacyAudio)</label>
-			<InputNullableBoolean class="@_inputColCss" @bind-Value="@_addPlayer.UsesLegacyAudio" />
-		</div>
+	<div class="row">
+		<label class="@_inputColCss">@nameof(AddPlayer.IsRightHanded)</label>
+		<InputNullableBoolean class="@_inputColCss" @bind-Value="@_addPlayer.IsRightHanded" />
+	</div>
 
-		<h2>Visibility</h2>
+	<div class="row">
+		<label class="@_inputColCss">@nameof(AddPlayer.UsesLegacyAudio)</label>
+		<InputNullableBoolean class="@_inputColCss" @bind-Value="@_addPlayer.UsesLegacyAudio" />
+	</div>
 
-		<div class="row">
-			<label class="@_inputColCss">@nameof(AddPlayer.HideDonations)</label>
-			<InputCheckbox class="@_inputColCss" @bind-Value="@_addPlayer.HideDonations" />
-		</div>
+	<h2>Visibility</h2>
 
-		<div class="row">
-			<label class="@_inputColCss">@nameof(AddPlayer.HidePastUsernames)</label>
-			<InputCheckbox class="@_inputColCss" @bind-Value="@_addPlayer.HidePastUsernames" />
-		</div>
+	<div class="row">
+		<label class="@_inputColCss">@nameof(AddPlayer.HideDonations)</label>
+		<InputCheckbox class="@_inputColCss" @bind-Value="@_addPlayer.HideDonations" />
+	</div>
 
-		<div class="row">
-			<label class="@_inputColCss">@nameof(AddPlayer.HideSettings)</label>
-			<InputCheckbox class="@_inputColCss" @bind-Value="@_addPlayer.HideSettings" />
-		</div>
+	<div class="row">
+		<label class="@_inputColCss">@nameof(AddPlayer.HidePastUsernames)</label>
+		<InputCheckbox class="@_inputColCss" @bind-Value="@_addPlayer.HidePastUsernames" />
+	</div>
 
-		<h2>Relations</h2>
+	<div class="row">
+		<label class="@_inputColCss">@nameof(AddPlayer.HideSettings)</label>
+		<InputCheckbox class="@_inputColCss" @bind-Value="@_addPlayer.HideSettings" />
+	</div>
 
-		<span>TODO</span>
+	<h2>Relations</h2>
 
-		<h2>Bans</h2>
+	<span>TODO</span>
 
-		<div class="row">
-			<label class="@_inputColCss">@nameof(AddPlayer.IsBanned)</label>
-			<InputCheckbox class="@_inputColCss" @bind-Value="@_addPlayer.IsBanned" />
-		</div>
+	<h2>Bans</h2>
 
-		<div class="row">
-			<label class="@_inputColCss">@nameof(AddPlayer.BanDescription)</label>
-			<InputText class="@_inputColCss" @bind-Value="@_addPlayer.BanDescription" />
-		</div>
+	<div class="row">
+		<label class="@_inputColCss">@nameof(AddPlayer.IsBanned)</label>
+		<InputCheckbox class="@_inputColCss" @bind-Value="@_addPlayer.IsBanned" />
+	</div>
 
-		<div class="row">
-			<label class="@_inputColCss">@nameof(AddPlayer.BanResponsibleId)</label>
-			<InputNumber class="@_inputColCss" @bind-Value="@_addPlayer.BanResponsibleId" />
-		</div>
+	<div class="row">
+		<label class="@_inputColCss">@nameof(AddPlayer.BanDescription)</label>
+		<InputText class="@_inputColCss" @bind-Value="@_addPlayer.BanDescription" />
+	</div>
 
-		<div class="row">
-			<label class="@_inputColCss">@nameof(AddPlayer.IsBannedFromDdcl)</label>
-			<InputCheckbox class="@_inputColCss" @bind-Value="@_addPlayer.IsBannedFromDdcl" />
-		</div>
+	<div class="row">
+		<label class="@_inputColCss">@nameof(AddPlayer.BanResponsibleId)</label>
+		<InputNumber class="@_inputColCss" @bind-Value="@_addPlayer.BanResponsibleId" />
+	</div>
 
-		<button type="submit">Submit</button>
-	</EditForm>
-}
+	<div class="row">
+		<label class="@_inputColCss">@nameof(AddPlayer.IsBannedFromDdcl)</label>
+		<InputCheckbox class="@_inputColCss" @bind-Value="@_addPlayer.IsBannedFromDdcl" />
+	</div>
+
+	<button type="submit">Submit</button>
+</EditForm>
 
 @code
 {
@@ -127,16 +123,12 @@ else
 	{
 		try
 		{
-			await Http.PostAsJsonAsync($"api/players/admin", _addPlayer);
+			HttpResponseMessage hrm = await Http.PostAsJsonAsync($"api/players/admin", _addPlayer);
 
-			NavigationManager.NavigateTo("/admin/players");
-		}
-		catch (HttpRequestException ex)
-		{
-			if (ex.StatusCode.HasValue)
-				_errorMessage = $"Error {(int)ex.StatusCode}: {ex.StatusCode}";
+			if (hrm.StatusCode == HttpStatusCode.OK)
+				NavigationManager.NavigateTo("/admin/players");
 			else
-				_errorMessage = "An error occurred while sending the request.";
+				_errorMessage = await hrm.Content.ReadAsStringAsync();
 		}
 		catch (AccessTokenNotAvailableException exception)
 		{
