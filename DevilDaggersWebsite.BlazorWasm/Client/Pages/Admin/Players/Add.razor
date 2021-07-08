@@ -90,6 +90,28 @@ else
 
 		<span>TODO</span>
 
+		<h2>Bans</h2>
+
+		<div class="row">
+			<label class="@_inputColCss">@nameof(AddPlayer.IsBanned)</label>
+			<InputCheckbox class="@_inputColCss" @bind-Value="@_addPlayer.IsBanned" />
+		</div>
+
+		<div class="row">
+			<label class="@_inputColCss">@nameof(AddPlayer.BanDescription)</label>
+			<InputText class="@_inputColCss" @bind-Value="@_addPlayer.BanDescription" />
+		</div>
+
+		<div class="row">
+			<label class="@_inputColCss">@nameof(AddPlayer.BanResponsibleId)</label>
+			<InputNumber class="@_inputColCss" @bind-Value="@_addPlayer.BanResponsibleId" />
+		</div>
+
+		<div class="row">
+			<label class="@_inputColCss">@nameof(AddPlayer.IsBannedFromDdcl)</label>
+			<InputCheckbox class="@_inputColCss" @bind-Value="@_addPlayer.IsBannedFromDdcl" />
+		</div>
+
 		<button type="submit">Submit</button>
 	</EditForm>
 }
