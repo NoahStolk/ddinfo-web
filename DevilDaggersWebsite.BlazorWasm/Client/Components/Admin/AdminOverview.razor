@@ -17,8 +17,10 @@ else
 	<Deletion AfterDelete="Fetch" ApiRoute="@ApiRoute" @ref="_deletion" />
 
 	<a class="btn btn-primary" href="@($"{NavigationManager.Uri}/add")">Add new</a>
+	<button class="btn" @onclick="() => ChangePageIndex(0)">First</button>
 	<button class="btn" @onclick="() => ChangePageIndex(_pageIndex - 1)">Previous</button>
 	<button class="btn" @onclick="() => ChangePageIndex(_pageIndex + 1)">Next</button>
+	<button class="btn" @onclick="() => ChangePageIndex(TotalPages - 1)">Last</button>
 	<Select @onchange="ChangePageSize">
 		@foreach (int i in new[] { 5, 10, 15, 25, 50 })
 		{
