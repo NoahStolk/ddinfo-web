@@ -6,45 +6,45 @@ namespace DevilDaggersWebsite.BlazorWasm.Shared.Players
 	public class AddPlayer
 	{
 		[Range(1, 9999999)]
-		public int Id { get; init; }
+		public int Id { get; set; }
 
 		[StringLength(32)]
-		public string? PlayerName { get; init; }
+		public string? PlayerName { get; set; }
 
 		[StringLength(2)]
-		public string? CountryCode { get; init; }
+		public string? CountryCode { get; set; }
 
-		public int? Dpi { get; init; }
+		public int? Dpi { get; set; }
 
-		public float? InGameSens { get; init; }
+		public float? InGameSens { get; set; }
 
-		public int? Fov { get; init; }
+		public int? Fov { get; set; }
 
-		public bool? IsRightHanded { get; init; }
+		public bool? IsRightHanded { get; set; }
 
-		public bool? HasFlashHandEnabled { get; init; }
+		public bool? HasFlashHandEnabled { get; set; }
 
-		public float? Gamma { get; init; }
+		public float? Gamma { get; set; }
 
-		public bool? UsesLegacyAudio { get; init; }
+		public bool? UsesLegacyAudio { get; set; }
 
-		public bool IsBanned { get; init; }
+		public bool IsBanned { get; set; }
 
 		[StringLength(64)]
-		public string? BanDescription { get; init; }
+		public string? BanDescription { get; set; }
 
-		public int? BanResponsibleId { get; init; }
+		public int? BanResponsibleId { get; set; }
 
-		public bool IsBannedFromDdcl { get; init; }
+		public bool IsBannedFromDdcl { get; set; }
 
-		public bool HideSettings { get; init; }
+		public bool HideSettings { get; set; }
 
-		public bool HideDonations { get; init; }
+		public bool HideDonations { get; set; }
 
-		public bool HidePastUsernames { get; init; }
+		public bool HidePastUsernames { get; set; }
 
-		public List<int>? AssetModIds { get; init; }
+		public List<int>? AssetModIds { get; set; }
 
-		public List<int>? TitleIds { get; init; }
+		public List<int>? TitleIds { get; set; }
 	}
 }

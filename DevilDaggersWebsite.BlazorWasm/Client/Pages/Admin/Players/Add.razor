@@ -1,0 +1,124 @@
+﻿@page "/admin/players/add"
+@inject HttpClient Http
+@inject NavigationManager NavigationManager
+@using DevilDaggersWebsite.BlazorWasm.Shared.Players
+@using Microsoft.AspNetCore.Components.WebAssembly.Authentication
+
+<h1>Add</h1>
+
+@if (_errorMessage != null)
+{
+	<p><em>@_errorMessage</em></p>
+}
+else
+{
+	<EditForm Model="@_addPlayer" OnValidSubmit="@OnValidSubmit">
+		<DataAnnotationsValidator />
+		<ValidationSummary />
+
+		<h2>General</h2>
+		<div class="row">
+			<label class="@_inputColCss">@nameof(AddPlayer.Id)</label>
+			<InputNumber class="@_inputColCss" @bind-Value="_addPlayer.Id" />
+		</div>
+
+		<div class="row">
+			<label class="@_inputColCss">@nameof(AddPlayer.PlayerName)</label>
+			<InputText class="@_inputColCss" @bind-Value="_addPlayer.PlayerName" />
+		</div>
+
+		<div class="row">
+			<label class="@_inputColCss">@nameof(AddPlayer.CountryCode)</label>
+			<InputText class="@_inputColCss" @bind-Value="@_addPlayer.CountryCode" />
+		</div>
+
+		<h2>Settings</h2>
+
+		<div class="row">
+			<label class="@_inputColCss">@nameof(AddPlayer.Dpi)</label>
+			<InputNumber class="@_inputColCss" @bind-Value="@_addPlayer.Dpi" />
+		</div>
+
+		<div class="row">
+			<label class="@_inputColCss">@nameof(AddPlayer.Fov)</label>
+			<InputNumber class="@_inputColCss" @bind-Value="@_addPlayer.Fov" />
+		</div>
+
+		<div class="row">
+			<label class="@_inputColCss">@nameof(AddPlayer.Gamma)</label>
+			<InputNumber class="@_inputColCss" @bind-Value="@_addPlayer.Gamma" />
+		</div>
+
+		<div class="row">
+			<label class="@_inputColCss">@nameof(AddPlayer.HasFlashHandEnabled)</label>
+			<InputNullableBoolean class="@_inputColCss" @bind-Value="@_addPlayer.HasFlashHandEnabled" />
+		</div>
+
+		<div class="row">
+			<label class="@_inputColCss">@nameof(AddPlayer.InGameSens)</label>
+			<InputNumber class="@_inputColCss" @bind-Value="@_addPlayer.InGameSens" />
+		</div>
+
+		<div class="row">
+			<label class="@_inputColCss">@nameof(AddPlayer.IsRightHanded)</label>
+			<InputNullableBoolean class="@_inputColCss" @bind-Value="@_addPlayer.IsRightHanded" />
+		</div>
+
+		<div class="row">
+			<label class="@_inputColCss">@nameof(AddPlayer.UsesLegacyAudio)</label>
+			<InputNullableBoolean class="@_inputColCss" @bind-Value="@_addPlayer.UsesLegacyAudio" />
+		</div>
+
+		<h2>Visibility</h2>
+
+		<div class="row">
+			<label class="@_inputColCss">@nameof(AddPlayer.HideDonations)</label>
+			<InputCheckbox class="@_inputColCss" @bind-Value="@_addPlayer.HideDonations" />
+		</div>
+
+		<div class="row">
+			<label class="@_inputColCss">@nameof(AddPlayer.HidePastUsernames)</label>
+			<InputCheckbox class="@_inputColCss" @bind-Value="@_addPlayer.HidePastUsernames" />
+		</div>
+
+		<div class="row">
+			<label class="@_inputColCss">@nameof(AddPlayer.HideSettings)</label>
+			<InputCheckbox class="@_inputColCss" @bind-Value="@_addPlayer.HideSettings" />
+		</div>
+
+		<h2>Relations</h2>
+
+		<span>TODO</span>
+
+		<button type="submit">Submit</button>
+	</EditForm>
+}
+
+@code
+{
+	private const string _inputColCss = "col-sm-12 col-md-6 col-lg-4 col-xl-3";
+
+	private AddPlayer _addPlayer = new();
+	private string? _errorMessage;
+
+	private async Task OnValidSubmit()
+	{
+		try
+		{
+			await Http.PostAsJsonAsync($"api/players/admin", _addPlayer);
+
+			NavigationManager.NavigateTo("/admin/players");
+		}
+		catch (HttpRequestException ex)
+		{
+			if (ex.StatusCode.HasValue)
+				_errorMessage = $"Error {(int)ex.StatusCode}: {ex.StatusCode}";
+			else
+				_errorMessage = "An error occurred while sending the request.";
+		}
+		catch (AccessTokenNotAvailableException exception)
+		{
+			exception.Redirect();
+		}
+	}
+}
