@@ -3,7 +3,7 @@ using System;
 
 namespace DevilDaggersWebsite.BlazorWasm.Shared.CustomLeaderboards
 {
-	public class GetCustomLeaderboard
+	public class GetCustomLeaderboard : IGetDto
 	{
 		public int Id { get; init; }
 

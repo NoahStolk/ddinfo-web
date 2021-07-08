@@ -3,7 +3,7 @@ using System;
 
 namespace DevilDaggersWebsite.BlazorWasm.Shared.Donations
 {
-	public class GetDonation
+	public class GetDonation : IGetDto
 	{
 		public int Id { get; init; }
 

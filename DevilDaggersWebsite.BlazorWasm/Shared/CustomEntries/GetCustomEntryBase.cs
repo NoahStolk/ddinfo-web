@@ -2,7 +2,7 @@
 
 namespace DevilDaggersWebsite.BlazorWasm.Shared.CustomEntries
 {
-	public class GetCustomEntryBase
+	public class GetCustomEntryBase : IGetDto
 	{
 		public int Id { get; init; }
 

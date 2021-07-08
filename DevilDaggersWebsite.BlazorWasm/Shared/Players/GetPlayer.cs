@@ -2,7 +2,7 @@
 
 namespace DevilDaggersWebsite.BlazorWasm.Shared.Players
 {
-	public class GetPlayer
+	public class GetPlayer : IGetDto
 	{
 		public int Id { get; init; }
 

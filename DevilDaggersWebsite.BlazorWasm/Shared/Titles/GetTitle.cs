@@ -2,7 +2,7 @@
 
 namespace DevilDaggersWebsite.BlazorWasm.Shared.Titles
 {
-	public class GetTitle
+	public class GetTitle : IGetDto
 	{
 		public int Id { get; init; }
 

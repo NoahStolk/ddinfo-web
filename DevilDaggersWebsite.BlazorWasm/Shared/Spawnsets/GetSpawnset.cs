@@ -2,7 +2,7 @@
 
 namespace DevilDaggersWebsite.BlazorWasm.Shared.Spawnsets
 {
-	public class GetSpawnset
+	public class GetSpawnset : IGetDto
 	{
 		public int Id { get; init; }
 
