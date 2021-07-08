@@ -7,7 +7,7 @@
 
 <h1>Add</h1>
 
-<ResultBar Title="Add failed" Type="danger" Message="@_errorMessage" />
+<ResultBar Title="Add failed" Type="danger" @bind-Message="@_errorMessage" />
 
 <EditForm Model="@_addPlayer" OnValidSubmit="@OnValidSubmit">
 	<DataAnnotationsValidator />

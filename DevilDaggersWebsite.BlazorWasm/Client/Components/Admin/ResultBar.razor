@@ -23,6 +23,9 @@
 	[Parameter] public bool Dismissable { get; set; } = true;
 	[Parameter] public Action? DismissEvent { get; set; }
 
+	[Parameter]
+	public EventCallback<string?> MessageChanged { get; set; }
+
 	private void Dismiss()
 	{
 		Message = null;

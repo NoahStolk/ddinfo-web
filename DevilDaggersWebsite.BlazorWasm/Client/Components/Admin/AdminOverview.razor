@@ -7,7 +7,7 @@
 
 <h1>@Title</h1>
 
-<ResultBar Title="Failed to retrieve overview" Type="danger" Message="@_errorMessage" />
+<ResultBar Title="Failed to retrieve overview" Type="danger" @bind-Message="@_errorMessage" />
 
 @if (results == null)
 {
@@ -28,7 +28,7 @@ else
 			break;
 		case DeleteState.Error:
 			{
-				<ResultBar Title="Delete failed" Type="danger" Message="@_deletion.ApiResponse" DismissEvent="_deletion.Cancel" />
+				<ResultBar Title="Delete failed" Type="danger" @bind-Message="@_deletion.ApiResponse" DismissEvent="_deletion.Cancel" />
 			}
 			break;
 		case DeleteState.Ok:
