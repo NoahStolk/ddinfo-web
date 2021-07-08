@@ -14,16 +14,20 @@ namespace DevilDaggersWebsite.BlazorWasm.Shared.Players
 		[StringLength(2)]
 		public string? CountryCode { get; set; }
 
+		[Range(1, 20000)]
 		public int? Dpi { get; set; }
 
+		[Range(0.01f, 2)]
 		public float? InGameSens { get; set; }
 
+		[Range(0, 179)]
 		public int? Fov { get; set; }
 
 		public bool? IsRightHanded { get; set; }
 
 		public bool? HasFlashHandEnabled { get; set; }
 
+		[Range(0.5f, 5)]
 		public float? Gamma { get; set; }
 
 		public bool? UsesLegacyAudio { get; set; }
