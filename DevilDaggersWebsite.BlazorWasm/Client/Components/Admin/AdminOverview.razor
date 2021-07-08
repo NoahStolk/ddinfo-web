@@ -89,6 +89,7 @@ else
 		try
 		{
 			results = await Http.GetFromJsonAsync<TGetDto[]>(ApiRoute);
+			_errorMessage = null;
 		}
 		catch (HttpRequestException ex)
 		{
