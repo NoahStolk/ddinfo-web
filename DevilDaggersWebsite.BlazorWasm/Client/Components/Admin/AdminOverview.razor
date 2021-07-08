@@ -32,7 +32,7 @@ else
 			}
 		}
 	</Select>
-	<label>Page @_pageIndex of @TotalPages (@(_pageIndex * _pageSize) - @Math.Min(_page.TotalResults, (_pageIndex + 1) * _pageSize) of @_page.TotalResults)</label>
+	<label>Page @(_pageIndex + 1) of @TotalPages (@(_pageIndex * _pageSize) - @Math.Min(_page.TotalResults, (_pageIndex + 1) * _pageSize) of @_page.TotalResults)</label>
 
 	<table class="table">
 		<thead>
@@ -66,7 +66,7 @@ else
 	[Parameter] public string Title { get; set; } = null!;
 	[Parameter] public string ApiRoute { get; set; } = null!;
 
-	public int TotalPages => _page == null ? 0 : (_page.TotalResults - 1) / _pageSize;
+	public int TotalPages => _page == null ? 0 : (_page.TotalResults - 1) / _pageSize + 1;
 
 	private int _pageIndex;
 	private int _pageSize = 25;
@@ -84,14 +84,14 @@ else
 
 	private async Task ChangePageIndex(int pageIndex)
 	{
-		_pageIndex = Math.Clamp(pageIndex, 0, TotalPages);
+		_pageIndex = Math.Clamp(pageIndex, 0, TotalPages - 1);
 		await Fetch();
 	}
 
 	private async Task ChangePageSize(ChangeEventArgs e)
 	{
 		_ = int.TryParse(e.Value?.ToString(), out _pageSize);
-		_pageIndex = Math.Clamp(_pageIndex, 0, TotalPages);
+		_pageIndex = Math.Clamp(_pageIndex, 0, TotalPages - 1);
 
 		await Fetch();
 	}
