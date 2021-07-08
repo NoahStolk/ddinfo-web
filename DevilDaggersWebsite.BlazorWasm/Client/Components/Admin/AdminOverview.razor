@@ -2,7 +2,6 @@
 @inject HttpClient Http
 @inject NavigationManager NavigationManager
 @using Microsoft.AspNetCore.Components.WebAssembly.Authentication
-@using System.Net
 @using System.Reflection
 
 <h1>@Title</h1>
@@ -15,29 +14,9 @@
 }
 else
 {
+	<Deletion AfterDelete="Fetch" ApiRoute="@ApiRoute" @ref="_deletion" />
+
 	<a class="btn btn-primary" href="@($"{NavigationManager.Uri}/add")">Add new</a>
-
-	switch (_deletion.State)
-	{
-		case DeleteState.Confirm:
-			{
-				<p>Are you sure you want to delete entity with ID @_deletion.IdToDelete?</p>
-				<button class="btn btn-danger" @onclick="ConfirmDelete">Delete permanently</button>
-				<button class="btn btn-primary" @onclick="_deletion.Cancel">Cancel</button>
-			}
-			break;
-		case DeleteState.Error:
-			{
-				<ResultBar Title="Delete failed" Type="danger" @bind-Message="@_deletion.ApiResponse" DismissEvent="_deletion.Cancel" />
-			}
-			break;
-		case DeleteState.Ok:
-			{
-				<ResultBar Type="success" Message="Successfully deleted." DismissEvent="_deletion.Cancel" />
-			}
-			break;
-	}
-
 	<button class="btn" @onclick="() => ChangePageIndex(_pageIndex - 1)">Previous</button>
 	<button class="btn" @onclick="() => ChangePageIndex(_pageIndex + 1)">Next</button>
 	<Select @onchange="ChangePageSize">
@@ -75,7 +54,7 @@ else
 						<td>@ReflectionUtils.GetDtoPropertyDisplayValue(pi, result)</td>
 					}
 					<td><a href="@($"{NavigationManager.Uri}/edit/{result.Id}")">Edit</a></td>
-					<td><a href="" @onclick="() => _deletion.Set(result.Id)" @onclick:preventDefault>Delete</a></td>
+					<td><a href="" @onclick="() => _deletion?.Set(result.Id)" @onclick:preventDefault>Delete</a></td>
 				</tr>
 			}
 		</tbody>
@@ -96,7 +75,7 @@ else
 	private string? _errorMessage;
 	private PropertyInfo[] _properties = ReflectionUtils.GetDtoDisplayPropertyInfos<TGetDto>();
 
-	private Deletion _deletion = new();
+	private Deletion? _deletion;
 
 	protected override async Task OnInitializedAsync()
 	{
@@ -123,6 +102,7 @@ else
 		{
 			_page = await Http.GetFromJsonAsync<Page<TGetDto>>($"{ApiRoute}?pageIndex={_pageIndex}&pageSize={_pageSize}");
 			_errorMessage = null;
+			StateHasChanged();
 		}
 		catch (HttpRequestException ex)
 		{
@@ -135,55 +115,5 @@ else
 		{
 			exception.Redirect();
 		}
-	}
-
-	private async Task ConfirmDelete()
-	{
-		try
-		{
-			HttpResponseMessage hrm = await Http.DeleteAsync($"{ApiRoute}/{_deletion.IdToDelete}");
-			if (hrm.StatusCode == HttpStatusCode.OK)
-			{
-				_deletion.State = DeleteState.Ok;
-
-				await Fetch();
-			}
-			else
-			{
-				_deletion.State = DeleteState.Error;
-				_deletion.ApiResponse = await hrm.Content.ReadAsStringAsync();
-			}
-		}
-		catch (AccessTokenNotAvailableException exception)
-		{
-			exception.Redirect();
-		}
-	}
-
-	private class Deletion
-	{
-		public DeleteState State { get; set; }
-		public int? IdToDelete { get; set; }
-		public string? ApiResponse { get; set; }
-
-		public void Set(int id)
-		{
-			State = DeleteState.Confirm;
-			IdToDelete = id;
-		}
-
-		public void Cancel()
-		{
-			State = DeleteState.None;
-			IdToDelete = null;
-		}
-	}
-
-	private enum DeleteState
-	{
-		None = 0,
-		Confirm = 1,
-		Ok = 2,
-		Error = 3,
 	}
 }

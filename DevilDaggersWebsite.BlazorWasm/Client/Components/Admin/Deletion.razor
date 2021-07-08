@@ -1,0 +1,77 @@
+﻿@inject HttpClient Http
+@using Microsoft.AspNetCore.Components.WebAssembly.Authentication
+@using System.Net
+
+@switch (State)
+{
+	case DeleteState.Confirm:
+		{
+			<p>Are you sure you want to delete entity with ID @IdToDelete?</p>
+			<button class="btn btn-danger" @onclick="ConfirmDelete">Delete permanently</button>
+			<button class="btn btn-primary" @onclick="Cancel">Cancel</button>
+		}
+		break;
+	case DeleteState.Error:
+		{
+			<ResultBar Title="Delete failed" Type="danger" @bind-Message="@ApiResponse" DismissEvent="Cancel" />
+		}
+		break;
+	case DeleteState.Ok:
+		{
+			<ResultBar Type="success" Message="Successfully deleted." DismissEvent="Cancel" />
+		}
+		break;
+}
+
+@code {
+	public DeleteState State { get; set; }
+	public int? IdToDelete { get; set; }
+	public string? ApiResponse { get; set; }
+
+	[Parameter] public Func<Task>? AfterDelete { get; set; }
+	[Parameter] public string ApiRoute { get; set; } = null!;
+
+	public void Set(int id)
+	{
+		State = DeleteState.Confirm;
+		IdToDelete = id;
+	}
+
+	private async Task ConfirmDelete()
+	{
+		try
+		{
+			HttpResponseMessage hrm = await Http.DeleteAsync($"{ApiRoute}/{IdToDelete}");
+			if (hrm.StatusCode == HttpStatusCode.OK)
+			{
+				State = DeleteState.Ok;
+
+				if (AfterDelete != null)
+					await AfterDelete.Invoke();
+			}
+			else
+			{
+				State = DeleteState.Error;
+				ApiResponse = await hrm.Content.ReadAsStringAsync();
+			}
+		}
+		catch (AccessTokenNotAvailableException exception)
+		{
+			exception.Redirect();
+		}
+	}
+
+	public void Cancel()
+	{
+		State = DeleteState.None;
+		IdToDelete = null;
+	}
+
+	public enum DeleteState
+	{
+		None = 0,
+		Confirm = 1,
+		Ok = 2,
+		Error = 3,
+	}
+}
