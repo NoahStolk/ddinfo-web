@@ -9,6 +9,7 @@ using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.EntityFrameworkCore;
 using System.Collections.Generic;
+using System.ComponentModel.DataAnnotations;
 using System.Linq;
 using System.Threading.Tasks;
 
@@ -31,23 +32,29 @@ namespace DevilDaggersWebsite.Api
 		[Authorize(Roles = Roles.Players)]
 		[ProducesResponseType(StatusCodes.Status200OK)]
 		[EndpointConsumer(EndpointConsumers.Admin)]
-		public ActionResult<List<GetPlayerBase>> GetPlayers()
+		public ActionResult<Page<GetPlayerBase>> GetPlayers([Range(0, 1000)] int pageIndex = 0, [Range(5, 50)] int pageSize = 25)
 		{
 			var players = _dbContext.Players
 				.AsNoTracking()
 				.Select(p => new { p.Id, p.PlayerName, p.CountryCode, p.Dpi, p.InGameSens, p.Fov, p.IsBanned })
+				.Skip(pageIndex * pageSize)
+				.Take(pageSize)
 				.ToList();
 
-			return players.ConvertAll(p => new GetPlayerBase
+			return new Page<GetPlayerBase>
 			{
-				Id = p.Id,
-				PlayerName = p.PlayerName,
-				CountryCode = p.CountryCode,
-				Dpi = p.Dpi,
-				InGameSens = p.InGameSens,
-				Fov = p.Fov,
-				IsBanned = p.IsBanned,
-			});
+				Results = players.ConvertAll(p => new GetPlayerBase
+				{
+					Id = p.Id,
+					PlayerName = p.PlayerName,
+					CountryCode = p.CountryCode,
+					Dpi = p.Dpi,
+					InGameSens = p.InGameSens,
+					Fov = p.Fov,
+					IsBanned = p.IsBanned,
+				}),
+				TotalResults = _dbContext.Players.Count(),
+			};
 		}
 
 		[HttpGet("{id}")]

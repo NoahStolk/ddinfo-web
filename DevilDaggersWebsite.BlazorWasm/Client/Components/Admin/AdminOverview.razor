@@ -9,7 +9,7 @@
 
 <ResultBar Title="Failed to retrieve overview" Type="danger" @bind-Message="@_errorMessage" />
 
-@if (results == null)
+@if (_page == null)
 {
 	<Loading />
 }
@@ -38,6 +38,23 @@ else
 			break;
 	}
 
+	<button class="btn" @onclick="() => ChangePageIndex(_pageIndex - 1)">Previous</button>
+	<button class="btn" @onclick="() => ChangePageIndex(_pageIndex + 1)">Next</button>
+	<Select @onchange="ChangePageSize">
+		@foreach (int i in new[] { 5, 10, 15, 25, 50 })
+		{
+			if (i == 25)
+			{
+				<option value="@i" selected>@i</option>
+			}
+			else
+			{
+				<option value="@i">@i</option>
+			}
+		}
+	</Select>
+	<label>Page @_pageIndex of @TotalPages (@(_pageIndex * _pageSize) - @Math.Min(_page.TotalResults, (_pageIndex + 1) * _pageSize) of @_page.TotalResults)</label>
+
 	<table class="table">
 		<thead>
 			<tr>
@@ -50,7 +67,7 @@ else
 			</tr>
 		</thead>
 		<tbody>
-			@foreach (TGetDto result in results)
+			@foreach (TGetDto result in _page.Results)
 			{
 				<tr>
 					@foreach (PropertyInfo pi in _properties)
@@ -68,18 +85,34 @@ else
 @code
 {
 	[Parameter] public string Title { get; set; } = null!;
-
 	[Parameter] public string ApiRoute { get; set; } = null!;
 
-	private TGetDto[]? results;
+	public int TotalPages => _page == null ? 0 : (_page.TotalResults - 1) / _pageSize;
+
+	private int _pageIndex;
+	private int _pageSize = 25;
+
+	private Page<TGetDto>? _page;
 	private string? _errorMessage;
-	private PropertyInfo[] _properties = Array.Empty<PropertyInfo>();
+	private PropertyInfo[] _properties = ReflectionUtils.GetDtoDisplayPropertyInfos<TGetDto>();
 
 	private Deletion _deletion = new();
 
 	protected override async Task OnInitializedAsync()
 	{
-		_properties = ReflectionUtils.GetDtoDisplayPropertyInfos<TGetDto>();
+		await Fetch();
+	}
+
+	private async Task ChangePageIndex(int pageIndex)
+	{
+		_pageIndex = Math.Clamp(pageIndex, 0, TotalPages);
+		await Fetch();
+	}
+
+	private async Task ChangePageSize(ChangeEventArgs e)
+	{
+		_ = int.TryParse(e.Value?.ToString(), out _pageSize);
+		_pageIndex = Math.Clamp(_pageIndex, 0, TotalPages);
 
 		await Fetch();
 	}
@@ -88,7 +121,7 @@ else
 	{
 		try
 		{
-			results = await Http.GetFromJsonAsync<TGetDto[]>(ApiRoute);
+			_page = await Http.GetFromJsonAsync<Page<TGetDto>>($"{ApiRoute}?pageIndex={_pageIndex}&pageSize={_pageSize}");
 			_errorMessage = null;
 		}
 		catch (HttpRequestException ex)
