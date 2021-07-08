@@ -1,7 +1,7 @@
 ﻿@inherits InputBase<string>
 
 <div class="row">
-	<Dropdown TItem="string" OnSelected="OnSelected" @ref="_dropdown">
+	<Dropdown TItem="string" OnSelected="e => CurrentValue = e" @ref="_dropdown">
 		<InitialTip>Dropdown</InitialTip>
 		<ChildContent>
 			<InputTextImmediate @bind-Value="_searchValue" />
@@ -35,10 +35,5 @@
 		validationMessage = string.Empty;
 		result = value;
 		return true;
-	}
-
-	private void OnSelected(string selection)
-	{
-		CurrentValue = selection;
 	}
 }
