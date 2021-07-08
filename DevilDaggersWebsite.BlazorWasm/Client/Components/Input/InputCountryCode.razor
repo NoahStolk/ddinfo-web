@@ -1,0 +1,44 @@
+﻿@inherits InputBase<string>
+
+<div class="row">
+	<Dropdown TItem="string" OnSelected="OnSelected" @ref="_dropdown">
+		<InitialTip>Dropdown</InitialTip>
+		<ChildContent>
+			<InputTextImmediate @bind-Value="_searchValue" />
+			@foreach (KeyValuePair<string, string> kvp in FilteredCountries)
+			{
+				<a class="dropdown-item" Item="@kvp" @onclick="e => _dropdown?.HandleSelect(kvp.Key) ?? Task.CompletedTask">@kvp.Key (@kvp.Value) </a>
+			}
+		</ChildContent>
+	</Dropdown>
+
+	@if (!string.IsNullOrWhiteSpace(CurrentValue))
+	{
+		<label>@CurrentValue (@(UserUtils.CountryNames.ContainsKey(CurrentValue) ? UserUtils.CountryNames[CurrentValue] : "???"))</label>
+	}
+</div>
+
+@code
+{
+	private string? _searchValue;
+
+	private Dropdown<string>? _dropdown;
+
+	public Dictionary<string, string> FilteredCountries => _searchValue == null ? UserUtils.CountryNames : UserUtils.CountryNames
+		.Where(kvp =>
+			kvp.Key.Contains(_searchValue, StringComparison.InvariantCultureIgnoreCase) ||
+			kvp.Value.Contains(_searchValue, StringComparison.InvariantCultureIgnoreCase))
+		.ToDictionary(kvp => kvp.Key, kvp => kvp.Value);
+
+	protected override bool TryParseValueFromString(string? value, out string? result, out string validationMessage)
+	{
+		validationMessage = string.Empty;
+		result = value;
+		return true;
+	}
+
+	private void OnSelected(string selection)
+	{
+		CurrentValue = selection;
+	}
+}
