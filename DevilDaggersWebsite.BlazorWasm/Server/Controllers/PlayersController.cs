@@ -57,6 +57,7 @@ namespace DevilDaggersWebsite.Api
 		public ActionResult<GetPlayer> GetPlayerById(int id)
 		{
 			Player? player = _dbContext.Players
+				.AsSingleQuery()
 				.AsNoTracking()
 				.Include(p => p.PlayerTitles)
 				.Include(p => p.PlayerAssetMods)
