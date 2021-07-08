@@ -46,7 +46,7 @@ else
 
 		<div class="row">
 			<label class="@_inputColCss">@nameof(EditPlayer.HasFlashHandEnabled)</label>
-			<InputNullableCheckbox class="@_inputColCss" @bind-Value="_editPlayer.HasFlashHandEnabled" />
+			<InputNullableBoolean class="@_inputColCss" @bind-Value="@_editPlayer.HasFlashHandEnabled" />
 		</div>
 
 		<div class="row">
@@ -56,12 +56,12 @@ else
 
 		<div class="row">
 			<label class="@_inputColCss">@nameof(EditPlayer.IsRightHanded)</label>
-			<InputNullableCheckbox class="@_inputColCss" @bind-Value="_editPlayer.IsRightHanded" />
+			<InputNullableBoolean class="@_inputColCss" @bind-Value="@_editPlayer.IsRightHanded" />
 		</div>
 
 		<div class="row">
 			<label class="@_inputColCss">@nameof(EditPlayer.UsesLegacyAudio)</label>
-			<InputNullableCheckbox class="@_inputColCss" @bind-Value="_editPlayer.UsesLegacyAudio" />
+			<InputNullableBoolean class="@_inputColCss" @bind-Value="@_editPlayer.UsesLegacyAudio" />
 		</div>
 
 		<h2>Visibility</h2>
