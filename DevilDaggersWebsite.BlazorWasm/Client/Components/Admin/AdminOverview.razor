@@ -13,19 +13,29 @@
 }
 else
 {
-	<p>
-		<a href="@($"{NavigationManager.Uri}/add")">Add</a>
-	</p>
+	<a href="@($"{NavigationManager.Uri}/add")">Add</a>
 
-	if (_idToDelete.HasValue)
+	switch (_deletion.State)
 	{
-		<p>Are you sure you want to delete entity with ID @_idToDelete?</p>
-		if (_deleteResult != null)
-		{
-			<p class="@_deleteResult.CssClass">@_deleteResult.Response</p>
-		}
-		<button class="btn btn-danger" @onclick="ConfirmDelete">Delete permanently</button>
-		<button class="btn btn-primary" @onclick="() => _idToDelete = null">Cancel</button>
+		case DeleteState.Confirm:
+			{
+				<p>Are you sure you want to delete entity with ID @_deletion.IdToDelete?</p>
+				<button class="btn btn-danger" @onclick="ConfirmDelete">Delete permanently</button>
+				<button class="btn btn-primary" @onclick="_deletion.Cancel">Cancel</button>
+			}
+			break;
+		case DeleteState.Error:
+			{
+				<p class="bg-danger">@_deletion.ApiResponse</p>
+				<button class="btn btn-primary" @onclick="_deletion.Cancel">OK</button>
+			}
+			break;
+		case DeleteState.Ok:
+			{
+				<p class="bg-success">Successfully deleted.</p>
+				<button class="btn btn-primary" @onclick="_deletion.Cancel">OK</button>
+			}
+			break;
 	}
 
 	<table class="table">
@@ -48,7 +58,7 @@ else
 						<td>@ReflectionUtils.GetDtoPropertyDisplayValue(pi, result)</td>
 					}
 					<td><a href="@($"{NavigationManager.Uri}/edit/{result.Id}")">Edit</a></td>
-					<td><a href="" @onclick="() => _idToDelete = result.Id" @onclick:preventDefault>Delete</a></td>
+					<td><a href="" @onclick="() => _deletion.Set(result.Id)" @onclick:preventDefault>Delete</a></td>
 				</tr>
 			}
 		</tbody>
@@ -64,14 +74,8 @@ else
 	private TGetDto[]? results;
 	private string? _uninitializedState = "Loading...";
 	private PropertyInfo[] _properties = Array.Empty<PropertyInfo>();
-	private int? _idToDelete;
-	private DeleteResult? _deleteResult;
 
-	private class DeleteResult
-	{
-		public string? Response { get; set; }
-		public string? CssClass { get; set; }
-	}
+	private Deletion _deletion = new();
 
 	protected override async Task OnInitializedAsync()
 	{
@@ -98,14 +102,40 @@ else
 	{
 		try
 		{
-			HttpResponseMessage hrm = await Http.DeleteAsync($"{ApiRoute}/{_idToDelete}");
-			_deleteResult = new();
-			_deleteResult.Response = await hrm.Content.ReadAsStringAsync();
-			_deleteResult.CssClass = hrm.StatusCode == HttpStatusCode.OK ? "bg-success" : "bg-danger";
+			HttpResponseMessage hrm = await Http.DeleteAsync($"{ApiRoute}/{_deletion.IdToDelete}");
+			_deletion.ApiResponse = await hrm.Content.ReadAsStringAsync();
+			_deletion.State = hrm.StatusCode == HttpStatusCode.OK ? DeleteState.Ok : DeleteState.Error;
 		}
 		catch (AccessTokenNotAvailableException exception)
 		{
 			exception.Redirect();
 		}
+	}
+
+	private class Deletion
+	{
+		public DeleteState State { get; set; }
+		public int? IdToDelete { get; set; }
+		public string? ApiResponse { get; set; }
+
+		public void Set(int id)
+		{
+			State = DeleteState.Confirm;
+			IdToDelete = id;
+		}
+
+		public void Cancel()
+		{
+			State = DeleteState.None;
+			IdToDelete = null;
+		}
+	}
+
+	private enum DeleteState
+	{
+		None = 0,
+		Confirm = 1,
+		Ok = 2,
+		Error = 3,
 	}
 }
