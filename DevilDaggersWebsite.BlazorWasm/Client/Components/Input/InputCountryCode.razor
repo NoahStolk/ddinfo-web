@@ -2,7 +2,7 @@
 
 <div class="@CssClass">
 	<Dropdown TItem="string" OnSelected="e => CurrentValue = e" @ref="_dropdown">
-		<InitialTip>Dropdown</InitialTip>
+		<InitialTip>@SelectedDisplayValue</InitialTip>
 		<ChildContent>
 			<InputTextImmediate @bind-Value="_searchValue" />
 			<div class="select-list">
@@ -14,11 +14,6 @@
 			</div>
 		</ChildContent>
 	</Dropdown>
-
-	@if (!string.IsNullOrWhiteSpace(CurrentValue))
-	{
-		<label>@CurrentValue (@(UserUtils.CountryNames.ContainsKey(CurrentValue) ? UserUtils.CountryNames[CurrentValue] : "???"))</label>
-	}
 </div>
 
 @code
@@ -26,6 +21,8 @@
 	private string? _searchValue;
 
 	private Dropdown<string>? _dropdown;
+
+	private string SelectedDisplayValue => string.IsNullOrWhiteSpace(CurrentValue) ? "<None selected>" : $"{CurrentValue} ({(UserUtils.CountryNames.ContainsKey(CurrentValue) ? UserUtils.CountryNames[CurrentValue] : "???")})";
 
 	public Dictionary<string, string> FilteredCountries => _searchValue == null ? UserUtils.CountryNames : UserUtils.CountryNames
 		.Where(kvp =>
