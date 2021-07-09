@@ -34,9 +34,8 @@ namespace DevilDaggersWebsite.Api
 		[EndpointConsumer(EndpointConsumers.Admin)]
 		public ActionResult<Page<GetPlayerBase>> GetPlayers([Range(0, 1000)] int pageIndex = 0, [Range(5, 50)] int pageSize = 25)
 		{
-			var players = _dbContext.Players
+			List<Player> players = _dbContext.Players
 				.AsNoTracking()
-				.Select(p => new { p.Id, p.PlayerName, p.CountryCode, p.Dpi, p.InGameSens, p.Fov, p.IsBanned })
 				.Skip(pageIndex * pageSize)
 				.Take(pageSize)
 				.ToList();
@@ -52,6 +51,16 @@ namespace DevilDaggersWebsite.Api
 					InGameSens = p.InGameSens,
 					Fov = p.Fov,
 					IsBanned = p.IsBanned,
+					BanDescription = p.BanDescription,
+					BanResponsibleId = p.BanResponsibleId,
+					Gamma = p.Gamma,
+					HasFlashHandEnabled = p.HasFlashHandEnabled,
+					HideDonations = p.HideDonations,
+					HidePastUsernames = p.HidePastUsernames,
+					HideSettings = p.HideSettings,
+					IsBannedFromDdcl = p.IsBannedFromDdcl,
+					IsRightHanded = p.IsRightHanded,
+					UsesLegacyAudio = p.UsesLegacyAudio,
 				}),
 				TotalResults = _dbContext.Players.Count(),
 			};

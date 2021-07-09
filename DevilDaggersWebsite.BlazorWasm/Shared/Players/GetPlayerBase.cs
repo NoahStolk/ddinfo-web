@@ -14,6 +14,26 @@
 
 		public int? Fov { get; init; }
 
+		public bool? IsRightHanded { get; init; }
+
+		public bool? HasFlashHandEnabled { get; init; }
+
+		public float? Gamma { get; init; }
+
+		public bool? UsesLegacyAudio { get; init; }
+
 		public bool IsBanned { get; init; }
+
+		public string? BanDescription { get; init; }
+
+		public int? BanResponsibleId { get; init; }
+
+		public bool IsBannedFromDdcl { get; init; }
+
+		public bool HideSettings { get; init; }
+
+		public bool HideDonations { get; init; }
+
+		public bool HidePastUsernames { get; init; }
 	}
 }
