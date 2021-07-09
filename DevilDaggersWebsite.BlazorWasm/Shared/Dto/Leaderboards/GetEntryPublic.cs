@@ -14,7 +14,7 @@
 
 		public int Gems { get; init; }
 
-		public byte DeathType { get; init; }
+		public DeathType DeathType { get; init; }
 
 		public int DaggersHit { get; init; }
 

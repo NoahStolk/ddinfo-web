@@ -71,7 +71,6 @@ namespace DevilDaggersWebsite.BlazorWasm.Server.Clients.OfficialLeaderboard
 				entry.DaggersHit = br.ReadInt32();
 				entry.Gems = br.ReadInt32();
 				entry.DeathType = br.ReadInt32();
-
 				entry.DeathsTotal = br.ReadUInt64();
 				entry.KillsTotal = br.ReadUInt64();
 				entry.DaggersFiredTotal = br.ReadUInt64();
@@ -103,7 +102,6 @@ namespace DevilDaggersWebsite.BlazorWasm.Server.Clients.OfficialLeaderboard
 
 				short usernameLength = br.ReadInt16();
 				entry.Username = Encoding.UTF8.GetString(br.ReadBytes(usernameLength));
-
 				entry.Rank = br.ReadInt32();
 				entry.Id = br.ReadInt32();
 
@@ -114,7 +112,6 @@ namespace DevilDaggersWebsite.BlazorWasm.Server.Clients.OfficialLeaderboard
 				entry.DaggersHit = br.ReadInt32();
 				entry.Gems = br.ReadInt32();
 				entry.DeathType = br.ReadInt32();
-
 				entry.DeathsTotal = br.ReadUInt64();
 				entry.KillsTotal = br.ReadUInt64();
 				entry.DaggersFiredTotal = br.ReadUInt64();
@@ -143,7 +140,6 @@ namespace DevilDaggersWebsite.BlazorWasm.Server.Clients.OfficialLeaderboard
 
 				short usernameLength = br.ReadInt16();
 				entry.Username = Encoding.UTF8.GetString(br.ReadBytes(usernameLength));
-
 				entry.Rank = br.ReadInt32();
 				entry.Id = br.ReadInt32();
 
@@ -154,7 +150,6 @@ namespace DevilDaggersWebsite.BlazorWasm.Server.Clients.OfficialLeaderboard
 				entry.DaggersHit = br.ReadInt32();
 				entry.Gems = br.ReadInt32();
 				entry.DeathType = br.ReadInt32();
-
 				entry.DeathsTotal = br.ReadUInt64();
 				entry.KillsTotal = br.ReadUInt64();
 				entry.DaggersFiredTotal = br.ReadUInt64();
@@ -180,7 +175,6 @@ namespace DevilDaggersWebsite.BlazorWasm.Server.Clients.OfficialLeaderboard
 
 			short usernameLength = br.ReadInt16();
 			entry.Username = Encoding.UTF8.GetString(br.ReadBytes(usernameLength));
-
 			entry.Rank = br.ReadInt32();
 			entry.Id = br.ReadInt32();
 			entry.Time = br.ReadInt32();
@@ -189,7 +183,6 @@ namespace DevilDaggersWebsite.BlazorWasm.Server.Clients.OfficialLeaderboard
 			entry.DaggersHit = br.ReadInt32();
 			entry.Gems = br.ReadInt32();
 			entry.DeathType = br.ReadInt32();
-
 			entry.DeathsTotal = br.ReadUInt64();
 			entry.KillsTotal = br.ReadUInt64();
 			entry.DaggersFiredTotal = br.ReadUInt64();

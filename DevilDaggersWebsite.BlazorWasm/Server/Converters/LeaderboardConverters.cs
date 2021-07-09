@@ -1,0 +1,41 @@
+﻿using DevilDaggersWebsite.BlazorWasm.Server.Clients.OfficialLeaderboard;
+using DevilDaggersWebsite.BlazorWasm.Shared.Dto.Leaderboards;
+using System;
+
+namespace DevilDaggersWebsite.BlazorWasm.Server.Converters
+{
+	public static class LeaderboardConverters
+	{
+		public static GetLeaderboardPublic ToGetLeaderboardPublic(this LeaderboardResponse leaderboardResponse) => new GetLeaderboardPublic
+		{
+			DaggersFiredGlobal = leaderboardResponse.DaggersFiredGlobal,
+			DaggersHitGlobal = leaderboardResponse.DaggersHitGlobal,
+			DateTime = DateTime.UtcNow,
+			DeathsGlobal = leaderboardResponse.DeathsGlobal,
+			Entries = leaderboardResponse.Entries.ConvertAll(e => e.ToGetEntryPublic()),
+			GemsGlobal = leaderboardResponse.GemsGlobal,
+			KillsGlobal = leaderboardResponse.KillsGlobal,
+			TotalPlayers = leaderboardResponse.TotalPlayers,
+			TimeGlobal = leaderboardResponse.TimeGlobal == 0 ? 0 : leaderboardResponse.TimeGlobal / 10000f,
+		};
+
+		public static GetEntryPublic ToGetEntryPublic(this EntryResponse entryResponse) => new()
+		{
+			DaggersFired = entryResponse.DaggersFired,
+			DaggersFiredTotal = entryResponse.DaggersFiredTotal,
+			DaggersHit = entryResponse.DaggersHit,
+			DaggersHitTotal = entryResponse.DaggersHitTotal,
+			DeathsTotal = entryResponse.DeathsTotal,
+			DeathType = (DeathType)entryResponse.DeathType,
+			Gems = entryResponse.Gems,
+			GemsTotal = entryResponse.GemsTotal,
+			Id = entryResponse.Id,
+			Kills = entryResponse.Kills,
+			KillsTotal = entryResponse.KillsTotal,
+			Rank = entryResponse.Rank,
+			Time = entryResponse.Time == 0 ? 0 : entryResponse.Time / 10000f,
+			TimeTotal = entryResponse.TimeTotal == 0 ? 0 : entryResponse.TimeTotal / 10000f,
+			Username = entryResponse.Username,
+		};
+	}
+}

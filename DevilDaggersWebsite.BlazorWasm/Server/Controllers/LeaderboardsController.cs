@@ -1,5 +1,6 @@
 ﻿using DevilDaggersWebsite.Api.Attributes;
 using DevilDaggersWebsite.BlazorWasm.Server.Clients.OfficialLeaderboard;
+using DevilDaggersWebsite.BlazorWasm.Server.Converters;
 using DevilDaggersWebsite.BlazorWasm.Shared.Dto.Leaderboards;
 using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
@@ -21,35 +22,7 @@ namespace DevilDaggersWebsite.BlazorWasm.Server.Controllers
 		public async Task<ActionResult<GetLeaderboardPublic?>> GetLeaderboard([Range(1, int.MaxValue)] int rankStart = 1)
 		{
 			LeaderboardResponse l = await LeaderboardClient.Instance.GetScores(rankStart);
-			return new GetLeaderboardPublic
-			{
-				DaggersFiredGlobal = l.DaggersFiredGlobal,
-				DaggersHitGlobal = l.DaggersHitGlobal,
-				DateTime = DateTime.UtcNow,
-				DeathsGlobal = l.DeathsGlobal,
-				Entries = l.Entries.ConvertAll(e => new GetEntryPublic
-				{
-					DaggersFired = e.DaggersFired,
-					DaggersFiredTotal = e.DaggersFiredTotal,
-					DaggersHit = e.DaggersHit,
-					DaggersHitTotal = e.DaggersHitTotal,
-					DeathsTotal = e.DeathsTotal,
-					DeathType = (byte)e.DeathType,
-					Gems = e.Gems,
-					GemsTotal = e.GemsTotal,
-					Id = e.Id,
-					Kills = e.Kills,
-					KillsTotal = e.KillsTotal,
-					Rank = e.Rank,
-					Time = e.Time == 0 ? 0 : e.Time / 10000f,
-					TimeTotal = e.TimeTotal == 0 ? 0 : e.TimeTotal / 10000f,
-					Username = e.Username,
-				}),
-				GemsGlobal = l.GemsGlobal,
-				KillsGlobal = l.KillsGlobal,
-				TotalPlayers = l.TotalPlayers,
-				TimeGlobal = l.TimeGlobal == 0 ? 0 : l.TimeGlobal / 10000f,
-			};
+			return l.ToGetLeaderboardPublic();
 		}
 
 		[HttpGet("user/by-id")]
@@ -59,24 +32,7 @@ namespace DevilDaggersWebsite.BlazorWasm.Server.Controllers
 		public async Task<ActionResult<GetEntryPublic>> GetPlayerById([Required, Range(1, int.MaxValue)] int userId)
 		{
 			EntryResponse e = await LeaderboardClient.Instance.GetUserById(userId);
-			return new GetEntryPublic
-			{
-				DaggersFired = e.DaggersFired,
-				DaggersFiredTotal = e.DaggersFiredTotal,
-				DaggersHit = e.DaggersHit,
-				DaggersHitTotal = e.DaggersHitTotal,
-				DeathsTotal = e.DeathsTotal,
-				DeathType = (byte)e.DeathType,
-				Gems = e.Gems,
-				GemsTotal = e.GemsTotal,
-				Id = e.Id,
-				Kills = e.Kills,
-				KillsTotal = e.KillsTotal,
-				Rank = e.Rank,
-				Time = e.Time == 0 ? 0 : e.Time / 10000f,
-				TimeTotal = e.TimeTotal == 0 ? 0 : e.TimeTotal / 10000f,
-				Username = e.Username,
-			};
+			return e.ToGetEntryPublic();
 		}
 
 		[HttpGet("user/by-ids")]
@@ -88,24 +44,7 @@ namespace DevilDaggersWebsite.BlazorWasm.Server.Controllers
 			IEnumerable<int> userIds = commaSeparatedUserIds.Split(',').Where(s => int.TryParse(s, out _)).Select(int.Parse);
 
 			List<EntryResponse> el = await LeaderboardClient.Instance.GetUsersByIds(userIds);
-			return el.ConvertAll(e => new GetEntryPublic
-			{
-				DaggersFired = e.DaggersFired,
-				DaggersFiredTotal = e.DaggersFiredTotal,
-				DaggersHit = e.DaggersHit,
-				DaggersHitTotal = e.DaggersHitTotal,
-				DeathsTotal = e.DeathsTotal,
-				DeathType = (byte)e.DeathType,
-				Gems = e.Gems,
-				GemsTotal = e.GemsTotal,
-				Id = e.Id,
-				Kills = e.Kills,
-				KillsTotal = e.KillsTotal,
-				Rank = e.Rank,
-				Time = e.Time == 0 ? 0 : e.Time / 10000f,
-				TimeTotal = e.TimeTotal == 0 ? 0 : e.TimeTotal / 10000f,
-				Username = e.Username,
-			});
+			return el.ConvertAll(e => e.ToGetEntryPublic());
 		}
 
 		[HttpGet("user/by-username")]
@@ -115,24 +54,7 @@ namespace DevilDaggersWebsite.BlazorWasm.Server.Controllers
 		public async Task<ActionResult<List<GetEntryPublic>>> GetPlayersByName([Required, MinLength(3)] string username)
 		{
 			List<EntryResponse> el = await LeaderboardClient.Instance.GetUserSearch(username);
-			return el.ConvertAll(e => new GetEntryPublic
-			{
-				DaggersFired = e.DaggersFired,
-				DaggersFiredTotal = e.DaggersFiredTotal,
-				DaggersHit = e.DaggersHit,
-				DaggersHitTotal = e.DaggersHitTotal,
-				DeathsTotal = e.DeathsTotal,
-				DeathType = (byte)e.DeathType,
-				Gems = e.Gems,
-				GemsTotal = e.GemsTotal,
-				Id = e.Id,
-				Kills = e.Kills,
-				KillsTotal = e.KillsTotal,
-				Rank = e.Rank,
-				Time = e.Time == 0 ? 0 : e.Time / 10000f,
-				TimeTotal = e.TimeTotal == 0 ? 0 : e.TimeTotal / 10000f,
-				Username = e.Username,
-			});
+			return el.ConvertAll(e => e.ToGetEntryPublic());
 		}
 
 		[HttpGet("user/by-rank")]
@@ -145,25 +67,7 @@ namespace DevilDaggersWebsite.BlazorWasm.Server.Controllers
 			if (l.Entries.Count == 0)
 				return NotFound();
 
-			EntryResponse e = l.Entries[0];
-			return new GetEntryPublic
-			{
-				DaggersFired = e.DaggersFired,
-				DaggersFiredTotal = e.DaggersFiredTotal,
-				DaggersHit = e.DaggersHit,
-				DaggersHitTotal = e.DaggersHitTotal,
-				DeathsTotal = e.DeathsTotal,
-				DeathType = (byte)e.DeathType,
-				Gems = e.Gems,
-				GemsTotal = e.GemsTotal,
-				Id = e.Id,
-				Kills = e.Kills,
-				KillsTotal = e.KillsTotal,
-				Rank = e.Rank,
-				Time = e.Time == 0 ? 0 : e.Time / 10000f,
-				TimeTotal = e.TimeTotal == 0 ? 0 : e.TimeTotal / 10000f,
-				Username = e.Username,
-			};
+			return l.Entries[0].ToGetEntryPublic();
 		}
 	}
 }
