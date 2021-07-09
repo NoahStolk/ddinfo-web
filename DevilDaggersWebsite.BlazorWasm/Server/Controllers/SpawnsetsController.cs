@@ -1,4 +1,5 @@
-﻿using DevilDaggersCore.Spawnsets;
+﻿using DevilDaggersCore.Extensions;
+using DevilDaggersCore.Spawnsets;
 using DevilDaggersWebsite.Api.Attributes;
 using DevilDaggersWebsite.BlazorWasm.Server.Constants;
 using DevilDaggersWebsite.BlazorWasm.Server.Singletons;
@@ -67,7 +68,7 @@ namespace DevilDaggersWebsite.BlazorWasm.Server.Controllers
 					PlayerId = sf.PlayerId,
 					Name = sf.Name,
 					MaxDisplayWaves = sf.MaxDisplayWaves,
-					HtmlDescription = sf.HtmlDescription,
+					HtmlDescription = sf.HtmlDescription?.TrimAfter(40, true),
 					LastUpdated = sf.LastUpdated,
 					IsPractice = sf.IsPractice,
 				}),

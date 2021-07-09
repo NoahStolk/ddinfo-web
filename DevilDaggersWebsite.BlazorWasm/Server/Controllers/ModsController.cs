@@ -1,4 +1,5 @@
-﻿using DevilDaggersWebsite.Api.Attributes;
+﻿using DevilDaggersCore.Extensions;
+using DevilDaggersWebsite.Api.Attributes;
 using DevilDaggersWebsite.BlazorWasm.Server.Constants;
 using DevilDaggersWebsite.BlazorWasm.Server.Singletons;
 using DevilDaggersWebsite.BlazorWasm.Shared;
@@ -66,13 +67,13 @@ namespace DevilDaggersWebsite.BlazorWasm.Server.Controllers
 				{
 					Id = m.Id,
 					AssetModTypes = m.AssetModTypes,
-					HtmlDescription = m.HtmlDescription,
+					HtmlDescription = m.HtmlDescription?.TrimAfter(40, true),
 					IsHidden = m.IsHidden,
 					LastUpdated = m.LastUpdated,
 					Name = m.Name,
 					PlayerIds = m.PlayerAssetMods.ConvertAll(pam => pam.PlayerId),
-					TrailerUrl = m.TrailerUrl,
-					Url = m.Url,
+					TrailerUrl = m.TrailerUrl?.TrimAfter(40, true),
+					Url = m.Url?.TrimAfter(40, true),
 				}),
 				TotalResults = _dbContext.AssetMods.Count(),
 			};
