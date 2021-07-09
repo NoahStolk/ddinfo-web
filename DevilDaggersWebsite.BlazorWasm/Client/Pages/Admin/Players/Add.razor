@@ -27,7 +27,7 @@
 
 	<div class="row">
 		<label class="@_inputLabelCss">@nameof(AddPlayer.CountryCode)</label>
-		<InputCountryCode class="admin-input" @bind-Value="@_addPlayer.CountryCode" />
+		<SearchDropdown class="admin-input" Values="@UserUtils.CountryNames" @bind-Value="@_addPlayer.CountryCode" />
 	</div>
 
 	<h2>Settings</h2>

@@ -7,7 +7,7 @@
 			<InputTextImmediate @bind-Value="_searchValue" />
 			<div class="select-list">
 				<a class="dropdown-item" @onclick="e => _dropdown?.HandleSelect(null) ?? Task.CompletedTask">[CLEAR]</a>
-				@foreach (KeyValuePair<string, string> kvp in FilteredCountries)
+				@foreach (KeyValuePair<string, string> kvp in FilteredItems)
 				{
 					<a class="dropdown-item" Item="@kvp" @onclick="e => _dropdown?.HandleSelect(kvp.Key) ?? Task.CompletedTask">@kvp.Key (@kvp.Value)</a>
 				}
@@ -22,9 +22,11 @@
 
 	private Dropdown<string>? _dropdown;
 
-	private string SelectedDisplayValue => string.IsNullOrWhiteSpace(CurrentValue) ? "<None selected>" : $"{CurrentValue} ({(UserUtils.CountryNames.ContainsKey(CurrentValue) ? UserUtils.CountryNames[CurrentValue] : "???")})";
+	private string SelectedDisplayValue => string.IsNullOrWhiteSpace(CurrentValue) ? "<None selected>" : $"{CurrentValue} ({(Values.ContainsKey(CurrentValue) ? Values[CurrentValue] : "???")})";
 
-	public Dictionary<string, string> FilteredCountries => _searchValue == null ? UserUtils.CountryNames : UserUtils.CountryNames
+	[Parameter] public Dictionary<string, string> Values { get; set; } = null!;
+
+	public Dictionary<string, string> FilteredItems => _searchValue == null ? Values : Values
 		.Where(kvp =>
 			kvp.Key.Contains(_searchValue, StringComparison.InvariantCultureIgnoreCase) ||
 			kvp.Value.Contains(_searchValue, StringComparison.InvariantCultureIgnoreCase))
