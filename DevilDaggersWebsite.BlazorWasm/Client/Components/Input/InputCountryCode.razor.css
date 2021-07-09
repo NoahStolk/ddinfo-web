@@ -1,0 +1,5 @@
+﻿.select-list {
+	max-height: 50vh;
+	overflow-y: scroll;
+	max-width: 256px;
+}
