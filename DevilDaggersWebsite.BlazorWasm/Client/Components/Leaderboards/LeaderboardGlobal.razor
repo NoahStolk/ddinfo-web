@@ -76,7 +76,7 @@
 	protected override void OnInitialized()
 	{
 		_players = Leaderboard.TotalPlayers.ToString(FormatUtils.LeaderboardIntFormat);
-		_time = Leaderboard.TimeGlobal.FormatTimeInteger(true);
+		_time = Leaderboard.TimeGlobal.ToString(FormatUtils.LeaderboardGlobalTimeFormat);
 		_kills = Leaderboard.KillsGlobal.ToString(FormatUtils.LeaderboardIntFormat);
 		_gems = Leaderboard.GemsGlobal.ToString(FormatUtils.LeaderboardIntFormat);
 		_deaths = Leaderboard.DeathsGlobal.ToString(FormatUtils.LeaderboardIntFormat);
