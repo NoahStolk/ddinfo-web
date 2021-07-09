@@ -7,3 +7,7 @@
 		margin-bottom: 0;
 	}
 }
+
+::deep .admin-input {
+	margin-left: 15px;
+}

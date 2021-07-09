@@ -48,12 +48,3 @@ a, .btn-link {
 		right: 0.75rem;
 		top: 0.5rem;
 	}
-
-.table > tbody > tr > td {
-	padding: 0.25rem 0.75rem;
-}
-
-/*TODO: Move this to CSS isolation... Doesn't work right now because isolation tag is not applied to built-in InputNumber InputText etc components.*/
-.admin-input {
-	margin-left: 15px;
-}
