@@ -57,6 +57,24 @@ namespace DevilDaggersWebsite.Api
 			};
 		}
 
+		[HttpGet("names")]
+		[Authorize(Roles = Roles.Players)]
+		[ProducesResponseType(StatusCodes.Status200OK)]
+		[EndpointConsumer(EndpointConsumers.Admin)]
+		public ActionResult<List<GetPlayerName>> GetPlayerNames()
+		{
+			var players = _dbContext.Players
+				.AsNoTracking()
+				.Select(p => new { p.Id, p.PlayerName })
+				.ToList();
+
+			return players.ConvertAll(p => new GetPlayerName
+			{
+				Id = p.Id,
+				PlayerName = p.PlayerName,
+			});
+		}
+
 		[HttpGet("{id}")]
 		[Authorize(Roles = Roles.Players)]
 		[ProducesResponseType(StatusCodes.Status200OK)]
