@@ -146,6 +146,8 @@ namespace DevilDaggersWebsite.BlazorWasm.Server.Clients.OfficialLeaderboard
 
 				entry.Rank = br.ReadInt32();
 				entry.Id = br.ReadInt32();
+
+				br.BaseStream.Seek(4, SeekOrigin.Current);
 				entry.Time = br.ReadInt32();
 				entry.Kills = br.ReadInt32();
 				entry.DaggersFired = br.ReadInt32();

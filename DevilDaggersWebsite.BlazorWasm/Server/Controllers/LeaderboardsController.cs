@@ -6,6 +6,7 @@ using Microsoft.AspNetCore.Mvc;
 using System;
 using System.Collections.Generic;
 using System.ComponentModel.DataAnnotations;
+using System.Linq;
 using System.Threading.Tasks;
 
 namespace DevilDaggersWebsite.BlazorWasm.Server.Controllers
@@ -76,6 +77,35 @@ namespace DevilDaggersWebsite.BlazorWasm.Server.Controllers
 				TimeTotal = e.TimeTotal == 0 ? 0 : e.TimeTotal / 10000f,
 				Username = e.Username,
 			};
+		}
+
+		[HttpGet("user/by-ids")]
+		[ProducesResponseType(StatusCodes.Status200OK)]
+		[ProducesResponseType(StatusCodes.Status400BadRequest)]
+		[EndpointConsumer(EndpointConsumers.Website)]
+		public async Task<ActionResult<List<GetEntryPublic>>> GetPlayersByIds(string commaSeparatedUserIds)
+		{
+			IEnumerable<int> userIds = commaSeparatedUserIds.Split(',').Where(s => int.TryParse(s, out _)).Select(int.Parse);
+
+			List<EntryResponse> el = await LeaderboardClient.Instance.GetUsersByIds(userIds);
+			return el.ConvertAll(e => new GetEntryPublic
+			{
+				DaggersFired = e.DaggersFired,
+				DaggersFiredTotal = e.DaggersFiredTotal,
+				DaggersHit = e.DaggersHit,
+				DaggersHitTotal = e.DaggersHitTotal,
+				DeathsTotal = e.DeathsTotal,
+				DeathType = (byte)e.DeathType,
+				Gems = e.Gems,
+				GemsTotal = e.GemsTotal,
+				Id = e.Id,
+				Kills = e.Kills,
+				KillsTotal = e.KillsTotal,
+				Rank = e.Rank,
+				Time = e.Time == 0 ? 0 : e.Time / 10000f,
+				TimeTotal = e.TimeTotal == 0 ? 0 : e.TimeTotal / 10000f,
+				Username = e.Username,
+			});
 		}
 
 		[HttpGet("user/by-username")]
