@@ -1,0 +1,88 @@
+﻿@using DevilDaggersWebsite.BlazorWasm.Shared.Dto.Leaderboards
+
+<div class="leaderboard-data-container d-block d-sm-none">
+	<div class="row">
+		<div class="col-xs-6">Total players</div>
+		<div class="col-xs-6 devil text-right">@_players</div>
+	</div>
+	<div class="row">
+		<div class="col-xs-6">Global time</div>
+		<div class="col-xs-6 devil text-right">@_time</div>
+	</div>
+	<div class="row">
+		<div class="col-xs-6">Global kills</div>
+		<div class="col-xs-6 devil text-right">@_kills</div>
+	</div>
+	<div class="row">
+		<div class="col-xs-6">Global gems</div>
+		<div class="col-xs-6 devil text-right">@_gems</div>
+	</div>
+	<div class="row">
+		<div class="col-xs-6">Global accuracy</div>
+		<div class="col-xs-6 text-right">
+			<span data-toggle="tooltip" title="@_daggers" class="leaderboard-tooltip"><span class="devil">@_accuracy</span></span>
+		</div>
+	</div>
+	<div class="row">
+		<div class="col-xs-6">Global deaths</div>
+		<div class="col-xs-6 devil text-right">@_deaths</div>
+	</div>
+</div>
+
+<div class="d-none d-sm-block text-center">
+	<div class="flex-container flex-center flex-space-evenly icon-list">
+		<div>
+			<div class="icon-large pointer" data-toggle='tooltip' title='Total players'><img src="/images/icons/eye4x4.png" /></div>
+			<div class="devil text-center">@_players</div>
+		</div>
+		<div>
+			<div class="icon-large pointer" data-toggle='tooltip' title='Global time'><img src="/images/icons/stopwatchx4.png" /></div>
+			<div class="devil text-center">@_time</div>
+		</div>
+		<div>
+			<div class="icon-large pointer" data-toggle='tooltip' title='Global kills'><img src="/images/icons/daggerx4.png" /></div>
+			<div class="devil text-center">@_kills</div>
+		</div>
+		<div>
+			<div class="icon-large pointer" data-toggle='tooltip' title='Global gems'><img src="/images/icons/gemx4.png" /></div>
+			<div class="devil text-center">@_gems</div>
+		</div>
+		<div>
+			<div class="icon-large pointer" data-toggle='tooltip' title='Global accuracy'><img src="/images/icons/crosshairx4.png" /></div>
+			<div class="text-center">
+				<span data-toggle="tooltip" title="@_daggers" class="leaderboard-tooltip"><span class="devil">@_accuracy</span></span>
+			</div>
+		</div>
+		<div>
+			<div class="icon-large pointer" data-toggle='tooltip' title='Global deaths'><img src="/images/icons/skullx4.png" /></div>
+			<div class="devil text-center">@_deaths</div>
+		</div>
+	</div>
+</div>
+
+@code
+{
+	[Parameter] public GetLeaderboardPublic Leaderboard { get; set; } = null!;
+	[Parameter] public bool IsHistory { get; set; }
+
+	private string? _players;
+	private string? _time;
+	private string? _kills;
+	private string? _gems;
+	private string? _deaths;
+	private string? _daggers;
+	private string? _accuracy;
+
+	protected override void OnInitialized()
+	{
+		_players = Leaderboard.TotalPlayers.ToString(FormatUtils.LeaderboardIntFormat);
+		_time = Leaderboard.TimeGlobal.FormatTimeInteger(true);
+		_kills = Leaderboard.KillsGlobal.ToString(FormatUtils.LeaderboardIntFormat);
+		_gems = Leaderboard.GemsGlobal.ToString(FormatUtils.LeaderboardIntFormat);
+		_deaths = Leaderboard.DeathsGlobal.ToString(FormatUtils.LeaderboardIntFormat);
+		_daggers = FormatUtils.FormatDaggersUInt64(Leaderboard.DaggersHitGlobal, Leaderboard.DaggersFiredGlobal, IsHistory);
+
+		float acc = Leaderboard.DaggersFiredGlobal == 0 ? 0 : Leaderboard.DaggersHitGlobal / (float)Leaderboard.DaggersFiredGlobal;
+		_accuracy = acc.ToString(FormatUtils.AccuracyFormat);
+	}
+}

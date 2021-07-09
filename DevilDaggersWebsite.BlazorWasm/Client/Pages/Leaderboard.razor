@@ -1,19 +1,21 @@
 ﻿@page "/leaderboard"
 @inject HttpClient Http
 @using DevilDaggersWebsite.BlazorWasm.Shared.Dto.Leaderboards
+@using DevilDaggersWebsite.BlazorWasm.Client.Components.Leaderboards
 
 <h1>Leaderboard</h1>
 
 @if (LeaderboardResponse == null)
 {
-	@if (_ddServerError)
+	@if (_ddServerError == null)
 	{
-		<p>Failed to retrieve scores from the official Devil Daggers leaderboard servers. Please try again later.</p>
-		<p>If the problem persists, try contacting the Devil Daggers developer.</p>
+		<Loading />
 	}
 	else
 	{
-		<Loading />
+		<p>Failed to retrieve scores from the official Devil Daggers leaderboard servers. Please try again later.</p>
+		<p>If the problem persists, try contacting the Devil Daggers developer.</p>
+		<p>@_ddServerError</p>
 	}
 }
 else
@@ -37,14 +39,15 @@ else
 			<a class="btn btn-default btn-page @(Rank >= _maxRank ? "disabled" : string.Empty)" @onclick="() => Rank = LeaderboardResponse.TotalPlayers - 99">&gt;|</a>
 		</div>
 	</div>
-	@*@await Html.PartialAsync("Partials/LeaderboardGlobalPartial")
-		@await Html.PartialAsync("Partials/LeaderboardTableInfoPartial")
+
+	<LeaderboardGlobal Leaderboard="LeaderboardResponse" IsHistory="false" />
+	@*@await Html.PartialAsync("Partials/LeaderboardTableInfoPartial")
 		@await Html.PartialAsync("Partials/LeaderboardUserPartial")*@
 }
 
 @code
 {
-	private bool _ddServerError = false;
+	private string? _ddServerError;
 
 	private int _maxRank => (LeaderboardResponse?.TotalPlayers ?? int.MaxValue) - 99;
 
@@ -76,9 +79,9 @@ else
 		{
 			return await Http.GetFromJsonAsync<GetLeaderboardPublic>($"api/leaderboards?rankStart={Rank}");
 		}
-		catch
+		catch (Exception ex)
 		{
-			_ddServerError = true;
+			_ddServerError = ex.Message;
 			return null;
 		}
 	}
