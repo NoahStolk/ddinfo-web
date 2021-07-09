@@ -8,6 +8,7 @@ using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.EntityFrameworkCore;
 using System.Collections.Generic;
+using System.ComponentModel.DataAnnotations;
 using System.Linq;
 using System.Threading.Tasks;
 
@@ -30,32 +31,45 @@ namespace DevilDaggersWebsite.BlazorWasm.Server.Controllers
 		[Authorize(Roles = Roles.Admin)]
 		[ProducesResponseType(StatusCodes.Status200OK)]
 		[EndpointConsumer(EndpointConsumers.None)]
-		public ActionResult<List<GetCustomEntryBase>> GetCustomEntries()
+		public ActionResult<Page<GetCustomEntry>> GetCustomEntries([Range(0, 1000)] int pageIndex = 0, [Range(5, 50)] int pageSize = 25)
 		{
-			List<CustomEntry> customEntries = _dbContext.CustomEntries.AsNoTracking().ToList();
+			List<CustomEntry> customEntries = _dbContext.CustomEntries
+				.AsNoTracking()
+				.AsSingleQuery()
+				.Include(ce => ce.Player)
+				.Include(ce => ce.CustomLeaderboard)
+					.ThenInclude(cl => cl.SpawnsetFile)
+				.Skip(pageIndex * pageSize)
+				.Take(pageSize)
+				.ToList();
 
-			return customEntries.ConvertAll(ce => new GetCustomEntryBase
+			return new Page<GetCustomEntry>
 			{
-				Id = ce.Id,
-				ClientVersion = ce.ClientVersion,
-				DaggersFired = ce.DaggersFired,
-				DaggersHit = ce.DaggersHit,
-				DeathType = ce.DeathType,
-				EnemiesAlive = ce.EnemiesAlive,
-				EnemiesKilled = ce.EnemiesKilled,
-				GemsCollected = ce.GemsCollected,
-				GemsDespawned = ce.GemsDespawned,
-				GemsEaten = ce.GemsEaten,
-				GemsTotal = ce.GemsTotal,
-				HomingDaggers = ce.HomingDaggers,
-				HomingDaggersEaten = ce.HomingDaggersEaten,
-				LevelUpTime2 = ce.LevelUpTime2,
-				LevelUpTime3 = ce.LevelUpTime3,
-				LevelUpTime4 = ce.LevelUpTime4,
-				PlayerId = ce.PlayerId,
-				SubmitDate = ce.SubmitDate,
-				Time = ce.Time,
-			});
+				Results = customEntries.ConvertAll(ce => new GetCustomEntry
+				{
+					Id = ce.Id,
+					ClientVersion = ce.ClientVersion,
+					DaggersFired = ce.DaggersFired,
+					DaggersHit = ce.DaggersHit,
+					DeathType = ce.DeathType,
+					EnemiesAlive = ce.EnemiesAlive,
+					EnemiesKilled = ce.EnemiesKilled,
+					GemsCollected = ce.GemsCollected,
+					GemsDespawned = ce.GemsDespawned,
+					GemsEaten = ce.GemsEaten,
+					GemsTotal = ce.GemsTotal,
+					HomingDaggers = ce.HomingDaggers,
+					HomingDaggersEaten = ce.HomingDaggersEaten,
+					LevelUpTime2 = ce.LevelUpTime2,
+					LevelUpTime3 = ce.LevelUpTime3,
+					LevelUpTime4 = ce.LevelUpTime4,
+					PlayerName = ce.Player.PlayerName,
+					SpawnsetName = ce.CustomLeaderboard.SpawnsetFile.Name,
+					SubmitDate = ce.SubmitDate,
+					Time = ce.Time,
+				}),
+				TotalResults = _dbContext.CustomEntries.Count(),
+			};
 		}
 
 		[HttpPost]

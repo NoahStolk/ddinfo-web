@@ -11,22 +11,18 @@ namespace DevilDaggersWebsite.BlazorWasm.Shared.CustomLeaderboards
 
 		public string SpawnsetAuthorName { get; init; } = null!;
 
-		public int TimeBronze { get; init; }
+		public float TimeBronze { get; init; }
 
-		public int TimeSilver { get; init; }
+		public float TimeSilver { get; init; }
 
-		public int TimeGolden { get; init; }
+		public float TimeGolden { get; init; }
 
-		public int TimeDevil { get; init; }
+		public float TimeDevil { get; init; }
 
-		public int TimeLeviathan { get; init; }
-
-		public DateTime? DateLastPlayed { get; init; }
+		public float TimeLeviathan { get; init; }
 
 		public DateTime? DateCreated { get; init; }
 
 		public CustomLeaderboardCategory Category { get; init; }
-
-		public bool IsAscending { get; init; }
 	}
 }

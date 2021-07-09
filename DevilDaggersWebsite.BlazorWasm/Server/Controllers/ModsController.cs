@@ -18,6 +18,7 @@ using Microsoft.AspNetCore.Mvc;
 using Microsoft.EntityFrameworkCore;
 using System;
 using System.Collections.Generic;
+using System.ComponentModel.DataAnnotations;
 using System.IO;
 using System.Linq;
 using System.Threading.Tasks;
@@ -50,25 +51,31 @@ namespace DevilDaggersWebsite.BlazorWasm.Server.Controllers
 		[Authorize(Roles = Roles.AssetMods)]
 		[ProducesResponseType(StatusCodes.Status200OK)]
 		[EndpointConsumer(EndpointConsumers.Admin)]
-		public List<GetMod> GetMods()
+		public ActionResult<Page<GetMod>> GetMods([Range(0, 1000)] int pageIndex = 0, [Range(5, 50)] int pageSize = 25)
 		{
 			List<AssetMod> mods = _dbContext.AssetMods
 				.AsNoTracking()
 				.Include(m => m.PlayerAssetMods)
+				.Skip(pageIndex * pageSize)
+				.Take(pageSize)
 				.ToList();
 
-			return mods.ConvertAll(m => new GetMod
+			return new Page<GetMod>
 			{
-				Id = m.Id,
-				AssetModTypes = m.AssetModTypes,
-				HtmlDescription = m.HtmlDescription,
-				IsHidden = m.IsHidden,
-				LastUpdated = m.LastUpdated,
-				Name = m.Name,
-				PlayerIds = m.PlayerAssetMods.ConvertAll(pam => pam.PlayerId),
-				TrailerUrl = m.TrailerUrl,
-				Url = m.Url,
-			});
+				Results = mods.ConvertAll(m => new GetMod
+				{
+					Id = m.Id,
+					AssetModTypes = m.AssetModTypes,
+					HtmlDescription = m.HtmlDescription,
+					IsHidden = m.IsHidden,
+					LastUpdated = m.LastUpdated,
+					Name = m.Name,
+					PlayerIds = m.PlayerAssetMods.ConvertAll(pam => pam.PlayerId),
+					TrailerUrl = m.TrailerUrl,
+					Url = m.Url,
+				}),
+				TotalResults = _dbContext.AssetMods.Count(),
+			};
 		}
 
 		[HttpPost("admin")]

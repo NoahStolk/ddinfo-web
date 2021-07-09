@@ -1,0 +1,5 @@
+﻿@page "/admin/spawnsets"
+@using DevilDaggersWebsite.BlazorWasm.Shared.Spawnsets
+@inject HttpClient Http
+
+<AdminOverview TGetDto="GetSpawnset" TKey="int" Title="Spawnsets" ApiRoute="api/spawnsets/admin"></AdminOverview>

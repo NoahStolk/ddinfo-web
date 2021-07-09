@@ -8,6 +8,7 @@ using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.EntityFrameworkCore;
 using System.Collections.Generic;
+using System.ComponentModel.DataAnnotations;
 using System.Linq;
 using System.Threading.Tasks;
 
@@ -30,25 +31,31 @@ namespace DevilDaggersWebsite.Api
 		[Authorize(Roles = Roles.Admin)]
 		[ProducesResponseType(StatusCodes.Status200OK)]
 		[EndpointConsumer(EndpointConsumers.None)]
-		public ActionResult<List<GetDonation>> GetDonations()
+		public ActionResult<Page<GetDonation>> GetDonations([Range(0, 1000)] int pageIndex = 0, [Range(5, 50)] int pageSize = 25)
 		{
 			List<Donation> donations = _dbContext.Donations
 				.AsNoTracking()
+				.Skip(pageIndex * pageSize)
+				.Take(pageSize)
 				.Include(d => d.Player)
 				.ToList();
 
-			return donations.ConvertAll(d => new GetDonation
+			return new Page<GetDonation>
 			{
-				Id = d.Id,
-				Amount = d.Amount,
-				ConvertedEuroCentsReceived = d.ConvertedEuroCentsReceived,
-				Currency = d.Currency,
-				DateReceived = d.DateReceived,
-				IsRefunded = d.IsRefunded,
-				Note = d.Note,
-				PlayerId = d.PlayerId,
-				PlayerName = d.Player.PlayerName,
-			});
+				Results = donations.ConvertAll(d => new GetDonation
+				{
+					Id = d.Id,
+					Amount = d.Amount,
+					ConvertedEuroCentsReceived = d.ConvertedEuroCentsReceived,
+					Currency = d.Currency,
+					DateReceived = d.DateReceived,
+					IsRefunded = d.IsRefunded,
+					Note = d.Note,
+					PlayerId = d.PlayerId,
+					PlayerName = d.Player.PlayerName,
+				}),
+				TotalResults = _dbContext.Donations.Count(),
+			};
 		}
 
 		[HttpPost]

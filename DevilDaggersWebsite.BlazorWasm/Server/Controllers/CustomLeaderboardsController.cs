@@ -13,6 +13,7 @@ using Microsoft.AspNetCore.Mvc;
 using Microsoft.EntityFrameworkCore;
 using System;
 using System.Collections.Generic;
+using System.ComponentModel.DataAnnotations;
 using System.IO;
 using System.Linq;
 using System.Threading.Tasks;
@@ -38,29 +39,34 @@ namespace DevilDaggersWebsite.BlazorWasm.Server.Controllers
 		[Authorize(Roles = Roles.CustomLeaderboards)]
 		[ProducesResponseType(StatusCodes.Status200OK)]
 		[EndpointConsumer(EndpointConsumers.Admin)]
-		public ActionResult<List<GetCustomLeaderboard>> GetCustomLeaderboards()
+		public ActionResult<Page<GetCustomLeaderboard>> GetCustomLeaderboards([Range(0, 1000)] int pageIndex = 0, [Range(5, 50)] int pageSize = 25)
 		{
-			return _dbContext.CustomLeaderboards
+			List<CustomLeaderboard> customLeaderboards = _dbContext.CustomLeaderboards
 				.AsNoTracking()
 				.Where(cl => !cl.IsArchived)
 				.Include(cl => cl.SpawnsetFile)
 					.ThenInclude(sf => sf.Player)
-				.Select(cl => new GetCustomLeaderboard
+				.Skip(pageIndex * pageSize)
+				.Take(pageSize)
+				.ToList();
+
+			return new Page<GetCustomLeaderboard>
+			{
+				Results = customLeaderboards.ConvertAll(cl => new GetCustomLeaderboard
 				{
 					Id = cl.Id,
 					SpawnsetAuthorName = cl.SpawnsetFile.Player.PlayerName,
 					SpawnsetName = cl.SpawnsetFile.Name,
-					TimeBronze = cl.TimeBronze,
-					TimeSilver = cl.TimeSilver,
-					TimeGolden = cl.TimeGolden,
-					TimeDevil = cl.TimeDevil,
-					TimeLeviathan = cl.TimeLeviathan,
-					DateLastPlayed = cl.DateLastPlayed,
+					TimeBronze = cl.TimeBronze / 10000f,
+					TimeSilver = cl.TimeSilver / 10000f,
+					TimeGolden = cl.TimeGolden / 10000f,
+					TimeDevil = cl.TimeDevil / 10000f,
+					TimeLeviathan = cl.TimeLeviathan / 10000f,
 					DateCreated = cl.DateCreated,
 					Category = cl.Category,
-					IsAscending = cl.Category.IsAscending(),
-				})
-				.ToList();
+				}),
+				TotalResults = _dbContext.CustomLeaderboards.Count(),
+			};
 		}
 
 		[HttpGet("{id}")]
@@ -85,15 +91,13 @@ namespace DevilDaggersWebsite.BlazorWasm.Server.Controllers
 				Id = customLeaderboard.Id,
 				SpawnsetAuthorName = customLeaderboard.SpawnsetFile.Player.PlayerName,
 				SpawnsetName = customLeaderboard.SpawnsetFile.Name,
-				TimeBronze = customLeaderboard.TimeBronze,
-				TimeSilver = customLeaderboard.TimeSilver,
-				TimeGolden = customLeaderboard.TimeGolden,
-				TimeDevil = customLeaderboard.TimeDevil,
-				TimeLeviathan = customLeaderboard.TimeLeviathan,
-				DateLastPlayed = customLeaderboard.DateLastPlayed,
+				TimeBronze = customLeaderboard.TimeBronze / 10000f,
+				TimeSilver = customLeaderboard.TimeSilver / 10000f,
+				TimeGolden = customLeaderboard.TimeGolden / 10000f,
+				TimeDevil = customLeaderboard.TimeDevil / 10000f,
+				TimeLeviathan = customLeaderboard.TimeLeviathan / 10000f,
 				DateCreated = customLeaderboard.DateCreated,
 				Category = customLeaderboard.Category,
-				IsAscending = customLeaderboard.Category.IsAscending(),
 			};
 		}
 

@@ -1,0 +1,5 @@
+﻿@page "/admin/custom-entries"
+@using DevilDaggersWebsite.BlazorWasm.Shared.CustomEntries
+@inject HttpClient Http
+
+<AdminOverview TGetDto="GetCustomEntry" TKey="int" Title="Custom Entries" ApiRoute="api/custom-entries/admin"></AdminOverview>

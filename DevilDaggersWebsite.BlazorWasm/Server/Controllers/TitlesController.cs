@@ -8,6 +8,7 @@ using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.EntityFrameworkCore;
 using System.Collections.Generic;
+using System.ComponentModel.DataAnnotations;
 using System.Linq;
 using System.Threading.Tasks;
 
@@ -30,11 +31,13 @@ namespace DevilDaggersWebsite.Api
 		[Authorize(Roles = Roles.Admin)]
 		[ProducesResponseType(StatusCodes.Status200OK)]
 		[EndpointConsumer(EndpointConsumers.None)]
-		public ActionResult<Page<GetTitle>> GetTitles()
+		public ActionResult<Page<GetTitle>> GetTitles([Range(0, 1000)] int pageIndex = 0, [Range(5, 50)] int pageSize = 25)
 		{
 			List<Title> titles = _dbContext.Titles
 				.AsNoTracking()
 				.Include(t => t.PlayerTitles)
+				.Skip(pageIndex * pageSize)
+				.Take(pageSize)
 				.ToList();
 
 			return new Page<GetTitle>

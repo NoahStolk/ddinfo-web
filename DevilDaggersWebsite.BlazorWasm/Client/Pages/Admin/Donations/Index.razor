@@ -1,0 +1,5 @@
+﻿@page "/admin/donations"
+@using DevilDaggersWebsite.BlazorWasm.Shared.Donations
+@inject HttpClient Http
+
+<AdminOverview TGetDto="GetDonation" TKey="int" Title="Donations" ApiRoute="api/donations/admin"></AdminOverview>

@@ -2,17 +2,13 @@
 
 namespace DevilDaggersWebsite.BlazorWasm.Shared.CustomEntries
 {
-	public class GetCustomEntryBase : IGetDto<int>
+	public class GetCustomEntry : IGetDto<int>
 	{
 		public int Id { get; init; }
 
-		public int CustomLeaderboardId { get; init; }
+		public string SpawnsetName { get; init; } = null!;
 
-		//public string SpawnsetName { get; init; } = null!;
-
-		public int PlayerId { get; init; }
-
-		//public string PlayerName { get; init; } = null!;
+		public string PlayerName { get; init; } = null!;
 
 		public int Time { get; init; }
 

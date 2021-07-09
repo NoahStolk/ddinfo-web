@@ -9,6 +9,7 @@ using Microsoft.AspNetCore.Identity;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.EntityFrameworkCore;
 using System.Collections.Generic;
+using System.ComponentModel.DataAnnotations;
 using System.Linq;
 using System.Threading.Tasks;
 
@@ -31,11 +32,13 @@ namespace DevilDaggersWebsite.Api
 		[Authorize(Roles = Roles.Admin)]
 		[ProducesResponseType(StatusCodes.Status200OK)]
 		[EndpointConsumer(EndpointConsumers.None)]
-		public ActionResult<Page<GetUser>> GetUsers()
+		public ActionResult<Page<GetUser>> GetUsers([Range(0, 1000)] int pageIndex = 0, [Range(5, 50)] int pageSize = 25)
 		{
 			var users = _dbContext.Users
 				.AsNoTracking()
 				.Select(u => new { u.Id, u.UserName })
+				.Skip(pageIndex * pageSize)
+				.Take(pageSize)
 				.ToList();
 
 			List<IdentityUserRole<string>> userRoles = _dbContext.UserRoles

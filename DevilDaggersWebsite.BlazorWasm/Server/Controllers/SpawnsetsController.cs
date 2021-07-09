@@ -17,6 +17,7 @@ using Microsoft.AspNetCore.Mvc;
 using Microsoft.EntityFrameworkCore;
 using System;
 using System.Collections.Generic;
+using System.ComponentModel.DataAnnotations;
 using System.IO;
 using System.Linq;
 using System.Security.Cryptography;
@@ -50,20 +51,28 @@ namespace DevilDaggersWebsite.BlazorWasm.Server.Controllers
 		[Authorize(Roles = Roles.Spawnsets)]
 		[ProducesResponseType(StatusCodes.Status200OK)]
 		[EndpointConsumer(EndpointConsumers.Admin)]
-		public List<GetSpawnset> GetSpawnsets()
+		public ActionResult<Page<GetSpawnset>> GetSpawnsets([Range(0, 1000)] int pageIndex = 0, [Range(5, 50)] int pageSize = 25)
 		{
-			List<SpawnsetFile> spawnsetFiles = _dbContext.SpawnsetFiles.AsNoTracking().ToList();
+			List<SpawnsetFile> spawnsetFiles = _dbContext.SpawnsetFiles
+				.AsNoTracking()
+				.Skip(pageIndex * pageSize)
+				.Take(pageSize)
+				.ToList();
 
-			return spawnsetFiles.ConvertAll(sf => new GetSpawnset
+			return new Page<GetSpawnset>
 			{
-				Id = sf.Id,
-				PlayerId = sf.PlayerId,
-				Name = sf.Name,
-				MaxDisplayWaves = sf.MaxDisplayWaves,
-				HtmlDescription = sf.HtmlDescription,
-				LastUpdated = sf.LastUpdated,
-				IsPractice = sf.IsPractice,
-			});
+				Results = spawnsetFiles.ConvertAll(sf => new GetSpawnset
+				{
+					Id = sf.Id,
+					PlayerId = sf.PlayerId,
+					Name = sf.Name,
+					MaxDisplayWaves = sf.MaxDisplayWaves,
+					HtmlDescription = sf.HtmlDescription,
+					LastUpdated = sf.LastUpdated,
+					IsPractice = sf.IsPractice,
+				}),
+				TotalResults = _dbContext.SpawnsetFiles.Count(),
+			};
 		}
 
 		[HttpPost("admin")]
