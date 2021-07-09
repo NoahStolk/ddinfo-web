@@ -19,49 +19,57 @@
 		</li>
 		<li class="nav-item px-3">
 			<NavLink class="nav-link" href="statistics">
-				<span class="oi oi-graph" aria-hidden="true"></span> Statistics
+				<span class="oi oi-bar-chart" aria-hidden="true"></span> Statistics
 			</NavLink>
 		</li>
 		<li class="nav-item px-3">
-			<NavLink class="nav-link" href="admin/custom-entries">
-				<span class="oi oi-list-rich" aria-hidden="true"></span> Custom Entries
+			<NavLink class="nav-link" href="" @onclick="() => _expandAdminMenu = !_expandAdminMenu">
+				<span class="oi oi-list-rich" aria-hidden="true"></span> Admin
 			</NavLink>
 		</li>
-		<li class="nav-item px-3">
-			<NavLink class="nav-link" href="admin/custom-leaderboards">
-				<span class="oi oi-list-rich" aria-hidden="true"></span> Custom Leaderboards
-			</NavLink>
-		</li>
-		<li class="nav-item px-3">
-			<NavLink class="nav-link" href="admin/donations">
-				<span class="oi oi-list-rich" aria-hidden="true"></span> Donations
-			</NavLink>
-		</li>
-		<li class="nav-item px-3">
-			<NavLink class="nav-link" href="admin/mods">
-				<span class="oi oi-list-rich" aria-hidden="true"></span> Mods
-			</NavLink>
-		</li>
-		<li class="nav-item px-3">
-			<NavLink class="nav-link" href="admin/players">
-				<span class="oi oi-list-rich" aria-hidden="true"></span> Players
-			</NavLink>
-		</li>
-		<li class="nav-item px-3">
-			<NavLink class="nav-link" href="admin/spawnsets">
-				<span class="oi oi-list-rich" aria-hidden="true"></span> Spawnsets
-			</NavLink>
-		</li>
-		<li class="nav-item px-3">
-			<NavLink class="nav-link" href="admin/titles">
-				<span class="oi oi-list-rich" aria-hidden="true"></span> Titles
-			</NavLink>
-		</li>
-		<li class="nav-item px-3">
-			<NavLink class="nav-link" href="admin/users">
-				<span class="oi oi-list-rich" aria-hidden="true"></span> Users
-			</NavLink>
-		</li>
+		@if (_expandAdminMenu)
+		{
+			<li class="nav-item px-4">
+				<NavLink class="nav-link" href="admin/custom-entries">
+					<span class="oi oi-ellipses" aria-hidden="true"></span> Custom Entries
+				</NavLink>
+			</li>
+			<li class="nav-item px-4">
+				<NavLink class="nav-link" href="admin/custom-leaderboards">
+					<span class="oi oi-list" aria-hidden="true"></span> Custom LBs
+				</NavLink>
+			</li>
+			<li class="nav-item px-4">
+				<NavLink class="nav-link" href="admin/donations">
+					<span class="oi oi-dollar" aria-hidden="true"></span> Donations
+				</NavLink>
+			</li>
+			<li class="nav-item px-4">
+				<NavLink class="nav-link" href="admin/mods">
+					<span class="oi oi-brush" aria-hidden="true"></span> Mods
+				</NavLink>
+			</li>
+			<li class="nav-item px-4">
+				<NavLink class="nav-link" href="admin/players">
+					<span class="oi oi-people" aria-hidden="true"></span> Players
+				</NavLink>
+			</li>
+			<li class="nav-item px-4">
+				<NavLink class="nav-link" href="admin/spawnsets">
+					<span class="oi oi-grid-three-up" aria-hidden="true"></span> Spawnsets
+				</NavLink>
+			</li>
+			<li class="nav-item px-4">
+				<NavLink class="nav-link" href="admin/titles">
+					<span class="oi oi-badge" aria-hidden="true"></span> Titles
+				</NavLink>
+			</li>
+			<li class="nav-item px-4">
+				<NavLink class="nav-link" href="admin/users">
+					<span class="oi oi-person" aria-hidden="true"></span> Users
+				</NavLink>
+			</li>
+		}
 		<li class="nav-item px-3">
 			<NavLink class="nav-link" href="swagger/index.html">
 				<span class="oi oi-cog" aria-hidden="true"></span> API
@@ -72,12 +80,14 @@
 
 @code
 {
-	private bool collapseNavMenu = true;
+	private bool _collapseNavMenu = true;
 
-	private string? NavMenuCssClass => collapseNavMenu ? "collapse" : null;
+	private bool _expandAdminMenu = false;
+
+	private string? NavMenuCssClass => _collapseNavMenu ? "collapse" : null;
 
 	private void ToggleNavMenu()
 	{
-		collapseNavMenu = !collapseNavMenu;
+		_collapseNavMenu = !_collapseNavMenu;
 	}
 }
