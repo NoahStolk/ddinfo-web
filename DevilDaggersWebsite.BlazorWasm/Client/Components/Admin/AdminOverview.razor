@@ -18,10 +18,10 @@ else
 	<Deletion TKey="TKey" AfterDelete="Fetch" ApiRoute="@ApiRoute" @ref="_deletion" />
 
 	<a class="btn btn-primary" href="@($"{NavigationManager.Uri}/add")">Add new</a>
-	<button class="btn" @onclick="() => ChangePageIndex(0)">First</button>
-	<button class="btn" @onclick="() => ChangePageIndex(_pageIndex - 1)">Previous</button>
-	<button class="btn" @onclick="() => ChangePageIndex(_pageIndex + 1)">Next</button>
-	<button class="btn" @onclick="() => ChangePageIndex(TotalPages - 1)">Last</button>
+	<button class="btn" @onclick="() => ChangePageIndex(0)">|&lt;</button>
+	<button class="btn" @onclick="() => ChangePageIndex(_pageIndex - 1)">&lt;</button>
+	<button class="btn" @onclick="() => ChangePageIndex(_pageIndex + 1)">&gt;</button>
+	<button class="btn" @onclick="() => ChangePageIndex(TotalPages - 1)">&gt;|</button>
 	<Select @onchange="ChangePageSize">
 		@foreach (int i in new[] { 5, 10, 15, 25, 50 })
 		{
@@ -42,7 +42,7 @@ else
 			<tr>
 				@foreach (PropertyInfo pi in _properties)
 				{
-					<th>@pi.Name</th>
+					<th><a href="" @onclick="() => Sort(pi.Name)" @onclick:preventDefault>@pi.Name</a></th>
 				}
 				<th></th>
 				<th></th>
@@ -69,19 +69,23 @@ else
 	[Parameter] public string Title { get; set; } = null!;
 	[Parameter] public string ApiRoute { get; set; } = null!;
 
-	public int TotalPages => _page == null ? 0 : (_page.TotalResults - 1) / _pageSize + 1;
+	private int TotalPages => _page == null ? 0 : (_page.TotalResults - 1) / _pageSize + 1;
 
 	private int _pageIndex;
 	private int _pageSize = 25;
+	private string? _sortBy;
+	private bool _ascending;
 
 	private Page<TGetDto>? _page;
 	private string? _errorMessage;
 	private PropertyInfo[] _properties = ReflectionUtils.GetDtoDisplayPropertyInfos<TGetDto>();
+	private Dictionary<string, bool> _sortings = null!;
 
 	private Deletion<TKey>? _deletion;
 
 	protected override async Task OnInitializedAsync()
 	{
+		_sortings = _properties.ToDictionary(pi => pi.Name, _ => true);
 		await Fetch();
 	}
 
@@ -95,7 +99,14 @@ else
 	{
 		_ = int.TryParse(e.Value?.ToString(), out _pageSize);
 		_pageIndex = Math.Clamp(_pageIndex, 0, TotalPages - 1);
+		await Fetch();
+	}
 
+	private async Task Sort(string propertyName)
+	{
+		_sortBy = propertyName;
+		_sortings[propertyName] = !_sortings[propertyName];
+		_ascending = _sortings[propertyName];
 		await Fetch();
 	}
 
@@ -103,7 +114,7 @@ else
 	{
 		try
 		{
-			_page = await Http.GetFromJsonAsync<Page<TGetDto>>($"{ApiRoute}?pageIndex={_pageIndex}&pageSize={_pageSize}");
+			_page = await Http.GetFromJsonAsync<Page<TGetDto>>($"{ApiRoute}?pageIndex={_pageIndex}&pageSize={_pageSize}&sortBy={_sortBy}&ascending={_ascending}");
 			_errorMessage = null;
 			StateHasChanged();
 		}

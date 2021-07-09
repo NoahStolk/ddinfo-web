@@ -4,6 +4,7 @@ using DevilDaggersWebsite.BlazorWasm.Shared;
 using DevilDaggersWebsite.BlazorWasm.Shared.Players;
 using DevilDaggersWebsite.Clients;
 using DevilDaggersWebsite.Entities;
+using DevilDaggersWebsite.Extensions;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
@@ -32,36 +33,41 @@ namespace DevilDaggersWebsite.Api
 		[Authorize(Roles = Roles.Players)]
 		[ProducesResponseType(StatusCodes.Status200OK)]
 		[EndpointConsumer(EndpointConsumers.Admin)]
-		public ActionResult<Page<GetPlayerBase>> GetPlayers([Range(0, 1000)] int pageIndex = 0, [Range(5, 50)] int pageSize = 25)
+		public ActionResult<Page<GetPlayerBase>> GetPlayers([Range(0, 1000)] int pageIndex = 0, [Range(5, 50)] int pageSize = 25, string? sortBy = null, bool ascending = false)
 		{
-			List<Player> players = _dbContext.Players
-				.AsNoTracking()
+			IQueryable<Player> playersQuery = _dbContext.Players.AsNoTracking();
+
+			if (sortBy != null)
+				playersQuery = playersQuery.OrderByMember(sortBy, ascending);
+
+			playersQuery = playersQuery
 				.Skip(pageIndex * pageSize)
-				.Take(pageSize)
-				.ToList();
+				.Take(pageSize);
 
 			return new Page<GetPlayerBase>
 			{
-				Results = players.ConvertAll(p => new GetPlayerBase
-				{
-					Id = p.Id,
-					PlayerName = p.PlayerName,
-					CountryCode = p.CountryCode,
-					Dpi = p.Dpi,
-					InGameSens = p.InGameSens,
-					Fov = p.Fov,
-					IsBanned = p.IsBanned,
-					BanDescription = p.BanDescription,
-					BanResponsibleId = p.BanResponsibleId,
-					Gamma = p.Gamma,
-					HasFlashHandEnabled = p.HasFlashHandEnabled,
-					HideDonations = p.HideDonations,
-					HidePastUsernames = p.HidePastUsernames,
-					HideSettings = p.HideSettings,
-					IsBannedFromDdcl = p.IsBannedFromDdcl,
-					IsRightHanded = p.IsRightHanded,
-					UsesLegacyAudio = p.UsesLegacyAudio,
-				}),
+				Results = playersQuery
+					.Select(p => new GetPlayerBase
+					{
+						Id = p.Id,
+						PlayerName = p.PlayerName,
+						CountryCode = p.CountryCode,
+						Dpi = p.Dpi,
+						InGameSens = p.InGameSens,
+						Fov = p.Fov,
+						IsBanned = p.IsBanned,
+						BanDescription = p.BanDescription,
+						BanResponsibleId = p.BanResponsibleId,
+						Gamma = p.Gamma,
+						HasFlashHandEnabled = p.HasFlashHandEnabled,
+						HideDonations = p.HideDonations,
+						HidePastUsernames = p.HidePastUsernames,
+						HideSettings = p.HideSettings,
+						IsBannedFromDdcl = p.IsBannedFromDdcl,
+						IsRightHanded = p.IsRightHanded,
+						UsesLegacyAudio = p.UsesLegacyAudio,
+					})
+					.ToList(),
 				TotalResults = _dbContext.Players.Count(),
 			};
 		}
