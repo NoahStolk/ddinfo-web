@@ -19,10 +19,10 @@ else
 	<Deletion TKey="TKey" AfterDelete="Fetch" ApiRoute="@ApiRoute" @ref="_deletion" />
 
 	<a class="btn btn-primary" href="@($"{NavigationManager.Uri}/add")">Add new</a>
-	<button class="btn" @onclick="() => ChangePageIndex(0)">|&lt;</button>
-	<button class="btn" @onclick="() => ChangePageIndex(_pageIndex - 1)">&lt;</button>
-	<button class="btn" @onclick="() => ChangePageIndex(_pageIndex + 1)">&gt;</button>
-	<button class="btn" @onclick="() => ChangePageIndex(TotalPages - 1)">&gt;|</button>
+	<button class="btn btn-light" @onclick="() => ChangePageIndex(0)">|&lt;</button>
+	<button class="btn btn-light" @onclick="() => ChangePageIndex(_pageIndex - 1)">&lt;</button>
+	<button class="btn btn-light" @onclick="() => ChangePageIndex(_pageIndex + 1)">&gt;</button>
+	<button class="btn btn-light" @onclick="() => ChangePageIndex(TotalPages - 1)">&gt;|</button>
 	<Select @onchange="ChangePageSize">
 		@foreach (int i in new[] { 5, 10, 15, 25, 50 })
 		{
