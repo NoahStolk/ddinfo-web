@@ -4,6 +4,8 @@
 	--col-dropdown: #337ab7;
 	--col-dropdown-hover: #23527c;
 	--col-red: #f00;
+	--col-link: #f11;
+	--col-link-hover: #c11;
 	--col-dark-red: #600;
 	--col-dark-orange: #630;
 	--col-gray: #666;
@@ -36,8 +38,12 @@ html, body {
 }
 
 a, .btn-link {
-	color: #0366d6;
+	color: var(--col-link);
 }
+
+	a:hover, .btn-link:hover {
+		color: var(--col-link-hover);
+	}
 
 .btn-primary {
 	color: #fff;
