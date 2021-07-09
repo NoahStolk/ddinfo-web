@@ -8,10 +8,12 @@ namespace DevilDaggersWebsite.Clients
 {
 	public sealed class LeaderboardClient
 	{
+#pragma warning disable S1075 // URIs should not be hardcoded
 		private const string _getScoresUrl = "http://dd.hasmodai.com/backend15/get_scores.php";
 		private const string _getUserSearchUrl = "http://dd.hasmodai.com/backend16/get_user_search_public.php";
 		private const string _getUsersByIdsUrl = "http://l.sorath.com/dd/get_multiple_users_by_id_public.php";
 		private const string _getUserByIdUrl = "http://dd.hasmodai.com/backend16/get_user_by_id_public.php";
+#pragma warning restore S1075 // URIs should not be hardcoded
 
 		private readonly HttpClient _httpClient;
 
