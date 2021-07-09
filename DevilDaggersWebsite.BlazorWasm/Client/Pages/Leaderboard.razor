@@ -34,7 +34,7 @@ else
 			<a class="btn btn-default btn-page @(Rank <= 1 ? "disabled" : string.Empty)" @onclick="() => Rank -= 100">&lt;</a>
 			<a class="btn btn-default btn-page @(Rank >= _maxRank ? "disabled" : string.Empty)" @onclick="() => Rank += 100">&gt;</a>
 			<a class="btn btn-default btn-page @(Rank >= _maxRank ? "disabled" : string.Empty)" @onclick="() => Rank += 1000">&gt;&gt;</a>
-			<a class="btn btn-default btn-page @(Rank >= _maxRank ? "disabled" : string.Empty)" @onclick="() => Rank = LeaderboardResponse.Players - 99">&gt;|</a>
+			<a class="btn btn-default btn-page @(Rank >= _maxRank ? "disabled" : string.Empty)" @onclick="() => Rank = LeaderboardResponse.TotalPlayers - 99">&gt;|</a>
 		</div>
 	</div>
 	@*@await Html.PartialAsync("Partials/LeaderboardGlobalPartial")
@@ -46,7 +46,7 @@ else
 {
 	private bool _ddServerError = false;
 
-	private int _maxRank => (LeaderboardResponse?.Players ?? int.MaxValue) - 99;
+	private int _maxRank => (LeaderboardResponse?.TotalPlayers ?? int.MaxValue) - 99;
 
 	private int _rank = 1;
 
@@ -62,9 +62,9 @@ else
 	{
 		LeaderboardResponse = await FetchLeaderboard();
 
-		if (LeaderboardResponse != null && Rank > LeaderboardResponse.Players - 99)
+		if (LeaderboardResponse != null && Rank > LeaderboardResponse.TotalPlayers - 99)
 		{
-			Rank = LeaderboardResponse.Players - 99;
+			Rank = LeaderboardResponse.TotalPlayers - 99;
 			LeaderboardResponse.Entries.Clear();
 			LeaderboardResponse = await FetchLeaderboard();
 		}

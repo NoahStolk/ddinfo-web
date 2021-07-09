@@ -7,9 +7,9 @@ namespace DevilDaggersWebsite.BlazorWasm.Shared.Dto.Leaderboards
 	{
 		public DateTime DateTime { get; init; }
 
-		public int Players { get; init; }
+		public int TotalPlayers { get; init; }
 
-		public ulong TimeGlobal { get; init; }
+		public float TimeGlobal { get; init; }
 
 		public ulong KillsGlobal { get; init; }
 

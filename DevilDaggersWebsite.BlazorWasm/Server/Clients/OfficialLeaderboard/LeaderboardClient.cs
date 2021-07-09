@@ -1,5 +1,7 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.IO;
+using System.Linq;
 using System.Net.Http;
 using System.Text;
 using System.Threading.Tasks;
@@ -26,55 +28,60 @@ namespace DevilDaggersWebsite.BlazorWasm.Server.Clients.OfficialLeaderboard
 
 		public static LeaderboardClient Instance => _lazy.Value;
 
-		private async Task<byte[]> ExecuteRequest(string url, params KeyValuePair<string?, string?>[] parameters)
+		private async Task<MemoryStream> ExecuteRequest(string url, params KeyValuePair<string?, string?>[] parameters)
 		{
 			using FormUrlEncodedContent content = new(parameters);
 			using HttpResponseMessage response = await _httpClient.PostAsync(url, content);
-			return await response.Content.ReadAsByteArrayAsync(); // TODO: Copy to stream and use BinaryReader.
+
+			MemoryStream ms = new();
+			await response.Content.CopyToAsync(ms);
+			return ms;
 		}
 
 		public async Task<LeaderboardResponse> GetScores(int rankStart)
 		{
-			string offset = (rankStart - 1).ToString();
-			byte[] data = await ExecuteRequest(_getScoresUrl, new KeyValuePair<string?, string?>("offset", offset));
+			using BinaryReader br = new(await ExecuteRequest(_getScoresUrl, new KeyValuePair<string?, string?>("offset", (rankStart - 1).ToString())));
 
-			LeaderboardResponse leaderboard = new()
+			LeaderboardResponse leaderboard = new();
+
+			br.BaseStream.Seek(11, SeekOrigin.Begin);
+			leaderboard.DeathsGlobal = br.ReadUInt64();
+			leaderboard.KillsGlobal = br.ReadUInt64();
+			leaderboard.DaggersFiredGlobal = br.ReadUInt64();
+			leaderboard.TimeGlobal = br.ReadUInt64();
+			leaderboard.GemsGlobal = br.ReadUInt64();
+			leaderboard.DaggersHitGlobal = br.ReadUInt64();
+			leaderboard.TotalEntries = br.ReadUInt16();
+
+			br.BaseStream.Seek(14, SeekOrigin.Current);
+			leaderboard.TotalPlayers = br.ReadInt32();
+
+			br.BaseStream.Seek(4, SeekOrigin.Current);
+			for (int i = 0; i < leaderboard.TotalEntries; i++)
 			{
-				DeathsGlobal = BitConverter.ToUInt64(data, 11),
-				KillsGlobal = BitConverter.ToUInt64(data, 19),
-				TimeGlobal = BitConverter.ToUInt64(data, 35),
-				GemsGlobal = BitConverter.ToUInt64(data, 43),
-				Players = BitConverter.ToInt32(data, 75),
-				DaggersHitGlobal = BitConverter.ToUInt64(data, 51),
-				DaggersFiredGlobal = BitConverter.ToUInt64(data, 27),
-			};
+				EntryResponse entry = new();
 
-			int entryCount = BitConverter.ToInt16(data, 59);
-			int rankIterator = 0;
-			int bytePosition = 83;
-			while (rankIterator < entryCount)
-			{
-				leaderboard.Entries.Add(new()
-				{
-					Username = GetUsername(data, ref bytePosition),
-					Rank = BitConverter.ToInt32(data, bytePosition),
-					Id = BitConverter.ToInt32(data, bytePosition + 4),
-					Time = BitConverter.ToInt32(data, bytePosition + 8),
-					Kills = BitConverter.ToInt32(data, bytePosition + 12),
-					Gems = BitConverter.ToInt32(data, bytePosition + 24),
-					DaggersHit = BitConverter.ToInt32(data, bytePosition + 20),
-					DaggersFired = BitConverter.ToInt32(data, bytePosition + 16),
-					DeathType = BitConverter.ToInt16(data, bytePosition + 28),
-					TimeTotal = BitConverter.ToUInt64(data, bytePosition + 56),
-					KillsTotal = BitConverter.ToUInt64(data, bytePosition + 40),
-					GemsTotal = BitConverter.ToUInt64(data, bytePosition + 64),
-					DeathsTotal = BitConverter.ToUInt64(data, bytePosition + 32),
-					DaggersHitTotal = BitConverter.ToUInt64(data, bytePosition + 72),
-					DaggersFiredTotal = BitConverter.ToUInt64(data, bytePosition + 48),
-				});
+				short usernameLength = br.ReadInt16();
+				entry.Username = Encoding.UTF8.GetString(br.ReadBytes(usernameLength));
+				entry.Rank = br.ReadInt32();
+				entry.Id = br.ReadInt32();
+				entry.Time = br.ReadInt32();
+				entry.Kills = br.ReadInt32();
+				entry.DaggersFired = br.ReadInt32();
+				entry.DaggersHit = br.ReadInt32();
+				entry.Gems = br.ReadInt32();
+				entry.DeathType = br.ReadInt32();
 
-				bytePosition += 84;
-				rankIterator++;
+				entry.DeathsTotal = br.ReadUInt64();
+				entry.KillsTotal = br.ReadUInt64();
+				entry.DaggersFiredTotal = br.ReadUInt64();
+				entry.TimeTotal = br.ReadUInt64();
+				entry.GemsTotal = br.ReadUInt64();
+				entry.DaggersHitTotal = br.ReadUInt64();
+
+				br.BaseStream.Seek(4, SeekOrigin.Current);
+
+				leaderboard.Entries.Add(entry);
 			}
 
 			return leaderboard;
@@ -82,36 +89,42 @@ namespace DevilDaggersWebsite.BlazorWasm.Server.Clients.OfficialLeaderboard
 
 		public async Task<List<EntryResponse>> GetUserSearch(string search)
 		{
-			byte[] data = await ExecuteRequest(_getUserSearchUrl, new KeyValuePair<string?, string?>("search", search));
-
-			int entryCount = BitConverter.ToInt16(data, 11);
-			int rankIterator = 0;
-			int bytePosition = 19;
+			using BinaryReader br = new(await ExecuteRequest(_getUserSearchUrl, new KeyValuePair<string?, string?>("search", search)));
 
 			List<EntryResponse> entries = new();
-			while (rankIterator < entryCount)
-			{
-				entries.Add(new()
-				{
-					Username = GetUsername(data, ref bytePosition),
-					Rank = BitConverter.ToInt32(data, bytePosition),
-					Id = BitConverter.ToInt32(data, bytePosition + 4),
-					Time = BitConverter.ToInt32(data, bytePosition + 12),
-					Kills = BitConverter.ToInt32(data, bytePosition + 16),
-					Gems = BitConverter.ToInt32(data, bytePosition + 28),
-					DaggersHit = BitConverter.ToInt32(data, bytePosition + 24),
-					DaggersFired = BitConverter.ToInt32(data, bytePosition + 20),
-					DeathType = BitConverter.ToInt16(data, bytePosition + 32),
-					TimeTotal = BitConverter.ToUInt64(data, bytePosition + 60),
-					KillsTotal = BitConverter.ToUInt64(data, bytePosition + 44),
-					GemsTotal = BitConverter.ToUInt64(data, bytePosition + 68),
-					DeathsTotal = BitConverter.ToUInt64(data, bytePosition + 36),
-					DaggersHitTotal = BitConverter.ToUInt64(data, bytePosition + 76),
-					DaggersFiredTotal = BitConverter.ToUInt64(data, bytePosition + 52),
-				});
 
-				bytePosition += 88;
-				rankIterator++;
+			br.BaseStream.Seek(11, SeekOrigin.Begin);
+			short totalResults = br.ReadInt16();
+
+			br.BaseStream.Seek(6, SeekOrigin.Current);
+			for (int i = 0; i < totalResults; i++)
+			{
+				EntryResponse entry = new();
+
+				short usernameLength = br.ReadInt16();
+				entry.Username = Encoding.UTF8.GetString(br.ReadBytes(usernameLength));
+
+				entry.Rank = br.ReadInt32();
+				entry.Id = br.ReadInt32();
+
+				br.BaseStream.Seek(4, SeekOrigin.Current);
+				entry.Time = br.ReadInt32();
+				entry.Kills = br.ReadInt32();
+				entry.DaggersFired = br.ReadInt32();
+				entry.DaggersHit = br.ReadInt32();
+				entry.Gems = br.ReadInt32();
+				entry.DeathType = br.ReadInt32();
+
+				entry.DeathsTotal = br.ReadUInt64();
+				entry.KillsTotal = br.ReadUInt64();
+				entry.DaggersFiredTotal = br.ReadUInt64();
+				entry.TimeTotal = br.ReadUInt64();
+				entry.GemsTotal = br.ReadUInt64();
+				entry.DaggersHitTotal = br.ReadUInt64();
+
+				br.BaseStream.Seek(4, SeekOrigin.Current);
+
+				entries.Add(entry);
 			}
 
 			return entries;
@@ -119,32 +132,37 @@ namespace DevilDaggersWebsite.BlazorWasm.Server.Clients.OfficialLeaderboard
 
 		public async Task<List<EntryResponse>> GetUsersByIds(IEnumerable<int> ids)
 		{
-			byte[] data = await ExecuteRequest(_getUsersByIdsUrl, new KeyValuePair<string?, string?>("uid", string.Join(',', ids)));
+			using BinaryReader br = new(await ExecuteRequest(_getUsersByIdsUrl, new KeyValuePair<string?, string?>("uid", string.Join(',', ids))));
 
-			int bytePosition = 19;
 			List<EntryResponse> entries = new();
-			while (bytePosition < data.Length)
-			{
-				entries.Add(new()
-				{
-					Username = GetUsername(data, ref bytePosition),
-					Rank = BitConverter.ToInt32(data, bytePosition),
-					Id = BitConverter.ToInt32(data, bytePosition + 4),
-					Time = BitConverter.ToInt32(data, bytePosition + 12),
-					Kills = BitConverter.ToInt32(data, bytePosition + 16),
-					Gems = BitConverter.ToInt32(data, bytePosition + 28),
-					DaggersHit = BitConverter.ToInt32(data, bytePosition + 24),
-					DaggersFired = BitConverter.ToInt32(data, bytePosition + 20),
-					DeathType = BitConverter.ToInt16(data, bytePosition + 32),
-					TimeTotal = BitConverter.ToUInt64(data, bytePosition + 60),
-					KillsTotal = BitConverter.ToUInt64(data, bytePosition + 44),
-					GemsTotal = BitConverter.ToUInt64(data, bytePosition + 68),
-					DeathsTotal = BitConverter.ToUInt64(data, bytePosition + 36),
-					DaggersHitTotal = BitConverter.ToUInt64(data, bytePosition + 76),
-					DaggersFiredTotal = BitConverter.ToUInt64(data, bytePosition + 52),
-				});
 
-				bytePosition += 88;
+			br.BaseStream.Seek(19, SeekOrigin.Begin);
+			for (int i = 0; i < ids.Count(); i++)
+			{
+				EntryResponse entry = new();
+
+				short usernameLength = br.ReadInt16();
+				entry.Username = Encoding.UTF8.GetString(br.ReadBytes(usernameLength));
+
+				entry.Rank = br.ReadInt32();
+				entry.Id = br.ReadInt32();
+				entry.Time = br.ReadInt32();
+				entry.Kills = br.ReadInt32();
+				entry.DaggersFired = br.ReadInt32();
+				entry.DaggersHit = br.ReadInt32();
+				entry.Gems = br.ReadInt32();
+				entry.DeathType = br.ReadInt32();
+
+				entry.DeathsTotal = br.ReadUInt64();
+				entry.KillsTotal = br.ReadUInt64();
+				entry.DaggersFiredTotal = br.ReadUInt64();
+				entry.TimeTotal = br.ReadUInt64();
+				entry.GemsTotal = br.ReadUInt64();
+				entry.DaggersHitTotal = br.ReadUInt64();
+
+				br.BaseStream.Seek(4, SeekOrigin.Current);
+
+				entries.Add(entry);
 			}
 
 			return entries;
@@ -152,39 +170,32 @@ namespace DevilDaggersWebsite.BlazorWasm.Server.Clients.OfficialLeaderboard
 
 		public async Task<EntryResponse> GetUserById(int userId)
 		{
-			byte[] data = await ExecuteRequest(_getUserByIdUrl, new KeyValuePair<string?, string?>("uid", userId.ToString()));
+			using BinaryReader br = new(await ExecuteRequest(_getUserByIdUrl, new KeyValuePair<string?, string?>("uid", userId.ToString())));
 
-			int bytePosition = 19;
-			return new EntryResponse
-			{
-				Username = GetUsername(data, ref bytePosition),
-				Rank = BitConverter.ToInt32(data, bytePosition),
-				Id = BitConverter.ToInt32(data, bytePosition + 4),
-				Time = BitConverter.ToInt32(data, bytePosition + 12),
-				Kills = BitConverter.ToInt32(data, bytePosition + 16),
-				Gems = BitConverter.ToInt32(data, bytePosition + 28),
-				DaggersHit = BitConverter.ToInt32(data, bytePosition + 24),
-				DaggersFired = BitConverter.ToInt32(data, bytePosition + 20),
-				DeathType = BitConverter.ToInt16(data, bytePosition + 32),
-				TimeTotal = BitConverter.ToUInt64(data, bytePosition + 60),
-				KillsTotal = BitConverter.ToUInt64(data, bytePosition + 44),
-				GemsTotal = BitConverter.ToUInt64(data, bytePosition + 68),
-				DeathsTotal = BitConverter.ToUInt64(data, bytePosition + 36),
-				DaggersHitTotal = BitConverter.ToUInt64(data, bytePosition + 76),
-				DaggersFiredTotal = BitConverter.ToUInt64(data, bytePosition + 52),
-			};
-		}
+			EntryResponse entry = new();
 
-		private static string GetUsername(byte[] data, ref int bytePos)
-		{
-			short usernameLength = BitConverter.ToInt16(data, bytePos);
-			bytePos += 2;
+			br.BaseStream.Seek(19, SeekOrigin.Begin);
 
-			byte[] usernameBytes = new byte[usernameLength];
-			Buffer.BlockCopy(data, bytePos, usernameBytes, 0, usernameLength);
+			short usernameLength = br.ReadInt16();
+			entry.Username = Encoding.UTF8.GetString(br.ReadBytes(usernameLength));
 
-			bytePos += usernameLength;
-			return Encoding.UTF8.GetString(usernameBytes);
+			entry.Rank = br.ReadInt32();
+			entry.Id = br.ReadInt32();
+			entry.Time = br.ReadInt32();
+			entry.Kills = br.ReadInt32();
+			entry.DaggersFired = br.ReadInt32();
+			entry.DaggersHit = br.ReadInt32();
+			entry.Gems = br.ReadInt32();
+			entry.DeathType = br.ReadInt32();
+
+			entry.DeathsTotal = br.ReadUInt64();
+			entry.KillsTotal = br.ReadUInt64();
+			entry.DaggersFiredTotal = br.ReadUInt64();
+			entry.TimeTotal = br.ReadUInt64();
+			entry.GemsTotal = br.ReadUInt64();
+			entry.DaggersHitTotal = br.ReadUInt64();
+
+			return entry;
 		}
 	}
 }

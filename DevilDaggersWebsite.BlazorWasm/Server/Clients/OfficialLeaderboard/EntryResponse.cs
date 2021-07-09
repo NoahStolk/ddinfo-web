@@ -2,34 +2,34 @@
 {
 	public class EntryResponse
 	{
-		public int Rank { get; init; }
+		public int Rank { get; set; }
 
-		public int Id { get; init; }
+		public int Id { get; set; }
 
-		public string Username { get; init; } = null!;
+		public string Username { get; set; } = null!;
 
-		public int Time { get; init; }
+		public int Time { get; set; }
 
-		public int Kills { get; init; }
+		public int Kills { get; set; }
 
-		public int Gems { get; init; }
+		public int Gems { get; set; }
 
-		public short DeathType { get; init; }
+		public int DeathType { get; set; }
 
-		public int DaggersHit { get; init; }
+		public int DaggersHit { get; set; }
 
-		public int DaggersFired { get; init; }
+		public int DaggersFired { get; set; }
 
-		public ulong TimeTotal { get; init; }
+		public ulong TimeTotal { get; set; }
 
-		public ulong KillsTotal { get; init; }
+		public ulong KillsTotal { get; set; }
 
-		public ulong GemsTotal { get; init; }
+		public ulong GemsTotal { get; set; }
 
-		public ulong DeathsTotal { get; init; }
+		public ulong DeathsTotal { get; set; }
 
-		public ulong DaggersHitTotal { get; init; }
+		public ulong DaggersHitTotal { get; set; }
 
-		public ulong DaggersFiredTotal { get; init; }
+		public ulong DaggersFiredTotal { get; set; }
 	}
 }

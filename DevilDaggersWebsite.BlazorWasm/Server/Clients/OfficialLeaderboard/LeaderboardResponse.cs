@@ -4,20 +4,22 @@ namespace DevilDaggersWebsite.BlazorWasm.Server.Clients.OfficialLeaderboard
 {
 	public class LeaderboardResponse
 	{
-		public int Players { get; init; }
+		public int TotalPlayers { get; set; }
 
-		public ulong TimeGlobal { get; init; }
+		public ulong TimeGlobal { get; set; }
 
-		public ulong KillsGlobal { get; init; }
+		public ulong KillsGlobal { get; set; }
 
-		public ulong GemsGlobal { get; init; }
+		public ulong GemsGlobal { get; set; }
 
-		public ulong DeathsGlobal { get; init; }
+		public ulong DeathsGlobal { get; set; }
 
-		public ulong DaggersHitGlobal { get; init; }
+		public ulong DaggersHitGlobal { get; set; }
 
-		public ulong DaggersFiredGlobal { get; init; }
+		public ulong DaggersFiredGlobal { get; set; }
 
-		public List<EntryResponse> Entries { get; init; } = new();
+		public ushort TotalEntries { get; set; }
+
+		public List<EntryResponse> Entries { get; } = new();
 	}
 }

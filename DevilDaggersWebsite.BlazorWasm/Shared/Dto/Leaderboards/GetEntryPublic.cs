@@ -8,19 +8,19 @@
 
 		public string Username { get; init; } = null!;
 
-		public int Time { get; init; }
+		public float Time { get; init; }
 
 		public int Kills { get; init; }
 
 		public int Gems { get; init; }
 
-		public short DeathType { get; init; }
+		public byte DeathType { get; init; }
 
 		public int DaggersHit { get; init; }
 
 		public int DaggersFired { get; init; }
 
-		public ulong TimeTotal { get; init; }
+		public float TimeTotal { get; init; }
 
 		public ulong KillsTotal { get; init; }
 
