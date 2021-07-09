@@ -1,5 +1,5 @@
 ﻿using DevilDaggersWebsite.Api.Attributes;
-using DevilDaggersWebsite.BlazorWasm.Server.Clients.OfficialLeaderboard;
+using DevilDaggersWebsite.BlazorWasm.Server.Clients.Leaderboard;
 using DevilDaggersWebsite.BlazorWasm.Server.Converters;
 using DevilDaggersWebsite.BlazorWasm.Shared.Dto.Leaderboards;
 using Microsoft.AspNetCore.Http;

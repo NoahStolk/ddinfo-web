@@ -1,4 +1,4 @@
-﻿namespace DevilDaggersWebsite.BlazorWasm.Server.Clients.OfficialLeaderboard
+﻿namespace DevilDaggersWebsite.BlazorWasm.Server.Clients.Leaderboard
 {
 	public class EntryResponse
 	{
