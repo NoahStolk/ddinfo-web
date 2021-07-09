@@ -1,5 +1,6 @@
 ﻿using DevilDaggersWebsite.BlazorWasm.Server.Controllers;
 using DevilDaggersWebsite.BlazorWasm.Server.Singletons;
+using DevilDaggersWebsite.BlazorWasm.Shared;
 using DevilDaggersWebsite.BlazorWasm.Shared.CustomLeaderboards;
 using DevilDaggersWebsite.Entities;
 using DevilDaggersWebsite.Enumerators;
@@ -11,7 +12,6 @@ using Microsoft.AspNetCore.Hosting;
 using Microsoft.Extensions.Hosting;
 using Microsoft.VisualStudio.TestTools.UnitTesting;
 using Moq;
-using System.Collections.Generic;
 using System.Linq;
 
 namespace DevilDaggersWebsite.Tests
@@ -53,11 +53,11 @@ namespace DevilDaggersWebsite.Tests
 		[TestMethod]
 		public void GetCustomLeaderboards()
 		{
-			List<GetCustomLeaderboard> customLeaderboards = _customLeaderboardsController.GetCustomLeaderboards().Value;
+			Page<GetCustomLeaderboard> customLeaderboards = _customLeaderboardsController.GetCustomLeaderboards().Value;
 
 			_dbContext.Verify(db => db.SaveChanges(), Times.Never);
-			Assert.AreEqual(1, customLeaderboards.Count);
-			Assert.IsTrue(customLeaderboards.Any(cl => cl.TimeBronze == 600000));
+			Assert.AreEqual(1, customLeaderboards.Results.Count);
+			Assert.IsTrue(customLeaderboards.Results.Any(cl => cl.TimeBronze == 600000));
 		}
 	}
 }
