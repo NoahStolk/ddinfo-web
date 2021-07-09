@@ -3,6 +3,7 @@ using DevilDaggersWebsite.BlazorWasm.Server.Singletons;
 using DevilDaggersWebsite.BlazorWasm.Shared;
 using DevilDaggersWebsite.BlazorWasm.Shared.CustomEntries;
 using DevilDaggersWebsite.Entities;
+using DevilDaggersWebsite.Extensions;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
@@ -31,14 +32,19 @@ namespace DevilDaggersWebsite.BlazorWasm.Server.Controllers
 		[Authorize(Roles = Roles.Admin)]
 		[ProducesResponseType(StatusCodes.Status200OK)]
 		[EndpointConsumer(EndpointConsumers.None)]
-		public ActionResult<Page<GetCustomEntry>> GetCustomEntries([Range(0, 1000)] int pageIndex = 0, [Range(5, 50)] int pageSize = 25)
+		public ActionResult<Page<GetCustomEntry>> GetCustomEntries([Range(0, 1000)] int pageIndex = 0, [Range(5, 50)] int pageSize = 25, string? sortBy = null, bool ascending = false)
 		{
-			List<CustomEntry> customEntries = _dbContext.CustomEntries
+			IQueryable<CustomEntry> customEntriesQuery = _dbContext.CustomEntries
 				.AsNoTracking()
 				.AsSingleQuery()
 				.Include(ce => ce.Player)
 				.Include(ce => ce.CustomLeaderboard)
-					.ThenInclude(cl => cl.SpawnsetFile)
+					.ThenInclude(cl => cl.SpawnsetFile);
+
+			if (sortBy != null)
+				customEntriesQuery = customEntriesQuery.OrderByMember(sortBy, ascending);
+
+			List<CustomEntry> customEntries = customEntriesQuery
 				.Skip(pageIndex * pageSize)
 				.Take(pageSize)
 				.ToList();

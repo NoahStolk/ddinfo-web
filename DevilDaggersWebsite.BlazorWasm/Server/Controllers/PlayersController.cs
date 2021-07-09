@@ -40,34 +40,33 @@ namespace DevilDaggersWebsite.Api
 			if (sortBy != null)
 				playersQuery = playersQuery.OrderByMember(sortBy, ascending);
 
-			playersQuery = playersQuery
+			List<Player> players = playersQuery
 				.Skip(pageIndex * pageSize)
-				.Take(pageSize);
+				.Take(pageSize)
+				.ToList();
 
 			return new Page<GetPlayerBase>
 			{
-				Results = playersQuery
-					.Select(p => new GetPlayerBase
-					{
-						Id = p.Id,
-						PlayerName = p.PlayerName,
-						CountryCode = p.CountryCode,
-						Dpi = p.Dpi,
-						InGameSens = p.InGameSens,
-						Fov = p.Fov,
-						IsBanned = p.IsBanned,
-						BanDescription = p.BanDescription,
-						BanResponsibleId = p.BanResponsibleId,
-						Gamma = p.Gamma,
-						HasFlashHandEnabled = p.HasFlashHandEnabled,
-						HideDonations = p.HideDonations,
-						HidePastUsernames = p.HidePastUsernames,
-						HideSettings = p.HideSettings,
-						IsBannedFromDdcl = p.IsBannedFromDdcl,
-						IsRightHanded = p.IsRightHanded,
-						UsesLegacyAudio = p.UsesLegacyAudio,
-					})
-					.ToList(),
+				Results = players.ConvertAll(p => new GetPlayerBase
+				{
+					Id = p.Id,
+					PlayerName = p.PlayerName,
+					CountryCode = p.CountryCode,
+					Dpi = p.Dpi,
+					InGameSens = p.InGameSens,
+					Fov = p.Fov,
+					IsBanned = p.IsBanned,
+					BanDescription = p.BanDescription,
+					BanResponsibleId = p.BanResponsibleId,
+					Gamma = p.Gamma,
+					HasFlashHandEnabled = p.HasFlashHandEnabled,
+					HideDonations = p.HideDonations,
+					HidePastUsernames = p.HidePastUsernames,
+					HideSettings = p.HideSettings,
+					IsBannedFromDdcl = p.IsBannedFromDdcl,
+					IsRightHanded = p.IsRightHanded,
+					UsesLegacyAudio = p.UsesLegacyAudio,
+				}),
 				TotalResults = _dbContext.Players.Count(),
 			};
 		}

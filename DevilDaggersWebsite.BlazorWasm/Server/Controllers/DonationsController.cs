@@ -3,6 +3,7 @@ using DevilDaggersWebsite.BlazorWasm.Server.Singletons;
 using DevilDaggersWebsite.BlazorWasm.Shared;
 using DevilDaggersWebsite.BlazorWasm.Shared.Donations;
 using DevilDaggersWebsite.Entities;
+using DevilDaggersWebsite.Extensions;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
@@ -31,13 +32,18 @@ namespace DevilDaggersWebsite.Api
 		[Authorize(Roles = Roles.Admin)]
 		[ProducesResponseType(StatusCodes.Status200OK)]
 		[EndpointConsumer(EndpointConsumers.None)]
-		public ActionResult<Page<GetDonation>> GetDonations([Range(0, 1000)] int pageIndex = 0, [Range(5, 50)] int pageSize = 25)
+		public ActionResult<Page<GetDonation>> GetDonations([Range(0, 1000)] int pageIndex = 0, [Range(5, 50)] int pageSize = 25, string? sortBy = null, bool ascending = false)
 		{
-			List<Donation> donations = _dbContext.Donations
+			IQueryable<Donation> donationsQuery = _dbContext.Donations
 				.AsNoTracking()
+				.Include(d => d.Player);
+
+			if (sortBy != null)
+				donationsQuery = donationsQuery.OrderByMember(sortBy, ascending);
+
+			List<Donation> donations = donationsQuery
 				.Skip(pageIndex * pageSize)
 				.Take(pageSize)
-				.Include(d => d.Player)
 				.ToList();
 
 			return new Page<GetDonation>

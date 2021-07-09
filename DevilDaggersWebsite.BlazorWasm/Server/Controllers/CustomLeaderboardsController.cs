@@ -39,13 +39,18 @@ namespace DevilDaggersWebsite.BlazorWasm.Server.Controllers
 		[Authorize(Roles = Roles.CustomLeaderboards)]
 		[ProducesResponseType(StatusCodes.Status200OK)]
 		[EndpointConsumer(EndpointConsumers.Admin)]
-		public ActionResult<Page<GetCustomLeaderboard>> GetCustomLeaderboards([Range(0, 1000)] int pageIndex = 0, [Range(5, 50)] int pageSize = 25)
+		public ActionResult<Page<GetCustomLeaderboard>> GetCustomLeaderboards([Range(0, 1000)] int pageIndex = 0, [Range(5, 50)] int pageSize = 25, string? sortBy = null, bool ascending = false)
 		{
-			List<CustomLeaderboard> customLeaderboards = _dbContext.CustomLeaderboards
+			IQueryable<CustomLeaderboard> customLeaderboardsQuery = _dbContext.CustomLeaderboards
 				.AsNoTracking()
 				.Where(cl => !cl.IsArchived)
 				.Include(cl => cl.SpawnsetFile)
-					.ThenInclude(sf => sf.Player)
+					.ThenInclude(sf => sf.Player);
+
+			if (sortBy != null)
+				customLeaderboardsQuery = customLeaderboardsQuery.OrderByMember(sortBy, ascending);
+
+			List<CustomLeaderboard> customLeaderboards = customLeaderboardsQuery
 				.Skip(pageIndex * pageSize)
 				.Take(pageSize)
 				.ToList();

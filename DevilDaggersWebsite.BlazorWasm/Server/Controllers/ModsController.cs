@@ -52,11 +52,16 @@ namespace DevilDaggersWebsite.BlazorWasm.Server.Controllers
 		[Authorize(Roles = Roles.AssetMods)]
 		[ProducesResponseType(StatusCodes.Status200OK)]
 		[EndpointConsumer(EndpointConsumers.Admin)]
-		public ActionResult<Page<GetMod>> GetMods([Range(0, 1000)] int pageIndex = 0, [Range(5, 50)] int pageSize = 25)
+		public ActionResult<Page<GetMod>> GetMods([Range(0, 1000)] int pageIndex = 0, [Range(5, 50)] int pageSize = 25, string? sortBy = null, bool ascending = false)
 		{
-			List<AssetMod> mods = _dbContext.AssetMods
+			IQueryable<AssetMod> modsQuery = _dbContext.AssetMods
 				.AsNoTracking()
-				.Include(m => m.PlayerAssetMods)
+				.Include(m => m.PlayerAssetMods);
+
+			if (sortBy != null)
+				modsQuery = modsQuery.OrderByMember(sortBy, ascending);
+
+			List<AssetMod> mods = modsQuery
 				.Skip(pageIndex * pageSize)
 				.Take(pageSize)
 				.ToList();

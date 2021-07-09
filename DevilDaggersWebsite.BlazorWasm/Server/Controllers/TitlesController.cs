@@ -3,6 +3,7 @@ using DevilDaggersWebsite.BlazorWasm.Server.Singletons;
 using DevilDaggersWebsite.BlazorWasm.Shared;
 using DevilDaggersWebsite.BlazorWasm.Shared.Titles;
 using DevilDaggersWebsite.Entities;
+using DevilDaggersWebsite.Extensions;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
@@ -31,11 +32,16 @@ namespace DevilDaggersWebsite.Api
 		[Authorize(Roles = Roles.Admin)]
 		[ProducesResponseType(StatusCodes.Status200OK)]
 		[EndpointConsumer(EndpointConsumers.None)]
-		public ActionResult<Page<GetTitle>> GetTitles([Range(0, 1000)] int pageIndex = 0, [Range(5, 50)] int pageSize = 25)
+		public ActionResult<Page<GetTitle>> GetTitles([Range(0, 1000)] int pageIndex = 0, [Range(5, 50)] int pageSize = 25, string? sortBy = null, bool ascending = false)
 		{
-			List<Title> titles = _dbContext.Titles
+			IQueryable<Title> titlesQuery = _dbContext.Titles
 				.AsNoTracking()
-				.Include(t => t.PlayerTitles)
+				.Include(t => t.PlayerTitles);
+
+			if (sortBy != null)
+				titlesQuery = titlesQuery.OrderByMember(sortBy, ascending);
+
+			List<Title> titles = titlesQuery
 				.Skip(pageIndex * pageSize)
 				.Take(pageSize)
 				.ToList();

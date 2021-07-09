@@ -3,6 +3,7 @@ using DevilDaggersWebsite.BlazorWasm.Server.Singletons;
 using DevilDaggersWebsite.BlazorWasm.Shared;
 using DevilDaggersWebsite.BlazorWasm.Shared.Users;
 using DevilDaggersWebsite.Entities;
+using DevilDaggersWebsite.Extensions;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Identity;
@@ -32,11 +33,16 @@ namespace DevilDaggersWebsite.Api
 		[Authorize(Roles = Roles.Admin)]
 		[ProducesResponseType(StatusCodes.Status200OK)]
 		[EndpointConsumer(EndpointConsumers.None)]
-		public ActionResult<Page<GetUser>> GetUsers([Range(0, 1000)] int pageIndex = 0, [Range(5, 50)] int pageSize = 25)
+		public ActionResult<Page<GetUser>> GetUsers([Range(0, 1000)] int pageIndex = 0, [Range(5, 50)] int pageSize = 25, string? sortBy = null, bool ascending = false)
 		{
-			var users = _dbContext.Users
+			var usersQuery = _dbContext.Users
 				.AsNoTracking()
-				.Select(u => new { u.Id, u.UserName })
+				.Select(u => new { u.Id, u.UserName });
+
+			if (sortBy != null)
+				usersQuery = usersQuery.OrderByMember(sortBy, ascending);
+
+			var users = usersQuery
 				.Skip(pageIndex * pageSize)
 				.Take(pageSize)
 				.ToList();
@@ -56,7 +62,7 @@ namespace DevilDaggersWebsite.Api
 				{
 					Id = u.Id,
 					UserName = u.UserName,
-					Roles = userRoles.Where(ur => ur.UserId == u.Id).Select(ur => roles.Find(r => r.Id == ur.RoleId)?.Name ?? string.Empty).ToList(),
+					Roles = userRoles.Where(ur => ur.UserId == u.Id).Select(ur => roles.First(r => r.Id == ur.RoleId).Name).ToList(),
 				}),
 				TotalResults = _dbContext.Users.Count(),
 			};

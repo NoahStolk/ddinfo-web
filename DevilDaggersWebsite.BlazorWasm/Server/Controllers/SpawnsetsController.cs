@@ -52,23 +52,27 @@ namespace DevilDaggersWebsite.BlazorWasm.Server.Controllers
 		[Authorize(Roles = Roles.Spawnsets)]
 		[ProducesResponseType(StatusCodes.Status200OK)]
 		[EndpointConsumer(EndpointConsumers.Admin)]
-		public ActionResult<Page<GetSpawnset>> GetSpawnsets([Range(0, 1000)] int pageIndex = 0, [Range(5, 50)] int pageSize = 25)
+		public ActionResult<Page<GetSpawnset>> GetSpawnsets([Range(0, 1000)] int pageIndex = 0, [Range(5, 50)] int pageSize = 25, string? sortBy = null, bool ascending = false)
 		{
-			List<SpawnsetFile> spawnsetFiles = _dbContext.SpawnsetFiles
-				.AsNoTracking()
+			IQueryable<SpawnsetFile> spawnsetsQuery = _dbContext.SpawnsetFiles.AsNoTracking();
+
+			if (sortBy != null)
+				spawnsetsQuery = spawnsetsQuery.OrderByMember(sortBy, ascending);
+
+			List<SpawnsetFile> spawnsets = spawnsetsQuery
 				.Skip(pageIndex * pageSize)
 				.Take(pageSize)
 				.ToList();
 
 			return new Page<GetSpawnset>
 			{
-				Results = spawnsetFiles.ConvertAll(sf => new GetSpawnset
+				Results = spawnsets.ConvertAll(sf => new GetSpawnset
 				{
 					Id = sf.Id,
 					PlayerId = sf.PlayerId,
 					Name = sf.Name,
 					MaxDisplayWaves = sf.MaxDisplayWaves,
-					HtmlDescription = sf.HtmlDescription?.TrimAfter(40, true),
+					HtmlDescription = sf.HtmlDescription == null ? null : sf.HtmlDescription.TrimAfter(40, true),
 					LastUpdated = sf.LastUpdated,
 					IsPractice = sf.IsPractice,
 				}),
