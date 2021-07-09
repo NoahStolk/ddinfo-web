@@ -1,7 +1,8 @@
 ﻿using DevilDaggersWebsite.Api.Attributes;
 using DevilDaggersWebsite.BlazorWasm.Server.Singletons;
 using DevilDaggersWebsite.BlazorWasm.Shared;
-using DevilDaggersWebsite.BlazorWasm.Shared.Players;
+using DevilDaggersWebsite.BlazorWasm.Shared.Dto;
+using DevilDaggersWebsite.BlazorWasm.Shared.Dto.Players;
 using DevilDaggersWebsite.Clients;
 using DevilDaggersWebsite.Entities;
 using DevilDaggersWebsite.Extensions;

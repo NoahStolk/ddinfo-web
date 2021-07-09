@@ -2,7 +2,8 @@
 using DevilDaggersWebsite.Api.Attributes;
 using DevilDaggersWebsite.BlazorWasm.Server.Singletons;
 using DevilDaggersWebsite.BlazorWasm.Shared;
-using DevilDaggersWebsite.BlazorWasm.Shared.CustomLeaderboards;
+using DevilDaggersWebsite.BlazorWasm.Shared.Dto;
+using DevilDaggersWebsite.BlazorWasm.Shared.Dto.CustomLeaderboards;
 using DevilDaggersWebsite.Entities;
 using DevilDaggersWebsite.Enumerators;
 using DevilDaggersWebsite.Extensions;
