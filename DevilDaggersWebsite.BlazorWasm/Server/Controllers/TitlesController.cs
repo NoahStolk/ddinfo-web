@@ -30,19 +30,23 @@ namespace DevilDaggersWebsite.Api
 		[Authorize(Roles = Roles.Admin)]
 		[ProducesResponseType(StatusCodes.Status200OK)]
 		[EndpointConsumer(EndpointConsumers.None)]
-		public ActionResult<List<GetTitle>> GetTitles()
+		public ActionResult<Page<GetTitle>> GetTitles()
 		{
 			List<Title> titles = _dbContext.Titles
 				.AsNoTracking()
 				.Include(t => t.PlayerTitles)
 				.ToList();
 
-			return titles.ConvertAll(t => new GetTitle
+			return new Page<GetTitle>
 			{
-				Id = t.Id,
-				Name = t.Name,
-				PlayerIds = t.PlayerTitles.ConvertAll(pt => pt.PlayerId),
-			});
+				Results = titles.ConvertAll(t => new GetTitle
+				{
+					Id = t.Id,
+					Name = t.Name,
+					PlayerIds = t.PlayerTitles.ConvertAll(pt => pt.PlayerId),
+				}),
+				TotalResults = _dbContext.Titles.Count(),
+			};
 		}
 
 		[HttpPost]
