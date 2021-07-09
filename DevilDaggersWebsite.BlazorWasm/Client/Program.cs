@@ -7,7 +7,7 @@ using System.Threading.Tasks;
 
 namespace DevilDaggersWebsite.BlazorWasm.Client
 {
-	public class Program
+	public static class Program
 	{
 		public static async Task Main(string[] args)
 		{

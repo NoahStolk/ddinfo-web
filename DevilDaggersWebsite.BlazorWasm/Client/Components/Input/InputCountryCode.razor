@@ -1,6 +1,6 @@
 ﻿@inherits InputBase<string>
 
-<div class="row">
+<div class="@CssClass">
 	<Dropdown TItem="string" OnSelected="e => CurrentValue = e" @ref="_dropdown">
 		<InitialTip>Dropdown</InitialTip>
 		<ChildContent>

@@ -21,67 +21,67 @@ else
 
 		<h2>General</h2>
 		<div class="row">
-			<label class="@_inputColCss">@nameof(EditPlayer.PlayerName)</label>
-			<InputText class="@_inputColCss" @bind-Value="_editPlayer.PlayerName" />
+			<label class="@_inputLabelCss">@nameof(EditPlayer.PlayerName)</label>
+			<InputText class="admin-input" @bind-Value="_editPlayer.PlayerName" />
 		</div>
 
 		<div class="row">
-			<label class="@_inputColCss">@nameof(EditPlayer.CountryCode)</label>
-			<InputCountryCode class="@_inputColCss" @bind-Value="@_editPlayer.CountryCode" />
+			<label class="@_inputLabelCss">@nameof(EditPlayer.CountryCode)</label>
+			<InputCountryCode class="admin-input" @bind-Value="@_editPlayer.CountryCode" />
 		</div>
 
 		<h2>Settings</h2>
 
 		<div class="row">
-			<label class="@_inputColCss">@nameof(EditPlayer.Dpi)</label>
-			<InputNumber class="@_inputColCss" @bind-Value="@_editPlayer.Dpi" />
+			<label class="@_inputLabelCss">@nameof(EditPlayer.Dpi)</label>
+			<InputNumber class="admin-input" @bind-Value="@_editPlayer.Dpi" />
 		</div>
 
 		<div class="row">
-			<label class="@_inputColCss">@nameof(EditPlayer.Fov)</label>
-			<InputNumber class="@_inputColCss" @bind-Value="@_editPlayer.Fov" />
+			<label class="@_inputLabelCss">@nameof(EditPlayer.Fov)</label>
+			<InputNumber class="admin-input" @bind-Value="@_editPlayer.Fov" />
 		</div>
 
 		<div class="row">
-			<label class="@_inputColCss">@nameof(EditPlayer.Gamma)</label>
-			<InputNumber class="@_inputColCss" @bind-Value="@_editPlayer.Gamma" />
+			<label class="@_inputLabelCss">@nameof(EditPlayer.Gamma)</label>
+			<InputNumber class="admin-input" @bind-Value="@_editPlayer.Gamma" />
 		</div>
 
 		<div class="row">
-			<label class="@_inputColCss">@nameof(EditPlayer.HasFlashHandEnabled)</label>
-			<InputNullableBoolean class="@_inputColCss" @bind-Value="@_editPlayer.HasFlashHandEnabled" />
+			<label class="@_inputLabelCss">@nameof(EditPlayer.HasFlashHandEnabled)</label>
+			<InputNullableBoolean class="admin-input" @bind-Value="@_editPlayer.HasFlashHandEnabled" />
 		</div>
 
 		<div class="row">
-			<label class="@_inputColCss">@nameof(EditPlayer.InGameSens)</label>
-			<InputNumber class="@_inputColCss" @bind-Value="@_editPlayer.InGameSens" />
+			<label class="@_inputLabelCss">@nameof(EditPlayer.InGameSens)</label>
+			<InputNumber class="admin-input" @bind-Value="@_editPlayer.InGameSens" />
 		</div>
 
 		<div class="row">
-			<label class="@_inputColCss">@nameof(EditPlayer.IsRightHanded)</label>
-			<InputNullableBoolean class="@_inputColCss" @bind-Value="@_editPlayer.IsRightHanded" />
+			<label class="@_inputLabelCss">@nameof(EditPlayer.IsRightHanded)</label>
+			<InputNullableBoolean class="admin-input" @bind-Value="@_editPlayer.IsRightHanded" />
 		</div>
 
 		<div class="row">
-			<label class="@_inputColCss">@nameof(EditPlayer.UsesLegacyAudio)</label>
-			<InputNullableBoolean class="@_inputColCss" @bind-Value="@_editPlayer.UsesLegacyAudio" />
+			<label class="@_inputLabelCss">@nameof(EditPlayer.UsesLegacyAudio)</label>
+			<InputNullableBoolean class="admin-input" @bind-Value="@_editPlayer.UsesLegacyAudio" />
 		</div>
 
 		<h2>Visibility</h2>
 
 		<div class="row">
-			<label class="@_inputColCss">@nameof(EditPlayer.HideDonations)</label>
-			<InputCheckbox class="@_inputColCss" @bind-Value="@_editPlayer.HideDonations" />
+			<label class="@_inputLabelCss">@nameof(EditPlayer.HideDonations)</label>
+			<InputCheckbox class="admin-input" @bind-Value="@_editPlayer.HideDonations" />
 		</div>
 
 		<div class="row">
-			<label class="@_inputColCss">@nameof(EditPlayer.HidePastUsernames)</label>
-			<InputCheckbox class="@_inputColCss" @bind-Value="@_editPlayer.HidePastUsernames" />
+			<label class="@_inputLabelCss">@nameof(EditPlayer.HidePastUsernames)</label>
+			<InputCheckbox class="admin-input" @bind-Value="@_editPlayer.HidePastUsernames" />
 		</div>
 
 		<div class="row">
-			<label class="@_inputColCss">@nameof(EditPlayer.HideSettings)</label>
-			<InputCheckbox class="@_inputColCss" @bind-Value="@_editPlayer.HideSettings" />
+			<label class="@_inputLabelCss">@nameof(EditPlayer.HideSettings)</label>
+			<InputCheckbox class="admin-input" @bind-Value="@_editPlayer.HideSettings" />
 		</div>
 
 		<h2>Relations</h2>
@@ -91,23 +91,23 @@ else
 		<h2>Bans</h2>
 
 		<div class="row">
-			<label class="@_inputColCss">@nameof(EditPlayer.IsBanned)</label>
-			<InputCheckbox class="@_inputColCss" @bind-Value="@_editPlayer.IsBanned" />
+			<label class="@_inputLabelCss">@nameof(EditPlayer.IsBanned)</label>
+			<InputCheckbox class="admin-input" @bind-Value="@_editPlayer.IsBanned" />
 		</div>
 
 		<div class="row">
-			<label class="@_inputColCss">@nameof(EditPlayer.BanDescription)</label>
-			<InputText class="@_inputColCss" @bind-Value="@_editPlayer.BanDescription" />
+			<label class="@_inputLabelCss">@nameof(EditPlayer.BanDescription)</label>
+			<InputText class="admin-input" @bind-Value="@_editPlayer.BanDescription" />
 		</div>
 
 		<div class="row">
-			<label class="@_inputColCss">@nameof(EditPlayer.BanResponsibleId)</label>
-			<InputNumber class="@_inputColCss" @bind-Value="@_editPlayer.BanResponsibleId" />
+			<label class="@_inputLabelCss">@nameof(EditPlayer.BanResponsibleId)</label>
+			<InputNumber class="admin-input" @bind-Value="@_editPlayer.BanResponsibleId" />
 		</div>
 
 		<div class="row">
-			<label class="@_inputColCss">@nameof(EditPlayer.IsBannedFromDdcl)</label>
-			<InputCheckbox class="@_inputColCss" @bind-Value="@_editPlayer.IsBannedFromDdcl" />
+			<label class="@_inputLabelCss">@nameof(EditPlayer.IsBannedFromDdcl)</label>
+			<InputCheckbox class="admin-input" @bind-Value="@_editPlayer.IsBannedFromDdcl" />
 		</div>
 
 		<button type="submit">Submit</button>
@@ -116,7 +116,7 @@ else
 
 @code
 {
-	private const string _inputColCss = "col-sm-12 col-md-6 col-lg-4 col-xl-3";
+	private const string _inputLabelCss = "col-sm-12 col-md-6 col-lg-4 col-xl-3";
 
 	private EditPlayer? _editPlayer;
 	private string? _errorMessage;

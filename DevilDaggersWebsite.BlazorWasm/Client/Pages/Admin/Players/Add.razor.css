@@ -1,0 +1,9 @@
+﻿@media (max-width: 767px) {
+	.row {
+		margin-bottom: 15px;
+	}
+
+	label {
+		margin-bottom: 0;
+	}
+}
