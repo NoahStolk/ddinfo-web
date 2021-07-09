@@ -2,9 +2,9 @@
 
 namespace DevilDaggersWebsite.BlazorWasm.Shared.Users
 {
-	public class GetUser
+	public class GetUser : IGetDto<string>
 	{
-		public string? Id { get; init; }
+		public string Id { get; init; } = null!;
 
 		public string? UserName { get; init; }
 

@@ -23,8 +23,8 @@ namespace DevilDaggersWebsite.BlazorWasm.Server.Singletons
 			_discordLogger = discordLogger;
 		}
 
-		public async Task LogAdd<T>(T obj, ClaimsPrincipal claimsPrincipal, int id, [CallerMemberName] string endpointName = "")
-			where T : notnull
+		public async Task LogAdd<TData, TKey>(TData obj, ClaimsPrincipal claimsPrincipal, TKey id, [CallerMemberName] string endpointName = "")
+			where TData : notnull
 		{
 			StringBuilder auditLogger = GetAuditLogger("ADD", claimsPrincipal, id, endpointName);
 			auditLogger.AppendLine("```diff");
@@ -52,8 +52,8 @@ namespace DevilDaggersWebsite.BlazorWasm.Server.Singletons
 			await _discordLogger.TryLog(Channel.MonitoringAuditLog, auditLogger.ToString());
 		}
 
-		public async Task LogEdit<T>(T oldObj, T newObj, ClaimsPrincipal claimsPrincipal, int id, [CallerMemberName] string endpointName = "")
-			where T : notnull
+		public async Task LogEdit<TData, TKey>(TData oldObj, TData newObj, ClaimsPrincipal claimsPrincipal, TKey id, [CallerMemberName] string endpointName = "")
+			where TData : notnull
 		{
 			StringBuilder auditLogger = GetAuditLogger("EDIT", claimsPrincipal, id, endpointName);
 
@@ -116,8 +116,8 @@ namespace DevilDaggersWebsite.BlazorWasm.Server.Singletons
 			}
 		}
 
-		public async Task LogDelete<T>(T obj, ClaimsPrincipal claimsPrincipal, int id, [CallerMemberName] string endpointName = "")
-			where T : notnull
+		public async Task LogDelete<TData, TKey>(TData obj, ClaimsPrincipal claimsPrincipal, TKey id, [CallerMemberName] string endpointName = "")
+			where TData : notnull
 		{
 			StringBuilder auditLogger = GetAuditLogger("DELETE", claimsPrincipal, id, endpointName);
 			auditLogger.AppendLine("```diff");
@@ -145,7 +145,7 @@ namespace DevilDaggersWebsite.BlazorWasm.Server.Singletons
 			await _discordLogger.TryLog(Channel.MonitoringAuditLog, auditLogger.ToString());
 		}
 
-		private static StringBuilder GetAuditLogger(string action, ClaimsPrincipal claimsPrincipal, int id, string endpointName)
+		private static StringBuilder GetAuditLogger<TKey>(string action, ClaimsPrincipal claimsPrincipal, TKey id, string endpointName)
 			=> new($"`{action}` by `{claimsPrincipal.GetShortName()}` for `{GetEntityFromEndpointName(endpointName)}` `{id}`\n");
 
 		private static string GetEntityFromEndpointName(string endpointName)
@@ -159,8 +159,8 @@ namespace DevilDaggersWebsite.BlazorWasm.Server.Singletons
 			return endpointName;
 		}
 
-		private static Dictionary<string, string> GetLog<T>(T obj)
-			where T : notnull
+		private static Dictionary<string, string> GetLog<TData>(TData obj)
+			where TData : notnull
 		{
 			Dictionary<string, string> dict = new();
 			foreach (PropertyInfo pi in obj.GetType().GetProperties())

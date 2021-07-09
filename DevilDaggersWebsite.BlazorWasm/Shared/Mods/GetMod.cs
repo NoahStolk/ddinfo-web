@@ -4,7 +4,7 @@ using System.Collections.Generic;
 
 namespace DevilDaggersWebsite.BlazorWasm.Shared.Mods
 {
-	public class GetMod : IGetDto
+	public class GetMod : IGetDto<int>
 	{
 		public int Id { get; init; }
 

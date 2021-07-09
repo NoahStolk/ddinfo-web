@@ -1,4 +1,5 @@
-﻿@inject HttpClient Http
+﻿@typeparam TKey
+@inject HttpClient Http
 @using Microsoft.AspNetCore.Components.WebAssembly.Authentication
 @using System.Net
 
@@ -30,13 +31,13 @@
 
 @code {
 	public DeleteState State { get; set; }
-	public int? IdToDelete { get; set; }
+	public TKey? IdToDelete { get; set; }
 	public string? ApiResponse { get; set; }
 
 	[Parameter] public Func<Task>? AfterDelete { get; set; }
 	[Parameter] public string ApiRoute { get; set; } = null!;
 
-	public void Set(int id)
+	public void Set(TKey id)
 	{
 		State = DeleteState.Confirm;
 		IdToDelete = id;
@@ -69,7 +70,7 @@
 	public void Cancel()
 	{
 		State = DeleteState.None;
-		IdToDelete = null;
+		IdToDelete = default;
 	}
 
 	public enum DeleteState

@@ -1,7 +1,7 @@
 ﻿namespace DevilDaggersWebsite.BlazorWasm.Shared
 {
-	public interface IGetDto
+	public interface IGetDto<out TKey>
 	{
-		public int Id { get; }
+		public TKey Id { get; }
 	}
 }
