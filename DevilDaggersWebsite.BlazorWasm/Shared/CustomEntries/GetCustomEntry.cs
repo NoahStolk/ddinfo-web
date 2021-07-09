@@ -10,7 +10,7 @@ namespace DevilDaggersWebsite.BlazorWasm.Shared.CustomEntries
 
 		public string PlayerName { get; init; } = null!;
 
-		public int Time { get; init; }
+		public float Time { get; init; }
 
 		public int GemsCollected { get; init; }
 
@@ -34,11 +34,11 @@ namespace DevilDaggersWebsite.BlazorWasm.Shared.CustomEntries
 
 		public byte DeathType { get; init; }
 
-		public int LevelUpTime2 { get; init; }
+		public float LevelUpTime2 { get; init; }
 
-		public int LevelUpTime3 { get; init; }
+		public float LevelUpTime3 { get; init; }
 
-		public int LevelUpTime4 { get; init; }
+		public float LevelUpTime4 { get; init; }
 
 		public DateTime SubmitDate { get; init; }
 
