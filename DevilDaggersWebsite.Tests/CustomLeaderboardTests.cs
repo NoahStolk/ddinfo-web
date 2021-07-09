@@ -8,8 +8,11 @@ using DevilDaggersWebsite.Extensions;
 using DevilDaggersWebsite.Singletons;
 using DevilDaggersWebsite.Tests.Data;
 using DevilDaggersWebsite.Tests.Extensions;
+using IdentityServer4.EntityFramework.Options;
 using Microsoft.AspNetCore.Hosting;
+using Microsoft.EntityFrameworkCore;
 using Microsoft.Extensions.Hosting;
+using Microsoft.Extensions.Options;
 using Microsoft.VisualStudio.TestTools.UnitTesting;
 using Moq;
 using System.Linq;
@@ -26,7 +29,8 @@ namespace DevilDaggersWebsite.Tests
 		{
 			MockEntities mockEntities = new();
 
-			_dbContext = new Mock<ApplicationDbContext>()
+			DbContextOptionsBuilder<ApplicationDbContext> optionsBuilder = new();
+			_dbContext = new Mock<ApplicationDbContext>(optionsBuilder.Options, Options.Create(new OperationalStoreOptions()))
 				.SetUpDbSet(db => db.Players, mockEntities.MockDbSetPlayers)
 				.SetUpDbSet(db => db.SpawnsetFiles, mockEntities.MockDbSetSpawnsetFiles)
 				.SetUpDbSet(db => db.CustomLeaderboards, mockEntities.MockDbSetCustomLeaderboards)
@@ -57,7 +61,7 @@ namespace DevilDaggersWebsite.Tests
 
 			_dbContext.Verify(db => db.SaveChanges(), Times.Never);
 			Assert.AreEqual(1, customLeaderboards.Results.Count);
-			Assert.IsTrue(customLeaderboards.Results.Any(cl => cl.TimeBronze == 600000));
+			Assert.IsTrue(customLeaderboards.Results.Any(cl => cl.TimeBronze == 60));
 		}
 	}
 }

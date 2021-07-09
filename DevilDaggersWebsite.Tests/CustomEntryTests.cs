@@ -7,10 +7,13 @@ using DevilDaggersWebsite.Singletons;
 using DevilDaggersWebsite.Tests.Data;
 using DevilDaggersWebsite.Tests.Extensions;
 using DevilDaggersWebsite.Transients;
+using IdentityServer4.EntityFramework.Options;
 using Microsoft.AspNetCore.Hosting;
 using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
+using Microsoft.EntityFrameworkCore;
 using Microsoft.Extensions.Hosting;
+using Microsoft.Extensions.Options;
 using Microsoft.VisualStudio.TestTools.UnitTesting;
 using Moq;
 using System.IO;
@@ -31,7 +34,8 @@ namespace DevilDaggersWebsite.Tests
 		{
 			MockEntities mockEntities = new();
 
-			_dbContext = new Mock<ApplicationDbContext>()
+			DbContextOptionsBuilder<ApplicationDbContext> optionsBuilder = new();
+			_dbContext = new Mock<ApplicationDbContext>(optionsBuilder.Options, Options.Create(new OperationalStoreOptions()))
 				.SetUpDbSet(db => db.Players, mockEntities.MockDbSetPlayers)
 				.SetUpDbSet(db => db.SpawnsetFiles, mockEntities.MockDbSetSpawnsetFiles)
 				.SetUpDbSet(db => db.CustomLeaderboards, mockEntities.MockDbSetCustomLeaderboards)
@@ -52,9 +56,8 @@ namespace DevilDaggersWebsite.Tests
 
 			Mock<DiscordLogger> discordLogger = new(mockEnvironment.Object);
 			Mock<SpawnsetHashCache> spawnsetHashCache = new(discordLogger.Object, mockEnvironment.Object);
-			Mock<AuditLogger> auditLogger = new(discordLogger.Object);
 
-			_customEntriesController = new CustomEntriesController(_dbContext.Object, toolHelper.Object, discordLogger.Object, spawnsetHashCache.Object, auditLogger.Object);
+			_customEntriesController = new CustomEntriesController(_dbContext.Object, toolHelper.Object, discordLogger.Object, spawnsetHashCache.Object);
 
 			if (!Spawnset.TryParse(File.ReadAllBytes(Path.Combine(TestConstants.WebRoot, "spawnsets", "V3")), out _spawnset))
 				Assert.Fail("Spawnset could not be parsed.");
