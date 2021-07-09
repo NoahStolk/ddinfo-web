@@ -30,11 +30,11 @@ namespace DevilDaggersWebsite.Api
 		[Authorize(Roles = Roles.Admin)]
 		[ProducesResponseType(StatusCodes.Status200OK)]
 		[EndpointConsumer(EndpointConsumers.None)]
-		public ActionResult<List<GetUser>> GetUsers()
+		public ActionResult<Page<GetUser>> GetUsers()
 		{
 			var users = _dbContext.Users
 				.AsNoTracking()
-				.Select(u => new { u.Id, u.Email, u.UserName })
+				.Select(u => new { u.Id, u.UserName })
 				.ToList();
 
 			List<IdentityUserRole<string>> userRoles = _dbContext.UserRoles
@@ -46,13 +46,16 @@ namespace DevilDaggersWebsite.Api
 				.Select(r => new { r.Id, r.Name })
 				.ToList();
 
-			return users.ConvertAll(u => new GetUser
+			return new Page<GetUser>
 			{
-				Id = u.Id,
-				Email = u.Email,
-				UserName = u.UserName,
-				Roles = userRoles.Where(ur => ur.UserId == u.Id).Select(ur => roles.FirstOrDefault(r => r.Id == ur.RoleId)?.Name ?? string.Empty).ToList(),
-			});
+				Results = users.ConvertAll(u => new GetUser
+				{
+					Id = u.Id,
+					UserName = u.UserName,
+					Roles = userRoles.Where(ur => ur.UserId == u.Id).Select(ur => roles.Find(r => r.Id == ur.RoleId)?.Name ?? string.Empty).ToList(),
+				}),
+				TotalResults = _dbContext.Users.Count(),
+			};
 		}
 
 		[HttpDelete("{id}")]
