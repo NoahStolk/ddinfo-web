@@ -18,7 +18,6 @@ using Microsoft.EntityFrameworkCore;
 using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Extensions.Hosting;
-using Newtonsoft.Json.Converters;
 using System.Globalization;
 using System.IdentityModel.Tokens.Jwt;
 using System.Linq;
@@ -61,9 +60,7 @@ namespace DevilDaggersWebsite.BlazorWasm.Server
 			services.AddAuthentication()
 				.AddIdentityServerJwt();
 
-			services
-				.AddControllersWithViews()
-				.AddNewtonsoftJson(options => options.SerializerSettings.Converters.Add(new StringEnumConverter()));
+			services.AddControllersWithViews();
 
 			services.AddRazorPages();
 
