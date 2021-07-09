@@ -6,7 +6,7 @@ namespace DevilDaggersWebsite.BlazorWasm.Server.Converters
 {
 	public static class LeaderboardConverters
 	{
-		public static GetLeaderboardPublic ToGetLeaderboardPublic(this LeaderboardResponse leaderboardResponse) => new GetLeaderboardPublic
+		public static GetLeaderboardPublic ToGetLeaderboardPublic(this LeaderboardResponse leaderboardResponse) => new()
 		{
 			DaggersFiredGlobal = leaderboardResponse.DaggersFiredGlobal,
 			DaggersHitGlobal = leaderboardResponse.DaggersHitGlobal,
@@ -16,7 +16,7 @@ namespace DevilDaggersWebsite.BlazorWasm.Server.Converters
 			GemsGlobal = leaderboardResponse.GemsGlobal,
 			KillsGlobal = leaderboardResponse.KillsGlobal,
 			TotalPlayers = leaderboardResponse.TotalPlayers,
-			TimeGlobal = leaderboardResponse.TimeGlobal == 0 ? 0 : leaderboardResponse.TimeGlobal / 10000f,
+			TimeGlobal = leaderboardResponse.TimeGlobal == 0 ? 0 : leaderboardResponse.TimeGlobal / 10000.0,
 		};
 
 		public static GetEntryPublic ToGetEntryPublic(this EntryResponse entryResponse) => new()
@@ -33,8 +33,8 @@ namespace DevilDaggersWebsite.BlazorWasm.Server.Converters
 			Kills = entryResponse.Kills,
 			KillsTotal = entryResponse.KillsTotal,
 			Rank = entryResponse.Rank,
-			Time = entryResponse.Time == 0 ? 0 : entryResponse.Time / 10000f,
-			TimeTotal = entryResponse.TimeTotal == 0 ? 0 : entryResponse.TimeTotal / 10000f,
+			Time = entryResponse.Time == 0 ? 0 : entryResponse.Time / 10000.0,
+			TimeTotal = entryResponse.TimeTotal == 0 ? 0 : entryResponse.TimeTotal / 10000.0,
 			Username = entryResponse.Username,
 		};
 	}

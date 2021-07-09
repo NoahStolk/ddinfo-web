@@ -8,7 +8,7 @@
 
 		public string Username { get; init; } = null!;
 
-		public float Time { get; init; }
+		public double Time { get; init; }
 
 		public int Kills { get; init; }
 
@@ -20,7 +20,7 @@
 
 		public int DaggersFired { get; init; }
 
-		public float TimeTotal { get; init; }
+		public double TimeTotal { get; init; }
 
 		public ulong KillsTotal { get; init; }
 
