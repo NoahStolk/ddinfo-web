@@ -10,6 +10,7 @@ using Microsoft.AspNetCore.Mvc;
 using Microsoft.EntityFrameworkCore;
 using System.Collections.Generic;
 using System.Linq;
+using System.Threading.Tasks;
 
 namespace DevilDaggersWebsite.Api
 {
@@ -63,7 +64,7 @@ namespace DevilDaggersWebsite.Api
 		[ProducesResponseType(StatusCodes.Status200OK)]
 		[ProducesResponseType(StatusCodes.Status404NotFound)]
 		[EndpointConsumer(EndpointConsumers.None)]
-		public ActionResult DeleteUserById(string id)
+		public async Task<ActionResult> DeleteUserById(string id)
 		{
 			ApplicationUser? user = _dbContext.Users
 				.FirstOrDefault(t => t.Id == id);
@@ -72,6 +73,8 @@ namespace DevilDaggersWebsite.Api
 
 			_dbContext.Users.Remove(user);
 			_dbContext.SaveChanges();
+
+			await _auditLogger.LogDelete(user, User, user.Id);
 
 			return Ok();
 		}
