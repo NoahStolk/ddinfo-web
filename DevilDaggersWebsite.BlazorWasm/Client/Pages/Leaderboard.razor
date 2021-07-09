@@ -1,0 +1,85 @@
+﻿@page "/leaderboard"
+@inject HttpClient Http
+@using DevilDaggersWebsite.BlazorWasm.Shared.Dto.Leaderboards
+
+<h1>Leaderboard</h1>
+
+@if (LeaderboardResponse == null)
+{
+	@if (_ddServerError)
+	{
+		<p>Failed to retrieve scores from the official Devil Daggers leaderboard servers. Please try again later.</p>
+		<p>If the problem persists, try contacting the Devil Daggers developer.</p>
+	}
+	else
+	{
+		<Loading />
+	}
+}
+else
+{
+	<div class="leaderboard-form-container">
+		<a href="/leaderboard/search">Search players by username</a>
+
+		<div class="input-label text-left">Rank:</div>
+		<input @bind="Rank" />
+		<button class="btn btn-primary" @onclick="FetchLeaderboard">Show</button>
+
+		<div>
+			Showing rank @Rank - @(Rank + 99)
+		</div>
+		<div>
+			<a class="btn btn-default btn-page @(Rank <= 1 ? "disabled" : string.Empty)" @onclick="() => Rank = 1">|&lt;</a>
+			<a class="btn btn-default btn-page @(Rank <= 1 ? "disabled" : string.Empty)" @onclick="() => Rank -= 1000">&lt;&lt;</a>
+			<a class="btn btn-default btn-page @(Rank <= 1 ? "disabled" : string.Empty)" @onclick="() => Rank -= 100">&lt;</a>
+			<a class="btn btn-default btn-page @(Rank >= _maxRank ? "disabled" : string.Empty)" @onclick="() => Rank += 100">&gt;</a>
+			<a class="btn btn-default btn-page @(Rank >= _maxRank ? "disabled" : string.Empty)" @onclick="() => Rank += 1000">&gt;&gt;</a>
+			<a class="btn btn-default btn-page @(Rank >= _maxRank ? "disabled" : string.Empty)" @onclick="() => Rank = LeaderboardResponse.Players - 99">&gt;|</a>
+		</div>
+	</div>
+	@*@await Html.PartialAsync("Partials/LeaderboardGlobalPartial")
+		@await Html.PartialAsync("Partials/LeaderboardTableInfoPartial")
+		@await Html.PartialAsync("Partials/LeaderboardUserPartial")*@
+}
+
+@code
+{
+	private bool _ddServerError = false;
+
+	private int _maxRank => (LeaderboardResponse?.Players ?? int.MaxValue) - 99;
+
+	private int _rank = 1;
+
+	public int Rank
+	{
+		get => _rank;
+		set => _rank = Math.Clamp(value, 1, _maxRank);
+	}
+
+	public GetLeaderboardPublic? LeaderboardResponse { get; set; }
+
+	protected override async Task OnInitializedAsync()
+	{
+		LeaderboardResponse = await FetchLeaderboard();
+
+		if (LeaderboardResponse != null && Rank > LeaderboardResponse.Players - 99)
+		{
+			Rank = LeaderboardResponse.Players - 99;
+			LeaderboardResponse.Entries.Clear();
+			LeaderboardResponse = await FetchLeaderboard();
+		}
+	}
+
+	private async Task<GetLeaderboardPublic?> FetchLeaderboard()
+	{
+		try
+		{
+			return await Http.GetFromJsonAsync<GetLeaderboardPublic>($"api/leaderboards?rankStart={Rank}");
+		}
+		catch
+		{
+			_ddServerError = true;
+			return null;
+		}
+	}
+}
