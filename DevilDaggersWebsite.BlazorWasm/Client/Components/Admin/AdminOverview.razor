@@ -3,6 +3,7 @@
 @inject HttpClient Http
 @inject NavigationManager NavigationManager
 @using Microsoft.AspNetCore.Components.WebAssembly.Authentication
+@using System.ComponentModel.DataAnnotations
 @using System.Reflection
 
 <h1>@Title</h1>
@@ -42,7 +43,8 @@ else
 			<tr>
 				@foreach (PropertyInfo pi in _properties)
 				{
-					<th><a href="" @onclick="() => Sort(pi.Name)" @onclick:preventDefault>@pi.Name</a></th>
+					string name = (pi.GetCustomAttribute(typeof(DisplayAttribute)) as DisplayAttribute)?.Name ?? pi.Name;
+					<th><a href="" @onclick="() => Sort(pi.Name)" @onclick:preventDefault>@name</a></th>
 				}
 				<th></th>
 				<th></th>
