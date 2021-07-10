@@ -1,7 +1,7 @@
 ﻿<div class="pl-4 pt-4">
-	<a href="">DevilDaggers.Info</a>
-	<button @onclick="ToggleNavMenu">
-		<span>+</span>
+	<a href="" class="text-xl">DevilDaggers.Info</a>
+	<button class="sm:hidden" @onclick="ToggleNavMenu">
+		<span class="oi oi-menu" aria-hidden="true"></span>
 	</button>
 </div>
 
@@ -23,53 +23,55 @@
 			</NavLink>
 		</li>
 		<li class="px-3">
-			<NavLink href="" @onclick="() => _collapseAdminMenu = !_collapseAdminMenu">
+			<div @onclick="() => _collapseAdminMenu = !_collapseAdminMenu">
 				<span class="oi oi-list-rich" aria-hidden="true"></span> Admin
-			</NavLink>
+			</div>
+			@if (_collapseAdminMenu)
+			{
+				<ul>
+					<li class="px-4">
+						<NavLink href="admin/custom-entries">
+							<span class="oi oi-ellipses" aria-hidden="true"></span> Custom Entries
+						</NavLink>
+					</li>
+					<li class="px-4">
+						<NavLink href="admin/custom-leaderboards">
+							<span class="oi oi-list" aria-hidden="true"></span> Custom LBs
+						</NavLink>
+					</li>
+					<li class="px-4">
+						<NavLink href="admin/donations">
+							<span class="oi oi-dollar" aria-hidden="true"></span> Donations
+						</NavLink>
+					</li>
+					<li class="px-4">
+						<NavLink href="admin/mods">
+							<span class="oi oi-brush" aria-hidden="true"></span> Mods
+						</NavLink>
+					</li>
+					<li class="px-4">
+						<NavLink href="admin/players">
+							<span class="oi oi-people" aria-hidden="true"></span> Players
+						</NavLink>
+					</li>
+					<li class="px-4">
+						<NavLink href="admin/spawnsets">
+							<span class="oi oi-grid-three-up" aria-hidden="true"></span> Spawnsets
+						</NavLink>
+					</li>
+					<li class="px-4">
+						<NavLink href="admin/titles">
+							<span class="oi oi-badge" aria-hidden="true"></span> Titles
+						</NavLink>
+					</li>
+					<li class="px-4">
+						<NavLink href="admin/users">
+							<span class="oi oi-person" aria-hidden="true"></span> Users
+						</NavLink>
+					</li>
+				</ul>
+			}
 		</li>
-		@if (_collapseAdminMenu)
-		{
-			<li class="px-4">
-				<NavLink href="admin/custom-entries">
-					<span class="oi oi-ellipses" aria-hidden="true"></span> Custom Entries
-				</NavLink>
-			</li>
-			<li class="px-4">
-				<NavLink href="admin/custom-leaderboards">
-					<span class="oi oi-list" aria-hidden="true"></span> Custom LBs
-				</NavLink>
-			</li>
-			<li class="px-4">
-				<NavLink href="admin/donations">
-					<span class="oi oi-dollar" aria-hidden="true"></span> Donations
-				</NavLink>
-			</li>
-			<li class="px-4">
-				<NavLink href="admin/mods">
-					<span class="oi oi-brush" aria-hidden="true"></span> Mods
-				</NavLink>
-			</li>
-			<li class="px-4">
-				<NavLink href="admin/players">
-					<span class="oi oi-people" aria-hidden="true"></span> Players
-				</NavLink>
-			</li>
-			<li class="px-4">
-				<NavLink href="admin/spawnsets">
-					<span class="oi oi-grid-three-up" aria-hidden="true"></span> Spawnsets
-				</NavLink>
-			</li>
-			<li class="px-4">
-				<NavLink href="admin/titles">
-					<span class="oi oi-badge" aria-hidden="true"></span> Titles
-				</NavLink>
-			</li>
-			<li class="px-4">
-				<NavLink href="admin/users">
-					<span class="oi oi-person" aria-hidden="true"></span> Users
-				</NavLink>
-			</li>
-		}
 		<li class="px-3">
 			<NavLink href="swagger/index.html">
 				<span class="oi oi-cog" aria-hidden="true"></span> API
@@ -81,10 +83,9 @@
 @code
 {
 	private bool _collapseNavMenu = true;
-
 	private bool _collapseAdminMenu = true;
 
-	private string? NavMenuCssClass => _collapseNavMenu ? "collapse" : null;
+	private string? NavMenuCssClass => _collapseNavMenu ? "hidden sm:block" : null;
 
 	private void ToggleNavMenu()
 	{
