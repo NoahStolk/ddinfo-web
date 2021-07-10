@@ -9,64 +9,64 @@
 	<ul>
 		<li class="p-3 text-xl">
 			<NavLink href="" Match="NavLinkMatch.All">
-				<span class="oi oi-home" aria-hidden="true"></span> Home
+				<Icon Type="home" Text="Home" />
 			</NavLink>
 		</li>
 		<li class="p-3 text-xl">
 			<NavLink href="leaderboard">
-				<span class="oi oi-clock" aria-hidden="true"></span> Leaderboard
+				<Icon Type="clock" Text="Leaderboard" />
 			</NavLink>
 		</li>
 		<li class="p-3 text-xl">
 			<NavLink href="statistics">
-				<span class="oi oi-bar-chart" aria-hidden="true"></span> Statistics
+				<Icon Type="bar-chart" Text="Statistics" />
 			</NavLink>
 		</li>
 		<li class="p-3 text-xl">
 			<div @onclick="() => _collapseAdminMenu = !_collapseAdminMenu">
-				<span class="oi oi-list-rich" aria-hidden="true"></span> Admin
+				<Icon Type="list-rich" Text="Admin" />
 			</div>
 			@if (_collapseAdminMenu)
 			{
 				<ul class="pl-1 pt-3">
 					<li class="p-3 text-xl">
 						<NavLink href="admin/custom-entries">
-							<span class="oi oi-ellipses" aria-hidden="true"></span> Custom Entries
+							<Icon Type="ellipses" Text="Custom Entries" />
 						</NavLink>
 					</li>
 					<li class="p-3 text-xl">
 						<NavLink href="admin/custom-leaderboards">
-							<span class="oi oi-list" aria-hidden="true"></span> Custom LBs
+							<Icon Type="list" Text="Custom LBs" />
 						</NavLink>
 					</li>
 					<li class="p-3 text-xl">
 						<NavLink href="admin/donations">
-							<span class="oi oi-dollar" aria-hidden="true"></span> Donations
+							<Icon Type="dollar" Text="Donations" />
 						</NavLink>
 					</li>
 					<li class="p-3 text-xl">
 						<NavLink href="admin/mods">
-							<span class="oi oi-brush" aria-hidden="true"></span> Mods
+							<Icon Type="brush" Text="Mods" />
 						</NavLink>
 					</li>
 					<li class="p-3 text-xl">
 						<NavLink href="admin/players">
-							<span class="oi oi-people" aria-hidden="true"></span> Players
+							<Icon Type="people" Text="Players" />
 						</NavLink>
 					</li>
 					<li class="p-3 text-xl">
 						<NavLink href="admin/spawnsets">
-							<span class="oi oi-grid-three-up" aria-hidden="true"></span> Spawnsets
+							<Icon Type="grid-three-up" Text="Spawnsets" />
 						</NavLink>
 					</li>
 					<li class="p-3 text-xl">
 						<NavLink href="admin/titles">
-							<span class="oi oi-badge" aria-hidden="true"></span> Titles
+							<Icon Type="badge" Text="Titles" />
 						</NavLink>
 					</li>
 					<li class="p-3 text-xl">
 						<NavLink href="admin/users">
-							<span class="oi oi-person" aria-hidden="true"></span> Users
+							<Icon Type="person" Text="Users" />
 						</NavLink>
 					</li>
 				</ul>
@@ -74,7 +74,7 @@
 		</li>
 		<li class="p-3 text-xl">
 			<NavLink href="swagger/index.html">
-				<span class="oi oi-cog" aria-hidden="true"></span> API
+				<Icon Type="cog" Text="API" />
 			</NavLink>
 		</li>
 	</ul>
