@@ -1,14 +1,4 @@
-﻿.logo {
-	max-width: 192px;
-	max-height: 192px;
-	margin: 0 0 16px;
-}
-
-.home-title > h1 {
-	font-size: 52px;
-}
-
-.home-section-container {
+﻿.home-section-container {
 	margin-top: 8px;
 	margin-bottom: 8px;
 	background-color: transparent;
@@ -35,17 +25,17 @@
 
 @media (max-width: 767px) {
 	.home-section-container {
-		height: 52vw;
+		height: 36vw;
 	}
 }
 
-@media (min-width: 768px) and (max-width: 1199px) {
+@media (min-width: 768px) and (max-width: 1279px) {
 	.home-section-container {
-		height: 26vw;
+		height: 20vw;
 	}
 }
 
-@media (min-width: 1200px) {
+@media (min-width: 1280px) {
 	.home-section-container {
 		height: 13vw;
 	}

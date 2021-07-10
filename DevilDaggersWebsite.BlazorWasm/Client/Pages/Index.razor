@@ -1,11 +1,11 @@
 ﻿@page "/"
 
-<h1>DevilDaggers.info</h1>
+<h1 class="text-5xl">DevilDaggers.info</h1>
 
 <p>
 	Welcome to DevilDaggers.info, a website specifically made for the game <a href="//store.steampowered.com/app/422970/Devil_Daggers/">Devil Daggers</a>.
 </p>
-<img class="img-fluid logo" src="/images/home/logo.gif" />
+<img class="w-64 h-64 m-4" src="/images/home/logo.gif" />
 <p>
 	This is a fan-made website; the creator of this website is not related to the developers of Devil Daggers. Devil Daggers is a game created by Sorath, and <a href="//devildaggers.com/">devildaggers.com</a> is the official website for the game.
 </p>
@@ -15,10 +15,10 @@
 <p>
 	Since then, I've expanded the project quite a bit, adding leaderboard history, world record progression, statistics, the possibility to mod the assets of the game, and much more.
 </p>
-<div class="row">
+<div class="grid gap-4 xl:grid-cols-4 lg:grid-cols-2 md:grid-cols-2 sm:grid-cols-1 xs:grid-cols-1">
 	@foreach ((string text, string imageUrl, string url) in _sections)
 	{
-		<a href="@url" class="col-xs-12 col-sm-6 col-md-6 col-lg-3">
+		<a href="@url">
 			<div class="home-section-container">
 				<div class="overlay-block"></div>
 				<div class="home-section-text">@text</div>
