@@ -5,9 +5,9 @@
 
 <h1>Leaderboard</h1>
 
-@if (LeaderboardResponse == null)
+@if (GetLeaderboardPublic == null)
 {
-	@if (_ddServerError == null)
+	@if (_apiError == null)
 	{
 		<Loading />
 	}
@@ -15,7 +15,7 @@
 	{
 		<p>Failed to retrieve scores from the official Devil Daggers leaderboard servers. Please try again later.</p>
 		<p>If the problem persists, try contacting the Devil Daggers developer.</p>
-		<p>@_ddServerError</p>
+		<p>@_apiError</p>
 	}
 }
 else
@@ -36,20 +36,20 @@ else
 			<a class="btn btn-default btn-page @(Rank <= 1 ? "disabled" : string.Empty)" @onclick="() => Rank -= 100">&lt;</a>
 			<a class="btn btn-default btn-page @(Rank >= _maxRank ? "disabled" : string.Empty)" @onclick="() => Rank += 100">&gt;</a>
 			<a class="btn btn-default btn-page @(Rank >= _maxRank ? "disabled" : string.Empty)" @onclick="() => Rank += 1000">&gt;&gt;</a>
-			<a class="btn btn-default btn-page @(Rank >= _maxRank ? "disabled" : string.Empty)" @onclick="() => Rank = LeaderboardResponse.TotalPlayers - 99">&gt;|</a>
+			<a class="btn btn-default btn-page @(Rank >= _maxRank ? "disabled" : string.Empty)" @onclick="() => Rank = GetLeaderboardPublic.TotalPlayers - 99">&gt;|</a>
 		</div>
 	</div>
 
-	<LeaderboardGlobal Leaderboard="LeaderboardResponse" IsHistory="false" />
+	<LeaderboardGlobal Leaderboard="GetLeaderboardPublic" IsHistory="false" />
 	<LeaderboardTableInfo />
 	@*await Html.PartialAsync("Partials/LeaderboardUserPartial")*@
 }
 
 @code
 {
-	private string? _ddServerError;
+	private string? _apiError;
 
-	private int _maxRank => (LeaderboardResponse?.TotalPlayers ?? int.MaxValue) - 99;
+	private int _maxRank => (GetLeaderboardPublic?.TotalPlayers ?? int.MaxValue) - 99;
 
 	private int _rank = 1;
 
@@ -59,17 +59,17 @@ else
 		set => _rank = Math.Clamp(value, 1, _maxRank);
 	}
 
-	public GetLeaderboardPublic? LeaderboardResponse { get; set; }
+	public GetLeaderboardPublic? GetLeaderboardPublic { get; set; }
 
 	protected override async Task OnInitializedAsync()
 	{
-		LeaderboardResponse = await FetchLeaderboard();
+		GetLeaderboardPublic = await FetchLeaderboard();
 
-		if (LeaderboardResponse != null && Rank > LeaderboardResponse.TotalPlayers - 99)
+		if (GetLeaderboardPublic != null && Rank > GetLeaderboardPublic.TotalPlayers - 99)
 		{
-			Rank = LeaderboardResponse.TotalPlayers - 99;
-			LeaderboardResponse.Entries.Clear();
-			LeaderboardResponse = await FetchLeaderboard();
+			Rank = GetLeaderboardPublic.TotalPlayers - 99;
+			GetLeaderboardPublic.Entries.Clear();
+			GetLeaderboardPublic = await FetchLeaderboard();
 		}
 	}
 
@@ -81,7 +81,7 @@ else
 		}
 		catch (Exception ex)
 		{
-			_ddServerError = ex.Message;
+			_apiError = ex.Message;
 			return null;
 		}
 	}

@@ -17,7 +17,7 @@ using System.Threading.Tasks;
 
 namespace DevilDaggersWebsite.Api
 {
-	[Route("api/players/admin")]
+	[Route("api/players")]
 	[ApiController]
 	public class PlayersController : ControllerBase
 	{
@@ -30,7 +30,7 @@ namespace DevilDaggersWebsite.Api
 			_auditLogger = auditLogger;
 		}
 
-		[HttpGet]
+		[HttpGet("admin")]
 		[Authorize(Roles = Roles.Players)]
 		[ProducesResponseType(StatusCodes.Status200OK)]
 		[EndpointConsumer(EndpointConsumers.Admin)]
@@ -72,7 +72,7 @@ namespace DevilDaggersWebsite.Api
 			};
 		}
 
-		[HttpGet("names")]
+		[HttpGet("admin/names")]
 		[Authorize(Roles = Roles.Players)]
 		[ProducesResponseType(StatusCodes.Status200OK)]
 		[EndpointConsumer(EndpointConsumers.Admin)]
@@ -90,7 +90,7 @@ namespace DevilDaggersWebsite.Api
 			});
 		}
 
-		[HttpGet("{id}")]
+		[HttpGet("admin/{id}")]
 		[Authorize(Roles = Roles.Players)]
 		[ProducesResponseType(StatusCodes.Status200OK)]
 		[EndpointConsumer(EndpointConsumers.Admin)]
@@ -129,7 +129,7 @@ namespace DevilDaggersWebsite.Api
 			};
 		}
 
-		[HttpPost]
+		[HttpPost("admin")]
 		[Authorize(Roles = Roles.Players)]
 		[ProducesResponseType(StatusCodes.Status200OK)]
 		[ProducesResponseType(StatusCodes.Status400BadRequest)]
@@ -200,7 +200,7 @@ namespace DevilDaggersWebsite.Api
 			return Ok(player.Id);
 		}
 
-		[HttpPut("{id}")]
+		[HttpPut("admin/{id}")]
 		[Authorize(Roles = Roles.Players)]
 		[ProducesResponseType(StatusCodes.Status200OK)]
 		[ProducesResponseType(StatusCodes.Status400BadRequest)]
@@ -292,7 +292,7 @@ namespace DevilDaggersWebsite.Api
 			return Ok();
 		}
 
-		[HttpDelete("{id}")]
+		[HttpDelete("admin/{id}")]
 		[Authorize(Roles = Roles.Players)]
 		[ProducesResponseType(StatusCodes.Status200OK)]
 		[ProducesResponseType(StatusCodes.Status400BadRequest)]
