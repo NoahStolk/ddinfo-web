@@ -1,77 +1,77 @@
-﻿<div class="top-row pl-4 navbar navbar-dark">
-	<a class="navbar-brand" href="">DevilDaggers.Info</a>
-	<button class="navbar-toggler" @onclick="ToggleNavMenu">
-		<span class="navbar-toggler-icon"></span>
+﻿<div class="pl-4 pt-4">
+	<a href="">DevilDaggers.Info</a>
+	<button @onclick="ToggleNavMenu">
+		<span>+</span>
 	</button>
 </div>
 
 <div class="@NavMenuCssClass" @onclick="ToggleNavMenu">
-	<ul class="nav flex-column">
-		<li class="nav-item px-3">
-			<NavLink class="nav-link" href="" Match="NavLinkMatch.All">
+	<ul>
+		<li class="px-3">
+			<NavLink href="" Match="NavLinkMatch.All">
 				<span class="oi oi-home" aria-hidden="true"></span> Home
 			</NavLink>
 		</li>
-		<li class="nav-item px-3">
-			<NavLink class="nav-link" href="leaderboard">
+		<li class="px-3">
+			<NavLink href="leaderboard">
 				<span class="oi oi-clock" aria-hidden="true"></span> Leaderboard
 			</NavLink>
 		</li>
-		<li class="nav-item px-3">
-			<NavLink class="nav-link" href="statistics">
+		<li class="px-3">
+			<NavLink href="statistics">
 				<span class="oi oi-bar-chart" aria-hidden="true"></span> Statistics
 			</NavLink>
 		</li>
-		<li class="nav-item px-3">
-			<NavLink class="nav-link" href="" @onclick="() => _expandAdminMenu = !_expandAdminMenu">
+		<li class="px-3">
+			<NavLink href="" @onclick="() => _collapseAdminMenu = !_collapseAdminMenu">
 				<span class="oi oi-list-rich" aria-hidden="true"></span> Admin
 			</NavLink>
 		</li>
-		@if (_expandAdminMenu)
+		@if (_collapseAdminMenu)
 		{
-			<li class="nav-item px-4">
-				<NavLink class="nav-link" href="admin/custom-entries">
+			<li class="px-4">
+				<NavLink href="admin/custom-entries">
 					<span class="oi oi-ellipses" aria-hidden="true"></span> Custom Entries
 				</NavLink>
 			</li>
-			<li class="nav-item px-4">
-				<NavLink class="nav-link" href="admin/custom-leaderboards">
+			<li class="px-4">
+				<NavLink href="admin/custom-leaderboards">
 					<span class="oi oi-list" aria-hidden="true"></span> Custom LBs
 				</NavLink>
 			</li>
-			<li class="nav-item px-4">
-				<NavLink class="nav-link" href="admin/donations">
+			<li class="px-4">
+				<NavLink href="admin/donations">
 					<span class="oi oi-dollar" aria-hidden="true"></span> Donations
 				</NavLink>
 			</li>
-			<li class="nav-item px-4">
-				<NavLink class="nav-link" href="admin/mods">
+			<li class="px-4">
+				<NavLink href="admin/mods">
 					<span class="oi oi-brush" aria-hidden="true"></span> Mods
 				</NavLink>
 			</li>
-			<li class="nav-item px-4">
-				<NavLink class="nav-link" href="admin/players">
+			<li class="px-4">
+				<NavLink href="admin/players">
 					<span class="oi oi-people" aria-hidden="true"></span> Players
 				</NavLink>
 			</li>
-			<li class="nav-item px-4">
-				<NavLink class="nav-link" href="admin/spawnsets">
+			<li class="px-4">
+				<NavLink href="admin/spawnsets">
 					<span class="oi oi-grid-three-up" aria-hidden="true"></span> Spawnsets
 				</NavLink>
 			</li>
-			<li class="nav-item px-4">
-				<NavLink class="nav-link" href="admin/titles">
+			<li class="px-4">
+				<NavLink href="admin/titles">
 					<span class="oi oi-badge" aria-hidden="true"></span> Titles
 				</NavLink>
 			</li>
-			<li class="nav-item px-4">
-				<NavLink class="nav-link" href="admin/users">
+			<li class="px-4">
+				<NavLink href="admin/users">
 					<span class="oi oi-person" aria-hidden="true"></span> Users
 				</NavLink>
 			</li>
 		}
-		<li class="nav-item px-3">
-			<NavLink class="nav-link" href="swagger/index.html">
+		<li class="px-3">
+			<NavLink href="swagger/index.html">
 				<span class="oi oi-cog" aria-hidden="true"></span> API
 			</NavLink>
 		</li>
@@ -82,7 +82,7 @@
 {
 	private bool _collapseNavMenu = true;
 
-	private bool _expandAdminMenu = false;
+	private bool _collapseAdminMenu = true;
 
 	private string? NavMenuCssClass => _collapseNavMenu ? "collapse" : null;
 
