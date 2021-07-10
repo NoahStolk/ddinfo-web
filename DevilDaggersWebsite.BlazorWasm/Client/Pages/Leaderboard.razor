@@ -41,8 +41,8 @@ else
 	</div>
 
 	<LeaderboardGlobal Leaderboard="LeaderboardResponse" IsHistory="false" />
-	@*@await Html.PartialAsync("Partials/LeaderboardTableInfoPartial")
-		@await Html.PartialAsync("Partials/LeaderboardUserPartial")*@
+	<LeaderboardTableInfo />
+	@*await Html.PartialAsync("Partials/LeaderboardUserPartial")*@
 }
 
 @code
