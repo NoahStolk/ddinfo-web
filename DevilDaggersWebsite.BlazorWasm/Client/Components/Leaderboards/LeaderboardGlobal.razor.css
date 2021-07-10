@@ -1,12 +1,7 @@
-﻿.leaderboard-data-container > :nth-child(2n+1) {
-	background-color: var(--col-gray-11);
+﻿.icon-list {
+	margin: 12px;
 }
 
-.leaderboard-data-container {
-	max-width: 480px;
-	margin: 12px 0;
-}
-
-.icon-large {
-	margin-bottom: 8px;
+img {
+	margin: 6px;
 }

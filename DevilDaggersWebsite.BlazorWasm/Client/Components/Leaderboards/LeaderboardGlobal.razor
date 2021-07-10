@@ -1,62 +1,31 @@
 ﻿@using DevilDaggersWebsite.BlazorWasm.Shared.Dto.Leaderboards
 
-<div class="leaderboard-data-container d-block d-sm-none">
-	<div class="row">
-		<div class="col-xs-6">Total players</div>
-		<div class="col-xs-6 devil text-right">@_players</div>
+<div class="row icon-list">
+	<div class="col-lg-2">
+		<Tooltip Text="Total players"><img src="/images/icons/eye4x4.png" /></Tooltip>
+		<div class="devil text-center">@_players</div>
 	</div>
-	<div class="row">
-		<div class="col-xs-6">Global time</div>
-		<div class="col-xs-6 devil text-right">@_time</div>
+	<div class="col-lg-2">
+		<Tooltip Text="Global time"><img src="/images/icons/stopwatchx4.png" /></Tooltip>
+		<div class="devil text-center">@_time</div>
 	</div>
-	<div class="row">
-		<div class="col-xs-6">Global kills</div>
-		<div class="col-xs-6 devil text-right">@_kills</div>
+	<div class="col-lg-2">
+		<Tooltip Text="Global kills"><img src="/images/icons/daggerx4.png" /></Tooltip>
+		<div class="devil text-center">@_kills</div>
 	</div>
-	<div class="row">
-		<div class="col-xs-6">Global gems</div>
-		<div class="col-xs-6 devil text-right">@_gems</div>
+	<div class="col-lg-2">
+		<Tooltip Text="Global gems"><img src="/images/icons/gemx4.png" /></Tooltip>
+		<div class="devil text-center">@_gems</div>
 	</div>
-	<div class="row">
-		<div class="col-xs-6">Global accuracy</div>
-		<div class="col-xs-6 text-right">
-			<span data-toggle="tooltip" title="@_daggers" class="leaderboard-tooltip"><span class="devil">@_accuracy</span></span>
+	<div class="col-lg-2">
+		<Tooltip Text="Global accuracy"><img src="/images/icons/crosshairx4.png" /></Tooltip>
+		<div class="text-center">
+			<Tooltip Text="@_daggers"><span class="devil">@_accuracy</span></Tooltip>
 		</div>
 	</div>
-	<div class="row">
-		<div class="col-xs-6">Global deaths</div>
-		<div class="col-xs-6 devil text-right">@_deaths</div>
-	</div>
-</div>
-
-<div class="d-none d-sm-block text-center">
-	<div class="flex-container flex-center flex-space-evenly icon-list">
-		<div>
-			<div class="icon-large pointer" data-toggle='tooltip' title='Total players'><img src="/images/icons/eye4x4.png" /></div>
-			<div class="devil text-center">@_players</div>
-		</div>
-		<div>
-			<div class="icon-large pointer" data-toggle='tooltip' title='Global time'><img src="/images/icons/stopwatchx4.png" /></div>
-			<div class="devil text-center">@_time</div>
-		</div>
-		<div>
-			<div class="icon-large pointer" data-toggle='tooltip' title='Global kills'><img src="/images/icons/daggerx4.png" /></div>
-			<div class="devil text-center">@_kills</div>
-		</div>
-		<div>
-			<div class="icon-large pointer" data-toggle='tooltip' title='Global gems'><img src="/images/icons/gemx4.png" /></div>
-			<div class="devil text-center">@_gems</div>
-		</div>
-		<div>
-			<div class="icon-large pointer" data-toggle='tooltip' title='Global accuracy'><img src="/images/icons/crosshairx4.png" /></div>
-			<div class="text-center">
-				<span data-toggle="tooltip" title="@_daggers" class="leaderboard-tooltip"><span class="devil">@_accuracy</span></span>
-			</div>
-		</div>
-		<div>
-			<div class="icon-large pointer" data-toggle='tooltip' title='Global deaths'><img src="/images/icons/skullx4.png" /></div>
-			<div class="devil text-center">@_deaths</div>
-		</div>
+	<div class="col-lg-2">
+		<Tooltip Text="Global deaths"><img src="/images/icons/skullx4.png" /></Tooltip>
+		<div class="devil text-center">@_deaths</div>
 	</div>
 </div>
 
