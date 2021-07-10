@@ -9,8 +9,8 @@
 	}
 
 	@font-face {
-		font-family: 'roboto';
+		font-family: 'calibri';
 		font-weight: 500;
-		src: url('fonts/Roboto-Medium.ttf') format('truetype');
+		src: url('fonts/calibri-regular.ttf') format('truetype');
 	}
 }

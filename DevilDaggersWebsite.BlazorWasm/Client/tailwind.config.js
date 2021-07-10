@@ -25,7 +25,7 @@ module.exports = {
 			}
 		},
 		fontFamily: {
-			'roboto': ['roboto', 'sans-serif'],
+			'calibri': ['calibri', 'sans-serif'],
 			'goethe': ['goethe']
 		}
 	}
