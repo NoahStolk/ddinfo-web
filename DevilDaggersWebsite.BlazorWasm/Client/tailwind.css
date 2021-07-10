@@ -5,12 +5,12 @@
 @layer base {
 	@font-face {
 		font-family: 'goethe';
-		src: local('Goethe Bold'), url('../wwwroot/fonts/goethebold.ttf') format('truetype');
+		src: local('Goethe Bold'), url('wwwroot/fonts/goethebold.ttf') format('truetype');
 	}
 
 	@font-face {
 		font-family: 'roboto';
 		font-weight: 500;
-		src: local('Roboto Lt'), url('../wwwroot/fonts/Roboto-Medium.ttf') format('truetype');
+		src: local('Roboto Lt'), url('wwwroot/fonts/Roboto-Medium.ttf') format('truetype');
 	}
 }
