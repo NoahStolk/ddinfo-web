@@ -9,7 +9,7 @@
 }
 
 .sidebar {
-	background-image: linear-gradient(180deg, #f00 0%, #3a0000 70%);
+	background-image: linear-gradient(180deg, #bb1a00 0%, #300 100%);
 }
 
 @media (min-width: 641px) {
