@@ -152,6 +152,17 @@ namespace DevilDaggersWebsite.Api
 				{
 					return BadRequest("Banned players must not have settings.");
 				}
+
+				if (string.IsNullOrWhiteSpace(addPlayer.BanDescription))
+					return BadRequest("BanDescription is required for banned players.");
+			}
+			else
+			{
+				if (!string.IsNullOrWhiteSpace(addPlayer.BanDescription))
+					return BadRequest("BanDescription must only be used for banned players.");
+
+				if (addPlayer.BanResponsibleId.HasValue)
+					return BadRequest("BanResponsibleId must only be used for banned players.");
 			}
 
 			if (_dbContext.Players.Any(p => p.Id == addPlayer.Id))
@@ -223,6 +234,17 @@ namespace DevilDaggersWebsite.Api
 				{
 					return BadRequest("Banned players must not have settings.");
 				}
+
+				if (string.IsNullOrWhiteSpace(editPlayer.BanDescription))
+					return BadRequest("BanDescription is required for banned players.");
+			}
+			else
+			{
+				if (!string.IsNullOrWhiteSpace(editPlayer.BanDescription))
+					return BadRequest("BanDescription must only be used for banned players.");
+
+				if (editPlayer.BanResponsibleId.HasValue)
+					return BadRequest("BanResponsibleId must only be used for banned players.");
 			}
 
 			foreach (int modId in editPlayer.AssetModIds ?? new())
