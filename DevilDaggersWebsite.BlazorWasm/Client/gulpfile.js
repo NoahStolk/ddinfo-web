@@ -12,7 +12,7 @@ gulp.task('css:dev', () => {
 			require('tailwindcss'),
 			require('autoprefixer')
 		]))
-		.pipe(gulp.dest('./wwwroot/css/'));
+		.pipe(gulp.dest('./wwwroot/'));
 });
 
 gulp.task('css:prod', () => {
@@ -26,5 +26,5 @@ gulp.task('css:prod', () => {
 		.pipe(purgecss({ content: ['**/*.html', '**/*.razor'] }))
 		.pipe(cleanCSS({ level: 2 }))
 		.pipe(sourcemaps.write('.'))
-		.pipe(gulp.dest('./wwwroot/css/'));
+		.pipe(gulp.dest('./wwwroot/'));
 });
