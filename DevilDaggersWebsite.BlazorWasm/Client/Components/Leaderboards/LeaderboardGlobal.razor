@@ -1,30 +1,30 @@
 ﻿@using DevilDaggersWebsite.BlazorWasm.Shared.Dto.Leaderboards
 
-<div class="grid gap-4 xl:grid-cols-6 lg:grid-cols-6 md:grid-cols-6 sm:grid-cols-1 xs:grid-cols-1 font-goethe">
+<div class="grid gap-4 xl:grid-cols-6 lg:grid-cols-6 md:grid-cols-6 sm:grid-cols-1 xs:grid-cols-1 font-goethe text-xl">
 	<div>
-		<Tooltip Text="Total players" CssClass="text-center w-full"><img class="mx-auto" src="/images/icons/eye4x4.png" /></Tooltip>
+		<Tooltip Text="Total players" CssClass="@_tooltipClasses"><img class="@_iconClasses" src="/images/icons/eye4x4.png" /></Tooltip>
 		<div class="devil text-center">@_players</div>
 	</div>
 	<div>
-		<Tooltip Text="Global time" CssClass="text-center w-full"><img class="mx-auto" src="/images/icons/stopwatchx4.png" /></Tooltip>
+		<Tooltip Text="Global time" CssClass="@_tooltipClasses"><img class="@_iconClasses" src="/images/icons/stopwatchx4.png" /></Tooltip>
 		<div class="devil text-center">@_time</div>
 	</div>
 	<div>
-		<Tooltip Text="Global kills" CssClass="text-center w-full"><img class="mx-auto" src="/images/icons/daggerx4.png" /></Tooltip>
+		<Tooltip Text="Global kills" CssClass="@_tooltipClasses"><img class="@_iconClasses" src="/images/icons/daggerx4.png" /></Tooltip>
 		<div class="devil text-center">@_kills</div>
 	</div>
 	<div>
-		<Tooltip Text="Global gems" CssClass="text-center w-full"><img class="mx-auto" src="/images/icons/gemx4.png" /></Tooltip>
+		<Tooltip Text="Global gems" CssClass="@_tooltipClasses"><img class="@_iconClasses" src="/images/icons/gemx4.png" /></Tooltip>
 		<div class="devil text-center">@_gems</div>
 	</div>
 	<div>
-		<Tooltip Text="Global accuracy" CssClass="text-center w-full"><img class="mx-auto" src="/images/icons/crosshairx4.png" /></Tooltip>
+		<Tooltip Text="Global accuracy" CssClass="@_tooltipClasses"><img class="@_iconClasses" src="/images/icons/crosshairx4.png" /></Tooltip>
 		<div class="text-center">
 			<Tooltip Text="@_daggers"><span class="devil">@_accuracy</span></Tooltip>
 		</div>
 	</div>
 	<div>
-		<Tooltip Text="Global deaths" CssClass="text-center w-full"><img class="mx-auto" src="/images/icons/skullx4.png" /></Tooltip>
+		<Tooltip Text="Global deaths" CssClass="@_tooltipClasses"><img class="@_iconClasses" src="/images/icons/skullx4.png" /></Tooltip>
 		<div class="devil text-center">@_deaths</div>
 	</div>
 </div>
@@ -33,6 +33,9 @@
 {
 	[Parameter] public GetLeaderboardPublic Leaderboard { get; set; } = null!;
 	[Parameter] public bool IsHistory { get; set; }
+
+	private const string _tooltipClasses = "text-center w-full font-calibri";
+	private const string _iconClasses = "mx-auto";
 
 	private string? _players;
 	private string? _time;

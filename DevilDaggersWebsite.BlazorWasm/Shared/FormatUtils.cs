@@ -8,7 +8,7 @@
 		public static readonly string DateFormat = "yyyy-MM-dd";
 		public static readonly string DateTimeUtcFormat = "yyyy-MM-dd HH:mm UTC";
 		public static readonly string DateTimeFullFormat = "yyyy-MM-dd HH:mm:ss.fff zzz";
-		public static readonly string SpawnTimeFormat = "0.0000";
+		public static readonly string TimeFormat = "0.0000";
 		public static readonly string InGameSensFormat = "0.000";
 		public static readonly string GammaFormat = "0.00";
 		public static readonly string AccuracyFormat = "0.00%";

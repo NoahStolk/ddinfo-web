@@ -1,9 +1,10 @@
-﻿<div class="tooltip-wrapper">
-	<span>@Text</span>
+﻿<div class="wrapper cursor-pointer inline-block relative @CssClass">
+	<span class="text-colortext bg-tooltipbackground text-center p-2 text-base font-calibri">@Text</span>
 	@ChildContent
 </div>
 
 @code {
 	[Parameter] public RenderFragment ChildContent { get; set; } = null!;
 	[Parameter] public string Text { get; set; } = null!;
+	[Parameter] public string? CssClass { get; set; }
 }

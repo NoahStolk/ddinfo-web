@@ -1,20 +1,20 @@
 ﻿<div>
 	@if (IsBanned)
 	{
-		<Tooltip Text="@BanDescription"><a href="/leaderboard/player?id=@Id" class="@DaggerCssClass">@Name</a></Tooltip>
+		<Tooltip Text="@BanDescription" CssClass="overflow-hidden"><a href="/leaderboard/player?id=@Id" class="@DaggerCssClass">@Name</a></Tooltip>
 	}
 	else
 	{
-		<a href="/leaderboard/player?id=@Id" class="@DaggerCssClass font-goethe">@Name</a>
+		<a href="/leaderboard/player?id=@Id" class="@DaggerCssClass font-goethe overflow-hidden">@Name</a>
 	}
 
 	@if (_titles.Count > 0)
 	{
-		<span>
+		<span class="px-1">
 			@foreach (string title in _titles)
 			{
 				string? titleImage = UserUtils.TitleImages.ContainsKey(title) ? UserUtils.TitleImages[title] : null;
-				<Tooltip Text="@title"><img src="/images/Icons/@(titleImage).png" /></Tooltip>
+				<Tooltip Text="@title"><img src="/images/icons/@(titleImage).png" /></Tooltip>
 			}
 		</span>
 	}

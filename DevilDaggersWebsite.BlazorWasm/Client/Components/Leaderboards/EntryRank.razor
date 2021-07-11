@@ -1,11 +1,11 @@
 ﻿<div class="text-right">
 	@if (PlayerId != 0)
 	{
-		<span data-toggle="tooltip" title="ID: @PlayerId (click to copy)" onclick="copyToClipboard('@PlayerId')" class="leaderboard-tooltip">@Rank</span>
+		<span data-toggle="tooltip" title="ID: @PlayerId (click to copy)" onclick="copyToClipboard('@PlayerId')" class="leaderboard-tooltip">@Rank.ToString(FormatUtils.LeaderboardIntFormat)</span>
 	}
 	else
 	{
-		<span style="color: #ff0;" data-toggle="tooltip" title="ID: ???" class="leaderboard-tooltip">@Rank</span>
+		<span style="color: #ff0;" data-toggle="tooltip" title="ID: ???" class="leaderboard-tooltip">@Rank.ToString(FormatUtils.LeaderboardIntFormat)</span>
 	}
 </div>
 

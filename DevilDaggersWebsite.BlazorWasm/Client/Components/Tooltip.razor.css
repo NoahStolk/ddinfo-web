@@ -1,19 +1,10 @@
-﻿.tooltip-wrapper {
-	position: relative;
-	display: inline-block;
-	cursor: help;
-}
-
-span {
+﻿span {
 	visibility: hidden;
 	position: absolute;
 	width: 120px;
 	bottom: 100%;
 	left: 50%;
 	margin-left: -60px;
-	background-color: var(--col-gray-22);
-	color: var(--col-default-text);
-	text-align: center;
 	padding: 5px 0;
 	border-radius: 6px;
 	z-index: 1;
@@ -30,6 +21,6 @@ span {
 		border-color: #555 transparent transparent transparent;
 	}
 
-.tooltip-wrapper:hover span {
+.wrapper:hover span {
 	visibility: visible;
 }

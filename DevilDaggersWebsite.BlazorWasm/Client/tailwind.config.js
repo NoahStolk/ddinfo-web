@@ -21,7 +21,8 @@ module.exports = {
 				underlinegolden: '#FCBE34',
 				underlinesilver: '#9CA4AA',
 				underlinebronze: '#765A46',
-				underlinedefault: '#434343'
+				underlinedefault: '#434343',
+				tooltipbackground: '#000b'
 			},
 			gridTemplateColumns: {
 				'13': 'repeat(13, minmax(0, 1fr))'
