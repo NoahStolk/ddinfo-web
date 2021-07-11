@@ -22,6 +22,9 @@ module.exports = {
 				underlinesilver: '#9CA4AA',
 				underlinebronze: '#765A46',
 				underlinedefault: '#434343'
+			},
+			gridTemplateColumns: {
+				'13': 'repeat(13, minmax(0, 1fr))'
 			}
 		},
 		fontFamily: {
