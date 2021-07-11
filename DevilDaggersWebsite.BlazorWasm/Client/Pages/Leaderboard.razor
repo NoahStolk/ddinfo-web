@@ -1,6 +1,7 @@
 ﻿@page "/leaderboard"
 @inject HttpClient Http
 @using DevilDaggersWebsite.BlazorWasm.Shared.Dto.Leaderboards
+@using DevilDaggersWebsite.BlazorWasm.Shared.Dto.Players
 @using DevilDaggersWebsite.BlazorWasm.Client.Components.Leaderboards
 
 <h1>Leaderboard</h1>
@@ -42,7 +43,7 @@ else
 
 	<LeaderboardGlobal Leaderboard="GetLeaderboardPublic" IsHistory="false" />
 	<LeaderboardTableInfo />
-	@*await Html.PartialAsync("Partials/LeaderboardUserPartial")*@
+	<LeaderboardTable Leaderboard="GetLeaderboardPublic" Players="Players" IsHistory="false" />
 }
 
 @code
@@ -61,8 +62,12 @@ else
 
 	public GetLeaderboardPublic? GetLeaderboardPublic { get; set; }
 
+	public List<GetPlayerForLeaderboard>? Players { get; set; }
+
 	protected override async Task OnInitializedAsync()
 	{
+		Players = await Http.GetFromJsonAsync<List<GetPlayerForLeaderboard>>("api/players/leaderboard");
+
 		GetLeaderboardPublic = await FetchLeaderboard();
 
 		if (GetLeaderboardPublic != null && Rank > GetLeaderboardPublic.TotalPlayers - 99)

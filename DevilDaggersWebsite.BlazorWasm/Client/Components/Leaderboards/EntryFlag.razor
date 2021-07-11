@@ -1,0 +1,18 @@
+﻿<div>
+	@if (!string.IsNullOrEmpty(CountryCode))
+	{
+		<Tooltip Text="@_countryName"><img src="/images/Flags/24x24/@(CountryCode).png" /></Tooltip>
+	}
+</div>
+
+@code
+{
+	[Parameter] public string? CountryCode { get; set; }
+
+	private string? _countryName;
+
+	protected override void OnInitialized()
+	{
+		_countryName = CountryCode != null && UserUtils.CountryNames.ContainsKey(CountryCode) ? UserUtils.CountryNames[CountryCode] : null;
+	}
+}

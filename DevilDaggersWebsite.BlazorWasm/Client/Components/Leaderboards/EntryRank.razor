@@ -1,0 +1,16 @@
+﻿<div class="text-right">
+	@if (PlayerId != 0)
+	{
+		<span data-toggle="tooltip" title="ID: @PlayerId (click to copy)" onclick="copyToClipboard('@PlayerId')" class="leaderboard-tooltip">@Rank</span>
+	}
+	else
+	{
+		<span style="color: #ff0;" data-toggle="tooltip" title="ID: ???" class="leaderboard-tooltip">@Rank</span>
+	}
+</div>
+
+@code
+{
+	[Parameter] public int PlayerId { get; set; }
+	[Parameter] public int Rank { get; set; }
+}

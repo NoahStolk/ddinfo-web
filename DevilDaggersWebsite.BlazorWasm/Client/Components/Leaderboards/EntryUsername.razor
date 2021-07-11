@@ -1,0 +1,32 @@
+﻿<div class="text-left leaderboard-username">
+	@{
+		if (IsBanned)
+		{
+			<Tooltip Text="@BanDescription"><a href="/leaderboard/player?id=@Id" class="@DaggerCssClass">@Name</a></Tooltip>
+		}
+		else
+		{
+			<a href="/leaderboard/player?id=@Id" class="@DaggerCssClass">@Name</a>
+		}
+
+		List<string> titles = Titles ?? new();
+		if (IsPublicDonator == true)
+			titles.Add("Donator");
+
+		foreach (string title in titles)
+		{
+			string? titleImage = UserUtils.TitleImages.ContainsKey(title) ? UserUtils.TitleImages[title] : null;
+			<Tooltip Text="@title"><img src="/images/Icons/@(titleImage).png" /></Tooltip>
+		}
+	}
+</div>
+
+@code {
+	[Parameter] public int Id { get; set; }
+	[Parameter] public string Name { get; set; } = null!;
+	[Parameter] public string DaggerCssClass { get; set; } = null!;
+	[Parameter] public bool IsBanned { get; set; }
+	[Parameter] public string? BanDescription { get; set; }
+	[Parameter] public List<string>? Titles { get; set; }
+	[Parameter] public bool IsPublicDonator { get; set; }
+}
