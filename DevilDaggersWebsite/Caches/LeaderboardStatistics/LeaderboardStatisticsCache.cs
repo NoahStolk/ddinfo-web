@@ -70,7 +70,7 @@ namespace DevilDaggersWebsite.Caches.LeaderboardStatistics
 
 			foreach (CompressedEntry entry in _entries)
 			{
-				Dagger dagger = GameInfo.GetDaggerFromTime(GameVersion.V31, (int)entry.Time);
+				Dagger dagger = GameInfo.GetDaggerFromTenthsOfMilliseconds(GameVersion.V31, (int)entry.Time);
 				if (DaggerStats.ContainsKey(dagger))
 					DaggerStats[dagger]++;
 

@@ -33,7 +33,7 @@ namespace DevilDaggersWebsite.Razor.Models
 			FlagCode = player?.CountryCode ?? string.Empty;
 			CountryName = UserUtils.CountryNames.ContainsKey(FlagCode) ? UserUtils.CountryNames[FlagCode] : "Invalid country code";
 
-			Dagger dagger = GameInfo.GetDaggerFromTime(gameVersion, entry.Time);
+			Dagger dagger = GameInfo.GetDaggerFromTenthsOfMilliseconds(gameVersion, entry.Time);
 			DaggerColor = player?.IsBanned ?? false ? "ban" : dagger.Name.ToLower();
 
 			Death? death = GameInfo.GetDeathByType(gameVersion, entry.DeathType);

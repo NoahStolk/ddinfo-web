@@ -40,10 +40,10 @@
 				int count = LeaderboardStatisticsCache.Entries.Count(e => e.Time > kvp.Value.Time);
 				int total = LeaderboardStatisticsCache.Entries.Count;
 				string daggerStyle = kvp.Value.Dagger.Name.ToLower();
-				string daggerTimeStyle = GameInfo.GetDaggerFromTime(GameVersion.V31, kvp.Value.Time ?? int.MaxValue).Name.ToLower();
+				string daggerTimeStyle = GameInfo.GetDaggerFromTenthsOfMilliseconds(GameVersion.V31, kvp.Value.Time ?? int.MaxValue).Name.ToLower();
 				<li><span class="@daggerStyle">@count</span> out of @total players (<span class="@daggerStyle">@((count / (float)total).ToString("0.00%"))</span>) have seen @Html.Raw(string.Join(" and ", kvp.Key.Select(e => RazorUtils.GetLayoutAnchor(e)))) (<span class="@daggerTimeStyle">@(!kvp.Value.Time.HasValue ? "???" : (kvp.Value.Time.Value / 10000).ToString("0.0000"))</span> seconds).</li>
 			}
-			<li>The average time survived for all players is <span class="@GameInfo.GetDaggerFromTime(GameVersion.V31, avgTime).Name.ToLower()">@(FormatUtils.FormatTimeInteger(avgTime / 10000f))</span> seconds.</li>
+			<li>The average time survived for all players is <span class="@GameInfo.GetDaggerFromTenthsOfMilliseconds(GameVersion.V31, avgTime).Name.ToLower()">@(FormatUtils.FormatTimeInteger(avgTime / 10000f))</span> seconds.</li>
 			<li>The average kills for all players is @(avgKills.ToString(FormatUtils.LeaderboardIntAverageFormat)).</li>
 			<li>The average gems for all players is @(avgGems.ToString(FormatUtils.LeaderboardIntAverageFormat)).</li>
 		</ul>

@@ -78,7 +78,7 @@ namespace DevilDaggersWebsite.Razor.Pages.Leaderboard
 			if (Entry != null)
 			{
 				Death = GameInfo.GetDeathByType(GameVersion.V31, Entry.DeathType);
-				Dagger = GameInfo.GetDaggerFromTime(GameVersion.V31, Entry.Time);
+				Dagger = GameInfo.GetDaggerFromTenthsOfMilliseconds(GameVersion.V31, Entry.Time);
 				CountryName = Player?.CountryCode != null ? UserUtils.CountryNames.ContainsKey(Player.CountryCode) ? UserUtils.CountryNames[Player.CountryCode] : null : null;
 
 				Dictionary<string, int> aliases = new();
