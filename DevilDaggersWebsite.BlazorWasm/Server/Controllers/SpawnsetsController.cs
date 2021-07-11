@@ -1,7 +1,7 @@
-﻿using DevilDaggersCore.Extensions;
-using DevilDaggersCore.Spawnsets;
+﻿using DevilDaggersCore.Spawnsets;
 using DevilDaggersWebsite.Api.Attributes;
 using DevilDaggersWebsite.BlazorWasm.Server.Constants;
+using DevilDaggersWebsite.BlazorWasm.Server.Converters;
 using DevilDaggersWebsite.BlazorWasm.Server.Singletons;
 using DevilDaggersWebsite.BlazorWasm.Shared;
 using DevilDaggersWebsite.BlazorWasm.Shared.Dto;
@@ -67,16 +67,7 @@ namespace DevilDaggersWebsite.BlazorWasm.Server.Controllers
 
 			return new Page<GetSpawnset>
 			{
-				Results = spawnsets.ConvertAll(sf => new GetSpawnset
-				{
-					Id = sf.Id,
-					PlayerId = sf.PlayerId,
-					Name = sf.Name,
-					MaxDisplayWaves = sf.MaxDisplayWaves,
-					HtmlDescription = sf.HtmlDescription == null ? null : sf.HtmlDescription.TrimAfter(40, true),
-					LastUpdated = sf.LastUpdated,
-					IsPractice = sf.IsPractice,
-				}),
+				Results = spawnsets.ConvertAll(s => s.ToGetSpawnset()),
 				TotalResults = _dbContext.SpawnsetFiles.Count(),
 			};
 		}

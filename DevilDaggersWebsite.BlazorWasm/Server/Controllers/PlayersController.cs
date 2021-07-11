@@ -1,4 +1,5 @@
 ﻿using DevilDaggersWebsite.Api.Attributes;
+using DevilDaggersWebsite.BlazorWasm.Server.Converters;
 using DevilDaggersWebsite.BlazorWasm.Server.Singletons;
 using DevilDaggersWebsite.BlazorWasm.Shared;
 using DevilDaggersWebsite.BlazorWasm.Shared.Dto;
@@ -81,26 +82,7 @@ namespace DevilDaggersWebsite.Api
 
 			return new Page<GetPlayerBase>
 			{
-				Results = players.ConvertAll(p => new GetPlayerBase
-				{
-					Id = p.Id,
-					PlayerName = p.PlayerName,
-					CountryCode = p.CountryCode,
-					Dpi = p.Dpi,
-					InGameSens = p.InGameSens,
-					Fov = p.Fov,
-					IsBanned = p.IsBanned,
-					BanDescription = p.BanDescription,
-					BanResponsibleId = p.BanResponsibleId,
-					Gamma = p.Gamma,
-					HasFlashHandEnabled = p.HasFlashHandEnabled,
-					HideDonations = p.HideDonations,
-					HidePastUsernames = p.HidePastUsernames,
-					HideSettings = p.HideSettings,
-					IsBannedFromDdcl = p.IsBannedFromDdcl,
-					IsRightHanded = p.IsRightHanded,
-					UsesLegacyAudio = p.UsesLegacyAudio,
-				}),
+				Results = players.ConvertAll(p => p.ToGetPlayerBase()),
 				TotalResults = _dbContext.Players.Count(),
 			};
 		}
@@ -138,28 +120,7 @@ namespace DevilDaggersWebsite.Api
 			if (player == null)
 				return NotFound();
 
-			return new GetPlayer
-			{
-				Id = player.Id,
-				PlayerName = player.PlayerName,
-				CountryCode = player.CountryCode,
-				Dpi = player.Dpi,
-				InGameSens = player.InGameSens,
-				Fov = player.Fov,
-				IsRightHanded = player.IsRightHanded,
-				HasFlashHandEnabled = player.HasFlashHandEnabled,
-				Gamma = player.Gamma,
-				UsesLegacyAudio = player.UsesLegacyAudio,
-				IsBanned = player.IsBanned,
-				BanDescription = player.BanDescription,
-				BanResponsibleId = player.BanResponsibleId,
-				IsBannedFromDdcl = player.IsBannedFromDdcl,
-				HideSettings = player.HideSettings,
-				HideDonations = player.HideDonations,
-				HidePastUsernames = player.HidePastUsernames,
-				AssetModIds = player.PlayerAssetMods.ConvertAll(pam => pam.AssetModId),
-				TitleIds = player.PlayerTitles.ConvertAll(pt => pt.TitleId),
-			};
+			return player.ToGetPlayer();
 		}
 
 		[HttpPost("admin")]

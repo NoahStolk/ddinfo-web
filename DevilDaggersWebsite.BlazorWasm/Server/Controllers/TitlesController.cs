@@ -1,4 +1,5 @@
 ﻿using DevilDaggersWebsite.Api.Attributes;
+using DevilDaggersWebsite.BlazorWasm.Server.Converters;
 using DevilDaggersWebsite.BlazorWasm.Server.Singletons;
 using DevilDaggersWebsite.BlazorWasm.Shared;
 using DevilDaggersWebsite.BlazorWasm.Shared.Dto;
@@ -49,12 +50,7 @@ namespace DevilDaggersWebsite.Api
 
 			return new Page<GetTitle>
 			{
-				Results = titles.ConvertAll(t => new GetTitle
-				{
-					Id = t.Id,
-					Name = t.Name,
-					PlayerIds = t.PlayerTitles.ConvertAll(pt => pt.PlayerId),
-				}),
+				Results = titles.ConvertAll(t => t.ToGetTitle()),
 				TotalResults = _dbContext.Titles.Count(),
 			};
 		}

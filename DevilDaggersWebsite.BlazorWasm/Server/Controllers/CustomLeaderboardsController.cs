@@ -1,5 +1,6 @@
 ﻿using DevilDaggersCore.Spawnsets;
 using DevilDaggersWebsite.Api.Attributes;
+using DevilDaggersWebsite.BlazorWasm.Server.Converters;
 using DevilDaggersWebsite.BlazorWasm.Server.Singletons;
 using DevilDaggersWebsite.BlazorWasm.Shared;
 using DevilDaggersWebsite.BlazorWasm.Shared.Dto;
@@ -58,19 +59,7 @@ namespace DevilDaggersWebsite.BlazorWasm.Server.Controllers
 
 			return new Page<GetCustomLeaderboard>
 			{
-				Results = customLeaderboards.ConvertAll(cl => new GetCustomLeaderboard
-				{
-					Id = cl.Id,
-					SpawnsetAuthorName = cl.SpawnsetFile.Player.PlayerName,
-					SpawnsetName = cl.SpawnsetFile.Name,
-					TimeBronze = cl.TimeBronze / 10000f,
-					TimeSilver = cl.TimeSilver / 10000f,
-					TimeGolden = cl.TimeGolden / 10000f,
-					TimeDevil = cl.TimeDevil / 10000f,
-					TimeLeviathan = cl.TimeLeviathan / 10000f,
-					DateCreated = cl.DateCreated,
-					Category = cl.Category,
-				}),
+				Results = customLeaderboards.ConvertAll(cl => cl.ToGetCustomLeaderboard()),
 				TotalResults = _dbContext.CustomLeaderboards.Count(),
 			};
 		}
@@ -92,19 +81,7 @@ namespace DevilDaggersWebsite.BlazorWasm.Server.Controllers
 			if (customLeaderboard == null)
 				return NotFound($"Leaderboard with ID '{id}' was not found.");
 
-			return new GetCustomLeaderboard
-			{
-				Id = customLeaderboard.Id,
-				SpawnsetAuthorName = customLeaderboard.SpawnsetFile.Player.PlayerName,
-				SpawnsetName = customLeaderboard.SpawnsetFile.Name,
-				TimeBronze = customLeaderboard.TimeBronze / 10000f,
-				TimeSilver = customLeaderboard.TimeSilver / 10000f,
-				TimeGolden = customLeaderboard.TimeGolden / 10000f,
-				TimeDevil = customLeaderboard.TimeDevil / 10000f,
-				TimeLeviathan = customLeaderboard.TimeLeviathan / 10000f,
-				DateCreated = customLeaderboard.DateCreated,
-				Category = customLeaderboard.Category,
-			};
+			return customLeaderboard.ToGetCustomLeaderboard();
 		}
 
 		[HttpPost]

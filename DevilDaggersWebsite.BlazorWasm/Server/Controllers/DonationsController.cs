@@ -1,4 +1,5 @@
 ﻿using DevilDaggersWebsite.Api.Attributes;
+using DevilDaggersWebsite.BlazorWasm.Server.Converters;
 using DevilDaggersWebsite.BlazorWasm.Server.Singletons;
 using DevilDaggersWebsite.BlazorWasm.Shared;
 using DevilDaggersWebsite.BlazorWasm.Shared.Dto;
@@ -49,18 +50,7 @@ namespace DevilDaggersWebsite.Api
 
 			return new Page<GetDonation>
 			{
-				Results = donations.ConvertAll(d => new GetDonation
-				{
-					Id = d.Id,
-					Amount = d.Amount,
-					ConvertedEuroCentsReceived = d.ConvertedEuroCentsReceived,
-					Currency = d.Currency,
-					DateReceived = d.DateReceived,
-					IsRefunded = d.IsRefunded,
-					Note = d.Note,
-					PlayerId = d.PlayerId,
-					PlayerName = d.Player.PlayerName,
-				}),
+				Results = donations.ConvertAll(d => d.ToGetDonation()),
 				TotalResults = _dbContext.Donations.Count(),
 			};
 		}

@@ -1,4 +1,5 @@
 ﻿using DevilDaggersWebsite.Api.Attributes;
+using DevilDaggersWebsite.BlazorWasm.Server.Converters;
 using DevilDaggersWebsite.BlazorWasm.Server.Singletons;
 using DevilDaggersWebsite.BlazorWasm.Shared;
 using DevilDaggersWebsite.BlazorWasm.Shared.Dto;
@@ -52,29 +53,7 @@ namespace DevilDaggersWebsite.BlazorWasm.Server.Controllers
 
 			return new Page<GetCustomEntry>
 			{
-				Results = customEntries.ConvertAll(ce => new GetCustomEntry
-				{
-					Id = ce.Id,
-					ClientVersion = ce.ClientVersion,
-					DaggersFired = ce.DaggersFired,
-					DaggersHit = ce.DaggersHit,
-					DeathType = ce.DeathType,
-					EnemiesAlive = ce.EnemiesAlive,
-					EnemiesKilled = ce.EnemiesKilled,
-					GemsCollected = ce.GemsCollected,
-					GemsDespawned = ce.GemsDespawned,
-					GemsEaten = ce.GemsEaten,
-					GemsTotal = ce.GemsTotal,
-					HomingDaggers = ce.HomingDaggers,
-					HomingDaggersEaten = ce.HomingDaggersEaten,
-					LevelUpTime2 = ce.LevelUpTime2 / 10000f,
-					LevelUpTime3 = ce.LevelUpTime3 / 10000f,
-					LevelUpTime4 = ce.LevelUpTime4 / 10000f,
-					PlayerName = ce.Player.PlayerName,
-					SpawnsetName = ce.CustomLeaderboard.SpawnsetFile.Name,
-					SubmitDate = ce.SubmitDate,
-					Time = ce.Time / 10000f,
-				}),
+				Results = customEntries.ConvertAll(ce => ce.ToGetCustomEntry()),
 				TotalResults = _dbContext.CustomEntries.Count(),
 			};
 		}
