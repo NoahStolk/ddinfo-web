@@ -30,6 +30,38 @@ namespace DevilDaggersWebsite.Api
 			_auditLogger = auditLogger;
 		}
 
+		[HttpGet("leaderboard")]
+		[Authorize(Roles = Roles.Players)]
+		[ProducesResponseType(StatusCodes.Status200OK)]
+		[EndpointConsumer(EndpointConsumers.Admin)]
+		public ActionResult<List<GetPlayerForLeaderboard>> GetPlayersForLeaderboard()
+		{
+			var players = _dbContext.Players
+				.AsNoTracking()
+				.Select(p => new { p.Id, p.BanDescription, p.IsBanned, p.CountryCode, p.HideDonations })
+				.ToList();
+
+			var donations = _dbContext.Donations
+				.AsNoTracking()
+				.Select(d => new { d.PlayerId, d.IsRefunded, d.ConvertedEuroCentsReceived })
+				.Where(d => !d.IsRefunded && d.ConvertedEuroCentsReceived > 0)
+				.ToList();
+
+			List<PlayerTitle> playerTitles = _dbContext.PlayerTitles
+				.AsNoTracking()
+				.Include(pt => pt.Title)
+				.ToList();
+
+			return players.ConvertAll(p => new GetPlayerForLeaderboard
+			{
+				Id = p.Id,
+				BanDescription = p.IsBanned ? p.BanDescription : null,
+				IsPublicDonator = donations.Any(d => d.PlayerId == p.Id),
+				Titles = playerTitles.Where(pt => pt.PlayerId == p.Id).Select(pt => pt.Title.Name).ToList(),
+				CountryCode = p.CountryCode,
+			});
+		}
+
 		[HttpGet("admin")]
 		[Authorize(Roles = Roles.Players)]
 		[ProducesResponseType(StatusCodes.Status200OK)]
