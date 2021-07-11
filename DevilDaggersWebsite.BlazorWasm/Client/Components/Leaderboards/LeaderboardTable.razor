@@ -2,22 +2,20 @@
 @using DevilDaggersWebsite.BlazorWasm.Shared.Dto.Leaderboards
 @using DevilDaggersWebsite.BlazorWasm.Shared.Dto.Players
 
-<div class="grid grid-cols-13">
+<div class="grid grid-cols-4 sm:grid-cols-7 lg:grid-cols-13">
 	<div class="text-right" sort="rank">#</div>
-	<div sort="flag">
-		<Tooltip Text="Nationality (flag)"><img src="~/images/Icons/flag.png" /></Tooltip>
-	</div>
+	<div class="text-left" sort="flag">Flag</div>
 	<div class="text-left" sort="username">Username</div>
 	<div class="text-right" sort="time">Time</div>
-	<div class="text-right invisible sm:visible" sort="kills">Kills</div>
-	<div class="text-right invisible sm:visible" sort="Gems">Gems</div>
-	<div class="text-right invisible sm:visible" sort="accuracy">Accuracy</div>
-	<div class="text-left invisible lg:visible" sort="death-type">Death type</div>
-	<div class="text-right invisible lg:visible" sort="total-time">Total time</div>
-	<div class="text-right invisible lg:visible" sort="total-kills">Total kills</div>
-	<div class="text-right invisible lg:visible" sort="total-Gems">Total Gems</div>
-	<div class="text-right invisible lg:visible" sort="total-accuracy">Total accuracy</div>
-	<div class="text-right invisible lg:visible" sort="total-deaths">Total deaths</div>
+	<div class="text-right hidden sm:block" sort="kills">Kills</div>
+	<div class="text-right hidden sm:block" sort="Gems">Gems</div>
+	<div class="text-right hidden sm:block" sort="accuracy">Accuracy</div>
+	<div class="text-left hidden lg:block" sort="death-type">Death type</div>
+	<div class="text-right hidden lg:block" sort="total-time">Total time</div>
+	<div class="text-right hidden lg:block" sort="total-kills">Total kills</div>
+	<div class="text-right hidden lg:block" sort="total-Gems">Total Gems</div>
+	<div class="text-right hidden lg:block" sort="total-accuracy">Total accuracy</div>
+	<div class="text-right hidden lg:block" sort="total-deaths">Total deaths</div>
 </div>
 @foreach (GetEntryPublic entry in Leaderboard.Entries)
 {
@@ -38,24 +36,24 @@
 	string daggers = FormatUtils.FormatDaggersInt32(entry.DaggersHit, entry.DaggersFired, IsHistory);
 	string daggersTotal = FormatUtils.FormatDaggersUInt64(entry.DaggersHitTotal, entry.DaggersFiredTotal, IsHistory);
 
-	<div class="grid grid-cols-13 @(isBanned ? "text-colorban" : string.Empty)">
+	<div class="grid grid-cols-4 sm:grid-cols-7 lg:grid-cols-13 @(isBanned ? "text-colorban" : string.Empty)">
 		<EntryRank PlayerId="@entry.Id" Rank="@entry.Rank" />
 		<EntryFlag CountryCode="@player?.CountryCode" />
 		<EntryUsername DaggerCssClass="@daggerCssClass" Id="entry.Id" Name="@entry.Username" BanDescription="@player?.BanDescription" IsBanned="player?.IsBanned ?? false" IsPublicDonator="player?.IsPublicDonator ?? false" Titles="player?.Titles" />
 		<div class="text-right @daggerCssClass">@entry.Time</div>
-		<div class="text-right invisible sm:visible">@entry.Kills</div>
-		<div class="text-right invisible sm:visible">@entry.Gems</div>
-		<div class="text-right invisible sm:visible">
+		<div class="text-right hidden sm:block">@entry.Kills</div>
+		<div class="text-right hidden sm:block">@entry.Gems</div>
+		<div class="text-right hidden sm:block">
 			<Tooltip Text="@daggers">@accuracy.ToString(FormatUtils.AccuracyFormat)</Tooltip>
 		</div>
-		<div class="text-left invisible lg:visible" style="@deathStyle">@deathName</div>
-		<div class="text-right invisible lg:visible">@entry.TimeTotal</div>
-		<div class="text-right invisible lg:visible">@entry.KillsTotal</div>
-		<div class="text-right invisible lg:visible">@entry.GemsTotal</div>
-		<div class="text-right invisible lg:visible">
+		<div class="text-left hidden lg:block font-goethe" style="@deathStyle">@deathName</div>
+		<div class="text-right hidden lg:block">@entry.TimeTotal</div>
+		<div class="text-right hidden lg:block">@entry.KillsTotal</div>
+		<div class="text-right hidden lg:block">@entry.GemsTotal</div>
+		<div class="text-right hidden lg:block">
 			<Tooltip Text="@daggersTotal">@accuracyTotal.ToString(FormatUtils.AccuracyFormat)</Tooltip>
 		</div>
-		<div class="hidden-xs hidden-sm hidden-md text-right">@entry.DeathsTotal</div>
+		<div class="text-right hidden lg:block">@entry.DeathsTotal</div>
 	</div>
 }
 
