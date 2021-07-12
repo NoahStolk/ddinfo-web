@@ -5,7 +5,6 @@ using DevilDaggersWebsite.BlazorWasm.Shared.Dto.CustomLeaderboards;
 using DevilDaggersWebsite.Entities;
 using DevilDaggersWebsite.Enumerators;
 using DevilDaggersWebsite.Extensions;
-using DevilDaggersWebsite.Singletons;
 using DevilDaggersWebsite.Tests.Data;
 using DevilDaggersWebsite.Tests.Extensions;
 using IdentityServer4.EntityFramework.Options;

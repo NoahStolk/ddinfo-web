@@ -1,6 +1,6 @@
-﻿using DevilDaggersWebsite.BlazorWasm.Server.Controllers.Attributes;
+﻿using DevilDaggersWebsite.BlazorWasm.Server.Caches.LeaderboardStatistics;
+using DevilDaggersWebsite.BlazorWasm.Server.Controllers.Attributes;
 using DevilDaggersWebsite.BlazorWasm.Shared.Dto.LeaderboardStatistics;
-using DevilDaggersWebsite.Caches.LeaderboardStatistics;
 using DevilDaggersWebsite.Utils;
 using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;

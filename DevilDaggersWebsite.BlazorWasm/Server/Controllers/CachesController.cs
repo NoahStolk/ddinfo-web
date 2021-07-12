@@ -1,10 +1,10 @@
-﻿using DevilDaggersWebsite.BlazorWasm.Shared;
-using DevilDaggersWebsite.Caches;
-using DevilDaggersWebsite.Caches.LeaderboardHistory;
-using DevilDaggersWebsite.Caches.LeaderboardStatistics;
-using DevilDaggersWebsite.Caches.ModArchive;
-using DevilDaggersWebsite.Caches.SpawnsetData;
-using DevilDaggersWebsite.Caches.SpawnsetHash;
+﻿using DevilDaggersWebsite.BlazorWasm.Server.Caches;
+using DevilDaggersWebsite.BlazorWasm.Server.Caches.LeaderboardHistory;
+using DevilDaggersWebsite.BlazorWasm.Server.Caches.LeaderboardStatistics;
+using DevilDaggersWebsite.BlazorWasm.Server.Caches.ModArchive;
+using DevilDaggersWebsite.BlazorWasm.Server.Caches.SpawnsetData;
+using DevilDaggersWebsite.BlazorWasm.Server.Caches.SpawnsetHash;
+using DevilDaggersWebsite.BlazorWasm.Shared;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;

@@ -1,5 +1,5 @@
-﻿using DevilDaggersWebsite.BlazorWasm.Server.Controllers.Attributes;
-using DevilDaggersWebsite.Caches.LeaderboardHistory;
+﻿using DevilDaggersWebsite.BlazorWasm.Server.Caches.LeaderboardHistory;
+using DevilDaggersWebsite.BlazorWasm.Server.Controllers.Attributes;
 using DevilDaggersWebsite.Clients;
 using DevilDaggersWebsite.Dto;
 using DevilDaggersWebsite.Transients;

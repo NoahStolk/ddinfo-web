@@ -1,7 +1,6 @@
 ﻿using DevilDaggersCore.Extensions;
+using DevilDaggersWebsite.BlazorWasm.Server.HostedServices.DdInfoDiscordBot;
 using DevilDaggersWebsite.Extensions;
-using DevilDaggersWebsite.HostedServices.DdInfoDiscordBot;
-using DevilDaggersWebsite.Singletons;
 using System.Collections.Generic;
 using System.ComponentModel.DataAnnotations.Schema;
 using System.Reflection;
