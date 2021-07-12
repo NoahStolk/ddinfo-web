@@ -1,6 +1,6 @@
 ﻿using System;
 
-namespace DevilDaggersWebsite.Api.Attributes
+namespace DevilDaggersWebsite.BlazorWasm.Server.Controllers.Attributes
 {
 	[Flags]
 	public enum EndpointConsumers
@@ -10,6 +10,5 @@ namespace DevilDaggersWebsite.Api.Attributes
 		Ddcl = 2,
 		Ddae = 4,
 		Website = 8,
-		Admin = 16,
 	}
 }

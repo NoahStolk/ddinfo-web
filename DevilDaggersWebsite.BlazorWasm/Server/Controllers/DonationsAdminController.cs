@@ -1,5 +1,4 @@
-﻿using DevilDaggersWebsite.Api.Attributes;
-using DevilDaggersWebsite.BlazorWasm.Server.Converters;
+﻿using DevilDaggersWebsite.BlazorWasm.Server.Converters;
 using DevilDaggersWebsite.BlazorWasm.Server.Singletons;
 using DevilDaggersWebsite.BlazorWasm.Shared;
 using DevilDaggersWebsite.BlazorWasm.Shared.Dto;
@@ -17,23 +16,22 @@ using System.Threading.Tasks;
 
 namespace DevilDaggersWebsite.Api
 {
-	[Route("api/donations/admin")]
+	[Route("api/admin/donations")]
+	[Authorize(Roles = Roles.Admin)]
 	[ApiController]
-	public class DonationsController : ControllerBase
+	public class DonationsAdminController : ControllerBase
 	{
 		private readonly ApplicationDbContext _dbContext;
 		private readonly AuditLogger _auditLogger;
 
-		public DonationsController(ApplicationDbContext dbContext, AuditLogger auditLogger)
+		public DonationsAdminController(ApplicationDbContext dbContext, AuditLogger auditLogger)
 		{
 			_dbContext = dbContext;
 			_auditLogger = auditLogger;
 		}
 
 		[HttpGet]
-		[Authorize(Roles = Roles.Admin)]
 		[ProducesResponseType(StatusCodes.Status200OK)]
-		[EndpointConsumer(EndpointConsumers.None)]
 		public ActionResult<Page<GetDonation>> GetDonations([Range(0, 1000)] int pageIndex = 0, [Range(5, 50)] int pageSize = 25, string? sortBy = null, bool ascending = false)
 		{
 			IQueryable<Donation> donationsQuery = _dbContext.Donations
@@ -56,10 +54,8 @@ namespace DevilDaggersWebsite.Api
 		}
 
 		[HttpPost]
-		[Authorize(Roles = Roles.Admin)]
 		[ProducesResponseType(StatusCodes.Status200OK)]
 		[ProducesResponseType(StatusCodes.Status400BadRequest)]
-		[EndpointConsumer(EndpointConsumers.None)]
 		public async Task<ActionResult> AddDonation(AddDonation addDonation)
 		{
 			if (!_dbContext.Players.Any(p => p.Id == addDonation.PlayerId))
@@ -84,11 +80,9 @@ namespace DevilDaggersWebsite.Api
 		}
 
 		[HttpPut("{id}")]
-		[Authorize(Roles = Roles.Admin)]
 		[ProducesResponseType(StatusCodes.Status200OK)]
 		[ProducesResponseType(StatusCodes.Status400BadRequest)]
 		[ProducesResponseType(StatusCodes.Status404NotFound)]
-		[EndpointConsumer(EndpointConsumers.None)]
 		public async Task<ActionResult> EditDonationById(int id, EditDonation editDonation)
 		{
 			if (!_dbContext.Players.Any(p => p.Id == editDonation.PlayerId))
@@ -124,10 +118,8 @@ namespace DevilDaggersWebsite.Api
 		}
 
 		[HttpDelete("{id}")]
-		[Authorize(Roles = Roles.Admin)]
 		[ProducesResponseType(StatusCodes.Status200OK)]
 		[ProducesResponseType(StatusCodes.Status404NotFound)]
-		[EndpointConsumer(EndpointConsumers.None)]
 		public async Task<ActionResult> DeleteDonationById(int id)
 		{
 			Donation? donation = _dbContext.Donations.FirstOrDefault(d => d.Id == id);

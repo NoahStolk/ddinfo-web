@@ -1,4 +1,4 @@
-﻿using DevilDaggersWebsite.Api.Attributes;
+﻿using DevilDaggersWebsite.BlazorWasm.Server.Controllers.Attributes;
 using DevilDaggersWebsite.Caches.LeaderboardHistory;
 using DevilDaggersWebsite.Clients;
 using DevilDaggersWebsite.Dto;
@@ -13,7 +13,7 @@ using System.ComponentModel.DataAnnotations;
 using System.Linq;
 using Io = System.IO;
 
-namespace DevilDaggersWebsite.Api
+namespace DevilDaggersWebsite.BlazorWasm.Server.Controllers
 {
 	[Route("api/leaderboard-history")]
 	[ApiController]

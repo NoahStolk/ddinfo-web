@@ -1,4 +1,4 @@
-﻿using DevilDaggersWebsite.Api.Attributes;
+﻿using DevilDaggersWebsite.BlazorWasm.Server.Controllers.Attributes;
 using DevilDaggersWebsite.Dto;
 using DevilDaggersWebsite.Entities;
 using DevilDaggersWebsite.Transients;
@@ -14,7 +14,7 @@ using System.Linq;
 using System.Net.Mime;
 using Io = System.IO;
 
-namespace DevilDaggersWebsite.Api
+namespace DevilDaggersWebsite.BlazorWasm.Server.Controllers
 {
 	[Route("api/tools")]
 	[ApiController]

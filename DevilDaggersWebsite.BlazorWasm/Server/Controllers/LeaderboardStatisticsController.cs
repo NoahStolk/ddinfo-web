@@ -1,4 +1,4 @@
-﻿using DevilDaggersWebsite.Api.Attributes;
+﻿using DevilDaggersWebsite.BlazorWasm.Server.Controllers.Attributes;
 using DevilDaggersWebsite.BlazorWasm.Shared.Dto.LeaderboardStatistics;
 using DevilDaggersWebsite.Caches.LeaderboardStatistics;
 using DevilDaggersWebsite.Utils;

@@ -1,5 +1,5 @@
 ﻿using DevilDaggersCore.Game;
-using DevilDaggersWebsite.Api;
+using DevilDaggersWebsite.BlazorWasm.Server.Controllers;
 using Microsoft.VisualStudio.TestTools.UnitTesting;
 using System.Collections.Generic;
 using System.Linq;

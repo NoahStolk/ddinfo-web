@@ -1,5 +1,4 @@
-﻿using DevilDaggersWebsite.Api.Attributes;
-using DevilDaggersWebsite.BlazorWasm.Server.Singletons;
+﻿using DevilDaggersWebsite.BlazorWasm.Server.Singletons;
 using DevilDaggersWebsite.BlazorWasm.Shared;
 using DevilDaggersWebsite.BlazorWasm.Shared.Dto;
 using DevilDaggersWebsite.BlazorWasm.Shared.Dto.Users;
@@ -17,7 +16,8 @@ using System.Threading.Tasks;
 
 namespace DevilDaggersWebsite.Api
 {
-	[Route("api/users/admin")]
+	[Route("api/admin/users")]
+	[Authorize(Roles = Roles.Admin)]
 	[ApiController]
 	public class UsersController : ControllerBase
 	{
@@ -31,9 +31,7 @@ namespace DevilDaggersWebsite.Api
 		}
 
 		[HttpGet]
-		[Authorize(Roles = Roles.Admin)]
 		[ProducesResponseType(StatusCodes.Status200OK)]
-		[EndpointConsumer(EndpointConsumers.None)]
 		public ActionResult<Page<GetUser>> GetUsers([Range(0, 1000)] int pageIndex = 0, [Range(5, 50)] int pageSize = 25, string? sortBy = null, bool ascending = false)
 		{
 			var usersQuery = _dbContext.Users
@@ -70,10 +68,8 @@ namespace DevilDaggersWebsite.Api
 		}
 
 		[HttpDelete("{id}")]
-		[Authorize(Roles = Roles.Admin)]
 		[ProducesResponseType(StatusCodes.Status200OK)]
 		[ProducesResponseType(StatusCodes.Status404NotFound)]
-		[EndpointConsumer(EndpointConsumers.None)]
 		public async Task<ActionResult> DeleteUserById(string id)
 		{
 			ApplicationUser? user = _dbContext.Users

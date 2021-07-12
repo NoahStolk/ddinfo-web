@@ -124,7 +124,7 @@
 	{
 		try
 		{
-			HttpResponseMessage hrm = await Http.Client.PostAsJsonAsync($"api/players/admin", _addPlayer);
+			HttpResponseMessage hrm = await Http.Client.PostAsJsonAsync($"api/admin/players", _addPlayer);
 
 			if (hrm.StatusCode == HttpStatusCode.OK)
 				NavigationManager.NavigateTo("/admin/players");

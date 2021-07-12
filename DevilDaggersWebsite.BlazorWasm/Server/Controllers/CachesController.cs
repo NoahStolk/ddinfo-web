@@ -1,5 +1,4 @@
-﻿using DevilDaggersWebsite.Api.Attributes;
-using DevilDaggersWebsite.BlazorWasm.Shared;
+﻿using DevilDaggersWebsite.BlazorWasm.Shared;
 using DevilDaggersWebsite.Caches;
 using DevilDaggersWebsite.Caches.LeaderboardHistory;
 using DevilDaggersWebsite.Caches.LeaderboardStatistics;
@@ -11,9 +10,10 @@ using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
 using System.Threading.Tasks;
 
-namespace DevilDaggersWebsite.Api
+namespace DevilDaggersWebsite.BlazorWasm.Server.Controllers
 {
-	[Route("api/caches/admin")]
+	[Route("api/admin/caches")]
+	[Authorize(Roles = Roles.Admin)]
 	[ApiController]
 	public class CachesController : ControllerBase
 	{
@@ -38,9 +38,7 @@ namespace DevilDaggersWebsite.Api
 		}
 
 		[HttpPost("clear")]
-		[Authorize(Roles = Roles.Admin)]
 		[ProducesResponseType(StatusCodes.Status200OK)]
-		[EndpointConsumer(EndpointConsumers.Admin)]
 		public async Task<ActionResult> ClearCache(CacheType cacheType)
 		{
 			switch (cacheType)

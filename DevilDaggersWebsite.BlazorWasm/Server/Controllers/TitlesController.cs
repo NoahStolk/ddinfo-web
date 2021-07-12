@@ -1,5 +1,4 @@
-﻿using DevilDaggersWebsite.Api.Attributes;
-using DevilDaggersWebsite.BlazorWasm.Server.Converters;
+﻿using DevilDaggersWebsite.BlazorWasm.Server.Converters;
 using DevilDaggersWebsite.BlazorWasm.Server.Singletons;
 using DevilDaggersWebsite.BlazorWasm.Shared;
 using DevilDaggersWebsite.BlazorWasm.Shared.Dto;
@@ -17,7 +16,8 @@ using System.Threading.Tasks;
 
 namespace DevilDaggersWebsite.Api
 {
-	[Route("api/titles/admin")]
+	[Route("api/admin/titles")]
+	[Authorize(Roles = Roles.Admin)]
 	[ApiController]
 	public class TitlesController : ControllerBase
 	{
@@ -31,9 +31,7 @@ namespace DevilDaggersWebsite.Api
 		}
 
 		[HttpGet]
-		[Authorize(Roles = Roles.Admin)]
 		[ProducesResponseType(StatusCodes.Status200OK)]
-		[EndpointConsumer(EndpointConsumers.None)]
 		public ActionResult<Page<GetTitle>> GetTitles([Range(0, 1000)] int pageIndex = 0, [Range(5, 50)] int pageSize = 25, string? sortBy = null, bool ascending = false)
 		{
 			IQueryable<Title> titlesQuery = _dbContext.Titles
@@ -56,10 +54,8 @@ namespace DevilDaggersWebsite.Api
 		}
 
 		[HttpPost]
-		[Authorize(Roles = Roles.Admin)]
 		[ProducesResponseType(StatusCodes.Status200OK)]
 		[ProducesResponseType(StatusCodes.Status400BadRequest)]
-		[EndpointConsumer(EndpointConsumers.None)]
 		public async Task<ActionResult> AddTitle(AddTitle addTitle)
 		{
 			foreach (int playerId in addTitle.PlayerIds ?? new())
@@ -84,11 +80,9 @@ namespace DevilDaggersWebsite.Api
 		}
 
 		[HttpPut("{id}")]
-		[Authorize(Roles = Roles.Admin)]
 		[ProducesResponseType(StatusCodes.Status200OK)]
 		[ProducesResponseType(StatusCodes.Status400BadRequest)]
 		[ProducesResponseType(StatusCodes.Status404NotFound)]
-		[EndpointConsumer(EndpointConsumers.None)]
 		public async Task<ActionResult> EditTitleById(int id, EditTitle editTitle)
 		{
 			foreach (int playerId in editTitle.PlayerIds ?? new())
@@ -120,10 +114,8 @@ namespace DevilDaggersWebsite.Api
 		}
 
 		[HttpDelete("{id}")]
-		[Authorize(Roles = Roles.Admin)]
 		[ProducesResponseType(StatusCodes.Status200OK)]
 		[ProducesResponseType(StatusCodes.Status404NotFound)]
-		[EndpointConsumer(EndpointConsumers.None)]
 		public async Task<ActionResult> DeleteTitleById(int id)
 		{
 			Title? title = _dbContext.Titles

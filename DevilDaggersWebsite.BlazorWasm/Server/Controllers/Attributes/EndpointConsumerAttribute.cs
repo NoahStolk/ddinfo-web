@@ -1,6 +1,6 @@
 ﻿using System;
 
-namespace DevilDaggersWebsite.Api.Attributes
+namespace DevilDaggersWebsite.BlazorWasm.Server.Controllers.Attributes
 {
 	[AttributeUsage(AttributeTargets.Method, AllowMultiple = false)]
 	public class EndpointConsumerAttribute : Attribute
