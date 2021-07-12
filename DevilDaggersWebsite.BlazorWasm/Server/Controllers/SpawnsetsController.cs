@@ -1,12 +1,18 @@
-﻿using DevilDaggersWebsite.BlazorWasm.Server.Controllers.Attributes;
-using DevilDaggersWebsite.BlazorWasm.Server.Transients;
+﻿using DevilDaggersCore.Spawnsets;
+using DevilDaggersWebsite.BlazorWasm.Server.Caches.SpawnsetData;
+using DevilDaggersWebsite.BlazorWasm.Server.Controllers.Attributes;
+using DevilDaggersWebsite.BlazorWasm.Server.Entities;
+using DevilDaggersWebsite.BlazorWasm.Server.Extensions;
 using DevilDaggersWebsite.BlazorWasm.Shared.Dto.Spawnsets;
 using Microsoft.AspNetCore.Hosting;
 using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
+using Microsoft.EntityFrameworkCore;
+using System;
 using System.Collections.Generic;
 using System.ComponentModel.DataAnnotations;
 using System.IO;
+using System.Linq;
 using System.Net.Mime;
 using Io = System.IO;
 
@@ -16,20 +22,47 @@ namespace DevilDaggersWebsite.BlazorWasm.Server.Controllers
 	[ApiController]
 	public class SpawnsetsController : ControllerBase
 	{
-		private readonly SpawnsetHelper _spawnsetHelper;
+		private readonly ApplicationDbContext _dbContext;
 		private readonly IWebHostEnvironment _environment;
+		private readonly SpawnsetDataCache _spawnsetDataCache;
 
-		public SpawnsetsController(SpawnsetHelper spawnsetHelper, IWebHostEnvironment environment)
+		public SpawnsetsController(ApplicationDbContext dbContext, IWebHostEnvironment environment, SpawnsetDataCache spawnsetDataCache)
 		{
-			_spawnsetHelper = spawnsetHelper;
+			_dbContext = dbContext;
 			_environment = environment;
+			_spawnsetDataCache = spawnsetDataCache;
 		}
 
 		[HttpGet]
 		[ProducesResponseType(StatusCodes.Status200OK)]
 		[EndpointConsumer(EndpointConsumers.Ddse)]
 		public List<GetSpawnsetPublic> GetPublicSpawnsets(string? authorFilter = null, string? nameFilter = null)
-			=> _spawnsetHelper.GetSpawnsets(authorFilter, nameFilter);
+		{
+			List<int> spawnsetsWithCustomLeaderboardIds = _dbContext.CustomLeaderboards
+				.AsNoTracking()
+				.Where(cl => !cl.IsArchived)
+				.Select(cl => cl.SpawnsetFileId)
+				.ToList();
+
+			IEnumerable<SpawnsetFile> query = _dbContext.SpawnsetFiles.AsNoTracking().Include(sf => sf.Player);
+
+			if (!string.IsNullOrWhiteSpace(authorFilter))
+				query = query.Where(sf => sf.Player.PlayerName.Contains(authorFilter, StringComparison.InvariantCultureIgnoreCase));
+
+			if (!string.IsNullOrWhiteSpace(nameFilter))
+				query = query.Where(sf => sf.Name.Contains(nameFilter, StringComparison.InvariantCultureIgnoreCase));
+
+			return query
+				.Where(sf => Io.File.Exists(Path.Combine(_environment.WebRootPath, "spawnsets", sf.Name)))
+				.Select(sf => Map(sf))
+				.ToList();
+
+			GetSpawnsetPublic Map(SpawnsetFile spawnsetFile)
+			{
+				SpawnsetData spawnsetData = _spawnsetDataCache.GetSpawnsetDataByFilePath(Path.Combine(_environment.WebRootPath, "spawnsets", spawnsetFile.Name));
+				return spawnsetFile.ToDto(spawnsetData, spawnsetsWithCustomLeaderboardIds.Contains(spawnsetFile.Id));
+			}
+		}
 
 		[HttpGet("{fileName}/file")]
 		[ProducesResponseType(typeof(FileContentResult), StatusCodes.Status200OK)]
