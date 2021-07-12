@@ -14,6 +14,8 @@ namespace DevilDaggersWebsite.BlazorWasm.Client
 			WebAssemblyHostBuilder builder = WebAssemblyHostBuilder.CreateDefault(args);
 			builder.RootComponents.Add<App>("#app");
 
+			builder.Services.AddHttpClient("BlazorWasmApp.AnonymousAPI", client => client.BaseAddress = new Uri(builder.HostEnvironment.BaseAddress));
+
 			builder.Services.AddHttpClient("DevilDaggersWebsite.BlazorWasm.ServerAPI", client => client.BaseAddress = new Uri(builder.HostEnvironment.BaseAddress))
 				.AddHttpMessageHandler<BaseAddressAuthorizationMessageHandler>();
 

@@ -10,7 +10,7 @@ namespace DevilDaggersWebsite.Caches.LeaderboardStatistics
 {
 	public class LeaderboardStatisticsCache : IStaticCache
 	{
-		private static readonly int _timeStep = 100000; // 10 seconds
+		private const int _timeStep = 100000; // 10 seconds
 
 		private readonly List<CompressedEntry> _entries = new();
 
@@ -55,7 +55,7 @@ namespace DevilDaggersWebsite.Caches.LeaderboardStatistics
 				return;
 			}
 
-			FileName = Path.GetFileNameWithoutExtension(paths[0]);
+			FileName = Path.GetFileNameWithoutExtension(paths.OrderByDescending(p => p).First());
 
 			IsFetched = false;
 
