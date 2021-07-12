@@ -1,14 +1,14 @@
 ﻿using DevilDaggersCore.Spawnsets;
 using DevilDaggersWebsite.BlazorWasm.Server.Entities;
 using DevilDaggersWebsite.BlazorWasm.Shared.Dto.CustomEntries;
-using DevilDaggersWebsite.Dto.CustomLeaderboards;
-using DevilDaggersWebsite.Dto.Spawnsets;
+using DevilDaggersWebsite.BlazorWasm.Shared.Dto.CustomLeaderboards;
+using DevilDaggersWebsite.BlazorWasm.Shared.Dto.Spawnsets;
 
 namespace DevilDaggersWebsite.BlazorWasm.Server.Extensions
 {
 	public static class EntityConverterExtensions
 	{
-		public static GetCustomLeaderboard ToDto(this CustomLeaderboard customLeaderboard)
+		public static GetCustomLeaderboardPublic ToDto(this CustomLeaderboard customLeaderboard)
 		{
 			return new()
 			{

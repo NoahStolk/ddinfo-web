@@ -1,11 +1,11 @@
-﻿using DevilDaggersWebsite.BlazorWasm.Server.Converters;
+﻿using DevilDaggersWebsite.BlazorWasm.Server.Clients.Leaderboard;
+using DevilDaggersWebsite.BlazorWasm.Server.Converters;
 using DevilDaggersWebsite.BlazorWasm.Server.Entities;
 using DevilDaggersWebsite.BlazorWasm.Server.Extensions;
 using DevilDaggersWebsite.BlazorWasm.Server.Singletons;
 using DevilDaggersWebsite.BlazorWasm.Shared;
 using DevilDaggersWebsite.BlazorWasm.Shared.Dto;
 using DevilDaggersWebsite.BlazorWasm.Shared.Dto.Players;
-using DevilDaggersWebsite.Clients;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;

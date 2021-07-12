@@ -1,6 +1,6 @@
 ﻿using DevilDaggersWebsite.BlazorWasm.Server.Controllers.Attributes;
 using DevilDaggersWebsite.BlazorWasm.Server.Transients;
-using DevilDaggersWebsite.Dto.Spawnsets;
+using DevilDaggersWebsite.BlazorWasm.Shared.Dto.Spawnsets;
 using Microsoft.AspNetCore.Hosting;
 using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;

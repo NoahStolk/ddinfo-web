@@ -2,7 +2,7 @@
 
 namespace DevilDaggersWebsite.BlazorWasm.Shared.Dto.Assets
 {
-	public class AssetInfoPublic
+	public class GetAssetInfoPublic
 	{
 		public string Name { get; init; } = null!;
 		public string Description { get; init; } = null!;

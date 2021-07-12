@@ -191,7 +191,7 @@ namespace DevilDaggersWebsite.BlazorWasm.Server.Controllers
 
 				await TrySendLeaderboardMessage(customLeaderboard, $"`{uploadRequest.PlayerName}` just entered the `{spawnsetName}` leaderboard!", rank, totalPlayers, uploadRequest.Time);
 				await TryLog(uploadRequest, spawnsetName);
-				return new Dto.GetUploadSuccessPublic
+				return new GetUploadSuccessPublic
 				{
 					Message = $"Welcome to the {spawnsetName} leaderboard!",
 					TotalPlayers = totalPlayers,
@@ -225,7 +225,7 @@ namespace DevilDaggersWebsite.BlazorWasm.Server.Controllers
 				entries = FetchEntriesFromDatabase(customLeaderboard, isAscending);
 
 				await TryLog(uploadRequest, spawnsetName);
-				return new Dto.GetUploadSuccessPublic
+				return new GetUploadSuccessPublic
 				{
 					Message = $"No new highscore for {customLeaderboard.SpawnsetFile.Name}.",
 					TotalPlayers = totalPlayers,
@@ -299,7 +299,7 @@ namespace DevilDaggersWebsite.BlazorWasm.Server.Controllers
 
 			await TrySendLeaderboardMessage(customLeaderboard, $"`{uploadRequest.PlayerName}` just got {FormatTimeString(uploadRequest.Time)} seconds on the `{spawnsetName}` leaderboard, beating their previous highscore of {FormatTimeString(uploadRequest.Time - timeDiff)} by {FormatTimeString(Math.Abs(timeDiff))} seconds!", rank, totalPlayers, uploadRequest.Time);
 			await TryLog(uploadRequest, spawnsetName);
-			return new Dto.GetUploadSuccessPublic
+			return new GetUploadSuccessPublic
 			{
 				Message = $"NEW HIGHSCORE for {customLeaderboard.SpawnsetFile.Name}!",
 				TotalPlayers = totalPlayers,

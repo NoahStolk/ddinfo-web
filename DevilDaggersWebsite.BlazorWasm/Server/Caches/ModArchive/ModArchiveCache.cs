@@ -1,4 +1,4 @@
-﻿using DevilDaggersWebsite.Exceptions;
+﻿using DevilDaggersWebsite.BlazorWasm.Server.Exceptions;
 using Microsoft.AspNetCore.Hosting;
 using Newtonsoft.Json;
 using System.Collections.Concurrent;

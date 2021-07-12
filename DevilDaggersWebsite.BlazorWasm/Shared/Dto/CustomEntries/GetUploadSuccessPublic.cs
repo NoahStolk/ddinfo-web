@@ -1,4 +1,5 @@
-﻿using DevilDaggersWebsite.BlazorWasm.Shared.Enums;
+﻿using DevilDaggersWebsite.BlazorWasm.Shared.Dto.CustomLeaderboards;
+using DevilDaggersWebsite.BlazorWasm.Shared.Enums;
 using System.Collections.Generic;
 
 namespace DevilDaggersWebsite.BlazorWasm.Shared.Dto.CustomEntries
@@ -8,9 +9,9 @@ namespace DevilDaggersWebsite.BlazorWasm.Shared.Dto.CustomEntries
 		public string Message { get; init; } = string.Empty;
 
 		public int TotalPlayers { get; init; }
-		public GetCustomLeaderboard Leaderboard { get; init; } = null!;
+		public GetCustomLeaderboardPublic Leaderboard { get; init; } = null!;
 		public CustomLeaderboardCategory Category { get; init; }
-		public List<CustomEntry> Entries { get; init; } = new();
+		public List<GetCustomEntryPublic> Entries { get; init; } = new();
 		public bool IsNewPlayerOnThisLeaderboard { get; init; }
 
 		public int Rank { get; init; }

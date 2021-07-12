@@ -2,7 +2,7 @@
 using DevilDaggersWebsite.BlazorWasm.Server.Caches.SpawnsetData;
 using DevilDaggersWebsite.BlazorWasm.Server.Entities;
 using DevilDaggersWebsite.BlazorWasm.Server.Extensions;
-using DevilDaggersWebsite.Dto.Spawnsets;
+using DevilDaggersWebsite.BlazorWasm.Shared.Dto.Spawnsets;
 using Microsoft.AspNetCore.Hosting;
 using Microsoft.EntityFrameworkCore;
 using System;

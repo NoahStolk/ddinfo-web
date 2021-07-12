@@ -1,4 +1,5 @@
 ﻿using DevilDaggersWebsite.BlazorWasm.Server.Controllers.Attributes;
+using DevilDaggersWebsite.BlazorWasm.Shared.Dto.Assets;
 using Microsoft.AspNetCore.Hosting;
 using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
@@ -23,13 +24,13 @@ namespace DevilDaggersWebsite.BlazorWasm.Server.Controllers
 		[HttpGet("info")]
 		[ProducesResponseType(StatusCodes.Status200OK)]
 		[EndpointConsumer(EndpointConsumers.Ddae)]
-		public ActionResult<Dictionary<string, List<Dto.AssetInfo>>> GetAssetInfo()
+		public ActionResult<Dictionary<string, List<GetAssetInfoPublic>>> GetAssetInfo()
 		{
 			return Io.Directory.GetFiles(Io.Path.Combine(_environment.WebRootPath, "asset-info"))
 				.Select(p =>
 				{
 					string fileName = Io.Path.GetFileNameWithoutExtension(p);
-					List<Dto.AssetInfo> assetInfo = JsonConvert.DeserializeObject<List<Dto.AssetInfo>?>(Io.File.ReadAllText(p)) ?? throw new($"Could not deserialize asset info from file '{fileName}'.");
+					List<GetAssetInfoPublic> assetInfo = JsonConvert.DeserializeObject<List<GetAssetInfoPublic>?>(Io.File.ReadAllText(p)) ?? throw new($"Could not deserialize asset info from file '{fileName}'.");
 					return (fileName, assetInfo);
 				}).
 				ToDictionary(t => t.fileName, t => t.assetInfo);

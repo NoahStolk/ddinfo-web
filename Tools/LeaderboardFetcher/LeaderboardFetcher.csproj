@@ -16,4 +16,7 @@
       <IncludeAssets>runtime; build; native; contentfiles; analyzers; buildtransitive</IncludeAssets>
     </PackageReference>
   </ItemGroup>
+  <ItemGroup>
+    <ProjectReference Include="..\..\DevilDaggersWebsite.BlazorWasm\Server\DevilDaggersWebsite.BlazorWasm.Server.csproj" />
+  </ItemGroup>
 </Project>

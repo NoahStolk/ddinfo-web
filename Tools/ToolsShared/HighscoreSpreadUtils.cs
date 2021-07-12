@@ -1,6 +1,6 @@
 ﻿using DevilDaggersCore.Game;
-using DevilDaggersWebsite.Clients;
-using DevilDaggersWebsite.Utils;
+using DevilDaggersWebsite.BlazorWasm.Server.Clients.Leaderboard;
+using DevilDaggersWebsite.BlazorWasm.Shared;
 using Newtonsoft.Json;
 using System;
 using System.Collections.Generic;
@@ -18,10 +18,10 @@ namespace ToolsShared
 
 		public static void SpreadAllHighscoreStats(bool writeLogToFile, bool useConsole)
 		{
-			Dictionary<string, Leaderboard> leaderboards = GetAllLeaderboards();
+			Dictionary<string, LeaderboardResponse> leaderboards = GetAllLeaderboards();
 
 			_log.Clear();
-			foreach (KeyValuePair<string, Leaderboard> kvp in leaderboards)
+			foreach (KeyValuePair<string, LeaderboardResponse> kvp in leaderboards)
 			{
 				SpreadHighscoreStats(leaderboards.Select(kvp => kvp.Value).ToList(), kvp.Value);
 				File.WriteAllText(kvp.Key, JsonConvert.SerializeObject(kvp.Value, kvp.Value.DateTime > _fullHistoryDateStart ? Formatting.None : Formatting.Indented));
@@ -33,26 +33,26 @@ namespace ToolsShared
 				Console.WriteLine(_log.ToString());
 		}
 
-		public static Dictionary<string, Leaderboard> GetAllLeaderboards()
+		public static Dictionary<string, LeaderboardResponse> GetAllLeaderboards()
 		{
-			Dictionary<string, Leaderboard> leaderboards = new();
+			Dictionary<string, LeaderboardResponse> leaderboards = new();
 			foreach (string path in Directory.GetFiles(@"C:\Users\NOAH\source\repos\DevilDaggersWebsite\DevilDaggersWebsite.Razor\wwwroot\leaderboard-history", "*.json"))
 			{
 				string jsonString = File.ReadAllText(path, Encoding.UTF8);
-				leaderboards.Add(path, JsonConvert.DeserializeObject<Leaderboard>(jsonString) ?? throw new("Could not deserialize leaderboard."));
+				leaderboards.Add(path, JsonConvert.DeserializeObject<LeaderboardResponse>(jsonString) ?? throw new("Could not deserialize leaderboard."));
 			}
 
 			return leaderboards;
 		}
 
-		public static void SpreadHighscoreStats(List<Leaderboard> leaderboards, Leaderboard leaderboard)
+		public static void SpreadHighscoreStats(List<LeaderboardResponse> leaderboards, LeaderboardResponse leaderboard)
 		{
-			List<Entry> changes = new();
-			foreach (Entry entry in leaderboard.Entries)
+			List<EntryResponse> changes = new();
+			foreach (EntryResponse entry in leaderboard.Entries)
 			{
 				if (entry.Id != 0 && entry.HasMissingStats())
 				{
-					IEnumerable<Leaderboard> leaderboardsWithStats = leaderboards.Where(l => l.Entries.Any(e => e.Id == entry.Id && e.Time >= entry.Time - 1 && e.Time <= entry.Time + 1));
+					IEnumerable<LeaderboardResponse> leaderboardsWithStats = leaderboards.Where(l => l.Entries.Any(e => e.Id == entry.Id && e.Time >= entry.Time - 1 && e.Time <= entry.Time + 1));
 					if (!leaderboardsWithStats.Any())
 						continue;
 
@@ -64,9 +64,9 @@ namespace ToolsShared
 			if (changes.Count != 0)
 			{
 				_log.AppendLine(leaderboard.DateTime.ToString());
-				foreach (Entry entry in changes)
+				foreach (EntryResponse entry in changes)
 				{
-					_log.Append("\tSet missing stats for ").Append(entry.Username).Append(' ').AppendLine(entry.Time.FormatTimeInteger());
+					_log.Append("\tSet missing stats for ").Append(entry.Username).Append(' ').AppendLine(entry.Time.ToString(FormatUtils.TimeFormat));
 					_log.Append("\t\tGems: ").Append(entry.Gems).AppendLine();
 					_log.Append("\t\tKills: ").Append(entry.Kills).AppendLine();
 					_log.Append("\t\tDeathType: ").AppendLine(GameInfo.GetDeathByType(GameInfo.GetGameVersionFromDate(leaderboard.DateTime) ?? GameVersion.V1, entry.DeathType)?.Name ?? "Unknown");
@@ -77,24 +77,24 @@ namespace ToolsShared
 			}
 		}
 
-		public static bool HasMissingStats(this Entry entry)
+		public static bool HasMissingStats(this EntryResponse entry)
 			=> entry.Gems == 0 || entry.Kills == 0 || entry.DeathType == -1 || entry.DaggersHit == 0 || entry.DaggersFired == 0 || entry.DaggersFired == 10000;
 
-		private static void Combine(Entry original, IEnumerable<Entry> entries)
+		private static void Combine(EntryResponse original, IEnumerable<EntryResponse> entries)
 		{
-			Entry? withGems = entries.FirstOrDefault(e => e.Gems != 0);
+			EntryResponse? withGems = entries.FirstOrDefault(e => e.Gems != 0);
 			if (withGems != null)
 				original.Gems = withGems.Gems;
 
-			Entry? withKills = entries.FirstOrDefault(e => e.Kills != 0);
+			EntryResponse? withKills = entries.FirstOrDefault(e => e.Kills != 0);
 			if (withKills != null)
 				original.Kills = withKills.Kills;
 
-			Entry? withDeathType = entries.FirstOrDefault(e => e.DeathType != -1);
+			EntryResponse? withDeathType = entries.FirstOrDefault(e => e.DeathType != -1);
 			if (withDeathType != null)
 				original.DeathType = withDeathType.DeathType;
 
-			Entry? withFullDaggerStats = entries.FirstOrDefault(e => e.DaggersFired != 0 && e.DaggersFired != 10000);
+			EntryResponse? withFullDaggerStats = entries.FirstOrDefault(e => e.DaggersFired != 0 && e.DaggersFired != 10000);
 			if (withFullDaggerStats != null)
 			{
 				original.DaggersHit = withFullDaggerStats.DaggersHit;
@@ -102,7 +102,7 @@ namespace ToolsShared
 			}
 			else
 			{
-				Entry? withPartialDaggerStats = entries.FirstOrDefault(e => e.DaggersFired != 0);
+				EntryResponse? withPartialDaggerStats = entries.FirstOrDefault(e => e.DaggersFired != 0);
 				if (withPartialDaggerStats != null)
 				{
 					original.DaggersHit = withPartialDaggerStats.DaggersHit;

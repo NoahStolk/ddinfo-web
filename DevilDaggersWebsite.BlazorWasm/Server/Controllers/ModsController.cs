@@ -2,7 +2,6 @@
 using DevilDaggersWebsite.BlazorWasm.Server.Entities;
 using DevilDaggersWebsite.BlazorWasm.Server.Transients;
 using DevilDaggersWebsite.BlazorWasm.Shared.Dto.Mods;
-using DevilDaggersWebsite.Dto.Mods;
 using Microsoft.AspNetCore.Hosting;
 using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;

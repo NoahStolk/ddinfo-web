@@ -1,7 +1,7 @@
 ﻿using DevilDaggersCore.Spawnsets;
 using System;
 
-namespace DevilDaggersWebsite.Dto.Spawnsets
+namespace DevilDaggersWebsite.BlazorWasm.Shared.Dto.Spawnsets
 {
 	public class GetSpawnsetPublic
 	{
