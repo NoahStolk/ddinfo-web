@@ -69,7 +69,7 @@ namespace DevilDaggersWebsite.Tests
 		[TestMethod]
 		public async Task PostUploadRequest_ExistingPlayer_ExistingEntry_NoHighscore()
 		{
-			Dto.AddUploadRequestPublic uploadRequest = new()
+			AddUploadRequestPublic uploadRequest = new()
 			{
 				Time = 100000,
 				PlayerId = 1,
@@ -90,7 +90,7 @@ namespace DevilDaggersWebsite.Tests
 		[TestMethod]
 		public async Task PostUploadRequest_ExistingPlayer_ExistingEntry_NewHighscore()
 		{
-			Dto.AddUploadRequestPublic uploadRequest = new()
+			AddUploadRequestPublic uploadRequest = new()
 			{
 				Time = 200000,
 				PlayerId = 1,
@@ -111,7 +111,7 @@ namespace DevilDaggersWebsite.Tests
 		[TestMethod]
 		public async Task PostUploadRequest_ExistingPlayer_NewEntry()
 		{
-			Dto.AddUploadRequestPublic uploadRequest = new()
+			AddUploadRequestPublic uploadRequest = new()
 			{
 				Time = 200000,
 				PlayerId = 2,
@@ -132,7 +132,7 @@ namespace DevilDaggersWebsite.Tests
 		[TestMethod]
 		public async Task PostUploadRequest_NewPlayer()
 		{
-			Dto.AddUploadRequestPublic uploadRequest = new()
+			AddUploadRequestPublic uploadRequest = new()
 			{
 				Time = 300000,
 				PlayerId = 3,
@@ -154,7 +154,7 @@ namespace DevilDaggersWebsite.Tests
 		[TestMethod]
 		public async Task PostUploadRequest_Outdated()
 		{
-			Dto.AddUploadRequestPublic uploadRequest = new()
+			AddUploadRequestPublic uploadRequest = new()
 			{
 				Time = 100000,
 				PlayerId = 1,
@@ -181,7 +181,7 @@ namespace DevilDaggersWebsite.Tests
 		[TestMethod]
 		public async Task PostUploadRequest_InvalidValidation()
 		{
-			Dto.AddUploadRequestPublic uploadRequest = new()
+			AddUploadRequestPublic uploadRequest = new()
 			{
 				Time = 100000,
 				PlayerId = 1,
@@ -205,7 +205,7 @@ namespace DevilDaggersWebsite.Tests
 			Assert.IsTrue(problemDetails.Title == "Invalid submission.");
 		}
 
-		private static string GetValidation(Dto.AddUploadRequestPublic uploadRequest)
+		private static string GetValidation(AddUploadRequestPublic uploadRequest)
 		{
 			string toEncrypt = string.Join(
 				";",

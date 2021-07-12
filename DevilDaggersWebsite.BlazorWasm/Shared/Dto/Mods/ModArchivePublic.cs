@@ -1,5 +1,4 @@
-﻿using DevilDaggersWebsite.Dto;
-using System.Collections.Generic;
+﻿using System.Collections.Generic;
 
 namespace DevilDaggersWebsite.BlazorWasm.Shared.Dto.Mods
 {

@@ -1,4 +1,4 @@
-﻿namespace DevilDaggersWebsite.Dto
+﻿namespace DevilDaggersWebsite.BlazorWasm.Shared.Dto.CustomEntries
 {
 	public class AddGameStatePublic
 	{

@@ -1,4 +1,4 @@
-﻿using DevilDaggersWebsite.Dto;
+﻿using DevilDaggersWebsite.BlazorWasm.Shared.Dto.CustomEntries;
 using System;
 
 namespace DevilDaggersWebsite.BlazorWasm.Server.Extensions

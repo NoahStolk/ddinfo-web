@@ -1,6 +1,6 @@
 ﻿using DevilDaggersWebsite.BlazorWasm.Shared.Enums;
 
-namespace DevilDaggersWebsite.Dto
+namespace DevilDaggersWebsite.BlazorWasm.Shared.Dto.Mods
 {
 	public class ModBinaryPublic
 	{
