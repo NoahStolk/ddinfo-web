@@ -18,6 +18,7 @@ using Microsoft.EntityFrameworkCore;
 using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Extensions.Hosting;
+using NJsonSchema;
 using System;
 using System.Globalization;
 using System.IdentityModel.Tokens.Jwt;
@@ -92,14 +93,18 @@ namespace DevilDaggersWebsite.BlazorWasm.Server
 			services.AddTransient<SpawnsetHelper>();
 			services.AddTransient<IToolHelper, ToolHelper>(); // TODO: Singleton?
 
-			services.AddSwaggerDocument(config => config.PostProcess = document =>
+			services.AddSwaggerDocument(config =>
 			{
-				document.Info.Title = "DevilDaggers.Info API";
-				document.Info.Contact = new()
+				config.PostProcess = document =>
 				{
-					Name = "Noah Stolk",
-					Url = "//noahstolk.com/",
+					document.Info.Title = "DevilDaggers.Info API";
+					document.Info.Contact = new()
+					{
+						Name = "Noah Stolk",
+						Url = "//noahstolk.com/",
+					};
 				};
+				config.SchemaType = SchemaType.OpenApi3;
 			});
 		}
 
