@@ -58,9 +58,19 @@ namespace DevilDaggersWebsite.Caches.LeaderboardStatistics
 			DeathStats.Clear();
 			TimeStats = Enumerable.Range(0, 120).ToDictionary(i => i * 10, _ => 0);
 
-			byte[] bytes = File.ReadAllBytes(paths[0]);
-			for (int i = 0; i < bytes.Length / 15; i++)
-				_entries.Add(CompressedEntry.FromBytes(bytes[(i * 15)..((i + 1) * 15)]));
+			using (FileStream fs = new(paths[0], FileMode.Open))
+			{
+				using BinaryReader br = new(fs);
+				_entries.Add(new()
+				{
+					Time = br.ReadUInt32(),
+					Kills = br.ReadUInt16(),
+					Gems = br.ReadUInt16(),
+					DaggersHit = br.ReadUInt16(),
+					DaggersFired = br.ReadUInt32(),
+					DeathType = br.ReadByte(),
+				});
+			}
 
 			foreach (Death death in GameInfo.GetDeaths(GameVersion.V31))
 				DeathStats.Add(death, 0);
