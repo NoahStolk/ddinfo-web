@@ -18,9 +18,11 @@ using Microsoft.EntityFrameworkCore;
 using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Extensions.Hosting;
+using System;
 using System.Globalization;
 using System.IdentityModel.Tokens.Jwt;
 using System.Linq;
+using System.Threading.Tasks;
 
 namespace DevilDaggersWebsite.BlazorWasm.Server
 {
@@ -101,7 +103,7 @@ namespace DevilDaggersWebsite.BlazorWasm.Server
 			});
 		}
 
-		public void Configure(IApplicationBuilder app, IWebHostEnvironment env)
+		public void Configure(IApplicationBuilder app, IWebHostEnvironment env, IServiceProvider serviceProvider)
 		{
 			CultureInfo.DefaultThreadCurrentCulture = CultureInfo.InvariantCulture;
 			CultureInfo.DefaultThreadCurrentUICulture = CultureInfo.InvariantCulture;
@@ -164,6 +166,24 @@ namespace DevilDaggersWebsite.BlazorWasm.Server
 
 			app.UseOpenApi();
 			app.UseSwaggerUi3();
+
+			// Initiate static caches.
+			LeaderboardStatisticsCache leaderboardStatisticsCache = serviceProvider.GetRequiredService<LeaderboardStatisticsCache>();
+			Task task = leaderboardStatisticsCache.Initiate();
+			task.Wait();
+
+			// Initiate dynamic caches.
+
+			// SpawnsetDataCache does not need to be initiated as it is fast enough.
+			// SpawnsetHashCache does not need to be initiated as it is fast enough.
+
+			// TODO: LeaderboardHistoryCache might need to be initiated as the initial world record progression load is a little slow.
+
+			/* The ModArchiveCache is initially very slow because it requires unzipping huge mod archive zip files.
+			 * The idea to fix this; when adding data (based on a mod archive) to the ConcurrentBag, write this data to a JSON file as well, so it is not lost when the site shuts down.
+			 * The cache then needs to be initiated here, by reading all the JSON files and populating the ConcurrentBag on start up. Effectively this is caching the cache.*/
+			//ModArchiveCache modArchiveCache = serviceProvider.GetRequiredService<ModArchiveCache>();
+			//modArchiveCache.LoadEntireFileCache();
 		}
 	}
 }

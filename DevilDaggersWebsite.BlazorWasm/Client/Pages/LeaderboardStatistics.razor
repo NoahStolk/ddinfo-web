@@ -1,0 +1,56 @@
+﻿@page "/leaderboard-statistics"
+@using DevilDaggersCore.Game
+@using DevilDaggersWebsite.BlazorWasm.Shared.Dto.LeaderboardStatistics
+@inject HttpClient Http
+
+<h1>Leaderboard Statistics</h1>
+
+@if (_statistics == null)
+{
+	<Loading />
+}
+else
+{
+	@if (!_statistics.IsFetched)
+	{
+		<p>Statistics are not initialized.</p>
+	}
+	else
+	{
+		<p>
+			This page contains some global statistics from the leaderboard.
+		</p>
+		<p>
+			Statistics were last fetched on @_statistics.DateTime.ToString(FormatUtils.DateTimeUtcFormat).
+		</p>
+
+		<h2>Scores</h2>
+		<ul>
+			@foreach (KeyValuePair<string, int> kvp in _statistics.EnemyStatistics)
+			{
+				<li>>@kvp.Value out of @_statistics.TotalEntries players (<span>@((kvp.Value / (float)_statistics.TotalEntries).ToString("0.00%"))</span>) have seen @kvp.Key.</li>
+			}
+			<li>The average time survived for all players is <span class="@GameInfo.GetDaggerFromTenthsOfMilliseconds(GameVersion.V31, _statistics.AverageTimeInTenthsOfMilliseconds).Name.ToLower()">@((_statistics.AverageTimeInTenthsOfMilliseconds / 10000f).ToString(FormatUtils.TimeFormat))</span> seconds.</li>
+			<li>The average kills for all players is @(_statistics.AverageKills.ToString(FormatUtils.LeaderboardIntAverageFormat)).</li>
+			<li>The average gems for all players is @(_statistics.AverageGems.ToString(FormatUtils.LeaderboardIntAverageFormat)).</li>
+		</ul>
+
+		<h3>Sub 500 Scores</h3>
+
+		<h3>500+ Scores</h3>
+
+		<h2>Daggers</h2>
+
+		<h2>Death types</h2>
+	}
+}
+
+@code
+{
+	private GetLeaderboardStatistics? _statistics;
+
+	protected override async Task OnInitializedAsync()
+	{
+		_statistics = await Http.GetFromJsonAsync<GetLeaderboardStatistics>("api/leaderboard-statistics");
+	}
+}

@@ -30,4 +30,9 @@
     <ProjectReference Include="..\Client\DevilDaggersWebsite.BlazorWasm.Client.csproj" />
     <ProjectReference Include="..\Shared\DevilDaggersWebsite.BlazorWasm.Shared.csproj" />
   </ItemGroup>
+  <ItemGroup>
+    <None Update="Content\LeaderboardStatistics\202105091042.bin">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </None>
+  </ItemGroup>
 </Project>
