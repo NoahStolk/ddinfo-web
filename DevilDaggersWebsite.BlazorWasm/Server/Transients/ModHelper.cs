@@ -3,7 +3,6 @@ using DevilDaggersWebsite.BlazorWasm.Server.Caches.ModArchive;
 using DevilDaggersWebsite.BlazorWasm.Server.Entities;
 using DevilDaggersWebsite.BlazorWasm.Shared.Dto.Mods;
 using DevilDaggersWebsite.BlazorWasm.Shared.Enums;
-using DevilDaggersWebsite.Dto;
 using Microsoft.AspNetCore.Hosting;
 using Microsoft.EntityFrameworkCore;
 using System;
