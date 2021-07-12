@@ -1,4 +1,4 @@
-﻿namespace DevilDaggersWebsite.Enumerators
+﻿namespace DevilDaggersWebsite.BlazorWasm.Shared.Enums
 {
 	public enum OperatingSystem
 	{

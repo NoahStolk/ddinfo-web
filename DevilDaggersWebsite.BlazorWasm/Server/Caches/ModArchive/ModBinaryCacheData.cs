@@ -1,5 +1,5 @@
 ﻿using DevilDaggersCore.Mods;
-using DevilDaggersWebsite.Enumerators;
+using DevilDaggersWebsite.BlazorWasm.Shared.Enums;
 using DevilDaggersWebsite.Exceptions;
 using System;
 using System.Collections.Generic;

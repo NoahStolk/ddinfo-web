@@ -1,4 +1,4 @@
-﻿using DevilDaggersWebsite.Enumerators;
+﻿using DevilDaggersWebsite.BlazorWasm.Shared.Enums;
 using System;
 
 namespace DevilDaggersWebsite.BlazorWasm.Shared.Dto.CustomLeaderboards

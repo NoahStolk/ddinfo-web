@@ -1,5 +1,5 @@
 ﻿using DevilDaggersWebsite.BlazorWasm.Server.Entities;
-using DevilDaggersWebsite.Enumerators;
+using DevilDaggersWebsite.BlazorWasm.Shared.Enums;
 using DevilDaggersWebsite.Tests.Extensions;
 using Microsoft.EntityFrameworkCore;
 using Moq;

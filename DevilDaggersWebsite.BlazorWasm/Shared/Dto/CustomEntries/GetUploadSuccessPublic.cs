@@ -1,7 +1,7 @@
-﻿using DevilDaggersWebsite.Enumerators;
+﻿using DevilDaggersWebsite.BlazorWasm.Shared.Enums;
 using System.Collections.Generic;
 
-namespace DevilDaggersWebsite.Dto
+namespace DevilDaggersWebsite.BlazorWasm.Shared.Dto.CustomEntries
 {
 	public class GetUploadSuccessPublic
 	{

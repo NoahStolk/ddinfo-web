@@ -15,9 +15,6 @@
     </PackageReference>
   </ItemGroup>
   <ItemGroup>
-    <ProjectReference Include="..\..\DevilDaggersWebsite.Enumerators\DevilDaggersWebsite.Enumerators.csproj" />
-  </ItemGroup>
-  <ItemGroup>
     <SupportedPlatform Include="browser" />
   </ItemGroup>
 </Project>

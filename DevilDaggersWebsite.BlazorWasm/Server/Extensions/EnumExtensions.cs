@@ -1,5 +1,5 @@
 ﻿using DevilDaggersWebsite.BlazorWasm.Server.HostedServices.DdInfoDiscordBot;
-using DevilDaggersWebsite.Enumerators;
+using DevilDaggersWebsite.BlazorWasm.Shared.Enums;
 using DSharpPlus.Entities;
 
 namespace DevilDaggersWebsite.BlazorWasm.Server.Extensions

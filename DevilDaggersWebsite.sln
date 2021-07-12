@@ -29,8 +29,6 @@ Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "DevilDaggersWebsite.BlazorW
 EndProject
 Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "DevilDaggersWebsite.BlazorWasm.Shared", "DevilDaggersWebsite.BlazorWasm\Shared\DevilDaggersWebsite.BlazorWasm.Shared.csproj", "{B73F0FEF-0D3B-4B41-8920-34134012F5C8}"
 EndProject
-Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "DevilDaggersWebsite.Enumerators", "DevilDaggersWebsite.Enumerators\DevilDaggersWebsite.Enumerators.csproj", "{F45B53AB-A603-4018-A51A-39BED9625A41}"
-EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
 		Debug|Any CPU = Debug|Any CPU
@@ -81,10 +79,6 @@ Global
 		{B73F0FEF-0D3B-4B41-8920-34134012F5C8}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{B73F0FEF-0D3B-4B41-8920-34134012F5C8}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{B73F0FEF-0D3B-4B41-8920-34134012F5C8}.Release|Any CPU.Build.0 = Release|Any CPU
-		{F45B53AB-A603-4018-A51A-39BED9625A41}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
-		{F45B53AB-A603-4018-A51A-39BED9625A41}.Debug|Any CPU.Build.0 = Debug|Any CPU
-		{F45B53AB-A603-4018-A51A-39BED9625A41}.Release|Any CPU.ActiveCfg = Release|Any CPU
-		{F45B53AB-A603-4018-A51A-39BED9625A41}.Release|Any CPU.Build.0 = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE

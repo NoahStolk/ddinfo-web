@@ -6,7 +6,9 @@ using DevilDaggersWebsite.BlazorWasm.Server.HostedServices.DdInfoDiscordBot;
 using DevilDaggersWebsite.BlazorWasm.Server.Singletons;
 using DevilDaggersWebsite.BlazorWasm.Server.Transients;
 using DevilDaggersWebsite.BlazorWasm.Server.Utils;
+using DevilDaggersWebsite.BlazorWasm.Shared.Dto.CustomEntries;
 using DevilDaggersWebsite.BlazorWasm.Shared.Dto.Tools;
+using DevilDaggersWebsite.BlazorWasm.Shared.Enums;
 using DSharpPlus.Entities;
 using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
@@ -40,7 +42,7 @@ namespace DevilDaggersWebsite.BlazorWasm.Server.Controllers
 		[ProducesResponseType(StatusCodes.Status200OK)]
 		[ProducesResponseType(StatusCodes.Status400BadRequest)]
 		[EndpointConsumer(EndpointConsumers.Ddcl)]
-		public async Task<ActionResult<Dto.GetUploadSuccessPublic>> SubmitScore([FromBody] Dto.AddUploadRequestPublic uploadRequest)
+		public async Task<ActionResult<GetUploadSuccessPublic>> SubmitScore([FromBody] Dto.AddUploadRequestPublic uploadRequest)
 		{
 			try
 			{
@@ -58,7 +60,7 @@ namespace DevilDaggersWebsite.BlazorWasm.Server.Controllers
 
 		[ApiExplorerSettings(IgnoreApi = true)]
 		[NonAction]
-		public async Task<ActionResult<Dto.GetUploadSuccessPublic>> ProcessUploadRequest(Dto.AddUploadRequestPublic uploadRequest)
+		public async Task<ActionResult<GetUploadSuccessPublic>> ProcessUploadRequest(Dto.AddUploadRequestPublic uploadRequest)
 		{
 			// Check if the submission actually came from DDCL.
 			string check = string.Join(
@@ -139,7 +141,7 @@ namespace DevilDaggersWebsite.BlazorWasm.Server.Controllers
 			}
 
 			// Temporary workaround until TimeAttack works in DDCL.
-			if (customLeaderboard.Category == Enumerators.CustomLeaderboardCategory.TimeAttack)
+			if (customLeaderboard.Category == CustomLeaderboardCategory.TimeAttack)
 			{
 				const string errorMessage = "TimeAttack leaderboards are not supported right now.";
 				await TryLog(uploadRequest, spawnsetName, errorMessage);
