@@ -42,7 +42,10 @@ namespace DevilDaggersWebsite.BlazorWasm.Server.Clients.Leaderboard
 		{
 			using BinaryReader br = new(await ExecuteRequest(_getScoresUrl, new KeyValuePair<string?, string?>("offset", (rankStart - 1).ToString())));
 
-			LeaderboardResponse leaderboard = new();
+			LeaderboardResponse leaderboard = new()
+			{
+				DateTime = DateTime.UtcNow,
+			};
 
 			br.BaseStream.Seek(11, SeekOrigin.Begin);
 			leaderboard.DeathsGlobal = br.ReadUInt64();

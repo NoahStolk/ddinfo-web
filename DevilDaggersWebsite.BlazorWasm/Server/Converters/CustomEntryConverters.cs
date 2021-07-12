@@ -1,5 +1,5 @@
-﻿using DevilDaggersWebsite.BlazorWasm.Shared.Dto.CustomEntries;
-using DevilDaggersWebsite.Entities;
+﻿using DevilDaggersWebsite.BlazorWasm.Server.Entities;
+using DevilDaggersWebsite.BlazorWasm.Shared.Dto.CustomEntries;
 
 namespace DevilDaggersWebsite.BlazorWasm.Server.Converters
 {

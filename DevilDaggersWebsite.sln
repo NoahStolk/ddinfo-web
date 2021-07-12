@@ -7,8 +7,6 @@ Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "DevilDaggersWebsite.Razor",
 EndProject
 Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "DevilDaggersWebsite.Tests", "DevilDaggersWebsite.Tests\DevilDaggersWebsite.Tests.csproj", "{EF02C310-86AD-4F70-8D30-D73FAD185F23}"
 EndProject
-Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "DevilDaggersWebsite", "DevilDaggersWebsite\DevilDaggersWebsite.csproj", "{A4F895DB-C920-4E13-B52B-C6B96657E38F}"
-EndProject
 Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "Tests", "Tests", "{F7BF9B31-DDAD-4562-93A8-677E71FA8774}"
 EndProject
 Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "Tools", "Tools", "{A682E0EF-9B0E-4113-8BED-4534C64A9BDE}"
@@ -47,10 +45,6 @@ Global
 		{EF02C310-86AD-4F70-8D30-D73FAD185F23}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{EF02C310-86AD-4F70-8D30-D73FAD185F23}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{EF02C310-86AD-4F70-8D30-D73FAD185F23}.Release|Any CPU.Build.0 = Release|Any CPU
-		{A4F895DB-C920-4E13-B52B-C6B96657E38F}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
-		{A4F895DB-C920-4E13-B52B-C6B96657E38F}.Debug|Any CPU.Build.0 = Debug|Any CPU
-		{A4F895DB-C920-4E13-B52B-C6B96657E38F}.Release|Any CPU.ActiveCfg = Release|Any CPU
-		{A4F895DB-C920-4E13-B52B-C6B96657E38F}.Release|Any CPU.Build.0 = Release|Any CPU
 		{7FF030A0-D588-4BCD-A01B-7CF847BD7DE4}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
 		{7FF030A0-D588-4BCD-A01B-7CF847BD7DE4}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{7FF030A0-D588-4BCD-A01B-7CF847BD7DE4}.Release|Any CPU.ActiveCfg = Release|Any CPU

@@ -1,9 +1,12 @@
-﻿using System.Collections.Generic;
+﻿using System;
+using System.Collections.Generic;
 
 namespace DevilDaggersWebsite.BlazorWasm.Server.Clients.Leaderboard
 {
 	public class LeaderboardResponse
 	{
+		public DateTime DateTime { get; init; }
+
 		public int TotalPlayers { get; set; }
 
 		public ulong TimeGlobal { get; set; }

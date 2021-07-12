@@ -1,10 +1,10 @@
 ﻿using DevilDaggersWebsite.BlazorWasm.Server.Controllers;
+using DevilDaggersWebsite.BlazorWasm.Server.Entities;
+using DevilDaggersWebsite.BlazorWasm.Server.Extensions;
 using DevilDaggersWebsite.BlazorWasm.Server.Singletons;
 using DevilDaggersWebsite.BlazorWasm.Shared.Dto;
 using DevilDaggersWebsite.BlazorWasm.Shared.Dto.CustomLeaderboards;
-using DevilDaggersWebsite.Entities;
 using DevilDaggersWebsite.Enumerators;
-using DevilDaggersWebsite.Extensions;
 using DevilDaggersWebsite.Tests.Data;
 using DevilDaggersWebsite.Tests.Extensions;
 using IdentityServer4.EntityFramework.Options;

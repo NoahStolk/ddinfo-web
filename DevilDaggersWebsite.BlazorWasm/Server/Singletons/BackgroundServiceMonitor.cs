@@ -1,4 +1,4 @@
-﻿using DevilDaggersWebsite.Extensions;
+﻿using DevilDaggersWebsite.BlazorWasm.Server.Extensions;
 using DSharpPlus.Entities;
 using System;
 using System.Collections.Concurrent;

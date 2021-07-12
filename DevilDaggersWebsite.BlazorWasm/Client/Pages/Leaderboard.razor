@@ -62,11 +62,11 @@ else
 
 	public GetLeaderboardPublic? GetLeaderboardPublic { get; set; }
 
-	public List<GetPlayerForLeaderboard>? Players { get; set; }
+	public List<GetPlayerForLeaderboardPublic>? Players { get; set; }
 
 	protected override async Task OnInitializedAsync()
 	{
-		Players = await Http.Client.GetFromJsonAsync<List<GetPlayerForLeaderboard>>("api/players/leaderboard");
+		Players = await Http.Client.GetFromJsonAsync<List<GetPlayerForLeaderboardPublic>>("api/players/leaderboard");
 
 		GetLeaderboardPublic = await FetchLeaderboard();
 

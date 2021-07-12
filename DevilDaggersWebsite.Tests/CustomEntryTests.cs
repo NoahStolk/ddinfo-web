@@ -1,12 +1,13 @@
 ﻿using DevilDaggersCore.Spawnsets;
+using DevilDaggersWebsite.BlazorWasm.Server;
 using DevilDaggersWebsite.BlazorWasm.Server.Caches.SpawnsetHash;
 using DevilDaggersWebsite.BlazorWasm.Server.Controllers;
+using DevilDaggersWebsite.BlazorWasm.Server.Entities;
+using DevilDaggersWebsite.BlazorWasm.Server.Extensions;
 using DevilDaggersWebsite.BlazorWasm.Server.Singletons;
-using DevilDaggersWebsite.Entities;
-using DevilDaggersWebsite.Extensions;
+using DevilDaggersWebsite.BlazorWasm.Server.Transients;
 using DevilDaggersWebsite.Tests.Data;
 using DevilDaggersWebsite.Tests.Extensions;
-using DevilDaggersWebsite.Transients;
 using IdentityServer4.EntityFramework.Options;
 using Microsoft.AspNetCore.Hosting;
 using Microsoft.AspNetCore.Http;
@@ -66,7 +67,7 @@ namespace DevilDaggersWebsite.Tests
 		[TestMethod]
 		public async Task PostUploadRequest_ExistingPlayer_ExistingEntry_NoHighscore()
 		{
-			Dto.UploadRequest uploadRequest = new()
+			Dto.AddUploadRequestPublic uploadRequest = new()
 			{
 				Time = 100000,
 				PlayerId = 1,
@@ -77,7 +78,7 @@ namespace DevilDaggersWebsite.Tests
 			};
 			uploadRequest.Validation = GetValidation(uploadRequest);
 
-			Dto.UploadSuccess uploadSuccess = (await _customEntriesController.ProcessUploadRequest(uploadRequest)).Value;
+			Dto.GetUploadSuccessPublic uploadSuccess = (await _customEntriesController.ProcessUploadRequest(uploadRequest)).Value;
 
 			_dbContext.Verify(db => db.SaveChanges(), Times.AtLeastOnce);
 			Assert.AreEqual(1, uploadSuccess.TotalPlayers);
@@ -87,7 +88,7 @@ namespace DevilDaggersWebsite.Tests
 		[TestMethod]
 		public async Task PostUploadRequest_ExistingPlayer_ExistingEntry_NewHighscore()
 		{
-			Dto.UploadRequest uploadRequest = new()
+			Dto.AddUploadRequestPublic uploadRequest = new()
 			{
 				Time = 200000,
 				PlayerId = 1,
@@ -98,7 +99,7 @@ namespace DevilDaggersWebsite.Tests
 			};
 			uploadRequest.Validation = GetValidation(uploadRequest);
 
-			Dto.UploadSuccess uploadSuccess = (await _customEntriesController.ProcessUploadRequest(uploadRequest)).Value;
+			Dto.GetUploadSuccessPublic uploadSuccess = (await _customEntriesController.ProcessUploadRequest(uploadRequest)).Value;
 
 			_dbContext.Verify(db => db.SaveChanges(), Times.AtLeastOnce);
 			Assert.AreEqual(1, uploadSuccess.TotalPlayers);
@@ -108,7 +109,7 @@ namespace DevilDaggersWebsite.Tests
 		[TestMethod]
 		public async Task PostUploadRequest_ExistingPlayer_NewEntry()
 		{
-			Dto.UploadRequest uploadRequest = new()
+			Dto.AddUploadRequestPublic uploadRequest = new()
 			{
 				Time = 200000,
 				PlayerId = 2,
@@ -119,7 +120,7 @@ namespace DevilDaggersWebsite.Tests
 			};
 			uploadRequest.Validation = GetValidation(uploadRequest);
 
-			Dto.UploadSuccess uploadSuccess = (await _customEntriesController.ProcessUploadRequest(uploadRequest)).Value;
+			Dto.GetUploadSuccessPublic uploadSuccess = (await _customEntriesController.ProcessUploadRequest(uploadRequest)).Value;
 
 			_dbContext.Verify(db => db.CustomEntries.Add(It.Is<CustomEntry>(ce => ce.PlayerId == 2 && ce.Time == 200000)), Times.Once);
 			_dbContext.Verify(db => db.SaveChanges(), Times.AtLeastOnce);
@@ -129,7 +130,7 @@ namespace DevilDaggersWebsite.Tests
 		[TestMethod]
 		public async Task PostUploadRequest_NewPlayer()
 		{
-			Dto.UploadRequest uploadRequest = new()
+			Dto.AddUploadRequestPublic uploadRequest = new()
 			{
 				Time = 300000,
 				PlayerId = 3,
@@ -140,7 +141,7 @@ namespace DevilDaggersWebsite.Tests
 			};
 			uploadRequest.Validation = GetValidation(uploadRequest);
 
-			Dto.UploadSuccess uploadSuccess = (await _customEntriesController.ProcessUploadRequest(uploadRequest)).Value;
+			Dto.GetUploadSuccessPublic uploadSuccess = (await _customEntriesController.ProcessUploadRequest(uploadRequest)).Value;
 
 			_dbContext.Verify(db => db.SaveChanges(), Times.AtLeastOnce);
 			_dbContext.Verify(db => db.Players.Add(It.Is<Player>(p => p.Id == 3 && p.PlayerName == "TestPlayer3")), Times.Once);
@@ -151,7 +152,7 @@ namespace DevilDaggersWebsite.Tests
 		[TestMethod]
 		public async Task PostUploadRequest_Outdated()
 		{
-			Dto.UploadRequest uploadRequest = new()
+			Dto.AddUploadRequestPublic uploadRequest = new()
 			{
 				Time = 100000,
 				PlayerId = 1,
@@ -162,7 +163,7 @@ namespace DevilDaggersWebsite.Tests
 			};
 			uploadRequest.Validation = GetValidation(uploadRequest);
 
-			ActionResult<Dto.UploadSuccess> response = await _customEntriesController.ProcessUploadRequest(uploadRequest);
+			ActionResult<Dto.GetUploadSuccessPublic> response = await _customEntriesController.ProcessUploadRequest(uploadRequest);
 
 			_dbContext.Verify(db => db.SaveChanges(), Times.Never);
 
@@ -178,7 +179,7 @@ namespace DevilDaggersWebsite.Tests
 		[TestMethod]
 		public async Task PostUploadRequest_InvalidValidation()
 		{
-			Dto.UploadRequest uploadRequest = new()
+			Dto.AddUploadRequestPublic uploadRequest = new()
 			{
 				Time = 100000,
 				PlayerId = 1,
@@ -189,7 +190,7 @@ namespace DevilDaggersWebsite.Tests
 				Validation = "Malformed validation",
 			};
 
-			ActionResult<Dto.UploadSuccess> response = await _customEntriesController.ProcessUploadRequest(uploadRequest);
+			ActionResult<Dto.GetUploadSuccessPublic> response = await _customEntriesController.ProcessUploadRequest(uploadRequest);
 
 			_dbContext.Verify(db => db.SaveChanges(), Times.Never);
 
@@ -202,7 +203,7 @@ namespace DevilDaggersWebsite.Tests
 			Assert.IsTrue(problemDetails.Title == "Invalid submission.");
 		}
 
-		private static string GetValidation(Dto.UploadRequest uploadRequest)
+		private static string GetValidation(Dto.AddUploadRequestPublic uploadRequest)
 		{
 			string toEncrypt = string.Join(
 				";",

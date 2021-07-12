@@ -1,6 +1,6 @@
 ﻿using DevilDaggersWebsite.BlazorWasm.Server.Controllers.Attributes;
+using DevilDaggersWebsite.BlazorWasm.Server.Entities;
 using DevilDaggersWebsite.BlazorWasm.Shared.Dto.Players;
-using DevilDaggersWebsite.Entities;
 using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.EntityFrameworkCore;
@@ -23,7 +23,7 @@ namespace DevilDaggersWebsite.BlazorWasm.Server.Controllers
 		[HttpGet("leaderboard")]
 		[ProducesResponseType(StatusCodes.Status200OK)]
 		[EndpointConsumer(EndpointConsumers.Website)]
-		public ActionResult<List<GetPlayerForLeaderboard>> GetPlayersForLeaderboard()
+		public ActionResult<List<GetPlayerForLeaderboardPublic>> GetPlayersForLeaderboard()
 		{
 			var players = _dbContext.Players
 				.AsNoTracking()
@@ -41,7 +41,7 @@ namespace DevilDaggersWebsite.BlazorWasm.Server.Controllers
 				.Include(pt => pt.Title)
 				.ToList();
 
-			return players.ConvertAll(p => new GetPlayerForLeaderboard
+			return players.ConvertAll(p => new GetPlayerForLeaderboardPublic
 			{
 				Id = p.Id,
 				BanDescription = p.BanDescription,

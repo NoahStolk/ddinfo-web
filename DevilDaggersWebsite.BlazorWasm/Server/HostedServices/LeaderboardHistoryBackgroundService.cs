@@ -1,7 +1,7 @@
 ﻿using DevilDaggersWebsite.BlazorWasm.Server.Clients.Leaderboard;
 using DevilDaggersWebsite.BlazorWasm.Server.HostedServices.DdInfoDiscordBot;
 using DevilDaggersWebsite.BlazorWasm.Server.Singletons;
-using DevilDaggersWebsite.Utils;
+using DevilDaggersWebsite.BlazorWasm.Server.Utils;
 using Microsoft.AspNetCore.Hosting;
 using Newtonsoft.Json;
 using System;
@@ -29,11 +29,11 @@ namespace DevilDaggersWebsite.BlazorWasm.Server.HostedServices
 			if (HistoryFileExistsForDate(DateTime.UtcNow))
 				return;
 
-			LeaderboardResponse? lb = await LeaderboardClient.Instance.GetScores(1);
-			if (lb != null)
+			LeaderboardResponse? l = await LeaderboardClient.Instance.GetScores(1);
+			if (l != null)
 			{
 				string fileName = $"{DateTime.UtcNow:yyyyMMddHHmm}.json";
-				File.WriteAllText(Path.Combine(_environment.WebRootPath, "leaderboard-history", fileName), JsonConvert.SerializeObject(lb));
+				File.WriteAllText(Path.Combine(_environment.WebRootPath, "leaderboard-history", fileName), JsonConvert.SerializeObject(l));
 				await DiscordLogger.TryLog(Channel.MonitoringTask, $":white_check_mark: Task execution for `{nameof(LeaderboardHistoryBackgroundService)}` succeeded. `{fileName}` was created.");
 			}
 			else

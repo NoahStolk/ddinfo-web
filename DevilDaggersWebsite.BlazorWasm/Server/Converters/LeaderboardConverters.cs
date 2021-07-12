@@ -1,6 +1,6 @@
 ﻿using DevilDaggersWebsite.BlazorWasm.Server.Clients.Leaderboard;
 using DevilDaggersWebsite.BlazorWasm.Shared.Dto.Leaderboards;
-using System;
+using DevilDaggersWebsite.BlazorWasm.Shared.Enums;
 
 namespace DevilDaggersWebsite.BlazorWasm.Server.Converters
 {
@@ -10,7 +10,7 @@ namespace DevilDaggersWebsite.BlazorWasm.Server.Converters
 		{
 			DaggersFiredGlobal = leaderboardResponse.DaggersFiredGlobal,
 			DaggersHitGlobal = leaderboardResponse.DaggersHitGlobal,
-			DateTime = DateTime.UtcNow,
+			DateTime = leaderboardResponse.DateTime,
 			DeathsGlobal = leaderboardResponse.DeathsGlobal,
 			Entries = leaderboardResponse.Entries.ConvertAll(e => e.ToGetEntryPublic()),
 			GemsGlobal = leaderboardResponse.GemsGlobal,

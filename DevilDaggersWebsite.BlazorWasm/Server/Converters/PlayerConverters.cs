@@ -1,5 +1,5 @@
-﻿using DevilDaggersWebsite.BlazorWasm.Shared.Dto.Players;
-using DevilDaggersWebsite.Entities;
+﻿using DevilDaggersWebsite.BlazorWasm.Server.Entities;
+using DevilDaggersWebsite.BlazorWasm.Shared.Dto.Players;
 
 namespace DevilDaggersWebsite.BlazorWasm.Server.Converters
 {

@@ -1,7 +1,8 @@
 ﻿using DevilDaggersWebsite.BlazorWasm.Server.Controllers.Attributes;
+using DevilDaggersWebsite.BlazorWasm.Server.Entities;
+using DevilDaggersWebsite.BlazorWasm.Server.Transients;
+using DevilDaggersWebsite.BlazorWasm.Shared.Dto.Mods;
 using DevilDaggersWebsite.Dto.Mods;
-using DevilDaggersWebsite.Entities;
-using DevilDaggersWebsite.Transients;
 using Microsoft.AspNetCore.Hosting;
 using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
@@ -33,7 +34,7 @@ namespace DevilDaggersWebsite.BlazorWasm.Server.Controllers
 		[HttpGet]
 		[ProducesResponseType(StatusCodes.Status200OK)]
 		[EndpointConsumer(EndpointConsumers.Ddae)]
-		public List<GetPublicMod> GetPublicMods(string? authorFilter = null, string? nameFilter = null, bool? isHostedFilter = null)
+		public List<GetModPublic> GetPublicMods(string? authorFilter = null, string? nameFilter = null, bool? isHostedFilter = null)
 			=> _modHelper.GetPublicMods(authorFilter, nameFilter, isHostedFilter);
 
 		[HttpGet("{modName}/file")]

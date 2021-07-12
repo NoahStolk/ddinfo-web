@@ -1,6 +1,6 @@
 ﻿using DevilDaggersWebsite.BlazorWasm.Server.Controllers.Attributes;
+using DevilDaggersWebsite.BlazorWasm.Server.Transients;
 using DevilDaggersWebsite.Dto.Spawnsets;
-using DevilDaggersWebsite.Transients;
 using Microsoft.AspNetCore.Hosting;
 using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
@@ -28,7 +28,7 @@ namespace DevilDaggersWebsite.BlazorWasm.Server.Controllers
 		[HttpGet]
 		[ProducesResponseType(StatusCodes.Status200OK)]
 		[EndpointConsumer(EndpointConsumers.Ddse)]
-		public List<GetPublicSpawnset> GetPublicSpawnsets(string? authorFilter = null, string? nameFilter = null)
+		public List<GetSpawnsetPublic> GetPublicSpawnsets(string? authorFilter = null, string? nameFilter = null)
 			=> _spawnsetHelper.GetSpawnsets(authorFilter, nameFilter);
 
 		[HttpGet("{fileName}/file")]

@@ -1,8 +1,10 @@
 ﻿using DevilDaggersWebsite.BlazorWasm.Server.Caches.LeaderboardHistory;
+using DevilDaggersWebsite.BlazorWasm.Server.Clients.Leaderboard;
 using DevilDaggersWebsite.BlazorWasm.Server.Controllers.Attributes;
-using DevilDaggersWebsite.Clients;
-using DevilDaggersWebsite.Dto;
-using DevilDaggersWebsite.Transients;
+using DevilDaggersWebsite.BlazorWasm.Server.Converters;
+using DevilDaggersWebsite.BlazorWasm.Server.Transients;
+using DevilDaggersWebsite.BlazorWasm.Shared.Dto.LeaderboardHistory;
+using DevilDaggersWebsite.BlazorWasm.Shared.Dto.Leaderboards;
 using Microsoft.AspNetCore.Hosting;
 using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
@@ -34,16 +36,16 @@ namespace DevilDaggersWebsite.BlazorWasm.Server.Controllers
 		[ProducesResponseType(StatusCodes.Status200OK)]
 		[ProducesResponseType(StatusCodes.Status400BadRequest)]
 		[EndpointConsumer(EndpointConsumers.Website)]
-		public SortedDictionary<DateTime, Entry> GetUserProgressionById([Required] int userId)
+		public SortedDictionary<DateTime, GetEntryPublic> GetUserProgressionById([Required] int userId)
 		{
-			SortedDictionary<DateTime, Entry> data = new();
+			SortedDictionary<DateTime, GetEntryPublic> data = new();
 			if (userId < 1)
 				return data;
 
 			foreach (string leaderboardHistoryPath in Io.Directory.GetFiles(Io.Path.Combine(_environment.WebRootPath, "leaderboard-history"), "*.json"))
 			{
-				Leaderboard leaderboard = _leaderboardHistoryCache.GetLeaderboardHistoryByFilePath(leaderboardHistoryPath);
-				Entry? entry = leaderboard.Entries.Find(e => e.Id == userId);
+				LeaderboardResponse leaderboard = _leaderboardHistoryCache.GetLeaderboardHistoryByFilePath(leaderboardHistoryPath);
+				EntryResponse? entry = leaderboard.Entries.Find(e => e.Id == userId);
 
 				// + 1 and - 1 are used to fix off-by-one errors in the history based on screenshots and videos. This is due to a rounding error in Devil Daggers itself.
 				if (entry != null && !data.Values.Any(e =>
@@ -51,7 +53,7 @@ namespace DevilDaggersWebsite.BlazorWasm.Server.Controllers
 					e.Time == entry.Time + 1 ||
 					e.Time == entry.Time - 1))
 				{
-					data[leaderboard.DateTime] = entry;
+					data[leaderboard.DateTime] = entry.ToGetEntryPublic();
 				}
 			}
 
@@ -61,7 +63,7 @@ namespace DevilDaggersWebsite.BlazorWasm.Server.Controllers
 		[HttpGet("world-records")]
 		[ProducesResponseType(StatusCodes.Status200OK)]
 		[EndpointConsumer(EndpointConsumers.Website)]
-		public List<WorldRecord> GetWorldRecords()
+		public List<GetWorldRecordPublic> GetWorldRecords()
 			=> _worldRecordsHelper.GetWorldRecords();
 
 		[HttpGet("user-activity")]
@@ -73,8 +75,8 @@ namespace DevilDaggersWebsite.BlazorWasm.Server.Controllers
 			Dictionary<DateTime, ulong> data = new();
 			foreach (string leaderboardHistoryPath in Io.Directory.GetFiles(Io.Path.Combine(_environment.WebRootPath, "leaderboard-history"), "*.json"))
 			{
-				Leaderboard leaderboard = _leaderboardHistoryCache.GetLeaderboardHistoryByFilePath(leaderboardHistoryPath);
-				Entry? entry = leaderboard.Entries.Find(e => e.Id == userId);
+				LeaderboardResponse leaderboard = _leaderboardHistoryCache.GetLeaderboardHistoryByFilePath(leaderboardHistoryPath);
+				EntryResponse? entry = leaderboard.Entries.Find(e => e.Id == userId);
 				if (entry?.DeathsTotal > 0)
 					data.Add(leaderboard.DateTime, entry.DeathsTotal);
 			}

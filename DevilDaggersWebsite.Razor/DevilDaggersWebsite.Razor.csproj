@@ -40,9 +40,6 @@
     <DotNetCliToolReference Include="Microsoft.VisualStudio.Web.CodeGeneration.Tools" Version="2.0.2" />
   </ItemGroup>
   <ItemGroup>
-    <ProjectReference Include="..\DevilDaggersWebsite\DevilDaggersWebsite.csproj" />
-  </ItemGroup>
-  <ItemGroup>
     <None Update=".botToken">
       <CopyToOutputDirectory>Always</CopyToOutputDirectory>
     </None>
