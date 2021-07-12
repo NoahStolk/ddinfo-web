@@ -1,4 +1,4 @@
-﻿using LeaderboardFetcher;
+﻿using DevilDaggersWebsite.Caches.LeaderboardStatistics;
 using System;
 using System.Collections.Generic;
 using System.Diagnostics;
@@ -12,18 +12,6 @@ using System.Threading.Tasks;
 
 const int _totalPages = 2424; // TODO: Fetch the leaderboard one more time on startup to retrieve total amount of players.
 
-#if TASK_WHEN_ALL
-Task<List<CompressedEntry>>[] tasks = new Task<List<CompressedEntry>>[_totalPages];
-for (int i = 0; i < _totalPages; i++)
-	tasks[i] = Fetch(i * 100 + 1);
-
-Stopwatch stopwatch = new();
-stopwatch.Start();
-List<CompressedEntry> allEntries = (await Task.WhenAll(tasks)).SelectMany(e => e).ToList();
-Console.WriteLine($"\nFetching {_totalPages} pages took {stopwatch.ElapsedMilliseconds / 1000f} seconds.");
-
-File.WriteAllBytes($"{DateTime.UtcNow}.bin", GetBytes(allEntries));
-#else
 string start = DateTime.UtcNow.ToString("yyyyMMddHHmm");
 Stopwatch stopwatch = new();
 List<CompressedEntry> entries = new();
@@ -36,14 +24,22 @@ for (int i = 0; i < _totalPages; i++)
 	// Write the file after every fetch in case it crashes and all progress is lost.
 	File.WriteAllBytes($"{start}.bin", GetBytes(entries));
 }
-#endif
 
 static byte[] GetBytes(List<CompressedEntry> entries)
 {
-	byte[] bytes = new byte[entries.Count * 15];
-	for (int j = 0; j < entries.Count; j++)
-		Buffer.BlockCopy(entries[j].ToBytes(), 0, bytes, j * 15, 15);
-	return bytes;
+	using MemoryStream ms = new();
+	using BinaryWriter bw = new(ms);
+	foreach (CompressedEntry ce in entries)
+	{
+		bw.Write(ce.Time);
+		bw.Write(ce.Kills);
+		bw.Write(ce.Gems);
+		bw.Write(ce.DaggersHit);
+		bw.Write(ce.DaggersFired);
+		bw.Write(ce.DeathType);
+	}
+
+	return ms.ToArray();
 }
 
 static async Task<List<CompressedEntry>> Fetch(int rank)
