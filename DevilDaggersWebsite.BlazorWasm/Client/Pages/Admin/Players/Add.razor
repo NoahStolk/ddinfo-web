@@ -1,5 +1,5 @@
 ﻿@page "/admin/players/add"
-@inject HttpClient Http
+@inject AdminApiHttpClient Http
 @inject NavigationManager NavigationManager
 @using DevilDaggersWebsite.BlazorWasm.Shared.Dto.Players
 @using Microsoft.AspNetCore.Components.WebAssembly.Authentication
@@ -124,7 +124,7 @@
 	{
 		try
 		{
-			HttpResponseMessage hrm = await Http.PostAsJsonAsync($"api/players/admin", _addPlayer);
+			HttpResponseMessage hrm = await Http.Client.PostAsJsonAsync($"api/players/admin", _addPlayer);
 
 			if (hrm.StatusCode == HttpStatusCode.OK)
 				NavigationManager.NavigateTo("/admin/players");

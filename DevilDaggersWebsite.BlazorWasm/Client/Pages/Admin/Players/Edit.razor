@@ -1,5 +1,5 @@
 ﻿@page "/admin/players/edit/{Id:int}"
-@inject HttpClient Http
+@inject AdminApiHttpClient Http
 @inject NavigationManager NavigationManager
 @using DevilDaggersWebsite.BlazorWasm.Shared.Dto.Players
 @using Microsoft.AspNetCore.Components.WebAssembly.Authentication
@@ -128,7 +128,7 @@ else
 	{
 		try
 		{
-			GetPlayer getPlayer = await Http.GetFromJsonAsync<GetPlayer>($"api/players/admin/{Id}") ?? throw new($"Response could not be deserialized to {nameof(GetPlayer)}.");
+			GetPlayer getPlayer = await Http.Client.GetFromJsonAsync<GetPlayer>($"api/players/admin/{Id}") ?? throw new($"Response could not be deserialized to {nameof(GetPlayer)}.");
 			_editPlayer = new()
 			{
 				AssetModIds = getPlayer.AssetModIds,
@@ -172,7 +172,7 @@ else
 
 		try
 		{
-			HttpResponseMessage hrm = await Http.PutAsJsonAsync<EditPlayer>($"api/players/admin/{Id}", _editPlayer);
+			HttpResponseMessage hrm = await Http.Client.PutAsJsonAsync<EditPlayer>($"api/players/admin/{Id}", _editPlayer);
 
 			if (hrm.StatusCode == HttpStatusCode.OK)
 				NavigationManager.NavigateTo("/admin/players");

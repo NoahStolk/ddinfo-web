@@ -32,9 +32,8 @@ namespace DevilDaggersWebsite.Api
 		}
 
 		[HttpGet("leaderboard")]
-		[Authorize(Roles = Roles.Players)]
 		[ProducesResponseType(StatusCodes.Status200OK)]
-		[EndpointConsumer(EndpointConsumers.Admin)]
+		[EndpointConsumer(EndpointConsumers.Website)]
 		public ActionResult<List<GetPlayerForLeaderboard>> GetPlayersForLeaderboard()
 		{
 			var players = _dbContext.Players

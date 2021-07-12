@@ -1,6 +1,6 @@
 ﻿@typeparam TGetDto
 @typeparam TKey
-@inject HttpClient Http
+@inject AdminApiHttpClient Http
 @inject NavigationManager NavigationManager
 @using Microsoft.AspNetCore.Components.WebAssembly.Authentication
 @using System.ComponentModel.DataAnnotations
@@ -116,7 +116,7 @@ else
 	{
 		try
 		{
-			_page = await Http.GetFromJsonAsync<Page<TGetDto>>($"{ApiRoute}?pageIndex={_pageIndex}&pageSize={_pageSize}&sortBy={_sortBy}&ascending={_ascending}");
+			_page = await Http.Client.GetFromJsonAsync<Page<TGetDto>>($"{ApiRoute}?pageIndex={_pageIndex}&pageSize={_pageSize}&sortBy={_sortBy}&ascending={_ascending}");
 			_errorMessage = null;
 			StateHasChanged();
 		}

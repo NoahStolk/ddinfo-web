@@ -1,7 +1,7 @@
 ﻿@page "/leaderboard-statistics"
+@inject PublicApiHttpClient Http
 @using DevilDaggersCore.Game
 @using DevilDaggersWebsite.BlazorWasm.Shared.Dto.LeaderboardStatistics
-@inject IHttpClientFactory HttpClientFactory
 
 <h1>Leaderboard Statistics</h1>
 
@@ -51,7 +51,6 @@ else
 
 	protected override async Task OnInitializedAsync()
 	{
-		HttpClient http = HttpClientFactory.CreateClient("BlazorWasmApp.AnonymousAPI");
-		_statistics = await http.GetFromJsonAsync<GetLeaderboardStatistics>("api/leaderboard-statistics");
+		_statistics = await Http.Client.GetFromJsonAsync<GetLeaderboardStatistics>("api/leaderboard-statistics");
 	}
 }

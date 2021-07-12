@@ -1,5 +1,5 @@
 ﻿@page "/leaderboard"
-@inject HttpClient Http
+@inject PublicApiHttpClient Http
 @using DevilDaggersWebsite.BlazorWasm.Shared.Dto.Leaderboards
 @using DevilDaggersWebsite.BlazorWasm.Shared.Dto.Players
 @using DevilDaggersWebsite.BlazorWasm.Client.Components.Leaderboards
@@ -66,14 +66,13 @@ else
 
 	protected override async Task OnInitializedAsync()
 	{
-		Players = await Http.GetFromJsonAsync<List<GetPlayerForLeaderboard>>("api/players/leaderboard");
+		Players = await Http.Client.GetFromJsonAsync<List<GetPlayerForLeaderboard>>("api/players/leaderboard");
 
 		GetLeaderboardPublic = await FetchLeaderboard();
 
 		if (GetLeaderboardPublic != null && Rank > GetLeaderboardPublic.TotalPlayers - 99)
 		{
 			Rank = GetLeaderboardPublic.TotalPlayers - 99;
-			GetLeaderboardPublic.Entries.Clear();
 			GetLeaderboardPublic = await FetchLeaderboard();
 		}
 	}
@@ -82,7 +81,7 @@ else
 	{
 		try
 		{
-			return await Http.GetFromJsonAsync<GetLeaderboardPublic>($"api/leaderboards?rankStart={Rank}");
+			return await Http.Client.GetFromJsonAsync<GetLeaderboardPublic>($"api/leaderboards?rankStart={Rank}");
 		}
 		catch (Exception ex)
 		{

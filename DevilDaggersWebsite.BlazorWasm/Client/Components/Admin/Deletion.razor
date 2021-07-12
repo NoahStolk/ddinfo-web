@@ -1,5 +1,5 @@
 ﻿@typeparam TKey
-@inject HttpClient Http
+@inject AdminApiHttpClient Http
 @using Microsoft.AspNetCore.Components.WebAssembly.Authentication
 @using System.Net
 
@@ -47,7 +47,7 @@
 	{
 		try
 		{
-			HttpResponseMessage hrm = await Http.DeleteAsync($"{ApiRoute}/{IdToDelete}");
+			HttpResponseMessage hrm = await Http.Client.DeleteAsync($"{ApiRoute}/{IdToDelete}");
 			if (hrm.StatusCode == HttpStatusCode.OK)
 			{
 				State = DeleteState.Ok;
