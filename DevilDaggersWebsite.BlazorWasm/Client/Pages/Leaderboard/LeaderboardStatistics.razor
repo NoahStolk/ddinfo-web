@@ -49,8 +49,16 @@ else
 		<BarChart @ref="_post1000BarChart" TItem="int" />
 
 		<h2 class="text-red text-xl">Daggers</h2>
+		<button @onclick="@(async () => await DrawDaggersBarChart())">Redraw</button>
+		<BarChart @ref="_daggersBarChart" TItem="int" />
 
 		<h2 class="text-red text-xl">Death types</h2>
+		<button @onclick="@(async () => await DrawDeathsBarChart())">Redraw</button>
+		<BarChart @ref="_deathsBarChart" TItem="int" />
+
+		<h2 class="text-red text-xl">Enemies seen</h2>
+		<button @onclick="@(async () => await DrawEnemiesBarChart())">Redraw</button>
+		<BarChart @ref="_enemiesBarChart" TItem="int" />
 	}
 }
 
@@ -70,6 +78,9 @@ else
 	private BarChart<int>? _sub500BarChart;
 	private BarChart<int>? _sub1000BarChart;
 	private BarChart<int>? _post1000BarChart;
+	private BarChart<int>? _daggersBarChart;
+	private BarChart<int>? _deathsBarChart;
+	private BarChart<int>? _enemiesBarChart;
 
 	protected override async Task OnAfterRenderAsync(bool firstRender)
 	{
@@ -116,6 +127,48 @@ else
 			Label = "Players",
 			Data = _statistics?.TimeStatistics.Select(kvp => kvp.Value).Skip(100).Take(20).ToList(),
 			BackgroundColor = _post1000Times.Select(t => $"#{GameInfo.GetDaggerFromSeconds(GameVersion.V31, t).ColorCode}").ToList(),
+		});
+	}
+
+	private async Task DrawDaggersBarChart()
+	{
+		if (_daggersBarChart == null)
+			return;
+
+		await _daggersBarChart.Clear();
+		await _daggersBarChart.AddLabelsDatasetsAndUpdate(_statistics?.DaggerStatistics.Select(kvp => kvp.Key).ToArray(), new BarChartDataset<int>
+		{
+			Label = "Players",
+			Data = _statistics?.DaggerStatistics.Select(kvp => kvp.Value).ToList(),
+			BackgroundColor = _statistics?.DaggerStatistics.Select(kvp => $"#{GameInfo.GetDaggers(GameVersion.V31).FirstOrDefault(d => d.Name == kvp.Key)?.ColorCode ?? "444"}").ToList(),
+		});
+	}
+
+	private async Task DrawDeathsBarChart()
+	{
+		if (_deathsBarChart == null)
+			return;
+
+		await _deathsBarChart.Clear();
+		await _deathsBarChart.AddLabelsDatasetsAndUpdate(_statistics?.DeathStatistics.Select(kvp => kvp.Key).ToArray(), new BarChartDataset<int>
+		{
+			Label = "Players",
+			Data = _statistics?.DeathStatistics.Select(kvp => kvp.Value).ToList(),
+			BackgroundColor = _statistics?.DeathStatistics.Select(kvp => $"#{GameInfo.GetDeathByName(GameVersion.V31, kvp.Key)?.ColorCode ?? "444"}").ToList(),
+		});
+	}
+
+	private async Task DrawEnemiesBarChart()
+	{
+		if (_enemiesBarChart == null)
+			return;
+
+		await _enemiesBarChart.Clear();
+		await _enemiesBarChart.AddLabelsDatasetsAndUpdate(_statistics?.EnemyStatistics.Select(kvp => kvp.Key).ToArray(), new BarChartDataset<int>
+		{
+			Label = "Players",
+			Data = _statistics?.EnemyStatistics.Select(kvp => kvp.Value).ToList(),
+			BackgroundColor = _statistics?.EnemyStatistics.Select(kvp => $"#{GameInfo.GetEnemies(GameVersion.V31).FirstOrDefault(e => e.Name == kvp.Key)?.ColorCode ?? "444"}").ToList(),
 		});
 	}
 }
