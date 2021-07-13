@@ -1,0 +1,13 @@
+﻿<li class="p-3 text-xl">
+	<NavLink href="@Href" Match="Match">
+		<Icon Type="@IconType" Text="@Text" />
+	</NavLink>
+</li>
+
+@code
+{
+	[Parameter] public string Href { get; set; } = null!;
+	[Parameter] public string IconType { get; set; } = null!;
+	[Parameter] public string Text { get; set; } = null!;
+	[Parameter] public NavLinkMatch Match { get; set; }
+}

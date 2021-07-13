@@ -1,0 +1,41 @@
+﻿<div class="p-4">
+	<a href="" class="font-goethe text-3xl">DevilDaggers.Info</a>
+	<button class="sm:hidden" @onclick="() => _collapseNavMenu = !_collapseNavMenu">
+		<span class="oi oi-menu" aria-hidden="true"></span>
+	</button>
+</div>
+
+<div class="@NavMenuCssClass pb-4">
+	<ul>
+		<NavItem IconType="home" Text="Home" Match="NavLinkMatch.All" />
+		<NavItem Href="leaderboard" IconType="clock" Text="Leaderboard" />
+		<NavItem Href="leaderboard-statistics" IconType="bar-chart" Text="Statistics" />
+		<li class="p-3 text-xl">
+			<div @onclick="() => _collapseAdminMenu = !_collapseAdminMenu">
+				<Icon Type="list-rich" Text="Admin" />
+			</div>
+			@if (_collapseAdminMenu)
+			{
+				<ul class="pl-1 pt-3">
+					<NavItem Href="admin/custom-entries" IconType="ellipses" Text="Custom Entries" />
+					<NavItem Href="admin/custom-leaderboards" IconType="list" Text="Custom LBs" />
+					<NavItem Href="admin/donations" IconType="dollar" Text="Donations" />
+					<NavItem Href="admin/mods" IconType="brush" Text="Mods" />
+					<NavItem Href="admin/players" IconType="people" Text="Players" />
+					<NavItem Href="admin/spawnsets" IconType="grid-three-up" Text="Spawnsets" />
+					<NavItem Href="admin/titles" IconType="badge" Text="Titles" />
+					<NavItem Href="admin/users" IconType="person" Text="Users" />
+				</ul>
+			}
+		</li>
+		<NavItem Href="swagger/index.html" IconType="cog" Text="API" />
+	</ul>
+</div>
+
+@code
+{
+	private bool _collapseNavMenu = true;
+	private bool _collapseAdminMenu = true;
+
+	private string? NavMenuCssClass => _collapseNavMenu ? "hidden sm:block" : null;
+}
