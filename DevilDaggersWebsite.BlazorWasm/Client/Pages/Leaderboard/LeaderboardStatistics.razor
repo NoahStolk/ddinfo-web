@@ -1,5 +1,6 @@
 ﻿@page "/leaderboard-statistics"
 @inject PublicApiHttpClient Http
+@using Blazorise.Charts
 @using DevilDaggersCore.Game
 @using DevilDaggersWebsite.BlazorWasm.Shared.Dto.LeaderboardStatistics
 
@@ -28,20 +29,28 @@ else
 		<ul>
 			@foreach (KeyValuePair<string, int> kvp in _statistics.EnemyStatistics)
 			{
-				<li>>@kvp.Value out of @_statistics.TotalEntries players (<span>@((kvp.Value / (float)_statistics.TotalEntries).ToString("0.00%"))</span>) have seen @kvp.Key.</li>
+				<li>@kvp.Value out of @_statistics.TotalEntries players (<span>@((kvp.Value / (float)_statistics.TotalEntries).ToString("0.00%"))</span>) have seen @kvp.Key.</li>
 			}
 			<li>The average time survived for all players is <span class="@GameInfo.GetDaggerFromTenthsOfMilliseconds(GameVersion.V31, _statistics.AverageTimeInTenthsOfMilliseconds).Name.ToLower()">@((_statistics.AverageTimeInTenthsOfMilliseconds / 10000f).ToString(FormatUtils.TimeFormat))</span> seconds.</li>
 			<li>The average kills for all players is @(_statistics.AverageKills.ToString(FormatUtils.LeaderboardIntAverageFormat)).</li>
 			<li>The average gems for all players is @(_statistics.AverageGems.ToString(FormatUtils.LeaderboardIntAverageFormat)).</li>
 		</ul>
 
-		<h3>Sub 500 Scores</h3>
+		<h3 class="text-red text-lg">0-500 Scores</h3>
+		<button @onclick="@(async () => await DrawSub500BarChart())">Redraw</button>
+		<BarChart @ref="_sub500BarChart" TItem="int" />
 
-		<h3>500+ Scores</h3>
+		<h3 class="text-red text-lg">500-1000 Scores</h3>
+		<button @onclick="@(async () => await DrawSub1000BarChart())">Redraw</button>
+		<BarChart @ref="_sub1000BarChart" TItem="int" />
 
-		<h2>Daggers</h2>
+		<h3 class="text-red text-lg">1000+ Scores</h3>
+		<button @onclick="@(async () => await DrawPost1000BarChart())">Redraw</button>
+		<BarChart @ref="_post1000BarChart" TItem="int" />
 
-		<h2>Death types</h2>
+		<h2 class="text-red text-xl">Daggers</h2>
+
+		<h2 class="text-red text-xl">Death types</h2>
 	}
 }
 
@@ -52,5 +61,61 @@ else
 	protected override async Task OnInitializedAsync()
 	{
 		_statistics = await Http.Client.GetFromJsonAsync<GetLeaderboardStatistics>("api/leaderboard-statistics");
+	}
+
+	private int[] _sub500Times = Enumerable.Range(0, 50).Select(i => i * 10).ToArray();
+	private int[] _sub1000Times = Enumerable.Range(50, 50).Select(i => i * 10).ToArray();
+	private int[] _post1000Times = Enumerable.Range(100, 20).Select(i => i * 10).ToArray();
+
+	private BarChart<int>? _sub500BarChart;
+	private BarChart<int>? _sub1000BarChart;
+	private BarChart<int>? _post1000BarChart;
+
+	protected override async Task OnAfterRenderAsync(bool firstRender)
+	{
+		if (firstRender)
+			await DrawSub500BarChart();
+	}
+
+	private async Task DrawSub500BarChart()
+	{
+		if (_sub500BarChart == null)
+			return;
+
+		await _sub500BarChart.Clear();
+		await _sub500BarChart.AddLabelsDatasetsAndUpdate(_sub500Times.Select(i => i.ToString()).ToArray(), new BarChartDataset<int>
+		{
+			Label = "Players",
+			Data = _statistics?.TimeStatistics.Select(kvp => kvp.Value).Take(50).ToList(),
+			BackgroundColor = _sub500Times.Select(t => $"#{GameInfo.GetDaggerFromSeconds(GameVersion.V31, t).ColorCode}").ToList(),
+		});
+	}
+
+	private async Task DrawSub1000BarChart()
+	{
+		if (_sub1000BarChart == null)
+			return;
+
+		await _sub1000BarChart.Clear();
+		await _sub1000BarChart.AddLabelsDatasetsAndUpdate(_sub1000Times.Select(i => i.ToString()).ToArray(), new BarChartDataset<int>
+		{
+			Label = "Players",
+			Data = _statistics?.TimeStatistics.Select(kvp => kvp.Value).Skip(50).Take(50).ToList(),
+			BackgroundColor = _sub1000Times.Select(t => $"#{GameInfo.GetDaggerFromSeconds(GameVersion.V31, t).ColorCode}").ToList(),
+		});
+	}
+
+	private async Task DrawPost1000BarChart()
+	{
+		if (_post1000BarChart == null)
+			return;
+
+		await _post1000BarChart.Clear();
+		await _post1000BarChart.AddLabelsDatasetsAndUpdate(_post1000Times.Select(i => i.ToString()).ToArray(), new BarChartDataset<int>
+		{
+			Label = "Players",
+			Data = _statistics?.TimeStatistics.Select(kvp => kvp.Value).Skip(100).Take(20).ToList(),
+			BackgroundColor = _post1000Times.Select(t => $"#{GameInfo.GetDaggerFromSeconds(GameVersion.V31, t).ColorCode}").ToList(),
+		});
 	}
 }

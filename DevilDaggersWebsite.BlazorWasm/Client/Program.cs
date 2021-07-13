@@ -1,4 +1,5 @@
-﻿using DevilDaggersWebsite.BlazorWasm.Client.HttpClients;
+﻿using Blazorise;
+using DevilDaggersWebsite.BlazorWasm.Client.HttpClients;
 using Microsoft.AspNetCore.Components.WebAssembly.Authentication;
 using Microsoft.AspNetCore.Components.WebAssembly.Hosting;
 using Microsoft.Extensions.DependencyInjection;
@@ -18,6 +19,10 @@ namespace DevilDaggersWebsite.BlazorWasm.Client
 			builder.Services.AddHttpClient<AdminApiHttpClient>(client => client.BaseAddress = new Uri(builder.HostEnvironment.BaseAddress)).AddHttpMessageHandler<BaseAddressAuthorizationMessageHandler>();
 
 			builder.Services.AddApiAuthorization();
+
+			builder.Services
+				.AddBlazorise(options => options.ChangeTextOnKeyPress = true)
+				.AddEmptyProviders();
 
 			await builder.Build().RunAsync();
 		}

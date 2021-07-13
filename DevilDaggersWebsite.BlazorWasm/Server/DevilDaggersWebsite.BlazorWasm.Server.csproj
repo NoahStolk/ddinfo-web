@@ -36,7 +36,16 @@
     <ProjectReference Include="..\Shared\DevilDaggersWebsite.BlazorWasm.Shared.csproj" />
   </ItemGroup>
   <ItemGroup>
+    <None Update="Content\LeaderboardStatistics\202102250839.bin">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </None>
+    <None Update="Content\LeaderboardStatistics\202104290859.bin">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </None>
     <None Update="Content\LeaderboardStatistics\202105091042.bin">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </None>
+    <None Update="Content\LeaderboardStatistics\202107121006.bin">
       <CopyToOutputDirectory>Always</CopyToOutputDirectory>
     </None>
   </ItemGroup>
