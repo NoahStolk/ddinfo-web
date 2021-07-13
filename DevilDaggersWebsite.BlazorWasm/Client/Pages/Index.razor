@@ -3,17 +3,23 @@
 <h1 class="text-6xl font-goethe pt-4 pb-4">DevilDaggers.Info</h1>
 
 <p>
-	Welcome to DevilDaggers.Info, a website specifically made for the game <a href="//store.steampowered.com/app/422970/Devil_Daggers/">Devil Daggers</a>.
+	Welcome to DevilDaggers.Info, a website specifically made for the game <a class="text-colorlink hover:text-colorlinkhover" href="//store.steampowered.com/app/422970/Devil_Daggers/">Devil Daggers</a>.
 </p>
 <img class="w-64 h-64 m-4" src="/images/home/logo.gif" />
 <p>
-	This is a fan-made website; the creator of this website is not related to the developers of Devil Daggers. Devil Daggers is a game created by Sorath, and <a href="//devildaggers.com/">devildaggers.com</a> is the official website for the game.
+	This is a fan-made website; the creator of this website is not related to the developers of Devil Daggers. Devil Daggers is a game created by Sorath, and <a class="text-colorlink hover:text-colorlinkhover" href="//devildaggers.com/">devildaggers.com</a> is the official website for the game.
 </p>
 <p>
-	I first launched this website in early 2017 as a small hobby project. It started as a simple leaderboard page, so people could view the leaderboard without opening the game. Later I added wiki pages for spawns, hand upgrades, enemy types, and dagger types. After that I began hosting custom spawnsets, which allow modifications of the enemy spawns and arena of the main game. I developed a <a href="/tools/survival-editor">spawnset editor</a> to create spawnsets more easily, and some time later created and began hosting <a href="/custom-leaderboards">custom leaderboards</a> for them.
+	I first launched this website in early 2017 as a small hobby project. It started as a simple leaderboard page, so people could view the leaderboard without opening the game. Later I added wiki pages for spawns, hand upgrades, enemy types, and dagger types. After that I began hosting custom spawnsets, which allow modifications of the enemy spawns and arena of the main game. I developed a <a class="text-colorlink hover:text-colorlinkhover" href="/tools/survival-editor">spawnset editor</a> to create spawnsets more easily, and some time later created and began hosting <a class="text-colorlink hover:text-colorlinkhover" href="/custom-leaderboards">custom leaderboards</a> for them.
 </p>
 <p>
 	Since then, I've expanded the project quite a bit, adding leaderboard history, world record progression, statistics, the possibility to mod the assets of the game, and much more.
+</p>
+<p>
+	All of this would not have been possible without such a dedicated and helpful community. Thank you.
+</p>
+<p>
+	Feel free to join the <a class="text-colorlink hover:text-colorlinkhover" href="@Constants.DiscordUrl" target="_blank">Discord server</a>.
 </p>
 <div class="grid gap-4 xl:grid-cols-4 lg:grid-cols-2 md:grid-cols-2 sm:grid-cols-1 xs:grid-cols-1">
 	@foreach ((string text, string imageUrl, string url) in _sections)
@@ -27,12 +33,6 @@
 		</a>
 	}
 </div>
-<p>
-	All of this would not have been possible without such a dedicated and helpful community. Thank you.
-</p>
-<p>
-	Feel free to join the <a href="@Constants.DiscordUrl" target="_blank">Discord server</a>.
-</p>
 
 @code
 {
