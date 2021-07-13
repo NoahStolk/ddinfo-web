@@ -1,0 +1,95 @@
+﻿@page "/leaderboard"
+@inject PublicApiHttpClient Http
+@using DevilDaggersWebsite.BlazorWasm.Shared.Dto.Leaderboards
+@using DevilDaggersWebsite.BlazorWasm.Shared.Dto.Players
+@using DevilDaggersWebsite.BlazorWasm.Client.Components.Leaderboards
+
+<h1>Leaderboard</h1>
+
+@if (GetLeaderboardPublic == null)
+{
+	@if (_apiError == null)
+	{
+		<Loading />
+	}
+	else
+	{
+		<p>Failed to retrieve scores from the official Devil Daggers leaderboard servers. Please try again later.</p>
+		<p>@_apiError</p>
+	}
+}
+else
+{
+	<div>
+		<a class="text-colorlink hover:text-colorlinkhover" href="/leaderboard/search">Search players by username</a>
+
+		<div class="text-left">Rank:</div>
+		<input @bind="Rank" class="bg-black border-white border-t-2" /> @*TODO: Enter key should fetch leaderboard.*@
+		<button @onclick="FetchLeaderboard">Show</button>
+
+		<div>
+			@if (_reloading)
+			{
+				<em>Loading...</em>
+			}
+			else
+			{
+				<span>Showing rank @Rank - @(Rank + 99)</span>
+			}
+		</div>
+		<div>
+			<a class="btn btn-default btn-page @(Rank <= 1 ? "disabled" : string.Empty)" @onclick="() => SetRank(1)">|&lt;</a>
+			<a class="btn btn-default btn-page @(Rank <= 1 ? "disabled" : string.Empty)" @onclick="() => SetRank(Rank - 1000)">&lt;&lt;</a>
+			<a class="btn btn-default btn-page @(Rank <= 1 ? "disabled" : string.Empty)" @onclick="() => SetRank(Rank - 100)">&lt;</a>
+			<a class="btn btn-default btn-page @(Rank >= _maxRank ? "disabled" : string.Empty)" @onclick="() => SetRank(Rank + 100)">&gt;</a>
+			<a class="btn btn-default btn-page @(Rank >= _maxRank ? "disabled" : string.Empty)" @onclick="() => SetRank(Rank + 1000)">&gt;&gt;</a>
+			<a class="btn btn-default btn-page @(Rank >= _maxRank ? "disabled" : string.Empty)" @onclick="() => SetRank(GetLeaderboardPublic.TotalPlayers - 99)">&gt;|</a>
+		</div>
+	</div>
+
+	<LeaderboardGlobal Leaderboard="GetLeaderboardPublic" IsHistory="false" />
+	<LeaderboardTableInfo />
+	<LeaderboardTable Leaderboard="GetLeaderboardPublic" Players="Players" IsHistory="false" />
+}
+
+@code
+{
+	private string? _apiError;
+	private bool _reloading;
+
+	private int _maxRank => (GetLeaderboardPublic?.TotalPlayers ?? int.MaxValue) - 99;
+
+	public int Rank { get; set; } = 1;
+
+	public GetLeaderboardPublic? GetLeaderboardPublic { get; set; }
+
+	public List<GetPlayerForLeaderboardPublic>? Players { get; set; }
+
+	protected override async Task OnInitializedAsync()
+	{
+		Players = await Http.Client.GetFromJsonAsync<List<GetPlayerForLeaderboardPublic>>("api/players/leaderboard");
+		await FetchLeaderboard();
+	}
+
+	private async Task SetRank(int value)
+	{
+		Rank = Math.Clamp(value, 1, _maxRank);
+		await FetchLeaderboard();
+	}
+
+	private async Task FetchLeaderboard()
+	{
+		try
+		{
+			if (GetLeaderboardPublic != null)
+				_reloading = true;
+
+			GetLeaderboardPublic = await Http.Client.GetFromJsonAsync<GetLeaderboardPublic>($"api/leaderboards?rankStart={Rank}");
+			_reloading = false;
+		}
+		catch (Exception ex)
+		{
+			_apiError = ex.Message;
+		}
+	}
+}
