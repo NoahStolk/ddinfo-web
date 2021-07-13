@@ -14,7 +14,6 @@ using System.Collections.Generic;
 using System.ComponentModel.DataAnnotations;
 using System.IO;
 using System.Linq;
-using Io = System.IO;
 
 namespace DevilDaggersWebsite.BlazorWasm.Server.Controllers
 {
@@ -43,7 +42,7 @@ namespace DevilDaggersWebsite.BlazorWasm.Server.Controllers
 			if (userId < 1)
 				return data;
 
-			foreach (string leaderboardHistoryPath in Io.Directory.GetFiles(Io.Path.Combine(_environment.WebRootPath, "leaderboard-history"), "*.json"))
+			foreach (string leaderboardHistoryPath in Directory.GetFiles(Path.Combine(_environment.WebRootPath, "leaderboard-history"), "*.json"))
 			{
 				LeaderboardResponse leaderboard = _leaderboardHistoryCache.GetLeaderboardHistoryByFilePath(leaderboardHistoryPath);
 				EntryResponse? entry = leaderboard.Entries.Find(e => e.Id == userId);
@@ -68,7 +67,7 @@ namespace DevilDaggersWebsite.BlazorWasm.Server.Controllers
 		public Dictionary<DateTime, ulong> GetUserActivity([Required] int userId)
 		{
 			Dictionary<DateTime, ulong> data = new();
-			foreach (string leaderboardHistoryPath in Io.Directory.GetFiles(Io.Path.Combine(_environment.WebRootPath, "leaderboard-history"), "*.json"))
+			foreach (string leaderboardHistoryPath in Directory.GetFiles(Path.Combine(_environment.WebRootPath, "leaderboard-history"), "*.json"))
 			{
 				LeaderboardResponse leaderboard = _leaderboardHistoryCache.GetLeaderboardHistoryByFilePath(leaderboardHistoryPath);
 				EntryResponse? entry = leaderboard.Entries.Find(e => e.Id == userId);
