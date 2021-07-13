@@ -55,7 +55,8 @@ namespace DevilDaggersWebsite.BlazorWasm.Server.Caches.LeaderboardStatistics
 				return;
 			}
 
-			FileName = Path.GetFileNameWithoutExtension(paths.OrderByDescending(p => p).First());
+			string path = paths.OrderByDescending(p => p).First();
+			FileName = Path.GetFileNameWithoutExtension(path);
 
 			IsFetched = false;
 
@@ -64,7 +65,7 @@ namespace DevilDaggersWebsite.BlazorWasm.Server.Caches.LeaderboardStatistics
 			DeathStats.Clear();
 			TimeStats = Enumerable.Range(0, 120).ToDictionary(i => i * 10, _ => 0);
 
-			using (FileStream fs = new(paths[0], FileMode.Open))
+			using (FileStream fs = new(path, FileMode.Open))
 			{
 				using BinaryReader br = new(fs);
 				while (br.BaseStream.Position <= br.BaseStream.Length - 15)
