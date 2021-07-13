@@ -27,10 +27,6 @@ else
 
 		<h2 class="text-red text-xl">Scores</h2>
 		<ul>
-			@foreach (KeyValuePair<string, int> kvp in _statistics.EnemyStatistics)
-			{
-				<li>@kvp.Value out of @_statistics.TotalEntries players (<span>@((kvp.Value / (float)_statistics.TotalEntries).ToString("0.00%"))</span>) have seen @kvp.Key.</li>
-			}
 			<li>The average time survived for all players is <span class="@GameInfo.GetDaggerFromTenthsOfMilliseconds(GameVersion.V31, _statistics.AverageTimeInTenthsOfMilliseconds).Name.ToLower()">@((_statistics.AverageTimeInTenthsOfMilliseconds / 10000f).ToString(FormatUtils.TimeFormat))</span> seconds.</li>
 			<li>The average kills for all players is @(_statistics.AverageKills.ToString(FormatUtils.LeaderboardIntAverageFormat)).</li>
 			<li>The average gems for all players is @(_statistics.AverageGems.ToString(FormatUtils.LeaderboardIntAverageFormat)).</li>
