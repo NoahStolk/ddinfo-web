@@ -87,10 +87,8 @@ namespace DevilDaggersWebsite.BlazorWasm.Server
 				//services.AddHostedService<ResponseTimeLoggerBackgroundService>();
 			}
 
-			services.AddTransient<WorldRecordsHelper>();
-			services.AddTransient<ModHelper>();
-			services.AddTransient<SpawnsetHelper>();
-			services.AddTransient<IToolHelper, ToolHelper>(); // TODO: Singleton?
+			// Use a transient for ToolHelper so we can update the Tools.json file without having to re-instantiate this.
+			services.AddTransient<IToolHelper, ToolHelper>();
 
 			services.AddSwaggerDocument(config =>
 			{
