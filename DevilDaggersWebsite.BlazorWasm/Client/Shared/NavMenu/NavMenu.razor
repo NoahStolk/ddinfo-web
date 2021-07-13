@@ -7,20 +7,46 @@
 
 <div class="@NavMenuCssClass pb-4">
 	<ul>
-		<NavItem Href="" IconType="home" Text="Home" Match="NavLinkMatch.All" />
-		<NavItem Href="leaderboard" IconType="clock" Text="Leaderboard" />
-		<NavItem Href="leaderboard-statistics" IconType="bar-chart" Text="Statistics" />
-		<NavDropdown IconType="list-rich" Text="Admin">
-			<NavItem Href="admin/custom-entries" IconType="ellipses" Text="Custom Entries" />
-			<NavItem Href="admin/custom-leaderboards" IconType="list" Text="Custom LBs" />
-			<NavItem Href="admin/donations" IconType="dollar" Text="Donations" />
-			<NavItem Href="admin/mods" IconType="brush" Text="Mods" />
-			<NavItem Href="admin/players" IconType="people" Text="Players" />
-			<NavItem Href="admin/spawnsets" IconType="grid-three-up" Text="Spawnsets" />
-			<NavItem Href="admin/titles" IconType="badge" Text="Titles" />
-			<NavItem Href="admin/users" IconType="person" Text="Users" />
+		<NavItem Href="" CssClass="text-xl" IconType="home" Text="Home" Match="NavLinkMatch.All" />
+		<NavDropdown Text="Leaderboard">
+			<NavItem Href="leaderboard" CssClass="text-lg" IconType="clock" Text="Leaderboard" />
+			<NavItem Href="leaderboard-history" CssClass="text-lg" IconType="book" Text="History" />
+			<NavItem Href="player-settings" CssClass="text-lg" IconType="book" Text="Settings" />
+			<NavItem Href="leaderboard-statistics" CssClass="text-lg" IconType="bar-chart" Text="Statistics" />
+			<NavItem Href="world-record-progression" CssClass="text-lg" IconType="star" Text="World Record Progression" />
 		</NavDropdown>
-		<NavItem Href="swagger/index.html" IconType="cog" Text="API" />
+		<NavDropdown Text="Custom">
+			<NavItem Href="spawnsets" CssClass="text-lg" IconType="grid-three-up" Text="Spawnsets" />
+			<NavItem Href="custom-leaderboards" CssClass="text-lg" IconType="clock" Text="Custom Leaderboards" />
+			<NavItem Href="mods" CssClass="text-lg" IconType="brush" Text="Mods" />
+		</NavDropdown>
+		<NavDropdown Text="Tools">
+			<NavItem Href="tools/survival-editor" CssClass="text-lg" IconType="grid-three-up" Text="Survival Editor" />
+			<NavItem Href="tools/custom-leaderboards" CssClass="text-lg" IconType="clock" Text="Custom Leaderboards" />
+			<NavItem Href="tools/asset-editor" CssClass="text-lg" IconType="brush" Text="Asset Editor" />
+		</NavDropdown>
+		<NavDropdown Text="Wiki">
+			<NavItem Href="wiki/spawns" CssClass="text-lg" IconType="grid-three-up" Text="Spawns" />
+			<NavItem Href="wiki/upgrades" CssClass="text-lg" IconType="clock" Text="Upgrades" />
+			<NavItem Href="wiki/enemies" CssClass="text-lg" IconType="brush" Text="Enemies" />
+			<NavItem Href="wiki/daggers" CssClass="text-lg" IconType="brush" Text="Daggers" />
+		</NavDropdown>
+		<NavDropdown Text="Guides">
+			<NavItem Href="guides/survival-editor" CssClass="text-lg" IconType="grid-three-up" Text="Survival Editor" />
+			<NavItem Href="guides/asset-editor" CssClass="text-lg" IconType="brush" Text="Asset Editor" />
+		</NavDropdown>
+		<NavDropdown Text="Admin">
+			<NavItem Href="admin/custom-entries" CssClass="text-lg" IconType="ellipses" Text="Custom Entries" />
+			<NavItem Href="admin/custom-leaderboards" CssClass="text-lg" IconType="list" Text="Custom Leaderboards" />
+			<NavItem Href="admin/donations" CssClass="text-lg" IconType="heart" Text="Donations" />
+			<NavItem Href="admin/mods" CssClass="text-lg" IconType="brush" Text="Mods" />
+			<NavItem Href="admin/players" CssClass="text-lg" IconType="people" Text="Players" />
+			<NavItem Href="admin/spawnsets" CssClass="text-lg" IconType="grid-three-up" Text="Spawnsets" />
+			<NavItem Href="admin/titles" CssClass="text-lg" IconType="badge" Text="Titles" />
+			<NavItem Href="admin/users" CssClass="text-lg" IconType="person" Text="Users" />
+		</NavDropdown>
+		<NavItem Href="donations" CssClass="text-xl" IconType="heart" Text="Donations" />
+		<NavItem Href="swagger/index.html" CssClass="text-xl" IconType="cog" Text="API" />
 	</ul>
 </div>
 

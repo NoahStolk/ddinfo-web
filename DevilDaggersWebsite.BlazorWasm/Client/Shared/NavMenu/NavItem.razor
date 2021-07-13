@@ -1,4 +1,4 @@
-﻿<li class="p-3 text-xl">
+﻿<li class="pl-3 py-1 @CssClass">
 	<NavLink href="@Href" Match="Match">
 		<Icon Type="@IconType" Text="@Text" />
 	</NavLink>
@@ -7,6 +7,7 @@
 @code
 {
 	[Parameter] public string Href { get; set; } = null!;
+	[Parameter] public string? CssClass { get; set; }
 	[Parameter] public string IconType { get; set; } = null!;
 	[Parameter] public string Text { get; set; } = null!;
 	[Parameter] public NavLinkMatch Match { get; set; }

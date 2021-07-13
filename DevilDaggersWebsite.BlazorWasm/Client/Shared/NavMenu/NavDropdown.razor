@@ -1,10 +1,10 @@
-﻿<li class="p-3 text-xl">
+﻿<li class="pl-3 py-1 text-xl">
 	<div class="cursor-pointer select-none" @onclick="() => _collapse = !_collapse">
-		<Icon Type="@IconType" Text="@Text" />
+		<Icon Type="@(_collapse ? "chevron-right" : "chevron-bottom")" Text="@Text" />
 	</div>
 	@if (!_collapse)
 	{
-		<ul class="pl-1 pt-3">
+		<ul class="pl-1 pt-1">
 			@ChildContent
 		</ul>
 	}
@@ -15,6 +15,5 @@
 	private bool _collapse = true;
 
 	[Parameter] public RenderFragment ChildContent { get; set; } = null!;
-	[Parameter] public string IconType { get; set; } = null!;
 	[Parameter] public string Text { get; set; } = null!;
 }
