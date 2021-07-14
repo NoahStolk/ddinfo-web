@@ -21,8 +21,8 @@ namespace DevilDaggersWebsite.BlazorWasm.Shared.Dto.LeaderboardStatistics
 		public int PlayersWithLevel2 { get; init; }
 		public int PlayersWithLevel3Or4 { get; init; }
 
-		public ArrayData Time { get; init; }
-		public ArrayData Kills { get; init; }
-		public ArrayData Gems { get; init; }
+		public ArrayData Time { get; init; } = null!;
+		public ArrayData Kills { get; init; } = null!;
+		public ArrayData Gems { get; init; } = null!;
 	}
 }
