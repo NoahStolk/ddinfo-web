@@ -76,98 +76,57 @@ else
 
 	protected override async Task OnAfterRenderAsync(bool firstRender)
 	{
-		if (firstRender || _statistics == null)
+		if (firstRender ||
+			_statistics == null ||
+			_sub500BarChart == null ||
+			_sub1000BarChart == null ||
+			_post1000BarChart == null ||
+			_daggersBarChart == null ||
+			_deathsBarChart == null ||
+			_enemiesBarChart == null)
 			return;
 
-		await DrawSub500BarChart();
-		await DrawSub1000BarChart();
-		await DrawPost1000BarChart();
-		await DrawDaggersBarChart();
-		await DrawDeathsBarChart();
-		await DrawEnemiesBarChart();
+		await SetUpBarChart(
+			barChart: _sub500BarChart,
+			labels: _sub500Times.Select(i => i.ToString()).ToArray(),
+			data: _statistics.TimeStatistics.Select(kvp => kvp.Value).Take(50).ToList(),
+			backgroundColors: _sub500Times.Select(t => $"#{GameInfo.GetDaggerFromSeconds(GameVersion.V31, t).ColorCode}").ToList());
+		await SetUpBarChart(
+			barChart: _sub1000BarChart,
+			labels: _sub1000Times.Select(i => i.ToString()).ToArray(),
+			data: _statistics.TimeStatistics.Select(kvp => kvp.Value).Skip(50).Take(50).ToList(),
+			backgroundColors: _sub1000Times.Select(t => $"#{GameInfo.GetDaggerFromSeconds(GameVersion.V31, t).ColorCode}").ToList());
+		await SetUpBarChart(
+			barChart: _post1000BarChart,
+			labels: _post1000Times.Select(i => i.ToString()).ToArray(),
+			data: _statistics.TimeStatistics.Select(kvp => kvp.Value).Skip(100).Take(_post1000BarCount).ToList(),
+			backgroundColors: _post1000Times.Select(t => $"#{GameInfo.GetDaggerFromSeconds(GameVersion.V31, t).ColorCode}").ToList());
+		await SetUpBarChart(
+			barChart: _daggersBarChart,
+			labels: _statistics.DaggerStatistics.Select(kvp => kvp.Key).ToArray(),
+			data: _statistics.DaggerStatistics.Select(kvp => kvp.Value).ToList(),
+			backgroundColors: _statistics.DaggerStatistics.Select(kvp => $"#{GameInfo.GetDaggers(GameVersion.V31).FirstOrDefault(d => d.Name == kvp.Key)?.ColorCode ?? "444"}").ToList());
+		await SetUpBarChart(
+			barChart: _deathsBarChart,
+			labels: _statistics.DeathStatistics.Select(kvp => kvp.Key).ToArray(),
+			data: _statistics.DeathStatistics.Select(kvp => kvp.Value).ToList(),
+			backgroundColors: _statistics.DeathStatistics.Select(kvp => $"#{GameInfo.GetDeathByName(GameVersion.V31, kvp.Key)?.ColorCode ?? "444"}").ToList());
+		await SetUpBarChart(
+			barChart: _enemiesBarChart,
+			labels: _statistics.EnemyStatistics.Select(kvp => kvp.Key).ToArray(),
+			data: _statistics.EnemyStatistics.Select(kvp => kvp.Value).ToList(),
+			backgroundColors: _statistics.EnemyStatistics.Select(kvp => $"#{GameInfo.GetEnemies(GameVersion.V31).FirstOrDefault(e => e.Name == kvp.Key)?.ColorCode ?? "444"}").ToList());
+
 	}
 
-	private async Task DrawSub500BarChart()
+	private async Task SetUpBarChart(BarChart<int> barChart, string[] labels, List<int> data, List<string> backgroundColors)
 	{
-		if (_sub500BarChart == null)
-			return;
-
-		await _sub500BarChart.Clear();
-		await _sub500BarChart.AddLabelsDatasetsAndUpdate(_sub500Times.Select(i => i.ToString()).ToArray(), new BarChartDataset<int>
+		await barChart.Clear();
+		await barChart.AddLabelsDatasetsAndUpdate(labels, new BarChartDataset<int>
 		{
 			Label = "Players",
-			Data = _statistics?.TimeStatistics.Select(kvp => kvp.Value).Take(50).ToList(),
-			BackgroundColor = _sub500Times.Select(t => $"#{GameInfo.GetDaggerFromSeconds(GameVersion.V31, t).ColorCode}").ToList(),
-		});
-	}
-
-	private async Task DrawSub1000BarChart()
-	{
-		if (_sub1000BarChart == null)
-			return;
-
-		await _sub1000BarChart.Clear();
-		await _sub1000BarChart.AddLabelsDatasetsAndUpdate(_sub1000Times.Select(i => i.ToString()).ToArray(), new BarChartDataset<int>
-		{
-			Label = "Players",
-			Data = _statistics?.TimeStatistics.Select(kvp => kvp.Value).Skip(50).Take(50).ToList(),
-			BackgroundColor = _sub1000Times.Select(t => $"#{GameInfo.GetDaggerFromSeconds(GameVersion.V31, t).ColorCode}").ToList(),
-		});
-	}
-
-	private async Task DrawPost1000BarChart()
-	{
-		if (_post1000BarChart == null)
-			return;
-
-		await _post1000BarChart.Clear();
-		await _post1000BarChart.AddLabelsDatasetsAndUpdate(_post1000Times.Select(i => i.ToString()).ToArray(), new BarChartDataset<int>
-		{
-			Label = "Players",
-			Data = _statistics?.TimeStatistics.Select(kvp => kvp.Value).Skip(100).Take(_post1000BarCount).ToList(),
-			BackgroundColor = _post1000Times.Select(t => $"#{GameInfo.GetDaggerFromSeconds(GameVersion.V31, t).ColorCode}").ToList(),
-		});
-	}
-
-	private async Task DrawDaggersBarChart()
-	{
-		if (_daggersBarChart == null)
-			return;
-
-		await _daggersBarChart.Clear();
-		await _daggersBarChart.AddLabelsDatasetsAndUpdate(_statistics?.DaggerStatistics.Select(kvp => kvp.Key).ToArray(), new BarChartDataset<int>
-		{
-			Label = "Players",
-			Data = _statistics?.DaggerStatistics.Select(kvp => kvp.Value).ToList(),
-			BackgroundColor = _statistics?.DaggerStatistics.Select(kvp => $"#{GameInfo.GetDaggers(GameVersion.V31).FirstOrDefault(d => d.Name == kvp.Key)?.ColorCode ?? "444"}").ToList(),
-		});
-	}
-
-	private async Task DrawDeathsBarChart()
-	{
-		if (_deathsBarChart == null)
-			return;
-
-		await _deathsBarChart.Clear();
-		await _deathsBarChart.AddLabelsDatasetsAndUpdate(_statistics?.DeathStatistics.Select(kvp => kvp.Key).ToArray(), new BarChartDataset<int>
-		{
-			Label = "Players",
-			Data = _statistics?.DeathStatistics.Select(kvp => kvp.Value).ToList(),
-			BackgroundColor = _statistics?.DeathStatistics.Select(kvp => $"#{GameInfo.GetDeathByName(GameVersion.V31, kvp.Key)?.ColorCode ?? "444"}").ToList(),
-		});
-	}
-
-	private async Task DrawEnemiesBarChart()
-	{
-		if (_enemiesBarChart == null)
-			return;
-
-		await _enemiesBarChart.Clear();
-		await _enemiesBarChart.AddLabelsDatasetsAndUpdate(_statistics?.EnemyStatistics.Select(kvp => kvp.Key).ToArray(), new BarChartDataset<int>
-		{
-			Label = "Players",
-			Data = _statistics?.EnemyStatistics.Select(kvp => kvp.Value).ToList(),
-			BackgroundColor = _statistics?.EnemyStatistics.Select(kvp => $"#{GameInfo.GetEnemies(GameVersion.V31).FirstOrDefault(e => e.Name == kvp.Key)?.ColorCode ?? "444"}").ToList(),
+			Data = data,
+			BackgroundColor = backgroundColors,
 		});
 	}
 }
