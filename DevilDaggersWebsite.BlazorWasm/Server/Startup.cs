@@ -6,6 +6,7 @@ using DevilDaggersWebsite.BlazorWasm.Server.Caches.SpawnsetHash;
 using DevilDaggersWebsite.BlazorWasm.Server.Entities;
 using DevilDaggersWebsite.BlazorWasm.Server.HostedServices;
 using DevilDaggersWebsite.BlazorWasm.Server.Middleware;
+using DevilDaggersWebsite.BlazorWasm.Server.NSwag;
 using DevilDaggersWebsite.BlazorWasm.Server.Singletons;
 using DevilDaggersWebsite.BlazorWasm.Server.Transients;
 using Microsoft.AspNetCore.Authentication;
@@ -101,6 +102,7 @@ namespace DevilDaggersWebsite.BlazorWasm.Server
 						Url = "//noahstolk.com/",
 					};
 				};
+				config.DocumentProcessors.Add(new PublicApiDocumentProcessor());
 				config.SchemaType = SchemaType.OpenApi3;
 			});
 		}
