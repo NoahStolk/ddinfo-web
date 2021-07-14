@@ -17,6 +17,10 @@ namespace DevilDaggersWebsite.BlazorWasm.Shared.Dto.LeaderboardStatistics
 		public Dictionary<int, int> KillStatistics { get; init; } = null!;
 		public Dictionary<int, int> GemStatistics { get; init; } = null!;
 
+		public int PlayersWithLevel1 { get; init; }
+		public int PlayersWithLevel2 { get; init; }
+		public int PlayersWithLevel3Or4 { get; init; }
+
 		public ArrayData Time { get; init; }
 		public ArrayData Kills { get; init; }
 		public ArrayData Gems { get; init; }

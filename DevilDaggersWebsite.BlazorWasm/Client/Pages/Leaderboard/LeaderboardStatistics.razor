@@ -28,12 +28,17 @@ else
 		<BarChart Options="_bco" @ref="_post1000BarChart" TItem="int" />
 
 		<h2 class="text-red text-xl">Kills</h2>
-		<p>The average kills for all players is @(_statistics.Kills.Average.ToString(FormatUtils.LeaderboardIntAverageFormat)).</p>
-		<LineChart Options="_lco" @ref="_killsBarChart" TItem="int" />
+		<p>The average kills for all players is @(_statistics.Kills.Average.ToString("0.00")).</p>
+		<p>The median kills for all players is @_statistics.Kills.Median.</p>
+		<p>The mode kills for all players is @_statistics.Kills.Mode.</p>
+		<LineChart Options="_lco" @ref="_killsLineChart" TItem="int" />
 
 		<h2 class="text-red text-xl">Gems</h2>
-		<p>The average gems for all players is @(_statistics.Gems.Average.ToString(FormatUtils.LeaderboardIntAverageFormat)).</p>
-		<LineChart Options="_lco" @ref="_gemsBarChart" TItem="int" />
+		<p>The average gems for all players is @(_statistics.Gems.Average.ToString("0.00")).</p>
+		<p>The median gems for all players is @_statistics.Gems.Median.</p>
+		<p>The mode gems for all players is @_statistics.Gems.Mode.</p>
+		<LineChart Options="_lco" @ref="_gemsLineChart" TItem="int" />
+		<PieChart Options="_pco" @ref="_levelsPieChart" TItem="int" />
 
 		<h2 class="text-red text-xl">Daggers achieved</h2>
 		<BarChart Options="_bco" @ref="_daggersBarChart" TItem="int" />
@@ -71,6 +76,13 @@ else
 		AspectRatio = 3.5f,
 	};
 
+	private PieChartOptions _pco = new()
+	{
+		MaintainAspectRatio = true,
+		Responsive = true,
+		AspectRatio = 3.5f,
+	};
+
 	private int[] _sub500Times = Enumerable.Range(0, 50).Select(i => i * 10).ToArray();
 	private int[] _sub1000Times = Enumerable.Range(50, 50).Select(i => i * 10).ToArray();
 	private int[] _post1000Times = Enumerable.Range(100, _post1000BarCount).Select(i => i * 10).ToArray();
@@ -78,8 +90,9 @@ else
 	private BarChart<int>? _sub500BarChart;
 	private BarChart<int>? _sub1000BarChart;
 	private BarChart<int>? _post1000BarChart;
-	private LineChart<int>? _killsBarChart;
-	private LineChart<int>? _gemsBarChart;
+	private LineChart<int>? _killsLineChart;
+	private LineChart<int>? _gemsLineChart;
+	private PieChart<int>? _levelsPieChart;
 	private BarChart<int>? _daggersBarChart;
 	private BarChart<int>? _deathsBarChart;
 	private BarChart<int>? _enemiesBarChart;
@@ -91,8 +104,9 @@ else
 			_sub500BarChart == null ||
 			_sub1000BarChart == null ||
 			_post1000BarChart == null ||
-			_killsBarChart == null ||
-			_gemsBarChart == null ||
+			_killsLineChart == null ||
+			_gemsLineChart == null ||
+			_levelsPieChart == null ||
 			_daggersBarChart == null ||
 			_deathsBarChart == null ||
 			_enemiesBarChart == null)
@@ -114,15 +128,20 @@ else
 			data: _statistics.TimeStatistics.Select(kvp => kvp.Value).Skip(100).Take(_post1000BarCount).ToList(),
 			backgroundColors: _post1000Times.Select(t => $"#{GameInfo.GetDaggerFromSeconds(GameVersion.V31, t).ColorCode}").ToList());
 		await SetUpLineChart(
-			lineChart: _killsBarChart,
+			lineChart: _killsLineChart,
 			labels: _statistics.KillStatistics.Take(500).Select(kvp => kvp.Key.ToString()).ToArray(),
 			data: _statistics.KillStatistics.Select(kvp => kvp.Value).Take(500).ToList(),
 			backgroundColors: new() { "#dd8800" });
 		await SetUpLineChart(
-			lineChart: _gemsBarChart,
+			lineChart: _gemsLineChart,
 			labels: _statistics.GemStatistics.Take(100).Select(kvp => kvp.Key.ToString()).ToArray(),
 			data: _statistics.GemStatistics.Select(kvp => kvp.Value).Take(100).ToList(),
 			backgroundColors: new() { "#ff0000" });
+		await SetUpPieChart(
+			pieChart: _levelsPieChart,
+			labels: new[] { "Level 1", "Level 2", "Level 3 or 4" },
+			data: new() { _statistics.PlayersWithLevel1, _statistics.PlayersWithLevel2, _statistics.PlayersWithLevel3Or4 },
+			backgroundColors: GameInfo.GetUpgrades(GameVersion.V31).Where(u => u.Level != 4).Select(u => $"#{u.ColorCode}").ToList());
 		await SetUpBarChart(
 			barChart: _daggersBarChart,
 			labels: _statistics.DaggerStatistics.Select(kvp => kvp.Key).ToArray(),
@@ -162,6 +181,17 @@ else
 			Fill = true,
 			LineTension = 0,
 			PointRadius = 10,
+		});
+	}
+
+	private async Task SetUpPieChart(PieChart<int> pieChart, string[] labels, List<int> data, List<string> backgroundColors)
+	{
+		await pieChart.Clear();
+		await pieChart.AddLabelsDatasetsAndUpdate(labels, new PieChartDataset<int>
+		{
+			Label = "Players",
+			Data = data,
+			BackgroundColor = backgroundColors,
 		});
 	}
 }

@@ -31,6 +31,9 @@ namespace DevilDaggersWebsite.BlazorWasm.Server.Caches.LeaderboardStatistics
 		public Dictionary<int, int> TimeStats { get; } = new();
 		public Dictionary<int, int> KillStats { get; } = new();
 		public Dictionary<int, int> GemStats { get; } = new();
+		public int Level1 { get; private set; }
+		public int Level2 { get; private set; }
+		public int Level3Or4 { get; private set; }
 
 		public ArrayData Time { get; private set; }
 		public ArrayData Kills { get; private set; }
@@ -143,6 +146,10 @@ namespace DevilDaggersWebsite.BlazorWasm.Server.Caches.LeaderboardStatistics
 			Time = new ArrayData(_entries.Select(e => (int)e.Time));
 			Kills = new ArrayData(_entries.Select(e => (int)e.Kills));
 			Gems = new ArrayData(_entries.Select(e => (int)e.Gems));
+
+			Level1 = _entries.Count(e => e.Gems < 10);
+			Level2 = _entries.Count(e => e.Gems >= 10 && e.Gems < 70);
+			Level3Or4 = _entries.Count(e => e.Gems > 70);
 
 			IsFetched = true;
 		}
