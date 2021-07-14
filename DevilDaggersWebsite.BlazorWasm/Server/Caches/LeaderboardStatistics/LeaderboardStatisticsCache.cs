@@ -128,6 +128,16 @@ namespace DevilDaggersWebsite.BlazorWasm.Server.Caches.LeaderboardStatistics
 						previous -= 10;
 					}
 				}
+
+				if (KillStats.ContainsKey(entry.Kills))
+					KillStats[entry.Kills]++;
+				else
+					KillStats.Add(entry.Kills, 1);
+
+				if (GemStats.ContainsKey(entry.Gems))
+					GemStats[entry.Gems]++;
+				else
+					GemStats.Add(entry.Gems, 1);
 			}
 
 			Time = new ArrayData(_entries.Select(e => (int)e.Time));

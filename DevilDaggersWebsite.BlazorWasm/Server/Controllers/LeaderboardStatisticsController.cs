@@ -33,6 +33,8 @@ namespace DevilDaggersWebsite.BlazorWasm.Server.Controllers
 				DeathStatistics = _leaderboardStatisticsCache.DeathStats.OrderBy(kvp => kvp.Key.DeathType).ToDictionary(kvp => kvp.Key.Name, kvp => kvp.Value),
 				EnemyStatistics = _leaderboardStatisticsCache.EnemyStats.OrderByDescending(kvp => kvp.Value).ToDictionary(kvp => kvp.Key.Name, kvp => kvp.Value),
 				TimeStatistics = _leaderboardStatisticsCache.TimeStats.OrderBy(kvp => kvp.Key).ToDictionary(kvp => kvp.Key, kvp => kvp.Value),
+				KillStatistics = _leaderboardStatisticsCache.KillStats.OrderBy(kvp => kvp.Key).ToDictionary(kvp => kvp.Key, kvp => kvp.Value),
+				GemStatistics = _leaderboardStatisticsCache.GemStats.OrderBy(kvp => kvp.Key).ToDictionary(kvp => kvp.Key, kvp => kvp.Value),
 				Time = _leaderboardStatisticsCache.Time,
 				Kills = _leaderboardStatisticsCache.Kills,
 				Gems = _leaderboardStatisticsCache.Gems,
