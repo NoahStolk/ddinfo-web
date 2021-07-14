@@ -117,27 +117,27 @@ else
 
 		await SetUpBarChart(
 			barChart: _sub500BarChart,
-			labels: sub500Times.Select(i => i.ToString()).ToArray(),
+			labels: sub500Times.Select(i => $"{i} - {i + 9}").ToArray(),
 			data: _statistics.TimeStatistics.Select(kvp => kvp.Value).Take(50).ToList(),
 			backgroundColors: sub500Times.Select(t => $"#{GameInfo.GetDaggerFromSeconds(GameVersion.V31, t).ColorCode}").ToList());
 		await SetUpBarChart(
 			barChart: _sub1000BarChart,
-			labels: sub1000Times.Select(i => i.ToString()).ToArray(),
+			labels: sub1000Times.Select(i => $"{i} - {i + 9}").ToArray(),
 			data: _statistics.TimeStatistics.Select(kvp => kvp.Value).Skip(50).Take(50).ToList(),
 			backgroundColors: sub1000Times.Select(t => $"#{GameInfo.GetDaggerFromSeconds(GameVersion.V31, t).ColorCode}").ToList());
 		await SetUpBarChart(
 			barChart: _post1000BarChart,
-			labels: post1000Times.Select(i => i.ToString()).ToArray(),
+			labels: post1000Times.Select(i => $"{i} - {i + 9}").ToArray(),
 			data: _statistics.TimeStatistics.Select(kvp => kvp.Value).Skip(100).Take(post1000BarCount).ToList(),
 			backgroundColors: post1000Times.Select(t => $"#{GameInfo.GetDaggerFromSeconds(GameVersion.V31, t).ColorCode}").ToList());
 		await SetUpBarChart(
 			barChart: _killsLineChart,
-			labels: _statistics.KillStatistics.Take(_killGraphCount).Select(kvp => kvp.Key.ToString()).ToArray(),
+			labels: _statistics.KillStatistics.Take(_killGraphCount).Select(kvp => $"{kvp.Key} - {kvp.Key + 9}").ToArray(),
 			data: _statistics.KillStatistics.Take(_killGraphCount).Select(kvp => kvp.Value).ToList(),
 			backgroundColors: Enumerable.Repeat("#dd8800", _killGraphCount).ToList());
 		await SetUpBarChart(
 			barChart: _gemsLineChart,
-			labels: _statistics.GemStatistics.Take(_gemGraphCount).Select(kvp => kvp.Key.ToString()).ToArray(),
+			labels: _statistics.GemStatistics.Take(_gemGraphCount).Select(kvp => $"{kvp.Key} - {kvp.Key + 9}").ToArray(),
 			data: _statistics.GemStatistics.Take(_gemGraphCount).Select(kvp => kvp.Value).ToList(),
 			backgroundColors: Enumerable.Repeat("#ff0000", _gemGraphCount).ToList());
 		await SetUpPieChart(
