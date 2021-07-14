@@ -143,6 +143,12 @@ namespace DevilDaggersWebsite.BlazorWasm.Server.Controllers
 				PlayerId = spawnset.PlayerId,
 			};
 
+			if (spawnset.Name != editSpawnset.Name)
+			{
+				string directory = Path.Combine(_environment.WebRootPath, "spawnsets");
+				Io.File.Move(Path.Combine(directory, spawnset.Name), Path.Combine(directory, editSpawnset.Name));
+			}
+
 			// Do not update LastUpdated here. This value is based only on the file which cannot be edited.
 			spawnset.HtmlDescription = editSpawnset.HtmlDescription;
 			spawnset.IsPractice = editSpawnset.IsPractice;

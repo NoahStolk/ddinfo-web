@@ -119,17 +119,17 @@ else
 
 		await SetUpBarChart(
 			barChart: _sub500Chart,
-			labels: sub500Times.Select(i => $"{i}.0000 - {i + 9}.9999").ToArray(),
+			labels: sub500Times.Select(i => $"{i} - {i + 9}").ToArray(),
 			data: _statistics.TimeStatistics.Select(kvp => kvp.Value).Take(50).ToList(),
 			backgroundColors: sub500Times.Select(t => $"#{GameInfo.GetDaggerFromSeconds(GameVersion.V31, t).ColorCode}").ToList());
 		await SetUpBarChart(
 			barChart: _sub1000Chart,
-			labels: sub1000Times.Select(i => $"{i}.0000 - {i + 9}.9999").ToArray(),
+			labels: sub1000Times.Select(i => $"{i} - {i + 9}").ToArray(),
 			data: _statistics.TimeStatistics.Select(kvp => kvp.Value).Skip(50).Take(50).ToList(),
 			backgroundColors: sub1000Times.Select(t => $"#{GameInfo.GetDaggerFromSeconds(GameVersion.V31, t).ColorCode}").ToList());
 		await SetUpBarChart(
 			barChart: _post1000Chart,
-			labels: post1000Times.Select(i => $"{i}.0000 - {i + 9}.9999").ToArray(),
+			labels: post1000Times.Select(i => $"{i} - {i + 9}").ToArray(),
 			data: _statistics.TimeStatistics.Select(kvp => kvp.Value).Skip(100).Take(post1000BarCount).ToList(),
 			backgroundColors: post1000Times.Select(t => $"#{GameInfo.GetDaggerFromSeconds(GameVersion.V31, t).ColorCode}").ToList());
 		await SetUpBarChart(
