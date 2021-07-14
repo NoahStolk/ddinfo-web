@@ -18,27 +18,21 @@ else
 	}
 	else
 	{
-		<p>
-			This page contains some global statistics from the leaderboard.
-		</p>
-		<p>
-			Statistics were last fetched on @_statistics.DateTime.ToString(FormatUtils.DateTimeUtcFormat).
-		</p>
+		<p>This page contains some global statistics from the leaderboard.</p>
+		<p>Statistics were last fetched on @_statistics.DateTime.ToString(FormatUtils.DateTimeUtcFormat).</p>
 
 		<h2 class="text-red text-xl">Scores</h2>
-		<ul>
-			<li>The average time survived for all players is <span class="@GameInfo.GetDaggerFromTenthsOfMilliseconds(GameVersion.V31, (int)_statistics.Time.Average).Name.ToLower()">@((_statistics.Time.Average / 10000.0).ToString(FormatUtils.TimeFormat))</span> seconds.</li>
-		</ul>
+		<p>The average time survived for all players is <span class="@GameInfo.GetDaggerFromTenthsOfMilliseconds(GameVersion.V31, (int)_statistics.Time.Average).Name.ToLower()">@((_statistics.Time.Average / 10000.0).ToString(FormatUtils.TimeFormat))</span> seconds.</p>
 
 		<BarChart Options="_bco" @ref="_sub500BarChart" TItem="int" />
 		<BarChart Options="_bco" @ref="_sub1000BarChart" TItem="int" />
 		<BarChart Options="_bco" @ref="_post1000BarChart" TItem="int" />
 
 		<h2 class="text-red text-xl">Kills</h2>
-		<li>The average kills for all players is @(_statistics.Kills.Average.ToString(FormatUtils.LeaderboardIntAverageFormat)).</li>
+		<p>The average kills for all players is @(_statistics.Kills.Average.ToString(FormatUtils.LeaderboardIntAverageFormat)).</p>
 
 		<h2 class="text-red text-xl">Gems</h2>
-		<li>The average gems for all players is @(_statistics.Gems.Average.ToString(FormatUtils.LeaderboardIntAverageFormat)).</li>
+		<p>The average gems for all players is @(_statistics.Gems.Average.ToString(FormatUtils.LeaderboardIntAverageFormat)).</p>
 
 		<h2 class="text-red text-xl">Daggers achieved</h2>
 		<BarChart Options="_bco" @ref="_daggersBarChart" TItem="int" />
@@ -53,14 +47,14 @@ else
 
 @code
 {
-	private const int _post1000BarCount = 20;
-
 	private GetLeaderboardStatistics? _statistics;
 
 	protected override async Task OnInitializedAsync()
 	{
 		_statistics = await Http.Client.GetFromJsonAsync<GetLeaderboardStatistics>("api/leaderboard-statistics");
 	}
+
+	private const int _post1000BarCount = 20;
 
 	private BarChartOptions _bco = new()
 	{
