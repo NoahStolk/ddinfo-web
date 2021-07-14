@@ -11,8 +11,6 @@ namespace DevilDaggersWebsite.BlazorWasm.Server.Caches.LeaderboardStatistics
 {
 	public class LeaderboardStatisticsCache : IStaticCache
 	{
-		private const int _timeStep = 100000; // 10 seconds
-
 		private readonly List<CompressedEntry> _entries = new();
 
 		private readonly DiscordLogger _discordLogger;
@@ -115,32 +113,58 @@ namespace DevilDaggersWebsite.BlazorWasm.Server.Caches.LeaderboardStatistics
 						EnemyStats[enemy]++;
 				}
 
-				int step = (int)(entry.Time / _timeStep * 10);
-				if (TimeStats.ContainsKey(step))
+				const int step = 10;
+
+				int timeStep = (int)(entry.Time / 10000 / step * step);
+				if (TimeStats.ContainsKey(timeStep))
 				{
-					TimeStats[step]++;
+					TimeStats[timeStep]++;
 				}
 				else
 				{
-					TimeStats.Add(step, 1);
+					TimeStats.Add(timeStep, 1);
 
-					int previous = step - 10;
+					int previous = timeStep - step;
 					while (!TimeStats.ContainsKey(previous) && previous >= 0)
 					{
 						TimeStats.Add(previous, 0);
-						previous -= 10;
+						previous -= step;
 					}
 				}
 
-				if (KillStats.ContainsKey(entry.Kills))
-					KillStats[entry.Kills]++;
+				int killStep = entry.Kills / step * step;
+				if (KillStats.ContainsKey(killStep))
+				{
+					KillStats[killStep]++;
+				}
 				else
-					KillStats.Add(entry.Kills, 1);
+				{
+					KillStats.Add(killStep, 1);
 
-				if (GemStats.ContainsKey(entry.Gems))
-					GemStats[entry.Gems]++;
+					int previous = killStep - step;
+					while (!KillStats.ContainsKey(previous) && previous >= 0)
+					{
+						KillStats.Add(previous, 0);
+						previous -= step;
+					}
+				}
+
+				int gemStep = entry.Gems / step * step;
+				if (GemStats.ContainsKey(gemStep))
+				{
+					GemStats[gemStep]++;
+				}
 				else
-					GemStats.Add(entry.Gems, 1);
+				{
+					GemStats.Add(gemStep, 1);
+
+					int previous = gemStep - step;
+					while (!GemStats.ContainsKey(previous) && previous >= 0)
+					{
+						GemStats.Add(previous, 0);
+						previous -= step;
+					}
+				}
 			}
 
 			Time.Populate(_entries.Select(e => (int)e.Time));
