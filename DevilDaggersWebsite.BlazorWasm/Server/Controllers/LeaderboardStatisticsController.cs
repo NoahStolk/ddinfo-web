@@ -26,16 +26,16 @@ namespace DevilDaggersWebsite.BlazorWasm.Server.Controllers
 		{
 			return new GetLeaderboardStatistics
 			{
+				DateTime = HistoryUtils.HistoryJsonFileNameToDateTime(_leaderboardStatisticsCache.FileName),
+				IsFetched = _leaderboardStatisticsCache.IsFetched,
+				TotalEntries = _leaderboardStatisticsCache.Entries.Count,
 				DaggerStatistics = _leaderboardStatisticsCache.DaggerStats.OrderBy(kvp => kvp.Key.UnlockSecond).ToDictionary(kvp => kvp.Key.Name, kvp => kvp.Value),
 				DeathStatistics = _leaderboardStatisticsCache.DeathStats.OrderBy(kvp => kvp.Key.DeathType).ToDictionary(kvp => kvp.Key.Name, kvp => kvp.Value),
 				EnemyStatistics = _leaderboardStatisticsCache.EnemyStats.OrderByDescending(kvp => kvp.Value).ToDictionary(kvp => kvp.Key.Name, kvp => kvp.Value),
-				TimeStatistics = _leaderboardStatisticsCache.TimeStats,
-				DateTime = HistoryUtils.HistoryJsonFileNameToDateTime(_leaderboardStatisticsCache.FileName),
-				IsFetched = _leaderboardStatisticsCache.IsFetched,
-				AverageGems = _leaderboardStatisticsCache.AverageGems,
-				AverageKills = _leaderboardStatisticsCache.AverageKills,
-				AverageTimeInTenthsOfMilliseconds = _leaderboardStatisticsCache.AverageTimeInTenthsOfMilliseconds,
-				TotalEntries = _leaderboardStatisticsCache.Entries.Count,
+				TimeStatistics = _leaderboardStatisticsCache.TimeStats.OrderBy(kvp => kvp.Key).ToDictionary(kvp => kvp.Key, kvp => kvp.Value),
+				Time = _leaderboardStatisticsCache.Time,
+				Kills = _leaderboardStatisticsCache.Kills,
+				Gems = _leaderboardStatisticsCache.Gems,
 			};
 		}
 	}

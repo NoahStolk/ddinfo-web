@@ -14,8 +14,8 @@ namespace DevilDaggersWebsite.BlazorWasm.Shared.Dto.LeaderboardStatistics
 		public bool IsFetched { get; init; }
 		public int TotalEntries { get; init; }
 
-		public int AverageTimeInTenthsOfMilliseconds { get; init; }
-		public float AverageKills { get; init; }
-		public float AverageGems { get; init; }
+		public ArrayData Time { get; init; }
+		public ArrayData Kills { get; init; }
+		public ArrayData Gems { get; init; }
 	}
 }

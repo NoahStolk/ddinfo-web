@@ -27,39 +27,34 @@ else
 
 		<h2 class="text-red text-xl">Scores</h2>
 		<ul>
-			<li>The average time survived for all players is <span class="@GameInfo.GetDaggerFromTenthsOfMilliseconds(GameVersion.V31, _statistics.AverageTimeInTenthsOfMilliseconds).Name.ToLower()">@((_statistics.AverageTimeInTenthsOfMilliseconds / 10000f).ToString(FormatUtils.TimeFormat))</span> seconds.</li>
-			<li>The average kills for all players is @(_statistics.AverageKills.ToString(FormatUtils.LeaderboardIntAverageFormat)).</li>
-			<li>The average gems for all players is @(_statistics.AverageGems.ToString(FormatUtils.LeaderboardIntAverageFormat)).</li>
+			<li>The average time survived for all players is <span class="@GameInfo.GetDaggerFromTenthsOfMilliseconds(GameVersion.V31, (int)_statistics.Time.Average).Name.ToLower()">@((_statistics.Time.Average / 10000.0).ToString(FormatUtils.TimeFormat))</span> seconds.</li>
 		</ul>
 
-		<h3 class="text-red text-lg">0-500 Scores</h3>
-		<button @onclick="@(async () => await DrawSub500BarChart())">Redraw</button>
-		<BarChart @ref="_sub500BarChart" TItem="int" />
+		<BarChart Options="_bco" @ref="_sub500BarChart" TItem="int" />
+		<BarChart Options="_bco" @ref="_sub1000BarChart" TItem="int" />
+		<BarChart Options="_bco" @ref="_post1000BarChart" TItem="int" />
 
-		<h3 class="text-red text-lg">500-1000 Scores</h3>
-		<button @onclick="@(async () => await DrawSub1000BarChart())">Redraw</button>
-		<BarChart @ref="_sub1000BarChart" TItem="int" />
+		<h2 class="text-red text-xl">Kills</h2>
+		<li>The average kills for all players is @(_statistics.Kills.Average.ToString(FormatUtils.LeaderboardIntAverageFormat)).</li>
 
-		<h3 class="text-red text-lg">1000+ Scores</h3>
-		<button @onclick="@(async () => await DrawPost1000BarChart())">Redraw</button>
-		<BarChart @ref="_post1000BarChart" TItem="int" />
+		<h2 class="text-red text-xl">Gems</h2>
+		<li>The average gems for all players is @(_statistics.Gems.Average.ToString(FormatUtils.LeaderboardIntAverageFormat)).</li>
 
-		<h2 class="text-red text-xl">Daggers</h2>
-		<button @onclick="@(async () => await DrawDaggersBarChart())">Redraw</button>
-		<BarChart @ref="_daggersBarChart" TItem="int" />
+		<h2 class="text-red text-xl">Daggers achieved</h2>
+		<BarChart Options="_bco" @ref="_daggersBarChart" TItem="int" />
 
 		<h2 class="text-red text-xl">Death types</h2>
-		<button @onclick="@(async () => await DrawDeathsBarChart())">Redraw</button>
-		<BarChart @ref="_deathsBarChart" TItem="int" />
+		<BarChart Options="_bco" @ref="_deathsBarChart" TItem="int" />
 
 		<h2 class="text-red text-xl">Enemies seen</h2>
-		<button @onclick="@(async () => await DrawEnemiesBarChart())">Redraw</button>
-		<BarChart @ref="_enemiesBarChart" TItem="int" />
+		<BarChart Options="_bco" @ref="_enemiesBarChart" TItem="int" />
 	}
 }
 
 @code
 {
+	private const int _post1000BarCount = 20;
+
 	private GetLeaderboardStatistics? _statistics;
 
 	protected override async Task OnInitializedAsync()
@@ -67,9 +62,16 @@ else
 		_statistics = await Http.Client.GetFromJsonAsync<GetLeaderboardStatistics>("api/leaderboard-statistics");
 	}
 
+	private BarChartOptions _bco = new()
+	{
+		MaintainAspectRatio = true,
+		Responsive = true,
+		AspectRatio = 3.5f,
+	};
+
 	private int[] _sub500Times = Enumerable.Range(0, 50).Select(i => i * 10).ToArray();
 	private int[] _sub1000Times = Enumerable.Range(50, 50).Select(i => i * 10).ToArray();
-	private int[] _post1000Times = Enumerable.Range(100, 20).Select(i => i * 10).ToArray();
+	private int[] _post1000Times = Enumerable.Range(100, _post1000BarCount).Select(i => i * 10).ToArray();
 
 	private BarChart<int>? _sub500BarChart;
 	private BarChart<int>? _sub1000BarChart;
@@ -80,8 +82,15 @@ else
 
 	protected override async Task OnAfterRenderAsync(bool firstRender)
 	{
-		if (firstRender)
-			await DrawSub500BarChart();
+		if (firstRender || _statistics == null)
+			return;
+
+		await DrawSub500BarChart();
+		await DrawSub1000BarChart();
+		await DrawPost1000BarChart();
+		await DrawDaggersBarChart();
+		await DrawDeathsBarChart();
+		await DrawEnemiesBarChart();
 	}
 
 	private async Task DrawSub500BarChart()
@@ -121,7 +130,7 @@ else
 		await _post1000BarChart.AddLabelsDatasetsAndUpdate(_post1000Times.Select(i => i.ToString()).ToArray(), new BarChartDataset<int>
 		{
 			Label = "Players",
-			Data = _statistics?.TimeStatistics.Select(kvp => kvp.Value).Skip(100).Take(20).ToList(),
+			Data = _statistics?.TimeStatistics.Select(kvp => kvp.Value).Skip(100).Take(_post1000BarCount).ToList(),
 			BackgroundColor = _post1000Times.Select(t => $"#{GameInfo.GetDaggerFromSeconds(GameVersion.V31, t).ColorCode}").ToList(),
 		});
 	}

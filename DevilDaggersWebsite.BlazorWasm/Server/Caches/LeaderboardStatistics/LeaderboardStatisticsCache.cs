@@ -1,6 +1,7 @@
 ﻿using DevilDaggersCore.Game;
 using DevilDaggersWebsite.BlazorWasm.Server.HostedServices.DdInfoDiscordBot;
 using DevilDaggersWebsite.BlazorWasm.Server.Singletons;
+using DevilDaggersWebsite.BlazorWasm.Shared;
 using System.Collections.Generic;
 using System.IO;
 using System.Linq;
@@ -27,15 +28,13 @@ namespace DevilDaggersWebsite.BlazorWasm.Server.Caches.LeaderboardStatistics
 		public Dictionary<Dagger, int> DaggerStats { get; } = new();
 		public Dictionary<Death, int> DeathStats { get; } = new();
 		public Dictionary<Enemy, int> EnemyStats { get; } = new();
-		public Dictionary<int, int> TimeStats { get; private set; } = new();
+		public Dictionary<int, int> TimeStats { get; } = new();
+		public Dictionary<int, int> KillStats { get; } = new();
+		public Dictionary<int, int> GemStats { get; } = new();
 
-		public ulong AllTime { get; private set; }
-		public ulong AllKills { get; private set; }
-		public ulong AllGems { get; private set; }
-
-		public int AverageTimeInTenthsOfMilliseconds { get; private set; }
-		public float AverageKills { get; private set; }
-		public float AverageGems { get; private set; }
+		public ArrayData Time { get; private set; }
+		public ArrayData Kills { get; private set; }
+		public ArrayData Gems { get; private set; }
 
 		public IReadOnlyList<CompressedEntry> Entries => _entries;
 
@@ -44,14 +43,14 @@ namespace DevilDaggersWebsite.BlazorWasm.Server.Caches.LeaderboardStatistics
 			string leaderboardStatisticsDirectory = Path.Combine("Content", "LeaderboardStatistics");
 			if (!Directory.Exists(leaderboardStatisticsDirectory))
 			{
-				await _discordLogger.TryLog(Channel.MonitoringError, ":x: Directory `LeaderboardStatistics` does not exist.");
+				await _discordLogger.TryLog(Channel.MonitoringError, ":x: Leaderboard statistics directory does not exist.");
 				return;
 			}
 
 			string[] paths = Directory.GetFiles(leaderboardStatisticsDirectory);
 			if (paths.Length == 0)
 			{
-				await _discordLogger.TryLog(Channel.MonitoringError, ":x: No files found in `LeaderboardStatistics`.");
+				await _discordLogger.TryLog(Channel.MonitoringError, ":x: No files found in leaderboard statistics directory.");
 				return;
 			}
 
@@ -63,7 +62,10 @@ namespace DevilDaggersWebsite.BlazorWasm.Server.Caches.LeaderboardStatistics
 			_entries.Clear();
 			DaggerStats.Clear();
 			DeathStats.Clear();
-			TimeStats = Enumerable.Range(0, 120).ToDictionary(i => i * 10, _ => 0);
+			EnemyStats.Clear();
+			TimeStats.Clear();
+			KillStats.Clear();
+			GemStats.Clear();
 
 			using (FileStream fs = new(path, FileMode.Open))
 			{
@@ -112,16 +114,25 @@ namespace DevilDaggersWebsite.BlazorWasm.Server.Caches.LeaderboardStatistics
 
 				int step = (int)(entry.Time / _timeStep * 10);
 				if (TimeStats.ContainsKey(step))
+				{
 					TimeStats[step]++;
+				}
+				else
+				{
+					TimeStats.Add(step, 1);
 
-				AllTime += entry.Time;
-				AllKills += entry.Kills;
-				AllGems += entry.Gems;
+					int previous = step - 10;
+					while (!TimeStats.ContainsKey(previous) && previous >= 0)
+					{
+						TimeStats.Add(previous, 0);
+						previous -= 10;
+					}
+				}
 			}
 
-			AverageTimeInTenthsOfMilliseconds = (int)(AllTime / (float)_entries.Count);
-			AverageKills = AllKills / (float)_entries.Count;
-			AverageGems = AllGems / (float)_entries.Count;
+			Time = new ArrayData(_entries.Select(e => (int)e.Time));
+			Kills = new ArrayData(_entries.Select(e => (int)e.Kills));
+			Gems = new ArrayData(_entries.Select(e => (int)e.Gems));
 
 			IsFetched = true;
 		}
