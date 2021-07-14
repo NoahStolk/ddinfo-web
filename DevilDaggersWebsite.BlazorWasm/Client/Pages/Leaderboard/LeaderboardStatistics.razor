@@ -23,16 +23,17 @@ else
 
 		<h2 class="text-red text-xl">Scores</h2>
 		<p>The average time survived for all players is <span class="@GameInfo.GetDaggerFromTenthsOfMilliseconds(GameVersion.V31, (int)_statistics.Time.Average).Name.ToLower()">@((_statistics.Time.Average / 10000.0).ToString(FormatUtils.TimeFormat))</span> seconds.</p>
-
 		<BarChart Options="_bco" @ref="_sub500BarChart" TItem="int" />
 		<BarChart Options="_bco" @ref="_sub1000BarChart" TItem="int" />
 		<BarChart Options="_bco" @ref="_post1000BarChart" TItem="int" />
 
 		<h2 class="text-red text-xl">Kills</h2>
 		<p>The average kills for all players is @(_statistics.Kills.Average.ToString(FormatUtils.LeaderboardIntAverageFormat)).</p>
+		<LineChart Options="_lco" @ref="_killsBarChart" TItem="int" />
 
 		<h2 class="text-red text-xl">Gems</h2>
 		<p>The average gems for all players is @(_statistics.Gems.Average.ToString(FormatUtils.LeaderboardIntAverageFormat)).</p>
+		<LineChart Options="_lco" @ref="_gemsBarChart" TItem="int" />
 
 		<h2 class="text-red text-xl">Daggers achieved</h2>
 		<BarChart Options="_bco" @ref="_daggersBarChart" TItem="int" />
@@ -63,6 +64,13 @@ else
 		AspectRatio = 3.5f,
 	};
 
+	private LineChartOptions _lco = new()
+	{
+		MaintainAspectRatio = true,
+		Responsive = true,
+		AspectRatio = 3.5f,
+	};
+
 	private int[] _sub500Times = Enumerable.Range(0, 50).Select(i => i * 10).ToArray();
 	private int[] _sub1000Times = Enumerable.Range(50, 50).Select(i => i * 10).ToArray();
 	private int[] _post1000Times = Enumerable.Range(100, _post1000BarCount).Select(i => i * 10).ToArray();
@@ -70,6 +78,8 @@ else
 	private BarChart<int>? _sub500BarChart;
 	private BarChart<int>? _sub1000BarChart;
 	private BarChart<int>? _post1000BarChart;
+	private LineChart<int>? _killsBarChart;
+	private LineChart<int>? _gemsBarChart;
 	private BarChart<int>? _daggersBarChart;
 	private BarChart<int>? _deathsBarChart;
 	private BarChart<int>? _enemiesBarChart;
@@ -81,6 +91,8 @@ else
 			_sub500BarChart == null ||
 			_sub1000BarChart == null ||
 			_post1000BarChart == null ||
+			_killsBarChart == null ||
+			_gemsBarChart == null ||
 			_daggersBarChart == null ||
 			_deathsBarChart == null ||
 			_enemiesBarChart == null)
@@ -101,6 +113,16 @@ else
 			labels: _post1000Times.Select(i => i.ToString()).ToArray(),
 			data: _statistics.TimeStatistics.Select(kvp => kvp.Value).Skip(100).Take(_post1000BarCount).ToList(),
 			backgroundColors: _post1000Times.Select(t => $"#{GameInfo.GetDaggerFromSeconds(GameVersion.V31, t).ColorCode}").ToList());
+		await SetUpLineChart(
+			lineChart: _killsBarChart,
+			labels: _statistics.KillStatistics.Take(500).Select(kvp => kvp.Key.ToString()).ToArray(),
+			data: _statistics.KillStatistics.Select(kvp => kvp.Value).Take(500).ToList(),
+			backgroundColors: new() { "#dd8800" });
+		await SetUpLineChart(
+			lineChart: _gemsBarChart,
+			labels: _statistics.GemStatistics.Take(100).Select(kvp => kvp.Key.ToString()).ToArray(),
+			data: _statistics.GemStatistics.Select(kvp => kvp.Value).Take(100).ToList(),
+			backgroundColors: new() { "#ff0000" });
 		await SetUpBarChart(
 			barChart: _daggersBarChart,
 			labels: _statistics.DaggerStatistics.Select(kvp => kvp.Key).ToArray(),
@@ -116,7 +138,6 @@ else
 			labels: _statistics.EnemyStatistics.Select(kvp => kvp.Key).ToArray(),
 			data: _statistics.EnemyStatistics.Select(kvp => kvp.Value).ToList(),
 			backgroundColors: _statistics.EnemyStatistics.Select(kvp => $"#{GameInfo.GetEnemies(GameVersion.V31).FirstOrDefault(e => e.Name == kvp.Key)?.ColorCode ?? "444"}").ToList());
-
 	}
 
 	private async Task SetUpBarChart(BarChart<int> barChart, string[] labels, List<int> data, List<string> backgroundColors)
@@ -127,6 +148,20 @@ else
 			Label = "Players",
 			Data = data,
 			BackgroundColor = backgroundColors,
+		});
+	}
+
+	private async Task SetUpLineChart(LineChart<int> lineChart, string[] labels, List<int> data, List<string> backgroundColors)
+	{
+		await lineChart.Clear();
+		await lineChart.AddLabelsDatasetsAndUpdate(labels, new LineChartDataset<int>
+		{
+			Label = "Players",
+			Data = data,
+			BackgroundColor = backgroundColors,
+			Fill = true,
+			LineTension = 0,
+			PointRadius = 10,
 		});
 	}
 }
