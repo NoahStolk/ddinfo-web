@@ -1,6 +1,6 @@
 ﻿<div class="p-4">
 	<a href="" class="font-goethe text-3xl">DevilDaggers.Info</a>
-	<button class="sm:hidden" @onclick="() => _collapseNavMenu = !_collapseNavMenu">
+	<button class="sm:hidden" @onclick="() => _showNavMenu = !_showNavMenu">
 		<span class="oi oi-menu" aria-hidden="true"></span>
 	</button>
 </div>
@@ -8,34 +8,34 @@
 <div class="@NavMenuCssClass pb-4">
 	<ul>
 		<NavItem Href="" CssClass="text-xl" IconType="home" Text="Home" Match="NavLinkMatch.All" />
-		<NavDropdown Text="Leaderboard">
+		<NavDropdown NavMenu="this" Text="Leaderboard">
 			<NavItem Href="leaderboard" CssClass="text-lg" IconType="clock" Text="Leaderboard" />
 			<NavItem Href="leaderboard-history" CssClass="text-lg" IconType="book" Text="History" />
 			<NavItem Href="player-settings" CssClass="text-lg" IconType="book" Text="Settings" />
 			<NavItem Href="leaderboard-statistics" CssClass="text-lg" IconType="bar-chart" Text="Statistics" />
 			<NavItem Href="world-record-progression" CssClass="text-lg" IconType="star" Text="World Record Progression" />
 		</NavDropdown>
-		<NavDropdown Text="Custom">
+		<NavDropdown NavMenu="this" Text="Custom">
 			<NavItem Href="spawnsets" CssClass="text-lg" IconType="grid-three-up" Text="Spawnsets" />
 			<NavItem Href="custom-leaderboards" CssClass="text-lg" IconType="clock" Text="Custom Leaderboards" />
 			<NavItem Href="mods" CssClass="text-lg" IconType="brush" Text="Mods" />
 		</NavDropdown>
-		<NavDropdown Text="Tools">
+		<NavDropdown NavMenu="this" Text="Tools">
 			<NavItem Href="tools/survival-editor" CssClass="text-lg" IconType="grid-three-up" Text="Survival Editor" />
 			<NavItem Href="tools/custom-leaderboards" CssClass="text-lg" IconType="clock" Text="Custom Leaderboards" />
 			<NavItem Href="tools/asset-editor" CssClass="text-lg" IconType="brush" Text="Asset Editor" />
 		</NavDropdown>
-		<NavDropdown Text="Wiki">
+		<NavDropdown NavMenu="this" Text="Wiki">
 			<NavItem Href="wiki/spawns" CssClass="text-lg" IconType="grid-three-up" Text="Spawns" />
 			<NavItem Href="wiki/upgrades" CssClass="text-lg" IconType="clock" Text="Upgrades" />
 			<NavItem Href="wiki/enemies" CssClass="text-lg" IconType="brush" Text="Enemies" />
 			<NavItem Href="wiki/daggers" CssClass="text-lg" IconType="brush" Text="Daggers" />
 		</NavDropdown>
-		<NavDropdown Text="Guides">
+		<NavDropdown NavMenu="this" Text="Guides">
 			<NavItem Href="guides/survival-editor" CssClass="text-lg" IconType="grid-three-up" Text="Survival Editor" />
 			<NavItem Href="guides/asset-editor" CssClass="text-lg" IconType="brush" Text="Asset Editor" />
 		</NavDropdown>
-		<NavDropdown Text="Admin">
+		<NavDropdown NavMenu="this" Text="Admin">
 			<NavItem Href="admin/custom-entries" CssClass="text-lg" IconType="ellipses" Text="Custom Entries" />
 			<NavItem Href="admin/custom-leaderboards" CssClass="text-lg" IconType="list" Text="Custom Leaderboards" />
 			<NavItem Href="admin/donations" CssClass="text-lg" IconType="heart" Text="Donations" />
@@ -52,7 +52,15 @@
 
 @code
 {
-	private bool _collapseNavMenu = true;
+	private bool _showNavMenu = false;
 
-	private string? NavMenuCssClass => _collapseNavMenu ? "hidden sm:block" : null;
+	private string? NavMenuCssClass => _showNavMenu ? null : "hidden sm:block";
+
+	public List<NavDropdown> NavDropdowns { get; } = new();
+
+	public void ShowSubMenu(NavDropdown navDropdown)
+	{
+		foreach (NavDropdown nd in NavDropdowns)
+			nd.ShowList = navDropdown == nd;
+	}
 }
