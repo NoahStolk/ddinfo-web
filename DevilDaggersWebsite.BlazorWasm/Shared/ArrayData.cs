@@ -5,9 +5,10 @@ namespace DevilDaggersWebsite.BlazorWasm.Shared
 {
 	public class ArrayData
 	{
-		public double Average { get; private set; }
-		public int Median { get; private set; }
-		public int Mode { get; private set; }
+		// Make setters public so this can be used as DTO.
+		public double Average { get; set; }
+		public int Median { get; set; }
+		public int Mode { get; set; }
 
 		public void Populate(IEnumerable<int> data)
 		{
