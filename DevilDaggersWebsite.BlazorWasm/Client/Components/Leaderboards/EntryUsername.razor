@@ -1,7 +1,7 @@
 ﻿<div>
 	@if (IsBanned)
 	{
-		<Tooltip Text="@BanDescription"><a href="/leaderboard/player?id=@Id" class="@DaggerCssClass">@Name</a></Tooltip>
+		<Tooltip Text="@BanDescription"><a href="/leaderboard/player?id=@Id" class="@(IsBanned ? string.Empty : DaggerCssClass)">@Name</a></Tooltip>
 	}
 	else
 	{

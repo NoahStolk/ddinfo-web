@@ -19,7 +19,7 @@
 	}
 
 .leviathan {
-	background: linear-gradient(#FF0031 40%, #DC002A 41%, #A50020 50%, #6C0015 59%, #A50020 60%, #DC002A 65%, #FF0031);
+	background: linear-gradient(#FF0031 40%, #DC002A 41%, #A50020 45%, #6C0015 59%, #A50020 65%, #DC002A 70%, #FF0031);
 	background-repeat: repeat-x;
 	-webkit-font-smoothing: antialiased;
 	-webkit-background-clip: text;

@@ -44,7 +44,7 @@ else
 				@foreach (PropertyInfo pi in _properties)
 				{
 					string name = (pi.GetCustomAttribute(typeof(DisplayAttribute)) as DisplayAttribute)?.Name ?? pi.Name;
-					<th><a class="text-colorlink hover:text-colorlinkhover" href="" @onclick="() => Sort(pi.Name)" @onclick:preventDefault>@name</a></th>
+					<th><a class="text-color-link hover:text-color-link-hover" href="" @onclick="() => Sort(pi.Name)" @onclick:preventDefault>@name</a></th>
 				}
 				<th></th>
 				<th></th>
@@ -58,8 +58,8 @@ else
 					{
 						<td>@ReflectionUtils.GetDtoPropertyDisplayValue(pi, result)</td>
 					}
-					<td><a class="text-colorlink hover:text-colorlinkhover" href="@($"{NavigationManager.Uri}/edit/{result.Id}")">Edit</a></td>
-					<td><a class="text-colorlink hover:text-colorlinkhover" href="" @onclick="() => _deletion?.Set(result.Id)" @onclick:preventDefault>Delete</a></td>
+					<td><a class="text-color-link hover:text-color-link-hover" href="@($"{NavigationManager.Uri}/edit/{result.Id}")">Edit</a></td>
+					<td><a class="text-color-link hover:text-color-link-hover" href="" @onclick="() => _deletion?.Set(result.Id)" @onclick:preventDefault>Delete</a></td>
 				</tr>
 			}
 		</tbody>
