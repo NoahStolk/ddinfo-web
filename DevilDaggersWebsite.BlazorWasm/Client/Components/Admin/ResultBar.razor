@@ -1,16 +1,16 @@
 ﻿@if (Message != null)
 {
-	<div class="alert alert-@Type">
+	<div class="@CssClass">
 		@if (Title != null)
 		{
-			<h4 class="alert-heading">@Title</h4>
+			<h4>@Title</h4>
 		}
 
 		<p>@Message</p>
 
 		@if (Dismissable)
 		{
-			<button class="btn btn-@Type" @onclick="Dismiss">Dismiss</button>
+			<button class="@CssClass" @onclick="Dismiss">Dismiss</button>
 		}
 	</div>
 }
@@ -19,7 +19,7 @@
 {
 	[Parameter] public string? Title { get; set; }
 	[Parameter] public string? Message { get; set; }
-	[Parameter] public string Type { get; set; } = null!;
+	[Parameter] public string CssClass { get; set; } = null!;
 	[Parameter] public bool Dismissable { get; set; } = true;
 	[Parameter] public Action? DismissEvent { get; set; }
 

@@ -5,11 +5,11 @@
 		<InitialTip>@SelectedDisplayValue</InitialTip>
 		<ChildContent>
 			<InputTextImmediate @bind-Value="_searchValue" />
-			<div class="select-list">
-				<a class="dropdown-item" @onclick="e => _dropdown?.HandleSelect(null) ?? Task.CompletedTask">[CLEAR]</a>
+			<div>
+				<a @onclick="e => _dropdown?.HandleSelect(null) ?? Task.CompletedTask">[CLEAR]</a>
 				@foreach (KeyValuePair<string, string> kvp in FilteredItems)
 				{
-					<a class="dropdown-item" Item="@kvp" @onclick="e => _dropdown?.HandleSelect(kvp.Key) ?? Task.CompletedTask">@kvp.Key (@kvp.Value)</a>
+					<a Item="@kvp" @onclick="e => _dropdown?.HandleSelect(kvp.Key) ?? Task.CompletedTask">@kvp.Key (@kvp.Value)</a>
 				}
 			</div>
 		</ChildContent>

@@ -1,13 +1,11 @@
 ﻿@typeparam TItem
-<div class="dropdown">
-	<button class="btn btn-primary dropdown-toggle" data-toggle="dropdown" type="button" @onclick="e => _show = !_show" aria-haspopup="true" aria-expanded="false">
+<div>
+	<button @onclick="e => _show = !_show">
 		@InitialTip
 	</button>
-	<CascadingValue name="Dropdown" Value="@this">
-		<div class="dropdown-menu @(_show ? "show" : string.Empty)">
-			@ChildContent
-		</div>
-	</CascadingValue>
+	<div class="@(_show ? string.Empty : "hidden")">
+		@ChildContent
+	</div>
 </div>
 
 @code {
