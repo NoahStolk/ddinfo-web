@@ -10,15 +10,18 @@
 		<NavItem Href="" CssClass="text-xl" IconType="home" Text="Home" Match="NavLinkMatch.All" />
 		<NavDropdown NavMenu="this" Text="Leaderboard">
 			<NavItem Href="leaderboard" CssClass="text-lg" IconType="clock" Text="Leaderboard" />
-			<NavItem Href="leaderboard-history" CssClass="text-lg" IconType="book" Text="History" />
-			<NavItem Href="player-settings" CssClass="text-lg" IconType="cog" Text="Player Settings" />
-			<NavItem Href="leaderboard-statistics" CssClass="text-lg" IconType="bar-chart" Text="Statistics" />
-			<NavItem Href="world-record-progression" CssClass="text-lg" IconType="star" Text="World Record Progression" />
+			<NavItem Href="leaderboard/statistics" CssClass="text-lg" IconType="bar-chart" Text="Statistics" />
+			<hr />
+			<NavItem Href="leaderboard/history" CssClass="text-lg" IconType="book" Text="History" />
+			<NavItem Href="leaderboard/world-records" CssClass="text-lg" IconType="star" Text="World Records" />
+			<NavItem Href="leaderboard/history/statistics" CssClass="text-lg" IconType="bar-chart" Text="History Statistics" />
+			<hr />
+			<NavItem Href="leaderboard/settings" CssClass="text-lg" IconType="cog" Text="Player Settings" />
 		</NavDropdown>
 		<NavDropdown NavMenu="this" Text="Custom">
-			<NavItem Href="spawnsets" CssClass="text-lg" IconType="grid-three-up" Text="Spawnsets" />
-			<NavItem Href="custom-leaderboards" CssClass="text-lg" IconType="clock" Text="Custom Leaderboards" />
-			<NavItem Href="mods" CssClass="text-lg" IconType="brush" Text="Mods" />
+			<NavItem Href="custom/spawnsets" CssClass="text-lg" IconType="grid-three-up" Text="Spawnsets" />
+			<NavItem Href="custom/leaderboards" CssClass="text-lg" IconType="clock" Text="Leaderboards" />
+			<NavItem Href="custom/mods" CssClass="text-lg" IconType="brush" Text="Mods" />
 		</NavDropdown>
 		<NavDropdown NavMenu="this" Text="Tools">
 			<NavItem Href="tools/survival-editor" CssClass="text-lg" IconType="grid-three-up" Text="Survival Editor" />
