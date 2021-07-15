@@ -19,7 +19,7 @@
 	}
 
 .leviathan {
-	background: url('../images/fonts/Leviathan.png');
+	background: url('../images/fonts/gradient-leviathan.png');
 	background-repeat: repeat-x;
 	background-position-y: 4px;
 	-webkit-font-smoothing: antialiased;
@@ -30,7 +30,7 @@
 }
 
 .devil {
-	background: url('../images/fonts/Devil.png');
+	background: url('../images/fonts/gradient-devil.png');
 	background-repeat: repeat-x;
 	background-position-y: 4px;
 	-webkit-font-smoothing: antialiased;
@@ -41,7 +41,7 @@
 }
 
 .golden {
-	background: url('../images/fonts/Golden.png');
+	background: url('../images/fonts/gradient-golden.png');
 	background-repeat: repeat-x;
 	background-position-y: 4px;
 	-webkit-font-smoothing: antialiased;
@@ -52,7 +52,7 @@
 }
 
 .silver {
-	background: url('../images/fonts/Silver.png');
+	background: url('../images/fonts/gradient-silver.png');
 	background-repeat: repeat-x;
 	background-position-y: 4px;
 	-webkit-font-smoothing: antialiased;
@@ -63,7 +63,7 @@
 }
 
 .bronze {
-	background: url('../images/fonts/Bronze.png');
+	background: url('../images/fonts/gradient-bronze.png');
 	background-repeat: repeat-x;
 	background-position-y: 4px;
 	-webkit-font-smoothing: antialiased;
@@ -74,7 +74,7 @@
 }
 
 .default {
-	background: url('../images/fonts/Default.png');
+	background: url('../images/fonts/gradient-default.png');
 	background-repeat: repeat-x;
 	background-position-y: 4px;
 	-webkit-font-smoothing: antialiased;

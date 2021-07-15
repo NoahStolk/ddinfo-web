@@ -14,7 +14,7 @@
 			@foreach (string title in _titles)
 			{
 				string? titleImage = UserUtils.TitleImages.ContainsKey(title) ? UserUtils.TitleImages[title] : null;
-				<Tooltip Text="@title"><img src="/images/icons/@(titleImage).png" /></Tooltip>
+				<Tooltip Text="@title"><img src="/images/icons/default/@(titleImage).png" /></Tooltip>
 			}
 		</span>
 	}
