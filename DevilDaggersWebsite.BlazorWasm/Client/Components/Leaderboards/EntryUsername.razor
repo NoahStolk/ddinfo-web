@@ -1,11 +1,11 @@
 ﻿<div>
 	@if (IsBanned)
 	{
-		<Tooltip Text="@BanDescription"><a href="/leaderboard/player?id=@Id" class="@DaggerCssClass overflow-hidden">@Name</a></Tooltip>
+		<Tooltip Text="@BanDescription"><a href="/leaderboard/player?id=@Id" class="@DaggerCssClass">@Name</a></Tooltip>
 	}
 	else
 	{
-		<a href="/leaderboard/player?id=@Id" class="@DaggerCssClass overflow-hidden highlight">@Name</a>
+		<a href="/leaderboard/player?id=@Id" class="@DaggerCssClass highlight">@Name</a>
 	}
 
 	@if (_titles.Count > 0)
