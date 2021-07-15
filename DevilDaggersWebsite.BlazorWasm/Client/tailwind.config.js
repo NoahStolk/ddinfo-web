@@ -25,7 +25,10 @@ module.exports = {
 				tooltipbackground: '#000b'
 			},
 			gridTemplateColumns: {
-				'13': 'repeat(13, minmax(0, 1fr))'
+				'leaderboard-xl': 'minmax(0, 4%) minmax(0, 2%) minmax(0, 14%) minmax(0, 7%) minmax(0, 4%) minmax(0, 4%) minmax(0, 8%) minmax(0, 11%) minmax(0, 9%) minmax(0, 9%) minmax(0, 9%) minmax(0, 10%) minmax(0, 9%)',
+				'leaderboard-lg': 'minmax(0, 6%) minmax(0, 3%) minmax(0, 8%) minmax(0, 10%) minmax(0, 6%) minmax(0, 6%) minmax(0, 8%) minmax(0, 10.5%) minmax(0, 10.5%) minmax(0, 10%) minmax(0, 8%) minmax(0, 10%) minmax(0, 10%)',
+				'leaderboard-md': 'minmax(0, 9%) minmax(0, 4.5%) minmax(0, 35%) minmax(0, 14%) minmax(0, 14%) minmax(0, 14%) minmax(0, 14%)',
+				'leaderboard-sm': 'minmax(0, 18%) minmax(0, 9%) minmax(0, 41%) minmax(0, 32%)'
 			}
 		},
 		fontFamily: {
