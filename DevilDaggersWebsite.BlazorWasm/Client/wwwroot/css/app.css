@@ -19,9 +19,8 @@
 	}
 
 .leviathan {
-	background: url('../images/fonts/gradient-leviathan.png');
+	background: linear-gradient(#FF0031 40%, #DC002A 41%, #A50020 50%, #6C0015 59%, #A50020 60%, #DC002A 65%, #FF0031);
 	background-repeat: repeat-x;
-	background-position-y: 4px;
 	-webkit-font-smoothing: antialiased;
 	-webkit-background-clip: text;
 	-moz-background-clip: text;
@@ -30,9 +29,8 @@
 }
 
 .devil {
-	background: url('../images/fonts/gradient-devil.png');
+	background: linear-gradient(#FF3A2A 40%, #AB1407 50%, #580500 51%, #FF3A2A);
 	background-repeat: repeat-x;
-	background-position-y: 4px;
 	-webkit-font-smoothing: antialiased;
 	-webkit-background-clip: text;
 	-moz-background-clip: text;
@@ -41,9 +39,8 @@
 }
 
 .golden {
-	background: url('../images/fonts/gradient-golden.png');
+	background: linear-gradient(#FFFA96 40%, #D68A10 50%, #3A2014 51%, #A87E25);
 	background-repeat: repeat-x;
-	background-position-y: 4px;
 	-webkit-font-smoothing: antialiased;
 	-webkit-background-clip: text;
 	-moz-background-clip: text;
@@ -52,9 +49,8 @@
 }
 
 .silver {
-	background: url('../images/fonts/gradient-silver.png');
+	background: linear-gradient(#E8E8E8 40%, #666F75 50%, #242627 51%, #989794);
 	background-repeat: repeat-x;
-	background-position-y: 4px;
 	-webkit-font-smoothing: antialiased;
 	-webkit-background-clip: text;
 	-moz-background-clip: text;
@@ -63,9 +59,8 @@
 }
 
 .bronze {
-	background: url('../images/fonts/gradient-bronze.png');
+	background: linear-gradient(#CCB7A1 40%, #4A2F21 50%, #2E2521 51%, #654B35);
 	background-repeat: repeat-x;
-	background-position-y: 4px;
 	-webkit-font-smoothing: antialiased;
 	-webkit-background-clip: text;
 	-moz-background-clip: text;
@@ -74,9 +69,8 @@
 }
 
 .default {
-	background: url('../images/fonts/gradient-default.png');
+	background: linear-gradient(#696969 40%, #202020 60%, #202020);
 	background-repeat: repeat-x;
-	background-position-y: 4px;
 	-webkit-font-smoothing: antialiased;
 	-webkit-background-clip: text;
 	-moz-background-clip: text;
