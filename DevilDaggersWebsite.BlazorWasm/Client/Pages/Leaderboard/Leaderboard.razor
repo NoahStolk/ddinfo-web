@@ -36,12 +36,12 @@ else
 			}
 		</div>
 		<div>
-			<a class="btn btn-default btn-page @(Rank <= 1 ? "disabled" : string.Empty)" @onclick="() => SetRank(1)">|&lt;</a>
-			<a class="btn btn-default btn-page @(Rank <= 1 ? "disabled" : string.Empty)" @onclick="() => SetRank(Rank - 1000)">&lt;&lt;</a>
-			<a class="btn btn-default btn-page @(Rank <= 1 ? "disabled" : string.Empty)" @onclick="() => SetRank(Rank - 100)">&lt;</a>
-			<a class="btn btn-default btn-page @(Rank >= _maxRank ? "disabled" : string.Empty)" @onclick="() => SetRank(Rank + 100)">&gt;</a>
-			<a class="btn btn-default btn-page @(Rank >= _maxRank ? "disabled" : string.Empty)" @onclick="() => SetRank(Rank + 1000)">&gt;&gt;</a>
-			<a class="btn btn-default btn-page @(Rank >= _maxRank ? "disabled" : string.Empty)" @onclick="() => SetRank(GetLeaderboardPublic.TotalPlayers - 99)">&gt;|</a>
+			<a class="@(Rank <= 1 ? "disabled" : string.Empty)" @onclick="() => SetRank(1)">|&lt;</a>
+			<a class="@(Rank <= 1 ? "disabled" : string.Empty)" @onclick="() => SetRank(Rank - 1000)">&lt;&lt;</a>
+			<a class="@(Rank <= 1 ? "disabled" : string.Empty)" @onclick="() => SetRank(Rank - 100)">&lt;</a>
+			<a class="@(Rank >= _maxRank ? "disabled" : string.Empty)" @onclick="() => SetRank(Rank + 100)">&gt;</a>
+			<a class="@(Rank >= _maxRank ? "disabled" : string.Empty)" @onclick="() => SetRank(Rank + 1000)">&gt;&gt;</a>
+			<a class="@(Rank >= _maxRank ? "disabled" : string.Empty)" @onclick="() => SetRank(GetLeaderboardPublic.TotalPlayers - 99)">&gt;|</a>
 		</div>
 	</div>
 
