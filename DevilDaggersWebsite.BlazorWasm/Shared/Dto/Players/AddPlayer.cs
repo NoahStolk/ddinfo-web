@@ -8,9 +8,6 @@ namespace DevilDaggersWebsite.BlazorWasm.Shared.Dto.Players
 		[Range(1, 9999999)]
 		public int Id { get; set; }
 
-		[StringLength(32)]
-		public string? PlayerName { get; set; }
-
 		[StringLength(2)]
 		public string? CountryCode { get; set; }
 

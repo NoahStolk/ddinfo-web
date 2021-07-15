@@ -5,9 +5,6 @@ namespace DevilDaggersWebsite.BlazorWasm.Shared.Dto.Players
 {
 	public class EditPlayer
 	{
-		[StringLength(32)]
-		public string? PlayerName { get; set; }
-
 		[StringLength(2)]
 		public string? CountryCode { get; set; }
 

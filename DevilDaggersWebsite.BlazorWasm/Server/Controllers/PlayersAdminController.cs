@@ -136,7 +136,7 @@ namespace DevilDaggersWebsite.Api
 			Player player = new()
 			{
 				Id = addPlayer.Id,
-				PlayerName = string.IsNullOrWhiteSpace(addPlayer.PlayerName) ? await GetPlayerNameOrDefault(addPlayer.Id, string.Empty) : addPlayer.PlayerName,
+				PlayerName = await GetPlayerName(addPlayer.Id),
 				CountryCode = addPlayer.CountryCode,
 				Dpi = addPlayer.Dpi,
 				InGameSens = addPlayer.InGameSens,
@@ -220,7 +220,6 @@ namespace DevilDaggersWebsite.Api
 
 			EditPlayer logDto = new()
 			{
-				PlayerName = player.PlayerName,
 				CountryCode = player.CountryCode,
 				Dpi = player.Dpi,
 				InGameSens = player.InGameSens,
@@ -240,7 +239,7 @@ namespace DevilDaggersWebsite.Api
 				IsBannedFromDdcl = player.IsBannedFromDdcl,
 			};
 
-			player.PlayerName = string.IsNullOrWhiteSpace(editPlayer.PlayerName) ? await GetPlayerNameOrDefault(id, player.PlayerName) : editPlayer.PlayerName;
+			player.PlayerName = await GetPlayerName(id);
 			player.CountryCode = editPlayer.CountryCode;
 			player.Dpi = editPlayer.Dpi;
 			player.InGameSens = editPlayer.InGameSens;
@@ -297,8 +296,17 @@ namespace DevilDaggersWebsite.Api
 			return Ok();
 		}
 
-		private static async Task<string> GetPlayerNameOrDefault(int id, string defaultValue)
-			=> (await LeaderboardClient.Instance.GetUserById(id))?.Username ?? defaultValue;
+		private static async Task<string> GetPlayerName(int id)
+		{
+			try
+			{
+				return (await LeaderboardClient.Instance.GetUserById(id)).Username;
+			}
+			catch
+			{
+				return string.Empty;
+			}
+		}
 
 		private void UpdateManyToManyRelations(List<int> assetModIds, List<int> titleIds, int playerId)
 		{

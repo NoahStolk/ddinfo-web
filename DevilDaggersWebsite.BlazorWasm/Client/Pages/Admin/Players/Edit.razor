@@ -22,11 +22,6 @@ else
 		<h2>General</h2>
 
 		<div class="row">
-			<label class="@_inputLabelCss">@nameof(EditPlayer.PlayerName)</label>
-			<InputText class="admin-input" @bind-Value="_editPlayer.PlayerName" />
-		</div>
-
-		<div class="row">
 			<label class="@_inputLabelCss">@nameof(EditPlayer.CountryCode)</label>
 			<SearchDropdown class="admin-input" Values="@UserUtils.CountryNames" @bind-Value="@_editPlayer.CountryCode" />
 		</div>
@@ -142,7 +137,6 @@ else
 				HideSettings = getPlayer.HideSettings,
 				InGameSens = getPlayer.InGameSens,
 				IsRightHanded = getPlayer.IsRightHanded,
-				PlayerName = getPlayer.PlayerName,
 				TitleIds = getPlayer.TitleIds,
 				UsesLegacyAudio = getPlayer.UsesLegacyAudio,
 				BanDescription = getPlayer.BanDescription,
