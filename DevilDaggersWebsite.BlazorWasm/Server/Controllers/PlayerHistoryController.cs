@@ -3,7 +3,7 @@ using DevilDaggersWebsite.BlazorWasm.Server.Clients.Leaderboard;
 using DevilDaggersWebsite.BlazorWasm.Server.Controllers.Attributes;
 using DevilDaggersWebsite.BlazorWasm.Server.Converters;
 using DevilDaggersWebsite.BlazorWasm.Server.Utils;
-using DevilDaggersWebsite.BlazorWasm.Shared.Dto.Leaderboards;
+using DevilDaggersWebsite.BlazorWasm.Shared.Dto.PlayerHistory;
 using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
 using Newtonsoft.Json;
@@ -29,11 +29,9 @@ namespace DevilDaggersWebsite.BlazorWasm.Server.Controllers
 		[ProducesResponseType(StatusCodes.Status200OK)]
 		[ProducesResponseType(StatusCodes.Status400BadRequest)]
 		[EndpointConsumer(EndpointConsumers.Website)]
-		public SortedDictionary<DateTime, GetEntryPublic> GetProgressionById([Required] int playerId)
+		public List<GetPlayerHighscorePublic> GetPlayerProgressionById([Required, Range(1, 9999999)] int playerId)
 		{
-			SortedDictionary<DateTime, GetEntryPublic> data = new();
-			if (playerId < 1)
-				return data;
+			List<GetPlayerHighscorePublic> data = new();
 
 			foreach (string leaderboardHistoryPath in DataUtils.GetLeaderboardHistoryPaths())
 			{
@@ -41,12 +39,12 @@ namespace DevilDaggersWebsite.BlazorWasm.Server.Controllers
 				EntryResponse? entry = leaderboard.Entries.Find(e => e.Id == playerId);
 
 				// + 1 and - 1 are used to fix off-by-one errors in the history based on screenshots and videos. This is due to a rounding error in Devil Daggers itself.
-				if (entry != null && !data.Values.Any(e =>
+				if (entry != null && !data.Any(e =>
 					e.Time == entry.Time ||
 					e.Time == entry.Time + 1 ||
 					e.Time == entry.Time - 1))
 				{
-					data[leaderboard.DateTime] = entry.ToGetEntryPublic();
+					data.Add(entry.ToGetPlayerHighscorePublic());
 				}
 			}
 
@@ -57,15 +55,21 @@ namespace DevilDaggersWebsite.BlazorWasm.Server.Controllers
 		[ProducesResponseType(StatusCodes.Status200OK)]
 		[ProducesResponseType(StatusCodes.Status400BadRequest)]
 		[EndpointConsumer(EndpointConsumers.Website)]
-		public Dictionary<DateTime, ulong> GetActivityById([Required] int playerId)
+		public List<GetPlayerActivityPublic> GetPlayerActivityById([Required, Range(1, 9999999)] int playerId)
 		{
-			Dictionary<DateTime, ulong> data = new();
+			List<GetPlayerActivityPublic> data = new();
 			foreach (string leaderboardHistoryPath in DataUtils.GetLeaderboardHistoryPaths())
 			{
 				LeaderboardResponse leaderboard = _leaderboardHistoryCache.GetLeaderboardHistoryByFilePath(leaderboardHistoryPath);
 				EntryResponse? entry = leaderboard.Entries.Find(e => e.Id == playerId);
 				if (entry?.DeathsTotal > 0)
-					data.Add(leaderboard.DateTime, entry.DeathsTotal);
+				{
+					data.Add(new()
+					{
+						DateTime = leaderboard.DateTime,
+						DeathsTotal = entry.DeathsTotal,
+					});
+				}
 			}
 
 			return data;

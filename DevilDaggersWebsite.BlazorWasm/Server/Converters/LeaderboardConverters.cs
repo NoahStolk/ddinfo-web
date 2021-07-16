@@ -1,5 +1,6 @@
 ﻿using DevilDaggersWebsite.BlazorWasm.Server.Clients.Leaderboard;
 using DevilDaggersWebsite.BlazorWasm.Shared.Dto.Leaderboards;
+using DevilDaggersWebsite.BlazorWasm.Shared.Dto.PlayerHistory;
 using DevilDaggersWebsite.BlazorWasm.Shared.Enums;
 
 namespace DevilDaggersWebsite.BlazorWasm.Server.Converters
@@ -33,8 +34,20 @@ namespace DevilDaggersWebsite.BlazorWasm.Server.Converters
 			Kills = entryResponse.Kills,
 			KillsTotal = entryResponse.KillsTotal,
 			Rank = entryResponse.Rank,
-			Time = entryResponse.Time == 0 ? 0 : entryResponse.Time / 10000.0,
-			TimeTotal = entryResponse.TimeTotal == 0 ? 0 : entryResponse.TimeTotal / 10000.0,
+			Time = entryResponse.Time / 10000.0,
+			TimeTotal = entryResponse.TimeTotal / 10000.0,
+			Username = entryResponse.Username,
+		};
+
+		public static GetPlayerHighscorePublic ToGetPlayerHighscorePublic(this EntryResponse entryResponse) => new()
+		{
+			DaggersFired = entryResponse.DaggersFired,
+			DaggersHit = entryResponse.DaggersHit,
+			DeathType = (DeathType)entryResponse.DeathType,
+			Gems = entryResponse.Gems,
+			Kills = entryResponse.Kills,
+			Rank = entryResponse.Rank,
+			Time = entryResponse.Time / 10000.0,
 			Username = entryResponse.Username,
 		};
 	}
