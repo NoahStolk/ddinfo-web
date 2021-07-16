@@ -17,13 +17,13 @@ const string _leaderboardHistoryPath = @"C:\Users\NOAH\source\repos\DevilDaggers
 #pragma warning disable S125 // Sections of code should not be commented out
 
 // Raven fix
-// SwapIds(new DateTime(1, 1, 1), new DateTime(2019, 10, 11), 86805, 187974);
+SwapIds(new DateTime(2019, 4, 8), new DateTime(2019, 10, 11), 187974, 86805);
 
 // pocket fix
-// SwapIds(new DateTime(1, 1, 1), new DateTime(2020, 1, 14), 116704, 106722);
+SwapIds(new DateTime(2017, 11, 23), new DateTime(2020, 1, 14), 106722, 116704);
 #pragma warning restore S125 // Sections of code should not be commented out
 
-ApplyNameTable();
+//ApplyNameTable();
 
 // Swaps Ids for players with 2 accounts in the leaderboard history files.
 // "dateStart" The date on which the player's alt overtook their main account.
