@@ -1,6 +1,7 @@
 ﻿using DevilDaggersCore.Game;
 using DevilDaggersWebsite.BlazorWasm.Server.HostedServices.DdInfoDiscordBot;
 using DevilDaggersWebsite.BlazorWasm.Server.Singletons;
+using DevilDaggersWebsite.BlazorWasm.Server.Utils;
 using DevilDaggersWebsite.BlazorWasm.Shared;
 using System.Collections.Generic;
 using System.IO;
@@ -41,14 +42,7 @@ namespace DevilDaggersWebsite.BlazorWasm.Server.Caches.LeaderboardStatistics
 
 		public async Task Initiate()
 		{
-			string leaderboardStatisticsDirectory = Path.Combine("Content", "LeaderboardStatistics");
-			if (!Directory.Exists(leaderboardStatisticsDirectory))
-			{
-				await _discordLogger.TryLog(Channel.MonitoringError, ":x: Leaderboard statistics directory does not exist.");
-				return;
-			}
-
-			string[] paths = Directory.GetFiles(leaderboardStatisticsDirectory);
+			string[] paths = DataUtils.GetLeaderboardStatistics();
 			if (paths.Length == 0)
 			{
 				await _discordLogger.TryLog(Channel.MonitoringError, ":x: No files found in leaderboard statistics directory.");
