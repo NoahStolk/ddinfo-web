@@ -1,8 +1,8 @@
 ﻿using DevilDaggersWebsite.BlazorWasm.Server.Caches.LeaderboardHistory;
-using DevilDaggersWebsite.BlazorWasm.Server.Clients.Leaderboard;
 using DevilDaggersWebsite.BlazorWasm.Server.Controllers.Attributes;
 using DevilDaggersWebsite.BlazorWasm.Server.Extensions;
 using DevilDaggersWebsite.BlazorWasm.Server.Utils;
+using DevilDaggersWebsite.BlazorWasm.Shared.Dto.LeaderboardHistory;
 using DevilDaggersWebsite.BlazorWasm.Shared.Dto.LeaderboardHistoryStatistics;
 using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
@@ -31,7 +31,7 @@ namespace DevilDaggersWebsite.BlazorWasm.Server.Controllers
 
 			foreach (string leaderboardHistoryPath in DataUtils.GetLeaderboardHistoryPaths())
 			{
-				LeaderboardResponse leaderboard = _leaderboardHistoryCache.GetLeaderboardHistoryByFilePath(leaderboardHistoryPath);
+				GetLeaderboardHistoryPublic leaderboard = _leaderboardHistoryCache.GetLeaderboardHistoryByFilePath(leaderboardHistoryPath);
 				leaderboardHistoryStatistics.Add(new GetLeaderboardHistoryStatisticsPublic
 				{
 					DateTime = leaderboard.DateTime,
@@ -43,7 +43,7 @@ namespace DevilDaggersWebsite.BlazorWasm.Server.Controllers
 					TimeGlobal = (leaderboard.TimeGlobal / 10000.0).NullIfDefault(),
 					Top100Entrance = leaderboard.Entries.Count > 99 ? leaderboard.Entries[99].Time / 10000.0 : null,
 					Top10Entrance = leaderboard.Entries.Count > 9 ? leaderboard.Entries[9].Time / 10000.0 : null,
-					TotalPlayers = leaderboard.TotalPlayers.NullIfDefault(),
+					TotalPlayers = leaderboard.Players.NullIfDefault(),
 				});
 			}
 

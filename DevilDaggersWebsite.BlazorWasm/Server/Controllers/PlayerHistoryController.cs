@@ -1,8 +1,7 @@
 ﻿using DevilDaggersWebsite.BlazorWasm.Server.Caches.LeaderboardHistory;
-using DevilDaggersWebsite.BlazorWasm.Server.Clients.Leaderboard;
 using DevilDaggersWebsite.BlazorWasm.Server.Controllers.Attributes;
-using DevilDaggersWebsite.BlazorWasm.Server.Converters;
 using DevilDaggersWebsite.BlazorWasm.Server.Utils;
+using DevilDaggersWebsite.BlazorWasm.Shared.Dto.LeaderboardHistory;
 using DevilDaggersWebsite.BlazorWasm.Shared.Dto.PlayerHistory;
 using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
@@ -29,14 +28,14 @@ namespace DevilDaggersWebsite.BlazorWasm.Server.Controllers
 		[ProducesResponseType(StatusCodes.Status200OK)]
 		[ProducesResponseType(StatusCodes.Status400BadRequest)]
 		[EndpointConsumer(EndpointConsumers.Website)]
-		public List<GetPlayerHighscorePublic> GetPlayerProgressionById([Required, Range(1, 9999999)] int playerId)
+		public List<GetEntryHistoryPublic> GetPlayerProgressionById([Required, Range(1, 9999999)] int playerId)
 		{
-			List<GetPlayerHighscorePublic> data = new();
+			List<GetEntryHistoryPublic> data = new();
 
 			foreach (string leaderboardHistoryPath in DataUtils.GetLeaderboardHistoryPaths())
 			{
-				LeaderboardResponse leaderboard = _leaderboardHistoryCache.GetLeaderboardHistoryByFilePath(leaderboardHistoryPath);
-				EntryResponse? entry = leaderboard.Entries.Find(e => e.Id == playerId);
+				GetLeaderboardHistoryPublic leaderboard = _leaderboardHistoryCache.GetLeaderboardHistoryByFilePath(leaderboardHistoryPath);
+				GetEntryHistoryPublic? entry = leaderboard.Entries.Find(e => e.Id == playerId);
 
 				// + 1 and - 1 are used to fix off-by-one errors in the history based on screenshots and videos. This is due to a rounding error in Devil Daggers itself.
 				if (entry != null && !data.Any(e =>
@@ -44,7 +43,7 @@ namespace DevilDaggersWebsite.BlazorWasm.Server.Controllers
 					e.Time == entry.Time + 1 ||
 					e.Time == entry.Time - 1))
 				{
-					data.Add(entry.ToGetPlayerHighscorePublic());
+					data.Add(entry);
 				}
 			}
 
@@ -60,8 +59,8 @@ namespace DevilDaggersWebsite.BlazorWasm.Server.Controllers
 			List<GetPlayerActivityPublic> data = new();
 			foreach (string leaderboardHistoryPath in DataUtils.GetLeaderboardHistoryPaths())
 			{
-				LeaderboardResponse leaderboard = _leaderboardHistoryCache.GetLeaderboardHistoryByFilePath(leaderboardHistoryPath);
-				EntryResponse? entry = leaderboard.Entries.Find(e => e.Id == playerId);
+				GetLeaderboardHistoryPublic leaderboard = _leaderboardHistoryCache.GetLeaderboardHistoryByFilePath(leaderboardHistoryPath);
+				GetEntryHistoryPublic? entry = leaderboard.Entries.Find(e => e.Id == playerId);
 				if (entry?.DeathsTotal > 0)
 				{
 					data.Add(new()

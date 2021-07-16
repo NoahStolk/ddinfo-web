@@ -1,9 +1,8 @@
 ﻿using DevilDaggersCore.Game;
 using DevilDaggersWebsite.BlazorWasm.Server.Caches.LeaderboardHistory;
-using DevilDaggersWebsite.BlazorWasm.Server.Clients.Leaderboard;
 using DevilDaggersWebsite.BlazorWasm.Server.Controllers.Attributes;
-using DevilDaggersWebsite.BlazorWasm.Server.Converters;
 using DevilDaggersWebsite.BlazorWasm.Server.Utils;
+using DevilDaggersWebsite.BlazorWasm.Shared.Dto.LeaderboardHistory;
 using DevilDaggersWebsite.BlazorWasm.Shared.Dto.WorldRecords;
 using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
@@ -114,8 +113,8 @@ namespace DevilDaggersWebsite.BlazorWasm.Server.Controllers
 			int worldRecord = 0;
 			foreach (string leaderboardHistoryPath in DataUtils.GetLeaderboardHistoryPaths())
 			{
-				LeaderboardResponse leaderboard = _leaderboardHistoryCache.GetLeaderboardHistoryByFilePath(leaderboardHistoryPath);
-				EntryResponse? firstPlace = leaderboard.Entries.Find(e => e.Rank == 1);
+				GetLeaderboardHistoryPublic leaderboard = _leaderboardHistoryCache.GetLeaderboardHistoryByFilePath(leaderboardHistoryPath);
+				GetEntryHistoryPublic? firstPlace = leaderboard.Entries.Find(e => e.Rank == 1);
 				if (firstPlace == null)
 					continue;
 
@@ -136,7 +135,7 @@ namespace DevilDaggersWebsite.BlazorWasm.Server.Controllers
 					worldRecords.Add(new()
 					{
 						DateTime = date,
-						Entry = firstPlace.ToGetEntryPublic(),
+						Entry = firstPlace,
 						GameVersion = GameInfo.GetGameVersionFromDate(date),
 					});
 				}
