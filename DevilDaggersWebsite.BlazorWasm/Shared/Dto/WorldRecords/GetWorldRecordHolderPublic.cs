@@ -1,7 +1,7 @@
 ﻿using System;
 using System.Collections.Generic;
 
-namespace DevilDaggersWebsite.BlazorWasm.Shared.Dto.LeaderboardHistory
+namespace DevilDaggersWebsite.BlazorWasm.Shared.Dto.WorldRecords
 {
 	public class GetWorldRecordHolderPublic
 	{

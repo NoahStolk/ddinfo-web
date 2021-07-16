@@ -4,75 +4,26 @@ using DevilDaggersWebsite.BlazorWasm.Server.Clients.Leaderboard;
 using DevilDaggersWebsite.BlazorWasm.Server.Controllers.Attributes;
 using DevilDaggersWebsite.BlazorWasm.Server.Converters;
 using DevilDaggersWebsite.BlazorWasm.Server.Utils;
-using DevilDaggersWebsite.BlazorWasm.Shared.Dto.LeaderboardHistory;
-using DevilDaggersWebsite.BlazorWasm.Shared.Dto.Leaderboards;
+using DevilDaggersWebsite.BlazorWasm.Shared.Dto.WorldRecords;
 using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
-using Newtonsoft.Json;
 using System;
 using System.Collections.Generic;
-using System.ComponentModel.DataAnnotations;
 using System.Linq;
 
 namespace DevilDaggersWebsite.BlazorWasm.Server.Controllers
 {
-	[Route("api/leaderboard-history")]
+	[Route("api/world-records")]
 	[ApiController]
-	public class LeaderboardHistoryController : ControllerBase
+	public class WorldRecordsController : ControllerBase
 	{
 		private static readonly DateTime _automationStart = new(2019, 10, 26);
 
 		private readonly LeaderboardHistoryCache _leaderboardHistoryCache;
 
-		public LeaderboardHistoryController(LeaderboardHistoryCache leaderboardHistoryCache)
+		public WorldRecordsController(LeaderboardHistoryCache leaderboardHistoryCache)
 		{
 			_leaderboardHistoryCache = leaderboardHistoryCache;
-		}
-
-		[HttpGet("user-progression")]
-		[ProducesResponseType(StatusCodes.Status200OK)]
-		[ProducesResponseType(StatusCodes.Status400BadRequest)]
-		[EndpointConsumer(EndpointConsumers.Website)]
-		public SortedDictionary<DateTime, GetEntryPublic> GetUserProgressionById([Required] int userId)
-		{
-			SortedDictionary<DateTime, GetEntryPublic> data = new();
-			if (userId < 1)
-				return data;
-
-			foreach (string leaderboardHistoryPath in DataUtils.GetLeaderboardHistoryPaths())
-			{
-				LeaderboardResponse leaderboard = _leaderboardHistoryCache.GetLeaderboardHistoryByFilePath(leaderboardHistoryPath);
-				EntryResponse? entry = leaderboard.Entries.Find(e => e.Id == userId);
-
-				// + 1 and - 1 are used to fix off-by-one errors in the history based on screenshots and videos. This is due to a rounding error in Devil Daggers itself.
-				if (entry != null && !data.Values.Any(e =>
-					e.Time == entry.Time ||
-					e.Time == entry.Time + 1 ||
-					e.Time == entry.Time - 1))
-				{
-					data[leaderboard.DateTime] = entry.ToGetEntryPublic();
-				}
-			}
-
-			return data;
-		}
-
-		[HttpGet("user-activity")]
-		[ProducesResponseType(StatusCodes.Status200OK)]
-		[ProducesResponseType(StatusCodes.Status400BadRequest)]
-		[EndpointConsumer(EndpointConsumers.Website)]
-		public Dictionary<DateTime, ulong> GetUserActivity([Required] int userId)
-		{
-			Dictionary<DateTime, ulong> data = new();
-			foreach (string leaderboardHistoryPath in DataUtils.GetLeaderboardHistoryPaths())
-			{
-				LeaderboardResponse leaderboard = _leaderboardHistoryCache.GetLeaderboardHistoryByFilePath(leaderboardHistoryPath);
-				EntryResponse? entry = leaderboard.Entries.Find(e => e.Id == userId);
-				if (entry?.DeathsTotal > 0)
-					data.Add(leaderboard.DateTime, entry.DeathsTotal);
-			}
-
-			return data;
 		}
 
 		[HttpGet("world-records")]
