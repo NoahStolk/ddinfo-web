@@ -7,11 +7,17 @@ namespace DevilDaggersWebsite.BlazorWasm.Server.Utils
 	{
 		private const string _root = "Data";
 
-		public static string[] GetLeaderboardStatistics()
+		public static string[] GetLeaderboardHistoryPaths()
+			=> TryGetFiles("LeaderboardHistory");
+
+		public static string[] GetLeaderboardStatisticsPaths()
+			=> TryGetFiles("LeaderboardStatistics");
+
+		private static string[] TryGetFiles(string subDirectory)
 		{
 			try
 			{
-				return Directory.GetFiles(Path.Combine(_root, "LeaderboardStatistics"));
+				return Directory.GetFiles(Path.Combine(_root, subDirectory));
 			}
 			catch
 			{

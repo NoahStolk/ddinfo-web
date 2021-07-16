@@ -3,16 +3,15 @@ using DevilDaggersWebsite.BlazorWasm.Server.Caches.LeaderboardHistory;
 using DevilDaggersWebsite.BlazorWasm.Server.Clients.Leaderboard;
 using DevilDaggersWebsite.BlazorWasm.Server.Controllers.Attributes;
 using DevilDaggersWebsite.BlazorWasm.Server.Converters;
+using DevilDaggersWebsite.BlazorWasm.Server.Utils;
 using DevilDaggersWebsite.BlazorWasm.Shared.Dto.LeaderboardHistory;
 using DevilDaggersWebsite.BlazorWasm.Shared.Dto.Leaderboards;
-using Microsoft.AspNetCore.Hosting;
 using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
 using Newtonsoft.Json;
 using System;
 using System.Collections.Generic;
 using System.ComponentModel.DataAnnotations;
-using System.IO;
 using System.Linq;
 
 namespace DevilDaggersWebsite.BlazorWasm.Server.Controllers
@@ -23,12 +22,10 @@ namespace DevilDaggersWebsite.BlazorWasm.Server.Controllers
 	{
 		private static readonly DateTime _automationStart = new(2019, 10, 26);
 
-		private readonly IWebHostEnvironment _environment;
 		private readonly LeaderboardHistoryCache _leaderboardHistoryCache;
 
-		public LeaderboardHistoryController(IWebHostEnvironment environment, LeaderboardHistoryCache leaderboardHistoryCache)
+		public LeaderboardHistoryController(LeaderboardHistoryCache leaderboardHistoryCache)
 		{
-			_environment = environment;
 			_leaderboardHistoryCache = leaderboardHistoryCache;
 		}
 
@@ -42,7 +39,7 @@ namespace DevilDaggersWebsite.BlazorWasm.Server.Controllers
 			if (userId < 1)
 				return data;
 
-			foreach (string leaderboardHistoryPath in Directory.GetFiles(Path.Combine(_environment.WebRootPath, "leaderboard-history"), "*.json"))
+			foreach (string leaderboardHistoryPath in DataUtils.GetLeaderboardHistoryPaths())
 			{
 				LeaderboardResponse leaderboard = _leaderboardHistoryCache.GetLeaderboardHistoryByFilePath(leaderboardHistoryPath);
 				EntryResponse? entry = leaderboard.Entries.Find(e => e.Id == userId);
@@ -67,7 +64,7 @@ namespace DevilDaggersWebsite.BlazorWasm.Server.Controllers
 		public Dictionary<DateTime, ulong> GetUserActivity([Required] int userId)
 		{
 			Dictionary<DateTime, ulong> data = new();
-			foreach (string leaderboardHistoryPath in Directory.GetFiles(Path.Combine(_environment.WebRootPath, "leaderboard-history"), "*.json"))
+			foreach (string leaderboardHistoryPath in DataUtils.GetLeaderboardHistoryPaths())
 			{
 				LeaderboardResponse leaderboard = _leaderboardHistoryCache.GetLeaderboardHistoryByFilePath(leaderboardHistoryPath);
 				EntryResponse? entry = leaderboard.Entries.Find(e => e.Id == userId);
@@ -164,7 +161,7 @@ namespace DevilDaggersWebsite.BlazorWasm.Server.Controllers
 			DateTime? previousDate = null;
 			List<GetWorldRecordPublic> worldRecords = new();
 			int worldRecord = 0;
-			foreach (string leaderboardHistoryPath in Directory.GetFiles(Path.Combine(_environment.WebRootPath, "leaderboard-history"), "*.json"))
+			foreach (string leaderboardHistoryPath in DataUtils.GetLeaderboardHistoryPaths())
 			{
 				LeaderboardResponse leaderboard = _leaderboardHistoryCache.GetLeaderboardHistoryByFilePath(leaderboardHistoryPath);
 				EntryResponse? firstPlace = leaderboard.Entries.Find(e => e.Rank == 1);

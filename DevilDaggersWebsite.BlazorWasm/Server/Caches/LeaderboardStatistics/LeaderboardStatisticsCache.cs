@@ -42,7 +42,7 @@ namespace DevilDaggersWebsite.BlazorWasm.Server.Caches.LeaderboardStatistics
 
 		public async Task Initiate()
 		{
-			string[] paths = DataUtils.GetLeaderboardStatistics();
+			string[] paths = DataUtils.GetLeaderboardStatisticsPaths();
 			if (paths.Length == 0)
 			{
 				await _discordLogger.TryLog(Channel.MonitoringError, ":x: No files found in leaderboard statistics directory.");
