@@ -1,0 +1,104 @@
+﻿@page "/leaderboard/history/statistics"
+@inject PublicApiHttpClient Http
+@using Blazorise.Charts
+@using DevilDaggersCore.Game
+@using DevilDaggersWebsite.BlazorWasm.Shared.Dto.LeaderboardHistoryStatistics
+
+<h1 class="text-red text-2xl">Leaderboard History Statistics</h1>
+
+@if (_statistics == null)
+{
+	<Loading />
+}
+else
+{
+	<h2 class="text-red text-xl">Total Players</h2>
+	<LineChart Options="_lco" @ref="_playersChart" TItem="int" />
+
+	<h2 class="text-red text-xl">Top entrance</h2>
+	<LineChart Options="_lco" @ref="_entranceChart" TItem="double" />
+
+	<h2 class="text-red text-xl">Global accuracy</h2>
+	<LineChart Options="_lco" @ref="_accuracyChart" TItem="double" />
+}
+
+@code
+{
+	private List<GetLeaderboardHistoryStatisticsPublic>? _statistics;
+
+	protected override async Task OnInitializedAsync()
+	{
+		_statistics = await Http.Client.GetFromJsonAsync<List<GetLeaderboardHistoryStatisticsPublic>>("api/leaderboard-history-statistics");
+	}
+
+	private LineChartOptions _lco = new()
+	{
+		MaintainAspectRatio = true,
+		Responsive = true,
+		AspectRatio = 3.5f,
+		ShowLines = true,
+	};
+
+	private LineChart<int>? _playersChart;
+	private LineChart<double>? _entranceChart;
+	private LineChart<double>? _accuracyChart;
+
+	protected override async Task OnAfterRenderAsync(bool firstRender)
+	{
+		if (firstRender ||
+			_statistics == null ||
+			_playersChart == null ||
+			_entranceChart == null ||
+			_accuracyChart == null)
+			return;
+
+		await _playersChart.AddLabelsDatasetsAndUpdate(_statistics.Select(s => s.DateTime.ToShortDateString()).ToArray(), new LineChartDataset<int>
+		{
+			Label = "Total Players",
+			Data = _statistics.Select(s => s.TotalPlayers).ToList(),
+			BackgroundColor = _statistics.Select(s => s.TotalPlayersUpdated ? "#f00" : "#bbb").ToList(),
+			Fill = false,
+			PointRadius = 1,
+			ShowLine = true,
+			BorderColor = "#f0f",
+			LineTension = 0.1f,
+		});
+
+		await _entranceChart.AddLabelsDatasetsAndUpdate(
+			_statistics.Select(s => s.DateTime.ToShortDateString()).ToArray(),
+			new LineChartDataset<double>
+			{
+				Label = "Top 10 Entrance",
+				Data = _statistics.Select(s => s.Top10Entrance).ToList(),
+				BackgroundColor = _statistics.Select(s => s.Top10EntranceUpdated ? "#c00" : "#bbb").ToList(),
+				Fill = false,
+				PointRadius = 1,
+				ShowLine = true,
+				BorderColor = $"#{GameInfo.V31LeviathanDagger.ColorCode}",
+				LineTension = 0.1f,
+			},
+			new LineChartDataset<double>
+			{
+				Label = "Top 100 Entrance",
+				Data = _statistics.Select(s => s.Top100Entrance).ToList(),
+				BackgroundColor = _statistics.Select(s => s.Top100EntranceUpdated ? "#f00" : "#bbb").ToList(),
+				Fill = false,
+				PointRadius = 1,
+				ShowLine = true,
+				BorderColor = $"#{GameInfo.V31Devil.ColorCode}",
+				LineTension = 0.1f,
+			});
+
+		await _accuracyChart.AddLabelsDatasetsAndUpdate(_statistics.Select(s => s.DateTime.ToShortDateString()).ToArray(), new LineChartDataset<double>
+		{
+			Label = "Accuracy",
+			Data = _statistics.Select(s => s.DaggersFiredGlobal == 0 ? 0 : s.DaggersHitGlobal / (double)s.DaggersFiredGlobal).ToList(),
+			BackgroundColor = _statistics.Select(s => s.DaggersHitGlobalUpdated && s.DaggersFiredGlobalUpdated ? "#f00" : "#bbb").ToList(),
+			Fill = false,
+			PointRadius = 1,
+			ShowLine = true,
+			BorderColor = "#0f0",
+			LineTension = 0.1f,
+		});
+	}
+}
