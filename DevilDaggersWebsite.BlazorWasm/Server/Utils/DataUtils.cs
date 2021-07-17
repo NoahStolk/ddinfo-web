@@ -1,5 +1,6 @@
 ﻿using System;
 using System.IO;
+using System.Linq;
 
 namespace DevilDaggersWebsite.BlazorWasm.Server.Utils
 {
@@ -23,6 +24,18 @@ namespace DevilDaggersWebsite.BlazorWasm.Server.Utils
 			{
 				return Array.Empty<string>();
 			}
+		}
+
+		public static string GetLeaderboardHistoryPathFromDate(DateTime dateTime)
+		{
+			string[] paths = GetLeaderboardHistoryPaths();
+			foreach (string path in paths.OrderByDescending(p => p))
+			{
+				if (HistoryUtils.HistoryJsonFileNameToDateTime(Path.GetFileName(path)) < dateTime)
+					return path;
+			}
+
+			return paths[^1];
 		}
 	}
 }

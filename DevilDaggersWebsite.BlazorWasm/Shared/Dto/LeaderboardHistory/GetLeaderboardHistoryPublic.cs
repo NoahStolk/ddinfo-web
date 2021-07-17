@@ -3,6 +3,7 @@ using System.Collections.Generic;
 
 namespace DevilDaggersWebsite.BlazorWasm.Shared.Dto.LeaderboardHistory
 {
+	// This class must correspond to what's stored in the leaderboard history JSON.
 	public class GetLeaderboardHistoryPublic
 	{
 		public DateTime DateTime { get; init; }

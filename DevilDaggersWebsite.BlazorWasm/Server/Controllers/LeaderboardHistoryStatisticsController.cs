@@ -1,12 +1,13 @@
 ﻿using DevilDaggersWebsite.BlazorWasm.Server.Caches.LeaderboardHistory;
 using DevilDaggersWebsite.BlazorWasm.Server.Controllers.Attributes;
-using DevilDaggersWebsite.BlazorWasm.Server.Extensions;
 using DevilDaggersWebsite.BlazorWasm.Server.Utils;
 using DevilDaggersWebsite.BlazorWasm.Shared.Dto.LeaderboardHistory;
 using DevilDaggersWebsite.BlazorWasm.Shared.Dto.LeaderboardHistoryStatistics;
 using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
+using System;
 using System.Collections.Generic;
+using System.Linq;
 
 namespace DevilDaggersWebsite.BlazorWasm.Server.Controllers
 {
@@ -27,27 +28,125 @@ namespace DevilDaggersWebsite.BlazorWasm.Server.Controllers
 		[EndpointConsumer(EndpointConsumers.Website)]
 		public List<GetLeaderboardHistoryStatisticsPublic> GetLeaderboardHistoryStatistics()
 		{
-			List<GetLeaderboardHistoryStatisticsPublic> leaderboardHistoryStatistics = new();
+			string? firstPath = DataUtils.GetLeaderboardHistoryPaths().OrderBy(p => p).FirstOrDefault();
+			if (firstPath == null)
+				return new();
 
-			foreach (string leaderboardHistoryPath in DataUtils.GetLeaderboardHistoryPaths())
+			GetLeaderboardHistoryPublic current = _leaderboardHistoryCache.GetLeaderboardHistoryByFilePath(firstPath);
+
+			ulong daggersFiredGlobal = current.DaggersFiredGlobal;
+			ulong daggersHitGlobal = current.DaggersHitGlobal;
+			ulong deathsGlobal = current.DeathsGlobal;
+			ulong gemsGlobal = current.GemsGlobal;
+			ulong killsGlobal = current.KillsGlobal;
+			double timeGlobal = current.TimeGlobal / 10000.0;
+			double rank100 = GetTimeOr0(current, 99);
+			double rank10 = GetTimeOr0(current, 9);
+			int totalPlayers = current.Players;
+
+			List<GetLeaderboardHistoryStatisticsPublic> leaderboardHistoryStatistics = new();
+			DateTime dateTime = current.DateTime;
+			Add(true, true, true, true, true, true, true, true, true);
+
+			while (dateTime < DateTime.UtcNow)
 			{
-				GetLeaderboardHistoryPublic leaderboard = _leaderboardHistoryCache.GetLeaderboardHistoryByFilePath(leaderboardHistoryPath);
-				leaderboardHistoryStatistics.Add(new GetLeaderboardHistoryStatisticsPublic
+				dateTime = dateTime.AddDays(7);
+				string historyPath = DataUtils.GetLeaderboardHistoryPathFromDate(dateTime);
+				current = _leaderboardHistoryCache.GetLeaderboardHistoryByFilePath(historyPath);
+
+				bool daggersFiredUpdated = false;
+				bool daggersHitUpdated = false;
+				bool deathsUpdated = false;
+				bool gemsUpdated = false;
+				bool killsUpdated = false;
+				bool totalPlayersUpdated = false;
+				bool timeUpdated = false;
+				bool rank100Updated = false;
+				bool rank10Updated = false;
+
+				if (daggersFiredGlobal < current.DaggersFiredGlobal)
 				{
-					DateTime = leaderboard.DateTime,
-					DaggersFiredGlobal = leaderboard.DaggersFiredGlobal.NullIfDefault(),
-					DaggersHitGlobal = leaderboard.DaggersHitGlobal.NullIfDefault(),
-					DeathsGlobal = leaderboard.DeathsGlobal.NullIfDefault(),
-					GemsGlobal = leaderboard.GemsGlobal.NullIfDefault(),
-					KillsGlobal = leaderboard.KillsGlobal.NullIfDefault(),
-					TimeGlobal = (leaderboard.TimeGlobal / 10000.0).NullIfDefault(),
-					Top100Entrance = leaderboard.Entries.Count > 99 ? leaderboard.Entries[99].Time / 10000.0 : null,
-					Top10Entrance = leaderboard.Entries.Count > 9 ? leaderboard.Entries[9].Time / 10000.0 : null,
-					TotalPlayers = leaderboard.Players.NullIfDefault(),
-				});
+					daggersFiredGlobal = current.DaggersFiredGlobal;
+					daggersFiredUpdated = true;
+				}
+
+				if (daggersHitGlobal < current.DaggersHitGlobal)
+				{
+					daggersHitGlobal = current.DaggersHitGlobal;
+					daggersHitUpdated = true;
+				}
+
+				if (deathsGlobal < current.DeathsGlobal)
+				{
+					deathsGlobal = current.DeathsGlobal;
+					deathsUpdated = true;
+				}
+
+				if (gemsGlobal < current.GemsGlobal)
+				{
+					gemsGlobal = current.GemsGlobal;
+					gemsUpdated = true;
+				}
+
+				if (killsGlobal < current.KillsGlobal)
+				{
+					killsGlobal = current.KillsGlobal;
+					killsUpdated = true;
+				}
+
+				if (totalPlayers < current.Players)
+				{
+					totalPlayers = current.Players;
+					totalPlayersUpdated = true;
+				}
+
+				double currentTimeGlobal = current.TimeGlobal / 10000.0;
+				if (timeGlobal < currentTimeGlobal)
+				{
+					timeGlobal = currentTimeGlobal;
+					timeUpdated = true;
+				}
+
+				double currentRank100 = GetTimeOr0(current, 99);
+				if (rank100 < currentRank100)
+					rank100 = currentRank100;
+				rank100Updated = currentRank100 != 0;
+
+				double currentRank10 = GetTimeOr0(current, 9);
+				if (rank10 < currentRank10)
+					rank10 = currentRank10;
+				rank10Updated = currentRank10 != 0;
+
+				Add(daggersFiredUpdated, daggersHitUpdated, deathsUpdated, gemsUpdated, killsUpdated, totalPlayersUpdated, timeUpdated, rank100Updated, rank10Updated);
 			}
 
 			return leaderboardHistoryStatistics;
+
+			void Add(bool daggersFiredUpdated, bool daggersHitUpdated, bool deathsUpdated, bool gemsUpdated, bool killsUpdated, bool totalPlayersUpdated, bool timeUpdated, bool rank100Updated, bool rank10Updated) => leaderboardHistoryStatistics.Add(new()
+			{
+				DateTime = dateTime,
+				DaggersFiredGlobal = daggersFiredGlobal,
+				DaggersHitGlobal = daggersHitGlobal,
+				DeathsGlobal = deathsGlobal,
+				GemsGlobal = gemsGlobal,
+				KillsGlobal = killsGlobal,
+				TimeGlobal = timeGlobal,
+				Top100Entrance = rank100,
+				Top10Entrance = rank10,
+				TotalPlayers = totalPlayers,
+				DaggersFiredGlobalUpdated = daggersFiredUpdated,
+				DaggersHitGlobalUpdated = daggersHitUpdated,
+				DeathsGlobalUpdated = deathsUpdated,
+				GemsGlobalUpdated = gemsUpdated,
+				KillsGlobalUpdated = killsUpdated,
+				TimeGlobalUpdated = timeUpdated,
+				Top100EntranceUpdated = rank100Updated,
+				Top10EntranceUpdated = rank10Updated,
+				TotalPlayersUpdated = totalPlayersUpdated,
+			});
+
+			static double GetTimeOr0(GetLeaderboardHistoryPublic history, int rankIndex)
+				=> history.Entries.Count > rankIndex ? history.Entries[rankIndex].Time / 10000.0 : 0;
 		}
 	}
 }
