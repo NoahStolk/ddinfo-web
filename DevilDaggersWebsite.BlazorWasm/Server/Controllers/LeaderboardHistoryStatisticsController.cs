@@ -12,11 +12,11 @@ namespace DevilDaggersWebsite.BlazorWasm.Server.Controllers
 {
 	[Route("api/leaderboard-history-statistics")]
 	[ApiController]
-	public class LeaderboardStatisticsHistoryController : ControllerBase
+	public class LeaderboardHistoryStatisticsController : ControllerBase
 	{
 		private readonly LeaderboardHistoryCache _leaderboardHistoryCache;
 
-		public LeaderboardStatisticsHistoryController(LeaderboardHistoryCache leaderboardHistoryCache)
+		public LeaderboardHistoryStatisticsController(LeaderboardHistoryCache leaderboardHistoryCache)
 		{
 			_leaderboardHistoryCache = leaderboardHistoryCache;
 		}
