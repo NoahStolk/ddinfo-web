@@ -22,9 +22,9 @@ namespace DevilDaggersWebsite.BlazorWasm.Server.Controllers
 		[HttpGet]
 		[ProducesResponseType(StatusCodes.Status200OK)]
 		[EndpointConsumer(EndpointConsumers.Website)]
-		public ActionResult<GetLeaderboardStatistics> GetStatistics()
+		public ActionResult<GetLeaderboardStatisticsPublic> GetStatistics()
 		{
-			return new GetLeaderboardStatistics
+			return new GetLeaderboardStatisticsPublic
 			{
 				DateTime = HistoryUtils.HistoryJsonFileNameToDateTime(_leaderboardStatisticsCache.FileName),
 				IsFetched = _leaderboardStatisticsCache.IsFetched,

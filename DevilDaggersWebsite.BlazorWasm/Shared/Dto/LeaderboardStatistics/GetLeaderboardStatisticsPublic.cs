@@ -3,7 +3,7 @@ using System.Collections.Generic;
 
 namespace DevilDaggersWebsite.BlazorWasm.Shared.Dto.LeaderboardStatistics
 {
-	public class GetLeaderboardStatistics
+	public class GetLeaderboardStatisticsPublic
 	{
 		public DateTime DateTime { get; init; }
 		public bool IsFetched { get; init; }

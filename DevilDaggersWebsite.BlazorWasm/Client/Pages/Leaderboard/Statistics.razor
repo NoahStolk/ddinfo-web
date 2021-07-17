@@ -54,11 +54,11 @@ else
 
 @code
 {
-	private GetLeaderboardStatistics? _statistics;
+	private GetLeaderboardStatisticsPublic? _statistics;
 
 	protected override async Task OnInitializedAsync()
 	{
-		_statistics = await Http.Client.GetFromJsonAsync<GetLeaderboardStatistics>("api/leaderboard-statistics");
+		_statistics = await Http.Client.GetFromJsonAsync<GetLeaderboardStatisticsPublic>("api/leaderboard-statistics");
 	}
 
 	private const int _killGraphCount = 100;
