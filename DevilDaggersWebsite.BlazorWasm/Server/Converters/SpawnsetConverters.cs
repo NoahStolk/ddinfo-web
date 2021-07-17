@@ -1,4 +1,5 @@
 ﻿using DevilDaggersCore.Extensions;
+using DevilDaggersCore.Spawnsets;
 using DevilDaggersWebsite.BlazorWasm.Server.Entities;
 using DevilDaggersWebsite.BlazorWasm.Shared.Dto.Spawnsets;
 
@@ -15,6 +16,18 @@ namespace DevilDaggersWebsite.BlazorWasm.Server.Converters
 			HtmlDescription = spawnset.HtmlDescription?.TrimAfter(40, true),
 			LastUpdated = spawnset.LastUpdated,
 			IsPractice = spawnset.IsPractice,
+		};
+
+		public static GetSpawnsetPublic ToGetSpawnsetPublic(this SpawnsetFile spawnsetFile, SpawnsetData spawnsetData, bool hasCustomLeaderboard) => new()
+		{
+			MaxDisplayWaves = spawnsetFile.MaxDisplayWaves,
+			HtmlDescription = spawnsetFile.HtmlDescription,
+			LastUpdated = spawnsetFile.LastUpdated,
+			SpawnsetData = spawnsetData,
+			Name = spawnsetFile.Name,
+			AuthorName = spawnsetFile.Player.PlayerName,
+			HasCustomLeaderboard = hasCustomLeaderboard,
+			IsPractice = spawnsetFile.IsPractice,
 		};
 	}
 }

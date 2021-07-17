@@ -15,19 +15,19 @@ namespace DevilDaggersWebsite.BlazorWasm.Shared.Dto.CustomLeaderboards
 		public string SpawnsetAuthorName { get; init; } = null!;
 
 		[Display(Name = "Bronze")]
-		public float TimeBronze { get; init; }
+		public double TimeBronze { get; init; }
 
 		[Display(Name = "Silver")]
-		public float TimeSilver { get; init; }
+		public double TimeSilver { get; init; }
 
 		[Display(Name = "Golden")]
-		public float TimeGolden { get; init; }
+		public double TimeGolden { get; init; }
 
 		[Display(Name = "Devil")]
-		public float TimeDevil { get; init; }
+		public double TimeDevil { get; init; }
 
 		[Display(Name = "Levi")]
-		public float TimeLeviathan { get; init; }
+		public double TimeLeviathan { get; init; }
 
 		public DateTime? DateCreated { get; init; }
 

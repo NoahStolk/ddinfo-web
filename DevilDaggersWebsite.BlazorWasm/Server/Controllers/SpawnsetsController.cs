@@ -1,8 +1,8 @@
 ﻿using DevilDaggersCore.Spawnsets;
 using DevilDaggersWebsite.BlazorWasm.Server.Caches.SpawnsetData;
 using DevilDaggersWebsite.BlazorWasm.Server.Controllers.Attributes;
+using DevilDaggersWebsite.BlazorWasm.Server.Converters;
 using DevilDaggersWebsite.BlazorWasm.Server.Entities;
-using DevilDaggersWebsite.BlazorWasm.Server.Extensions;
 using DevilDaggersWebsite.BlazorWasm.Shared.Dto.Spawnsets;
 using Microsoft.AspNetCore.Hosting;
 using Microsoft.AspNetCore.Http;
@@ -60,7 +60,7 @@ namespace DevilDaggersWebsite.BlazorWasm.Server.Controllers
 			GetSpawnsetPublic Map(SpawnsetFile spawnsetFile)
 			{
 				SpawnsetData spawnsetData = _spawnsetDataCache.GetSpawnsetDataByFilePath(Path.Combine(_environment.WebRootPath, "spawnsets", spawnsetFile.Name));
-				return spawnsetFile.ToDto(spawnsetData, spawnsetsWithCustomLeaderboardIds.Contains(spawnsetFile.Id));
+				return spawnsetFile.ToGetSpawnsetPublic(spawnsetData, spawnsetsWithCustomLeaderboardIds.Contains(spawnsetFile.Id));
 			}
 		}
 

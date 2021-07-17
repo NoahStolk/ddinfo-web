@@ -3,23 +3,21 @@ using System;
 
 namespace DevilDaggersWebsite.BlazorWasm.Shared.Dto.CustomLeaderboards
 {
-	public class GetCustomLeaderboardPublic
+	public class GetCustomLeaderboardDdcl
 	{
-		public int Id { get; init; }
-
 		public string SpawnsetName { get; init; } = null!;
 
 		public string SpawnsetAuthorName { get; init; } = null!;
 
-		public double TimeBronze { get; init; }
+		public int TimeBronze { get; init; }
 
-		public double TimeSilver { get; init; }
+		public int TimeSilver { get; init; }
 
-		public double TimeGolden { get; init; }
+		public int TimeGolden { get; init; }
 
-		public double TimeDevil { get; init; }
+		public int TimeDevil { get; init; }
 
-		public double TimeLeviathan { get; init; }
+		public int TimeLeviathan { get; init; }
 
 		public DateTime? DateLastPlayed { get; init; }
 

@@ -9,9 +9,9 @@ namespace DevilDaggersWebsite.BlazorWasm.Shared.Dto.CustomEntries
 		public string Message { get; init; } = string.Empty;
 
 		public int TotalPlayers { get; init; }
-		public GetCustomLeaderboardPublic Leaderboard { get; init; } = null!;
+		public GetCustomLeaderboardDdcl Leaderboard { get; init; } = null!;
 		public CustomLeaderboardCategory Category { get; init; }
-		public List<GetCustomEntryPublic> Entries { get; init; } = new();
+		public List<GetCustomEntryDdcl> Entries { get; init; } = new();
 		public bool IsNewPlayerOnThisLeaderboard { get; init; }
 
 		public int Rank { get; init; }

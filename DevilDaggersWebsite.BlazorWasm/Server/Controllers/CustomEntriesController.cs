@@ -1,5 +1,6 @@
 ﻿using DevilDaggersWebsite.BlazorWasm.Server.Caches.SpawnsetHash;
 using DevilDaggersWebsite.BlazorWasm.Server.Controllers.Attributes;
+using DevilDaggersWebsite.BlazorWasm.Server.Converters;
 using DevilDaggersWebsite.BlazorWasm.Server.Entities;
 using DevilDaggersWebsite.BlazorWasm.Server.Extensions;
 using DevilDaggersWebsite.BlazorWasm.Server.HostedServices.DdInfoDiscordBot;
@@ -195,9 +196,9 @@ namespace DevilDaggersWebsite.BlazorWasm.Server.Controllers
 				{
 					Message = $"Welcome to the {spawnsetName} leaderboard!",
 					TotalPlayers = totalPlayers,
-					Leaderboard = customLeaderboard.ToDto(),
+					Leaderboard = customLeaderboard.ToGetCustomLeaderboardDdcl(),
 					Category = customLeaderboard.Category,
-					Entries = entries.ConvertAll(e => e.ToDto()),
+					Entries = entries.ConvertAll(e => e.ToGetCustomEntryDdcl()),
 					IsNewPlayerOnThisLeaderboard = true,
 					Rank = rank,
 					Time = uploadRequest.Time,
@@ -229,9 +230,9 @@ namespace DevilDaggersWebsite.BlazorWasm.Server.Controllers
 				{
 					Message = $"No new highscore for {customLeaderboard.SpawnsetFile.Name}.",
 					TotalPlayers = totalPlayers,
-					Leaderboard = customLeaderboard.ToDto(),
+					Leaderboard = customLeaderboard.ToGetCustomLeaderboardDdcl(),
 					Category = customLeaderboard.Category,
-					Entries = entries.ConvertAll(e => e.ToDto()),
+					Entries = entries.ConvertAll(e => e.ToGetCustomEntryDdcl()),
 					IsNewPlayerOnThisLeaderboard = false,
 				};
 			}
@@ -303,9 +304,9 @@ namespace DevilDaggersWebsite.BlazorWasm.Server.Controllers
 			{
 				Message = $"NEW HIGHSCORE for {customLeaderboard.SpawnsetFile.Name}!",
 				TotalPlayers = totalPlayers,
-				Leaderboard = customLeaderboard.ToDto(),
+				Leaderboard = customLeaderboard.ToGetCustomLeaderboardDdcl(),
 				Category = customLeaderboard.Category,
-				Entries = entries.ConvertAll(e => e.ToDto()),
+				Entries = entries.ConvertAll(e => e.ToGetCustomEntryDdcl()),
 				IsNewPlayerOnThisLeaderboard = false,
 				Rank = rank,
 				RankDiff = rankDiff,
@@ -411,7 +412,7 @@ namespace DevilDaggersWebsite.BlazorWasm.Server.Controllers
 			}
 		}
 
-		private void Populate(CustomEntryData ced, List<AddGameStatePublic> gameStates)
+		private static void Populate(CustomEntryData ced, List<AddGameStatePublic> gameStates)
 		{
 			ced.GemsCollectedData = CompressProperty(gs => gs.GemsCollected);
 			ced.EnemiesKilledData = CompressProperty(gs => gs.EnemiesKilled);
