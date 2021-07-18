@@ -1,10 +1,10 @@
-﻿using DevilDaggersWebsite.BlazorWasm.Server.Converters;
+﻿using DevilDaggersWebsite.BlazorWasm.Server.Converters.Admin;
 using DevilDaggersWebsite.BlazorWasm.Server.Entities;
 using DevilDaggersWebsite.BlazorWasm.Server.Extensions;
 using DevilDaggersWebsite.BlazorWasm.Server.Singletons;
 using DevilDaggersWebsite.BlazorWasm.Shared;
 using DevilDaggersWebsite.BlazorWasm.Shared.Dto;
-using DevilDaggersWebsite.BlazorWasm.Shared.Dto.Titles;
+using DevilDaggersWebsite.BlazorWasm.Shared.Dto.Admin.Titles;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
@@ -14,7 +14,7 @@ using System.ComponentModel.DataAnnotations;
 using System.Linq;
 using System.Threading.Tasks;
 
-namespace DevilDaggersWebsite.Api
+namespace DevilDaggersWebsite.BlazorWasm.Server.Controllers.Admin
 {
 	[Route("api/admin/titles")]
 	[Authorize(Roles = Roles.Admin)]

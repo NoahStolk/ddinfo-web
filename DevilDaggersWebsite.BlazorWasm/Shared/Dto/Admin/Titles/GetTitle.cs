@@ -1,6 +1,6 @@
 ﻿using System.Collections.Generic;
 
-namespace DevilDaggersWebsite.BlazorWasm.Shared.Dto.Titles
+namespace DevilDaggersWebsite.BlazorWasm.Shared.Dto.Admin.Titles
 {
 	public class GetTitle : IGetDto<int>
 	{

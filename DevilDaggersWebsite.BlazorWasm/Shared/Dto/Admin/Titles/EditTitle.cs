@@ -1,9 +1,9 @@
 ﻿using System.Collections.Generic;
 using System.ComponentModel.DataAnnotations;
 
-namespace DevilDaggersWebsite.BlazorWasm.Shared.Dto.Titles
+namespace DevilDaggersWebsite.BlazorWasm.Shared.Dto.Admin.Titles
 {
-	public class AddTitle
+	public class EditTitle
 	{
 		[StringLength(16)]
 		public string Name { get; init; } = null!;

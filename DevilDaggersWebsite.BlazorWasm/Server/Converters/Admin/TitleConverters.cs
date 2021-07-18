@@ -1,7 +1,7 @@
 ﻿using DevilDaggersWebsite.BlazorWasm.Server.Entities;
-using DevilDaggersWebsite.BlazorWasm.Shared.Dto.Titles;
+using DevilDaggersWebsite.BlazorWasm.Shared.Dto.Admin.Titles;
 
-namespace DevilDaggersWebsite.BlazorWasm.Server.Converters
+namespace DevilDaggersWebsite.BlazorWasm.Server.Converters.Admin
 {
 	public static class TitleConverters
 	{
