@@ -2,9 +2,9 @@
 using DevilDaggersWebsite.BlazorWasm.Shared.Dto.Public.LeaderboardHistory;
 using System;
 
-namespace DevilDaggersWebsite.BlazorWasm.Shared.Dto.WorldRecords
+namespace DevilDaggersWebsite.BlazorWasm.Shared.Dto.Public.WorldRecords
 {
-	public class GetWorldRecordPublic
+	public class GetWorldRecord
 	{
 		public DateTime DateTime { get; init; }
 		public GetEntryHistory Entry { get; init; } = null!;

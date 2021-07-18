@@ -3,14 +3,14 @@ using DevilDaggersWebsite.BlazorWasm.Server.Caches.LeaderboardHistory;
 using DevilDaggersWebsite.BlazorWasm.Server.Controllers.Attributes;
 using DevilDaggersWebsite.BlazorWasm.Server.Utils;
 using DevilDaggersWebsite.BlazorWasm.Shared.Dto.Public.LeaderboardHistory;
-using DevilDaggersWebsite.BlazorWasm.Shared.Dto.WorldRecords;
+using DevilDaggersWebsite.BlazorWasm.Shared.Dto.Public.WorldRecords;
 using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
 using System;
 using System.Collections.Generic;
 using System.Linq;
 
-namespace DevilDaggersWebsite.BlazorWasm.Server.Controllers
+namespace DevilDaggersWebsite.BlazorWasm.Server.Controllers.Public
 {
 	[Route("api/world-records")]
 	[ApiController]
@@ -28,25 +28,25 @@ namespace DevilDaggersWebsite.BlazorWasm.Server.Controllers
 		[HttpGet("world-records")]
 		[ProducesResponseType(StatusCodes.Status200OK)]
 		[EndpointConsumer(EndpointConsumers.Website)]
-		public List<GetWorldRecordPublic> GetWorldRecords()
+		public List<GetWorldRecord> GetWorldRecords()
 			=> GetWorldRecordsPrivate();
 
 		[HttpGet("world-record-data")]
 		[ProducesResponseType(StatusCodes.Status200OK)]
 		[EndpointConsumer(EndpointConsumers.Website)]
-		public (List<GetWorldRecordHolderPublic> WorldRecordHolders, Dictionary<GetWorldRecordPublic, GetWorldRecordDataPublic> WorldRecordData) GetWorldRecordData()
+		public (List<GetWorldRecordHolder> WorldRecordHolders, Dictionary<GetWorldRecord, GetWorldRecordData> WorldRecordData) GetWorldRecordData()
 		{
-			List<GetWorldRecordPublic> worldRecords = GetWorldRecordsPrivate();
+			List<GetWorldRecord> worldRecords = GetWorldRecordsPrivate();
 
-			List<GetWorldRecordHolderPublic> worldRecordHolders = new();
-			Dictionary<GetWorldRecordPublic, GetWorldRecordDataPublic> worldRecordData = new();
+			List<GetWorldRecordHolder> worldRecordHolders = new();
+			Dictionary<GetWorldRecord, GetWorldRecordData> worldRecordData = new();
 
 			TimeSpan heldConsecutively = default;
 			for (int i = 0; i < worldRecords.Count; i++)
 			{
-				GetWorldRecordPublic wr = worldRecords[i];
+				GetWorldRecord wr = worldRecords[i];
 
-				GetWorldRecordPublic? previousWrSameLeaderboard = worldRecords.OrderByDescending(w => w.Entry.Time).FirstOrDefault(w => w.Entry.Time < wr.Entry.Time && GetMajorGameVersion(w.GameVersion) == GetMajorGameVersion(wr.GameVersion));
+				GetWorldRecord? previousWrSameLeaderboard = worldRecords.OrderByDescending(w => w.Entry.Time).FirstOrDefault(w => w.Entry.Time < wr.Entry.Time && GetMajorGameVersion(w.GameVersion) == GetMajorGameVersion(wr.GameVersion));
 
 				TimeSpan duration;
 				DateTime firstHeld;
@@ -59,7 +59,7 @@ namespace DevilDaggersWebsite.BlazorWasm.Server.Controllers
 				}
 				else
 				{
-					GetWorldRecordPublic nextWr = worldRecords[i + 1];
+					GetWorldRecord nextWr = worldRecords[i + 1];
 					duration = nextWr.DateTime - wr.DateTime;
 					firstHeld = wr.DateTime;
 					lastHeld = nextWr.DateTime;
@@ -71,7 +71,7 @@ namespace DevilDaggersWebsite.BlazorWasm.Server.Controllers
 				heldConsecutively += duration;
 				worldRecordData.Add(wr, new(duration, previousWrSameLeaderboard == null ? null : wr.Entry.Time - previousWrSameLeaderboard.Entry.Time));
 
-				GetWorldRecordHolderPublic? holder = worldRecordHolders.Find(wrh => wrh.Id == wr.Entry.Id);
+				GetWorldRecordHolder? holder = worldRecordHolders.Find(wrh => wrh.Id == wr.Entry.Id);
 				if (holder == null)
 				{
 					worldRecordHolders.Add(new(wr.Entry.Id, wr.Entry.Username, duration, heldConsecutively, 1, firstHeld, lastHeld));
@@ -106,10 +106,10 @@ namespace DevilDaggersWebsite.BlazorWasm.Server.Controllers
 			};
 		}
 
-		private List<GetWorldRecordPublic> GetWorldRecordsPrivate()
+		private List<GetWorldRecord> GetWorldRecordsPrivate()
 		{
 			DateTime? previousDate = null;
-			List<GetWorldRecordPublic> worldRecords = new();
+			List<GetWorldRecord> worldRecords = new();
 			int worldRecord = 0;
 			foreach (string leaderboardHistoryPath in DataUtils.GetLeaderboardHistoryPaths())
 			{

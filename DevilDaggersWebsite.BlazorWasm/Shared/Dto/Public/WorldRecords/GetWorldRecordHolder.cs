@@ -1,11 +1,11 @@
 ﻿using System;
 using System.Collections.Generic;
 
-namespace DevilDaggersWebsite.BlazorWasm.Shared.Dto.WorldRecords
+namespace DevilDaggersWebsite.BlazorWasm.Shared.Dto.Public.WorldRecords
 {
-	public class GetWorldRecordHolderPublic
+	public class GetWorldRecordHolder
 	{
-		public GetWorldRecordHolderPublic(int id, string username, TimeSpan totalTimeHeld, TimeSpan longestTimeHeldConsecutively, int worldRecordCount, DateTime firstHeld, DateTime lastHeld)
+		public GetWorldRecordHolder(int id, string username, TimeSpan totalTimeHeld, TimeSpan longestTimeHeldConsecutively, int worldRecordCount, DateTime firstHeld, DateTime lastHeld)
 		{
 			Id = id;
 			Usernames = new() { username };
