@@ -1,0 +1,14 @@
+﻿@page "/custom/leaderboard/{Name:string}"
+@inject PublicApiHttpClient Http
+@using DevilDaggersWebsite.BlazorWasm.Shared.Dto.CustomLeaderboards
+
+<h1 class="text-red text-2xl">Custom Leaderboard - @Name</h1>
+
+@code
+{
+	[Parameter] public string? Name { get; set; }
+
+	protected override async Task OnInitializedAsync()
+	{
+	}
+}

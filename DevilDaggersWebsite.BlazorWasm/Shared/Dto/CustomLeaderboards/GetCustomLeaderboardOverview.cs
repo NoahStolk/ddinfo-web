@@ -3,10 +3,8 @@ using System;
 
 namespace DevilDaggersWebsite.BlazorWasm.Shared.Dto.CustomLeaderboards
 {
-	public class GetCustomLeaderboardPublic
+	public class GetCustomLeaderboardOverview
 	{
-		public int Id { get; init; }
-
 		public string SpawnsetName { get; init; } = null!;
 
 		public string SpawnsetAuthorName { get; init; } = null!;
@@ -26,7 +24,5 @@ namespace DevilDaggersWebsite.BlazorWasm.Shared.Dto.CustomLeaderboards
 		public DateTime? DateCreated { get; init; }
 
 		public CustomLeaderboardCategory Category { get; init; }
-
-		public bool IsAscending { get; init; }
 	}
 }

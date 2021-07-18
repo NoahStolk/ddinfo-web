@@ -26,9 +26,9 @@ namespace DevilDaggersWebsite.BlazorWasm.Server.Controllers
 
 		[HttpGet]
 		[ProducesResponseType(StatusCodes.Status200OK)]
-		public ActionResult<Page<GetCustomLeaderboardPublic>> GetCustomLeaderboards(
+		public ActionResult<Page<GetCustomLeaderboardOverview>> GetCustomLeaderboards(
 			[Range(0, 1000)] int pageIndex = 0,
-			[Range(5, 50)] int pageSize = 25,
+			[Range(10, 25)] int pageSize = 25,
 			string? sortBy = null,
 			bool ascending = false,
 			CustomLeaderboardCategory? categoriesFilter = null)
@@ -50,9 +50,9 @@ namespace DevilDaggersWebsite.BlazorWasm.Server.Controllers
 				.Take(pageSize)
 				.ToList();
 
-			return new Page<GetCustomLeaderboardPublic>
+			return new Page<GetCustomLeaderboardOverview>
 			{
-				Results = customLeaderboards.ConvertAll(cl => cl.ToGetCustomLeaderboardPublic()),
+				Results = customLeaderboards.ConvertAll(cl => cl.ToGetCustomLeaderboardOverview()),
 				TotalResults = customLeaderboardsQuery.Count(),
 			};
 		}

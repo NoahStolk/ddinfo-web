@@ -35,9 +35,8 @@ namespace DevilDaggersWebsite.BlazorWasm.Server.Converters
 			Category = customLeaderboard.Category,
 		};
 
-		public static GetCustomLeaderboardPublic ToGetCustomLeaderboardPublic(this CustomLeaderboard customLeaderboard) => new()
+		public static GetCustomLeaderboardOverview ToGetCustomLeaderboardOverview(this CustomLeaderboard customLeaderboard) => new()
 		{
-			Id = customLeaderboard.Id,
 			SpawnsetAuthorName = customLeaderboard.SpawnsetFile.Player.PlayerName,
 			SpawnsetName = customLeaderboard.SpawnsetFile.Name,
 			TimeBronze = customLeaderboard.TimeBronze / 10000.0,

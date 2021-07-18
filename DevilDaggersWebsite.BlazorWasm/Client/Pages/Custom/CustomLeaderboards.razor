@@ -10,45 +10,36 @@
 }
 else
 {
-	<div class="text-xl font-goethe">
-		<div class="grid gap-3 sm:grid-cols-leaderboard-sm md:grid-cols-leaderboard-md lg:grid-cols-leaderboard-lg xl:grid-cols-leaderboard-xl">
-			<div class="text-left">Name</div>
-			<div class="text-left">Author</div>
-			<div class="text-right hidden sm:block bronze">Bronze</div>
-			<div class="text-right hidden sm:block silver">Silver</div>
-			<div class="text-right hidden sm:block golden">Golden</div>
-			<div class="text-right hidden sm:block devil">Devil</div>
-			<div class="text-right hidden sm:block leviathan">Leviathan</div>
-		</div>
-		<div>
-			@{
-				int i = 0;
-
-				foreach (GetCustomLeaderboardPublic customLeaderboard in GetCustomLeaderboards.Results)
-				{
-					<div class="grid gap-3 sm:grid-cols-leaderboard-sm md:grid-cols-leaderboard-md lg:grid-cols-leaderboard-lg xl:grid-cols-leaderboard-xl h-6 @(i % 2 == 0 ? "bg-gray0B" : string.Empty)">
-						<div class="text-left">@customLeaderboard.SpawnsetName</div>
-						<div class="text-left">@customLeaderboard.SpawnsetAuthorName</div>
-						<div class="text-right hidden sm:block bronze">@customLeaderboard.TimeBronze.ToString(FormatUtils.TimeFormat)</div>
-						<div class="text-right hidden sm:block silver">@customLeaderboard.TimeSilver.ToString(FormatUtils.TimeFormat)</div>
-						<div class="text-right hidden sm:block golden">@customLeaderboard.TimeGolden.ToString(FormatUtils.TimeFormat)</div>
-						<div class="text-right hidden sm:block devil">@customLeaderboard.TimeDevil.ToString(FormatUtils.TimeFormat)</div>
-						<div class="text-right hidden sm:block leviathan">@customLeaderboard.TimeLeviathan.ToString(FormatUtils.TimeFormat)</div>
-					</div>
-
-					i++;
-				}
-			}
-		</div>
+	<div class="grid gap-3 sm:grid-cols-leaderboard-sm md:grid-cols-leaderboard-md lg:grid-cols-leaderboard-lg xl:grid-cols-leaderboard-xl">
+		<div class="text-left">Name</div>
+		<div class="text-left">Author</div>
+		<div class="text-right hidden sm:block bronze">Bronze</div>
+		<div class="text-right hidden sm:block silver">Silver</div>
+		<div class="text-right hidden sm:block golden">Golden</div>
+		<div class="text-right hidden sm:block devil">Devil</div>
+		<div class="text-right hidden sm:block leviathan">Leviathan</div>
 	</div>
+	@for (int i = 0; i < GetCustomLeaderboards.Results.Count; i++)
+	{
+		GetCustomLeaderboardOverview customLeaderboard = GetCustomLeaderboards.Results[i];
+		<div class="grid gap-3 sm:grid-cols-leaderboard-sm md:grid-cols-leaderboard-md lg:grid-cols-leaderboard-lg xl:grid-cols-leaderboard-xl h-6 @(i % 2 == 0 ? "bg-gray0B" : string.Empty)">
+			<div class="text-left"><a href="/custom/leaderboard/@customLeaderboard.SpawnsetName">@customLeaderboard.SpawnsetName</a></div>
+			<div class="text-left">@customLeaderboard.SpawnsetAuthorName</div>
+			<div class="text-right hidden sm:block bronze">@customLeaderboard.TimeBronze.ToString(FormatUtils.TimeFormat)</div>
+			<div class="text-right hidden sm:block silver">@customLeaderboard.TimeSilver.ToString(FormatUtils.TimeFormat)</div>
+			<div class="text-right hidden sm:block golden">@customLeaderboard.TimeGolden.ToString(FormatUtils.TimeFormat)</div>
+			<div class="text-right hidden sm:block devil">@customLeaderboard.TimeDevil.ToString(FormatUtils.TimeFormat)</div>
+			<div class="text-right hidden sm:block leviathan">@customLeaderboard.TimeLeviathan.ToString(FormatUtils.TimeFormat)</div>
+		</div>
+	}
 }
 
 @code
 {
-	public Page<GetCustomLeaderboardPublic>? GetCustomLeaderboards { get; set; }
+	public Page<GetCustomLeaderboardOverview>? GetCustomLeaderboards { get; set; }
 
 	protected override async Task OnInitializedAsync()
 	{
-		GetCustomLeaderboards = await Http.Client.GetFromJsonAsync<Page<GetCustomLeaderboardPublic>>("api/custom-leaderboards");
+		GetCustomLeaderboards = await Http.Client.GetFromJsonAsync<Page<GetCustomLeaderboardOverview>>("api/custom-leaderboards");
 	}
 }
