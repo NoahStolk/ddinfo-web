@@ -2,9 +2,9 @@
 using DevilDaggersWebsite.BlazorWasm.Shared.Enums;
 using System.Collections.Generic;
 
-namespace DevilDaggersWebsite.BlazorWasm.Shared.Dto.CustomEntries
+namespace DevilDaggersWebsite.BlazorWasm.Shared.Dto.Public.CustomEntries
 {
-	public class GetUploadSuccessPublic
+	public class GetUploadSuccess
 	{
 		public string Message { get; init; } = string.Empty;
 

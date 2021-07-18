@@ -1,6 +1,6 @@
-﻿namespace DevilDaggersWebsite.BlazorWasm.Shared.Dto.CustomEntries
+﻿namespace DevilDaggersWebsite.BlazorWasm.Shared.Dto.Public.CustomEntries
 {
-	public class AddGameStatePublic
+	public class AddGameState
 	{
 		public int GemsCollected { get; init; }
 		public int EnemiesKilled { get; init; }

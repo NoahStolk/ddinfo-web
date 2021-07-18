@@ -1,7 +1,7 @@
 ﻿using System;
 using System.ComponentModel.DataAnnotations;
 
-namespace DevilDaggersWebsite.BlazorWasm.Shared.Dto.CustomEntries
+namespace DevilDaggersWebsite.BlazorWasm.Shared.Dto.Admin.CustomEntries
 {
 	public class GetCustomEntry : IGetDto<int>
 	{

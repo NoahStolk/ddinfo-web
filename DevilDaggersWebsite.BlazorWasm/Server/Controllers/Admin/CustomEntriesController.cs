@@ -1,10 +1,10 @@
-﻿using DevilDaggersWebsite.BlazorWasm.Server.Converters;
+﻿using DevilDaggersWebsite.BlazorWasm.Server.Converters.Admin;
 using DevilDaggersWebsite.BlazorWasm.Server.Entities;
 using DevilDaggersWebsite.BlazorWasm.Server.Extensions;
 using DevilDaggersWebsite.BlazorWasm.Server.Singletons;
 using DevilDaggersWebsite.BlazorWasm.Shared;
 using DevilDaggersWebsite.BlazorWasm.Shared.Dto;
-using DevilDaggersWebsite.BlazorWasm.Shared.Dto.CustomEntries;
+using DevilDaggersWebsite.BlazorWasm.Shared.Dto.Admin.CustomEntries;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
@@ -14,17 +14,17 @@ using System.ComponentModel.DataAnnotations;
 using System.Linq;
 using System.Threading.Tasks;
 
-namespace DevilDaggersWebsite.BlazorWasm.Server.Controllers
+namespace DevilDaggersWebsite.BlazorWasm.Server.Controllers.Admin
 {
 	[Route("api/admin/custom-entries")]
 	[Authorize(Roles = Roles.Admin)]
 	[ApiController]
-	public class CustomEntriesAdminController : ControllerBase
+	public class CustomEntriesController : ControllerBase
 	{
 		private readonly ApplicationDbContext _dbContext;
 		private readonly AuditLogger _auditLogger;
 
-		public CustomEntriesAdminController(ApplicationDbContext dbContext, AuditLogger auditLogger)
+		public CustomEntriesController(ApplicationDbContext dbContext, AuditLogger auditLogger)
 		{
 			_dbContext = dbContext;
 			_auditLogger = auditLogger;

@@ -1,11 +1,11 @@
-﻿using DevilDaggersWebsite.BlazorWasm.Shared.Dto.CustomEntries;
+﻿using DevilDaggersWebsite.BlazorWasm.Shared.Dto.Public.CustomEntries;
 using System;
 
 namespace DevilDaggersWebsite.BlazorWasm.Server.Extensions
 {
 	public static class DtoConverterExtensions
 	{
-		public static Entities.CustomEntry ToCustomEntryEntity(this AddUploadRequestPublic uploadRequest, Entities.CustomLeaderboard customLeaderboard)
+		public static Entities.CustomEntry ToCustomEntryEntity(this AddUploadRequest uploadRequest, Entities.CustomLeaderboard customLeaderboard)
 		{
 			return new()
 			{

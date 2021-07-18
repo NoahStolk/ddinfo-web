@@ -1,13 +1,14 @@
 ﻿using DevilDaggersWebsite.BlazorWasm.Server.Caches.SpawnsetHash;
 using DevilDaggersWebsite.BlazorWasm.Server.Controllers.Attributes;
 using DevilDaggersWebsite.BlazorWasm.Server.Converters;
+using DevilDaggersWebsite.BlazorWasm.Server.Converters.Public;
 using DevilDaggersWebsite.BlazorWasm.Server.Entities;
 using DevilDaggersWebsite.BlazorWasm.Server.Extensions;
 using DevilDaggersWebsite.BlazorWasm.Server.HostedServices.DdInfoDiscordBot;
 using DevilDaggersWebsite.BlazorWasm.Server.Singletons;
 using DevilDaggersWebsite.BlazorWasm.Server.Transients;
 using DevilDaggersWebsite.BlazorWasm.Server.Utils;
-using DevilDaggersWebsite.BlazorWasm.Shared.Dto.CustomEntries;
+using DevilDaggersWebsite.BlazorWasm.Shared.Dto.Public.CustomEntries;
 using DevilDaggersWebsite.BlazorWasm.Shared.Dto.Tools;
 using DevilDaggersWebsite.BlazorWasm.Shared.Enums;
 using DSharpPlus.Entities;
@@ -20,7 +21,7 @@ using System.Linq;
 using System.Threading.Tasks;
 using System.Web;
 
-namespace DevilDaggersWebsite.BlazorWasm.Server.Controllers
+namespace DevilDaggersWebsite.BlazorWasm.Server.Controllers.Public
 {
 	[Route("api/custom-entries")]
 	[ApiController]
@@ -43,7 +44,7 @@ namespace DevilDaggersWebsite.BlazorWasm.Server.Controllers
 		[ProducesResponseType(StatusCodes.Status200OK)]
 		[ProducesResponseType(StatusCodes.Status400BadRequest)]
 		[EndpointConsumer(EndpointConsumers.Ddcl)]
-		public async Task<ActionResult<GetUploadSuccessPublic>> SubmitScore([FromBody] AddUploadRequestPublic uploadRequest)
+		public async Task<ActionResult<GetUploadSuccess>> SubmitScore([FromBody] AddUploadRequest uploadRequest)
 		{
 			try
 			{
@@ -61,7 +62,7 @@ namespace DevilDaggersWebsite.BlazorWasm.Server.Controllers
 
 		[ApiExplorerSettings(IgnoreApi = true)]
 		[NonAction]
-		public async Task<ActionResult<GetUploadSuccessPublic>> ProcessUploadRequest(AddUploadRequestPublic uploadRequest)
+		public async Task<ActionResult<GetUploadSuccess>> ProcessUploadRequest(AddUploadRequest uploadRequest)
 		{
 			// Check if the submission actually came from DDCL.
 			string check = string.Join(
@@ -192,7 +193,7 @@ namespace DevilDaggersWebsite.BlazorWasm.Server.Controllers
 
 				await TrySendLeaderboardMessage(customLeaderboard, $"`{uploadRequest.PlayerName}` just entered the `{spawnsetName}` leaderboard!", rank, totalPlayers, uploadRequest.Time);
 				await TryLog(uploadRequest, spawnsetName);
-				return new GetUploadSuccessPublic
+				return new GetUploadSuccess
 				{
 					Message = $"Welcome to the {spawnsetName} leaderboard!",
 					TotalPlayers = totalPlayers,
@@ -226,7 +227,7 @@ namespace DevilDaggersWebsite.BlazorWasm.Server.Controllers
 				entries = FetchEntriesFromDatabase(customLeaderboard, isAscending);
 
 				await TryLog(uploadRequest, spawnsetName);
-				return new GetUploadSuccessPublic
+				return new GetUploadSuccess
 				{
 					Message = $"No new highscore for {customLeaderboard.SpawnsetFile.Name}.",
 					TotalPlayers = totalPlayers,
@@ -300,7 +301,7 @@ namespace DevilDaggersWebsite.BlazorWasm.Server.Controllers
 
 			await TrySendLeaderboardMessage(customLeaderboard, $"`{uploadRequest.PlayerName}` just got {FormatTimeString(uploadRequest.Time)} seconds on the `{spawnsetName}` leaderboard, beating their previous highscore of {FormatTimeString(uploadRequest.Time - timeDiff)} by {FormatTimeString(Math.Abs(timeDiff))} seconds!", rank, totalPlayers, uploadRequest.Time);
 			await TryLog(uploadRequest, spawnsetName);
-			return new GetUploadSuccessPublic
+			return new GetUploadSuccess
 			{
 				Message = $"NEW HIGHSCORE for {customLeaderboard.SpawnsetFile.Name}!",
 				TotalPlayers = totalPlayers,
@@ -392,7 +393,7 @@ namespace DevilDaggersWebsite.BlazorWasm.Server.Controllers
 			}
 		}
 
-		private async Task TryLog(AddUploadRequestPublic uploadRequest, string? spawnsetName, string? errorMessage = null, string? errorEmoteNameOverride = null)
+		private async Task TryLog(AddUploadRequest uploadRequest, string? spawnsetName, string? errorMessage = null, string? errorEmoteNameOverride = null)
 		{
 			try
 			{
@@ -412,7 +413,7 @@ namespace DevilDaggersWebsite.BlazorWasm.Server.Controllers
 			}
 		}
 
-		private static void Populate(CustomEntryData ced, List<AddGameStatePublic> gameStates)
+		private static void Populate(CustomEntryData ced, List<AddGameState> gameStates)
 		{
 			ced.GemsCollectedData = CompressProperty(gs => gs.GemsCollected);
 			ced.EnemiesKilledData = CompressProperty(gs => gs.EnemiesKilled);
@@ -461,7 +462,7 @@ namespace DevilDaggersWebsite.BlazorWasm.Server.Controllers
 			ced.GhostpedesKilledData = CompressProperty(gs => gs.GhostpedesKilled);
 			ced.SpiderEggsKilledData = CompressProperty(gs => gs.SpiderEggsKilled);
 
-			byte[] CompressProperty(Func<AddGameStatePublic, int> propertySelector)
+			byte[] CompressProperty(Func<AddGameState, int> propertySelector)
 				=> IntegerArrayCompressor.CompressData(gameStates.Select(propertySelector).ToArray());
 		}
 	}

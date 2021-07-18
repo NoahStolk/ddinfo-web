@@ -8,7 +8,7 @@ using System.Collections.Generic;
 using System.Linq;
 using Io = System.IO;
 
-namespace DevilDaggersWebsite.BlazorWasm.Server.Controllers
+namespace DevilDaggersWebsite.BlazorWasm.Server.Controllers.Public
 {
 	[Route("api/assets")]
 	[ApiController]

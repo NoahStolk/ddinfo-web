@@ -1,9 +1,9 @@
 ﻿using DevilDaggersWebsite.BlazorWasm.Shared.Enums;
 using System.Collections.Generic;
 
-namespace DevilDaggersWebsite.BlazorWasm.Shared.Dto.CustomEntries
+namespace DevilDaggersWebsite.BlazorWasm.Shared.Dto.Public.CustomEntries
 {
-	public class AddUploadRequestPublic
+	public class AddUploadRequest
 	{
 		public byte[] SurvivalHashMd5 { get; init; } = null!;
 		public int PlayerId { get; init; }
@@ -29,6 +29,6 @@ namespace DevilDaggersWebsite.BlazorWasm.Shared.Dto.CustomEntries
 		public string Validation { get; set; } = null!; // Use set for unit tests.
 		public bool IsReplay { get; init; }
 		public bool ProhibitedMods { get; init; }
-		public List<AddGameStatePublic> GameStates { get; init; } = new();
+		public List<AddGameState> GameStates { get; init; } = new();
 	}
 }

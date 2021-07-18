@@ -1,8 +1,8 @@
 ﻿using System;
 
-namespace DevilDaggersWebsite.BlazorWasm.Shared.Dto.CustomEntries
+namespace DevilDaggersWebsite.BlazorWasm.Shared.Dto.Public.CustomEntries
 {
-	public class GetCustomEntryDdcl
+	public class GetCustomEntry
 	{
 		public int PlayerId { get; init; }
 		public string PlayerName { get; init; } = null!;

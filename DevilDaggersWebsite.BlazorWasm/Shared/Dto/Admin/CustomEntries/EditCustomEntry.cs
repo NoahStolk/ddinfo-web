@@ -1,9 +1,9 @@
 ﻿using System;
 using System.ComponentModel.DataAnnotations;
 
-namespace DevilDaggersWebsite.BlazorWasm.Shared.Dto.CustomEntries
+namespace DevilDaggersWebsite.BlazorWasm.Shared.Dto.Admin.CustomEntries
 {
-	public class AddCustomEntry
+	public class EditCustomEntry
 	{
 		public int CustomLeaderboardId { get; init; }
 
