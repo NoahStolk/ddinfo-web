@@ -2,7 +2,7 @@
 using DevilDaggersWebsite.BlazorWasm.Server.Caches.ModArchive;
 using DevilDaggersWebsite.BlazorWasm.Server.Controllers.Attributes;
 using DevilDaggersWebsite.BlazorWasm.Server.Entities;
-using DevilDaggersWebsite.BlazorWasm.Shared.Dto.Mods;
+using DevilDaggersWebsite.BlazorWasm.Shared.Dto.Public.Mods;
 using DevilDaggersWebsite.BlazorWasm.Shared.Enums;
 using Microsoft.AspNetCore.Hosting;
 using Microsoft.AspNetCore.Http;
@@ -17,7 +17,7 @@ using System.Linq;
 using System.Net.Mime;
 using Io = System.IO;
 
-namespace DevilDaggersWebsite.BlazorWasm.Server.Controllers
+namespace DevilDaggersWebsite.BlazorWasm.Server.Controllers.Public
 {
 	[Route("api/mods")]
 	[ApiController]
@@ -37,7 +37,7 @@ namespace DevilDaggersWebsite.BlazorWasm.Server.Controllers
 		[HttpGet]
 		[ProducesResponseType(StatusCodes.Status200OK)]
 		[EndpointConsumer(EndpointConsumers.Ddae)]
-		public List<GetModPublic> GetPublicMods(string? authorFilter = null, string? nameFilter = null, bool? isHostedFilter = null)
+		public List<GetMod> GetPublicMods(string? authorFilter = null, string? nameFilter = null, bool? isHostedFilter = null)
 		{
 			IEnumerable<AssetMod> assetModsQuery = _dbContext.AssetMods
 				.AsNoTracking()
@@ -66,7 +66,7 @@ namespace DevilDaggersWebsite.BlazorWasm.Server.Controllers
 				.Select(amwfi =>
 				{
 					bool? containsProhibitedAssets = null;
-					ModArchivePublic? modArchive = null;
+					GetModArchive? modArchive = null;
 					AssetModTypes assetModTypes;
 					if (amwfi.Value.FileExists)
 					{
@@ -76,7 +76,7 @@ namespace DevilDaggersWebsite.BlazorWasm.Server.Controllers
 						{
 							FileSize = archiveData.FileSize,
 							FileSizeExtracted = archiveData.FileSizeExtracted,
-							Binaries = archiveData.Binaries.ConvertAll(b => new ModBinaryPublic
+							Binaries = archiveData.Binaries.ConvertAll(b => new GetModBinary
 							{
 								Name = b.Name,
 								Size = b.Size,
@@ -108,7 +108,7 @@ namespace DevilDaggersWebsite.BlazorWasm.Server.Controllers
 					else
 						screenshotFileNames = new();
 
-					return new GetModPublic
+					return new GetMod
 					{
 						Name = amwfi.Key.Name,
 						HtmlDescription = amwfi.Key.HtmlDescription,

@@ -2,9 +2,9 @@
 using System;
 using System.Collections.Generic;
 
-namespace DevilDaggersWebsite.BlazorWasm.Shared.Dto.Mods
+namespace DevilDaggersWebsite.BlazorWasm.Shared.Dto.Public.Mods
 {
-	public class GetModPublic
+	public class GetMod
 	{
 		public string Name { get; init; } = null!;
 
@@ -22,7 +22,7 @@ namespace DevilDaggersWebsite.BlazorWasm.Shared.Dto.Mods
 
 		public bool? ContainsProhibitedAssets { get; init; }
 
-		public ModArchivePublic? ModArchive { get; init; }
+		public GetModArchive? ModArchive { get; init; }
 
 		public List<string> ScreenshotFileNames { get; init; } = null!;
 	}

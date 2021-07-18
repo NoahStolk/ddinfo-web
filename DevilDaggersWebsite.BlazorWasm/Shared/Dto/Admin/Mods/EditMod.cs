@@ -2,7 +2,7 @@
 using System.Collections.Generic;
 using System.ComponentModel.DataAnnotations;
 
-namespace DevilDaggersWebsite.BlazorWasm.Shared.Dto.Mods
+namespace DevilDaggersWebsite.BlazorWasm.Shared.Dto.Admin.Mods
 {
 	public class EditMod
 	{

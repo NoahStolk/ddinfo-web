@@ -1,6 +1,6 @@
 ﻿using DevilDaggersWebsite.BlazorWasm.Server.Caches.ModArchive;
 using DevilDaggersWebsite.BlazorWasm.Server.Constants;
-using DevilDaggersWebsite.BlazorWasm.Server.Converters;
+using DevilDaggersWebsite.BlazorWasm.Server.Converters.Admin;
 using DevilDaggersWebsite.BlazorWasm.Server.Entities;
 using DevilDaggersWebsite.BlazorWasm.Server.Exceptions;
 using DevilDaggersWebsite.BlazorWasm.Server.Extensions;
@@ -8,7 +8,7 @@ using DevilDaggersWebsite.BlazorWasm.Server.HostedServices.DdInfoDiscordBot;
 using DevilDaggersWebsite.BlazorWasm.Server.Singletons;
 using DevilDaggersWebsite.BlazorWasm.Shared;
 using DevilDaggersWebsite.BlazorWasm.Shared.Dto;
-using DevilDaggersWebsite.BlazorWasm.Shared.Dto.Mods;
+using DevilDaggersWebsite.BlazorWasm.Shared.Dto.Admin.Mods;
 using DevilDaggersWebsite.BlazorWasm.Shared.Enums;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Hosting;
@@ -23,12 +23,12 @@ using System.Linq;
 using System.Threading.Tasks;
 using Io = System.IO;
 
-namespace DevilDaggersWebsite.BlazorWasm.Server.Controllers
+namespace DevilDaggersWebsite.BlazorWasm.Server.Controllers.Admin
 {
 	[Route("api/admin/mods")]
 	[Authorize(Roles = Roles.AssetMods)]
 	[ApiController]
-	public class ModsAdminController : ControllerBase
+	public class ModsController : ControllerBase
 	{
 		private readonly IWebHostEnvironment _environment;
 		private readonly ApplicationDbContext _dbContext;
@@ -36,7 +36,7 @@ namespace DevilDaggersWebsite.BlazorWasm.Server.Controllers
 		private readonly DiscordLogger _discordLogger;
 		private readonly AuditLogger _auditLogger;
 
-		public ModsAdminController(IWebHostEnvironment environment, ApplicationDbContext dbContext, ModArchiveCache modArchiveCache, DiscordLogger discordLogger, AuditLogger auditLogger)
+		public ModsController(IWebHostEnvironment environment, ApplicationDbContext dbContext, ModArchiveCache modArchiveCache, DiscordLogger discordLogger, AuditLogger auditLogger)
 		{
 			_environment = environment;
 			_dbContext = dbContext;

@@ -1,8 +1,8 @@
 ﻿using DevilDaggersWebsite.BlazorWasm.Shared.Enums;
 
-namespace DevilDaggersWebsite.BlazorWasm.Shared.Dto.Mods
+namespace DevilDaggersWebsite.BlazorWasm.Shared.Dto.Public.Mods
 {
-	public class ModBinaryPublic
+	public class GetModBinary
 	{
 		public string Name { get; init; } = null!;
 		public long Size { get; init; }

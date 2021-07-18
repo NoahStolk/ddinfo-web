@@ -1,8 +1,8 @@
 ﻿using DevilDaggersCore.Extensions;
 using DevilDaggersWebsite.BlazorWasm.Server.Entities;
-using DevilDaggersWebsite.BlazorWasm.Shared.Dto.Mods;
+using DevilDaggersWebsite.BlazorWasm.Shared.Dto.Admin.Mods;
 
-namespace DevilDaggersWebsite.BlazorWasm.Server.Converters
+namespace DevilDaggersWebsite.BlazorWasm.Server.Converters.Admin
 {
 	public static class ModConverters
 	{
