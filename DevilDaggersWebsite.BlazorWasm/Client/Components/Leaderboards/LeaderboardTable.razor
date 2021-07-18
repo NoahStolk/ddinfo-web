@@ -22,7 +22,7 @@
 		@{
 			int i = 0;
 
-			foreach (GetEntryPublic entry in Leaderboard.Entries)
+			foreach (GetEntry entry in Leaderboard.Entries)
 			{
 				GetPlayerForLeaderboardPublic? player = Players?.Find(p => p.Id == entry.Id);
 				bool isBanned = player?.IsBanned ?? false;
@@ -69,7 +69,7 @@
 @code
 {
 	[Parameter] public bool IsHistory { get; set; }
-	[Parameter] public GetLeaderboardPublic Leaderboard { get; set; } = null!;
+	[Parameter] public GetLeaderboard Leaderboard { get; set; } = null!;
 	[Parameter] public List<GetPlayerForLeaderboardPublic>? Players { get; set; } = null!;
 
 	private GameVersion _gameVersion;

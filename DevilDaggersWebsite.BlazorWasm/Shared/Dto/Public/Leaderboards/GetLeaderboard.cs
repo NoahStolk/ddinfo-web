@@ -1,9 +1,9 @@
 ﻿using System;
 using System.Collections.Generic;
 
-namespace DevilDaggersWebsite.BlazorWasm.Shared.Dto.Leaderboards
+namespace DevilDaggersWebsite.BlazorWasm.Shared.Dto.Public.Leaderboards
 {
-	public class GetLeaderboardPublic
+	public class GetLeaderboard
 	{
 		public DateTime DateTime { get; init; }
 
@@ -21,6 +21,6 @@ namespace DevilDaggersWebsite.BlazorWasm.Shared.Dto.Leaderboards
 
 		public ulong DaggersFiredGlobal { get; init; }
 
-		public List<GetEntryPublic> Entries { get; init; } = new();
+		public List<GetEntry> Entries { get; init; } = new();
 	}
 }

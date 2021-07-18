@@ -1,8 +1,8 @@
 ﻿using DevilDaggersWebsite.BlazorWasm.Shared.Enums;
 
-namespace DevilDaggersWebsite.BlazorWasm.Shared.Dto.Leaderboards
+namespace DevilDaggersWebsite.BlazorWasm.Shared.Dto.Public.Leaderboards
 {
-	public class GetEntryPublic
+	public class GetEntry
 	{
 		public int Rank { get; init; }
 

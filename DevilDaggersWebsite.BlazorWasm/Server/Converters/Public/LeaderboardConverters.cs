@@ -1,12 +1,12 @@
 ﻿using DevilDaggersWebsite.BlazorWasm.Server.Clients.Leaderboard;
-using DevilDaggersWebsite.BlazorWasm.Shared.Dto.Leaderboards;
+using DevilDaggersWebsite.BlazorWasm.Shared.Dto.Public.Leaderboards;
 using DevilDaggersWebsite.BlazorWasm.Shared.Enums;
 
-namespace DevilDaggersWebsite.BlazorWasm.Server.Converters
+namespace DevilDaggersWebsite.BlazorWasm.Server.Converters.Public
 {
 	public static class LeaderboardConverters
 	{
-		public static GetLeaderboardPublic ToGetLeaderboardPublic(this LeaderboardResponse leaderboardResponse) => new()
+		public static GetLeaderboard ToGetLeaderboardPublic(this LeaderboardResponse leaderboardResponse) => new()
 		{
 			DaggersFiredGlobal = leaderboardResponse.DaggersFiredGlobal,
 			DaggersHitGlobal = leaderboardResponse.DaggersHitGlobal,
@@ -19,7 +19,7 @@ namespace DevilDaggersWebsite.BlazorWasm.Server.Converters
 			TimeGlobal = leaderboardResponse.TimeGlobal == 0 ? 0 : leaderboardResponse.TimeGlobal / 10000.0,
 		};
 
-		public static GetEntryPublic ToGetEntryPublic(this EntryResponse entryResponse) => new()
+		public static GetEntry ToGetEntryPublic(this EntryResponse entryResponse) => new()
 		{
 			DaggersFired = entryResponse.DaggersFired,
 			DaggersFiredTotal = entryResponse.DaggersFiredTotal,

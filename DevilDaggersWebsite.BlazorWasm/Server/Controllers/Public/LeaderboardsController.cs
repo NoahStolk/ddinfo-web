@@ -1,7 +1,7 @@
 ﻿using DevilDaggersWebsite.BlazorWasm.Server.Clients.Leaderboard;
 using DevilDaggersWebsite.BlazorWasm.Server.Controllers.Attributes;
-using DevilDaggersWebsite.BlazorWasm.Server.Converters;
-using DevilDaggersWebsite.BlazorWasm.Shared.Dto.Leaderboards;
+using DevilDaggersWebsite.BlazorWasm.Server.Converters.Public;
+using DevilDaggersWebsite.BlazorWasm.Shared.Dto.Public.Leaderboards;
 using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
 using System;
@@ -10,7 +10,7 @@ using System.ComponentModel.DataAnnotations;
 using System.Linq;
 using System.Threading.Tasks;
 
-namespace DevilDaggersWebsite.BlazorWasm.Server.Controllers
+namespace DevilDaggersWebsite.BlazorWasm.Server.Controllers.Public
 {
 	[Route("api/leaderboards")]
 	[ApiController]
@@ -19,7 +19,7 @@ namespace DevilDaggersWebsite.BlazorWasm.Server.Controllers
 		[HttpGet]
 		[ProducesResponseType(StatusCodes.Status200OK)]
 		[EndpointConsumer(EndpointConsumers.Website)]
-		public async Task<ActionResult<GetLeaderboardPublic?>> GetLeaderboard([Range(1, int.MaxValue)] int rankStart = 1)
+		public async Task<ActionResult<GetLeaderboard?>> GetLeaderboard([Range(1, int.MaxValue)] int rankStart = 1)
 		{
 			LeaderboardResponse l = await LeaderboardClient.Instance.GetScores(rankStart);
 			return l.ToGetLeaderboardPublic();
@@ -29,7 +29,7 @@ namespace DevilDaggersWebsite.BlazorWasm.Server.Controllers
 		[ProducesResponseType(StatusCodes.Status200OK)]
 		[ProducesResponseType(StatusCodes.Status400BadRequest)]
 		[EndpointConsumer(EndpointConsumers.Website)]
-		public async Task<ActionResult<GetEntryPublic>> GetPlayerById([Required, Range(1, int.MaxValue)] int userId)
+		public async Task<ActionResult<GetEntry>> GetPlayerById([Required, Range(1, int.MaxValue)] int userId)
 		{
 			EntryResponse e = await LeaderboardClient.Instance.GetUserById(userId);
 			return e.ToGetEntryPublic();
@@ -39,7 +39,7 @@ namespace DevilDaggersWebsite.BlazorWasm.Server.Controllers
 		[ProducesResponseType(StatusCodes.Status200OK)]
 		[ProducesResponseType(StatusCodes.Status400BadRequest)]
 		[EndpointConsumer(EndpointConsumers.Website)]
-		public async Task<ActionResult<List<GetEntryPublic>>> GetPlayersByIds(string commaSeparatedUserIds)
+		public async Task<ActionResult<List<GetEntry>>> GetPlayersByIds(string commaSeparatedUserIds)
 		{
 			IEnumerable<int> userIds = commaSeparatedUserIds.Split(',').Where(s => int.TryParse(s, out _)).Select(int.Parse);
 
@@ -51,7 +51,7 @@ namespace DevilDaggersWebsite.BlazorWasm.Server.Controllers
 		[ProducesResponseType(StatusCodes.Status200OK)]
 		[ProducesResponseType(StatusCodes.Status400BadRequest)]
 		[EndpointConsumer(EndpointConsumers.Website)]
-		public async Task<ActionResult<List<GetEntryPublic>>> GetPlayersByName([Required, MinLength(3)] string username)
+		public async Task<ActionResult<List<GetEntry>>> GetPlayersByName([Required, MinLength(3)] string username)
 		{
 			List<EntryResponse> el = await LeaderboardClient.Instance.GetUserSearch(username);
 			return el.ConvertAll(e => e.ToGetEntryPublic());
@@ -61,7 +61,7 @@ namespace DevilDaggersWebsite.BlazorWasm.Server.Controllers
 		[ProducesResponseType(StatusCodes.Status200OK)]
 		[ProducesResponseType(StatusCodes.Status400BadRequest)]
 		[EndpointConsumer(EndpointConsumers.Website)]
-		public async Task<ActionResult<GetEntryPublic>> GetPlayerByRank([Required, Range(1, int.MaxValue)] int rank)
+		public async Task<ActionResult<GetEntry>> GetPlayerByRank([Required, Range(1, int.MaxValue)] int rank)
 		{
 			LeaderboardResponse l = await LeaderboardClient.Instance.GetScores(rank);
 			if (l.Entries.Count == 0)
