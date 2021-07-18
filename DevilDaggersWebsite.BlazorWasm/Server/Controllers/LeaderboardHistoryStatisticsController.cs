@@ -1,8 +1,8 @@
 ﻿using DevilDaggersWebsite.BlazorWasm.Server.Caches.LeaderboardHistory;
 using DevilDaggersWebsite.BlazorWasm.Server.Controllers.Attributes;
 using DevilDaggersWebsite.BlazorWasm.Server.Utils;
-using DevilDaggersWebsite.BlazorWasm.Shared.Dto.LeaderboardHistory;
-using DevilDaggersWebsite.BlazorWasm.Shared.Dto.LeaderboardHistoryStatistics;
+using DevilDaggersWebsite.BlazorWasm.Shared.Dto.Public.LeaderboardHistory;
+using DevilDaggersWebsite.BlazorWasm.Shared.Dto.Public.LeaderboardHistoryStatistics;
 using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
 using System;
@@ -26,13 +26,13 @@ namespace DevilDaggersWebsite.BlazorWasm.Server.Controllers
 		[ProducesResponseType(StatusCodes.Status200OK)]
 		[ProducesResponseType(StatusCodes.Status400BadRequest)]
 		[EndpointConsumer(EndpointConsumers.Website)]
-		public List<GetLeaderboardHistoryStatisticsPublic> GetLeaderboardHistoryStatistics()
+		public List<GetLeaderboardHistoryStatistics> GetLeaderboardHistoryStatistics()
 		{
 			string? firstPath = DataUtils.GetLeaderboardHistoryPaths().OrderBy(p => p).FirstOrDefault();
 			if (firstPath == null)
 				return new();
 
-			GetLeaderboardHistoryPublic current = _leaderboardHistoryCache.GetLeaderboardHistoryByFilePath(firstPath);
+			GetLeaderboardHistory current = _leaderboardHistoryCache.GetLeaderboardHistoryByFilePath(firstPath);
 
 			ulong daggersFiredGlobal = current.DaggersFiredGlobal;
 			ulong daggersHitGlobal = current.DaggersHitGlobal;
@@ -44,7 +44,7 @@ namespace DevilDaggersWebsite.BlazorWasm.Server.Controllers
 			double rank10 = GetTimeOr0(current, 9);
 			int totalPlayers = current.Players;
 
-			List<GetLeaderboardHistoryStatisticsPublic> leaderboardHistoryStatistics = new();
+			List<GetLeaderboardHistoryStatistics> leaderboardHistoryStatistics = new();
 			DateTime dateTime = current.DateTime;
 			Add(true, true, true, true, true, true, true, true, true);
 
@@ -145,7 +145,7 @@ namespace DevilDaggersWebsite.BlazorWasm.Server.Controllers
 				TotalPlayersUpdated = totalPlayersUpdated,
 			});
 
-			static double GetTimeOr0(GetLeaderboardHistoryPublic history, int rankIndex)
+			static double GetTimeOr0(GetLeaderboardHistory history, int rankIndex)
 				=> history.Entries.Count > rankIndex ? history.Entries[rankIndex].Time / 10000.0 : 0;
 		}
 	}

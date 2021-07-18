@@ -1,8 +1,8 @@
 ﻿using System;
 
-namespace DevilDaggersWebsite.BlazorWasm.Shared.Dto.LeaderboardHistoryStatistics
+namespace DevilDaggersWebsite.BlazorWasm.Shared.Dto.Public.LeaderboardHistoryStatistics
 {
-	public class GetLeaderboardHistoryStatisticsPublic
+	public class GetLeaderboardHistoryStatistics
 	{
 		public DateTime DateTime { get; init; }
 

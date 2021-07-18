@@ -1,10 +1,10 @@
 ﻿using System;
 using System.Collections.Generic;
 
-namespace DevilDaggersWebsite.BlazorWasm.Shared.Dto.LeaderboardHistory
+namespace DevilDaggersWebsite.BlazorWasm.Shared.Dto.Public.LeaderboardHistory
 {
 	// This class must correspond to what's stored in the leaderboard history JSON.
-	public class GetLeaderboardHistoryPublic
+	public class GetLeaderboardHistory
 	{
 		public DateTime DateTime { get; init; }
 
@@ -23,6 +23,6 @@ namespace DevilDaggersWebsite.BlazorWasm.Shared.Dto.LeaderboardHistory
 
 		public ulong DaggersFiredGlobal { get; set; }
 
-		public List<GetEntryHistoryPublic> Entries { get; } = new();
+		public List<GetEntryHistory> Entries { get; } = new();
 	}
 }

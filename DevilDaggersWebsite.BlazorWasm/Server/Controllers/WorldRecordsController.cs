@@ -2,7 +2,7 @@
 using DevilDaggersWebsite.BlazorWasm.Server.Caches.LeaderboardHistory;
 using DevilDaggersWebsite.BlazorWasm.Server.Controllers.Attributes;
 using DevilDaggersWebsite.BlazorWasm.Server.Utils;
-using DevilDaggersWebsite.BlazorWasm.Shared.Dto.LeaderboardHistory;
+using DevilDaggersWebsite.BlazorWasm.Shared.Dto.Public.LeaderboardHistory;
 using DevilDaggersWebsite.BlazorWasm.Shared.Dto.WorldRecords;
 using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
@@ -113,8 +113,8 @@ namespace DevilDaggersWebsite.BlazorWasm.Server.Controllers
 			int worldRecord = 0;
 			foreach (string leaderboardHistoryPath in DataUtils.GetLeaderboardHistoryPaths())
 			{
-				GetLeaderboardHistoryPublic leaderboard = _leaderboardHistoryCache.GetLeaderboardHistoryByFilePath(leaderboardHistoryPath);
-				GetEntryHistoryPublic? firstPlace = leaderboard.Entries.Find(e => e.Rank == 1);
+				GetLeaderboardHistory leaderboard = _leaderboardHistoryCache.GetLeaderboardHistoryByFilePath(leaderboardHistoryPath);
+				GetEntryHistory? firstPlace = leaderboard.Entries.Find(e => e.Rank == 1);
 				if (firstPlace == null)
 					continue;
 

@@ -1,4 +1,4 @@
-﻿using DevilDaggersWebsite.BlazorWasm.Shared.Dto.LeaderboardHistory;
+﻿using DevilDaggersWebsite.BlazorWasm.Shared.Dto.Public.LeaderboardHistory;
 using Newtonsoft.Json;
 using System;
 using System.IO;
@@ -13,7 +13,7 @@ foreach (string path in Directory.GetFiles(@"C:\Users\NOAH\source\repos\DevilDag
 {
 	try
 	{
-		GetLeaderboardHistoryPublic leaderboard = JsonConvert.DeserializeObject<GetLeaderboardHistoryPublic>(File.ReadAllText(path)) ?? throw new("Could not deserialize leaderboard.");
+		GetLeaderboardHistory leaderboard = JsonConvert.DeserializeObject<GetLeaderboardHistory>(File.ReadAllText(path)) ?? throw new("Could not deserialize leaderboard.");
 		Formatting formatting = leaderboard.DateTime > fullHistoryDateStart ? Formatting.None : Formatting.Indented;
 		File.WriteAllText(path, JsonConvert.SerializeObject(leaderboard, formatting));
 
