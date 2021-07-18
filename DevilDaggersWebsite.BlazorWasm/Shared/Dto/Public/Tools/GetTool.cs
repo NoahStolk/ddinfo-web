@@ -1,9 +1,9 @@
 ﻿using System;
 using System.Collections.Generic;
 
-namespace DevilDaggersWebsite.BlazorWasm.Shared.Dto.Tools
+namespace DevilDaggersWebsite.BlazorWasm.Shared.Dto.Public.Tools
 {
-	public class GetToolPublic
+	public class GetTool
 	{
 		public string Name { get; init; } = null!;
 
@@ -19,7 +19,7 @@ namespace DevilDaggersWebsite.BlazorWasm.Shared.Dto.Tools
 		/// </summary>
 		public Version VersionNumberRequired { get; init; } = null!;
 
-		public IReadOnlyList<GetChangelogEntryPublic> Changelog { get; init; } = null!;
+		public IReadOnlyList<GetChangelogEntry> Changelog { get; init; } = null!;
 
 		//public HtmlString ToChangelogHtmlString()
 		//{

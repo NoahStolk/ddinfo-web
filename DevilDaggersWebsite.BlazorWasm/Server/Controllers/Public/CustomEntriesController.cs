@@ -8,7 +8,7 @@ using DevilDaggersWebsite.BlazorWasm.Server.Singletons;
 using DevilDaggersWebsite.BlazorWasm.Server.Transients;
 using DevilDaggersWebsite.BlazorWasm.Server.Utils;
 using DevilDaggersWebsite.BlazorWasm.Shared.Dto.Public.CustomEntries;
-using DevilDaggersWebsite.BlazorWasm.Shared.Dto.Tools;
+using DevilDaggersWebsite.BlazorWasm.Shared.Dto.Public.Tools;
 using DevilDaggersWebsite.BlazorWasm.Shared.Enums;
 using DSharpPlus.Entities;
 using Microsoft.AspNetCore.Http;
@@ -113,7 +113,7 @@ namespace DevilDaggersWebsite.BlazorWasm.Server.Controllers.Public
 			}
 
 			// Check for required version.
-			GetToolPublic tool = _toolHelper.GetToolByName("DevilDaggersCustomLeaderboards");
+			GetTool tool = _toolHelper.GetToolByName("DevilDaggersCustomLeaderboards");
 			Version clientVersionParsed = Version.Parse(uploadRequest.ClientVersion);
 			if (clientVersionParsed < tool.VersionNumberRequired)
 			{

@@ -1,7 +1,7 @@
 ﻿using DevilDaggersWebsite.BlazorWasm.Server.Controllers.Attributes;
 using DevilDaggersWebsite.BlazorWasm.Server.Entities;
 using DevilDaggersWebsite.BlazorWasm.Server.Transients;
-using DevilDaggersWebsite.BlazorWasm.Shared.Dto.Tools;
+using DevilDaggersWebsite.BlazorWasm.Shared.Dto.Public.Tools;
 using Microsoft.AspNetCore.Hosting;
 using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
@@ -14,7 +14,7 @@ using System.Linq;
 using System.Net.Mime;
 using Io = System.IO;
 
-namespace DevilDaggersWebsite.BlazorWasm.Server.Controllers
+namespace DevilDaggersWebsite.BlazorWasm.Server.Controllers.Public
 {
 	[Route("api/tools")]
 	[ApiController]
@@ -34,9 +34,9 @@ namespace DevilDaggersWebsite.BlazorWasm.Server.Controllers
 		[HttpGet]
 		[ProducesResponseType(StatusCodes.Status200OK)]
 		[EndpointConsumer(EndpointConsumers.Ddse | EndpointConsumers.Ddcl | EndpointConsumers.Ddae)]
-		public ActionResult<List<GetToolPublic>> GetTools(string? toolNameFilter = null)
+		public ActionResult<List<GetTool>> GetTools(string? toolNameFilter = null)
 		{
-			IEnumerable<GetToolPublic> tools = _toolHelper.Tools;
+			IEnumerable<GetTool> tools = _toolHelper.Tools;
 			if (!string.IsNullOrEmpty(toolNameFilter))
 				tools = tools.Where(t => t.Name.Contains(toolNameFilter));
 			return tools.ToList();
@@ -49,7 +49,7 @@ namespace DevilDaggersWebsite.BlazorWasm.Server.Controllers
 		[EndpointConsumer(EndpointConsumers.Website)]
 		public ActionResult GetToolFile([Required] string toolName)
 		{
-			GetToolPublic? tool = _toolHelper.Tools.Find(t => t.Name == toolName);
+			GetTool? tool = _toolHelper.Tools.Find(t => t.Name == toolName);
 			if (tool == null)
 				return new NotFoundObjectResult(new ProblemDetails { Title = $"Tool '{toolName}' was not found." });
 
@@ -72,9 +72,9 @@ namespace DevilDaggersWebsite.BlazorWasm.Server.Controllers
 		[HttpGet("devildaggerscustomleaderboards/settings")]
 		[ProducesResponseType(StatusCodes.Status200OK)]
 		[EndpointConsumer(EndpointConsumers.Ddcl)]
-		public ActionResult<GetDdclSettingsPublic> GetDdclSettings()
+		public ActionResult<GetDdclSettings> GetDdclSettings()
 		{
-			return JsonConvert.DeserializeObject<GetDdclSettingsPublic?>(Io.File.ReadAllText(Path.Combine(_environment.WebRootPath, "tools", "DevilDaggersCustomLeaderboards", "Settings.json"))) ?? throw new("Could not deserialize DDCL settings JSON.");
+			return JsonConvert.DeserializeObject<GetDdclSettings?>(Io.File.ReadAllText(Path.Combine(_environment.WebRootPath, "tools", "DevilDaggersCustomLeaderboards", "Settings.json"))) ?? throw new("Could not deserialize DDCL settings JSON.");
 		}
 	}
 }

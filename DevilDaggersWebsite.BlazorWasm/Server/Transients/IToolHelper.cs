@@ -1,12 +1,12 @@
-﻿using DevilDaggersWebsite.BlazorWasm.Shared.Dto.Tools;
+﻿using DevilDaggersWebsite.BlazorWasm.Shared.Dto.Public.Tools;
 using System.Collections.Generic;
 
 namespace DevilDaggersWebsite.BlazorWasm.Server.Transients
 {
 	public interface IToolHelper
 	{
-		List<GetToolPublic> Tools { get; }
+		List<GetTool> Tools { get; }
 
-		GetToolPublic GetToolByName(string name);
+		GetTool GetToolByName(string name);
 	}
 }

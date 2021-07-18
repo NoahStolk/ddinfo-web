@@ -1,17 +1,17 @@
 ﻿using System.Collections.Generic;
 
-namespace DevilDaggersWebsite.BlazorWasm.Shared.Dto.Tools
+namespace DevilDaggersWebsite.BlazorWasm.Shared.Dto.Public.Tools
 {
-	public class GetChangePublic
+	public class GetChange
 	{
-		public GetChangePublic(string description)
+		public GetChange(string description)
 		{
 			Description = description;
 		}
 
 		public string Description { get; }
 
-		public IReadOnlyList<GetChangePublic>? SubChanges { get; init; }
+		public IReadOnlyList<GetChange>? SubChanges { get; init; }
 
 		//public HtmlString ToHtmlString()
 		//{
