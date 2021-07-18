@@ -1,7 +1,7 @@
 ﻿using DevilDaggersWebsite.BlazorWasm.Server.Caches.LeaderboardStatistics;
 using DevilDaggersWebsite.BlazorWasm.Server.Controllers.Attributes;
 using DevilDaggersWebsite.BlazorWasm.Server.Utils;
-using DevilDaggersWebsite.BlazorWasm.Shared.Dto.LeaderboardStatistics;
+using DevilDaggersWebsite.BlazorWasm.Shared.Dto.Public.LeaderboardStatistics;
 using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
 using System.Linq;
@@ -22,9 +22,9 @@ namespace DevilDaggersWebsite.BlazorWasm.Server.Controllers.Public
 		[HttpGet]
 		[ProducesResponseType(StatusCodes.Status200OK)]
 		[EndpointConsumer(EndpointConsumers.Website)]
-		public ActionResult<GetLeaderboardStatisticsPublic> GetStatistics()
+		public ActionResult<GetLeaderboardStatistics> GetStatistics()
 		{
-			return new GetLeaderboardStatisticsPublic
+			return new GetLeaderboardStatistics
 			{
 				DateTime = HistoryUtils.HistoryJsonFileNameToDateTime(_leaderboardStatisticsCache.FileName),
 				IsFetched = _leaderboardStatisticsCache.IsFetched,

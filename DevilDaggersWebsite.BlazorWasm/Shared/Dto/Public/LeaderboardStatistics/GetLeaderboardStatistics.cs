@@ -1,9 +1,9 @@
 ﻿using System;
 using System.Collections.Generic;
 
-namespace DevilDaggersWebsite.BlazorWasm.Shared.Dto.LeaderboardStatistics
+namespace DevilDaggersWebsite.BlazorWasm.Shared.Dto.Public.LeaderboardStatistics
 {
-	public class GetLeaderboardStatisticsPublic
+	public class GetLeaderboardStatistics
 	{
 		public DateTime DateTime { get; init; }
 		public bool IsFetched { get; init; }
