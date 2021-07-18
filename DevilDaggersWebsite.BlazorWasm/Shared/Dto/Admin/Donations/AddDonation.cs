@@ -2,7 +2,7 @@
 using System;
 using System.ComponentModel.DataAnnotations;
 
-namespace DevilDaggersWebsite.BlazorWasm.Shared.Dto.Donations
+namespace DevilDaggersWebsite.BlazorWasm.Shared.Dto.Admin.Donations
 {
 	public class AddDonation
 	{

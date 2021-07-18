@@ -1,7 +1,7 @@
 ﻿using DevilDaggersWebsite.BlazorWasm.Server.Entities;
-using DevilDaggersWebsite.BlazorWasm.Shared.Dto.Donations;
+using DevilDaggersWebsite.BlazorWasm.Shared.Dto.Admin.Donations;
 
-namespace DevilDaggersWebsite.BlazorWasm.Server.Converters
+namespace DevilDaggersWebsite.BlazorWasm.Server.Converters.Admin
 {
 	public static class DonationConverters
 	{
