@@ -1,6 +1,6 @@
 ﻿@using DevilDaggersCore.Game
 @using DevilDaggersWebsite.BlazorWasm.Shared.Dto.Public.Leaderboards
-@using DevilDaggersWebsite.BlazorWasm.Shared.Dto.Players
+@using DevilDaggersWebsite.BlazorWasm.Shared.Dto.Public.Players
 
 <div class="text-xl font-goethe">
 	<div class="grid gap-3 sm:grid-cols-leaderboard-sm md:grid-cols-leaderboard-md lg:grid-cols-leaderboard-lg xl:grid-cols-leaderboard-xl">
@@ -24,7 +24,7 @@
 
 			foreach (GetEntry entry in Leaderboard.Entries)
 			{
-				GetPlayerForLeaderboardPublic? player = Players?.Find(p => p.Id == entry.Id);
+				GetPlayerForLeaderboard? player = Players?.Find(p => p.Id == entry.Id);
 				bool isBanned = player?.IsBanned ?? false;
 
 				Dagger dagger = GameInfo.GetDaggerFromSeconds(_gameVersion, entry.Time);
@@ -70,7 +70,7 @@
 {
 	[Parameter] public bool IsHistory { get; set; }
 	[Parameter] public GetLeaderboard Leaderboard { get; set; } = null!;
-	[Parameter] public List<GetPlayerForLeaderboardPublic>? Players { get; set; } = null!;
+	[Parameter] public List<GetPlayerForLeaderboard>? Players { get; set; } = null!;
 
 	private GameVersion _gameVersion;
 

@@ -1,8 +1,8 @@
 ﻿using System;
 
-namespace DevilDaggersWebsite.BlazorWasm.Shared.Dto.PlayerHistory
+namespace DevilDaggersWebsite.BlazorWasm.Shared.Dto.Public.PlayerHistory
 {
-	public class GetPlayerActivityPublic
+	public class GetPlayerActivity
 	{
 		public DateTime DateTime { get; init; }
 

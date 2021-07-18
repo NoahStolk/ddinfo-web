@@ -1,13 +1,10 @@
 ﻿using System.Collections.Generic;
 using System.ComponentModel.DataAnnotations;
 
-namespace DevilDaggersWebsite.BlazorWasm.Shared.Dto.Players
+namespace DevilDaggersWebsite.BlazorWasm.Shared.Dto.Admin.Players
 {
-	public class AddPlayer
+	public class EditPlayer
 	{
-		[Range(1, 9999999)]
-		public int Id { get; set; }
-
 		[StringLength(2)]
 		public string? CountryCode { get; set; }
 

@@ -1,8 +1,8 @@
 ﻿using System.Collections.Generic;
 
-namespace DevilDaggersWebsite.BlazorWasm.Shared.Dto.Players
+namespace DevilDaggersWebsite.BlazorWasm.Shared.Dto.Public.Players
 {
-	public class GetPlayerForLeaderboardPublic : IGetDto<int>
+	public class GetPlayerForLeaderboard : IGetDto<int>
 	{
 		public int Id { get; init; }
 

@@ -1,7 +1,7 @@
 ﻿@page "/leaderboard"
 @inject PublicApiHttpClient Http
 @using DevilDaggersWebsite.BlazorWasm.Shared.Dto.Public.Leaderboards
-@using DevilDaggersWebsite.BlazorWasm.Shared.Dto.Players
+@using DevilDaggersWebsite.BlazorWasm.Shared.Dto.Public.Players
 @using DevilDaggersWebsite.BlazorWasm.Client.Components.Leaderboards
 
 <h1 class="text-red text-2xl">Leaderboard</h1>
@@ -61,11 +61,11 @@ else
 
 	public GetLeaderboard? GetLeaderboard { get; set; }
 
-	public List<GetPlayerForLeaderboardPublic>? Players { get; set; }
+	public List<GetPlayerForLeaderboard>? Players { get; set; }
 
 	protected override async Task OnInitializedAsync()
 	{
-		Players = await Http.Client.GetFromJsonAsync<List<GetPlayerForLeaderboardPublic>>("api/players/leaderboard");
+		Players = await Http.Client.GetFromJsonAsync<List<GetPlayerForLeaderboard>>("api/players/leaderboard");
 		await FetchLeaderboard();
 	}
 

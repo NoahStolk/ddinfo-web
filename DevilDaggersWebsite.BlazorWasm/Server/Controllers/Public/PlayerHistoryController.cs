@@ -1,8 +1,8 @@
 ﻿using DevilDaggersWebsite.BlazorWasm.Server.Caches.LeaderboardHistory;
 using DevilDaggersWebsite.BlazorWasm.Server.Controllers.Attributes;
 using DevilDaggersWebsite.BlazorWasm.Server.Utils;
-using DevilDaggersWebsite.BlazorWasm.Shared.Dto.PlayerHistory;
 using DevilDaggersWebsite.BlazorWasm.Shared.Dto.Public.LeaderboardHistory;
+using DevilDaggersWebsite.BlazorWasm.Shared.Dto.Public.PlayerHistory;
 using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
 using Newtonsoft.Json;
@@ -54,9 +54,9 @@ namespace DevilDaggersWebsite.BlazorWasm.Server.Controllers.Public
 		[ProducesResponseType(StatusCodes.Status200OK)]
 		[ProducesResponseType(StatusCodes.Status400BadRequest)]
 		[EndpointConsumer(EndpointConsumers.Website)]
-		public List<GetPlayerActivityPublic> GetPlayerActivityById([Required, Range(1, 9999999)] int playerId)
+		public List<GetPlayerActivity> GetPlayerActivityById([Required, Range(1, 9999999)] int playerId)
 		{
-			List<GetPlayerActivityPublic> data = new();
+			List<GetPlayerActivity> data = new();
 			foreach (string leaderboardHistoryPath in DataUtils.GetLeaderboardHistoryPaths())
 			{
 				GetLeaderboardHistory leaderboard = _leaderboardHistoryCache.GetLeaderboardHistoryByFilePath(leaderboardHistoryPath);
