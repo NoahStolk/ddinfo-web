@@ -10,7 +10,7 @@ using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
 using System.Threading.Tasks;
 
-namespace DevilDaggersWebsite.BlazorWasm.Server.Controllers
+namespace DevilDaggersWebsite.BlazorWasm.Server.Controllers.Admin
 {
 	[Route("api/admin/caches")]
 	[Authorize(Roles = Roles.Admin)]
