@@ -1,11 +1,11 @@
 ﻿using DevilDaggersCore.Spawnsets;
-using DevilDaggersWebsite.BlazorWasm.Server.Converters;
+using DevilDaggersWebsite.BlazorWasm.Server.Converters.Admin;
 using DevilDaggersWebsite.BlazorWasm.Server.Entities;
 using DevilDaggersWebsite.BlazorWasm.Server.Extensions;
 using DevilDaggersWebsite.BlazorWasm.Server.Singletons;
 using DevilDaggersWebsite.BlazorWasm.Shared;
 using DevilDaggersWebsite.BlazorWasm.Shared.Dto;
-using DevilDaggersWebsite.BlazorWasm.Shared.Dto.CustomLeaderboards;
+using DevilDaggersWebsite.BlazorWasm.Shared.Dto.Admin.CustomLeaderboards;
 using DevilDaggersWebsite.BlazorWasm.Shared.Enums;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Hosting;
@@ -19,18 +19,18 @@ using System.IO;
 using System.Linq;
 using System.Threading.Tasks;
 
-namespace DevilDaggersWebsite.BlazorWasm.Server.Controllers
+namespace DevilDaggersWebsite.BlazorWasm.Server.Controllers.Admin
 {
 	[Route("api/admin/custom-leaderboards")]
 	[Authorize(Roles = Roles.CustomLeaderboards)]
 	[ApiController]
-	public class CustomLeaderboardsAdminController : ControllerBase
+	public class CustomLeaderboardsController : ControllerBase
 	{
 		private readonly ApplicationDbContext _dbContext;
 		private readonly IWebHostEnvironment _environment;
 		private readonly AuditLogger _auditLogger;
 
-		public CustomLeaderboardsAdminController(ApplicationDbContext dbContext, IWebHostEnvironment environment, AuditLogger auditLogger)
+		public CustomLeaderboardsController(ApplicationDbContext dbContext, IWebHostEnvironment environment, AuditLogger auditLogger)
 		{
 			_dbContext = dbContext;
 			_environment = environment;

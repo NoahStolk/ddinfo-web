@@ -1,4 +1,4 @@
-﻿using DevilDaggersWebsite.BlazorWasm.Shared.Dto.CustomLeaderboards;
+﻿using DevilDaggersWebsite.BlazorWasm.Shared.Dto.Public.CustomLeaderboards;
 using DevilDaggersWebsite.BlazorWasm.Shared.Enums;
 using System.Collections.Generic;
 

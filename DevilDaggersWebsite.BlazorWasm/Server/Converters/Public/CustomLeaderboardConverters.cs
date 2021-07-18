@@ -1,8 +1,8 @@
 ﻿using DevilDaggersWebsite.BlazorWasm.Server.Entities;
 using DevilDaggersWebsite.BlazorWasm.Server.Extensions;
-using DevilDaggersWebsite.BlazorWasm.Shared.Dto.CustomLeaderboards;
+using DevilDaggersWebsite.BlazorWasm.Shared.Dto.Public.CustomLeaderboards;
 
-namespace DevilDaggersWebsite.BlazorWasm.Server.Converters
+namespace DevilDaggersWebsite.BlazorWasm.Server.Converters.Public
 {
 	public static class CustomLeaderboardConverters
 	{
@@ -19,20 +19,6 @@ namespace DevilDaggersWebsite.BlazorWasm.Server.Converters
 			DateCreated = customLeaderboard.DateCreated,
 			Category = customLeaderboard.Category,
 			IsAscending = customLeaderboard.Category.IsAscending(),
-		};
-
-		public static GetCustomLeaderboard ToGetCustomLeaderboard(this CustomLeaderboard customLeaderboard) => new()
-		{
-			Id = customLeaderboard.Id,
-			SpawnsetAuthorName = customLeaderboard.SpawnsetFile.Player.PlayerName,
-			SpawnsetName = customLeaderboard.SpawnsetFile.Name,
-			TimeBronze = customLeaderboard.TimeBronze / 10000.0,
-			TimeSilver = customLeaderboard.TimeSilver / 10000.0,
-			TimeGolden = customLeaderboard.TimeGolden / 10000.0,
-			TimeDevil = customLeaderboard.TimeDevil / 10000.0,
-			TimeLeviathan = customLeaderboard.TimeLeviathan / 10000.0,
-			DateCreated = customLeaderboard.DateCreated,
-			Category = customLeaderboard.Category,
 		};
 
 		public static GetCustomLeaderboardOverview ToGetCustomLeaderboardOverview(this CustomLeaderboard customLeaderboard) => new()
