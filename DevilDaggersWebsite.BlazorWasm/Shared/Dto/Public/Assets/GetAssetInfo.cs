@@ -1,8 +1,8 @@
 ﻿using System.Collections.Generic;
 
-namespace DevilDaggersWebsite.BlazorWasm.Shared.Dto.Assets
+namespace DevilDaggersWebsite.BlazorWasm.Shared.Dto.Public.Assets
 {
-	public class GetAssetInfoPublic
+	public class GetAssetInfo
 	{
 		public string Name { get; init; } = null!;
 		public string Description { get; init; } = null!;
