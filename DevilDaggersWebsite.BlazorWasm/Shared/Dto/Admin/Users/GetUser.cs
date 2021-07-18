@@ -1,6 +1,6 @@
 ﻿using System.Collections.Generic;
 
-namespace DevilDaggersWebsite.BlazorWasm.Shared.Dto.Users
+namespace DevilDaggersWebsite.BlazorWasm.Shared.Dto.Admin.Users
 {
 	public class GetUser : IGetDto<string>
 	{
