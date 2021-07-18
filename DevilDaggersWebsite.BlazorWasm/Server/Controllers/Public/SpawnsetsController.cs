@@ -1,9 +1,9 @@
 ﻿using DevilDaggersCore.Spawnsets;
 using DevilDaggersWebsite.BlazorWasm.Server.Caches.SpawnsetData;
 using DevilDaggersWebsite.BlazorWasm.Server.Controllers.Attributes;
-using DevilDaggersWebsite.BlazorWasm.Server.Converters;
+using DevilDaggersWebsite.BlazorWasm.Server.Converters.Public;
 using DevilDaggersWebsite.BlazorWasm.Server.Entities;
-using DevilDaggersWebsite.BlazorWasm.Shared.Dto.Spawnsets;
+using DevilDaggersWebsite.BlazorWasm.Shared.Dto.Public.Spawnsets;
 using Microsoft.AspNetCore.Hosting;
 using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
@@ -16,7 +16,7 @@ using System.Linq;
 using System.Net.Mime;
 using Io = System.IO;
 
-namespace DevilDaggersWebsite.BlazorWasm.Server.Controllers
+namespace DevilDaggersWebsite.BlazorWasm.Server.Controllers.Public
 {
 	[Route("api/spawnsets")]
 	[ApiController]
@@ -36,7 +36,7 @@ namespace DevilDaggersWebsite.BlazorWasm.Server.Controllers
 		[HttpGet]
 		[ProducesResponseType(StatusCodes.Status200OK)]
 		[EndpointConsumer(EndpointConsumers.Ddse)]
-		public List<GetSpawnsetPublic> GetPublicSpawnsets(string? authorFilter = null, string? nameFilter = null)
+		public List<GetSpawnset> GetPublicSpawnsets(string? authorFilter = null, string? nameFilter = null)
 		{
 			List<int> spawnsetsWithCustomLeaderboardIds = _dbContext.CustomLeaderboards
 				.AsNoTracking()
@@ -57,7 +57,7 @@ namespace DevilDaggersWebsite.BlazorWasm.Server.Controllers
 				.Select(sf => Map(sf))
 				.ToList();
 
-			GetSpawnsetPublic Map(SpawnsetFile spawnsetFile)
+			GetSpawnset Map(SpawnsetFile spawnsetFile)
 			{
 				SpawnsetData spawnsetData = _spawnsetDataCache.GetSpawnsetDataByFilePath(Path.Combine(_environment.WebRootPath, "spawnsets", spawnsetFile.Name));
 				return spawnsetFile.ToGetSpawnsetPublic(spawnsetData, spawnsetsWithCustomLeaderboardIds.Contains(spawnsetFile.Id));

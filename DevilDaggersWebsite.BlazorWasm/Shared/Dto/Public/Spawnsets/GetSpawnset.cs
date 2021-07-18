@@ -1,9 +1,9 @@
 ﻿using DevilDaggersCore.Spawnsets;
 using System;
 
-namespace DevilDaggersWebsite.BlazorWasm.Shared.Dto.Spawnsets
+namespace DevilDaggersWebsite.BlazorWasm.Shared.Dto.Public.Spawnsets
 {
-	public class GetSpawnsetPublic
+	public class GetSpawnset
 	{
 		public int? MaxDisplayWaves { get; init; }
 

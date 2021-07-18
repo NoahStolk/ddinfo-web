@@ -1,13 +1,13 @@
 ﻿using DevilDaggersCore.Spawnsets;
 using DevilDaggersWebsite.BlazorWasm.Server.Caches.SpawnsetHash;
 using DevilDaggersWebsite.BlazorWasm.Server.Constants;
-using DevilDaggersWebsite.BlazorWasm.Server.Converters;
+using DevilDaggersWebsite.BlazorWasm.Server.Converters.Admin;
 using DevilDaggersWebsite.BlazorWasm.Server.Entities;
 using DevilDaggersWebsite.BlazorWasm.Server.Extensions;
 using DevilDaggersWebsite.BlazorWasm.Server.Singletons;
 using DevilDaggersWebsite.BlazorWasm.Shared;
 using DevilDaggersWebsite.BlazorWasm.Shared.Dto;
-using DevilDaggersWebsite.BlazorWasm.Shared.Dto.Spawnsets;
+using DevilDaggersWebsite.BlazorWasm.Shared.Dto.Admin.Spawnsets;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Hosting;
 using Microsoft.AspNetCore.Http;
@@ -22,19 +22,19 @@ using System.Security.Cryptography;
 using System.Threading.Tasks;
 using Io = System.IO;
 
-namespace DevilDaggersWebsite.BlazorWasm.Server.Controllers
+namespace DevilDaggersWebsite.BlazorWasm.Server.Controllers.Admin
 {
 	[Route("api/admin/spawnsets")]
 	[Authorize(Roles = Roles.Spawnsets)]
 	[ApiController]
-	public class SpawnsetsAdminController : ControllerBase
+	public class SpawnsetsController : ControllerBase
 	{
 		private readonly IWebHostEnvironment _environment;
 		private readonly ApplicationDbContext _dbContext;
 		private readonly SpawnsetHashCache _spawnsetHashCache;
 		private readonly AuditLogger _auditLogger;
 
-		public SpawnsetsAdminController(IWebHostEnvironment environment, ApplicationDbContext dbContext, SpawnsetHashCache spawnsetHashCache, AuditLogger auditLogger)
+		public SpawnsetsController(IWebHostEnvironment environment, ApplicationDbContext dbContext, SpawnsetHashCache spawnsetHashCache, AuditLogger auditLogger)
 		{
 			_environment = environment;
 			_dbContext = dbContext;

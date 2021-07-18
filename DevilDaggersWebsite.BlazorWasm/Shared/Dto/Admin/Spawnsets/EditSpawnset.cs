@@ -1,6 +1,6 @@
 ﻿using System.ComponentModel.DataAnnotations;
 
-namespace DevilDaggersWebsite.BlazorWasm.Shared.Dto.Spawnsets
+namespace DevilDaggersWebsite.BlazorWasm.Shared.Dto.Admin.Spawnsets
 {
 	public class EditSpawnset
 	{
