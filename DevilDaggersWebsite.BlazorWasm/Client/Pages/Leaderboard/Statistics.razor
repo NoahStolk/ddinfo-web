@@ -2,7 +2,7 @@
 @inject PublicApiHttpClient Http
 @using Blazorise.Charts
 @using DevilDaggersCore.Game
-@using DevilDaggersWebsite.BlazorWasm.Shared.Dto.LeaderboardStatistics
+@using DevilDaggersWebsite.BlazorWasm.Shared.Dto.Public.LeaderboardStatistics
 
 <h1 class="text-red text-2xl">Leaderboard Statistics</h1>
 
@@ -54,11 +54,11 @@ else
 
 @code
 {
-	private GetLeaderboardStatisticsPublic? _statistics;
+	private GetLeaderboardStatistics? _statistics;
 
 	protected override async Task OnInitializedAsync()
 	{
-		_statistics = await Http.Client.GetFromJsonAsync<GetLeaderboardStatisticsPublic>("api/leaderboard-statistics");
+		_statistics = await Http.Client.GetFromJsonAsync<GetLeaderboardStatistics>("api/leaderboard-statistics");
 	}
 
 	private const int _killGraphCount = 100;

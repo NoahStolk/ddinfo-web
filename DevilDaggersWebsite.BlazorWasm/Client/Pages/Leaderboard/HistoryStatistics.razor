@@ -2,7 +2,7 @@
 @inject PublicApiHttpClient Http
 @using Blazorise.Charts
 @using DevilDaggersCore.Game
-@using DevilDaggersWebsite.BlazorWasm.Shared.Dto.LeaderboardHistoryStatistics
+@using DevilDaggersWebsite.BlazorWasm.Shared.Dto.Public.LeaderboardHistoryStatistics
 
 <h1 class="text-red text-2xl">Leaderboard History Statistics</h1>
 
@@ -24,11 +24,11 @@ else
 
 @code
 {
-	private List<GetLeaderboardHistoryStatisticsPublic>? _statistics;
+	private List<GetLeaderboardHistoryStatistics>? _statistics;
 
 	protected override async Task OnInitializedAsync()
 	{
-		_statistics = await Http.Client.GetFromJsonAsync<List<GetLeaderboardHistoryStatisticsPublic>>("api/leaderboard-history-statistics");
+		_statistics = await Http.Client.GetFromJsonAsync<List<GetLeaderboardHistoryStatistics>>("api/leaderboard-history-statistics");
 	}
 
 	private LineChartOptions _lco = new()

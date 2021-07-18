@@ -1,12 +1,12 @@
 ﻿@page "/leaderboard"
 @inject PublicApiHttpClient Http
-@using DevilDaggersWebsite.BlazorWasm.Shared.Dto.Leaderboards
+@using DevilDaggersWebsite.BlazorWasm.Shared.Dto.Public.Leaderboards
 @using DevilDaggersWebsite.BlazorWasm.Shared.Dto.Players
 @using DevilDaggersWebsite.BlazorWasm.Client.Components.Leaderboards
 
 <h1 class="text-red text-2xl">Leaderboard</h1>
 
-@if (GetLeaderboardPublic == null)
+@if (GetLeaderboard == null)
 {
 	@if (_apiError == null)
 	{
@@ -41,13 +41,13 @@ else
 			<a class="@(Rank <= 1 ? "disabled" : string.Empty)" @onclick="() => SetRank(Rank - 100)">&lt;</a>
 			<a class="@(Rank >= _maxRank ? "disabled" : string.Empty)" @onclick="() => SetRank(Rank + 100)">&gt;</a>
 			<a class="@(Rank >= _maxRank ? "disabled" : string.Empty)" @onclick="() => SetRank(Rank + 1000)">&gt;&gt;</a>
-			<a class="@(Rank >= _maxRank ? "disabled" : string.Empty)" @onclick="() => SetRank(GetLeaderboardPublic.TotalPlayers - 99)">&gt;|</a>
+			<a class="@(Rank >= _maxRank ? "disabled" : string.Empty)" @onclick="() => SetRank(GetLeaderboard.TotalPlayers - 99)">&gt;|</a>
 		</div>
 	</div>
 
-	<LeaderboardGlobal Leaderboard="GetLeaderboardPublic" IsHistory="false" />
+	<LeaderboardGlobal Leaderboard="GetLeaderboard" IsHistory="false" />
 	<LeaderboardTableInfo />
-	<LeaderboardTable Leaderboard="GetLeaderboardPublic" Players="Players" IsHistory="false" />
+	<LeaderboardTable Leaderboard="GetLeaderboard" Players="Players" IsHistory="false" />
 }
 
 @code
@@ -55,11 +55,11 @@ else
 	private string? _apiError;
 	private bool _reloading;
 
-	private int _maxRank => (GetLeaderboardPublic?.TotalPlayers ?? int.MaxValue) - 99;
+	private int _maxRank => (GetLeaderboard?.TotalPlayers ?? int.MaxValue) - 99;
 
 	public int Rank { get; set; } = 1;
 
-	public GetLeaderboardPublic? GetLeaderboardPublic { get; set; }
+	public GetLeaderboard? GetLeaderboard { get; set; }
 
 	public List<GetPlayerForLeaderboardPublic>? Players { get; set; }
 
@@ -79,10 +79,10 @@ else
 	{
 		try
 		{
-			if (GetLeaderboardPublic != null)
+			if (GetLeaderboard != null)
 				_reloading = true;
 
-			GetLeaderboardPublic = await Http.Client.GetFromJsonAsync<GetLeaderboardPublic>($"api/leaderboards?rankStart={Rank}");
+			GetLeaderboard = await Http.Client.GetFromJsonAsync<GetLeaderboard>($"api/leaderboards?rankStart={Rank}");
 			_reloading = false;
 		}
 		catch (Exception ex)
