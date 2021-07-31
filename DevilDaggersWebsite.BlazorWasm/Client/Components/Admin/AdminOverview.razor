@@ -24,9 +24,9 @@ else
 	<button class="bg-gray-900 hover:bg-red w-8 h-6 text-color-text" @onclick="() => ChangePageIndex(_pageIndex + 1)">&gt;</button>
 	<button class="bg-gray-900 hover:bg-red w-8 h-6 text-color-text" @onclick="() => ChangePageIndex(TotalPages - 1)">&gt;|</button>
 	<Select @onchange="ChangePageSize" class="py-0 h-6 text-white bg-gray-900">
-		@foreach (int i in new[] { 5, 10, 15, 25, 50 })
+		@foreach (int i in AdminPagingConstants.PageSizeOptions)
 		{
-			if (i == 25)
+			if (i == AdminPagingConstants.PageSizeDefault)
 			{
 				<option class="text-white bg-gray-900" value="@i" selected>@i</option>
 			}
@@ -76,7 +76,7 @@ else
 	private int TotalPages => _page == null ? 0 : (_page.TotalResults - 1) / _pageSize + 1;
 
 	private int _pageIndex;
-	private int _pageSize = 25;
+	private int _pageSize = AdminPagingConstants.PageSizeDefault;
 	private string? _sortBy;
 	private bool _ascending;
 
