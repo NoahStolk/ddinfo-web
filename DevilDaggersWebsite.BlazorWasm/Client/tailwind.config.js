@@ -24,10 +24,10 @@ module.exports = {
 				'tooltip-background': '#000b'
 			},
 			gridTemplateColumns: {
-				'leaderboard-xl': 'minmax(0, 4%) minmax(0, 2%) minmax(0, 14%) minmax(0, 7%) minmax(0, 4%) minmax(0, 4%) minmax(0, 8%) minmax(0, 11%) minmax(0, 9%) minmax(0, 9%) minmax(0, 9%) minmax(0, 10%) minmax(0, 9%)',
-				'leaderboard-lg': 'minmax(0, 6%) minmax(0, 3%) minmax(0, 8%) minmax(0, 10%) minmax(0, 6%) minmax(0, 6%) minmax(0, 8%) minmax(0, 10.5%) minmax(0, 10.5%) minmax(0, 10%) minmax(0, 8%) minmax(0, 10%) minmax(0, 10%)',
-				'leaderboard-md': 'minmax(0, 9%) minmax(0, 4.5%) minmax(0, 35%) minmax(0, 14%) minmax(0, 14%) minmax(0, 14%) minmax(0, 14%)',
-				'leaderboard-sm': 'minmax(0, 18%) minmax(0, 9%) minmax(0, 41%) minmax(0, 32%)'
+				'leaderboard-xl': createMinmaxGrid([4, 2, 14, 7, 4, 4, 8, 11, 9, 9, 9, 10, 9]),
+				'leaderboard-lg': createMinmaxGrid([6, 3, 8, 10, 6, 6, 8, 10.5, 10.5, 10, 8, 10, 10]),
+				'leaderboard-md': createMinmaxGrid([9, 4.5, 35, 14, 14, 14, 14]),
+				'leaderboard-sm': createMinmaxGrid([18, 9, 41, 32]),
 			}
 		},
 		fontFamily: {
@@ -36,3 +36,7 @@ module.exports = {
 		}
 	}
 };
+
+function createMinmaxGrid(array) {
+	return array.map(value => "minmax(0, " + value + "%)").join(' ');
+}
