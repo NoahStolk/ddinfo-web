@@ -7,7 +7,19 @@
 
 <h1 class="text-red text-2xl">Edit</h1>
 
-<ResultBar Title="Validation failed" ResultBarType="ResultBarType.ValidationError" @bind-Message="@_errorMessage" />
+@switch (State)
+{
+	case ErrorState.ValidationError:
+		{
+			<ResultBar Title="Validation failed" ResultBarType="ResultBarType.ValidationError" @bind-Message="@_errorMessage" DismissEvent="() => State = ErrorState.None" />
+		}
+		break;
+	case ErrorState.FatalError:
+		{
+			<ResultBar Title="Fatal error" ResultBarType="ResultBarType.FatalError" @bind-Message="@_errorMessage" DismissEvent="() => State = ErrorState.None" />
+		}
+		break;
+}
 
 @if (_editPlayer == null)
 {
@@ -96,16 +108,18 @@ else
 			<InputCheckbox @bind-Value="@_editPlayer.IsBannedFromDdcl" />
 		</div>
 
-		<button class="btn btn-primary" type="submit">Submit</button>
+		<button class="bg-gray-900 hover:bg-gray-500 p-1 rounded text-color-text" type="submit">Submit</button>
 	</EditForm>
 }
 
 @code
 {
-	private const string _inputLabelCss = "col-sm-12 col-md-6 col-lg-4 col-xl-3";
+	private const string _inputLabelCss = "w-64";
 
 	private EditPlayer? _editPlayer;
 	private string? _errorMessage;
+
+	public ErrorState State { get; set; }
 
 	[Parameter] public int Id { get; set; }
 
@@ -134,7 +148,7 @@ else
 				IsBanned = getPlayer.IsBanned,
 				IsBannedFromDdcl = getPlayer.IsBannedFromDdcl,
 			};
-			_errorMessage = null;
+			State = ErrorState.None;
 		}
 		catch (HttpRequestException ex)
 		{
@@ -142,6 +156,8 @@ else
 				_errorMessage = $"Error {(int)ex.StatusCode}: {ex.StatusCode}";
 			else
 				_errorMessage = "An error occurred while sending the request.";
+
+			State = ErrorState.FatalError;
 		}
 		catch (AccessTokenNotAvailableException exception)
 		{
@@ -159,9 +175,14 @@ else
 			HttpResponseMessage hrm = await Http.Client.PutAsJsonAsync<EditPlayer>($"api/admin/players/{Id}", _editPlayer);
 
 			if (hrm.StatusCode == HttpStatusCode.OK)
+			{
 				NavigationManager.NavigateTo("/admin/players");
+			}
 			else
+			{
 				_errorMessage = await hrm.Content.ReadAsStringAsync();
+				State = hrm.StatusCode.IsUserError() ? ErrorState.ValidationError : ErrorState.FatalError;
+			}
 		}
 		catch (AccessTokenNotAvailableException exception)
 		{
