@@ -2,11 +2,14 @@ module.exports = {
 	theme: {
 		extend: {
 			colors: {
-				'red': '#f00',
 				'color-link': '#f11',
 				'color-link-hover': '#c11',
+				'red': '#f00',
+				'orange': '#f80',
+				'green': '#0f0',
 				'dark-red': '#600',
 				'dark-orange': '#630',
+				'dark-green': '#060',
 				'color-text': '#ddd',
 				'gray08': '#080808',
 				'gray0B': '#0b0b0b',

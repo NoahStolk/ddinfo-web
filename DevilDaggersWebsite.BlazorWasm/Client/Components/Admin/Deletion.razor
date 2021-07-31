@@ -19,12 +19,12 @@
 		break;
 	case DeleteState.Error:
 		{
-			<ResultBar Title="Delete failed" CssClass="bg-red" @bind-Message="@ApiResponse" DismissEvent="Cancel" />
+			<ResultBar Title="Validation failed" ResultBarType="ResultBarType.ValidationError" @bind-Message="@ApiResponse" DismissEvent="Cancel" />
 		}
 		break;
 	case DeleteState.Ok:
 		{
-			<ResultBar Title="Delete successful" CssClass="bg-green" Message="Successfully deleted." DismissEvent="Cancel" />
+			<ResultBar Title="Delete successful" ResultBarType="ResultBarType.Success" Message="Successfully deleted." DismissEvent="Cancel" />
 		}
 		break;
 }
