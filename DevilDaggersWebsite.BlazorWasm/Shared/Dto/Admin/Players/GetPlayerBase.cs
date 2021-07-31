@@ -44,6 +44,7 @@ namespace DevilDaggersWebsite.BlazorWasm.Shared.Dto.Admin.Players
 
 		public bool HideDonations { get; init; }
 
+		[Display(Name = "HideNames")]
 		public bool HidePastUsernames { get; init; }
 	}
 }

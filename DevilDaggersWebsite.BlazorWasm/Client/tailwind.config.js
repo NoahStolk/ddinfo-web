@@ -28,8 +28,14 @@ module.exports = {
 				'leaderboard-lg': createMinmaxGrid([6, 3, 8, 10, 6, 6, 8, 10.5, 10.5, 10, 8, 10, 10]),
 				'leaderboard-md': createMinmaxGrid([9, 4.5, 35, 14, 14, 14, 14]),
 				'leaderboard-sm': createMinmaxGrid([18, 9, 41, 32]),
-				'admin-custom-entries': createMinmaxGrid([2, 10, 6, 3, 2, 2, 2, 2, 2, 2, 2, 2, 2, 2, 2, 2, 2, 2, 6, 5]),
-				'admin-custom-leaderboards': createMinmaxGrid([4, 20, 10, 8, 8, 8, 8, 8, 8, 8, 5, 5])
+				'admin-custom-entries': createMinmaxGrid([1, 4, 3, 1.5, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 3, 2.5, 1, 1]),
+				'admin-custom-leaderboards': createMinmaxGrid([1, 4, 4, 1, 1, 1, 1, 1, 4, 2, 1, 1]),
+				'admin-donations': createMinmaxGrid([1, 1, 3, 1, 1, 3, 2, 4, 1, 1, 1]),
+				'admin-mods': createMinmaxGrid([1, 4, 1, 2, 5, 5, 3, 5, 1, 1]),
+				'admin-players': createMinmaxGrid([1, 4, 1, 1, 1, 1, 1, 1, 1, 1, 1, 3, 2, 1, 1, 1, 1, 1, 1]),
+				'admin-spawnsets': createMinmaxGrid([1, 1, 4, 2, 8, 2, 1, 1, 1]),
+				'admin-titles': createMinmaxGrid([1, 8, 1, 1]),
+				'admin-users': createMinmaxGrid([2, 8, 1, 1]),
 			}
 		},
 		fontFamily: {
@@ -40,5 +46,12 @@ module.exports = {
 };
 
 function createMinmaxGrid(array) {
-	return array.map(value => "minmax(0, " + value + "%)").join(' ');
+	let total = 0;
+	for (let i = 0; i < array.length; i++) {
+		total += array[i];
+	}
+
+	const multiplier = 100 / total;
+
+	return array.map(value => "minmax(0, " + (value * multiplier) + "%)").join(' ');
 }
