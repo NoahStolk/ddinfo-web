@@ -39,6 +39,9 @@ module.exports = {
 				'admin-spawnsets': createMinmaxGrid([1, 1, 4, 2, 8, 2, 1, 1, 1]),
 				'admin-titles': createMinmaxGrid([1, 8, 1, 1]),
 				'admin-users': createMinmaxGrid([2, 8, 1, 1]),
+			},
+			maxHeight: {
+				'screen-half': '50vh',
 			}
 		},
 		fontFamily: {
