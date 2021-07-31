@@ -28,6 +28,8 @@ module.exports = {
 				'leaderboard-lg': createMinmaxGrid([6, 3, 8, 10, 6, 6, 8, 10.5, 10.5, 10, 8, 10, 10]),
 				'leaderboard-md': createMinmaxGrid([9, 4.5, 35, 14, 14, 14, 14]),
 				'leaderboard-sm': createMinmaxGrid([18, 9, 41, 32]),
+				'admin-custom-entries': createMinmaxGrid([2, 10, 6, 3, 2, 2, 2, 2, 2, 2, 2, 2, 2, 2, 2, 2, 2, 2, 6, 5]),
+				'admin-custom-leaderboards': createMinmaxGrid([4, 20, 10, 8, 8, 8, 8, 8, 8, 8, 5, 5])
 			}
 		},
 		fontFamily: {

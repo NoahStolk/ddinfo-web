@@ -38,38 +38,37 @@ else
 	</Select>
 	<label>Page @(_pageIndex + 1) of @TotalPages (@(_pageIndex * _pageSize) - @Math.Min(_page.TotalResults, (_pageIndex + 1) * _pageSize) of @_page.TotalResults)</label>
 
-	<table class="table">
-		<thead>
-			<tr>
-				@foreach (PropertyInfo pi in _properties)
-				{
-					string name = (pi.GetCustomAttribute(typeof(DisplayAttribute)) as DisplayAttribute)?.Name ?? pi.Name;
-					<th><a class="text-color-link hover:text-color-link-hover" href="" @onclick="() => Sort(pi.Name)" @onclick:preventDefault>@name</a></th>
-				}
-				<th></th>
-				<th></th>
-			</tr>
-		</thead>
-		<tbody>
+	<div>
+		<div class="grid grid-cols-@GridConfiguration">
+			@foreach (PropertyInfo pi in _properties)
+			{
+				string name = (pi.GetCustomAttribute(typeof(DisplayAttribute)) as DisplayAttribute)?.Name ?? pi.Name;
+				<div><a class="text-color-link hover:text-color-link-hover" href="" @onclick="() => Sort(pi.Name)" @onclick:preventDefault>@name</a></div>
+			}
+			<div></div>
+			<div></div>
+		</div>
+		<div>
 			@foreach (TGetDto result in _page.Results)
 			{
-				<tr>
+				<div class="grid grid-cols-@GridConfiguration">
 					@foreach (PropertyInfo pi in _properties)
 					{
-						<td>@ReflectionUtils.GetDtoPropertyDisplayValue(pi, result)</td>
+						<div>@ReflectionUtils.GetDtoPropertyDisplayValue(pi, result)</div>
 					}
-					<td><a class="text-color-link hover:text-color-link-hover" href="@($"{NavigationManager.Uri}/edit/{result.Id}")">Edit</a></td>
-					<td><a class="text-color-link hover:text-color-link-hover" href="" @onclick="() => _deletion?.Set(result.Id)" @onclick:preventDefault>Delete</a></td>
-				</tr>
+					<div><a class="text-color-link hover:text-color-link-hover" href="@($"{NavigationManager.Uri}/edit/{result.Id}")">Edit</a></div>
+					<div><a class="text-color-link hover:text-color-link-hover" href="" @onclick="() => _deletion?.Set(result.Id)" @onclick:preventDefault>Delete</a></div>
+				</div>
 			}
-		</tbody>
-	</table>
+		</div>
+	</div>
 }
 
 @code
 {
 	[Parameter] public string Title { get; set; } = null!;
 	[Parameter] public string ApiRoute { get; set; } = null!;
+	[Parameter] public string GridConfiguration { get; set; } = null!;
 
 	private int TotalPages => _page == null ? 0 : (_page.TotalResults - 1) / _pageSize + 1;
 
