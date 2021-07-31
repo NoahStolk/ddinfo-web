@@ -10,7 +10,7 @@
 
 @if (_errorMessage != null)
 {
-	<ResultBar Title="Failed to retrieve overview" ResultBarType="ResultBarType.FatalError">
+	<ResultBar Title="Failed to retrieve overview" ResultBarType="ResultBarType.FatalError" DismissEvent="Dismiss">
 		@_errorMessage
 	</ResultBar>
 }
@@ -138,5 +138,11 @@ else
 		{
 			exception.Redirect();
 		}
+	}
+
+	private void Dismiss()
+	{
+		_errorMessage = null;
+		StateHasChanged();
 	}
 }
