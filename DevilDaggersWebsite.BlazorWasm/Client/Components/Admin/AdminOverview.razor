@@ -49,16 +49,19 @@ else
 			<div></div>
 		</div>
 		<div>
-			@foreach (TGetDto result in _page.Results)
-			{
-				<div class="grid grid-cols-@GridConfiguration">
-					@foreach (PropertyInfo pi in _properties)
-					{
-						<div>@ReflectionUtils.GetDtoPropertyDisplayValue(pi, result)</div>
-					}
-					<div><a class="text-color-link hover:text-color-link-hover" href="@($"{NavigationManager.Uri}/edit/{result.Id}")">Edit</a></div>
-					<div><a class="text-color-link hover:text-color-link-hover" href="" @onclick="() => _deletion?.Set(result.Id)" @onclick:preventDefault>Delete</a></div>
-				</div>
+			@{
+				int j = 0;
+				foreach (TGetDto result in _page.Results)
+				{
+					<div class="grid grid-cols-@GridConfiguration @(j++ % 2 == 0 ? "bg-gray0B" : string.Empty)">
+						@foreach (PropertyInfo pi in _properties)
+						{
+							<div>@ReflectionUtils.GetDtoPropertyDisplayValue(pi, result)</div>
+						}
+						<div><a class="text-color-link hover:text-color-link-hover" href="@($"{NavigationManager.Uri}/edit/{result.Id}")">Edit</a></div>
+						<div><a class="text-color-link hover:text-color-link-hover" href="" @onclick="() => _deletion?.Set(result.Id)" @onclick:preventDefault>Delete</a></div>
+					</div>
+				}
 			}
 		</div>
 	</div>
