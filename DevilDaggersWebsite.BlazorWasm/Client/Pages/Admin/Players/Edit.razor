@@ -11,12 +11,16 @@
 {
 	case ErrorState.ValidationError:
 		{
-			<ResultBar Title="Validation failed" ResultBarType="ResultBarType.ValidationError" @bind-Message="@_errorMessage" DismissEvent="() => State = ErrorState.None" />
+			<ResultBar Title="Validation failed" ResultBarType="ResultBarType.ValidationError" DismissEvent="() => State = ErrorState.None">
+				@_errorMessage
+			</ResultBar>
 		}
 		break;
 	case ErrorState.FatalError:
 		{
-			<ResultBar Title="Fatal error" ResultBarType="ResultBarType.FatalError" @bind-Message="@_errorMessage" DismissEvent="() => State = ErrorState.None" />
+			<ResultBar Title="Fatal error" ResultBarType="ResultBarType.FatalError" DismissEvent="() => State = ErrorState.None">
+				@_errorMessage
+			</ResultBar>
 		}
 		break;
 }
