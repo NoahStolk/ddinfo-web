@@ -31,7 +31,7 @@
 			"Unknown" => (string.Empty, (bool?)null),
 			"False" => (string.Empty, (bool?)false),
 			"True" => (string.Empty, (bool?)true),
-			_ => ($"{value} is not a supported value for InputNullableCheckbox.", (bool?)null),
+			_ => ($"{value} is not a supported value for {nameof(InputNullableBoolean)}.", (bool?)null),
 		};
 		return validationErrorMessage == string.Empty;
 	}
