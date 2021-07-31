@@ -4,6 +4,6 @@
 	{
 		public int Id { get; init; }
 
-		public string? PlayerName { get; init; }
+		public string PlayerName { get; init; } = null!;
 	}
 }
