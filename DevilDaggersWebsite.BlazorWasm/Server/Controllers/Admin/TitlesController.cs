@@ -54,6 +54,22 @@ namespace DevilDaggersWebsite.BlazorWasm.Server.Controllers.Admin
 			};
 		}
 
+		[HttpGet("names")]
+		[ProducesResponseType(StatusCodes.Status200OK)]
+		public ActionResult<List<GetTitleName>> GetTitleNames()
+		{
+			var titles = _dbContext.Titles
+				.AsNoTracking()
+				.Select(t => new { t.Id, t.Name })
+				.ToList();
+
+			return titles.ConvertAll(p => new GetTitleName
+			{
+				Id = p.Id,
+				Name = p.Name,
+			});
+		}
+
 		[HttpPost]
 		[ProducesResponseType(StatusCodes.Status200OK)]
 		[ProducesResponseType(StatusCodes.Status400BadRequest)]
