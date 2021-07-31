@@ -1,7 +1,9 @@
 ﻿@page "/admin/players/add"
 @inject AdminApiHttpClient Http
 @inject NavigationManager NavigationManager
+@using DevilDaggersWebsite.BlazorWasm.Shared.Dto.Admin.Mods
 @using DevilDaggersWebsite.BlazorWasm.Shared.Dto.Admin.Players
+@using DevilDaggersWebsite.BlazorWasm.Shared.Dto.Admin.Titles
 @using Microsoft.AspNetCore.Components.WebAssembly.Authentication
 @using System.Net
 
@@ -89,7 +91,15 @@
 		<InputCheckbox @bind-Value="@_addPlayer.HideSettings" />
 	</div>
 
-	<span>TODO relations</span>
+	<div class="py-1">
+		<label class="@_inputLabelCss">@nameof(AddPlayer.AssetModIds)</label>
+		<MultiSearchDropdown Values="@_modNames" SelectedValues="@_addPlayer.AssetModIds" />
+	</div>
+
+	<div class="py-1">
+		<label class="@_inputLabelCss">@nameof(AddPlayer.TitleIds)</label>
+		<MultiSearchDropdown Values="@_titleNames" SelectedValues="@_addPlayer.TitleIds" />
+	</div>
 
 	<div class="py-1">
 		<label class="@_inputLabelCss">@nameof(AddPlayer.IsBanned)</label>
@@ -118,10 +128,39 @@
 {
 	private const string _inputLabelCss = "inline-block w-64";
 
+	private Dictionary<int, string>? _modNames;
+	private Dictionary<int, string>? _titleNames;
 	private AddPlayer _addPlayer = new();
 	private string? _errorMessage;
 
 	public ErrorState State { get; set; }
+
+	protected override async Task OnInitializedAsync()
+	{
+		try
+		{
+			List<GetModName> getModNames = await Http.Client.GetFromJsonAsync<List<GetModName>>($"api/admin/mods/names") ?? throw new($"Response could not be deserialized to {nameof(List<GetModName>)}.");
+			_modNames = getModNames.ToDictionary(m => m.Id, m => m.Name);
+
+			List<GetTitle> getTitles = await Http.Client.GetFromJsonAsync<List<GetTitle>>($"api/admin/titles/names") ?? throw new($"Response could not be deserialized to {nameof(List<GetTitle>)}.");
+			_titleNames = getTitles.ToDictionary(t => t.Id, t => t.Name);
+
+			State = ErrorState.None;
+		}
+		catch (HttpRequestException ex)
+		{
+			if (ex.StatusCode.HasValue)
+				_errorMessage = $"Error {(int)ex.StatusCode}: {ex.StatusCode}";
+			else
+				_errorMessage = "An error occurred while sending the request.";
+
+			State = ErrorState.FatalError;
+		}
+		catch (AccessTokenNotAvailableException exception)
+		{
+			exception.Redirect();
+		}
+	}
 
 	private async Task OnValidSubmit()
 	{

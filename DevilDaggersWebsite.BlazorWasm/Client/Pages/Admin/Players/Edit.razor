@@ -1,7 +1,9 @@
 ﻿@page "/admin/players/edit/{Id:int}"
 @inject AdminApiHttpClient Http
 @inject NavigationManager NavigationManager
+@using DevilDaggersWebsite.BlazorWasm.Shared.Dto.Admin.Mods
 @using DevilDaggersWebsite.BlazorWasm.Shared.Dto.Admin.Players
+@using DevilDaggersWebsite.BlazorWasm.Shared.Dto.Admin.Titles
 @using Microsoft.AspNetCore.Components.WebAssembly.Authentication
 @using System.Net
 
@@ -90,7 +92,15 @@ else
 			<InputCheckbox @bind-Value="@_editPlayer.HideSettings" />
 		</div>
 
-		<span>TODO relations</span>
+		<div class="py-1">
+			<label class="@_inputLabelCss">@nameof(AddPlayer.AssetModIds)</label>
+			<MultiSearchDropdown Values="@_modNames" SelectedValues="@_editPlayer.AssetModIds" />
+		</div>
+
+		<div class="py-1">
+			<label class="@_inputLabelCss">@nameof(AddPlayer.TitleIds)</label>
+			<MultiSearchDropdown Values="@_titleNames" SelectedValues="@_editPlayer.TitleIds" />
+		</div>
 
 		<div class="py-1">
 			<label class="@_inputLabelCss">@nameof(EditPlayer.IsBanned)</label>
@@ -120,6 +130,8 @@ else
 {
 	private const string _inputLabelCss = "inline-block w-64";
 
+	private Dictionary<int, string>? _modNames;
+	private Dictionary<int, string>? _titleNames;
 	private EditPlayer? _editPlayer;
 	private string? _errorMessage;
 
@@ -131,6 +143,12 @@ else
 	{
 		try
 		{
+			List<GetModName> getModNames = await Http.Client.GetFromJsonAsync<List<GetModName>>($"api/admin/mods/names") ?? throw new($"Response could not be deserialized to {nameof(List<GetModName>)}.");
+			_modNames = getModNames.ToDictionary(m => m.Id, m => m.Name);
+
+			List<GetTitle> getTitles = await Http.Client.GetFromJsonAsync<List<GetTitle>>($"api/admin/titles/names") ?? throw new($"Response could not be deserialized to {nameof(List<GetTitle>)}.");
+			_titleNames = getTitles.ToDictionary(t => t.Id, t => t.Name);
+
 			GetPlayer getPlayer = await Http.Client.GetFromJsonAsync<GetPlayer>($"api/admin/players/{Id}") ?? throw new($"Response could not be deserialized to {nameof(GetPlayer)}.");
 			_editPlayer = new()
 			{
