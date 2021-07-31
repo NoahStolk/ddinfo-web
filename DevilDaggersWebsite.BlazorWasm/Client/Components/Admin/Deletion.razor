@@ -7,24 +7,24 @@
 {
 	case DeleteState.Confirm:
 		{
-			<div class="bg-red">
-				<h4>Delete?</h4>
+			<div class="bg-dark-red p-2 rounded">
+				<h4 class="text-xl">Delete?</h4>
 
 				<p>Are you sure you want to delete entity with ID @IdToDelete?</p>
 
-				<button class="bg-red" @onclick="ConfirmDelete">Delete permanently</button>
-				<button @onclick="Cancel">Cancel</button>
+				<button class="bg-red w-40 py-1 rounded" @onclick="ConfirmDelete">Delete permanently</button>
+				<button class="bg-gray-900 w-20 py-1 rounded" @onclick="Cancel">Cancel</button>
 			</div>
 		}
 		break;
 	case DeleteState.Error:
 		{
-			<ResultBar Title="Delete failed" @bind-Message="@ApiResponse" DismissEvent="Cancel" />
+			<ResultBar Title="Delete failed" CssClass="bg-red" @bind-Message="@ApiResponse" DismissEvent="Cancel" />
 		}
 		break;
 	case DeleteState.Ok:
 		{
-			<ResultBar Title="Delete successful" Message="Successfully deleted." DismissEvent="Cancel" />
+			<ResultBar Title="Delete successful" CssClass="bg-green" Message="Successfully deleted." DismissEvent="Cancel" />
 		}
 		break;
 }
