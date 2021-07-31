@@ -18,21 +18,21 @@ else
 {
 	<Deletion TKey="TKey" AfterDelete="Fetch" ApiRoute="@ApiRoute" @ref="_deletion" />
 
-	<a class="btn btn-primary" href="@($"{NavigationManager.Uri}/add")">Add new</a>
-	<button class="btn btn-light" @onclick="() => ChangePageIndex(0)">|&lt;</button>
-	<button class="btn btn-light" @onclick="() => ChangePageIndex(_pageIndex - 1)">&lt;</button>
-	<button class="btn btn-light" @onclick="() => ChangePageIndex(_pageIndex + 1)">&gt;</button>
-	<button class="btn btn-light" @onclick="() => ChangePageIndex(TotalPages - 1)">&gt;|</button>
-	<Select @onchange="ChangePageSize">
+	<a class="inline-block bg-gray-900 hover:bg-red w-20 h-6 text-color-text text-center" href="@($"{NavigationManager.Uri}/add")">Add new</a>
+	<button class="bg-gray-900 hover:bg-red w-8 h-6 text-color-text" @onclick="() => ChangePageIndex(0)">|&lt;</button>
+	<button class="bg-gray-900 hover:bg-red w-8 h-6 text-color-text" @onclick="() => ChangePageIndex(_pageIndex - 1)">&lt;</button>
+	<button class="bg-gray-900 hover:bg-red w-8 h-6 text-color-text" @onclick="() => ChangePageIndex(_pageIndex + 1)">&gt;</button>
+	<button class="bg-gray-900 hover:bg-red w-8 h-6 text-color-text" @onclick="() => ChangePageIndex(TotalPages - 1)">&gt;|</button>
+	<Select @onchange="ChangePageSize" class="py-0 h-6 text-white bg-gray-900">
 		@foreach (int i in new[] { 5, 10, 15, 25, 50 })
 		{
 			if (i == 25)
 			{
-				<option value="@i" selected>@i</option>
+				<option class="text-white bg-gray-900" value="@i" selected>@i</option>
 			}
 			else
 			{
-				<option value="@i">@i</option>
+				<option class="text-white bg-gray-900" value="@i">@i</option>
 			}
 		}
 	</Select>
