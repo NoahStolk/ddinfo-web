@@ -1,6 +1,8 @@
 ﻿@typeparam TItem
 <div class="inline-block w-64 bg-gray-900 text-color-text cursor-pointer">
-	<div class="w-full" @onclick="e => _show = !_show">@InitialTip</div>
+	<div class="w-full" @onclick="e => _show = !_show">
+		@InitialTip
+	</div>
 	<div class="@(_show ? "absolute" : "hidden") z-10">
 		@ChildContent
 	</div>

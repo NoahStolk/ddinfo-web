@@ -29,84 +29,84 @@
 	<DataAnnotationsValidator />
 	<ValidationSummary />
 
-	<div>
+	<div class="py-1">
 		<label class="@_inputLabelCss">@nameof(AddPlayer.Id)</label>
 		<InputNumber class="bg-gray-900 text-color-text" @bind-Value="_addPlayer.Id" />
 	</div>
 
-	<div>
+	<div class="py-1">
 		<label class="@_inputLabelCss">@nameof(AddPlayer.CountryCode)</label>
 		<SearchDropdown Values="@UserUtils.CountryNames" @bind-Value="@_addPlayer.CountryCode" />
 	</div>
 
-	<div>
+	<div class="py-1">
 		<label class="@_inputLabelCss">@nameof(AddPlayer.Dpi)</label>
 		<InputNumber class="bg-gray-900 text-color-text" @bind-Value="@_addPlayer.Dpi" />
 	</div>
 
-	<div>
+	<div class="py-1">
 		<label class="@_inputLabelCss">@nameof(AddPlayer.Fov)</label>
 		<InputNumber class="bg-gray-900 text-color-text" @bind-Value="@_addPlayer.Fov" />
 	</div>
 
-	<div>
+	<div class="py-1">
 		<label class="@_inputLabelCss">@nameof(AddPlayer.Gamma)</label>
 		<InputNumber class="bg-gray-900 text-color-text" @bind-Value="@_addPlayer.Gamma" />
 	</div>
 
-	<div>
+	<div class="py-1">
 		<label class="@_inputLabelCss">@nameof(AddPlayer.HasFlashHandEnabled)</label>
 		<InputNullableBoolean @bind-Value="@_addPlayer.HasFlashHandEnabled" />
 	</div>
 
-	<div>
+	<div class="py-1">
 		<label class="@_inputLabelCss">@nameof(AddPlayer.InGameSens)</label>
 		<InputNumber class="bg-gray-900 text-color-text" @bind-Value="@_addPlayer.InGameSens" />
 	</div>
 
-	<div>
+	<div class="py-1">
 		<label class="@_inputLabelCss">@nameof(AddPlayer.IsRightHanded)</label>
 		<InputNullableBoolean @bind-Value="@_addPlayer.IsRightHanded" />
 	</div>
 
-	<div>
+	<div class="py-1">
 		<label class="@_inputLabelCss">@nameof(AddPlayer.UsesLegacyAudio)</label>
 		<InputNullableBoolean @bind-Value="@_addPlayer.UsesLegacyAudio" />
 	</div>
 
-	<div>
+	<div class="py-1">
 		<label class="@_inputLabelCss">@nameof(AddPlayer.HideDonations)</label>
 		<InputCheckbox @bind-Value="@_addPlayer.HideDonations" />
 	</div>
 
-	<div>
+	<div class="py-1">
 		<label class="@_inputLabelCss">@nameof(AddPlayer.HidePastUsernames)</label>
 		<InputCheckbox @bind-Value="@_addPlayer.HidePastUsernames" />
 	</div>
 
-	<div>
+	<div class="py-1">
 		<label class="@_inputLabelCss">@nameof(AddPlayer.HideSettings)</label>
 		<InputCheckbox @bind-Value="@_addPlayer.HideSettings" />
 	</div>
 
 	<span>TODO relations</span>
 
-	<div>
+	<div class="py-1">
 		<label class="@_inputLabelCss">@nameof(AddPlayer.IsBanned)</label>
 		<InputCheckbox @bind-Value="@_addPlayer.IsBanned" />
 	</div>
 
-	<div>
+	<div class="py-1">
 		<label class="@_inputLabelCss">@nameof(AddPlayer.BanDescription)</label>
-		<InputText @bind-Value="@_addPlayer.BanDescription" />
+		<InputText class="bg-gray-900 text-color-text" @bind-Value="@_addPlayer.BanDescription" />
 	</div>
 
-	<div>
+	<div class="py-1">
 		<label class="@_inputLabelCss">@nameof(AddPlayer.BanResponsibleId)</label>
 		<InputNumber class="bg-gray-900 text-color-text" @bind-Value="@_addPlayer.BanResponsibleId" />
 	</div>
 
-	<div>
+	<div class="py-1">
 		<label class="@_inputLabelCss">@nameof(AddPlayer.IsBannedFromDdcl)</label>
 		<InputCheckbox @bind-Value="@_addPlayer.IsBannedFromDdcl" />
 	</div>
