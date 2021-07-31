@@ -13,96 +13,86 @@
 	<DataAnnotationsValidator />
 	<ValidationSummary />
 
-	<h2>General</h2>
-
-	<div class="row">
+	<div>
 		<label class="@_inputLabelCss">@nameof(AddPlayer.Id)</label>
-		<InputNumber class="admin-input" @bind-Value="_addPlayer.Id" />
+		<InputNumber @bind-Value="_addPlayer.Id" />
 	</div>
 
-	<div class="row">
+	<div>
 		<label class="@_inputLabelCss">@nameof(AddPlayer.CountryCode)</label>
-		<SearchDropdown class="admin-input" Values="@UserUtils.CountryNames" @bind-Value="@_addPlayer.CountryCode" />
+		<SearchDropdown Values="@UserUtils.CountryNames" @bind-Value="@_addPlayer.CountryCode" />
 	</div>
 
-	<h2>Settings</h2>
-
-	<div class="row">
+	<div>
 		<label class="@_inputLabelCss">@nameof(AddPlayer.Dpi)</label>
-		<InputNumber class="admin-input" @bind-Value="@_addPlayer.Dpi" />
+		<InputNumber @bind-Value="@_addPlayer.Dpi" />
 	</div>
 
-	<div class="row">
+	<div>
 		<label class="@_inputLabelCss">@nameof(AddPlayer.Fov)</label>
-		<InputNumber class="admin-input" @bind-Value="@_addPlayer.Fov" />
+		<InputNumber @bind-Value="@_addPlayer.Fov" />
 	</div>
 
-	<div class="row">
+	<div>
 		<label class="@_inputLabelCss">@nameof(AddPlayer.Gamma)</label>
-		<InputNumber class="admin-input" @bind-Value="@_addPlayer.Gamma" />
+		<InputNumber @bind-Value="@_addPlayer.Gamma" />
 	</div>
 
-	<div class="row">
+	<div>
 		<label class="@_inputLabelCss">@nameof(AddPlayer.HasFlashHandEnabled)</label>
-		<InputNullableBoolean class="admin-input" @bind-Value="@_addPlayer.HasFlashHandEnabled" />
+		<InputNullableBoolean @bind-Value="@_addPlayer.HasFlashHandEnabled" />
 	</div>
 
-	<div class="row">
+	<div>
 		<label class="@_inputLabelCss">@nameof(AddPlayer.InGameSens)</label>
-		<InputNumber class="admin-input" @bind-Value="@_addPlayer.InGameSens" />
+		<InputNumber @bind-Value="@_addPlayer.InGameSens" />
 	</div>
 
-	<div class="row">
+	<div>
 		<label class="@_inputLabelCss">@nameof(AddPlayer.IsRightHanded)</label>
-		<InputNullableBoolean class="admin-input" @bind-Value="@_addPlayer.IsRightHanded" />
+		<InputNullableBoolean @bind-Value="@_addPlayer.IsRightHanded" />
 	</div>
 
-	<div class="row">
+	<div>
 		<label class="@_inputLabelCss">@nameof(AddPlayer.UsesLegacyAudio)</label>
-		<InputNullableBoolean class="admin-input" @bind-Value="@_addPlayer.UsesLegacyAudio" />
+		<InputNullableBoolean @bind-Value="@_addPlayer.UsesLegacyAudio" />
 	</div>
 
-	<h2>Visibility</h2>
-
-	<div class="row">
+	<div>
 		<label class="@_inputLabelCss">@nameof(AddPlayer.HideDonations)</label>
-		<InputCheckbox class="admin-input" @bind-Value="@_addPlayer.HideDonations" />
+		<InputCheckbox @bind-Value="@_addPlayer.HideDonations" />
 	</div>
 
-	<div class="row">
+	<div>
 		<label class="@_inputLabelCss">@nameof(AddPlayer.HidePastUsernames)</label>
-		<InputCheckbox class="admin-input" @bind-Value="@_addPlayer.HidePastUsernames" />
+		<InputCheckbox @bind-Value="@_addPlayer.HidePastUsernames" />
 	</div>
 
-	<div class="row">
+	<div>
 		<label class="@_inputLabelCss">@nameof(AddPlayer.HideSettings)</label>
-		<InputCheckbox class="admin-input" @bind-Value="@_addPlayer.HideSettings" />
+		<InputCheckbox @bind-Value="@_addPlayer.HideSettings" />
 	</div>
 
-	<h2>Relations</h2>
+	<span>TODO relations</span>
 
-	<span>TODO</span>
-
-	<h2>Bans</h2>
-
-	<div class="row">
+	<div>
 		<label class="@_inputLabelCss">@nameof(AddPlayer.IsBanned)</label>
-		<InputCheckbox class="admin-input" @bind-Value="@_addPlayer.IsBanned" />
+		<InputCheckbox @bind-Value="@_addPlayer.IsBanned" />
 	</div>
 
-	<div class="row">
+	<div>
 		<label class="@_inputLabelCss">@nameof(AddPlayer.BanDescription)</label>
-		<InputText class="admin-input" @bind-Value="@_addPlayer.BanDescription" />
+		<InputText @bind-Value="@_addPlayer.BanDescription" />
 	</div>
 
-	<div class="row">
+	<div>
 		<label class="@_inputLabelCss">@nameof(AddPlayer.BanResponsibleId)</label>
-		<InputNumber class="admin-input" @bind-Value="@_addPlayer.BanResponsibleId" />
+		<InputNumber @bind-Value="@_addPlayer.BanResponsibleId" />
 	</div>
 
-	<div class="row">
+	<div>
 		<label class="@_inputLabelCss">@nameof(AddPlayer.IsBannedFromDdcl)</label>
-		<InputCheckbox class="admin-input" @bind-Value="@_addPlayer.IsBannedFromDdcl" />
+		<InputCheckbox @bind-Value="@_addPlayer.IsBannedFromDdcl" />
 	</div>
 
 	<button class="btn btn-primary" type="submit">Submit</button>

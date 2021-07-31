@@ -19,91 +19,81 @@ else
 		<DataAnnotationsValidator />
 		<ValidationSummary />
 
-		<h2>General</h2>
-
-		<div class="row">
+		<div>
 			<label class="@_inputLabelCss">@nameof(EditPlayer.CountryCode)</label>
-			<SearchDropdown class="admin-input" Values="@UserUtils.CountryNames" @bind-Value="@_editPlayer.CountryCode" />
+			<SearchDropdown Values="@UserUtils.CountryNames" @bind-Value="@_editPlayer.CountryCode" />
 		</div>
 
-		<h2>Settings</h2>
-
-		<div class="row">
+		<div>
 			<label class="@_inputLabelCss">@nameof(EditPlayer.Dpi)</label>
-			<InputNumber class="admin-input" @bind-Value="@_editPlayer.Dpi" />
+			<InputNumber @bind-Value="@_editPlayer.Dpi" />
 		</div>
 
-		<div class="row">
+		<div>
 			<label class="@_inputLabelCss">@nameof(EditPlayer.Fov)</label>
-			<InputNumber class="admin-input" @bind-Value="@_editPlayer.Fov" />
+			<InputNumber @bind-Value="@_editPlayer.Fov" />
 		</div>
 
-		<div class="row">
+		<div>
 			<label class="@_inputLabelCss">@nameof(EditPlayer.Gamma)</label>
-			<InputNumber class="admin-input" @bind-Value="@_editPlayer.Gamma" />
+			<InputNumber @bind-Value="@_editPlayer.Gamma" />
 		</div>
 
-		<div class="row">
+		<div>
 			<label class="@_inputLabelCss">@nameof(EditPlayer.HasFlashHandEnabled)</label>
-			<InputNullableBoolean class="admin-input" @bind-Value="@_editPlayer.HasFlashHandEnabled" />
+			<InputNullableBoolean @bind-Value="@_editPlayer.HasFlashHandEnabled" />
 		</div>
 
-		<div class="row">
+		<div>
 			<label class="@_inputLabelCss">@nameof(EditPlayer.InGameSens)</label>
-			<InputNumber class="admin-input" @bind-Value="@_editPlayer.InGameSens" />
+			<InputNumber @bind-Value="@_editPlayer.InGameSens" />
 		</div>
 
-		<div class="row">
+		<div>
 			<label class="@_inputLabelCss">@nameof(EditPlayer.IsRightHanded)</label>
-			<InputNullableBoolean class="admin-input" @bind-Value="@_editPlayer.IsRightHanded" />
+			<InputNullableBoolean @bind-Value="@_editPlayer.IsRightHanded" />
 		</div>
 
-		<div class="row">
+		<div>
 			<label class="@_inputLabelCss">@nameof(EditPlayer.UsesLegacyAudio)</label>
-			<InputNullableBoolean class="admin-input" @bind-Value="@_editPlayer.UsesLegacyAudio" />
+			<InputNullableBoolean @bind-Value="@_editPlayer.UsesLegacyAudio" />
 		</div>
 
-		<h2>Visibility</h2>
-
-		<div class="row">
+		<div>
 			<label class="@_inputLabelCss">@nameof(EditPlayer.HideDonations)</label>
-			<InputCheckbox class="admin-input" @bind-Value="@_editPlayer.HideDonations" />
+			<InputCheckbox @bind-Value="@_editPlayer.HideDonations" />
 		</div>
 
-		<div class="row">
+		<div>
 			<label class="@_inputLabelCss">@nameof(EditPlayer.HidePastUsernames)</label>
-			<InputCheckbox class="admin-input" @bind-Value="@_editPlayer.HidePastUsernames" />
+			<InputCheckbox @bind-Value="@_editPlayer.HidePastUsernames" />
 		</div>
 
-		<div class="row">
+		<div>
 			<label class="@_inputLabelCss">@nameof(EditPlayer.HideSettings)</label>
-			<InputCheckbox class="admin-input" @bind-Value="@_editPlayer.HideSettings" />
+			<InputCheckbox @bind-Value="@_editPlayer.HideSettings" />
 		</div>
 
-		<h2>Relations</h2>
+		<span>TODO relations</span>
 
-		<span>TODO</span>
-
-		<h2>Bans</h2>
-
-		<div class="row">
+		<div>
 			<label class="@_inputLabelCss">@nameof(EditPlayer.IsBanned)</label>
-			<InputCheckbox class="admin-input" @bind-Value="@_editPlayer.IsBanned" />
+			<InputCheckbox @bind-Value="@_editPlayer.IsBanned" />
 		</div>
 
-		<div class="row">
+		<div>
 			<label class="@_inputLabelCss">@nameof(EditPlayer.BanDescription)</label>
-			<InputText class="admin-input" @bind-Value="@_editPlayer.BanDescription" />
+			<InputText @bind-Value="@_editPlayer.BanDescription" />
 		</div>
 
-		<div class="row">
+		<div>
 			<label class="@_inputLabelCss">@nameof(EditPlayer.BanResponsibleId)</label>
-			<InputNumber class="admin-input" @bind-Value="@_editPlayer.BanResponsibleId" />
+			<InputNumber @bind-Value="@_editPlayer.BanResponsibleId" />
 		</div>
 
-		<div class="row">
+		<div>
 			<label class="@_inputLabelCss">@nameof(EditPlayer.IsBannedFromDdcl)</label>
-			<InputCheckbox class="admin-input" @bind-Value="@_editPlayer.IsBannedFromDdcl" />
+			<InputCheckbox @bind-Value="@_editPlayer.IsBannedFromDdcl" />
 		</div>
 
 		<button class="btn btn-primary" type="submit">Submit</button>
