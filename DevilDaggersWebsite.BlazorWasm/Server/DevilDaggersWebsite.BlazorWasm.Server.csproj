@@ -35,9 +35,4 @@
     <ProjectReference Include="..\Client\DevilDaggersWebsite.BlazorWasm.Client.csproj" />
     <ProjectReference Include="..\Shared\DevilDaggersWebsite.BlazorWasm.Shared.csproj" />
   </ItemGroup>
-  <ItemGroup>
-    <Content Include="Data\**\*.*">
-      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
-    </Content>
-  </ItemGroup>
 </Project>
