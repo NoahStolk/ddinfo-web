@@ -19,17 +19,23 @@
 		break;
 	case DeleteState.ValidationError:
 		{
-			<ResultBar Title="Validation failed" ResultBarType="ResultBarType.ValidationError" @bind-Message="@ApiResponse" DismissEvent="Cancel" />
+			<ResultBar Title="Validation failed" ResultBarType="ResultBarType.ValidationError" DismissEvent="Cancel">
+				@ApiResponse
+			</ResultBar>
 		}
 		break;
 	case DeleteState.FatalError:
 		{
-			<ResultBar Title="Fatal error" ResultBarType="ResultBarType.FatalError" @bind-Message="@ApiResponse" DismissEvent="Cancel" />
+			<ResultBar Title="Fatal error" ResultBarType="ResultBarType.FatalError" DismissEvent="Cancel">
+				@ApiResponse
+			</ResultBar>
 		}
 		break;
 	case DeleteState.Ok:
 		{
-			<ResultBar Title="Delete successful" ResultBarType="ResultBarType.Success" Message="Successfully deleted." DismissEvent="Cancel" />
+			<ResultBar Title="Delete successful" ResultBarType="ResultBarType.Success" DismissEvent="Cancel">
+				Successfully deleted.
+			</ResultBar>
 		}
 		break;
 }
@@ -76,5 +82,6 @@
 	{
 		State = DeleteState.None;
 		IdToDelete = default;
+		StateHasChanged();
 	}
 }

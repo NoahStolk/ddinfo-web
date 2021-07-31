@@ -8,7 +8,12 @@
 
 <h1 class="text-red text-2xl">@Title</h1>
 
-<ResultBar Title="Failed to retrieve overview" ResultBarType="ResultBarType.FatalError" @bind-Message="@_errorMessage" />
+@if (_errorMessage != null)
+{
+	<ResultBar Title="Failed to retrieve overview" ResultBarType="ResultBarType.FatalError">
+		@_errorMessage
+	</ResultBar>
+}
 
 @if (_page == null)
 {

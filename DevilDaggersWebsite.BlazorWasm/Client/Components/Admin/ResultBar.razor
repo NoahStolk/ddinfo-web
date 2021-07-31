@@ -1,26 +1,24 @@
-﻿@if (Message != null)
-{
-	<div class="p-2 rounded @BackgroundColorClass">
-		@if (Title != null)
-		{
-			<h4 class="text-xl">@Title</h4>
-		}
+﻿<div class="p-2 rounded @BackgroundColorClass">
+	@if (Title != null)
+	{
+		<h4 class="text-xl">@Title</h4>
+	}
 
-		<p>@Message</p>
+	@ChildContent
 
-		@if (Dismissable)
-		{
-			<button class="w-20 py-1 rounded @ButtonColorClass" @onclick="Dismiss">Dismiss</button>
-		}
-	</div>
-}
+	@if (DismissEvent != null)
+	{
+		<p>
+			<button class="w-20 py-1 rounded @ButtonColorClass" @onclick="() => DismissEvent.Invoke()">Dismiss</button>
+		</p>
+	}
+</div>
 
 @code
 {
 	[Parameter] public string? Title { get; set; }
-	[Parameter] public string? Message { get; set; }
+	[Parameter] public RenderFragment ChildContent { get; set; } = null!;
 	[Parameter] public ResultBarType ResultBarType { get; set; }
-	[Parameter] public bool Dismissable { get; set; } = true;
 	[Parameter] public Action? DismissEvent { get; set; }
 
 	public string BackgroundColorClass => ResultBarType switch
@@ -41,10 +39,4 @@
 
 	[Parameter]
 	public EventCallback<string?> MessageChanged { get; set; }
-
-	private void Dismiss()
-	{
-		Message = null;
-		DismissEvent?.Invoke();
-	}
 }
