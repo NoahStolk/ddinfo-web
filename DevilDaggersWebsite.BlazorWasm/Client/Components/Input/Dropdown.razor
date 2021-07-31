@@ -1,7 +1,8 @@
 ﻿@typeparam TItem
 <div class="inline-block w-64 bg-gray-900 text-color-text cursor-pointer">
-	<div class="w-full" @onclick="e => _show = !_show">
-		@InitialTip
+	<div class="grid grid-cols-8">
+		<span class="col-span-7" @onclick="e => _show = !_show">@InitialTip</span>
+		<span class="w-8 cursor-pointer bg-gray-800 rounded block text-center" @onclick="e => HandleSelect(default) ?? Task.CompletedTask">✕</span>
 	</div>
 	<div class="@(_show ? "absolute" : "hidden") z-10">
 		@ChildContent

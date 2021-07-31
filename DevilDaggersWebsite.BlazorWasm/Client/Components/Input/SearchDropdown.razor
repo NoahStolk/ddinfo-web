@@ -3,7 +3,6 @@
 <Dropdown TItem="string" OnSelected="e => CurrentValue = e" @ref="_dropdown">
 	<InitialTip>
 		<span class="pl-2">@SelectedDisplayValue</span>
-		<span class="w-6 cursor-pointer bg-gray-800 rounded inline-block text-center" @onclick="e => _dropdown?.HandleSelect(null) ?? Task.CompletedTask">✕</span>
 	</InitialTip>
 	<ChildContent>
 		<div class="bg-gray-900">
