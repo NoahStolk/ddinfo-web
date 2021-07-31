@@ -1,0 +1,10 @@
+﻿using System.Net;
+
+namespace DevilDaggersWebsite.BlazorWasm.Client.Extensions
+{
+	public static class HttpStatusCodeExtensions
+	{
+		public static bool IsUserError(this HttpStatusCode httpStatusCode)
+			=> (int)httpStatusCode is >= 400 and < 500;
+	}
+}

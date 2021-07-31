@@ -17,9 +17,14 @@
 			</div>
 		}
 		break;
-	case DeleteState.Error:
+	case DeleteState.ValidationError:
 		{
 			<ResultBar Title="Validation failed" ResultBarType="ResultBarType.ValidationError" @bind-Message="@ApiResponse" DismissEvent="Cancel" />
+		}
+		break;
+	case DeleteState.FatalError:
+		{
+			<ResultBar Title="Fatal error" ResultBarType="ResultBarType.FatalError" @bind-Message="@ApiResponse" DismissEvent="Cancel" />
 		}
 		break;
 	case DeleteState.Ok:
@@ -57,7 +62,7 @@
 			}
 			else
 			{
-				State = DeleteState.Error;
+				State = hrm.StatusCode.IsUserError() ? DeleteState.ValidationError : DeleteState.FatalError;
 				ApiResponse = await hrm.Content.ReadAsStringAsync();
 			}
 		}
@@ -78,6 +83,7 @@
 		None = 0,
 		Confirm = 1,
 		Ok = 2,
-		Error = 3,
+		ValidationError = 3,
+		FatalError = 4,
 	}
 }
