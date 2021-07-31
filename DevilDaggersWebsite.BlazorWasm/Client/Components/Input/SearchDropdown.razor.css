@@ -1,11 +1,4 @@
 ﻿.select-list {
 	max-height: 50vh;
 	overflow-y: scroll;
-	max-width: 256px;
-}
-
-::deep input {
-	max-width: 256px;
-	min-width: 256px;
-	width: 256px;
 }

@@ -1,9 +1,7 @@
 ﻿@typeparam TItem
-<div>
-	<button @onclick="e => _show = !_show">
-		@InitialTip
-	</button>
-	<div class="@(_show ? string.Empty : "hidden")">
+<div class="inline-block w-64 bg-gray-900 text-color-text cursor-pointer">
+	<div class="w-full" @onclick="e => _show = !_show">@InitialTip</div>
+	<div class="@(_show ? "absolute" : "hidden") z-10">
 		@ChildContent
 	</div>
 </div>
