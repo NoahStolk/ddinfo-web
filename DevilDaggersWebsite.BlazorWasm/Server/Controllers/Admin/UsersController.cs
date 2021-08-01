@@ -23,11 +23,13 @@ namespace DevilDaggersWebsite.BlazorWasm.Server.Controllers.Admin
 	public class UsersController : ControllerBase
 	{
 		private readonly ApplicationDbContext _dbContext;
+		private readonly UserManager<IdentityRole> _userManager;
 		private readonly AuditLogger _auditLogger;
 
-		public UsersController(ApplicationDbContext dbContext, AuditLogger auditLogger)
+		public UsersController(ApplicationDbContext dbContext, UserManager<IdentityRole> userManager, AuditLogger auditLogger)
 		{
 			_dbContext = dbContext;
+			_userManager = userManager;
 			_auditLogger = auditLogger;
 		}
 
@@ -66,6 +68,21 @@ namespace DevilDaggersWebsite.BlazorWasm.Server.Controllers.Admin
 				}),
 				TotalResults = _dbContext.Users.Count(),
 			};
+		}
+
+		[HttpPatch("{id}/add-to-role")]
+		[ProducesResponseType(StatusCodes.Status200OK)]
+		[ProducesResponseType(StatusCodes.Status404NotFound)]
+		public async Task<ActionResult> AddUserToRoleById(string id, string role)
+		{
+			ApplicationUser? user = _dbContext.Users
+				.FirstOrDefault(t => t.Id == id);
+			if (user == null)
+				return NotFound();
+
+			//await _userManager.AddToRoleAsync(user, role);
+
+			return Ok();
 		}
 
 		[HttpDelete("{id}")]

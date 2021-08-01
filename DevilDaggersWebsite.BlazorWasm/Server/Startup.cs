@@ -196,7 +196,6 @@ namespace DevilDaggersWebsite.BlazorWasm.Server
 		private static async Task CreateRoles(IServiceProvider serviceProvider)
 		{
 			RoleManager<IdentityRole>? roleManager = serviceProvider.GetRequiredService<RoleManager<IdentityRole>>();
-
 			foreach (string? roleName in Roles.All)
 			{
 				bool roleExist = await roleManager.RoleExistsAsync(roleName);
