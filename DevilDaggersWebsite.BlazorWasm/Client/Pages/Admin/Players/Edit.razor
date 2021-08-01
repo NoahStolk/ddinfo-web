@@ -4,69 +4,33 @@
 @using DevilDaggersWebsite.BlazorWasm.Shared.Dto.Admin.Mods
 @using DevilDaggersWebsite.BlazorWasm.Shared.Dto.Admin.Players
 @using DevilDaggersWebsite.BlazorWasm.Shared.Dto.Admin.Titles
-@using Microsoft.AspNetCore.Components.WebAssembly.Authentication
-@using System.Net
 
-<h1 class="text-red text-2xl">Edit</h1>
-
-@switch (State)
-{
-	case ErrorState.ValidationError:
-		{
-			<ResultBar Title="Validation failed" ResultBarType="ResultBarType.ValidationError" DismissEvent="Dismiss">
-				@_errorMessage
-			</ResultBar>
-		}
-		break;
-	case ErrorState.FatalError:
-		{
-			<ResultBar Title="Fatal error" ResultBarType="ResultBarType.FatalError" DismissEvent="Dismiss">
-				@_errorMessage
-			</ResultBar>
-		}
-		break;
-}
-
-@if (_editPlayer == null)
-{
-	<Loading />
-}
-else
-{
-	<EditForm Model="@_editPlayer" OnValidSubmit="@OnValidSubmit">
-		<DataAnnotationsValidator />
-		<ValidationSummary />
-
-		<AdminInput Label="@nameof(EditPlayer.CountryCode)"><SearchDropdown Values="@UserUtils.CountryNames" @bind-Value="@_editPlayer.CountryCode" /></AdminInput>
-		<AdminInput Label="@nameof(EditPlayer.Dpi)"><InputNumber class="w-64 pl-2 bg-gray-900 text-color-text" @bind-Value="_editPlayer.Dpi" /></AdminInput>
-		<AdminInput Label="@nameof(EditPlayer.Fov)"><InputNumber class="w-64 pl-2 bg-gray-900 text-color-text" @bind-Value="_editPlayer.Fov" /></AdminInput>
-		<AdminInput Label="@nameof(EditPlayer.Gamma)"><InputNumber class="w-64 pl-2 bg-gray-900 text-color-text" @bind-Value="_editPlayer.Gamma" /></AdminInput>
-		<AdminInput Label="@nameof(EditPlayer.HasFlashHandEnabled)"><InputNullableBoolean @bind-Value="@_editPlayer.HasFlashHandEnabled" /></AdminInput>
-		<AdminInput Label="@nameof(EditPlayer.InGameSens)"><InputNumber class="w-64 pl-2 bg-gray-900 text-color-text" @bind-Value="@_editPlayer.InGameSens" /></AdminInput>
-		<AdminInput Label="@nameof(EditPlayer.IsRightHanded)"><InputNullableBoolean @bind-Value="@_editPlayer.IsRightHanded" /></AdminInput>
-		<AdminInput Label="@nameof(EditPlayer.UsesLegacyAudio)"><InputNullableBoolean @bind-Value="@_editPlayer.UsesLegacyAudio" /></AdminInput>
-		<AdminInput Label="@nameof(EditPlayer.HideDonations)"><InputCheckbox @bind-Value="@_editPlayer.HideDonations" /></AdminInput>
-		<AdminInput Label="@nameof(EditPlayer.HidePastUsernames)"><InputCheckbox @bind-Value="@_editPlayer.HidePastUsernames" /></AdminInput>
-		<AdminInput Label="@nameof(EditPlayer.HideSettings)"><InputCheckbox @bind-Value="@_editPlayer.HideSettings" /></AdminInput>
-		<AdminInput Label="@nameof(EditPlayer.AssetModIds)"><MultiSearchDropdown Values="@_modNames" @bind-Value="@_editPlayer.AssetModIds" /></AdminInput>
-		<AdminInput Label="@nameof(EditPlayer.TitleIds)"><MultiSearchDropdown Values="@_titleNames" @bind-Value="@_editPlayer.TitleIds" /></AdminInput>
-		<AdminInput Label="@nameof(EditPlayer.IsBanned)"><InputCheckbox @bind-Value="@_editPlayer.IsBanned" /></AdminInput>
-		<AdminInput Label="@nameof(EditPlayer.BanDescription)"><InputText class="w-64 pl-2 bg-gray-900 text-color-text" @bind-Value="@_editPlayer.BanDescription" /></AdminInput>
-		<AdminInput Label="@nameof(EditPlayer.BanResponsibleId)"><InputNumber class="w-64 pl-2 bg-gray-900 text-color-text" @bind-Value="@_editPlayer.BanResponsibleId" /></AdminInput>
-		<AdminInput Label="@nameof(EditPlayer.IsBannedFromDdcl)"><InputCheckbox @bind-Value="@_editPlayer.IsBannedFromDdcl" /></AdminInput>
-
-		<button class="bg-gray-900 hover:bg-gray-500 p-1 rounded text-color-text" type="submit">Submit</button>
-	</EditForm>
-}
+<AdminEdit OverviewUrl="/admin/players" PutApiUrl="api/admin/players" Model="_editPlayer" Id="Id" @ref="_editComponent">
+	<AdminInput Label="@nameof(EditPlayer.CountryCode)"><SearchDropdown Values="@UserUtils.CountryNames" @bind-Value="@_editPlayer!.CountryCode" /></AdminInput>
+	<AdminInput Label="@nameof(EditPlayer.Dpi)"><InputNumber class="w-64 pl-2 bg-gray-900 text-color-text" @bind-Value="_editPlayer!.Dpi" /></AdminInput>
+	<AdminInput Label="@nameof(EditPlayer.Fov)"><InputNumber class="w-64 pl-2 bg-gray-900 text-color-text" @bind-Value="_editPlayer!.Fov" /></AdminInput>
+	<AdminInput Label="@nameof(EditPlayer.Gamma)"><InputNumber class="w-64 pl-2 bg-gray-900 text-color-text" @bind-Value="_editPlayer!.Gamma" /></AdminInput>
+	<AdminInput Label="@nameof(EditPlayer.HasFlashHandEnabled)"><InputNullableBoolean @bind-Value="@_editPlayer!.HasFlashHandEnabled" /></AdminInput>
+	<AdminInput Label="@nameof(EditPlayer.InGameSens)"><InputNumber class="w-64 pl-2 bg-gray-900 text-color-text" @bind-Value="@_editPlayer!.InGameSens" /></AdminInput>
+	<AdminInput Label="@nameof(EditPlayer.IsRightHanded)"><InputNullableBoolean @bind-Value="@_editPlayer!.IsRightHanded" /></AdminInput>
+	<AdminInput Label="@nameof(EditPlayer.UsesLegacyAudio)"><InputNullableBoolean @bind-Value="@_editPlayer!.UsesLegacyAudio" /></AdminInput>
+	<AdminInput Label="@nameof(EditPlayer.HideDonations)"><InputCheckbox @bind-Value="@_editPlayer!.HideDonations" /></AdminInput>
+	<AdminInput Label="@nameof(EditPlayer.HidePastUsernames)"><InputCheckbox @bind-Value="@_editPlayer!.HidePastUsernames" /></AdminInput>
+	<AdminInput Label="@nameof(EditPlayer.HideSettings)"><InputCheckbox @bind-Value="@_editPlayer!.HideSettings" /></AdminInput>
+	<AdminInput Label="@nameof(EditPlayer.AssetModIds)"><MultiSearchDropdown Values="@_modNames" @bind-Value="@_editPlayer!.AssetModIds" /></AdminInput>
+	<AdminInput Label="@nameof(EditPlayer.TitleIds)"><MultiSearchDropdown Values="@_titleNames" @bind-Value="@_editPlayer!.TitleIds" /></AdminInput>
+	<AdminInput Label="@nameof(EditPlayer.IsBanned)"><InputCheckbox @bind-Value="@_editPlayer!.IsBanned" /></AdminInput>
+	<AdminInput Label="@nameof(EditPlayer.BanDescription)"><InputText class="w-64 pl-2 bg-gray-900 text-color-text" @bind-Value="@_editPlayer!.BanDescription" /></AdminInput>
+	<AdminInput Label="@nameof(EditPlayer.BanResponsibleId)"><InputNumber class="w-64 pl-2 bg-gray-900 text-color-text" @bind-Value="@_editPlayer!.BanResponsibleId" /></AdminInput>
+	<AdminInput Label="@nameof(EditPlayer.IsBannedFromDdcl)"><InputCheckbox @bind-Value="@_editPlayer!.IsBannedFromDdcl" /></AdminInput>
+</AdminEdit>
 
 @code
 {
 	private Dictionary<int, string>? _modNames;
 	private Dictionary<int, string>? _titleNames;
 	private EditPlayer? _editPlayer;
-	private string? _errorMessage;
-
-	public ErrorState State { get; set; }
+	private AdminEdit<EditPlayer> _editComponent = null!;
 
 	[Parameter] public int Id { get; set; }
 
@@ -74,10 +38,10 @@ else
 	{
 		try
 		{
-			List<GetModName> getModNames = await Http.Client.GetFromJsonAsync<List<GetModName>>($"api/admin/mods/names") ?? throw new($"Response could not be deserialized to {nameof(List<GetModName>)}.");
+			List<GetModName> getModNames = await Http.Client.GetFromJsonAsync<List<GetModName>>("api/admin/mods/names") ?? throw new($"Response could not be deserialized to {nameof(List<GetModName>)}.");
 			_modNames = getModNames.ToDictionary(m => m.Id, m => m.Name);
 
-			List<GetTitle> getTitles = await Http.Client.GetFromJsonAsync<List<GetTitle>>($"api/admin/titles/names") ?? throw new($"Response could not be deserialized to {nameof(List<GetTitle>)}.");
+			List<GetTitle> getTitles = await Http.Client.GetFromJsonAsync<List<GetTitle>>("api/admin/titles/names") ?? throw new($"Response could not be deserialized to {nameof(List<GetTitle>)}.");
 			_titleNames = getTitles.ToDictionary(t => t.Id, t => t.Name);
 
 			GetPlayer getPlayer = await Http.Client.GetFromJsonAsync<GetPlayer>($"api/admin/players/{Id}") ?? throw new($"Response could not be deserialized to {nameof(GetPlayer)}.");
@@ -101,51 +65,20 @@ else
 				IsBanned = getPlayer.IsBanned,
 				IsBannedFromDdcl = getPlayer.IsBannedFromDdcl,
 			};
-			State = ErrorState.None;
+			_editComponent.State = ErrorState.None;
 		}
 		catch (HttpRequestException ex)
 		{
 			if (ex.StatusCode.HasValue)
-				_errorMessage = $"Error {(int)ex.StatusCode}: {ex.StatusCode}";
+				_editComponent.ErrorMessage = $"Error {(int)ex.StatusCode}: {ex.StatusCode}";
 			else
-				_errorMessage = "An error occurred while sending the request.";
+				_editComponent.ErrorMessage = "An error occurred while sending the request.";
 
-			State = ErrorState.FatalError;
+			_editComponent.State = ErrorState.FatalError;
 		}
 		catch (AccessTokenNotAvailableException exception)
 		{
 			exception.Redirect();
 		}
-	}
-
-	private async Task OnValidSubmit()
-	{
-		if (_editPlayer == null)
-			return;
-
-		try
-		{
-			HttpResponseMessage hrm = await Http.Client.PutAsJsonAsync<EditPlayer>($"api/admin/players/{Id}", _editPlayer);
-
-			if (hrm.StatusCode == HttpStatusCode.OK)
-			{
-				NavigationManager.NavigateTo("/admin/players");
-			}
-			else
-			{
-				_errorMessage = await hrm.Content.ReadAsStringAsync();
-				State = hrm.StatusCode.IsUserError() ? ErrorState.ValidationError : ErrorState.FatalError;
-			}
-		}
-		catch (AccessTokenNotAvailableException exception)
-		{
-			exception.Redirect();
-		}
-	}
-
-	private void Dismiss()
-	{
-		State = ErrorState.None;
-		StateHasChanged();
 	}
 }
