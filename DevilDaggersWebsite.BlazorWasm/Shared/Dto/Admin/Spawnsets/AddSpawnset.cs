@@ -1,4 +1,5 @@
-﻿using System.ComponentModel.DataAnnotations;
+﻿using DevilDaggersWebsite.BlazorWasm.Shared.Constants;
+using System.ComponentModel.DataAnnotations;
 
 namespace DevilDaggersWebsite.BlazorWasm.Shared.Dto.Admin.Spawnsets
 {
@@ -17,5 +18,8 @@ namespace DevilDaggersWebsite.BlazorWasm.Shared.Dto.Admin.Spawnsets
 		public string? HtmlDescription { get; set; }
 
 		public bool IsPractice { get; set; }
+
+		[MaxLength(SpawnsetFileConstants.MaxFileSize)]
+		public byte[] FileContents { get; set; } = null!;
 	}
 }

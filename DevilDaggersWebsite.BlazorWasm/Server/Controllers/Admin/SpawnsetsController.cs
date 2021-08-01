@@ -66,26 +66,12 @@ namespace DevilDaggersWebsite.BlazorWasm.Server.Controllers.Admin
 		[HttpPost]
 		[ProducesResponseType(StatusCodes.Status200OK)]
 		[ProducesResponseType(StatusCodes.Status400BadRequest)]
-		public async Task<ActionResult> AddSpawnset(AddSpawnset addSpawnset, IFormFile file)
+		public async Task<ActionResult> AddSpawnset(AddSpawnset addSpawnset)
 		{
-			// File validation.
-			if (file == null)
-				return BadRequest("No file.");
-
-			if (file.Length > SpawnsetFileConstants.MaxFileSize)
-				return BadRequest($"File too large ({file.Length:n0} / max {SpawnsetFileConstants.MaxFileSize:n0} bytes).");
-
-			byte[] formFileBytes = new byte[file.Length];
-			using (MemoryStream ms = new())
-			{
-				file.CopyTo(ms);
-				formFileBytes = ms.ToArray();
-			}
-
-			if (!Spawnset.TryParse(formFileBytes, out _))
+			if (!Spawnset.TryParse(addSpawnset.FileContents, out _))
 				return BadRequest("File could not be parsed to a proper survival file.");
 
-			byte[] spawnsetHash = MD5.HashData(formFileBytes);
+			byte[] spawnsetHash = MD5.HashData(addSpawnset.FileContents);
 			SpawnsetHashCacheData? existingSpawnset = await _spawnsetHashCache.GetSpawnset(spawnsetHash);
 			if (existingSpawnset != null)
 				return BadRequest($"Spawnset is exactly the same as an already existing spawnset named '{existingSpawnset.Name}'.");
@@ -98,7 +84,7 @@ namespace DevilDaggersWebsite.BlazorWasm.Server.Controllers.Admin
 				return BadRequest($"Spawnset with name '{addSpawnset.Name}' already exists.");
 
 			// Add file.
-			Io.File.WriteAllBytes(Path.Combine(_environment.WebRootPath, "spawnsets", addSpawnset.Name), formFileBytes);
+			Io.File.WriteAllBytes(Path.Combine(_environment.WebRootPath, "spawnsets", addSpawnset.Name), addSpawnset.FileContents);
 
 			// Add entity.
 			SpawnsetFile spawnset = new()

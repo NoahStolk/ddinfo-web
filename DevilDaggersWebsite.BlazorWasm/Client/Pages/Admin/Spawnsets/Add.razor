@@ -3,6 +3,7 @@
 @inject NavigationManager NavigationManager
 @using DevilDaggersWebsite.BlazorWasm.Shared.Dto.Admin.Players
 @using DevilDaggersWebsite.BlazorWasm.Shared.Dto.Admin.Spawnsets
+@using System.IO
 
 <AdminAdd OverviewUrl="/admin/spawnsets" PostApiUrl="api/admin/spawnsets" Model="_addSpawnset" @ref="_addComponent">
 	<AdminInput Label="@nameof(AddSpawnset.PlayerId)"><SearchDropdown Values="@_playerNames" Converter="s => int.Parse(s)" @bind-Value="@_addSpawnset.PlayerId" /></AdminInput>
@@ -10,6 +11,7 @@
 	<AdminInput Label="@nameof(AddSpawnset.MaxDisplayWaves)"><InputNumber class="w-64 pl-2 bg-gray-900 text-color-text" @bind-Value="_addSpawnset.MaxDisplayWaves" /></AdminInput>
 	<AdminInput Label="@nameof(AddSpawnset.HtmlDescription)"><InputText class="w-64 pl-2 bg-gray-900 text-color-text" @bind-Value="@_addSpawnset.HtmlDescription" /></AdminInput>
 	<AdminInput Label="@nameof(AddSpawnset.IsPractice)"><InputCheckbox @bind-Value="@_addSpawnset.IsPractice" /></AdminInput>
+	<AdminInput Label="@nameof(AddSpawnset.FileContents)"><InputFile OnChange="LoadFile" /></AdminInput>
 </AdminAdd>
 
 @code
@@ -41,5 +43,14 @@
 		{
 			exception.Redirect();
 		}
+	}
+
+	private async Task LoadFile(InputFileChangeEventArgs e)
+	{
+		IBrowserFile file = e.File;
+		using MemoryStream ms = new();
+		await file.OpenReadStream().CopyToAsync(ms);
+
+		_addSpawnset.FileContents = ms.ToArray();
 	}
 }
