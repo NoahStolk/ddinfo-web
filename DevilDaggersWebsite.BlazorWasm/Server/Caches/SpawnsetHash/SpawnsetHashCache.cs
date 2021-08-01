@@ -1,7 +1,7 @@
 ﻿using DevilDaggersCore.Spawnsets;
 using DevilDaggersWebsite.BlazorWasm.Server.HostedServices.DdInfoDiscordBot;
 using DevilDaggersWebsite.BlazorWasm.Server.Singletons;
-using Microsoft.AspNetCore.Hosting;
+using DevilDaggersWebsite.BlazorWasm.Server.Utils;
 using System.Collections.Concurrent;
 using System.IO;
 using System.Linq;
@@ -15,12 +15,10 @@ namespace DevilDaggersWebsite.BlazorWasm.Server.Caches.SpawnsetHash
 		private readonly ConcurrentBag<SpawnsetHashCacheData> _cache = new();
 
 		private readonly DiscordLogger _discordLogger;
-		private readonly IWebHostEnvironment _environment;
 
-		public SpawnsetHashCache(DiscordLogger discordLogger, IWebHostEnvironment environment)
+		public SpawnsetHashCache(DiscordLogger discordLogger)
 		{
 			_discordLogger = discordLogger;
-			_environment = environment;
 		}
 
 		public async Task<SpawnsetHashCacheData?> GetSpawnset(byte[] hash)
@@ -29,7 +27,7 @@ namespace DevilDaggersWebsite.BlazorWasm.Server.Caches.SpawnsetHash
 			if (spawnsetCacheData != null)
 				return spawnsetCacheData;
 
-			foreach (string spawnsetPath in Directory.GetFiles(Path.Combine(_environment.WebRootPath, "spawnsets")))
+			foreach (string spawnsetPath in Directory.GetFiles(DataUtils.GetPath("Spawnsets")))
 			{
 				byte[] spawnsetBytes = File.ReadAllBytes(spawnsetPath);
 				if (!Spawnset.TryParse(spawnsetBytes, out _))

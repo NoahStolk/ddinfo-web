@@ -18,7 +18,7 @@ namespace DevilDaggersWebsite.BlazorWasm.Server.Utils
 		{
 			try
 			{
-				return Directory.GetFiles(Path.Combine(_root, subDirectory));
+				return Directory.GetFiles(GetPath(subDirectory));
 			}
 			catch
 			{
@@ -37,5 +37,8 @@ namespace DevilDaggersWebsite.BlazorWasm.Server.Utils
 
 			return paths[^1];
 		}
+
+		public static string GetPath(string subDirectory)
+			=> Path.Combine(_root, subDirectory);
 	}
 }

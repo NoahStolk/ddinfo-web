@@ -4,6 +4,7 @@ using DevilDaggersWebsite.BlazorWasm.Server.Converters.Admin;
 using DevilDaggersWebsite.BlazorWasm.Server.Entities;
 using DevilDaggersWebsite.BlazorWasm.Server.Extensions;
 using DevilDaggersWebsite.BlazorWasm.Server.Singletons;
+using DevilDaggersWebsite.BlazorWasm.Server.Utils;
 using DevilDaggersWebsite.BlazorWasm.Shared;
 using DevilDaggersWebsite.BlazorWasm.Shared.Constants;
 using DevilDaggersWebsite.BlazorWasm.Shared.Dto;
@@ -84,7 +85,7 @@ namespace DevilDaggersWebsite.BlazorWasm.Server.Controllers.Admin
 				return BadRequest($"Spawnset with name '{addSpawnset.Name}' already exists.");
 
 			// Add file.
-			Io.File.WriteAllBytes(Path.Combine(_environment.WebRootPath, "spawnsets", addSpawnset.Name), addSpawnset.FileContents);
+			Io.File.WriteAllBytes(Path.Combine(DataUtils.GetPath("Spawnsets"), addSpawnset.Name), addSpawnset.FileContents);
 
 			// Add entity.
 			SpawnsetFile spawnset = new()
@@ -131,7 +132,7 @@ namespace DevilDaggersWebsite.BlazorWasm.Server.Controllers.Admin
 
 			if (spawnset.Name != editSpawnset.Name)
 			{
-				string directory = Path.Combine(_environment.WebRootPath, "spawnsets");
+				string directory = DataUtils.GetPath("Spawnsets");
 				Io.File.Move(Path.Combine(directory, spawnset.Name), Path.Combine(directory, editSpawnset.Name));
 			}
 
@@ -161,7 +162,7 @@ namespace DevilDaggersWebsite.BlazorWasm.Server.Controllers.Admin
 			if (_dbContext.CustomLeaderboards.Any(ce => ce.SpawnsetFileId == id))
 				return BadRequest("Spawnset with custom leaderboard cannot be deleted.");
 
-			string path = Path.Combine(_environment.WebRootPath, "spawnsets", spawnset.Name);
+			string path = Path.Combine(DataUtils.GetPath("Spawnsets"), spawnset.Name);
 			if (Io.File.Exists(path))
 			{
 				Io.File.Delete(path);
