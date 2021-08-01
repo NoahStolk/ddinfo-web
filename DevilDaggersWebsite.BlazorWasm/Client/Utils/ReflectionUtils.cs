@@ -24,6 +24,9 @@ namespace DevilDaggersWebsite.BlazorWasm.Client.Utils
 			if (nullableType != null)
 				type = nullableType;
 
+			if (type == typeof(DateTime))
+				return ((DateTime)value).ToString(FormatUtils.DateTimeUtcFormat);
+
 			if (type.GetInterfaces().Any(i => i == typeof(IFormattable)))
 			{
 				FormatAttribute? fa = pi.GetCustomAttribute<FormatAttribute>();
