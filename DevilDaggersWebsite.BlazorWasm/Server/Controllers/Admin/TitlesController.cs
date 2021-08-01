@@ -153,11 +153,11 @@ namespace DevilDaggersWebsite.BlazorWasm.Server.Controllers.Admin
 		{
 			foreach (PlayerTitle newEntity in playerIds.ConvertAll(pi => new PlayerTitle { TitleId = titleId, PlayerId = pi }))
 			{
-				if (!_dbContext.PlayerTitles.Any(pam => pam.TitleId == newEntity.TitleId && pam.PlayerId == newEntity.PlayerId))
+				if (!_dbContext.PlayerTitles.Any(pt => pt.TitleId == newEntity.TitleId && pt.PlayerId == newEntity.PlayerId))
 					_dbContext.PlayerTitles.Add(newEntity);
 			}
 
-			foreach (PlayerTitle entityToRemove in _dbContext.PlayerTitles.Where(pam => pam.TitleId == titleId && !playerIds.Contains(pam.PlayerId)))
+			foreach (PlayerTitle entityToRemove in _dbContext.PlayerTitles.Where(pt => pt.TitleId == titleId && !playerIds.Contains(pt.PlayerId)))
 				_dbContext.PlayerTitles.Remove(entityToRemove);
 		}
 	}
