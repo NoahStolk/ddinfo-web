@@ -34,7 +34,7 @@ namespace DevilDaggersWebsite.BlazorWasm.Server.Controllers.Admin
 
 		[HttpGet]
 		[ProducesResponseType(StatusCodes.Status200OK)]
-		public ActionResult<Page<GetPlayerBase>> GetPlayers([Range(0, 1000)] int pageIndex = 0, [Range(AdminPagingConstants.PageSizeMin, AdminPagingConstants.PageSizeMax)] int pageSize = AdminPagingConstants.PageSizeDefault, string? sortBy = null, bool ascending = false)
+		public ActionResult<Page<GetPlayerForOverview>> GetPlayers([Range(0, 1000)] int pageIndex = 0, [Range(AdminPagingConstants.PageSizeMin, AdminPagingConstants.PageSizeMax)] int pageSize = AdminPagingConstants.PageSizeDefault, string? sortBy = null, bool ascending = false)
 		{
 			IQueryable<Player> playersQuery = _dbContext.Players.AsNoTracking();
 
@@ -46,9 +46,9 @@ namespace DevilDaggersWebsite.BlazorWasm.Server.Controllers.Admin
 				.Take(pageSize)
 				.ToList();
 
-			return new Page<GetPlayerBase>
+			return new Page<GetPlayerForOverview>
 			{
-				Results = players.ConvertAll(p => p.ToGetPlayerBase()),
+				Results = players.ConvertAll(p => p.ToGetPlayerForOverview()),
 				TotalResults = _dbContext.Players.Count(),
 			};
 		}
@@ -71,6 +71,7 @@ namespace DevilDaggersWebsite.BlazorWasm.Server.Controllers.Admin
 
 		[HttpGet("{id}")]
 		[ProducesResponseType(StatusCodes.Status200OK)]
+		[ProducesResponseType(StatusCodes.Status404NotFound)]
 		public ActionResult<GetPlayer> GetPlayerById(int id)
 		{
 			Player? player = _dbContext.Players

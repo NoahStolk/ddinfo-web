@@ -5,7 +5,7 @@ namespace DevilDaggersWebsite.BlazorWasm.Server.Converters.Admin
 {
 	public static class PlayerConverters
 	{
-		public static GetPlayerBase ToGetPlayerBase(this Player player) => new()
+		public static GetPlayerForOverview ToGetPlayerForOverview(this Player player) => new()
 		{
 			Id = player.Id,
 			PlayerName = player.PlayerName,
