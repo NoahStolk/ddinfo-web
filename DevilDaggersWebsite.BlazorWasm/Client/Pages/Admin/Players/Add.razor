@@ -93,12 +93,12 @@
 
 	<div class="py-1">
 		<label class="@_inputLabelCss">@nameof(AddPlayer.AssetModIds)</label>
-		<MultiSearchDropdown Values="@_modNames" SelectedValues="@_addPlayer.AssetModIds" />
+		<MultiSearchDropdown Values="@_modNames" @bind-Value="@_addPlayer.AssetModIds" />
 	</div>
 
 	<div class="py-1">
 		<label class="@_inputLabelCss">@nameof(AddPlayer.TitleIds)</label>
-		<MultiSearchDropdown Values="@_titleNames" SelectedValues="@_addPlayer.TitleIds" />
+		<MultiSearchDropdown Values="@_titleNames" @bind-Value="@_addPlayer.TitleIds" />
 	</div>
 
 	<div class="py-1">
