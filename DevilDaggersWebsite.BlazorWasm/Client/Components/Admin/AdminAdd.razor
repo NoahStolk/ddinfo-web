@@ -1,7 +1,6 @@
 ﻿@inject AdminApiHttpClient Http
 @inject NavigationManager NavigationManager
 @typeparam TModel
-@using Microsoft.AspNetCore.Components.WebAssembly.Authentication
 @using System.Net
 
 <h1 class="text-red text-2xl">Add</h1>
@@ -37,9 +36,7 @@
 {
 	[Parameter] public string OverviewUrl { get; set; } = null!;
 	[Parameter] public string PostApiUrl { get; set; } = null!;
-
 	[Parameter] public RenderFragment ChildContent { get; set; } = null!;
-
 	[Parameter] public TModel Model { get; set; } = default!;
 
 	public ErrorState State { get; set; }
