@@ -112,6 +112,9 @@ namespace DevilDaggersWebsite.BlazorWasm.Server.Controllers.Admin
 				Url = addMod.Url ?? string.Empty,
 			};
 			_dbContext.AssetMods.Add(mod);
+			_dbContext.SaveChanges(); // Save changes here so PlayerMods entities can be assigned properly.
+
+			UpdateManyToManyRelations(addMod.PlayerIds ?? new(), mod.Id);
 			_dbContext.SaveChanges();
 
 			await _auditLogger.LogAdd(addMod, User, mod.Id);
@@ -161,6 +164,9 @@ namespace DevilDaggersWebsite.BlazorWasm.Server.Controllers.Admin
 			mod.Name = editMod.Name;
 			mod.TrailerUrl = editMod.TrailerUrl;
 			mod.Url = editMod.Url ?? string.Empty;
+			_dbContext.SaveChanges(); // Save changes here so PlayerMods entities can be assigned properly.
+
+			UpdateManyToManyRelations(editMod.PlayerIds ?? new(), mod.Id);
 			_dbContext.SaveChanges();
 
 			await _auditLogger.LogEdit(logDto, editMod, User, mod.Id);
@@ -183,6 +189,18 @@ namespace DevilDaggersWebsite.BlazorWasm.Server.Controllers.Admin
 			await _auditLogger.LogDelete(assetMod, User, assetMod.Id);
 
 			return Ok();
+		}
+
+		private void UpdateManyToManyRelations(List<int> playerIds, int modId)
+		{
+			foreach (PlayerAssetMod newEntity in playerIds.ConvertAll(pi => new PlayerAssetMod { AssetModId = modId, PlayerId = pi }))
+			{
+				if (!_dbContext.PlayerAssetMods.Any(pam => pam.AssetModId == newEntity.AssetModId && pam.PlayerId == newEntity.PlayerId))
+					_dbContext.PlayerAssetMods.Add(newEntity);
+			}
+
+			foreach (PlayerAssetMod entityToRemove in _dbContext.PlayerAssetMods.Where(pam => pam.AssetModId == modId && !playerIds.Contains(pam.PlayerId)))
+				_dbContext.PlayerAssetMods.Remove(entityToRemove);
 		}
 
 		[HttpPost("upload-file")]
