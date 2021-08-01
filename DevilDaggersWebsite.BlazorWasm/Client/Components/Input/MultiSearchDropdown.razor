@@ -2,7 +2,7 @@
 
 <div class="inline-block w-64 bg-gray-900 text-color-text cursor-pointer">
 	<div>
-		<span class="pl-2" @onclick="e => _show = !_show">@SelectedDisplayValue</span>
+		<div class="w-full" @onclick="e => _show = !_show"><span class="pl-2">@SelectedDisplayValue</span></div>
 		@foreach (int id in CurrentValue ?? new())
 		{
 			<div class="grid grid-cols-8">
