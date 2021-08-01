@@ -6,6 +6,7 @@ using DevilDaggersWebsite.BlazorWasm.Shared;
 using DevilDaggersWebsite.BlazorWasm.Shared.Constants;
 using DevilDaggersWebsite.BlazorWasm.Shared.Dto;
 using DevilDaggersWebsite.BlazorWasm.Shared.Dto.Admin.CustomEntries;
+using DevilDaggersWebsite.BlazorWasm.Shared.Enums;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
@@ -77,7 +78,7 @@ namespace DevilDaggersWebsite.BlazorWasm.Server.Controllers.Admin
 				CustomLeaderboardId = addCustomEntry.CustomLeaderboardId,
 				DaggersFired = addCustomEntry.DaggersFired,
 				DaggersHit = addCustomEntry.DaggersHit,
-				DeathType = addCustomEntry.DeathType,
+				DeathType = (byte)addCustomEntry.DeathType,
 				EnemiesAlive = addCustomEntry.EnemiesAlive,
 				EnemiesKilled = addCustomEntry.EnemiesKilled,
 				GemsCollected = addCustomEntry.GemsCollected,
@@ -123,7 +124,7 @@ namespace DevilDaggersWebsite.BlazorWasm.Server.Controllers.Admin
 				CustomLeaderboardId = customEntry.CustomLeaderboardId,
 				DaggersFired = customEntry.DaggersFired,
 				DaggersHit = customEntry.DaggersHit,
-				DeathType = customEntry.DeathType,
+				DeathType = (DeathType)customEntry.DeathType,
 				EnemiesAlive = customEntry.EnemiesAlive,
 				EnemiesKilled = customEntry.EnemiesKilled,
 				GemsCollected = customEntry.GemsCollected,
@@ -144,7 +145,7 @@ namespace DevilDaggersWebsite.BlazorWasm.Server.Controllers.Admin
 			customEntry.CustomLeaderboardId = editCustomEntry.CustomLeaderboardId;
 			customEntry.DaggersFired = editCustomEntry.DaggersFired;
 			customEntry.DaggersHit = editCustomEntry.DaggersHit;
-			customEntry.DeathType = editCustomEntry.DeathType;
+			customEntry.DeathType = (byte)editCustomEntry.DeathType;
 			customEntry.EnemiesAlive = editCustomEntry.EnemiesAlive;
 			customEntry.EnemiesKilled = editCustomEntry.EnemiesKilled;
 			customEntry.GemsCollected = editCustomEntry.GemsCollected;

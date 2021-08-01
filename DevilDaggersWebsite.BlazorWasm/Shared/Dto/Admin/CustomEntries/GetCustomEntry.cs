@@ -1,4 +1,5 @@
-﻿using System;
+﻿using DevilDaggersWebsite.BlazorWasm.Shared.Enums;
+using System;
 using System.ComponentModel.DataAnnotations;
 
 namespace DevilDaggersWebsite.BlazorWasm.Shared.Dto.Admin.CustomEntries
@@ -45,7 +46,7 @@ namespace DevilDaggersWebsite.BlazorWasm.Shared.Dto.Admin.CustomEntries
 		public int HomingDaggersEaten { get; init; }
 
 		[Display(Name = "Death")]
-		public byte DeathType { get; init; }
+		public DeathType DeathType { get; init; }
 
 		[Format(FormatUtils.TimeFormat)]
 		[Display(Name = "Level2")]

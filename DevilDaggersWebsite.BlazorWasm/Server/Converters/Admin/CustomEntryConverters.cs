@@ -1,5 +1,6 @@
 ﻿using DevilDaggersWebsite.BlazorWasm.Server.Entities;
 using DevilDaggersWebsite.BlazorWasm.Shared.Dto.Admin.CustomEntries;
+using DevilDaggersWebsite.BlazorWasm.Shared.Enums;
 
 namespace DevilDaggersWebsite.BlazorWasm.Server.Converters.Admin
 {
@@ -11,7 +12,7 @@ namespace DevilDaggersWebsite.BlazorWasm.Server.Converters.Admin
 			ClientVersion = customEntry.ClientVersion,
 			DaggersFired = customEntry.DaggersFired,
 			DaggersHit = customEntry.DaggersHit,
-			DeathType = customEntry.DeathType,
+			DeathType = (DeathType)customEntry.DeathType,
 			EnemiesAlive = customEntry.EnemiesAlive,
 			EnemiesKilled = customEntry.EnemiesKilled,
 			GemsCollected = customEntry.GemsCollected,

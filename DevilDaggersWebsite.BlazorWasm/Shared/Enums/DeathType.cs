@@ -1,6 +1,6 @@
 ﻿namespace DevilDaggersWebsite.BlazorWasm.Shared.Enums
 {
-	public enum DeathType
+	public enum DeathType : byte
 	{
 		Fallen = 0,
 		Swarmed = 1,
