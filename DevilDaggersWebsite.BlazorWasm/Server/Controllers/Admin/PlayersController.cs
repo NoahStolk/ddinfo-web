@@ -157,7 +157,7 @@ namespace DevilDaggersWebsite.BlazorWasm.Server.Controllers.Admin
 			_dbContext.Players.Add(player);
 			_dbContext.SaveChanges(); // Save changes here so PlayerTitle and PlayerAssetMod entities can be assigned properly.
 
-			UpdateManyToManyRelations(addPlayer.TitleIds ?? new(), addPlayer.AssetModIds ?? new(), player.Id);
+			UpdateManyToManyRelations(addPlayer.AssetModIds ?? new(), addPlayer.TitleIds ?? new(), player.Id);
 			_dbContext.SaveChanges();
 
 			await _auditLogger.LogAdd(addPlayer, User, player.Id);
@@ -257,7 +257,7 @@ namespace DevilDaggersWebsite.BlazorWasm.Server.Controllers.Admin
 			player.IsBanned = editPlayer.IsBanned;
 			player.IsBannedFromDdcl = editPlayer.IsBannedFromDdcl;
 
-			UpdateManyToManyRelations(editPlayer.TitleIds ?? new(), editPlayer.AssetModIds ?? new(), player.Id);
+			UpdateManyToManyRelations(editPlayer.AssetModIds ?? new(), editPlayer.TitleIds ?? new(), player.Id);
 			_dbContext.SaveChanges();
 
 			await _auditLogger.LogEdit(logDto, editPlayer, User, player.Id);
