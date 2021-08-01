@@ -3,8 +3,6 @@ Microsoft Visual Studio Solution File, Format Version 12.00
 # Visual Studio Version 16
 VisualStudioVersion = 16.0.28917.181
 MinimumVisualStudioVersion = 10.0.40219.1
-Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "DevilDaggersWebsite.Razor", "DevilDaggersWebsite.Razor\DevilDaggersWebsite.Razor.csproj", "{43297161-4F0D-413F-8961-8678B9F3DFFB}"
-EndProject
 Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "DevilDaggersWebsite.Tests", "DevilDaggersWebsite.Tests\DevilDaggersWebsite.Tests.csproj", "{EF02C310-86AD-4F70-8D30-D73FAD185F23}"
 EndProject
 Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "Tests", "Tests", "{F7BF9B31-DDAD-4562-93A8-677E71FA8774}"
@@ -33,10 +31,6 @@ Global
 		Release|Any CPU = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(ProjectConfigurationPlatforms) = postSolution
-		{43297161-4F0D-413F-8961-8678B9F3DFFB}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
-		{43297161-4F0D-413F-8961-8678B9F3DFFB}.Debug|Any CPU.Build.0 = Debug|Any CPU
-		{43297161-4F0D-413F-8961-8678B9F3DFFB}.Release|Any CPU.ActiveCfg = Release|Any CPU
-		{43297161-4F0D-413F-8961-8678B9F3DFFB}.Release|Any CPU.Build.0 = Release|Any CPU
 		{EF02C310-86AD-4F70-8D30-D73FAD185F23}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
 		{EF02C310-86AD-4F70-8D30-D73FAD185F23}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{EF02C310-86AD-4F70-8D30-D73FAD185F23}.Release|Any CPU.ActiveCfg = Release|Any CPU
