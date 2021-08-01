@@ -1,14 +1,13 @@
 ﻿using DevilDaggersCore.Spawnsets;
 using DevilDaggersWebsite.BlazorWasm.Server;
 using DevilDaggersWebsite.BlazorWasm.Server.Caches.SpawnsetHash;
-using DevilDaggersWebsite.BlazorWasm.Server.Controllers.Admin;
 using DevilDaggersWebsite.BlazorWasm.Server.Controllers.Public;
 using DevilDaggersWebsite.BlazorWasm.Server.Entities;
 using DevilDaggersWebsite.BlazorWasm.Server.Extensions;
 using DevilDaggersWebsite.BlazorWasm.Server.Singletons;
 using DevilDaggersWebsite.BlazorWasm.Server.Transients;
 using DevilDaggersWebsite.BlazorWasm.Shared.Dto.Public.CustomEntries;
-using DevilDaggersWebsite.BlazorWasm.Shared.Dto.Tools;
+using DevilDaggersWebsite.BlazorWasm.Shared.Dto.Public.Tools;
 using DevilDaggersWebsite.Tests.Data;
 using DevilDaggersWebsite.Tests.Extensions;
 using IdentityServer4.EntityFramework.Options;
@@ -51,7 +50,7 @@ namespace DevilDaggersWebsite.Tests
 			mockEnvironment.Setup(m => m.WebRootPath).Returns(TestConstants.WebRoot);
 
 			Mock<IToolHelper> toolHelper = new();
-			toolHelper.Setup(m => m.GetToolByName(It.IsAny<string>())).Returns(new GetToolPublic
+			toolHelper.Setup(m => m.GetToolByName(It.IsAny<string>())).Returns(new GetTool
 			{
 				Name = "DevilDaggersCustomLeaderboards",
 				VersionNumber = new(1, 0, 0, 0),
