@@ -17,5 +17,18 @@ namespace DevilDaggersWebsite.BlazorWasm.Server.Converters.Admin
 			TrailerUrl = mod.TrailerUrl?.TrimAfter(40, true),
 			Url = mod.Url?.TrimAfter(40, true),
 		};
+
+		public static GetMod ToGetMod(this AssetMod mod) => new()
+		{
+			Id = mod.Id,
+			AssetModTypes = mod.AssetModTypes,
+			HtmlDescription = mod.HtmlDescription,
+			IsHidden = mod.IsHidden,
+			LastUpdated = mod.LastUpdated,
+			Name = mod.Name,
+			PlayerIds = mod.PlayerAssetMods.ConvertAll(pam => pam.PlayerId),
+			TrailerUrl = mod.TrailerUrl,
+			Url = mod.Url,
+		};
 	}
 }

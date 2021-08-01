@@ -83,6 +83,22 @@ namespace DevilDaggersWebsite.BlazorWasm.Server.Controllers.Admin
 			});
 		}
 
+		[HttpGet("{id}")]
+		[ProducesResponseType(StatusCodes.Status200OK)]
+		[ProducesResponseType(StatusCodes.Status404NotFound)]
+		public ActionResult<GetMod> GetModById(int id)
+		{
+			AssetMod? mod = _dbContext.AssetMods
+				.AsSingleQuery()
+				.AsNoTracking()
+				.Include(m => m.PlayerAssetMods)
+				.FirstOrDefault(m => m.Id == id);
+			if (mod == null)
+				return NotFound();
+
+			return mod.ToGetMod();
+		}
+
 		[HttpPost]
 		[ProducesResponseType(StatusCodes.Status200OK)]
 		[ProducesResponseType(StatusCodes.Status400BadRequest)]
