@@ -6,7 +6,7 @@ namespace DevilDaggersWebsite.BlazorWasm.Server.Converters.Admin
 {
 	public static class ModConverters
 	{
-		public static GetMod ToGetMod(this AssetMod mod) => new()
+		public static GetModForOverview ToGetModForOverview(this AssetMod mod) => new()
 		{
 			Id = mod.Id,
 			AssetModTypes = mod.AssetModTypes,
@@ -14,7 +14,6 @@ namespace DevilDaggersWebsite.BlazorWasm.Server.Converters.Admin
 			IsHidden = mod.IsHidden,
 			LastUpdated = mod.LastUpdated,
 			Name = mod.Name,
-			PlayerIds = mod.PlayerAssetMods.ConvertAll(pam => pam.PlayerId),
 			TrailerUrl = mod.TrailerUrl?.TrimAfter(40, true),
 			Url = mod.Url?.TrimAfter(40, true),
 		};

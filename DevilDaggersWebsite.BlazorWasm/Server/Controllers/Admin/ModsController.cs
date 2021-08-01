@@ -48,11 +48,9 @@ namespace DevilDaggersWebsite.BlazorWasm.Server.Controllers.Admin
 
 		[HttpGet]
 		[ProducesResponseType(StatusCodes.Status200OK)]
-		public ActionResult<Page<GetMod>> GetMods([Range(0, 1000)] int pageIndex = 0, [Range(AdminPagingConstants.PageSizeMin, AdminPagingConstants.PageSizeMax)] int pageSize = AdminPagingConstants.PageSizeDefault, string? sortBy = null, bool ascending = false)
+		public ActionResult<Page<GetModForOverview>> GetMods([Range(0, 1000)] int pageIndex = 0, [Range(AdminPagingConstants.PageSizeMin, AdminPagingConstants.PageSizeMax)] int pageSize = AdminPagingConstants.PageSizeDefault, string? sortBy = null, bool ascending = false)
 		{
-			IQueryable<AssetMod> modsQuery = _dbContext.AssetMods
-				.AsNoTracking()
-				.Include(m => m.PlayerAssetMods);
+			IQueryable<AssetMod> modsQuery = _dbContext.AssetMods.AsNoTracking();
 
 			if (sortBy != null)
 				modsQuery = modsQuery.OrderByMember(sortBy, ascending);
@@ -62,9 +60,9 @@ namespace DevilDaggersWebsite.BlazorWasm.Server.Controllers.Admin
 				.Take(pageSize)
 				.ToList();
 
-			return new Page<GetMod>
+			return new Page<GetModForOverview>
 			{
-				Results = mods.ConvertAll(m => m.ToGetMod()),
+				Results = mods.ConvertAll(m => m.ToGetModForOverview()),
 				TotalResults = _dbContext.AssetMods.Count(),
 			};
 		}
