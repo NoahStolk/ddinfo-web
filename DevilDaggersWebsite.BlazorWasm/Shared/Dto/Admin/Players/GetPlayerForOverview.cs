@@ -14,6 +14,7 @@ namespace DevilDaggersWebsite.BlazorWasm.Shared.Dto.Admin.Players
 
 		public int? Dpi { get; init; }
 
+		[Format(FormatUtils.InGameSensFormat)]
 		[Display(Name = "Sens")]
 		public float? InGameSens { get; init; }
 
@@ -25,6 +26,7 @@ namespace DevilDaggersWebsite.BlazorWasm.Shared.Dto.Admin.Players
 		[Display(Name = "FlashHand")]
 		public bool? HasFlashHandEnabled { get; init; }
 
+		[Format(FormatUtils.GammaFormat)]
 		public float? Gamma { get; init; }
 
 		[Display(Name = "LegacyAudio")]
