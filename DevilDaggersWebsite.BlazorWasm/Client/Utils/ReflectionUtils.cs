@@ -1,6 +1,7 @@
 ﻿using DevilDaggersWebsite.BlazorWasm.Shared;
 using DevilDaggersWebsite.BlazorWasm.Shared.Dto;
 using System;
+using System.Collections.Generic;
 using System.Data;
 using System.Globalization;
 using System.Linq;
@@ -10,8 +11,28 @@ namespace DevilDaggersWebsite.BlazorWasm.Client.Utils
 {
 	public static class ReflectionUtils
 	{
-		public static PropertyInfo[] GetDtoDisplayPropertyInfos<TDto>()
-			=> typeof(TDto).GetProperties().Where(pi => pi.CanWrite && (pi.PropertyType.IsValueType || pi.PropertyType == typeof(string))).ToArray();
+		public static Dictionary<PropertyInfo, bool> GetDtoDisplayProperties<TDto>()
+		{
+			return typeof(TDto)
+				.GetProperties()
+				.Where(pi => pi.CanWrite && (pi.PropertyType.IsValueType || pi.PropertyType == typeof(string)))
+				.ToDictionary(
+					pi => pi,
+					pi => TextAlignRight(pi.PropertyType));
+
+			static bool TextAlignRight(Type type)
+			{
+				UseUnderlyingNullableType(ref type);
+				return type == typeof(float) || type == typeof(int);
+			}
+		}
+
+		private static void UseUnderlyingNullableType(ref Type type)
+		{
+			Type? nullableType = Nullable.GetUnderlyingType(type);
+			if (nullableType != null)
+				type = nullableType;
+		}
 
 		public static string GetDtoPropertyDisplayValue<TDto>(PropertyInfo pi, TDto dto)
 		{
@@ -20,9 +41,7 @@ namespace DevilDaggersWebsite.BlazorWasm.Client.Utils
 			if (value == null)
 				return string.Empty;
 
-			Type? nullableType = Nullable.GetUnderlyingType(type);
-			if (nullableType != null)
-				type = nullableType;
+			UseUnderlyingNullableType(ref type);
 
 			if (type == typeof(DateTime))
 				return ((DateTime)value).ToString(FormatUtils.DateTimeUtcFormat);
