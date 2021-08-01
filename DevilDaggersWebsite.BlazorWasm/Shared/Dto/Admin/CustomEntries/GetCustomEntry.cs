@@ -13,6 +13,7 @@ namespace DevilDaggersWebsite.BlazorWasm.Shared.Dto.Admin.CustomEntries
 		[Display(Name = "Player")]
 		public string PlayerName { get; init; } = null!;
 
+		[Format(FormatUtils.TimeFormat)]
 		public float Time { get; init; }
 
 		[Display(Name = "Gems")]
@@ -46,12 +47,15 @@ namespace DevilDaggersWebsite.BlazorWasm.Shared.Dto.Admin.CustomEntries
 		[Display(Name = "Death")]
 		public byte DeathType { get; init; }
 
+		[Format(FormatUtils.TimeFormat)]
 		[Display(Name = "Level2")]
 		public float LevelUpTime2 { get; init; }
 
+		[Format(FormatUtils.TimeFormat)]
 		[Display(Name = "Level3")]
 		public float LevelUpTime3 { get; init; }
 
+		[Format(FormatUtils.TimeFormat)]
 		[Display(Name = "Level4")]
 		public float LevelUpTime4 { get; init; }
 

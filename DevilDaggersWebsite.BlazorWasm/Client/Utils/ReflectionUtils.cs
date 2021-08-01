@@ -23,7 +23,7 @@ namespace DevilDaggersWebsite.BlazorWasm.Client.Utils
 			static bool TextAlignRight(Type type)
 			{
 				UseUnderlyingNullableType(ref type);
-				return type == typeof(float) || type == typeof(int);
+				return type == typeof(double) || type == typeof(float) || type == typeof(int);
 			}
 		}
 
