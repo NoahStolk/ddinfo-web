@@ -1,4 +1,5 @@
-﻿@inherits InputBase<string>
+﻿@inherits InputBase<TKey>
+@typeparam TKey
 
 <div class="inline-block w-64 bg-gray-900 text-color-text cursor-pointer">
 	<div class="grid grid-cols-8">
@@ -14,7 +15,7 @@
 			<ul class="max-h-screen-half overflow-y-scroll w-64">
 				@{
 					int i = 0;
-					foreach (KeyValuePair<string, string> kvp in FilteredItems)
+					foreach (KeyValuePair<TKey, string> kvp in FilteredItems)
 					{
 						<li class="cursor-pointer pl-2 @(i++ % 2 == 0 ? "bg-gray-800" : string.Empty)" Item="@kvp" @onclick="e => HandleSelect(kvp.Key)">@kvp.Key (@kvp.Value)</li>
 					}
@@ -28,29 +29,30 @@
 {
 	private string? _searchValue;
 
-	private string SelectedDisplayValue => string.IsNullOrWhiteSpace(CurrentValue) ? "<None selected>" : $"{CurrentValue} ({(Values.ContainsKey(CurrentValue) ? Values[CurrentValue] : "???")})";
+	private string SelectedDisplayValue => CurrentValue == null ? "<None selected>" : $"{CurrentValue} ({(Values.ContainsKey(CurrentValue) ? Values[CurrentValue] : "???")})";
 
-	[Parameter] public Dictionary<string, string> Values { get; set; } = null!;
+	[Parameter] public Dictionary<TKey, string> Values { get; set; } = null!;
+	[Parameter] public Func<string?, TKey> Converter { get; set; } = null!;
 
 	private bool _show = false;
 
-	public Dictionary<string, string> FilteredItems => _searchValue == null ? Values : Values
+	public Dictionary<TKey, string> FilteredItems => _searchValue == null ? Values : Values
 		.Where(kvp =>
 			kvp.Key.ToString()?.Contains(_searchValue, StringComparison.InvariantCultureIgnoreCase) == true ||
 			kvp.Value.Contains(_searchValue, StringComparison.InvariantCultureIgnoreCase))
 		.ToDictionary(kvp => kvp.Key, kvp => kvp.Value);
 
-	public void HandleSelect(string? item)
+	public void HandleSelect(TKey? item)
 	{
 		CurrentValue = item;
 		_show = false;
 		StateHasChanged();
 	}
 
-	protected override bool TryParseValueFromString(string? value, out string? result, out string validationMessage)
+	protected override bool TryParseValueFromString(string? value, out TKey? result, out string validationMessage)
 	{
 		validationMessage = string.Empty;
-		result = value;
+		result = Converter(value);
 		return true;
 	}
 }

@@ -6,7 +6,7 @@
 @using DevilDaggersWebsite.BlazorWasm.Shared.Dto.Admin.Titles
 
 <AdminEdit OverviewUrl="/admin/players" PutApiUrl="api/admin/players" Model="_editPlayer" Id="Id" @ref="_editComponent">
-	<AdminInput Label="@nameof(EditPlayer.CountryCode)"><SearchDropdown Values="@UserUtils.CountryNames" @bind-Value="@_editPlayer!.CountryCode" /></AdminInput>
+	<AdminInput Label="@nameof(EditPlayer.CountryCode)"><SearchDropdown Values="@(UserUtils.CountryNames!)" Converter="s => s" @bind-Value="@_editPlayer!.CountryCode" /></AdminInput>
 	<AdminInput Label="@nameof(EditPlayer.Dpi)"><InputNumber class="w-64 pl-2 bg-gray-900 text-color-text" @bind-Value="_editPlayer!.Dpi" /></AdminInput>
 	<AdminInput Label="@nameof(EditPlayer.Fov)"><InputNumber class="w-64 pl-2 bg-gray-900 text-color-text" @bind-Value="_editPlayer!.Fov" /></AdminInput>
 	<AdminInput Label="@nameof(EditPlayer.Gamma)"><InputNumber class="w-64 pl-2 bg-gray-900 text-color-text" @bind-Value="_editPlayer!.Gamma" /></AdminInput>

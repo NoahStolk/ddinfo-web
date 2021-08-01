@@ -7,7 +7,7 @@
 
 <AdminAdd OverviewUrl="/admin/players" PostApiUrl="api/admin/players" Model="_addPlayer" @ref="_addComponent">
 	<AdminInput Label="@nameof(AddPlayer.Id)"><InputNumber class="w-64 pl-2 bg-gray-900 text-color-text" @bind-Value="_addPlayer.Id" /></AdminInput>
-	<AdminInput Label="@nameof(AddPlayer.CountryCode)"><SearchDropdown Values="@UserUtils.CountryNames" @bind-Value="@_addPlayer.CountryCode" /></AdminInput>
+	<AdminInput Label="@nameof(AddPlayer.CountryCode)"><SearchDropdown Values="@(UserUtils.CountryNames!)" Converter="s => s" @bind-Value="@_addPlayer.CountryCode" /></AdminInput>
 	<AdminInput Label="@nameof(AddPlayer.Dpi)"><InputNumber class="w-64 pl-2 bg-gray-900 text-color-text" @bind-Value="_addPlayer.Dpi" /></AdminInput>
 	<AdminInput Label="@nameof(AddPlayer.Fov)"><InputNumber class="w-64 pl-2 bg-gray-900 text-color-text" @bind-Value="_addPlayer.Fov" /></AdminInput>
 	<AdminInput Label="@nameof(AddPlayer.Gamma)"><InputNumber class="w-64 pl-2 bg-gray-900 text-color-text" @bind-Value="_addPlayer.Gamma" /></AdminInput>
