@@ -31,103 +31,30 @@
 	<DataAnnotationsValidator />
 	<ValidationSummary />
 
-	<div class="py-1">
-		<label class="@_inputLabelCss">@nameof(AddPlayer.Id)</label>
-		<InputNumber class="w-64 pl-2 bg-gray-900 text-color-text" @bind-Value="_addPlayer.Id" />
-	</div>
-
-	<div class="py-1">
-		<label class="@_inputLabelCss">@nameof(AddPlayer.CountryCode)</label>
-		<SearchDropdown Values="@UserUtils.CountryNames" @bind-Value="@_addPlayer.CountryCode" />
-	</div>
-
-	<div class="py-1">
-		<label class="@_inputLabelCss">@nameof(AddPlayer.Dpi)</label>
-		<InputNumber class="w-64 pl-2 bg-gray-900 text-color-text" @bind-Value="@_addPlayer.Dpi" />
-	</div>
-
-	<div class="py-1">
-		<label class="@_inputLabelCss">@nameof(AddPlayer.Fov)</label>
-		<InputNumber class="w-64 pl-2 bg-gray-900 text-color-text" @bind-Value="@_addPlayer.Fov" />
-	</div>
-
-	<div class="py-1">
-		<label class="@_inputLabelCss">@nameof(AddPlayer.Gamma)</label>
-		<InputNumber class="w-64 pl-2 bg-gray-900 text-color-text" @bind-Value="@_addPlayer.Gamma" />
-	</div>
-
-	<div class="py-1">
-		<label class="@_inputLabelCss">@nameof(AddPlayer.HasFlashHandEnabled)</label>
-		<InputNullableBoolean @bind-Value="@_addPlayer.HasFlashHandEnabled" />
-	</div>
-
-	<div class="py-1">
-		<label class="@_inputLabelCss">@nameof(AddPlayer.InGameSens)</label>
-		<InputNumber class="w-64 pl-2 bg-gray-900 text-color-text" @bind-Value="@_addPlayer.InGameSens" />
-	</div>
-
-	<div class="py-1">
-		<label class="@_inputLabelCss">@nameof(AddPlayer.IsRightHanded)</label>
-		<InputNullableBoolean @bind-Value="@_addPlayer.IsRightHanded" />
-	</div>
-
-	<div class="py-1">
-		<label class="@_inputLabelCss">@nameof(AddPlayer.UsesLegacyAudio)</label>
-		<InputNullableBoolean @bind-Value="@_addPlayer.UsesLegacyAudio" />
-	</div>
-
-	<div class="py-1">
-		<label class="@_inputLabelCss">@nameof(AddPlayer.HideDonations)</label>
-		<InputCheckbox @bind-Value="@_addPlayer.HideDonations" />
-	</div>
-
-	<div class="py-1">
-		<label class="@_inputLabelCss">@nameof(AddPlayer.HidePastUsernames)</label>
-		<InputCheckbox @bind-Value="@_addPlayer.HidePastUsernames" />
-	</div>
-
-	<div class="py-1">
-		<label class="@_inputLabelCss">@nameof(AddPlayer.HideSettings)</label>
-		<InputCheckbox @bind-Value="@_addPlayer.HideSettings" />
-	</div>
-
-	<div class="py-1">
-		<label class="@_inputLabelCss">@nameof(AddPlayer.AssetModIds)</label>
-		<MultiSearchDropdown Values="@_modNames" @bind-Value="@_addPlayer.AssetModIds" />
-	</div>
-
-	<div class="py-1">
-		<label class="@_inputLabelCss">@nameof(AddPlayer.TitleIds)</label>
-		<MultiSearchDropdown Values="@_titleNames" @bind-Value="@_addPlayer.TitleIds" />
-	</div>
-
-	<div class="py-1">
-		<label class="@_inputLabelCss">@nameof(AddPlayer.IsBanned)</label>
-		<InputCheckbox @bind-Value="@_addPlayer.IsBanned" />
-	</div>
-
-	<div class="py-1">
-		<label class="@_inputLabelCss">@nameof(AddPlayer.BanDescription)</label>
-		<InputText class="w-64 pl-2 bg-gray-900 text-color-text" @bind-Value="@_addPlayer.BanDescription" />
-	</div>
-
-	<div class="py-1">
-		<label class="@_inputLabelCss">@nameof(AddPlayer.BanResponsibleId)</label>
-		<InputNumber class="w-64 pl-2 bg-gray-900 text-color-text" @bind-Value="@_addPlayer.BanResponsibleId" />
-	</div>
-
-	<div class="py-1">
-		<label class="@_inputLabelCss">@nameof(AddPlayer.IsBannedFromDdcl)</label>
-		<InputCheckbox @bind-Value="@_addPlayer.IsBannedFromDdcl" />
-	</div>
+	<AdminInput Label="@nameof(AddPlayer.Id)"><InputNumber class="w-64 pl-2 bg-gray-900 text-color-text" @bind-Value="_addPlayer.Id" /></AdminInput>
+	<AdminInput Label="@nameof(AddPlayer.CountryCode)"><SearchDropdown Values="@UserUtils.CountryNames" @bind-Value="@_addPlayer.CountryCode" /></AdminInput>
+	<AdminInput Label="@nameof(AddPlayer.Dpi)"><InputNumber class="w-64 pl-2 bg-gray-900 text-color-text" @bind-Value="_addPlayer.Dpi" /></AdminInput>
+	<AdminInput Label="@nameof(AddPlayer.Fov)"><InputNumber class="w-64 pl-2 bg-gray-900 text-color-text" @bind-Value="_addPlayer.Fov" /></AdminInput>
+	<AdminInput Label="@nameof(AddPlayer.Gamma)"><InputNumber class="w-64 pl-2 bg-gray-900 text-color-text" @bind-Value="_addPlayer.Gamma" /></AdminInput>
+	<AdminInput Label="@nameof(AddPlayer.HasFlashHandEnabled)"><InputNullableBoolean @bind-Value="@_addPlayer.HasFlashHandEnabled" /></AdminInput>
+	<AdminInput Label="@nameof(AddPlayer.InGameSens)"><InputNumber class="w-64 pl-2 bg-gray-900 text-color-text" @bind-Value="@_addPlayer.InGameSens" /></AdminInput>
+	<AdminInput Label="@nameof(AddPlayer.IsRightHanded)"><InputNullableBoolean @bind-Value="@_addPlayer.IsRightHanded" /></AdminInput>
+	<AdminInput Label="@nameof(AddPlayer.UsesLegacyAudio)"><InputNullableBoolean @bind-Value="@_addPlayer.UsesLegacyAudio" /></AdminInput>
+	<AdminInput Label="@nameof(AddPlayer.HideDonations)"><InputCheckbox @bind-Value="@_addPlayer.HideDonations" /></AdminInput>
+	<AdminInput Label="@nameof(AddPlayer.HidePastUsernames)"><InputCheckbox @bind-Value="@_addPlayer.HidePastUsernames" /></AdminInput>
+	<AdminInput Label="@nameof(AddPlayer.HideSettings)"><InputCheckbox @bind-Value="@_addPlayer.HideSettings" /></AdminInput>
+	<AdminInput Label="@nameof(AddPlayer.AssetModIds)"><MultiSearchDropdown Values="@_modNames" @bind-Value="@_addPlayer.AssetModIds" /></AdminInput>
+	<AdminInput Label="@nameof(AddPlayer.TitleIds)"><MultiSearchDropdown Values="@_titleNames" @bind-Value="@_addPlayer.TitleIds" /></AdminInput>
+	<AdminInput Label="@nameof(AddPlayer.IsBanned)"><InputCheckbox @bind-Value="@_addPlayer.IsBanned" /></AdminInput>
+	<AdminInput Label="@nameof(AddPlayer.BanDescription)"><InputText class="w-64 pl-2 bg-gray-900 text-color-text" @bind-Value="@_addPlayer.BanDescription" /></AdminInput>
+	<AdminInput Label="@nameof(AddPlayer.BanResponsibleId)"><InputNumber class="w-64 pl-2 bg-gray-900 text-color-text" @bind-Value="@_addPlayer.BanResponsibleId" /></AdminInput>
+	<AdminInput Label="@nameof(AddPlayer.IsBannedFromDdcl)"><InputCheckbox @bind-Value="@_addPlayer.IsBannedFromDdcl" /></AdminInput>
 
 	<button class="bg-gray-900 hover:bg-gray-500 p-1 rounded text-color-text" type="submit">Submit</button>
 </EditForm>
 
 @code
 {
-	private const string _inputLabelCss = "inline-block w-64";
-
 	private Dictionary<int, string>? _modNames;
 	private Dictionary<int, string>? _titleNames;
 	private AddPlayer _addPlayer = new();

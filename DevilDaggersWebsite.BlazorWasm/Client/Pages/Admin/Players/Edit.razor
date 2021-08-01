@@ -37,90 +37,23 @@ else
 		<DataAnnotationsValidator />
 		<ValidationSummary />
 
-		<div class="py-1">
-			<label class="@_inputLabelCss">@nameof(EditPlayer.CountryCode)</label>
-			<SearchDropdown Values="@UserUtils.CountryNames" @bind-Value="@_editPlayer.CountryCode" />
-		</div>
-
-		<div class="py-1">
-			<label class="@_inputLabelCss">@nameof(EditPlayer.Dpi)</label>
-			<InputNumber class="w-64 pl-2 bg-gray-900 text-color-text" @bind-Value="@_editPlayer.Dpi" />
-		</div>
-
-		<div class="py-1">
-			<label class="@_inputLabelCss">@nameof(EditPlayer.Fov)</label>
-			<InputNumber class="w-64 pl-2 bg-gray-900 text-color-text" @bind-Value="@_editPlayer.Fov" />
-		</div>
-
-		<div class="py-1">
-			<label class="@_inputLabelCss">@nameof(EditPlayer.Gamma)</label>
-			<InputNumber class="w-64 pl-2 bg-gray-900 text-color-text" @bind-Value="@_editPlayer.Gamma" />
-		</div>
-
-		<div class="py-1">
-			<label class="@_inputLabelCss">@nameof(EditPlayer.HasFlashHandEnabled)</label>
-			<InputNullableBoolean @bind-Value="@_editPlayer.HasFlashHandEnabled" />
-		</div>
-
-		<div class="py-1">
-			<label class="@_inputLabelCss">@nameof(EditPlayer.InGameSens)</label>
-			<InputNumber class="w-64 pl-2 bg-gray-900 text-color-text" @bind-Value="@_editPlayer.InGameSens" />
-		</div>
-
-		<div class="py-1">
-			<label class="@_inputLabelCss">@nameof(EditPlayer.IsRightHanded)</label>
-			<InputNullableBoolean @bind-Value="@_editPlayer.IsRightHanded" />
-		</div>
-
-		<div class="py-1">
-			<label class="@_inputLabelCss">@nameof(EditPlayer.UsesLegacyAudio)</label>
-			<InputNullableBoolean @bind-Value="@_editPlayer.UsesLegacyAudio" />
-		</div>
-
-		<div class="py-1">
-			<label class="@_inputLabelCss">@nameof(EditPlayer.HideDonations)</label>
-			<InputCheckbox @bind-Value="@_editPlayer.HideDonations" />
-		</div>
-
-		<div class="py-1">
-			<label class="@_inputLabelCss">@nameof(EditPlayer.HidePastUsernames)</label>
-			<InputCheckbox @bind-Value="@_editPlayer.HidePastUsernames" />
-		</div>
-
-		<div class="py-1">
-			<label class="@_inputLabelCss">@nameof(EditPlayer.HideSettings)</label>
-			<InputCheckbox @bind-Value="@_editPlayer.HideSettings" />
-		</div>
-
-		<div class="py-1">
-			<label class="@_inputLabelCss">@nameof(AddPlayer.AssetModIds)</label>
-			<MultiSearchDropdown Values="@_modNames" @bind-Value="@_editPlayer.AssetModIds" />
-		</div>
-
-		<div class="py-1">
-			<label class="@_inputLabelCss">@nameof(AddPlayer.TitleIds)</label>
-			<MultiSearchDropdown Values="@_titleNames" @bind-Value="@_editPlayer.TitleIds" />
-		</div>
-
-		<div class="py-1">
-			<label class="@_inputLabelCss">@nameof(EditPlayer.IsBanned)</label>
-			<InputCheckbox @bind-Value="@_editPlayer.IsBanned" />
-		</div>
-
-		<div class="py-1">
-			<label class="@_inputLabelCss">@nameof(EditPlayer.BanDescription)</label>
-			<InputText class="w-64 pl-2 bg-gray-900 text-color-text" @bind-Value="@_editPlayer.BanDescription" />
-		</div>
-
-		<div class="py-1">
-			<label class="@_inputLabelCss">@nameof(EditPlayer.BanResponsibleId)</label>
-			<InputNumber class="w-64 pl-2 bg-gray-900 text-color-text" @bind-Value="@_editPlayer.BanResponsibleId" />
-		</div>
-
-		<div class="py-1">
-			<label class="@_inputLabelCss">@nameof(EditPlayer.IsBannedFromDdcl)</label>
-			<InputCheckbox @bind-Value="@_editPlayer.IsBannedFromDdcl" />
-		</div>
+		<AdminInput Label="@nameof(EditPlayer.CountryCode)"><SearchDropdown Values="@UserUtils.CountryNames" @bind-Value="@_editPlayer.CountryCode" /></AdminInput>
+		<AdminInput Label="@nameof(EditPlayer.Dpi)"><InputNumber class="w-64 pl-2 bg-gray-900 text-color-text" @bind-Value="_editPlayer.Dpi" /></AdminInput>
+		<AdminInput Label="@nameof(EditPlayer.Fov)"><InputNumber class="w-64 pl-2 bg-gray-900 text-color-text" @bind-Value="_editPlayer.Fov" /></AdminInput>
+		<AdminInput Label="@nameof(EditPlayer.Gamma)"><InputNumber class="w-64 pl-2 bg-gray-900 text-color-text" @bind-Value="_editPlayer.Gamma" /></AdminInput>
+		<AdminInput Label="@nameof(EditPlayer.HasFlashHandEnabled)"><InputNullableBoolean @bind-Value="@_editPlayer.HasFlashHandEnabled" /></AdminInput>
+		<AdminInput Label="@nameof(EditPlayer.InGameSens)"><InputNumber class="w-64 pl-2 bg-gray-900 text-color-text" @bind-Value="@_editPlayer.InGameSens" /></AdminInput>
+		<AdminInput Label="@nameof(EditPlayer.IsRightHanded)"><InputNullableBoolean @bind-Value="@_editPlayer.IsRightHanded" /></AdminInput>
+		<AdminInput Label="@nameof(EditPlayer.UsesLegacyAudio)"><InputNullableBoolean @bind-Value="@_editPlayer.UsesLegacyAudio" /></AdminInput>
+		<AdminInput Label="@nameof(EditPlayer.HideDonations)"><InputCheckbox @bind-Value="@_editPlayer.HideDonations" /></AdminInput>
+		<AdminInput Label="@nameof(EditPlayer.HidePastUsernames)"><InputCheckbox @bind-Value="@_editPlayer.HidePastUsernames" /></AdminInput>
+		<AdminInput Label="@nameof(EditPlayer.HideSettings)"><InputCheckbox @bind-Value="@_editPlayer.HideSettings" /></AdminInput>
+		<AdminInput Label="@nameof(EditPlayer.AssetModIds)"><MultiSearchDropdown Values="@_modNames" @bind-Value="@_editPlayer.AssetModIds" /></AdminInput>
+		<AdminInput Label="@nameof(EditPlayer.TitleIds)"><MultiSearchDropdown Values="@_titleNames" @bind-Value="@_editPlayer.TitleIds" /></AdminInput>
+		<AdminInput Label="@nameof(EditPlayer.IsBanned)"><InputCheckbox @bind-Value="@_editPlayer.IsBanned" /></AdminInput>
+		<AdminInput Label="@nameof(EditPlayer.BanDescription)"><InputText class="w-64 pl-2 bg-gray-900 text-color-text" @bind-Value="@_editPlayer.BanDescription" /></AdminInput>
+		<AdminInput Label="@nameof(EditPlayer.BanResponsibleId)"><InputNumber class="w-64 pl-2 bg-gray-900 text-color-text" @bind-Value="@_editPlayer.BanResponsibleId" /></AdminInput>
+		<AdminInput Label="@nameof(EditPlayer.IsBannedFromDdcl)"><InputCheckbox @bind-Value="@_editPlayer.IsBannedFromDdcl" /></AdminInput>
 
 		<button class="bg-gray-900 hover:bg-gray-500 p-1 rounded text-color-text" type="submit">Submit</button>
 	</EditForm>
@@ -128,8 +61,6 @@ else
 
 @code
 {
-	private const string _inputLabelCss = "inline-block w-64";
-
 	private Dictionary<int, string>? _modNames;
 	private Dictionary<int, string>? _titleNames;
 	private EditPlayer? _editPlayer;
