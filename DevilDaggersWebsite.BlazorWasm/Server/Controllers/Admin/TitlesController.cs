@@ -88,7 +88,7 @@ namespace DevilDaggersWebsite.BlazorWasm.Server.Controllers.Admin
 			_dbContext.Titles.Add(title);
 			_dbContext.SaveChanges(); // Save changes here so PlayerTitle entities can be assigned properly.
 
-			UpdateManyToManyRelations(addTitle.PlayerIds ?? new(), title.Id);
+			UpdatePlayerTitles(addTitle.PlayerIds ?? new(), title.Id);
 			_dbContext.SaveChanges();
 
 			await _auditLogger.LogAdd(addTitle, User, title.Id);
@@ -122,7 +122,7 @@ namespace DevilDaggersWebsite.BlazorWasm.Server.Controllers.Admin
 
 			title.Name = editTitle.Name;
 
-			UpdateManyToManyRelations(editTitle.PlayerIds ?? new(), title.Id);
+			UpdatePlayerTitles(editTitle.PlayerIds ?? new(), title.Id);
 			_dbContext.SaveChanges();
 
 			await _auditLogger.LogEdit(logDto, editTitle, User, title.Id);
@@ -149,7 +149,7 @@ namespace DevilDaggersWebsite.BlazorWasm.Server.Controllers.Admin
 			return Ok();
 		}
 
-		private void UpdateManyToManyRelations(List<int> playerIds, int titleId)
+		private void UpdatePlayerTitles(List<int> playerIds, int titleId)
 		{
 			foreach (PlayerTitle newEntity in playerIds.ConvertAll(pi => new PlayerTitle { TitleId = titleId, PlayerId = pi }))
 			{

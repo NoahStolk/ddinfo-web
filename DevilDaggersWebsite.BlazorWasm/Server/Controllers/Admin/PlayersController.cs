@@ -157,7 +157,8 @@ namespace DevilDaggersWebsite.BlazorWasm.Server.Controllers.Admin
 			_dbContext.Players.Add(player);
 			_dbContext.SaveChanges(); // Save changes here so PlayerTitle and PlayerAssetMod entities can be assigned properly.
 
-			UpdateManyToManyRelations(addPlayer.AssetModIds ?? new(), addPlayer.TitleIds ?? new(), player.Id);
+			UpdatePlayerMods(addPlayer.AssetModIds ?? new(), player.Id);
+			UpdatePlayerTitles(addPlayer.TitleIds ?? new(), player.Id);
 			_dbContext.SaveChanges();
 
 			await _auditLogger.LogAdd(addPlayer, User, player.Id);
@@ -257,7 +258,8 @@ namespace DevilDaggersWebsite.BlazorWasm.Server.Controllers.Admin
 			player.IsBanned = editPlayer.IsBanned;
 			player.IsBannedFromDdcl = editPlayer.IsBannedFromDdcl;
 
-			UpdateManyToManyRelations(editPlayer.AssetModIds ?? new(), editPlayer.TitleIds ?? new(), player.Id);
+			UpdatePlayerMods(editPlayer.AssetModIds ?? new(), player.Id);
+			UpdatePlayerTitles(editPlayer.TitleIds ?? new(), player.Id);
 			_dbContext.SaveChanges();
 
 			await _auditLogger.LogEdit(logDto, editPlayer, User, player.Id);
@@ -309,7 +311,7 @@ namespace DevilDaggersWebsite.BlazorWasm.Server.Controllers.Admin
 			}
 		}
 
-		private void UpdateManyToManyRelations(List<int> assetModIds, List<int> titleIds, int playerId)
+		private void UpdatePlayerMods(List<int> assetModIds, int playerId)
 		{
 			foreach (PlayerAssetMod newEntity in assetModIds.ConvertAll(ami => new PlayerAssetMod { AssetModId = ami, PlayerId = playerId }))
 			{
@@ -319,7 +321,10 @@ namespace DevilDaggersWebsite.BlazorWasm.Server.Controllers.Admin
 
 			foreach (PlayerAssetMod entityToRemove in _dbContext.PlayerAssetMods.Where(pam => pam.PlayerId == playerId && !assetModIds.Contains(pam.AssetModId)))
 				_dbContext.PlayerAssetMods.Remove(entityToRemove);
+		}
 
+		private void UpdatePlayerTitles(List<int> titleIds, int playerId)
+		{
 			foreach (PlayerTitle newEntity in titleIds.ConvertAll(ti => new PlayerTitle { TitleId = ti, PlayerId = playerId }))
 			{
 				if (!_dbContext.PlayerTitles.Any(pt => pt.TitleId == newEntity.TitleId && pt.PlayerId == newEntity.PlayerId))

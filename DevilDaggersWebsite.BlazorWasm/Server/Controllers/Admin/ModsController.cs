@@ -114,7 +114,7 @@ namespace DevilDaggersWebsite.BlazorWasm.Server.Controllers.Admin
 			_dbContext.AssetMods.Add(mod);
 			_dbContext.SaveChanges(); // Save changes here so PlayerMods entities can be assigned properly.
 
-			UpdateManyToManyRelations(addMod.PlayerIds ?? new(), mod.Id);
+			UpdatePlayerMods(addMod.PlayerIds ?? new(), mod.Id);
 			_dbContext.SaveChanges();
 
 			await _auditLogger.LogAdd(addMod, User, mod.Id);
@@ -166,7 +166,7 @@ namespace DevilDaggersWebsite.BlazorWasm.Server.Controllers.Admin
 			mod.Url = editMod.Url ?? string.Empty;
 			_dbContext.SaveChanges(); // Save changes here so PlayerMods entities can be assigned properly.
 
-			UpdateManyToManyRelations(editMod.PlayerIds ?? new(), mod.Id);
+			UpdatePlayerMods(editMod.PlayerIds ?? new(), mod.Id);
 			_dbContext.SaveChanges();
 
 			await _auditLogger.LogEdit(logDto, editMod, User, mod.Id);
@@ -191,7 +191,7 @@ namespace DevilDaggersWebsite.BlazorWasm.Server.Controllers.Admin
 			return Ok();
 		}
 
-		private void UpdateManyToManyRelations(List<int> playerIds, int modId)
+		private void UpdatePlayerMods(List<int> playerIds, int modId)
 		{
 			foreach (PlayerAssetMod newEntity in playerIds.ConvertAll(pi => new PlayerAssetMod { AssetModId = modId, PlayerId = pi }))
 			{
