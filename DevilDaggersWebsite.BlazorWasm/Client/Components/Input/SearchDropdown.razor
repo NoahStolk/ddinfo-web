@@ -1,10 +1,11 @@
 ﻿@inherits InputBase<string>
 
-<Dropdown TItem="string" OnSelected="e => CurrentValue = e" @ref="_dropdown">
-	<InitialTip>
-		<span class="pl-2">@SelectedDisplayValue</span>
-	</InitialTip>
-	<ChildContent>
+<div class="inline-block w-64 bg-gray-900 text-color-text cursor-pointer">
+	<div class="grid grid-cols-8">
+		<span class="pl-2 col-span-7" @onclick="e => _show = !_show">@SelectedDisplayValue</span>
+		<span class="w-8 cursor-pointer bg-gray-800 rounded block text-center" @onclick="e => HandleSelect(default)">✕</span>
+	</div>
+	<div class="@(_show ? "absolute" : "hidden") z-10">
 		<div class="bg-gray-900">
 			<div class="p-2 w-64">
 				<span class="cursor-default w-16">Search:</span>
@@ -15,29 +16,36 @@
 					int i = 0;
 					foreach (KeyValuePair<string, string> kvp in FilteredItems)
 					{
-						<li class="cursor-pointer pl-2 @(i++ % 2 == 0 ? "bg-gray-800" : string.Empty)" Item="@kvp" @onclick="e => _dropdown?.HandleSelect(kvp.Key) ?? Task.CompletedTask">@kvp.Key (@kvp.Value)</li>
+						<li class="cursor-pointer pl-2 @(i++ % 2 == 0 ? "bg-gray-800" : string.Empty)" Item="@kvp" @onclick="e => HandleSelect(kvp.Key)">@kvp.Key (@kvp.Value)</li>
 					}
 				}
 			</ul>
 		</div>
-	</ChildContent>
-</Dropdown>
+	</div>
+</div>
 
 @code
 {
 	private string? _searchValue;
 
-	private Dropdown<string>? _dropdown;
-
 	private string SelectedDisplayValue => string.IsNullOrWhiteSpace(CurrentValue) ? "<None selected>" : $"{CurrentValue} ({(Values.ContainsKey(CurrentValue) ? Values[CurrentValue] : "???")})";
 
 	[Parameter] public Dictionary<string, string> Values { get; set; } = null!;
 
+	private bool _show = false;
+
 	public Dictionary<string, string> FilteredItems => _searchValue == null ? Values : Values
 		.Where(kvp =>
-			kvp.Key.Contains(_searchValue, StringComparison.InvariantCultureIgnoreCase) ||
+			kvp.Key.ToString()?.Contains(_searchValue, StringComparison.InvariantCultureIgnoreCase) == true ||
 			kvp.Value.Contains(_searchValue, StringComparison.InvariantCultureIgnoreCase))
 		.ToDictionary(kvp => kvp.Key, kvp => kvp.Value);
+
+	public void HandleSelect(string? item)
+	{
+		CurrentValue = item;
+		_show = false;
+		StateHasChanged();
+	}
 
 	protected override bool TryParseValueFromString(string? value, out string? result, out string validationMessage)
 	{
