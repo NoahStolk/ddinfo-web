@@ -9,6 +9,7 @@ using DevilDaggersWebsite.BlazorWasm.Server.Middleware;
 using DevilDaggersWebsite.BlazorWasm.Server.NSwag;
 using DevilDaggersWebsite.BlazorWasm.Server.Singletons;
 using DevilDaggersWebsite.BlazorWasm.Server.Transients;
+using DevilDaggersWebsite.BlazorWasm.Shared;
 using Microsoft.AspNetCore.Authentication;
 using Microsoft.AspNetCore.Builder;
 using Microsoft.AspNetCore.Hosting;
@@ -188,6 +189,20 @@ namespace DevilDaggersWebsite.BlazorWasm.Server
 			 * The cache then needs to be initiated here, by reading all the JSON files and populating the ConcurrentBag on start up. Effectively this is caching the cache.*/
 			//ModArchiveCache modArchiveCache = serviceProvider.GetRequiredService<ModArchiveCache>();
 			//modArchiveCache.LoadEntireFileCache();
+
+			CreateRoles(serviceProvider).Wait();
+		}
+
+		private static async Task CreateRoles(IServiceProvider serviceProvider)
+		{
+			RoleManager<IdentityRole>? roleManager = serviceProvider.GetRequiredService<RoleManager<IdentityRole>>();
+
+			foreach (string? roleName in Roles.All)
+			{
+				bool roleExist = await roleManager.RoleExistsAsync(roleName);
+				if (!roleExist)
+					await roleManager.CreateAsync(new IdentityRole(roleName));
+			}
 		}
 	}
 }
