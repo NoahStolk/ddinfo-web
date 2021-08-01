@@ -1,4 +1,4 @@
-﻿namespace DevilDaggersWebsite.BlazorWasm.Server.Constants
+﻿namespace DevilDaggersWebsite.BlazorWasm.Shared.Constants
 {
 	public static class ModScreenshotConstants
 	{
