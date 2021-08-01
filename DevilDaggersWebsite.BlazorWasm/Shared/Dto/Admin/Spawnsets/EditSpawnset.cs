@@ -10,6 +10,7 @@ namespace DevilDaggersWebsite.BlazorWasm.Shared.Dto.Admin.Spawnsets
 		[StringLength(64)]
 		public string Name { get; init; } = null!;
 
+		[Range(1, 400)]
 		public int? MaxDisplayWaves { get; init; }
 
 		[StringLength(2048)]
