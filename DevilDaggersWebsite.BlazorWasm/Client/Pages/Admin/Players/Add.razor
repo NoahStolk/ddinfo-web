@@ -4,33 +4,8 @@
 @using DevilDaggersWebsite.BlazorWasm.Shared.Dto.Admin.Mods
 @using DevilDaggersWebsite.BlazorWasm.Shared.Dto.Admin.Players
 @using DevilDaggersWebsite.BlazorWasm.Shared.Dto.Admin.Titles
-@using Microsoft.AspNetCore.Components.WebAssembly.Authentication
-@using System.Net
 
-<h1 class="text-red text-2xl">Add</h1>
-
-@switch (State)
-{
-	case ErrorState.ValidationError:
-		{
-			<ResultBar Title="Validation failed" ResultBarType="ResultBarType.ValidationError" DismissEvent="Dismiss">
-				@_errorMessage
-			</ResultBar>
-		}
-		break;
-	case ErrorState.FatalError:
-		{
-			<ResultBar Title="Fatal error" ResultBarType="ResultBarType.FatalError" DismissEvent="Dismiss">
-				@_errorMessage
-			</ResultBar>
-		}
-		break;
-}
-
-<EditForm Model="@_addPlayer" OnValidSubmit="@OnValidSubmit">
-	<DataAnnotationsValidator />
-	<ValidationSummary />
-
+<AdminAdd OverviewUrl="/admin/players" PostApiUrl="api/admin/players" Model="_addPlayer" @ref="_addComponent">
 	<AdminInput Label="@nameof(AddPlayer.Id)"><InputNumber class="w-64 pl-2 bg-gray-900 text-color-text" @bind-Value="_addPlayer.Id" /></AdminInput>
 	<AdminInput Label="@nameof(AddPlayer.CountryCode)"><SearchDropdown Values="@UserUtils.CountryNames" @bind-Value="@_addPlayer.CountryCode" /></AdminInput>
 	<AdminInput Label="@nameof(AddPlayer.Dpi)"><InputNumber class="w-64 pl-2 bg-gray-900 text-color-text" @bind-Value="_addPlayer.Dpi" /></AdminInput>
@@ -49,18 +24,15 @@
 	<AdminInput Label="@nameof(AddPlayer.BanDescription)"><InputText class="w-64 pl-2 bg-gray-900 text-color-text" @bind-Value="@_addPlayer.BanDescription" /></AdminInput>
 	<AdminInput Label="@nameof(AddPlayer.BanResponsibleId)"><InputNumber class="w-64 pl-2 bg-gray-900 text-color-text" @bind-Value="@_addPlayer.BanResponsibleId" /></AdminInput>
 	<AdminInput Label="@nameof(AddPlayer.IsBannedFromDdcl)"><InputCheckbox @bind-Value="@_addPlayer.IsBannedFromDdcl" /></AdminInput>
-
-	<button class="bg-gray-900 hover:bg-gray-500 p-1 rounded text-color-text" type="submit">Submit</button>
-</EditForm>
+</AdminAdd>
 
 @code
 {
 	private Dictionary<int, string>? _modNames;
 	private Dictionary<int, string>? _titleNames;
 	private AddPlayer _addPlayer = new();
-	private string? _errorMessage;
 
-	public ErrorState State { get; set; }
+	private AdminAdd<AddPlayer> _addComponent = null!;
 
 	protected override async Task OnInitializedAsync()
 	{
@@ -72,45 +44,20 @@
 			List<GetTitle> getTitles = await Http.Client.GetFromJsonAsync<List<GetTitle>>($"api/admin/titles/names") ?? throw new($"Response could not be deserialized to {nameof(List<GetTitle>)}.");
 			_titleNames = getTitles.ToDictionary(t => t.Id, t => t.Name);
 
-			State = ErrorState.None;
+			_addComponent.State = ErrorState.None;
 		}
 		catch (HttpRequestException ex)
 		{
 			if (ex.StatusCode.HasValue)
-				_errorMessage = $"Error {(int)ex.StatusCode}: {ex.StatusCode}";
+				_addComponent.ErrorMessage = $"Error {(int)ex.StatusCode}: {ex.StatusCode}";
 			else
-				_errorMessage = "An error occurred while sending the request.";
+				_addComponent.ErrorMessage = "An error occurred while sending the request.";
 
-			State = ErrorState.FatalError;
+			_addComponent.State = ErrorState.FatalError;
 		}
 		catch (AccessTokenNotAvailableException exception)
 		{
 			exception.Redirect();
 		}
-	}
-
-	private async Task OnValidSubmit()
-	{
-		try
-		{
-			HttpResponseMessage hrm = await Http.Client.PostAsJsonAsync($"api/admin/players", _addPlayer);
-
-			if (hrm.StatusCode == HttpStatusCode.OK)
-				NavigationManager.NavigateTo("/admin/players");
-			else
-				_errorMessage = await hrm.Content.ReadAsStringAsync();
-
-			State = hrm.StatusCode.IsUserError() ? ErrorState.ValidationError : ErrorState.FatalError;
-		}
-		catch (AccessTokenNotAvailableException exception)
-		{
-			exception.Redirect();
-		}
-	}
-
-	private void Dismiss()
-	{
-		State = ErrorState.None;
-		StateHasChanged();
 	}
 }

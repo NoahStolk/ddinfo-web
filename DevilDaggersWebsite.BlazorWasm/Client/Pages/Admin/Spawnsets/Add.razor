@@ -3,49 +3,21 @@
 @inject NavigationManager NavigationManager
 @using DevilDaggersWebsite.BlazorWasm.Shared.Dto.Admin.Players
 @using DevilDaggersWebsite.BlazorWasm.Shared.Dto.Admin.Spawnsets
-@using Microsoft.AspNetCore.Components.WebAssembly.Authentication
-@using System.Net
 
-<h1 class="text-red text-2xl">Add</h1>
-
-@switch (State)
-{
-	case ErrorState.ValidationError:
-		{
-			<ResultBar Title="Validation failed" ResultBarType="ResultBarType.ValidationError" DismissEvent="Dismiss">
-				@_errorMessage
-			</ResultBar>
-		}
-		break;
-	case ErrorState.FatalError:
-		{
-			<ResultBar Title="Fatal error" ResultBarType="ResultBarType.FatalError" DismissEvent="Dismiss">
-				@_errorMessage
-			</ResultBar>
-		}
-		break;
-}
-
-<EditForm Model="@_addSpawnset" OnValidSubmit="@OnValidSubmit">
-	<DataAnnotationsValidator />
-	<ValidationSummary />
-
+<AdminAdd OverviewUrl="/admin/spawnsets" PostApiUrl="api/admin/spawnsets" Model="_addSpawnset" @ref="_addComponent">
 	<AdminInput Label="@nameof(AddSpawnset.PlayerId)"><InputNumber class="w-64 pl-2 bg-gray-900 text-color-text" @bind-Value="_addSpawnset.PlayerId" /></AdminInput>
 	<AdminInput Label="@nameof(AddSpawnset.Name)"><InputText class="w-64 pl-2 bg-gray-900 text-color-text" @bind-Value="@_addSpawnset.Name" /></AdminInput>
 	<AdminInput Label="@nameof(AddSpawnset.MaxDisplayWaves)"><InputNumber class="w-64 pl-2 bg-gray-900 text-color-text" @bind-Value="_addSpawnset.MaxDisplayWaves" /></AdminInput>
 	<AdminInput Label="@nameof(AddSpawnset.HtmlDescription)"><InputText class="w-64 pl-2 bg-gray-900 text-color-text" @bind-Value="@_addSpawnset.HtmlDescription" /></AdminInput>
 	<AdminInput Label="@nameof(AddSpawnset.IsPractice)"><InputCheckbox @bind-Value="@_addSpawnset.IsPractice" /></AdminInput>
-
-	<button class="bg-gray-900 hover:bg-gray-500 p-1 rounded text-color-text" type="submit">Submit</button>
-</EditForm>
+</AdminAdd>
 
 @code
 {
 	private Dictionary<int, string>? _playerNames;
 	private AddSpawnset _addSpawnset = new();
-	private string? _errorMessage;
 
-	public ErrorState State { get; set; }
+	private AdminAdd<AddSpawnset> _addComponent = null!;
 
 	protected override async Task OnInitializedAsync()
 	{
@@ -54,45 +26,20 @@
 			List<GetPlayerName> getPlayerNames = await Http.Client.GetFromJsonAsync<List<GetPlayerName>>($"api/admin/players/names") ?? throw new($"Response could not be deserialized to {nameof(List<GetPlayerName>)}.");
 			_playerNames = getPlayerNames.ToDictionary(m => m.Id, m => m.PlayerName);
 
-			State = ErrorState.None;
+			_addComponent.State = ErrorState.None;
 		}
 		catch (HttpRequestException ex)
 		{
 			if (ex.StatusCode.HasValue)
-				_errorMessage = $"Error {(int)ex.StatusCode}: {ex.StatusCode}";
+				_addComponent.ErrorMessage = $"Error {(int)ex.StatusCode}: {ex.StatusCode}";
 			else
-				_errorMessage = "An error occurred while sending the request.";
+				_addComponent.ErrorMessage = "An error occurred while sending the request.";
 
-			State = ErrorState.FatalError;
+			_addComponent.State = ErrorState.FatalError;
 		}
 		catch (AccessTokenNotAvailableException exception)
 		{
 			exception.Redirect();
 		}
-	}
-
-	private async Task OnValidSubmit()
-	{
-		try
-		{
-			HttpResponseMessage hrm = await Http.Client.PostAsJsonAsync($"api/admin/spawnsets", _addSpawnset);
-
-			if (hrm.StatusCode == HttpStatusCode.OK)
-				NavigationManager.NavigateTo("/admin/spawnsets");
-			else
-				_errorMessage = await hrm.Content.ReadAsStringAsync();
-
-			State = hrm.StatusCode.IsUserError() ? ErrorState.ValidationError : ErrorState.FatalError;
-		}
-		catch (AccessTokenNotAvailableException exception)
-		{
-			exception.Redirect();
-		}
-	}
-
-	private void Dismiss()
-	{
-		State = ErrorState.None;
-		StateHasChanged();
 	}
 }
