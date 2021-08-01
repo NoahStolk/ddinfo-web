@@ -17,7 +17,7 @@
 					int i = 0;
 					foreach (KeyValuePair<TKey, string> kvp in FilteredItems)
 					{
-						<li class="cursor-pointer pl-2 @(i++ % 2 == 0 ? "bg-gray-800" : string.Empty)" Item="@kvp" @onclick="e => HandleSelect(kvp.Key)">@kvp.Key (@kvp.Value)</li>
+						<li class="cursor-pointer pl-2 @(i++ % 2 == 0 ? "bg-gray-800" : string.Empty)" Item="@kvp" @onclick="e => HandleSelect(kvp.Key)">@kvp.Value (@kvp.Key)</li>
 					}
 				}
 			</ul>
@@ -29,7 +29,7 @@
 {
 	private string? _searchValue;
 
-	private string SelectedDisplayValue => CurrentValue == null ? "<None selected>" : $"{CurrentValue} ({(Values?.ContainsKey(CurrentValue) == true ? Values[CurrentValue] : "???")})";
+	private string SelectedDisplayValue => CurrentValue == null || Values?.ContainsKey(CurrentValue) != true ? "<None selected>" : $"{CurrentValue} ({Values[CurrentValue]})";
 
 	[Parameter] public Dictionary<TKey, string>? Values { get; set; }
 	[Parameter] public Func<string?, TKey> Converter { get; set; } = null!;
