@@ -27,7 +27,7 @@ using Io = System.IO;
 namespace DevilDaggersWebsite.BlazorWasm.Server.Controllers.Admin
 {
 	[Route("api/admin/mods")]
-	[Authorize(Roles = Roles.AssetMods)]
+	[Authorize(Roles = Roles.Mods)]
 	[ApiController]
 	public class ModsController : ControllerBase
 	{
