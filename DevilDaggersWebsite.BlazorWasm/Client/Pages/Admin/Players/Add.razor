@@ -13,14 +13,14 @@
 {
 	case ErrorState.ValidationError:
 		{
-			<ResultBar Title="Validation failed" ResultBarType="ResultBarType.ValidationError" DismissEvent="() => State = ErrorState.None">
+			<ResultBar Title="Validation failed" ResultBarType="ResultBarType.ValidationError" DismissEvent="Dismiss">
 				@_errorMessage
 			</ResultBar>
 		}
 		break;
 	case ErrorState.FatalError:
 		{
-			<ResultBar Title="Fatal error" ResultBarType="ResultBarType.FatalError" DismissEvent="() => State = ErrorState.None">
+			<ResultBar Title="Fatal error" ResultBarType="ResultBarType.FatalError" DismissEvent="Dismiss">
 				@_errorMessage
 			</ResultBar>
 		}
@@ -179,5 +179,11 @@
 		{
 			exception.Redirect();
 		}
+	}
+
+	private void Dismiss()
+	{
+		State = ErrorState.None;
+		StateHasChanged();
 	}
 }
