@@ -47,7 +47,6 @@ namespace DevilDaggersWebsite.Tests
 
 			Mock<IWebHostEnvironment> mockEnvironment = new();
 			mockEnvironment.Setup(m => m.EnvironmentName).Returns(Environments.Development);
-			mockEnvironment.Setup(m => m.WebRootPath).Returns(TestConstants.WebRoot);
 
 			Mock<IToolHelper> toolHelper = new();
 			toolHelper.Setup(m => m.GetToolByName(It.IsAny<string>())).Returns(new GetTool
@@ -58,11 +57,11 @@ namespace DevilDaggersWebsite.Tests
 			});
 
 			Mock<DiscordLogger> discordLogger = new(mockEnvironment.Object);
-			Mock<SpawnsetHashCache> spawnsetHashCache = new(discordLogger.Object, mockEnvironment.Object);
+			Mock<SpawnsetHashCache> spawnsetHashCache = new(discordLogger.Object);
 
 			_customEntriesController = new CustomEntriesController(_dbContext.Object, toolHelper.Object, discordLogger.Object, spawnsetHashCache.Object);
 
-			if (!Spawnset.TryParse(File.ReadAllBytes(Path.Combine(TestConstants.WebRoot, "spawnsets", "V3")), out _spawnset))
+			if (!Spawnset.TryParse(File.ReadAllBytes(Path.Combine(TestConstants.DataDirectory, "Spawnsets", "V3")), out _spawnset))
 				Assert.Fail("Spawnset could not be parsed.");
 		}
 

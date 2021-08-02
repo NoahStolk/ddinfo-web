@@ -37,7 +37,6 @@ namespace DevilDaggersWebsite.Tests
 
 			Mock<IWebHostEnvironment> mockEnvironment = new();
 			mockEnvironment.Setup(m => m.EnvironmentName).Returns(Environments.Development);
-			mockEnvironment.Setup(m => m.WebRootPath).Returns(TestConstants.WebRoot);
 
 			Mock<DiscordLogger> discordLogger = new(mockEnvironment.Object);
 			Mock<AuditLogger> auditLogger = new(discordLogger.Object);
