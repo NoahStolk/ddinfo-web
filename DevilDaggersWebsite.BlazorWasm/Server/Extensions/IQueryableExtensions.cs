@@ -6,6 +6,9 @@ namespace DevilDaggersWebsite.BlazorWasm.Server.Extensions
 {
 	public static class IQueryableExtensions
 	{
+		public static IOrderedQueryable<T> OrderBy<T, TKey>(this IQueryable<T> query, Expression<Func<T, TKey>> keySelector, bool isAscending)
+			=> isAscending ? query.OrderBy(keySelector) : query.OrderByDescending(keySelector);
+
 		public static IQueryable<T> OrderByMember<T>(this IQueryable<T> query, string memberName, bool ascending)
 			=> query.ByMember(memberName, ascending, "OrderBy", "OrderByDescending");
 

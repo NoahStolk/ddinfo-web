@@ -9,6 +9,7 @@ using DevilDaggersWebsite.BlazorWasm.Shared;
 using DevilDaggersWebsite.BlazorWasm.Shared.Constants;
 using DevilDaggersWebsite.BlazorWasm.Shared.Dto;
 using DevilDaggersWebsite.BlazorWasm.Shared.Dto.Admin.Spawnsets;
+using DevilDaggersWebsite.BlazorWasm.Shared.Enums.Sortings;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
@@ -42,12 +43,28 @@ namespace DevilDaggersWebsite.BlazorWasm.Server.Controllers.Admin
 
 		[HttpGet]
 		[ProducesResponseType(StatusCodes.Status200OK)]
-		public ActionResult<Page<GetSpawnsetForOverview>> GetSpawnsets([Range(0, 1000)] int pageIndex = 0, [Range(AdminPagingConstants.PageSizeMin, AdminPagingConstants.PageSizeMax)] int pageSize = AdminPagingConstants.PageSizeDefault, string? sortBy = null, bool ascending = false)
+		public ActionResult<Page<GetSpawnsetForOverview>> GetSpawnsets(
+			[Range(0, 1000)] int pageIndex = 0,
+			[Range(AdminPagingConstants.PageSizeMin, AdminPagingConstants.PageSizeMax)] int pageSize = AdminPagingConstants.PageSizeDefault,
+			SpawnsetSorting? sortBy = null,
+			bool ascending = false)
 		{
-			IQueryable<SpawnsetFile> spawnsetsQuery = _dbContext.SpawnsetFiles.AsNoTracking();
+			IQueryable<SpawnsetFile> spawnsetsQuery = _dbContext.SpawnsetFiles.AsNoTracking().Include(s => s.Player);
 
 			if (sortBy != null)
-				spawnsetsQuery = spawnsetsQuery.OrderByMember(sortBy, ascending);
+			{
+				spawnsetsQuery = sortBy switch
+				{
+					SpawnsetSorting.Author => spawnsetsQuery.OrderBy(s => s.Player.PlayerName, ascending),
+					SpawnsetSorting.HtmlDescription => spawnsetsQuery.OrderBy(s => s.HtmlDescription, ascending),
+					SpawnsetSorting.Id => spawnsetsQuery.OrderBy(s => s.Id, ascending),
+					SpawnsetSorting.IsPractice => spawnsetsQuery.OrderBy(s => s.IsPractice, ascending),
+					SpawnsetSorting.LastUpdated => spawnsetsQuery.OrderBy(s => s.LastUpdated, ascending),
+					SpawnsetSorting.MaxDisplayWaves => spawnsetsQuery.OrderBy(s => s.MaxDisplayWaves, ascending),
+					SpawnsetSorting.Name => spawnsetsQuery.OrderBy(s => s.Name, ascending),
+					_ => spawnsetsQuery,
+				};
+			}
 
 			List<SpawnsetFile> spawnsets = spawnsetsQuery
 				.Skip(pageIndex * pageSize)

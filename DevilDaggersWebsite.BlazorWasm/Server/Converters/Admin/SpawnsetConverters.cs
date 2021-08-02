@@ -9,7 +9,7 @@ namespace DevilDaggersWebsite.BlazorWasm.Server.Converters.Admin
 		public static GetSpawnsetForOverview ToGetSpawnsetForOverview(this SpawnsetFile spawnset) => new()
 		{
 			Id = spawnset.Id,
-			PlayerId = spawnset.PlayerId,
+			Author = spawnset.Player.PlayerName,
 			Name = spawnset.Name,
 			MaxDisplayWaves = spawnset.MaxDisplayWaves,
 			HtmlDescription = spawnset.HtmlDescription?.TrimAfter(40, true),

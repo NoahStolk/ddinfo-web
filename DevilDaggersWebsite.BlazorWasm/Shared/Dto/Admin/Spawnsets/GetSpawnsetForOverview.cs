@@ -6,7 +6,7 @@ namespace DevilDaggersWebsite.BlazorWasm.Shared.Dto.Admin.Spawnsets
 	{
 		public int Id { get; init; }
 
-		public int PlayerId { get; init; }
+		public string Author { get; init; } = null!;
 
 		public string Name { get; init; } = null!;
 
