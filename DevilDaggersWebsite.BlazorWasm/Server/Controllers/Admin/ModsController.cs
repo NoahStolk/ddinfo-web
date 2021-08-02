@@ -32,15 +32,13 @@ namespace DevilDaggersWebsite.BlazorWasm.Server.Controllers.Admin
 		private readonly IWebHostEnvironment _environment;
 		private readonly ApplicationDbContext _dbContext;
 		private readonly ModArchiveCache _modArchiveCache;
-		private readonly DiscordLogger _discordLogger;
 		private readonly AuditLogger _auditLogger;
 
-		public ModsController(IWebHostEnvironment environment, ApplicationDbContext dbContext, ModArchiveCache modArchiveCache, DiscordLogger discordLogger, AuditLogger auditLogger)
+		public ModsController(IWebHostEnvironment environment, ApplicationDbContext dbContext, ModArchiveCache modArchiveCache, AuditLogger auditLogger)
 		{
 			_environment = environment;
 			_dbContext = dbContext;
 			_modArchiveCache = modArchiveCache;
-			_discordLogger = discordLogger;
 			_auditLogger = auditLogger;
 		}
 
