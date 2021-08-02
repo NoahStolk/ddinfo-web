@@ -128,12 +128,18 @@ namespace DevilDaggersWebsite.BlazorWasm.Server.Controllers.Admin
 			if (!_dbContext.Players.Any(p => p.Id == editSpawnset.PlayerId))
 				return BadRequest($"Player with ID '{editSpawnset.PlayerId}' does not exist.");
 
-			if (_dbContext.SpawnsetFiles.Any(m => m.Name == editSpawnset.Name))
-				return BadRequest($"Spawnset with name '{editSpawnset.Name}' already exists.");
-
 			SpawnsetFile? spawnset = _dbContext.SpawnsetFiles.FirstOrDefault(s => s.Id == id);
 			if (spawnset == null)
 				return NotFound();
+
+			if (spawnset.Name != editSpawnset.Name)
+			{
+				if (_dbContext.SpawnsetFiles.Any(m => m.Name == editSpawnset.Name))
+					return BadRequest($"Spawnset with name '{editSpawnset.Name}' already exists.");
+
+				string directory = DataUtils.GetPath("Spawnsets");
+				Io.File.Move(Path.Combine(directory, spawnset.Name), Path.Combine(directory, editSpawnset.Name));
+			}
 
 			EditSpawnset logDto = new()
 			{
@@ -143,12 +149,6 @@ namespace DevilDaggersWebsite.BlazorWasm.Server.Controllers.Admin
 				Name = spawnset.Name,
 				PlayerId = spawnset.PlayerId,
 			};
-
-			if (spawnset.Name != editSpawnset.Name)
-			{
-				string directory = DataUtils.GetPath("Spawnsets");
-				Io.File.Move(Path.Combine(directory, spawnset.Name), Path.Combine(directory, editSpawnset.Name));
-			}
 
 			// Do not update LastUpdated here. This value is based only on the file which cannot be edited.
 			spawnset.HtmlDescription = editSpawnset.HtmlDescription;
