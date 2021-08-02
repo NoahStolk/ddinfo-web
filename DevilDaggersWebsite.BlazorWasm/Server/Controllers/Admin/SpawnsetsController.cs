@@ -10,7 +10,6 @@ using DevilDaggersWebsite.BlazorWasm.Shared.Constants;
 using DevilDaggersWebsite.BlazorWasm.Shared.Dto;
 using DevilDaggersWebsite.BlazorWasm.Shared.Dto.Admin.Spawnsets;
 using Microsoft.AspNetCore.Authorization;
-using Microsoft.AspNetCore.Hosting;
 using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.EntityFrameworkCore;
@@ -30,14 +29,12 @@ namespace DevilDaggersWebsite.BlazorWasm.Server.Controllers.Admin
 	[ApiController]
 	public class SpawnsetsController : ControllerBase
 	{
-		private readonly IWebHostEnvironment _environment;
 		private readonly ApplicationDbContext _dbContext;
 		private readonly SpawnsetHashCache _spawnsetHashCache;
 		private readonly AuditLogger _auditLogger;
 
-		public SpawnsetsController(IWebHostEnvironment environment, ApplicationDbContext dbContext, SpawnsetHashCache spawnsetHashCache, AuditLogger auditLogger)
+		public SpawnsetsController(ApplicationDbContext dbContext, SpawnsetHashCache spawnsetHashCache, AuditLogger auditLogger)
 		{
-			_environment = environment;
 			_dbContext = dbContext;
 			_spawnsetHashCache = spawnsetHashCache;
 			_auditLogger = auditLogger;
@@ -62,6 +59,22 @@ namespace DevilDaggersWebsite.BlazorWasm.Server.Controllers.Admin
 				Results = spawnsets.ConvertAll(s => s.ToGetSpawnsetForOverview()),
 				TotalResults = _dbContext.SpawnsetFiles.Count(),
 			};
+		}
+
+		[HttpGet("names")]
+		[ProducesResponseType(StatusCodes.Status200OK)]
+		public ActionResult<List<GetSpawnsetName>> GetSpawnsetNames()
+		{
+			var spawnsets = _dbContext.SpawnsetFiles
+				.AsNoTracking()
+				.Select(s => new { s.Id, s.Name })
+				.ToList();
+
+			return spawnsets.ConvertAll(s => new GetSpawnsetName
+			{
+				Id = s.Id,
+				Name = s.Name,
+			});
 		}
 
 		[HttpGet("{id}")]
