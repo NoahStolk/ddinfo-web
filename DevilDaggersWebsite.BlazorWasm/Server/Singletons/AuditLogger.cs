@@ -1,5 +1,4 @@
 ﻿using DevilDaggersCore.Extensions;
-using DevilDaggersWebsite.BlazorWasm.Server.Extensions;
 using DevilDaggersWebsite.BlazorWasm.Server.HostedServices.DdInfoDiscordBot;
 using System.Collections.Generic;
 using System.ComponentModel.DataAnnotations.Schema;
@@ -145,7 +144,10 @@ namespace DevilDaggersWebsite.BlazorWasm.Server.Singletons
 		}
 
 		private static StringBuilder GetAuditLogger<TKey>(string action, ClaimsPrincipal claimsPrincipal, TKey id, string endpointName)
-			=> new($"`{action}` by `{claimsPrincipal.GetShortName()}` for `{GetEntityFromEndpointName(endpointName)}` `{id}`\n");
+		{
+			// TODO: Get user from database.
+			return new($"`{action}` by `{claimsPrincipal.Identity?.Name ?? "?"}` for `{GetEntityFromEndpointName(endpointName)}` `{id}`\n");
+		}
 
 		private static string GetEntityFromEndpointName(string endpointName)
 		{

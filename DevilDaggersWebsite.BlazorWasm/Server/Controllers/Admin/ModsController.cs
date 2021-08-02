@@ -3,7 +3,6 @@ using DevilDaggersWebsite.BlazorWasm.Server.Converters.Admin;
 using DevilDaggersWebsite.BlazorWasm.Server.Entities;
 using DevilDaggersWebsite.BlazorWasm.Server.Exceptions;
 using DevilDaggersWebsite.BlazorWasm.Server.Extensions;
-using DevilDaggersWebsite.BlazorWasm.Server.HostedServices.DdInfoDiscordBot;
 using DevilDaggersWebsite.BlazorWasm.Server.Singletons;
 using DevilDaggersWebsite.BlazorWasm.Shared;
 using DevilDaggersWebsite.BlazorWasm.Shared.Constants;
@@ -273,7 +272,7 @@ namespace DevilDaggersWebsite.BlazorWasm.Server.Controllers.Admin
 					{
 						ModBinaryType.Audio => $"audio-{archiveNameWithoutExtension}-",
 						ModBinaryType.Dd => $"dd-{archiveNameWithoutExtension}-",
-						_ => throw new InvalidModBinaryException($"Mod binary  '{binary.Name}' is a '{binary.ModBinaryType}' mod which is not allowed."),
+						_ => throw new InvalidModBinaryException($"Mod binary '{binary.Name}' is a '{binary.ModBinaryType}' mod which is not allowed."),
 					};
 
 					if (!binary.Name.StartsWith(expectedPrefix))
@@ -284,7 +283,6 @@ namespace DevilDaggersWebsite.BlazorWasm.Server.Controllers.Admin
 				}
 
 				Io.File.WriteAllBytes(filePath, formFileBytes);
-				await _discordLogger.TryLog(Channel.MonitoringAuditLog, $"`{User.GetShortName()}` uploaded new ASSETMOD file :file_folder: `{file.FileName}` (`{formFileBytes.Length:n0}` bytes)");
 
 				return Ok();
 			}
@@ -308,8 +306,6 @@ namespace DevilDaggersWebsite.BlazorWasm.Server.Controllers.Admin
 				return BadRequest($"File '{fileName}' does not exist.");
 
 			Io.File.Delete(path);
-
-			await _discordLogger.TryLog(Channel.MonitoringAuditLog, $"`{User.GetShortName()}` deleted ASSETMOD file :file_folder: `{fileName}`.");
 
 			// Clear entire memory cache (can't clear individual entries).
 			_modArchiveCache.Clear();
@@ -363,8 +359,6 @@ namespace DevilDaggersWebsite.BlazorWasm.Server.Controllers.Admin
 			Directory.CreateDirectory(fileDirectory);
 			Io.File.WriteAllBytes(filePath, formFileBytes);
 
-			await _discordLogger.TryLog(Channel.MonitoringAuditLog, $"`{User.GetShortName()}` uploaded new ASSETMOD screenshot :frame_photo: `{file.FileName}` for mod `{modName}` (`{formFileBytes.Length:n0}` bytes)");
-
 			return Ok();
 		}
 
@@ -378,8 +372,6 @@ namespace DevilDaggersWebsite.BlazorWasm.Server.Controllers.Admin
 				return BadRequest($"File '{fileName}' does not exist.");
 
 			Io.File.Delete(path);
-
-			await _discordLogger.TryLog(Channel.MonitoringAuditLog, $"`{User.GetShortName()}` deleted ASSETMOD screenshot :frame_photo: `{fileName}`.");
 
 			return Ok();
 		}
