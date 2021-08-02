@@ -6,7 +6,7 @@ namespace DevilDaggersWebsite.BlazorWasm.Server.Converters.Admin
 {
 	public static class SpawnsetConverters
 	{
-		public static GetSpawnset ToGetSpawnset(this SpawnsetFile spawnset) => new()
+		public static GetSpawnsetForOverview ToGetSpawnsetForOverview(this SpawnsetFile spawnset) => new()
 		{
 			Id = spawnset.Id,
 			PlayerId = spawnset.PlayerId,

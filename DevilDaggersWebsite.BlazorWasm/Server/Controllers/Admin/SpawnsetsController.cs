@@ -45,7 +45,7 @@ namespace DevilDaggersWebsite.BlazorWasm.Server.Controllers.Admin
 
 		[HttpGet]
 		[ProducesResponseType(StatusCodes.Status200OK)]
-		public ActionResult<Page<GetSpawnset>> GetSpawnsets([Range(0, 1000)] int pageIndex = 0, [Range(AdminPagingConstants.PageSizeMin, AdminPagingConstants.PageSizeMax)] int pageSize = AdminPagingConstants.PageSizeDefault, string? sortBy = null, bool ascending = false)
+		public ActionResult<Page<GetSpawnsetForOverview>> GetSpawnsets([Range(0, 1000)] int pageIndex = 0, [Range(AdminPagingConstants.PageSizeMin, AdminPagingConstants.PageSizeMax)] int pageSize = AdminPagingConstants.PageSizeDefault, string? sortBy = null, bool ascending = false)
 		{
 			IQueryable<SpawnsetFile> spawnsetsQuery = _dbContext.SpawnsetFiles.AsNoTracking();
 
@@ -57,9 +57,9 @@ namespace DevilDaggersWebsite.BlazorWasm.Server.Controllers.Admin
 				.Take(pageSize)
 				.ToList();
 
-			return new Page<GetSpawnset>
+			return new Page<GetSpawnsetForOverview>
 			{
-				Results = spawnsets.ConvertAll(s => s.ToGetSpawnset()),
+				Results = spawnsets.ConvertAll(s => s.ToGetSpawnsetForOverview()),
 				TotalResults = _dbContext.SpawnsetFiles.Count(),
 			};
 		}
