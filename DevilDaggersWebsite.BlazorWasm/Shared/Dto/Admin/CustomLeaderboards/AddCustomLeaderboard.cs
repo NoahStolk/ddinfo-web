@@ -6,7 +6,7 @@ namespace DevilDaggersWebsite.BlazorWasm.Shared.Dto.Admin.CustomLeaderboards
 {
 	public class AddCustomLeaderboard
 	{
-		public int SpawnsetFileId { get; init; }
+		public int SpawnsetId { get; init; }
 
 		public CustomLeaderboardCategory Category { get; init; }
 
