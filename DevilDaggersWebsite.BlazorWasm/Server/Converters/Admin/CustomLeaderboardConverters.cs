@@ -9,11 +9,12 @@ namespace DevilDaggersWebsite.BlazorWasm.Server.Converters.Admin
 		{
 			Id = customLeaderboard.Id,
 			SpawnsetName = customLeaderboard.SpawnsetFile.Name,
-			TimeBronze = customLeaderboard.TimeBronze / 10000.0,
-			TimeSilver = customLeaderboard.TimeSilver / 10000.0,
-			TimeGolden = customLeaderboard.TimeGolden / 10000.0,
-			TimeDevil = customLeaderboard.TimeDevil / 10000.0,
-			TimeLeviathan = customLeaderboard.TimeLeviathan / 10000.0,
+			TimeBronze = customLeaderboard.TimeBronze * 0.0001,
+			TimeSilver = customLeaderboard.TimeSilver * 0.0001,
+			TimeGolden = customLeaderboard.TimeGolden * 0.0001,
+			TimeDevil = customLeaderboard.TimeDevil * 0.0001,
+			TimeLeviathan = customLeaderboard.TimeLeviathan * 0.0001,
+			IsArchived = customLeaderboard.IsArchived,
 			DateCreated = customLeaderboard.DateCreated,
 			Category = customLeaderboard.Category,
 		};

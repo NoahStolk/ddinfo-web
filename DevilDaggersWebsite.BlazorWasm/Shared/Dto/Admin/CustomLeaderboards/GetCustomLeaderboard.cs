@@ -31,6 +31,8 @@ namespace DevilDaggersWebsite.BlazorWasm.Shared.Dto.Admin.CustomLeaderboards
 		[Display(Name = "Levi")]
 		public double TimeLeviathan { get; init; }
 
+		public bool IsArchived { get; init; }
+
 		public DateTime? DateCreated { get; init; }
 
 		public CustomLeaderboardCategory Category { get; init; }
