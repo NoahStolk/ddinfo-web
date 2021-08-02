@@ -8,20 +8,20 @@ namespace DevilDaggersWebsite.BlazorWasm.Shared.Dto.Admin.CustomLeaderboards
 	{
 		public CustomLeaderboardCategory Category { get; init; }
 
-		[Range(10000, 15000000)]
-		public int TimeBronze { get; init; }
+		[Range(1, 1500)]
+		public double TimeBronze { get; init; }
 
-		[Range(10000, 15000000)]
-		public int TimeSilver { get; init; }
+		[Range(1, 1500)]
+		public double TimeSilver { get; init; }
 
-		[Range(10000, 15000000)]
-		public int TimeGolden { get; init; }
+		[Range(1, 1500)]
+		public double TimeGolden { get; init; }
 
-		[Range(10000, 15000000)]
-		public int TimeDevil { get; init; }
+		[Range(1, 1500)]
+		public double TimeDevil { get; init; }
 
-		[Range(10000, 15000000)]
-		public int TimeLeviathan { get; init; }
+		[Range(1, 1500)]
+		public double TimeLeviathan { get; init; }
 
 		public bool IsArchived { get; init; }
 	}
