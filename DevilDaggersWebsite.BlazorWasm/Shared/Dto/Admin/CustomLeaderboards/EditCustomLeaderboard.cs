@@ -6,23 +6,23 @@ namespace DevilDaggersWebsite.BlazorWasm.Shared.Dto.Admin.CustomLeaderboards
 {
 	public class EditCustomLeaderboard
 	{
-		public CustomLeaderboardCategory Category { get; init; }
+		public CustomLeaderboardCategory Category { get; set; }
 
 		[Range(1, 1500)]
-		public double TimeBronze { get; init; }
+		public double TimeBronze { get; set; }
 
 		[Range(1, 1500)]
-		public double TimeSilver { get; init; }
+		public double TimeSilver { get; set; }
 
 		[Range(1, 1500)]
-		public double TimeGolden { get; init; }
+		public double TimeGolden { get; set; }
 
 		[Range(1, 1500)]
-		public double TimeDevil { get; init; }
+		public double TimeDevil { get; set; }
 
 		[Range(1, 1500)]
-		public double TimeLeviathan { get; init; }
+		public double TimeLeviathan { get; set; }
 
-		public bool IsArchived { get; init; }
+		public bool IsArchived { get; set; }
 	}
 }

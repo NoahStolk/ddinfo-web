@@ -1,0 +1,55 @@
+﻿@page "/admin/custom-leaderboards/edit/{Id:int}"
+@inject AdminApiHttpClient Http
+@inject NavigationManager NavigationManager
+@using DevilDaggersWebsite.BlazorWasm.Shared.Dto.Admin.CustomLeaderboards
+@using DevilDaggersWebsite.BlazorWasm.Shared.Enums
+
+<AdminEdit OverviewUrl="/admin/custom-leaderboards" PutApiUrl="api/admin/custom-leaderboards" Model="_editCustomLeaderboard" Id="Id" @ref="_editComponent">
+	<AdminInput Label="@nameof(EditCustomLeaderboard.Category)"><SearchDropdown Values="@(Enum.GetValues<CustomLeaderboardCategory>().ToDictionary(e => e, e => e.ToString()))" Converter="s => Enum.Parse<CustomLeaderboardCategory>(s)" @bind-Value="@_editCustomLeaderboard!.Category" /></AdminInput>
+	<AdminInput Label="@nameof(EditCustomLeaderboard.TimeBronze)"><InputNumber class="w-64 pl-2 bg-gray-900 text-color-text" @bind-Value="_editCustomLeaderboard!.TimeBronze" /></AdminInput>
+	<AdminInput Label="@nameof(EditCustomLeaderboard.TimeSilver)"><InputNumber class="w-64 pl-2 bg-gray-900 text-color-text" @bind-Value="_editCustomLeaderboard!.TimeSilver" /></AdminInput>
+	<AdminInput Label="@nameof(EditCustomLeaderboard.TimeGolden)"><InputNumber class="w-64 pl-2 bg-gray-900 text-color-text" @bind-Value="_editCustomLeaderboard!.TimeGolden" /></AdminInput>
+	<AdminInput Label="@nameof(EditCustomLeaderboard.TimeDevil)"><InputNumber class="w-64 pl-2 bg-gray-900 text-color-text" @bind-Value="_editCustomLeaderboard!.TimeDevil" /></AdminInput>
+	<AdminInput Label="@nameof(EditCustomLeaderboard.TimeLeviathan)"><InputNumber class="w-64 pl-2 bg-gray-900 text-color-text" @bind-Value="_editCustomLeaderboard!.TimeLeviathan" /></AdminInput>
+	<AdminInput Label="@nameof(EditCustomLeaderboard.IsArchived)"><InputCheckbox @bind-Value="@_editCustomLeaderboard!.IsArchived" /></AdminInput>
+</AdminEdit>
+
+@code
+{
+	private EditCustomLeaderboard? _editCustomLeaderboard;
+	private AdminEdit<EditCustomLeaderboard> _editComponent = null!;
+
+	[Parameter] public int Id { get; set; }
+
+	protected override async Task OnInitializedAsync()
+	{
+		try
+		{
+			GetCustomLeaderboard getCustomLeaderboard = await Http.Client.GetFromJsonAsync<GetCustomLeaderboard>($"api/admin/custom-leaderboards/{Id}") ?? throw new($"Response could not be deserialized to {nameof(GetCustomLeaderboard)}.");
+			_editCustomLeaderboard = new()
+			{
+				Category = getCustomLeaderboard.Category,
+				IsArchived = getCustomLeaderboard.IsArchived,
+				TimeBronze = getCustomLeaderboard.TimeBronze,
+				TimeSilver = getCustomLeaderboard.TimeSilver,
+				TimeGolden = getCustomLeaderboard.TimeGolden,
+				TimeDevil = getCustomLeaderboard.TimeDevil,
+				TimeLeviathan = getCustomLeaderboard.TimeLeviathan,
+			};
+			_editComponent.State = ErrorState.None;
+		}
+		catch (HttpRequestException ex)
+		{
+			if (ex.StatusCode.HasValue)
+				_editComponent.ErrorMessage = $"Error {(int)ex.StatusCode}: {ex.StatusCode}";
+			else
+				_editComponent.ErrorMessage = "An error occurred while sending the request.";
+
+			_editComponent.State = ErrorState.FatalError;
+		}
+		catch (AccessTokenNotAvailableException exception)
+		{
+			exception.Redirect();
+		}
+	}
+}
