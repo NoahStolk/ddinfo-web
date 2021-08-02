@@ -42,7 +42,7 @@ namespace DevilDaggersWebsite.Tests
 			Mock<DiscordLogger> discordLogger = new(mockEnvironment.Object);
 			Mock<AuditLogger> auditLogger = new(discordLogger.Object);
 
-			_customLeaderboardsController = new CustomLeaderboardsController(_dbContext.Object, new Mock<IWebHostEnvironment>().Object, auditLogger.Object);
+			_customLeaderboardsController = new CustomLeaderboardsController(_dbContext.Object, auditLogger.Object);
 		}
 
 		[TestMethod]
