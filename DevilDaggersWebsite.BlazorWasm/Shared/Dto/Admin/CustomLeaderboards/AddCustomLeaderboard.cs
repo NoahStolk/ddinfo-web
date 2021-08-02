@@ -24,7 +24,5 @@ namespace DevilDaggersWebsite.BlazorWasm.Shared.Dto.Admin.CustomLeaderboards
 
 		[Range(1, 1500)]
 		public double TimeLeviathan { get; init; }
-
-		public bool IsArchived { get; init; }
 	}
 }

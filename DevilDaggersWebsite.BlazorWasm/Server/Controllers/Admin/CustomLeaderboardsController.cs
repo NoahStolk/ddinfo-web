@@ -141,7 +141,6 @@ namespace DevilDaggersWebsite.BlazorWasm.Server.Controllers.Admin
 				TimeGolden = (int)(addCustomLeaderboard.TimeGolden * 10000),
 				TimeDevil = (int)(addCustomLeaderboard.TimeDevil * 10000),
 				TimeLeviathan = (int)(addCustomLeaderboard.TimeLeviathan * 10000),
-				IsArchived = addCustomLeaderboard.IsArchived,
 			};
 			_dbContext.CustomLeaderboards.Add(customLeaderboard);
 			_dbContext.SaveChanges();
