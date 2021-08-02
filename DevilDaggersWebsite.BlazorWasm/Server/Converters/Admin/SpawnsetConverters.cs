@@ -16,5 +16,16 @@ namespace DevilDaggersWebsite.BlazorWasm.Server.Converters.Admin
 			LastUpdated = spawnset.LastUpdated,
 			IsPractice = spawnset.IsPractice,
 		};
+
+		public static GetSpawnset ToGetSpawnset(this SpawnsetFile spawnset) => new()
+		{
+			Id = spawnset.Id,
+			PlayerId = spawnset.PlayerId,
+			Name = spawnset.Name,
+			MaxDisplayWaves = spawnset.MaxDisplayWaves,
+			HtmlDescription = spawnset.HtmlDescription,
+			LastUpdated = spawnset.LastUpdated,
+			IsPractice = spawnset.IsPractice,
+		};
 	}
 }

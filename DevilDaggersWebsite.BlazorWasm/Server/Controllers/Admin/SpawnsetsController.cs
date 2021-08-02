@@ -64,6 +64,20 @@ namespace DevilDaggersWebsite.BlazorWasm.Server.Controllers.Admin
 			};
 		}
 
+		[HttpGet("{id}")]
+		[ProducesResponseType(StatusCodes.Status200OK)]
+		[ProducesResponseType(StatusCodes.Status404NotFound)]
+		public ActionResult<GetSpawnset> GetSpawnsetById(int id)
+		{
+			SpawnsetFile? spawnset = _dbContext.SpawnsetFiles
+				.AsNoTracking()
+				.FirstOrDefault(p => p.Id == id);
+			if (spawnset == null)
+				return NotFound();
+
+			return spawnset.ToGetSpawnset();
+		}
+
 		[HttpPost]
 		[ProducesResponseType(StatusCodes.Status200OK)]
 		[ProducesResponseType(StatusCodes.Status400BadRequest)]
