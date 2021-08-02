@@ -1,4 +1,5 @@
 ﻿using DevilDaggersWebsite.BlazorWasm.Server.Clients.Leaderboard;
+using DevilDaggersWebsite.BlazorWasm.Shared;
 using DevilDaggersWebsite.BlazorWasm.Shared.Dto.Public.Leaderboards;
 using DevilDaggersWebsite.BlazorWasm.Shared.Enums;
 
@@ -16,7 +17,7 @@ namespace DevilDaggersWebsite.BlazorWasm.Server.Converters.Public
 			GemsGlobal = leaderboardResponse.GemsGlobal,
 			KillsGlobal = leaderboardResponse.KillsGlobal,
 			TotalPlayers = leaderboardResponse.TotalPlayers,
-			TimeGlobal = leaderboardResponse.TimeGlobal == 0 ? 0 : leaderboardResponse.TimeGlobal / 10000.0,
+			TimeGlobal = leaderboardResponse.TimeGlobal == 0 ? 0 : leaderboardResponse.TimeGlobal.ToSecondsTime(),
 		};
 
 		public static GetEntry ToGetEntryPublic(this EntryResponse entryResponse) => new()
@@ -33,8 +34,8 @@ namespace DevilDaggersWebsite.BlazorWasm.Server.Converters.Public
 			Kills = entryResponse.Kills,
 			KillsTotal = entryResponse.KillsTotal,
 			Rank = entryResponse.Rank,
-			Time = entryResponse.Time / 10000.0,
-			TimeTotal = entryResponse.TimeTotal / 10000.0,
+			Time = entryResponse.Time.ToSecondsTime(),
+			TimeTotal = entryResponse.TimeTotal.ToSecondsTime(),
 			Username = entryResponse.Username,
 		};
 	}

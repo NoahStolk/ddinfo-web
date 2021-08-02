@@ -1,5 +1,6 @@
 ﻿using DevilDaggersWebsite.BlazorWasm.Server.Entities;
 using DevilDaggersWebsite.BlazorWasm.Server.Extensions;
+using DevilDaggersWebsite.BlazorWasm.Shared;
 using DevilDaggersWebsite.BlazorWasm.Shared.Dto.Public.CustomLeaderboards;
 
 namespace DevilDaggersWebsite.BlazorWasm.Server.Converters.Public
@@ -25,11 +26,11 @@ namespace DevilDaggersWebsite.BlazorWasm.Server.Converters.Public
 		{
 			SpawnsetAuthorName = customLeaderboard.SpawnsetFile.Player.PlayerName,
 			SpawnsetName = customLeaderboard.SpawnsetFile.Name,
-			TimeBronze = customLeaderboard.TimeBronze / 10000.0,
-			TimeSilver = customLeaderboard.TimeSilver / 10000.0,
-			TimeGolden = customLeaderboard.TimeGolden / 10000.0,
-			TimeDevil = customLeaderboard.TimeDevil / 10000.0,
-			TimeLeviathan = customLeaderboard.TimeLeviathan / 10000.0,
+			TimeBronze = customLeaderboard.TimeBronze.ToSecondsTime(),
+			TimeSilver = customLeaderboard.TimeSilver.ToSecondsTime(),
+			TimeGolden = customLeaderboard.TimeGolden.ToSecondsTime(),
+			TimeDevil = customLeaderboard.TimeDevil.ToSecondsTime(),
+			TimeLeviathan = customLeaderboard.TimeLeviathan.ToSecondsTime(),
 			DateCreated = customLeaderboard.DateCreated,
 			Category = customLeaderboard.Category,
 		};

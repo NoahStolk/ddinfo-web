@@ -136,11 +136,11 @@ namespace DevilDaggersWebsite.BlazorWasm.Server.Controllers.Admin
 				DateCreated = DateTime.UtcNow,
 				SpawnsetFileId = addCustomLeaderboard.SpawnsetId,
 				Category = addCustomLeaderboard.Category,
-				TimeBronze = (int)(addCustomLeaderboard.TimeBronze * 10000),
-				TimeSilver = (int)(addCustomLeaderboard.TimeSilver * 10000),
-				TimeGolden = (int)(addCustomLeaderboard.TimeGolden * 10000),
-				TimeDevil = (int)(addCustomLeaderboard.TimeDevil * 10000),
-				TimeLeviathan = (int)(addCustomLeaderboard.TimeLeviathan * 10000),
+				TimeBronze = addCustomLeaderboard.TimeBronze.To10thMilliTime(),
+				TimeSilver = addCustomLeaderboard.TimeSilver.To10thMilliTime(),
+				TimeGolden = addCustomLeaderboard.TimeGolden.To10thMilliTime(),
+				TimeDevil = addCustomLeaderboard.TimeDevil.To10thMilliTime(),
+				TimeLeviathan = addCustomLeaderboard.TimeLeviathan.To10thMilliTime(),
 			};
 			_dbContext.CustomLeaderboards.Add(customLeaderboard);
 			_dbContext.SaveChanges();
@@ -205,20 +205,20 @@ namespace DevilDaggersWebsite.BlazorWasm.Server.Controllers.Admin
 			EditCustomLeaderboard logDto = new()
 			{
 				Category = customLeaderboard.Category,
-				TimeBronze = customLeaderboard.TimeBronze * 0.0001,
-				TimeSilver = customLeaderboard.TimeSilver * 0.0001,
-				TimeGolden = customLeaderboard.TimeGolden * 0.0001,
-				TimeDevil = customLeaderboard.TimeDevil * 0.0001,
-				TimeLeviathan = customLeaderboard.TimeLeviathan * 0.0001,
+				TimeBronze = customLeaderboard.TimeBronze.ToSecondsTime(),
+				TimeSilver = customLeaderboard.TimeSilver.ToSecondsTime(),
+				TimeGolden = customLeaderboard.TimeGolden.ToSecondsTime(),
+				TimeDevil = customLeaderboard.TimeDevil.ToSecondsTime(),
+				TimeLeviathan = customLeaderboard.TimeLeviathan.ToSecondsTime(),
 				IsArchived = customLeaderboard.IsArchived,
 			};
 
 			customLeaderboard.Category = editCustomLeaderboard.Category;
-			customLeaderboard.TimeBronze = (int)(editCustomLeaderboard.TimeBronze * 10000);
-			customLeaderboard.TimeSilver = (int)(editCustomLeaderboard.TimeSilver * 10000);
-			customLeaderboard.TimeGolden = (int)(editCustomLeaderboard.TimeGolden * 10000);
-			customLeaderboard.TimeDevil = (int)(editCustomLeaderboard.TimeDevil * 10000);
-			customLeaderboard.TimeLeviathan = (int)(editCustomLeaderboard.TimeLeviathan * 10000);
+			customLeaderboard.TimeBronze = editCustomLeaderboard.TimeBronze.To10thMilliTime();
+			customLeaderboard.TimeSilver = editCustomLeaderboard.TimeSilver.To10thMilliTime();
+			customLeaderboard.TimeGolden = editCustomLeaderboard.TimeGolden.To10thMilliTime();
+			customLeaderboard.TimeDevil = editCustomLeaderboard.TimeDevil.To10thMilliTime();
+			customLeaderboard.TimeLeviathan = editCustomLeaderboard.TimeLeviathan.To10thMilliTime();
 			customLeaderboard.IsArchived = editCustomLeaderboard.IsArchived;
 			_dbContext.SaveChanges();
 

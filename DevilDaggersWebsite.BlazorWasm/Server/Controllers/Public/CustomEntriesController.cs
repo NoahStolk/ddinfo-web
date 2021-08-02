@@ -7,6 +7,7 @@ using DevilDaggersWebsite.BlazorWasm.Server.HostedServices.DdInfoDiscordBot;
 using DevilDaggersWebsite.BlazorWasm.Server.Singletons;
 using DevilDaggersWebsite.BlazorWasm.Server.Transients;
 using DevilDaggersWebsite.BlazorWasm.Server.Utils;
+using DevilDaggersWebsite.BlazorWasm.Shared;
 using DevilDaggersWebsite.BlazorWasm.Shared.Dto.Public.CustomEntries;
 using DevilDaggersWebsite.BlazorWasm.Shared.Dto.Public.Tools;
 using DevilDaggersWebsite.BlazorWasm.Shared.Enums;
@@ -394,7 +395,7 @@ namespace DevilDaggersWebsite.BlazorWasm.Server.Controllers.Public
 		}
 
 		private static string FormatTimeString(int time)
-			=> (time / 10000.0).ToString("0.0000");
+			=> time.ToSecondsTime().ToString("0.0000");
 
 		private static string GetSpawnsetHashOrName(byte[] spawnsetHash, string? spawnsetName)
 			=> string.IsNullOrEmpty(spawnsetName) ? BitConverter.ToString(spawnsetHash).Replace("-", string.Empty) : spawnsetName;
@@ -425,7 +426,7 @@ namespace DevilDaggersWebsite.BlazorWasm.Server.Controllers.Public
 				if (!string.IsNullOrEmpty(errorMessage))
 					await _discordLogger.TryLog(Channel.MonitoringCustomLeaderboard, $":{errorEmoteNameOverride ?? "warning"}: Upload failed for user `{uploadRequest.PlayerName}` (`{uploadRequest.PlayerId}`) for `{spawnsetIdentification}`. {ddclInfo}\n**{errorMessage}**");
 				else
-					await _discordLogger.TryLog(Channel.MonitoringCustomLeaderboard, $":white_check_mark: `{uploadRequest.PlayerName}` just submitted a score of `{uploadRequest.Time / 10000f:0.0000}` to `{spawnsetIdentification}`. {ddclInfo}");
+					await _discordLogger.TryLog(Channel.MonitoringCustomLeaderboard, $":white_check_mark: `{uploadRequest.PlayerName}` just submitted a score of `{FormatTimeString(uploadRequest.Time)}` to `{spawnsetIdentification}`. {ddclInfo}");
 			}
 			catch
 			{

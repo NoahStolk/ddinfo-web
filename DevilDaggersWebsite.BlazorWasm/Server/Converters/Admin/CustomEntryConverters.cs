@@ -1,4 +1,5 @@
 ﻿using DevilDaggersWebsite.BlazorWasm.Server.Entities;
+using DevilDaggersWebsite.BlazorWasm.Shared;
 using DevilDaggersWebsite.BlazorWasm.Shared.Dto.Admin.CustomEntries;
 using DevilDaggersWebsite.BlazorWasm.Shared.Enums;
 
@@ -21,13 +22,13 @@ namespace DevilDaggersWebsite.BlazorWasm.Server.Converters.Admin
 			GemsTotal = customEntry.GemsTotal,
 			HomingDaggers = customEntry.HomingDaggers,
 			HomingDaggersEaten = customEntry.HomingDaggersEaten,
-			LevelUpTime2 = customEntry.LevelUpTime2 / 10000f,
-			LevelUpTime3 = customEntry.LevelUpTime3 / 10000f,
-			LevelUpTime4 = customEntry.LevelUpTime4 / 10000f,
+			LevelUpTime2 = customEntry.LevelUpTime2.ToSecondsTime(),
+			LevelUpTime3 = customEntry.LevelUpTime3.ToSecondsTime(),
+			LevelUpTime4 = customEntry.LevelUpTime4.ToSecondsTime(),
 			PlayerName = customEntry.Player.PlayerName,
 			SpawnsetName = customEntry.CustomLeaderboard.SpawnsetFile.Name,
 			SubmitDate = customEntry.SubmitDate,
-			Time = customEntry.Time / 10000f,
+			Time = customEntry.Time.ToSecondsTime(),
 		};
 	}
 }

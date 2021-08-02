@@ -1,6 +1,7 @@
 ﻿using DevilDaggersWebsite.BlazorWasm.Server.Caches.LeaderboardHistory;
 using DevilDaggersWebsite.BlazorWasm.Server.Controllers.Attributes;
 using DevilDaggersWebsite.BlazorWasm.Server.Utils;
+using DevilDaggersWebsite.BlazorWasm.Shared;
 using DevilDaggersWebsite.BlazorWasm.Shared.Dto.Public.LeaderboardHistory;
 using DevilDaggersWebsite.BlazorWasm.Shared.Dto.Public.LeaderboardHistoryStatistics;
 using Microsoft.AspNetCore.Http;
@@ -39,7 +40,7 @@ namespace DevilDaggersWebsite.BlazorWasm.Server.Controllers.Public
 			ulong deathsGlobal = current.DeathsGlobal;
 			ulong gemsGlobal = current.GemsGlobal;
 			ulong killsGlobal = current.KillsGlobal;
-			double timeGlobal = current.TimeGlobal / 10000.0;
+			double timeGlobal = current.TimeGlobal.ToSecondsTime();
 			double rank100 = GetTimeOr0(current, 99);
 			double rank10 = GetTimeOr0(current, 9);
 			int totalPlayers = current.Players;
@@ -100,7 +101,7 @@ namespace DevilDaggersWebsite.BlazorWasm.Server.Controllers.Public
 					totalPlayersUpdated = true;
 				}
 
-				double currentTimeGlobal = current.TimeGlobal / 10000.0;
+				double currentTimeGlobal = current.TimeGlobal.ToSecondsTime();
 				if (timeGlobal < currentTimeGlobal)
 				{
 					timeGlobal = currentTimeGlobal;
@@ -146,7 +147,7 @@ namespace DevilDaggersWebsite.BlazorWasm.Server.Controllers.Public
 			});
 
 			static double GetTimeOr0(GetLeaderboardHistory history, int rankIndex)
-				=> history.Entries.Count > rankIndex ? history.Entries[rankIndex].Time / 10000.0 : 0;
+				=> history.Entries.Count > rankIndex ? history.Entries[rankIndex].Time.ToSecondsTime() : 0;
 		}
 	}
 }

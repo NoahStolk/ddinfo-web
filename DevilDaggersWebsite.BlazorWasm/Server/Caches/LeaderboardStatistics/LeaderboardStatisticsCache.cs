@@ -103,7 +103,7 @@ namespace DevilDaggersWebsite.BlazorWasm.Server.Caches.LeaderboardStatistics
 
 				foreach (Enemy enemy in enemies)
 				{
-					if (entry.Time >= enemy.FirstSpawnSecond * 10000 && EnemyStats.ContainsKey(enemy))
+					if (entry.Time >= ((double?)enemy.FirstSpawnSecond).To10thMilliTime() && EnemyStats.ContainsKey(enemy))
 						EnemyStats[enemy]++;
 				}
 

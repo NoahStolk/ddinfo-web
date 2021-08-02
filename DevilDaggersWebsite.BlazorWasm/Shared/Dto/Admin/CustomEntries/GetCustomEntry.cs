@@ -15,7 +15,7 @@ namespace DevilDaggersWebsite.BlazorWasm.Shared.Dto.Admin.CustomEntries
 		public string PlayerName { get; init; } = null!;
 
 		[Format(FormatUtils.TimeFormat)]
-		public float Time { get; init; }
+		public double Time { get; init; }
 
 		[Display(Name = "Gems")]
 		public int GemsCollected { get; init; }
@@ -50,15 +50,15 @@ namespace DevilDaggersWebsite.BlazorWasm.Shared.Dto.Admin.CustomEntries
 
 		[Format(FormatUtils.TimeFormat)]
 		[Display(Name = "Level2")]
-		public float LevelUpTime2 { get; init; }
+		public double LevelUpTime2 { get; init; }
 
 		[Format(FormatUtils.TimeFormat)]
 		[Display(Name = "Level3")]
-		public float LevelUpTime3 { get; init; }
+		public double LevelUpTime3 { get; init; }
 
 		[Format(FormatUtils.TimeFormat)]
 		[Display(Name = "Level4")]
-		public float LevelUpTime4 { get; init; }
+		public double LevelUpTime4 { get; init; }
 
 		public DateTime SubmitDate { get; init; }
 
