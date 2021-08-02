@@ -42,7 +42,6 @@ namespace DevilDaggersWebsite.BlazorWasm.Server.Controllers.Admin
 		{
 			IQueryable<CustomLeaderboard> customLeaderboardsQuery = _dbContext.CustomLeaderboards
 				.AsNoTracking()
-				.Where(cl => !cl.IsArchived)
 				.Include(cl => cl.SpawnsetFile)
 					.ThenInclude(sf => sf.Player);
 
