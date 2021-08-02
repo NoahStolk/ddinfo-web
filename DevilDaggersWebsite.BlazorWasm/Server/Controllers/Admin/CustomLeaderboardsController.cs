@@ -86,7 +86,7 @@ namespace DevilDaggersWebsite.BlazorWasm.Server.Controllers.Admin
 		[ProducesResponseType(StatusCodes.Status400BadRequest)]
 		public async Task<ActionResult> AddCustomLeaderboard(AddCustomLeaderboard addCustomLeaderboard)
 		{
-			if (_dbContext.CustomLeaderboards.Any(cl => cl.SpawnsetFileId == addCustomLeaderboard.SpawnsetFileId))
+			if (_dbContext.CustomLeaderboards.Any(cl => cl.SpawnsetFileId == addCustomLeaderboard.SpawnsetId))
 				return BadRequest("A leaderboard for this spawnset already exists.");
 
 			if (addCustomLeaderboard.Category.IsAscending())
@@ -115,9 +115,9 @@ namespace DevilDaggersWebsite.BlazorWasm.Server.Controllers.Admin
 			var spawnsetFile = _dbContext.SpawnsetFiles
 				.AsNoTracking()
 				.Select(sf => new { sf.Id, sf.Name })
-				.FirstOrDefault(sf => sf.Id == addCustomLeaderboard.SpawnsetFileId);
+				.FirstOrDefault(sf => sf.Id == addCustomLeaderboard.SpawnsetId);
 			if (spawnsetFile == null)
-				return BadRequest($"Spawnset with ID '{addCustomLeaderboard.SpawnsetFileId}' does not exist.");
+				return BadRequest($"Spawnset with ID '{addCustomLeaderboard.SpawnsetId}' does not exist.");
 
 			if (!Spawnset.TryParse(System.IO.File.ReadAllBytes(Path.Combine(_environment.WebRootPath, "spawnsets", spawnsetFile.Name)), out Spawnset spawnset))
 				throw new($"Could not parse survival file '{spawnsetFile.Name}'. Please review the file. Also review how this file ended up in the 'spawnsets' directory, as it is not possible to upload non-survival files from within the Admin pages.");
@@ -134,7 +134,7 @@ namespace DevilDaggersWebsite.BlazorWasm.Server.Controllers.Admin
 			CustomLeaderboard customLeaderboard = new()
 			{
 				DateCreated = DateTime.UtcNow,
-				SpawnsetFileId = addCustomLeaderboard.SpawnsetFileId,
+				SpawnsetFileId = addCustomLeaderboard.SpawnsetId,
 				Category = addCustomLeaderboard.Category,
 				TimeBronze = addCustomLeaderboard.TimeBronze,
 				TimeSilver = addCustomLeaderboard.TimeSilver,
