@@ -149,12 +149,12 @@ namespace DevilDaggersWebsite.BlazorWasm.Server.Singletons
 
 		private static string GetEntityFromEndpointName(string endpointName)
 		{
-			if (endpointName.StartsWith("Add"))
-				return endpointName[3..];
-			if (endpointName.StartsWith("Edit"))
-				return endpointName[4..];
-			if (endpointName.StartsWith("Delete"))
-				return endpointName[6..];
+			foreach (string s in new[] { "Add", "Edit", "Delete" })
+			{
+				if (endpointName.StartsWith(s))
+					return endpointName[s.Length..];
+			}
+
 			return endpointName;
 		}
 
