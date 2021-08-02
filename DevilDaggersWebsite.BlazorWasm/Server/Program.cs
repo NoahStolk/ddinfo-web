@@ -1,4 +1,6 @@
-﻿using Microsoft.AspNetCore.Hosting;
+﻿using DevilDaggersWebsite.BlazorWasm.Server.HostedServices.DdInfoDiscordBot;
+using Microsoft.AspNetCore.Hosting;
+using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Extensions.Hosting;
 
 namespace DevilDaggersWebsite.BlazorWasm.Server
@@ -6,15 +8,9 @@ namespace DevilDaggersWebsite.BlazorWasm.Server
 	public static class Program
 	{
 		public static void Main(string[] args)
-		{
-			CreateHostBuilder(args).Build().Run();
-		}
+			=> CreateHostBuilder(args).Build().Run();
 
-		public static IHostBuilder CreateHostBuilder(string[] args) =>
-			Host.CreateDefaultBuilder(args)
-				.ConfigureWebHostDefaults(webBuilder =>
-				{
-					webBuilder.UseStartup<Startup>();
-				});
+		public static IHostBuilder CreateHostBuilder(string[] args)
+			=> Host.CreateDefaultBuilder(args).ConfigureWebHostDefaults(webBuilder => webBuilder.UseStartup<Startup>()).ConfigureServices(services => services.AddHostedService<DdInfoDiscordBotService>());
 	}
 }
