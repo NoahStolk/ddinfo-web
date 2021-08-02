@@ -4,7 +4,7 @@ using System.Linq.Expressions;
 
 namespace DevilDaggersWebsite.BlazorWasm.Server.Extensions
 {
-	public static class LinqExtensions
+	public static class IQueryableExtensions
 	{
 		public static IQueryable<T> OrderByMember<T>(this IQueryable<T> query, string memberName, bool ascending)
 			=> query.ByMember(memberName, ascending, "OrderBy", "OrderByDescending");
