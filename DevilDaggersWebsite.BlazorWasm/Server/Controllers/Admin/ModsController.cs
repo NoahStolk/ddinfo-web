@@ -4,6 +4,7 @@ using DevilDaggersWebsite.BlazorWasm.Server.Entities;
 using DevilDaggersWebsite.BlazorWasm.Server.Exceptions;
 using DevilDaggersWebsite.BlazorWasm.Server.Extensions;
 using DevilDaggersWebsite.BlazorWasm.Server.Singletons;
+using DevilDaggersWebsite.BlazorWasm.Server.Utils;
 using DevilDaggersWebsite.BlazorWasm.Shared;
 using DevilDaggersWebsite.BlazorWasm.Shared.Constants;
 using DevilDaggersWebsite.BlazorWasm.Shared.Dto;
@@ -20,6 +21,7 @@ using System.Collections.Generic;
 using System.ComponentModel.DataAnnotations;
 using System.IO;
 using System.Linq;
+using System.Text;
 using System.Threading.Tasks;
 using Io = System.IO;
 
@@ -211,10 +213,28 @@ namespace DevilDaggersWebsite.BlazorWasm.Server.Controllers.Admin
 			if (assetMod == null)
 				return NotFound();
 
+			StringBuilder additionalInformation = new();
+
+			string path = Path.Combine(DataUtils.GetPath("Mods"), $"{assetMod.Name}.zip");
+			if (Io.File.Exists(path))
+				Io.File.Delete(path);
+			else
+				additionalInformation.Append(":information_source: File ").Append(path).AppendLine(" was not deleted because it does not exist.");
+
+			// Clear entire memory cache (can't clear individual entries).
+			_modArchiveCache.Clear();
+
+			// Clear file cache for this mod.
+			string cacheFilePath = Path.Combine(DataUtils.GetPath("ModArchiveCache"), $"{assetMod.Name}.json");
+			if (Io.File.Exists(cacheFilePath))
+				Io.File.Delete(cacheFilePath);
+			else
+				additionalInformation.Append(":information_source: File ").Append(cacheFilePath).AppendLine(" was not deleted because it does not exist.");
+
 			_dbContext.AssetMods.Remove(assetMod);
 			_dbContext.SaveChanges();
 
-			await _auditLogger.LogDelete(assetMod, User, assetMod.Id);
+			await _auditLogger.LogDelete(assetMod, User, assetMod.Id, additionalInformation.ToString());
 
 			return Ok();
 		}
@@ -310,28 +330,6 @@ namespace DevilDaggersWebsite.BlazorWasm.Server.Controllers.Admin
 			{
 				return BadRequest($"A mod binary inside the mod archive '{file?.FileName}' is invalid. {ex.Message}");
 			}
-		}
-
-		[HttpDelete("delete-file")]
-		[ProducesResponseType(StatusCodes.Status200OK)]
-		[ProducesResponseType(StatusCodes.Status400BadRequest)]
-		public async Task<ActionResult> DeleteModFile(string fileName)
-		{
-			string path = Path.Combine(_environment.WebRootPath, "mods", fileName);
-			if (!Io.File.Exists(path))
-				return BadRequest($"File '{fileName}' does not exist.");
-
-			Io.File.Delete(path);
-
-			// Clear entire memory cache (can't clear individual entries).
-			_modArchiveCache.Clear();
-
-			// Clear file cache for this mod.
-			string cacheFilePath = Path.Combine(_environment.WebRootPath, "mod-archive-cache", $"{Path.GetFileNameWithoutExtension(fileName)}.json");
-			if (Io.File.Exists(cacheFilePath))
-				Io.File.Delete(cacheFilePath);
-
-			return Ok();
 		}
 
 		[HttpPost("upload-screenshot")]

@@ -114,7 +114,7 @@ namespace DevilDaggersWebsite.BlazorWasm.Server.Singletons
 			}
 		}
 
-		public async Task LogDelete<TData, TKey>(TData obj, ClaimsPrincipal claimsPrincipal, TKey id, [CallerMemberName] string endpointName = "")
+		public async Task LogDelete<TData, TKey>(TData obj, ClaimsPrincipal claimsPrincipal, TKey id, string? additionalInformation = null, [CallerMemberName] string endpointName = "")
 			where TData : notnull
 		{
 			StringBuilder auditLogger = GetAuditLogger("DELETE", claimsPrincipal, id, endpointName);
@@ -140,6 +140,10 @@ namespace DevilDaggersWebsite.BlazorWasm.Server.Singletons
 				auditLogger.AppendFormat($"{{0,-{maxL + paddingL}}}", $"- {kvp.Key.TrimAfter(_loggingMax, true)}").AppendLine(kvp.Value.TrimAfter(_loggingMax, true));
 
 			auditLogger.AppendLine("```");
+
+			if (!string.IsNullOrWhiteSpace(additionalInformation))
+				auditLogger.AppendLine("*Additional information:*").AppendLine(additionalInformation);
+
 			await _discordLogger.TryLog(Channel.MonitoringAuditLog, auditLogger.ToString());
 		}
 

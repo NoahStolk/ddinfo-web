@@ -20,6 +20,7 @@ using System.ComponentModel.DataAnnotations;
 using System.IO;
 using System.Linq;
 using System.Security.Cryptography;
+using System.Text;
 using System.Threading.Tasks;
 using Io = System.IO;
 
@@ -206,11 +207,17 @@ namespace DevilDaggersWebsite.BlazorWasm.Server.Controllers.Admin
 			if (_dbContext.CustomLeaderboards.Any(ce => ce.SpawnsetFileId == id))
 				return BadRequest("Spawnset with custom leaderboard cannot be deleted.");
 
+			StringBuilder additionalInformation = new();
+
 			string path = Path.Combine(DataUtils.GetPath("Spawnsets"), spawnset.Name);
 			if (Io.File.Exists(path))
 			{
 				Io.File.Delete(path);
 				_spawnsetHashCache.Clear();
+			}
+			else
+			{
+				additionalInformation.Append(":warning: File ").Append(path).AppendLine(" was not deleted because it does not exist.");
 			}
 
 			_dbContext.SpawnsetFiles.Remove(spawnset);
