@@ -44,21 +44,17 @@ namespace DevilDaggersWebsite.BlazorWasm.Server.Controllers.Admin
 				.AsNoTracking()
 				.Include(d => d.Player);
 
-			if (sortBy != null)
+			donationsQuery = sortBy switch
 			{
-				donationsQuery = sortBy switch
-				{
-					DonationSorting.Amount => donationsQuery.OrderBy(d => d.Amount, ascending),
-					DonationSorting.ConvertedEuroCentsReceived => donationsQuery.OrderBy(d => d.ConvertedEuroCentsReceived, ascending),
-					DonationSorting.Currency => donationsQuery.OrderBy(d => d.Currency, ascending),
-					DonationSorting.DateReceived => donationsQuery.OrderBy(d => d.DateReceived, ascending),
-					DonationSorting.Id => donationsQuery.OrderBy(d => d.Id, ascending),
-					DonationSorting.IsRefunded => donationsQuery.OrderBy(d => d.IsRefunded, ascending),
-					DonationSorting.Note => donationsQuery.OrderBy(d => d.Note, ascending),
-					DonationSorting.PlayerName => donationsQuery.OrderBy(d => d.Player.PlayerName, ascending),
-					_ => donationsQuery,
-				};
-			}
+				DonationSorting.Amount => donationsQuery.OrderBy(d => d.Amount, ascending),
+				DonationSorting.ConvertedEuroCentsReceived => donationsQuery.OrderBy(d => d.ConvertedEuroCentsReceived, ascending),
+				DonationSorting.Currency => donationsQuery.OrderBy(d => d.Currency, ascending),
+				DonationSorting.DateReceived => donationsQuery.OrderBy(d => d.DateReceived, ascending),
+				DonationSorting.IsRefunded => donationsQuery.OrderBy(d => d.IsRefunded, ascending),
+				DonationSorting.Note => donationsQuery.OrderBy(d => d.Note, ascending),
+				DonationSorting.PlayerName => donationsQuery.OrderBy(d => d.Player.PlayerName, ascending),
+				_ => donationsQuery.OrderBy(d => d.Id, ascending),
+			};
 
 			List<Donation> donations = donationsQuery
 				.Skip(pageIndex * pageSize)

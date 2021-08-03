@@ -48,33 +48,29 @@ namespace DevilDaggersWebsite.BlazorWasm.Server.Controllers.Admin
 				.Include(ce => ce.CustomLeaderboard)
 					.ThenInclude(cl => cl.SpawnsetFile);
 
-			if (sortBy != null)
+			customEntriesQuery = sortBy switch
 			{
-				customEntriesQuery = sortBy switch
-				{
-					CustomEntrySorting.ClientVersion => customEntriesQuery.OrderBy(ce => ce.ClientVersion, ascending),
-					CustomEntrySorting.DaggersFired => customEntriesQuery.OrderBy(ce => ce.DaggersFired, ascending),
-					CustomEntrySorting.DaggersHit => customEntriesQuery.OrderBy(ce => ce.DaggersHit, ascending),
-					CustomEntrySorting.DeathType => customEntriesQuery.OrderBy(ce => ce.DeathType, ascending),
-					CustomEntrySorting.EnemiesAlive => customEntriesQuery.OrderBy(ce => ce.EnemiesAlive, ascending),
-					CustomEntrySorting.EnemiesKilled => customEntriesQuery.OrderBy(ce => ce.EnemiesKilled, ascending),
-					CustomEntrySorting.GemsCollected => customEntriesQuery.OrderBy(ce => ce.GemsCollected, ascending),
-					CustomEntrySorting.GemsDespawned => customEntriesQuery.OrderBy(ce => ce.GemsDespawned, ascending),
-					CustomEntrySorting.GemsEaten => customEntriesQuery.OrderBy(ce => ce.GemsEaten, ascending),
-					CustomEntrySorting.GemsTotal => customEntriesQuery.OrderBy(ce => ce.GemsTotal, ascending),
-					CustomEntrySorting.HomingDaggers => customEntriesQuery.OrderBy(ce => ce.HomingDaggers, ascending),
-					CustomEntrySorting.HomingDaggersEaten => customEntriesQuery.OrderBy(ce => ce.HomingDaggersEaten, ascending),
-					CustomEntrySorting.Id => customEntriesQuery.OrderBy(ce => ce.Id, ascending),
-					CustomEntrySorting.LevelUpTime2 => customEntriesQuery.OrderBy(ce => ce.LevelUpTime2, ascending),
-					CustomEntrySorting.LevelUpTime3 => customEntriesQuery.OrderBy(ce => ce.LevelUpTime3, ascending),
-					CustomEntrySorting.LevelUpTime4 => customEntriesQuery.OrderBy(ce => ce.LevelUpTime4, ascending),
-					CustomEntrySorting.PlayerName => customEntriesQuery.OrderBy(ce => ce.Player.PlayerName, ascending),
-					CustomEntrySorting.SpawnsetName => customEntriesQuery.OrderBy(ce => ce.CustomLeaderboard.SpawnsetFile.Name, ascending),
-					CustomEntrySorting.SubmitDate => customEntriesQuery.OrderBy(ce => ce.SubmitDate, ascending),
-					CustomEntrySorting.Time => customEntriesQuery.OrderBy(ce => ce.Time, ascending),
-					_ => customEntriesQuery,
-				};
-			}
+				CustomEntrySorting.ClientVersion => customEntriesQuery.OrderBy(ce => ce.ClientVersion, ascending),
+				CustomEntrySorting.DaggersFired => customEntriesQuery.OrderBy(ce => ce.DaggersFired, ascending),
+				CustomEntrySorting.DaggersHit => customEntriesQuery.OrderBy(ce => ce.DaggersHit, ascending),
+				CustomEntrySorting.DeathType => customEntriesQuery.OrderBy(ce => ce.DeathType, ascending),
+				CustomEntrySorting.EnemiesAlive => customEntriesQuery.OrderBy(ce => ce.EnemiesAlive, ascending),
+				CustomEntrySorting.EnemiesKilled => customEntriesQuery.OrderBy(ce => ce.EnemiesKilled, ascending),
+				CustomEntrySorting.GemsCollected => customEntriesQuery.OrderBy(ce => ce.GemsCollected, ascending),
+				CustomEntrySorting.GemsDespawned => customEntriesQuery.OrderBy(ce => ce.GemsDespawned, ascending),
+				CustomEntrySorting.GemsEaten => customEntriesQuery.OrderBy(ce => ce.GemsEaten, ascending),
+				CustomEntrySorting.GemsTotal => customEntriesQuery.OrderBy(ce => ce.GemsTotal, ascending),
+				CustomEntrySorting.HomingDaggers => customEntriesQuery.OrderBy(ce => ce.HomingDaggers, ascending),
+				CustomEntrySorting.HomingDaggersEaten => customEntriesQuery.OrderBy(ce => ce.HomingDaggersEaten, ascending),
+				CustomEntrySorting.LevelUpTime2 => customEntriesQuery.OrderBy(ce => ce.LevelUpTime2, ascending),
+				CustomEntrySorting.LevelUpTime3 => customEntriesQuery.OrderBy(ce => ce.LevelUpTime3, ascending),
+				CustomEntrySorting.LevelUpTime4 => customEntriesQuery.OrderBy(ce => ce.LevelUpTime4, ascending),
+				CustomEntrySorting.PlayerName => customEntriesQuery.OrderBy(ce => ce.Player.PlayerName, ascending),
+				CustomEntrySorting.SpawnsetName => customEntriesQuery.OrderBy(ce => ce.CustomLeaderboard.SpawnsetFile.Name, ascending),
+				CustomEntrySorting.SubmitDate => customEntriesQuery.OrderBy(ce => ce.SubmitDate, ascending),
+				CustomEntrySorting.Time => customEntriesQuery.OrderBy(ce => ce.Time, ascending),
+				_ => customEntriesQuery.OrderBy(ce => ce.Id, ascending),
+			};
 
 			List<CustomEntry> customEntries = customEntriesQuery
 				.Skip(pageIndex * pageSize)

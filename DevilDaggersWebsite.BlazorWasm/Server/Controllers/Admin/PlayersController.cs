@@ -43,30 +43,26 @@ namespace DevilDaggersWebsite.BlazorWasm.Server.Controllers.Admin
 		{
 			IQueryable<Player> playersQuery = _dbContext.Players.AsNoTracking();
 
-			if (sortBy != null)
+			playersQuery = sortBy switch
 			{
-				playersQuery = sortBy switch
-				{
-					PlayerSorting.BanDescription => playersQuery.OrderBy(p => p.BanDescription, ascending),
-					PlayerSorting.BanResponsibleId => playersQuery.OrderBy(p => p.BanResponsibleId, ascending),
-					PlayerSorting.CountryCode => playersQuery.OrderBy(p => p.CountryCode, ascending),
-					PlayerSorting.Dpi => playersQuery.OrderBy(p => p.Dpi, ascending),
-					PlayerSorting.Fov => playersQuery.OrderBy(p => p.Fov, ascending),
-					PlayerSorting.Gamma => playersQuery.OrderBy(p => p.Gamma, ascending),
-					PlayerSorting.HasFlashHandEnabled => playersQuery.OrderBy(p => p.HasFlashHandEnabled, ascending),
-					PlayerSorting.HideDonations => playersQuery.OrderBy(p => p.HideDonations, ascending),
-					PlayerSorting.HidePastUsernames => playersQuery.OrderBy(p => p.HidePastUsernames, ascending),
-					PlayerSorting.HideSettings => playersQuery.OrderBy(p => p.HideSettings, ascending),
-					PlayerSorting.Id => playersQuery.OrderBy(p => p.Id, ascending),
-					PlayerSorting.InGameSens => playersQuery.OrderBy(p => p.InGameSens, ascending),
-					PlayerSorting.IsBanned => playersQuery.OrderBy(p => p.IsBanned, ascending),
-					PlayerSorting.IsBannedFromDdcl => playersQuery.OrderBy(p => p.IsBannedFromDdcl, ascending),
-					PlayerSorting.IsRightHanded => playersQuery.OrderBy(p => p.IsRightHanded, ascending),
-					PlayerSorting.PlayerName => playersQuery.OrderBy(p => p.PlayerName, ascending),
-					PlayerSorting.UsesLegacyAudio => playersQuery.OrderBy(p => p.UsesLegacyAudio, ascending),
-					_ => playersQuery,
-				};
-			}
+				PlayerSorting.BanDescription => playersQuery.OrderBy(p => p.BanDescription, ascending),
+				PlayerSorting.BanResponsibleId => playersQuery.OrderBy(p => p.BanResponsibleId, ascending),
+				PlayerSorting.CountryCode => playersQuery.OrderBy(p => p.CountryCode, ascending),
+				PlayerSorting.Dpi => playersQuery.OrderBy(p => p.Dpi, ascending),
+				PlayerSorting.Fov => playersQuery.OrderBy(p => p.Fov, ascending),
+				PlayerSorting.Gamma => playersQuery.OrderBy(p => p.Gamma, ascending),
+				PlayerSorting.HasFlashHandEnabled => playersQuery.OrderBy(p => p.HasFlashHandEnabled, ascending),
+				PlayerSorting.HideDonations => playersQuery.OrderBy(p => p.HideDonations, ascending),
+				PlayerSorting.HidePastUsernames => playersQuery.OrderBy(p => p.HidePastUsernames, ascending),
+				PlayerSorting.HideSettings => playersQuery.OrderBy(p => p.HideSettings, ascending),
+				PlayerSorting.InGameSens => playersQuery.OrderBy(p => p.InGameSens, ascending),
+				PlayerSorting.IsBanned => playersQuery.OrderBy(p => p.IsBanned, ascending),
+				PlayerSorting.IsBannedFromDdcl => playersQuery.OrderBy(p => p.IsBannedFromDdcl, ascending),
+				PlayerSorting.IsRightHanded => playersQuery.OrderBy(p => p.IsRightHanded, ascending),
+				PlayerSorting.PlayerName => playersQuery.OrderBy(p => p.PlayerName, ascending),
+				PlayerSorting.UsesLegacyAudio => playersQuery.OrderBy(p => p.UsesLegacyAudio, ascending),
+				_ => playersQuery.OrderBy(p => p.Id, ascending),
+			};
 
 			List<Player> players = playersQuery
 				.Skip(pageIndex * pageSize)

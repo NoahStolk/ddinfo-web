@@ -55,21 +55,17 @@ namespace DevilDaggersWebsite.BlazorWasm.Server.Controllers.Admin
 		{
 			IQueryable<AssetMod> modsQuery = _dbContext.AssetMods.AsNoTracking();
 
-			if (sortBy != null)
+			modsQuery = sortBy switch
 			{
-				modsQuery = sortBy switch
-				{
-					ModSorting.AssetModTypes => modsQuery.OrderBy(m => m.AssetModTypes, ascending),
-					ModSorting.HtmlDescription => modsQuery.OrderBy(m => m.HtmlDescription, ascending),
-					ModSorting.Id => modsQuery.OrderBy(m => m.Id, ascending),
-					ModSorting.IsHidden => modsQuery.OrderBy(m => m.IsHidden, ascending),
-					ModSorting.LastUpdated => modsQuery.OrderBy(m => m.LastUpdated, ascending),
-					ModSorting.Name => modsQuery.OrderBy(m => m.Name, ascending),
-					ModSorting.TrailerUrl => modsQuery.OrderBy(m => m.TrailerUrl, ascending),
-					ModSorting.Url => modsQuery.OrderBy(m => m.Url, ascending),
-					_ => modsQuery,
-				};
-			}
+				ModSorting.AssetModTypes => modsQuery.OrderBy(m => m.AssetModTypes, ascending),
+				ModSorting.HtmlDescription => modsQuery.OrderBy(m => m.HtmlDescription, ascending),
+				ModSorting.IsHidden => modsQuery.OrderBy(m => m.IsHidden, ascending),
+				ModSorting.LastUpdated => modsQuery.OrderBy(m => m.LastUpdated, ascending),
+				ModSorting.Name => modsQuery.OrderBy(m => m.Name, ascending),
+				ModSorting.TrailerUrl => modsQuery.OrderBy(m => m.TrailerUrl, ascending),
+				ModSorting.Url => modsQuery.OrderBy(m => m.Url, ascending),
+				_ => modsQuery.OrderBy(m => m.Id, ascending),
+			};
 
 			List<AssetMod> mods = modsQuery
 				.Skip(pageIndex * pageSize)

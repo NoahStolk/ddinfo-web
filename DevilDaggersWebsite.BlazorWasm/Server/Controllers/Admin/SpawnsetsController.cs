@@ -52,20 +52,16 @@ namespace DevilDaggersWebsite.BlazorWasm.Server.Controllers.Admin
 		{
 			IQueryable<SpawnsetFile> spawnsetsQuery = _dbContext.SpawnsetFiles.AsNoTracking().Include(s => s.Player);
 
-			if (sortBy != null)
+			spawnsetsQuery = sortBy switch
 			{
-				spawnsetsQuery = sortBy switch
-				{
-					SpawnsetSorting.Author => spawnsetsQuery.OrderBy(s => s.Player.PlayerName, ascending),
-					SpawnsetSorting.HtmlDescription => spawnsetsQuery.OrderBy(s => s.HtmlDescription, ascending),
-					SpawnsetSorting.Id => spawnsetsQuery.OrderBy(s => s.Id, ascending),
-					SpawnsetSorting.IsPractice => spawnsetsQuery.OrderBy(s => s.IsPractice, ascending),
-					SpawnsetSorting.LastUpdated => spawnsetsQuery.OrderBy(s => s.LastUpdated, ascending),
-					SpawnsetSorting.MaxDisplayWaves => spawnsetsQuery.OrderBy(s => s.MaxDisplayWaves, ascending),
-					SpawnsetSorting.Name => spawnsetsQuery.OrderBy(s => s.Name, ascending),
-					_ => spawnsetsQuery,
-				};
-			}
+				SpawnsetSorting.Author => spawnsetsQuery.OrderBy(s => s.Player.PlayerName, ascending),
+				SpawnsetSorting.HtmlDescription => spawnsetsQuery.OrderBy(s => s.HtmlDescription, ascending),
+				SpawnsetSorting.IsPractice => spawnsetsQuery.OrderBy(s => s.IsPractice, ascending),
+				SpawnsetSorting.LastUpdated => spawnsetsQuery.OrderBy(s => s.LastUpdated, ascending),
+				SpawnsetSorting.MaxDisplayWaves => spawnsetsQuery.OrderBy(s => s.MaxDisplayWaves, ascending),
+				SpawnsetSorting.Name => spawnsetsQuery.OrderBy(s => s.Name, ascending),
+				_ => spawnsetsQuery.OrderBy(s => s.Id, ascending),
+			};
 
 			List<SpawnsetFile> spawnsets = spawnsetsQuery
 				.Skip(pageIndex * pageSize)
