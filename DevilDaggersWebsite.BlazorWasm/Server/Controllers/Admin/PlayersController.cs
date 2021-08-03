@@ -7,6 +7,7 @@ using DevilDaggersWebsite.BlazorWasm.Shared;
 using DevilDaggersWebsite.BlazorWasm.Shared.Constants;
 using DevilDaggersWebsite.BlazorWasm.Shared.Dto;
 using DevilDaggersWebsite.BlazorWasm.Shared.Dto.Admin.Players;
+using DevilDaggersWebsite.BlazorWasm.Shared.Enums.Sortings;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
@@ -34,12 +35,38 @@ namespace DevilDaggersWebsite.BlazorWasm.Server.Controllers.Admin
 
 		[HttpGet]
 		[ProducesResponseType(StatusCodes.Status200OK)]
-		public ActionResult<Page<GetPlayerForOverview>> GetPlayers([Range(0, 1000)] int pageIndex = 0, [Range(AdminPagingConstants.PageSizeMin, AdminPagingConstants.PageSizeMax)] int pageSize = AdminPagingConstants.PageSizeDefault, string? sortBy = null, bool ascending = false)
+		public ActionResult<Page<GetPlayerForOverview>> GetPlayers(
+			[Range(0, 1000)] int pageIndex = 0,
+			[Range(AdminPagingConstants.PageSizeMin, AdminPagingConstants.PageSizeMax)] int pageSize = AdminPagingConstants.PageSizeDefault,
+			PlayerSorting? sortBy = null,
+			bool ascending = false)
 		{
 			IQueryable<Player> playersQuery = _dbContext.Players.AsNoTracking();
 
 			if (sortBy != null)
-				playersQuery = playersQuery.OrderByMember(sortBy, ascending);
+			{
+				playersQuery = sortBy switch
+				{
+					PlayerSorting.BanDescription => playersQuery.OrderBy(p => p.BanDescription, ascending),
+					PlayerSorting.BanResponsibleId => playersQuery.OrderBy(p => p.BanResponsibleId, ascending),
+					PlayerSorting.CountryCode => playersQuery.OrderBy(p => p.CountryCode, ascending),
+					PlayerSorting.Dpi => playersQuery.OrderBy(p => p.Dpi, ascending),
+					PlayerSorting.Fov => playersQuery.OrderBy(p => p.Fov, ascending),
+					PlayerSorting.Gamma => playersQuery.OrderBy(p => p.Gamma, ascending),
+					PlayerSorting.HasFlashHandEnabled => playersQuery.OrderBy(p => p.HasFlashHandEnabled, ascending),
+					PlayerSorting.HideDonations => playersQuery.OrderBy(p => p.HideDonations, ascending),
+					PlayerSorting.HidePastUsernames => playersQuery.OrderBy(p => p.HidePastUsernames, ascending),
+					PlayerSorting.HideSettings => playersQuery.OrderBy(p => p.HideSettings, ascending),
+					PlayerSorting.Id => playersQuery.OrderBy(p => p.Id, ascending),
+					PlayerSorting.InGameSens => playersQuery.OrderBy(p => p.InGameSens, ascending),
+					PlayerSorting.IsBanned => playersQuery.OrderBy(p => p.IsBanned, ascending),
+					PlayerSorting.IsBannedFromDdcl => playersQuery.OrderBy(p => p.IsBannedFromDdcl, ascending),
+					PlayerSorting.IsRightHanded => playersQuery.OrderBy(p => p.IsRightHanded, ascending),
+					PlayerSorting.PlayerName => playersQuery.OrderBy(p => p.PlayerName, ascending),
+					PlayerSorting.UsesLegacyAudio => playersQuery.OrderBy(p => p.UsesLegacyAudio, ascending),
+					_ => playersQuery,
+				};
+			}
 
 			List<Player> players = playersQuery
 				.Skip(pageIndex * pageSize)
