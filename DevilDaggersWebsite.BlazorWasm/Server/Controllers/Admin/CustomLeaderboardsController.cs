@@ -9,6 +9,7 @@ using DevilDaggersWebsite.BlazorWasm.Shared.Constants;
 using DevilDaggersWebsite.BlazorWasm.Shared.Dto;
 using DevilDaggersWebsite.BlazorWasm.Shared.Dto.Admin.CustomLeaderboards;
 using DevilDaggersWebsite.BlazorWasm.Shared.Enums;
+using DevilDaggersWebsite.BlazorWasm.Shared.Enums.Sortings;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
@@ -38,15 +39,33 @@ namespace DevilDaggersWebsite.BlazorWasm.Server.Controllers.Admin
 
 		[HttpGet]
 		[ProducesResponseType(StatusCodes.Status200OK)]
-		public ActionResult<Page<GetCustomLeaderboard>> GetCustomLeaderboards([Range(0, 1000)] int pageIndex = 0, [Range(AdminPagingConstants.PageSizeMin, AdminPagingConstants.PageSizeMax)] int pageSize = AdminPagingConstants.PageSizeDefault, string? sortBy = null, bool ascending = false)
+		public ActionResult<Page<GetCustomLeaderboard>> GetCustomLeaderboards(
+			[Range(0, 1000)] int pageIndex = 0,
+			[Range(AdminPagingConstants.PageSizeMin, AdminPagingConstants.PageSizeMax)] int pageSize = AdminPagingConstants.PageSizeDefault,
+			CustomLeaderboardSorting? sortBy = null,
+			bool ascending = false)
 		{
 			IQueryable<CustomLeaderboard> customLeaderboardsQuery = _dbContext.CustomLeaderboards
 				.AsNoTracking()
-				.Include(cl => cl.SpawnsetFile)
-					.ThenInclude(sf => sf.Player);
+				.Include(cl => cl.SpawnsetFile);
 
 			if (sortBy != null)
-				customLeaderboardsQuery = customLeaderboardsQuery.OrderByMember(sortBy, ascending);
+			{
+				customLeaderboardsQuery = sortBy switch
+				{
+					CustomLeaderboardSorting.Category => customLeaderboardsQuery.OrderBy(cl => cl.Category, ascending),
+					CustomLeaderboardSorting.DateCreated => customLeaderboardsQuery.OrderBy(cl => cl.DateCreated, ascending),
+					CustomLeaderboardSorting.Id => customLeaderboardsQuery.OrderBy(cl => cl.Id, ascending),
+					CustomLeaderboardSorting.IsArchived => customLeaderboardsQuery.OrderBy(cl => cl.IsArchived, ascending),
+					CustomLeaderboardSorting.SpawnsetName => customLeaderboardsQuery.OrderBy(cl => cl.SpawnsetFile.Name, ascending),
+					CustomLeaderboardSorting.TimeBronze => customLeaderboardsQuery.OrderBy(cl => cl.TimeBronze, ascending),
+					CustomLeaderboardSorting.TimeSilver => customLeaderboardsQuery.OrderBy(cl => cl.TimeSilver, ascending),
+					CustomLeaderboardSorting.TimeGolden => customLeaderboardsQuery.OrderBy(cl => cl.TimeGolden, ascending),
+					CustomLeaderboardSorting.TimeDevil => customLeaderboardsQuery.OrderBy(cl => cl.TimeDevil, ascending),
+					CustomLeaderboardSorting.TimeLeviathan => customLeaderboardsQuery.OrderBy(cl => cl.TimeLeviathan, ascending),
+					_ => customLeaderboardsQuery,
+				};
+			}
 
 			List<CustomLeaderboard> customLeaderboards = customLeaderboardsQuery
 				.Skip(pageIndex * pageSize)
