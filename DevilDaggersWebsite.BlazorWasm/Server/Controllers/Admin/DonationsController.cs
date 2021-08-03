@@ -6,6 +6,7 @@ using DevilDaggersWebsite.BlazorWasm.Shared;
 using DevilDaggersWebsite.BlazorWasm.Shared.Constants;
 using DevilDaggersWebsite.BlazorWasm.Shared.Dto;
 using DevilDaggersWebsite.BlazorWasm.Shared.Dto.Admin.Donations;
+using DevilDaggersWebsite.BlazorWasm.Shared.Enums.Sortings;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
@@ -33,14 +34,31 @@ namespace DevilDaggersWebsite.BlazorWasm.Server.Controllers.Admin
 
 		[HttpGet]
 		[ProducesResponseType(StatusCodes.Status200OK)]
-		public ActionResult<Page<GetDonation>> GetDonations([Range(0, 1000)] int pageIndex = 0, [Range(AdminPagingConstants.PageSizeMin, AdminPagingConstants.PageSizeMax)] int pageSize = AdminPagingConstants.PageSizeDefault, string? sortBy = null, bool ascending = false)
+		public ActionResult<Page<GetDonation>> GetDonations(
+			[Range(0, 1000)] int pageIndex = 0,
+			[Range(AdminPagingConstants.PageSizeMin, AdminPagingConstants.PageSizeMax)] int pageSize = AdminPagingConstants.PageSizeDefault,
+			DonationSorting? sortBy = null,
+			bool ascending = false)
 		{
 			IQueryable<Donation> donationsQuery = _dbContext.Donations
 				.AsNoTracking()
 				.Include(d => d.Player);
 
 			if (sortBy != null)
-				donationsQuery = donationsQuery.OrderByMember(sortBy, ascending);
+			{
+				donationsQuery = sortBy switch
+				{
+					DonationSorting.Amount => donationsQuery.OrderBy(d => d.Amount, ascending),
+					DonationSorting.ConvertedEuroCentsReceived => donationsQuery.OrderBy(d => d.ConvertedEuroCentsReceived, ascending),
+					DonationSorting.Currency => donationsQuery.OrderBy(d => d.Currency, ascending),
+					DonationSorting.DateReceived => donationsQuery.OrderBy(d => d.DateReceived, ascending),
+					DonationSorting.Id => donationsQuery.OrderBy(d => d.Id, ascending),
+					DonationSorting.IsRefunded => donationsQuery.OrderBy(d => d.IsRefunded, ascending),
+					DonationSorting.Note => donationsQuery.OrderBy(d => d.Note, ascending),
+					DonationSorting.PlayerName => donationsQuery.OrderBy(d => d.Player.PlayerName, ascending),
+					_ => donationsQuery,
+				};
+			}
 
 			List<Donation> donations = donationsQuery
 				.Skip(pageIndex * pageSize)

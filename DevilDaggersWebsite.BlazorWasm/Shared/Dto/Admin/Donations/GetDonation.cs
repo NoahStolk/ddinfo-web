@@ -7,8 +7,6 @@ namespace DevilDaggersWebsite.BlazorWasm.Shared.Dto.Admin.Donations
 	{
 		public int Id { get; init; }
 
-		public int PlayerId { get; init; }
-
 		public string PlayerName { get; init; } = null!;
 
 		public int Amount { get; init; }

@@ -33,7 +33,7 @@ module.exports = {
 				'leaderboard-sm': createMinmaxGrid([18, 9, 41, 32]),
 				'admin-custom-entries': createMinmaxGrid([1, 4, 3, 1.5, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 3, 2.5, 1, 1]),
 				'admin-custom-leaderboards': createMinmaxGrid([1, 4, 4, 1, 1, 1, 1, 1, 4, 2, 1, 1]),
-				'admin-donations': createMinmaxGrid([1, 1, 3, 1, 1, 3, 2, 4, 1, 1, 1]),
+				'admin-donations': createMinmaxGrid([1, 3, 1, 1, 3, 2, 4, 1, 1, 1]),
 				'admin-mods': createMinmaxGrid([1, 4, 1, 2, 5, 5, 3, 5, 1, 1]),
 				'admin-players': createMinmaxGrid([1, 4, 1, 1, 1, 1, 1, 1, 1, 1, 1, 3, 2, 1, 1, 1, 1, 1, 1]),
 				'admin-spawnsets': createMinmaxGrid([1, 1, 4, 2, 8, 2, 1, 1, 1]),

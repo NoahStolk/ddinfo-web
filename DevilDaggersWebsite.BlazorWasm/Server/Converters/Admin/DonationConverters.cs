@@ -14,7 +14,6 @@ namespace DevilDaggersWebsite.BlazorWasm.Server.Converters.Admin
 			DateReceived = donation.DateReceived,
 			IsRefunded = donation.IsRefunded,
 			Note = donation.Note,
-			PlayerId = donation.PlayerId,
 			PlayerName = donation.Player.PlayerName,
 		};
 	}
