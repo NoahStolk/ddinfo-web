@@ -44,7 +44,11 @@ namespace DevilDaggersWebsite.BlazorWasm.Server.Utils
 		public static string GetRelevantDisplayPath(string path)
 		{
 			char sep = Path.DirectorySeparatorChar;
-			return path[path.IndexOf($"{sep}{_root}{sep}")..];
+			string rootIndicator = $"{sep}{_root}{sep}";
+			if (!path.Contains(rootIndicator))
+				return path;
+
+			return path[path.IndexOf(rootIndicator)..];
 		}
 	}
 }
