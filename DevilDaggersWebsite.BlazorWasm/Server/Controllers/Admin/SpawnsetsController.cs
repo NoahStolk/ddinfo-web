@@ -20,7 +20,6 @@ using System.ComponentModel.DataAnnotations;
 using System.IO;
 using System.Linq;
 using System.Security.Cryptography;
-using System.Text;
 using System.Threading.Tasks;
 using Io = System.IO;
 
@@ -126,7 +125,9 @@ namespace DevilDaggersWebsite.BlazorWasm.Server.Controllers.Admin
 				return BadRequest($"Spawnset with name '{addSpawnset.Name}' already exists.");
 
 			// Add file.
-			Io.File.WriteAllBytes(Path.Combine(DataUtils.GetPath("Spawnsets"), addSpawnset.Name), addSpawnset.FileContents);
+			string path = Path.Combine(DataUtils.GetPath("Spawnsets"), addSpawnset.Name);
+			Io.File.WriteAllBytes(path, addSpawnset.FileContents);
+			string fileSystemInformation = $"File '{DataUtils.GetRelevantDisplayPath(path)}' was added.";
 
 			// Add entity.
 			SpawnsetFile spawnset = new()
@@ -141,7 +142,7 @@ namespace DevilDaggersWebsite.BlazorWasm.Server.Controllers.Admin
 			_dbContext.SpawnsetFiles.Add(spawnset);
 			_dbContext.SaveChanges();
 
-			await _auditLogger.LogAdd(addSpawnset, User, spawnset.Id);
+			await _auditLogger.LogAdd(addSpawnset, User, spawnset.Id, fileSystemInformation);
 
 			return Ok(spawnset.Id);
 		}
@@ -203,8 +204,7 @@ namespace DevilDaggersWebsite.BlazorWasm.Server.Controllers.Admin
 			if (_dbContext.CustomLeaderboards.Any(ce => ce.SpawnsetFileId == id))
 				return BadRequest("Spawnset with custom leaderboard cannot be deleted.");
 
-			StringBuilder additionalInformation = new();
-
+			string? fileSystemInformation = null;
 			string path = Path.Combine(DataUtils.GetPath("Spawnsets"), spawnset.Name);
 			if (Io.File.Exists(path))
 			{
@@ -213,13 +213,13 @@ namespace DevilDaggersWebsite.BlazorWasm.Server.Controllers.Admin
 			}
 			else
 			{
-				additionalInformation.Append(":warning: File ").Append(path).AppendLine(" was not deleted because it does not exist.");
+				fileSystemInformation = $":warning: File '{DataUtils.GetRelevantDisplayPath(path)}' was not deleted because it does not exist.");
 			}
 
 			_dbContext.SpawnsetFiles.Remove(spawnset);
 			_dbContext.SaveChanges();
 
-			await _auditLogger.LogDelete(spawnset, User, spawnset.Id);
+			await _auditLogger.LogDelete(spawnset, User, spawnset.Id, fileSystemInformation);
 
 			return Ok();
 		}
