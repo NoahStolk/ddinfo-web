@@ -145,6 +145,20 @@ namespace DevilDaggersWebsite.BlazorWasm.Server.Controllers.Admin
 				addInfo = $"File '{DataUtils.GetRelevantDisplayPath(path)}' was added.";
 			}
 
+			if (addMod.Screenshots.Count > 0)
+			{
+				string directory = Path.Combine(DataUtils.GetPath("ModScreenshots"), addMod.Name);
+				Directory.CreateDirectory(directory);
+				DirectoryInfo directoryInfo = new(directory);
+
+				foreach (AddModScreenshot addModScreenshot in addMod.Screenshots)
+				{
+					int screenshots = directoryInfo.EnumerateFiles().Count();
+					string filePath = Path.Combine(directory, $"{screenshots:00}.png");
+					Io.File.WriteAllBytes(filePath, addModScreenshot.FileContents);
+				}
+			}
+
 			AssetMod mod = new()
 			{
 				AssetModTypes = addMod.AssetModTypes,
