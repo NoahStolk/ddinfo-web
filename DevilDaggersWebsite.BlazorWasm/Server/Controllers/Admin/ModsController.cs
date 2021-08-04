@@ -140,9 +140,9 @@ namespace DevilDaggersWebsite.BlazorWasm.Server.Controllers.Admin
 				if (validationError != null)
 					return BadRequest(validationError);
 
-				string filePath = Path.Combine(modsDirectory, $"{addMod.Name}.zip");
-				Io.File.WriteAllBytes(filePath, addMod.FileContents);
-				addInfo = $"File '{DataUtils.GetRelevantDisplayPath(filePath)}' was added.";
+				string path = Path.Combine(modsDirectory, $"{addMod.Name}.zip");
+				Io.File.WriteAllBytes(path, addMod.FileContents);
+				addInfo = $"File '{DataUtils.GetRelevantDisplayPath(path)}' was added.";
 			}
 
 			AssetMod mod = new()
@@ -194,7 +194,7 @@ namespace DevilDaggersWebsite.BlazorWasm.Server.Controllers.Admin
 					return BadRequest($"Mod with name '{editMod.Name}' already exists.");
 
 				string directory = DataUtils.GetPath("Mods");
-				string oldPath = Path.Combine(directory, mod.Name);
+				string oldPath = Path.Combine(directory, $"{mod.Name}.zip");
 				if (Io.File.Exists(oldPath))
 				{
 					string newPath = Path.Combine(directory, editMod.Name);
