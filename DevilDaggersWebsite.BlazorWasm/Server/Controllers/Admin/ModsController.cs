@@ -279,12 +279,12 @@ namespace DevilDaggersWebsite.BlazorWasm.Server.Controllers.Admin
 		[ProducesResponseType(StatusCodes.Status404NotFound)]
 		public async Task<ActionResult> DeleteModById(int id)
 		{
-			AssetMod? assetMod = _dbContext.AssetMods.FirstOrDefault(d => d.Id == id);
-			if (assetMod == null)
+			AssetMod? mod = _dbContext.AssetMods.FirstOrDefault(d => d.Id == id);
+			if (mod == null)
 				return NotFound();
 
 			List<FileSystemInformation> fileSystemInformation = new();
-			string path = Path.Combine(DataUtils.GetPath("Mods"), $"{assetMod.Name}.zip");
+			string path = Path.Combine(DataUtils.GetPath("Mods"), $"{mod.Name}.zip");
 			if (Io.File.Exists(path))
 				Io.File.Delete(path);
 			else
@@ -294,16 +294,22 @@ namespace DevilDaggersWebsite.BlazorWasm.Server.Controllers.Admin
 			_modArchiveCache.Clear();
 
 			// Clear file cache for this mod.
-			string cachePath = Path.Combine(DataUtils.GetPath("ModArchiveCache"), $"{assetMod.Name}.json");
+			string cachePath = Path.Combine(DataUtils.GetPath("ModArchiveCache"), $"{mod.Name}.json");
 			if (Io.File.Exists(cachePath))
 				Io.File.Delete(cachePath);
 			else
 				fileSystemInformation.Add(new($"File {DataUtils.GetRelevantDisplayPath(cachePath)} was not deleted because it does not exist.", FileSystemInformationType.NotFound));
 
-			_dbContext.AssetMods.Remove(assetMod);
+			string screenshotsDirectory = Path.Combine(DataUtils.GetPath("ModScreenshots"), mod.Name);
+			if (Directory.Exists(screenshotsDirectory))
+				Directory.Delete(screenshotsDirectory, true);
+			else
+				fileSystemInformation.Add(new($"Directory {DataUtils.GetRelevantDisplayPath(screenshotsDirectory)} was not deleted because it does not exist.", FileSystemInformationType.NotFound));
+
+			_dbContext.AssetMods.Remove(mod);
 			_dbContext.SaveChanges();
 
-			await _auditLogger.LogDelete(assetMod, User, assetMod.Id, fileSystemInformation);
+			await _auditLogger.LogDelete(mod, User, mod.Id, fileSystemInformation);
 
 			return Ok();
 		}
