@@ -136,45 +136,12 @@ namespace DevilDaggersWebsite.BlazorWasm.Server.Controllers.Admin
 				if (addMod.FileContents.Length + usedSpace > ModFileConstants.MaxHostingSpace)
 					return BadRequest($"This file is {addMod.FileContents.Length:n0} bytes in size, but only {ModFileConstants.MaxHostingSpace - usedSpace:n0} bytes of free space is available.");
 
+				string? validationError = ValidateModArchive(addMod.FileContents, addMod.Name);
+				if (validationError != null)
+					return BadRequest(validationError);
+
 				string filePath = Path.Combine(modsDirectory, $"{addMod.Name}.zip");
-
-				try
-				{
-					List<ModBinaryCacheData> archive = _modArchiveCache.GetArchiveDataByBytes(addMod.Name, addMod.FileContents).Binaries;
-					if (archive.Count == 0)
-						throw new InvalidModArchiveException("Mod archive does not contain any binaries.");
-
-					foreach (ModBinaryCacheData binary in archive)
-					{
-						if (binary.Chunks.Count == 0)
-							throw new InvalidModBinaryException($"Mod binary '{binary.Name}' does not contain any assets.");
-
-						string expectedPrefix = binary.ModBinaryType switch
-						{
-							ModBinaryType.Audio => $"audio-{addMod.Name}-",
-							ModBinaryType.Dd => $"dd-{addMod.Name}-",
-							_ => throw new InvalidModBinaryException($"Mod binary '{binary.Name}' is a '{binary.ModBinaryType}' mod which is not allowed."),
-						};
-
-						if (!binary.Name.StartsWith(expectedPrefix))
-							throw new InvalidModBinaryException($"Name of mod binary '{binary.Name}' must start with '{expectedPrefix}'.");
-
-						if (binary.Name.Length == expectedPrefix.Length)
-							throw new InvalidModBinaryException($"Name of mod binary '{binary.Name}' must not be equal to '{expectedPrefix}'.");
-					}
-
-					Io.File.WriteAllBytes(filePath, addMod.FileContents);
-
-					return Ok();
-				}
-				catch (InvalidModArchiveException ex)
-				{
-					return BadRequest($"The mod archive is invalid. {ex.Message}");
-				}
-				catch (InvalidModBinaryException ex)
-				{
-					return BadRequest($"A mod binary inside the mod archive is invalid. {ex.Message}");
-				}
+				Io.File.WriteAllBytes(filePath, addMod.FileContents);
 			}
 
 			AssetMod mod = new()
@@ -295,6 +262,45 @@ namespace DevilDaggersWebsite.BlazorWasm.Server.Controllers.Admin
 
 			foreach (PlayerAssetMod entityToRemove in _dbContext.PlayerAssetMods.Where(pam => pam.AssetModId == modId && !playerIds.Contains(pam.PlayerId)))
 				_dbContext.PlayerAssetMods.Remove(entityToRemove);
+		}
+
+		private string? ValidateModArchive(byte[] fileContents, string modName)
+		{
+			try
+			{
+				List<ModBinaryCacheData> archive = _modArchiveCache.GetArchiveDataByBytes(modName, fileContents).Binaries;
+				if (archive.Count == 0)
+					throw new InvalidModArchiveException("Mod archive does not contain any binaries.");
+
+				foreach (ModBinaryCacheData binary in archive)
+				{
+					if (binary.Chunks.Count == 0)
+						throw new InvalidModBinaryException($"Mod binary '{binary.Name}' does not contain any assets.");
+
+					string expectedPrefix = binary.ModBinaryType switch
+					{
+						ModBinaryType.Audio => $"audio-{modName}-",
+						ModBinaryType.Dd => $"dd-{modName}-",
+						_ => throw new InvalidModBinaryException($"Mod binary '{binary.Name}' is a '{binary.ModBinaryType}' mod which is not allowed."),
+					};
+
+					if (!binary.Name.StartsWith(expectedPrefix))
+						throw new InvalidModBinaryException($"Name of mod binary '{binary.Name}' must start with '{expectedPrefix}'.");
+
+					if (binary.Name.Length == expectedPrefix.Length)
+						throw new InvalidModBinaryException($"Name of mod binary '{binary.Name}' must not be equal to '{expectedPrefix}'.");
+				}
+			}
+			catch (InvalidModArchiveException ex)
+			{
+				return $"The mod archive is invalid. {ex.Message}";
+			}
+			catch (InvalidModBinaryException ex)
+			{
+				return $"A mod binary inside the mod archive is invalid. {ex.Message}";
+			}
+
+			return null;
 		}
 
 		[HttpPost("upload-screenshot")]
