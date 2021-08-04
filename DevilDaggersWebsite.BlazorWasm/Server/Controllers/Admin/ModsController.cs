@@ -12,7 +12,6 @@ using DevilDaggersWebsite.BlazorWasm.Shared.Dto.Admin.Mods;
 using DevilDaggersWebsite.BlazorWasm.Shared.Enums;
 using DevilDaggersWebsite.BlazorWasm.Shared.Enums.Sortings;
 using Microsoft.AspNetCore.Authorization;
-using Microsoft.AspNetCore.Hosting;
 using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.EntityFrameworkCore;
@@ -31,14 +30,12 @@ namespace DevilDaggersWebsite.BlazorWasm.Server.Controllers.Admin
 	[ApiController]
 	public class ModsController : ControllerBase
 	{
-		private readonly IWebHostEnvironment _environment;
 		private readonly ApplicationDbContext _dbContext;
 		private readonly ModArchiveCache _modArchiveCache;
 		private readonly AuditLogger _auditLogger;
 
-		public ModsController(IWebHostEnvironment environment, ApplicationDbContext dbContext, ModArchiveCache modArchiveCache, AuditLogger auditLogger)
+		public ModsController(ApplicationDbContext dbContext, ModArchiveCache modArchiveCache, AuditLogger auditLogger)
 		{
-			_environment = environment;
 			_dbContext = dbContext;
 			_modArchiveCache = modArchiveCache;
 			_auditLogger = auditLogger;
