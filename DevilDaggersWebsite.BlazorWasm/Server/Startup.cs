@@ -8,6 +8,7 @@ using DevilDaggersWebsite.BlazorWasm.Server.HostedServices;
 using DevilDaggersWebsite.BlazorWasm.Server.Middleware;
 using DevilDaggersWebsite.BlazorWasm.Server.NSwag;
 using DevilDaggersWebsite.BlazorWasm.Server.Singletons;
+using DevilDaggersWebsite.BlazorWasm.Server.Singletons.AuditLog;
 using DevilDaggersWebsite.BlazorWasm.Server.Transients;
 using DevilDaggersWebsite.BlazorWasm.Shared;
 using Microsoft.AspNetCore.Authentication;

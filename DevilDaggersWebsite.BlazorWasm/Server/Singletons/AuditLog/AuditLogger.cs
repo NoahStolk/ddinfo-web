@@ -8,7 +8,7 @@ using System.Security.Claims;
 using System.Text;
 using System.Threading.Tasks;
 
-namespace DevilDaggersWebsite.BlazorWasm.Server.Singletons
+namespace DevilDaggersWebsite.BlazorWasm.Server.Singletons.AuditLog
 {
 	public class AuditLogger
 	{
@@ -21,7 +21,7 @@ namespace DevilDaggersWebsite.BlazorWasm.Server.Singletons
 			_discordLogger = discordLogger;
 		}
 
-		public async Task LogAdd<TData, TKey>(TData obj, ClaimsPrincipal claimsPrincipal, TKey id, string? fileSystemInformation = null, [CallerMemberName] string endpointName = "")
+		public async Task LogAdd<TData, TKey>(TData obj, ClaimsPrincipal claimsPrincipal, TKey id, List<FileSystemInformation>? fileSystemInformation = null, [CallerMemberName] string endpointName = "")
 			where TData : notnull
 		{
 			StringBuilder auditLogger = GetAuditLogger("ADD", claimsPrincipal, id, endpointName);
@@ -48,12 +48,12 @@ namespace DevilDaggersWebsite.BlazorWasm.Server.Singletons
 
 			auditLogger.AppendLine("```");
 
-			AddFileSystemInformation(fileSystemInformation, auditLogger);
+			AddFileSystemInformation(auditLogger, fileSystemInformation);
 
 			await _discordLogger.TryLog(Channel.MonitoringAuditLog, auditLogger.ToString());
 		}
 
-		public async Task LogEdit<TData, TKey>(TData oldObj, TData newObj, ClaimsPrincipal claimsPrincipal, TKey id, string? fileSystemInformation = null, [CallerMemberName] string endpointName = "")
+		public async Task LogEdit<TData, TKey>(TData oldObj, TData newObj, ClaimsPrincipal claimsPrincipal, TKey id, List<FileSystemInformation>? fileSystemInformation = null, [CallerMemberName] string endpointName = "")
 			where TData : notnull
 		{
 			StringBuilder auditLogger = GetAuditLogger("EDIT", claimsPrincipal, id, endpointName);
@@ -98,7 +98,7 @@ namespace DevilDaggersWebsite.BlazorWasm.Server.Singletons
 
 			auditLogger.AppendLine("```");
 
-			AddFileSystemInformation(fileSystemInformation, auditLogger);
+			AddFileSystemInformation(auditLogger, fileSystemInformation);
 
 			await _discordLogger.TryLog(Channel.MonitoringAuditLog, auditLogger.ToString());
 
@@ -120,7 +120,7 @@ namespace DevilDaggersWebsite.BlazorWasm.Server.Singletons
 			}
 		}
 
-		public async Task LogDelete<TData, TKey>(TData obj, ClaimsPrincipal claimsPrincipal, TKey id, string? fileSystemInformation = null, [CallerMemberName] string endpointName = "")
+		public async Task LogDelete<TData, TKey>(TData obj, ClaimsPrincipal claimsPrincipal, TKey id, List<FileSystemInformation>? fileSystemInformation = null, [CallerMemberName] string endpointName = "")
 			where TData : notnull
 		{
 			StringBuilder auditLogger = GetAuditLogger("DELETE", claimsPrincipal, id, endpointName);
@@ -147,7 +147,7 @@ namespace DevilDaggersWebsite.BlazorWasm.Server.Singletons
 
 			auditLogger.AppendLine("```");
 
-			AddFileSystemInformation(fileSystemInformation, auditLogger);
+			AddFileSystemInformation(auditLogger, fileSystemInformation);
 
 			await _discordLogger.TryLog(Channel.MonitoringAuditLog, auditLogger.ToString());
 		}
@@ -189,10 +189,24 @@ namespace DevilDaggersWebsite.BlazorWasm.Server.Singletons
 			return dict;
 		}
 
-		private static void AddFileSystemInformation(string? fileSystemInformation, StringBuilder auditLogger)
+		private static void AddFileSystemInformation(StringBuilder auditLogger, List<FileSystemInformation>? auditLogFileSystemInformation)
 		{
-			if (!string.IsNullOrWhiteSpace(fileSystemInformation))
-				auditLogger.AppendLine("*File system information:*").AppendLine(fileSystemInformation);
+			if (auditLogFileSystemInformation == null || auditLogFileSystemInformation.Count == 0)
+				return;
+
+			auditLogger.AppendLine("*File system information:*");
+			foreach (FileSystemInformation alfsi in auditLogFileSystemInformation)
+			{
+				string emote = alfsi.Type switch
+				{
+					FileSystemInformationType.Delete => "wastebasket",
+					FileSystemInformationType.Move => "arrow_right",
+					FileSystemInformationType.NotFound => "information_source",
+					FileSystemInformationType.NotFoundUnexpected => "warning",
+					_ => "white_check_mark",
+				};
+				auditLogger.Append(':').Append(emote).Append(": ").AppendLine(alfsi.Message);
+			}
 		}
 	}
 }
