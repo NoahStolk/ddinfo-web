@@ -175,9 +175,6 @@ namespace DevilDaggersWebsite.BlazorWasm.Server.Controllers.Admin
 			if (editMod.PlayerIds == null || editMod.PlayerIds.Count == 0)
 				return BadRequest("Mod must have at least one author.");
 
-			if (_dbContext.AssetMods.Any(m => m.Name == editMod.Name))
-				return BadRequest($"Mod with name '{editMod.Name}' already exists.");
-
 			foreach (int playerId in editMod.PlayerIds)
 			{
 				if (!_dbContext.Players.Any(p => p.Id == playerId))
@@ -189,6 +186,39 @@ namespace DevilDaggersWebsite.BlazorWasm.Server.Controllers.Admin
 				.FirstOrDefault(m => m.Id == id);
 			if (mod == null)
 				return NotFound();
+
+			List<FileSystemInformation> fileSystemInformation = new();
+			if (mod.Name != editMod.Name)
+			{
+				if (_dbContext.AssetMods.Any(m => m.Name == editMod.Name))
+					return BadRequest($"Mod with name '{editMod.Name}' already exists.");
+
+				string directory = DataUtils.GetPath("Mods");
+				string oldPath = Path.Combine(directory, mod.Name);
+				if (Io.File.Exists(oldPath))
+				{
+					string newPath = Path.Combine(directory, editMod.Name);
+					Io.File.Move(oldPath, newPath);
+					fileSystemInformation.Add(new($"File '{DataUtils.GetRelevantDisplayPath(oldPath)}' was moved to {DataUtils.GetRelevantDisplayPath(newPath)}.", FileSystemInformationType.Move));
+				}
+				else
+				{
+					fileSystemInformation.Add(new($"File '{DataUtils.GetRelevantDisplayPath(oldPath)}' was not moved because it does not exist.", FileSystemInformationType.NotFound));
+				}
+
+				string cacheDirectory = DataUtils.GetPath("ModArchiveCache");
+				string oldCachePath = Path.Combine(cacheDirectory, $"{mod.Name}.json");
+				if (Io.File.Exists(oldCachePath))
+				{
+					string newCachePath = Path.Combine(directory, editMod.Name);
+					Io.File.Move(oldCachePath, newCachePath);
+					fileSystemInformation.Add(new($"File '{DataUtils.GetRelevantDisplayPath(oldCachePath)}' was moved to {DataUtils.GetRelevantDisplayPath(newCachePath)}.", FileSystemInformationType.Move));
+				}
+				else
+				{
+					fileSystemInformation.Add(new($"File {DataUtils.GetRelevantDisplayPath(oldCachePath)} was not moved because it does not exist.", FileSystemInformationType.NotFound));
+				}
+			}
 
 			EditMod logDto = new()
 			{
@@ -213,7 +243,7 @@ namespace DevilDaggersWebsite.BlazorWasm.Server.Controllers.Admin
 			UpdatePlayerMods(editMod.PlayerIds ?? new(), mod.Id);
 			_dbContext.SaveChanges();
 
-			await _auditLogger.LogEdit(logDto, editMod, User, mod.Id);
+			await _auditLogger.LogEdit(logDto, editMod, User, mod.Id, fileSystemInformation);
 
 			return Ok();
 		}
@@ -238,11 +268,11 @@ namespace DevilDaggersWebsite.BlazorWasm.Server.Controllers.Admin
 			_modArchiveCache.Clear();
 
 			// Clear file cache for this mod.
-			string cacheFilePath = Path.Combine(DataUtils.GetPath("ModArchiveCache"), $"{assetMod.Name}.json");
-			if (Io.File.Exists(cacheFilePath))
-				Io.File.Delete(cacheFilePath);
+			string cachePath = Path.Combine(DataUtils.GetPath("ModArchiveCache"), $"{assetMod.Name}.json");
+			if (Io.File.Exists(cachePath))
+				Io.File.Delete(cachePath);
 			else
-				fileSystemInformation.Add(new($"File {DataUtils.GetRelevantDisplayPath(cacheFilePath)} was not deleted because it does not exist.", FileSystemInformationType.NotFound));
+				fileSystemInformation.Add(new($"File {DataUtils.GetRelevantDisplayPath(cachePath)} was not deleted because it does not exist.", FileSystemInformationType.NotFound));
 
 			_dbContext.AssetMods.Remove(assetMod);
 			_dbContext.SaveChanges();
