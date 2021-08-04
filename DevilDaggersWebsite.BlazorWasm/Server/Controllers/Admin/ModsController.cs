@@ -232,6 +232,18 @@ namespace DevilDaggersWebsite.BlazorWasm.Server.Controllers.Admin
 				{
 					fileSystemInformation.Add(new($"File {DataUtils.GetRelevantDisplayPath(oldCachePath)} was not moved because it does not exist.", FileSystemInformationType.NotFound));
 				}
+
+				string oldScreenshotsDirectory = Path.Combine(DataUtils.GetPath("ModScreenshots"), mod.Name);
+				if (Directory.Exists(oldScreenshotsDirectory))
+				{
+					string newScreenshotsDirectory = Path.Combine(DataUtils.GetPath("ModScreenshots"), editMod.Name);
+					Directory.Move(oldScreenshotsDirectory, newScreenshotsDirectory);
+					fileSystemInformation.Add(new($"Directory '{DataUtils.GetRelevantDisplayPath(oldScreenshotsDirectory)}' was moved to {DataUtils.GetRelevantDisplayPath(newScreenshotsDirectory)}.", FileSystemInformationType.Move));
+				}
+				else
+				{
+					fileSystemInformation.Add(new($"Directory {DataUtils.GetRelevantDisplayPath(oldScreenshotsDirectory)} was not moved because it does not exist.", FileSystemInformationType.NotFound));
+				}
 			}
 
 			EditMod logDto = new()
