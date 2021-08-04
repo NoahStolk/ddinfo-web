@@ -127,7 +127,7 @@ namespace DevilDaggersWebsite.BlazorWasm.Server.Controllers.Admin
 					return BadRequest($"Player with ID '{playerId}' does not exist.");
 			}
 
-			string? fileSystemInformation = null;
+			string? addInfo = null;
 			if (addMod.FileContents != null)
 			{
 				string modsDirectory = DataUtils.GetPath("Mods");
@@ -142,7 +142,7 @@ namespace DevilDaggersWebsite.BlazorWasm.Server.Controllers.Admin
 
 				string filePath = Path.Combine(modsDirectory, $"{addMod.Name}.zip");
 				Io.File.WriteAllBytes(filePath, addMod.FileContents);
-				fileSystemInformation = $"File '{DataUtils.GetRelevantDisplayPath(filePath)}' was added.";
+				addInfo = $"File '{DataUtils.GetRelevantDisplayPath(filePath)}' was added.";
 			}
 
 			AssetMod mod = new()
@@ -161,7 +161,7 @@ namespace DevilDaggersWebsite.BlazorWasm.Server.Controllers.Admin
 			UpdatePlayerMods(addMod.PlayerIds ?? new(), mod.Id);
 			_dbContext.SaveChanges();
 
-			await _auditLogger.LogAdd(addMod, User, mod.Id, fileSystemInformation == null ? null : new() { new(fileSystemInformation, FileSystemInformationType.Upload) });
+			await _auditLogger.LogAdd(addMod, User, mod.Id, addInfo == null ? null : new() { new(addInfo, FileSystemInformationType.Add) });
 
 			return Ok(mod.Id);
 		}

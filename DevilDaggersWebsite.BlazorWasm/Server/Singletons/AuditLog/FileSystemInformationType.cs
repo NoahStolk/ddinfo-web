@@ -2,7 +2,7 @@
 {
 	public enum FileSystemInformationType
 	{
-		Upload,
+		Add,
 		Delete,
 		NotFoundUnexpected,
 		NotFound,
