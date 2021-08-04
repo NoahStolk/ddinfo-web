@@ -127,7 +127,6 @@ namespace DevilDaggersWebsite.BlazorWasm.Server.Controllers.Admin
 			// Add file.
 			string path = Path.Combine(DataUtils.GetPath("Spawnsets"), addSpawnset.Name);
 			Io.File.WriteAllBytes(path, addSpawnset.FileContents);
-			string fileSystemInformation = $"File '{DataUtils.GetRelevantDisplayPath(path)}' was added.";
 
 			// Add entity.
 			SpawnsetFile spawnset = new()
@@ -142,7 +141,7 @@ namespace DevilDaggersWebsite.BlazorWasm.Server.Controllers.Admin
 			_dbContext.SpawnsetFiles.Add(spawnset);
 			_dbContext.SaveChanges();
 
-			await _auditLogger.LogAdd(addSpawnset, User, spawnset.Id, fileSystemInformation);
+			await _auditLogger.LogAdd(addSpawnset, User, spawnset.Id, new() { new($"File '{DataUtils.GetRelevantDisplayPath(path)}' was added.", FileSystemInformationType.Upload) });
 
 			return Ok(spawnset.Id);
 		}
@@ -204,22 +203,18 @@ namespace DevilDaggersWebsite.BlazorWasm.Server.Controllers.Admin
 			if (_dbContext.CustomLeaderboards.Any(ce => ce.SpawnsetFileId == id))
 				return BadRequest("Spawnset with custom leaderboard cannot be deleted.");
 
-			string? fileSystemInformation = null;
 			string path = Path.Combine(DataUtils.GetPath("Spawnsets"), spawnset.Name);
-			if (Io.File.Exists(path))
+			bool fileExists = Io.File.Exists(path);
+			if (fileExists)
 			{
 				Io.File.Delete(path);
 				_spawnsetHashCache.Clear();
-			}
-			else
-			{
-				fileSystemInformation = $":warning: File '{DataUtils.GetRelevantDisplayPath(path)}' was not deleted because it does not exist.");
 			}
 
 			_dbContext.SpawnsetFiles.Remove(spawnset);
 			_dbContext.SaveChanges();
 
-			await _auditLogger.LogDelete(spawnset, User, spawnset.Id, fileSystemInformation);
+			await _auditLogger.LogDelete(spawnset, User, spawnset.Id, fileExists ? null : new() { new($":warning: File '{DataUtils.GetRelevantDisplayPath(path)}' was not deleted because it does not exist.", FileSystemInformationType.NotFoundUnexpected) });
 
 			return Ok();
 		}

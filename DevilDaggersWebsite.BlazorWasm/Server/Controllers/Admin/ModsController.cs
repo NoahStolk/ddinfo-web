@@ -21,7 +21,6 @@ using System.Collections.Generic;
 using System.ComponentModel.DataAnnotations;
 using System.IO;
 using System.Linq;
-using System.Text;
 using System.Threading.Tasks;
 using Io = System.IO;
 
@@ -162,7 +161,7 @@ namespace DevilDaggersWebsite.BlazorWasm.Server.Controllers.Admin
 			UpdatePlayerMods(addMod.PlayerIds ?? new(), mod.Id);
 			_dbContext.SaveChanges();
 
-			await _auditLogger.LogAdd(addMod, User, mod.Id, fileSystemInformation);
+			await _auditLogger.LogAdd(addMod, User, mod.Id, fileSystemInformation == null ? null : new() { new(fileSystemInformation, FileSystemInformationType.Upload) });
 
 			return Ok(mod.Id);
 		}
@@ -228,13 +227,12 @@ namespace DevilDaggersWebsite.BlazorWasm.Server.Controllers.Admin
 			if (assetMod == null)
 				return NotFound();
 
-			StringBuilder additionalInformation = new();
-
+			List<FileSystemInformation> fileSystemInformation = new();
 			string path = Path.Combine(DataUtils.GetPath("Mods"), $"{assetMod.Name}.zip");
 			if (Io.File.Exists(path))
 				Io.File.Delete(path);
 			else
-				additionalInformation.Append(":information_source: File ").Append(path).AppendLine(" was not deleted because it does not exist.");
+				fileSystemInformation.Add(new($"File {DataUtils.GetRelevantDisplayPath(path)} was not deleted because it does not exist.", FileSystemInformationType.NotFound));
 
 			// Clear entire memory cache (can't clear individual entries).
 			_modArchiveCache.Clear();
@@ -244,12 +242,12 @@ namespace DevilDaggersWebsite.BlazorWasm.Server.Controllers.Admin
 			if (Io.File.Exists(cacheFilePath))
 				Io.File.Delete(cacheFilePath);
 			else
-				additionalInformation.Append(":information_source: File ").Append(cacheFilePath).AppendLine(" was not deleted because it does not exist.");
+				fileSystemInformation.Add(new($"File {DataUtils.GetRelevantDisplayPath(cacheFilePath)} was not deleted because it does not exist.", FileSystemInformationType.NotFound));
 
 			_dbContext.AssetMods.Remove(assetMod);
 			_dbContext.SaveChanges();
 
-			await _auditLogger.LogDelete(assetMod, User, assetMod.Id, additionalInformation.ToString());
+			await _auditLogger.LogDelete(assetMod, User, assetMod.Id, fileSystemInformation);
 
 			return Ok();
 		}
