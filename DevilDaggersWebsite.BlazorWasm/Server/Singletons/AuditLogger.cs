@@ -21,7 +21,7 @@ namespace DevilDaggersWebsite.BlazorWasm.Server.Singletons
 			_discordLogger = discordLogger;
 		}
 
-		public async Task LogAdd<TData, TKey>(TData obj, ClaimsPrincipal claimsPrincipal, TKey id, [CallerMemberName] string endpointName = "")
+		public async Task LogAdd<TData, TKey>(TData obj, ClaimsPrincipal claimsPrincipal, TKey id, string? fileSystemInformation = null, [CallerMemberName] string endpointName = "")
 			where TData : notnull
 		{
 			StringBuilder auditLogger = GetAuditLogger("ADD", claimsPrincipal, id, endpointName);
@@ -47,10 +47,13 @@ namespace DevilDaggersWebsite.BlazorWasm.Server.Singletons
 				auditLogger.AppendFormat($"{{0,-{maxL + paddingL}}}", $"+ {kvp.Key.TrimAfter(_loggingMax, true)}").AppendLine(kvp.Value.TrimAfter(_loggingMax, true));
 
 			auditLogger.AppendLine("```");
+
+			AddFileSystemInformation(fileSystemInformation, auditLogger);
+
 			await _discordLogger.TryLog(Channel.MonitoringAuditLog, auditLogger.ToString());
 		}
 
-		public async Task LogEdit<TData, TKey>(TData oldObj, TData newObj, ClaimsPrincipal claimsPrincipal, TKey id, [CallerMemberName] string endpointName = "")
+		public async Task LogEdit<TData, TKey>(TData oldObj, TData newObj, ClaimsPrincipal claimsPrincipal, TKey id, string? fileSystemInformation = null, [CallerMemberName] string endpointName = "")
 			where TData : notnull
 		{
 			StringBuilder auditLogger = GetAuditLogger("EDIT", claimsPrincipal, id, endpointName);
@@ -94,6 +97,9 @@ namespace DevilDaggersWebsite.BlazorWasm.Server.Singletons
 			}
 
 			auditLogger.AppendLine("```");
+
+			AddFileSystemInformation(fileSystemInformation, auditLogger);
+
 			await _discordLogger.TryLog(Channel.MonitoringAuditLog, auditLogger.ToString());
 
 			static bool AreEditLogsEqual(Dictionary<string, string> oldLog, Dictionary<string, string> newLog)
@@ -114,7 +120,7 @@ namespace DevilDaggersWebsite.BlazorWasm.Server.Singletons
 			}
 		}
 
-		public async Task LogDelete<TData, TKey>(TData obj, ClaimsPrincipal claimsPrincipal, TKey id, string? additionalInformation = null, [CallerMemberName] string endpointName = "")
+		public async Task LogDelete<TData, TKey>(TData obj, ClaimsPrincipal claimsPrincipal, TKey id, string? fileSystemInformation = null, [CallerMemberName] string endpointName = "")
 			where TData : notnull
 		{
 			StringBuilder auditLogger = GetAuditLogger("DELETE", claimsPrincipal, id, endpointName);
@@ -141,8 +147,7 @@ namespace DevilDaggersWebsite.BlazorWasm.Server.Singletons
 
 			auditLogger.AppendLine("```");
 
-			if (!string.IsNullOrWhiteSpace(additionalInformation))
-				auditLogger.AppendLine("*Additional information:*").AppendLine(additionalInformation);
+			AddFileSystemInformation(fileSystemInformation, auditLogger);
 
 			await _discordLogger.TryLog(Channel.MonitoringAuditLog, auditLogger.ToString());
 		}
@@ -182,6 +187,12 @@ namespace DevilDaggersWebsite.BlazorWasm.Server.Singletons
 			}
 
 			return dict;
+		}
+
+		private static void AddFileSystemInformation(string? fileSystemInformation, StringBuilder auditLogger)
+		{
+			if (!string.IsNullOrWhiteSpace(fileSystemInformation))
+				auditLogger.AppendLine("*File system information:*").AppendLine(fileSystemInformation);
 		}
 	}
 }
