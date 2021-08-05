@@ -50,15 +50,15 @@ else
 		<div class="grid gap-3 sm:grid-cols-leaderboard-sm md:grid-cols-leaderboard-md lg:grid-cols-leaderboard-lg xl:grid-cols-leaderboard-xl h-6 @(i % 2 == 0 ? "bg-gray0B" : string.Empty)">
 			<div class="text-left"><a href="/custom/leaderboard/@customLeaderboard.SpawnsetName">@customLeaderboard.SpawnsetName</a></div>
 			<div class="text-left">@customLeaderboard.SpawnsetAuthorName</div>
-			<div class="text-left">@customLeaderboard.DateCreated</div>
-			<div class="text-left">@customLeaderboard.DateLastPlayed</div>
+			<div class="text-left">@customLeaderboard.DateCreated?.ToString(FormatUtils.DateFormat)</div>
+			<div class="text-left">@customLeaderboard.DateLastPlayed?.ToString(FormatUtils.DateFormat)</div>
 			<div class="text-right hidden sm:block bronze">@customLeaderboard.TimeBronze.ToString(FormatUtils.TimeFormat)</div>
 			<div class="text-right hidden sm:block silver">@customLeaderboard.TimeSilver.ToString(FormatUtils.TimeFormat)</div>
 			<div class="text-right hidden sm:block golden">@customLeaderboard.TimeGolden.ToString(FormatUtils.TimeFormat)</div>
 			<div class="text-right hidden sm:block devil">@customLeaderboard.TimeDevil.ToString(FormatUtils.TimeFormat)</div>
 			<div class="text-right hidden sm:block leviathan">@customLeaderboard.TimeLeviathan.ToString(FormatUtils.TimeFormat)</div>
 			<div class="text-left hidden sm:block">@customLeaderboard.TopPlayer</div>
-			<div class="text-right hidden sm:block">@customLeaderboard.WorldRecord</div>
+			<div class="text-right hidden sm:block">@customLeaderboard.WorldRecord?.ToString(FormatUtils.TimeFormat)</div>
 		</div>
 	}
 }
