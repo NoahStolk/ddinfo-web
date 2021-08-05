@@ -43,7 +43,7 @@ namespace DevilDaggersWebsite.BlazorWasm.Server.Controllers.Admin
 			[Range(0, 1000)] int pageIndex = 0,
 			[Range(AdminPagingConstants.PageSizeMin, AdminPagingConstants.PageSizeMax)] int pageSize = AdminPagingConstants.PageSizeDefault,
 			CustomLeaderboardSorting? sortBy = null,
-			bool ascending = true)
+			bool ascending = false)
 		{
 			IQueryable<CustomLeaderboard> customLeaderboardsQuery = _dbContext.CustomLeaderboards
 				.AsNoTracking()

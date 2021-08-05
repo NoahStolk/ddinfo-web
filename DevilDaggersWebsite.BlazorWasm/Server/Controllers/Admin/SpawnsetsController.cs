@@ -47,7 +47,7 @@ namespace DevilDaggersWebsite.BlazorWasm.Server.Controllers.Admin
 			[Range(0, 1000)] int pageIndex = 0,
 			[Range(AdminPagingConstants.PageSizeMin, AdminPagingConstants.PageSizeMax)] int pageSize = AdminPagingConstants.PageSizeDefault,
 			SpawnsetSorting? sortBy = null,
-			bool ascending = true)
+			bool ascending = false)
 		{
 			IQueryable<SpawnsetFile> spawnsetsQuery = _dbContext.SpawnsetFiles.AsNoTracking().Include(s => s.Player);
 

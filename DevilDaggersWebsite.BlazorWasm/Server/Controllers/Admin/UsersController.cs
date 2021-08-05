@@ -39,7 +39,7 @@ namespace DevilDaggersWebsite.BlazorWasm.Server.Controllers.Admin
 			[Range(0, 1000)] int pageIndex = 0,
 			[Range(AdminPagingConstants.PageSizeMin, AdminPagingConstants.PageSizeMax)] int pageSize = AdminPagingConstants.PageSizeDefault,
 			string? sortBy = null,
-			bool ascending = true)
+			bool ascending = false)
 		{
 			var usersQuery = _dbContext.Users
 				.AsNoTracking()
