@@ -2,7 +2,6 @@
 using DevilDaggersWebsite.BlazorWasm.Server.Extensions;
 using DevilDaggersWebsite.BlazorWasm.Shared;
 using DevilDaggersWebsite.BlazorWasm.Shared.Dto.Public.CustomLeaderboards;
-using System.Linq;
 
 namespace DevilDaggersWebsite.BlazorWasm.Server.Converters.Public
 {
@@ -23,7 +22,7 @@ namespace DevilDaggersWebsite.BlazorWasm.Server.Converters.Public
 			IsAscending = customLeaderboard.Category.IsAscending(),
 		};
 
-		public static GetCustomLeaderboardOverview ToGetCustomLeaderboardOverview(this CustomLeaderboard customLeaderboard) => new()
+		public static GetCustomLeaderboardOverview ToGetCustomLeaderboardOverview(this CustomLeaderboard customLeaderboard, string? topPlayer, int? worldRecord) => new()
 		{
 			SpawnsetAuthorName = customLeaderboard.SpawnsetFile.Player.PlayerName,
 			SpawnsetName = customLeaderboard.SpawnsetFile.Name,
@@ -34,10 +33,8 @@ namespace DevilDaggersWebsite.BlazorWasm.Server.Converters.Public
 			TimeLeviathan = customLeaderboard.TimeLeviathan.ToSecondsTime(),
 			DateCreated = customLeaderboard.DateCreated,
 			DateLastPlayed = customLeaderboard.DateLastPlayed,
-
-			// TODO: Take leaderboard direction into account.
-			TopPlayer = customLeaderboard.CustomEntries?.OrderBy(ce => ce.Time).FirstOrDefault()?.Player.PlayerName,
-			WorldRecord = customLeaderboard.CustomEntries?.OrderBy(ce => ce.Time).FirstOrDefault()?.Time.ToSecondsTime(),
+			TopPlayer = topPlayer,
+			WorldRecord = worldRecord.ToSecondsTime(),
 		};
 	}
 }

@@ -56,16 +56,63 @@ namespace DevilDaggersWebsite.BlazorWasm.Server.Controllers.Public
 				_ => customLeaderboardsQuery,
 			};
 
-			List<CustomLeaderboard> customLeaderboards = customLeaderboardsQuery
+			List<CustomLeaderboard> customLeaderboards = customLeaderboardsQuery.ToList();
+
+			IEnumerable<int> customLeaderboardIds = customLeaderboards.Select(cl => cl.Id);
+			var customEntries = _dbContext.CustomEntries
+				.AsNoTracking()
+				.Where(ce => customLeaderboardIds.Contains(ce.CustomLeaderboardId))
+				.Include(ce => ce.Player)
+				.Select(ce => new { ce.Time, ce.Player.PlayerName, ce.CustomLeaderboardId });
+
+			if (categoryFilter.IsAscending())
+				customEntries = customEntries.OrderBy(wr => wr.Time);
+			else
+				customEntries = customEntries.OrderByDescending(wr => wr.Time);
+
+			List<CustomLeaderboardWr> customLeaderboardWrs = customLeaderboards
+				.ConvertAll(cl => new CustomLeaderboardWr(
+					cl,
+					customEntries.FirstOrDefault(wr => wr.CustomLeaderboardId == cl.Id)?.Time,
+					customEntries.FirstOrDefault(wr => wr.CustomLeaderboardId == cl.Id)?.PlayerName));
+
+			if (sortBy is CustomLeaderboardSorting.WorldRecord)
+			{
+				customLeaderboardWrs = ascending
+					? customLeaderboardWrs.OrderBy(wr => wr.WorldRecord).ToList()
+					: customLeaderboardWrs.OrderByDescending(wr => wr.WorldRecord).ToList();
+			}
+			else if (sortBy is CustomLeaderboardSorting.TopPlayer)
+			{
+				customLeaderboardWrs = ascending
+					? customLeaderboardWrs.OrderBy(wr => wr.TopPlayer).ToList()
+					: customLeaderboardWrs.OrderByDescending(wr => wr.TopPlayer).ToList();
+			}
+
+			customLeaderboardWrs = customLeaderboardWrs
 				.Skip(pageIndex * pageSize)
 				.Take(pageSize)
 				.ToList();
 
 			return new Page<GetCustomLeaderboardOverview>
 			{
-				Results = customLeaderboards.ConvertAll(cl => cl.ToGetCustomLeaderboardOverview()),
+				Results = customLeaderboardWrs.ConvertAll(cl => cl.CustomLeaderboard.ToGetCustomLeaderboardOverview(cl.TopPlayer, cl.WorldRecord)),
 				TotalResults = customLeaderboardsQuery.Count(),
 			};
+		}
+
+		private class CustomLeaderboardWr
+		{
+			public CustomLeaderboardWr(CustomLeaderboard customLeaderboard, int? worldRecord, string? topPlayer)
+			{
+				CustomLeaderboard = customLeaderboard;
+				WorldRecord = worldRecord;
+				TopPlayer = topPlayer;
+			}
+
+			public CustomLeaderboard CustomLeaderboard { get; }
+			public int? WorldRecord { get; }
+			public string? TopPlayer { get; }
 		}
 	}
 }
