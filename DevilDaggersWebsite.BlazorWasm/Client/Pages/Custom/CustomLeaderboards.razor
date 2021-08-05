@@ -51,7 +51,7 @@ else
 			<div class="text-left"><a href="/custom/leaderboard/@customLeaderboard.SpawnsetName">@customLeaderboard.SpawnsetName</a></div>
 			<div class="text-left">@customLeaderboard.SpawnsetAuthorName</div>
 			<div class="text-left">@customLeaderboard.DateCreated?.ToString(FormatUtils.DateFormat)</div>
-			<div class="text-left">@customLeaderboard.DateLastPlayed?.ToString(FormatUtils.DateFormat)</div>
+			<div class="text-left">@FormatTimeAgo(customLeaderboard.DateLastPlayed)</div>
 			<div class="text-right hidden sm:block bronze">@customLeaderboard.TimeBronze.ToString(FormatUtils.TimeFormat)</div>
 			<div class="text-right hidden sm:block silver">@customLeaderboard.TimeSilver.ToString(FormatUtils.TimeFormat)</div>
 			<div class="text-right hidden sm:block golden">@customLeaderboard.TimeGolden.ToString(FormatUtils.TimeFormat)</div>
@@ -109,5 +109,23 @@ else
 	private async Task Fetch()
 	{
 		GetCustomLeaderboards = await Http.Client.GetFromJsonAsync<Page<GetCustomLeaderboardOverview>>($"api/custom-leaderboards?categoryFilter={_category}&pageIndex={_pageIndex}&pageSize={_pageSize}&sortBy={_sortBy}&ascending={_ascending}");
+	}
+
+	private string FormatTimeAgo(DateTime? dateTime)
+	{
+		if (!dateTime.HasValue)
+			return "Never";
+
+		TimeSpan difference = DateTime.UtcNow - dateTime.Value;
+		if (difference.TotalMinutes < 1)
+			return "Less than 1 minute ago";
+
+		if (difference.TotalHours < 1)
+			return $"{difference.TotalMinutes:0} minutes ago";
+
+		if (difference.TotalDays < 1)
+			return $"{difference.TotalHours:0} hours ago";
+
+		return $"{difference.TotalDays:0} days ago";
 	}
 }
