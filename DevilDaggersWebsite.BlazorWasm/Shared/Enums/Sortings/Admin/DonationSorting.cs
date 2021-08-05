@@ -1,4 +1,4 @@
-﻿namespace DevilDaggersWebsite.BlazorWasm.Shared.Enums.Sortings
+﻿namespace DevilDaggersWebsite.BlazorWasm.Shared.Enums.Sortings.Admin
 {
 	public enum DonationSorting
 	{

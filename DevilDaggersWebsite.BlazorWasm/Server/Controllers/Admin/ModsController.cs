@@ -10,7 +10,7 @@ using DevilDaggersWebsite.BlazorWasm.Shared.Constants;
 using DevilDaggersWebsite.BlazorWasm.Shared.Dto;
 using DevilDaggersWebsite.BlazorWasm.Shared.Dto.Admin.Mods;
 using DevilDaggersWebsite.BlazorWasm.Shared.Enums;
-using DevilDaggersWebsite.BlazorWasm.Shared.Enums.Sortings;
+using DevilDaggersWebsite.BlazorWasm.Shared.Enums.Sortings.Admin;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
@@ -47,7 +47,7 @@ namespace DevilDaggersWebsite.BlazorWasm.Server.Controllers.Admin
 			[Range(0, 1000)] int pageIndex = 0,
 			[Range(AdminPagingConstants.PageSizeMin, AdminPagingConstants.PageSizeMax)] int pageSize = AdminPagingConstants.PageSizeDefault,
 			ModSorting? sortBy = null,
-			bool ascending = false)
+			bool ascending = true)
 		{
 			IQueryable<AssetMod> modsQuery = _dbContext.AssetMods.AsNoTracking();
 
