@@ -29,20 +29,18 @@ namespace DevilDaggersWebsite.BlazorWasm.Server.Controllers.Public
 		[HttpGet]
 		[ProducesResponseType(StatusCodes.Status200OK)]
 		public ActionResult<Page<GetCustomLeaderboardOverview>> GetCustomLeaderboards(
+			CustomLeaderboardCategory categoryFilter,
 			[Range(0, 1000)] int pageIndex = 0,
 			[Range(PublicPagingConstants.PageSizeMin, PublicPagingConstants.PageSizeMax)] int pageSize = PublicPagingConstants.PageSizeDefault,
 			CustomLeaderboardSorting? sortBy = null,
-			bool ascending = false,
-			CustomLeaderboardCategory? categoryFilter = null)
+			bool ascending = false)
 		{
 			IQueryable<CustomLeaderboard> customLeaderboardsQuery = _dbContext.CustomLeaderboards
 				.AsNoTracking()
 				.Where(cl => !cl.IsArchived)
 				.Include(cl => cl.SpawnsetFile)
 					.ThenInclude(sf => sf.Player)
-				.Include(cl => cl.CustomEntries)
-					.ThenInclude(ce => ce.Player)
-				.Where(cl => !cl.IsArchived);
+				.Where(cl => !cl.IsArchived && categoryFilter == cl.Category);
 
 			customLeaderboardsQuery = sortBy switch
 			{
@@ -54,15 +52,9 @@ namespace DevilDaggersWebsite.BlazorWasm.Server.Controllers.Public
 				CustomLeaderboardSorting.TimeGolden => customLeaderboardsQuery.OrderBy(cl => cl.TimeGolden, ascending),
 				CustomLeaderboardSorting.TimeDevil => customLeaderboardsQuery.OrderBy(cl => cl.TimeDevil, ascending),
 				CustomLeaderboardSorting.TimeLeviathan => customLeaderboardsQuery.OrderBy(cl => cl.TimeLeviathan, ascending),
-
-				// TODO: Take leaderboard direction into account.
-				CustomLeaderboardSorting.TopPlayer => customLeaderboardsQuery.OrderBy(cl => cl.CustomEntries != null && cl.CustomEntries.Count > 0 ? cl.CustomEntries.OrderBy(ce => ce.Time).First().Player.PlayerName : string.Empty),
-				CustomLeaderboardSorting.WorldRecord => customLeaderboardsQuery.OrderBy(cl => cl.CustomEntries != null && cl.CustomEntries.Count > 0 ? cl.CustomEntries.Max(ce => ce.Time) : 0),
-				_ => customLeaderboardsQuery.OrderBy(cl => cl.DateCreated, ascending),
+				CustomLeaderboardSorting.DateCreated => customLeaderboardsQuery.OrderBy(cl => cl.DateCreated, ascending),
+				_ => customLeaderboardsQuery,
 			};
-
-			if (categoryFilter != null)
-				customLeaderboardsQuery = customLeaderboardsQuery.Where(cl => categoryFilter == cl.Category);
 
 			List<CustomLeaderboard> customLeaderboards = customLeaderboardsQuery
 				.Skip(pageIndex * pageSize)

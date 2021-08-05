@@ -2,6 +2,7 @@
 @inject PublicApiHttpClient Http
 @using DevilDaggersWebsite.BlazorWasm.Shared.Dto.Public.CustomLeaderboards
 @using DevilDaggersWebsite.BlazorWasm.Shared.Enums.Sortings.Public;
+@using DevilDaggersWebsite.BlazorWasm.Shared.Enums;
 
 <h1 class="text-red text-2xl">Custom Leaderboards</h1>
 
@@ -64,6 +65,7 @@ else
 
 @code
 {
+	private CustomLeaderboardCategory _category = CustomLeaderboardCategory.Default;
 	private int _pageIndex;
 	private int _pageSize = PublicPagingConstants.PageSizeDefault;
 	private CustomLeaderboardSorting? _sortBy;
@@ -106,6 +108,6 @@ else
 
 	private async Task Fetch()
 	{
-		GetCustomLeaderboards = await Http.Client.GetFromJsonAsync<Page<GetCustomLeaderboardOverview>>($"api/custom-leaderboards?pageIndex={_pageIndex}&pageSize={_pageSize}&sortBy={_sortBy}&ascending={_ascending}");
+		GetCustomLeaderboards = await Http.Client.GetFromJsonAsync<Page<GetCustomLeaderboardOverview>>($"api/custom-leaderboards?categoryFilter={_category}&pageIndex={_pageIndex}&pageSize={_pageSize}&sortBy={_sortBy}&ascending={_ascending}");
 	}
 }
