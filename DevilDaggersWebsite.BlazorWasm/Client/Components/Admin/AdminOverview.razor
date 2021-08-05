@@ -43,32 +43,30 @@ else
 	</Select>
 	<label>Page @(_pageIndex + 1) of @TotalPages (@(_pageIndex * _pageSize) - @Math.Min(_page.TotalResults, (_pageIndex + 1) * _pageSize) of @_page.TotalResults)</label>
 
+	<div class="grid gap-2 grid-cols-@GridConfiguration">
+		@foreach (KeyValuePair<PropertyInfo, bool> pi in _properties)
+		{
+			string name = (pi.Key.GetCustomAttribute(typeof(DisplayAttribute)) as DisplayAttribute)?.Name ?? pi.Key.Name;
+			<a class="@(pi.Value ? "text-right" : "text-left") text-color-link hover:text-color-link-hover" href="" @onclick="() => Sort(pi.Key.Name)" @onclick:preventDefault>@name</a>
+		}
+		<div></div>
+		<div></div>
+	</div>
 	<div>
-		<div class="grid gap-2 grid-cols-@GridConfiguration">
-			@foreach (KeyValuePair<PropertyInfo, bool> pi in _properties)
+		@{
+			int j = 0;
+			foreach (TGetDto result in _page.Results)
 			{
-				string name = (pi.Key.GetCustomAttribute(typeof(DisplayAttribute)) as DisplayAttribute)?.Name ?? pi.Key.Name;
-				<a class="@(pi.Value ? "text-right" : "text-left") text-color-link hover:text-color-link-hover" href="" @onclick="() => Sort(pi.Key.Name)" @onclick:preventDefault>@name</a>
+				<div class="grid gap-2 grid-cols-@GridConfiguration @(j++ % 2 == 0 ? "bg-gray0B" : string.Empty)">
+					@foreach (KeyValuePair<PropertyInfo, bool> pi in _properties)
+					{
+						<div class="@(pi.Value ? "text-right" : "text-left")">@ReflectionUtils.GetDtoPropertyDisplayValue(pi.Key, result)</div>
+					}
+					<div><a class="text-color-link hover:text-color-link-hover" href="@($"{NavigationManager.Uri}/edit/{result.Id}")">Edit</a></div>
+					<div><a class="text-color-link hover:text-color-link-hover" href="" @onclick="() => _deletion?.Set(result.Id)" @onclick:preventDefault>Delete</a></div>
+				</div>
 			}
-			<div></div>
-			<div></div>
-		</div>
-		<div>
-			@{
-				int j = 0;
-				foreach (TGetDto result in _page.Results)
-				{
-					<div class="grid gap-2 grid-cols-@GridConfiguration @(j++ % 2 == 0 ? "bg-gray0B" : string.Empty)">
-						@foreach (KeyValuePair<PropertyInfo, bool> pi in _properties)
-						{
-							<div class="@(pi.Value ? "text-right" : "text-left")">@ReflectionUtils.GetDtoPropertyDisplayValue(pi.Key, result)</div>
-						}
-						<div><a class="text-color-link hover:text-color-link-hover" href="@($"{NavigationManager.Uri}/edit/{result.Id}")">Edit</a></div>
-						<div><a class="text-color-link hover:text-color-link-hover" href="" @onclick="() => _deletion?.Set(result.Id)" @onclick:preventDefault>Delete</a></div>
-					</div>
-				}
-			}
-		</div>
+		}
 	</div>
 }
 
@@ -83,7 +81,7 @@ else
 	private int _pageIndex;
 	private int _pageSize = AdminPagingConstants.PageSizeDefault;
 	private string? _sortBy;
-	private bool _ascending;
+	private bool _ascending = true;
 
 	private Page<TGetDto>? _page;
 	private string? _errorMessage;
