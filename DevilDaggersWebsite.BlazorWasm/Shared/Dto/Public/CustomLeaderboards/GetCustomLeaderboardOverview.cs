@@ -1,5 +1,4 @@
-﻿using DevilDaggersWebsite.BlazorWasm.Shared.Enums;
-using System;
+﻿using System;
 
 namespace DevilDaggersWebsite.BlazorWasm.Shared.Dto.Public.CustomLeaderboards
 {
@@ -23,6 +22,8 @@ namespace DevilDaggersWebsite.BlazorWasm.Shared.Dto.Public.CustomLeaderboards
 
 		public DateTime? DateCreated { get; init; }
 
-		public CustomLeaderboardCategory Category { get; init; }
+		public string? TopPlayer { get; init; }
+
+		public double? WorldRecord { get; init; }
 	}
 }

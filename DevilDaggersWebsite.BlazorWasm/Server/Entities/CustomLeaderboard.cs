@@ -1,6 +1,7 @@
 ﻿using DevilDaggersWebsite.BlazorWasm.Server.Extensions;
 using DevilDaggersWebsite.BlazorWasm.Shared.Enums;
 using System;
+using System.Collections.Generic;
 using System.ComponentModel.DataAnnotations;
 using System.ComponentModel.DataAnnotations.Schema;
 
@@ -35,6 +36,8 @@ namespace DevilDaggersWebsite.BlazorWasm.Server.Entities
 		public int TotalRunsSubmitted { get; set; }
 
 		public bool IsArchived { get; set; }
+
+		public List<CustomEntry>? CustomEntries { get; set; }
 
 		public CustomLeaderboardDagger GetDaggerFromTime(int time)
 		{

@@ -2,6 +2,7 @@
 using DevilDaggersWebsite.BlazorWasm.Server.Extensions;
 using DevilDaggersWebsite.BlazorWasm.Shared;
 using DevilDaggersWebsite.BlazorWasm.Shared.Dto.Public.CustomLeaderboards;
+using System.Linq;
 
 namespace DevilDaggersWebsite.BlazorWasm.Server.Converters.Public
 {
@@ -32,7 +33,11 @@ namespace DevilDaggersWebsite.BlazorWasm.Server.Converters.Public
 			TimeDevil = customLeaderboard.TimeDevil.ToSecondsTime(),
 			TimeLeviathan = customLeaderboard.TimeLeviathan.ToSecondsTime(),
 			DateCreated = customLeaderboard.DateCreated,
-			Category = customLeaderboard.Category,
+			DateLastPlayed = customLeaderboard.DateLastPlayed,
+
+			// TODO: Take leaderboard direction into account.
+			TopPlayer = customLeaderboard.CustomEntries?.OrderBy(ce => ce.Time).FirstOrDefault()?.Player.PlayerName,
+			WorldRecord = customLeaderboard.CustomEntries?.OrderBy(ce => ce.Time).FirstOrDefault()?.Time.ToSecondsTime(),
 		};
 	}
 }

@@ -11,5 +11,7 @@
 		TimeLeviathan,
 		DateCreated,
 		DateLastPlayed,
+		TopPlayer,
+		WorldRecord,
 	}
 }

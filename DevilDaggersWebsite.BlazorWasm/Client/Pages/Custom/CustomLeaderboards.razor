@@ -1,6 +1,7 @@
 ﻿@page "/custom/leaderboards"
 @inject PublicApiHttpClient Http
 @using DevilDaggersWebsite.BlazorWasm.Shared.Dto.Public.CustomLeaderboards
+@using DevilDaggersWebsite.BlazorWasm.Shared.Enums.Sortings.Public;
 
 <h1 class="text-red text-2xl">Custom Leaderboards</h1>
 
@@ -10,14 +11,37 @@
 }
 else
 {
+	<button class="bg-gray-900 hover:bg-gray-700 transition-colors duration-100 w-8 h-8 py-1 rounded text-color-text" @onclick="() => ChangePageIndex(0)">|&lt;</button>
+	<button class="bg-gray-900 hover:bg-gray-700 transition-colors duration-100 w-8 h-8 py-1 rounded text-color-text" @onclick="() => ChangePageIndex(_pageIndex - 1)">&lt;</button>
+	<button class="bg-gray-900 hover:bg-gray-700 transition-colors duration-100 w-8 h-8 py-1 rounded text-color-text" @onclick="() => ChangePageIndex(_pageIndex + 1)">&gt;</button>
+	<button class="bg-gray-900 hover:bg-gray-700 transition-colors duration-100 w-8 h-8 py-1 rounded text-color-text" @onclick="() => ChangePageIndex(TotalPages - 1)">&gt;|</button>
+	<Select @onchange="ChangePageSize" class="bg-gray-900 transition-colors duration-100 h-8 py-1 rounded text-color-text">
+		@foreach (int i in PublicPagingConstants.PageSizeOptions)
+		{
+			if (i == PublicPagingConstants.PageSizeDefault)
+			{
+				<option value="@i" selected>@i</option>
+			}
+			else
+			{
+				<option value="@i">@i</option>
+			}
+		}
+	</Select>
+	<label>Page @(_pageIndex + 1) of @TotalPages (@(_pageIndex * _pageSize) - @Math.Min(GetCustomLeaderboards.TotalResults, (_pageIndex + 1) * _pageSize) of @GetCustomLeaderboards.TotalResults)</label>
+
 	<div class="grid gap-3 sm:grid-cols-leaderboard-sm md:grid-cols-leaderboard-md lg:grid-cols-leaderboard-lg xl:grid-cols-leaderboard-xl">
-		<div class="text-left">Name</div>
-		<div class="text-left">Author</div>
-		<div class="text-right hidden sm:block bronze">Bronze</div>
-		<div class="text-right hidden sm:block silver">Silver</div>
-		<div class="text-right hidden sm:block golden">Golden</div>
-		<div class="text-right hidden sm:block devil">Devil</div>
-		<div class="text-right hidden sm:block leviathan">Leviathan</div>
+		<a href="" @onclick:preventDefault @onclick="() => Sort(CustomLeaderboardSorting.SpawnsetName)" class="text-color-link hover:text-color-link-hover text-left">Name</a>
+		<a href="" @onclick:preventDefault @onclick="() => Sort(CustomLeaderboardSorting.AuthorName)" class="text-color-link hover:text-color-link-hover text-left">Author</a>
+		<a href="" @onclick:preventDefault @onclick="() => Sort(CustomLeaderboardSorting.DateCreated)" class="text-color-link hover:text-color-link-hover text-left">Created</a>
+		<a href="" @onclick:preventDefault @onclick="() => Sort(CustomLeaderboardSorting.DateLastPlayed)" class="text-color-link hover:text-color-link-hover text-left">Last played</a>
+		<a href="" @onclick:preventDefault @onclick="() => Sort(CustomLeaderboardSorting.TimeBronze)" class="text-color-link hover:text-color-link-hover text-right hidden sm:block">Bronze</a>
+		<a href="" @onclick:preventDefault @onclick="() => Sort(CustomLeaderboardSorting.TimeSilver)" class="text-color-link hover:text-color-link-hover text-right hidden sm:block">Silver</a>
+		<a href="" @onclick:preventDefault @onclick="() => Sort(CustomLeaderboardSorting.TimeGolden)" class="text-color-link hover:text-color-link-hover text-right hidden sm:block">Golden</a>
+		<a href="" @onclick:preventDefault @onclick="() => Sort(CustomLeaderboardSorting.TimeDevil)" class="text-color-link hover:text-color-link-hover text-right hidden sm:block">Devil</a>
+		<a href="" @onclick:preventDefault @onclick="() => Sort(CustomLeaderboardSorting.TimeLeviathan)" class="text-color-link hover:text-color-link-hover text-right hidden sm:block">Leviathan</a>
+		<a href="" @onclick:preventDefault @onclick="() => Sort(CustomLeaderboardSorting.TopPlayer)" class="text-color-link hover:text-color-link-hover text-left hidden sm:block">Top player</a>
+		<a href="" @onclick:preventDefault @onclick="() => Sort(CustomLeaderboardSorting.WorldRecord)" class="text-color-link hover:text-color-link-hover text-right hidden sm:block">World record</a>
 	</div>
 	@for (int i = 0; i < GetCustomLeaderboards.Results.Count; i++)
 	{
@@ -25,21 +49,63 @@ else
 		<div class="grid gap-3 sm:grid-cols-leaderboard-sm md:grid-cols-leaderboard-md lg:grid-cols-leaderboard-lg xl:grid-cols-leaderboard-xl h-6 @(i % 2 == 0 ? "bg-gray0B" : string.Empty)">
 			<div class="text-left"><a href="/custom/leaderboard/@customLeaderboard.SpawnsetName">@customLeaderboard.SpawnsetName</a></div>
 			<div class="text-left">@customLeaderboard.SpawnsetAuthorName</div>
+			<div class="text-left">@customLeaderboard.DateCreated</div>
+			<div class="text-left">@customLeaderboard.DateLastPlayed</div>
 			<div class="text-right hidden sm:block bronze">@customLeaderboard.TimeBronze.ToString(FormatUtils.TimeFormat)</div>
 			<div class="text-right hidden sm:block silver">@customLeaderboard.TimeSilver.ToString(FormatUtils.TimeFormat)</div>
 			<div class="text-right hidden sm:block golden">@customLeaderboard.TimeGolden.ToString(FormatUtils.TimeFormat)</div>
 			<div class="text-right hidden sm:block devil">@customLeaderboard.TimeDevil.ToString(FormatUtils.TimeFormat)</div>
 			<div class="text-right hidden sm:block leviathan">@customLeaderboard.TimeLeviathan.ToString(FormatUtils.TimeFormat)</div>
+			<div class="text-left hidden sm:block">@customLeaderboard.TopPlayer</div>
+			<div class="text-right hidden sm:block">@customLeaderboard.WorldRecord</div>
 		</div>
 	}
 }
 
 @code
 {
+	private int _pageIndex;
+	private int _pageSize = PublicPagingConstants.PageSizeDefault;
+	private CustomLeaderboardSorting? _sortBy;
+	private bool _ascending = false;
+
+	private Dictionary<CustomLeaderboardSorting, bool> _sortings = new();
+
 	public Page<GetCustomLeaderboardOverview>? GetCustomLeaderboards { get; set; }
+
+	private int TotalPages => GetCustomLeaderboards == null ? 0 : (GetCustomLeaderboards.TotalResults - 1) / _pageSize + 1;
 
 	protected override async Task OnInitializedAsync()
 	{
-		GetCustomLeaderboards = await Http.Client.GetFromJsonAsync<Page<GetCustomLeaderboardOverview>>("api/custom-leaderboards");
+		foreach (CustomLeaderboardSorting e in (CustomLeaderboardSorting[])Enum.GetValues(typeof(CustomLeaderboardSorting)))
+			_sortings.Add(e, false);
+
+		await Fetch();
+	}
+
+	private async Task ChangePageIndex(int pageIndex)
+	{
+		_pageIndex = Math.Clamp(pageIndex, 0, TotalPages - 1);
+		await Fetch();
+	}
+
+	private async Task ChangePageSize(ChangeEventArgs e)
+	{
+		_ = int.TryParse(e.Value?.ToString(), out _pageSize);
+		_pageIndex = Math.Clamp(_pageIndex, 0, TotalPages - 1);
+		await Fetch();
+	}
+
+	private async Task Sort(CustomLeaderboardSorting sortBy)
+	{
+		_sortBy = sortBy;
+		_sortings[sortBy] = !_sortings[sortBy];
+		_ascending = _sortings[sortBy];
+		await Fetch();
+	}
+
+	private async Task Fetch()
+	{
+		GetCustomLeaderboards = await Http.Client.GetFromJsonAsync<Page<GetCustomLeaderboardOverview>>($"api/custom-leaderboards?pageIndex={_pageIndex}&pageSize={_pageSize}&sortBy={_sortBy}&ascending={_ascending}");
 	}
 }
