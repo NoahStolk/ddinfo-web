@@ -9,6 +9,6 @@ namespace DevilDaggersWebsite.BlazorWasm.Shared.Constants
 		public const int PageSizeMin = 15;
 		public const int PageSizeMax = 35;
 
-		public static IEnumerable<int> PageSizeOptions { get; } = Enumerable.Range(3, 4).Select(i => i * 5);
+		public static IEnumerable<int> PageSizeOptions { get; } = Enumerable.Range(3, 5).Select(i => i * 5);
 	}
 }

@@ -27,10 +27,6 @@ module.exports = {
 				'tooltip-background': '#000b'
 			},
 			gridTemplateColumns: {
-				'leaderboard-xl': createMinmaxGrid([4, 2, 14, 7, 4, 4, 8, 11, 9, 9, 9, 10, 9]),
-				'leaderboard-lg': createMinmaxGrid([6, 3, 8, 10, 6, 6, 8, 10.5, 10.5, 10, 8, 10, 10]),
-				'leaderboard-md': createMinmaxGrid([9, 4.5, 35, 14, 14, 14, 14]),
-				'leaderboard-sm': createMinmaxGrid([18, 9, 41, 32]),
 				'admin-custom-entries': createMinmaxGrid([1, 4, 3, 1.5, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 3, 2.5, 1, 1]),
 				'admin-custom-leaderboards': createMinmaxGrid([1, 4, 4, 1, 1, 1, 1, 1, 4, 2, 1, 1]),
 				'admin-donations': createMinmaxGrid([1, 3, 1, 1, 3, 2, 4, 1, 1, 1]),
@@ -39,6 +35,11 @@ module.exports = {
 				'admin-spawnsets': createMinmaxGrid([1, 1, 4, 2, 8, 2, 1, 1, 1]),
 				'admin-titles': createMinmaxGrid([1, 8, 1, 1]),
 				'admin-users': createMinmaxGrid([2, 8, 1, 1]),
+				'custom-leaderboard-xl': createMinmaxGrid([4, 3, 1, 1, 1, 1, 1, 1, 1, 3, 1]),
+				'leaderboard-xl': createMinmaxGrid([4, 2, 14, 7, 4, 4, 8, 11, 9, 9, 9, 10, 9]),
+				'leaderboard-lg': createMinmaxGrid([6, 3, 8, 10, 6, 6, 8, 10.5, 10.5, 10, 8, 10, 10]),
+				'leaderboard-md': createMinmaxGrid([9, 4.5, 35, 14, 14, 14, 14]),
+				'leaderboard-sm': createMinmaxGrid([18, 9, 41, 32]),
 			},
 			maxHeight: {
 				'screen-half': '50vh',

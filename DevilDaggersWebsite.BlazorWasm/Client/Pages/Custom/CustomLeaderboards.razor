@@ -31,7 +31,7 @@ else
 	</Select>
 	<label>Page @(_pageIndex + 1) of @TotalPages (@(_pageIndex * _pageSize) - @Math.Min(GetCustomLeaderboards.TotalResults, (_pageIndex + 1) * _pageSize) of @GetCustomLeaderboards.TotalResults)</label>
 
-	<div class="grid gap-3 sm:grid-cols-leaderboard-sm md:grid-cols-leaderboard-md lg:grid-cols-leaderboard-lg xl:grid-cols-leaderboard-xl">
+	<div class="grid gap-3 sm:grid-cols-leaderboard-sm md:grid-cols-leaderboard-md lg:grid-cols-leaderboard-lg xl:grid-cols-custom-leaderboard-xl">
 		<a href="" @onclick:preventDefault @onclick="() => Sort(CustomLeaderboardSorting.SpawnsetName)" class="text-color-link hover:text-color-link-hover text-left">Name</a>
 		<a href="" @onclick:preventDefault @onclick="() => Sort(CustomLeaderboardSorting.AuthorName)" class="text-color-link hover:text-color-link-hover text-left">Author</a>
 		<a href="" @onclick:preventDefault @onclick="() => Sort(CustomLeaderboardSorting.DateCreated)" class="text-color-link hover:text-color-link-hover text-left">Created</a>
@@ -47,7 +47,7 @@ else
 	@for (int i = 0; i < GetCustomLeaderboards.Results.Count; i++)
 	{
 		GetCustomLeaderboardOverview customLeaderboard = GetCustomLeaderboards.Results[i];
-		<div class="grid gap-3 sm:grid-cols-leaderboard-sm md:grid-cols-leaderboard-md lg:grid-cols-leaderboard-lg xl:grid-cols-leaderboard-xl h-6 @(i % 2 == 0 ? "bg-gray0B" : string.Empty)">
+		<div class="grid gap-3 sm:grid-cols-leaderboard-sm md:grid-cols-leaderboard-md lg:grid-cols-leaderboard-lg xl:grid-cols-custom-leaderboard-xl h-6 @(i % 2 == 0 ? "bg-gray0B" : string.Empty)">
 			<div class="text-left"><a href="/custom/leaderboard/@customLeaderboard.SpawnsetName">@customLeaderboard.SpawnsetName</a></div>
 			<div class="text-left">@customLeaderboard.SpawnsetAuthorName</div>
 			<div class="text-left">@customLeaderboard.DateCreated?.ToString(FormatUtils.DateFormat)</div>
