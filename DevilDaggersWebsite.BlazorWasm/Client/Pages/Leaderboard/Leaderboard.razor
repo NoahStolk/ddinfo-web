@@ -22,7 +22,7 @@ else
 {
 	<div>
 		<div>Rank:</div>
-		<input @bind="Rank" class="bg-black border-gray-700 border-2" /> @*TODO: Enter key should fetch leaderboard.*@
+		<input @bind="Rank" class="bg-black border-gray-700 border-2" @onkeypress="KeyPressInputRank" />
 		<button class="bg-gray-900 hover:bg-gray-700 transition-colors duration-100 w-16 h-8 py-1 rounded text-color-text" @onclick="FetchLeaderboard">Show</button>
 
 		<div>
@@ -88,6 +88,15 @@ else
 		catch (Exception ex)
 		{
 			_apiError = ex.Message;
+		}
+	}
+
+	private async Task KeyPressInputRank(KeyboardEventArgs e)
+	{
+		// TODO: Rank binding is not updated here yet...
+		if (e.Code == "Enter" || e.Code == "NumpadEnter")
+		{
+			await FetchLeaderboard();
 		}
 	}
 }
