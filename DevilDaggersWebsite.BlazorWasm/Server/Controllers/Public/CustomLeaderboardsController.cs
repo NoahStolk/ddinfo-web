@@ -4,6 +4,7 @@ using DevilDaggersWebsite.BlazorWasm.Server.Extensions;
 using DevilDaggersWebsite.BlazorWasm.Shared.Dto;
 using DevilDaggersWebsite.BlazorWasm.Shared.Dto.Public.CustomLeaderboards;
 using DevilDaggersWebsite.BlazorWasm.Shared.Enums;
+using DevilDaggersWebsite.BlazorWasm.Shared.Enums.Sortings.Public;
 using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.EntityFrameworkCore;
@@ -29,7 +30,7 @@ namespace DevilDaggersWebsite.BlazorWasm.Server.Controllers.Public
 		public ActionResult<Page<GetCustomLeaderboardOverview>> GetCustomLeaderboards(
 			[Range(0, 1000)] int pageIndex = 0,
 			[Range(10, 25)] int pageSize = 25,
-			string? sortBy = null,
+			CustomLeaderboardSorting? sortBy = null,
 			bool ascending = false,
 			CustomLeaderboardCategory? categoriesFilter = null)
 		{
@@ -37,10 +38,21 @@ namespace DevilDaggersWebsite.BlazorWasm.Server.Controllers.Public
 				.AsNoTracking()
 				.Where(cl => !cl.IsArchived)
 				.Include(cl => cl.SpawnsetFile)
-					.ThenInclude(sf => sf.Player);
+					.ThenInclude(sf => sf.Player)
+				.Where(cl => !cl.IsArchived);
 
-			if (sortBy != null)
-				customLeaderboardsQuery = customLeaderboardsQuery.OrderByMember(sortBy, ascending);
+			customLeaderboardsQuery = sortBy switch
+			{
+				CustomLeaderboardSorting.AuthorName => customLeaderboardsQuery.OrderBy(cl => cl.SpawnsetFile.Player.PlayerName, ascending),
+				CustomLeaderboardSorting.DateLastPlayed => customLeaderboardsQuery.OrderBy(cl => cl.DateLastPlayed, ascending),
+				CustomLeaderboardSorting.SpawnsetName => customLeaderboardsQuery.OrderBy(cl => cl.SpawnsetFile.Name, ascending),
+				CustomLeaderboardSorting.TimeBronze => customLeaderboardsQuery.OrderBy(cl => cl.TimeBronze, ascending),
+				CustomLeaderboardSorting.TimeSilver => customLeaderboardsQuery.OrderBy(cl => cl.TimeSilver, ascending),
+				CustomLeaderboardSorting.TimeGolden => customLeaderboardsQuery.OrderBy(cl => cl.TimeGolden, ascending),
+				CustomLeaderboardSorting.TimeDevil => customLeaderboardsQuery.OrderBy(cl => cl.TimeDevil, ascending),
+				CustomLeaderboardSorting.TimeLeviathan => customLeaderboardsQuery.OrderBy(cl => cl.TimeLeviathan, ascending),
+				_ => customLeaderboardsQuery.OrderBy(cl => cl.DateCreated, ascending),
+			};
 
 			if (categoriesFilter != null)
 				customLeaderboardsQuery = customLeaderboardsQuery.Where(cl => categoriesFilter == cl.Category);
