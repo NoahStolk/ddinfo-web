@@ -1,4 +1,6 @@
-﻿namespace DevilDaggersWebsite.BlazorWasm.Shared
+﻿using System;
+
+namespace DevilDaggersWebsite.BlazorWasm.Shared
 {
 	public static class FormatUtils
 	{
@@ -27,6 +29,25 @@
 			}
 
 			return $"{hit:N0} / {fired:N0}";
+		}
+
+		public static string FormatDateTimeAsTimeAgo(DateTime? dateTime)
+			=> dateTime.HasValue ? FormatDateTimeAsTimeAgo(dateTime.Value) : "Never";
+
+		public static string FormatDateTimeAsTimeAgo(DateTime dateTime)
+		{
+			TimeSpan difference = DateTime.UtcNow - dateTime;
+
+			if (difference.TotalMinutes < 1)
+				return "Less than 1 minute ago";
+
+			if (difference.TotalHours < 1)
+				return $"{difference.TotalMinutes:0} minutes ago";
+
+			if (difference.TotalDays < 1)
+				return $"{difference.TotalHours:0} hours ago";
+
+			return $"{difference.TotalDays:0} days ago";
 		}
 	}
 }
