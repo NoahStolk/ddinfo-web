@@ -28,6 +28,10 @@ namespace DevilDaggersWebsite.BlazorWasm.Shared.Dto.Admin.Mods
 		[MaxLength(ModFileConstants.MaxFileSize, ErrorMessage = ModFileConstants.MaxFileSizeErrorMessage)]
 		public byte[]? FileContents { get; set; }
 
+		/// <summary>
+		/// Removes the mod file, cache file, and mod screenshots.
+		/// Cannot be used if <see cref="FileContents"/> is not null.
+		/// </summary>
 		public bool RemoveExistingFile { get; set; }
 	}
 }

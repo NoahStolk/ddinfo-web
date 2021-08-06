@@ -210,77 +210,16 @@ namespace DevilDaggersWebsite.BlazorWasm.Server.Controllers.Admin
 			// Request is accepted.
 			List<FileSystemInformation> fileSystemInformation = new();
 
-			// Remove existing file if requested.
+			// Remove existing file if requested (this does NOT remove screenshots). Otherwise; move files if mod is renamed (this DOES include screenshots).
 			if (editMod.RemoveExistingFile)
-			{
-				string directory = DataUtils.GetPath("Mods");
-				string oldPath = Path.Combine(directory, $"{mod.Name}.zip");
-				bool fileExists = Io.File.Exists(oldPath);
-				if (fileExists)
-					Io.File.Delete(oldPath);
-
-				fileSystemInformation.Add(new(fileExists ? $"File '{DataUtils.GetRelevantDisplayPath(oldPath)}' was deleted because removal was requested." : $"File '{DataUtils.GetRelevantDisplayPath(oldPath)}' was not deleted because it does not exist.", fileExists ? FileSystemInformationType.Delete : FileSystemInformationType.NotFound));
-
-				string cacheDirectory = DataUtils.GetPath("ModArchiveCache");
-				string oldCachePath = Path.Combine(cacheDirectory, $"{mod.Name}.json");
-				bool cacheFileExists = Io.File.Exists(oldCachePath);
-				if (cacheFileExists)
-					Io.File.Delete(oldCachePath);
-
-				fileSystemInformation.Add(new(cacheFileExists ? $"File '{DataUtils.GetRelevantDisplayPath(oldCachePath)}' was deleted because removal was requested." : $"File '{DataUtils.GetRelevantDisplayPath(oldCachePath)}' was not deleted because it does not exist.", cacheFileExists ? FileSystemInformationType.Delete : FileSystemInformationType.NotFound));
-			}
-
-			// Move files if mod is renamed and removal is not requested.
-			if (mod.Name != editMod.Name)
-			{
-				// If removal is requested the files are gone already.
-				if (!editMod.RemoveExistingFile)
-				{
-					string directory = DataUtils.GetPath("Mods");
-					string oldPath = Path.Combine(directory, $"{mod.Name}.zip");
-					if (Io.File.Exists(oldPath))
-					{
-						string newPath = Path.Combine(directory, editMod.Name);
-						Io.File.Move(oldPath, newPath);
-						fileSystemInformation.Add(new($"File '{DataUtils.GetRelevantDisplayPath(oldPath)}' was moved to {DataUtils.GetRelevantDisplayPath(newPath)}.", FileSystemInformationType.Move));
-					}
-					else
-					{
-						fileSystemInformation.Add(new($"File '{DataUtils.GetRelevantDisplayPath(oldPath)}' was not moved because it does not exist.", FileSystemInformationType.NotFound));
-					}
-
-					string cacheDirectory = DataUtils.GetPath("ModArchiveCache");
-					string oldCachePath = Path.Combine(cacheDirectory, $"{mod.Name}.json");
-					if (Io.File.Exists(oldCachePath))
-					{
-						string newCachePath = Path.Combine(directory, editMod.Name);
-						Io.File.Move(oldCachePath, newCachePath);
-						fileSystemInformation.Add(new($"File '{DataUtils.GetRelevantDisplayPath(oldCachePath)}' was moved to {DataUtils.GetRelevantDisplayPath(newCachePath)}.", FileSystemInformationType.Move));
-					}
-					else
-					{
-						fileSystemInformation.Add(new($"File '{DataUtils.GetRelevantDisplayPath(oldCachePath)}' was not moved because it does not exist.", FileSystemInformationType.NotFound));
-					}
-				}
-
-				// Always move screenshots directory (not removed when removal is requested as screenshots are separate entities).
-				string oldScreenshotsDirectory = Path.Combine(DataUtils.GetPath("ModScreenshots"), mod.Name);
-				if (Directory.Exists(oldScreenshotsDirectory))
-				{
-					string newScreenshotsDirectory = Path.Combine(DataUtils.GetPath("ModScreenshots"), editMod.Name);
-					Directory.Move(oldScreenshotsDirectory, newScreenshotsDirectory);
-					fileSystemInformation.Add(new($"Directory '{DataUtils.GetRelevantDisplayPath(oldScreenshotsDirectory)}' was moved to {DataUtils.GetRelevantDisplayPath(newScreenshotsDirectory)}.", FileSystemInformationType.Move));
-				}
-				else
-				{
-					fileSystemInformation.Add(new($"Directory '{DataUtils.GetRelevantDisplayPath(oldScreenshotsDirectory)}' was not moved because it does not exist.", FileSystemInformationType.NotFound));
-				}
-			}
+				DeleteModFileAndClearCache(mod, fileSystemInformation);
+			else if (mod.Name != editMod.Name)
+				MoveModFiles(editMod.Name, mod.Name, fileSystemInformation);
 
 			// Update file.
 			if (editMod.FileContents != null)
 			{
-				// At this point we already know RemoveExistingFile is false.
+				// At this point we already know RemoveExistingFile is false, and that the old files are moved already.
 				string path = Path.Combine(DataUtils.GetPath("Mods"), $"{editMod.Name}.zip");
 				Io.File.WriteAllBytes(path, editMod.FileContents);
 				fileSystemInformation.Add(new($"File '{DataUtils.GetRelevantDisplayPath(path)}' was added.", FileSystemInformationType.Add));
@@ -326,27 +265,21 @@ namespace DevilDaggersWebsite.BlazorWasm.Server.Controllers.Admin
 				return NotFound();
 
 			List<FileSystemInformation> fileSystemInformation = new();
-			string path = Path.Combine(DataUtils.GetPath("Mods"), $"{mod.Name}.zip");
-			if (Io.File.Exists(path))
-				Io.File.Delete(path);
-			else
-				fileSystemInformation.Add(new($"File {DataUtils.GetRelevantDisplayPath(path)} was not deleted because it does not exist.", FileSystemInformationType.NotFound));
 
-			// Clear entire memory cache (can't clear individual entries).
-			_modArchiveCache.Clear();
+			// Delete mod file and cache.
+			DeleteModFileAndClearCache(mod, fileSystemInformation);
 
-			// Clear file cache for this mod.
-			string cachePath = Path.Combine(DataUtils.GetPath("ModArchiveCache"), $"{mod.Name}.json");
-			if (Io.File.Exists(cachePath))
-				Io.File.Delete(cachePath);
-			else
-				fileSystemInformation.Add(new($"File {DataUtils.GetRelevantDisplayPath(cachePath)} was not deleted because it does not exist.", FileSystemInformationType.NotFound));
-
+			// Delete screenshots directory.
 			string screenshotsDirectory = Path.Combine(DataUtils.GetPath("ModScreenshots"), mod.Name);
 			if (Directory.Exists(screenshotsDirectory))
+			{
 				Directory.Delete(screenshotsDirectory, true);
+				fileSystemInformation.Add(new($"Directory {DataUtils.GetRelevantDisplayPath(screenshotsDirectory)} was deleted because removal was requested.", FileSystemInformationType.Delete));
+			}
 			else
+			{
 				fileSystemInformation.Add(new($"Directory {DataUtils.GetRelevantDisplayPath(screenshotsDirectory)} was not deleted because it does not exist.", FileSystemInformationType.NotFound));
+			}
 
 			_dbContext.AssetMods.Remove(mod);
 			_dbContext.SaveChanges();
@@ -354,6 +287,88 @@ namespace DevilDaggersWebsite.BlazorWasm.Server.Controllers.Admin
 			await _auditLogger.LogDelete(mod, User, mod.Id, fileSystemInformation);
 
 			return Ok();
+		}
+
+		/// <summary>
+		/// Moves the mod archive, mod archive cache, and the screenshots to a new path.
+		/// </summary>
+		private void MoveModFiles(string newName, string currentName, List<FileSystemInformation> fileSystemInformation)
+		{
+			string directory = DataUtils.GetPath("Mods");
+			string oldPath = Path.Combine(directory, $"{currentName}.zip");
+			if (Io.File.Exists(oldPath))
+			{
+				string newPath = Path.Combine(directory, newName);
+				Io.File.Move(oldPath, newPath);
+				fileSystemInformation.Add(new($"File '{DataUtils.GetRelevantDisplayPath(oldPath)}' was moved to {DataUtils.GetRelevantDisplayPath(newPath)}.", FileSystemInformationType.Move));
+
+				// Clear entire memory cache (can't clear individual entries).
+				_modArchiveCache.Clear();
+			}
+			else
+			{
+				fileSystemInformation.Add(new($"File '{DataUtils.GetRelevantDisplayPath(oldPath)}' was not moved because it does not exist.", FileSystemInformationType.NotFound));
+			}
+
+			string cacheDirectory = DataUtils.GetPath("ModArchiveCache");
+			string oldCachePath = Path.Combine(cacheDirectory, $"{currentName}.json");
+			if (Io.File.Exists(oldCachePath))
+			{
+				string newCachePath = Path.Combine(directory, newName);
+				Io.File.Move(oldCachePath, newCachePath);
+				fileSystemInformation.Add(new($"File '{DataUtils.GetRelevantDisplayPath(oldCachePath)}' was moved to {DataUtils.GetRelevantDisplayPath(newCachePath)}.", FileSystemInformationType.Move));
+			}
+			else
+			{
+				fileSystemInformation.Add(new($"File '{DataUtils.GetRelevantDisplayPath(oldCachePath)}' was not moved because it does not exist.", FileSystemInformationType.NotFound));
+			}
+
+			// Always move screenshots directory (not removed when removal is requested as screenshots are separate entities).
+			string oldScreenshotsDirectory = Path.Combine(DataUtils.GetPath("ModScreenshots"), currentName);
+			if (Directory.Exists(oldScreenshotsDirectory))
+			{
+				string newScreenshotsDirectory = Path.Combine(DataUtils.GetPath("ModScreenshots"), newName);
+				Directory.Move(oldScreenshotsDirectory, newScreenshotsDirectory);
+				fileSystemInformation.Add(new($"Directory '{DataUtils.GetRelevantDisplayPath(oldScreenshotsDirectory)}' was moved to {DataUtils.GetRelevantDisplayPath(newScreenshotsDirectory)}.", FileSystemInformationType.Move));
+			}
+			else
+			{
+				fileSystemInformation.Add(new($"Directory '{DataUtils.GetRelevantDisplayPath(oldScreenshotsDirectory)}' was not moved because it does not exist.", FileSystemInformationType.NotFound));
+			}
+		}
+
+		/// <summary>
+		/// Deletes the mod archive and the mod archive cache for this mod, and also clears the memory cache.
+		/// <b>This method does not delete mod screenshot files</b>.
+		/// </summary>
+		private void DeleteModFileAndClearCache(AssetMod mod, List<FileSystemInformation> fileSystemInformation)
+		{
+			// Delete file.
+			string path = Path.Combine(DataUtils.GetPath("Mods"), $"{mod.Name}.zip");
+			if (Io.File.Exists(path))
+			{
+				Io.File.Delete(path);
+				fileSystemInformation.Add(new($"File {DataUtils.GetRelevantDisplayPath(path)} was deleted because removal was requested.", FileSystemInformationType.Delete));
+
+				// Clear entire memory cache (can't clear individual entries).
+				_modArchiveCache.Clear();
+			}
+			else
+			{
+				fileSystemInformation.Add(new($"File {DataUtils.GetRelevantDisplayPath(path)} was not deleted because it does not exist.", FileSystemInformationType.NotFound));
+			}
+
+			// Clear file cache for this mod.
+			string cachePath = Path.Combine(DataUtils.GetPath("ModArchiveCache"), $"{mod.Name}.json");
+			if (Io.File.Exists(cachePath))
+			{
+				Io.File.Delete(cachePath);
+				fileSystemInformation.Add(new($"File {DataUtils.GetRelevantDisplayPath(cachePath)} was deleted because removal was requested.", FileSystemInformationType.Delete));
+			}
+			else
+			{
+				fileSystemInformation.Add(new($"File {DataUtils.GetRelevantDisplayPath(cachePath)} was not deleted because it does not exist.", FileSystemInformationType.NotFound));
+			}
 		}
 
 		private void UpdatePlayerMods(List<int> playerIds, int modId)
