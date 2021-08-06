@@ -152,6 +152,13 @@ namespace DevilDaggersWebsite.BlazorWasm.Server.Singletons.AuditLog
 			await _discordLogger.TryLog(Channel.MonitoringAuditLog, auditLogger.ToString());
 		}
 
+		public async Task LogFileSystemInformation(List<FileSystemInformation>? fileSystemInformation = null)
+		{
+			StringBuilder auditLogger = new();
+			AddFileSystemInformation(auditLogger, fileSystemInformation);
+			await _discordLogger.TryLog(Channel.MonitoringAuditLog, auditLogger.ToString());
+		}
+
 		private static StringBuilder GetAuditLogger<TKey>(string action, ClaimsPrincipal claimsPrincipal, TKey id, string endpointName)
 		{
 			// TODO: Get user from database.
