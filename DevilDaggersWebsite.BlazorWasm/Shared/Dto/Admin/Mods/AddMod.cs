@@ -27,8 +27,5 @@ namespace DevilDaggersWebsite.BlazorWasm.Shared.Dto.Admin.Mods
 
 		[MaxLength(ModFileConstants.MaxFileSize, ErrorMessage = ModFileConstants.MaxFileSizeErrorMessage)]
 		public byte[]? FileContents { get; set; }
-
-		[MaxLength(ModScreenshotConstants.MaxScreenshots)]
-		public List<AddModScreenshot> Screenshots { get; set; } = new();
 	}
 }
