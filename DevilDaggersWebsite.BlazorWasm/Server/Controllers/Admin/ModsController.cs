@@ -212,9 +212,9 @@ namespace DevilDaggersWebsite.BlazorWasm.Server.Controllers.Admin
 
 			// Remove existing file if requested (this does NOT remove screenshots). Otherwise; move files if mod is renamed (this DOES include screenshots).
 			if (editMod.RemoveExistingFile)
-				DeleteModFileAndClearCache(mod, fileSystemInformation);
+				DeleteModFilesAndClearCache(mod, fileSystemInformation);
 			else if (mod.Name != editMod.Name)
-				MoveModFiles(editMod.Name, mod.Name, fileSystemInformation);
+				MoveModFilesAndClearCache(newName: editMod.Name, currentName: mod.Name, fileSystemInformation);
 
 			// Update file.
 			if (editMod.FileContents != null)
@@ -267,18 +267,18 @@ namespace DevilDaggersWebsite.BlazorWasm.Server.Controllers.Admin
 			List<FileSystemInformation> fileSystemInformation = new();
 
 			// Delete mod file and cache.
-			DeleteModFileAndClearCache(mod, fileSystemInformation);
+			DeleteModFilesAndClearCache(mod, fileSystemInformation);
 
 			// Delete screenshots directory.
 			string screenshotsDirectory = Path.Combine(DataUtils.GetPath("ModScreenshots"), mod.Name);
 			if (Directory.Exists(screenshotsDirectory))
 			{
 				Directory.Delete(screenshotsDirectory, true);
-				fileSystemInformation.Add(new($"Directory {DataUtils.GetRelevantDisplayPath(screenshotsDirectory)} was deleted because removal was requested.", FileSystemInformationType.Delete));
+				fileSystemInformation.Add(new($"Directory '{DataUtils.GetRelevantDisplayPath(screenshotsDirectory)}' was deleted because removal was requested.", FileSystemInformationType.Delete));
 			}
 			else
 			{
-				fileSystemInformation.Add(new($"Directory {DataUtils.GetRelevantDisplayPath(screenshotsDirectory)} was not deleted because it does not exist.", FileSystemInformationType.NotFound));
+				fileSystemInformation.Add(new($"Directory '{DataUtils.GetRelevantDisplayPath(screenshotsDirectory)}' was not deleted because it does not exist.", FileSystemInformationType.NotFound));
 			}
 
 			_dbContext.AssetMods.Remove(mod);
@@ -292,7 +292,7 @@ namespace DevilDaggersWebsite.BlazorWasm.Server.Controllers.Admin
 		/// <summary>
 		/// Moves the mod archive, mod archive cache, and the screenshots to a new path.
 		/// </summary>
-		private void MoveModFiles(string newName, string currentName, List<FileSystemInformation> fileSystemInformation)
+		private void MoveModFilesAndClearCache(string newName, string currentName, List<FileSystemInformation> fileSystemInformation)
 		{
 			string directory = DataUtils.GetPath("Mods");
 			string oldPath = Path.Combine(directory, $"{currentName}.zip");
@@ -300,7 +300,7 @@ namespace DevilDaggersWebsite.BlazorWasm.Server.Controllers.Admin
 			{
 				string newPath = Path.Combine(directory, newName);
 				Io.File.Move(oldPath, newPath);
-				fileSystemInformation.Add(new($"File '{DataUtils.GetRelevantDisplayPath(oldPath)}' was moved to {DataUtils.GetRelevantDisplayPath(newPath)}.", FileSystemInformationType.Move));
+				fileSystemInformation.Add(new($"File '{DataUtils.GetRelevantDisplayPath(oldPath)}' was moved to '{DataUtils.GetRelevantDisplayPath(newPath)}'.", FileSystemInformationType.Move));
 
 				// Clear entire memory cache (can't clear individual entries).
 				_modArchiveCache.Clear();
@@ -316,7 +316,7 @@ namespace DevilDaggersWebsite.BlazorWasm.Server.Controllers.Admin
 			{
 				string newCachePath = Path.Combine(directory, newName);
 				Io.File.Move(oldCachePath, newCachePath);
-				fileSystemInformation.Add(new($"File '{DataUtils.GetRelevantDisplayPath(oldCachePath)}' was moved to {DataUtils.GetRelevantDisplayPath(newCachePath)}.", FileSystemInformationType.Move));
+				fileSystemInformation.Add(new($"File '{DataUtils.GetRelevantDisplayPath(oldCachePath)}' was moved to '{DataUtils.GetRelevantDisplayPath(newCachePath)}'.", FileSystemInformationType.Move));
 			}
 			else
 			{
@@ -329,7 +329,7 @@ namespace DevilDaggersWebsite.BlazorWasm.Server.Controllers.Admin
 			{
 				string newScreenshotsDirectory = Path.Combine(DataUtils.GetPath("ModScreenshots"), newName);
 				Directory.Move(oldScreenshotsDirectory, newScreenshotsDirectory);
-				fileSystemInformation.Add(new($"Directory '{DataUtils.GetRelevantDisplayPath(oldScreenshotsDirectory)}' was moved to {DataUtils.GetRelevantDisplayPath(newScreenshotsDirectory)}.", FileSystemInformationType.Move));
+				fileSystemInformation.Add(new($"Directory '{DataUtils.GetRelevantDisplayPath(oldScreenshotsDirectory)}' was moved to '{DataUtils.GetRelevantDisplayPath(newScreenshotsDirectory)}'.", FileSystemInformationType.Move));
 			}
 			else
 			{
@@ -341,7 +341,7 @@ namespace DevilDaggersWebsite.BlazorWasm.Server.Controllers.Admin
 		/// Deletes the mod archive and the mod archive cache for this mod, and also clears the memory cache.
 		/// <b>This method does not delete mod screenshot files</b>.
 		/// </summary>
-		private void DeleteModFileAndClearCache(AssetMod mod, List<FileSystemInformation> fileSystemInformation)
+		private void DeleteModFilesAndClearCache(AssetMod mod, List<FileSystemInformation> fileSystemInformation)
 		{
 			// Delete file.
 			string path = Path.Combine(DataUtils.GetPath("Mods"), $"{mod.Name}.zip");
