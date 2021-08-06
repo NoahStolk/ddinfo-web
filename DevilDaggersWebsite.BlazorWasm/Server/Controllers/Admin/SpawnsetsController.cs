@@ -218,7 +218,8 @@ namespace DevilDaggersWebsite.BlazorWasm.Server.Controllers.Admin
 			_dbContext.SpawnsetFiles.Remove(spawnset);
 			_dbContext.SaveChanges();
 
-			await _auditLogger.LogDelete(spawnset, User, spawnset.Id, fileExists ? null : new() { new($"File '{DataUtils.GetRelevantDisplayPath(path)}' was not deleted because it does not exist.", FileSystemInformationType.NotFoundUnexpected) });
+			string message = fileExists ? $"File '{DataUtils.GetRelevantDisplayPath(path)}' was deleted." : $"File '{DataUtils.GetRelevantDisplayPath(path)}' was not deleted because it does not exist.";
+			await _auditLogger.LogDelete(spawnset, User, spawnset.Id, new() { new(message, fileExists ? FileSystemInformationType.Delete : FileSystemInformationType.NotFoundUnexpected) });
 
 			return Ok();
 		}
