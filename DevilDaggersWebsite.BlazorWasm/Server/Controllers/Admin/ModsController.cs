@@ -142,9 +142,13 @@ namespace DevilDaggersWebsite.BlazorWasm.Server.Controllers.Admin
 				addInfo = $"File '{DataUtils.GetRelevantDisplayPath(path)}' was added.";
 			}
 
+			AssetModTypes amt = AssetModTypes.None;
+			foreach (int i in addMod.AssetModTypes ?? new())
+				amt |= (AssetModTypes)i;
+
 			AssetMod mod = new()
 			{
-				AssetModTypes = addMod.AssetModTypes,
+				AssetModTypes = amt,
 				HtmlDescription = addMod.HtmlDescription,
 				IsHidden = addMod.IsHidden,
 				LastUpdated = DateTime.Now,
