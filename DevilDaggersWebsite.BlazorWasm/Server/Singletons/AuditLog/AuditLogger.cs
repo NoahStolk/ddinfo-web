@@ -210,7 +210,9 @@ namespace DevilDaggersWebsite.BlazorWasm.Server.Singletons.AuditLog
 					FileSystemInformationType.Move => "arrow_right",
 					FileSystemInformationType.NotFound => "information_source",
 					FileSystemInformationType.NotFoundUnexpected => "warning",
-					_ => "white_check_mark",
+					FileSystemInformationType.Add => "new",
+					FileSystemInformationType.Update => "white_check_mark",
+					_ => "black_circle",
 				};
 				auditLogger.Append(':').Append(emote).Append(": ").AppendLine(alfsi.Message);
 			}

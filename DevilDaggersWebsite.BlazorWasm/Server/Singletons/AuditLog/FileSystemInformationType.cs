@@ -7,5 +7,6 @@
 		NotFoundUnexpected,
 		NotFound,
 		Move,
+		Update,
 	}
 }
