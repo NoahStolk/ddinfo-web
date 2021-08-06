@@ -169,6 +169,10 @@ namespace DevilDaggersWebsite.BlazorWasm.Server.Controllers.Admin
 		[ProducesResponseType(StatusCodes.Status404NotFound)]
 		public async Task<ActionResult> EditModById(int id, EditMod editMod)
 		{
+			// Validate DTO.
+			if (editMod.RemoveExistingFile && editMod.FileContents != null)
+				return BadRequest("Requested to remove the existing file, but a new file was also provided.");
+
 			if (editMod.PlayerIds == null || editMod.PlayerIds.Count == 0)
 				return BadRequest("Mod must have at least one author.");
 
@@ -178,44 +182,88 @@ namespace DevilDaggersWebsite.BlazorWasm.Server.Controllers.Admin
 					return BadRequest($"Player with ID '{playerId}' does not exist.");
 			}
 
+			// Validate file.
+			if (editMod.FileContents != null)
+			{
+				DirectoryInfo di = new(DataUtils.GetPath("Mods"));
+				long usedSpace = di.EnumerateFiles("*.*", SearchOption.AllDirectories).Sum(fi => fi.Length);
+
+				int additionalAddedSpace = editMod.FileContents.Length; // TODO: New file length - old file length
+				if (additionalAddedSpace + usedSpace > ModFileConstants.MaxHostingSpace)
+					return BadRequest($"This file is {editMod.FileContents.Length:n0} bytes in size, but only {ModFileConstants.MaxHostingSpace - usedSpace:n0} bytes of free space is available.");
+
+				string? validationError = ValidateModArchive(editMod.FileContents, editMod.Name);
+				if (validationError != null)
+					return BadRequest(validationError);
+			}
+
+			// Validate against database.
 			AssetMod? mod = _dbContext.AssetMods
 				.Include(m => m.PlayerAssetMods)
 				.FirstOrDefault(m => m.Id == id);
 			if (mod == null)
 				return NotFound();
 
-			List<FileSystemInformation> fileSystemInformation = new();
-			if (mod.Name != editMod.Name)
-			{
-				if (_dbContext.AssetMods.Any(m => m.Name == editMod.Name))
-					return BadRequest($"Mod with name '{editMod.Name}' already exists.");
+			if (mod.Name != editMod.Name && _dbContext.AssetMods.Any(m => m.Name == editMod.Name))
+				return BadRequest($"Mod with name '{editMod.Name}' already exists.");
 
+			// Request is accepted.
+			List<FileSystemInformation> fileSystemInformation = new();
+
+			// Remove existing file if requested.
+			if (editMod.RemoveExistingFile)
+			{
 				string directory = DataUtils.GetPath("Mods");
 				string oldPath = Path.Combine(directory, $"{mod.Name}.zip");
-				if (Io.File.Exists(oldPath))
-				{
-					string newPath = Path.Combine(directory, editMod.Name);
-					Io.File.Move(oldPath, newPath);
-					fileSystemInformation.Add(new($"File '{DataUtils.GetRelevantDisplayPath(oldPath)}' was moved to {DataUtils.GetRelevantDisplayPath(newPath)}.", FileSystemInformationType.Move));
-				}
-				else
-				{
-					fileSystemInformation.Add(new($"File '{DataUtils.GetRelevantDisplayPath(oldPath)}' was not moved because it does not exist.", FileSystemInformationType.NotFound));
-				}
+				bool fileExists = Io.File.Exists(oldPath);
+				if (fileExists)
+					Io.File.Delete(oldPath);
+
+				fileSystemInformation.Add(new(fileExists ? $"File '{DataUtils.GetRelevantDisplayPath(oldPath)}' was deleted because removal was requested." : $"File '{DataUtils.GetRelevantDisplayPath(oldPath)}' was not deleted because it does not exist.", fileExists ? FileSystemInformationType.Delete : FileSystemInformationType.NotFound));
 
 				string cacheDirectory = DataUtils.GetPath("ModArchiveCache");
 				string oldCachePath = Path.Combine(cacheDirectory, $"{mod.Name}.json");
-				if (Io.File.Exists(oldCachePath))
+				bool cacheFileExists = Io.File.Exists(oldCachePath);
+				if (cacheFileExists)
+					Io.File.Delete(oldCachePath);
+
+				fileSystemInformation.Add(new(cacheFileExists ? $"File '{DataUtils.GetRelevantDisplayPath(oldCachePath)}' was deleted because removal was requested." : $"File '{DataUtils.GetRelevantDisplayPath(oldCachePath)}' was not deleted because it does not exist.", cacheFileExists ? FileSystemInformationType.Delete : FileSystemInformationType.NotFound));
+			}
+
+			// Move files if mod is renamed and removal is not requested.
+			if (mod.Name != editMod.Name)
+			{
+				// If removal is requested the files are gone already.
+				if (!editMod.RemoveExistingFile)
 				{
-					string newCachePath = Path.Combine(directory, editMod.Name);
-					Io.File.Move(oldCachePath, newCachePath);
-					fileSystemInformation.Add(new($"File '{DataUtils.GetRelevantDisplayPath(oldCachePath)}' was moved to {DataUtils.GetRelevantDisplayPath(newCachePath)}.", FileSystemInformationType.Move));
-				}
-				else
-				{
-					fileSystemInformation.Add(new($"File {DataUtils.GetRelevantDisplayPath(oldCachePath)} was not moved because it does not exist.", FileSystemInformationType.NotFound));
+					string directory = DataUtils.GetPath("Mods");
+					string oldPath = Path.Combine(directory, $"{mod.Name}.zip");
+					if (Io.File.Exists(oldPath))
+					{
+						string newPath = Path.Combine(directory, editMod.Name);
+						Io.File.Move(oldPath, newPath);
+						fileSystemInformation.Add(new($"File '{DataUtils.GetRelevantDisplayPath(oldPath)}' was moved to {DataUtils.GetRelevantDisplayPath(newPath)}.", FileSystemInformationType.Move));
+					}
+					else
+					{
+						fileSystemInformation.Add(new($"File '{DataUtils.GetRelevantDisplayPath(oldPath)}' was not moved because it does not exist.", FileSystemInformationType.NotFound));
+					}
+
+					string cacheDirectory = DataUtils.GetPath("ModArchiveCache");
+					string oldCachePath = Path.Combine(cacheDirectory, $"{mod.Name}.json");
+					if (Io.File.Exists(oldCachePath))
+					{
+						string newCachePath = Path.Combine(directory, editMod.Name);
+						Io.File.Move(oldCachePath, newCachePath);
+						fileSystemInformation.Add(new($"File '{DataUtils.GetRelevantDisplayPath(oldCachePath)}' was moved to {DataUtils.GetRelevantDisplayPath(newCachePath)}.", FileSystemInformationType.Move));
+					}
+					else
+					{
+						fileSystemInformation.Add(new($"File '{DataUtils.GetRelevantDisplayPath(oldCachePath)}' was not moved because it does not exist.", FileSystemInformationType.NotFound));
+					}
 				}
 
+				// Always move screenshots directory (not removed when removal is requested as screenshots are separate entities).
 				string oldScreenshotsDirectory = Path.Combine(DataUtils.GetPath("ModScreenshots"), mod.Name);
 				if (Directory.Exists(oldScreenshotsDirectory))
 				{
@@ -225,8 +273,20 @@ namespace DevilDaggersWebsite.BlazorWasm.Server.Controllers.Admin
 				}
 				else
 				{
-					fileSystemInformation.Add(new($"Directory {DataUtils.GetRelevantDisplayPath(oldScreenshotsDirectory)} was not moved because it does not exist.", FileSystemInformationType.NotFound));
+					fileSystemInformation.Add(new($"Directory '{DataUtils.GetRelevantDisplayPath(oldScreenshotsDirectory)}' was not moved because it does not exist.", FileSystemInformationType.NotFound));
 				}
+			}
+
+			// Update file.
+			if (editMod.FileContents != null)
+			{
+				// At this point we already know RemoveExistingFile is false.
+				string path = Path.Combine(DataUtils.GetPath("Mods"), $"{editMod.Name}.zip");
+				Io.File.WriteAllBytes(path, editMod.FileContents);
+				fileSystemInformation.Add(new($"File '{DataUtils.GetRelevantDisplayPath(path)}' was added.", FileSystemInformationType.Add));
+
+				// Update LastUpdated when updating the file only.
+				mod.LastUpdated = DateTime.UtcNow;
 			}
 
 			EditMod logDto = new()
@@ -240,7 +300,6 @@ namespace DevilDaggersWebsite.BlazorWasm.Server.Controllers.Admin
 				PlayerIds = mod.PlayerAssetMods.ConvertAll(pam => pam.PlayerId),
 			};
 
-			// Do not update LastUpdated. Update this value when updating the file only.
 			mod.AssetModTypes = editMod.AssetModTypes;
 			mod.HtmlDescription = editMod.HtmlDescription;
 			mod.IsHidden = editMod.IsHidden;
@@ -338,10 +397,12 @@ namespace DevilDaggersWebsite.BlazorWasm.Server.Controllers.Admin
 			}
 			catch (InvalidModArchiveException ex)
 			{
+				// TODO: Remove from cache again.
 				return $"The mod archive is invalid. {ex.Message}";
 			}
 			catch (InvalidModBinaryException ex)
 			{
+				// TODO: Remove from cache again.
 				return $"A mod binary inside the mod archive is invalid. {ex.Message}";
 			}
 

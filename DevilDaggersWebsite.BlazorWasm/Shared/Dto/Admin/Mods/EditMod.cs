@@ -1,4 +1,5 @@
-﻿using DevilDaggersWebsite.BlazorWasm.Shared.Enums;
+﻿using DevilDaggersWebsite.BlazorWasm.Shared.Constants;
+using DevilDaggersWebsite.BlazorWasm.Shared.Enums;
 using System.Collections.Generic;
 using System.ComponentModel.DataAnnotations;
 
@@ -23,5 +24,10 @@ namespace DevilDaggersWebsite.BlazorWasm.Shared.Dto.Admin.Mods
 		public string? Url { get; init; }
 
 		public List<int>? PlayerIds { get; init; }
+
+		[MaxLength(ModFileConstants.MaxFileSize, ErrorMessage = ModFileConstants.MaxFileSizeErrorMessage)]
+		public byte[]? FileContents { get; set; }
+
+		public bool RemoveExistingFile { get; set; }
 	}
 }
