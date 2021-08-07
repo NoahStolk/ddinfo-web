@@ -102,6 +102,21 @@ namespace DevilDaggersWebsite.BlazorWasm.Server.Controllers.Public
 			};
 		}
 
+		[HttpGet("{id}")]
+		[ProducesResponseType(StatusCodes.Status200OK)]
+		[ProducesResponseType(StatusCodes.Status404NotFound)]
+		public ActionResult<GetCustomLeaderboard> GetCustomLeaderboardById(int id)
+		{
+			CustomLeaderboard? customLeaderboard = _dbContext.CustomLeaderboards
+				.AsNoTracking()
+				.Include(cl => cl.CustomEntries)
+				.FirstOrDefault(cl => cl.Id == id);
+			if (customLeaderboard == null)
+				return NotFound();
+
+			return customLeaderboard.ToGetCustomLeaderboard();
+		}
+
 		private class CustomLeaderboardWr
 		{
 			public CustomLeaderboardWr(CustomLeaderboard customLeaderboard, int? worldRecord, string? topPlayer)
