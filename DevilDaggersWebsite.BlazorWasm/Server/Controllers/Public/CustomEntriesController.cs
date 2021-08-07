@@ -142,7 +142,7 @@ namespace DevilDaggersWebsite.BlazorWasm.Server.Controllers.Public
 				return new BadRequestObjectResult(new ProblemDetails { Title = errorMessage });
 			}
 
-			// Temporary workaround until TimeAttack works in DDCL.
+			// Temporary workaround until TimeAttack works in DDCL (if ever).
 			if (customLeaderboard.Category == CustomLeaderboardCategory.TimeAttack)
 			{
 				const string errorMessage = "TimeAttack leaderboards are not supported right now.";
@@ -153,13 +153,7 @@ namespace DevilDaggersWebsite.BlazorWasm.Server.Controllers.Public
 			bool isAscending = customLeaderboard.Category.IsAscending();
 
 			// At this point, the submission is accepted.
-			if (!uploadRequest.IsReplay)
-			{
-				// Update leaderboard statistics.
-				customLeaderboard.DateLastPlayed = DateTime.UtcNow;
-				customLeaderboard.TotalRunsSubmitted++;
-			}
-			else if (!isAscending)
+			if (uploadRequest.IsReplay && !isAscending)
 			{
 				// Due to a bug in the game, we need to subtract a couple ticks if the run is a replay, so replays don't overwrite the actual score if submitted twice.
 				// The amount of overflowing ticks varies between 0 and 3 (the longer the run the higher the amount), so subtract 4 ticks for now.
@@ -214,6 +208,9 @@ namespace DevilDaggersWebsite.BlazorWasm.Server.Controllers.Public
 
 				await TrySendLeaderboardMessage(customLeaderboard, $"`{uploadRequest.PlayerName}` just entered the `{spawnsetName}` leaderboard!", rank, totalPlayers, uploadRequest.Time);
 				await TryLog(uploadRequest, spawnsetName);
+
+				UpdateLeaderboardStatistics(customLeaderboard);
+
 				return new GetUploadSuccess
 				{
 					Message = $"Welcome to the {spawnsetName} leaderboard!",
@@ -248,6 +245,10 @@ namespace DevilDaggersWebsite.BlazorWasm.Server.Controllers.Public
 				entries = FetchEntriesFromDatabase(customLeaderboard, isAscending);
 
 				await TryLog(uploadRequest, spawnsetName);
+
+				if (!uploadRequest.IsReplay)
+					UpdateLeaderboardStatistics(customLeaderboard);
+
 				return new GetUploadSuccess
 				{
 					Message = $"No new highscore for {customLeaderboard.SpawnsetFile.Name}.",
@@ -322,6 +323,9 @@ namespace DevilDaggersWebsite.BlazorWasm.Server.Controllers.Public
 
 			await TrySendLeaderboardMessage(customLeaderboard, $"`{uploadRequest.PlayerName}` just got {FormatTimeString(uploadRequest.Time)} seconds on the `{spawnsetName}` leaderboard, beating their previous highscore of {FormatTimeString(uploadRequest.Time - timeDiff)} by {FormatTimeString(Math.Abs(timeDiff))} seconds!", rank, totalPlayers, uploadRequest.Time);
 			await TryLog(uploadRequest, spawnsetName);
+
+			UpdateLeaderboardStatistics(customLeaderboard);
+
 			return new GetUploadSuccess
 			{
 				Message = $"NEW HIGHSCORE for {customLeaderboard.SpawnsetFile.Name}!",
@@ -361,6 +365,12 @@ namespace DevilDaggersWebsite.BlazorWasm.Server.Controllers.Public
 				LevelUpTime4 = uploadRequest.LevelUpTime4,
 				LevelUpTime4Diff = levelUpTime4Diff,
 			};
+		}
+
+		private static void UpdateLeaderboardStatistics(CustomLeaderboard customLeaderboard)
+		{
+			customLeaderboard.DateLastPlayed = DateTime.UtcNow;
+			customLeaderboard.TotalRunsSubmitted++;
 		}
 
 		private List<CustomEntry> FetchEntriesFromDatabase(CustomLeaderboard? customLeaderboard, bool isAscending)
