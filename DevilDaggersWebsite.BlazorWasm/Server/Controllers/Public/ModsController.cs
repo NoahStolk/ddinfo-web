@@ -134,12 +134,12 @@ namespace DevilDaggersWebsite.BlazorWasm.Server.Controllers.Public
 		public ActionResult GetModFile([Required] string modName)
 		{
 			if (!_dbContext.AssetMods.Any(m => m.Name == modName))
-				return new NotFoundObjectResult(new ProblemDetails { Title = $"Mod '{modName}' was not found." });
+				return NotFound();
 
 			string fileName = $"{modName}.zip";
 			string path = Path.Combine(_fileSystemService.GetPath(DataSubDirectory.Mods), fileName);
 			if (!Io.File.Exists(path))
-				return new BadRequestObjectResult(new ProblemDetails { Title = $"Mod file '{fileName}' does not exist." });
+				return BadRequest($"Mod file '{fileName}' does not exist.");
 
 			return File(Io.File.ReadAllBytes(path), MediaTypeNames.Application.Zip, fileName);
 		}

@@ -28,7 +28,7 @@ namespace DevilDaggersWebsite.BlazorWasm.Server.Converters.Public
 			Time = customEntry.Time,
 		};
 
-		public static GetCustomEntry ToGetCustomEntryPublic(this CustomEntry customEntry) => new()
+		public static GetCustomEntry ToGetCustomEntry(this CustomEntry customEntry) => new()
 		{
 			PlayerId = customEntry.PlayerId,
 			PlayerName = customEntry.Player.PlayerName,
