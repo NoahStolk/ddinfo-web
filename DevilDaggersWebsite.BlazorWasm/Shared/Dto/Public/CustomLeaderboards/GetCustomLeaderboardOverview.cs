@@ -4,6 +4,8 @@ namespace DevilDaggersWebsite.BlazorWasm.Shared.Dto.Public.CustomLeaderboards
 {
 	public class GetCustomLeaderboardOverview
 	{
+		public int Id { get; init; }
+
 		public string SpawnsetName { get; init; } = null!;
 
 		public string SpawnsetAuthorName { get; init; } = null!;

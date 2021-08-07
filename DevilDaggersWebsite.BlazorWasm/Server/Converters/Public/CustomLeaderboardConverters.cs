@@ -24,6 +24,7 @@ namespace DevilDaggersWebsite.BlazorWasm.Server.Converters.Public
 
 		public static GetCustomLeaderboardOverview ToGetCustomLeaderboardOverview(this CustomLeaderboard customLeaderboard, string? topPlayer, int? worldRecord) => new()
 		{
+			Id = customLeaderboard.Id,
 			SpawnsetAuthorName = customLeaderboard.SpawnsetFile.Player.PlayerName,
 			SpawnsetName = customLeaderboard.SpawnsetFile.Name,
 			TimeBronze = customLeaderboard.TimeBronze.ToSecondsTime(),

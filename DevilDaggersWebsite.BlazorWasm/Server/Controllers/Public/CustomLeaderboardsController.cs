@@ -28,6 +28,7 @@ namespace DevilDaggersWebsite.BlazorWasm.Server.Controllers.Public
 
 		[HttpGet]
 		[ProducesResponseType(StatusCodes.Status200OK)]
+		[ProducesResponseType(StatusCodes.Status400BadRequest)]
 		public ActionResult<Page<GetCustomLeaderboardOverview>> GetCustomLeaderboards(
 			CustomLeaderboardCategory categoryFilter,
 			[Range(0, 1000)] int pageIndex = 0,

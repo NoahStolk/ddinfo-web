@@ -1,14 +1,26 @@
-﻿@page "/custom/leaderboard/{Name}"
+﻿@page "/custom/leaderboard/{Id:int}"
 @inject PublicApiHttpClient Http
 @using DevilDaggersWebsite.BlazorWasm.Shared.Dto.Public.CustomLeaderboards
 
-<h1 class="text-red text-2xl">Custom Leaderboard - @Name</h1>
+<h1 class="text-red text-2xl">Custom Leaderboard</h1>
+
+@if (GetCustomLeaderboard == null)
+{
+	<Loading />
+}
+else
+{
+
+}
 
 @code
 {
-	[Parameter] public string? Name { get; set; }
+	[Parameter] public int Id { get; set; }
+
+	public GetCustomLeaderboard? GetCustomLeaderboard { get; set; }
 
 	protected override async Task OnInitializedAsync()
 	{
+		GetCustomLeaderboard = await Http.Client.GetFromJsonAsync<GetCustomLeaderboard>($"api/custom-leaderboards/{Id}");
 	}
 }

@@ -1,8 +1,8 @@
 ﻿@page "/custom/leaderboards"
 @inject PublicApiHttpClient Http
 @using DevilDaggersWebsite.BlazorWasm.Shared.Dto.Public.CustomLeaderboards
-@using DevilDaggersWebsite.BlazorWasm.Shared.Enums.Sortings.Public;
-@using DevilDaggersWebsite.BlazorWasm.Shared.Enums;
+@using DevilDaggersWebsite.BlazorWasm.Shared.Enums.Sortings.Public
+@using DevilDaggersWebsite.BlazorWasm.Shared.Enums
 
 <h1 class="text-red text-2xl">Custom Leaderboards</h1>
 
@@ -48,7 +48,7 @@ else
 	{
 		GetCustomLeaderboardOverview customLeaderboard = GetCustomLeaderboards.Results[i];
 		<div class="grid gap-3 sm:grid-cols-custom-leaderboard-sm md:grid-cols-custom-leaderboard-md lg:grid-cols-custom-leaderboard-lg xl:grid-cols-custom-leaderboard-xl h-6 @(i % 2 == 0 ? "bg-gray0B" : string.Empty)">
-			<div class="text-left"><a href="/custom/leaderboard/@customLeaderboard.SpawnsetName">@customLeaderboard.SpawnsetName</a></div>
+			<div class="text-left"><a href="/custom/leaderboard/@customLeaderboard.Id">@customLeaderboard.SpawnsetName</a></div>
 			<div class="text-left hidden md:block">@customLeaderboard.SpawnsetAuthorName</div>
 			<div class="text-left hidden md:block">@customLeaderboard.DateCreated?.ToString(FormatUtils.DateFormat)</div>
 			<div class="text-left hidden md:block">@FormatUtils.FormatDateTimeAsTimeAgo(customLeaderboard.DateLastPlayed)</div>
