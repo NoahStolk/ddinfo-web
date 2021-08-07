@@ -1,0 +1,73 @@
+﻿@page "/admin/mods/edit/{Id:int}"
+@inject AdminApiHttpClient Http
+@inject NavigationManager NavigationManager
+@using DevilDaggersWebsite.BlazorWasm.Shared.Dto.Admin.Mods
+@using DevilDaggersWebsite.BlazorWasm.Shared.Dto.Admin.Players
+@using DevilDaggersWebsite.BlazorWasm.Shared.Enums
+@using System.IO
+
+<AdminEdit OverviewUrl="/admin/mods" PutApiUrl="api/admin/mods" Model="_editMod" Id="Id" @ref="_editComponent">
+	<AdminInput Label="@nameof(EditMod.Name)"><InputText class="w-64 pl-2 bg-gray-900 text-color-text" @bind-Value="@_editMod!.Name" /></AdminInput>
+	<AdminInput Label="@nameof(EditMod.PlayerIds)"><MultiSearchDropdown Values="@_playerNames" @bind-Value="@_editMod!.PlayerIds" /></AdminInput>
+	<AdminInput Label="@nameof(EditMod.TrailerUrl)"><InputText class="w-64 pl-2 bg-gray-900 text-color-text" @bind-Value="_editMod!.TrailerUrl" /></AdminInput>
+	<AdminInput Label="@nameof(EditMod.HtmlDescription)"><InputText class="w-64 pl-2 bg-gray-900 text-color-text" @bind-Value="@_editMod!.HtmlDescription" /></AdminInput>
+	<AdminInput Label="@nameof(EditMod.AssetModTypes)"><MultiSearchDropdown Values="@_assetModTypes" @bind-Value="@_editMod!.AssetModTypes" /></AdminInput>
+	<AdminInput Label="@nameof(EditMod.Url)"><InputText class="w-64 pl-2 bg-gray-900 text-color-text" @bind-Value="@_editMod!.Url" /></AdminInput>
+	<AdminInput Label="@nameof(EditMod.IsHidden)"><InputCheckbox @bind-Value="@_editMod!.IsHidden" /></AdminInput>
+	<AdminInput Label="@nameof(EditMod.FileContents)"><InputFile OnChange="LoadFile" /></AdminInput>
+	<AdminInput Label="@nameof(EditMod.RemoveExistingFile)"><InputCheckbox @bind-Value="@_editMod!.RemoveExistingFile" /></AdminInput>
+</AdminEdit>
+
+@code
+{
+	private Dictionary<int, string>? _playerNames;
+	private EditMod? _editMod;
+	private AdminEdit<EditMod> _editComponent = null!;
+	private Dictionary<int, string> _assetModTypes = Enum.GetValues<AssetModTypes>().ToDictionary(e => (int)e, e => e.ToString());
+
+	[Parameter] public int Id { get; set; }
+
+	protected override async Task OnInitializedAsync()
+	{
+		try
+		{
+			List<GetPlayerName> getPlayerNames = await Http.Client.GetFromJsonAsync<List<GetPlayerName>>($"api/admin/players/names") ?? throw new($"Response could not be deserialized to {nameof(List<GetPlayerName>)}.");
+			_playerNames = getPlayerNames.ToDictionary(m => m.Id, m => m.PlayerName);
+
+			GetMod getMod = await Http.Client.GetFromJsonAsync<GetMod>($"api/admin/spawnsets/{Id}") ?? throw new($"Response could not be deserialized to {nameof(GetMod)}.");
+			_editMod = new()
+			{
+				AssetModTypes = getMod.AssetModTypes.AsEnumerable().ToList(),
+				HtmlDescription = getMod.HtmlDescription,
+				IsHidden = getMod.IsHidden,
+				Name = getMod.Name,
+				PlayerIds = getMod.PlayerIds,
+				TrailerUrl = getMod.TrailerUrl,
+				Url = getMod.Url,
+			};
+			_editComponent.State = ErrorState.None;
+		}
+		catch (HttpRequestException ex)
+		{
+			if (ex.StatusCode.HasValue)
+				_editComponent.ErrorMessage = $"Error {(int)ex.StatusCode}: {ex.StatusCode}";
+			else
+				_editComponent.ErrorMessage = "An error occurred while sending the request.";
+
+			_editComponent.State = ErrorState.FatalError;
+		}
+		catch (AccessTokenNotAvailableException exception)
+		{
+			exception.Redirect();
+		}
+	}
+
+	private async Task LoadFile(InputFileChangeEventArgs e)
+	{
+		IBrowserFile file = e.File;
+		using MemoryStream ms = new();
+		await file.OpenReadStream().CopyToAsync(ms);
+
+		_editMod!.FileContents = ms.ToArray();
+	}
+}
