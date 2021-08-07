@@ -3,6 +3,7 @@ using DevilDaggersWebsite.BlazorWasm.Server.Entities;
 using DevilDaggersWebsite.BlazorWasm.Server.Extensions;
 using DevilDaggersWebsite.BlazorWasm.Server.Singletons;
 using DevilDaggersWebsite.BlazorWasm.Server.Singletons.AuditLog;
+using DevilDaggersWebsite.BlazorWasm.Server.Transients;
 using DevilDaggersWebsite.BlazorWasm.Shared.Dto;
 using DevilDaggersWebsite.BlazorWasm.Shared.Dto.Admin.CustomLeaderboards;
 using DevilDaggersWebsite.BlazorWasm.Shared.Enums;
@@ -42,7 +43,10 @@ namespace DevilDaggersWebsite.Tests
 			Mock<DiscordLogger> discordLogger = new(mockEnvironment.Object);
 			Mock<AuditLogger> auditLogger = new(discordLogger.Object);
 
-			_customLeaderboardsController = new CustomLeaderboardsController(_dbContext.Object, auditLogger.Object);
+			// TODO: Mock to get spawnset.
+			Mock<IFileSystemService> fileSystemService = new();
+
+			_customLeaderboardsController = new CustomLeaderboardsController(_dbContext.Object, fileSystemService.Object, auditLogger.Object);
 		}
 
 		[TestMethod]
