@@ -4,7 +4,7 @@ using DevilDaggersWebsite.BlazorWasm.Server.Entities;
 using DevilDaggersWebsite.BlazorWasm.Server.Exceptions;
 using DevilDaggersWebsite.BlazorWasm.Server.Extensions;
 using DevilDaggersWebsite.BlazorWasm.Server.Singletons.AuditLog;
-using DevilDaggersWebsite.BlazorWasm.Server.Utils;
+using DevilDaggersWebsite.BlazorWasm.Server.Utils.Data;
 using DevilDaggersWebsite.BlazorWasm.Shared;
 using DevilDaggersWebsite.BlazorWasm.Shared.Constants;
 using DevilDaggersWebsite.BlazorWasm.Shared.Dto;
@@ -127,7 +127,7 @@ namespace DevilDaggersWebsite.BlazorWasm.Server.Controllers.Admin
 			string? addInfo = null;
 			if (addMod.FileContents != null)
 			{
-				string modsDirectory = DataUtils.GetPath("Mods");
+				string modsDirectory = DataUtils.GetPath(DataSubDirectory.Mods);
 				DirectoryInfo di = new(modsDirectory);
 				long usedSpace = di.EnumerateFiles("*.*", SearchOption.AllDirectories).Sum(fi => fi.Length);
 				if (addMod.FileContents.Length + usedSpace > ModFileConstants.MaxHostingSpace)
@@ -189,7 +189,7 @@ namespace DevilDaggersWebsite.BlazorWasm.Server.Controllers.Admin
 			// Validate file.
 			if (editMod.FileContents != null)
 			{
-				DirectoryInfo di = new(DataUtils.GetPath("Mods"));
+				DirectoryInfo di = new(DataUtils.GetPath(DataSubDirectory.Mods));
 				long usedSpace = di.EnumerateFiles("*.*", SearchOption.AllDirectories).Sum(fi => fi.Length);
 
 				int additionalAddedSpace = editMod.FileContents.Length; // TODO: New file length - old file length
@@ -224,7 +224,7 @@ namespace DevilDaggersWebsite.BlazorWasm.Server.Controllers.Admin
 			if (editMod.FileContents != null)
 			{
 				// At this point we already know RemoveExistingFile is false, and that the old files are moved already.
-				string path = Path.Combine(DataUtils.GetPath("Mods"), $"{editMod.Name}.zip");
+				string path = Path.Combine(DataUtils.GetPath(DataSubDirectory.Mods), $"{editMod.Name}.zip");
 				Io.File.WriteAllBytes(path, editMod.FileContents);
 				fileSystemInformation.Add(new($"File '{DataUtils.GetRelevantDisplayPath(path)}' was added.", FileSystemInformationType.Add));
 
@@ -274,7 +274,7 @@ namespace DevilDaggersWebsite.BlazorWasm.Server.Controllers.Admin
 			DeleteModFilesAndClearCache(mod, fileSystemInformation);
 
 			// Delete screenshots directory.
-			string screenshotsDirectory = Path.Combine(DataUtils.GetPath("ModScreenshots"), mod.Name);
+			string screenshotsDirectory = Path.Combine(DataUtils.GetPath(DataSubDirectory.ModScreenshots), mod.Name);
 			if (Directory.Exists(screenshotsDirectory))
 			{
 				Directory.Delete(screenshotsDirectory, true);
@@ -298,7 +298,7 @@ namespace DevilDaggersWebsite.BlazorWasm.Server.Controllers.Admin
 		/// </summary>
 		private void MoveModFilesAndClearCache(string newName, string currentName, List<FileSystemInformation> fileSystemInformation)
 		{
-			string directory = DataUtils.GetPath("Mods");
+			string directory = DataUtils.GetPath(DataSubDirectory.Mods);
 			string oldPath = Path.Combine(directory, $"{currentName}.zip");
 			if (Io.File.Exists(oldPath))
 			{
@@ -314,7 +314,7 @@ namespace DevilDaggersWebsite.BlazorWasm.Server.Controllers.Admin
 				fileSystemInformation.Add(new($"File '{DataUtils.GetRelevantDisplayPath(oldPath)}' was not moved because it does not exist.", FileSystemInformationType.NotFound));
 			}
 
-			string cacheDirectory = DataUtils.GetPath("ModArchiveCache");
+			string cacheDirectory = DataUtils.GetPath(DataSubDirectory.ModArchiveCache);
 			string oldCachePath = Path.Combine(cacheDirectory, $"{currentName}.json");
 			if (Io.File.Exists(oldCachePath))
 			{
@@ -328,10 +328,10 @@ namespace DevilDaggersWebsite.BlazorWasm.Server.Controllers.Admin
 			}
 
 			// Always move screenshots directory (not removed when removal is requested as screenshots are separate entities).
-			string oldScreenshotsDirectory = Path.Combine(DataUtils.GetPath("ModScreenshots"), currentName);
+			string oldScreenshotsDirectory = Path.Combine(DataUtils.GetPath(DataSubDirectory.ModScreenshots), currentName);
 			if (Directory.Exists(oldScreenshotsDirectory))
 			{
-				string newScreenshotsDirectory = Path.Combine(DataUtils.GetPath("ModScreenshots"), newName);
+				string newScreenshotsDirectory = Path.Combine(DataUtils.GetPath(DataSubDirectory.ModScreenshots), newName);
 				Directory.Move(oldScreenshotsDirectory, newScreenshotsDirectory);
 				fileSystemInformation.Add(new($"Directory '{DataUtils.GetRelevantDisplayPath(oldScreenshotsDirectory)}' was moved to '{DataUtils.GetRelevantDisplayPath(newScreenshotsDirectory)}'.", FileSystemInformationType.Move));
 			}
@@ -348,7 +348,7 @@ namespace DevilDaggersWebsite.BlazorWasm.Server.Controllers.Admin
 		private void DeleteModFilesAndClearCache(AssetMod mod, List<FileSystemInformation> fileSystemInformation)
 		{
 			// Delete file.
-			string path = Path.Combine(DataUtils.GetPath("Mods"), $"{mod.Name}.zip");
+			string path = Path.Combine(DataUtils.GetPath(DataSubDirectory.Mods), $"{mod.Name}.zip");
 			if (Io.File.Exists(path))
 			{
 				Io.File.Delete(path);
@@ -363,7 +363,7 @@ namespace DevilDaggersWebsite.BlazorWasm.Server.Controllers.Admin
 			}
 
 			// Clear file cache for this mod.
-			string cachePath = Path.Combine(DataUtils.GetPath("ModArchiveCache"), $"{mod.Name}.json");
+			string cachePath = Path.Combine(DataUtils.GetPath(DataSubDirectory.ModArchiveCache), $"{mod.Name}.json");
 			if (Io.File.Exists(cachePath))
 			{
 				Io.File.Delete(cachePath);

@@ -1,6 +1,6 @@
 ﻿using DevilDaggersWebsite.BlazorWasm.Server.Entities;
 using DevilDaggersWebsite.BlazorWasm.Server.Singletons.AuditLog;
-using DevilDaggersWebsite.BlazorWasm.Server.Utils;
+using DevilDaggersWebsite.BlazorWasm.Server.Utils.Data;
 using DevilDaggersWebsite.BlazorWasm.Shared;
 using DevilDaggersWebsite.BlazorWasm.Shared.Constants;
 using DevilDaggersWebsite.BlazorWasm.Shared.Dto.Admin.ModScreenshots;
@@ -36,7 +36,7 @@ namespace DevilDaggersWebsite.BlazorWasm.Server.Controllers.Admin
 			if (!_dbContext.AssetMods.Any(m => m.Name == addModScreenshot.ModName))
 				return BadRequest($"Mod with name '{addModScreenshot.ModName}' does not exist.");
 
-			string directory = Path.Combine(DataUtils.GetPath("ModScreenshots"), addModScreenshot.ModName);
+			string directory = Path.Combine(DataUtils.GetPath(DataSubDirectory.ModScreenshots), addModScreenshot.ModName);
 			Directory.CreateDirectory(directory);
 			DirectoryInfo directoryInfo = new(directory);
 			int screenshots = directoryInfo.EnumerateFiles().Count();
@@ -59,7 +59,7 @@ namespace DevilDaggersWebsite.BlazorWasm.Server.Controllers.Admin
 			if (!_dbContext.AssetMods.Any(m => m.Name == deleteModScreenshot.ModName))
 				return BadRequest($"Mod with name '{deleteModScreenshot.ModName}' does not exist.");
 
-			string directory = Path.Combine(DataUtils.GetPath("ModScreenshots"), deleteModScreenshot.ModName);
+			string directory = Path.Combine(DataUtils.GetPath(DataSubDirectory.ModScreenshots), deleteModScreenshot.ModName);
 			string path = Path.Combine(directory, deleteModScreenshot.ScreenshotName);
 			bool fileExists = Io.File.Exists(path);
 			if (!fileExists)

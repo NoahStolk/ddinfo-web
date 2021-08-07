@@ -1,7 +1,7 @@
 ﻿using DevilDaggersCore.Game;
 using DevilDaggersWebsite.BlazorWasm.Server.HostedServices.DdInfoDiscordBot;
 using DevilDaggersWebsite.BlazorWasm.Server.Singletons;
-using DevilDaggersWebsite.BlazorWasm.Server.Utils;
+using DevilDaggersWebsite.BlazorWasm.Server.Utils.Data;
 using DevilDaggersWebsite.BlazorWasm.Shared;
 using System.Collections.Generic;
 using System.IO;

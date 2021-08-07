@@ -1,7 +1,7 @@
 ﻿using DevilDaggersCore.Spawnsets;
 using DevilDaggersWebsite.BlazorWasm.Server.HostedServices.DdInfoDiscordBot;
 using DevilDaggersWebsite.BlazorWasm.Server.Singletons;
-using DevilDaggersWebsite.BlazorWasm.Server.Utils;
+using DevilDaggersWebsite.BlazorWasm.Server.Utils.Data;
 using System.Collections.Concurrent;
 using System.IO;
 using System.Linq;
@@ -27,7 +27,7 @@ namespace DevilDaggersWebsite.BlazorWasm.Server.Caches.SpawnsetHash
 			if (spawnsetCacheData != null)
 				return spawnsetCacheData;
 
-			foreach (string spawnsetPath in Directory.GetFiles(DataUtils.GetPath("Spawnsets")))
+			foreach (string spawnsetPath in Directory.GetFiles(DataUtils.GetPath(DataSubDirectory.Spawnsets)))
 			{
 				byte[] spawnsetBytes = File.ReadAllBytes(spawnsetPath);
 				if (!Spawnset.TryParse(spawnsetBytes, out _))

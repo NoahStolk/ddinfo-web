@@ -2,19 +2,25 @@
 using System.IO;
 using System.Linq;
 
-namespace DevilDaggersWebsite.BlazorWasm.Server.Utils
+namespace DevilDaggersWebsite.BlazorWasm.Server.Utils.Data
 {
 	public static class DataUtils
 	{
 		private const string _root = "Data";
 
+		static DataUtils()
+		{
+			foreach (DataSubDirectory e in (DataSubDirectory[])Enum.GetValues(typeof(DataSubDirectory)))
+				Directory.CreateDirectory(GetPath(e));
+		}
+
 		public static string[] GetLeaderboardHistoryPaths()
-			=> TryGetFiles("LeaderboardHistory");
+			=> TryGetFiles(DataSubDirectory.LeaderboardHistory);
 
 		public static string[] GetLeaderboardStatisticsPaths()
-			=> TryGetFiles("LeaderboardStatistics");
+			=> TryGetFiles(DataSubDirectory.LeaderboardStatistics);
 
-		private static string[] TryGetFiles(string subDirectory)
+		private static string[] TryGetFiles(DataSubDirectory subDirectory)
 		{
 			try
 			{
@@ -38,8 +44,8 @@ namespace DevilDaggersWebsite.BlazorWasm.Server.Utils
 			return paths[^1];
 		}
 
-		public static string GetPath(string subDirectory)
-			=> Path.Combine(_root, subDirectory);
+		public static string GetPath(DataSubDirectory subDirectory)
+			=> Path.Combine(_root, subDirectory.ToString());
 
 		public static string GetRelevantDisplayPath(string path)
 		{
