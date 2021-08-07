@@ -67,30 +67,37 @@ namespace DevilDaggersWebsite.BlazorWasm.Server.Caches.ModArchive
 
 		private ModArchiveCacheData CreateModArchiveCacheDataFromStream(string name, Stream stream, bool addToCache)
 		{
-			using ZipArchive archive = new(stream);
-			ModArchiveCacheData archiveData = new() { FileSize = stream.Length };
-			foreach (ZipArchiveEntry entry in archive.Entries)
+			try
 			{
-				if (string.IsNullOrEmpty(entry.Name))
-					throw new InvalidModArchiveException("Mod archive must not contain any folders.");
+				using ZipArchive archive = new(stream);
+				ModArchiveCacheData archiveData = new() { FileSize = stream.Length };
+				foreach (ZipArchiveEntry entry in archive.Entries)
+				{
+					if (string.IsNullOrEmpty(entry.Name))
+						throw new InvalidModArchiveException("Mod archive must not contain any folders.");
 
-				byte[] extractedContents = new byte[entry.Length];
+					byte[] extractedContents = new byte[entry.Length];
 
-				using Stream entryStream = entry.Open();
-				entryStream.Read(extractedContents, 0, extractedContents.Length);
+					using Stream entryStream = entry.Open();
+					entryStream.Read(extractedContents, 0, extractedContents.Length);
 
-				archiveData.Binaries.Add(ModBinaryCacheData.CreateFromFile(entry.Name, extractedContents));
-				archiveData.FileSizeExtracted += entry.Length;
+					archiveData.Binaries.Add(ModBinaryCacheData.CreateFromFile(entry.Name, extractedContents));
+					archiveData.FileSizeExtracted += entry.Length;
+				}
+
+				if (addToCache)
+				{
+					// Add to memory cache and file cache.
+					_cache.TryAdd(name, archiveData);
+					WriteToFileCache(name, archiveData);
+				}
+
+				return archiveData;
 			}
-
-			if (addToCache)
+			catch (InvalidDataException)
 			{
-				// Add to memory cache and file cache.
-				_cache.TryAdd(name, archiveData);
-				WriteToFileCache(name, archiveData);
+				throw new InvalidModArchiveException("Mod archive must be a valid ZIP file.");
 			}
-
-			return archiveData;
 		}
 
 		private static void WriteToFileCache(string name, ModArchiveCacheData archiveData)
