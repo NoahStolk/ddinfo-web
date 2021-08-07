@@ -142,13 +142,9 @@ namespace DevilDaggersWebsite.BlazorWasm.Server.Controllers.Admin
 				addInfo = $"File '{DataUtils.GetRelevantDisplayPath(path)}' was added.";
 			}
 
-			AssetModTypes amt = AssetModTypes.None;
-			foreach (int i in addMod.AssetModTypes ?? new())
-				amt |= (AssetModTypes)i;
-
 			AssetMod mod = new()
 			{
-				AssetModTypes = amt,
+				AssetModTypes = addMod.AssetModTypes?.ToFlagEnum<AssetModTypes>() ?? AssetModTypes.None,
 				HtmlDescription = addMod.HtmlDescription,
 				IsHidden = addMod.IsHidden,
 				LastUpdated = DateTime.Now,
@@ -234,7 +230,7 @@ namespace DevilDaggersWebsite.BlazorWasm.Server.Controllers.Admin
 
 			EditMod logDto = new()
 			{
-				AssetModTypes = mod.AssetModTypes,
+				AssetModTypes = mod.AssetModTypes.AsEnumerable().ToList(),
 				HtmlDescription = mod.HtmlDescription,
 				IsHidden = mod.IsHidden,
 				Name = mod.Name,
@@ -243,7 +239,7 @@ namespace DevilDaggersWebsite.BlazorWasm.Server.Controllers.Admin
 				PlayerIds = mod.PlayerAssetMods.ConvertAll(pam => pam.PlayerId),
 			};
 
-			mod.AssetModTypes = editMod.AssetModTypes;
+			mod.AssetModTypes = editMod.AssetModTypes?.ToFlagEnum<AssetModTypes>() ?? AssetModTypes.None;
 			mod.HtmlDescription = editMod.HtmlDescription;
 			mod.IsHidden = editMod.IsHidden;
 			mod.Name = editMod.Name;
