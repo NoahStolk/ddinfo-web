@@ -2,9 +2,9 @@
 using DevilDaggersWebsite.BlazorWasm.Server.Caches.ModArchive;
 using DevilDaggersWebsite.BlazorWasm.Server.Controllers.Attributes;
 using DevilDaggersWebsite.BlazorWasm.Server.Entities;
+using DevilDaggersWebsite.BlazorWasm.Server.Utils.Data;
 using DevilDaggersWebsite.BlazorWasm.Shared.Dto.Public.Mods;
 using DevilDaggersWebsite.BlazorWasm.Shared.Enums;
-using Microsoft.AspNetCore.Hosting;
 using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.EntityFrameworkCore;
@@ -23,13 +23,11 @@ namespace DevilDaggersWebsite.BlazorWasm.Server.Controllers.Public
 	[ApiController]
 	public class ModsController : ControllerBase
 	{
-		private readonly IWebHostEnvironment _environment;
 		private readonly ApplicationDbContext _dbContext;
 		private readonly ModArchiveCache _modArchiveCache;
 
-		public ModsController(IWebHostEnvironment environment, ApplicationDbContext dbContext, ModArchiveCache modArchiveCache)
+		public ModsController(ApplicationDbContext dbContext, ModArchiveCache modArchiveCache)
 		{
-			_environment = environment;
 			_dbContext = dbContext;
 			_modArchiveCache = modArchiveCache;
 		}
@@ -54,7 +52,7 @@ namespace DevilDaggersWebsite.BlazorWasm.Server.Controllers.Public
 
 			Dictionary<AssetMod, (bool FileExists, string? Path)> assetModsWithFileInfo = assetMods.ToDictionary(am => am, am =>
 			{
-				string filePath = Path.Combine(_environment.WebRootPath, "mods", $"{am.Name}.zip");
+				string filePath = Path.Combine(DataUtils.GetPath(DataSubDirectory.Mods), $"{am.Name}.zip");
 				bool fileExists = Io.File.Exists(filePath);
 				return (fileExists, fileExists ? filePath : null);
 			});
@@ -101,7 +99,7 @@ namespace DevilDaggersWebsite.BlazorWasm.Server.Controllers.Public
 						assetModTypes = amwfi.Key.AssetModTypes;
 					}
 
-					string modScreenshotsDirectory = Path.Combine(_environment.WebRootPath, "mod-screenshots", amwfi.Key.Name);
+					string modScreenshotsDirectory = Path.Combine(DataUtils.GetPath(DataSubDirectory.ModScreenshots), amwfi.Key.Name);
 					List<string> screenshotFileNames;
 					if (Directory.Exists(modScreenshotsDirectory))
 						screenshotFileNames = Directory.GetFiles(modScreenshotsDirectory).Select(p => Path.GetFileName(p)).ToList();
@@ -136,11 +134,11 @@ namespace DevilDaggersWebsite.BlazorWasm.Server.Controllers.Public
 				return new NotFoundObjectResult(new ProblemDetails { Title = $"Mod '{modName}' was not found." });
 
 			string fileName = $"{modName}.zip";
-			string path = Path.Combine("mods", fileName);
-			if (!Io.File.Exists(Path.Combine(_environment.WebRootPath, path)))
+			string path = Path.Combine(DataUtils.GetPath(DataSubDirectory.Mods), fileName);
+			if (!Io.File.Exists(path))
 				return new BadRequestObjectResult(new ProblemDetails { Title = $"Mod file '{fileName}' does not exist." });
 
-			return File(Io.File.ReadAllBytes(Path.Combine(_environment.WebRootPath, path)), MediaTypeNames.Application.Zip, fileName);
+			return File(Io.File.ReadAllBytes(path), MediaTypeNames.Application.Zip, fileName);
 		}
 	}
 }
