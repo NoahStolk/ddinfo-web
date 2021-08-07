@@ -110,6 +110,9 @@ namespace DevilDaggersWebsite.BlazorWasm.Server.Controllers.Public
 			CustomLeaderboard? customLeaderboard = _dbContext.CustomLeaderboards
 				.AsNoTracking()
 				.Include(cl => cl.CustomEntries)
+					.ThenInclude(ce => ce.Player)
+				.Include(cl => cl.SpawnsetFile)
+					.ThenInclude(sf => sf.Player)
 				.FirstOrDefault(cl => cl.Id == id);
 			if (customLeaderboard == null)
 				return NotFound();

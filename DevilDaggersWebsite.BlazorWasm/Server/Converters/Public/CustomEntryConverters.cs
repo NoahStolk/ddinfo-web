@@ -1,4 +1,5 @@
 ﻿using DevilDaggersWebsite.BlazorWasm.Server.Entities;
+using DevilDaggersWebsite.BlazorWasm.Shared;
 using DevilDaggersWebsite.BlazorWasm.Shared.Dto.Public.CustomEntries;
 
 namespace DevilDaggersWebsite.BlazorWasm.Server.Converters.Public
@@ -42,13 +43,13 @@ namespace DevilDaggersWebsite.BlazorWasm.Server.Converters.Public
 			HomingDaggers = customEntry.HomingDaggers,
 			HomingDaggersEaten = customEntry.HomingDaggersEaten,
 			EnemiesKilled = customEntry.EnemiesKilled,
-			LevelUpTime2 = customEntry.LevelUpTime2,
-			LevelUpTime3 = customEntry.LevelUpTime3,
-			LevelUpTime4 = customEntry.LevelUpTime4,
+			LevelUpTime2 = customEntry.LevelUpTime2.ToSecondsTime(),
+			LevelUpTime3 = customEntry.LevelUpTime3.ToSecondsTime(),
+			LevelUpTime4 = customEntry.LevelUpTime4.ToSecondsTime(),
 			DaggersFired = customEntry.DaggersFired,
 			DaggersHit = customEntry.DaggersHit,
 			SubmitDate = customEntry.SubmitDate,
-			Time = customEntry.Time,
+			Time = customEntry.Time.ToSecondsTime(),
 		};
 	}
 }
