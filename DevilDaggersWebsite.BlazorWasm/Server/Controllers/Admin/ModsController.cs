@@ -1,10 +1,11 @@
 ﻿using DevilDaggersWebsite.BlazorWasm.Server.Caches.ModArchive;
 using DevilDaggersWebsite.BlazorWasm.Server.Converters.Admin;
 using DevilDaggersWebsite.BlazorWasm.Server.Entities;
+using DevilDaggersWebsite.BlazorWasm.Server.Enumerators;
 using DevilDaggersWebsite.BlazorWasm.Server.Exceptions;
 using DevilDaggersWebsite.BlazorWasm.Server.Extensions;
 using DevilDaggersWebsite.BlazorWasm.Server.Singletons.AuditLog;
-using DevilDaggersWebsite.BlazorWasm.Server.Utils.Data;
+using DevilDaggersWebsite.BlazorWasm.Server.Transients;
 using DevilDaggersWebsite.BlazorWasm.Shared;
 using DevilDaggersWebsite.BlazorWasm.Shared.Constants;
 using DevilDaggersWebsite.BlazorWasm.Shared.Dto;
@@ -31,12 +32,14 @@ namespace DevilDaggersWebsite.BlazorWasm.Server.Controllers.Admin
 	public class ModsController : ControllerBase
 	{
 		private readonly ApplicationDbContext _dbContext;
+		private readonly IFileSystemService _fileSystemService;
 		private readonly ModArchiveCache _modArchiveCache;
 		private readonly AuditLogger _auditLogger;
 
-		public ModsController(ApplicationDbContext dbContext, ModArchiveCache modArchiveCache, AuditLogger auditLogger)
+		public ModsController(ApplicationDbContext dbContext, IFileSystemService fileSystemService, ModArchiveCache modArchiveCache, AuditLogger auditLogger)
 		{
 			_dbContext = dbContext;
+			_fileSystemService = fileSystemService;
 			_modArchiveCache = modArchiveCache;
 			_auditLogger = auditLogger;
 		}
@@ -127,7 +130,7 @@ namespace DevilDaggersWebsite.BlazorWasm.Server.Controllers.Admin
 			string? addInfo = null;
 			if (addMod.FileContents != null)
 			{
-				string modsDirectory = DataUtils.GetPath(DataSubDirectory.Mods);
+				string modsDirectory = _fileSystemService.GetPath(DataSubDirectory.Mods);
 				DirectoryInfo di = new(modsDirectory);
 				long usedSpace = di.EnumerateFiles("*.*", SearchOption.AllDirectories).Sum(fi => fi.Length);
 				if (addMod.FileContents.Length + usedSpace > ModFileConstants.MaxHostingSpace)
@@ -139,7 +142,7 @@ namespace DevilDaggersWebsite.BlazorWasm.Server.Controllers.Admin
 
 				string path = Path.Combine(modsDirectory, $"{addMod.Name}.zip");
 				Io.File.WriteAllBytes(path, addMod.FileContents);
-				addInfo = $"File '{DataUtils.GetRelevantDisplayPath(path)}' was added.";
+				addInfo = $"File '{_fileSystemService.GetRelevantDisplayPath(path)}' was added.";
 			}
 
 			AssetMod mod = new()
@@ -185,7 +188,7 @@ namespace DevilDaggersWebsite.BlazorWasm.Server.Controllers.Admin
 			// Validate file.
 			if (editMod.FileContents != null)
 			{
-				DirectoryInfo di = new(DataUtils.GetPath(DataSubDirectory.Mods));
+				DirectoryInfo di = new(_fileSystemService.GetPath(DataSubDirectory.Mods));
 				long usedSpace = di.EnumerateFiles("*.*", SearchOption.AllDirectories).Sum(fi => fi.Length);
 
 				int additionalAddedSpace = editMod.FileContents.Length; // TODO: New file length - old file length
@@ -220,9 +223,9 @@ namespace DevilDaggersWebsite.BlazorWasm.Server.Controllers.Admin
 			if (editMod.FileContents != null)
 			{
 				// At this point we already know RemoveExistingFile is false, and that the old files are moved already.
-				string path = Path.Combine(DataUtils.GetPath(DataSubDirectory.Mods), $"{editMod.Name}.zip");
+				string path = Path.Combine(_fileSystemService.GetPath(DataSubDirectory.Mods), $"{editMod.Name}.zip");
 				Io.File.WriteAllBytes(path, editMod.FileContents);
-				fileSystemInformation.Add(new($"File '{DataUtils.GetRelevantDisplayPath(path)}' was added.", FileSystemInformationType.Add));
+				fileSystemInformation.Add(new($"File '{_fileSystemService.GetRelevantDisplayPath(path)}' was added.", FileSystemInformationType.Add));
 
 				// Update LastUpdated when updating the file only.
 				mod.LastUpdated = DateTime.UtcNow;
@@ -270,15 +273,15 @@ namespace DevilDaggersWebsite.BlazorWasm.Server.Controllers.Admin
 			DeleteModFilesAndClearCache(mod, fileSystemInformation);
 
 			// Delete screenshots directory.
-			string screenshotsDirectory = Path.Combine(DataUtils.GetPath(DataSubDirectory.ModScreenshots), mod.Name);
+			string screenshotsDirectory = Path.Combine(_fileSystemService.GetPath(DataSubDirectory.ModScreenshots), mod.Name);
 			if (Directory.Exists(screenshotsDirectory))
 			{
 				Directory.Delete(screenshotsDirectory, true);
-				fileSystemInformation.Add(new($"Directory '{DataUtils.GetRelevantDisplayPath(screenshotsDirectory)}' was deleted because removal was requested.", FileSystemInformationType.Delete));
+				fileSystemInformation.Add(new($"Directory '{_fileSystemService.GetRelevantDisplayPath(screenshotsDirectory)}' was deleted because removal was requested.", FileSystemInformationType.Delete));
 			}
 			else
 			{
-				fileSystemInformation.Add(new($"Directory '{DataUtils.GetRelevantDisplayPath(screenshotsDirectory)}' was not deleted because it does not exist.", FileSystemInformationType.NotFound));
+				fileSystemInformation.Add(new($"Directory '{_fileSystemService.GetRelevantDisplayPath(screenshotsDirectory)}' was not deleted because it does not exist.", FileSystemInformationType.NotFound));
 			}
 
 			_dbContext.AssetMods.Remove(mod);
@@ -294,46 +297,46 @@ namespace DevilDaggersWebsite.BlazorWasm.Server.Controllers.Admin
 		/// </summary>
 		private void MoveModFilesAndClearCache(string newName, string currentName, List<FileSystemInformation> fileSystemInformation)
 		{
-			string directory = DataUtils.GetPath(DataSubDirectory.Mods);
+			string directory = _fileSystemService.GetPath(DataSubDirectory.Mods);
 			string oldPath = Path.Combine(directory, $"{currentName}.zip");
 			if (Io.File.Exists(oldPath))
 			{
 				string newPath = Path.Combine(directory, newName);
 				Io.File.Move(oldPath, newPath);
-				fileSystemInformation.Add(new($"File '{DataUtils.GetRelevantDisplayPath(oldPath)}' was moved to '{DataUtils.GetRelevantDisplayPath(newPath)}'.", FileSystemInformationType.Move));
+				fileSystemInformation.Add(new($"File '{_fileSystemService.GetRelevantDisplayPath(oldPath)}' was moved to '{_fileSystemService.GetRelevantDisplayPath(newPath)}'.", FileSystemInformationType.Move));
 
 				// Clear entire memory cache (can't clear individual entries).
 				_modArchiveCache.Clear();
 			}
 			else
 			{
-				fileSystemInformation.Add(new($"File '{DataUtils.GetRelevantDisplayPath(oldPath)}' was not moved because it does not exist.", FileSystemInformationType.NotFound));
+				fileSystemInformation.Add(new($"File '{_fileSystemService.GetRelevantDisplayPath(oldPath)}' was not moved because it does not exist.", FileSystemInformationType.NotFound));
 			}
 
-			string cacheDirectory = DataUtils.GetPath(DataSubDirectory.ModArchiveCache);
+			string cacheDirectory = _fileSystemService.GetPath(DataSubDirectory.ModArchiveCache);
 			string oldCachePath = Path.Combine(cacheDirectory, $"{currentName}.json");
 			if (Io.File.Exists(oldCachePath))
 			{
 				string newCachePath = Path.Combine(directory, newName);
 				Io.File.Move(oldCachePath, newCachePath);
-				fileSystemInformation.Add(new($"File '{DataUtils.GetRelevantDisplayPath(oldCachePath)}' was moved to '{DataUtils.GetRelevantDisplayPath(newCachePath)}'.", FileSystemInformationType.Move));
+				fileSystemInformation.Add(new($"File '{_fileSystemService.GetRelevantDisplayPath(oldCachePath)}' was moved to '{_fileSystemService.GetRelevantDisplayPath(newCachePath)}'.", FileSystemInformationType.Move));
 			}
 			else
 			{
-				fileSystemInformation.Add(new($"File '{DataUtils.GetRelevantDisplayPath(oldCachePath)}' was not moved because it does not exist.", FileSystemInformationType.NotFound));
+				fileSystemInformation.Add(new($"File '{_fileSystemService.GetRelevantDisplayPath(oldCachePath)}' was not moved because it does not exist.", FileSystemInformationType.NotFound));
 			}
 
 			// Always move screenshots directory (not removed when removal is requested as screenshots are separate entities).
-			string oldScreenshotsDirectory = Path.Combine(DataUtils.GetPath(DataSubDirectory.ModScreenshots), currentName);
+			string oldScreenshotsDirectory = Path.Combine(_fileSystemService.GetPath(DataSubDirectory.ModScreenshots), currentName);
 			if (Directory.Exists(oldScreenshotsDirectory))
 			{
-				string newScreenshotsDirectory = Path.Combine(DataUtils.GetPath(DataSubDirectory.ModScreenshots), newName);
+				string newScreenshotsDirectory = Path.Combine(_fileSystemService.GetPath(DataSubDirectory.ModScreenshots), newName);
 				Directory.Move(oldScreenshotsDirectory, newScreenshotsDirectory);
-				fileSystemInformation.Add(new($"Directory '{DataUtils.GetRelevantDisplayPath(oldScreenshotsDirectory)}' was moved to '{DataUtils.GetRelevantDisplayPath(newScreenshotsDirectory)}'.", FileSystemInformationType.Move));
+				fileSystemInformation.Add(new($"Directory '{_fileSystemService.GetRelevantDisplayPath(oldScreenshotsDirectory)}' was moved to '{_fileSystemService.GetRelevantDisplayPath(newScreenshotsDirectory)}'.", FileSystemInformationType.Move));
 			}
 			else
 			{
-				fileSystemInformation.Add(new($"Directory '{DataUtils.GetRelevantDisplayPath(oldScreenshotsDirectory)}' was not moved because it does not exist.", FileSystemInformationType.NotFound));
+				fileSystemInformation.Add(new($"Directory '{_fileSystemService.GetRelevantDisplayPath(oldScreenshotsDirectory)}' was not moved because it does not exist.", FileSystemInformationType.NotFound));
 			}
 		}
 
@@ -344,30 +347,30 @@ namespace DevilDaggersWebsite.BlazorWasm.Server.Controllers.Admin
 		private void DeleteModFilesAndClearCache(AssetMod mod, List<FileSystemInformation> fileSystemInformation)
 		{
 			// Delete file.
-			string path = Path.Combine(DataUtils.GetPath(DataSubDirectory.Mods), $"{mod.Name}.zip");
+			string path = Path.Combine(_fileSystemService.GetPath(DataSubDirectory.Mods), $"{mod.Name}.zip");
 			if (Io.File.Exists(path))
 			{
 				Io.File.Delete(path);
-				fileSystemInformation.Add(new($"File {DataUtils.GetRelevantDisplayPath(path)} was deleted because removal was requested.", FileSystemInformationType.Delete));
+				fileSystemInformation.Add(new($"File {_fileSystemService.GetRelevantDisplayPath(path)} was deleted because removal was requested.", FileSystemInformationType.Delete));
 
 				// Clear entire memory cache (can't clear individual entries).
 				_modArchiveCache.Clear();
 			}
 			else
 			{
-				fileSystemInformation.Add(new($"File {DataUtils.GetRelevantDisplayPath(path)} was not deleted because it does not exist.", FileSystemInformationType.NotFound));
+				fileSystemInformation.Add(new($"File {_fileSystemService.GetRelevantDisplayPath(path)} was not deleted because it does not exist.", FileSystemInformationType.NotFound));
 			}
 
 			// Clear file cache for this mod.
-			string cachePath = Path.Combine(DataUtils.GetPath(DataSubDirectory.ModArchiveCache), $"{mod.Name}.json");
+			string cachePath = Path.Combine(_fileSystemService.GetPath(DataSubDirectory.ModArchiveCache), $"{mod.Name}.json");
 			if (Io.File.Exists(cachePath))
 			{
 				Io.File.Delete(cachePath);
-				fileSystemInformation.Add(new($"File {DataUtils.GetRelevantDisplayPath(cachePath)} was deleted because removal was requested.", FileSystemInformationType.Delete));
+				fileSystemInformation.Add(new($"File {_fileSystemService.GetRelevantDisplayPath(cachePath)} was deleted because removal was requested.", FileSystemInformationType.Delete));
 			}
 			else
 			{
-				fileSystemInformation.Add(new($"File {DataUtils.GetRelevantDisplayPath(cachePath)} was not deleted because it does not exist.", FileSystemInformationType.NotFound));
+				fileSystemInformation.Add(new($"File {_fileSystemService.GetRelevantDisplayPath(cachePath)} was not deleted because it does not exist.", FileSystemInformationType.NotFound));
 			}
 		}
 

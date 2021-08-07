@@ -2,9 +2,10 @@
 using DevilDaggersWebsite.BlazorWasm.Server.Caches.SpawnsetHash;
 using DevilDaggersWebsite.BlazorWasm.Server.Converters.Admin;
 using DevilDaggersWebsite.BlazorWasm.Server.Entities;
+using DevilDaggersWebsite.BlazorWasm.Server.Enumerators;
 using DevilDaggersWebsite.BlazorWasm.Server.Extensions;
 using DevilDaggersWebsite.BlazorWasm.Server.Singletons.AuditLog;
-using DevilDaggersWebsite.BlazorWasm.Server.Utils.Data;
+using DevilDaggersWebsite.BlazorWasm.Server.Transients;
 using DevilDaggersWebsite.BlazorWasm.Shared;
 using DevilDaggersWebsite.BlazorWasm.Shared.Constants;
 using DevilDaggersWebsite.BlazorWasm.Shared.Dto;
@@ -31,12 +32,14 @@ namespace DevilDaggersWebsite.BlazorWasm.Server.Controllers.Admin
 	public class SpawnsetsController : ControllerBase
 	{
 		private readonly ApplicationDbContext _dbContext;
+		private readonly IFileSystemService _fileSystemService;
 		private readonly SpawnsetHashCache _spawnsetHashCache;
 		private readonly AuditLogger _auditLogger;
 
-		public SpawnsetsController(ApplicationDbContext dbContext, SpawnsetHashCache spawnsetHashCache, AuditLogger auditLogger)
+		public SpawnsetsController(ApplicationDbContext dbContext, IFileSystemService fileSystemService, SpawnsetHashCache spawnsetHashCache, AuditLogger auditLogger)
 		{
 			_dbContext = dbContext;
+			_fileSystemService = fileSystemService;
 			_spawnsetHashCache = spawnsetHashCache;
 			_auditLogger = auditLogger;
 		}
@@ -125,7 +128,7 @@ namespace DevilDaggersWebsite.BlazorWasm.Server.Controllers.Admin
 				return BadRequest($"Spawnset with name '{addSpawnset.Name}' already exists.");
 
 			// Add file.
-			string path = Path.Combine(DataUtils.GetPath(DataSubDirectory.Spawnsets), addSpawnset.Name);
+			string path = Path.Combine(_fileSystemService.GetPath(DataSubDirectory.Spawnsets), addSpawnset.Name);
 			Io.File.WriteAllBytes(path, addSpawnset.FileContents);
 
 			// Add entity.
@@ -141,7 +144,7 @@ namespace DevilDaggersWebsite.BlazorWasm.Server.Controllers.Admin
 			_dbContext.SpawnsetFiles.Add(spawnset);
 			_dbContext.SaveChanges();
 
-			await _auditLogger.LogAdd(addSpawnset, User, spawnset.Id, new() { new($"File '{DataUtils.GetRelevantDisplayPath(path)}' was added.", FileSystemInformationType.Add) });
+			await _auditLogger.LogAdd(addSpawnset, User, spawnset.Id, new() { new($"File '{_fileSystemService.GetRelevantDisplayPath(path)}' was added.", FileSystemInformationType.Add) });
 
 			return Ok(spawnset.Id);
 		}
@@ -165,11 +168,11 @@ namespace DevilDaggersWebsite.BlazorWasm.Server.Controllers.Admin
 				if (_dbContext.SpawnsetFiles.Any(m => m.Name == editSpawnset.Name))
 					return BadRequest($"Spawnset with name '{editSpawnset.Name}' already exists.");
 
-				string directory = DataUtils.GetPath(DataSubDirectory.Spawnsets);
+				string directory = _fileSystemService.GetPath(DataSubDirectory.Spawnsets);
 				string oldPath = Path.Combine(directory, spawnset.Name);
 				string newPath = Path.Combine(directory, editSpawnset.Name);
 				Io.File.Move(oldPath, newPath);
-				moveInfo = $"File '{DataUtils.GetRelevantDisplayPath(oldPath)}' was moved to {DataUtils.GetRelevantDisplayPath(newPath)}.";
+				moveInfo = $"File '{_fileSystemService.GetRelevantDisplayPath(oldPath)}' was moved to {_fileSystemService.GetRelevantDisplayPath(newPath)}.";
 			}
 
 			EditSpawnset logDto = new()
@@ -207,7 +210,7 @@ namespace DevilDaggersWebsite.BlazorWasm.Server.Controllers.Admin
 			if (_dbContext.CustomLeaderboards.Any(ce => ce.SpawnsetFileId == id))
 				return BadRequest("Spawnset with custom leaderboard cannot be deleted.");
 
-			string path = Path.Combine(DataUtils.GetPath(DataSubDirectory.Spawnsets), spawnset.Name);
+			string path = Path.Combine(_fileSystemService.GetPath(DataSubDirectory.Spawnsets), spawnset.Name);
 			bool fileExists = Io.File.Exists(path);
 			if (fileExists)
 			{
@@ -218,7 +221,7 @@ namespace DevilDaggersWebsite.BlazorWasm.Server.Controllers.Admin
 			_dbContext.SpawnsetFiles.Remove(spawnset);
 			_dbContext.SaveChanges();
 
-			string message = fileExists ? $"File '{DataUtils.GetRelevantDisplayPath(path)}' was deleted." : $"File '{DataUtils.GetRelevantDisplayPath(path)}' was not deleted because it does not exist.";
+			string message = fileExists ? $"File '{_fileSystemService.GetRelevantDisplayPath(path)}' was deleted." : $"File '{_fileSystemService.GetRelevantDisplayPath(path)}' was not deleted because it does not exist.";
 			await _auditLogger.LogDelete(spawnset, User, spawnset.Id, new() { new(message, fileExists ? FileSystemInformationType.Delete : FileSystemInformationType.NotFoundUnexpected) });
 
 			return Ok();

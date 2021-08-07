@@ -92,6 +92,7 @@ namespace DevilDaggersWebsite.BlazorWasm.Server
 
 			// Use a transient for ToolHelper so we can update the Tools.json file without having to re-instantiate this.
 			services.AddTransient<IToolHelper, ToolHelper>();
+			services.AddTransient<IFileSystemService, FileSystemService>();
 
 			services.AddSwaggerDocument(config =>
 			{

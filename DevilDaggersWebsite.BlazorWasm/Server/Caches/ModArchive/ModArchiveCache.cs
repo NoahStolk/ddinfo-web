@@ -1,5 +1,6 @@
-﻿using DevilDaggersWebsite.BlazorWasm.Server.Exceptions;
-using DevilDaggersWebsite.BlazorWasm.Server.Utils.Data;
+﻿using DevilDaggersWebsite.BlazorWasm.Server.Enumerators;
+using DevilDaggersWebsite.BlazorWasm.Server.Exceptions;
+using DevilDaggersWebsite.BlazorWasm.Server.Transients;
 using Newtonsoft.Json;
 using System.Collections.Concurrent;
 using System.IO;
@@ -12,6 +13,13 @@ namespace DevilDaggersWebsite.BlazorWasm.Server.Caches.ModArchive
 		private readonly object _fileStreamLock = new();
 
 		private readonly ConcurrentDictionary<string, ModArchiveCacheData> _cache = new();
+
+		private readonly IFileSystemService _fileSystemService;
+
+		public ModArchiveCache(IFileSystemService fileSystemService)
+		{
+			_fileSystemService = fileSystemService;
+		}
 
 		public ModArchiveCacheData GetArchiveDataByBytes(string name, byte[] bytes)
 		{
@@ -51,7 +59,7 @@ namespace DevilDaggersWebsite.BlazorWasm.Server.Caches.ModArchive
 
 		private ModArchiveCacheData? LoadFromFileCache(string name)
 		{
-			string fileCachePath = Path.Combine(DataUtils.GetPath(DataSubDirectory.ModArchiveCache), $"{name}.json");
+			string fileCachePath = Path.Combine(_fileSystemService.GetPath(DataSubDirectory.ModArchiveCache), $"{name}.json");
 			if (!File.Exists(fileCachePath))
 				return null;
 
@@ -100,11 +108,11 @@ namespace DevilDaggersWebsite.BlazorWasm.Server.Caches.ModArchive
 			}
 		}
 
-		private static void WriteToFileCache(string name, ModArchiveCacheData archiveData)
+		private void WriteToFileCache(string name, ModArchiveCacheData archiveData)
 		{
 			try
 			{
-				string fileCacheDirectory = DataUtils.GetPath(DataSubDirectory.ModArchiveCache);
+				string fileCacheDirectory = _fileSystemService.GetPath(DataSubDirectory.ModArchiveCache);
 				if (!Directory.Exists(fileCacheDirectory))
 					Directory.CreateDirectory(fileCacheDirectory);
 
@@ -118,7 +126,7 @@ namespace DevilDaggersWebsite.BlazorWasm.Server.Caches.ModArchive
 
 		public void LoadEntireFileCache()
 		{
-			string fileCacheDirectory = DataUtils.GetPath(DataSubDirectory.ModArchiveCache);
+			string fileCacheDirectory = _fileSystemService.GetPath(DataSubDirectory.ModArchiveCache);
 			if (!Directory.Exists(fileCacheDirectory))
 				Directory.CreateDirectory(fileCacheDirectory);
 
@@ -134,7 +142,7 @@ namespace DevilDaggersWebsite.BlazorWasm.Server.Caches.ModArchive
 
 		public string LogState()
 		{
-			int fileCaches = Directory.GetFiles(DataUtils.GetPath(DataSubDirectory.ModArchiveCache)).Length;
+			int fileCaches = Directory.GetFiles(_fileSystemService.GetPath(DataSubDirectory.ModArchiveCache)).Length;
 
 			return $"`{_cache.Count}` in memory\n`{fileCaches}` in file system";
 		}

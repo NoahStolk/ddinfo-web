@@ -1,7 +1,8 @@
 ﻿using DevilDaggersCore.Game;
 using DevilDaggersWebsite.BlazorWasm.Server.Caches.LeaderboardHistory;
 using DevilDaggersWebsite.BlazorWasm.Server.Controllers.Attributes;
-using DevilDaggersWebsite.BlazorWasm.Server.Utils.Data;
+using DevilDaggersWebsite.BlazorWasm.Server.Enumerators;
+using DevilDaggersWebsite.BlazorWasm.Server.Transients;
 using DevilDaggersWebsite.BlazorWasm.Shared.Dto.Public.LeaderboardHistory;
 using DevilDaggersWebsite.BlazorWasm.Shared.Dto.Public.WorldRecords;
 using Microsoft.AspNetCore.Http;
@@ -18,10 +19,12 @@ namespace DevilDaggersWebsite.BlazorWasm.Server.Controllers.Public
 	{
 		private static readonly DateTime _automationStart = new(2019, 10, 26);
 
+		private readonly IFileSystemService _fileSystemService;
 		private readonly LeaderboardHistoryCache _leaderboardHistoryCache;
 
-		public WorldRecordsController(LeaderboardHistoryCache leaderboardHistoryCache)
+		public WorldRecordsController(IFileSystemService fileSystemService, LeaderboardHistoryCache leaderboardHistoryCache)
 		{
+			_fileSystemService = fileSystemService;
 			_leaderboardHistoryCache = leaderboardHistoryCache;
 		}
 
@@ -111,7 +114,7 @@ namespace DevilDaggersWebsite.BlazorWasm.Server.Controllers.Public
 			DateTime? previousDate = null;
 			List<GetWorldRecord> worldRecords = new();
 			int worldRecord = 0;
-			foreach (string leaderboardHistoryPath in DataUtils.GetLeaderboardHistoryPaths())
+			foreach (string leaderboardHistoryPath in _fileSystemService.TryGetFiles(DataSubDirectory.LeaderboardHistory))
 			{
 				GetLeaderboardHistory leaderboard = _leaderboardHistoryCache.GetLeaderboardHistoryByFilePath(leaderboardHistoryPath);
 				GetEntryHistory? firstPlace = leaderboard.Entries.Find(e => e.Rank == 1);

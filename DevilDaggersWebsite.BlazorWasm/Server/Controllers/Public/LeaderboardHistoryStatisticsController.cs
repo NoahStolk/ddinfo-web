@@ -1,6 +1,7 @@
 ﻿using DevilDaggersWebsite.BlazorWasm.Server.Caches.LeaderboardHistory;
 using DevilDaggersWebsite.BlazorWasm.Server.Controllers.Attributes;
-using DevilDaggersWebsite.BlazorWasm.Server.Utils.Data;
+using DevilDaggersWebsite.BlazorWasm.Server.Enumerators;
+using DevilDaggersWebsite.BlazorWasm.Server.Transients;
 using DevilDaggersWebsite.BlazorWasm.Shared;
 using DevilDaggersWebsite.BlazorWasm.Shared.Dto.Public.LeaderboardHistory;
 using DevilDaggersWebsite.BlazorWasm.Shared.Dto.Public.LeaderboardHistoryStatistics;
@@ -16,10 +17,12 @@ namespace DevilDaggersWebsite.BlazorWasm.Server.Controllers.Public
 	[ApiController]
 	public class LeaderboardHistoryStatisticsController : ControllerBase
 	{
+		private readonly IFileSystemService _fileSystemService;
 		private readonly LeaderboardHistoryCache _leaderboardHistoryCache;
 
-		public LeaderboardHistoryStatisticsController(LeaderboardHistoryCache leaderboardHistoryCache)
+		public LeaderboardHistoryStatisticsController(IFileSystemService fileSystemService, LeaderboardHistoryCache leaderboardHistoryCache)
 		{
+			_fileSystemService = fileSystemService;
 			_leaderboardHistoryCache = leaderboardHistoryCache;
 		}
 
@@ -29,7 +32,7 @@ namespace DevilDaggersWebsite.BlazorWasm.Server.Controllers.Public
 		[EndpointConsumer(EndpointConsumers.Website)]
 		public List<GetLeaderboardHistoryStatistics> GetLeaderboardHistoryStatistics()
 		{
-			string? firstPath = DataUtils.GetLeaderboardHistoryPaths().OrderBy(p => p).FirstOrDefault();
+			string? firstPath = _fileSystemService.TryGetFiles(DataSubDirectory.LeaderboardHistory).OrderBy(p => p).FirstOrDefault();
 			if (firstPath == null)
 				return new();
 
@@ -52,7 +55,7 @@ namespace DevilDaggersWebsite.BlazorWasm.Server.Controllers.Public
 			while (dateTime < DateTime.UtcNow)
 			{
 				dateTime = dateTime.AddDays(7);
-				string historyPath = DataUtils.GetLeaderboardHistoryPathFromDate(dateTime);
+				string historyPath = _fileSystemService.GetLeaderboardHistoryPathFromDate(dateTime);
 				current = _leaderboardHistoryCache.GetLeaderboardHistoryByFilePath(historyPath);
 
 				bool daggersFiredUpdated = false;

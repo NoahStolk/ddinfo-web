@@ -1,9 +1,10 @@
 ﻿using DevilDaggersCore.Spawnsets;
 using DevilDaggersWebsite.BlazorWasm.Server.Converters.Admin;
 using DevilDaggersWebsite.BlazorWasm.Server.Entities;
+using DevilDaggersWebsite.BlazorWasm.Server.Enumerators;
 using DevilDaggersWebsite.BlazorWasm.Server.Extensions;
 using DevilDaggersWebsite.BlazorWasm.Server.Singletons.AuditLog;
-using DevilDaggersWebsite.BlazorWasm.Server.Utils.Data;
+using DevilDaggersWebsite.BlazorWasm.Server.Transients;
 using DevilDaggersWebsite.BlazorWasm.Shared;
 using DevilDaggersWebsite.BlazorWasm.Shared.Constants;
 using DevilDaggersWebsite.BlazorWasm.Shared.Dto;
@@ -29,11 +30,13 @@ namespace DevilDaggersWebsite.BlazorWasm.Server.Controllers.Admin
 	public class CustomLeaderboardsController : ControllerBase
 	{
 		private readonly ApplicationDbContext _dbContext;
+		private readonly IFileSystemService _fileSystemService;
 		private readonly AuditLogger _auditLogger;
 
-		public CustomLeaderboardsController(ApplicationDbContext dbContext, AuditLogger auditLogger)
+		public CustomLeaderboardsController(ApplicationDbContext dbContext, IFileSystemService fileSystemService, AuditLogger auditLogger)
 		{
 			_dbContext = dbContext;
+			_fileSystemService = fileSystemService;
 			_auditLogger = auditLogger;
 		}
 
@@ -131,7 +134,7 @@ namespace DevilDaggersWebsite.BlazorWasm.Server.Controllers.Admin
 			if (spawnsetFile == null)
 				return BadRequest($"Spawnset with ID '{addCustomLeaderboard.SpawnsetId}' does not exist.");
 
-			if (!Spawnset.TryParse(System.IO.File.ReadAllBytes(Path.Combine(DataUtils.GetPath(DataSubDirectory.Spawnsets), spawnsetFile.Name)), out Spawnset spawnset))
+			if (!Spawnset.TryParse(System.IO.File.ReadAllBytes(Path.Combine(_fileSystemService.GetPath(DataSubDirectory.Spawnsets), spawnsetFile.Name)), out Spawnset spawnset))
 				throw new($"Could not parse survival file '{spawnsetFile.Name}'. Please review the file. Also review how this file ended up in the 'spawnsets' directory, as it is not possible to upload non-survival files from within the Admin pages.");
 
 			if (addCustomLeaderboard.Category == CustomLeaderboardCategory.TimeAttack && spawnset.GameMode != GameMode.TimeAttack
@@ -202,7 +205,7 @@ namespace DevilDaggersWebsite.BlazorWasm.Server.Controllers.Admin
 			if (spawnsetFile == null)
 				return BadRequest($"Spawnset with ID '{customLeaderboard.SpawnsetFileId}' does not exist.");
 
-			if (!Spawnset.TryParse(System.IO.File.ReadAllBytes(Path.Combine(DataUtils.GetPath(DataSubDirectory.Spawnsets), spawnsetFile.Name)), out Spawnset spawnset))
+			if (!Spawnset.TryParse(System.IO.File.ReadAllBytes(Path.Combine(_fileSystemService.GetPath(DataSubDirectory.Spawnsets), spawnsetFile.Name)), out Spawnset spawnset))
 				throw new($"Could not parse survival file '{spawnsetFile.Name}'. Please review the file. Also review how this file ended up in the 'spawnsets' directory, as it is not possible to upload non-survival files from within the Admin pages.");
 
 			if (editCustomLeaderboard.Category == CustomLeaderboardCategory.TimeAttack && spawnset.GameMode != GameMode.TimeAttack

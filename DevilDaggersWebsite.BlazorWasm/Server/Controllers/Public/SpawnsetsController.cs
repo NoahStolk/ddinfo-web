@@ -3,7 +3,8 @@ using DevilDaggersWebsite.BlazorWasm.Server.Caches.SpawnsetData;
 using DevilDaggersWebsite.BlazorWasm.Server.Controllers.Attributes;
 using DevilDaggersWebsite.BlazorWasm.Server.Converters.Public;
 using DevilDaggersWebsite.BlazorWasm.Server.Entities;
-using DevilDaggersWebsite.BlazorWasm.Server.Utils.Data;
+using DevilDaggersWebsite.BlazorWasm.Server.Enumerators;
+using DevilDaggersWebsite.BlazorWasm.Server.Transients;
 using DevilDaggersWebsite.BlazorWasm.Shared.Dto.Public.Spawnsets;
 using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
@@ -23,11 +24,13 @@ namespace DevilDaggersWebsite.BlazorWasm.Server.Controllers.Public
 	public class SpawnsetsController : ControllerBase
 	{
 		private readonly ApplicationDbContext _dbContext;
+		private readonly IFileSystemService _fileSystemService;
 		private readonly SpawnsetDataCache _spawnsetDataCache;
 
-		public SpawnsetsController(ApplicationDbContext dbContext, SpawnsetDataCache spawnsetDataCache)
+		public SpawnsetsController(ApplicationDbContext dbContext, IFileSystemService fileSystemService, SpawnsetDataCache spawnsetDataCache)
 		{
 			_dbContext = dbContext;
+			_fileSystemService = fileSystemService;
 			_spawnsetDataCache = spawnsetDataCache;
 		}
 
@@ -51,13 +54,13 @@ namespace DevilDaggersWebsite.BlazorWasm.Server.Controllers.Public
 				query = query.Where(sf => sf.Name.Contains(nameFilter, StringComparison.InvariantCultureIgnoreCase));
 
 			return query
-				.Where(sf => Io.File.Exists(Path.Combine(DataUtils.GetPath(DataSubDirectory.Spawnsets), sf.Name)))
+				.Where(sf => Io.File.Exists(Path.Combine(_fileSystemService.GetPath(DataSubDirectory.Spawnsets), sf.Name)))
 				.Select(sf => Map(sf))
 				.ToList();
 
 			GetSpawnset Map(SpawnsetFile spawnsetFile)
 			{
-				SpawnsetData spawnsetData = _spawnsetDataCache.GetSpawnsetDataByFilePath(Path.Combine(DataUtils.GetPath(DataSubDirectory.Spawnsets), spawnsetFile.Name));
+				SpawnsetData spawnsetData = _spawnsetDataCache.GetSpawnsetDataByFilePath(Path.Combine(_fileSystemService.GetPath(DataSubDirectory.Spawnsets), spawnsetFile.Name));
 				return spawnsetFile.ToGetSpawnsetPublic(spawnsetData, spawnsetsWithCustomLeaderboardIds.Contains(spawnsetFile.Id));
 			}
 		}
@@ -69,7 +72,7 @@ namespace DevilDaggersWebsite.BlazorWasm.Server.Controllers.Public
 		[EndpointConsumer(EndpointConsumers.Ddse | EndpointConsumers.Website)]
 		public ActionResult GetSpawnsetFile([Required] string fileName)
 		{
-			string path = Path.Combine(DataUtils.GetPath(DataSubDirectory.Spawnsets), fileName);
+			string path = Path.Combine(_fileSystemService.GetPath(DataSubDirectory.Spawnsets), fileName);
 			if (!Io.File.Exists(path))
 				return new NotFoundObjectResult(new ProblemDetails { Title = $"Spawnset '{fileName}' was not found." });
 

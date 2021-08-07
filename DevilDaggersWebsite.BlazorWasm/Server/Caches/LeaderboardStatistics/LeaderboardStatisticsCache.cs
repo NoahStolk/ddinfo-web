@@ -1,7 +1,8 @@
 ﻿using DevilDaggersCore.Game;
+using DevilDaggersWebsite.BlazorWasm.Server.Enumerators;
 using DevilDaggersWebsite.BlazorWasm.Server.HostedServices.DdInfoDiscordBot;
 using DevilDaggersWebsite.BlazorWasm.Server.Singletons;
-using DevilDaggersWebsite.BlazorWasm.Server.Utils.Data;
+using DevilDaggersWebsite.BlazorWasm.Server.Transients;
 using DevilDaggersWebsite.BlazorWasm.Shared;
 using System.Collections.Generic;
 using System.IO;
@@ -14,10 +15,12 @@ namespace DevilDaggersWebsite.BlazorWasm.Server.Caches.LeaderboardStatistics
 	{
 		private readonly List<CompressedEntry> _entries = new();
 
+		private readonly IFileSystemService _fileSystemService;
 		private readonly DiscordLogger _discordLogger;
 
-		public LeaderboardStatisticsCache(DiscordLogger discordLogger)
+		public LeaderboardStatisticsCache(IFileSystemService fileSystemService, DiscordLogger discordLogger)
 		{
+			_fileSystemService = fileSystemService;
 			_discordLogger = discordLogger;
 		}
 
@@ -42,7 +45,7 @@ namespace DevilDaggersWebsite.BlazorWasm.Server.Caches.LeaderboardStatistics
 
 		public async Task Initiate()
 		{
-			string[] paths = DataUtils.GetLeaderboardStatisticsPaths();
+			string[] paths = _fileSystemService.TryGetFiles(DataSubDirectory.LeaderboardStatistics);
 			if (paths.Length == 0)
 			{
 				await _discordLogger.TryLog(Channel.MonitoringError, ":x: No files found in leaderboard statistics directory.");

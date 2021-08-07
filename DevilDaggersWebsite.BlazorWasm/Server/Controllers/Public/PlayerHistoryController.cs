@@ -1,6 +1,7 @@
 ﻿using DevilDaggersWebsite.BlazorWasm.Server.Caches.LeaderboardHistory;
 using DevilDaggersWebsite.BlazorWasm.Server.Controllers.Attributes;
-using DevilDaggersWebsite.BlazorWasm.Server.Utils.Data;
+using DevilDaggersWebsite.BlazorWasm.Server.Enumerators;
+using DevilDaggersWebsite.BlazorWasm.Server.Transients;
 using DevilDaggersWebsite.BlazorWasm.Shared.Dto.Public.LeaderboardHistory;
 using DevilDaggersWebsite.BlazorWasm.Shared.Dto.Public.PlayerHistory;
 using Microsoft.AspNetCore.Http;
@@ -17,10 +18,12 @@ namespace DevilDaggersWebsite.BlazorWasm.Server.Controllers.Public
 	[ApiController]
 	public class PlayerHistoryController : ControllerBase
 	{
+		private readonly IFileSystemService _fileSystemService;
 		private readonly LeaderboardHistoryCache _leaderboardHistoryCache;
 
-		public PlayerHistoryController(LeaderboardHistoryCache leaderboardHistoryCache)
+		public PlayerHistoryController(IFileSystemService fileSystemService, LeaderboardHistoryCache leaderboardHistoryCache)
 		{
+			_fileSystemService = fileSystemService;
 			_leaderboardHistoryCache = leaderboardHistoryCache;
 		}
 
@@ -32,7 +35,7 @@ namespace DevilDaggersWebsite.BlazorWasm.Server.Controllers.Public
 		{
 			List<GetEntryHistory> data = new();
 
-			foreach (string leaderboardHistoryPath in DataUtils.GetLeaderboardHistoryPaths())
+			foreach (string leaderboardHistoryPath in _fileSystemService.TryGetFiles(DataSubDirectory.LeaderboardHistory))
 			{
 				GetLeaderboardHistory leaderboard = _leaderboardHistoryCache.GetLeaderboardHistoryByFilePath(leaderboardHistoryPath);
 				GetEntryHistory? entry = leaderboard.Entries.Find(e => e.Id == playerId);
@@ -57,7 +60,7 @@ namespace DevilDaggersWebsite.BlazorWasm.Server.Controllers.Public
 		public List<GetPlayerActivity> GetPlayerActivityById([Required, Range(1, 9999999)] int playerId)
 		{
 			List<GetPlayerActivity> data = new();
-			foreach (string leaderboardHistoryPath in DataUtils.GetLeaderboardHistoryPaths())
+			foreach (string leaderboardHistoryPath in _fileSystemService.TryGetFiles(DataSubDirectory.LeaderboardHistory))
 			{
 				GetLeaderboardHistory leaderboard = _leaderboardHistoryCache.GetLeaderboardHistoryByFilePath(leaderboardHistoryPath);
 				GetEntryHistory? entry = leaderboard.Entries.Find(e => e.Id == playerId);

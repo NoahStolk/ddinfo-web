@@ -1,6 +1,7 @@
 ﻿using DevilDaggersWebsite.BlazorWasm.Server.Entities;
+using DevilDaggersWebsite.BlazorWasm.Server.Enumerators;
 using DevilDaggersWebsite.BlazorWasm.Server.Singletons.AuditLog;
-using DevilDaggersWebsite.BlazorWasm.Server.Utils.Data;
+using DevilDaggersWebsite.BlazorWasm.Server.Transients;
 using DevilDaggersWebsite.BlazorWasm.Shared;
 using DevilDaggersWebsite.BlazorWasm.Shared.Constants;
 using DevilDaggersWebsite.BlazorWasm.Shared.Dto.Admin.ModScreenshots;
@@ -20,11 +21,13 @@ namespace DevilDaggersWebsite.BlazorWasm.Server.Controllers.Admin
 	public class ModScreenshotsController : ControllerBase
 	{
 		private readonly ApplicationDbContext _dbContext;
+		private readonly IFileSystemService _fileSystemService;
 		private readonly AuditLogger _auditLogger;
 
-		public ModScreenshotsController(ApplicationDbContext dbContext, AuditLogger auditLogger)
+		public ModScreenshotsController(ApplicationDbContext dbContext, IFileSystemService fileSystemService, AuditLogger auditLogger)
 		{
 			_dbContext = dbContext;
+			_fileSystemService = fileSystemService;
 			_auditLogger = auditLogger;
 		}
 
@@ -36,7 +39,7 @@ namespace DevilDaggersWebsite.BlazorWasm.Server.Controllers.Admin
 			if (!_dbContext.AssetMods.Any(m => m.Name == addModScreenshot.ModName))
 				return BadRequest($"Mod with name '{addModScreenshot.ModName}' does not exist.");
 
-			string directory = Path.Combine(DataUtils.GetPath(DataSubDirectory.ModScreenshots), addModScreenshot.ModName);
+			string directory = Path.Combine(_fileSystemService.GetPath(DataSubDirectory.ModScreenshots), addModScreenshot.ModName);
 			Directory.CreateDirectory(directory);
 			DirectoryInfo directoryInfo = new(directory);
 			int screenshots = directoryInfo.EnumerateFiles().Count();
@@ -46,7 +49,7 @@ namespace DevilDaggersWebsite.BlazorWasm.Server.Controllers.Admin
 			string path = Path.Combine(directory, $"{screenshots:00}.png");
 			Io.File.WriteAllBytes(path, addModScreenshot.FileContents);
 
-			await _auditLogger.LogFileSystemInformation(new() { new($"File '{DataUtils.GetRelevantDisplayPath(path)}' was added.", FileSystemInformationType.Add) });
+			await _auditLogger.LogFileSystemInformation(new() { new($"File '{_fileSystemService.GetRelevantDisplayPath(path)}' was added.", FileSystemInformationType.Add) });
 
 			return Ok();
 		}
@@ -59,7 +62,7 @@ namespace DevilDaggersWebsite.BlazorWasm.Server.Controllers.Admin
 			if (!_dbContext.AssetMods.Any(m => m.Name == deleteModScreenshot.ModName))
 				return BadRequest($"Mod with name '{deleteModScreenshot.ModName}' does not exist.");
 
-			string directory = Path.Combine(DataUtils.GetPath(DataSubDirectory.ModScreenshots), deleteModScreenshot.ModName);
+			string directory = Path.Combine(_fileSystemService.GetPath(DataSubDirectory.ModScreenshots), deleteModScreenshot.ModName);
 			string path = Path.Combine(directory, deleteModScreenshot.ScreenshotName);
 			bool fileExists = Io.File.Exists(path);
 			if (!fileExists)
@@ -67,7 +70,7 @@ namespace DevilDaggersWebsite.BlazorWasm.Server.Controllers.Admin
 
 			Io.File.Delete(path);
 
-			await _auditLogger.LogFileSystemInformation(new() { new($"File '{DataUtils.GetRelevantDisplayPath(path)}' was deleted.", FileSystemInformationType.Delete) });
+			await _auditLogger.LogFileSystemInformation(new() { new($"File '{_fileSystemService.GetRelevantDisplayPath(path)}' was deleted.", FileSystemInformationType.Delete) });
 
 			return Ok();
 		}

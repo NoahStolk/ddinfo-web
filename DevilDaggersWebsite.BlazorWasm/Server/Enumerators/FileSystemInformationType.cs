@@ -1,4 +1,4 @@
-﻿namespace DevilDaggersWebsite.BlazorWasm.Server.Singletons.AuditLog
+﻿namespace DevilDaggersWebsite.BlazorWasm.Server.Enumerators
 {
 	public enum FileSystemInformationType
 	{
