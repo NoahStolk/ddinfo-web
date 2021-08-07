@@ -1,6 +1,7 @@
 ﻿using DevilDaggersWebsite.BlazorWasm.Server.Entities;
 using DevilDaggersWebsite.BlazorWasm.Server.Extensions;
 using DevilDaggersWebsite.BlazorWasm.Shared;
+using DevilDaggersWebsite.BlazorWasm.Shared.Constants;
 using DevilDaggersWebsite.BlazorWasm.Shared.Dto.Public.CustomLeaderboards;
 
 namespace DevilDaggersWebsite.BlazorWasm.Server.Converters.Public
@@ -36,6 +37,21 @@ namespace DevilDaggersWebsite.BlazorWasm.Server.Converters.Public
 			DateLastPlayed = customLeaderboard.DateLastPlayed,
 			TopPlayer = topPlayer,
 			WorldRecord = worldRecord.ToSecondsTime(),
+		};
+
+		public static GetCustomLeaderboard ToGetCustomLeaderboard(this CustomLeaderboard customLeaderboard) => new()
+		{
+			SpawnsetAuthorName = customLeaderboard.SpawnsetFile.Player.PlayerName,
+			SpawnsetName = customLeaderboard.SpawnsetFile.Name,
+			TimeBronze = customLeaderboard.TimeBronze.ToSecondsTime(),
+			TimeSilver = customLeaderboard.TimeSilver.ToSecondsTime(),
+			TimeGolden = customLeaderboard.TimeGolden.ToSecondsTime(),
+			TimeDevil = customLeaderboard.TimeDevil.ToSecondsTime(),
+			TimeLeviathan = customLeaderboard.TimeLeviathan.ToSecondsTime(),
+			DateCreated = customLeaderboard.DateCreated,
+			TotalRunsSubmitted = customLeaderboard.DateCreated < CustomLeaderboardFeatureConstants.SubmitCount ? null : customLeaderboard.TotalRunsSubmitted,
+			DateLastPlayed = customLeaderboard.DateLastPlayed,
+			CustomEntries = customLeaderboard.CustomEntries?.ConvertAll(ce => ce.ToGetCustomEntry()) ?? new(),
 		};
 	}
 }
