@@ -107,35 +107,39 @@ namespace DevilDaggersWebsite.Razor.Pages.Leaderboard
 				UsernameAliases = aliases.OrderByDescending(kvp => kvp.Value).Select(kvp => kvp.Key).ToList();
 			}
 
-			if (Player != null && _dbContext.CustomEntries.Any(ce => ce.PlayerId == PlayerId))
+			if (Player != null)
 			{
-				var customEntriesQuery = _dbContext.CustomEntries
-					.AsNoTracking()
-					.Include(ce => ce.CustomLeaderboard)
-					.Select(ce => new { ce.Time, ce.CustomLeaderboard, ce.PlayerId })
-					.Where(ce => ce.PlayerId == PlayerId && !ce.CustomLeaderboard.IsArchived);
-
-				foreach (var customEntry in customEntriesQuery)
+				if (_dbContext.CustomEntries.Any(ce => ce.PlayerId == PlayerId))
 				{
-					int daggerIndex = (int)customEntry.CustomLeaderboard.GetDaggerFromTime(customEntry.Time);
-					int[] daggerCounts = customEntry.CustomLeaderboard.Category switch
+					var customEntriesQuery = _dbContext.CustomEntries
+						.AsNoTracking()
+						.Include(ce => ce.CustomLeaderboard)
+						.Select(ce => new { ce.Time, ce.CustomLeaderboard, ce.PlayerId })
+						.Where(ce => ce.PlayerId == PlayerId && !ce.CustomLeaderboard.IsArchived);
+
+					foreach (var customEntry in customEntriesQuery)
 					{
-						CustomLeaderboardCategory.Default => CustomDaggerCountsDefault,
-						CustomLeaderboardCategory.TimeAttack => CustomDaggerCountsTimeAttack,
-						CustomLeaderboardCategory.Speedrun => CustomDaggerCountsSpeedrun,
-						_ => throw new NotSupportedException($"Dagger count for custom leaderboard category '{customEntry.CustomLeaderboard.Category}' is not supported."),
-					};
-					daggerCounts[daggerIndex]++;
+						int daggerIndex = (int)customEntry.CustomLeaderboard.GetDaggerFromTime(customEntry.Time);
+						int[] daggerCounts = customEntry.CustomLeaderboard.Category switch
+						{
+							CustomLeaderboardCategory.Default => CustomDaggerCountsDefault,
+							CustomLeaderboardCategory.TimeAttack => CustomDaggerCountsTimeAttack,
+							CustomLeaderboardCategory.Speedrun => CustomDaggerCountsSpeedrun,
+							_ => throw new NotSupportedException($"Dagger count for custom leaderboard category '{customEntry.CustomLeaderboard.Category}' is not supported."),
+						};
+						daggerCounts[daggerIndex]++;
+					}
+
+					var customLeaderboardsQuery = _dbContext.CustomLeaderboards
+						.AsNoTracking()
+						.Where(cl => !cl.IsArchived)
+						.Select(cl => new { cl.Category });
+
+					TotalDefaultCustomLeaderboards = customLeaderboardsQuery.Count(cl => cl.Category == CustomLeaderboardCategory.Default);
+					TotalTimeAttackCustomLeaderboards = customLeaderboardsQuery.Count(cl => cl.Category == CustomLeaderboardCategory.TimeAttack);
+					TotalSpeedrunCustomLeaderboards = customLeaderboardsQuery.Count(cl => cl.Category == CustomLeaderboardCategory.Speedrun);
 				}
 
-				var customLeaderboardsQuery = _dbContext.CustomLeaderboards
-					.AsNoTracking()
-					.Where(cl => !cl.IsArchived)
-					.Select(cl => new { cl.Category });
-
-				TotalDefaultCustomLeaderboards = customLeaderboardsQuery.Count(cl => cl.Category == CustomLeaderboardCategory.Default);
-				TotalTimeAttackCustomLeaderboards = customLeaderboardsQuery.Count(cl => cl.Category == CustomLeaderboardCategory.TimeAttack);
-				TotalSpeedrunCustomLeaderboards = customLeaderboardsQuery.Count(cl => cl.Category == CustomLeaderboardCategory.Speedrun);
 				Mods = _dbContext.AssetMods
 					.AsNoTracking()
 					.Include(am => am.PlayerAssetMods)
