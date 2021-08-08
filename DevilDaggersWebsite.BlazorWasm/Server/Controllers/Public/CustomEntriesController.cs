@@ -234,10 +234,12 @@ namespace DevilDaggersWebsite.BlazorWasm.Server.Controllers.Public
 			// We don't want replays to overwrite the real score (this spams messages and is incorrect).
 			// The amount of overflowing ticks varies between 0 and 3 (the longer the run the higher the amount).
 			// Simply reset the time to the original when all data is the same.
-			bool isHighscoreByUnderASecond = uploadRequest.Time > customEntry.Time && uploadRequest.Time < customEntry.Time + 10000;
-			const int threshold = 5;
-			bool gemsAlmostTheSame = uploadRequest.GemsCollected >= customEntry.GemsCollected - threshold && uploadRequest.GemsCollected <= customEntry.GemsCollected + threshold;
-			bool killsAlmostTheSame = uploadRequest.EnemiesKilled >= customEntry.EnemiesKilled - threshold && uploadRequest.EnemiesKilled <= customEntry.EnemiesKilled + threshold;
+			const int timeThreshold = 1000; // 0.1 seconds (or 6 ticks).
+			const int gemThreshold = 2;
+			const int killThreshold = 5;
+			bool isHighscoreByUnderASecond = uploadRequest.Time > customEntry.Time && uploadRequest.Time < customEntry.Time + timeThreshold;
+			bool gemsAlmostTheSame = uploadRequest.GemsCollected >= customEntry.GemsCollected - gemThreshold && uploadRequest.GemsCollected <= customEntry.GemsCollected + gemThreshold;
+			bool killsAlmostTheSame = uploadRequest.EnemiesKilled >= customEntry.EnemiesKilled - killThreshold && uploadRequest.EnemiesKilled <= customEntry.EnemiesKilled + killThreshold;
 			bool deathTypeTheSame = uploadRequest.DeathType == customEntry.DeathType;
 			if (uploadRequest.IsReplay && !isAscending && isHighscoreByUnderASecond && gemsAlmostTheSame && killsAlmostTheSame && deathTypeTheSame)
 				uploadRequest.Time = customEntry.Time;
