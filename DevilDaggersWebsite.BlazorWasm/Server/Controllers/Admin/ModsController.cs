@@ -150,7 +150,7 @@ namespace DevilDaggersWebsite.BlazorWasm.Server.Controllers.Admin
 				AssetModTypes = addMod.AssetModTypes?.ToFlagEnum<AssetModTypes>() ?? AssetModTypes.None,
 				HtmlDescription = addMod.HtmlDescription,
 				IsHidden = addMod.IsHidden,
-				LastUpdated = DateTime.Now,
+				LastUpdated = DateTime.UtcNow,
 				Name = addMod.Name,
 				TrailerUrl = addMod.TrailerUrl,
 				Url = addMod.Url ?? string.Empty,
