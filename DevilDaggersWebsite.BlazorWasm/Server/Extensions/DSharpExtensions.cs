@@ -22,7 +22,10 @@ namespace DevilDaggersWebsite.BlazorWasm.Server.Extensions
 			if (message?.Length >= 2000)
 				message = $"{message.Substring(0, 1996)}...";
 
-			await channel.SendMessageAsync(message, embed);
+			if (embed == null)
+				await channel.SendMessageAsync(message);
+			else
+				await channel.SendMessageAsync(message, embed);
 		}
 
 		public static DiscordEmbedBuilder AddFieldObject(this DiscordEmbedBuilder builder, string name, object? value, bool inline = false)
