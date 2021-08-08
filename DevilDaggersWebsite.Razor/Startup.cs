@@ -81,7 +81,7 @@ namespace DevilDaggersWebsite.Razor
 			services.AddTransient<WorldRecordsHelper>();
 			services.AddTransient<ModHelper>();
 			services.AddTransient<SpawnsetHelper>();
-			services.AddTransient<IToolHelper, ToolHelper>(); // TODO: Singleton?
+			services.AddTransient<IToolHelper, ToolHelper>();
 
 			services
 				.AddControllers()
