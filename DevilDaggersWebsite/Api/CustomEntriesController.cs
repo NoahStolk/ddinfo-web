@@ -286,12 +286,6 @@ namespace DevilDaggersWebsite.Api
 			bool isAscending = customLeaderboard.Category.IsAscending();
 
 			// At this point, the submission is accepted.
-			if (uploadRequest.IsReplay && !isAscending)
-			{
-				// Due to a bug in the game, we need to subtract a couple ticks if the run is a replay, so replays don't overwrite the actual score if submitted twice.
-				// The amount of overflowing ticks varies between 0 and 3 (the longer the run the higher the amount), so subtract 4 ticks for now.
-				uploadRequest.Time -= 667;
-			}
 
 			// Make sure HomingDaggers is not negative (happens rarely).
 			uploadRequest.HomingDaggers = Math.Max(0, uploadRequest.HomingDaggers);
@@ -347,6 +341,20 @@ namespace DevilDaggersWebsite.Api
 					LevelUpTime4 = uploadRequest.LevelUpTime4,
 				};
 			}
+
+			// Due to a bug in the game, we need to manually fix the request's time. The time gains a couple extra ticks if the run is a replay.
+			// We don't want replays to overwrite the real score (this spams messages and is incorrect).
+			// The amount of overflowing ticks varies between 0 and 3 (the longer the run the higher the amount).
+			// Simply reset the time to the original when all data is the same.
+			const int timeThreshold = 1000; // 0.1 seconds (or 6 ticks).
+			const int gemThreshold = 2;
+			const int killThreshold = 5;
+			bool isHighscoreByUnderASecond = uploadRequest.Time > customEntry.Time && uploadRequest.Time < customEntry.Time + timeThreshold;
+			bool gemsAlmostTheSame = uploadRequest.GemsCollected >= customEntry.GemsCollected - gemThreshold && uploadRequest.GemsCollected <= customEntry.GemsCollected + gemThreshold;
+			bool killsAlmostTheSame = uploadRequest.EnemiesKilled >= customEntry.EnemiesKilled - killThreshold && uploadRequest.EnemiesKilled <= customEntry.EnemiesKilled + killThreshold;
+			bool deathTypeTheSame = uploadRequest.DeathType == customEntry.DeathType;
+			if (uploadRequest.IsReplay && !isAscending && isHighscoreByUnderASecond && gemsAlmostTheSame && killsAlmostTheSame && deathTypeTheSame)
+				uploadRequest.Time = customEntry.Time;
 
 			// User is already on the leaderboard, but did not get a better score.
 			if (isAscending && customEntry.Time <= uploadRequest.Time || !isAscending && customEntry.Time >= uploadRequest.Time)
