@@ -1,8 +1,10 @@
 ﻿@page "/custom/leaderboards"
 @inject PublicApiHttpClient Http
+@inject NavigationManager NavigationManager
 @using DevilDaggersWebsite.BlazorWasm.Shared.Dto.Public.CustomLeaderboards
 @using DevilDaggersWebsite.BlazorWasm.Shared.Enums.Sortings.Public
 @using DevilDaggersWebsite.BlazorWasm.Shared.Enums
+@using Microsoft.Extensions.Primitives
 
 <h1 class="text-red text-2xl">Custom Leaderboards</h1>
 
@@ -66,9 +68,9 @@ else
 @code
 {
 	private CustomLeaderboardCategory _category = CustomLeaderboardCategory.Default;
-	private int _pageIndex;
+	private int _pageIndex = 0;
 	private int _pageSize = PublicPagingConstants.PageSizeDefault;
-	private CustomLeaderboardSorting? _sortBy;
+	private CustomLeaderboardSorting _sortBy = CustomLeaderboardSorting.SpawnsetName;
 	private bool _ascending = false;
 
 	private Dictionary<CustomLeaderboardSorting, bool> _sortings = new();
@@ -79,6 +81,18 @@ else
 
 	protected override async Task OnInitializedAsync()
 	{
+		Dictionary<string, StringValues> query = NavigationManager.GetQuery();
+
+		query.RemoveAllUnknownQueryParameters(Enum.GetValues<QueryParameter>().Select(qp => qp.ToString()).ToArray());
+
+		_ = query.TryGetValue(nameof(QueryParameter.PageIndex), out StringValues pageIndex) && int.TryParse(pageIndex, out _pageIndex);
+		_ = query.TryGetValue(nameof(QueryParameter.PageSize), out StringValues pageSize) && int.TryParse(pageSize, out _pageSize);
+		_ = query.TryGetValue(nameof(QueryParameter.SortBy), out StringValues sortBy) && Enum.TryParse<CustomLeaderboardSorting>(sortBy, out _sortBy);
+		_ = query.TryGetValue(nameof(QueryParameter.Ascending), out StringValues ascending) && bool.TryParse(ascending, out _ascending);
+
+		if (_pageSize < PublicPagingConstants.PageSizeMin || _pageSize > PublicPagingConstants.PageSizeMax)
+			_pageSize = PublicPagingConstants.PageSizeDefault;
+
 		foreach (CustomLeaderboardSorting e in (CustomLeaderboardSorting[])Enum.GetValues(typeof(CustomLeaderboardSorting)))
 			_sortings.Add(e, false);
 
@@ -88,12 +102,16 @@ else
 	private async Task ChangePageIndex(int pageIndex)
 	{
 		_pageIndex = Math.Clamp(pageIndex, 0, TotalPages - 1);
+		NavigationManager.AddOrModifyQueryParameter(nameof(QueryParameter.PageIndex), _pageIndex.ToString());
+
 		await Fetch();
 	}
 
 	private async Task ChangePageSize(ChangeEventArgs e)
 	{
 		_ = int.TryParse(e.Value?.ToString(), out _pageSize);
+		NavigationManager.AddOrModifyQueryParameter(nameof(QueryParameter.PageSize), _pageSize.ToString());
+
 		_pageIndex = Math.Clamp(_pageIndex, 0, TotalPages - 1);
 		await Fetch();
 	}
@@ -101,13 +119,25 @@ else
 	private async Task Sort(CustomLeaderboardSorting sortBy)
 	{
 		_sortBy = sortBy;
+		NavigationManager.AddOrModifyQueryParameter(nameof(QueryParameter.SortBy), _sortBy.ToString());
+
 		_sortings[sortBy] = !_sortings[sortBy];
 		_ascending = _sortings[sortBy];
+		NavigationManager.AddOrModifyQueryParameter(nameof(QueryParameter.Ascending), _ascending.ToString());
+
 		await Fetch();
 	}
 
 	private async Task Fetch()
 	{
 		GetCustomLeaderboards = await Http.Client.GetFromJsonAsync<Page<GetCustomLeaderboardOverview>>($"api/custom-leaderboards?categoryFilter={_category}&pageIndex={_pageIndex}&pageSize={_pageSize}&sortBy={_sortBy}&ascending={_ascending}");
+	}
+
+	private enum QueryParameter
+	{
+		PageIndex,
+		PageSize,
+		SortBy,
+		Ascending,
 	}
 }
