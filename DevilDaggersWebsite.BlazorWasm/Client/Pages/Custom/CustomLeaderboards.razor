@@ -21,7 +21,7 @@ else
 	<Select @onchange="ChangePageSize" class="bg-gray-900 transition-colors duration-100 h-8 py-1 rounded text-color-text">
 		@foreach (int i in PublicPagingConstants.PageSizeOptions)
 		{
-			if (i == PublicPagingConstants.PageSizeDefault)
+			if (i == _pageSize)
 			{
 				<option value="@i" selected>@i</option>
 			}
