@@ -22,6 +22,6 @@ namespace DevilDaggersWebsite.Api
 		[ProducesResponseType(StatusCodes.Status400BadRequest)]
 		[EndpointConsumer(EndpointConsumers.None)]
 		public ActionResult<Dagger> GetDaggerAtSeconds([Required] uint seconds)
-			=> GameInfo.GetDaggerFromTime(GameVersion.V31, (int)seconds * 10000);
+			=> GameInfo.GetDaggerFromTenthsOfMilliseconds(GameVersion.V31, (int)seconds * 10000);
 	}
 }
