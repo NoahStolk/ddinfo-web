@@ -194,6 +194,8 @@ namespace DevilDaggersWebsite.BlazorWasm.Server.Controllers.Public
 				Populate(newCustomEntryData, uploadRequest.GameStates);
 				_dbContext.CustomEntryData.Add(newCustomEntryData);
 
+				UpdateLeaderboardStatistics(customLeaderboard);
+
 				_dbContext.SaveChanges();
 
 				// Fetch the entries again after having modified the leaderboard.
@@ -202,8 +204,6 @@ namespace DevilDaggersWebsite.BlazorWasm.Server.Controllers.Public
 
 				await TrySendLeaderboardMessage(customLeaderboard, $"`{uploadRequest.PlayerName}` just entered the `{spawnsetName}` leaderboard!", rank, totalPlayers, uploadRequest.Time);
 				await TryLog(uploadRequest, spawnsetName);
-
-				UpdateLeaderboardStatistics(customLeaderboard);
 
 				return new GetUploadSuccess
 				{
@@ -247,15 +247,15 @@ namespace DevilDaggersWebsite.BlazorWasm.Server.Controllers.Public
 			// User is already on the leaderboard, but did not get a better score.
 			if (isAscending && customEntry.Time <= uploadRequest.Time || !isAscending && customEntry.Time >= uploadRequest.Time)
 			{
+				if (!uploadRequest.IsReplay)
+					UpdateLeaderboardStatistics(customLeaderboard);
+
 				_dbContext.SaveChanges();
 
 				// Fetch the entries again after having modified the leaderboard.
 				entries = FetchEntriesFromDatabase(customLeaderboard, isAscending);
 
 				await TryLog(uploadRequest, spawnsetName);
-
-				if (!uploadRequest.IsReplay)
-					UpdateLeaderboardStatistics(customLeaderboard);
 
 				return new GetUploadSuccess
 				{
@@ -324,6 +324,8 @@ namespace DevilDaggersWebsite.BlazorWasm.Server.Controllers.Public
 				Populate(customEntryData, uploadRequest.GameStates);
 			}
 
+			UpdateLeaderboardStatistics(customLeaderboard);
+
 			_dbContext.SaveChanges();
 
 			// Fetch the entries again after having modified the leaderboard.
@@ -331,8 +333,6 @@ namespace DevilDaggersWebsite.BlazorWasm.Server.Controllers.Public
 
 			await TrySendLeaderboardMessage(customLeaderboard, $"`{uploadRequest.PlayerName}` just got {FormatTimeString(uploadRequest.Time)} seconds on the `{spawnsetName}` leaderboard, beating their previous highscore of {FormatTimeString(uploadRequest.Time - timeDiff)} by {FormatTimeString(Math.Abs(timeDiff))} seconds!", rank, totalPlayers, uploadRequest.Time);
 			await TryLog(uploadRequest, spawnsetName);
-
-			UpdateLeaderboardStatistics(customLeaderboard);
 
 			return new GetUploadSuccess
 			{
