@@ -83,8 +83,6 @@ else
 	{
 		Dictionary<string, StringValues> query = NavigationManager.GetQuery();
 
-		query.RemoveAllUnknownQueryParameters(Enum.GetValues<QueryParameter>().Select(qp => qp.ToString()).ToArray());
-
 		_ = query.TryGetValue(nameof(QueryParameter.PageIndex), out StringValues pageIndex) && int.TryParse(pageIndex, out _pageIndex);
 		_ = query.TryGetValue(nameof(QueryParameter.PageSize), out StringValues pageSize) && int.TryParse(pageSize, out _pageSize);
 		_ = query.TryGetValue(nameof(QueryParameter.SortBy), out StringValues sortBy) && Enum.TryParse<CustomLeaderboardSorting>(sortBy, out _sortBy);

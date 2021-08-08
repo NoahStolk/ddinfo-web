@@ -3,7 +3,6 @@ using Microsoft.AspNetCore.WebUtilities;
 using Microsoft.Extensions.Primitives;
 using System;
 using System.Collections.Generic;
-using System.Linq;
 
 namespace DevilDaggersWebsite.BlazorWasm.Client.Extensions
 {
@@ -32,15 +31,6 @@ namespace DevilDaggersWebsite.BlazorWasm.Client.Extensions
 				}
 
 				navigationManager.NavigateTo(newUrl);
-			}
-		}
-
-		public static void RemoveAllUnknownQueryParameters(this Dictionary<string, StringValues> query, params string[] knownKeys)
-		{
-			foreach (string key in query.Values)
-			{
-				if (!knownKeys.Any(s => string.Equals(s, key, StringComparison.InvariantCultureIgnoreCase)))
-					query.Remove(key);
 			}
 		}
 	}
