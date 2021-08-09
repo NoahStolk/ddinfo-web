@@ -28,7 +28,7 @@ else
 
 	protected override async Task OnInitializedAsync()
 	{
-		_statistics = await Http.Client.GetFromJsonAsync<List<GetLeaderboardHistoryStatistics>>("api/leaderboard-history-statistics");
+		_statistics = await Http.GetLeaderboardHistoryStatistics();
 	}
 
 	private LineChartOptions _lco = new()

@@ -58,7 +58,7 @@ else
 
 	protected override async Task OnInitializedAsync()
 	{
-		_statistics = await Http.Client.GetFromJsonAsync<GetLeaderboardStatistics>("api/leaderboard-statistics");
+		_statistics = await Http.GetLeaderboardStatistics();
 	}
 
 	private const int _killGraphCount = 100;

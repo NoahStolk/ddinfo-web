@@ -65,7 +65,7 @@ else
 
 	protected override async Task OnInitializedAsync()
 	{
-		Players = await Http.Client.GetFromJsonAsync<List<GetPlayerForLeaderboard>>("api/players/leaderboard");
+		Players = await Http.GetPlayersForLeaderboard();
 		await FetchLeaderboard();
 	}
 
@@ -82,7 +82,7 @@ else
 			if (GetLeaderboard != null)
 				_reloading = true;
 
-			GetLeaderboard = await Http.Client.GetFromJsonAsync<GetLeaderboard>($"api/leaderboards?rankStart={Rank}");
+			GetLeaderboard = await Http.GetLeaderboard(Rank);
 			_reloading = false;
 		}
 		catch (Exception ex)

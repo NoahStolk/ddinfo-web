@@ -133,14 +133,7 @@ else
 
 	private async Task Fetch()
 	{
-		GetCustomLeaderboards = await Http.Client.GetFromJsonAsync<Page<GetCustomLeaderboardOverview>>(UrlBuilderUtils.BuildUrlWithQuery("api/custom-leaderboards", new()
-		{
-				{ QueryParameters.Category, _category },
-				{ QueryParameters.PageIndex, _pageIndex },
-				{ QueryParameters.PageSize, _pageSize },
-				{ QueryParameters.SortBy, _sortBy },
-				{ QueryParameters.Ascending, _ascending },
-			}));
+		GetCustomLeaderboards = await Http.GetCustomLeaderboards(_category, _pageIndex, _pageSize, _sortBy, _ascending);
 	}
 
 	private static class QueryParameters

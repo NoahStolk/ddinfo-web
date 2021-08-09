@@ -21,6 +21,6 @@ else
 
 	protected override async Task OnInitializedAsync()
 	{
-		GetCustomLeaderboard = await Http.Client.GetFromJsonAsync<GetCustomLeaderboard>($"api/custom-leaderboards/{Id}");
+		GetCustomLeaderboard = await Http.GetCustomLeaderboardById(Id);
 	}
 }
