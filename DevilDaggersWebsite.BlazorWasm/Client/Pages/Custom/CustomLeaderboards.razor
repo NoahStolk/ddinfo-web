@@ -56,23 +56,23 @@ else
 		<a href="" @onclick:preventDefault class="text-color-link hover:text-color-link-hover text-right hidden xl:block" @onclick="() => Sort(CustomLeaderboardSorting.TimeDevil)">Devil</a>
 		<a href="" @onclick:preventDefault class="text-color-link hover:text-color-link-hover text-right hidden xl:block" @onclick="() => Sort(CustomLeaderboardSorting.TimeLeviathan)">Leviathan</a>
 		<a href="" @onclick:preventDefault class="text-color-link hover:text-color-link-hover text-left hidden lg:block" @onclick="() => Sort(CustomLeaderboardSorting.TopPlayer)">Top player</a>
-		<a href="" @onclick:preventDefault class="text-color-link hover:text-color-link-hover text-right hidden lg:block" @onclick="() => Sort(CustomLeaderboardSorting.WorldRecord)">World record</a>
+		<a href="" @onclick:preventDefault class="text-color-link hover:text-color-link-hover text-right hidden lg:block" @onclick="() => Sort(CustomLeaderboardSorting.WorldRecord)">WR</a>
 	</div>
 	@for (int i = 0; i < GetCustomLeaderboards.Results.Count; i++)
 	{
 		GetCustomLeaderboardOverview customLeaderboard = GetCustomLeaderboards.Results[i];
 		<div class="grid gap-3 sm:grid-cols-custom-leaderboard-sm md:grid-cols-custom-leaderboard-md lg:grid-cols-custom-leaderboard-lg xl:grid-cols-custom-leaderboard-xl h-6 @(i % 2 == 0 ? "bg-gray0B" : string.Empty)">
-			<div class="text-left"><a href="/custom/leaderboard/@customLeaderboard.Id">@customLeaderboard.SpawnsetName</a></div>
-			<div class="text-left hidden md:block">@customLeaderboard.SpawnsetAuthorName</div>
-			<div class="text-left hidden md:block">@customLeaderboard.DateCreated?.ToString(FormatUtils.DateFormat)</div>
-			<div class="text-left hidden md:block">@FormatUtils.FormatDateTimeAsTimeAgo(customLeaderboard.DateLastPlayed)</div>
-			<div class="text-right hidden xl:block bronze">@customLeaderboard.TimeBronze.ToString(FormatUtils.TimeFormat)</div>
-			<div class="text-right hidden xl:block silver">@customLeaderboard.TimeSilver.ToString(FormatUtils.TimeFormat)</div>
-			<div class="text-right hidden xl:block golden">@customLeaderboard.TimeGolden.ToString(FormatUtils.TimeFormat)</div>
-			<div class="text-right hidden xl:block devil">@customLeaderboard.TimeDevil.ToString(FormatUtils.TimeFormat)</div>
-			<div class="text-right hidden xl:block leviathan">@customLeaderboard.TimeLeviathan.ToString(FormatUtils.TimeFormat)</div>
-			<div class="text-left hidden lg:block">@customLeaderboard.TopPlayer</div>
-			<div class="text-right hidden lg:block @(customLeaderboard.WorldRecordDagger.ToString().ToLower())">@customLeaderboard.WorldRecord?.ToString(FormatUtils.TimeFormat)</div>
+			<div class="overflow-x-hidden text-left"><a href="/custom/leaderboard/@customLeaderboard.Id">@customLeaderboard.SpawnsetName</a></div>
+			<div class="overflow-x-hidden text-left hidden md:block">@customLeaderboard.SpawnsetAuthorName</div>
+			<div class="overflow-x-hidden text-left hidden md:block">@customLeaderboard.DateCreated?.ToString(FormatUtils.DateFormat)</div>
+			<div class="overflow-x-hidden text-left hidden md:block">@FormatUtils.FormatDateTimeAsTimeAgo(customLeaderboard.DateLastPlayed)</div>
+			<div class="overflow-x-hidden text-right hidden xl:block bronze">@customLeaderboard.TimeBronze.ToString(FormatUtils.TimeFormat)</div>
+			<div class="overflow-x-hidden text-right hidden xl:block silver">@customLeaderboard.TimeSilver.ToString(FormatUtils.TimeFormat)</div>
+			<div class="overflow-x-hidden text-right hidden xl:block golden">@customLeaderboard.TimeGolden.ToString(FormatUtils.TimeFormat)</div>
+			<div class="overflow-x-hidden text-right hidden xl:block devil">@customLeaderboard.TimeDevil.ToString(FormatUtils.TimeFormat)</div>
+			<div class="overflow-x-hidden text-right hidden xl:block leviathan">@customLeaderboard.TimeLeviathan.ToString(FormatUtils.TimeFormat)</div>
+			<div class="overflow-x-hidden text-left hidden lg:block">@customLeaderboard.TopPlayer</div>
+			<div class="overflow-x-hidden text-right hidden lg:block @(customLeaderboard.WorldRecordDagger.ToString().ToLower())">@customLeaderboard.WorldRecord?.ToString(FormatUtils.TimeFormat)</div>
 		</div>
 	}
 }
