@@ -6,20 +6,20 @@ namespace DevilDaggersWebsite.BlazorWasm.Client.HttpClients
 {
 	[Serializable]
 #pragma warning disable RCS1194 // Implement exception constructors.
-	public class JsonSerializationException : Exception
+	public class JsonDeserializationException : Exception
 #pragma warning restore RCS1194 // Implement exception constructors.
 	{
-		public JsonSerializationException([CallerMemberName] string? methodName = null)
+		public JsonDeserializationException([CallerMemberName] string? methodName = null)
 			: base($"JSON deserialization error in {methodName}.")
 		{
 		}
 
-		public JsonSerializationException(string? message, Exception? innerException)
+		public JsonDeserializationException(string? message, Exception? innerException)
 			: base(message, innerException)
 		{
 		}
 
-		protected JsonSerializationException(SerializationInfo info, StreamingContext context)
+		protected JsonDeserializationException(SerializationInfo info, StreamingContext context)
 			: base(info, context)
 		{
 		}

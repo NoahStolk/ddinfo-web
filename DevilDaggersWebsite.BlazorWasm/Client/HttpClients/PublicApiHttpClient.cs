@@ -25,7 +25,7 @@ namespace DevilDaggersWebsite.BlazorWasm.Client.HttpClients
 
 		public async Task<GetCustomLeaderboard> GetCustomLeaderboardById(int id)
 		{
-			return await _client.GetFromJsonAsync<GetCustomLeaderboard>($"api/custom-leaderboards/{id}") ?? throw new JsonSerializationException();
+			return await _client.GetFromJsonAsync<GetCustomLeaderboard>($"api/custom-leaderboards/{id}") ?? throw new JsonDeserializationException();
 		}
 
 		public async Task<Page<GetCustomLeaderboardOverview>> GetCustomLeaderboards(CustomLeaderboardCategory category, int pageIndex, int pageSize, CustomLeaderboardSorting sortBy, bool ascending)
@@ -38,27 +38,27 @@ namespace DevilDaggersWebsite.BlazorWasm.Client.HttpClients
 				{ nameof(sortBy), sortBy },
 				{ nameof(ascending), ascending },
 			};
-			return await _client.GetFromJsonAsync<Page<GetCustomLeaderboardOverview>>(UrlBuilderUtils.BuildUrlWithQuery("api/custom-leaderboards", queryParameters)) ?? throw new JsonSerializationException();
+			return await _client.GetFromJsonAsync<Page<GetCustomLeaderboardOverview>>(UrlBuilderUtils.BuildUrlWithQuery("api/custom-leaderboards", queryParameters)) ?? throw new JsonDeserializationException();
 		}
 
 		public async Task<List<GetLeaderboardHistoryStatistics>> GetLeaderboardHistoryStatistics()
 		{
-			return await _client.GetFromJsonAsync<List<GetLeaderboardHistoryStatistics>>("api/leaderboard-history-statistics") ?? throw new JsonSerializationException();
+			return await _client.GetFromJsonAsync<List<GetLeaderboardHistoryStatistics>>("api/leaderboard-history-statistics") ?? throw new JsonDeserializationException();
 		}
 
 		public async Task<List<GetPlayerForLeaderboard>> GetPlayersForLeaderboard()
 		{
-			return await _client.GetFromJsonAsync<List<GetPlayerForLeaderboard>>("api/players/leaderboard") ?? throw new JsonSerializationException();
+			return await _client.GetFromJsonAsync<List<GetPlayerForLeaderboard>>("api/players/leaderboard") ?? throw new JsonDeserializationException();
 		}
 
 		public async Task<GetLeaderboardStatistics> GetLeaderboardStatistics()
 		{
-			return await _client.GetFromJsonAsync<GetLeaderboardStatistics>("api/leaderboard-statistics") ?? throw new JsonSerializationException();
+			return await _client.GetFromJsonAsync<GetLeaderboardStatistics>("api/leaderboard-statistics") ?? throw new JsonDeserializationException();
 		}
 
 		public async Task<GetLeaderboard> GetLeaderboard(int rankStart)
 		{
-			return await _client.GetFromJsonAsync<GetLeaderboard>(UrlBuilderUtils.BuildUrlWithQuery("api/leaderboards", new() { { nameof(rankStart), rankStart } })) ?? throw new JsonSerializationException();
+			return await _client.GetFromJsonAsync<GetLeaderboard>(UrlBuilderUtils.BuildUrlWithQuery("api/leaderboards", new() { { nameof(rankStart), rankStart } })) ?? throw new JsonDeserializationException();
 		}
 	}
 }
