@@ -13,6 +13,19 @@
 }
 else
 {
+	<Select @onchange="ChangeCategory" class="bg-gray-900 transition-colors duration-100 h-8 py-1 rounded text-color-text">
+		@foreach (CustomLeaderboardCategory e in (CustomLeaderboardCategory[])Enum.GetValues(typeof(CustomLeaderboardCategory)))
+		{
+			if (e == _category)
+			{
+				<option value="@e" selected>@e</option>
+			}
+			else
+			{
+				<option value="@e">@e</option>
+			}
+		}
+	</Select>
 	<button class="bg-gray-900 hover:bg-gray-700 transition-colors duration-100 w-8 h-8 py-1 rounded text-color-text" @onclick="() => ChangePageIndex(0)">|&lt;</button>
 	<button class="bg-gray-900 hover:bg-gray-700 transition-colors duration-100 w-8 h-8 py-1 rounded text-color-text" @onclick="() => ChangePageIndex(_pageIndex - 1)">&lt;</button>
 	<button class="bg-gray-900 hover:bg-gray-700 transition-colors duration-100 w-8 h-8 py-1 rounded text-color-text" @onclick="() => ChangePageIndex(_pageIndex + 1)">&gt;</button>
@@ -116,6 +129,14 @@ else
 		NavigationManager.AddOrModifyQueryParameter(QueryParameters.PageSize, _pageSize);
 
 		_pageIndex = Math.Clamp(_pageIndex, 0, TotalPages - 1);
+		await Fetch();
+	}
+
+	private async Task ChangeCategory(ChangeEventArgs e)
+	{
+		_ = Enum.TryParse<CustomLeaderboardCategory>(e.Value?.ToString(), out _category);
+		NavigationManager.AddOrModifyQueryParameter(QueryParameters.Category, _category);
+
 		await Fetch();
 	}
 
