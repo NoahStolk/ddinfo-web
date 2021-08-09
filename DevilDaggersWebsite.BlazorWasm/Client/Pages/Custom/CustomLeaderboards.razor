@@ -66,9 +66,9 @@ else
 
 @code
 {
-	private CustomLeaderboardCategory _category = CustomLeaderboardCategory.Default;
-	private int _pageIndex = 0;
-	private int _pageSize = PublicPagingConstants.PageSizeDefault;
+	private CustomLeaderboardCategory _category;
+	private int _pageIndex;
+	private int _pageSize;
 	private CustomLeaderboardSorting _sortBy = CustomLeaderboardSorting.SpawnsetName;
 	private bool _ascending = false;
 
@@ -80,18 +80,24 @@ else
 
 	protected override async Task OnInitializedAsync()
 	{
-		Dictionary<string, StringValues> query = NavigationManager.GetQuery();
+		foreach (CustomLeaderboardSorting e in (CustomLeaderboardSorting[])Enum.GetValues(typeof(CustomLeaderboardSorting)))
+			_sortings.Add(e, false);
 
+		Dictionary<string, StringValues> query = NavigationManager.GetQuery();
+		_category = query.GetEnumOrDefault<CustomLeaderboardCategory>(nameof(QueryParameter.Category));
 		_pageIndex = query.GetIntOrDefault(nameof(QueryParameter.PageIndex));
 		_pageSize = query.GetIntOrDefault(nameof(QueryParameter.PageSize));
 		_sortBy = query.GetEnumOrDefault<CustomLeaderboardSorting>(nameof(QueryParameter.SortBy));
 		_ascending = query.GetBoolOrDefault(nameof(QueryParameter.Ascending));
 
+		if (_category == default)
+			_category = CustomLeaderboardCategory.Default;
+
+		if (_pageIndex < 0)
+			_pageIndex = 0;
+
 		if (_pageSize < PublicPagingConstants.PageSizeMin || _pageSize > PublicPagingConstants.PageSizeMax)
 			_pageSize = PublicPagingConstants.PageSizeDefault;
-
-		foreach (CustomLeaderboardSorting e in (CustomLeaderboardSorting[])Enum.GetValues(typeof(CustomLeaderboardSorting)))
-			_sortings.Add(e, false);
 
 		await Fetch();
 	}
@@ -116,10 +122,10 @@ else
 	private async Task Sort(CustomLeaderboardSorting sortBy)
 	{
 		_sortBy = sortBy;
-		NavigationManager.AddOrModifyQueryParameter(nameof(QueryParameter.SortBy), _sortBy);
-
 		_sortings[sortBy] = !_sortings[sortBy];
 		_ascending = _sortings[sortBy];
+
+		NavigationManager.AddOrModifyQueryParameter(nameof(QueryParameter.SortBy), _sortBy);
 		NavigationManager.AddOrModifyQueryParameter(nameof(QueryParameter.Ascending), _ascending);
 
 		await Fetch();
@@ -132,6 +138,7 @@ else
 
 	private enum QueryParameter
 	{
+		Category,
 		PageIndex,
 		PageSize,
 		SortBy,
