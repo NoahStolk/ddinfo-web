@@ -1,4 +1,4 @@
-﻿using DevilDaggersWebsite.BlazorWasm.Server.Enumerators;
+﻿using DevilDaggersWebsite.BlazorWasm.Server.Enums;
 using System;
 
 namespace DevilDaggersWebsite.BlazorWasm.Server.Transients

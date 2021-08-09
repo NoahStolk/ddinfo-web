@@ -1,4 +1,4 @@
-﻿using DevilDaggersWebsite.BlazorWasm.Server.Enumerators;
+﻿using DevilDaggersWebsite.BlazorWasm.Server.Enums;
 using DevilDaggersWebsite.BlazorWasm.Server.Exceptions;
 using DevilDaggersWebsite.BlazorWasm.Server.Transients;
 using Newtonsoft.Json;

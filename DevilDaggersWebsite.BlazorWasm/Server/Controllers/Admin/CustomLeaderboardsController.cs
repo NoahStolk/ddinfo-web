@@ -1,7 +1,7 @@
 ﻿using DevilDaggersCore.Spawnsets;
 using DevilDaggersWebsite.BlazorWasm.Server.Converters.Admin;
 using DevilDaggersWebsite.BlazorWasm.Server.Entities;
-using DevilDaggersWebsite.BlazorWasm.Server.Enumerators;
+using DevilDaggersWebsite.BlazorWasm.Server.Enums;
 using DevilDaggersWebsite.BlazorWasm.Server.Extensions;
 using DevilDaggersWebsite.BlazorWasm.Server.Singletons.AuditLog;
 using DevilDaggersWebsite.BlazorWasm.Server.Transients;

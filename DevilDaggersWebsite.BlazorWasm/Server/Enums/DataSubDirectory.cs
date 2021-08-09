@@ -1,4 +1,4 @@
-﻿namespace DevilDaggersWebsite.BlazorWasm.Server.Enumerators
+﻿namespace DevilDaggersWebsite.BlazorWasm.Server.Enums
 {
 	public enum DataSubDirectory
 	{

@@ -3,7 +3,7 @@ using DevilDaggersWebsite.BlazorWasm.Server.Caches.SpawnsetData;
 using DevilDaggersWebsite.BlazorWasm.Server.Controllers.Attributes;
 using DevilDaggersWebsite.BlazorWasm.Server.Converters.Public;
 using DevilDaggersWebsite.BlazorWasm.Server.Entities;
-using DevilDaggersWebsite.BlazorWasm.Server.Enumerators;
+using DevilDaggersWebsite.BlazorWasm.Server.Enums;
 using DevilDaggersWebsite.BlazorWasm.Server.Transients;
 using DevilDaggersWebsite.BlazorWasm.Shared.Dto.Public.Spawnsets;
 using Microsoft.AspNetCore.Http;

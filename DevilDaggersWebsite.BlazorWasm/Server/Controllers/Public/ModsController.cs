@@ -2,7 +2,7 @@
 using DevilDaggersWebsite.BlazorWasm.Server.Caches.ModArchive;
 using DevilDaggersWebsite.BlazorWasm.Server.Controllers.Attributes;
 using DevilDaggersWebsite.BlazorWasm.Server.Entities;
-using DevilDaggersWebsite.BlazorWasm.Server.Enumerators;
+using DevilDaggersWebsite.BlazorWasm.Server.Enums;
 using DevilDaggersWebsite.BlazorWasm.Server.Transients;
 using DevilDaggersWebsite.BlazorWasm.Shared.Dto.Public.Mods;
 using DevilDaggersWebsite.BlazorWasm.Shared.Enums;

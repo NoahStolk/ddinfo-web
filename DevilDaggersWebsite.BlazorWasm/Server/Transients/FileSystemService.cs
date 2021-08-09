@@ -1,4 +1,4 @@
-﻿using DevilDaggersWebsite.BlazorWasm.Server.Enumerators;
+﻿using DevilDaggersWebsite.BlazorWasm.Server.Enums;
 using DevilDaggersWebsite.BlazorWasm.Server.Utils;
 using System;
 using System.IO;

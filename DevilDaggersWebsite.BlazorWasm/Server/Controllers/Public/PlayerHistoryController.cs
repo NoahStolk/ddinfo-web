@@ -1,6 +1,6 @@
 ﻿using DevilDaggersWebsite.BlazorWasm.Server.Caches.LeaderboardHistory;
 using DevilDaggersWebsite.BlazorWasm.Server.Controllers.Attributes;
-using DevilDaggersWebsite.BlazorWasm.Server.Enumerators;
+using DevilDaggersWebsite.BlazorWasm.Server.Enums;
 using DevilDaggersWebsite.BlazorWasm.Server.Transients;
 using DevilDaggersWebsite.BlazorWasm.Shared.Dto.Public.LeaderboardHistory;
 using DevilDaggersWebsite.BlazorWasm.Shared.Dto.Public.PlayerHistory;
