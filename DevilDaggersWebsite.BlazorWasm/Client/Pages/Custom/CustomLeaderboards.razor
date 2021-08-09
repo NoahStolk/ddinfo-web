@@ -84,11 +84,11 @@ else
 			_sortings.Add(e, false);
 
 		Dictionary<string, StringValues> query = NavigationManager.GetQuery();
-		_category = query.GetEnumOrDefault<CustomLeaderboardCategory>(nameof(QueryParameter.Category));
-		_pageIndex = query.GetIntOrDefault(nameof(QueryParameter.PageIndex));
-		_pageSize = query.GetIntOrDefault(nameof(QueryParameter.PageSize));
-		_sortBy = query.GetEnumOrDefault<CustomLeaderboardSorting>(nameof(QueryParameter.SortBy));
-		_ascending = query.GetBoolOrDefault(nameof(QueryParameter.Ascending));
+		_category = query.GetEnumOrDefault<CustomLeaderboardCategory>(QueryParameters.Category);
+		_pageIndex = query.GetIntOrDefault(QueryParameters.PageIndex);
+		_pageSize = query.GetIntOrDefault(QueryParameters.PageSize);
+		_sortBy = query.GetEnumOrDefault<CustomLeaderboardSorting>(QueryParameters.SortBy);
+		_ascending = query.GetBoolOrDefault(QueryParameters.Ascending);
 
 		if (_category == default)
 			_category = CustomLeaderboardCategory.Default;
@@ -105,7 +105,7 @@ else
 	private async Task ChangePageIndex(int pageIndex)
 	{
 		_pageIndex = Math.Clamp(pageIndex, 0, TotalPages - 1);
-		NavigationManager.AddOrModifyQueryParameter(nameof(QueryParameter.PageIndex), _pageIndex);
+		NavigationManager.AddOrModifyQueryParameter(QueryParameters.PageIndex, _pageIndex);
 
 		await Fetch();
 	}
@@ -113,7 +113,7 @@ else
 	private async Task ChangePageSize(ChangeEventArgs e)
 	{
 		_ = int.TryParse(e.Value?.ToString(), out _pageSize);
-		NavigationManager.AddOrModifyQueryParameter(nameof(QueryParameter.PageSize), _pageSize);
+		NavigationManager.AddOrModifyQueryParameter(QueryParameters.PageSize, _pageSize);
 
 		_pageIndex = Math.Clamp(_pageIndex, 0, TotalPages - 1);
 		await Fetch();
@@ -125,23 +125,30 @@ else
 		_sortings[sortBy] = !_sortings[sortBy];
 		_ascending = _sortings[sortBy];
 
-		NavigationManager.AddOrModifyQueryParameter(nameof(QueryParameter.SortBy), _sortBy);
-		NavigationManager.AddOrModifyQueryParameter(nameof(QueryParameter.Ascending), _ascending);
+		NavigationManager.AddOrModifyQueryParameter(QueryParameters.SortBy, _sortBy);
+		NavigationManager.AddOrModifyQueryParameter(QueryParameters.Ascending, _ascending);
 
 		await Fetch();
 	}
 
 	private async Task Fetch()
 	{
-		GetCustomLeaderboards = await Http.Client.GetFromJsonAsync<Page<GetCustomLeaderboardOverview>>($"api/custom-leaderboards?categoryFilter={_category}&pageIndex={_pageIndex}&pageSize={_pageSize}&sortBy={_sortBy}&ascending={_ascending}");
+		GetCustomLeaderboards = await Http.Client.GetFromJsonAsync<Page<GetCustomLeaderboardOverview>>(UrlBuilderUtils.BuildUrlWithQuery("api/custom-leaderboards", new()
+		{
+				{ QueryParameters.Category, _category },
+				{ QueryParameters.PageIndex, _pageIndex },
+				{ QueryParameters.PageSize, _pageSize },
+				{ QueryParameters.SortBy, _sortBy },
+				{ QueryParameters.Ascending, _ascending },
+			}));
 	}
 
-	private enum QueryParameter
+	private static class QueryParameters
 	{
-		Category,
-		PageIndex,
-		PageSize,
-		SortBy,
-		Ascending,
+		public static string Category { get; } = nameof(Category);
+		public static string PageIndex { get; } = nameof(PageIndex);
+		public static string PageSize { get; } = nameof(PageSize);
+		public static string SortBy { get; } = nameof(SortBy);
+		public static string Ascending { get; } = nameof(Ascending);
 	}
 }

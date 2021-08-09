@@ -30,7 +30,7 @@ namespace DevilDaggersWebsite.BlazorWasm.Server.Controllers.Public
 		[ProducesResponseType(StatusCodes.Status200OK)]
 		[ProducesResponseType(StatusCodes.Status400BadRequest)]
 		public ActionResult<Page<GetCustomLeaderboardOverview>> GetCustomLeaderboards(
-			CustomLeaderboardCategory categoryFilter,
+			CustomLeaderboardCategory category,
 			[Range(0, 1000)] int pageIndex = 0,
 			[Range(PublicPagingConstants.PageSizeMin, PublicPagingConstants.PageSizeMax)] int pageSize = PublicPagingConstants.PageSizeDefault,
 			CustomLeaderboardSorting? sortBy = null,
@@ -41,7 +41,7 @@ namespace DevilDaggersWebsite.BlazorWasm.Server.Controllers.Public
 				.Where(cl => !cl.IsArchived)
 				.Include(cl => cl.SpawnsetFile)
 					.ThenInclude(sf => sf.Player)
-				.Where(cl => !cl.IsArchived && categoryFilter == cl.Category);
+				.Where(cl => !cl.IsArchived && category == cl.Category);
 
 			customLeaderboardsQuery = sortBy switch
 			{
@@ -66,7 +66,7 @@ namespace DevilDaggersWebsite.BlazorWasm.Server.Controllers.Public
 				.Include(ce => ce.Player)
 				.Select(ce => new { ce.Time, ce.Player.PlayerName, ce.CustomLeaderboardId });
 
-			if (categoryFilter.IsAscending())
+			if (category.IsAscending())
 				customEntries = customEntries.OrderBy(wr => wr.Time);
 			else
 				customEntries = customEntries.OrderByDescending(wr => wr.Time);
