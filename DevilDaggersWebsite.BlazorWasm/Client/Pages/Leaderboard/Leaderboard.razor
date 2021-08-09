@@ -1,5 +1,6 @@
 ﻿@page "/leaderboard"
 @inject PublicApiHttpClient Http
+@inject NavigationManager NavigationManager
 @using DevilDaggersWebsite.BlazorWasm.Shared.Dto.Public.Leaderboards
 @using DevilDaggersWebsite.BlazorWasm.Shared.Dto.Public.Players
 @using DevilDaggersWebsite.BlazorWasm.Client.Components.Leaderboards
@@ -65,6 +66,9 @@ else
 
 	protected override async Task OnInitializedAsync()
 	{
+		Dictionary<string, StringValues> query = NavigationManager.GetQuery();
+		Rank = Math.Clamp(query.GetIntOrDefault(QueryParameters.Rank), 1, _maxRank);
+
 		Players = await Http.GetPlayersForLeaderboard();
 		await FetchLeaderboard();
 	}
@@ -72,6 +76,8 @@ else
 	private async Task SetRank(int value)
 	{
 		Rank = Math.Clamp(value, 1, _maxRank);
+		NavigationManager.AddOrModifyQueryParameter(QueryParameters.Rank, Rank);
+
 		await FetchLeaderboard();
 	}
 
@@ -98,5 +104,10 @@ else
 		{
 			await FetchLeaderboard();
 		}
+	}
+
+	private static class QueryParameters
+	{
+		public static string Rank { get; } = nameof(Rank);
 	}
 }
