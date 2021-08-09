@@ -1,7 +1,7 @@
 ﻿using DevilDaggersWebsite.BlazorWasm.Server.Clients.Leaderboard;
-using DevilDaggersWebsite.BlazorWasm.Shared;
 using DevilDaggersWebsite.BlazorWasm.Shared.Dto.Public.Leaderboards;
 using DevilDaggersWebsite.BlazorWasm.Shared.Enums;
+using DevilDaggersWebsite.BlazorWasm.Shared.Extensions;
 
 namespace DevilDaggersWebsite.BlazorWasm.Server.Converters.Public
 {

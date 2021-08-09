@@ -2,9 +2,9 @@
 using DevilDaggersWebsite.BlazorWasm.Server.Controllers.Attributes;
 using DevilDaggersWebsite.BlazorWasm.Server.Enums;
 using DevilDaggersWebsite.BlazorWasm.Server.Transients;
-using DevilDaggersWebsite.BlazorWasm.Shared;
 using DevilDaggersWebsite.BlazorWasm.Shared.Dto.Public.LeaderboardHistory;
 using DevilDaggersWebsite.BlazorWasm.Shared.Dto.Public.LeaderboardHistoryStatistics;
+using DevilDaggersWebsite.BlazorWasm.Shared.Extensions;
 using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
 using System;

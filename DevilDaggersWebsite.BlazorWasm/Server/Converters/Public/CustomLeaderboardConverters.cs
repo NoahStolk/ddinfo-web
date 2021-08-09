@@ -1,8 +1,8 @@
 ﻿using DevilDaggersWebsite.BlazorWasm.Server.Entities;
 using DevilDaggersWebsite.BlazorWasm.Server.Extensions;
-using DevilDaggersWebsite.BlazorWasm.Shared;
 using DevilDaggersWebsite.BlazorWasm.Shared.Constants;
 using DevilDaggersWebsite.BlazorWasm.Shared.Dto.Public.CustomLeaderboards;
+using DevilDaggersWebsite.BlazorWasm.Shared.Extensions;
 
 namespace DevilDaggersWebsite.BlazorWasm.Server.Converters.Public
 {

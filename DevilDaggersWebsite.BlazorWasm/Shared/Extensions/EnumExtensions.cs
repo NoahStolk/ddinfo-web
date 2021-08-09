@@ -2,7 +2,7 @@
 using System.Collections.Generic;
 using System.Linq;
 
-namespace DevilDaggersWebsite.BlazorWasm.Shared
+namespace DevilDaggersWebsite.BlazorWasm.Shared.Extensions
 {
 	public static class EnumExtensions
 	{

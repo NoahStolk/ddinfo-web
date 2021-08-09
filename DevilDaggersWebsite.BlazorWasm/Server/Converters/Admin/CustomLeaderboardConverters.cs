@@ -1,6 +1,6 @@
 ﻿using DevilDaggersWebsite.BlazorWasm.Server.Entities;
-using DevilDaggersWebsite.BlazorWasm.Shared;
 using DevilDaggersWebsite.BlazorWasm.Shared.Dto.Admin.CustomLeaderboards;
+using DevilDaggersWebsite.BlazorWasm.Shared.Extensions;
 
 namespace DevilDaggersWebsite.BlazorWasm.Server.Converters.Admin
 {

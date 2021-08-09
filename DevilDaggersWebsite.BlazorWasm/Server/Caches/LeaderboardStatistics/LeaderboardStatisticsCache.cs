@@ -4,6 +4,7 @@ using DevilDaggersWebsite.BlazorWasm.Server.HostedServices.DdInfoDiscordBot;
 using DevilDaggersWebsite.BlazorWasm.Server.Singletons;
 using DevilDaggersWebsite.BlazorWasm.Server.Transients;
 using DevilDaggersWebsite.BlazorWasm.Shared;
+using DevilDaggersWebsite.BlazorWasm.Shared.Extensions;
 using System.Collections.Generic;
 using System.IO;
 using System.Linq;
