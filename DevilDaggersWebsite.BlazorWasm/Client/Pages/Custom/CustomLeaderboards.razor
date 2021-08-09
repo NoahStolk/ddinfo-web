@@ -4,7 +4,6 @@
 @using DevilDaggersWebsite.BlazorWasm.Shared.Dto.Public.CustomLeaderboards
 @using DevilDaggersWebsite.BlazorWasm.Shared.Enums.Sortings.Public
 @using DevilDaggersWebsite.BlazorWasm.Shared.Enums
-@using Microsoft.Extensions.Primitives
 
 <h1 class="text-red text-2xl">Custom Leaderboards</h1>
 
@@ -83,10 +82,10 @@ else
 	{
 		Dictionary<string, StringValues> query = NavigationManager.GetQuery();
 
-		_ = query.TryGetValue(nameof(QueryParameter.PageIndex), out StringValues pageIndex) && int.TryParse(pageIndex, out _pageIndex);
-		_ = query.TryGetValue(nameof(QueryParameter.PageSize), out StringValues pageSize) && int.TryParse(pageSize, out _pageSize);
-		_ = query.TryGetValue(nameof(QueryParameter.SortBy), out StringValues sortBy) && Enum.TryParse<CustomLeaderboardSorting>(sortBy, out _sortBy);
-		_ = query.TryGetValue(nameof(QueryParameter.Ascending), out StringValues ascending) && bool.TryParse(ascending, out _ascending);
+		_pageIndex = query.GetIntOrDefault(nameof(QueryParameter.PageIndex));
+		_pageSize = query.GetIntOrDefault(nameof(QueryParameter.PageSize));
+		_sortBy = query.GetEnumOrDefault<CustomLeaderboardSorting>(nameof(QueryParameter.SortBy));
+		_ascending = query.GetBoolOrDefault(nameof(QueryParameter.Ascending));
 
 		if (_pageSize < PublicPagingConstants.PageSizeMin || _pageSize > PublicPagingConstants.PageSizeMax)
 			_pageSize = PublicPagingConstants.PageSizeDefault;
@@ -100,7 +99,7 @@ else
 	private async Task ChangePageIndex(int pageIndex)
 	{
 		_pageIndex = Math.Clamp(pageIndex, 0, TotalPages - 1);
-		NavigationManager.AddOrModifyQueryParameter(nameof(QueryParameter.PageIndex), _pageIndex.ToString());
+		NavigationManager.AddOrModifyQueryParameter(nameof(QueryParameter.PageIndex), _pageIndex);
 
 		await Fetch();
 	}
@@ -108,7 +107,7 @@ else
 	private async Task ChangePageSize(ChangeEventArgs e)
 	{
 		_ = int.TryParse(e.Value?.ToString(), out _pageSize);
-		NavigationManager.AddOrModifyQueryParameter(nameof(QueryParameter.PageSize), _pageSize.ToString());
+		NavigationManager.AddOrModifyQueryParameter(nameof(QueryParameter.PageSize), _pageSize);
 
 		_pageIndex = Math.Clamp(_pageIndex, 0, TotalPages - 1);
 		await Fetch();
@@ -117,11 +116,11 @@ else
 	private async Task Sort(CustomLeaderboardSorting sortBy)
 	{
 		_sortBy = sortBy;
-		NavigationManager.AddOrModifyQueryParameter(nameof(QueryParameter.SortBy), _sortBy.ToString());
+		NavigationManager.AddOrModifyQueryParameter(nameof(QueryParameter.SortBy), _sortBy);
 
 		_sortings[sortBy] = !_sortings[sortBy];
 		_ascending = _sortings[sortBy];
-		NavigationManager.AddOrModifyQueryParameter(nameof(QueryParameter.Ascending), _ascending.ToString());
+		NavigationManager.AddOrModifyQueryParameter(nameof(QueryParameter.Ascending), _ascending);
 
 		await Fetch();
 	}

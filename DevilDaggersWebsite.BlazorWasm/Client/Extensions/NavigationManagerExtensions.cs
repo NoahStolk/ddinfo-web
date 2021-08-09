@@ -11,13 +11,13 @@ namespace DevilDaggersWebsite.BlazorWasm.Client.Extensions
 		public static Dictionary<string, StringValues> GetQuery(this NavigationManager navigationManager)
 			=> QueryHelpers.ParseQuery(navigationManager.ToAbsoluteUri(navigationManager.Uri).Query);
 
-		public static void AddOrModifyQueryParameter(this NavigationManager navigationManager, string key, StringValues value)
+		public static void AddOrModifyQueryParameter(this NavigationManager navigationManager, string key, object value)
 		{
 			Dictionary<string, StringValues> query = navigationManager.GetQuery();
 
 			if (!query.ContainsKey(key))
 			{
-				navigationManager.NavigateTo(QueryHelpers.AddQueryString(navigationManager.Uri, key, value));
+				navigationManager.NavigateTo(QueryHelpers.AddQueryString(navigationManager.Uri, key, value.ToString()));
 			}
 			else
 			{
@@ -25,7 +25,7 @@ namespace DevilDaggersWebsite.BlazorWasm.Client.Extensions
 				foreach (KeyValuePair<string, StringValues> kvp in query)
 				{
 					if (kvp.Key == key)
-						newUrl = QueryHelpers.AddQueryString(newUrl, key, value);
+						newUrl = QueryHelpers.AddQueryString(newUrl, key, value.ToString());
 					else
 						newUrl = QueryHelpers.AddQueryString(newUrl, kvp.Key, kvp.Value);
 				}
