@@ -2,6 +2,7 @@
 using DevilDaggersWebsite.BlazorWasm.Server.Extensions;
 using DevilDaggersWebsite.BlazorWasm.Shared.Constants;
 using DevilDaggersWebsite.BlazorWasm.Shared.Dto.Public.CustomLeaderboards;
+using DevilDaggersWebsite.BlazorWasm.Shared.Enums;
 using DevilDaggersWebsite.BlazorWasm.Shared.Extensions;
 
 namespace DevilDaggersWebsite.BlazorWasm.Server.Converters.Public
@@ -37,6 +38,7 @@ namespace DevilDaggersWebsite.BlazorWasm.Server.Converters.Public
 			DateLastPlayed = customLeaderboard.DateLastPlayed,
 			TopPlayer = topPlayer,
 			WorldRecord = worldRecord.ToSecondsTime(),
+			WorldRecordDagger = worldRecord.HasValue ? customLeaderboard.GetDaggerFromTime(worldRecord.Value) : CustomLeaderboardDagger.Default,
 		};
 
 		public static GetCustomLeaderboard ToGetCustomLeaderboard(this CustomLeaderboard customLeaderboard) => new()

@@ -72,7 +72,7 @@ else
 			<div class="text-right hidden xl:block devil">@customLeaderboard.TimeDevil.ToString(FormatUtils.TimeFormat)</div>
 			<div class="text-right hidden xl:block leviathan">@customLeaderboard.TimeLeviathan.ToString(FormatUtils.TimeFormat)</div>
 			<div class="text-left hidden lg:block">@customLeaderboard.TopPlayer</div>
-			<div class="text-right hidden lg:block">@customLeaderboard.WorldRecord?.ToString(FormatUtils.TimeFormat)</div>
+			<div class="text-right hidden lg:block @(customLeaderboard.WorldRecordDagger.ToString().ToLower())">@customLeaderboard.WorldRecord?.ToString(FormatUtils.TimeFormat)</div>
 		</div>
 	}
 }
