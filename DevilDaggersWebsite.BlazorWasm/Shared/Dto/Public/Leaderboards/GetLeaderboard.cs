@@ -21,6 +21,6 @@ namespace DevilDaggersWebsite.BlazorWasm.Shared.Dto.Public.Leaderboards
 
 		public ulong DaggersFiredGlobal { get; init; }
 
-		public List<GetEntry> Entries { get; init; } = new();
+		public List<GetEntry> Entries { get; set; } = new();
 	}
 }
