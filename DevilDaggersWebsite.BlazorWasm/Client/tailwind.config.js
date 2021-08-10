@@ -24,7 +24,7 @@ module.exports = {
 				'underline-silver': '#9CA4AA',
 				'underline-bronze': '#765A46',
 				'underline-default': '#434343',
-				'tooltip-background': '#000b'
+				'tooltip-background': '#000b',
 			},
 			gridTemplateColumns: {
 				'admin-custom-entries': createMinmaxGrid([1, 4, 3, 1.5, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 3, 2.5, 1, 1]),
@@ -46,11 +46,12 @@ module.exports = {
 			},
 			maxHeight: {
 				'screen-half': '50vh',
+				'lb-name': '1.5rem',
 			}
 		},
 		fontFamily: {
 			'calibri': ['calibri', 'sans-serif'],
-			'goethe': ['goethe']
+			'goethe': ['goethe'],
 		}
 	}
 };
