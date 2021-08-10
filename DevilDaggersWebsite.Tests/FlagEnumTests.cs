@@ -89,5 +89,12 @@ namespace DevilDaggersWebsite.Tests
 			Assert.IsTrue(list.Contains((int)TestFlag.M));
 			Assert.IsTrue(list.Contains((int)TestFlag.N));
 		}
+
+		[TestMethod]
+		public void TestListToFlagEnum()
+		{
+			List<int> list = new() { 1, 2, 4, 8 };
+			Assert.AreEqual(TestFlag.A | TestFlag.B | TestFlag.C | TestFlag.D, list.ToFlagEnum<TestFlag>());
+		}
 	}
 }
