@@ -1,14 +1,22 @@
 ﻿<li class="pl-3 py-1 @CssClass">
-	<NavLink href="@Href" Match="Match">
+	<NavLink href="@Href" Match="Match" @onclick="CloseMenu">
 		<Icon Type="@IconType" Text="@Text" />
 	</NavLink>
 </li>
 
 @code
 {
+	[CascadingParameter] NavMenu NavMenu { get; set; } = null!;
+
 	[Parameter] public string Href { get; set; } = null!;
 	[Parameter] public string? CssClass { get; set; }
 	[Parameter] public string IconType { get; set; } = null!;
 	[Parameter] public string Text { get; set; } = null!;
 	[Parameter] public NavLinkMatch Match { get; set; }
+
+	private void CloseMenu()
+	{
+		NavMenu.ShowNavMenu = false;
+		NavMenu.UpdateState();
+	}
 }
