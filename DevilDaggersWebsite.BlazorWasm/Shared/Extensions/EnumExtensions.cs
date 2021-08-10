@@ -7,9 +7,12 @@ namespace DevilDaggersWebsite.BlazorWasm.Shared.Extensions
 	public static class EnumExtensions
 	{
 		public static IEnumerable<int> AsEnumerable<TEnum>(this TEnum e)
-			where TEnum : Enum
+			where TEnum : struct, Enum
 		{
-			for (int i = 1; i < 128; i *= 2)
+			int count = Enum.GetValues<TEnum>().Length;
+			int max = 1 << (count - 1);
+
+			for (int i = 1; i < max; i <<= 1)
 			{
 				if (((int)(object)e & i) != 0)
 					yield return i;
