@@ -9,7 +9,6 @@ namespace DevilDaggersWebsite.BlazorWasm.Server.Converters.Admin
 		{
 			Id = title.Id,
 			Name = title.Name,
-			PlayerIds = title.PlayerTitles.ConvertAll(pt => pt.PlayerId),
 		};
 	}
 }

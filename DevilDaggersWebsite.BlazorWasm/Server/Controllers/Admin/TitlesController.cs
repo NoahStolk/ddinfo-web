@@ -6,6 +6,7 @@ using DevilDaggersWebsite.BlazorWasm.Shared;
 using DevilDaggersWebsite.BlazorWasm.Shared.Constants;
 using DevilDaggersWebsite.BlazorWasm.Shared.Dto;
 using DevilDaggersWebsite.BlazorWasm.Shared.Dto.Admin.Titles;
+using DevilDaggersWebsite.BlazorWasm.Shared.Enums.Sortings.Admin;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
@@ -36,15 +37,16 @@ namespace DevilDaggersWebsite.BlazorWasm.Server.Controllers.Admin
 		public ActionResult<Page<GetTitle>> GetTitles(
 			[Range(0, 1000)] int pageIndex = 0,
 			[Range(AdminPagingConstants.PageSizeMin, AdminPagingConstants.PageSizeMax)] int pageSize = AdminPagingConstants.PageSizeDefault,
-			string? sortBy = null,
+			TitleSorting? sortBy = null,
 			bool ascending = false)
 		{
-			IQueryable<Title> titlesQuery = _dbContext.Titles
-				.AsNoTracking()
-				.Include(t => t.PlayerTitles);
+			IQueryable<Title> titlesQuery = _dbContext.Titles.AsNoTracking();
 
-			if (sortBy != null)
-				titlesQuery = titlesQuery.OrderByMember(sortBy, ascending);
+			titlesQuery = sortBy switch
+			{
+				TitleSorting.Name => titlesQuery.OrderBy(s => s.Name, ascending),
+				_ => titlesQuery.OrderBy(s => s.Id, ascending),
+			};
 
 			List<Title> titles = titlesQuery
 				.Skip(pageIndex * pageSize)
