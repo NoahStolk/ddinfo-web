@@ -6,13 +6,15 @@
 
 <AuthorizeView>
 	<Authorized>
-		<a class="text-color-link hover:text-color-link-hover" href="authentication/profile">Hello, @context.User.Identity?.Name!</a>
-		<button class="nav-link btn btn-link" @onclick="BeginSignOut">Log out</button>
+		<div class="p-4 bg-gray22">
+			<a class="text-color-link hover:text-color-link-hover" href="authentication/profile">Hello, @context.User.Identity?.Name!</a>
+			<button class="nav-link btn btn-link" @onclick="BeginSignOut">Log out</button>
+		</div>
 	</Authorized>
-	<NotAuthorized>
-		<a class="text-color-link hover:text-color-link-hover" href="authentication/register">Register</a>
-		<a class="text-color-link hover:text-color-link-hover" href="authentication/login">Log in</a>
-	</NotAuthorized>
+	@*<NotAuthorized>
+			<a class="text-color-link hover:text-color-link-hover" href="authentication/register">Register</a>
+			<a class="text-color-link hover:text-color-link-hover" href="authentication/login">Log in</a>
+		</NotAuthorized>*@
 </AuthorizeView>
 
 @code
