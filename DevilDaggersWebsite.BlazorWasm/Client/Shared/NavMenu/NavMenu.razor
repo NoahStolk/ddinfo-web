@@ -38,16 +38,20 @@
 			<NavItem Href="guides/survival-editor" CssClass="text-lg" IconType="grid-three-up" Text="Survival Editor" />
 			<NavItem Href="guides/asset-editor" CssClass="text-lg" IconType="brush" Text="Asset Editor" />
 		</NavDropdown>
-		<NavDropdown NavMenu="this" Text="Admin">
-			<NavItem Href="admin/custom-entries" CssClass="text-lg" IconType="ellipses" Text="Custom Entries" />
-			<NavItem Href="admin/custom-leaderboards" CssClass="text-lg" IconType="list" Text="Custom Leaderboards" />
-			<NavItem Href="admin/donations" CssClass="text-lg" IconType="heart" Text="Donations" />
-			<NavItem Href="admin/mods" CssClass="text-lg" IconType="brush" Text="Mods" />
-			<NavItem Href="admin/players" CssClass="text-lg" IconType="people" Text="Players" />
-			<NavItem Href="admin/spawnsets" CssClass="text-lg" IconType="grid-three-up" Text="Spawnsets" />
-			<NavItem Href="admin/titles" CssClass="text-lg" IconType="badge" Text="Titles" />
-			<NavItem Href="admin/users" CssClass="text-lg" IconType="person" Text="Users" />
-		</NavDropdown>
+		<AuthorizeView>
+			<Authorized>
+				<NavDropdown NavMenu="this" Text="Admin">
+					<NavItem Href="admin/custom-entries" CssClass="text-lg" IconType="ellipses" Text="Custom Entries" />
+					<NavItem Href="admin/custom-leaderboards" CssClass="text-lg" IconType="list" Text="Custom Leaderboards" />
+					<NavItem Href="admin/donations" CssClass="text-lg" IconType="heart" Text="Donations" />
+					<NavItem Href="admin/mods" CssClass="text-lg" IconType="brush" Text="Mods" />
+					<NavItem Href="admin/players" CssClass="text-lg" IconType="people" Text="Players" />
+					<NavItem Href="admin/spawnsets" CssClass="text-lg" IconType="grid-three-up" Text="Spawnsets" />
+					<NavItem Href="admin/titles" CssClass="text-lg" IconType="badge" Text="Titles" />
+					<NavItem Href="admin/users" CssClass="text-lg" IconType="person" Text="Users" />
+				</NavDropdown>
+			</Authorized>
+		</AuthorizeView>
 		<NavItem Href="donations" CssClass="text-xl" IconType="heart" Text="Donations" />
 		<NavItem Href="swagger/index.html" CssClass="text-xl" IconType="link-intact" Text="API" />
 	</ul>
