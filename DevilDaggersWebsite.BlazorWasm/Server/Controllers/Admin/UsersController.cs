@@ -5,6 +5,7 @@ using DevilDaggersWebsite.BlazorWasm.Shared;
 using DevilDaggersWebsite.BlazorWasm.Shared.Constants;
 using DevilDaggersWebsite.BlazorWasm.Shared.Dto;
 using DevilDaggersWebsite.BlazorWasm.Shared.Dto.Admin.Users;
+using DevilDaggersWebsite.BlazorWasm.Shared.Enums.Sortings.Admin;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Identity;
@@ -36,15 +37,19 @@ namespace DevilDaggersWebsite.BlazorWasm.Server.Controllers.Admin
 		public ActionResult<Page<GetUser>> GetUsers(
 			[Range(0, 1000)] int pageIndex = 0,
 			[Range(AdminPagingConstants.PageSizeMin, AdminPagingConstants.PageSizeMax)] int pageSize = AdminPagingConstants.PageSizeDefault,
-			string? sortBy = null,
+			UserSorting? sortBy = null,
 			bool ascending = false)
 		{
 			var usersQuery = _dbContext.Users
 				.AsNoTracking()
 				.Select(u => new { u.Id, u.UserName });
 
-			if (sortBy != null)
-				usersQuery = usersQuery.OrderByMember(sortBy, ascending);
+			usersQuery = sortBy switch
+			{
+				// TODO: Implement sorting for roles.
+				UserSorting.UserName => usersQuery.OrderBy(s => s.UserName, ascending),
+				_ => usersQuery.OrderBy(s => s.Id, ascending),
+			};
 
 			var users = usersQuery
 				.Skip(pageIndex * pageSize)
