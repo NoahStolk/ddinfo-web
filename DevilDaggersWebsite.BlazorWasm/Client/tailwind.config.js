@@ -39,10 +39,10 @@ module.exports = {
 				'custom-leaderboard-lg': createMinmaxGrid([2, 2, 1, 2, 2, 1]),
 				'custom-leaderboard-md': createMinmaxGrid([2, 2, 1, 2]),
 				'custom-leaderboard-sm': createMinmaxGrid([1]),
-				'leaderboard-xl': createMinmaxGrid([4, 2, 14, 7, 4, 4, 8, 11, 9, 9, 9, 10, 9]),
-				'leaderboard-lg': createMinmaxGrid([6, 3, 8, 10, 6, 6, 8, 10.5, 10.5, 10, 8, 10, 10]),
-				'leaderboard-md': createMinmaxGrid([9, 4.5, 35, 14, 14, 14, 14]),
-				'leaderboard-sm': createMinmaxGrid([18, 9, 41, 32]),
+				'leaderboard-xl': createMinmaxGrid([4, 2, 14, 7, 4, 4, 8, 11, 9, 9, 9, 10, 9], "32px"),
+				'leaderboard-lg': createMinmaxGrid([6, 3, 8, 10, 6, 6, 8, 10.5, 10.5, 10, 8, 10, 10], "32px"),
+				'leaderboard-md': createMinmaxGrid([9, 4.5, 35, 14, 14, 14, 14], "32px"),
+				'leaderboard-sm': createMinmaxGrid([18, 9, 41, 32], "32px"),
 			},
 			maxHeight: {
 				'screen-half': '50vh',
@@ -55,7 +55,7 @@ module.exports = {
 	}
 };
 
-function createMinmaxGrid(array) {
+function createMinmaxGrid(array, min = "0") {
 	let total = 0;
 	for (let i = 0; i < array.length; i++) {
 		total += array[i];
@@ -63,5 +63,5 @@ function createMinmaxGrid(array) {
 
 	const multiplier = 100 / total;
 
-	return array.map(value => "minmax(0, " + (value * multiplier) + "%)").join(' ');
+	return array.map(value => "minmax(" + min + ", " + (value * multiplier) + "%)").join(' ');
 }
