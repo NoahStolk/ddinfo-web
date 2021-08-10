@@ -34,7 +34,7 @@ module.exports = {
 				'admin-players': createMinmaxGrid([1, 4, 1, 1, 1, 1, 1, 1, 1, 1, 1, 3, 2, 1, 1, 1, 1, 1, 1]),
 				'admin-spawnsets': createMinmaxGrid([1, 1, 4, 2, 8, 2, 1, 1, 1]),
 				'admin-titles': createMinmaxGrid([1, 8, 1, 1]),
-				'admin-users': createMinmaxGrid([2, 8, 1, 1]),
+				'admin-users': createMinmaxGrid([3, 2, 1, 1, 1, 1, 1, 1, 1, 1]),
 				'custom-leaderboard-xl': createMinmaxGrid([2, 2, 1, 2, 1, 1, 1, 1, 1, 2, 1]),
 				'custom-leaderboard-lg': createMinmaxGrid([2, 2, 1, 2, 2, 1]),
 				'custom-leaderboard-md': createMinmaxGrid([2, 2, 1, 2]),

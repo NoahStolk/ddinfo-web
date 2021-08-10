@@ -23,13 +23,11 @@ namespace DevilDaggersWebsite.BlazorWasm.Server.Controllers.Admin
 	public class UsersController : ControllerBase
 	{
 		private readonly ApplicationDbContext _dbContext;
-		private readonly UserManager<IdentityRole> _userManager;
 		private readonly AuditLogger _auditLogger;
 
-		public UsersController(ApplicationDbContext dbContext, UserManager<IdentityRole> userManager, AuditLogger auditLogger)
+		public UsersController(ApplicationDbContext dbContext, AuditLogger auditLogger)
 		{
 			_dbContext = dbContext;
-			_userManager = userManager;
 			_auditLogger = auditLogger;
 		}
 
@@ -62,13 +60,28 @@ namespace DevilDaggersWebsite.BlazorWasm.Server.Controllers.Admin
 				.Select(r => new { r.Id, r.Name })
 				.ToList();
 
+			List<(string RoleId, string RoleName, List<string> UserIds)> usersByRole = new();
+			foreach (var role in roles)
+				usersByRole.Add((role.Id, role.Name, new()));
+
+			foreach ((string roleId, string roleName, List<string> userIds) in usersByRole)
+			{
+				IEnumerable<IdentityUserRole<string>> userRolesWithRole = userRoles.Where(ur => ur.RoleId == roleId);
+				userIds.AddRange(userRolesWithRole.Select(ur => ur.UserId));
+			}
+
 			return new Page<GetUser>
 			{
 				Results = users.ConvertAll(u => new GetUser
 				{
 					Id = u.Id,
 					UserName = u.UserName,
-					Roles = userRoles.Where(ur => ur.UserId == u.Id).Select(ur => roles.First(r => r.Id == ur.RoleId).Name).ToList(),
+					IsAdmin = usersByRole.Find(t => t.RoleName == Roles.Admin).UserIds.Contains(u.Id),
+					IsCustomLeaderboardsMaintainer = usersByRole.Find(t => t.RoleName == Roles.CustomLeaderboards).UserIds.Contains(u.Id),
+					IsDonationsMaintainer = usersByRole.Find(t => t.RoleName == Roles.Donations).UserIds.Contains(u.Id),
+					IsModsMaintainer = usersByRole.Find(t => t.RoleName == Roles.Mods).UserIds.Contains(u.Id),
+					IsPlayersMaintainer = usersByRole.Find(t => t.RoleName == Roles.Players).UserIds.Contains(u.Id),
+					IsSpawnsetsMaintainer = usersByRole.Find(t => t.RoleName == Roles.Spawnsets).UserIds.Contains(u.Id),
 				}),
 				TotalResults = _dbContext.Users.Count(),
 			};
