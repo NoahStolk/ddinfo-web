@@ -41,7 +41,7 @@ else
 			}
 		}
 	</Select>
-	<label>Page @(_pageIndex + 1) of @TotalPages (@(_pageIndex * _pageSize) - @Math.Min(_page.TotalResults, (_pageIndex + 1) * _pageSize) of @_page.TotalResults)</label>
+	<div class="p-1">Page @(_pageIndex + 1) of @TotalPages (@(_pageIndex * _pageSize) - @Math.Min(_page.TotalResults, (_pageIndex + 1) * _pageSize) of @_page.TotalResults)</div>
 
 	<div class="grid gap-2 grid-cols-@GridConfiguration">
 		@foreach (KeyValuePair<PropertyInfo, bool> pi in _properties)
