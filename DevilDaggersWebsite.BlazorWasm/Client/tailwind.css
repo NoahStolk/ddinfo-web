@@ -14,3 +14,11 @@
 		src: url('fonts/calibri-regular.ttf') format('truetype');
 	}
 }
+
+.tooltip {
+	@apply invisible absolute;
+}
+
+.has-tooltip:hover .tooltip {
+	@apply visible z-50;
+}
