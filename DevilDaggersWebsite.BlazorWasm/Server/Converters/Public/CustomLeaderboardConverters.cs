@@ -54,7 +54,7 @@ namespace DevilDaggersWebsite.BlazorWasm.Server.Converters.Public
 			DateCreated = customLeaderboard.DateCreated,
 			TotalRunsSubmitted = customLeaderboard.DateCreated < CustomLeaderboardFeatureConstants.SubmitCount ? null : customLeaderboard.TotalRunsSubmitted,
 			DateLastPlayed = customLeaderboard.DateLastPlayed,
-			CustomEntries = customLeaderboard.CustomEntries?.OrderBy(ce => ce.Time, customLeaderboard.Category.IsAscending()).Select((ce, i) => ce.ToGetCustomEntry(i)).ToList() ?? new(),
+			CustomEntries = customLeaderboard.CustomEntries?.OrderBy(ce => ce.Time, customLeaderboard.Category.IsAscending()).Select((ce, i) => ce.ToGetCustomEntry(i + 1)).ToList() ?? new(),
 		};
 	}
 }
