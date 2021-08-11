@@ -25,13 +25,16 @@
 			<div class="row">
 				<div class="col-xs-6">@(Model.AssetMod.PlayerAssetMods.Count == 1 ? "Author" : "Authors")</div>
 				<div class="col-xs-6">
-					@for (int i = 0; i < Model.AssetMod.PlayerAssetMods.Count; i++)
-					{
-						PlayerAssetMod playerAssetMod = Model.AssetMod.PlayerAssetMods[i];
-						<a asp-page="/Mods" asp-route-SearchAuthor="@playerAssetMod.Player.PlayerName">@playerAssetMod.Player.PlayerName</a>
-						if (i < Model.AssetMod.PlayerAssetMods.Count - 1)
+					@{
+						Model.AssetMod.PlayerAssetMods = Model.AssetMod.PlayerAssetMods.OrderBy(pam => pam.Player.PlayerName).ToList();
+						for (int i = 0; i < Model.AssetMod.PlayerAssetMods.Count; i++)
 						{
-							<span>&amp;</span>
+							PlayerAssetMod playerAssetMod = Model.AssetMod.PlayerAssetMods[i];
+							<a asp-page="/Mods" asp-route-SearchAuthor="@playerAssetMod.Player.PlayerName">@playerAssetMod.Player.PlayerName</a>
+							if (i < Model.AssetMod.PlayerAssetMods.Count - 1)
+							{
+								<span>&amp;</span>
+							}
 						}
 					}
 				</div>
