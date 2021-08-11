@@ -26,6 +26,6 @@ namespace DevilDaggersWebsite.BlazorWasm.Shared.Dto.Public.CustomLeaderboards
 
 		public int? TotalRunsSubmitted { get; init; }
 
-		public List<GetCustomEntry> CustomEntries { get; init; } = new();
+		public List<GetCustomEntry> CustomEntries { get; set; } = new();
 	}
 }

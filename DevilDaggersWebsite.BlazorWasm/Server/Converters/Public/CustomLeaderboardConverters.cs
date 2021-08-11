@@ -4,6 +4,7 @@ using DevilDaggersWebsite.BlazorWasm.Shared.Constants;
 using DevilDaggersWebsite.BlazorWasm.Shared.Dto.Public.CustomLeaderboards;
 using DevilDaggersWebsite.BlazorWasm.Shared.Enums;
 using DevilDaggersWebsite.BlazorWasm.Shared.Extensions;
+using System.Linq;
 
 namespace DevilDaggersWebsite.BlazorWasm.Server.Converters.Public
 {
@@ -53,7 +54,7 @@ namespace DevilDaggersWebsite.BlazorWasm.Server.Converters.Public
 			DateCreated = customLeaderboard.DateCreated,
 			TotalRunsSubmitted = customLeaderboard.DateCreated < CustomLeaderboardFeatureConstants.SubmitCount ? null : customLeaderboard.TotalRunsSubmitted,
 			DateLastPlayed = customLeaderboard.DateLastPlayed,
-			CustomEntries = customLeaderboard.CustomEntries?.ConvertAll(ce => ce.ToGetCustomEntry()) ?? new(),
+			CustomEntries = customLeaderboard.CustomEntries?.OrderBy(ce => ce.Time, customLeaderboard.Category.IsAscending()).Select((ce, i) => ce.ToGetCustomEntry(i)).ToList() ?? new(),
 		};
 	}
 }

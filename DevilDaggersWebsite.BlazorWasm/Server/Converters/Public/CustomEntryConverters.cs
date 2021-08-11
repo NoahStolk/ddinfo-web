@@ -29,10 +29,12 @@ namespace DevilDaggersWebsite.BlazorWasm.Server.Converters.Public
 			Time = customEntry.Time,
 		};
 
-		public static GetCustomEntry ToGetCustomEntry(this CustomEntry customEntry) => new()
+		public static GetCustomEntry ToGetCustomEntry(this CustomEntry customEntry, int rank) => new()
 		{
+			Rank = rank,
 			PlayerId = customEntry.PlayerId,
 			PlayerName = customEntry.Player.PlayerName,
+			CountryCode = customEntry.Player.CountryCode,
 			ClientVersion = customEntry.ClientVersion,
 			DeathType = customEntry.DeathType,
 			EnemiesAlive = customEntry.EnemiesAlive,
@@ -50,6 +52,7 @@ namespace DevilDaggersWebsite.BlazorWasm.Server.Converters.Public
 			DaggersHit = customEntry.DaggersHit,
 			SubmitDate = customEntry.SubmitDate,
 			Time = customEntry.Time.ToSecondsTime(),
+			CustomLeaderboardDagger = customEntry.CustomLeaderboard.GetDaggerFromTime(customEntry.Time),
 		};
 	}
 }
