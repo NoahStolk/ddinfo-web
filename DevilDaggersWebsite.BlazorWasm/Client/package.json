@@ -1,14 +1,14 @@
 {
   "devDependencies": {
-    "autoprefixer": "^9.8.6",
-    "gulp": "^4.0.2",
-    "gulp-clean-css": "^4.3.0",
-    "gulp-postcss": "^8.0.0",
-    "gulp-purgecss": "^4.0.3",
-    "gulp-sourcemaps": "^3.0.0",
-    "postcss": "^7.0.36",
-    "precss": "^4.0.0",
-    "tailwindcss": "npm:@tailwindcss/postcss7-compat@^2.2.7"
+    "autoprefixer": "9.8.6",
+    "gulp": "4.0.2",
+    "gulp-clean-css": "4.3.0",
+    "gulp-postcss": "8.0.0",
+    "gulp-purgecss": "4.0.3",
+    "gulp-sourcemaps": "3.0.0",
+    "postcss": "7.0.36",
+    "precss": "4.0.0",
+    "tailwindcss": "npm:@tailwindcss/postcss7-compat@2.2.7"
   },
   "dependencies": {}
 }
