@@ -26,7 +26,7 @@ namespace DevilDaggersWebsite.BlazorWasm.Server.Converters.Admin
 			IsHidden = mod.IsHidden,
 			LastUpdated = mod.LastUpdated,
 			Name = mod.Name,
-			PlayerIds = mod.PlayerAssetMods.ConvertAll(pam => pam.PlayerId),
+			PlayerIds = mod.PlayerMods.ConvertAll(pam => pam.PlayerId),
 			TrailerUrl = mod.TrailerUrl,
 			Url = mod.Url,
 		};

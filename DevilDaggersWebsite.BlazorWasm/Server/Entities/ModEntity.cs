@@ -30,6 +30,6 @@ namespace DevilDaggersWebsite.BlazorWasm.Server.Entities
 		[StringLength(128)]
 		public string Url { get; set; } = null!;
 
-		public List<PlayerModEntity> PlayerAssetMods { get; set; } = new();
+		public List<PlayerModEntity> PlayerMods { get; set; } = new();
 	}
 }

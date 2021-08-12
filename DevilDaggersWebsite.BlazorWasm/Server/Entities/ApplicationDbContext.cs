@@ -39,7 +39,7 @@ namespace DevilDaggersWebsite.BlazorWasm.Server.Entities
 
 			builder.Entity<PlayerModEntity>()
 				.HasOne(pam => pam.Mod)
-				.WithMany(am => am.PlayerAssetMods)
+				.WithMany(am => am.PlayerMods)
 				.HasForeignKey(pam => pam.ModId);
 
 			builder.Entity<PlayerTitleEntity>()

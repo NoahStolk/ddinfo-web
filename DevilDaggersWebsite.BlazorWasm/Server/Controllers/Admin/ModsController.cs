@@ -103,7 +103,7 @@ namespace DevilDaggersWebsite.BlazorWasm.Server.Controllers.Admin
 			ModEntity? mod = _dbContext.Mods
 				.AsSingleQuery()
 				.AsNoTracking()
-				.Include(m => m.PlayerAssetMods)
+				.Include(m => m.PlayerMods)
 				.FirstOrDefault(m => m.Id == id);
 			if (mod == null)
 				return NotFound();
@@ -203,7 +203,7 @@ namespace DevilDaggersWebsite.BlazorWasm.Server.Controllers.Admin
 
 			// Validate against database.
 			ModEntity? mod = _dbContext.Mods
-				.Include(m => m.PlayerAssetMods)
+				.Include(m => m.PlayerMods)
 				.FirstOrDefault(m => m.Id == id);
 			if (mod == null)
 				return NotFound();
@@ -240,7 +240,7 @@ namespace DevilDaggersWebsite.BlazorWasm.Server.Controllers.Admin
 				Name = mod.Name,
 				TrailerUrl = mod.TrailerUrl,
 				Url = mod.Url,
-				PlayerIds = mod.PlayerAssetMods.ConvertAll(pam => pam.PlayerId),
+				PlayerIds = mod.PlayerMods.ConvertAll(pam => pam.PlayerId),
 			};
 
 			mod.AssetModTypes = editMod.AssetModTypes?.ToFlagEnum<AssetModTypes>() ?? AssetModTypes.None;

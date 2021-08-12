@@ -42,12 +42,12 @@ namespace DevilDaggersWebsite.BlazorWasm.Server.Controllers.Public
 		{
 			IEnumerable<ModEntity> assetModsQuery = _dbContext.Mods
 				.AsNoTracking()
-				.Include(am => am.PlayerAssetMods)
+				.Include(am => am.PlayerMods)
 					.ThenInclude(pam => pam.Player)
 				.Where(am => !am.IsHidden);
 
 			if (!string.IsNullOrWhiteSpace(authorFilter))
-				assetModsQuery = assetModsQuery.Where(am => am.PlayerAssetMods.Any(pam => pam.Player.PlayerName.Contains(authorFilter, StringComparison.InvariantCultureIgnoreCase)));
+				assetModsQuery = assetModsQuery.Where(am => am.PlayerMods.Any(pam => pam.Player.PlayerName.Contains(authorFilter, StringComparison.InvariantCultureIgnoreCase)));
 			if (!string.IsNullOrWhiteSpace(nameFilter))
 				assetModsQuery = assetModsQuery.Where(am => am.Name.Contains(nameFilter, StringComparison.InvariantCultureIgnoreCase));
 
@@ -114,7 +114,7 @@ namespace DevilDaggersWebsite.BlazorWasm.Server.Controllers.Public
 						Name = amwfi.Key.Name,
 						HtmlDescription = amwfi.Key.HtmlDescription,
 						TrailerUrl = amwfi.Key.TrailerUrl,
-						Authors = amwfi.Key.PlayerAssetMods.Select(pam => pam.Player.PlayerName).OrderBy(s => s).ToList(),
+						Authors = amwfi.Key.PlayerMods.Select(pam => pam.Player.PlayerName).OrderBy(s => s).ToList(),
 						LastUpdated = amwfi.Key.LastUpdated,
 						AssetModTypes = assetModTypes,
 						IsHostedOnDdInfo = amwfi.Value.FileExists,
