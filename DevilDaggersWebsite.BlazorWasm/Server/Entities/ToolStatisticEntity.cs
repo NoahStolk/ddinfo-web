@@ -1,8 +1,10 @@
 ﻿using System.ComponentModel.DataAnnotations;
+using System.ComponentModel.DataAnnotations.Schema;
 
 namespace DevilDaggersWebsite.BlazorWasm.Server.Entities
 {
-	public class ToolStatistic : IEntity
+	[Table("ToolStatistics")]
+	public class ToolStatisticEntity : IEntity
 	{
 		[Key]
 		public int Id { get; init; }

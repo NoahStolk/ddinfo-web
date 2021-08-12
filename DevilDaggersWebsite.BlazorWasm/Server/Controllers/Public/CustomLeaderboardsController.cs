@@ -36,18 +36,18 @@ namespace DevilDaggersWebsite.BlazorWasm.Server.Controllers.Public
 			CustomLeaderboardSorting? sortBy = null,
 			bool ascending = false)
 		{
-			IQueryable<CustomLeaderboard> customLeaderboardsQuery = _dbContext.CustomLeaderboards
+			IQueryable<CustomLeaderboardEntity> customLeaderboardsQuery = _dbContext.CustomLeaderboards
 				.AsNoTracking()
 				.Where(cl => !cl.IsArchived)
-				.Include(cl => cl.SpawnsetFile)
+				.Include(cl => cl.Spawnset)
 					.ThenInclude(sf => sf.Player)
 				.Where(cl => !cl.IsArchived && category == cl.Category);
 
 			customLeaderboardsQuery = sortBy switch
 			{
-				CustomLeaderboardSorting.AuthorName => customLeaderboardsQuery.OrderBy(cl => cl.SpawnsetFile.Player.PlayerName, ascending),
+				CustomLeaderboardSorting.AuthorName => customLeaderboardsQuery.OrderBy(cl => cl.Spawnset.Player.PlayerName, ascending),
 				CustomLeaderboardSorting.DateLastPlayed => customLeaderboardsQuery.OrderBy(cl => cl.DateLastPlayed, ascending),
-				CustomLeaderboardSorting.SpawnsetName => customLeaderboardsQuery.OrderBy(cl => cl.SpawnsetFile.Name, ascending),
+				CustomLeaderboardSorting.SpawnsetName => customLeaderboardsQuery.OrderBy(cl => cl.Spawnset.Name, ascending),
 				CustomLeaderboardSorting.TimeBronze => customLeaderboardsQuery.OrderBy(cl => cl.TimeBronze, ascending),
 				CustomLeaderboardSorting.TimeSilver => customLeaderboardsQuery.OrderBy(cl => cl.TimeSilver, ascending),
 				CustomLeaderboardSorting.TimeGolden => customLeaderboardsQuery.OrderBy(cl => cl.TimeGolden, ascending),
@@ -57,7 +57,7 @@ namespace DevilDaggersWebsite.BlazorWasm.Server.Controllers.Public
 				_ => customLeaderboardsQuery,
 			};
 
-			List<CustomLeaderboard> customLeaderboards = customLeaderboardsQuery.ToList();
+			List<CustomLeaderboardEntity> customLeaderboards = customLeaderboardsQuery.ToList();
 
 			IEnumerable<int> customLeaderboardIds = customLeaderboards.Select(cl => cl.Id);
 			var customEntries = _dbContext.CustomEntries
@@ -107,11 +107,11 @@ namespace DevilDaggersWebsite.BlazorWasm.Server.Controllers.Public
 		[ProducesResponseType(StatusCodes.Status404NotFound)]
 		public ActionResult<GetCustomLeaderboard> GetCustomLeaderboardById(int id)
 		{
-			CustomLeaderboard? customLeaderboard = _dbContext.CustomLeaderboards
+			CustomLeaderboardEntity? customLeaderboard = _dbContext.CustomLeaderboards
 				.AsNoTracking()
 				.Include(cl => cl.CustomEntries)
 					.ThenInclude(ce => ce.Player)
-				.Include(cl => cl.SpawnsetFile)
+				.Include(cl => cl.Spawnset)
 					.ThenInclude(sf => sf.Player)
 				.FirstOrDefault(cl => cl.Id == id);
 			if (customLeaderboard == null)
@@ -122,14 +122,14 @@ namespace DevilDaggersWebsite.BlazorWasm.Server.Controllers.Public
 
 		private class CustomLeaderboardWr
 		{
-			public CustomLeaderboardWr(CustomLeaderboard customLeaderboard, int? worldRecord, string? topPlayer)
+			public CustomLeaderboardWr(CustomLeaderboardEntity customLeaderboard, int? worldRecord, string? topPlayer)
 			{
 				CustomLeaderboard = customLeaderboard;
 				WorldRecord = worldRecord;
 				TopPlayer = topPlayer;
 			}
 
-			public CustomLeaderboard CustomLeaderboard { get; }
+			public CustomLeaderboardEntity CustomLeaderboard { get; }
 			public int? WorldRecord { get; }
 			public string? TopPlayer { get; }
 		}

@@ -52,7 +52,7 @@ namespace DevilDaggersWebsite.BlazorWasm.Server.Controllers.Admin
 			SpawnsetSorting? sortBy = null,
 			bool ascending = false)
 		{
-			IQueryable<SpawnsetFile> spawnsetsQuery = _dbContext.SpawnsetFiles.AsNoTracking().Include(s => s.Player);
+			IQueryable<SpawnsetEntity> spawnsetsQuery = _dbContext.Spawnsets.AsNoTracking().Include(s => s.Player);
 
 			spawnsetsQuery = sortBy switch
 			{
@@ -65,7 +65,7 @@ namespace DevilDaggersWebsite.BlazorWasm.Server.Controllers.Admin
 				_ => spawnsetsQuery.OrderBy(s => s.Id, ascending),
 			};
 
-			List<SpawnsetFile> spawnsets = spawnsetsQuery
+			List<SpawnsetEntity> spawnsets = spawnsetsQuery
 				.Skip(pageIndex * pageSize)
 				.Take(pageSize)
 				.ToList();
@@ -73,7 +73,7 @@ namespace DevilDaggersWebsite.BlazorWasm.Server.Controllers.Admin
 			return new Page<GetSpawnsetForOverview>
 			{
 				Results = spawnsets.ConvertAll(s => s.ToGetSpawnsetForOverview()),
-				TotalResults = _dbContext.SpawnsetFiles.Count(),
+				TotalResults = _dbContext.Spawnsets.Count(),
 			};
 		}
 
@@ -81,7 +81,7 @@ namespace DevilDaggersWebsite.BlazorWasm.Server.Controllers.Admin
 		[ProducesResponseType(StatusCodes.Status200OK)]
 		public ActionResult<List<GetSpawnsetName>> GetSpawnsetNames()
 		{
-			var spawnsets = _dbContext.SpawnsetFiles
+			var spawnsets = _dbContext.Spawnsets
 				.AsNoTracking()
 				.Select(s => new { s.Id, s.Name })
 				.ToList();
@@ -98,7 +98,7 @@ namespace DevilDaggersWebsite.BlazorWasm.Server.Controllers.Admin
 		[ProducesResponseType(StatusCodes.Status404NotFound)]
 		public ActionResult<GetSpawnset> GetSpawnsetById(int id)
 		{
-			SpawnsetFile? spawnset = _dbContext.SpawnsetFiles
+			SpawnsetEntity? spawnset = _dbContext.Spawnsets
 				.AsNoTracking()
 				.FirstOrDefault(p => p.Id == id);
 			if (spawnset == null)
@@ -124,7 +124,7 @@ namespace DevilDaggersWebsite.BlazorWasm.Server.Controllers.Admin
 			if (!_dbContext.Players.Any(p => p.Id == addSpawnset.PlayerId))
 				return BadRequest($"Player with ID '{addSpawnset.PlayerId}' does not exist.");
 
-			if (_dbContext.SpawnsetFiles.Any(m => m.Name == addSpawnset.Name))
+			if (_dbContext.Spawnsets.Any(m => m.Name == addSpawnset.Name))
 				return BadRequest($"Spawnset with name '{addSpawnset.Name}' already exists.");
 
 			// Add file.
@@ -132,7 +132,7 @@ namespace DevilDaggersWebsite.BlazorWasm.Server.Controllers.Admin
 			Io.File.WriteAllBytes(path, addSpawnset.FileContents);
 
 			// Add entity.
-			SpawnsetFile spawnset = new()
+			SpawnsetEntity spawnset = new()
 			{
 				HtmlDescription = addSpawnset.HtmlDescription,
 				IsPractice = addSpawnset.IsPractice,
@@ -141,7 +141,7 @@ namespace DevilDaggersWebsite.BlazorWasm.Server.Controllers.Admin
 				PlayerId = addSpawnset.PlayerId,
 				LastUpdated = DateTime.UtcNow,
 			};
-			_dbContext.SpawnsetFiles.Add(spawnset);
+			_dbContext.Spawnsets.Add(spawnset);
 			_dbContext.SaveChanges();
 
 			await _auditLogger.LogAdd(addSpawnset, User, spawnset.Id, new() { new($"File '{_fileSystemService.GetRelevantDisplayPath(path)}' was added.", FileSystemInformationType.Add) });
@@ -158,14 +158,14 @@ namespace DevilDaggersWebsite.BlazorWasm.Server.Controllers.Admin
 			if (!_dbContext.Players.Any(p => p.Id == editSpawnset.PlayerId))
 				return BadRequest($"Player with ID '{editSpawnset.PlayerId}' does not exist.");
 
-			SpawnsetFile? spawnset = _dbContext.SpawnsetFiles.FirstOrDefault(s => s.Id == id);
+			SpawnsetEntity? spawnset = _dbContext.Spawnsets.FirstOrDefault(s => s.Id == id);
 			if (spawnset == null)
 				return NotFound();
 
 			string? moveInfo = null;
 			if (spawnset.Name != editSpawnset.Name)
 			{
-				if (_dbContext.SpawnsetFiles.Any(m => m.Name == editSpawnset.Name))
+				if (_dbContext.Spawnsets.Any(m => m.Name == editSpawnset.Name))
 					return BadRequest($"Spawnset with name '{editSpawnset.Name}' already exists.");
 
 				string directory = _fileSystemService.GetPath(DataSubDirectory.Spawnsets);
@@ -203,11 +203,11 @@ namespace DevilDaggersWebsite.BlazorWasm.Server.Controllers.Admin
 		[ProducesResponseType(StatusCodes.Status404NotFound)]
 		public async Task<ActionResult> DeleteSpawnsetById(int id)
 		{
-			SpawnsetFile? spawnset = _dbContext.SpawnsetFiles.FirstOrDefault(s => s.Id == id);
+			SpawnsetEntity? spawnset = _dbContext.Spawnsets.FirstOrDefault(s => s.Id == id);
 			if (spawnset == null)
 				return NotFound();
 
-			if (_dbContext.CustomLeaderboards.Any(ce => ce.SpawnsetFileId == id))
+			if (_dbContext.CustomLeaderboards.Any(ce => ce.SpawnsetId == id))
 				return BadRequest("Spawnset with custom leaderboard cannot be deleted.");
 
 			string path = Path.Combine(_fileSystemService.GetPath(DataSubDirectory.Spawnsets), spawnset.Name);
@@ -218,7 +218,7 @@ namespace DevilDaggersWebsite.BlazorWasm.Server.Controllers.Admin
 				_spawnsetHashCache.Clear();
 			}
 
-			_dbContext.SpawnsetFiles.Remove(spawnset);
+			_dbContext.Spawnsets.Remove(spawnset);
 			_dbContext.SaveChanges();
 
 			string message = fileExists ? $"File '{_fileSystemService.GetRelevantDisplayPath(path)}' was deleted." : $"File '{_fileSystemService.GetRelevantDisplayPath(path)}' was not deleted because it does not exist.";

@@ -40,7 +40,7 @@ namespace DevilDaggersWebsite.BlazorWasm.Server.Controllers.Admin
 			DonationSorting? sortBy = null,
 			bool ascending = false)
 		{
-			IQueryable<Donation> donationsQuery = _dbContext.Donations
+			IQueryable<DonationEntity> donationsQuery = _dbContext.Donations
 				.AsNoTracking()
 				.Include(d => d.Player);
 
@@ -56,7 +56,7 @@ namespace DevilDaggersWebsite.BlazorWasm.Server.Controllers.Admin
 				_ => donationsQuery.OrderBy(d => d.Id, ascending),
 			};
 
-			List<Donation> donations = donationsQuery
+			List<DonationEntity> donations = donationsQuery
 				.Skip(pageIndex * pageSize)
 				.Take(pageSize)
 				.ToList();
@@ -76,7 +76,7 @@ namespace DevilDaggersWebsite.BlazorWasm.Server.Controllers.Admin
 			if (!_dbContext.Players.Any(p => p.Id == addDonation.PlayerId))
 				return BadRequest($"Player with ID '{addDonation.PlayerId}' does not exist.");
 
-			Donation donation = new()
+			DonationEntity donation = new()
 			{
 				Amount = addDonation.Amount,
 				ConvertedEuroCentsReceived = addDonation.ConvertedEuroCentsReceived,
@@ -103,7 +103,7 @@ namespace DevilDaggersWebsite.BlazorWasm.Server.Controllers.Admin
 			if (!_dbContext.Players.Any(p => p.Id == editDonation.PlayerId))
 				return BadRequest($"Player with ID '{editDonation.PlayerId}' does not exist.");
 
-			Donation? donation = _dbContext.Donations.FirstOrDefault(d => d.Id == id);
+			DonationEntity? donation = _dbContext.Donations.FirstOrDefault(d => d.Id == id);
 			if (donation == null)
 				return NotFound();
 
@@ -137,7 +137,7 @@ namespace DevilDaggersWebsite.BlazorWasm.Server.Controllers.Admin
 		[ProducesResponseType(StatusCodes.Status404NotFound)]
 		public async Task<ActionResult> DeleteDonationById(int id)
 		{
-			Donation? donation = _dbContext.Donations.FirstOrDefault(d => d.Id == id);
+			DonationEntity? donation = _dbContext.Donations.FirstOrDefault(d => d.Id == id);
 			if (donation == null)
 				return NotFound();
 

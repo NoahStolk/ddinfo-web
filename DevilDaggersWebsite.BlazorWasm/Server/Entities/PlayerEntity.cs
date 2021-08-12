@@ -1,11 +1,13 @@
 ﻿using DevilDaggersWebsite.BlazorWasm.Shared;
 using System.Collections.Generic;
 using System.ComponentModel.DataAnnotations;
+using System.ComponentModel.DataAnnotations.Schema;
 using System.Linq;
 
 namespace DevilDaggersWebsite.BlazorWasm.Server.Entities
 {
-	public class Player : IEntity
+	[Table("Players")]
+	public class PlayerEntity : IEntity
 	{
 		[Key]
 		public int Id { get; set; }
@@ -45,9 +47,9 @@ namespace DevilDaggersWebsite.BlazorWasm.Server.Entities
 
 		public bool HidePastUsernames { get; set; }
 
-		public List<PlayerAssetMod> PlayerAssetMods { get; set; } = new();
+		public List<PlayerModEntity> PlayerAssetMods { get; set; } = new();
 
-		public List<PlayerTitle> PlayerTitles { get; set; } = new();
+		public List<PlayerTitleEntity> PlayerTitles { get; set; } = new();
 
 		public float? Edpi => Dpi * InGameSens;
 
@@ -62,7 +64,7 @@ namespace DevilDaggersWebsite.BlazorWasm.Server.Entities
 		public override string ToString()
 			=> $"{PlayerName} ({Id})";
 
-		public bool IsPublicDonator(IEnumerable<Donation> donations)
+		public bool IsPublicDonator(IEnumerable<DonationEntity> donations)
 			=> !HideDonations && donations.Any(d => d.PlayerId == Id && !d.IsRefunded && d.ConvertedEuroCentsReceived > 0);
 
 		public bool HasSettings()

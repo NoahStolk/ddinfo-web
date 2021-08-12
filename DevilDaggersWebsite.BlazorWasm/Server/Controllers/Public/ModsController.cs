@@ -40,7 +40,7 @@ namespace DevilDaggersWebsite.BlazorWasm.Server.Controllers.Public
 		[EndpointConsumer(EndpointConsumers.Ddae)]
 		public List<GetMod> GetPublicMods(string? authorFilter = null, string? nameFilter = null, bool? isHostedFilter = null)
 		{
-			IEnumerable<AssetMod> assetModsQuery = _dbContext.AssetMods
+			IEnumerable<ModEntity> assetModsQuery = _dbContext.Mods
 				.AsNoTracking()
 				.Include(am => am.PlayerAssetMods)
 					.ThenInclude(pam => pam.Player)
@@ -51,9 +51,9 @@ namespace DevilDaggersWebsite.BlazorWasm.Server.Controllers.Public
 			if (!string.IsNullOrWhiteSpace(nameFilter))
 				assetModsQuery = assetModsQuery.Where(am => am.Name.Contains(nameFilter, StringComparison.InvariantCultureIgnoreCase));
 
-			List<AssetMod> assetMods = assetModsQuery.ToList();
+			List<ModEntity> assetMods = assetModsQuery.ToList();
 
-			Dictionary<AssetMod, (bool FileExists, string? Path)> assetModsWithFileInfo = assetMods.ToDictionary(am => am, am =>
+			Dictionary<ModEntity, (bool FileExists, string? Path)> assetModsWithFileInfo = assetMods.ToDictionary(am => am, am =>
 			{
 				string filePath = Path.Combine(_fileSystemService.GetPath(DataSubDirectory.Mods), $"{am.Name}.zip");
 				bool fileExists = Io.File.Exists(filePath);
@@ -133,7 +133,7 @@ namespace DevilDaggersWebsite.BlazorWasm.Server.Controllers.Public
 		[EndpointConsumer(EndpointConsumers.Ddae | EndpointConsumers.Website)]
 		public ActionResult GetModFile([Required] string modName)
 		{
-			if (!_dbContext.AssetMods.Any(m => m.Name == modName))
+			if (!_dbContext.Mods.Any(m => m.Name == modName))
 				return NotFound();
 
 			string fileName = $"{modName}.zip";

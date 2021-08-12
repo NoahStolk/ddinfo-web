@@ -91,7 +91,7 @@ namespace DevilDaggersWebsite.BlazorWasm.Server.Controllers.Public
 			}
 
 			// Add the player or update the username. Also check for banned user immediately.
-			Player? player = _dbContext.Players.FirstOrDefault(p => p.Id == uploadRequest.PlayerId);
+			PlayerEntity? player = _dbContext.Players.FirstOrDefault(p => p.Id == uploadRequest.PlayerId);
 			if (player != null)
 			{
 				if (player.IsBannedFromDdcl)
@@ -134,7 +134,7 @@ namespace DevilDaggersWebsite.BlazorWasm.Server.Controllers.Public
 			}
 
 			// Check for existing leaderboard.
-			CustomLeaderboard? customLeaderboard = _dbContext.CustomLeaderboards.Include(cl => cl.SpawnsetFile).ThenInclude(sf => sf.Player).FirstOrDefault(cl => cl.SpawnsetFile.Name == spawnsetName);
+			CustomLeaderboardEntity? customLeaderboard = _dbContext.CustomLeaderboards.Include(cl => cl.Spawnset).ThenInclude(sf => sf.Player).FirstOrDefault(cl => cl.Spawnset.Name == spawnsetName);
 			if (customLeaderboard == null)
 			{
 				const string errorMessage = "This spawnset exists on DevilDaggers.info, but doesn't have a leaderboard.";
@@ -158,15 +158,15 @@ namespace DevilDaggersWebsite.BlazorWasm.Server.Controllers.Public
 			uploadRequest.HomingDaggers = Math.Max(0, uploadRequest.HomingDaggers);
 
 			// Calculate the new rank.
-			List<CustomEntry> entries = FetchEntriesFromDatabase(customLeaderboard, isAscending);
+			List<CustomEntryEntity> entries = FetchEntriesFromDatabase(customLeaderboard, isAscending);
 			int rank = isAscending ? entries.Count(e => e.Time <= uploadRequest.Time) + 1 : entries.Count(e => e.Time >= uploadRequest.Time) + 1;
 			int totalPlayers = entries.Count;
 
-			CustomEntry? customEntry = entries.Find(e => e.PlayerId == uploadRequest.PlayerId);
+			CustomEntryEntity? customEntry = entries.Find(e => e.PlayerId == uploadRequest.PlayerId);
 			if (customEntry == null)
 			{
 				// Add new custom entry to this leaderboard.
-				CustomEntry newCustomEntry = new()
+				CustomEntryEntity newCustomEntry = new()
 				{
 					PlayerId = uploadRequest.PlayerId,
 					Time = uploadRequest.Time,
@@ -190,7 +190,7 @@ namespace DevilDaggersWebsite.BlazorWasm.Server.Controllers.Public
 				};
 				_dbContext.CustomEntries.Add(newCustomEntry);
 
-				CustomEntryData newCustomEntryData = new() { CustomEntry = newCustomEntry };
+				CustomEntryDataEntity newCustomEntryData = new() { CustomEntry = newCustomEntry };
 				Populate(newCustomEntryData, uploadRequest.GameStates);
 				_dbContext.CustomEntryData.Add(newCustomEntryData);
 
@@ -259,7 +259,7 @@ namespace DevilDaggersWebsite.BlazorWasm.Server.Controllers.Public
 
 				return new GetUploadSuccess
 				{
-					Message = $"No new highscore for {customLeaderboard.SpawnsetFile.Name}.",
+					Message = $"No new highscore for {customLeaderboard.Spawnset.Name}.",
 					TotalPlayers = totalPlayers,
 					Leaderboard = customLeaderboard.ToGetCustomLeaderboardDdcl(),
 					Category = customLeaderboard.Category,
@@ -309,7 +309,7 @@ namespace DevilDaggersWebsite.BlazorWasm.Server.Controllers.Public
 			customEntry.ClientVersion = uploadRequest.ClientVersion;
 
 			// Update the entry data.
-			CustomEntryData? customEntryData = _dbContext.CustomEntryData.FirstOrDefault(ced => ced.CustomEntryId == customEntry.Id);
+			CustomEntryDataEntity? customEntryData = _dbContext.CustomEntryData.FirstOrDefault(ced => ced.CustomEntryId == customEntry.Id);
 			if (customEntryData == null)
 			{
 				customEntryData = new()
@@ -336,7 +336,7 @@ namespace DevilDaggersWebsite.BlazorWasm.Server.Controllers.Public
 
 			return new GetUploadSuccess
 			{
-				Message = $"NEW HIGHSCORE for {customLeaderboard.SpawnsetFile.Name}!",
+				Message = $"NEW HIGHSCORE for {customLeaderboard.Spawnset.Name}!",
 				TotalPlayers = totalPlayers,
 				Leaderboard = customLeaderboard.ToGetCustomLeaderboardDdcl(),
 				Category = customLeaderboard.Category,
@@ -375,24 +375,24 @@ namespace DevilDaggersWebsite.BlazorWasm.Server.Controllers.Public
 			};
 		}
 
-		private static void UpdateLeaderboardStatistics(CustomLeaderboard customLeaderboard)
+		private static void UpdateLeaderboardStatistics(CustomLeaderboardEntity customLeaderboard)
 		{
 			customLeaderboard.DateLastPlayed = DateTime.UtcNow;
 			customLeaderboard.TotalRunsSubmitted++;
 		}
 
-		private List<CustomEntry> FetchEntriesFromDatabase(CustomLeaderboard? customLeaderboard, bool isAscending)
+		private List<CustomEntryEntity> FetchEntriesFromDatabase(CustomLeaderboardEntity? customLeaderboard, bool isAscending)
 		{
 			// Use tracking to update player score.
 			return _dbContext.CustomEntries
 				.Include(ce => ce.Player)
 				.Where(e => e.CustomLeaderboard == customLeaderboard)
-				.OrderByMember(nameof(CustomEntry.Time), isAscending)
-				.ThenByMember(nameof(CustomEntry.SubmitDate), true)
+				.OrderByMember(nameof(CustomEntryEntity.Time), isAscending)
+				.ThenByMember(nameof(CustomEntryEntity.SubmitDate), true)
 				.ToList();
 		}
 
-		private async Task TrySendLeaderboardMessage(CustomLeaderboard customLeaderboard, string message, int rank, int totalPlayers, int time)
+		private async Task TrySendLeaderboardMessage(CustomLeaderboardEntity customLeaderboard, string message, int rank, int totalPlayers, int time)
 		{
 			try
 			{
@@ -400,7 +400,7 @@ namespace DevilDaggersWebsite.BlazorWasm.Server.Controllers.Public
 				{
 					Title = message,
 					Color = customLeaderboard.GetDaggerFromTime(time).GetDiscordColor(),
-					Url = Uri.EscapeUriString($"https://devildaggers.info/CustomLeaderboards/Leaderboard?spawnsetName={customLeaderboard.SpawnsetFile.Name}"),
+					Url = Uri.EscapeUriString($"https://devildaggers.info/CustomLeaderboards/Leaderboard?spawnsetName={customLeaderboard.Spawnset.Name}"),
 				};
 				builder.AddFieldObject("Score", FormatTimeString(time), true);
 				builder.AddFieldObject("Rank", $"{rank}/{totalPlayers}", true);
@@ -452,7 +452,7 @@ namespace DevilDaggersWebsite.BlazorWasm.Server.Controllers.Public
 			}
 		}
 
-		private static void Populate(CustomEntryData ced, List<AddGameState> gameStates)
+		private static void Populate(CustomEntryDataEntity ced, List<AddGameState> gameStates)
 		{
 			ced.GemsCollectedData = CompressProperty(gs => gs.GemsCollected);
 			ced.EnemiesKilledData = CompressProperty(gs => gs.EnemiesKilled);

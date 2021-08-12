@@ -6,7 +6,7 @@ namespace DevilDaggersWebsite.BlazorWasm.Server.Converters.Public
 {
 	public static class SpawnsetConverters
 	{
-		public static GetSpawnset ToGetSpawnsetPublic(this SpawnsetFile spawnsetFile, SpawnsetData spawnsetData, bool hasCustomLeaderboard) => new()
+		public static GetSpawnset ToGetSpawnsetPublic(this SpawnsetEntity spawnsetFile, SpawnsetData spawnsetData, bool hasCustomLeaderboard) => new()
 		{
 			MaxDisplayWaves = spawnsetFile.MaxDisplayWaves,
 			HtmlDescription = spawnsetFile.HtmlDescription,

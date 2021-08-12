@@ -41,7 +41,7 @@ namespace DevilDaggersWebsite.BlazorWasm.Server.Controllers.Admin
 			PlayerSorting? sortBy = null,
 			bool ascending = false)
 		{
-			IQueryable<Player> playersQuery = _dbContext.Players.AsNoTracking();
+			IQueryable<PlayerEntity> playersQuery = _dbContext.Players.AsNoTracking();
 
 			playersQuery = sortBy switch
 			{
@@ -64,7 +64,7 @@ namespace DevilDaggersWebsite.BlazorWasm.Server.Controllers.Admin
 				_ => playersQuery.OrderBy(p => p.Id, ascending),
 			};
 
-			List<Player> players = playersQuery
+			List<PlayerEntity> players = playersQuery
 				.Skip(pageIndex * pageSize)
 				.Take(pageSize)
 				.ToList();
@@ -97,7 +97,7 @@ namespace DevilDaggersWebsite.BlazorWasm.Server.Controllers.Admin
 		[ProducesResponseType(StatusCodes.Status404NotFound)]
 		public ActionResult<GetPlayer> GetPlayerById(int id)
 		{
-			Player? player = _dbContext.Players
+			PlayerEntity? player = _dbContext.Players
 				.AsSingleQuery()
 				.AsNoTracking()
 				.Include(p => p.PlayerTitles)
@@ -148,7 +148,7 @@ namespace DevilDaggersWebsite.BlazorWasm.Server.Controllers.Admin
 
 			foreach (int modId in addPlayer.AssetModIds ?? new())
 			{
-				if (!_dbContext.AssetMods.Any(m => m.Id == modId))
+				if (!_dbContext.Mods.Any(m => m.Id == modId))
 					return BadRequest($"Mod with ID '{modId}' does not exist.");
 			}
 
@@ -158,7 +158,7 @@ namespace DevilDaggersWebsite.BlazorWasm.Server.Controllers.Admin
 					return BadRequest($"Title with ID '{titleId}' does not exist.");
 			}
 
-			Player player = new()
+			PlayerEntity player = new()
 			{
 				Id = addPlayer.Id,
 				PlayerName = await GetPlayerName(addPlayer.Id),
@@ -226,7 +226,7 @@ namespace DevilDaggersWebsite.BlazorWasm.Server.Controllers.Admin
 
 			foreach (int modId in editPlayer.AssetModIds ?? new())
 			{
-				if (!_dbContext.AssetMods.Any(m => m.Id == modId))
+				if (!_dbContext.Mods.Any(m => m.Id == modId))
 					return BadRequest($"Mod with ID '{modId}' does not exist.");
 			}
 
@@ -236,7 +236,7 @@ namespace DevilDaggersWebsite.BlazorWasm.Server.Controllers.Admin
 					return BadRequest($"Title with ID '{titleId}' does not exist.");
 			}
 
-			Player? player = _dbContext.Players
+			PlayerEntity? player = _dbContext.Players
 				.AsSingleQuery()
 				.Include(p => p.PlayerAssetMods)
 				.Include(p => p.PlayerTitles)
@@ -257,7 +257,7 @@ namespace DevilDaggersWebsite.BlazorWasm.Server.Controllers.Admin
 				HideSettings = player.HideSettings,
 				HideDonations = player.HideDonations,
 				HidePastUsernames = player.HidePastUsernames,
-				AssetModIds = player.PlayerAssetMods.ConvertAll(pam => pam.AssetModId),
+				AssetModIds = player.PlayerAssetMods.ConvertAll(pam => pam.ModId),
 				TitleIds = player.PlayerTitles.ConvertAll(pt => pt.TitleId),
 				BanDescription = player.BanDescription,
 				BanResponsibleId = player.BanResponsibleId,
@@ -297,7 +297,7 @@ namespace DevilDaggersWebsite.BlazorWasm.Server.Controllers.Admin
 		[ProducesResponseType(StatusCodes.Status404NotFound)]
 		public async Task<ActionResult> DeletePlayerById(int id)
 		{
-			Player? player = _dbContext.Players
+			PlayerEntity? player = _dbContext.Players
 				.Include(p => p.PlayerTitles)
 				.FirstOrDefault(p => p.Id == id);
 			if (player == null)
@@ -309,10 +309,10 @@ namespace DevilDaggersWebsite.BlazorWasm.Server.Controllers.Admin
 			if (_dbContext.Donations.Any(d => d.PlayerId == id))
 				return BadRequest("Player with donations cannot be deleted.");
 
-			if (_dbContext.PlayerAssetMods.Any(pam => pam.PlayerId == id))
+			if (_dbContext.PlayerMods.Any(pam => pam.PlayerId == id))
 				return BadRequest("Player with mods cannot be deleted.");
 
-			if (_dbContext.SpawnsetFiles.Any(sf => sf.PlayerId == id))
+			if (_dbContext.Spawnsets.Any(sf => sf.PlayerId == id))
 				return BadRequest("Player with spawnsets cannot be deleted.");
 
 			_dbContext.Players.Remove(player);
@@ -337,25 +337,25 @@ namespace DevilDaggersWebsite.BlazorWasm.Server.Controllers.Admin
 
 		private void UpdatePlayerMods(List<int> assetModIds, int playerId)
 		{
-			foreach (PlayerAssetMod newEntity in assetModIds.ConvertAll(ami => new PlayerAssetMod { AssetModId = ami, PlayerId = playerId }))
+			foreach (PlayerModEntity newEntity in assetModIds.ConvertAll(ami => new PlayerModEntity { ModId = ami, PlayerId = playerId }))
 			{
-				if (!_dbContext.PlayerAssetMods.Any(pam => pam.AssetModId == newEntity.AssetModId && pam.PlayerId == newEntity.PlayerId))
-					_dbContext.PlayerAssetMods.Add(newEntity);
+				if (!_dbContext.PlayerMods.Any(pam => pam.ModId == newEntity.ModId && pam.PlayerId == newEntity.PlayerId))
+					_dbContext.PlayerMods.Add(newEntity);
 			}
 
-			foreach (PlayerAssetMod entityToRemove in _dbContext.PlayerAssetMods.Where(pam => pam.PlayerId == playerId && !assetModIds.Contains(pam.AssetModId)))
-				_dbContext.PlayerAssetMods.Remove(entityToRemove);
+			foreach (PlayerModEntity entityToRemove in _dbContext.PlayerMods.Where(pam => pam.PlayerId == playerId && !assetModIds.Contains(pam.ModId)))
+				_dbContext.PlayerMods.Remove(entityToRemove);
 		}
 
 		private void UpdatePlayerTitles(List<int> titleIds, int playerId)
 		{
-			foreach (PlayerTitle newEntity in titleIds.ConvertAll(ti => new PlayerTitle { TitleId = ti, PlayerId = playerId }))
+			foreach (PlayerTitleEntity newEntity in titleIds.ConvertAll(ti => new PlayerTitleEntity { TitleId = ti, PlayerId = playerId }))
 			{
 				if (!_dbContext.PlayerTitles.Any(pt => pt.TitleId == newEntity.TitleId && pt.PlayerId == newEntity.PlayerId))
 					_dbContext.PlayerTitles.Add(newEntity);
 			}
 
-			foreach (PlayerTitle entityToRemove in _dbContext.PlayerTitles.Where(pam => pam.PlayerId == playerId && !titleIds.Contains(pam.TitleId)))
+			foreach (PlayerTitleEntity entityToRemove in _dbContext.PlayerTitles.Where(pam => pam.PlayerId == playerId && !titleIds.Contains(pam.TitleId)))
 				_dbContext.PlayerTitles.Remove(entityToRemove);
 		}
 	}

@@ -40,7 +40,7 @@ namespace DevilDaggersWebsite.Tests
 			DbContextOptionsBuilder<ApplicationDbContext> optionsBuilder = new();
 			_dbContext = new Mock<ApplicationDbContext>(optionsBuilder.Options, Options.Create(new OperationalStoreOptions()))
 				.SetUpDbSet(db => db.Players, mockEntities.MockDbSetPlayers)
-				.SetUpDbSet(db => db.SpawnsetFiles, mockEntities.MockDbSetSpawnsetFiles)
+				.SetUpDbSet(db => db.Spawnsets, mockEntities.MockDbSetSpawnsetFiles)
 				.SetUpDbSet(db => db.CustomLeaderboards, mockEntities.MockDbSetCustomLeaderboards)
 				.SetUpDbSet(db => db.CustomEntries, mockEntities.MockDbSetCustomEntries)
 				.SetUpDbSet(db => db.CustomEntryData, mockEntities.MockDbSetCustomEntryData);
@@ -123,7 +123,7 @@ namespace DevilDaggersWebsite.Tests
 
 			GetUploadSuccess uploadSuccess = (await _customEntriesController.ProcessUploadRequest(uploadRequest)).Value;
 
-			_dbContext.Verify(db => db.CustomEntries.Add(It.Is<CustomEntry>(ce => ce.PlayerId == 2 && ce.Time == 200000)), Times.Once);
+			_dbContext.Verify(db => db.CustomEntries.Add(It.Is<CustomEntryEntity>(ce => ce.PlayerId == 2 && ce.Time == 200000)), Times.Once);
 			_dbContext.Verify(db => db.SaveChanges(), Times.AtLeastOnce);
 			Assert.IsTrue(uploadSuccess.Message.StartsWith("Welcome"));
 		}
@@ -145,8 +145,8 @@ namespace DevilDaggersWebsite.Tests
 			GetUploadSuccess uploadSuccess = (await _customEntriesController.ProcessUploadRequest(uploadRequest)).Value;
 
 			_dbContext.Verify(db => db.SaveChanges(), Times.AtLeastOnce);
-			_dbContext.Verify(db => db.Players.Add(It.Is<Player>(p => p.Id == 3 && p.PlayerName == "TestPlayer3")), Times.Once);
-			_dbContext.Verify(db => db.CustomEntries.Add(It.Is<CustomEntry>(ce => ce.PlayerId == 3 && ce.Time == 300000)), Times.Once);
+			_dbContext.Verify(db => db.Players.Add(It.Is<PlayerEntity>(p => p.Id == 3 && p.PlayerName == "TestPlayer3")), Times.Once);
+			_dbContext.Verify(db => db.CustomEntries.Add(It.Is<CustomEntryEntity>(ce => ce.PlayerId == 3 && ce.Time == 300000)), Times.Once);
 			Assert.IsTrue(uploadSuccess.Message.StartsWith("Welcome"));
 		}
 

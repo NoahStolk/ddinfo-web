@@ -40,7 +40,7 @@ namespace DevilDaggersWebsite.BlazorWasm.Server.Controllers.Admin
 			TitleSorting? sortBy = null,
 			bool ascending = false)
 		{
-			IQueryable<Title> titlesQuery = _dbContext.Titles.AsNoTracking();
+			IQueryable<TitleEntity> titlesQuery = _dbContext.Titles.AsNoTracking();
 
 			titlesQuery = sortBy switch
 			{
@@ -48,7 +48,7 @@ namespace DevilDaggersWebsite.BlazorWasm.Server.Controllers.Admin
 				_ => titlesQuery.OrderBy(s => s.Id, ascending),
 			};
 
-			List<Title> titles = titlesQuery
+			List<TitleEntity> titles = titlesQuery
 				.Skip(pageIndex * pageSize)
 				.Take(pageSize)
 				.ToList();
@@ -87,7 +87,7 @@ namespace DevilDaggersWebsite.BlazorWasm.Server.Controllers.Admin
 					return BadRequest($"Player with ID '{playerId}' does not exist.");
 			}
 
-			Title title = new()
+			TitleEntity title = new()
 			{
 				Name = addTitle.Name,
 			};
@@ -114,7 +114,7 @@ namespace DevilDaggersWebsite.BlazorWasm.Server.Controllers.Admin
 					return BadRequest($"Player with ID '{playerId}' does not exist.");
 			}
 
-			Title? title = _dbContext.Titles
+			TitleEntity? title = _dbContext.Titles
 				.Include(t => t.PlayerTitles)
 				.FirstOrDefault(t => t.Id == id);
 			if (title == null)
@@ -141,7 +141,7 @@ namespace DevilDaggersWebsite.BlazorWasm.Server.Controllers.Admin
 		[ProducesResponseType(StatusCodes.Status404NotFound)]
 		public async Task<ActionResult> DeleteTitleById(int id)
 		{
-			Title? title = _dbContext.Titles
+			TitleEntity? title = _dbContext.Titles
 				.Include(t => t.PlayerTitles)
 				.FirstOrDefault(t => t.Id == id);
 			if (title == null)
@@ -157,13 +157,13 @@ namespace DevilDaggersWebsite.BlazorWasm.Server.Controllers.Admin
 
 		private void UpdatePlayerTitles(List<int> playerIds, int titleId)
 		{
-			foreach (PlayerTitle newEntity in playerIds.ConvertAll(pi => new PlayerTitle { TitleId = titleId, PlayerId = pi }))
+			foreach (PlayerTitleEntity newEntity in playerIds.ConvertAll(pi => new PlayerTitleEntity { TitleId = titleId, PlayerId = pi }))
 			{
 				if (!_dbContext.PlayerTitles.Any(pt => pt.TitleId == newEntity.TitleId && pt.PlayerId == newEntity.PlayerId))
 					_dbContext.PlayerTitles.Add(newEntity);
 			}
 
-			foreach (PlayerTitle entityToRemove in _dbContext.PlayerTitles.Where(pt => pt.TitleId == titleId && !playerIds.Contains(pt.PlayerId)))
+			foreach (PlayerTitleEntity entityToRemove in _dbContext.PlayerTitles.Where(pt => pt.TitleId == titleId && !playerIds.Contains(pt.PlayerId)))
 				_dbContext.PlayerTitles.Remove(entityToRemove);
 		}
 	}

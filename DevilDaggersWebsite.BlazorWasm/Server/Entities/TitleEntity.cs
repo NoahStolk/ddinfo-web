@@ -1,9 +1,11 @@
 ﻿using System.Collections.Generic;
 using System.ComponentModel.DataAnnotations;
+using System.ComponentModel.DataAnnotations.Schema;
 
 namespace DevilDaggersWebsite.BlazorWasm.Server.Entities
 {
-	public class Title
+	[Table("Titles")]
+	public class TitleEntity
 	{
 		[Key]
 		public int Id { get; init; }
@@ -11,6 +13,6 @@ namespace DevilDaggersWebsite.BlazorWasm.Server.Entities
 		[StringLength(16)]
 		public string Name { get; set; } = null!;
 
-		public List<PlayerTitle> PlayerTitles { get; set; } = new();
+		public List<PlayerTitleEntity> PlayerTitles { get; set; } = new();
 	}
 }

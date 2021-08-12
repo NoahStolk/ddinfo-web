@@ -6,7 +6,7 @@ namespace DevilDaggersWebsite.BlazorWasm.Server.Converters.Admin
 {
 	public static class SpawnsetConverters
 	{
-		public static GetSpawnsetForOverview ToGetSpawnsetForOverview(this SpawnsetFile spawnset) => new()
+		public static GetSpawnsetForOverview ToGetSpawnsetForOverview(this SpawnsetEntity spawnset) => new()
 		{
 			Id = spawnset.Id,
 			Author = spawnset.Player.PlayerName,
@@ -17,7 +17,7 @@ namespace DevilDaggersWebsite.BlazorWasm.Server.Converters.Admin
 			IsPractice = spawnset.IsPractice,
 		};
 
-		public static GetSpawnset ToGetSpawnset(this SpawnsetFile spawnset) => new()
+		public static GetSpawnset ToGetSpawnset(this SpawnsetEntity spawnset) => new()
 		{
 			Id = spawnset.Id,
 			PlayerId = spawnset.PlayerId,

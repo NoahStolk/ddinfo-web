@@ -4,7 +4,8 @@ using System.ComponentModel.DataAnnotations.Schema;
 
 namespace DevilDaggersWebsite.BlazorWasm.Server.Entities
 {
-	public class CustomEntry
+	[Table("CustomEntries")]
+	public class CustomEntryEntity
 	{
 		[Key]
 		public int Id { get; init; }
@@ -12,12 +13,12 @@ namespace DevilDaggersWebsite.BlazorWasm.Server.Entities
 		public int CustomLeaderboardId { get; set; }
 
 		[ForeignKey(nameof(CustomLeaderboardId))]
-		public CustomLeaderboard CustomLeaderboard { get; set; } = null!;
+		public CustomLeaderboardEntity CustomLeaderboard { get; set; } = null!;
 
 		public int PlayerId { get; set; }
 
 		[ForeignKey(nameof(PlayerId))]
-		public Player Player { get; set; } = null!;
+		public PlayerEntity Player { get; set; } = null!;
 
 		public int Time { get; set; }
 

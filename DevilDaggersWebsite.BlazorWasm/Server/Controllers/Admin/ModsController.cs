@@ -53,7 +53,7 @@ namespace DevilDaggersWebsite.BlazorWasm.Server.Controllers.Admin
 			ModSorting? sortBy = null,
 			bool ascending = false)
 		{
-			IQueryable<AssetMod> modsQuery = _dbContext.AssetMods.AsNoTracking();
+			IQueryable<ModEntity> modsQuery = _dbContext.Mods.AsNoTracking();
 
 			modsQuery = sortBy switch
 			{
@@ -67,7 +67,7 @@ namespace DevilDaggersWebsite.BlazorWasm.Server.Controllers.Admin
 				_ => modsQuery.OrderBy(m => m.Id, ascending),
 			};
 
-			List<AssetMod> mods = modsQuery
+			List<ModEntity> mods = modsQuery
 				.Skip(pageIndex * pageSize)
 				.Take(pageSize)
 				.ToList();
@@ -75,7 +75,7 @@ namespace DevilDaggersWebsite.BlazorWasm.Server.Controllers.Admin
 			return new Page<GetModForOverview>
 			{
 				Results = mods.ConvertAll(m => m.ToGetModForOverview()),
-				TotalResults = _dbContext.AssetMods.Count(),
+				TotalResults = _dbContext.Mods.Count(),
 			};
 		}
 
@@ -83,7 +83,7 @@ namespace DevilDaggersWebsite.BlazorWasm.Server.Controllers.Admin
 		[ProducesResponseType(StatusCodes.Status200OK)]
 		public ActionResult<List<GetModName>> GetModNames()
 		{
-			var mods = _dbContext.AssetMods
+			var mods = _dbContext.Mods
 				.AsNoTracking()
 				.Select(m => new { m.Id, m.Name })
 				.ToList();
@@ -100,7 +100,7 @@ namespace DevilDaggersWebsite.BlazorWasm.Server.Controllers.Admin
 		[ProducesResponseType(StatusCodes.Status404NotFound)]
 		public ActionResult<GetMod> GetModById(int id)
 		{
-			AssetMod? mod = _dbContext.AssetMods
+			ModEntity? mod = _dbContext.Mods
 				.AsSingleQuery()
 				.AsNoTracking()
 				.Include(m => m.PlayerAssetMods)
@@ -119,7 +119,7 @@ namespace DevilDaggersWebsite.BlazorWasm.Server.Controllers.Admin
 			if (addMod.PlayerIds == null || addMod.PlayerIds.Count == 0)
 				return BadRequest("Mod must have at least one author.");
 
-			if (_dbContext.AssetMods.Any(m => m.Name == addMod.Name))
+			if (_dbContext.Mods.Any(m => m.Name == addMod.Name))
 				return BadRequest($"Mod with name '{addMod.Name}' already exists.");
 
 			foreach (int playerId in addMod.PlayerIds)
@@ -146,7 +146,7 @@ namespace DevilDaggersWebsite.BlazorWasm.Server.Controllers.Admin
 				addInfo = $"File '{_fileSystemService.GetRelevantDisplayPath(path)}' was added.";
 			}
 
-			AssetMod mod = new()
+			ModEntity mod = new()
 			{
 				AssetModTypes = addMod.AssetModTypes?.ToFlagEnum<AssetModTypes>() ?? AssetModTypes.None,
 				HtmlDescription = addMod.HtmlDescription,
@@ -156,7 +156,7 @@ namespace DevilDaggersWebsite.BlazorWasm.Server.Controllers.Admin
 				TrailerUrl = addMod.TrailerUrl,
 				Url = addMod.Url ?? string.Empty,
 			};
-			_dbContext.AssetMods.Add(mod);
+			_dbContext.Mods.Add(mod);
 			_dbContext.SaveChanges(); // Save changes here so PlayerMods entities can be assigned properly.
 
 			UpdatePlayerMods(addMod.PlayerIds ?? new(), mod.Id);
@@ -202,13 +202,13 @@ namespace DevilDaggersWebsite.BlazorWasm.Server.Controllers.Admin
 			}
 
 			// Validate against database.
-			AssetMod? mod = _dbContext.AssetMods
+			ModEntity? mod = _dbContext.Mods
 				.Include(m => m.PlayerAssetMods)
 				.FirstOrDefault(m => m.Id == id);
 			if (mod == null)
 				return NotFound();
 
-			if (mod.Name != editMod.Name && _dbContext.AssetMods.Any(m => m.Name == editMod.Name))
+			if (mod.Name != editMod.Name && _dbContext.Mods.Any(m => m.Name == editMod.Name))
 				return BadRequest($"Mod with name '{editMod.Name}' already exists.");
 
 			// Request is accepted.
@@ -264,7 +264,7 @@ namespace DevilDaggersWebsite.BlazorWasm.Server.Controllers.Admin
 		[ProducesResponseType(StatusCodes.Status404NotFound)]
 		public async Task<ActionResult> DeleteModById(int id)
 		{
-			AssetMod? mod = _dbContext.AssetMods.FirstOrDefault(d => d.Id == id);
+			ModEntity? mod = _dbContext.Mods.FirstOrDefault(d => d.Id == id);
 			if (mod == null)
 				return NotFound();
 
@@ -285,7 +285,7 @@ namespace DevilDaggersWebsite.BlazorWasm.Server.Controllers.Admin
 				fileSystemInformation.Add(new($"Directory '{_fileSystemService.GetRelevantDisplayPath(screenshotsDirectory)}' was not deleted because it does not exist.", FileSystemInformationType.NotFound));
 			}
 
-			_dbContext.AssetMods.Remove(mod);
+			_dbContext.Mods.Remove(mod);
 			_dbContext.SaveChanges();
 
 			await _auditLogger.LogDelete(mod, User, mod.Id, fileSystemInformation);
@@ -345,7 +345,7 @@ namespace DevilDaggersWebsite.BlazorWasm.Server.Controllers.Admin
 		/// Deletes the mod archive and the mod archive cache for this mod, and also clears the memory cache.
 		/// <b>This method does not delete mod screenshot files</b>.
 		/// </summary>
-		private void DeleteModFilesAndClearCache(AssetMod mod, List<FileSystemInformation> fileSystemInformation)
+		private void DeleteModFilesAndClearCache(ModEntity mod, List<FileSystemInformation> fileSystemInformation)
 		{
 			// Delete file.
 			string path = Path.Combine(_fileSystemService.GetPath(DataSubDirectory.Mods), $"{mod.Name}.zip");
@@ -377,14 +377,14 @@ namespace DevilDaggersWebsite.BlazorWasm.Server.Controllers.Admin
 
 		private void UpdatePlayerMods(List<int> playerIds, int modId)
 		{
-			foreach (PlayerAssetMod newEntity in playerIds.ConvertAll(pi => new PlayerAssetMod { AssetModId = modId, PlayerId = pi }))
+			foreach (PlayerModEntity newEntity in playerIds.ConvertAll(pi => new PlayerModEntity { ModId = modId, PlayerId = pi }))
 			{
-				if (!_dbContext.PlayerAssetMods.Any(pam => pam.AssetModId == newEntity.AssetModId && pam.PlayerId == newEntity.PlayerId))
-					_dbContext.PlayerAssetMods.Add(newEntity);
+				if (!_dbContext.PlayerMods.Any(pam => pam.ModId == newEntity.ModId && pam.PlayerId == newEntity.PlayerId))
+					_dbContext.PlayerMods.Add(newEntity);
 			}
 
-			foreach (PlayerAssetMod entityToRemove in _dbContext.PlayerAssetMods.Where(pam => pam.AssetModId == modId && !playerIds.Contains(pam.PlayerId)))
-				_dbContext.PlayerAssetMods.Remove(entityToRemove);
+			foreach (PlayerModEntity entityToRemove in _dbContext.PlayerMods.Where(pam => pam.ModId == modId && !playerIds.Contains(pam.PlayerId)))
+				_dbContext.PlayerMods.Remove(entityToRemove);
 		}
 
 		private string? ValidateModArchive(byte[] fileContents, string modName)

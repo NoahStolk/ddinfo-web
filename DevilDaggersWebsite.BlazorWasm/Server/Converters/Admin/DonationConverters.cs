@@ -5,7 +5,7 @@ namespace DevilDaggersWebsite.BlazorWasm.Server.Converters.Admin
 {
 	public static class DonationConverters
 	{
-		public static GetDonation ToGetDonation(this Donation donation) => new()
+		public static GetDonation ToGetDonation(this DonationEntity donation) => new()
 		{
 			Id = donation.Id,
 			Amount = donation.Amount,

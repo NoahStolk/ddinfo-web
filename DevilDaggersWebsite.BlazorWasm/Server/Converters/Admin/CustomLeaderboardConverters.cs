@@ -6,10 +6,10 @@ namespace DevilDaggersWebsite.BlazorWasm.Server.Converters.Admin
 {
 	public static class CustomLeaderboardConverters
 	{
-		public static GetCustomLeaderboard ToGetCustomLeaderboard(this CustomLeaderboard customLeaderboard) => new()
+		public static GetCustomLeaderboard ToGetCustomLeaderboard(this CustomLeaderboardEntity customLeaderboard) => new()
 		{
 			Id = customLeaderboard.Id,
-			SpawnsetName = customLeaderboard.SpawnsetFile.Name,
+			SpawnsetName = customLeaderboard.Spawnset.Name,
 			TimeBronze = customLeaderboard.TimeBronze.ToSecondsTime(),
 			TimeSilver = customLeaderboard.TimeSilver.ToSecondsTime(),
 			TimeGolden = customLeaderboard.TimeGolden.ToSecondsTime(),

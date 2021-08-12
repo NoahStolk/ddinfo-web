@@ -3,7 +3,8 @@ using System.ComponentModel.DataAnnotations.Schema;
 
 namespace DevilDaggersWebsite.BlazorWasm.Server.Entities
 {
-	public class CustomEntryData : IEntity
+	[Table("CustomEntryData")]
+	public class CustomEntryDataEntity : IEntity
 	{
 		[Key]
 		public int Id { get; init; }
@@ -11,7 +12,7 @@ namespace DevilDaggersWebsite.BlazorWasm.Server.Entities
 		public int CustomEntryId { get; set; }
 
 		[ForeignKey(nameof(CustomEntryId))]
-		public CustomEntry CustomEntry { get; set; } = null!;
+		public CustomEntryEntity CustomEntry { get; set; } = null!;
 
 		public byte[] GemsCollectedData { get; set; } = null!;
 		public byte[] EnemiesKilledData { get; set; } = null!;

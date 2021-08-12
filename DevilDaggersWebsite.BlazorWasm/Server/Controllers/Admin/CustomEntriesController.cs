@@ -41,12 +41,12 @@ namespace DevilDaggersWebsite.BlazorWasm.Server.Controllers.Admin
 			CustomEntrySorting? sortBy = null,
 			bool ascending = false)
 		{
-			IQueryable<CustomEntry> customEntriesQuery = _dbContext.CustomEntries
+			IQueryable<CustomEntryEntity> customEntriesQuery = _dbContext.CustomEntries
 				.AsNoTracking()
 				.AsSingleQuery()
 				.Include(ce => ce.Player)
 				.Include(ce => ce.CustomLeaderboard)
-					.ThenInclude(cl => cl.SpawnsetFile);
+					.ThenInclude(cl => cl.Spawnset);
 
 			customEntriesQuery = sortBy switch
 			{
@@ -66,13 +66,13 @@ namespace DevilDaggersWebsite.BlazorWasm.Server.Controllers.Admin
 				CustomEntrySorting.LevelUpTime3 => customEntriesQuery.OrderBy(ce => ce.LevelUpTime3, ascending),
 				CustomEntrySorting.LevelUpTime4 => customEntriesQuery.OrderBy(ce => ce.LevelUpTime4, ascending),
 				CustomEntrySorting.PlayerName => customEntriesQuery.OrderBy(ce => ce.Player.PlayerName, ascending),
-				CustomEntrySorting.SpawnsetName => customEntriesQuery.OrderBy(ce => ce.CustomLeaderboard.SpawnsetFile.Name, ascending),
+				CustomEntrySorting.SpawnsetName => customEntriesQuery.OrderBy(ce => ce.CustomLeaderboard.Spawnset.Name, ascending),
 				CustomEntrySorting.SubmitDate => customEntriesQuery.OrderBy(ce => ce.SubmitDate, ascending),
 				CustomEntrySorting.Time => customEntriesQuery.OrderBy(ce => ce.Time, ascending),
 				_ => customEntriesQuery.OrderBy(ce => ce.Id, ascending),
 			};
 
-			List<CustomEntry> customEntries = customEntriesQuery
+			List<CustomEntryEntity> customEntries = customEntriesQuery
 				.Skip(pageIndex * pageSize)
 				.Take(pageSize)
 				.ToList();
@@ -98,7 +98,7 @@ namespace DevilDaggersWebsite.BlazorWasm.Server.Controllers.Admin
 			if (_dbContext.CustomEntries.Any(cl => cl.CustomLeaderboardId == addCustomEntry.CustomLeaderboardId && cl.PlayerId == addCustomEntry.PlayerId))
 				return BadRequest("A score for this player already exists on this custom leaderboard.");
 
-			CustomEntry customEntry = new()
+			CustomEntryEntity customEntry = new()
 			{
 				ClientVersion = addCustomEntry.ClientVersion,
 				CustomLeaderboardId = addCustomEntry.CustomLeaderboardId,
@@ -140,7 +140,7 @@ namespace DevilDaggersWebsite.BlazorWasm.Server.Controllers.Admin
 			if (!_dbContext.CustomLeaderboards.Any(cl => cl.Id == editCustomEntry.CustomLeaderboardId))
 				return BadRequest($"Custom leaderboard with ID '{editCustomEntry.CustomLeaderboardId}' does not exist.");
 
-			CustomEntry? customEntry = _dbContext.CustomEntries.FirstOrDefault(ce => ce.Id == id);
+			CustomEntryEntity? customEntry = _dbContext.CustomEntries.FirstOrDefault(ce => ce.Id == id);
 			if (customEntry == null)
 				return NotFound();
 
@@ -198,11 +198,11 @@ namespace DevilDaggersWebsite.BlazorWasm.Server.Controllers.Admin
 		[ProducesResponseType(StatusCodes.Status404NotFound)]
 		public async Task<ActionResult> DeleteCustomEntryById(int id)
 		{
-			CustomEntry? customEntry = _dbContext.CustomEntries.FirstOrDefault(ced => ced.Id == id);
+			CustomEntryEntity? customEntry = _dbContext.CustomEntries.FirstOrDefault(ced => ced.Id == id);
 			if (customEntry == null)
 				return NotFound();
 
-			CustomEntryData? customEntryData = _dbContext.CustomEntryData.FirstOrDefault(ced => ced.CustomEntryId == id);
+			CustomEntryDataEntity? customEntryData = _dbContext.CustomEntryData.FirstOrDefault(ced => ced.CustomEntryId == id);
 			if (customEntryData != null)
 				_dbContext.CustomEntryData.Remove(customEntryData);
 

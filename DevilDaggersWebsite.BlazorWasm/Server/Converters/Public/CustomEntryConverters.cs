@@ -6,7 +6,7 @@ namespace DevilDaggersWebsite.BlazorWasm.Server.Converters.Public
 {
 	public static class CustomEntryConverters
 	{
-		public static GetCustomEntryDdcl ToGetCustomEntryDdcl(this CustomEntry customEntry) => new()
+		public static GetCustomEntryDdcl ToGetCustomEntryDdcl(this CustomEntryEntity customEntry) => new()
 		{
 			PlayerId = customEntry.PlayerId,
 			PlayerName = customEntry.Player.PlayerName,
@@ -29,7 +29,7 @@ namespace DevilDaggersWebsite.BlazorWasm.Server.Converters.Public
 			Time = customEntry.Time,
 		};
 
-		public static GetCustomEntry ToGetCustomEntry(this CustomEntry customEntry, int rank) => new()
+		public static GetCustomEntry ToGetCustomEntry(this CustomEntryEntity customEntry, int rank) => new()
 		{
 			Rank = rank,
 			PlayerId = customEntry.PlayerId,

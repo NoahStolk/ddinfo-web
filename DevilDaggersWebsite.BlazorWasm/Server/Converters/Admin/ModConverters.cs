@@ -6,7 +6,7 @@ namespace DevilDaggersWebsite.BlazorWasm.Server.Converters.Admin
 {
 	public static class ModConverters
 	{
-		public static GetModForOverview ToGetModForOverview(this AssetMod mod) => new()
+		public static GetModForOverview ToGetModForOverview(this ModEntity mod) => new()
 		{
 			Id = mod.Id,
 			AssetModTypes = mod.AssetModTypes,
@@ -18,7 +18,7 @@ namespace DevilDaggersWebsite.BlazorWasm.Server.Converters.Admin
 			Url = mod.Url?.TrimAfter(40, true),
 		};
 
-		public static GetMod ToGetMod(this AssetMod mod) => new()
+		public static GetMod ToGetMod(this ModEntity mod) => new()
 		{
 			Id = mod.Id,
 			AssetModTypes = mod.AssetModTypes,

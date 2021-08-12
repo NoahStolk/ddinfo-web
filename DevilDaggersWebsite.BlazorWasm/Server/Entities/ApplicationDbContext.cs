@@ -12,45 +12,45 @@ namespace DevilDaggersWebsite.BlazorWasm.Server.Entities
 		{
 		}
 
-		public virtual DbSet<AssetMod> AssetMods => Set<AssetMod>();
-		public virtual DbSet<CustomEntry> CustomEntries => Set<CustomEntry>();
-		public virtual DbSet<CustomEntryData> CustomEntryData => Set<CustomEntryData>();
-		public virtual DbSet<CustomLeaderboard> CustomLeaderboards => Set<CustomLeaderboard>();
-		public virtual DbSet<Donation> Donations => Set<Donation>();
-		public virtual DbSet<Player> Players => Set<Player>();
-		public virtual DbSet<SpawnsetFile> SpawnsetFiles => Set<SpawnsetFile>();
-		public virtual DbSet<Title> Titles => Set<Title>();
-		public virtual DbSet<ToolStatistic> ToolStatistics => Set<ToolStatistic>();
+		public virtual DbSet<CustomEntryEntity> CustomEntries => Set<CustomEntryEntity>();
+		public virtual DbSet<CustomEntryDataEntity> CustomEntryData => Set<CustomEntryDataEntity>();
+		public virtual DbSet<CustomLeaderboardEntity> CustomLeaderboards => Set<CustomLeaderboardEntity>();
+		public virtual DbSet<DonationEntity> Donations => Set<DonationEntity>();
+		public virtual DbSet<ModEntity> Mods => Set<ModEntity>();
+		public virtual DbSet<PlayerEntity> Players => Set<PlayerEntity>();
+		public virtual DbSet<SpawnsetEntity> Spawnsets => Set<SpawnsetEntity>();
+		public virtual DbSet<TitleEntity> Titles => Set<TitleEntity>();
+		public virtual DbSet<ToolStatisticEntity> ToolStatistics => Set<ToolStatisticEntity>();
 
-		public virtual DbSet<PlayerAssetMod> PlayerAssetMods => Set<PlayerAssetMod>();
-		public virtual DbSet<PlayerTitle> PlayerTitles => Set<PlayerTitle>();
+		public virtual DbSet<PlayerModEntity> PlayerMods => Set<PlayerModEntity>();
+		public virtual DbSet<PlayerTitleEntity> PlayerTitles => Set<PlayerTitleEntity>();
 
 		public virtual DbSet<InformationSchemaTable> InformationSchemaTables => Set<InformationSchemaTable>();
 
 		protected override void OnModelCreating(ModelBuilder builder)
 		{
-			builder.Entity<PlayerAssetMod>()
-				.HasKey(pam => new { pam.PlayerId, pam.AssetModId });
+			builder.Entity<PlayerModEntity>()
+				.HasKey(pam => new { pam.PlayerId, pam.ModId });
 
-			builder.Entity<PlayerAssetMod>()
+			builder.Entity<PlayerModEntity>()
 				.HasOne(pam => pam.Player)
 				.WithMany(p => p.PlayerAssetMods)
 				.HasForeignKey(pam => pam.PlayerId);
 
-			builder.Entity<PlayerAssetMod>()
-				.HasOne(pam => pam.AssetMod)
+			builder.Entity<PlayerModEntity>()
+				.HasOne(pam => pam.Mod)
 				.WithMany(am => am.PlayerAssetMods)
-				.HasForeignKey(pam => pam.AssetModId);
+				.HasForeignKey(pam => pam.ModId);
 
-			builder.Entity<PlayerTitle>()
+			builder.Entity<PlayerTitleEntity>()
 				.HasKey(pt => new { pt.PlayerId, pt.TitleId });
 
-			builder.Entity<PlayerTitle>()
+			builder.Entity<PlayerTitleEntity>()
 				.HasOne(pt => pt.Player)
 				.WithMany(p => p.PlayerTitles)
 				.HasForeignKey(pt => pt.PlayerId);
 
-			builder.Entity<PlayerTitle>()
+			builder.Entity<PlayerTitleEntity>()
 				.HasOne(pt => pt.Title)
 				.WithMany(t => t.PlayerTitles)
 				.HasForeignKey(pt => pt.TitleId);

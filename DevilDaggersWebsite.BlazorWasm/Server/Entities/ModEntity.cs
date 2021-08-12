@@ -2,10 +2,12 @@
 using System;
 using System.Collections.Generic;
 using System.ComponentModel.DataAnnotations;
+using System.ComponentModel.DataAnnotations.Schema;
 
 namespace DevilDaggersWebsite.BlazorWasm.Server.Entities
 {
-	public class AssetMod : IEntity
+	[Table("AssetMods")]
+	public class ModEntity : IEntity
 	{
 		[Key]
 		public int Id { get; init; }
@@ -28,6 +30,6 @@ namespace DevilDaggersWebsite.BlazorWasm.Server.Entities
 		[StringLength(128)]
 		public string Url { get; set; } = null!;
 
-		public List<PlayerAssetMod> PlayerAssetMods { get; set; } = new();
+		public List<PlayerModEntity> PlayerAssetMods { get; set; } = new();
 	}
 }

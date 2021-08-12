@@ -36,7 +36,7 @@ namespace DevilDaggersWebsite.BlazorWasm.Server.Controllers.Admin
 		[ProducesResponseType(StatusCodes.Status400BadRequest)]
 		public async Task<ActionResult> AddModScreenshot(AddModScreenshot addModScreenshot)
 		{
-			if (!_dbContext.AssetMods.Any(m => m.Name == addModScreenshot.ModName))
+			if (!_dbContext.Mods.Any(m => m.Name == addModScreenshot.ModName))
 				return BadRequest($"Mod with name '{addModScreenshot.ModName}' does not exist.");
 
 			string directory = Path.Combine(_fileSystemService.GetPath(DataSubDirectory.ModScreenshots), addModScreenshot.ModName);
@@ -59,7 +59,7 @@ namespace DevilDaggersWebsite.BlazorWasm.Server.Controllers.Admin
 		[ProducesResponseType(StatusCodes.Status400BadRequest)]
 		public async Task<ActionResult> DeleteModScreenshot(DeleteModScreenshot deleteModScreenshot)
 		{
-			if (!_dbContext.AssetMods.Any(m => m.Name == deleteModScreenshot.ModName))
+			if (!_dbContext.Mods.Any(m => m.Name == deleteModScreenshot.ModName))
 				return BadRequest($"Mod with name '{deleteModScreenshot.ModName}' does not exist.");
 
 			string directory = Path.Combine(_fileSystemService.GetPath(DataSubDirectory.ModScreenshots), deleteModScreenshot.ModName);

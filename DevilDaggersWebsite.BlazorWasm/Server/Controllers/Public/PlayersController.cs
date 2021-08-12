@@ -36,7 +36,7 @@ namespace DevilDaggersWebsite.BlazorWasm.Server.Controllers.Public
 				.Where(d => !d.IsRefunded && d.ConvertedEuroCentsReceived > 0)
 				.ToList();
 
-			List<PlayerTitle> playerTitles = _dbContext.PlayerTitles
+			List<PlayerTitleEntity> playerTitles = _dbContext.PlayerTitles
 				.AsNoTracking()
 				.Include(pt => pt.Title)
 				.ToList();

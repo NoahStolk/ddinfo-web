@@ -57,9 +57,9 @@ namespace DevilDaggersWebsite.BlazorWasm.Server.Controllers.Public
 			if (!Io.File.Exists(Path.Combine(_environment.WebRootPath, path)))
 				throw new Exception($"Tool file '{path}' does not exist.");
 
-			ToolStatistic? toolStatistic = _dbContext.ToolStatistics.FirstOrDefault(ts => ts.ToolName == tool.Name && ts.VersionNumber == tool.VersionNumber.ToString());
+			ToolStatisticEntity? toolStatistic = _dbContext.ToolStatistics.FirstOrDefault(ts => ts.ToolName == tool.Name && ts.VersionNumber == tool.VersionNumber.ToString());
 			if (toolStatistic == null)
-				_dbContext.ToolStatistics.Add(new ToolStatistic { DownloadCount = 1, ToolName = tool.Name, VersionNumber = tool.VersionNumber.ToString() });
+				_dbContext.ToolStatistics.Add(new ToolStatisticEntity { DownloadCount = 1, ToolName = tool.Name, VersionNumber = tool.VersionNumber.ToString() });
 			else
 				toolStatistic.DownloadCount++;
 

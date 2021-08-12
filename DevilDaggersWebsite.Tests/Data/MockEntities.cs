@@ -14,17 +14,17 @@ namespace DevilDaggersWebsite.Tests.Data
 		public MockEntities()
 		{
 			SpawnsetFile.Player = TestPlayer1;
-			CustomLeaderboard.SpawnsetFile = SpawnsetFile;
+			CustomLeaderboard.Spawnset = SpawnsetFile;
 			CustomEntry.CustomLeaderboard = CustomLeaderboard;
 			CustomEntry.Player = TestPlayer1;
 
 			PropertyInfo[] properties = typeof(MockEntities).GetProperties();
 
-			MockDbSetPlayers = new Mock<DbSet<Player>>().SetUpDbSet(GetEntities<Player>());
-			MockDbSetSpawnsetFiles = new Mock<DbSet<SpawnsetFile>>().SetUpDbSet(GetEntities<SpawnsetFile>());
-			MockDbSetCustomLeaderboards = new Mock<DbSet<CustomLeaderboard>>().SetUpDbSet(GetEntities<CustomLeaderboard>());
-			MockDbSetCustomEntries = new Mock<DbSet<CustomEntry>>().SetUpDbSet(GetEntities<CustomEntry>());
-			MockDbSetCustomEntryData = new Mock<DbSet<CustomEntryData>>().SetUpDbSet(GetEntities<CustomEntryData>());
+			MockDbSetPlayers = new Mock<DbSet<PlayerEntity>>().SetUpDbSet(GetEntities<PlayerEntity>());
+			MockDbSetSpawnsetFiles = new Mock<DbSet<SpawnsetEntity>>().SetUpDbSet(GetEntities<SpawnsetEntity>());
+			MockDbSetCustomLeaderboards = new Mock<DbSet<CustomLeaderboardEntity>>().SetUpDbSet(GetEntities<CustomLeaderboardEntity>());
+			MockDbSetCustomEntries = new Mock<DbSet<CustomEntryEntity>>().SetUpDbSet(GetEntities<CustomEntryEntity>());
+			MockDbSetCustomEntryData = new Mock<DbSet<CustomEntryDataEntity>>().SetUpDbSet(GetEntities<CustomEntryDataEntity>());
 
 			T[] GetEntities<T>() => properties
 				.Where(pi => pi.PropertyType == typeof(T))
@@ -32,25 +32,25 @@ namespace DevilDaggersWebsite.Tests.Data
 				.ToArray();
 		}
 
-		public Mock<DbSet<Player>> MockDbSetPlayers { get; }
-		public Mock<DbSet<SpawnsetFile>> MockDbSetSpawnsetFiles { get; }
-		public Mock<DbSet<CustomLeaderboard>> MockDbSetCustomLeaderboards { get; }
-		public Mock<DbSet<CustomEntry>> MockDbSetCustomEntries { get; }
-		public Mock<DbSet<CustomEntryData>> MockDbSetCustomEntryData { get; }
+		public Mock<DbSet<PlayerEntity>> MockDbSetPlayers { get; }
+		public Mock<DbSet<SpawnsetEntity>> MockDbSetSpawnsetFiles { get; }
+		public Mock<DbSet<CustomLeaderboardEntity>> MockDbSetCustomLeaderboards { get; }
+		public Mock<DbSet<CustomEntryEntity>> MockDbSetCustomEntries { get; }
+		public Mock<DbSet<CustomEntryDataEntity>> MockDbSetCustomEntryData { get; }
 
-		public Player TestPlayer1 { get; } = new()
+		public PlayerEntity TestPlayer1 { get; } = new()
 		{
 			Id = 1,
 			PlayerName = "TestPlayer1",
 		};
 
-		public Player TestPlayer2 { get; } = new()
+		public PlayerEntity TestPlayer2 { get; } = new()
 		{
 			Id = 2,
 			PlayerName = "TestPlayer2",
 		};
 
-		public SpawnsetFile SpawnsetFile { get; } = new()
+		public SpawnsetEntity SpawnsetFile { get; } = new()
 		{
 			Id = 1,
 			LastUpdated = DateTime.UtcNow,
@@ -60,7 +60,7 @@ namespace DevilDaggersWebsite.Tests.Data
 			MaxDisplayWaves = 5,
 		};
 
-		public CustomLeaderboard CustomLeaderboard { get; } = new()
+		public CustomLeaderboardEntity CustomLeaderboard { get; } = new()
 		{
 			Id = 1,
 			TimeBronze = 600000,
@@ -71,11 +71,11 @@ namespace DevilDaggersWebsite.Tests.Data
 			Category = CustomLeaderboardCategory.Default,
 			DateCreated = DateTime.UtcNow,
 			DateLastPlayed = DateTime.UtcNow,
-			SpawnsetFileId = 1,
+			SpawnsetId = 1,
 			TotalRunsSubmitted = 666,
 		};
 
-		public CustomEntry CustomEntry { get; } = new()
+		public CustomEntryEntity CustomEntry { get; } = new()
 		{
 			Id = 1,
 			ClientVersion = TestConstants.DdclVersion,

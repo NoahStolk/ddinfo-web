@@ -10,10 +10,10 @@ namespace DevilDaggersWebsite.BlazorWasm.Server.Converters.Public
 {
 	public static class CustomLeaderboardConverters
 	{
-		public static GetCustomLeaderboardDdcl ToGetCustomLeaderboardDdcl(this CustomLeaderboard customLeaderboard) => new()
+		public static GetCustomLeaderboardDdcl ToGetCustomLeaderboardDdcl(this CustomLeaderboardEntity customLeaderboard) => new()
 		{
-			SpawnsetAuthorName = customLeaderboard.SpawnsetFile.Player.PlayerName,
-			SpawnsetName = customLeaderboard.SpawnsetFile.Name,
+			SpawnsetAuthorName = customLeaderboard.Spawnset.Player.PlayerName,
+			SpawnsetName = customLeaderboard.Spawnset.Name,
 			TimeBronze = customLeaderboard.TimeBronze,
 			TimeSilver = customLeaderboard.TimeSilver,
 			TimeGolden = customLeaderboard.TimeGolden,
@@ -25,11 +25,11 @@ namespace DevilDaggersWebsite.BlazorWasm.Server.Converters.Public
 			IsAscending = customLeaderboard.Category.IsAscending(),
 		};
 
-		public static GetCustomLeaderboardOverview ToGetCustomLeaderboardOverview(this CustomLeaderboard customLeaderboard, string? topPlayer, int? worldRecord) => new()
+		public static GetCustomLeaderboardOverview ToGetCustomLeaderboardOverview(this CustomLeaderboardEntity customLeaderboard, string? topPlayer, int? worldRecord) => new()
 		{
 			Id = customLeaderboard.Id,
-			SpawnsetAuthorName = customLeaderboard.SpawnsetFile.Player.PlayerName,
-			SpawnsetName = customLeaderboard.SpawnsetFile.Name,
+			SpawnsetAuthorName = customLeaderboard.Spawnset.Player.PlayerName,
+			SpawnsetName = customLeaderboard.Spawnset.Name,
 			TimeBronze = customLeaderboard.TimeBronze.ToSecondsTime(),
 			TimeSilver = customLeaderboard.TimeSilver.ToSecondsTime(),
 			TimeGolden = customLeaderboard.TimeGolden.ToSecondsTime(),
@@ -42,10 +42,10 @@ namespace DevilDaggersWebsite.BlazorWasm.Server.Converters.Public
 			WorldRecordDagger = worldRecord.HasValue ? customLeaderboard.GetDaggerFromTime(worldRecord.Value) : CustomLeaderboardDagger.Default,
 		};
 
-		public static GetCustomLeaderboard ToGetCustomLeaderboard(this CustomLeaderboard customLeaderboard) => new()
+		public static GetCustomLeaderboard ToGetCustomLeaderboard(this CustomLeaderboardEntity customLeaderboard) => new()
 		{
-			SpawnsetAuthorName = customLeaderboard.SpawnsetFile.Player.PlayerName,
-			SpawnsetName = customLeaderboard.SpawnsetFile.Name,
+			SpawnsetAuthorName = customLeaderboard.Spawnset.Player.PlayerName,
+			SpawnsetName = customLeaderboard.Spawnset.Name,
 			TimeBronze = customLeaderboard.TimeBronze.ToSecondsTime(),
 			TimeSilver = customLeaderboard.TimeSilver.ToSecondsTime(),
 			TimeGolden = customLeaderboard.TimeGolden.ToSecondsTime(),

@@ -2,16 +2,17 @@
 
 namespace DevilDaggersWebsite.BlazorWasm.Server.Entities
 {
-	public class PlayerTitle
+	[Table("PlayerTitles")]
+	public class PlayerTitleEntity
 	{
 		public int PlayerId { get; set; }
 
 		[ForeignKey(nameof(PlayerId))]
-		public Player Player { get; set; } = null!;
+		public PlayerEntity Player { get; set; } = null!;
 
 		public int TitleId { get; set; }
 
 		[ForeignKey(nameof(TitleId))]
-		public Title Title { get; set; } = null!;
+		public TitleEntity Title { get; set; } = null!;
 	}
 }

@@ -7,15 +7,17 @@ using System.ComponentModel.DataAnnotations.Schema;
 
 namespace DevilDaggersWebsite.BlazorWasm.Server.Entities
 {
-	public class CustomLeaderboard : IEntity
+	[Table("CustomLeaderboards")]
+	public class CustomLeaderboardEntity : IEntity
 	{
 		[Key]
 		public int Id { get; init; }
 
-		public int SpawnsetFileId { get; set; }
+		[Column("SpawnsetFileId")]
+		public int SpawnsetId { get; set; }
 
-		[ForeignKey(nameof(SpawnsetFileId))]
-		public SpawnsetFile SpawnsetFile { get; set; } = null!;
+		[ForeignKey(nameof(SpawnsetId))]
+		public SpawnsetEntity Spawnset { get; set; } = null!;
 
 		public CustomLeaderboardCategory Category { get; set; }
 
@@ -37,7 +39,7 @@ namespace DevilDaggersWebsite.BlazorWasm.Server.Entities
 
 		public bool IsArchived { get; set; }
 
-		public List<CustomEntry>? CustomEntries { get; set; }
+		public List<CustomEntryEntity>? CustomEntries { get; set; }
 
 		public CustomLeaderboardDagger GetDaggerFromTime(int time)
 		{

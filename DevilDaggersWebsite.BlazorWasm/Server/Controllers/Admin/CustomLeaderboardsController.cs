@@ -49,16 +49,16 @@ namespace DevilDaggersWebsite.BlazorWasm.Server.Controllers.Admin
 			CustomLeaderboardSorting? sortBy = null,
 			bool ascending = false)
 		{
-			IQueryable<CustomLeaderboard> customLeaderboardsQuery = _dbContext.CustomLeaderboards
+			IQueryable<CustomLeaderboardEntity> customLeaderboardsQuery = _dbContext.CustomLeaderboards
 				.AsNoTracking()
-				.Include(cl => cl.SpawnsetFile);
+				.Include(cl => cl.Spawnset);
 
 			customLeaderboardsQuery = sortBy switch
 			{
 				CustomLeaderboardSorting.Category => customLeaderboardsQuery.OrderBy(cl => cl.Category, ascending),
 				CustomLeaderboardSorting.DateCreated => customLeaderboardsQuery.OrderBy(cl => cl.DateCreated, ascending),
 				CustomLeaderboardSorting.IsArchived => customLeaderboardsQuery.OrderBy(cl => cl.IsArchived, ascending),
-				CustomLeaderboardSorting.SpawnsetName => customLeaderboardsQuery.OrderBy(cl => cl.SpawnsetFile.Name, ascending),
+				CustomLeaderboardSorting.SpawnsetName => customLeaderboardsQuery.OrderBy(cl => cl.Spawnset.Name, ascending),
 				CustomLeaderboardSorting.TimeBronze => customLeaderboardsQuery.OrderBy(cl => cl.TimeBronze, ascending),
 				CustomLeaderboardSorting.TimeSilver => customLeaderboardsQuery.OrderBy(cl => cl.TimeSilver, ascending),
 				CustomLeaderboardSorting.TimeGolden => customLeaderboardsQuery.OrderBy(cl => cl.TimeGolden, ascending),
@@ -67,7 +67,7 @@ namespace DevilDaggersWebsite.BlazorWasm.Server.Controllers.Admin
 				_ => customLeaderboardsQuery.OrderBy(cl => cl.Id, ascending),
 			};
 
-			List<CustomLeaderboard> customLeaderboards = customLeaderboardsQuery
+			List<CustomLeaderboardEntity> customLeaderboards = customLeaderboardsQuery
 				.Skip(pageIndex * pageSize)
 				.Take(pageSize)
 				.ToList();
@@ -84,10 +84,10 @@ namespace DevilDaggersWebsite.BlazorWasm.Server.Controllers.Admin
 		[ProducesResponseType(StatusCodes.Status404NotFound)]
 		public ActionResult<GetCustomLeaderboard> GetCustomLeaderboardById(int id)
 		{
-			CustomLeaderboard? customLeaderboard = _dbContext.CustomLeaderboards
+			CustomLeaderboardEntity? customLeaderboard = _dbContext.CustomLeaderboards
 				.AsNoTracking()
 				.Where(cl => !cl.IsArchived)
-				.Include(cl => cl.SpawnsetFile)
+				.Include(cl => cl.Spawnset)
 					.ThenInclude(sf => sf.Player)
 				.FirstOrDefault(cl => cl.Id == id);
 
@@ -102,7 +102,7 @@ namespace DevilDaggersWebsite.BlazorWasm.Server.Controllers.Admin
 		[ProducesResponseType(StatusCodes.Status400BadRequest)]
 		public async Task<ActionResult> AddCustomLeaderboard(AddCustomLeaderboard addCustomLeaderboard)
 		{
-			if (_dbContext.CustomLeaderboards.Any(cl => cl.SpawnsetFileId == addCustomLeaderboard.SpawnsetId))
+			if (_dbContext.CustomLeaderboards.Any(cl => cl.SpawnsetId == addCustomLeaderboard.SpawnsetId))
 				return BadRequest("A leaderboard for this spawnset already exists.");
 
 			if (addCustomLeaderboard.Category.IsAscending())
@@ -128,7 +128,7 @@ namespace DevilDaggersWebsite.BlazorWasm.Server.Controllers.Admin
 					return BadRequest("For descending leaderboards, Silver time must be greater than Bronze time.");
 			}
 
-			var spawnsetFile = _dbContext.SpawnsetFiles
+			var spawnsetFile = _dbContext.Spawnsets
 				.AsNoTracking()
 				.Select(sf => new { sf.Id, sf.Name })
 				.FirstOrDefault(sf => sf.Id == addCustomLeaderboard.SpawnsetId);
@@ -147,10 +147,10 @@ namespace DevilDaggersWebsite.BlazorWasm.Server.Controllers.Admin
 			if (spawnset.TimerStart != 0)
 				return BadRequest("Cannot create a leaderboard for spawnset that uses the TimerStart value. This value is meant for practice and it is confusing to use it with custom leaderboards, as custom leaderboards always use the 'actual' timer value.");
 
-			CustomLeaderboard customLeaderboard = new()
+			CustomLeaderboardEntity customLeaderboard = new()
 			{
 				DateCreated = DateTime.UtcNow,
-				SpawnsetFileId = addCustomLeaderboard.SpawnsetId,
+				SpawnsetId = addCustomLeaderboard.SpawnsetId,
 				Category = addCustomLeaderboard.Category,
 				TimeBronze = addCustomLeaderboard.TimeBronze.To10thMilliTime(),
 				TimeSilver = addCustomLeaderboard.TimeSilver.To10thMilliTime(),
@@ -195,16 +195,16 @@ namespace DevilDaggersWebsite.BlazorWasm.Server.Controllers.Admin
 					return BadRequest("For descending leaderboards, Silver time must be greater than Bronze time.");
 			}
 
-			CustomLeaderboard? customLeaderboard = _dbContext.CustomLeaderboards.FirstOrDefault(cl => cl.Id == id);
+			CustomLeaderboardEntity? customLeaderboard = _dbContext.CustomLeaderboards.FirstOrDefault(cl => cl.Id == id);
 			if (customLeaderboard == null)
 				return NotFound();
 
-			var spawnsetFile = _dbContext.SpawnsetFiles
+			var spawnsetFile = _dbContext.Spawnsets
 				.AsNoTracking()
 				.Select(sf => new { sf.Id, sf.Name })
-				.FirstOrDefault(sf => sf.Id == customLeaderboard.SpawnsetFileId);
+				.FirstOrDefault(sf => sf.Id == customLeaderboard.SpawnsetId);
 			if (spawnsetFile == null)
-				return BadRequest($"Spawnset with ID '{customLeaderboard.SpawnsetFileId}' does not exist.");
+				return BadRequest($"Spawnset with ID '{customLeaderboard.SpawnsetId}' does not exist.");
 
 			if (!Spawnset.TryParse(System.IO.File.ReadAllBytes(Path.Combine(_fileSystemService.GetPath(DataSubDirectory.Spawnsets), spawnsetFile.Name)), out Spawnset spawnset))
 				throw new($"Could not parse survival file '{spawnsetFile.Name}'. Please review the file. Also review how this file ended up in the 'spawnsets' directory, as it is not possible to upload non-survival files from within the Admin pages.");
@@ -249,7 +249,7 @@ namespace DevilDaggersWebsite.BlazorWasm.Server.Controllers.Admin
 		[ProducesResponseType(StatusCodes.Status404NotFound)]
 		public async Task<ActionResult> DeleteCustomLeaderboardById(int id)
 		{
-			CustomLeaderboard? customLeaderboard = _dbContext.CustomLeaderboards.FirstOrDefault(cl => cl.Id == id);
+			CustomLeaderboardEntity? customLeaderboard = _dbContext.CustomLeaderboards.FirstOrDefault(cl => cl.Id == id);
 			if (customLeaderboard == null)
 				return NotFound();
 

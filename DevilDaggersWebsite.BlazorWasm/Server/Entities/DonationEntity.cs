@@ -5,7 +5,8 @@ using System.ComponentModel.DataAnnotations.Schema;
 
 namespace DevilDaggersWebsite.BlazorWasm.Server.Entities
 {
-	public class Donation
+	[Table("Donations")]
+	public class DonationEntity
 	{
 		[Key]
 		public int Id { get; init; }
@@ -13,7 +14,7 @@ namespace DevilDaggersWebsite.BlazorWasm.Server.Entities
 		public int PlayerId { get; set; }
 
 		[ForeignKey(nameof(PlayerId))]
-		public Player Player { get; set; } = null!;
+		public PlayerEntity Player { get; set; } = null!;
 
 		public int Amount { get; set; }
 

@@ -4,7 +4,8 @@ using System.ComponentModel.DataAnnotations.Schema;
 
 namespace DevilDaggersWebsite.BlazorWasm.Server.Entities
 {
-	public class SpawnsetFile : IEntity
+	[Table("SpawnsetFiles")]
+	public class SpawnsetEntity : IEntity
 	{
 		[Key]
 		public int Id { get; init; }
@@ -12,7 +13,7 @@ namespace DevilDaggersWebsite.BlazorWasm.Server.Entities
 		public int PlayerId { get; set; }
 
 		[ForeignKey(nameof(PlayerId))]
-		public Player Player { get; set; } = null!;
+		public PlayerEntity Player { get; set; } = null!;
 
 		[StringLength(64)]
 		public string Name { get; set; } = null!;

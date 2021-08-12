@@ -5,7 +5,7 @@ namespace DevilDaggersWebsite.BlazorWasm.Server.Converters.Admin
 {
 	public static class PlayerConverters
 	{
-		public static GetPlayerForOverview ToGetPlayerForOverview(this Player player) => new()
+		public static GetPlayerForOverview ToGetPlayerForOverview(this PlayerEntity player) => new()
 		{
 			Id = player.Id,
 			PlayerName = player.PlayerName,
@@ -26,7 +26,7 @@ namespace DevilDaggersWebsite.BlazorWasm.Server.Converters.Admin
 			UsesLegacyAudio = player.UsesLegacyAudio,
 		};
 
-		public static GetPlayer ToGetPlayer(this Player player) => new()
+		public static GetPlayer ToGetPlayer(this PlayerEntity player) => new()
 		{
 			Id = player.Id,
 			PlayerName = player.PlayerName,
@@ -45,7 +45,7 @@ namespace DevilDaggersWebsite.BlazorWasm.Server.Converters.Admin
 			HideSettings = player.HideSettings,
 			HideDonations = player.HideDonations,
 			HidePastUsernames = player.HidePastUsernames,
-			AssetModIds = player.PlayerAssetMods.ConvertAll(pam => pam.AssetModId),
+			AssetModIds = player.PlayerAssetMods.ConvertAll(pam => pam.ModId),
 			TitleIds = player.PlayerTitles.ConvertAll(pt => pt.TitleId),
 		};
 	}

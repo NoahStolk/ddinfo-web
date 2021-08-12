@@ -7,7 +7,7 @@ namespace DevilDaggersWebsite.BlazorWasm.Server.Converters.Admin
 {
 	public static class CustomEntryConverters
 	{
-		public static GetCustomEntry ToGetCustomEntry(this CustomEntry customEntry) => new()
+		public static GetCustomEntry ToGetCustomEntry(this CustomEntryEntity customEntry) => new()
 		{
 			Id = customEntry.Id,
 			ClientVersion = customEntry.ClientVersion,
@@ -26,7 +26,7 @@ namespace DevilDaggersWebsite.BlazorWasm.Server.Converters.Admin
 			LevelUpTime3 = customEntry.LevelUpTime3.ToSecondsTime(),
 			LevelUpTime4 = customEntry.LevelUpTime4.ToSecondsTime(),
 			PlayerName = customEntry.Player.PlayerName,
-			SpawnsetName = customEntry.CustomLeaderboard.SpawnsetFile.Name,
+			SpawnsetName = customEntry.CustomLeaderboard.Spawnset.Name,
 			SubmitDate = customEntry.SubmitDate,
 			Time = customEntry.Time.ToSecondsTime(),
 		};
