@@ -40,10 +40,9 @@ namespace DevilDaggersWebsite.BlazorWasm.Shared.Dto.Admin.CustomEntries
 		public int DaggersHit { get; init; }
 
 		[Display(Name = "Homing")]
-		public int HomingDaggers { get; init; }
+		public int HomingStored { get; init; }
 
-		[Display(Name = "HomingEaten")]
-		public int HomingDaggersEaten { get; init; }
+		public int HomingEaten { get; init; }
 
 		[Display(Name = "Death")]
 		public DeathType DeathType { get; init; }
