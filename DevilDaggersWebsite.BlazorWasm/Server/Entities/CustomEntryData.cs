@@ -18,8 +18,8 @@ namespace DevilDaggersWebsite.BlazorWasm.Server.Entities
 		public byte[] DaggersFiredData { get; set; } = null!;
 		public byte[] DaggersHitData { get; set; } = null!;
 		public byte[] EnemiesAliveData { get; set; } = null!;
-		public byte[] HomingDaggersData { get; set; } = null!;
-		public byte[] HomingDaggersEatenData { get; set; } = null!;
+		public byte[] HomingDaggersData { get; set; } = null!; // TODO: Rename to HomingStoredData.
+		public byte[] HomingDaggersEatenData { get; set; } = null!; // TODO: Rename to HomingEatenData.
 		public byte[] GemsDespawnedData { get; set; } = null!;
 		public byte[] GemsEatenData { get; set; } = null!;
 		public byte[] GemsTotalData { get; set; } = null!;
