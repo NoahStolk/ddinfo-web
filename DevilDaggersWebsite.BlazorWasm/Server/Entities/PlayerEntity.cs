@@ -47,7 +47,7 @@ namespace DevilDaggersWebsite.BlazorWasm.Server.Entities
 
 		public bool HidePastUsernames { get; set; }
 
-		public List<PlayerModEntity> PlayerAssetMods { get; set; } = new();
+		public List<PlayerModEntity> PlayerMods { get; set; } = new();
 
 		public List<PlayerTitleEntity> PlayerTitles { get; set; } = new();
 

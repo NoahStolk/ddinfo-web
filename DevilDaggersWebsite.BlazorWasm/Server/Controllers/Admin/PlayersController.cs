@@ -101,7 +101,7 @@ namespace DevilDaggersWebsite.BlazorWasm.Server.Controllers.Admin
 				.AsSingleQuery()
 				.AsNoTracking()
 				.Include(p => p.PlayerTitles)
-				.Include(p => p.PlayerAssetMods)
+				.Include(p => p.PlayerMods)
 				.FirstOrDefault(p => p.Id == id);
 			if (player == null)
 				return NotFound();
@@ -238,7 +238,7 @@ namespace DevilDaggersWebsite.BlazorWasm.Server.Controllers.Admin
 
 			PlayerEntity? player = _dbContext.Players
 				.AsSingleQuery()
-				.Include(p => p.PlayerAssetMods)
+				.Include(p => p.PlayerMods)
 				.Include(p => p.PlayerTitles)
 				.FirstOrDefault(p => p.Id == id);
 			if (player == null)
@@ -257,7 +257,7 @@ namespace DevilDaggersWebsite.BlazorWasm.Server.Controllers.Admin
 				HideSettings = player.HideSettings,
 				HideDonations = player.HideDonations,
 				HidePastUsernames = player.HidePastUsernames,
-				ModIds = player.PlayerAssetMods.ConvertAll(pam => pam.ModId),
+				ModIds = player.PlayerMods.ConvertAll(pam => pam.ModId),
 				TitleIds = player.PlayerTitles.ConvertAll(pt => pt.TitleId),
 				BanDescription = player.BanDescription,
 				BanResponsibleId = player.BanResponsibleId,
