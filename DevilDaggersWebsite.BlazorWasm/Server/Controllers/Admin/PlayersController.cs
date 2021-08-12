@@ -146,7 +146,7 @@ namespace DevilDaggersWebsite.BlazorWasm.Server.Controllers.Admin
 			if (_dbContext.Players.Any(p => p.Id == addPlayer.Id))
 				return Conflict($"Player with ID '{addPlayer.Id}' already exists.");
 
-			foreach (int modId in addPlayer.AssetModIds ?? new())
+			foreach (int modId in addPlayer.ModIds ?? new())
 			{
 				if (!_dbContext.Mods.Any(m => m.Id == modId))
 					return BadRequest($"Mod with ID '{modId}' does not exist.");
@@ -181,7 +181,7 @@ namespace DevilDaggersWebsite.BlazorWasm.Server.Controllers.Admin
 			_dbContext.Players.Add(player);
 			_dbContext.SaveChanges(); // Save changes here so PlayerTitle and PlayerAssetMod entities can be assigned properly.
 
-			UpdatePlayerMods(addPlayer.AssetModIds ?? new(), player.Id);
+			UpdatePlayerMods(addPlayer.ModIds ?? new(), player.Id);
 			UpdatePlayerTitles(addPlayer.TitleIds ?? new(), player.Id);
 			_dbContext.SaveChanges();
 
@@ -224,7 +224,7 @@ namespace DevilDaggersWebsite.BlazorWasm.Server.Controllers.Admin
 					return BadRequest("BanResponsibleId must only be used for banned players.");
 			}
 
-			foreach (int modId in editPlayer.AssetModIds ?? new())
+			foreach (int modId in editPlayer.ModIds ?? new())
 			{
 				if (!_dbContext.Mods.Any(m => m.Id == modId))
 					return BadRequest($"Mod with ID '{modId}' does not exist.");
@@ -257,7 +257,7 @@ namespace DevilDaggersWebsite.BlazorWasm.Server.Controllers.Admin
 				HideSettings = player.HideSettings,
 				HideDonations = player.HideDonations,
 				HidePastUsernames = player.HidePastUsernames,
-				AssetModIds = player.PlayerAssetMods.ConvertAll(pam => pam.ModId),
+				ModIds = player.PlayerAssetMods.ConvertAll(pam => pam.ModId),
 				TitleIds = player.PlayerTitles.ConvertAll(pt => pt.TitleId),
 				BanDescription = player.BanDescription,
 				BanResponsibleId = player.BanResponsibleId,
@@ -282,7 +282,7 @@ namespace DevilDaggersWebsite.BlazorWasm.Server.Controllers.Admin
 			player.IsBanned = editPlayer.IsBanned;
 			player.IsBannedFromDdcl = editPlayer.IsBannedFromDdcl;
 
-			UpdatePlayerMods(editPlayer.AssetModIds ?? new(), player.Id);
+			UpdatePlayerMods(editPlayer.ModIds ?? new(), player.Id);
 			UpdatePlayerTitles(editPlayer.TitleIds ?? new(), player.Id);
 			_dbContext.SaveChanges();
 

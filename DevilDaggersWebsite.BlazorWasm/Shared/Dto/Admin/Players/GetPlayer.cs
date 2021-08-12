@@ -38,7 +38,7 @@ namespace DevilDaggersWebsite.BlazorWasm.Shared.Dto.Admin.Players
 
 		public bool HidePastUsernames { get; init; }
 
-		public List<int>? AssetModIds { get; init; }
+		public List<int>? ModIds { get; init; }
 
 		public List<int>? TitleIds { get; init; }
 	}

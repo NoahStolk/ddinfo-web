@@ -17,7 +17,7 @@
 	<AdminInput Label="@nameof(EditPlayer.HideDonations)"><InputCheckbox @bind-Value="@_editPlayer!.HideDonations" /></AdminInput>
 	<AdminInput Label="@nameof(EditPlayer.HidePastUsernames)"><InputCheckbox @bind-Value="@_editPlayer!.HidePastUsernames" /></AdminInput>
 	<AdminInput Label="@nameof(EditPlayer.HideSettings)"><InputCheckbox @bind-Value="@_editPlayer!.HideSettings" /></AdminInput>
-	<AdminInput Label="@nameof(EditPlayer.AssetModIds)"><MultiSearchDropdown Values="@_modNames" @bind-Value="@_editPlayer!.AssetModIds" /></AdminInput>
+	<AdminInput Label="@nameof(EditPlayer.ModIds)"><MultiSearchDropdown Values="@_modNames" @bind-Value="@_editPlayer!.ModIds" /></AdminInput>
 	<AdminInput Label="@nameof(EditPlayer.TitleIds)"><MultiSearchDropdown Values="@_titleNames" @bind-Value="@_editPlayer!.TitleIds" /></AdminInput>
 	<AdminInput Label="@nameof(EditPlayer.IsBanned)"><InputCheckbox @bind-Value="@_editPlayer!.IsBanned" /></AdminInput>
 	<AdminInput Label="@nameof(EditPlayer.BanDescription)"><InputText class="w-64 pl-2 bg-gray-900 text-color-text" @bind-Value="@_editPlayer!.BanDescription" /></AdminInput>
@@ -47,7 +47,7 @@
 			GetPlayer getPlayer = await Http.Client.GetFromJsonAsync<GetPlayer>($"api/admin/players/{Id}") ?? throw new($"Response could not be deserialized to {nameof(GetPlayer)}.");
 			_editPlayer = new()
 			{
-				AssetModIds = getPlayer.AssetModIds,
+				ModIds = getPlayer.ModIds,
 				CountryCode = getPlayer.CountryCode,
 				Dpi = getPlayer.Dpi,
 				Fov = getPlayer.Fov,

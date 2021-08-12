@@ -45,7 +45,7 @@ namespace DevilDaggersWebsite.BlazorWasm.Server.Converters.Admin
 			HideSettings = player.HideSettings,
 			HideDonations = player.HideDonations,
 			HidePastUsernames = player.HidePastUsernames,
-			AssetModIds = player.PlayerAssetMods.ConvertAll(pam => pam.ModId),
+			ModIds = player.PlayerAssetMods.ConvertAll(pam => pam.ModId),
 			TitleIds = player.PlayerTitles.ConvertAll(pt => pt.TitleId),
 		};
 	}

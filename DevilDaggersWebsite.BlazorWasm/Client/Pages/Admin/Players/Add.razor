@@ -18,7 +18,7 @@
 	<AdminInput Label="@nameof(AddPlayer.HideDonations)"><InputCheckbox @bind-Value="@_addPlayer.HideDonations" /></AdminInput>
 	<AdminInput Label="@nameof(AddPlayer.HidePastUsernames)"><InputCheckbox @bind-Value="@_addPlayer.HidePastUsernames" /></AdminInput>
 	<AdminInput Label="@nameof(AddPlayer.HideSettings)"><InputCheckbox @bind-Value="@_addPlayer.HideSettings" /></AdminInput>
-	<AdminInput Label="@nameof(AddPlayer.AssetModIds)"><MultiSearchDropdown Values="@_modNames" @bind-Value="@_addPlayer.AssetModIds" /></AdminInput>
+	<AdminInput Label="@nameof(AddPlayer.ModIds)"><MultiSearchDropdown Values="@_modNames" @bind-Value="@_addPlayer.ModIds" /></AdminInput>
 	<AdminInput Label="@nameof(AddPlayer.TitleIds)"><MultiSearchDropdown Values="@_titleNames" @bind-Value="@_addPlayer.TitleIds" /></AdminInput>
 	<AdminInput Label="@nameof(AddPlayer.IsBanned)"><InputCheckbox @bind-Value="@_addPlayer.IsBanned" /></AdminInput>
 	<AdminInput Label="@nameof(AddPlayer.BanDescription)"><InputText class="w-64 pl-2 bg-gray-900 text-color-text" @bind-Value="@_addPlayer.BanDescription" /></AdminInput>
