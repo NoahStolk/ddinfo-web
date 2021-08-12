@@ -18,8 +18,8 @@ else
 			<div @onclick="() => Sort(CustomLeaderboardSorting.Flag)" class="text-left"><Tooltip Text="Sort by FLAG"><img src="/images/icons/custom-x2/flag.png" /></Tooltip></div>
 			<div @onclick="() => Sort(CustomLeaderboardSorting.Player)" class="text-left"><Tooltip Text="Sort by PLAYER"><img src="/images/icons/mask-x2/eye.png" /></Tooltip></div>
 			<div @onclick="() => Sort(CustomLeaderboardSorting.Time)" class="text-right"><Tooltip Text="Sort by TIME"><img src="/images/icons/mask-x2/stopwatch.png" /></Tooltip></div>
-			<div @onclick="() => Sort(CustomLeaderboardSorting.Kills)" class="text-right hidden md:block"><Tooltip Text="Sort by KILLS"><img src="/images/icons/mask-x2/dagger.png" /></Tooltip></div>
-			<div @onclick="() => Sort(CustomLeaderboardSorting.Gems)" class="text-right hidden md:block"><Tooltip Text="Sort by GEMS"><img src="/images/icons/mask-x2/gem.png" /></Tooltip></div>
+			<div @onclick="() => Sort(CustomLeaderboardSorting.EnemiesKilled)" class="text-right hidden md:block"><Tooltip Text="Sort by KILLS"><img src="/images/icons/mask-x2/dagger.png" /></Tooltip></div>
+			<div @onclick="() => Sort(CustomLeaderboardSorting.GemsCollected)" class="text-right hidden md:block"><Tooltip Text="Sort by GEMS"><img src="/images/icons/mask-x2/gem.png" /></Tooltip></div>
 			<div @onclick="() => Sort(CustomLeaderboardSorting.Accuracy)" class="text-right hidden md:block"><Tooltip Text="Sort by ACCURACY"><img src="/images/icons/mask-x2/crosshair.png" /></Tooltip></div>
 			<div @onclick="() => Sort(CustomLeaderboardSorting.DeathType)" class="text-left hidden lg:block"><Tooltip Text="Sort by DEATH&nbsp;TYPE"><img src="/images/icons/mask-x2/skull.png" /></Tooltip></div>
 		</div>
@@ -86,8 +86,8 @@ else
 			CustomLeaderboardSorting.Accuracy => GetCustomLeaderboard.CustomEntries.OrderBy(ce => ce.DaggersFired == 0 ? 0 : ce.DaggersHit / (float)ce.DaggersFired, _ascending).ToList(),
 			CustomLeaderboardSorting.DeathType => GetCustomLeaderboard.CustomEntries.OrderBy(ce => ce.DeathType, _ascending).ToList(),
 			CustomLeaderboardSorting.Flag => GetCustomLeaderboard.CustomEntries.OrderBy(ce => ce.CountryCode, _ascending).ToList(),
-			CustomLeaderboardSorting.Gems => GetCustomLeaderboard.CustomEntries.OrderBy(ce => ce.GemsCollected, _ascending).ToList(),
-			CustomLeaderboardSorting.Kills => GetCustomLeaderboard.CustomEntries.OrderBy(ce => ce.EnemiesKilled, _ascending).ToList(),
+			CustomLeaderboardSorting.GemsCollected => GetCustomLeaderboard.CustomEntries.OrderBy(ce => ce.GemsCollected, _ascending).ToList(),
+			CustomLeaderboardSorting.EnemiesKilled => GetCustomLeaderboard.CustomEntries.OrderBy(ce => ce.EnemiesKilled, _ascending).ToList(),
 			CustomLeaderboardSorting.Player => GetCustomLeaderboard.CustomEntries.OrderBy(ce => ce.PlayerName, _ascending).ToList(),
 			CustomLeaderboardSorting.Rank => GetCustomLeaderboard.CustomEntries.OrderBy(ce => ce.Rank, _ascending).ToList(),
 			CustomLeaderboardSorting.Time => GetCustomLeaderboard.CustomEntries.OrderBy(ce => ce.Time, _ascending).ToList(),
@@ -101,9 +101,18 @@ else
 		Flag,
 		Player,
 		Time,
-		Kills,
-		Gems,
+		EnemiesKilled,
+		EnemiesAlive,
+		GemsCollected,
+		GemsDespawned,
+		GemsEaten,
 		Accuracy,
 		DeathType,
+		HomingStored,
+		HomingEaten,
+		Level2,
+		Level3,
+		Level4,
+		SubmitDate,
 	}
 }
