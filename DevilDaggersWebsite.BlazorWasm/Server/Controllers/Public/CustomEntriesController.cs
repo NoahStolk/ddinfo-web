@@ -179,8 +179,8 @@ namespace DevilDaggersWebsite.BlazorWasm.Server.Controllers.Public
 					DaggersHit = uploadRequest.DaggersHit,
 					DaggersFired = uploadRequest.DaggersFired,
 					EnemiesAlive = uploadRequest.EnemiesAlive,
-					HomingDaggers = uploadRequest.HomingDaggers,
-					HomingDaggersEaten = uploadRequest.HomingDaggersEaten,
+					HomingStored = uploadRequest.HomingDaggers,
+					HomingEaten = uploadRequest.HomingDaggersEaten,
 					LevelUpTime2 = uploadRequest.LevelUpTime2,
 					LevelUpTime3 = uploadRequest.LevelUpTime3,
 					LevelUpTime4 = uploadRequest.LevelUpTime4,
@@ -280,8 +280,8 @@ namespace DevilDaggersWebsite.BlazorWasm.Server.Controllers.Public
 			int daggersFiredDiff = uploadRequest.DaggersFired - customEntry.DaggersFired;
 			int daggersHitDiff = uploadRequest.DaggersHit - customEntry.DaggersHit;
 			int enemiesAliveDiff = uploadRequest.EnemiesAlive - customEntry.EnemiesAlive;
-			int homingDaggersDiff = uploadRequest.HomingDaggers - customEntry.HomingDaggers;
-			int homingDaggersEatenDiff = uploadRequest.HomingDaggersEaten - customEntry.HomingDaggersEaten;
+			int homingDaggersDiff = uploadRequest.HomingDaggers - customEntry.HomingStored;
+			int homingDaggersEatenDiff = uploadRequest.HomingDaggersEaten - customEntry.HomingEaten;
 			int gemsDespawnedDiff = uploadRequest.GemsDespawned - customEntry.GemsDespawned;
 			int gemsEatenDiff = uploadRequest.GemsEaten - customEntry.GemsEaten;
 			int gemsTotalDiff = uploadRequest.GemsTotal - customEntry.GemsTotal;
@@ -296,8 +296,8 @@ namespace DevilDaggersWebsite.BlazorWasm.Server.Controllers.Public
 			customEntry.DaggersFired = uploadRequest.DaggersFired;
 			customEntry.DaggersHit = uploadRequest.DaggersHit;
 			customEntry.EnemiesAlive = uploadRequest.EnemiesAlive;
-			customEntry.HomingDaggers = uploadRequest.HomingDaggers;
-			customEntry.HomingDaggersEaten = uploadRequest.HomingDaggersEaten;
+			customEntry.HomingStored = uploadRequest.HomingDaggers;
+			customEntry.HomingEaten = uploadRequest.HomingDaggersEaten;
 			customEntry.GemsDespawned = uploadRequest.GemsDespawned;
 			customEntry.GemsEaten = uploadRequest.GemsEaten;
 			customEntry.GemsTotal = uploadRequest.GemsTotal;
@@ -459,8 +459,8 @@ namespace DevilDaggersWebsite.BlazorWasm.Server.Controllers.Public
 			ced.DaggersFiredData = CompressProperty(gs => gs.DaggersFired);
 			ced.DaggersHitData = CompressProperty(gs => gs.DaggersHit);
 			ced.EnemiesAliveData = CompressProperty(gs => gs.EnemiesAlive);
-			ced.HomingDaggersData = CompressProperty(gs => gs.HomingDaggers);
-			ced.HomingDaggersEatenData = CompressProperty(gs => gs.HomingDaggersEaten);
+			ced.HomingStoredData = CompressProperty(gs => gs.HomingDaggers);
+			ced.HomingEatenData = CompressProperty(gs => gs.HomingDaggersEaten);
 			ced.GemsDespawnedData = CompressProperty(gs => gs.GemsDespawned);
 			ced.GemsEatenData = CompressProperty(gs => gs.GemsEaten);
 			ced.GemsTotalData = CompressProperty(gs => gs.GemsTotal);

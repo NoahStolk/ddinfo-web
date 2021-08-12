@@ -60,8 +60,8 @@ namespace DevilDaggersWebsite.BlazorWasm.Server.Controllers.Admin
 				CustomEntrySorting.GemsDespawned => customEntriesQuery.OrderBy(ce => ce.GemsDespawned, ascending),
 				CustomEntrySorting.GemsEaten => customEntriesQuery.OrderBy(ce => ce.GemsEaten, ascending),
 				CustomEntrySorting.GemsTotal => customEntriesQuery.OrderBy(ce => ce.GemsTotal, ascending),
-				CustomEntrySorting.HomingStored => customEntriesQuery.OrderBy(ce => ce.HomingDaggers, ascending),
-				CustomEntrySorting.HomingEaten => customEntriesQuery.OrderBy(ce => ce.HomingDaggersEaten, ascending),
+				CustomEntrySorting.HomingStored => customEntriesQuery.OrderBy(ce => ce.HomingStored, ascending),
+				CustomEntrySorting.HomingEaten => customEntriesQuery.OrderBy(ce => ce.HomingEaten, ascending),
 				CustomEntrySorting.LevelUpTime2 => customEntriesQuery.OrderBy(ce => ce.LevelUpTime2, ascending),
 				CustomEntrySorting.LevelUpTime3 => customEntriesQuery.OrderBy(ce => ce.LevelUpTime3, ascending),
 				CustomEntrySorting.LevelUpTime4 => customEntriesQuery.OrderBy(ce => ce.LevelUpTime4, ascending),
@@ -111,8 +111,8 @@ namespace DevilDaggersWebsite.BlazorWasm.Server.Controllers.Admin
 				GemsDespawned = addCustomEntry.GemsDespawned,
 				GemsEaten = addCustomEntry.GemsEaten,
 				GemsTotal = addCustomEntry.GemsTotal,
-				HomingDaggers = addCustomEntry.HomingStored,
-				HomingDaggersEaten = addCustomEntry.HomingEaten,
+				HomingStored = addCustomEntry.HomingStored,
+				HomingEaten = addCustomEntry.HomingEaten,
 				LevelUpTime2 = addCustomEntry.LevelUpTime2,
 				LevelUpTime3 = addCustomEntry.LevelUpTime3,
 				LevelUpTime4 = addCustomEntry.LevelUpTime4,
@@ -157,8 +157,8 @@ namespace DevilDaggersWebsite.BlazorWasm.Server.Controllers.Admin
 				GemsDespawned = customEntry.GemsDespawned,
 				GemsEaten = customEntry.GemsEaten,
 				GemsTotal = customEntry.GemsTotal,
-				HomingStored = customEntry.HomingDaggers,
-				HomingEaten = customEntry.HomingDaggersEaten,
+				HomingStored = customEntry.HomingStored,
+				HomingEaten = customEntry.HomingEaten,
 				LevelUpTime2 = customEntry.LevelUpTime2,
 				LevelUpTime3 = customEntry.LevelUpTime3,
 				LevelUpTime4 = customEntry.LevelUpTime4,
@@ -178,8 +178,8 @@ namespace DevilDaggersWebsite.BlazorWasm.Server.Controllers.Admin
 			customEntry.GemsDespawned = editCustomEntry.GemsDespawned;
 			customEntry.GemsEaten = editCustomEntry.GemsEaten;
 			customEntry.GemsTotal = editCustomEntry.GemsTotal;
-			customEntry.HomingDaggers = editCustomEntry.HomingStored;
-			customEntry.HomingDaggersEaten = editCustomEntry.HomingEaten;
+			customEntry.HomingStored = editCustomEntry.HomingStored;
+			customEntry.HomingEaten = editCustomEntry.HomingEaten;
 			customEntry.LevelUpTime2 = editCustomEntry.LevelUpTime2;
 			customEntry.LevelUpTime3 = editCustomEntry.LevelUpTime3;
 			customEntry.LevelUpTime4 = editCustomEntry.LevelUpTime4;

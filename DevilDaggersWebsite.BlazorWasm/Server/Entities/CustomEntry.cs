@@ -31,11 +31,9 @@ namespace DevilDaggersWebsite.BlazorWasm.Server.Entities
 
 		public int EnemiesAlive { get; set; }
 
-		// TODO: Rename to HomingStored.
-		public int HomingDaggers { get; set; }
+		public int HomingStored { get; set; }
 
-		// TODO: Rename to HomingEaten.
-		public int HomingDaggersEaten { get; set; }
+		public int HomingEaten { get; set; }
 
 		public int GemsDespawned { get; set; }
 
