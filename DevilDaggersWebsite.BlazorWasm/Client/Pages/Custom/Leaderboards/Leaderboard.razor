@@ -18,10 +18,19 @@ else
 			<div @onclick="() => Sort(CustomEntrySorting.Flag)" class="text-left"><Tooltip Text="Sort by FLAG"><img src="/images/icons/custom-x2/flag.png" /></Tooltip></div>
 			<div @onclick="() => Sort(CustomEntrySorting.Player)" class="text-left"><Tooltip Text="Sort by PLAYER"><img src="/images/icons/mask-x2/eye.png" /></Tooltip></div>
 			<div @onclick="() => Sort(CustomEntrySorting.Time)" class="text-right"><Tooltip Text="Sort by TIME"><img src="/images/icons/mask-x2/stopwatch.png" /></Tooltip></div>
-			<div @onclick="() => Sort(CustomEntrySorting.EnemiesKilled)" class="text-right hidden md:block"><Tooltip Text="Sort by KILLS"><img src="/images/icons/mask-x2/dagger.png" /></Tooltip></div>
-			<div @onclick="() => Sort(CustomEntrySorting.GemsCollected)" class="text-right hidden md:block"><Tooltip Text="Sort by GEMS"><img src="/images/icons/mask-x2/gem.png" /></Tooltip></div>
+			<div @onclick="() => Sort(CustomEntrySorting.EnemiesKilled)" class="text-right hidden md:block"><Tooltip Text="Sort by ENEMIES&nbsp;KILLED"><img src="/images/icons/mask-x2/dagger.png" /></Tooltip></div>
+			<div @onclick="() => Sort(CustomEntrySorting.EnemiesAlive)" class="text-right hidden md:block"><Tooltip Text="Sort by ENEMIES&nbsp;ALIVE"><img src="/images/icons/mask-x2/skull.png" /></Tooltip></div>
+			<div @onclick="() => Sort(CustomEntrySorting.GemsCollected)" class="text-right hidden md:block"><Tooltip Text="Sort by GEMS COLLECTED"><img src="/images/icons/mask-x2/gem.png" /></Tooltip></div>
+			<div @onclick="() => Sort(CustomEntrySorting.GemsDespawned)" class="text-right hidden md:block"><Tooltip Text="Sort by GEMS DESPAWNED"><img src="/images/icons/mask-x2/gem.png" /></Tooltip></div>
+			<div @onclick="() => Sort(CustomEntrySorting.GemsEaten)" class="text-right hidden md:block"><Tooltip Text="Sort by GEMS EATEN"><img src="/images/icons/mask-x2/gem.png" /></Tooltip></div>
 			<div @onclick="() => Sort(CustomEntrySorting.Accuracy)" class="text-right hidden md:block"><Tooltip Text="Sort by ACCURACY"><img src="/images/icons/mask-x2/crosshair.png" /></Tooltip></div>
 			<div @onclick="() => Sort(CustomEntrySorting.DeathType)" class="text-left hidden lg:block"><Tooltip Text="Sort by DEATH&nbsp;TYPE"><img src="/images/icons/mask-x2/skull.png" /></Tooltip></div>
+			<div @onclick="() => Sort(CustomEntrySorting.HomingDaggers)" class="text-left hidden lg:block"><Tooltip Text="Sort by HOMING&nbsp;STORED"><img src="/images/icons/mask-x2/skull.png" /></Tooltip></div>
+			<div @onclick="() => Sort(CustomEntrySorting.HomingDaggersEaten)" class="text-left hidden lg:block"><Tooltip Text="Sort by HOMING&nbsp;EATEN"><img src="/images/icons/mask-x2/skull.png" /></Tooltip></div>
+			<div @onclick="() => Sort(CustomEntrySorting.LevelUpTime2)" class="text-left hidden lg:block"><Tooltip Text="Sort by LEVEL&nbsp;2"><img src="/images/icons/mask-x2/skull.png" /></Tooltip></div>
+			<div @onclick="() => Sort(CustomEntrySorting.LevelUpTime3)" class="text-left hidden lg:block"><Tooltip Text="Sort by LEVEL&nbsp;3"><img src="/images/icons/mask-x2/skull.png" /></Tooltip></div>
+			<div @onclick="() => Sort(CustomEntrySorting.LevelUpTime4)" class="text-left hidden lg:block"><Tooltip Text="Sort by LEVEL&nbsp;4"><img src="/images/icons/mask-x2/skull.png" /></Tooltip></div>
+			<div @onclick="() => Sort(CustomEntrySorting.SubmitDate)" class="text-left hidden lg:block"><Tooltip Text="Sort by SUBMIT&nbsp;DATE"><img src="/images/icons/mask-x2/stopwatch.png" /></Tooltip></div>
 		</div>
 		<div>
 			@{
