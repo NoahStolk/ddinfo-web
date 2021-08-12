@@ -58,8 +58,8 @@ namespace DevilDaggersWebsite.Api
 				GemsDespawned = ce.GemsDespawned,
 				GemsEaten = ce.GemsEaten,
 				GemsTotal = ce.GemsTotal,
-				HomingDaggers = ce.HomingDaggers,
-				HomingDaggersEaten = ce.HomingDaggersEaten,
+				HomingDaggers = ce.HomingStored,
+				HomingDaggersEaten = ce.HomingEaten,
 				LevelUpTime2 = ce.LevelUpTime2,
 				LevelUpTime3 = ce.LevelUpTime3,
 				LevelUpTime4 = ce.LevelUpTime4,
@@ -95,8 +95,8 @@ namespace DevilDaggersWebsite.Api
 				GemsDespawned = addCustomEntry.GemsDespawned,
 				GemsEaten = addCustomEntry.GemsEaten,
 				GemsTotal = addCustomEntry.GemsTotal,
-				HomingDaggers = addCustomEntry.HomingDaggers,
-				HomingDaggersEaten = addCustomEntry.HomingDaggersEaten,
+				HomingStored = addCustomEntry.HomingDaggers,
+				HomingEaten = addCustomEntry.HomingDaggersEaten,
 				LevelUpTime2 = addCustomEntry.LevelUpTime2,
 				LevelUpTime3 = addCustomEntry.LevelUpTime3,
 				LevelUpTime4 = addCustomEntry.LevelUpTime4,
@@ -139,8 +139,8 @@ namespace DevilDaggersWebsite.Api
 			customEntry.GemsDespawned = editCustomEntry.GemsDespawned;
 			customEntry.GemsEaten = editCustomEntry.GemsEaten;
 			customEntry.GemsTotal = editCustomEntry.GemsTotal;
-			customEntry.HomingDaggers = editCustomEntry.HomingDaggers;
-			customEntry.HomingDaggersEaten = editCustomEntry.HomingDaggersEaten;
+			customEntry.HomingStored = editCustomEntry.HomingDaggers;
+			customEntry.HomingEaten = editCustomEntry.HomingDaggersEaten;
 			customEntry.LevelUpTime2 = editCustomEntry.LevelUpTime2;
 			customEntry.LevelUpTime3 = editCustomEntry.LevelUpTime3;
 			customEntry.LevelUpTime4 = editCustomEntry.LevelUpTime4;
@@ -392,8 +392,8 @@ namespace DevilDaggersWebsite.Api
 			int daggersFiredDiff = uploadRequest.DaggersFired - customEntry.DaggersFired;
 			int daggersHitDiff = uploadRequest.DaggersHit - customEntry.DaggersHit;
 			int enemiesAliveDiff = uploadRequest.EnemiesAlive - customEntry.EnemiesAlive;
-			int homingDaggersDiff = uploadRequest.HomingDaggers - customEntry.HomingDaggers;
-			int homingDaggersEatenDiff = uploadRequest.HomingDaggersEaten - customEntry.HomingDaggersEaten;
+			int homingDaggersDiff = uploadRequest.HomingDaggers - customEntry.HomingStored;
+			int homingDaggersEatenDiff = uploadRequest.HomingDaggersEaten - customEntry.HomingEaten;
 			int gemsDespawnedDiff = uploadRequest.GemsDespawned - customEntry.GemsDespawned;
 			int gemsEatenDiff = uploadRequest.GemsEaten - customEntry.GemsEaten;
 			int gemsTotalDiff = uploadRequest.GemsTotal - customEntry.GemsTotal;
@@ -408,8 +408,8 @@ namespace DevilDaggersWebsite.Api
 			customEntry.DaggersFired = uploadRequest.DaggersFired;
 			customEntry.DaggersHit = uploadRequest.DaggersHit;
 			customEntry.EnemiesAlive = uploadRequest.EnemiesAlive;
-			customEntry.HomingDaggers = uploadRequest.HomingDaggers;
-			customEntry.HomingDaggersEaten = uploadRequest.HomingDaggersEaten;
+			customEntry.HomingStored = uploadRequest.HomingDaggers;
+			customEntry.HomingEaten = uploadRequest.HomingDaggersEaten;
 			customEntry.GemsDespawned = uploadRequest.GemsDespawned;
 			customEntry.GemsEaten = uploadRequest.GemsEaten;
 			customEntry.GemsTotal = uploadRequest.GemsTotal;

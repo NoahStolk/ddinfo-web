@@ -31,9 +31,9 @@ namespace DevilDaggersWebsite.Entities
 
 		public int EnemiesAlive { get; set; }
 
-		public int HomingDaggers { get; set; }
+		public int HomingStored { get; set; }
 
-		public int HomingDaggersEaten { get; set; }
+		public int HomingEaten { get; set; }
 
 		public int GemsDespawned { get; set; }
 

@@ -85,7 +85,7 @@ namespace DevilDaggersWebsite.Tests.Data
 			DeathType = 1,
 			EnemiesAlive = 6,
 			GemsCollected = 3,
-			HomingDaggers = 0,
+			HomingStored = 0,
 			EnemiesKilled = 2,
 			PlayerId = 1,
 			Time = 166666,

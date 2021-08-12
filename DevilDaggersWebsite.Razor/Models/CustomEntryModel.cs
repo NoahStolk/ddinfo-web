@@ -36,7 +36,7 @@ namespace DevilDaggersWebsite.Razor.Models
 			EnemiesAlive = customEntry.EnemiesAlive;
 			GemsCollected = customEntry.GemsCollected;
 			DeathType = customEntry.DeathType;
-			HomingDaggers = customEntry.HomingDaggers;
+			HomingDaggers = customEntry.HomingStored;
 			SubmitDate = customEntry.SubmitDate;
 			ClientVersion = customEntry.ClientVersion;
 
@@ -67,7 +67,7 @@ namespace DevilDaggersWebsite.Razor.Models
 
 			GemsDespawned = v31 ? new(customEntry.GemsDespawned.ToString(FormatUtils.LeaderboardIntFormat)) : RazorUtils.NAString;
 			GemsEaten = v31 ? new(customEntry.GemsEaten.ToString(FormatUtils.LeaderboardIntFormat)) : RazorUtils.NAString;
-			HomingDaggersEaten = homingEaten ? new(customEntry.HomingDaggersEaten.ToString(FormatUtils.LeaderboardIntFormat)) : RazorUtils.NAString;
+			HomingDaggersEaten = homingEaten ? new(customEntry.HomingEaten.ToString(FormatUtils.LeaderboardIntFormat)) : RazorUtils.NAString;
 
 			DaggerTooltipText = FormatUtils.FormatDaggersInt32(customEntry.DaggersHit, customEntry.DaggersFired, false);
 			Accuracy = customEntry.Accuracy.ToString(FormatUtils.AccuracyFormat);
@@ -85,7 +85,7 @@ gems-eaten='{(v31 ? customEntry.GemsEaten : -1)}'
 accuracy='{customEntry.Accuracy * 10000:0}'
 death-type='{GameInfo.GetDeathByType(GameVersion.V31, DeathType)?.Name ?? "Invalid"}'
 homing-daggers='{HomingDaggers}'
-homing-daggers-eaten='{(homingEaten ? customEntry.HomingDaggersEaten : -1)}'
+homing-daggers-eaten='{(homingEaten ? customEntry.HomingEaten : -1)}'
 level-2='{(customEntry.LevelUpTime2 == 0 ? 999999999 : customEntry.LevelUpTime2)}'
 level-3='{(customEntry.LevelUpTime3 == 0 ? 999999999 : customEntry.LevelUpTime3)}'
 level-4='{(customEntry.LevelUpTime4 == 0 ? 999999999 : customEntry.LevelUpTime4)}'

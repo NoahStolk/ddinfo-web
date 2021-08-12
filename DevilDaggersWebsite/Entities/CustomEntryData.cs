@@ -23,8 +23,8 @@ namespace DevilDaggersWebsite.Entities
 		public byte[] DaggersFiredData { get; set; } = null!;
 		public byte[] DaggersHitData { get; set; } = null!;
 		public byte[] EnemiesAliveData { get; set; } = null!;
-		public byte[] HomingDaggersData { get; set; } = null!;
-		public byte[] HomingDaggersEatenData { get; set; } = null!;
+		public byte[] HomingStoredData { get; set; } = null!;
+		public byte[] HomingEatenData { get; set; } = null!;
 		public byte[] GemsDespawnedData { get; set; } = null!;
 		public byte[] GemsEatenData { get; set; } = null!;
 		public byte[] GemsTotalData { get; set; } = null!;
@@ -72,8 +72,8 @@ namespace DevilDaggersWebsite.Entities
 			DaggersFiredData = CompressProperty(gs => gs.DaggersFired);
 			DaggersHitData = CompressProperty(gs => gs.DaggersHit);
 			EnemiesAliveData = CompressProperty(gs => gs.EnemiesAlive);
-			HomingDaggersData = CompressProperty(gs => gs.HomingDaggers);
-			HomingDaggersEatenData = CompressProperty(gs => gs.HomingDaggersEaten);
+			HomingStoredData = CompressProperty(gs => gs.HomingDaggers);
+			HomingEatenData = CompressProperty(gs => gs.HomingDaggersEaten);
 			GemsDespawnedData = CompressProperty(gs => gs.GemsDespawned);
 			GemsEatenData = CompressProperty(gs => gs.GemsEaten);
 			GemsTotalData = CompressProperty(gs => gs.GemsTotal);
