@@ -25,8 +25,8 @@ else
 			<div @onclick="() => Sort(CustomEntrySorting.GemsEaten)" class="text-right hidden md:block"><Tooltip Text="Sort by GEMS EATEN"><img src="/images/icons/mask-x2/gem.png" /></Tooltip></div>
 			<div @onclick="() => Sort(CustomEntrySorting.Accuracy)" class="text-right hidden md:block"><Tooltip Text="Sort by ACCURACY"><img src="/images/icons/mask-x2/crosshair.png" /></Tooltip></div>
 			<div @onclick="() => Sort(CustomEntrySorting.DeathType)" class="text-left hidden lg:block"><Tooltip Text="Sort by DEATH&nbsp;TYPE"><img src="/images/icons/mask-x2/skull.png" /></Tooltip></div>
-			<div @onclick="() => Sort(CustomEntrySorting.HomingDaggers)" class="text-left hidden lg:block"><Tooltip Text="Sort by HOMING&nbsp;STORED"><img src="/images/icons/mask-x2/skull.png" /></Tooltip></div>
-			<div @onclick="() => Sort(CustomEntrySorting.HomingDaggersEaten)" class="text-left hidden lg:block"><Tooltip Text="Sort by HOMING&nbsp;EATEN"><img src="/images/icons/mask-x2/skull.png" /></Tooltip></div>
+			<div @onclick="() => Sort(CustomEntrySorting.HomingStored)" class="text-left hidden lg:block"><Tooltip Text="Sort by HOMING&nbsp;STORED"><img src="/images/icons/mask-x2/skull.png" /></Tooltip></div>
+			<div @onclick="() => Sort(CustomEntrySorting.HomingEaten)" class="text-left hidden lg:block"><Tooltip Text="Sort by HOMING&nbsp;EATEN"><img src="/images/icons/mask-x2/skull.png" /></Tooltip></div>
 			<div @onclick="() => Sort(CustomEntrySorting.LevelUpTime2)" class="text-left hidden lg:block"><Tooltip Text="Sort by LEVEL&nbsp;2"><img src="/images/icons/mask-x2/skull.png" /></Tooltip></div>
 			<div @onclick="() => Sort(CustomEntrySorting.LevelUpTime3)" class="text-left hidden lg:block"><Tooltip Text="Sort by LEVEL&nbsp;3"><img src="/images/icons/mask-x2/skull.png" /></Tooltip></div>
 			<div @onclick="() => Sort(CustomEntrySorting.LevelUpTime4)" class="text-left hidden lg:block"><Tooltip Text="Sort by LEVEL&nbsp;4"><img src="/images/icons/mask-x2/skull.png" /></Tooltip></div>
@@ -103,8 +103,8 @@ else
 			CustomEntrySorting.GemsEaten => GetCustomLeaderboard.CustomEntries.OrderBy(ce => ce.GemsEaten, _ascending).ToList(),
 			CustomEntrySorting.Accuracy => GetCustomLeaderboard.CustomEntries.OrderBy(ce => ce.DaggersFired == 0 ? 0 : ce.DaggersHit / (float)ce.DaggersFired, _ascending).ToList(),
 			CustomEntrySorting.DeathType => GetCustomLeaderboard.CustomEntries.OrderBy(ce => ce.DeathType, _ascending).ToList(),
-			CustomEntrySorting.HomingDaggers => GetCustomLeaderboard.CustomEntries.OrderBy(ce => ce.HomingDaggers, _ascending).ToList(),
-			CustomEntrySorting.HomingDaggersEaten => GetCustomLeaderboard.CustomEntries.OrderBy(ce => ce.HomingDaggersEaten, _ascending).ToList(),
+			CustomEntrySorting.HomingStored => GetCustomLeaderboard.CustomEntries.OrderBy(ce => ce.HomingDaggers, _ascending).ToList(),
+			CustomEntrySorting.HomingEaten => GetCustomLeaderboard.CustomEntries.OrderBy(ce => ce.HomingDaggersEaten, _ascending).ToList(),
 			CustomEntrySorting.LevelUpTime2 => GetCustomLeaderboard.CustomEntries.OrderBy(ce => ce.LevelUpTime2, _ascending).ToList(),
 			CustomEntrySorting.LevelUpTime3 => GetCustomLeaderboard.CustomEntries.OrderBy(ce => ce.LevelUpTime3, _ascending).ToList(),
 			CustomEntrySorting.LevelUpTime4 => GetCustomLeaderboard.CustomEntries.OrderBy(ce => ce.LevelUpTime4, _ascending).ToList(),
@@ -126,8 +126,8 @@ else
 		GemsEaten,
 		Accuracy,
 		DeathType,
-		HomingDaggers,
-		HomingDaggersEaten,
+		HomingStored,
+		HomingEaten,
 		LevelUpTime2,
 		LevelUpTime3,
 		LevelUpTime4,
