@@ -13,15 +13,15 @@ namespace DevilDaggersWebsite.Tests.Data
 	{
 		public MockEntities()
 		{
-			SpawnsetFile.Player = TestPlayer1;
-			CustomLeaderboard.Spawnset = SpawnsetFile;
+			Spawnset.Player = TestPlayer1;
+			CustomLeaderboard.Spawnset = Spawnset;
 			CustomEntry.CustomLeaderboard = CustomLeaderboard;
 			CustomEntry.Player = TestPlayer1;
 
 			PropertyInfo[] properties = typeof(MockEntities).GetProperties();
 
 			MockDbSetPlayers = new Mock<DbSet<PlayerEntity>>().SetUpDbSet(GetEntities<PlayerEntity>());
-			MockDbSetSpawnsetFiles = new Mock<DbSet<SpawnsetEntity>>().SetUpDbSet(GetEntities<SpawnsetEntity>());
+			MockDbSetSpawnsets = new Mock<DbSet<SpawnsetEntity>>().SetUpDbSet(GetEntities<SpawnsetEntity>());
 			MockDbSetCustomLeaderboards = new Mock<DbSet<CustomLeaderboardEntity>>().SetUpDbSet(GetEntities<CustomLeaderboardEntity>());
 			MockDbSetCustomEntries = new Mock<DbSet<CustomEntryEntity>>().SetUpDbSet(GetEntities<CustomEntryEntity>());
 			MockDbSetCustomEntryData = new Mock<DbSet<CustomEntryDataEntity>>().SetUpDbSet(GetEntities<CustomEntryDataEntity>());
@@ -33,7 +33,7 @@ namespace DevilDaggersWebsite.Tests.Data
 		}
 
 		public Mock<DbSet<PlayerEntity>> MockDbSetPlayers { get; }
-		public Mock<DbSet<SpawnsetEntity>> MockDbSetSpawnsetFiles { get; }
+		public Mock<DbSet<SpawnsetEntity>> MockDbSetSpawnsets { get; }
 		public Mock<DbSet<CustomLeaderboardEntity>> MockDbSetCustomLeaderboards { get; }
 		public Mock<DbSet<CustomEntryEntity>> MockDbSetCustomEntries { get; }
 		public Mock<DbSet<CustomEntryDataEntity>> MockDbSetCustomEntryData { get; }
@@ -50,7 +50,7 @@ namespace DevilDaggersWebsite.Tests.Data
 			PlayerName = "TestPlayer2",
 		};
 
-		public SpawnsetEntity SpawnsetFile { get; } = new()
+		public SpawnsetEntity Spawnset { get; } = new()
 		{
 			Id = 1,
 			LastUpdated = DateTime.UtcNow,

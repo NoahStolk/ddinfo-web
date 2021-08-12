@@ -19,7 +19,7 @@ namespace DevilDaggersWebsite.BlazorWasm.Shared.Dto.Admin.Spawnsets
 
 		public bool IsPractice { get; set; }
 
-		[MaxLength(SpawnsetFileConstants.MaxFileSize, ErrorMessage = SpawnsetFileConstants.MaxFileSizeErrorMessage)]
+		[MaxLength(SpawnsetConstants.MaxFileSize, ErrorMessage = SpawnsetConstants.MaxFileSizeErrorMessage)]
 		public byte[] FileContents { get; set; } = null!;
 	}
 }

@@ -128,23 +128,23 @@ namespace DevilDaggersWebsite.BlazorWasm.Server.Controllers.Admin
 					return BadRequest("For descending leaderboards, Silver time must be greater than Bronze time.");
 			}
 
-			var spawnsetFile = _dbContext.Spawnsets
+			var spawnset = _dbContext.Spawnsets
 				.AsNoTracking()
 				.Select(sf => new { sf.Id, sf.Name })
 				.FirstOrDefault(sf => sf.Id == addCustomLeaderboard.SpawnsetId);
-			if (spawnsetFile == null)
+			if (spawnset == null)
 				return BadRequest($"Spawnset with ID '{addCustomLeaderboard.SpawnsetId}' does not exist.");
 
-			if (!Spawnset.TryParse(System.IO.File.ReadAllBytes(Path.Combine(_fileSystemService.GetPath(DataSubDirectory.Spawnsets), spawnsetFile.Name)), out Spawnset spawnset))
-				throw new($"Could not parse survival file '{spawnsetFile.Name}'. Please review the file. Also review how this file ended up in the 'spawnsets' directory, as it is not possible to upload non-survival files from within the Admin pages.");
+			if (!Spawnset.TryParse(System.IO.File.ReadAllBytes(Path.Combine(_fileSystemService.GetPath(DataSubDirectory.Spawnsets), spawnset.Name)), out Spawnset parsedSpawnset))
+				throw new($"Could not parse survival file '{spawnset.Name}'. Please review the file. Also review how this file ended up in the 'spawnsets' directory, as it is not possible to upload non-survival files from within the Admin pages.");
 
-			if (addCustomLeaderboard.Category == CustomLeaderboardCategory.TimeAttack && spawnset.GameMode != GameMode.TimeAttack
-			 || addCustomLeaderboard.Category != CustomLeaderboardCategory.TimeAttack && spawnset.GameMode == GameMode.TimeAttack)
+			if (addCustomLeaderboard.Category == CustomLeaderboardCategory.TimeAttack && parsedSpawnset.GameMode != GameMode.TimeAttack
+			 || addCustomLeaderboard.Category != CustomLeaderboardCategory.TimeAttack && parsedSpawnset.GameMode == GameMode.TimeAttack)
 			{
-				return BadRequest($"Spawnset game mode is '{spawnset.GameMode}' while custom leaderboard category is '{addCustomLeaderboard.Category}'.");
+				return BadRequest($"Spawnset game mode is '{parsedSpawnset.GameMode}' while custom leaderboard category is '{addCustomLeaderboard.Category}'.");
 			}
 
-			if (spawnset.TimerStart != 0)
+			if (parsedSpawnset.TimerStart != 0)
 				return BadRequest("Cannot create a leaderboard for spawnset that uses the TimerStart value. This value is meant for practice and it is confusing to use it with custom leaderboards, as custom leaderboards always use the 'actual' timer value.");
 
 			CustomLeaderboardEntity customLeaderboard = new()
@@ -199,23 +199,23 @@ namespace DevilDaggersWebsite.BlazorWasm.Server.Controllers.Admin
 			if (customLeaderboard == null)
 				return NotFound();
 
-			var spawnsetFile = _dbContext.Spawnsets
+			var spawnset = _dbContext.Spawnsets
 				.AsNoTracking()
 				.Select(sf => new { sf.Id, sf.Name })
 				.FirstOrDefault(sf => sf.Id == customLeaderboard.SpawnsetId);
-			if (spawnsetFile == null)
+			if (spawnset == null)
 				return BadRequest($"Spawnset with ID '{customLeaderboard.SpawnsetId}' does not exist.");
 
-			if (!Spawnset.TryParse(System.IO.File.ReadAllBytes(Path.Combine(_fileSystemService.GetPath(DataSubDirectory.Spawnsets), spawnsetFile.Name)), out Spawnset spawnset))
-				throw new($"Could not parse survival file '{spawnsetFile.Name}'. Please review the file. Also review how this file ended up in the 'spawnsets' directory, as it is not possible to upload non-survival files from within the Admin pages.");
+			if (!Spawnset.TryParse(System.IO.File.ReadAllBytes(Path.Combine(_fileSystemService.GetPath(DataSubDirectory.Spawnsets), spawnset.Name)), out Spawnset parsedSpawnset))
+				throw new($"Could not parse survival file '{spawnset.Name}'. Please review the file. Also review how this file ended up in the 'spawnsets' directory, as it is not possible to upload non-survival files from within the Admin pages.");
 
-			if (editCustomLeaderboard.Category == CustomLeaderboardCategory.TimeAttack && spawnset.GameMode != GameMode.TimeAttack
-			 || editCustomLeaderboard.Category != CustomLeaderboardCategory.TimeAttack && spawnset.GameMode == GameMode.TimeAttack)
+			if (editCustomLeaderboard.Category == CustomLeaderboardCategory.TimeAttack && parsedSpawnset.GameMode != GameMode.TimeAttack
+			 || editCustomLeaderboard.Category != CustomLeaderboardCategory.TimeAttack && parsedSpawnset.GameMode == GameMode.TimeAttack)
 			{
-				return BadRequest($"Spawnset game mode is '{spawnset.GameMode}' while custom leaderboard category is '{editCustomLeaderboard.Category}'.");
+				return BadRequest($"Spawnset game mode is '{parsedSpawnset.GameMode}' while custom leaderboard category is '{editCustomLeaderboard.Category}'.");
 			}
 
-			if (spawnset.TimerStart != 0)
+			if (parsedSpawnset.TimerStart != 0)
 				return BadRequest("Cannot create a leaderboard for spawnset that uses the TimerStart value. This value is meant for practice and it is confusing to use it with custom leaderboards, as custom leaderboards always use the 'actual' timer value.");
 
 			EditCustomLeaderboard logDto = new()

@@ -58,10 +58,10 @@ namespace DevilDaggersWebsite.BlazorWasm.Server.Controllers.Public
 				.Select(sf => Map(sf))
 				.ToList();
 
-			GetSpawnset Map(SpawnsetEntity spawnsetFile)
+			GetSpawnset Map(SpawnsetEntity spawnset)
 			{
-				SpawnsetData spawnsetData = _spawnsetDataCache.GetSpawnsetDataByFilePath(Path.Combine(_fileSystemService.GetPath(DataSubDirectory.Spawnsets), spawnsetFile.Name));
-				return spawnsetFile.ToGetSpawnsetPublic(spawnsetData, spawnsetsWithCustomLeaderboardIds.Contains(spawnsetFile.Id));
+				SpawnsetData spawnsetData = _spawnsetDataCache.GetSpawnsetDataByFilePath(Path.Combine(_fileSystemService.GetPath(DataSubDirectory.Spawnsets), spawnset.Name));
+				return spawnset.ToGetSpawnsetPublic(spawnsetData, spawnsetsWithCustomLeaderboardIds.Contains(spawnset.Id));
 			}
 		}
 
