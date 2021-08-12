@@ -179,7 +179,7 @@ namespace DevilDaggersWebsite.BlazorWasm.Server.Controllers.Admin
 				HidePastUsernames = addPlayer.HidePastUsernames,
 			};
 			_dbContext.Players.Add(player);
-			_dbContext.SaveChanges(); // Save changes here so PlayerTitle and PlayerAssetMod entities can be assigned properly.
+			_dbContext.SaveChanges(); // Save changes here so PlayerTitle and PlayerMod entities can be assigned properly.
 
 			UpdatePlayerMods(addPlayer.ModIds ?? new(), player.Id);
 			UpdatePlayerTitles(addPlayer.TitleIds ?? new(), player.Id);
@@ -335,15 +335,15 @@ namespace DevilDaggersWebsite.BlazorWasm.Server.Controllers.Admin
 			}
 		}
 
-		private void UpdatePlayerMods(List<int> assetModIds, int playerId)
+		private void UpdatePlayerMods(List<int> modIds, int playerId)
 		{
-			foreach (PlayerModEntity newEntity in assetModIds.ConvertAll(ami => new PlayerModEntity { ModId = ami, PlayerId = playerId }))
+			foreach (PlayerModEntity newEntity in modIds.ConvertAll(ami => new PlayerModEntity { ModId = ami, PlayerId = playerId }))
 			{
 				if (!_dbContext.PlayerMods.Any(pam => pam.ModId == newEntity.ModId && pam.PlayerId == newEntity.PlayerId))
 					_dbContext.PlayerMods.Add(newEntity);
 			}
 
-			foreach (PlayerModEntity entityToRemove in _dbContext.PlayerMods.Where(pam => pam.PlayerId == playerId && !assetModIds.Contains(pam.ModId)))
+			foreach (PlayerModEntity entityToRemove in _dbContext.PlayerMods.Where(pam => pam.PlayerId == playerId && !modIds.Contains(pam.ModId)))
 				_dbContext.PlayerMods.Remove(entityToRemove);
 		}
 

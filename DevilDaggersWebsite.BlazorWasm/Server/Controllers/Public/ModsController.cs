@@ -40,20 +40,20 @@ namespace DevilDaggersWebsite.BlazorWasm.Server.Controllers.Public
 		[EndpointConsumer(EndpointConsumers.Ddae)]
 		public List<GetMod> GetPublicMods(string? authorFilter = null, string? nameFilter = null, bool? isHostedFilter = null)
 		{
-			IEnumerable<ModEntity> assetModsQuery = _dbContext.Mods
+			IEnumerable<ModEntity> modsQuery = _dbContext.Mods
 				.AsNoTracking()
 				.Include(am => am.PlayerMods)
 					.ThenInclude(pam => pam.Player)
 				.Where(am => !am.IsHidden);
 
 			if (!string.IsNullOrWhiteSpace(authorFilter))
-				assetModsQuery = assetModsQuery.Where(am => am.PlayerMods.Any(pam => pam.Player.PlayerName.Contains(authorFilter, StringComparison.InvariantCultureIgnoreCase)));
+				modsQuery = modsQuery.Where(am => am.PlayerMods.Any(pam => pam.Player.PlayerName.Contains(authorFilter, StringComparison.InvariantCultureIgnoreCase)));
 			if (!string.IsNullOrWhiteSpace(nameFilter))
-				assetModsQuery = assetModsQuery.Where(am => am.Name.Contains(nameFilter, StringComparison.InvariantCultureIgnoreCase));
+				modsQuery = modsQuery.Where(am => am.Name.Contains(nameFilter, StringComparison.InvariantCultureIgnoreCase));
 
-			List<ModEntity> assetMods = assetModsQuery.ToList();
+			List<ModEntity> assetMods = modsQuery.ToList();
 
-			Dictionary<ModEntity, (bool FileExists, string? Path)> assetModsWithFileInfo = assetMods.ToDictionary(am => am, am =>
+			Dictionary<ModEntity, (bool FileExists, string? Path)> modsWithFileInfo = assetMods.ToDictionary(am => am, am =>
 			{
 				string filePath = Path.Combine(_fileSystemService.GetPath(DataSubDirectory.Mods), $"{am.Name}.zip");
 				bool fileExists = Io.File.Exists(filePath);
@@ -61,9 +61,9 @@ namespace DevilDaggersWebsite.BlazorWasm.Server.Controllers.Public
 			});
 
 			if (isHostedFilter.HasValue)
-				assetModsWithFileInfo = assetModsWithFileInfo.Where(kvp => kvp.Value.FileExists == isHostedFilter.Value).ToDictionary(kvp => kvp.Key, kvp => kvp.Value);
+				modsWithFileInfo = modsWithFileInfo.Where(kvp => kvp.Value.FileExists == isHostedFilter.Value).ToDictionary(kvp => kvp.Key, kvp => kvp.Value);
 
-			return assetModsWithFileInfo
+			return modsWithFileInfo
 				.Select(amwfi =>
 				{
 					bool? containsProhibitedAssets = null;
