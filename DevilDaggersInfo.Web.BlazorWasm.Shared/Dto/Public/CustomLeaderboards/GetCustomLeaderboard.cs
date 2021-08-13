@@ -1,8 +1,8 @@
-﻿using DevilDaggersWebsite.BlazorWasm.Shared.Dto.Public.CustomEntries;
+﻿using DevilDaggersInfo.Web.BlazorWasm.Shared.Dto.Public.CustomEntries;
 using System;
 using System.Collections.Generic;
 
-namespace DevilDaggersWebsite.BlazorWasm.Shared.Dto.Public.CustomLeaderboards
+namespace DevilDaggersInfo.Web.BlazorWasm.Shared.Dto.Public.CustomLeaderboards
 {
 	public class GetCustomLeaderboard
 	{

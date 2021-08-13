@@ -1,12 +1,12 @@
-﻿using DevilDaggersWebsite.BlazorWasm.Server.Converters.Admin;
-using DevilDaggersWebsite.BlazorWasm.Server.Entities;
-using DevilDaggersWebsite.BlazorWasm.Server.Extensions;
-using DevilDaggersWebsite.BlazorWasm.Server.Singletons.AuditLog;
-using DevilDaggersWebsite.BlazorWasm.Shared;
-using DevilDaggersWebsite.BlazorWasm.Shared.Constants;
-using DevilDaggersWebsite.BlazorWasm.Shared.Dto;
-using DevilDaggersWebsite.BlazorWasm.Shared.Dto.Admin.Donations;
-using DevilDaggersWebsite.BlazorWasm.Shared.Enums.Sortings.Admin;
+﻿using DevilDaggersInfo.Web.BlazorWasm.Server.Converters.Admin;
+using DevilDaggersInfo.Web.BlazorWasm.Server.Entities;
+using DevilDaggersInfo.Web.BlazorWasm.Server.Extensions;
+using DevilDaggersInfo.Web.BlazorWasm.Server.Singletons.AuditLog;
+using DevilDaggersInfo.Web.BlazorWasm.Shared;
+using DevilDaggersInfo.Web.BlazorWasm.Shared.Constants;
+using DevilDaggersInfo.Web.BlazorWasm.Shared.Dto;
+using DevilDaggersInfo.Web.BlazorWasm.Shared.Dto.Admin.Donations;
+using DevilDaggersInfo.Web.BlazorWasm.Shared.Enums.Sortings.Admin;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
@@ -16,7 +16,7 @@ using System.ComponentModel.DataAnnotations;
 using System.Linq;
 using System.Threading.Tasks;
 
-namespace DevilDaggersWebsite.BlazorWasm.Server.Controllers.Admin
+namespace DevilDaggersInfo.Web.BlazorWasm.Server.Controllers.Admin
 {
 	[Route("api/admin/donations")]
 	[Authorize(Roles = Roles.Admin)]

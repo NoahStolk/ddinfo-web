@@ -1,6 +1,6 @@
 ﻿using System;
 
-namespace DevilDaggersWebsite.BlazorWasm.Shared
+namespace DevilDaggersInfo.Web.BlazorWasm.Shared
 {
 	public static class FormatUtils
 	{

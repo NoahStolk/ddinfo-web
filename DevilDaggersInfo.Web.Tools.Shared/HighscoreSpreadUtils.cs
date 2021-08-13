@@ -1,6 +1,6 @@
 ﻿using DevilDaggersCore.Game;
-using DevilDaggersWebsite.BlazorWasm.Shared;
-using DevilDaggersWebsite.BlazorWasm.Shared.Dto.Public.LeaderboardHistory;
+using DevilDaggersInfo.Web.BlazorWasm.Shared;
+using DevilDaggersInfo.Web.BlazorWasm.Shared.Dto.Public.LeaderboardHistory;
 using Newtonsoft.Json;
 using System;
 using System.Collections.Generic;

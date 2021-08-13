@@ -1,8 +1,8 @@
-﻿using DevilDaggersWebsite.BlazorWasm.Shared.Dto.Public.CustomLeaderboards;
-using DevilDaggersWebsite.BlazorWasm.Shared.Enums;
+﻿using DevilDaggersInfo.Web.BlazorWasm.Shared.Dto.Public.CustomLeaderboards;
+using DevilDaggersInfo.Web.BlazorWasm.Shared.Enums;
 using System.Collections.Generic;
 
-namespace DevilDaggersWebsite.BlazorWasm.Shared.Dto.Public.CustomEntries
+namespace DevilDaggersInfo.Web.BlazorWasm.Shared.Dto.Public.CustomEntries
 {
 	public class GetUploadSuccess
 	{

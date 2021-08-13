@@ -1,6 +1,6 @@
 ﻿using System.Collections.Generic;
 
-namespace DevilDaggersWebsite.BlazorWasm.Shared.Dto
+namespace DevilDaggersInfo.Web.BlazorWasm.Shared.Dto
 {
 	public class Page<T>
 	{

@@ -1,7 +1,7 @@
 ﻿using System;
 using System.Collections.Generic;
 
-namespace DevilDaggersWebsite.BlazorWasm.Server.Clients.Leaderboard
+namespace DevilDaggersInfo.Web.BlazorWasm.Server.Clients.Leaderboard
 {
 	public class LeaderboardResponse
 	{

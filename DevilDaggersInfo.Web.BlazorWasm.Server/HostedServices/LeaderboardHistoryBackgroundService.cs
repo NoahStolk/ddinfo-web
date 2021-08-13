@@ -1,7 +1,7 @@
-﻿using DevilDaggersWebsite.BlazorWasm.Server.Clients.Leaderboard;
-using DevilDaggersWebsite.BlazorWasm.Server.HostedServices.DdInfoDiscordBot;
-using DevilDaggersWebsite.BlazorWasm.Server.Singletons;
-using DevilDaggersWebsite.BlazorWasm.Server.Utils;
+﻿using DevilDaggersInfo.Web.BlazorWasm.Server.Clients.Leaderboard;
+using DevilDaggersInfo.Web.BlazorWasm.Server.HostedServices.DdInfoDiscordBot;
+using DevilDaggersInfo.Web.BlazorWasm.Server.Singletons;
+using DevilDaggersInfo.Web.BlazorWasm.Server.Utils;
 using Microsoft.AspNetCore.Hosting;
 using Newtonsoft.Json;
 using System;
@@ -9,7 +9,7 @@ using System.IO;
 using System.Threading;
 using System.Threading.Tasks;
 
-namespace DevilDaggersWebsite.BlazorWasm.Server.HostedServices
+namespace DevilDaggersInfo.Web.BlazorWasm.Server.HostedServices
 {
 	public class LeaderboardHistoryBackgroundService : AbstractBackgroundService
 	{

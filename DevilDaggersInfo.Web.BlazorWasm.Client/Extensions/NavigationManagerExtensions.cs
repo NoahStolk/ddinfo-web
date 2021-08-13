@@ -4,7 +4,7 @@ using Microsoft.Extensions.Primitives;
 using System;
 using System.Collections.Generic;
 
-namespace DevilDaggersWebsite.BlazorWasm.Client.Extensions
+namespace DevilDaggersInfo.Web.BlazorWasm.Client.Extensions
 {
 	public static class NavigationManagerExtensions
 	{

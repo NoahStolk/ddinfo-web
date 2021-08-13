@@ -1,16 +1,16 @@
-﻿using DevilDaggersWebsite.BlazorWasm.Server.Caches;
-using DevilDaggersWebsite.BlazorWasm.Server.Caches.LeaderboardHistory;
-using DevilDaggersWebsite.BlazorWasm.Server.Caches.LeaderboardStatistics;
-using DevilDaggersWebsite.BlazorWasm.Server.Caches.ModArchive;
-using DevilDaggersWebsite.BlazorWasm.Server.Caches.SpawnsetData;
-using DevilDaggersWebsite.BlazorWasm.Server.Caches.SpawnsetHash;
-using DevilDaggersWebsite.BlazorWasm.Shared;
+﻿using DevilDaggersInfo.Web.BlazorWasm.Server.Caches;
+using DevilDaggersInfo.Web.BlazorWasm.Server.Caches.LeaderboardHistory;
+using DevilDaggersInfo.Web.BlazorWasm.Server.Caches.LeaderboardStatistics;
+using DevilDaggersInfo.Web.BlazorWasm.Server.Caches.ModArchive;
+using DevilDaggersInfo.Web.BlazorWasm.Server.Caches.SpawnsetData;
+using DevilDaggersInfo.Web.BlazorWasm.Server.Caches.SpawnsetHash;
+using DevilDaggersInfo.Web.BlazorWasm.Shared;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
 using System.Threading.Tasks;
 
-namespace DevilDaggersWebsite.BlazorWasm.Server.Controllers.Admin
+namespace DevilDaggersInfo.Web.BlazorWasm.Server.Controllers.Admin
 {
 	[Route("api/admin/caches")]
 	[Authorize(Roles = Roles.Admin)]

@@ -4,7 +4,7 @@ using NSwag.Generation.Processors.Contexts;
 using System.Collections.Generic;
 using System.Linq;
 
-namespace DevilDaggersWebsite.BlazorWasm.Server.NSwag
+namespace DevilDaggersInfo.Web.BlazorWasm.Server.NSwag
 {
 	public class PublicApiDocumentProcessor : IDocumentProcessor
 	{

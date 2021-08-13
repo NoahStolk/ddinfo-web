@@ -1,4 +1,4 @@
-﻿using DevilDaggersWebsite.BlazorWasm.Server.Utils;
+﻿using DevilDaggersInfo.Web.BlazorWasm.Server.Utils;
 using JetBrains.Annotations;
 using Microsoft.VisualStudio.TestTools.UnitTesting;
 using System;

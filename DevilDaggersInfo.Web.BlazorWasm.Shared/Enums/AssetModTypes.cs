@@ -1,6 +1,6 @@
 ﻿using System;
 
-namespace DevilDaggersWebsite.BlazorWasm.Shared.Enums
+namespace DevilDaggersInfo.Web.BlazorWasm.Shared.Enums
 {
 	[Flags]
 	public enum AssetModTypes

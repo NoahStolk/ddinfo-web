@@ -2,7 +2,7 @@
 using System.Runtime.CompilerServices;
 using System.Runtime.Serialization;
 
-namespace DevilDaggersWebsite.BlazorWasm.Client.HttpClients
+namespace DevilDaggersInfo.Web.BlazorWasm.Client.HttpClients
 {
 	[Serializable]
 #pragma warning disable RCS1194 // Implement exception constructors.

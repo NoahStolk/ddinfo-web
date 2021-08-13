@@ -1,4 +1,4 @@
-﻿namespace DevilDaggersWebsite.BlazorWasm.Shared.Dto
+﻿namespace DevilDaggersInfo.Web.BlazorWasm.Shared.Dto
 {
 	public interface IGetDto<out TKey>
 	{

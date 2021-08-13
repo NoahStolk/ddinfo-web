@@ -2,7 +2,7 @@
 using System.Linq;
 using System.Linq.Expressions;
 
-namespace DevilDaggersWebsite.BlazorWasm.Server.Extensions
+namespace DevilDaggersInfo.Web.BlazorWasm.Server.Extensions
 {
 	public static class IQueryableExtensions
 	{

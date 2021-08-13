@@ -1,16 +1,16 @@
-﻿using DevilDaggersWebsite.BlazorWasm.Server.Caches.LeaderboardHistory;
-using DevilDaggersWebsite.BlazorWasm.Server.Caches.LeaderboardStatistics;
-using DevilDaggersWebsite.BlazorWasm.Server.Caches.ModArchive;
-using DevilDaggersWebsite.BlazorWasm.Server.Caches.SpawnsetData;
-using DevilDaggersWebsite.BlazorWasm.Server.Caches.SpawnsetHash;
-using DevilDaggersWebsite.BlazorWasm.Server.Entities;
-using DevilDaggersWebsite.BlazorWasm.Server.HostedServices;
-using DevilDaggersWebsite.BlazorWasm.Server.Middleware;
-using DevilDaggersWebsite.BlazorWasm.Server.NSwag;
-using DevilDaggersWebsite.BlazorWasm.Server.Singletons;
-using DevilDaggersWebsite.BlazorWasm.Server.Singletons.AuditLog;
-using DevilDaggersWebsite.BlazorWasm.Server.Transients;
-using DevilDaggersWebsite.BlazorWasm.Shared;
+﻿using DevilDaggersInfo.Web.BlazorWasm.Server.Caches.LeaderboardHistory;
+using DevilDaggersInfo.Web.BlazorWasm.Server.Caches.LeaderboardStatistics;
+using DevilDaggersInfo.Web.BlazorWasm.Server.Caches.ModArchive;
+using DevilDaggersInfo.Web.BlazorWasm.Server.Caches.SpawnsetData;
+using DevilDaggersInfo.Web.BlazorWasm.Server.Caches.SpawnsetHash;
+using DevilDaggersInfo.Web.BlazorWasm.Server.Entities;
+using DevilDaggersInfo.Web.BlazorWasm.Server.HostedServices;
+using DevilDaggersInfo.Web.BlazorWasm.Server.Middleware;
+using DevilDaggersInfo.Web.BlazorWasm.Server.NSwag;
+using DevilDaggersInfo.Web.BlazorWasm.Server.Singletons;
+using DevilDaggersInfo.Web.BlazorWasm.Server.Singletons.AuditLog;
+using DevilDaggersInfo.Web.BlazorWasm.Server.Transients;
+using DevilDaggersInfo.Web.BlazorWasm.Shared;
 using Microsoft.AspNetCore.Authentication;
 using Microsoft.AspNetCore.Builder;
 using Microsoft.AspNetCore.Hosting;
@@ -27,7 +27,7 @@ using System.IdentityModel.Tokens.Jwt;
 using System.Linq;
 using System.Threading.Tasks;
 
-namespace DevilDaggersWebsite.BlazorWasm.Server
+namespace DevilDaggersInfo.Web.BlazorWasm.Server
 {
 	public class Startup
 	{

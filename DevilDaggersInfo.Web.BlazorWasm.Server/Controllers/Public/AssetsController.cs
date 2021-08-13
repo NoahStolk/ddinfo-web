@@ -1,5 +1,5 @@
-﻿using DevilDaggersWebsite.BlazorWasm.Server.Controllers.Attributes;
-using DevilDaggersWebsite.BlazorWasm.Shared.Dto.Public.Assets;
+﻿using DevilDaggersInfo.Web.BlazorWasm.Server.Controllers.Attributes;
+using DevilDaggersInfo.Web.BlazorWasm.Shared.Dto.Public.Assets;
 using Microsoft.AspNetCore.Hosting;
 using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
@@ -8,7 +8,7 @@ using System.Collections.Generic;
 using System.Linq;
 using Io = System.IO;
 
-namespace DevilDaggersWebsite.BlazorWasm.Server.Controllers.Public
+namespace DevilDaggersInfo.Web.BlazorWasm.Server.Controllers.Public
 {
 	[Route("api/assets")]
 	[ApiController]

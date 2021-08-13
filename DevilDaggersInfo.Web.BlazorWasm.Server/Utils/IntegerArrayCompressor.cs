@@ -2,7 +2,7 @@
 using System.Collections;
 using System.Linq;
 
-namespace DevilDaggersWebsite.BlazorWasm.Server.Utils
+namespace DevilDaggersInfo.Web.BlazorWasm.Server.Utils
 {
 	public static class IntegerArrayCompressor
 	{

@@ -1,8 +1,8 @@
-﻿using DevilDaggersWebsite.BlazorWasm.Shared.Enums;
+﻿using DevilDaggersInfo.Web.BlazorWasm.Shared.Enums;
 using System;
 using System.Collections.Generic;
 
-namespace DevilDaggersWebsite.BlazorWasm.Shared.Dto.Admin.Mods
+namespace DevilDaggersInfo.Web.BlazorWasm.Shared.Dto.Admin.Mods
 {
 	public class GetMod : IGetDto<int>
 	{

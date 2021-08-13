@@ -1,6 +1,6 @@
-﻿using DevilDaggersWebsite.BlazorWasm.Shared.Dto;
+﻿using DevilDaggersInfo.Web.BlazorWasm.Shared.Dto;
 
-namespace DevilDaggersWebsite.BlazorWasm.Client.Components.Admin
+namespace DevilDaggersInfo.Web.BlazorWasm.Client.Components.Admin
 {
 	public partial class AdminOverview<TGetDto, TKey>
 		where TGetDto : IGetDto<TKey>

@@ -1,6 +1,6 @@
 ﻿using System;
 
-namespace DevilDaggersWebsite.BlazorWasm.Shared.Constants
+namespace DevilDaggersInfo.Web.BlazorWasm.Shared.Constants
 {
 	public static class CustomLeaderboardFeatureConstants
 	{

@@ -1,9 +1,9 @@
-﻿using DevilDaggersWebsite.BlazorWasm.Server.Extensions;
+﻿using DevilDaggersInfo.Web.BlazorWasm.Server.Extensions;
 using DSharpPlus.EventArgs;
 using System;
 using System.Collections.Generic;
 
-namespace DevilDaggersWebsite.BlazorWasm.Server.HostedServices.DdInfoDiscordBot
+namespace DevilDaggersInfo.Web.BlazorWasm.Server.HostedServices.DdInfoDiscordBot
 {
 	public static class Commands
 	{

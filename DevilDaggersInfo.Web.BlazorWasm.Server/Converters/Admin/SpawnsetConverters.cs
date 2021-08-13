@@ -1,8 +1,8 @@
 ﻿using DevilDaggersCore.Extensions;
-using DevilDaggersWebsite.BlazorWasm.Server.Entities;
-using DevilDaggersWebsite.BlazorWasm.Shared.Dto.Admin.Spawnsets;
+using DevilDaggersInfo.Web.BlazorWasm.Server.Entities;
+using DevilDaggersInfo.Web.BlazorWasm.Shared.Dto.Admin.Spawnsets;
 
-namespace DevilDaggersWebsite.BlazorWasm.Server.Converters.Admin
+namespace DevilDaggersInfo.Web.BlazorWasm.Server.Converters.Admin
 {
 	public static class SpawnsetConverters
 	{

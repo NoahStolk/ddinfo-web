@@ -3,7 +3,7 @@ using Microsoft.AspNetCore.ApiAuthorization.IdentityServer;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.Extensions.Options;
 
-namespace DevilDaggersWebsite.BlazorWasm.Server.Entities
+namespace DevilDaggersInfo.Web.BlazorWasm.Server.Entities
 {
 	public class ApplicationDbContext : ApiAuthorizationDbContext<ApplicationUser>
 	{

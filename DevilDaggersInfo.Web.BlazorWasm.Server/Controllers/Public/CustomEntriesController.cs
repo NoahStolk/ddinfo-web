@@ -1,16 +1,16 @@
-﻿using DevilDaggersWebsite.BlazorWasm.Server.Caches.SpawnsetHash;
-using DevilDaggersWebsite.BlazorWasm.Server.Controllers.Attributes;
-using DevilDaggersWebsite.BlazorWasm.Server.Converters.Public;
-using DevilDaggersWebsite.BlazorWasm.Server.Entities;
-using DevilDaggersWebsite.BlazorWasm.Server.Extensions;
-using DevilDaggersWebsite.BlazorWasm.Server.HostedServices.DdInfoDiscordBot;
-using DevilDaggersWebsite.BlazorWasm.Server.Singletons;
-using DevilDaggersWebsite.BlazorWasm.Server.Transients;
-using DevilDaggersWebsite.BlazorWasm.Server.Utils;
-using DevilDaggersWebsite.BlazorWasm.Shared.Dto.Public.CustomEntries;
-using DevilDaggersWebsite.BlazorWasm.Shared.Dto.Public.Tools;
-using DevilDaggersWebsite.BlazorWasm.Shared.Enums;
-using DevilDaggersWebsite.BlazorWasm.Shared.Extensions;
+﻿using DevilDaggersInfo.Web.BlazorWasm.Server.Caches.SpawnsetHash;
+using DevilDaggersInfo.Web.BlazorWasm.Server.Controllers.Attributes;
+using DevilDaggersInfo.Web.BlazorWasm.Server.Converters.Public;
+using DevilDaggersInfo.Web.BlazorWasm.Server.Entities;
+using DevilDaggersInfo.Web.BlazorWasm.Server.Extensions;
+using DevilDaggersInfo.Web.BlazorWasm.Server.HostedServices.DdInfoDiscordBot;
+using DevilDaggersInfo.Web.BlazorWasm.Server.Singletons;
+using DevilDaggersInfo.Web.BlazorWasm.Server.Transients;
+using DevilDaggersInfo.Web.BlazorWasm.Server.Utils;
+using DevilDaggersInfo.Web.BlazorWasm.Shared.Dto.Public.CustomEntries;
+using DevilDaggersInfo.Web.BlazorWasm.Shared.Dto.Public.Tools;
+using DevilDaggersInfo.Web.BlazorWasm.Shared.Enums;
+using DevilDaggersInfo.Web.BlazorWasm.Shared.Extensions;
 using DSharpPlus.Entities;
 using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
@@ -21,7 +21,7 @@ using System.Linq;
 using System.Threading.Tasks;
 using System.Web;
 
-namespace DevilDaggersWebsite.BlazorWasm.Server.Controllers.Public
+namespace DevilDaggersInfo.Web.BlazorWasm.Server.Controllers.Public
 {
 	[Route("api/custom-entries")]
 	[ApiController]

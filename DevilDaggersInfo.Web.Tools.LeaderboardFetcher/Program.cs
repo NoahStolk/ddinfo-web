@@ -1,4 +1,4 @@
-﻿using DevilDaggersWebsite.BlazorWasm.Server.Caches.LeaderboardStatistics;
+﻿using DevilDaggersInfo.Web.BlazorWasm.Server.Caches.LeaderboardStatistics;
 using System;
 using System.Collections.Generic;
 using System.Diagnostics;

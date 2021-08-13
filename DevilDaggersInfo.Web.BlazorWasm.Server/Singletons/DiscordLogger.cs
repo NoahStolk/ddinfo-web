@@ -1,5 +1,5 @@
-﻿using DevilDaggersWebsite.BlazorWasm.Server.Extensions;
-using DevilDaggersWebsite.BlazorWasm.Server.HostedServices.DdInfoDiscordBot;
+﻿using DevilDaggersInfo.Web.BlazorWasm.Server.Extensions;
+using DevilDaggersInfo.Web.BlazorWasm.Server.HostedServices.DdInfoDiscordBot;
 using DSharpPlus.Entities;
 using Microsoft.AspNetCore.Hosting;
 using Microsoft.Extensions.Hosting;
@@ -9,7 +9,7 @@ using System.Diagnostics;
 using System.Runtime.CompilerServices;
 using System.Threading.Tasks;
 
-namespace DevilDaggersWebsite.BlazorWasm.Server.Singletons
+namespace DevilDaggersInfo.Web.BlazorWasm.Server.Singletons
 {
 	public class DiscordLogger
 	{

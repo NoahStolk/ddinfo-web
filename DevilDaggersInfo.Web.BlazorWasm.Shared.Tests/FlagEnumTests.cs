@@ -1,4 +1,4 @@
-﻿using DevilDaggersWebsite.BlazorWasm.Shared.Extensions;
+﻿using DevilDaggersInfo.Web.BlazorWasm.Shared.Extensions;
 using Microsoft.VisualStudio.TestTools.UnitTesting;
 using System;
 using System.Collections.Generic;

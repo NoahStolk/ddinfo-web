@@ -1,9 +1,9 @@
-﻿using DevilDaggersWebsite.BlazorWasm.Server.Clients.Leaderboard;
-using DevilDaggersWebsite.BlazorWasm.Shared.Dto.Public.Leaderboards;
-using DevilDaggersWebsite.BlazorWasm.Shared.Enums;
-using DevilDaggersWebsite.BlazorWasm.Shared.Extensions;
+﻿using DevilDaggersInfo.Web.BlazorWasm.Server.Clients.Leaderboard;
+using DevilDaggersInfo.Web.BlazorWasm.Shared.Dto.Public.Leaderboards;
+using DevilDaggersInfo.Web.BlazorWasm.Shared.Enums;
+using DevilDaggersInfo.Web.BlazorWasm.Shared.Extensions;
 
-namespace DevilDaggersWebsite.BlazorWasm.Server.Converters.Public
+namespace DevilDaggersInfo.Web.BlazorWasm.Server.Converters.Public
 {
 	public static class LeaderboardConverters
 	{

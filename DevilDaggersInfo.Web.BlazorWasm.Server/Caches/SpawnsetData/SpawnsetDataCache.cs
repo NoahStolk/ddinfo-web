@@ -2,7 +2,7 @@
 using System.IO;
 using Core = DevilDaggersCore.Spawnsets;
 
-namespace DevilDaggersWebsite.BlazorWasm.Server.Caches.SpawnsetData
+namespace DevilDaggersInfo.Web.BlazorWasm.Server.Caches.SpawnsetData
 {
 	public class SpawnsetDataCache : IDynamicCache
 	{

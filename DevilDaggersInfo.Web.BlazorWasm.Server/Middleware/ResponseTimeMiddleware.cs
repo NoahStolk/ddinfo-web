@@ -1,10 +1,10 @@
-﻿using DevilDaggersWebsite.BlazorWasm.Server.Singletons;
+﻿using DevilDaggersInfo.Web.BlazorWasm.Server.Singletons;
 using Microsoft.AspNetCore.Http;
 using System;
 using System.Diagnostics;
 using System.Threading.Tasks;
 
-namespace DevilDaggersWebsite.BlazorWasm.Server.Middleware
+namespace DevilDaggersInfo.Web.BlazorWasm.Server.Middleware
 {
 	public class ResponseTimeMiddleware
 	{

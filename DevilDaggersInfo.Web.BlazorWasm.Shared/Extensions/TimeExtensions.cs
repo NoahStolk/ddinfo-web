@@ -1,4 +1,4 @@
-﻿namespace DevilDaggersWebsite.BlazorWasm.Shared.Extensions
+﻿namespace DevilDaggersInfo.Web.BlazorWasm.Shared.Extensions
 {
 	public static class TimeExtensions
 	{

@@ -1,11 +1,11 @@
-﻿using DevilDaggersWebsite.BlazorWasm.Server.Converters.Public;
-using DevilDaggersWebsite.BlazorWasm.Server.Entities;
-using DevilDaggersWebsite.BlazorWasm.Server.Extensions;
-using DevilDaggersWebsite.BlazorWasm.Shared.Constants;
-using DevilDaggersWebsite.BlazorWasm.Shared.Dto;
-using DevilDaggersWebsite.BlazorWasm.Shared.Dto.Public.CustomLeaderboards;
-using DevilDaggersWebsite.BlazorWasm.Shared.Enums;
-using DevilDaggersWebsite.BlazorWasm.Shared.Enums.Sortings.Public;
+﻿using DevilDaggersInfo.Web.BlazorWasm.Server.Converters.Public;
+using DevilDaggersInfo.Web.BlazorWasm.Server.Entities;
+using DevilDaggersInfo.Web.BlazorWasm.Server.Extensions;
+using DevilDaggersInfo.Web.BlazorWasm.Shared.Constants;
+using DevilDaggersInfo.Web.BlazorWasm.Shared.Dto;
+using DevilDaggersInfo.Web.BlazorWasm.Shared.Dto.Public.CustomLeaderboards;
+using DevilDaggersInfo.Web.BlazorWasm.Shared.Enums;
+using DevilDaggersInfo.Web.BlazorWasm.Shared.Enums.Sortings.Public;
 using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.EntityFrameworkCore;
@@ -13,7 +13,7 @@ using System.Collections.Generic;
 using System.ComponentModel.DataAnnotations;
 using System.Linq;
 
-namespace DevilDaggersWebsite.BlazorWasm.Server.Controllers.Public
+namespace DevilDaggersInfo.Web.BlazorWasm.Server.Controllers.Public
 {
 	[Route("api/custom-leaderboards")]
 	[ApiController]

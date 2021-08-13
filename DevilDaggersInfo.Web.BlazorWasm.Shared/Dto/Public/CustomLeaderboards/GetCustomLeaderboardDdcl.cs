@@ -1,7 +1,7 @@
-﻿using DevilDaggersWebsite.BlazorWasm.Shared.Enums;
+﻿using DevilDaggersInfo.Web.BlazorWasm.Shared.Enums;
 using System;
 
-namespace DevilDaggersWebsite.BlazorWasm.Shared.Dto.Public.CustomLeaderboards
+namespace DevilDaggersInfo.Web.BlazorWasm.Shared.Dto.Public.CustomLeaderboards
 {
 	public class GetCustomLeaderboardDdcl
 	{

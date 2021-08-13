@@ -33,7 +33,7 @@
     </PackageReference>
   </ItemGroup>
   <ItemGroup>
-    <ProjectReference Include="..\DevilDaggersWebsite.BlazorWasm.Client\DevilDaggersWebsite.BlazorWasm.Client.csproj" />
-    <ProjectReference Include="..\DevilDaggersWebsite.BlazorWasm.Shared\DevilDaggersWebsite.BlazorWasm.Shared.csproj" />
+    <ProjectReference Include="..\DevilDaggersInfo.Web.BlazorWasm.Client\DevilDaggersInfo.Web.BlazorWasm.Client.csproj" />
+    <ProjectReference Include="..\DevilDaggersInfo.Web.BlazorWasm.Shared\DevilDaggersInfo.Web.BlazorWasm.Shared.csproj" />
   </ItemGroup>
 </Project>

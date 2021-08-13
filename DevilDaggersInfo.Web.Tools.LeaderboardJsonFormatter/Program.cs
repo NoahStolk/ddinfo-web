@@ -1,4 +1,4 @@
-﻿using DevilDaggersWebsite.BlazorWasm.Shared.Dto.Public.LeaderboardHistory;
+﻿using DevilDaggersInfo.Web.BlazorWasm.Shared.Dto.Public.LeaderboardHistory;
 using Newtonsoft.Json;
 using System;
 using System.IO;

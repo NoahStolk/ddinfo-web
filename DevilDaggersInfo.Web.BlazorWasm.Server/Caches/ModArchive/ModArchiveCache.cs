@@ -1,12 +1,12 @@
-﻿using DevilDaggersWebsite.BlazorWasm.Server.Enums;
-using DevilDaggersWebsite.BlazorWasm.Server.Exceptions;
-using DevilDaggersWebsite.BlazorWasm.Server.Transients;
+﻿using DevilDaggersInfo.Web.BlazorWasm.Server.Enums;
+using DevilDaggersInfo.Web.BlazorWasm.Server.Exceptions;
+using DevilDaggersInfo.Web.BlazorWasm.Server.Transients;
 using Newtonsoft.Json;
 using System.Collections.Concurrent;
 using System.IO;
 using System.IO.Compression;
 
-namespace DevilDaggersWebsite.BlazorWasm.Server.Caches.ModArchive
+namespace DevilDaggersInfo.Web.BlazorWasm.Server.Caches.ModArchive
 {
 	public class ModArchiveCache : IDynamicCache
 	{

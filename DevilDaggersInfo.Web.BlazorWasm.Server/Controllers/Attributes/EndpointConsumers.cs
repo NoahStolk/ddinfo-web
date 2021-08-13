@@ -1,6 +1,6 @@
 ﻿using System;
 
-namespace DevilDaggersWebsite.BlazorWasm.Server.Controllers.Attributes
+namespace DevilDaggersInfo.Web.BlazorWasm.Server.Controllers.Attributes
 {
 	[Flags]
 	public enum EndpointConsumers

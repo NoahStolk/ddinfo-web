@@ -1,4 +1,4 @@
-﻿namespace DevilDaggersWebsite.BlazorWasm.Shared.Dto.Admin.Titles
+﻿namespace DevilDaggersInfo.Web.BlazorWasm.Shared.Dto.Admin.Titles
 {
 	public class GetTitleName : IGetDto<int>
 	{

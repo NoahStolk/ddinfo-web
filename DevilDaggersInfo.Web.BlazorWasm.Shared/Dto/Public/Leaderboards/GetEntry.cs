@@ -1,6 +1,6 @@
-﻿using DevilDaggersWebsite.BlazorWasm.Shared.Enums;
+﻿using DevilDaggersInfo.Web.BlazorWasm.Shared.Enums;
 
-namespace DevilDaggersWebsite.BlazorWasm.Shared.Dto.Public.Leaderboards
+namespace DevilDaggersInfo.Web.BlazorWasm.Shared.Dto.Public.Leaderboards
 {
 	public class GetEntry
 	{

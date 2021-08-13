@@ -1,8 +1,8 @@
 ﻿using DevilDaggersCore.Game;
-using DevilDaggersWebsite.BlazorWasm.Shared.Dto.Public.LeaderboardHistory;
+using DevilDaggersInfo.Web.BlazorWasm.Shared.Dto.Public.LeaderboardHistory;
 using System;
 
-namespace DevilDaggersWebsite.BlazorWasm.Shared.Dto.Public.WorldRecords
+namespace DevilDaggersInfo.Web.BlazorWasm.Shared.Dto.Public.WorldRecords
 {
 	public class GetWorldRecord
 	{

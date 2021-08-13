@@ -3,7 +3,7 @@ using DSharpPlus.Entities;
 using System.Collections.Generic;
 using System.Threading.Tasks;
 
-namespace DevilDaggersWebsite.BlazorWasm.Server.HostedServices.DdInfoDiscordBot
+namespace DevilDaggersInfo.Web.BlazorWasm.Server.HostedServices.DdInfoDiscordBot
 {
 	public static class DevilDaggersInfoServerConstants
 	{

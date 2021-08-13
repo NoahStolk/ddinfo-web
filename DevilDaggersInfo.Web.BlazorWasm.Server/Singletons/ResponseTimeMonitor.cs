@@ -4,7 +4,7 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Text;
 
-namespace DevilDaggersWebsite.BlazorWasm.Server.Singletons
+namespace DevilDaggersInfo.Web.BlazorWasm.Server.Singletons
 {
 	public class ResponseTimeMonitor
 	{

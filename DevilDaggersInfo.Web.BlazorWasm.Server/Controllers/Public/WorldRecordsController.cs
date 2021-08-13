@@ -1,17 +1,17 @@
 ﻿using DevilDaggersCore.Game;
-using DevilDaggersWebsite.BlazorWasm.Server.Caches.LeaderboardHistory;
-using DevilDaggersWebsite.BlazorWasm.Server.Controllers.Attributes;
-using DevilDaggersWebsite.BlazorWasm.Server.Enums;
-using DevilDaggersWebsite.BlazorWasm.Server.Transients;
-using DevilDaggersWebsite.BlazorWasm.Shared.Dto.Public.LeaderboardHistory;
-using DevilDaggersWebsite.BlazorWasm.Shared.Dto.Public.WorldRecords;
+using DevilDaggersInfo.Web.BlazorWasm.Server.Caches.LeaderboardHistory;
+using DevilDaggersInfo.Web.BlazorWasm.Server.Controllers.Attributes;
+using DevilDaggersInfo.Web.BlazorWasm.Server.Enums;
+using DevilDaggersInfo.Web.BlazorWasm.Server.Transients;
+using DevilDaggersInfo.Web.BlazorWasm.Shared.Dto.Public.LeaderboardHistory;
+using DevilDaggersInfo.Web.BlazorWasm.Shared.Dto.Public.WorldRecords;
 using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
 using System;
 using System.Collections.Generic;
 using System.Linq;
 
-namespace DevilDaggersWebsite.BlazorWasm.Server.Controllers.Public
+namespace DevilDaggersInfo.Web.BlazorWasm.Server.Controllers.Public
 {
 	[Route("api/world-records")]
 	[ApiController]

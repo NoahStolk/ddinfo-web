@@ -1,6 +1,6 @@
 ﻿using System.ComponentModel.DataAnnotations.Schema;
 
-namespace DevilDaggersWebsite.BlazorWasm.Server.Entities
+namespace DevilDaggersInfo.Web.BlazorWasm.Server.Entities
 {
 	[Table("PlayerAssetMods")]
 	public class PlayerModEntity

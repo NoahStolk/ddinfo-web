@@ -1,10 +1,10 @@
-﻿using DevilDaggersWebsite.BlazorWasm.Server.HostedServices.DdInfoDiscordBot;
-using DevilDaggersWebsite.BlazorWasm.Server.Singletons;
+﻿using DevilDaggersInfo.Web.BlazorWasm.Server.HostedServices.DdInfoDiscordBot;
+using DevilDaggersInfo.Web.BlazorWasm.Server.Singletons;
 using System;
 using System.Threading;
 using System.Threading.Tasks;
 
-namespace DevilDaggersWebsite.BlazorWasm.Server.HostedServices
+namespace DevilDaggersInfo.Web.BlazorWasm.Server.HostedServices
 {
 	public class ResponseTimeLoggerBackgroundService : AbstractBackgroundService
 	{

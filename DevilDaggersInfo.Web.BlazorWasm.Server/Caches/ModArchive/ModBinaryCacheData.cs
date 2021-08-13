@@ -1,11 +1,11 @@
 ﻿using DevilDaggersCore.Mods;
-using DevilDaggersWebsite.BlazorWasm.Server.Exceptions;
-using DevilDaggersWebsite.BlazorWasm.Shared.Enums;
+using DevilDaggersInfo.Web.BlazorWasm.Server.Exceptions;
+using DevilDaggersInfo.Web.BlazorWasm.Shared.Enums;
 using System;
 using System.Collections.Generic;
 using System.Text;
 
-namespace DevilDaggersWebsite.BlazorWasm.Server.Caches.ModArchive
+namespace DevilDaggersInfo.Web.BlazorWasm.Server.Caches.ModArchive
 {
 	public class ModBinaryCacheData
 	{

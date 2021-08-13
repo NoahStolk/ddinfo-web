@@ -1,7 +1,7 @@
-﻿using DevilDaggersWebsite.BlazorWasm.Server.Entities;
-using DevilDaggersWebsite.BlazorWasm.Shared.Dto.Admin.Players;
+﻿using DevilDaggersInfo.Web.BlazorWasm.Server.Entities;
+using DevilDaggersInfo.Web.BlazorWasm.Shared.Dto.Admin.Players;
 
-namespace DevilDaggersWebsite.BlazorWasm.Server.Converters.Admin
+namespace DevilDaggersInfo.Web.BlazorWasm.Server.Converters.Admin
 {
 	public static class PlayerConverters
 	{

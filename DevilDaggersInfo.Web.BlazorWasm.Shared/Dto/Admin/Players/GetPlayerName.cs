@@ -1,4 +1,4 @@
-﻿namespace DevilDaggersWebsite.BlazorWasm.Shared.Dto.Admin.Players
+﻿namespace DevilDaggersInfo.Web.BlazorWasm.Shared.Dto.Admin.Players
 {
 	public class GetPlayerName : IGetDto<int>
 	{

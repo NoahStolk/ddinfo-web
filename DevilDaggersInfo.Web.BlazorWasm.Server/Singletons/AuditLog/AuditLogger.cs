@@ -1,6 +1,6 @@
 ﻿using DevilDaggersCore.Extensions;
-using DevilDaggersWebsite.BlazorWasm.Server.Enums;
-using DevilDaggersWebsite.BlazorWasm.Server.HostedServices.DdInfoDiscordBot;
+using DevilDaggersInfo.Web.BlazorWasm.Server.Enums;
+using DevilDaggersInfo.Web.BlazorWasm.Server.HostedServices.DdInfoDiscordBot;
 using System.Collections.Generic;
 using System.ComponentModel.DataAnnotations.Schema;
 using System.Reflection;
@@ -9,7 +9,7 @@ using System.Security.Claims;
 using System.Text;
 using System.Threading.Tasks;
 
-namespace DevilDaggersWebsite.BlazorWasm.Server.Singletons.AuditLog
+namespace DevilDaggersInfo.Web.BlazorWasm.Server.Singletons.AuditLog
 {
 	public class AuditLogger
 	{

@@ -1,12 +1,12 @@
 ﻿using Blazorise;
-using DevilDaggersWebsite.BlazorWasm.Client.HttpClients;
+using DevilDaggersInfo.Web.BlazorWasm.Client.HttpClients;
 using Microsoft.AspNetCore.Components.WebAssembly.Authentication;
 using Microsoft.AspNetCore.Components.WebAssembly.Hosting;
 using Microsoft.Extensions.DependencyInjection;
 using System;
 using System.Threading.Tasks;
 
-namespace DevilDaggersWebsite.BlazorWasm.Client
+namespace DevilDaggersInfo.Web.BlazorWasm.Client
 {
 	public static class Program
 	{

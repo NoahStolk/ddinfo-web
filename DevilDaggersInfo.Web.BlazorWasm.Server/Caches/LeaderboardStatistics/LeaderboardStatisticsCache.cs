@@ -1,16 +1,16 @@
 ﻿using DevilDaggersCore.Game;
-using DevilDaggersWebsite.BlazorWasm.Server.Enums;
-using DevilDaggersWebsite.BlazorWasm.Server.HostedServices.DdInfoDiscordBot;
-using DevilDaggersWebsite.BlazorWasm.Server.Singletons;
-using DevilDaggersWebsite.BlazorWasm.Server.Transients;
-using DevilDaggersWebsite.BlazorWasm.Shared;
-using DevilDaggersWebsite.BlazorWasm.Shared.Extensions;
+using DevilDaggersInfo.Web.BlazorWasm.Server.Enums;
+using DevilDaggersInfo.Web.BlazorWasm.Server.HostedServices.DdInfoDiscordBot;
+using DevilDaggersInfo.Web.BlazorWasm.Server.Singletons;
+using DevilDaggersInfo.Web.BlazorWasm.Server.Transients;
+using DevilDaggersInfo.Web.BlazorWasm.Shared;
+using DevilDaggersInfo.Web.BlazorWasm.Shared.Extensions;
 using System.Collections.Generic;
 using System.IO;
 using System.Linq;
 using System.Threading.Tasks;
 
-namespace DevilDaggersWebsite.BlazorWasm.Server.Caches.LeaderboardStatistics
+namespace DevilDaggersInfo.Web.BlazorWasm.Server.Caches.LeaderboardStatistics
 {
 	public class LeaderboardStatisticsCache : IStaticCache
 	{

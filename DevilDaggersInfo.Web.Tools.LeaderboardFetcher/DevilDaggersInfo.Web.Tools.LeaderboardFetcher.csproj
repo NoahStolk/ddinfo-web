@@ -17,6 +17,6 @@
     </PackageReference>
   </ItemGroup>
   <ItemGroup>
-    <ProjectReference Include="..\..\DevilDaggersWebsite.BlazorWasm.Server\DevilDaggersWebsite.BlazorWasm.Server.csproj" />
+    <ProjectReference Include="..\DevilDaggersInfo.Web.Tools.Shared\DevilDaggersInfo.Web.Tools.Shared.csproj" />
   </ItemGroup>
 </Project>

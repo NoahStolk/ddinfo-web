@@ -1,9 +1,9 @@
-﻿using DevilDaggersWebsite.BlazorWasm.Server.Entities;
-using DevilDaggersWebsite.BlazorWasm.Shared.Dto.Admin.CustomEntries;
-using DevilDaggersWebsite.BlazorWasm.Shared.Enums;
-using DevilDaggersWebsite.BlazorWasm.Shared.Extensions;
+﻿using DevilDaggersInfo.Web.BlazorWasm.Server.Entities;
+using DevilDaggersInfo.Web.BlazorWasm.Shared.Dto.Admin.CustomEntries;
+using DevilDaggersInfo.Web.BlazorWasm.Shared.Enums;
+using DevilDaggersInfo.Web.BlazorWasm.Shared.Extensions;
 
-namespace DevilDaggersWebsite.BlazorWasm.Server.Converters.Admin
+namespace DevilDaggersInfo.Web.BlazorWasm.Server.Converters.Admin
 {
 	public static class CustomEntryConverters
 	{

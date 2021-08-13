@@ -1,6 +1,6 @@
 ﻿using DevilDaggersCore.Mods;
 
-namespace DevilDaggersWebsite.BlazorWasm.Server.Caches.ModArchive
+namespace DevilDaggersInfo.Web.BlazorWasm.Server.Caches.ModArchive
 {
 	public class ModChunkCacheData
 	{

@@ -1,7 +1,7 @@
 ﻿using DevilDaggersCore.Game;
 using DSharpPlus.Entities;
 
-namespace DevilDaggersWebsite.BlazorWasm.Server.HostedServices.DdInfoDiscordBot
+namespace DevilDaggersInfo.Web.BlazorWasm.Server.HostedServices.DdInfoDiscordBot
 {
 	public static class DiscordColors
 	{

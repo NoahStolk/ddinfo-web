@@ -1,6 +1,6 @@
-﻿using DevilDaggersWebsite.BlazorWasm.Server.Extensions;
-using DevilDaggersWebsite.BlazorWasm.Server.HostedServices.DdInfoDiscordBot;
-using DevilDaggersWebsite.BlazorWasm.Server.Singletons;
+﻿using DevilDaggersInfo.Web.BlazorWasm.Server.Extensions;
+using DevilDaggersInfo.Web.BlazorWasm.Server.HostedServices.DdInfoDiscordBot;
+using DevilDaggersInfo.Web.BlazorWasm.Server.Singletons;
 using DSharpPlus.Entities;
 using Microsoft.AspNetCore.Hosting;
 using System;
@@ -10,7 +10,7 @@ using System.Linq;
 using System.Threading;
 using System.Threading.Tasks;
 
-namespace DevilDaggersWebsite.BlazorWasm.Server.HostedServices
+namespace DevilDaggersInfo.Web.BlazorWasm.Server.HostedServices
 {
 	public class FileSystemLoggerBackgroundService : AbstractBackgroundService
 	{

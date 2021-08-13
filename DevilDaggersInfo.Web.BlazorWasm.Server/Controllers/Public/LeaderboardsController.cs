@@ -1,7 +1,7 @@
-﻿using DevilDaggersWebsite.BlazorWasm.Server.Clients.Leaderboard;
-using DevilDaggersWebsite.BlazorWasm.Server.Controllers.Attributes;
-using DevilDaggersWebsite.BlazorWasm.Server.Converters.Public;
-using DevilDaggersWebsite.BlazorWasm.Shared.Dto.Public.Leaderboards;
+﻿using DevilDaggersInfo.Web.BlazorWasm.Server.Clients.Leaderboard;
+using DevilDaggersInfo.Web.BlazorWasm.Server.Controllers.Attributes;
+using DevilDaggersInfo.Web.BlazorWasm.Server.Converters.Public;
+using DevilDaggersInfo.Web.BlazorWasm.Shared.Dto.Public.Leaderboards;
 using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
 using System;
@@ -10,7 +10,7 @@ using System.ComponentModel.DataAnnotations;
 using System.Linq;
 using System.Threading.Tasks;
 
-namespace DevilDaggersWebsite.BlazorWasm.Server.Controllers.Public
+namespace DevilDaggersInfo.Web.BlazorWasm.Server.Controllers.Public
 {
 	[Route("api/leaderboards")]
 	[ApiController]

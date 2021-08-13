@@ -1,4 +1,4 @@
-﻿namespace DevilDaggersWebsite.BlazorWasm.Server.Caches.SpawnsetHash
+﻿namespace DevilDaggersInfo.Web.BlazorWasm.Server.Caches.SpawnsetHash
 {
 	public class SpawnsetHashCacheData
 	{

@@ -1,9 +1,9 @@
 ﻿@page "/admin/custom-leaderboards/add"
 @inject AdminApiHttpClient Http
 @inject NavigationManager NavigationManager
-@using DevilDaggersWebsite.BlazorWasm.Shared.Dto.Admin.CustomLeaderboards
-@using DevilDaggersWebsite.BlazorWasm.Shared.Dto.Admin.Spawnsets
-@using DevilDaggersWebsite.BlazorWasm.Shared.Enums
+@using DevilDaggersInfo.Web.BlazorWasm.Shared.Dto.Admin.CustomLeaderboards
+@using DevilDaggersInfo.Web.BlazorWasm.Shared.Dto.Admin.Spawnsets
+@using DevilDaggersInfo.Web.BlazorWasm.Shared.Enums
 
 <AdminAdd OverviewUrl="/admin/custom-leaderboards" PostApiUrl="api/admin/custom-leaderboards" Model="_addCustomLeaderboard" @ref="_addComponent">
 	<AdminInput Label="@nameof(AddCustomLeaderboard.SpawnsetId)"><SearchDropdown Values="@_spawnsetNames" Converter="s => int.Parse(s)" @bind-Value="@_addCustomLeaderboard.SpawnsetId" /></AdminInput>

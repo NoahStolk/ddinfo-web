@@ -1,8 +1,8 @@
-﻿using DevilDaggersWebsite.BlazorWasm.Shared.Constants;
+﻿using DevilDaggersInfo.Web.BlazorWasm.Shared.Constants;
 using System.Collections.Generic;
 using System.ComponentModel.DataAnnotations;
 
-namespace DevilDaggersWebsite.BlazorWasm.Shared.Dto.Admin.Mods
+namespace DevilDaggersInfo.Web.BlazorWasm.Shared.Dto.Admin.Mods
 {
 	public class AddMod
 	{

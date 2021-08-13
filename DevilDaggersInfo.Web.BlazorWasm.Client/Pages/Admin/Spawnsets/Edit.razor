@@ -1,8 +1,8 @@
 ﻿@page "/admin/spawnsets/edit/{Id:int}"
 @inject AdminApiHttpClient Http
 @inject NavigationManager NavigationManager
-@using DevilDaggersWebsite.BlazorWasm.Shared.Dto.Admin.Players
-@using DevilDaggersWebsite.BlazorWasm.Shared.Dto.Admin.Spawnsets
+@using DevilDaggersInfo.Web.BlazorWasm.Shared.Dto.Admin.Players
+@using DevilDaggersInfo.Web.BlazorWasm.Shared.Dto.Admin.Spawnsets
 
 <AdminEdit OverviewUrl="/admin/spawnsets" PutApiUrl="api/admin/spawnsets" Model="_editSpawnset" Id="Id" @ref="_editComponent">
 	<AdminInput Label="@nameof(EditSpawnset.PlayerId)"><SearchDropdown Values="@_playerNames" Converter="s => int.Parse(s)" @bind-Value="@_editSpawnset!.PlayerId" /></AdminInput>

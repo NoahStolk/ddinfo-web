@@ -1,19 +1,19 @@
-﻿using DevilDaggersWebsite.BlazorWasm.Client.Utils;
-using DevilDaggersWebsite.BlazorWasm.Shared.Dto;
-using DevilDaggersWebsite.BlazorWasm.Shared.Dto.Public.CustomEntries;
-using DevilDaggersWebsite.BlazorWasm.Shared.Dto.Public.CustomLeaderboards;
-using DevilDaggersWebsite.BlazorWasm.Shared.Dto.Public.LeaderboardHistoryStatistics;
-using DevilDaggersWebsite.BlazorWasm.Shared.Dto.Public.Leaderboards;
-using DevilDaggersWebsite.BlazorWasm.Shared.Dto.Public.LeaderboardStatistics;
-using DevilDaggersWebsite.BlazorWasm.Shared.Dto.Public.Players;
-using DevilDaggersWebsite.BlazorWasm.Shared.Enums;
-using DevilDaggersWebsite.BlazorWasm.Shared.Enums.Sortings.Public;
+﻿using DevilDaggersInfo.Web.BlazorWasm.Client.Utils;
+using DevilDaggersInfo.Web.BlazorWasm.Shared.Dto;
+using DevilDaggersInfo.Web.BlazorWasm.Shared.Dto.Public.CustomEntries;
+using DevilDaggersInfo.Web.BlazorWasm.Shared.Dto.Public.CustomLeaderboards;
+using DevilDaggersInfo.Web.BlazorWasm.Shared.Dto.Public.LeaderboardHistoryStatistics;
+using DevilDaggersInfo.Web.BlazorWasm.Shared.Dto.Public.Leaderboards;
+using DevilDaggersInfo.Web.BlazorWasm.Shared.Dto.Public.LeaderboardStatistics;
+using DevilDaggersInfo.Web.BlazorWasm.Shared.Dto.Public.Players;
+using DevilDaggersInfo.Web.BlazorWasm.Shared.Enums;
+using DevilDaggersInfo.Web.BlazorWasm.Shared.Enums.Sortings.Public;
 using System.Collections.Generic;
 using System.Net.Http;
 using System.Net.Http.Json;
 using System.Threading.Tasks;
 
-namespace DevilDaggersWebsite.BlazorWasm.Client.HttpClients
+namespace DevilDaggersInfo.Web.BlazorWasm.Client.HttpClients
 {
 	public class PublicApiHttpClient
 	{

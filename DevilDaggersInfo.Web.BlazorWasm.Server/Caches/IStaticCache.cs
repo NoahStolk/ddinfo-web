@@ -1,6 +1,6 @@
 ﻿using System.Threading.Tasks;
 
-namespace DevilDaggersWebsite.BlazorWasm.Server.Caches
+namespace DevilDaggersInfo.Web.BlazorWasm.Server.Caches
 {
 	public interface IStaticCache : ICache
 	{

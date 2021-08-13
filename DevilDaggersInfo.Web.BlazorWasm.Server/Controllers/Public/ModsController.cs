@@ -1,11 +1,11 @@
 ﻿using DevilDaggersCore.Mods;
-using DevilDaggersWebsite.BlazorWasm.Server.Caches.ModArchive;
-using DevilDaggersWebsite.BlazorWasm.Server.Controllers.Attributes;
-using DevilDaggersWebsite.BlazorWasm.Server.Entities;
-using DevilDaggersWebsite.BlazorWasm.Server.Enums;
-using DevilDaggersWebsite.BlazorWasm.Server.Transients;
-using DevilDaggersWebsite.BlazorWasm.Shared.Dto.Public.Mods;
-using DevilDaggersWebsite.BlazorWasm.Shared.Enums;
+using DevilDaggersInfo.Web.BlazorWasm.Server.Caches.ModArchive;
+using DevilDaggersInfo.Web.BlazorWasm.Server.Controllers.Attributes;
+using DevilDaggersInfo.Web.BlazorWasm.Server.Entities;
+using DevilDaggersInfo.Web.BlazorWasm.Server.Enums;
+using DevilDaggersInfo.Web.BlazorWasm.Server.Transients;
+using DevilDaggersInfo.Web.BlazorWasm.Shared.Dto.Public.Mods;
+using DevilDaggersInfo.Web.BlazorWasm.Shared.Enums;
 using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.EntityFrameworkCore;
@@ -18,7 +18,7 @@ using System.Linq;
 using System.Net.Mime;
 using Io = System.IO;
 
-namespace DevilDaggersWebsite.BlazorWasm.Server.Controllers.Public
+namespace DevilDaggersInfo.Web.BlazorWasm.Server.Controllers.Public
 {
 	[Route("api/mods")]
 	[ApiController]

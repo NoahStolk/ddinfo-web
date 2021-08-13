@@ -1,7 +1,7 @@
 ﻿using DevilDaggersInfo.Web.Tools.Shared;
-using DevilDaggersWebsite.BlazorWasm.Server.Utils;
-using DevilDaggersWebsite.BlazorWasm.Shared;
-using DevilDaggersWebsite.BlazorWasm.Shared.Dto.Public.LeaderboardHistory;
+using DevilDaggersInfo.Web.BlazorWasm.Server.Utils;
+using DevilDaggersInfo.Web.BlazorWasm.Shared;
+using DevilDaggersInfo.Web.BlazorWasm.Shared.Dto.Public.LeaderboardHistory;
 using Newtonsoft.Json;
 using System;
 using System.Collections.Generic;

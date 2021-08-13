@@ -1,9 +1,9 @@
-﻿using DevilDaggersWebsite.BlazorWasm.Server.HostedServices.DdInfoDiscordBot;
+﻿using DevilDaggersInfo.Web.BlazorWasm.Server.HostedServices.DdInfoDiscordBot;
 using Microsoft.AspNetCore.Hosting;
 using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Extensions.Hosting;
 
-namespace DevilDaggersWebsite.BlazorWasm.Server
+namespace DevilDaggersInfo.Web.BlazorWasm.Server
 {
 	public static class Program
 	{

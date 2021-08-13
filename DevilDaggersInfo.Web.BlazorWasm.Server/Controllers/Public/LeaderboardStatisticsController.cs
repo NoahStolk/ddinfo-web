@@ -1,12 +1,12 @@
-﻿using DevilDaggersWebsite.BlazorWasm.Server.Caches.LeaderboardStatistics;
-using DevilDaggersWebsite.BlazorWasm.Server.Controllers.Attributes;
-using DevilDaggersWebsite.BlazorWasm.Server.Utils;
-using DevilDaggersWebsite.BlazorWasm.Shared.Dto.Public.LeaderboardStatistics;
+﻿using DevilDaggersInfo.Web.BlazorWasm.Server.Caches.LeaderboardStatistics;
+using DevilDaggersInfo.Web.BlazorWasm.Server.Controllers.Attributes;
+using DevilDaggersInfo.Web.BlazorWasm.Server.Utils;
+using DevilDaggersInfo.Web.BlazorWasm.Shared.Dto.Public.LeaderboardStatistics;
 using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
 using System.Linq;
 
-namespace DevilDaggersWebsite.BlazorWasm.Server.Controllers.Public
+namespace DevilDaggersInfo.Web.BlazorWasm.Server.Controllers.Public
 {
 	[Route("api/leaderboard-statistics")]
 	[ApiController]

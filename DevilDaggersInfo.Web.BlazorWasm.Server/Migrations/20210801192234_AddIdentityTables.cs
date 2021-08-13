@@ -2,7 +2,7 @@
 using Microsoft.EntityFrameworkCore.Migrations;
 using System;
 
-namespace DevilDaggersWebsite.BlazorWasm.Server.Migrations
+namespace DevilDaggersInfo.Web.BlazorWasm.Server.Migrations
 {
 	public partial class AddIdentityTables : Migration
 	{

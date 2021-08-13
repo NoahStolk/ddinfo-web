@@ -1,4 +1,4 @@
-﻿namespace DevilDaggersWebsite.BlazorWasm.Server.Entities
+﻿namespace DevilDaggersInfo.Web.BlazorWasm.Server.Entities
 {
 	public interface IEntity
 	{

@@ -1,17 +1,17 @@
-﻿using DevilDaggersWebsite.BlazorWasm.Server.Caches.LeaderboardHistory;
-using DevilDaggersWebsite.BlazorWasm.Server.Caches.LeaderboardStatistics;
-using DevilDaggersWebsite.BlazorWasm.Server.Caches.ModArchive;
-using DevilDaggersWebsite.BlazorWasm.Server.Caches.SpawnsetData;
-using DevilDaggersWebsite.BlazorWasm.Server.Caches.SpawnsetHash;
-using DevilDaggersWebsite.BlazorWasm.Server.Extensions;
-using DevilDaggersWebsite.BlazorWasm.Server.HostedServices.DdInfoDiscordBot;
-using DevilDaggersWebsite.BlazorWasm.Server.Singletons;
+﻿using DevilDaggersInfo.Web.BlazorWasm.Server.Caches.LeaderboardHistory;
+using DevilDaggersInfo.Web.BlazorWasm.Server.Caches.LeaderboardStatistics;
+using DevilDaggersInfo.Web.BlazorWasm.Server.Caches.ModArchive;
+using DevilDaggersInfo.Web.BlazorWasm.Server.Caches.SpawnsetData;
+using DevilDaggersInfo.Web.BlazorWasm.Server.Caches.SpawnsetHash;
+using DevilDaggersInfo.Web.BlazorWasm.Server.Extensions;
+using DevilDaggersInfo.Web.BlazorWasm.Server.HostedServices.DdInfoDiscordBot;
+using DevilDaggersInfo.Web.BlazorWasm.Server.Singletons;
 using DSharpPlus.Entities;
 using System;
 using System.Threading;
 using System.Threading.Tasks;
 
-namespace DevilDaggersWebsite.BlazorWasm.Server.HostedServices
+namespace DevilDaggersInfo.Web.BlazorWasm.Server.HostedServices
 {
 	public class CacheLoggerBackgroundService : AbstractBackgroundService
 	{

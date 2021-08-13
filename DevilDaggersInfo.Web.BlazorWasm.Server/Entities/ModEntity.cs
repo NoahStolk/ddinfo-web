@@ -1,10 +1,10 @@
-﻿using DevilDaggersWebsite.BlazorWasm.Shared.Enums;
+﻿using DevilDaggersInfo.Web.BlazorWasm.Shared.Enums;
 using System;
 using System.Collections.Generic;
 using System.ComponentModel.DataAnnotations;
 using System.ComponentModel.DataAnnotations.Schema;
 
-namespace DevilDaggersWebsite.BlazorWasm.Server.Entities
+namespace DevilDaggersInfo.Web.BlazorWasm.Server.Entities
 {
 	[Table("AssetMods")]
 	public class ModEntity : IEntity

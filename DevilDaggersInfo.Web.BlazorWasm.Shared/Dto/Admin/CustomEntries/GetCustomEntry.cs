@@ -1,8 +1,8 @@
-﻿using DevilDaggersWebsite.BlazorWasm.Shared.Enums;
+﻿using DevilDaggersInfo.Web.BlazorWasm.Shared.Enums;
 using System;
 using System.ComponentModel.DataAnnotations;
 
-namespace DevilDaggersWebsite.BlazorWasm.Shared.Dto.Admin.CustomEntries
+namespace DevilDaggersInfo.Web.BlazorWasm.Shared.Dto.Admin.CustomEntries
 {
 	public class GetCustomEntry : IGetDto<int>
 	{

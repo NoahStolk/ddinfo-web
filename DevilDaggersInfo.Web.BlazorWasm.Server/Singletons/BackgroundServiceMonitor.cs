@@ -1,10 +1,10 @@
-﻿using DevilDaggersWebsite.BlazorWasm.Server.Extensions;
+﻿using DevilDaggersInfo.Web.BlazorWasm.Server.Extensions;
 using DSharpPlus.Entities;
 using System;
 using System.Collections.Concurrent;
 using System.Linq;
 
-namespace DevilDaggersWebsite.BlazorWasm.Server.Singletons
+namespace DevilDaggersInfo.Web.BlazorWasm.Server.Singletons
 {
 	public class BackgroundServiceMonitor
 	{

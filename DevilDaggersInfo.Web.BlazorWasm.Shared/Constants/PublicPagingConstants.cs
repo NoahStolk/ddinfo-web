@@ -1,7 +1,7 @@
 ﻿using System.Collections.Generic;
 using System.Linq;
 
-namespace DevilDaggersWebsite.BlazorWasm.Shared.Constants
+namespace DevilDaggersInfo.Web.BlazorWasm.Shared.Constants
 {
 	public static class PublicPagingConstants
 	{

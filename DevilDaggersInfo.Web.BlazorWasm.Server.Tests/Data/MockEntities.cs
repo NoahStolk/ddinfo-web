@@ -1,6 +1,6 @@
 ﻿using DevilDaggersInfo.Web.BlazorWasm.Server.Tests.Extensions;
-using DevilDaggersWebsite.BlazorWasm.Server.Entities;
-using DevilDaggersWebsite.BlazorWasm.Shared.Enums;
+using DevilDaggersInfo.Web.BlazorWasm.Server.Entities;
+using DevilDaggersInfo.Web.BlazorWasm.Shared.Enums;
 using Microsoft.EntityFrameworkCore;
 using Moq;
 using System;

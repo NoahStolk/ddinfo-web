@@ -1,4 +1,4 @@
-﻿namespace DevilDaggersWebsite.BlazorWasm.Shared.Dto.Public.LeaderboardHistory
+﻿namespace DevilDaggersInfo.Web.BlazorWasm.Shared.Dto.Public.LeaderboardHistory
 {
 	// This class must correspond to what's stored in the leaderboard history JSON.
 	public class GetEntryHistory

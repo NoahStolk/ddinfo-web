@@ -1,6 +1,6 @@
 ﻿using System.Collections.Generic;
 
-namespace DevilDaggersWebsite.BlazorWasm.Shared.Dto.Public.Mods
+namespace DevilDaggersInfo.Web.BlazorWasm.Shared.Dto.Public.Mods
 {
 	public class GetModArchive
 	{

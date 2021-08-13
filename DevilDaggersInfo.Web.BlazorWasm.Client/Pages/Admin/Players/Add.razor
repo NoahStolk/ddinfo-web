@@ -1,9 +1,9 @@
 ﻿@page "/admin/players/add"
 @inject AdminApiHttpClient Http
 @inject NavigationManager NavigationManager
-@using DevilDaggersWebsite.BlazorWasm.Shared.Dto.Admin.Mods
-@using DevilDaggersWebsite.BlazorWasm.Shared.Dto.Admin.Players
-@using DevilDaggersWebsite.BlazorWasm.Shared.Dto.Admin.Titles
+@using DevilDaggersInfo.Web.BlazorWasm.Shared.Dto.Admin.Mods
+@using DevilDaggersInfo.Web.BlazorWasm.Shared.Dto.Admin.Players
+@using DevilDaggersInfo.Web.BlazorWasm.Shared.Dto.Admin.Titles
 
 <AdminAdd OverviewUrl="/admin/players" PostApiUrl="api/admin/players" Model="_addPlayer" @ref="_addComponent">
 	<AdminInput Label="@nameof(AddPlayer.Id)"><InputNumber class="w-64 pl-2 bg-gray-900 text-color-text" @bind-Value="_addPlayer.Id" /></AdminInput>

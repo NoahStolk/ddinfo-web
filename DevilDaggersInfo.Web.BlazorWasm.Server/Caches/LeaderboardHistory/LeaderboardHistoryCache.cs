@@ -1,10 +1,10 @@
-﻿using DevilDaggersWebsite.BlazorWasm.Shared.Dto.Public.LeaderboardHistory;
+﻿using DevilDaggersInfo.Web.BlazorWasm.Shared.Dto.Public.LeaderboardHistory;
 using Newtonsoft.Json;
 using System.Collections.Concurrent;
 using System.IO;
 using System.Text;
 
-namespace DevilDaggersWebsite.BlazorWasm.Server.Caches.LeaderboardHistory
+namespace DevilDaggersInfo.Web.BlazorWasm.Server.Caches.LeaderboardHistory
 {
 	public class LeaderboardHistoryCache : IDynamicCache
 	{

@@ -1,10 +1,10 @@
-﻿using DevilDaggersWebsite.BlazorWasm.Server.Entities;
-using DevilDaggersWebsite.BlazorWasm.Server.Enums;
-using DevilDaggersWebsite.BlazorWasm.Server.Singletons.AuditLog;
-using DevilDaggersWebsite.BlazorWasm.Server.Transients;
-using DevilDaggersWebsite.BlazorWasm.Shared;
-using DevilDaggersWebsite.BlazorWasm.Shared.Constants;
-using DevilDaggersWebsite.BlazorWasm.Shared.Dto.Admin.ModScreenshots;
+﻿using DevilDaggersInfo.Web.BlazorWasm.Server.Entities;
+using DevilDaggersInfo.Web.BlazorWasm.Server.Enums;
+using DevilDaggersInfo.Web.BlazorWasm.Server.Singletons.AuditLog;
+using DevilDaggersInfo.Web.BlazorWasm.Server.Transients;
+using DevilDaggersInfo.Web.BlazorWasm.Shared;
+using DevilDaggersInfo.Web.BlazorWasm.Shared.Constants;
+using DevilDaggersInfo.Web.BlazorWasm.Shared.Dto.Admin.ModScreenshots;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
@@ -13,7 +13,7 @@ using System.Linq;
 using System.Threading.Tasks;
 using Io = System.IO;
 
-namespace DevilDaggersWebsite.BlazorWasm.Server.Controllers.Admin
+namespace DevilDaggersInfo.Web.BlazorWasm.Server.Controllers.Admin
 {
 	[Route("api/admin/mod-screenshots")]
 	[Authorize(Roles = Roles.Mods)]

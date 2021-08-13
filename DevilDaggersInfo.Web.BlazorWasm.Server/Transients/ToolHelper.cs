@@ -1,10 +1,10 @@
-﻿using DevilDaggersWebsite.BlazorWasm.Server.Enums;
-using DevilDaggersWebsite.BlazorWasm.Shared.Dto.Public.Tools;
+﻿using DevilDaggersInfo.Web.BlazorWasm.Server.Enums;
+using DevilDaggersInfo.Web.BlazorWasm.Shared.Dto.Public.Tools;
 using Newtonsoft.Json;
 using System.Collections.Generic;
 using System.IO;
 
-namespace DevilDaggersWebsite.BlazorWasm.Server.Transients
+namespace DevilDaggersInfo.Web.BlazorWasm.Server.Transients
 {
 	public class ToolHelper : IToolHelper
 	{

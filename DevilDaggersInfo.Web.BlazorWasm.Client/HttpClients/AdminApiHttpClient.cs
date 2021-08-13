@@ -1,6 +1,6 @@
 ﻿using System.Net.Http;
 
-namespace DevilDaggersWebsite.BlazorWasm.Client.HttpClients
+namespace DevilDaggersInfo.Web.BlazorWasm.Client.HttpClients
 {
 	public class AdminApiHttpClient
 	{

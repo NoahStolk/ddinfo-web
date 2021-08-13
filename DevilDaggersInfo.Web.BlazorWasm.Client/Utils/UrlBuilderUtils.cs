@@ -1,7 +1,7 @@
 ﻿using System.Collections.Generic;
 using System.Linq;
 
-namespace DevilDaggersWebsite.BlazorWasm.Client.Utils
+namespace DevilDaggersInfo.Web.BlazorWasm.Client.Utils
 {
 	public static class UrlBuilderUtils
 	{

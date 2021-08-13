@@ -1,4 +1,4 @@
-﻿namespace DevilDaggersWebsite.BlazorWasm.Shared.Dto.Admin.ModScreenshots
+﻿namespace DevilDaggersInfo.Web.BlazorWasm.Shared.Dto.Admin.ModScreenshots
 {
 	public class DeleteModScreenshot
 	{

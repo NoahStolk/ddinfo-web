@@ -1,6 +1,6 @@
 ﻿using Microsoft.EntityFrameworkCore;
 
-namespace DevilDaggersWebsite.BlazorWasm.Server.Entities
+namespace DevilDaggersInfo.Web.BlazorWasm.Server.Entities
 {
 	[Keyless]
 	public class InformationSchemaTable

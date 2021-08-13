@@ -1,9 +1,9 @@
 ﻿@page "/admin/mods/edit/{Id:int}"
 @inject AdminApiHttpClient Http
 @inject NavigationManager NavigationManager
-@using DevilDaggersWebsite.BlazorWasm.Shared.Dto.Admin.Mods
-@using DevilDaggersWebsite.BlazorWasm.Shared.Dto.Admin.Players
-@using DevilDaggersWebsite.BlazorWasm.Shared.Enums
+@using DevilDaggersInfo.Web.BlazorWasm.Shared.Dto.Admin.Mods
+@using DevilDaggersInfo.Web.BlazorWasm.Shared.Dto.Admin.Players
+@using DevilDaggersInfo.Web.BlazorWasm.Shared.Enums
 @using System.IO
 
 <AdminEdit OverviewUrl="/admin/mods" PutApiUrl="api/admin/mods" Model="_editMod" Id="Id" @ref="_editComponent">

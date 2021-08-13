@@ -1,18 +1,18 @@
-﻿using DevilDaggersWebsite.BlazorWasm.Server.Caches.ModArchive;
-using DevilDaggersWebsite.BlazorWasm.Server.Converters.Admin;
-using DevilDaggersWebsite.BlazorWasm.Server.Entities;
-using DevilDaggersWebsite.BlazorWasm.Server.Enums;
-using DevilDaggersWebsite.BlazorWasm.Server.Exceptions;
-using DevilDaggersWebsite.BlazorWasm.Server.Extensions;
-using DevilDaggersWebsite.BlazorWasm.Server.Singletons.AuditLog;
-using DevilDaggersWebsite.BlazorWasm.Server.Transients;
-using DevilDaggersWebsite.BlazorWasm.Shared;
-using DevilDaggersWebsite.BlazorWasm.Shared.Constants;
-using DevilDaggersWebsite.BlazorWasm.Shared.Dto;
-using DevilDaggersWebsite.BlazorWasm.Shared.Dto.Admin.Mods;
-using DevilDaggersWebsite.BlazorWasm.Shared.Enums;
-using DevilDaggersWebsite.BlazorWasm.Shared.Enums.Sortings.Admin;
-using DevilDaggersWebsite.BlazorWasm.Shared.Extensions;
+﻿using DevilDaggersInfo.Web.BlazorWasm.Server.Caches.ModArchive;
+using DevilDaggersInfo.Web.BlazorWasm.Server.Converters.Admin;
+using DevilDaggersInfo.Web.BlazorWasm.Server.Entities;
+using DevilDaggersInfo.Web.BlazorWasm.Server.Enums;
+using DevilDaggersInfo.Web.BlazorWasm.Server.Exceptions;
+using DevilDaggersInfo.Web.BlazorWasm.Server.Extensions;
+using DevilDaggersInfo.Web.BlazorWasm.Server.Singletons.AuditLog;
+using DevilDaggersInfo.Web.BlazorWasm.Server.Transients;
+using DevilDaggersInfo.Web.BlazorWasm.Shared;
+using DevilDaggersInfo.Web.BlazorWasm.Shared.Constants;
+using DevilDaggersInfo.Web.BlazorWasm.Shared.Dto;
+using DevilDaggersInfo.Web.BlazorWasm.Shared.Dto.Admin.Mods;
+using DevilDaggersInfo.Web.BlazorWasm.Shared.Enums;
+using DevilDaggersInfo.Web.BlazorWasm.Shared.Enums.Sortings.Admin;
+using DevilDaggersInfo.Web.BlazorWasm.Shared.Extensions;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
@@ -25,7 +25,7 @@ using System.Linq;
 using System.Threading.Tasks;
 using Io = System.IO;
 
-namespace DevilDaggersWebsite.BlazorWasm.Server.Controllers.Admin
+namespace DevilDaggersInfo.Web.BlazorWasm.Server.Controllers.Admin
 {
 	[Route("api/admin/mods")]
 	[Authorize(Roles = Roles.Mods)]

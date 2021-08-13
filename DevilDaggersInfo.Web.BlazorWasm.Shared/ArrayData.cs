@@ -1,7 +1,7 @@
 ﻿using System.Collections.Generic;
 using System.Linq;
 
-namespace DevilDaggersWebsite.BlazorWasm.Shared
+namespace DevilDaggersInfo.Web.BlazorWasm.Shared
 {
 	public class ArrayData
 	{

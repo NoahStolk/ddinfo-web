@@ -3,7 +3,7 @@ using DSharpPlus.Entities;
 using System;
 using System.Threading.Tasks;
 
-namespace DevilDaggersWebsite.BlazorWasm.Server.Extensions
+namespace DevilDaggersInfo.Web.BlazorWasm.Server.Extensions
 {
 	public static class DSharpExtensions
 	{

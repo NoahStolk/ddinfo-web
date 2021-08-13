@@ -1,4 +1,4 @@
-﻿namespace DevilDaggersWebsite.BlazorWasm.Shared.Enums
+﻿namespace DevilDaggersInfo.Web.BlazorWasm.Shared.Enums
 {
 	public enum BuildMode
 	{

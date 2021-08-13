@@ -1,9 +1,9 @@
 ﻿@page "/admin/players/edit/{Id:int}"
 @inject AdminApiHttpClient Http
 @inject NavigationManager NavigationManager
-@using DevilDaggersWebsite.BlazorWasm.Shared.Dto.Admin.Mods
-@using DevilDaggersWebsite.BlazorWasm.Shared.Dto.Admin.Players
-@using DevilDaggersWebsite.BlazorWasm.Shared.Dto.Admin.Titles
+@using DevilDaggersInfo.Web.BlazorWasm.Shared.Dto.Admin.Mods
+@using DevilDaggersInfo.Web.BlazorWasm.Shared.Dto.Admin.Players
+@using DevilDaggersInfo.Web.BlazorWasm.Shared.Dto.Admin.Titles
 
 <AdminEdit OverviewUrl="/admin/players" PutApiUrl="api/admin/players" Model="_editPlayer" Id="Id" @ref="_editComponent">
 	<AdminInput Label="@nameof(EditPlayer.CountryCode)"><SearchDropdown Values="@(UserUtils.CountryNames!)" Converter="s => s" @bind-Value="@_editPlayer!.CountryCode" /></AdminInput>

@@ -1,8 +1,8 @@
-﻿using DevilDaggersWebsite.BlazorWasm.Server.HostedServices.DdInfoDiscordBot;
-using DevilDaggersWebsite.BlazorWasm.Shared.Enums;
+﻿using DevilDaggersInfo.Web.BlazorWasm.Server.HostedServices.DdInfoDiscordBot;
+using DevilDaggersInfo.Web.BlazorWasm.Shared.Enums;
 using DSharpPlus.Entities;
 
-namespace DevilDaggersWebsite.BlazorWasm.Server.Extensions
+namespace DevilDaggersInfo.Web.BlazorWasm.Server.Extensions
 {
 	public static class EnumExtensions
 	{

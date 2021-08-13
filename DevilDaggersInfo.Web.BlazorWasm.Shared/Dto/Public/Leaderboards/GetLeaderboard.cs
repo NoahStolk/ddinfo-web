@@ -1,7 +1,7 @@
 ﻿using System;
 using System.Collections.Generic;
 
-namespace DevilDaggersWebsite.BlazorWasm.Shared.Dto.Public.Leaderboards
+namespace DevilDaggersInfo.Web.BlazorWasm.Shared.Dto.Public.Leaderboards
 {
 	public class GetLeaderboard
 	{

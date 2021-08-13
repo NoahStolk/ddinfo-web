@@ -1,6 +1,6 @@
 ﻿using System.Collections.Generic;
 
-namespace DevilDaggersWebsite.BlazorWasm.Shared.Dto.Admin.Players
+namespace DevilDaggersInfo.Web.BlazorWasm.Shared.Dto.Admin.Players
 {
 	public class GetPlayer : IGetDto<int>
 	{

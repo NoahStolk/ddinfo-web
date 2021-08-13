@@ -1,7 +1,7 @@
-﻿using DevilDaggersWebsite.BlazorWasm.Shared.Enums;
+﻿using DevilDaggersInfo.Web.BlazorWasm.Shared.Enums;
 using System;
 
-namespace DevilDaggersWebsite.BlazorWasm.Shared.Dto.Admin.Donations
+namespace DevilDaggersInfo.Web.BlazorWasm.Shared.Dto.Admin.Donations
 {
 	public class GetDonation : IGetDto<int>
 	{

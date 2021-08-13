@@ -1,10 +1,10 @@
-﻿using DevilDaggersWebsite.BlazorWasm.Shared;
+﻿using DevilDaggersInfo.Web.BlazorWasm.Shared;
 using System.Collections.Generic;
 using System.ComponentModel.DataAnnotations;
 using System.ComponentModel.DataAnnotations.Schema;
 using System.Linq;
 
-namespace DevilDaggersWebsite.BlazorWasm.Server.Entities
+namespace DevilDaggersInfo.Web.BlazorWasm.Server.Entities
 {
 	[Table("Players")]
 	public class PlayerEntity : IEntity
