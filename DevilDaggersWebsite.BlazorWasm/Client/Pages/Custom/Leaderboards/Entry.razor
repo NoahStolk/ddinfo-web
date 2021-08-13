@@ -16,6 +16,12 @@ else
 
 	<h2 class="text-red text-xl">Homing</h2>
 	<LineChart Options="_lco" @ref="_homingChart" TItem="int" />
+
+	<h2 class="text-red text-xl">Enemies</h2>
+	<LineChart Options="_lco" @ref="_enemiesChart" TItem="int" />
+
+	<h2 class="text-red text-xl">Daggers</h2>
+	<LineChart Options="_lco" @ref="_daggersChart" TItem="int" />
 }
 
 @code
@@ -30,6 +36,8 @@ else
 
 	private LineChart<int>? _gemsChart;
 	private LineChart<int>? _homingChart;
+	private LineChart<int>? _enemiesChart;
+	private LineChart<int>? _daggersChart;
 
 	[Parameter] public int Id { get; set; }
 
@@ -45,11 +53,15 @@ else
 		if (firstRender ||
 			GetCustomEntryData == null ||
 			_gemsChart == null ||
-			_homingChart == null)
+			_homingChart == null ||
+			_enemiesChart == null ||
+			_daggersChart == null)
 			return;
 
-		await AddLabelsDatasets(_gemsChart, new("Gems Collected", GetCustomEntryData.GemsCollectedData, "#f00", "#f00"), new("Gems Despawned", GetCustomEntryData.GemsDespawnedData, "#888", "#888"), new("Gems Eaten", GetCustomEntryData.GemsEatenData, "#0f0", "#0f0"));
-		await AddLabelsDatasets(_homingChart, new("Homing Stored", GetCustomEntryData.HomingStoredData, "#f0f", "#f0f"), new Dataset("Homing Eaten", GetCustomEntryData.HomingEatenData, "#ff0", "#ff0"));
+		await AddLabelsDatasets(_gemsChart, new("Gems Collected", GetCustomEntryData.GemsCollectedData, "#f00", "#f00"), new("Gems Despawned", GetCustomEntryData.GemsDespawnedData, "#888", "#888"), new("Gems Eaten", GetCustomEntryData.GemsEatenData, "#0f0", "#0f0"), new("Gems Total", GetCustomEntryData.GemsTotalData, "#800", "#800"));
+		await AddLabelsDatasets(_homingChart, new("Homing Stored", GetCustomEntryData.HomingStoredData, "#f0f", "#f0f"), new("Homing Eaten", GetCustomEntryData.HomingEatenData, "#f00", "#f00"));
+		await AddLabelsDatasets(_enemiesChart, new("Enemies Alive", GetCustomEntryData.EnemiesAliveData, "#840", "#840"), new("Enemies Killed", GetCustomEntryData.EnemiesKilledData, "#f00", "#f00"));
+		await AddLabelsDatasets(_daggersChart, new("Daggers Hit", GetCustomEntryData.DaggersHitData, "#80f", "#80f"), new("Daggers Fired", GetCustomEntryData.DaggersFiredData, "#00f", "#00f"));
 	}
 
 	private async Task AddLabelsDatasets(LineChart<int> chart, params Dataset[] datasets)
