@@ -40,7 +40,7 @@ module.exports = {
 				// Overviews
 				'custom-leaderboards-xl': createMinmaxGrid([2, 2, 1, 2, 1, 1, 1, 1, 1, 2, 1]),
 				'custom-leaderboards-lg': createMinmaxGrid([2, 2, 1, 2, 2, 1]),
-				'custom-leaderboards-md': createMinmaxGrid([2, 2, 1, 2]),
+				'custom-leaderboards-md': createMinmaxGrid([2, 2, 1.5, 1.5]),
 				'custom-leaderboards-sm': createMinmaxGrid([1]),
 
 				// Leaderboards
