@@ -14,11 +14,8 @@ else
 	<h2 class="text-red text-xl">Gems</h2>
 	<LineChart Options="_lco" @ref="_gemsChart" TItem="int" />
 
-	<h2 class="text-red text-xl">Homing Stored</h2>
-	<LineChart Options="_lco" @ref="_homingStoredChart" TItem="int" />
-
-	<h2 class="text-red text-xl">Homing Eaten</h2>
-	<LineChart Options="_lco" @ref="_homingEatenChart" TItem="int" />
+	<h2 class="text-red text-xl">Homing</h2>
+	<LineChart Options="_lco" @ref="_homingChart" TItem="int" />
 }
 
 @code
@@ -32,8 +29,7 @@ else
 	};
 
 	private LineChart<int>? _gemsChart;
-	private LineChart<int>? _homingStoredChart;
-	private LineChart<int>? _homingEatenChart;
+	private LineChart<int>? _homingChart;
 
 	[Parameter] public int Id { get; set; }
 
@@ -49,13 +45,11 @@ else
 		if (firstRender ||
 			GetCustomEntryData == null ||
 			_gemsChart == null ||
-			_homingStoredChart == null ||
-			_homingEatenChart == null)
+			_homingChart == null)
 			return;
 
 		await AddLabelsDatasets(_gemsChart, new("Gems Collected", GetCustomEntryData.GemsCollectedData, "#f00", "#f00"), new("Gems Despawned", GetCustomEntryData.GemsDespawnedData, "#888", "#888"), new("Gems Eaten", GetCustomEntryData.GemsEatenData, "#0f0", "#0f0"));
-		await AddLabelsDatasets(_homingStoredChart, new Dataset("Homing Stored", GetCustomEntryData.HomingStoredData, "#f0f", "#f0f"));
-		await AddLabelsDatasets(_homingEatenChart, new Dataset("Homing Eaten", GetCustomEntryData.HomingEatenData, "#ff0", "#ff0"));
+		await AddLabelsDatasets(_homingChart, new("Homing Stored", GetCustomEntryData.HomingStoredData, "#f0f", "#f0f"), new Dataset("Homing Eaten", GetCustomEntryData.HomingEatenData, "#ff0", "#ff0"));
 	}
 
 	private async Task AddLabelsDatasets(LineChart<int> chart, params Dataset[] datasets)
