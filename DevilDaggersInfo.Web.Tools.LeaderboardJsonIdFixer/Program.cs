@@ -1,4 +1,5 @@
-﻿using DevilDaggersWebsite.BlazorWasm.Server.Utils;
+﻿using DevilDaggersInfo.Web.Tools.Shared;
+using DevilDaggersWebsite.BlazorWasm.Server.Utils;
 using DevilDaggersWebsite.BlazorWasm.Shared;
 using DevilDaggersWebsite.BlazorWasm.Shared.Dto.Public.LeaderboardHistory;
 using Newtonsoft.Json;
@@ -6,7 +7,6 @@ using System;
 using System.Collections.Generic;
 using System.IO;
 using System.Text;
-using ToolsShared;
 
 #pragma warning disable IDE0079 // Remove unnecessary suppression
 #pragma warning disable S1075 // URIs should not be hardcoded

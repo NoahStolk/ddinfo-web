@@ -1,6 +1,6 @@
 ﻿using System.Collections.Generic;
 
-namespace ToolsShared
+namespace DevilDaggersInfo.Web.Tools.Shared
 {
 	public static class NameData
 	{

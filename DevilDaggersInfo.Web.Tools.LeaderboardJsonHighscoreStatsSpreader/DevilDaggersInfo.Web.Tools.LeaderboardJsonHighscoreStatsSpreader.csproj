@@ -1,4 +1,4 @@
-﻿<Project Sdk="Microsoft.NET.Sdk">
+<Project Sdk="Microsoft.NET.Sdk">
   <PropertyGroup>
     <OutputType>Exe</OutputType>
   </PropertyGroup>
@@ -18,6 +18,6 @@
     </PackageReference>
   </ItemGroup>
   <ItemGroup>
-    <ProjectReference Include="..\ToolsShared\ToolsShared.csproj" />
+    <ProjectReference Include="..\ToolsShared\DevilDaggersInfo.Web.Tools.Shared.csproj" />
   </ItemGroup>
 </Project>
