@@ -13,7 +13,7 @@
 else
 {
 	<div class="text-xl font-goethe">
-		<div class="grid gap-3 grid-cols-leaderboard-sm md:grid-cols-leaderboard-md lg:grid-cols-leaderboard-lg xl:grid-cols-leaderboard-xl">
+		<div class="grid gap-3 grid-cols-custom-leaderboard-sm md:grid-cols-custom-leaderboard-md lg:grid-cols-custom-leaderboard-lg xl:grid-cols-custom-leaderboard-xl 2xl:grid-cols-custom-leaderboard-2xl">
 			<div @onclick="() => Sort(CustomEntrySorting.Rank)" class="text-right"><Tooltip Text="Sort by RANK"><img src="/images/icons/custom-x2/rank.png" /></Tooltip></div>
 			<div @onclick="() => Sort(CustomEntrySorting.Flag)" class="text-left"><Tooltip Text="Sort by FLAG"><img src="/images/icons/custom-x2/flag.png" /></Tooltip></div>
 			<div @onclick="() => Sort(CustomEntrySorting.Player)" class="text-left"><Tooltip Text="Sort by PLAYER"><img src="/images/icons/mask-x2/eye.png" /></Tooltip></div>
@@ -21,16 +21,16 @@ else
 			<div @onclick="() => Sort(CustomEntrySorting.EnemiesKilled)" class="text-right hidden md:block"><Tooltip Text="Sort by ENEMIES&nbsp;KILLED"><img src="/images/icons/mask-x2/dagger.png" /></Tooltip></div>
 			<div @onclick="() => Sort(CustomEntrySorting.EnemiesAlive)" class="text-right hidden md:block"><Tooltip Text="Sort by ENEMIES&nbsp;ALIVE"><img src="/images/icons/mask-x2/skull.png" /></Tooltip></div>
 			<div @onclick="() => Sort(CustomEntrySorting.GemsCollected)" class="text-right hidden md:block"><Tooltip Text="Sort by GEMS COLLECTED"><img src="/images/icons/mask-x2/gem.png" /></Tooltip></div>
-			<div @onclick="() => Sort(CustomEntrySorting.GemsDespawned)" class="text-right hidden md:block"><Tooltip Text="Sort by GEMS DESPAWNED"><img src="/images/icons/mask-x2/gem.png" /></Tooltip></div>
-			<div @onclick="() => Sort(CustomEntrySorting.GemsEaten)" class="text-right hidden md:block"><Tooltip Text="Sort by GEMS EATEN"><img src="/images/icons/mask-x2/gem.png" /></Tooltip></div>
+			<div @onclick="() => Sort(CustomEntrySorting.GemsDespawned)" class="text-right hidden lg:block"><Tooltip Text="Sort by GEMS DESPAWNED"><img src="/images/icons/mask-x2/gem.png" /></Tooltip></div>
+			<div @onclick="() => Sort(CustomEntrySorting.GemsEaten)" class="text-right hidden lg:block"><Tooltip Text="Sort by GEMS EATEN"><img src="/images/icons/mask-x2/gem.png" /></Tooltip></div>
 			<div @onclick="() => Sort(CustomEntrySorting.Accuracy)" class="text-right hidden md:block"><Tooltip Text="Sort by ACCURACY"><img src="/images/icons/mask-x2/crosshair.png" /></Tooltip></div>
 			<div @onclick="() => Sort(CustomEntrySorting.DeathType)" class="text-left hidden lg:block"><Tooltip Text="Sort by DEATH&nbsp;TYPE"><img src="/images/icons/mask-x2/skull.png" /></Tooltip></div>
-			<div @onclick="() => Sort(CustomEntrySorting.HomingStored)" class="text-left hidden lg:block"><Tooltip Text="Sort by HOMING&nbsp;STORED"><img src="/images/icons/mask-x2/skull.png" /></Tooltip></div>
-			<div @onclick="() => Sort(CustomEntrySorting.HomingEaten)" class="text-left hidden lg:block"><Tooltip Text="Sort by HOMING&nbsp;EATEN"><img src="/images/icons/mask-x2/skull.png" /></Tooltip></div>
-			<div @onclick="() => Sort(CustomEntrySorting.LevelUpTime2)" class="text-left hidden lg:block"><Tooltip Text="Sort by LEVEL&nbsp;2"><img src="/images/icons/mask-x2/skull.png" /></Tooltip></div>
-			<div @onclick="() => Sort(CustomEntrySorting.LevelUpTime3)" class="text-left hidden lg:block"><Tooltip Text="Sort by LEVEL&nbsp;3"><img src="/images/icons/mask-x2/skull.png" /></Tooltip></div>
-			<div @onclick="() => Sort(CustomEntrySorting.LevelUpTime4)" class="text-left hidden lg:block"><Tooltip Text="Sort by LEVEL&nbsp;4"><img src="/images/icons/mask-x2/skull.png" /></Tooltip></div>
-			<div @onclick="() => Sort(CustomEntrySorting.SubmitDate)" class="text-left hidden lg:block"><Tooltip Text="Sort by SUBMIT&nbsp;DATE"><img src="/images/icons/mask-x2/stopwatch.png" /></Tooltip></div>
+			<div @onclick="() => Sort(CustomEntrySorting.HomingStored)" class="text-right hidden xl:block"><Tooltip Text="Sort by HOMING&nbsp;STORED"><img src="/images/icons/mask-x2/dagger.png" /></Tooltip></div>
+			<div @onclick="() => Sort(CustomEntrySorting.HomingEaten)" class="text-right hidden xl:block"><Tooltip Text="Sort by HOMING&nbsp;EATEN"><img src="/images/icons/mask-x2/dagger.png" /></Tooltip></div>
+			<div @onclick="() => Sort(CustomEntrySorting.LevelUpTime2)" class="text-right hidden 2xl:block"><Tooltip Text="Sort by LEVEL&nbsp;2"><img src="/images/icons/mask-x2/dagger.png" /></Tooltip></div>
+			<div @onclick="() => Sort(CustomEntrySorting.LevelUpTime3)" class="text-right hidden 2xl:block"><Tooltip Text="Sort by LEVEL&nbsp;3"><img src="/images/icons/mask-x2/dagger.png" /></Tooltip></div>
+			<div @onclick="() => Sort(CustomEntrySorting.LevelUpTime4)" class="text-right hidden 2xl:block"><Tooltip Text="Sort by LEVEL&nbsp;4"><img src="/images/icons/mask-x2/dagger.png" /></Tooltip></div>
+			<div @onclick="() => Sort(CustomEntrySorting.SubmitDate)" class="text-right hidden 2xl:block"><Tooltip Text="Sort by SUBMIT&nbsp;DATE"><img src="/images/icons/mask-x2/stopwatch.png" /></Tooltip></div>
 		</div>
 		<div>
 			@{
@@ -47,17 +47,26 @@ else
 					double accuracy = ce.DaggersFired == 0 ? 0 : ce.DaggersHit / (double)ce.DaggersFired;
 					string daggers = FormatUtils.FormatDaggersInt32(ce.DaggersHit, ce.DaggersFired, false);
 
-					<div class="grid gap-3 grid-cols-leaderboard-sm md:grid-cols-leaderboard-md lg:grid-cols-leaderboard-lg xl:grid-cols-leaderboard-xl h-6 @(i++ % 2 == 0 ? "bg-gray0B" : string.Empty)">
+					<div class="grid gap-3 grid-cols-custom-leaderboard-sm md:grid-cols-custom-leaderboard-md lg:grid-cols-custom-leaderboard-lg xl:grid-cols-custom-leaderboard-xl 2xl:grid-cols-custom-leaderboard-2xl h-6 @(i++ % 2 == 0 ? "bg-gray0B" : string.Empty)">
 						<EntryRank PlayerId="@ce.PlayerId" Rank="@ce.Rank" />
 						<EntryFlag CountryCode="@ce.CountryCode" />
 						<EntryUsername DaggerCssClass="@daggerCssClass" Id="@ce.PlayerId" Name="@ce.PlayerName" />
 						<div class="text-right @daggerCssClass">@ce.Time.ToString(FormatUtils.TimeFormat)</div>
 						<div class="text-right hidden md:block">@ce.EnemiesKilled.ToString(FormatUtils.LeaderboardIntFormat)</div>
+						<div class="text-right hidden md:block">@ce.EnemiesAlive.ToString(FormatUtils.LeaderboardIntFormat)</div>
 						<div class="text-right hidden md:block">@ce.GemsCollected.ToString(FormatUtils.LeaderboardIntFormat)</div>
+						<div class="text-right hidden lg:block">@ce.GemsDespawned.ToString(FormatUtils.LeaderboardIntFormat)</div>
+						<div class="text-right hidden lg:block">@ce.GemsEaten.ToString(FormatUtils.LeaderboardIntFormat)</div>
 						<div class="text-right hidden md:block">
 							<Tooltip Text="@daggers">@accuracy.ToString(FormatUtils.AccuracyFormat)</Tooltip>
 						</div>
 						<div class="text-left hidden lg:block" style="@deathStyle">@deathName</div>
+						<div class="text-right hidden xl:block">@ce.HomingStored.ToString(FormatUtils.LeaderboardIntFormat)</div>
+						<div class="text-right hidden xl:block">@ce.HomingEaten.ToString(FormatUtils.LeaderboardIntFormat)</div>
+						<div class="text-right hidden 2xl:block">@ce.LevelUpTime2.ToString(FormatUtils.TimeFormat)</div>
+						<div class="text-right hidden 2xl:block">@ce.LevelUpTime3.ToString(FormatUtils.TimeFormat)</div>
+						<div class="text-right hidden 2xl:block">@ce.LevelUpTime4.ToString(FormatUtils.TimeFormat)</div>
+						<div class="text-right hidden 2xl:block">@ce.SubmitDate.ToString(FormatUtils.DateTimeFormat)</div>
 					</div>
 				}
 			}
@@ -103,8 +112,8 @@ else
 			CustomEntrySorting.GemsEaten => GetCustomLeaderboard.CustomEntries.OrderBy(ce => ce.GemsEaten, _ascending).ToList(),
 			CustomEntrySorting.Accuracy => GetCustomLeaderboard.CustomEntries.OrderBy(ce => ce.DaggersFired == 0 ? 0 : ce.DaggersHit / (float)ce.DaggersFired, _ascending).ToList(),
 			CustomEntrySorting.DeathType => GetCustomLeaderboard.CustomEntries.OrderBy(ce => ce.DeathType, _ascending).ToList(),
-			CustomEntrySorting.HomingStored => GetCustomLeaderboard.CustomEntries.OrderBy(ce => ce.HomingDaggers, _ascending).ToList(),
-			CustomEntrySorting.HomingEaten => GetCustomLeaderboard.CustomEntries.OrderBy(ce => ce.HomingDaggersEaten, _ascending).ToList(),
+			CustomEntrySorting.HomingStored => GetCustomLeaderboard.CustomEntries.OrderBy(ce => ce.HomingStored, _ascending).ToList(),
+			CustomEntrySorting.HomingEaten => GetCustomLeaderboard.CustomEntries.OrderBy(ce => ce.HomingEaten, _ascending).ToList(),
 			CustomEntrySorting.LevelUpTime2 => GetCustomLeaderboard.CustomEntries.OrderBy(ce => ce.LevelUpTime2, _ascending).ToList(),
 			CustomEntrySorting.LevelUpTime3 => GetCustomLeaderboard.CustomEntries.OrderBy(ce => ce.LevelUpTime3, _ascending).ToList(),
 			CustomEntrySorting.LevelUpTime4 => GetCustomLeaderboard.CustomEntries.OrderBy(ce => ce.LevelUpTime4, _ascending).ToList(),

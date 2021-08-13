@@ -8,6 +8,7 @@ namespace DevilDaggersWebsite.BlazorWasm.Shared
 		public const string LeaderboardIntFormat = "N0";
 		public const string LeaderboardIntAverageFormat = "N2";
 		public const string DateFormat = "yyyy-MM-dd";
+		public const string DateTimeFormat = "yyyy-MM-dd HH:mm";
 		public const string DateTimeUtcFormat = "yyyy-MM-dd HH:mm UTC";
 		public const string DateTimeFullFormat = "yyyy-MM-dd HH:mm:ss.fff zzz";
 		public const string TimeFormat = "0.0000";

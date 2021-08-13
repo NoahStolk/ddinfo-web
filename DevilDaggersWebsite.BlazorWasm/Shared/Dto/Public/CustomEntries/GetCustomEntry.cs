@@ -27,9 +27,9 @@ namespace DevilDaggersWebsite.BlazorWasm.Shared.Dto.Public.CustomEntries
 
 		public int EnemiesAlive { get; init; }
 
-		public int HomingDaggers { get; init; }
+		public int HomingStored { get; init; }
 
-		public int HomingDaggersEaten { get; init; }
+		public int HomingEaten { get; init; }
 
 		public int GemsDespawned { get; init; }
 
