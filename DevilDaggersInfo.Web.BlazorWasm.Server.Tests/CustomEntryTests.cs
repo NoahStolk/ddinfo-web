@@ -1,11 +1,12 @@
 ﻿using DevilDaggersCore.Spawnsets;
+using DevilDaggersInfo.Web.BlazorWasm.Server.Tests.Data;
+using DevilDaggersInfo.Web.BlazorWasm.Server.Tests.Extensions;
+using DevilDaggersWebsite.BlazorWasm.Server;
 using DevilDaggersWebsite.BlazorWasm.Server.Caches.SpawnsetHash;
 using DevilDaggersWebsite.BlazorWasm.Server.Controllers.Public;
 using DevilDaggersWebsite.BlazorWasm.Server.Entities;
 using DevilDaggersWebsite.BlazorWasm.Server.Extensions;
 using DevilDaggersWebsite.BlazorWasm.Server.Singletons;
-using DevilDaggersWebsite.BlazorWasm.Server.Tests.Data;
-using DevilDaggersWebsite.BlazorWasm.Server.Tests.Extensions;
 using DevilDaggersWebsite.BlazorWasm.Server.Transients;
 using DevilDaggersWebsite.BlazorWasm.Shared.Dto.Public.CustomEntries;
 using DevilDaggersWebsite.BlazorWasm.Shared.Dto.Public.Tools;
@@ -23,7 +24,7 @@ using System.Security.Cryptography;
 using System.Threading.Tasks;
 using System.Web;
 
-namespace DevilDaggersWebsite.BlazorWasm.Server.Tests
+namespace DevilDaggersInfo.Web.BlazorWasm.Server.Tests
 {
 	[TestClass]
 	public class CustomEntryTests

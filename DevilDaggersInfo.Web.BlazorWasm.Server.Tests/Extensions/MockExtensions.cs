@@ -5,7 +5,7 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Linq.Expressions;
 
-namespace DevilDaggersWebsite.BlazorWasm.Server.Tests.Extensions
+namespace DevilDaggersInfo.Web.BlazorWasm.Server.Tests.Extensions
 {
 	public static class MockExtensions
 	{

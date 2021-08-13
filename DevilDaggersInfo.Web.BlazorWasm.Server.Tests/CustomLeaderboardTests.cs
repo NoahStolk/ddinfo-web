@@ -1,10 +1,10 @@
-﻿using DevilDaggersWebsite.BlazorWasm.Server.Controllers.Admin;
+﻿using DevilDaggersInfo.Web.BlazorWasm.Server.Tests.Data;
+using DevilDaggersInfo.Web.BlazorWasm.Server.Tests.Extensions;
+using DevilDaggersWebsite.BlazorWasm.Server.Controllers.Admin;
 using DevilDaggersWebsite.BlazorWasm.Server.Entities;
 using DevilDaggersWebsite.BlazorWasm.Server.Extensions;
 using DevilDaggersWebsite.BlazorWasm.Server.Singletons;
 using DevilDaggersWebsite.BlazorWasm.Server.Singletons.AuditLog;
-using DevilDaggersWebsite.BlazorWasm.Server.Tests.Data;
-using DevilDaggersWebsite.BlazorWasm.Server.Tests.Extensions;
 using DevilDaggersWebsite.BlazorWasm.Server.Transients;
 using DevilDaggersWebsite.BlazorWasm.Shared.Dto;
 using DevilDaggersWebsite.BlazorWasm.Shared.Dto.Admin.CustomLeaderboards;
@@ -18,7 +18,7 @@ using Microsoft.VisualStudio.TestTools.UnitTesting;
 using Moq;
 using System.Linq;
 
-namespace DevilDaggersWebsite.BlazorWasm.Server.Tests
+namespace DevilDaggersInfo.Web.BlazorWasm.Server.Tests
 {
 	[TestClass]
 	public class CustomLeaderboardTests

@@ -19,9 +19,9 @@ Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "DevilDaggersInfo.Web.Tools.
 EndProject
 Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "DevilDaggersInfo.Web.Tools.Shared", "DevilDaggersInfo.Web.Tools.Shared\DevilDaggersInfo.Web.Tools.Shared.csproj", "{D305DE6F-3EE9-49A2-A670-9408BAECBF71}"
 EndProject
-Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "DevilDaggersWebsite.BlazorWasm.Server.Tests", "DevilDaggersWebsite.BlazorWasm.Server.Tests\DevilDaggersWebsite.BlazorWasm.Server.Tests.csproj", "{CB715CD9-FB6A-4E79-B9C0-830833223D91}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "DevilDaggersInfo.Web.BlazorWasm.Server.Tests", "DevilDaggersInfo.Web.BlazorWasm.Server.Tests\DevilDaggersInfo.Web.BlazorWasm.Server.Tests.csproj", "{CB715CD9-FB6A-4E79-B9C0-830833223D91}"
 EndProject
-Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "DevilDaggersWebsite.BlazorWasm.Shared.Tests", "DevilDaggersWebsite.BlazorWasm.Shared.Tests\DevilDaggersWebsite.BlazorWasm.Shared.Tests.csproj", "{9C3CED1D-A4D9-46DD-8CB8-9DE0FAC1CBE0}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "DevilDaggersInfo.Web.BlazorWasm.Shared.Tests", "DevilDaggersInfo.Web.BlazorWasm.Shared.Tests\DevilDaggersInfo.Web.BlazorWasm.Shared.Tests.csproj", "{9C3CED1D-A4D9-46DD-8CB8-9DE0FAC1CBE0}"
 EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
