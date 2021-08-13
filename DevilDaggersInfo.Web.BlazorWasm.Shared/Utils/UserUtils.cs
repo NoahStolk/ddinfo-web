@@ -1,6 +1,6 @@
 ﻿using System.Collections.Generic;
 
-namespace DevilDaggersInfo.Web.BlazorWasm.Shared
+namespace DevilDaggersInfo.Web.BlazorWasm.Shared.Utils
 {
 	public static class UserUtils
 	{

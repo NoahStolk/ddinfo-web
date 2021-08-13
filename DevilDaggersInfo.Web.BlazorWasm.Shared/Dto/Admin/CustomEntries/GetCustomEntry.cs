@@ -1,4 +1,5 @@
 ﻿using DevilDaggersInfo.Web.BlazorWasm.Shared.Enums;
+using DevilDaggersInfo.Web.BlazorWasm.Shared.Utils;
 using System;
 using System.ComponentModel.DataAnnotations;
 

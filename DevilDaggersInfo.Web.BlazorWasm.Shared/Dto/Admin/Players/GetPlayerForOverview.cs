@@ -1,4 +1,5 @@
-﻿using System.ComponentModel.DataAnnotations;
+﻿using DevilDaggersInfo.Web.BlazorWasm.Shared.Utils;
+using System.ComponentModel.DataAnnotations;
 
 namespace DevilDaggersInfo.Web.BlazorWasm.Shared.Dto.Admin.Players
 {

@@ -1,5 +1,5 @@
-﻿using DevilDaggersInfo.Web.BlazorWasm.Shared;
-using DevilDaggersInfo.Web.BlazorWasm.Shared.Dto;
+﻿using DevilDaggersInfo.Web.BlazorWasm.Shared.Dto;
+using DevilDaggersInfo.Web.BlazorWasm.Shared.Utils;
 using System;
 using System.Collections.Generic;
 using System.Data;
