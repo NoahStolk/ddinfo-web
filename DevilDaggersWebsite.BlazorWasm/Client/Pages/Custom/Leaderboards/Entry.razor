@@ -1,0 +1,89 @@
+﻿@page "/custom/entry/{Id:int}"
+@inject PublicApiHttpClient Http
+@using Blazorise.Charts
+@using DevilDaggersWebsite.BlazorWasm.Shared.Dto.Public.CustomEntries
+
+@if (GetCustomEntryData == null)
+{
+	<Loading />
+}
+else
+{
+	<Heading>@GetCustomEntryData.PlayerName's score on @GetCustomEntryData.SpawnsetName</Heading>
+
+	<h2 class="text-red text-xl">Gems</h2>
+	<LineChart Options="_lco" @ref="_gemsChart" TItem="int" />
+
+	<h2 class="text-red text-xl">Homing Stored</h2>
+	<LineChart Options="_lco" @ref="_homingStoredChart" TItem="int" />
+
+	<h2 class="text-red text-xl">Homing Eaten</h2>
+	<LineChart Options="_lco" @ref="_homingEatenChart" TItem="int" />
+}
+
+@code
+{
+	private LineChartOptions _lco = new()
+	{
+		MaintainAspectRatio = true,
+		Responsive = true,
+		AspectRatio = 3.5f,
+		ShowLines = true,
+	};
+
+	private LineChart<int>? _gemsChart;
+	private LineChart<int>? _homingStoredChart;
+	private LineChart<int>? _homingEatenChart;
+
+	[Parameter] public int Id { get; set; }
+
+	public GetCustomEntryData? GetCustomEntryData { get; set; }
+
+	protected override async Task OnInitializedAsync()
+	{
+		GetCustomEntryData = await Http.GetCustomEntryDataById(Id);
+	}
+
+	protected override async Task OnAfterRenderAsync(bool firstRender)
+	{
+		if (firstRender ||
+			GetCustomEntryData == null ||
+			_gemsChart == null ||
+			_homingStoredChart == null ||
+			_homingEatenChart == null)
+			return;
+
+		await AddLabelsDatasets(_gemsChart, new("Gems Collected", GetCustomEntryData.GemsCollectedData, "#f00", "#f00"), new("Gems Despawned", GetCustomEntryData.GemsDespawnedData, "#888", "#888"), new("Gems Eaten", GetCustomEntryData.GemsEatenData, "#0f0", "#0f0"));
+		await AddLabelsDatasets(_homingStoredChart, new Dataset("Homing Stored", GetCustomEntryData.HomingStoredData, "#f0f", "#f0f"));
+		await AddLabelsDatasets(_homingEatenChart, new Dataset("Homing Eaten", GetCustomEntryData.HomingEatenData, "#ff0", "#ff0"));
+	}
+
+	private async Task AddLabelsDatasets(LineChart<int> chart, params Dataset[] datasets)
+	{
+		if (GetCustomEntryData == null)
+			return;
+
+		List<LineChartDataset<int>> lineChartDatasets = new();
+		foreach (Dataset dataset in datasets)
+		{
+			if (dataset.Data == null)
+				continue;
+
+			lineChartDatasets.Add(new LineChartDataset<int>
+			{
+				Label = dataset.Title,
+				Data = dataset.Data.ToList(),
+				BackgroundColor = new(dataset.BackgroundColor),
+				Fill = false,
+				PointRadius = 1,
+				ShowLine = true,
+				BorderColor = dataset.BorderColor,
+				LineTension = 0.1f,
+			});
+		}
+
+		await chart.AddLabelsDatasetsAndUpdate(Enumerable.Range(0, (int)GetCustomEntryData.Time).Select(i => i.ToString()).ToArray(), lineChartDatasets.ToArray());
+	}
+
+	private record Dataset(string Title, int[]? Data, string BackgroundColor, string BorderColor);
+}
