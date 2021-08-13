@@ -11,7 +11,7 @@
 	<AdminInput Label="@nameof(AddMod.PlayerIds)"><MultiSearchDropdown Values="@_playerNames" @bind-Value="@_addMod.PlayerIds" /></AdminInput>
 	<AdminInput Label="@nameof(AddMod.TrailerUrl)"><InputText class="w-64 pl-2 bg-gray-900 text-color-text" @bind-Value="_addMod.TrailerUrl" /></AdminInput>
 	<AdminInput Label="@nameof(AddMod.HtmlDescription)"><InputText class="w-64 pl-2 bg-gray-900 text-color-text" @bind-Value="@_addMod.HtmlDescription" /></AdminInput>
-	<AdminInput Label="@nameof(AddMod.AssetModTypes)"><MultiSearchDropdown Values="@_assetModTypes" @bind-Value="@_addMod.AssetModTypes" /></AdminInput>
+	<AdminInput Label="@nameof(AddMod.ModTypes)"><MultiSearchDropdown Values="@_modTypes" @bind-Value="@_addMod.ModTypes" /></AdminInput>
 	<AdminInput Label="@nameof(AddMod.Url)"><InputText class="w-64 pl-2 bg-gray-900 text-color-text" @bind-Value="@_addMod.Url" /></AdminInput>
 	<AdminInput Label="@nameof(AddMod.IsHidden)"><InputCheckbox @bind-Value="@_addMod.IsHidden" /></AdminInput>
 	<AdminInput Label="@nameof(AddMod.FileContents)"><InputFile OnChange="LoadFile" /></AdminInput>
@@ -22,7 +22,7 @@
 	private Dictionary<int, string>? _playerNames;
 	private AddMod _addMod = new();
 	private AdminAdd<AddMod> _addComponent = null!;
-	private Dictionary<int, string> _assetModTypes = Enum.GetValues<AssetModTypes>().ToDictionary(e => (int)e, e => e.ToString());
+	private Dictionary<int, string> _modTypes = Enum.GetValues<ModTypes>().ToDictionary(e => (int)e, e => e.ToString());
 
 	protected override async Task OnInitializedAsync()
 	{

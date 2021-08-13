@@ -1,4 +1,5 @@
 ﻿using DevilDaggersInfo.Web.BlazorWasm.Shared.Enums;
+using Newtonsoft.Json;
 using System;
 using System.Collections.Generic;
 
@@ -16,7 +17,8 @@ namespace DevilDaggersInfo.Web.BlazorWasm.Shared.Dto.Public.Mods
 
 		public DateTime LastUpdated { get; init; }
 
-		public AssetModTypes AssetModTypes { get; init; }
+		[JsonProperty("AssetModTypes")]
+		public ModTypes ModTypes { get; init; }
 
 		public bool IsHostedOnDdInfo { get; init; }
 

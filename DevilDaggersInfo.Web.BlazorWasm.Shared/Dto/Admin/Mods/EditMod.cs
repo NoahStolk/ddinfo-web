@@ -17,7 +17,7 @@ namespace DevilDaggersInfo.Web.BlazorWasm.Shared.Dto.Admin.Mods
 		[StringLength(2048)]
 		public string? HtmlDescription { get; set; }
 
-		public List<int>? AssetModTypes { get; set; }
+		public List<int>? ModTypes { get; set; }
 
 		[StringLength(128)]
 		public string? Url { get; set; }

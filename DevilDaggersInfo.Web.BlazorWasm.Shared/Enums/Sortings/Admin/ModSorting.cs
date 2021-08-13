@@ -8,7 +8,7 @@
 		LastUpdated,
 		TrailerUrl,
 		HtmlDescription,
-		AssetModTypes,
+		ModTypes,
 		Url,
 	}
 }

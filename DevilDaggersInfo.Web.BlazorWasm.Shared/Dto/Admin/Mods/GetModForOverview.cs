@@ -17,7 +17,7 @@ namespace DevilDaggersInfo.Web.BlazorWasm.Shared.Dto.Admin.Mods
 
 		public string? HtmlDescription { get; init; }
 
-		public AssetModTypes AssetModTypes { get; init; }
+		public ModTypes ModTypes { get; init; }
 
 		public string? Url { get; init; }
 	}

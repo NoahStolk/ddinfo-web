@@ -9,7 +9,7 @@ namespace DevilDaggersInfo.Web.BlazorWasm.Server.Converters.Admin
 		public static GetModForOverview ToGetModForOverview(this ModEntity mod) => new()
 		{
 			Id = mod.Id,
-			AssetModTypes = mod.AssetModTypes,
+			ModTypes = mod.ModTypes,
 			HtmlDescription = mod.HtmlDescription?.TrimAfter(40, true),
 			IsHidden = mod.IsHidden,
 			LastUpdated = mod.LastUpdated,
@@ -21,7 +21,7 @@ namespace DevilDaggersInfo.Web.BlazorWasm.Server.Converters.Admin
 		public static GetMod ToGetMod(this ModEntity mod) => new()
 		{
 			Id = mod.Id,
-			AssetModTypes = mod.AssetModTypes,
+			ModTypes = mod.ModTypes,
 			HtmlDescription = mod.HtmlDescription,
 			IsHidden = mod.IsHidden,
 			LastUpdated = mod.LastUpdated,

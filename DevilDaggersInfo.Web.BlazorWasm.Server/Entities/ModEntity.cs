@@ -25,7 +25,8 @@ namespace DevilDaggersInfo.Web.BlazorWasm.Server.Entities
 		[StringLength(2048)]
 		public string? HtmlDescription { get; set; }
 
-		public AssetModTypes AssetModTypes { get; set; }
+		[Column("AssetModTypes")]
+		public ModTypes ModTypes { get; set; }
 
 		[StringLength(128)]
 		public string Url { get; set; } = null!;

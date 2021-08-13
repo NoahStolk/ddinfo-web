@@ -57,7 +57,7 @@ namespace DevilDaggersInfo.Web.BlazorWasm.Server.Controllers.Admin
 
 			modsQuery = sortBy switch
 			{
-				ModSorting.AssetModTypes => modsQuery.OrderBy(m => m.AssetModTypes, ascending),
+				ModSorting.ModTypes => modsQuery.OrderBy(m => m.ModTypes, ascending),
 				ModSorting.HtmlDescription => modsQuery.OrderBy(m => m.HtmlDescription, ascending),
 				ModSorting.IsHidden => modsQuery.OrderBy(m => m.IsHidden, ascending),
 				ModSorting.LastUpdated => modsQuery.OrderBy(m => m.LastUpdated, ascending),
@@ -148,7 +148,7 @@ namespace DevilDaggersInfo.Web.BlazorWasm.Server.Controllers.Admin
 
 			ModEntity mod = new()
 			{
-				AssetModTypes = addMod.AssetModTypes?.ToFlagEnum<AssetModTypes>() ?? AssetModTypes.None,
+				ModTypes = addMod.ModTypes?.ToFlagEnum<ModTypes>() ?? ModTypes.None,
 				HtmlDescription = addMod.HtmlDescription,
 				IsHidden = addMod.IsHidden,
 				LastUpdated = DateTime.UtcNow,
@@ -234,7 +234,7 @@ namespace DevilDaggersInfo.Web.BlazorWasm.Server.Controllers.Admin
 
 			EditMod logDto = new()
 			{
-				AssetModTypes = mod.AssetModTypes.AsEnumerable().ToList(),
+				ModTypes = mod.ModTypes.AsEnumerable().ToList(),
 				HtmlDescription = mod.HtmlDescription,
 				IsHidden = mod.IsHidden,
 				Name = mod.Name,
@@ -243,7 +243,7 @@ namespace DevilDaggersInfo.Web.BlazorWasm.Server.Controllers.Admin
 				PlayerIds = mod.PlayerMods.ConvertAll(pam => pam.PlayerId),
 			};
 
-			mod.AssetModTypes = editMod.AssetModTypes?.ToFlagEnum<AssetModTypes>() ?? AssetModTypes.None;
+			mod.ModTypes = editMod.ModTypes?.ToFlagEnum<ModTypes>() ?? ModTypes.None;
 			mod.HtmlDescription = editMod.HtmlDescription;
 			mod.IsHidden = editMod.IsHidden;
 			mod.Name = editMod.Name;

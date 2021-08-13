@@ -51,9 +51,9 @@ namespace DevilDaggersInfo.Web.BlazorWasm.Server.Controllers.Public
 			if (!string.IsNullOrWhiteSpace(nameFilter))
 				modsQuery = modsQuery.Where(am => am.Name.Contains(nameFilter, StringComparison.InvariantCultureIgnoreCase));
 
-			List<ModEntity> assetMods = modsQuery.ToList();
+			List<ModEntity> mods = modsQuery.ToList();
 
-			Dictionary<ModEntity, (bool FileExists, string? Path)> modsWithFileInfo = assetMods.ToDictionary(am => am, am =>
+			Dictionary<ModEntity, (bool FileExists, string? Path)> modsWithFileInfo = mods.ToDictionary(am => am, am =>
 			{
 				string filePath = Path.Combine(_fileSystemService.GetPath(DataSubDirectory.Mods), $"{am.Name}.zip");
 				bool fileExists = Io.File.Exists(filePath);
@@ -68,7 +68,7 @@ namespace DevilDaggersInfo.Web.BlazorWasm.Server.Controllers.Public
 				{
 					bool? containsProhibitedAssets = null;
 					GetModArchive? modArchive = null;
-					AssetModTypes assetModTypes;
+					ModTypes modTypes;
 					if (amwfi.Value.FileExists)
 					{
 						ModArchiveCacheData archiveData = _modArchiveCache.GetArchiveDataByFilePath(amwfi.Value.Path!);
@@ -87,19 +87,19 @@ namespace DevilDaggersInfo.Web.BlazorWasm.Server.Controllers.Public
 
 						ModBinaryCacheData? ddBinary = archiveData.Binaries.Find(md => md.ModBinaryType == ModBinaryType.Dd);
 
-						assetModTypes = AssetModTypes.None;
+						modTypes = ModTypes.None;
 						if (archiveData.Binaries.Any(md => md.ModBinaryType == ModBinaryType.Audio))
-							assetModTypes |= AssetModTypes.Audio;
+							modTypes |= ModTypes.Audio;
 						if (archiveData.Binaries.Any(md => md.ModBinaryType == ModBinaryType.Core) || ddBinary?.Chunks.Any(mad => mad.AssetType == AssetType.Shader) == true)
-							assetModTypes |= AssetModTypes.Shader;
+							modTypes |= ModTypes.Shader;
 						if (ddBinary?.Chunks.Any(mad => mad.AssetType == AssetType.ModelBinding || mad.AssetType == AssetType.Model) == true)
-							assetModTypes |= AssetModTypes.Model;
+							modTypes |= ModTypes.Model;
 						if (ddBinary?.Chunks.Any(mad => mad.AssetType == AssetType.Texture) == true)
-							assetModTypes |= AssetModTypes.Texture;
+							modTypes |= ModTypes.Texture;
 					}
 					else
 					{
-						assetModTypes = amwfi.Key.AssetModTypes;
+						modTypes = amwfi.Key.ModTypes;
 					}
 
 					string modScreenshotsDirectory = Path.Combine(_fileSystemService.GetPath(DataSubDirectory.ModScreenshots), amwfi.Key.Name);
@@ -116,7 +116,7 @@ namespace DevilDaggersInfo.Web.BlazorWasm.Server.Controllers.Public
 						TrailerUrl = amwfi.Key.TrailerUrl,
 						Authors = amwfi.Key.PlayerMods.Select(pam => pam.Player.PlayerName).OrderBy(s => s).ToList(),
 						LastUpdated = amwfi.Key.LastUpdated,
-						AssetModTypes = assetModTypes,
+						ModTypes = modTypes,
 						IsHostedOnDdInfo = amwfi.Value.FileExists,
 						ContainsProhibitedAssets = containsProhibitedAssets,
 						ModArchive = modArchive,

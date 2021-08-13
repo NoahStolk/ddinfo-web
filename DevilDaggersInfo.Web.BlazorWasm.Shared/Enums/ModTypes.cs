@@ -3,7 +3,7 @@
 namespace DevilDaggersInfo.Web.BlazorWasm.Shared.Enums
 {
 	[Flags]
-	public enum AssetModTypes
+	public enum ModTypes
 	{
 		None = 0,
 		Audio = 1,
