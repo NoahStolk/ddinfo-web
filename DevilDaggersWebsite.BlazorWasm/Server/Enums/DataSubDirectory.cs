@@ -8,5 +8,6 @@
 		Mods,
 		ModScreenshots,
 		Spawnsets,
+		Tools,
 	}
 }
