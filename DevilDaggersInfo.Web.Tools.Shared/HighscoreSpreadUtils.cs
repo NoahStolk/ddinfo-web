@@ -36,7 +36,7 @@ namespace DevilDaggersInfo.Web.Tools.Shared
 		public static Dictionary<string, GetLeaderboardHistory> GetAllLeaderboards()
 		{
 			Dictionary<string, GetLeaderboardHistory> leaderboards = new();
-			foreach (string path in Directory.GetFiles(@"C:\Users\NOAH\source\repos\DevilDaggersWebsite\DevilDaggersWebsite.Razor\wwwroot\leaderboard-history", "*.json"))
+			foreach (string path in Directory.GetFiles(@"C:\Users\NOAH\source\repos\DevilDaggersWebsite\DevilDaggersInfo.Web.BlazorWasm.Server\Data\LeaderboardHistory", "*.json"))
 			{
 				string jsonString = File.ReadAllText(path, Encoding.UTF8);
 				leaderboards.Add(path, JsonConvert.DeserializeObject<GetLeaderboardHistory>(jsonString) ?? throw new("Could not deserialize leaderboard."));

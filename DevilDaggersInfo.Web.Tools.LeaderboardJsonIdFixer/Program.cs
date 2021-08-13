@@ -10,7 +10,7 @@ using System.Text;
 
 #pragma warning disable IDE0079 // Remove unnecessary suppression
 #pragma warning disable S1075 // URIs should not be hardcoded
-const string _leaderboardHistoryPath = @"C:\Users\NOAH\source\repos\DevilDaggersWebsite\DevilDaggersWebsite.BlazorWasm\Server\Data\LeaderboardHistory";
+const string _leaderboardHistoryPath = @"C:\Users\NOAH\source\repos\DevilDaggersWebsite\DevilDaggersInfo.Web.BlazorWasm\Server\Data\LeaderboardHistory";
 #pragma warning restore S1075 // URIs should not be hardcoded
 #pragma warning restore IDE0079 // Remove unnecessary suppression
 

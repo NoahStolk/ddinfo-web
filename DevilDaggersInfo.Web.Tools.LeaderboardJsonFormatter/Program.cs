@@ -7,7 +7,7 @@ DateTime fullHistoryDateStart = new(2018, 10, 1);
 
 #pragma warning disable IDE0079 // Remove unnecessary suppression
 #pragma warning disable S1075 // URIs should not be hardcoded
-foreach (string path in Directory.GetFiles(@"C:\Users\NOAH\source\repos\DevilDaggersWebsite\DevilDaggersWebsite.BlazorWasm\Server\Data\LeaderboardHistory", "*.json"))
+foreach (string path in Directory.GetFiles(@"C:\Users\NOAH\source\repos\DevilDaggersWebsite\DevilDaggersInfo.Web.BlazorWasm\Server\Data\LeaderboardHistory", "*.json"))
 #pragma warning restore S1075 // URIs should not be hardcoded
 #pragma warning restore IDE0079 // Remove unnecessary suppression
 {

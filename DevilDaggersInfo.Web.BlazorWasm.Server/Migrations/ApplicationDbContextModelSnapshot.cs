@@ -16,7 +16,7 @@ namespace DevilDaggersInfo.Web.BlazorWasm.Server.Migrations
 				.HasAnnotation("Relational:MaxIdentifierLength", 64)
 				.HasAnnotation("ProductVersion", "5.0.8");
 
-			modelBuilder.Entity("DevilDaggersWebsite.BlazorWasm.Server.Entities.ApplicationUser", b =>
+			modelBuilder.Entity("DevilDaggersInfo.Web.BlazorWasm.Server.Entities.ApplicationUser", b =>
 				{
 					b.Property<string>("Id")
 						.HasColumnType("varchar(255)");
@@ -326,7 +326,7 @@ namespace DevilDaggersInfo.Web.BlazorWasm.Server.Migrations
 
 			modelBuilder.Entity("Microsoft.AspNetCore.Identity.IdentityUserClaim<string>", b =>
 				{
-					b.HasOne("DevilDaggersWebsite.BlazorWasm.Server.Entities.ApplicationUser", null)
+					b.HasOne("DevilDaggersInfo.Web.BlazorWasm.Server.Entities.ApplicationUser", null)
 						.WithMany()
 						.HasForeignKey("UserId")
 						.OnDelete(DeleteBehavior.Cascade)
@@ -335,7 +335,7 @@ namespace DevilDaggersInfo.Web.BlazorWasm.Server.Migrations
 
 			modelBuilder.Entity("Microsoft.AspNetCore.Identity.IdentityUserLogin<string>", b =>
 				{
-					b.HasOne("DevilDaggersWebsite.BlazorWasm.Server.Entities.ApplicationUser", null)
+					b.HasOne("DevilDaggersInfo.Web.BlazorWasm.Server.Entities.ApplicationUser", null)
 						.WithMany()
 						.HasForeignKey("UserId")
 						.OnDelete(DeleteBehavior.Cascade)
@@ -350,7 +350,7 @@ namespace DevilDaggersInfo.Web.BlazorWasm.Server.Migrations
 						.OnDelete(DeleteBehavior.Cascade)
 						.IsRequired();
 
-					b.HasOne("DevilDaggersWebsite.BlazorWasm.Server.Entities.ApplicationUser", null)
+					b.HasOne("DevilDaggersInfo.Web.BlazorWasm.Server.Entities.ApplicationUser", null)
 						.WithMany()
 						.HasForeignKey("UserId")
 						.OnDelete(DeleteBehavior.Cascade)
@@ -359,7 +359,7 @@ namespace DevilDaggersInfo.Web.BlazorWasm.Server.Migrations
 
 			modelBuilder.Entity("Microsoft.AspNetCore.Identity.IdentityUserToken<string>", b =>
 				{
-					b.HasOne("DevilDaggersWebsite.BlazorWasm.Server.Entities.ApplicationUser", null)
+					b.HasOne("DevilDaggersInfo.Web.BlazorWasm.Server.Entities.ApplicationUser", null)
 						.WithMany()
 						.HasForeignKey("UserId")
 						.OnDelete(DeleteBehavior.Cascade)

@@ -57,7 +57,7 @@ namespace DevilDaggersInfo.Web.BlazorWasm.Server.Tests
 			});
 
 			Mock<IFileSystemService> fileSystemService = new();
-			fileSystemService.Setup(m => m.GetPath(Enums.DataSubDirectory.Spawnsets)).Returns(@"C:\Users\NOAH\source\repos\DevilDaggersWebsite\DevilDaggersWebsite.BlazorWasm.Server\Data\Spawnsets");
+			fileSystemService.Setup(m => m.GetPath(Enums.DataSubDirectory.Spawnsets)).Returns(@"C:\Users\NOAH\source\repos\DevilDaggersWebsite\DevilDaggersInfo.Web.BlazorWasm.Server\Data\Spawnsets");
 
 			Mock<DiscordLogger> discordLogger = new(mockEnvironment.Object);
 			Mock<SpawnsetHashCache> spawnsetHashCache = new(fileSystemService.Object, discordLogger.Object);
