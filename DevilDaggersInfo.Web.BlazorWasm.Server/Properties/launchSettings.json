@@ -16,7 +16,7 @@
           "ASPNETCORE_ENVIRONMENT": "Development"
         }
       },
-      "DevilDaggersWebsite.BlazorWasm.Server": {
+      "DevilDaggersInfo.Web.BlazorWasm.Server": {
         "commandName": "Project",
         "dotnetRunMessages": "true",
         "launchBrowser": true,

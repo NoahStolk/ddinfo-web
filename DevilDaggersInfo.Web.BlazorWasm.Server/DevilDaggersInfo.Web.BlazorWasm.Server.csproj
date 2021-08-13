@@ -1,6 +1,6 @@
 ﻿<Project Sdk="Microsoft.NET.Sdk.Web">
   <PropertyGroup>
-    <UserSecretsId>DevilDaggersWebsite.BlazorWasm.Server-263F51EE-93E3-4591-979C-D593FC68F5E7</UserSecretsId>
+    <UserSecretsId>DevilDaggersInfo.Web.BlazorWasm.Server-263F51EE-93E3-4591-979C-D593FC68F5E7</UserSecretsId>
     <IncludeOpenAPIAnalyzers>true</IncludeOpenAPIAnalyzers>
   </PropertyGroup>
   <ItemGroup>
