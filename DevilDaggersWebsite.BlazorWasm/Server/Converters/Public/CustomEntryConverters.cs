@@ -33,6 +33,7 @@ namespace DevilDaggersWebsite.BlazorWasm.Server.Converters.Public
 
 		public static GetCustomEntry ToGetCustomEntry(this CustomEntryEntity customEntry, int rank) => new()
 		{
+			Id = customEntry.Id,
 			Rank = rank,
 			PlayerId = customEntry.PlayerId,
 			PlayerName = customEntry.Player.PlayerName,

@@ -5,6 +5,8 @@ namespace DevilDaggersWebsite.BlazorWasm.Shared.Dto.Public.CustomEntries
 {
 	public class GetCustomEntry
 	{
+		public int Id { get; init; }
+
 		public int Rank { get; init; }
 
 		public int PlayerId { get; init; }
