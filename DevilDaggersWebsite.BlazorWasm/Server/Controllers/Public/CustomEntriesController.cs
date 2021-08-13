@@ -40,6 +40,27 @@ namespace DevilDaggersWebsite.BlazorWasm.Server.Controllers.Public
 			_spawnsetHashCache = spawnsetHashCache;
 		}
 
+		[HttpGet("{id}/data")]
+		[ProducesResponseType(StatusCodes.Status200OK)]
+		[ProducesResponseType(StatusCodes.Status404NotFound)]
+		public ActionResult<GetCustomEntryData> GetCustomEntryDataById(int id)
+		{
+			CustomEntryEntity? customEntry = _dbContext.CustomEntries
+				.AsNoTracking()
+				.Include(ce => ce.Player)
+				.Include(ce => ce.CustomLeaderboard)
+					.ThenInclude(cl => cl.Spawnset)
+				.FirstOrDefault(cl => cl.Id == id);
+			if (customEntry == null)
+				return NotFound();
+
+			CustomEntryDataEntity? customEntryData = _dbContext.CustomEntryData
+				.AsNoTracking()
+				.FirstOrDefault(ced => ced.CustomEntryId == id);
+
+			return customEntry.ToGetCustomEntryData(customEntryData);
+		}
+
 		[HttpPost("submit")]
 		[ProducesResponseType(StatusCodes.Status200OK)]
 		[ProducesResponseType(StatusCodes.Status400BadRequest)]

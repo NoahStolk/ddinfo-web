@@ -1,5 +1,6 @@
 ﻿using DevilDaggersWebsite.BlazorWasm.Client.Utils;
 using DevilDaggersWebsite.BlazorWasm.Shared.Dto;
+using DevilDaggersWebsite.BlazorWasm.Shared.Dto.Public.CustomEntries;
 using DevilDaggersWebsite.BlazorWasm.Shared.Dto.Public.CustomLeaderboards;
 using DevilDaggersWebsite.BlazorWasm.Shared.Dto.Public.LeaderboardHistoryStatistics;
 using DevilDaggersWebsite.BlazorWasm.Shared.Dto.Public.Leaderboards;
@@ -21,6 +22,11 @@ namespace DevilDaggersWebsite.BlazorWasm.Client.HttpClients
 		public PublicApiHttpClient(HttpClient client)
 		{
 			_client = client;
+		}
+
+		public async Task<GetCustomEntryData> GetCustomEntryDataById(int id)
+		{
+			return await _client.GetFromJsonAsync<GetCustomEntryData>($"api/custom-entries/{id}/data") ?? throw new JsonDeserializationException();
 		}
 
 		public async Task<GetCustomLeaderboard> GetCustomLeaderboardById(int id)
