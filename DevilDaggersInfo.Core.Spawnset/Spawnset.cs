@@ -48,22 +48,25 @@ namespace DevilDaggersInfo.Core.Spawnset
 			TimerStart = timerStart;
 		}
 
-		public int SpawnVersion { get; } = 6;
-		public int WorldVersion { get; } = 9;
-		public float ShrinkStart { get; } = 50;
-		public float ShrinkEnd { get; } = 20;
-		public float ShrinkRate { get; } = 0.025f;
-		public float Brightness { get; } = 60;
+		public int SpawnVersion { get; }
+		public int WorldVersion { get; }
+		public float ShrinkStart { get; }
+		public float ShrinkEnd { get; }
+		public float ShrinkRate { get; }
+		public float Brightness { get; }
 		public GameMode GameMode { get; }
 
-		public float[,] ArenaTiles { get; } = new float[ArenaWidth, ArenaHeight];
+		public float[,] ArenaTiles { get; }
 		public Spawn[] Spawns { get; }
 
-		public HandLevel HandLevel { get; } = HandLevel.Level1;
+		public HandLevel HandLevel { get; }
 		public int AdditionalGems { get; }
 		public float TimerStart { get; }
 
 		#region Utilities
+
+		public static Spawnset CreateDefault()
+			=> new(6, 9, 50, 20, 0.025f, 60, GameMode.Default, new float[ArenaWidth, ArenaHeight], Array.Empty<Spawn>(), HandLevel.Level1, 0, 0);
 
 		public static int GetSpawnsHeaderBufferSize(int worldVersion) => worldVersion switch
 		{
