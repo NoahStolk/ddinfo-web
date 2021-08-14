@@ -67,21 +67,17 @@ namespace DevilDaggersInfo.Core.Spawnset
 		public static Spawnset CreateDefault()
 			=> new(6, 9, 50, 20, 0.025f, 60, GameMode.Default, new float[ArenaWidth, ArenaHeight], Array.Empty<Spawn>(), HandLevel.Level1, 0, 0);
 
-		public static int GetSpawnsHeaderBufferSize(int worldVersion) => worldVersion switch
-		{
-			8 => 36,
-			_ => 40,
-		};
+		public static bool IsEmptySpawn(int enemyType)
+			=> enemyType < 0 || enemyType > 9;
 
-		public static int GetSettingsBufferSize(int spawnVersion) => spawnVersion switch
-		{
-			5 => 5,
-			6 => 9,
-			_ => 0,
-		};
+		public bool HasSpawns()
+			=> HasSpawns(Spawns);
 
 		public static bool HasSpawns(Spawn[] spawns)
 			=> spawns.Any(s => s.EnemyType != EnemyType.Empty);
+
+		public int GetEndLoopStartIndex()
+			=> GetEndLoopStartIndex(Spawns);
 
 		public static int GetEndLoopStartIndex(Spawn[] spawns)
 		{
@@ -93,6 +89,9 @@ namespace DevilDaggersInfo.Core.Spawnset
 
 			return 0;
 		}
+
+		public IEnumerable<double> GenerateEndWaveTimes(double endGameSecond, int waveIndex)
+			=> GenerateEndWaveTimes(Spawns, endGameSecond, waveIndex);
 
 		public static IEnumerable<double> GenerateEndWaveTimes(Spawn[] spawns, double endGameSecond, int waveIndex)
 		{
@@ -112,10 +111,10 @@ namespace DevilDaggersInfo.Core.Spawnset
 			}
 		}
 
-		public static bool IsEmptySpawn(int enemyType)
-			=> enemyType < 0 || enemyType > 9;
+		public int GetInitialGems()
+			=> GetInitialGems(AdditionalGems, HandLevel);
 
-		public int GetInitialGems() => AdditionalGems + HandLevel switch
+		public static int GetInitialGems(int additionalGems, HandLevel handLevel) => additionalGems + handLevel switch
 		{
 			HandLevel.Level2 => 10,
 			HandLevel.Level3 => 70,
@@ -128,25 +127,6 @@ namespace DevilDaggersInfo.Core.Spawnset
 
 		public static string GetGameVersionString(int worldVersion, int spawnVersion)
 			=> worldVersion == 8 ? "V0 / V1" : spawnVersion == 4 ? "V2 / V3" : "V3.1";
-
-		public (double LoopLength, double EndLoopSpawns) GetEndLoopData()
-		{
-			double loopLength = 0;
-			int endLoopSpawns = 0;
-			for (int i = Spawns.Length - 1; i >= 0; i--)
-			{
-				loopLength += Spawns[i].Delay;
-				if (Spawns[i].EnemyType == EnemyType.Empty || i == 0)
-					break;
-
-				endLoopSpawns++;
-			}
-
-			if (!Spawns.Any(s => s.EnemyType == EnemyType.Empty) && Spawns.Length > 0)
-				endLoopSpawns++;
-
-			return (loopLength, endLoopSpawns);
-		}
 
 		#endregion Utilities
 
@@ -223,16 +203,15 @@ namespace DevilDaggersInfo.Core.Spawnset
 			}
 
 			// Settings
-			int settingsBufferSize = GetSettingsBufferSize(spawnVersion);
 			HandLevel handLevel = HandLevel.Level1;
 			int additionalGems = 0;
 			float timerStart = 0;
-			if (settingsBufferSize >= 5)
+			if (spawnVersion >= 5)
 			{
 				handLevel = (HandLevel)br.ReadByte();
 				additionalGems = br.ReadInt32();
 
-				if (settingsBufferSize >= 9)
+				if (spawnVersion >= 6)
 					timerStart = br.ReadSingle();
 			}
 
@@ -252,8 +231,7 @@ namespace DevilDaggersInfo.Core.Spawnset
 			GameMode gameMode = (GameMode)br.ReadInt32();
 
 			// Spawns header
-			int spawnsHeaderBufferSize = GetSpawnsHeaderBufferSize(worldVersion);
-			br.BaseStream.Position = HeaderBufferSize + ArenaBufferSize + spawnsHeaderBufferSize - sizeof(int);
+			br.Seek(worldVersion == 8 ? 32 : 36);
 			int spawnCount = br.ReadInt32();
 
 			// Spawns
@@ -292,16 +270,15 @@ namespace DevilDaggersInfo.Core.Spawnset
 			}
 
 			// Settings
-			int settingsBufferSize = GetSettingsBufferSize(spawnVersion);
 			HandLevel handLevel = HandLevel.Level1;
 			int additionalGems = 0;
 			float timerStart = 0;
-			if (settingsBufferSize >= 5)
+			if (spawnVersion >= 5)
 			{
 				handLevel = (HandLevel)br.ReadByte();
 				additionalGems = br.ReadInt32();
 
-				if (settingsBufferSize >= 9)
+				if (spawnVersion >= 6)
 					timerStart = br.ReadSingle();
 			}
 
