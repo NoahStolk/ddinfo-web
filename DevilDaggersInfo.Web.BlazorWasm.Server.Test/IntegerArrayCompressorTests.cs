@@ -4,7 +4,7 @@ using Microsoft.VisualStudio.TestTools.UnitTesting;
 using System;
 using System.Linq;
 
-namespace DevilDaggersInfo.Web.BlazorWasm.Server.Tests
+namespace DevilDaggersInfo.Web.BlazorWasm.Server.Test
 {
 	[TestClass]
 	public class IntegerArrayCompressorTests

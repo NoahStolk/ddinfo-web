@@ -4,7 +4,7 @@ using System;
 using System.Collections.Generic;
 using System.Linq;
 
-namespace DevilDaggersInfo.Web.BlazorWasm.Shared.Tests
+namespace DevilDaggersInfo.Web.BlazorWasm.Shared.Test
 {
 	[TestClass]
 	public class FlagEnumTests

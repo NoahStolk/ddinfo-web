@@ -1,5 +1,5 @@
-﻿using DevilDaggersInfo.Web.BlazorWasm.Server.Tests.Extensions;
-using DevilDaggersInfo.Web.BlazorWasm.Server.Entities;
+﻿using DevilDaggersInfo.Web.BlazorWasm.Server.Entities;
+using DevilDaggersInfo.Web.BlazorWasm.Server.Test.Extensions;
 using DevilDaggersInfo.Web.BlazorWasm.Shared.Enums;
 using Microsoft.EntityFrameworkCore;
 using Moq;
@@ -7,7 +7,7 @@ using System;
 using System.Linq;
 using System.Reflection;
 
-namespace DevilDaggersInfo.Web.BlazorWasm.Server.Tests.Data
+namespace DevilDaggersInfo.Web.BlazorWasm.Server.Test.Data
 {
 	public class MockEntities
 	{
