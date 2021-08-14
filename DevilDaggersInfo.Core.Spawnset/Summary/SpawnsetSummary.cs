@@ -3,7 +3,7 @@ using DevilDaggersInfo.Core.Spawnset.Extensions;
 using System.Diagnostics.CodeAnalysis;
 using System.IO;
 
-namespace DevilDaggersInfo.Core.Spawnset
+namespace DevilDaggersInfo.Core.Spawnset.Summary
 {
 	public class SpawnsetSummary
 	{

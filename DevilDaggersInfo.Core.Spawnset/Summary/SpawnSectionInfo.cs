@@ -1,4 +1,4 @@
-﻿namespace DevilDaggersInfo.Core.Spawnset
+﻿namespace DevilDaggersInfo.Core.Spawnset.Summary
 {
 	public struct SpawnSectionInfo
 	{

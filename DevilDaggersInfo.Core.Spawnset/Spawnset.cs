@@ -81,6 +81,7 @@ namespace DevilDaggersInfo.Core.Spawnset
 		}
 
 		// TODO: Throw clear exceptions when parsing fails.
+		// TODO: Manually fix incorrect enum values.
 		public static Spawnset Parse(Stream stream)
 		{
 			using BinaryReader br = new(stream);
@@ -219,7 +220,7 @@ namespace DevilDaggersInfo.Core.Spawnset
 		public static bool HasSpawns(Spawn[] spawns)
 			=> spawns.Any(s => s.EnemyType != EnemyType.Empty);
 
-		public int GetEndLoopStartIndex()
+		public int GetLoopStartIndex()
 			=> GetLoopStartIndex(Spawns);
 
 		public static int GetLoopStartIndex(Spawn[] spawns)
