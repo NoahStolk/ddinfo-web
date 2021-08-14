@@ -7,7 +7,7 @@ namespace DevilDaggersInfo.Core.Spawnset.Test
 	public class SpawnsetParseTests
 	{
 		[TestMethod]
-		public void ParseV0()
+		public void Parse_V0()
 		{
 			using FileStream fs = new(Path.Combine("Data", "V0"), FileMode.Open);
 			Spawnset spawnset = Spawnset.ParseSpawnset(fs);
@@ -27,7 +27,7 @@ namespace DevilDaggersInfo.Core.Spawnset.Test
 		}
 
 		[TestMethod]
-		public void ParseV1()
+		public void Parse_V1()
 		{
 			using FileStream fs = new(Path.Combine("Data", "V1"), FileMode.Open);
 			Spawnset spawnset = Spawnset.ParseSpawnset(fs);
@@ -47,7 +47,7 @@ namespace DevilDaggersInfo.Core.Spawnset.Test
 		}
 
 		[TestMethod]
-		public void ParseV2()
+		public void Parse_V2()
 		{
 			using FileStream fs = new(Path.Combine("Data", "V2"), FileMode.Open);
 			Spawnset spawnset = Spawnset.ParseSpawnset(fs);
@@ -67,7 +67,7 @@ namespace DevilDaggersInfo.Core.Spawnset.Test
 		}
 
 		[TestMethod]
-		public void ParseV3()
+		public void Parse_V3()
 		{
 			using FileStream fs = new(Path.Combine("Data", "V3"), FileMode.Open);
 			Spawnset spawnset = Spawnset.ParseSpawnset(fs);
@@ -91,7 +91,7 @@ namespace DevilDaggersInfo.Core.Spawnset.Test
 		}
 
 		[TestMethod]
-		public void ParseV3_229()
+		public void Parse_V3_229()
 		{
 			using FileStream fs = new(Path.Combine("Data", "V3_229"), FileMode.Open);
 			Spawnset spawnset = Spawnset.ParseSpawnset(fs);
@@ -115,7 +115,7 @@ namespace DevilDaggersInfo.Core.Spawnset.Test
 		}
 
 		[TestMethod]
-		public void ParseV3_451()
+		public void Parse_V3_451()
 		{
 			using FileStream fs = new(Path.Combine("Data", "V3_451"), FileMode.Open);
 			Spawnset spawnset = Spawnset.ParseSpawnset(fs);
@@ -138,7 +138,7 @@ namespace DevilDaggersInfo.Core.Spawnset.Test
 		}
 
 		[TestMethod]
-		public void ParseEmpty()
+		public void Parse_Empty()
 		{
 			using FileStream fs = new(Path.Combine("Data", "Empty"), FileMode.Open);
 			Spawnset spawnset = Spawnset.ParseSpawnset(fs);
@@ -159,7 +159,7 @@ namespace DevilDaggersInfo.Core.Spawnset.Test
 		}
 
 		[TestMethod]
-		public void ParseScanner()
+		public void Parse_Scanner()
 		{
 			using FileStream fs = new(Path.Combine("Data", "Scanner"), FileMode.Open);
 			Spawnset spawnset = Spawnset.ParseSpawnset(fs);
