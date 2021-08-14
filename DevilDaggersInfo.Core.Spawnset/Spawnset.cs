@@ -10,8 +10,8 @@ namespace DevilDaggersInfo.Core.Spawnset
 	public class Spawnset
 	{
 		public const int HeaderBufferSize = 36;
-		public const int ArenaBufferSize = 10404; // ArenaWidth * ArenaHeight * TileBufferSize (51 * 51 * 4 = 10404)
-		public const int SpawnBufferSize = 28; // The amount of bytes per spawn
+		public const int ArenaBufferSize = ArenaWidth * ArenaHeight * sizeof(float);
+		public const int SpawnBufferSize = 28;
 
 		public const int ArenaWidth = 51;
 		public const int ArenaHeight = 51;
@@ -229,9 +229,9 @@ namespace DevilDaggersInfo.Core.Spawnset
 			int worldVersion = br.ReadInt32();
 			br.Seek(16);
 			GameMode gameMode = (GameMode)br.ReadInt32();
+			br.Seek(8 + ArenaBufferSize + (worldVersion == 8 ? 32 : 36));
 
 			// Spawns header
-			br.Seek(worldVersion == 8 ? 32 : 36);
 			int spawnCount = br.ReadInt32();
 
 			// Spawns
