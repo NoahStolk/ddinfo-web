@@ -44,7 +44,7 @@ namespace DevilDaggersInfo.Core.Spawnset.Test
 			using MemoryStream ms = new();
 			fs.CopyTo(ms);
 
-			Spawnset spawnset = Spawnset.ParseSpawnset(ms);
+			Spawnset spawnset = Spawnset.Parse(ms);
 
 			byte[] originalBytes = ms.ToArray();
 			byte[] bytes = spawnset.ToBytes();

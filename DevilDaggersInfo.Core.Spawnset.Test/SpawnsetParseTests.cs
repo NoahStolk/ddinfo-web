@@ -70,10 +70,22 @@ namespace DevilDaggersInfo.Core.Spawnset.Test
 		}
 
 		[AssertionMethod]
-		private static Spawnset Parse(string fileName, int expectedSpawnVersion, int expectedWorldVersion, float expectedShrinkStart, float expectedShrinkEnd, float expectedShrinkRate, float expectedBrightness, GameMode expectedGameMode, int expectedSpawnCount, HandLevel expectedHandLevel, int expectedAdditionalGems, float expectedTimerStart)
+		private static Spawnset Parse(
+			string fileName,
+			int expectedSpawnVersion,
+			int expectedWorldVersion,
+			float expectedShrinkStart,
+			float expectedShrinkEnd,
+			float expectedShrinkRate,
+			float expectedBrightness,
+			GameMode expectedGameMode,
+			int expectedSpawnCount,
+			HandLevel expectedHandLevel,
+			int expectedAdditionalGems,
+			float expectedTimerStart)
 		{
 			using FileStream fs = new(Path.Combine("Data", fileName), FileMode.Open);
-			Spawnset spawnset = Spawnset.ParseSpawnset(fs);
+			Spawnset spawnset = Spawnset.Parse(fs);
 
 			Assert.AreEqual(expectedSpawnVersion, spawnset.SpawnVersion);
 			Assert.AreEqual(expectedWorldVersion, spawnset.WorldVersion);
