@@ -233,10 +233,7 @@ namespace DevilDaggersInfo.Core.Spawnset
 				// Header
 				int spawnVersion = br.ReadInt32();
 				int worldVersion = br.ReadInt32();
-				float shrinkEnd = br.ReadSingle();
-				float shrinkStart = br.ReadSingle();
-				float shrinkRate = br.ReadSingle();
-				float brightness = br.ReadSingle();
+				br.BaseStream.Seek(16, SeekOrigin.Current);
 				GameMode gameMode = (GameMode)br.ReadInt32();
 
 				// Spawns header
@@ -346,7 +343,6 @@ namespace DevilDaggersInfo.Core.Spawnset
 			bw.BaseStream.Seek(WorldVersion == 8 ? 8 : 12, SeekOrigin.Current);
 
 			// Spawns
-			byte[] spawnsBuffer = new byte[Spawns.Length * SpawnBufferSize];
 			foreach (Spawn spawn in Spawns)
 			{
 				bw.Write((int)spawn.EnemyType);
@@ -361,9 +357,6 @@ namespace DevilDaggersInfo.Core.Spawnset
 			}
 
 			// Settings
-			int settingsBufferSize = GetSettingsBufferSize(SpawnVersion);
-			byte[] settingsBuffer = new byte[settingsBufferSize];
-
 			if (SpawnVersion >= 5)
 			{
 				bw.Write((byte)HandLevel);
