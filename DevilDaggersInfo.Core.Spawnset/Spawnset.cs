@@ -278,7 +278,7 @@ namespace DevilDaggersInfo.Core.Spawnset
 				Spawn spawn = spawns[i];
 
 				if (i < endLoopStartIndex)
-					nonLoopSeconds += spawn.Delay; // TODO: Trim EMPTY spawns at the end (test with Delirium_Stop)
+					nonLoopSeconds += spawn.Delay;
 				else
 					loopSeconds += spawn.Delay;
 
