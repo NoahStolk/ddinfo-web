@@ -1,4 +1,5 @@
-﻿using Microsoft.VisualStudio.TestTools.UnitTesting;
+﻿using JetBrains.Annotations;
+using Microsoft.VisualStudio.TestTools.UnitTesting;
 using System.IO;
 
 namespace DevilDaggersInfo.Core.Spawnset.Test
@@ -8,159 +9,74 @@ namespace DevilDaggersInfo.Core.Spawnset.Test
 	{
 		[TestMethod]
 		public void ParseSummary_V0()
-		{
-			using FileStream fs = new(Path.Combine("Data", "V0"), FileMode.Open);
-			SpawnsetSummary spawnset = Spawnset.ParseSpawnsetSummary(fs);
-
-			Assert.AreEqual(4, spawnset.SpawnVersion);
-			Assert.AreEqual(8, spawnset.WorldVersion);
-			Assert.AreEqual(GameMode.Default, spawnset.GameMode);
-			Assert.AreEqual(57, spawnset.NonLoopSpawnCount);
-			Assert.AreEqual(18, spawnset.LoopSpawnCount);
-			Assert.IsNotNull(spawnset.NonLoopLength);
-			Assert.IsNotNull(spawnset.LoopLength);
-			Assert.AreEqual(275, spawnset.NonLoopLength.Value, 0.001f);
-			Assert.AreEqual(30, spawnset.LoopLength.Value, 0.001f);
-			Assert.AreEqual(HandLevel.Level1, spawnset.HandLevel);
-			Assert.AreEqual(0, spawnset.AdditionalGems);
-			Assert.AreEqual(0, spawnset.TimerStart);
-		}
+			=> ParseSummary("V0", 4, 8, GameMode.Default, 57, 18, 275, 30, HandLevel.Level1, 0, 0);
 
 		[TestMethod]
 		public void ParseSummary_V1()
-		{
-			using FileStream fs = new(Path.Combine("Data", "V1"), FileMode.Open);
-			SpawnsetSummary spawnset = Spawnset.ParseSpawnsetSummary(fs);
-
-			Assert.AreEqual(4, spawnset.SpawnVersion);
-			Assert.AreEqual(8, spawnset.WorldVersion);
-			Assert.AreEqual(GameMode.Default, spawnset.GameMode);
-			Assert.AreEqual(99, spawnset.NonLoopSpawnCount);
-			Assert.AreEqual(21, spawnset.LoopSpawnCount);
-			Assert.IsNotNull(spawnset.NonLoopLength);
-			Assert.IsNotNull(spawnset.LoopLength);
-			Assert.AreEqual(421, spawnset.NonLoopLength.Value, 0.001f);
-			Assert.AreEqual(54, spawnset.LoopLength.Value, 0.001f);
-			Assert.AreEqual(HandLevel.Level1, spawnset.HandLevel);
-			Assert.AreEqual(0, spawnset.AdditionalGems);
-			Assert.AreEqual(0, spawnset.TimerStart);
-		}
+			=> ParseSummary("V1", 4, 8, GameMode.Default, 99, 21, 421, 54, HandLevel.Level1, 0, 0);
 
 		[TestMethod]
 		public void ParseSummary_V2()
-		{
-			using FileStream fs = new(Path.Combine("Data", "V2"), FileMode.Open);
-			SpawnsetSummary spawnset = Spawnset.ParseSpawnsetSummary(fs);
-
-			Assert.AreEqual(4, spawnset.SpawnVersion);
-			Assert.AreEqual(9, spawnset.WorldVersion);
-			Assert.AreEqual(GameMode.Default, spawnset.GameMode);
-			Assert.AreEqual(71, spawnset.NonLoopSpawnCount);
-			Assert.AreEqual(7, spawnset.LoopSpawnCount);
-			Assert.IsNotNull(spawnset.NonLoopLength);
-			Assert.IsNotNull(spawnset.LoopLength);
-			Assert.AreEqual(375, spawnset.NonLoopLength.Value, 0.001f);
-			Assert.AreEqual(58, spawnset.LoopLength.Value, 0.001f);
-			Assert.AreEqual(HandLevel.Level1, spawnset.HandLevel);
-			Assert.AreEqual(0, spawnset.AdditionalGems);
-			Assert.AreEqual(0, spawnset.TimerStart);
-		}
+			=> ParseSummary("V2", 4, 9, GameMode.Default, 71, 7, 375, 58, HandLevel.Level1, 0, 0);
 
 		[TestMethod]
 		public void ParseSummary_V3()
-		{
-			using FileStream fs = new(Path.Combine("Data", "V3"), FileMode.Open);
-			SpawnsetSummary spawnset = Spawnset.ParseSpawnsetSummary(fs);
-
-			Assert.AreEqual(4, spawnset.SpawnVersion);
-			Assert.AreEqual(9, spawnset.WorldVersion);
-			Assert.AreEqual(GameMode.Default, spawnset.GameMode);
-			Assert.AreEqual(90, spawnset.NonLoopSpawnCount);
-			Assert.AreEqual(17, spawnset.LoopSpawnCount);
-			Assert.IsNotNull(spawnset.NonLoopLength);
-			Assert.IsNotNull(spawnset.LoopLength);
-			Assert.AreEqual(451, spawnset.NonLoopLength.Value, 0.001f);
-			Assert.AreEqual(56, spawnset.LoopLength.Value, 0.001f);
-			Assert.AreEqual(HandLevel.Level1, spawnset.HandLevel);
-			Assert.AreEqual(0, spawnset.AdditionalGems);
-			Assert.AreEqual(0, spawnset.TimerStart);
-		}
+			=> ParseSummary("V3", 4, 9, GameMode.Default, 90, 17, 451, 56, HandLevel.Level1, 0, 0);
 
 		[TestMethod]
 		public void ParseSummary_V3_229()
-		{
-			using FileStream fs = new(Path.Combine("Data", "V3_229"), FileMode.Open);
-			SpawnsetSummary spawnset = Spawnset.ParseSpawnsetSummary(fs);
-
-			Assert.AreEqual(6, spawnset.SpawnVersion);
-			Assert.AreEqual(9, spawnset.WorldVersion);
-			Assert.AreEqual(GameMode.Default, spawnset.GameMode);
-			Assert.AreEqual(52, spawnset.NonLoopSpawnCount);
-			Assert.AreEqual(17, spawnset.LoopSpawnCount);
-			Assert.IsNotNull(spawnset.NonLoopLength);
-			Assert.IsNotNull(spawnset.LoopLength);
-			Assert.AreEqual(222, spawnset.NonLoopLength.Value, 0.001f);
-			Assert.AreEqual(56, spawnset.LoopLength.Value, 0.001f);
-			Assert.AreEqual(HandLevel.Level3, spawnset.HandLevel);
-			Assert.AreEqual(57, spawnset.AdditionalGems);
-			Assert.AreEqual(229, spawnset.TimerStart);
-		}
+			=> ParseSummary("V3_229", 6, 9, GameMode.Default, 52, 17, 222, 56, HandLevel.Level3, 57, 229);
 
 		[TestMethod]
 		public void ParseSummary_V3_451()
-		{
-			using FileStream fs = new(Path.Combine("Data", "V3_451"), FileMode.Open);
-			SpawnsetSummary spawnset = Spawnset.ParseSpawnsetSummary(fs);
-
-			Assert.AreEqual(6, spawnset.SpawnVersion);
-			Assert.AreEqual(9, spawnset.WorldVersion);
-			Assert.AreEqual(GameMode.Default, spawnset.GameMode);
-			Assert.AreEqual(0, spawnset.NonLoopSpawnCount);
-			Assert.AreEqual(17, spawnset.LoopSpawnCount);
-			Assert.IsNull(spawnset.NonLoopLength);
-			Assert.IsNotNull(spawnset.LoopLength);
-			Assert.AreEqual(56, spawnset.LoopLength.Value, 0.001f);
-			Assert.AreEqual(HandLevel.Level4, spawnset.HandLevel);
-			Assert.AreEqual(0, spawnset.AdditionalGems);
-			Assert.AreEqual(451, spawnset.TimerStart);
-		}
+			=> ParseSummary("V3_451", 6, 9, GameMode.Default, 0, 17, null, 56, HandLevel.Level4, 0, 451);
 
 		[TestMethod]
 		public void ParseSummary_Empty()
-		{
-			using FileStream fs = new(Path.Combine("Data", "Empty"), FileMode.Open);
-			SpawnsetSummary spawnset = Spawnset.ParseSpawnsetSummary(fs);
-
-			Assert.AreEqual(6, spawnset.SpawnVersion);
-			Assert.AreEqual(9, spawnset.WorldVersion);
-			Assert.AreEqual(GameMode.Default, spawnset.GameMode);
-			Assert.AreEqual(0, spawnset.NonLoopSpawnCount);
-			Assert.AreEqual(0, spawnset.LoopSpawnCount);
-			Assert.IsNull(spawnset.NonLoopLength);
-			Assert.IsNull(spawnset.LoopLength);
-			Assert.AreEqual(HandLevel.Level1, spawnset.HandLevel);
-			Assert.AreEqual(0, spawnset.AdditionalGems);
-			Assert.AreEqual(0, spawnset.TimerStart);
-		}
+			=> ParseSummary("Empty", 6, 9, GameMode.Default, 0, 0, null, null, HandLevel.Level1, 0, 0);
 
 		[TestMethod]
 		public void ParseSummary_Scanner()
-		{
-			using FileStream fs = new(Path.Combine("Data", "Scanner"), FileMode.Open);
-			SpawnsetSummary spawnset = Spawnset.ParseSpawnsetSummary(fs);
+			=> ParseSummary("Scanner", 6, 9, GameMode.Default, 62, 62, 16, 21, HandLevel.Level4, 30, 0);
 
-			Assert.AreEqual(6, spawnset.SpawnVersion);
-			Assert.AreEqual(9, spawnset.WorldVersion);
-			Assert.AreEqual(GameMode.Default, spawnset.GameMode);
-			Assert.AreEqual(62, spawnset.NonLoopSpawnCount);
-			Assert.AreEqual(62, spawnset.LoopSpawnCount);
-			Assert.IsNotNull(spawnset.NonLoopLength);
-			Assert.IsNotNull(spawnset.LoopLength);
-			Assert.AreEqual(16, spawnset.NonLoopLength.Value, 0.001f);
-			Assert.AreEqual(21, spawnset.LoopLength.Value, 0.001f);
-			Assert.AreEqual(HandLevel.Level4, spawnset.HandLevel);
-			Assert.AreEqual(30, spawnset.AdditionalGems);
-			Assert.AreEqual(0, spawnset.TimerStart);
+		[AssertionMethod]
+		private static SpawnsetSummary ParseSummary(string fileName, int expectedSpawnVersion, int expectedWorldVersion, GameMode expectedGameMode, int expectedNonLoopSpawnCount, int expectedLoopSpawnCount, float? expectedNonLoopLength, float? expectedLoopLength, HandLevel expectedHandLevel, int expectedAdditionalGems, float expectedTimerStart)
+		{
+			using FileStream fs = new(Path.Combine("Data", fileName), FileMode.Open);
+			SpawnsetSummary spawnsetSummary = Spawnset.ParseSpawnsetSummary(fs);
+
+			Assert.AreEqual(expectedSpawnVersion, spawnsetSummary.SpawnVersion);
+			Assert.AreEqual(expectedWorldVersion, spawnsetSummary.WorldVersion);
+			Assert.AreEqual(expectedGameMode, spawnsetSummary.GameMode);
+
+			Assert.AreEqual(expectedNonLoopSpawnCount, spawnsetSummary.NonLoopSpawnCount);
+			Assert.AreEqual(expectedLoopSpawnCount, spawnsetSummary.LoopSpawnCount);
+
+			if (expectedNonLoopLength.HasValue)
+			{
+				Assert.IsNotNull(spawnsetSummary.NonLoopLength);
+				Assert.AreEqual(expectedNonLoopLength.Value, spawnsetSummary.NonLoopLength.Value, 0.001f);
+			}
+			else
+			{
+				Assert.IsNull(spawnsetSummary.NonLoopLength);
+			}
+
+			if (expectedLoopLength.HasValue)
+			{
+				Assert.IsNotNull(spawnsetSummary.LoopLength);
+				Assert.AreEqual(expectedLoopLength.Value, spawnsetSummary.LoopLength.Value, 0.001f);
+			}
+			else
+			{
+				Assert.IsNull(spawnsetSummary.LoopLength);
+			}
+
+			Assert.AreEqual(expectedHandLevel, spawnsetSummary.HandLevel);
+			Assert.AreEqual(expectedAdditionalGems, spawnsetSummary.AdditionalGems);
+			Assert.AreEqual(expectedTimerStart, spawnsetSummary.TimerStart);
+
+			return spawnsetSummary;
 		}
 	}
 }
