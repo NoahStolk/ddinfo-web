@@ -153,74 +153,78 @@ namespace DevilDaggersInfo.Core.Spawnset
 
 		#region Parsing
 
-		// TODO: Throw clear exceptions when parsing fails, remove try-catch and rename method to Parse. Write extra method TryParse which is a wrapper around this.
-		// TODO: Seek instead of setting BaseStream.Position.
 		public static bool TryParse(Stream stream, [NotNullWhen(true)] out Spawnset? spawnset)
 		{
 			try
 			{
-				using BinaryReader br = new(stream);
-				br.BaseStream.Position = 0;
-
-				// Header
-				int spawnVersion = br.ReadInt32();
-				int worldVersion = br.ReadInt32();
-				float shrinkEnd = br.ReadSingle();
-				float shrinkStart = br.ReadSingle();
-				float shrinkRate = br.ReadSingle();
-				float brightness = br.ReadSingle();
-				GameMode gameMode = (GameMode)br.ReadInt32();
-
-				// Arena
-				br.BaseStream.Position = HeaderBufferSize;
-				float[,] arenaTiles = new float[ArenaWidth, ArenaHeight];
-				for (int i = 0; i < ArenaWidth * ArenaHeight; i++)
-				{
-					int x = i % ArenaHeight;
-					int y = i / ArenaWidth;
-					arenaTiles[x, y] = br.ReadSingle();
-				}
-
-				// Spawns header
-				int spawnsHeaderBufferSize = GetSpawnsHeaderBufferSize(worldVersion);
-				br.BaseStream.Position = HeaderBufferSize + ArenaBufferSize + spawnsHeaderBufferSize - sizeof(int);
-				int spawnCount = br.ReadInt32();
-
-				// Spawns
-				Spawn[] spawns = new Spawn[spawnCount];
-				for (int i = 0; i < spawnCount; i++)
-				{
-					EnemyType enemyType = (EnemyType)br.ReadInt32();
-					float delay = br.ReadSingle();
-					spawns[i] = new(enemyType, delay);
-
-					br.BaseStream.Seek(20, SeekOrigin.Current);
-				}
-
-				// Settings
-				int settingsBufferSize = GetSettingsBufferSize(spawnVersion);
-				HandLevel handLevel = HandLevel.Level1;
-				int additionalGems = 0;
-				float timerStart = 0;
-				if (settingsBufferSize >= 5)
-				{
-					handLevel = (HandLevel)br.ReadByte();
-					additionalGems = br.ReadInt32();
-
-					if (settingsBufferSize >= 9)
-						timerStart = br.ReadSingle();
-				}
-
-				spawnset = new(spawnVersion, worldVersion, shrinkStart, shrinkEnd, shrinkRate, brightness, gameMode, arenaTiles, spawns, handLevel, additionalGems, timerStart);
-
+				spawnset = Parse(stream);
 				return true;
 			}
 			catch
 			{
+				// TODO: Log exceptions.
 				spawnset = null;
-
 				return false;
 			}
+		}
+
+		// TODO: Throw clear exceptions when parsing fails.
+		// TODO: Seek instead of setting BaseStream.Position.
+		public static Spawnset Parse(Stream stream)
+		{
+			using BinaryReader br = new(stream);
+			br.BaseStream.Position = 0;
+
+			// Header
+			int spawnVersion = br.ReadInt32();
+			int worldVersion = br.ReadInt32();
+			float shrinkEnd = br.ReadSingle();
+			float shrinkStart = br.ReadSingle();
+			float shrinkRate = br.ReadSingle();
+			float brightness = br.ReadSingle();
+			GameMode gameMode = (GameMode)br.ReadInt32();
+
+			// Arena
+			br.BaseStream.Position = HeaderBufferSize;
+			float[,] arenaTiles = new float[ArenaWidth, ArenaHeight];
+			for (int i = 0; i < ArenaWidth * ArenaHeight; i++)
+			{
+				int x = i % ArenaHeight;
+				int y = i / ArenaWidth;
+				arenaTiles[x, y] = br.ReadSingle();
+			}
+
+			// Spawns header
+			int spawnsHeaderBufferSize = GetSpawnsHeaderBufferSize(worldVersion);
+			br.BaseStream.Position = HeaderBufferSize + ArenaBufferSize + spawnsHeaderBufferSize - sizeof(int);
+			int spawnCount = br.ReadInt32();
+
+			// Spawns
+			Spawn[] spawns = new Spawn[spawnCount];
+			for (int i = 0; i < spawnCount; i++)
+			{
+				EnemyType enemyType = (EnemyType)br.ReadInt32();
+				float delay = br.ReadSingle();
+				spawns[i] = new(enemyType, delay);
+
+				br.BaseStream.Seek(20, SeekOrigin.Current);
+			}
+
+			// Settings
+			int settingsBufferSize = GetSettingsBufferSize(spawnVersion);
+			HandLevel handLevel = HandLevel.Level1;
+			int additionalGems = 0;
+			float timerStart = 0;
+			if (settingsBufferSize >= 5)
+			{
+				handLevel = (HandLevel)br.ReadByte();
+				additionalGems = br.ReadInt32();
+
+				if (settingsBufferSize >= 9)
+					timerStart = br.ReadSingle();
+			}
+
+			return new(spawnVersion, worldVersion, shrinkStart, shrinkEnd, shrinkRate, brightness, gameMode, arenaTiles, spawns, handLevel, additionalGems, timerStart);
 		}
 
 		public static bool TryGetSpawnsetData(Stream stream, [NotNullWhen(true)] out SpawnsetSummary? spawnsetSummary)
