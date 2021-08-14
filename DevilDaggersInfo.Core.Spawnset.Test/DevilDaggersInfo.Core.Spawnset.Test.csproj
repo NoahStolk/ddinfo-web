@@ -29,6 +29,9 @@
     <ProjectReference Include="..\DevilDaggersInfo.Core.Spawnset\DevilDaggersInfo.Core.Spawnset.csproj" />
   </ItemGroup>
   <ItemGroup>
+    <None Update="Data\Empty">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </None>
     <None Update="Data\Scanner">
       <CopyToOutputDirectory>Always</CopyToOutputDirectory>
     </None>
