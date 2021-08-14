@@ -157,5 +157,26 @@ namespace DevilDaggersInfo.Core.Spawnset.Test
 			Assert.AreEqual(0, spawnset.AdditionalGems);
 			Assert.AreEqual(0, spawnset.TimerStart);
 		}
+
+		[TestMethod]
+		public void ParseScanner()
+		{
+			using FileStream fs = new(Path.Combine("Data", "Scanner"), FileMode.Open);
+			Spawnset spawnset = Spawnset.ParseSpawnset(fs);
+
+			Assert.AreEqual(6, spawnset.SpawnVersion);
+			Assert.AreEqual(9, spawnset.WorldVersion);
+			Assert.AreEqual(26, spawnset.ShrinkStart, 0.001f);
+			Assert.AreEqual(15, spawnset.ShrinkEnd, 0.001f);
+			Assert.AreEqual(0.025f, spawnset.ShrinkRate, 0.001f);
+			Assert.AreEqual(60, spawnset.Brightness, 0.001f);
+			Assert.AreEqual(GameMode.Default, spawnset.GameMode);
+
+			Assert.AreEqual(125, spawnset.Spawns.Length);
+
+			Assert.AreEqual(HandLevel.Level4, spawnset.HandLevel);
+			Assert.AreEqual(30, spawnset.AdditionalGems);
+			Assert.AreEqual(0, spawnset.TimerStart);
+		}
 	}
 }
