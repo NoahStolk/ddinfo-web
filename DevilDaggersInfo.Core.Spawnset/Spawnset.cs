@@ -30,6 +30,9 @@ namespace DevilDaggersInfo.Core.Spawnset
 			int additionalGems,
 			float timerStart)
 		{
+			if (arenaTiles.GetLength(0) != ArenaWidth || arenaTiles.GetLength(1) != ArenaHeight)
+				throw new ArgumentOutOfRangeException(nameof(arenaTiles), $"Arena array must be {ArenaWidth} by {ArenaHeight}.");
+
 			SpawnVersion = spawnVersion;
 			WorldVersion = worldVersion;
 			ShrinkStart = shrinkStart;
