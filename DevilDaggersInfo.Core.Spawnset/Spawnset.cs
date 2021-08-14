@@ -346,20 +346,21 @@ namespace DevilDaggersInfo.Core.Spawnset
 			bw.Write(0xFA);
 			bw.Write(0x78);
 			bw.Write(0x3C);
-			bw.Seek(WorldVersion == 8 ? 8 : 12, SeekOrigin.Current);
+			if (WorldVersion >= 9)
+				bw.Seek(4, SeekOrigin.Current);
+			bw.Write(Spawns.Length);
 
 			// Spawns
 			foreach (Spawn spawn in Spawns)
 			{
 				bw.Write((int)spawn.EnemyType);
 				bw.Write(spawn.Delay);
-				bw.Seek(1, SeekOrigin.Current);
+				bw.Seek(4, SeekOrigin.Current);
 				bw.Write(0x03);
 				bw.Seek(6, SeekOrigin.Current);
 				bw.Write((byte)0xF0);
 				bw.Write((byte)0x41);
-				bw.Write((byte)0x0A);
-				bw.Seek(4, SeekOrigin.Current);
+				bw.Write(0x0A);
 			}
 
 			// Settings
