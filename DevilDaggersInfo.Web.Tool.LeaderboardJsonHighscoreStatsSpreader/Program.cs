@@ -1,3 +1,3 @@
-﻿using DevilDaggersInfo.Web.Tools.Shared;
+﻿using DevilDaggersInfo.Web.Tool.Shared;
 
 HighscoreSpreadUtils.SpreadAllHighscoreStats(false, true);

@@ -8,7 +8,7 @@ using System.IO;
 using System.Linq;
 using System.Text;
 
-namespace DevilDaggersInfo.Web.Tools.Shared
+namespace DevilDaggersInfo.Web.Tool.Shared
 {
 	public static class HighscoreSpreadUtils
 	{
