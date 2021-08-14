@@ -10,7 +10,7 @@ namespace DevilDaggersInfo.Core.Spawnset.Test
 		public void ParseV0()
 		{
 			using FileStream fs = new(Path.Combine("Data", "V0"), FileMode.Open);
-			Spawnset spawnset = Spawnset.Parse(fs);
+			Spawnset spawnset = Spawnset.ParseSpawnset(fs);
 
 			Assert.AreEqual(4, spawnset.SpawnVersion);
 			Assert.AreEqual(8, spawnset.WorldVersion);
@@ -30,7 +30,7 @@ namespace DevilDaggersInfo.Core.Spawnset.Test
 		public void ParseV1()
 		{
 			using FileStream fs = new(Path.Combine("Data", "V1"), FileMode.Open);
-			Spawnset spawnset = Spawnset.Parse(fs);
+			Spawnset spawnset = Spawnset.ParseSpawnset(fs);
 
 			Assert.AreEqual(4, spawnset.SpawnVersion);
 			Assert.AreEqual(8, spawnset.WorldVersion);
@@ -50,7 +50,7 @@ namespace DevilDaggersInfo.Core.Spawnset.Test
 		public void ParseV2()
 		{
 			using FileStream fs = new(Path.Combine("Data", "V2"), FileMode.Open);
-			Spawnset spawnset = Spawnset.Parse(fs);
+			Spawnset spawnset = Spawnset.ParseSpawnset(fs);
 
 			Assert.AreEqual(4, spawnset.SpawnVersion);
 			Assert.AreEqual(9, spawnset.WorldVersion);
@@ -70,7 +70,7 @@ namespace DevilDaggersInfo.Core.Spawnset.Test
 		public void ParseV3()
 		{
 			using FileStream fs = new(Path.Combine("Data", "V3"), FileMode.Open);
-			Spawnset spawnset = Spawnset.Parse(fs);
+			Spawnset spawnset = Spawnset.ParseSpawnset(fs);
 
 			Assert.AreEqual(4, spawnset.SpawnVersion);
 			Assert.AreEqual(9, spawnset.WorldVersion);
@@ -94,7 +94,7 @@ namespace DevilDaggersInfo.Core.Spawnset.Test
 		public void ParseV3_229()
 		{
 			using FileStream fs = new(Path.Combine("Data", "V3_229"), FileMode.Open);
-			Spawnset spawnset = Spawnset.Parse(fs);
+			Spawnset spawnset = Spawnset.ParseSpawnset(fs);
 
 			Assert.AreEqual(6, spawnset.SpawnVersion);
 			Assert.AreEqual(9, spawnset.WorldVersion);
@@ -118,7 +118,7 @@ namespace DevilDaggersInfo.Core.Spawnset.Test
 		public void ParseV3_451()
 		{
 			using FileStream fs = new(Path.Combine("Data", "V3_451"), FileMode.Open);
-			Spawnset spawnset = Spawnset.Parse(fs);
+			Spawnset spawnset = Spawnset.ParseSpawnset(fs);
 
 			Assert.AreEqual(6, spawnset.SpawnVersion);
 			Assert.AreEqual(9, spawnset.WorldVersion);

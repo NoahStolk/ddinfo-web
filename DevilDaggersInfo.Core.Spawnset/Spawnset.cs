@@ -1,4 +1,5 @@
-﻿using System;
+﻿using DevilDaggersInfo.Core.Spawnset.Extensions;
+using System;
 using System.Collections.Generic;
 using System.Diagnostics.CodeAnalysis;
 using System.IO;
@@ -6,8 +7,6 @@ using System.Linq;
 
 namespace DevilDaggersInfo.Core.Spawnset
 {
-	// TODO: Log exceptions.
-	// TODO: Add unit tests.
 	public class Spawnset
 	{
 		public const int HeaderBufferSize = 36;
@@ -153,11 +152,11 @@ namespace DevilDaggersInfo.Core.Spawnset
 
 		#region Parsing
 
-		public static bool TryParse(Stream stream, [NotNullWhen(true)] out Spawnset? spawnset)
+		public static bool TryParseSpawnset(Stream stream, [NotNullWhen(true)] out Spawnset? spawnset)
 		{
 			try
 			{
-				spawnset = Parse(stream);
+				spawnset = ParseSpawnset(stream);
 				return true;
 			}
 			catch
@@ -168,9 +167,23 @@ namespace DevilDaggersInfo.Core.Spawnset
 			}
 		}
 
+		public static bool TryParseSpawnsetSummary(Stream stream, [NotNullWhen(true)] out SpawnsetSummary? spawnsetSummary)
+		{
+			try
+			{
+				spawnsetSummary = ParseSpawnsetSummary(stream);
+				return true;
+			}
+			catch
+			{
+				// TODO: Log exceptions.
+				spawnsetSummary = null;
+				return false;
+			}
+		}
+
 		// TODO: Throw clear exceptions when parsing fails.
-		// TODO: Seek instead of setting BaseStream.Position.
-		public static Spawnset Parse(Stream stream)
+		public static Spawnset ParseSpawnset(Stream stream)
 		{
 			using BinaryReader br = new(stream);
 			br.BaseStream.Position = 0;
@@ -183,9 +196,9 @@ namespace DevilDaggersInfo.Core.Spawnset
 			float shrinkRate = br.ReadSingle();
 			float brightness = br.ReadSingle();
 			GameMode gameMode = (GameMode)br.ReadInt32();
+			br.Seek(8);
 
 			// Arena
-			br.BaseStream.Position = HeaderBufferSize;
 			float[,] arenaTiles = new float[ArenaWidth, ArenaHeight];
 			for (int i = 0; i < ArenaWidth * ArenaHeight; i++)
 			{
@@ -195,8 +208,7 @@ namespace DevilDaggersInfo.Core.Spawnset
 			}
 
 			// Spawns header
-			int spawnsHeaderBufferSize = GetSpawnsHeaderBufferSize(worldVersion);
-			br.BaseStream.Position = HeaderBufferSize + ArenaBufferSize + spawnsHeaderBufferSize - sizeof(int);
+			br.Seek(worldVersion == 8 ? 32 : 36);
 			int spawnCount = br.ReadInt32();
 
 			// Spawns
@@ -207,7 +219,7 @@ namespace DevilDaggersInfo.Core.Spawnset
 				float delay = br.ReadSingle();
 				spawns[i] = new(enemyType, delay);
 
-				br.BaseStream.Seek(20, SeekOrigin.Current);
+				br.Seek(20);
 			}
 
 			// Settings
@@ -227,83 +239,73 @@ namespace DevilDaggersInfo.Core.Spawnset
 			return new(spawnVersion, worldVersion, shrinkStart, shrinkEnd, shrinkRate, brightness, gameMode, arenaTiles, spawns, handLevel, additionalGems, timerStart);
 		}
 
-		public static bool TryGetSpawnsetData(Stream stream, [NotNullWhen(true)] out SpawnsetSummary? spawnsetSummary)
+		// TODO: Throw clear exceptions when parsing fails.
+		public static SpawnsetSummary ParseSpawnsetSummary(Stream stream)
 		{
-			try
+			using BinaryReader br = new(stream);
+			br.BaseStream.Position = 0;
+
+			// Header
+			int spawnVersion = br.ReadInt32();
+			int worldVersion = br.ReadInt32();
+			br.Seek(16);
+			GameMode gameMode = (GameMode)br.ReadInt32();
+
+			// Spawns header
+			int spawnsHeaderBufferSize = GetSpawnsHeaderBufferSize(worldVersion);
+			br.BaseStream.Position = HeaderBufferSize + ArenaBufferSize + spawnsHeaderBufferSize - sizeof(int);
+			int spawnCount = br.ReadInt32();
+
+			// Spawns
+			Spawn[] spawns = new Spawn[spawnCount];
+			for (int i = 0; i < spawnCount; i++)
 			{
-				using BinaryReader br = new(stream);
-				br.BaseStream.Position = 0;
+				EnemyType enemyType = (EnemyType)br.ReadInt32();
+				float delay = br.ReadSingle();
+				spawns[i] = new(enemyType, delay);
 
-				// Header
-				int spawnVersion = br.ReadInt32();
-				int worldVersion = br.ReadInt32();
-				br.BaseStream.Seek(16, SeekOrigin.Current);
-				GameMode gameMode = (GameMode)br.ReadInt32();
+				br.Seek(20);
+			}
 
-				// Spawns header
-				int spawnsHeaderBufferSize = GetSpawnsHeaderBufferSize(worldVersion);
-				br.BaseStream.Position = HeaderBufferSize + ArenaBufferSize + spawnsHeaderBufferSize - sizeof(int);
-				int spawnCount = br.ReadInt32();
+			int endLoopStartIndex = GetEndLoopStartIndex(spawns);
 
-				// Spawns
-				Spawn[] spawns = new Spawn[spawnCount];
-				for (int i = 0; i < spawnCount; i++)
+			int nonLoopSpawns = 0;
+			int loopSpawns = 0;
+			float nonLoopSeconds = 0;
+			float loopSeconds = 0;
+			for (int i = 0; i < spawns.Length; i++)
+			{
+				Spawn spawn = spawns[i];
+
+				if (i < endLoopStartIndex)
+					nonLoopSeconds += spawn.Delay; // TODO: Trim EMPTY spawns at the end (test with Delirium_Stop)
+				else
+					loopSeconds += spawn.Delay;
+
+				if (spawn.EnemyType != EnemyType.Empty)
 				{
-					EnemyType enemyType = (EnemyType)br.ReadInt32();
-					float delay = br.ReadSingle();
-					spawns[i] = new(enemyType, delay);
-
-					br.BaseStream.Seek(20, SeekOrigin.Current);
-				}
-
-				int endLoopStartIndex = GetEndLoopStartIndex(spawns);
-
-				int nonLoopSpawns = 0;
-				int loopSpawns = 0;
-				float nonLoopSeconds = 0;
-				float loopSeconds = 0;
-				for (int i = 0; i < spawns.Length; i++)
-				{
-					Spawn spawn = spawns[i];
-
 					if (i < endLoopStartIndex)
-						nonLoopSeconds += spawn.Delay; // TODO: Trim EMPTY spawns at the end (test with Delirium_Stop)
+						nonLoopSpawns++;
 					else
-						loopSeconds += spawn.Delay;
-
-					if (spawn.EnemyType != EnemyType.Empty)
-					{
-						if (i < endLoopStartIndex)
-							nonLoopSpawns++;
-						else
-							loopSpawns++;
-					}
+						loopSpawns++;
 				}
-
-				// Settings
-				int settingsBufferSize = GetSettingsBufferSize(spawnVersion);
-				HandLevel handLevel = HandLevel.Level1;
-				int additionalGems = 0;
-				float timerStart = 0;
-				if (settingsBufferSize >= 5)
-				{
-					handLevel = (HandLevel)br.ReadByte();
-					additionalGems = br.ReadInt32();
-
-					if (settingsBufferSize >= 9)
-						timerStart = br.ReadSingle();
-				}
-
-				spawnsetSummary = new(spawnVersion, worldVersion, gameMode, nonLoopSpawns, loopSpawns, nonLoopSpawns == 0 ? null : nonLoopSeconds, loopSpawns == 0 ? null : loopSeconds, handLevel, additionalGems, timerStart);
-
-				return true;
 			}
-			catch
+
+			// Settings
+			int settingsBufferSize = GetSettingsBufferSize(spawnVersion);
+			HandLevel handLevel = HandLevel.Level1;
+			int additionalGems = 0;
+			float timerStart = 0;
+			if (settingsBufferSize >= 5)
 			{
-				spawnsetSummary = null;
+				handLevel = (HandLevel)br.ReadByte();
+				additionalGems = br.ReadInt32();
 
-				return false;
+				if (settingsBufferSize >= 9)
+					timerStart = br.ReadSingle();
 			}
+
+			return new(spawnVersion, worldVersion, gameMode, nonLoopSpawns, loopSpawns, nonLoopSpawns == 0 ? null : nonLoopSeconds, loopSpawns == 0 ? null : loopSeconds, handLevel, additionalGems, timerStart);
 		}
 
 		#endregion Parsing
@@ -336,28 +338,28 @@ namespace DevilDaggersInfo.Core.Spawnset
 			}
 
 			// Spawns header
-			bw.BaseStream.Seek(12, SeekOrigin.Current);
+			bw.Seek(12, SeekOrigin.Current);
 			bw.Write(0x01);
 			bw.Write(WorldVersion == 8 ? (byte)0x90 : (byte)0xF4);
 			bw.Write((byte)0x01);
-			bw.BaseStream.Seek(2, SeekOrigin.Current);
+			bw.Seek(2, SeekOrigin.Current);
 			bw.Write(0xFA);
 			bw.Write(0x78);
 			bw.Write(0x3C);
-			bw.BaseStream.Seek(WorldVersion == 8 ? 8 : 12, SeekOrigin.Current);
+			bw.Seek(WorldVersion == 8 ? 8 : 12, SeekOrigin.Current);
 
 			// Spawns
 			foreach (Spawn spawn in Spawns)
 			{
 				bw.Write((int)spawn.EnemyType);
 				bw.Write(spawn.Delay);
-				bw.BaseStream.Seek(1, SeekOrigin.Current);
+				bw.Seek(1, SeekOrigin.Current);
 				bw.Write(0x03);
-				bw.BaseStream.Seek(6, SeekOrigin.Current);
+				bw.Seek(6, SeekOrigin.Current);
 				bw.Write((byte)0xF0);
 				bw.Write((byte)0x41);
 				bw.Write((byte)0x0A);
-				bw.BaseStream.Seek(4, SeekOrigin.Current);
+				bw.Seek(4, SeekOrigin.Current);
 			}
 
 			// Settings
