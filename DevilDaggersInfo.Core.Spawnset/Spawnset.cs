@@ -1,4 +1,5 @@
-﻿using DevilDaggersInfo.Core.Spawnset.Extensions;
+﻿using DevilDaggersInfo.Core.Spawnset.Enums;
+using DevilDaggersInfo.Core.Spawnset.Extensions;
 using System;
 using System.Collections.Generic;
 using System.Diagnostics.CodeAnalysis;

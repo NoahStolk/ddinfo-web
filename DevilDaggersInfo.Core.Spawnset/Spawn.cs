@@ -1,4 +1,6 @@
-﻿namespace DevilDaggersInfo.Core.Spawnset
+﻿using DevilDaggersInfo.Core.Spawnset.Enums;
+
+namespace DevilDaggersInfo.Core.Spawnset
 {
 	public struct Spawn
 	{
