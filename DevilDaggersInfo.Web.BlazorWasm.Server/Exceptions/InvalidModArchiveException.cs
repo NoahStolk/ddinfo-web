@@ -1,28 +1,26 @@
-﻿using System;
-using System.Runtime.Serialization;
+﻿using System.Runtime.Serialization;
 
-namespace DevilDaggersInfo.Web.BlazorWasm.Server.Exceptions
+namespace DevilDaggersInfo.Web.BlazorWasm.Server.Exceptions;
+
+[Serializable]
+public class InvalidModArchiveException : Exception
 {
-	[Serializable]
-	public class InvalidModArchiveException : Exception
+	public InvalidModArchiveException()
 	{
-		public InvalidModArchiveException()
-		{
-		}
+	}
 
-		public InvalidModArchiveException(string? message)
-			: base(message)
-		{
-		}
+	public InvalidModArchiveException(string? message)
+		: base(message)
+	{
+	}
 
-		public InvalidModArchiveException(string? message, Exception? innerException)
-			: base(message, innerException)
-		{
-		}
+	public InvalidModArchiveException(string? message, Exception? innerException)
+		: base(message, innerException)
+	{
+	}
 
-		protected InvalidModArchiveException(SerializationInfo info, StreamingContext context)
-			: base(info, context)
-		{
-		}
+	protected InvalidModArchiveException(SerializationInfo info, StreamingContext context)
+		: base(info, context)
+	{
 	}
 }

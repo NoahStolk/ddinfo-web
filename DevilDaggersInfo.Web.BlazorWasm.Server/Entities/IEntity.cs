@@ -1,7 +1,6 @@
-﻿namespace DevilDaggersInfo.Web.BlazorWasm.Server.Entities
+﻿namespace DevilDaggersInfo.Web.BlazorWasm.Server.Entities;
+
+public interface IEntity
 {
-	public interface IEntity
-	{
-		public int Id { get; }
-	}
+	public int Id { get; }
 }

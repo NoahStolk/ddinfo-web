@@ -1,76 +1,73 @@
 ﻿using DevilDaggersInfo.Web.BlazorWasm.Server.Extensions;
 using DevilDaggersInfo.Web.BlazorWasm.Shared.Enums;
-using System;
-using System.Collections.Generic;
 using System.ComponentModel.DataAnnotations;
 using System.ComponentModel.DataAnnotations.Schema;
 
-namespace DevilDaggersInfo.Web.BlazorWasm.Server.Entities
+namespace DevilDaggersInfo.Web.BlazorWasm.Server.Entities;
+
+[Table("CustomLeaderboards")]
+public class CustomLeaderboardEntity : IEntity
 {
-	[Table("CustomLeaderboards")]
-	public class CustomLeaderboardEntity : IEntity
+	[Key]
+	public int Id { get; init; }
+
+	[Column("SpawnsetFileId")]
+	public int SpawnsetId { get; set; }
+
+	[ForeignKey(nameof(SpawnsetId))]
+	public SpawnsetEntity Spawnset { get; set; } = null!;
+
+	public CustomLeaderboardCategory Category { get; set; }
+
+	public int TimeBronze { get; set; }
+
+	public int TimeSilver { get; set; }
+
+	public int TimeGolden { get; set; }
+
+	public int TimeDevil { get; set; }
+
+	public int TimeLeviathan { get; set; }
+
+	public DateTime? DateLastPlayed { get; set; }
+
+	public DateTime? DateCreated { get; set; }
+
+	public int TotalRunsSubmitted { get; set; }
+
+	public bool IsArchived { get; set; }
+
+	public List<CustomEntryEntity>? CustomEntries { get; set; }
+
+	public CustomLeaderboardDagger GetDaggerFromTime(int time)
 	{
-		[Key]
-		public int Id { get; init; }
-
-		[Column("SpawnsetFileId")]
-		public int SpawnsetId { get; set; }
-
-		[ForeignKey(nameof(SpawnsetId))]
-		public SpawnsetEntity Spawnset { get; set; } = null!;
-
-		public CustomLeaderboardCategory Category { get; set; }
-
-		public int TimeBronze { get; set; }
-
-		public int TimeSilver { get; set; }
-
-		public int TimeGolden { get; set; }
-
-		public int TimeDevil { get; set; }
-
-		public int TimeLeviathan { get; set; }
-
-		public DateTime? DateLastPlayed { get; set; }
-
-		public DateTime? DateCreated { get; set; }
-
-		public int TotalRunsSubmitted { get; set; }
-
-		public bool IsArchived { get; set; }
-
-		public List<CustomEntryEntity>? CustomEntries { get; set; }
-
-		public CustomLeaderboardDagger GetDaggerFromTime(int time)
+		if (Category.IsAscending())
 		{
-			if (Category.IsAscending())
-			{
-				if (time <= TimeLeviathan)
-					return CustomLeaderboardDagger.Leviathan;
-				if (time <= TimeDevil)
-					return CustomLeaderboardDagger.Devil;
-				if (time <= TimeGolden)
-					return CustomLeaderboardDagger.Golden;
-				if (time <= TimeSilver)
-					return CustomLeaderboardDagger.Silver;
-				if (time <= TimeBronze)
-					return CustomLeaderboardDagger.Bronze;
-
-				return CustomLeaderboardDagger.Default;
-			}
-
-			if (time >= TimeLeviathan)
+			if (time <= TimeLeviathan)
 				return CustomLeaderboardDagger.Leviathan;
-			if (time >= TimeDevil)
+			if (time <= TimeDevil)
 				return CustomLeaderboardDagger.Devil;
-			if (time >= TimeGolden)
+			if (time <= TimeGolden)
 				return CustomLeaderboardDagger.Golden;
-			if (time >= TimeSilver)
+			if (time <= TimeSilver)
 				return CustomLeaderboardDagger.Silver;
-			if (time >= TimeBronze)
+			if (time <= TimeBronze)
 				return CustomLeaderboardDagger.Bronze;
 
 			return CustomLeaderboardDagger.Default;
 		}
+
+		if (time >= TimeLeviathan)
+			return CustomLeaderboardDagger.Leviathan;
+		if (time >= TimeDevil)
+			return CustomLeaderboardDagger.Devil;
+		if (time >= TimeGolden)
+			return CustomLeaderboardDagger.Golden;
+		if (time >= TimeSilver)
+			return CustomLeaderboardDagger.Silver;
+		if (time >= TimeBronze)
+			return CustomLeaderboardDagger.Bronze;
+
+		return CustomLeaderboardDagger.Default;
 	}
 }

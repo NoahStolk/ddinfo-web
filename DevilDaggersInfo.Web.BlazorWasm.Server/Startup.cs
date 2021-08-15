@@ -12,198 +12,189 @@ using DevilDaggersInfo.Web.BlazorWasm.Server.Singletons.AuditLog;
 using DevilDaggersInfo.Web.BlazorWasm.Server.Transients;
 using DevilDaggersInfo.Web.BlazorWasm.Shared;
 using Microsoft.AspNetCore.Authentication;
-using Microsoft.AspNetCore.Builder;
-using Microsoft.AspNetCore.Hosting;
 using Microsoft.AspNetCore.Identity;
 using Microsoft.AspNetCore.Rewrite;
 using Microsoft.EntityFrameworkCore;
-using Microsoft.Extensions.Configuration;
-using Microsoft.Extensions.DependencyInjection;
-using Microsoft.Extensions.Hosting;
 using NJsonSchema;
-using System;
 using System.Globalization;
 using System.IdentityModel.Tokens.Jwt;
-using System.Linq;
-using System.Threading.Tasks;
 
-namespace DevilDaggersInfo.Web.BlazorWasm.Server
+namespace DevilDaggersInfo.Web.BlazorWasm.Server;
+
+public class Startup
 {
-	public class Startup
+	private const string _defaultCorsPolicy = nameof(_defaultCorsPolicy);
+
+	public Startup(IConfiguration configuration, IWebHostEnvironment webHostEnvironment)
 	{
-		private const string _defaultCorsPolicy = nameof(_defaultCorsPolicy);
+		Configuration = configuration;
+		WebHostEnvironment = webHostEnvironment;
+	}
 
-		public Startup(IConfiguration configuration, IWebHostEnvironment webHostEnvironment)
+	public IConfiguration Configuration { get; }
+	public IWebHostEnvironment WebHostEnvironment { get; }
+
+	public void ConfigureServices(IServiceCollection services)
+	{
+		services.AddDbContext<ApplicationDbContext>(options =>
+			options.UseMySql(Configuration.GetConnectionString("DefaultConnection"), MySqlServerVersion.LatestSupportedServerVersion, providerOptions => providerOptions.EnableRetryOnFailure(1)));
+
+		services.AddDatabaseDeveloperPageExceptionFilter();
+
+		services.AddDefaultIdentity<ApplicationUser>(options => options.SignIn.RequireConfirmedAccount = true)
+			.AddRoles<IdentityRole>()
+			.AddEntityFrameworkStores<ApplicationDbContext>();
+
+		services.AddIdentityServer()
+			.AddApiAuthorization<ApplicationUser, ApplicationDbContext>(options =>
+			{
+				options.IdentityResources["openid"].UserClaims.Add("role");
+				options.ApiResources.Single().UserClaims.Add("role");
+			});
+
+		JwtSecurityTokenHandler.DefaultInboundClaimTypeMap.Remove("role");
+
+		services.AddAuthentication()
+			.AddIdentityServerJwt();
+
+		services.AddControllersWithViews();
+
+		services.AddRazorPages();
+
+		services.AddSingleton<BackgroundServiceMonitor>();
+		services.AddSingleton<ResponseTimeMonitor>();
+
+		services.AddSingleton<DiscordLogger>();
+		services.AddSingleton<AuditLogger>();
+		services.AddSingleton<LeaderboardHistoryCache>();
+		services.AddSingleton<LeaderboardStatisticsCache>();
+		services.AddSingleton<ModArchiveCache>();
+		services.AddSingleton<SpawnsetDataCache>();
+		services.AddSingleton<SpawnsetHashCache>();
+
+		if (!WebHostEnvironment.IsDevelopment())
 		{
-			Configuration = configuration;
-			WebHostEnvironment = webHostEnvironment;
+			services.AddHostedService<BackgroundServiceLoggerBackgroundService>();
+			services.AddHostedService<CacheLoggerBackgroundService>();
+			services.AddHostedService<DatabaseLoggerBackgroundService>();
+			services.AddHostedService<FileSystemLoggerBackgroundService>();
+			services.AddHostedService<LeaderboardHistoryBackgroundService>();
+			//services.AddHostedService<ResponseTimeLoggerBackgroundService>();
 		}
 
-		public IConfiguration Configuration { get; }
-		public IWebHostEnvironment WebHostEnvironment { get; }
+		// Use a transient for ToolHelper so we can update the Tools.json file without having to re-instantiate this.
+		services.AddTransient<IToolHelper, ToolHelper>();
+		services.AddTransient<IFileSystemService, FileSystemService>();
 
-		public void ConfigureServices(IServiceCollection services)
+		services.AddSwaggerDocument(config =>
 		{
-			services.AddDbContext<ApplicationDbContext>(options =>
-				options.UseMySql(Configuration.GetConnectionString("DefaultConnection"), MySqlServerVersion.LatestSupportedServerVersion, providerOptions => providerOptions.EnableRetryOnFailure(1)));
-
-			services.AddDatabaseDeveloperPageExceptionFilter();
-
-			services.AddDefaultIdentity<ApplicationUser>(options => options.SignIn.RequireConfirmedAccount = true)
-				.AddRoles<IdentityRole>()
-				.AddEntityFrameworkStores<ApplicationDbContext>();
-
-			services.AddIdentityServer()
-				.AddApiAuthorization<ApplicationUser, ApplicationDbContext>(options =>
-				{
-					options.IdentityResources["openid"].UserClaims.Add("role");
-					options.ApiResources.Single().UserClaims.Add("role");
-				});
-
-			JwtSecurityTokenHandler.DefaultInboundClaimTypeMap.Remove("role");
-
-			services.AddAuthentication()
-				.AddIdentityServerJwt();
-
-			services.AddControllersWithViews();
-
-			services.AddRazorPages();
-
-			services.AddSingleton<BackgroundServiceMonitor>();
-			services.AddSingleton<ResponseTimeMonitor>();
-
-			services.AddSingleton<DiscordLogger>();
-			services.AddSingleton<AuditLogger>();
-			services.AddSingleton<LeaderboardHistoryCache>();
-			services.AddSingleton<LeaderboardStatisticsCache>();
-			services.AddSingleton<ModArchiveCache>();
-			services.AddSingleton<SpawnsetDataCache>();
-			services.AddSingleton<SpawnsetHashCache>();
-
-			if (!WebHostEnvironment.IsDevelopment())
+			config.PostProcess = document =>
 			{
-				services.AddHostedService<BackgroundServiceLoggerBackgroundService>();
-				services.AddHostedService<CacheLoggerBackgroundService>();
-				services.AddHostedService<DatabaseLoggerBackgroundService>();
-				services.AddHostedService<FileSystemLoggerBackgroundService>();
-				services.AddHostedService<LeaderboardHistoryBackgroundService>();
-				//services.AddHostedService<ResponseTimeLoggerBackgroundService>();
-			}
-
-			// Use a transient for ToolHelper so we can update the Tools.json file without having to re-instantiate this.
-			services.AddTransient<IToolHelper, ToolHelper>();
-			services.AddTransient<IFileSystemService, FileSystemService>();
-
-			services.AddSwaggerDocument(config =>
-			{
-				config.PostProcess = document =>
+				document.Info.Title = "DevilDaggers.Info API";
+				document.Info.Contact = new()
 				{
-					document.Info.Title = "DevilDaggers.Info API";
-					document.Info.Contact = new()
-					{
-						Name = "Noah Stolk",
-						Url = "//noahstolk.com/",
-					};
+					Name = "Noah Stolk",
+					Url = "//noahstolk.com/",
 				};
-				config.DocumentProcessors.Add(new PublicApiDocumentProcessor());
-				config.SchemaType = SchemaType.OpenApi3;
-			});
+			};
+			config.DocumentProcessors.Add(new PublicApiDocumentProcessor());
+			config.SchemaType = SchemaType.OpenApi3;
+		});
+	}
+
+	public void Configure(IApplicationBuilder app, IWebHostEnvironment env, IServiceProvider serviceProvider)
+	{
+		CultureInfo.DefaultThreadCurrentCulture = CultureInfo.InvariantCulture;
+		CultureInfo.DefaultThreadCurrentUICulture = CultureInfo.InvariantCulture;
+
+		app.UseMiddleware<ResponseTimeMiddleware>();
+
+		// Do not change order of redirects.
+		RewriteOptions options = new RewriteOptions()
+			.AddRedirect("^Home/Index$", "Index")
+			.AddRedirect("^Home/Leaderboard$", "Leaderboard")
+			.AddRedirect("^Home/Spawnset/(.*)$", "Spawnset?spawnset=$1")
+			.AddRedirect("^Home/Spawnsets$", "Spawnsets")
+			.AddRedirect("^Home/SpawnsetsInfo$", "Spawnsets")
+			.AddRedirect("^Home/Spawnset$", "Spawnset")
+			.AddRedirect("^Home/Hands$", "Wiki/Upgrades")
+			.AddRedirect("^Home/Enemies$", "Wiki/Enemies")
+			.AddRedirect("^Home/Daggers$", "Wiki/Daggers")
+			.AddRedirect("^Home/Donations$", "Donations")
+			.AddRedirect("^Home$", "Index")
+			.AddRedirect("^Upgrades$", "Wiki/Upgrades")
+			.AddRedirect("^Enemies$", "Wiki/Enemies")
+			.AddRedirect("^Daggers$", "Wiki/Daggers")
+			.AddRedirect("^Spawns$", "Wiki/Spawns")
+			.AddRedirect("^Home/Spawns$", "Wiki/Spawns")
+			.AddRedirect("^Wiki/SpawnsetGuide$", "Wiki/Guides/SurvivalEditor")
+			.AddRedirect("^Wiki/AssetGuide$", "Wiki/Guides/AssetEditor")
+			.AddRedirect("^Leaderboard/UserSettings", "Leaderboard/PlayerSettings");
+		app.UseRewriter(options);
+
+		if (env.IsDevelopment())
+		{
+			app.UseDeveloperExceptionPage();
+			app.UseMigrationsEndPoint();
+			app.UseWebAssemblyDebugging();
+		}
+		else
+		{
+			app.UseExceptionHandler("/Error");
+			app.UseHsts();
 		}
 
-		public void Configure(IApplicationBuilder app, IWebHostEnvironment env, IServiceProvider serviceProvider)
+		app.UseHttpsRedirection();
+		app.UseBlazorFrameworkFiles();
+		app.UseStaticFiles();
+
+		app.UseRouting();
+
+		app.UseCors(_defaultCorsPolicy);
+
+		app.UseIdentityServer();
+		app.UseAuthentication();
+		app.UseAuthorization();
+
+		app.UseEndpoints(endpoints =>
 		{
-			CultureInfo.DefaultThreadCurrentCulture = CultureInfo.InvariantCulture;
-			CultureInfo.DefaultThreadCurrentUICulture = CultureInfo.InvariantCulture;
+			endpoints.MapRazorPages();
+			endpoints.MapControllers();
+			endpoints.MapFallbackToFile("index.html");
+		});
 
-			app.UseMiddleware<ResponseTimeMiddleware>();
+		app.UseOpenApi();
+		app.UseSwaggerUi3();
 
-			// Do not change order of redirects.
-			RewriteOptions options = new RewriteOptions()
-				.AddRedirect("^Home/Index$", "Index")
-				.AddRedirect("^Home/Leaderboard$", "Leaderboard")
-				.AddRedirect("^Home/Spawnset/(.*)$", "Spawnset?spawnset=$1")
-				.AddRedirect("^Home/Spawnsets$", "Spawnsets")
-				.AddRedirect("^Home/SpawnsetsInfo$", "Spawnsets")
-				.AddRedirect("^Home/Spawnset$", "Spawnset")
-				.AddRedirect("^Home/Hands$", "Wiki/Upgrades")
-				.AddRedirect("^Home/Enemies$", "Wiki/Enemies")
-				.AddRedirect("^Home/Daggers$", "Wiki/Daggers")
-				.AddRedirect("^Home/Donations$", "Donations")
-				.AddRedirect("^Home$", "Index")
-				.AddRedirect("^Upgrades$", "Wiki/Upgrades")
-				.AddRedirect("^Enemies$", "Wiki/Enemies")
-				.AddRedirect("^Daggers$", "Wiki/Daggers")
-				.AddRedirect("^Spawns$", "Wiki/Spawns")
-				.AddRedirect("^Home/Spawns$", "Wiki/Spawns")
-				.AddRedirect("^Wiki/SpawnsetGuide$", "Wiki/Guides/SurvivalEditor")
-				.AddRedirect("^Wiki/AssetGuide$", "Wiki/Guides/AssetEditor")
-				.AddRedirect("^Leaderboard/UserSettings", "Leaderboard/PlayerSettings");
-			app.UseRewriter(options);
+		// Initiate static caches.
+		LeaderboardStatisticsCache leaderboardStatisticsCache = serviceProvider.GetRequiredService<LeaderboardStatisticsCache>();
+		Task task = leaderboardStatisticsCache.Initiate();
+		task.Wait();
 
-			if (env.IsDevelopment())
-			{
-				app.UseDeveloperExceptionPage();
-				app.UseMigrationsEndPoint();
-				app.UseWebAssemblyDebugging();
-			}
-			else
-			{
-				app.UseExceptionHandler("/Error");
-				app.UseHsts();
-			}
+		// Initiate dynamic caches.
 
-			app.UseHttpsRedirection();
-			app.UseBlazorFrameworkFiles();
-			app.UseStaticFiles();
+		// SpawnsetDataCache does not need to be initiated as it is fast enough.
+		// SpawnsetHashCache does not need to be initiated as it is fast enough.
 
-			app.UseRouting();
+		// TODO: LeaderboardHistoryCache might need to be initiated as the initial world record progression load is a little slow.
 
-			app.UseCors(_defaultCorsPolicy);
+		/* The ModArchiveCache is initially very slow because it requires unzipping huge mod archive zip files.
+		 * The idea to fix this; when adding data (based on a mod archive) to the ConcurrentBag, write this data to a JSON file as well, so it is not lost when the site shuts down.
+		 * The cache then needs to be initiated here, by reading all the JSON files and populating the ConcurrentBag on start up. Effectively this is caching the cache.*/
+		//ModArchiveCache modArchiveCache = serviceProvider.GetRequiredService<ModArchiveCache>();
+		//modArchiveCache.LoadEntireFileCache();
 
-			app.UseIdentityServer();
-			app.UseAuthentication();
-			app.UseAuthorization();
+		CreateRoles(serviceProvider).Wait();
+	}
 
-			app.UseEndpoints(endpoints =>
-			{
-				endpoints.MapRazorPages();
-				endpoints.MapControllers();
-				endpoints.MapFallbackToFile("index.html");
-			});
-
-			app.UseOpenApi();
-			app.UseSwaggerUi3();
-
-			// Initiate static caches.
-			LeaderboardStatisticsCache leaderboardStatisticsCache = serviceProvider.GetRequiredService<LeaderboardStatisticsCache>();
-			Task task = leaderboardStatisticsCache.Initiate();
-			task.Wait();
-
-			// Initiate dynamic caches.
-
-			// SpawnsetDataCache does not need to be initiated as it is fast enough.
-			// SpawnsetHashCache does not need to be initiated as it is fast enough.
-
-			// TODO: LeaderboardHistoryCache might need to be initiated as the initial world record progression load is a little slow.
-
-			/* The ModArchiveCache is initially very slow because it requires unzipping huge mod archive zip files.
-			 * The idea to fix this; when adding data (based on a mod archive) to the ConcurrentBag, write this data to a JSON file as well, so it is not lost when the site shuts down.
-			 * The cache then needs to be initiated here, by reading all the JSON files and populating the ConcurrentBag on start up. Effectively this is caching the cache.*/
-			//ModArchiveCache modArchiveCache = serviceProvider.GetRequiredService<ModArchiveCache>();
-			//modArchiveCache.LoadEntireFileCache();
-
-			CreateRoles(serviceProvider).Wait();
-		}
-
-		private static async Task CreateRoles(IServiceProvider serviceProvider)
+	private static async Task CreateRoles(IServiceProvider serviceProvider)
+	{
+		RoleManager<IdentityRole>? roleManager = serviceProvider.GetRequiredService<RoleManager<IdentityRole>>();
+		foreach (string? roleName in Roles.All)
 		{
-			RoleManager<IdentityRole>? roleManager = serviceProvider.GetRequiredService<RoleManager<IdentityRole>>();
-			foreach (string? roleName in Roles.All)
-			{
-				bool roleExist = await roleManager.RoleExistsAsync(roleName);
-				if (!roleExist)
-					await roleManager.CreateAsync(new IdentityRole(roleName));
-			}
+			bool roleExist = await roleManager.RoleExistsAsync(roleName);
+			if (!roleExist)
+				await roleManager.CreateAsync(new IdentityRole(roleName));
 		}
 	}
 }

@@ -1,11 +1,10 @@
-﻿namespace DevilDaggersInfo.Web.BlazorWasm.Server.Caches
+﻿namespace DevilDaggersInfo.Web.BlazorWasm.Server.Caches;
+
+public enum CacheType
 {
-	public enum CacheType
-	{
-		LeaderboardHistory,
-		LeaderboardStatistics,
-		ModArchive,
-		SpawnsetData,
-		SpawnsetHash,
-	}
+	LeaderboardHistory,
+	LeaderboardStatistics,
+	ModArchive,
+	SpawnsetData,
+	SpawnsetHash,
 }

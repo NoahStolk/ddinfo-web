@@ -1,30 +1,28 @@
-﻿using System;
-using System.ComponentModel.DataAnnotations;
+﻿using System.ComponentModel.DataAnnotations;
 using System.ComponentModel.DataAnnotations.Schema;
 
-namespace DevilDaggersInfo.Web.BlazorWasm.Server.Entities
+namespace DevilDaggersInfo.Web.BlazorWasm.Server.Entities;
+
+[Table("SpawnsetFiles")]
+public class SpawnsetEntity : IEntity
 {
-	[Table("SpawnsetFiles")]
-	public class SpawnsetEntity : IEntity
-	{
-		[Key]
-		public int Id { get; init; }
+	[Key]
+	public int Id { get; init; }
 
-		public int PlayerId { get; set; }
+	public int PlayerId { get; set; }
 
-		[ForeignKey(nameof(PlayerId))]
-		public PlayerEntity Player { get; set; } = null!;
+	[ForeignKey(nameof(PlayerId))]
+	public PlayerEntity Player { get; set; } = null!;
 
-		[StringLength(64)]
-		public string Name { get; set; } = null!;
+	[StringLength(64)]
+	public string Name { get; set; } = null!;
 
-		public int? MaxDisplayWaves { get; set; }
+	public int? MaxDisplayWaves { get; set; }
 
-		[StringLength(2048)]
-		public string? HtmlDescription { get; set; }
+	[StringLength(2048)]
+	public string? HtmlDescription { get; set; }
 
-		public DateTime LastUpdated { get; set; }
+	public DateTime LastUpdated { get; set; }
 
-		public bool IsPractice { get; set; }
-	}
+	public bool IsPractice { get; set; }
 }

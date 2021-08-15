@@ -1,28 +1,26 @@
-﻿using System;
-using System.Runtime.Serialization;
+﻿using System.Runtime.Serialization;
 
-namespace DevilDaggersInfo.Web.BlazorWasm.Server.Exceptions
+namespace DevilDaggersInfo.Web.BlazorWasm.Server.Exceptions;
+
+[Serializable]
+public class InvalidModBinaryException : Exception
 {
-	[Serializable]
-	public class InvalidModBinaryException : Exception
+	public InvalidModBinaryException()
 	{
-		public InvalidModBinaryException()
-		{
-		}
+	}
 
-		public InvalidModBinaryException(string? message)
-			: base(message)
-		{
-		}
+	public InvalidModBinaryException(string? message)
+		: base(message)
+	{
+	}
 
-		public InvalidModBinaryException(string? message, Exception? innerException)
-			: base(message, innerException)
-		{
-		}
+	public InvalidModBinaryException(string? message, Exception? innerException)
+		: base(message, innerException)
+	{
+	}
 
-		protected InvalidModBinaryException(SerializationInfo info, StreamingContext context)
-			: base(info, context)
-		{
-		}
+	protected InvalidModBinaryException(SerializationInfo info, StreamingContext context)
+		: base(info, context)
+	{
 	}
 }

@@ -1,18 +1,17 @@
 ﻿using Microsoft.EntityFrameworkCore;
 
-namespace DevilDaggersInfo.Web.BlazorWasm.Server.Entities
+namespace DevilDaggersInfo.Web.BlazorWasm.Server.Entities;
+
+[Keyless]
+public class InformationSchemaTable
 {
-	[Keyless]
-	public class InformationSchemaTable
-	{
-		public string? Table { get; set; }
+	public string? Table { get; set; }
 
-		public int DataSize { get; set; }
+	public int DataSize { get; set; }
 
-		public int IndexSize { get; set; }
+	public int IndexSize { get; set; }
 
-		public int AverageRowLength { get; set; }
+	public int AverageRowLength { get; set; }
 
-		public int TableRows { get; set; }
-	}
+	public int TableRows { get; set; }
 }

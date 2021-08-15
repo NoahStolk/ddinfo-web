@@ -1,18 +1,16 @@
-﻿using System.Collections.Generic;
-using System.ComponentModel.DataAnnotations;
+﻿using System.ComponentModel.DataAnnotations;
 using System.ComponentModel.DataAnnotations.Schema;
 
-namespace DevilDaggersInfo.Web.BlazorWasm.Server.Entities
+namespace DevilDaggersInfo.Web.BlazorWasm.Server.Entities;
+
+[Table("Titles")]
+public class TitleEntity
 {
-	[Table("Titles")]
-	public class TitleEntity
-	{
-		[Key]
-		public int Id { get; init; }
+	[Key]
+	public int Id { get; init; }
 
-		[StringLength(16)]
-		public string Name { get; set; } = null!;
+	[StringLength(16)]
+	public string Name { get; set; } = null!;
 
-		public List<PlayerTitleEntity> PlayerTitles { get; set; } = new();
-	}
+	public List<PlayerTitleEntity> PlayerTitles { get; set; } = new();
 }

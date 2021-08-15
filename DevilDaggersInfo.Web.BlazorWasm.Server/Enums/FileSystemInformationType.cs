@@ -1,12 +1,11 @@
-﻿namespace DevilDaggersInfo.Web.BlazorWasm.Server.Enums
+﻿namespace DevilDaggersInfo.Web.BlazorWasm.Server.Enums;
+
+public enum FileSystemInformationType
 {
-	public enum FileSystemInformationType
-	{
-		Add,
-		Delete,
-		NotFoundUnexpected,
-		NotFound,
-		Move,
-		Update,
-	}
+	Add,
+	Delete,
+	NotFoundUnexpected,
+	NotFound,
+	Move,
+	Update,
 }

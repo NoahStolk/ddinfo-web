@@ -1,15 +1,12 @@
-﻿using System;
+﻿namespace DevilDaggersInfo.Web.BlazorWasm.Server.Controllers.Attributes;
 
-namespace DevilDaggersInfo.Web.BlazorWasm.Server.Controllers.Attributes
+[AttributeUsage(AttributeTargets.Method, AllowMultiple = false)]
+public class EndpointConsumerAttribute : Attribute
 {
-	[AttributeUsage(AttributeTargets.Method, AllowMultiple = false)]
-	public class EndpointConsumerAttribute : Attribute
+	public EndpointConsumerAttribute(EndpointConsumers endpointConsumers)
 	{
-		public EndpointConsumerAttribute(EndpointConsumers endpointConsumers)
-		{
-			EndpointConsumers = endpointConsumers;
-		}
-
-		public EndpointConsumers EndpointConsumers { get; init; }
+		EndpointConsumers = endpointConsumers;
 	}
+
+	public EndpointConsumers EndpointConsumers { get; init; }
 }

@@ -1,46 +1,42 @@
 ﻿using DevilDaggersInfo.Web.BlazorWasm.Server.HostedServices.DdInfoDiscordBot;
 using DevilDaggersInfo.Web.BlazorWasm.Server.Singletons;
-using System;
-using System.Threading;
-using System.Threading.Tasks;
 
-namespace DevilDaggersInfo.Web.BlazorWasm.Server.HostedServices
+namespace DevilDaggersInfo.Web.BlazorWasm.Server.HostedServices;
+
+public class ResponseTimeLoggerBackgroundService : AbstractBackgroundService
 {
-	public class ResponseTimeLoggerBackgroundService : AbstractBackgroundService
+	private readonly ResponseTimeMonitor _responseTimeMonitor;
+
+	private DateTime _measurementStart;
+
+	public ResponseTimeLoggerBackgroundService(BackgroundServiceMonitor backgroundServiceMonitor, DiscordLogger discordLogger, ResponseTimeMonitor responseTimeMonitor)
+		: base(backgroundServiceMonitor, discordLogger)
 	{
-		private readonly ResponseTimeMonitor _responseTimeMonitor;
+		_responseTimeMonitor = responseTimeMonitor;
+	}
 
-		private DateTime _measurementStart;
+	protected override TimeSpan Interval => TimeSpan.FromMinutes(1);
 
-		public ResponseTimeLoggerBackgroundService(BackgroundServiceMonitor backgroundServiceMonitor, DiscordLogger discordLogger, ResponseTimeMonitor responseTimeMonitor)
-			: base(backgroundServiceMonitor, discordLogger)
+	protected override async Task ExecuteTaskAsync(CancellationToken stoppingToken)
+	{
+		DateTime now = DateTime.UtcNow;
+		if (now.Hour != 12 || now.Minute != 0)
+			return;
+
+		bool includeEnvironmentName = true;
+		foreach (string log in _responseTimeMonitor.CreateLogs(_measurementStart, now))
 		{
-			_responseTimeMonitor = responseTimeMonitor;
+			await DiscordLogger.TryLog(Channel.MonitoringTask, log, null, includeEnvironmentName);
+			includeEnvironmentName = false;
 		}
 
-		protected override TimeSpan Interval => TimeSpan.FromMinutes(1);
+		_responseTimeMonitor.Clear();
 
-		protected override async Task ExecuteTaskAsync(CancellationToken stoppingToken)
-		{
-			DateTime now = DateTime.UtcNow;
-			if (now.Hour != 12 || now.Minute != 0)
-				return;
+		_measurementStart = DateTime.UtcNow; // Get UtcNow again. Logging takes time.
+	}
 
-			bool includeEnvironmentName = true;
-			foreach (string log in _responseTimeMonitor.CreateLogs(_measurementStart, now))
-			{
-				await DiscordLogger.TryLog(Channel.MonitoringTask, log, null, includeEnvironmentName);
-				includeEnvironmentName = false;
-			}
-
-			_responseTimeMonitor.Clear();
-
-			_measurementStart = DateTime.UtcNow; // Get UtcNow again. Logging takes time.
-		}
-
-		protected override void Begin()
-		{
-			_measurementStart = DateTime.UtcNow;
-		}
+	protected override void Begin()
+	{
+		_measurementStart = DateTime.UtcNow;
 	}
 }

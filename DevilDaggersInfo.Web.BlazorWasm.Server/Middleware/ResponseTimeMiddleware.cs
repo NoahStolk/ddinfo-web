@@ -1,49 +1,45 @@
 ﻿using DevilDaggersInfo.Web.BlazorWasm.Server.Singletons;
-using Microsoft.AspNetCore.Http;
-using System;
 using System.Diagnostics;
-using System.Threading.Tasks;
 
-namespace DevilDaggersInfo.Web.BlazorWasm.Server.Middleware
+namespace DevilDaggersInfo.Web.BlazorWasm.Server.Middleware;
+
+public class ResponseTimeMiddleware
 {
-	public class ResponseTimeMiddleware
+	private readonly RequestDelegate _next;
+	private readonly ResponseTimeMonitor _responseTimeMonitor;
+
+	public ResponseTimeMiddleware(RequestDelegate next, ResponseTimeMonitor responseTimeMonitor)
 	{
-		private readonly RequestDelegate _next;
-		private readonly ResponseTimeMonitor _responseTimeMonitor;
+		_next = next;
+		_responseTimeMonitor = responseTimeMonitor;
+	}
 
-		public ResponseTimeMiddleware(RequestDelegate next, ResponseTimeMonitor responseTimeMonitor)
+	public Task InvokeAsync(HttpContext context)
+	{
+		PathString path = context.Request.Path;
+		string pathString = path.ToString();
+		if (pathString.EndsWith(".png")
+		 || pathString.EndsWith(".jpg")
+		 || pathString.EndsWith(".css")
+		 || pathString.EndsWith(".js")
+		 || pathString.EndsWith(".ico")
+		 || pathString.EndsWith(".gif")
+		 || pathString.EndsWith(".ttf")
+		 || pathString.EndsWith(".json"))
 		{
-			_next = next;
-			_responseTimeMonitor = responseTimeMonitor;
-		}
-
-		public Task InvokeAsync(HttpContext context)
-		{
-			PathString path = context.Request.Path;
-			string pathString = path.ToString();
-			if (pathString.EndsWith(".png")
-			 || pathString.EndsWith(".jpg")
-			 || pathString.EndsWith(".css")
-			 || pathString.EndsWith(".js")
-			 || pathString.EndsWith(".ico")
-			 || pathString.EndsWith(".gif")
-			 || pathString.EndsWith(".ttf")
-			 || pathString.EndsWith(".json"))
-			{
-				return _next(context);
-			}
-
-			Stopwatch sw = Stopwatch.StartNew();
-			context.Response.OnStarting(() =>
-			{
-				sw.Stop();
-
-				_responseTimeMonitor.Add(pathString, sw.ElapsedTicks, DateTime.UtcNow);
-
-				return Task.CompletedTask;
-			});
-
 			return _next(context);
 		}
+
+		Stopwatch sw = Stopwatch.StartNew();
+		context.Response.OnStarting(() =>
+		{
+			sw.Stop();
+
+			_responseTimeMonitor.Add(pathString, sw.ElapsedTicks, DateTime.UtcNow);
+
+			return Task.CompletedTask;
+		});
+
+		return _next(context);
 	}
 }

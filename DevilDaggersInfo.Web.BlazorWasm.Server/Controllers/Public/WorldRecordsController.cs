@@ -5,151 +5,146 @@ using DevilDaggersInfo.Web.BlazorWasm.Server.Enums;
 using DevilDaggersInfo.Web.BlazorWasm.Server.Transients;
 using DevilDaggersInfo.Web.BlazorWasm.Shared.Dto.Public.LeaderboardHistory;
 using DevilDaggersInfo.Web.BlazorWasm.Shared.Dto.Public.WorldRecords;
-using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
-using System;
-using System.Collections.Generic;
-using System.Linq;
 
-namespace DevilDaggersInfo.Web.BlazorWasm.Server.Controllers.Public
+namespace DevilDaggersInfo.Web.BlazorWasm.Server.Controllers.Public;
+
+[Route("api/world-records")]
+[ApiController]
+public class WorldRecordsController : ControllerBase
 {
-	[Route("api/world-records")]
-	[ApiController]
-	public class WorldRecordsController : ControllerBase
+	private static readonly DateTime _automationStart = new(2019, 10, 26);
+
+	private readonly IFileSystemService _fileSystemService;
+	private readonly LeaderboardHistoryCache _leaderboardHistoryCache;
+
+	public WorldRecordsController(IFileSystemService fileSystemService, LeaderboardHistoryCache leaderboardHistoryCache)
 	{
-		private static readonly DateTime _automationStart = new(2019, 10, 26);
+		_fileSystemService = fileSystemService;
+		_leaderboardHistoryCache = leaderboardHistoryCache;
+	}
 
-		private readonly IFileSystemService _fileSystemService;
-		private readonly LeaderboardHistoryCache _leaderboardHistoryCache;
+	[HttpGet("world-records")]
+	[ProducesResponseType(StatusCodes.Status200OK)]
+	[EndpointConsumer(EndpointConsumers.Website)]
+	public List<GetWorldRecord> GetWorldRecords()
+		=> GetWorldRecordsPrivate();
 
-		public WorldRecordsController(IFileSystemService fileSystemService, LeaderboardHistoryCache leaderboardHistoryCache)
+	[HttpGet("world-record-data")]
+	[ProducesResponseType(StatusCodes.Status200OK)]
+	[EndpointConsumer(EndpointConsumers.Website)]
+	public (List<GetWorldRecordHolder> WorldRecordHolders, Dictionary<GetWorldRecord, GetWorldRecordData> WorldRecordData) GetWorldRecordData()
+	{
+		List<GetWorldRecord> worldRecords = GetWorldRecordsPrivate();
+
+		List<GetWorldRecordHolder> worldRecordHolders = new();
+		Dictionary<GetWorldRecord, GetWorldRecordData> worldRecordData = new();
+
+		TimeSpan heldConsecutively = default;
+		for (int i = 0; i < worldRecords.Count; i++)
 		{
-			_fileSystemService = fileSystemService;
-			_leaderboardHistoryCache = leaderboardHistoryCache;
-		}
+			GetWorldRecord wr = worldRecords[i];
 
-		[HttpGet("world-records")]
-		[ProducesResponseType(StatusCodes.Status200OK)]
-		[EndpointConsumer(EndpointConsumers.Website)]
-		public List<GetWorldRecord> GetWorldRecords()
-			=> GetWorldRecordsPrivate();
+			GetWorldRecord? previousWrSameLeaderboard = worldRecords.OrderByDescending(w => w.Entry.Time).FirstOrDefault(w => w.Entry.Time < wr.Entry.Time && GetMajorGameVersion(w.GameVersion) == GetMajorGameVersion(wr.GameVersion));
 
-		[HttpGet("world-record-data")]
-		[ProducesResponseType(StatusCodes.Status200OK)]
-		[EndpointConsumer(EndpointConsumers.Website)]
-		public (List<GetWorldRecordHolder> WorldRecordHolders, Dictionary<GetWorldRecord, GetWorldRecordData> WorldRecordData) GetWorldRecordData()
-		{
-			List<GetWorldRecord> worldRecords = GetWorldRecordsPrivate();
-
-			List<GetWorldRecordHolder> worldRecordHolders = new();
-			Dictionary<GetWorldRecord, GetWorldRecordData> worldRecordData = new();
-
-			TimeSpan heldConsecutively = default;
-			for (int i = 0; i < worldRecords.Count; i++)
+			TimeSpan duration;
+			DateTime firstHeld;
+			DateTime lastHeld;
+			if (i == worldRecords.Count - 1)
 			{
-				GetWorldRecord wr = worldRecords[i];
-
-				GetWorldRecord? previousWrSameLeaderboard = worldRecords.OrderByDescending(w => w.Entry.Time).FirstOrDefault(w => w.Entry.Time < wr.Entry.Time && GetMajorGameVersion(w.GameVersion) == GetMajorGameVersion(wr.GameVersion));
-
-				TimeSpan duration;
-				DateTime firstHeld;
-				DateTime lastHeld;
-				if (i == worldRecords.Count - 1)
-				{
-					duration = DateTime.UtcNow - wr.DateTime;
-					firstHeld = wr.DateTime;
-					lastHeld = DateTime.UtcNow;
-				}
-				else
-				{
-					GetWorldRecord nextWr = worldRecords[i + 1];
-					duration = nextWr.DateTime - wr.DateTime;
-					firstHeld = wr.DateTime;
-					lastHeld = nextWr.DateTime;
-				}
-
-				if (i != 0 && wr.Entry.Id != worldRecords[i - 1].Entry.Id)
-					heldConsecutively = default;
-
-				heldConsecutively += duration;
-				worldRecordData.Add(wr, new(duration, previousWrSameLeaderboard == null ? null : wr.Entry.Time - previousWrSameLeaderboard.Entry.Time));
-
-				GetWorldRecordHolder? holder = worldRecordHolders.Find(wrh => wrh.Id == wr.Entry.Id);
-				if (holder == null)
-				{
-					worldRecordHolders.Add(new(wr.Entry.Id, wr.Entry.Username, duration, heldConsecutively, 1, firstHeld, lastHeld));
-				}
-				else
-				{
-					holder.MostRecentUsername = wr.Entry.Username;
-					if (!holder.Usernames.Contains(wr.Entry.Username))
-						holder.Usernames.Add(wr.Entry.Username);
-
-					if (heldConsecutively > holder.LongestTimeHeldConsecutively)
-						holder.LongestTimeHeldConsecutively = heldConsecutively;
-
-					holder.TotalTimeHeld += duration;
-					holder.WorldRecordCount++;
-					if (firstHeld < holder.FirstHeld)
-						holder.FirstHeld = firstHeld;
-					holder.LastHeld = lastHeld;
-				}
+				duration = DateTime.UtcNow - wr.DateTime;
+				firstHeld = wr.DateTime;
+				lastHeld = DateTime.UtcNow;
+			}
+			else
+			{
+				GetWorldRecord nextWr = worldRecords[i + 1];
+				duration = nextWr.DateTime - wr.DateTime;
+				firstHeld = wr.DateTime;
+				lastHeld = nextWr.DateTime;
 			}
 
-			return (worldRecordHolders.OrderByDescending(wrh => wrh.TotalTimeHeld).ToList(), worldRecordData);
+			if (i != 0 && wr.Entry.Id != worldRecords[i - 1].Entry.Id)
+				heldConsecutively = default;
 
-			// Used for determining when the leaderboard was reset.
-			static int GetMajorGameVersion(GameVersion? gameVersion) => gameVersion switch
+			heldConsecutively += duration;
+			worldRecordData.Add(wr, new(duration, previousWrSameLeaderboard == null ? null : wr.Entry.Time - previousWrSameLeaderboard.Entry.Time));
+
+			GetWorldRecordHolder? holder = worldRecordHolders.Find(wrh => wrh.Id == wr.Entry.Id);
+			if (holder == null)
 			{
-				GameVersion.V1 => 1,
-				GameVersion.V2 => 2,
-				GameVersion.V3 => 3,
-				GameVersion.V31 => 3,
-				_ => 0,
-			};
+				worldRecordHolders.Add(new(wr.Entry.Id, wr.Entry.Username, duration, heldConsecutively, 1, firstHeld, lastHeld));
+			}
+			else
+			{
+				holder.MostRecentUsername = wr.Entry.Username;
+				if (!holder.Usernames.Contains(wr.Entry.Username))
+					holder.Usernames.Add(wr.Entry.Username);
+
+				if (heldConsecutively > holder.LongestTimeHeldConsecutively)
+					holder.LongestTimeHeldConsecutively = heldConsecutively;
+
+				holder.TotalTimeHeld += duration;
+				holder.WorldRecordCount++;
+				if (firstHeld < holder.FirstHeld)
+					holder.FirstHeld = firstHeld;
+				holder.LastHeld = lastHeld;
+			}
 		}
 
-		private List<GetWorldRecord> GetWorldRecordsPrivate()
+		return (worldRecordHolders.OrderByDescending(wrh => wrh.TotalTimeHeld).ToList(), worldRecordData);
+
+		// Used for determining when the leaderboard was reset.
+		static int GetMajorGameVersion(GameVersion? gameVersion) => gameVersion switch
 		{
-			DateTime? previousDate = null;
-			List<GetWorldRecord> worldRecords = new();
-			int worldRecord = 0;
-			foreach (string leaderboardHistoryPath in _fileSystemService.TryGetFiles(DataSubDirectory.LeaderboardHistory))
+			GameVersion.V1 => 1,
+			GameVersion.V2 => 2,
+			GameVersion.V3 => 3,
+			GameVersion.V31 => 3,
+			_ => 0,
+		};
+	}
+
+	private List<GetWorldRecord> GetWorldRecordsPrivate()
+	{
+		DateTime? previousDate = null;
+		List<GetWorldRecord> worldRecords = new();
+		int worldRecord = 0;
+		foreach (string leaderboardHistoryPath in _fileSystemService.TryGetFiles(DataSubDirectory.LeaderboardHistory))
+		{
+			GetLeaderboardHistory leaderboard = _leaderboardHistoryCache.GetLeaderboardHistoryByFilePath(leaderboardHistoryPath);
+			GetEntryHistory? firstPlace = leaderboard.Entries.Find(e => e.Rank == 1);
+			if (firstPlace == null)
+				continue;
+
+			if (firstPlace.Time != worldRecord)
 			{
-				GetLeaderboardHistory leaderboard = _leaderboardHistoryCache.GetLeaderboardHistoryByFilePath(leaderboardHistoryPath);
-				GetEntryHistory? firstPlace = leaderboard.Entries.Find(e => e.Rank == 1);
-				if (firstPlace == null)
-					continue;
+				worldRecord = firstPlace.Time;
 
-				if (firstPlace.Time != worldRecord)
+				DateTime date;
+
+				// If history dates are only one day apart (which is assumed to be every day after _automationStart), use the average of the previous and the current date.
+				// This is because leaderboard history is recorded exactly at 00:00 UTC, and the date will therefore be one day ahead in all cases.
+				// For older history, use the literal leaderboard DateTime.
+				if (previousDate.HasValue && leaderboard.DateTime >= _automationStart)
+					date = GetAverage(previousDate.Value, leaderboard.DateTime);
+				else
+					date = leaderboard.DateTime;
+
+				worldRecords.Add(new()
 				{
-					worldRecord = firstPlace.Time;
-
-					DateTime date;
-
-					// If history dates are only one day apart (which is assumed to be every day after _automationStart), use the average of the previous and the current date.
-					// This is because leaderboard history is recorded exactly at 00:00 UTC, and the date will therefore be one day ahead in all cases.
-					// For older history, use the literal leaderboard DateTime.
-					if (previousDate.HasValue && leaderboard.DateTime >= _automationStart)
-						date = GetAverage(previousDate.Value, leaderboard.DateTime);
-					else
-						date = leaderboard.DateTime;
-
-					worldRecords.Add(new()
-					{
-						DateTime = date,
-						Entry = firstPlace,
-						GameVersion = GameInfo.GetGameVersionFromDate(date),
-					});
-				}
-
-				previousDate = leaderboard.DateTime;
+					DateTime = date,
+					Entry = firstPlace,
+					GameVersion = GameInfo.GetGameVersionFromDate(date),
+				});
 			}
 
-			return worldRecords;
-
-			static DateTime GetAverage(DateTime a, DateTime b)
-				=> new((a.Ticks + b.Ticks) / 2);
+			previousDate = leaderboard.DateTime;
 		}
+
+		return worldRecords;
+
+		static DateTime GetAverage(DateTime a, DateTime b)
+			=> new((a.Ticks + b.Ticks) / 2);
 	}
 }
