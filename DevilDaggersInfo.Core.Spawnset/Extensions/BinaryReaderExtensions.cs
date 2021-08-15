@@ -1,10 +1,7 @@
-﻿using System.IO;
+﻿namespace DevilDaggersInfo.Core.Spawnset.Extensions;
 
-namespace DevilDaggersInfo.Core.Spawnset.Extensions
+public static class BinaryReaderExtensions
 {
-	public static class BinaryReaderExtensions
-	{
-		public static void Seek(this BinaryReader binaryReader, long count)
-			=> binaryReader.BaseStream.Seek(count, SeekOrigin.Current);
-	}
+	public static void Seek(this BinaryReader binaryReader, long count)
+		=> binaryReader.BaseStream.Seek(count, SeekOrigin.Current);
 }

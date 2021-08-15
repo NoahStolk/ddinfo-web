@@ -1,14 +1,13 @@
-﻿namespace DevilDaggersInfo.Core.Spawnset.Summary
-{
-	public struct SpawnSectionInfo
-	{
-		public SpawnSectionInfo(int loopSpawnCount, float? nonLoopLength)
-		{
-			LoopSpawnCount = loopSpawnCount;
-			NonLoopLength = nonLoopLength;
-		}
+﻿namespace DevilDaggersInfo.Core.Spawnset.Summary;
 
-		public int LoopSpawnCount { get; }
-		public float? NonLoopLength { get; }
+public struct SpawnSectionInfo
+{
+	public SpawnSectionInfo(int loopSpawnCount, float? nonLoopLength)
+	{
+		LoopSpawnCount = loopSpawnCount;
+		NonLoopLength = nonLoopLength;
 	}
+
+	public int LoopSpawnCount { get; }
+	public float? NonLoopLength { get; }
 }

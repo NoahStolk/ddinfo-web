@@ -1,9 +1,8 @@
-﻿namespace DevilDaggersInfo.Core.Spawnset.Enums
+﻿namespace DevilDaggersInfo.Core.Spawnset.Enums;
+
+public enum GameMode
 {
-	public enum GameMode
-	{
-		Default = 0,
-		TimeAttack = 1,
-		Race = 2,
-	}
+	Default = 0,
+	TimeAttack = 1,
+	Race = 2,
 }
