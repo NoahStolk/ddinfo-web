@@ -2,6 +2,7 @@
 using DevilDaggersInfo.Web.BlazorWasm.Shared.Dto;
 using DevilDaggersInfo.Web.BlazorWasm.Shared.Dto.Public.CustomEntries;
 using DevilDaggersInfo.Web.BlazorWasm.Shared.Dto.Public.CustomLeaderboards;
+using DevilDaggersInfo.Web.BlazorWasm.Shared.Dto.Public.LeaderboardHistory;
 using DevilDaggersInfo.Web.BlazorWasm.Shared.Dto.Public.LeaderboardHistoryStatistics;
 using DevilDaggersInfo.Web.BlazorWasm.Shared.Dto.Public.Leaderboards;
 using DevilDaggersInfo.Web.BlazorWasm.Shared.Dto.Public.LeaderboardStatistics;
@@ -62,5 +63,10 @@ public class PublicApiHttpClient
 	public async Task<GetLeaderboard> GetLeaderboard(int rankStart)
 	{
 		return await _client.GetFromJsonAsync<GetLeaderboard>(UrlBuilderUtils.BuildUrlWithQuery("api/leaderboards", new() { { nameof(rankStart), rankStart } })) ?? throw new JsonDeserializationException();
+	}
+
+	public async Task<GetLeaderboardHistory> GetLeaderboardHistory(DateTime dateTime)
+	{
+		return await _client.GetFromJsonAsync<GetLeaderboardHistory>(UrlBuilderUtils.BuildUrlWithQuery("api/leaderboard-history", new() { { nameof(dateTime), dateTime } })) ?? throw new JsonDeserializationException();
 	}
 }

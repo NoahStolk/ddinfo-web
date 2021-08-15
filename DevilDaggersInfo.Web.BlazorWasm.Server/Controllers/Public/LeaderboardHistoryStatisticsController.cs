@@ -26,11 +26,11 @@ public class LeaderboardHistoryStatisticsController : ControllerBase
 	[ProducesResponseType(StatusCodes.Status200OK)]
 	[ProducesResponseType(StatusCodes.Status400BadRequest)]
 	[EndpointConsumer(EndpointConsumers.Website)]
-	public List<GetLeaderboardHistoryStatistics> GetLeaderboardHistoryStatistics()
+	public ActionResult<List<GetLeaderboardHistoryStatistics>> GetLeaderboardHistoryStatistics()
 	{
 		string? firstPath = _fileSystemService.TryGetFiles(DataSubDirectory.LeaderboardHistory).OrderBy(p => p).FirstOrDefault();
 		if (firstPath == null)
-			return new();
+			return new List<GetLeaderboardHistoryStatistics>();
 
 		GetLeaderboardHistory current = _leaderboardHistoryCache.GetLeaderboardHistoryByFilePath(firstPath);
 
