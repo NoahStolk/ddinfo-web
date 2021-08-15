@@ -1,4 +1,4 @@
-﻿@using DevilDaggersInfo.Web.BlazorWasm.Shared.Dto.Public.Leaderboards
+﻿@using DevilDaggersInfo.Web.BlazorWasm.Shared.Dto.Public
 
 <div class="py-3 grid gap-4 grid-cols-2 lg:grid-cols-6 font-goethe text-xl">
 	<LeaderboardGlobalIcon TooltipText="TOTAL PLAYERS" IconImageSrc="/images/icons/default-x4/eye4.png">
@@ -23,7 +23,7 @@
 
 @code
 {
-	[Parameter, EditorRequired] public GetLeaderboard Leaderboard { get; set; } = null!;
+	[Parameter, EditorRequired] public IGetLeaderboardGlobalDto Leaderboard { get; set; } = null!;
 	[Parameter] public bool IsHistory { get; set; }
 
 	private string? _players;

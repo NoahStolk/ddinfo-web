@@ -1,6 +1,5 @@
 ﻿using DevilDaggersInfo.Web.BlazorWasm.Server.Clients.Leaderboard;
 using DevilDaggersInfo.Web.BlazorWasm.Shared.Dto.Public.Leaderboards;
-using DevilDaggersInfo.Web.BlazorWasm.Shared.Enums;
 using DevilDaggersInfo.Web.BlazorWasm.Shared.Extensions;
 
 namespace DevilDaggersInfo.Web.BlazorWasm.Server.Converters.Public;
@@ -27,7 +26,7 @@ public static class LeaderboardConverters
 		DaggersHit = entryResponse.DaggersHit,
 		DaggersHitTotal = entryResponse.DaggersHitTotal,
 		DeathsTotal = entryResponse.DeathsTotal,
-		DeathType = (DeathType)entryResponse.DeathType,
+		DeathType = (byte)entryResponse.DeathType,
 		Gems = entryResponse.Gems,
 		GemsTotal = entryResponse.GemsTotal,
 		Id = entryResponse.Id,

@@ -1,7 +1,10 @@
-﻿namespace DevilDaggersInfo.Web.BlazorWasm.Shared.Dto.Public.LeaderboardHistory;
+﻿using DevilDaggersInfo.Web.BlazorWasm.Shared.Extensions;
+using Newtonsoft.Json;
+
+namespace DevilDaggersInfo.Web.BlazorWasm.Shared.Dto.Public.LeaderboardHistory;
 
 // This class must correspond to what's stored in the leaderboard history JSON.
-public class GetEntryHistory
+public class GetEntryHistory : IGetEntryDto
 {
 	public int Rank { get; set; }
 
@@ -16,7 +19,7 @@ public class GetEntryHistory
 
 	public int Gems { get; set; }
 
-	public int DeathType { get; set; }
+	public byte DeathType { get; set; }
 
 	public int DaggersHit { get; set; }
 
@@ -34,4 +37,10 @@ public class GetEntryHistory
 	public ulong DaggersHitTotal { get; set; }
 
 	public ulong DaggersFiredTotal { get; set; }
+
+	[JsonIgnore]
+	double IGetEntryDto.Time => Time.ToSecondsTime();
+
+	[JsonIgnore]
+	double IGetEntryDto.TimeTotal => TimeTotal.ToSecondsTime();
 }

@@ -1,6 +1,6 @@
 ﻿namespace DevilDaggersInfo.Web.BlazorWasm.Shared.Dto.Public.Leaderboards;
 
-public class GetEntry
+public class GetEntry : IGetEntryDto
 {
 	public int Rank { get; init; }
 
@@ -14,7 +14,7 @@ public class GetEntry
 
 	public int Gems { get; init; }
 
-	public DeathType DeathType { get; init; }
+	public byte DeathType { get; init; }
 
 	public int DaggersHit { get; init; }
 
