@@ -106,7 +106,7 @@ public class CustomLeaderboardsController : ControllerBase
 	{
 		CustomLeaderboardEntity? customLeaderboard = _dbContext.CustomLeaderboards
 			.AsNoTracking()
-			.Include(cl => cl.CustomEntries)
+			.Include(cl => cl.CustomEntries!)
 				.ThenInclude(ce => ce.Player)
 			.Include(cl => cl.Spawnset)
 				.ThenInclude(sf => sf.Player)

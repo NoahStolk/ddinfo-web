@@ -1,0 +1,11 @@
+﻿<div>
+	<Tooltip Text="@TooltipText" CssClass="text-center w-full font-calibri"><img class="mx-auto" src="@IconImageSrc" /></Tooltip>
+	@ChildContent
+</div>
+
+@code
+{
+	[Parameter, EditorRequired] public string TooltipText { get; set; } = null!;
+	[Parameter, EditorRequired] public string IconImageSrc { get; set; } = null!;
+	[Parameter, EditorRequired] public RenderFragment ChildContent { get; set; } = null!;
+}

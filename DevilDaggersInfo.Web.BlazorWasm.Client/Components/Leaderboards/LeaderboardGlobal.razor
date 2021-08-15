@@ -1,41 +1,32 @@
 ﻿@using DevilDaggersInfo.Web.BlazorWasm.Shared.Dto.Public.Leaderboards
 
 <div class="py-3 grid gap-4 grid-cols-2 lg:grid-cols-6 font-goethe text-xl">
-	<div>
-		<Tooltip Text="TOTAL PLAYERS" CssClass="@_tooltipClasses"><img class="@_iconClasses" src="/images/icons/default-x4/eye4.png" /></Tooltip>
+	<LeaderboardGlobalIcon TooltipText="TOTAL PLAYERS" IconImageSrc="/images/icons/default-x4/eye4.png">
 		<div class="devil text-center">@_players</div>
-	</div>
-	<div>
-		<Tooltip Text="GLOBAL TIME" CssClass="@_tooltipClasses"><img class="@_iconClasses" src="/images/icons/default-x4/stopwatch.png" /></Tooltip>
+	</LeaderboardGlobalIcon>
+	<LeaderboardGlobalIcon TooltipText="GLOBAL TIME" IconImageSrc="/images/icons/default-x4/stopwatch.png">
 		<div class="devil text-center">@_time</div>
-	</div>
-	<div>
-		<Tooltip Text="GLOBAL KILLS" CssClass="@_tooltipClasses"><img class="@_iconClasses" src="/images/icons/default-x4/dagger.png" /></Tooltip>
+	</LeaderboardGlobalIcon>
+	<LeaderboardGlobalIcon TooltipText="GLOBAL KILLS" IconImageSrc="/images/icons/default-x4/dagger.png">
 		<div class="devil text-center">@_kills</div>
-	</div>
-	<div>
-		<Tooltip Text="GLOBAL GEMS" CssClass="@_tooltipClasses"><img class="@_iconClasses" src="/images/icons/default-x4/gem.png" /></Tooltip>
+	</LeaderboardGlobalIcon>
+	<LeaderboardGlobalIcon TooltipText="GLOBAL GEMS" IconImageSrc="/images/icons/default-x4/gem.png">
 		<div class="devil text-center">@_gems</div>
-	</div>
-	<div>
-		<Tooltip Text="GLOBAL ACCURACY" CssClass="@_tooltipClasses"><img class="@_iconClasses" src="/images/icons/default-x4/crosshair.png" /></Tooltip>
+	</LeaderboardGlobalIcon>
+	<LeaderboardGlobalIcon TooltipText="GLOBAL ACCURACY" IconImageSrc="/images/icons/default-x4/crosshair.png">
 		<div class="text-center">
 			<Tooltip Text="@_daggers"><span class="devil">@_accuracy</span></Tooltip>
 		</div>
-	</div>
-	<div>
-		<Tooltip Text="GLOBAL DEATHS" CssClass="@_tooltipClasses"><img class="@_iconClasses" src="/images/icons/default-x4/skull.png" /></Tooltip>
+	</LeaderboardGlobalIcon>
+	<LeaderboardGlobalIcon TooltipText="GLOBAL DEATHS" IconImageSrc="/images/icons/default-x4/skull.png">
 		<div class="devil text-center">@_deaths</div>
-	</div>
+	</LeaderboardGlobalIcon>
 </div>
 
 @code
 {
 	[Parameter, EditorRequired] public GetLeaderboard Leaderboard { get; set; } = null!;
 	[Parameter] public bool IsHistory { get; set; }
-
-	private const string _tooltipClasses = "text-center w-full font-calibri";
-	private const string _iconClasses = "mx-auto";
 
 	private string? _players;
 	private string? _time;
