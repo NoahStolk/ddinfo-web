@@ -1,8 +1,6 @@
 ﻿using DevilDaggersInfo.Web.BlazorWasm.Shared.Dto;
 using DevilDaggersInfo.Web.BlazorWasm.Shared.Utils;
-using System.Data;
 using System.Globalization;
-using System.Reflection;
 
 namespace DevilDaggersInfo.Web.BlazorWasm.Client.Utils;
 
