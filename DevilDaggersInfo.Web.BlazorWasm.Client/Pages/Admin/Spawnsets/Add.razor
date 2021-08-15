@@ -3,7 +3,6 @@
 @inject NavigationManager NavigationManager
 @using DevilDaggersInfo.Web.BlazorWasm.Shared.Dto.Admin.Players
 @using DevilDaggersInfo.Web.BlazorWasm.Shared.Dto.Admin.Spawnsets
-@using System.IO
 
 <AdminAdd OverviewUrl="/admin/spawnsets" PostApiUrl="api/admin/spawnsets" Model="_addSpawnset" @ref="_addComponent">
 	<AdminInput Label="@nameof(AddSpawnset.PlayerId)"><SearchDropdown Values="@_playerNames" Converter="s => int.Parse(s)" @bind-Value="@_addSpawnset.PlayerId" /></AdminInput>

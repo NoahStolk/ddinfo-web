@@ -4,7 +4,6 @@
 @using DevilDaggersInfo.Web.BlazorWasm.Shared.Dto.Admin.Mods
 @using DevilDaggersInfo.Web.BlazorWasm.Shared.Dto.Admin.Players
 @using DevilDaggersInfo.Web.BlazorWasm.Shared.Enums
-@using System.IO
 
 <AdminAdd OverviewUrl="/admin/mods" PostApiUrl="api/admin/mods" Model="_addMod" @ref="_addComponent">
 	<AdminInput Label="@nameof(AddMod.Name)"><InputText class="w-64 pl-2 bg-gray-900 text-color-text" @bind-Value="@_addMod.Name" /></AdminInput>
