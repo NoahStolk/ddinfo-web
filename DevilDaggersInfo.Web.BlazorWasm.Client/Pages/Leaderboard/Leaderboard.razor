@@ -53,12 +53,13 @@ else
 
 @code
 {
+	private int _rank = 1;
 	private string? _apiError;
 	private bool _reloading;
 
 	private int _maxRank => (GetLeaderboard?.TotalPlayers ?? int.MaxValue) - 99;
 
-	public int Rank { get; set; } = 1;
+	[Parameter, SupplyParameterFromQuery] public int Rank { get => _rank; set => _rank = Math.Max(1, value); }
 
 	public GetLeaderboard? GetLeaderboard { get; set; }
 
@@ -66,9 +67,6 @@ else
 
 	protected override async Task OnInitializedAsync()
 	{
-		Dictionary<string, StringValues> query = NavigationManager.GetQuery();
-		Rank = Math.Clamp(query.GetIntOrDefault(QueryParameters.Rank), 1, _maxRank);
-
 		Players = await Http.GetPlayersForLeaderboard();
 		await FetchLeaderboard();
 	}

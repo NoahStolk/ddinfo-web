@@ -16,7 +16,7 @@ else
 	<Select @onchange="ChangeCategory" class="bg-gray-900 transition-colors duration-100 h-8 py-1 rounded text-color-text">
 		@foreach (CustomLeaderboardCategory e in (CustomLeaderboardCategory[])Enum.GetValues(typeof(CustomLeaderboardCategory)))
 		{
-			if (e == _category)
+			if (e == (CustomLeaderboardCategory)Category)
 			{
 				<option value="@e" selected>@e</option>
 			}
@@ -27,13 +27,13 @@ else
 		}
 	</Select>
 	<button class="bg-gray-900 hover:bg-gray-700 transition-colors duration-100 w-8 h-8 py-1 rounded text-color-text" @onclick="() => ChangePageIndex(0)">|&lt;</button>
-	<button class="bg-gray-900 hover:bg-gray-700 transition-colors duration-100 w-8 h-8 py-1 rounded text-color-text" @onclick="() => ChangePageIndex(_pageIndex - 1)">&lt;</button>
-	<button class="bg-gray-900 hover:bg-gray-700 transition-colors duration-100 w-8 h-8 py-1 rounded text-color-text" @onclick="() => ChangePageIndex(_pageIndex + 1)">&gt;</button>
+	<button class="bg-gray-900 hover:bg-gray-700 transition-colors duration-100 w-8 h-8 py-1 rounded text-color-text" @onclick="() => ChangePageIndex(PageIndex - 1)">&lt;</button>
+	<button class="bg-gray-900 hover:bg-gray-700 transition-colors duration-100 w-8 h-8 py-1 rounded text-color-text" @onclick="() => ChangePageIndex(PageIndex + 1)">&gt;</button>
 	<button class="bg-gray-900 hover:bg-gray-700 transition-colors duration-100 w-8 h-8 py-1 rounded text-color-text" @onclick="() => ChangePageIndex(TotalPages - 1)">&gt;|</button>
 	<Select @onchange="ChangePageSize" class="bg-gray-900 transition-colors duration-100 h-8 py-1 rounded text-color-text">
 		@foreach (int i in PublicPagingConstants.PageSizeOptions)
 		{
-			if (i == _pageSize)
+			if (i == PageSize)
 			{
 				<option value="@i" selected>@i</option>
 			}
@@ -43,7 +43,7 @@ else
 			}
 		}
 	</Select>
-	<div class="p-1">Page @(_pageIndex + 1) of @TotalPages (@(_pageIndex * _pageSize) - @Math.Min(GetCustomLeaderboards.TotalResults, (_pageIndex + 1) * _pageSize) of @GetCustomLeaderboards.TotalResults)</div>
+	<div class="p-1">Page @(PageIndex + 1) of @TotalPages (@(PageIndex * PageSize) - @Math.Min(GetCustomLeaderboards.TotalResults, (PageIndex + 1) * PageSize) of @GetCustomLeaderboards.TotalResults)</div>
 
 	<div class="grid gap-3 sm:grid-cols-custom-leaderboards-sm md:grid-cols-custom-leaderboards-md lg:grid-cols-custom-leaderboards-lg xl:grid-cols-custom-leaderboards-xl">
 		<a href="" @onclick:preventDefault class="text-color-link hover:text-color-link-hover text-left" @onclick="() => Sort(CustomLeaderboardSorting.SpawnsetName)">Name</a>
@@ -79,82 +79,75 @@ else
 
 @code
 {
-	private CustomLeaderboardCategory _category;
+	private int _category = 1;
 	private int _pageIndex;
-	private int _pageSize;
-	private CustomLeaderboardSorting _sortBy = CustomLeaderboardSorting.SpawnsetName;
-	private bool _ascending = false;
+	private int _pageSize = PublicPagingConstants.PageSizeDefault;
+
+	[Parameter, SupplyParameterFromQuery] public int Category { get => _category; set => _category = Math.Max(1, value); }
+	[Parameter, SupplyParameterFromQuery] public int PageIndex { get => _pageIndex; set => _pageIndex = Math.Max(0, value); }
+	[Parameter, SupplyParameterFromQuery] public int PageSize { get => _pageSize; set => _pageSize = value < PublicPagingConstants.PageSizeMin || value > PublicPagingConstants.PageSizeMax ? PublicPagingConstants.PageSizeDefault : value; }
+	[Parameter, SupplyParameterFromQuery] public int SortBy { get; set; }
+	[Parameter, SupplyParameterFromQuery] public bool Ascending { get; set; }
 
 	private Dictionary<CustomLeaderboardSorting, bool> _sortings = new();
 
 	public Page<GetCustomLeaderboardOverview>? GetCustomLeaderboards { get; set; }
 
-	private int TotalPages => GetCustomLeaderboards == null ? 0 : (GetCustomLeaderboards.TotalResults - 1) / _pageSize + 1;
+	private int TotalPages => GetCustomLeaderboards == null ? 0 : (GetCustomLeaderboards.TotalResults - 1) / PageSize + 1;
 
 	protected override async Task OnInitializedAsync()
 	{
 		foreach (CustomLeaderboardSorting e in (CustomLeaderboardSorting[])Enum.GetValues(typeof(CustomLeaderboardSorting)))
 			_sortings.Add(e, false);
 
-		Dictionary<string, StringValues> query = NavigationManager.GetQuery();
-		_category = query.GetEnumOrDefault<CustomLeaderboardCategory>(QueryParameters.Category);
-		_pageIndex = query.GetIntOrDefault(QueryParameters.PageIndex);
-		_pageSize = query.GetIntOrDefault(QueryParameters.PageSize);
-		_sortBy = query.GetEnumOrDefault<CustomLeaderboardSorting>(QueryParameters.SortBy);
-		_ascending = query.GetBoolOrDefault(QueryParameters.Ascending);
-
-		if (_category == default)
-			_category = CustomLeaderboardCategory.Default;
-
-		if (_pageIndex < 0)
-			_pageIndex = 0;
-
-		if (_pageSize < PublicPagingConstants.PageSizeMin || _pageSize > PublicPagingConstants.PageSizeMax)
-			_pageSize = PublicPagingConstants.PageSizeDefault;
-
 		await Fetch();
 	}
 
 	private async Task ChangePageIndex(int pageIndex)
 	{
-		_pageIndex = Math.Clamp(pageIndex, 0, TotalPages - 1);
-		NavigationManager.AddOrModifyQueryParameter(QueryParameters.PageIndex, _pageIndex);
+		PageIndex = Math.Clamp(pageIndex, 0, TotalPages - 1);
+		NavigationManager.AddOrModifyQueryParameter(QueryParameters.PageIndex, PageIndex);
 
 		await Fetch();
 	}
 
 	private async Task ChangePageSize(ChangeEventArgs e)
 	{
-		_ = int.TryParse(e.Value?.ToString(), out _pageSize);
-		NavigationManager.AddOrModifyQueryParameter(QueryParameters.PageSize, _pageSize);
+		if (!int.TryParse(e.Value?.ToString(), out int pageSize))
+			return;
 
-		_pageIndex = Math.Clamp(_pageIndex, 0, TotalPages - 1);
+		PageSize = pageSize;
+		NavigationManager.AddOrModifyQueryParameter(QueryParameters.PageSize, PageSize);
+
+		PageIndex = Math.Clamp(PageIndex, 0, TotalPages - 1);
 		await Fetch();
 	}
 
 	private async Task ChangeCategory(ChangeEventArgs e)
 	{
-		_ = Enum.TryParse<CustomLeaderboardCategory>(e.Value?.ToString(), out _category);
-		NavigationManager.AddOrModifyQueryParameter(QueryParameters.Category, _category);
+		if (!Enum.TryParse<CustomLeaderboardCategory>(e.Value?.ToString(), out CustomLeaderboardCategory category))
+			return;
+
+		Category = (int)category;
+		NavigationManager.AddOrModifyQueryParameter(QueryParameters.Category, Category);
 
 		await Fetch();
 	}
 
 	private async Task Sort(CustomLeaderboardSorting sortBy)
 	{
-		_sortBy = sortBy;
+		SortBy = (int)sortBy;
 		_sortings[sortBy] = !_sortings[sortBy];
-		_ascending = _sortings[sortBy];
+		Ascending = _sortings[sortBy];
 
-		NavigationManager.AddOrModifyQueryParameter(QueryParameters.SortBy, _sortBy);
-		NavigationManager.AddOrModifyQueryParameter(QueryParameters.Ascending, _ascending);
+		NavigationManager.AddOrModifyQueryParameter(new(QueryParameters.SortBy, SortBy), new(QueryParameters.Ascending, Ascending));
 
 		await Fetch();
 	}
 
 	private async Task Fetch()
 	{
-		GetCustomLeaderboards = await Http.GetCustomLeaderboards(_category, _pageIndex, _pageSize, _sortBy, _ascending);
+		GetCustomLeaderboards = await Http.GetCustomLeaderboards((CustomLeaderboardCategory)Category, PageIndex, PageSize, (CustomLeaderboardSorting)SortBy, Ascending);
 	}
 
 	private static class QueryParameters
