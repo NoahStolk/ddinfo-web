@@ -24,7 +24,7 @@ namespace DevilDaggersInfo.Web.BlazorWasm.Shared.Dto.Public.CustomEntries
 		public int LevelUpTime3 { get; init; }
 		public int LevelUpTime4 { get; init; }
 		public string ClientVersion { get; init; } = null!;
-		public OperatingSystem OperatingSystem { get; init; }
+		public Enums.OperatingSystem OperatingSystem { get; init; }
 		public BuildMode BuildMode { get; init; }
 		public string Validation { get; set; } = null!; // Use set for unit tests.
 		public bool IsReplay { get; init; }
