@@ -1,14 +1,13 @@
-﻿namespace DevilDaggersInfo.Web.BlazorWasm.Shared.Enums.Sortings.Admin
+﻿namespace DevilDaggersInfo.Web.BlazorWasm.Shared.Enums.Sortings.Admin;
+
+public enum DonationSorting
 {
-	public enum DonationSorting
-	{
-		Id,
-		PlayerName,
-		Amount,
-		Currency,
-		ConvertedEuroCentsReceived,
-		DateReceived,
-		Note,
-		IsRefunded,
-	}
+	Id,
+	PlayerName,
+	Amount,
+	Currency,
+	ConvertedEuroCentsReceived,
+	DateReceived,
+	Note,
+	IsRefunded,
 }

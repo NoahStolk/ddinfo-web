@@ -1,9 +1,8 @@
-﻿namespace DevilDaggersInfo.Web.BlazorWasm.Shared.Dto.Admin.Players
-{
-	public class GetPlayerName : IGetDto<int>
-	{
-		public int Id { get; init; }
+﻿namespace DevilDaggersInfo.Web.BlazorWasm.Shared.Dto.Admin.Players;
 
-		public string PlayerName { get; init; } = null!;
-	}
+public class GetPlayerName : IGetDto<int>
+{
+	public int Id { get; init; }
+
+	public string PlayerName { get; init; } = null!;
 }

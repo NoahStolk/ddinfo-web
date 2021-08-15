@@ -1,17 +1,16 @@
-﻿namespace DevilDaggersInfo.Web.BlazorWasm.Shared.Enums.Sortings.Public
+﻿namespace DevilDaggersInfo.Web.BlazorWasm.Shared.Enums.Sortings.Public;
+
+public enum CustomLeaderboardSorting
 {
-	public enum CustomLeaderboardSorting
-	{
-		SpawnsetName,
-		AuthorName,
-		TimeBronze,
-		TimeSilver,
-		TimeGolden,
-		TimeDevil,
-		TimeLeviathan,
-		DateCreated,
-		DateLastPlayed,
-		TopPlayer,
-		WorldRecord,
-	}
+	SpawnsetName,
+	AuthorName,
+	TimeBronze,
+	TimeSilver,
+	TimeGolden,
+	TimeDevil,
+	TimeLeviathan,
+	DateCreated,
+	DateLastPlayed,
+	TopPlayer,
+	WorldRecord,
 }

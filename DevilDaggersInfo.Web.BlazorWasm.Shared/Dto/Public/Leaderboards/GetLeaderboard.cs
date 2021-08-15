@@ -1,26 +1,22 @@
-﻿using System;
-using System.Collections.Generic;
+﻿namespace DevilDaggersInfo.Web.BlazorWasm.Shared.Dto.Public.Leaderboards;
 
-namespace DevilDaggersInfo.Web.BlazorWasm.Shared.Dto.Public.Leaderboards
+public class GetLeaderboard
 {
-	public class GetLeaderboard
-	{
-		public DateTime DateTime { get; init; }
+	public DateTime DateTime { get; init; }
 
-		public int TotalPlayers { get; init; }
+	public int TotalPlayers { get; init; }
 
-		public double TimeGlobal { get; init; }
+	public double TimeGlobal { get; init; }
 
-		public ulong KillsGlobal { get; init; }
+	public ulong KillsGlobal { get; init; }
 
-		public ulong GemsGlobal { get; init; }
+	public ulong GemsGlobal { get; init; }
 
-		public ulong DeathsGlobal { get; init; }
+	public ulong DeathsGlobal { get; init; }
 
-		public ulong DaggersHitGlobal { get; init; }
+	public ulong DaggersHitGlobal { get; init; }
 
-		public ulong DaggersFiredGlobal { get; init; }
+	public ulong DaggersFiredGlobal { get; init; }
 
-		public List<GetEntry> Entries { get; set; } = new();
-	}
+	public List<GetEntry> Entries { get; set; } = new();
 }

@@ -1,9 +1,6 @@
-﻿using System;
+﻿namespace DevilDaggersInfo.Web.BlazorWasm.Shared.Constants;
 
-namespace DevilDaggersInfo.Web.BlazorWasm.Shared.Constants
+public static class CustomLeaderboardFeatureConstants
 {
-	public static class CustomLeaderboardFeatureConstants
-	{
-		public static DateTime SubmitCount { get; } = new(2020, 8, 25);
-	}
+	public static DateTime SubmitCount { get; } = new(2020, 8, 25);
 }

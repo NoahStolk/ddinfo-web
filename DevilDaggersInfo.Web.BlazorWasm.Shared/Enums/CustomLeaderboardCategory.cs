@@ -1,9 +1,8 @@
-﻿namespace DevilDaggersInfo.Web.BlazorWasm.Shared.Enums
+﻿namespace DevilDaggersInfo.Web.BlazorWasm.Shared.Enums;
+
+public enum CustomLeaderboardCategory
 {
-	public enum CustomLeaderboardCategory
-	{
-		Default = 1,
-		TimeAttack = 2,
-		Speedrun = 3,
-	}
+	Default = 1,
+	TimeAttack = 2,
+	Speedrun = 3,
 }

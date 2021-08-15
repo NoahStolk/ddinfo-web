@@ -1,9 +1,8 @@
-﻿namespace DevilDaggersInfo.Web.BlazorWasm.Shared.Dto.Admin.ModScreenshots
-{
-	public class DeleteModScreenshot
-	{
-		public string ModName { get; set; } = null!;
+﻿namespace DevilDaggersInfo.Web.BlazorWasm.Shared.Dto.Admin.ModScreenshots;
 
-		public string ScreenshotName { get; set; } = null!;
-	}
+public class DeleteModScreenshot
+{
+	public string ModName { get; set; } = null!;
+
+	public string ScreenshotName { get; set; } = null!;
 }

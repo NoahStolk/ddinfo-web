@@ -1,8 +1,7 @@
-﻿namespace DevilDaggersInfo.Web.BlazorWasm.Shared.Dto.Public.Tools
+﻿namespace DevilDaggersInfo.Web.BlazorWasm.Shared.Dto.Public.Tools;
+
+// TODO: Move to Memory folder.
+public class GetDdclSettings
 {
-	// TODO: Move to Memory folder.
-	public class GetDdclSettings
-	{
-		public long MarkerWindowsSteam { get; init; }
-	}
+	public long MarkerWindowsSteam { get; init; }
 }

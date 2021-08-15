@@ -1,30 +1,29 @@
-﻿namespace DevilDaggersInfo.Web.BlazorWasm.Shared.Enums
+﻿namespace DevilDaggersInfo.Web.BlazorWasm.Shared.Enums;
+
+public enum Currency
 {
-	public enum Currency
-	{
-		/// <summary>
-		/// Euro.
-		/// </summary>
-		Eur,
+	/// <summary>
+	/// Euro.
+	/// </summary>
+	Eur,
 
-		/// <summary>
-		/// US Dollar.
-		/// </summary>
-		Usd,
+	/// <summary>
+	/// US Dollar.
+	/// </summary>
+	Usd,
 
-		/// <summary>
-		/// Australian Dollar.
-		/// </summary>
-		Aud,
+	/// <summary>
+	/// Australian Dollar.
+	/// </summary>
+	Aud,
 
-		/// <summary>
-		/// Great British Pound.
-		/// </summary>
-		Gbp,
+	/// <summary>
+	/// Great British Pound.
+	/// </summary>
+	Gbp,
 
-		/// <summary>
-		/// Singapore Dollar.
-		/// </summary>
-		Sgd,
-	}
+	/// <summary>
+	/// Singapore Dollar.
+	/// </summary>
+	Sgd,
 }

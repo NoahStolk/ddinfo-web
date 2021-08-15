@@ -1,9 +1,8 @@
-﻿namespace DevilDaggersInfo.Web.BlazorWasm.Shared.Enums
+﻿namespace DevilDaggersInfo.Web.BlazorWasm.Shared.Enums;
+
+public enum BuildMode
 {
-	public enum BuildMode
-	{
-		None = 0,
-		Debug = 1,
-		Release = 2,
-	}
+	None = 0,
+	Debug = 1,
+	Release = 2,
 }

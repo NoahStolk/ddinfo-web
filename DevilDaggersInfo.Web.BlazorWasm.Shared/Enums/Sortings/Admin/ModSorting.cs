@@ -1,14 +1,13 @@
-﻿namespace DevilDaggersInfo.Web.BlazorWasm.Shared.Enums.Sortings.Admin
+﻿namespace DevilDaggersInfo.Web.BlazorWasm.Shared.Enums.Sortings.Admin;
+
+public enum ModSorting
 {
-	public enum ModSorting
-	{
-		Id,
-		Name,
-		IsHidden,
-		LastUpdated,
-		TrailerUrl,
-		HtmlDescription,
-		ModTypes,
-		Url,
-	}
+	Id,
+	Name,
+	IsHidden,
+	LastUpdated,
+	TrailerUrl,
+	HtmlDescription,
+	ModTypes,
+	Url,
 }

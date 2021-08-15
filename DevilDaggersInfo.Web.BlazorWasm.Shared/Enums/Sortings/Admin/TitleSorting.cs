@@ -1,8 +1,7 @@
-﻿namespace DevilDaggersInfo.Web.BlazorWasm.Shared.Enums.Sortings.Admin
+﻿namespace DevilDaggersInfo.Web.BlazorWasm.Shared.Enums.Sortings.Admin;
+
+public enum TitleSorting
 {
-	public enum TitleSorting
-	{
-		Id,
-		Name,
-	}
+	Id,
+	Name,
 }

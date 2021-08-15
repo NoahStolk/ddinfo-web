@@ -1,13 +1,9 @@
-﻿using DevilDaggersInfo.Web.BlazorWasm.Shared.Constants;
-using System.ComponentModel.DataAnnotations;
+﻿namespace DevilDaggersInfo.Web.BlazorWasm.Shared.Dto.Admin.ModScreenshots;
 
-namespace DevilDaggersInfo.Web.BlazorWasm.Shared.Dto.Admin.ModScreenshots
+public class AddModScreenshot
 {
-	public class AddModScreenshot
-	{
-		public string ModName { get; set; } = null!;
+	public string ModName { get; set; } = null!;
 
-		[MaxLength(ModScreenshotConstants.MaxFileSize, ErrorMessage = ModScreenshotConstants.MaxFileSizeErrorMessage)]
-		public byte[] FileContents { get; set; } = null!;
-	}
+	[MaxLength(ModScreenshotConstants.MaxFileSize, ErrorMessage = ModScreenshotConstants.MaxFileSizeErrorMessage)]
+	public byte[] FileContents { get; set; } = null!;
 }

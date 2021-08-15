@@ -1,14 +1,13 @@
-﻿namespace DevilDaggersInfo.Web.BlazorWasm.Shared.Enums.Sortings.Admin
+﻿namespace DevilDaggersInfo.Web.BlazorWasm.Shared.Enums.Sortings.Admin;
+
+public enum UserSorting
 {
-	public enum UserSorting
-	{
-		Id,
-		UserName,
-		IsAdmin,
-		IsCustomLeaderboardsMaintainer,
-		IsDonationsMaintainer,
-		IsModsMaintainer,
-		IsPlayersMaintainer,
-		IsSpawnsetsMaintainer,
-	}
+	Id,
+	UserName,
+	IsAdmin,
+	IsCustomLeaderboardsMaintainer,
+	IsDonationsMaintainer,
+	IsModsMaintainer,
+	IsPlayersMaintainer,
+	IsSpawnsetsMaintainer,
 }

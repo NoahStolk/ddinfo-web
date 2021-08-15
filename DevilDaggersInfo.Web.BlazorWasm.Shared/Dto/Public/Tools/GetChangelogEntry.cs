@@ -1,14 +1,10 @@
-﻿using System;
-using System.Collections.Generic;
+﻿namespace DevilDaggersInfo.Web.BlazorWasm.Shared.Dto.Public.Tools;
 
-namespace DevilDaggersInfo.Web.BlazorWasm.Shared.Dto.Public.Tools
+public class GetChangelogEntry
 {
-	public class GetChangelogEntry
-	{
-		public Version VersionNumber { get; init; } = null!;
+	public Version VersionNumber { get; init; } = null!;
 
-		public DateTime Date { get; init; }
+	public DateTime Date { get; init; }
 
-		public IReadOnlyList<GetChange> Changes { get; init; } = new List<GetChange>();
-	}
+	public IReadOnlyList<GetChange> Changes { get; init; } = new List<GetChange>();
 }

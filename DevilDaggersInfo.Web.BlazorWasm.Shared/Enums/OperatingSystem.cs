@@ -1,9 +1,8 @@
-﻿namespace DevilDaggersInfo.Web.BlazorWasm.Shared.Enums
+﻿namespace DevilDaggersInfo.Web.BlazorWasm.Shared.Enums;
+
+public enum OperatingSystem
 {
-	public enum OperatingSystem
-	{
-		None = 0,
-		Windows = 1,
-		Linux = 2,
-	}
+	None = 0,
+	Windows = 1,
+	Linux = 2,
 }
