@@ -7,7 +7,6 @@ using DevilDaggersInfo.Web.BlazorWasm.Shared;
 using DevilDaggersInfo.Web.BlazorWasm.Shared.Constants;
 using DevilDaggersInfo.Web.BlazorWasm.Shared.Dto;
 using DevilDaggersInfo.Web.BlazorWasm.Shared.Dto.Admin.CustomEntries;
-using DevilDaggersInfo.Web.BlazorWasm.Shared.Enums;
 using DevilDaggersInfo.Web.BlazorWasm.Shared.Enums.Sortings.Admin;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
