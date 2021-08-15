@@ -1,0 +1,61 @@
+﻿@page "/leaderboard/history"
+@inject PublicApiHttpClient Http
+@inject NavigationManager NavigationManager
+@using DevilDaggersInfo.Web.BlazorWasm.Shared.Dto.Public
+@using DevilDaggersInfo.Web.BlazorWasm.Shared.Dto.Public.LeaderboardHistory
+@using DevilDaggersInfo.Web.BlazorWasm.Shared.Dto.Public.Players
+@using DevilDaggersInfo.Web.BlazorWasm.Client.Components.Leaderboards
+
+<Heading>Leaderboard</Heading>
+
+@if (GetLeaderboardHistory == null)
+{
+	<Loading />
+}
+else
+{
+	<div>
+		@*Date picker*@
+		<button class="bg-gray-900 hover:bg-gray-700 transition-colors duration-100 w-16 h-8 py-1 rounded text-color-text" @onclick="FetchLeaderboard">Show</button>
+
+		@if (_reloading)
+		{
+			<Loading />
+		}
+	</div>
+
+	<LeaderboardGlobal Leaderboard="GetLeaderboardHistory" IsHistory="true" />
+	<LeaderboardTableInfo />
+	<LeaderboardTable TGetLeaderboardDto="GetLeaderboardHistory" TGetEntryDto="GetEntryHistory" Leaderboard="GetLeaderboardHistory" Players="Players" IsHistory="true" />
+}
+
+@code
+{
+	private bool _reloading;
+
+	[Parameter, SupplyParameterFromQuery] public DateTime DateTime { get; set; }
+
+	public GetLeaderboardHistory? GetLeaderboardHistory { get; set; }
+
+	public List<GetPlayerForLeaderboard>? Players { get; set; }
+
+	protected override async Task OnInitializedAsync()
+	{
+		Players = await Http.GetPlayersForLeaderboard();
+		await FetchLeaderboard();
+	}
+
+	private async Task FetchLeaderboard()
+	{
+		if (GetLeaderboardHistory != null)
+			_reloading = true;
+
+		GetLeaderboardHistory = await Http.GetLeaderboardHistory(DateTime);
+		_reloading = false;
+	}
+
+	private static class QueryParameters
+	{
+		public static string Date { get; } = nameof(Date);
+	}
+}
