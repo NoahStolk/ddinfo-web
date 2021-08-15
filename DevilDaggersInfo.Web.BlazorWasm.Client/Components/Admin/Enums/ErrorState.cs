@@ -1,9 +1,8 @@
-﻿namespace DevilDaggersInfo.Web.BlazorWasm.Client.Components.Admin.Enums
+﻿namespace DevilDaggersInfo.Web.BlazorWasm.Client.Components.Admin.Enums;
+
+public enum ErrorState
 {
-	public enum ErrorState
-	{
-		None,
-		ValidationError,
-		FatalError,
-	}
+	None,
+	ValidationError,
+	FatalError,
 }
