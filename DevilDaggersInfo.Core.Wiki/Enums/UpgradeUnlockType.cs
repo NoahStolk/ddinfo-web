@@ -1,8 +1,7 @@
-﻿namespace DevilDaggersInfo.Core.Wiki.Enums
+﻿namespace DevilDaggersInfo.Core.Wiki.Enums;
+
+public enum UpgradeUnlockType
 {
-	public enum UpgradeUnlockType
-	{
-		Gems,
-		Homing,
-	}
+	Gems,
+	Homing,
 }

@@ -1,8 +1,7 @@
-﻿namespace DevilDaggersInfo.Core.Wiki.Enums
+﻿namespace DevilDaggersInfo.Core.Wiki.Enums;
+
+// Includes 'made-up' values for old death types, such as for STRICKEN.
+public enum LeaderboardDeathType
 {
-	// Includes 'made-up' types for old death types, such as STRICKEN.
-	public enum LeaderboardDeathType
-	{
-		// TODO
-	}
+	// TODO
 }

@@ -1,16 +1,13 @@
-﻿using DevilDaggersInfo.Core.Wiki.Enums;
+﻿namespace DevilDaggersInfo.Core.Wiki.Structs;
 
-namespace DevilDaggersInfo.Core.Wiki.Structs
+public struct UpgradeUnlock
 {
-	public struct UpgradeUnlock
+	public UpgradeUnlock(UpgradeUnlockType upgradeUnlockType, int value)
 	{
-		public UpgradeUnlock(UpgradeUnlockType upgradeUnlockType, int value)
-		{
-			UpgradeUnlockType = upgradeUnlockType;
-			Value = value;
-		}
-
-		public UpgradeUnlockType UpgradeUnlockType { get; }
-		public int Value { get; }
+		UpgradeUnlockType = upgradeUnlockType;
+		Value = value;
 	}
+
+	public UpgradeUnlockType UpgradeUnlockType { get; }
+	public int Value { get; }
 }
