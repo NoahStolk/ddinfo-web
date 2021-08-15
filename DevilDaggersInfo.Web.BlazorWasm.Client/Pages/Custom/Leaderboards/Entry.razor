@@ -47,7 +47,7 @@ else
 	private LineChart<ushort>? _enemiesAlivePerTypeChart;
 	private LineChart<ushort>? _enemiesKilledPerTypeChart;
 
-	[Parameter] public int Id { get; set; }
+	[Parameter, EditorRequired] public int Id { get; set; }
 
 	public GetCustomEntryData? GetCustomEntryData { get; set; }
 

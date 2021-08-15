@@ -21,9 +21,9 @@
 </div>
 
 @code {
-	[Parameter] public int Id { get; set; }
-	[Parameter] public string Name { get; set; } = null!;
-	[Parameter] public string DaggerCssClass { get; set; } = null!;
+	[Parameter, EditorRequired] public int Id { get; set; }
+	[Parameter, EditorRequired] public string Name { get; set; } = null!;
+	[Parameter, EditorRequired] public string DaggerCssClass { get; set; } = null!;
 	[Parameter] public bool IsBanned { get; set; }
 	[Parameter] public string? BanDescription { get; set; }
 	[Parameter] public List<string>? Titles { get; set; }

@@ -3,5 +3,5 @@
 <span class="@GameInfo.GetDaggerFromSeconds(GameVersion.V31, TimeInSeconds).Name.ToLower()">@(TimeInSeconds.ToString(FormatUtils.TimeFormat))</span>
 
 @code {
-	[Parameter] public double TimeInSeconds { get; set; }
+	[Parameter, EditorRequired] public double TimeInSeconds { get; set; }
 }

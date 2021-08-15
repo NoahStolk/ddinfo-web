@@ -13,8 +13,8 @@
 
 @code
 {
-	[Parameter] public int PlayerId { get; set; }
-	[Parameter] public int Rank { get; set; }
+	[Parameter, EditorRequired] public int PlayerId { get; set; }
+	[Parameter, EditorRequired] public int Rank { get; set; }
 
 	private async Task CopyToClipboard()
 	{

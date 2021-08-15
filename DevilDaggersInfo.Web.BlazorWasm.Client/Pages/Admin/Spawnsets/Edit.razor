@@ -18,7 +18,7 @@
 	private EditSpawnset? _editSpawnset;
 	private AdminEdit<EditSpawnset> _editComponent = null!;
 
-	[Parameter] public int Id { get; set; }
+	[Parameter, EditorRequired] public int Id { get; set; }
 
 	protected override async Task OnInitializedAsync()
 	{

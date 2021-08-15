@@ -67,8 +67,8 @@
 @code
 {
 	[Parameter] public bool IsHistory { get; set; }
-	[Parameter] public GetLeaderboard Leaderboard { get; set; } = null!;
-	[Parameter] public List<GetPlayerForLeaderboard>? Players { get; set; } = null!;
+	[Parameter, EditorRequired] public GetLeaderboard Leaderboard { get; set; } = null!;
+	[Parameter, EditorRequired] public List<GetPlayerForLeaderboard>? Players { get; set; } = null!;
 
 	private GameVersion _gameVersion;
 	private LeaderboardSorting _sortBy;

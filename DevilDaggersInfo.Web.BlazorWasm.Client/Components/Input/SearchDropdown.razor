@@ -32,7 +32,7 @@
 	private string SelectedDisplayValue => CurrentValue == null || Values?.ContainsKey(CurrentValue) != true ? "<None selected>" : $"{CurrentValue} ({Values[CurrentValue]})";
 
 	[Parameter] public Dictionary<TKey, string>? Values { get; set; }
-	[Parameter] public Func<string?, TKey> Converter { get; set; } = null!;
+	[Parameter, EditorRequired] public Func<string?, TKey> Converter { get; set; } = null!;
 
 	private bool _show = false;
 

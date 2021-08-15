@@ -46,7 +46,7 @@
 	public string? ApiResponse { get; set; }
 
 	[Parameter] public Func<Task>? AfterDelete { get; set; }
-	[Parameter] public string ApiRoute { get; set; } = null!;
+	[Parameter, EditorRequired] public string ApiRoute { get; set; } = null!;
 
 	public void Set(TKey id)
 	{

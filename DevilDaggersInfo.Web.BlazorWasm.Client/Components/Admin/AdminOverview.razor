@@ -72,9 +72,9 @@ else
 
 @code
 {
-	[Parameter] public string Title { get; set; } = null!;
-	[Parameter] public string ApiRoute { get; set; } = null!;
-	[Parameter] public string GridConfiguration { get; set; } = null!;
+	[Parameter, EditorRequired] public string Title { get; set; } = null!;
+	[Parameter, EditorRequired] public string ApiRoute { get; set; } = null!;
+	[Parameter, EditorRequired] public string GridConfiguration { get; set; } = null!;
 
 	private int TotalPages => _page == null ? 0 : (_page.TotalResults - 1) / _pageSize + 1;
 

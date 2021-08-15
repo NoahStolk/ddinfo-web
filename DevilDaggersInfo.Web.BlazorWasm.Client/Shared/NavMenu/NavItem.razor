@@ -8,10 +8,10 @@
 {
 	[CascadingParameter] NavMenu NavMenu { get; set; } = null!;
 
-	[Parameter] public string Href { get; set; } = null!;
+	[Parameter, EditorRequired] public string Href { get; set; } = null!;
 	[Parameter] public string? CssClass { get; set; }
-	[Parameter] public string IconType { get; set; } = null!;
-	[Parameter] public string Text { get; set; } = null!;
+	[Parameter, EditorRequired] public string IconType { get; set; } = null!;
+	[Parameter, EditorRequired] public string Text { get; set; } = null!;
 	[Parameter] public NavLinkMatch Match { get; set; }
 
 	private void CloseMenu()

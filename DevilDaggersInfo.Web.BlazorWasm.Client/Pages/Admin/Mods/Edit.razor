@@ -25,7 +25,7 @@
 	private AdminEdit<EditMod> _editComponent = null!;
 	private Dictionary<int, string> _modTypes = Enum.GetValues<ModTypes>().ToDictionary(e => (int)e, e => e.ToString());
 
-	[Parameter] public int Id { get; set; }
+	[Parameter, EditorRequired] public int Id { get; set; }
 
 	protected override async Task OnInitializedAsync()
 	{

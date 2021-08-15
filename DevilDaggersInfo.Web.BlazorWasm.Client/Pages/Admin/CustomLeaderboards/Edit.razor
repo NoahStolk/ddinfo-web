@@ -19,7 +19,7 @@
 	private EditCustomLeaderboard? _editCustomLeaderboard;
 	private AdminEdit<EditCustomLeaderboard> _editComponent = null!;
 
-	[Parameter] public int Id { get; set; }
+	[Parameter, EditorRequired] public int Id { get; set; }
 
 	protected override async Task OnInitializedAsync()
 	{

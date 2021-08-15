@@ -1,5 +1,5 @@
 ﻿<h1 class="text-red text-4xl py-2">@ChildContent</h1>
 
 @code {
-	[Parameter] public RenderFragment ChildContent { get; set; } = null!;
+	[Parameter, EditorRequired] public RenderFragment ChildContent { get; set; } = null!;
 }
