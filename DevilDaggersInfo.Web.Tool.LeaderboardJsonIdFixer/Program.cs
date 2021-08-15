@@ -3,9 +3,6 @@ using DevilDaggersInfo.Web.BlazorWasm.Shared.Dto.Public.LeaderboardHistory;
 using DevilDaggersInfo.Web.BlazorWasm.Shared.Utils;
 using DevilDaggersInfo.Web.Tool.Shared;
 using Newtonsoft.Json;
-using System;
-using System.Collections.Generic;
-using System.IO;
 using System.Text;
 
 #pragma warning disable IDE0079 // Remove unnecessary suppression
@@ -14,25 +11,20 @@ const string _leaderboardHistoryPath = @"C:\Users\NOAH\source\repos\DevilDaggers
 #pragma warning restore S1075 // URIs should not be hardcoded
 #pragma warning restore IDE0079 // Remove unnecessary suppression
 
-#pragma warning disable S125 // Sections of code should not be commented out
-
 // Raven fix
 SwapIds(new DateTime(2019, 4, 8), new DateTime(2019, 10, 11), 187974, 86805);
 
 // pocket fix
 SwapIds(new DateTime(2017, 11, 23), new DateTime(2020, 1, 14), 106722, 116704);
-#pragma warning restore S125 // Sections of code should not be commented out
 
-//ApplyNameTable();
+// ApplyNameTable();
 
 // Swaps Ids for players with 2 accounts in the leaderboard history files.
 // "dateStart" The date on which the player's alt overtook their main account.
 // "dateEnd" The date on which the player's main overtook their alt account.
 // "id1" The first Id to swap.
 // "id2" The second Id to swap.
-#pragma warning disable CS8321 // Local function is declared but never used
 static void SwapIds(DateTime dateStart, DateTime dateEnd, int id1, int id2)
-#pragma warning restore CS8321 // Local function is declared but never used
 {
 	foreach (string leaderboardHistoryPath in Directory.GetFiles(_leaderboardHistoryPath, "*.json"))
 	{

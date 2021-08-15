@@ -1,10 +1,5 @@
 ﻿using DevilDaggersInfo.Web.BlazorWasm.Server.Caches.LeaderboardStatistics;
-using System;
-using System.Collections.Generic;
 using System.Diagnostics;
-using System.IO;
-using System.Net.Http;
-using System.Threading.Tasks;
 
 byte[] init = await ExecuteRequest(1);
 

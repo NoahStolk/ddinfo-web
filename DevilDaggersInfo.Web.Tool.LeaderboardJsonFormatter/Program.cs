@@ -1,7 +1,5 @@
 ﻿using DevilDaggersInfo.Web.BlazorWasm.Shared.Dto.Public.LeaderboardHistory;
 using Newtonsoft.Json;
-using System;
-using System.IO;
 
 DateTime fullHistoryDateStart = new(2018, 10, 1);
 
