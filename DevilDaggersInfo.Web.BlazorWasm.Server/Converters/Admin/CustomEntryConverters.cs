@@ -1,4 +1,5 @@
-﻿using DevilDaggersInfo.Web.BlazorWasm.Server.Entities;
+﻿using DevilDaggersInfo.Core.Wiki.Enums;
+using DevilDaggersInfo.Web.BlazorWasm.Server.Entities;
 using DevilDaggersInfo.Web.BlazorWasm.Shared.Dto.Admin.CustomEntries;
 using DevilDaggersInfo.Web.BlazorWasm.Shared.Enums;
 using DevilDaggersInfo.Web.BlazorWasm.Shared.Extensions;

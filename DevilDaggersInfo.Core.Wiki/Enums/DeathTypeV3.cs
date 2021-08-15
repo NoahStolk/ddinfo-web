@@ -1,4 +1,4 @@
-﻿namespace DevilDaggersInfo.Web.BlazorWasm.Shared.Enums;
+﻿namespace DevilDaggersInfo.Core.Wiki.Enums;
 
 public enum DeathTypeV3 : byte
 {

@@ -1,4 +1,4 @@
-﻿namespace DevilDaggersInfo.Web.BlazorWasm.Shared.Enums;
+﻿namespace DevilDaggersInfo.Core.Wiki.Enums;
 
 /// <summary>
 /// Represents the death types from V1. The values are partially made up, because history was never kept track of for this game version.

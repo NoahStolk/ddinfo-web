@@ -1,4 +1,6 @@
-﻿namespace DevilDaggersInfo.Web.BlazorWasm.Shared.Dto.Admin.CustomEntries;
+﻿using DevilDaggersInfo.Core.Wiki.Enums;
+
+namespace DevilDaggersInfo.Web.BlazorWasm.Shared.Dto.Admin.CustomEntries;
 
 public class GetCustomEntry : IGetDto<int>
 {

@@ -1,4 +1,5 @@
-﻿using DevilDaggersInfo.Web.BlazorWasm.Server.Converters.Admin;
+﻿using DevilDaggersInfo.Core.Wiki.Enums;
+using DevilDaggersInfo.Web.BlazorWasm.Server.Converters.Admin;
 using DevilDaggersInfo.Web.BlazorWasm.Server.Entities;
 using DevilDaggersInfo.Web.BlazorWasm.Server.Extensions;
 using DevilDaggersInfo.Web.BlazorWasm.Server.Singletons.AuditLog;
