@@ -74,7 +74,7 @@ else
 	private async Task SetRank(int value)
 	{
 		Rank = Math.Clamp(value, 1, _maxRank);
-		NavigationManager.AddOrModifyQueryParameter(QueryParameters.Rank, Rank);
+		NavigationManager.AddOrModifyQueryParameters(QueryParameters.Rank, Rank);
 
 		await FetchLeaderboard();
 	}

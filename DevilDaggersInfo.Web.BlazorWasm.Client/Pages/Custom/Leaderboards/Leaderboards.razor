@@ -106,7 +106,7 @@ else
 	private async Task ChangePageIndex(int pageIndex)
 	{
 		PageIndex = Math.Clamp(pageIndex, 0, TotalPages - 1);
-		NavigationManager.AddOrModifyQueryParameter(QueryParameters.PageIndex, PageIndex);
+		NavigationManager.AddOrModifyQueryParameters(QueryParameters.PageIndex, PageIndex);
 
 		await Fetch();
 	}
@@ -117,7 +117,7 @@ else
 			return;
 
 		PageSize = pageSize;
-		NavigationManager.AddOrModifyQueryParameter(QueryParameters.PageSize, PageSize);
+		NavigationManager.AddOrModifyQueryParameters(QueryParameters.PageSize, PageSize);
 
 		PageIndex = Math.Clamp(PageIndex, 0, TotalPages - 1);
 		await Fetch();
@@ -129,7 +129,7 @@ else
 			return;
 
 		Category = (int)category;
-		NavigationManager.AddOrModifyQueryParameter(QueryParameters.Category, Category);
+		NavigationManager.AddOrModifyQueryParameters(QueryParameters.Category, Category);
 
 		await Fetch();
 	}
@@ -140,7 +140,7 @@ else
 		_sortings[sortBy] = !_sortings[sortBy];
 		Ascending = _sortings[sortBy];
 
-		NavigationManager.AddOrModifyQueryParameter(new(QueryParameters.SortBy, SortBy), new(QueryParameters.Ascending, Ascending));
+		NavigationManager.AddOrModifyQueryParameters(new(QueryParameters.SortBy, SortBy), new(QueryParameters.Ascending, Ascending));
 
 		await Fetch();
 	}
