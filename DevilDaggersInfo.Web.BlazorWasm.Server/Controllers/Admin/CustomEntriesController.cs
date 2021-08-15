@@ -146,7 +146,7 @@ public class CustomEntriesController : ControllerBase
 			CustomLeaderboardId = customEntry.CustomLeaderboardId,
 			DaggersFired = customEntry.DaggersFired,
 			DaggersHit = customEntry.DaggersHit,
-			DeathType = (DeathType)customEntry.DeathType,
+			DeathType = (DeathTypeV31)customEntry.DeathType,
 			EnemiesAlive = customEntry.EnemiesAlive,
 			EnemiesKilled = customEntry.EnemiesKilled,
 			GemsCollected = customEntry.GemsCollected,

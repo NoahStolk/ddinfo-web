@@ -15,6 +15,9 @@
     </PackageReference>
   </ItemGroup>
   <ItemGroup>
+    <ProjectReference Include="..\DevilDaggersInfo.Core.Wiki\DevilDaggersInfo.Core.Wiki.csproj" />
+  </ItemGroup>
+  <ItemGroup>
     <SupportedPlatform Include="browser" />
   </ItemGroup>
 </Project>
