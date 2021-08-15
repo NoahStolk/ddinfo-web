@@ -1,0 +1,16 @@
+﻿global using DevilDaggersInfo.Web.BlazorWasm.Server.Test.Data;
+global using DevilDaggersInfo.Web.BlazorWasm.Server.Test.Extensions;
+global using IdentityServer4.EntityFramework.Options;
+global using JetBrains.Annotations;
+global using Microsoft.AspNetCore.Hosting;
+global using Microsoft.AspNetCore.Http;
+global using Microsoft.AspNetCore.Mvc;
+global using Microsoft.EntityFrameworkCore;
+global using Microsoft.Extensions.Hosting;
+global using Microsoft.Extensions.Options;
+global using Microsoft.VisualStudio.TestTools.UnitTesting;
+global using Moq;
+global using System.Linq.Expressions;
+global using System.Reflection;
+global using System.Security.Cryptography;
+global using System.Web;
