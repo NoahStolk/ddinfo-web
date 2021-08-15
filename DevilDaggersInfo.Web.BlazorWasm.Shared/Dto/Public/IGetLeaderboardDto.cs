@@ -3,5 +3,5 @@
 public interface IGetLeaderboardDto<TGetEntryDto> : IGetLeaderboardGlobalDto
 	where TGetEntryDto : IGetEntryDto
 {
-	List<TGetEntryDto> Entries { get; }
+	List<TGetEntryDto> Entries { get; set; }
 }

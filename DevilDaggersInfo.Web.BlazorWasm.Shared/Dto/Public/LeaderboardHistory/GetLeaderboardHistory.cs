@@ -23,7 +23,7 @@ public class GetLeaderboardHistory : IGetLeaderboardDto<GetEntryHistory>
 
 	public ulong DaggersFiredGlobal { get; set; }
 
-	public List<GetEntryHistory> Entries { get; } = new();
+	public List<GetEntryHistory> Entries { get; set; } = new();
 
 	[JsonIgnore]
 	public int TotalPlayers => Players;

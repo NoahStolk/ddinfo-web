@@ -1,4 +1,7 @@
-﻿@using DevilDaggersCore.Game
+﻿@typeparam TGetLeaderboardDto
+@typeparam TGetEntryDto
+@using DevilDaggersCore.Game
+@using DevilDaggersInfo.Web.BlazorWasm.Shared.Dto.Public
 @using DevilDaggersInfo.Web.BlazorWasm.Shared.Dto.Public.Leaderboards
 @using DevilDaggersInfo.Web.BlazorWasm.Shared.Dto.Public.Players
 
@@ -22,7 +25,7 @@
 		@{
 			int i = 0;
 
-			foreach (GetEntry entry in Leaderboard.Entries)
+			foreach (IGetEntryDto entry in Leaderboard.Entries)
 			{
 				GetPlayerForLeaderboard? player = Players?.Find(p => p.Id == entry.Id);
 				bool isBanned = player?.IsBanned ?? false;
@@ -67,7 +70,7 @@
 @code
 {
 	[Parameter] public bool IsHistory { get; set; }
-	[Parameter, EditorRequired] public GetLeaderboard Leaderboard { get; set; } = null!;
+	[Parameter, EditorRequired] public TGetLeaderboardDto Leaderboard { get; set; } = default!;
 	[Parameter, EditorRequired] public List<GetPlayerForLeaderboard>? Players { get; set; } = null!;
 
 	private GameVersion _gameVersion;

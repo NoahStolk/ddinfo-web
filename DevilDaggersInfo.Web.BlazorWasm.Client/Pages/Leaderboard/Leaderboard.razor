@@ -1,6 +1,7 @@
 ﻿@page "/leaderboard"
 @inject PublicApiHttpClient Http
 @inject NavigationManager NavigationManager
+@using DevilDaggersInfo.Web.BlazorWasm.Shared.Dto.Public
 @using DevilDaggersInfo.Web.BlazorWasm.Shared.Dto.Public.Leaderboards
 @using DevilDaggersInfo.Web.BlazorWasm.Shared.Dto.Public.Players
 @using DevilDaggersInfo.Web.BlazorWasm.Client.Components.Leaderboards
@@ -49,7 +50,7 @@ else
 
 	<LeaderboardGlobal Leaderboard="GetLeaderboard" IsHistory="false" />
 	<LeaderboardTableInfo />
-	<LeaderboardTable Leaderboard="GetLeaderboard" Players="Players" IsHistory="false" />
+	<LeaderboardTable TGetLeaderboardDto="GetLeaderboard" TGetEntryDto="GetEntry" Leaderboard="GetLeaderboard" Players="Players" IsHistory="false" />
 }
 
 @code
