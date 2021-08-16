@@ -1,4 +1,5 @@
-﻿using DevilDaggersCore.Spawnsets;
+﻿using DevilDaggersInfo.Core.Spawnset;
+using DevilDaggersInfo.Core.Spawnset.Enums;
 using DevilDaggersInfo.Web.BlazorWasm.Server.Converters.Admin;
 using DevilDaggersInfo.Web.BlazorWasm.Server.Entities;
 using DevilDaggersInfo.Web.BlazorWasm.Server.Enums;
@@ -129,7 +130,7 @@ public class CustomLeaderboardsController : ControllerBase
 		if (spawnset == null)
 			return BadRequest($"Spawnset with ID '{addCustomLeaderboard.SpawnsetId}' does not exist.");
 
-		if (!Spawnset.TryParse(System.IO.File.ReadAllBytes(Path.Combine(_fileSystemService.GetPath(DataSubDirectory.Spawnsets), spawnset.Name)), out Spawnset parsedSpawnset))
+		if (!Spawnset.TryParse(System.IO.File.ReadAllBytes(Path.Combine(_fileSystemService.GetPath(DataSubDirectory.Spawnsets), spawnset.Name)), out Spawnset? parsedSpawnset))
 			throw new($"Could not parse survival file '{spawnset.Name}'. Please review the file. Also review how this file ended up in the 'spawnsets' directory, as it is not possible to upload non-survival files from within the Admin pages.");
 
 		if (addCustomLeaderboard.Category == CustomLeaderboardCategory.TimeAttack && parsedSpawnset.GameMode != GameMode.TimeAttack
@@ -200,7 +201,7 @@ public class CustomLeaderboardsController : ControllerBase
 		if (spawnset == null)
 			return BadRequest($"Spawnset with ID '{customLeaderboard.SpawnsetId}' does not exist.");
 
-		if (!Spawnset.TryParse(System.IO.File.ReadAllBytes(Path.Combine(_fileSystemService.GetPath(DataSubDirectory.Spawnsets), spawnset.Name)), out Spawnset parsedSpawnset))
+		if (!Spawnset.TryParse(System.IO.File.ReadAllBytes(Path.Combine(_fileSystemService.GetPath(DataSubDirectory.Spawnsets), spawnset.Name)), out Spawnset? parsedSpawnset))
 			throw new($"Could not parse survival file '{spawnset.Name}'. Please review the file. Also review how this file ended up in the 'spawnsets' directory, as it is not possible to upload non-survival files from within the Admin pages.");
 
 		if (editCustomLeaderboard.Category == CustomLeaderboardCategory.TimeAttack && parsedSpawnset.GameMode != GameMode.TimeAttack

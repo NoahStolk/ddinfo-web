@@ -1,4 +1,6 @@
-﻿using DevilDaggersCore.Game;
+﻿using DevilDaggersInfo.Core.Wiki;
+using DevilDaggersInfo.Core.Wiki.Enums;
+using DevilDaggersInfo.Core.Wiki.Objects;
 using DevilDaggersInfo.Web.BlazorWasm.Server.Enums;
 using DevilDaggersInfo.Web.BlazorWasm.Server.HostedServices.DdInfoDiscordBot;
 using DevilDaggersInfo.Web.BlazorWasm.Server.Singletons;
@@ -79,23 +81,23 @@ public class LeaderboardStatisticsCache : IStaticCache
 			}
 		}
 
-		foreach (Death death in GameInfo.GetDeaths(GameVersion.V31))
+		foreach (Death death in Deaths.GetDeaths(GameVersion.V3_1))
 			DeathStats.Add(death, 0);
 
-		foreach (Dagger dagger in GameInfo.GetDaggers(GameVersion.V31))
+		foreach (Dagger dagger in Daggers.GetDaggers(GameVersion.V3_1))
 			DaggerStats.Add(dagger, 0);
 
-		IEnumerable<Enemy> enemies = GameInfo.GetEnemies(GameVersion.V31).Where(e => e.FirstSpawnSecond.HasValue);
+		IEnumerable<Enemy> enemies = EnemiesV3_1.All.Where(e => e.FirstSpawnSecond.HasValue);
 		foreach (Enemy enemy in enemies)
 			EnemyStats.Add(enemy, 0);
 
 		foreach (CompressedEntry entry in _entries)
 		{
-			Dagger dagger = GameInfo.GetDaggerFromTenthsOfMilliseconds(GameVersion.V31, (int)entry.Time);
+			Dagger dagger = Daggers.GetDaggerFromTenthsOfMilliseconds(GameVersion.V3_1, (int)entry.Time);
 			if (DaggerStats.ContainsKey(dagger))
 				DaggerStats[dagger]++;
 
-			Death? death = GameInfo.GetDeathByType(GameVersion.V31, entry.DeathType);
+			Death? death = Deaths.GetDeathByType(GameVersion.V3_1, entry.DeathType);
 			if (death == null)
 				await _discordLogger.TryLog(Channel.MonitoringError, $":x: Invalid death type 0x{entry.DeathType:X} for entry with time {entry.Time} in leaderboard-statistics.");
 			else if (DeathStats.ContainsKey(death))

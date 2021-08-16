@@ -1,4 +1,5 @@
-﻿using DevilDaggersCore.Game;
+﻿using DevilDaggersInfo.Core.Wiki;
+using DevilDaggersInfo.Core.Wiki.Enums;
 using DevilDaggersInfo.Web.BlazorWasm.Server.Caches.LeaderboardHistory;
 using DevilDaggersInfo.Web.BlazorWasm.Server.Controllers.Attributes;
 using DevilDaggersInfo.Web.BlazorWasm.Server.Enums;
@@ -97,10 +98,9 @@ public class WorldRecordsController : ControllerBase
 		// Used for determining when the leaderboard was reset.
 		static int GetMajorGameVersion(GameVersion? gameVersion) => gameVersion switch
 		{
-			GameVersion.V1 => 1,
-			GameVersion.V2 => 2,
-			GameVersion.V3 => 3,
-			GameVersion.V31 => 3,
+			GameVersion.V1_0 => 1,
+			GameVersion.V2_0 => 2,
+			GameVersion.V3_0 or GameVersion.V3_1 => 3,
 			_ => 0,
 		};
 	}
@@ -135,7 +135,7 @@ public class WorldRecordsController : ControllerBase
 				{
 					DateTime = date,
 					Entry = firstPlace,
-					GameVersion = GameInfo.GetGameVersionFromDate(date),
+					GameVersion = GameVersions.GetGameVersionFromDate(date),
 				});
 			}
 

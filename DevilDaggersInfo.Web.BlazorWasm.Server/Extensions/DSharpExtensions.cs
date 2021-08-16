@@ -1,5 +1,4 @@
-﻿using DevilDaggersCore.Extensions;
-using DSharpPlus.Entities;
+﻿using DSharpPlus.Entities;
 
 namespace DevilDaggersInfo.Web.BlazorWasm.Server.Extensions;
 

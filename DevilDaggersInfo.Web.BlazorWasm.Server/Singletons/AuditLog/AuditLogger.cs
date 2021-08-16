@@ -1,5 +1,5 @@
-﻿using DevilDaggersCore.Extensions;
-using DevilDaggersInfo.Web.BlazorWasm.Server.Enums;
+﻿using DevilDaggersInfo.Web.BlazorWasm.Server.Enums;
+using DevilDaggersInfo.Web.BlazorWasm.Server.Extensions;
 using DevilDaggersInfo.Web.BlazorWasm.Server.HostedServices.DdInfoDiscordBot;
 using System.ComponentModel.DataAnnotations.Schema;
 using System.Reflection;

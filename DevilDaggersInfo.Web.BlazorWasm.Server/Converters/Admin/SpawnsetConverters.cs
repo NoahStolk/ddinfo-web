@@ -1,5 +1,5 @@
-﻿using DevilDaggersCore.Extensions;
-using DevilDaggersInfo.Web.BlazorWasm.Server.Entities;
+﻿using DevilDaggersInfo.Web.BlazorWasm.Server.Entities;
+using DevilDaggersInfo.Web.BlazorWasm.Server.Extensions;
 using DevilDaggersInfo.Web.BlazorWasm.Shared.Dto.Admin.Spawnsets;
 
 namespace DevilDaggersInfo.Web.BlazorWasm.Server.Converters.Admin;
