@@ -106,7 +106,7 @@
 			_ => null,
 		};
 
-		public static string[] GetEnemyInfo(Enemy enemy)
+		public static string[] GetEnemyDescription(Enemy enemy)
 		{
 			foreach (KeyValuePair<Enemy, string[]> kvp in _enemyDescriptions)
 			{
@@ -114,7 +114,7 @@
 					return kvp.Value;
 			}
 
-			throw new($"Could not find enemy info for {nameof(Enemy)} with name '{enemy.Name}' and version '{enemy.GameVersions}'.");
+			throw new($"Could not find enemy description for {nameof(Enemy)} '{enemy}'.");
 		}
 
 		public static Dagger GetDaggerFromTenthsOfMilliseconds(GameVersion gameVersion, int timeInTenthsOfMilliseconds)
