@@ -16,7 +16,7 @@ public static class EnemyColors
 	public static readonly Color Squid2 = new(0x80, 0x4E, 0x00);
 	public static readonly Color Squid3 = new(0xAF, 0x6B, 0x00);
 
-	public static readonly Color Spiderling = new(0x99, 0xA1, 0x00);
+	public static readonly Color Spiderling = new(0xDC, 0xCB, 0x00);
 
 	public static readonly Color Centipede = new(0x83, 0x7E, 0x75);
 	public static readonly Color Gigapede_V1_0_V2_0 = new(0x7B, 0x51, 0x57);
