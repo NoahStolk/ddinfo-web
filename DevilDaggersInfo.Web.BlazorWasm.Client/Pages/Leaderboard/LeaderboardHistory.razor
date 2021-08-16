@@ -6,7 +6,7 @@
 @using DevilDaggersInfo.Web.BlazorWasm.Shared.Dto.Public.Players
 @using DevilDaggersInfo.Web.BlazorWasm.Client.Components.Leaderboards
 
-<Heading>Leaderboard</Heading>
+<Heading>Leaderboard History</Heading>
 
 @if (GetLeaderboardHistory == null)
 {
@@ -15,14 +15,15 @@
 else
 {
 	<div>
-		@*Date picker*@
-		<button class="bg-gray-900 hover:bg-gray-700 transition-colors duration-100 w-16 h-8 py-1 rounded text-color-text" @onclick="FetchLeaderboard">Show</button>
+		<DatePicker DateSelected="@(d => UpdateDateTime(d))"/>
 
 		@if (_reloading)
 		{
 			<Loading />
 		}
 	</div>
+
+	<div>Closest result for @(DateTime.ToString(FormatUtils.DateTimeFormat)) is @(GetLeaderboardHistory.DateTime.ToString(FormatUtils.DateTimeFormat)).</div>
 
 	<LeaderboardGlobal Leaderboard="GetLeaderboardHistory" IsHistory="true" />
 	<LeaderboardTableInfo />
@@ -42,6 +43,18 @@ else
 	protected override async Task OnInitializedAsync()
 	{
 		Players = await Http.GetPlayersForLeaderboard();
+
+		if (DateTime == default)
+			DateTime = DateTime.UtcNow;
+
+		await FetchLeaderboard();
+	}
+
+	private async Task UpdateDateTime(DateTime dateTime)
+	{
+		DateTime = dateTime;
+		NavigationManager.AddOrModifyQueryParameters(QueryParameters.Date, dateTime);
+
 		await FetchLeaderboard();
 	}
 
