@@ -79,8 +79,7 @@ public class SpawnsetParseTests
 		int expectedAdditionalGems,
 		float expectedTimerStart)
 	{
-		using FileStream fs = new(Path.Combine("Data", fileName), FileMode.Open);
-		Spawnset spawnset = Spawnset.Parse(fs);
+		Spawnset spawnset = Spawnset.Parse(File.ReadAllBytes(Path.Combine("Data", fileName)));
 
 		Assert.AreEqual(expectedSpawnVersion, spawnset.SpawnVersion);
 		Assert.AreEqual(expectedWorldVersion, spawnset.WorldVersion);

@@ -57,11 +57,11 @@ public class Spawnset
 
 	#region Parsing
 
-	public static bool TryParse(Stream stream, [NotNullWhen(true)] out Spawnset? spawnset)
+	public static bool TryParse(byte[] fileContents, [NotNullWhen(true)] out Spawnset? spawnset)
 	{
 		try
 		{
-			spawnset = Parse(stream);
+			spawnset = Parse(fileContents);
 			return true;
 		}
 		catch
@@ -74,9 +74,10 @@ public class Spawnset
 
 	// TODO: Throw clear exceptions when parsing fails.
 	// TODO: Manually fix incorrect enum values.
-	public static Spawnset Parse(Stream stream)
+	public static Spawnset Parse(byte[] fileContents)
 	{
-		using BinaryReader br = new(stream);
+		using MemoryStream ms = new(fileContents);
+		using BinaryReader br = new(ms);
 		br.BaseStream.Position = 0;
 
 		// Header

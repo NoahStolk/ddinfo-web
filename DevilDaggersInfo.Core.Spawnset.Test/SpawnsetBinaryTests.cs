@@ -37,13 +37,8 @@ public class SpawnsetBinaryTests
 
 	private static void CompareBinaryOutput(string fileName)
 	{
-		using FileStream fs = new(Path.Combine("Data", fileName), FileMode.Open);
-		using MemoryStream ms = new();
-		fs.CopyTo(ms);
-
-		Spawnset spawnset = Spawnset.Parse(ms);
-
-		byte[] originalBytes = ms.ToArray();
+		byte[] originalBytes = File.ReadAllBytes(Path.Combine("Data", fileName));
+		Spawnset spawnset = Spawnset.Parse(originalBytes);
 		byte[] bytes = spawnset.ToBytes();
 
 		Assert.AreEqual(originalBytes.Length, bytes.Length);

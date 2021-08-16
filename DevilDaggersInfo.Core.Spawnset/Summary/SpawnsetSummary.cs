@@ -38,11 +38,11 @@ public class SpawnsetSummary
 	public int AdditionalGems { get; }
 	public float TimerStart { get; }
 
-	public static bool TryParse(Stream stream, [NotNullWhen(true)] out SpawnsetSummary? spawnsetSummary)
+	public static bool TryParse(byte[] fileContents, [NotNullWhen(true)] out SpawnsetSummary? spawnsetSummary)
 	{
 		try
 		{
-			spawnsetSummary = Parse(stream);
+			spawnsetSummary = Parse(fileContents);
 			return true;
 		}
 		catch
@@ -54,9 +54,10 @@ public class SpawnsetSummary
 	}
 
 	// TODO: Throw clear exceptions when parsing fails.
-	public static SpawnsetSummary Parse(Stream stream)
+	public static SpawnsetSummary Parse(byte[] fileContents)
 	{
-		using BinaryReader br = new(stream);
+		using MemoryStream ms = new(fileContents);
+		using BinaryReader br = new(ms);
 		br.BaseStream.Position = 0;
 
 		// Header

@@ -2,12 +2,12 @@
 
 public struct SpawnSectionInfo
 {
-	public SpawnSectionInfo(int loopSpawnCount, float? nonLoopLength)
+	public SpawnSectionInfo(int spawnCount, float? length)
 	{
-		LoopSpawnCount = loopSpawnCount;
-		NonLoopLength = nonLoopLength;
+		SpawnCount = spawnCount;
+		Length = length;
 	}
 
-	public int LoopSpawnCount { get; }
-	public float? NonLoopLength { get; }
+	public int SpawnCount { get; }
+	public float? Length { get; }
 }
