@@ -12,4 +12,6 @@ public struct Color
 	public byte R { get; }
 	public byte G { get; }
 	public byte B { get; }
+
+	public string HexCode => $"#{R:X2}{G:X2}{B:X2}";
 }

@@ -29,6 +29,8 @@ Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "DevilDaggersInfo.Core.Spawn
 EndProject
 Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "DevilDaggersInfo.Core.Wiki", "DevilDaggersInfo.Core.Wiki\DevilDaggersInfo.Core.Wiki.csproj", "{BA3418E3-BC09-4F07-9A84-79379BA02DCC}"
 EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "DevilDaggersInfo.Core.Wiki.Test", "DevilDaggersInfo.Core.Wiki.Test\DevilDaggersInfo.Core.Wiki.Test.csproj", "{07BBEC96-50D3-49A2-934F-AC8BB7E8BB0D}"
+EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
 		Debug|Any CPU = Debug|Any CPU
@@ -87,6 +89,10 @@ Global
 		{BA3418E3-BC09-4F07-9A84-79379BA02DCC}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{BA3418E3-BC09-4F07-9A84-79379BA02DCC}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{BA3418E3-BC09-4F07-9A84-79379BA02DCC}.Release|Any CPU.Build.0 = Release|Any CPU
+		{07BBEC96-50D3-49A2-934F-AC8BB7E8BB0D}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{07BBEC96-50D3-49A2-934F-AC8BB7E8BB0D}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{07BBEC96-50D3-49A2-934F-AC8BB7E8BB0D}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{07BBEC96-50D3-49A2-934F-AC8BB7E8BB0D}.Release|Any CPU.Build.0 = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE
