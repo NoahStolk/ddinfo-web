@@ -1,4 +1,4 @@
-﻿using DevilDaggersCore.Mods;
+﻿using DevilDaggersInfo.Core.Asset;
 
 namespace DevilDaggersInfo.Web.BlazorWasm.Server.Caches.ModArchives;
 

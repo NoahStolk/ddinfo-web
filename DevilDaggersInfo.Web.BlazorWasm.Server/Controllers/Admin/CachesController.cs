@@ -2,8 +2,8 @@
 using DevilDaggersInfo.Web.BlazorWasm.Server.Caches.LeaderboardHistory;
 using DevilDaggersInfo.Web.BlazorWasm.Server.Caches.LeaderboardStatistics;
 using DevilDaggersInfo.Web.BlazorWasm.Server.Caches.ModArchives;
-using DevilDaggersInfo.Web.BlazorWasm.Server.Caches.SpawnsetData;
 using DevilDaggersInfo.Web.BlazorWasm.Server.Caches.SpawnsetHashes;
+using DevilDaggersInfo.Web.BlazorWasm.Server.Caches.SpawnsetSummaries;
 using DevilDaggersInfo.Web.BlazorWasm.Shared;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
