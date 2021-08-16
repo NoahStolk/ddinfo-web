@@ -1,4 +1,4 @@
-﻿using DevilDaggersCore.Spawnsets;
+﻿using DevilDaggersInfo.Core.Spawnset;
 using DevilDaggersInfo.Web.BlazorWasm.Server.Caches.SpawnsetHashes;
 using DevilDaggersInfo.Web.BlazorWasm.Server.Controllers.Public;
 using DevilDaggersInfo.Web.BlazorWasm.Server.Entities;
@@ -215,10 +215,5 @@ public class CustomEntryTests
 	}
 
 	private static byte[] GetSpawnsetHash(Spawnset spawnset)
-	{
-		if (!spawnset.TryGetBytes(out byte[] bytes))
-			throw new("Could not get bytes from spawnset.");
-
-		return MD5.HashData(bytes);
-	}
+		=> MD5.HashData(spawnset.ToBytes());
 }

@@ -1,4 +1,5 @@
-﻿using DevilDaggersCore.Game;
+﻿using DevilDaggersInfo.Core.Wiki;
+using DevilDaggersInfo.Core.Wiki.Enums;
 using DevilDaggersInfo.Web.BlazorWasm.Shared.Dto.Public.LeaderboardHistory;
 using DevilDaggersInfo.Web.BlazorWasm.Shared.Utils;
 using Newtonsoft.Json;
@@ -65,7 +66,7 @@ public static class HighscoreSpreadUtils
 				_log.Append("\tSet missing stats for ").Append(entry.Username).Append(' ').AppendLine(entry.Time.ToString(FormatUtils.TimeFormat));
 				_log.Append("\t\tGems: ").Append(entry.Gems).AppendLine();
 				_log.Append("\t\tKills: ").Append(entry.Kills).AppendLine();
-				_log.Append("\t\tDeathType: ").AppendLine(GameInfo.GetDeathByType(GameInfo.GetGameVersionFromDate(leaderboard.DateTime) ?? GameVersion.V1, entry.DeathType)?.Name ?? "Unknown");
+				_log.Append("\t\tDeathType: ").AppendLine(Deaths.GetDeathByType(GameVersions.GetGameVersionFromDate(leaderboard.DateTime) ?? GameVersion.V1_0, entry.DeathType)?.Name ?? "Unknown");
 				_log.Append("\t\tAccuracy: ").AppendFormat("{0:00.00%}", entry.DaggersHit / (float)entry.DaggersFired).AppendLine();
 			}
 
