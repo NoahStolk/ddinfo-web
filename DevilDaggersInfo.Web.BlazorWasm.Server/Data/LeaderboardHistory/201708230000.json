@@ -32,7 +32,7 @@
       "Time": 10352322,
       "Kills": 0,
       "Gems": 0,
-      "DeathType": -1,
+      "DeathType": 255,
       "DaggersHit": 0,
       "DaggersFired": 0,
       "TimeTotal": 0,

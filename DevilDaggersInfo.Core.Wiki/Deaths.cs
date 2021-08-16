@@ -2,7 +2,7 @@
 
 public static class Deaths
 {
-	public static readonly Death None = new(GameVersionFlags.V2_0, "None", EnemyColors.Andras, 255);
+	public static readonly Death Unknown = new(GameVersionFlags.V1_0 | GameVersionFlags.V2_0 | GameVersionFlags.V3_0, "Unknown", EnemyColors.Andras, 255);
 
 	public static readonly Death Fallen = new(GameVersionFlags.V1_0 | GameVersionFlags.V2_0 | GameVersionFlags.V3_0 | GameVersionFlags.V3_1, "FALLEN", new(0xDD, 0xDD, 0xDD), 0);
 
@@ -53,6 +53,8 @@ public static class Deaths
 
 	public static readonly Death Ghostpede_Intoxicated = new(GameVersionFlags.V3_0, "INTOXICATED", EnemyColors.Ghostpede, 11);
 	public static readonly Death Ghostpede_Haunted = new(GameVersionFlags.V3_1, "HAUNTED", EnemyColors.Ghostpede, 16);
+
+	public static readonly Death Andras_None = new(GameVersionFlags.V2_0, "None", EnemyColors.Andras, 200);
 
 	private static readonly IEnumerable<Death> _all = typeof(Deaths).GetFields().Where(f => f.FieldType == typeof(Death)).Select(f => (Death)f.GetValue(null)!);
 	private static readonly IEnumerable<Death> _allV1_0 = _all.Where(ddo => (ddo.GameVersions & GameVersionFlags.V1_0) != 0);

@@ -25,7 +25,7 @@ public static class EnemiesV2_0
 	public static readonly Enemy SpiderEgg2 = new(GameVersionFlags.V2_0, "Spider Egg II", EnemyColors.SpiderEgg2, 3, 0, 0, Deaths.SpiderEgg2_Envenomated, new(3, 3), null, Spider2);
 	public static readonly Enemy Spiderling = new(GameVersionFlags.V2_0, "Spiderling", EnemyColors.Spiderling, 3, 0, 0, Deaths.Spiderling_Stricken, new(1, 1), null, SpiderEgg1, SpiderEgg2);
 
-	public static readonly Enemy Andras = new(GameVersionFlags.V2_0, "Andras", EnemyColors.Andras, 25, 1, 1, Deaths.None, new(null, null), null);
+	public static readonly Enemy Andras = new(GameVersionFlags.V2_0, "Andras", EnemyColors.Andras, 25, 1, 1, Deaths.Andras_None, new(null, null), null);
 
 	public static readonly IEnumerable<Enemy> All = typeof(EnemiesV2_0).GetFields().Where(f => f.FieldType == typeof(Enemy)).Select(f => (Enemy)f.GetValue(null)!);
 }
