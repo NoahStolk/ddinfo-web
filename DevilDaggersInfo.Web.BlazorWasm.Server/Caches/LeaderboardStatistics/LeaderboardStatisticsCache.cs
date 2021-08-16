@@ -97,7 +97,7 @@ public class LeaderboardStatisticsCache : IStaticCache
 			if (DaggerStats.ContainsKey(dagger))
 				DaggerStats[dagger]++;
 
-			Death? death = Deaths.GetDeathByType(GameVersion.V3_1, entry.DeathType);
+			Death? death = Deaths.GetDeathByLeaderboardType(GameVersion.V3_1, entry.DeathType);
 			if (death == null)
 				await _discordLogger.TryLog(Channel.MonitoringError, $":x: Invalid death type 0x{entry.DeathType:X} for entry with time {entry.Time} in leaderboard-statistics.");
 			else if (DeathStats.ContainsKey(death))

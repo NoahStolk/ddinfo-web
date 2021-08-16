@@ -37,7 +37,7 @@
 				Dagger dagger = Daggers.GetDaggerFromSeconds(_gameVersion, entry.Time);
 				string daggerCssClass = dagger.Name.ToLower();
 
-				Death? death = Deaths.GetDeathByType(_gameVersion, entry.DeathType);
+				Death? death = Deaths.GetDeathByLeaderboardType(_gameVersion, entry.DeathType);
 				string deathStyle = $"color: {(death?.Color.HexCode ?? "#444")};";
 				string deathName = death?.Name ?? "Unknown";
 

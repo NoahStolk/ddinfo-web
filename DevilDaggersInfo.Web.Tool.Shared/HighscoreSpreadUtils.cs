@@ -66,7 +66,7 @@ public static class HighscoreSpreadUtils
 				_log.Append("\tSet missing stats for ").Append(entry.Username).Append(' ').AppendLine(entry.Time.ToString(FormatUtils.TimeFormat));
 				_log.Append("\t\tGems: ").Append(entry.Gems).AppendLine();
 				_log.Append("\t\tKills: ").Append(entry.Kills).AppendLine();
-				_log.Append("\t\tDeathType: ").AppendLine(Deaths.GetDeathByType(GameVersions.GetGameVersionFromDate(leaderboard.DateTime) ?? GameVersion.V1_0, entry.DeathType)?.Name ?? "Unknown");
+				_log.Append("\t\tDeathType: ").AppendLine(Deaths.GetDeathByLeaderboardType(GameVersions.GetGameVersionFromDate(leaderboard.DateTime) ?? GameVersion.V1_0, entry.DeathType)?.Name ?? "Unknown");
 				_log.Append("\t\tAccuracy: ").AppendFormat("{0:00.00%}", entry.DaggersHit / (float)entry.DaggersFired).AppendLine();
 			}
 
