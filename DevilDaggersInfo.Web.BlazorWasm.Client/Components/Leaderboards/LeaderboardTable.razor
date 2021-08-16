@@ -1,6 +1,8 @@
 ﻿@typeparam TGetLeaderboardDto
 @typeparam TGetEntryDto
-@using DevilDaggersCore.Game
+@using DevilDaggersInfo.Core.Wiki
+@using DevilDaggersInfo.Core.Wiki.Enums
+@using DevilDaggersInfo.Core.Wiki.Objects
 @using DevilDaggersInfo.Web.BlazorWasm.Shared.Dto.Public
 @using DevilDaggersInfo.Web.BlazorWasm.Shared.Dto.Public.Leaderboards
 @using DevilDaggersInfo.Web.BlazorWasm.Shared.Dto.Public.Players
@@ -30,11 +32,11 @@
 				GetPlayerForLeaderboard? player = Players?.Find(p => p.Id == entry.Id);
 				bool isBanned = player?.IsBanned ?? false;
 
-				Dagger dagger = GameInfo.GetDaggerFromSeconds(_gameVersion, entry.Time);
+				Dagger dagger = Daggers.GetDaggerFromSeconds(_gameVersion, entry.Time);
 				string daggerCssClass = dagger.Name.ToLower();
 
-				Death? death = GameInfo.GetDeathByType(_gameVersion, (int)entry.DeathType);
-				string deathStyle = isBanned ? string.Empty : $"color: #{death?.ColorCode ?? "444"};";
+				Death? death = Deaths.GetDeathByType(_gameVersion, entry.DeathType);
+				string deathStyle = $"color: {(death?.Color.HexCode ?? "#444")};";
 				string deathName = death?.Name ?? "Unknown";
 
 				double accuracy = entry.DaggersFired == 0 ? 0 : entry.DaggersHit / (double)entry.DaggersFired;
@@ -84,7 +86,7 @@
 		foreach (LeaderboardSorting e in (LeaderboardSorting[])Enum.GetValues(typeof(LeaderboardSorting)))
 			_sortings.Add(e, false);
 
-		_gameVersion = GameInfo.GetGameVersionFromDate(Leaderboard.DateTime) ?? GameVersion.V1;
+		_gameVersion = GameVersions.GetGameVersionFromDate(Leaderboard.DateTime) ?? GameVersion.V1_0;
 	}
 
 	private void Sort(LeaderboardSorting sortBy)

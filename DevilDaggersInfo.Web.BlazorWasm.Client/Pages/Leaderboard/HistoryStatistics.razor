@@ -1,7 +1,7 @@
 ﻿@page "/leaderboard/history/statistics"
 @inject PublicApiHttpClient Http
 @using Blazorise.Charts
-@using DevilDaggersCore.Game
+@using DevilDaggersInfo.Core.Wiki
 @using DevilDaggersInfo.Web.BlazorWasm.Shared.Dto.Public.LeaderboardHistoryStatistics
 
 <Heading>Leaderboard History Statistics</Heading>
@@ -74,7 +74,7 @@ else
 				Fill = false,
 				PointRadius = 1,
 				ShowLine = true,
-				BorderColor = $"#{GameInfo.V31LeviathanDagger.ColorCode}",
+				BorderColor = Daggers.Leviathan.Color.HexCode,
 				LineTension = 0.1f,
 			},
 			new LineChartDataset<double>
@@ -85,7 +85,7 @@ else
 				Fill = false,
 				PointRadius = 1,
 				ShowLine = true,
-				BorderColor = $"#{GameInfo.V31Devil.ColorCode}",
+				BorderColor = Daggers.Devil.Color.HexCode,
 				LineTension = 0.1f,
 			});
 

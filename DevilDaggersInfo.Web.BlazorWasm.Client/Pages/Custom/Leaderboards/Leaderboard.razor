@@ -2,7 +2,9 @@
 @inject PublicApiHttpClient Http
 @using DevilDaggersInfo.Web.BlazorWasm.Shared.Dto.Public.CustomEntries
 @using DevilDaggersInfo.Web.BlazorWasm.Shared.Dto.Public.CustomLeaderboards
-@using DevilDaggersCore.Game
+@using DevilDaggersInfo.Core.Wiki
+@using DevilDaggersInfo.Core.Wiki.Enums
+@using DevilDaggersInfo.Core.Wiki.Objects
 
 <Heading>Custom Leaderboard</Heading>
 
@@ -40,8 +42,8 @@ else
 				{
 					string daggerCssClass = ce.CustomLeaderboardDagger.ToString().ToLower();
 
-					Death? death = GameInfo.GetDeathByType(GameVersion.V31, (int)ce.DeathType);
-					string deathStyle = $"color: #{death?.ColorCode ?? "444"};";
+					Death? death = Deaths.GetDeathByType(GameVersion.V3_1, ce.DeathType);
+					string deathStyle = $"color: {(death?.Color.HexCode ?? "#444")};";
 					string deathName = death?.Name ?? "Unknown";
 
 					double accuracy = ce.DaggersFired == 0 ? 0 : ce.DaggersHit / (double)ce.DaggersFired;

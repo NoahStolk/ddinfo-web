@@ -2,9 +2,9 @@
 {
 	public static class GameVersions
 	{
-		private static readonly GameVersionFlags[] _gameVersions = (GameVersionFlags[])Enum.GetValues(typeof(GameVersionFlags));
+		private static readonly GameVersion[] _gameVersions = (GameVersion[])Enum.GetValues(typeof(GameVersion));
 
-		public static GameVersionFlags? GetGameVersionFromDate(DateTime dateTime)
+		public static GameVersion? GetGameVersionFromDate(DateTime dateTime)
 		{
 			for (int i = 0; i < _gameVersions.Length; i++)
 			{
@@ -15,12 +15,12 @@
 			return null;
 		}
 
-		public static DateTime? GetReleaseDate(GameVersionFlags gameVersion) => gameVersion switch
+		public static DateTime? GetReleaseDate(GameVersion gameVersion) => gameVersion switch
 		{
-			GameVersionFlags.V1_0 => new(2016, 2, 18),
-			GameVersionFlags.V2_0 => new(2016, 7, 5),
-			GameVersionFlags.V3_0 => new(2016, 9, 19),
-			GameVersionFlags.V3_1 => new(2021, 2, 19),
+			GameVersion.V1_0 => new(2016, 2, 18),
+			GameVersion.V2_0 => new(2016, 7, 5),
+			GameVersion.V3_0 => new(2016, 9, 19),
+			GameVersion.V3_1 => new(2021, 2, 19),
 			_ => null,
 		};
 	}

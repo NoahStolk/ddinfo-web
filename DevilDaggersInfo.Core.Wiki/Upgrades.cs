@@ -11,7 +11,7 @@ public static class Upgrades
 	private static readonly IEnumerable<Upgrade> _all = typeof(Upgrades).GetFields().Where(f => f.FieldType == typeof(Upgrade)).Select(f => (Upgrade)f.GetValue(null)!);
 	private static readonly IEnumerable<Upgrade> _allV1_0 = _all.Where(ddo => ddo != Level4);
 
-	public static IEnumerable<DevilDaggersObject> GetDeaths(GameVersion gameVersion) => gameVersion switch
+	public static IEnumerable<Upgrade> GetUpgrades(GameVersion gameVersion) => gameVersion switch
 	{
 		GameVersion.V1_0 => _allV1_0,
 		GameVersion.V2_0 or GameVersion.V3_0 or GameVersion.V3_1 => _all,
