@@ -38,7 +38,7 @@ namespace DevilDaggersWebsite.Razor.Pages.Admin.AssetMods
 				.ConvertAll(n => new SelectListItem(n, n));
 		}
 
-		public static int MaxScreenshots { get; } = 10;
+		public static int MaxScreenshots { get; } = 16;
 
 		[BindProperty]
 		public IFormFile? FormFile { get; set; }
