@@ -19,7 +19,7 @@ public static class EnemyColors
 	public static readonly Color Spiderling = new(0x99, 0xA1, 0x00);
 
 	public static readonly Color Centipede = new(0x83, 0x7E, 0x75);
-	public static readonly Color GigapedeOld = new(0x7B, 0x51, 0x57);
+	public static readonly Color GigapedeV1V2 = new(0x7B, 0x51, 0x57);
 	public static readonly Color Gigapede = new(0x47, 0x8B, 0x41);
 	public static readonly Color Ghostpede = new(0xC8, 0xA2, 0xC8);
 
