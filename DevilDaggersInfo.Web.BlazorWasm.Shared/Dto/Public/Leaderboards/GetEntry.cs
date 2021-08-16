@@ -14,6 +14,7 @@ public class GetEntry : IGetEntryDto
 
 	public int Gems { get; init; }
 
+	// Note: cannot use DeathType enum here because of conflict with leaderboard history (which also implements this interface).
 	public byte DeathType { get; init; }
 
 	public int DaggersHit { get; init; }

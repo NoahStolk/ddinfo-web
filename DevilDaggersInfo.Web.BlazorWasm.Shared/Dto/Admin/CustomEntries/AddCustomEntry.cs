@@ -28,7 +28,7 @@ public class AddCustomEntry
 
 	public int HomingEaten { get; init; }
 
-	public DeathType DeathType { get; init; }
+	public CustomEntryDeathType DeathType { get; init; }
 
 	public int LevelUpTime2 { get; init; }
 

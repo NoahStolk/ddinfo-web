@@ -1,9 +1,6 @@
 ﻿namespace DevilDaggersInfo.Web.BlazorWasm.Shared.Enums;
 
-/// <summary>
-/// Death types for V3.1 only. Used for custom leaderboards.
-/// </summary>
-public enum DeathType : byte
+public enum CustomEntryDeathType : byte
 {
 	Fallen = 0,
 	Swarmed = 1,

@@ -41,7 +41,7 @@ public class GetCustomEntry : IGetDto<int>
 	public int HomingEaten { get; init; }
 
 	[Display(Name = "Death")]
-	public DeathType DeathType { get; init; }
+	public CustomEntryDeathType DeathType { get; init; }
 
 	[Format(FormatUtils.TimeFormat)]
 	[Display(Name = "Level2")]

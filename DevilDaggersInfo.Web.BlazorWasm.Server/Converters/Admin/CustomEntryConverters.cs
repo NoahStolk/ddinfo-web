@@ -13,7 +13,7 @@ public static class CustomEntryConverters
 		ClientVersion = customEntry.ClientVersion,
 		DaggersFired = customEntry.DaggersFired,
 		DaggersHit = customEntry.DaggersHit,
-		DeathType = (DeathType)customEntry.DeathType,
+		DeathType = (CustomEntryDeathType)customEntry.DeathType,
 		EnemiesAlive = customEntry.EnemiesAlive,
 		EnemiesKilled = customEntry.EnemiesKilled,
 		GemsCollected = customEntry.GemsCollected,
