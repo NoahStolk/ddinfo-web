@@ -18,4 +18,19 @@ public static class Daggers
 		GameVersion.V3_1 => _all,
 		_ => throw new ArgumentOutOfRangeException(nameof(gameVersion)),
 	};
+
+	public static Dagger GetDaggerFromTenthsOfMilliseconds(GameVersion gameVersion, int timeInTenthsOfMilliseconds)
+		=> GetDaggerFromSeconds(gameVersion, timeInTenthsOfMilliseconds / 10000.0); // TODO: Use time extension.
+
+	public static Dagger GetDaggerFromSeconds(GameVersion gameVersion, double timeInSeconds)
+	{
+		List<Dagger> daggers = GetDaggers(gameVersion);
+		for (int i = daggers.Count - 1; i >= 0; i--)
+		{
+			if (timeInSeconds >= daggers[i].UnlockSecond)
+				return daggers[i];
+		}
+
+		throw new ArgumentOutOfRangeException(nameof(timeInSeconds), $"Could not determine dagger based on time '{timeInSeconds:0.0000}'.");
+	}
 }
