@@ -81,7 +81,7 @@ public class LeaderboardStatisticsCache : IStaticCache
 			}
 		}
 
-		foreach (Death death in Deaths.GetDeaths(GameVersion.V3_1))
+		foreach (Death death in Deaths.GetDeaths(GameVersion.V3_1).DistinctBy(d => d.Name))
 			DeathStats.Add(death, 0);
 
 		foreach (Dagger dagger in Daggers.GetDaggers(GameVersion.V3_1))
