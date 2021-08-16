@@ -1,6 +1,4 @@
-﻿using DevilDaggersInfo.Core.Wiki.Enums;
-
-namespace DevilDaggersInfo.Web.BlazorWasm.Shared.Dto.Admin.CustomEntries;
+﻿namespace DevilDaggersInfo.Web.BlazorWasm.Shared.Dto.Admin.CustomEntries;
 
 public class EditCustomEntry
 {
