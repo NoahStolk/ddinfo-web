@@ -15,7 +15,7 @@ public class CacheLoggerBackgroundService : AbstractBackgroundService
 	private readonly LeaderboardStatisticsCache _leaderboardStatisticsCache;
 	private readonly LeaderboardHistoryCache _leaderboardHistoryCache;
 	private readonly ModArchiveCache _modArchiveCache;
-	private readonly SpawnsetSummaryCache _spawnsetDataCache;
+	private readonly SpawnsetSummaryCache _spawnsetSummaryCache;
 	private readonly SpawnsetHashCache _spawnsetHashCache;
 
 	public CacheLoggerBackgroundService(
@@ -24,14 +24,14 @@ public class CacheLoggerBackgroundService : AbstractBackgroundService
 		LeaderboardStatisticsCache leaderboardStatisticsCache,
 		LeaderboardHistoryCache leaderboardHistoryCache,
 		ModArchiveCache modArchiveCache,
-		SpawnsetSummaryCache spawnsetDataCache,
+		SpawnsetSummaryCache spawnsetSummaryCache,
 		SpawnsetHashCache spawnsetHashCache)
 		: base(backgroundServiceMonitor, discordLogger)
 	{
 		_leaderboardStatisticsCache = leaderboardStatisticsCache;
 		_leaderboardHistoryCache = leaderboardHistoryCache;
 		_modArchiveCache = modArchiveCache;
-		_spawnsetDataCache = spawnsetDataCache;
+		_spawnsetSummaryCache = spawnsetSummaryCache;
 		_spawnsetHashCache = spawnsetHashCache;
 	}
 
@@ -52,7 +52,7 @@ public class CacheLoggerBackgroundService : AbstractBackgroundService
 		builder.AddFieldObject(nameof(LeaderboardStatisticsCache), _leaderboardStatisticsCache.LogState());
 		builder.AddFieldObject(nameof(LeaderboardHistoryCache), _leaderboardHistoryCache.LogState());
 		builder.AddFieldObject(nameof(ModArchiveCache), _modArchiveCache.LogState());
-		builder.AddFieldObject(nameof(SpawnsetSummaryCache), _spawnsetDataCache.LogState());
+		builder.AddFieldObject(nameof(SpawnsetSummaryCache), _spawnsetSummaryCache.LogState());
 		builder.AddFieldObject(nameof(SpawnsetHashCache), _spawnsetHashCache.LogState());
 
 		await DiscordLogger.TryEditMessage(DevilDaggersInfoServerConstants.CacheMessage, builder.Build());

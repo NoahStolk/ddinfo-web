@@ -20,13 +20,13 @@ public class SpawnsetsController : ControllerBase
 {
 	private readonly ApplicationDbContext _dbContext;
 	private readonly IFileSystemService _fileSystemService;
-	private readonly SpawnsetSummaryCache _spawnsetDataCache;
+	private readonly SpawnsetSummaryCache _spawnsetSummaryCache;
 
-	public SpawnsetsController(ApplicationDbContext dbContext, IFileSystemService fileSystemService, SpawnsetSummaryCache spawnsetDataCache)
+	public SpawnsetsController(ApplicationDbContext dbContext, IFileSystemService fileSystemService, SpawnsetSummaryCache spawnsetSummaryCache)
 	{
 		_dbContext = dbContext;
 		_fileSystemService = fileSystemService;
-		_spawnsetDataCache = spawnsetDataCache;
+		_spawnsetSummaryCache = spawnsetSummaryCache;
 	}
 
 	[HttpGet]
@@ -55,8 +55,8 @@ public class SpawnsetsController : ControllerBase
 
 		GetSpawnset Map(SpawnsetEntity spawnset)
 		{
-			SpawnsetSummary spawnsetData = _spawnsetDataCache.GetSpawnsetSummaryByFilePath(Path.Combine(_fileSystemService.GetPath(DataSubDirectory.Spawnsets), spawnset.Name));
-			return spawnset.ToGetSpawnsetPublic(spawnsetData, spawnsetsWithCustomLeaderboardIds.Contains(spawnset.Id));
+			SpawnsetSummary spawnsetSummary = _spawnsetSummaryCache.GetSpawnsetSummaryByFilePath(Path.Combine(_fileSystemService.GetPath(DataSubDirectory.Spawnsets), spawnset.Name));
+			return spawnset.ToGetSpawnsetPublic(spawnsetSummary, spawnsetsWithCustomLeaderboardIds.Contains(spawnset.Id));
 		}
 	}
 

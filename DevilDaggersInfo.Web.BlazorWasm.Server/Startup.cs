@@ -173,8 +173,8 @@ public class Startup
 
 		// Initiate dynamic caches.
 
-		// SpawnsetDataCache does not need to be initiated as it is fast enough.
 		// SpawnsetHashCache does not need to be initiated as it is fast enough.
+		// SpawnsetSummaryCache does not need to be initiated as it is fast enough.
 
 		// TODO: LeaderboardHistoryCache might need to be initiated as the initial world record progression load is a little slow.
 

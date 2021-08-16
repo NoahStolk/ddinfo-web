@@ -5,6 +5,6 @@ public enum CacheType
 	LeaderboardHistory,
 	LeaderboardStatistics,
 	ModArchive,
-	SpawnsetData,
 	SpawnsetHash,
+	SpawnsetSummary,
 }

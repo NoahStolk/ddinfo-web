@@ -13,11 +13,11 @@ public class SpawnsetSummaryCache : IDynamicCache
 		if (_cache.ContainsKey(name))
 			return _cache[name];
 
-		if (!SpawnsetSummary.TryParse(File.ReadAllBytes(filePath), out SpawnsetSummary? spawnsetData))
-			throw new($"Failed to get spawn data from spawnset file: '{name}'.");
+		if (!SpawnsetSummary.TryParse(File.ReadAllBytes(filePath), out SpawnsetSummary? spawnsetSummary))
+			throw new($"Failed to get spawnset summary from spawnset file: '{name}'.");
 
-		_cache.TryAdd(name, spawnsetData);
-		return spawnsetData;
+		_cache.TryAdd(name, spawnsetSummary);
+		return spawnsetSummary;
 	}
 
 	public void Clear()
