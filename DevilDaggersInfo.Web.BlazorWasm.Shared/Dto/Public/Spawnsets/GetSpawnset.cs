@@ -1,6 +1,4 @@
-﻿using DevilDaggersCore.Spawnsets;
-
-namespace DevilDaggersInfo.Web.BlazorWasm.Shared.Dto.Public.Spawnsets;
+﻿namespace DevilDaggersInfo.Web.BlazorWasm.Shared.Dto.Public.Spawnsets;
 
 public class GetSpawnset
 {
@@ -10,7 +8,7 @@ public class GetSpawnset
 
 	public DateTime LastUpdated { get; init; }
 
-	public SpawnsetData SpawnsetData { get; init; } = null!;
+	public GetSpawnsetData SpawnsetData { get; init; } = null!;
 
 	public string Name { get; init; } = null!;
 
