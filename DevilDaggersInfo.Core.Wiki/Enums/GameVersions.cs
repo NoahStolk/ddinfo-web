@@ -4,8 +4,8 @@
 public enum GameVersions
 {
 	None = 0,
-	V1 = 1,
-	V2 = 2,
-	V3 = 4,
-	V31 = 8, // TODO: Rename...
+	V1_0 = 1,
+	V2_0 = 2,
+	V3_0 = 4,
+	V3_1 = 8,
 }
