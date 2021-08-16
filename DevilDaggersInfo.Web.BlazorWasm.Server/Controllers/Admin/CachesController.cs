@@ -1,9 +1,9 @@
 ﻿using DevilDaggersInfo.Web.BlazorWasm.Server.Caches;
 using DevilDaggersInfo.Web.BlazorWasm.Server.Caches.LeaderboardHistory;
 using DevilDaggersInfo.Web.BlazorWasm.Server.Caches.LeaderboardStatistics;
-using DevilDaggersInfo.Web.BlazorWasm.Server.Caches.ModArchive;
+using DevilDaggersInfo.Web.BlazorWasm.Server.Caches.ModArchives;
 using DevilDaggersInfo.Web.BlazorWasm.Server.Caches.SpawnsetData;
-using DevilDaggersInfo.Web.BlazorWasm.Server.Caches.SpawnsetHash;
+using DevilDaggersInfo.Web.BlazorWasm.Server.Caches.SpawnsetHashes;
 using DevilDaggersInfo.Web.BlazorWasm.Shared;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
@@ -18,14 +18,14 @@ public class CachesController : ControllerBase
 	private readonly LeaderboardStatisticsCache _leaderboardStatisticsCache;
 	private readonly LeaderboardHistoryCache _leaderboardHistoryCache;
 	private readonly ModArchiveCache _modArchiveCache;
-	private readonly SpawnsetDataCache _spawnsetDataCache;
+	private readonly SpawnsetSummaryCache _spawnsetDataCache;
 	private readonly SpawnsetHashCache _spawnsetHashCache;
 
 	public CachesController(
 		LeaderboardStatisticsCache leaderboardStatisticsCache,
 		LeaderboardHistoryCache leaderboardHistoryCache,
 		ModArchiveCache modArchiveCache,
-		SpawnsetDataCache spawnsetDataCache,
+		SpawnsetSummaryCache spawnsetDataCache,
 		SpawnsetHashCache spawnsetHashCache)
 	{
 		_leaderboardStatisticsCache = leaderboardStatisticsCache;

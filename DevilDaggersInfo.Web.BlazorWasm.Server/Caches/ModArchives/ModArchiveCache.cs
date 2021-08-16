@@ -5,7 +5,7 @@ using Newtonsoft.Json;
 using System.Collections.Concurrent;
 using System.IO.Compression;
 
-namespace DevilDaggersInfo.Web.BlazorWasm.Server.Caches.ModArchive;
+namespace DevilDaggersInfo.Web.BlazorWasm.Server.Caches.ModArchives;
 
 public class ModArchiveCache : IDynamicCache
 {

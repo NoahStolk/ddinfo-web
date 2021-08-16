@@ -1,5 +1,5 @@
-﻿using DevilDaggersCore.Spawnsets;
-using DevilDaggersInfo.Web.BlazorWasm.Server.Caches.SpawnsetData;
+﻿using DevilDaggersInfo.Core.Spawnset.Summary;
+using DevilDaggersInfo.Web.BlazorWasm.Server.Caches.SpawnsetSummaries;
 using DevilDaggersInfo.Web.BlazorWasm.Server.Controllers.Attributes;
 using DevilDaggersInfo.Web.BlazorWasm.Server.Converters.Public;
 using DevilDaggersInfo.Web.BlazorWasm.Server.Entities;
@@ -20,9 +20,9 @@ public class SpawnsetsController : ControllerBase
 {
 	private readonly ApplicationDbContext _dbContext;
 	private readonly IFileSystemService _fileSystemService;
-	private readonly SpawnsetDataCache _spawnsetDataCache;
+	private readonly SpawnsetSummaryCache _spawnsetDataCache;
 
-	public SpawnsetsController(ApplicationDbContext dbContext, IFileSystemService fileSystemService, SpawnsetDataCache spawnsetDataCache)
+	public SpawnsetsController(ApplicationDbContext dbContext, IFileSystemService fileSystemService, SpawnsetSummaryCache spawnsetDataCache)
 	{
 		_dbContext = dbContext;
 		_fileSystemService = fileSystemService;
@@ -55,7 +55,7 @@ public class SpawnsetsController : ControllerBase
 
 		GetSpawnset Map(SpawnsetEntity spawnset)
 		{
-			SpawnsetData spawnsetData = _spawnsetDataCache.GetSpawnsetDataByFilePath(Path.Combine(_fileSystemService.GetPath(DataSubDirectory.Spawnsets), spawnset.Name));
+			SpawnsetSummary spawnsetData = _spawnsetDataCache.GetSpawnsetSummaryByFilePath(Path.Combine(_fileSystemService.GetPath(DataSubDirectory.Spawnsets), spawnset.Name));
 			return spawnset.ToGetSpawnsetPublic(spawnsetData, spawnsetsWithCustomLeaderboardIds.Contains(spawnset.Id));
 		}
 	}

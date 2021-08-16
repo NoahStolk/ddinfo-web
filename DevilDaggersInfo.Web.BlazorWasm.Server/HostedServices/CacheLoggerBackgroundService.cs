@@ -1,8 +1,8 @@
 ﻿using DevilDaggersInfo.Web.BlazorWasm.Server.Caches.LeaderboardHistory;
 using DevilDaggersInfo.Web.BlazorWasm.Server.Caches.LeaderboardStatistics;
-using DevilDaggersInfo.Web.BlazorWasm.Server.Caches.ModArchive;
+using DevilDaggersInfo.Web.BlazorWasm.Server.Caches.ModArchives;
 using DevilDaggersInfo.Web.BlazorWasm.Server.Caches.SpawnsetData;
-using DevilDaggersInfo.Web.BlazorWasm.Server.Caches.SpawnsetHash;
+using DevilDaggersInfo.Web.BlazorWasm.Server.Caches.SpawnsetHashes;
 using DevilDaggersInfo.Web.BlazorWasm.Server.Extensions;
 using DevilDaggersInfo.Web.BlazorWasm.Server.HostedServices.DdInfoDiscordBot;
 using DevilDaggersInfo.Web.BlazorWasm.Server.Singletons;
@@ -15,7 +15,7 @@ public class CacheLoggerBackgroundService : AbstractBackgroundService
 	private readonly LeaderboardStatisticsCache _leaderboardStatisticsCache;
 	private readonly LeaderboardHistoryCache _leaderboardHistoryCache;
 	private readonly ModArchiveCache _modArchiveCache;
-	private readonly SpawnsetDataCache _spawnsetDataCache;
+	private readonly SpawnsetSummaryCache _spawnsetDataCache;
 	private readonly SpawnsetHashCache _spawnsetHashCache;
 
 	public CacheLoggerBackgroundService(
@@ -24,7 +24,7 @@ public class CacheLoggerBackgroundService : AbstractBackgroundService
 		LeaderboardStatisticsCache leaderboardStatisticsCache,
 		LeaderboardHistoryCache leaderboardHistoryCache,
 		ModArchiveCache modArchiveCache,
-		SpawnsetDataCache spawnsetDataCache,
+		SpawnsetSummaryCache spawnsetDataCache,
 		SpawnsetHashCache spawnsetHashCache)
 		: base(backgroundServiceMonitor, discordLogger)
 	{
@@ -52,7 +52,7 @@ public class CacheLoggerBackgroundService : AbstractBackgroundService
 		builder.AddFieldObject(nameof(LeaderboardStatisticsCache), _leaderboardStatisticsCache.LogState());
 		builder.AddFieldObject(nameof(LeaderboardHistoryCache), _leaderboardHistoryCache.LogState());
 		builder.AddFieldObject(nameof(ModArchiveCache), _modArchiveCache.LogState());
-		builder.AddFieldObject(nameof(SpawnsetDataCache), _spawnsetDataCache.LogState());
+		builder.AddFieldObject(nameof(SpawnsetSummaryCache), _spawnsetDataCache.LogState());
 		builder.AddFieldObject(nameof(SpawnsetHashCache), _spawnsetHashCache.LogState());
 
 		await DiscordLogger.TryEditMessage(DevilDaggersInfoServerConstants.CacheMessage, builder.Build());

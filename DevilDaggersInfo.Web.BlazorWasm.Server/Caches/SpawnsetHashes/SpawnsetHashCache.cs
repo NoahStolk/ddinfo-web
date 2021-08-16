@@ -1,4 +1,4 @@
-﻿using DevilDaggersCore.Spawnsets;
+﻿using DevilDaggersInfo.Core.Spawnset;
 using DevilDaggersInfo.Web.BlazorWasm.Server.Enums;
 using DevilDaggersInfo.Web.BlazorWasm.Server.HostedServices.DdInfoDiscordBot;
 using DevilDaggersInfo.Web.BlazorWasm.Server.Singletons;
@@ -6,7 +6,7 @@ using DevilDaggersInfo.Web.BlazorWasm.Server.Transients;
 using System.Collections.Concurrent;
 using System.Security.Cryptography;
 
-namespace DevilDaggersInfo.Web.BlazorWasm.Server.Caches.SpawnsetHash;
+namespace DevilDaggersInfo.Web.BlazorWasm.Server.Caches.SpawnsetHashes;
 
 public class SpawnsetHashCache : IDynamicCache
 {

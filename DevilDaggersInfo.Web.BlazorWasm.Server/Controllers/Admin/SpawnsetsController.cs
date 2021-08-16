@@ -1,5 +1,5 @@
-﻿using DevilDaggersCore.Spawnsets;
-using DevilDaggersInfo.Web.BlazorWasm.Server.Caches.SpawnsetHash;
+﻿using DevilDaggersInfo.Core.Spawnset;
+using DevilDaggersInfo.Web.BlazorWasm.Server.Caches.SpawnsetHashes;
 using DevilDaggersInfo.Web.BlazorWasm.Server.Converters.Admin;
 using DevilDaggersInfo.Web.BlazorWasm.Server.Entities;
 using DevilDaggersInfo.Web.BlazorWasm.Server.Enums;

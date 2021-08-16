@@ -3,7 +3,7 @@ using DevilDaggersInfo.Web.BlazorWasm.Server.Exceptions;
 using DevilDaggersInfo.Web.BlazorWasm.Shared.Enums;
 using System.Text;
 
-namespace DevilDaggersInfo.Web.BlazorWasm.Server.Caches.ModArchive;
+namespace DevilDaggersInfo.Web.BlazorWasm.Server.Caches.ModArchives;
 
 public class ModBinaryCacheData
 {
