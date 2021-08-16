@@ -33,6 +33,8 @@ Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "DevilDaggersInfo.Core.Wiki.
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "DevilDaggersInfo.Core.Asset", "DevilDaggersInfo.Core.Asset\DevilDaggersInfo.Core.Asset.csproj", "{E855606F-5DFB-407F-979B-C2F25DC05C5D}"
 EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "DevilDaggersInfo.Core.Encryption", "DevilDaggersInfo.Core.Encryption\DevilDaggersInfo.Core.Encryption.csproj", "{6F010EA4-496C-49C5-B947-82BA4EDA2648}"
+EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
 		Debug|Any CPU = Debug|Any CPU
@@ -99,6 +101,10 @@ Global
 		{E855606F-5DFB-407F-979B-C2F25DC05C5D}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{E855606F-5DFB-407F-979B-C2F25DC05C5D}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{E855606F-5DFB-407F-979B-C2F25DC05C5D}.Release|Any CPU.Build.0 = Release|Any CPU
+		{6F010EA4-496C-49C5-B947-82BA4EDA2648}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{6F010EA4-496C-49C5-B947-82BA4EDA2648}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{6F010EA4-496C-49C5-B947-82BA4EDA2648}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{6F010EA4-496C-49C5-B947-82BA4EDA2648}.Release|Any CPU.Build.0 = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE
