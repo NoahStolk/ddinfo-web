@@ -1,7 +1,7 @@
 ﻿namespace DevilDaggersInfo.Core.Wiki.Enums;
 
 [Flags]
-public enum GameVersions
+public enum GameVersionFlags
 {
 	None = 0,
 	V1_0 = 1,

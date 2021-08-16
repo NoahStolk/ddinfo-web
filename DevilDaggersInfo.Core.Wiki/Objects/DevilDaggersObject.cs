@@ -1,3 +1,3 @@
 ﻿namespace DevilDaggersInfo.Core.Wiki.Objects;
 
-public abstract record DevilDaggersObject(GameVersions GameVersions, string Name, Color Color);
+public abstract record DevilDaggersObject(GameVersionFlags GameVersions, string Name, Color Color);

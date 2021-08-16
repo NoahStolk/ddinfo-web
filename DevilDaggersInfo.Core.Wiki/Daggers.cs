@@ -2,12 +2,12 @@
 
 public static class Daggers
 {
-	public static readonly Dagger Default = new(GameVersions.V1_0 | GameVersions.V2_0 | GameVersions.V3_0 | GameVersions.V3_1, "Default", DaggerColors.Default, 0);
-	public static readonly Dagger Bronze = new(GameVersions.V1_0 | GameVersions.V2_0 | GameVersions.V3_0 | GameVersions.V3_1, "Bronze", DaggerColors.Bronze, 60);
-	public static readonly Dagger Silver = new(GameVersions.V1_0 | GameVersions.V2_0 | GameVersions.V3_0 | GameVersions.V3_1, "Silver", DaggerColors.Silver, 120);
-	public static readonly Dagger Golden = new(GameVersions.V1_0 | GameVersions.V2_0 | GameVersions.V3_0 | GameVersions.V3_1, "Golden", DaggerColors.Golden, 250);
-	public static readonly Dagger Devil = new(GameVersions.V1_0 | GameVersions.V2_0 | GameVersions.V3_0 | GameVersions.V3_1, "Devil", DaggerColors.Devil, 500);
-	public static readonly Dagger Leviathan = new(GameVersions.V3_1, "Leviathan", DaggerColors.Leviathan, 1000);
+	public static readonly Dagger Default = new(GameVersionFlags.V1_0 | GameVersionFlags.V2_0 | GameVersionFlags.V3_0 | GameVersionFlags.V3_1, "Default", DaggerColors.Default, 0);
+	public static readonly Dagger Bronze = new(GameVersionFlags.V1_0 | GameVersionFlags.V2_0 | GameVersionFlags.V3_0 | GameVersionFlags.V3_1, "Bronze", DaggerColors.Bronze, 60);
+	public static readonly Dagger Silver = new(GameVersionFlags.V1_0 | GameVersionFlags.V2_0 | GameVersionFlags.V3_0 | GameVersionFlags.V3_1, "Silver", DaggerColors.Silver, 120);
+	public static readonly Dagger Golden = new(GameVersionFlags.V1_0 | GameVersionFlags.V2_0 | GameVersionFlags.V3_0 | GameVersionFlags.V3_1, "Golden", DaggerColors.Golden, 250);
+	public static readonly Dagger Devil = new(GameVersionFlags.V1_0 | GameVersionFlags.V2_0 | GameVersionFlags.V3_0 | GameVersionFlags.V3_1, "Devil", DaggerColors.Devil, 500);
+	public static readonly Dagger Leviathan = new(GameVersionFlags.V3_1, "Leviathan", DaggerColors.Leviathan, 1000);
 
 	private static readonly List<Dagger> _all = typeof(Daggers).GetFields().Where(f => f.FieldType == typeof(Dagger)).Select(f => (Dagger)f.GetValue(null)!).ToList();
 	private static readonly List<Dagger> _allV1_0_V2_0_V3_0 = _all.Where(ddo => ddo != Leviathan).ToList();
