@@ -7,6 +7,7 @@ using DevilDaggersInfo.Web.BlazorWasm.Shared.Dto.Public.LeaderboardHistoryStatis
 using DevilDaggersInfo.Web.BlazorWasm.Shared.Dto.Public.Leaderboards;
 using DevilDaggersInfo.Web.BlazorWasm.Shared.Dto.Public.LeaderboardStatistics;
 using DevilDaggersInfo.Web.BlazorWasm.Shared.Dto.Public.Players;
+using DevilDaggersInfo.Web.BlazorWasm.Shared.Dto.Public.Spawnsets;
 using DevilDaggersInfo.Web.BlazorWasm.Shared.Enums;
 using DevilDaggersInfo.Web.BlazorWasm.Shared.Enums.Sortings.Public;
 using System.Net.Http.Json;
@@ -43,6 +44,20 @@ public class PublicApiHttpClient
 			{ nameof(ascending), ascending },
 		};
 		return await _client.GetFromJsonAsync<Page<GetCustomLeaderboardOverview>>(UrlBuilderUtils.BuildUrlWithQuery("api/custom-leaderboards", queryParameters)) ?? throw new JsonDeserializationException();
+	}
+
+	public async Task<Page<GetSpawnsetOverview>> GetSpawnsets(bool onlyPractice, bool onlyWithLeaderboard, int pageIndex, int pageSize, SpawnsetSorting sortBy, bool ascending)
+	{
+		Dictionary<string, object?> queryParameters = new()
+		{
+			{ nameof(onlyPractice), onlyPractice },
+			{ nameof(onlyWithLeaderboard), onlyWithLeaderboard },
+			{ nameof(pageIndex), pageIndex },
+			{ nameof(pageSize), pageSize },
+			{ nameof(sortBy), sortBy },
+			{ nameof(ascending), ascending },
+		};
+		return await _client.GetFromJsonAsync<Page<GetSpawnsetOverview>>(UrlBuilderUtils.BuildUrlWithQuery("api/spawnsets/overview", queryParameters)) ?? throw new JsonDeserializationException();
 	}
 
 	public async Task<List<GetLeaderboardHistoryStatistics>> GetLeaderboardHistoryStatistics()

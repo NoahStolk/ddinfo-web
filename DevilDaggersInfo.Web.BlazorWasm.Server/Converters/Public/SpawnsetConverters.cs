@@ -1,4 +1,5 @@
-﻿using DevilDaggersInfo.Core.Spawnset.Summary;
+﻿using DevilDaggersInfo.Core.Spawnset;
+using DevilDaggersInfo.Core.Spawnset.Summary;
 using DevilDaggersInfo.Web.BlazorWasm.Server.Entities;
 using DevilDaggersInfo.Web.BlazorWasm.Shared.Dto.Public.Spawnsets;
 
@@ -30,5 +31,22 @@ public static class SpawnsetConverters
 		SpawnVersion = spawnsetSummary.SpawnVersion,
 		TimerStart = spawnsetSummary.TimerStart,
 		WorldVersion = spawnsetSummary.WorldVersion,
+	};
+
+	public static GetSpawnsetOverview ToGetSpawnsetOverview(this SpawnsetEntity spawnset, SpawnsetSummary spawnsetSummary) => new()
+	{
+		AdditionalGems = spawnsetSummary.AdditionalGems,
+		GameMode = spawnsetSummary.GameMode,
+		Hand = (byte)spawnsetSummary.HandLevel,
+		Id = spawnset.Id,
+		LoopLength = spawnsetSummary.LoopSection.Length,
+		LoopSpawnCount = spawnsetSummary.LoopSection.SpawnCount,
+		PreLoopLength = spawnsetSummary.PreLoopSection.Length,
+		PreLoopSpawnCount = spawnsetSummary.PreLoopSection.SpawnCount,
+		GameVersion = Spawnset.GetGameVersionString(spawnsetSummary.WorldVersion, spawnsetSummary.SpawnVersion),
+		TimerStart = spawnsetSummary.TimerStart,
+		AuthorName = spawnset.Player.PlayerName,
+		LastUpdated = spawnset.LastUpdated,
+		Name = spawnset.Name,
 	};
 }
