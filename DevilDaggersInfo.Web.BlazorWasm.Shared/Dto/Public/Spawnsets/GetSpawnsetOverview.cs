@@ -24,9 +24,9 @@ public class GetSpawnsetOverview
 
 	public int PreLoopSpawnCount { get; init; }
 
-	public byte? Hand { get; init; }
+	public byte Hand { get; init; }
 
-	public int? AdditionalGems { get; init; }
+	public int AdditionalGems { get; init; }
 
-	public float? TimerStart { get; init; }
+	public float TimerStart { get; init; }
 }

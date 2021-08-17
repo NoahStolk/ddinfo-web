@@ -43,6 +43,11 @@ module.exports = {
 				'custom-leaderboards-md': createMinmaxGrid([2, 2, 1.5, 1.5]),
 				'custom-leaderboards-sm': createMinmaxGrid([1]),
 
+				'spawnsets-xl': createMinmaxGrid([2, 2, 1, 2, 1, 1, 1, 1, 1, 2, 1, 1]),
+				'spawnsets-lg': createMinmaxGrid([2, 2, 1, 2, 2, 1]),
+				'spawnsets-md': createMinmaxGrid([2, 2, 1.5, 1.5]),
+				'spawnsets-sm': createMinmaxGrid([1]),
+
 				// Leaderboards
 				'custom-leaderboard-2xl': '36px 32px minmax(64px, 100%) minmax(80px, 5%) minmax(40px, 5%) minmax(40px, 5%) minmax(40px, 5%) minmax(40px, 5%) minmax(40px, 5%) minmax(48px, 5%) minmax(120px, 5%) minmax(40px, 5%) minmax(40px, 5%) minmax(72px, 5%) minmax(72px, 5%) minmax(72px, 5%) minmax(144px, 5%)',
 				'custom-leaderboard-xl': '36px 32px minmax(64px, 100%) minmax(80px, 5%) minmax(40px, 5%) minmax(40px, 5%) minmax(40px, 5%) minmax(40px, 5%) minmax(40px, 5%) minmax(48px, 5%) minmax(120px, 5%) minmax(40px, 5%) minmax(40px, 5%)',
