@@ -1,5 +1,27 @@
 <Project Sdk="Microsoft.NET.Sdk">
   <ItemGroup>
+    <AdditionalFiles Include="Data\DaggerColors.txt" />
+    <AdditionalFiles Include="Data\DaggersV1_0.txt" />
+    <AdditionalFiles Include="Data\DaggersV2_0.txt" />
+    <AdditionalFiles Include="Data\DaggersV3_0.txt" />
+    <AdditionalFiles Include="Data\DaggersV3_1.txt" />
+    <AdditionalFiles Include="Data\DeathsV1_0.txt" />
+    <AdditionalFiles Include="Data\DeathsV2_0.txt" />
+    <AdditionalFiles Include="Data\DeathsV3_0.txt" />
+    <AdditionalFiles Include="Data\DeathsV3_1.txt" />
+    <AdditionalFiles Include="Data\EnemiesV1_0.txt" />
+    <AdditionalFiles Include="Data\EnemiesV2_0.txt" />
+    <AdditionalFiles Include="Data\EnemiesV3_0.txt" />
+    <AdditionalFiles Include="Data\EnemiesV3_1.txt" />
+    <AdditionalFiles Include="Data\EnemyColors.txt" />
+    <AdditionalFiles Include="Data\UpgradeColors.txt" />
+    <AdditionalFiles Include="Data\UpgradesV1_0.txt" />
+    <AdditionalFiles Include="Data\UpgradesV2_0.txt" />
+    <AdditionalFiles Include="Data\UpgradesV3_0.txt" />
+    <AdditionalFiles Include="Data\UpgradesV3_1.txt" />
+  </ItemGroup>
+  <ItemGroup>
+    <ProjectReference Include="..\DevilDaggersInfo.Core.Wiki.SourceGenerator\DevilDaggersInfo.Core.Wiki.SourceGenerator.csproj" OutputItemType="Analyzer" ReferenceOutputAssembly="false" />
     <PackageReference Include="Roslynator.Analyzers" Version="3.2.0">
       <PrivateAssets>all</PrivateAssets>
       <IncludeAssets>runtime; build; native; contentfiles; analyzers; buildtransitive</IncludeAssets>

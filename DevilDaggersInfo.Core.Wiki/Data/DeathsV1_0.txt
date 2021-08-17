@@ -1,0 +1,12 @@
+Fallen		Void				0
+Swarmed		Skull1				1
+Impaled		Skull2				2
+Infested	SpiderEgg1			4
+Purged		Squid1				6
+Sacrificed	Squid2				8
+Eviscerated	Centipede			9
+Annihilated	TransmutedSkull4	10
+Stricken	Spiderling			16
+Devastated	Leviathan			17
+Dismembered	Skull3				18
+Unknown		Andras				255

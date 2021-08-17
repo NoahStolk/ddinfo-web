@@ -1,0 +1,14 @@
+Squid1				Squid I					Squid1				10	1	2	Purged		1		!	3
+Squid2				Squid II				Squid2				20	2	3	Sacrificed	2		!	39
+Centipede			Centipede				Centipede			75	25	25	Eviscerated	25		!	114
+Gigapede			Gigapede				GigapedeRed			250	50	50	Eviscerated	50		!	264
+Leviathan			Leviathan				Leviathan			600	6	6	Devastated	600		!	397
+Spider1				Spider I				Spider1				25	1	1	Infested	3		!	39
+Skull1				Skull I					Skull1				1	0	0	Swarmed		0.25	!	!	Squid1		Squid2 
+Skull2				Skull II				Skull2				5	1	1	Impaled		1		!	!	Squid1 
+Skull3				Skull III				Skull3				10	1	1	Dismembered	1		!	!	Squid2 
+TransmutedSkull2	Transmuted Skull II		TransmutedSkull2	10	1	1	Impaled		1		!	!	Leviathan 
+TransmutedSkull3	Transmuted Skull III	TransmutedSkull3	20	1	1	Dismembered	2		!	!	Leviathan 
+TransmutedSkull4	Transmuted Skull IV		TransmutedSkull4	100	0	0	Annihilated	10		!	!	Leviathan 
+SpiderEgg1			Spider Egg I			SpiderEgg1			3	0	0	Infested	3		!	!	Spider1 
+Spiderling			Spiderling				Spiderling			3	0	0	Stricken	1		!	!	SpiderEgg1 

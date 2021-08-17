@@ -1,6 +1,6 @@
 ﻿namespace DevilDaggersInfo.Core.Wiki.Objects;
 
-public record Upgrade(GameVersionFlags GameVersions, string Name, Color Color, byte Level, Damage DefaultDamage, Damage HomingDamage, UpgradeUnlock UpgradeUnlock)
-	: DevilDaggersObject(GameVersions, Name, Color)
+public record Upgrade(GameVersion GameVersion, string Name, Color Color, byte Level, Damage DefaultDamage, Damage HomingDamage, UpgradeUnlock UpgradeUnlock)
+	: DevilDaggersObject(GameVersion, Name, Color)
 {
 }

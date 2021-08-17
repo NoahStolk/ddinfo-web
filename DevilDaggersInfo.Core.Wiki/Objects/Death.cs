@@ -1,4 +1,4 @@
 ﻿namespace DevilDaggersInfo.Core.Wiki.Objects;
 
-public record Death(GameVersionFlags GameVersions, string Name, Color Color, byte LeaderboardDeathType)
-	: DevilDaggersObject(GameVersions, Name, Color);
+public record Death(GameVersion GameVersion, string Name, Color Color, byte LeaderboardDeathType)
+	: DevilDaggersObject(GameVersion, Name, Color);

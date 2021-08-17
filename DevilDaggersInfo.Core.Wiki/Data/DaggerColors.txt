@@ -1,0 +1,6 @@
+Default		444444
+Bronze		CD7F32
+Silver		DDDDDD
+Golden		FFDF00
+Devil		FF0000
+Leviathan	A00000

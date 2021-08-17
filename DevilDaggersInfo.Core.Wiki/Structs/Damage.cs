@@ -2,12 +2,12 @@
 
 public struct Damage
 {
-	public Damage(int daggersPerShot, float? daggersPerSpraySecond)
+	public Damage(int? daggersPerShot, float? daggersPerSpraySecond)
 	{
 		DaggersPerShot = daggersPerShot;
 		DaggersPerSpraySecond = daggersPerSpraySecond;
 	}
 
-	public int DaggersPerShot { get; }
+	public int? DaggersPerShot { get; }
 	public float? DaggersPerSpraySecond { get; }
 }
