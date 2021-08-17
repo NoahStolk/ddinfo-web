@@ -2,7 +2,7 @@
 
 namespace DevilDaggersInfo.Web.BlazorWasm.Shared.Dto.Public.Spawnsets;
 
-public class GetSpawnsetData
+public class GetSpawnsetDataDdse
 {
 	public int SpawnVersion { get; init; }
 	public int WorldVersion { get; init; }

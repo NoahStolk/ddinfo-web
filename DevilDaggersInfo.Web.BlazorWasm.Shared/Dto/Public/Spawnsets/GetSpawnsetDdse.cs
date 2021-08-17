@@ -1,6 +1,6 @@
 ﻿namespace DevilDaggersInfo.Web.BlazorWasm.Shared.Dto.Public.Spawnsets;
 
-public class GetSpawnset
+public class GetSpawnsetDdse
 {
 	public int? MaxDisplayWaves { get; init; }
 
@@ -8,7 +8,7 @@ public class GetSpawnset
 
 	public DateTime LastUpdated { get; init; }
 
-	public GetSpawnsetData SpawnsetData { get; init; } = null!;
+	public GetSpawnsetDataDdse SpawnsetData { get; init; } = null!;
 
 	public string Name { get; init; } = null!;
 
