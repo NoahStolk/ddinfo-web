@@ -32,7 +32,7 @@ public class SpawnsetsController : ControllerBase
 	[HttpGet]
 	[ProducesResponseType(StatusCodes.Status200OK)]
 	[EndpointConsumer(EndpointConsumers.Ddse)]
-	public List<GetSpawnset> GetPublicSpawnsets(string? authorFilter = null, string? nameFilter = null)
+	public List<GetSpawnsetDdse> GetSpawnsetsForDdse(string? authorFilter = null, string? nameFilter = null)
 	{
 		List<int> spawnsetsWithCustomLeaderboardIds = _dbContext.CustomLeaderboards
 			.AsNoTracking()
@@ -53,10 +53,10 @@ public class SpawnsetsController : ControllerBase
 			.Select(sf => Map(sf))
 			.ToList();
 
-		GetSpawnset Map(SpawnsetEntity spawnset)
+		GetSpawnsetDdse Map(SpawnsetEntity spawnset)
 		{
 			SpawnsetSummary spawnsetSummary = _spawnsetSummaryCache.GetSpawnsetSummaryByFilePath(Path.Combine(_fileSystemService.GetPath(DataSubDirectory.Spawnsets), spawnset.Name));
-			return spawnset.ToGetSpawnsetPublic(spawnsetSummary, spawnsetsWithCustomLeaderboardIds.Contains(spawnset.Id));
+			return spawnset.ToGetSpawnsetDdse(spawnsetSummary, spawnsetsWithCustomLeaderboardIds.Contains(spawnset.Id));
 		}
 	}
 

@@ -6,19 +6,19 @@ namespace DevilDaggersInfo.Web.BlazorWasm.Server.Converters.Public;
 
 public static class SpawnsetConverters
 {
-	public static GetSpawnsetDdse ToGetSpawnsetPublic(this SpawnsetEntity spawnset, SpawnsetSummary spawnsetSummary, bool hasCustomLeaderboard) => new()
+	public static GetSpawnsetDdse ToGetSpawnsetDdse(this SpawnsetEntity spawnset, SpawnsetSummary spawnsetSummary, bool hasCustomLeaderboard) => new()
 	{
 		MaxDisplayWaves = spawnset.MaxDisplayWaves,
 		HtmlDescription = spawnset.HtmlDescription,
 		LastUpdated = spawnset.LastUpdated,
-		SpawnsetData = spawnsetSummary.ToGetSpawnsetDataPublic(),
+		SpawnsetData = spawnsetSummary.ToGetSpawnsetDataDdse(),
 		Name = spawnset.Name,
 		AuthorName = spawnset.Player.PlayerName,
 		HasCustomLeaderboard = hasCustomLeaderboard,
 		IsPractice = spawnset.IsPractice,
 	};
 
-	public static GetSpawnsetDataDdse ToGetSpawnsetDataPublic(this SpawnsetSummary spawnsetSummary) => new()
+	public static GetSpawnsetDataDdse ToGetSpawnsetDataDdse(this SpawnsetSummary spawnsetSummary) => new()
 	{
 		AdditionalGems = spawnsetSummary.AdditionalGems,
 		GameMode = spawnsetSummary.GameMode,
