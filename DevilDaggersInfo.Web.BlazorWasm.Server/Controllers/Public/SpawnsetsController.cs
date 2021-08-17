@@ -92,7 +92,7 @@ public class SpawnsetsController : ControllerBase
 			SpawnsetSorting.Hand => spawnsets.OrderBy(s => summaries[s.Id].HandLevel, ascending).ToList(),
 			SpawnsetSorting.AdditionalGems => spawnsets.OrderBy(s => summaries[s.Id].AdditionalGems, ascending).ToList(),
 			SpawnsetSorting.TimerStart => spawnsets.OrderBy(s => summaries[s.Id].TimerStart, ascending).ToList(),
-			_ => spawnsets,
+			_ => spawnsets.OrderBy(s => s.Id, ascending).ToList(),
 		};
 
 		spawnsets = spawnsets

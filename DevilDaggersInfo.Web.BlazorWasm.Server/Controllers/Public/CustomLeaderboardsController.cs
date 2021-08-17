@@ -51,7 +51,7 @@ public class CustomLeaderboardsController : ControllerBase
 			CustomLeaderboardSorting.TimeDevil => customLeaderboardsQuery.OrderBy(cl => cl.TimeDevil, ascending),
 			CustomLeaderboardSorting.TimeLeviathan => customLeaderboardsQuery.OrderBy(cl => cl.TimeLeviathan, ascending),
 			CustomLeaderboardSorting.DateCreated => customLeaderboardsQuery.OrderBy(cl => cl.DateCreated, ascending),
-			_ => customLeaderboardsQuery,
+			_ => customLeaderboardsQuery.OrderBy(cl => cl.Id, ascending),
 		};
 
 		List<CustomLeaderboardEntity> customLeaderboards = customLeaderboardsQuery.ToList();
@@ -74,13 +74,13 @@ public class CustomLeaderboardsController : ControllerBase
 				customEntries.FirstOrDefault(wr => wr.CustomLeaderboardId == cl.Id)?.Time,
 				customEntries.FirstOrDefault(wr => wr.CustomLeaderboardId == cl.Id)?.PlayerName));
 
-		if (sortBy is CustomLeaderboardSorting.WorldRecord)
+		if (sortBy == CustomLeaderboardSorting.WorldRecord)
 		{
 			customLeaderboardWrs = ascending
 				? customLeaderboardWrs.OrderBy(wr => wr.WorldRecord).ToList()
 				: customLeaderboardWrs.OrderByDescending(wr => wr.WorldRecord).ToList();
 		}
-		else if (sortBy is CustomLeaderboardSorting.TopPlayer)
+		else if (sortBy == CustomLeaderboardSorting.TopPlayer)
 		{
 			customLeaderboardWrs = ascending
 				? customLeaderboardWrs.OrderBy(wr => wr.TopPlayer).ToList()
