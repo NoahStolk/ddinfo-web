@@ -2,6 +2,7 @@
 @inject PublicApiHttpClient Http
 @using Blazorise.Charts
 @using DevilDaggersInfo.Web.BlazorWasm.Shared.Dto.Public.CustomEntries
+@using DevilDaggersInfo.Core.Wiki.Colors
 
 @if (GetCustomEntryData == null)
 {
@@ -23,11 +24,11 @@ else
 	<h2 class="text-red text-xl">Daggers</h2>
 	<LineChart Options="_lco" @ref="_daggersChart" TItem="int" />
 
-	<h2 class="text-red text-xl">Enemies Alive Per Type</h2>
-	<LineChart Options="_lco" @ref="_enemiesAlivePerTypeChart" TItem="ushort" />
+	<h2 class="text-red text-xl">Squids Alive</h2>
+	<LineChart Options="_lco" @ref="_squidsAliveChart" TItem="ushort" />
 
-	<h2 class="text-red text-xl">Enemies Killed Per Type</h2>
-	<LineChart Options="_lco" @ref="_enemiesKilledPerTypeChart" TItem="ushort" />
+	<h2 class="text-red text-xl">Squids Killed</h2>
+	<LineChart Options="_lco" @ref="_squidsKilledChart" TItem="ushort" />
 }
 
 @code
@@ -44,8 +45,8 @@ else
 	private LineChart<int>? _homingChart;
 	private LineChart<int>? _enemiesChart;
 	private LineChart<int>? _daggersChart;
-	private LineChart<ushort>? _enemiesAlivePerTypeChart;
-	private LineChart<ushort>? _enemiesKilledPerTypeChart;
+	private LineChart<ushort>? _squidsAliveChart;
+	private LineChart<ushort>? _squidsKilledChart;
 
 	[Parameter, EditorRequired] public int Id { get; set; }
 
@@ -64,8 +65,8 @@ else
 			_homingChart == null ||
 			_enemiesChart == null ||
 			_daggersChart == null ||
-			_enemiesAlivePerTypeChart == null ||
-			_enemiesKilledPerTypeChart == null)
+			_squidsAliveChart == null ||
+			_squidsKilledChart == null)
 			return;
 
 		await AddLabelsDatasets(_gemsChart,
@@ -76,14 +77,14 @@ else
 		await AddLabelsDatasets(_homingChart, new("Homing Stored", GetCustomEntryData.HomingStoredData, "#f0f", "#f0f"), new("Homing Eaten", GetCustomEntryData.HomingEatenData, "#f00", "#f00"));
 		await AddLabelsDatasets(_enemiesChart, new("Enemies Alive", GetCustomEntryData.EnemiesAliveData, "#840", "#840"), new("Enemies Killed", GetCustomEntryData.EnemiesKilledData, "#f00", "#f00"));
 		await AddLabelsDatasets(_daggersChart, new("Daggers Hit", GetCustomEntryData.DaggersHitData, "#80f", "#80f"), new("Daggers Fired", GetCustomEntryData.DaggersFiredData, "#00f", "#00f"));
-		await AddLabelsDatasets(_enemiesAlivePerTypeChart,
-			new("Squid Is Alive", GetCustomEntryData.Squid1sAliveData, "#80f", "#80f"),
-			new("Squid IIs Alive", GetCustomEntryData.Squid2sAliveData, "#00f", "#00f"),
-			new("Squid IIIs Alive", GetCustomEntryData.Squid3sAliveData, "#00f", "#00f"));
-		await AddLabelsDatasets(_enemiesKilledPerTypeChart,
-			new("Squid Is Killed", GetCustomEntryData.Squid1sKilledData, "#80f", "#80f"),
-			new("Squid IIs Killed", GetCustomEntryData.Squid2sKilledData, "#00f", "#00f"),
-			new("Squid IIIs Killed", GetCustomEntryData.Squid3sKilledData, "#00f", "#00f"));
+		await AddLabelsDatasets(_squidsAliveChart,
+			new("Squid Is Alive", GetCustomEntryData.Squid1sAliveData, EnemyColors.Squid1.HexCode, EnemyColors.Squid1.HexCode),
+			new("Squid IIs Alive", GetCustomEntryData.Squid2sAliveData, EnemyColors.Squid2.HexCode, EnemyColors.Squid2.HexCode),
+			new("Squid IIIs Alive", GetCustomEntryData.Squid3sAliveData, EnemyColors.Squid3.HexCode, EnemyColors.Squid3.HexCode));
+		await AddLabelsDatasets(_squidsKilledChart,
+			new("Squid Is Killed", GetCustomEntryData.Squid1sKilledData, EnemyColors.Squid1.HexCode, EnemyColors.Squid1.HexCode),
+			new("Squid IIs Killed", GetCustomEntryData.Squid2sKilledData, EnemyColors.Squid2.HexCode, EnemyColors.Squid2.HexCode),
+			new("Squid IIIs Killed", GetCustomEntryData.Squid3sKilledData, EnemyColors.Squid3.HexCode, EnemyColors.Squid3.HexCode));
 	}
 
 	private async Task AddLabelsDatasets<T>(LineChart<T> chart, params Dataset<T>[] datasets)
