@@ -7,8 +7,6 @@
 @using DevilDaggersInfo.Web.BlazorWasm.Shared.Dto.Public.Leaderboards
 @using DevilDaggersInfo.Web.BlazorWasm.Shared.Dto.Public.Players
 
-<div>Game version is @(_gameVersion).</div>
-
 <div class="text-xl font-goethe">
 	<div class="grid gap-3 grid-cols-leaderboard-sm md:grid-cols-leaderboard-md lg:grid-cols-leaderboard-lg xl:grid-cols-leaderboard-xl">
 		<div @onclick="() => Sort(LeaderboardSorting.Rank)" class="text-right"><Tooltip Text="Sort by RANK"><img src="/images/icons/custom-x2/rank.png" /></Tooltip></div>
@@ -34,10 +32,10 @@
 				GetPlayerForLeaderboard? player = Players?.Find(p => p.Id == entry.Id);
 				bool isBanned = player?.IsBanned ?? false;
 
-				Dagger dagger = Daggers.GetDaggerFromSeconds(_gameVersion, entry.Time);
+				Dagger dagger = Daggers.GetDaggerFromSeconds(GameVersion, entry.Time);
 				string daggerCssClass = dagger.Name.ToLower();
 
-				Death? death = Deaths.GetDeathByLeaderboardType(_gameVersion, entry.DeathType);
+				Death? death = Deaths.GetDeathByLeaderboardType(GameVersion, entry.DeathType);
 				string deathStyle = $"color: {(death?.Color.HexCode ?? "#444")};";
 				string deathName = death?.Name ?? "Unknown";
 
@@ -76,8 +74,8 @@
 	[Parameter] public bool IsHistory { get; set; }
 	[Parameter, EditorRequired] public TGetLeaderboardDto Leaderboard { get; set; } = default!;
 	[Parameter, EditorRequired] public List<GetPlayerForLeaderboard>? Players { get; set; } = null!;
+	[Parameter, EditorRequired] public GameVersion GameVersion { get; set; }
 
-	private GameVersion _gameVersion;
 	private LeaderboardSorting _sortBy;
 	private bool _ascending;
 
@@ -87,8 +85,6 @@
 	{
 		foreach (LeaderboardSorting e in (LeaderboardSorting[])Enum.GetValues(typeof(LeaderboardSorting)))
 			_sortings.Add(e, false);
-
-		_gameVersion = GameVersions.GetGameVersionFromDate(Leaderboard.DateTime) ?? GameVersion.V1_0;
 	}
 
 	private void Sort(LeaderboardSorting sortBy)
