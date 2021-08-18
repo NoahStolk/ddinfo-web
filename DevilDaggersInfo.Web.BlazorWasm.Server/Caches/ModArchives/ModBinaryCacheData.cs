@@ -1,4 +1,5 @@
 ﻿using DevilDaggersInfo.Core.Asset;
+using DevilDaggersInfo.Core.Asset.Enums;
 using DevilDaggersInfo.Web.BlazorWasm.Server.Exceptions;
 using DevilDaggersInfo.Web.BlazorWasm.Shared.Enums;
 using System.Text;

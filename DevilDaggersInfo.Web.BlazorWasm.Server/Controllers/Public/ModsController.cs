@@ -1,4 +1,4 @@
-﻿using DevilDaggersInfo.Core.Asset;
+﻿using DevilDaggersInfo.Core.Asset.Enums;
 using DevilDaggersInfo.Web.BlazorWasm.Server.Caches.ModArchives;
 using DevilDaggersInfo.Web.BlazorWasm.Server.Controllers.Attributes;
 using DevilDaggersInfo.Web.BlazorWasm.Server.Entities;
