@@ -1,0 +1,16 @@
+Fallen,Void,0
+Swarmed,Skull1,1
+Impaled,Skull2,2
+Gored,Skull3,3
+Infested,SpiderEgg1,4
+Opened,Skull4,5
+Purged,Squid1,6
+Desecrated,Squid2,7
+Sacrificed,Squid3,8
+Eviscerated,Centipede,9
+Annihilated,GigapedeRed,10
+Envenomated,SpiderEgg2,12 
+Stricken,Spiderling,16
+Devastated,Leviathan,17
+None,Andras,200
+Unknown,Andras,255

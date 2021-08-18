@@ -20,7 +20,7 @@ public static class {_className}
 
 	public void Execute(GeneratorExecutionContext context)
 	{
-		foreach (AdditionalText additionalText in context.AdditionalFiles.Where(at => at.Path.EndsWith("Colors.txt")))
+		foreach (AdditionalText additionalText in context.AdditionalFiles.Where(at => at.Path.EndsWith("Colors.csv")))
 		{
 			string className = Path.GetFileNameWithoutExtension(additionalText.Path);
 			string? fileContents = additionalText.GetText()?.ToString();
@@ -34,7 +34,7 @@ public static class {_className}
 			{
 				string line = lines[i];
 
-				string[] parameters = line.Split(new string[] { "\t" }, StringSplitOptions.RemoveEmptyEntries);
+				string[] parameters = line.Split(new string[] { "," }, StringSplitOptions.RemoveEmptyEntries);
 				const int parameterCount = 2;
 				if (parameters.Length != parameterCount)
 					throw new($"Invalid specification in line '{line}'. There should be {parameterCount} parameters, but {parameters.Length} were found.");

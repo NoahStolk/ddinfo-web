@@ -38,7 +38,7 @@ public static class {_className}
 			{
 				string line = lines[i];
 
-				string[] parameters = line.Split(new string[] { "\t" }, StringSplitOptions.RemoveEmptyEntries);
+				string[] parameters = line.Split(new string[] { "," }, StringSplitOptions.RemoveEmptyEntries);
 				const int parameterCount = 7;
 				if (parameters.Length != parameterCount)
 					throw new($"Invalid specification in line '{line}'. There should be {parameterCount} parameters, but {parameters.Length} were found.");
