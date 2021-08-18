@@ -29,6 +29,7 @@ public class ModBinaryCacheData
 	private static ulong MakeMagic(ulong a, ulong b, ulong c, ulong d)
 		=> a | b << 8 | c << 16 | d << 24;
 
+	// TODO: Move this logic to a new project called DevilDaggersInfo.Core.Mod.
 	public static ModBinaryCacheData CreateFromFile(string fileName, byte[] fileContents)
 	{
 		ModBinaryType modBinaryType;
