@@ -10,7 +10,7 @@ public static class StringExtensions
 		foreach (string value in values)
 		{
 			if (str.StartsWith(value))
-				return str.Substring(value.Length);
+				return str[value.Length..];
 		}
 
 		return str;

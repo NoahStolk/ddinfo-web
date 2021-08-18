@@ -90,7 +90,7 @@ public class ModBinaryCacheData
 					if (!TryReadLoudnessLine(line, out string? assetName, out float loudness) || assetName == null)
 						continue;
 
-					AudioAssetData? audioAssetData = AssetHandler.Instance.AudioAudioAssets.Find(a => a.AssetName == assetName);
+					AudioAssetData? audioAssetData = AudioAudio.All.Find(a => a.AssetName == assetName);
 					if (audioAssetData == null || audioAssetData.DefaultLoudness == loudness)
 						continue;
 
@@ -101,14 +101,14 @@ public class ModBinaryCacheData
 			{
 				bool isProhibited = modBinaryType switch
 				{
-					ModBinaryType.Audio => AssetHandler.Instance.AudioAudioAssets.Find(a => a.AssetName == name)?.IsProhibited ?? false,
-					ModBinaryType.Core => AssetHandler.Instance.CoreShadersAssets.Find(a => a.AssetName == name)?.IsProhibited ?? false,
+					ModBinaryType.Audio => AudioAudio.All.Find(a => a.AssetName == name)?.IsProhibited ?? false,
+					ModBinaryType.Core => CoreShaders.All.Find(a => a.AssetName == name)?.IsProhibited ?? false,
 					ModBinaryType.Dd => assetType switch
 					{
-						AssetType.ModelBinding => AssetHandler.Instance.DdModelBindingsAssets.Find(a => a.AssetName == name)?.IsProhibited ?? false,
-						AssetType.Model => AssetHandler.Instance.DdModelsAssets.Find(a => a.AssetName == name)?.IsProhibited ?? false,
-						AssetType.Shader => AssetHandler.Instance.DdShadersAssets.Find(a => a.AssetName == name)?.IsProhibited ?? false,
-						AssetType.Texture => AssetHandler.Instance.DdTexturesAssets.Find(a => a.AssetName == name)?.IsProhibited ?? false,
+						AssetType.ModelBinding => DdModelBindings.All.Find(a => a.AssetName == name)?.IsProhibited ?? false,
+						AssetType.Model => DdModels.All.Find(a => a.AssetName == name)?.IsProhibited ?? false,
+						AssetType.Shader => DdShaders.All.Find(a => a.AssetName == name)?.IsProhibited ?? false,
+						AssetType.Texture => DdTextures.All.Find(a => a.AssetName == name)?.IsProhibited ?? false,
 						_ => throw new InvalidModBinaryException($"Mod binary '{fileName}', which is a '{modBinaryType}' binary file, contains an asset of type '{assetType}', which is not supported."),
 					},
 					_ => throw new NotSupportedException($"Mod binary type '{modBinaryType}' is not supported."),

@@ -11,4 +11,6 @@ public class AudioAssetData : AssetData
 
 	public float DefaultLoudness { get; }
 	public bool PresentInDefaultLoudness { get; }
+
+	public override AssetType AssetType => AssetType.Audio;
 }

@@ -11,4 +11,6 @@ public class ModelAssetData : AssetData
 
 	public int DefaultIndexCount { get; }
 	public int DefaultVertexCount { get; }
+
+	public override AssetType AssetType => AssetType.Model;
 }
