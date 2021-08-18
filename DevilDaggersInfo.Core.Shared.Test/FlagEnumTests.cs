@@ -1,7 +1,4 @@
-﻿using DevilDaggersInfo.Web.BlazorWasm.Shared.Extensions;
-using Microsoft.VisualStudio.TestTools.UnitTesting;
-
-namespace DevilDaggersInfo.Web.BlazorWasm.Shared.Test;
+﻿namespace DevilDaggersInfo.Core.Shared.Test;
 
 [TestClass]
 public class FlagEnumTests

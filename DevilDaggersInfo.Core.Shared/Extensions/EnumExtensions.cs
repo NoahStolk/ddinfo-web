@@ -1,11 +1,11 @@
-﻿namespace DevilDaggersInfo.Web.BlazorWasm.Shared.Extensions;
+﻿namespace DevilDaggersInfo.Core.Shared.Extensions;
 
 public static class EnumExtensions
 {
 	public static IEnumerable<int> AsEnumerable<TEnum>(this TEnum e)
 		where TEnum : struct, Enum
 	{
-		int count = Enum.GetValues<TEnum>().Length;
+		int count = Enum.GetValues(typeof(TEnum)).Length;
 		int max = 1 << (count - 1);
 
 		for (int i = 1; i < max; i <<= 1)
