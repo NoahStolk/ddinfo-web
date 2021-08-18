@@ -51,14 +51,10 @@ public static class {_className}
 				fieldLines[i] = $"\tpublic static readonly Color {objectName} = new(0x{colorR}, 0x{colorG}, 0x{colorB});";
 			}
 
-			string sourceBuilder = _template
+			string source = _template
 				.Replace(_className, className)
 				.Replace(_colorFields, string.Join(Environment.NewLine, fieldLines));
-
-			string warningSuppressionCodes = string.Join(", ", new[] { "CS0105", "CS1591", "CS8618", "S1128", "SA1001", "SA1027", "SA1028", "SA1101", "SA1122", "SA1137", "SA1200", "SA1201", "SA1208", "SA1210", "SA1309", "SA1311", "SA1413", "SA1503", "SA1505", "SA1507", "SA1508", "SA1516", "SA1600", "SA1601", "SA1602", "SA1623", "SA1649" });
-			string warningsDisable = $"#pragma warning disable {warningSuppressionCodes}\n";
-			string warningsRestore = $"\n#pragma warning restore {warningSuppressionCodes}";
-			context.AddSource(className, SourceText.From(warningsDisable + sourceBuilder + warningsRestore, Encoding.UTF8));
+			context.AddSource(className, SourceText.From(SourceBuilderUtils.WrapInsideWarningSuppressionDirectives(source), Encoding.UTF8));
 		}
 	}
 }
