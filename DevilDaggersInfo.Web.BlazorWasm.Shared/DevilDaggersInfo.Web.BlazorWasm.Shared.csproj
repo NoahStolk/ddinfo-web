@@ -16,6 +16,7 @@
   </ItemGroup>
   <ItemGroup>
     <ProjectReference Include="..\DevilDaggersInfo.Core.Asset\DevilDaggersInfo.Core.Asset.csproj" />
+    <ProjectReference Include="..\DevilDaggersInfo.Core.Shared\DevilDaggersInfo.Core.Shared.csproj" />
     <ProjectReference Include="..\DevilDaggersInfo.Core.Spawnset\DevilDaggersInfo.Core.Spawnset.csproj" />
     <ProjectReference Include="..\DevilDaggersInfo.Core.Wiki\DevilDaggersInfo.Core.Wiki.csproj" />
   </ItemGroup>
