@@ -1,4 +1,12 @@
-<Project Sdk="Microsoft.NET.Sdk">
+﻿<Project Sdk="Microsoft.NET.Sdk">
+  <ItemGroup>
+    <AdditionalFiles Include="Data\AudioAudio.csv" />
+    <AdditionalFiles Include="Data\CoreShaders.csv" />
+    <AdditionalFiles Include="Data\DdModelBindings.csv" />
+    <AdditionalFiles Include="Data\DdModels.csv" />
+    <AdditionalFiles Include="Data\DdShaders.csv" />
+    <AdditionalFiles Include="Data\DdTextures.csv" />
+  </ItemGroup>
   <ItemGroup>
     <PackageReference Include="Newtonsoft.Json" Version="13.0.1" />
     <PackageReference Include="Roslynator.Analyzers" Version="3.2.0">
