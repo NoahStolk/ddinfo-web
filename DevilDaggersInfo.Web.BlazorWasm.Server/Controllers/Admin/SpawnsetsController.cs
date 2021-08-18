@@ -138,7 +138,7 @@ public class SpawnsetsController : ControllerBase
 		_dbContext.Spawnsets.Add(spawnset);
 		_dbContext.SaveChanges();
 
-		await _auditLogger.LogAdd(addSpawnset, User, spawnset.Id, new() { new($"File '{_fileSystemService.GetRelevantDisplayPath(path)}' was added.", FileSystemInformationType.Add) });
+		await _auditLogger.LogAdd(addSpawnset, User, spawnset.Id, new() { new($"File {_fileSystemService.FormatPath(path)} was added.", FileSystemInformationType.Add) });
 
 		return Ok(spawnset.Id);
 	}
@@ -166,7 +166,7 @@ public class SpawnsetsController : ControllerBase
 			string oldPath = Path.Combine(directory, spawnset.Name);
 			string newPath = Path.Combine(directory, editSpawnset.Name);
 			Io.File.Move(oldPath, newPath);
-			moveInfo = $"File '{_fileSystemService.GetRelevantDisplayPath(oldPath)}' was moved to {_fileSystemService.GetRelevantDisplayPath(newPath)}.";
+			moveInfo = $"File {_fileSystemService.FormatPath(oldPath)} was moved to {_fileSystemService.FormatPath(newPath)}.";
 		}
 
 		EditSpawnset logDto = new()
@@ -215,7 +215,7 @@ public class SpawnsetsController : ControllerBase
 		_dbContext.Spawnsets.Remove(spawnset);
 		_dbContext.SaveChanges();
 
-		string message = fileExists ? $"File '{_fileSystemService.GetRelevantDisplayPath(path)}' was deleted." : $"File '{_fileSystemService.GetRelevantDisplayPath(path)}' was not deleted because it does not exist.";
+		string message = fileExists ? $"File {_fileSystemService.FormatPath(path)} was deleted." : $"File {_fileSystemService.FormatPath(path)} was not deleted because it does not exist.";
 		await _auditLogger.LogDelete(spawnset, User, spawnset.Id, new() { new(message, fileExists ? FileSystemInformationType.Delete : FileSystemInformationType.NotFoundUnexpected) });
 
 		return Ok();

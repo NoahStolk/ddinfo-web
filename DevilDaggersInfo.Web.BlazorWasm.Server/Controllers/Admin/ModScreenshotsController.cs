@@ -45,7 +45,7 @@ public class ModScreenshotsController : ControllerBase
 		string path = Path.Combine(directory, $"{screenshots:00}.png");
 		Io.File.WriteAllBytes(path, addModScreenshot.FileContents);
 
-		await _auditLogger.LogFileSystemInformation(new() { new($"File '{_fileSystemService.GetRelevantDisplayPath(path)}' was added.", FileSystemInformationType.Add) });
+		await _auditLogger.LogFileSystemInformation(new() { new($"File {_fileSystemService.FormatPath(path)} was added.", FileSystemInformationType.Add) });
 
 		return Ok();
 	}
@@ -66,7 +66,7 @@ public class ModScreenshotsController : ControllerBase
 
 		Io.File.Delete(path);
 
-		await _auditLogger.LogFileSystemInformation(new() { new($"File '{_fileSystemService.GetRelevantDisplayPath(path)}' was deleted.", FileSystemInformationType.Delete) });
+		await _auditLogger.LogFileSystemInformation(new() { new($"File {_fileSystemService.FormatPath(path)} was deleted.", FileSystemInformationType.Delete) });
 
 		return Ok();
 	}

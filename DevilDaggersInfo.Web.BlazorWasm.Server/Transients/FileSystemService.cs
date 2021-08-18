@@ -40,13 +40,13 @@ public class FileSystemService : IFileSystemService
 	public string GetPath(DataSubDirectory subDirectory)
 		=> Path.Combine(Root, subDirectory.ToString());
 
-	public string GetRelevantDisplayPath(string path)
+	public string FormatPath(string path)
 	{
 		char sep = Path.DirectorySeparatorChar;
 		string rootIndicator = $"{sep}{Root}{sep}";
 		if (!path.Contains(rootIndicator))
-			return path;
+			return $"`{path}`";
 
-		return path[path.IndexOf(rootIndicator)..];
+		return $"`{path[path.IndexOf(rootIndicator)..]}`";
 	}
 }

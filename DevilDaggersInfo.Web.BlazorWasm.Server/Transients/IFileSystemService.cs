@@ -12,5 +12,5 @@ public interface IFileSystemService
 
 	string GetPath(DataSubDirectory subDirectory);
 
-	string GetRelevantDisplayPath(string path);
+	string FormatPath(string path);
 }

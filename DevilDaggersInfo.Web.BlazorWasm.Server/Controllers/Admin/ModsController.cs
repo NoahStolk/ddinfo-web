@@ -137,7 +137,7 @@ public class ModsController : ControllerBase
 
 			string path = Path.Combine(modsDirectory, $"{addMod.Name}.zip");
 			Io.File.WriteAllBytes(path, addMod.FileContents);
-			addInfo = $"File '{_fileSystemService.GetRelevantDisplayPath(path)}' was added.";
+			addInfo = $"File {_fileSystemService.FormatPath(path)} was added.";
 		}
 
 		ModEntity mod = new()
@@ -220,7 +220,7 @@ public class ModsController : ControllerBase
 			// At this point we already know RemoveExistingFile is false, and that the old files are moved already.
 			string path = Path.Combine(_fileSystemService.GetPath(DataSubDirectory.Mods), $"{editMod.Name}.zip");
 			Io.File.WriteAllBytes(path, editMod.FileContents);
-			fileSystemInformation.Add(new($"File '{_fileSystemService.GetRelevantDisplayPath(path)}' was added.", FileSystemInformationType.Add));
+			fileSystemInformation.Add(new($"File {_fileSystemService.FormatPath(path)} was added.", FileSystemInformationType.Add));
 
 			// Update LastUpdated when updating the file only.
 			mod.LastUpdated = DateTime.UtcNow;
@@ -272,11 +272,11 @@ public class ModsController : ControllerBase
 		if (Directory.Exists(screenshotsDirectory))
 		{
 			Directory.Delete(screenshotsDirectory, true);
-			fileSystemInformation.Add(new($"Directory '{_fileSystemService.GetRelevantDisplayPath(screenshotsDirectory)}' was deleted because removal was requested.", FileSystemInformationType.Delete));
+			fileSystemInformation.Add(new($"Directory {_fileSystemService.FormatPath(screenshotsDirectory)} was deleted because removal was requested.", FileSystemInformationType.Delete));
 		}
 		else
 		{
-			fileSystemInformation.Add(new($"Directory '{_fileSystemService.GetRelevantDisplayPath(screenshotsDirectory)}' was not deleted because it does not exist.", FileSystemInformationType.NotFound));
+			fileSystemInformation.Add(new($"Directory {_fileSystemService.FormatPath(screenshotsDirectory)} was not deleted because it does not exist.", FileSystemInformationType.NotFound));
 		}
 
 		_dbContext.Mods.Remove(mod);
@@ -298,14 +298,14 @@ public class ModsController : ControllerBase
 		{
 			string newPath = Path.Combine(directory, newName);
 			Io.File.Move(oldPath, newPath);
-			fileSystemInformation.Add(new($"File '{_fileSystemService.GetRelevantDisplayPath(oldPath)}' was moved to '{_fileSystemService.GetRelevantDisplayPath(newPath)}'.", FileSystemInformationType.Move));
+			fileSystemInformation.Add(new($"File {_fileSystemService.FormatPath(oldPath)} was moved to {_fileSystemService.FormatPath(newPath)}.", FileSystemInformationType.Move));
 
 			// Clear entire memory cache (can't clear individual entries).
 			_modArchiveCache.Clear();
 		}
 		else
 		{
-			fileSystemInformation.Add(new($"File '{_fileSystemService.GetRelevantDisplayPath(oldPath)}' was not moved because it does not exist.", FileSystemInformationType.NotFound));
+			fileSystemInformation.Add(new($"File {_fileSystemService.FormatPath(oldPath)} was not moved because it does not exist.", FileSystemInformationType.NotFound));
 		}
 
 		string cacheDirectory = _fileSystemService.GetPath(DataSubDirectory.ModArchiveCache);
@@ -314,11 +314,11 @@ public class ModsController : ControllerBase
 		{
 			string newCachePath = Path.Combine(directory, newName);
 			Io.File.Move(oldCachePath, newCachePath);
-			fileSystemInformation.Add(new($"File '{_fileSystemService.GetRelevantDisplayPath(oldCachePath)}' was moved to '{_fileSystemService.GetRelevantDisplayPath(newCachePath)}'.", FileSystemInformationType.Move));
+			fileSystemInformation.Add(new($"File {_fileSystemService.FormatPath(oldCachePath)} was moved to {_fileSystemService.FormatPath(newCachePath)}.", FileSystemInformationType.Move));
 		}
 		else
 		{
-			fileSystemInformation.Add(new($"File '{_fileSystemService.GetRelevantDisplayPath(oldCachePath)}' was not moved because it does not exist.", FileSystemInformationType.NotFound));
+			fileSystemInformation.Add(new($"File {_fileSystemService.FormatPath(oldCachePath)} was not moved because it does not exist.", FileSystemInformationType.NotFound));
 		}
 
 		// Always move screenshots directory (not removed when removal is requested as screenshots are separate entities).
@@ -327,11 +327,11 @@ public class ModsController : ControllerBase
 		{
 			string newScreenshotsDirectory = Path.Combine(_fileSystemService.GetPath(DataSubDirectory.ModScreenshots), newName);
 			Directory.Move(oldScreenshotsDirectory, newScreenshotsDirectory);
-			fileSystemInformation.Add(new($"Directory '{_fileSystemService.GetRelevantDisplayPath(oldScreenshotsDirectory)}' was moved to '{_fileSystemService.GetRelevantDisplayPath(newScreenshotsDirectory)}'.", FileSystemInformationType.Move));
+			fileSystemInformation.Add(new($"Directory {_fileSystemService.FormatPath(oldScreenshotsDirectory)} was moved to {_fileSystemService.FormatPath(newScreenshotsDirectory)}.", FileSystemInformationType.Move));
 		}
 		else
 		{
-			fileSystemInformation.Add(new($"Directory '{_fileSystemService.GetRelevantDisplayPath(oldScreenshotsDirectory)}' was not moved because it does not exist.", FileSystemInformationType.NotFound));
+			fileSystemInformation.Add(new($"Directory {_fileSystemService.FormatPath(oldScreenshotsDirectory)} was not moved because it does not exist.", FileSystemInformationType.NotFound));
 		}
 	}
 
@@ -346,14 +346,14 @@ public class ModsController : ControllerBase
 		if (Io.File.Exists(path))
 		{
 			Io.File.Delete(path);
-			fileSystemInformation.Add(new($"File {_fileSystemService.GetRelevantDisplayPath(path)} was deleted because removal was requested.", FileSystemInformationType.Delete));
+			fileSystemInformation.Add(new($"File {_fileSystemService.FormatPath(path)} was deleted because removal was requested.", FileSystemInformationType.Delete));
 
 			// Clear entire memory cache (can't clear individual entries).
 			_modArchiveCache.Clear();
 		}
 		else
 		{
-			fileSystemInformation.Add(new($"File {_fileSystemService.GetRelevantDisplayPath(path)} was not deleted because it does not exist.", FileSystemInformationType.NotFound));
+			fileSystemInformation.Add(new($"File {_fileSystemService.FormatPath(path)} was not deleted because it does not exist.", FileSystemInformationType.NotFound));
 		}
 
 		// Clear file cache for this mod.
@@ -361,11 +361,11 @@ public class ModsController : ControllerBase
 		if (Io.File.Exists(cachePath))
 		{
 			Io.File.Delete(cachePath);
-			fileSystemInformation.Add(new($"File {_fileSystemService.GetRelevantDisplayPath(cachePath)} was deleted because removal was requested.", FileSystemInformationType.Delete));
+			fileSystemInformation.Add(new($"File {_fileSystemService.FormatPath(cachePath)} was deleted because removal was requested.", FileSystemInformationType.Delete));
 		}
 		else
 		{
-			fileSystemInformation.Add(new($"File {_fileSystemService.GetRelevantDisplayPath(cachePath)} was not deleted because it does not exist.", FileSystemInformationType.NotFound));
+			fileSystemInformation.Add(new($"File {_fileSystemService.FormatPath(cachePath)} was not deleted because it does not exist.", FileSystemInformationType.NotFound));
 		}
 	}
 
