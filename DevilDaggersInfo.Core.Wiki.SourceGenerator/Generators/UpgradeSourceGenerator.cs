@@ -1,4 +1,4 @@
-﻿namespace DevilDaggersInfo.Core.Wiki.SourceGenerator;
+﻿namespace DevilDaggersInfo.Core.Wiki.SourceGenerator.Generators;
 
 [Generator]
 public class UpgradeSourceGenerator : ISourceGenerator
