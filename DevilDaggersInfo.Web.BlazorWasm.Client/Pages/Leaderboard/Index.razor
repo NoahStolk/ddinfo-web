@@ -5,6 +5,7 @@
 @using DevilDaggersInfo.Web.BlazorWasm.Shared.Dto.Public.Leaderboards
 @using DevilDaggersInfo.Web.BlazorWasm.Shared.Dto.Public.Players
 @using DevilDaggersInfo.Web.BlazorWasm.Client.Components.Leaderboards
+@using DevilDaggersInfo.Core.Wiki.Enums
 
 <Heading>Leaderboard</Heading>
 
@@ -50,7 +51,7 @@ else
 
 	<LeaderboardGlobal Leaderboard="GetLeaderboard" IsHistory="false" />
 	<LeaderboardTableInfo />
-	<LeaderboardTable TGetLeaderboardDto="GetLeaderboard" TGetEntryDto="GetEntry" Leaderboard="GetLeaderboard" Players="Players" IsHistory="false" />
+	<LeaderboardTable TGetLeaderboardDto="GetLeaderboard" TGetEntryDto="GetEntry" Leaderboard="GetLeaderboard" Players="Players" IsHistory="false" GameVersion="GameVersion.V3_1" />
 }
 
 @code

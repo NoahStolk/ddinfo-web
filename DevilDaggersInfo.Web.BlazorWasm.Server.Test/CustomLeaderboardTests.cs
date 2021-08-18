@@ -33,7 +33,6 @@ public class CustomLeaderboardTests
 		Mock<DiscordLogger> discordLogger = new(mockEnvironment.Object);
 		Mock<AuditLogger> auditLogger = new(discordLogger.Object);
 
-		// TODO: Mock to get spawnset.
 		Mock<IFileSystemService> fileSystemService = new();
 
 		_customLeaderboardsController = new CustomLeaderboardsController(_dbContext.Object, fileSystemService.Object, auditLogger.Object);
@@ -50,9 +49,10 @@ public class CustomLeaderboardTests
 	[TestMethod]
 	public void GetCustomLeaderboards()
 	{
-		Page<GetCustomLeaderboard> customLeaderboards = _customLeaderboardsController.GetCustomLeaderboards().Value;
+		Page<GetCustomLeaderboard>? customLeaderboards = _customLeaderboardsController.GetCustomLeaderboards().Value;
 
 		_dbContext.Verify(db => db.SaveChanges(), Times.Never);
+		Assert.IsNotNull(customLeaderboards);
 		Assert.AreEqual(1, customLeaderboards.Results.Count);
 		Assert.IsTrue(customLeaderboards.Results.Any(cl => cl.TimeBronze == 60));
 	}

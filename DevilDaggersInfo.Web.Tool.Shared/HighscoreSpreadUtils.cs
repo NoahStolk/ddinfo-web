@@ -75,7 +75,7 @@ public static class HighscoreSpreadUtils
 	}
 
 	public static bool HasMissingStats(this GetEntryHistory entry)
-		=> entry.Gems == 0 || entry.Kills == 0 || entry.DeathType == -1 || entry.DaggersHit == 0 || entry.DaggersFired == 0 || entry.DaggersFired == 10000;
+		=> entry.Gems == 0 || entry.Kills == 0 || entry.DeathType == 255 || entry.DaggersHit == 0 || entry.DaggersFired == 0 || entry.DaggersFired == 10000;
 
 	private static void Combine(GetEntryHistory original, IEnumerable<GetEntryHistory> entries)
 	{
@@ -87,7 +87,7 @@ public static class HighscoreSpreadUtils
 		if (withKills != null)
 			original.Kills = withKills.Kills;
 
-		GetEntryHistory? withDeathType = entries.FirstOrDefault(e => e.DeathType != -1);
+		GetEntryHistory? withDeathType = entries.FirstOrDefault(e => e.DeathType != 255);
 		if (withDeathType != null)
 			original.DeathType = withDeathType.DeathType;
 

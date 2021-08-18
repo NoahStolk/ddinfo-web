@@ -48,7 +48,7 @@ public class CustomEntryTests
 
 		_customEntriesController = new CustomEntriesController(_dbContext.Object, toolHelper.Object, discordLogger.Object, spawnsetHashCache.Object);
 
-		if (!Spawnset.TryParse(File.ReadAllBytes(Path.Combine(TestConstants.DataDirectory, "Spawnsets", "V3")), out _spawnset))
+		if (!Spawnset.TryParse(File.ReadAllBytes(Path.Combine(TestConstants.DataDirectory, "Spawnsets", "V3")), out _spawnset!))
 			Assert.Fail("Spawnset could not be parsed.");
 	}
 
@@ -66,9 +66,10 @@ public class CustomEntryTests
 		};
 		uploadRequest.Validation = GetValidation(uploadRequest);
 
-		GetUploadSuccess uploadSuccess = (await _customEntriesController.ProcessUploadRequest(uploadRequest)).Value;
+		GetUploadSuccess? uploadSuccess = (await _customEntriesController.ProcessUploadRequest(uploadRequest)).Value;
 
 		_dbContext.Verify(db => db.SaveChanges(), Times.AtLeastOnce);
+		Assert.IsNotNull(uploadSuccess);
 		Assert.AreEqual(1, uploadSuccess.TotalPlayers);
 		Assert.IsTrue(uploadSuccess.Message.StartsWith("No new highscore"));
 	}
@@ -87,9 +88,10 @@ public class CustomEntryTests
 		};
 		uploadRequest.Validation = GetValidation(uploadRequest);
 
-		GetUploadSuccess uploadSuccess = (await _customEntriesController.ProcessUploadRequest(uploadRequest)).Value;
+		GetUploadSuccess? uploadSuccess = (await _customEntriesController.ProcessUploadRequest(uploadRequest)).Value;
 
 		_dbContext.Verify(db => db.SaveChanges(), Times.AtLeastOnce);
+		Assert.IsNotNull(uploadSuccess);
 		Assert.AreEqual(1, uploadSuccess.TotalPlayers);
 		Assert.IsTrue(uploadSuccess.Message.StartsWith("NEW HIGHSCORE"));
 	}
@@ -108,10 +110,11 @@ public class CustomEntryTests
 		};
 		uploadRequest.Validation = GetValidation(uploadRequest);
 
-		GetUploadSuccess uploadSuccess = (await _customEntriesController.ProcessUploadRequest(uploadRequest)).Value;
+		GetUploadSuccess? uploadSuccess = (await _customEntriesController.ProcessUploadRequest(uploadRequest)).Value;
 
 		_dbContext.Verify(db => db.CustomEntries.Add(It.Is<CustomEntryEntity>(ce => ce.PlayerId == 2 && ce.Time == 200000)), Times.Once);
 		_dbContext.Verify(db => db.SaveChanges(), Times.AtLeastOnce);
+		Assert.IsNotNull(uploadSuccess);
 		Assert.IsTrue(uploadSuccess.Message.StartsWith("Welcome"));
 	}
 
@@ -129,11 +132,12 @@ public class CustomEntryTests
 		};
 		uploadRequest.Validation = GetValidation(uploadRequest);
 
-		GetUploadSuccess uploadSuccess = (await _customEntriesController.ProcessUploadRequest(uploadRequest)).Value;
+		GetUploadSuccess? uploadSuccess = (await _customEntriesController.ProcessUploadRequest(uploadRequest)).Value;
 
 		_dbContext.Verify(db => db.SaveChanges(), Times.AtLeastOnce);
 		_dbContext.Verify(db => db.Players.Add(It.Is<PlayerEntity>(p => p.Id == 3 && p.PlayerName == "TestPlayer3")), Times.Once);
 		_dbContext.Verify(db => db.CustomEntries.Add(It.Is<CustomEntryEntity>(ce => ce.PlayerId == 3 && ce.Time == 300000)), Times.Once);
+		Assert.IsNotNull(uploadSuccess);
 		Assert.IsTrue(uploadSuccess.Message.StartsWith("Welcome"));
 	}
 
@@ -155,12 +159,13 @@ public class CustomEntryTests
 
 		_dbContext.Verify(db => db.SaveChanges(), Times.Never);
 
-		Assert.IsInstanceOfType(response.Result, typeof(BadRequestObjectResult));
-		BadRequestObjectResult badRequest = (BadRequestObjectResult)response.Result;
+		BadRequestObjectResult? badRequest = response.Result as BadRequestObjectResult;
+		Assert.IsNotNull(badRequest);
 		Assert.AreEqual(StatusCodes.Status400BadRequest, badRequest.StatusCode);
 
-		Assert.IsInstanceOfType(badRequest.Value, typeof(ProblemDetails));
-		ProblemDetails problemDetails = (ProblemDetails)badRequest.Value;
+		ProblemDetails? problemDetails = badRequest.Value as ProblemDetails;
+		Assert.IsNotNull(problemDetails);
+		Assert.IsNotNull(problemDetails.Title);
 		Assert.IsTrue(problemDetails.Title.Contains("unsupported and outdated"));
 	}
 
@@ -182,12 +187,13 @@ public class CustomEntryTests
 
 		_dbContext.Verify(db => db.SaveChanges(), Times.Never);
 
-		Assert.IsInstanceOfType(response.Result, typeof(BadRequestObjectResult));
-		BadRequestObjectResult badRequest = (BadRequestObjectResult)response.Result;
+		BadRequestObjectResult? badRequest = response.Result as BadRequestObjectResult;
+		Assert.IsNotNull(badRequest);
 		Assert.AreEqual(StatusCodes.Status400BadRequest, badRequest.StatusCode);
 
-		Assert.IsInstanceOfType(badRequest.Value, typeof(ProblemDetails));
-		ProblemDetails problemDetails = (ProblemDetails)badRequest.Value;
+		ProblemDetails? problemDetails = badRequest.Value as ProblemDetails;
+		Assert.IsNotNull(problemDetails);
+		Assert.IsNotNull(problemDetails.Title);
 		Assert.IsTrue(problemDetails.Title == "Invalid submission.");
 	}
 
