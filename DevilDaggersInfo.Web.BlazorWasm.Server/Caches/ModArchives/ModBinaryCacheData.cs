@@ -26,7 +26,7 @@ public class ModBinaryCacheData
 
 	public static ModBinaryCacheData CreateFromFile(string fileName, byte[] fileContents)
 	{
-		ModBinary modBinary = ModBinaryHandler.ReadChunks(fileName, fileContents);
+		ModBinary modBinary = ModBinaryHandler.ReadModBinary(fileName, fileContents);
 
 		List<ModChunkCacheData> chunks = modBinary.Chunks
 			.ConvertAll(c =>
@@ -54,7 +54,7 @@ public class ModBinaryCacheData
 		if (loudnessChunk != null)
 		{
 			byte[] loudnessBytes = new byte[loudnessChunk.Size];
-			Buffer.BlockCopy(fileContents, (int)loudnessChunk.Offset, loudnessBytes, 0, (int)loudnessChunk.Size);
+			Buffer.BlockCopy(fileContents, loudnessChunk.Offset, loudnessBytes, 0, loudnessChunk.Size);
 			string loudnessString = Encoding.Default.GetString(loudnessBytes);
 			loudnessAssets = ReadLoudness(loudnessString);
 		}

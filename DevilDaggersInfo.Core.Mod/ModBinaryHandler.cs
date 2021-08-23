@@ -8,7 +8,7 @@ public static class ModBinaryHandler
 	private static ulong MakeMagic(ulong a, ulong b, ulong c, ulong d)
 		=> a | b << 8 | c << 16 | d << 24;
 
-	public static ModBinary ReadChunks(string fileName, byte[] fileContents)
+	public static ModBinary ReadModBinary(string fileName, byte[] fileContents)
 	{
 		ModBinaryType modBinaryType;
 		if (fileName.StartsWith("audio"))
@@ -43,8 +43,8 @@ public static class ModBinaryHandler
 			string name = ReadNullTerminatedString(tocBuffer, i + 2);
 
 			i += name.Length + 1; // + 1 to include null terminator.
-			uint offset = BitConverter.ToUInt32(tocBuffer, i + 2);
-			uint size = BitConverter.ToUInt32(tocBuffer, i + 6);
+			int offset = BitConverter.ToInt32(tocBuffer, i + 2);
+			int size = BitConverter.ToInt32(tocBuffer, i + 6);
 			i += 14;
 			AssetType assetType = type switch
 			{

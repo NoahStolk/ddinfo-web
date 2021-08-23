@@ -4,7 +4,7 @@ namespace DevilDaggersInfo.Web.BlazorWasm.Server.Caches.ModArchives;
 
 public class ModChunkCacheData
 {
-	public ModChunkCacheData(string name, uint size, AssetType assetType, bool isProhibited)
+	public ModChunkCacheData(string name, int size, AssetType assetType, bool isProhibited)
 	{
 		Name = name;
 		Size = size;
@@ -13,7 +13,7 @@ public class ModChunkCacheData
 	}
 
 	public string Name { get; }
-	public uint Size { get; }
+	public int Size { get; }
 	public AssetType AssetType { get; }
 	public bool IsProhibited { get; }
 }

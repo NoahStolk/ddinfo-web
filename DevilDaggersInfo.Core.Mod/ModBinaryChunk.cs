@@ -2,7 +2,7 @@
 
 public class ModBinaryChunk
 {
-	public ModBinaryChunk(string name, uint offset, uint size, AssetType assetType)
+	public ModBinaryChunk(string name, int offset, int size, AssetType assetType)
 	{
 		Name = name;
 		Offset = offset;
@@ -11,7 +11,7 @@ public class ModBinaryChunk
 	}
 
 	public string Name { get; }
-	public uint Offset { get; }
-	public uint Size { get; }
+	public int Offset { get; }
+	public int Size { get; }
 	public AssetType AssetType { get; }
 }
