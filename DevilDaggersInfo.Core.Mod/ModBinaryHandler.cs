@@ -2,8 +2,8 @@
 
 public static class ModBinaryHandler
 {
-	public static readonly ulong Magic1 = MakeMagic(0x3AUL, 0x68UL, 0x78UL, 0x3AUL);
-	public static readonly ulong Magic2 = MakeMagic(0x72UL, 0x67UL, 0x3AUL, 0x01UL);
+	internal static readonly ulong Magic1 = MakeMagic(0x3AUL, 0x68UL, 0x78UL, 0x3AUL);
+	internal static readonly ulong Magic2 = MakeMagic(0x72UL, 0x67UL, 0x3AUL, 0x01UL);
 
 	private static ulong MakeMagic(ulong a, ulong b, ulong c, ulong d)
 		=> a | b << 8 | c << 16 | d << 24;
