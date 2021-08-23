@@ -17,13 +17,7 @@ public class ModBinary
 		{
 			byte[] buffer = new byte[chunk.Size];
 			Buffer.BlockCopy(fileContents, chunk.Offset, buffer, 0, buffer.Length);
-
-			switch (chunk.AssetType)
-			{
-				case AssetType.Audio:
-					AssetWriter.WriteWav(outputDirectory, chunk, buffer);
-					break;
-			}
+			AssetWriter.WriteFile(outputDirectory, chunk, buffer);
 		}
 	}
 }
