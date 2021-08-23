@@ -1,4 +1,6 @@
-﻿namespace DevilDaggersInfo.Web.BlazorWasm.Shared.Dto.Public.Mods;
+﻿using DevilDaggersInfo.Core.Mod.Enums;
+
+namespace DevilDaggersInfo.Web.BlazorWasm.Shared.Dto.Public.Mods;
 
 public class GetModBinary
 {
