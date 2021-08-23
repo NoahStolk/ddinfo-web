@@ -37,11 +37,13 @@ Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "DevilDaggersInfo.Core.Encry
 EndProject
 Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "DevilDaggersInfo.Core.Wiki.SourceGenerator", "DevilDaggersInfo.Core.Wiki.SourceGenerator\DevilDaggersInfo.Core.Wiki.SourceGenerator.csproj", "{3B98ACA6-2DD1-430D-948A-2796E4C4A866}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "DevilDaggersInfo.Core.Asset.SourceGenerator", "DevilDaggersInfo.Core.Asset.SourceGenerator\DevilDaggersInfo.Core.Asset.SourceGenerator.csproj", "{2BE3E7C9-DEAF-4D2C-ADFC-40EA3FE3D325}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "DevilDaggersInfo.Core.Asset.SourceGenerator", "DevilDaggersInfo.Core.Asset.SourceGenerator\DevilDaggersInfo.Core.Asset.SourceGenerator.csproj", "{2BE3E7C9-DEAF-4D2C-ADFC-40EA3FE3D325}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "DevilDaggersInfo.Core.Shared", "DevilDaggersInfo.Core.Shared\DevilDaggersInfo.Core.Shared.csproj", "{A45271DA-D8D2-4BAA-83BA-31115C4FD702}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "DevilDaggersInfo.Core.Shared", "DevilDaggersInfo.Core.Shared\DevilDaggersInfo.Core.Shared.csproj", "{A45271DA-D8D2-4BAA-83BA-31115C4FD702}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "DevilDaggersInfo.Core.Shared.Test", "DevilDaggersInfo.Core.Shared.Test\DevilDaggersInfo.Core.Shared.Test.csproj", "{79C2EF91-46DF-4E4D-A083-57C34D15A890}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "DevilDaggersInfo.Core.Shared.Test", "DevilDaggersInfo.Core.Shared.Test\DevilDaggersInfo.Core.Shared.Test.csproj", "{79C2EF91-46DF-4E4D-A083-57C34D15A890}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "DevilDaggersInfo.Core.Mod", "DevilDaggersInfo.Core.Mod\DevilDaggersInfo.Core.Mod.csproj", "{1C25E368-6E37-4144-AAC7-EBA5475BD833}"
 EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
@@ -129,6 +131,10 @@ Global
 		{79C2EF91-46DF-4E4D-A083-57C34D15A890}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{79C2EF91-46DF-4E4D-A083-57C34D15A890}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{79C2EF91-46DF-4E4D-A083-57C34D15A890}.Release|Any CPU.Build.0 = Release|Any CPU
+		{1C25E368-6E37-4144-AAC7-EBA5475BD833}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{1C25E368-6E37-4144-AAC7-EBA5475BD833}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{1C25E368-6E37-4144-AAC7-EBA5475BD833}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{1C25E368-6E37-4144-AAC7-EBA5475BD833}.Release|Any CPU.Build.0 = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE

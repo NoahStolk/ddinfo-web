@@ -1,6 +1,4 @@
-﻿using System.Runtime.Serialization;
-
-namespace DevilDaggersInfo.Web.BlazorWasm.Server.Exceptions;
+﻿namespace DevilDaggersInfo.Core.Mod.Exceptions;
 
 [Serializable]
 public class InvalidModBinaryException : Exception
