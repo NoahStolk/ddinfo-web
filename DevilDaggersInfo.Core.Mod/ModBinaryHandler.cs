@@ -8,7 +8,7 @@ public static class ModBinaryHandler
 	private static ulong MakeMagic(ulong a, ulong b, ulong c, ulong d)
 		=> a | b << 8 | c << 16 | d << 24;
 
-	public static ModBinary CreateFromFile(string fileName, byte[] fileContents)
+	public static ModBinary ReadChunks(string fileName, byte[] fileContents)
 	{
 		ModBinaryType modBinaryType;
 		if (fileName.StartsWith("audio"))
