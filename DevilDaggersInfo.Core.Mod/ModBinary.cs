@@ -10,4 +10,20 @@ public class ModBinary
 
 	public ModBinaryType ModBinaryType { get; }
 	public List<ModBinaryChunk> Chunks { get; }
+
+	public void ExtractAssets(string outputDirectory, byte[] fileContents)
+	{
+		foreach (ModBinaryChunk chunk in Chunks)
+		{
+			byte[] buffer = new byte[chunk.Size];
+			Buffer.BlockCopy(fileContents, chunk.Offset, buffer, 0, buffer.Length);
+
+			switch (chunk.AssetType)
+			{
+				case AssetType.Audio:
+					AssetWriter.WriteWav(outputDirectory, chunk, buffer);
+					break;
+			}
+		}
+	}
 }
