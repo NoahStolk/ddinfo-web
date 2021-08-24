@@ -1,6 +1,6 @@
 ﻿namespace DevilDaggersInfo.Core.Mod.FileHandling;
 
-public class GlslFileHandler : IFileHandler
+public sealed class GlslFileHandler : IFileHandler
 {
 	private static readonly Lazy<GlslFileHandler> _lazy = new(() => new());
 
@@ -30,6 +30,7 @@ public class GlslFileHandler : IFileHandler
 		byte[] fragmentBuffer = new byte[fragmentSize];
 		Buffer.BlockCopy(binaryBuffer, nameLength + HeaderSize + vertexSize, fragmentBuffer, 0, fragmentSize);
 
+		// TODO: Add comments at beginning of buffers in case of old shader binaries that don't start with // Vert or // Frag.
 		return vertexBuffer.Concat(fragmentBuffer).ToArray();
 	}
 }

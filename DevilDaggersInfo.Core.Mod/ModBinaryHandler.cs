@@ -46,18 +46,22 @@ public static class ModBinaryHandler
 			int offset = BitConverter.ToInt32(tocBuffer, i + 2);
 			int size = BitConverter.ToInt32(tocBuffer, i + 6);
 			i += 14;
-			AssetType assetType = type switch
+			AssetType? assetType = type switch
 			{
 				0x01 => AssetType.Model,
 				0x02 => AssetType.Texture,
 				0x10 => AssetType.Shader,
 				0x20 => AssetType.Audio,
 				0x80 => AssetType.ModelBinding,
-				_ => throw new InvalidModBinaryException($"Binary '{fileName}' contains an unknown asset type '{type}'. Valid types are {0x01}, {0x02}, {0x10}, {0x20}, and {0x80}."),
+				_ => null,
 			};
 
+			// Skip unknown or obsolete types (such as 0x11, which is an outdated type for (fragment?) shaders).
+			if (!assetType.HasValue)
+				continue;
+
 			if (!(assetType == AssetType.Audio && name == "loudness"))
-				chunks.Add(new(name, offset, size, assetType));
+				chunks.Add(new(name, offset, size, assetType.Value));
 		}
 
 		return new(modBinaryType, chunks);
