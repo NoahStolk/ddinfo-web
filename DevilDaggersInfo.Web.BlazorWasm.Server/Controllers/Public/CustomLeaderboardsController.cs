@@ -68,23 +68,23 @@ public class CustomLeaderboardsController : ControllerBase
 		else
 			customEntries = customEntries.OrderByDescending(wr => wr.Time);
 
-		List<CustomLeaderboardWr> customLeaderboardWrs = customLeaderboards
-			.ConvertAll(cl => new CustomLeaderboardWr(
+		List<CustomLeaderboardWorldRecord> customLeaderboardWrs = customLeaderboards
+			.ConvertAll(cl => new CustomLeaderboardWorldRecord(
 				cl,
-				customEntries.FirstOrDefault(wr => wr.CustomLeaderboardId == cl.Id)?.Time,
-				customEntries.FirstOrDefault(wr => wr.CustomLeaderboardId == cl.Id)?.PlayerName));
+				customEntries.FirstOrDefault(clwr => clwr.CustomLeaderboardId == cl.Id)?.Time,
+				customEntries.FirstOrDefault(clwr => clwr.CustomLeaderboardId == cl.Id)?.PlayerName));
 
 		if (sortBy == CustomLeaderboardSorting.WorldRecord)
 		{
 			customLeaderboardWrs = ascending
-				? customLeaderboardWrs.OrderBy(wr => wr.WorldRecord).ToList()
-				: customLeaderboardWrs.OrderByDescending(wr => wr.WorldRecord).ToList();
+				? customLeaderboardWrs.OrderBy(clwr => clwr.WorldRecord).ToList()
+				: customLeaderboardWrs.OrderByDescending(clwr => clwr.WorldRecord).ToList();
 		}
 		else if (sortBy == CustomLeaderboardSorting.TopPlayer)
 		{
 			customLeaderboardWrs = ascending
-				? customLeaderboardWrs.OrderBy(wr => wr.TopPlayer).ToList()
-				: customLeaderboardWrs.OrderByDescending(wr => wr.TopPlayer).ToList();
+				? customLeaderboardWrs.OrderBy(clwr => clwr.TopPlayer).ToList()
+				: customLeaderboardWrs.OrderByDescending(clwr => clwr.TopPlayer).ToList();
 		}
 
 		customLeaderboardWrs = customLeaderboardWrs
@@ -117,9 +117,9 @@ public class CustomLeaderboardsController : ControllerBase
 		return customLeaderboard.ToGetCustomLeaderboard();
 	}
 
-	private class CustomLeaderboardWr
+	private class CustomLeaderboardWorldRecord
 	{
-		public CustomLeaderboardWr(CustomLeaderboardEntity customLeaderboard, int? worldRecord, string? topPlayer)
+		public CustomLeaderboardWorldRecord(CustomLeaderboardEntity customLeaderboard, int? worldRecord, string? topPlayer)
 		{
 			CustomLeaderboard = customLeaderboard;
 			WorldRecord = worldRecord;
