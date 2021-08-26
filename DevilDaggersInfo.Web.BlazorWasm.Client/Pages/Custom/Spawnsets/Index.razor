@@ -50,7 +50,7 @@ else
 	{
 		GetSpawnsetOverview spawnset = GetSpawnsets.Results[i];
 		<div class="grid gap-3 sm:grid-cols-spawnsets-sm md:grid-cols-spawnsets-md lg:grid-cols-spawnsets-lg xl:grid-cols-spawnsets-xl h-6 @(i % 2 == 0 ? "bg-gray0B" : string.Empty)">
-			<div class="overflow-x-hidden text-left"><a href="/custom/leaderboard/@spawnset.Id">@spawnset.Name</a></div>
+			<div class="overflow-x-hidden text-left"><a href="/custom/spawnset/@spawnset.Id">@spawnset.Name</a></div>
 			<div class="overflow-x-hidden text-left hidden md:block">@spawnset.AuthorName</div>
 			<div class="overflow-x-hidden text-left hidden md:block">@spawnset.LastUpdated.ToString(FormatUtils.DateFormat)</div>
 			<div class="overflow-x-hidden text-left hidden md:block">@spawnset.GameVersion</div>

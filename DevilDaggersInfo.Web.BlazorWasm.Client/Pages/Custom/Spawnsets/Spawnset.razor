@@ -1,0 +1,29 @@
+﻿@page "/custom/spawnset/{Id:int}"
+@inject PublicApiHttpClient Http
+@inject NavigationManager NavigationManager
+@using DevilDaggersInfo.Web.BlazorWasm.Shared.Dto.Public.Spawnsets
+@using DevilDaggersInfo.Web.BlazorWasm.Shared.Enums
+
+<Heading>Spawnset</Heading>
+
+@if (GetSpawnset == null)
+{
+	<Loading />
+}
+else
+{
+	<div>@GetSpawnset.Name</div>
+	<div>@GetSpawnset.FileBytes.Length</div>
+}
+
+@code
+{
+	[Parameter, EditorRequired] public int Id { get; set; }
+
+	public GetSpawnset? GetSpawnset { get; set; }
+
+	protected override async Task OnInitializedAsync()
+	{
+		GetSpawnset = await Http.GetSpawnsetById(Id);
+	}
+}

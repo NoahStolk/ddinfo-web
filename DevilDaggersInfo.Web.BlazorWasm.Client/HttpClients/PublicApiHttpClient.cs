@@ -60,6 +60,11 @@ public class PublicApiHttpClient
 		return await _client.GetFromJsonAsync<Page<GetSpawnsetOverview>>(UrlBuilderUtils.BuildUrlWithQuery("api/spawnsets/overview", queryParameters)) ?? throw new JsonDeserializationException();
 	}
 
+	public async Task<GetSpawnset> GetSpawnsetById(int id)
+	{
+		return await _client.GetFromJsonAsync<GetSpawnset>($"api/spawnsets/{id}") ?? throw new JsonDeserializationException();
+	}
+
 	public async Task<List<GetLeaderboardHistoryStatistics>> GetLeaderboardHistoryStatistics()
 	{
 		return await _client.GetFromJsonAsync<List<GetLeaderboardHistoryStatistics>>("api/leaderboard-history-statistics") ?? throw new JsonDeserializationException();

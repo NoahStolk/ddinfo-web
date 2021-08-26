@@ -49,4 +49,13 @@ public static class SpawnsetConverters
 		LastUpdated = spawnset.LastUpdated,
 		Name = spawnset.Name,
 	};
+
+	public static GetSpawnset ToGetSpawnset(this SpawnsetEntity spawnset, byte[] fileBytes) => new()
+	{
+		AuthorName = spawnset.Player.PlayerName,
+		FileBytes = fileBytes,
+		Id = spawnset.Id,
+		LastUpdated = spawnset.LastUpdated,
+		Name = spawnset.Name,
+	};
 }

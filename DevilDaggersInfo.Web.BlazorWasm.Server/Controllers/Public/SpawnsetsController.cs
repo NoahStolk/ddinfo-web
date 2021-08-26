@@ -151,4 +151,25 @@ public class SpawnsetsController : ControllerBase
 
 		return File(Io.File.ReadAllBytes(path), MediaTypeNames.Application.Octet, fileName);
 	}
+
+	[HttpGet("{id}")]
+	[ProducesResponseType(typeof(FileContentResult), StatusCodes.Status200OK)]
+	[ProducesResponseType(StatusCodes.Status400BadRequest)]
+	[ProducesResponseType(StatusCodes.Status404NotFound)]
+	[EndpointConsumer(EndpointConsumers.Website)]
+	public ActionResult<GetSpawnset> GetSpawnsetById([Required] int id)
+	{
+		SpawnsetEntity? spawnsetEntity = _dbContext.Spawnsets
+			.AsNoTracking()
+			.Include(s => s.Player)
+			.FirstOrDefault(s => s.Id == id);
+		if (spawnsetEntity == null)
+			return NotFound();
+
+		string path = Path.Combine(_fileSystemService.GetPath(DataSubDirectory.Spawnsets), spawnsetEntity.Name);
+		if (!Io.File.Exists(path))
+			return NotFound();
+
+		return spawnsetEntity.ToGetSpawnset(Io.File.ReadAllBytes(path));
+	}
 }
