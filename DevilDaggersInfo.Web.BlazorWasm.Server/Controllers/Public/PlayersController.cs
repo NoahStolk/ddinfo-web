@@ -3,6 +3,7 @@ using DevilDaggersInfo.Web.BlazorWasm.Server.Entities;
 using DevilDaggersInfo.Web.BlazorWasm.Shared.Dto.Public.Players;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.EntityFrameworkCore;
+using System.ComponentModel.DataAnnotations;
 
 namespace DevilDaggersInfo.Web.BlazorWasm.Server.Controllers.Public;
 
@@ -47,5 +48,14 @@ public class PlayersController : ControllerBase
 			Titles = playerTitles.Where(pt => pt.PlayerId == p.Id).Select(pt => pt.Title.Name).ToList(),
 			CountryCode = p.CountryCode,
 		});
+	}
+
+	[HttpGet("{id}/flag")]
+	[ProducesResponseType(StatusCodes.Status200OK)]
+	[ProducesResponseType(StatusCodes.Status400BadRequest)]
+	public ActionResult<string> GetPlayerFlagById([Required] int id)
+	{
+		var player = _dbContext.Players.AsNoTracking().Select(p => new { p.Id, p.CountryCode }).FirstOrDefault(p => p.Id == id);
+		return player?.CountryCode ?? string.Empty;
 	}
 }
