@@ -1,5 +1,4 @@
 ﻿using DevilDaggersInfo.Web.BlazorWasm.Server.Clients.Leaderboard;
-using DevilDaggersInfo.Web.BlazorWasm.Server.Controllers.Attributes;
 using DevilDaggersInfo.Web.BlazorWasm.Server.Converters.Public;
 using DevilDaggersInfo.Web.BlazorWasm.Shared.Dto.Public.Leaderboards;
 using Microsoft.AspNetCore.Mvc;
@@ -13,7 +12,6 @@ public class LeaderboardsController : ControllerBase
 {
 	[HttpGet]
 	[ProducesResponseType(StatusCodes.Status200OK)]
-	[EndpointConsumer(EndpointConsumers.Website)]
 	public async Task<ActionResult<GetLeaderboard?>> GetLeaderboard([Range(1, int.MaxValue)] int rankStart = 1)
 	{
 		LeaderboardResponse l = await LeaderboardClient.Instance.GetScores(rankStart);
@@ -23,7 +21,6 @@ public class LeaderboardsController : ControllerBase
 	[HttpGet("user/by-id")]
 	[ProducesResponseType(StatusCodes.Status200OK)]
 	[ProducesResponseType(StatusCodes.Status400BadRequest)]
-	[EndpointConsumer(EndpointConsumers.Website)]
 	public async Task<ActionResult<GetEntry>> GetPlayerById([Required, Range(1, int.MaxValue)] int userId)
 	{
 		EntryResponse e = await LeaderboardClient.Instance.GetUserById(userId);
@@ -33,7 +30,6 @@ public class LeaderboardsController : ControllerBase
 	[HttpGet("user/by-ids")]
 	[ProducesResponseType(StatusCodes.Status200OK)]
 	[ProducesResponseType(StatusCodes.Status400BadRequest)]
-	[EndpointConsumer(EndpointConsumers.Website)]
 	public async Task<ActionResult<List<GetEntry>>> GetPlayersByIds(string commaSeparatedUserIds)
 	{
 		IEnumerable<int> userIds = commaSeparatedUserIds.Split(',').Where(s => int.TryParse(s, out _)).Select(int.Parse);
@@ -45,7 +41,6 @@ public class LeaderboardsController : ControllerBase
 	[HttpGet("user/by-username")]
 	[ProducesResponseType(StatusCodes.Status200OK)]
 	[ProducesResponseType(StatusCodes.Status400BadRequest)]
-	[EndpointConsumer(EndpointConsumers.Website)]
 	public async Task<ActionResult<List<GetEntry>>> GetPlayersByName([Required, MinLength(3)] string username)
 	{
 		List<EntryResponse> el = await LeaderboardClient.Instance.GetUserSearch(username);
@@ -55,7 +50,6 @@ public class LeaderboardsController : ControllerBase
 	[HttpGet("user/by-rank")]
 	[ProducesResponseType(StatusCodes.Status200OK)]
 	[ProducesResponseType(StatusCodes.Status400BadRequest)]
-	[EndpointConsumer(EndpointConsumers.Website)]
 	public async Task<ActionResult<GetEntry>> GetPlayerByRank([Required, Range(1, int.MaxValue)] int rank)
 	{
 		LeaderboardResponse l = await LeaderboardClient.Instance.GetScores(rank);

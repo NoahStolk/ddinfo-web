@@ -1,5 +1,4 @@
 ﻿using DevilDaggersInfo.Web.BlazorWasm.Server.Caches.LeaderboardHistory;
-using DevilDaggersInfo.Web.BlazorWasm.Server.Controllers.Attributes;
 using DevilDaggersInfo.Web.BlazorWasm.Server.Enums;
 using DevilDaggersInfo.Web.BlazorWasm.Server.Transients;
 using DevilDaggersInfo.Web.BlazorWasm.Shared.Dto.Public.LeaderboardHistory;
@@ -26,7 +25,6 @@ public class PlayerHistoryController : ControllerBase
 	[HttpGet("progression")]
 	[ProducesResponseType(StatusCodes.Status200OK)]
 	[ProducesResponseType(StatusCodes.Status400BadRequest)]
-	[EndpointConsumer(EndpointConsumers.Website)]
 	public List<GetEntryHistory> GetPlayerProgressionById([Required, Range(1, 9999999)] int playerId)
 	{
 		List<GetEntryHistory> data = new();
@@ -52,7 +50,6 @@ public class PlayerHistoryController : ControllerBase
 	[HttpGet("activity")]
 	[ProducesResponseType(StatusCodes.Status200OK)]
 	[ProducesResponseType(StatusCodes.Status400BadRequest)]
-	[EndpointConsumer(EndpointConsumers.Website)]
 	public List<GetPlayerActivity> GetPlayerActivityById([Required, Range(1, 9999999)] int playerId)
 	{
 		List<GetPlayerActivity> data = new();

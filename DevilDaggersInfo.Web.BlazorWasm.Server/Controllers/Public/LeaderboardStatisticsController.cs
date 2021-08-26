@@ -1,5 +1,4 @@
 ﻿using DevilDaggersInfo.Web.BlazorWasm.Server.Caches.LeaderboardStatistics;
-using DevilDaggersInfo.Web.BlazorWasm.Server.Controllers.Attributes;
 using DevilDaggersInfo.Web.BlazorWasm.Server.Utils;
 using DevilDaggersInfo.Web.BlazorWasm.Shared.Dto.Public.LeaderboardStatistics;
 using Microsoft.AspNetCore.Mvc;
@@ -19,7 +18,6 @@ public class LeaderboardStatisticsController : ControllerBase
 
 	[HttpGet]
 	[ProducesResponseType(StatusCodes.Status200OK)]
-	[EndpointConsumer(EndpointConsumers.Website)]
 	public ActionResult<GetLeaderboardStatistics> GetStatistics()
 	{
 		return new GetLeaderboardStatistics

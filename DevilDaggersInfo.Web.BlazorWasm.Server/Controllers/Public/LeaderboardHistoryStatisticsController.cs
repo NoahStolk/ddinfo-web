@@ -1,5 +1,4 @@
 ﻿using DevilDaggersInfo.Web.BlazorWasm.Server.Caches.LeaderboardHistory;
-using DevilDaggersInfo.Web.BlazorWasm.Server.Controllers.Attributes;
 using DevilDaggersInfo.Web.BlazorWasm.Server.Enums;
 using DevilDaggersInfo.Web.BlazorWasm.Server.Transients;
 using DevilDaggersInfo.Web.BlazorWasm.Shared.Dto.Public.LeaderboardHistory;
@@ -25,7 +24,6 @@ public class LeaderboardHistoryStatisticsController : ControllerBase
 	[HttpGet]
 	[ProducesResponseType(StatusCodes.Status200OK)]
 	[ProducesResponseType(StatusCodes.Status400BadRequest)]
-	[EndpointConsumer(EndpointConsumers.Website)]
 	public ActionResult<List<GetLeaderboardHistoryStatistics>> GetLeaderboardHistoryStatistics()
 	{
 		string? firstPath = _fileSystemService.TryGetFiles(DataSubDirectory.LeaderboardHistory).OrderBy(p => p).FirstOrDefault();

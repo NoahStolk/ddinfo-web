@@ -1,5 +1,4 @@
 ﻿using DevilDaggersInfo.Web.BlazorWasm.Server.Caches.SpawnsetHashes;
-using DevilDaggersInfo.Web.BlazorWasm.Server.Controllers.Attributes;
 using DevilDaggersInfo.Web.BlazorWasm.Server.Converters.Public;
 using DevilDaggersInfo.Web.BlazorWasm.Server.Entities;
 using DevilDaggersInfo.Web.BlazorWasm.Server.Extensions;
@@ -10,7 +9,6 @@ using DevilDaggersInfo.Web.BlazorWasm.Server.Utils;
 using DevilDaggersInfo.Web.BlazorWasm.Shared.Dto.Public.CustomEntries;
 using DevilDaggersInfo.Web.BlazorWasm.Shared.Dto.Public.Tools;
 using DevilDaggersInfo.Web.BlazorWasm.Shared.Enums;
-using DevilDaggersInfo.Web.BlazorWasm.Shared.Extensions;
 using DSharpPlus.Entities;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.EntityFrameworkCore;
@@ -59,8 +57,7 @@ public class CustomEntriesController : ControllerBase
 	[HttpPost("submit")]
 	[ProducesResponseType(StatusCodes.Status200OK)]
 	[ProducesResponseType(StatusCodes.Status400BadRequest)]
-	[EndpointConsumer(EndpointConsumers.Ddcl)]
-	public async Task<ActionResult<GetUploadSuccess>> SubmitScore([FromBody] AddUploadRequest uploadRequest)
+	public async Task<ActionResult<GetUploadSuccess>> SubmitScoreForDdcl([FromBody] AddUploadRequest uploadRequest)
 	{
 		try
 		{

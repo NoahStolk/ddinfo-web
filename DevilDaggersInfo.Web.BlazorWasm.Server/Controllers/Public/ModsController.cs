@@ -1,7 +1,6 @@
 ﻿using DevilDaggersInfo.Core.Asset.Enums;
 using DevilDaggersInfo.Core.Mod.Enums;
 using DevilDaggersInfo.Web.BlazorWasm.Server.Caches.ModArchives;
-using DevilDaggersInfo.Web.BlazorWasm.Server.Controllers.Attributes;
 using DevilDaggersInfo.Web.BlazorWasm.Server.Entities;
 using DevilDaggersInfo.Web.BlazorWasm.Server.Enums;
 using DevilDaggersInfo.Web.BlazorWasm.Server.Transients;
@@ -33,8 +32,7 @@ public class ModsController : ControllerBase
 
 	[HttpGet]
 	[ProducesResponseType(StatusCodes.Status200OK)]
-	[EndpointConsumer(EndpointConsumers.Ddae)]
-	public List<GetMod> GetPublicMods(string? authorFilter = null, string? nameFilter = null, bool? isHostedFilter = null)
+	public List<GetModDdae> GetPublicModsForDdae(string? authorFilter = null, string? nameFilter = null, bool? isHostedFilter = null)
 	{
 		IEnumerable<ModEntity> modsQuery = _dbContext.Mods
 			.AsNoTracking()
@@ -105,7 +103,7 @@ public class ModsController : ControllerBase
 				else
 					screenshotFileNames = new();
 
-				return new GetMod
+				return new GetModDdae
 				{
 					Name = amwfi.Key.Name,
 					HtmlDescription = amwfi.Key.HtmlDescription,
@@ -126,7 +124,6 @@ public class ModsController : ControllerBase
 	[ProducesResponseType(typeof(FileContentResult), StatusCodes.Status200OK)]
 	[ProducesResponseType(StatusCodes.Status400BadRequest)]
 	[ProducesResponseType(StatusCodes.Status404NotFound)]
-	[EndpointConsumer(EndpointConsumers.Ddae | EndpointConsumers.Website)]
 	public ActionResult GetModFile([Required] string modName)
 	{
 		if (!_dbContext.Mods.Any(m => m.Name == modName))

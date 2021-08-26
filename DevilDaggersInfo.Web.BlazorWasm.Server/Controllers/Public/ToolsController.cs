@@ -1,5 +1,4 @@
-﻿using DevilDaggersInfo.Web.BlazorWasm.Server.Controllers.Attributes;
-using DevilDaggersInfo.Web.BlazorWasm.Server.Entities;
+﻿using DevilDaggersInfo.Web.BlazorWasm.Server.Entities;
 using DevilDaggersInfo.Web.BlazorWasm.Server.Transients;
 using DevilDaggersInfo.Web.BlazorWasm.Shared.Dto.Public.Tools;
 using Microsoft.AspNetCore.Mvc;
@@ -27,8 +26,7 @@ public class ToolsController : ControllerBase
 
 	[HttpGet]
 	[ProducesResponseType(StatusCodes.Status200OK)]
-	[EndpointConsumer(EndpointConsumers.Ddse | EndpointConsumers.Ddcl | EndpointConsumers.Ddae)]
-	public ActionResult<List<GetTool>> GetTools(string? toolNameFilter = null)
+	public ActionResult<List<GetTool>> GetToolsForTools(string? toolNameFilter = null)
 	{
 		IEnumerable<GetTool> tools = _toolHelper.Tools;
 		if (!string.IsNullOrEmpty(toolNameFilter))
@@ -40,7 +38,6 @@ public class ToolsController : ControllerBase
 	[ProducesResponseType(typeof(FileContentResult), StatusCodes.Status200OK)]
 	[ProducesResponseType(StatusCodes.Status400BadRequest)]
 	[ProducesResponseType(StatusCodes.Status404NotFound)]
-	[EndpointConsumer(EndpointConsumers.Website)]
 	public ActionResult GetToolFile([Required] string toolName)
 	{
 		GetTool? tool = _toolHelper.Tools.Find(t => t.Name == toolName);
@@ -65,8 +62,7 @@ public class ToolsController : ControllerBase
 	// TODO: Move to MemoryController.
 	[HttpGet("devildaggerscustomleaderboards/settings")]
 	[ProducesResponseType(StatusCodes.Status200OK)]
-	[EndpointConsumer(EndpointConsumers.Ddcl)]
-	public ActionResult<GetDdclSettings> GetDdclSettings()
+	public ActionResult<GetDdclSettings> GetDdclSettingsForDdcl()
 	{
 		return JsonConvert.DeserializeObject<GetDdclSettings?>(Io.File.ReadAllText(Path.Combine(_environment.WebRootPath, "tools", "DevilDaggersCustomLeaderboards", "Settings.json"))) ?? throw new("Could not deserialize DDCL settings JSON.");
 	}

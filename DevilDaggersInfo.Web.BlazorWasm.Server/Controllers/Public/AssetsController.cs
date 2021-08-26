@@ -1,5 +1,4 @@
-﻿using DevilDaggersInfo.Web.BlazorWasm.Server.Controllers.Attributes;
-using DevilDaggersInfo.Web.BlazorWasm.Shared.Dto.Public.Assets;
+﻿using DevilDaggersInfo.Web.BlazorWasm.Shared.Dto.Public.Assets;
 using Microsoft.AspNetCore.Mvc;
 using Newtonsoft.Json;
 using Io = System.IO;
@@ -19,8 +18,7 @@ public class AssetsController : ControllerBase
 
 	[HttpGet("info")]
 	[ProducesResponseType(StatusCodes.Status200OK)]
-	[EndpointConsumer(EndpointConsumers.Ddae)]
-	public ActionResult<Dictionary<string, List<GetAssetInfo>>> GetAssetInfo()
+	public ActionResult<Dictionary<string, List<GetAssetInfo>>> GetAssetInfoForDdae()
 	{
 		return Io.Directory.GetFiles(Io.Path.Combine(_environment.WebRootPath, "asset-info"))
 			.Select(p =>

@@ -1,7 +1,6 @@
 ﻿using DevilDaggersInfo.Core.Spawnset;
 using DevilDaggersInfo.Core.Spawnset.Summary;
 using DevilDaggersInfo.Web.BlazorWasm.Server.Caches.SpawnsetSummaries;
-using DevilDaggersInfo.Web.BlazorWasm.Server.Controllers.Attributes;
 using DevilDaggersInfo.Web.BlazorWasm.Server.Converters.Public;
 using DevilDaggersInfo.Web.BlazorWasm.Server.Entities;
 using DevilDaggersInfo.Web.BlazorWasm.Server.Enums;
@@ -109,7 +108,6 @@ public class SpawnsetsController : ControllerBase
 
 	[HttpGet]
 	[ProducesResponseType(StatusCodes.Status200OK)]
-	[EndpointConsumer(EndpointConsumers.Ddse)]
 	public List<GetSpawnsetDdse> GetSpawnsetsForDdse(string? authorFilter = null, string? nameFilter = null)
 	{
 		List<int> spawnsetsWithCustomLeaderboardIds = _dbContext.CustomLeaderboards
@@ -142,7 +140,6 @@ public class SpawnsetsController : ControllerBase
 	[ProducesResponseType(typeof(FileContentResult), StatusCodes.Status200OK)]
 	[ProducesResponseType(StatusCodes.Status400BadRequest)]
 	[ProducesResponseType(StatusCodes.Status404NotFound)]
-	[EndpointConsumer(EndpointConsumers.Ddse | EndpointConsumers.Website)]
 	public ActionResult GetSpawnsetFile([Required] string fileName)
 	{
 		string path = Path.Combine(_fileSystemService.GetPath(DataSubDirectory.Spawnsets), fileName);
@@ -156,7 +153,6 @@ public class SpawnsetsController : ControllerBase
 	[ProducesResponseType(typeof(FileContentResult), StatusCodes.Status200OK)]
 	[ProducesResponseType(StatusCodes.Status400BadRequest)]
 	[ProducesResponseType(StatusCodes.Status404NotFound)]
-	[EndpointConsumer(EndpointConsumers.Website)]
 	public ActionResult<GetSpawnset> GetSpawnsetById([Required] int id)
 	{
 		SpawnsetEntity? spawnsetEntity = _dbContext.Spawnsets

@@ -1,5 +1,4 @@
-﻿using DevilDaggersInfo.Web.BlazorWasm.Server.Controllers.Attributes;
-using DevilDaggersInfo.Web.BlazorWasm.Server.Entities;
+﻿using DevilDaggersInfo.Web.BlazorWasm.Server.Entities;
 using DevilDaggersInfo.Web.BlazorWasm.Shared.Dto.Public.Players;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.EntityFrameworkCore;
@@ -20,7 +19,6 @@ public class PlayersController : ControllerBase
 
 	[HttpGet("leaderboard")]
 	[ProducesResponseType(StatusCodes.Status200OK)]
-	[EndpointConsumer(EndpointConsumers.Website)]
 	public ActionResult<List<GetPlayerForLeaderboard>> GetPlayersForLeaderboard()
 	{
 		var players = _dbContext.Players

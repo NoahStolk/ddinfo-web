@@ -1,5 +1,4 @@
 ﻿using DevilDaggersInfo.Web.BlazorWasm.Server.Caches.LeaderboardHistory;
-using DevilDaggersInfo.Web.BlazorWasm.Server.Controllers.Attributes;
 using DevilDaggersInfo.Web.BlazorWasm.Server.Transients;
 using DevilDaggersInfo.Web.BlazorWasm.Shared.Dto.Public.LeaderboardHistory;
 using Microsoft.AspNetCore.Mvc;
@@ -22,7 +21,6 @@ public class LeaderboardHistoryController : ControllerBase
 	[HttpGet]
 	[ProducesResponseType(StatusCodes.Status200OK)]
 	[ProducesResponseType(StatusCodes.Status400BadRequest)]
-	[EndpointConsumer(EndpointConsumers.Website)]
 	public ActionResult<GetLeaderboardHistory> GetLeaderboardHistory(DateTime dateTime)
 	{
 		string historyPath = _fileSystemService.GetLeaderboardHistoryPathFromDate(dateTime);

@@ -1,7 +1,6 @@
 ﻿using DevilDaggersInfo.Core.Wiki;
 using DevilDaggersInfo.Core.Wiki.Enums;
 using DevilDaggersInfo.Web.BlazorWasm.Server.Caches.LeaderboardHistory;
-using DevilDaggersInfo.Web.BlazorWasm.Server.Controllers.Attributes;
 using DevilDaggersInfo.Web.BlazorWasm.Server.Enums;
 using DevilDaggersInfo.Web.BlazorWasm.Server.Transients;
 using DevilDaggersInfo.Web.BlazorWasm.Shared.Dto.Public.LeaderboardHistory;
@@ -27,13 +26,11 @@ public class WorldRecordsController : ControllerBase
 
 	[HttpGet("world-records")]
 	[ProducesResponseType(StatusCodes.Status200OK)]
-	[EndpointConsumer(EndpointConsumers.Website)]
 	public List<GetWorldRecord> GetWorldRecords()
 		=> GetWorldRecordsPrivate();
 
 	[HttpGet("world-record-data")]
 	[ProducesResponseType(StatusCodes.Status200OK)]
-	[EndpointConsumer(EndpointConsumers.Website)]
 	public (List<GetWorldRecordHolder> WorldRecordHolders, Dictionary<GetWorldRecord, GetWorldRecordData> WorldRecordData) GetWorldRecordData()
 	{
 		List<GetWorldRecord> worldRecords = GetWorldRecordsPrivate();
