@@ -50,6 +50,7 @@ public class LeaderboardsController : ControllerBase
 	[HttpGet("user/by-rank")]
 	[ProducesResponseType(StatusCodes.Status200OK)]
 	[ProducesResponseType(StatusCodes.Status400BadRequest)]
+	[ProducesResponseType(StatusCodes.Status404NotFound)]
 	public async Task<ActionResult<GetEntry>> GetPlayerByRank([Required, Range(1, int.MaxValue)] int rank)
 	{
 		LeaderboardResponse l = await LeaderboardClient.Instance.GetScores(rank);
