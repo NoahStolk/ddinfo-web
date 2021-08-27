@@ -15,7 +15,7 @@ public static class EnemyTypeExtensions
 		EnemyType.Thorn => 0,
 		EnemyType.Spider2 => 1,
 		EnemyType.Ghostpede => 10,
-		_ => throw new NotSupportedException($"{nameof(EnemyType)} '{enemyType}' is not supported."),
+		_ => 0,
 	};
 
 	public static Color GetColor(this EnemyType enemyType, GameVersion gameVersion) => enemyType switch
@@ -31,7 +31,7 @@ public static class EnemyTypeExtensions
 		EnemyType.Thorn => gameVersion is GameVersion.V3_0 or GameVersion.V3_1 ? EnemyColors.Thorn : gameVersion is GameVersion.V2_0 ? EnemyColors.Andras : EnemyColors.Unknown,
 		EnemyType.Spider2 => gameVersion is not GameVersion.V1_0 ? EnemyColors.Spider2 : EnemyColors.Unknown,
 		EnemyType.Ghostpede => gameVersion is GameVersion.V3_0 or GameVersion.V3_1 ? EnemyColors.Ghostpede : EnemyColors.Unknown,
-		_ => throw new NotSupportedException($"{nameof(EnemyType)} '{enemyType}' is not supported."),
+		_ => EnemyColors.Unknown,
 	};
 
 	public static string GetName(this EnemyType enemyType, GameVersion gameVersion) => enemyType switch
