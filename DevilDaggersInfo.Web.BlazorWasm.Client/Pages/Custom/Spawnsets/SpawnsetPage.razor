@@ -7,8 +7,6 @@
 @using DevilDaggersInfo.Web.BlazorWasm.Shared.Dto.Public.Spawnsets
 @using DevilDaggersInfo.Web.BlazorWasm.Shared.Enums
 
-<Heading>Spawnset</Heading>
-
 @if (GetSpawnset == null)
 {
 	<Loading />
@@ -19,19 +17,20 @@ else if (SpawnsView == null)
 }
 else
 {
-	<div>@GetSpawnset.Name</div>
-	<div>@GetSpawnset.FileBytes.Length</div>
+	<Heading>Spawnset - @GetSpawnset.Name</Heading>
+
 	@foreach (SpawnView sv in SpawnsView.PreLoop)
 	{
-		<div>@sv.EnemyType, @sv.Seconds, @sv.Gems, @sv.GemsTotal</div>
+		<Spawn SpawnView="sv" />
 	}
+
 	<div>LOOP</div>
 	@for (int i = 0; i < SpawnsView.Waves.Length; i++)
 	{
 		<div>WAVE @(i + 1)</div>
 		@foreach (SpawnView sv in SpawnsView.Waves[i])
 		{
-			<div>@sv.EnemyType, @sv.Seconds, @sv.Gems, @sv.GemsTotal</div>
+			<Spawn SpawnView="sv" />
 		}
 	}
 }
