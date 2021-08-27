@@ -2,8 +2,8 @@
 @inject PublicApiHttpClient Http
 @inject NavigationManager NavigationManager
 @using DevilDaggersInfo.Core.Spawnset
-@using DevilDaggersInfo.Core.Spawnset.Enums
 @using DevilDaggersInfo.Core.Spawnset.View
+@using DevilDaggersInfo.Core.Wiki.Enums
 @using DevilDaggersInfo.Web.BlazorWasm.Shared.Dto.Public.Spawnsets
 @using DevilDaggersInfo.Web.BlazorWasm.Shared.Enums
 
@@ -50,6 +50,6 @@ else
 		if (!Spawnset.TryParse(GetSpawnset.FileBytes, out Spawnset? spawnset))
 			return;
 
-		SpawnsView = new(spawnset, MajorGameVersion.V3);
+		SpawnsView = new(spawnset, GameVersion.V3_1);
 	}
 }

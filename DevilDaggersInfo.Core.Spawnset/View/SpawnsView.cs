@@ -3,12 +3,12 @@
 // TODO: Write unit tests.
 public class SpawnsView
 {
-	public SpawnsView(Spawnset spawnset, MajorGameVersion majorGameVersion, int waveCount = 30)
-		: this(spawnset.GameMode, majorGameVersion, spawnset.Spawns, waveCount, spawnset.HandLevel, spawnset.AdditionalGems, spawnset.TimerStart)
+	public SpawnsView(Spawnset spawnset, GameVersion gameVersion, int waveCount = 30)
+		: this(spawnset.GameMode, gameVersion, spawnset.Spawns, waveCount, spawnset.HandLevel, spawnset.AdditionalGems, spawnset.TimerStart)
 	{
 	}
 
-	public SpawnsView(GameMode gameMode, MajorGameVersion majorGameVersion, Spawn[] spawns, int waveCount = 30, HandLevel handLevel = HandLevel.Level1, int additionalGems = 0, float timerStart = 0)
+	public SpawnsView(GameMode gameMode, GameVersion gameVersion, Spawn[] spawns, int waveCount = 30, HandLevel handLevel = HandLevel.Level1, int additionalGems = 0, float timerStart = 0)
 	{
 		PreLoop = new();
 		Waves = new List<SpawnView>[waveCount];
@@ -32,7 +32,7 @@ public class SpawnsView
 			BuildPreLoop(ref totalSeconds, ref gemsTotal, preLoopSpawns);
 
 			if (waveCount > 0 && loopSpawns.Any(s => s.EnemyType != EnemyType.Empty))
-				BuildLoop(majorGameVersion, waveCount, ref totalSeconds, ref gemsTotal, loopSpawns);
+				BuildLoop(gameVersion, waveCount, ref totalSeconds, ref gemsTotal, loopSpawns);
 		}
 	}
 
@@ -51,7 +51,7 @@ public class SpawnsView
 		}
 	}
 
-	private void BuildLoop(MajorGameVersion majorGameVersion, int waveCount, ref double totalSeconds, ref int gemsTotal, Spawn[] loopSpawns)
+	private void BuildLoop(GameVersion gameVersion, int waveCount, ref double totalSeconds, ref int gemsTotal, Spawn[] loopSpawns)
 	{
 		for (int i = 0; i < waveCount; i++)
 		{
@@ -70,7 +70,7 @@ public class SpawnsView
 				if (spawn.EnemyType != EnemyType.Empty)
 				{
 					EnemyType finalEnemy = spawn.EnemyType;
-					if (i % 3 == 2 && majorGameVersion == MajorGameVersion.V3 && finalEnemy == EnemyType.Gigapede)
+					if (i % 3 == 2 && gameVersion is GameVersion.V3_0 or GameVersion.V3_1 && finalEnemy == EnemyType.Gigapede)
 						finalEnemy = EnemyType.Ghostpede;
 
 					int gems = finalEnemy.GetNoFarmGems();
