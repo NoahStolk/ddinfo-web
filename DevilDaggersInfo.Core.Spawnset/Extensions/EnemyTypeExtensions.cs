@@ -17,4 +17,20 @@ public static class EnemyTypeExtensions
 		EnemyType.Ghostpede => 10,
 		_ => throw new NotSupportedException($"{nameof(EnemyType)} '{enemyType}' is not supported."),
 	};
+
+	public static Color GetColor(this EnemyType enemyType) => enemyType switch
+	{
+		EnemyType.Empty => EnemyColors.Void,
+		EnemyType.Squid1 => EnemyColors.Squid1,
+		EnemyType.Squid2 => EnemyColors.Squid2,
+		EnemyType.Centipede => EnemyColors.Centipede,
+		EnemyType.Spider1 => EnemyColors.Spider1,
+		EnemyType.Leviathan => EnemyColors.Leviathan,
+		EnemyType.Gigapede => EnemyColors.Gigapede,
+		EnemyType.Squid3 => EnemyColors.Squid3,
+		EnemyType.Thorn => EnemyColors.Thorn,
+		EnemyType.Spider2 => EnemyColors.Spider2,
+		EnemyType.Ghostpede => EnemyColors.Ghostpede,
+		_ => throw new NotSupportedException($"{nameof(EnemyType)} '{enemyType}' is not supported."),
+	};
 }
