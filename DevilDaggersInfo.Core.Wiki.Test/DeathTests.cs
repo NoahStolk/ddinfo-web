@@ -328,10 +328,10 @@ public class DeathTests
 		Assert.AreEqual(DeathsV3_0.Unknown, Deaths.GetDeathByLeaderboardType(GameVersion.V3_0, 255));
 		Assert.AreEqual(DeathsV3_1.Unknown, Deaths.GetDeathByLeaderboardType(GameVersion.V3_1, 255));
 
-		Assert.AreEqual(DeathsV1_0.Unknown.Color, EnemyColors.Andras);
-		Assert.AreEqual(DeathsV2_0.Unknown.Color, EnemyColors.Andras);
-		Assert.AreEqual(DeathsV3_0.Unknown.Color, EnemyColors.Andras);
-		Assert.AreEqual(DeathsV3_1.Unknown.Color, EnemyColors.Andras);
+		Assert.AreEqual(DeathsV1_0.Unknown.Color, EnemyColors.Unknown);
+		Assert.AreEqual(DeathsV2_0.Unknown.Color, EnemyColors.Unknown);
+		Assert.AreEqual(DeathsV3_0.Unknown.Color, EnemyColors.Unknown);
+		Assert.AreEqual(DeathsV3_1.Unknown.Color, EnemyColors.Unknown);
 	}
 
 	[TestMethod]
