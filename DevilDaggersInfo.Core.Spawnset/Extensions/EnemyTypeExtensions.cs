@@ -33,4 +33,20 @@ public static class EnemyTypeExtensions
 		EnemyType.Ghostpede => EnemyColors.Ghostpede,
 		_ => throw new NotSupportedException($"{nameof(EnemyType)} '{enemyType}' is not supported."),
 	};
+
+	public static string GetName(this EnemyType enemyType) => enemyType switch
+	{
+		EnemyType.Empty => "Empty",
+		EnemyType.Squid1 => EnemiesV3_1.Squid1.Name,
+		EnemyType.Squid2 => EnemiesV3_1.Squid2.Name,
+		EnemyType.Centipede => EnemiesV3_1.Centipede.Name,
+		EnemyType.Spider1 => EnemiesV3_1.Spider1.Name,
+		EnemyType.Leviathan => EnemiesV3_1.Leviathan.Name,
+		EnemyType.Gigapede => EnemiesV3_1.Gigapede.Name,
+		EnemyType.Squid3 => EnemiesV3_1.Squid3.Name,
+		EnemyType.Thorn => EnemiesV3_1.Thorn.Name,
+		EnemyType.Spider2 => EnemiesV3_1.Spider2.Name,
+		EnemyType.Ghostpede => EnemiesV3_1.Ghostpede.Name,
+		_ => throw new NotSupportedException($"{nameof(EnemyType)} '{enemyType}' is not supported."),
+	};
 }
