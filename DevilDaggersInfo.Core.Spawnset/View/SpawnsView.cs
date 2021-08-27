@@ -12,6 +12,8 @@ public class SpawnsView
 	{
 		PreLoop = new();
 		Waves = new List<SpawnView>[waveCount];
+		for (int i = 0; i < waveCount; i++)
+			Waves[i] = new();
 
 		if (spawns.Length == 0)
 			return;
@@ -55,7 +57,6 @@ public class SpawnsView
 	{
 		for (int i = 0; i < waveCount; i++)
 		{
-			Waves[i] = new();
 			double enemyTimer = 0;
 			double delay = 0;
 			foreach (Spawn spawn in loopSpawns)
