@@ -3,8 +3,16 @@
 // TODO: Write unit tests.
 public class SpawnsView
 {
+	public SpawnsView(Spawnset spawnset, MajorGameVersion majorGameVersion, int waveCount = 30)
+		: this(spawnset.GameMode, majorGameVersion, spawnset.Spawns, waveCount, spawnset.HandLevel, spawnset.AdditionalGems, spawnset.TimerStart)
+	{
+	}
+
 	public SpawnsView(GameMode gameMode, MajorGameVersion majorGameVersion, Spawn[] spawns, int waveCount = 30, HandLevel handLevel = HandLevel.Level1, int additionalGems = 0, float timerStart = 0)
 	{
+		PreLoop = new();
+		Waves = new List<SpawnView>[waveCount];
+
 		if (spawns.Length == 0)
 			return;
 
@@ -13,7 +21,7 @@ public class SpawnsView
 
 		if (gameMode is GameMode.TimeAttack or GameMode.Race)
 		{
-			PreLoop = BuildPreLoop(ref totalSeconds, ref gemsTotal, spawns);
+			BuildPreLoop(ref totalSeconds, ref gemsTotal, spawns);
 		}
 		else
 		{
@@ -21,37 +29,33 @@ public class SpawnsView
 			Spawn[] preLoopSpawns = spawns.Take(loopIndex).ToArray();
 			Spawn[] loopSpawns = spawns.Skip(loopIndex).ToArray();
 
-			PreLoop = BuildPreLoop(ref totalSeconds, ref gemsTotal, preLoopSpawns);
+			BuildPreLoop(ref totalSeconds, ref gemsTotal, preLoopSpawns);
 
 			if (waveCount > 0 && loopSpawns.Any(s => s.EnemyType != EnemyType.Empty))
-				Waves = BuildLoop(majorGameVersion, waveCount, ref totalSeconds, ref gemsTotal, loopSpawns);
+				BuildLoop(majorGameVersion, waveCount, ref totalSeconds, ref gemsTotal, loopSpawns);
 		}
 	}
 
-	public List<SpawnView>? PreLoop { get; }
-	public List<SpawnView>[]? Waves { get; }
+	public List<SpawnView> PreLoop { get; }
+	public List<SpawnView>[] Waves { get; }
 
-	private static List<SpawnView> BuildPreLoop(ref double totalSeconds, ref int gemsTotal, Spawn[] preLoopSpawns)
+	private void BuildPreLoop(ref double totalSeconds, ref int gemsTotal, Spawn[] preLoopSpawns)
 	{
-		List<SpawnView> preLoop = new();
 		foreach (Spawn spawn in preLoopSpawns)
 		{
 			totalSeconds += spawn.Delay;
 			int gems = spawn.EnemyType.GetNoFarmGems();
 			gemsTotal += gems;
 			if (spawn.EnemyType != EnemyType.Empty)
-				preLoop.Add(new(spawn.EnemyType, totalSeconds, gems, gemsTotal));
+				PreLoop.Add(new(spawn.EnemyType, totalSeconds, gems, gemsTotal));
 		}
-
-		return preLoop;
 	}
 
-	private static List<SpawnView>[] BuildLoop(MajorGameVersion majorGameVersion, int waveCount, ref double totalSeconds, ref int gemsTotal, Spawn[] loopSpawns)
+	private void BuildLoop(MajorGameVersion majorGameVersion, int waveCount, ref double totalSeconds, ref int gemsTotal, Spawn[] loopSpawns)
 	{
-		List<SpawnView>[] waves = new List<SpawnView>[waveCount];
 		for (int i = 0; i < waveCount; i++)
 		{
-			waves[i] = new();
+			Waves[i] = new();
 			double enemyTimer = 0;
 			double delay = 0;
 			foreach (Spawn spawn in loopSpawns)
@@ -72,11 +76,9 @@ public class SpawnsView
 					int gems = finalEnemy.GetNoFarmGems();
 					gemsTotal += gems;
 
-					waves[i].Add(new(finalEnemy, totalSeconds, gems, gemsTotal));
+					Waves[i].Add(new(finalEnemy, totalSeconds, gems, gemsTotal));
 				}
 			}
 		}
-
-		return waves;
 	}
 }
