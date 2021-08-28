@@ -9,18 +9,18 @@ namespace DevilDaggersInfo.Web.BlazorWasm.Server.Controllers.Public;
 [ApiController]
 public class AssetsController : ControllerBase
 {
-	private readonly IWebHostEnvironment _environment;
+	private readonly IFileSystemService _fileSystemService;
 
-	public AssetsController(IWebHostEnvironment environment)
+	public AssetsController(IFileSystemService fileSystemService)
 	{
-		_environment = environment;
+		_fileSystemService = fileSystemService;
 	}
 
 	[HttpGet("info")]
 	[ProducesResponseType(StatusCodes.Status200OK)]
 	public ActionResult<Dictionary<string, List<GetAssetInfo>>> GetAssetInfoForDdae()
 	{
-		return Io.Directory.GetFiles(Io.Path.Combine(_environment.WebRootPath, "asset-info"))
+		return Directory.GetFiles(_fileSystemService.GetPath(DataSubDirectory.AssetInfo))
 			.Select(p =>
 			{
 				string fileName = Io.Path.GetFileNameWithoutExtension(p);

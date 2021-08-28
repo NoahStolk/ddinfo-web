@@ -9,4 +9,5 @@ public enum DataSubDirectory
 	ModScreenshots,
 	Spawnsets,
 	Tools,
+	AssetInfo,
 }
