@@ -1,6 +1,4 @@
-﻿using DevilDaggersInfo.Web.BlazorWasm.Server.Utils;
-
-namespace DevilDaggersInfo.Web.BlazorWasm.Server.Test;
+﻿namespace DevilDaggersInfo.Web.BlazorWasm.Server.Test;
 
 [TestClass]
 public class IntegerArrayCompressorTests

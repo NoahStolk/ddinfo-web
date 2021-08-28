@@ -1,10 +1,5 @@
-﻿using DevilDaggersInfo.Core.Spawnset;
-using DevilDaggersInfo.Web.BlazorWasm.Server.Caches.SpawnsetHashes;
+﻿using DevilDaggersInfo.Web.BlazorWasm.Server.Caches.SpawnsetHashes;
 using DevilDaggersInfo.Web.BlazorWasm.Server.Controllers.Public;
-using DevilDaggersInfo.Web.BlazorWasm.Server.Entities;
-using DevilDaggersInfo.Web.BlazorWasm.Server.Extensions;
-using DevilDaggersInfo.Web.BlazorWasm.Server.Singletons;
-using DevilDaggersInfo.Web.BlazorWasm.Server.Transients;
 using DevilDaggersInfo.Web.BlazorWasm.Shared.Dto.Public.CustomEntries;
 using DevilDaggersInfo.Web.BlazorWasm.Shared.Dto.Public.Tools;
 

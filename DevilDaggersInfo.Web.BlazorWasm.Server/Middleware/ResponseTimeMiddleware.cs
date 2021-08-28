@@ -1,7 +1,4 @@
-﻿using DevilDaggersInfo.Web.BlazorWasm.Server.Singletons;
-using System.Diagnostics;
-
-namespace DevilDaggersInfo.Web.BlazorWasm.Server.Middleware;
+﻿namespace DevilDaggersInfo.Web.BlazorWasm.Server.Middleware;
 
 public class ResponseTimeMiddleware
 {

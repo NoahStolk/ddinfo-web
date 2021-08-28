@@ -1,7 +1,4 @@
-﻿using DevilDaggersInfo.Web.BlazorWasm.Server.Entities;
-using DevilDaggersInfo.Web.BlazorWasm.Shared.Enums;
-
-namespace DevilDaggersInfo.Web.BlazorWasm.Server.Test.Data;
+﻿namespace DevilDaggersInfo.Web.BlazorWasm.Server.Test.Data;
 
 public class MockEntities
 {

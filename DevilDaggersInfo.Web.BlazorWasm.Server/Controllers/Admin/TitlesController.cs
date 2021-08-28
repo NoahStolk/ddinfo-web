@@ -1,5 +1,4 @@
 ﻿using DevilDaggersInfo.Web.BlazorWasm.Server.Converters.Admin;
-using DevilDaggersInfo.Web.BlazorWasm.Server.Singletons.AuditLog;
 using DevilDaggersInfo.Web.BlazorWasm.Shared.Dto;
 using DevilDaggersInfo.Web.BlazorWasm.Shared.Dto.Admin.Titles;
 using DevilDaggersInfo.Web.BlazorWasm.Shared.Enums.Sortings.Admin;

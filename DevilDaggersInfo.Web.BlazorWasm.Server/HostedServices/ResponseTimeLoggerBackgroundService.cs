@@ -1,5 +1,4 @@
 ﻿using DevilDaggersInfo.Web.BlazorWasm.Server.HostedServices.DdInfoDiscordBot;
-using DevilDaggersInfo.Web.BlazorWasm.Server.Singletons;
 
 namespace DevilDaggersInfo.Web.BlazorWasm.Server.HostedServices;
 

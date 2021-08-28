@@ -4,7 +4,6 @@ using DevilDaggersInfo.Web.BlazorWasm.Server.Caches.ModArchives;
 using DevilDaggersInfo.Web.BlazorWasm.Server.Caches.SpawnsetHashes;
 using DevilDaggersInfo.Web.BlazorWasm.Server.Caches.SpawnsetSummaries;
 using DevilDaggersInfo.Web.BlazorWasm.Server.HostedServices.DdInfoDiscordBot;
-using DevilDaggersInfo.Web.BlazorWasm.Server.Singletons;
 using DSharpPlus.Entities;
 
 namespace DevilDaggersInfo.Web.BlazorWasm.Server.HostedServices;

@@ -6,8 +6,6 @@ using DevilDaggersInfo.Web.BlazorWasm.Server.Caches.SpawnsetSummaries;
 using DevilDaggersInfo.Web.BlazorWasm.Server.HostedServices;
 using DevilDaggersInfo.Web.BlazorWasm.Server.Middleware;
 using DevilDaggersInfo.Web.BlazorWasm.Server.NSwag;
-using DevilDaggersInfo.Web.BlazorWasm.Server.Singletons;
-using DevilDaggersInfo.Web.BlazorWasm.Server.Singletons.AuditLog;
 using Microsoft.AspNetCore.Authentication;
 using Microsoft.AspNetCore.Rewrite;
 using NJsonSchema;

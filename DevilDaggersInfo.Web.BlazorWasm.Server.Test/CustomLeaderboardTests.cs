@@ -1,12 +1,6 @@
 ﻿using DevilDaggersInfo.Web.BlazorWasm.Server.Controllers.Admin;
-using DevilDaggersInfo.Web.BlazorWasm.Server.Entities;
-using DevilDaggersInfo.Web.BlazorWasm.Server.Extensions;
-using DevilDaggersInfo.Web.BlazorWasm.Server.Singletons;
-using DevilDaggersInfo.Web.BlazorWasm.Server.Singletons.AuditLog;
-using DevilDaggersInfo.Web.BlazorWasm.Server.Transients;
 using DevilDaggersInfo.Web.BlazorWasm.Shared.Dto;
 using DevilDaggersInfo.Web.BlazorWasm.Shared.Dto.Admin.CustomLeaderboards;
-using DevilDaggersInfo.Web.BlazorWasm.Shared.Enums;
 
 namespace DevilDaggersInfo.Web.BlazorWasm.Server.Test;
 
