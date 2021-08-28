@@ -18,6 +18,12 @@ public class GetTool
 
 	public IReadOnlyList<GetChangelogEntry> Changelog { get; init; } = null!;
 
+	public int FileSize { get; set; }
+
+	public int DownloadCount { get; set; }
+
+	public List<string> SupportedOperatingSystems { get; set; } = new();
+
 	//public HtmlString ToChangelogHtmlString()
 	//{
 	//	StringBuilder sb = new();

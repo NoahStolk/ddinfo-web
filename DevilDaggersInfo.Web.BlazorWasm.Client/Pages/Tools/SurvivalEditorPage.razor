@@ -1,0 +1,24 @@
+﻿@page "/tools/survival-editor"
+@inject PublicApiHttpClient Http
+@using DevilDaggersInfo.Web.BlazorWasm.Shared.Dto.Public.Tools
+
+<Heading>Devil Daggers Survival Editor</Heading>
+
+@if (GetTool == null)
+{
+	<Loading />
+}
+else
+{
+	<BuildInfo GetTool="GetTool" />
+}
+
+@code
+{
+	public GetTool? GetTool { get; set; }
+
+	protected override async Task OnInitializedAsync()
+	{
+		GetTool = await Http.GetTool("DevilDaggersSurvivalEditor");
+	}
+}

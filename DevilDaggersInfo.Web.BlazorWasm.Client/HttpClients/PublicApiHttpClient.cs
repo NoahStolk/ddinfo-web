@@ -8,6 +8,7 @@ using DevilDaggersInfo.Web.BlazorWasm.Shared.Dto.Public.Leaderboards;
 using DevilDaggersInfo.Web.BlazorWasm.Shared.Dto.Public.LeaderboardStatistics;
 using DevilDaggersInfo.Web.BlazorWasm.Shared.Dto.Public.Players;
 using DevilDaggersInfo.Web.BlazorWasm.Shared.Dto.Public.Spawnsets;
+using DevilDaggersInfo.Web.BlazorWasm.Shared.Dto.Public.Tools;
 using DevilDaggersInfo.Web.BlazorWasm.Shared.Enums;
 using DevilDaggersInfo.Web.BlazorWasm.Shared.Enums.Sortings.Public;
 using System.Net.Http.Json;
@@ -88,5 +89,10 @@ public class PublicApiHttpClient
 	public async Task<GetLeaderboardHistory> GetLeaderboardHistory(DateTime dateTime)
 	{
 		return await _client.GetFromJsonAsync<GetLeaderboardHistory>(UrlBuilderUtils.BuildUrlWithQuery("api/leaderboard-history", new() { { nameof(dateTime), dateTime } })) ?? throw new JsonDeserializationException();
+	}
+
+	public async Task<GetTool> GetTool(string toolName)
+	{
+		return await _client.GetFromJsonAsync<GetTool>($"api/tools/{toolName}") ?? throw new JsonDeserializationException();
 	}
 }
