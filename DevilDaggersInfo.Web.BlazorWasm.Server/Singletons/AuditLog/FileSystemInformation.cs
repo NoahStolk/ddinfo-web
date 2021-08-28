@@ -1,6 +1,4 @@
-﻿using DevilDaggersInfo.Web.BlazorWasm.Server.Enums;
-
-namespace DevilDaggersInfo.Web.BlazorWasm.Server.Singletons.AuditLog;
+﻿namespace DevilDaggersInfo.Web.BlazorWasm.Server.Singletons.AuditLog;
 
 public class FileSystemInformation
 {

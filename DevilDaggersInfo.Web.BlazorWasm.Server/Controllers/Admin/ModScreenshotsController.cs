@@ -1,13 +1,5 @@
-﻿using DevilDaggersInfo.Web.BlazorWasm.Server.Entities;
-using DevilDaggersInfo.Web.BlazorWasm.Server.Enums;
-using DevilDaggersInfo.Web.BlazorWasm.Server.Singletons.AuditLog;
-using DevilDaggersInfo.Web.BlazorWasm.Server.Transients;
-using DevilDaggersInfo.Web.BlazorWasm.Shared;
-using DevilDaggersInfo.Web.BlazorWasm.Shared.Constants;
+﻿using DevilDaggersInfo.Web.BlazorWasm.Server.Singletons.AuditLog;
 using DevilDaggersInfo.Web.BlazorWasm.Shared.Dto.Admin.ModScreenshots;
-using Microsoft.AspNetCore.Authorization;
-using Microsoft.AspNetCore.Mvc;
-using Io = System.IO;
 
 namespace DevilDaggersInfo.Web.BlazorWasm.Server.Controllers.Admin;
 
@@ -43,7 +35,7 @@ public class ModScreenshotsController : ControllerBase
 			return BadRequest($"This mod already contains {screenshots} screenshots.");
 
 		string path = Path.Combine(directory, $"{screenshots:00}.png");
-		Io.File.WriteAllBytes(path, addModScreenshot.FileContents);
+		IoFile.WriteAllBytes(path, addModScreenshot.FileContents);
 
 		await _auditLogger.LogFileSystemInformation(new() { new($"File {_fileSystemService.FormatPath(path)} was added.", FileSystemInformationType.Add) });
 
@@ -60,11 +52,11 @@ public class ModScreenshotsController : ControllerBase
 
 		string directory = Path.Combine(_fileSystemService.GetPath(DataSubDirectory.ModScreenshots), deleteModScreenshot.ModName);
 		string path = Path.Combine(directory, deleteModScreenshot.ScreenshotName);
-		bool fileExists = Io.File.Exists(path);
+		bool fileExists = IoFile.Exists(path);
 		if (!fileExists)
 			return BadRequest($"Screenshot with name {deleteModScreenshot.ScreenshotName} does not exist.");
 
-		Io.File.Delete(path);
+		IoFile.Delete(path);
 
 		await _auditLogger.LogFileSystemInformation(new() { new($"File {_fileSystemService.FormatPath(path)} was deleted.", FileSystemInformationType.Delete) });
 

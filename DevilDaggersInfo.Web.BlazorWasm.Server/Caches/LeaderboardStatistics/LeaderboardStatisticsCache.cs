@@ -1,12 +1,5 @@
-﻿using DevilDaggersInfo.Core.Wiki;
-using DevilDaggersInfo.Core.Wiki.Enums;
-using DevilDaggersInfo.Core.Wiki.Objects;
-using DevilDaggersInfo.Web.BlazorWasm.Server.Enums;
-using DevilDaggersInfo.Web.BlazorWasm.Server.HostedServices.DdInfoDiscordBot;
+﻿using DevilDaggersInfo.Web.BlazorWasm.Server.HostedServices.DdInfoDiscordBot;
 using DevilDaggersInfo.Web.BlazorWasm.Server.Singletons;
-using DevilDaggersInfo.Web.BlazorWasm.Server.Transients;
-using DevilDaggersInfo.Web.BlazorWasm.Shared;
-using DevilDaggersInfo.Web.BlazorWasm.Shared.Extensions;
 
 namespace DevilDaggersInfo.Web.BlazorWasm.Server.Caches.LeaderboardStatistics;
 

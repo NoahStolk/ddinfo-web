@@ -1,9 +1,4 @@
-﻿using DevilDaggersInfo.Web.BlazorWasm.Server.Extensions;
-using DevilDaggersInfo.Web.BlazorWasm.Shared.Enums;
-using System.ComponentModel.DataAnnotations;
-using System.ComponentModel.DataAnnotations.Schema;
-
-namespace DevilDaggersInfo.Web.BlazorWasm.Server.Entities;
+﻿namespace DevilDaggersInfo.Web.BlazorWasm.Server.Entities;
 
 [Table("CustomLeaderboards")]
 public class CustomLeaderboardEntity : IEntity

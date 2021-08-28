@@ -1,14 +1,7 @@
 ﻿using DevilDaggersInfo.Web.BlazorWasm.Server.Converters.Public;
-using DevilDaggersInfo.Web.BlazorWasm.Server.Entities;
-using DevilDaggersInfo.Web.BlazorWasm.Server.Extensions;
-using DevilDaggersInfo.Web.BlazorWasm.Shared.Constants;
 using DevilDaggersInfo.Web.BlazorWasm.Shared.Dto;
 using DevilDaggersInfo.Web.BlazorWasm.Shared.Dto.Public.CustomLeaderboards;
-using DevilDaggersInfo.Web.BlazorWasm.Shared.Enums;
 using DevilDaggersInfo.Web.BlazorWasm.Shared.Enums.Sortings.Public;
-using Microsoft.AspNetCore.Mvc;
-using Microsoft.EntityFrameworkCore;
-using System.ComponentModel.DataAnnotations;
 
 namespace DevilDaggersInfo.Web.BlazorWasm.Server.Controllers.Public;
 

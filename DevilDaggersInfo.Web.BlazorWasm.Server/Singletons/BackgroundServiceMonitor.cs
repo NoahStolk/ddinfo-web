@@ -1,6 +1,4 @@
-﻿using DevilDaggersInfo.Web.BlazorWasm.Server.Extensions;
-using DSharpPlus.Entities;
-using System.Collections.Concurrent;
+﻿using DSharpPlus.Entities;
 
 namespace DevilDaggersInfo.Web.BlazorWasm.Server.Singletons;
 

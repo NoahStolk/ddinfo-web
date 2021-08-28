@@ -1,8 +1,4 @@
-﻿using DevilDaggersInfo.Web.BlazorWasm.Server.Entities;
-using DevilDaggersInfo.Web.BlazorWasm.Shared.Dto.Public.Players;
-using Microsoft.AspNetCore.Mvc;
-using Microsoft.EntityFrameworkCore;
-using System.ComponentModel.DataAnnotations;
+﻿using DevilDaggersInfo.Web.BlazorWasm.Shared.Dto.Public.Players;
 
 namespace DevilDaggersInfo.Web.BlazorWasm.Server.Controllers.Public;
 

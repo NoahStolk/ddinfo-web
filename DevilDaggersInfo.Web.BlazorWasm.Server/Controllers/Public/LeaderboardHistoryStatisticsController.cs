@@ -1,10 +1,6 @@
 ﻿using DevilDaggersInfo.Web.BlazorWasm.Server.Caches.LeaderboardHistory;
-using DevilDaggersInfo.Web.BlazorWasm.Server.Enums;
-using DevilDaggersInfo.Web.BlazorWasm.Server.Transients;
 using DevilDaggersInfo.Web.BlazorWasm.Shared.Dto.Public.LeaderboardHistory;
 using DevilDaggersInfo.Web.BlazorWasm.Shared.Dto.Public.LeaderboardHistoryStatistics;
-using DevilDaggersInfo.Web.BlazorWasm.Shared.Extensions;
-using Microsoft.AspNetCore.Mvc;
 
 namespace DevilDaggersInfo.Web.BlazorWasm.Server.Controllers.Public;
 

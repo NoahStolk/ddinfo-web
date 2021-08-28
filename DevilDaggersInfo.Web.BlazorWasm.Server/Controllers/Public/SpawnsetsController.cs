@@ -1,21 +1,8 @@
-﻿using DevilDaggersInfo.Core.Spawnset;
-using DevilDaggersInfo.Core.Spawnset.Summary;
-using DevilDaggersInfo.Web.BlazorWasm.Server.Caches.SpawnsetSummaries;
+﻿using DevilDaggersInfo.Web.BlazorWasm.Server.Caches.SpawnsetSummaries;
 using DevilDaggersInfo.Web.BlazorWasm.Server.Converters.Public;
-using DevilDaggersInfo.Web.BlazorWasm.Server.Entities;
-using DevilDaggersInfo.Web.BlazorWasm.Server.Enums;
-using DevilDaggersInfo.Web.BlazorWasm.Server.Extensions;
-using DevilDaggersInfo.Web.BlazorWasm.Server.Transients;
-using DevilDaggersInfo.Web.BlazorWasm.Shared.Constants;
 using DevilDaggersInfo.Web.BlazorWasm.Shared.Dto;
 using DevilDaggersInfo.Web.BlazorWasm.Shared.Dto.Public.Spawnsets;
 using DevilDaggersInfo.Web.BlazorWasm.Shared.Enums.Sortings.Public;
-using DevilDaggersInfo.Web.BlazorWasm.Shared.Extensions;
-using Microsoft.AspNetCore.Mvc;
-using Microsoft.EntityFrameworkCore;
-using System.ComponentModel.DataAnnotations;
-using System.Net.Mime;
-using Io = System.IO;
 
 namespace DevilDaggersInfo.Web.BlazorWasm.Server.Controllers.Public;
 
@@ -125,7 +112,7 @@ public class SpawnsetsController : ControllerBase
 			query = query.Where(sf => sf.Name.Contains(nameFilter, StringComparison.InvariantCultureIgnoreCase));
 
 		return query
-			.Where(sf => Io.File.Exists(Path.Combine(_fileSystemService.GetPath(DataSubDirectory.Spawnsets), sf.Name)))
+			.Where(sf => IoFile.Exists(Path.Combine(_fileSystemService.GetPath(DataSubDirectory.Spawnsets), sf.Name)))
 			.Select(sf => Map(sf))
 			.ToList();
 
@@ -143,10 +130,10 @@ public class SpawnsetsController : ControllerBase
 	public ActionResult GetSpawnsetFile([Required] string fileName)
 	{
 		string path = Path.Combine(_fileSystemService.GetPath(DataSubDirectory.Spawnsets), fileName);
-		if (!Io.File.Exists(path))
+		if (!IoFile.Exists(path))
 			return new NotFoundObjectResult(new ProblemDetails { Title = $"Spawnset '{fileName}' was not found." });
 
-		return File(Io.File.ReadAllBytes(path), MediaTypeNames.Application.Octet, fileName);
+		return File(IoFile.ReadAllBytes(path), MediaTypeNames.Application.Octet, fileName);
 	}
 
 	[HttpGet("{id}")]
@@ -163,9 +150,9 @@ public class SpawnsetsController : ControllerBase
 			return NotFound();
 
 		string path = Path.Combine(_fileSystemService.GetPath(DataSubDirectory.Spawnsets), spawnsetEntity.Name);
-		if (!Io.File.Exists(path))
+		if (!IoFile.Exists(path))
 			return NotFound();
 
-		return spawnsetEntity.ToGetSpawnset(Io.File.ReadAllBytes(path));
+		return spawnsetEntity.ToGetSpawnset(IoFile.ReadAllBytes(path));
 	}
 }

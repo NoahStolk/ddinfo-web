@@ -1,17 +1,10 @@
 ﻿using DevilDaggersInfo.Web.BlazorWasm.Server.Caches.SpawnsetHashes;
 using DevilDaggersInfo.Web.BlazorWasm.Server.Converters.Public;
-using DevilDaggersInfo.Web.BlazorWasm.Server.Entities;
-using DevilDaggersInfo.Web.BlazorWasm.Server.Extensions;
 using DevilDaggersInfo.Web.BlazorWasm.Server.HostedServices.DdInfoDiscordBot;
 using DevilDaggersInfo.Web.BlazorWasm.Server.Singletons;
-using DevilDaggersInfo.Web.BlazorWasm.Server.Transients;
-using DevilDaggersInfo.Web.BlazorWasm.Server.Utils;
 using DevilDaggersInfo.Web.BlazorWasm.Shared.Dto.Public.CustomEntries;
 using DevilDaggersInfo.Web.BlazorWasm.Shared.Dto.Public.Tools;
-using DevilDaggersInfo.Web.BlazorWasm.Shared.Enums;
 using DSharpPlus.Entities;
-using Microsoft.AspNetCore.Mvc;
-using Microsoft.EntityFrameworkCore;
 using System.Web;
 
 namespace DevilDaggersInfo.Web.BlazorWasm.Server.Controllers.Public;

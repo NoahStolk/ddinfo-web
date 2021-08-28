@@ -1,8 +1,6 @@
 ﻿using DevilDaggersInfo.Web.BlazorWasm.Server.Clients.Leaderboard;
 using DevilDaggersInfo.Web.BlazorWasm.Server.Converters.Public;
 using DevilDaggersInfo.Web.BlazorWasm.Shared.Dto.Public.Leaderboards;
-using Microsoft.AspNetCore.Mvc;
-using System.ComponentModel.DataAnnotations;
 
 namespace DevilDaggersInfo.Web.BlazorWasm.Server.Controllers.Public;
 

@@ -1,7 +1,4 @@
-﻿using DevilDaggersInfo.Web.BlazorWasm.Server.Entities;
-using DevilDaggersInfo.Web.BlazorWasm.Server.Utils;
-using DevilDaggersInfo.Web.BlazorWasm.Shared.Dto.Public.CustomEntries;
-using DevilDaggersInfo.Web.BlazorWasm.Shared.Extensions;
+﻿using DevilDaggersInfo.Web.BlazorWasm.Shared.Dto.Public.CustomEntries;
 
 namespace DevilDaggersInfo.Web.BlazorWasm.Server.Converters.Public;
 

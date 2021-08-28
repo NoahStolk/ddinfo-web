@@ -1,9 +1,5 @@
-﻿using DevilDaggersInfo.Web.BlazorWasm.Server.Extensions;
-using DevilDaggersInfo.Web.BlazorWasm.Server.HostedServices.DdInfoDiscordBot;
+﻿using DevilDaggersInfo.Web.BlazorWasm.Server.HostedServices.DdInfoDiscordBot;
 using DSharpPlus.Entities;
-using System.Collections;
-using System.Diagnostics;
-using System.Runtime.CompilerServices;
 
 namespace DevilDaggersInfo.Web.BlazorWasm.Server.Singletons;
 

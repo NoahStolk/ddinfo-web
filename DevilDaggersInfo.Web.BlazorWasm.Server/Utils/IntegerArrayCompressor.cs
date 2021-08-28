@@ -1,6 +1,4 @@
-﻿using System.Collections;
-
-namespace DevilDaggersInfo.Web.BlazorWasm.Server.Utils;
+﻿namespace DevilDaggersInfo.Web.BlazorWasm.Server.Utils;
 
 public static class IntegerArrayCompressor
 {

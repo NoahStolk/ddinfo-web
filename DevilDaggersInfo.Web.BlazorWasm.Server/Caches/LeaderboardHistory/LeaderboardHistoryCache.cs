@@ -1,7 +1,4 @@
 ﻿using DevilDaggersInfo.Web.BlazorWasm.Shared.Dto.Public.LeaderboardHistory;
-using Newtonsoft.Json;
-using System.Collections.Concurrent;
-using System.Text;
 
 namespace DevilDaggersInfo.Web.BlazorWasm.Server.Caches.LeaderboardHistory;
 

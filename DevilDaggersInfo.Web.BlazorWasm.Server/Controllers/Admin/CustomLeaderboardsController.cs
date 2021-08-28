@@ -1,22 +1,8 @@
-﻿using DevilDaggersInfo.Core.Spawnset;
-using DevilDaggersInfo.Core.Spawnset.Enums;
-using DevilDaggersInfo.Web.BlazorWasm.Server.Converters.Admin;
-using DevilDaggersInfo.Web.BlazorWasm.Server.Entities;
-using DevilDaggersInfo.Web.BlazorWasm.Server.Enums;
-using DevilDaggersInfo.Web.BlazorWasm.Server.Extensions;
+﻿using DevilDaggersInfo.Web.BlazorWasm.Server.Converters.Admin;
 using DevilDaggersInfo.Web.BlazorWasm.Server.Singletons.AuditLog;
-using DevilDaggersInfo.Web.BlazorWasm.Server.Transients;
-using DevilDaggersInfo.Web.BlazorWasm.Shared;
-using DevilDaggersInfo.Web.BlazorWasm.Shared.Constants;
 using DevilDaggersInfo.Web.BlazorWasm.Shared.Dto;
 using DevilDaggersInfo.Web.BlazorWasm.Shared.Dto.Admin.CustomLeaderboards;
-using DevilDaggersInfo.Web.BlazorWasm.Shared.Enums;
 using DevilDaggersInfo.Web.BlazorWasm.Shared.Enums.Sortings.Admin;
-using DevilDaggersInfo.Web.BlazorWasm.Shared.Extensions;
-using Microsoft.AspNetCore.Authorization;
-using Microsoft.AspNetCore.Mvc;
-using Microsoft.EntityFrameworkCore;
-using System.ComponentModel.DataAnnotations;
 
 namespace DevilDaggersInfo.Web.BlazorWasm.Server.Controllers.Admin;
 

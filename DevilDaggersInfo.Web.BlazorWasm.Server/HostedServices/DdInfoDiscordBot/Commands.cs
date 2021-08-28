@@ -1,5 +1,4 @@
-﻿using DevilDaggersInfo.Web.BlazorWasm.Server.Extensions;
-using DSharpPlus.EventArgs;
+﻿using DSharpPlus.EventArgs;
 
 namespace DevilDaggersInfo.Web.BlazorWasm.Server.HostedServices.DdInfoDiscordBot;
 

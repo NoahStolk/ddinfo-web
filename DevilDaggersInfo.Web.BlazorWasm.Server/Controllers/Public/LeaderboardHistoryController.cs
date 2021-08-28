@@ -1,7 +1,5 @@
 ﻿using DevilDaggersInfo.Web.BlazorWasm.Server.Caches.LeaderboardHistory;
-using DevilDaggersInfo.Web.BlazorWasm.Server.Transients;
 using DevilDaggersInfo.Web.BlazorWasm.Shared.Dto.Public.LeaderboardHistory;
-using Microsoft.AspNetCore.Mvc;
 
 namespace DevilDaggersInfo.Web.BlazorWasm.Server.Controllers.Public;
 

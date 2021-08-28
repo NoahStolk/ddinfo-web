@@ -1,6 +1,4 @@
-﻿using DevilDaggersInfo.Web.BlazorWasm.Server.Enums;
-
-namespace DevilDaggersInfo.Web.BlazorWasm.Server.Transients;
+﻿namespace DevilDaggersInfo.Web.BlazorWasm.Server.Transients;
 
 public interface IFileSystemService
 {

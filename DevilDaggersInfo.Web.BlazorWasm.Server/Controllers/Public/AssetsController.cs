@@ -1,7 +1,4 @@
 ﻿using DevilDaggersInfo.Web.BlazorWasm.Shared.Dto.Public.Assets;
-using Microsoft.AspNetCore.Mvc;
-using Newtonsoft.Json;
-using Io = System.IO;
 
 namespace DevilDaggersInfo.Web.BlazorWasm.Server.Controllers.Public;
 
@@ -23,8 +20,8 @@ public class AssetsController : ControllerBase
 		return Directory.GetFiles(_fileSystemService.GetPath(DataSubDirectory.AssetInfo))
 			.Select(p =>
 			{
-				string fileName = Io.Path.GetFileNameWithoutExtension(p);
-				List<GetAssetInfo> assetInfo = JsonConvert.DeserializeObject<List<GetAssetInfo>?>(Io.File.ReadAllText(p)) ?? throw new($"Could not deserialize asset info from file '{fileName}'.");
+				string fileName = Path.GetFileNameWithoutExtension(p);
+				List<GetAssetInfo> assetInfo = JsonConvert.DeserializeObject<List<GetAssetInfo>?>(IoFile.ReadAllText(p)) ?? throw new($"Could not deserialize asset info from file '{fileName}'.");
 				return (fileName, assetInfo);
 			}).
 			ToDictionary(t => t.fileName, t => t.assetInfo);

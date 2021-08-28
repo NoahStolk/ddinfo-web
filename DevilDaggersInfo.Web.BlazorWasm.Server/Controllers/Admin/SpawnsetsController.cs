@@ -1,22 +1,9 @@
-﻿using DevilDaggersInfo.Core.Spawnset;
-using DevilDaggersInfo.Web.BlazorWasm.Server.Caches.SpawnsetHashes;
+﻿using DevilDaggersInfo.Web.BlazorWasm.Server.Caches.SpawnsetHashes;
 using DevilDaggersInfo.Web.BlazorWasm.Server.Converters.Admin;
-using DevilDaggersInfo.Web.BlazorWasm.Server.Entities;
-using DevilDaggersInfo.Web.BlazorWasm.Server.Enums;
-using DevilDaggersInfo.Web.BlazorWasm.Server.Extensions;
 using DevilDaggersInfo.Web.BlazorWasm.Server.Singletons.AuditLog;
-using DevilDaggersInfo.Web.BlazorWasm.Server.Transients;
-using DevilDaggersInfo.Web.BlazorWasm.Shared;
-using DevilDaggersInfo.Web.BlazorWasm.Shared.Constants;
 using DevilDaggersInfo.Web.BlazorWasm.Shared.Dto;
 using DevilDaggersInfo.Web.BlazorWasm.Shared.Dto.Admin.Spawnsets;
 using DevilDaggersInfo.Web.BlazorWasm.Shared.Enums.Sortings.Admin;
-using Microsoft.AspNetCore.Authorization;
-using Microsoft.AspNetCore.Mvc;
-using Microsoft.EntityFrameworkCore;
-using System.ComponentModel.DataAnnotations;
-using System.Security.Cryptography;
-using Io = System.IO;
 
 namespace DevilDaggersInfo.Web.BlazorWasm.Server.Controllers.Admin;
 
@@ -123,7 +110,7 @@ public class SpawnsetsController : ControllerBase
 
 		// Add file.
 		string path = Path.Combine(_fileSystemService.GetPath(DataSubDirectory.Spawnsets), addSpawnset.Name);
-		Io.File.WriteAllBytes(path, addSpawnset.FileContents);
+		IoFile.WriteAllBytes(path, addSpawnset.FileContents);
 
 		// Add entity.
 		SpawnsetEntity spawnset = new()
@@ -165,7 +152,7 @@ public class SpawnsetsController : ControllerBase
 			string directory = _fileSystemService.GetPath(DataSubDirectory.Spawnsets);
 			string oldPath = Path.Combine(directory, spawnset.Name);
 			string newPath = Path.Combine(directory, editSpawnset.Name);
-			Io.File.Move(oldPath, newPath);
+			IoFile.Move(oldPath, newPath);
 			moveInfo = $"File {_fileSystemService.FormatPath(oldPath)} was moved to {_fileSystemService.FormatPath(newPath)}.";
 		}
 
@@ -205,10 +192,10 @@ public class SpawnsetsController : ControllerBase
 			return BadRequest("Spawnset with custom leaderboard cannot be deleted.");
 
 		string path = Path.Combine(_fileSystemService.GetPath(DataSubDirectory.Spawnsets), spawnset.Name);
-		bool fileExists = Io.File.Exists(path);
+		bool fileExists = IoFile.Exists(path);
 		if (fileExists)
 		{
-			Io.File.Delete(path);
+			IoFile.Delete(path);
 			_spawnsetHashCache.Clear();
 		}
 

@@ -1,7 +1,5 @@
 ﻿using DevilDaggersInfo.Web.BlazorWasm.Server.Caches.LeaderboardStatistics;
-using DevilDaggersInfo.Web.BlazorWasm.Server.Utils;
 using DevilDaggersInfo.Web.BlazorWasm.Shared.Dto.Public.LeaderboardStatistics;
-using Microsoft.AspNetCore.Mvc;
 
 namespace DevilDaggersInfo.Web.BlazorWasm.Server.Controllers.Public;
 

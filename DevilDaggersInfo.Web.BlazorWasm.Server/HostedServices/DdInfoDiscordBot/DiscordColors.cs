@@ -1,6 +1,4 @@
-﻿using DevilDaggersInfo.Core.Wiki;
-using DevilDaggersInfo.Core.Wiki.Structs;
-using DSharpPlus.Entities;
+﻿using DSharpPlus.Entities;
 
 namespace DevilDaggersInfo.Web.BlazorWasm.Server.HostedServices.DdInfoDiscordBot;
 

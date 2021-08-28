@@ -1,8 +1,4 @@
-﻿using DevilDaggersInfo.Web.BlazorWasm.Shared.Enums;
-using System.ComponentModel.DataAnnotations;
-using System.ComponentModel.DataAnnotations.Schema;
-
-namespace DevilDaggersInfo.Web.BlazorWasm.Server.Entities;
+﻿namespace DevilDaggersInfo.Web.BlazorWasm.Server.Entities;
 
 [Table("Donations")]
 public class DonationEntity

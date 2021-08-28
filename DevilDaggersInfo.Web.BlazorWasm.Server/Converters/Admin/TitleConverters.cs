@@ -1,5 +1,4 @@
-﻿using DevilDaggersInfo.Web.BlazorWasm.Server.Entities;
-using DevilDaggersInfo.Web.BlazorWasm.Shared.Dto.Admin.Titles;
+﻿using DevilDaggersInfo.Web.BlazorWasm.Shared.Dto.Admin.Titles;
 
 namespace DevilDaggersInfo.Web.BlazorWasm.Server.Converters.Admin;
 

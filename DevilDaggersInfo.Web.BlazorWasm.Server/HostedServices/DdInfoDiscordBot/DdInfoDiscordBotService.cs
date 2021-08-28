@@ -1,5 +1,4 @@
-﻿using DevilDaggersInfo.Web.BlazorWasm.Server.Extensions;
-using DSharpPlus;
+﻿using DSharpPlus;
 using DSharpPlus.Entities;
 using DSharpPlus.EventArgs;
 
