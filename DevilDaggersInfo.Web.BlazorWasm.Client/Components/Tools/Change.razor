@@ -1,0 +1,16 @@
+﻿@using DevilDaggersInfo.Web.BlazorWasm.Shared.Dto.Public.Tools
+
+<div class="pl-4">
+	<span>@GetChange.Description</span>
+	@if (GetChange.SubChanges != null)
+	{
+		foreach (GetChange c in GetChange.SubChanges)
+		{
+			<Change GetChange="c" />
+		}
+	}
+</div>
+
+@code {
+	[Parameter, EditorRequired] public GetChange GetChange { get; set; } = null!;
+}

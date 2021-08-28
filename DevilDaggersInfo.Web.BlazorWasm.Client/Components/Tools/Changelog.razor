@@ -1,0 +1,19 @@
+﻿@using DevilDaggersInfo.Web.BlazorWasm.Shared.Dto.Public.Tools
+
+<h2 class="text-red text-xl">Changelog</h2>
+
+@foreach (GetChangelogEntry ce in ChangelogEntries)
+{
+	<h3 class="text-red text-lg">@ce.VersionNumber - @ce.Date.ToString(FormatUtils.DateFormat)</h3>
+	<div>
+		@foreach (GetChange c in ce.Changes)
+		{
+			<Change GetChange="c" />
+		}
+	</div>
+}
+
+@code
+{
+	[Parameter, EditorRequired] public IReadOnlyList<GetChangelogEntry> ChangelogEntries { get; set; } = null!;
+}
