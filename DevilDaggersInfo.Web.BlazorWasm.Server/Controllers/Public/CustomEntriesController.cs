@@ -119,7 +119,7 @@ public class CustomEntriesController : ControllerBase
 		}
 
 		// Check for required version.
-		GetTool tool = _toolHelper.GetToolByName("DevilDaggersCustomLeaderboards");
+		Tool tool = _toolHelper.GetToolByName("DevilDaggersCustomLeaderboards");
 		Version clientVersionParsed = Version.Parse(uploadRequest.ClientVersion);
 		if (clientVersionParsed < tool.VersionNumberRequired)
 		{
