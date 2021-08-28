@@ -1,6 +1,10 @@
-﻿namespace DevilDaggersInfo.Web.BlazorWasm.Shared.Dto.Public.Tools;
+﻿namespace DevilDaggersInfo.Web.BlazorWasm.Server.Transients;
 
-public class GetTool
+/// <summary>
+/// This class must correspond to what's stored in the Tools.json file.
+/// TODO: Store in database.
+/// </summary>
+public class Tool
 {
 	public string Name { get; init; } = null!;
 
@@ -16,11 +20,5 @@ public class GetTool
 	/// </summary>
 	public Version VersionNumberRequired { get; init; } = null!;
 
-	public IReadOnlyList<GetChangelogEntry> Changelog { get; init; } = null!;
-
-	public int FileSize { get; set; }
-
-	public int DownloadCount { get; set; }
-
-	public List<string> SupportedOperatingSystems { get; set; } = new();
+	public IReadOnlyList<ChangelogEntry> Changelog { get; init; } = null!;
 }

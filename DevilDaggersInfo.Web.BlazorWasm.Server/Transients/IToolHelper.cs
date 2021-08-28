@@ -4,7 +4,7 @@ namespace DevilDaggersInfo.Web.BlazorWasm.Server.Transients;
 
 public interface IToolHelper
 {
-	List<GetTool> Tools { get; }
+	List<Tool> Tools { get; }
 
-	GetTool GetToolByName(string name);
+	Tool GetToolByName(string name);
 }

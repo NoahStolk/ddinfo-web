@@ -1,4 +1,5 @@
-﻿using DevilDaggersInfo.Web.BlazorWasm.Shared.Dto.Public.Tools;
+﻿using DevilDaggersInfo.Web.BlazorWasm.Server.Converters.Public;
+using DevilDaggersInfo.Web.BlazorWasm.Shared.Dto.Public.Tools;
 
 namespace DevilDaggersInfo.Web.BlazorWasm.Server.Controllers.Public;
 
@@ -21,9 +22,9 @@ public class ToolsController : ControllerBase
 	[Obsolete($"Use {nameof(GetTool)} instead.")]
 	[HttpGet]
 	[ProducesResponseType(StatusCodes.Status200OK)]
-	public ActionResult<List<GetTool>> GetToolsForTools(string? toolNameFilter = null)
+	public ActionResult<List<Tool>> GetToolsForTools(string? toolNameFilter = null)
 	{
-		IEnumerable<GetTool> tools = _toolHelper.Tools;
+		IEnumerable<Tool> tools = _toolHelper.Tools;
 		if (!string.IsNullOrEmpty(toolNameFilter))
 			tools = tools.Where(t => t.Name.Contains(toolNameFilter));
 		return tools.ToList();
@@ -35,7 +36,7 @@ public class ToolsController : ControllerBase
 	[ProducesResponseType(StatusCodes.Status404NotFound)]
 	public ActionResult<GetTool> GetTool([Required] string toolName)
 	{
-		GetTool? tool = _toolHelper.Tools.Find(t => t.Name == toolName);
+		Tool? tool = _toolHelper.Tools.Find(t => t.Name == toolName);
 		if (tool == null)
 			return NotFound();
 
@@ -47,11 +48,7 @@ public class ToolsController : ControllerBase
 			.AsNoTracking()
 			.FirstOrDefault(ts => ts.ToolName == tool.Name && ts.VersionNumber == tool.VersionNumber.ToString());
 
-		tool.DownloadCount = toolStatistic?.DownloadCount ?? 0;
-		tool.FileSize = (int)new FileInfo(path).Length;
-		tool.SupportedOperatingSystems = new() { "Windows 64-bit" }; // TODO: Get this from database. Also, DDSE is actually supported on 32-bit, but DD itself isn't 32-bit anymore so probably not worth mentioning.
-
-		return tool;
+		return tool.ToGetTool(toolStatistic, (int)new FileInfo(path).Length);
 	}
 
 	[HttpGet("{toolName}/file")]
@@ -60,7 +57,7 @@ public class ToolsController : ControllerBase
 	[ProducesResponseType(StatusCodes.Status404NotFound)]
 	public ActionResult GetToolFile([Required] string toolName)
 	{
-		GetTool? tool = _toolHelper.Tools.Find(t => t.Name == toolName);
+		Tool? tool = _toolHelper.Tools.Find(t => t.Name == toolName);
 		if (tool == null)
 			return NotFound();
 
