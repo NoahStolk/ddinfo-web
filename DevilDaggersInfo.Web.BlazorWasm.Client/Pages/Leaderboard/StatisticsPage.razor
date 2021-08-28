@@ -21,7 +21,7 @@ else
 	{
 		<p class="py-1">Statistics were last fetched on @_statistics.DateTime.ToString(FormatUtils.DateTimeUtcFormat).</p>
 
-		<h2 class="text-red text-xl">Scores</h2>
+		<Heading Level="2">Scores</Heading>
 		<p>The average time survived for all players is <Time TimeInSeconds="_statistics.Time.Average / 10000.0" /> seconds.</p>
 		<p>The median time survived for all players is <Time TimeInSeconds="_statistics.Time.Median / 10000.0" /> seconds.</p>
 		<p>The mode time survived for all players is <Time TimeInSeconds="_statistics.Time.Mode / 10000.0" /> seconds.</p>
@@ -29,26 +29,26 @@ else
 		<BarChart Options="_bco" @ref="_sub1000Chart" TItem="int" />
 		<BarChart Options="_bco" @ref="_post1000Chart" TItem="int" />
 
-		<h2 class="text-red text-xl">Kills</h2>
+		<Heading Level="2">Kills</Heading>
 		<p>The average kills for all players is @(_statistics.Kills.Average.ToString("0.00")).</p>
 		<p>The median kills for all players is @_statistics.Kills.Median.</p>
 		<p>The mode kills for all players is @_statistics.Kills.Mode.</p>
 		<BarChart Options="_bco" @ref="_killsChart" TItem="int" />
 
-		<h2 class="text-red text-xl">Gems</h2>
+		<Heading Level="2">Gems</Heading>
 		<p>The average gems for all players is @(_statistics.Gems.Average.ToString("0.00")).</p>
 		<p>The median gems for all players is @_statistics.Gems.Median.</p>
 		<p>The mode gems for all players is @_statistics.Gems.Mode.</p>
 		<BarChart Options="_bco" @ref="_gemsChart" TItem="int" />
 		<PieChart Options="_pco" @ref="_levelsChart" TItem="int" />
 
-		<h2 class="text-red text-xl">Daggers achieved</h2>
+		<Heading Level="2">Daggers Achieved</Heading>
 		<BarChart Options="_bco" @ref="_daggersChart" TItem="int" />
 
-		<h2 class="text-red text-xl">Death types</h2>
+		<Heading Level="2">Death Types</Heading>
 		<BarChart Options="_bco" @ref="_deathsChart" TItem="int" />
 
-		<h2 class="text-red text-xl">Enemies seen</h2>
+		<Heading Level="2">Enemies Seen</Heading>
 		<BarChart Options="_bco" @ref="_enemiesChart" TItem="int" />
 	}
 }

@@ -1,5 +1,13 @@
-﻿<h1 class="text-red text-4xl py-2 font-goethe">@ChildContent</h1>
+﻿@switch (Level)
+{
+	case 4: <h4 class="text-red text-lg py-2 font-goethe">@ChildContent</h4> break;
+	case 3: <h3 class="text-red text-xl py-2 font-goethe">@ChildContent</h3> break;
+	case 2: <h2 class="text-red text-2xl py-2 font-goethe">@ChildContent</h2> break;
+	default: <h1 class="text-red text-4xl py-2 font-goethe">@ChildContent</h1> break;
+}
 
 @code {
 	[Parameter, EditorRequired] public RenderFragment ChildContent { get; set; } = null!;
+
+	[Parameter] public int Level { get; set; } = 1;
 }

@@ -1,10 +1,10 @@
 ﻿@using DevilDaggersInfo.Web.BlazorWasm.Shared.Dto.Public.Tools
 
-<h2 class="text-red text-xl">Changelog</h2>
+<Heading Level="2">Changelog</Heading>
 
 @foreach (GetChangelogEntry ce in ChangelogEntries)
 {
-	<h3 class="text-red text-lg">@ce.VersionNumber - @ce.Date.ToString(FormatUtils.DateFormat)</h3>
+	<Heading Level="3">@ce.VersionNumber - @ce.Date.ToString(FormatUtils.DateFormat)</Heading>
 	<div>
 		@foreach (GetChange c in ce.Changes)
 		{
