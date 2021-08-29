@@ -4,7 +4,7 @@
 	<li class="list-disc">@GetChange.Description</li>
 	@if (GetChange.SubChanges != null)
 	{
-		foreach (GetChange c in GetChange.SubChanges)
+		foreach (GetToolVersionChange c in GetChange.SubChanges)
 		{
 			<Change GetChange="c" />
 		}
@@ -12,5 +12,5 @@
 </ul>
 
 @code {
-	[Parameter, EditorRequired] public GetChange GetChange { get; set; } = null!;
+	[Parameter, EditorRequired] public GetToolVersionChange GetChange { get; set; } = null!;
 }

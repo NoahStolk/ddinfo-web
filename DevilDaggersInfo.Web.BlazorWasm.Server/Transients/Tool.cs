@@ -3,6 +3,7 @@
 /// <summary>
 /// This class must correspond to what's stored in the Tools.json file.
 /// TODO: Store in database.
+/// TODO: Rename to ToolEntity.
 /// </summary>
 public class Tool
 {
@@ -20,5 +21,6 @@ public class Tool
 	/// </summary>
 	public Version VersionNumberRequired { get; init; } = null!;
 
+	// TODO: Rename to Versions.
 	public IReadOnlyList<ChangelogEntry> Changelog { get; init; } = null!;
 }

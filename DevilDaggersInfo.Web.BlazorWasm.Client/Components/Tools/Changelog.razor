@@ -2,10 +2,10 @@
 
 <Heading Level="2">Changelog</Heading>
 
-@foreach (GetChangelogEntry ce in ChangelogEntries)
+@foreach (GetToolVersion v in Versions)
 {
-	<Heading Level="3">@ce.VersionNumber - @ce.Date.ToString(FormatUtils.DateFormat)</Heading>
-	@foreach (GetChange c in ce.Changes)
+	<Heading Level="3">@v.VersionNumber - @v.ReleaseDate.ToString(FormatUtils.DateFormat)@(v.ReleaseDate > FeatureConstants.TrackingToolDownloadCounts ? $" ({v.DownloadCount} downloads)" : string.Empty)</Heading>
+	@foreach (GetToolVersionChange c in v.Changes)
 	{
 		<Change GetChange="c" />
 	}
@@ -13,5 +13,5 @@
 
 @code
 {
-	[Parameter, EditorRequired] public IReadOnlyList<GetChangelogEntry> ChangelogEntries { get; set; } = null!;
+	[Parameter, EditorRequired] public IReadOnlyList<GetToolVersion> Versions { get; set; } = null!;
 }

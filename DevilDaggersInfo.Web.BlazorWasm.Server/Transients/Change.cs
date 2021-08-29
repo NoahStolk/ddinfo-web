@@ -3,6 +3,7 @@
 /// <summary>
 /// This class must correspond to what's stored in the Tools.json file.
 /// TODO: Store in database.
+/// TODO: Rename to ToolVersionChangeEntity.
 /// </summary>
 public class Change
 {

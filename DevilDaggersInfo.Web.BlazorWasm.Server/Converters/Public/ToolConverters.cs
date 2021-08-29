@@ -4,33 +4,33 @@ namespace DevilDaggersInfo.Web.BlazorWasm.Server.Converters.Public;
 
 public static class ToolConverters
 {
-	public static GetTool ToGetTool(this Tool tool, ToolStatisticEntity? toolStatistic, int fileSize) => new()
+	public static GetTool ToGetTool(this Tool tool, List<ToolStatisticEntity> toolStatistics, int fileSize) => new()
 	{
-		Changelog = tool.Changelog
-			.Select(ce => ce.ToGetChangelogEntry())
-			.ToList(),
 		DisplayName = tool.DisplayName,
-		DownloadCount = toolStatistic?.DownloadCount ?? 0,
-		Name = tool.Name,
 		FileSize = fileSize,
+		Name = tool.Name,
 		VersionNumber = tool.VersionNumber,
 		VersionNumberRequired = tool.VersionNumberRequired,
+		Versions = tool.Changelog
+			.Select(ce => ce.ToGetToolVersion(toolStatistics.Find(ts => ts.VersionNumber == ce.VersionNumber.ToString())))
+			.ToList(),
 	};
 
-	private static GetChangelogEntry ToGetChangelogEntry(this ChangelogEntry changelogEntry) => new()
+	private static GetToolVersion ToGetToolVersion(this ChangelogEntry changelogEntry, ToolStatisticEntity? toolStatistic) => new()
 	{
 		Changes = changelogEntry.Changes
-			.Select(c => c.ToGetChange())
+			.Select(c => c.ToGetToolVersionChange())
 			.ToList(),
-		Date = changelogEntry.Date,
+		DownloadCount = toolStatistic?.DownloadCount ?? 0,
+		ReleaseDate = changelogEntry.Date,
 		VersionNumber = changelogEntry.VersionNumber,
 	};
 
-	private static GetChange ToGetChange(this Change change) => new()
+	private static GetToolVersionChange ToGetToolVersionChange(this Change change) => new()
 	{
 		Description = change.Description,
 		SubChanges = change.SubChanges?
-			.Select(c => c.ToGetChange())
+			.Select(c => c.ToGetToolVersionChange())
 			.ToList(),
 	};
 }

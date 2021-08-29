@@ -1,8 +1,8 @@
 ﻿namespace DevilDaggersInfo.Web.BlazorWasm.Shared.Dto.Public.Tools;
 
-public class GetChange
+public class GetToolVersionChange
 {
 	public string Description { get; init; } = null!;
 
-	public IReadOnlyList<GetChange>? SubChanges { get; init; }
+	public IReadOnlyList<GetToolVersionChange>? SubChanges { get; init; }
 }

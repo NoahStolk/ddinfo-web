@@ -19,6 +19,7 @@ public class ToolsController : ControllerBase
 	}
 
 	// This endpoint is still in use by DDSE/DDCL/DDAE.
+	// TODO: Remove this endpoint, and stop using Tool classes (which correspond to the Tools.json format) as DTOs.
 	[Obsolete($"Use {nameof(GetTool)} instead.")]
 	[HttpGet]
 	[ProducesResponseType(StatusCodes.Status200OK)]
@@ -44,11 +45,12 @@ public class ToolsController : ControllerBase
 		if (!IoFile.Exists(path))
 			throw new($"Tool file '{path}' does not exist.");
 
-		ToolStatisticEntity? toolStatistic = _dbContext.ToolStatistics
+		List<ToolStatisticEntity> toolStatistics = _dbContext.ToolStatistics
 			.AsNoTracking()
-			.FirstOrDefault(ts => ts.ToolName == tool.Name && ts.VersionNumber == tool.VersionNumber.ToString());
+			.Where(ts => ts.ToolName == tool.Name)
+			.ToList();
 
-		return tool.ToGetTool(toolStatistic, (int)new FileInfo(path).Length);
+		return tool.ToGetTool(toolStatistics, (int)new FileInfo(path).Length);
 	}
 
 	[HttpGet("{toolName}/file")]
