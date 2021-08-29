@@ -1,7 +1,6 @@
 ﻿using DevilDaggersInfo.Web.BlazorWasm.Server.Caches.SpawnsetHashes;
 using DevilDaggersInfo.Web.BlazorWasm.Server.Controllers.Public;
 using DevilDaggersInfo.Web.BlazorWasm.Shared.Dto.Public.CustomEntries;
-using DevilDaggersInfo.Web.BlazorWasm.Shared.Dto.Public.Tools;
 
 namespace DevilDaggersInfo.Web.BlazorWasm.Server.Test;
 
@@ -28,7 +27,7 @@ public class CustomEntryTests
 		mockEnvironment.Setup(m => m.EnvironmentName).Returns(Environments.Development);
 
 		Mock<IToolHelper> toolHelper = new();
-		toolHelper.Setup(m => m.GetToolByName(It.IsAny<string>())).Returns(new GetTool
+		toolHelper.Setup(m => m.GetToolByName(It.IsAny<string>())).Returns(new Tool
 		{
 			Name = "DevilDaggersCustomLeaderboards",
 			VersionNumber = new(1, 0, 0, 0),
