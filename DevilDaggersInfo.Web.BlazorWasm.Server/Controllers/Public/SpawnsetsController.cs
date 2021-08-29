@@ -123,6 +123,16 @@ public class SpawnsetsController : ControllerBase
 		}
 	}
 
+	[HttpGet("total-data")]
+	[ProducesResponseType(StatusCodes.Status200OK)]
+	public ActionResult<GetTotalSpawnsetData> GetTotalSpawnsetData()
+	{
+		return new GetTotalSpawnsetData
+		{
+			Count = _dbContext.Spawnsets.AsNoTracking().Select(s => s.Id).Count(),
+		};
+	}
+
 	[HttpGet("{fileName}/file")]
 	[ProducesResponseType(typeof(FileContentResult), StatusCodes.Status200OK)]
 	[ProducesResponseType(StatusCodes.Status400BadRequest)]

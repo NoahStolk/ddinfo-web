@@ -95,4 +95,9 @@ public class PublicApiHttpClient
 	{
 		return await _client.GetFromJsonAsync<GetTool>($"api/tools/{toolName}") ?? throw new JsonDeserializationException();
 	}
+
+	public async Task<GetTotalSpawnsetData> GetTotalSpawnsetData()
+	{
+		return await _client.GetFromJsonAsync<GetTotalSpawnsetData>("api/spawnsets/total-data") ?? throw new JsonDeserializationException();
+	}
 }
