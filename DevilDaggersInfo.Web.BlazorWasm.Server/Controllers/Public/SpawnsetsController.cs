@@ -141,7 +141,7 @@ public class SpawnsetsController : ControllerBase
 	{
 		string path = Path.Combine(_fileSystemService.GetPath(DataSubDirectory.Spawnsets), fileName);
 		if (!IoFile.Exists(path))
-			return new NotFoundObjectResult(new ProblemDetails { Title = $"Spawnset '{fileName}' was not found." });
+			return NotFound();
 
 		return File(IoFile.ReadAllBytes(path), MediaTypeNames.Application.Octet, fileName);
 	}
