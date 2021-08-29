@@ -16,10 +16,17 @@
 	<div>Supported operating systems</div>
 	<div>@string.Join(", ", GetTool.SupportedOperatingSystems)</div>
 
-	<button class="bg-gray-900 hover:bg-gray-700 transition-colors duration-100 w-24 h-8 py-1 rounded text-color-text" href="/api/tools/@GetTool.Name/file">Download</button>
+	<a class="bg-gray-900 hover:bg-gray-700 transition-colors duration-100 w-24 h-8 py-1 rounded text-color-text text-center" href="/api/tools/@(GetTool.Name)/file" download="@_fileName" role="button" target="=_top">Download</a>
 </div>
 
 @code
 {
 	[Parameter, EditorRequired] public GetTool GetTool { get; set; } = null!;
+
+	private string? _fileName;
+
+	protected override void OnInitialized()
+	{
+		_fileName = $"{GetTool.Name}{GetTool.VersionNumber}.zip";
+	}
 }
