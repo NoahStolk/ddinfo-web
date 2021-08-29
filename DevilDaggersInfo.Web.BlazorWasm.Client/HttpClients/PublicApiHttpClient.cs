@@ -6,6 +6,7 @@ using DevilDaggersInfo.Web.BlazorWasm.Shared.Dto.Public.LeaderboardHistory;
 using DevilDaggersInfo.Web.BlazorWasm.Shared.Dto.Public.LeaderboardHistoryStatistics;
 using DevilDaggersInfo.Web.BlazorWasm.Shared.Dto.Public.Leaderboards;
 using DevilDaggersInfo.Web.BlazorWasm.Shared.Dto.Public.LeaderboardStatistics;
+using DevilDaggersInfo.Web.BlazorWasm.Shared.Dto.Public.Mods;
 using DevilDaggersInfo.Web.BlazorWasm.Shared.Dto.Public.Players;
 using DevilDaggersInfo.Web.BlazorWasm.Shared.Dto.Public.Spawnsets;
 using DevilDaggersInfo.Web.BlazorWasm.Shared.Dto.Public.Tools;
@@ -99,5 +100,10 @@ public class PublicApiHttpClient
 	public async Task<GetTotalSpawnsetData> GetTotalSpawnsetData()
 	{
 		return await _client.GetFromJsonAsync<GetTotalSpawnsetData>("api/spawnsets/total-data") ?? throw new JsonDeserializationException();
+	}
+
+	public async Task<GetTotalModData> GetTotalModData()
+	{
+		return await _client.GetFromJsonAsync<GetTotalModData>("api/mods/total-data") ?? throw new JsonDeserializationException();
 	}
 }

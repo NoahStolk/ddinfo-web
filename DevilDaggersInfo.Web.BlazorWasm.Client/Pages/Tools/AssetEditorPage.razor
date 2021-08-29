@@ -1,0 +1,48 @@
+﻿@page "/tools/asset-editor"
+@inject PublicApiHttpClient Http
+@using DevilDaggersInfo.Web.BlazorWasm.Shared.Dto.Public.Mods
+@using DevilDaggersInfo.Web.BlazorWasm.Shared.Dto.Public.Tools
+
+<Heading>Devil Daggers Asset Editor</Heading>
+
+@if (GetTool == null || GetTotalModData == null)
+{
+	<Loading />
+}
+else
+{
+	<BuildInfo GetTool="GetTool" />
+
+	<Heading Level="2">Features</Heading>
+	<ul class="pl-4">
+		<li class="list-disc">Extract game assets from the original game or mods</li>
+		<li class="list-disc">Modify game assets and create mods</li>
+		<li class="list-disc">Supports models, textures, audio, shaders, and bindings</li>
+		<li class="list-disc">Download @(GetTotalModData.Count) existing mods from the website to insert them into the game directly</li>
+		<li class="list-disc">Enable or disable mods with a single click</li>
+		<li class="list-disc">Enable or disable prohibited assets inside a mod with a single click</li>
+		<li class="list-disc">View the final effective list of assets (for when using multiple mods simultaneously)</li>
+	</ul>
+
+	<Heading Level="2">System Requirements</Heading>
+	<ul class="pl-4">
+		<li class="list-disc">Windows (64-bit)</li>
+		<li class="list-disc">.NET Desktop Runtime 5.0.x <b>x64 (NOT x86!)</b></li>
+	</ul>
+
+	<RunInfo />
+	<SourceInfo Url="https://github.com/NoahStolk/DevilDaggersAssetEditor" />
+	<Changelog Versions="GetTool.Versions" />
+}
+
+@code
+{
+	public GetTool? GetTool { get; set; }
+	public GetTotalModData? GetTotalModData { get; set; }
+
+	protected override async Task OnInitializedAsync()
+	{
+		GetTool = await Http.GetTool("DevilDaggersAssetEditor");
+		GetTotalModData = await Http.GetTotalModData();
+	}
+}

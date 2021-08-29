@@ -108,6 +108,16 @@ public class ModsController : ControllerBase
 			.ToList();
 	}
 
+	[HttpGet("total-data")]
+	[ProducesResponseType(StatusCodes.Status200OK)]
+	public ActionResult<GetTotalModData> GetTotalModData()
+	{
+		return new GetTotalModData
+		{
+			Count = _dbContext.Mods.AsNoTracking().Select(s => s.Id).Count(),
+		};
+	}
+
 	[HttpGet("{modName}/file")]
 	[ProducesResponseType(typeof(FileContentResult), StatusCodes.Status200OK)]
 	[ProducesResponseType(StatusCodes.Status400BadRequest)]
