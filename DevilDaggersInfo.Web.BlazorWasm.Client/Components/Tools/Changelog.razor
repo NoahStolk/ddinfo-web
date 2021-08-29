@@ -5,12 +5,10 @@
 @foreach (GetChangelogEntry ce in ChangelogEntries)
 {
 	<Heading Level="3">@ce.VersionNumber - @ce.Date.ToString(FormatUtils.DateFormat)</Heading>
-	<div>
-		@foreach (GetChange c in ce.Changes)
-		{
-			<Change GetChange="c" />
-		}
-	</div>
+	@foreach (GetChange c in ce.Changes)
+	{
+		<Change GetChange="c" />
+	}
 }
 
 @code

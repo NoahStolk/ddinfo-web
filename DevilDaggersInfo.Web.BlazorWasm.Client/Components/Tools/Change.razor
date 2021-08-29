@@ -1,7 +1,7 @@
 ﻿@using DevilDaggersInfo.Web.BlazorWasm.Shared.Dto.Public.Tools
 
-<div class="pl-4">
-	<span>@GetChange.Description</span>
+<ul class="pl-4">
+	<li class="list-disc">@GetChange.Description</li>
 	@if (GetChange.SubChanges != null)
 	{
 		foreach (GetChange c in GetChange.SubChanges)
@@ -9,7 +9,7 @@
 			<Change GetChange="c" />
 		}
 	}
-</div>
+</ul>
 
 @code {
 	[Parameter, EditorRequired] public GetChange GetChange { get; set; } = null!;
