@@ -13,7 +13,6 @@ public static class ToolConverters
 		DownloadCount = toolStatistic?.DownloadCount ?? 0,
 		Name = tool.Name,
 		FileSize = fileSize,
-		SupportedOperatingSystems = new() { "Windows 64-bit" }, // TODO: Get this from database. Also, DDSE is actually supported on 32-bit, but DD itself isn't 32-bit anymore so probably not worth mentioning.
 		VersionNumber = tool.VersionNumber,
 		VersionNumberRequired = tool.VersionNumberRequired,
 	};
