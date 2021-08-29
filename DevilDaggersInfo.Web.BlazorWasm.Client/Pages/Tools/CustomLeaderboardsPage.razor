@@ -1,0 +1,45 @@
+﻿@page "/tools/custom-leaderboards"
+@inject PublicApiHttpClient Http
+@using DevilDaggersInfo.Web.BlazorWasm.Shared.Dto.Public.CustomLeaderboards
+@using DevilDaggersInfo.Web.BlazorWasm.Shared.Dto.Public.Tools
+
+<Heading>Devil Daggers Custom Leaderboards</Heading>
+
+@if (GetTool == null || GetTotalCustomLeaderboardData == null)
+{
+	<Loading />
+}
+else
+{
+	<BuildInfo GetTool="GetTool" />
+	
+	<Heading Level="2">Features</Heading>
+	<ul class="pl-4">
+		<li class="list-disc">Participate in @GetTotalCustomLeaderboardData.CountDefault.ToString("N0") custom survival leaderboards and @GetTotalCustomLeaderboardData.CountSpeedrun.ToString("N0") custom speedrun leaderboards</li>
+		<li class="list-disc">@GetTotalCustomLeaderboardData.UniquePlayers.ToString("N0") unique players</li>
+		<li class="list-disc">@GetTotalCustomLeaderboardData.UniqueScores.ToString("N0") unique scores</li>
+		<li class="list-disc">@GetTotalCustomLeaderboardData.TotalSubmits.ToString("N0") total submissions (since @FeatureConstants.TrackingCustomLeaderboardSubmitCounts.ToString(FormatUtils.DateFormat))</li>
+	</ul>
+
+	<Heading Level="2">System Requirements</Heading>
+	<ul class="pl-4">
+		<li class="list-disc">Windows (64-bit)</li>
+		<li class="list-disc">.NET Desktop Runtime 5.0.x <b>x64 (NOT x86!)</b></li>
+	</ul>
+
+	<RunInfo />
+	<SourceInfo Url="https://github.com/NoahStolk/DevilDaggersCustomLeaderboards" />
+	<Versions ToolVersions="GetTool.Versions" />
+}
+
+@code
+{
+	public GetTool? GetTool { get; set; }
+	public GetTotalCustomLeaderboardData? GetTotalCustomLeaderboardData { get; set; }
+
+	protected override async Task OnInitializedAsync()
+	{
+		GetTool = await Http.GetTool("DevilDaggersCustomLeaderboards");
+		GetTotalCustomLeaderboardData = await Http.GetTotalCustomLeaderboardData();
+	}
+}

@@ -1,6 +1,7 @@
 ﻿using DevilDaggersInfo.Web.BlazorWasm.Server.Converters.Public;
 using DevilDaggersInfo.Web.BlazorWasm.Shared.Dto;
 using DevilDaggersInfo.Web.BlazorWasm.Shared.Dto.Public.CustomLeaderboards;
+using DevilDaggersInfo.Web.BlazorWasm.Shared.Dto.Public.Mods;
 using DevilDaggersInfo.Web.BlazorWasm.Shared.Enums.Sortings.Public;
 
 namespace DevilDaggersInfo.Web.BlazorWasm.Server.Controllers.Public;
@@ -89,6 +90,23 @@ public class CustomLeaderboardsController : ControllerBase
 		{
 			Results = customLeaderboardWrs.ConvertAll(cl => cl.CustomLeaderboard.ToGetCustomLeaderboardOverview(cl.TopPlayer, cl.WorldRecord)),
 			TotalResults = customLeaderboardsQuery.Count(),
+		};
+	}
+
+	[HttpGet("total-data")]
+	[ProducesResponseType(StatusCodes.Status200OK)]
+	public ActionResult<GetTotalCustomLeaderboardData> GetTotalCustomLeaderboardData()
+	{
+		var customLeaderboards = _dbContext.CustomLeaderboards.AsNoTracking().Select(cl => new { cl.Id, cl.Category, cl.TotalRunsSubmitted }).ToList();
+		List<int> customEntryPlayerIds = _dbContext.CustomEntries.AsNoTracking().Select(ce => ce.PlayerId).ToList();
+
+		return new GetTotalCustomLeaderboardData
+		{
+			CountDefault = customLeaderboards.Count(cl => cl.Category == CustomLeaderboardCategory.Default),
+			CountSpeedrun = customLeaderboards.Count(cl => cl.Category == CustomLeaderboardCategory.Speedrun),
+			TotalSubmits = customLeaderboards.Sum(cl => cl.TotalRunsSubmitted),
+			UniqueScores = customEntryPlayerIds.Count,
+			UniquePlayers = customEntryPlayerIds.Distinct().Count(),
 		};
 	}
 

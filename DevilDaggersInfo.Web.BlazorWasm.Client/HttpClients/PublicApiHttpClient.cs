@@ -106,4 +106,9 @@ public class PublicApiHttpClient
 	{
 		return await _client.GetFromJsonAsync<GetTotalModData>("api/mods/total-data") ?? throw new JsonDeserializationException();
 	}
+
+	public async Task<GetTotalCustomLeaderboardData> GetTotalCustomLeaderboardData()
+	{
+		return await _client.GetFromJsonAsync<GetTotalCustomLeaderboardData>("api/custom-leaderboards/total-data") ?? throw new JsonDeserializationException();
+	}
 }

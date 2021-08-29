@@ -114,7 +114,7 @@ public class ModsController : ControllerBase
 	{
 		return new GetTotalModData
 		{
-			Count = _dbContext.Mods.AsNoTracking().Select(s => s.Id).Count(),
+			Count = _dbContext.Mods.AsNoTracking().Select(m => m.Id).Count(),
 		};
 	}
 
