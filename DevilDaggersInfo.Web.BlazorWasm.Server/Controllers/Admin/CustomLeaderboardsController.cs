@@ -127,6 +127,9 @@ public class CustomLeaderboardsController : ControllerBase
 		if (parsedSpawnset.TimerStart != 0)
 			return BadRequest("Cannot create a leaderboard for spawnset that uses the TimerStart value. This value is meant for practice and it is confusing to use it with custom leaderboards, as custom leaderboards always use the 'actual' timer value.");
 
+		if (addCustomLeaderboard.Category == CustomLeaderboardCategory.Default && !parsedSpawnset.HasEndLoop())
+			return BadRequest($"Custom leaderboard with category {CustomLeaderboardCategory.Default} must have an end loop.");
+
 		CustomLeaderboardEntity customLeaderboard = new()
 		{
 			DateCreated = DateTime.UtcNow,
