@@ -20,7 +20,7 @@ public class SpawnsetSummary
 		WorldVersion = spawnset.WorldVersion;
 		GameMode = spawnset.GameMode;
 
-		(SpawnSectionInfo preLoopSection, SpawnSectionInfo loopSection) = CalculateSections(spawnset.Spawns);
+		(SpawnSectionInfo preLoopSection, SpawnSectionInfo loopSection) = CalculateSections(spawnset.Spawns, spawnset.GameMode);
 		PreLoopSection = preLoopSection;
 		LoopSection = loopSection;
 
@@ -81,7 +81,7 @@ public class SpawnsetSummary
 			br.Seek(20);
 		}
 
-		(SpawnSectionInfo preLoopSection, SpawnSectionInfo loopSection) = CalculateSections(spawns);
+		(SpawnSectionInfo preLoopSection, SpawnSectionInfo loopSection) = CalculateSections(spawns, gameMode);
 
 		// Settings
 		HandLevel handLevel = HandLevel.Level1;
@@ -99,12 +99,30 @@ public class SpawnsetSummary
 		return new(spawnVersion, worldVersion, gameMode, preLoopSection, loopSection, handLevel, additionalGems, timerStart);
 	}
 
-	private static (SpawnSectionInfo PreLoopSection, SpawnSectionInfo LoopSection) CalculateSections(Spawn[] spawns)
+	private static (SpawnSectionInfo PreLoopSection, SpawnSectionInfo LoopSection) CalculateSections(Spawn[] spawns, GameMode gameMode)
+		=> gameMode != GameMode.Default ? CalculateSectionsForNonDefaultGameMode(spawns) : CalculateSectionsForDefaultGameMode(spawns);
+
+	private static (SpawnSectionInfo PreLoopSection, SpawnSectionInfo LoopSection) CalculateSectionsForNonDefaultGameMode(Spawn[] spawns)
+	{
+		int spawnCount = 0;
+		float seconds = 0;
+		for (int i = 0; i < spawns.Length; i++)
+		{
+			Spawn spawn = spawns[i];
+			seconds += spawn.Delay;
+			if (spawn.EnemyType != EnemyType.Empty)
+				spawnCount++;
+		}
+
+		return (new(spawnCount, spawnCount == 0 ? null : seconds), default);
+	}
+
+	private static (SpawnSectionInfo PreLoopSection, SpawnSectionInfo LoopSection) CalculateSectionsForDefaultGameMode(Spawn[] spawns)
 	{
 		int loopStartIndex = Spawnset.GetLoopStartIndex(spawns);
 
-		int preLoopSpawns = 0;
-		int loopSpawns = 0;
+		int preLoopSpawnCount = 0;
+		int loopSpawnCount = 0;
 		float preLoopSeconds = 0;
 		float loopSeconds = 0;
 		for (int i = 0; i < spawns.Length; i++)
@@ -119,12 +137,12 @@ public class SpawnsetSummary
 			if (spawn.EnemyType != EnemyType.Empty)
 			{
 				if (i < loopStartIndex)
-					preLoopSpawns++;
+					preLoopSpawnCount++;
 				else
-					loopSpawns++;
+					loopSpawnCount++;
 			}
 		}
 
-		return (new(preLoopSpawns, preLoopSpawns == 0 ? null : preLoopSeconds), new(loopSpawns, loopSpawns == 0 ? null : loopSeconds));
+		return (new(preLoopSpawnCount, preLoopSpawnCount == 0 ? null : preLoopSeconds), new(loopSpawnCount, loopSpawnCount == 0 ? null : loopSeconds));
 	}
 }
