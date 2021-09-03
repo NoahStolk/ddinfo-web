@@ -27,9 +27,9 @@ public class SpawnsView
 		}
 		else
 		{
-			int loopIndex = Spawnset.GetLoopStartIndex(spawns);
-			Spawn[] preLoopSpawns = spawns.Take(loopIndex).ToArray();
-			Spawn[] loopSpawns = spawns.Skip(loopIndex).ToArray();
+			int loopStartIndex = Spawnset.GetLoopStartIndex(spawns);
+			Spawn[] preLoopSpawns = spawns.Take(loopStartIndex).ToArray();
+			Spawn[] loopSpawns = spawns.Skip(loopStartIndex).ToArray();
 
 			BuildPreLoop(ref totalSeconds, ref gemsTotal, preLoopSpawns);
 
