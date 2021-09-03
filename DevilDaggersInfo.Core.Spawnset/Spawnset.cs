@@ -213,6 +213,20 @@ public class Spawnset
 	public static bool HasSpawns(Spawn[] spawns)
 		=> spawns.Any(s => s.EnemyType != EnemyType.Empty);
 
+	public bool HasEndLoop()
+		=> HasEndLoop(Spawns, GameMode);
+
+	public static bool HasEndLoop(Spawn[] spawns, GameMode gameMode)
+	{
+		if (gameMode != GameMode.Default || !HasSpawns(spawns))
+			return false;
+
+		int loopStartIndex = GetLoopStartIndex(spawns);
+		Spawn[] loopSpawns = spawns.Skip(loopStartIndex).ToArray();
+
+		return loopSpawns.Any(s => s.EnemyType != EnemyType.Empty);
+	}
+
 	public int GetLoopStartIndex()
 		=> GetLoopStartIndex(Spawns);
 
