@@ -27,32 +27,28 @@ namespace DevilDaggersWebsite.Razor.Pages
 		{
 			try
 			{
+				IExceptionHandlerPathFeature? exceptionFeature = HttpContext?.Features?.Get<IExceptionHandlerPathFeature>();
+				if (exceptionFeature == null)
+					return;
+
 				DiscordEmbedBuilder builder = new()
 				{
 					Title = "Internal Server Error",
 					Color = DiscordColor.Red,
 				};
 
-				IExceptionHandlerPathFeature? exceptionFeature = HttpContext?.Features?.Get<IExceptionHandlerPathFeature>();
 				builder.AddFieldObject("Environment", _environment.EnvironmentName, true);
 				builder.AddFieldObject("Timestamp", DateTime.UtcNow.ToString(FormatUtils.DateTimeFullFormat), true);
 				builder.AddFieldObject("Request query string", HttpContext?.Request?.QueryString, true);
 
-				if (exceptionFeature != null)
+				builder.AddFieldObject("Route", exceptionFeature.Path, true);
+				if (exceptionFeature.Error.StackTrace != null)
 				{
-					builder.AddFieldObject("Route", exceptionFeature.Path, true);
-					if (exceptionFeature.Error.StackTrace != null)
-					{
-						string stackTrace = exceptionFeature.Error.StackTrace;
-						builder.AddFieldObject("Stack trace", stackTrace.TrimAfter(100));
-					}
+					string stackTrace = exceptionFeature.Error.StackTrace;
+					builder.AddFieldObject("Stack trace", stackTrace.TrimAfter(100));
+				}
 
-					builder.AddError(exceptionFeature.Error);
-				}
-				else
-				{
-					builder.AddError(new($"{nameof(IExceptionHandlerPathFeature)} is not available in the current HTTP context."));
-				}
+				builder.AddError(exceptionFeature.Error);
 
 				await _discordLogger.TryLog(Channel.MonitoringError, null, builder.Build());
 			}
