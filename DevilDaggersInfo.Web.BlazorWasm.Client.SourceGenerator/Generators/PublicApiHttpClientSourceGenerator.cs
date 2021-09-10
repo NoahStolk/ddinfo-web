@@ -96,31 +96,30 @@ public class PublicApiHttpClient
 
 	private class Endpoint
 	{
-		public Endpoint(string name, List<Parameter> queryParameters, List<Parameter> routeParameters, Type returnType, string apiRoute)
+		public Endpoint(string methodName, List<Parameter> queryParameters, List<Parameter> routeParameters, string returnType, string apiRoute)
 		{
-			Name = name;
+			MethodName = methodName;
 			QueryParameters = queryParameters;
 			RouteParameters = routeParameters;
 			ReturnType = returnType;
 			ApiRoute = apiRoute;
 		}
 
-		public string Name { get; }
 		public List<Parameter> QueryParameters { get; }
 		public List<Parameter> RouteParameters { get; }
-		public Type ReturnType { get; }
+		public string ReturnType { get; }
 		public string ApiRoute { get; }
 	}
 
 	private class Parameter
 	{
-		public Parameter(Type type, string name)
+		public Parameter(string type, string name)
 		{
 			Type = type;
 			Name = name;
 		}
 
-		public Type Type { get; }
+		public string Type { get; }
 		public string Name { get; }
 	}
 }
