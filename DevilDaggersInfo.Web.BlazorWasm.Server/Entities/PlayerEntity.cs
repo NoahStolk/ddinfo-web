@@ -44,23 +44,4 @@ public class PlayerEntity : IEntity
 	public List<PlayerModEntity> PlayerMods { get; set; } = new();
 
 	public List<PlayerTitleEntity> PlayerTitles { get; set; } = new();
-
-	public float? Edpi => Dpi * InGameSens;
-
-	public string EdpiString => Edpi.HasValue ? Edpi.Value.ToString(FormatUtils.InGameSensFormat) : string.Empty;
-	public string DpiString => Dpi.HasValue ? Dpi.Value.ToString() : string.Empty;
-	public string InGameSensString => InGameSens.HasValue ? InGameSens.Value.ToString(FormatUtils.InGameSensFormat) : string.Empty;
-	public string GammaString => Gamma.HasValue ? Gamma.Value.ToString(FormatUtils.GammaFormat) : string.Empty;
-	public string RightHandedString => IsRightHanded.HasValue ? IsRightHanded.Value ? "Right" : "Left" : string.Empty;
-	public string FlashEnabledString => HasFlashHandEnabled.HasValue ? HasFlashHandEnabled.Value ? "On" : "Off" : string.Empty;
-	public string UsesLegacyAudioString => UsesLegacyAudio.HasValue ? UsesLegacyAudio.Value ? "On" : "Off" : string.Empty;
-
-	public override string ToString()
-		=> $"{PlayerName} ({Id})";
-
-	public bool IsPublicDonator(IEnumerable<DonationEntity> donations)
-		=> !HideDonations && donations.Any(d => d.PlayerId == Id && !d.IsRefunded && d.ConvertedEuroCentsReceived > 0);
-
-	public bool HasSettings()
-		=> Dpi.HasValue || InGameSens.HasValue || Fov.HasValue || IsRightHanded.HasValue || HasFlashHandEnabled.HasValue || Gamma.HasValue || UsesLegacyAudio.HasValue;
 }

@@ -77,6 +77,11 @@ public class PublicApiHttpClient
 		return await _client.GetFromJsonAsync<List<GetPlayerForLeaderboard>>("api/players/leaderboard") ?? throw new JsonDeserializationException();
 	}
 
+	public async Task<List<GetPlayerForSettings>> GetPlayersForSettings()
+	{
+		return await _client.GetFromJsonAsync<List<GetPlayerForSettings>>("api/players/settings") ?? throw new JsonDeserializationException();
+	}
+
 	public async Task<GetLeaderboardStatistics> GetLeaderboardStatistics()
 	{
 		return await _client.GetFromJsonAsync<GetLeaderboardStatistics>("api/leaderboard-statistics") ?? throw new JsonDeserializationException();
@@ -85,6 +90,11 @@ public class PublicApiHttpClient
 	public async Task<GetLeaderboard> GetLeaderboard(int rankStart)
 	{
 		return await _client.GetFromJsonAsync<GetLeaderboard>(UrlBuilderUtils.BuildUrlWithQuery("api/leaderboards", new() { { nameof(rankStart), rankStart } })) ?? throw new JsonDeserializationException();
+	}
+
+	public async Task<List<GetEntry>> GetPlayersByIds(IEnumerable<int> playerIds)
+	{
+		return await _client.GetFromJsonAsync<List<GetEntry>>(UrlBuilderUtils.BuildUrlWithQuery("api/leaderboards/entry/by-ids", new() { { "commaSeparatedIds", string.Join(',', playerIds) } })) ?? throw new JsonDeserializationException();
 	}
 
 	public async Task<GetLeaderboardHistory> GetLeaderboardHistory(DateTime dateTime)

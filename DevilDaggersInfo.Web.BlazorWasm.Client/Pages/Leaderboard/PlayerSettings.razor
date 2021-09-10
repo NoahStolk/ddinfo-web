@@ -1,0 +1,33 @@
+﻿@page "/leaderboard/player-settings"
+@inject PublicApiHttpClient Http
+@inject NavigationManager NavigationManager
+@using DevilDaggersInfo.Web.BlazorWasm.Shared.Dto.Public
+@using DevilDaggersInfo.Web.BlazorWasm.Shared.Dto.Public.Leaderboards
+@using DevilDaggersInfo.Web.BlazorWasm.Shared.Dto.Public.Players
+@using DevilDaggersInfo.Web.BlazorWasm.Client.Components.Leaderboards
+@using DevilDaggersInfo.Core.Wiki.Enums
+
+<Heading>Leaderboard</Heading>
+
+@if (GetEntries == null)
+{
+	<Loading />
+}
+else
+{
+	<LeaderboardTableInfo />
+	<LeaderboardTableSettings Entries="GetEntries" Players="Players" />
+}
+
+@code
+{
+	public List<GetEntry>? GetEntries { get; set; }
+
+	public List<GetPlayerForSettings>? Players { get; set; }
+
+	protected override async Task OnInitializedAsync()
+	{
+		Players = await Http.GetPlayersForSettings();
+		GetEntries = await Http.GetPlayersByIds(Players.Select(p => p.Id));
+	}
+}

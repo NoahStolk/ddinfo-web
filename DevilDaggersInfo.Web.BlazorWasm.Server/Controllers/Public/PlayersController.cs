@@ -1,4 +1,5 @@
 ﻿using DevilDaggersInfo.Web.BlazorWasm.Shared.Dto.Public.Players;
+using System.Runtime.Intrinsics.Arm;
 
 namespace DevilDaggersInfo.Web.BlazorWasm.Server.Controllers.Public;
 
@@ -51,5 +52,41 @@ public class PlayersController : ControllerBase
 	{
 		var player = _dbContext.Players.AsNoTracking().Select(p => new { p.Id, p.CountryCode }).FirstOrDefault(p => p.Id == id);
 		return player?.CountryCode ?? string.Empty;
+	}
+
+	[HttpGet("settings")]
+	[ProducesResponseType(StatusCodes.Status200OK)]
+	public ActionResult<List<GetPlayerForSettings>> GetPlayersForSettings()
+	{
+		List<PlayerEntity> players = _dbContext.Players
+			.AsNoTracking()
+			.Where(p => !p.IsBanned && !p.HideSettings && (p.Dpi.HasValue || p.InGameSens.HasValue || p.Fov.HasValue || p.IsRightHanded.HasValue || p.HasFlashHandEnabled.HasValue || p.Gamma.HasValue || p.UsesLegacyAudio.HasValue))
+			.ToList();
+
+		var donations = _dbContext.Donations
+			.AsNoTracking()
+			.Select(d => new { d.PlayerId, d.IsRefunded, d.ConvertedEuroCentsReceived })
+			.Where(d => !d.IsRefunded && d.ConvertedEuroCentsReceived > 0)
+			.ToList();
+
+		List<PlayerTitleEntity> playerTitles = _dbContext.PlayerTitles
+			.AsNoTracking()
+			.Include(pt => pt.Title)
+			.ToList();
+
+		return players.ConvertAll(p => new GetPlayerForSettings
+		{
+			Id = p.Id,
+			IsPublicDonator = !p.HideDonations && donations.Any(d => d.PlayerId == p.Id),
+			Titles = playerTitles.Where(pt => pt.PlayerId == p.Id).Select(pt => pt.Title.Name).ToList(),
+			CountryCode = p.CountryCode,
+			Dpi = p.Dpi,
+			Fov = p.Fov,
+			Gamma = p.Gamma,
+			HasFlashHandEnabled = p.HasFlashHandEnabled,
+			InGameSens = p.InGameSens,
+			IsRightHanded = p.IsRightHanded,
+			UsesLegacyAudio = p.UsesLegacyAudio,
+		});
 	}
 }
