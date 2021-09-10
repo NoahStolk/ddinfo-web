@@ -71,7 +71,7 @@ public class PublicApiHttpClient
 		public void OnVisitSyntaxNode(GeneratorSyntaxContext context)
 		{
 			// Find all controllers.
-			if (context.Node is ClassDeclarationSyntax classSyntax && classSyntax.BaseList?.Types.Any(bt => context.SemanticModel.GetTypeInfo(bt).Type?.ToDisplayString() == "ControllerBase") == true)
+			if (context.Node is ClassDeclarationSyntax classSyntax && classSyntax.BaseList?.Types.Any(bt => bt.GetDisplayStringFromContext(context) == "ControllerBase") == true)
 			{
 				// Find all methods.
 				foreach (MethodDeclarationSyntax method in classSyntax.Members.OfType<MethodDeclarationSyntax>())
@@ -84,11 +84,17 @@ public class PublicApiHttpClient
 					if (name == null)
 						continue;
 
-					List<Parameter> queryParameters = new();
-					List<Parameter> routeParameters = new();
-					string? apiRoute = null;
+					List<Parameter> queryParameters = new(); // TODO
+					List<Parameter> routeParameters = new(); // TODO
+					string? returnType = method.ReturnType.GetDisplayStringFromContext(context);
+					if (returnType == null)
+						continue;
 
-					Endpoints.Add(new(name, queryParameters, routeParameters, method.ReturnType, apiRoute));
+					string? apiRoute = method.GetAttributeValueFromMethod(context, "HttpGet");
+					if (apiRoute == null)
+						continue;
+
+					Endpoints.Add(new(name, queryParameters, routeParameters, returnType, apiRoute));
 				}
 			}
 		}
@@ -105,6 +111,7 @@ public class PublicApiHttpClient
 			ApiRoute = apiRoute;
 		}
 
+		public string MethodName { get; }
 		public List<Parameter> QueryParameters { get; }
 		public List<Parameter> RouteParameters { get; }
 		public string ReturnType { get; }
