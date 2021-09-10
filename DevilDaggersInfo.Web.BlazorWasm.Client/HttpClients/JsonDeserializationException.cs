@@ -8,6 +8,7 @@ namespace DevilDaggersInfo.Web.BlazorWasm.Client.HttpClients;
 public class JsonDeserializationException : Exception
 #pragma warning restore RCS1194 // Implement exception constructors.
 {
+	// Can't implement parameterless constructor because of optional parameter.
 	public JsonDeserializationException([CallerMemberName] string? methodName = null)
 		: base($"JSON deserialization error in {methodName}.")
 	{
