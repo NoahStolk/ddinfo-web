@@ -45,6 +45,31 @@ public class PlayersController : ControllerBase
 		});
 	}
 
+	[HttpGet("{id}")]
+	[ProducesResponseType(StatusCodes.Status200OK)]
+	[ProducesResponseType(StatusCodes.Status400BadRequest)]
+	[ProducesResponseType(StatusCodes.Status404NotFound)]
+	public ActionResult<GetPlayer> GetPlayer([Required] int id)
+	{
+		PlayerEntity? player = _dbContext.Players
+			.AsNoTracking()
+			.FirstOrDefault(p => p.Id == id);
+		if (player == null)
+			return NotFound();
+
+		bool isPublicDonator = !player.HideDonations && _dbContext.Donations.Any(d => d.PlayerId == id && !d.IsRefunded && d.ConvertedEuroCentsReceived > 0);
+
+		List<string> playerTitles = _dbContext.PlayerTitles
+			.AsNoTracking()
+			.Include(pt => pt.Title)
+			.Select(pt => new { TitleName = pt.Title.Name, pt.PlayerId })
+			.Where(pt => pt.PlayerId == player.Id)
+			.Select(pt => pt.TitleName)
+			.ToList();
+
+		return player.ToGetPlayer(isPublicDonator, playerTitles);
+	}
+
 	[HttpGet("{id}/flag")]
 	[ProducesResponseType(StatusCodes.Status200OK)]
 	[ProducesResponseType(StatusCodes.Status400BadRequest)]
