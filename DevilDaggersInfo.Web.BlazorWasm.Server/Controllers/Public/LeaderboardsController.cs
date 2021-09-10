@@ -15,7 +15,7 @@ public class LeaderboardsController : ControllerBase
 		return l.ToGetLeaderboardPublic();
 	}
 
-	[HttpGet("user/by-id")]
+	[HttpGet("player/by-id")]
 	[ProducesResponseType(StatusCodes.Status200OK)]
 	[ProducesResponseType(StatusCodes.Status400BadRequest)]
 	public async Task<ActionResult<GetEntry>> GetPlayerById([Required, Range(1, int.MaxValue)] int userId)
@@ -24,7 +24,7 @@ public class LeaderboardsController : ControllerBase
 		return e.ToGetEntryPublic();
 	}
 
-	[HttpGet("user/by-ids")]
+	[HttpGet("player/by-ids")]
 	[ProducesResponseType(StatusCodes.Status200OK)]
 	[ProducesResponseType(StatusCodes.Status400BadRequest)]
 	public async Task<ActionResult<List<GetEntry>>> GetPlayersByIds(string commaSeparatedUserIds)
@@ -35,7 +35,7 @@ public class LeaderboardsController : ControllerBase
 		return el.ConvertAll(e => e.ToGetEntryPublic());
 	}
 
-	[HttpGet("user/by-username")]
+	[HttpGet("player/by-username")]
 	[ProducesResponseType(StatusCodes.Status200OK)]
 	[ProducesResponseType(StatusCodes.Status400BadRequest)]
 	public async Task<ActionResult<List<GetEntry>>> GetPlayersByName([Required, MinLength(3)] string username)
@@ -44,7 +44,7 @@ public class LeaderboardsController : ControllerBase
 		return el.ConvertAll(e => e.ToGetEntryPublic());
 	}
 
-	[HttpGet("user/by-rank")]
+	[HttpGet("player/by-rank")]
 	[ProducesResponseType(StatusCodes.Status200OK)]
 	[ProducesResponseType(StatusCodes.Status400BadRequest)]
 	[ProducesResponseType(StatusCodes.Status404NotFound)]
