@@ -1,0 +1,29 @@
+﻿@page "/leaderboard/player/{Id:int}"
+@inject PublicApiHttpClient Http
+@inject NavigationManager NavigationManager
+@using DevilDaggersInfo.Web.BlazorWasm.Shared.Dto.Public
+@using DevilDaggersInfo.Web.BlazorWasm.Shared.Dto.Public.LeaderboardHistory
+@using DevilDaggersInfo.Web.BlazorWasm.Shared.Dto.Public.Players
+@using DevilDaggersInfo.Web.BlazorWasm.Client.Components.Leaderboards
+@using DevilDaggersInfo.Core.Wiki
+@using DevilDaggersInfo.Core.Wiki.Enums
+
+<Heading>Player</Heading>
+
+@if (GetPlayer == null)
+{
+	<Loading />
+}
+else
+{
+}
+
+@code
+{
+	public GetPlayer? GetPlayer { get; set; }
+
+	protected override async Task OnInitializedAsync()
+	{
+		//GetPlayer = await Http.GetPlayersForLeaderboard();
+	}
+}
