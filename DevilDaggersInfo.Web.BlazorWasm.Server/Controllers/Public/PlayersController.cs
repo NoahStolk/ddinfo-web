@@ -38,7 +38,7 @@ public class PlayersController : ControllerBase
 			Id = p.Id,
 			BanDescription = p.BanDescription,
 			IsBanned = p.IsBanned,
-			IsPublicDonator = donations.Any(d => d.PlayerId == p.Id),
+			IsPublicDonator = !p.HideDonations && donations.Any(d => d.PlayerId == p.Id),
 			Titles = playerTitles.Where(pt => pt.PlayerId == p.Id).Select(pt => pt.Title.Name).ToList(),
 			CountryCode = p.CountryCode,
 		});
