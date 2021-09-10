@@ -313,7 +313,7 @@ public class PlayersController : ControllerBase
 	{
 		try
 		{
-			return (await LeaderboardClient.Instance.GetUserById(id)).Username;
+			return (await LeaderboardClient.Instance.GetEntryById(id)).Username;
 		}
 		catch
 		{

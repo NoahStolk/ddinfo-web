@@ -20,7 +20,7 @@ public class LeaderboardHistoryBackgroundService : AbstractBackgroundService
 		if (HistoryFileExistsForDate(DateTime.UtcNow))
 			return;
 
-		LeaderboardResponse? l = await LeaderboardClient.Instance.GetScores(1);
+		LeaderboardResponse? l = await LeaderboardClient.Instance.GetLeaderboard(1);
 		if (l != null)
 		{
 			string fileName = $"{DateTime.UtcNow:yyyyMMddHHmm}.json";

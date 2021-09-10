@@ -30,7 +30,7 @@ public sealed class LeaderboardClient
 		return ms;
 	}
 
-	public async Task<LeaderboardResponse> GetScores(int rankStart)
+	public async Task<LeaderboardResponse> GetLeaderboard(int rankStart)
 	{
 		using BinaryReader br = new(await ExecuteRequest(_getScoresUrl, new KeyValuePair<string?, string?>("offset", (rankStart - 1).ToString())));
 
@@ -81,9 +81,9 @@ public sealed class LeaderboardClient
 		return leaderboard;
 	}
 
-	public async Task<List<EntryResponse>> GetUserSearch(string search)
+	public async Task<List<EntryResponse>> GetEntriesByName(string name)
 	{
-		using BinaryReader br = new(await ExecuteRequest(_getUserSearchUrl, new KeyValuePair<string?, string?>("search", search)));
+		using BinaryReader br = new(await ExecuteRequest(_getUserSearchUrl, new KeyValuePair<string?, string?>("search", name)));
 
 		List<EntryResponse> entries = new();
 
@@ -122,14 +122,15 @@ public sealed class LeaderboardClient
 		return entries;
 	}
 
-	public async Task<List<EntryResponse>> GetUsersByIds(IEnumerable<int> ids)
+	public async Task<List<EntryResponse>> GetEntriesByIds(IEnumerable<int> ids)
 	{
 		using BinaryReader br = new(await ExecuteRequest(_getUsersByIdsUrl, new KeyValuePair<string?, string?>("uid", string.Join(',', ids))));
 
 		List<EntryResponse> entries = new();
 
 		br.BaseStream.Seek(19, SeekOrigin.Begin);
-		for (int i = 0; i < ids.Count(); i++)
+		int entryCount = ids.Count();
+		for (int i = 0; i < entryCount; i++)
 		{
 			EntryResponse entry = new();
 
@@ -160,9 +161,9 @@ public sealed class LeaderboardClient
 		return entries;
 	}
 
-	public async Task<EntryResponse> GetUserById(int userId)
+	public async Task<EntryResponse> GetEntryById(int id)
 	{
-		using BinaryReader br = new(await ExecuteRequest(_getUserByIdUrl, new KeyValuePair<string?, string?>("uid", userId.ToString())));
+		using BinaryReader br = new(await ExecuteRequest(_getUserByIdUrl, new KeyValuePair<string?, string?>("uid", id.ToString())));
 
 		EntryResponse entry = new();
 
