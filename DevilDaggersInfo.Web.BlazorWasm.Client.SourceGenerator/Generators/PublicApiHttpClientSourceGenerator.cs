@@ -95,8 +95,12 @@ public class PublicApiHttpClient
 					if (name == null)
 						continue;
 
-					List<Parameter> queryParameters = new(); // TODO
-					List<Parameter> routeParameters = new(); // TODO
+					List<Parameter> allParameters = method.ParameterList.Parameters
+						.Select(p => new { Type = p.Type?.GetDisplayStringFromContext(context), Name = p.GetDisplayStringFromContext(context) })
+						.Where(p => p.Type != null && p.Name != null)
+						.Select(p => new Parameter(p.Type!, p.Name!))
+						.ToList();
+
 					string? returnType = method.ReturnType.GetDisplayStringFromContext(context);
 					if (returnType == null)
 						continue;
@@ -104,6 +108,9 @@ public class PublicApiHttpClient
 					string? apiRoute = method.GetAttributeValueFromMethod(context, "HttpGet");
 					if (apiRoute == null)
 						continue;
+
+					List<Parameter> queryParameters = allParameters.Where(p => apiRoute.Contains($"{{{p.Name}}}")).ToList();
+					List<Parameter> routeParameters = allParameters.Except(queryParameters).ToList();
 
 					Endpoints.Add(new(name, queryParameters, routeParameters, returnType, apiRoute));
 				}
