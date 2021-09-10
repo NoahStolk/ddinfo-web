@@ -28,6 +28,6 @@ else
 	protected override async Task OnInitializedAsync()
 	{
 		Players = await Http.GetPlayersForSettings();
-		GetEntries = await Http.GetPlayersByIds(Players.Select(p => p.Id));
+		GetEntries = await Http.GetPlayersByIds(string.Join(',', Players.Select(p => p.Id)));
 	}
 }

@@ -92,9 +92,9 @@ public class PublicApiHttpClient
 		return await _client.GetFromJsonAsync<GetLeaderboard>(UrlBuilderUtils.BuildUrlWithQuery("api/leaderboards", new() { { nameof(rankStart), rankStart } })) ?? throw new JsonDeserializationException();
 	}
 
-	public async Task<List<GetEntry>> GetPlayersByIds(IEnumerable<int> playerIds)
+	public async Task<List<GetEntry>> GetPlayersByIds(string commaSeparatedIds)
 	{
-		return await _client.GetFromJsonAsync<List<GetEntry>>(UrlBuilderUtils.BuildUrlWithQuery("api/leaderboards/entry/by-ids", new() { { "commaSeparatedIds", string.Join(',', playerIds) } })) ?? throw new JsonDeserializationException();
+		return await _client.GetFromJsonAsync<List<GetEntry>>(UrlBuilderUtils.BuildUrlWithQuery("api/leaderboards/entry/by-ids", new() { { nameof(commaSeparatedIds), commaSeparatedIds } })) ?? throw new JsonDeserializationException();
 	}
 
 	public async Task<GetLeaderboardHistory> GetLeaderboardHistory(DateTime dateTime)
