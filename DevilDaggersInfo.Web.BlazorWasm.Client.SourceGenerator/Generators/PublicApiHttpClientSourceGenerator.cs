@@ -1,8 +1,4 @@
-﻿using Microsoft.CodeAnalysis.CSharp;
-using Microsoft.CodeAnalysis.CSharp.Syntax;
-using System.Collections.Generic;
-
-namespace DevilDaggersInfo.Web.BlazorWasm.Client.SourceGenerator.Generators;
+﻿namespace DevilDaggersInfo.Web.BlazorWasm.Client.SourceGenerator.Generators;
 
 [Generator]
 public class PublicApiHttpClientSourceGenerator : ISourceGenerator
@@ -48,7 +44,7 @@ public class PublicApiHttpClient
 {{
 	Dictionary<string, object?> queryParameters = new()
 	{{
-		{_queryParameters}
+{_queryParameters}
 	}};
 	return await _client.GetFromJsonAsync<{_returnType}>(UrlBuilderUtils.BuildUrlWithQuery(""{_apiRoute}"", queryParameters)) ?? throw new JsonDeserializationException();
 }}";
@@ -63,7 +59,6 @@ public class PublicApiHttpClient
 		SyntaxReceiver rx = (SyntaxReceiver)context.SyntaxContextReceiver!;
 		foreach (Endpoint endpoint in rx.Endpoints)
 		{
-			//string source = SourceFileFromMustachePath(name, template, hash);
 		}
 
 		context.AddSource("PublicApiHttpClient", "");
