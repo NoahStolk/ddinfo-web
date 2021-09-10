@@ -56,12 +56,23 @@ public class PublicApiHttpClient
 
 	public void Execute(GeneratorExecutionContext context)
 	{
-		SyntaxReceiver rx = (SyntaxReceiver)context.SyntaxContextReceiver!;
-		foreach (Endpoint endpoint in rx.Endpoints)
+		SyntaxReceiver sr = (SyntaxReceiver)context.SyntaxContextReceiver!;
+
+		List<string> endpointMethods = new();
+		foreach (Endpoint endpoint in sr.Endpoints)
 		{
+			string methodParameters = string.Join(", ", endpoint.RouteParameters.Concat(endpoint.QueryParameters).Select(p => $"{p.Type} {p.Name}").ToList());
+			string queryParameters = string.Join(Environment.NewLine, endpoint.QueryParameters.ConvertAll(p => $"{{nameof({p.Name}), {p.Name}}}"));
+
+			endpointMethods.Add(_endpointTemplate
+				.Replace(_returnType, endpoint.ReturnType)
+				.Replace(_methodName, endpoint.MethodName)
+				.Replace(_methodParameters, methodParameters)
+				.Replace(_queryParameters, queryParameters)
+				.Replace(_apiRoute, endpoint.ApiRoute));
 		}
 
-		context.AddSource("PublicApiHttpClient", "");
+		context.AddSource("PublicApiHttpClient", _template.Replace(_endpointMethods, string.Join(Environment.NewLine, endpointMethods)));
 	}
 
 	private class SyntaxReceiver : ISyntaxContextReceiver
