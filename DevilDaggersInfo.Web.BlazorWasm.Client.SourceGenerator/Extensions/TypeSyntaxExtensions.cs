@@ -2,16 +2,26 @@
 
 public static class TypeSyntaxExtensions
 {
-	public static string GetTypeStringWithoutActionResult(this TypeSyntax typeSyntax)
+	public static string GetTypeStringForApiHttpClient(this TypeSyntax typeSyntax)
 	{
 		string typeString = typeSyntax.ToString();
 		if (typeString == "ActionResult")
-			return "void";
+			return "Task";
 
-		if (!typeString.StartsWith("ActionResult<"))
-			return typeString;
+		while (typeString.StartsWith("ActionResult<") || typeString.StartsWith("Task<"))
+			typeString = typeString.RemoveOuterType();
 
-		string trimStart = typeString.TrimStart("ActionResult<");
-		return trimStart.Substring(0, trimStart.Length - 1);
+		return $"Task<{typeString}>";
+	}
+
+	private static string RemoveOuterType(this string str)
+	{
+		int startTypeParameterTokenIndex = str.IndexOf('<');
+		int endTypeParameterTokenIndex = str.LastIndexOf('>');
+
+		if (startTypeParameterTokenIndex == -1 || endTypeParameterTokenIndex == -1)
+			return str;
+
+		return str.Substring(startTypeParameterTokenIndex + 1, endTypeParameterTokenIndex - startTypeParameterTokenIndex - 1);
 	}
 }

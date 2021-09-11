@@ -7,6 +7,7 @@ public class ApiHttpClientSourceGenerator : ISourceGenerator
 {
 	private const string _dtoUsings = $"%{nameof(_dtoUsings)}%";
 	private const string _enumUsings = $"%{nameof(_enumUsings)}%";
+	private const string _clientType = $"%{nameof(_clientType)}%";
 	private const string _endpointMethods = $"%{nameof(_endpointMethods)}%";
 	private const string _template = $@"{_dtoUsings}
 {_enumUsings}
@@ -17,11 +18,11 @@ using System.Threading.Tasks;
 
 namespace DevilDaggersInfo.Web.BlazorWasm.Client.HttpClients;
 
-public class PublicApiHttpClientGenerated
+public class {_clientType}ApiHttpClientGenerated
 {{
 	private readonly HttpClient _client;
 
-	public PublicApiHttpClientGenerated(HttpClient client)
+	public {_clientType}ApiHttpClientGenerated(HttpClient client)
 	{{
 		_client = client;
 	}}
@@ -35,7 +36,7 @@ public class PublicApiHttpClientGenerated
 	private const string _methodParameters = $"%{nameof(_methodParameters)}%";
 	private const string _queryParameters = $"%{nameof(_queryParameters)}%";
 	private const string _apiRoute = $"%{nameof(_apiRoute)}%";
-	private const string _endpointTemplate = $@"public async Task<{_returnType}> {_methodName}({_methodParameters})
+	private const string _endpointTemplate = $@"public async {_returnType} {_methodName}({_methodParameters})
 {{
 	Dictionary<string, object?> queryParameters = new()
 	{{
@@ -80,9 +81,11 @@ public class PublicApiHttpClientGenerated
 				.Replace(_apiRoute, endpoint.ApiRoute));
 		}
 
-		context.AddSource($"{clientType}ApiHttpClientGenerated", _template
+		string code = _template
 			.Replace(_dtoUsings, string.Join(Environment.NewLine, _apiHttpClientContext.GlobalUsings[IncludedDirectory.Dto].Concat(_apiHttpClientContext.SpecificUsings[IncludedDirectory.Dto][clientType]).Select(s => s.ToUsingDirective())))
 			.Replace(_enumUsings, string.Join(Environment.NewLine, _apiHttpClientContext.GlobalUsings[IncludedDirectory.Enums].Concat(_apiHttpClientContext.SpecificUsings[IncludedDirectory.Enums][clientType]).Select(s => s.ToUsingDirective())))
-			.Replace(_endpointMethods, string.Join(Environment.NewLine, endpointMethods).Indent(1)));
+			.Replace(_clientType, clientType.ToString())
+			.Replace(_endpointMethods, string.Join(Environment.NewLine, endpointMethods).Indent(1));
+		context.AddSource($"{clientType}ApiHttpClientGenerated", code);
 	}
 }

@@ -91,7 +91,7 @@ internal class ApiHttpClientContext
 				.Select(ps => new Parameter(ps.Type!, ps.Name!))
 				.ToList();
 
-			string? returnType = mds.ReturnType.GetTypeStringWithoutActionResult();
+			string? returnType = mds.ReturnType.GetTypeStringForApiHttpClient();
 			if (returnType == null)
 				continue;
 
