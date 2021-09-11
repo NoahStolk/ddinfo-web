@@ -50,11 +50,6 @@ public class {_clientType}ApiHttpClientGenerated
 
 	public void Initialize(GeneratorInitializationContext context)
 	{
-#if DEBUG
-		if (!Debugger.IsAttached)
-			Debugger.Launch();
-#endif
-
 		_apiHttpClientContext.FindUsings();
 		_apiHttpClientContext.FindEndpoints();
 	}
