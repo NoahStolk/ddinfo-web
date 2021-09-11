@@ -105,11 +105,14 @@ public class PublicApiHttpClientGenerated
 				_globalEnumUsings.Add(usingDirective);
 		}
 
-		foreach (string controllerFilePath in Directory.GetFiles($@"{_serverProjectPath}\Controllers\Admin"))
-			_endpoints[ClientType.Admin].AddRange(Parse(CSharpSyntaxTree.ParseText(File.ReadAllText(controllerFilePath))));
+		FindEndpoints(ClientType.Admin);
+		FindEndpoints(ClientType.Public);
 
-		foreach (string controllerFilePath in Directory.GetFiles($@"{_serverProjectPath}\Controllers\Public"))
-			_endpoints[ClientType.Public].AddRange(Parse(CSharpSyntaxTree.ParseText(File.ReadAllText(controllerFilePath))));
+		void FindEndpoints(ClientType clientType)
+		{
+			foreach (string controllerFilePath in Directory.GetFiles(Path.Combine(_serverProjectPath, "Controllers", clientType.ToString())))
+				_endpoints[clientType].AddRange(Parse(CSharpSyntaxTree.ParseText(File.ReadAllText(controllerFilePath))));
+		}
 	}
 
 	public void Execute(GeneratorExecutionContext context)
