@@ -11,7 +11,7 @@ public static class TypeSyntaxExtensions
 		while (typeString.StartsWith("ActionResult<") || typeString.StartsWith("Task<"))
 			typeString = typeString.RemoveOuterType();
 
-		return $"Task<{typeString}>";
+		return typeString;
 	}
 
 	private static string RemoveOuterType(this string str)

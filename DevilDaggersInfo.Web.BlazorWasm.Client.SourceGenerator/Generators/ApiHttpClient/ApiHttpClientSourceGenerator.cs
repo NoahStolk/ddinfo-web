@@ -36,7 +36,7 @@ public class {_clientType}ApiHttpClientGenerated
 	private const string _methodParameters = $"%{nameof(_methodParameters)}%";
 	private const string _queryParameters = $"%{nameof(_queryParameters)}%";
 	private const string _apiRoute = $"%{nameof(_apiRoute)}%";
-	private const string _endpointTemplate = $@"public async {_returnType} {_methodName}({_methodParameters})
+	private const string _endpointTemplate = $@"public async Task<{_returnType}> {_methodName}({_methodParameters})
 {{
 	Dictionary<string, object?> queryParameters = new()
 	{{
