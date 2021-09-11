@@ -49,6 +49,8 @@ public class PublicApiHttpClientGenerated
 	return await _client.GetFromJsonAsync<{_returnType}>(UrlBuilderUtils.BuildUrlWithQuery(""{_apiRoute}"", queryParameters)) ?? throw new JsonDeserializationException();
 }}";
 
+	private readonly List<Endpoint> _endpoints = new();
+
 	public void Initialize(GeneratorInitializationContext context)
 	{
 #if DEBUG
@@ -56,15 +58,17 @@ public class PublicApiHttpClientGenerated
 			Debugger.Launch();
 #endif
 
-		context.RegisterForSyntaxNotifications(() => new SyntaxReceiver());
+		foreach (string controllerFilePath in Directory.GetFiles(@"C:\Users\NOAH\source\repos\DevilDaggersInfo\DevilDaggersInfo.Web.BlazorWasm.Server\Controllers\Public"))
+		{
+			SyntaxTree syntaxTree = CSharpSyntaxTree.ParseText(File.ReadAllText(controllerFilePath));
+			Parse(syntaxTree);
+		}
 	}
 
 	public void Execute(GeneratorExecutionContext context)
 	{
-		SyntaxReceiver sr = (SyntaxReceiver)context.SyntaxContextReceiver!;
-
 		List<string> endpointMethods = new();
-		foreach (Endpoint endpoint in sr.Endpoints)
+		foreach (Endpoint endpoint in _endpoints)
 		{
 			string methodParameters = string.Join(", ", endpoint.RouteParameters.Concat(endpoint.QueryParameters).Select(p => $"{p.Type} {p.Name}").ToList());
 			string queryParameters = string.Join(Environment.NewLine, endpoint.QueryParameters.ConvertAll(p => $"{{nameof({p.Name}), {p.Name}}}"));
@@ -80,57 +84,55 @@ public class PublicApiHttpClientGenerated
 		context.AddSource("PublicApiHttpClientGenerated", _template.Replace(_endpointMethods, string.Join(Environment.NewLine, endpointMethods).Indent(2)));
 	}
 
-	private class SyntaxReceiver : ISyntaxContextReceiver
+	private void Parse(SyntaxTree syntaxTree)
 	{
-		public List<Endpoint> Endpoints { get; } = new();
+		SyntaxNode root = syntaxTree.GetRoot();
 
-		public void OnVisitSyntaxNode(GeneratorSyntaxContext context)
+		// Find class.
+		ClassDeclarationSyntax? cds = (ClassDeclarationSyntax)root.DescendantNodes().FirstOrDefault(sn => sn.IsKind(SyntaxKind.ClassDeclaration));
+		if (cds == null)
+			return;
+
+		// Return if not derived from ControllerBase.
+		if (cds.BaseList?.Types.Any(bts => bts.ToString() == "ControllerBase") != true)
+			return;
+
+		// Find base route.
+		AttributeSyntax? routeAttribute = cds.GetAttributeFromMember("Route");
+		if (routeAttribute == null)
+			return;
+
+		string apiRoute = routeAttribute.GetRouteAttributeStringValue();
+
+		// Find all methods.
+		foreach (MethodDeclarationSyntax mds in cds.Members.OfType<MethodDeclarationSyntax>())
 		{
-			// Find all classes.
-			if (context.Node is ClassDeclarationSyntax cds)
-			{
-				// Find all controllers.
-				if (cds.BaseList?.Types.Any(bts => bts.ToString() == "ControllerBase") != true)
-					return;
+			// Skip non-public methods.
+			if (!mds.Modifiers.Any(st => st.Kind() == SyntaxKind.PublicKeyword))
+				continue;
 
-				// Find base route.
-				AttributeSyntax? routeAttribute = cds.GetAttributeFromMember(context, "Microsoft.AspNetCore.Mvc.RouteAttribute");
-				if (routeAttribute == null)
-					return;
+			string methodName = mds.Identifier.ToString();
 
-				string apiRoute = routeAttribute.GetRouteAttributeStringValue();
+			List<Parameter> allParameters = mds.ParameterList.Parameters
+				.Select(ps => new { Type = ps.Type?.ToString(), Name = ps.Identifier.ToString() })
+				.Where(ps => ps.Type != null && ps.Name != null)
+				.Select(ps => new Parameter(ps.Type!, ps.Name!))
+				.ToList();
 
-				// Find all methods.
-				foreach (MethodDeclarationSyntax mds in cds.Members.OfType<MethodDeclarationSyntax>())
-				{
-					// Skip non-public methods.
-					if (!mds.Modifiers.Any(st => st.Kind() == SyntaxKind.PublicKeyword))
-						continue;
+			string? returnType = mds.ReturnType.ToString(); // TODO: Remove ActionResult.
+			if (returnType == null)
+				continue;
 
-					string methodName = mds.Identifier.ToString();
+			AttributeSyntax? httpGetAttribute = mds.GetAttributeFromMember("HttpGet");
+			if (httpGetAttribute == null)
+				continue;
 
-					List<Parameter> allParameters = mds.ParameterList.Parameters
-						.Select(ps => new { Type = ps.Type?.GetDisplayStringFromContext(context), Name = ps.Identifier.ToString() })
-						.Where(ps => ps.Type != null && ps.Name != null)
-						.Select(ps => new Parameter(ps.Type!, ps.Name!))
-						.ToList();
+			string endpointRoute = httpGetAttribute.GetRouteAttributeStringValue();
 
-					string? returnType = mds.ReturnType.GetDisplayStringFromContext(context); // TODO: Remove ActionResult.
-					if (returnType == null)
-						continue;
+			List<Parameter> routeParameters = allParameters.Where(p => endpointRoute.Contains($"{{{p.Name}}}")).ToList();
+			List<Parameter> queryParameters = allParameters.Except(routeParameters).ToList();
 
-					AttributeSyntax? httpGetAttribute = mds.GetAttributeFromMember(context, "Microsoft.AspNetCore.Mvc.HttpGetAttribute");
-					if (httpGetAttribute == null)
-						continue;
-
-					string endpointRoute = httpGetAttribute.GetRouteAttributeStringValue();
-
-					List<Parameter> routeParameters = allParameters.Where(p => endpointRoute.Contains($"{{{p.Name}}}")).ToList();
-					List<Parameter> queryParameters = allParameters.Except(routeParameters).ToList();
-
-					Endpoints.Add(new(methodName, routeParameters, queryParameters, returnType, $"{apiRoute}/{endpointRoute}"));
-				}
-			}
+			_endpoints.Add(new(methodName, routeParameters, queryParameters, returnType, $"{apiRoute}/{endpointRoute}"));
 		}
 	}
 
