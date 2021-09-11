@@ -1,7 +1,7 @@
 ﻿namespace DevilDaggersInfo.Web.BlazorWasm.Client.SourceGenerator.Generators;
 
 [Generator]
-public class PublicApiHttpClientSourceGenerator : ISourceGenerator
+public class ApiHttpClientSourceGenerator : ISourceGenerator
 {
 	private const string _endpointMethods = $"%{nameof(_endpointMethods)}%";
 	private const string _template = $@"using DevilDaggersInfo.Web.BlazorWasm.Client.Utils;
@@ -18,7 +18,9 @@ using DevilDaggersInfo.Web.BlazorWasm.Shared.Dto.Public.Spawnsets;
 using DevilDaggersInfo.Web.BlazorWasm.Shared.Dto.Public.Tools;
 using DevilDaggersInfo.Web.BlazorWasm.Shared.Enums;
 using DevilDaggersInfo.Web.BlazorWasm.Shared.Enums.Sortings.Public;
+using System.Net.Http;
 using System.Net.Http.Json;
+using System.Threading.Tasks;
 
 namespace DevilDaggersInfo.Web.BlazorWasm.Client.HttpClients;
 
@@ -47,9 +49,11 @@ public class PublicApiHttpClientGenerated
 {_queryParameters}
 	}};
 	return await _client.GetFromJsonAsync<{_returnType}>(UrlBuilderUtils.BuildUrlWithQuery(""{_apiRoute}"", queryParameters)) ?? throw new JsonDeserializationException();
-}}";
+}}
+";
 
-	private readonly List<Endpoint> _endpoints = new();
+	private readonly List<Endpoint> _adminEndpoints = new();
+	private readonly List<Endpoint> _publicEndpoints = new();
 
 	public void Initialize(GeneratorInitializationContext context)
 	{
@@ -58,20 +62,26 @@ public class PublicApiHttpClientGenerated
 			Debugger.Launch();
 #endif
 
+		foreach (string controllerFilePath in Directory.GetFiles(@"C:\Users\NOAH\source\repos\DevilDaggersInfo\DevilDaggersInfo.Web.BlazorWasm.Server\Controllers\Admin"))
+			_adminEndpoints.AddRange(Parse(CSharpSyntaxTree.ParseText(File.ReadAllText(controllerFilePath))));
+
 		foreach (string controllerFilePath in Directory.GetFiles(@"C:\Users\NOAH\source\repos\DevilDaggersInfo\DevilDaggersInfo.Web.BlazorWasm.Server\Controllers\Public"))
-		{
-			SyntaxTree syntaxTree = CSharpSyntaxTree.ParseText(File.ReadAllText(controllerFilePath));
-			Parse(syntaxTree);
-		}
+			_publicEndpoints.AddRange(Parse(CSharpSyntaxTree.ParseText(File.ReadAllText(controllerFilePath))));
 	}
 
 	public void Execute(GeneratorExecutionContext context)
 	{
+		GenerateClient(context, "Admin", _adminEndpoints);
+		GenerateClient(context, "Public", _publicEndpoints);
+	}
+
+	private static void GenerateClient(GeneratorExecutionContext context, string classPrefix, List<Endpoint> endpoints)
+	{
 		List<string> endpointMethods = new();
-		foreach (Endpoint endpoint in _endpoints)
+		foreach (Endpoint endpoint in endpoints)
 		{
 			string methodParameters = string.Join(", ", endpoint.RouteParameters.Concat(endpoint.QueryParameters).Select(p => $"{p.Type} {p.Name}").ToList());
-			string queryParameters = string.Join(Environment.NewLine, endpoint.QueryParameters.ConvertAll(p => $"{{nameof({p.Name}), {p.Name}}}"));
+			string queryParameters = string.Join($",{Environment.NewLine}", endpoint.QueryParameters.ConvertAll(p => $"{{nameof({p.Name}), {p.Name}}}"));
 
 			endpointMethods.Add(_endpointTemplate
 				.Replace(_returnType, endpoint.ReturnType)
@@ -81,26 +91,26 @@ public class PublicApiHttpClientGenerated
 				.Replace(_apiRoute, endpoint.ApiRoute));
 		}
 
-		context.AddSource("PublicApiHttpClientGenerated", _template.Replace(_endpointMethods, string.Join(Environment.NewLine, endpointMethods).Indent(2)));
+		context.AddSource($"{classPrefix}ApiHttpClientGenerated", _template.Replace(_endpointMethods, string.Join(Environment.NewLine, endpointMethods).Indent(1)));
 	}
 
-	private void Parse(SyntaxTree syntaxTree)
+	private static IEnumerable<Endpoint> Parse(SyntaxTree syntaxTree)
 	{
 		SyntaxNode root = syntaxTree.GetRoot();
 
 		// Find class.
 		ClassDeclarationSyntax? cds = (ClassDeclarationSyntax)root.DescendantNodes().FirstOrDefault(sn => sn.IsKind(SyntaxKind.ClassDeclaration));
 		if (cds == null)
-			return;
+			yield break;
 
 		// Return if not derived from ControllerBase.
 		if (cds.BaseList?.Types.Any(bts => bts.ToString() == "ControllerBase") != true)
-			return;
+			yield break;
 
 		// Find base route.
 		AttributeSyntax? routeAttribute = cds.GetAttributeFromMember("Route");
 		if (routeAttribute == null)
-			return;
+			yield break;
 
 		string apiRoute = routeAttribute.GetRouteAttributeStringValue();
 
@@ -119,7 +129,7 @@ public class PublicApiHttpClientGenerated
 				.Select(ps => new Parameter(ps.Type!, ps.Name!))
 				.ToList();
 
-			string? returnType = mds.ReturnType.ToString(); // TODO: Remove ActionResult.
+			string? returnType = mds.ReturnType.GetTypeStringWithoutActionResult();
 			if (returnType == null)
 				continue;
 
@@ -132,7 +142,7 @@ public class PublicApiHttpClientGenerated
 			List<Parameter> routeParameters = allParameters.Where(p => endpointRoute.Contains($"{{{p.Name}}}")).ToList();
 			List<Parameter> queryParameters = allParameters.Except(routeParameters).ToList();
 
-			_endpoints.Add(new(methodName, routeParameters, queryParameters, returnType, $"{apiRoute}/{endpointRoute}"));
+			yield return new(methodName, routeParameters, queryParameters, returnType, $"{apiRoute}/{endpointRoute}");
 		}
 	}
 
