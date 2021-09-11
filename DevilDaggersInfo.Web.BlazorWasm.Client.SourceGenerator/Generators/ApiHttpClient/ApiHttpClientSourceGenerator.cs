@@ -36,7 +36,12 @@ public class {_clientType}ApiHttpClient
 	private const string _methodParameters = $"%{nameof(_methodParameters)}%";
 	private const string _queryParameters = $"%{nameof(_queryParameters)}%";
 	private const string _apiRoute = $"%{nameof(_apiRoute)}%";
-	private const string _endpointTemplate = $@"public async Task<{_returnType}> {_methodName}({_methodParameters})
+	private const string _getEndpointTemplate = $@"public async Task<{_returnType}> {_methodName}({_methodParameters})
+{{
+	return await Client.GetFromJsonAsync<{_returnType}>($""{_apiRoute}"") ?? throw new JsonDeserializationException();
+}}
+";
+	private const string _getEndpointWithQueryTemplate = $@"public async Task<{_returnType}> {_methodName}({_methodParameters})
 {{
 	Dictionary<string, object?> queryParameters = new()
 	{{
@@ -68,12 +73,23 @@ public class {_clientType}ApiHttpClient
 			string methodParameters = string.Join(", ", endpoint.RouteParameters.Concat(endpoint.QueryParameters).Select(p => $"{p.Type} {p.Name}").ToList());
 			string queryParameters = string.Join($",{Environment.NewLine}", endpoint.QueryParameters.ConvertAll(p => $"{{nameof({p.Name}), {p.Name}}}"));
 
-			endpointMethods.Add(_endpointTemplate
-				.Replace(_returnType, endpoint.ReturnType)
-				.Replace(_methodName, endpoint.MethodName)
-				.Replace(_methodParameters, methodParameters)
-				.Replace(_queryParameters, queryParameters.Indent(2))
-				.Replace(_apiRoute, endpoint.ApiRoute));
+			if (endpoint.QueryParameters.Count == 0)
+			{
+				endpointMethods.Add(_getEndpointTemplate
+					.Replace(_returnType, endpoint.ReturnType)
+					.Replace(_methodName, endpoint.MethodName)
+					.Replace(_methodParameters, methodParameters)
+					.Replace(_apiRoute, endpoint.ApiRoute));
+			}
+			else
+			{
+				endpointMethods.Add(_getEndpointWithQueryTemplate
+					.Replace(_returnType, endpoint.ReturnType)
+					.Replace(_methodName, endpoint.MethodName)
+					.Replace(_methodParameters, methodParameters)
+					.Replace(_queryParameters, queryParameters.Indent(2))
+					.Replace(_apiRoute, endpoint.ApiRoute));
+			}
 		}
 
 		string code = _template
