@@ -4,8 +4,15 @@ namespace DevilDaggersInfo.Web.BlazorWasm.Client.SourceGenerator.Generators.ApiH
 
 internal class ApiHttpClientContext
 {
-	public ApiHttpClientContext()
+	public Dictionary<IncludedDirectory, List<string>> GlobalUsings { get; } = new();
+	public Dictionary<IncludedDirectory, Dictionary<ClientType, List<string>>> SpecificUsings { get; } = new();
+	public Dictionary<ClientType, List<Endpoint>> Endpoints { get; } = new();
+
+	public void FindUsings()
 	{
+		GlobalUsings.Clear();
+		SpecificUsings.Clear();
+
 		foreach (IncludedDirectory includedDirectory in Constants.IncludedDirectories)
 		{
 			GlobalUsings.Add(includedDirectory, new());
@@ -16,21 +23,6 @@ internal class ApiHttpClientContext
 
 			SpecificUsings.Add(includedDirectory, specificUsingsDictionary);
 		}
-
-		foreach (ClientType clientType in Constants.ClientTypes)
-			Endpoints.Add(clientType, new());
-	}
-
-	public Dictionary<IncludedDirectory, List<string>> GlobalUsings { get; } = new();
-
-	public Dictionary<IncludedDirectory, Dictionary<ClientType, List<string>>> SpecificUsings { get; } = new();
-
-	public Dictionary<ClientType, List<Endpoint>> Endpoints { get; } = new();
-
-	public void FindUsings()
-	{
-		GlobalUsings.Clear();
-		SpecificUsings.Clear();
 
 		foreach (IncludedDirectory includedDirectory in Constants.IncludedDirectories)
 		{
@@ -53,6 +45,8 @@ internal class ApiHttpClientContext
 	public void FindEndpoints()
 	{
 		Endpoints.Clear();
+		foreach (ClientType clientType in Constants.ClientTypes)
+			Endpoints.Add(clientType, new());
 
 		foreach (ClientType clientType in Constants.ClientTypes)
 		{
