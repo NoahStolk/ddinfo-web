@@ -20,7 +20,7 @@ public class PlayerHistoryController : ControllerBase
 	[HttpGet("progression")]
 	[ProducesResponseType(StatusCodes.Status200OK)]
 	[ProducesResponseType(StatusCodes.Status400BadRequest)]
-	public List<GetEntryHistory> GetPlayerProgressionById([Required, Range(1, 9999999)] int playerId)
+	public List<GetEntryHistory> GetPlayerProgressionById([Required, Range(1, int.MaxValue)] int playerId)
 	{
 		List<GetEntryHistory> data = new();
 
@@ -45,7 +45,7 @@ public class PlayerHistoryController : ControllerBase
 	[HttpGet("activity")]
 	[ProducesResponseType(StatusCodes.Status200OK)]
 	[ProducesResponseType(StatusCodes.Status400BadRequest)]
-	public List<GetPlayerActivity> GetPlayerActivityById([Required, Range(1, 9999999)] int playerId)
+	public List<GetPlayerActivity> GetPlayerActivityById([Required, Range(1, int.MaxValue)] int playerId)
 	{
 		List<GetPlayerActivity> data = new();
 		foreach (string leaderboardHistoryPath in _fileSystemService.TryGetFiles(DataSubDirectory.LeaderboardHistory))

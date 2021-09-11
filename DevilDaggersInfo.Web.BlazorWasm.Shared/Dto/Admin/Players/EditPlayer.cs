@@ -28,7 +28,7 @@ public class EditPlayer
 	[StringLength(64)]
 	public string? BanDescription { get; set; }
 
-	[Range(1, 9999999)]
+	[Range(1, int.MaxValue)]
 	public int? BanResponsibleId { get; set; }
 
 	public bool IsBannedFromDdcl { get; set; }
