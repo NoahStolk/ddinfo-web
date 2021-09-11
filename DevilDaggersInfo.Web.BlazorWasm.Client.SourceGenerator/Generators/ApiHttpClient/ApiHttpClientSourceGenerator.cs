@@ -18,11 +18,11 @@ using System.Threading.Tasks;
 
 namespace DevilDaggersInfo.Web.BlazorWasm.Client.HttpClients;
 
-public class {_clientType}ApiHttpClientGenerated
+public class {_clientType}ApiHttpClient
 {{
 	private readonly HttpClient _client;
 
-	public {_clientType}ApiHttpClientGenerated(HttpClient client)
+	public {_clientType}ApiHttpClient(HttpClient client)
 	{{
 		_client = client;
 	}}
