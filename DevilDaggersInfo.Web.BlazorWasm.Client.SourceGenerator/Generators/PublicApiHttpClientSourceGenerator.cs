@@ -1,4 +1,4 @@
-﻿namespace DevilDaggersInfo.Web.BlazorWasm.Server.SourceGenerator.Generators;
+﻿namespace DevilDaggersInfo.Web.BlazorWasm.Client.SourceGenerator.Generators;
 
 [Generator]
 public class PublicApiHttpClientSourceGenerator : ISourceGenerator
@@ -115,7 +115,7 @@ public class PublicApiHttpClientGenerated
 						.Select(ps => new Parameter(ps.Type!, ps.Name!))
 						.ToList();
 
-					string? returnType = mds.ReturnType.GetDisplayStringFromContext(context);
+					string? returnType = mds.ReturnType.GetDisplayStringFromContext(context); // TODO: Remove ActionResult.
 					if (returnType == null)
 						continue;
 

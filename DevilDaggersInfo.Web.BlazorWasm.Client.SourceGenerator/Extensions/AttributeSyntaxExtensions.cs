@@ -1,4 +1,4 @@
-﻿namespace DevilDaggersInfo.Web.BlazorWasm.Server.SourceGenerator.Extensions;
+﻿namespace DevilDaggersInfo.Web.BlazorWasm.Client.SourceGenerator.Extensions;
 
 public static class AttributeSyntaxExtensions
 {
