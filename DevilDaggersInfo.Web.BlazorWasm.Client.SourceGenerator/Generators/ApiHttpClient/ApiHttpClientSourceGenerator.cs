@@ -20,12 +20,12 @@ namespace DevilDaggersInfo.Web.BlazorWasm.Client.HttpClients;
 
 public class {_clientType}ApiHttpClient
 {{
-	private readonly HttpClient _client;
-
 	public {_clientType}ApiHttpClient(HttpClient client)
 	{{
-		_client = client;
+		Client = client;
 	}}
+
+	public HttpClient Client {{ get; }}
 
 {_endpointMethods}
 }}
@@ -42,7 +42,7 @@ public class {_clientType}ApiHttpClient
 	{{
 {_queryParameters}
 	}};
-	return await _client.GetFromJsonAsync<{_returnType}>(UrlBuilderUtils.BuildUrlWithQuery(""{_apiRoute}"", queryParameters)) ?? throw new JsonDeserializationException();
+	return await Client.GetFromJsonAsync<{_returnType}>(UrlBuilderUtils.BuildUrlWithQuery(""{_apiRoute}"", queryParameters)) ?? throw new JsonDeserializationException();
 }}
 ";
 
