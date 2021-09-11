@@ -42,7 +42,7 @@ public class {_clientType}ApiHttpClient
 	{{
 {_queryParameters}
 	}};
-	return await Client.GetFromJsonAsync<{_returnType}>(UrlBuilderUtils.BuildUrlWithQuery(""{_apiRoute}"", queryParameters)) ?? throw new JsonDeserializationException();
+	return await Client.GetFromJsonAsync<{_returnType}>(UrlBuilderUtils.BuildUrlWithQuery($""{_apiRoute}"", queryParameters)) ?? throw new JsonDeserializationException();
 }}
 ";
 
