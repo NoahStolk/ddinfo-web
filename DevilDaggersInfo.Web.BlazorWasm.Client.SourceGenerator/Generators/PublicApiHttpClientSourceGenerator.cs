@@ -82,30 +82,30 @@ public class PublicApiHttpClient
 		public void OnVisitSyntaxNode(GeneratorSyntaxContext context)
 		{
 			// Find all controllers.
-			if (context.Node is ClassDeclarationSyntax classSyntax && classSyntax.BaseList?.Types.Any(bt => bt.GetDisplayStringFromContext(context) == "ControllerBase") == true)
+			if (context.Node is ClassDeclarationSyntax cds && cds.BaseList?.Types.Any(bts => bts.GetDisplayStringFromContext(context) == "ControllerBase") == true)
 			{
 				// Find all methods.
-				foreach (MethodDeclarationSyntax method in classSyntax.Members.OfType<MethodDeclarationSyntax>())
+				foreach (MethodDeclarationSyntax mds in cds.Members.OfType<MethodDeclarationSyntax>())
 				{
 					// Skip non-public methods.
-					if (!method.Modifiers.Any(m => m.Kind() == SyntaxKind.PublicKeyword))
+					if (!mds.Modifiers.Any(st => st.Kind() == SyntaxKind.PublicKeyword))
 						continue;
 
-					string? name = context.SemanticModel.GetTypeInfo(method).Type?.Name;
+					string? name = mds.GetDisplayStringFromContext(context);
 					if (name == null)
 						continue;
 
-					List<Parameter> allParameters = method.ParameterList.Parameters
-						.Select(p => new { Type = p.Type?.GetDisplayStringFromContext(context), Name = p.GetDisplayStringFromContext(context) })
-						.Where(p => p.Type != null && p.Name != null)
-						.Select(p => new Parameter(p.Type!, p.Name!))
+					List<Parameter> allParameters = mds.ParameterList.Parameters
+						.Select(ps => new { Type = ps.Type?.GetDisplayStringFromContext(context), Name = ps.GetDisplayStringFromContext(context) })
+						.Where(ps => ps.Type != null && ps.Name != null)
+						.Select(ps => new Parameter(ps.Type!, ps.Name!))
 						.ToList();
 
-					string? returnType = method.ReturnType.GetDisplayStringFromContext(context);
+					string? returnType = mds.ReturnType.GetDisplayStringFromContext(context);
 					if (returnType == null)
 						continue;
 
-					string? apiRoute = method.GetAttributeValueFromMethod(context, "HttpGet");
+					string? apiRoute = mds.GetAttributeValueFromMethod(context, "HttpGet");
 					if (apiRoute == null)
 						continue;
 
