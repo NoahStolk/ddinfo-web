@@ -16,7 +16,7 @@ public class LeaderboardStatisticsController : ControllerBase
 
 	[HttpGet]
 	[ProducesResponseType(StatusCodes.Status200OK)]
-	public ActionResult<GetLeaderboardStatistics> GetStatistics()
+	public ActionResult<GetLeaderboardStatistics> GetLeaderboardStatistics()
 	{
 		return new GetLeaderboardStatistics
 		{
