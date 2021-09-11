@@ -73,11 +73,11 @@ public class PublicApiHttpClientGenerated
 				.Replace(_returnType, endpoint.ReturnType)
 				.Replace(_methodName, endpoint.MethodName)
 				.Replace(_methodParameters, methodParameters)
-				.Replace(_queryParameters, queryParameters)
+				.Replace(_queryParameters, queryParameters.Indent(2))
 				.Replace(_apiRoute, endpoint.ApiRoute));
 		}
 
-		context.AddSource("PublicApiHttpClientGenerated", _template.Replace(_endpointMethods, string.Join(Environment.NewLine, endpointMethods)));
+		context.AddSource("PublicApiHttpClientGenerated", _template.Replace(_endpointMethods, string.Join(Environment.NewLine, endpointMethods).Indent(2)));
 	}
 
 	private class SyntaxReceiver : ISyntaxContextReceiver
