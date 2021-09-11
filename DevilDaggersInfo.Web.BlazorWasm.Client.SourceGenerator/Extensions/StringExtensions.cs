@@ -8,6 +8,9 @@ public static class StringExtensions
 		return code.Insert(0, indentation).Replace(Environment.NewLine, Environment.NewLine + indentation);
 	}
 
+	public static string ToUsingDirective(this string namespaceString)
+		=> $"using {namespaceString};";
+
 	public static string TrimStart(this string str, params string[] values)
 	{
 		if (values.Length == 0)

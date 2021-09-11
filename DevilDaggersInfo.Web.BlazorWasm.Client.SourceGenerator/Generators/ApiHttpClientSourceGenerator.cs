@@ -3,21 +3,15 @@
 [Generator]
 public class ApiHttpClientSourceGenerator : ISourceGenerator
 {
+	private const string _serverProjectPath = @"C:\Users\NOAH\source\repos\DevilDaggersInfo\DevilDaggersInfo.Web.BlazorWasm.Server";
+	private const string _sharedProjectPath = @"C:\Users\NOAH\source\repos\DevilDaggersInfo\DevilDaggersInfo.Web.BlazorWasm.Shared";
+
+	private const string _dtoUsings = $"%{nameof(_dtoUsings)}%";
+	private const string _enumUsings = $"%{nameof(_enumUsings)}%";
 	private const string _endpointMethods = $"%{nameof(_endpointMethods)}%";
-	private const string _template = $@"using DevilDaggersInfo.Web.BlazorWasm.Client.Utils;
-using DevilDaggersInfo.Web.BlazorWasm.Shared.Dto;
-using DevilDaggersInfo.Web.BlazorWasm.Shared.Dto.Public.CustomEntries;
-using DevilDaggersInfo.Web.BlazorWasm.Shared.Dto.Public.CustomLeaderboards;
-using DevilDaggersInfo.Web.BlazorWasm.Shared.Dto.Public.LeaderboardHistory;
-using DevilDaggersInfo.Web.BlazorWasm.Shared.Dto.Public.LeaderboardHistoryStatistics;
-using DevilDaggersInfo.Web.BlazorWasm.Shared.Dto.Public.Leaderboards;
-using DevilDaggersInfo.Web.BlazorWasm.Shared.Dto.Public.LeaderboardStatistics;
-using DevilDaggersInfo.Web.BlazorWasm.Shared.Dto.Public.Mods;
-using DevilDaggersInfo.Web.BlazorWasm.Shared.Dto.Public.Players;
-using DevilDaggersInfo.Web.BlazorWasm.Shared.Dto.Public.Spawnsets;
-using DevilDaggersInfo.Web.BlazorWasm.Shared.Dto.Public.Tools;
-using DevilDaggersInfo.Web.BlazorWasm.Shared.Enums;
-using DevilDaggersInfo.Web.BlazorWasm.Shared.Enums.Sortings.Public;
+	private const string _template = $@"{_dtoUsings}
+{_enumUsings}
+using DevilDaggersInfo.Web.BlazorWasm.Client.Utils;
 using System.Net.Http;
 using System.Net.Http.Json;
 using System.Threading.Tasks;
@@ -52,8 +46,31 @@ public class PublicApiHttpClientGenerated
 }}
 ";
 
-	private readonly List<Endpoint> _adminEndpoints = new();
-	private readonly List<Endpoint> _publicEndpoints = new();
+	private readonly List<string> _globalDtoUsings = new();
+	private readonly Dictionary<ClientType, List<string>> _specificDtoUsings = new()
+	{
+		{ ClientType.Admin, new() },
+		{ ClientType.Public, new() },
+	};
+
+	private readonly List<string> _globalEnumUsings = new();
+	private readonly Dictionary<ClientType, List<string>> _specificEnumUsings = new()
+	{
+		{ ClientType.Admin, new() },
+		{ ClientType.Public, new() },
+	};
+
+	private readonly Dictionary<ClientType, List<Endpoint>> _endpoints = new()
+	{
+		{ ClientType.Admin, new() },
+		{ ClientType.Public, new() },
+	};
+
+	private enum ClientType
+	{
+		Admin,
+		Public,
+	}
 
 	public void Initialize(GeneratorInitializationContext context)
 	{
@@ -62,20 +79,48 @@ public class PublicApiHttpClientGenerated
 			Debugger.Launch();
 #endif
 
-		foreach (string controllerFilePath in Directory.GetFiles(@"C:\Users\NOAH\source\repos\DevilDaggersInfo\DevilDaggersInfo.Web.BlazorWasm.Server\Controllers\Admin"))
-			_adminEndpoints.AddRange(Parse(CSharpSyntaxTree.ParseText(File.ReadAllText(controllerFilePath))));
+		const string dtoPrefix = "DevilDaggersInfo.Web.BlazorWasm.Shared.Dto";
+		string dtoPath = Path.Combine(_sharedProjectPath, "Dto");
+		foreach (string directory in Directory.GetDirectories(dtoPath, "*", SearchOption.AllDirectories).Append(dtoPath))
+		{
+			string? directoryName = directory.TrimStart(dtoPath);
+			string usingDirective = dtoPrefix + directoryName.Replace('\\', '.');
+			if (directoryName.Contains(nameof(ClientType.Admin)))
+				_specificDtoUsings[ClientType.Admin].Add(usingDirective);
+			else if (directoryName.Contains(nameof(ClientType.Public)))
+				_specificDtoUsings[ClientType.Public].Add(usingDirective);
+			else
+				_globalDtoUsings.Add(usingDirective);
+		}
 
-		foreach (string controllerFilePath in Directory.GetFiles(@"C:\Users\NOAH\source\repos\DevilDaggersInfo\DevilDaggersInfo.Web.BlazorWasm.Server\Controllers\Public"))
-			_publicEndpoints.AddRange(Parse(CSharpSyntaxTree.ParseText(File.ReadAllText(controllerFilePath))));
+		const string enumsPrefix = "DevilDaggersInfo.Web.BlazorWasm.Shared.Enums";
+		string enumsPath = Path.Combine(_sharedProjectPath, "Enums");
+		foreach (string directory in Directory.GetDirectories(enumsPath, "*", SearchOption.AllDirectories).Append(enumsPath))
+		{
+			string? directoryName = directory.TrimStart(enumsPath);
+			string usingDirective = enumsPrefix + directoryName.Replace('\\', '.');
+			if (directoryName.Contains(nameof(ClientType.Admin)))
+				_specificEnumUsings[ClientType.Admin].Add(usingDirective);
+			else if (directoryName.Contains(nameof(ClientType.Public)))
+				_specificEnumUsings[ClientType.Public].Add(usingDirective);
+			else
+				_globalEnumUsings.Add(usingDirective);
+		}
+
+		foreach (string controllerFilePath in Directory.GetFiles($@"{_serverProjectPath}\Controllers\Admin"))
+			_endpoints[ClientType.Admin].AddRange(Parse(CSharpSyntaxTree.ParseText(File.ReadAllText(controllerFilePath))));
+
+		foreach (string controllerFilePath in Directory.GetFiles($@"{_serverProjectPath}\Controllers\Public"))
+			_endpoints[ClientType.Public].AddRange(Parse(CSharpSyntaxTree.ParseText(File.ReadAllText(controllerFilePath))));
 	}
 
 	public void Execute(GeneratorExecutionContext context)
 	{
-		GenerateClient(context, "Admin", _adminEndpoints);
-		GenerateClient(context, "Public", _publicEndpoints);
+		GenerateClient(context, ClientType.Admin, _endpoints[ClientType.Admin]);
+		GenerateClient(context, ClientType.Public, _endpoints[ClientType.Public]);
 	}
 
-	private static void GenerateClient(GeneratorExecutionContext context, string classPrefix, List<Endpoint> endpoints)
+	private void GenerateClient(GeneratorExecutionContext context, ClientType clientType, List<Endpoint> endpoints)
 	{
 		List<string> endpointMethods = new();
 		foreach (Endpoint endpoint in endpoints)
@@ -91,7 +136,10 @@ public class PublicApiHttpClientGenerated
 				.Replace(_apiRoute, endpoint.ApiRoute));
 		}
 
-		context.AddSource($"{classPrefix}ApiHttpClientGenerated", _template.Replace(_endpointMethods, string.Join(Environment.NewLine, endpointMethods).Indent(1)));
+		context.AddSource($"{clientType}ApiHttpClientGenerated", _template
+			.Replace(_dtoUsings, string.Join(Environment.NewLine, _globalDtoUsings.Concat(_specificDtoUsings[clientType]).Select(s => s.ToUsingDirective())))
+			.Replace(_enumUsings, string.Join(Environment.NewLine, _globalEnumUsings.Concat(_specificEnumUsings[clientType]).Select(s => s.ToUsingDirective())))
+			.Replace(_endpointMethods, string.Join(Environment.NewLine, endpointMethods).Indent(1)));
 	}
 
 	private static IEnumerable<Endpoint> Parse(SyntaxTree syntaxTree)
