@@ -1,4 +1,4 @@
-﻿namespace DevilDaggersInfo.Web.BlazorWasm.Client.SourceGenerator.Generators;
+﻿namespace DevilDaggersInfo.Web.BlazorWasm.Server.SourceGenerator.Generators;
 
 [Generator]
 public class PublicApiHttpClientSourceGenerator : ISourceGenerator
@@ -22,11 +22,11 @@ using System.Net.Http.Json;
 
 namespace DevilDaggersInfo.Web.BlazorWasm.Client.HttpClients;
 
-public class PublicApiHttpClient
+public class PublicApiHttpClientGenerated
 {{
 	private readonly HttpClient _client;
 
-	public PublicApiHttpClient(HttpClient client)
+	public PublicApiHttpClientGenerated(HttpClient client)
 	{{
 		_client = client;
 	}}
@@ -51,6 +51,11 @@ public class PublicApiHttpClient
 
 	public void Initialize(GeneratorInitializationContext context)
 	{
+#if DEBUG
+		if (!Debugger.IsAttached)
+			Debugger.Launch();
+#endif
+
 		context.RegisterForSyntaxNotifications(() => new SyntaxReceiver());
 	}
 
@@ -72,7 +77,7 @@ public class PublicApiHttpClient
 				.Replace(_apiRoute, endpoint.ApiRoute));
 		}
 
-		context.AddSource("PublicApiHttpClient", _template.Replace(_endpointMethods, string.Join(Environment.NewLine, endpointMethods)));
+		context.AddSource("PublicApiHttpClientGenerated", _template.Replace(_endpointMethods, string.Join(Environment.NewLine, endpointMethods)));
 	}
 
 	private class SyntaxReceiver : ISyntaxContextReceiver
@@ -81,9 +86,20 @@ public class PublicApiHttpClient
 
 		public void OnVisitSyntaxNode(GeneratorSyntaxContext context)
 		{
-			// Find all controllers.
-			if (context.Node is ClassDeclarationSyntax cds && cds.BaseList?.Types.Any(bts => bts.GetDisplayStringFromContext(context) == "ControllerBase") == true)
+			// Find all classes.
+			if (context.Node is ClassDeclarationSyntax cds)
 			{
+				// Find all controllers.
+				if (cds.BaseList?.Types.Any(bts => bts.ToString() == "ControllerBase") != true)
+					return;
+
+				// Find base route.
+				AttributeSyntax? routeAttribute = cds.GetAttributeFromMember(context, "Microsoft.AspNetCore.Mvc.RouteAttribute");
+				if (routeAttribute == null)
+					return;
+
+				string apiRoute = routeAttribute.GetRouteAttributeStringValue();
+
 				// Find all methods.
 				foreach (MethodDeclarationSyntax mds in cds.Members.OfType<MethodDeclarationSyntax>())
 				{
@@ -91,12 +107,10 @@ public class PublicApiHttpClient
 					if (!mds.Modifiers.Any(st => st.Kind() == SyntaxKind.PublicKeyword))
 						continue;
 
-					string? name = mds.GetDisplayStringFromContext(context);
-					if (name == null)
-						continue;
+					string methodName = mds.Identifier.ToString();
 
 					List<Parameter> allParameters = mds.ParameterList.Parameters
-						.Select(ps => new { Type = ps.Type?.GetDisplayStringFromContext(context), Name = ps.GetDisplayStringFromContext(context) })
+						.Select(ps => new { Type = ps.Type?.GetDisplayStringFromContext(context), Name = ps.Identifier.ToString() })
 						.Where(ps => ps.Type != null && ps.Name != null)
 						.Select(ps => new Parameter(ps.Type!, ps.Name!))
 						.ToList();
@@ -105,14 +119,16 @@ public class PublicApiHttpClient
 					if (returnType == null)
 						continue;
 
-					string? apiRoute = mds.GetAttributeValueFromMethod(context, "HttpGet");
-					if (apiRoute == null)
+					AttributeSyntax? httpGetAttribute = mds.GetAttributeFromMember(context, "Microsoft.AspNetCore.Mvc.HttpGetAttribute");
+					if (httpGetAttribute == null)
 						continue;
 
-					List<Parameter> queryParameters = allParameters.Where(p => apiRoute.Contains($"{{{p.Name}}}")).ToList();
-					List<Parameter> routeParameters = allParameters.Except(queryParameters).ToList();
+					string endpointRoute = httpGetAttribute.GetRouteAttributeStringValue();
 
-					Endpoints.Add(new(name, queryParameters, routeParameters, returnType, apiRoute));
+					List<Parameter> routeParameters = allParameters.Where(p => endpointRoute.Contains($"{{{p.Name}}}")).ToList();
+					List<Parameter> queryParameters = allParameters.Except(routeParameters).ToList();
+
+					Endpoints.Add(new(methodName, routeParameters, queryParameters, returnType, $"{apiRoute}/{endpointRoute}"));
 				}
 			}
 		}
@@ -120,7 +136,7 @@ public class PublicApiHttpClient
 
 	private class Endpoint
 	{
-		public Endpoint(string methodName, List<Parameter> queryParameters, List<Parameter> routeParameters, string returnType, string apiRoute)
+		public Endpoint(string methodName, List<Parameter> routeParameters, List<Parameter> queryParameters, string returnType, string apiRoute)
 		{
 			MethodName = methodName;
 			QueryParameters = queryParameters;
@@ -130,10 +146,13 @@ public class PublicApiHttpClient
 		}
 
 		public string MethodName { get; }
-		public List<Parameter> QueryParameters { get; }
 		public List<Parameter> RouteParameters { get; }
+		public List<Parameter> QueryParameters { get; }
 		public string ReturnType { get; }
 		public string ApiRoute { get; }
+
+		public override string ToString()
+			=> $"{ApiRoute} {ReturnType} {MethodName}({string.Join(", ", RouteParameters)} | {string.Join(", ", QueryParameters)})";
 	}
 
 	private class Parameter
@@ -146,5 +165,8 @@ public class PublicApiHttpClient
 
 		public string Type { get; }
 		public string Name { get; }
+
+		public override string ToString()
+			=> $"{Type} {Name}";
 	}
 }
