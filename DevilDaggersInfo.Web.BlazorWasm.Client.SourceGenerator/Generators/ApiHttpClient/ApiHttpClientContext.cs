@@ -32,11 +32,19 @@ internal class ApiHttpClientContext
 			{
 				string? directoryName = directory.TrimStart(path);
 				string usingDirective = prefix + directoryName.Replace('\\', '.');
-				if (directoryName.Contains(nameof(ClientType.Admin)))
-					SpecificUsings[includedDirectory][ClientType.Admin].Add(usingDirective);
-				else if (directoryName.Contains(nameof(ClientType.Public)))
-					SpecificUsings[includedDirectory][ClientType.Public].Add(usingDirective);
-				else
+
+				bool registered = false;
+				foreach (ClientType clientType in Constants.ClientTypes)
+				{
+					if (directoryName.Contains(clientType.ToString()))
+					{
+						SpecificUsings[includedDirectory][clientType].Add(usingDirective);
+						registered = true;
+						break;
+					}
+				}
+
+				if (!registered)
 					GlobalUsings[includedDirectory].Add(usingDirective);
 			}
 		}
