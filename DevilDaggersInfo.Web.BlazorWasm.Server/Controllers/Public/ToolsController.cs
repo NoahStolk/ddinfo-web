@@ -1,5 +1,6 @@
 ﻿using DevilDaggersInfo.Web.BlazorWasm.Server.Converters.Public;
 using DevilDaggersInfo.Web.BlazorWasm.Shared.Dto.Public.Tools;
+using DevilDaggersInfo.Web.BlazorWasm.Shared.Dto.Public.Tools.Obsolete;
 
 namespace DevilDaggersInfo.Web.BlazorWasm.Server.Controllers.Public;
 
@@ -23,12 +24,38 @@ public class ToolsController : ControllerBase
 	[Obsolete($"Use {nameof(GetTool)} instead.")]
 	[HttpGet]
 	[ProducesResponseType(StatusCodes.Status200OK)]
-	public ActionResult<List<Tool>> GetToolsForTools(string? toolNameFilter = null)
+	public ActionResult<List<GetToolObsolete>> GetToolsForTools(string? toolNameFilter = null)
 	{
 		IEnumerable<Tool> tools = _toolHelper.Tools;
 		if (!string.IsNullOrEmpty(toolNameFilter))
 			tools = tools.Where(t => t.Name.Contains(toolNameFilter));
-		return tools.ToList();
+
+		return tools
+			.Select(t => new GetToolObsolete
+			{
+				Changelog = t.Changelog
+					.Select(ce => new GetChangelogEntryObsolete
+					{
+						Changes = ce.Changes.Select(c => ToGetChange(c)).ToList(),
+						Date = ce.Date,
+						VersionNumber = ce.VersionNumber,
+					})
+					.ToList(),
+				DisplayName = t.DisplayName,
+				Name = t.Name,
+				VersionNumber = t.VersionNumber,
+				VersionNumberRequired = t.VersionNumberRequired,
+			})
+			.ToList();
+
+		static GetChangeObsolete ToGetChange(Change change)
+		{
+			return new GetChangeObsolete
+			{
+				Description = change.Description,
+				SubChanges = change.SubChanges?.Select(c => ToGetChange(c)).ToList(),
+			};
+		}
 	}
 
 	[HttpGet("{toolName}")]
