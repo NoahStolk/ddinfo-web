@@ -29,6 +29,9 @@ internal class ApiHttpClientContext
 
 	public void FindUsings()
 	{
+		GlobalUsings.Clear();
+		SpecificUsings.Clear();
+
 		foreach (IncludedDirectory includedDirectory in Constants.IncludedDirectories)
 		{
 			string prefix = $"{Constants.SharedProjectName}.{includedDirectory}";
@@ -49,6 +52,8 @@ internal class ApiHttpClientContext
 
 	public void FindEndpoints()
 	{
+		Endpoints.Clear();
+
 		foreach (ClientType clientType in Constants.ClientTypes)
 		{
 			foreach (string controllerFilePath in Directory.GetFiles(Path.Combine(Constants.ServerProjectPath, "Controllers", clientType.ToString())))
