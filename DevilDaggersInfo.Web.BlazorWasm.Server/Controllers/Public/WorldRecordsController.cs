@@ -26,7 +26,7 @@ public class WorldRecordsController : ControllerBase
 
 	[HttpGet("world-record-data")]
 	[ProducesResponseType(StatusCodes.Status200OK)]
-	public (List<GetWorldRecordHolder> WorldRecordHolders, Dictionary<GetWorldRecord, GetWorldRecordData> WorldRecordData) GetWorldRecordData()
+	public GetWorldRecordDataContainer GetWorldRecordData()
 	{
 		List<GetWorldRecord> worldRecords = GetWorldRecordsPrivate();
 
@@ -85,7 +85,11 @@ public class WorldRecordsController : ControllerBase
 			}
 		}
 
-		return (worldRecordHolders.OrderByDescending(wrh => wrh.TotalTimeHeld).ToList(), worldRecordData);
+		return new()
+		{
+			WorldRecordHolders = worldRecordHolders.OrderByDescending(wrh => wrh.TotalTimeHeld).ToList(),
+			WorldRecordData = worldRecordData,
+		};
 
 		// Used for determining when the leaderboard was reset.
 		static int GetMajorGameVersion(GameVersion? gameVersion) => gameVersion switch
