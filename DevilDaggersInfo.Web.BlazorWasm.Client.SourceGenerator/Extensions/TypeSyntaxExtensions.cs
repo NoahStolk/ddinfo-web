@@ -5,6 +5,8 @@ public static class TypeSyntaxExtensions
 	public static string GetTypeStringWithoutActionResult(this TypeSyntax typeSyntax)
 	{
 		string typeString = typeSyntax.ToString();
+		if (typeString == "ActionResult")
+			return "void";
 
 		if (!typeString.StartsWith("ActionResult<"))
 			return typeString;
