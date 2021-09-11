@@ -47,24 +47,22 @@ public class PublicApiHttpClientGenerated
 ";
 
 	private readonly List<string> _globalDtoUsings = new();
-	private readonly Dictionary<ClientType, List<string>> _specificDtoUsings = new()
-	{
-		{ ClientType.Admin, new() },
-		{ ClientType.Public, new() },
-	};
+	private readonly Dictionary<ClientType, List<string>> _specificDtoUsings = new();
 
 	private readonly List<string> _globalEnumUsings = new();
-	private readonly Dictionary<ClientType, List<string>> _specificEnumUsings = new()
-	{
-		{ ClientType.Admin, new() },
-		{ ClientType.Public, new() },
-	};
+	private readonly Dictionary<ClientType, List<string>> _specificEnumUsings = new();
 
-	private readonly Dictionary<ClientType, List<Endpoint>> _endpoints = new()
+	private readonly Dictionary<ClientType, List<Endpoint>> _endpoints = new();
+
+	public ApiHttpClientSourceGenerator()
 	{
-		{ ClientType.Admin, new() },
-		{ ClientType.Public, new() },
-	};
+		foreach (ClientType clientType in Enum.GetValues(typeof(ClientType)))
+		{
+			_specificDtoUsings.Add(clientType, new());
+			_specificEnumUsings.Add(clientType, new());
+			_endpoints.Add(clientType, new());
+		}
+	}
 
 	private enum ClientType
 	{
