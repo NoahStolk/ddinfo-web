@@ -30,6 +30,7 @@ namespace DevilDaggersWebsite.Api
 			_toolHelper = toolHelper;
 		}
 
+		[Obsolete("Use api/tools/{toolName} instead.")]
 		[HttpGet]
 		[ProducesResponseType(StatusCodes.Status200OK)]
 		public ActionResult<List<Tool>> GetTools(string? toolNameFilter = null)
@@ -38,6 +39,18 @@ namespace DevilDaggersWebsite.Api
 			if (!string.IsNullOrEmpty(toolNameFilter))
 				tools = tools.Where(t => t.Name.Contains(toolNameFilter));
 			return tools.ToList();
+		}
+
+		[HttpGet("{toolName}")]
+		[ProducesResponseType(StatusCodes.Status200OK)]
+		[ProducesResponseType(StatusCodes.Status404NotFound)]
+		public ActionResult<Tool> GetTool(string toolName)
+		{
+			Tool? tool = _toolHelper.Tools.Find(t => t.Name == toolName);
+			if (tool == null)
+				return NotFound($"Tool '{toolName}' was not found.");
+
+			return tool;
 		}
 
 		[HttpGet("{toolName}/file")]
