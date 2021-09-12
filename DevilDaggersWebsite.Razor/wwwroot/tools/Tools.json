@@ -851,9 +851,24 @@
 	{
 		"Name": "DevilDaggersCustomLeaderboards",
 		"DisplayName": "Devil Daggers Custom Leaderboards",
-		"VersionNumber": "1.2.0.0",
+		"VersionNumber": "1.3.0.0",
 		"VersionNumberRequired": "1.2.0.0",
 		"Changelog": [
+			{
+				"VersionNumber": "1.3.0.0",
+				"Date": "2021-09-12T00:00:00",
+				"Changes": [
+					{
+						"Description": "Reduced CPU and memory usage."
+					},
+					{
+						"Description": "Fixed not always scanning homing and level up times."
+					},
+					{
+						"Description": "Removed 32-bit support completely."
+					}
+				]
+			},
 			{
 				"VersionNumber": "1.2.0.0",
 				"Date": "2021-06-28T00:00:00",
