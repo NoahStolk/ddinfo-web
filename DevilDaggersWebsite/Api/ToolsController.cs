@@ -68,6 +68,7 @@ namespace DevilDaggersWebsite.Api
 			return File(Io.File.ReadAllBytes(Path.Combine(_environment.WebRootPath, path)), MediaTypeNames.Application.Zip, $"{toolName}{tool.VersionNumber}.zip");
 		}
 
+		[Obsolete("Use api/process-memory/marker instead.")]
 		[HttpGet("devildaggerscustomleaderboards/settings")]
 		[ProducesResponseType(StatusCodes.Status200OK)]
 		[EndpointConsumer(EndpointConsumers.Ddcl)]
