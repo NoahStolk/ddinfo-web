@@ -119,7 +119,7 @@
 					</div>
 				</div>
 			}
-			@if (Model.Player?.HideSettings == false)
+			@if (Model.Player?.HideSettings == false && Model.Player.HasSettings())
 			{
 				<div class="flex-container player-section">
 					<div class="leaderboard-data-container">
