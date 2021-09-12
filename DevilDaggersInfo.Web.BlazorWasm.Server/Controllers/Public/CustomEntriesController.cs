@@ -161,22 +161,6 @@ public class CustomEntriesController : ControllerBase
 		// Make sure HomingDaggers is not negative (happens rarely).
 		uploadRequest.HomingDaggers = Math.Max(0, uploadRequest.HomingDaggers);
 
-		// This is a partial fix for a bug in Devil Daggers process memory (__ddstats__ copy).
-		// Sometimes the level up times do not clear, and they will be re-submitted if no gems were collected in the run.
-		// We know this has happened when the level up times are greater than the time, so in that case we can clear the level up times.
-		// We also know there were no actual level ups in the run because no gems were collected.
-		// While this fix does not solve all the problems, it's an easy way to clean up at least some incorrect values.
-		// A more robust fix would be to check the graph data for actual level up times, but this is a bit more complex and will need to be unit tested properly.
-		const int margin = 333; // Use 2 tick margin just in case.
-		if (uploadRequest.LevelUpTime2 > uploadRequest.Time + margin
-		 || uploadRequest.LevelUpTime3 > uploadRequest.Time + margin
-		 || uploadRequest.LevelUpTime4 > uploadRequest.Time + margin)
-		{
-			uploadRequest.LevelUpTime2 = 0;
-			uploadRequest.LevelUpTime3 = 0;
-			uploadRequest.LevelUpTime4 = 0;
-		}
-
 		// Calculate the new rank.
 		List<CustomEntryEntity> entries = FetchEntriesFromDatabase(customLeaderboard, isAscending);
 		int rank = isAscending ? entries.Count(e => e.Time <= uploadRequest.Time) + 1 : entries.Count(e => e.Time >= uploadRequest.Time) + 1;
