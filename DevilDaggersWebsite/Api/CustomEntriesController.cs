@@ -1,13 +1,10 @@
-﻿using DevilDaggersWebsite.Authorization;
-using DevilDaggersWebsite.Caches.SpawnsetHash;
-using DevilDaggersWebsite.Dto.CustomEntries;
+﻿using DevilDaggersWebsite.Caches.SpawnsetHash;
 using DevilDaggersWebsite.Entities;
 using DevilDaggersWebsite.Extensions;
 using DevilDaggersWebsite.HostedServices.DdInfoDiscordBot;
 using DevilDaggersWebsite.Singletons;
 using DevilDaggersWebsite.Transients;
 using DSharpPlus.Entities;
-using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.EntityFrameworkCore;
@@ -34,138 +31,6 @@ namespace DevilDaggersWebsite.Api
 			_toolHelper = toolHelper;
 			_discordLogger = discordLogger;
 			_spawnsetHashCache = spawnsetHashCache;
-		}
-
-		[HttpGet]
-		[Authorize(Policies.AdminPolicy)]
-		[ProducesResponseType(StatusCodes.Status200OK)]
-		public ActionResult<List<GetBaseCustomEntry>> GetCustomEntries()
-		{
-			List<CustomEntry> customEntries = _dbContext.CustomEntries.AsNoTracking().ToList();
-
-			return customEntries.ConvertAll(ce => new GetBaseCustomEntry
-			{
-				Id = ce.Id,
-				ClientVersion = ce.ClientVersion,
-				DaggersFired = ce.DaggersFired,
-				DaggersHit = ce.DaggersHit,
-				DeathType = ce.DeathType,
-				EnemiesAlive = ce.EnemiesAlive,
-				EnemiesKilled = ce.EnemiesKilled,
-				GemsCollected = ce.GemsCollected,
-				GemsDespawned = ce.GemsDespawned,
-				GemsEaten = ce.GemsEaten,
-				GemsTotal = ce.GemsTotal,
-				HomingDaggers = ce.HomingStored,
-				HomingDaggersEaten = ce.HomingEaten,
-				LevelUpTime2 = ce.LevelUpTime2,
-				LevelUpTime3 = ce.LevelUpTime3,
-				LevelUpTime4 = ce.LevelUpTime4,
-				PlayerId = ce.PlayerId,
-				SubmitDate = ce.SubmitDate,
-				Time = ce.Time,
-			});
-		}
-
-		[HttpPost]
-		[Authorize(Policies.AdminPolicy)]
-		[ProducesResponseType(StatusCodes.Status200OK)]
-		[ProducesResponseType(StatusCodes.Status400BadRequest)]
-		public ActionResult AddCustomEntry(AddCustomEntry addCustomEntry)
-		{
-			if (!_dbContext.Players.Any(p => p.Id == addCustomEntry.PlayerId))
-				return BadRequest($"Player with ID {addCustomEntry.PlayerId} does not exist.");
-
-			if (!_dbContext.CustomLeaderboards.Any(cl => cl.Id == addCustomEntry.CustomLeaderboardId))
-				return BadRequest($"Custom leaderboard with ID {addCustomEntry.CustomLeaderboardId} does not exist.");
-
-			CustomEntry customEntry = new()
-			{
-				ClientVersion = addCustomEntry.ClientVersion,
-				CustomLeaderboardId = addCustomEntry.CustomLeaderboardId,
-				DaggersFired = addCustomEntry.DaggersFired,
-				DaggersHit = addCustomEntry.DaggersHit,
-				DeathType = addCustomEntry.DeathType,
-				EnemiesAlive = addCustomEntry.EnemiesAlive,
-				EnemiesKilled = addCustomEntry.EnemiesKilled,
-				GemsCollected = addCustomEntry.GemsCollected,
-				GemsDespawned = addCustomEntry.GemsDespawned,
-				GemsEaten = addCustomEntry.GemsEaten,
-				GemsTotal = addCustomEntry.GemsTotal,
-				HomingStored = addCustomEntry.HomingDaggers,
-				HomingEaten = addCustomEntry.HomingDaggersEaten,
-				LevelUpTime2 = addCustomEntry.LevelUpTime2,
-				LevelUpTime3 = addCustomEntry.LevelUpTime3,
-				LevelUpTime4 = addCustomEntry.LevelUpTime4,
-				PlayerId = addCustomEntry.PlayerId,
-				SubmitDate = addCustomEntry.SubmitDate,
-				Time = addCustomEntry.Time,
-			};
-			_dbContext.CustomEntries.Add(customEntry);
-			_dbContext.SaveChanges();
-
-			return Ok();
-		}
-
-		[HttpPut("{id}")]
-		[Authorize(Policies.AdminPolicy)]
-		[ProducesResponseType(StatusCodes.Status200OK)]
-		[ProducesResponseType(StatusCodes.Status400BadRequest)]
-		[ProducesResponseType(StatusCodes.Status404NotFound)]
-		public ActionResult EditCustomEntry(int id, EditCustomEntry editCustomEntry)
-		{
-			if (!_dbContext.Players.Any(p => p.Id == editCustomEntry.PlayerId))
-				return BadRequest($"Player with ID {editCustomEntry.PlayerId} does not exist.");
-
-			if (!_dbContext.CustomLeaderboards.Any(cl => cl.Id == editCustomEntry.CustomLeaderboardId))
-				return BadRequest($"Custom leaderboard with ID {editCustomEntry.CustomLeaderboardId} does not exist.");
-
-			CustomEntry? customEntry = _dbContext.CustomEntries.FirstOrDefault(ce => ce.Id == id);
-			if (customEntry == null)
-				return NotFound();
-
-			customEntry.ClientVersion = editCustomEntry.ClientVersion;
-			customEntry.CustomLeaderboardId = editCustomEntry.CustomLeaderboardId;
-			customEntry.DaggersFired = editCustomEntry.DaggersFired;
-			customEntry.DaggersHit = editCustomEntry.DaggersHit;
-			customEntry.DeathType = editCustomEntry.DeathType;
-			customEntry.EnemiesAlive = editCustomEntry.EnemiesAlive;
-			customEntry.EnemiesKilled = editCustomEntry.EnemiesKilled;
-			customEntry.GemsCollected = editCustomEntry.GemsCollected;
-			customEntry.GemsDespawned = editCustomEntry.GemsDespawned;
-			customEntry.GemsEaten = editCustomEntry.GemsEaten;
-			customEntry.GemsTotal = editCustomEntry.GemsTotal;
-			customEntry.HomingStored = editCustomEntry.HomingDaggers;
-			customEntry.HomingEaten = editCustomEntry.HomingDaggersEaten;
-			customEntry.LevelUpTime2 = editCustomEntry.LevelUpTime2;
-			customEntry.LevelUpTime3 = editCustomEntry.LevelUpTime3;
-			customEntry.LevelUpTime4 = editCustomEntry.LevelUpTime4;
-			customEntry.PlayerId = editCustomEntry.PlayerId;
-			customEntry.SubmitDate = editCustomEntry.SubmitDate;
-			customEntry.Time = editCustomEntry.Time;
-			_dbContext.SaveChanges();
-
-			return Ok();
-		}
-
-		[HttpDelete("{id}")]
-		[Authorize(Policies.AdminPolicy)]
-		[ProducesResponseType(StatusCodes.Status200OK)]
-		[ProducesResponseType(StatusCodes.Status404NotFound)]
-		public ActionResult DeleteCustomEntry(int id)
-		{
-			CustomEntry? customEntry = _dbContext.CustomEntries.FirstOrDefault(ced => ced.Id == id);
-			if (customEntry == null)
-				return NotFound();
-
-			CustomEntryData? customEntryData = _dbContext.CustomEntryData.FirstOrDefault(ced => ced.CustomEntryId == id);
-			if (customEntryData != null)
-				_dbContext.CustomEntryData.Remove(customEntryData);
-
-			_dbContext.CustomEntries.Remove(customEntry);
-			_dbContext.SaveChanges();
-
-			return Ok();
 		}
 
 		[HttpPost("submit")]
