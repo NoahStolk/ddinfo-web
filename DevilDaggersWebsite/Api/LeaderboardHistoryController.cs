@@ -1,5 +1,4 @@
-﻿using DevilDaggersWebsite.Api.Attributes;
-using DevilDaggersWebsite.Caches.LeaderboardHistory;
+﻿using DevilDaggersWebsite.Caches.LeaderboardHistory;
 using DevilDaggersWebsite.Dto;
 using DevilDaggersWebsite.Transients;
 using Microsoft.AspNetCore.Hosting;
@@ -32,7 +31,6 @@ namespace DevilDaggersWebsite.Api
 		[HttpGet("user-progression")]
 		[ProducesResponseType(StatusCodes.Status200OK)]
 		[ProducesResponseType(StatusCodes.Status400BadRequest)]
-		[EndpointConsumer(EndpointConsumers.Website)]
 		public SortedDictionary<DateTime, Entry> GetUserProgressionById([Required] int userId)
 		{
 			SortedDictionary<DateTime, Entry> data = new();
@@ -59,14 +57,12 @@ namespace DevilDaggersWebsite.Api
 
 		[HttpGet("world-records")]
 		[ProducesResponseType(StatusCodes.Status200OK)]
-		[EndpointConsumer(EndpointConsumers.Website)]
 		public List<WorldRecord> GetWorldRecords()
 			=> _worldRecordsHelper.GetWorldRecords();
 
 		[HttpGet("user-activity")]
 		[ProducesResponseType(StatusCodes.Status200OK)]
 		[ProducesResponseType(StatusCodes.Status400BadRequest)]
-		[EndpointConsumer(EndpointConsumers.Website)]
 		public Dictionary<DateTime, ulong> GetUserActivity([Required] int userId)
 		{
 			Dictionary<DateTime, ulong> data = new();

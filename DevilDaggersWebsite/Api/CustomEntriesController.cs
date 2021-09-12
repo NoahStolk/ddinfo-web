@@ -1,5 +1,4 @@
-﻿using DevilDaggersWebsite.Api.Attributes;
-using DevilDaggersWebsite.Authorization;
+﻿using DevilDaggersWebsite.Authorization;
 using DevilDaggersWebsite.Caches.SpawnsetHash;
 using DevilDaggersWebsite.Dto.CustomEntries;
 using DevilDaggersWebsite.Entities;
@@ -40,7 +39,6 @@ namespace DevilDaggersWebsite.Api
 		[HttpGet]
 		[Authorize(Policies.AdminPolicy)]
 		[ProducesResponseType(StatusCodes.Status200OK)]
-		[EndpointConsumer(EndpointConsumers.None)]
 		public ActionResult<List<GetBaseCustomEntry>> GetCustomEntries()
 		{
 			List<CustomEntry> customEntries = _dbContext.CustomEntries.AsNoTracking().ToList();
@@ -73,7 +71,6 @@ namespace DevilDaggersWebsite.Api
 		[Authorize(Policies.AdminPolicy)]
 		[ProducesResponseType(StatusCodes.Status200OK)]
 		[ProducesResponseType(StatusCodes.Status400BadRequest)]
-		[EndpointConsumer(EndpointConsumers.None)]
 		public ActionResult AddCustomEntry(AddCustomEntry addCustomEntry)
 		{
 			if (!_dbContext.Players.Any(p => p.Id == addCustomEntry.PlayerId))
@@ -115,7 +112,6 @@ namespace DevilDaggersWebsite.Api
 		[ProducesResponseType(StatusCodes.Status200OK)]
 		[ProducesResponseType(StatusCodes.Status400BadRequest)]
 		[ProducesResponseType(StatusCodes.Status404NotFound)]
-		[EndpointConsumer(EndpointConsumers.None)]
 		public ActionResult EditCustomEntry(int id, EditCustomEntry editCustomEntry)
 		{
 			if (!_dbContext.Players.Any(p => p.Id == editCustomEntry.PlayerId))
@@ -156,7 +152,6 @@ namespace DevilDaggersWebsite.Api
 		[Authorize(Policies.AdminPolicy)]
 		[ProducesResponseType(StatusCodes.Status200OK)]
 		[ProducesResponseType(StatusCodes.Status404NotFound)]
-		[EndpointConsumer(EndpointConsumers.None)]
 		public ActionResult DeleteCustomEntry(int id)
 		{
 			CustomEntry? customEntry = _dbContext.CustomEntries.FirstOrDefault(ced => ced.Id == id);
@@ -176,7 +171,6 @@ namespace DevilDaggersWebsite.Api
 		[HttpPost("submit")]
 		[ProducesResponseType(StatusCodes.Status200OK)]
 		[ProducesResponseType(StatusCodes.Status400BadRequest)]
-		[EndpointConsumer(EndpointConsumers.Ddcl)]
 		public async Task<ActionResult<Dto.UploadSuccess>> SubmitScore([FromBody] Dto.UploadRequest uploadRequest)
 		{
 			try

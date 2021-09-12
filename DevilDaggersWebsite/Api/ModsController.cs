@@ -1,5 +1,4 @@
-﻿using DevilDaggersWebsite.Api.Attributes;
-using DevilDaggersWebsite.Dto;
+﻿using DevilDaggersWebsite.Dto;
 using DevilDaggersWebsite.Entities;
 using DevilDaggersWebsite.Transients;
 using Microsoft.AspNetCore.Hosting;
@@ -32,7 +31,6 @@ namespace DevilDaggersWebsite.Api
 
 		[HttpGet]
 		[ProducesResponseType(StatusCodes.Status200OK)]
-		[EndpointConsumer(EndpointConsumers.Ddae)]
 		public List<Mod> GetMods(string? authorFilter = null, string? nameFilter = null, bool? isHostedFilter = null)
 			=> _modHelper.GetMods(authorFilter, nameFilter, isHostedFilter);
 
@@ -40,7 +38,6 @@ namespace DevilDaggersWebsite.Api
 		[ProducesResponseType(typeof(FileContentResult), StatusCodes.Status200OK)]
 		[ProducesResponseType(StatusCodes.Status400BadRequest)]
 		[ProducesResponseType(StatusCodes.Status404NotFound)]
-		[EndpointConsumer(EndpointConsumers.Ddae)]
 		public ActionResult GetModFile([Required] string modName)
 		{
 			if (!_dbContext.AssetMods.Any(am => am.Name == modName))

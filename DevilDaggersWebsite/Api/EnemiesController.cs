@@ -1,5 +1,4 @@
 ﻿using DevilDaggersCore.Game;
-using DevilDaggersWebsite.Api.Attributes;
 using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
 using System.Collections.Generic;
@@ -13,7 +12,6 @@ namespace DevilDaggersWebsite.Api
 	{
 		[HttpGet]
 		[ProducesResponseType(StatusCodes.Status200OK)]
-		[EndpointConsumer(EndpointConsumers.None)]
 		public ActionResult<List<Enemy>> GetEnemies(GameVersion? gameVersion = null, string? name = null, byte? spawnsetType = null)
 		{
 			IEnumerable<Enemy> enemies = GameInfo.GetEnemies(gameVersion ?? GameVersion.V31);

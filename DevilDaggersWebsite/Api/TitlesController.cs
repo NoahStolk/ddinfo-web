@@ -1,5 +1,4 @@
-﻿using DevilDaggersWebsite.Api.Attributes;
-using DevilDaggersWebsite.Authorization;
+﻿using DevilDaggersWebsite.Authorization;
 using DevilDaggersWebsite.Dto.Titles;
 using DevilDaggersWebsite.Entities;
 using Microsoft.AspNetCore.Authorization;
@@ -25,7 +24,6 @@ namespace DevilDaggersWebsite.Api
 		[HttpGet]
 		[Authorize(Policies.AdminPolicy)]
 		[ProducesResponseType(StatusCodes.Status200OK)]
-		[EndpointConsumer(EndpointConsumers.None)]
 		public ActionResult<List<GetTitle>> GetTitles()
 		{
 			List<Title> titles = _dbContext.Titles
@@ -45,7 +43,6 @@ namespace DevilDaggersWebsite.Api
 		[Authorize(Policies.AdminPolicy)]
 		[ProducesResponseType(StatusCodes.Status200OK)]
 		[ProducesResponseType(StatusCodes.Status400BadRequest)]
-		[EndpointConsumer(EndpointConsumers.None)]
 		public ActionResult AddTitle(AddTitle addTitle)
 		{
 			foreach (int playerId in addTitle.PlayerIds ?? new())
@@ -72,7 +69,6 @@ namespace DevilDaggersWebsite.Api
 		[ProducesResponseType(StatusCodes.Status200OK)]
 		[ProducesResponseType(StatusCodes.Status400BadRequest)]
 		[ProducesResponseType(StatusCodes.Status404NotFound)]
-		[EndpointConsumer(EndpointConsumers.None)]
 		public ActionResult EditTitle(int id, EditTitle editTitle)
 		{
 			foreach (int playerId in editTitle.PlayerIds ?? new())
@@ -97,7 +93,6 @@ namespace DevilDaggersWebsite.Api
 		[Authorize(Policies.AdminPolicy)]
 		[ProducesResponseType(StatusCodes.Status200OK)]
 		[ProducesResponseType(StatusCodes.Status404NotFound)]
-		[EndpointConsumer(EndpointConsumers.None)]
 		public ActionResult DeleteTitle(int id)
 		{
 			Title? title = _dbContext.Titles

@@ -1,5 +1,4 @@
 ﻿using DevilDaggersCore.Game;
-using DevilDaggersWebsite.Api.Attributes;
 using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
 using System;
@@ -14,7 +13,6 @@ namespace DevilDaggersWebsite.Api
 	{
 		[HttpGet]
 		[ProducesResponseType(StatusCodes.Status200OK)]
-		[EndpointConsumer(EndpointConsumers.Website)]
 		public ActionResult<List<Death>> GetDeaths(GameVersion? gameVersion = null, string? name = null, byte? type = null)
 		{
 			IEnumerable<Death> deaths = GameInfo.GetDeaths(gameVersion ?? GameVersion.V31);

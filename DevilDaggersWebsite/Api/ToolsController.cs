@@ -1,5 +1,4 @@
-﻿using DevilDaggersWebsite.Api.Attributes;
-using DevilDaggersWebsite.Dto;
+﻿using DevilDaggersWebsite.Dto;
 using DevilDaggersWebsite.Entities;
 using DevilDaggersWebsite.Transients;
 using Microsoft.AspNetCore.Hosting;
@@ -33,7 +32,6 @@ namespace DevilDaggersWebsite.Api
 
 		[HttpGet]
 		[ProducesResponseType(StatusCodes.Status200OK)]
-		[EndpointConsumer(EndpointConsumers.Ddse | EndpointConsumers.Ddcl | EndpointConsumers.Ddae)]
 		public ActionResult<List<Tool>> GetTools(string? toolNameFilter = null)
 		{
 			IEnumerable<Tool> tools = _toolHelper.Tools;
@@ -46,7 +44,6 @@ namespace DevilDaggersWebsite.Api
 		[ProducesResponseType(typeof(FileContentResult), StatusCodes.Status200OK)]
 		[ProducesResponseType(StatusCodes.Status400BadRequest)]
 		[ProducesResponseType(StatusCodes.Status404NotFound)]
-		[EndpointConsumer(EndpointConsumers.Website)]
 		public ActionResult GetToolFile([Required] string toolName)
 		{
 			Tool? tool = _toolHelper.Tools.Find(t => t.Name == toolName);
@@ -71,7 +68,6 @@ namespace DevilDaggersWebsite.Api
 		[Obsolete("Use api/process-memory/marker instead.")]
 		[HttpGet("devildaggerscustomleaderboards/settings")]
 		[ProducesResponseType(StatusCodes.Status200OK)]
-		[EndpointConsumer(EndpointConsumers.Ddcl)]
 		public ActionResult<DdclSettings> GetDdclSettings()
 		{
 			return JsonConvert.DeserializeObject<DdclSettings?>(Io.File.ReadAllText(Path.Combine(_environment.WebRootPath, "tools", "DevilDaggersCustomLeaderboards", "Settings.json"))) ?? throw new("Could not deserialize DDCL settings JSON.");

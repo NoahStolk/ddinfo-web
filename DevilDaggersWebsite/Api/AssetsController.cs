@@ -1,5 +1,4 @@
-﻿using DevilDaggersWebsite.Api.Attributes;
-using Microsoft.AspNetCore.Hosting;
+﻿using Microsoft.AspNetCore.Hosting;
 using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
 using Newtonsoft.Json;
@@ -22,7 +21,6 @@ namespace DevilDaggersWebsite.Api
 
 		[HttpGet("info")]
 		[ProducesResponseType(StatusCodes.Status200OK)]
-		[EndpointConsumer(EndpointConsumers.Ddae)]
 		public ActionResult<Dictionary<string, List<Dto.AssetInfo>>> GetAssetInfo()
 		{
 			return Io.Directory.GetFiles(Io.Path.Combine(_environment.WebRootPath, "asset-info"))
