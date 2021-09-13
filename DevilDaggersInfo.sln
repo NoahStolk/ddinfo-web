@@ -49,6 +49,8 @@ Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "DevilDaggersInfo.Cmd.Extrac
 EndProject
 Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "DevilDaggersInfo.Web.BlazorWasm.Client.SourceGenerator", "DevilDaggersInfo.Web.BlazorWasm.Client.SourceGenerator\DevilDaggersInfo.Web.BlazorWasm.Client.SourceGenerator.csproj", "{9178E989-F0E7-44EE-BC27-FD07D06DD5DA}"
 EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "DevilDaggersInfo.Core.Memory", "DevilDaggersInfo.Core.Memory\DevilDaggersInfo.Core.Memory.csproj", "{4E6B8A02-5C01-4BF4-B398-C3AA588B3940}"
+EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
 		Debug|Any CPU = Debug|Any CPU
@@ -147,6 +149,10 @@ Global
 		{9178E989-F0E7-44EE-BC27-FD07D06DD5DA}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{9178E989-F0E7-44EE-BC27-FD07D06DD5DA}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{9178E989-F0E7-44EE-BC27-FD07D06DD5DA}.Release|Any CPU.Build.0 = Release|Any CPU
+		{4E6B8A02-5C01-4BF4-B398-C3AA588B3940}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{4E6B8A02-5C01-4BF4-B398-C3AA588B3940}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{4E6B8A02-5C01-4BF4-B398-C3AA588B3940}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{4E6B8A02-5C01-4BF4-B398-C3AA588B3940}.Release|Any CPU.Build.0 = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE
