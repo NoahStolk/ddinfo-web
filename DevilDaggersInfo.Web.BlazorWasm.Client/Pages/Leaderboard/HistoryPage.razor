@@ -57,7 +57,7 @@ else
 	private async Task UpdateDateTime(DateTime dateTime)
 	{
 		DateTime = dateTime;
-		NavigationManager.AddOrModifyQueryParameters(QueryParameters.Date, dateTime);
+		NavigationManager.AddOrModifyQueryParameter(QueryParameters.Date, dateTime);
 
 		await FetchLeaderboard();
 	}

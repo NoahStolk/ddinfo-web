@@ -95,7 +95,7 @@ else
 	private async Task ChangePageIndex(int pageIndex)
 	{
 		PageIndex = Math.Clamp(pageIndex, 0, TotalPages - 1);
-		NavigationManager.AddOrModifyQueryParameters(QueryParameters.PageIndex, PageIndex);
+		NavigationManager.AddOrModifyQueryParameter(QueryParameters.PageIndex, PageIndex);
 
 		await Fetch();
 	}
@@ -106,7 +106,7 @@ else
 			return;
 
 		PageSize = pageSize;
-		NavigationManager.AddOrModifyQueryParameters(QueryParameters.PageSize, PageSize);
+		NavigationManager.AddOrModifyQueryParameter(QueryParameters.PageSize, PageSize);
 
 		PageIndex = Math.Clamp(PageIndex, 0, TotalPages - 1);
 		await Fetch();

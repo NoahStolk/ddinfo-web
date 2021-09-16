@@ -2,6 +2,7 @@
 
 public static class UrlBuilderUtils
 {
+	// TODO: Use NavigationManager.
 	public static string BuildUrlWithQuery(this string baseUrl, Dictionary<string, object?> queryParameters)
 	{
 		if (queryParameters.Count == 0)
