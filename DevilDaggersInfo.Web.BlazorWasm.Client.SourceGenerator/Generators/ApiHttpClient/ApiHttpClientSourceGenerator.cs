@@ -9,7 +9,8 @@ public class ApiHttpClientSourceGenerator : ISourceGenerator
 	private const string _enumUsings = $"%{nameof(_enumUsings)}%";
 	private const string _clientType = $"%{nameof(_clientType)}%";
 	private const string _endpointMethods = $"%{nameof(_endpointMethods)}%";
-	private const string _template = $@"{_dtoUsings}
+	private const string _template = $@"#pragma warning disable CS1591
+{_dtoUsings}
 {_enumUsings}
 using DevilDaggersInfo.Web.BlazorWasm.Client.Utils;
 using System.Net.Http;
