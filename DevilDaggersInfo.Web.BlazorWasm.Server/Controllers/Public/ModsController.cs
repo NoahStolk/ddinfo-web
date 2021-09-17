@@ -1,5 +1,7 @@
 ﻿using DevilDaggersInfo.Web.BlazorWasm.Server.Caches.ModArchives;
+using DevilDaggersInfo.Web.BlazorWasm.Shared.Dto;
 using DevilDaggersInfo.Web.BlazorWasm.Shared.Dto.Public.Mods;
+using DevilDaggersInfo.Web.BlazorWasm.Shared.Enums.Sortings.Public;
 
 namespace DevilDaggersInfo.Web.BlazorWasm.Server.Controllers.Public;
 
@@ -16,6 +18,79 @@ public class ModsController : ControllerBase
 		_dbContext = dbContext;
 		_fileSystemService = fileSystemService;
 		_modArchiveCache = modArchiveCache;
+	}
+
+	[HttpGet("overview")] // Can't use default route because already in use by DDAE.
+	[ProducesResponseType(StatusCodes.Status200OK)]
+	[ProducesResponseType(StatusCodes.Status400BadRequest)]
+	public ActionResult<Page<GetModOverview>> GetMods(
+		bool onlyHosted,
+		[Range(0, 1000)] int pageIndex = 0,
+		[Range(PublicPagingConstants.PageSizeMin, PublicPagingConstants.PageSizeMax)] int pageSize = PublicPagingConstants.PageSizeDefault,
+		ModSorting? sortBy = null,
+		bool ascending = false)
+	{
+		IEnumerable<ModEntity> modsQuery = _dbContext.Mods
+			.AsNoTracking()
+			.Include(am => am.PlayerMods)
+				.ThenInclude(pam => pam.Player)
+			.Where(am => !am.IsHidden);
+
+		List<ModEntity> mods = modsQuery.ToList();
+		Dictionary<ModEntity, (bool FileExists, string? Path)> modsWithFileInfo = GetModsWithFileInfo(mods);
+		if (onlyHosted)
+			modsWithFileInfo = modsWithFileInfo.Where(kvp => kvp.Value.FileExists).ToDictionary(kvp => kvp.Key, kvp => kvp.Value);
+
+		List<GetModOverview> modDtos = modsWithFileInfo
+			.Select(amwfi =>
+			{
+				bool? containsProhibitedAssets = null;
+				ModTypes modTypes;
+				if (amwfi.Value.FileExists)
+				{
+					ModArchiveCacheData archiveData = _modArchiveCache.GetArchiveDataByFilePath(amwfi.Value.Path!);
+					containsProhibitedAssets = archiveData.ContainsProhibitedAssets();
+					modTypes = archiveData.GetModTypes();
+				}
+				else
+				{
+					modTypes = amwfi.Key.ModTypes;
+				}
+
+				return new GetModOverview
+				{
+					Id = amwfi.Key.Id,
+					Name = amwfi.Key.Name,
+					Authors = amwfi.Key.PlayerMods.Select(pam => pam.Player.PlayerName).OrderBy(s => s).ToList(),
+					LastUpdated = amwfi.Key.LastUpdated,
+					ModTypes = modTypes,
+					IsHosted = amwfi.Value.FileExists,
+					ContainsProhibitedAssets = containsProhibitedAssets,
+				};
+			})
+			.ToList();
+
+		modDtos = sortBy switch
+		{
+			ModSorting.Name => modDtos.OrderBy(m => m.Name, ascending).ToList(),
+			ModSorting.Authors => modDtos.OrderBy(m => m.Authors.FirstOrDefault(), ascending).ToList(),
+			ModSorting.LastUpdated => modDtos.OrderBy(m => m.LastUpdated, ascending).ToList(),
+			ModSorting.ModTypes => modDtos.OrderBy(m => m.ModTypes, ascending).ToList(),
+			ModSorting.Hosted => modDtos.OrderBy(m => m.IsHosted, ascending).ToList(),
+			ModSorting.ProhibitedAssets => modDtos.OrderBy(m => m.ContainsProhibitedAssets, ascending).ToList(),
+			_ => modDtos.OrderBy(m => m.Id, ascending).ToList(),
+		};
+
+		modDtos = modDtos
+			.Skip(pageIndex * pageSize)
+			.Take(pageSize)
+			.ToList();
+
+		return new Page<GetModOverview>
+		{
+			Results = modDtos,
+			TotalResults = modsWithFileInfo.Count,
+		};
 	}
 
 	[HttpGet]
