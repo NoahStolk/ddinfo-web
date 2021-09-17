@@ -21,7 +21,7 @@ public class GetModDdae
 
 	public bool? ContainsProhibitedAssets { get; init; }
 
-	public GetModArchive? ModArchive { get; init; }
+	public GetModArchiveDdae? ModArchive { get; init; }
 
 	public List<string> ScreenshotFileNames { get; init; } = null!;
 }

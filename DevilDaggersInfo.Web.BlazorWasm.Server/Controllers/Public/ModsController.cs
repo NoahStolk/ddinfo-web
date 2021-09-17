@@ -49,7 +49,7 @@ public class ModsController : ControllerBase
 			.Select(amwfi =>
 			{
 				bool? containsProhibitedAssets = null;
-				GetModArchive? modArchive = null;
+				GetModArchiveDdae? modArchive = null;
 				ModTypes modTypes;
 				if (amwfi.Value.FileExists)
 				{
@@ -59,7 +59,7 @@ public class ModsController : ControllerBase
 					{
 						FileSize = archiveData.FileSize,
 						FileSizeExtracted = archiveData.FileSizeExtracted,
-						Binaries = archiveData.Binaries.ConvertAll(b => new GetModBinary
+						Binaries = archiveData.Binaries.ConvertAll(b => new GetModBinaryDdae
 						{
 							Name = b.Name,
 							Size = b.Size,
