@@ -12,7 +12,7 @@ public static class Daggers
 	};
 
 	public static Dagger GetDaggerFromTenthsOfMilliseconds(GameVersion gameVersion, int timeInTenthsOfMilliseconds)
-		=> GetDaggerFromSeconds(gameVersion, timeInTenthsOfMilliseconds / 10000.0); // TODO: Use time extension.
+		=> GetDaggerFromSeconds(gameVersion, timeInTenthsOfMilliseconds.ToSecondsTime());
 
 	public static Dagger GetDaggerFromSeconds(GameVersion gameVersion, double timeInSeconds)
 	{

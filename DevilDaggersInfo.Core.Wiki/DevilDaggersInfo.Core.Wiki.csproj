@@ -21,6 +21,7 @@
     <AdditionalFiles Include="Data\UpgradesV3_1.csv" />
   </ItemGroup>
   <ItemGroup>
+    <ProjectReference Include="..\DevilDaggersInfo.Core.Shared\DevilDaggersInfo.Core.Shared.csproj" />
     <ProjectReference Include="..\DevilDaggersInfo.Core.Wiki.SourceGenerator\DevilDaggersInfo.Core.Wiki.SourceGenerator.csproj" OutputItemType="Analyzer" ReferenceOutputAssembly="false" />
     <PackageReference Include="Roslynator.Analyzers" Version="3.2.2">
       <PrivateAssets>all</PrivateAssets>
