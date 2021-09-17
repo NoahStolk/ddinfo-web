@@ -54,7 +54,6 @@ public class ModsController : ControllerBase
 				if (amwfi.Value.FileExists)
 				{
 					ModArchiveCacheData archiveData = _modArchiveCache.GetArchiveDataByFilePath(amwfi.Value.Path!);
-					containsProhibitedAssets = archiveData.Binaries.Any(md => md.Chunks.Any(mad => mad.IsProhibited));
 					modArchive = new()
 					{
 						FileSize = archiveData.FileSize,
@@ -67,17 +66,8 @@ public class ModsController : ControllerBase
 						}),
 					};
 
-					ModBinaryCacheData? ddBinary = archiveData.Binaries.Find(md => md.ModBinaryType == ModBinaryType.Dd);
-
-					modTypes = ModTypes.None;
-					if (archiveData.Binaries.Any(md => md.ModBinaryType == ModBinaryType.Audio))
-						modTypes |= ModTypes.Audio;
-					if (archiveData.Binaries.Any(md => md.ModBinaryType == ModBinaryType.Core) || ddBinary?.Chunks.Any(mad => mad.AssetType == AssetType.Shader) == true)
-						modTypes |= ModTypes.Shader;
-					if (ddBinary?.Chunks.Any(mad => mad.AssetType == AssetType.ModelBinding || mad.AssetType == AssetType.Model) == true)
-						modTypes |= ModTypes.Model;
-					if (ddBinary?.Chunks.Any(mad => mad.AssetType == AssetType.Texture) == true)
-						modTypes |= ModTypes.Texture;
+					containsProhibitedAssets = archiveData.ContainsProhibitedAssets();
+					modTypes = archiveData.GetModTypes();
 				}
 				else
 				{
