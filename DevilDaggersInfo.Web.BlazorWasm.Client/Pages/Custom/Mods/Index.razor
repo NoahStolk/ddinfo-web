@@ -1,0 +1,126 @@
+﻿@page "/custom/mods"
+@inject PublicApiHttpClient Http
+@inject NavigationManager NavigationManager
+@using DevilDaggersInfo.Web.BlazorWasm.Shared.Dto.Public.Mods
+@using DevilDaggersInfo.Web.BlazorWasm.Shared.Enums.Sortings.Public
+@using DevilDaggersInfo.Web.BlazorWasm.Shared.Enums
+
+<Heading>Mods</Heading>
+
+@if (GetMods == null)
+{
+	<Loading />
+}
+else
+{
+	<button class="bg-gray-900 hover:bg-gray-700 transition-colors duration-100 w-8 h-8 py-1 rounded text-color-text" @onclick="() => ChangePageIndex(0)">|&lt;</button>
+	<button class="bg-gray-900 hover:bg-gray-700 transition-colors duration-100 w-8 h-8 py-1 rounded text-color-text" @onclick="() => ChangePageIndex(PageIndex - 1)">&lt;</button>
+	<button class="bg-gray-900 hover:bg-gray-700 transition-colors duration-100 w-8 h-8 py-1 rounded text-color-text" @onclick="() => ChangePageIndex(PageIndex + 1)">&gt;</button>
+	<button class="bg-gray-900 hover:bg-gray-700 transition-colors duration-100 w-8 h-8 py-1 rounded text-color-text" @onclick="() => ChangePageIndex(TotalPages - 1)">&gt;|</button>
+	<Select @onchange="ChangePageSize" class="bg-gray-900 transition-colors duration-100 h-8 py-1 rounded text-color-text">
+		@foreach (int i in PublicPagingConstants.PageSizeOptions)
+		{
+			if (i == PageSize)
+			{
+				<option value="@i" selected>@i</option>
+			}
+			else
+			{
+				<option value="@i">@i</option>
+			}
+		}
+	</Select>
+	<div class="p-1">Page @(PageIndex + 1) of @TotalPages (@(PageIndex * PageSize) - @Math.Min(GetMods.TotalResults, (PageIndex + 1) * PageSize) of @GetMods.TotalResults)</div>
+
+	<div class="grid gap-3 sm:grid-cols-mods-sm md:grid-cols-mods-md lg:grid-cols-mods-lg xl:grid-cols-mods-xl">
+		<a href="" @onclick:preventDefault class="text-color-link hover:text-color-link-hover text-left" @onclick="() => Sort(ModSorting.Name)">Name</a>
+		<a href="" @onclick:preventDefault class="text-color-link hover:text-color-link-hover text-left hidden md:block" @onclick="() => Sort(ModSorting.Authors)">Author(s)</a>
+		<a href="" @onclick:preventDefault class="text-color-link hover:text-color-link-hover text-left hidden md:block" @onclick="() => Sort(ModSorting.LastUpdated)">Last updated</a>
+		<a href="" @onclick:preventDefault class="text-color-link hover:text-color-link-hover text-left hidden md:block" @onclick="() => Sort(ModSorting.ModTypes)">Type</a>
+		<a href="" @onclick:preventDefault class="text-color-link hover:text-color-link-hover text-right hidden xl:block" @onclick="() => Sort(ModSorting.Hosted)">Hosted</a>
+		<a href="" @onclick:preventDefault class="text-color-link hover:text-color-link-hover text-right hidden xl:block" @onclick="() => Sort(ModSorting.ProhibitedAssets)">Prohibited assets</a>
+	</div>
+	@for (int i = 0; i < GetMods.Results.Count; i++)
+	{
+		GetModOverview mod = GetMods.Results[i];
+		<div class="grid gap-3 sm:grid-cols-mods-sm md:grid-cols-mods-md lg:grid-cols-mods-lg xl:grid-cols-mods-xl h-6 @(i % 2 == 0 ? "bg-gray0B" : string.Empty)">
+			<div class="overflow-x-hidden text-left"><a href="/custom/mod/@mod.Id">@mod.Name</a></div>
+			<div class="overflow-x-hidden text-left hidden md:block">@string.Join(", ", mod.Authors)</div>
+			<div class="overflow-x-hidden text-left hidden md:block">@mod.LastUpdated.ToString(FormatUtils.DateFormat)</div>
+			<div class="overflow-x-hidden text-left hidden md:block">@mod.ModTypes</div>
+			<div class="overflow-x-hidden text-right hidden xl:block">@mod.IsHosted</div>
+			<div class="overflow-x-hidden text-right hidden xl:block">@mod.ContainsProhibitedAssets</div>
+		</div>
+	}
+}
+
+@code
+{
+	private int _pageIndex;
+	private int _pageSize = PublicPagingConstants.PageSizeDefault;
+
+	[Parameter, SupplyParameterFromQuery] public bool OnlyHosted { get; set; }
+	[Parameter, SupplyParameterFromQuery] public int PageIndex { get => _pageIndex; set => _pageIndex = Math.Max(0, value); }
+	[Parameter, SupplyParameterFromQuery] public int PageSize { get => _pageSize; set => _pageSize = value < PublicPagingConstants.PageSizeMin || value > PublicPagingConstants.PageSizeMax ? PublicPagingConstants.PageSizeDefault : value; }
+	[Parameter, SupplyParameterFromQuery] public int SortBy { get; set; }
+	[Parameter, SupplyParameterFromQuery] public bool Ascending { get; set; }
+
+	private Dictionary<ModSorting, bool> _sortings = new();
+
+	public Page<GetModOverview>? GetMods { get; set; }
+
+	private int TotalPages => GetMods == null ? 0 : (GetMods.TotalResults - 1) / PageSize + 1;
+
+	protected override async Task OnInitializedAsync()
+	{
+		foreach (ModSorting e in (ModSorting[])Enum.GetValues(typeof(ModSorting)))
+			_sortings.Add(e, false);
+
+		await Fetch();
+	}
+
+	private async Task ChangePageIndex(int pageIndex)
+	{
+		PageIndex = Math.Clamp(pageIndex, 0, TotalPages - 1);
+		NavigationManager.AddOrModifyQueryParameter(QueryParameters.PageIndex, PageIndex);
+
+		await Fetch();
+	}
+
+	private async Task ChangePageSize(ChangeEventArgs e)
+	{
+		if (!int.TryParse(e.Value?.ToString(), out int pageSize))
+			return;
+
+		PageSize = pageSize;
+		NavigationManager.AddOrModifyQueryParameter(QueryParameters.PageSize, PageSize);
+
+		PageIndex = Math.Clamp(PageIndex, 0, TotalPages - 1);
+		await Fetch();
+	}
+
+	private async Task Sort(ModSorting sortBy)
+	{
+		SortBy = (int)sortBy;
+		_sortings[sortBy] = !_sortings[sortBy];
+		Ascending = _sortings[sortBy];
+
+		NavigationManager.AddOrModifyQueryParameters(new(QueryParameters.SortBy, SortBy), new(QueryParameters.Ascending, Ascending));
+
+		await Fetch();
+	}
+
+	private async Task Fetch()
+	{
+		GetMods = await Http.GetMods(OnlyHosted, PageIndex, PageSize, (ModSorting)SortBy, Ascending);
+	}
+
+	private static class QueryParameters
+	{
+		public static string OnlyHosted { get; } = nameof(OnlyHosted);
+		public static string PageIndex { get; } = nameof(PageIndex);
+		public static string PageSize { get; } = nameof(PageSize);
+		public static string SortBy { get; } = nameof(SortBy);
+		public static string Ascending { get; } = nameof(Ascending);
+	}
+}
