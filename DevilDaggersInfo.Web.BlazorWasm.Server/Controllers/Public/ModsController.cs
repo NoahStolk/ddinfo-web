@@ -34,14 +34,7 @@ public class ModsController : ControllerBase
 			modsQuery = modsQuery.Where(am => am.Name.Contains(nameFilter, StringComparison.InvariantCultureIgnoreCase));
 
 		List<ModEntity> mods = modsQuery.ToList();
-
-		Dictionary<ModEntity, (bool FileExists, string? Path)> modsWithFileInfo = mods.ToDictionary(am => am, am =>
-		{
-			string filePath = Path.Combine(_fileSystemService.GetPath(DataSubDirectory.Mods), $"{am.Name}.zip");
-			bool fileExists = IoFile.Exists(filePath);
-			return (fileExists, fileExists ? filePath : null);
-		});
-
+		Dictionary<ModEntity, (bool FileExists, string? Path)> modsWithFileInfo = GetModsWithFileInfo(mods);
 		if (isHostedFilter.HasValue)
 			modsWithFileInfo = modsWithFileInfo.Where(kvp => kvp.Value.FileExists == isHostedFilter.Value).ToDictionary(kvp => kvp.Key, kvp => kvp.Value);
 
@@ -124,4 +117,12 @@ public class ModsController : ControllerBase
 
 		return File(IoFile.ReadAllBytes(path), MediaTypeNames.Application.Zip, fileName);
 	}
+
+	private Dictionary<ModEntity, (bool FileExists, string? Path)> GetModsWithFileInfo(List<ModEntity> mods)
+		=> mods.ToDictionary(m => m, m =>
+		{
+			string filePath = Path.Combine(_fileSystemService.GetPath(DataSubDirectory.Mods), $"{m.Name}.zip");
+			bool fileExists = IoFile.Exists(filePath);
+			return (fileExists, fileExists ? filePath : null);
+		});
 }
