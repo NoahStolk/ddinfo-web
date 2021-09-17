@@ -81,6 +81,8 @@ public class SpawnsetsController : ControllerBase
 			_ => spawnsets.OrderBy(s => s.Id, ascending).ToList(),
 		};
 
+		int totalSpawnsets = spawnsets.Count;
+
 		spawnsets = spawnsets
 			.Skip(pageIndex * pageSize)
 			.Take(pageSize)
@@ -89,7 +91,7 @@ public class SpawnsetsController : ControllerBase
 		return new Page<GetSpawnsetOverview>
 		{
 			Results = spawnsets.ConvertAll(s => s.ToGetSpawnsetOverview(summaries[s.Id])),
-			TotalResults = spawnsetsQuery.Count(),
+			TotalResults = totalSpawnsets,
 		};
 	}
 
