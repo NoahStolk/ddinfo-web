@@ -17,7 +17,8 @@ public class GetModDdae
 	[JsonProperty("AssetModTypes")]
 	public ModTypes ModTypes { get; init; }
 
-	public bool IsHostedOnDdInfo { get; init; }
+	[JsonProperty("IsHostedOnDdInfo")]
+	public bool IsHosted { get; init; }
 
 	public bool? ContainsProhibitedAssets { get; init; }
 

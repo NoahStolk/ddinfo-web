@@ -99,7 +99,7 @@ public class ModsController : ControllerBase
 					Authors = amwfi.Key.PlayerMods.Select(pam => pam.Player.PlayerName).OrderBy(s => s).ToList(),
 					LastUpdated = amwfi.Key.LastUpdated,
 					ModTypes = modTypes,
-					IsHostedOnDdInfo = amwfi.Value.FileExists,
+					IsHosted = amwfi.Value.FileExists,
 					ContainsProhibitedAssets = containsProhibitedAssets,
 					ModArchive = modArchive,
 					ScreenshotFileNames = screenshotFileNames,
