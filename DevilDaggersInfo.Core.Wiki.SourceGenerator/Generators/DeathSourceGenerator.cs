@@ -11,7 +11,7 @@ public static class {_className}
 {{
 {_deathFields}
 
-	public static readonly List<Death> All = typeof({_className}).GetFields().Where(f => f.FieldType == typeof(Death)).Select(f => (Death)f.GetValue(null)!).ToList();
+	internal static readonly List<Death> All = typeof({_className}).GetFields().Where(f => f.FieldType == typeof(Death)).Select(f => (Death)f.GetValue(null)!).ToList();
 }}
 ";
 

@@ -11,7 +11,7 @@ public static class {_className}
 {{
 {_daggerFields}
 
-	public static readonly List<Dagger> All = typeof({_className}).GetFields().Where(f => f.FieldType == typeof(Dagger)).Select(f => (Dagger)f.GetValue(null)!).ToList();
+	internal static readonly List<Dagger> All = typeof({_className}).GetFields().Where(f => f.FieldType == typeof(Dagger)).Select(f => (Dagger)f.GetValue(null)!).ToList();
 }}
 ";
 

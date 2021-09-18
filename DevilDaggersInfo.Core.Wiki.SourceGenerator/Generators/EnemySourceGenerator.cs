@@ -11,7 +11,7 @@ public static class {_className}
 {{
 {_enemyFields}
 
-	public static readonly List<Enemy> All = typeof({_className}).GetFields().Where(f => f.FieldType == typeof(Enemy)).Select(f => (Enemy)f.GetValue(null)!).ToList();
+	internal static readonly List<Enemy> All = typeof({_className}).GetFields().Where(f => f.FieldType == typeof(Enemy)).Select(f => (Enemy)f.GetValue(null)!).ToList();
 }}
 ";
 

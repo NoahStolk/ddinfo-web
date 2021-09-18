@@ -11,7 +11,7 @@ public static class {_className}
 {{
 {_upgradeFields}
 
-	public static readonly List<Upgrade> All = typeof({_className}).GetFields().Where(f => f.FieldType == typeof(Upgrade)).Select(f => (Upgrade)f.GetValue(null)!).ToList();
+	internal static readonly List<Upgrade> All = typeof({_className}).GetFields().Where(f => f.FieldType == typeof(Upgrade)).Select(f => (Upgrade)f.GetValue(null)!).ToList();
 }}
 ";
 
