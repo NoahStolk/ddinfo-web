@@ -109,6 +109,11 @@ public class SpawnsetSummary
 		for (int i = 0; i < spawns.Length; i++)
 		{
 			Spawn spawn = spawns[i];
+
+			// If the rest of the spawns are empty, break loop.
+			if (spawns.Skip(i).All(s => s.EnemyType == EnemyType.Empty))
+				break;
+
 			seconds += spawn.Delay;
 			if (spawn.EnemyType != EnemyType.Empty)
 				spawnCount++;
