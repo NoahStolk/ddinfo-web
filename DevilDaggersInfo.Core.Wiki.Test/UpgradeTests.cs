@@ -72,9 +72,9 @@ public class UpgradeTests
 		Assert.AreEqual(new(null, null), UpgradesV3_1.Level2.HomingDamage);
 
 		Assert.AreEqual(new(40, 40f), UpgradesV1_0.Level3.HomingDamage);
-		Assert.AreEqual(new(40, 40f), UpgradesV2_0.Level3.HomingDamage);
-		Assert.AreEqual(new(40, 40f), UpgradesV3_0.Level3.HomingDamage);
-		Assert.AreEqual(new(40, 40f), UpgradesV3_1.Level3.HomingDamage);
+		Assert.AreEqual(new(20, 40f), UpgradesV2_0.Level3.HomingDamage);
+		Assert.AreEqual(new(20, 40f), UpgradesV3_0.Level3.HomingDamage);
+		Assert.AreEqual(new(20, 40f), UpgradesV3_1.Level3.HomingDamage);
 
 		Assert.AreEqual(new(30, 40f), UpgradesV2_0.Level4.HomingDamage);
 		Assert.AreEqual(new(30, 40f), UpgradesV3_0.Level4.HomingDamage);
