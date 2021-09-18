@@ -11,6 +11,9 @@ public static class Deaths
 		_ => throw new ArgumentOutOfRangeException(nameof(gameVersion)),
 	};
 
+	public static Death? GetDeathByName(GameVersion gameVersion, string name)
+		=> GetDeaths(gameVersion).Find(d => d.Name == name);
+
 	public static Death? GetDeathByLeaderboardType(GameVersion gameVersion, byte leaderboardDeathType)
 		=> GetDeaths(gameVersion).Find(e => e.LeaderboardDeathType == leaderboardDeathType);
 }

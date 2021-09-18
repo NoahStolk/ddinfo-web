@@ -144,17 +144,17 @@ else
 			barChart: _daggersChart,
 			labels: _statistics.DaggerStatistics.Select(kvp => kvp.Key).ToArray(),
 			data: _statistics.DaggerStatistics.Select(kvp => kvp.Value).ToList(),
-			backgroundColors: _statistics.DaggerStatistics.Select(kvp => Daggers.GetDaggers(GameVersion.V3_1).FirstOrDefault(d => d.Name == kvp.Key)?.Color.HexCode ?? "#444").ToList());
+			backgroundColors: _statistics.DaggerStatistics.Select(kvp => Daggers.GetDaggerByName(GameVersion.V3_1, kvp.Key)?.Color.HexCode ?? "#444").ToList());
 		await SetUpBarChart(
 			barChart: _deathsChart,
 			labels: _statistics.DeathStatistics.Select(kvp => kvp.Key).ToArray(),
 			data: _statistics.DeathStatistics.Select(kvp => kvp.Value).ToList(),
-			backgroundColors: _statistics.DeathStatistics.Select(kvp => Deaths.GetDeaths(GameVersion.V3_1).FirstOrDefault(d => d.Name == kvp.Key)?.Color.HexCode ?? "#444").ToList());
+			backgroundColors: _statistics.DeathStatistics.Select(kvp => Deaths.GetDeathByName(GameVersion.V3_1, kvp.Key)?.Color.HexCode ?? "#444").ToList());
 		await SetUpBarChart(
 			barChart: _enemiesChart,
 			labels: _statistics.EnemyStatistics.Select(kvp => kvp.Key).ToArray(),
 			data: _statistics.EnemyStatistics.Select(kvp => kvp.Value).ToList(),
-			backgroundColors: _statistics.EnemyStatistics.Select(kvp => EnemiesV3_1.All.FirstOrDefault(e => e.Name == kvp.Key)?.Color.HexCode ?? "#444").ToList());
+			backgroundColors: _statistics.EnemyStatistics.Select(kvp => Enemies.GetEnemyByName(GameVersion.V3_1, kvp.Key)?.Color.HexCode ?? "#444").ToList());
 	}
 
 	private async Task SetUpBarChart(BarChart<int> barChart, string[] labels, List<int> data, List<string> backgroundColors)

@@ -11,6 +11,9 @@ public static class Daggers
 		_ => throw new ArgumentOutOfRangeException(nameof(gameVersion)),
 	};
 
+	public static Dagger? GetDaggerByName(GameVersion gameVersion, string name)
+		=> GetDaggers(gameVersion).Find(d => d.Name == name);
+
 	public static Dagger GetDaggerFromTenthsOfMilliseconds(GameVersion gameVersion, int timeInTenthsOfMilliseconds)
 		=> GetDaggerFromSeconds(gameVersion, timeInTenthsOfMilliseconds.ToSecondsTime());
 
