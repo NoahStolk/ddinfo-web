@@ -32,6 +32,18 @@ public class SpawnsetSummaryParseTests
 		=> ParseSummary("Empty", 6, 9, GameMode.Default, new(0, null), new(0, null), HandLevel.Level1, 0, 0);
 
 	[TestMethod]
+	public void ParseSummary_EmptySpawn()
+		=> ParseSummary("EmptySpawn", 6, 9, GameMode.Default, new(0, null), new(0, null), HandLevel.Level1, 0, 0);
+
+	[TestMethod]
+	public void ParseSummary_NoEndLoop()
+		=> ParseSummary("NoEndLoop", 6, 9, GameMode.Default, new(2, 2), new(0, null), HandLevel.Level1, 0, 0);
+
+	[TestMethod]
+	public void ParseSummary_TimeAttack()
+		=> ParseSummary("TimeAttack", 6, 9, GameMode.TimeAttack, new(1, 1), new(0, null), HandLevel.Level1, 0, 0);
+
+	[TestMethod]
 	public void ParseSummary_Scanner()
 		=> ParseSummary("Scanner", 6, 9, GameMode.Default, new(62, 16), new(62, 21), HandLevel.Level4, 30, 0);
 
