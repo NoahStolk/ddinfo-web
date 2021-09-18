@@ -1,6 +1,6 @@
 ﻿namespace DevilDaggersInfo.Core.Wiki.Structs;
 
-public struct Color
+public readonly record struct Color
 {
 	public Color(byte r, byte g, byte b)
 	{
