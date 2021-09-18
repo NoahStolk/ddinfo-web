@@ -90,10 +90,10 @@ public class LeaderboardStatisticsCache : IStaticCache
 				DaggerStats[dagger]++;
 
 			Death? death = Deaths.GetDeathByLeaderboardType(GameVersion.V3_1, entry.DeathType);
-			if (death == null)
+			if (!death.HasValue)
 				await _discordLogger.TryLog(Channel.MonitoringError, $":x: Invalid death type 0x{entry.DeathType:X} for entry with time {entry.Time} in leaderboard-statistics.");
-			else if (DeathStats.ContainsKey(death))
-				DeathStats[death]++;
+			else if (DeathStats.ContainsKey(death.Value))
+				DeathStats[death.Value]++;
 
 			foreach (Enemy enemy in enemies)
 			{
