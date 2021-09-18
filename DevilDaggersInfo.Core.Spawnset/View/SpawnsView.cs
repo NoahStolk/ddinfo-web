@@ -19,11 +19,11 @@ public class SpawnsView
 			return;
 
 		double totalSeconds = timerStart;
-		int gemsTotal = handLevel.GetStartGems() + additionalGems;
+		int totalGems = handLevel.GetStartGems() + additionalGems;
 
 		if (gameMode is GameMode.TimeAttack or GameMode.Race)
 		{
-			BuildPreLoop(ref totalSeconds, ref gemsTotal, spawns);
+			BuildPreLoop(ref totalSeconds, ref totalGems, spawns);
 		}
 		else
 		{
@@ -31,29 +31,29 @@ public class SpawnsView
 			Spawn[] preLoopSpawns = spawns.Take(loopStartIndex).ToArray();
 			Spawn[] loopSpawns = spawns.Skip(loopStartIndex).ToArray();
 
-			BuildPreLoop(ref totalSeconds, ref gemsTotal, preLoopSpawns);
+			BuildPreLoop(ref totalSeconds, ref totalGems, preLoopSpawns);
 
 			if (waveCount > 0 && loopSpawns.Any(s => s.EnemyType != EnemyType.Empty))
-				BuildLoop(gameVersion, waveCount, ref totalSeconds, ref gemsTotal, loopSpawns);
+				BuildLoop(gameVersion, waveCount, ref totalSeconds, ref totalGems, loopSpawns);
 		}
 	}
 
 	public List<SpawnView> PreLoop { get; }
 	public List<SpawnView>[] Waves { get; }
 
-	private void BuildPreLoop(ref double totalSeconds, ref int gemsTotal, Spawn[] preLoopSpawns)
+	private void BuildPreLoop(ref double totalSeconds, ref int totalGems, Spawn[] preLoopSpawns)
 	{
 		foreach (Spawn spawn in preLoopSpawns)
 		{
 			totalSeconds += spawn.Delay;
 			int gems = spawn.EnemyType.GetNoFarmGems();
-			gemsTotal += gems;
+			totalGems += gems;
 			if (spawn.EnemyType != EnemyType.Empty)
-				PreLoop.Add(new(spawn.EnemyType, totalSeconds, gems, gemsTotal));
+				PreLoop.Add(new(spawn.EnemyType, totalSeconds, gems, totalGems));
 		}
 	}
 
-	private void BuildLoop(GameVersion gameVersion, int waveCount, ref double totalSeconds, ref int gemsTotal, Spawn[] loopSpawns)
+	private void BuildLoop(GameVersion gameVersion, int waveCount, ref double totalSeconds, ref int totalGems, Spawn[] loopSpawns)
 	{
 		for (int i = 0; i < waveCount; i++)
 		{
@@ -75,9 +75,9 @@ public class SpawnsView
 						finalEnemy = EnemyType.Ghostpede;
 
 					int gems = finalEnemy.GetNoFarmGems();
-					gemsTotal += gems;
+					totalGems += gems;
 
-					Waves[i].Add(new(finalEnemy, totalSeconds, gems, gemsTotal));
+					Waves[i].Add(new(finalEnemy, totalSeconds, gems, totalGems));
 				}
 			}
 		}
