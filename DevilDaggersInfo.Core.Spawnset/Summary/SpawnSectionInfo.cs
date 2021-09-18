@@ -1,6 +1,6 @@
 ﻿namespace DevilDaggersInfo.Core.Spawnset.Summary;
 
-public struct SpawnSectionInfo
+public record struct SpawnSectionInfo
 {
 	public SpawnSectionInfo(int spawnCount, float? length)
 	{
