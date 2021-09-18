@@ -79,7 +79,7 @@ public class LeaderboardStatisticsCache : IStaticCache
 		foreach (Dagger dagger in Daggers.GetDaggers(GameVersion.V3_1))
 			DaggerStats.Add(dagger, 0);
 
-		IEnumerable<Enemy> enemies = EnemiesV3_1.All.Where(e => e.FirstSpawnSecond.HasValue);
+		IEnumerable<Enemy> enemies = Enemies.GetEnemies(GameVersion.V3_1).Where(e => e.FirstSpawnSecond.HasValue);
 		foreach (Enemy enemy in enemies)
 			EnemyStats.Add(enemy, 0);
 
