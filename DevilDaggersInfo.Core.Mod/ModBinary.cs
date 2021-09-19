@@ -2,6 +2,8 @@
 
 public class ModBinary
 {
+	private const long _fileHeader = 0x3A68783A72673A01;
+
 	public ModBinary(string fileName, byte[] fileContents)
 	{
 		ModBinaryType modBinaryType;
@@ -17,8 +19,8 @@ public class ModBinary
 		if (fileContents.Length <= 12)
 			throw new InvalidModBinaryException($"Binary '{fileName}' is not a valid binary; file must be at least 13 bytes in length.");
 
-		ulong magic = BitConverter.ToUInt64(fileContents, 0);
-		if (magic != 0x3A68783A72673A01)
+		ulong fileHeader = BitConverter.ToUInt64(fileContents, 0);
+		if (fileHeader != _fileHeader)
 			throw new InvalidModBinaryException($"Binary '{fileName}' is not a valid binary; incorrect header values.");
 
 		uint tocSize = BitConverter.ToUInt32(fileContents, 8);
@@ -39,22 +41,14 @@ public class ModBinary
 			int offset = BitConverter.ToInt32(tocBuffer, i + 2);
 			int size = BitConverter.ToInt32(tocBuffer, i + 6);
 			i += 14;
-			AssetType? assetType = type switch
-			{
-				0x01 => AssetType.Model,
-				0x02 => AssetType.Texture,
-				0x10 => AssetType.Shader,
-				0x20 => AssetType.Audio,
-				0x80 => AssetType.ModelBinding,
-				_ => null,
-			};
+			AssetType assetType = (AssetType)type;
 
 			// Skip unknown or obsolete types (such as 0x11, which is an outdated type for (fragment?) shaders).
-			if (!assetType.HasValue)
+			if (!Enum.IsDefined(assetType))
 				continue;
 
 			if (!(assetType == AssetType.Audio && name == "loudness"))
-				chunks.Add(new(name, offset, size, assetType.Value));
+				chunks.Add(new(name, offset, size, assetType));
 		}
 
 		ModBinaryType = modBinaryType;
