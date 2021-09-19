@@ -1,7 +1,7 @@
 ﻿namespace DevilDaggersInfo.Web.BlazorWasm.Server.Entities;
 
 [Table("AssetMods")]
-public class ModEntity : IEntity
+public class ModEntity
 {
 	[Key]
 	public int Id { get; init; }

@@ -1,7 +1,7 @@
 ﻿namespace DevilDaggersInfo.Web.BlazorWasm.Server.Entities;
 
 [Table("ToolStatistics")]
-public class ToolStatisticEntity : IEntity
+public class ToolStatisticEntity
 {
 	[Key]
 	public int Id { get; init; }

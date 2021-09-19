@@ -1,7 +1,7 @@
 ﻿namespace DevilDaggersInfo.Web.BlazorWasm.Server.Entities;
 
 [Table("CustomEntryData")]
-public class CustomEntryDataEntity : IEntity
+public class CustomEntryDataEntity
 {
 	[Key]
 	public int Id { get; init; }

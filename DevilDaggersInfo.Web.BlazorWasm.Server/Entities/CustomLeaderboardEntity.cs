@@ -1,7 +1,7 @@
 ﻿namespace DevilDaggersInfo.Web.BlazorWasm.Server.Entities;
 
 [Table("CustomLeaderboards")]
-public class CustomLeaderboardEntity : IEntity
+public class CustomLeaderboardEntity
 {
 	[Key]
 	public int Id { get; init; }

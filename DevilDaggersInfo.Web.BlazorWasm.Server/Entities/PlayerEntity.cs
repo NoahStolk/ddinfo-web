@@ -1,7 +1,7 @@
 ﻿namespace DevilDaggersInfo.Web.BlazorWasm.Server.Entities;
 
 [Table("Players")]
-public class PlayerEntity : IEntity
+public class PlayerEntity
 {
 	[Key]
 	public int Id { get; set; }

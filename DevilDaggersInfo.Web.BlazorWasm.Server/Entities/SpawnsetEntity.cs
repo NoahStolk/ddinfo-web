@@ -1,7 +1,7 @@
 ﻿namespace DevilDaggersInfo.Web.BlazorWasm.Server.Entities;
 
 [Table("SpawnsetFiles")]
-public class SpawnsetEntity : IEntity
+public class SpawnsetEntity
 {
 	[Key]
 	public int Id { get; init; }
