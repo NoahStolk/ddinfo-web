@@ -2,7 +2,8 @@
 
 public class ModBinary
 {
-	private const long _fileHeader = 0x3A68783A72673A01;
+	private const long _fileIdentifier = 0x3A68783A72673A01;
+	private const int _fileHeaderSize = 12;
 
 	public ModBinary(string fileName, byte[] fileContents)
 	{
@@ -16,19 +17,19 @@ public class ModBinary
 		else
 			throw new InvalidModBinaryException($"Binary '{fileName}' must start with 'audio', 'core', or 'dd'.");
 
-		if (fileContents.Length <= 12)
+		if (fileContents.Length <= _fileHeaderSize)
 			throw new InvalidModBinaryException($"Binary '{fileName}' is not a valid binary; file must be at least 13 bytes in length.");
 
-		ulong fileHeader = BitConverter.ToUInt64(fileContents, 0);
-		if (fileHeader != _fileHeader)
+		ulong fileIdentifier = BitConverter.ToUInt64(fileContents, 0);
+		if (fileIdentifier != _fileIdentifier)
 			throw new InvalidModBinaryException($"Binary '{fileName}' is not a valid binary; incorrect header values.");
 
 		uint tocSize = BitConverter.ToUInt32(fileContents, 8);
-		if (tocSize > fileContents.Length - 12)
+		if (tocSize > fileContents.Length - _fileHeaderSize)
 			throw new InvalidModBinaryException($"Binary '{fileName}' is not a valid binary; TOC size is larger than the remaining amount of file bytes.");
 
 		byte[] tocBuffer = new byte[tocSize];
-		Buffer.BlockCopy(fileContents, 12, tocBuffer, 0, (int)tocSize);
+		Buffer.BlockCopy(fileContents, _fileHeaderSize, tocBuffer, 0, (int)tocSize);
 
 		List<ModBinaryChunk> chunks = new();
 		int i = 0;
