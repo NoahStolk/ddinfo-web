@@ -1,8 +1,5 @@
 ﻿using SixLabors.ImageSharp;
-using SixLabors.ImageSharp.Formats;
 using SixLabors.ImageSharp.PixelFormats;
-using System.Runtime.InteropServices;
-using System.Xml.Linq;
 
 namespace DevilDaggersInfo.Core.Mod.FileHandling;
 
@@ -20,7 +17,25 @@ public sealed class PngFileHandler : IFileHandler
 
 	public byte[] ToBinary(byte[] fileBuffer)
 	{
-		throw new NotImplementedException();
+		using Image<Rgba32> image = Image.Load(fileBuffer);
+		using MemoryStream ms = new();
+		using BinaryWriter bw = new(ms);
+		bw.Write(image.Width);
+		bw.Write(image.Height);
+		for (int i = 0; i < image.Width; i++)
+		{
+			Span<Rgba32> span = image.GetPixelRowSpan(i);
+			for (int j = 0; j < span.Length; j++)
+			{
+				Rgba32 color = span[j];
+				bw.Write(color.A);
+				bw.Write(color.G);
+				bw.Write(color.B);
+				bw.Write(color.R);
+			}
+		}
+
+		return ms.ToArray();
 	}
 
 	public byte[] ToFile(byte[] binaryBuffer)
