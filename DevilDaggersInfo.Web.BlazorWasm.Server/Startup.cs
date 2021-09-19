@@ -34,21 +34,18 @@ public class Startup
 
 		services.AddDatabaseDeveloperPageExceptionFilter();
 
-		services.AddDefaultIdentity<ApplicationUser>(options => options.SignIn.RequireConfirmedAccount = true)
-			.AddRoles<IdentityRole>()
-			.AddEntityFrameworkStores<ApplicationDbContext>();
-
-		services.AddIdentityServer()
-			.AddApiAuthorization<ApplicationUser, ApplicationDbContext>(options =>
+		services.AddIdentity<ApplicationUser, IdentityRole>().AddEntityFrameworkStores<ApplicationDbContext>();
+		services.ConfigureApplicationCookie(options =>
+		{
+			options.Cookie.HttpOnly = false;
+			options.Events.OnRedirectToLogin = context =>
 			{
-				options.IdentityResources["openid"].UserClaims.Add("role");
-				options.ApiResources.Single().UserClaims.Add("role");
-			});
+				context.Response.StatusCode = 401;
+				return Task.CompletedTask;
+			};
+		});
 
-		JwtSecurityTokenHandler.DefaultInboundClaimTypeMap.Remove("role");
-
-		services.AddAuthentication()
-			.AddIdentityServerJwt();
+		services.AddAuthentication();
 
 		services.AddControllersWithViews();
 
@@ -145,7 +142,6 @@ public class Startup
 
 		app.UseCors(_defaultCorsPolicy);
 
-		app.UseIdentityServer();
 		app.UseAuthentication();
 		app.UseAuthorization();
 
