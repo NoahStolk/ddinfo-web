@@ -12,13 +12,13 @@ public sealed class GlslFileHandler : IFileHandler
 
 	public int HeaderSize => 12;
 
-	public byte[] ToBinary(byte[] fileBuffer)
+	public byte[] Compile(byte[] fileBuffer)
 	{
 		// TODO: Validate if file contains both "// Vert" and "// Frag" (or without space -- case insensitive).
 		throw new NotImplementedException();
 	}
 
-	public byte[] ToFile(byte[] binaryBuffer)
+	public byte[] Extract(byte[] binaryBuffer)
 	{
 		int nameLength = BitConverter.ToInt32(binaryBuffer, 0);
 		int vertexSize = BitConverter.ToInt32(binaryBuffer, 4);

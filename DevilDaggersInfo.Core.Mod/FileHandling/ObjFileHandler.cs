@@ -12,12 +12,12 @@ public sealed class ObjFileHandler : IFileHandler
 
 	public int HeaderSize => 10;
 
-	public byte[] ToBinary(byte[] fileBuffer)
+	public byte[] Compile(byte[] fileBuffer)
 	{
 		throw new NotImplementedException();
 	}
 
-	public byte[] ToFile(byte[] binaryBuffer)
+	public byte[] Extract(byte[] binaryBuffer)
 	{
 		int indexCount = BitConverter.ToInt32(binaryBuffer, 0);
 		int vertexCount = BitConverter.ToInt32(binaryBuffer, 4);

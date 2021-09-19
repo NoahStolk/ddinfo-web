@@ -4,7 +4,7 @@ public interface IFileHandler
 {
 	int HeaderSize { get; }
 
-	byte[] ToBinary(byte[] fileBuffer);
+	byte[] Compile(byte[] fileBuffer);
 
-	byte[] ToFile(byte[] binaryBuffer);
+	byte[] Extract(byte[] binaryBuffer);
 }

@@ -64,7 +64,7 @@ public class ModBinary
 		{
 			byte[] buffer = new byte[chunk.Size];
 			Buffer.BlockCopy(fileContents, chunk.Offset, buffer, 0, buffer.Length);
-			AssetWriter.WriteFile(outputDirectory, chunk, buffer);
+			File.WriteAllBytes(Path.Combine(outputDirectory, chunk.Name + chunk.AssetType.GetFileExtension()), AssetConverter.Extract(chunk, buffer));
 		}
 	}
 }
