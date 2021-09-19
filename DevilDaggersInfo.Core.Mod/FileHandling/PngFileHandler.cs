@@ -15,9 +15,9 @@ public sealed class PngFileHandler : IFileHandler
 
 	public int HeaderSize => 11;
 
-	public byte[] Compile(byte[] fileBuffer)
+	public byte[] Compile(byte[] buffer)
 	{
-		using Image<Rgba32> image = Image.Load(fileBuffer);
+		using Image<Rgba32> image = Image.Load(buffer);
 		using MemoryStream ms = new();
 		using BinaryWriter bw = new(ms);
 		bw.Write(image.Width);
@@ -38,12 +38,12 @@ public sealed class PngFileHandler : IFileHandler
 		return ms.ToArray();
 	}
 
-	public byte[] Extract(byte[] binaryBuffer)
+	public byte[] Extract(byte[] buffer)
 	{
-		int width = BitConverter.ToInt32(binaryBuffer, 2);
-		int height = BitConverter.ToInt32(binaryBuffer, 6);
+		int width = BitConverter.ToInt32(buffer, 2);
+		int height = BitConverter.ToInt32(buffer, 6);
 
-		using Image<Rgba32> image = Image.LoadPixelData<Rgba32>(binaryBuffer[HeaderSize..], width, height);
+		using Image<Rgba32> image = Image.LoadPixelData<Rgba32>(buffer[HeaderSize..], width, height);
 		using MemoryStream ms = new();
 		image.SaveAsPng(ms);
 		return ms.ToArray();

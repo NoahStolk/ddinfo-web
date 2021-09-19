@@ -12,23 +12,23 @@ public sealed class GlslFileHandler : IFileHandler
 
 	public int HeaderSize => 12;
 
-	public byte[] Compile(byte[] fileBuffer)
+	public byte[] Compile(byte[] buffer)
 	{
 		// TODO: Validate if file contains both "// Vert" and "// Frag" (or without space -- case insensitive).
 		throw new NotImplementedException();
 	}
 
-	public byte[] Extract(byte[] binaryBuffer)
+	public byte[] Extract(byte[] buffer)
 	{
-		int nameLength = BitConverter.ToInt32(binaryBuffer, 0);
-		int vertexSize = BitConverter.ToInt32(binaryBuffer, 4);
-		int fragmentSize = BitConverter.ToInt32(binaryBuffer, 8);
+		int nameLength = BitConverter.ToInt32(buffer, 0);
+		int vertexSize = BitConverter.ToInt32(buffer, 4);
+		int fragmentSize = BitConverter.ToInt32(buffer, 8);
 
 		byte[] vertexBuffer = new byte[vertexSize];
-		Buffer.BlockCopy(binaryBuffer, nameLength + HeaderSize, vertexBuffer, 0, vertexSize);
+		Buffer.BlockCopy(buffer, nameLength + HeaderSize, vertexBuffer, 0, vertexSize);
 
 		byte[] fragmentBuffer = new byte[fragmentSize];
-		Buffer.BlockCopy(binaryBuffer, nameLength + HeaderSize + vertexSize, fragmentBuffer, 0, fragmentSize);
+		Buffer.BlockCopy(buffer, nameLength + HeaderSize + vertexSize, fragmentBuffer, 0, fragmentSize);
 
 		// TODO: Add comments at beginning of buffers in case of old shader binaries that don't start with // Vert or // Frag.
 		return vertexBuffer.Concat(fragmentBuffer).ToArray();

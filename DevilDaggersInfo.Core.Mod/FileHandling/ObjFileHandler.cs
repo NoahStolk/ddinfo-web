@@ -12,24 +12,24 @@ public sealed class ObjFileHandler : IFileHandler
 
 	public int HeaderSize => 10;
 
-	public byte[] Compile(byte[] fileBuffer)
+	public byte[] Compile(byte[] buffer)
 	{
 		throw new NotImplementedException();
 	}
 
-	public byte[] Extract(byte[] binaryBuffer)
+	public byte[] Extract(byte[] buffer)
 	{
-		int indexCount = BitConverter.ToInt32(binaryBuffer, 0);
-		int vertexCount = BitConverter.ToInt32(binaryBuffer, 4);
+		int indexCount = BitConverter.ToInt32(buffer, 0);
+		int vertexCount = BitConverter.ToInt32(buffer, 4);
 
 		Vertex[] vertices = new Vertex[vertexCount];
 		int[] indices = new int[indexCount];
 
 		for (int i = 0; i < vertices.Length; i++)
-			vertices[i] = Vertex.CreateFromBuffer(binaryBuffer, HeaderSize, i);
+			vertices[i] = Vertex.CreateFromBuffer(buffer, HeaderSize, i);
 
 		for (int i = 0; i < indices.Length; i++)
-			indices[i] = BitConverter.ToInt32(binaryBuffer, HeaderSize + vertices.Length * Vertex.ByteCount + i * sizeof(int));
+			indices[i] = BitConverter.ToInt32(buffer, HeaderSize + vertices.Length * Vertex.ByteCount + i * sizeof(int));
 
 		StringBuilder sb = new("# Vertex Attributes\n");
 
