@@ -33,7 +33,7 @@ public class ModBinary
 		while (i < tocBuffer.Length - 14)
 		{
 			byte type = tocBuffer[i];
-			string name = ReadNullTerminatedString(tocBuffer, i + 2);
+			string name = tocBuffer.ReadNullTerminatedString(i + 2);
 
 			i += name.Length + 1; // + 1 to include null terminator.
 			int offset = BitConverter.ToInt32(tocBuffer, i + 2);
@@ -59,20 +59,6 @@ public class ModBinary
 
 		ModBinaryType = modBinaryType;
 		Chunks = chunks;
-
-		string ReadNullTerminatedString(byte[] buffer, int offset)
-		{
-			StringBuilder sb = new();
-			for (int i = offset; i < buffer.Length; i++)
-			{
-				char c = (char)buffer[i];
-				if (c == '\0')
-					return sb.ToString();
-				sb.Append(c);
-			}
-
-			throw new InvalidModBinaryException($"Null terminator not observed in buffer with length '{buffer.Length}' starting from offset '{offset}' in mod binary '{fileName}'.");
-		}
 	}
 
 	public ModBinaryType ModBinaryType { get; }
