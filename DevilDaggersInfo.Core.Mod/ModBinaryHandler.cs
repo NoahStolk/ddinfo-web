@@ -2,8 +2,8 @@
 
 public static class ModBinaryHandler
 {
-	internal static readonly ulong Magic1 = MakeMagic(0x3AUL, 0x68UL, 0x78UL, 0x3AUL);
-	internal static readonly ulong Magic2 = MakeMagic(0x72UL, 0x67UL, 0x3AUL, 0x01UL);
+	private static readonly ulong _magic1 = MakeMagic(0x3AUL, 0x68UL, 0x78UL, 0x3AUL);
+	private static readonly ulong _magic2 = MakeMagic(0x72UL, 0x67UL, 0x3AUL, 0x01UL);
 
 	private static ulong MakeMagic(ulong a, ulong b, ulong c, ulong d)
 		=> a | b << 8 | c << 16 | d << 24;
@@ -25,7 +25,7 @@ public static class ModBinaryHandler
 
 		uint magic1FromFile = BitConverter.ToUInt32(fileContents, 0);
 		uint magic2FromFile = BitConverter.ToUInt32(fileContents, 4);
-		if (magic1FromFile != Magic1 || magic2FromFile != Magic2)
+		if (magic1FromFile != _magic1 || magic2FromFile != _magic2)
 			throw new InvalidModBinaryException($"Binary '{fileName}' is not a valid binary; incorrect header values.");
 
 		uint tocSize = BitConverter.ToUInt32(fileContents, 8);
