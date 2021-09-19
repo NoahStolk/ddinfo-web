@@ -5,5 +5,5 @@ string outputDirectory = args[1];
 
 string fileName = Path.GetFileName(inputPath);
 byte[] fileContents = File.ReadAllBytes(inputPath);
-ModBinary modBinary = ModBinaryHandler.ReadModBinary(fileName, fileContents);
+ModBinary modBinary = new(fileName, fileContents);
 modBinary.ExtractAssets(outputDirectory, fileContents);
