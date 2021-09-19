@@ -48,8 +48,11 @@ public class ModBinary
 			if (!Enum.IsDefined(assetType))
 				continue;
 
-			if (!(assetType == AssetType.Audio && name == "loudness"))
-				chunks.Add(new(name, offset, size, assetType));
+			// Skip loudness.
+			if (assetType == AssetType.Audio && name == "loudness")
+				continue;
+
+			chunks.Add(new(name, offset, size, assetType));
 		}
 
 		ModBinaryType = modBinaryType;
