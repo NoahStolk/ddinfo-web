@@ -23,17 +23,5 @@
   <ItemGroup>
     <ProjectReference Include="..\DevilDaggersInfo.Core.Shared\DevilDaggersInfo.Core.Shared.csproj" />
     <ProjectReference Include="..\DevilDaggersInfo.Core.Wiki.SourceGenerator\DevilDaggersInfo.Core.Wiki.SourceGenerator.csproj" OutputItemType="Analyzer" ReferenceOutputAssembly="false" />
-    <PackageReference Include="Roslynator.Analyzers" Version="3.2.2">
-      <PrivateAssets>all</PrivateAssets>
-      <IncludeAssets>runtime; build; native; contentfiles; analyzers; buildtransitive</IncludeAssets>
-    </PackageReference>
-    <PackageReference Include="SonarAnalyzer.CSharp" Version="8.29.0.36737">
-      <PrivateAssets>all</PrivateAssets>
-      <IncludeAssets>runtime; build; native; contentfiles; analyzers; buildtransitive</IncludeAssets>
-    </PackageReference>
-    <PackageReference Include="StyleCop.Analyzers" Version="1.2.0-beta.354">
-      <PrivateAssets>all</PrivateAssets>
-      <IncludeAssets>runtime; build; native; contentfiles; analyzers; buildtransitive</IncludeAssets>
-    </PackageReference>
   </ItemGroup>
 </Project>

@@ -1,24 +1,12 @@
 ﻿<Project Sdk="Microsoft.NET.Sdk.BlazorWebAssembly">
   <ItemGroup>
-    <PackageReference Include="Blazorise.Charts" Version="0.9.4.4" />
-    <PackageReference Include="Microsoft.AspNetCore.Components.WebAssembly" Version="6.0.0-rc.1.21452.15" />
-    <PackageReference Include="Microsoft.AspNetCore.Components.WebAssembly.DevServer" Version="6.0.0-rc.1.21452.15" PrivateAssets="all" />
-    <PackageReference Include="Microsoft.AspNetCore.Components.WebAssembly.Authentication" Version="6.0.0-rc.1.21452.15" />
-    <PackageReference Include="Microsoft.AspNetCore.WebUtilities" Version="2.2.0" />
-    <PackageReference Include="Microsoft.Extensions.Http" Version="6.0.0-rc.1.21451.13" />
-    <PackageReference Include="System.Net.Http.Json" Version="6.0.0-rc.1.21451.13" />
-    <PackageReference Include="Roslynator.Analyzers" Version="3.2.2">
-      <PrivateAssets>all</PrivateAssets>
-      <IncludeAssets>runtime; build; native; contentfiles; analyzers; buildtransitive</IncludeAssets>
-    </PackageReference>
-    <PackageReference Include="SonarAnalyzer.CSharp" Version="8.29.0.36737">
-      <PrivateAssets>all</PrivateAssets>
-      <IncludeAssets>runtime; build; native; contentfiles; analyzers; buildtransitive</IncludeAssets>
-    </PackageReference>
-    <PackageReference Include="StyleCop.Analyzers" Version="1.2.0-beta.354">
-      <PrivateAssets>all</PrivateAssets>
-      <IncludeAssets>runtime; build; native; contentfiles; analyzers; buildtransitive</IncludeAssets>
-    </PackageReference>
+    <PackageReference Include="Blazorise.Charts" />
+    <PackageReference Include="Microsoft.AspNetCore.Components.WebAssembly" />
+    <PackageReference Include="Microsoft.AspNetCore.Components.WebAssembly.DevServer" PrivateAssets="all" />
+    <PackageReference Include="Microsoft.AspNetCore.Components.WebAssembly.Authentication" />
+    <PackageReference Include="Microsoft.AspNetCore.WebUtilities" />
+    <PackageReference Include="Microsoft.Extensions.Http" />
+    <PackageReference Include="System.Net.Http.Json" />
   </ItemGroup>
   <ItemGroup>
     <ProjectReference Include="..\DevilDaggersInfo.Web.BlazorWasm.Client.SourceGenerator\DevilDaggersInfo.Web.BlazorWasm.Client.SourceGenerator.csproj" OutputItemType="Analyzer" ReferenceOutputAssembly="false" />
