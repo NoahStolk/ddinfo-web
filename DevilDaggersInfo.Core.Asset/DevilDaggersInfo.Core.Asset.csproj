@@ -1,4 +1,4 @@
-﻿<Project Sdk="Microsoft.NET.Sdk">
+<Project Sdk="Microsoft.NET.Sdk">
   <ItemGroup>
     <AdditionalFiles Include="Data\AudioAudio.csv" />
     <AdditionalFiles Include="Data\CoreShaders.csv" />

@@ -1,4 +1,4 @@
-﻿using DevilDaggersInfo.Web.BlazorWasm.Server.Utils;
+using DevilDaggersInfo.Web.BlazorWasm.Server.Utils;
 using DevilDaggersInfo.Web.BlazorWasm.Shared.Dto.Public.LeaderboardHistory;
 using DevilDaggersInfo.Web.BlazorWasm.Shared.Utils;
 using DevilDaggersInfo.Web.Tool.Shared;

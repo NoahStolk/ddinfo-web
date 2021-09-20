@@ -1,4 +1,4 @@
-﻿namespace DevilDaggersInfo.Web.BlazorWasm.Shared.Dto.Public.Leaderboards;
+namespace DevilDaggersInfo.Web.BlazorWasm.Shared.Dto.Public.Leaderboards;
 
 public class GetEntry : IGetEntryDto
 {

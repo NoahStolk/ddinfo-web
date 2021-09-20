@@ -1,4 +1,4 @@
-﻿namespace DevilDaggersInfo.Web.BlazorWasm.Server.Transients;
+namespace DevilDaggersInfo.Web.BlazorWasm.Server.Transients;
 
 /// <summary>
 /// This class must correspond to what's stored in the Tools.json file.

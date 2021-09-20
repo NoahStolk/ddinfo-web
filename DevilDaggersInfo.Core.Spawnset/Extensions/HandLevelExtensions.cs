@@ -1,4 +1,4 @@
-﻿namespace DevilDaggersInfo.Core.Spawnset.Extensions;
+namespace DevilDaggersInfo.Core.Spawnset.Extensions;
 
 public static class HandLevelExtensions
 {

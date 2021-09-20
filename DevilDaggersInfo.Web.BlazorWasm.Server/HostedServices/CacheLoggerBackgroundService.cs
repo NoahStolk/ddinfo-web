@@ -1,4 +1,4 @@
-﻿using DevilDaggersInfo.Web.BlazorWasm.Server.Caches.LeaderboardHistory;
+using DevilDaggersInfo.Web.BlazorWasm.Server.Caches.LeaderboardHistory;
 using DevilDaggersInfo.Web.BlazorWasm.Server.Caches.LeaderboardStatistics;
 using DevilDaggersInfo.Web.BlazorWasm.Server.Caches.ModArchives;
 using DevilDaggersInfo.Web.BlazorWasm.Server.Caches.SpawnsetHashes;

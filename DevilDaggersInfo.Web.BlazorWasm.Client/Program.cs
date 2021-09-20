@@ -1,4 +1,4 @@
-﻿using Blazorise;
+using Blazorise;
 using DevilDaggersInfo.Web.BlazorWasm.Client.HttpClients;
 using Microsoft.AspNetCore.Components.WebAssembly.Authentication;
 using Microsoft.AspNetCore.Components.WebAssembly.Hosting;

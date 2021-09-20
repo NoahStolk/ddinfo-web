@@ -1,4 +1,4 @@
-﻿using DevilDaggersInfo.Web.BlazorWasm.Shared.Dto;
+using DevilDaggersInfo.Web.BlazorWasm.Shared.Dto;
 
 namespace DevilDaggersInfo.Web.BlazorWasm.Client.Components.Admin;
 

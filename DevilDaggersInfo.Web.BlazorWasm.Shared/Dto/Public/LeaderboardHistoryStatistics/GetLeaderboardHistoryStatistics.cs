@@ -1,4 +1,4 @@
-﻿namespace DevilDaggersInfo.Web.BlazorWasm.Shared.Dto.Public.LeaderboardHistoryStatistics;
+namespace DevilDaggersInfo.Web.BlazorWasm.Shared.Dto.Public.LeaderboardHistoryStatistics;
 
 public class GetLeaderboardHistoryStatistics
 {

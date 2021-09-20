@@ -1,4 +1,4 @@
-﻿namespace DevilDaggersInfo.Core.Spawnset.Test;
+namespace DevilDaggersInfo.Core.Spawnset.Test;
 
 [TestClass]
 public class SpawnsetBinaryTests

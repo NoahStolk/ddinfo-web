@@ -1,4 +1,4 @@
-﻿namespace DevilDaggersInfo.Core.Shared.Extensions;
+namespace DevilDaggersInfo.Core.Shared.Extensions;
 
 public static class ByteArrayExtensions
 {

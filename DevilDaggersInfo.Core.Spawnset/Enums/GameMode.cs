@@ -1,4 +1,4 @@
-﻿namespace DevilDaggersInfo.Core.Spawnset.Enums;
+namespace DevilDaggersInfo.Core.Spawnset.Enums;
 
 public enum GameMode
 {

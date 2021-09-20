@@ -1,4 +1,4 @@
-﻿namespace DevilDaggersInfo.Web.BlazorWasm.Shared.Dto.Public;
+namespace DevilDaggersInfo.Web.BlazorWasm.Shared.Dto.Public;
 
 public interface IGetEntryDto
 {

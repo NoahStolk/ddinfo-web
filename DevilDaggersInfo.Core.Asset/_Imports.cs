@@ -1,1 +1,1 @@
-﻿global using DevilDaggersInfo.Core.Asset.Enums;
+global using DevilDaggersInfo.Core.Asset.Enums;

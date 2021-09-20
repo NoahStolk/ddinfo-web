@@ -1,4 +1,4 @@
-﻿using NSwag;
+using NSwag;
 using NSwag.Generation.Processors;
 using NSwag.Generation.Processors.Contexts;
 

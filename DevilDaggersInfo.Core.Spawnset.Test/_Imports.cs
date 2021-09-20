@@ -1,4 +1,4 @@
-﻿global using DevilDaggersInfo.Core.Spawnset.Enums;
+global using DevilDaggersInfo.Core.Spawnset.Enums;
 global using DevilDaggersInfo.Core.Spawnset.Summary;
 global using DevilDaggersInfo.Core.Spawnset.View;
 global using DevilDaggersInfo.Core.Wiki.Enums;

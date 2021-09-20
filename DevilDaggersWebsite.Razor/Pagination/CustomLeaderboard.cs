@@ -1,4 +1,4 @@
-﻿using DevilDaggersWebsite.Entities;
+using DevilDaggersWebsite.Entities;
 using DevilDaggersWebsite.Enumerators;
 using System;
 

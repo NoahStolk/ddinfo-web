@@ -1,4 +1,4 @@
-﻿using DevilDaggersInfo.Core.Wiki;
+using DevilDaggersInfo.Core.Wiki;
 using DevilDaggersInfo.Core.Wiki.Enums;
 using DevilDaggersInfo.Web.BlazorWasm.Shared.Dto.Public.LeaderboardHistory;
 using DevilDaggersInfo.Web.BlazorWasm.Shared.Utils;

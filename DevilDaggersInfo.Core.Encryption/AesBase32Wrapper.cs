@@ -1,4 +1,4 @@
-﻿namespace DevilDaggersInfo.Core.Encryption;
+namespace DevilDaggersInfo.Core.Encryption;
 
 /// <summary>
 /// Taken from <see href="http://mjremijan.blogspot.com/2014/08/aes-encryption-between-java-and-c.html"/>.

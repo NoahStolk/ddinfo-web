@@ -1,4 +1,4 @@
-﻿namespace DevilDaggersInfo.Core.Mod;
+namespace DevilDaggersInfo.Core.Mod;
 
 public class ModBinaryChunk
 {

@@ -1,4 +1,4 @@
-﻿using DevilDaggersInfo.Web.BlazorWasm.Server.HostedServices.DdInfoDiscordBot;
+using DevilDaggersInfo.Web.BlazorWasm.Server.HostedServices.DdInfoDiscordBot;
 using System.Security.Claims;
 
 namespace DevilDaggersInfo.Web.BlazorWasm.Server.Singletons.AuditLog;

@@ -1,4 +1,4 @@
-﻿namespace DevilDaggersInfo.Core.Memory.Enums;
+namespace DevilDaggersInfo.Core.Memory.Enums;
 
 public enum SupportedOs
 {

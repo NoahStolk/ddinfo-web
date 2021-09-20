@@ -1,4 +1,4 @@
-﻿namespace DevilDaggersInfo.Web.BlazorWasm.Client.Extensions;
+namespace DevilDaggersInfo.Web.BlazorWasm.Client.Extensions;
 
 public static class HttpStatusCodeExtensions
 {

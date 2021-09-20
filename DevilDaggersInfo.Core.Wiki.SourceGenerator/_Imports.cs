@@ -1,4 +1,4 @@
-﻿global using DevilDaggersInfo.Core.Wiki.SourceGenerator.Utils;
+global using DevilDaggersInfo.Core.Wiki.SourceGenerator.Utils;
 global using Microsoft.CodeAnalysis;
 global using Microsoft.CodeAnalysis.Text;
 global using System;

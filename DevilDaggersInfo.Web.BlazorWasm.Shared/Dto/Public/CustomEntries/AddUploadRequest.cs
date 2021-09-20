@@ -1,4 +1,4 @@
-﻿namespace DevilDaggersInfo.Web.BlazorWasm.Shared.Dto.Public.CustomEntries;
+namespace DevilDaggersInfo.Web.BlazorWasm.Shared.Dto.Public.CustomEntries;
 
 public class AddUploadRequest
 {

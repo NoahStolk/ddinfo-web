@@ -1,4 +1,4 @@
-﻿namespace DevilDaggersInfo.Core.Shared.Test;
+namespace DevilDaggersInfo.Core.Shared.Test;
 
 [TestClass]
 public class TimeTests

@@ -1,4 +1,4 @@
-﻿using DevilDaggersInfo.Web.BlazorWasm.Shared.Dto.Admin.Donations;
+using DevilDaggersInfo.Web.BlazorWasm.Shared.Dto.Admin.Donations;
 
 namespace DevilDaggersInfo.Web.BlazorWasm.Server.Converters.Admin;
 

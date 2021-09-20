@@ -1,4 +1,4 @@
-﻿using DevilDaggersInfo.Core.Wiki.Enums;
+using DevilDaggersInfo.Core.Wiki.Enums;
 using DevilDaggersInfo.Web.BlazorWasm.Shared.Dto.Public.LeaderboardHistory;
 
 namespace DevilDaggersInfo.Web.BlazorWasm.Shared.Dto.Public.WorldRecords;

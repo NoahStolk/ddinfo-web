@@ -1,4 +1,4 @@
-﻿using DevilDaggersWebsite.Caches.LeaderboardHistory;
+using DevilDaggersWebsite.Caches.LeaderboardHistory;
 using DevilDaggersWebsite.Clients;
 using DevilDaggersWebsite.Razor.PageModels;
 using DevilDaggersWebsite.Razor.Utils;

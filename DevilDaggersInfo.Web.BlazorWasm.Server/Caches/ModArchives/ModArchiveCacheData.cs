@@ -1,4 +1,4 @@
-﻿namespace DevilDaggersInfo.Web.BlazorWasm.Server.Caches.ModArchives;
+namespace DevilDaggersInfo.Web.BlazorWasm.Server.Caches.ModArchives;
 
 public class ModArchiveCacheData
 {

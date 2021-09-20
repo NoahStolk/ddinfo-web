@@ -1,4 +1,4 @@
-﻿using DevilDaggersInfo.Core.Mod.Enums;
+using DevilDaggersInfo.Core.Mod.Enums;
 
 namespace DevilDaggersInfo.Web.BlazorWasm.Shared.Dto.Public.Mods;
 

@@ -1,4 +1,4 @@
-﻿namespace DevilDaggersInfo.Web.BlazorWasm.Client.Components.Admin.Enums;
+namespace DevilDaggersInfo.Web.BlazorWasm.Client.Components.Admin.Enums;
 
 public enum ResultBarType
 {

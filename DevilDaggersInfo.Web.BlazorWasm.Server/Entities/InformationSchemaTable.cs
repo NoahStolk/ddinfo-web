@@ -1,4 +1,4 @@
-﻿namespace DevilDaggersInfo.Web.BlazorWasm.Server.Entities;
+namespace DevilDaggersInfo.Web.BlazorWasm.Server.Entities;
 
 [Keyless]
 public class InformationSchemaTable

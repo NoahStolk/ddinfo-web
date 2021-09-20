@@ -1,4 +1,4 @@
-﻿using DevilDaggersWebsite.Dto.Mods;
+using DevilDaggersWebsite.Dto.Mods;
 using DevilDaggersWebsite.Razor.PageModels;
 using DevilDaggersWebsite.Razor.Pagination;
 using DevilDaggersWebsite.Transients;

@@ -1,4 +1,4 @@
-﻿using DevilDaggersCore.Game;
+using DevilDaggersCore.Game;
 using DevilDaggersWebsite.Clients;
 using DevilDaggersWebsite.Entities;
 using DevilDaggersWebsite.Razor.Utils;

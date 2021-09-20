@@ -1,4 +1,4 @@
-﻿using DevilDaggersInfo.Core.Mod;
+using DevilDaggersInfo.Core.Mod;
 
 string inputPath = args[0];
 string outputDirectory = args[1];

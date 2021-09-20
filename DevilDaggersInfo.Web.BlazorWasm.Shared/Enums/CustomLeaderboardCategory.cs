@@ -1,4 +1,4 @@
-﻿namespace DevilDaggersInfo.Web.BlazorWasm.Shared.Enums;
+namespace DevilDaggersInfo.Web.BlazorWasm.Shared.Enums;
 
 public enum CustomLeaderboardCategory
 {

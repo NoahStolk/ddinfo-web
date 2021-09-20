@@ -1,4 +1,4 @@
-﻿namespace DevilDaggersInfo.Core.Spawnset.Summary;
+namespace DevilDaggersInfo.Core.Spawnset.Summary;
 
 public class SpawnsetSummary
 {

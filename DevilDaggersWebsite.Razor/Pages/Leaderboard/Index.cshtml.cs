@@ -1,4 +1,4 @@
-﻿using DevilDaggersWebsite.Clients;
+using DevilDaggersWebsite.Clients;
 using DevilDaggersWebsite.Razor.PageModels;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.AspNetCore.Mvc.RazorPages;

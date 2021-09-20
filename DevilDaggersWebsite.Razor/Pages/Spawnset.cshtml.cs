@@ -1,4 +1,4 @@
-﻿using DevilDaggersCore.Spawnsets;
+using DevilDaggersCore.Spawnsets;
 using DevilDaggersWebsite.Entities;
 using Microsoft.AspNetCore.Hosting;
 using Microsoft.AspNetCore.Mvc;

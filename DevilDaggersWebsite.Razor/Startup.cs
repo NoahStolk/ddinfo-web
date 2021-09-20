@@ -1,4 +1,4 @@
-﻿// #define TEST_EXCEPTION_HANDLER
+// #define TEST_EXCEPTION_HANDLER
 using DevilDaggersWebsite.Caches.LeaderboardHistory;
 using DevilDaggersWebsite.Caches.LeaderboardStatistics;
 using DevilDaggersWebsite.Caches.ModArchive;

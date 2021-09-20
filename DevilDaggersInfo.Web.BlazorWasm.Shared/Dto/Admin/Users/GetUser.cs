@@ -1,4 +1,4 @@
-﻿namespace DevilDaggersInfo.Web.BlazorWasm.Shared.Dto.Admin.Users;
+namespace DevilDaggersInfo.Web.BlazorWasm.Shared.Dto.Admin.Users;
 
 public class GetUser : IGetDto<string>
 {

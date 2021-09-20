@@ -1,4 +1,4 @@
-﻿namespace DevilDaggersInfo.Web.BlazorWasm.Shared.Enums.Sortings.Public;
+namespace DevilDaggersInfo.Web.BlazorWasm.Shared.Enums.Sortings.Public;
 
 public enum ModSorting
 {

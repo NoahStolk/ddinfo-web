@@ -1,4 +1,4 @@
-﻿namespace DevilDaggersInfo.Web.BlazorWasm.Server.Extensions;
+namespace DevilDaggersInfo.Web.BlazorWasm.Server.Extensions;
 
 public static class ByteArrayExtensions
 {

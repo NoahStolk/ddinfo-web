@@ -1,4 +1,4 @@
-﻿namespace DevilDaggersInfo.Web.BlazorWasm.Server.Transients;
+namespace DevilDaggersInfo.Web.BlazorWasm.Server.Transients;
 
 public interface IFileSystemService
 {

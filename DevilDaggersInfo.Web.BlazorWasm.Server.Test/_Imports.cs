@@ -1,4 +1,4 @@
-﻿global using DevilDaggersInfo.Core.Spawnset;
+global using DevilDaggersInfo.Core.Spawnset;
 global using DevilDaggersInfo.Web.BlazorWasm.Server.Entities;
 global using DevilDaggersInfo.Web.BlazorWasm.Server.Extensions;
 global using DevilDaggersInfo.Web.BlazorWasm.Server.Singletons;

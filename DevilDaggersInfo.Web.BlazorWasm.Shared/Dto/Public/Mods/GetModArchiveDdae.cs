@@ -1,4 +1,4 @@
-﻿namespace DevilDaggersInfo.Web.BlazorWasm.Shared.Dto.Public.Mods;
+namespace DevilDaggersInfo.Web.BlazorWasm.Shared.Dto.Public.Mods;
 
 public class GetModArchiveDdae
 {

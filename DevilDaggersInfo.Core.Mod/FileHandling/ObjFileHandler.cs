@@ -1,4 +1,4 @@
-﻿namespace DevilDaggersInfo.Core.Mod.FileHandling;
+namespace DevilDaggersInfo.Core.Mod.FileHandling;
 
 public sealed class ObjFileHandler : IFileHandler
 {

@@ -1,4 +1,4 @@
-﻿namespace DevilDaggersInfo.Core.Wiki.Structs;
+namespace DevilDaggersInfo.Core.Wiki.Structs;
 
 public readonly record struct Color
 {

@@ -1,4 +1,4 @@
-﻿using DevilDaggersInfo.Web.BlazorWasm.Server.Extensions;
+using DevilDaggersInfo.Web.BlazorWasm.Server.Extensions;
 using System.Text;
 
 namespace DevilDaggersInfo.Web.BlazorWasm.Server.Singletons;

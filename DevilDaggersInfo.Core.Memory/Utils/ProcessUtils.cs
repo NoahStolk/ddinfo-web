@@ -1,4 +1,4 @@
-﻿namespace DevilDaggersInfo.Core.Memory.Utils;
+namespace DevilDaggersInfo.Core.Memory.Utils;
 
 public static class ProcessUtils
 {

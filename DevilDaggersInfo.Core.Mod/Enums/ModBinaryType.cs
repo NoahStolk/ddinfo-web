@@ -1,4 +1,4 @@
-﻿namespace DevilDaggersInfo.Core.Mod.Enums;
+namespace DevilDaggersInfo.Core.Mod.Enums;
 
 public enum ModBinaryType
 {

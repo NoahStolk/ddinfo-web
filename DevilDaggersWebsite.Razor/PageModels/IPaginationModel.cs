@@ -1,4 +1,4 @@
-﻿namespace DevilDaggersWebsite.Razor.PageModels
+namespace DevilDaggersWebsite.Razor.PageModels
 {
 	public interface IPaginationModel
 	{

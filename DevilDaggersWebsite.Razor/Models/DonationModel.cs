@@ -1,4 +1,4 @@
-﻿using DevilDaggersWebsite.Enumerators;
+using DevilDaggersWebsite.Enumerators;
 
 namespace DevilDaggersWebsite.Razor.Models
 {

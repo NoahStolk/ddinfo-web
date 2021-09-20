@@ -1,4 +1,4 @@
-﻿using DevilDaggersInfo.Web.BlazorWasm.Shared.Dto.Public.Assets;
+using DevilDaggersInfo.Web.BlazorWasm.Shared.Dto.Public.Assets;
 
 namespace DevilDaggersInfo.Web.BlazorWasm.Server.Controllers.Public;
 

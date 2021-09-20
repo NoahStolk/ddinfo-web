@@ -1,4 +1,4 @@
-﻿using DevilDaggersCore.Game;
+using DevilDaggersCore.Game;
 using Microsoft.AspNetCore.Mvc.RazorPages;
 using System.Collections.Generic;
 

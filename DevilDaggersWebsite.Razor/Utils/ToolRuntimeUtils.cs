@@ -1,4 +1,4 @@
-﻿namespace DevilDaggersWebsite.Razor.Utils
+namespace DevilDaggersWebsite.Razor.Utils
 {
 	public static class ToolRuntimeUtils
 	{

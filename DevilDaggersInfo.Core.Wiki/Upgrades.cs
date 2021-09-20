@@ -1,4 +1,4 @@
-﻿namespace DevilDaggersInfo.Core.Wiki;
+namespace DevilDaggersInfo.Core.Wiki;
 
 public static class Upgrades
 {

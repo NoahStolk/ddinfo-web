@@ -1,4 +1,4 @@
-﻿namespace DevilDaggersInfo.Core.Spawnset.View;
+namespace DevilDaggersInfo.Core.Spawnset.View;
 
 // TODO: Write unit tests.
 public class SpawnsView

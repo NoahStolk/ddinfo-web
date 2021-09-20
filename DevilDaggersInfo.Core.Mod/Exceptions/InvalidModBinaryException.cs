@@ -1,4 +1,4 @@
-﻿namespace DevilDaggersInfo.Core.Mod.Exceptions;
+namespace DevilDaggersInfo.Core.Mod.Exceptions;
 
 [Serializable]
 public class InvalidModBinaryException : Exception

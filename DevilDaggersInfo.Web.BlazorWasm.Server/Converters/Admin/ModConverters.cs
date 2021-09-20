@@ -1,4 +1,4 @@
-﻿using DevilDaggersInfo.Web.BlazorWasm.Shared.Dto.Admin.Mods;
+using DevilDaggersInfo.Web.BlazorWasm.Shared.Dto.Admin.Mods;
 
 namespace DevilDaggersInfo.Web.BlazorWasm.Server.Converters.Admin;
 

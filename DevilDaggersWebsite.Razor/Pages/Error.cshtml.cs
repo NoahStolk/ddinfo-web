@@ -1,4 +1,4 @@
-﻿using DevilDaggersCore.Extensions;
+using DevilDaggersCore.Extensions;
 using DevilDaggersWebsite.Extensions;
 using DevilDaggersWebsite.HostedServices.DdInfoDiscordBot;
 using DevilDaggersWebsite.Singletons;

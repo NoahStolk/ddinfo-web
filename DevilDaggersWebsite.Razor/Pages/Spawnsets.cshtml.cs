@@ -1,4 +1,4 @@
-﻿using DevilDaggersWebsite.Dto.Spawnsets;
+using DevilDaggersWebsite.Dto.Spawnsets;
 using DevilDaggersWebsite.Razor.PageModels;
 using DevilDaggersWebsite.Razor.Pagination;
 using DevilDaggersWebsite.Transients;

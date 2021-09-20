@@ -1,4 +1,4 @@
-﻿namespace DevilDaggersInfo.Web.BlazorWasm.Shared.Dto.Admin.Donations;
+namespace DevilDaggersInfo.Web.BlazorWasm.Shared.Dto.Admin.Donations;
 
 public class EditDonation
 {

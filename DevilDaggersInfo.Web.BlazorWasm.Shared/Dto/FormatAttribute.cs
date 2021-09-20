@@ -1,4 +1,4 @@
-﻿namespace DevilDaggersInfo.Web.BlazorWasm.Shared.Dto;
+namespace DevilDaggersInfo.Web.BlazorWasm.Shared.Dto;
 
 [AttributeUsage(AttributeTargets.Property, AllowMultiple = false)]
 public class FormatAttribute : Attribute

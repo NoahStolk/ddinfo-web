@@ -1,4 +1,4 @@
-﻿namespace DevilDaggersInfo.Web.BlazorWasm.Shared.Dto.Public.PlayerHistory;
+namespace DevilDaggersInfo.Web.BlazorWasm.Shared.Dto.Public.PlayerHistory;
 
 public class GetPlayerActivity
 {

@@ -1,4 +1,4 @@
-﻿namespace DevilDaggersInfo.Core.Asset.Extensions;
+namespace DevilDaggersInfo.Core.Asset.Extensions;
 
 public static class AssetTypeExtensions
 {

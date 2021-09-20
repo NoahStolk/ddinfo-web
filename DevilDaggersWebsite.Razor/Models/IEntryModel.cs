@@ -1,4 +1,4 @@
-﻿namespace DevilDaggersWebsite.Razor.Models
+namespace DevilDaggersWebsite.Razor.Models
 {
 	public interface IEntryModel
 	{

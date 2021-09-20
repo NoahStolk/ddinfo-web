@@ -1,4 +1,4 @@
-﻿namespace DevilDaggersInfo.Web.BlazorWasm.Server.Test.Data;
+namespace DevilDaggersInfo.Web.BlazorWasm.Server.Test.Data;
 
 public static class TestConstants
 {

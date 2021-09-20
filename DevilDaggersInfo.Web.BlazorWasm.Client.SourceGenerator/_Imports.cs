@@ -1,4 +1,4 @@
-﻿global using DevilDaggersInfo.Web.BlazorWasm.Client.SourceGenerator.Extensions;
+global using DevilDaggersInfo.Web.BlazorWasm.Client.SourceGenerator.Extensions;
 global using Microsoft.CodeAnalysis;
 global using Microsoft.CodeAnalysis.CSharp;
 global using Microsoft.CodeAnalysis.CSharp.Syntax;

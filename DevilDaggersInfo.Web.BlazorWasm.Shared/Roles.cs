@@ -1,4 +1,4 @@
-﻿namespace DevilDaggersInfo.Web.BlazorWasm.Shared;
+namespace DevilDaggersInfo.Web.BlazorWasm.Shared;
 
 public static class Roles
 {

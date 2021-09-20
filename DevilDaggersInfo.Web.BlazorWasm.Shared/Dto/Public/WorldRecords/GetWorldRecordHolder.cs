@@ -1,4 +1,4 @@
-﻿namespace DevilDaggersInfo.Web.BlazorWasm.Shared.Dto.Public.WorldRecords;
+namespace DevilDaggersInfo.Web.BlazorWasm.Shared.Dto.Public.WorldRecords;
 
 public class GetWorldRecordHolder
 {

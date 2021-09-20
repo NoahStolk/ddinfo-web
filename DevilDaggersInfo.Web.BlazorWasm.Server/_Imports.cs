@@ -1,4 +1,4 @@
-﻿global using DevilDaggersInfo.Core.Asset;
+global using DevilDaggersInfo.Core.Asset;
 global using DevilDaggersInfo.Core.Asset.Enums;
 global using DevilDaggersInfo.Core.Mod;
 global using DevilDaggersInfo.Core.Mod.Enums;

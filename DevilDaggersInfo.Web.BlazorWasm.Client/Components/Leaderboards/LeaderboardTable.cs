@@ -1,4 +1,4 @@
-﻿using DevilDaggersInfo.Web.BlazorWasm.Shared.Dto.Public;
+using DevilDaggersInfo.Web.BlazorWasm.Shared.Dto.Public;
 
 namespace DevilDaggersInfo.Web.BlazorWasm.Client.Components.Leaderboards;
 

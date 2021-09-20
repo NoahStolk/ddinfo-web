@@ -1,4 +1,4 @@
-﻿namespace DevilDaggersInfo.Core.Wiki.SourceGenerator.Generators;
+namespace DevilDaggersInfo.Core.Wiki.SourceGenerator.Generators;
 
 [Generator]
 public class ColorSourceGenerator : ISourceGenerator

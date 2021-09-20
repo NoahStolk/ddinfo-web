@@ -1,4 +1,4 @@
-﻿namespace DevilDaggersInfo.Web.BlazorWasm.Shared.Enums.Sortings.Admin;
+namespace DevilDaggersInfo.Web.BlazorWasm.Shared.Enums.Sortings.Admin;
 
 public enum CustomEntrySorting
 {

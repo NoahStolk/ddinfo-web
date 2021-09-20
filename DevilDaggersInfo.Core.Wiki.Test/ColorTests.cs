@@ -1,4 +1,4 @@
-﻿namespace DevilDaggersInfo.Core.Wiki.Test;
+namespace DevilDaggersInfo.Core.Wiki.Test;
 
 [TestClass]
 public class ColorTests

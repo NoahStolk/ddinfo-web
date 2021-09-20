@@ -1,4 +1,4 @@
-﻿using DevilDaggersCore.Game;
+using DevilDaggersCore.Game;
 using DevilDaggersWebsite.Razor.PageModels;
 
 namespace DevilDaggersWebsite.Razor.Pages.Wiki

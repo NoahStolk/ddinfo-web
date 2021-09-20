@@ -1,4 +1,4 @@
-﻿namespace DevilDaggersInfo.Core.Encryption;
+namespace DevilDaggersInfo.Core.Encryption;
 
 /// <summary>
 /// Taken from <see href="https://stackoverflow.com/a/7135008"/>.
