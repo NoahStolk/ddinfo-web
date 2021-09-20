@@ -1,4 +1,4 @@
-﻿const dayLengthInMilliseconds = 1000 * 60 * 60 * 24;
+const dayLengthInMilliseconds = 1000 * 60 * 60 * 24;
 
 $.getJSON("/api/leaderboard-history/user-activity?UserId=" + getUrlParameter("id"), function (data) {
 	const activity = [];

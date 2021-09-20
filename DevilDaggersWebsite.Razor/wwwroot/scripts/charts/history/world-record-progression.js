@@ -1,4 +1,4 @@
-﻿const minDate = new Date("2016-01-01T00:00:00Z");
+const minDate = new Date("2016-01-01T00:00:00Z");
 const maxDate = Date.now();
 
 $.getJSON("/api/leaderboard-history/world-records", function (data) {

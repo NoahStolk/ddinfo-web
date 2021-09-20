@@ -1,4 +1,4 @@
-﻿$.getJSON("/api/leaderboard-statistics/times", function (data) {
+$.getJSON("/api/leaderboard-statistics/times", function (data) {
 	const pre500ScoreCounts = [];
 	const post500ScoreCounts = [];
 	$.each(data, function (key, scoreCount) {

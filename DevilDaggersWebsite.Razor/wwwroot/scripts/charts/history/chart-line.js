@@ -1,4 +1,4 @@
-﻿const preRelease = new Date(2016, 0, 1); // January 1st
+const preRelease = new Date(2016, 0, 1); // January 1st
 const v1Release = new Date(2016, 1, 18); // February 18th
 const v2Release = new Date(2016, 6, 5); // July 5th
 const v3Release = new Date(2016, 8, 19); // September 19th

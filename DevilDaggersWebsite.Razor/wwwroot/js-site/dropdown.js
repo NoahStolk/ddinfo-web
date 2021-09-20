@@ -1,4 +1,4 @@
-﻿$('.dropdown').on('show.bs.dropdown', function () {
+$('.dropdown').on('show.bs.dropdown', function () {
 	$(this).find('.dropdown-menu').first().stop(true, true).slideDown(200);
 });
 

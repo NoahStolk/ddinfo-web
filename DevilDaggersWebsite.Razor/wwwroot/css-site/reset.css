@@ -1,4 +1,4 @@
-﻿/*This is apparently needed to fix a bug in Bootstrap (?) where nav bar reserves more space than available on small screens.*/
+/*This is apparently needed to fix a bug in Bootstrap (?) where nav bar reserves more space than available on small screens.*/
 ﻿.container-fluid {
 	padding-left: 0;
 	padding-right: 0;

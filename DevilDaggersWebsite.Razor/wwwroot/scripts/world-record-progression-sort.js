@@ -1,4 +1,4 @@
-﻿$(document).ready(function () {
+$(document).ready(function () {
 	const worldRecordHolderSortDirections = {
 		"username": 1,
 		"total-time-held": 1,

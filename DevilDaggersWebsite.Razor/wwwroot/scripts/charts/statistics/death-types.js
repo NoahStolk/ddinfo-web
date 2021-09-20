@@ -1,4 +1,4 @@
-﻿$.getJSON("/api/leaderboard-statistics/death-types", function (data) {
+$.getJSON("/api/leaderboard-statistics/death-types", function (data) {
 	const deathCounts = [];
 	$.each(data, function (_, deathCount) {
 		deathCounts.push(deathCount);

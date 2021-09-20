@@ -1,4 +1,4 @@
-﻿$.getJSON("/api/leaderboard-statistics/daggers", function (data) {
+$.getJSON("/api/leaderboard-statistics/daggers", function (data) {
 	const daggerCounts = [];
 	$.each(data, function (_, daggerCount) {
 		daggerCounts.push(daggerCount);

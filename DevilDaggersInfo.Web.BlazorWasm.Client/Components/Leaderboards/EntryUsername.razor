@@ -1,4 +1,4 @@
-﻿<div class="max-h-lb-name overflow-hidden">
+<div class="max-h-lb-name overflow-hidden">
 	@if (IsBanned)
 	{
 		<Tooltip Text="@BanDescription"><a href="/leaderboard/player/@Id" class="@(IsBanned ? string.Empty : DaggerCssClass)">@((MarkupString)Name.Replace(" ", "&nbsp;"))</a></Tooltip>

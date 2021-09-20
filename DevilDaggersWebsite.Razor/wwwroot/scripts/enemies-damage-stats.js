@@ -1,4 +1,4 @@
-﻿$(document).on("click", ".enemy-expander", function () {
+$(document).on("click", ".enemy-expander", function () {
 	var id = $(this).attr('id');
 	$("#" + id + "-expand").toggleClass('expand');
 

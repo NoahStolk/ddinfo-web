@@ -1,4 +1,4 @@
-﻿$(function () {
+$(function () {
 	if (document.location.href.indexOf('#') > -1) {
 		$(window).scrollTop($(window).scrollTop() - 70);
 	}

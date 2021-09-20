@@ -1,4 +1,4 @@
-﻿function getDataBasedOnMouseXPositionBar(chart, xy, plot, minXValue, maxXValue) {
+function getDataBasedOnMouseXPositionBar(chart, xy, plot, minXValue, maxXValue) {
 	const data = plot.series[0].data;
 
 	for (i = 1; i < data.length; i++) {

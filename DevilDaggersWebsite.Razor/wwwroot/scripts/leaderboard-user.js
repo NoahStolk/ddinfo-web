@@ -1,4 +1,4 @@
-﻿$(document).ready(function () {
+$(document).ready(function () {
 	var directions = {
 		"rank": -1,
 		"flag": -1,

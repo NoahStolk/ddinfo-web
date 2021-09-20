@@ -1,4 +1,4 @@
-﻿const maxDate = Date.now();
+const maxDate = Date.now();
 
 $.getJSON("/api/leaderboard-history/user-progression?userId=" + getUrlParameter("id"), function (data) {
 	const pbs = [];

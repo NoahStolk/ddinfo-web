@@ -1,4 +1,4 @@
-﻿$(document).ready(function () {
+$(document).ready(function () {
 	var directions = {
 		"name": 1,
 		"players": -1,

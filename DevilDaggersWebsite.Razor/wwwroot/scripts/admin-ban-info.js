@@ -1,4 +1,4 @@
-﻿$(document).ready(function () {
+$(document).ready(function () {
 	var directions = {
 		"description": 1,
 		"banned-account": 1,

@@ -1,4 +1,4 @@
-﻿$("#navbar-toggle").click(function () {
+$("#navbar-toggle").click(function () {
 	if (!$('#navbar-collapse').hasClass("collapsing")) {
 		if ($('#navbar-toggle').hasClass("collapsed")) {
 			$('#navbar-toggle').removeClass('collapsed');
