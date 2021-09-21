@@ -13,7 +13,7 @@
     <ProjectReference Include="..\DevilDaggersInfo.Core.Mod\DevilDaggersInfo.Core.Mod.csproj" />
   </ItemGroup>
   <ItemGroup>
-    <None Update="Data\dd-mesh">
+    <None Update="Data\dd-model">
       <CopyToOutputDirectory>Always</CopyToOutputDirectory>
     </None>
     <None Update="Data\dd-shader">

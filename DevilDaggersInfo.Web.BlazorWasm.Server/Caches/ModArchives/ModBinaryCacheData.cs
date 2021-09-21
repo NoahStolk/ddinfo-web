@@ -19,7 +19,7 @@ public class ModBinaryCacheData
 
 	public static ModBinaryCacheData CreateFromFile(string fileName, byte[] fileContents)
 	{
-		ModBinary modBinary = new(fileName, fileContents);
+		ModBinary modBinary = new(fileName, fileContents, false);
 
 		List<ModChunkCacheData> chunks = modBinary.Chunks
 			.ConvertAll(c =>
