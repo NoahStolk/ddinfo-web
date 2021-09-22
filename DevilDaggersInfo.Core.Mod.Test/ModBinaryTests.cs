@@ -7,6 +7,7 @@ public class ModBinaryTests
 	[DataRow("dd-model")]
 	[DataRow("dd-shader")]
 	[DataRow("dd-texture")]
+	[DataRow("dd-model-shader-texture")]
 	public void CompareBinaryOutput(string fileName)
 	{
 		string filePath = Path.Combine("Data", fileName);

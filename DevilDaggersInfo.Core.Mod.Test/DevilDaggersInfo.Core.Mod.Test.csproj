@@ -16,6 +16,9 @@
     <None Update="Data\dd-model">
       <CopyToOutputDirectory>Always</CopyToOutputDirectory>
     </None>
+    <None Update="Data\dd-model-shader-texture">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </None>
     <None Update="Data\dd-shader">
       <CopyToOutputDirectory>Always</CopyToOutputDirectory>
     </None>
