@@ -33,8 +33,7 @@ public class ModBinary
 		List<ModBinaryChunk> chunks = new();
 		while (true)
 		{
-			byte type = br.ReadByte();
-			_ = br.ReadByte();
+			ushort type = br.ReadUInt16();
 			string name = br.ReadNullTerminatedString();
 
 			int offset = br.ReadInt32();
@@ -114,7 +113,8 @@ public class ModBinary
 			assetBuffer = assetStream.ToArray();
 		}
 
-		int tocSize = 15 * AssetMap.Count + Chunks.Sum(c => Encoding.Default.GetBytes(c.Name).Length) + 2;
+		const int tocEntrySizeWithoutName = 15;
+		int tocSize = tocEntrySizeWithoutName * AssetMap.Count + Chunks.Sum(c => Encoding.Default.GetBytes(c.Name).Length) + 2;
 		byte[]? tocBuffer = null;
 		using (MemoryStream tocStream = new())
 		{
@@ -124,8 +124,7 @@ public class ModBinary
 				ModBinaryChunk chunk = kvp.Key;
 				AssetData assetData = kvp.Value;
 
-				bw.Write((byte)chunk.AssetType);
-				bw.Write((byte)0);
+				bw.Write((ushort)chunk.AssetType);
 
 				bw.Write(Encoding.Default.GetBytes(chunk.Name));
 				bw.Write((byte)0);
