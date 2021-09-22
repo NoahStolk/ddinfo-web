@@ -15,5 +15,12 @@ public class NullTerminatorTests
 		Assert.AreEqual("nd", buffer.ReadNullTerminatedString(2));
 		Assert.AreEqual("dd", buffer.ReadNullTerminatedString(5));
 		Assert.AreEqual(string.Empty, buffer.ReadNullTerminatedString(buffer.Length - 1));
+
+		using MemoryStream ms = new(buffer);
+		using BinaryReader br = new(ms);
+		string hand = br.ReadNullTerminatedString();
+		Assert.AreEqual("hand", hand);
+		string dd = br.ReadNullTerminatedString();
+		Assert.AreEqual("dd", dd);
 	}
 }
