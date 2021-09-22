@@ -20,28 +20,30 @@ public class ModBinary
 		if (fileContents.Length <= _fileHeaderSize)
 			throw new InvalidModBinaryException($"Binary '{fileName}' is not a valid binary; file must be at least 13 bytes in length.");
 
-		ulong fileIdentifier = BitConverter.ToUInt64(fileContents, 0);
+		using MemoryStream ms = new(fileContents);
+		using BinaryReader br = new(ms);
+		ulong fileIdentifier = br.ReadUInt64();
 		if (fileIdentifier != _fileIdentifier)
 			throw new InvalidModBinaryException($"Binary '{fileName}' is not a valid binary; incorrect header values.");
 
-		uint tocSize = BitConverter.ToUInt32(fileContents, 8);
+		uint tocSize = br.ReadUInt32();
 		if (tocSize > fileContents.Length - _fileHeaderSize)
 			throw new InvalidModBinaryException($"Binary '{fileName}' is not a valid binary; TOC size is larger than the remaining amount of file bytes.");
 
-		byte[] tocBuffer = new byte[tocSize];
-		Buffer.BlockCopy(fileContents, _fileHeaderSize, tocBuffer, 0, (int)tocSize);
-
 		List<ModBinaryChunk> chunks = new();
-		int i = 0;
-		while (i < tocBuffer.Length - 14)
+		while (true)
 		{
-			byte type = tocBuffer[i];
-			string name = tocBuffer.ReadNullTerminatedString(i + 2);
+			byte type = br.ReadByte();
+			_ = br.ReadByte();
+			string name = br.ReadNullTerminatedString();
 
-			i += name.Length + 1; // + 1 to include null terminator.
-			int offset = BitConverter.ToInt32(tocBuffer, i + 2);
-			int size = BitConverter.ToInt32(tocBuffer, i + 6);
-			i += 14;
+			int offset = br.ReadInt32();
+			int size = br.ReadInt32();
+			_ = br.ReadInt32();
+
+			if (br.BaseStream.Position >= _fileHeaderSize + tocSize)
+				break;
+
 			AssetType assetType = (AssetType)type;
 
 			// Skip unknown or obsolete types (such as 0x11, which is an outdated type for (fragment?) shaders).
@@ -58,12 +60,13 @@ public class ModBinary
 		if (readAssets)
 		{
 			AssetMap = new();
-			foreach (ModBinaryChunk chunk in chunks)
-			{
-				byte[] buffer = new byte[chunk.Size];
-				Buffer.BlockCopy(fileContents, chunk.Offset, buffer, 0, buffer.Length);
 
-				// TODO: If in TOC the chunks point to the same asset position; the asset is re-used (TODO: test if this works in DD).
+			// If chunks point to the same asset position; the asset is re-used (TODO: test if this even works in DD -- if not, remove DistinctBy).
+			foreach (ModBinaryChunk chunk in chunks.DistinctBy(c => c.Offset))
+			{
+				br.BaseStream.Seek(chunk.Offset, SeekOrigin.Begin);
+				byte[] buffer = br.ReadBytes(chunk.Size);
+
 				AssetMap[chunk] = new(buffer);
 			}
 		}
