@@ -22,6 +22,9 @@
     <None Update="Data\dd-shader">
       <CopyToOutputDirectory>Always</CopyToOutputDirectory>
     </None>
+    <None Update="Data\dd-skull-1-2-same-texture-copied">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </None>
     <None Update="Data\dd-texture">
       <CopyToOutputDirectory>Always</CopyToOutputDirectory>
     </None>
