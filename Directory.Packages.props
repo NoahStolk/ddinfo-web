@@ -14,7 +14,7 @@
 
 		<!-- Unit testing -->
 		<PackageVersion Include="coverlet.collector" Version="3.1.0" />
-		<PackageVersion Include="JetBrains.Annotations" Version="2021.2.0" />
+		<PackageVersion Include="JetBrains.Annotations" Version="2021.3.0-eap3" />
 		<PackageVersion Include="Microsoft.EntityFrameworkCore.InMemory" Version="6.0.0-rc.1.21452.10" />
 		<PackageVersion Include="Microsoft.EntityFrameworkCore.Relational" Version="6.0.0-rc.1.21452.10" />
 		<PackageVersion Include="Microsoft.NET.Test.Sdk" Version="16.11.0" />
