@@ -43,12 +43,12 @@ public static class {_className}
 				if (parameters.Length != parameterCount)
 					throw new($"Invalid specification in line '{line}'. There should be {parameterCount} parameters, but {parameters.Length} were found.");
 
-				fieldLines[i] = $"\tpublic static readonly Death {parameters[0]} = new(GameVersion.{gameVersion}, \"{parameters[0].ToUpper()}\", EnemyColors.{parameters[1]}, {parameters[2]});";
+				fieldLines[i] = $"public static readonly Death {parameters[0]} = new(GameVersion.{gameVersion}, \"{parameters[0].ToUpper()}\", EnemyColors.{parameters[1]}, {parameters[2]});";
 			}
 
 			string source = _template
 				.Replace(_className, className)
-				.Replace(_deathFields, string.Join(Environment.NewLine, fieldLines));
+				.Replace(_deathFields, string.Join(Environment.NewLine, fieldLines).Indent(1));
 			context.AddSource(className, SourceText.From(SourceBuilderUtils.WrapInsideWarningSuppressionDirectives(source), Encoding.UTF8));
 		}
 	}

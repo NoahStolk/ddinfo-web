@@ -48,12 +48,12 @@ public static class {_className}
 				string colorG = parameters[1].Substring(2, 2);
 				string colorB = parameters[1].Substring(4, 2);
 
-				fieldLines[i] = $"\tpublic static readonly Color {objectName} = new(0x{colorR}, 0x{colorG}, 0x{colorB});";
+				fieldLines[i] = $"public static readonly Color {objectName} = new(0x{colorR}, 0x{colorG}, 0x{colorB});";
 			}
 
 			string source = _template
 				.Replace(_className, className)
-				.Replace(_colorFields, string.Join(Environment.NewLine, fieldLines));
+				.Replace(_colorFields, string.Join(Environment.NewLine, fieldLines).Indent(1));
 			context.AddSource(className, SourceText.From(SourceBuilderUtils.WrapInsideWarningSuppressionDirectives(source), Encoding.UTF8));
 		}
 	}

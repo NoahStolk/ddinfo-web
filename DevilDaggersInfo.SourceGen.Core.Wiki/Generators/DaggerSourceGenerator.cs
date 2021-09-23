@@ -43,12 +43,12 @@ public static class {_className}
 				if (parameters.Length != parameterCount)
 					throw new($"Invalid specification in line '{line}'. There should be {parameterCount} parameters, but {parameters.Length} were found.");
 
-				fieldLines[i] = $"\tpublic static readonly Dagger {parameters[0]} = new(GameVersion.{gameVersion}, \"{parameters[0]}\", DaggerColors.{parameters[0]}, {parameters[1]});";
+				fieldLines[i] = $"public static readonly Dagger {parameters[0]} = new(GameVersion.{gameVersion}, \"{parameters[0]}\", DaggerColors.{parameters[0]}, {parameters[1]});";
 			}
 
 			string source = _template
 				.Replace(_className, className)
-				.Replace(_daggerFields, string.Join(Environment.NewLine, fieldLines));
+				.Replace(_daggerFields, string.Join(Environment.NewLine, fieldLines).Indent(1));
 			context.AddSource(className, SourceText.From(SourceBuilderUtils.WrapInsideWarningSuppressionDirectives(source), Encoding.UTF8));
 		}
 	}

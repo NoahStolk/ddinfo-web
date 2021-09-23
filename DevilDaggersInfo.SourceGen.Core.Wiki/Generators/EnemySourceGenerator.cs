@@ -59,12 +59,12 @@ public static class {_className}
 				if (remainingParameters.Length > 0)
 					enemies = $", {string.Join(", ", remainingParameters)}";
 
-				fieldLines[i] = $"\tpublic static readonly Enemy {name} = new(GameVersion.{gameVersion}, \"{displayName}\", EnemyColors.{colorProperty}, {hp}, {gems}, {noFarmGems}, Deaths{gameVersion}.{death}, new({ValueOrNull(homing3)}, {ValueOrNull(homing4)}), {ValueOrNull(spawn)}{enemies});";
+				fieldLines[i] = $"public static readonly Enemy {name} = new(GameVersion.{gameVersion}, \"{displayName}\", EnemyColors.{colorProperty}, {hp}, {gems}, {noFarmGems}, Deaths{gameVersion}.{death}, new({ValueOrNull(homing3)}, {ValueOrNull(homing4)}), {ValueOrNull(spawn)}{enemies});";
 			}
 
 			string source = _template
 				.Replace(_className, className)
-				.Replace(_enemyFields, string.Join(Environment.NewLine, fieldLines));
+				.Replace(_enemyFields, string.Join(Environment.NewLine, fieldLines).Indent(1));
 			context.AddSource(className, SourceText.From(SourceBuilderUtils.WrapInsideWarningSuppressionDirectives(source), Encoding.UTF8));
 		}
 	}

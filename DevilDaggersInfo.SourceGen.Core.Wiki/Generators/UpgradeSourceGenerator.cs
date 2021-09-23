@@ -50,12 +50,12 @@ public static class {_className}
 				float? homingSpray = parameters[4] == "!" ? null : float.Parse(parameters[4]);
 				string unlockType = parameters[5];
 				int unlockValue = int.Parse(parameters[6]);
-				fieldLines[i] = $"\tpublic static readonly Upgrade Level{level} = new(GameVersion.{gameVersion}, \"Level {level}\", UpgradeColors.Level{level}, {level}, new({defaultShot}, {defaultSpray}f), new({ValueOrNull(homingShot)}, {ValueOrNull(homingSpray)}), new(UpgradeUnlockType.{unlockType}, {unlockValue}));";
+				fieldLines[i] = $"public static readonly Upgrade Level{level} = new(GameVersion.{gameVersion}, \"Level {level}\", UpgradeColors.Level{level}, {level}, new({defaultShot}, {defaultSpray}f), new({ValueOrNull(homingShot)}, {ValueOrNull(homingSpray)}), new(UpgradeUnlockType.{unlockType}, {unlockValue}));";
 			}
 
 			string source = _template
 				.Replace(_className, className)
-				.Replace(_upgradeFields, string.Join(Environment.NewLine, fieldLines));
+				.Replace(_upgradeFields, string.Join(Environment.NewLine, fieldLines).Indent(1));
 			context.AddSource(className, SourceText.From(SourceBuilderUtils.WrapInsideWarningSuppressionDirectives(source), Encoding.UTF8));
 		}
 	}

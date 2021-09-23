@@ -81,13 +81,13 @@ public static class {_className}
 					_ => throw new NotSupportedException(),
 				};
 
-				fieldLines[i] = $"\tpublic static readonly {assetTypeName} {parameters[0]} = new({ctorParameters});";
+				fieldLines[i] = $"public static readonly {assetTypeName} {parameters[0]} = new({ctorParameters});";
 			}
 
 			string source = _template
 				.Replace(_className, className)
 				.Replace(_assetTypeName, assetTypeName)
-				.Replace(_assetFields, string.Join(Environment.NewLine, fieldLines));
+				.Replace(_assetFields, string.Join(Environment.NewLine, fieldLines).Indent(1));
 
 			context.AddSource(className, SourceText.From(SourceBuilderUtils.WrapInsideWarningSuppressionDirectives(source), Encoding.UTF8));
 		}
