@@ -2,6 +2,6 @@
   <ItemGroup>
     <PackageReference Include="SixLabors.ImageSharp" />
     <ProjectReference Include="..\DevilDaggersInfo.Core.Asset\DevilDaggersInfo.Core.Asset.csproj" />
-    <ProjectReference Include="..\DevilDaggersInfo.Core.Shared\DevilDaggersInfo.Core.Shared.csproj" />
+    <ProjectReference Include="..\DevilDaggersInfo.Core.Shared\DevilDaggersInfo.Core.csproj" />
   </ItemGroup>
 </Project>

@@ -1,4 +1,4 @@
-namespace DevilDaggersInfo.Test.Core.Shared;
+namespace DevilDaggersInfo.Test.Core;
 
 [TestClass]
 public class NullTerminatorTests

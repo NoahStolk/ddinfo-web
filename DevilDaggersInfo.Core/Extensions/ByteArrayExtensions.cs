@@ -1,9 +1,9 @@
-namespace DevilDaggersInfo.Core.Shared.Extensions;
+namespace DevilDaggersInfo.Core.Extensions;
 
 public static class ByteArrayExtensions
 {
 	public static string ReadNullTerminatedString(this byte[] buffer, int offset)
-		=> ReadNullTerminatedString(buffer, offset, Encoding.UTF8);
+		=> buffer.ReadNullTerminatedString(offset, Encoding.UTF8);
 
 	public static string ReadNullTerminatedString(this byte[] buffer, int offset, Encoding encoding)
 	{

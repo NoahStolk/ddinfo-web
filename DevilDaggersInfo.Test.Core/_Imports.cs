@@ -1,2 +1,2 @@
-global using DevilDaggersInfo.Core.Shared.Extensions;
+global using DevilDaggersInfo.Core.Extensions;
 global using Microsoft.VisualStudio.TestTools.UnitTesting;
