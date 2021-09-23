@@ -1,5 +1,3 @@
-using DevilDaggersInfo.SourceGen.Core.Wiki.Utils;
-
 namespace DevilDaggersInfo.SourceGen.Core.Wiki.Generators;
 
 [Generator]

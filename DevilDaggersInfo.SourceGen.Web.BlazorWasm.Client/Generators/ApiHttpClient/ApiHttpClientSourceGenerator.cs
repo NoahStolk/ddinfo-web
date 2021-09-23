@@ -1,5 +1,6 @@
-using DevilDaggersInfo.SourceGen.Web.BlazorWasm.Client.Extensions;
 using DevilDaggersInfo.SourceGen.Web.BlazorWasm.Client.Generators.ApiHttpClient.Enums;
+using Microsoft.CodeAnalysis.Text;
+using System.Text;
 
 namespace DevilDaggersInfo.SourceGen.Web.BlazorWasm.Client.Generators.ApiHttpClient;
 
@@ -99,6 +100,6 @@ public class {_clientType}ApiHttpClient
 			.Replace(_enumUsings, string.Join(Environment.NewLine, _apiHttpClientContext.GlobalUsings[IncludedDirectory.Enums].Concat(_apiHttpClientContext.SpecificUsings[IncludedDirectory.Enums][clientType]).Select(s => s.ToUsingDirective())))
 			.Replace(_clientType, clientType.ToString())
 			.Replace(_endpointMethods, string.Join(Environment.NewLine, endpointMethods).Indent(1));
-		context.AddSource($"{clientType}ApiHttpClientGenerated", code);
+		context.AddSource($"{clientType}ApiHttpClientGenerated", SourceText.From(SourceBuilderUtils.WrapInsideWarningSuppressionDirectives(code), Encoding.UTF8));
 	}
 }
