@@ -3,8 +3,8 @@ namespace DevilDaggersInfo.Core.Spawnset.View;
 // TODO: Write unit tests.
 public class SpawnsView
 {
-	public SpawnsView(Spawnset spawnset, GameVersion gameVersion, int waveCount = 30)
-		: this(spawnset.GameMode, gameVersion, spawnset.Spawns, waveCount, spawnset.HandLevel, spawnset.AdditionalGems, spawnset.TimerStart)
+	public SpawnsView(SpawnsetBinary spawnsetBinary, GameVersion gameVersion, int waveCount = 30)
+		: this(spawnsetBinary.GameMode, gameVersion, spawnsetBinary.Spawns, waveCount, spawnsetBinary.HandLevel, spawnsetBinary.AdditionalGems, spawnsetBinary.TimerStart)
 	{
 	}
 
@@ -27,7 +27,7 @@ public class SpawnsView
 		}
 		else
 		{
-			int loopStartIndex = Spawnset.GetLoopStartIndex(spawns);
+			int loopStartIndex = SpawnsetBinary.GetLoopStartIndex(spawns);
 			Spawn[] preLoopSpawns = spawns.Take(loopStartIndex).ToArray();
 			Spawn[] loopSpawns = spawns.Skip(loopStartIndex).ToArray();
 

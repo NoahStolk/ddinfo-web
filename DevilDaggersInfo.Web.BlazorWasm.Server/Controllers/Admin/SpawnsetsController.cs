@@ -92,7 +92,7 @@ public class SpawnsetsController : ControllerBase
 	[ProducesResponseType(StatusCodes.Status400BadRequest)]
 	public async Task<ActionResult> AddSpawnset(AddSpawnset addSpawnset)
 	{
-		if (!Spawnset.TryParse(addSpawnset.FileContents, out _))
+		if (!SpawnsetBinary.TryParse(addSpawnset.FileContents, out _))
 			return BadRequest("File could not be parsed to a proper survival file.");
 
 		byte[] spawnsetHash = MD5.HashData(addSpawnset.FileContents);

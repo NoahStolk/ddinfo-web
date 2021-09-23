@@ -47,7 +47,7 @@ else
 	{
 		GetSpawnset = await Http.GetSpawnsetById(Id);
 
-		if (!Spawnset.TryParse(GetSpawnset.FileBytes, out Spawnset? spawnset))
+		if (!SpawnsetBinary.TryParse(GetSpawnset.FileBytes, out SpawnsetBinary? spawnset))
 			return;
 
 		SpawnsView = new(spawnset, GameVersion.V3_1);

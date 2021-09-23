@@ -24,7 +24,7 @@ public class SpawnsetHashCache : IDynamicCache
 		foreach (string spawnsetPath in Directory.GetFiles(_fileSystemService.GetPath(DataSubDirectory.Spawnsets)))
 		{
 			byte[] spawnsetBytes = File.ReadAllBytes(spawnsetPath);
-			if (!Spawnset.TryParse(spawnsetBytes, out _))
+			if (!SpawnsetBinary.TryParse(spawnsetBytes, out _))
 			{
 				await _discordLogger.TryLog(Channel.MonitoringError, $":x: Could not parse file at `{spawnsetPath}` to a spawnset. Skipping file for cache.");
 				continue;

@@ -69,7 +69,7 @@ public class SpawnsetsController : ControllerBase
 			SpawnsetSorting.Name => spawnsets.OrderBy(s => s.Name, ascending).ToList(),
 			SpawnsetSorting.AuthorName => spawnsets.OrderBy(s => s.Player.PlayerName, ascending).ToList(),
 			SpawnsetSorting.LastUpdated => spawnsets.OrderBy(s => s.LastUpdated, ascending).ToList(),
-			SpawnsetSorting.GameVersion => spawnsets.OrderBy(s => Spawnset.GetGameVersionString(summaries[s.Id].WorldVersion, summaries[s.Id].SpawnVersion), ascending).ToList(),
+			SpawnsetSorting.GameVersion => spawnsets.OrderBy(s => SpawnsetBinary.GetGameVersionString(summaries[s.Id].WorldVersion, summaries[s.Id].SpawnVersion), ascending).ToList(),
 			SpawnsetSorting.GameMode => spawnsets.OrderBy(s => summaries[s.Id].GameMode, ascending).ToList(),
 			SpawnsetSorting.LoopLength => spawnsets.OrderBy(s => summaries[s.Id].LoopSection.Length, ascending).ToList(),
 			SpawnsetSorting.LoopSpawnCount => spawnsets.OrderBy(s => summaries[s.Id].LoopSection.SpawnCount, ascending).ToList(),

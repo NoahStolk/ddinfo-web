@@ -14,19 +14,19 @@ public class SpawnsetSummary
 		TimerStart = timerStart;
 	}
 
-	public SpawnsetSummary(Spawnset spawnset)
+	public SpawnsetSummary(SpawnsetBinary spawnsetBinary)
 	{
-		SpawnVersion = spawnset.SpawnVersion;
-		WorldVersion = spawnset.WorldVersion;
-		GameMode = spawnset.GameMode;
+		SpawnVersion = spawnsetBinary.SpawnVersion;
+		WorldVersion = spawnsetBinary.WorldVersion;
+		GameMode = spawnsetBinary.GameMode;
 
-		(SpawnSectionInfo preLoopSection, SpawnSectionInfo loopSection) = CalculateSections(spawnset.Spawns, spawnset.GameMode);
+		(SpawnSectionInfo preLoopSection, SpawnSectionInfo loopSection) = CalculateSections(spawnsetBinary.Spawns, spawnsetBinary.GameMode);
 		PreLoopSection = preLoopSection;
 		LoopSection = loopSection;
 
-		HandLevel = spawnset.HandLevel;
-		AdditionalGems = spawnset.AdditionalGems;
-		TimerStart = spawnset.TimerStart;
+		HandLevel = spawnsetBinary.HandLevel;
+		AdditionalGems = spawnsetBinary.AdditionalGems;
+		TimerStart = spawnsetBinary.TimerStart;
 	}
 
 	public int SpawnVersion { get; }
@@ -65,7 +65,7 @@ public class SpawnsetSummary
 		int worldVersion = br.ReadInt32();
 		br.Seek(16);
 		GameMode gameMode = (GameMode)br.ReadInt32();
-		br.Seek(8 + Spawnset.ArenaBufferSize + (worldVersion == 8 ? 32 : 36));
+		br.Seek(8 + SpawnsetBinary.ArenaBufferSize + (worldVersion == 8 ? 32 : 36));
 
 		// Spawns header
 		int spawnCount = br.ReadInt32();
@@ -124,7 +124,7 @@ public class SpawnsetSummary
 
 	private static (SpawnSectionInfo PreLoopSection, SpawnSectionInfo LoopSection) CalculateSectionsForDefaultGameMode(Spawn[] spawns)
 	{
-		int loopStartIndex = Spawnset.GetLoopStartIndex(spawns);
+		int loopStartIndex = SpawnsetBinary.GetLoopStartIndex(spawns);
 
 		int preLoopSpawnCount = 0;
 		int loopSpawnCount = 0;

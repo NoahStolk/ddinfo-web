@@ -1,6 +1,6 @@
 namespace DevilDaggersInfo.Core.Spawnset;
 
-public class Spawnset
+public class SpawnsetBinary
 {
 	public const int HeaderBufferSize = 36;
 	public const int ArenaBufferSize = ArenaWidth * ArenaHeight * sizeof(float);
@@ -9,7 +9,7 @@ public class Spawnset
 	public const int ArenaWidth = 51;
 	public const int ArenaHeight = 51;
 
-	public Spawnset(
+	public SpawnsetBinary(
 		int spawnVersion,
 		int worldVersion,
 		float shrinkStart,
@@ -57,24 +57,24 @@ public class Spawnset
 
 	#region Parsing
 
-	public static bool TryParse(byte[] fileContents, [NotNullWhen(true)] out Spawnset? spawnset)
+	public static bool TryParse(byte[] fileContents, [NotNullWhen(true)] out SpawnsetBinary? spawnsetBinary)
 	{
 		try
 		{
-			spawnset = Parse(fileContents);
+			spawnsetBinary = Parse(fileContents);
 			return true;
 		}
 		catch
 		{
 			// TODO: Log exceptions.
-			spawnset = null;
+			spawnsetBinary = null;
 			return false;
 		}
 	}
 
 	// TODO: Throw clear exceptions when parsing fails.
 	// TODO: Manually fix incorrect enum values.
-	public static Spawnset Parse(byte[] fileContents)
+	public static SpawnsetBinary Parse(byte[] fileContents)
 	{
 		using MemoryStream ms = new(fileContents);
 		using BinaryReader br = new(ms);
@@ -201,7 +201,7 @@ public class Spawnset
 
 	#region Utilities
 
-	public static Spawnset CreateDefault()
+	public static SpawnsetBinary CreateDefault()
 		=> new(6, 9, 50, 20, 0.025f, 60, GameMode.Default, new float[ArenaWidth, ArenaHeight], Array.Empty<Spawn>(), HandLevel.Level1, 0, 0);
 
 	public static bool IsEmptySpawn(int enemyType)
