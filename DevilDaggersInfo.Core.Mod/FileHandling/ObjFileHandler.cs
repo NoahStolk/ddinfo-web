@@ -1,6 +1,6 @@
 namespace DevilDaggersInfo.Core.Mod.FileHandling;
 
-public sealed class ObjFileHandler : IFileHandler
+internal sealed class ObjFileHandler : IFileHandler
 {
 	private static readonly Lazy<ObjFileHandler> _lazy = new(() => new());
 

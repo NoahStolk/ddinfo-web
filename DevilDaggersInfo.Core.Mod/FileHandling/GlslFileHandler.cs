@@ -1,6 +1,6 @@
 namespace DevilDaggersInfo.Core.Mod.FileHandling;
 
-public sealed class GlslFileHandler : IFileHandler
+internal sealed class GlslFileHandler : IFileHandler
 {
 	private static readonly Lazy<GlslFileHandler> _lazy = new(() => new());
 

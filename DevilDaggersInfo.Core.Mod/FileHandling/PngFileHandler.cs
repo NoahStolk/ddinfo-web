@@ -3,7 +3,7 @@ using SixLabors.ImageSharp.PixelFormats;
 
 namespace DevilDaggersInfo.Core.Mod.FileHandling;
 
-public sealed class PngFileHandler : IFileHandler
+internal sealed class PngFileHandler : IFileHandler
 {
 	private static readonly Lazy<PngFileHandler> _lazy = new(() => new());
 

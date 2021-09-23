@@ -1,6 +1,6 @@
 namespace DevilDaggersInfo.Core.Mod.FileHandling;
 
-public interface IFileHandler
+internal interface IFileHandler
 {
 	int HeaderSize { get; }
 
