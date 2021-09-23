@@ -1,4 +1,4 @@
-namespace DevilDaggersInfo.Web.Tool.Shared;
+namespace DevilDaggersInfo.Web.Tool;
 
 public static class NameData
 {

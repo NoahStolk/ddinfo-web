@@ -3,6 +3,6 @@
     <OutputType>Exe</OutputType>
   </PropertyGroup>
   <ItemGroup>
-    <ProjectReference Include="..\DevilDaggersInfo.Web.Tool.Shared\DevilDaggersInfo.Web.Tool.Shared.csproj" />
+    <ProjectReference Include="..\DevilDaggersInfo.Web.Tool\DevilDaggersInfo.Web.Tool.csproj" />
   </ItemGroup>
 </Project>

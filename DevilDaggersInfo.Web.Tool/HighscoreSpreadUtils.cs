@@ -5,7 +5,7 @@ using DevilDaggersInfo.Web.BlazorWasm.Shared.Utils;
 using Newtonsoft.Json;
 using System.Text;
 
-namespace DevilDaggersInfo.Web.Tool.Shared;
+namespace DevilDaggersInfo.Web.Tool;
 
 public static class HighscoreSpreadUtils
 {
