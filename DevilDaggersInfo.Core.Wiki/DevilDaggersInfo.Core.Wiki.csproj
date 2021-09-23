@@ -21,7 +21,8 @@
     <AdditionalFiles Include="Data\UpgradesV3_1.csv" />
   </ItemGroup>
   <ItemGroup>
-    <ProjectReference Include="..\DevilDaggersInfo.SourceGen.Core.Wiki\DevilDaggersInfo.SourceGen.Core.Wiki.csproj" OutputItemType="Analyzer" ReferenceOutputAssembly="false" />
     <ProjectReference Include="..\DevilDaggersInfo.Core\DevilDaggersInfo.Core.csproj" />
+    <ProjectReference Include="..\DevilDaggersInfo.SourceGen\DevilDaggersInfo.SourceGen.csproj" OutputItemType="Analyzer" />
+    <ProjectReference Include="..\DevilDaggersInfo.SourceGen.Core.Wiki\DevilDaggersInfo.SourceGen.Core.Wiki.csproj" OutputItemType="Analyzer" ReferenceOutputAssembly="false" />
   </ItemGroup>
 </Project>
