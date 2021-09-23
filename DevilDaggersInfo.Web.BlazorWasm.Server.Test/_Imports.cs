@@ -1,4 +1,5 @@
 global using DevilDaggersInfo.Core.Spawnset;
+global using DevilDaggersInfo.Test;
 global using DevilDaggersInfo.Web.BlazorWasm.Server.Entities;
 global using DevilDaggersInfo.Web.BlazorWasm.Server.Extensions;
 global using DevilDaggersInfo.Web.BlazorWasm.Server.Singletons;
@@ -14,7 +15,6 @@ global using Microsoft.AspNetCore.Http;
 global using Microsoft.AspNetCore.Mvc;
 global using Microsoft.EntityFrameworkCore;
 global using Microsoft.Extensions.Hosting;
-global using Microsoft.Extensions.Options;
 global using Microsoft.VisualStudio.TestTools.UnitTesting;
 global using Moq;
 global using System.Linq.Expressions;

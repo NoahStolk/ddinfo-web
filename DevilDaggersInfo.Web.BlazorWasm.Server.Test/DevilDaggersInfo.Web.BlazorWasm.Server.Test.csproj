@@ -16,6 +16,7 @@
     <PackageReference Include="MSTest.TestFramework" />
   </ItemGroup>
   <ItemGroup>
+    <ProjectReference Include="..\DevilDaggersInfo.Test\DevilDaggersInfo.Test.csproj" />
     <ProjectReference Include="..\DevilDaggersInfo.Web.BlazorWasm.Server\DevilDaggersInfo.Web.BlazorWasm.Server.csproj" />
   </ItemGroup>
 </Project>

@@ -1,2 +1,2 @@
-global using DevilDaggersInfo.Test;
+global using JetBrains.Annotations;
 global using Microsoft.VisualStudio.TestTools.UnitTesting;

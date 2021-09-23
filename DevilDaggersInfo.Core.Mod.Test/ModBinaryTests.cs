@@ -16,8 +16,6 @@ public class ModBinaryTests
 		ModBinary modBinary = new(fileName, originalBytes, true);
 		byte[] bytes = modBinary.ToBytes();
 
-		Assert.AreEqual(originalBytes.Length, bytes.Length);
-		for (int i = 0; i < originalBytes.Length; i++)
-			Assert.AreEqual(originalBytes[i], bytes[i]);
+		TestUtils.AssertArrayContentsEqual(originalBytes, bytes);
 	}
 }

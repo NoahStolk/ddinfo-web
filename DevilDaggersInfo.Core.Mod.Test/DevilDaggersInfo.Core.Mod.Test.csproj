@@ -11,6 +11,7 @@
     <PackageReference Include="MSTest.TestAdapter" />
     <PackageReference Include="MSTest.TestFramework" />
     <ProjectReference Include="..\DevilDaggersInfo.Core.Mod\DevilDaggersInfo.Core.Mod.csproj" />
+    <ProjectReference Include="..\DevilDaggersInfo.Test\DevilDaggersInfo.Test.csproj" />
   </ItemGroup>
   <ItemGroup>
     <None Update="Data\dd-model">
