@@ -1,8 +1,7 @@
-using DevilDaggersInfo.Test.Web.BlazorWasm.Server.Data;
-using DevilDaggersInfo.Test.Web.BlazorWasm.Server.Extensions;
 using DevilDaggersInfo.Web.BlazorWasm.Server;
 using DevilDaggersInfo.Web.BlazorWasm.Server.Caches.SpawnsetHashes;
 using DevilDaggersInfo.Web.BlazorWasm.Server.Controllers.Public;
+using DevilDaggersInfo.Web.BlazorWasm.Server.Enums;
 using DevilDaggersInfo.Web.BlazorWasm.Shared.Dto.Public.CustomEntries;
 
 namespace DevilDaggersInfo.Test.Web.BlazorWasm.Server;
@@ -10,7 +9,10 @@ namespace DevilDaggersInfo.Test.Web.BlazorWasm.Server;
 [TestClass]
 public class CustomEntryTests
 {
-	private readonly SpawnsetBinary _spawnset;
+#pragma warning disable S3459 // Unassigned members should be removed
+	private readonly SpawnsetBinary _spawnsetBinary;
+#pragma warning restore S3459 // Unassigned members should be removed
+
 	private readonly Mock<ApplicationDbContext> _dbContext;
 	private readonly CustomEntriesController _customEntriesController;
 
@@ -38,14 +40,14 @@ public class CustomEntryTests
 		});
 
 		Mock<IFileSystemService> fileSystemService = new();
-		fileSystemService.Setup(m => m.GetPath(Enums.DataSubDirectory.Spawnsets)).Returns(@"C:\Users\NOAH\source\repos\DevilDaggersInfo\DevilDaggersInfo.Web.BlazorWasm.Server\Data\Spawnsets");
+		fileSystemService.Setup(m => m.GetPath(DataSubDirectory.Spawnsets)).Returns(@"C:\Users\NOAH\source\repos\DevilDaggersInfo\DevilDaggersInfo.Web.BlazorWasm.Server\Data\Spawnsets");
 
 		Mock<DiscordLogger> discordLogger = new(mockEnvironment.Object);
 		Mock<SpawnsetHashCache> spawnsetHashCache = new(fileSystemService.Object, discordLogger.Object);
 
 		_customEntriesController = new CustomEntriesController(_dbContext.Object, toolHelper.Object, discordLogger.Object, spawnsetHashCache.Object);
 
-		if (!SpawnsetBinary.TryParse(File.ReadAllBytes(Path.Combine(TestConstants.DataDirectory, "Spawnsets", "V3")), out _spawnset!))
+		if (!SpawnsetBinary.TryParse(File.ReadAllBytes(Path.Combine(TestConstants.DataDirectory, "Spawnsets", "V3")), out _spawnsetBinary!))
 			Assert.Fail("Spawnset could not be parsed.");
 	}
 
@@ -57,7 +59,7 @@ public class CustomEntryTests
 			Time = 100000,
 			PlayerId = 1,
 			ClientVersion = TestConstants.DdclVersion,
-			SurvivalHashMd5 = GetSpawnsetHash(_spawnset),
+			SurvivalHashMd5 = GetSpawnsetHash(_spawnsetBinary),
 			GameStates = new(),
 			PlayerName = "TestPlayer1",
 		};
@@ -79,7 +81,7 @@ public class CustomEntryTests
 			Time = 200000,
 			PlayerId = 1,
 			ClientVersion = TestConstants.DdclVersion,
-			SurvivalHashMd5 = GetSpawnsetHash(_spawnset),
+			SurvivalHashMd5 = GetSpawnsetHash(_spawnsetBinary),
 			GameStates = new(),
 			PlayerName = "TestPlayer1",
 		};
@@ -101,7 +103,7 @@ public class CustomEntryTests
 			Time = 200000,
 			PlayerId = 2,
 			ClientVersion = TestConstants.DdclVersion,
-			SurvivalHashMd5 = GetSpawnsetHash(_spawnset),
+			SurvivalHashMd5 = GetSpawnsetHash(_spawnsetBinary),
 			GameStates = new(),
 			PlayerName = "TestPlayer2",
 		};
@@ -123,7 +125,7 @@ public class CustomEntryTests
 			Time = 300000,
 			PlayerId = 3,
 			ClientVersion = TestConstants.DdclVersion,
-			SurvivalHashMd5 = GetSpawnsetHash(_spawnset),
+			SurvivalHashMd5 = GetSpawnsetHash(_spawnsetBinary),
 			GameStates = new(),
 			PlayerName = "TestPlayer3",
 		};
@@ -146,7 +148,7 @@ public class CustomEntryTests
 			Time = 100000,
 			PlayerId = 1,
 			ClientVersion = "0.0.0.0",
-			SurvivalHashMd5 = GetSpawnsetHash(_spawnset),
+			SurvivalHashMd5 = GetSpawnsetHash(_spawnsetBinary),
 			GameStates = new(),
 			PlayerName = "TestPlayer1",
 		};
@@ -174,7 +176,7 @@ public class CustomEntryTests
 			Time = 100000,
 			PlayerId = 1,
 			ClientVersion = TestConstants.DdclVersion,
-			SurvivalHashMd5 = GetSpawnsetHash(_spawnset),
+			SurvivalHashMd5 = GetSpawnsetHash(_spawnsetBinary),
 			GameStates = new(),
 			PlayerName = "TestPlayer1",
 			Validation = "Malformed validation",

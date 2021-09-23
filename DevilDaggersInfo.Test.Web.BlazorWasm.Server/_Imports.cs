@@ -1,11 +1,10 @@
 global using DevilDaggersInfo.Core.Spawnset;
-global using DevilDaggersInfo.Test;
+global using DevilDaggersInfo.Test.Web.BlazorWasm.Server.Data;
+global using DevilDaggersInfo.Test.Web.BlazorWasm.Server.Extensions;
 global using DevilDaggersInfo.Web.BlazorWasm.Server.Entities;
 global using DevilDaggersInfo.Web.BlazorWasm.Server.Extensions;
 global using DevilDaggersInfo.Web.BlazorWasm.Server.Singletons;
 global using DevilDaggersInfo.Web.BlazorWasm.Server.Singletons.AuditLog;
-global using DevilDaggersInfo.Web.BlazorWasm.Server.Test.Data;
-global using DevilDaggersInfo.Web.BlazorWasm.Server.Test.Extensions;
 global using DevilDaggersInfo.Web.BlazorWasm.Server.Transients;
 global using DevilDaggersInfo.Web.BlazorWasm.Server.Utils;
 global using DevilDaggersInfo.Web.BlazorWasm.Shared.Enums;
