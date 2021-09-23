@@ -1,4 +1,4 @@
-using DevilDaggersInfo.Core.Shared.Extensions;
+using DevilDaggersInfo.Core.Extensions;
 using Newtonsoft.Json;
 
 namespace DevilDaggersInfo.Web.BlazorWasm.Shared.Dto.Public.LeaderboardHistory;

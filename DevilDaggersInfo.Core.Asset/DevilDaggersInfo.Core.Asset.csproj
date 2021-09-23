@@ -8,6 +8,6 @@
     <AdditionalFiles Include="Data\DdTextures.csv" />
   </ItemGroup>
   <ItemGroup>
-    <ProjectReference Include="..\DevilDaggersInfo.Core.Asset.SourceGenerator\DevilDaggersInfo.Core.Asset.SourceGenerator.csproj" OutputItemType="Analyzer" ReferenceOutputAssembly="false" />
+    <ProjectReference Include="..\DevilDaggersInfo.SourceGen.Core.Asset\DevilDaggersInfo.SourceGen.Core.Asset.csproj" OutputItemType="Analyzer" ReferenceOutputAssembly="false" />
   </ItemGroup>
 </Project>

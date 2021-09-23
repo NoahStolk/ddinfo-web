@@ -34,9 +34,9 @@ Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "DevilDaggersInfo.Core.Asset
 EndProject
 Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "DevilDaggersInfo.Core.Encryption", "DevilDaggersInfo.Core.Encryption\DevilDaggersInfo.Core.Encryption.csproj", "{6F010EA4-496C-49C5-B947-82BA4EDA2648}"
 EndProject
-Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "DevilDaggersInfo.Core.Wiki.SourceGenerator", "DevilDaggersInfo.Core.Wiki.SourceGenerator\DevilDaggersInfo.Core.Wiki.SourceGenerator.csproj", "{3B98ACA6-2DD1-430D-948A-2796E4C4A866}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "DevilDaggersInfo.SourceGen.Core.Wiki", "DevilDaggersInfo.SourceGen.Core.Wiki\DevilDaggersInfo.SourceGen.Core.Wiki.csproj", "{3B98ACA6-2DD1-430D-948A-2796E4C4A866}"
 EndProject
-Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "DevilDaggersInfo.Core.Asset.SourceGenerator", "DevilDaggersInfo.Core.Asset.SourceGenerator\DevilDaggersInfo.Core.Asset.SourceGenerator.csproj", "{2BE3E7C9-DEAF-4D2C-ADFC-40EA3FE3D325}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "DevilDaggersInfo.SourceGen.Core.Asset", "DevilDaggersInfo.SourceGen.Core.Asset\DevilDaggersInfo.SourceGen.Core.Asset.csproj", "{2BE3E7C9-DEAF-4D2C-ADFC-40EA3FE3D325}"
 EndProject
 Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "DevilDaggersInfo.Core", "DevilDaggersInfo.Core\DevilDaggersInfo.Core.csproj", "{A45271DA-D8D2-4BAA-83BA-31115C4FD702}"
 EndProject
@@ -46,7 +46,7 @@ Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "DevilDaggersInfo.Core.Mod",
 EndProject
 Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "DevilDaggersInfo.Cmd.ExtractMod", "DevilDaggersInfo.Cmd.ExtractMod\DevilDaggersInfo.Cmd.ExtractMod.csproj", "{8A747382-EEA6-433F-B61A-85ABD0706E54}"
 EndProject
-Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "DevilDaggersInfo.Web.BlazorWasm.Client.SourceGenerator", "DevilDaggersInfo.Web.BlazorWasm.Client.SourceGenerator\DevilDaggersInfo.Web.BlazorWasm.Client.SourceGenerator.csproj", "{9178E989-F0E7-44EE-BC27-FD07D06DD5DA}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "DevilDaggersInfo.SourceGen.Web.BlazorWasm.Client", "DevilDaggersInfo.SourceGen.Web.BlazorWasm.Client\DevilDaggersInfo.SourceGen.Web.BlazorWasm.Client.csproj", "{9178E989-F0E7-44EE-BC27-FD07D06DD5DA}"
 EndProject
 Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "DevilDaggersInfo.Core.Memory", "DevilDaggersInfo.Core.Memory\DevilDaggersInfo.Core.Memory.csproj", "{4E6B8A02-5C01-4BF4-B398-C3AA588B3940}"
 EndProject

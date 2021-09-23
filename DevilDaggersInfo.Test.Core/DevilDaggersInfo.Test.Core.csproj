@@ -10,8 +10,6 @@
     <PackageReference Include="Microsoft.NET.Test.Sdk" />
     <PackageReference Include="MSTest.TestAdapter" />
     <PackageReference Include="MSTest.TestFramework" />
-  </ItemGroup>
-  <ItemGroup>
     <ProjectReference Include="..\DevilDaggersInfo.Core\DevilDaggersInfo.Core.csproj" />
   </ItemGroup>
 </Project>

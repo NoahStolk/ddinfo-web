@@ -1,4 +1,4 @@
-namespace DevilDaggersInfo.Core.Wiki.SourceGenerator.Utils;
+namespace DevilDaggersInfo.SourceGen.Core.Wiki.Utils;
 
 public static class SourceBuilderUtils
 {

@@ -1,4 +1,4 @@
-namespace DevilDaggersInfo.Core.Asset.SourceGenerator;
+namespace DevilDaggersInfo.SourceGen.Core.Asset;
 
 [Generator]
 public class AssetDataSourceGenerator : ISourceGenerator

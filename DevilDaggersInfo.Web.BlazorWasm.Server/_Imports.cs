@@ -1,9 +1,9 @@
 global using DevilDaggersInfo.Core.Asset;
 global using DevilDaggersInfo.Core.Asset.Enums;
+global using DevilDaggersInfo.Core.Extensions;
 global using DevilDaggersInfo.Core.Mod;
 global using DevilDaggersInfo.Core.Mod.Enums;
 global using DevilDaggersInfo.Core.Mod.Exceptions;
-global using DevilDaggersInfo.Core.Shared.Extensions;
 global using DevilDaggersInfo.Core.Spawnset;
 global using DevilDaggersInfo.Core.Spawnset.Enums;
 global using DevilDaggersInfo.Core.Spawnset.Summary;
@@ -24,7 +24,6 @@ global using DevilDaggersInfo.Web.BlazorWasm.Shared;
 global using DevilDaggersInfo.Web.BlazorWasm.Shared.Constants;
 global using DevilDaggersInfo.Web.BlazorWasm.Shared.Enums;
 global using DevilDaggersInfo.Web.BlazorWasm.Shared.Extensions;
-global using DevilDaggersInfo.Web.BlazorWasm.Shared.Utils;
 global using Microsoft.AspNetCore.Authorization;
 global using Microsoft.AspNetCore.Identity;
 global using Microsoft.AspNetCore.Mvc;

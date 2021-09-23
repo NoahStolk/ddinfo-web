@@ -1,4 +1,6 @@
-namespace DevilDaggersInfo.Core.Wiki.SourceGenerator.Generators;
+using DevilDaggersInfo.SourceGen.Core.Wiki.Utils;
+
+namespace DevilDaggersInfo.SourceGen.Core.Wiki.Generators;
 
 [Generator]
 public class EnemySourceGenerator : ISourceGenerator
