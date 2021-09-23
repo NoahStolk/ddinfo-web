@@ -2,21 +2,21 @@ namespace DevilDaggersInfo.Core.Mod.FileHandling;
 
 public static class AssetConverter
 {
-	public static byte[] Compile(ModBinaryChunk chunk, byte[] buffer) => chunk.AssetType switch
+	public static AssetData Compile(AssetType assetType, byte[] buffer) => assetType switch
 	{
-		AssetType.Audio or AssetType.ModelBinding => buffer,
-		AssetType.Model => ObjFileHandler.Instance.Compile(buffer),
-		AssetType.Shader => GlslFileHandler.Instance.Compile(buffer),
-		AssetType.Texture => PngFileHandler.Instance.Compile(buffer),
-		_ => throw new NotSupportedException($"Compiling asset of type '{chunk.AssetType}' is not supported."),
+		AssetType.Audio or AssetType.ModelBinding => new(buffer),
+		AssetType.Model => new(ObjFileHandler.Instance.Compile(buffer)),
+		AssetType.Shader => new(GlslFileHandler.Instance.Compile(buffer)),
+		AssetType.Texture => new(PngFileHandler.Instance.Compile(buffer)),
+		_ => throw new NotSupportedException($"Compiling asset of type '{assetType}' is not supported."),
 	};
 
-	public static byte[] Extract(ModBinaryChunk chunk, byte[] buffer) => chunk.AssetType switch
+	public static byte[] Extract(AssetType assetType, AssetData assetData) => assetType switch
 	{
-		AssetType.Audio or AssetType.ModelBinding => buffer,
-		AssetType.Model => ObjFileHandler.Instance.Extract(buffer),
-		AssetType.Shader => GlslFileHandler.Instance.Extract(buffer),
-		AssetType.Texture => PngFileHandler.Instance.Extract(buffer),
-		_ => throw new NotSupportedException($"Extracting asset of type '{chunk.AssetType}' is not supported."),
+		AssetType.Audio or AssetType.ModelBinding => assetData.Buffer,
+		AssetType.Model => ObjFileHandler.Instance.Extract(assetData.Buffer),
+		AssetType.Shader => GlslFileHandler.Instance.Extract(assetData.Buffer),
+		AssetType.Texture => PngFileHandler.Instance.Extract(assetData.Buffer),
+		_ => throw new NotSupportedException($"Extracting asset of type '{assetType}' is not supported."),
 	};
 }

@@ -87,7 +87,7 @@ public class ModBinary
 		}
 
 		foreach (KeyValuePair<ModBinaryChunk, AssetData> kvp in AssetMap)
-			File.WriteAllBytes(Path.Combine(outputDirectory, kvp.Key.Name + kvp.Key.AssetType.GetFileExtension()), AssetConverter.Extract(kvp.Key, kvp.Value.Buffer));
+			File.WriteAllBytes(Path.Combine(outputDirectory, kvp.Key.Name + kvp.Key.AssetType.GetFileExtension()), AssetConverter.Extract(kvp.Key.AssetType, kvp.Value));
 	}
 
 	public byte[] ToBytes()
