@@ -45,7 +45,7 @@
 				string daggers = FormatUtils.FormatDaggersInt32(entry.DaggersHit, entry.DaggersFired, IsHistory);
 				string daggersTotal = FormatUtils.FormatDaggersUInt64(entry.DaggersHitTotal, entry.DaggersFiredTotal, IsHistory);
 
-				<div class="grid gap-3 grid-cols-leaderboard-sm md:grid-cols-leaderboard-md lg:grid-cols-leaderboard-lg xl:grid-cols-leaderboard-xl h-6 @(i++ % 2 == 0 ? "bg-gray0B" : string.Empty) @(isBanned ? "text-color-ban" : string.Empty)">
+				<div class="grid gap-3 grid-cols-leaderboard-sm md:grid-cols-leaderboard-md lg:grid-cols-leaderboard-lg xl:grid-cols-leaderboard-xl h-6 @(i++ % 2 == 0 ? "bg-gray-0b" : string.Empty) @(isBanned ? "text-color-ban" : string.Empty)">
 					<EntryRank PlayerId="@entry.Id" Rank="@entry.Rank" />
 					<EntryFlag CountryCode="@player?.CountryCode" />
 					<EntryUsername DaggerCssClass="@daggerCssClass" Id="entry.Id" Name="@entry.Username" BanDescription="@player?.BanDescription" IsBanned="isBanned" IsPublicDonator="player?.IsPublicDonator ?? false" Titles="player?.Titles" />

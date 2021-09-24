@@ -55,7 +55,7 @@ else
 			int j = 0;
 			foreach (TGetDto result in _page.Results)
 			{
-				<div class="grid gap-2 grid-cols-@GridConfiguration @(j++ % 2 == 0 ? "bg-gray0B" : string.Empty)">
+				<div class="grid gap-2 grid-cols-@GridConfiguration @(j++ % 2 == 0 ? "bg-gray-0b" : string.Empty)">
 					@foreach (KeyValuePair<PropertyInfo, bool> pi in _properties)
 					{
 						<div class="overflow-x-hidden @(pi.Value ? "text-right" : "text-left")">@ReflectionUtils.GetDtoPropertyDisplayValue(pi.Key, result)</div>

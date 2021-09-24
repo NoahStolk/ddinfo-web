@@ -61,7 +61,7 @@ else
 	@for (int i = 0; i < GetCustomLeaderboards.Results.Count; i++)
 	{
 		GetCustomLeaderboardOverview customLeaderboard = GetCustomLeaderboards.Results[i];
-		<div class="grid gap-3 sm:grid-cols-custom-leaderboards-sm md:grid-cols-custom-leaderboards-md lg:grid-cols-custom-leaderboards-lg xl:grid-cols-custom-leaderboards-xl h-6 @(i % 2 == 0 ? "bg-gray0B" : string.Empty)">
+		<div class="grid gap-3 sm:grid-cols-custom-leaderboards-sm md:grid-cols-custom-leaderboards-md lg:grid-cols-custom-leaderboards-lg xl:grid-cols-custom-leaderboards-xl h-6 @(i % 2 == 0 ? "bg-gray-0b" : string.Empty)">
 			<div class="overflow-x-hidden text-left"><a href="/custom/leaderboard/@customLeaderboard.Id">@customLeaderboard.SpawnsetName</a></div>
 			<div class="overflow-x-hidden text-left hidden md:block">@customLeaderboard.SpawnsetAuthorName</div>
 			<div class="overflow-x-hidden text-left hidden md:block">@customLeaderboard.DateCreated?.ToString(FormatUtils.DateFormat)</div>

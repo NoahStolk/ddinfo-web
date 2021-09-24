@@ -33,7 +33,7 @@
 				Dagger dagger = Daggers.GetDaggerFromSeconds(GameVersion.V3_1, entry.Time);
 				string daggerCssClass = dagger.Name.ToLower();
 
-				<div class="grid gap-3 grid-cols-leaderboard-sm md:grid-cols-leaderboard-md lg:grid-cols-leaderboard-lg xl:grid-cols-leaderboard-xl h-6 @(i++ % 2 == 0 ? "bg-gray0B" : string.Empty)">
+				<div class="grid gap-3 grid-cols-leaderboard-sm md:grid-cols-leaderboard-md lg:grid-cols-leaderboard-lg xl:grid-cols-leaderboard-xl h-6 @(i++ % 2 == 0 ? "bg-gray-0b" : string.Empty)">
 					<EntryRank PlayerId="@entry.Id" Rank="@entry.Rank" />
 					<EntryFlag CountryCode="@player.CountryCode" />
 					<EntryUsername DaggerCssClass="@daggerCssClass" Id="entry.Id" Name="@entry.Username" IsPublicDonator="player.IsPublicDonator" Titles="player.Titles" />
