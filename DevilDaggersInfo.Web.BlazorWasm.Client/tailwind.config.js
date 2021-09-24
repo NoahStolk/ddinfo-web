@@ -6,7 +6,7 @@ module.exports = {
 				'color-link-hover': '#c11',
 				'red': '#f00',
 				'orange': '#f80',
-				'green': '#0f0',
+				'green': '#0a0',
 				'dark-red': '#600',
 				'dark-orange': '#630',
 				'dark-green': '#060',
