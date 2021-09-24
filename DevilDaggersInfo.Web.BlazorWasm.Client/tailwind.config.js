@@ -48,6 +48,11 @@ module.exports = {
 				'spawnsets-md': createMinmaxGrid([2, 2, 1.5, 1.5]),
 				'spawnsets-sm': createMinmaxGrid([1]),
 
+				'mods-xl': createMinmaxGrid([2, 2, 2, 2, 1, 1]),
+				'mods-lg': createMinmaxGrid([1, 1, 1, 1]),
+				'mods-md': createMinmaxGrid([1, 1, 1, 1]),
+				'mods-sm': createMinmaxGrid([1]),
+
 				// Leaderboards
 				'custom-leaderboard-2xl': '36px 32px minmax(64px, 100%) minmax(80px, 5%) minmax(40px, 5%) minmax(40px, 5%) minmax(40px, 5%) minmax(40px, 5%) minmax(40px, 5%) minmax(48px, 5%) minmax(120px, 5%) minmax(40px, 5%) minmax(40px, 5%) minmax(72px, 5%) minmax(72px, 5%) minmax(72px, 5%) minmax(144px, 5%)',
 				'custom-leaderboard-xl': '36px 32px minmax(64px, 100%) minmax(80px, 5%) minmax(40px, 5%) minmax(40px, 5%) minmax(40px, 5%) minmax(40px, 5%) minmax(40px, 5%) minmax(48px, 5%) minmax(120px, 5%) minmax(40px, 5%) minmax(40px, 5%)',
