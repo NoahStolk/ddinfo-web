@@ -8,7 +8,7 @@ public class PlayerModEntity
 	[ForeignKey(nameof(PlayerId))]
 	public PlayerEntity Player { get; set; } = null!;
 
-	[Column("ModId")]
+	[Column("AssetModId")]
 	public int ModId { get; set; }
 
 	[ForeignKey(nameof(ModId))]
