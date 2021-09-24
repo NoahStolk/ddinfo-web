@@ -17,7 +17,7 @@ public class CustomLeaderboardTests
 		MockEntities mockEntities = new();
 
 		DbContextOptionsBuilder<ApplicationDbContext> optionsBuilder = new();
-		_dbContext = new Mock<ApplicationDbContext>(optionsBuilder.Options)
+		_dbContext = new Mock<ApplicationDbContext>(optionsBuilder.Options, Options.Create(new OperationalStoreOptions()))
 			.SetUpDbSet(db => db.Players, mockEntities.MockDbSetPlayers)
 			.SetUpDbSet(db => db.Spawnsets, mockEntities.MockDbSetSpawnsets)
 			.SetUpDbSet(db => db.CustomLeaderboards, mockEntities.MockDbSetCustomLeaderboards)

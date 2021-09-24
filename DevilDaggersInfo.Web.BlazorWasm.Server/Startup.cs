@@ -6,9 +6,11 @@ using DevilDaggersInfo.Web.BlazorWasm.Server.Caches.SpawnsetSummaries;
 using DevilDaggersInfo.Web.BlazorWasm.Server.HostedServices;
 using DevilDaggersInfo.Web.BlazorWasm.Server.Middleware;
 using DevilDaggersInfo.Web.BlazorWasm.Server.NSwag;
+using Microsoft.AspNetCore.Authentication;
 using Microsoft.AspNetCore.Rewrite;
 using NJsonSchema;
 using System.Globalization;
+using System.IdentityModel.Tokens.Jwt;
 
 namespace DevilDaggersInfo.Web.BlazorWasm.Server;
 
@@ -32,18 +34,21 @@ public class Startup
 
 		services.AddDatabaseDeveloperPageExceptionFilter();
 
-		services.AddIdentity<ApplicationUser, IdentityRole>().AddEntityFrameworkStores<ApplicationDbContext>();
-		services.ConfigureApplicationCookie(options =>
-		{
-			options.Cookie.HttpOnly = false;
-			options.Events.OnRedirectToLogin = context =>
-			{
-				context.Response.StatusCode = 401;
-				return Task.CompletedTask;
-			};
-		});
+		services.AddDefaultIdentity<ApplicationUser>(options => options.SignIn.RequireConfirmedAccount = true)
+			.AddRoles<IdentityRole>()
+			.AddEntityFrameworkStores<ApplicationDbContext>();
 
-		services.AddAuthentication();
+		services.AddIdentityServer()
+			.AddApiAuthorization<ApplicationUser, ApplicationDbContext>(options =>
+			{
+				options.IdentityResources["openid"].UserClaims.Add("role");
+				options.ApiResources.Single().UserClaims.Add("role");
+			});
+
+		JwtSecurityTokenHandler.DefaultInboundClaimTypeMap.Remove("role");
+
+		services.AddAuthentication()
+			.AddIdentityServerJwt();
 
 		services.AddControllersWithViews();
 
@@ -140,6 +145,7 @@ public class Startup
 
 		app.UseCors(_defaultCorsPolicy);
 
+		app.UseIdentityServer();
 		app.UseAuthentication();
 		app.UseAuthorization();
 
