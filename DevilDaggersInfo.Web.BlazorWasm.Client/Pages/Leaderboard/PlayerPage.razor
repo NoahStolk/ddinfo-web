@@ -20,6 +20,8 @@ else
 
 @code
 {
+	[Parameter, EditorRequired] public int Id { get; set; }
+
 	public GetPlayer? GetPlayer { get; set; }
 
 	protected override async Task OnInitializedAsync()
