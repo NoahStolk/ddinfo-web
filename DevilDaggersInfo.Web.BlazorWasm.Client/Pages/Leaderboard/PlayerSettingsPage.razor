@@ -7,7 +7,7 @@
 @using DevilDaggersInfo.Web.BlazorWasm.Client.Components.Leaderboards
 @using DevilDaggersInfo.Core.Wiki.Enums
 
-<Heading>Leaderboard</Heading>
+<Heading>Player Settings</Heading>
 
 @if (GetEntries == null)
 {
@@ -28,6 +28,6 @@ else
 	protected override async Task OnInitializedAsync()
 	{
 		Players = await Http.GetPlayersForSettings();
-		GetEntries = await Http.GetEntriesByIds(string.Join(',', Players.Select(p => p.Id)));
+		GetEntries = (await Http.GetEntriesByIds(string.Join(',', Players.Select(p => p.Id)))).OrderBy(e => e.Rank).ToList();
 	}
 }

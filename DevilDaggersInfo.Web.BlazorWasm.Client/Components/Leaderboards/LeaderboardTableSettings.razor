@@ -76,7 +76,6 @@
 
 		Entries = _sortBy switch
 		{
-			LeaderboardSorting.Rank => Entries.OrderBy(e => e.Rank, _ascending).ToList(),
 			LeaderboardSorting.Flag => Entries.OrderBy(e => Players?.Find(p => p.Id == e.Id)?.CountryCode ?? string.Empty, _ascending).ToList(),
 			LeaderboardSorting.Player => Entries.OrderBy(e => e.Username, _ascending).ToList(),
 			LeaderboardSorting.Time => Entries.OrderBy(e => e.Time, _ascending).ToList(),
@@ -88,7 +87,7 @@
 			LeaderboardSorting.HasFlashHandEnabled => Entries.OrderBy(e => Players?.Find(p => p.Id == e.Id)?.HasFlashHandEnabled, _ascending).ToList(),
 			LeaderboardSorting.Gamma => Entries.OrderBy(e => Players?.Find(p => p.Id == e.Id)?.Gamma ?? 0, _ascending).ToList(),
 			LeaderboardSorting.UsesLegacyAudio => Entries.OrderBy(e => Players?.Find(p => p.Id == e.Id)?.UsesLegacyAudio, _ascending).ToList(),
-			_ => Entries,
+			_ => Entries.OrderBy(e => e.Rank, _ascending).ToList(),
 		};
 	}
 
