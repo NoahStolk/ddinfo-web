@@ -1,0 +1,27 @@
+@page "/wiki/upgrades"
+
+<Heading>Upgrades</Heading>
+
+<p>
+	There are 4 different types of hand upgrades in Devil Daggers. You unlock the first two upgrades by collecting gems, and the last one by collecting homing daggers. Each upgrades makes the player significantly more powerful.
+</p>
+
+<div class="grid gap-4 xl:grid-cols-4 lg:grid-cols-2 md:grid-cols-2 sm:grid-cols-1 xs:grid-cols-1">
+	@foreach (Upgrade upgrade in Upgrades.GetUpgrades(GameVersion.V3_1))
+	{
+		<div>
+			<div>
+				<div style="color: @upgrade.Color.HexCode;">@upgrade.Name</div>
+				<div>Unlocks at @upgrade.UpgradeUnlock</div>
+				<div>Default spray @upgrade.DefaultDamage.DaggersPerSpraySecond</div>
+				<div>Default shot @upgrade.DefaultDamage.DaggersPerShot</div>
+				<div>Homing spray @upgrade.HomingDamage.DaggersPerSpraySecond</div>
+				<div>Homing shot @upgrade.HomingDamage.DaggersPerShot</div>
+				@*TODO: Mention that leel 4 was added in V2.*@
+			</div>
+			<div>
+				<img src='~/Images/Upgrades/@(upgrade.Name).png' />
+			</div>
+		</div>
+	}
+</div>
