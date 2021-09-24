@@ -7,11 +7,11 @@
 
 <AdminEdit OverviewUrl="/admin/players" PutApiUrl="api/admin/players" Model="_editPlayer" Id="Id" @ref="_editComponent">
 	<AdminInput Label="@nameof(EditPlayer.CountryCode)"><SearchDropdown Values="@(UserUtils.CountryNames!)" Converter="s => s" @bind-Value="@_editPlayer!.CountryCode" /></AdminInput>
-	<AdminInput Label="@nameof(EditPlayer.Dpi)"><InputNumber class="w-64 pl-2 bg-gray-900 text-color-text" @bind-Value="_editPlayer!.Dpi" /></AdminInput>
-	<AdminInput Label="@nameof(EditPlayer.Fov)"><InputNumber class="w-64 pl-2 bg-gray-900 text-color-text" @bind-Value="_editPlayer!.Fov" /></AdminInput>
-	<AdminInput Label="@nameof(EditPlayer.Gamma)"><InputNumber class="w-64 pl-2 bg-gray-900 text-color-text" @bind-Value="_editPlayer!.Gamma" /></AdminInput>
+	<AdminInput Label="@nameof(EditPlayer.Dpi)"><InputNumber class="w-64 pl-2 bg-gray-0b text-color-text" @bind-Value="_editPlayer!.Dpi" /></AdminInput>
+	<AdminInput Label="@nameof(EditPlayer.Fov)"><InputNumber class="w-64 pl-2 bg-gray-0b text-color-text" @bind-Value="_editPlayer!.Fov" /></AdminInput>
+	<AdminInput Label="@nameof(EditPlayer.Gamma)"><InputNumber class="w-64 pl-2 bg-gray-0b text-color-text" @bind-Value="_editPlayer!.Gamma" /></AdminInput>
 	<AdminInput Label="@nameof(EditPlayer.HasFlashHandEnabled)"><InputNullableBoolean @bind-Value="@_editPlayer!.HasFlashHandEnabled" /></AdminInput>
-	<AdminInput Label="@nameof(EditPlayer.InGameSens)"><InputNumber class="w-64 pl-2 bg-gray-900 text-color-text" @bind-Value="@_editPlayer!.InGameSens" /></AdminInput>
+	<AdminInput Label="@nameof(EditPlayer.InGameSens)"><InputNumber class="w-64 pl-2 bg-gray-0b text-color-text" @bind-Value="@_editPlayer!.InGameSens" /></AdminInput>
 	<AdminInput Label="@nameof(EditPlayer.IsRightHanded)"><InputNullableBoolean @bind-Value="@_editPlayer!.IsRightHanded" /></AdminInput>
 	<AdminInput Label="@nameof(EditPlayer.UsesLegacyAudio)"><InputNullableBoolean @bind-Value="@_editPlayer!.UsesLegacyAudio" /></AdminInput>
 	<AdminInput Label="@nameof(EditPlayer.HideDonations)"><InputCheckbox @bind-Value="@_editPlayer!.HideDonations" /></AdminInput>
@@ -20,8 +20,8 @@
 	<AdminInput Label="@nameof(EditPlayer.ModIds)"><MultiSearchDropdown Values="@_modNames" @bind-Value="@_editPlayer!.ModIds" /></AdminInput>
 	<AdminInput Label="@nameof(EditPlayer.TitleIds)"><MultiSearchDropdown Values="@_titleNames" @bind-Value="@_editPlayer!.TitleIds" /></AdminInput>
 	<AdminInput Label="@nameof(EditPlayer.IsBanned)"><InputCheckbox @bind-Value="@_editPlayer!.IsBanned" /></AdminInput>
-	<AdminInput Label="@nameof(EditPlayer.BanDescription)"><InputText class="w-64 pl-2 bg-gray-900 text-color-text" @bind-Value="@_editPlayer!.BanDescription" /></AdminInput>
-	<AdminInput Label="@nameof(EditPlayer.BanResponsibleId)"><InputNumber class="w-64 pl-2 bg-gray-900 text-color-text" @bind-Value="@_editPlayer!.BanResponsibleId" /></AdminInput>
+	<AdminInput Label="@nameof(EditPlayer.BanDescription)"><InputText class="w-64 pl-2 bg-gray-0b text-color-text" @bind-Value="@_editPlayer!.BanDescription" /></AdminInput>
+	<AdminInput Label="@nameof(EditPlayer.BanResponsibleId)"><InputNumber class="w-64 pl-2 bg-gray-0b text-color-text" @bind-Value="@_editPlayer!.BanResponsibleId" /></AdminInput>
 	<AdminInput Label="@nameof(EditPlayer.IsBannedFromDdcl)"><InputCheckbox @bind-Value="@_editPlayer!.IsBannedFromDdcl" /></AdminInput>
 </AdminEdit>
 

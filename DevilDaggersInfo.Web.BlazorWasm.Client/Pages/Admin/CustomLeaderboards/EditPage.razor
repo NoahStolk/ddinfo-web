@@ -6,11 +6,11 @@
 
 <AdminEdit OverviewUrl="/admin/custom-leaderboards" PutApiUrl="api/admin/custom-leaderboards" Model="_editCustomLeaderboard" Id="Id" @ref="_editComponent">
 	<AdminInput Label="@nameof(EditCustomLeaderboard.Category)"><SearchDropdown Values="@(Enum.GetValues<CustomLeaderboardCategory>().ToDictionary(e => e, e => e.ToString()))" Converter="s => Enum.Parse<CustomLeaderboardCategory>(s)" @bind-Value="@_editCustomLeaderboard!.Category" /></AdminInput>
-	<AdminInput Label="@nameof(EditCustomLeaderboard.TimeBronze)"><InputNumber class="w-64 pl-2 bg-gray-900 text-color-text" @bind-Value="_editCustomLeaderboard!.TimeBronze" /></AdminInput>
-	<AdminInput Label="@nameof(EditCustomLeaderboard.TimeSilver)"><InputNumber class="w-64 pl-2 bg-gray-900 text-color-text" @bind-Value="_editCustomLeaderboard!.TimeSilver" /></AdminInput>
-	<AdminInput Label="@nameof(EditCustomLeaderboard.TimeGolden)"><InputNumber class="w-64 pl-2 bg-gray-900 text-color-text" @bind-Value="_editCustomLeaderboard!.TimeGolden" /></AdminInput>
-	<AdminInput Label="@nameof(EditCustomLeaderboard.TimeDevil)"><InputNumber class="w-64 pl-2 bg-gray-900 text-color-text" @bind-Value="_editCustomLeaderboard!.TimeDevil" /></AdminInput>
-	<AdminInput Label="@nameof(EditCustomLeaderboard.TimeLeviathan)"><InputNumber class="w-64 pl-2 bg-gray-900 text-color-text" @bind-Value="_editCustomLeaderboard!.TimeLeviathan" /></AdminInput>
+	<AdminInput Label="@nameof(EditCustomLeaderboard.TimeBronze)"><InputNumber class="w-64 pl-2 bg-gray-0b text-color-text" @bind-Value="_editCustomLeaderboard!.TimeBronze" /></AdminInput>
+	<AdminInput Label="@nameof(EditCustomLeaderboard.TimeSilver)"><InputNumber class="w-64 pl-2 bg-gray-0b text-color-text" @bind-Value="_editCustomLeaderboard!.TimeSilver" /></AdminInput>
+	<AdminInput Label="@nameof(EditCustomLeaderboard.TimeGolden)"><InputNumber class="w-64 pl-2 bg-gray-0b text-color-text" @bind-Value="_editCustomLeaderboard!.TimeGolden" /></AdminInput>
+	<AdminInput Label="@nameof(EditCustomLeaderboard.TimeDevil)"><InputNumber class="w-64 pl-2 bg-gray-0b text-color-text" @bind-Value="_editCustomLeaderboard!.TimeDevil" /></AdminInput>
+	<AdminInput Label="@nameof(EditCustomLeaderboard.TimeLeviathan)"><InputNumber class="w-64 pl-2 bg-gray-0b text-color-text" @bind-Value="_editCustomLeaderboard!.TimeLeviathan" /></AdminInput>
 	<AdminInput Label="@nameof(EditCustomLeaderboard.IsArchived)"><InputCheckbox @bind-Value="@_editCustomLeaderboard!.IsArchived" /></AdminInput>
 </AdminEdit>
 

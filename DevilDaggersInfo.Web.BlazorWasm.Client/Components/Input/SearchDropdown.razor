@@ -1,23 +1,23 @@
 @inherits InputBase<TKey>
 @typeparam TKey
 
-<div class="inline-block w-64 bg-gray-900 text-color-text cursor-pointer">
+<div class="inline-block w-64 bg-gray-0b text-color-text cursor-pointer">
 	<div class="grid grid-cols-8">
 		<span class="pl-2 col-span-7" @onclick="e => _show = !_show">@SelectedDisplayValue</span>
-		<span class="w-8 cursor-pointer bg-gray-800 rounded block text-center" @onclick="e => HandleSelect(default)">✕</span>
+		<span class="w-8 cursor-pointer bg-gray-0b rounded block text-center" @onclick="e => HandleSelect(default)">✕</span>
 	</div>
 	<div class="@(_show ? "absolute" : "hidden") z-10">
-		<div class="bg-gray-900">
+		<div class="bg-gray-0b">
 			<div class="p-2 w-64">
 				<span class="cursor-default w-16">Search:</span>
-				<InputTextImmediate @bind-Value="_searchValue" class="w-48 bg-gray-700 text-color-text" />
+				<InputTextImmediate @bind-Value="_searchValue" class="w-48 bg-gray-22 text-color-text" />
 			</div>
 			<ul class="max-h-screen-half overflow-y-scroll w-64">
 				@{
 					int i = 0;
 					foreach (KeyValuePair<TKey, string> kvp in FilteredItems)
 					{
-						<li class="cursor-pointer pl-2 @(i++ % 2 == 0 ? "bg-gray-800" : string.Empty)" Item="@kvp" @onclick="e => HandleSelect(kvp.Key)">@kvp.Value (@kvp.Key)</li>
+						<li class="cursor-pointer pl-2 @(i++ % 2 == 0 ? "bg-gray-0b" : string.Empty)" Item="@kvp" @onclick="e => HandleSelect(kvp.Key)">@kvp.Value (@kvp.Key)</li>
 					}
 				}
 			</ul>

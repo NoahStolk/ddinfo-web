@@ -1,6 +1,6 @@
 @using System.Globalization
 
-<Select @onchange="UpdateDay" class="bg-gray-900 transition-colors duration-100 h-8 py-1 rounded text-color-text">
+<Select @onchange="UpdateDay" class="bg-gray-0b transition-colors duration-100 h-8 py-1 rounded text-color-text">
 	@for (int i = 1; i <= 31; i++)
 	{
 		if (i == Day)
@@ -13,7 +13,7 @@
 		}
 	}
 </Select>
-<Select @onchange="UpdateMonth" class="bg-gray-900 transition-colors duration-100 h-8 py-1 rounded text-color-text">
+<Select @onchange="UpdateMonth" class="bg-gray-0b transition-colors duration-100 h-8 py-1 rounded text-color-text">
 	@for (int i = 1; i <= 12; i++)
 	{
 		if (i == Month)
@@ -26,7 +26,7 @@
 		}
 	}
 </Select>
-<Select @onchange="UpdateYear" class="bg-gray-900 transition-colors duration-100 h-8 py-1 rounded text-color-text">
+<Select @onchange="UpdateYear" class="bg-gray-0b transition-colors duration-100 h-8 py-1 rounded text-color-text">
 	@for (int i = _minYear; i <= _maxYear; i++)
 	{
 		if (i == Year)

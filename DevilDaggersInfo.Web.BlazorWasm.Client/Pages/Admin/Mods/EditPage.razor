@@ -6,12 +6,12 @@
 @using DevilDaggersInfo.Web.BlazorWasm.Shared.Enums
 
 <AdminEdit OverviewUrl="/admin/mods" PutApiUrl="api/admin/mods" Model="_editMod" Id="Id" @ref="_editComponent">
-	<AdminInput Label="@nameof(EditMod.Name)"><InputText class="w-64 pl-2 bg-gray-900 text-color-text" @bind-Value="@_editMod!.Name" /></AdminInput>
+	<AdminInput Label="@nameof(EditMod.Name)"><InputText class="w-64 pl-2 bg-gray-0b text-color-text" @bind-Value="@_editMod!.Name" /></AdminInput>
 	<AdminInput Label="@nameof(EditMod.PlayerIds)"><MultiSearchDropdown Values="@_playerNames" @bind-Value="@_editMod!.PlayerIds" /></AdminInput>
-	<AdminInput Label="@nameof(EditMod.TrailerUrl)"><InputText class="w-64 pl-2 bg-gray-900 text-color-text" @bind-Value="_editMod!.TrailerUrl" /></AdminInput>
-	<AdminInput Label="@nameof(EditMod.HtmlDescription)"><InputText class="w-64 pl-2 bg-gray-900 text-color-text" @bind-Value="@_editMod!.HtmlDescription" /></AdminInput>
+	<AdminInput Label="@nameof(EditMod.TrailerUrl)"><InputText class="w-64 pl-2 bg-gray-0b text-color-text" @bind-Value="_editMod!.TrailerUrl" /></AdminInput>
+	<AdminInput Label="@nameof(EditMod.HtmlDescription)"><InputText class="w-64 pl-2 bg-gray-0b text-color-text" @bind-Value="@_editMod!.HtmlDescription" /></AdminInput>
 	<AdminInput Label="@nameof(EditMod.ModTypes)"><MultiSearchDropdown Values="@_modTypes" @bind-Value="@_editMod!.ModTypes" /></AdminInput>
-	<AdminInput Label="@nameof(EditMod.Url)"><InputText class="w-64 pl-2 bg-gray-900 text-color-text" @bind-Value="@_editMod!.Url" /></AdminInput>
+	<AdminInput Label="@nameof(EditMod.Url)"><InputText class="w-64 pl-2 bg-gray-0b text-color-text" @bind-Value="@_editMod!.Url" /></AdminInput>
 	<AdminInput Label="@nameof(EditMod.IsHidden)"><InputCheckbox @bind-Value="@_editMod!.IsHidden" /></AdminInput>
 	<AdminInput Label="@nameof(EditMod.FileContents)"><InputFile OnChange="LoadFile" /></AdminInput>
 	<AdminInput Label="@nameof(EditMod.RemoveExistingFile)"><InputCheckbox @bind-Value="@_editMod!.RemoveExistingFile" /></AdminInput>

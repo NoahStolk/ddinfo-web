@@ -13,7 +13,7 @@
 	<div>Total downloads (since @(FeatureConstants.TrackingToolDownloadCounts.ToString(FormatUtils.DateFormat)))</div>
 	<div>@GetTool.Versions.Sum(v => v.DownloadCount).ToString("N0")</div>
 	
-	<a class="bg-gray-900 hover:bg-gray-700 transition-colors duration-100 w-24 h-8 py-1 rounded text-color-text text-center" href="/api/tools/@(GetTool.Name)/file" download="@_fileName" role="button" target="=_top">Download</a>
+	<a class="bg-gray-0b hover:bg-gray-22 transition-colors duration-100 w-24 h-8 py-1 rounded text-color-text text-center" href="/api/tools/@(GetTool.Name)/file" download="@_fileName" role="button" target="=_top">Download</a>
 </div>
 
 @code

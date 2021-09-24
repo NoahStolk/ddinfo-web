@@ -21,12 +21,12 @@ else
 {
 	<Deletion TKey="TKey" AfterDelete="Fetch" ApiRoute="@ApiRoute" @ref="_deletion" />
 
-	<a class="inline-block bg-gray-900 hover:bg-gray-700 transition-colors duration-100 w-20 h-8 py-1 rounded text-color-text text-center" href="@($"{NavigationManager.Uri}/add")">Add new</a>
-	<button class="bg-gray-900 hover:bg-gray-700 transition-colors duration-100 w-8 h-8 py-1 rounded text-color-text" @onclick="() => ChangePageIndex(0)">|&lt;</button>
-	<button class="bg-gray-900 hover:bg-gray-700 transition-colors duration-100 w-8 h-8 py-1 rounded text-color-text" @onclick="() => ChangePageIndex(_pageIndex - 1)">&lt;</button>
-	<button class="bg-gray-900 hover:bg-gray-700 transition-colors duration-100 w-8 h-8 py-1 rounded text-color-text" @onclick="() => ChangePageIndex(_pageIndex + 1)">&gt;</button>
-	<button class="bg-gray-900 hover:bg-gray-700 transition-colors duration-100 w-8 h-8 py-1 rounded text-color-text" @onclick="() => ChangePageIndex(TotalPages - 1)">&gt;|</button>
-	<Select @onchange="ChangePageSize" class="bg-gray-900 transition-colors duration-100 h-8 py-1 rounded text-color-text">
+	<a class="inline-block bg-gray-0b hover:bg-gray-22 transition-colors duration-100 w-20 h-8 py-1 rounded text-color-text text-center" href="@($"{NavigationManager.Uri}/add")">Add new</a>
+	<button class="bg-gray-0b hover:bg-gray-22 transition-colors duration-100 w-8 h-8 py-1 rounded text-color-text" @onclick="() => ChangePageIndex(0)">|&lt;</button>
+	<button class="bg-gray-0b hover:bg-gray-22 transition-colors duration-100 w-8 h-8 py-1 rounded text-color-text" @onclick="() => ChangePageIndex(_pageIndex - 1)">&lt;</button>
+	<button class="bg-gray-0b hover:bg-gray-22 transition-colors duration-100 w-8 h-8 py-1 rounded text-color-text" @onclick="() => ChangePageIndex(_pageIndex + 1)">&gt;</button>
+	<button class="bg-gray-0b hover:bg-gray-22 transition-colors duration-100 w-8 h-8 py-1 rounded text-color-text" @onclick="() => ChangePageIndex(TotalPages - 1)">&gt;|</button>
+	<Select @onchange="ChangePageSize" class="bg-gray-0b transition-colors duration-100 h-8 py-1 rounded text-color-text">
 		@foreach (int i in AdminPagingConstants.PageSizeOptions)
 		{
 			if (i == AdminPagingConstants.PageSizeDefault)

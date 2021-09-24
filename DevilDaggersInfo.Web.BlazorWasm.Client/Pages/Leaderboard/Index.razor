@@ -26,8 +26,8 @@ else
 {
 	<div>
 		<div>Rank:</div>
-		<input class="bg-black border-gray-700 border-2" @onkeypress="KeyPressInputRank" @onchange="ChangeInputRank" />
-		<button class="bg-gray-900 hover:bg-gray-700 transition-colors duration-100 w-16 h-8 py-1 rounded text-color-text" @onclick="FetchLeaderboard">Show</button>
+		<input class="bg-black border-gray-22 border-2" @onkeypress="KeyPressInputRank" @onchange="ChangeInputRank" />
+		<button class="bg-gray-0b hover:bg-gray-22 transition-colors duration-100 w-16 h-8 py-1 rounded text-color-text" @onclick="FetchLeaderboard">Show</button>
 
 		<div>
 			@if (_reloading)
@@ -40,12 +40,12 @@ else
 			}
 		</div>
 		<div>
-			<button class="@(Rank <= 1 ? "disabled" : string.Empty) bg-gray-900 hover:bg-gray-700 transition-colors duration-100 w-8 h-8 py-1 rounded text-color-text" @onclick="() => SetRank(1)">|&lt;</button>
-			<button class="@(Rank <= 1 ? "disabled" : string.Empty) bg-gray-900 hover:bg-gray-700 transition-colors duration-100 w-8 h-8 py-1 rounded text-color-text" @onclick="() => SetRank(Rank - 1000)">&lt;&lt;</button>
-			<button class="@(Rank <= 1 ? "disabled" : string.Empty) bg-gray-900 hover:bg-gray-700 transition-colors duration-100 w-8 h-8 py-1 rounded text-color-text" @onclick="() => SetRank(Rank - 100)">&lt;</button>
-			<button class="@(Rank >= _maxRank ? "disabled" : string.Empty) bg-gray-900 hover:bg-gray-700 transition-colors duration-100 w-8 h-8 py-1 rounded text-color-text" @onclick="() => SetRank(Rank + 100)">&gt;</button>
-			<button class="@(Rank >= _maxRank ? "disabled" : string.Empty) bg-gray-900 hover:bg-gray-700 transition-colors duration-100 w-8 h-8 py-1 rounded text-color-text" @onclick="() => SetRank(Rank + 1000)">&gt;&gt;</button>
-			<button class="@(Rank >= _maxRank ? "disabled" : string.Empty) bg-gray-900 hover:bg-gray-700 transition-colors duration-100 w-8 h-8 py-1 rounded text-color-text" @onclick="() => SetRank(GetLeaderboard.TotalPlayers - 99)">&gt;|</button>
+			<button class="@(Rank <= 1 ? "disabled" : string.Empty) bg-gray-0b hover:bg-gray-22 transition-colors duration-100 w-8 h-8 py-1 rounded text-color-text" @onclick="() => SetRank(1)">|&lt;</button>
+			<button class="@(Rank <= 1 ? "disabled" : string.Empty) bg-gray-0b hover:bg-gray-22 transition-colors duration-100 w-8 h-8 py-1 rounded text-color-text" @onclick="() => SetRank(Rank - 1000)">&lt;&lt;</button>
+			<button class="@(Rank <= 1 ? "disabled" : string.Empty) bg-gray-0b hover:bg-gray-22 transition-colors duration-100 w-8 h-8 py-1 rounded text-color-text" @onclick="() => SetRank(Rank - 100)">&lt;</button>
+			<button class="@(Rank >= _maxRank ? "disabled" : string.Empty) bg-gray-0b hover:bg-gray-22 transition-colors duration-100 w-8 h-8 py-1 rounded text-color-text" @onclick="() => SetRank(Rank + 100)">&gt;</button>
+			<button class="@(Rank >= _maxRank ? "disabled" : string.Empty) bg-gray-0b hover:bg-gray-22 transition-colors duration-100 w-8 h-8 py-1 rounded text-color-text" @onclick="() => SetRank(Rank + 1000)">&gt;&gt;</button>
+			<button class="@(Rank >= _maxRank ? "disabled" : string.Empty) bg-gray-0b hover:bg-gray-22 transition-colors duration-100 w-8 h-8 py-1 rounded text-color-text" @onclick="() => SetRank(GetLeaderboard.TotalPlayers - 99)">&gt;|</button>
 		</div>
 	</div>
 
