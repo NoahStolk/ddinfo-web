@@ -6,11 +6,9 @@ using DevilDaggersInfo.Web.BlazorWasm.Server.Caches.SpawnsetSummaries;
 using DevilDaggersInfo.Web.BlazorWasm.Server.HostedServices;
 using DevilDaggersInfo.Web.BlazorWasm.Server.Middleware;
 using DevilDaggersInfo.Web.BlazorWasm.Server.NSwag;
-using Microsoft.AspNetCore.Authentication;
 using Microsoft.AspNetCore.Rewrite;
 using NJsonSchema;
 using System.Globalization;
-using System.IdentityModel.Tokens.Jwt;
 
 namespace DevilDaggersInfo.Web.BlazorWasm.Server;
 
@@ -64,12 +62,12 @@ public class Startup
 
 		if (!WebHostEnvironment.IsDevelopment())
 		{
+			// TODO: ResponseTimeLoggerBackgroundService
 			services.AddHostedService<BackgroundServiceLoggerBackgroundService>();
 			services.AddHostedService<CacheLoggerBackgroundService>();
 			services.AddHostedService<DatabaseLoggerBackgroundService>();
 			services.AddHostedService<FileSystemLoggerBackgroundService>();
 			services.AddHostedService<LeaderboardHistoryBackgroundService>();
-			//services.AddHostedService<ResponseTimeLoggerBackgroundService>();
 		}
 
 		// Use a transient for ToolHelper so we can update the Tools.json file without having to re-instantiate this.
@@ -181,8 +179,8 @@ public class Startup
 		RoleManager<IdentityRole>? roleManager = serviceProvider.GetRequiredService<RoleManager<IdentityRole>>();
 		foreach (string? roleName in Roles.All)
 		{
-			bool roleExist = await roleManager.RoleExistsAsync(roleName);
-			if (!roleExist)
+			bool roleExists = await roleManager.RoleExistsAsync(roleName);
+			if (!roleExists)
 				await roleManager.CreateAsync(new IdentityRole(roleName));
 		}
 	}

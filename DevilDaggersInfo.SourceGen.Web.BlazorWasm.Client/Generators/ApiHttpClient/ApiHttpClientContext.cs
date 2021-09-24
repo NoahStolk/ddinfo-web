@@ -1,4 +1,3 @@
-using DevilDaggersInfo.SourceGen.Web.BlazorWasm.Client.Extensions;
 using DevilDaggersInfo.SourceGen.Web.BlazorWasm.Client.Generators.ApiHttpClient.Enums;
 
 namespace DevilDaggersInfo.SourceGen.Web.BlazorWasm.Client.Generators.ApiHttpClient;
