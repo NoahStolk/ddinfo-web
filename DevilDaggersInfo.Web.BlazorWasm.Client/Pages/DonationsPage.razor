@@ -41,8 +41,8 @@ else
 						.GroupBy(d => d.Currency)
 						.Select(g => $"{g.Key.GetChar()} {(g.Sum(d => d.Amount) / 100.0).ToString("0.00")} {(g.Key.ToString().ToUpper())}"));
 
-					<div class="font-goethe">
-						<div style="white-space: nowrap; flex-grow: 4;" class="text-left devil">@username</div>
+					<div>
+						<div style="white-space: nowrap; flex-grow: 4;" class="font-goethe devil text-xl">@username</div>
 						<Tooltip Text="@tooltipText" CssClass="text-center w-full font-calibri">
 							€ @((donator.Donations.Sum(d => d.ConvertedEuroCentsReceived) / 100.0).ToString("0.00"))
 						</Tooltip>
