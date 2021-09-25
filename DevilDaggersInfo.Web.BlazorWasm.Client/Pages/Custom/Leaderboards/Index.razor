@@ -86,7 +86,7 @@ else
 	[Parameter, SupplyParameterFromQuery] public int Category { get => _category; set => _category = Math.Max(1, value); }
 	[Parameter, SupplyParameterFromQuery] public int PageIndex { get => _pageIndex; set => _pageIndex = Math.Max(0, value); }
 	[Parameter, SupplyParameterFromQuery] public int PageSize { get => _pageSize; set => _pageSize = value < PublicPagingConstants.PageSizeMin || value > PublicPagingConstants.PageSizeMax ? PublicPagingConstants.PageSizeDefault : value; }
-	[Parameter, SupplyParameterFromQuery] public int SortBy { get; set; }
+	[Parameter, SupplyParameterFromQuery] public int? SortBy { get; set; }
 	[Parameter, SupplyParameterFromQuery] public bool Ascending { get; set; }
 
 	private Dictionary<CustomLeaderboardSorting, bool> _sortings = new();
@@ -147,7 +147,7 @@ else
 
 	private async Task Fetch()
 	{
-		GetCustomLeaderboards = await Http.GetCustomLeaderboards((CustomLeaderboardCategory)Category, PageIndex, PageSize, (CustomLeaderboardSorting)SortBy, Ascending);
+		GetCustomLeaderboards = await Http.GetCustomLeaderboards((CustomLeaderboardCategory)Category, PageIndex, PageSize, SortBy.HasValue ? (CustomLeaderboardSorting)SortBy.Value : CustomLeaderboardSorting.DateLastPlayed, Ascending);
 	}
 
 	private static class QueryParameters

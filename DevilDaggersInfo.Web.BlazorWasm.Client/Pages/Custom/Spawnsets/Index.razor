@@ -75,7 +75,7 @@ else
 	[Parameter, SupplyParameterFromQuery] public bool OnlyWithLeaderboard { get; set; }
 	[Parameter, SupplyParameterFromQuery] public int PageIndex { get => _pageIndex; set => _pageIndex = Math.Max(0, value); }
 	[Parameter, SupplyParameterFromQuery] public int PageSize { get => _pageSize; set => _pageSize = value < PublicPagingConstants.PageSizeMin || value > PublicPagingConstants.PageSizeMax ? PublicPagingConstants.PageSizeDefault : value; }
-	[Parameter, SupplyParameterFromQuery] public int SortBy { get; set; }
+	[Parameter, SupplyParameterFromQuery] public int? SortBy { get; set; }
 	[Parameter, SupplyParameterFromQuery] public bool Ascending { get; set; }
 
 	private Dictionary<SpawnsetSorting, bool> _sortings = new();
@@ -125,7 +125,7 @@ else
 
 	private async Task Fetch()
 	{
-		GetSpawnsets = await Http.GetSpawnsets(OnlyPractice, OnlyWithLeaderboard, PageIndex, PageSize, (SpawnsetSorting)SortBy, Ascending);
+		GetSpawnsets = await Http.GetSpawnsets(OnlyPractice, OnlyWithLeaderboard, PageIndex, PageSize, SortBy.HasValue ? (SpawnsetSorting)SortBy.Value : SpawnsetSorting.LastUpdated, Ascending);
 	}
 
 	private static class QueryParameters

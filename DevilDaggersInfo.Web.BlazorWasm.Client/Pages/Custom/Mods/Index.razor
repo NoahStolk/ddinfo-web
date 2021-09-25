@@ -62,7 +62,7 @@ else
 	[Parameter, SupplyParameterFromQuery] public bool OnlyHosted { get; set; }
 	[Parameter, SupplyParameterFromQuery] public int PageIndex { get => _pageIndex; set => _pageIndex = Math.Max(0, value); }
 	[Parameter, SupplyParameterFromQuery] public int PageSize { get => _pageSize; set => _pageSize = value < PublicPagingConstants.PageSizeMin || value > PublicPagingConstants.PageSizeMax ? PublicPagingConstants.PageSizeDefault : value; }
-	[Parameter, SupplyParameterFromQuery] public int SortBy { get; set; }
+	[Parameter, SupplyParameterFromQuery] public int? SortBy { get; set; }
 	[Parameter, SupplyParameterFromQuery] public bool Ascending { get; set; }
 
 	private Dictionary<ModSorting, bool> _sortings = new();
@@ -112,7 +112,7 @@ else
 
 	private async Task Fetch()
 	{
-		GetMods = await Http.GetMods(OnlyHosted, PageIndex, PageSize, (ModSorting)SortBy, Ascending);
+		GetMods = await Http.GetMods(OnlyHosted, PageIndex, PageSize, SortBy.HasValue ? (ModSorting)SortBy.Value : ModSorting.LastUpdated, Ascending);
 	}
 
 	private static class QueryParameters
