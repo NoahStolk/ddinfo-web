@@ -1,11 +1,11 @@
 <div class="max-h-lb-name overflow-hidden">
 	@if (IsBanned)
 	{
-		<Tooltip Text="@BanDescription"><a href="/leaderboard/player/@Id" class="@(IsBanned ? string.Empty : DaggerCssClass)">@((MarkupString)Name.Replace(" ", "&nbsp;"))</a></Tooltip>
+		<Tooltip Text="@BanDescription"><a href="/leaderboard/player/@Id" class="@(IsBanned ? string.Empty : DaggerCssClass)">@Name.ToNoBreakString()</a></Tooltip>
 	}
 	else
 	{
-		<a href="/leaderboard/player/@Id" class="@DaggerCssClass highlight">@((MarkupString)Name.Replace(" ", "&nbsp;"))</a>
+		<a href="/leaderboard/player/@Id" class="@DaggerCssClass highlight">@Name.ToNoBreakString()</a>
 	}
 </div>
 
