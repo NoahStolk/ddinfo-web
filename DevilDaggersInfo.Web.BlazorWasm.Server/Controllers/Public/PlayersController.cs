@@ -18,31 +18,17 @@ public class PlayersController : ControllerBase
 	[ProducesResponseType(StatusCodes.Status200OK)]
 	public ActionResult<List<GetPlayerForLeaderboard>> GetPlayersForLeaderboard()
 	{
-		var players = _dbContext.Players
+		return _dbContext.Players
 			.AsNoTracking()
-			.Select(p => new { p.Id, p.BanDescription, p.IsBanned, p.CountryCode, p.HideDonations })
+			.Select(p => new { p.Id, p.BanDescription, p.IsBanned, p.CountryCode })
+			.Select(p => new GetPlayerForLeaderboard
+			{
+				Id = p.Id,
+				BanDescription = p.BanDescription,
+				IsBanned = p.IsBanned,
+				CountryCode = p.CountryCode,
+			})
 			.ToList();
-
-		var donations = _dbContext.Donations
-			.AsNoTracking()
-			.Select(d => new { d.PlayerId, d.IsRefunded, d.ConvertedEuroCentsReceived })
-			.Where(d => !d.IsRefunded && d.ConvertedEuroCentsReceived > 0)
-			.ToList();
-
-		List<PlayerTitleEntity> playerTitles = _dbContext.PlayerTitles
-			.AsNoTracking()
-			.Include(pt => pt.Title)
-			.ToList();
-
-		return players.ConvertAll(p => new GetPlayerForLeaderboard
-		{
-			Id = p.Id,
-			BanDescription = p.BanDescription,
-			IsBanned = p.IsBanned,
-			IsPublicDonator = !p.HideDonations && donations.Any(d => d.PlayerId == p.Id),
-			Titles = playerTitles.Where(pt => pt.PlayerId == p.Id).Select(pt => pt.Title.Name).ToList(),
-			CountryCode = p.CountryCode,
-		});
 	}
 
 	[HttpGet("{id}")]

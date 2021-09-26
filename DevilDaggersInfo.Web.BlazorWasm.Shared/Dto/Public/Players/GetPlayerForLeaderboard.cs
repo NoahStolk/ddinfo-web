@@ -8,9 +8,5 @@ public class GetPlayerForLeaderboard : IGetDto<int>
 
 	public string? BanDescription { get; init; }
 
-	public List<string> Titles { get; init; } = null!;
-
-	public bool IsPublicDonator { get; init; }
-
 	public string? CountryCode { get; init; }
 }

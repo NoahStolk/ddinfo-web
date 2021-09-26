@@ -2,13 +2,6 @@ namespace DevilDaggersInfo.Web.BlazorWasm.Shared.Utils;
 
 public static class UserUtils
 {
-	public static Dictionary<string, string> TitleImages { get; } = new()
-	{
-		{ "Admin", "eye2" },
-		{ "Discord mod", "eye3" },
-		{ "Donator", "gem" },
-	};
-
 	public static Dictionary<string, string> CountryNames { get; } = new()
 	{
 		{ "AD", "Andorra" },

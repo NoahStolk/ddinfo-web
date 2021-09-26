@@ -7,17 +7,6 @@
 	{
 		<a href="/leaderboard/player/@Id" class="@DaggerCssClass highlight">@((MarkupString)Name.Replace(" ", "&nbsp;"))</a>
 	}
-
-	@if (_titles.Count > 0)
-	{
-		<span class="px-1">
-			@foreach (string title in _titles)
-			{
-				string? titleImage = UserUtils.TitleImages.ContainsKey(title) ? UserUtils.TitleImages[title] : null;
-				<Tooltip Text="@title"><img src="/images/icons/default/@(titleImage).png" /></Tooltip>
-			}
-		</span>
-	}
 </div>
 
 @code {
@@ -26,16 +15,4 @@
 	[Parameter, EditorRequired] public string DaggerCssClass { get; set; } = null!;
 	[Parameter] public bool IsBanned { get; set; }
 	[Parameter] public string? BanDescription { get; set; }
-	[Parameter] public List<string>? Titles { get; set; }
-	[Parameter] public bool IsPublicDonator { get; set; }
-
-	private List<string> _titles = new();
-
-	protected override void OnInitialized()
-	{
-		if (Titles != null)
-			_titles.AddRange(Titles);
-		if (IsPublicDonator == true)
-			_titles.Add("Donator");
-	}
 }
