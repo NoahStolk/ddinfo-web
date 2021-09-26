@@ -14,11 +14,11 @@
 		<div @onclick="() => Sort(LeaderboardSorting.Edpi)" class="text-right hidden md:block"><Tooltip Text="Sort by EDPI"><img src="/images/icons/mask-x2/dagger.png" /></Tooltip></div>
 		<div @onclick="() => Sort(LeaderboardSorting.Dpi)" class="text-right hidden md:block"><Tooltip Text="Sort by DPI"><img src="/images/icons/mask-x2/gem.png" /></Tooltip></div>
 		<div @onclick="() => Sort(LeaderboardSorting.InGameSens)" class="text-right hidden md:block"><Tooltip Text="Sort by IN-GAME&nbsp;SENS"><img src="/images/icons/mask-x2/crosshair.png" /></Tooltip></div>
-		<div @onclick="() => Sort(LeaderboardSorting.Fov)" class="text-left hidden lg:block"><Tooltip Text="Sort by FOV"><img src="/images/icons/mask-x2/skull.png" /></Tooltip></div>
-		<div @onclick="() => Sort(LeaderboardSorting.IsRightHanded)" class="text-right hidden xl:block"><Tooltip Text="Sort by HAND"><img src="/images/icons/mask-x2/stopwatch.png" /></Tooltip></div>
-		<div @onclick="() => Sort(LeaderboardSorting.HasFlashHandEnabled)" class="text-right hidden xl:block"><Tooltip Text="Sort by FLASH"><img src="/images/icons/mask-x2/dagger.png" /></Tooltip></div>
+		<div @onclick="() => Sort(LeaderboardSorting.Fov)" class="text-right hidden lg:block"><Tooltip Text="Sort by FOV"><img src="/images/icons/mask-x2/skull.png" /></Tooltip></div>
+		<div @onclick="() => Sort(LeaderboardSorting.IsRightHanded)" class="text-left hidden xl:block"><Tooltip Text="Sort by HAND"><img src="/images/icons/mask-x2/stopwatch.png" /></Tooltip></div>
+		<div @onclick="() => Sort(LeaderboardSorting.HasFlashHandEnabled)" class="text-left hidden xl:block"><Tooltip Text="Sort by FLASH"><img src="/images/icons/mask-x2/dagger.png" /></Tooltip></div>
 		<div @onclick="() => Sort(LeaderboardSorting.Gamma)" class="text-right hidden xl:block"><Tooltip Text="Sort by GAMMA"><img src="/images/icons/mask-x2/gem.png" /></Tooltip></div>
-		<div @onclick="() => Sort(LeaderboardSorting.UsesLegacyAudio)" class="text-right hidden xl:block"><Tooltip Text="Sort by LEGACY&nbsp;AUDIO"><img src="/images/icons/mask-x2/crosshair.png" /></Tooltip></div>
+		<div @onclick="() => Sort(LeaderboardSorting.UsesLegacyAudio)" class="text-left hidden xl:block"><Tooltip Text="Sort by LEGACY&nbsp;AUDIO"><img src="/images/icons/mask-x2/crosshair.png" /></Tooltip></div>
 	</div>
 	<div>
 		@{
@@ -36,16 +36,16 @@
 				<div class="grid gap-3 grid-cols-leaderboard-sm md:grid-cols-leaderboard-md lg:grid-cols-leaderboard-lg xl:grid-cols-leaderboard-xl h-6 @(i++ % 2 == 0 ? "bg-gray-0b" : string.Empty)">
 					<EntryRank PlayerId="@entry.Id" Rank="@entry.Rank" />
 					<EntryFlag CountryCode="@player.CountryCode" />
-					<EntryUsername DaggerCssClass="@daggerCssClass" Id="entry.Id" Name="@entry.Username" IsPublicDonator="player.IsPublicDonator" Titles="player.Titles" />
+					<EntryUsername DaggerCssClass="@daggerCssClass" Id="entry.Id" Name="@entry.Username" />
 					<div class="text-right @daggerCssClass">@entry.Time.ToString(FormatUtils.TimeFormat)</div>
 					<div class="text-right hidden md:block">@player.Edpi?.ToString(FormatUtils.InGameSensFormat)</div>
 					<div class="text-right hidden md:block">@player.Dpi</div>
 					<div class="text-right hidden md:block">@player.InGameSens?.ToString(FormatUtils.InGameSensFormat)</div>
-					<div class="text-left hidden lg:block">@player.Fov</div>
-					<div class="text-right hidden xl:block">@(player.IsRightHanded.HasValue ? player.IsRightHanded.Value ? "Right" : "Left" : string.Empty)</div>
-					<div class="text-right hidden xl:block">@(player.HasFlashHandEnabled.HasValue ? player.HasFlashHandEnabled.Value ? "On" : "Off" : string.Empty)</div>
+					<div class="text-right hidden lg:block">@player.Fov</div>
+					<div class="text-left hidden xl:block">@(player.IsRightHanded.HasValue ? player.IsRightHanded.Value ? "Right" : "Left" : string.Empty)</div>
+					<div class="text-left hidden xl:block">@(player.HasFlashHandEnabled.HasValue ? player.HasFlashHandEnabled.Value ? "On" : "Off" : string.Empty)</div>
 					<div class="text-right hidden xl:block">@player.Gamma?.ToString(FormatUtils.GammaFormat)</div>
-					<div class="text-right hidden xl:block">@(player.UsesLegacyAudio.HasValue ? player.UsesLegacyAudio.Value ? "On" : "Off" : string.Empty)</div>
+					<div class="text-left hidden xl:block">@(player.UsesLegacyAudio.HasValue ? player.UsesLegacyAudio.Value ? "On" : "Off" : string.Empty)</div>
 				</div>
 			}
 		}
