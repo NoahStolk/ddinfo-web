@@ -1,11 +1,11 @@
 @inherits LayoutComponentBase
 
-<div class="page">
-	<div class="sidebar">
+<div class="flex flex-col sm:flex-row relative">
+	<div class="sticky top-0 bg-gradient-to-b from-dark-red to-dark-red sm:to-black sm:width-64 sm:h-screen">
 		<NavMenu />
 	</div>
 
-	<div class="main">
+	<div class="flex-1">
 		<LoginDisplay />
 
 		<div class="content px-4">
