@@ -5,7 +5,7 @@
 	</button>
 </div>
 
-<div class="@NavMenuCssClass pb-4 font-goethe">
+<div class="@(ShowNavMenu ? null : "hidden sm:block") pb-4 font-goethe">
 	<ul>
 		<CascadingValue Value="this">
 			<NavItem Href="" CssClass="text-xl" IconType="home" Text="Home" Match="NavLinkMatch.All" />
@@ -65,8 +65,6 @@
 @code
 {
 	public bool ShowNavMenu { get; set; } = false;
-
-	private string? NavMenuCssClass => ShowNavMenu ? null : "hidden sm:block";
 
 	public List<NavDropdown> NavDropdowns { get; } = new();
 
