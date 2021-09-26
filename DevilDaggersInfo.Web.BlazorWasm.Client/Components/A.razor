@@ -1,11 +1,4 @@
-@if (OpenInNewTab)
-{
-	<a class="text-color-link hover:text-color-link-hover" href="@Href" target="_blank">@ChildContent</a>
-}
-else
-{
-	<a class="text-color-link hover:text-color-link-hover" href="@Href">@ChildContent</a>
-}
+<a class="text-color-link hover:text-color-link-hover" href="@Href" target="@(OpenInNewTab ? "_blank" : null)">@ChildContent</a>
 
 @code
 {
