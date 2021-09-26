@@ -13,9 +13,13 @@
 	[Parameter, EditorRequired] public string IconType { get; set; } = null!;
 	[Parameter, EditorRequired] public string Text { get; set; } = null!;
 	[Parameter] public NavLinkMatch Match { get; set; }
+	[Parameter] public Func<Task>? OnClickAction { get; set; }
 
-	private void CloseMenu()
+	private async Task CloseMenu()
 	{
+		if (OnClickAction != null)
+			await OnClickAction();
+
 		NavMenu.ShowNavMenu = false;
 		NavMenu.UpdateState();
 	}
