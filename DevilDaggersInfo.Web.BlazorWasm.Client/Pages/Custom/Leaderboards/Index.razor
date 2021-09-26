@@ -62,8 +62,8 @@ else
 	{
 		GetCustomLeaderboardOverview customLeaderboard = GetCustomLeaderboards.Results[i];
 		<div class="grid gap-3 sm:grid-cols-custom-leaderboards-sm md:grid-cols-custom-leaderboards-md lg:grid-cols-custom-leaderboards-lg xl:grid-cols-custom-leaderboards-xl h-6 @(i % 2 == 0 ? "bg-gray-0b" : string.Empty)">
-			<div class="overflow-x-hidden text-left"><a href="/custom/leaderboard/@customLeaderboard.Id">@customLeaderboard.SpawnsetName</a></div>
-			<div class="overflow-x-hidden text-left hidden md:block">@customLeaderboard.SpawnsetAuthorName</div>
+			<div class="overflow-x-hidden text-left"><a href="/custom/leaderboard/@customLeaderboard.Id">@customLeaderboard.SpawnsetName.ToNoBreakString()</a></div>
+			<div class="overflow-x-hidden text-left hidden md:block">@customLeaderboard.SpawnsetAuthorName.ToNoBreakString()</div>
 			<div class="overflow-x-hidden text-left hidden md:block">@customLeaderboard.DateCreated?.ToString(FormatUtils.DateFormat)</div>
 			<div class="overflow-x-hidden text-left hidden md:block">@FormatUtils.FormatDateTimeAsTimeAgo(customLeaderboard.DateLastPlayed)</div>
 			<div class="overflow-x-hidden text-right hidden xl:block text-xl font-goethe bronze">@customLeaderboard.TimeBronze.ToString(FormatUtils.TimeFormat)</div>
@@ -71,7 +71,7 @@ else
 			<div class="overflow-x-hidden text-right hidden xl:block text-xl font-goethe golden">@customLeaderboard.TimeGolden.ToString(FormatUtils.TimeFormat)</div>
 			<div class="overflow-x-hidden text-right hidden xl:block text-xl font-goethe devil">@customLeaderboard.TimeDevil.ToString(FormatUtils.TimeFormat)</div>
 			<div class="overflow-x-hidden text-right hidden xl:block text-xl font-goethe leviathan">@customLeaderboard.TimeLeviathan.ToString(FormatUtils.TimeFormat)</div>
-			<div class="overflow-x-hidden text-left hidden lg:block">@customLeaderboard.TopPlayer</div>
+			<div class="overflow-x-hidden text-left hidden lg:block">@customLeaderboard.TopPlayer.ToNoBreakString()</div>
 			<div class="overflow-x-hidden text-right hidden lg:block text-xl font-goethe @(customLeaderboard.WorldRecordDagger.ToString().ToLower())">@customLeaderboard.WorldRecord?.ToString(FormatUtils.TimeFormat)</div>
 		</div>
 	}
