@@ -40,9 +40,9 @@ module.exports = {
 				'custom-leaderboards-md': createMinmaxGrid([2, 2, 1.5, 1.5]),
 				'custom-leaderboards-sm': createMinmaxGrid([1]),
 
-				'spawnsets-xl': createMinmaxGrid([2, 2, 1, 2, 1, 1, 1, 1, 1, 2, 1, 1]),
-				'spawnsets-lg': createMinmaxGrid([2, 2, 1, 2, 2, 1]),
-				'spawnsets-md': createMinmaxGrid([2, 2, 1.5, 1.5]),
+				'spawnsets-xl': createMinmaxGrid([2, 2, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1]),
+				'spawnsets-lg': createMinmaxGrid([2, 2, 1, 1.2, 1, 1, 1]),
+				'spawnsets-md': createMinmaxGrid([2, 2, 1, 1.2]),
 				'spawnsets-sm': createMinmaxGrid([1]),
 
 				'mods-xl': createMinmaxGrid([3, 3, 2, 2.5, 1, 1]),
