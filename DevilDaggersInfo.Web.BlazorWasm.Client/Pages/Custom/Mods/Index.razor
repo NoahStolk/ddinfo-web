@@ -44,10 +44,10 @@ else
 	{
 		GetModOverview mod = GetMods.Results[i];
 		<div class="grid gap-3 sm:grid-cols-mods-sm md:grid-cols-mods-md lg:grid-cols-mods-lg xl:grid-cols-mods-xl h-6 @(i % 2 == 0 ? "bg-gray-0b" : string.Empty)">
-			<div class="overflow-x-hidden text-left"><a href="/custom/mod/@mod.Id">@mod.Name</a></div>
-			<div class="overflow-x-hidden text-left hidden md:block">@string.Join(", ", mod.Authors)</div>
+			<div class="overflow-x-hidden text-left"><a href="/custom/mod/@mod.Id">@mod.Name.ToNoBreakString()</a></div>
+			<div class="overflow-x-hidden text-left hidden md:block">@string.Join(", ", mod.Authors).ToNoBreakString()</div>
 			<div class="overflow-x-hidden text-left hidden md:block">@mod.LastUpdated.ToString(FormatUtils.DateFormat)</div>
-			<div class="overflow-x-hidden text-left hidden md:block">@mod.ModTypes</div>
+			<div class="overflow-x-hidden text-left hidden md:block">@mod.ModTypes.ToNoBreakString()</div>
 			<div class="overflow-x-hidden text-right hidden xl:block">@mod.IsHosted</div>
 			<div class="overflow-x-hidden text-right hidden xl:block">@mod.ContainsProhibitedAssets</div>
 		</div>

@@ -45,9 +45,9 @@ module.exports = {
 				'spawnsets-md': createMinmaxGrid([2, 2, 1.5, 1.5]),
 				'spawnsets-sm': createMinmaxGrid([1]),
 
-				'mods-xl': createMinmaxGrid([2, 2, 2, 2, 1, 1]),
-				'mods-lg': createMinmaxGrid([1, 1, 1, 1]),
-				'mods-md': createMinmaxGrid([1, 1, 1, 1]),
+				'mods-xl': createMinmaxGrid([3, 3, 2, 2.5, 1, 1]),
+				'mods-lg': createMinmaxGrid([2, 2, 1, 1.5]),
+				'mods-md': createMinmaxGrid([2, 1.5, 1, 2]),
 				'mods-sm': createMinmaxGrid([1]),
 
 				// Leaderboards
