@@ -19,20 +19,7 @@ else
 {
 	<Heading>Spawnset - @GetSpawnset.Name</Heading>
 
-	@foreach (SpawnView sv in SpawnsView.PreLoop)
-	{
-		<Spawn SpawnView="sv" />
-	}
-
-	<div>LOOP</div>
-	@for (int i = 0; i < SpawnsView.Waves.Length; i++)
-	{
-		<div>WAVE @(i + 1)</div>
-		@foreach (SpawnView sv in SpawnsView.Waves[i])
-		{
-			<Spawn SpawnView="sv" />
-		}
-	}
+	<Spawnset SpawnsView=SpawnsView />
 }
 
 @code
@@ -48,7 +35,10 @@ else
 		GetSpawnset = await Http.GetSpawnsetById(Id);
 
 		if (!SpawnsetBinary.TryParse(GetSpawnset.FileBytes, out SpawnsetBinary? spawnset))
+		{
+			// TODO: Log error.
 			return;
+		}
 
 		SpawnsView = new(spawnset, GameVersion.V3_1);
 	}
