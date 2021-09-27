@@ -171,7 +171,7 @@ public class SpawnsetsController : ControllerBase
 	[HttpGet("default")]
 	[ProducesResponseType(typeof(FileContentResult), StatusCodes.Status200OK)]
 	[ProducesResponseType(StatusCodes.Status404NotFound)]
-	public ActionResult GetDefaultSpawnset(GameVersion gameVersion)
+	public ActionResult<byte[]> GetDefaultSpawnset(GameVersion gameVersion)
 	{
 		string fileName = gameVersion switch
 		{
@@ -187,6 +187,6 @@ public class SpawnsetsController : ControllerBase
 			return NotFound();
 		}
 
-		return File(IoFile.ReadAllBytes(path), MediaTypeNames.Application.Octet, fileName);
+		return IoFile.ReadAllBytes(path);
 	}
 }
