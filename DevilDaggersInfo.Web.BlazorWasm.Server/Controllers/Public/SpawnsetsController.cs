@@ -139,7 +139,7 @@ public class SpawnsetsController : ControllerBase
 	[ProducesResponseType(typeof(FileContentResult), StatusCodes.Status200OK)]
 	[ProducesResponseType(StatusCodes.Status400BadRequest)]
 	[ProducesResponseType(StatusCodes.Status404NotFound)]
-	public ActionResult GetSpawnsetFile([Required] string fileName)
+	public ActionResult GetSpawnsetFileForDdse([Required] string fileName)
 	{
 		string path = Path.Combine(_fileSystemService.GetPath(DataSubDirectory.Spawnsets), fileName);
 		if (!IoFile.Exists(path))
@@ -166,5 +166,27 @@ public class SpawnsetsController : ControllerBase
 			return NotFound();
 
 		return spawnsetEntity.ToGetSpawnset(IoFile.ReadAllBytes(path));
+	}
+
+	[HttpGet("default")]
+	[ProducesResponseType(typeof(FileContentResult), StatusCodes.Status200OK)]
+	[ProducesResponseType(StatusCodes.Status404NotFound)]
+	public ActionResult GetDefaultSpawnset(GameVersion gameVersion)
+	{
+		string fileName = gameVersion switch
+		{
+			GameVersion.V1_0 => "V1",
+			GameVersion.V2_0 => "V2",
+			_ => "V3",
+		};
+
+		string path = Path.Combine(_fileSystemService.GetPath(DataSubDirectory.Spawnsets), fileName);
+		if (!IoFile.Exists(path))
+		{
+			// TODO: Log error.
+			return NotFound();
+		}
+
+		return File(IoFile.ReadAllBytes(path), MediaTypeNames.Application.Octet, fileName);
 	}
 }
