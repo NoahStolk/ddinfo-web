@@ -9,7 +9,7 @@ namespace DevilDaggersWebsite.Dto
 	{
 		public string Name { get; init; } = null!;
 
-		public string DisplayName { get; init; } = null!;
+		public string DisplayName { get; set; } = null!;
 
 		/// <summary>
 		/// Indicates the current version of the tool on the website.

@@ -36,11 +36,12 @@ namespace DevilDaggersWebsite.Transients
 					VersionNumber = Version.Parse(toolEntity.CurrentVersionNumber),
 					VersionNumberRequired = Version.Parse(toolEntity.RequiredVersionNumber),
 					Changelog = new List<Dto.ChangelogEntry>(),
-					DisplayName = toolEntity.Name,
+					DisplayName = toolEntity.DisplayName,
 					Name = toolEntity.Name,
 				};
 			}
 
+			tool.DisplayName = toolEntity.DisplayName;
 			tool.VersionNumber = Version.Parse(toolEntity.CurrentVersionNumber);
 			tool.VersionNumberRequired = Version.Parse(toolEntity.RequiredVersionNumber);
 
