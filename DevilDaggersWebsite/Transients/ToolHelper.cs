@@ -1,25 +1,36 @@
-﻿using DevilDaggersWebsite.Dto;
+﻿using DevilDaggersWebsite.Entities;
 using Microsoft.AspNetCore.Hosting;
+using Microsoft.EntityFrameworkCore;
 using Newtonsoft.Json;
 using System.Collections.Generic;
 using System.IO;
+using System.Linq;
 
 namespace DevilDaggersWebsite.Transients
 {
 	public class ToolHelper : IToolHelper
 	{
-		public ToolHelper(IWebHostEnvironment environment)
+		private readonly ApplicationDbContext _dbContext;
+
+		public ToolHelper(ApplicationDbContext dbContext, IWebHostEnvironment environment)
 		{
-			Tools = JsonConvert.DeserializeObject<List<Tool>?>(File.ReadAllText(Path.Combine(environment.WebRootPath, "tools", "Tools.json"))) ?? throw new("Could not deserialize tools JSON.");
+			_dbContext = dbContext;
+
+			Tools = JsonConvert.DeserializeObject<List<Dto.Tool>?>(File.ReadAllText(Path.Combine(environment.WebRootPath, "tools", "Tools.json"))) ?? throw new("Could not deserialize tools JSON.");
 		}
 
-		public List<Tool> Tools { get; } = new();
+		public List<Dto.Tool> Tools { get; } = new();
 
-		public Tool GetToolByName(string name)
+		public Dto.Tool GetToolByName(string name)
 		{
-			Tool? tool = Tools.Find(t => t.Name == name);
+			Tool? toolEntity = _dbContext.Tools.AsNoTracking().FirstOrDefault(t => t.Name == name);
+			if (toolEntity == null)
+				throw new($"Could not find tool with name {name} in database.");
+
+			Dto.Tool? tool = Tools.Find(t => t.Name == name);
 			if (tool == null)
-				throw new($"Could not find tool with name {name}.");
+				throw new($"Could not find tool with name {name} in file system.");
+
 			return tool;
 		}
 	}
