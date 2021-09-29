@@ -27,6 +27,7 @@ namespace DevilDaggersWebsite.Extensions
 				LevelUpTime4 = uploadRequest.LevelUpTime4,
 				SubmitDate = DateTime.UtcNow,
 				ClientVersion = uploadRequest.ClientVersion,
+				Client = uploadRequest.Client,
 				CustomLeaderboard = customLeaderboard,
 			};
 		}

@@ -54,6 +54,8 @@ namespace DevilDaggersWebsite.Entities
 		[StringLength(16)]
 		public string ClientVersion { get; set; } = null!;
 
+		public Enumerators.CustomLeaderboardsClient Client { get; set; }
+
 		public double Accuracy => DaggersFired == 0 ? 0 : DaggersHit / (double)DaggersFired;
 	}
 }

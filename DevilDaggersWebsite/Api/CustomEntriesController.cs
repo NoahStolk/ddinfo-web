@@ -279,6 +279,7 @@ namespace DevilDaggersWebsite.Api
 			customEntry.LevelUpTime4 = uploadRequest.LevelUpTime4;
 			customEntry.SubmitDate = DateTime.UtcNow;
 			customEntry.ClientVersion = uploadRequest.ClientVersion;
+			customEntry.Client = uploadRequest.Client;
 
 			// Update the entry data.
 			CustomEntryData? customEntryData = _dbContext.CustomEntryData.FirstOrDefault(ced => ced.CustomEntryId == customEntry.Id);
