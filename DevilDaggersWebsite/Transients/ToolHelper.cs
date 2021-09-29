@@ -30,7 +30,16 @@ namespace DevilDaggersWebsite.Transients
 
 			Dto.Tool? tool = Tools.Find(t => t.Name == name);
 			if (tool == null)
-				throw new($"Could not find tool with name {name} in file system.");
+			{
+				return new Dto.Tool
+				{
+					VersionNumber = Version.Parse(toolEntity.CurrentVersionNumber),
+					VersionNumberRequired = Version.Parse(toolEntity.RequiredVersionNumber),
+					Changelog = new List<Dto.ChangelogEntry>(),
+					DisplayName = toolEntity.Name,
+					Name = toolEntity.Name,
+				};
+			}
 
 			tool.VersionNumber = Version.Parse(toolEntity.CurrentVersionNumber);
 			tool.VersionNumberRequired = Version.Parse(toolEntity.RequiredVersionNumber);
