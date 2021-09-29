@@ -33,9 +33,9 @@ namespace DevilDaggersWebsite.Api
 		[Obsolete("Use api/tools/{toolName} instead.")]
 		[HttpGet]
 		[ProducesResponseType(StatusCodes.Status200OK)]
-		public ActionResult<List<Tool>> GetTools(string? toolNameFilter = null)
+		public ActionResult<List<Dto.Tool>> GetTools(string? toolNameFilter = null)
 		{
-			IEnumerable<Tool> tools = _toolHelper.Tools;
+			IEnumerable<Dto.Tool> tools = _toolHelper.Tools;
 			if (!string.IsNullOrEmpty(toolNameFilter))
 				tools = tools.Where(t => t.Name.Contains(toolNameFilter));
 			return tools.ToList();
@@ -44,9 +44,9 @@ namespace DevilDaggersWebsite.Api
 		[HttpGet("{toolName}")]
 		[ProducesResponseType(StatusCodes.Status200OK)]
 		[ProducesResponseType(StatusCodes.Status404NotFound)]
-		public ActionResult<Tool> GetTool(string toolName)
+		public ActionResult<Dto.Tool> GetTool(string toolName)
 		{
-			Tool? tool = _toolHelper.Tools.Find(t => t.Name == toolName);
+			Dto.Tool? tool = _toolHelper.Tools.Find(t => t.Name == toolName);
 			if (tool == null)
 				return NotFound($"Tool '{toolName}' was not found.");
 
@@ -59,7 +59,7 @@ namespace DevilDaggersWebsite.Api
 		[ProducesResponseType(StatusCodes.Status404NotFound)]
 		public ActionResult GetToolFile([Required] string toolName)
 		{
-			Tool? tool = _toolHelper.Tools.Find(t => t.Name == toolName);
+			Dto.Tool? tool = _toolHelper.Tools.Find(t => t.Name == toolName);
 			if (tool == null)
 				return new NotFoundObjectResult(new ProblemDetails { Title = $"Tool '{toolName}' was not found." });
 
