@@ -24,6 +24,7 @@ namespace DevilDaggersWebsite.Dto
 		public int LevelUpTime3 { get; init; }
 		public int LevelUpTime4 { get; init; }
 		public string ClientVersion { get; init; } = null!;
+		public CustomLeaderboardsClient Client { get; init; }
 		public OperatingSystem OperatingSystem { get; init; }
 		public BuildMode BuildMode { get; init; }
 		public string Validation { get; set; } = null!; // Use set for unit tests.

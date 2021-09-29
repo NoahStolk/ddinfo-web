@@ -56,7 +56,7 @@ namespace DevilDaggersWebsite.Api
 		[NonAction]
 		public async Task<ActionResult<Dto.UploadSuccess>> ProcessUploadRequest(Dto.UploadRequest uploadRequest)
 		{
-			// Check if the submission actually came from DDCL.
+			// Check if the submission actually came from an allowed program.
 			string check = string.Join(
 				";",
 				uploadRequest.PlayerId,
@@ -106,7 +106,7 @@ namespace DevilDaggersWebsite.Api
 			}
 
 			// Check for required version.
-			Dto.Tool tool = _toolHelper.GetToolByName("DevilDaggersCustomLeaderboards");
+			Dto.Tool tool = _toolHelper.GetToolByName(uploadRequest.Client.ToString());
 			Version clientVersionParsed = Version.Parse(uploadRequest.ClientVersion);
 			if (clientVersionParsed < tool.VersionNumberRequired)
 			{
@@ -205,6 +205,7 @@ namespace DevilDaggersWebsite.Api
 			// We don't want replays to overwrite the real score (this spams messages and is incorrect).
 			// The amount of overflowing ticks varies between 0 and 3 (the longer the run the higher the amount).
 			// Simply reset the time to the original when all data is the same.
+			// TODO: Also apply this to ascending leaderboards.
 			const int timeThreshold = 1000; // 0.1 seconds (or 6 ticks).
 			const int gemThreshold = 2;
 			const int killThreshold = 5;
