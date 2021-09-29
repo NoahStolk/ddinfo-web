@@ -3,7 +3,6 @@ using DevilDaggersWebsite.Entities;
 using DevilDaggersWebsite.Extensions;
 using DevilDaggersWebsite.HostedServices.DdInfoDiscordBot;
 using DevilDaggersWebsite.Singletons;
-using DevilDaggersWebsite.Transients;
 using DSharpPlus.Entities;
 using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
@@ -21,14 +20,12 @@ namespace DevilDaggersWebsite.Api
 	public class CustomEntriesController : ControllerBase
 	{
 		private readonly ApplicationDbContext _dbContext;
-		private readonly IToolHelper _toolHelper;
 		private readonly DiscordLogger _discordLogger;
 		private readonly SpawnsetHashCache _spawnsetHashCache;
 
-		public CustomEntriesController(ApplicationDbContext dbContext, IToolHelper toolHelper, DiscordLogger discordLogger, SpawnsetHashCache spawnsetHashCache)
+		public CustomEntriesController(ApplicationDbContext dbContext, DiscordLogger discordLogger, SpawnsetHashCache spawnsetHashCache)
 		{
 			_dbContext = dbContext;
-			_toolHelper = toolHelper;
 			_discordLogger = discordLogger;
 			_spawnsetHashCache = spawnsetHashCache;
 		}
