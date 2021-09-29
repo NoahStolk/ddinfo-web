@@ -106,9 +106,14 @@ namespace DevilDaggersWebsite.Api
 			}
 
 			// Check for required version.
-			Dto.Tool tool = _toolHelper.GetToolByName(uploadRequest.Client.ToString());
+			string client = uploadRequest.Client.ToString();
+			string clientName = client is "ddstats-rust" or "DdstatsRust" or "1" ? "ddstats-rust" : "DevilDaggersCustomLeaderboards";
+			Tool? tool = _dbContext.Tools.AsNoTracking().FirstOrDefault(t => t.Name == clientName);
+			if (tool == null)
+				throw new($"Could not find tool with name {clientName} in database.");
+
 			Version clientVersionParsed = Version.Parse(uploadRequest.ClientVersion);
-			if (clientVersionParsed < tool.VersionNumberRequired)
+			if (clientVersionParsed < Version.Parse(tool.RequiredVersionNumber))
 			{
 				const string errorMessage = "You are using an unsupported and outdated version of DDCL. Please update the program.";
 				await TryLog(uploadRequest, null, errorMessage);
