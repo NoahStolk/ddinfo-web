@@ -30,7 +30,7 @@ public class Startup
 	public void ConfigureServices(IServiceCollection services)
 	{
 		services.AddDbContext<ApplicationDbContext>(options =>
-			options.UseMySql(Configuration.GetConnectionString("DefaultConnection"), MySqlServerVersion.LatestSupportedServerVersion, providerOptions => providerOptions.EnableRetryOnFailure(1)));
+			options.UseMySql(Configuration.GetConnectionString("DefaultConnection"), MySqlServerVersion.LatestSupportedServerVersion, providerOptions => providerOptions.EnableRetryOnFailure(5)));
 
 		services.AddDatabaseDeveloperPageExceptionFilter();
 

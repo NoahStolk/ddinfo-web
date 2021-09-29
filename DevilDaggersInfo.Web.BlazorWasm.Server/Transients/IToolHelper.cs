@@ -1,10 +1,10 @@
-using DevilDaggersInfo.Web.BlazorWasm.Shared.Dto.Public.Tools;
-
 namespace DevilDaggersInfo.Web.BlazorWasm.Server.Transients;
 
 public interface IToolHelper
 {
-	List<Tool> Tools { get; }
+	Dictionary<string, List<ChangelogEntry>> Changelogs { get; }
 
 	Tool GetToolByName(string name);
+
+	Tool GetToolFromEntity(ToolEntity tool);
 }

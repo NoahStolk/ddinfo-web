@@ -19,6 +19,7 @@ public class ApplicationDbContext : ApiAuthorizationDbContext<ApplicationUser>
 	public virtual DbSet<PlayerEntity> Players => Set<PlayerEntity>();
 	public virtual DbSet<SpawnsetEntity> Spawnsets => Set<SpawnsetEntity>();
 	public virtual DbSet<TitleEntity> Titles => Set<TitleEntity>();
+	public virtual DbSet<ToolEntity> Tools => Set<ToolEntity>();
 	public virtual DbSet<ToolStatisticEntity> ToolStatistics => Set<ToolStatisticEntity>();
 
 	public virtual DbSet<PlayerModEntity> PlayerMods => Set<PlayerModEntity>();

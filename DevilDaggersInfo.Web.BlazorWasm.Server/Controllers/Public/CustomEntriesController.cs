@@ -12,14 +12,12 @@ namespace DevilDaggersInfo.Web.BlazorWasm.Server.Controllers.Public;
 public class CustomEntriesController : ControllerBase
 {
 	private readonly ApplicationDbContext _dbContext;
-	private readonly IToolHelper _toolHelper;
 	private readonly DiscordLogger _discordLogger;
 	private readonly SpawnsetHashCache _spawnsetHashCache;
 
-	public CustomEntriesController(ApplicationDbContext dbContext, IToolHelper toolHelper, DiscordLogger discordLogger, SpawnsetHashCache spawnsetHashCache)
+	public CustomEntriesController(ApplicationDbContext dbContext, DiscordLogger discordLogger, SpawnsetHashCache spawnsetHashCache)
 	{
 		_dbContext = dbContext;
-		_toolHelper = toolHelper;
 		_discordLogger = discordLogger;
 		_spawnsetHashCache = spawnsetHashCache;
 	}
@@ -68,7 +66,7 @@ public class CustomEntriesController : ControllerBase
 	[NonAction]
 	public async Task<ActionResult<GetUploadSuccess>> ProcessUploadRequest(AddUploadRequest uploadRequest)
 	{
-		// Check if the submission actually came from DDCL.
+		// Check if the submission actually came from an allowed program.
 		string check = string.Join(
 			";",
 			uploadRequest.PlayerId,
@@ -118,11 +116,16 @@ public class CustomEntriesController : ControllerBase
 		}
 
 		// Check for required version.
-		Tool tool = _toolHelper.GetToolByName("DevilDaggersCustomLeaderboards");
+		string client = uploadRequest.Client.ToString();
+		string clientName = client is "ddstats-rust" or "DdstatsRust" or "1" ? "ddstats-rust" : "DevilDaggersCustomLeaderboards";
+		ToolEntity? tool = _dbContext.Tools.AsNoTracking().FirstOrDefault(t => t.Name == clientName);
+		if (tool == null)
+			throw new($"Could not find tool with name {clientName} in database.");
+
 		Version clientVersionParsed = Version.Parse(uploadRequest.ClientVersion);
-		if (clientVersionParsed < tool.VersionNumberRequired)
+		if (clientVersionParsed < Version.Parse(tool.RequiredVersionNumber))
 		{
-			const string errorMessage = "You are using an unsupported and outdated version of DDCL. Please update the program.";
+			string errorMessage = $"You are using an unsupported and outdated version of {clientName}. Please update the program.";
 			await TryLog(uploadRequest, null, errorMessage);
 			return new BadRequestObjectResult(new ProblemDetails { Title = errorMessage });
 		}
@@ -190,6 +193,7 @@ public class CustomEntriesController : ControllerBase
 				LevelUpTime4 = uploadRequest.LevelUpTime4,
 				SubmitDate = DateTime.UtcNow,
 				ClientVersion = uploadRequest.ClientVersion,
+				Client = uploadRequest.Client,
 				CustomLeaderboard = customLeaderboard,
 			};
 			_dbContext.CustomEntries.Add(newCustomEntry);
@@ -238,6 +242,7 @@ public class CustomEntriesController : ControllerBase
 		// We don't want replays to overwrite the real score (this spams messages and is incorrect).
 		// The amount of overflowing ticks varies between 0 and 3 (the longer the run the higher the amount).
 		// Simply reset the time to the original when all data is the same.
+		// TODO: Also apply this to ascending leaderboards.
 		const int timeThreshold = 1000; // 0.1 seconds (or 6 ticks).
 		const int gemThreshold = 2;
 		const int killThreshold = 5;
@@ -311,6 +316,7 @@ public class CustomEntriesController : ControllerBase
 		customEntry.LevelUpTime4 = uploadRequest.LevelUpTime4;
 		customEntry.SubmitDate = DateTime.UtcNow;
 		customEntry.ClientVersion = uploadRequest.ClientVersion;
+		customEntry.Client = uploadRequest.Client;
 
 		// Update the entry data.
 		CustomEntryDataEntity? customEntryData = _dbContext.CustomEntryData.FirstOrDefault(ced => ced.CustomEntryId == customEntry.Id);
@@ -443,12 +449,12 @@ public class CustomEntriesController : ControllerBase
 			string spawnsetIdentification = GetSpawnsetHashOrName(uploadRequest.SurvivalHashMd5, spawnsetName);
 
 			string replayString = uploadRequest.IsReplay ? " | `Replay`" : string.Empty;
-			string ddclInfo = $"(`{uploadRequest.ClientVersion}` | `{uploadRequest.OperatingSystem}` | `{uploadRequest.BuildMode}`{replayString})";
+			string requestInfo = $"(`{uploadRequest.ClientVersion}` | `{uploadRequest.OperatingSystem}` | `{uploadRequest.BuildMode}` | `{uploadRequest.Client}`{replayString})";
 
 			if (!string.IsNullOrEmpty(errorMessage))
-				await _discordLogger.TryLog(Channel.MonitoringCustomLeaderboard, $":{errorEmoteNameOverride ?? "warning"}: Upload failed for user `{uploadRequest.PlayerName}` (`{uploadRequest.PlayerId}`) for `{spawnsetIdentification}`. {ddclInfo}\n**{errorMessage}**");
+				await _discordLogger.TryLog(Channel.MonitoringCustomLeaderboard, $":{errorEmoteNameOverride ?? "warning"}: Upload failed for user `{uploadRequest.PlayerName}` (`{uploadRequest.PlayerId}`) for `{spawnsetIdentification}`. {requestInfo}\n**{errorMessage}**");
 			else
-				await _discordLogger.TryLog(Channel.MonitoringCustomLeaderboard, $":white_check_mark: `{uploadRequest.PlayerName}` just submitted a score of `{FormatTimeString(uploadRequest.Time)}` to `{spawnsetIdentification}`. {ddclInfo}");
+				await _discordLogger.TryLog(Channel.MonitoringCustomLeaderboard, $":white_check_mark: `{uploadRequest.PlayerName}` just submitted a score of `{FormatTimeString(uploadRequest.Time)}` to `{spawnsetIdentification}`. {requestInfo}");
 		}
 		catch
 		{

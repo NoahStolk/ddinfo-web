@@ -26,11 +26,13 @@ public class ToolsController : ControllerBase
 	[ProducesResponseType(StatusCodes.Status200OK)]
 	public ActionResult<List<GetToolObsolete>> GetToolsForTools(string? toolNameFilter = null)
 	{
-		IEnumerable<Tool> tools = _toolHelper.Tools;
+		IQueryable<ToolEntity> tools = _dbContext.Tools.AsNoTracking();
 		if (!string.IsNullOrEmpty(toolNameFilter))
 			tools = tools.Where(t => t.Name.Contains(toolNameFilter));
 
-		return tools
+		List<Tool> toolModels = tools.ToList().ConvertAll(t => _toolHelper.GetToolFromEntity(t));
+
+		return toolModels
 			.Select(t => new GetToolObsolete
 			{
 				Changelog = t.Changelog
@@ -64,7 +66,7 @@ public class ToolsController : ControllerBase
 	[ProducesResponseType(StatusCodes.Status404NotFound)]
 	public ActionResult<GetTool> GetTool([Required] string toolName)
 	{
-		Tool? tool = _toolHelper.Tools.Find(t => t.Name == toolName);
+		Tool? tool = _toolHelper.GetToolByName(toolName);
 		if (tool == null)
 			return NotFound();
 
@@ -86,7 +88,7 @@ public class ToolsController : ControllerBase
 	[ProducesResponseType(StatusCodes.Status404NotFound)]
 	public ActionResult GetToolFile([Required] string toolName)
 	{
-		Tool? tool = _toolHelper.Tools.Find(t => t.Name == toolName);
+		Tool? tool = _toolHelper.GetToolByName(toolName);
 		if (tool == null)
 			return NotFound();
 
