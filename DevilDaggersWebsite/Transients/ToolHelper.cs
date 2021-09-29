@@ -2,6 +2,7 @@
 using Microsoft.AspNetCore.Hosting;
 using Microsoft.EntityFrameworkCore;
 using Newtonsoft.Json;
+using System;
 using System.Collections.Generic;
 using System.IO;
 using System.Linq;
@@ -30,6 +31,9 @@ namespace DevilDaggersWebsite.Transients
 			Dto.Tool? tool = Tools.Find(t => t.Name == name);
 			if (tool == null)
 				throw new($"Could not find tool with name {name} in file system.");
+
+			tool.VersionNumber = Version.Parse(toolEntity.CurrentVersionNumber);
+			tool.VersionNumberRequired = Version.Parse(toolEntity.RequiredVersionNumber);
 
 			return tool;
 		}
