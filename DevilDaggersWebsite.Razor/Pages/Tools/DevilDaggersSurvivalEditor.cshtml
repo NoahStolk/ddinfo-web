@@ -52,7 +52,7 @@
 		<li>Run the executable (.exe file) inside the folder.</li>
 	</ol>
 
-	@await Html.PartialAsync("Partials/ToolSourcePartial", tool)
+	@await Html.PartialAsync("Partials/ToolSourcePartial", new KeyValuePair<string, List<Dto.ChangelogEntry>>(tool.Name, tool.Changelog.ToList()))
 </main>
 
 @section Styles {

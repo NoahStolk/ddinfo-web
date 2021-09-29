@@ -4,6 +4,7 @@ using DevilDaggersWebsite.Transients;
 using Microsoft.AspNetCore.Hosting;
 using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
+using Microsoft.EntityFrameworkCore;
 using Newtonsoft.Json;
 using System;
 using System.Collections.Generic;
@@ -35,10 +36,11 @@ namespace DevilDaggersWebsite.Api
 		[ProducesResponseType(StatusCodes.Status200OK)]
 		public ActionResult<List<Dto.Tool>> GetTools(string? toolNameFilter = null)
 		{
-			IEnumerable<Dto.Tool> tools = _toolHelper.Tools;
+			IQueryable<Entities.Tool> tools = _dbContext.Tools.AsNoTracking();
 			if (!string.IsNullOrEmpty(toolNameFilter))
 				tools = tools.Where(t => t.Name.Contains(toolNameFilter));
-			return tools.ToList();
+
+			return tools.ToList().ConvertAll(t => _toolHelper.GetToolFromEntity(t));
 		}
 
 		[HttpGet("{toolName}")]
@@ -46,11 +48,8 @@ namespace DevilDaggersWebsite.Api
 		[ProducesResponseType(StatusCodes.Status404NotFound)]
 		public ActionResult<Dto.Tool> GetTool(string toolName)
 		{
-			Dto.Tool? tool = _toolHelper.Tools.Find(t => t.Name == toolName);
-			if (tool == null)
-				return NotFound($"Tool '{toolName}' was not found.");
-
-			return tool;
+			Dto.Tool? tool = _toolHelper.GetToolByName(toolName);
+			return tool == null ? NotFound($"Tool '{toolName}' was not found.") : tool;
 		}
 
 		[HttpGet("{toolName}/file")]
@@ -59,7 +58,7 @@ namespace DevilDaggersWebsite.Api
 		[ProducesResponseType(StatusCodes.Status404NotFound)]
 		public ActionResult GetToolFile([Required] string toolName)
 		{
-			Dto.Tool? tool = _toolHelper.Tools.Find(t => t.Name == toolName);
+			Dto.Tool? tool = _toolHelper.GetToolByName(toolName);
 			if (tool == null)
 				return new NotFoundObjectResult(new ProblemDetails { Title = $"Tool '{toolName}' was not found." });
 

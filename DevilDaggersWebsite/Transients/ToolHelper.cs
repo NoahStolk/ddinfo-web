@@ -17,10 +17,10 @@ namespace DevilDaggersWebsite.Transients
 		{
 			_dbContext = dbContext;
 
-			Tools = JsonConvert.DeserializeObject<List<Dto.Tool>?>(File.ReadAllText(Path.Combine(environment.WebRootPath, "tools", "Tools.json"))) ?? throw new("Could not deserialize tools JSON.");
+			Changelogs = JsonConvert.DeserializeObject<Dictionary<string, List<Dto.ChangelogEntry>>?>(File.ReadAllText(Path.Combine(environment.WebRootPath, "tools", "Changelogs.json"))) ?? throw new("Could not deserialize changelogs.json.");
 		}
 
-		public List<Dto.Tool> Tools { get; } = new();
+		public Dictionary<string, List<Dto.ChangelogEntry>> Changelogs { get; } = new();
 
 		public Dto.Tool GetToolByName(string name)
 		{
@@ -28,24 +28,16 @@ namespace DevilDaggersWebsite.Transients
 			if (toolEntity == null)
 				throw new($"Could not find tool with name {name} in database.");
 
-			Dto.Tool? tool = Tools.Find(t => t.Name == name);
-			if (tool == null)
-			{
-				return new Dto.Tool
-				{
-					VersionNumber = Version.Parse(toolEntity.CurrentVersionNumber),
-					VersionNumberRequired = Version.Parse(toolEntity.RequiredVersionNumber),
-					Changelog = new List<Dto.ChangelogEntry>(),
-					DisplayName = toolEntity.DisplayName,
-					Name = toolEntity.Name,
-				};
-			}
-
-			tool.DisplayName = toolEntity.DisplayName;
-			tool.VersionNumber = Version.Parse(toolEntity.CurrentVersionNumber);
-			tool.VersionNumberRequired = Version.Parse(toolEntity.RequiredVersionNumber);
-
-			return tool;
+			return GetToolFromEntity(toolEntity);
 		}
+
+		public Dto.Tool GetToolFromEntity(Tool tool) => new()
+		{
+			Changelog = Changelogs.TryGetValue(tool.Name, out List<Dto.ChangelogEntry>? changelog) ? changelog : new List<Dto.ChangelogEntry>(),
+			DisplayName = tool.DisplayName,
+			Name = tool.Name,
+			VersionNumber = Version.Parse(tool.CurrentVersionNumber),
+			VersionNumberRequired = Version.Parse(tool.RequiredVersionNumber),
+		};
 	}
 }

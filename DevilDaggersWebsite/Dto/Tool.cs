@@ -1,7 +1,5 @@
-﻿using Microsoft.AspNetCore.Html;
-using System;
+﻿using System;
 using System.Collections.Generic;
-using System.Text;
 
 namespace DevilDaggersWebsite.Dto
 {
@@ -22,19 +20,5 @@ namespace DevilDaggersWebsite.Dto
 		public Version VersionNumberRequired { get; set; } = null!;
 
 		public IReadOnlyList<ChangelogEntry> Changelog { get; init; } = null!;
-
-		public HtmlString ToChangelogHtmlString()
-		{
-			StringBuilder sb = new();
-			foreach (ChangelogEntry entry in Changelog)
-			{
-				sb.Append("<h3>").Append(entry.VersionNumber).Append(" - ").AppendFormat("{0:MMMM dd, yyyy}", entry.Date).Append("</h3><ul>");
-				foreach (Change change in entry.Changes)
-					sb.Append(change.ToHtmlString());
-				sb.Append("</ul>");
-			}
-
-			return new(sb.ToString());
-		}
 	}
 }

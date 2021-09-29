@@ -1,11 +1,28 @@
-﻿@model Tool
+﻿@model KeyValuePair<string, List<ChangelogEntry>>
 @using DevilDaggersCore.Utils
 @using DevilDaggersWebsite.Dto
+@using Microsoft.AspNetCore.Html
+@using System.Text
+@{
+	HtmlString GetHtmlString()
+	{
+		StringBuilder sb = new();
+		foreach (ChangelogEntry entry in Model.Value)
+		{
+			sb.Append("<h3>").Append(entry.VersionNumber).Append(" - ").AppendFormat("{0:MMMM dd, yyyy}", entry.Date).Append("</h3><ul>");
+			foreach (Change change in entry.Changes)
+				sb.Append(change.ToHtmlString());
+			sb.Append("</ul>");
+		}
+
+		return new(sb.ToString());
+	}
+}
 
 <h2>Source code</h2>
 <p>
-	The source code can be found on <a target="_blank" href="@UrlUtils.SourceCodeUrl(Model.Name)">GitHub</a>.
+	The source code can be found on <a target="_blank" href="@UrlUtils.SourceCodeUrl(Model.Key)">GitHub</a>.
 </p>
 
 <h2>Changelog</h2>
-@Model.ToChangelogHtmlString()
+@GetHtmlString()

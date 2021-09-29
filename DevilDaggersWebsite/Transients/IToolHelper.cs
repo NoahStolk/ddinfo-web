@@ -5,8 +5,10 @@ namespace DevilDaggersWebsite.Transients
 {
 	public interface IToolHelper
 	{
-		List<Tool> Tools { get; }
+		Dictionary<string, List<ChangelogEntry>> Changelogs { get; }
 
 		Tool GetToolByName(string name);
+
+		Tool GetToolFromEntity(Entities.Tool tool);
 	}
 }
