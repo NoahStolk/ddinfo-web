@@ -412,12 +412,12 @@ namespace DevilDaggersWebsite.Api
 				string spawnsetIdentification = GetSpawnsetHashOrName(uploadRequest.SurvivalHashMd5, spawnsetName);
 
 				string replayString = uploadRequest.IsReplay ? " | `Replay`" : string.Empty;
-				string ddclInfo = $"(`{uploadRequest.ClientVersion}` | `{uploadRequest.OperatingSystem}` | `{uploadRequest.BuildMode}`{replayString})";
+				string requestInfo = $"(`{uploadRequest.ClientVersion}` | `{uploadRequest.OperatingSystem}` | `{uploadRequest.BuildMode}` | `{uploadRequest.Client}`{replayString})";
 
 				if (!string.IsNullOrEmpty(errorMessage))
-					await _discordLogger.TryLog(Channel.MonitoringCustomLeaderboard, $":{errorEmoteNameOverride ?? "warning"}: Upload failed for user `{uploadRequest.PlayerName}` (`{uploadRequest.PlayerId}`) for `{spawnsetIdentification}`. {ddclInfo}\n**{errorMessage}**");
+					await _discordLogger.TryLog(Channel.MonitoringCustomLeaderboard, $":{errorEmoteNameOverride ?? "warning"}: Upload failed for user `{uploadRequest.PlayerName}` (`{uploadRequest.PlayerId}`) for `{spawnsetIdentification}`. {requestInfo}\n**{errorMessage}**");
 				else
-					await _discordLogger.TryLog(Channel.MonitoringCustomLeaderboard, $":white_check_mark: `{uploadRequest.PlayerName}` just submitted a score of `{uploadRequest.Time / 10000f:0.0000}` to `{spawnsetIdentification}`. {ddclInfo}");
+					await _discordLogger.TryLog(Channel.MonitoringCustomLeaderboard, $":white_check_mark: `{uploadRequest.PlayerName}` just submitted a score of `{uploadRequest.Time / 10000f:0.0000}` to `{spawnsetIdentification}`. {requestInfo}");
 			}
 			catch
 			{
