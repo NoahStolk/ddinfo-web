@@ -8,7 +8,6 @@ namespace DevilDaggersWebsite.Entities
 		[StringLength(64)]
 		public string Name { get; set; } = null!;
 
-		[Key]
 		[StringLength(64)]
 		public string DisplayName { get; set; } = null!;
 
