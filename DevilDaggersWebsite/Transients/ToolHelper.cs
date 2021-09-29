@@ -17,7 +17,7 @@ namespace DevilDaggersWebsite.Transients
 		{
 			_dbContext = dbContext;
 
-			Changelogs = JsonConvert.DeserializeObject<Dictionary<string, List<Dto.ChangelogEntry>>?>(File.ReadAllText(Path.Combine(environment.WebRootPath, "tools", "Changelogs.json"))) ?? throw new("Could not deserialize changelogs.json.");
+			Changelogs = JsonConvert.DeserializeObject<Dictionary<string, List<Dto.ChangelogEntry>>?>(File.ReadAllText(Path.Combine(environment.WebRootPath, "tools", "Changelogs.json"))) ?? throw new("Could not deserialize Changelogs.json.");
 		}
 
 		public Dictionary<string, List<Dto.ChangelogEntry>> Changelogs { get; } = new();

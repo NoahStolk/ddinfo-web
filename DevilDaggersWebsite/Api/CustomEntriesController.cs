@@ -112,7 +112,7 @@ namespace DevilDaggersWebsite.Api
 			Version clientVersionParsed = Version.Parse(uploadRequest.ClientVersion);
 			if (clientVersionParsed < Version.Parse(tool.RequiredVersionNumber))
 			{
-				const string errorMessage = "You are using an unsupported and outdated version of DDCL. Please update the program.";
+				string errorMessage = $"You are using an unsupported and outdated version of {clientName}. Please update the program.";
 				await TryLog(uploadRequest, null, errorMessage);
 				return new BadRequestObjectResult(new ProblemDetails { Title = errorMessage });
 			}
