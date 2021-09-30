@@ -67,7 +67,7 @@ public class CustomEntriesController : ControllerBase
 	public async Task<ActionResult<GetUploadSuccess>> ProcessUploadRequest(AddUploadRequest uploadRequest)
 	{
 		// Check if the submission actually came from an allowed program.
-		string check = string.Join(
+		string expected = string.Join(
 			";",
 			uploadRequest.PlayerId,
 			uploadRequest.Time,
@@ -85,9 +85,11 @@ public class CustomEntriesController : ControllerBase
 			uploadRequest.IsReplay ? 1 : 0,
 			uploadRequest.SurvivalHashMd5.ByteArrayToHexString(),
 			string.Join(",", new int[3] { uploadRequest.LevelUpTime2, uploadRequest.LevelUpTime3, uploadRequest.LevelUpTime4 }));
-		if (await DecryptValidation(uploadRequest.Validation) != check)
+
+		string actual = await DecryptValidation(uploadRequest.Validation);
+		if (actual != expected)
 		{
-			const string errorMessage = "Invalid submission.";
+			string errorMessage = $"Invalid submission for {uploadRequest.Validation}.\nExpected: {expected}\nActual:   {actual}";
 			await TryLog(uploadRequest, null, errorMessage, "rotating_light");
 			return new BadRequestObjectResult(new ProblemDetails { Title = errorMessage });
 		}
