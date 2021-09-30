@@ -72,9 +72,10 @@ namespace DevilDaggersWebsite.Api
 				uploadRequest.IsReplay ? 1 : 0,
 				uploadRequest.SurvivalHashMd5.ByteArrayToHexString(),
 				string.Join(",", new int[3] { uploadRequest.LevelUpTime2, uploadRequest.LevelUpTime3, uploadRequest.LevelUpTime4 }));
-			if (await DecryptValidation(uploadRequest.Validation) != check)
+			string result = await DecryptValidation(uploadRequest.Validation);
+			if (result != check)
 			{
-				const string errorMessage = "Invalid submission.";
+				string errorMessage = $"Invalid submission for {uploadRequest.Validation}.\nExpected: {check}\nActual: {result}";
 				await TryLog(uploadRequest, null, errorMessage, "rotating_light");
 				return new BadRequestObjectResult(new ProblemDetails { Title = errorMessage });
 			}
