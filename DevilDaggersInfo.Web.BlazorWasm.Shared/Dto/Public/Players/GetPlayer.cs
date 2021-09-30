@@ -14,19 +14,5 @@ public class GetPlayer : IGetDto<int>
 
 	public string? CountryCode { get; init; }
 
-	public int? Dpi { get; init; }
-
-	public float? InGameSens { get; init; }
-
-	public int? Fov { get; init; }
-
-	public bool? IsRightHanded { get; init; }
-
-	public bool? HasFlashHandEnabled { get; init; }
-
-	public float? Gamma { get; init; }
-
-	public bool? UsesLegacyAudio { get; init; }
-
-	public float? Edpi => Dpi * InGameSens;
+	public GetPlayerSettings? Settings { get; init; }
 }
