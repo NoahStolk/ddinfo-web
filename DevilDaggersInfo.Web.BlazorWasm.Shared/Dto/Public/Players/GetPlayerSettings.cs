@@ -15,4 +15,7 @@ public class GetPlayerSettings
 	public float? Gamma { get; init; }
 
 	public bool? UsesLegacyAudio { get; init; }
+
+	// TODO: Json ignore?
+	public float? Edpi => Dpi * InGameSens;
 }
