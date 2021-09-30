@@ -35,7 +35,7 @@ public class PlayersController : ControllerBase
 	[ProducesResponseType(StatusCodes.Status200OK)]
 	[ProducesResponseType(StatusCodes.Status400BadRequest)]
 	[ProducesResponseType(StatusCodes.Status404NotFound)]
-	public ActionResult<GetPlayer> GetPlayer([Required] int id)
+	public ActionResult<GetPlayer> GetPlayerById([Required] int id)
 	{
 		PlayerEntity? player = _dbContext.Players
 			.AsNoTracking()
