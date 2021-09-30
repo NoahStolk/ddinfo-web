@@ -24,18 +24,19 @@ public static class PlayerConverters
 		Titles = titles,
 	};
 
-	public static GetPlayerForSettings ToGetPlayerForSettings(this PlayerEntity player, List<int> donatorIds, List<PlayerTitleEntity> playerTitles) => new()
+	public static GetPlayerForSettings ToGetPlayerForSettings(this PlayerEntity player) => new()
 	{
-		Id = player.Id,
-		IsPublicDonator = !player.HideDonations && donatorIds.Any(d => d == player.Id),
-		Titles = playerTitles.Where(pt => pt.PlayerId == player.Id).Select(pt => pt.Title.Name).ToList(),
 		CountryCode = player.CountryCode,
-		Dpi = player.Dpi,
-		Fov = player.Fov,
-		Gamma = player.Gamma,
-		HasFlashHandEnabled = player.HasFlashHandEnabled,
-		InGameSens = player.InGameSens,
-		IsRightHanded = player.IsRightHanded,
-		UsesLegacyAudio = player.UsesLegacyAudio,
+		Id = player.Id,
+		Settings = new()
+		{
+			Dpi = player.Dpi,
+			Fov = player.Fov,
+			Gamma = player.Gamma,
+			UsesFlashHand = player.HasFlashHandEnabled,
+			InGameSens = player.InGameSens,
+			IsRightHanded = player.IsRightHanded,
+			UsesLegacyAudio = player.UsesLegacyAudio,
+		},
 	};
 }

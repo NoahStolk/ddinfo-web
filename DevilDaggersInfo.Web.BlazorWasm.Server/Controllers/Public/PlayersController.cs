@@ -20,6 +20,8 @@ public class PlayersController : ControllerBase
 	{
 		return _dbContext.Players
 			.AsNoTracking()
+
+			// TODO: Check if this can be combined without querying entire entity.
 			.Select(p => new { p.Id, p.BanDescription, p.IsBanned, p.CountryCode })
 			.Select(p => new GetPlayerForLeaderboard
 			{
@@ -71,21 +73,10 @@ public class PlayersController : ControllerBase
 	{
 		List<PlayerEntity> players = _dbContext.Players
 			.AsNoTracking()
-			.Where(p => !p.IsBanned && !p.HideSettings && (p.Dpi.HasValue || p.InGameSens.HasValue || p.Fov.HasValue || p.IsRightHanded.HasValue || p.HasFlashHandEnabled.HasValue || p.Gamma.HasValue || p.UsesLegacyAudio.HasValue))
+			.Where(p => !p.IsBanned && !p.HideSettings)
 			.ToList();
 
-		List<int> donatorIds = _dbContext.Donations
-			.AsNoTracking()
-			.Select(d => new { d.PlayerId, d.IsRefunded, d.ConvertedEuroCentsReceived })
-			.Where(d => !d.IsRefunded && d.ConvertedEuroCentsReceived > 0)
-			.Select(d => d.PlayerId)
-			.ToList();
-
-		List<PlayerTitleEntity> playerTitles = _dbContext.PlayerTitles
-			.AsNoTracking()
-			.Include(pt => pt.Title)
-			.ToList();
-
-		return players.ConvertAll(p => p.ToGetPlayerForSettings(donatorIds, playerTitles));
+		// Note; cannot evaluate HasSettings() against database (IQueryable).
+		return players.Where(p => p.HasSettings()).Select(p => p.ToGetPlayerForSettings()).ToList();
 	}
 }

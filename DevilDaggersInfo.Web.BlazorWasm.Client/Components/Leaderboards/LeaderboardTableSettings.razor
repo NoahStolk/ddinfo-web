@@ -38,14 +38,14 @@
 					<EntryFlag CountryCode="@player.CountryCode" />
 					<EntryUsername DaggerCssClass="@daggerCssClass" Id="entry.Id" Name="@entry.Username" />
 					<div class="text-right @daggerCssClass">@entry.Time.ToString(FormatUtils.TimeFormat)</div>
-					<div class="text-right hidden md:block">@player.Edpi?.ToString(FormatUtils.InGameSensFormat)</div>
-					<div class="text-right hidden md:block">@player.Dpi</div>
-					<div class="text-right hidden md:block">@player.InGameSens?.ToString(FormatUtils.InGameSensFormat)</div>
-					<div class="text-right hidden lg:block">@player.Fov</div>
-					<div class="text-left hidden xl:block">@(player.IsRightHanded.HasValue ? player.IsRightHanded.Value ? "Right" : "Left" : string.Empty)</div>
-					<div class="text-left hidden xl:block">@(player.HasFlashHandEnabled.HasValue ? player.HasFlashHandEnabled.Value ? "On" : "Off" : string.Empty)</div>
-					<div class="text-right hidden xl:block">@player.Gamma?.ToString(FormatUtils.GammaFormat)</div>
-					<div class="text-left hidden xl:block">@(player.UsesLegacyAudio.HasValue ? player.UsesLegacyAudio.Value ? "On" : "Off" : string.Empty)</div>
+					<div class="text-right hidden md:block">@player.Settings.Edpi?.ToString(FormatUtils.InGameSensFormat)</div>
+					<div class="text-right hidden md:block">@player.Settings.Dpi</div>
+					<div class="text-right hidden md:block">@player.Settings.InGameSens?.ToString(FormatUtils.InGameSensFormat)</div>
+					<div class="text-right hidden lg:block">@player.Settings.Fov</div>
+					<div class="text-left hidden xl:block">@(player.Settings.IsRightHanded.HasValue ? player.Settings.IsRightHanded.Value ? "Right" : "Left" : string.Empty)</div>
+					<div class="text-left hidden xl:block">@(player.Settings.UsesFlashHand.HasValue ? player.Settings.UsesFlashHand.Value ? "On" : "Off" : string.Empty)</div>
+					<div class="text-right hidden xl:block">@player.Settings.Gamma?.ToString(FormatUtils.GammaFormat)</div>
+					<div class="text-left hidden xl:block">@(player.Settings.UsesLegacyAudio.HasValue ? player.Settings.UsesLegacyAudio.Value ? "On" : "Off" : string.Empty)</div>
 				</div>
 			}
 		}
@@ -79,14 +79,14 @@
 			LeaderboardSorting.Flag => Entries.OrderBy(e => Players?.Find(p => p.Id == e.Id)?.CountryCode ?? string.Empty, _ascending).ToList(),
 			LeaderboardSorting.Player => Entries.OrderBy(e => e.Username, _ascending).ToList(),
 			LeaderboardSorting.Time => Entries.OrderBy(e => e.Time, _ascending).ToList(),
-			LeaderboardSorting.Edpi => Entries.OrderBy(e => Players?.Find(p => p.Id == e.Id)?.Edpi ?? 0, _ascending).ToList(),
-			LeaderboardSorting.Dpi => Entries.OrderBy(e => Players?.Find(p => p.Id == e.Id)?.Dpi ?? 0, _ascending).ToList(),
-			LeaderboardSorting.InGameSens => Entries.OrderBy(e => Players?.Find(p => p.Id == e.Id)?.InGameSens ?? 0, _ascending).ToList(),
-			LeaderboardSorting.Fov => Entries.OrderBy(e => Players?.Find(p => p.Id == e.Id)?.Fov ?? 0, _ascending).ToList(),
-			LeaderboardSorting.IsRightHanded => Entries.OrderBy(e => Players?.Find(p => p.Id == e.Id)?.IsRightHanded, _ascending).ToList(),
-			LeaderboardSorting.HasFlashHandEnabled => Entries.OrderBy(e => Players?.Find(p => p.Id == e.Id)?.HasFlashHandEnabled, _ascending).ToList(),
-			LeaderboardSorting.Gamma => Entries.OrderBy(e => Players?.Find(p => p.Id == e.Id)?.Gamma ?? 0, _ascending).ToList(),
-			LeaderboardSorting.UsesLegacyAudio => Entries.OrderBy(e => Players?.Find(p => p.Id == e.Id)?.UsesLegacyAudio, _ascending).ToList(),
+			LeaderboardSorting.Edpi => Entries.OrderBy(e => Players?.Find(p => p.Id == e.Id)?.Settings.Edpi ?? 0, _ascending).ToList(),
+			LeaderboardSorting.Dpi => Entries.OrderBy(e => Players?.Find(p => p.Id == e.Id)?.Settings.Dpi ?? 0, _ascending).ToList(),
+			LeaderboardSorting.InGameSens => Entries.OrderBy(e => Players?.Find(p => p.Id == e.Id)?.Settings.InGameSens ?? 0, _ascending).ToList(),
+			LeaderboardSorting.Fov => Entries.OrderBy(e => Players?.Find(p => p.Id == e.Id)?.Settings.Fov ?? 0, _ascending).ToList(),
+			LeaderboardSorting.IsRightHanded => Entries.OrderBy(e => Players?.Find(p => p.Id == e.Id)?.Settings.IsRightHanded, _ascending).ToList(),
+			LeaderboardSorting.HasFlashHandEnabled => Entries.OrderBy(e => Players?.Find(p => p.Id == e.Id)?.Settings.UsesFlashHand, _ascending).ToList(),
+			LeaderboardSorting.Gamma => Entries.OrderBy(e => Players?.Find(p => p.Id == e.Id)?.Settings.Gamma ?? 0, _ascending).ToList(),
+			LeaderboardSorting.UsesLegacyAudio => Entries.OrderBy(e => Players?.Find(p => p.Id == e.Id)?.Settings.UsesLegacyAudio, _ascending).ToList(),
 			_ => Entries.OrderBy(e => e.Rank, _ascending).ToList(),
 		};
 	}
