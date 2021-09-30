@@ -1,9 +1,9 @@
 @using System.Globalization
 
-<Select @onchange="UpdateDay" class="bg-gray-0b transition-colors duration-100 h-8 py-1 rounded text-color-text">
+<Select @onchange="@((e) => UpdateComponent(e, (dp) => dp._date.Day = ToInt(e)))" class="bg-gray-0b transition-colors duration-100 h-8 py-1 rounded text-color-text">
 	@for (int i = 1; i <= 31; i++)
 	{
-		if (i == Day)
+		if (i == _date.Day)
 		{
 			<option value="@i" selected>@i</option>
 		}
@@ -13,10 +13,10 @@
 		}
 	}
 </Select>
-<Select @onchange="UpdateMonth" class="bg-gray-0b transition-colors duration-100 h-8 py-1 rounded text-color-text">
+<Select @onchange="@((e) => UpdateComponent(e, (dp) => dp._date.Month = ToInt(e)))" class="bg-gray-0b transition-colors duration-100 h-8 py-1 rounded text-color-text">
 	@for (int i = 1; i <= 12; i++)
 	{
-		if (i == Month)
+		if (i == _date.Month)
 		{
 			<option value="@i" selected>@_monthNames[i - 1]</option>
 		}
@@ -26,10 +26,10 @@
 		}
 	}
 </Select>
-<Select @onchange="UpdateYear" class="bg-gray-0b transition-colors duration-100 h-8 py-1 rounded text-color-text">
-	@for (int i = _minYear; i <= _maxYear; i++)
+<Select @onchange="@((e) => UpdateComponent(e, (dp) => dp._date.Year = ToInt(e)))" class="bg-gray-0b transition-colors duration-100 h-8 py-1 rounded text-color-text">
+	@for (int i = Date.MinYear; i <= Date.MaxYear; i++)
 	{
-		if (i == Year)
+		if (i == _date.Year)
 		{
 			<option value="@i" selected>@i</option>
 		}
@@ -41,48 +41,16 @@
 </Select>
 
 @code {
-	private static readonly int _minYear = 2015;
-	private static readonly int _maxYear = DateTime.UtcNow.Year;
 	private static readonly string[] _monthNames = CultureInfo.InvariantCulture.DateTimeFormat.MonthNames.Take(12).ToArray();
-
-	public int Day { get; set; }
-	public int Month { get; set; }
-	public int Year { get; set; }
 
 	[Parameter, EditorRequired] public EventCallback<DateTime> DateSelected { get; set; }
 
-	protected override void OnInitialized()
-	{
-		Day = DateTime.UtcNow.Day;
-		Month = DateTime.UtcNow.Month;
-		Year = DateTime.UtcNow.Year;
-	}
+	private Date _date = new();
 
-	public Task UpdateDay(ChangeEventArgs e)
+	public async Task UpdateComponent(ChangeEventArgs e, Action<DatePicker> action)
 	{
-		Day = ToInt(e);
-		return UpdateDate();
-	}
-
-	public Task UpdateMonth(ChangeEventArgs e)
-	{
-		Month = ToInt(e);
-		return UpdateDate();
-	}
-
-	public Task UpdateYear(ChangeEventArgs e)
-	{
-		Year = ToInt(e);
-		return UpdateDate();
-	}
-
-	private Task UpdateDate()
-	{
-		Year = Math.Clamp(Year, 2015, DateTime.UtcNow.Year);
-		Month = Math.Clamp(Month, 1, 12);
-		Day = Math.Clamp(Day, 1, DateTime.DaysInMonth(Year, Month));
-		DateTime dateTime = new(Year, Month, Day);
-		return DateSelected.InvokeAsync(dateTime);
+		action.Invoke(this);
+		await DateSelected.InvokeAsync(_date.ToDateTime());
 	}
 
 	private int ToInt(ChangeEventArgs e)
@@ -94,5 +62,31 @@
 			return result;
 
 		return 0;
+	}
+
+	private struct Date
+	{
+		public static readonly int MinYear = 2015;
+		public static readonly int MaxYear = DateTime.UtcNow.Year;
+
+		public int Day { get; set; }
+		public int Month { get; set; }
+		public int Year { get; set; }
+
+		public Date()
+		{
+			DateTime now = DateTime.UtcNow;
+			Day = now.Day;
+			Month = now.Month;
+			Year = now.Year;
+		}
+
+		public DateTime ToDateTime()
+		{
+			Year = Math.Clamp(Year, MinYear, MaxYear);
+			Month = Math.Clamp(Month, 1, 12);
+			Day = Math.Clamp(Day, 1, DateTime.DaysInMonth(Year, Month));
+			return new(Year, Month, Day);
+		}
 	}
 }
