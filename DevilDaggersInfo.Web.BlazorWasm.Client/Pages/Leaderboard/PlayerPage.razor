@@ -20,7 +20,7 @@ else
 	<Heading Level=2>Personal Best</Heading>
 	<div class="grid gap-2 grid-cols-2">
 		<div>Time</div>
-		<div>@GetEntry.Time</div>
+		<div>@GetEntry.Time.ToString(FormatUtils.TimeFormat)</div>
 		<div>Kills</div>
 		<div>@GetEntry.Kills.ToString(FormatUtils.LeaderboardIntFormat)</div>
 		<div>Gems</div>
@@ -38,7 +38,7 @@ else
 	<Heading Level=2>Total Statistics</Heading>
 	<div class="grid gap-2 grid-cols-2">
 		<div>Total time</div>
-		<div>@GetEntry.TimeTotal</div>
+		<div>@GetEntry.TimeTotal.ToString(FormatUtils.TimeFormat)</div>
 		<div>Total kills</div>
 		<div>@GetEntry.KillsTotal.ToString(FormatUtils.LeaderboardIntFormat)</div>
 		<div>Total gems</div>
@@ -60,7 +60,7 @@ else
 		<Heading Level=2>Average Statistics</Heading>
 		<div class="grid gap-2 grid-cols-2">
 			<div>Average time</div>
-			<div>@(GetEntry.TimeTotal / deathsAsFloat)</div>
+			<div>@((GetEntry.TimeTotal / deathsAsFloat).ToString(FormatUtils.TimeFormat))</div>
 			<div>Average kills</div>
 			<div>@((GetEntry.KillsTotal / deathsAsFloat).ToString(FormatUtils.LeaderboardIntAverageFormat))</div>
 			<div>Average gems</div>
@@ -85,24 +85,28 @@ else
 
 		@if (GetPlayer.Settings != null)
 		{
+			bool? rightHand = GetPlayer.Settings.IsRightHanded;
+			bool? flashHand = GetPlayer.Settings.UsesFlashHand;
+			bool? legacyAudio = GetPlayer.Settings.UsesLegacyAudio;
+
 			<Heading Level=2>Settings</Heading>
 			<div class="grid gap-2 grid-cols-2">
 				<div>eDPI</div>
-				<div>@GetPlayer.Settings.Edpi</div>
+				<div>@(GetPlayer.Settings.Edpi?.ToString(FormatUtils.InGameSensFormat) ?? "N/A")</div>
 				<div>DPI</div>
-				<div>@GetPlayer.Settings.Dpi</div>
+				<div>@(GetPlayer.Settings.Dpi?.ToString() ?? "N/A")</div>
 				<div>In-game sens</div>
-				<div>@GetPlayer.Settings.InGameSens</div>
+				<div>@(GetPlayer.Settings.InGameSens?.ToString(FormatUtils.InGameSensFormat) ?? "N/A")</div>
 				<div>FOV</div>
-				<div>@GetPlayer.Settings.Fov</div>
+				<div>@(GetPlayer.Settings.Fov?.ToString() ?? "N/A")</div>
 				<div>Gamma</div>
-				<div>@GetPlayer.Settings.Gamma</div>
+				<div>@(GetPlayer.Settings.Gamma?.ToString(FormatUtils.GammaFormat) ?? "N/A")</div>
 				<div>Hand orientation</div>
-				<div>@GetPlayer.Settings.IsRightHanded</div>
+				<div>@(rightHand.HasValue ? rightHand.Value ? "Right" : "Left" : "N/A")</div>
 				<div>Hand flash</div>
-				<div>@GetPlayer.Settings.UsesFlashHand</div>
+				<div>@(flashHand.HasValue ? flashHand.Value ? "On" : "Off" : "N/A")</div>
 				<div>Legacy audio</div>
-				<div>@GetPlayer.Settings.UsesLegacyAudio</div>
+				<div>@(legacyAudio.HasValue ? legacyAudio.Value ? "On" : "Off" : "N/A")</div>
 			</div>
 		}
 	}
