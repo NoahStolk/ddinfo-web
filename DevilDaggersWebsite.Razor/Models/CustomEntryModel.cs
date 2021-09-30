@@ -57,12 +57,21 @@ namespace DevilDaggersWebsite.Razor.Models
 			LevelUpTime2 = customEntry.LevelUpTime2 == 0 ? RazorUtils.NAString : new(customEntry.LevelUpTime2.FormatTimeInteger());
 			LevelUpTime3 = customEntry.LevelUpTime3 == 0 ? RazorUtils.NAString : new(customEntry.LevelUpTime3.FormatTimeInteger());
 			LevelUpTime4 = customEntry.LevelUpTime4 == 0 ? RazorUtils.NAString : new(customEntry.LevelUpTime4.FormatTimeInteger());
+
 			bool v31 = false;
 			bool homingEaten = false;
-			if (Version.TryParse(customEntry.ClientVersion, out Version? version) && version != null)
+			if (customEntry.Client == CustomLeaderboardsClient.DevilDaggersCustomLeaderboards)
 			{
-				v31 = version > new Version(0, 10, 4, 0);
-				homingEaten = version >= new Version(0, 14, 5, 0);
+				if (Version.TryParse(customEntry.ClientVersion, out Version? version) && version != null)
+				{
+					v31 = version > new Version(0, 10, 4, 0);
+					homingEaten = version >= new Version(0, 14, 5, 0);
+				}
+			}
+			else
+			{
+				v31 = true;
+				homingEaten = true;
 			}
 
 			GemsDespawned = v31 ? new(customEntry.GemsDespawned.ToString(FormatUtils.LeaderboardIntFormat)) : RazorUtils.NAString;
