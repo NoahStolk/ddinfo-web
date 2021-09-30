@@ -173,6 +173,8 @@ public sealed class LeaderboardClient
 		entry.Username = Encoding.UTF8.GetString(br.ReadBytes(usernameLength));
 		entry.Rank = br.ReadInt32();
 		entry.Id = br.ReadInt32();
+
+		br.BaseStream.Seek(4, SeekOrigin.Current);
 		entry.Time = br.ReadInt32();
 		entry.Kills = br.ReadInt32();
 		entry.DaggersFired = br.ReadInt32();
