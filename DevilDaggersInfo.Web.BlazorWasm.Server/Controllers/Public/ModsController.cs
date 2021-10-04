@@ -20,7 +20,7 @@ public class ModsController : ControllerBase
 		_modArchiveCache = modArchiveCache;
 	}
 
-	[HttpGet("overview")] // Can't use default route because already in use by DDAE.
+	[HttpGet]
 	[ProducesResponseType(StatusCodes.Status200OK)]
 	[ProducesResponseType(StatusCodes.Status400BadRequest)]
 	public ActionResult<Page<GetModOverview>> GetMods(
@@ -93,9 +93,9 @@ public class ModsController : ControllerBase
 		};
 	}
 
-	[HttpGet]
+	[HttpGet("ddae")]
 	[ProducesResponseType(StatusCodes.Status200OK)]
-	public List<GetModDdae> GetPublicModsForDdae(string? authorFilter = null, string? nameFilter = null, bool? isHostedFilter = null)
+	public List<GetModDdae> GetModsForDdae(string? authorFilter = null, string? nameFilter = null, bool? isHostedFilter = null)
 	{
 		IEnumerable<ModEntity> modsQuery = _dbContext.Mods
 			.AsNoTracking()

@@ -21,7 +21,7 @@ public class SpawnsetsController : ControllerBase
 		_spawnsetSummaryCache = spawnsetSummaryCache;
 	}
 
-	[HttpGet("overview")] // Can't use default route because already in use by DDSE.
+	[HttpGet]
 	[ProducesResponseType(StatusCodes.Status200OK)]
 	[ProducesResponseType(StatusCodes.Status400BadRequest)]
 	public ActionResult<Page<GetSpawnsetOverview>> GetSpawnsets(
@@ -95,7 +95,7 @@ public class SpawnsetsController : ControllerBase
 		};
 	}
 
-	[HttpGet]
+	[HttpGet("ddse")]
 	[ProducesResponseType(StatusCodes.Status200OK)]
 	public List<GetSpawnsetDdse> GetSpawnsetsForDdse(string? authorFilter = null, string? nameFilter = null)
 	{

@@ -13,7 +13,7 @@ public class AssetsController : ControllerBase
 		_fileSystemService = fileSystemService;
 	}
 
-	[HttpGet("info")]
+	[HttpGet("ddae/info")]
 	[ProducesResponseType(StatusCodes.Status200OK)]
 	public ActionResult<Dictionary<string, List<GetAssetInfo>>> GetAssetInfoForDdae()
 	{
