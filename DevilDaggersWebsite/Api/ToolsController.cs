@@ -85,7 +85,7 @@ namespace DevilDaggersWebsite.Api
 		public ActionResult<DdclSettings> GetDdclSettings()
 		{
 			Entities.Marker linux = _dbContext.Markers.FirstOrDefault(m => m.Name == "LinuxSteam") ?? throw new("LinuxSteam not found in database.");
-			Entities.Marker windows = _dbContext.Markers.FirstOrDefault(m => m.Name == "WindowsSteam") ?? throw new("LinuxSteam not found in database.");
+			Entities.Marker windows = _dbContext.Markers.FirstOrDefault(m => m.Name == "WindowsSteam") ?? throw new("WindowsSteam not found in database.");
 			return new DdclSettings { MarkerLinuxSteam = linux.Value, MarkerWindowsSteam = windows.Value };
 		}
 	}
