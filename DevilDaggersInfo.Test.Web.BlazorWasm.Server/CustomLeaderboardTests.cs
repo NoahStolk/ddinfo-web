@@ -1,8 +1,7 @@
-using DevilDaggersInfo.Test.Web.BlazorWasm.Server.Data;
-using DevilDaggersInfo.Test.Web.BlazorWasm.Server.Extensions;
 using DevilDaggersInfo.Web.BlazorWasm.Server.Controllers.Admin;
 using DevilDaggersInfo.Web.BlazorWasm.Shared.Dto;
 using DevilDaggersInfo.Web.BlazorWasm.Shared.Dto.Admin.CustomLeaderboards;
+using Microsoft.Extensions.Options;
 
 namespace DevilDaggersInfo.Test.Web.BlazorWasm.Server;
 

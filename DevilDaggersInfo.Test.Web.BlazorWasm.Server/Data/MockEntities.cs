@@ -1,5 +1,3 @@
-using DevilDaggersInfo.Test.Web.BlazorWasm.Server.Extensions;
-
 namespace DevilDaggersInfo.Test.Web.BlazorWasm.Server.Data;
 
 public class MockEntities
@@ -13,6 +11,7 @@ public class MockEntities
 
 		PropertyInfo[] properties = typeof(MockEntities).GetProperties();
 
+		MockDbSetTools = new Mock<DbSet<ToolEntity>>().SetUpDbSet(GetEntities<ToolEntity>());
 		MockDbSetPlayers = new Mock<DbSet<PlayerEntity>>().SetUpDbSet(GetEntities<PlayerEntity>());
 		MockDbSetSpawnsets = new Mock<DbSet<SpawnsetEntity>>().SetUpDbSet(GetEntities<SpawnsetEntity>());
 		MockDbSetCustomLeaderboards = new Mock<DbSet<CustomLeaderboardEntity>>().SetUpDbSet(GetEntities<CustomLeaderboardEntity>());
@@ -25,11 +24,18 @@ public class MockEntities
 			.ToArray();
 	}
 
+	public Mock<DbSet<ToolEntity>> MockDbSetTools { get; }
 	public Mock<DbSet<PlayerEntity>> MockDbSetPlayers { get; }
 	public Mock<DbSet<SpawnsetEntity>> MockDbSetSpawnsets { get; }
 	public Mock<DbSet<CustomLeaderboardEntity>> MockDbSetCustomLeaderboards { get; }
 	public Mock<DbSet<CustomEntryEntity>> MockDbSetCustomEntries { get; }
 	public Mock<DbSet<CustomEntryDataEntity>> MockDbSetCustomEntryData { get; }
+
+	public ToolEntity Ddcl { get; } = new()
+	{
+		Name = "DevilDaggersCustomLeaderboards",
+		RequiredVersionNumber = "1.2.0.0",
+	};
 
 	public PlayerEntity TestPlayer1 { get; } = new()
 	{

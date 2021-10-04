@@ -3,6 +3,7 @@ using DevilDaggersInfo.Web.BlazorWasm.Server.Caches.SpawnsetHashes;
 using DevilDaggersInfo.Web.BlazorWasm.Server.Controllers.Public;
 using DevilDaggersInfo.Web.BlazorWasm.Server.Enums;
 using DevilDaggersInfo.Web.BlazorWasm.Shared.Dto.Public.CustomEntries;
+using Microsoft.Extensions.Options;
 
 namespace DevilDaggersInfo.Test.Web.BlazorWasm.Server;
 
@@ -22,6 +23,7 @@ public class CustomEntryTests
 
 		DbContextOptionsBuilder<ApplicationDbContext> optionsBuilder = new();
 		_dbContext = new Mock<ApplicationDbContext>(optionsBuilder.Options, Options.Create(new OperationalStoreOptions()))
+			.SetUpDbSet(db => db.Tools, mockEntities.MockDbSetTools)
 			.SetUpDbSet(db => db.Players, mockEntities.MockDbSetPlayers)
 			.SetUpDbSet(db => db.Spawnsets, mockEntities.MockDbSetSpawnsets)
 			.SetUpDbSet(db => db.CustomLeaderboards, mockEntities.MockDbSetCustomLeaderboards)
@@ -31,21 +33,13 @@ public class CustomEntryTests
 		Mock<IWebHostEnvironment> mockEnvironment = new();
 		mockEnvironment.Setup(m => m.EnvironmentName).Returns(Environments.Development);
 
-		Mock<IToolHelper> toolHelper = new();
-		toolHelper.Setup(m => m.GetToolByName(It.IsAny<string>())).Returns(new Tool
-		{
-			Name = "DevilDaggersCustomLeaderboards",
-			VersionNumber = new(1, 0, 0, 0),
-			VersionNumberRequired = new(1, 0, 0, 0),
-		});
-
 		Mock<IFileSystemService> fileSystemService = new();
 		fileSystemService.Setup(m => m.GetPath(DataSubDirectory.Spawnsets)).Returns(@"C:\Users\NOAH\source\repos\DevilDaggersInfo\DevilDaggersInfo.Web.BlazorWasm.Server\Data\Spawnsets");
 
 		Mock<DiscordLogger> discordLogger = new(mockEnvironment.Object);
 		Mock<SpawnsetHashCache> spawnsetHashCache = new(fileSystemService.Object, discordLogger.Object);
 
-		_customEntriesController = new CustomEntriesController(_dbContext.Object, toolHelper.Object, discordLogger.Object, spawnsetHashCache.Object);
+		_customEntriesController = new CustomEntriesController(_dbContext.Object, discordLogger.Object, spawnsetHashCache.Object);
 
 		if (!SpawnsetBinary.TryParse(File.ReadAllBytes(Path.Combine(TestConstants.DataDirectory, "Spawnsets", "V3")), out _spawnsetBinary!))
 			Assert.Fail("Spawnset could not be parsed.");
@@ -193,7 +187,7 @@ public class CustomEntryTests
 		ProblemDetails? problemDetails = badRequest.Value as ProblemDetails;
 		Assert.IsNotNull(problemDetails);
 		Assert.IsNotNull(problemDetails.Title);
-		Assert.IsTrue(problemDetails.Title == "Invalid submission.");
+		Assert.IsTrue(problemDetails.Title.StartsWith("Invalid submission"));
 	}
 
 	private static string GetValidation(AddUploadRequest uploadRequest)
