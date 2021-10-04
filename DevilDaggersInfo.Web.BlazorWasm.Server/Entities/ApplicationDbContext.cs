@@ -15,6 +15,7 @@ public class ApplicationDbContext : ApiAuthorizationDbContext<ApplicationUser>
 	public virtual DbSet<CustomEntryDataEntity> CustomEntryData => Set<CustomEntryDataEntity>();
 	public virtual DbSet<CustomLeaderboardEntity> CustomLeaderboards => Set<CustomLeaderboardEntity>();
 	public virtual DbSet<DonationEntity> Donations => Set<DonationEntity>();
+	public virtual DbSet<MarkerEntity> Markers => Set<MarkerEntity>();
 	public virtual DbSet<ModEntity> Mods => Set<ModEntity>();
 	public virtual DbSet<PlayerEntity> Players => Set<PlayerEntity>();
 	public virtual DbSet<SpawnsetEntity> Spawnsets => Set<SpawnsetEntity>();
