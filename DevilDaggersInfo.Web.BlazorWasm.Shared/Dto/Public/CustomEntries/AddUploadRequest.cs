@@ -44,7 +44,7 @@ public class AddUploadRequest
 
 	public CustomLeaderboardsClient Client { get; init; }
 
-	public Enums.OperatingSystem OperatingSystem { get; init; }
+	public SupportedOperatingSystem OperatingSystem { get; init; }
 
 	public BuildMode BuildMode { get; init; }
 

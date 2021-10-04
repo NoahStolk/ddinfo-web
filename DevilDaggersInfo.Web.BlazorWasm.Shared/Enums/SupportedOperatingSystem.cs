@@ -1,6 +1,6 @@
 namespace DevilDaggersInfo.Web.BlazorWasm.Shared.Enums;
 
-public enum OperatingSystem
+public enum SupportedOperatingSystem
 {
 	None = 0,
 	Windows = 1,
