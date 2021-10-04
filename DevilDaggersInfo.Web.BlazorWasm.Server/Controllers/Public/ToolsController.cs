@@ -1,6 +1,5 @@
 using DevilDaggersInfo.Web.BlazorWasm.Server.Converters.Public;
 using DevilDaggersInfo.Web.BlazorWasm.Shared.Dto.Public.Tools;
-using DevilDaggersInfo.Web.BlazorWasm.Shared.Dto.Public.Tools.Obsolete;
 
 namespace DevilDaggersInfo.Web.BlazorWasm.Server.Controllers.Public;
 
@@ -17,47 +16,6 @@ public class ToolsController : ControllerBase
 		_fileSystemService = fileSystemService;
 		_dbContext = dbContext;
 		_toolHelper = toolHelper;
-	}
-
-	// This endpoint is still in use by DDSE/DDCL/DDAE.
-	// TODO: Remove this endpoint, and stop using Tool classes (which correspond to the Tools.json format) as DTOs.
-	[Obsolete($"Use {nameof(GetTool)} instead.")]
-	[HttpGet]
-	[ProducesResponseType(StatusCodes.Status200OK)]
-	public ActionResult<List<GetToolObsolete>> GetToolsForTools(string? toolNameFilter = null)
-	{
-		IQueryable<ToolEntity> tools = _dbContext.Tools.AsNoTracking();
-		if (!string.IsNullOrEmpty(toolNameFilter))
-			tools = tools.Where(t => t.Name.Contains(toolNameFilter));
-
-		List<Tool> toolModels = tools.ToList().ConvertAll(t => _toolHelper.GetToolFromEntity(t));
-
-		return toolModels
-			.Select(t => new GetToolObsolete
-			{
-				Changelog = t.Changelog
-					.Select(ce => new GetChangelogEntryObsolete
-					{
-						Changes = ce.Changes.Select(c => ToGetChange(c)).ToList(),
-						Date = ce.Date,
-						VersionNumber = ce.VersionNumber,
-					})
-					.ToList(),
-				DisplayName = t.DisplayName,
-				Name = t.Name,
-				VersionNumber = t.VersionNumber,
-				VersionNumberRequired = t.VersionNumberRequired,
-			})
-			.ToList();
-
-		static GetChangeObsolete ToGetChange(Change change)
-		{
-			return new GetChangeObsolete
-			{
-				Description = change.Description,
-				SubChanges = change.SubChanges?.Select(c => ToGetChange(c)).ToList(),
-			};
-		}
 	}
 
 	[HttpGet("{toolName}")]
@@ -105,13 +63,5 @@ public class ToolsController : ControllerBase
 		_dbContext.SaveChanges();
 
 		return File(IoFile.ReadAllBytes(path), MediaTypeNames.Application.Zip, $"{toolName}{tool.VersionNumber}.zip");
-	}
-
-	// TODO: Move to MemoryController.
-	[HttpGet("devildaggerscustomleaderboards/settings")]
-	[ProducesResponseType(StatusCodes.Status200OK)]
-	public ActionResult<GetDdclSettings> GetDdclSettingsForDdcl()
-	{
-		return JsonConvert.DeserializeObject<GetDdclSettings?>(IoFile.ReadAllText(Path.Combine(_fileSystemService.GetPath(DataSubDirectory.Tools), "DevilDaggersCustomLeaderboards", "Settings.json"))) ?? throw new("Could not deserialize DDCL settings JSON.");
 	}
 }
