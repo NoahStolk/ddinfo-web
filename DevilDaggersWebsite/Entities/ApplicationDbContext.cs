@@ -19,6 +19,7 @@ namespace DevilDaggersWebsite.Entities
 		public virtual DbSet<CustomEntryData> CustomEntryData => Set<CustomEntryData>();
 		public virtual DbSet<CustomLeaderboard> CustomLeaderboards => Set<CustomLeaderboard>();
 		public virtual DbSet<Donation> Donations => Set<Donation>();
+		public virtual DbSet<Marker> Markers => Set<Marker>();
 		public virtual DbSet<Player> Players => Set<Player>();
 		public virtual DbSet<SpawnsetFile> SpawnsetFiles => Set<SpawnsetFile>();
 		public virtual DbSet<Title> Titles => Set<Title>();

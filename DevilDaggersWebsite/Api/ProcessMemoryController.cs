@@ -1,11 +1,8 @@
-﻿using DevilDaggersWebsite.Dto;
+﻿using DevilDaggersWebsite.Entities;
 using DevilDaggersWebsite.Enumerators;
-using Microsoft.AspNetCore.Hosting;
 using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
-using Newtonsoft.Json;
-using System.IO;
-using Io = System.IO;
+using System.Linq;
 
 namespace DevilDaggersWebsite.Api
 {
@@ -13,30 +10,33 @@ namespace DevilDaggersWebsite.Api
 	[ApiController]
 	public class ProcessMemoryController : ControllerBase
 	{
-		private readonly IWebHostEnvironment _environment;
+		private readonly ApplicationDbContext _dbContext;
 
-		public ProcessMemoryController(IWebHostEnvironment environment)
+		public ProcessMemoryController(ApplicationDbContext dbContext)
 		{
-			_environment = environment;
+			_dbContext = dbContext;
 		}
 
 		[HttpGet("marker")]
 		[ProducesResponseType(StatusCodes.Status200OK)]
 		[ProducesResponseType(StatusCodes.Status400BadRequest)]
-		public ActionResult<Marker> GetMarker(OperatingSystem operatingSystem)
+		public ActionResult<Dto.Marker> GetMarker(OperatingSystem operatingSystem)
 		{
-			DdclSettings ddclSettings = JsonConvert.DeserializeObject<DdclSettings?>(Io.File.ReadAllText(Path.Combine(_environment.WebRootPath, "tools", "DevilDaggersCustomLeaderboards", "Settings.json"))) ?? throw new("Could not deserialize DDCL settings JSON.");
-			if (operatingSystem is OperatingSystem.Linux or OperatingSystem.Windows)
-				return new Marker { Value = GetMarker(operatingSystem, ddclSettings) };
-
-			return BadRequest($"Operating system '{operatingSystem}' is not supported.");
-
-			static long GetMarker(OperatingSystem operatingSystem, DdclSettings ddclSettings) => operatingSystem switch
+			string? name = operatingSystem switch
 			{
-				OperatingSystem.Linux => ddclSettings.MarkerLinuxSteam,
-				OperatingSystem.Windows => ddclSettings.MarkerWindowsSteam,
-				_ => 0,
+				OperatingSystem.Windows => "WindowsSteam",
+				OperatingSystem.Linux => "LinuxSteam",
+				_ => null,
 			};
+
+			if (name == null)
+				return BadRequest($"Operating system '{operatingSystem}' is not supported.");
+
+			Marker? marker = _dbContext.Markers.FirstOrDefault(m => m.Name == name);
+			if (marker == null)
+				throw new($"Marker key '{name}' was not found in database.");
+
+			return new Dto.Marker { Value = marker.Value };
 		}
 	}
 }
