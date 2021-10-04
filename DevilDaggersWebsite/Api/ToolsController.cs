@@ -79,7 +79,7 @@ namespace DevilDaggersWebsite.Api
 		}
 
 		[ApiExplorerSettings(IgnoreApi = true)]
-		[Obsolete("Use api/process-memory/marker instead. This is still in use by DDCL 1.2.0.0")]
+		[Obsolete("Use api/process-memory/marker instead. This is still in use by DDCL 1.2.0.0.")]
 		[HttpGet("devildaggerscustomleaderboards/settings")]
 		[ProducesResponseType(StatusCodes.Status200OK)]
 		public ActionResult<DdclSettings> GetDdclSettings()
