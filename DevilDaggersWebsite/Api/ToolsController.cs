@@ -84,7 +84,9 @@ namespace DevilDaggersWebsite.Api
 		[ProducesResponseType(StatusCodes.Status200OK)]
 		public ActionResult<DdclSettings> GetDdclSettings()
 		{
-			return JsonConvert.DeserializeObject<DdclSettings?>(Io.File.ReadAllText(Path.Combine(_environment.WebRootPath, "tools", "DevilDaggersCustomLeaderboards", "Settings.json"))) ?? throw new("Could not deserialize DDCL settings JSON.");
+			Entities.Marker linux = _dbContext.Markers.FirstOrDefault(m => m.Name == "LinuxSteam") ?? throw new("LinuxSteam not found in database.");
+			Entities.Marker windows = _dbContext.Markers.FirstOrDefault(m => m.Name == "WindowsSteam") ?? throw new("LinuxSteam not found in database.");
+			return new DdclSettings { MarkerLinuxSteam = linux.Value, MarkerWindowsSteam = windows.Value };
 		}
 	}
 }
