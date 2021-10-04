@@ -31,7 +31,7 @@ namespace DevilDaggersWebsite.Api
 			_toolHelper = toolHelper;
 		}
 
-		[Obsolete("Use api/tools/{toolName} instead.")]
+		[Obsolete("Use api/tools/{toolName} instead. This is still in use by DDSE 2.34.0.0, DDCL 1.2.0.0, and DDAE 1.0.0.0.")]
 		[HttpGet]
 		[ProducesResponseType(StatusCodes.Status200OK)]
 		public ActionResult<List<Dto.Tool>> GetTools(string? toolNameFilter = null)
@@ -77,7 +77,7 @@ namespace DevilDaggersWebsite.Api
 			return File(Io.File.ReadAllBytes(Path.Combine(_environment.WebRootPath, path)), MediaTypeNames.Application.Zip, $"{toolName}{tool.VersionNumber}.zip");
 		}
 
-		[Obsolete("Use api/process-memory/marker instead.")]
+		[Obsolete("Use api/process-memory/marker instead. This is still in use by DDCL 1.2.0.0")]
 		[HttpGet("devildaggerscustomleaderboards/settings")]
 		[ProducesResponseType(StatusCodes.Status200OK)]
 		public ActionResult<DdclSettings> GetDdclSettings()
