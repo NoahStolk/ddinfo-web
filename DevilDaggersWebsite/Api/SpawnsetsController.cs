@@ -3,6 +3,7 @@ using DevilDaggersWebsite.Transients;
 using Microsoft.AspNetCore.Hosting;
 using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
+using System;
 using System.Collections.Generic;
 using System.ComponentModel.DataAnnotations;
 using System.IO;
@@ -24,9 +25,16 @@ namespace DevilDaggersWebsite.Api
 			_environment = environment;
 		}
 
+		[ApiExplorerSettings(IgnoreApi = true)]
+		[Obsolete("Use " + nameof(GetSpawnsetsForDdse) + " instead. This is still in use by DDSE 2.34.0.0.")]
 		[HttpGet]
 		[ProducesResponseType(StatusCodes.Status200OK)]
 		public List<SpawnsetFile> GetSpawnsets(string? authorFilter = null, string? nameFilter = null)
+			=> _spawnsetHelper.GetSpawnsets(authorFilter, nameFilter);
+
+		[HttpGet("ddse")]
+		[ProducesResponseType(StatusCodes.Status200OK)]
+		public List<SpawnsetFile> GetSpawnsetsForDdse(string? authorFilter = null, string? nameFilter = null)
 			=> _spawnsetHelper.GetSpawnsets(authorFilter, nameFilter);
 
 		[HttpGet("{fileName}/file")]
