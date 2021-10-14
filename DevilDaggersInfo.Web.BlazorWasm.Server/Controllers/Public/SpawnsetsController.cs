@@ -1,3 +1,4 @@
+using DevilDaggersInfo.Web.BlazorWasm.Server.Caches.SpawnsetHashes;
 using DevilDaggersInfo.Web.BlazorWasm.Server.Caches.SpawnsetSummaries;
 using DevilDaggersInfo.Web.BlazorWasm.Server.Converters.Public;
 using DevilDaggersInfo.Web.BlazorWasm.Shared.Dto;
@@ -13,12 +14,14 @@ public class SpawnsetsController : ControllerBase
 	private readonly ApplicationDbContext _dbContext;
 	private readonly IFileSystemService _fileSystemService;
 	private readonly SpawnsetSummaryCache _spawnsetSummaryCache;
+	private readonly SpawnsetHashCache _spawnsetHashCache;
 
-	public SpawnsetsController(ApplicationDbContext dbContext, IFileSystemService fileSystemService, SpawnsetSummaryCache spawnsetSummaryCache)
+	public SpawnsetsController(ApplicationDbContext dbContext, IFileSystemService fileSystemService, SpawnsetSummaryCache spawnsetSummaryCache, SpawnsetHashCache spawnsetHashCache)
 	{
 		_dbContext = dbContext;
 		_fileSystemService = fileSystemService;
 		_spawnsetSummaryCache = spawnsetSummaryCache;
+		_spawnsetHashCache = spawnsetHashCache;
 	}
 
 	[HttpGet]
@@ -99,12 +102,6 @@ public class SpawnsetsController : ControllerBase
 	[ProducesResponseType(StatusCodes.Status200OK)]
 	public List<GetSpawnsetDdse> GetSpawnsetsForDdse(string? authorFilter = null, string? nameFilter = null)
 	{
-		List<int> spawnsetsWithCustomLeaderboardIds = _dbContext.CustomLeaderboards
-			.AsNoTracking()
-			.Where(cl => !cl.IsArchived)
-			.Select(cl => cl.SpawnsetId)
-			.ToList();
-
 		IEnumerable<SpawnsetEntity> query = _dbContext.Spawnsets.AsNoTracking().Include(sf => sf.Player);
 
 		if (!string.IsNullOrWhiteSpace(authorFilter))
@@ -115,14 +112,39 @@ public class SpawnsetsController : ControllerBase
 
 		return query
 			.Where(sf => IoFile.Exists(Path.Combine(_fileSystemService.GetPath(DataSubDirectory.Spawnsets), sf.Name)))
-			.Select(sf => Map(sf))
+			.Select(sf => ToGetSpawnsetDdse(sf))
+			.ToList();
+	}
+
+	[HttpGet("by-hash")]
+	[ProducesResponseType(StatusCodes.Status200OK)]
+	[ProducesResponseType(StatusCodes.Status404NotFound)]
+	public async Task<ActionResult<GetSpawnsetDdse>> GetSpawnsetByHash([FromBody] byte[] hash)
+{
+		SpawnsetHashCacheData? data = await _spawnsetHashCache.GetSpawnset(hash);
+		if (data == null)
+			return NotFound();
+
+		SpawnsetEntity? spawnset = _dbContext.Spawnsets.AsNoTracking().Include(s => s.Player).FirstOrDefault(s => s.Name == data.Name);
+		if (spawnset == null)
+		{
+			// TODO: Log error.
+			return NotFound();
+		}
+
+		return ToGetSpawnsetDdse(spawnset);
+	}
+
+	private GetSpawnsetDdse ToGetSpawnsetDdse(SpawnsetEntity spawnset)
+	{
+		List<int> spawnsetsWithCustomLeaderboardIds = _dbContext.CustomLeaderboards
+			.AsNoTracking()
+			.Where(cl => !cl.IsArchived)
+			.Select(cl => cl.SpawnsetId)
 			.ToList();
 
-		GetSpawnsetDdse Map(SpawnsetEntity spawnset)
-		{
-			SpawnsetSummary spawnsetSummary = _spawnsetSummaryCache.GetSpawnsetSummaryByFilePath(Path.Combine(_fileSystemService.GetPath(DataSubDirectory.Spawnsets), spawnset.Name));
-			return spawnset.ToGetSpawnsetDdse(spawnsetSummary, spawnsetsWithCustomLeaderboardIds.Contains(spawnset.Id));
-		}
+		SpawnsetSummary spawnsetSummary = _spawnsetSummaryCache.GetSpawnsetSummaryByFilePath(Path.Combine(_fileSystemService.GetPath(DataSubDirectory.Spawnsets), spawnset.Name));
+		return spawnset.ToGetSpawnsetDdse(spawnsetSummary, spawnsetsWithCustomLeaderboardIds.Contains(spawnset.Id));
 	}
 
 	[HttpGet("total-data")]
