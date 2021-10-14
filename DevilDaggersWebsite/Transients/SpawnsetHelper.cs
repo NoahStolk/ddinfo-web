@@ -46,12 +46,21 @@ namespace DevilDaggersWebsite.Transients
 				.Where(sf => File.Exists(Path.Combine(_environment.WebRootPath, "spawnsets", sf.Name)))
 				.Select(sf => Map(sf))
 				.ToList();
+		}
 
-			Dto.SpawnsetFile Map(SpawnsetFile spawnsetFile)
-			{
-				SpawnsetData spawnsetData = _spawnsetDataCache.GetSpawnsetDataByFilePath(Path.Combine(_environment.WebRootPath, "spawnsets", spawnsetFile.Name));
-				return spawnsetFile.ToDto(spawnsetData, _spawnsetsWithCustomLeaderboardIds.Contains(spawnsetFile.Id));
-			}
+		public Dto.SpawnsetFile? GetSpawnset(string name)
+		{
+			SpawnsetFile? spawnset = _dbContext.SpawnsetFiles.AsNoTracking().Include(sf => sf.Player).FirstOrDefault(sf => sf.Name == name);
+			if (spawnset == null)
+				return null;
+
+			return Map(spawnset);
+		}
+
+		private Dto.SpawnsetFile Map(SpawnsetFile spawnsetFile)
+		{
+			SpawnsetData spawnsetData = _spawnsetDataCache.GetSpawnsetDataByFilePath(Path.Combine(_environment.WebRootPath, "spawnsets", spawnsetFile.Name));
+			return spawnsetFile.ToDto(spawnsetData, _spawnsetsWithCustomLeaderboardIds.Contains(spawnsetFile.Id));
 		}
 	}
 }

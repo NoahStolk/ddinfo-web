@@ -1,4 +1,6 @@
-﻿using DevilDaggersWebsite.Dto;
+﻿using DevilDaggersWebsite.Caches.SpawnsetHash;
+using DevilDaggersWebsite.Dto;
+using DevilDaggersWebsite.Extensions;
 using DevilDaggersWebsite.Transients;
 using Microsoft.AspNetCore.Hosting;
 using Microsoft.AspNetCore.Http;
@@ -8,6 +10,7 @@ using System.Collections.Generic;
 using System.ComponentModel.DataAnnotations;
 using System.IO;
 using System.Net.Mime;
+using System.Threading.Tasks;
 using Io = System.IO;
 
 namespace DevilDaggersWebsite.Api
@@ -18,11 +21,13 @@ namespace DevilDaggersWebsite.Api
 	{
 		private readonly SpawnsetHelper _spawnsetHelper;
 		private readonly IWebHostEnvironment _environment;
+		private readonly SpawnsetHashCache _spawnsetHashCache;
 
-		public SpawnsetsController(SpawnsetHelper spawnsetHelper, IWebHostEnvironment environment)
+		public SpawnsetsController(SpawnsetHelper spawnsetHelper, IWebHostEnvironment environment, SpawnsetHashCache spawnsetHashCache)
 		{
 			_spawnsetHelper = spawnsetHelper;
 			_environment = environment;
+			_spawnsetHashCache = spawnsetHashCache;
 		}
 
 		[ApiExplorerSettings(IgnoreApi = true)]
@@ -36,6 +41,37 @@ namespace DevilDaggersWebsite.Api
 		[ProducesResponseType(StatusCodes.Status200OK)]
 		public List<SpawnsetFile> GetSpawnsetsForDdse(string? authorFilter = null, string? nameFilter = null)
 			=> _spawnsetHelper.GetSpawnsets(authorFilter, nameFilter);
+
+		[HttpGet("by-hash")]
+		[ProducesResponseType(StatusCodes.Status200OK)]
+		[ProducesResponseType(StatusCodes.Status404NotFound)]
+		public async Task<ActionResult<SpawnsetFile>> GetSpawnsetByHash([FromBody] byte[] hash)
+		{
+			SpawnsetHashCacheData? data = await _spawnsetHashCache.GetSpawnset(hash);
+			if (data == null)
+				return new NotFoundObjectResult(new ProblemDetails { Title = $"Spawnset with {nameof(hash)} '{hash.ByteArrayToHexString()}' was not found." });
+
+			SpawnsetFile? dto = _spawnsetHelper.GetSpawnset(data.Name);
+			if (dto == null)
+				return new NotFoundObjectResult(new ProblemDetails { Title = $"Spawnset with {nameof(hash)} '{hash.ByteArrayToHexString()}' was not found." });
+
+			return dto;
+		}
+
+		/*
+		[HttpGet("hash-by-name")]
+		[ProducesResponseType(StatusCodes.Status200OK)]
+		[ProducesResponseType(StatusCodes.Status404NotFound)]
+		public ActionResult<byte[]> GetSpawnsetHashByName(string name)
+		{
+			string path = Path.Combine(_environment.WebRootPath, "spawnsets", name);
+			if (!Io.File.Exists(path))
+				return new NotFoundObjectResult(new ProblemDetails { Title = $"Spawnset with {nameof(name)} '{name}' was not found." });
+
+			byte[] spawnsetBytes = Io.File.ReadAllBytes(path);
+			return MD5.HashData(spawnsetBytes);
+		}
+		*/
 
 		[HttpGet("{fileName}/file")]
 		[ProducesResponseType(typeof(FileContentResult), StatusCodes.Status200OK)]
