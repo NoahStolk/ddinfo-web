@@ -1,4 +1,4 @@
-using IdentityServer4.EntityFramework.Options; // TODO: Update to using Duende.IdentityServer.EntityFramework.Options; for RC 1.
+using Duende.IdentityServer.EntityFramework.Options;
 using Microsoft.AspNetCore.ApiAuthorization.IdentityServer;
 using Microsoft.Extensions.Options;
 
