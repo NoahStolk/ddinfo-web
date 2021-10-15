@@ -262,51 +262,41 @@ public class SpawnsetBinary
 		}
 	}
 
-	// TODO:
-	/*
-	public (byte EffectiveHand, int EffectiveGemsOrHoming, byte HandModel) GetEffectivePlayerSettings()
+	public EffectivePlayerSettings GetEffectivePlayerSettings()
+		=> GetEffectivePlayerSettings(HandLevel, AdditionalGems);
+
+	public static EffectivePlayerSettings GetEffectivePlayerSettings(HandLevel handLevel, int additionalGems)
 	{
-		if (Hand <= 1)
+		if (handLevel == HandLevel.Level1)
 		{
-			if (AdditionalGems < 10)
-				return (1, AdditionalGems, 1);
+			if (additionalGems < 10)
+				return new(HandLevel.Level1, additionalGems, HandLevel.Level1);
 
-			if (AdditionalGems < 70)
-				return (2, AdditionalGems, 2);
+			if (additionalGems < 70)
+				return new(HandLevel.Level2, additionalGems, HandLevel.Level2);
 
-			if (AdditionalGems == 70)
-				return (3, 0, 3);
+			if (additionalGems == 70)
+				return new(HandLevel.Level3, 0, HandLevel.Level3);
 
-			if (AdditionalGems == 71)
-				return (4, 0, 4);
+			if (additionalGems == 71)
+				return new(HandLevel.Level4, 0, HandLevel.Level4);
 
-			return (4, 0, 3);
+			return new(HandLevel.Level4, 0, HandLevel.Level3);
 		}
 
-		if (Hand == 2)
+		if (handLevel == HandLevel.Level2)
 		{
-			if (AdditionalGems < 0)
-				return (1, AdditionalGems + 10, 1);
+			if (additionalGems < 0)
+				return new(HandLevel.Level1, additionalGems + 10, HandLevel.Level1);
 
-			return (2, Math.Min(69, AdditionalGems + 10), 2);
+			return new(HandLevel.Level2, Math.Min(59, additionalGems) + 10, HandLevel.Level2);
 		}
 
-		if (Hand == 3)
-			return (3, Math.Min(149, AdditionalGems), 3);
+		if (handLevel == HandLevel.Level3)
+			return new(HandLevel.Level3, Math.Min(149, additionalGems), HandLevel.Level3);
 
-		return (4, AdditionalGems, 4);
+		return new(HandLevel.Level4, additionalGems, HandLevel.Level4);
 	}
-	*/
-	public int GetInitialGems()
-		=> GetInitialGems(AdditionalGems, HandLevel);
-
-	public static int GetInitialGems(int additionalGems, HandLevel handLevel) => additionalGems + handLevel switch
-	{
-		HandLevel.Level2 => 10,
-		HandLevel.Level3 => 70,
-		HandLevel.Level4 => 220,
-		_ => 0,
-	};
 
 	public string GetGameVersionString()
 		=> GetGameVersionString(WorldVersion, SpawnVersion);
