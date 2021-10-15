@@ -73,7 +73,6 @@ public class SpawnsetBinary
 	}
 
 	// TODO: Throw clear exceptions when parsing fails.
-	// TODO: Manually fix incorrect enum values.
 	public static SpawnsetBinary Parse(byte[] fileContents)
 	{
 		using MemoryStream ms = new(fileContents);
@@ -87,7 +86,7 @@ public class SpawnsetBinary
 		float shrinkStart = br.ReadSingle();
 		float shrinkRate = br.ReadSingle();
 		float brightness = br.ReadSingle();
-		GameMode gameMode = (GameMode)br.ReadInt32();
+		GameMode gameMode = br.ReadInt32().ToGameMode();
 		br.Seek(8);
 
 		// Arena
@@ -107,7 +106,7 @@ public class SpawnsetBinary
 		Spawn[] spawns = new Spawn[spawnCount];
 		for (int i = 0; i < spawnCount; i++)
 		{
-			EnemyType enemyType = (EnemyType)br.ReadInt32();
+			EnemyType enemyType = br.ReadInt32().ToEnemyType();
 			float delay = br.ReadSingle();
 			spawns[i] = new(enemyType, delay);
 
@@ -120,7 +119,7 @@ public class SpawnsetBinary
 		float timerStart = 0;
 		if (spawnVersion >= 5)
 		{
-			handLevel = (HandLevel)br.ReadByte();
+			handLevel = br.ReadByte().ToHandLevel();
 			additionalGems = br.ReadInt32();
 
 			if (spawnVersion >= 6)
