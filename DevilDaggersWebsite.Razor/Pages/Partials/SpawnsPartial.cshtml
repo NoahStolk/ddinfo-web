@@ -51,21 +51,54 @@
 
 	bool hasEndLoop = loopSpawns.Any(s => s.Enemy != null);
 
-	Upgrade? hand = GameInfo.GetUpgrades(GameVersion.V31).FirstOrDefault(u => u.Name == $"Level {spawnset.Hand}") ?? GameInfo.V31Level1;
+	static Upgrade GetHand(byte hand)
+	{
+		return GameInfo.GetUpgrades(GameVersion.V31).FirstOrDefault(u => u.Name == $"Level {hand}") ?? GameInfo.V31Level1;
+	}
+
+	Upgrade? hand = GetHand(spawnset.Hand);
+
+	(byte effectiveHand, int effectiveGemsOrHoming, byte handModel) = spawnset.GetEffectivePlayerSettings();
 
 	<div class="flex-container flex-column section-container spawns-main-container">
 		@if (!Model.IsWikiPage)
 		{
 			<div class="spawns-header-container">
 				<div class="flex-container flex-space-evenly spawns-flex-container">
-					<div>Timer start</div>
 					<div>Hand</div>
 					<div>Additional gems</div>
+					<div>Timer start</div>
 				</div>
 				<div class="flex-container flex-space-evenly spawns-flex-container">
-					<div>@spawnset.TimerStart.ToString(FormatUtils.SpawnTimeFormat)</div>
 					<div>@hand.GetLayoutAnchor()</div>
-					<div>@(spawnset.AdditionalGems == int.MinValue ? "Disabled" : spawnset.AdditionalGems)</div>
+					<div>@spawnset.AdditionalGems</div>
+					<div>@spawnset.TimerStart.ToString(FormatUtils.SpawnTimeFormat)</div>
+				</div>
+			</div>
+			<div class="spawns-header-container">
+				<div class="flex-container flex-space-evenly spawns-flex-container">
+					<div>Effective hand</div>
+					<div>Effective @(effectiveHand > 2 ? "homing" : "gems")</div>
+					@if (effectiveHand != handModel)
+					{
+						<div>Effective hand model</div>
+					}
+					else
+					{
+						<div></div>
+					}
+				</div>
+				<div class="flex-container flex-space-evenly spawns-flex-container">
+					<div>@GetHand(effectiveHand).GetLayoutAnchor()</div>
+					<div>@effectiveGemsOrHoming</div>
+					@if (effectiveHand != handModel)
+					{
+						<div>@GetHand(handModel).GetLayoutAnchor()</div>
+					}
+					else
+					{
+						<div></div>
+					}
 				</div>
 			</div>
 		}
