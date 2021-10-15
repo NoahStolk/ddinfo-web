@@ -1,6 +1,42 @@
 {
 	"DevilDaggersSurvivalEditor": [
 		{
+			"VersionNumber": "2.41.0.0",
+			"Date": "2021-10-15T00:00:00",
+			"Changes": [
+				{
+					"Description": "Application now allows all possible values for arena shrink, brightness, additional gems, and start timer."
+				},
+				{
+					"Description": "Removed checkbox for disabling gem collection since you can now set the value for additional gems to negative."
+				},
+				{
+					"Description": "Added effective hand and gems/homing to layout. For example, when you set the hand to Level 1 and set the additional gems to 70, the effective result is Level 3 hand with 0 homing. This also replaces the warning stating that negative additional gems for Level 2 will reset the hand to Level 1."
+				},
+				{
+					"Description": "Effective hand and gems/homing are now shown in the 'Download spawnset' window instead of the spawnset hand and additional gems values."
+				},
+				{
+					"Description": "Effective gems/homing is now used in the 'Total gems' values in the spawns list."
+				},
+				{
+					"Description": "Tile heights are no longer restricted between values -1 and 54 in arena presets and arena editor."
+				},
+				{
+					"Description": "Added tile height button with value -1.01."
+				},
+				{
+					"Description": "Fixed incorrect arena tile preview when shrink end is higher than shrink start."
+				},
+				{
+					"Description": "Fixed layout issue with long spawnset or author names in the 'Download spawnset' window."
+				},
+				{
+					"Description": "Removed 32-bit support completely because Devil Daggers does not run on 32-bit machines anymore."
+				}
+			]
+		},
+		{
 			"VersionNumber": "2.34.0.0",
 			"Date": "2021-04-26T00:00:00",
 			"Changes": [
@@ -309,7 +345,7 @@
 					"Description": "Fixed crash when attempting to view log file while it was being used by another process."
 				},
 				{
-					"Description": "Fixed search TextBoxes in DownloadSpawnset window being empty after reopening the window."
+					"Description": "Fixed search TextBoxes in the 'Download spawnset' window being empty after reopening the window."
 				},
 				{
 					"Description": "Improved startup performance by reducing the amount of API calls."
@@ -854,7 +890,7 @@
 					"Description": "Fixed not always scanning homing and level up times."
 				},
 				{
-					"Description": "Removed 32-bit support completely."
+					"Description": "Removed 32-bit support completely because Devil Daggers does not run on 32-bit machines anymore."
 				}
 			]
 		},
