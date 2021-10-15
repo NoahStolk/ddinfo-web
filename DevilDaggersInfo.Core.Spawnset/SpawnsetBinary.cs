@@ -262,6 +262,41 @@ public class SpawnsetBinary
 		}
 	}
 
+	// TODO:
+	/*
+	public (byte EffectiveHand, int EffectiveGemsOrHoming, byte HandModel) GetEffectivePlayerSettings()
+	{
+		if (Hand <= 1)
+		{
+			if (AdditionalGems < 10)
+				return (1, AdditionalGems, 1);
+
+			if (AdditionalGems < 70)
+				return (2, AdditionalGems, 2);
+
+			if (AdditionalGems == 70)
+				return (3, 0, 3);
+
+			if (AdditionalGems == 71)
+				return (4, 0, 4);
+
+			return (4, 0, 3);
+		}
+
+		if (Hand == 2)
+		{
+			if (AdditionalGems < 0)
+				return (1, AdditionalGems + 10, 1);
+
+			return (2, Math.Min(69, AdditionalGems + 10), 2);
+		}
+
+		if (Hand == 3)
+			return (3, Math.Min(149, AdditionalGems), 3);
+
+		return (4, AdditionalGems, 4);
+	}
+	*/
 	public int GetInitialGems()
 		=> GetInitialGems(AdditionalGems, HandLevel);
 
