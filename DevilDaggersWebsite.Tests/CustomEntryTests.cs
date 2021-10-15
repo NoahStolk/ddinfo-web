@@ -55,7 +55,7 @@ namespace DevilDaggersWebsite.Tests
 			Mock<DiscordLogger> discordLogger = new(mockEnvironment.Object);
 			Mock<SpawnsetHashCache> spawnsetHashCache = new(discordLogger.Object, mockEnvironment.Object);
 
-			_customEntriesController = new CustomEntriesController(_dbContext.Object, toolHelper.Object, discordLogger.Object, spawnsetHashCache.Object);
+			_customEntriesController = new CustomEntriesController(_dbContext.Object, discordLogger.Object, spawnsetHashCache.Object);
 
 			if (!Spawnset.TryParse(File.ReadAllBytes(Path.Combine(wwwroot, "spawnsets", "V3")), out _spawnset))
 				Assert.Fail("Spawnset could not be parsed.");
