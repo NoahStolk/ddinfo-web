@@ -119,7 +119,7 @@ public class SpawnsetsController : ControllerBase
 	[HttpGet("by-hash")]
 	[ProducesResponseType(StatusCodes.Status200OK)]
 	[ProducesResponseType(StatusCodes.Status404NotFound)]
-	public async Task<ActionResult<GetSpawnsetDdse>> GetSpawnsetByHash([FromBody] byte[] hash)
+	public async Task<ActionResult<GetSpawnsetDdse>> GetSpawnsetByHash([FromQuery] byte[] hash)
 {
 		SpawnsetHashCacheData? data = await _spawnsetHashCache.GetSpawnset(hash);
 		if (data == null)
