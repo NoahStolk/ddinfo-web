@@ -135,6 +135,19 @@ public class SpawnsetsController : ControllerBase
 		return ToGetSpawnsetDdse(spawnset);
 	}
 
+	[HttpGet("hash")]
+	[ProducesResponseType(StatusCodes.Status200OK)]
+	[ProducesResponseType(StatusCodes.Status404NotFound)]
+	public ActionResult<byte[]> GetSpawnsetHash([Required] string fileName)
+	{
+		string path = Path.Combine(_fileSystemService.GetPath(DataSubDirectory.Spawnsets), fileName);
+		if (!IoFile.Exists(path))
+			return NotFound();
+
+		byte[] spawnsetBytes = IoFile.ReadAllBytes(path);
+		return MD5.HashData(spawnsetBytes);
+	}
+
 	private GetSpawnsetDdse ToGetSpawnsetDdse(SpawnsetEntity spawnset)
 	{
 		List<int> spawnsetsWithCustomLeaderboardIds = _dbContext.CustomLeaderboards
