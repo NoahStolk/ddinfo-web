@@ -59,14 +59,14 @@ namespace DevilDaggersWebsite.Api
 			return dto;
 		}
 
-		[HttpGet("hash-by-name")]
+		[HttpGet("hash")]
 		[ProducesResponseType(StatusCodes.Status200OK)]
 		[ProducesResponseType(StatusCodes.Status404NotFound)]
-		public ActionResult<byte[]> GetSpawnsetHashByName(string name)
+		public ActionResult<byte[]> GetSpawnsetHash([Required] string fileName)
 		{
-			string path = Path.Combine(_environment.WebRootPath, "spawnsets", name);
+			string path = Path.Combine(_environment.WebRootPath, "spawnsets", fileName);
 			if (!Io.File.Exists(path))
-				return new NotFoundObjectResult(new ProblemDetails { Title = $"Spawnset with {nameof(name)} '{name}' was not found." });
+				return new NotFoundObjectResult(new ProblemDetails { Title = $"Spawnset with {nameof(fileName)} '{fileName}' was not found." });
 
 			byte[] spawnsetBytes = Io.File.ReadAllBytes(path);
 			return MD5.HashData(spawnsetBytes);
