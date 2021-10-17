@@ -10,6 +10,7 @@ using System.Collections.Generic;
 using System.ComponentModel.DataAnnotations;
 using System.IO;
 using System.Net.Mime;
+using System.Security.Cryptography;
 using System.Threading.Tasks;
 using Io = System.IO;
 
@@ -45,7 +46,7 @@ namespace DevilDaggersWebsite.Api
 		[HttpGet("by-hash")]
 		[ProducesResponseType(StatusCodes.Status200OK)]
 		[ProducesResponseType(StatusCodes.Status404NotFound)]
-		public async Task<ActionResult<SpawnsetFile>> GetSpawnsetByHash([FromBody] byte[] hash)
+		public async Task<ActionResult<SpawnsetFile>> GetSpawnsetByHash([FromQuery] byte[] hash)
 		{
 			SpawnsetHashCacheData? data = await _spawnsetHashCache.GetSpawnset(hash);
 			if (data == null)
@@ -58,7 +59,6 @@ namespace DevilDaggersWebsite.Api
 			return dto;
 		}
 
-		/*
 		[HttpGet("hash-by-name")]
 		[ProducesResponseType(StatusCodes.Status200OK)]
 		[ProducesResponseType(StatusCodes.Status404NotFound)]
@@ -71,7 +71,6 @@ namespace DevilDaggersWebsite.Api
 			byte[] spawnsetBytes = Io.File.ReadAllBytes(path);
 			return MD5.HashData(spawnsetBytes);
 		}
-		*/
 
 		[HttpGet("{fileName}/file")]
 		[ProducesResponseType(typeof(FileContentResult), StatusCodes.Status200OK)]
