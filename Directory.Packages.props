@@ -1,18 +1,17 @@
 <Project xmlns="http://schemas.microsoft.com/developer/msbuild/2003" ToolsVersion="Current">
-	<ItemGroup>
-		<!-- Static code analysis -->
+	<ItemGroup Label="Static code analysis">
 		<PackageVersion Include="Roslynator.Analyzers" Version="3.2.2" />
 		<PackageVersion Include="SonarAnalyzer.CSharp" Version="8.30.0.37606" />
 		<PackageVersion Include="StyleCop.Analyzers" Version="1.2.0-beta.354" />
-
-		<!-- Image processing -->
+	</ItemGroup>
+	<ItemGroup Label="Image processing">
 		<PackageVersion Include="SixLabors.ImageSharp" Version="1.0.4" />
-
-		<!-- Source generators -->
+	</ItemGroup>
+	<ItemGroup Label="Source generators">
 		<PackageVersion Include="Microsoft.CodeAnalysis.Analyzers" Version="3.3.2" />
 		<PackageVersion Include="Microsoft.CodeAnalysis.CSharp.Workspaces" Version="4.0.0-5.final" />
-
-		<!-- Unit testing -->
+	</ItemGroup>
+	<ItemGroup Label="Unit tests">
 		<PackageVersion Include="coverlet.collector" Version="3.1.0" />
 		<PackageVersion Include="JetBrains.Annotations" Version="2021.3.0-eap4" />
 		<PackageVersion Include="Microsoft.EntityFrameworkCore.InMemory" Version="6.0.0-rc.2.21480.5" />
@@ -21,8 +20,8 @@
 		<PackageVersion Include="Moq" Version="4.16.1" />
 		<PackageVersion Include="MSTest.TestAdapter" Version="2.2.7" />
 		<PackageVersion Include="MSTest.TestFramework" Version="2.2.7" />
-
-		<!-- Web client -->
+	</ItemGroup>
+	<ItemGroup Label="Web client">
 		<PackageVersion Include="Blazorise.Charts" Version="0.9.4.6" />
 		<PackageVersion Include="Microsoft.AspNetCore.Components.WebAssembly" Version="6.0.0-rc.2.21480.10" />
 		<PackageVersion Include="Microsoft.AspNetCore.Components.WebAssembly.DevServer" Version="6.0.0-rc.2.21480.10" />
@@ -30,8 +29,8 @@
 		<PackageVersion Include="Microsoft.AspNetCore.WebUtilities" Version="2.2.0" />
 		<PackageVersion Include="Microsoft.Extensions.Http" Version="6.0.0-rc.2.21480.5" />
 		<PackageVersion Include="System.Net.Http.Json" Version="6.0.0-rc.2.21480.5" />
-
-		<!-- Web server -->
+	</ItemGroup>
+	<ItemGroup Label="Web server">
 		<PackageVersion Include="IdentityServer4.EntityFramework.Storage" Version="4.1.2" />
 		<PackageVersion Include="Microsoft.AspNetCore.ApiAuthorization.IdentityServer" Version="6.0.0-rc.2.21480.10" />
 		<PackageVersion Include="Microsoft.AspNetCore.Components.WebAssembly.Server" Version="6.0.0-rc.2.21480.10" />
@@ -42,11 +41,11 @@
 		<PackageVersion Include="Microsoft.EntityFrameworkCore.Tools" Version="6.0.0-rc.2.21480.5" />
 		<PackageVersion Include="NSwag.AspNetCore" Version="13.13.2" />
 		<PackageVersion Include="Pomelo.EntityFrameworkCore.MySql" Version="6.0.0-rc.1.ci.20211007223757+sha.e5110ec" />
-
-		<!-- Discord integration -->
+	</ItemGroup>
+	<ItemGroup Label="Discord integration">
 		<PackageVersion Include="DSharpPlus" Version="4.1.0" />
-
-		<!-- JSON -->
+	</ItemGroup>
+	<ItemGroup Label="JSON">
 		<PackageVersion Include="Newtonsoft.Json" Version="13.0.1" />
 	</ItemGroup>
 </Project>
