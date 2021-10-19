@@ -71,7 +71,12 @@ module.exports = {
 			'calibri': ['calibri', 'sans-serif'],
 			'goethe': ['goethe'],
 		}
-	}
+	},
+	variants: {
+		extend: {
+			backgroundColor: ['even'],
+		}
+	},
 };
 
 function createMinmaxGrid(array, min = "0") {
