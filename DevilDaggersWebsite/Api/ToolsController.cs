@@ -1,5 +1,4 @@
-﻿using DevilDaggersWebsite.Dto;
-using DevilDaggersWebsite.Entities;
+﻿using DevilDaggersWebsite.Entities;
 using DevilDaggersWebsite.Transients;
 using Microsoft.AspNetCore.Hosting;
 using Microsoft.AspNetCore.Http;
@@ -76,17 +75,6 @@ namespace DevilDaggersWebsite.Api
 			_dbContext.SaveChanges();
 
 			return File(Io.File.ReadAllBytes(Path.Combine(_environment.WebRootPath, path)), MediaTypeNames.Application.Zip, $"{toolName}{tool.VersionNumber}.zip");
-		}
-
-		[ApiExplorerSettings(IgnoreApi = true)]
-		[Obsolete("Use api/process-memory/marker instead. This is still in use by DDCL 1.2.0.0.")]
-		[HttpGet("devildaggerscustomleaderboards/settings")]
-		[ProducesResponseType(StatusCodes.Status200OK)]
-		public ActionResult<DdclSettings> GetDdclSettings()
-		{
-			Entities.Marker linux = _dbContext.Markers.FirstOrDefault(m => m.Name == "LinuxSteam") ?? throw new("LinuxSteam not found in database.");
-			Entities.Marker windows = _dbContext.Markers.FirstOrDefault(m => m.Name == "WindowsSteam") ?? throw new("WindowsSteam not found in database.");
-			return new DdclSettings { MarkerLinuxSteam = linux.Value, MarkerWindowsSteam = windows.Value };
 		}
 	}
 }
