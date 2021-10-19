@@ -127,7 +127,7 @@ public class CustomLeaderboardsController : ControllerBase
 		return customLeaderboard.ToGetCustomLeaderboard();
 	}
 
-	private class CustomLeaderboardWorldRecord
+	private sealed class CustomLeaderboardWorldRecord
 	{
 		public CustomLeaderboardWorldRecord(CustomLeaderboardEntity customLeaderboard, int? worldRecord, string? topPlayer)
 		{
