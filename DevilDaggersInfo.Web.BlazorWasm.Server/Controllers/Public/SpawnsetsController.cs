@@ -225,9 +225,9 @@ public class SpawnsetsController : ControllerBase
 		return IoFile.ReadAllBytes(path);
 	}
 
-	[HttpGet("from-author")]
+	[HttpGet("by-author")]
 	[ProducesResponseType(StatusCodes.Status200OK)]
-	public ActionResult<List<GetSpawnsetName>> GetSpawnsetsFromAuthor([Required] int playerId)
+	public ActionResult<List<GetSpawnsetName>> GetSpawnsetsByAuthorId([Required] int playerId)
 	{
 		var spawnsets = _dbContext.Spawnsets.AsNoTracking().Where(s => s.PlayerId == playerId).Select(s => new { s.Id, s.Name }).ToList();
 

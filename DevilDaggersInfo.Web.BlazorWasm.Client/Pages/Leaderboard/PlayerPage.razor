@@ -4,7 +4,9 @@
 @using DevilDaggersInfo.Web.BlazorWasm.Shared.Dto.Public
 @using DevilDaggersInfo.Web.BlazorWasm.Shared.Dto.Public.Leaderboards
 @using DevilDaggersInfo.Web.BlazorWasm.Shared.Dto.Public.LeaderboardHistory
+@using DevilDaggersInfo.Web.BlazorWasm.Shared.Dto.Public.Mods
 @using DevilDaggersInfo.Web.BlazorWasm.Shared.Dto.Public.Players
+@using DevilDaggersInfo.Web.BlazorWasm.Shared.Dto.Public.Spawnsets
 @using DevilDaggersInfo.Web.BlazorWasm.Client.Components.Leaderboards
 @using DevilDaggersInfo.Core.Wiki
 @using DevilDaggersInfo.Core.Wiki.Enums
@@ -88,6 +90,38 @@ else
 				</PlayerCard>
 			}
 		}
+
+		@if (GetSpawnsetNames == null)
+		{
+			<Loading />
+		}
+		else
+		{
+			<PlayerCard Title="Spawnsets">
+				@foreach (GetSpawnsetName getSpawnsetName in GetSpawnsetNames)
+				{
+					<div class="grid gap-2 grid-cols-2 even:bg-gray-22 px-1">
+						<a href="/custom/spawnsets/@getSpawnsetName.Id">@getSpawnsetName.Name</a>
+					</div>
+				}
+			</PlayerCard>
+		}
+
+		@if (GetModNames == null)
+		{
+			<Loading />
+		}
+		else
+		{
+			<PlayerCard Title="Mods">
+				@foreach (GetModName getModName in GetModNames)
+				{
+					<div class="grid gap-2 grid-cols-2 even:bg-gray-22 px-1">
+						<a href="/custom/mods/@getModName.Id">@getModName.Name</a>
+					</div>
+				}
+			</PlayerCard>
+		}
 	</div>
 }
 
@@ -97,6 +131,8 @@ else
 
 	public GetEntry? GetEntry { get; set; }
 	public GetPlayer? GetPlayer { get; set; }
+	public List<GetSpawnsetName>? GetSpawnsetNames { get; set; }
+	public List<GetModName>? GetModNames { get; set; }
 
 	public bool PlayerNotFound { get; set; }
 
@@ -112,5 +148,8 @@ else
 		{
 			PlayerNotFound = true;
 		}
+
+		GetSpawnsetNames = await Http.GetSpawnsetsByAuthorId(Id);
+		GetModNames = await Http.GetModsByAuthorId(Id);
 	}
 }
