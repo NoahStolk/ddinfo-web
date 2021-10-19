@@ -62,7 +62,7 @@ else
 		{
 			@*TODO: Spawnsets, mods, custom entries*@
 
-			@if (GetPlayer.Settings != null)
+			if (GetPlayer.Settings != null)
 			{
 				bool? rightHand = GetPlayer.Settings.IsRightHanded;
 				bool? flashHand = GetPlayer.Settings.UsesFlashHand;
@@ -77,6 +77,14 @@ else
 					<PlayerCardEntry Name="Hand orientation">@(rightHand.HasValue ? rightHand.Value ? "Right" : "Left" : "N/A")</PlayerCardEntry>
 					<PlayerCardEntry Name="Hand flash">@(flashHand.HasValue ? flashHand.Value ? "On" : "Off" : "N/A")</PlayerCardEntry>
 					<PlayerCardEntry Name="Legacy audio">@(legacyAudio.HasValue ? legacyAudio.Value ? "On" : "Off" : "N/A")</PlayerCardEntry>
+				</PlayerCard>
+			}
+
+			@*TODO: Country name instead of code / Best rank recorded / Past usernames*@
+			if (GetPlayer.CountryCode != null)
+			{
+				<PlayerCard Title="Miscellaneous">
+					<PlayerCardEntry Name="Country">@GetPlayer.CountryCode</PlayerCardEntry>
 				</PlayerCard>
 			}
 		}
