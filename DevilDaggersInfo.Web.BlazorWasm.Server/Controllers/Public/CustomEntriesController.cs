@@ -2,6 +2,7 @@ using DevilDaggersInfo.Web.BlazorWasm.Server.Caches.SpawnsetHashes;
 using DevilDaggersInfo.Web.BlazorWasm.Server.Converters.Public;
 using DevilDaggersInfo.Web.BlazorWasm.Server.HostedServices.DdInfoDiscordBot;
 using DevilDaggersInfo.Web.BlazorWasm.Shared.Dto.Public.CustomEntries;
+using DevilDaggersInfo.Web.BlazorWasm.Shared.Utils;
 using DSharpPlus.Entities;
 using System.Web;
 
@@ -41,6 +42,71 @@ public class CustomEntriesController : ControllerBase
 			.FirstOrDefault(ced => ced.CustomEntryId == id);
 
 		return customEntry.ToGetCustomEntryData(customEntryData);
+	}
+
+	[HttpGet("player-stats")]
+	[ProducesResponseType(StatusCodes.Status200OK)]
+	public ActionResult<List<GetCustomLeaderboardStatisticsForPlayer>> GetCustomEntryStatisticsByPlayerId([Required] int playerId)
+	{
+		var customEntries = _dbContext.CustomEntries
+			.AsNoTracking()
+			.Include(ce => ce.CustomLeaderboard)
+			.Where(cl => cl.Id == playerId)
+			.Select(ce => new
+			{
+				ce.Time,
+				ce.CustomLeaderboardId,
+				ce.CustomLeaderboard.Category,
+				ce.CustomLeaderboard.TimeLeviathan,
+				ce.CustomLeaderboard.TimeDevil,
+				ce.CustomLeaderboard.TimeGolden,
+				ce.CustomLeaderboard.TimeSilver,
+				ce.CustomLeaderboard.TimeBronze,
+			})
+			.ToList();
+
+		List<GetCustomLeaderboardStatisticsForPlayer> stats = new();
+		foreach (CustomLeaderboardCategory category in Enum.GetValues<CustomLeaderboardCategory>())
+		{
+			var customEntriesByCategory = customEntries.Where(c => c.Category == category);
+			if (!customEntriesByCategory.Any())
+				continue;
+
+			int leviathan = 0;
+			int devil = 0;
+			int golden = 0;
+			int silver = 0;
+			int bronze = 0;
+			int def = 0;
+			int played = 0;
+			foreach (var customEntry in customEntriesByCategory)
+			{
+				played++;
+				switch (CustomLeaderboardUtils.GetDaggerFromTime(category, customEntry.Time, customEntry.TimeLeviathan, customEntry.TimeDevil, customEntry.TimeGolden, customEntry.TimeSilver, customEntry.TimeBronze))
+				{
+					case CustomLeaderboardDagger.Leviathan: leviathan++; break;
+					case CustomLeaderboardDagger.Devil: devil++; break;
+					case CustomLeaderboardDagger.Golden: golden++; break;
+					case CustomLeaderboardDagger.Silver: silver++; break;
+					case CustomLeaderboardDagger.Bronze: bronze++; break;
+					default: def++; break;
+				}
+			}
+
+			stats.Add(new()
+			{
+				CustomLeaderboardCategory = category,
+				LeviathanDaggerCount = leviathan,
+				DevilDaggerCount = devil,
+				GoldenDaggerCount = golden,
+				SilverDaggerCount = silver,
+				BronzeDaggerCount = bronze,
+				DefaultDaggerCount = def,
+				LeaderboardsPlayedCount = played,
+			});
+		}
+
+		return stats;
 	}
 
 	[HttpPost("submit")]
