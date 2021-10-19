@@ -120,7 +120,7 @@ public class SpawnsetsController : ControllerBase
 	[ProducesResponseType(StatusCodes.Status200OK)]
 	[ProducesResponseType(StatusCodes.Status404NotFound)]
 	public async Task<ActionResult<GetSpawnsetDdse>> GetSpawnsetByHash([FromQuery] byte[] hash)
-{
+	{
 		SpawnsetHashCacheData? data = await _spawnsetHashCache.GetSpawnset(hash);
 		if (data == null)
 			return NotFound();
@@ -223,5 +223,18 @@ public class SpawnsetsController : ControllerBase
 		}
 
 		return IoFile.ReadAllBytes(path);
+	}
+
+	[HttpGet("from-author")]
+	[ProducesResponseType(typeof(FileContentResult), StatusCodes.Status200OK)]
+	public ActionResult<List<GetSpawnsetName>> GetSpawnsetsFromAuthor([Required] int playerId)
+	{
+		var spawnsets = _dbContext.Spawnsets.AsNoTracking().Where(s => s.PlayerId == playerId).Select(s => new { s.Id, s.Name }).ToList();
+
+		return spawnsets.ConvertAll(s => new GetSpawnsetName
+		{
+			Id = s.Id,
+			Name = s.Name,
+		});
 	}
 }
