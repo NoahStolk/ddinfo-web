@@ -19,37 +19,23 @@ else
 
 	<div class="grid gap-2 grid-cols-1 md:grid-cols-2 xl:grid-cols-4">
 		<PlayerCard Title="Personal Best">
-			<div>Time</div>
-			<div>@GetEntry.Time.ToString(FormatUtils.TimeFormat)</div>
-			<div>Kills</div>
-			<div>@GetEntry.Kills.ToString(FormatUtils.LeaderboardIntFormat)</div>
-			<div>Gems</div>
-			<div>@GetEntry.Gems.ToString(FormatUtils.LeaderboardIntFormat)</div>
-			<div>Accuracy</div>
-			<div>@((GetEntry.DaggersHit / (float)GetEntry.DaggersFired).ToString(FormatUtils.AccuracyFormat))</div>
-			<div>Daggers hit</div>
-			<div>@GetEntry.DaggersHit.ToString(FormatUtils.LeaderboardIntFormat)</div>
-			<div>Daggers fired</div>
-			<div>@GetEntry.DaggersFired.ToString(FormatUtils.LeaderboardIntFormat)</div>
-			<div>Death type</div>
-			<div>@(Deaths.GetDeathByLeaderboardType(GameVersion.V3_1, GetEntry.DeathType)?.Name ?? "?")</div>
+			<PlayerCardEntry Name="Time">@GetEntry.Time.ToString(FormatUtils.TimeFormat)</PlayerCardEntry>
+			<PlayerCardEntry Name="Kills">@GetEntry.Kills.ToString(FormatUtils.LeaderboardIntFormat)</PlayerCardEntry>
+			<PlayerCardEntry Name="Gems">@GetEntry.Gems.ToString(FormatUtils.LeaderboardIntFormat)</PlayerCardEntry>
+			<PlayerCardEntry Name="Accuracy">@((GetEntry.DaggersHit / (float)GetEntry.DaggersFired).ToString(FormatUtils.AccuracyFormat))</PlayerCardEntry>
+			<PlayerCardEntry Name="Daggers hit">@GetEntry.DaggersHit.ToString(FormatUtils.LeaderboardIntFormat)</PlayerCardEntry>
+			<PlayerCardEntry Name="Daggers fired">@GetEntry.DaggersFired.ToString(FormatUtils.LeaderboardIntFormat)</PlayerCardEntry>
+			<PlayerCardEntry Name="Death type">@(Deaths.GetDeathByLeaderboardType(GameVersion.V3_1, GetEntry.DeathType)?.Name ?? "?")</PlayerCardEntry>
 		</PlayerCard>
 
 		<PlayerCard Title="Total Statistics">
-			<div>Total time</div>
-			<div>@GetEntry.TimeTotal.ToString(FormatUtils.TimeFormat)</div>
-			<div>Total kills</div>
-			<div>@GetEntry.KillsTotal.ToString(FormatUtils.LeaderboardIntFormat)</div>
-			<div>Total gems</div>
-			<div>@GetEntry.GemsTotal.ToString(FormatUtils.LeaderboardIntFormat)</div>
-			<div>Total accuracy</div>
-			<div>@((GetEntry.DaggersHitTotal / (float)GetEntry.DaggersFiredTotal).ToString(FormatUtils.AccuracyFormat))</div>
-			<div>Total daggers hit</div>
-			<div>@GetEntry.DaggersHitTotal.ToString(FormatUtils.LeaderboardIntFormat)</div>
-			<div>Total daggers fired</div>
-			<div>@GetEntry.DaggersFiredTotal.ToString(FormatUtils.LeaderboardIntFormat)</div>
-			<div>Total deaths</div>
-			<div>@GetEntry.DeathsTotal</div>
+			<PlayerCardEntry Name="Total time">@GetEntry.TimeTotal.ToString(FormatUtils.TimeFormat)</PlayerCardEntry>
+			<PlayerCardEntry Name="Total kills">@GetEntry.KillsTotal.ToString(FormatUtils.LeaderboardIntFormat)</PlayerCardEntry>
+			<PlayerCardEntry Name="Total gems">@GetEntry.GemsTotal.ToString(FormatUtils.LeaderboardIntFormat)</PlayerCardEntry>
+			<PlayerCardEntry Name="Total accuracy">@((GetEntry.DaggersHitTotal / (float)GetEntry.DaggersFiredTotal).ToString(FormatUtils.AccuracyFormat))</PlayerCardEntry>
+			<PlayerCardEntry Name="Total daggers hit">@GetEntry.DaggersHitTotal.ToString(FormatUtils.LeaderboardIntFormat)</PlayerCardEntry>
+			<PlayerCardEntry Name="Total daggers fired">@GetEntry.DaggersFiredTotal.ToString(FormatUtils.LeaderboardIntFormat)</PlayerCardEntry>
+			<PlayerCardEntry Name="Total deaths">@GetEntry.DeathsTotal</PlayerCardEntry>
 		</PlayerCard>
 
 		@if (GetEntry.DeathsTotal > 0)
@@ -57,16 +43,11 @@ else
 			float deathsAsFloat = (float)GetEntry.DeathsTotal;
 
 			<PlayerCard Title="Average Statistics">
-				<div>Average time</div>
-				<div>@((GetEntry.TimeTotal / deathsAsFloat).ToString(FormatUtils.TimeFormat))</div>
-				<div>Average kills</div>
-				<div>@((GetEntry.KillsTotal / deathsAsFloat).ToString(FormatUtils.LeaderboardIntAverageFormat))</div>
-				<div>Average gems</div>
-				<div>@((GetEntry.GemsTotal / deathsAsFloat).ToString(FormatUtils.LeaderboardIntAverageFormat))</div>
-				<div>Average daggers hit</div>
-				<div>@((GetEntry.DaggersHitTotal / deathsAsFloat).ToString(FormatUtils.LeaderboardIntAverageFormat))</div>
-				<div>Average daggers fired</div>
-				<div>@((GetEntry.DaggersFiredTotal / deathsAsFloat).ToString(FormatUtils.LeaderboardIntAverageFormat))</div>
+				<PlayerCardEntry Name="Average time">@((GetEntry.TimeTotal / deathsAsFloat).ToString(FormatUtils.TimeFormat))</PlayerCardEntry>
+				<PlayerCardEntry Name="Average kills">@((GetEntry.KillsTotal / deathsAsFloat).ToString(FormatUtils.LeaderboardIntAverageFormat))</PlayerCardEntry>
+				<PlayerCardEntry Name="Average gems">@((GetEntry.GemsTotal / deathsAsFloat).ToString(FormatUtils.LeaderboardIntAverageFormat))</PlayerCardEntry>
+				<PlayerCardEntry Name="Average daggers hit">@((GetEntry.DaggersHitTotal / deathsAsFloat).ToString(FormatUtils.LeaderboardIntAverageFormat))</PlayerCardEntry>
+				<PlayerCardEntry Name="Average daggers fired">@((GetEntry.DaggersFiredTotal / deathsAsFloat).ToString(FormatUtils.LeaderboardIntAverageFormat))</PlayerCardEntry>
 			</PlayerCard>
 		}
 
@@ -88,22 +69,14 @@ else
 				bool? legacyAudio = GetPlayer.Settings.UsesLegacyAudio;
 
 				<PlayerCard Title="Settings">
-					<div>eDPI</div>
-					<div>@(GetPlayer.Settings.Edpi?.ToString(FormatUtils.InGameSensFormat) ?? "N/A")</div>
-					<div>DPI</div>
-					<div>@(GetPlayer.Settings.Dpi?.ToString() ?? "N/A")</div>
-					<div>In-game sens</div>
-					<div>@(GetPlayer.Settings.InGameSens?.ToString(FormatUtils.InGameSensFormat) ?? "N/A")</div>
-					<div>FOV</div>
-					<div>@(GetPlayer.Settings.Fov?.ToString() ?? "N/A")</div>
-					<div>Gamma</div>
-					<div>@(GetPlayer.Settings.Gamma?.ToString(FormatUtils.GammaFormat) ?? "N/A")</div>
-					<div>Hand orientation</div>
-					<div>@(rightHand.HasValue ? rightHand.Value ? "Right" : "Left" : "N/A")</div>
-					<div>Hand flash</div>
-					<div>@(flashHand.HasValue ? flashHand.Value ? "On" : "Off" : "N/A")</div>
-					<div>Legacy audio</div>
-					<div>@(legacyAudio.HasValue ? legacyAudio.Value ? "On" : "Off" : "N/A")</div>
+					<PlayerCardEntry Name="eDPI">@(GetPlayer.Settings.Edpi?.ToString(FormatUtils.InGameSensFormat) ?? "N/A")</PlayerCardEntry>
+					<PlayerCardEntry Name="DPI">@(GetPlayer.Settings.Dpi?.ToString() ?? "N/A")</PlayerCardEntry>
+					<PlayerCardEntry Name="In-game sens">@(GetPlayer.Settings.InGameSens?.ToString(FormatUtils.InGameSensFormat) ?? "N/A")</PlayerCardEntry>
+					<PlayerCardEntry Name="FOV">@(GetPlayer.Settings.Fov?.ToString() ?? "N/A")</PlayerCardEntry>
+					<PlayerCardEntry Name="Gamma">@(GetPlayer.Settings.Gamma?.ToString(FormatUtils.GammaFormat) ?? "N/A")</PlayerCardEntry>
+					<PlayerCardEntry Name="Hand orientation">@(rightHand.HasValue ? rightHand.Value ? "Right" : "Left" : "N/A")</PlayerCardEntry>
+					<PlayerCardEntry Name="Hand flash">@(flashHand.HasValue ? flashHand.Value ? "On" : "Off" : "N/A")</PlayerCardEntry>
+					<PlayerCardEntry Name="Legacy audio">@(legacyAudio.HasValue ? legacyAudio.Value ? "On" : "Off" : "N/A")</PlayerCardEntry>
 				</PlayerCard>
 			}
 		}
