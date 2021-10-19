@@ -46,12 +46,12 @@ public class CustomEntriesController : ControllerBase
 
 	[HttpGet("player-stats")]
 	[ProducesResponseType(StatusCodes.Status200OK)]
-	public ActionResult<List<GetCustomLeaderboardStatisticsForPlayer>> GetCustomEntryStatisticsByPlayerId([Required] int playerId)
+	public ActionResult<List<GetCustomLeaderboardStatisticsForPlayer>> GetCustomLeaderboardStatisticsByPlayerId([Required] int playerId)
 	{
 		var customEntries = _dbContext.CustomEntries
 			.AsNoTracking()
 			.Include(ce => ce.CustomLeaderboard)
-			.Where(cl => cl.Id == playerId)
+			.Where(cl => cl.PlayerId == playerId)
 			.Select(ce => new
 			{
 				ce.Time,
