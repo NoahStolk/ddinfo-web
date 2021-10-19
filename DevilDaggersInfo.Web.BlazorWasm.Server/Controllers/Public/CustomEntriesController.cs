@@ -25,7 +25,7 @@ public class CustomEntriesController : ControllerBase
 	[HttpGet("{id}/data")]
 	[ProducesResponseType(StatusCodes.Status200OK)]
 	[ProducesResponseType(StatusCodes.Status404NotFound)]
-	public ActionResult<GetCustomEntryData> GetCustomEntryDataById(int id)
+	public ActionResult<GetCustomEntryData> GetCustomEntryDataById([Required] int id)
 	{
 		CustomEntryEntity? customEntry = _dbContext.CustomEntries
 			.AsNoTracking()
