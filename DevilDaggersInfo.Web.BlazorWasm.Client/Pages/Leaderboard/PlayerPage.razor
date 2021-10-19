@@ -29,7 +29,7 @@ else
 		</PlayerCard>
 
 		<PlayerCard Title="Total Statistics">
-			<PlayerCardEntry Name="Total time">@GetEntry.TimeTotal.ToString(FormatUtils.TimeFormat)</PlayerCardEntry>
+			<PlayerCardEntry Name="Total time">@GetEntry.TimeTotal.ToString(FormatUtils.LeaderboardGlobalTimeFormat)</PlayerCardEntry>
 			<PlayerCardEntry Name="Total kills">@GetEntry.KillsTotal.ToString(FormatUtils.LeaderboardIntFormat)</PlayerCardEntry>
 			<PlayerCardEntry Name="Total gems">@GetEntry.GemsTotal.ToString(FormatUtils.LeaderboardIntFormat)</PlayerCardEntry>
 			<PlayerCardEntry Name="Total accuracy">@((GetEntry.DaggersHitTotal / (float)GetEntry.DaggersFiredTotal).ToString(FormatUtils.AccuracyFormat))</PlayerCardEntry>
