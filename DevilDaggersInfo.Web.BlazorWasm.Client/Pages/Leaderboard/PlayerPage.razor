@@ -6,11 +6,13 @@
 @using DevilDaggersInfo.Web.BlazorWasm.Client.Components
 @using DevilDaggersInfo.Web.BlazorWasm.Client.Components.Leaderboards
 @using DevilDaggersInfo.Web.BlazorWasm.Shared.Dto.Public
+@using DevilDaggersInfo.Web.BlazorWasm.Shared.Dto.Public.CustomEntries
 @using DevilDaggersInfo.Web.BlazorWasm.Shared.Dto.Public.Leaderboards
 @using DevilDaggersInfo.Web.BlazorWasm.Shared.Dto.Public.LeaderboardHistory
 @using DevilDaggersInfo.Web.BlazorWasm.Shared.Dto.Public.Mods
 @using DevilDaggersInfo.Web.BlazorWasm.Shared.Dto.Public.Players
 @using DevilDaggersInfo.Web.BlazorWasm.Shared.Dto.Public.Spawnsets
+@using DevilDaggersInfo.Web.BlazorWasm.Shared.Enums
 
 @if (GetEntry == null)
 {
@@ -92,6 +94,30 @@ else
 			}
 		}
 
+		@if (GetCustomLeaderboardStatistics == null)
+		{
+			<Loading />
+		}
+		else
+		{
+			@foreach (CustomLeaderboardCategory category in Enum.GetValues<CustomLeaderboardCategory>())
+			{
+				var stats = GetCustomLeaderboardStatistics.FirstOrDefault(cls => cls.CustomLeaderboardCategory == category);
+				if (stats == null)
+					continue;
+
+				<PlayerCard Title="@($"Custom Leaderboard Statistics ({category})")">
+					<PlayerCardEntry Name="Leviathan daggers">@stats.LeviathanDaggerCount</PlayerCardEntry>
+					<PlayerCardEntry Name="Devil daggers">@stats.DevilDaggerCount</PlayerCardEntry>
+					<PlayerCardEntry Name="Golden daggers">@stats.GoldenDaggerCount</PlayerCardEntry>
+					<PlayerCardEntry Name="Silver daggers">@stats.SilverDaggerCount</PlayerCardEntry>
+					<PlayerCardEntry Name="Bronze daggers">@stats.BronzeDaggerCount</PlayerCardEntry>
+					<PlayerCardEntry Name="Default daggers">@stats.DefaultDaggerCount</PlayerCardEntry>
+					<PlayerCardEntry Name="Played">@stats.LeaderboardsPlayedCount</PlayerCardEntry>
+				</PlayerCard>
+			}
+		}
+
 		@if (GetSpawnsetNames == null)
 		{
 			<Loading />
@@ -134,6 +160,7 @@ else
 
 	public GetEntry? GetEntry { get; set; }
 	public GetPlayer? GetPlayer { get; set; }
+	public List<GetCustomLeaderboardStatisticsForPlayer>? GetCustomLeaderboardStatistics { get; set; }
 	public List<GetSpawnsetName>? GetSpawnsetNames { get; set; }
 	public List<GetModName>? GetModNames { get; set; }
 
@@ -152,6 +179,7 @@ else
 			PlayerNotFound = true;
 		}
 
+		GetCustomLeaderboardStatistics = await Http.GetCustomLeaderboardStatisticsByPlayerId(Id);
 		GetSpawnsetNames = await Http.GetSpawnsetsByAuthorId(Id);
 		GetModNames = await Http.GetModsByAuthorId(Id);
 	}
