@@ -1,3 +1,5 @@
+using DevilDaggersInfo.Web.BlazorWasm.Shared.Utils;
+
 namespace DevilDaggersInfo.Web.BlazorWasm.Server.Entities;
 
 [Table("CustomLeaderboards")]
@@ -35,34 +37,5 @@ public class CustomLeaderboardEntity
 	public List<CustomEntryEntity>? CustomEntries { get; set; }
 
 	public CustomLeaderboardDagger GetDaggerFromTime(int time)
-	{
-		if (Category.IsAscending())
-		{
-			if (time <= TimeLeviathan)
-				return CustomLeaderboardDagger.Leviathan;
-			if (time <= TimeDevil)
-				return CustomLeaderboardDagger.Devil;
-			if (time <= TimeGolden)
-				return CustomLeaderboardDagger.Golden;
-			if (time <= TimeSilver)
-				return CustomLeaderboardDagger.Silver;
-			if (time <= TimeBronze)
-				return CustomLeaderboardDagger.Bronze;
-
-			return CustomLeaderboardDagger.Default;
-		}
-
-		if (time >= TimeLeviathan)
-			return CustomLeaderboardDagger.Leviathan;
-		if (time >= TimeDevil)
-			return CustomLeaderboardDagger.Devil;
-		if (time >= TimeGolden)
-			return CustomLeaderboardDagger.Golden;
-		if (time >= TimeSilver)
-			return CustomLeaderboardDagger.Silver;
-		if (time >= TimeBronze)
-			return CustomLeaderboardDagger.Bronze;
-
-		return CustomLeaderboardDagger.Default;
-	}
+		=> CustomLeaderboardUtils.GetDaggerFromTime(Category, time, TimeLeviathan, TimeDevil, TimeGolden, TimeSilver, TimeBronze);
 }
