@@ -184,7 +184,7 @@ public class SpawnsetsController : ControllerBase
 	}
 
 	[HttpGet("{id}")]
-	[ProducesResponseType(typeof(FileContentResult), StatusCodes.Status200OK)]
+	[ProducesResponseType(StatusCodes.Status200OK)]
 	[ProducesResponseType(StatusCodes.Status400BadRequest)]
 	[ProducesResponseType(StatusCodes.Status404NotFound)]
 	public ActionResult<GetSpawnset> GetSpawnsetById([Required] int id)
@@ -204,7 +204,7 @@ public class SpawnsetsController : ControllerBase
 	}
 
 	[HttpGet("default")]
-	[ProducesResponseType(typeof(FileContentResult), StatusCodes.Status200OK)]
+	[ProducesResponseType(StatusCodes.Status200OK)]
 	[ProducesResponseType(StatusCodes.Status404NotFound)]
 	public ActionResult<byte[]> GetDefaultSpawnset(GameVersion gameVersion)
 	{
@@ -226,7 +226,7 @@ public class SpawnsetsController : ControllerBase
 	}
 
 	[HttpGet("from-author")]
-	[ProducesResponseType(typeof(FileContentResult), StatusCodes.Status200OK)]
+	[ProducesResponseType(StatusCodes.Status200OK)]
 	public ActionResult<List<GetSpawnsetName>> GetSpawnsetsFromAuthor([Required] int playerId)
 	{
 		var spawnsets = _dbContext.Spawnsets.AsNoTracking().Where(s => s.PlayerId == playerId).Select(s => new { s.Id, s.Name }).ToList();
