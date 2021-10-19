@@ -1,7 +1,7 @@
 <div>
 	@if (!string.IsNullOrEmpty(CountryCode))
 	{
-		<Tooltip Text="@_countryName"><img src="/images/flags/@(CountryCode).png" /></Tooltip>
+		<Tooltip Text="@_countryName"><Flag CountryCode=@CountryCode /></Tooltip>
 	}
 </div>
 
