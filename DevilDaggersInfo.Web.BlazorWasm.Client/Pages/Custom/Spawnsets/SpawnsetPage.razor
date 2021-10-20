@@ -11,7 +11,7 @@
 {
 	<Loading />
 }
-else if (SpawnsView == null)
+else if (SpawnsetBinary == null || SpawnsView == null)
 {
 	<div>Spawnset could not be parsed.</div>
 }
@@ -29,6 +29,13 @@ else
 			<a class="bg-dark-red hover:bg-red transition-colors duration-200 p-2 rounded text-color-text text-center text-xl font-goethe" href="/api/spawnsets/@(GetSpawnset.Name)/file" download="@GetSpawnset.Name" role="button" target="=_top">Download</a>
 		</div>
 	</div>
+	
+	<Heading Level="2">Format</Heading>
+	<div class="bg-gray-22 max-w-sm">
+		<DataField Name="Game version">@SpawnsetBinary.GetGameVersionString()</DataField>
+		<DataField Name="Game mode">@SpawnsetBinary.GameMode</DataField>
+	</div>
+
 	<Heading Level="2">Spawns</Heading>
 	<Spawnset SpawnsView=SpawnsView />
 }
@@ -39,18 +46,20 @@ else
 
 	public GetSpawnset? GetSpawnset { get; set; }
 
+	public SpawnsetBinary? SpawnsetBinary { get; set; }
 	public SpawnsView? SpawnsView { get; set; }
 
 	protected override async Task OnInitializedAsync()
 	{
 		GetSpawnset = await Http.GetSpawnsetById(Id);
 
-		if (!SpawnsetBinary.TryParse(GetSpawnset.FileBytes, out SpawnsetBinary? spawnset))
+		if (!SpawnsetBinary.TryParse(GetSpawnset.FileBytes, out SpawnsetBinary? spawnsetBinary))
 		{
 			// TODO: Log error.
 			return;
 		}
 
-		SpawnsView = new(spawnset, GameVersion.V3_1);
+		SpawnsetBinary = spawnsetBinary;
+		SpawnsView = new(spawnsetBinary, GameVersion.V3_1);
 	}
 }
