@@ -8,6 +8,8 @@ public class GetSpawnset
 
 	public string AuthorName { get; init; } = null!;
 
+	public bool IsPractice { get; init; }
+
 	public DateTime LastUpdated { get; init; }
 
 	public byte[] FileBytes { get; init; } = null!;

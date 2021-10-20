@@ -52,6 +52,7 @@ public static class SpawnsetConverters
 		AuthorName = spawnset.Player.PlayerName,
 		FileBytes = fileBytes,
 		Id = spawnset.Id,
+		IsPractice = spawnset.IsPractice,
 		LastUpdated = spawnset.LastUpdated,
 		Name = spawnset.Name,
 	};

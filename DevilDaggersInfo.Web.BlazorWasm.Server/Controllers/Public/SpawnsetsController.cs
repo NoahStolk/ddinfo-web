@@ -174,7 +174,7 @@ public class SpawnsetsController : ControllerBase
 	[ProducesResponseType(typeof(FileContentResult), StatusCodes.Status200OK)]
 	[ProducesResponseType(StatusCodes.Status400BadRequest)]
 	[ProducesResponseType(StatusCodes.Status404NotFound)]
-	public ActionResult GetSpawnsetFileForDdse([Required] string fileName)
+	public ActionResult GetSpawnsetFile([Required] string fileName)
 	{
 		string path = Path.Combine(_fileSystemService.GetPath(DataSubDirectory.Spawnsets), fileName);
 		if (!IoFile.Exists(path))
