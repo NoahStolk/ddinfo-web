@@ -22,19 +22,43 @@ else
 	<div class="bg-gray-22 max-w-sm">
 		<DataField Name="Author">@GetSpawnset.AuthorName</DataField>
 		<DataField Name="Last updated">@GetSpawnset.LastUpdated.ToString(FormatUtils.DateTimeFormat)</DataField>
-		<DataField Name="Practice">@GetSpawnset.IsPractice</DataField>
+		<DataField Name="Practice">@(GetSpawnset.IsPractice ? "Yes" : "No")</DataField>
 		<DataField Name="File size">@FileSizeUtils.Format(GetSpawnset.FileBytes.Length)</DataField>
 
 		<div class="px-1 py-3">
 			<a class="bg-dark-red hover:bg-red transition-colors duration-200 p-2 rounded text-color-text text-center text-xl font-goethe" href="/api/spawnsets/@(GetSpawnset.Name)/file" download="@GetSpawnset.Name" role="button" target="=_top">Download</a>
 		</div>
 	</div>
-	
+
 	<Heading Level="2">Format</Heading>
 	<div class="bg-gray-22 max-w-sm">
 		<DataField Name="Game version">@SpawnsetBinary.GetGameVersionString()</DataField>
 		<DataField Name="Game mode">@SpawnsetBinary.GameMode</DataField>
 	</div>
+
+	<Heading Level="2">Arena</Heading>
+	<div class="bg-gray-22 max-w-sm">
+		<DataField Name="Start radius">@SpawnsetBinary.ShrinkStart</DataField>
+		<DataField Name="End radius">@SpawnsetBinary.ShrinkEnd</DataField>
+		<DataField Name="Shrinking rate">@SpawnsetBinary.ShrinkRate</DataField>
+		<DataField Name="Brightness">@SpawnsetBinary.Brightness</DataField>
+	</div>
+	<table class="table-fixed mt-2 border-2 border-gray-22">
+		<tbody>
+			@for (int i = 0; i < SpawnsetBinary.ArenaTiles.GetLength(0); i++)
+			{
+				<tr>
+					@for (int j = 0; j < SpawnsetBinary.ArenaTiles.GetLength(1); j++)
+					{
+						float height = MathF.Round(SpawnsetBinary.ArenaTiles[j, i] * 32 + 64); // Swap coordinates because <tr> elements cannot be vertical.
+
+						string backgroundColorStyle = $"background-color: rgb({height}, {Math.Round(height / 2)}, 0)";
+						<td class="w-2 h-2 border border-black" style="@backgroundColorStyle"></td>
+					}
+				</tr>
+			}
+		</tbody>
+	</table>
 
 	<Heading Level="2">Spawns</Heading>
 	<Spawnset SpawnsView=SpawnsView />
