@@ -65,6 +65,13 @@ module.exports = {
 			maxHeight: {
 				'screen-half': '50vh',
 				'lb-name': '1.5rem',
+			},
+			spacing: {
+				'128': '32rem',
+				'160': '40rem',
+				'192': '48rem',
+				'224': '56rem',
+				'256': '64rem'
 			}
 		},
 		fontFamily: {
