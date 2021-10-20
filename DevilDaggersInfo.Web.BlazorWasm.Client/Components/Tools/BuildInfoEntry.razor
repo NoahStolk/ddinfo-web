@@ -1,9 +1,0 @@
-<div class="grid gap-2 grid-cols-4 px-1">
-	<span class="col-span-3">@Name</span>
-	<span class="text-right">@ChildContent</span>
-</div>
-
-@code {
-	[Parameter, EditorRequired] public string Name { get; set; } = null!;
-	[Parameter, EditorRequired] public RenderFragment ChildContent { get; set; } = null!;
-}

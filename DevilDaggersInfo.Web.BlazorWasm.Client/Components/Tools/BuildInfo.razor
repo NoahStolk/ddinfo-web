@@ -1,10 +1,10 @@
 @using DevilDaggersInfo.Web.BlazorWasm.Shared.Dto.Public.Tools
 
 <div class="bg-gray-22 max-w-sm">
-	<BuildInfoEntry Name="Current version">@GetTool.VersionNumber</BuildInfoEntry>
-	<BuildInfoEntry Name="Oldest supported version">@GetTool.VersionNumberRequired</BuildInfoEntry>
-	<BuildInfoEntry Name="File size">@FileSizeUtils.Format(GetTool.FileSize)</BuildInfoEntry>
-	<BuildInfoEntry Name="@($"Total downloads (since {FeatureConstants.TrackingToolDownloadCounts.ToString(FormatUtils.DateFormat)})")">@GetTool.Versions.Sum(v => v.DownloadCount).ToString("N0")</BuildInfoEntry>
+	<DataField Left="3" Name="Current version">@GetTool.VersionNumber</DataField>
+	<DataField Left="3" Name="Oldest supported version">@GetTool.VersionNumberRequired</DataField>
+	<DataField Left="3" Name="File size">@FileSizeUtils.Format(GetTool.FileSize)</DataField>
+	<DataField Left="3" Name="@($"Total downloads (since {FeatureConstants.TrackingToolDownloadCounts.ToString(FormatUtils.DateFormat)})")">@GetTool.Versions.Sum(v => v.DownloadCount).ToString("N0")</DataField>
 
 	<div class="px-1 py-3">
 		<a class="bg-dark-red hover:bg-red transition-colors duration-200 p-2 rounded text-color-text text-center text-xl font-goethe" href="/api/tools/@(GetTool.Name)/file" download="@_fileName" role="button" target="=_top">Download</a>
