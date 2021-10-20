@@ -2,6 +2,7 @@
 @inject PublicApiHttpClient Http
 @inject NavigationManager NavigationManager
 @using DevilDaggersInfo.Core.Spawnset
+@using DevilDaggersInfo.Core.Spawnset.Structs
 @using DevilDaggersInfo.Core.Spawnset.View
 @using DevilDaggersInfo.Core.Wiki.Enums
 @using DevilDaggersInfo.Web.BlazorWasm.Shared.Dto.Public.Spawnsets
@@ -60,6 +61,27 @@ else
 		</tbody>
 	</table>
 
+	<Heading Level="2">Player Settings</Heading>
+	<div class="bg-gray-22 max-w-sm">
+		<DataField Name="Hand">@SpawnsetBinary.HandLevel</DataField>
+		<DataField Name="Additional gems">@SpawnsetBinary.AdditionalGems</DataField>
+	</div>
+	
+	<Heading Level="2">Effective Player Settings</Heading>
+	<div class="bg-gray-22 max-w-sm">
+		<DataField Name="Effective hand">@EffectivePlayerSettings.HandLevel</DataField>
+		<DataField Name="@($"Effective {((int)EffectivePlayerSettings.HandLevel > 2 ? "homing" : "gems")}")">@SpawnsetBinary.AdditionalGems</DataField>
+		@if (EffectivePlayerSettings.HandLevel != EffectivePlayerSettings.HandModel)
+		{
+			<DataField Name="Effective hand model">@EffectivePlayerSettings.HandModel</DataField>
+		}
+	</div>
+	
+	<Heading Level="2">Timer Settings</Heading>
+	<div class="bg-gray-22 max-w-sm">
+		<DataField Name="Timer Start">@SpawnsetBinary.TimerStart.ToString(FormatUtils.TimeFormat)</DataField>
+	</div>
+	
 	<Heading Level="2">Spawns</Heading>
 	<Spawnset SpawnsView=SpawnsView />
 }
@@ -72,6 +94,7 @@ else
 
 	public SpawnsetBinary? SpawnsetBinary { get; set; }
 	public SpawnsView? SpawnsView { get; set; }
+	public EffectivePlayerSettings EffectivePlayerSettings { get; set; }
 
 	protected override async Task OnInitializedAsync()
 	{
@@ -85,5 +108,6 @@ else
 
 		SpawnsetBinary = spawnsetBinary;
 		SpawnsView = new(spawnsetBinary, GameVersion.V3_1);
+		EffectivePlayerSettings = spawnsetBinary.GetEffectivePlayerSettings();
 	}
 }
