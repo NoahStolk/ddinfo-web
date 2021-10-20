@@ -1,19 +1,14 @@
 @using DevilDaggersInfo.Web.BlazorWasm.Shared.Dto.Public.Tools
 
-<div class="grid gap-3 grid-cols-2">
-	<div>Current version</div>
-	<div>@GetTool.VersionNumber</div>
+<div class="bg-gray-22 max-w-sm">
+	<BuildInfoEntry Name="Current version">@GetTool.VersionNumber</BuildInfoEntry>
+	<BuildInfoEntry Name="Oldest supported version">@GetTool.VersionNumberRequired</BuildInfoEntry>
+	<BuildInfoEntry Name="File size">@FileSizeUtils.Format(GetTool.FileSize)</BuildInfoEntry>
+	<BuildInfoEntry Name="@($"Total downloads (since {FeatureConstants.TrackingToolDownloadCounts.ToString(FormatUtils.DateFormat)})")">@GetTool.Versions.Sum(v => v.DownloadCount).ToString("N0")</BuildInfoEntry>
 
-	<div>Oldest supported version</div>
-	<div>@GetTool.VersionNumberRequired</div>
-	
-	<div>File size</div>
-	<div>@FileSizeUtils.Format(GetTool.FileSize)</div>
-	
-	<div>Total downloads (since @(FeatureConstants.TrackingToolDownloadCounts.ToString(FormatUtils.DateFormat)))</div>
-	<div>@GetTool.Versions.Sum(v => v.DownloadCount).ToString("N0")</div>
-	
-	<a class="bg-gray-0b hover:bg-gray-22 transition-colors duration-100 w-24 h-8 py-1 rounded text-color-text text-center" href="/api/tools/@(GetTool.Name)/file" download="@_fileName" role="button" target="=_top">Download</a>
+	<div class="px-1 py-3">
+		<a class="bg-dark-red hover:bg-red transition-colors duration-200 p-2 rounded text-color-text text-center text-xl font-goethe" href="/api/tools/@(GetTool.Name)/file" download="@_fileName" role="button" target="=_top">Download</a>
+	</div>
 </div>
 
 @code
