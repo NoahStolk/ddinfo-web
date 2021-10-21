@@ -37,6 +37,13 @@ else
 
 				foreach (GetCustomEntry ce in GetCustomLeaderboard.CustomEntries)
 				{
+					if (!Version.TryParse(ce.ClientVersion, out Version version))
+						continue;
+
+					bool graphs = version >= FeatureConstants.DdclGraphs;
+					bool homingEaten = version >= FeatureConstants.DdclHomingEaten;
+					bool v3_1 = version >= FeatureConstants.DdclV3_1;
+
 					string daggerCssClass = ce.CustomLeaderboardDagger.ToString().ToLower();
 
 					Death? death = Deaths.GetDeathByLeaderboardType(GameVersion.V3_1, ce.DeathType);
@@ -51,25 +58,28 @@ else
 						<EntryFlag CountryCode="@ce.CountryCode" />
 						<EntryUsername DaggerCssClass="@daggerCssClass" Id="@ce.PlayerId" Name="@($"{ce.PlayerName}")" />
 						<div class="text-right @daggerCssClass">
+							@if (graphs)
+							{
+								<UrlLink Href="@($"/custom/entry/{ce.Id}")">
+									<Tooltip Text="View graphs"><img src="/images/icons/mask/eye.png" /></Tooltip>
+								</UrlLink>
+							}
 							@ce.Time.ToString(FormatUtils.TimeFormat)
-							<UrlLink Href="@($"/custom/entry/{ce.Id}")">
-								<Tooltip Text="View graphs"><img src="/images/icons/mask/eye.png" /></Tooltip>
-							</UrlLink>
 						</div>
 						<div class="text-right hidden md:block">@ce.EnemiesKilled.ToString(FormatUtils.LeaderboardIntFormat)</div>
 						<div class="text-right hidden md:block">@ce.EnemiesAlive.ToString(FormatUtils.LeaderboardIntFormat)</div>
 						<div class="text-right hidden md:block">@ce.GemsCollected.ToString(FormatUtils.LeaderboardIntFormat)</div>
-						<div class="text-right hidden lg:block">@ce.GemsDespawned.ToString(FormatUtils.LeaderboardIntFormat)</div>
-						<div class="text-right hidden lg:block">@ce.GemsEaten.ToString(FormatUtils.LeaderboardIntFormat)</div>
+						<div class="text-right hidden lg:block">@(v3_1 ? ce.GemsDespawned.ToString(FormatUtils.LeaderboardIntFormat) : "N/A")</div>
+						<div class="text-right hidden lg:block">@(v3_1 ? ce.GemsEaten.ToString(FormatUtils.LeaderboardIntFormat) : "N/A")</div>
 						<div class="text-right hidden md:block">
 							<Tooltip Text="@daggers">@accuracy.ToString(FormatUtils.AccuracyFormat)</Tooltip>
 						</div>
 						<div class="text-left hidden lg:block" style="@deathStyle">@deathName</div>
 						<div class="text-right hidden xl:block">@ce.HomingStored.ToString(FormatUtils.LeaderboardIntFormat)</div>
-						<div class="text-right hidden xl:block">@ce.HomingEaten.ToString(FormatUtils.LeaderboardIntFormat)</div>
-						<div class="text-right hidden 2xl:block">@ce.LevelUpTime2.ToString(FormatUtils.TimeFormat)</div>
-						<div class="text-right hidden 2xl:block">@ce.LevelUpTime3.ToString(FormatUtils.TimeFormat)</div>
-						<div class="text-right hidden 2xl:block">@ce.LevelUpTime4.ToString(FormatUtils.TimeFormat)</div>
+						<div class="text-right hidden xl:block">@(homingEaten ? ce.HomingEaten.ToString(FormatUtils.LeaderboardIntFormat) : "N/A")</div>
+						<div class="text-right hidden 2xl:block">@(ce.LevelUpTime2 == 0 ? "N/A" : ce.LevelUpTime2.ToString(FormatUtils.TimeFormat))</div>
+						<div class="text-right hidden 2xl:block">@(ce.LevelUpTime3 == 0 ? "N/A" : ce.LevelUpTime3.ToString(FormatUtils.TimeFormat))</div>
+						<div class="text-right hidden 2xl:block">@(ce.LevelUpTime4 == 0 ? "N/A" : ce.LevelUpTime4.ToString(FormatUtils.TimeFormat))</div>
 						<div class="text-right hidden 2xl:block">@ce.SubmitDate.ToString(FormatUtils.DateTimeFormat)</div>
 					</div>
 				}
