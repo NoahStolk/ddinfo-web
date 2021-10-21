@@ -34,6 +34,7 @@ public static class CustomEntryConverters
 		PlayerId = customEntry.PlayerId,
 		PlayerName = customEntry.Player.PlayerName,
 		CountryCode = customEntry.Player.CountryCode,
+		Client = customEntry.Client,
 		ClientVersion = customEntry.ClientVersion,
 		DeathType = customEntry.DeathType,
 		EnemiesAlive = customEntry.EnemiesAlive,

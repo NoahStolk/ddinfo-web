@@ -2,6 +2,7 @@
 @inject PublicApiHttpClient Http
 @using DevilDaggersInfo.Web.BlazorWasm.Shared.Dto.Public.CustomEntries
 @using DevilDaggersInfo.Web.BlazorWasm.Shared.Dto.Public.CustomLeaderboards
+@using DevilDaggersInfo.Web.BlazorWasm.Shared.Enums;
 
 <Heading>Custom Leaderboard</Heading>
 
@@ -40,9 +41,10 @@ else
 					if (!Version.TryParse(ce.ClientVersion, out Version version))
 						continue;
 
-					bool graphs = version >= FeatureConstants.DdclGraphs;
-					bool homingEaten = version >= FeatureConstants.DdclHomingEaten;
-					bool v3_1 = version >= FeatureConstants.DdclV3_1;
+					bool isDdcl = ce.Client == CustomLeaderboardsClient.DevilDaggersCustomLeaderboards;
+					bool graphs = !isDdcl || version >= FeatureConstants.DdclGraphs;
+					bool homingEaten = !isDdcl ||version >= FeatureConstants.DdclHomingEaten;
+					bool v3_1 = !isDdcl ||version >= FeatureConstants.DdclV3_1;
 
 					string daggerCssClass = ce.CustomLeaderboardDagger.ToString().ToLower();
 

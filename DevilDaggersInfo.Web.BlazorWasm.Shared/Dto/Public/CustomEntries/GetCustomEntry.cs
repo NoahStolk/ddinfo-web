@@ -47,4 +47,6 @@ public class GetCustomEntry
 	public DateTime SubmitDate { get; init; }
 
 	public string? ClientVersion { get; init; }
+
+	public CustomLeaderboardsClient Client { get; init; }
 }
