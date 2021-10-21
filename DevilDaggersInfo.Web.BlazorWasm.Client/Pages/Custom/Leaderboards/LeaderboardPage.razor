@@ -48,10 +48,6 @@ else
 
 					string daggerCssClass = ce.CustomLeaderboardDagger.ToString().ToLower();
 
-					Death? death = Deaths.GetDeathByLeaderboardType(GameVersion.V3_1, ce.DeathType);
-					string deathStyle = $"color: {(death?.Color.HexCode ?? "#444")};";
-					string deathName = death?.Name ?? "Unknown";
-
 					double accuracy = ce.DaggersFired == 0 ? 0 : ce.DaggersHit / (double)ce.DaggersFired;
 					string daggers = FormatUtils.FormatDaggersInt32(ce.DaggersHit, ce.DaggersFired, false);
 
@@ -76,7 +72,7 @@ else
 						<div class="text-right hidden md:block">
 							<Tooltip Text="@daggers">@accuracy.ToString(FormatUtils.AccuracyFormat)</Tooltip>
 						</div>
-						<div class="text-left hidden lg:block" style="@deathStyle">@deathName</div>
+						<div class="text-left hidden lg:block"><SpanDeath DeathType="ce.DeathType" /></div>
 						<div class="text-right hidden xl:block">@ce.HomingStored.ToString(FormatUtils.LeaderboardIntFormat)</div>
 						<div class="text-right hidden xl:block">@(homingEaten ? (MarkupString)ce.HomingEaten.ToString(FormatUtils.LeaderboardIntFormat) : Constants.NoDataMarkup)</div>
 						<div class="text-right hidden 2xl:block">@(ce.LevelUpTime2 == 0 ? Constants.NoDataMarkup : (MarkupString)ce.LevelUpTime2.ToString(FormatUtils.TimeFormat))</div>
