@@ -53,11 +53,11 @@ module.exports = {
 				'mods-sm': createMinmaxGrid([1]),
 
 				// Leaderboards
-				'custom-leaderboard-2xl': '36px 32px minmax(64px, 100%) minmax(80px, 5%) minmax(40px, 5%) minmax(40px, 5%) minmax(40px, 5%) minmax(40px, 5%) minmax(40px, 5%) minmax(48px, 5%) minmax(120px, 5%) minmax(40px, 5%) minmax(40px, 5%) minmax(72px, 5%) minmax(72px, 5%) minmax(72px, 5%) minmax(144px, 5%)',
-				'custom-leaderboard-xl': '36px 32px minmax(64px, 100%) minmax(80px, 5%) minmax(40px, 5%) minmax(40px, 5%) minmax(40px, 5%) minmax(40px, 5%) minmax(40px, 5%) minmax(48px, 5%) minmax(120px, 5%) minmax(40px, 5%) minmax(40px, 5%)',
-				'custom-leaderboard-lg': '36px 32px minmax(64px, 100%) minmax(80px, 5%) minmax(40px, 5%) minmax(40px, 5%) minmax(40px, 5%) minmax(40px, 5%) minmax(40px, 5%) minmax(48px, 5%) minmax(120px, 5%)',
-				'custom-leaderboard-md': '36px 32px minmax(64px, 100%) minmax(80px, 5%) minmax(40px, 5%) minmax(40px, 5%) minmax(40px, 5%) minmax(48px, 5%)',
-				'custom-leaderboard-sm': '36px 32px minmax(64px, 100%) minmax(80px, 5%)',
+				'custom-leaderboard-2xl': '36px 32px minmax(64px, 100%) minmax(90px, 5%) minmax(40px, 5%) minmax(40px, 5%) minmax(40px, 5%) minmax(40px, 5%) minmax(40px, 5%) minmax(48px, 5%) minmax(120px, 5%) minmax(40px, 5%) minmax(40px, 5%) minmax(72px, 5%) minmax(72px, 5%) minmax(72px, 5%) minmax(144px, 5%)',
+				'custom-leaderboard-xl': '36px 32px minmax(64px, 100%) minmax(90px, 5%) minmax(40px, 5%) minmax(40px, 5%) minmax(40px, 5%) minmax(40px, 5%) minmax(40px, 5%) minmax(48px, 5%) minmax(120px, 5%) minmax(40px, 5%) minmax(40px, 5%)',
+				'custom-leaderboard-lg': '36px 32px minmax(64px, 100%) minmax(90px, 5%) minmax(40px, 5%) minmax(40px, 5%) minmax(40px, 5%) minmax(40px, 5%) minmax(40px, 5%) minmax(48px, 5%) minmax(120px, 5%)',
+				'custom-leaderboard-md': '36px 32px minmax(64px, 100%) minmax(90px, 5%) minmax(40px, 5%) minmax(40px, 5%) minmax(40px, 5%) minmax(48px, 5%)',
+				'custom-leaderboard-sm': '36px 32px minmax(64px, 100%) minmax(90px, 5%)',
 
 				'leaderboard-xl': 'minmax(36px, 72px) 32px minmax(64px, 100%) minmax(80px, 80px) minmax(40px, 5%) minmax(40px, 5%) minmax(48px, 5%) minmax(120px, 8%) minmax(112px, 8%) minmax(80px, 8%) minmax(80px, 8%) minmax(48px, 8%) minmax(56px, 8%)',
 				'leaderboard-lg': 'minmax(36px, 72px) 32px minmax(64px, 100%) minmax(80px, 80px) minmax(40px, 5%) minmax(40px, 5%) minmax(48px, 5%) minmax(120px, 8%)',
