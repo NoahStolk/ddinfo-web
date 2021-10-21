@@ -24,9 +24,9 @@ else
 
 	<UrlLink Href="@($"/leaderboard?Rank={(GetEntry.Rank - 1) / 100 * 100 + 1}")">Back to leaderboard</UrlLink>
 	<p>@GetEntry.Username is currently rank @GetEntry.Rank.</p>
-	<div class="grid gap-2 grid-cols-1 md:grid-cols-2 xl:grid-cols-4">
+	<div class="grid gap-2 grid-cols-1 md:grid-cols-2 xl:grid-cols-3 2xl:grid-cols-5">
 		<PlayerCard Title="Personal Best">
-			<DataField CssClass="even:bg-gray-22" Name="Time">@GetEntry.Time.ToString(FormatUtils.TimeFormat)</DataField>
+			<DataField CssClass="even:bg-gray-22" Name="Time"><Time TimeInSeconds="@GetEntry.Time" /></DataField>
 			<DataField CssClass="even:bg-gray-22" Name="Kills">@GetEntry.Kills.ToString(FormatUtils.LeaderboardIntFormat)</DataField>
 			<DataField CssClass="even:bg-gray-22" Name="Gems">@GetEntry.Gems.ToString(FormatUtils.LeaderboardIntFormat)</DataField>
 			<DataField CssClass="even:bg-gray-22" Name="Accuracy">@((GetEntry.DaggersHit / (float)GetEntry.DaggersFired).ToString(FormatUtils.AccuracyFormat))</DataField>
@@ -42,7 +42,7 @@ else
 			<DataField CssClass="even:bg-gray-22" Name="Total accuracy">@((GetEntry.DaggersHitTotal / (float)GetEntry.DaggersFiredTotal).ToString(FormatUtils.AccuracyFormat))</DataField>
 			<DataField CssClass="even:bg-gray-22" Name="Total daggers hit">@GetEntry.DaggersHitTotal.ToString(FormatUtils.LeaderboardIntFormat)</DataField>
 			<DataField CssClass="even:bg-gray-22" Name="Total daggers fired">@GetEntry.DaggersFiredTotal.ToString(FormatUtils.LeaderboardIntFormat)</DataField>
-			<DataField CssClass="even:bg-gray-22" Name="Total deaths">@GetEntry.DeathsTotal</DataField>
+			<DataField CssClass="even:bg-gray-22" Name="Total deaths">@GetEntry.DeathsTotal.ToString(FormatUtils.LeaderboardIntFormat)</DataField>
 		</PlayerCard>
 
 		@if (GetEntry.DeathsTotal > 0)
