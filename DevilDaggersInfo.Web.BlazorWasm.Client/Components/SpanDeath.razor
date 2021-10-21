@@ -4,8 +4,8 @@
 	[Parameter, EditorRequired] public byte DeathType { get; set; }
 	[Parameter] public GameVersion GameVersion { get; set; } = GameVersion.V3_1;
 
-	private string _deathStyle;
-	private string _deathName;
+	private string _deathStyle = null!;
+	private string _deathName = null!;
 
 	protected override void OnInitialized()
 	{
