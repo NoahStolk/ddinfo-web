@@ -1,0 +1,16 @@
+<span style="@_deathStyle" class="font-goethe text-lg">@_deathName</span>
+
+@code {
+	[Parameter, EditorRequired] public GameVersion GameVersion { get; set; }
+	[Parameter, EditorRequired] public byte DeathType { get; set; }
+
+	private string _deathStyle;
+	private string _deathName;
+
+	protected override void OnInitialized()
+	{
+		Death? death = Deaths.GetDeathByLeaderboardType(GameVersion, DeathType);
+		_deathStyle = $"color: {(death?.Color.HexCode ?? "#444")};";
+		_deathName = death?.Name ?? "Unknown";
+	}
+}
