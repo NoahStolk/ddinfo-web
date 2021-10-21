@@ -22,9 +22,9 @@ else
 		<p class="py-1">Statistics were last fetched on @_statistics.DateTime.ToString(FormatUtils.DateTimeUtcFormat).</p>
 
 		<Heading Level="2">Scores</Heading>
-		<p>The average time survived for all players is <Time TimeInSeconds="_statistics.Time.Average / 10000.0" /> seconds.</p>
-		<p>The median time survived for all players is <Time TimeInSeconds="_statistics.Time.Median / 10000.0" /> seconds.</p>
-		<p>The mode time survived for all players is <Time TimeInSeconds="_statistics.Time.Mode / 10000.0" /> seconds.</p>
+		<p>The average time survived for all players is <SpanTime TimeInSeconds="_statistics.Time.Average / 10000.0" /> seconds.</p>
+		<p>The median time survived for all players is <SpanTime TimeInSeconds="_statistics.Time.Median / 10000.0" /> seconds.</p>
+		<p>The mode time survived for all players is <SpanTime TimeInSeconds="_statistics.Time.Mode / 10000.0" /> seconds.</p>
 		<BarChart Options="_bco" @ref="_sub500Chart" TItem="int" />
 		<BarChart Options="_bco" @ref="_sub1000Chart" TItem="int" />
 		<BarChart Options="_bco" @ref="_post1000Chart" TItem="int" />
