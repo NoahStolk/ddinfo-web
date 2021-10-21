@@ -12,6 +12,7 @@ module.exports = {
 			'dark-green': '#060',
 			'color-text': '#ddd',
 			'gray-0b': '#0b0b0b',
+			'gray-16': '#161616',
 			'gray-22': '#222',
 			'color-ban': '#666',
 			'underline-leviathan': '#810017',

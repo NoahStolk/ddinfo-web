@@ -26,23 +26,23 @@ else
 	<p>@GetEntry.Username is currently rank @GetEntry.Rank.</p>
 	<div class="grid gap-2 grid-cols-1 md:grid-cols-2 xl:grid-cols-3 2xl:grid-cols-5">
 		<PlayerCard Title="Personal Best">
-			<DataField CssClass="even:bg-gray-22" Name="Time"><Time TimeInSeconds="@GetEntry.Time" /></DataField>
-			<DataField CssClass="even:bg-gray-22" Name="Kills">@GetEntry.Kills.ToString(FormatUtils.LeaderboardIntFormat)</DataField>
-			<DataField CssClass="even:bg-gray-22" Name="Gems">@GetEntry.Gems.ToString(FormatUtils.LeaderboardIntFormat)</DataField>
-			<DataField CssClass="even:bg-gray-22" Name="Accuracy">@((GetEntry.DaggersHit / (float)GetEntry.DaggersFired).ToString(FormatUtils.AccuracyFormat))</DataField>
-			<DataField CssClass="even:bg-gray-22" Name="Daggers hit">@GetEntry.DaggersHit.ToString(FormatUtils.LeaderboardIntFormat)</DataField>
-			<DataField CssClass="even:bg-gray-22" Name="Daggers fired">@GetEntry.DaggersFired.ToString(FormatUtils.LeaderboardIntFormat)</DataField>
-			<DataField CssClass="even:bg-gray-22" Name="Death type">@(Deaths.GetDeathByLeaderboardType(GameVersion.V3_1, GetEntry.DeathType)?.Name ?? "?")</DataField>
+			<DataField CssClass="even:bg-gray-16" Name="Time"><SpanTime TimeInSeconds="@GetEntry.Time" /></DataField>
+			<DataField CssClass="even:bg-gray-16" Name="Kills">@GetEntry.Kills.ToString(FormatUtils.LeaderboardIntFormat)</DataField>
+			<DataField CssClass="even:bg-gray-16" Name="Gems">@GetEntry.Gems.ToString(FormatUtils.LeaderboardIntFormat)</DataField>
+			<DataField CssClass="even:bg-gray-16" Name="Accuracy">@((GetEntry.DaggersHit / (float)GetEntry.DaggersFired).ToString(FormatUtils.AccuracyFormat))</DataField>
+			<DataField CssClass="even:bg-gray-16" Name="Daggers hit">@GetEntry.DaggersHit.ToString(FormatUtils.LeaderboardIntFormat)</DataField>
+			<DataField CssClass="even:bg-gray-16" Name="Daggers fired">@GetEntry.DaggersFired.ToString(FormatUtils.LeaderboardIntFormat)</DataField>
+			<DataField CssClass="even:bg-gray-16" Name="Death type"><SpanDeath GameVersion="GameVersion.V3_1" DeathType="@GetEntry.DeathType" /></DataField>
 		</PlayerCard>
 
 		<PlayerCard Title="Total Statistics">
-			<DataField CssClass="even:bg-gray-22" Name="Total time">@GetEntry.TimeTotal.ToString(FormatUtils.LeaderboardGlobalTimeFormat)</DataField>
-			<DataField CssClass="even:bg-gray-22" Name="Total kills">@GetEntry.KillsTotal.ToString(FormatUtils.LeaderboardIntFormat)</DataField>
-			<DataField CssClass="even:bg-gray-22" Name="Total gems">@GetEntry.GemsTotal.ToString(FormatUtils.LeaderboardIntFormat)</DataField>
-			<DataField CssClass="even:bg-gray-22" Name="Total accuracy">@((GetEntry.DaggersHitTotal / (float)GetEntry.DaggersFiredTotal).ToString(FormatUtils.AccuracyFormat))</DataField>
-			<DataField CssClass="even:bg-gray-22" Name="Total daggers hit">@GetEntry.DaggersHitTotal.ToString(FormatUtils.LeaderboardIntFormat)</DataField>
-			<DataField CssClass="even:bg-gray-22" Name="Total daggers fired">@GetEntry.DaggersFiredTotal.ToString(FormatUtils.LeaderboardIntFormat)</DataField>
-			<DataField CssClass="even:bg-gray-22" Name="Total deaths">@GetEntry.DeathsTotal.ToString(FormatUtils.LeaderboardIntFormat)</DataField>
+			<DataField CssClass="even:bg-gray-16" Name="Total time">@GetEntry.TimeTotal.ToString(FormatUtils.LeaderboardGlobalTimeFormat)</DataField>
+			<DataField CssClass="even:bg-gray-16" Name="Total kills">@GetEntry.KillsTotal.ToString(FormatUtils.LeaderboardIntFormat)</DataField>
+			<DataField CssClass="even:bg-gray-16" Name="Total gems">@GetEntry.GemsTotal.ToString(FormatUtils.LeaderboardIntFormat)</DataField>
+			<DataField CssClass="even:bg-gray-16" Name="Total accuracy">@((GetEntry.DaggersHitTotal / (float)GetEntry.DaggersFiredTotal).ToString(FormatUtils.AccuracyFormat))</DataField>
+			<DataField CssClass="even:bg-gray-16" Name="Total daggers hit">@GetEntry.DaggersHitTotal.ToString(FormatUtils.LeaderboardIntFormat)</DataField>
+			<DataField CssClass="even:bg-gray-16" Name="Total daggers fired">@GetEntry.DaggersFiredTotal.ToString(FormatUtils.LeaderboardIntFormat)</DataField>
+			<DataField CssClass="even:bg-gray-16" Name="Total deaths">@GetEntry.DeathsTotal.ToString(FormatUtils.LeaderboardIntFormat)</DataField>
 		</PlayerCard>
 
 		@if (GetEntry.DeathsTotal > 0)
@@ -50,11 +50,11 @@ else
 			float deathsAsFloat = (float)GetEntry.DeathsTotal;
 
 			<PlayerCard Title="Average Statistics">
-				<DataField CssClass="even:bg-gray-22" Name="Average time">@((GetEntry.TimeTotal / deathsAsFloat).ToString(FormatUtils.TimeFormat))</DataField>
-				<DataField CssClass="even:bg-gray-22" Name="Average kills">@((GetEntry.KillsTotal / deathsAsFloat).ToString(FormatUtils.LeaderboardIntAverageFormat))</DataField>
-				<DataField CssClass="even:bg-gray-22" Name="Average gems">@((GetEntry.GemsTotal / deathsAsFloat).ToString(FormatUtils.LeaderboardIntAverageFormat))</DataField>
-				<DataField CssClass="even:bg-gray-22" Name="Average daggers hit">@((GetEntry.DaggersHitTotal / deathsAsFloat).ToString(FormatUtils.LeaderboardIntAverageFormat))</DataField>
-				<DataField CssClass="even:bg-gray-22" Name="Average daggers fired">@((GetEntry.DaggersFiredTotal / deathsAsFloat).ToString(FormatUtils.LeaderboardIntAverageFormat))</DataField>
+				<DataField CssClass="even:bg-gray-16" Name="Average time">@((GetEntry.TimeTotal / deathsAsFloat).ToString(FormatUtils.TimeFormat))</DataField>
+				<DataField CssClass="even:bg-gray-16" Name="Average kills">@((GetEntry.KillsTotal / deathsAsFloat).ToString(FormatUtils.LeaderboardIntAverageFormat))</DataField>
+				<DataField CssClass="even:bg-gray-16" Name="Average gems">@((GetEntry.GemsTotal / deathsAsFloat).ToString(FormatUtils.LeaderboardIntAverageFormat))</DataField>
+				<DataField CssClass="even:bg-gray-16" Name="Average daggers hit">@((GetEntry.DaggersHitTotal / deathsAsFloat).ToString(FormatUtils.LeaderboardIntAverageFormat))</DataField>
+				<DataField CssClass="even:bg-gray-16" Name="Average daggers fired">@((GetEntry.DaggersFiredTotal / deathsAsFloat).ToString(FormatUtils.LeaderboardIntAverageFormat))</DataField>
 			</PlayerCard>
 		}
 
@@ -76,14 +76,14 @@ else
 				bool? legacyAudio = GetPlayer.Settings.UsesLegacyAudio;
 
 				<PlayerCard Title="Settings">
-					<DataField CssClass="even:bg-gray-22" Name="eDPI">@(GetPlayer.Settings.Edpi?.ToString(FormatUtils.InGameSensFormat) ?? "N/A")</DataField>
-					<DataField CssClass="even:bg-gray-22" Name="DPI">@(GetPlayer.Settings.Dpi?.ToString() ?? "N/A")</DataField>
-					<DataField CssClass="even:bg-gray-22" Name="In-game sens">@(GetPlayer.Settings.InGameSens?.ToString(FormatUtils.InGameSensFormat) ?? "N/A")</DataField>
-					<DataField CssClass="even:bg-gray-22" Name="FOV">@(GetPlayer.Settings.Fov?.ToString() ?? "N/A")</DataField>
-					<DataField CssClass="even:bg-gray-22" Name="Gamma">@(GetPlayer.Settings.Gamma?.ToString(FormatUtils.GammaFormat) ?? "N/A")</DataField>
-					<DataField CssClass="even:bg-gray-22" Name="Hand orientation">@(rightHand.HasValue ? rightHand.Value ? "Right" : "Left" : "N/A")</DataField>
-					<DataField CssClass="even:bg-gray-22" Name="Hand flash">@(flashHand.HasValue ? flashHand.Value ? "On" : "Off" : "N/A")</DataField>
-					<DataField CssClass="even:bg-gray-22" Name="Legacy audio">@(legacyAudio.HasValue ? legacyAudio.Value ? "On" : "Off" : "N/A")</DataField>
+					<DataField CssClass="even:bg-gray-16" Name="eDPI">@(GetPlayer.Settings.Edpi?.ToString(FormatUtils.InGameSensFormat) ?? "N/A")</DataField>
+					<DataField CssClass="even:bg-gray-16" Name="DPI">@(GetPlayer.Settings.Dpi?.ToString() ?? "N/A")</DataField>
+					<DataField CssClass="even:bg-gray-16" Name="In-game sens">@(GetPlayer.Settings.InGameSens?.ToString(FormatUtils.InGameSensFormat) ?? "N/A")</DataField>
+					<DataField CssClass="even:bg-gray-16" Name="FOV">@(GetPlayer.Settings.Fov?.ToString() ?? "N/A")</DataField>
+					<DataField CssClass="even:bg-gray-16" Name="Gamma">@(GetPlayer.Settings.Gamma?.ToString(FormatUtils.GammaFormat) ?? "N/A")</DataField>
+					<DataField CssClass="even:bg-gray-16" Name="Hand orientation">@(rightHand.HasValue ? rightHand.Value ? "Right" : "Left" : "N/A")</DataField>
+					<DataField CssClass="even:bg-gray-16" Name="Hand flash">@(flashHand.HasValue ? flashHand.Value ? "On" : "Off" : "N/A")</DataField>
+					<DataField CssClass="even:bg-gray-16" Name="Legacy audio">@(legacyAudio.HasValue ? legacyAudio.Value ? "On" : "Off" : "N/A")</DataField>
 				</PlayerCard>
 			}
 
@@ -91,7 +91,7 @@ else
 			if (GetPlayer.CountryCode != null)
 			{
 				<PlayerCard Title="Miscellaneous">
-					<DataField CssClass="even:bg-gray-22" Name="Country">@GetPlayer.CountryCode</DataField>
+					<DataField CssClass="even:bg-gray-16" Name="Country">@GetPlayer.CountryCode</DataField>
 				</PlayerCard>
 			}
 		}
@@ -109,13 +109,13 @@ else
 					continue;
 
 				<PlayerCard Title="@($"Custom Leaderboard Statistics ({category})")">
-					<DataField CssClass="even:bg-gray-22" Name="Leviathan daggers">@stats.LeviathanDaggerCount</DataField>
-					<DataField CssClass="even:bg-gray-22" Name="Devil daggers">@stats.DevilDaggerCount</DataField>
-					<DataField CssClass="even:bg-gray-22" Name="Golden daggers">@stats.GoldenDaggerCount</DataField>
-					<DataField CssClass="even:bg-gray-22" Name="Silver daggers">@stats.SilverDaggerCount</DataField>
-					<DataField CssClass="even:bg-gray-22" Name="Bronze daggers">@stats.BronzeDaggerCount</DataField>
-					<DataField CssClass="even:bg-gray-22" Name="Default daggers">@stats.DefaultDaggerCount</DataField>
-					<DataField CssClass="even:bg-gray-22" Name="Played">@stats.LeaderboardsPlayedCount</DataField>
+					<DataField CssClass="even:bg-gray-16" Name="Leviathan daggers">@stats.LeviathanDaggerCount</DataField>
+					<DataField CssClass="even:bg-gray-16" Name="Devil daggers">@stats.DevilDaggerCount</DataField>
+					<DataField CssClass="even:bg-gray-16" Name="Golden daggers">@stats.GoldenDaggerCount</DataField>
+					<DataField CssClass="even:bg-gray-16" Name="Silver daggers">@stats.SilverDaggerCount</DataField>
+					<DataField CssClass="even:bg-gray-16" Name="Bronze daggers">@stats.BronzeDaggerCount</DataField>
+					<DataField CssClass="even:bg-gray-16" Name="Default daggers">@stats.DefaultDaggerCount</DataField>
+					<DataField CssClass="even:bg-gray-16" Name="Played">@stats.LeaderboardsPlayedCount</DataField>
 				</PlayerCard>
 			}
 		}
@@ -130,7 +130,7 @@ else
 			<PlayerCard Title="Spawnsets">
 				@foreach (GetSpawnsetName getSpawnsetName in GetSpawnsetNames)
 				{
-					<div class="grid gap-2 grid-cols-2 even:bg-gray-22 px-1">
+					<div class="grid gap-2 grid-cols-2 even:bg-gray-16 px-1">
 						<UrlLink Href="@($"/custom/spawnset/{getSpawnsetName.Id}")">@getSpawnsetName.Name</UrlLink>
 					</div>
 				}
@@ -147,7 +147,7 @@ else
 			<PlayerCard Title="Mods">
 				@foreach (GetModName getModName in GetModNames)
 				{
-					<div class="grid gap-2 grid-cols-2 even:bg-gray-22 px-1">
+					<div class="grid gap-2 grid-cols-2 even:bg-gray-16 px-1">
 						<UrlLink Href="@($"/custom/mod/{getModName.Id}")">@getModName.Name</UrlLink>
 					</div>
 				}
