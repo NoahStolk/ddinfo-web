@@ -1,8 +1,8 @@
 <span style="@_deathStyle" class="font-goethe text-lg">@_deathName</span>
 
 @code {
-	[Parameter, EditorRequired] public GameVersion GameVersion { get; set; }
 	[Parameter, EditorRequired] public byte DeathType { get; set; }
+	[Parameter] public GameVersion GameVersion { get; set; } = GameVersion.V3_1;
 
 	private string _deathStyle;
 	private string _deathName;

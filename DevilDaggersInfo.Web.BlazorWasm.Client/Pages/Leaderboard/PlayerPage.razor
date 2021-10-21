@@ -32,7 +32,7 @@ else
 			<DataField CssClass="even:bg-gray-16" Name="Accuracy">@((GetEntry.DaggersHit / (float)GetEntry.DaggersFired).ToString(FormatUtils.AccuracyFormat))</DataField>
 			<DataField CssClass="even:bg-gray-16" Name="Daggers hit">@GetEntry.DaggersHit.ToString(FormatUtils.LeaderboardIntFormat)</DataField>
 			<DataField CssClass="even:bg-gray-16" Name="Daggers fired">@GetEntry.DaggersFired.ToString(FormatUtils.LeaderboardIntFormat)</DataField>
-			<DataField CssClass="even:bg-gray-16" Name="Death type"><SpanDeath GameVersion="GameVersion.V3_1" DeathType="@GetEntry.DeathType" /></DataField>
+			<DataField CssClass="even:bg-gray-16" Name="Death type"><SpanDeath DeathType="@GetEntry.DeathType" /></DataField>
 		</PlayerCard>
 
 		<PlayerCard Title="Total Statistics">
