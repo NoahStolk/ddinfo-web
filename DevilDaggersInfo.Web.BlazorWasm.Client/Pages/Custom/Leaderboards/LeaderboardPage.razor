@@ -49,8 +49,13 @@ else
 					<div class="grid gap-3 grid-cols-custom-leaderboard-sm md:grid-cols-custom-leaderboard-md lg:grid-cols-custom-leaderboard-lg xl:grid-cols-custom-leaderboard-xl 2xl:grid-cols-custom-leaderboard-2xl h-6 @(i++ % 2 == 0 ? "bg-gray-0b" : string.Empty)">
 						<EntryRank PlayerId="@ce.PlayerId" Rank="@ce.Rank" />
 						<EntryFlag CountryCode="@ce.CountryCode" />
-						<EntryUsername DaggerCssClass="@daggerCssClass" Id="@ce.PlayerId" Name="@($"{ce.PlayerName} ({ce.Id})")" />
-						<div class="text-right @daggerCssClass">@ce.Time.ToString(FormatUtils.TimeFormat)</div>
+						<EntryUsername DaggerCssClass="@daggerCssClass" Id="@ce.PlayerId" Name="@($"{ce.PlayerName}")" />
+						<div class="text-right @daggerCssClass">
+							@ce.Time.ToString(FormatUtils.TimeFormat)
+							<UrlLink Href="@($"/custom/entry/{ce.Id}")">
+								<Tooltip Text="View graphs"><img src="/images/icons/mask/eye.png" /></Tooltip>
+							</UrlLink>
+						</div>
 						<div class="text-right hidden md:block">@ce.EnemiesKilled.ToString(FormatUtils.LeaderboardIntFormat)</div>
 						<div class="text-right hidden md:block">@ce.EnemiesAlive.ToString(FormatUtils.LeaderboardIntFormat)</div>
 						<div class="text-right hidden md:block">@ce.GemsCollected.ToString(FormatUtils.LeaderboardIntFormat)</div>
