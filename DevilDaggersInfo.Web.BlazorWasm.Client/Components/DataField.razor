@@ -1,4 +1,4 @@
-<div class="grid gap-2 grid-cols-@(Left + Right) px-1">
+<div class="grid gap-2 grid-cols-@(Left + Right) px-1 @CssClass">
 	<span class="col-span-@(Left)">@Name</span>
 	<span class="col-span-@(Right) text-right">@ChildContent</span>
 </div>
@@ -9,4 +9,6 @@
 	
 	[Parameter] public int Left { get; set; } = 1;
 	[Parameter] public int Right { get; set; } = 1;
+
+	[Parameter] public string? CssClass { get; set; }
 }
