@@ -61,6 +61,11 @@ module.exports = {
 				'leaderboard-lg': 'minmax(36px, 72px) 32px minmax(64px, 100%) minmax(80px, 80px) minmax(40px, 5%) minmax(40px, 5%) minmax(48px, 5%) minmax(120px, 8%)',
 				'leaderboard-md': 'minmax(36px, 72px) 32px minmax(64px, 100%) minmax(80px, 80px) minmax(40px, 5%) minmax(40px, 5%) minmax(48px, 5%)',
 				'leaderboard-sm': 'minmax(36px, 72px) 32px minmax(64px, 100%) minmax(80px, 80px)',
+
+				'player-settings-xl': 'minmax(36px, 72px) 32px minmax(64px, 100%) minmax(80px, 80px) minmax(70px, 5%) minmax(50px, 5%) minmax(50px, 5%) minmax(50px, 5%) minmax(70px, 8%) minmax(90px, 8%) minmax(60px, 8%) minmax(110px, 8%)',
+				'player-settings-lg': 'minmax(36px, 72px) 32px minmax(64px, 100%) minmax(80px, 80px) minmax(70px, 5%) minmax(50px, 5%) minmax(50px, 5%) minmax(50px, 5%)',
+				'player-settings-md': 'minmax(36px, 72px) 32px minmax(64px, 100%) minmax(80px, 80px) minmax(70px, 5%) minmax(50px, 5%) minmax(50px, 5%)',
+				'player-settings-sm': 'minmax(36px, 72px) 32px minmax(64px, 100%) minmax(80px, 80px)',
 			},
 			maxHeight: {
 				'screen-half': '50vh',
@@ -71,7 +76,7 @@ module.exports = {
 				'160': '40rem',
 				'192': '48rem',
 				'224': '56rem',
-				'256': '64rem'
+				'256': '64rem',
 			}
 		},
 		fontFamily: {
