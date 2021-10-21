@@ -15,6 +15,7 @@ module.exports = {
 			'gray-16': '#161616',
 			'gray-22': '#222',
 			'color-ban': '#666',
+			'no-data': '#666',
 			'underline-leviathan': '#810017',
 			'underline-devil': '#CB2012',
 			'underline-golden': '#FCBE34',
