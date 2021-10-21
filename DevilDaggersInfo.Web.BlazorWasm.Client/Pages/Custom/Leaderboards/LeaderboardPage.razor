@@ -12,6 +12,16 @@
 }
 else
 {
+	if (GetCustomLeaderboard.IsArchived)
+	{
+		<p class="text-lg p-1 m-1 bg-dark-red">This leaderboard is archived. You can still submit scores to it, but it won't show up in the list of leaderboards or player statistics.</p>
+	}
+
+	if (GetCustomLeaderboard.Category == CustomLeaderboardCategory.TimeAttack)
+	{
+		<p class="text-lg p-1 m-1 bg-dark-orange">TimeAttack leaderboards are not supported right now.</p>
+	}
+
 	<div class="text-xl font-goethe">
 		<div class="grid gap-3 grid-cols-custom-leaderboard-sm md:grid-cols-custom-leaderboard-md lg:grid-cols-custom-leaderboard-lg xl:grid-cols-custom-leaderboard-xl 2xl:grid-cols-custom-leaderboard-2xl">
 			<div @onclick="() => Sort(CustomEntrySorting.Rank)" class="text-right"><Tooltip Text="Sort by RANK"><img src="/images/icons/custom-x2/rank.png" /></Tooltip></div>

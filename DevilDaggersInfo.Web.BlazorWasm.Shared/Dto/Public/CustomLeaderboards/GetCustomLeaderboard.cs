@@ -24,5 +24,9 @@ public class GetCustomLeaderboard
 
 	public int? TotalRunsSubmitted { get; init; }
 
+	public bool IsArchived { get; init; }
+
+	public CustomLeaderboardCategory Category { get; init; }
+
 	public List<GetCustomEntry> CustomEntries { get; set; } = new();
 }
