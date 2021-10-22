@@ -35,10 +35,10 @@ public static class DevilDaggersInfoServerConstants
 
 	internal static async Task LoadServerChannelsAndMessages(DiscordClient client)
 	{
-		foreach (KeyValuePair<Channel, ChannelWrapper> kvp in _channels)
+		foreach (ChannelWrapper wrapper in _channels.Values)
 		{
-			if (kvp.Value.DiscordChannel == null)
-				kvp.Value.DiscordChannel = await client.GetChannelAsync(kvp.Value.ChannelId);
+			if (wrapper.DiscordChannel == null)
+				wrapper.DiscordChannel = await client.GetChannelAsync(wrapper.ChannelId);
 		}
 
 		DiscordChannel? backgroundServiceChannel = _channels[Channel.MonitoringBackgroundService].DiscordChannel;
