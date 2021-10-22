@@ -93,6 +93,10 @@ else
 			{
 				<PlayerCard Title="Miscellaneous">
 					<DataField CssClass="even:bg-gray-16" Name="Country">@GetPlayer.CountryCode</DataField>
+					@if (GetPlayerHistory != null)
+					{
+						<DataField CssClass="even:bg-gray-16" Name="Best rank">@GetPlayerHistory.BestRank</DataField>
+					}
 				</PlayerCard>
 			}
 		}
@@ -163,6 +167,7 @@ else
 
 	public GetEntry? GetEntry { get; set; }
 	public GetPlayer? GetPlayer { get; set; }
+	public GetPlayerHistory? GetPlayerHistory { get; set; }
 	public List<GetCustomLeaderboardStatisticsForPlayer>? GetCustomLeaderboardStatistics { get; set; }
 	public List<GetSpawnsetName>? GetSpawnsetNames { get; set; }
 	public List<GetModName>? GetModNames { get; set; }
@@ -182,6 +187,7 @@ else
 			PlayerNotFound = true;
 		}
 
+		GetPlayerHistory = await Http.GetPlayerHistoryById(Id);
 		GetCustomLeaderboardStatistics = await Http.GetCustomLeaderboardStatisticsByPlayerId(Id);
 		GetSpawnsetNames = await Http.GetSpawnsetsByAuthorId(Id);
 		GetModNames = await Http.GetModsByAuthorId(Id);

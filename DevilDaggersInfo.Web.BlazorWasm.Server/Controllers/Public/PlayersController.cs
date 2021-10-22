@@ -1,4 +1,6 @@
+using DevilDaggersInfo.Web.BlazorWasm.Server.Caches.LeaderboardHistory;
 using DevilDaggersInfo.Web.BlazorWasm.Server.Converters.Public;
+using DevilDaggersInfo.Web.BlazorWasm.Shared.Dto.Public.LeaderboardHistory;
 using DevilDaggersInfo.Web.BlazorWasm.Shared.Dto.Public.Players;
 
 namespace DevilDaggersInfo.Web.BlazorWasm.Server.Controllers.Public;
@@ -8,10 +10,14 @@ namespace DevilDaggersInfo.Web.BlazorWasm.Server.Controllers.Public;
 public class PlayersController : ControllerBase
 {
 	private readonly ApplicationDbContext _dbContext;
+	private readonly IFileSystemService _fileSystemService;
+	private readonly LeaderboardHistoryCache _leaderboardHistoryCache;
 
-	public PlayersController(ApplicationDbContext dbContext)
+	public PlayersController(ApplicationDbContext dbContext, IFileSystemService fileSystemService, LeaderboardHistoryCache leaderboardHistoryCache)
 	{
 		_dbContext = dbContext;
+		_fileSystemService = fileSystemService;
+		_leaderboardHistoryCache = leaderboardHistoryCache;
 	}
 
 	[HttpGet("leaderboard")]
@@ -31,6 +37,19 @@ public class PlayersController : ControllerBase
 				CountryCode = p.CountryCode,
 			})
 			.ToList();
+	}
+
+	[HttpGet("settings")]
+	[ProducesResponseType(StatusCodes.Status200OK)]
+	public ActionResult<List<GetPlayerForSettings>> GetPlayersForSettings()
+	{
+		List<PlayerEntity> players = _dbContext.Players
+			.AsNoTracking()
+			.Where(p => !p.IsBanned && !p.HideSettings)
+			.ToList();
+
+		// Note; cannot evaluate HasSettings() against database (IQueryable).
+		return players.Where(p => p.HasSettings()).Select(p => p.ToGetPlayerForSettings()).ToList();
 	}
 
 	[HttpGet("{id}")]
@@ -67,16 +86,67 @@ public class PlayersController : ControllerBase
 		return player?.CountryCode ?? string.Empty;
 	}
 
-	[HttpGet("settings")]
+	[HttpGet("{id}/history")]
 	[ProducesResponseType(StatusCodes.Status200OK)]
-	public ActionResult<List<GetPlayerForSettings>> GetPlayersForSettings()
+	[ProducesResponseType(StatusCodes.Status400BadRequest)]
+	public GetPlayerHistory GetPlayerHistoryById([Required, Range(1, int.MaxValue)] int id)
 	{
-		List<PlayerEntity> players = _dbContext.Players
+		var entity = _dbContext.Players
 			.AsNoTracking()
-			.Where(p => !p.IsBanned && !p.HideSettings)
-			.ToList();
+			.Select(p => new { p.Id, p.HidePastUsernames })
+			.FirstOrDefault(p => p.Id == id);
 
-		// Note; cannot evaluate HasSettings() against database (IQueryable).
-		return players.Where(p => p.HasSettings()).Select(p => p.ToGetPlayerForSettings()).ToList();
+		bool hideUsernames = entity?.HidePastUsernames ?? false;
+
+		int? bestRank = null;
+		Dictionary<string, int> usernames = new();
+		List<GetEntryHistory> entryHistory = new();
+		List<GetPlayerActivity> activity = new();
+
+		foreach (string leaderboardHistoryPath in _fileSystemService.TryGetFiles(DataSubDirectory.LeaderboardHistory))
+		{
+			GetLeaderboardHistory leaderboard = _leaderboardHistoryCache.GetLeaderboardHistoryByFilePath(leaderboardHistoryPath);
+			GetEntryHistory? entry = leaderboard.Entries.Find(e => e.Id == id);
+
+			if (entry == null)
+				continue;
+
+			if (!bestRank.HasValue || entry.Rank < bestRank)
+				bestRank = entry.Rank;
+
+			if (!hideUsernames && !string.IsNullOrWhiteSpace(entry.Username))
+			{
+				if (usernames.ContainsKey(entry.Username))
+					usernames[entry.Username]++;
+				else
+					usernames.Add(entry.Username, 1);
+			}
+
+			// + 1 and - 1 are used to fix off-by-one errors in the history based on screenshots and videos. This is due to a rounding error in Devil Daggers itself.
+			if (!entryHistory.Any(e =>
+				e.Time == entry.Time ||
+				e.Time == entry.Time + 1 ||
+				e.Time == entry.Time - 1))
+			{
+				entryHistory.Add(entry);
+			}
+
+			if (entry.DeathsTotal > 0)
+			{
+				activity.Add(new()
+				{
+					DateTime = leaderboard.DateTime,
+					DeathsTotal = entry.DeathsTotal,
+				});
+			}
+		}
+
+		return new GetPlayerHistory
+		{
+			Activity = activity,
+			History = entryHistory,
+			BestRank = bestRank,
+			Usernames = usernames.OrderByDescending(kvp => kvp.Value).Select(kvp => kvp.Key).ToList(),
+		};
 	}
 }
