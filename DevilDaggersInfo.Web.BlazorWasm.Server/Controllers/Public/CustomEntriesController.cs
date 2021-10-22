@@ -15,12 +15,42 @@ public class CustomEntriesController : ControllerBase
 	private readonly ApplicationDbContext _dbContext;
 	private readonly DiscordLogger _discordLogger;
 	private readonly SpawnsetHashCache _spawnsetHashCache;
+	private readonly IFileSystemService _fileSystemService;
 
-	public CustomEntriesController(ApplicationDbContext dbContext, DiscordLogger discordLogger, SpawnsetHashCache spawnsetHashCache)
+	public CustomEntriesController(ApplicationDbContext dbContext, DiscordLogger discordLogger, SpawnsetHashCache spawnsetHashCache, IFileSystemService fileSystemService)
 	{
 		_dbContext = dbContext;
 		_discordLogger = discordLogger;
 		_spawnsetHashCache = spawnsetHashCache;
+		_fileSystemService = fileSystemService;
+	}
+
+	[HttpGet("{id}/replay")]
+	[ProducesResponseType(StatusCodes.Status200OK)]
+	[ProducesResponseType(StatusCodes.Status400BadRequest)]
+	[ProducesResponseType(StatusCodes.Status404NotFound)]
+	public ActionResult GetCustomEntryReplayById([Required] int id)
+	{
+		string path = Path.Combine(_fileSystemService.GetPath(DataSubDirectory.CustomEntryReplays), $"{id}.ddreplay");
+		if (!IoFile.Exists(path))
+			return NotFound();
+
+		var customEntry = _dbContext.CustomEntries
+			.AsNoTracking()
+			.Select(ce => new
+			{
+				ce.Id,
+				ce.CustomLeaderboard.SpawnsetId,
+				SpawnsetName = ce.CustomLeaderboard.Spawnset.Name,
+				ce.PlayerId,
+				ce.Player.PlayerName,
+			})
+			.FirstOrDefault(ce => ce.Id == id);
+		if (customEntry == null)
+			return NotFound();
+
+		string fileName = $"{customEntry.SpawnsetId}-{customEntry.SpawnsetName}-{customEntry.PlayerId}-{customEntry.PlayerName}.ddreplay";
+		return File(IoFile.ReadAllBytes(path), MediaTypeNames.Application.Octet, fileName);
 	}
 
 	[HttpGet("{id}/data")]
@@ -128,6 +158,7 @@ public class CustomEntriesController : ControllerBase
 		}
 	}
 
+	// TODO: Refactor and move method to a new service.
 	[ApiExplorerSettings(IgnoreApi = true)]
 	[NonAction]
 	public async Task<ActionResult<GetUploadSuccess>> ProcessUploadRequest(AddUploadRequest uploadRequest)

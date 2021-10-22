@@ -10,4 +10,5 @@ public enum DataSubDirectory
 	Spawnsets,
 	Tools,
 	AssetInfo,
+	CustomEntryReplays,
 }
