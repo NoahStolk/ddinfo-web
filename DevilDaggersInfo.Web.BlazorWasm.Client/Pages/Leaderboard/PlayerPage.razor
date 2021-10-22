@@ -8,6 +8,7 @@
 @using DevilDaggersInfo.Web.BlazorWasm.Client.Components.Leaderboards.Player
 @using DevilDaggersInfo.Web.BlazorWasm.Shared.Dto.Public
 @using DevilDaggersInfo.Web.BlazorWasm.Shared.Dto.Public.CustomEntries
+@using DevilDaggersInfo.Web.BlazorWasm.Shared.Dto.Public.CustomLeaderboards
 @using DevilDaggersInfo.Web.BlazorWasm.Shared.Dto.Public.Leaderboards
 @using DevilDaggersInfo.Web.BlazorWasm.Shared.Dto.Public.LeaderboardHistory
 @using DevilDaggersInfo.Web.BlazorWasm.Shared.Dto.Public.Mods
@@ -116,14 +117,21 @@ else
 				if (stats == null)
 					continue;
 
+				int total = category switch
+				{
+					CustomLeaderboardCategory.Default => GetNumberOfCustomLeaderboards.CountDefault,
+					CustomLeaderboardCategory.Speedrun => GetNumberOfCustomLeaderboards.CountSpeedrun,
+					_ => 0,
+				};
+
 				<PlayerCard Title="@($"Custom Leaderboard Statistics ({category})")">
-					<DataField CssClass="even:bg-gray-16" Name="Leviathan daggers">@stats.LeviathanDaggerCount</DataField>
-					<DataField CssClass="even:bg-gray-16" Name="Devil daggers">@stats.DevilDaggerCount</DataField>
-					<DataField CssClass="even:bg-gray-16" Name="Golden daggers">@stats.GoldenDaggerCount</DataField>
-					<DataField CssClass="even:bg-gray-16" Name="Silver daggers">@stats.SilverDaggerCount</DataField>
-					<DataField CssClass="even:bg-gray-16" Name="Bronze daggers">@stats.BronzeDaggerCount</DataField>
-					<DataField CssClass="even:bg-gray-16" Name="Default daggers">@stats.DefaultDaggerCount</DataField>
-					<DataField CssClass="even:bg-gray-16" Name="Played">@stats.LeaderboardsPlayedCount</DataField>
+					<DataField CssClass="even:bg-gray-16" Name="Leviathan daggers">@stats.LeviathanDaggerCount / @total</DataField>
+					<DataField CssClass="even:bg-gray-16" Name="Devil daggers">@stats.DevilDaggerCount / @total</DataField>
+					<DataField CssClass="even:bg-gray-16" Name="Golden daggers">@stats.GoldenDaggerCount / @total</DataField>
+					<DataField CssClass="even:bg-gray-16" Name="Silver daggers">@stats.SilverDaggerCount / @total</DataField>
+					<DataField CssClass="even:bg-gray-16" Name="Bronze daggers">@stats.BronzeDaggerCount / @total</DataField>
+					<DataField CssClass="even:bg-gray-16" Name="Default daggers">@stats.DefaultDaggerCount / @total</DataField>
+					<DataField CssClass="even:bg-gray-16" Name="Played">@stats.LeaderboardsPlayedCount / @total</DataField>
 				</PlayerCard>
 			}
 		}
@@ -174,6 +182,7 @@ else
 	public List<GetCustomLeaderboardStatisticsForPlayer>? GetCustomLeaderboardStatistics { get; set; }
 	public List<GetSpawnsetName>? GetSpawnsetNames { get; set; }
 	public List<GetModName>? GetModNames { get; set; }
+	public GetNumberOfCustomLeaderboards GetNumberOfCustomLeaderboards { get; set; }
 
 	public bool PlayerNotFound { get; set; }
 
@@ -194,5 +203,6 @@ else
 		GetCustomLeaderboardStatistics = await Http.GetCustomLeaderboardStatisticsByPlayerId(Id);
 		GetSpawnsetNames = await Http.GetSpawnsetsByAuthorId(Id);
 		GetModNames = await Http.GetModsByAuthorId(Id);
+		GetNumberOfCustomLeaderboards = await Http.GetNumberOfCustomLeaderboards();
 	}
 }

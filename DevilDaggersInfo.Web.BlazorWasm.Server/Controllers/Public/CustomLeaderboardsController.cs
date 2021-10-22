@@ -109,6 +109,19 @@ public class CustomLeaderboardsController : ControllerBase
 		};
 	}
 
+	[HttpGet("number-of-custom-leaderboards")]
+	[ProducesResponseType(StatusCodes.Status200OK)]
+	public ActionResult<GetNumberOfCustomLeaderboards> GetNumberOfCustomLeaderboards()
+	{
+		var customLeaderboards = _dbContext.CustomLeaderboards.AsNoTracking().Select(cl => new { cl.Id, cl.Category }).ToList();
+
+		return new GetNumberOfCustomLeaderboards
+		{
+			CountDefault = customLeaderboards.Count(cl => cl.Category == CustomLeaderboardCategory.Default),
+			CountSpeedrun = customLeaderboards.Count(cl => cl.Category == CustomLeaderboardCategory.Speedrun),
+		};
+	}
+
 	[HttpGet("{id}")]
 	[ProducesResponseType(StatusCodes.Status200OK)]
 	[ProducesResponseType(StatusCodes.Status404NotFound)]
