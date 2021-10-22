@@ -115,10 +115,13 @@ public class CustomLeaderboardsController : ControllerBase
 	{
 		var customLeaderboards = _dbContext.CustomLeaderboards.AsNoTracking().Select(cl => new { cl.Id, cl.Category }).ToList();
 
+		Dictionary<CustomLeaderboardCategory, int> countPerCategory = new();
+		foreach (CustomLeaderboardCategory category in Enum.GetValues<CustomLeaderboardCategory>())
+			countPerCategory[category] = customLeaderboards.Count(c => c.Category == category);
+
 		return new GetNumberOfCustomLeaderboards
 		{
-			CountDefault = customLeaderboards.Count(cl => cl.Category == CustomLeaderboardCategory.Default),
-			CountSpeedrun = customLeaderboards.Count(cl => cl.Category == CustomLeaderboardCategory.Speedrun),
+			CountPerCategory = countPerCategory,
 		};
 	}
 

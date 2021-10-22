@@ -89,7 +89,7 @@ else
 				</PlayerCard>
 			}
 
-			@*TODO: Country name instead of code / Best rank recorded / Past usernames*@
+			@*TODO: Country name instead of code / Past usernames*@
 			if (GetPlayer.CountryCode != null || GetPlayerHistory != null)
 			{
 				<PlayerCard Title="Miscellaneous">
@@ -111,18 +111,13 @@ else
 		}
 		else
 		{
-			@foreach (CustomLeaderboardCategory category in Enum.GetValues<CustomLeaderboardCategory>())
+			foreach (CustomLeaderboardCategory category in Enum.GetValues<CustomLeaderboardCategory>())
 			{
 				var stats = GetCustomLeaderboardStatistics.FirstOrDefault(cls => cls.CustomLeaderboardCategory == category);
 				if (stats == null)
 					continue;
 
-				int total = category switch
-				{
-					CustomLeaderboardCategory.Default => GetNumberOfCustomLeaderboards.CountDefault,
-					CustomLeaderboardCategory.Speedrun => GetNumberOfCustomLeaderboards.CountSpeedrun,
-					_ => 0,
-				};
+				_ = GetNumberOfCustomLeaderboards.CountPerCategory.TryGetValue(category, out int total);
 
 				<PlayerCard Title="@($"Custom Leaderboard Statistics ({category})")">
 					<DataField CssClass="even:bg-gray-16" Name="Leviathan daggers">@stats.LeviathanDaggerCount / @total</DataField>
