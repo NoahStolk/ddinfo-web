@@ -119,20 +119,48 @@ public class SpawnsetsController : ControllerBase
 	[HttpGet("by-hash")]
 	[ProducesResponseType(StatusCodes.Status200OK)]
 	[ProducesResponseType(StatusCodes.Status404NotFound)]
-	public async Task<ActionResult<GetSpawnsetDdse>> GetSpawnsetByHash([FromQuery] byte[] hash)
+	public async Task<ActionResult<GetSpawnsetByHash>> GetSpawnsetByHash([FromQuery] byte[] hash)
 	{
 		SpawnsetHashCacheData? data = await _spawnsetHashCache.GetSpawnset(hash);
 		if (data == null)
 			return NotFound();
 
-		SpawnsetEntity? spawnset = _dbContext.Spawnsets.AsNoTracking().Include(s => s.Player).FirstOrDefault(s => s.Name == data.Name);
+		SpawnsetEntity? spawnset = _dbContext.Spawnsets
+			.AsNoTracking()
+			.Include(s => s.Player)
+			.FirstOrDefault(s => s.Name == data.Name);
 		if (spawnset == null)
 		{
 			// TODO: Log error.
 			return NotFound();
 		}
 
-		return ToGetSpawnsetDdse(spawnset);
+		CustomLeaderboardEntity? customLeaderboard = _dbContext.CustomLeaderboards
+			.AsNoTracking()
+			.FirstOrDefault(cl => cl.SpawnsetId == spawnset.Id);
+
+		var customEntries = customLeaderboard == null ? null : _dbContext.CustomEntries
+			.AsNoTracking()
+			.Select(ce => new { ce.Id, ce.CustomLeaderboardId, ce.Time })
+			.Where(ce => ce.CustomLeaderboardId == customLeaderboard.Id)
+			.ToList();
+
+		return new GetSpawnsetByHash
+		{
+			AuthorName = spawnset.Player.PlayerName,
+			CustomLeaderboard = customLeaderboard == null ? null : new GetSpawnsetByHashCustomLeaderboard
+			{
+				CustomLeaderboardId = customLeaderboard.Id,
+				CustomEntries = customEntries?.ConvertAll(ce => new GetSpawnsetByHashCustomEntry
+				{
+					HasReplay = false,
+					CustomEntryId = ce.Id,
+					Time = ce.Time,
+				}) ?? new(),
+			},
+			SpawnsetId = spawnset.Id,
+			Name = spawnset.Name,
+		};
 	}
 
 	[HttpGet("hash")]
