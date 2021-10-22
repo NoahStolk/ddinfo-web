@@ -1,6 +1,10 @@
 @page "/leaderboard"
+@inherits FluxorComponent
 @inject PublicApiHttpClient Http
 @inject NavigationManager NavigationManager
+@inject IDispatcher Dispatcher
+@inject IState<RankState> RankState
+@using DevilDaggersInfo.Web.BlazorWasm.Client.Store.Leaderboard.Index
 @using DevilDaggersInfo.Web.BlazorWasm.Shared.Dto.Public
 @using DevilDaggersInfo.Web.BlazorWasm.Shared.Dto.Public.Leaderboards
 @using DevilDaggersInfo.Web.BlazorWasm.Shared.Dto.Public.Players
@@ -36,16 +40,16 @@ else
 			}
 			else
 			{
-				<span>Showing rank @Rank - @(Rank + 99)</span>
+				<span>Showing rank @RankState.Value.Rank - @(RankState.Value.Rank + 99)</span>
 			}
 		</div>
 		<div>
-			<button class="@(Rank <= 1 ? "disabled" : string.Empty) bg-gray-0b hover:bg-gray-22 transition-colors duration-100 w-8 h-8 py-1 rounded text-color-text" @onclick="() => SetRank(1)">|&lt;</button>
-			<button class="@(Rank <= 1 ? "disabled" : string.Empty) bg-gray-0b hover:bg-gray-22 transition-colors duration-100 w-8 h-8 py-1 rounded text-color-text" @onclick="() => SetRank(Rank - 1000)">&lt;&lt;</button>
-			<button class="@(Rank <= 1 ? "disabled" : string.Empty) bg-gray-0b hover:bg-gray-22 transition-colors duration-100 w-8 h-8 py-1 rounded text-color-text" @onclick="() => SetRank(Rank - 100)">&lt;</button>
-			<button class="@(Rank >= _maxRank ? "disabled" : string.Empty) bg-gray-0b hover:bg-gray-22 transition-colors duration-100 w-8 h-8 py-1 rounded text-color-text" @onclick="() => SetRank(Rank + 100)">&gt;</button>
-			<button class="@(Rank >= _maxRank ? "disabled" : string.Empty) bg-gray-0b hover:bg-gray-22 transition-colors duration-100 w-8 h-8 py-1 rounded text-color-text" @onclick="() => SetRank(Rank + 1000)">&gt;&gt;</button>
-			<button class="@(Rank >= _maxRank ? "disabled" : string.Empty) bg-gray-0b hover:bg-gray-22 transition-colors duration-100 w-8 h-8 py-1 rounded text-color-text" @onclick="() => SetRank(GetLeaderboard.TotalPlayers - 99)">&gt;|</button>
+			<button class="@(RankState.Value.Rank <= 1 ? "disabled" : string.Empty) bg-gray-0b hover:bg-gray-22 transition-colors duration-100 w-8 h-8 py-1 rounded text-color-text" @onclick="() => SetRank(1)">|&lt;</button>
+			<button class="@(RankState.Value.Rank <= 1 ? "disabled" : string.Empty) bg-gray-0b hover:bg-gray-22 transition-colors duration-100 w-8 h-8 py-1 rounded text-color-text" @onclick="() => SetRank(RankState.Value.Rank - 1000)">&lt;&lt;</button>
+			<button class="@(RankState.Value.Rank <= 1 ? "disabled" : string.Empty) bg-gray-0b hover:bg-gray-22 transition-colors duration-100 w-8 h-8 py-1 rounded text-color-text" @onclick="() => SetRank(RankState.Value.Rank - 100)">&lt;</button>
+			<button class="@(RankState.Value.Rank >= _maxRank ? "disabled" : string.Empty) bg-gray-0b hover:bg-gray-22 transition-colors duration-100 w-8 h-8 py-1 rounded text-color-text" @onclick="() => SetRank(RankState.Value.Rank + 100)">&gt;</button>
+			<button class="@(RankState.Value.Rank >= _maxRank ? "disabled" : string.Empty) bg-gray-0b hover:bg-gray-22 transition-colors duration-100 w-8 h-8 py-1 rounded text-color-text" @onclick="() => SetRank(RankState.Value.Rank + 1000)">&gt;&gt;</button>
+			<button class="@(RankState.Value.Rank >= _maxRank ? "disabled" : string.Empty) bg-gray-0b hover:bg-gray-22 transition-colors duration-100 w-8 h-8 py-1 rounded text-color-text" @onclick="() => SetRank(GetLeaderboard.TotalPlayers - 99)">&gt;|</button>
 		</div>
 	</div>
 
@@ -56,13 +60,12 @@ else
 
 @code
 {
-	private int _rank = 1;
 	private string? _apiError;
 	private bool _reloading;
 
 	private int _maxRank => (GetLeaderboard?.TotalPlayers ?? int.MaxValue) - 99;
 
-	[Parameter, SupplyParameterFromQuery] public int Rank { get => _rank; set => _rank = Math.Max(1, value); }
+	[Parameter, SupplyParameterFromQuery] public int Rank { get; set; }
 
 	public GetLeaderboard? GetLeaderboard { get; set; }
 
@@ -70,14 +73,16 @@ else
 
 	protected override async Task OnInitializedAsync()
 	{
+		Dispatcher.Dispatch(new ChangeRankAction(Rank, _maxRank));
+
 		Players = await Http.GetPlayersForLeaderboard();
 		await FetchLeaderboard();
 	}
 
 	private async Task SetRank(int value)
 	{
-		Rank = Math.Clamp(value, 1, _maxRank);
-		NavigationManager.AddOrModifyQueryParameter(QueryParameters.Rank, Rank);
+		Dispatcher.Dispatch(new ChangeRankAction(value, _maxRank));
+		NavigationManager.AddOrModifyQueryParameter(QueryParameters.Rank, RankState.Value.Rank);
 
 		await FetchLeaderboard();
 	}
@@ -89,7 +94,7 @@ else
 			if (GetLeaderboard != null)
 				_reloading = true;
 
-			GetLeaderboard = await Http.GetLeaderboard(Rank);
+			GetLeaderboard = await Http.GetLeaderboard(RankState.Value.Rank);
 			_reloading = false;
 		}
 		catch (Exception ex)
