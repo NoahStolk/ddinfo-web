@@ -7,8 +7,8 @@ public class FileSystemLoggerBackgroundService : AbstractBackgroundService
 {
 	private readonly IWebHostEnvironment _environment;
 
-	public FileSystemLoggerBackgroundService(IWebHostEnvironment environment, BackgroundServiceMonitor backgroundServiceMonitor, DiscordLogger discordLogger)
-		: base(backgroundServiceMonitor, discordLogger)
+	public FileSystemLoggerBackgroundService(IWebHostEnvironment environment, BackgroundServiceMonitor backgroundServiceMonitor, ILogger<FileSystemLoggerBackgroundService> logger)
+		: base(backgroundServiceMonitor, logger)
 	{
 		_environment = environment;
 	}
@@ -35,7 +35,7 @@ public class FileSystemLoggerBackgroundService : AbstractBackgroundService
 		AddFieldObject("mods", mods);
 		AddFieldObject("spawnsets", spawnsets);
 
-		await DiscordLogger.TryEditMessage(DevilDaggersInfoServerConstants.FileMessage, builder.Build());
+		await DevilDaggersInfoServerConstants.FileMessage.TryEdit(builder.Build());
 
 		void AddFieldObject(string name, DirectoryStatistics value)
 			=> builder.AddFieldObject(name, $"`{value.Size:n0}` bytes\n`{value.FileCount}` files");

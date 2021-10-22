@@ -5,8 +5,8 @@ namespace DevilDaggersInfo.Web.BlazorWasm.Server.HostedServices;
 
 public class DiscordLogFlushBackgroundService : AbstractBackgroundService
 {
-	public DiscordLogFlushBackgroundService(BackgroundServiceMonitor backgroundServiceMonitor, DiscordLogger ogLogger)
-		: base(backgroundServiceMonitor, ogLogger)
+	public DiscordLogFlushBackgroundService(BackgroundServiceMonitor backgroundServiceMonitor, ILogger<DiscordLogFlushBackgroundService> logger)
+		: base(backgroundServiceMonitor, logger)
 	{
 	}
 

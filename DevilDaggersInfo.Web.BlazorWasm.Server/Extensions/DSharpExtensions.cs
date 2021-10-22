@@ -17,7 +17,7 @@ public static class DSharpExtensions
 	public static async Task SendMessageAsyncSafe(this DiscordChannel channel, string? message, DiscordEmbed? embed = null)
 	{
 		if (message?.Length >= 2000)
-			message = $"{message.Substring(0, 1996)}...";
+			message = $"{message[..1996]}...";
 
 		if (embed == null)
 			await channel.SendMessageAsync(message);
@@ -30,5 +30,18 @@ public static class DSharpExtensions
 		string? valueString = value?.ToString()?.TrimAfter(1024);
 
 		return builder.AddField(name, string.IsNullOrWhiteSpace(valueString) ? "null" : valueString, inline);
+	}
+
+	public static async Task TryEdit(this DiscordMessage message, DiscordEmbed embed)
+	{
+		try
+		{
+			await message.ModifyAsync(":eye_in_speech_bubble:");
+			await message.ModifyAsync(embed);
+		}
+		catch
+		{
+			// Ignore exceptions that occurred while attempting to edit message.
+		}
 	}
 }

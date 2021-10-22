@@ -18,13 +18,13 @@ public class CacheLoggerBackgroundService : AbstractBackgroundService
 
 	public CacheLoggerBackgroundService(
 		BackgroundServiceMonitor backgroundServiceMonitor,
-		DiscordLogger discordLogger,
+		ILogger<CacheLoggerBackgroundService> logger,
 		LeaderboardStatisticsCache leaderboardStatisticsCache,
 		LeaderboardHistoryCache leaderboardHistoryCache,
 		ModArchiveCache modArchiveCache,
 		SpawnsetSummaryCache spawnsetSummaryCache,
 		SpawnsetHashCache spawnsetHashCache)
-		: base(backgroundServiceMonitor, discordLogger)
+		: base(backgroundServiceMonitor, logger)
 	{
 		_leaderboardStatisticsCache = leaderboardStatisticsCache;
 		_leaderboardHistoryCache = leaderboardHistoryCache;
@@ -53,6 +53,6 @@ public class CacheLoggerBackgroundService : AbstractBackgroundService
 		builder.AddFieldObject(nameof(SpawnsetSummaryCache), _spawnsetSummaryCache.LogState());
 		builder.AddFieldObject(nameof(SpawnsetHashCache), _spawnsetHashCache.LogState());
 
-		await DiscordLogger.TryEditMessage(DevilDaggersInfoServerConstants.CacheMessage, builder.Build());
+		await DevilDaggersInfoServerConstants.CacheMessage.TryEdit(builder.Build());
 	}
 }

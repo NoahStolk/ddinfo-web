@@ -7,8 +7,8 @@ public class DatabaseLoggerBackgroundService : AbstractBackgroundService
 {
 	private readonly IServiceScopeFactory _serviceScopeFactory;
 
-	public DatabaseLoggerBackgroundService(BackgroundServiceMonitor backgroundServiceMonitor, DiscordLogger discordLogger, IServiceScopeFactory serviceScopeFactory)
-		: base(backgroundServiceMonitor, discordLogger)
+	public DatabaseLoggerBackgroundService(BackgroundServiceMonitor backgroundServiceMonitor, ILogger<DatabaseLoggerBackgroundService> logger, IServiceScopeFactory serviceScopeFactory)
+		: base(backgroundServiceMonitor, logger)
 	{
 		_serviceScopeFactory = serviceScopeFactory;
 	}
@@ -49,6 +49,6 @@ ORDER BY table_name ASC;")
 			builder.AddFieldObject(table.Table ?? "Null", value, true);
 		}
 
-		await DiscordLogger.TryEditMessage(DevilDaggersInfoServerConstants.DatabaseMessage, builder.Build());
+		await DevilDaggersInfoServerConstants.DatabaseMessage.TryEdit(builder.Build());
 	}
 }

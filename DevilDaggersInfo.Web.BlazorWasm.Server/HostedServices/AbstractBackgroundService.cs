@@ -1,19 +1,17 @@
-using DevilDaggersInfo.Web.BlazorWasm.Server.HostedServices.DdInfoDiscordBot;
-
 namespace DevilDaggersInfo.Web.BlazorWasm.Server.HostedServices;
 
 public abstract class AbstractBackgroundService : BackgroundService
 {
-	protected AbstractBackgroundService(BackgroundServiceMonitor backgroundServiceMonitor, DiscordLogger discordLogger)
+	protected AbstractBackgroundService(BackgroundServiceMonitor backgroundServiceMonitor, ILogger<AbstractBackgroundService> logger)
 	{
 		BackgroundServiceMonitor = backgroundServiceMonitor;
-		DiscordLogger = discordLogger;
+		Logger = logger;
 
 		Name = GetType().Name;
 	}
 
 	protected BackgroundServiceMonitor BackgroundServiceMonitor { get; }
-	protected DiscordLogger DiscordLogger { get; }
+	protected ILogger<AbstractBackgroundService> Logger { get; }
 
 	protected string Name { get; }
 
@@ -38,19 +36,19 @@ public abstract class AbstractBackgroundService : BackgroundService
 			catch (Exception ex)
 			{
 				if (LogExceptions)
-					await DiscordLogger.TryLog(Channel.MonitoringTask, $":x: Task execution for `{Name}` failed with exception: `{ex.Message}`");
+					Logger.LogError(ex, "Task execution for `{name}` failed.", Name);
 			}
 
 			if (Interval.TotalMilliseconds > 0)
 				await Task.Delay(Interval, stoppingToken);
 		}
 
-		await End();
+		End();
 	}
 
 	protected virtual void Begin()
 		=> BackgroundServiceMonitor.Register(Name, Interval);
 
-	protected virtual async Task End()
-		=> await DiscordLogger.TryLog(Channel.MonitoringTask, $":x: Cancellation for `{Name}` was requested.");
+	protected virtual void End()
+		=> Logger.LogError("Cancellation for `{name}` was requested.", Name);
 }

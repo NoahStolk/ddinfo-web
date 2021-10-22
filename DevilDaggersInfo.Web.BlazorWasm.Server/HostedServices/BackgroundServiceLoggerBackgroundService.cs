@@ -5,8 +5,8 @@ namespace DevilDaggersInfo.Web.BlazorWasm.Server.HostedServices;
 
 public class BackgroundServiceLoggerBackgroundService : AbstractBackgroundService
 {
-	public BackgroundServiceLoggerBackgroundService(BackgroundServiceMonitor backgroundServiceMonitor, DiscordLogger discordLogger)
-		: base(backgroundServiceMonitor, discordLogger)
+	public BackgroundServiceLoggerBackgroundService(BackgroundServiceMonitor backgroundServiceMonitor, ILogger<BackgroundServiceLoggerBackgroundService> logger)
+		: base(backgroundServiceMonitor, logger)
 	{
 	}
 
@@ -21,6 +21,6 @@ public class BackgroundServiceLoggerBackgroundService : AbstractBackgroundServic
 
 		DiscordEmbed? embed = BackgroundServiceMonitor.BuildDiscordEmbed();
 		if (embed != null)
-			await DiscordLogger.TryEditMessage(DevilDaggersInfoServerConstants.BackgroundServiceMessage, embed);
+			await DevilDaggersInfoServerConstants.BackgroundServiceMessage.TryEdit(embed);
 	}
 }

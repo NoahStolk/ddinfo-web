@@ -1,13 +1,11 @@
-using DevilDaggersInfo.Web.BlazorWasm.Server.HostedServices.DdInfoDiscordBot;
-
 namespace DevilDaggersInfo.Web.BlazorWasm.Server.HostedServices;
 
 public class LeaderboardHistoryBackgroundService : AbstractBackgroundService
 {
 	private readonly IWebHostEnvironment _environment;
 
-	public LeaderboardHistoryBackgroundService(IWebHostEnvironment environment, BackgroundServiceMonitor backgroundServiceMonitor, DiscordLogger discordLogger)
-		: base(backgroundServiceMonitor, discordLogger)
+	public LeaderboardHistoryBackgroundService(IWebHostEnvironment environment, BackgroundServiceMonitor backgroundServiceMonitor, ILogger<LeaderboardHistoryBackgroundService> logger)
+		: base(backgroundServiceMonitor, logger)
 	{
 		_environment = environment;
 	}
@@ -25,11 +23,11 @@ public class LeaderboardHistoryBackgroundService : AbstractBackgroundService
 		{
 			string fileName = $"{DateTime.UtcNow:yyyyMMddHHmm}.json";
 			File.WriteAllText(Path.Combine(_environment.WebRootPath, "leaderboard-history", fileName), JsonConvert.SerializeObject(l));
-			await DiscordLogger.TryLog(Channel.MonitoringTask, $":white_check_mark: Task execution for `{nameof(LeaderboardHistoryBackgroundService)}` succeeded. `{fileName}` was created.");
+			Logger.LogInformation("Task execution for `{service}` succeeded. `{fileName}` was created.", nameof(LeaderboardHistoryBackgroundService), fileName);
 		}
 		else
 		{
-			await DiscordLogger.TryLog(Channel.MonitoringTask, $":x: Task execution for `{nameof(LeaderboardHistoryBackgroundService)}` failed because the Devil Daggers servers didn't return a leaderboard.");
+			Logger.LogError("Task execution for `{service}` failed because the Devil Daggers servers didn't return a leaderboard.", nameof(LeaderboardHistoryBackgroundService));
 		}
 	}
 
