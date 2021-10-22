@@ -57,7 +57,6 @@ public class Startup
 		services.AddSingleton<BackgroundServiceMonitor>();
 		services.AddSingleton<ResponseTimeMonitor>();
 
-		services.AddSingleton<DiscordLogger>();
 		services.AddSingleton<AuditLogger>();
 		services.AddSingleton<LeaderboardHistoryCache>();
 		services.AddSingleton<LeaderboardStatisticsCache>();

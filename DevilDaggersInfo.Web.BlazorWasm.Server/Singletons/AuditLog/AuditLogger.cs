@@ -1,4 +1,5 @@
 using DevilDaggersInfo.Web.BlazorWasm.Server.HostedServices.DdInfoDiscordBot;
+using DSharpPlus.Entities;
 using System.Security.Claims;
 
 namespace DevilDaggersInfo.Web.BlazorWasm.Server.Singletons.AuditLog;
@@ -7,11 +8,11 @@ public class AuditLogger
 {
 	private const int _loggingMax = 60;
 
-	private readonly DiscordLogger _discordLogger;
+	private readonly IWebHostEnvironment _environment;
 
-	public AuditLogger(DiscordLogger discordLogger)
+	public AuditLogger(IWebHostEnvironment environment)
 	{
-		_discordLogger = discordLogger;
+		_environment = environment;
 	}
 
 	public async Task LogAdd<TData, TKey>(TData obj, ClaimsPrincipal claimsPrincipal, TKey id, List<FileSystemInformation>? fileSystemInformation = null, [CallerMemberName] string endpointName = "")
@@ -43,7 +44,7 @@ public class AuditLogger
 
 		AddFileSystemInformation(auditLogger, fileSystemInformation);
 
-		await _discordLogger.TryLog(Channel.MonitoringAuditLog, auditLogger.ToString());
+		await TryLog(Channel.MonitoringAuditLog, auditLogger.ToString());
 	}
 
 	public async Task LogEdit<TData, TKey>(TData oldObj, TData newObj, ClaimsPrincipal claimsPrincipal, TKey id, List<FileSystemInformation>? fileSystemInformation = null, [CallerMemberName] string endpointName = "")
@@ -56,7 +57,7 @@ public class AuditLogger
 		if (AreEditLogsEqual(oldLog, newLog))
 		{
 			auditLogger.AppendLine("`No changes.`");
-			await _discordLogger.TryLog(Channel.MonitoringAuditLog, auditLogger.ToString());
+			await TryLog(Channel.MonitoringAuditLog, auditLogger.ToString());
 			return;
 		}
 
@@ -93,7 +94,7 @@ public class AuditLogger
 
 		AddFileSystemInformation(auditLogger, fileSystemInformation);
 
-		await _discordLogger.TryLog(Channel.MonitoringAuditLog, auditLogger.ToString());
+		await TryLog(Channel.MonitoringAuditLog, auditLogger.ToString());
 
 		static bool AreEditLogsEqual(Dictionary<string, string> oldLog, Dictionary<string, string> newLog)
 		{
@@ -142,14 +143,14 @@ public class AuditLogger
 
 		AddFileSystemInformation(auditLogger, fileSystemInformation);
 
-		await _discordLogger.TryLog(Channel.MonitoringAuditLog, auditLogger.ToString());
+		await TryLog(Channel.MonitoringAuditLog, auditLogger.ToString());
 	}
 
 	public async Task LogFileSystemInformation(List<FileSystemInformation>? fileSystemInformation = null)
 	{
 		StringBuilder auditLogger = new();
 		AddFileSystemInformation(auditLogger, fileSystemInformation);
-		await _discordLogger.TryLog(Channel.MonitoringAuditLog, auditLogger.ToString());
+		await TryLog(Channel.MonitoringAuditLog, auditLogger.ToString());
 	}
 
 	private static StringBuilder GetAuditLogger<TKey>(string action, ClaimsPrincipal claimsPrincipal, TKey id, string endpointName)
@@ -208,6 +209,26 @@ public class AuditLogger
 				_ => "black_circle",
 			};
 			auditLogger.Append(':').Append(emote).Append(": ").AppendLine(alfsi.Message);
+		}
+	}
+
+	private async Task TryLog(Channel loggingChannel, string? message, DiscordEmbed? embed = null, bool includeEnvironmentName = true)
+	{
+		if (_environment.IsDevelopment())
+			loggingChannel = Channel.MonitoringTest;
+
+		DiscordChannel? channel = DevilDaggersInfoServerConstants.Channels[loggingChannel].DiscordChannel;
+		if (channel == null)
+			return;
+
+		try
+		{
+			string? composedMessage = embed == null ? includeEnvironmentName ? $"[`{_environment.EnvironmentName}`]: {message}" : message : null;
+			await channel.SendMessageAsyncSafe(composedMessage, embed);
+		}
+		catch
+		{
+			// Ignore exceptions that occurred while attempting to log.
 		}
 	}
 }
