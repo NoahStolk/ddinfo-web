@@ -1,8 +1,7 @@
-namespace DevilDaggersInfo.Web.BlazorWasm.Server.Transients;
+namespace DevilDaggersInfo.Web.BlazorWasm.Server.InternalModels.Json;
 
 /// <summary>
 /// This class must correspond to what's stored in the Changelogs.json file.
-/// TODO: Move to JsonModels or something.
 /// </summary>
 public class ChangelogEntry
 {

@@ -1,3 +1,6 @@
+using DevilDaggersInfo.Web.BlazorWasm.Server.InternalModels;
+using DevilDaggersInfo.Web.BlazorWasm.Server.InternalModels.Json;
+
 namespace DevilDaggersInfo.Web.BlazorWasm.Server.Transients;
 
 public class ToolHelper : IToolHelper
@@ -15,19 +18,17 @@ public class ToolHelper : IToolHelper
 
 	public Tool GetToolByName(string name)
 	{
-		ToolEntity? toolEntity = _dbContext.Tools.AsNoTracking().FirstOrDefault(t => t.Name == name);
-		if (toolEntity == null)
+		ToolEntity? tool = _dbContext.Tools.AsNoTracking().FirstOrDefault(t => t.Name == name);
+		if (tool == null)
 			throw new($"Could not find tool with name {name} in database.");
 
-		return GetToolFromEntity(toolEntity);
+		return new()
+		{
+			Changelog = Changelogs.TryGetValue(tool.Name, out List<ChangelogEntry>? changelog) ? changelog : new List<ChangelogEntry>(),
+			DisplayName = tool.DisplayName,
+			Name = tool.Name,
+			VersionNumber = Version.Parse(tool.CurrentVersionNumber),
+			VersionNumberRequired = Version.Parse(tool.RequiredVersionNumber),
+		};
 	}
-
-	public Tool GetToolFromEntity(ToolEntity tool) => new()
-	{
-		Changelog = Changelogs.TryGetValue(tool.Name, out List<ChangelogEntry>? changelog) ? changelog : new List<ChangelogEntry>(),
-		DisplayName = tool.DisplayName,
-		Name = tool.Name,
-		VersionNumber = Version.Parse(tool.CurrentVersionNumber),
-		VersionNumberRequired = Version.Parse(tool.RequiredVersionNumber),
-	};
 }

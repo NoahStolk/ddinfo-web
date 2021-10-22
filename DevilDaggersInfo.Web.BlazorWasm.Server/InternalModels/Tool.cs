@@ -1,9 +1,7 @@
-namespace DevilDaggersInfo.Web.BlazorWasm.Server.Transients;
+using DevilDaggersInfo.Web.BlazorWasm.Server.InternalModels.Json;
 
-/// <summary>
-/// This class must correspond to what's stored in the Changelogs.json file.
-/// TODO: Move to JsonModels or something.
-/// </summary>
+namespace DevilDaggersInfo.Web.BlazorWasm.Server.InternalModels;
+
 public class Tool
 {
 	public string Name { get; init; } = null!;
@@ -20,6 +18,5 @@ public class Tool
 	/// </summary>
 	public Version VersionNumberRequired { get; init; } = null!;
 
-	// TODO: Rename to Versions.
 	public IReadOnlyList<ChangelogEntry> Changelog { get; init; } = null!;
 }
