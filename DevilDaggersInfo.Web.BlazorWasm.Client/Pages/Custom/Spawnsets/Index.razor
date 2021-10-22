@@ -14,7 +14,24 @@
 }
 else
 {
-	<OverviewPagination @ref=_overviewPaging />
+	<button class="bg-gray-0b hover:bg-gray-22 transition-colors duration-100 w-8 h-8 py-1 rounded text-color-text" @onclick="() => ChangePageIndex(0)">|&lt;</button>
+	<button class="bg-gray-0b hover:bg-gray-22 transition-colors duration-100 w-8 h-8 py-1 rounded text-color-text" @onclick="() => ChangePageIndex(PageIndex - 1)">&lt;</button>
+	<button class="bg-gray-0b hover:bg-gray-22 transition-colors duration-100 w-8 h-8 py-1 rounded text-color-text" @onclick="() => ChangePageIndex(PageIndex + 1)">&gt;</button>
+	<button class="bg-gray-0b hover:bg-gray-22 transition-colors duration-100 w-8 h-8 py-1 rounded text-color-text" @onclick="() => ChangePageIndex(TotalPages - 1)">&gt;|</button>
+	<Select @onchange="ChangePageSize" class="bg-gray-0b transition-colors duration-100 h-8 py-1 rounded text-color-text">
+		@foreach (int i in PublicPagingConstants.PageSizeOptions)
+		{
+			if (i == PageSize)
+			{
+				<option value="@i" selected>@i</option>
+			}
+			else
+			{
+				<option value="@i">@i</option>
+			}
+		}
+	</Select>
+	<div class="p-1">Page @(PageIndex + 1) of @TotalPages (@(PageIndex * PageSize + 1) - @Math.Min(GetSpawnsets.TotalResults, (PageIndex + 1) * PageSize) of @GetSpawnsets.TotalResults)</div>
 
 	<div class="grid gap-3 sm:grid-cols-spawnsets-sm md:grid-cols-spawnsets-md lg:grid-cols-spawnsets-lg xl:grid-cols-spawnsets-xl">
 		<a href="" @onclick:preventDefault class="text-color-link hover:text-color-link-hover text-left" @onclick="() => Sort(SpawnsetSorting.Name)">Name</a>
@@ -52,22 +69,47 @@ else
 
 @code
 {
+	private int _pageIndex;
+	private int _pageSize = PublicPagingConstants.PageSizeDefault;
+
 	[Parameter, SupplyParameterFromQuery] public bool OnlyPractice { get; set; }
 	[Parameter, SupplyParameterFromQuery] public bool OnlyWithLeaderboard { get; set; }
+	[Parameter, SupplyParameterFromQuery] public int PageIndex { get => _pageIndex; set => _pageIndex = Math.Max(0, value); }
+	[Parameter, SupplyParameterFromQuery] public int PageSize { get => _pageSize; set => _pageSize = value < PublicPagingConstants.PageSizeMin || value > PublicPagingConstants.PageSizeMax ? PublicPagingConstants.PageSizeDefault : value; }
 	[Parameter, SupplyParameterFromQuery] public int? SortBy { get; set; }
 	[Parameter, SupplyParameterFromQuery] public bool Ascending { get; set; }
 
 	private Dictionary<SpawnsetSorting, bool> _sortings = new();
 
-	private OverviewPaging? _overviewPaging;
-
 	public Page<GetSpawnsetOverview>? GetSpawnsets { get; set; }
+
+	private int TotalPages => GetSpawnsets == null ? 0 : (GetSpawnsets.TotalResults - 1) / PageSize + 1;
 
 	protected override async Task OnInitializedAsync()
 	{
 		foreach (SpawnsetSorting e in (SpawnsetSorting[])Enum.GetValues(typeof(SpawnsetSorting)))
 			_sortings.Add(e, false);
 
+		await Fetch();
+	}
+
+	private async Task ChangePageIndex(int pageIndex)
+	{
+		PageIndex = Math.Clamp(pageIndex, 0, TotalPages - 1);
+		NavigationManager.AddOrModifyQueryParameter(QueryParameters.PageIndex, PageIndex);
+
+		await Fetch();
+	}
+
+	private async Task ChangePageSize(ChangeEventArgs e)
+	{
+		if (!int.TryParse(e.Value?.ToString(), out int pageSize))
+			return;
+
+		PageSize = pageSize;
+		NavigationManager.AddOrModifyQueryParameter(QueryParameters.PageSize, PageSize);
+
+		PageIndex = Math.Clamp(PageIndex, 0, TotalPages - 1);
 		await Fetch();
 	}
 
@@ -84,13 +126,15 @@ else
 
 	private async Task Fetch()
 	{
-		GetSpawnsets = await Http.GetSpawnsets(OnlyPractice, OnlyWithLeaderboard, _overviewPaging?.PageIndex ?? 0, _overviewPaging?.PageSize ?? 25, SortBy.HasValue ? (SpawnsetSorting)SortBy.Value : SpawnsetSorting.LastUpdated, Ascending);
+		GetSpawnsets = await Http.GetSpawnsets(OnlyPractice, OnlyWithLeaderboard, PageIndex, PageSize, SortBy.HasValue ? (SpawnsetSorting)SortBy.Value : SpawnsetSorting.LastUpdated, Ascending);
 	}
 
 	private static class QueryParameters
 	{
 		public static string OnlyPractice { get; } = nameof(OnlyPractice);
 		public static string OnlyWithLeaderboard { get; } = nameof(OnlyWithLeaderboard);
+		public static string PageIndex { get; } = nameof(PageIndex);
+		public static string PageSize { get; } = nameof(PageSize);
 		public static string SortBy { get; } = nameof(SortBy);
 		public static string Ascending { get; } = nameof(Ascending);
 	}

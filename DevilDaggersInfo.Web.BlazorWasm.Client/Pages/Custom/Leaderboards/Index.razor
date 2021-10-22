@@ -43,7 +43,7 @@ else
 			}
 		}
 	</Select>
-	<div class="p-1">Page @(PageIndex + 1) of @TotalPages (@(PageIndex * PageSize) - @Math.Min(GetCustomLeaderboards.TotalResults, (PageIndex + 1) * PageSize) of @GetCustomLeaderboards.TotalResults)</div>
+	<div class="p-1">Page @(PageIndex + 1) of @TotalPages (@(PageIndex * PageSize + 1) - @Math.Min(GetCustomLeaderboards.TotalResults, (PageIndex + 1) * PageSize) of @GetCustomLeaderboards.TotalResults)</div>
 
 	<div class="grid gap-3 sm:grid-cols-custom-leaderboards-sm md:grid-cols-custom-leaderboards-md lg:grid-cols-custom-leaderboards-lg xl:grid-cols-custom-leaderboards-xl">
 		<a href="" @onclick:preventDefault class="text-color-link hover:text-color-link-hover text-left" @onclick="() => Sort(CustomLeaderboardSorting.SpawnsetName)">Name</a>

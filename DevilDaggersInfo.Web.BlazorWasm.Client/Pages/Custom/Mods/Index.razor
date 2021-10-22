@@ -30,7 +30,7 @@ else
 			}
 		}
 	</Select>
-	<div class="p-1">Page @(PageIndex + 1) of @TotalPages (@(PageIndex * PageSize) - @Math.Min(GetMods.TotalResults, (PageIndex + 1) * PageSize) of @GetMods.TotalResults)</div>
+	<div class="p-1">Page @(PageIndex + 1) of @TotalPages (@(PageIndex * PageSize + 1) - @Math.Min(GetMods.TotalResults, (PageIndex + 1) * PageSize) of @GetMods.TotalResults)</div>
 
 	<div class="grid gap-3 sm:grid-cols-mods-sm md:grid-cols-mods-md lg:grid-cols-mods-lg xl:grid-cols-mods-xl">
 		<a href="" @onclick:preventDefault class="text-color-link hover:text-color-link-hover text-left" @onclick="() => Sort(ModSorting.Name)">Name</a>
