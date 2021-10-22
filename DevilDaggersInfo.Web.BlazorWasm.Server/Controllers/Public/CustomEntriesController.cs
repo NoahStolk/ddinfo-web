@@ -13,14 +13,14 @@ namespace DevilDaggersInfo.Web.BlazorWasm.Server.Controllers.Public;
 public class CustomEntriesController : ControllerBase
 {
 	private readonly ApplicationDbContext _dbContext;
-	private readonly DiscordLogger _discordLogger;
+	private readonly ILogger<CustomEntriesController> _logger;
 	private readonly SpawnsetHashCache _spawnsetHashCache;
 	private readonly IFileSystemService _fileSystemService;
 
-	public CustomEntriesController(ApplicationDbContext dbContext, DiscordLogger discordLogger, SpawnsetHashCache spawnsetHashCache, IFileSystemService fileSystemService)
+	public CustomEntriesController(ApplicationDbContext dbContext, ILogger<CustomEntriesController> logger, SpawnsetHashCache spawnsetHashCache, IFileSystemService fileSystemService)
 	{
 		_dbContext = dbContext;
-		_discordLogger = discordLogger;
+		_logger = logger;
 		_spawnsetHashCache = spawnsetHashCache;
 		_fileSystemService = fileSystemService;
 	}
@@ -153,7 +153,7 @@ public class CustomEntriesController : ControllerBase
 			ex.Data[nameof(uploadRequest.ClientVersion)] = uploadRequest.ClientVersion;
 			ex.Data[nameof(uploadRequest.OperatingSystem)] = uploadRequest.OperatingSystem;
 			ex.Data[nameof(uploadRequest.BuildMode)] = uploadRequest.BuildMode;
-			await _discordLogger.TryLogException($"Upload failed for user `{uploadRequest.PlayerName}` (`{uploadRequest.PlayerId}`) for `{GetSpawnsetHashOrName(uploadRequest.SurvivalHashMd5, null)}`.", ex);
+			_logger.LogError(ex, "Upload failed for user `{playerName}` (`{playerId}`) for `{spawnset}`.", uploadRequest.PlayerName, uploadRequest.PlayerId, GetSpawnsetHashOrName(uploadRequest.SurvivalHashMd5, null));
 			throw;
 		}
 	}
@@ -183,7 +183,7 @@ public class CustomEntriesController : ControllerBase
 			uploadRequest.SurvivalHashMd5.ByteArrayToHexString(),
 			string.Join(",", new int[3] { uploadRequest.LevelUpTime2, uploadRequest.LevelUpTime3, uploadRequest.LevelUpTime4 }));
 
-		string actual = await DecryptValidation(uploadRequest.Validation);
+		string actual = DecryptValidation(uploadRequest.Validation);
 		if (actual != expected)
 		{
 			string errorMessage = $"Invalid submission for {uploadRequest.Validation}.\nExpected: {expected}\nActual:   {actual}";
@@ -513,11 +513,17 @@ public class CustomEntriesController : ControllerBase
 			};
 			builder.AddFieldObject("Score", FormatTimeString(time), true);
 			builder.AddFieldObject("Rank", $"{rank}/{totalPlayers}", true);
-			await _discordLogger.TryLog(Channel.CustomLeaderboards, null, builder.Build());
+
+			// TODO: Don't log in development.
+			DiscordChannel? channel = DevilDaggersInfoServerConstants.Channels[Channel.CustomLeaderboards].DiscordChannel;
+			if (channel == null)
+				return;
+
+			await channel.SendMessageAsyncSafe(null, builder.Build());
 		}
 		catch (Exception ex)
 		{
-			await _discordLogger.TryLogException("Error while attempting to send leaderboard message.", ex);
+			_logger.LogError(ex, "Error while attempting to send leaderboard message.");
 		}
 	}
 
@@ -527,7 +533,7 @@ public class CustomEntriesController : ControllerBase
 	private static string GetSpawnsetHashOrName(byte[] spawnsetHash, string? spawnsetName)
 		=> string.IsNullOrEmpty(spawnsetName) ? BitConverter.ToString(spawnsetHash).Replace("-", string.Empty) : spawnsetName;
 
-	private async Task<string> DecryptValidation(string validation)
+	private string DecryptValidation(string validation)
 	{
 		try
 		{
@@ -535,13 +541,13 @@ public class CustomEntriesController : ControllerBase
 		}
 		catch (Exception ex)
 		{
-			await _discordLogger.TryLogException($"Could not decrypt validation: `{validation}`", ex);
+			_logger.LogError(ex, "Could not decrypt validation: `{validation}`", validation);
 
 			return string.Empty;
 		}
 	}
 
-	private async Task TryLog(AddUploadRequest uploadRequest, string? spawnsetName, string? errorMessage = null, string? errorEmoteNameOverride = null)
+	private static async Task TryLog(AddUploadRequest uploadRequest, string? spawnsetName, string? errorMessage = null, string? errorEmoteNameOverride = null)
 	{
 		try
 		{
@@ -550,10 +556,15 @@ public class CustomEntriesController : ControllerBase
 			string replayString = uploadRequest.IsReplay ? " | `Replay`" : string.Empty;
 			string requestInfo = $"(`{uploadRequest.ClientVersion}` | `{uploadRequest.OperatingSystem}` | `{uploadRequest.BuildMode}` | `{uploadRequest.Client}`{replayString})";
 
+			// TODO: Don't log in development.
+			DiscordChannel? channel = DevilDaggersInfoServerConstants.Channels[Channel.MonitoringCustomLeaderboard].DiscordChannel;
+			if (channel == null)
+				return;
+
 			if (!string.IsNullOrEmpty(errorMessage))
-				await _discordLogger.TryLog(Channel.MonitoringCustomLeaderboard, $":{errorEmoteNameOverride ?? "warning"}: Upload failed for user `{uploadRequest.PlayerName}` (`{uploadRequest.PlayerId}`) for `{spawnsetIdentification}`. {requestInfo}\n**{errorMessage}**");
+				await channel.SendMessageAsyncSafe($":{errorEmoteNameOverride ?? "warning"}: Upload failed for user `{uploadRequest.PlayerName}` (`{uploadRequest.PlayerId}`) for `{spawnsetIdentification}`. {requestInfo}\n**{errorMessage}**");
 			else
-				await _discordLogger.TryLog(Channel.MonitoringCustomLeaderboard, $":white_check_mark: `{uploadRequest.PlayerName}` just submitted a score of `{FormatTimeString(uploadRequest.Time)}` to `{spawnsetIdentification}`. {requestInfo}");
+				await channel.SendMessageAsyncSafe($":white_check_mark: `{uploadRequest.PlayerName}` just submitted a score of `{FormatTimeString(uploadRequest.Time)}` to `{spawnsetIdentification}`. {requestInfo}");
 		}
 		catch
 		{
