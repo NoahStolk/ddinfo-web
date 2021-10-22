@@ -163,8 +163,7 @@ public class Startup
 
 		// Initiate static caches.
 		LeaderboardStatisticsCache leaderboardStatisticsCache = serviceProvider.GetRequiredService<LeaderboardStatisticsCache>();
-		Task task = leaderboardStatisticsCache.Initiate();
-		task.Wait();
+		leaderboardStatisticsCache.Initiate();
 
 		// Initiate dynamic caches.
 

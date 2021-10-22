@@ -1,5 +1,3 @@
-using DevilDaggersInfo.Web.BlazorWasm.Server.HostedServices.DdInfoDiscordBot;
-
 namespace DevilDaggersInfo.Web.BlazorWasm.Server.Caches.LeaderboardStatistics;
 
 public class LeaderboardStatisticsCache : IStaticCache
@@ -7,12 +5,12 @@ public class LeaderboardStatisticsCache : IStaticCache
 	private readonly List<CompressedEntry> _entries = new();
 
 	private readonly IFileSystemService _fileSystemService;
-	private readonly DiscordLogger _discordLogger;
+	private readonly ILogger<LeaderboardStatisticsCache> _logger;
 
-	public LeaderboardStatisticsCache(IFileSystemService fileSystemService, DiscordLogger discordLogger)
+	public LeaderboardStatisticsCache(IFileSystemService fileSystemService, ILogger<LeaderboardStatisticsCache> logger)
 	{
 		_fileSystemService = fileSystemService;
-		_discordLogger = discordLogger;
+		_logger = logger;
 	}
 
 	public string FileName { get; private set; } = string.Empty;
@@ -34,12 +32,12 @@ public class LeaderboardStatisticsCache : IStaticCache
 
 	public IReadOnlyList<CompressedEntry> Entries => _entries;
 
-	public async Task Initiate()
+	public void Initiate()
 	{
 		string[] paths = _fileSystemService.TryGetFiles(DataSubDirectory.LeaderboardStatistics);
 		if (paths.Length == 0)
 		{
-			await _discordLogger.TryLog(Channel.MonitoringError, ":x: No files found in leaderboard statistics directory.");
+			_logger.LogError("No files found in leaderboard statistics directory.");
 			return;
 		}
 
@@ -91,7 +89,7 @@ public class LeaderboardStatisticsCache : IStaticCache
 
 			Death? death = Deaths.GetDeathByLeaderboardType(GameVersion.V3_1, entry.DeathType);
 			if (!death.HasValue)
-				await _discordLogger.TryLog(Channel.MonitoringError, $":x: Invalid death type 0x{entry.DeathType:X} for entry with time {entry.Time} in leaderboard-statistics.");
+				_logger.LogError("Invalid death type 0x{death} for entry with time {time} in leaderboard-statistics.", entry.DeathType.ToString("X"), entry.Time);
 			else if (DeathStats.ContainsKey(death.Value))
 				DeathStats[death.Value]++;
 
