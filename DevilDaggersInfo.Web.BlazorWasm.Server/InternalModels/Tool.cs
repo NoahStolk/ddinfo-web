@@ -18,5 +18,8 @@ public class Tool
 	/// </summary>
 	public Version VersionNumberRequired { get; init; } = null!;
 
-	public IReadOnlyList<ChangelogEntry> Changelog { get; init; } = null!;
+	/// <summary>
+	/// Contains the changelog for this tool deserialized from the Changelogs.json file, or <see langword="null"/> if the tool does not have a changelog.
+	/// </summary>
+	public IReadOnlyList<ChangelogEntry>? Changelog { get; init; }
 }

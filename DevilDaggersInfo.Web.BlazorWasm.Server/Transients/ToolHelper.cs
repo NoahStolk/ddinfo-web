@@ -24,7 +24,7 @@ public class ToolHelper : IToolHelper
 
 		return new()
 		{
-			Changelog = Changelogs.TryGetValue(tool.Name, out List<ChangelogEntry>? changelog) ? changelog : new List<ChangelogEntry>(),
+			Changelog = Changelogs.TryGetValue(tool.Name, out List<ChangelogEntry>? changelog) ? changelog : null,
 			DisplayName = tool.DisplayName,
 			Name = tool.Name,
 			VersionNumber = Version.Parse(tool.CurrentVersionNumber),

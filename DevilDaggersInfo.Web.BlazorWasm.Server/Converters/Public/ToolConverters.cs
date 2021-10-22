@@ -13,7 +13,7 @@ public static class ToolConverters
 		Name = tool.Name,
 		VersionNumber = tool.VersionNumber,
 		VersionNumberRequired = tool.VersionNumberRequired,
-		Versions = tool.Changelog
+		Versions = tool.Changelog?
 			.Select(ce => ce.ToGetToolVersion(toolStatistics.Find(ts => ts.VersionNumber == ce.VersionNumber.ToString())))
 			.ToList(),
 	};
