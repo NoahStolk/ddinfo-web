@@ -1,4 +1,5 @@
 using DevilDaggersInfo.Web.BlazorWasm.Server.HostedServices.DdInfoDiscordBot;
+using DevilDaggersInfo.Web.BlazorWasm.Server.Logging.Discord;
 
 namespace DevilDaggersInfo.Web.BlazorWasm.Server;
 
@@ -8,5 +9,10 @@ public static class Program
 		=> CreateHostBuilder(args).Build().Run();
 
 	public static IHostBuilder CreateHostBuilder(string[] args)
-		=> Host.CreateDefaultBuilder(args).ConfigureWebHostDefaults(webBuilder => webBuilder.UseStartup<Startup>()).ConfigureServices(services => services.AddHostedService<DdInfoDiscordBotService>());
+	{
+		return Host.CreateDefaultBuilder(args)
+			.ConfigureLogging(builder => builder.ClearProviders().AddDiscordLogger())
+			.ConfigureWebHostDefaults(webBuilder => webBuilder.UseStartup<Startup>())
+			.ConfigureServices(services => services.AddHostedService<DdInfoDiscordBotService>());
+	}
 }

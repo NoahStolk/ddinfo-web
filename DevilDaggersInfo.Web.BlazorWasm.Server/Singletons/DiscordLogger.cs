@@ -12,36 +12,6 @@ public class DiscordLogger
 		_environment = environment;
 	}
 
-	public async Task TryLogException(string title, Exception ex)
-	{
-		try
-		{
-			DiscordChannel? channel = DevilDaggersInfoServerConstants.Channels[Channel.MonitoringError].DiscordChannel;
-			if (channel == null)
-				return;
-
-			DiscordEmbedBuilder builder = new()
-			{
-				Title = title,
-				Color = DiscordColor.Red,
-			};
-			builder.AddError(ex);
-			foreach (DictionaryEntry? data in ex.Data)
-				builder.AddFieldObject(data?.Key?.ToString() ?? "Null", data?.Value?.ToString() ?? "Null");
-
-			await channel.SendMessageAsyncSafe(null, builder.Build());
-		}
-		catch (Exception logEx)
-		{
-			await TryLog(Channel.MonitoringError, $"{nameof(TryLogException)} failed. {logEx.Message}");
-		}
-	}
-
-	public async Task TryLogElapsedMilliseconds(Stopwatch sw, [CallerMemberName] string methodName = "")
-	{
-		await TryLog(Channel.MonitoringTest, $"{methodName} took {sw.ElapsedMilliseconds} ms.");
-	}
-
 	public async Task TryLog(Channel loggingChannel, string? message, DiscordEmbed? embed = null, bool includeEnvironmentName = true)
 	{
 		if (_environment.IsDevelopment())

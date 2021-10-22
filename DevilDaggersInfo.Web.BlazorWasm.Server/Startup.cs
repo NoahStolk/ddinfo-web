@@ -65,6 +65,8 @@ public class Startup
 		services.AddSingleton<SpawnsetSummaryCache>();
 		services.AddSingleton<SpawnsetHashCache>();
 
+		services.AddHostedService<DiscordLogFlushBackgroundService>();
+
 		if (!WebHostEnvironment.IsDevelopment())
 		{
 			// TODO: ResponseTimeLoggerBackgroundService
