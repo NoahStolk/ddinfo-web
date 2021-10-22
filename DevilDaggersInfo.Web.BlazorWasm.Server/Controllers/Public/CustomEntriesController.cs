@@ -509,7 +509,7 @@ public class CustomEntriesController : ControllerBase
 			{
 				Title = message,
 				Color = customLeaderboard.GetDaggerFromTime(time).GetDiscordColor(),
-				Url = Uri.EscapeUriString($"https://devildaggers.info/CustomLeaderboards/Leaderboard?spawnsetName={customLeaderboard.Spawnset.Name}"),
+				Url = Uri.EscapeDataString($"https://devildaggers.info/CustomLeaderboards/Leaderboard?spawnsetName={customLeaderboard.Spawnset.Name}"),
 			};
 			builder.AddFieldObject("Score", FormatTimeString(time), true);
 			builder.AddFieldObject("Rank", $"{rank}/{totalPlayers}", true);
