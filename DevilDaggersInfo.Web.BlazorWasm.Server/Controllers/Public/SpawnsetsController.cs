@@ -15,13 +15,15 @@ public class SpawnsetsController : ControllerBase
 	private readonly IFileSystemService _fileSystemService;
 	private readonly SpawnsetSummaryCache _spawnsetSummaryCache;
 	private readonly SpawnsetHashCache _spawnsetHashCache;
+	private readonly ILogger<SpawnsetsController> _logger;
 
-	public SpawnsetsController(ApplicationDbContext dbContext, IFileSystemService fileSystemService, SpawnsetSummaryCache spawnsetSummaryCache, SpawnsetHashCache spawnsetHashCache)
+	public SpawnsetsController(ApplicationDbContext dbContext, IFileSystemService fileSystemService, SpawnsetSummaryCache spawnsetSummaryCache, SpawnsetHashCache spawnsetHashCache, ILogger<SpawnsetsController> logger)
 	{
 		_dbContext = dbContext;
 		_fileSystemService = fileSystemService;
 		_spawnsetSummaryCache = spawnsetSummaryCache;
 		_spawnsetHashCache = spawnsetHashCache;
+		_logger = logger;
 	}
 
 	[HttpGet]
@@ -119,7 +121,7 @@ public class SpawnsetsController : ControllerBase
 	[HttpGet("by-hash")]
 	[ProducesResponseType(StatusCodes.Status200OK)]
 	[ProducesResponseType(StatusCodes.Status404NotFound)]
-	public async Task<ActionResult<GetSpawnsetByHash>> GetSpawnsetByHash([FromQuery] byte[] hash)
+	public ActionResult<GetSpawnsetByHash> GetSpawnsetByHash([FromQuery] byte[] hash)
 	{
 		SpawnsetHashCacheData? data = _spawnsetHashCache.GetSpawnset(hash);
 		if (data == null)
@@ -131,7 +133,7 @@ public class SpawnsetsController : ControllerBase
 			.FirstOrDefault(s => s.Name == data.Name);
 		if (spawnset == null)
 		{
-			// TODO: Log error.
+			_logger.LogWarning("Spawnset {name} was found in hash cache but not in database.", data.Name);
 			return NotFound();
 		}
 
@@ -246,7 +248,7 @@ public class SpawnsetsController : ControllerBase
 		string path = Path.Combine(_fileSystemService.GetPath(DataSubDirectory.Spawnsets), fileName);
 		if (!IoFile.Exists(path))
 		{
-			// TODO: Log error.
+			_logger.LogError("Default spawnset {name} does not exist in the file system.", fileName);
 			return NotFound();
 		}
 
