@@ -4,14 +4,19 @@ using DevilDaggersWebsite.Extensions;
 using DevilDaggersWebsite.HostedServices.DdInfoDiscordBot;
 using DevilDaggersWebsite.Singletons;
 using DSharpPlus.Entities;
+using Microsoft.AspNetCore.Hosting;
 using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.EntityFrameworkCore;
 using System;
 using System.Collections.Generic;
+using System.ComponentModel.DataAnnotations;
+using System.IO;
 using System.Linq;
+using System.Net.Mime;
 using System.Threading.Tasks;
 using System.Web;
+using Io = System.IO;
 
 namespace DevilDaggersWebsite.Api
 {
@@ -22,12 +27,41 @@ namespace DevilDaggersWebsite.Api
 		private readonly ApplicationDbContext _dbContext;
 		private readonly DiscordLogger _discordLogger;
 		private readonly SpawnsetHashCache _spawnsetHashCache;
+		private readonly IWebHostEnvironment _environment;
 
-		public CustomEntriesController(ApplicationDbContext dbContext, DiscordLogger discordLogger, SpawnsetHashCache spawnsetHashCache)
+		public CustomEntriesController(ApplicationDbContext dbContext, DiscordLogger discordLogger, SpawnsetHashCache spawnsetHashCache, IWebHostEnvironment environment)
 		{
 			_dbContext = dbContext;
 			_discordLogger = discordLogger;
 			_spawnsetHashCache = spawnsetHashCache;
+			_environment = environment;
+		}
+
+		[HttpGet("replay")]
+		[ProducesResponseType(StatusCodes.Status200OK)]
+		[ProducesResponseType(StatusCodes.Status400BadRequest)]
+		[ProducesResponseType(StatusCodes.Status404NotFound)]
+		public ActionResult GetReplayByCustomEntryId([Required] int customEntryId)
+		{
+			string path = Path.Combine(_environment.WebRootPath, "custom-entry-replays", $"{customEntryId}.ddreplay");
+			if (!Io.File.Exists(path))
+				return new NotFoundObjectResult(new ProblemDetails { Title = $"Replay for custom entry '{customEntryId}' was not found." });
+
+			var customEntry = _dbContext.CustomEntries.AsNoTracking()
+				.Select(ce => new
+				{
+					ce.Id,
+					SpawnsetId = ce.CustomLeaderboard.SpawnsetFileId,
+					SpawnsetName = ce.CustomLeaderboard.SpawnsetFile.Name,
+					ce.PlayerId,
+					ce.Player.PlayerName,
+				})
+				.FirstOrDefault(ce => ce.Id == customEntryId);
+			if (customEntry == null)
+				return new NotFoundObjectResult(new ProblemDetails { Title = $"Custom entry '{customEntryId}' was not found." });
+
+			string fileName = $"{customEntry.SpawnsetId}-{customEntry.SpawnsetName}-{customEntry.PlayerId}-{customEntry.PlayerName}.ddreplay";
+			return File(Io.File.ReadAllBytes(path), MediaTypeNames.Application.Octet, fileName);
 		}
 
 		[HttpPost("submit")]
