@@ -22,7 +22,7 @@
 			"environmentVariables": {
 				"ASPNETCORE_ENVIRONMENT": "Development"
 			},
-			"applicationUrl": "http://localhost:2964/"
+			"applicationUrl": "http://localhost:3100/"
 		},
 		"DevilDaggersWebsiteProduction": {
 			"commandName": "Project",
@@ -30,7 +30,7 @@
 			"environmentVariables": {
 				"ASPNETCORE_ENVIRONMENT": "Production"
 			},
-			"applicationUrl": "http://localhost:2964/"
+			"applicationUrl": "http://localhost:3100/"
 		}
 	}
 }
