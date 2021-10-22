@@ -89,10 +89,13 @@ else
 			}
 
 			@*TODO: Country name instead of code / Best rank recorded / Past usernames*@
-			if (GetPlayer.CountryCode != null)
+			if (GetPlayer.CountryCode != null || GetPlayerHistory != null)
 			{
 				<PlayerCard Title="Miscellaneous">
-					<DataField CssClass="even:bg-gray-16" Name="Country">@GetPlayer.CountryCode</DataField>
+					@if (GetPlayer.CountryCode != null)
+					{
+						<DataField CssClass="even:bg-gray-16" Name="Country">@GetPlayer.CountryCode</DataField>
+					}
 					@if (GetPlayerHistory != null)
 					{
 						<DataField CssClass="even:bg-gray-16" Name="Best rank">@GetPlayerHistory.BestRank</DataField>
