@@ -1,5 +1,3 @@
-using DevilDaggersInfo.Web.BlazorWasm.Server.HostedServices.DdInfoDiscordBot;
-
 namespace DevilDaggersInfo.Web.BlazorWasm.Server.Caches.SpawnsetHashes;
 
 public class SpawnsetHashCache : IDynamicCache
@@ -7,15 +5,15 @@ public class SpawnsetHashCache : IDynamicCache
 	private readonly ConcurrentBag<SpawnsetHashCacheData> _cache = new();
 
 	private readonly IFileSystemService _fileSystemService;
-	private readonly DiscordLogger _discordLogger;
+	private readonly ILogger<SpawnsetHashCache> _logger;
 
-	public SpawnsetHashCache(IFileSystemService fileSystemService, DiscordLogger discordLogger)
+	public SpawnsetHashCache(IFileSystemService fileSystemService, ILogger<SpawnsetHashCache> logger)
 	{
 		_fileSystemService = fileSystemService;
-		_discordLogger = discordLogger;
+		_logger = logger;
 	}
 
-	public async Task<SpawnsetHashCacheData?> GetSpawnset(byte[] hash)
+	public SpawnsetHashCacheData? GetSpawnset(byte[] hash)
 	{
 		SpawnsetHashCacheData? spawnsetCacheData = _cache.FirstOrDefault(scd => MatchHashes(scd.Hash, hash));
 		if (spawnsetCacheData != null)
@@ -26,7 +24,7 @@ public class SpawnsetHashCache : IDynamicCache
 			byte[] spawnsetBytes = File.ReadAllBytes(spawnsetPath);
 			if (!SpawnsetBinary.TryParse(spawnsetBytes, out _))
 			{
-				await _discordLogger.TryLog(Channel.MonitoringError, $":x: Could not parse file at `{spawnsetPath}` to a spawnset. Skipping file for cache.");
+				_logger.LogError("Could not parse file at `{path}` to a spawnset. Skipping file for cache.", spawnsetPath);
 				continue;
 			}
 

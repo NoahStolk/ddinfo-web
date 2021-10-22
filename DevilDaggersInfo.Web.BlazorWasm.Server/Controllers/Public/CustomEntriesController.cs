@@ -230,7 +230,7 @@ public class CustomEntriesController : ControllerBase
 		}
 
 		// Check for existing spawnset.
-		SpawnsetHashCacheData? spawnsetHashData = await _spawnsetHashCache.GetSpawnset(uploadRequest.SurvivalHashMd5);
+		SpawnsetHashCacheData? spawnsetHashData = _spawnsetHashCache.GetSpawnset(uploadRequest.SurvivalHashMd5);
 		string? spawnsetName = spawnsetHashData?.Name;
 		if (string.IsNullOrEmpty(spawnsetName))
 		{
