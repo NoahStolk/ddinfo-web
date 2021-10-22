@@ -37,17 +37,18 @@ namespace DevilDaggersWebsite.Api
 			_environment = environment;
 		}
 
-		[HttpGet("replay")]
+		[HttpGet("{id}/replay")]
 		[ProducesResponseType(StatusCodes.Status200OK)]
 		[ProducesResponseType(StatusCodes.Status400BadRequest)]
 		[ProducesResponseType(StatusCodes.Status404NotFound)]
-		public ActionResult GetReplayByCustomEntryId([Required] int customEntryId)
+		public ActionResult GetCustomEntryReplayById([Required] int id)
 		{
-			string path = Path.Combine(_environment.WebRootPath, "custom-entry-replays", $"{customEntryId}.ddreplay");
+			string path = Path.Combine(_environment.WebRootPath, "custom-entry-replays", $"{id}.ddreplay");
 			if (!Io.File.Exists(path))
-				return new NotFoundObjectResult(new ProblemDetails { Title = $"Replay for custom entry '{customEntryId}' was not found." });
+				return new NotFoundObjectResult(new ProblemDetails { Title = $"Replay for custom entry '{id}' was not found." });
 
-			var customEntry = _dbContext.CustomEntries.AsNoTracking()
+			var customEntry = _dbContext.CustomEntries
+				.AsNoTracking()
 				.Select(ce => new
 				{
 					ce.Id,
@@ -56,9 +57,9 @@ namespace DevilDaggersWebsite.Api
 					ce.PlayerId,
 					ce.Player.PlayerName,
 				})
-				.FirstOrDefault(ce => ce.Id == customEntryId);
+				.FirstOrDefault(ce => ce.Id == id);
 			if (customEntry == null)
-				return new NotFoundObjectResult(new ProblemDetails { Title = $"Custom entry '{customEntryId}' was not found." });
+				return new NotFoundObjectResult(new ProblemDetails { Title = $"Custom entry '{id}' was not found." });
 
 			string fileName = $"{customEntry.SpawnsetId}-{customEntry.SpawnsetName}-{customEntry.PlayerId}-{customEntry.PlayerName}.ddreplay";
 			return File(Io.File.ReadAllBytes(path), MediaTypeNames.Application.Octet, fileName);
