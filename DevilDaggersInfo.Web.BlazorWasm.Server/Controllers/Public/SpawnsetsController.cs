@@ -121,7 +121,7 @@ public class SpawnsetsController : ControllerBase
 	[ProducesResponseType(StatusCodes.Status404NotFound)]
 	public async Task<ActionResult<GetSpawnsetByHash>> GetSpawnsetByHash([FromQuery] byte[] hash)
 	{
-		SpawnsetHashCacheData? data = await _spawnsetHashCache.GetSpawnset(hash);
+		SpawnsetHashCacheData? data = _spawnsetHashCache.GetSpawnset(hash);
 		if (data == null)
 			return NotFound();
 

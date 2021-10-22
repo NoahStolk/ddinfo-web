@@ -96,7 +96,7 @@ public class SpawnsetsController : ControllerBase
 			return BadRequest("File could not be parsed to a proper survival file.");
 
 		byte[] spawnsetHash = MD5.HashData(addSpawnset.FileContents);
-		SpawnsetHashCacheData? existingSpawnset = await _spawnsetHashCache.GetSpawnset(spawnsetHash);
+		SpawnsetHashCacheData? existingSpawnset = _spawnsetHashCache.GetSpawnset(spawnsetHash);
 		if (existingSpawnset != null)
 			return BadRequest($"Spawnset is exactly the same as an already existing spawnset named '{existingSpawnset.Name}'.");
 

@@ -34,11 +34,11 @@ public class CachesController : ControllerBase
 
 	[HttpPost("clear")]
 	[ProducesResponseType(StatusCodes.Status200OK)]
-	public async Task<ActionResult> ClearCache(CacheType cacheType)
+	public ActionResult ClearCache(CacheType cacheType)
 	{
 		switch (cacheType)
 		{
-			case CacheType.LeaderboardStatistics: await _leaderboardStatisticsCache.Initiate(); break;
+			case CacheType.LeaderboardStatistics: _leaderboardStatisticsCache.Initiate(); break;
 			case CacheType.LeaderboardHistory: _leaderboardHistoryCache.Clear(); break;
 			case CacheType.ModArchive: _modArchiveCache.Clear(); break;
 			case CacheType.SpawnsetSummary: _spawnsetSummaryCache.Clear(); break;
