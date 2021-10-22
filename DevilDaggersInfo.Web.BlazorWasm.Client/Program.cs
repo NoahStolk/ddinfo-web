@@ -1,5 +1,6 @@
 using Blazorise;
 using DevilDaggersInfo.Web.BlazorWasm.Client.HttpClients;
+using Fluxor;
 using Microsoft.AspNetCore.Components.WebAssembly.Authentication;
 using Microsoft.AspNetCore.Components.WebAssembly.Hosting;
 
@@ -16,6 +17,8 @@ public static class Program
 		builder.Services.AddHttpClient<AdminApiHttpClient>(client => client.BaseAddress = new Uri(builder.HostEnvironment.BaseAddress)).AddHttpMessageHandler<BaseAddressAuthorizationMessageHandler>();
 
 		builder.Services.AddApiAuthorization();
+
+		builder.Services.AddFluxor(options => options.ScanAssemblies(typeof(Program).Assembly));
 
 		builder.Services
 			.AddBlazorise(options => options.ChangeTextOnKeyPress = true)

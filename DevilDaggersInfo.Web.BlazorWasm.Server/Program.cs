@@ -12,7 +12,11 @@ public static class Program
 	{
 		return Host.CreateDefaultBuilder(args)
 			.ConfigureLogging(builder => builder.ClearProviders().AddDiscordLogger())
-			.ConfigureWebHostDefaults(webBuilder => webBuilder.UseStartup<Startup>())
+			.ConfigureWebHostDefaults(webBuilder =>
+			{
+				webBuilder.UseStaticWebAssets();
+				webBuilder.UseStartup<Startup>();
+			})
 			.ConfigureServices(services => services.AddHostedService<DdInfoDiscordBotService>());
 	}
 }
