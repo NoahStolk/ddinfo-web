@@ -1,5 +1,6 @@
 @page "/custom/leaderboard/{Id:int}"
 @inject PublicApiHttpClient Http
+@using DevilDaggersInfo.Web.BlazorWasm.Client.Components.Leaderboards
 @using DevilDaggersInfo.Web.BlazorWasm.Shared.Dto.Public.CustomEntries
 @using DevilDaggersInfo.Web.BlazorWasm.Shared.Dto.Public.CustomLeaderboards
 @using DevilDaggersInfo.Web.BlazorWasm.Shared.Enums;
@@ -48,7 +49,7 @@ else
 
 				foreach (GetCustomEntry ce in GetCustomLeaderboard.CustomEntries)
 				{
-					if (!Version.TryParse(ce.ClientVersion, out Version version))
+					if (!Version.TryParse(ce.ClientVersion, out Version? version))
 						continue;
 
 					bool isDdcl = ce.Client == CustomLeaderboardsClient.DevilDaggersCustomLeaderboards;
