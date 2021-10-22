@@ -1,9 +1,8 @@
 namespace DevilDaggersInfo.Web.BlazorWasm.Server.Transients;
 
 /// <summary>
-/// This class must correspond to what's stored in the Tools.json file.
-/// TODO: Store in database.
-/// TODO: Rename to ToolEntity.
+/// This class must correspond to what's stored in the Changelogs.json file.
+/// TODO: Move to JsonModels or something.
 /// </summary>
 public class Tool
 {
