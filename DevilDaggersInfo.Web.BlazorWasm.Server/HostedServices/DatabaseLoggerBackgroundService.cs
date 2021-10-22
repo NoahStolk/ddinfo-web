@@ -20,7 +20,8 @@ public class DatabaseLoggerBackgroundService : AbstractBackgroundService
 		if (DevilDaggersInfoServerConstants.DatabaseMessage == null)
 			return;
 
-		ApplicationDbContext dbContext = _serviceScopeFactory.CreateScope().ServiceProvider.GetRequiredService<ApplicationDbContext>();
+		using IServiceScope scope = _serviceScopeFactory.CreateScope();
+		using ApplicationDbContext dbContext = scope.ServiceProvider.GetRequiredService<ApplicationDbContext>();
 
 		List<InformationSchemaTable> tables = await dbContext.InformationSchemaTables
 			.FromSqlRaw($@"SELECT
