@@ -11,12 +11,12 @@
 <p>
 	Thanks to everyone who donated!
 </p>
-<p>
+<div class="grid gap-2 grid-cols-6">
 	@foreach (Dagger dagger in Daggers.GetDaggers(GameVersion.V3_1))
 	{
-		<img src="images/icons/daggers/@(dagger.Name.ToLower()).png" style="margin: 8px;" />
+		<img class="mx-auto" src="images/icons/daggers/@(dagger.Name.ToLower()).png" />
 	}
-</p>
+</div>
 
 @if (GetDonators == null)
 {
@@ -41,10 +41,10 @@ else
 						.GroupBy(d => d.Currency)
 						.Select(g => $"{g.Key.GetChar()} {(g.Sum(d => d.Amount) / 100.0).ToString("0.00")} {(g.Key.ToString().ToUpper())}"));
 
-					<div>
+					<div class="grid grid-cols-2">
 						<div style="white-space: nowrap; flex-grow: 4;" class="font-goethe devil text-xl">@username</div>
-						<Tooltip Text="@tooltipText" CssClass="text-center w-full font-calibri">
-							€ @((donator.Donations.Sum(d => d.ConvertedEuroCentsReceived) / 100.0).ToString("0.00"))
+						<Tooltip Text="@tooltipText">
+							<span class="float-right cursor-pointer">€ @((donator.Donations.Sum(d => d.ConvertedEuroCentsReceived) / 100.0).ToString("0.00"))</span>
 						</Tooltip>
 					</div>
 				}
