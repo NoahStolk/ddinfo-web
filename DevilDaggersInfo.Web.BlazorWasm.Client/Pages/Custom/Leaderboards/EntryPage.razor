@@ -159,13 +159,18 @@ else
 
 		chart.OptionsJsonString = @"{
       ""tooltips"": {
-         ""intersect"": false
+         ""intersect"": false,
+		 ""mode"": ""label""
       },
+	  ""hover"": {
+		 ""mode"": ""label""
+	  },
       ""scales"": {
-         ""yAxes"": [{
-            ""ticks"": {
-               ""beginAtZero"": true
-            }
+         ""xAxes"": [{
+            ""display"": true,
+			""scaleLabel"": {
+			  ""show"": true
+			}
          }]
       }
    }";
