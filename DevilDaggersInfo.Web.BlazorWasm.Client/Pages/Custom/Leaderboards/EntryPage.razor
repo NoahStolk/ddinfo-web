@@ -12,47 +12,119 @@ else
 {
 	<Heading>@GetCustomEntryData.PlayerName's score on @GetCustomEntryData.SpawnsetName</Heading>
 
-	<Heading Level="2">Gems</Heading>
-	<LineChart Options="_lco" OptionsJsonString="@_optionsJson" @ref="_gemsChart" TItem="int" />
+	@if (GetCustomEntryData.GemsCollectedData != null
+		|| GetCustomEntryData.GemsDespawnedData != null
+		|| GetCustomEntryData.GemsEatenData != null
+		|| GetCustomEntryData.GemsTotalData != null)
+	{
+		<Heading Level="2">Gems</Heading>
+		<LineChart Options="_lco" OptionsJsonString="@_optionsJson" @ref="_gemsChart" TItem="int" />
+	}
 
-	<Heading Level="2">Homing</Heading>
-	<LineChart Options="_lco" OptionsJsonString="@_optionsJson" @ref="_homingChart" TItem="int" />
-
-	<Heading Level="2">Enemies</Heading>
-	<LineChart Options="_lco" OptionsJsonString="@_optionsJson" @ref="_enemiesChart" TItem="int" />
-
-	<Heading Level="2">Daggers</Heading>
-	<LineChart Options="_lco" OptionsJsonString="@_optionsJson" @ref="_daggersChart" TItem="int" />
-
-	<Heading Level="2">Skulls Alive</Heading>
-	<LineChart Options="_lco" OptionsJsonString="@_optionsJson" @ref="_skullsAliveChart" TItem="ushort" />
-
-	<Heading Level="2">Squids Alive</Heading>
-	<LineChart Options="_lco" OptionsJsonString="@_optionsJson" @ref="_squidsAliveChart" TItem="ushort" />
-
-	<Heading Level="2">Spiders Alive</Heading>
-	<LineChart Options="_lco" OptionsJsonString="@_optionsJson" @ref="_spidersAliveChart" TItem="ushort" />
-
-	<Heading Level="2">Pedes Alive</Heading>
-	<LineChart Options="_lco" OptionsJsonString="@_optionsJson" @ref="_pedesAliveChart" TItem="ushort" />
-
-	<Heading Level="2">Other Enemies Alive</Heading>
-	<LineChart Options="_lco" OptionsJsonString="@_optionsJson" @ref="_otherEnemiesAliveChart" TItem="ushort" />
-
-	<Heading Level="2">Skulls Killed</Heading>
-	<LineChart Options="_lco" OptionsJsonString="@_optionsJson" @ref="_skullsKilledChart" TItem="ushort" />
-
-	<Heading Level="2">Squids Killed</Heading>
-	<LineChart Options="_lco" OptionsJsonString="@_optionsJson" @ref="_squidsKilledChart" TItem="ushort" />
-
-	<Heading Level="2">Spiders Killed</Heading>
-	<LineChart Options="_lco" OptionsJsonString="@_optionsJson" @ref="_spidersKilledChart" TItem="ushort" />
-
-	<Heading Level="2">Pedes Killed</Heading>
-	<LineChart Options="_lco" OptionsJsonString="@_optionsJson" @ref="_pedesKilledChart" TItem="ushort" />
-
-	<Heading Level="2">Other Enemies Killed</Heading>
-	<LineChart Options="_lco" OptionsJsonString="@_optionsJson" @ref="_otherEnemiesKilledChart" TItem="ushort" />
+	@if (GetCustomEntryData.HomingStoredData != null
+		|| GetCustomEntryData.HomingEatenData != null)
+	{
+		<Heading Level="2">Homing</Heading>
+		<LineChart Options="_lco" OptionsJsonString="@_optionsJson" @ref="_homingChart" TItem="int" />
+	}
+	
+	@if (GetCustomEntryData.EnemiesAliveData != null
+		|| GetCustomEntryData.EnemiesKilledData != null)
+	{
+		<Heading Level="2">Enemies</Heading>
+		<LineChart Options="_lco" OptionsJsonString="@_optionsJson" @ref="_enemiesChart" TItem="int" />
+	}
+	
+	@if (GetCustomEntryData.DaggersFiredData != null
+		|| GetCustomEntryData.DaggersHitData != null)
+	{
+		<Heading Level="2">Daggers</Heading>
+		<LineChart Options="_lco" OptionsJsonString="@_optionsJson" @ref="_daggersChart" TItem="int" />
+	}
+	
+	@if (GetCustomEntryData.Skull1sAliveData != null
+		|| GetCustomEntryData.Skull2sAliveData != null
+		|| GetCustomEntryData.Skull3sAliveData != null
+		|| GetCustomEntryData.Skull4sAliveData != null)
+	{
+		<Heading Level="2">Skulls Alive</Heading>
+		<LineChart Options="_lco" OptionsJsonString="@_optionsJson" @ref="_skullsAliveChart" TItem="ushort" />
+	}
+	
+	@if (GetCustomEntryData.Squid1sAliveData != null
+		|| GetCustomEntryData.Squid2sAliveData != null
+		|| GetCustomEntryData.Squid3sAliveData != null)
+	{
+		<Heading Level="2">Squids Alive</Heading>
+		<LineChart Options="_lco" OptionsJsonString="@_optionsJson" @ref="_squidsAliveChart" TItem="ushort" />
+	}
+	
+	@if (GetCustomEntryData.Spider1sAliveData != null
+		|| GetCustomEntryData.Spider2sAliveData != null
+		|| GetCustomEntryData.SpiderEggsAliveData != null
+		|| GetCustomEntryData.SpiderlingsAliveData != null)
+	{
+		<Heading Level="2">Spiders Alive</Heading>
+		<LineChart Options="_lco" OptionsJsonString="@_optionsJson" @ref="_spidersAliveChart" TItem="ushort" />
+	}
+	
+	@if (GetCustomEntryData.CentipedesAliveData != null
+		|| GetCustomEntryData.GigapedesAliveData != null
+		|| GetCustomEntryData.GhostpedesAliveData != null)
+	{
+		<Heading Level="2">Pedes Alive</Heading>
+		<LineChart Options="_lco" OptionsJsonString="@_optionsJson" @ref="_pedesAliveChart" TItem="ushort" />
+	}
+	
+	@if (GetCustomEntryData.ThornsAliveData != null
+		|| GetCustomEntryData.LeviathansAliveData != null
+		|| GetCustomEntryData.OrbsAliveData != null)
+	{
+		<Heading Level="2">Other Enemies Alive</Heading>
+		<LineChart Options="_lco" OptionsJsonString="@_optionsJson" @ref="_otherEnemiesAliveChart" TItem="ushort" />
+	}
+	
+	@if (GetCustomEntryData.Skull1sKilledData != null
+		|| GetCustomEntryData.Skull2sKilledData != null
+		|| GetCustomEntryData.Skull3sKilledData != null
+		|| GetCustomEntryData.Skull4sKilledData != null)
+	{
+		<Heading Level="2">Skulls Killed</Heading>
+		<LineChart Options="_lco" OptionsJsonString="@_optionsJson" @ref="_skullsKilledChart" TItem="ushort" />
+	}
+	
+	@if (GetCustomEntryData.Squid1sKilledData != null
+		|| GetCustomEntryData.Squid2sKilledData != null
+		|| GetCustomEntryData.Squid3sKilledData != null)
+	{
+		<Heading Level="2">Squids Killed</Heading>
+		<LineChart Options="_lco" OptionsJsonString="@_optionsJson" @ref="_squidsKilledChart" TItem="ushort" />
+	}
+	
+	@if (GetCustomEntryData.Spider1sKilledData != null
+		|| GetCustomEntryData.Spider2sKilledData != null
+		|| GetCustomEntryData.SpiderEggsKilledData != null
+		|| GetCustomEntryData.SpiderlingsKilledData != null)
+	{
+		<Heading Level="2">Spiders Killed</Heading>
+		<LineChart Options="_lco" OptionsJsonString="@_optionsJson" @ref="_spidersKilledChart" TItem="ushort" />
+	}
+	
+	@if (GetCustomEntryData.CentipedesKilledData != null
+		|| GetCustomEntryData.GigapedesKilledData != null
+		|| GetCustomEntryData.GhostpedesKilledData != null)
+	{
+		<Heading Level="2">Pedes Killed</Heading>
+		<LineChart Options="_lco" OptionsJsonString="@_optionsJson" @ref="_pedesKilledChart" TItem="ushort" />
+	}
+	
+	@if (GetCustomEntryData.ThornsKilledData != null
+		|| GetCustomEntryData.LeviathansKilledData != null
+		|| GetCustomEntryData.OrbsKilledData != null)
+	{
+		<Heading Level="2">Other Enemies Killed</Heading>
+		<LineChart Options="_lco" OptionsJsonString="@_optionsJson" @ref="_otherEnemiesKilledChart" TItem="ushort" />
+	}
 }
 
 @code
