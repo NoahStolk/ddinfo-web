@@ -55,9 +55,9 @@ else
 			<div class="overflow-x-hidden text-left hidden md:block">@spawnset.LastUpdated.ToString(FormatUtils.DateFormat)</div>
 			<div class="overflow-x-hidden text-left hidden md:block">@spawnset.GameVersion</div>
 			<div class="overflow-x-hidden text-right hidden xl:block">@spawnset.GameMode</div>
-			<div class="overflow-x-hidden text-right hidden xl:block">@(spawnset.LoopLength.HasValue ? spawnset.LoopLength.Value.ToString(FormatUtils.TimeFormat) : "N/A")</div>
+			<div class="overflow-x-hidden text-right hidden xl:block">@(spawnset.LoopLength.HasValue ? (MarkupString)spawnset.LoopLength.Value.ToString(FormatUtils.TimeFormat) : MarkupUtils.NoDataMarkup)</div>
 			<div class="overflow-x-hidden text-right hidden xl:block">@spawnset.LoopSpawnCount</div>
-			<div class="overflow-x-hidden text-right hidden xl:block">@(spawnset.PreLoopLength.HasValue ? spawnset.PreLoopLength.Value.ToString(FormatUtils.TimeFormat) : "N/A")</div>
+			<div class="overflow-x-hidden text-right hidden xl:block">@(spawnset.PreLoopLength.HasValue ? (MarkupString)spawnset.PreLoopLength.Value.ToString(FormatUtils.TimeFormat) : MarkupUtils.NoDataMarkup)</div>
 			<div class="overflow-x-hidden text-right hidden xl:block">@spawnset.PreLoopSpawnCount</div>
 			<div class="overflow-x-hidden text-left hidden lg:block">Level @spawnset.Hand</div>
 			<div class="overflow-x-hidden text-right hidden lg:block">@spawnset.AdditionalGems</div>
