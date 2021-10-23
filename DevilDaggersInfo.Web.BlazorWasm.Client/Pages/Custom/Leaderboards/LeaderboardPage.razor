@@ -54,8 +54,8 @@ else
 
 					bool isDdcl = ce.Client == CustomLeaderboardsClient.DevilDaggersCustomLeaderboards;
 					bool graphs = !isDdcl || version >= FeatureConstants.DdclGraphs;
-					bool homingEaten = !isDdcl ||version >= FeatureConstants.DdclHomingEaten;
-					bool v3_1 = !isDdcl ||version >= FeatureConstants.DdclV3_1;
+					bool homingEaten = !isDdcl || version >= FeatureConstants.DdclHomingEaten;
+					bool v3_1 = !isDdcl || version >= FeatureConstants.DdclV3_1;
 
 					string daggerCssClass = ce.CustomLeaderboardDagger.ToString().ToLower();
 

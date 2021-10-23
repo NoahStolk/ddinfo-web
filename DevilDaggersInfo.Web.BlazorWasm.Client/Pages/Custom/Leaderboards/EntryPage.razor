@@ -75,7 +75,7 @@ else
 	private LineChart<ushort>? _spidersAliveChart;
 	private LineChart<ushort>? _pedesAliveChart;
 	private LineChart<ushort>? _otherEnemiesAliveChart;
-		
+
 	private LineChart<ushort>? _skullsKilledChart;
 	private LineChart<ushort>? _squidsKilledChart;
 	private LineChart<ushort>? _spidersKilledChart;
@@ -127,7 +127,7 @@ else
 			new("Thorns Alive", GetCustomEntryData.ThornsAliveData, EnemyColors.Thorn.HexCode, EnemyColors.Thorn.HexCode),
 			new("Leviathans Alive", GetCustomEntryData.LeviathansAliveData, EnemyColors.Leviathan.HexCode, EnemyColors.Leviathan.HexCode),
 			new("Orbs Alive", GetCustomEntryData.OrbsAliveData, EnemyColors.TheOrb.HexCode, EnemyColors.TheOrb.HexCode));
-			
+
 		await AddLabelsDatasets(_skullsKilledChart,
 			new("Skull Is Killed", GetCustomEntryData.Skull1sKilledData, EnemyColors.Skull1.HexCode, EnemyColors.Skull1.HexCode),
 			new("Skull IIs Killed", GetCustomEntryData.Skull2sKilledData, EnemyColors.Skull2.HexCode, EnemyColors.Skull2.HexCode),
@@ -157,6 +157,19 @@ else
 		if (chart == null || GetCustomEntryData == null)
 			return;
 
+		chart.OptionsJsonString = @"{
+      ""tooltips"": {
+         ""intersect"": false
+      },
+      ""scales"": {
+         ""yAxes"": [{
+            ""ticks"": {
+               ""beginAtZero"": true
+            }
+         }]
+      }
+   }";
+
 		List<LineChartDataset<T>> lineChartDatasets = new();
 		foreach (Dataset<T> dataset in datasets)
 		{
@@ -169,7 +182,7 @@ else
 				Data = dataset.Data.ToList(),
 				BackgroundColor = new(dataset.BackgroundColor),
 				Fill = false,
-				PointRadius = 1,
+				PointRadius = 0,
 				ShowLine = true,
 				BorderColor = dataset.BorderColor,
 				LineTension = 0.1f,
