@@ -95,7 +95,7 @@ else
 				<PlayerCard Title="Miscellaneous">
 					@if (GetPlayer.CountryCode != null)
 					{
-						<DataField CssClass="even:bg-gray-16" Name="Country">@GetPlayer.CountryCode</DataField>
+						<DataField CssClass="even:bg-gray-16" Name="Country"><img src="/images/flags/@(@GetPlayer.CountryCode).png" /></DataField>
 					}
 					@if (GetPlayerHistory != null)
 					{
