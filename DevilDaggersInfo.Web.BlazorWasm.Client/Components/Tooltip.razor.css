@@ -4,7 +4,7 @@
 }
 
 	.tooltip:hover:after {
-		background: rgba(32, 32, 32, .8);
+		background: rgba(16, 16, 16, .8);
 		border-radius: 5px;
 		bottom: 26px;
 		color: #fff;
