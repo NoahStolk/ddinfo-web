@@ -15,21 +15,19 @@ public static class MarkupUtils
 		return new(@$"<span style=""{style}"" class=""font-goethe text-lg"">{name}</span>");
 	}
 
-	public static MarkupString UpgradeString(byte level, GameVersion gameVersion = GameVersion.V3_1)
+	public static MarkupString UpgradeString(Upgrade upgrade)
 	{
-		Upgrade? upgrade = Upgrades.GetUpgrades(gameVersion).Find(u => u.Level == level);
-		string style = $"color: {upgrade?.Color.HexCode ?? "#444"};";
-		string name = upgrade?.Name ?? "Unknown";
+		string style = $"color: {upgrade.Color.HexCode};";
+		string name = upgrade.Name;
 
 		return new(@$"<span style=""{style}"" class=""font-goethe text-lg"">{name}</span>");
 	}
 
-	public static MarkupString EnemyString(string enemyName, GameVersion gameVersion = GameVersion.V3_1)
+	public static MarkupString EnemyString(Enemy enemy, bool plural = false)
 	{
-		Enemy? enemy = Enemies.GetEnemies(gameVersion).Find(e => e.Name == enemyName);
-		string style = $"color: {enemy?.Color.HexCode ?? "#444"};";
-		string name = enemy?.Name ?? "Unknown";
+		string style = $"color: {enemy.Color.HexCode};";
+		string name = enemy.Name;
 
-		return new(@$"<span style=""{style}"" class=""font-goethe text-lg"">{name}</span>");
+		return new(@$"<span style=""{style}"" class=""font-goethe text-lg"">{name}{(plural ? "s" : string.Empty)}</span>");
 	}
 }
