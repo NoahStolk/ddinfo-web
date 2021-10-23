@@ -49,14 +49,14 @@
 					<div class="text-right hidden md:block">@entry.Kills.ToString(FormatUtils.LeaderboardIntFormat)</div>
 					<div class="text-right hidden md:block">@entry.Gems.ToString(FormatUtils.LeaderboardIntFormat)</div>
 					<div class="text-right hidden md:block">
-						<Tooltip Text="@daggers">@accuracy.ToString(FormatUtils.AccuracyFormat)</Tooltip>
+						<Tooltip Text="@daggers"><span class="font-goethe text-xl cursor-pointer">@accuracy.ToString(FormatUtils.AccuracyFormat)</span></Tooltip>
 					</div>
 					<div class="text-left hidden lg:block"><SpanDeath GameVersion="@GameVersion" DeathType="@entry.DeathType" /></div>
 					<div class="text-right hidden xl:block">@entry.TimeTotal.ToString(FormatUtils.LeaderboardGlobalTimeFormat)</div>
 					<div class="text-right hidden xl:block">@entry.KillsTotal.ToString(FormatUtils.LeaderboardIntFormat)</div>
 					<div class="text-right hidden xl:block">@entry.GemsTotal.ToString(FormatUtils.LeaderboardIntFormat)</div>
 					<div class="text-right hidden xl:block">
-						<Tooltip Text="@daggersTotal">@accuracyTotal.ToString(FormatUtils.AccuracyFormat)</Tooltip>
+						<Tooltip Text="@daggersTotal"><span class="font-goethe text-xl cursor-pointer">@accuracyTotal.ToString(FormatUtils.AccuracyFormat)</span></Tooltip>
 					</div>
 					<div class="text-right hidden xl:block">@entry.DeathsTotal.ToString(FormatUtils.LeaderboardIntFormat)</div>
 				</div>

@@ -81,7 +81,7 @@ else
 						<div class="text-right hidden lg:block">@(v3_1 ? (MarkupString)ce.GemsDespawned.ToString(FormatUtils.LeaderboardIntFormat) : Constants.NoDataMarkup)</div>
 						<div class="text-right hidden lg:block">@(v3_1 ? (MarkupString)ce.GemsEaten.ToString(FormatUtils.LeaderboardIntFormat) : Constants.NoDataMarkup)</div>
 						<div class="text-right hidden md:block">
-							<Tooltip Text="@daggers">@accuracy.ToString(FormatUtils.AccuracyFormat)</Tooltip>
+							<Tooltip Text="@daggers"><span class="font-goethe text-xl cursor-pointer">@accuracy.ToString(FormatUtils.AccuracyFormat)</span></Tooltip>
 						</div>
 						<div class="text-left hidden lg:block"><SpanDeath DeathType="ce.DeathType" /></div>
 						<div class="text-right hidden xl:block">@ce.HomingStored.ToString(FormatUtils.LeaderboardIntFormat)</div>
