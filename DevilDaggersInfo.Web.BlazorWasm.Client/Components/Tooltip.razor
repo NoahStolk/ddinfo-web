@@ -1,10 +1,8 @@
-<span class="cursor-pointer has-tooltip @CssClass">
-	<span class="tooltip bg-tooltip-background font-calibri text-color-text text-base shadow-lg rounded pointer-events-none px-1 -mt-8 mx-auto">@(Text.ToNoBreakString())</span>
+<span style="white-space:nowrap" class="tooltip font-calibri" title="@(Text)">
 	@ChildContent
 </span>
 
 @code {
 	[Parameter, EditorRequired] public RenderFragment ChildContent { get; set; } = null!;
 	[Parameter, EditorRequired] public string Text { get; set; } = null!;
-	[Parameter] public string? CssClass { get; set; }
 }
