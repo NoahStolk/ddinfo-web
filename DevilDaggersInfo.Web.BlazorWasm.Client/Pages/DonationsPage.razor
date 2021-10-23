@@ -25,32 +25,22 @@
 else
 {
 	<div class="grid gap-x-3 sm:grid-cols-1 md:grid-cols-3">
-		@{
-			const float columns = 3f;
-			int interval = (int)Math.Ceiling(GetDonators.Count / columns);
-			if (interval % 2 != 0)
-				interval++;
+		@foreach (GetDonator donator in GetDonators)
+		{
+			string username = donator.HideDonations ? "(anonymous)" : donator.PlayerName;
 
-			for (int i = 0; i < GetDonators.Count; i += interval)
-			{
-				foreach (GetDonator donator in GetDonators.Skip(i).Take(interval))
-				{
-					string username = donator.HideDonations ? "(anonymous)" : donator.PlayerName;
+			string tooltipText = string.Join(" + ", donator.Donations
+				.GroupBy(d => d.Currency)
+				.Select(g => $"{g.Key.GetChar()} {(g.Sum(d => d.Amount) / 100.0).ToString("0.00")} {(g.Key.ToString().ToUpper())}"));
 
-					string tooltipText = string.Join(" + ", donator.Donations
-						.GroupBy(d => d.Currency)
-						.Select(g => $"{g.Key.GetChar()} {(g.Sum(d => d.Amount) / 100.0).ToString("0.00")} {(g.Key.ToString().ToUpper())}"));
-
-					<div class="grid grid-cols-2 justify-items-stretch">
-						<div style="white-space: nowrap;" class="justify-self-start font-goethe devil text-xl">@username</div>
-						<div class="justify-self-end">
-							<Tooltip Text="@tooltipText">
-								<span class="cursor-pointer">€ @((donator.Donations.Sum(d => d.ConvertedEuroCentsReceived) / 100.0).ToString("0.00"))</span>
-							</Tooltip>
-						</div>
-					</div>
-				}
-			}
+			<div class="grid grid-cols-2 justify-items-stretch">
+				<div style="white-space: nowrap;" class="justify-self-start font-goethe devil text-xl">@username</div>
+				<div class="justify-self-end">
+					<Tooltip Text="@tooltipText">
+						<span class="cursor-pointer">€ @((donator.Donations.Sum(d => d.ConvertedEuroCentsReceived) / 100.0).ToString("0.00"))</span>
+					</Tooltip>
+				</div>
+			</div>
 		}
 	</div>
 }
