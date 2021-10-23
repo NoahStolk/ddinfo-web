@@ -3,6 +3,7 @@
 @using DevilDaggersInfo.Web.BlazorWasm.Client.Components.Tools
 @using DevilDaggersInfo.Web.BlazorWasm.Shared.Dto.Public.CustomLeaderboards
 @using DevilDaggersInfo.Web.BlazorWasm.Shared.Dto.Public.Tools
+@using DevilDaggersInfo.Web.BlazorWasm.Shared.Enums
 
 <Heading>Devil Daggers Custom Leaderboards</Heading>
 
@@ -18,10 +19,10 @@ else
 
 	<Heading Level="2">Features</Heading>
 	<ul class="pl-4">
-		<li class="list-disc">Participate in @GetTotalCustomLeaderboardData.CountDefault.ToString("N0") custom survival leaderboards and @GetTotalCustomLeaderboardData.CountSpeedrun.ToString("N0") custom speedrun leaderboards</li>
-		<li class="list-disc">@GetTotalCustomLeaderboardData.UniquePlayers.ToString("N0") unique players</li>
-		<li class="list-disc">@GetTotalCustomLeaderboardData.UniqueScores.ToString("N0") unique scores</li>
-		<li class="list-disc">@GetTotalCustomLeaderboardData.TotalSubmits.ToString("N0") total submissions (since @FeatureConstants.TrackingCustomLeaderboardSubmitCounts.ToString(FormatUtils.DateFormat))</li>
+		<li class="list-disc">Participate in @GetTotalCustomLeaderboardData.LeaderboardsPerCategory[CustomLeaderboardCategory.Default].ToString("N0") custom survival leaderboards and @GetTotalCustomLeaderboardData.LeaderboardsPerCategory[CustomLeaderboardCategory.Speedrun].ToString("N0") custom speedrun leaderboards</li>
+		<li class="list-disc">@GetTotalCustomLeaderboardData.PlayersPerCategory.Values.Sum().ToString("N0") players</li>
+		<li class="list-disc">@GetTotalCustomLeaderboardData.ScoresPerCategory.Values.Sum().ToString("N0") scores</li>
+		<li class="list-disc">@GetTotalCustomLeaderboardData.SubmitsPerCategory.Values.Sum().ToString("N0") total submissions (since @FeatureConstants.TrackingCustomLeaderboardSubmitCounts.ToString(FormatUtils.DateFormat))</li>
 	</ul>
 
 	<Heading Level="2">System Requirements</Heading>

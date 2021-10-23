@@ -97,15 +97,26 @@ public class CustomLeaderboardsController : ControllerBase
 	public ActionResult<GetTotalCustomLeaderboardData> GetTotalCustomLeaderboardData()
 	{
 		var customLeaderboards = _dbContext.CustomLeaderboards.AsNoTracking().Select(cl => new { cl.Id, cl.Category, cl.TotalRunsSubmitted }).ToList();
-		List<int> customEntryPlayerIds = _dbContext.CustomEntries.AsNoTracking().Select(ce => ce.PlayerId).ToList();
+		var customEntries = _dbContext.CustomEntries.AsNoTracking().Select(ce => new { ce.PlayerId, ce.CustomLeaderboard.Category }).ToList();
+
+		Dictionary<CustomLeaderboardCategory, int> leaderboardsPerCategory = new();
+		Dictionary<CustomLeaderboardCategory, int> scoresPerCategory = new();
+		Dictionary<CustomLeaderboardCategory, int> submitsPerCategory = new();
+		Dictionary<CustomLeaderboardCategory, int> playersPerCategory = new();
+		foreach (CustomLeaderboardCategory category in Enum.GetValues<CustomLeaderboardCategory>())
+		{
+			leaderboardsPerCategory[category] = customLeaderboards.Count(cl => cl.Category == category);
+			scoresPerCategory[category] = customEntries.Count(cl => cl.Category == category);
+			submitsPerCategory[category] = customLeaderboards.Where(cl => cl.Category == category).Sum(cl => cl.TotalRunsSubmitted);
+			playersPerCategory[category] = customEntries.Where(cl => cl.Category == category).DistinctBy(cl => cl.PlayerId).Count();
+		}
 
 		return new GetTotalCustomLeaderboardData
 		{
-			CountDefault = customLeaderboards.Count(cl => cl.Category == CustomLeaderboardCategory.Default),
-			CountSpeedrun = customLeaderboards.Count(cl => cl.Category == CustomLeaderboardCategory.Speedrun),
-			TotalSubmits = customLeaderboards.Sum(cl => cl.TotalRunsSubmitted),
-			UniqueScores = customEntryPlayerIds.Count,
-			UniquePlayers = customEntryPlayerIds.Distinct().Count(),
+			LeaderboardsPerCategory = leaderboardsPerCategory,
+			ScoresPerCategory = scoresPerCategory,
+			SubmitsPerCategory = submitsPerCategory,
+			PlayersPerCategory = playersPerCategory,
 		};
 	}
 
@@ -117,7 +128,7 @@ public class CustomLeaderboardsController : ControllerBase
 
 		Dictionary<CustomLeaderboardCategory, int> countPerCategory = new();
 		foreach (CustomLeaderboardCategory category in Enum.GetValues<CustomLeaderboardCategory>())
-			countPerCategory[category] = customLeaderboards.Count(c => c.Category == category);
+			countPerCategory[category] = customLeaderboards.Count(cl => cl.Category == category);
 
 		return new GetNumberOfCustomLeaderboards
 		{
