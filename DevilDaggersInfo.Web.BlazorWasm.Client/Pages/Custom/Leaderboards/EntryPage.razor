@@ -13,46 +13,46 @@ else
 	<Heading>@GetCustomEntryData.PlayerName's score on @GetCustomEntryData.SpawnsetName</Heading>
 
 	<Heading Level="2">Gems</Heading>
-	<LineChart Options="_lco" @ref="_gemsChart" TItem="int" />
+	<LineChart Options="_lco" OptionsJsonString="@_optionsJson" @ref="_gemsChart" TItem="int" />
 
 	<Heading Level="2">Homing</Heading>
-	<LineChart Options="_lco" @ref="_homingChart" TItem="int" />
+	<LineChart Options="_lco" OptionsJsonString="@_optionsJson" @ref="_homingChart" TItem="int" />
 
 	<Heading Level="2">Enemies</Heading>
-	<LineChart Options="_lco" @ref="_enemiesChart" TItem="int" />
+	<LineChart Options="_lco" OptionsJsonString="@_optionsJson" @ref="_enemiesChart" TItem="int" />
 
 	<Heading Level="2">Daggers</Heading>
-	<LineChart Options="_lco" @ref="_daggersChart" TItem="int" />
+	<LineChart Options="_lco" OptionsJsonString="@_optionsJson" @ref="_daggersChart" TItem="int" />
 
 	<Heading Level="2">Skulls Alive</Heading>
-	<LineChart Options="_lco" @ref="_skullsAliveChart" TItem="ushort" />
+	<LineChart Options="_lco" OptionsJsonString="@_optionsJson" @ref="_skullsAliveChart" TItem="ushort" />
 
 	<Heading Level="2">Squids Alive</Heading>
-	<LineChart Options="_lco" @ref="_squidsAliveChart" TItem="ushort" />
+	<LineChart Options="_lco" OptionsJsonString="@_optionsJson" @ref="_squidsAliveChart" TItem="ushort" />
 
 	<Heading Level="2">Spiders Alive</Heading>
-	<LineChart Options="_lco" @ref="_spidersAliveChart" TItem="ushort" />
+	<LineChart Options="_lco" OptionsJsonString="@_optionsJson" @ref="_spidersAliveChart" TItem="ushort" />
 
 	<Heading Level="2">Pedes Alive</Heading>
-	<LineChart Options="_lco" @ref="_pedesAliveChart" TItem="ushort" />
+	<LineChart Options="_lco" OptionsJsonString="@_optionsJson" @ref="_pedesAliveChart" TItem="ushort" />
 
 	<Heading Level="2">Other Enemies Alive</Heading>
-	<LineChart Options="_lco" @ref="_otherEnemiesAliveChart" TItem="ushort" />
+	<LineChart Options="_lco" OptionsJsonString="@_optionsJson" @ref="_otherEnemiesAliveChart" TItem="ushort" />
 
 	<Heading Level="2">Skulls Killed</Heading>
-	<LineChart Options="_lco" @ref="_skullsKilledChart" TItem="ushort" />
+	<LineChart Options="_lco" OptionsJsonString="@_optionsJson" @ref="_skullsKilledChart" TItem="ushort" />
 
 	<Heading Level="2">Squids Killed</Heading>
-	<LineChart Options="_lco" @ref="_squidsKilledChart" TItem="ushort" />
+	<LineChart Options="_lco" OptionsJsonString="@_optionsJson" @ref="_squidsKilledChart" TItem="ushort" />
 
 	<Heading Level="2">Spiders Killed</Heading>
-	<LineChart Options="_lco" @ref="_spidersKilledChart" TItem="ushort" />
+	<LineChart Options="_lco" OptionsJsonString="@_optionsJson" @ref="_spidersKilledChart" TItem="ushort" />
 
 	<Heading Level="2">Pedes Killed</Heading>
-	<LineChart Options="_lco" @ref="_pedesKilledChart" TItem="ushort" />
+	<LineChart Options="_lco" OptionsJsonString="@_optionsJson" @ref="_pedesKilledChart" TItem="ushort" />
 
 	<Heading Level="2">Other Enemies Killed</Heading>
-	<LineChart Options="_lco" @ref="_otherEnemiesKilledChart" TItem="ushort" />
+	<LineChart Options="_lco" OptionsJsonString="@_optionsJson" @ref="_otherEnemiesKilledChart" TItem="ushort" />
 }
 
 @code
@@ -64,6 +64,24 @@ else
 		AspectRatio = 3.5f,
 		ShowLines = true,
 	};
+
+	private string _optionsJson = @"{
+	""tooltips"": {
+		""intersect"": false,
+		""mode"": ""label""
+	},
+	""hover"": {
+		""mode"": ""label""
+	},
+	""scales"": {
+		""xAxes"": [{
+			""display"": true,
+			""scaleLabel"": {
+				""show"": true
+			}
+		}]
+	}
+}";
 
 	private LineChart<int>? _gemsChart;
 	private LineChart<int>? _homingChart;
@@ -156,24 +174,6 @@ else
 	{
 		if (chart == null || GetCustomEntryData == null)
 			return;
-
-		chart.OptionsJsonString = @"{
-      ""tooltips"": {
-         ""intersect"": false,
-		 ""mode"": ""label""
-      },
-	  ""hover"": {
-		 ""mode"": ""label""
-	  },
-      ""scales"": {
-         ""xAxes"": [{
-            ""display"": true,
-			""scaleLabel"": {
-			  ""show"": true
-			}
-         }]
-      }
-   }";
 
 		List<LineChartDataset<T>> lineChartDatasets = new();
 		foreach (Dataset<T> dataset in datasets)
