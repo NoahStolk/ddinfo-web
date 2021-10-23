@@ -9,19 +9,19 @@
 
 <div class="text-xl font-goethe">
 	<div class="grid gap-3 grid-cols-leaderboard-sm md:grid-cols-leaderboard-md lg:grid-cols-leaderboard-lg xl:grid-cols-leaderboard-xl">
-		<div @onclick="() => Sort(LeaderboardSorting.Rank)" class="text-right"><Tooltip Text="Sort by RANK"><img src="/images/icons/custom-x2/rank.png" /></Tooltip></div>
-		<div @onclick="() => Sort(LeaderboardSorting.Flag)" class="text-left"><Tooltip Text="Sort by FLAG"><img src="/images/icons/custom-x2/flag.png" /></Tooltip></div>
-		<div @onclick="() => Sort(LeaderboardSorting.Player)" class="text-left"><Tooltip Text="Sort by PLAYER"><img src="/images/icons/mask-x2/eye.png" /></Tooltip></div>
-		<div @onclick="() => Sort(LeaderboardSorting.Time)" class="text-right"><Tooltip Text="Sort by TIME"><img src="/images/icons/mask-x2/stopwatch.png" /></Tooltip></div>
-		<div @onclick="() => Sort(LeaderboardSorting.Kills)" class="text-right hidden md:block"><Tooltip Text="Sort by KILLS"><img src="/images/icons/mask-x2/dagger.png" /></Tooltip></div>
-		<div @onclick="() => Sort(LeaderboardSorting.Gems)" class="text-right hidden md:block"><Tooltip Text="Sort by GEMS"><img src="/images/icons/mask-x2/gem.png" /></Tooltip></div>
-		<div @onclick="() => Sort(LeaderboardSorting.Accuracy)" class="text-right hidden md:block"><Tooltip Text="Sort by ACCURACY"><img src="/images/icons/mask-x2/crosshair.png" /></Tooltip></div>
-		<div @onclick="() => Sort(LeaderboardSorting.DeathType)" class="text-left hidden lg:block"><Tooltip Text="Sort by DEATH&nbsp;TYPE"><img src="/images/icons/mask-x2/skull.png" /></Tooltip></div>
-		<div @onclick="() => Sort(LeaderboardSorting.TotalTime)" class="text-right hidden xl:block"><Tooltip Text="Sort by TOTAL&nbsp;TIME"><img src="/images/icons/mask-x2/stopwatch.png" /></Tooltip></div>
-		<div @onclick="() => Sort(LeaderboardSorting.TotalKills)" class="text-right hidden xl:block"><Tooltip Text="Sort by TOTAL&nbsp;KILLS"><img src="/images/icons/mask-x2/dagger.png" /></Tooltip></div>
-		<div @onclick="() => Sort(LeaderboardSorting.TotalGems)" class="text-right hidden xl:block"><Tooltip Text="Sort by TOTAL&nbsp;GEMS"><img src="/images/icons/mask-x2/gem.png" /></Tooltip></div>
-		<div @onclick="() => Sort(LeaderboardSorting.TotalAccuracy)" class="text-right hidden xl:block"><Tooltip Text="Sort by TOTAL&nbsp;ACCURACY"><img src="/images/icons/mask-x2/crosshair.png" /></Tooltip></div>
-		<div @onclick="() => Sort(LeaderboardSorting.TotalDeaths)" class="text-right hidden xl:block"><Tooltip Text="Sort by TOTAL&nbsp;DEATHS"><img src="/images/icons/mask-x2/skull.png" /></Tooltip></div>
+		<div @onclick="() => Sort(LeaderboardSorting.Rank)"><Tooltip CssClass="float-right" Text="Sort by RANK"><img src="/images/icons/custom-x2/rank.png" /></Tooltip></div>
+		<div @onclick="() => Sort(LeaderboardSorting.Flag)"><Tooltip CssClass="float-left" Text="Sort by FLAG"><img src="/images/icons/custom-x2/flag.png" /></Tooltip></div>
+		<div @onclick="() => Sort(LeaderboardSorting.Player)"><Tooltip CssClass="float-left" Text="Sort by PLAYER"><img src="/images/icons/mask-x2/eye.png" /></Tooltip></div>
+		<div @onclick="() => Sort(LeaderboardSorting.Time)"><Tooltip CssClass="float-right" Text="Sort by TIME"><img src="/images/icons/mask-x2/stopwatch.png" /></Tooltip></div>
+		<div @onclick="() => Sort(LeaderboardSorting.Kills)" class="hidden md:block"><Tooltip CssClass="float-right" Text="Sort by KILLS"><img src="/images/icons/mask-x2/dagger.png" /></Tooltip></div>
+		<div @onclick="() => Sort(LeaderboardSorting.Gems)" class="hidden md:block"><Tooltip CssClass="float-right" Text="Sort by GEMS"><img src="/images/icons/mask-x2/gem.png" /></Tooltip></div>
+		<div @onclick="() => Sort(LeaderboardSorting.Accuracy)" class="hidden md:block"><Tooltip CssClass="float-right" Text="Sort by ACCURACY"><img src="/images/icons/mask-x2/crosshair.png" /></Tooltip></div>
+		<div @onclick="() => Sort(LeaderboardSorting.DeathType)" class="hidden lg:block"><Tooltip CssClass="float-left" Text="Sort by DEATH TYPE"><img src="/images/icons/mask-x2/skull.png" /></Tooltip></div>
+		<div @onclick="() => Sort(LeaderboardSorting.TotalTime)" class="hidden xl:block"><Tooltip CssClass="float-right" Text="Sort by TOTAL TIME"><img src="/images/icons/mask-x2/stopwatch.png" /></Tooltip></div>
+		<div @onclick="() => Sort(LeaderboardSorting.TotalKills)" class="hidden xl:block"><Tooltip CssClass="float-right" Text="Sort by TOTAL KILLS"><img src="/images/icons/mask-x2/dagger.png" /></Tooltip></div>
+		<div @onclick="() => Sort(LeaderboardSorting.TotalGems)" class="hidden xl:block"><Tooltip CssClass="float-right" Text="Sort by TOTAL GEMS"><img src="/images/icons/mask-x2/gem.png" /></Tooltip></div>
+		<div @onclick="() => Sort(LeaderboardSorting.TotalAccuracy)" class="hidden xl:block"><Tooltip CssClass="float-right" Text="Sort by TOTAL ACCURACY"><img src="/images/icons/mask-x2/crosshair.png" /></Tooltip></div>
+		<div @onclick="() => Sort(LeaderboardSorting.TotalDeaths)" class="hidden xl:block"><Tooltip CssClass="float-right" Text="Sort by TOTAL DEATHS"><img src="/images/icons/mask-x2/skull.png" /></Tooltip></div>
 	</div>
 	<div>
 		@{
