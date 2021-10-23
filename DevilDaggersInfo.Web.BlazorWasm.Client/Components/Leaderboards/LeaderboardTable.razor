@@ -51,7 +51,7 @@
 					<div class="text-right hidden md:block">
 						<Tooltip Text="@daggers"><span class="font-goethe text-xl cursor-pointer">@accuracy.ToString(FormatUtils.AccuracyFormat)</span></Tooltip>
 					</div>
-					<div class="text-left hidden lg:block"><SpanDeath GameVersion="@GameVersion" DeathType="@entry.DeathType" /></div>
+					<div class="text-left hidden lg:block">@MarkupUtils.DeathString(entry.DeathType, GameVersion)</div>
 					<div class="text-right hidden xl:block">@entry.TimeTotal.ToString(FormatUtils.LeaderboardGlobalTimeFormat)</div>
 					<div class="text-right hidden xl:block">@entry.KillsTotal.ToString(FormatUtils.LeaderboardIntFormat)</div>
 					<div class="text-right hidden xl:block">@entry.GemsTotal.ToString(FormatUtils.LeaderboardIntFormat)</div>
