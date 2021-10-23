@@ -5,14 +5,14 @@
 @using DevilDaggersInfo.Web.BlazorWasm.Shared.Dto.Public.CustomLeaderboards
 @using DevilDaggersInfo.Web.BlazorWasm.Shared.Enums;
 
-<Heading>Custom Leaderboard</Heading>
-
 @if (GetCustomLeaderboard == null)
 {
 	<Loading />
 }
 else
 {
+	<Heading>Custom Leaderboard - @GetCustomLeaderboard.SpawnsetName</Heading>
+
 	if (GetCustomLeaderboard.IsArchived)
 	{
 		<p class="text-lg p-1 m-1 bg-dark-red">This leaderboard is archived. You can still submit scores to it, but it won't show up in the list of leaderboards or player statistics.</p>
@@ -66,14 +66,14 @@ else
 						<EntryRank PlayerId="@ce.PlayerId" Rank="@ce.Rank" />
 						<EntryFlag CountryCode="@ce.CountryCode" />
 						<EntryUsername DaggerCssClass="@daggerCssClass" Id="@ce.PlayerId" Name="@($"{ce.PlayerName}")" />
-						<div class="text-right @daggerCssClass">
+						<div class="text-right">
 							@if (graphs)
 							{
 								<UrlLink Href="@($"/custom/entry/{ce.Id}")">
-									<Tooltip Text="View graphs"><img src="/images/icons/mask/eye.png" /></Tooltip>
+									<Tooltip Text="View graphs"><img class="cursor-pointer inline-block mb-1 mr-1" src="/images/icons/mask/eye.png" /></Tooltip>
 								</UrlLink>
 							}
-							@ce.Time.ToString(FormatUtils.TimeFormat)
+							<span class="@daggerCssClass">@ce.Time.ToString(FormatUtils.TimeFormat)</span>
 						</div>
 						<div class="text-right hidden md:block">@ce.EnemiesKilled.ToString(FormatUtils.LeaderboardIntFormat)</div>
 						<div class="text-right hidden md:block">@ce.EnemiesAlive.ToString(FormatUtils.LeaderboardIntFormat)</div>
