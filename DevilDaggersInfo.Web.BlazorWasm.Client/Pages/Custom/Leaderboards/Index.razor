@@ -77,6 +77,34 @@ else
 	}
 }
 
+@if (GetTotalCustomLeaderboardData != null)
+{
+	<Heading Level="2">Statistics</Heading>
+
+	<div class="grid gap-2 grid-cols-1 md:grid-cols-2 lg:grid-cols-4">
+		<div>
+			<Heading Level="3">Total</Heading>
+			<p>@GetTotalCustomLeaderboardData.LeaderboardsPerCategory.Values.Sum().ToString("N0") leaderboards</p>
+			<p>@GetTotalCustomLeaderboardData.PlayersPerCategory.Values.Sum().ToString("N0") players</p>
+			<p>@GetTotalCustomLeaderboardData.ScoresPerCategory.Values.Sum().ToString("N0") scores</p>
+			<p>@GetTotalCustomLeaderboardData.SubmitsPerCategory.Values.Sum().ToString("N0") submissions*</p>
+		</div>
+
+		@foreach (CustomLeaderboardCategory category in Enum.GetValues<CustomLeaderboardCategory>())
+		{
+			<div>
+				<Heading Level="3">@category</Heading>
+				<p>@GetTotalCustomLeaderboardData.LeaderboardsPerCategory[category].ToString("N0") leaderboards</p>
+				<p>@GetTotalCustomLeaderboardData.PlayersPerCategory[category].ToString("N0") players</p>
+				<p>@GetTotalCustomLeaderboardData.ScoresPerCategory[category].ToString("N0") scores</p>
+				<p>@GetTotalCustomLeaderboardData.SubmitsPerCategory[category].ToString("N0") submissions*</p>
+			</div>
+		}
+	</div>
+
+	<i>* Submissions are counted since @FeatureConstants.TrackingCustomLeaderboardSubmitCounts.ToString(FormatUtils.DateFormat).</i>
+}
+
 @code
 {
 	private int _category = 1;
@@ -93,6 +121,8 @@ else
 
 	public Page<GetCustomLeaderboardOverview>? GetCustomLeaderboards { get; set; }
 
+	public GetTotalCustomLeaderboardData? GetTotalCustomLeaderboardData { get; set; }
+
 	private int TotalPages => GetCustomLeaderboards == null ? 0 : (GetCustomLeaderboards.TotalResults - 1) / PageSize + 1;
 
 	protected override async Task OnInitializedAsync()
@@ -101,6 +131,8 @@ else
 			_sortings.Add(e, false);
 
 		await Fetch();
+
+		GetTotalCustomLeaderboardData = await Http.GetTotalCustomLeaderboardData();
 	}
 
 	private async Task ChangePageIndex(int pageIndex)
