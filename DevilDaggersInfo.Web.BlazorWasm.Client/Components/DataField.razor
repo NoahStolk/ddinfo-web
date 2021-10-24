@@ -1,4 +1,4 @@
-<div class="grid gap-2 grid-cols-@(Left + Right) px-1 max-h-6 @CssClass">
+<div class="grid gap-2 grid-cols-@(Left + Right) px-1 @((PreventHeightOverflow ? "max-h-6" : string.Empty)) @CssClass">
 	<span class="col-span-@(Left)">@Name</span>
 	<span class="col-span-@(Right) text-right">@ChildContent</span>
 </div>
@@ -11,4 +11,5 @@
 	[Parameter] public int Right { get; set; } = 1;
 
 	[Parameter] public string? CssClass { get; set; }
+	[Parameter] public bool PreventHeightOverflow { get; set; } = true;
 }

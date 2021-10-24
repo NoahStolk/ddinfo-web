@@ -95,7 +95,12 @@ else
 				<PlayerCard Title="Miscellaneous">
 					@if (GetPlayer.CountryCode != null)
 					{
-						<DataField CssClass="even:bg-gray-16" Name="Country"><img src="/images/flags/@(@GetPlayer.CountryCode).png" /></DataField>
+						<DataField CssClass="even:bg-gray-16" Name="Country" PreventHeightOverflow="false">
+							<div class="grid grid-cols-2 justify-items-end">
+								<img src="/images/flags/@(@GetPlayer.CountryCode).png" />
+								<span>@(UserUtils.CountryNames.ContainsKey(GetPlayer.CountryCode) ? UserUtils.CountryNames[GetPlayer.CountryCode] : "?")</span>
+							</div>
+						</DataField>
 					}
 					@if (GetPlayerHistory != null)
 					{
