@@ -105,6 +105,12 @@ else
 					@if (GetPlayerHistory != null)
 					{
 						<DataField CssClass="even:bg-gray-16" Name="Best rank">@GetPlayerHistory.BestRank</DataField>
+						<DataField CssClass="even:bg-gray-16" Name="Usernames" PreventHeightOverflow="false">
+							@foreach (string username in GetPlayerHistory.Usernames)
+							{
+								<div class="even:bg-gray-16 px-1">@username</div>
+							}
+						</DataField>
 					}
 				</PlayerCard>
 			}

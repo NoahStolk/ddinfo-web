@@ -1,6 +1,17 @@
 <div class="grid gap-2 grid-cols-@(Left + Right) px-1 @((PreventHeightOverflow ? "max-h-6" : string.Empty)) @CssClass">
 	<span class="col-span-@(Left)">@Name</span>
-	<span class="col-span-@(Right) text-right">@ChildContent</span>
+	<span class="col-span-@(Right) text-right">
+		@if (!PreventHeightOverflow)
+		{
+			<div class="max-h-48 overflow-y-auto">
+				@ChildContent
+			</div>
+		}
+		else
+		{
+			@ChildContent
+		}
+	</span>
 </div>
 
 @code {
