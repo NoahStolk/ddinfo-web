@@ -18,28 +18,28 @@ else
 		|| GetCustomEntryData.GemsTotalData != null)
 	{
 		<Heading Level="2">Gems</Heading>
-		<LineChart Options="_lco" OptionsJsonString="@_optionsJson" @ref="_gemsChart" TItem="int" />
+		<LineChart Options="LineChartUtils.Options" OptionsJsonString="@LineChartUtils.AdditionalJsonOptions" @ref="_gemsChart" TItem="int" />
 	}
 
 	@if (GetCustomEntryData.HomingStoredData != null
 		|| GetCustomEntryData.HomingEatenData != null)
 	{
 		<Heading Level="2">Homing</Heading>
-		<LineChart Options="_lco" OptionsJsonString="@_optionsJson" @ref="_homingChart" TItem="int" />
+		<LineChart Options="LineChartUtils.Options" OptionsJsonString="@LineChartUtils.AdditionalJsonOptions" @ref="_homingChart" TItem="int" />
 	}
 	
 	@if (GetCustomEntryData.EnemiesAliveData != null
 		|| GetCustomEntryData.EnemiesKilledData != null)
 	{
 		<Heading Level="2">Enemies</Heading>
-		<LineChart Options="_lco" OptionsJsonString="@_optionsJson" @ref="_enemiesChart" TItem="int" />
+		<LineChart Options="LineChartUtils.Options" OptionsJsonString="@LineChartUtils.AdditionalJsonOptions" @ref="_enemiesChart" TItem="int" />
 	}
 	
 	@if (GetCustomEntryData.DaggersFiredData != null
 		|| GetCustomEntryData.DaggersHitData != null)
 	{
 		<Heading Level="2">Daggers</Heading>
-		<LineChart Options="_lco" OptionsJsonString="@_optionsJson" @ref="_daggersChart" TItem="int" />
+		<LineChart Options="LineChartUtils.Options" OptionsJsonString="@LineChartUtils.AdditionalJsonOptions" @ref="_daggersChart" TItem="int" />
 	}
 	
 	@if (GetCustomEntryData.Skull1sAliveData != null
@@ -48,7 +48,7 @@ else
 		|| GetCustomEntryData.Skull4sAliveData != null)
 	{
 		<Heading Level="2">Skulls Alive</Heading>
-		<LineChart Options="_lco" OptionsJsonString="@_optionsJson" @ref="_skullsAliveChart" TItem="ushort" />
+		<LineChart Options="LineChartUtils.Options" OptionsJsonString="@LineChartUtils.AdditionalJsonOptions" @ref="_skullsAliveChart" TItem="ushort" />
 	}
 	
 	@if (GetCustomEntryData.Squid1sAliveData != null
@@ -56,7 +56,7 @@ else
 		|| GetCustomEntryData.Squid3sAliveData != null)
 	{
 		<Heading Level="2">Squids Alive</Heading>
-		<LineChart Options="_lco" OptionsJsonString="@_optionsJson" @ref="_squidsAliveChart" TItem="ushort" />
+		<LineChart Options="LineChartUtils.Options" OptionsJsonString="@LineChartUtils.AdditionalJsonOptions" @ref="_squidsAliveChart" TItem="ushort" />
 	}
 	
 	@if (GetCustomEntryData.Spider1sAliveData != null
@@ -65,7 +65,7 @@ else
 		|| GetCustomEntryData.SpiderlingsAliveData != null)
 	{
 		<Heading Level="2">Spiders Alive</Heading>
-		<LineChart Options="_lco" OptionsJsonString="@_optionsJson" @ref="_spidersAliveChart" TItem="ushort" />
+		<LineChart Options="LineChartUtils.Options" OptionsJsonString="@LineChartUtils.AdditionalJsonOptions" @ref="_spidersAliveChart" TItem="ushort" />
 	}
 	
 	@if (GetCustomEntryData.CentipedesAliveData != null
@@ -73,7 +73,7 @@ else
 		|| GetCustomEntryData.GhostpedesAliveData != null)
 	{
 		<Heading Level="2">Pedes Alive</Heading>
-		<LineChart Options="_lco" OptionsJsonString="@_optionsJson" @ref="_pedesAliveChart" TItem="ushort" />
+		<LineChart Options="LineChartUtils.Options" OptionsJsonString="@LineChartUtils.AdditionalJsonOptions" @ref="_pedesAliveChart" TItem="ushort" />
 	}
 	
 	@if (GetCustomEntryData.ThornsAliveData != null
@@ -81,7 +81,7 @@ else
 		|| GetCustomEntryData.OrbsAliveData != null)
 	{
 		<Heading Level="2">Other Enemies Alive</Heading>
-		<LineChart Options="_lco" OptionsJsonString="@_optionsJson" @ref="_otherEnemiesAliveChart" TItem="ushort" />
+		<LineChart Options="LineChartUtils.Options" OptionsJsonString="@LineChartUtils.AdditionalJsonOptions" @ref="_otherEnemiesAliveChart" TItem="ushort" />
 	}
 	
 	@if (GetCustomEntryData.Skull1sKilledData != null
@@ -90,7 +90,7 @@ else
 		|| GetCustomEntryData.Skull4sKilledData != null)
 	{
 		<Heading Level="2">Skulls Killed</Heading>
-		<LineChart Options="_lco" OptionsJsonString="@_optionsJson" @ref="_skullsKilledChart" TItem="ushort" />
+		<LineChart Options="LineChartUtils.Options" OptionsJsonString="@LineChartUtils.AdditionalJsonOptions" @ref="_skullsKilledChart" TItem="ushort" />
 	}
 	
 	@if (GetCustomEntryData.Squid1sKilledData != null
@@ -98,7 +98,7 @@ else
 		|| GetCustomEntryData.Squid3sKilledData != null)
 	{
 		<Heading Level="2">Squids Killed</Heading>
-		<LineChart Options="_lco" OptionsJsonString="@_optionsJson" @ref="_squidsKilledChart" TItem="ushort" />
+		<LineChart Options="LineChartUtils.Options" OptionsJsonString="@LineChartUtils.AdditionalJsonOptions" @ref="_squidsKilledChart" TItem="ushort" />
 	}
 	
 	@if (GetCustomEntryData.Spider1sKilledData != null
@@ -107,7 +107,7 @@ else
 		|| GetCustomEntryData.SpiderlingsKilledData != null)
 	{
 		<Heading Level="2">Spiders Killed</Heading>
-		<LineChart Options="_lco" OptionsJsonString="@_optionsJson" @ref="_spidersKilledChart" TItem="ushort" />
+		<LineChart Options="LineChartUtils.Options" OptionsJsonString="@LineChartUtils.AdditionalJsonOptions" @ref="_spidersKilledChart" TItem="ushort" />
 	}
 	
 	@if (GetCustomEntryData.CentipedesKilledData != null
@@ -115,7 +115,7 @@ else
 		|| GetCustomEntryData.GhostpedesKilledData != null)
 	{
 		<Heading Level="2">Pedes Killed</Heading>
-		<LineChart Options="_lco" OptionsJsonString="@_optionsJson" @ref="_pedesKilledChart" TItem="ushort" />
+		<LineChart Options="LineChartUtils.Options" OptionsJsonString="@LineChartUtils.AdditionalJsonOptions" @ref="_pedesKilledChart" TItem="ushort" />
 	}
 	
 	@if (GetCustomEntryData.ThornsKilledData != null
@@ -123,38 +123,12 @@ else
 		|| GetCustomEntryData.OrbsKilledData != null)
 	{
 		<Heading Level="2">Other Enemies Killed</Heading>
-		<LineChart Options="_lco" OptionsJsonString="@_optionsJson" @ref="_otherEnemiesKilledChart" TItem="ushort" />
+		<LineChart Options="LineChartUtils.Options" OptionsJsonString="@LineChartUtils.AdditionalJsonOptions" @ref="_otherEnemiesKilledChart" TItem="ushort" />
 	}
 }
 
 @code
 {
-	private LineChartOptions _lco = new()
-	{
-		MaintainAspectRatio = true,
-		Responsive = true,
-		AspectRatio = 3.5f,
-		ShowLines = true,
-	};
-
-	private string _optionsJson = @"{
-	""tooltips"": {
-		""intersect"": false,
-		""mode"": ""label""
-	},
-	""hover"": {
-		""mode"": ""label""
-	},
-	""scales"": {
-		""xAxes"": [{
-			""display"": true,
-			""scaleLabel"": {
-				""show"": true
-			}
-		}]
-	}
-}";
-
 	private LineChart<int>? _gemsChart;
 	private LineChart<int>? _homingChart;
 	private LineChart<int>? _enemiesChart;

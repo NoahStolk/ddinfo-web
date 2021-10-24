@@ -13,13 +13,13 @@
 else
 {
 	<Heading Level="2">Total Players</Heading>
-	<LineChart Options="_lco" OptionsJsonString="@_optionsJson" @ref="_playersChart" TItem="int" />
+	<LineChart Options="LineChartUtils.Options" OptionsJsonString="@LineChartUtils.AdditionalJsonOptions" @ref="_playersChart" TItem="int" />
 
 	<Heading Level="2">Top Entrances</Heading>
-	<LineChart Options="_lco" OptionsJsonString="@_optionsJson" @ref="_entranceChart" TItem="double" />
+	<LineChart Options="LineChartUtils.Options" OptionsJsonString="@LineChartUtils.AdditionalJsonOptions" @ref="_entranceChart" TItem="double" />
 
 	<Heading Level="2">Global Accuracy</Heading>
-	<LineChart Options="_lco" OptionsJsonString="@_optionsJson" @ref="_accuracyChart" TItem="double" />
+	<LineChart Options="LineChartUtils.Options" OptionsJsonString="@LineChartUtils.AdditionalJsonOptions" @ref="_accuracyChart" TItem="double" />
 }
 
 @code
@@ -30,32 +30,6 @@ else
 	{
 		_statistics = await Http.GetLeaderboardHistoryStatistics();
 	}
-
-	private LineChartOptions _lco = new()
-	{
-		MaintainAspectRatio = true,
-		Responsive = true,
-		AspectRatio = 3.5f,
-		ShowLines = true,
-	};
-	
-	private string _optionsJson = @"{
-	""tooltips"": {
-		""intersect"": false,
-		""mode"": ""label""
-	},
-	""hover"": {
-		""mode"": ""label""
-	},
-	""scales"": {
-		""xAxes"": [{
-			""display"": true,
-			""scaleLabel"": {
-				""show"": true
-			}
-		}]
-	}
-}";
 
 	private LineChart<int>? _playersChart;
 	private LineChart<double>? _entranceChart;
