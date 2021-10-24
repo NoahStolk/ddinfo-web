@@ -237,7 +237,7 @@ else
 			PointRadius = 0,
 			ShowLine = true,
 			BorderColor = "#f00",
-			LineTension = 0,
+			SteppedLine = true,
 		});
 
 		await _activityChart.AddLabelsDatasetsAndUpdate(GetPlayerHistory.Activity.Select(pa => pa.DateTime.ToString("yyyy-MM-dd")).ToArray(), new LineChartDataset<double>
@@ -249,7 +249,7 @@ else
 			PointRadius = 0,
 			ShowLine = true,
 			BorderColor = "#f00",
-			LineTension = 0.1f,
+			SteppedLine = true,
 		});
 	}
 }

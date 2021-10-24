@@ -42,18 +42,7 @@ public static class LineChartUtils
 		""xAxes"": [
 			{
 				""type"": ""time"",
-				""display"": true,
-                ""scaleLabel"": {
-                    ""display"": true,
-                    ""labelString"": ""Date""
-                },
-				""time"": {
-					""unit"": ""day"",
-					""unitStepSize"": 14,
-					""displayFormats"": {
-						""day"": ""MMM DD""
-					}
-				}
+				""display"": true
 			}
 		]
 	}

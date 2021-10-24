@@ -150,6 +150,8 @@ public class PlayersController : ControllerBase
 			}
 		}
 
+		entryHistory.Add(entryHistory[^1] with { DateTime = DateTime.UtcNow });
+
 		return new GetPlayerHistory
 		{
 			Activity = activity,
