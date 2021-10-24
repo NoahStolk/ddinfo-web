@@ -1,6 +1,7 @@
 @page "/leaderboard/player/{Id:int}"
 @inject PublicApiHttpClient Http
 @inject NavigationManager NavigationManager
+@using Blazorise.Charts
 @using DevilDaggersInfo.Core.Wiki
 @using DevilDaggersInfo.Core.Wiki.Enums
 @using DevilDaggersInfo.Web.BlazorWasm.Client.Components
@@ -174,6 +175,12 @@ else
 			</PlayerCard>
 		}
 	</div>
+
+	<Heading Level="2">Progression</Heading>
+	<LineChart Options="LineChartUtils.Options" OptionsJsonString="@LineChartUtils.AdditionalJsonOptions" @ref="_progressionChart" TItem="double" />
+
+	<Heading Level="2">Activity</Heading>
+	<LineChart Options="LineChartUtils.Options" OptionsJsonString="@LineChartUtils.AdditionalJsonOptions" @ref="_activityChart" TItem="ulong" />
 }
 
 @code
@@ -189,6 +196,9 @@ else
 	public GetNumberOfCustomLeaderboards? GetNumberOfCustomLeaderboards { get; set; }
 
 	public bool PlayerNotFound { get; set; }
+
+	private LineChart<double>? _progressionChart;
+	private LineChart<ulong>? _activityChart;
 
 	protected override async Task OnInitializedAsync()
 	{
@@ -208,5 +218,38 @@ else
 		GetSpawnsetNames = await Http.GetSpawnsetsByAuthorId(Id);
 		GetModNames = await Http.GetModsByAuthorId(Id);
 		GetNumberOfCustomLeaderboards = await Http.GetNumberOfCustomLeaderboards();
+	}
+
+	protected override async Task OnAfterRenderAsync(bool firstRender)
+	{
+		if (firstRender ||
+			GetPlayerHistory == null ||
+			_progressionChart == null ||
+			_activityChart == null)
+			return;
+
+		await _progressionChart.AddLabelsDatasetsAndUpdate(new string[] { }, new LineChartDataset<double>
+		{
+			Label = "Score",
+			Data = GetPlayerHistory.History.Select(s => s.Time.ToSecondsTime()).ToList(),
+			BackgroundColor = "#f00",
+			Fill = false,
+			PointRadius = 0,
+			ShowLine = true,
+			BorderColor = DaggersV3_1.Leviathan.Color.HexCode,
+			LineTension = 0.1f,
+		});
+
+		await _activityChart.AddLabelsDatasetsAndUpdate(GetPlayerHistory.Activity.Select(pa => pa.DateTime.ToShortDateString()).ToArray(), new LineChartDataset<ulong>
+		{
+			Label = "Total Deaths",
+			Data = GetPlayerHistory.Activity.Select(s => s.DeathsTotal).ToList(),
+			BackgroundColor = "#f00",
+			Fill = false,
+			PointRadius = 0,
+			ShowLine = true,
+			BorderColor = DaggersV3_1.Leviathan.Color.HexCode,
+			LineTension = 0.1f,
+		});
 	}
 }
