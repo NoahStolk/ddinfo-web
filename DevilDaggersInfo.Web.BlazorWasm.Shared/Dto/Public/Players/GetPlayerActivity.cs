@@ -4,5 +4,5 @@ public class GetPlayerActivity
 {
 	public DateTime DateTime { get; init; }
 
-	public ulong DeathsTotal { get; init; }
+	public double DeathsIncrement { get; init; }
 }

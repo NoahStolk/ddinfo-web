@@ -92,17 +92,20 @@ public class PlayersController : ControllerBase
 	[ProducesResponseType(StatusCodes.Status400BadRequest)]
 	public GetPlayerHistory GetPlayerHistoryById([Required, Range(1, int.MaxValue)] int id)
 	{
-		var entity = _dbContext.Players
+		var player = _dbContext.Players
 			.AsNoTracking()
 			.Select(p => new { p.Id, p.HidePastUsernames })
 			.FirstOrDefault(p => p.Id == id);
 
-		bool hideUsernames = entity?.HidePastUsernames ?? false;
+		bool hideUsernames = player?.HidePastUsernames ?? false;
 
 		int? bestRank = null;
 		Dictionary<string, int> usernames = new();
 		List<GetEntryHistory> entryHistory = new();
 		List<GetPlayerActivity> activity = new();
+
+		ulong? deaths = null;
+		DateTime? datePrevious = null;
 
 		foreach (string leaderboardHistoryPath in _fileSystemService.TryGetFiles(DataSubDirectory.LeaderboardHistory))
 		{
@@ -125,20 +128,25 @@ public class PlayersController : ControllerBase
 
 			// + 1 and - 1 are used to fix off-by-one errors in the history based on screenshots and videos. This is due to a rounding error in Devil Daggers itself.
 			if (!entryHistory.Any(e =>
-				e.Time == entry.Time ||
-				e.Time == entry.Time + 1 ||
-				e.Time == entry.Time - 1))
+				e.Time.To10thMilliTime() == entry.Time ||
+				e.Time.To10thMilliTime() == entry.Time + 1 ||
+				e.Time.To10thMilliTime() == entry.Time - 1))
 			{
 				entryHistory.Add(entry.ToDto(leaderboard.DateTime));
 			}
 
 			if (entry.DeathsTotal > 0)
 			{
+				TimeSpan? span = datePrevious == null ? null : leaderboard.DateTime - datePrevious.Value;
+
 				activity.Add(new()
 				{
 					DateTime = leaderboard.DateTime,
-					DeathsTotal = entry.DeathsTotal,
+					DeathsIncrement = deaths.HasValue && span.HasValue ? (entry.DeathsTotal - deaths.Value) / span.Value.TotalDays : 0,
 				});
+
+				deaths = entry.DeathsTotal;
+				datePrevious = leaderboard.DateTime;
 			}
 		}
 

@@ -177,10 +177,10 @@ else
 	</div>
 
 	<Heading Level="2">Progression</Heading>
-	<LineChart Options="LineChartUtils.Options" OptionsJsonString="@LineChartUtils.AdditionalJsonOptions" @ref="_progressionChart" TItem="double" />
+	<LineChart Options="LineChartUtils.Options" OptionsJsonString="@LineChartUtils.AdditionalJsonOptionsTime" @ref="_progressionChart" TItem="double" />
 
 	<Heading Level="2">Activity</Heading>
-	<LineChart Options="LineChartUtils.Options" OptionsJsonString="@LineChartUtils.AdditionalJsonOptions" @ref="_activityChart" TItem="ulong" />
+	<LineChart Options="LineChartUtils.Options" OptionsJsonString="@LineChartUtils.AdditionalJsonOptionsTime" @ref="_activityChart" TItem="double" />
 }
 
 @code
@@ -198,7 +198,7 @@ else
 	public bool PlayerNotFound { get; set; }
 
 	private LineChart<double>? _progressionChart;
-	private LineChart<ulong>? _activityChart;
+	private LineChart<double>? _activityChart;
 
 	protected override async Task OnInitializedAsync()
 	{
@@ -228,7 +228,7 @@ else
 			_activityChart == null)
 			return;
 
-		await _progressionChart.AddLabelsDatasetsAndUpdate(new string[] { }, new LineChartDataset<double>
+		await _progressionChart.AddLabelsDatasetsAndUpdate(GetPlayerHistory.History.Select(eh => eh.DateTime.ToString("yyyy-MM-dd")).ToArray(), new LineChartDataset<double>
 		{
 			Label = "Score",
 			Data = GetPlayerHistory.History.Select(s => s.Time).ToList(),
@@ -236,19 +236,19 @@ else
 			Fill = false,
 			PointRadius = 0,
 			ShowLine = true,
-			BorderColor = DaggersV3_1.Leviathan.Color.HexCode,
-			LineTension = 0.1f,
+			BorderColor = "#f00",
+			LineTension = 0,
 		});
 
-		await _activityChart.AddLabelsDatasetsAndUpdate(GetPlayerHistory.Activity.Select(pa => pa.DateTime.ToShortDateString()).ToArray(), new LineChartDataset<ulong>
+		await _activityChart.AddLabelsDatasetsAndUpdate(GetPlayerHistory.Activity.Select(pa => pa.DateTime.ToString("yyyy-MM-dd")).ToArray(), new LineChartDataset<double>
 		{
-			Label = "Total Deaths",
-			Data = GetPlayerHistory.Activity.Select(s => s.DeathsTotal).ToList(),
+			Label = "Deaths",
+			Data = GetPlayerHistory.Activity.Select(s => s.DeathsIncrement).ToList(),
 			BackgroundColor = "#f00",
 			Fill = false,
 			PointRadius = 0,
 			ShowLine = true,
-			BorderColor = DaggersV3_1.Leviathan.Color.HexCode,
+			BorderColor = "#f00",
 			LineTension = 0.1f,
 		});
 	}

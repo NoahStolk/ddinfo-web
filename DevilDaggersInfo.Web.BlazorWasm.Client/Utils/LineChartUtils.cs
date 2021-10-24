@@ -29,4 +29,33 @@ public static class LineChartUtils
 		}]
 	}
 }";
+
+	public static string AdditionalJsonOptionsTime { get; } = @"{
+	""tooltips"": {
+		""intersect"": false,
+		""mode"": ""label""
+	},
+	""hover"": {
+		""mode"": ""label""
+	},
+	""scales"": {
+		""xAxes"": [
+			{
+				""type"": ""time"",
+				""display"": true,
+                ""scaleLabel"": {
+                    ""display"": true,
+                    ""labelString"": ""Date""
+                },
+				""time"": {
+					""unit"": ""day"",
+					""unitStepSize"": 14,
+					""displayFormats"": {
+						""day"": ""MMM DD""
+					}
+				}
+			}
+		]
+	}
+}";
 }
