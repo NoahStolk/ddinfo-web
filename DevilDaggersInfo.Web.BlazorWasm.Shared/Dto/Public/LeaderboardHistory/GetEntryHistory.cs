@@ -1,46 +1,36 @@
-using DevilDaggersInfo.Core.Extensions;
-using Newtonsoft.Json;
-
 namespace DevilDaggersInfo.Web.BlazorWasm.Shared.Dto.Public.LeaderboardHistory;
 
-// This class must correspond to what's stored in the leaderboard history JSON.
 public class GetEntryHistory : IGetEntryDto
 {
-	public int Rank { get; set; }
+	public DateTime DateTime { get; init; }
 
-	public int Id { get; set; }
+	public int Rank { get; init; }
 
-	public string Username { get; set; } = null!;
+	public int Id { get; init; }
 
-	// TODO: Translate all history Time to double.
-	public int Time { get; set; }
+	public string Username { get; init; } = null!;
 
-	public int Kills { get; set; }
+	public double Time { get; init; }
 
-	public int Gems { get; set; }
+	public int Kills { get; init; }
 
-	public byte DeathType { get; set; }
+	public int Gems { get; init; }
 
-	public int DaggersHit { get; set; }
+	public byte DeathType { get; init; }
 
-	public int DaggersFired { get; set; }
+	public int DaggersHit { get; init; }
 
-	// TODO: Translate all history TimeTotal to double.
-	public ulong TimeTotal { get; set; }
+	public int DaggersFired { get; init; }
 
-	public ulong KillsTotal { get; set; }
+	public double TimeTotal { get; init; }
 
-	public ulong GemsTotal { get; set; }
+	public ulong KillsTotal { get; init; }
 
-	public ulong DeathsTotal { get; set; }
+	public ulong GemsTotal { get; init; }
 
-	public ulong DaggersHitTotal { get; set; }
+	public ulong DeathsTotal { get; init; }
 
-	public ulong DaggersFiredTotal { get; set; }
+	public ulong DaggersHitTotal { get; init; }
 
-	[JsonIgnore]
-	double IGetEntryDto.Time => Time.ToSecondsTime();
-
-	[JsonIgnore]
-	double IGetEntryDto.TimeTotal => TimeTotal.ToSecondsTime();
+	public ulong DaggersFiredTotal { get; init; }
 }

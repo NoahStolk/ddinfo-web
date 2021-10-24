@@ -1,5 +1,5 @@
+using DevilDaggersInfo.Web.BlazorWasm.Server.InternalModels.Json;
 using DevilDaggersInfo.Web.BlazorWasm.Server.Utils;
-using DevilDaggersInfo.Web.BlazorWasm.Shared.Dto.Public.LeaderboardHistory;
 using DevilDaggersInfo.Web.BlazorWasm.Shared.Utils;
 using DevilDaggersInfo.Web.Tool;
 using Newtonsoft.Json;
@@ -29,12 +29,12 @@ static void SwapIds(DateTime dateStart, DateTime dateEnd, int id1, int id2)
 	foreach (string leaderboardHistoryPath in Directory.GetFiles(_leaderboardHistoryPath, "*.json"))
 	{
 		string fileName = Path.GetFileNameWithoutExtension(leaderboardHistoryPath);
-		GetLeaderboardHistory leaderboard = JsonConvert.DeserializeObject<GetLeaderboardHistory>(File.ReadAllText(leaderboardHistoryPath, Encoding.UTF8)) ?? throw new("Could not deserialize leaderboard.");
+		LeaderboardHistory leaderboard = JsonConvert.DeserializeObject<LeaderboardHistory>(File.ReadAllText(leaderboardHistoryPath, Encoding.UTF8)) ?? throw new("Could not deserialize leaderboard.");
 		if (leaderboard.DateTime < dateStart || leaderboard.DateTime > dateEnd)
 			continue;
 
-		GetEntryHistory? entry1 = leaderboard.Entries.Find(e => e.Id == id1);
-		GetEntryHistory? entry2 = leaderboard.Entries.Find(e => e.Id == id2);
+		EntryHistory? entry1 = leaderboard.Entries.Find(e => e.Id == id1);
+		EntryHistory? entry2 = leaderboard.Entries.Find(e => e.Id == id2);
 
 		if (entry1 != null)
 			entry1.Id = id2;
@@ -51,10 +51,10 @@ static void ApplyNameTable()
 	foreach (string path in Directory.GetFiles(_leaderboardHistoryPath, "*.json"))
 	{
 		string jsonString = File.ReadAllText(path, Encoding.UTF8);
-		GetLeaderboardHistory leaderboard = JsonConvert.DeserializeObject<GetLeaderboardHistory>(jsonString) ?? throw new("Could not deserialize leaderboard.");
+		LeaderboardHistory leaderboard = JsonConvert.DeserializeObject<LeaderboardHistory>(jsonString) ?? throw new("Could not deserialize leaderboard.");
 
-		List<GetEntryHistory> changes = new();
-		foreach (GetEntryHistory entry in leaderboard.Entries)
+		List<EntryHistory> changes = new();
+		foreach (EntryHistory entry in leaderboard.Entries)
 		{
 			if ((entry.Id == 0 || entry.Id == -1) && NameData.NameTable.ContainsKey(entry.Username))
 			{
@@ -66,7 +66,7 @@ static void ApplyNameTable()
 		if (changes.Count != 0)
 		{
 			Console.WriteLine(HistoryUtils.HistoryJsonFileNameToDateTime(Path.GetFileNameWithoutExtension(path)));
-			foreach (GetEntryHistory entry in changes)
+			foreach (EntryHistory entry in changes)
 				Console.WriteLine($"\tSet Id to {entry.Id:D6} for rank {entry.Rank:D3} with name {entry.Username} and score {entry.Time.ToString(FormatUtils.TimeFormat)}");
 			Console.WriteLine();
 		}

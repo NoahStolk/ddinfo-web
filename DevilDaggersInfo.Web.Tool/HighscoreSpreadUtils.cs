@@ -1,5 +1,6 @@
 using DevilDaggersInfo.Core.Wiki;
 using DevilDaggersInfo.Core.Wiki.Enums;
+using DevilDaggersInfo.Web.BlazorWasm.Server.InternalModels.Json;
 using DevilDaggersInfo.Web.BlazorWasm.Shared.Dto.Public.LeaderboardHistory;
 using DevilDaggersInfo.Web.BlazorWasm.Shared.Utils;
 using Newtonsoft.Json;
@@ -15,10 +16,10 @@ public static class HighscoreSpreadUtils
 
 	public static void SpreadAllHighscoreStats(bool writeLogToFile, bool useConsole)
 	{
-		Dictionary<string, GetLeaderboardHistory> leaderboards = GetAllLeaderboards();
+		Dictionary<string, LeaderboardHistory> leaderboards = GetAllLeaderboards();
 
 		_log.Clear();
-		foreach (KeyValuePair<string, GetLeaderboardHistory> kvp in leaderboards)
+		foreach (KeyValuePair<string, LeaderboardHistory> kvp in leaderboards)
 		{
 			SpreadHighscoreStats(leaderboards.Select(kvp => kvp.Value).ToList(), kvp.Value);
 			File.WriteAllText(kvp.Key, JsonConvert.SerializeObject(kvp.Value, kvp.Value.DateTime > _fullHistoryDateStart ? Formatting.None : Formatting.Indented));
@@ -30,26 +31,26 @@ public static class HighscoreSpreadUtils
 			Console.WriteLine(_log.ToString());
 	}
 
-	public static Dictionary<string, GetLeaderboardHistory> GetAllLeaderboards()
+	public static Dictionary<string, LeaderboardHistory> GetAllLeaderboards()
 	{
-		Dictionary<string, GetLeaderboardHistory> leaderboards = new();
+		Dictionary<string, LeaderboardHistory> leaderboards = new();
 		foreach (string path in Directory.GetFiles(@"C:\Users\NOAH\source\repos\DevilDaggersInfo\DevilDaggersInfo.Web.BlazorWasm.Server\Data\LeaderboardHistory", "*.json"))
 		{
 			string jsonString = File.ReadAllText(path, Encoding.UTF8);
-			leaderboards.Add(path, JsonConvert.DeserializeObject<GetLeaderboardHistory>(jsonString) ?? throw new("Could not deserialize leaderboard."));
+			leaderboards.Add(path, JsonConvert.DeserializeObject<LeaderboardHistory>(jsonString) ?? throw new("Could not deserialize leaderboard."));
 		}
 
 		return leaderboards;
 	}
 
-	public static void SpreadHighscoreStats(List<GetLeaderboardHistory> leaderboards, GetLeaderboardHistory leaderboard)
+	public static void SpreadHighscoreStats(List<LeaderboardHistory> leaderboards, LeaderboardHistory leaderboard)
 	{
-		List<GetEntryHistory> changes = new();
-		foreach (GetEntryHistory entry in leaderboard.Entries)
+		List<EntryHistory> changes = new();
+		foreach (EntryHistory entry in leaderboard.Entries)
 		{
 			if (entry.Id != 0 && entry.HasMissingStats())
 			{
-				IEnumerable<GetLeaderboardHistory> leaderboardsWithStats = leaderboards.Where(l => l.Entries.Any(e => e.Id == entry.Id && e.Time >= entry.Time - 1 && e.Time <= entry.Time + 1));
+				IEnumerable<LeaderboardHistory> leaderboardsWithStats = leaderboards.Where(l => l.Entries.Any(e => e.Id == entry.Id && e.Time >= entry.Time - 1 && e.Time <= entry.Time + 1));
 				if (!leaderboardsWithStats.Any())
 					continue;
 
@@ -61,7 +62,7 @@ public static class HighscoreSpreadUtils
 		if (changes.Count != 0)
 		{
 			_log.AppendLine(leaderboard.DateTime.ToString());
-			foreach (GetEntryHistory entry in changes)
+			foreach (EntryHistory entry in changes)
 			{
 				_log.Append("\tSet missing stats for ").Append(entry.Username).Append(' ').AppendLine(entry.Time.ToString(FormatUtils.TimeFormat));
 				_log.Append("\t\tGems: ").Append(entry.Gems).AppendLine();
@@ -74,24 +75,24 @@ public static class HighscoreSpreadUtils
 		}
 	}
 
-	public static bool HasMissingStats(this GetEntryHistory entry)
+	public static bool HasMissingStats(this EntryHistory entry)
 		=> entry.Gems == 0 || entry.Kills == 0 || entry.DeathType == 255 || entry.DaggersHit == 0 || entry.DaggersFired == 0 || entry.DaggersFired == 10000;
 
-	private static void Combine(GetEntryHistory original, IEnumerable<GetEntryHistory> entries)
+	private static void Combine(EntryHistory original, IEnumerable<EntryHistory> entries)
 	{
-		GetEntryHistory? withGems = entries.FirstOrDefault(e => e.Gems != 0);
+		EntryHistory? withGems = entries.FirstOrDefault(e => e.Gems != 0);
 		if (withGems != null)
 			original.Gems = withGems.Gems;
 
-		GetEntryHistory? withKills = entries.FirstOrDefault(e => e.Kills != 0);
+		EntryHistory? withKills = entries.FirstOrDefault(e => e.Kills != 0);
 		if (withKills != null)
 			original.Kills = withKills.Kills;
 
-		GetEntryHistory? withDeathType = entries.FirstOrDefault(e => e.DeathType != 255);
+		EntryHistory? withDeathType = entries.FirstOrDefault(e => e.DeathType != 255);
 		if (withDeathType != null)
 			original.DeathType = withDeathType.DeathType;
 
-		GetEntryHistory? withFullDaggerStats = entries.FirstOrDefault(e => e.DaggersFired != 0 && e.DaggersFired != 10000);
+		EntryHistory? withFullDaggerStats = entries.FirstOrDefault(e => e.DaggersFired != 0 && e.DaggersFired != 10000);
 		if (withFullDaggerStats != null)
 		{
 			original.DaggersHit = withFullDaggerStats.DaggersHit;
@@ -99,7 +100,7 @@ public static class HighscoreSpreadUtils
 		}
 		else
 		{
-			GetEntryHistory? withPartialDaggerStats = entries.FirstOrDefault(e => e.DaggersFired != 0);
+			EntryHistory? withPartialDaggerStats = entries.FirstOrDefault(e => e.DaggersFired != 0);
 			if (withPartialDaggerStats != null)
 			{
 				original.DaggersHit = withPartialDaggerStats.DaggersHit;

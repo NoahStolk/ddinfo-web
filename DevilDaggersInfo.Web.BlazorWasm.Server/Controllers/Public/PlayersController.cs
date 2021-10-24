@@ -1,5 +1,6 @@
 using DevilDaggersInfo.Web.BlazorWasm.Server.Caches.LeaderboardHistory;
 using DevilDaggersInfo.Web.BlazorWasm.Server.Converters.Public;
+using DevilDaggersInfo.Web.BlazorWasm.Server.InternalModels.Json;
 using DevilDaggersInfo.Web.BlazorWasm.Shared.Dto.Public.LeaderboardHistory;
 using DevilDaggersInfo.Web.BlazorWasm.Shared.Dto.Public.Players;
 
@@ -105,8 +106,8 @@ public class PlayersController : ControllerBase
 
 		foreach (string leaderboardHistoryPath in _fileSystemService.TryGetFiles(DataSubDirectory.LeaderboardHistory))
 		{
-			GetLeaderboardHistory leaderboard = _leaderboardHistoryCache.GetLeaderboardHistoryByFilePath(leaderboardHistoryPath);
-			GetEntryHistory? entry = leaderboard.Entries.Find(e => e.Id == id);
+			LeaderboardHistory leaderboard = _leaderboardHistoryCache.GetLeaderboardHistoryByFilePath(leaderboardHistoryPath);
+			EntryHistory? entry = leaderboard.Entries.Find(e => e.Id == id);
 
 			if (entry == null)
 				continue;
@@ -128,7 +129,7 @@ public class PlayersController : ControllerBase
 				e.Time == entry.Time + 1 ||
 				e.Time == entry.Time - 1))
 			{
-				entryHistory.Add(entry);
+				entryHistory.Add(entry.ToDto(leaderboard.DateTime));
 			}
 
 			if (entry.DeathsTotal > 0)

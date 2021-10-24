@@ -1,5 +1,5 @@
 using DevilDaggersInfo.Web.BlazorWasm.Server.Caches.LeaderboardHistory;
-using DevilDaggersInfo.Web.BlazorWasm.Shared.Dto.Public.LeaderboardHistory;
+using DevilDaggersInfo.Web.BlazorWasm.Server.InternalModels.Json;
 using DevilDaggersInfo.Web.BlazorWasm.Shared.Dto.Public.LeaderboardHistoryStatistics;
 
 namespace DevilDaggersInfo.Web.BlazorWasm.Server.Controllers.Public;
@@ -26,7 +26,7 @@ public class LeaderboardHistoryStatisticsController : ControllerBase
 		if (firstPath == null)
 			return new List<GetLeaderboardHistoryStatistics>();
 
-		GetLeaderboardHistory current = _leaderboardHistoryCache.GetLeaderboardHistoryByFilePath(firstPath);
+		LeaderboardHistory current = _leaderboardHistoryCache.GetLeaderboardHistoryByFilePath(firstPath);
 
 		ulong daggersFiredGlobal = current.DaggersFiredGlobal;
 		ulong daggersHitGlobal = current.DaggersHitGlobal;
@@ -139,7 +139,7 @@ public class LeaderboardHistoryStatisticsController : ControllerBase
 			TotalPlayersUpdated = totalPlayersUpdated,
 		});
 
-		static double GetTimeOr0(GetLeaderboardHistory history, int rankIndex)
+		static double GetTimeOr0(LeaderboardHistory history, int rankIndex)
 			=> history.Entries.Count > rankIndex ? history.Entries[rankIndex].Time.ToSecondsTime() : 0;
 	}
 }

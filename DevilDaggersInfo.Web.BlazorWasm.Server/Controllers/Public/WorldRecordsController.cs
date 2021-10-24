@@ -1,4 +1,6 @@
 using DevilDaggersInfo.Web.BlazorWasm.Server.Caches.LeaderboardHistory;
+using DevilDaggersInfo.Web.BlazorWasm.Server.Converters.Public;
+using DevilDaggersInfo.Web.BlazorWasm.Server.InternalModels.Json;
 using DevilDaggersInfo.Web.BlazorWasm.Shared.Dto.Public.LeaderboardHistory;
 using DevilDaggersInfo.Web.BlazorWasm.Shared.Dto.Public.WorldRecords;
 
@@ -108,8 +110,8 @@ public class WorldRecordsController : ControllerBase
 		int worldRecord = 0;
 		foreach (string leaderboardHistoryPath in _fileSystemService.TryGetFiles(DataSubDirectory.LeaderboardHistory))
 		{
-			GetLeaderboardHistory leaderboard = _leaderboardHistoryCache.GetLeaderboardHistoryByFilePath(leaderboardHistoryPath);
-			GetEntryHistory? firstPlace = leaderboard.Entries.Find(e => e.Rank == 1);
+			LeaderboardHistory leaderboard = _leaderboardHistoryCache.GetLeaderboardHistoryByFilePath(leaderboardHistoryPath);
+			EntryHistory? firstPlace = leaderboard.Entries.Find(e => e.Rank == 1);
 			if (firstPlace == null)
 				continue;
 
@@ -130,7 +132,7 @@ public class WorldRecordsController : ControllerBase
 				worldRecords.Add(new()
 				{
 					DateTime = date,
-					Entry = firstPlace,
+					Entry = firstPlace.ToDto(leaderboard.DateTime),
 					GameVersion = GameVersions.GetGameVersionFromDate(date),
 				});
 			}

@@ -1,4 +1,6 @@
 using DevilDaggersInfo.Web.BlazorWasm.Server.Caches.LeaderboardHistory;
+using DevilDaggersInfo.Web.BlazorWasm.Server.Converters.Public;
+using DevilDaggersInfo.Web.BlazorWasm.Server.InternalModels.Json;
 using DevilDaggersInfo.Web.BlazorWasm.Shared.Dto.Public.LeaderboardHistory;
 
 namespace DevilDaggersInfo.Web.BlazorWasm.Server.Controllers.Public;
@@ -22,6 +24,7 @@ public class LeaderboardHistoryController : ControllerBase
 	public ActionResult<GetLeaderboardHistory> GetLeaderboardHistory(DateTime dateTime)
 	{
 		string historyPath = _fileSystemService.GetLeaderboardHistoryPathFromDate(dateTime);
-		return _leaderboardHistoryCache.GetLeaderboardHistoryByFilePath(historyPath);
+		LeaderboardHistory history = _leaderboardHistoryCache.GetLeaderboardHistoryByFilePath(historyPath);
+		return history.ToDto();
 	}
 }

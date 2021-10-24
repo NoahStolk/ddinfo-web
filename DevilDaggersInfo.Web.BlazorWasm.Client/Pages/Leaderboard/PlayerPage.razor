@@ -231,7 +231,7 @@ else
 		await _progressionChart.AddLabelsDatasetsAndUpdate(new string[] { }, new LineChartDataset<double>
 		{
 			Label = "Score",
-			Data = GetPlayerHistory.History.Select(s => s.Time.ToSecondsTime()).ToList(),
+			Data = GetPlayerHistory.History.Select(s => s.Time).ToList(),
 			BackgroundColor = "#f00",
 			Fill = false,
 			PointRadius = 0,
