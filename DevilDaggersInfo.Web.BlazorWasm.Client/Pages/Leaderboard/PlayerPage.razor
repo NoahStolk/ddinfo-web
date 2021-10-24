@@ -142,8 +142,7 @@ else
 		}
 		else if (GetSpawnsetNames.Count > 0)
 		{
-			@*TODO: Add max height and scrollbar.*@
-			<PlayerCard Title="Spawnsets">
+			<PlayerCard Title="Spawnsets" Scroll="true">
 				@foreach (GetSpawnsetName getSpawnsetName in GetSpawnsetNames)
 				{
 					<div class="grid gap-2 grid-cols-2 even:bg-gray-16 px-1">
@@ -159,8 +158,7 @@ else
 		}
 		else if (GetModNames.Count > 0)
 		{
-			@*TODO: Add max height and scrollbar.*@
-			<PlayerCard Title="Mods">
+			<PlayerCard Title="Mods" Scroll="true">
 				@foreach (GetModName getModName in GetModNames)
 				{
 					<div class="grid gap-2 grid-cols-2 even:bg-gray-16 px-1">
