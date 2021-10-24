@@ -110,7 +110,7 @@ else
 			}
 		}
 
-		@if (GetCustomLeaderboardStatistics == null)
+		@if (GetCustomLeaderboardStatistics == null || GetNumberOfCustomLeaderboards == null)
 		{
 			<Loading />
 		}
@@ -180,7 +180,7 @@ else
 	public List<GetCustomLeaderboardStatisticsForPlayer>? GetCustomLeaderboardStatistics { get; set; }
 	public List<GetSpawnsetName>? GetSpawnsetNames { get; set; }
 	public List<GetModName>? GetModNames { get; set; }
-	public GetNumberOfCustomLeaderboards GetNumberOfCustomLeaderboards { get; set; }
+	public GetNumberOfCustomLeaderboards? GetNumberOfCustomLeaderboards { get; set; }
 
 	public bool PlayerNotFound { get; set; }
 
