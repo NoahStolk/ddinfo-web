@@ -208,7 +208,7 @@ else
 		{
 			GetPlayer = await Http.GetPlayerById(Id);
 		}
-		catch // TODO: Only HTTP 404.
+		catch (HttpRequestException ex) when (ex.StatusCode == HttpStatusCode.NotFound)
 		{
 			PlayerNotFound = true;
 		}
