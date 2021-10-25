@@ -13,6 +13,13 @@
 }
 else
 {
+	<div class="grid gap-2 grid-cols-2 max-w-md">
+		<span>Spawnset name:</span>
+		<input class="bg-black border-gray-22 border-2" @onchange="ChangeInputSpawnsetName" />
+		<span>Author name:</span>
+		<input class="bg-black border-gray-22 border-2" @onchange="ChangeInputAuthorName" />
+	</div>
+
 	<button class="bg-gray-0b hover:bg-gray-22 transition-colors duration-100 w-8 h-8 py-1 rounded text-color-text" @onclick="() => ChangePageIndex(0)">|&lt;</button>
 	<button class="bg-gray-0b hover:bg-gray-22 transition-colors duration-100 w-8 h-8 py-1 rounded text-color-text" @onclick="() => ChangePageIndex(PageIndex - 1)">&lt;</button>
 	<button class="bg-gray-0b hover:bg-gray-22 transition-colors duration-100 w-8 h-8 py-1 rounded text-color-text" @onclick="() => ChangePageIndex(PageIndex + 1)">&gt;</button>
@@ -30,39 +37,48 @@ else
 			}
 		}
 	</Select>
-	<div class="p-1">Page @(PageIndex + 1) of @TotalPages (@(PageIndex * PageSize + 1) - @Math.Min(GetSpawnsets.TotalResults, (PageIndex + 1) * PageSize) of @GetSpawnsets.TotalResults)</div>
 
-	<div class="grid gap-3 sm:grid-cols-spawnsets-sm md:grid-cols-spawnsets-md lg:grid-cols-spawnsets-lg xl:grid-cols-spawnsets-xl">
-		<a href="" @onclick:preventDefault class="text-color-link hover:text-color-link-hover text-left" @onclick="() => Sort(SpawnsetSorting.Name)">Name</a>
-		<a href="" @onclick:preventDefault class="text-color-link hover:text-color-link-hover text-left hidden md:block" @onclick="() => Sort(SpawnsetSorting.AuthorName)">Author</a>
-		<a href="" @onclick:preventDefault class="text-color-link hover:text-color-link-hover text-left hidden md:block" @onclick="() => Sort(SpawnsetSorting.LastUpdated)">Created</a>
-		<a href="" @onclick:preventDefault class="text-color-link hover:text-color-link-hover text-left hidden md:block" @onclick="() => Sort(SpawnsetSorting.GameVersion)">Game version</a>
-		<a href="" @onclick:preventDefault class="text-color-link hover:text-color-link-hover text-right hidden xl:block" @onclick="() => Sort(SpawnsetSorting.GameMode)">Game mode</a>
-		<a href="" @onclick:preventDefault class="text-color-link hover:text-color-link-hover text-right hidden xl:block" @onclick="() => Sort(SpawnsetSorting.LoopLength)">Loop length</a>
-		<a href="" @onclick:preventDefault class="text-color-link hover:text-color-link-hover text-right hidden xl:block" @onclick="() => Sort(SpawnsetSorting.LoopSpawnCount)">Loop spawns</a>
-		<a href="" @onclick:preventDefault class="text-color-link hover:text-color-link-hover text-right hidden xl:block" @onclick="() => Sort(SpawnsetSorting.PreLoopLength)">Pre-loop length</a>
-		<a href="" @onclick:preventDefault class="text-color-link hover:text-color-link-hover text-right hidden xl:block" @onclick="() => Sort(SpawnsetSorting.PreLoopSpawnCount)">Pre-loop spawns</a>
-		<a href="" @onclick:preventDefault class="text-color-link hover:text-color-link-hover text-left hidden lg:block" @onclick="() => Sort(SpawnsetSorting.Hand)">Hand</a>
-		<a href="" @onclick:preventDefault class="text-color-link hover:text-color-link-hover text-right hidden lg:block" @onclick="() => Sort(SpawnsetSorting.AdditionalGems)">Gems</a>
-		<a href="" @onclick:preventDefault class="text-color-link hover:text-color-link-hover text-right hidden lg:block" @onclick="() => Sort(SpawnsetSorting.TimerStart)">Timer</a>
-	</div>
-	@for (int i = 0; i < GetSpawnsets.Results.Count; i++)
+	@if (GetSpawnsets.Results.Count > 0)
 	{
-		GetSpawnsetOverview spawnset = GetSpawnsets.Results[i];
-		<div class="grid gap-3 sm:grid-cols-spawnsets-sm md:grid-cols-spawnsets-md lg:grid-cols-spawnsets-lg xl:grid-cols-spawnsets-xl h-6 @(i % 2 == 0 ? "bg-gray-0b" : string.Empty)">
-			<div class="overflow-x-hidden text-left"><a href="/custom/spawnset/@spawnset.Id">@spawnset.Name.ToNoBreakString()</a></div>
-			<div class="overflow-x-hidden text-left hidden md:block">@spawnset.AuthorName.ToNoBreakString()</div>
-			<div class="overflow-x-hidden text-left hidden md:block">@spawnset.LastUpdated.ToString(FormatUtils.DateFormat)</div>
-			<div class="overflow-x-hidden text-left hidden md:block">@spawnset.GameVersion</div>
-			<div class="overflow-x-hidden text-right hidden xl:block">@spawnset.GameMode</div>
-			<div class="overflow-x-hidden text-right hidden xl:block">@(spawnset.LoopLength.HasValue ? (MarkupString)spawnset.LoopLength.Value.ToString(FormatUtils.TimeFormat) : MarkupUtils.NoDataMarkup)</div>
-			<div class="overflow-x-hidden text-right hidden xl:block">@spawnset.LoopSpawnCount</div>
-			<div class="overflow-x-hidden text-right hidden xl:block">@(spawnset.PreLoopLength.HasValue ? (MarkupString)spawnset.PreLoopLength.Value.ToString(FormatUtils.TimeFormat) : MarkupUtils.NoDataMarkup)</div>
-			<div class="overflow-x-hidden text-right hidden xl:block">@spawnset.PreLoopSpawnCount</div>
-			<div class="overflow-x-hidden text-left hidden lg:block">Level @spawnset.Hand</div>
-			<div class="overflow-x-hidden text-right hidden lg:block">@spawnset.AdditionalGems</div>
-			<div class="overflow-x-hidden text-right hidden lg:block">@spawnset.TimerStart.ToString(FormatUtils.TimeFormat)</div>
+		<div class="p-1">Page @(PageIndex + 1) of @TotalPages (@(PageIndex * PageSize + 1) - @Math.Min(GetSpawnsets.TotalResults, (PageIndex + 1) * PageSize) of @GetSpawnsets.TotalResults)</div>
+
+		<div class="grid gap-3 sm:grid-cols-spawnsets-sm md:grid-cols-spawnsets-md lg:grid-cols-spawnsets-lg xl:grid-cols-spawnsets-xl">
+			<a href="" @onclick:preventDefault class="text-color-link hover:text-color-link-hover text-left" @onclick="() => Sort(SpawnsetSorting.Name)">Name</a>
+			<a href="" @onclick:preventDefault class="text-color-link hover:text-color-link-hover text-left hidden md:block" @onclick="() => Sort(SpawnsetSorting.AuthorName)">Author</a>
+			<a href="" @onclick:preventDefault class="text-color-link hover:text-color-link-hover text-left hidden md:block" @onclick="() => Sort(SpawnsetSorting.LastUpdated)">Created</a>
+			<a href="" @onclick:preventDefault class="text-color-link hover:text-color-link-hover text-left hidden md:block" @onclick="() => Sort(SpawnsetSorting.GameVersion)">Game version</a>
+			<a href="" @onclick:preventDefault class="text-color-link hover:text-color-link-hover text-right hidden xl:block" @onclick="() => Sort(SpawnsetSorting.GameMode)">Game mode</a>
+			<a href="" @onclick:preventDefault class="text-color-link hover:text-color-link-hover text-right hidden xl:block" @onclick="() => Sort(SpawnsetSorting.LoopLength)">Loop length</a>
+			<a href="" @onclick:preventDefault class="text-color-link hover:text-color-link-hover text-right hidden xl:block" @onclick="() => Sort(SpawnsetSorting.LoopSpawnCount)">Loop spawns</a>
+			<a href="" @onclick:preventDefault class="text-color-link hover:text-color-link-hover text-right hidden xl:block" @onclick="() => Sort(SpawnsetSorting.PreLoopLength)">Pre-loop length</a>
+			<a href="" @onclick:preventDefault class="text-color-link hover:text-color-link-hover text-right hidden xl:block" @onclick="() => Sort(SpawnsetSorting.PreLoopSpawnCount)">Pre-loop spawns</a>
+			<a href="" @onclick:preventDefault class="text-color-link hover:text-color-link-hover text-left hidden lg:block" @onclick="() => Sort(SpawnsetSorting.Hand)">Hand</a>
+			<a href="" @onclick:preventDefault class="text-color-link hover:text-color-link-hover text-right hidden lg:block" @onclick="() => Sort(SpawnsetSorting.AdditionalGems)">Gems</a>
+			<a href="" @onclick:preventDefault class="text-color-link hover:text-color-link-hover text-right hidden lg:block" @onclick="() => Sort(SpawnsetSorting.TimerStart)">Timer</a>
 		</div>
+
+		for (int i = 0; i < GetSpawnsets.Results.Count; i++)
+		{
+			GetSpawnsetOverview spawnset = GetSpawnsets.Results[i];
+			<div class="grid gap-3 sm:grid-cols-spawnsets-sm md:grid-cols-spawnsets-md lg:grid-cols-spawnsets-lg xl:grid-cols-spawnsets-xl h-6 @(i % 2 == 0 ? "bg-gray-0b" : string.Empty)">
+				<div class="overflow-x-hidden text-left"><a href="/custom/spawnset/@spawnset.Id">@spawnset.Name.ToNoBreakString()</a></div>
+				<div class="overflow-x-hidden text-left hidden md:block">@spawnset.AuthorName.ToNoBreakString()</div>
+				<div class="overflow-x-hidden text-left hidden md:block">@spawnset.LastUpdated.ToString(FormatUtils.DateFormat)</div>
+				<div class="overflow-x-hidden text-left hidden md:block">@spawnset.GameVersion</div>
+				<div class="overflow-x-hidden text-right hidden xl:block">@spawnset.GameMode</div>
+				<div class="overflow-x-hidden text-right hidden xl:block">@(spawnset.LoopLength.HasValue ? (MarkupString)spawnset.LoopLength.Value.ToString(FormatUtils.TimeFormat) : MarkupUtils.NoDataMarkup)</div>
+				<div class="overflow-x-hidden text-right hidden xl:block">@spawnset.LoopSpawnCount</div>
+				<div class="overflow-x-hidden text-right hidden xl:block">@(spawnset.PreLoopLength.HasValue ? (MarkupString)spawnset.PreLoopLength.Value.ToString(FormatUtils.TimeFormat) : MarkupUtils.NoDataMarkup)</div>
+				<div class="overflow-x-hidden text-right hidden xl:block">@spawnset.PreLoopSpawnCount</div>
+				<div class="overflow-x-hidden text-left hidden lg:block">Level @spawnset.Hand</div>
+				<div class="overflow-x-hidden text-right hidden lg:block">@spawnset.AdditionalGems</div>
+				<div class="overflow-x-hidden text-right hidden lg:block">@spawnset.TimerStart.ToString(FormatUtils.TimeFormat)</div>
+			</div>
+		}
+	}
+	else
+	{
+		<p class="pt-2">Search returned no results.</p>
 	}
 }
 
@@ -73,6 +89,8 @@ else
 
 	[Parameter, SupplyParameterFromQuery] public bool OnlyPractice { get; set; }
 	[Parameter, SupplyParameterFromQuery] public bool OnlyWithLeaderboard { get; set; }
+	[Parameter, SupplyParameterFromQuery] public string? SpawnsetFilter { get; set; }
+	[Parameter, SupplyParameterFromQuery] public string? AuthorFilter { get; set; }
 	[Parameter, SupplyParameterFromQuery] public int PageIndex { get => _pageIndex; set => _pageIndex = Math.Max(0, value); }
 	[Parameter, SupplyParameterFromQuery] public int PageSize { get => _pageSize; set => _pageSize = value < PublicPagingConstants.PageSizeMin || value > PublicPagingConstants.PageSizeMax ? PublicPagingConstants.PageSizeDefault : value; }
 	[Parameter, SupplyParameterFromQuery] public int? SortBy { get; set; }
@@ -84,8 +102,27 @@ else
 
 	private int TotalPages => GetSpawnsets == null ? 0 : (GetSpawnsets.TotalResults - 1) / PageSize + 1;
 
+	private async Task ChangeInputSpawnsetName(ChangeEventArgs e)
+	{
+		// TODO: Fluxor
+		SpawnsetFilter = e.Value?.ToString();
+		NavigationManager.AddOrModifyQueryParameter(QueryParameters.SpawnsetFilter, SpawnsetFilter);
+
+		await Fetch();
+	}
+
+	private async Task ChangeInputAuthorName(ChangeEventArgs e)
+	{
+		// TODO: Fluxor
+		AuthorFilter = e.Value?.ToString();
+		NavigationManager.AddOrModifyQueryParameter(QueryParameters.AuthorFilter, AuthorFilter);
+
+		await Fetch();
+	}
+
 	protected override async Task OnInitializedAsync()
 	{
+		// TODO: Set <input> values.
 		foreach (SpawnsetSorting e in (SpawnsetSorting[])Enum.GetValues(typeof(SpawnsetSorting)))
 			_sortings.Add(e, false);
 
@@ -125,11 +162,13 @@ else
 
 	private async Task Fetch()
 	{
-		GetSpawnsets = await Http.GetSpawnsets(OnlyPractice, OnlyWithLeaderboard, PageIndex, PageSize, SortBy.HasValue ? (SpawnsetSorting)SortBy.Value : SpawnsetSorting.LastUpdated, Ascending);
+		GetSpawnsets = await Http.GetSpawnsets(OnlyPractice, OnlyWithLeaderboard, SpawnsetFilter, AuthorFilter, PageIndex, PageSize, SortBy.HasValue ? (SpawnsetSorting)SortBy.Value : SpawnsetSorting.LastUpdated, Ascending);
 	}
 
 	private static class QueryParameters
 	{
+		public static string SpawnsetFilter { get; } = nameof(SpawnsetFilter);
+		public static string AuthorFilter { get; } = nameof(AuthorFilter);
 		public static string OnlyPractice { get; } = nameof(OnlyPractice);
 		public static string OnlyWithLeaderboard { get; } = nameof(OnlyWithLeaderboard);
 		public static string PageIndex { get; } = nameof(PageIndex);
