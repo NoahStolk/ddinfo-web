@@ -165,6 +165,21 @@ public class SpawnsetsController : ControllerBase
 		};
 	}
 
+	[HttpGet("name-by-hash")]
+	[ProducesResponseType(StatusCodes.Status200OK)]
+	[ProducesResponseType(StatusCodes.Status404NotFound)]
+	public ActionResult<GetSpawnsetNameByHash> GetSpawnsetNameByHash([FromQuery] byte[] hash)
+	{
+		SpawnsetHashCacheData? data = _spawnsetHashCache.GetSpawnset(hash);
+		if (data == null)
+			return NotFound();
+
+		return new GetSpawnsetNameByHash
+		{
+			Name = data.Name,
+		};
+	}
+
 	[HttpGet("hash")]
 	[ProducesResponseType(StatusCodes.Status200OK)]
 	[ProducesResponseType(StatusCodes.Status404NotFound)]
