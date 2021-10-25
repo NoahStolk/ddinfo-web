@@ -32,6 +32,8 @@ public class SpawnsetsController : ControllerBase
 	public ActionResult<Page<GetSpawnsetOverview>> GetSpawnsets(
 		bool onlyPractice,
 		bool onlyWithLeaderboard,
+		string? spawnsetFilter = null,
+		string? authorFilter = null,
 		[Range(0, 1000)] int pageIndex = 0,
 		[Range(PublicPagingConstants.PageSizeMin, PublicPagingConstants.PageSizeMax)] int pageSize = PublicPagingConstants.PageSizeDefault,
 		SpawnsetSorting? sortBy = null,
@@ -52,6 +54,12 @@ public class SpawnsetsController : ControllerBase
 
 			spawnsetsQuery = spawnsetsQuery.Where(s => spawnsetsWithCustomLeaderboardIds.Contains(s.Id));
 		}
+
+		if (!string.IsNullOrWhiteSpace(spawnsetFilter))
+			spawnsetsQuery = spawnsetsQuery.Where(s => s.Name.Contains(spawnsetFilter));
+
+		if (!string.IsNullOrWhiteSpace(authorFilter))
+			spawnsetsQuery = spawnsetsQuery.Where(s => s.Player.PlayerName.Contains(authorFilter));
 
 		List<SpawnsetEntity> spawnsets = spawnsetsQuery.ToList();
 
