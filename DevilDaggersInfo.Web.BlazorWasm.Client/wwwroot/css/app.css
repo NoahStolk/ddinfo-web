@@ -26,6 +26,7 @@
 	-moz-background-clip: text;
 	background-clip: text;
 	-webkit-text-fill-color: transparent;
+	color: #A50020;
 }
 
 .devil {
@@ -36,6 +37,7 @@
 	-moz-background-clip: text;
 	background-clip: text;
 	-webkit-text-fill-color: transparent;
+	color: #AB1407;
 }
 
 .golden {
@@ -46,6 +48,7 @@
 	-moz-background-clip: text;
 	background-clip: text;
 	-webkit-text-fill-color: transparent;
+	color: #D68A10;
 }
 
 .silver {
@@ -56,6 +59,7 @@
 	-moz-background-clip: text;
 	background-clip: text;
 	-webkit-text-fill-color: transparent;
+	color: #E8E8E8;
 }
 
 .bronze {
@@ -66,6 +70,7 @@
 	-moz-background-clip: text;
 	background-clip: text;
 	-webkit-text-fill-color: transparent;
+	color: #CCB7A1;
 }
 
 .default {
@@ -76,6 +81,7 @@
 	-moz-background-clip: text;
 	background-clip: text;
 	-webkit-text-fill-color: transparent;
+	color: #696969;
 }
 
 .highlight.leviathan:hover,
