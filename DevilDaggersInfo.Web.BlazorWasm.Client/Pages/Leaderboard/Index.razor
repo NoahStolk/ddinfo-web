@@ -30,7 +30,7 @@ else
 {
 	<div>
 		<span>Rank:</span>
-		<input class="bg-black border-gray-22 border-2" @onkeypress="KeyPressInputRank" @onchange="ChangeInputRank" />
+		<input class="bg-black border-gray-22 border-2" @onchange="ChangeInputRank" />
 	</div>
 
 	<div>
@@ -101,15 +101,6 @@ else
 		catch (Exception ex)
 		{
 			_apiError = ex.Message;
-		}
-	}
-
-	private async Task KeyPressInputRank(KeyboardEventArgs e)
-	{
-		// TODO: Rank is not updated here yet...
-		if (e.Code == "Enter" || e.Code == "NumpadEnter")
-		{
-			await FetchLeaderboard();
 		}
 	}
 
