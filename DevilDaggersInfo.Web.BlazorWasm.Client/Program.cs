@@ -8,8 +8,12 @@ namespace DevilDaggersInfo.Web.BlazorWasm.Client;
 
 public static class Program
 {
+	public static string? Version { get; private set; }
+
 	public static async Task Main(string[] args)
 	{
+		Version = Assembly.GetExecutingAssembly()?.GetCustomAttribute<AssemblyInformationalVersionAttribute>()?.InformationalVersion;
+
 		WebAssemblyHostBuilder builder = WebAssemblyHostBuilder.CreateDefault(args);
 		builder.RootComponents.Add<App>("#app");
 

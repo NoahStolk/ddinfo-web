@@ -1,4 +1,10 @@
 <Project Sdk="Microsoft.NET.Sdk.BlazorWebAssembly">
+  <PropertyGroup>
+    <DateTimeUtcNow>$([System.DateTime]::UtcNow.Ticks)</DateTimeUtcNow>
+    <ProjectStartDateTime>$([System.DateTime]::Parse("2021-07-06 09:22:00").Ticks)</ProjectStartDateTime>
+    <MinutesSinceProjectStart>$([System.Convert]::ToInt64($([MSBuild]::Divide($([MSBuild]::Subtract($(DateTimeUtcNow), $(ProjectStartDateTime))), 600000000))))</MinutesSinceProjectStart>
+    <Version>5.0.0.0-alpha.$(MinutesSinceProjectStart)</Version>
+  </PropertyGroup>
   <ItemGroup>
     <PackageReference Include="Blazorise.Charts" />
     <PackageReference Include="Fluxor" />
