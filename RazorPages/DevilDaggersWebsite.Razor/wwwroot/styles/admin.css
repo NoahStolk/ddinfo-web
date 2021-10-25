@@ -1,0 +1,34 @@
+﻿.admin-select {
+	color: var(--col-red);
+	background-color: var(--col-black);
+	margin: 12px auto;
+}
+
+.admin-table > thead > tr > th {
+	line-height: 1em;
+	border-bottom: red;
+	padding: 3px;
+}
+
+.admin-table > tbody > tr > td {
+	line-height: 1em;
+	border: none;
+	padding: 3px;
+}
+
+.admin-table > tbody > tr:nth-child(odd) {
+	background-color: var(--col-gray-11);
+}
+
+div.form-group > .text-danger {
+	background-color: red;
+	color: white;
+	font-size: 26px;
+}
+
+.delete-warning {
+	background-color: #b00;
+	color: white;
+	font-size: 22px;
+	padding: 8px;
+}

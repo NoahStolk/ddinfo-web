@@ -1,0 +1,54 @@
+﻿@page
+@model DevilDaggersWebsite.Razor.Pages.Leaderboard.SearchModel
+@using DevilDaggersWebsite.Razor.Utils
+@{
+	ViewData["Title"] = "Leaderboard Search";
+
+	int[] widths = new int[2] { 160, 160 };
+}
+
+<header>
+	<h1>@ViewData["Title"]</h1>
+</header>
+
+<main role="main">
+	@using (Html.BeginForm(FormMethod.Get))
+	{
+		<div class="leaderboard-form-container">
+			<a asp-page="/Leaderboard/Index">Browse leaderboard by rank</a>
+			<div>
+				<div>
+					<div class="input-label text-left" style="@RazorUtils.GetCssWidth(widths[0])">Username:</div>
+					<div style="@RazorUtils.GetCssWidth(widths[1])">@Html.TextBoxFor(m => m.Username, new { @class = "input" })</div>
+				</div>
+			</div>
+			<div>
+				<input class="btn" type="submit" value="Search" />
+			</div>
+		</div>
+	}
+	@if (Model.Username.Length < 3)
+	{
+		<p>Please enter a search query which is at least 3 characters in length.</p>
+	}
+	else if (Model.Leaderboard == null)
+	{
+		<p>Failed to retrieve scores from the official Devil Daggers leaderboard servers. Please try again later.</p>
+		<p>If the problem persists, try contacting the Devil Daggers developer.</p>
+	}
+	else
+	{
+		<p>Showing @Model.Leaderboard.Entries.Count username search results for "@Model.Username".</p>
+		@await Html.PartialAsync("Partials/LeaderboardTableInfoPartial")
+		@await Html.PartialAsync("Partials/LeaderboardUserPartial")
+	}
+</main>
+
+@section Scripts {
+	<script defer src='~/scripts/leaderboard-user.js' asp-append-version='true'></script>
+}
+
+@section Styles {
+	<link rel='stylesheet' href='~/styles/leaderboard.css' asp-append-version="true" />
+	<link rel='stylesheet' href='~/styles/leaderboard-rows-general.css' asp-append-version="true" />
+}

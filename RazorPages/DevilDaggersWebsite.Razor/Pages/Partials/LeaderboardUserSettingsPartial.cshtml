@@ -1,0 +1,91 @@
+﻿@model PlayerSettingsModel
+@using DevilDaggersWebsite.Dto
+@using DevilDaggersWebsite.Entities
+@using DevilDaggersWebsite.Razor.Models
+@using DevilDaggersWebsite.Razor.Pages.Leaderboard
+@using DevilDaggersWebsite.Utils
+@using Microsoft.EntityFrameworkCore
+@inject DevilDaggersWebsite.Entities.ApplicationDbContext dbContext
+
+<div class="leaderboard-container flex-container flex-center">
+	<div class="leaderboard-title-row flex-container">
+		<div class="sorter text-right" sort="rank">#</div>
+		<div class="sorter text-left" sort="flag">
+			<span data-toggle='tooltip' title='Nationality (flag)'><img src="~/images/Icons/flag.png" /></span>
+		</div>
+		<div class="sorter text-left" sort="username">Username</div>
+		<div class="sorter text-right" sort="time">Time</div>
+
+		<div class="sorter hidden-xs text-right" sort="e-dpi">eDPI</div>
+		<div class="sorter hidden-xs text-right" sort="dpi">DPI</div>
+		<div class="sorter hidden-xs text-right" sort="in-game-sens">In-game sens</div>
+		<div class="sorter hidden-xs text-right" sort="fov">FOV</div>
+		<div class="sorter hidden-xs hidden-sm hidden-md text-right" sort="gamma">Gamma</div>
+
+		<div class="sorter hidden-xs hidden-sm hidden-md text-left" sort="hand">Hand orientation</div>
+		<div class="sorter hidden-xs hidden-sm hidden-md text-left" sort="flash">Hand flash</div>
+		<div class="sorter hidden-xs hidden-sm hidden-md text-left" sort="legacy-audio">Legacy audio</div>
+	</div>
+	<div class="leaderboard-body">
+		@{
+			IEnumerable<Donation> donations = dbContext.Donations.AsNoTracking();
+			foreach (Entry entry in Model.Entries ?? new())
+			{
+				Player player = Model.Players.First(p => p.Id == entry.Id);
+
+				SettingsEntryModel sem = new(entry, player, donations);
+
+				<div class="sort" @sem.HtmlData>
+					<div class="leaderboard-row flex-container" id="@(entry.Rank)-row">
+						@await Html.PartialAsync("Partials/EntryIdPartial", sem)
+						@await Html.PartialAsync("Partials/EntryFlagPartial", sem)
+						@await Html.PartialAsync("Partials/EntryUsernamePartial", sem)
+						<div class="text-right @sem.DaggerColor">@(entry.Time.FormatTimeInteger())</div>
+						<div class="hidden-xs text-right">@player.EdpiString</div>
+						<div class="hidden-xs text-right">@player.DpiString</div>
+						<div class="hidden-xs text-right">@player.InGameSensString</div>
+						<div class="hidden-xs text-right">@player.Fov</div>
+						<div class="hidden-xs hidden-sm hidden-md text-right">@player.GammaString</div>
+						<div class="hidden-xs hidden-sm hidden-md text-left">@player.RightHandedString</div>
+						<div class="hidden-xs hidden-sm hidden-md text-left">@player.FlashEnabledString</div>
+						<div class="hidden-xs hidden-sm hidden-md text-left">@player.UsesLegacyAudioString</div>
+					</div>
+					<div class="leaderboard-expand flex-container" id="@(entry.Rank)-expand">
+						<div class="visible-xs">
+							<div class="text-left">eDPI</div>
+							<div class="text-right">@player.EdpiString</div>
+						</div>
+						<div class="visible-xs">
+							<div class="text-left">DPI</div>
+							<div class="text-right">@player.DpiString</div>
+						</div>
+						<div class="visible-xs">
+							<div class="text-left">In-game sens</div>
+							<div class="text-right">@player.InGameSensString</div>
+						</div>
+						<div class="visible-xs">
+							<div class="text-left">FOV</div>
+							<div class="text-right">@player.Fov</div>
+						</div>
+						<div class="visible-xs visible-sm visible-md">
+							<div class="text-left">Gamma</div>
+							<div class="text-right">@player.GammaString</div>
+						</div>
+						<div class="visible-xs visible-sm visible-md">
+							<div class="text-left">Hand orientation</div>
+							<div class="text-right">@player.RightHandedString</div>
+						</div>
+						<div class="visible-xs visible-sm visible-md">
+							<div class="text-left">Hand flash</div>
+							<div class="text-right">@player.FlashEnabledString</div>
+						</div>
+						<div class="visible-xs visible-sm visible-md">
+							<div class="text-left">Legacy audio</div>
+							<div class="text-right">@player.UsesLegacyAudioString</div>
+						</div>
+					</div>
+				</div>
+			}
+		}
+	</div>
+</div>

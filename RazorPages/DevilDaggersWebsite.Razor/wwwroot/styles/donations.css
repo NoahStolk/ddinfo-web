@@ -1,0 +1,17 @@
+﻿.donation-tooltip {
+	cursor: pointer;
+}
+
+.donator {
+	padding: 4px;
+	justify-content: space-between;
+}
+
+div > .donator:nth-child(2n) {
+	background-color: var(--col-gray-08);
+}
+
+
+div > .donator:nth-child(2n+1) {
+	background-color: var(--col-gray-11);
+}

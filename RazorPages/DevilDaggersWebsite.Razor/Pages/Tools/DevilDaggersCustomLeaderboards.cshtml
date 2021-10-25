@@ -1,0 +1,51 @@
+﻿@page
+@inject Microsoft.AspNetCore.Hosting.IWebHostEnvironment environment
+@inject IToolHelper toolHelper
+@using DevilDaggersWebsite.Dto
+@using DevilDaggersWebsite.Razor.Utils
+@using DevilDaggersWebsite.Transients
+@using System.IO
+@{
+	Tool tool = toolHelper.GetToolByName("DevilDaggersCustomLeaderboards");
+	ViewData["Title"] = tool.DisplayName;
+	string downloadFileName = $"{tool.Name}{tool.VersionNumber}.zip";
+	FileInfo downloadFileInfo = new(System.IO.Path.Combine(environment.WebRootPath, "tools", tool.Name, downloadFileName));
+	string runtimeUrl = ToolRuntimeUtils.GetRuntimeUrl("5.0");
+}
+
+<header>
+	<h1>@ViewData["Title"]</h1>
+</header>
+
+<main role="main">
+	<p>
+		Devil Daggers Custom Leaderboards is a program that records data from custom spawnset runs, and uploads it to a <a asp-page="/CustomLeaderboards/Index">custom leaderboard</a>.
+	</p>
+
+	@await Html.PartialAsync("Partials/ToolInfoPartial", (tool, downloadFileInfo))
+
+	<p>
+		<img class="img-responsive image-narrow ddcl-image" src="~/images/Tools/@(tool.Name).png" />
+	</p>
+
+	<h2>System requirements</h2>
+	<ul>
+		<li>Microsoft Windows (64-bit)</li>
+		<li><a href="@runtimeUrl">@ToolRuntimeUtils.RuntimeNameDotNet50</a> (x64)</li>
+		<li>The latest Steam version of Devil Daggers</li>
+	</ul>
+
+	<h2>Installation</h2>
+	<ol>
+		<li>Make sure to install <a href="@runtimeUrl">@ToolRuntimeUtils.RuntimeNameDotNet50</a> (x64) before running the program. If you already have the @ToolRuntimeUtils.DesktopRuntimeNameDotNet50 used for the survival and asset editors, you can skip this step.</li>
+		<li>Download the .zip file.</li>
+		<li>Unzip its contents.</li>
+		<li>Run the executable (.exe file) inside the folder.</li>
+	</ol>
+
+	@await Html.PartialAsync("Partials/ToolSourcePartial", new KeyValuePair<string, List<Dto.ChangelogEntry>>(tool.Name, tool.Changelog.ToList()))
+</main>
+
+@section Styles {
+	<link rel='stylesheet' href='~/styles/tools.css' asp-append-version="true" />
+}

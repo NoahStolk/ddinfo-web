@@ -1,0 +1,10 @@
+﻿@using DevilDaggersWebsite.Razor.Utils
+@inject Microsoft.AspNetCore.Hosting.IWebHostEnvironment environment
+<environment include="Development">
+	<link rel="stylesheet" href="~/lib/bootstrap/dist/css/bootstrap.css" asp-append-version="true" />
+	@RazorUtils.GetCssList(environment, "css-site")
+</environment>
+<environment exclude="Development">
+	<link rel="stylesheet" href="https://ajax.aspnetcdn.com/ajax/bootstrap/3.3.7/css/bootstrap.min.css" asp-append-version="true" />
+	<link rel="stylesheet" href="~/css/site.min.css" asp-append-version="true" />
+</environment>

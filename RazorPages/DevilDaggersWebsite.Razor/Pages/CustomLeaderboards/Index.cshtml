@@ -1,0 +1,179 @@
+﻿@page
+@model IndexModel
+@using DevilDaggersWebsite.Razor.Pagination
+@using DevilDaggersWebsite.Razor.Utils
+@using DevilDaggersWebsite.Utils
+@using Microsoft.AspNetCore.Html
+@using System
+@inject DevilDaggersWebsite.Entities.ApplicationDbContext dbContext
+@{
+	ViewData["Title"] = "Custom Leaderboards";
+	DateTime submitCountCollectionStart = new(2020, 8, 25);
+}
+
+<header>
+	<h1>@ViewData["Title"]</h1>
+</header>
+
+<main role="main">
+	<p>
+		Custom leaderboards are leaderboards for <a asp-page="/Spawnsets">custom spawnsets</a> hosted by DevilDaggers.info.
+	</p>
+
+	@await Html.PartialAsync("Partials/NavigationPartial", Model)
+
+	<div class="navigation-result-wrapper">
+		@if (Model.PaginatedList.Count > 0)
+		{
+			<table>
+				<thead>
+					<tr class="navigation-sort">
+						<th width="300">
+							<a asp-route-searchAuthor="@Model.SearchAuthor"
+							   asp-route-searchName="@Model.SearchName"
+							   asp-route-sortOrder="@Model.Name"
+							   asp-route-pageIndex="@Model.PageIndex">Name</a>
+						</th>
+						<th width="200">
+							<a asp-route-searchAuthor="@Model.SearchAuthor"
+							   asp-route-searchName="@Model.SearchName"
+							   asp-route-sortOrder="@Model.Author"
+							   asp-route-pageIndex="@Model.PageIndex">Author</a>
+						</th>
+						<th class="hidden-xs" width="90">
+							<a asp-route-searchAuthor="@Model.SearchAuthor"
+							   asp-route-searchName="@Model.SearchName"
+							   asp-route-sortOrder="@Model.Category"
+							   asp-route-pageIndex="@Model.PageIndex">Category</a>
+						</th>
+						<th class="text-right hidden-xs hidden-sm hidden-md" width="120">
+							<a asp-route-searchAuthor="@Model.SearchAuthor"
+							   asp-route-searchName="@Model.SearchName"
+							   asp-route-sortOrder="@Model.LastPlayed"
+							   asp-route-pageIndex="@Model.PageIndex">Last played</a>
+						</th>
+						<th class="text-right hidden-xs hidden-sm hidden-md" width="120">
+							<a asp-route-searchAuthor="@Model.SearchAuthor"
+							   asp-route-searchName="@Model.SearchName"
+							   asp-route-sortOrder="@Model.Created"
+							   asp-route-pageIndex="@Model.PageIndex">Created</a>
+						</th>
+						<th class="text-right hidden-xs hidden-sm hidden-md" width="90">
+							<a asp-route-searchAuthor="@Model.SearchAuthor"
+							   asp-route-searchName="@Model.SearchName"
+							   asp-route-sortOrder="@Model.Submits"
+							   asp-route-pageIndex="@Model.PageIndex">Submits <span style="cursor: pointer;" class="text-right devil" data-toggle="tooltip" data-placement="top" title="Data has only been collected since @submitCountCollectionStart.ToString("dd MMM yyyy"), and will not be correct for leaderboards that were created prior to this date (hence the +).">?</span></a>
+						</th>
+						<th class="text-right hidden-xs hidden-sm hidden-md" width="85">
+							<a asp-route-searchAuthor="@Model.SearchAuthor"
+							   asp-route-searchName="@Model.SearchName"
+							   asp-route-sortOrder="@Model.Players"
+							   asp-route-pageIndex="@Model.PageIndex">Players</a>
+						</th>
+						<th class="text-right hidden-xs hidden-sm hidden-md dagger-time" width="85">
+							<a asp-route-searchAuthor="@Model.SearchAuthor"
+							   asp-route-searchName="@Model.SearchName"
+							   asp-route-sortOrder="@Model.Bronze"
+							   asp-route-pageIndex="@Model.PageIndex">Bronze</a>
+						</th>
+						<th class="text-right hidden-xs hidden-sm hidden-md dagger-time" width="85">
+							<a asp-route-searchAuthor="@Model.SearchAuthor"
+							   asp-route-searchName="@Model.SearchName"
+							   asp-route-sortOrder="@Model.Silver"
+							   asp-route-pageIndex="@Model.PageIndex">Silver</a>
+						</th>
+						<th class="text-right hidden-xs hidden-sm hidden-md dagger-time" width="85">
+							<a asp-route-searchAuthor="@Model.SearchAuthor"
+							   asp-route-searchName="@Model.SearchName"
+							   asp-route-sortOrder="@Model.Golden"
+							   asp-route-pageIndex="@Model.PageIndex">Golden</a>
+						</th>
+						<th class="text-right hidden-xs hidden-sm hidden-md dagger-time" width="85">
+							<a asp-route-searchAuthor="@Model.SearchAuthor"
+							   asp-route-searchName="@Model.SearchName"
+							   asp-route-sortOrder="@Model.Devil"
+							   asp-route-pageIndex="@Model.PageIndex">Devil</a>
+						</th>
+						<th class="text-right hidden-xs hidden-sm hidden-md dagger-time" width="85">
+							<a asp-route-searchAuthor="@Model.SearchAuthor"
+							   asp-route-searchName="@Model.SearchName"
+							   asp-route-sortOrder="@Model.Leviathan"
+							   asp-route-pageIndex="@Model.PageIndex">Leviathan</a>
+						</th>
+						<th class="text-right hidden-xs hidden-sm hidden-md world-record" width="85">
+							<a asp-route-searchAuthor="@Model.SearchAuthor"
+							   asp-route-searchName="@Model.SearchName"
+							   asp-route-sortOrder="@Model.WorldRecord"
+							   asp-route-pageIndex="@Model.PageIndex">World record</a>
+						</th>
+						<th class="hidden-xs hidden-sm hidden-md world-record-holder" width="120">
+							<a asp-route-searchAuthor="@Model.SearchAuthor"
+							   asp-route-searchName="@Model.SearchName"
+							   asp-route-sortOrder="@Model.WorldRecordHolder"
+							   asp-route-pageIndex="@Model.PageIndex">Top player</a>
+						</th>
+					</tr>
+				</thead>
+				<tbody>
+					@foreach (CustomLeaderboard cl in Model.PaginatedList)
+					{
+						bool possibleMissingSubmitCounts = cl.DateCreated < submitCountCollectionStart;
+
+						<tr>
+							<td class="prevent-break-out"><a asp-page="/CustomLeaderboards/Leaderboard" asp-route-spawnsetName="@cl.SpawnsetName">@cl.SpawnsetName</a></td>
+							<td class="prevent-break-out"><a asp-route-searchAuthor="@cl.AuthorName">@cl.AuthorName</a></td>
+							<td class="hidden-xs">@cl.Category</td>
+							<td class="text-right hidden-xs hidden-sm hidden-md">@(cl.DateLastPlayed != null ? new HtmlString(cl.DateLastPlayed.Value.ToString("dd MMM yyyy")) : RazorUtils.NAString)</td>
+							<td class="text-right hidden-xs hidden-sm hidden-md">@(cl.DateCreated != null ? new HtmlString(cl.DateCreated.Value.ToString("dd MMM yyyy")) : RazorUtils.NAString)</td>
+							<td class="text-right hidden-xs hidden-sm hidden-md">@(possibleMissingSubmitCounts ? "+" : string.Empty)@cl.TotalRunsSubmitted</td>
+							<td class="text-right hidden-xs hidden-sm hidden-md">@cl.TotalPlayers</td>
+							<td class="text-right hidden-xs hidden-sm hidden-md dagger-time bronze">@cl.TimeBronze.FormatTimeInteger()</td>
+							<td class="text-right hidden-xs hidden-sm hidden-md dagger-time silver">@cl.TimeSilver.FormatTimeInteger()</td>
+							<td class="text-right hidden-xs hidden-sm hidden-md dagger-time golden">@cl.TimeGolden.FormatTimeInteger()</td>
+							<td class="text-right hidden-xs hidden-sm hidden-md dagger-time devil">@cl.TimeDevil.FormatTimeInteger()</td>
+							<td class="text-right hidden-xs hidden-sm hidden-md dagger-time leviathan">@cl.TimeLeviathan.FormatTimeInteger()</td>
+							<td class="text-right hidden-xs hidden-sm hidden-md world-record">
+								@if (cl.WorldRecord == null)
+								{
+									@:@RazorUtils.NAString
+								}
+								else
+								{
+									<span class="@cl.WorldRecordDaggerName">@cl.WorldRecord.Time.FormatTimeInteger()</span>
+								}
+							</td>
+							<td class="hidden-xs hidden-sm hidden-md world-record-holder">
+								@if (cl.WorldRecord == null)
+								{
+									@:@RazorUtils.NAString
+								}
+								else
+								{
+									<span class="@cl.WorldRecordDaggerName highlight leaderboard-username" style="display: block;"><a asp-route-page="/Leaderboard/Player" asp-route-id="@cl.WorldRecord.PlayerId">@cl.WorldRecord.Player.PlayerName</a></span>
+								}
+							</td>
+						</tr>
+					}
+				</tbody>
+			</table>
+		}
+		else
+		{
+			@:Search returned no results
+		}
+	</div>
+
+	<h2>FAQ</h2>
+
+	@await Html.PartialAsync("Partials/FaqCustomLeaderboardPartial")
+</main>
+
+@section Scripts {
+	<script defer src='~/scripts/custom-leaderboards.js' asp-append-version='true'></script>
+}
+
+@section Styles {
+	<link rel='stylesheet' href='~/styles/navigation.css' asp-append-version="true" />
+	<link rel='stylesheet' href='~/styles/leaderboard.css' asp-append-version="true" />
+	<link rel='stylesheet' href='~/styles/custom-leaderboards.css' asp-append-version="true" />
+}

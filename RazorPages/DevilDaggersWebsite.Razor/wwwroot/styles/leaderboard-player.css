@@ -1,0 +1,73 @@
+﻿.player-section-container {
+	flex-direction: row;
+	flex-wrap: wrap;
+}
+
+.player-section {
+	flex-direction: row;
+	flex-wrap: wrap;
+	justify-content: space-between;
+	background-color: var(--col-gray-08);
+	margin: 8px;
+}
+
+	.player-section > div {
+		width: 360px;
+	}
+
+.leaderboard-data-header {
+	font-size: 24px;
+	color: var(--col-red);
+	padding: 8px;
+	min-height: 2.55em;
+}
+
+.leaderboard-data-container {
+	margin: 0;
+}
+
+.player-section-list {
+	max-height: 10.3em;
+	overflow-y: auto;
+	overflow-x: hidden;
+}
+
+.username-list {
+	max-height: 7.5em;
+	background-color: var(--col-gray-18);
+}
+
+.leaderboard-data > div {
+	flex-grow: 1;
+}
+
+	.leaderboard-data > div:nth-child(1) {
+		padding-left: 8px;
+	}
+
+	.leaderboard-data > div:nth-child(2) {
+		padding-right: 8px;
+	}
+
+.player-section-list-link {
+	padding-left: 8px;
+	display: block;
+}
+
+div > .player-section-list-link:nth-child(2n) {
+	background-color: var(--col-gray-11);
+}
+
+.player-section-list > li {
+	overflow-wrap: break-word;
+	word-wrap: break-word;
+	-ms-word-break: break-all;
+	-epub-word-break: break-all;
+	word-break: break-all;
+	word-break: break-word;
+	-ms-hyphens: auto;
+	-moz-hyphens: auto;
+	-epub-hyphens: auto;
+	-webkit-hyphens: auto;
+	hyphens: auto;
+}

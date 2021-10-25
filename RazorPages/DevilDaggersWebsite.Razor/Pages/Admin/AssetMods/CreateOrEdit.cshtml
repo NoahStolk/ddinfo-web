@@ -1,0 +1,81 @@
+﻿@page
+@using DevilDaggersWebsite.Dto
+@using DevilDaggersWebsite.Entities
+@using DevilDaggersWebsite.Razor.PageModels
+@model AdminEntityCreateOrEditPageModel<AssetMod, AdminAssetMod>
+
+@{
+	ViewData["Title"] = Model.IsEditing ? "Edit" : "Create";
+
+	if (!Model.IsEditing)
+	{
+		Model.AdminDto.LastUpdated = DateTime.UtcNow;
+	}
+}
+
+<h1>@ViewData["Title"] AssetMod</h1>
+
+<div class="row">
+	<div class="col-md-4">
+		<form method="post">
+			<div asp-validation-summary="ModelOnly" class="text-danger"></div>
+			<div class="form-group">
+				<label asp-for="AdminDto.Name" class="control-label"></label>
+				<input asp-for="AdminDto.Name" class="form-control" />
+				<span asp-validation-for="AdminDto.Name" class="text-danger"></span>
+			</div>
+			<div class="form-group">
+				<div class="checkbox">
+					<label>
+						<input asp-for="AdminDto.IsHidden" /> @Html.DisplayNameFor(model => model.AdminDto.IsHidden)
+					</label>
+				</div>
+			</div>
+			<div class="form-group">
+				<label asp-for="AdminDto.LastUpdated" class="control-label"></label>
+				<input asp-for="AdminDto.LastUpdated" class="form-control" />
+				<span asp-validation-for="AdminDto.LastUpdated" class="text-danger"></span>
+			</div>
+			<div class="form-group">
+				<label asp-for="AdminDto.TrailerUrl" class="control-label"></label>
+				<input asp-for="AdminDto.TrailerUrl" class="form-control" />
+				<span asp-validation-for="AdminDto.TrailerUrl" class="text-danger"></span>
+			</div>
+			<div class="form-group">
+				<label asp-for="AdminDto.HtmlDescription" class="control-label"></label>
+				<input asp-for="AdminDto.HtmlDescription" class="form-control" />
+				<span asp-validation-for="AdminDto.HtmlDescription" class="text-danger"></span>
+			</div>
+			<div class="form-group">
+				<label class="control-label">AssetModTypes (CTRL+click for multiple)</label>
+				<select asp-for="AdminDto.AssetModTypes" class="admin-select form-control" asp-items="Model.AssetModTypesList" style="height: 192px;"></select>
+				<span asp-validation-for="AdminDto.AssetModTypes" class="text-danger"></span>
+			</div>
+			<div class="form-group">
+				<label asp-for="AdminDto.Url" class="control-label"></label>
+				<input asp-for="AdminDto.Url" class="form-control" />
+				<span asp-validation-for="AdminDto.Url" class="text-danger"></span>
+			</div>
+			<div class="form-group">
+				<label class="control-label">Players (CTRL+click for multiple)</label>
+				<select asp-for="AdminDto.PlayerIds" class="admin-select form-control" asp-items="Model.PlayerList" style="height: 640px;"></select>
+				<span asp-validation-for="AdminDto.PlayerIds" class="text-danger"></span>
+			</div>
+			<div class="form-group">
+				<input type="submit" value="Save" class="btn btn-default" />
+			</div>
+		</form>
+	</div>
+</div>
+
+<div>
+	<a asp-page="./Index">Back to List</a>
+</div>
+
+@section Scripts {
+	@{await Html.RenderPartialAsync("_ValidationScriptsPartial");}
+}
+
+@section Styles {
+	<link rel='stylesheet' href='~/styles/admin.css' asp-append-version="true" />
+}

@@ -1,0 +1,93 @@
+﻿@page
+@using DevilDaggersWebsite.Utils
+@model HistoryModel
+@{
+	if (Model.Leaderboard == null)
+		return;
+	ViewData["Title"] = $"Top 100 History ({Model.Leaderboard.DateTime.ToString(FormatUtils.DateTimeUtcFormat)})";
+}
+@using DevilDaggersWebsite.Razor.Utils
+
+<header>
+	<h1>@ViewData["Title"]</h1>
+</header>
+
+<main role="main">
+	@using (Html.BeginForm(FormMethod.Get))
+	{
+		<div class="leaderboard-form-container">
+			<select class="select form-control" asp-for="From" asp-items="Model.JsonFiles" onchange="this.form.submit()" style="margin-top: 8px;"></select>
+			<div>
+				<a class="btn btn-default btn-page @(Model.FromNext == null ? "disabled" : string.Empty)" asp-page="/Leaderboard/History" asp-route-from="@(Model.FromNext)">&lt;</a>
+				<a class="btn btn-default btn-page @(Model.FromPrevious == null ? "disabled" : string.Empty)" asp-page="/Leaderboard/History" asp-route-from="@(Model.FromPrevious)">&gt;</a>
+			</div>
+		</div>
+	}
+
+	@{
+		List<string> changesGlobal = Model.ChangesGlobal;
+		Dictionary<string, string> changesTop100 = Model.ChangesTop100;
+		TimeSpan diff = Model.Leaderboard.DateTime - Model.LeaderboardPrevious.DateTime;
+		if (changesGlobal.Count != 0 || changesTop100.Count != 0)
+		{
+			<div class="info-container info-orange">
+				<div>
+					Changes since @Model.LeaderboardPrevious.DateTime.ToString("yyyy-MM-dd HH:mm")<br />
+					@diff.Days day@(diff.Days.S()), @diff.Hours hour@(diff.Hours.S()), @diff.Minutes minute@(diff.Minutes.S()) before
+				</div>
+				<div class="flex-container leaderboard-flex flex-center flex-space-evenly text-left">
+					<div>
+						<div>Global</div>
+						<div class="info-text">
+							@{
+								if (changesGlobal.Count == 0)
+								{
+									@RazorUtils.NAString
+								}
+								else
+								{
+									foreach (string change in changesGlobal)
+									{
+										@:@change<br />
+									}
+								}
+							}
+						</div>
+					</div>
+					<div>
+						<div>Top 100</div>
+						<div class="info-text">
+							@{
+								if (changesGlobal.Count == 0)
+								{
+									@RazorUtils.NAString
+								}
+								else
+								{
+									foreach (KeyValuePair<string, string> change in changesTop100)
+									{
+										<span data-toggle="tooltip" title="@change.Value" class="leaderboard-tooltip">@change.Key</span><br />
+									}
+								}
+							}
+						</div>
+					</div>
+				</div>
+			</div>
+		}
+	}
+
+	@await Html.PartialAsync("Partials/LeaderboardGlobalPartial")
+	@await Html.PartialAsync("Partials/LeaderboardTableInfoPartial")
+	@await Html.PartialAsync("Partials/LeaderboardUserPartial")
+</main>
+
+@section Scripts {
+	<script defer src='~/scripts/leaderboard-user.js' asp-append-version='true'></script>
+}
+
+@section Styles {
+	<link rel='stylesheet' href='~/styles/leaderboard.css' asp-append-version="true" />
+	<link rel='stylesheet' href='~/styles/leaderboard-history.css' asp-append-version="true" />
+	<link rel='stylesheet' href='~/styles/leaderboard-rows-general.css' asp-append-version="true" />
+}

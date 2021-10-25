@@ -1,0 +1,13 @@
+﻿.upgrade {
+	padding: 8px;
+	margin: 8px 0;
+}
+
+.upgrade-row {
+	flex-direction: row;
+	justify-content: space-between;
+}
+
+	.upgrade-row > div {
+		flex-grow: 1;
+	}

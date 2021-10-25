@@ -1,0 +1,24 @@
+﻿@page
+@model UploadFileModel
+@{
+	ViewData["Title"] = "Upload Spawnset File";
+}
+
+<h1>@ViewData["Title"]</h1>
+
+<p>Notes</p>
+<ul>
+	<li>File must not be larger than 70 KiB (@($"{UploadFileModel.MaxFileSize:n0}") bytes).</li>
+	<li>File name must not be over @UploadFileModel.MaxFileNameLength characters in length.</li>
+	<li>File name must be unique.</li>
+	<li>File must be a survival file.</li>
+</ul>
+
+<form method="post" enctype="multipart/form-data">
+	<input asp-for="FormFile" />
+	<input type="submit" />
+</form>
+
+@section Styles {
+	<link rel='stylesheet' href='~/styles/admin.css' asp-append-version="true" />
+}

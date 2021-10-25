@@ -1,0 +1,18 @@
+﻿@page
+@model ErrorModel
+@{
+	ViewData["Title"] = "Internal server error";
+}
+
+<header>
+	<h1>@ViewData["Title"]</h1>
+</header>
+
+<div role="main">
+	<p>
+		An error occurred while processing your request.
+	</p>
+	<p>
+		Return to the <a asp-page="/Index">Home page</a>.
+	</p>
+</div>

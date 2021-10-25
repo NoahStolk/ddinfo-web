@@ -1,0 +1,23 @@
+﻿.info-text {
+	font-size: 17px;
+}
+
+.info-container {
+	max-width: 480px;
+	border: solid 1px;
+	padding: 8px;
+	margin: 8px 0;
+}
+
+.info-red {
+	border-color: var(--col-dark-red);
+}
+
+.info-orange {
+	border-color: var(--col-dark-orange);
+}
+
+select {
+	max-width: 480px;
+	width: 480px;
+}

@@ -1,0 +1,29 @@
+{
+  "DateTime": "2017-06-19T00:00:00",
+  "Players": 115168,
+  "TimeGlobal": 0,
+  "KillsGlobal": 0,
+  "GemsGlobal": 0,
+  "DeathsGlobal": 0,
+  "DaggersHitGlobal": 0,
+  "DaggersFiredGlobal": 0,
+  "Entries": [
+    {
+      "Rank": 19,
+      "Id": 93991,
+      "Username": "☆ Kacpr",
+      "Time": 8510362,
+      "Kills": 2122,
+      "Gems": 962,
+      "DeathType": 5,
+      "DaggersHit": 3111,
+      "DaggersFired": 10000,
+      "TimeTotal": 0,
+      "KillsTotal": 0,
+      "GemsTotal": 0,
+      "DeathsTotal": 0,
+      "DaggersHitTotal": 0,
+      "DaggersFiredTotal": 0
+    }
+  ]
+}

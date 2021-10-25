@@ -1,0 +1,56 @@
+﻿@page
+@model DevilDaggersWebsite.Razor.Pages.Leaderboard.IndexModel
+@using DevilDaggersWebsite.Razor.Utils
+@{
+	ViewData["Title"] = "Leaderboard";
+
+	int[] widths = new int[2] { 160, 160 };
+	int maxRank = (Model.Leaderboard?.Players ?? int.MaxValue) - 99;
+}
+
+<header>
+	<h1>@ViewData["Title"]</h1>
+</header>
+
+<main role="main">
+	@if (Model.Leaderboard == null)
+	{
+		<p>Failed to retrieve scores from the official Devil Daggers leaderboard servers. Please try again later.</p>
+		<p>If the problem persists, try contacting the Devil Daggers developer.</p>
+	}
+	else
+	{
+		@using (Html.BeginForm(FormMethod.Get))
+		{
+			<div class="leaderboard-form-container">
+				<a asp-page="/Leaderboard/Search">Search players by username</a>
+				<div class="input-label text-left" style="@RazorUtils.GetCssWidth(widths[0])">Rank:</div>
+				<div style="@RazorUtils.GetCssWidth(widths[1])">@Html.TextBoxFor(m => m.Rank, new { @class = "input" })</div>
+				<input class="btn" type="submit" value="Show" />
+				<div>
+					Showing rank @Model.Rank - @(Model.Rank + 99)
+				</div>
+				<div>
+					<a class="btn btn-default btn-page @(Model.Rank <= 1 ? "disabled" : string.Empty)" asp-page="/Leaderboard/Index" asp-route-rank="1">|&lt;</a>
+					<a class="btn btn-default btn-page @(Model.Rank <= 1 ? "disabled" : string.Empty)" asp-page="/Leaderboard/Index" asp-route-rank="@(Math.Max(1, Model.Rank - 1000))">&lt;&lt;</a>
+					<a class="btn btn-default btn-page @(Model.Rank <= 1 ? "disabled" : string.Empty)" asp-page="/Leaderboard/Index" asp-route-rank="@(Math.Max(1, Model.Rank - 100))">&lt;</a>
+					<a class="btn btn-default btn-page @(Model.Rank >= maxRank ? "disabled" : string.Empty)" asp-page="/Leaderboard/Index" asp-route-rank="@(Math.Min(Model.Leaderboard.Players - 99, Model.Rank + 100))">&gt;</a>
+					<a class="btn btn-default btn-page @(Model.Rank >= maxRank ? "disabled" : string.Empty)" asp-page="/Leaderboard/Index" asp-route-rank="@(Math.Min(Model.Leaderboard.Players - 99, Model.Rank + 1000))">&gt;&gt;</a>
+					<a class="btn btn-default btn-page @(Model.Rank >= maxRank ? "disabled" : string.Empty)" asp-page="/Leaderboard/Index" asp-route-rank="@(Model.Leaderboard.Players - 99)">&gt;|</a>
+				</div>
+			</div>
+		}
+		@await Html.PartialAsync("Partials/LeaderboardGlobalPartial")
+		@await Html.PartialAsync("Partials/LeaderboardTableInfoPartial")
+		@await Html.PartialAsync("Partials/LeaderboardUserPartial")
+	}
+</main>
+
+@section Scripts {
+	<script defer src='~/scripts/leaderboard-user.js' asp-append-version='true'></script>
+}
+
+@section Styles {
+	<link rel='stylesheet' href='~/styles/leaderboard.css' asp-append-version="true" />
+	<link rel='stylesheet' href='~/styles/leaderboard-rows-general.css' asp-append-version="true" />
+}

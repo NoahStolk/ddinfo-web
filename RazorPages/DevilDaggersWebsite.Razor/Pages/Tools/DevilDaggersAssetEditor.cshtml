@@ -1,0 +1,73 @@
+﻿@page
+@inject Microsoft.AspNetCore.Hosting.IWebHostEnvironment environment
+@inject IToolHelper toolHelper
+@using DevilDaggersWebsite.Dto
+@using DevilDaggersWebsite.Razor.Utils
+@using DevilDaggersWebsite.Transients
+@using System.IO
+@{
+	Tool tool = toolHelper.GetToolByName("DevilDaggersAssetEditor");
+	ViewData["Title"] = tool.DisplayName;
+	string downloadFileName = $"{tool.Name}{tool.VersionNumber}.zip";
+	FileInfo downloadFileInfo = new(System.IO.Path.Combine(environment.WebRootPath, "tools", tool.Name, downloadFileName));
+	string runtimeUrl = ToolRuntimeUtils.GetRuntimeUrl("5.0");
+}
+
+<header>
+	<h1>@ViewData["Title"]</h1>
+</header>
+
+<main role="main">
+	<p>
+		Devil Daggers Asset Editor is a tool that can be used to create asset mods for Devil Daggers.
+	</p>
+
+	@await Html.PartialAsync("Partials/ToolInfoPartial", (tool, downloadFileInfo))
+
+	<p>
+		<img class="img-responsive image-narrow" src="~/images/Tools/@(tool.Name).png" />
+	</p>
+
+	<h2>Main features</h2>
+	<ul>
+		<li>
+			Extracting and compressing asset types
+			<ul>
+				<li>Audio</li>
+				<li>Models</li>
+				<li>Model bindings</li>
+				<li>Shaders</li>
+				<li>Textures</li>
+			</ul>
+		</li>
+
+		<li>
+			Extracting and compressing binary files
+			<ul>
+				<li>res/audio</li>
+				<li>res/dd</li>
+				<li>core/core</li>
+			</ul>
+		</li>
+	</ul>
+
+	<h2>System requirements</h2>
+	<ul>
+		<li>Microsoft Windows (64-bit)</li>
+		<li><a href="@runtimeUrl">@ToolRuntimeUtils.DesktopRuntimeNameDotNet50</a> (x64)</li>
+	</ul>
+
+	<h2>Installation</h2>
+	<ol>
+		<li>Make sure to install <a href="@runtimeUrl">@ToolRuntimeUtils.DesktopRuntimeNameDotNet50</a> (x64) before running the program.</li>
+		<li>Download the .zip file.</li>
+		<li>Unzip its contents.</li>
+		<li>Run the executable (.exe file) inside the folder.</li>
+	</ol>
+
+	@await Html.PartialAsync("Partials/ToolSourcePartial", new KeyValuePair<string, List<Dto.ChangelogEntry>>(tool.Name, tool.Changelog.ToList()))
+</main>
+
+@section Styles {
+	<link rel='stylesheet' href='~/styles/tools.css' asp-append-version="true" />
+}
