@@ -91,6 +91,21 @@ namespace DevilDaggersWebsite.Api
 			};
 		}
 
+		[HttpGet("name-by-hash")]
+		[ProducesResponseType(StatusCodes.Status200OK)]
+		[ProducesResponseType(StatusCodes.Status404NotFound)]
+		public async Task<ActionResult<SpawnsetName>> GetSpawnsetNameByHash([FromQuery] byte[] hash)
+		{
+			SpawnsetHashCacheData? data = await _spawnsetHashCache.GetSpawnset(hash);
+			if (data == null)
+				return new NotFoundObjectResult(new ProblemDetails { Title = $"Spawnset with {nameof(hash)} '{hash.ByteArrayToHexString()}' was not found." });
+
+			return new SpawnsetName
+			{
+				Name = data.Name,
+			};
+		}
+
 		[HttpGet("hash")]
 		[ProducesResponseType(StatusCodes.Status200OK)]
 		[ProducesResponseType(StatusCodes.Status404NotFound)]
