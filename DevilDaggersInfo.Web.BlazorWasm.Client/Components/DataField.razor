@@ -1,0 +1,14 @@
+<div class="grid gap-2 grid-cols-@(Left + Right) max-h-6 @CssClass">
+	<span class="col-span-@(Left)">@Name</span>
+	<span class="col-span-@(Right) text-right">@ChildContent</span>
+</div>
+
+@code {
+	[Parameter, EditorRequired] public string Name { get; set; } = null!;
+	[Parameter, EditorRequired] public RenderFragment ChildContent { get; set; } = null!;
+	
+	[Parameter] public int Left { get; set; } = 1;
+	[Parameter] public int Right { get; set; } = 1;
+
+	[Parameter] public string? CssClass { get; set; }
+}

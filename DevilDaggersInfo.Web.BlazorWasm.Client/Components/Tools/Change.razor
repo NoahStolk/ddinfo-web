@@ -1,0 +1,16 @@
+@using DevilDaggersInfo.Web.BlazorWasm.Shared.Dto.Public.Tools
+
+<ul class="pl-4">
+	<li class="list-disc">@GetChange.Description</li>
+	@if (GetChange.SubChanges != null)
+	{
+		foreach (GetToolVersionChange c in GetChange.SubChanges)
+		{
+			<Change GetChange="c" />
+		}
+	}
+</ul>
+
+@code {
+	[Parameter, EditorRequired] public GetToolVersionChange GetChange { get; set; } = null!;
+}

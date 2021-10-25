@@ -1,0 +1,113 @@
+@page "/custom/spawnset/{Id:int}"
+@inject PublicApiHttpClient Http
+@inject NavigationManager NavigationManager
+@using DevilDaggersInfo.Core.Spawnset
+@using DevilDaggersInfo.Core.Spawnset.Structs
+@using DevilDaggersInfo.Core.Spawnset.View
+@using DevilDaggersInfo.Core.Wiki.Enums
+@using DevilDaggersInfo.Web.BlazorWasm.Shared.Dto.Public.Spawnsets
+@using DevilDaggersInfo.Web.BlazorWasm.Shared.Enums
+
+@if (GetSpawnset == null)
+{
+	<Loading />
+}
+else if (SpawnsetBinary == null || SpawnsView == null)
+{
+	<div>Spawnset could not be parsed.</div>
+}
+else
+{
+	<Heading>Spawnset - @GetSpawnset.Name</Heading>
+
+	<div class="bg-gray-22 max-w-sm">
+		<DataField Name="Author">@GetSpawnset.AuthorName</DataField>
+		<DataField Name="Last updated">@GetSpawnset.LastUpdated.ToString(FormatUtils.DateTimeFormat)</DataField>
+		<DataField Name="Practice">@(GetSpawnset.IsPractice ? "Yes" : "No")</DataField>
+		<DataField Name="File size">@FileSizeUtils.Format(GetSpawnset.FileBytes.Length)</DataField>
+
+		<div class="px-1 py-3">
+			<a class="bg-dark-red hover:bg-red transition-colors duration-200 p-2 rounded text-color-text text-center text-xl font-goethe" href="/api/spawnsets/@(GetSpawnset.Name)/file" download="@GetSpawnset.Name" role="button" target="=_top">Download</a>
+		</div>
+	</div>
+
+	<Heading Level="2">Format</Heading>
+	<div class="bg-gray-22 max-w-sm">
+		<DataField Name="Game version">@SpawnsetBinary.GetGameVersionString()</DataField>
+		<DataField Name="Game mode">@SpawnsetBinary.GameMode</DataField>
+	</div>
+
+	<Heading Level="2">Arena</Heading>
+	<div class="bg-gray-22 max-w-sm">
+		<DataField Name="Start radius">@SpawnsetBinary.ShrinkStart</DataField>
+		<DataField Name="End radius">@SpawnsetBinary.ShrinkEnd</DataField>
+		<DataField Name="Shrinking rate">@SpawnsetBinary.ShrinkRate</DataField>
+		<DataField Name="Brightness">@SpawnsetBinary.Brightness</DataField>
+	</div>
+	<table class="table-fixed mt-2 border-2 border-gray-22">
+		<tbody>
+			@for (int i = 0; i < SpawnsetBinary.ArenaTiles.GetLength(0); i++)
+			{
+				<tr>
+					@for (int j = 0; j < SpawnsetBinary.ArenaTiles.GetLength(1); j++)
+					{
+						float height = MathF.Round(SpawnsetBinary.ArenaTiles[j, i] * 32 + 64); // Swap coordinates because <tr> elements cannot be vertical.
+
+						string backgroundColorStyle = $"background-color: rgb({height}, {Math.Round(height / 2)}, 0)";
+						<td class="w-2 h-2 border border-black" style="@backgroundColorStyle"></td>
+					}
+				</tr>
+			}
+		</tbody>
+	</table>
+
+	<Heading Level="2">Player Settings</Heading>
+	<div class="bg-gray-22 max-w-sm">
+		<DataField Name="Hand">@SpawnsetBinary.HandLevel</DataField>
+		<DataField Name="Additional gems">@SpawnsetBinary.AdditionalGems</DataField>
+	</div>
+	
+	<Heading Level="2">Effective Player Settings</Heading>
+	<div class="bg-gray-22 max-w-sm">
+		<DataField Name="Effective hand">@EffectivePlayerSettings.HandLevel</DataField>
+		<DataField Name="@($"Effective {((int)EffectivePlayerSettings.HandLevel > 2 ? "homing" : "gems")}")">@SpawnsetBinary.AdditionalGems</DataField>
+		@if (EffectivePlayerSettings.HandLevel != EffectivePlayerSettings.HandModel)
+		{
+			<DataField Name="Effective hand model">@EffectivePlayerSettings.HandModel</DataField>
+		}
+	</div>
+	
+	<Heading Level="2">Timer Settings</Heading>
+	<div class="bg-gray-22 max-w-sm">
+		<DataField Name="Timer Start">@SpawnsetBinary.TimerStart.ToString(FormatUtils.TimeFormat)</DataField>
+	</div>
+	
+	<Heading Level="2">Spawns</Heading>
+	<Spawnset SpawnsView=SpawnsView />
+}
+
+@code
+{
+	[Parameter, EditorRequired] public int Id { get; set; }
+
+	public GetSpawnset? GetSpawnset { get; set; }
+
+	public SpawnsetBinary? SpawnsetBinary { get; set; }
+	public SpawnsView? SpawnsView { get; set; }
+	public EffectivePlayerSettings EffectivePlayerSettings { get; set; }
+
+	protected override async Task OnInitializedAsync()
+	{
+		GetSpawnset = await Http.GetSpawnsetById(Id);
+
+		if (!SpawnsetBinary.TryParse(GetSpawnset.FileBytes, out SpawnsetBinary? spawnsetBinary))
+		{
+			// TODO: Log error.
+			return;
+		}
+
+		SpawnsetBinary = spawnsetBinary;
+		SpawnsView = new(spawnsetBinary, GameVersion.V3_1);
+		EffectivePlayerSettings = spawnsetBinary.GetEffectivePlayerSettings();
+	}
+}

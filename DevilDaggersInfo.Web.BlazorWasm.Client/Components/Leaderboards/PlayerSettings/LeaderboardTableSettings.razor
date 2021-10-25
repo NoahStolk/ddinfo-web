@@ -1,0 +1,109 @@
+@using DevilDaggersInfo.Core.Wiki
+@using DevilDaggersInfo.Core.Wiki.Enums
+@using DevilDaggersInfo.Core.Wiki.Objects
+@using DevilDaggersInfo.Web.BlazorWasm.Shared.Dto.Public
+@using DevilDaggersInfo.Web.BlazorWasm.Shared.Dto.Public.Leaderboards
+@using DevilDaggersInfo.Web.BlazorWasm.Shared.Dto.Public.Players
+
+<div class="text-xl font-goethe">
+	<div class="grid gap-3 grid-cols-player-settings-sm md:grid-cols-player-settings-md lg:grid-cols-player-settings-lg xl:grid-cols-player-settings-xl">
+		<div @onclick="() => Sort(LeaderboardSorting.Rank)" class="text-right"><Tooltip Text="Sort by RANK"><img class="cursor-pointer inline-block" src="/images/icons/custom-x2/rank.png" /></Tooltip></div>
+		<div @onclick="() => Sort(LeaderboardSorting.Flag)" class="text-left"><Tooltip Text="Sort by FLAG"><img class="cursor-pointer inline-block" src="/images/icons/custom-x2/flag.png" /></Tooltip></div>
+		<div @onclick="() => Sort(LeaderboardSorting.Player)" class="text-left"><Tooltip Text="Sort by PLAYER"><img class="cursor-pointer inline-block" src="/images/icons/mask-x2/eye.png" /></Tooltip></div>
+		<div @onclick="() => Sort(LeaderboardSorting.Time)" class="text-right"><Tooltip Text="Sort by TIME"><img class="cursor-pointer inline-block" src="/images/icons/mask-x2/stopwatch.png" /></Tooltip></div>
+		<div @onclick="() => Sort(LeaderboardSorting.Edpi)" class="text-right hidden md:block"><Tooltip Text="Sort by EDPI"><span class="cursor-pointer font-goethe text-xl">eDPI</span></Tooltip></div>
+		<div @onclick="() => Sort(LeaderboardSorting.Dpi)" class="text-right hidden md:block"><Tooltip Text="Sort by DPI"><span class="cursor-pointer font-goethe text-xl">DPI</span></Tooltip></div>
+		<div @onclick="() => Sort(LeaderboardSorting.InGameSens)" class="text-right hidden md:block"><Tooltip Text="Sort by IN-GAME SENS"><span class="cursor-pointer font-goethe text-xl">Sens</span></Tooltip></div>
+		<div @onclick="() => Sort(LeaderboardSorting.Fov)" class="text-right hidden lg:block"><Tooltip Text="Sort by FOV"><span class="cursor-pointer font-goethe text-xl">FOV</span></Tooltip></div>
+		<div @onclick="() => Sort(LeaderboardSorting.IsRightHanded)" class="text-left hidden xl:block"><Tooltip Text="Sort by HAND"><span class="cursor-pointer font-goethe text-xl">Hand</span></Tooltip></div>
+		<div @onclick="() => Sort(LeaderboardSorting.HasFlashHandEnabled)" class="text-left hidden xl:block"><Tooltip Text="Sort by FLASH"><span class="cursor-pointer font-goethe text-xl">Flash hand</span></Tooltip></div>
+		<div @onclick="() => Sort(LeaderboardSorting.Gamma)" class="text-right hidden xl:block"><Tooltip Text="Sort by GAMMA"><span class="cursor-pointer font-goethe text-xl">Gamma</span></Tooltip></div>
+		<div @onclick="() => Sort(LeaderboardSorting.UsesLegacyAudio)" class="text-left hidden xl:block"><Tooltip Text="Sort by LEGACY AUDIO"><span class="cursor-pointer font-goethe text-xl">Legacy audio</span></Tooltip></div>
+	</div>
+	<div>
+		@{
+			int i = 0;
+
+			foreach (GetEntry entry in Entries)
+			{
+				GetPlayerForSettings? player = Players?.Find(p => p.Id == entry.Id);
+				if (player == null)
+					continue;
+
+				Dagger dagger = Daggers.GetDaggerFromSeconds(GameVersion.V3_1, entry.Time);
+				string daggerCssClass = dagger.Name.ToLower();
+
+				<div class="grid gap-3 grid-cols-player-settings-sm md:grid-cols-player-settings-md lg:grid-cols-player-settings-lg xl:grid-cols-player-settings-xl h-6 @(i++ % 2 == 0 ? "bg-gray-0b" : string.Empty)">
+					<EntryRank PlayerId="@entry.Id" Rank="@entry.Rank" />
+					<EntryFlag CountryCode="@player.CountryCode" />
+					<EntryUsername DaggerCssClass="@daggerCssClass" Id="entry.Id" Name="@entry.Username" />
+					<div class="text-right @daggerCssClass">@entry.Time.ToString(FormatUtils.TimeFormat)</div>
+					<div class="text-right hidden md:block">@player.Settings.Edpi?.ToString(FormatUtils.InGameSensFormat)</div>
+					<div class="text-right hidden md:block">@player.Settings.Dpi</div>
+					<div class="text-right hidden md:block">@player.Settings.InGameSens?.ToString(FormatUtils.InGameSensFormat)</div>
+					<div class="text-right hidden lg:block">@player.Settings.Fov</div>
+					<div class="text-left hidden xl:block">@(player.Settings.IsRightHanded.HasValue ? player.Settings.IsRightHanded.Value ? "Right" : "Left" : string.Empty)</div>
+					<div class="text-left hidden xl:block">@(player.Settings.UsesFlashHand.HasValue ? player.Settings.UsesFlashHand.Value ? "On" : "Off" : string.Empty)</div>
+					<div class="text-right hidden xl:block">@player.Settings.Gamma?.ToString(FormatUtils.GammaFormat)</div>
+					<div class="text-left hidden xl:block">@(player.Settings.UsesLegacyAudio.HasValue ? player.Settings.UsesLegacyAudio.Value ? "On" : "Off" : string.Empty)</div>
+				</div>
+			}
+		}
+	</div>
+</div>
+
+@code
+{
+	[Parameter, EditorRequired] public List<GetEntry> Entries { get; set; } = default!;
+	[Parameter, EditorRequired] public List<GetPlayerForSettings>? Players { get; set; } = null!;
+
+	private LeaderboardSorting _sortBy;
+	private bool _ascending;
+
+	private Dictionary<LeaderboardSorting, bool> _sortings = new();
+
+	protected override void OnInitialized()
+	{
+		foreach (LeaderboardSorting e in (LeaderboardSorting[])Enum.GetValues(typeof(LeaderboardSorting)))
+			_sortings.Add(e, false);
+	}
+
+	private void Sort(LeaderboardSorting sortBy)
+	{
+		_sortBy = sortBy;
+		_sortings[sortBy] = !_sortings[sortBy];
+		_ascending = _sortings[sortBy];
+
+		Entries = _sortBy switch
+		{
+			LeaderboardSorting.Flag => Entries.OrderBy(e => Players?.Find(p => p.Id == e.Id)?.CountryCode ?? string.Empty, _ascending).ToList(),
+			LeaderboardSorting.Player => Entries.OrderBy(e => e.Username, _ascending).ToList(),
+			LeaderboardSorting.Time => Entries.OrderBy(e => e.Time, _ascending).ToList(),
+			LeaderboardSorting.Edpi => Entries.OrderBy(e => Players?.Find(p => p.Id == e.Id)?.Settings.Edpi ?? 0, _ascending).ToList(),
+			LeaderboardSorting.Dpi => Entries.OrderBy(e => Players?.Find(p => p.Id == e.Id)?.Settings.Dpi ?? 0, _ascending).ToList(),
+			LeaderboardSorting.InGameSens => Entries.OrderBy(e => Players?.Find(p => p.Id == e.Id)?.Settings.InGameSens ?? 0, _ascending).ToList(),
+			LeaderboardSorting.Fov => Entries.OrderBy(e => Players?.Find(p => p.Id == e.Id)?.Settings.Fov ?? 0, _ascending).ToList(),
+			LeaderboardSorting.IsRightHanded => Entries.OrderBy(e => Players?.Find(p => p.Id == e.Id)?.Settings.IsRightHanded, _ascending).ToList(),
+			LeaderboardSorting.HasFlashHandEnabled => Entries.OrderBy(e => Players?.Find(p => p.Id == e.Id)?.Settings.UsesFlashHand, _ascending).ToList(),
+			LeaderboardSorting.Gamma => Entries.OrderBy(e => Players?.Find(p => p.Id == e.Id)?.Settings.Gamma ?? 0, _ascending).ToList(),
+			LeaderboardSorting.UsesLegacyAudio => Entries.OrderBy(e => Players?.Find(p => p.Id == e.Id)?.Settings.UsesLegacyAudio, _ascending).ToList(),
+			_ => Entries.OrderBy(e => e.Rank, _ascending).ToList(),
+		};
+	}
+
+	private enum LeaderboardSorting
+	{
+		Rank,
+		Flag,
+		Player,
+		Time,
+		Edpi,
+		Dpi,
+		InGameSens,
+		Fov,
+		IsRightHanded,
+		HasFlashHandEnabled,
+		Gamma,
+		UsesLegacyAudio,
+	}
+}

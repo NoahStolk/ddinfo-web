@@ -1,0 +1,9 @@
+<div class="py-1">
+	<label class="inline-block w-64">@Label</label>
+	@ChildContent
+</div>
+
+@code {
+	[Parameter, EditorRequired] public string Label { get; set; } = null!;
+	[Parameter, EditorRequired] public RenderFragment ChildContent { get; set; } = null!;
+}

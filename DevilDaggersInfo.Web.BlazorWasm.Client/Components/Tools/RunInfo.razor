@@ -1,0 +1,15 @@
+<Heading Level="2">Running The Tool</Heading>
+<p>In order to run the tools you will need to install @RuntimeName. This is a one-time set up and should not take long. If you already have it installed, go to step 3.</p>
+<ol class="pl-4">
+	<li class="list-decimal">Download the <UrlLink Href="@RuntimeUrl">@RuntimeName <b>x64 (NOT x86!)</b></UrlLink></li>
+	<li class="list-decimal">Install it</li>
+	<li class="list-decimal">Download the tool .zip file</li>
+	<li class="list-decimal">Extract it</li>
+	<li class="list-decimal">Run the .exe file inside it</li>
+</ol>
+
+@code
+{
+	[Parameter, EditorRequired] public string RuntimeName { get; set; } = null!;
+	[Parameter, EditorRequired] public string RuntimeUrl { get; set; } = null!;
+}

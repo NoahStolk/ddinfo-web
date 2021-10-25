@@ -1,0 +1,8 @@
+<a class="text-color-link hover:text-color-link-hover" href="@Href" target="@(OpenInNewTab ? "_blank" : null)">@ChildContent</a>
+
+@code
+{
+	[Parameter, EditorRequired] public string Href { get; set; } = null!;
+	[Parameter, EditorRequired] public RenderFragment ChildContent { get; set; } = null!;
+	[Parameter] public bool OpenInNewTab { get; set; }
+}

@@ -1,0 +1,87 @@
+@page "/guides/survival-editor"
+
+<Heading>Guide - Survival Editor</Heading>
+
+<p>
+	This page will guide you through the creation of custom spawnsets for Devil Daggers.
+</p>
+
+<Heading Level="2">Basic Information</Heading>
+<p>
+	The spawnset in Devil Daggers can be modified by editing a file known as the survival file. The survival file is located at <span class="text-color-path">devildaggers\dd\survival</span> where <span class="text-color-path">devildaggers</span> is the installation folder for Devil Daggers. As of the V3.1 update (February 2021), it is recommended to place custom survival files in the "mods" folder, so the custom survival file would be located at <span class="text-color-path">devildaggers\mods\survival</span>, leaving the original file intact at all times. This means replays from the official leaderboards will not be affected by the custom spawnset.
+</p>
+<p>
+	The survival file consists of the following data; a list of spawns that will appear in the game, the arena (basically a grid of 51x51 tile heights), and some miscellaneous information such as brightness and how fast the arena shrinks. As of the V3.1 update, the developer has made it possible to include the initial hand upgrade, as well as additional gems, in the survival file. This means that you can now create a spawnset where you start with @MarkupUtils.UpgradeString(UpgradesV3_1.Level4) and 20 homing daggers.
+</p>
+<p>
+	All of this data can be edited using <UrlLink Href="tools/survival-editor">Devil Daggers Survival Editor</UrlLink>.
+</p>
+
+<Heading Level="2">Spawns Information</Heading>
+
+<Heading Level="3">Enemy Types</Heading>
+<p>
+	10 enemies can be spawned in the survival file:
+</p>
+
+<ul class="pl-4">
+	<li class="list-disc">@MarkupUtils.EnemyString(EnemiesV3_1.Squid1)</li>
+	<li class="list-disc">@MarkupUtils.EnemyString(EnemiesV3_1.Squid2)</li>
+	<li class="list-disc">@MarkupUtils.EnemyString(EnemiesV3_1.Centipede)</li>
+	<li class="list-disc">@MarkupUtils.EnemyString(EnemiesV3_1.Spider1)</li>
+	<li class="list-disc">@MarkupUtils.EnemyString(EnemiesV3_1.Leviathan)</li>
+	<li class="list-disc">@MarkupUtils.EnemyString(EnemiesV3_1.Gigapede)</li>
+	<li class="list-disc">@MarkupUtils.EnemyString(EnemiesV3_1.Squid3)</li>
+	<li class="list-disc">@MarkupUtils.EnemyString(EnemiesV3_1.Thorn)</li>
+	<li class="list-disc">@MarkupUtils.EnemyString(EnemiesV3_1.Spider2)</li>
+	<li class="list-disc">@MarkupUtils.EnemyString(EnemiesV3_1.Ghostpede)</li>
+	<li class="list-disc">EMPTY</li>
+</ul>
+
+<p>
+	Every enemy type has a fixed amount of gems that it drops, this is why the application keeps track of gems so you can have a rough idea of when you will get upgrades (unless farming is done). It is recommended that you understand how <UrlLink Href="wiki/upgrades">Upgrades</UrlLink> work.
+</p>
+
+<Heading Level="3">The End Loop</Heading>
+<p>
+	The end loop is the same set of spawns over and over again, faster every time. This appears at the end of the spawnset.
+</p>
+<p>
+	You might have noticed how there is an EMPTY enemy type. This enemy type does not spawn an enemy, and its only purpose is to mark the beginning of the end loop. The last EMPTY spawn will always mark the beginning of the end loop. Having an end loop is optional, so if you don't want to include an end loop, simply make sure to put an EMPTY spawn at the end of the spawnset to mark the end of the spawnset (or literally; mark the start of an empty end loop).
+</p>
+<p>
+	How the end loop speeds up appears to be hardcoded in the game. After every wave, each enemy spawns an added 12.5% faster. Also note that in every third wave of the end loop, all @MarkupUtils.EnemyString(EnemiesV3_1.Gigapede, true) are changed into @MarkupUtils.EnemyString(EnemiesV3_1.Ghostpede, true). This also seems to be hardcoded in the game.
+</p>
+
+<Heading Level="3">Spawns</Heading>
+<p>
+	We now know how enemy types work in Devil Daggers. A spawn in the survival file is defined by an enemy type and a delay value. The delay value represents the amount of seconds between the current spawn and the previous spawn. So, if you want to spawn a @MarkupUtils.EnemyString(EnemiesV3_1.Squid1) at 4 seconds, followed by a @MarkupUtils.EnemyString(EnemiesV3_1.Squid2) at 7 seconds, you would get the following spawns:
+</p>
+<ul class="pl-4">
+	<li class="list-disc">Enemy type: @MarkupUtils.EnemyString(EnemiesV3_1.Squid1) - Delay: 4</li>
+	<li class="list-disc">Enemy type: @MarkupUtils.EnemyString(EnemiesV3_1.Squid2) - Delay: 3</li>
+</ul>
+<p>
+	The delay value supports decimal values, even though the original spawnset in the game doesn't use this. This means you can spawn an enemy, for example at 4.5 seconds.
+</p>
+
+<Heading Level="2">Arena Information</Heading>
+<p>Note that you don't necessarily need to understand how the arena works, as the default arena works fine.</p>
+<ul class="pl-4">
+	<li class="list-disc">The maximum arena size is 51 by 51.</li>
+	<li class="list-disc">The player always spawns at coordinate {25, 25}.</li>
+	<li class="list-disc">You can only have 1 tile per coordinate.</li>
+	<li class="list-disc">The default arena size is 23 by 23 tiles at the start. This is equivalent to shrink radius 50 (technically the arena would be 25 by 25 but, because of shrinking controls, the outer tiles are already shrunk at the very beginning).</li>
+	<li class="list-disc">The arena shrinks in size as time goes on. The default shrink start radius is 50 and the default shrink end radius is 20. The default shrink rate is 0.025. This means the default arena reaches the end radius at 1200 seconds, since (50-20)/0.025 = 1200. (Although not exactly because the shrinking radius will not hit the next tiles exactly at 1200, I haven't bothered with the math behind this, but the last tiles shrink around 1187 seconds. The shrinking technically continues for about 13 seconds but no tiles are affected by it.)</li>
+	<li class="list-disc">The original spawnset doesn't use different tile heights, all the tiles are around height 0. (Though there are some tiny differences that are barely noticable, but for convenience we could say that all the tiles are at height 0 and that 0 is the default height.)</li>
+	<li class="list-disc">The player can stand on tiles with height -1, but anything lower than that will result in the tile falling down immediately.</li>
+	<li class="list-disc">The tile at coordinate {1, 0} is always invisible for some reason, but you can still walk on it.</li>
+	<li class="list-disc">The player can be spawned on different tile heights.</li>
+	<li class="list-disc">Enemies and gems do not react to different tile heights, only the player, the daggers, and some effects do (like @MarkupUtils.EnemyString(EnemiesV3_1.Thorn) spawn smokes, meat chunks, etc).</li>
+	<li class="list-disc">The game crashes when you get too near the edge of a full arena (outside of the regular 51 by 51 range, and I think at or around coordinate {0, 0} but I am not sure).</li>
+	<li class="list-disc">The tiles have infinitely long hitboxes, but the texture only covers the top of it. You can work around this using mods that change the pillar model however.</li>
+	<li class="list-disc">1 tile height is equivalent to 1/4 of a tile, assuming it is a cube. So if you could stack tiles on top of each other, the first tile would be at tile height 0, the second at tile height 4, the third at tile height 8, and so on.</li>
+	<li class="list-disc">The player's jump height is equivalent to 1 tile height (1/4 of a tile).</li>
+	<li class="list-disc">The player's maximum single dagger jump height is around 5.2 tile heights.</li>
+	<li class="list-disc">The player's maximum double dagger jump height is around 8.4 tile heights.</li>
+</ul>

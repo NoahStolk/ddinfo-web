@@ -1,0 +1,42 @@
+<div class="p-2 rounded @BackgroundColorClass">
+	@if (Title != null)
+	{
+		<h4 class="text-xl">@Title</h4>
+	}
+
+	@ChildContent
+
+	@if (DismissEvent != null)
+	{
+		<p>
+			<button class="w-20 py-1 rounded @ButtonColorClass" @onclick="() => DismissEvent.Invoke()">Dismiss</button>
+		</p>
+	}
+</div>
+
+@code
+{
+	[Parameter] public string? Title { get; set; }
+	[Parameter, EditorRequired] public RenderFragment ChildContent { get; set; } = null!;
+	[Parameter, EditorRequired] public ResultBarType ResultBarType { get; set; }
+	[Parameter] public Action? DismissEvent { get; set; }
+
+	public string BackgroundColorClass => ResultBarType switch
+	{
+		ResultBarType.Success => "bg-dark-green",
+		ResultBarType.ValidationError => "bg-dark-orange",
+		ResultBarType.FatalError => "bg-dark-red",
+		_ => string.Empty,
+	};
+
+	public string ButtonColorClass => ResultBarType switch
+	{
+		ResultBarType.Success => "bg-green",
+		ResultBarType.ValidationError => "bg-orange",
+		ResultBarType.FatalError => "bg-red",
+		_ => string.Empty,
+	};
+
+	[Parameter]
+	public EventCallback<string?> MessageChanged { get; set; }
+}

@@ -1,0 +1,24 @@
+@using DevilDaggersInfo.Core.Spawnset.View
+
+<div class="max-w-xl">
+	@foreach (SpawnView sv in SpawnsView.PreLoop)
+	{
+		<Spawn SpawnView=sv GameVersion=GameVersion />
+	}
+
+	@for (int i = 0; i < SpawnsView.Waves.Length; i++)
+	{
+		<div class="font-goethe text-xl bg-dark-red">WAVE @(i + 1)</div>
+		@foreach (SpawnView sv in SpawnsView.Waves[i])
+		{
+			<Spawn SpawnView=sv GameVersion=GameVersion />
+		}
+	}
+</div>
+
+@code
+{
+	[Parameter, EditorRequired] public SpawnsView SpawnsView { get; set; } = null!;
+
+	[Parameter] public GameVersion GameVersion { get; set; } = GameVersion.V3_1;
+}

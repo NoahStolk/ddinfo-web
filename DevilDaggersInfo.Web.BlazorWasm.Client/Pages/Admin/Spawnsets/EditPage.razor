@@ -1,0 +1,56 @@
+@page "/admin/spawnsets/edit/{Id:int}"
+@inject AdminApiHttpClient Http
+@inject NavigationManager NavigationManager
+@using DevilDaggersInfo.Web.BlazorWasm.Client.Components.Admin
+@using DevilDaggersInfo.Web.BlazorWasm.Shared.Dto.Admin.Players
+@using DevilDaggersInfo.Web.BlazorWasm.Shared.Dto.Admin.Spawnsets
+
+<AdminEdit OverviewUrl="/admin/spawnsets" PutApiUrl="api/admin/spawnsets" Model="_editSpawnset" Id="Id" @ref="_editComponent">
+	<AdminInput Label="@nameof(EditSpawnset.PlayerId)"><SearchDropdown Values="@_playerNames" Converter="s => int.Parse(s)" @bind-Value="@_editSpawnset!.PlayerId" /></AdminInput>
+	<AdminInput Label="@nameof(EditSpawnset.Name)"><InputText class="w-64 pl-2 bg-gray-0b text-color-text" @bind-Value="@_editSpawnset!.Name" /></AdminInput>
+	<AdminInput Label="@nameof(EditSpawnset.MaxDisplayWaves)"><InputNumber class="w-64 pl-2 bg-gray-0b text-color-text" @bind-Value="_editSpawnset!.MaxDisplayWaves" /></AdminInput>
+	<AdminInput Label="@nameof(EditSpawnset.HtmlDescription)"><InputText class="w-64 pl-2 bg-gray-0b text-color-text" @bind-Value="@_editSpawnset!.HtmlDescription" /></AdminInput>
+	<AdminInput Label="@nameof(EditSpawnset.IsPractice)"><InputCheckbox @bind-Value="@_editSpawnset!.IsPractice" /></AdminInput>
+</AdminEdit>
+
+@code
+{
+	private Dictionary<int, string>? _playerNames;
+	private EditSpawnset? _editSpawnset;
+	private AdminEdit<EditSpawnset> _editComponent = null!;
+
+	[Parameter, EditorRequired] public int Id { get; set; }
+
+	protected override async Task OnInitializedAsync()
+	{
+		try
+		{
+			List<GetPlayerName> getPlayerNames = await Http.Client.GetFromJsonAsync<List<GetPlayerName>>($"api/admin/players/names") ?? throw new($"Response could not be deserialized to {nameof(List<GetPlayerName>)}.");
+			_playerNames = getPlayerNames.ToDictionary(m => m.Id, m => m.PlayerName);
+
+			GetSpawnset getSpawnset = await Http.Client.GetFromJsonAsync<GetSpawnset>($"api/admin/spawnsets/{Id}") ?? throw new($"Response could not be deserialized to {nameof(GetSpawnset)}.");
+			_editSpawnset = new()
+			{
+				HtmlDescription = getSpawnset.HtmlDescription,
+				IsPractice = getSpawnset.IsPractice,
+				MaxDisplayWaves = getSpawnset.MaxDisplayWaves,
+				Name = getSpawnset.Name,
+				PlayerId = getSpawnset.PlayerId,
+			};
+			_editComponent.State = ErrorState.None;
+		}
+		catch (HttpRequestException ex)
+		{
+			if (ex.StatusCode.HasValue)
+				_editComponent.ErrorMessage = $"Error {(int)ex.StatusCode}: {ex.StatusCode}";
+			else
+				_editComponent.ErrorMessage = "An error occurred while sending the request.";
+
+			_editComponent.State = ErrorState.FatalError;
+		}
+		catch (AccessTokenNotAvailableException exception)
+		{
+			exception.Redirect();
+		}
+	}
+}

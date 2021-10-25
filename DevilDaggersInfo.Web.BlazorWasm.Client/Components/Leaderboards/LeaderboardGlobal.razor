@@ -1,0 +1,47 @@
+@using DevilDaggersInfo.Web.BlazorWasm.Shared.Dto.Public
+
+<div class="py-3 grid gap-4 grid-cols-2 lg:grid-cols-6 font-goethe text-xl">
+	<LeaderboardGlobalIcon TooltipText="TOTAL PLAYERS" IconImageSrc="/images/icons/default-x4/eye4.png">
+		<div class="py-2 devil text-center">@_players</div>
+	</LeaderboardGlobalIcon>
+	<LeaderboardGlobalIcon TooltipText="GLOBAL TIME" IconImageSrc="/images/icons/default-x4/stopwatch.png">
+		<div class="py-2 devil text-center">@_time</div>
+	</LeaderboardGlobalIcon>
+	<LeaderboardGlobalIcon TooltipText="GLOBAL KILLS" IconImageSrc="/images/icons/default-x4/dagger.png">
+		<div class="py-2 devil text-center">@_kills</div>
+	</LeaderboardGlobalIcon>
+	<LeaderboardGlobalIcon TooltipText="GLOBAL GEMS" IconImageSrc="/images/icons/default-x4/gem.png">
+		<div class="py-2 devil text-center">@_gems</div>
+	</LeaderboardGlobalIcon>
+	<LeaderboardGlobalIcon TooltipText="GLOBAL ACCURACY" IconImageSrc="/images/icons/default-x4/crosshair.png">
+		<div class="py-2 text-center"><Tooltip Text="@_daggers"><span class="devil font-goethe text-xl cursor-pointer">@_accuracy</span></Tooltip></div>
+	</LeaderboardGlobalIcon>
+	<LeaderboardGlobalIcon TooltipText="GLOBAL DEATHS" IconImageSrc="/images/icons/default-x4/skull.png">
+		<div class="py-2 devil text-center">@_deaths</div>
+	</LeaderboardGlobalIcon>
+</div>
+
+@code
+{
+	[Parameter, EditorRequired] public IGetLeaderboardGlobalDto Leaderboard { get; set; } = null!;
+	[Parameter] public bool IsHistory { get; set; }
+
+	private string? _players;
+	private string? _time;
+	private string? _kills;
+	private string? _gems;
+	private string? _deaths;
+	private string? _daggers;
+	private string? _accuracy;
+
+	protected override void OnInitialized()
+	{
+		_players = Leaderboard.TotalPlayers.ToString(FormatUtils.LeaderboardIntFormat);
+		_time = Leaderboard.TimeGlobal.ToString(FormatUtils.LeaderboardGlobalTimeFormat);
+		_kills = Leaderboard.KillsGlobal.ToString(FormatUtils.LeaderboardIntFormat);
+		_gems = Leaderboard.GemsGlobal.ToString(FormatUtils.LeaderboardIntFormat);
+		_deaths = Leaderboard.DeathsGlobal.ToString(FormatUtils.LeaderboardIntFormat);
+		_daggers = FormatUtils.FormatDaggersUInt64(Leaderboard.DaggersHitGlobal, Leaderboard.DaggersFiredGlobal, IsHistory);
+		_accuracy = (Leaderboard.DaggersFiredGlobal == 0 ? 0 : Leaderboard.DaggersHitGlobal / (float)Leaderboard.DaggersFiredGlobal).ToString(FormatUtils.AccuracyFormat);
+	}
+}

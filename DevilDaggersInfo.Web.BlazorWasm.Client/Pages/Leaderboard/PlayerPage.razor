@@ -1,0 +1,255 @@
+@page "/leaderboard/player/{Id:int}"
+@inject PublicApiHttpClient Http
+@inject NavigationManager NavigationManager
+@using Blazorise.Charts
+@using DevilDaggersInfo.Core.Wiki
+@using DevilDaggersInfo.Core.Wiki.Enums
+@using DevilDaggersInfo.Web.BlazorWasm.Client.Components
+@using DevilDaggersInfo.Web.BlazorWasm.Client.Components.Leaderboards
+@using DevilDaggersInfo.Web.BlazorWasm.Client.Components.Leaderboards.Player
+@using DevilDaggersInfo.Web.BlazorWasm.Shared.Dto.Public
+@using DevilDaggersInfo.Web.BlazorWasm.Shared.Dto.Public.CustomEntries
+@using DevilDaggersInfo.Web.BlazorWasm.Shared.Dto.Public.CustomLeaderboards
+@using DevilDaggersInfo.Web.BlazorWasm.Shared.Dto.Public.Leaderboards
+@using DevilDaggersInfo.Web.BlazorWasm.Shared.Dto.Public.LeaderboardHistory
+@using DevilDaggersInfo.Web.BlazorWasm.Shared.Dto.Public.Mods
+@using DevilDaggersInfo.Web.BlazorWasm.Shared.Dto.Public.Players
+@using DevilDaggersInfo.Web.BlazorWasm.Shared.Dto.Public.Spawnsets
+@using DevilDaggersInfo.Web.BlazorWasm.Shared.Enums
+
+@if (GetEntry == null)
+{
+	<Loading />
+}
+else
+{
+	<Heading>@GetEntry.Username</Heading>
+
+	<UrlLink Href="@($"/leaderboard?Rank={(GetEntry.Rank - 1) / 100 * 100 + 1}")">Back to leaderboard</UrlLink>
+	<p>@GetEntry.Username is currently rank @GetEntry.Rank.</p>
+	<div class="grid gap-2 grid-cols-1 md:grid-cols-2 xl:grid-cols-3 2xl:grid-cols-5">
+		<PlayerCard Title="Personal Best">
+			<DataField CssClass="odd:bg-gray-16" Name="Time"><SpanTime TimeInSeconds="@GetEntry.Time" /></DataField>
+			<DataField CssClass="odd:bg-gray-16" Name="Kills">@GetEntry.Kills.ToString(FormatUtils.LeaderboardIntFormat)</DataField>
+			<DataField CssClass="odd:bg-gray-16" Name="Gems">@GetEntry.Gems.ToString(FormatUtils.LeaderboardIntFormat)</DataField>
+			<DataField CssClass="odd:bg-gray-16" Name="Accuracy">@((GetEntry.DaggersHit / (float)GetEntry.DaggersFired).ToString(FormatUtils.AccuracyFormat))</DataField>
+			<DataField CssClass="odd:bg-gray-16" Name="Daggers hit">@GetEntry.DaggersHit.ToString(FormatUtils.LeaderboardIntFormat)</DataField>
+			<DataField CssClass="odd:bg-gray-16" Name="Daggers fired">@GetEntry.DaggersFired.ToString(FormatUtils.LeaderboardIntFormat)</DataField>
+			<DataField CssClass="odd:bg-gray-16" Name="Death type">@MarkupUtils.DeathString(GetEntry.DeathType)</DataField>
+		</PlayerCard>
+
+		<PlayerCard Title="Total Statistics">
+			<DataField CssClass="odd:bg-gray-16" Name="Total time">@GetEntry.TimeTotal.ToString(FormatUtils.LeaderboardGlobalTimeFormat)</DataField>
+			<DataField CssClass="odd:bg-gray-16" Name="Total kills">@GetEntry.KillsTotal.ToString(FormatUtils.LeaderboardIntFormat)</DataField>
+			<DataField CssClass="odd:bg-gray-16" Name="Total gems">@GetEntry.GemsTotal.ToString(FormatUtils.LeaderboardIntFormat)</DataField>
+			<DataField CssClass="odd:bg-gray-16" Name="Total accuracy">@((GetEntry.DaggersHitTotal / (float)GetEntry.DaggersFiredTotal).ToString(FormatUtils.AccuracyFormat))</DataField>
+			<DataField CssClass="odd:bg-gray-16" Name="Total daggers hit">@GetEntry.DaggersHitTotal.ToString(FormatUtils.LeaderboardIntFormat)</DataField>
+			<DataField CssClass="odd:bg-gray-16" Name="Total daggers fired">@GetEntry.DaggersFiredTotal.ToString(FormatUtils.LeaderboardIntFormat)</DataField>
+			<DataField CssClass="odd:bg-gray-16" Name="Total deaths">@GetEntry.DeathsTotal.ToString(FormatUtils.LeaderboardIntFormat)</DataField>
+		</PlayerCard>
+
+		@if (GetEntry.DeathsTotal > 0)
+		{
+			float deathsAsFloat = (float)GetEntry.DeathsTotal;
+
+			<PlayerCard Title="Average Statistics">
+				<DataField CssClass="odd:bg-gray-16" Name="Average time">@((GetEntry.TimeTotal / deathsAsFloat).ToString(FormatUtils.TimeFormat))</DataField>
+				<DataField CssClass="odd:bg-gray-16" Name="Average kills">@((GetEntry.KillsTotal / deathsAsFloat).ToString(FormatUtils.LeaderboardIntAverageFormat))</DataField>
+				<DataField CssClass="odd:bg-gray-16" Name="Average gems">@((GetEntry.GemsTotal / deathsAsFloat).ToString(FormatUtils.LeaderboardIntAverageFormat))</DataField>
+				<DataField CssClass="odd:bg-gray-16" Name="Average daggers hit">@((GetEntry.DaggersHitTotal / deathsAsFloat).ToString(FormatUtils.LeaderboardIntAverageFormat))</DataField>
+				<DataField CssClass="odd:bg-gray-16" Name="Average daggers fired">@((GetEntry.DaggersFiredTotal / deathsAsFloat).ToString(FormatUtils.LeaderboardIntAverageFormat))</DataField>
+			</PlayerCard>
+		}
+
+		@if (GetPlayer == null)
+		{
+			@if (!PlayerNotFound)
+			{
+				<Loading />
+			}
+		}
+		else
+		{
+			@*TODO: custom entries*@
+
+			if (GetPlayer.Settings != null)
+			{
+				bool? rightHand = GetPlayer.Settings.IsRightHanded;
+				bool? flashHand = GetPlayer.Settings.UsesFlashHand;
+				bool? legacyAudio = GetPlayer.Settings.UsesLegacyAudio;
+
+				<PlayerCard Title="Settings">
+					<DataField CssClass="odd:bg-gray-16" Name="eDPI">@(GetPlayer.Settings.Edpi?.ToString(FormatUtils.InGameSensFormat) ?? "N/A")</DataField>
+					<DataField CssClass="odd:bg-gray-16" Name="DPI">@(GetPlayer.Settings.Dpi?.ToString() ?? "N/A")</DataField>
+					<DataField CssClass="odd:bg-gray-16" Name="In-game sens">@(GetPlayer.Settings.InGameSens?.ToString(FormatUtils.InGameSensFormat) ?? "N/A")</DataField>
+					<DataField CssClass="odd:bg-gray-16" Name="FOV">@(GetPlayer.Settings.Fov?.ToString() ?? "N/A")</DataField>
+					<DataField CssClass="odd:bg-gray-16" Name="Gamma">@(GetPlayer.Settings.Gamma?.ToString(FormatUtils.GammaFormat) ?? "N/A")</DataField>
+					<DataField CssClass="odd:bg-gray-16" Name="Hand orientation">@(rightHand.HasValue ? rightHand.Value ? "Right" : "Left" : "N/A")</DataField>
+					<DataField CssClass="odd:bg-gray-16" Name="Hand flash">@(flashHand.HasValue ? flashHand.Value ? "On" : "Off" : "N/A")</DataField>
+					<DataField CssClass="odd:bg-gray-16" Name="Legacy audio">@(legacyAudio.HasValue ? legacyAudio.Value ? "On" : "Off" : "N/A")</DataField>
+				</PlayerCard>
+			}
+
+			@*TODO: Country name instead of code / Past usernames*@
+			if (GetPlayer.CountryCode != null || GetPlayerHistory != null)
+			{
+				<PlayerCard Title="Miscellaneous">
+					@if (GetPlayer.CountryCode != null)
+					{
+						<TallDataField CssClass="odd:bg-gray-16" Name="Country">
+							<div class="grid grid-cols-2 justify-items-end">
+								<img src="/images/flags/@(@GetPlayer.CountryCode).png" />
+								<span>@(UserUtils.CountryNames.ContainsKey(GetPlayer.CountryCode) ? UserUtils.CountryNames[GetPlayer.CountryCode] : "?")</span>
+							</div>
+						</TallDataField>
+					}
+					@if (GetPlayerHistory != null)
+					{
+						<DataField CssClass="odd:bg-gray-16" Name="Best rank">@GetPlayerHistory.BestRank</DataField>
+						<TallDataField CssClass="odd:bg-gray-16" Name="Usernames">
+							@foreach (string username in GetPlayerHistory.Usernames)
+							{
+								<div class="odd:bg-gray-16 px-1">@username</div>
+							}
+						</TallDataField>
+					}
+				</PlayerCard>
+			}
+		}
+
+		@if (GetCustomLeaderboardStatistics == null || GetNumberOfCustomLeaderboards == null)
+		{
+			<Loading />
+		}
+		else
+		{
+			foreach (CustomLeaderboardCategory category in Enum.GetValues<CustomLeaderboardCategory>())
+			{
+				var stats = GetCustomLeaderboardStatistics.FirstOrDefault(cls => cls.CustomLeaderboardCategory == category);
+				if (stats == null)
+					continue;
+
+				_ = GetNumberOfCustomLeaderboards.CountPerCategory.TryGetValue(category, out int total);
+
+				<PlayerCard Title="@($"Custom Leaderboard Statistics ({category})")">
+					<DataField CssClass="odd:bg-gray-16" Name="Leviathan daggers">@stats.LeviathanDaggerCount / @total</DataField>
+					<DataField CssClass="odd:bg-gray-16" Name="Devil daggers">@stats.DevilDaggerCount / @total</DataField>
+					<DataField CssClass="odd:bg-gray-16" Name="Golden daggers">@stats.GoldenDaggerCount / @total</DataField>
+					<DataField CssClass="odd:bg-gray-16" Name="Silver daggers">@stats.SilverDaggerCount / @total</DataField>
+					<DataField CssClass="odd:bg-gray-16" Name="Bronze daggers">@stats.BronzeDaggerCount / @total</DataField>
+					<DataField CssClass="odd:bg-gray-16" Name="Default daggers">@stats.DefaultDaggerCount / @total</DataField>
+					<DataField CssClass="odd:bg-gray-16" Name="Played">@stats.LeaderboardsPlayedCount / @total</DataField>
+				</PlayerCard>
+			}
+		}
+
+		@if (GetSpawnsetNames == null)
+		{
+			<Loading />
+		}
+		else if (GetSpawnsetNames.Count > 0)
+		{
+			<PlayerCard Title="Spawnsets" Scroll="true">
+				@foreach (GetSpawnsetName getSpawnsetName in GetSpawnsetNames)
+				{
+					<div class="grid gap-2 grid-cols-2 odd:bg-gray-16 px-1">
+						<UrlLink Href="@($"/custom/spawnset/{getSpawnsetName.Id}")">@getSpawnsetName.Name</UrlLink>
+					</div>
+				}
+			</PlayerCard>
+		}
+
+		@if (GetModNames == null)
+		{
+			<Loading />
+		}
+		else if (GetModNames.Count > 0)
+		{
+			<PlayerCard Title="Mods" Scroll="true">
+				@foreach (GetModName getModName in GetModNames)
+				{
+					<div class="grid gap-2 grid-cols-2 odd:bg-gray-16 px-1">
+						<UrlLink Href="@($"/custom/mod/{getModName.Id}")">@getModName.Name</UrlLink>
+					</div>
+				}
+			</PlayerCard>
+		}
+	</div>
+
+	<Heading Level="2">Progression</Heading>
+	<LineChart Options="LineChartUtils.Options" OptionsJsonString="@LineChartUtils.AdditionalJsonOptionsTime" @ref="_progressionChart" TItem="double" />
+
+	<Heading Level="2">Activity</Heading>
+	<LineChart Options="LineChartUtils.Options" OptionsJsonString="@LineChartUtils.AdditionalJsonOptionsTime" @ref="_activityChart" TItem="double" />
+}
+
+@code
+{
+	[Parameter, EditorRequired] public int Id { get; set; }
+
+	public GetEntry? GetEntry { get; set; }
+	public GetPlayer? GetPlayer { get; set; }
+	public GetPlayerHistory? GetPlayerHistory { get; set; }
+	public List<GetCustomLeaderboardStatisticsForPlayer>? GetCustomLeaderboardStatistics { get; set; }
+	public List<GetSpawnsetName>? GetSpawnsetNames { get; set; }
+	public List<GetModName>? GetModNames { get; set; }
+	public GetNumberOfCustomLeaderboards? GetNumberOfCustomLeaderboards { get; set; }
+
+	public bool PlayerNotFound { get; set; }
+
+	private LineChart<double>? _progressionChart;
+	private LineChart<double>? _activityChart;
+
+	protected override async Task OnInitializedAsync()
+	{
+		GetEntry = await Http.GetEntryById(Id);
+
+		try
+		{
+			GetPlayer = await Http.GetPlayerById(Id);
+		}
+		catch // TODO: Only HTTP 404.
+		{
+			PlayerNotFound = true;
+		}
+
+		GetPlayerHistory = await Http.GetPlayerHistoryById(Id);
+		GetCustomLeaderboardStatistics = await Http.GetCustomLeaderboardStatisticsByPlayerId(Id);
+		GetSpawnsetNames = await Http.GetSpawnsetsByAuthorId(Id);
+		GetModNames = await Http.GetModsByAuthorId(Id);
+		GetNumberOfCustomLeaderboards = await Http.GetNumberOfCustomLeaderboards();
+	}
+
+	protected override async Task OnAfterRenderAsync(bool firstRender)
+	{
+		if (firstRender ||
+			GetPlayerHistory == null ||
+			_progressionChart == null ||
+			_activityChart == null)
+			return;
+
+		await _progressionChart.AddLabelsDatasetsAndUpdate(GetPlayerHistory.History.Select(eh => eh.DateTime.ToString("yyyy-MM-dd")).ToArray(), new LineChartDataset<double>
+		{
+			Label = "Score",
+			Data = GetPlayerHistory.History.Select(s => s.Time).ToList(),
+			BackgroundColor = "#f00",
+			Fill = false,
+			PointRadius = 0,
+			ShowLine = true,
+			BorderColor = "#f00",
+			SteppedLine = true,
+		});
+
+		await _activityChart.AddLabelsDatasetsAndUpdate(GetPlayerHistory.Activity.Select(pa => pa.DateTime.ToString("yyyy-MM-dd")).ToArray(), new LineChartDataset<double>
+		{
+			Label = "Deaths",
+			Data = GetPlayerHistory.Activity.Select(s => s.DeathsIncrement).ToList(),
+			BackgroundColor = "#f00",
+			Fill = false,
+			PointRadius = 0,
+			ShowLine = true,
+			BorderColor = "#f00",
+			SteppedLine = true,
+		});
+	}
+}

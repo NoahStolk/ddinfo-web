@@ -1,0 +1,11 @@
+<div class="text-center">
+	<Tooltip Text="@TooltipText"><img class="cursor-pointer inline-block" src="@IconImageSrc" /></Tooltip>
+	@ChildContent
+</div>
+
+@code
+{
+	[Parameter, EditorRequired] public string TooltipText { get; set; } = null!;
+	[Parameter, EditorRequired] public string IconImageSrc { get; set; } = null!;
+	[Parameter, EditorRequired] public RenderFragment ChildContent { get; set; } = null!;
+}

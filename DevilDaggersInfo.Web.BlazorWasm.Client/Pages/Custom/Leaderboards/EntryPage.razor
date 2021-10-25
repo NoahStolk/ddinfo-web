@@ -1,0 +1,247 @@
+@page "/custom/entry/{Id:int}"
+@inject PublicApiHttpClient Http
+@using Blazorise.Charts
+@using DevilDaggersInfo.Web.BlazorWasm.Shared.Dto.Public.CustomEntries
+@using DevilDaggersInfo.Core.Wiki.Colors
+
+@if (GetCustomEntryData == null)
+{
+	<Loading />
+}
+else
+{
+	<Heading>@GetCustomEntryData.PlayerName's score on @GetCustomEntryData.SpawnsetName</Heading>
+
+	@if (GetCustomEntryData.GemsCollectedData != null
+		|| GetCustomEntryData.GemsDespawnedData != null
+		|| GetCustomEntryData.GemsEatenData != null
+		|| GetCustomEntryData.GemsTotalData != null)
+	{
+		<Heading Level="2">Gems</Heading>
+		<LineChart Options="LineChartUtils.Options" OptionsJsonString="@LineChartUtils.AdditionalJsonOptions" @ref="_gemsChart" TItem="int" />
+	}
+
+	@if (GetCustomEntryData.HomingStoredData != null
+		|| GetCustomEntryData.HomingEatenData != null)
+	{
+		<Heading Level="2">Homing</Heading>
+		<LineChart Options="LineChartUtils.Options" OptionsJsonString="@LineChartUtils.AdditionalJsonOptions" @ref="_homingChart" TItem="int" />
+	}
+	
+	@if (GetCustomEntryData.EnemiesAliveData != null
+		|| GetCustomEntryData.EnemiesKilledData != null)
+	{
+		<Heading Level="2">Enemies</Heading>
+		<LineChart Options="LineChartUtils.Options" OptionsJsonString="@LineChartUtils.AdditionalJsonOptions" @ref="_enemiesChart" TItem="int" />
+	}
+	
+	@if (GetCustomEntryData.DaggersFiredData != null
+		|| GetCustomEntryData.DaggersHitData != null)
+	{
+		<Heading Level="2">Daggers</Heading>
+		<LineChart Options="LineChartUtils.Options" OptionsJsonString="@LineChartUtils.AdditionalJsonOptions" @ref="_daggersChart" TItem="int" />
+	}
+	
+	@if (GetCustomEntryData.Skull1sAliveData != null
+		|| GetCustomEntryData.Skull2sAliveData != null
+		|| GetCustomEntryData.Skull3sAliveData != null
+		|| GetCustomEntryData.Skull4sAliveData != null)
+	{
+		<Heading Level="2">Skulls Alive</Heading>
+		<LineChart Options="LineChartUtils.Options" OptionsJsonString="@LineChartUtils.AdditionalJsonOptions" @ref="_skullsAliveChart" TItem="ushort" />
+	}
+	
+	@if (GetCustomEntryData.Squid1sAliveData != null
+		|| GetCustomEntryData.Squid2sAliveData != null
+		|| GetCustomEntryData.Squid3sAliveData != null)
+	{
+		<Heading Level="2">Squids Alive</Heading>
+		<LineChart Options="LineChartUtils.Options" OptionsJsonString="@LineChartUtils.AdditionalJsonOptions" @ref="_squidsAliveChart" TItem="ushort" />
+	}
+	
+	@if (GetCustomEntryData.Spider1sAliveData != null
+		|| GetCustomEntryData.Spider2sAliveData != null
+		|| GetCustomEntryData.SpiderEggsAliveData != null
+		|| GetCustomEntryData.SpiderlingsAliveData != null)
+	{
+		<Heading Level="2">Spiders Alive</Heading>
+		<LineChart Options="LineChartUtils.Options" OptionsJsonString="@LineChartUtils.AdditionalJsonOptions" @ref="_spidersAliveChart" TItem="ushort" />
+	}
+	
+	@if (GetCustomEntryData.CentipedesAliveData != null
+		|| GetCustomEntryData.GigapedesAliveData != null
+		|| GetCustomEntryData.GhostpedesAliveData != null)
+	{
+		<Heading Level="2">Pedes Alive</Heading>
+		<LineChart Options="LineChartUtils.Options" OptionsJsonString="@LineChartUtils.AdditionalJsonOptions" @ref="_pedesAliveChart" TItem="ushort" />
+	}
+	
+	@if (GetCustomEntryData.ThornsAliveData != null
+		|| GetCustomEntryData.LeviathansAliveData != null
+		|| GetCustomEntryData.OrbsAliveData != null)
+	{
+		<Heading Level="2">Other Enemies Alive</Heading>
+		<LineChart Options="LineChartUtils.Options" OptionsJsonString="@LineChartUtils.AdditionalJsonOptions" @ref="_otherEnemiesAliveChart" TItem="ushort" />
+	}
+	
+	@if (GetCustomEntryData.Skull1sKilledData != null
+		|| GetCustomEntryData.Skull2sKilledData != null
+		|| GetCustomEntryData.Skull3sKilledData != null
+		|| GetCustomEntryData.Skull4sKilledData != null)
+	{
+		<Heading Level="2">Skulls Killed</Heading>
+		<LineChart Options="LineChartUtils.Options" OptionsJsonString="@LineChartUtils.AdditionalJsonOptions" @ref="_skullsKilledChart" TItem="ushort" />
+	}
+	
+	@if (GetCustomEntryData.Squid1sKilledData != null
+		|| GetCustomEntryData.Squid2sKilledData != null
+		|| GetCustomEntryData.Squid3sKilledData != null)
+	{
+		<Heading Level="2">Squids Killed</Heading>
+		<LineChart Options="LineChartUtils.Options" OptionsJsonString="@LineChartUtils.AdditionalJsonOptions" @ref="_squidsKilledChart" TItem="ushort" />
+	}
+	
+	@if (GetCustomEntryData.Spider1sKilledData != null
+		|| GetCustomEntryData.Spider2sKilledData != null
+		|| GetCustomEntryData.SpiderEggsKilledData != null
+		|| GetCustomEntryData.SpiderlingsKilledData != null)
+	{
+		<Heading Level="2">Spiders Killed</Heading>
+		<LineChart Options="LineChartUtils.Options" OptionsJsonString="@LineChartUtils.AdditionalJsonOptions" @ref="_spidersKilledChart" TItem="ushort" />
+	}
+	
+	@if (GetCustomEntryData.CentipedesKilledData != null
+		|| GetCustomEntryData.GigapedesKilledData != null
+		|| GetCustomEntryData.GhostpedesKilledData != null)
+	{
+		<Heading Level="2">Pedes Killed</Heading>
+		<LineChart Options="LineChartUtils.Options" OptionsJsonString="@LineChartUtils.AdditionalJsonOptions" @ref="_pedesKilledChart" TItem="ushort" />
+	}
+	
+	@if (GetCustomEntryData.ThornsKilledData != null
+		|| GetCustomEntryData.LeviathansKilledData != null
+		|| GetCustomEntryData.OrbsKilledData != null)
+	{
+		<Heading Level="2">Other Enemies Killed</Heading>
+		<LineChart Options="LineChartUtils.Options" OptionsJsonString="@LineChartUtils.AdditionalJsonOptions" @ref="_otherEnemiesKilledChart" TItem="ushort" />
+	}
+}
+
+@code
+{
+	private LineChart<int>? _gemsChart;
+	private LineChart<int>? _homingChart;
+	private LineChart<int>? _enemiesChart;
+	private LineChart<int>? _daggersChart;
+
+	private LineChart<ushort>? _skullsAliveChart;
+	private LineChart<ushort>? _squidsAliveChart;
+	private LineChart<ushort>? _spidersAliveChart;
+	private LineChart<ushort>? _pedesAliveChart;
+	private LineChart<ushort>? _otherEnemiesAliveChart;
+
+	private LineChart<ushort>? _skullsKilledChart;
+	private LineChart<ushort>? _squidsKilledChart;
+	private LineChart<ushort>? _spidersKilledChart;
+	private LineChart<ushort>? _pedesKilledChart;
+	private LineChart<ushort>? _otherEnemiesKilledChart;
+
+	[Parameter, EditorRequired] public int Id { get; set; }
+
+	public GetCustomEntryData? GetCustomEntryData { get; set; }
+
+	protected override async Task OnInitializedAsync()
+	{
+		GetCustomEntryData = await Http.GetCustomEntryDataById(Id);
+	}
+
+	protected override async Task OnAfterRenderAsync(bool firstRender)
+	{
+		if (firstRender || GetCustomEntryData == null)
+			return;
+
+		await AddLabelsDatasets(_gemsChart,
+			new("Gems Collected", GetCustomEntryData.GemsCollectedData, "#f00", "#f00"),
+			new("Gems Despawned", GetCustomEntryData.GemsDespawnedData, "#888", "#888"),
+			new("Gems Eaten", GetCustomEntryData.GemsEatenData, "#0f0", "#0f0"),
+			new("Gems Total", GetCustomEntryData.GemsTotalData, "#800", "#800"));
+		await AddLabelsDatasets(_homingChart, new("Homing Stored", GetCustomEntryData.HomingStoredData, "#f0f", "#f0f"), new("Homing Eaten", GetCustomEntryData.HomingEatenData, "#f00", "#f00"));
+		await AddLabelsDatasets(_enemiesChart, new("Enemies Alive", GetCustomEntryData.EnemiesAliveData, "#840", "#840"), new("Enemies Killed", GetCustomEntryData.EnemiesKilledData, "#f00", "#f00"));
+		await AddLabelsDatasets(_daggersChart, new("Daggers Hit", GetCustomEntryData.DaggersHitData, "#80f", "#80f"), new("Daggers Fired", GetCustomEntryData.DaggersFiredData, "#00f", "#00f"));
+
+		await AddLabelsDatasets(_skullsAliveChart,
+			new("Skull Is Alive", GetCustomEntryData.Skull1sAliveData, EnemyColors.Skull1.HexCode, EnemyColors.Skull1.HexCode),
+			new("Skull IIs Alive", GetCustomEntryData.Skull2sAliveData, EnemyColors.Skull2.HexCode, EnemyColors.Skull2.HexCode),
+			new("Skull IIIs Alive", GetCustomEntryData.Skull3sAliveData, EnemyColors.Skull3.HexCode, EnemyColors.Skull3.HexCode),
+			new("Skull IVs Alive", GetCustomEntryData.Skull4sAliveData, EnemyColors.Skull4.HexCode, EnemyColors.Skull4.HexCode));
+		await AddLabelsDatasets(_squidsAliveChart,
+			new("Squid Is Alive", GetCustomEntryData.Squid1sAliveData, EnemyColors.Squid1.HexCode, EnemyColors.Squid1.HexCode),
+			new("Squid IIs Alive", GetCustomEntryData.Squid2sAliveData, EnemyColors.Squid2.HexCode, EnemyColors.Squid2.HexCode),
+			new("Squid IIIs Alive", GetCustomEntryData.Squid3sAliveData, EnemyColors.Squid3.HexCode, EnemyColors.Squid3.HexCode));
+		await AddLabelsDatasets(_spidersAliveChart,
+			new("Spider Is Alive", GetCustomEntryData.Spider1sAliveData, EnemyColors.Spider1.HexCode, EnemyColors.Spider1.HexCode),
+			new("Spider IIs Alive", GetCustomEntryData.Spider2sAliveData, EnemyColors.Spider2.HexCode, EnemyColors.Spider2.HexCode),
+			new("Spider Eggs Alive", GetCustomEntryData.SpiderEggsAliveData, EnemyColors.SpiderEgg1.HexCode, EnemyColors.SpiderEgg1.HexCode),
+			new("Spiderlings Alive", GetCustomEntryData.SpiderlingsAliveData, EnemyColors.Spiderling.HexCode, EnemyColors.Spiderling.HexCode));
+		await AddLabelsDatasets(_pedesAliveChart,
+			new("Centipedes Alive", GetCustomEntryData.CentipedesAliveData, EnemyColors.Centipede.HexCode, EnemyColors.Centipede.HexCode),
+			new("Gigapedes Alive", GetCustomEntryData.GigapedesAliveData, EnemyColors.Gigapede.HexCode, EnemyColors.Gigapede.HexCode),
+			new("Ghostpedes Alive", GetCustomEntryData.GhostpedesAliveData, EnemyColors.Ghostpede.HexCode, EnemyColors.Ghostpede.HexCode));
+		await AddLabelsDatasets(_otherEnemiesAliveChart,
+			new("Thorns Alive", GetCustomEntryData.ThornsAliveData, EnemyColors.Thorn.HexCode, EnemyColors.Thorn.HexCode),
+			new("Leviathans Alive", GetCustomEntryData.LeviathansAliveData, EnemyColors.Leviathan.HexCode, EnemyColors.Leviathan.HexCode),
+			new("Orbs Alive", GetCustomEntryData.OrbsAliveData, EnemyColors.TheOrb.HexCode, EnemyColors.TheOrb.HexCode));
+
+		await AddLabelsDatasets(_skullsKilledChart,
+			new("Skull Is Killed", GetCustomEntryData.Skull1sKilledData, EnemyColors.Skull1.HexCode, EnemyColors.Skull1.HexCode),
+			new("Skull IIs Killed", GetCustomEntryData.Skull2sKilledData, EnemyColors.Skull2.HexCode, EnemyColors.Skull2.HexCode),
+			new("Skull IIIs Killed", GetCustomEntryData.Skull3sKilledData, EnemyColors.Skull3.HexCode, EnemyColors.Skull3.HexCode),
+			new("Skull IVs Killed", GetCustomEntryData.Skull4sKilledData, EnemyColors.Skull4.HexCode, EnemyColors.Skull4.HexCode));
+		await AddLabelsDatasets(_squidsKilledChart,
+			new("Squid Is Killed", GetCustomEntryData.Squid1sKilledData, EnemyColors.Squid1.HexCode, EnemyColors.Squid1.HexCode),
+			new("Squid IIs Killed", GetCustomEntryData.Squid2sKilledData, EnemyColors.Squid2.HexCode, EnemyColors.Squid2.HexCode),
+			new("Squid IIIs Killed", GetCustomEntryData.Squid3sKilledData, EnemyColors.Squid3.HexCode, EnemyColors.Squid3.HexCode));
+		await AddLabelsDatasets(_spidersKilledChart,
+			new("Spider Is Killed", GetCustomEntryData.Spider1sKilledData, EnemyColors.Spider1.HexCode, EnemyColors.Spider1.HexCode),
+			new("Spider IIs Killed", GetCustomEntryData.Spider2sKilledData, EnemyColors.Spider2.HexCode, EnemyColors.Spider2.HexCode),
+			new("Spider Eggs Killed", GetCustomEntryData.SpiderEggsKilledData, EnemyColors.SpiderEgg1.HexCode, EnemyColors.SpiderEgg1.HexCode),
+			new("Spiderlings Killed", GetCustomEntryData.SpiderlingsKilledData, EnemyColors.Spiderling.HexCode, EnemyColors.Spiderling.HexCode));
+		await AddLabelsDatasets(_pedesKilledChart,
+			new("Centipedes Killed", GetCustomEntryData.CentipedesKilledData, EnemyColors.Centipede.HexCode, EnemyColors.Centipede.HexCode),
+			new("Gigapedes Killed", GetCustomEntryData.GigapedesKilledData, EnemyColors.Gigapede.HexCode, EnemyColors.Gigapede.HexCode),
+			new("Ghostpedes Killed", GetCustomEntryData.GhostpedesKilledData, EnemyColors.Ghostpede.HexCode, EnemyColors.Ghostpede.HexCode));
+		await AddLabelsDatasets(_otherEnemiesKilledChart,
+			new("Thorns Killed", GetCustomEntryData.ThornsKilledData, EnemyColors.Thorn.HexCode, EnemyColors.Thorn.HexCode),
+			new("Leviathans Killed", GetCustomEntryData.LeviathansKilledData, EnemyColors.Leviathan.HexCode, EnemyColors.Leviathan.HexCode),
+			new("Orbs Killed", GetCustomEntryData.OrbsKilledData, EnemyColors.TheOrb.HexCode, EnemyColors.TheOrb.HexCode));
+	}
+
+	private async Task AddLabelsDatasets<T>(LineChart<T>? chart, params Dataset<T>[] datasets)
+	{
+		if (chart == null || GetCustomEntryData == null)
+			return;
+
+		List<LineChartDataset<T>> lineChartDatasets = new();
+		foreach (Dataset<T> dataset in datasets)
+		{
+			if (dataset.Data == null)
+				continue;
+
+			lineChartDatasets.Add(new LineChartDataset<T>
+			{
+				Label = dataset.Title,
+				Data = dataset.Data.ToList(),
+				BackgroundColor = new(dataset.BackgroundColor),
+				Fill = false,
+				PointRadius = 0,
+				ShowLine = true,
+				BorderColor = dataset.BorderColor,
+				LineTension = 0.1f,
+			});
+		}
+
+		await chart.AddLabelsDatasetsAndUpdate(Enumerable.Range(0, (int)GetCustomEntryData.Time).Select(i => i.ToString()).ToArray(), lineChartDatasets.ToArray());
+	}
+
+	private record Dataset<T>(string Title, T[]? Data, string BackgroundColor, string BorderColor);
+}

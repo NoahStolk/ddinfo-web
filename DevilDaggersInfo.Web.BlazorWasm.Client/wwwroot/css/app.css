@@ -1,0 +1,91 @@
+#blazor-error-ui {
+	background: lightyellow;
+	color: black;
+	bottom: 0;
+	box-shadow: 0 -1px 2px rgba(0, 0, 0, 0.2);
+	display: none;
+	left: 0;
+	padding: 0.6rem 1.25rem 0.7rem 1.25rem;
+	position: fixed;
+	width: 100%;
+	z-index: 1000;
+}
+
+	#blazor-error-ui .dismiss {
+		cursor: pointer;
+		position: absolute;
+		right: 0.75rem;
+		top: 0.5rem;
+	}
+
+.leviathan {
+	background: linear-gradient(#FF0031 40%, #DC002A 41%, #A50020 45%, #6C0015 59%, #A50020 65%, #DC002A 70%, #FF0031);
+	background-repeat: repeat-x;
+	-webkit-font-smoothing: antialiased;
+	-webkit-background-clip: text;
+	-moz-background-clip: text;
+	background-clip: text;
+	-webkit-text-fill-color: transparent;
+}
+
+.devil {
+	background: linear-gradient(#FF3A2A 40%, #AB1407 50%, #580500 51%, #FF3A2A);
+	background-repeat: repeat-x;
+	-webkit-font-smoothing: antialiased;
+	-webkit-background-clip: text;
+	-moz-background-clip: text;
+	background-clip: text;
+	-webkit-text-fill-color: transparent;
+}
+
+.golden {
+	background: linear-gradient(#FFFA96 40%, #D68A10 50%, #3A2014 51%, #A87E25);
+	background-repeat: repeat-x;
+	-webkit-font-smoothing: antialiased;
+	-webkit-background-clip: text;
+	-moz-background-clip: text;
+	background-clip: text;
+	-webkit-text-fill-color: transparent;
+}
+
+.silver {
+	background: linear-gradient(#E8E8E8 40%, #666F75 50%, #242627 51%, #989794);
+	background-repeat: repeat-x;
+	-webkit-font-smoothing: antialiased;
+	-webkit-background-clip: text;
+	-moz-background-clip: text;
+	background-clip: text;
+	-webkit-text-fill-color: transparent;
+}
+
+.bronze {
+	background: linear-gradient(#CCB7A1 40%, #4A2F21 50%, #2E2521 51%, #654B35);
+	background-repeat: repeat-x;
+	-webkit-font-smoothing: antialiased;
+	-webkit-background-clip: text;
+	-moz-background-clip: text;
+	background-clip: text;
+	-webkit-text-fill-color: transparent;
+}
+
+.default {
+	background: linear-gradient(#696969 40%, #202020 60%, #202020);
+	background-repeat: repeat-x;
+	-webkit-font-smoothing: antialiased;
+	-webkit-background-clip: text;
+	-moz-background-clip: text;
+	background-clip: text;
+	-webkit-text-fill-color: transparent;
+}
+
+.highlight.leviathan:hover,
+.highlight.bronze:hover,
+.highlight.default:hover {
+	filter: brightness(150%) saturate(150%);
+}
+
+.highlight.devil:hover,
+.highlight.golden:hover,
+.highlight.silver:hover {
+	filter: brightness(200%) saturate(200%);
+}

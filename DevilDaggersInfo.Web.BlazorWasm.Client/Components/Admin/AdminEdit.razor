@@ -1,0 +1,82 @@
+@inject AdminApiHttpClient Http
+@inject NavigationManager NavigationManager
+@typeparam TModel
+
+<Heading>Edit</Heading>
+
+@switch (State)
+{
+	case ErrorState.ValidationError:
+		{
+			<ResultBar Title="Validation failed" ResultBarType="ResultBarType.ValidationError" DismissEvent="Dismiss">
+				@ErrorMessage
+			</ResultBar>
+		}
+		break;
+	case ErrorState.FatalError:
+		{
+			<ResultBar Title="Fatal error" ResultBarType="ResultBarType.FatalError" DismissEvent="Dismiss">
+				@ErrorMessage
+			</ResultBar>
+		}
+		break;
+}
+
+@if (Model == null)
+{
+	<Loading />
+}
+else
+{
+	<EditForm Model="@Model" OnValidSubmit="@OnValidSubmit">
+		<DataAnnotationsValidator />
+		<ValidationSummary />
+
+		@ChildContent
+
+		<button class="bg-gray-0b hover:bg-gray-22 p-1 rounded text-color-text" type="submit">Submit</button>
+	</EditForm>
+}
+
+@code
+{
+	[Parameter, EditorRequired] public string OverviewUrl { get; set; } = null!;
+	[Parameter, EditorRequired] public string PutApiUrl { get; set; } = null!;
+	[Parameter, EditorRequired] public TModel? Model { get; set; }
+	[Parameter, EditorRequired] public int Id { get; set; }
+	[Parameter, EditorRequired] public RenderFragment ChildContent { get; set; } = null!;
+
+	public ErrorState State { get; set; }
+	public string? ErrorMessage { get; set; }
+
+	private async Task OnValidSubmit()
+	{
+		if (Model == null)
+			return;
+
+		try
+		{
+			HttpResponseMessage hrm = await Http.Client.PutAsJsonAsync<TModel>($"{PutApiUrl}/{Id}", Model);
+
+			if (hrm.StatusCode == HttpStatusCode.OK)
+			{
+				NavigationManager.NavigateTo(OverviewUrl);
+			}
+			else
+			{
+				ErrorMessage = await hrm.Content.ReadAsStringAsync();
+				State = hrm.StatusCode.IsUserError() ? ErrorState.ValidationError : ErrorState.FatalError;
+			}
+		}
+		catch (AccessTokenNotAvailableException exception)
+		{
+			exception.Redirect();
+		}
+	}
+
+	private void Dismiss()
+	{
+		State = ErrorState.None;
+		StateHasChanged();
+	}
+}

@@ -1,0 +1,16 @@
+@tailwind base;
+@tailwind components;
+@tailwind utilities;
+
+@layer base {
+	@font-face {
+		font-family: 'goethe';
+		src: url('fonts/goethebold.ttf') format('truetype');
+	}
+
+	@font-face {
+		font-family: 'calibri';
+		font-weight: 500;
+		src: url('fonts/calibri-regular.ttf') format('truetype');
+	}
+}

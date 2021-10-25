@@ -1,0 +1,14 @@
+<Project Sdk="Microsoft.NET.Sdk">
+  <ItemGroup>
+    <AdditionalFiles Include="Data\AudioAudio.csv" />
+    <AdditionalFiles Include="Data\CoreShaders.csv" />
+    <AdditionalFiles Include="Data\DdModelBindings.csv" />
+    <AdditionalFiles Include="Data\DdModels.csv" />
+    <AdditionalFiles Include="Data\DdShaders.csv" />
+    <AdditionalFiles Include="Data\DdTextures.csv" />
+  </ItemGroup>
+  <ItemGroup>
+    <ProjectReference Include="..\DevilDaggersInfo.SourceGen\DevilDaggersInfo.SourceGen.csproj" OutputItemType="Analyzer" />
+    <ProjectReference Include="..\DevilDaggersInfo.SourceGen.Core.Asset\DevilDaggersInfo.SourceGen.Core.Asset.csproj" OutputItemType="Analyzer" ReferenceOutputAssembly="false" />
+  </ItemGroup>
+</Project>

@@ -1,0 +1,92 @@
+@using System.Globalization
+
+<Select @onchange="@(async (e) => await UpdateComponent(e, (dp) => dp._date.Day = ToInt(e)))" class="bg-gray-0b transition-colors duration-100 h-8 py-1 rounded text-color-text">
+	@for (int i = 1; i <= 31; i++)
+	{
+		if (i == _date.Day)
+		{
+			<option value="@i" selected>@i</option>
+		}
+		else
+		{
+			<option value="@i">@i</option>
+		}
+	}
+</Select>
+<Select @onchange="@(async (e) => await UpdateComponent(e, (dp) => dp._date.Month = ToInt(e)))" class="bg-gray-0b transition-colors duration-100 h-8 py-1 rounded text-color-text">
+	@for (int i = 1; i <= 12; i++)
+	{
+		if (i == _date.Month)
+		{
+			<option value="@i" selected>@_monthNames[i - 1]</option>
+		}
+		else
+		{
+			<option value="@i">@_monthNames[i - 1]</option>
+		}
+	}
+</Select>
+<Select @onchange="@(async (e) => await UpdateComponent(e, (dp) => dp._date.Year = ToInt(e)))" class="bg-gray-0b transition-colors duration-100 h-8 py-1 rounded text-color-text">
+	@for (int i = Date.MinYear; i <= Date.MaxYear; i++)
+	{
+		if (i == _date.Year)
+		{
+			<option value="@i" selected>@i</option>
+		}
+		else
+		{
+			<option value="@i">@i</option>
+		}
+	}
+</Select>
+
+@code {
+	private static readonly string[] _monthNames = CultureInfo.InvariantCulture.DateTimeFormat.MonthNames.Take(12).ToArray();
+
+	[Parameter, EditorRequired] public EventCallback<DateTime> DateSelected { get; set; }
+
+	private Date _date = new();
+
+	public async Task UpdateComponent(ChangeEventArgs e, Action<DatePicker> action)
+	{
+		action.Invoke(this);
+		await DateSelected.InvokeAsync(_date.ToDateTime());
+	}
+
+	private int ToInt(ChangeEventArgs e)
+	{
+		if (e.Value == null)
+			return 0;
+
+		if (int.TryParse(e.Value.ToString(), out int result))
+			return result;
+
+		return 0;
+	}
+
+	private struct Date
+	{
+		public static readonly int MinYear = 2015;
+		public static readonly int MaxYear = DateTime.UtcNow.Year;
+
+		public int Day { get; set; }
+		public int Month { get; set; }
+		public int Year { get; set; }
+
+		public Date()
+		{
+			DateTime now = DateTime.UtcNow;
+			Day = now.Day;
+			Month = now.Month;
+			Year = now.Year;
+		}
+
+		public DateTime ToDateTime()
+		{
+			Year = Math.Clamp(Year, MinYear, MaxYear);
+			Month = Math.Clamp(Month, 1, 12);
+			Day = Math.Clamp(Day, 1, DateTime.DaysInMonth(Year, Month));
+			return new(Year, Month, Day);
+		}
+	}
+}

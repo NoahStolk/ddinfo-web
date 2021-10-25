@@ -1,0 +1,42 @@
+<li class="pl-3 py-1 text-xl">
+	<div class="cursor-pointer select-none" @onclick="Show">
+		<Icon Type="@(ShowList ? "chevron-bottom" : "chevron-right")" Text="@Text" />
+	</div>
+	@if (ShowList)
+	{
+		<ul class="pl-1 pt-1">
+			@ChildContent
+		</ul>
+	}
+</li>
+
+@code
+{
+	private bool _showList;
+	public bool ShowList
+	{
+		get => _showList;
+		set
+		{
+			_showList = value;
+			StateHasChanged();
+		}
+	}
+
+	[Parameter, EditorRequired] public NavMenu NavMenu { get; set; } = null!;
+	[Parameter, EditorRequired] public RenderFragment ChildContent { get; set; } = null!;
+	[Parameter, EditorRequired] public string Text { get; set; } = null!;
+
+	protected override void OnInitialized()
+	{
+		NavMenu.NavDropdowns.Add(this);
+	}
+
+	private void Show()
+	{
+		if (ShowList)
+			ShowList = false;
+		else
+			NavMenu.ShowSubMenu(this);
+	}
+}

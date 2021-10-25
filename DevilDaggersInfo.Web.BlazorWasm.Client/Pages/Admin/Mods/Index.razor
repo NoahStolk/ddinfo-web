@@ -1,0 +1,6 @@
+@page "/admin/mods"
+@using DevilDaggersInfo.Web.BlazorWasm.Client.Components.Admin
+@using DevilDaggersInfo.Web.BlazorWasm.Shared.Dto.Admin.Mods
+@inject HttpClient Http
+
+<AdminOverview TGetDto="GetModForOverview" TKey="int" Title="Mods" ApiRoute="api/admin/mods" GridConfiguration="admin-mods"></AdminOverview>

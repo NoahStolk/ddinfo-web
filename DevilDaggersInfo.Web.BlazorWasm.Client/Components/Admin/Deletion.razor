@@ -1,0 +1,86 @@
+@typeparam TKey
+@inject AdminApiHttpClient Http
+@using Microsoft.AspNetCore.Components.WebAssembly.Authentication
+
+@switch (State)
+{
+	case DeleteState.Confirm:
+		{
+			<div class="bg-dark-red p-2 rounded">
+				<h4 class="text-xl">Delete?</h4>
+
+				<p>Are you sure you want to delete entity with ID @IdToDelete?</p>
+
+				<button class="bg-red w-40 py-1 rounded" @onclick="ConfirmDelete">Delete permanently</button>
+				<button class="bg-gray-0b w-20 py-1 rounded" @onclick="Cancel">Cancel</button>
+			</div>
+		}
+		break;
+	case DeleteState.ValidationError:
+		{
+			<ResultBar Title="Validation failed" ResultBarType="ResultBarType.ValidationError" DismissEvent="Cancel">
+				@ApiResponse
+			</ResultBar>
+		}
+		break;
+	case DeleteState.FatalError:
+		{
+			<ResultBar Title="Fatal error" ResultBarType="ResultBarType.FatalError" DismissEvent="Cancel">
+				@ApiResponse
+			</ResultBar>
+		}
+		break;
+	case DeleteState.Ok:
+		{
+			<ResultBar Title="Delete successful" ResultBarType="ResultBarType.Success" DismissEvent="Cancel">
+				Successfully deleted entity with ID @IdToDelete.
+			</ResultBar>
+		}
+		break;
+}
+
+@code {
+	public DeleteState State { get; set; }
+	public TKey? IdToDelete { get; set; }
+	public string? ApiResponse { get; set; }
+
+	[Parameter] public Func<Task>? AfterDelete { get; set; }
+	[Parameter, EditorRequired] public string ApiRoute { get; set; } = null!;
+
+	public void Set(TKey id)
+	{
+		State = DeleteState.Confirm;
+		IdToDelete = id;
+	}
+
+	private async Task ConfirmDelete()
+	{
+		try
+		{
+			HttpResponseMessage hrm = await Http.Client.DeleteAsync($"{ApiRoute}/{IdToDelete}");
+			if (hrm.StatusCode == HttpStatusCode.OK)
+			{
+				State = DeleteState.Ok;
+
+				if (AfterDelete != null)
+					await AfterDelete.Invoke();
+			}
+			else
+			{
+				State = hrm.StatusCode.IsUserError() ? DeleteState.ValidationError : DeleteState.FatalError;
+				ApiResponse = await hrm.Content.ReadAsStringAsync();
+			}
+		}
+		catch (AccessTokenNotAvailableException exception)
+		{
+			exception.Redirect();
+		}
+	}
+
+	public void Cancel()
+	{
+		State = DeleteState.None;
+		IdToDelete = default;
+		StateHasChanged();
+	}
+}

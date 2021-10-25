@@ -1,0 +1,63 @@
+{
+  "DateTime": "2016-01-25T14:49:00",
+  "Players": 3,
+  "TimeGlobal": 0,
+  "KillsGlobal": 0,
+  "GemsGlobal": 0,
+  "DeathsGlobal": 0,
+  "DaggersHitGlobal": 0,
+  "DaggersFiredGlobal": 0,
+  "Entries": [
+    {
+      "Rank": 1,
+      "Id": 1,
+      "Username": "m4ttbush",
+      "Time": 3897822,
+      "Kills": 903,
+      "Gems": 296,
+      "DeathType": 18,
+      "DaggersHit": 2179,
+      "DaggersFired": 10000,
+      "TimeTotal": 0,
+      "KillsTotal": 0,
+      "GemsTotal": 0,
+      "DeathsTotal": 0,
+      "DaggersHitTotal": 0,
+      "DaggersFiredTotal": 0
+    },
+    {
+      "Rank": 2,
+      "Id": 5,
+      "Username": "lifeformed",
+      "Time": 2071602,
+      "Kills": 0,
+      "Gems": 0,
+      "DeathType": 255,
+      "DaggersHit": 0,
+      "DaggersFired": 0,
+      "TimeTotal": 0,
+      "KillsTotal": 0,
+      "GemsTotal": 0,
+      "DeathsTotal": 0,
+      "DaggersHitTotal": 0,
+      "DaggersFiredTotal": 0
+    },
+    {
+      "Rank": 3,
+      "Id": 8,
+      "Username": "phrase",
+      "Time": 2000785,
+      "Kills": 0,
+      "Gems": 0,
+      "DeathType": 255,
+      "DaggersHit": 0,
+      "DaggersFired": 0,
+      "TimeTotal": 0,
+      "KillsTotal": 0,
+      "GemsTotal": 0,
+      "DeathsTotal": 0,
+      "DaggersHitTotal": 0,
+      "DaggersFiredTotal": 0
+    }
+  ]
+}

@@ -1,0 +1,168 @@
+@page "/custom/leaderboard/{Id:int}"
+@inject PublicApiHttpClient Http
+@using DevilDaggersInfo.Web.BlazorWasm.Client.Components.Leaderboards
+@using DevilDaggersInfo.Web.BlazorWasm.Shared.Dto.Public.CustomEntries
+@using DevilDaggersInfo.Web.BlazorWasm.Shared.Dto.Public.CustomLeaderboards
+@using DevilDaggersInfo.Web.BlazorWasm.Shared.Enums;
+
+@if (GetCustomLeaderboard == null)
+{
+	<Loading />
+}
+else
+{
+	<Heading>Custom Leaderboard - @GetCustomLeaderboard.SpawnsetName</Heading>
+
+	if (GetCustomLeaderboard.IsArchived)
+	{
+		<p class="text-lg p-1 m-1 bg-dark-red">This leaderboard is archived. You can still submit scores to it, but it won't show up in the list of leaderboards or player statistics.</p>
+	}
+
+	if (GetCustomLeaderboard.Category == CustomLeaderboardCategory.TimeAttack)
+	{
+		<p class="text-lg p-1 m-1 bg-dark-orange">TimeAttack leaderboards are not supported right now.</p>
+	}
+
+	<div class="text-xl font-goethe">
+		<div class="grid gap-3 grid-cols-custom-leaderboard-sm md:grid-cols-custom-leaderboard-md lg:grid-cols-custom-leaderboard-lg xl:grid-cols-custom-leaderboard-xl 2xl:grid-cols-custom-leaderboard-2xl">
+			<div @onclick="() => Sort(CustomEntrySorting.Rank)" class="text-right"><Tooltip Text="Sort by RANK"><img class="cursor-pointer inline-block" src="/images/icons/custom-x2/rank.png" /></Tooltip></div>
+			<div @onclick="() => Sort(CustomEntrySorting.Flag)" class="text-left"><Tooltip Text="Sort by FLAG"><img class="cursor-pointer inline-block" src="/images/icons/custom-x2/flag.png" /></Tooltip></div>
+			<div @onclick="() => Sort(CustomEntrySorting.Player)" class="text-left"><Tooltip Text="Sort by PLAYER"><img class="cursor-pointer inline-block" src="/images/icons/mask-x2/eye.png" /></Tooltip></div>
+			<div @onclick="() => Sort(CustomEntrySorting.Time)" class="text-right"><Tooltip Text="Sort by TIME"><img class="cursor-pointer inline-block" src="/images/icons/mask-x2/stopwatch.png" /></Tooltip></div>
+			<div @onclick="() => Sort(CustomEntrySorting.EnemiesKilled)" class="text-right hidden md:block"><Tooltip Text="Sort by ENEMIES KILLED"><img class="cursor-pointer inline-block" src="/images/icons/mask-x2/dagger.png" /></Tooltip></div>
+			<div @onclick="() => Sort(CustomEntrySorting.EnemiesAlive)" class="text-right hidden md:block"><Tooltip Text="Sort by ENEMIES ALIVE"><img class="cursor-pointer inline-block" src="/images/icons/mask-x2/skull.png" /></Tooltip></div>
+			<div @onclick="() => Sort(CustomEntrySorting.GemsCollected)" class="text-right hidden md:block"><Tooltip Text="Sort by GEMS COLLECTED"><img class="cursor-pointer inline-block" src="/images/icons/mask-x2/gem.png" /></Tooltip></div>
+			<div @onclick="() => Sort(CustomEntrySorting.GemsDespawned)" class="text-right hidden lg:block"><Tooltip Text="Sort by GEMS DESPAWNED"><img class="cursor-pointer inline-block" src="/images/icons/mask-x2/gem.png" /></Tooltip></div>
+			<div @onclick="() => Sort(CustomEntrySorting.GemsEaten)" class="text-right hidden lg:block"><Tooltip Text="Sort by GEMS EATEN"><img class="cursor-pointer inline-block" src="/images/icons/mask-x2/gem.png" /></Tooltip></div>
+			<div @onclick="() => Sort(CustomEntrySorting.Accuracy)" class="text-right hidden md:block"><Tooltip Text="Sort by ACCURACY"><img class="cursor-pointer inline-block" src="/images/icons/mask-x2/crosshair.png" /></Tooltip></div>
+			<div @onclick="() => Sort(CustomEntrySorting.DeathType)" class="text-left hidden lg:block"><Tooltip Text="Sort by DEATH TYPE"><img class="cursor-pointer inline-block" src="/images/icons/mask-x2/skull.png" /></Tooltip></div>
+			<div @onclick="() => Sort(CustomEntrySorting.HomingStored)" class="text-right hidden xl:block"><Tooltip Text="Sort by HOMING STORED"><img class="cursor-pointer inline-block" src="/images/icons/mask-x2/dagger.png" /></Tooltip></div>
+			<div @onclick="() => Sort(CustomEntrySorting.HomingEaten)" class="text-right hidden xl:block"><Tooltip Text="Sort by HOMING EATEN"><img class="cursor-pointer inline-block" src="/images/icons/mask-x2/dagger.png" /></Tooltip></div>
+			<div @onclick="() => Sort(CustomEntrySorting.LevelUpTime2)" class="text-right hidden 2xl:block"><Tooltip Text="Sort by LEVEL 2"><img class="cursor-pointer inline-block" src="/images/icons/mask-x2/dagger.png" /></Tooltip></div>
+			<div @onclick="() => Sort(CustomEntrySorting.LevelUpTime3)" class="text-right hidden 2xl:block"><Tooltip Text="Sort by LEVEL 3"><img class="cursor-pointer inline-block" src="/images/icons/mask-x2/dagger.png" /></Tooltip></div>
+			<div @onclick="() => Sort(CustomEntrySorting.LevelUpTime4)" class="text-right hidden 2xl:block"><Tooltip Text="Sort by LEVEL 4"><img class="cursor-pointer inline-block" src="/images/icons/mask-x2/dagger.png" /></Tooltip></div>
+			<div @onclick="() => Sort(CustomEntrySorting.SubmitDate)" class="text-right hidden 2xl:block"><Tooltip Text="Sort by SUBMIT DATE"><img class="cursor-pointer inline-block" src="/images/icons/mask-x2/stopwatch.png" /></Tooltip></div>
+		</div>
+		<div>
+			@{
+				int i = 0;
+
+				foreach (GetCustomEntry ce in GetCustomLeaderboard.CustomEntries)
+				{
+					if (!Version.TryParse(ce.ClientVersion, out Version? version))
+						continue;
+
+					bool isDdcl = ce.Client == CustomLeaderboardsClient.DevilDaggersCustomLeaderboards;
+					bool graphs = !isDdcl || version >= FeatureConstants.DdclGraphs;
+					bool homingEaten = !isDdcl || version >= FeatureConstants.DdclHomingEaten;
+					bool v3_1 = !isDdcl || version >= FeatureConstants.DdclV3_1;
+
+					string daggerCssClass = ce.CustomLeaderboardDagger.ToString().ToLower();
+
+					double accuracy = ce.DaggersFired == 0 ? 0 : ce.DaggersHit / (double)ce.DaggersFired;
+					string daggers = FormatUtils.FormatDaggersInt32(ce.DaggersHit, ce.DaggersFired, false);
+
+					<div class="grid gap-3 grid-cols-custom-leaderboard-sm md:grid-cols-custom-leaderboard-md lg:grid-cols-custom-leaderboard-lg xl:grid-cols-custom-leaderboard-xl 2xl:grid-cols-custom-leaderboard-2xl h-6 @(i++ % 2 == 0 ? "bg-gray-0b" : string.Empty)">
+						<EntryRank PlayerId="@ce.PlayerId" Rank="@ce.Rank" />
+						<EntryFlag CountryCode="@ce.CountryCode" />
+						<EntryUsername DaggerCssClass="@daggerCssClass" Id="@ce.PlayerId" Name="@($"{ce.PlayerName}")" />
+						<div class="text-right">
+							@if (graphs)
+							{
+								<UrlLink Href="@($"/custom/entry/{ce.Id}")">
+									<Tooltip Text="View graphs"><img class="cursor-pointer inline-block mb-1 mr-1" src="/images/icons/mask/eye.png" /></Tooltip>
+								</UrlLink>
+							}
+							<span class="@daggerCssClass">@ce.Time.ToString(FormatUtils.TimeFormat)</span>
+						</div>
+						<div class="text-right hidden md:block">@ce.EnemiesKilled.ToString(FormatUtils.LeaderboardIntFormat)</div>
+						<div class="text-right hidden md:block">@ce.EnemiesAlive.ToString(FormatUtils.LeaderboardIntFormat)</div>
+						<div class="text-right hidden md:block">@ce.GemsCollected.ToString(FormatUtils.LeaderboardIntFormat)</div>
+						<div class="text-right hidden lg:block">@(v3_1 ? (MarkupString)ce.GemsDespawned.ToString(FormatUtils.LeaderboardIntFormat) : MarkupUtils.NoDataMarkup)</div>
+						<div class="text-right hidden lg:block">@(v3_1 ? (MarkupString)ce.GemsEaten.ToString(FormatUtils.LeaderboardIntFormat) : MarkupUtils.NoDataMarkup)</div>
+						<div class="text-right hidden md:block">
+							<Tooltip Text="@daggers"><span class="font-goethe text-xl cursor-pointer">@accuracy.ToString(FormatUtils.AccuracyFormat)</span></Tooltip>
+						</div>
+						<div class="text-left hidden lg:block">@MarkupUtils.DeathString(ce.DeathType)</div>
+						<div class="text-right hidden xl:block">@ce.HomingStored.ToString(FormatUtils.LeaderboardIntFormat)</div>
+						<div class="text-right hidden xl:block">@(homingEaten ? (MarkupString)ce.HomingEaten.ToString(FormatUtils.LeaderboardIntFormat) : MarkupUtils.NoDataMarkup)</div>
+						<div class="text-right hidden 2xl:block">@(ce.LevelUpTime2 == 0 ? MarkupUtils.NoDataMarkup : (MarkupString)ce.LevelUpTime2.ToString(FormatUtils.TimeFormat))</div>
+						<div class="text-right hidden 2xl:block">@(ce.LevelUpTime3 == 0 ? MarkupUtils.NoDataMarkup : (MarkupString)ce.LevelUpTime3.ToString(FormatUtils.TimeFormat))</div>
+						<div class="text-right hidden 2xl:block">@(ce.LevelUpTime4 == 0 ? MarkupUtils.NoDataMarkup : (MarkupString)ce.LevelUpTime4.ToString(FormatUtils.TimeFormat))</div>
+						<div class="text-right hidden 2xl:block">@ce.SubmitDate.ToString(FormatUtils.DateTimeFormat)</div>
+					</div>
+				}
+			}
+		</div>
+	</div>
+}
+
+@code
+{
+	[Parameter, EditorRequired] public int Id { get; set; }
+
+	public GetCustomLeaderboard? GetCustomLeaderboard { get; set; }
+
+	private CustomEntrySorting _sortBy;
+	private bool _ascending;
+
+	private Dictionary<CustomEntrySorting, bool> _sortings = new();
+
+	protected override async Task OnInitializedAsync()
+	{
+		foreach (CustomEntrySorting e in (CustomEntrySorting[])Enum.GetValues(typeof(CustomEntrySorting)))
+			_sortings.Add(e, false);
+
+		GetCustomLeaderboard = await Http.GetCustomLeaderboardById(Id);
+	}
+
+	private void Sort(CustomEntrySorting sortBy)
+	{
+		_sortBy = sortBy;
+		_sortings[sortBy] = !_sortings[sortBy];
+		_ascending = _sortings[sortBy];
+
+		GetCustomLeaderboard!.CustomEntries = _sortBy switch
+		{
+			CustomEntrySorting.Rank => GetCustomLeaderboard.CustomEntries.OrderBy(ce => ce.Rank, _ascending).ToList(),
+			CustomEntrySorting.Flag => GetCustomLeaderboard.CustomEntries.OrderBy(ce => ce.CountryCode, _ascending).ToList(),
+			CustomEntrySorting.Player => GetCustomLeaderboard.CustomEntries.OrderBy(ce => ce.PlayerName, _ascending).ToList(),
+			CustomEntrySorting.Time => GetCustomLeaderboard.CustomEntries.OrderBy(ce => ce.Time, _ascending).ToList(),
+			CustomEntrySorting.EnemiesKilled => GetCustomLeaderboard.CustomEntries.OrderBy(ce => ce.EnemiesKilled, _ascending).ToList(),
+			CustomEntrySorting.EnemiesAlive => GetCustomLeaderboard.CustomEntries.OrderBy(ce => ce.EnemiesAlive, _ascending).ToList(),
+			CustomEntrySorting.GemsCollected => GetCustomLeaderboard.CustomEntries.OrderBy(ce => ce.GemsCollected, _ascending).ToList(),
+			CustomEntrySorting.GemsDespawned => GetCustomLeaderboard.CustomEntries.OrderBy(ce => ce.GemsDespawned, _ascending).ToList(),
+			CustomEntrySorting.GemsEaten => GetCustomLeaderboard.CustomEntries.OrderBy(ce => ce.GemsEaten, _ascending).ToList(),
+			CustomEntrySorting.Accuracy => GetCustomLeaderboard.CustomEntries.OrderBy(ce => ce.DaggersFired == 0 ? 0 : ce.DaggersHit / (float)ce.DaggersFired, _ascending).ToList(),
+			CustomEntrySorting.DeathType => GetCustomLeaderboard.CustomEntries.OrderBy(ce => ce.DeathType, _ascending).ToList(),
+			CustomEntrySorting.HomingStored => GetCustomLeaderboard.CustomEntries.OrderBy(ce => ce.HomingStored, _ascending).ToList(),
+			CustomEntrySorting.HomingEaten => GetCustomLeaderboard.CustomEntries.OrderBy(ce => ce.HomingEaten, _ascending).ToList(),
+			CustomEntrySorting.LevelUpTime2 => GetCustomLeaderboard.CustomEntries.OrderBy(ce => ce.LevelUpTime2, _ascending).ToList(),
+			CustomEntrySorting.LevelUpTime3 => GetCustomLeaderboard.CustomEntries.OrderBy(ce => ce.LevelUpTime3, _ascending).ToList(),
+			CustomEntrySorting.LevelUpTime4 => GetCustomLeaderboard.CustomEntries.OrderBy(ce => ce.LevelUpTime4, _ascending).ToList(),
+			CustomEntrySorting.SubmitDate => GetCustomLeaderboard.CustomEntries.OrderBy(ce => ce.SubmitDate, _ascending).ToList(),
+			_ => GetCustomLeaderboard.CustomEntries,
+		};
+	}
+
+	private enum CustomEntrySorting
+	{
+		Rank,
+		Flag,
+		Player,
+		Time,
+		EnemiesKilled,
+		EnemiesAlive,
+		GemsCollected,
+		GemsDespawned,
+		GemsEaten,
+		Accuracy,
+		DeathType,
+		HomingStored,
+		HomingEaten,
+		LevelUpTime2,
+		LevelUpTime3,
+		LevelUpTime4,
+		SubmitDate,
+	}
+}

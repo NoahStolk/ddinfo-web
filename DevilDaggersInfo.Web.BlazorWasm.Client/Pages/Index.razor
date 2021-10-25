@@ -1,0 +1,51 @@
+@page "/"
+
+<h1 class="text-5xl md:text-6xl font-goethe pt-4 pb-4 text-red">DevilDaggers.Info</h1>
+
+<p class="py-1">
+	Welcome to DevilDaggers.Info, a website specifically made for the game <UrlLink Href="//store.steampowered.com/app/422970/Devil_Daggers/" OpenInNewTab=true>Devil Daggers</UrlLink>.
+</p>
+<img class="w-64 h-64 m-4" src="/images/home/logo.gif" />
+<p class="py-1">
+	This is a fan-made website; the creator of this website is not related to the developers of Devil Daggers. Devil Daggers is a game created by Sorath, and <UrlLink Href="//devildaggers.com/" OpenInNewTab=true>devildaggers.com</UrlLink> is the official website for the game.
+</p>
+<p class="py-1">
+	I first launched this website in early 2017 as a small hobby project. It started as a simple leaderboard page, so people could view the leaderboard without opening the game. Later I added wiki pages for spawns, hand upgrades, enemy types, and dagger types. After that I began hosting custom spawnsets, which allow modifications of the enemy spawns and arena of the main game. I developed a <UrlLink Href="/tools/survival-editor">spawnset editor</UrlLink> to create spawnsets more easily, and some time later created and began hosting <UrlLink Href="/custom/leaderboards">custom leaderboards</UrlLink> for them.
+</p>
+<p class="py-1">
+	Since then, I've expanded the project quite a bit, adding leaderboard history, world record progression, statistics, the possibility to mod the assets of the game, and much more.
+</p>
+<p class="py-1">
+	All of this would not have been possible without such a dedicated and helpful community. Thank you.
+</p>
+<p class="py-1">
+	Feel free to join the <UrlLink Href=@Constants.DiscordUrl OpenInNewTab=true>Discord server</UrlLink>.
+</p>
+<div class="grid gap-4 xl:grid-cols-4 lg:grid-cols-2 md:grid-cols-2 sm:grid-cols-1 xs:grid-cols-1">
+	@foreach ((string text, string imageUrl, string url) in _sections)
+	{
+		<a href="@url">
+			<div class="home-section-container">
+				<div class="overlay-block"></div>
+				<div class="home-section-text">@text</div>
+				<img class="img-fluid home-section-image" src="/images/@imageUrl" />
+			</div>
+		</a>
+	}
+</div>
+
+@code
+{
+	private Section[] _sections = new Section[]
+	{
+		new("View the official leaderboard", "home/leaderboard.png", "/leaderboard"),
+		new("Check out mods made by the community", "home/mod.png", "/custom/mods"),
+		new("Check out spawnsets made by the community", "home/spawnset.png", "/custom/spawnsets"),
+		new("Check out the asset editor which can be used to mod the game", "tools/ddae.png", "/tools/asset-editor"),
+		new("Check out the survival editor which can be used to create spawnsets and practice sections of the game", "tools/ddse.png", "/tools/survival-editor"),
+		new("Participate in custom leaderboards for spawnsets", "home/custom-leaderboard.png", "/custom/leaderboards"),
+		new("Check out the world record progression and other statistics", "home/graph.png", "/leaderboard/world-record-progression"),
+		new("Check out various wiki pages about the game, such as spawn times, enemy types, or hand upgrades", "home/enemies.png", "/wiki/enemies"), };
+
+	private record Section(string Text, string ImageUrl, string Url);
+}

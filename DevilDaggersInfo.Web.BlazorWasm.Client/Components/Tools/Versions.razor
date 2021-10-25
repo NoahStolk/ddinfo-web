@@ -1,0 +1,17 @@
+@using DevilDaggersInfo.Web.BlazorWasm.Shared.Dto.Public.Tools
+
+<Heading Level="2">Changelog</Heading>
+
+@foreach (GetToolVersion v in ToolVersions)
+{
+	<Heading Level="3">@v.VersionNumber - @v.ReleaseDate.ToString(FormatUtils.DateFormat)@(v.ReleaseDate > FeatureConstants.TrackingToolDownloadCounts ? $" ({v.DownloadCount.ToString("N0")} downloads)" : string.Empty)</Heading>
+	@foreach (GetToolVersionChange c in v.Changes)
+	{
+		<Change GetChange="c" />
+	}
+}
+
+@code
+{
+	[Parameter, EditorRequired] public IReadOnlyList<GetToolVersion> ToolVersions { get; set; } = null!;
+}

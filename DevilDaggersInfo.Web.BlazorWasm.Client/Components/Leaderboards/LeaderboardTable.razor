@@ -1,0 +1,127 @@
+@typeparam TGetLeaderboardDto
+@typeparam TGetEntryDto
+@using DevilDaggersInfo.Core.Wiki
+@using DevilDaggersInfo.Core.Wiki.Enums
+@using DevilDaggersInfo.Core.Wiki.Objects
+@using DevilDaggersInfo.Web.BlazorWasm.Shared.Dto.Public
+@using DevilDaggersInfo.Web.BlazorWasm.Shared.Dto.Public.Leaderboards
+@using DevilDaggersInfo.Web.BlazorWasm.Shared.Dto.Public.Players
+
+<div class="text-xl font-goethe">
+	<div class="grid gap-3 grid-cols-leaderboard-sm md:grid-cols-leaderboard-md lg:grid-cols-leaderboard-lg xl:grid-cols-leaderboard-xl">
+		<div @onclick="() => Sort(LeaderboardSorting.Rank)" class="text-right"><Tooltip Text="Sort by RANK"><img class="cursor-pointer inline-block" src="/images/icons/custom-x2/rank.png" /></Tooltip></div>
+		<div @onclick="() => Sort(LeaderboardSorting.Flag)" class="text-left"><Tooltip Text="Sort by FLAG"><img class="cursor-pointer inline-block" src="/images/icons/custom-x2/flag.png" /></Tooltip></div>
+		<div @onclick="() => Sort(LeaderboardSorting.Player)" class="text-left"><Tooltip Text="Sort by PLAYER"><img class="cursor-pointer inline-block" src="/images/icons/mask-x2/eye.png" /></Tooltip></div>
+		<div @onclick="() => Sort(LeaderboardSorting.Time)" class="text-right"><Tooltip Text="Sort by TIME"><img class="cursor-pointer inline-block" src="/images/icons/mask-x2/stopwatch.png" /></Tooltip></div>
+		<div @onclick="() => Sort(LeaderboardSorting.Kills)" class="text-right hidden md:block"><Tooltip Text="Sort by KILLS"><img class="cursor-pointer inline-block" src="/images/icons/mask-x2/dagger.png" /></Tooltip></div>
+		<div @onclick="() => Sort(LeaderboardSorting.Gems)" class="text-right hidden md:block"><Tooltip Text="Sort by GEMS"><img class="cursor-pointer inline-block" src="/images/icons/mask-x2/gem.png" /></Tooltip></div>
+		<div @onclick="() => Sort(LeaderboardSorting.Accuracy)" class="text-right hidden md:block"><Tooltip Text="Sort by ACCURACY"><img class="cursor-pointer inline-block" src="/images/icons/mask-x2/crosshair.png" /></Tooltip></div>
+		<div @onclick="() => Sort(LeaderboardSorting.DeathType)" class="text-left hidden lg:block"><Tooltip Text="Sort by DEATH TYPE"><img class="cursor-pointer inline-block" src="/images/icons/mask-x2/skull.png" /></Tooltip></div>
+		<div @onclick="() => Sort(LeaderboardSorting.TotalTime)" class="text-right hidden xl:block"><Tooltip Text="Sort by TOTAL TIME"><img class="cursor-pointer inline-block" src="/images/icons/mask-x2/stopwatch.png" /></Tooltip></div>
+		<div @onclick="() => Sort(LeaderboardSorting.TotalKills)" class="text-right hidden xl:block"><Tooltip Text="Sort by TOTAL KILLS"><img class="cursor-pointer inline-block" src="/images/icons/mask-x2/dagger.png" /></Tooltip></div>
+		<div @onclick="() => Sort(LeaderboardSorting.TotalGems)" class="text-right hidden xl:block"><Tooltip Text="Sort by TOTAL GEMS"><img class="cursor-pointer inline-block" src="/images/icons/mask-x2/gem.png" /></Tooltip></div>
+		<div @onclick="() => Sort(LeaderboardSorting.TotalAccuracy)" class="text-right hidden xl:block"><Tooltip Text="Sort by TOTAL ACCURACY"><img class="cursor-pointer inline-block" src="/images/icons/mask-x2/crosshair.png" /></Tooltip></div>
+		<div @onclick="() => Sort(LeaderboardSorting.TotalDeaths)" class="text-right hidden xl:block"><Tooltip Text="Sort by TOTAL DEATHS"><img class="cursor-pointer inline-block" src="/images/icons/mask-x2/skull.png" /></Tooltip></div>
+	</div>
+	<div>
+		@{
+			int i = 0;
+
+			foreach (IGetEntryDto entry in Leaderboard.Entries)
+			{
+				GetPlayerForLeaderboard? player = Players?.Find(p => p.Id == entry.Id);
+				bool isBanned = player?.IsBanned ?? false;
+
+				Dagger dagger = Daggers.GetDaggerFromSeconds(GameVersion, entry.Time);
+				string daggerCssClass = dagger.Name.ToLower();
+
+				double accuracy = entry.DaggersFired == 0 ? 0 : entry.DaggersHit / (double)entry.DaggersFired;
+				double accuracyTotal = entry.DaggersFiredTotal == 0 ? 0 : entry.DaggersHitTotal / (double)entry.DaggersFiredTotal;
+
+				string daggers = FormatUtils.FormatDaggersInt32(entry.DaggersHit, entry.DaggersFired, IsHistory);
+				string daggersTotal = FormatUtils.FormatDaggersUInt64(entry.DaggersHitTotal, entry.DaggersFiredTotal, IsHistory);
+
+				<div class="grid gap-3 grid-cols-leaderboard-sm md:grid-cols-leaderboard-md lg:grid-cols-leaderboard-lg xl:grid-cols-leaderboard-xl h-6 @(i++ % 2 == 0 ? "bg-gray-0b" : string.Empty) @(isBanned ? "text-color-ban" : string.Empty)">
+					<EntryRank PlayerId="@entry.Id" Rank="@entry.Rank" />
+					<EntryFlag CountryCode="@player?.CountryCode" />
+					<EntryUsername DaggerCssClass="@daggerCssClass" Id="entry.Id" Name="@entry.Username" BanDescription="@player?.BanDescription" IsBanned="isBanned" />
+					<div class="text-right @(isBanned ? string.Empty : daggerCssClass)">@entry.Time.ToString(FormatUtils.TimeFormat)</div>
+					<div class="text-right hidden md:block">@entry.Kills.ToString(FormatUtils.LeaderboardIntFormat)</div>
+					<div class="text-right hidden md:block">@entry.Gems.ToString(FormatUtils.LeaderboardIntFormat)</div>
+					<div class="text-right hidden md:block">
+						<Tooltip Text="@daggers"><span class="font-goethe text-xl cursor-pointer">@accuracy.ToString(FormatUtils.AccuracyFormat)</span></Tooltip>
+					</div>
+					<div class="text-left hidden lg:block">@MarkupUtils.DeathString(entry.DeathType, GameVersion)</div>
+					<div class="text-right hidden xl:block">@entry.TimeTotal.ToString(FormatUtils.LeaderboardGlobalTimeFormat)</div>
+					<div class="text-right hidden xl:block">@entry.KillsTotal.ToString(FormatUtils.LeaderboardIntFormat)</div>
+					<div class="text-right hidden xl:block">@entry.GemsTotal.ToString(FormatUtils.LeaderboardIntFormat)</div>
+					<div class="text-right hidden xl:block">
+						<Tooltip Text="@daggersTotal"><span class="font-goethe text-xl cursor-pointer">@accuracyTotal.ToString(FormatUtils.AccuracyFormat)</span></Tooltip>
+					</div>
+					<div class="text-right hidden xl:block">@entry.DeathsTotal.ToString(FormatUtils.LeaderboardIntFormat)</div>
+				</div>
+			}
+		}
+	</div>
+</div>
+
+@code
+{
+	[Parameter] public bool IsHistory { get; set; }
+	[Parameter, EditorRequired] public TGetLeaderboardDto Leaderboard { get; set; } = default!;
+	[Parameter, EditorRequired] public List<GetPlayerForLeaderboard>? Players { get; set; } = null!;
+	[Parameter, EditorRequired] public GameVersion GameVersion { get; set; }
+
+	private LeaderboardSorting _sortBy;
+	private bool _ascending;
+
+	private Dictionary<LeaderboardSorting, bool> _sortings = new();
+
+	protected override void OnInitialized()
+	{
+		foreach (LeaderboardSorting e in (LeaderboardSorting[])Enum.GetValues(typeof(LeaderboardSorting)))
+			_sortings.Add(e, false);
+	}
+
+	private void Sort(LeaderboardSorting sortBy)
+	{
+		_sortBy = sortBy;
+		_sortings[sortBy] = !_sortings[sortBy];
+		_ascending = _sortings[sortBy];
+
+		Leaderboard.Entries = _sortBy switch
+		{
+			LeaderboardSorting.Accuracy => Leaderboard.Entries.OrderBy(e => e.DaggersFired == 0 ? 0 : e.DaggersHit / (float)e.DaggersFired, _ascending).ToList(),
+			LeaderboardSorting.DeathType => Leaderboard.Entries.OrderBy(e => e.DeathType, _ascending).ToList(),
+			LeaderboardSorting.Flag => Leaderboard.Entries.OrderBy(e => Players?.Find(p => p.Id == e.Id)?.CountryCode ?? string.Empty, _ascending).ToList(),
+			LeaderboardSorting.Gems => Leaderboard.Entries.OrderBy(e => e.Gems, _ascending).ToList(),
+			LeaderboardSorting.Kills => Leaderboard.Entries.OrderBy(e => e.Kills, _ascending).ToList(),
+			LeaderboardSorting.Player => Leaderboard.Entries.OrderBy(e => e.Username, _ascending).ToList(),
+			LeaderboardSorting.Rank => Leaderboard.Entries.OrderBy(e => e.Rank, _ascending).ToList(),
+			LeaderboardSorting.Time => Leaderboard.Entries.OrderBy(e => e.Time, _ascending).ToList(),
+			LeaderboardSorting.TotalAccuracy => Leaderboard.Entries.OrderBy(e => e.DaggersFiredTotal == 0 ? 0 : e.DaggersHitTotal / (float)e.DaggersFiredTotal, _ascending).ToList(),
+			LeaderboardSorting.TotalDeaths => Leaderboard.Entries.OrderBy(e => e.DeathsTotal, _ascending).ToList(),
+			LeaderboardSorting.TotalGems => Leaderboard.Entries.OrderBy(e => e.GemsTotal, _ascending).ToList(),
+			LeaderboardSorting.TotalKills => Leaderboard.Entries.OrderBy(e => e.KillsTotal, _ascending).ToList(),
+			LeaderboardSorting.TotalTime => Leaderboard.Entries.OrderBy(e => e.TimeTotal, _ascending).ToList(),
+			_ => Leaderboard.Entries,
+		};
+	}
+
+	private enum LeaderboardSorting
+	{
+		Rank,
+		Flag,
+		Player,
+		Time,
+		Kills,
+		Gems,
+		Accuracy,
+		DeathType,
+		TotalTime,
+		TotalKills,
+		TotalGems,
+		TotalAccuracy,
+		TotalDeaths,
+	}
+}

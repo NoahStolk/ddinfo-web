@@ -1,0 +1,125 @@
+@page "/leaderboard"
+@inherits FluxorComponent
+@inject PublicApiHttpClient Http
+@inject NavigationManager NavigationManager
+@inject IDispatcher Dispatcher
+@inject IState<RankState> RankState
+@using DevilDaggersInfo.Core.Wiki.Enums
+@using DevilDaggersInfo.Web.BlazorWasm.Client.Components.Leaderboards
+@using DevilDaggersInfo.Web.BlazorWasm.Client.Store.Leaderboard.Index
+@using DevilDaggersInfo.Web.BlazorWasm.Shared.Dto.Public
+@using DevilDaggersInfo.Web.BlazorWasm.Shared.Dto.Public.Leaderboards
+@using DevilDaggersInfo.Web.BlazorWasm.Shared.Dto.Public.Players
+
+<Heading>Leaderboard</Heading>
+
+@if (GetLeaderboard == null)
+{
+	@if (_apiError == null)
+	{
+		<Loading />
+	}
+	else
+	{
+		// TODO: Only display this error message if we're sure the issue is from the official Devil Daggers leaderboard servers.
+		<p class="py-1">Failed to retrieve scores from the official Devil Daggers leaderboard servers. Please try again later.</p>
+		<p class="py-1">@_apiError</p>
+	}
+}
+else
+{
+	<div>
+		<div>Rank:</div>
+		<input class="bg-black border-gray-22 border-2" @onkeypress="KeyPressInputRank" @onchange="ChangeInputRank" />
+		<button class="bg-gray-0b hover:bg-gray-22 transition-colors duration-100 w-16 h-8 py-1 rounded text-color-text" @onclick="FetchLeaderboard">Show</button>
+
+		<div>
+			@if (_reloading)
+			{
+				<Loading />
+			}
+			else
+			{
+				<span>Showing rank @RankState.Value.Rank - @(RankState.Value.Rank + 99)</span>
+			}
+		</div>
+		<div>
+			<button class="@(RankState.Value.Rank <= 1 ? "disabled" : string.Empty) bg-gray-0b hover:bg-gray-22 transition-colors duration-100 w-8 h-8 py-1 rounded text-color-text" @onclick="() => SetRank(1)">|&lt;</button>
+			<button class="@(RankState.Value.Rank <= 1 ? "disabled" : string.Empty) bg-gray-0b hover:bg-gray-22 transition-colors duration-100 w-8 h-8 py-1 rounded text-color-text" @onclick="() => SetRank(RankState.Value.Rank - 1000)">&lt;&lt;</button>
+			<button class="@(RankState.Value.Rank <= 1 ? "disabled" : string.Empty) bg-gray-0b hover:bg-gray-22 transition-colors duration-100 w-8 h-8 py-1 rounded text-color-text" @onclick="() => SetRank(RankState.Value.Rank - 100)">&lt;</button>
+			<button class="@(RankState.Value.Rank >= _maxRank ? "disabled" : string.Empty) bg-gray-0b hover:bg-gray-22 transition-colors duration-100 w-8 h-8 py-1 rounded text-color-text" @onclick="() => SetRank(RankState.Value.Rank + 100)">&gt;</button>
+			<button class="@(RankState.Value.Rank >= _maxRank ? "disabled" : string.Empty) bg-gray-0b hover:bg-gray-22 transition-colors duration-100 w-8 h-8 py-1 rounded text-color-text" @onclick="() => SetRank(RankState.Value.Rank + 1000)">&gt;&gt;</button>
+			<button class="@(RankState.Value.Rank >= _maxRank ? "disabled" : string.Empty) bg-gray-0b hover:bg-gray-22 transition-colors duration-100 w-8 h-8 py-1 rounded text-color-text" @onclick="() => SetRank(GetLeaderboard.TotalPlayers - 99)">&gt;|</button>
+		</div>
+	</div>
+
+	<LeaderboardGlobal Leaderboard="GetLeaderboard" IsHistory="false" />
+	<LeaderboardTableInfo />
+	<LeaderboardTable TGetLeaderboardDto="GetLeaderboard" TGetEntryDto="GetEntry" Leaderboard="GetLeaderboard" Players="Players" IsHistory="false" GameVersion="GameVersion.V3_1" />
+}
+
+@code
+{
+	private string? _apiError;
+	private bool _reloading;
+
+	private int _maxRank => (GetLeaderboard?.TotalPlayers ?? int.MaxValue) - 99;
+
+	[Parameter, SupplyParameterFromQuery] public int Rank { get; set; }
+
+	public GetLeaderboard? GetLeaderboard { get; set; }
+
+	public List<GetPlayerForLeaderboard>? Players { get; set; }
+
+	protected override async Task OnInitializedAsync()
+	{
+		Dispatcher.Dispatch(new ChangeRankAction(Rank, _maxRank));
+
+		Players = await Http.GetPlayersForLeaderboard();
+		await FetchLeaderboard();
+	}
+
+	private async Task SetRank(int value)
+	{
+		Dispatcher.Dispatch(new ChangeRankAction(value, _maxRank));
+		NavigationManager.AddOrModifyQueryParameter(QueryParameters.Rank, RankState.Value.Rank);
+
+		await FetchLeaderboard();
+	}
+
+	private async Task FetchLeaderboard()
+	{
+		try
+		{
+			if (GetLeaderboard != null)
+				_reloading = true;
+
+			GetLeaderboard = await Http.GetLeaderboard(RankState.Value.Rank);
+			_reloading = false;
+		}
+		catch (Exception ex)
+		{
+			_apiError = ex.Message;
+		}
+	}
+
+	private async Task KeyPressInputRank(KeyboardEventArgs e)
+	{
+		// TODO: Rank is not updated here yet...
+		if (e.Code == "Enter" || e.Code == "NumpadEnter")
+		{
+			await FetchLeaderboard();
+		}
+	}
+
+	private async Task ChangeInputRank(ChangeEventArgs e)
+	{
+		if (int.TryParse(e.Value?.ToString(), out int result))
+			await SetRank(result);
+	}
+
+	private static class QueryParameters
+	{
+		public static string Rank { get; } = nameof(Rank);
+	}
+}

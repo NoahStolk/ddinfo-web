@@ -1,0 +1,63 @@
+@page "/admin/players/add"
+@inject AdminApiHttpClient Http
+@inject NavigationManager NavigationManager
+@using DevilDaggersInfo.Web.BlazorWasm.Client.Components.Admin
+@using DevilDaggersInfo.Web.BlazorWasm.Shared.Dto.Admin.Mods
+@using DevilDaggersInfo.Web.BlazorWasm.Shared.Dto.Admin.Players
+@using DevilDaggersInfo.Web.BlazorWasm.Shared.Dto.Admin.Titles
+
+<AdminAdd OverviewUrl="/admin/players" PostApiUrl="api/admin/players" Model="_addPlayer" @ref="_addComponent">
+	<AdminInput Label="@nameof(AddPlayer.Id)"><InputNumber class="w-64 pl-2 bg-gray-0b text-color-text" @bind-Value="_addPlayer.Id" /></AdminInput>
+	<AdminInput Label="@nameof(AddPlayer.CountryCode)"><SearchDropdown Values="@(UserUtils.CountryNames!)" Converter="s => s" @bind-Value="@_addPlayer.CountryCode" /></AdminInput>
+	<AdminInput Label="@nameof(AddPlayer.Dpi)"><InputNumber class="w-64 pl-2 bg-gray-0b text-color-text" @bind-Value="_addPlayer.Dpi" /></AdminInput>
+	<AdminInput Label="@nameof(AddPlayer.Fov)"><InputNumber class="w-64 pl-2 bg-gray-0b text-color-text" @bind-Value="_addPlayer.Fov" /></AdminInput>
+	<AdminInput Label="@nameof(AddPlayer.Gamma)"><InputNumber class="w-64 pl-2 bg-gray-0b text-color-text" @bind-Value="_addPlayer.Gamma" /></AdminInput>
+	<AdminInput Label="@nameof(AddPlayer.HasFlashHandEnabled)"><InputNullableBoolean @bind-Value="@_addPlayer.HasFlashHandEnabled" /></AdminInput>
+	<AdminInput Label="@nameof(AddPlayer.InGameSens)"><InputNumber class="w-64 pl-2 bg-gray-0b text-color-text" @bind-Value="@_addPlayer.InGameSens" /></AdminInput>
+	<AdminInput Label="@nameof(AddPlayer.IsRightHanded)"><InputNullableBoolean @bind-Value="@_addPlayer.IsRightHanded" /></AdminInput>
+	<AdminInput Label="@nameof(AddPlayer.UsesLegacyAudio)"><InputNullableBoolean @bind-Value="@_addPlayer.UsesLegacyAudio" /></AdminInput>
+	<AdminInput Label="@nameof(AddPlayer.HideDonations)"><InputCheckbox @bind-Value="@_addPlayer.HideDonations" /></AdminInput>
+	<AdminInput Label="@nameof(AddPlayer.HidePastUsernames)"><InputCheckbox @bind-Value="@_addPlayer.HidePastUsernames" /></AdminInput>
+	<AdminInput Label="@nameof(AddPlayer.HideSettings)"><InputCheckbox @bind-Value="@_addPlayer.HideSettings" /></AdminInput>
+	<AdminInput Label="@nameof(AddPlayer.ModIds)"><MultiSearchDropdown Values="@_modNames" @bind-Value="@_addPlayer.ModIds" /></AdminInput>
+	<AdminInput Label="@nameof(AddPlayer.TitleIds)"><MultiSearchDropdown Values="@_titleNames" @bind-Value="@_addPlayer.TitleIds" /></AdminInput>
+	<AdminInput Label="@nameof(AddPlayer.IsBanned)"><InputCheckbox @bind-Value="@_addPlayer.IsBanned" /></AdminInput>
+	<AdminInput Label="@nameof(AddPlayer.BanDescription)"><InputText class="w-64 pl-2 bg-gray-0b text-color-text" @bind-Value="@_addPlayer.BanDescription" /></AdminInput>
+	<AdminInput Label="@nameof(AddPlayer.BanResponsibleId)"><InputNumber class="w-64 pl-2 bg-gray-0b text-color-text" @bind-Value="@_addPlayer.BanResponsibleId" /></AdminInput>
+	<AdminInput Label="@nameof(AddPlayer.IsBannedFromDdcl)"><InputCheckbox @bind-Value="@_addPlayer.IsBannedFromDdcl" /></AdminInput>
+</AdminAdd>
+
+@code
+{
+	private Dictionary<int, string>? _modNames;
+	private Dictionary<int, string>? _titleNames;
+	private AddPlayer _addPlayer = new();
+	private AdminAdd<AddPlayer> _addComponent = null!;
+
+	protected override async Task OnInitializedAsync()
+	{
+		try
+		{
+			List<GetModName> getModNames = await Http.Client.GetFromJsonAsync<List<GetModName>>("api/admin/mods/names") ?? throw new($"Response could not be deserialized to {nameof(List<GetModName>)}.");
+			_modNames = getModNames.ToDictionary(m => m.Id, m => m.Name);
+
+			List<GetTitle> getTitles = await Http.Client.GetFromJsonAsync<List<GetTitle>>("api/admin/titles/names") ?? throw new($"Response could not be deserialized to {nameof(List<GetTitle>)}.");
+			_titleNames = getTitles.ToDictionary(t => t.Id, t => t.Name);
+
+			_addComponent.State = ErrorState.None;
+		}
+		catch (HttpRequestException ex)
+		{
+			if (ex.StatusCode.HasValue)
+				_addComponent.ErrorMessage = $"Error {(int)ex.StatusCode}: {ex.StatusCode}";
+			else
+				_addComponent.ErrorMessage = "An error occurred while sending the request.";
+
+			_addComponent.State = ErrorState.FatalError;
+		}
+		catch (AccessTokenNotAvailableException exception)
+		{
+			exception.Redirect();
+		}
+	}
+}

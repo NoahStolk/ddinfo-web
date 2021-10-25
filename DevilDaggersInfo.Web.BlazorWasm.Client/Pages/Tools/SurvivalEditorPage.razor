@@ -1,0 +1,50 @@
+@page "/tools/survival-editor"
+@inject PublicApiHttpClient Http
+@using DevilDaggersInfo.Web.BlazorWasm.Client.Components.Tools
+@using DevilDaggersInfo.Web.BlazorWasm.Shared.Dto.Public.Spawnsets
+@using DevilDaggersInfo.Web.BlazorWasm.Shared.Dto.Public.Tools
+
+<Heading>Devil Daggers Survival Editor</Heading>
+
+@if (GetTool == null || GetTotalSpawnsetData == null)
+{
+	<Loading />
+}
+else
+{
+	<BuildInfo GetTool="GetTool" />
+
+	<img src="/images/tools/ddse.png" class="object-contain h-160 pt-3" />
+
+	<Heading Level="2">Features</Heading>
+	<ul class="pl-4">
+		<li class="list-disc">Spawns editor with many useful features such as copying spawns, previewing end loop, speeding up spawns, etc</li>
+		<li class="list-disc">Arena editor with the ability to change tile heights, shrinking controls, arena brightness, etc</li>
+		<li class="list-disc">Practice editor which lets you change the initial timer, hand level, and additional gems</li>
+		<li class="list-disc">Supports reading and writing spawnsets for all three major versions of the game</li>
+		<li class="list-disc">Generate custom arenas with built-in presets</li>
+		<li class="list-disc">Download @(GetTotalSpawnsetData.Count) existing spawnsets from the website to insert them into the game directly</li>
+	</ul>
+
+	<Heading Level="2">System Requirements</Heading>
+	<ul class="pl-4">
+		<li class="list-disc">Windows (64-bit)</li>
+		<li class="list-disc">.NET Desktop Runtime 5.0</li>
+	</ul>
+
+	<RunInfo RuntimeName=".NET Desktop Runtime 5.0" RuntimeUrl="https://dotnet.microsoft.com/download/dotnet/5.0" />
+	<SourceInfo Url="https://github.com/NoahStolk/DevilDaggersSurvivalEditor" />
+	<Versions ToolVersions="GetTool.Versions" />
+}
+
+@code
+{
+	public GetTool? GetTool { get; set; }
+	public GetTotalSpawnsetData? GetTotalSpawnsetData { get; set; }
+
+	protected override async Task OnInitializedAsync()
+	{
+		GetTool = await Http.GetTool("DevilDaggersSurvivalEditor");
+		GetTotalSpawnsetData = await Http.GetTotalSpawnsetData();
+	}
+}

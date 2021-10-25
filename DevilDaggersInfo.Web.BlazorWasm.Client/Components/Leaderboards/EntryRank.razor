@@ -1,0 +1,23 @@
+@inject IJSRuntime JSRuntime
+
+<div class="text-right">
+	@if (PlayerId != 0)
+	{
+		<Tooltip Text="@($"ID: {PlayerId} (click to copy)")"><span @onclick="CopyToClipboard">@Rank.ToString(FormatUtils.LeaderboardIntFormat)</span></Tooltip>
+	}
+	else
+	{
+		<span style="color: #ff0;">@Rank.ToString(FormatUtils.LeaderboardIntFormat)</span>
+	}
+</div>
+
+@code
+{
+	[Parameter, EditorRequired] public int PlayerId { get; set; }
+	[Parameter, EditorRequired] public int Rank { get; set; }
+
+	private async Task CopyToClipboard()
+	{
+		await JSRuntime.InvokeVoidAsync("navigator.clipboard.writeText", PlayerId);
+	}
+}

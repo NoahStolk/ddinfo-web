@@ -1,0 +1,59 @@
+@page "/admin/mods/add"
+@inject AdminApiHttpClient Http
+@inject NavigationManager NavigationManager
+@using DevilDaggersInfo.Web.BlazorWasm.Client.Components.Admin
+@using DevilDaggersInfo.Web.BlazorWasm.Shared.Dto.Admin.Mods
+@using DevilDaggersInfo.Web.BlazorWasm.Shared.Dto.Admin.Players
+@using DevilDaggersInfo.Web.BlazorWasm.Shared.Enums
+
+<AdminAdd OverviewUrl="/admin/mods" PostApiUrl="api/admin/mods" Model="_addMod" @ref="_addComponent">
+	<AdminInput Label="@nameof(AddMod.Name)"><InputText class="w-64 pl-2 bg-gray-0b text-color-text" @bind-Value="@_addMod.Name" /></AdminInput>
+	<AdminInput Label="@nameof(AddMod.PlayerIds)"><MultiSearchDropdown Values="@_playerNames" @bind-Value="@_addMod.PlayerIds" /></AdminInput>
+	<AdminInput Label="@nameof(AddMod.TrailerUrl)"><InputText class="w-64 pl-2 bg-gray-0b text-color-text" @bind-Value="_addMod.TrailerUrl" /></AdminInput>
+	<AdminInput Label="@nameof(AddMod.HtmlDescription)"><InputText class="w-64 pl-2 bg-gray-0b text-color-text" @bind-Value="@_addMod.HtmlDescription" /></AdminInput>
+	<AdminInput Label="@nameof(AddMod.ModTypes)"><MultiSearchDropdown Values="@_modTypes" @bind-Value="@_addMod.ModTypes" /></AdminInput>
+	<AdminInput Label="@nameof(AddMod.Url)"><InputText class="w-64 pl-2 bg-gray-0b text-color-text" @bind-Value="@_addMod.Url" /></AdminInput>
+	<AdminInput Label="@nameof(AddMod.IsHidden)"><InputCheckbox @bind-Value="@_addMod.IsHidden" /></AdminInput>
+	<AdminInput Label="@nameof(AddMod.FileContents)"><InputFile OnChange="LoadFile" /></AdminInput>
+</AdminAdd>
+
+@code
+{
+	private Dictionary<int, string>? _playerNames;
+	private AddMod _addMod = new();
+	private AdminAdd<AddMod> _addComponent = null!;
+	private Dictionary<int, string> _modTypes = Enum.GetValues<ModTypes>().ToDictionary(e => (int)e, e => e.ToString());
+
+	protected override async Task OnInitializedAsync()
+	{
+		try
+		{
+			List<GetPlayerName> getPlayerNames = await Http.Client.GetFromJsonAsync<List<GetPlayerName>>($"api/admin/players/names") ?? throw new($"Response could not be deserialized to {nameof(List<GetPlayerName>)}.");
+			_playerNames = getPlayerNames.ToDictionary(m => m.Id, m => m.PlayerName);
+
+			_addComponent.State = ErrorState.None;
+		}
+		catch (HttpRequestException ex)
+		{
+			if (ex.StatusCode.HasValue)
+				_addComponent.ErrorMessage = $"Error {(int)ex.StatusCode}: {ex.StatusCode}";
+			else
+				_addComponent.ErrorMessage = "An error occurred while sending the request.";
+
+			_addComponent.State = ErrorState.FatalError;
+		}
+		catch (AccessTokenNotAvailableException exception)
+		{
+			exception.Redirect();
+		}
+	}
+
+	private async Task LoadFile(InputFileChangeEventArgs e)
+	{
+		IBrowserFile file = e.File;
+		using MemoryStream ms = new();
+		await file.OpenReadStream().CopyToAsync(ms);
+
+		_addMod.FileContents = ms.ToArray();
+	}
+}

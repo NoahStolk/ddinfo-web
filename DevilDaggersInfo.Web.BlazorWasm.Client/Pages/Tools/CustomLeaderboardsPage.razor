@@ -1,0 +1,51 @@
+@page "/tools/custom-leaderboards"
+@inject PublicApiHttpClient Http
+@using DevilDaggersInfo.Web.BlazorWasm.Client.Components.Tools
+@using DevilDaggersInfo.Web.BlazorWasm.Shared.Dto.Public.CustomLeaderboards
+@using DevilDaggersInfo.Web.BlazorWasm.Shared.Dto.Public.Tools
+@using DevilDaggersInfo.Web.BlazorWasm.Shared.Enums
+
+<Heading>Devil Daggers Custom Leaderboards</Heading>
+
+@if (GetTool == null || GetTotalCustomLeaderboardData == null)
+{
+	<Loading />
+}
+else
+{
+	<BuildInfo GetTool="GetTool" />
+
+	<img src="/images/tools/ddcl.png" class="object-contain h-160 pt-3" />
+
+	<Heading Level="2">Features</Heading>
+	<ul class="pl-4">
+		<li class="list-disc">Participate in @GetTotalCustomLeaderboardData.LeaderboardsPerCategory[CustomLeaderboardCategory.Default].ToString("N0") custom survival leaderboards and @GetTotalCustomLeaderboardData.LeaderboardsPerCategory[CustomLeaderboardCategory.Speedrun].ToString("N0") custom speedrun leaderboards</li>
+		<li class="list-disc">@GetTotalCustomLeaderboardData.PlayersPerCategory.Values.Sum().ToString("N0") players</li>
+		<li class="list-disc">@GetTotalCustomLeaderboardData.ScoresPerCategory.Values.Sum().ToString("N0") scores</li>
+		<li class="list-disc">@GetTotalCustomLeaderboardData.SubmitsPerCategory.Values.Sum().ToString("N0") total submissions (since @FeatureConstants.TrackingCustomLeaderboardSubmitCounts.ToString(FormatUtils.DateFormat))</li>
+	</ul>
+
+	<Heading Level="2">System Requirements</Heading>
+	<ul class="pl-4">
+		<li class="list-disc">Windows (64-bit)</li>
+		<li class="list-disc">.NET Runtime 5.0</li>
+	</ul>
+
+	<RunInfo RuntimeName=".NET Runtime 5.0" RuntimeUrl="https://dotnet.microsoft.com/download/dotnet/5.0" />
+	<p><i>Note: you do not need to install the .NET Runtime separately if you already have the .NET Desktop Runtime installed.</i></p>
+
+	<SourceInfo Url="https://github.com/NoahStolk/DevilDaggersCustomLeaderboards" />
+	<Versions ToolVersions="GetTool.Versions" />
+}
+
+@code
+{
+	public GetTool? GetTool { get; set; }
+	public GetTotalCustomLeaderboardData? GetTotalCustomLeaderboardData { get; set; }
+
+	protected override async Task OnInitializedAsync()
+	{
+		GetTool = await Http.GetTool("DevilDaggersCustomLeaderboards");
+		GetTotalCustomLeaderboardData = await Http.GetTotalCustomLeaderboardData();
+	}
+}

@@ -1,0 +1,58 @@
+@inherits InputBase<TKey>
+@typeparam TKey
+
+<div class="inline-block w-64 bg-gray-0b text-color-text cursor-pointer">
+	<div class="grid grid-cols-8">
+		<span class="pl-2 col-span-7" @onclick="e => _show = !_show">@SelectedDisplayValue</span>
+		<span class="w-8 cursor-pointer bg-gray-0b rounded block text-center" @onclick="e => HandleSelect(default)">✕</span>
+	</div>
+	<div class="@(_show ? "absolute" : "hidden") z-10">
+		<div class="bg-gray-0b">
+			<div class="p-2 w-64">
+				<span class="cursor-default w-16">Search:</span>
+				<InputTextImmediate @bind-Value="_searchValue" class="w-48 bg-gray-22 text-color-text" />
+			</div>
+			<ul class="max-h-screen-half overflow-y-scroll w-64">
+				@{
+					int i = 0;
+					foreach (KeyValuePair<TKey, string> kvp in FilteredItems)
+					{
+						<li class="cursor-pointer pl-2 @(i++ % 2 == 0 ? "bg-gray-0b" : string.Empty)" Item="@kvp" @onclick="e => HandleSelect(kvp.Key)">@kvp.Value (@kvp.Key)</li>
+					}
+				}
+			</ul>
+		</div>
+	</div>
+</div>
+
+@code
+{
+	private string? _searchValue;
+
+	private string SelectedDisplayValue => CurrentValue == null || Values?.ContainsKey(CurrentValue) != true ? "<None selected>" : $"{CurrentValue} ({Values[CurrentValue]})";
+
+	[Parameter] public Dictionary<TKey, string>? Values { get; set; }
+	[Parameter, EditorRequired] public Func<string?, TKey> Converter { get; set; } = null!;
+
+	private bool _show = false;
+
+	public Dictionary<TKey, string> FilteredItems => Values == null ? new() : _searchValue == null ? Values : Values
+		.Where(kvp =>
+			kvp.Key.ToString()?.Contains(_searchValue, StringComparison.InvariantCultureIgnoreCase) == true ||
+			kvp.Value.Contains(_searchValue, StringComparison.InvariantCultureIgnoreCase))
+		.ToDictionary(kvp => kvp.Key, kvp => kvp.Value);
+
+	public void HandleSelect(TKey? item)
+	{
+		CurrentValue = item;
+		_show = false;
+		StateHasChanged();
+	}
+
+	protected override bool TryParseValueFromString(string? value, out TKey? result, out string validationMessage)
+	{
+		validationMessage = string.Empty;
+		result = Converter(value);
+		return true;
+	}
+}

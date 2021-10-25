@@ -1,0 +1,6 @@
+@page "/admin/custom-leaderboards"
+@using DevilDaggersInfo.Web.BlazorWasm.Client.Components.Admin
+@using DevilDaggersInfo.Web.BlazorWasm.Shared.Dto.Admin.CustomLeaderboards
+@inject HttpClient Http
+
+<AdminOverview TGetDto="GetCustomLeaderboard" TKey="int" Title="Custom Leaderboards" ApiRoute="api/admin/custom-leaderboards" GridConfiguration="admin-custom-leaderboards"></AdminOverview>

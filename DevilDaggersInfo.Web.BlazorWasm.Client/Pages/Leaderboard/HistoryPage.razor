@@ -1,0 +1,80 @@
+@page "/leaderboard/history"
+@inject PublicApiHttpClient Http
+@inject NavigationManager NavigationManager
+@using DevilDaggersInfo.Core.Wiki
+@using DevilDaggersInfo.Core.Wiki.Enums
+@using DevilDaggersInfo.Web.BlazorWasm.Client.Components.Leaderboards
+@using DevilDaggersInfo.Web.BlazorWasm.Client.Components.Leaderboards.History
+@using DevilDaggersInfo.Web.BlazorWasm.Shared.Dto.Public
+@using DevilDaggersInfo.Web.BlazorWasm.Shared.Dto.Public.LeaderboardHistory
+@using DevilDaggersInfo.Web.BlazorWasm.Shared.Dto.Public.Players
+
+<Heading>Leaderboard History</Heading>
+
+@if (GetLeaderboardHistory == null)
+{
+	<Loading />
+}
+else
+{
+	<div>
+		<DatePicker DateSelected="@(d => UpdateDateTime(d))" />
+
+		@if (_reloading)
+		{
+			<Loading />
+		}
+	</div>
+
+	<div>Closest result for @(DateTime.ToString(FormatUtils.DateTimeFormat)) is @(GetLeaderboardHistory.DateTime.ToString(FormatUtils.DateTimeFormat)).</div>
+
+	<LeaderboardGlobal Leaderboard="GetLeaderboardHistory" IsHistory="true" />
+	<LeaderboardTableInfo />
+	<LeaderboardTable TGetLeaderboardDto="GetLeaderboardHistory" TGetEntryDto="GetEntryHistory" Leaderboard="GetLeaderboardHistory" Players="Players" IsHistory="true" GameVersion="_gameVersion" />
+}
+
+@code
+{
+	private bool _reloading;
+
+	[Parameter, SupplyParameterFromQuery] public DateTime DateTime { get; set; }
+
+	public GetLeaderboardHistory? GetLeaderboardHistory { get; set; }
+
+	public List<GetPlayerForLeaderboard>? Players { get; set; }
+
+	private GameVersion _gameVersion;
+
+	protected override async Task OnInitializedAsync()
+	{
+		Players = await Http.GetPlayersForLeaderboard();
+
+		if (DateTime == default)
+			DateTime = DateTime.UtcNow;
+
+		await FetchLeaderboard();
+	}
+
+	private async Task UpdateDateTime(DateTime dateTime)
+	{
+		DateTime = dateTime;
+		NavigationManager.AddOrModifyQueryParameter(QueryParameters.Date, dateTime);
+
+		await FetchLeaderboard();
+	}
+
+	private async Task FetchLeaderboard()
+	{
+		if (GetLeaderboardHistory != null)
+			_reloading = true;
+
+		GetLeaderboardHistory = await Http.GetLeaderboardHistory(DateTime);
+		_reloading = false;
+		_gameVersion = GameVersions.GetGameVersionFromDate(GetLeaderboardHistory.DateTime) ?? GameVersion.V1_0;
+	}
+
+	private static class QueryParameters
+	{
+		public static string Date { get; } = nameof(Date);
+	}
+}
