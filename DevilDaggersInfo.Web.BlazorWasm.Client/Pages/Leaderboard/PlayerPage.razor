@@ -152,7 +152,7 @@ else
 			<PlayerCard Title="Spawnsets" Scroll="true">
 				@foreach (GetSpawnsetName getSpawnsetName in GetSpawnsetNames)
 				{
-					<div class="grid gap-2 grid-cols-2 odd:bg-gray-16 px-1">
+					<div class="odd:bg-gray-16 px-1">
 						<UrlLink Href="@($"/custom/spawnset/{getSpawnsetName.Id}")">@getSpawnsetName.Name</UrlLink>
 					</div>
 				}
@@ -168,7 +168,7 @@ else
 			<PlayerCard Title="Mods" Scroll="true">
 				@foreach (GetModName getModName in GetModNames)
 				{
-					<div class="grid gap-2 grid-cols-2 odd:bg-gray-16 px-1">
+					<div class="odd:bg-gray-16 px-1">
 						<UrlLink Href="@($"/custom/mod/{getModName.Id}")">@getModName.Name</UrlLink>
 					</div>
 				}
