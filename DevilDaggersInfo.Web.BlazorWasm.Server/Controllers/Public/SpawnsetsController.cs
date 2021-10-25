@@ -30,8 +30,8 @@ public class SpawnsetsController : ControllerBase
 	[ProducesResponseType(StatusCodes.Status200OK)]
 	[ProducesResponseType(StatusCodes.Status400BadRequest)]
 	public ActionResult<Page<GetSpawnsetOverview>> GetSpawnsets(
-		bool onlyPractice,
-		bool onlyWithLeaderboard,
+		bool practiceOnly,
+		bool withCustomLeaderboardOnly,
 		string? spawnsetFilter = null,
 		string? authorFilter = null,
 		[Range(0, 1000)] int pageIndex = 0,
@@ -41,10 +41,10 @@ public class SpawnsetsController : ControllerBase
 	{
 		IQueryable<SpawnsetEntity> spawnsetsQuery = _dbContext.Spawnsets.AsNoTracking().Include(s => s.Player);
 
-		if (onlyPractice)
+		if (practiceOnly)
 			spawnsetsQuery = spawnsetsQuery.Where(s => s.IsPractice);
 
-		if (onlyWithLeaderboard)
+		if (withCustomLeaderboardOnly)
 		{
 			List<int> spawnsetsWithCustomLeaderboardIds = _dbContext.CustomLeaderboards
 				.AsNoTracking()
