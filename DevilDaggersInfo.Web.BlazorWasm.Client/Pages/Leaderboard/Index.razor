@@ -29,10 +29,11 @@
 else
 {
 	<div>
-		<div>Rank:</div>
+		<span>Rank:</span>
 		<input class="bg-black border-gray-22 border-2" @onkeypress="KeyPressInputRank" @onchange="ChangeInputRank" />
-		<button class="bg-gray-0b hover:bg-gray-22 transition-colors duration-100 w-16 h-8 py-1 rounded text-color-text" @onclick="FetchLeaderboard">Show</button>
+	</div>
 
+	<div>
 		<div>
 			@if (_reloading)
 			{
