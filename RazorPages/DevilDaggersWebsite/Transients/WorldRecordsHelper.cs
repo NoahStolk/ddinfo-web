@@ -1,4 +1,4 @@
-﻿using DevilDaggersCore.Game;
+using DevilDaggersCore.Game;
 using DevilDaggersWebsite.Caches.LeaderboardHistory;
 using DevilDaggersWebsite.Dto;
 using DevilDaggersWebsite.WorldRecords;
@@ -123,17 +123,13 @@ namespace DevilDaggersWebsite.Transients
 			return (worldRecordHolders.OrderByDescending(wrh => wrh.TotalTimeHeld).ToList(), worldRecordData);
 
 			// Used for determining when the leaderboard was reset.
-			static int GetMajorGameVersion(GameVersion? gameVersion)
+			static int GetMajorGameVersion(GameVersion? gameVersion) => gameVersion switch
 			{
-				return gameVersion switch
-				{
-					GameVersion.V1 => 1,
-					GameVersion.V2 => 2,
-					GameVersion.V3 => 3,
-					GameVersion.V31 => 3,
-					_ => 0,
-				};
-			}
+				GameVersion.V1 => 1,
+				GameVersion.V2 => 2,
+				GameVersion.V3 or GameVersion.V31 or GameVersion.V32 => 3,
+				_ => 0,
+			};
 		}
 	}
 }

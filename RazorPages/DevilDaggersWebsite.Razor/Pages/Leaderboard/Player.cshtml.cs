@@ -1,4 +1,4 @@
-﻿using DevilDaggersCore.Game;
+using DevilDaggersCore.Game;
 using DevilDaggersWebsite.Caches.LeaderboardHistory;
 using DevilDaggersWebsite.Clients;
 using DevilDaggersWebsite.Dto;
@@ -78,8 +78,8 @@ namespace DevilDaggersWebsite.Razor.Pages.Leaderboard
 			Entry = await LeaderboardClient.Instance.GetUserById(PlayerId);
 			if (Entry != null)
 			{
-				Death = GameInfo.GetDeathByType(GameVersion.V31, Entry.DeathType);
-				Dagger = GameInfo.GetDaggerFromTenthsOfMilliseconds(GameVersion.V31, Entry.Time);
+				Death = GameInfo.GetDeathByType(GameVersion.V32, Entry.DeathType);
+				Dagger = GameInfo.GetDaggerFromTenthsOfMilliseconds(GameVersion.V32, Entry.Time);
 				CountryName = Player?.CountryCode != null ? UserUtils.CountryNames.ContainsKey(Player.CountryCode) ? UserUtils.CountryNames[Player.CountryCode] : null : null;
 
 				Dictionary<string, int> aliases = new();

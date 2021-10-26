@@ -1,4 +1,4 @@
-﻿using DevilDaggersCore.Game;
+using DevilDaggersCore.Game;
 using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
 using System;
@@ -15,7 +15,7 @@ namespace DevilDaggersWebsite.Api
 		[ProducesResponseType(StatusCodes.Status200OK)]
 		public ActionResult<List<Death>> GetDeaths(GameVersion? gameVersion = null, string? name = null, byte? type = null)
 		{
-			IEnumerable<Death> deaths = GameInfo.GetDeaths(gameVersion ?? GameVersion.V31);
+			IEnumerable<Death> deaths = GameInfo.GetDeaths(gameVersion ?? GameVersion.V32);
 
 			if (!string.IsNullOrEmpty(name))
 				deaths = deaths.Where(d => string.Equals(d.Name, name, StringComparison.InvariantCultureIgnoreCase));

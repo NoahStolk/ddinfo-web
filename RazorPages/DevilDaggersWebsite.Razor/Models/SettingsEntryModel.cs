@@ -1,4 +1,4 @@
-﻿using DevilDaggersCore.Game;
+using DevilDaggersCore.Game;
 using DevilDaggersWebsite.Dto;
 using DevilDaggersWebsite.Entities;
 using DevilDaggersWebsite.Razor.Utils;
@@ -25,8 +25,8 @@ namespace DevilDaggersWebsite.Razor.Models
 				titles.Add("Donator");
 			Titles = titles.ToArray();
 
-			Dagger dagger = GameInfo.GetDaggerFromTenthsOfMilliseconds(GameVersion.V31, entry.Time);
-			Death? death = GameInfo.GetDeathByType(GameVersion.V31, entry.DeathType);
+			Dagger dagger = GameInfo.GetDaggerFromTenthsOfMilliseconds(GameVersion.V32, entry.Time);
+			Death? death = GameInfo.GetDeathByType(GameVersion.V32, entry.DeathType);
 
 			DaggerColor = dagger.Name.ToLower();
 			DeathStyle = $"color: #{death?.ColorCode ?? "444"};";

@@ -1,4 +1,4 @@
-﻿using DevilDaggersCore.Game;
+using DevilDaggersCore.Game;
 using Microsoft.AspNetCore.Hosting;
 using Microsoft.AspNetCore.Html;
 using Microsoft.AspNetCore.Mvc.Rendering;
@@ -55,12 +55,12 @@ namespace DevilDaggersWebsite.Razor.Utils
 			=> new($"<a style='color: #{upgrade.ColorCode};' href='/Wiki/Upgrades?GameVersion={upgrade.GameVersion}#{upgrade.Name}'>{upgrade.Name}</a>");
 
 		// TODO: Rewrite whole method. It's messy and not very performant.
-		public static HtmlString GetLayout(string str, GameVersion? gameVersion = null)
+		public static HtmlString GetLayout(string str, GameVersion gameVersion = GameVersion.V32)
 		{
 			char[] beginSeparators = new char[] { '>', ' ', ',', '.', '(', '-', '/' };
 			char[] endSeparators = new char[] { ' ', ',', '.', 's', ')', '\'', ';', '/' };
 
-			List<Enemy> enemies = GameInfo.GetEnemies(gameVersion ?? GameVersion.V31);
+			List<Enemy> enemies = GameInfo.GetEnemies(gameVersion);
 
 			// Use reverse iteration because transmuted skulls come after normal skulls in the list.
 			for (int i = enemies.Count - 1; i >= 0; i--)
@@ -79,7 +79,7 @@ namespace DevilDaggersWebsite.Razor.Utils
 				}
 			}
 
-			foreach (Upgrade upgrade in GameInfo.GetUpgrades(gameVersion ?? GameVersion.V31))
+			foreach (Upgrade upgrade in GameInfo.GetUpgrades(gameVersion))
 			{
 				foreach (char begin in beginSeparators)
 				{

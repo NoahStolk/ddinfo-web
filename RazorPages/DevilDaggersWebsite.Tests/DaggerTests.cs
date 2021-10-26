@@ -1,4 +1,4 @@
-﻿using DevilDaggersCore.Game;
+using DevilDaggersCore.Game;
 using DevilDaggersWebsite.Api;
 using Microsoft.VisualStudio.TestTools.UnitTesting;
 using System.Collections.Generic;
@@ -17,7 +17,7 @@ namespace DevilDaggersWebsite.Tests
 			List<Dagger> daggers = _daggersController.GetDaggers().Value;
 
 			Assert.AreEqual(6, daggers.Count);
-			Assert.IsTrue(daggers.All(d => d.GameVersion == GameVersion.V31));
+			Assert.IsTrue(daggers.All(d => d.GameVersion == GameVersion.V32));
 			Assert.AreEqual(1, daggers.Count(d => d.Name == "Default"));
 			Assert.AreEqual(1, daggers.Count(d => d.Name == "Bronze"));
 			Assert.AreEqual(1, daggers.Count(d => d.Name == "Silver"));

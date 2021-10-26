@@ -1,4 +1,4 @@
-﻿@page
+@page
 @using DevilDaggersWebsite.Razor.Utils
 @using DevilDaggersCore.Game
 @model DevilDaggersWebsite.Razor.Pages.CustomLeaderboards.LeaderboardModel
@@ -40,7 +40,7 @@
 					@if (!string.IsNullOrEmpty(Model.SpawnsetFile.HtmlDescription))
 					{
 						<div class="col-xs-6 spawnset-description">
-							@RazorUtils.GetLayout(Model.SpawnsetFile.HtmlDescription, GameVersion.V31)
+							@RazorUtils.GetLayout(Model.SpawnsetFile.HtmlDescription)
 						</div>
 					}
 					else

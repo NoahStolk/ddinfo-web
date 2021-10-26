@@ -1,4 +1,4 @@
-﻿@page
+@page
 @using DevilDaggersCore.Game
 @using DevilDaggersWebsite.Razor.Utils
 @{
@@ -19,7 +19,7 @@
 		The spawnset in Devil Daggers can be modified by editing a file known as the survival file. The survival file is located at <span class="path">devildaggers\dd\survival</span> where <span class="path">devildaggers</span> is the installation folder for Devil Daggers. As of the V3.1 update (February 2021), it is recommended to place custom survival files in the "mods" folder, so the custom survival file would be located at <span class="path">devildaggers\mods\survival</span>, leaving the original file intact at all times. This means replays from the official leaderboards will not be affected by the custom spawnset.
 	</p>
 	<p>
-		The survival file consists of the following data; a list of spawns that will appear in the game, the arena (basically a grid of 51x51 tile heights), and some miscellaneous information such as brightness and how fast the arena shrinks. As of the V3.1 update, the developer has made it possible to include the initial hand upgrade, as well as additional gems, in the survival file. This means that you can now create a spawnset where you start with @RazorUtils.GetLayoutAnchor(GameInfo.V31Level4) and 20 homing daggers.
+		The survival file consists of the following data; a list of spawns that will appear in the game, the arena (basically a grid of 51x51 tile heights), and some miscellaneous information such as brightness and how fast the arena shrinks. As of the V3.1 update, the developer has made it possible to include the initial hand upgrade, as well as additional gems, in the survival file. This means that you can now create a spawnset where you start with @RazorUtils.GetLayoutAnchor(GameInfo.V32Level4) and 20 homing daggers.
 	</p>
 	<p>
 		All of this data can be edited using <a asp-page="/Tools/DevilDaggersSurvivalEditor">Devil Daggers Survival Editor</a>.
@@ -33,16 +33,16 @@
 	</p>
 
 	<ul>
-		<li>@RazorUtils.GetLayoutAnchor(GameInfo.V31Squid1)</li>
-		<li>@RazorUtils.GetLayoutAnchor(GameInfo.V31Squid2)</li>
-		<li>@RazorUtils.GetLayoutAnchor(GameInfo.V31Centipede)</li>
-		<li>@RazorUtils.GetLayoutAnchor(GameInfo.V31Spider1)</li>
-		<li>@RazorUtils.GetLayoutAnchor(GameInfo.V31Leviathan)</li>
-		<li>@RazorUtils.GetLayoutAnchor(GameInfo.V31Gigapede)</li>
-		<li>@RazorUtils.GetLayoutAnchor(GameInfo.V31Squid3)</li>
-		<li>@RazorUtils.GetLayoutAnchor(GameInfo.V31Thorn)</li>
-		<li>@RazorUtils.GetLayoutAnchor(GameInfo.V31Spider2)</li>
-		<li>@RazorUtils.GetLayoutAnchor(GameInfo.V31Ghostpede)</li>
+		<li>@RazorUtils.GetLayoutAnchor(GameInfo.V32Squid1)</li>
+		<li>@RazorUtils.GetLayoutAnchor(GameInfo.V32Squid2)</li>
+		<li>@RazorUtils.GetLayoutAnchor(GameInfo.V32Centipede)</li>
+		<li>@RazorUtils.GetLayoutAnchor(GameInfo.V32Spider1)</li>
+		<li>@RazorUtils.GetLayoutAnchor(GameInfo.V32Leviathan)</li>
+		<li>@RazorUtils.GetLayoutAnchor(GameInfo.V32Gigapede)</li>
+		<li>@RazorUtils.GetLayoutAnchor(GameInfo.V32Squid3)</li>
+		<li>@RazorUtils.GetLayoutAnchor(GameInfo.V32Thorn)</li>
+		<li>@RazorUtils.GetLayoutAnchor(GameInfo.V32Spider2)</li>
+		<li>@RazorUtils.GetLayoutAnchor(GameInfo.V32Ghostpede)</li>
 		<li>EMPTY</li>
 	</ul>
 
@@ -58,16 +58,16 @@
 		You might have noticed how there is an EMPTY enemy type. This enemy type does not spawn an enemy, and its only purpose is to mark the beginning of the end loop. The last EMPTY spawn will always mark the beginning of the end loop. Having an end loop is optional, so if you don't want to include an end loop, simply make sure to put an EMPTY spawn at the end of the spawnset to mark the end of the spawnset (or literally; mark the start of an empty end loop).
 	</p>
 	<p>
-		How the end loop speeds up appears to be hardcoded in the game. After every wave, each enemy spawns an added 12.5% faster. Also note that in @RazorUtils.GetLayout("every third wave of the end loop, all Gigapedes are changed into Ghostpedes.", GameVersion.V31) This also seems to be hardcoded in the game.
+		How the end loop speeds up appears to be hardcoded in the game. After every wave, each enemy spawns an added 12.5% faster. Also note that in @RazorUtils.GetLayout("every third wave of the end loop, all Gigapedes are changed into Ghostpedes.") This also seems to be hardcoded in the game.
 	</p>
 
 	<h3>Spawns</h3>
 	<p>
-		We now know how enemy types work in Devil Daggers. A spawn in the survival file is defined by an enemy type and a delay value. The delay value represents the amount of seconds between the current spawn and the previous spawn. @RazorUtils.GetLayout("So, if you want to spawn a Squid I at 4 seconds, followed by a Squid II at 7 seconds, you would get the following spawns:", GameVersion.V31)
+		We now know how enemy types work in Devil Daggers. A spawn in the survival file is defined by an enemy type and a delay value. The delay value represents the amount of seconds between the current spawn and the previous spawn. @RazorUtils.GetLayout("So, if you want to spawn a Squid I at 4 seconds, followed by a Squid II at 7 seconds, you would get the following spawns:")
 	</p>
 	<ul>
-		<li>Enemy type: @RazorUtils.GetLayoutAnchor(GameInfo.V31Squid1) - Delay: 4</li>
-		<li>Enemy type: @RazorUtils.GetLayoutAnchor(GameInfo.V31Squid2) - Delay: 3</li>
+		<li>Enemy type: @RazorUtils.GetLayoutAnchor(GameInfo.V32Squid1) - Delay: 4</li>
+		<li>Enemy type: @RazorUtils.GetLayoutAnchor(GameInfo.V32Squid2) - Delay: 3</li>
 	</ul>
 	<p>
 		The delay value supports decimal values, even though the original spawnset in the game doesn't use this. This means you can spawn an enemy, for example at 4.5 seconds.
@@ -85,7 +85,7 @@
 		<li>The player can stand on tiles with height -1, but anything lower than that will result in the tile falling down immediately.</li>
 		<li>The tile at coordinate {1, 0} is always invisible for some reason, but you can still walk on it.</li>
 		<li>The player can be spawned on different tile heights.</li>
-		<li>@RazorUtils.GetLayout("Enemies and gems do not react to different tile heights, only the player, the daggers, and some effects do (like Thorn spawn smokes, meat chunks, etc).", GameVersion.V31)</li>
+		<li>@RazorUtils.GetLayout("Enemies and gems do not react to different tile heights, only the player, the daggers, and some effects do (like Thorn spawn smokes, meat chunks, etc).")</li>
 		<li>The game crashes when you get too near the edge of a full arena (outside of the regular 51 by 51 range, and I think at or around coordinate {0, 0} but I am not sure).</li>
 		<li>The tiles have infinitely long hitboxes, but the texture only covers the top of it. You can work around this using mods that change the pillar model however.</li>
 		<li>1 tile height is equivalent to 1/4 of a tile, assuming it is a cube. So if you could stack tiles on top of each other, the first tile would be at tile height 0, the second at tile height 4, the third at tile height 8, and so on.</li>

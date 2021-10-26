@@ -1,4 +1,4 @@
-﻿using DevilDaggersCore.Game;
+using DevilDaggersCore.Game;
 using DevilDaggersWebsite.Razor.PageModels;
 using System.Collections.Generic;
 
@@ -7,7 +7,7 @@ namespace DevilDaggersWebsite.Razor.Pages.Wiki
 	public class EnemiesModel : WikiPageModel
 	{
 		public EnemiesModel()
-			: base(skipV31: false)
+			: base(skipV3Next: false)
 		{
 		}
 
@@ -23,7 +23,7 @@ namespace DevilDaggersWebsite.Razor.Pages.Wiki
 			"Transmuted skulls",
 		};
 
-		public void OnGet(GameVersion gameVersion = GameVersion.V31)
+		public void OnGet(GameVersion gameVersion = GameVersion.V32)
 		{
 			SetGameVersion(gameVersion);
 

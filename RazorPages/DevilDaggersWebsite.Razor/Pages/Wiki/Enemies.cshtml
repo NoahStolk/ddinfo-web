@@ -1,4 +1,4 @@
-﻿@page
+@page
 @using DevilDaggersWebsite.Razor.Utils
 @using DevilDaggersCore.Game
 @model EnemiesModel
@@ -368,12 +368,12 @@
 			<ul>
 				@RazorUtils.GetLayout(@"
 				<li>All homing daggers cause 10 damage to most enemies.</li>
-				<li>Leviathan, The Orb, Spider Egg I, and Spider Egg II only take 1 damage from homing daggers.</li>
+				<li>Leviathan and The Orb only take 1 damage from homing daggers. This used to happen to Spider Egg I and Spider Egg II as well, but this was fixed in V3.2.</li>
 				<li>The Orb, Spider Egg I, and Spider Egg II are the only enemies that are not targeted by any homing daggers.</li>
 				<li>Level 4 homing daggers cause splash damage. This means that when they're destroyed, they create a little explosion that can cause damage (most likely 10) to near enemies. For example, you only need one Level 4 homing dagger to kill a Squid II, as the explosion will destroy the other gem.</li>
 				<li>Even though Ghostpede cannot be damaged by homing daggers (they phase through it), it can still take damage from Level 4 homing dagger splash damage.</li>
 				<li>Not sure why you need 3 Level 4 homing daggers to kill a Squid III gem, but only 1 Level 3 homing dagger... Seems like a bug.</li>
-				<li>Also not sure why you need 10 Level 4 homing daggers to kill a single Transmuted Skull I, while one single Level 3 homing dagger can kill 4 of them... Probably another bug.</li>")
+				<li>Another bug was that you needed 10 Level 4 homing daggers to kill a single Transmuted Skull I, while one single Level 3 homing dagger could kill 4 of them. This was fixed in V3.2 however, and now both Level 3 and Level 4 homing daggers can kill exactly one Transmuted Skull I.</li>")
 			</ul>
 		}
 	}

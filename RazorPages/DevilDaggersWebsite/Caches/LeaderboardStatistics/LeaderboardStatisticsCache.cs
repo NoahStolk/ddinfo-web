@@ -1,4 +1,4 @@
-﻿using DevilDaggersCore.Game;
+using DevilDaggersCore.Game;
 using DevilDaggersWebsite.HostedServices.DdInfoDiscordBot;
 using DevilDaggersWebsite.Singletons;
 using Microsoft.AspNetCore.Hosting;
@@ -62,19 +62,19 @@ namespace DevilDaggersWebsite.Caches.LeaderboardStatistics
 			for (int i = 0; i < bytes.Length / 15; i++)
 				_entries.Add(CompressedEntry.FromBytes(bytes[(i * 15)..((i + 1) * 15)]));
 
-			foreach (Death death in GameInfo.GetDeaths(GameVersion.V31))
+			foreach (Death death in GameInfo.GetDeaths(GameVersion.V32))
 				DeathStats.Add(death, 0);
 
-			foreach (Dagger dagger in GameInfo.GetDaggers(GameVersion.V31))
+			foreach (Dagger dagger in GameInfo.GetDaggers(GameVersion.V32))
 				DaggerStats.Add(dagger, 0);
 
 			foreach (CompressedEntry entry in _entries)
 			{
-				Dagger dagger = GameInfo.GetDaggerFromTenthsOfMilliseconds(GameVersion.V31, (int)entry.Time);
+				Dagger dagger = GameInfo.GetDaggerFromTenthsOfMilliseconds(GameVersion.V32, (int)entry.Time);
 				if (DaggerStats.ContainsKey(dagger))
 					DaggerStats[dagger]++;
 
-				Death? death = GameInfo.GetDeathByType(GameVersion.V31, entry.DeathType);
+				Death? death = GameInfo.GetDeathByType(GameVersion.V32, entry.DeathType);
 				if (death == null)
 					await _discordLogger.TryLog(Channel.MonitoringError, $":x: Invalid death type 0x{entry.DeathType:X} for entry with time {entry.Time} in leaderboard-statistics.");
 				else if (DeathStats.ContainsKey(death))

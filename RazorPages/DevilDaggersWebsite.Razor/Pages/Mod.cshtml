@@ -1,4 +1,4 @@
-﻿@page
+@page
 @using DevilDaggersCore.Game
 @using DevilDaggersCore.Mods
 @using DevilDaggersWebsite.Caches.ModArchive;
@@ -48,7 +48,7 @@
 				@if (!string.IsNullOrWhiteSpace(Model.AssetMod.HtmlDescription))
 				{
 					<div class="col-xs-6 mod-description">
-						@RazorUtils.GetLayout(Model.AssetMod.HtmlDescription, GameVersion.V31)
+						@RazorUtils.GetLayout(Model.AssetMod.HtmlDescription, GameVersion.V32)
 					</div>
 				}
 				else

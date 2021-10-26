@@ -1,11 +1,9 @@
-﻿@page
+@page
 @inject ApplicationDbContext dbContext
 @using DevilDaggersCore.Game
 @using DevilDaggersWebsite.Entities
-@using DevilDaggersWebsite.Enumerators
 @using DevilDaggersWebsite.Extensions
 @using DevilDaggersWebsite.Razor.Models
-@using Microsoft.EntityFrameworkCore
 @model DonationsModel
 @{
 	ViewData["Title"] = "Donations";
@@ -25,7 +23,7 @@
 		Thanks to everyone who donated!
 	</p>
 	<p>
-		@foreach (Dagger dagger in GameInfo.GetDaggers(GameVersion.V31))
+		@foreach (Dagger dagger in GameInfo.GetDaggers(GameVersion.V32))
 		{
 			<img src="~/Images/Daggers/@(dagger.Name)Small.png" style="margin: 8px;" />
 		}

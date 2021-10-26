@@ -1,4 +1,4 @@
-﻿using DevilDaggersCore.Game;
+using DevilDaggersCore.Game;
 using DevilDaggersWebsite.Clients;
 using DevilDaggersWebsite.Dto;
 using DevilDaggersWebsite.Razor.Utils;
@@ -51,6 +51,9 @@ namespace DevilDaggersWebsite.Razor.Pages.Leaderboard
 
 			if (gameVersion == GameVersion.V31)
 				return "V3.1";
+
+			if (gameVersion == GameVersion.V32)
+				return "V3.2";
 
 			return gameVersion.ToString() ?? string.Empty;
 		}

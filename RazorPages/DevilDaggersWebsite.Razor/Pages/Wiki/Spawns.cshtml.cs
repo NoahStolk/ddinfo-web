@@ -1,4 +1,4 @@
-﻿using DevilDaggersCore.Game;
+using DevilDaggersCore.Game;
 using DevilDaggersWebsite.Razor.PageModels;
 
 namespace DevilDaggersWebsite.Razor.Pages.Wiki
@@ -6,7 +6,7 @@ namespace DevilDaggersWebsite.Razor.Pages.Wiki
 	public class SpawnsModel : WikiPageModel
 	{
 		public SpawnsModel()
-			: base(skipV31: true)
+			: base(skipV3Next: true)
 		{
 		}
 
