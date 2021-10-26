@@ -8,6 +8,7 @@ public static class Daggers
 		GameVersion.V2_0 => DaggersV2_0.All,
 		GameVersion.V3_0 => DaggersV3_0.All,
 		GameVersion.V3_1 => DaggersV3_1.All,
+		GameVersion.V3_2 => DaggersV3_2.All,
 		_ => throw new ArgumentOutOfRangeException(nameof(gameVersion)),
 	};
 

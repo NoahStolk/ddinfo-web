@@ -5,20 +5,24 @@
     <AdditionalFiles Include="Data\DaggersV2_0.csv" />
     <AdditionalFiles Include="Data\DaggersV3_0.csv" />
     <AdditionalFiles Include="Data\DaggersV3_1.csv" />
+    <AdditionalFiles Include="Data\DaggersV3_2.csv" />
     <AdditionalFiles Include="Data\DeathsV1_0.csv" />
     <AdditionalFiles Include="Data\DeathsV2_0.csv" />
     <AdditionalFiles Include="Data\DeathsV3_0.csv" />
     <AdditionalFiles Include="Data\DeathsV3_1.csv" />
+    <AdditionalFiles Include="Data\DeathsV3_2.csv" />
     <AdditionalFiles Include="Data\EnemiesV1_0.csv" />
     <AdditionalFiles Include="Data\EnemiesV2_0.csv" />
     <AdditionalFiles Include="Data\EnemiesV3_0.csv" />
     <AdditionalFiles Include="Data\EnemiesV3_1.csv" />
+    <AdditionalFiles Include="Data\EnemiesV3_2.csv" />
     <AdditionalFiles Include="Data\EnemyColors.csv" />
     <AdditionalFiles Include="Data\UpgradeColors.csv" />
     <AdditionalFiles Include="Data\UpgradesV1_0.csv" />
     <AdditionalFiles Include="Data\UpgradesV2_0.csv" />
     <AdditionalFiles Include="Data\UpgradesV3_0.csv" />
     <AdditionalFiles Include="Data\UpgradesV3_1.csv" />
+    <AdditionalFiles Include="Data\UpgradesV3_2.csv" />
   </ItemGroup>
   <ItemGroup>
     <ProjectReference Include="..\DevilDaggersInfo.Core\DevilDaggersInfo.Core.csproj" />

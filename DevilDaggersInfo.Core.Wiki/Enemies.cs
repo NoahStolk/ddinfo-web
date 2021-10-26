@@ -8,6 +8,7 @@ public static class Enemies
 		GameVersion.V2_0 => EnemiesV2_0.All,
 		GameVersion.V3_0 => EnemiesV3_0.All,
 		GameVersion.V3_1 => EnemiesV3_1.All,
+		GameVersion.V3_2 => EnemiesV3_2.All,
 		_ => throw new ArgumentOutOfRangeException(nameof(gameVersion)),
 	};
 

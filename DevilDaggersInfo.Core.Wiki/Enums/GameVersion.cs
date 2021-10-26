@@ -6,4 +6,5 @@ public enum GameVersion
 	V2_0,
 	V3_0,
 	V3_1,
+	V3_2,
 }

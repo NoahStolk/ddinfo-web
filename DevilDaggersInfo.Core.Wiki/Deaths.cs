@@ -8,6 +8,7 @@ public static class Deaths
 		GameVersion.V2_0 => DeathsV2_0.All,
 		GameVersion.V3_0 => DeathsV3_0.All,
 		GameVersion.V3_1 => DeathsV3_1.All,
+		GameVersion.V3_2 => DeathsV3_2.All,
 		_ => throw new ArgumentOutOfRangeException(nameof(gameVersion)),
 	};
 

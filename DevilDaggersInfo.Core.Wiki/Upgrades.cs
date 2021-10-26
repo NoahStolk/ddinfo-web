@@ -9,6 +9,7 @@ public static class Upgrades
 		GameVersion.V2_0 => UpgradesV2_0.All,
 		GameVersion.V3_0 => UpgradesV3_0.All,
 		GameVersion.V3_1 => UpgradesV3_1.All,
+		GameVersion.V3_2 => UpgradesV3_2.All,
 		_ => throw new ArgumentOutOfRangeException(nameof(gameVersion)),
 	};
 }
