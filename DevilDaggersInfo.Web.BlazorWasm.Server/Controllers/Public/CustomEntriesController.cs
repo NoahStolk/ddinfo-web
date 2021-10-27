@@ -229,6 +229,14 @@ public class CustomEntriesController : ControllerBase
 			return new BadRequestObjectResult(new ProblemDetails { Title = errorMessage });
 		}
 
+		// Validate local replays.
+		if (!(uploadRequest.Status is 3 or 4 or 5))
+		{
+			const string errorMessage = "Invalid status.";
+			await TryLog(uploadRequest, null, errorMessage, "rotating_light");
+			return new BadRequestObjectResult(new ProblemDetails { Title = errorMessage });
+		}
+
 		// Check for existing spawnset.
 		SpawnsetHashCacheData? spawnsetHashData = _spawnsetHashCache.GetSpawnset(uploadRequest.SurvivalHashMd5);
 		string? spawnsetName = spawnsetHashData?.Name;
@@ -304,6 +312,9 @@ public class CustomEntriesController : ControllerBase
 			UpdateLeaderboardStatistics(customLeaderboard);
 
 			_dbContext.SaveChanges();
+
+			if (uploadRequest.ReplayData != null)
+				await WriteReplayFile(newCustomEntry.Id, uploadRequest.ReplayData);
 
 			// Fetch the entries again after having modified the leaderboard.
 			entries = FetchEntriesFromDatabase(customLeaderboard, isAscending);
@@ -437,6 +448,9 @@ public class CustomEntriesController : ControllerBase
 
 		_dbContext.SaveChanges();
 
+		if (uploadRequest.ReplayData != null)
+			await WriteReplayFile(customEntry.Id, uploadRequest.ReplayData);
+
 		// Fetch the entries again after having modified the leaderboard.
 		entries = FetchEntriesFromDatabase(customLeaderboard, isAscending);
 
@@ -482,6 +496,11 @@ public class CustomEntriesController : ControllerBase
 			LevelUpTime4 = uploadRequest.LevelUpTime4,
 			LevelUpTime4Diff = levelUpTime4Diff,
 		};
+	}
+
+	private async Task WriteReplayFile(int customEntryId, byte[] replayData)
+	{
+		await IoFile.WriteAllBytesAsync(Path.Combine(_fileSystemService.GetPath(DataSubDirectory.CustomEntryReplays), $"{customEntryId}.ddreplay"), replayData);
 	}
 
 	private static void UpdateLeaderboardStatistics(CustomLeaderboardEntity customLeaderboard)
@@ -553,8 +572,9 @@ public class CustomEntriesController : ControllerBase
 		{
 			string spawnsetIdentification = GetSpawnsetHashOrName(uploadRequest.SurvivalHashMd5, spawnsetName);
 
+			string replayData = uploadRequest.ReplayData == null ? "Replay data not included" : $"Replay data {uploadRequest.ReplayData.Length:N0} bytes";
 			string replayString = uploadRequest.IsReplay ? " | `Replay`" : string.Empty;
-			string requestInfo = $"(`{uploadRequest.ClientVersion}` | `{uploadRequest.OperatingSystem}` | `{uploadRequest.BuildMode}` | `{uploadRequest.Client}`{replayString})";
+			string requestInfo = $"(`{uploadRequest.ClientVersion}` | `{uploadRequest.OperatingSystem}` | `{uploadRequest.BuildMode}` | `{uploadRequest.Client}`{replayString} | `{replayData}` | `Status {uploadRequest.Status}`)";
 
 			// TODO: Don't log in development.
 			DiscordChannel? channel = DevilDaggersInfoServerConstants.Channels[Channel.MonitoringCustomLeaderboard].DiscordChannel;

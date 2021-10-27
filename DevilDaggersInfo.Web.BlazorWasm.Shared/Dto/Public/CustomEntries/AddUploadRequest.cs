@@ -55,4 +55,8 @@ public class AddUploadRequest
 	public bool ProhibitedMods { get; init; }
 
 	public List<AddGameState> GameStates { get; init; } = new();
+
+	public byte[]? ReplayData { get; init; }
+
+	public int Status { get; set; }
 }
