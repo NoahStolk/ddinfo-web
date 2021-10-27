@@ -115,13 +115,6 @@ namespace DevilDaggersWebsite.Api
 				return new BadRequestObjectResult(new ProblemDetails { Title = errorMessage });
 			}
 
-			if (!(uploadRequest.Status is 3 or 4 or 5))
-			{
-				const string errorMessage = "Invalid status.";
-				await TryLog(uploadRequest, null, errorMessage, "rotating_light");
-				return new BadRequestObjectResult(new ProblemDetails { Title = errorMessage });
-			}
-
 			// Add the player or update the username. Also check for banned user immediately.
 			Player? player = _dbContext.Players.FirstOrDefault(p => p.Id == uploadRequest.PlayerId);
 			if (player != null)
@@ -157,6 +150,14 @@ namespace DevilDaggersWebsite.Api
 			{
 				string errorMessage = $"You are using an unsupported and outdated version of {clientName}. Please update the program.";
 				await TryLog(uploadRequest, null, errorMessage);
+				return new BadRequestObjectResult(new ProblemDetails { Title = errorMessage });
+			}
+
+			// Validate local replays.
+			if (!(uploadRequest.Status is 3 or 4 or 5))
+			{
+				const string errorMessage = "Invalid status.";
+				await TryLog(uploadRequest, null, errorMessage, "rotating_light");
 				return new BadRequestObjectResult(new ProblemDetails { Title = errorMessage });
 			}
 
@@ -345,12 +346,12 @@ namespace DevilDaggersWebsite.Api
 				customEntryData.Populate(uploadRequest.GameStates);
 			}
 
-			if (uploadRequest.ReplayData != null)
-				await WriteReplayFile(customEntry.Id, uploadRequest.ReplayData);
-
 			UpdateLeaderboardStatistics(customLeaderboard);
 
 			_dbContext.SaveChanges();
+
+			if (uploadRequest.ReplayData != null)
+				await WriteReplayFile(customEntry.Id, uploadRequest.ReplayData);
 
 			// Fetch the entries again after having modified the leaderboard.
 			entries = FetchEntriesFromDatabase(customLeaderboard, isAscending);
