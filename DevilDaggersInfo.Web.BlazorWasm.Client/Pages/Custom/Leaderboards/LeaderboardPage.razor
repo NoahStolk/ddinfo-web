@@ -66,14 +66,18 @@ else
 						<EntryRank PlayerId="@ce.PlayerId" Rank="@ce.Rank" />
 						<EntryFlag CountryCode="@ce.CountryCode" />
 						<EntryUsername DaggerCssClass="@daggerCssClass" Id="@ce.PlayerId" Name="@($"{ce.PlayerName}")" />
-						<div class="text-right">
+						<div class="text-right whitespace-nowrap">
+							<span class="@daggerCssClass">@ce.Time.ToString(FormatUtils.TimeFormat)</span>
 							@if (graphs)
 							{
 								<UrlLink Href="@($"/custom/entry/{ce.Id}")">
-									<Tooltip Text="View graphs"><img class="cursor-pointer inline-block mb-1 mr-1" src="/images/icons/mask/eye.png" /></Tooltip>
+									<Tooltip Text="View graphs and replay"><img class="cursor-pointer inline-block mx-1 mb-1" src="/images/icons/mask/eye.png" /></Tooltip>
 								</UrlLink>
 							}
-							<span class="@daggerCssClass">@ce.Time.ToString(FormatUtils.TimeFormat)</span>
+							else
+							{
+								<img class="inline-block mx-1 mb-1" src="/images/icons/color/eye-gray.png" />
+							}
 						</div>
 						<div class="text-right hidden md:block">@ce.EnemiesKilled.ToString(FormatUtils.LeaderboardIntFormat)</div>
 						<div class="text-right hidden md:block">@ce.EnemiesAlive.ToString(FormatUtils.LeaderboardIntFormat)</div>
