@@ -13,6 +13,8 @@ namespace DevilDaggersWebsite.Dto
 		[StringLength(32)]
 		public string PlayerName { get; init; } = null!;
 
+		public int Status { get; set; }
+
 		public int Time { get; set; } // Use set to fix replay times.
 
 		public int GemsCollected { get; init; }

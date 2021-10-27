@@ -115,6 +115,13 @@ namespace DevilDaggersWebsite.Api
 				return new BadRequestObjectResult(new ProblemDetails { Title = errorMessage });
 			}
 
+			if (uploadRequest.IsReplay)
+			{
+				const string errorMessage = "Replays are disabled since V3.2.";
+				await TryLog(uploadRequest, null, errorMessage, "rotating_light");
+				return new BadRequestObjectResult(new ProblemDetails { Title = errorMessage });
+			}
+
 			// Add the player or update the username. Also check for banned user immediately.
 			Player? player = _dbContext.Players.FirstOrDefault(p => p.Id == uploadRequest.PlayerId);
 			if (player != null)
@@ -460,9 +467,9 @@ namespace DevilDaggersWebsite.Api
 			{
 				string spawnsetIdentification = GetSpawnsetHashOrName(uploadRequest.SurvivalHashMd5, spawnsetName);
 
-				string replayData = uploadRequest.ReplayData == null ? "Replay data not included" : $"Replay data {uploadRequest.ReplayData.Length:N3} bytes";
+				string replayData = uploadRequest.ReplayData == null ? "Replay data not included" : $"Replay data {uploadRequest.ReplayData.Length:N0} bytes";
 				string replayString = uploadRequest.IsReplay ? " | `Replay`" : string.Empty;
-				string requestInfo = $"(`{uploadRequest.ClientVersion}` | `{uploadRequest.OperatingSystem}` | `{uploadRequest.BuildMode}` | `{uploadRequest.Client}`{replayString} | `{replayData}`)";
+				string requestInfo = $"(`{uploadRequest.ClientVersion}` | `{uploadRequest.OperatingSystem}` | `{uploadRequest.BuildMode}` | `{uploadRequest.Client}`{replayString} | `{replayData}` | `Status {uploadRequest.Status}`)";
 
 				if (!string.IsNullOrEmpty(errorMessage))
 					await _discordLogger.TryLog(Channel.MonitoringCustomLeaderboard, $":{errorEmoteNameOverride ?? "warning"}: Upload failed for user `{uploadRequest.PlayerName}` (`{uploadRequest.PlayerId}`) for `{spawnsetIdentification}`. {requestInfo}\n**{errorMessage}**");
