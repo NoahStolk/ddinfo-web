@@ -82,15 +82,17 @@
 						@await Html.PartialAsync("Partials/EntryFlagPartial", cem)
 						@await Html.PartialAsync("Partials/EntryUsernamePartial", cem)
 						<div class="text-right">
-							<span class="@cem.DaggerColor">@(entry.Time.FormatTimeInteger())</span>
-							@if (hasReplay)
-							{
-								<span class="leaderboard-tooltip" data-toggle="tooltip" title="Download replay"><a href="/api/custom-entries/@entry.Id/replay"><img src="~/images/Icons/eye2.png" /></a></span>
-							}
-							else
-							{
-								<img src="~/images/Icons/eyegray.png" />
-							}
+							<span style="white-space: nowrap;">
+								<span class="@cem.DaggerColor">@(entry.Time.FormatTimeInteger())</span>
+								@if (hasReplay)
+								{
+									<span class="leaderboard-tooltip" data-toggle="tooltip" title="Download replay"><a href="/api/custom-entries/@entry.Id/replay"><img src="~/images/Icons/eye2.png" /></a></span>
+								}
+								else
+								{
+									<img src="~/images/Icons/eyegray.png" />
+								}
+							</span>
 						</div>
 						<div class="hidden-xs text-right">@entry.EnemiesKilled.ToString(FormatUtils.LeaderboardIntFormat)</div>
 						<div class="hidden-xs hidden-sm hidden-md text-right">@entry.EnemiesAlive.ToString(FormatUtils.LeaderboardIntFormat)</div>
