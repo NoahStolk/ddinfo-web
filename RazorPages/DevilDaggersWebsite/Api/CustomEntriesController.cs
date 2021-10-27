@@ -115,9 +115,9 @@ namespace DevilDaggersWebsite.Api
 				return new BadRequestObjectResult(new ProblemDetails { Title = errorMessage });
 			}
 
-			if (uploadRequest.IsReplay)
+			if (uploadRequest.Status == 7)
 			{
-				const string errorMessage = "Replays are disabled since V3.2.";
+				const string errorMessage = "Cannot upload other player's run.";
 				await TryLog(uploadRequest, null, errorMessage, "rotating_light");
 				return new BadRequestObjectResult(new ProblemDetails { Title = errorMessage });
 			}
