@@ -1,10 +1,14 @@
-﻿@model LeaderboardModel
+@model LeaderboardModel
 @using DevilDaggersWebsite.Entities
 @using DevilDaggersWebsite.Razor.Models
 @using DevilDaggersWebsite.Razor.Pages.CustomLeaderboards
 @using DevilDaggersWebsite.Utils
 @using Microsoft.EntityFrameworkCore
+@using Microsoft.AspNetCore.Hosting
+@using IoFile = System.IO.File
+@using IoPath = System.IO.Path
 @inject ApplicationDbContext dbContext
+@inject IWebHostEnvironment environment
 
 <div class="leaderboard-container flex-container flex-center">
 	<div class="leaderboard-title-row flex-container">
@@ -67,6 +71,8 @@
 			{
 				rank++;
 
+				bool hasReplay = IoFile.Exists(IoPath.Combine(environment.WebRootPath, "custom-entry-replays", $"{entry.Id}.ddreplay"));
+
 				Player? player = players.FirstOrDefault(p => p.Id == entry.PlayerId);
 				CustomEntryModel cem = new(rank, entry, Model.Leaderboard!, player, donations);
 
@@ -75,7 +81,17 @@
 						@await Html.PartialAsync("Partials/EntryIdPartial", cem)
 						@await Html.PartialAsync("Partials/EntryFlagPartial", cem)
 						@await Html.PartialAsync("Partials/EntryUsernamePartial", cem)
-						<div class="text-right @cem.DaggerColor">@(entry.Time.FormatTimeInteger())</div>
+						<div class="text-right">
+							<span class="@cem.DaggerColor">@(entry.Time.FormatTimeInteger())</span>
+							@if (hasReplay)
+							{
+								<span class="leaderboard-tooltip" data-toggle="tooltip" title="Download replay"><a href="/api/custom-entries/@entry.Id/replay"><img src="~/images/Icons/eye2.png" /></a></span>
+							}
+							else
+							{
+								<img src="~/images/Icons/eyegray.png" />
+							}
+						</div>
 						<div class="hidden-xs text-right">@entry.EnemiesKilled.ToString(FormatUtils.LeaderboardIntFormat)</div>
 						<div class="hidden-xs hidden-sm hidden-md text-right">@entry.EnemiesAlive.ToString(FormatUtils.LeaderboardIntFormat)</div>
 						<div class="hidden-xs text-right">@entry.GemsCollected.ToString(FormatUtils.LeaderboardIntFormat)</div>
