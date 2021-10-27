@@ -115,9 +115,9 @@ namespace DevilDaggersWebsite.Api
 				return new BadRequestObjectResult(new ProblemDetails { Title = errorMessage });
 			}
 
-			if (uploadRequest.Status == 7)
+			if (!(uploadRequest.Status is 3 or 4 or 5))
 			{
-				const string errorMessage = "Cannot upload other player's run.";
+				const string errorMessage = "Invalid status.";
 				await TryLog(uploadRequest, null, errorMessage, "rotating_light");
 				return new BadRequestObjectResult(new ProblemDetails { Title = errorMessage });
 			}
