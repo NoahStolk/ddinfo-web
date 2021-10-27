@@ -1,4 +1,4 @@
-﻿using DevilDaggersWebsite.Caches.SpawnsetHash;
+using DevilDaggersWebsite.Caches.SpawnsetHash;
 using DevilDaggersWebsite.Entities;
 using DevilDaggersWebsite.Extensions;
 using DevilDaggersWebsite.HostedServices.DdInfoDiscordBot;
@@ -207,6 +207,9 @@ namespace DevilDaggersWebsite.Api
 
 				_dbContext.SaveChanges();
 
+				if (uploadRequest.ReplayData != null)
+					await WriteReplayFile(newCustomEntry.Id, uploadRequest.ReplayData);
+
 				// Fetch the entries again after having modified the leaderboard.
 				entries = FetchEntriesFromDatabase(customLeaderboard, isAscending);
 				totalPlayers = entries.Count;
@@ -335,6 +338,9 @@ namespace DevilDaggersWebsite.Api
 				customEntryData.Populate(uploadRequest.GameStates);
 			}
 
+			if (uploadRequest.ReplayData != null)
+				await WriteReplayFile(customEntry.Id, uploadRequest.ReplayData);
+
 			UpdateLeaderboardStatistics(customLeaderboard);
 
 			_dbContext.SaveChanges();
@@ -384,6 +390,11 @@ namespace DevilDaggersWebsite.Api
 				LevelUpTime4 = uploadRequest.LevelUpTime4,
 				LevelUpTime4Diff = levelUpTime4Diff,
 			};
+		}
+
+		private async Task WriteReplayFile(int customEntryId, byte[] replayData)
+		{
+			await Io.File.WriteAllBytesAsync(Path.Combine(_environment.WebRootPath, "custom-entry-replays", $"{customEntryId}.ddreplay"), replayData);
 		}
 
 		private static void UpdateLeaderboardStatistics(CustomLeaderboard customLeaderboard)
@@ -449,8 +460,9 @@ namespace DevilDaggersWebsite.Api
 			{
 				string spawnsetIdentification = GetSpawnsetHashOrName(uploadRequest.SurvivalHashMd5, spawnsetName);
 
+				string replayData = uploadRequest.ReplayData == null ? "Replay data not included" : $"Replay data {uploadRequest.ReplayData.Length:N3} bytes";
 				string replayString = uploadRequest.IsReplay ? " | `Replay`" : string.Empty;
-				string requestInfo = $"(`{uploadRequest.ClientVersion}` | `{uploadRequest.OperatingSystem}` | `{uploadRequest.BuildMode}` | `{uploadRequest.Client}`{replayString})";
+				string requestInfo = $"(`{uploadRequest.ClientVersion}` | `{uploadRequest.OperatingSystem}` | `{uploadRequest.BuildMode}` | `{uploadRequest.Client}`{replayString} | `{replayData}`)";
 
 				if (!string.IsNullOrEmpty(errorMessage))
 					await _discordLogger.TryLog(Channel.MonitoringCustomLeaderboard, $":{errorEmoteNameOverride ?? "warning"}: Upload failed for user `{uploadRequest.PlayerName}` (`{uploadRequest.PlayerId}`) for `{spawnsetIdentification}`. {requestInfo}\n**{errorMessage}**");

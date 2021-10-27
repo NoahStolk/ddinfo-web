@@ -1,4 +1,4 @@
-﻿using DevilDaggersWebsite.Enumerators;
+using DevilDaggersWebsite.Enumerators;
 using System.Collections.Generic;
 using System.ComponentModel.DataAnnotations;
 
@@ -59,5 +59,7 @@ namespace DevilDaggersWebsite.Dto
 		public bool ProhibitedMods { get; init; }
 
 		public List<GameState> GameStates { get; init; } = new();
+
+		public byte[]? ReplayData { get; init; }
 	}
 }
