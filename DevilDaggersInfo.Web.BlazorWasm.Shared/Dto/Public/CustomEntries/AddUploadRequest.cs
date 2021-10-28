@@ -34,11 +34,11 @@ public class AddUploadRequest
 
 	public byte DeathType { get; init; }
 
-	public int LevelUpTime2 { get; set; } // Use set to fix level up times that were not reset after restart (bug in DD).
+	public int LevelUpTime2 { get; init; }
 
-	public int LevelUpTime3 { get; set; } // Use set to fix level up times that were not reset after restart (bug in DD).
+	public int LevelUpTime3 { get; init; }
 
-	public int LevelUpTime4 { get; set; } // Use set to fix level up times that were not reset after restart (bug in DD).
+	public int LevelUpTime4 { get; init; }
 
 	[StringLength(16)]
 	public string ClientVersion { get; init; } = null!;
