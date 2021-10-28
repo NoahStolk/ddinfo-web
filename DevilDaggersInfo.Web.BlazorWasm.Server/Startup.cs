@@ -58,6 +58,8 @@ public class Startup
 		services.AddSingleton<ResponseTimeMonitor>();
 
 		services.AddSingleton<AuditLogger>();
+		services.AddSingleton<IFileSystemService, FileSystemService>();
+
 		services.AddSingleton<LeaderboardHistoryCache>();
 		services.AddSingleton<LeaderboardStatisticsCache>();
 		services.AddSingleton<ModArchiveCache>();
@@ -76,9 +78,8 @@ public class Startup
 			services.AddHostedService<LeaderboardHistoryBackgroundService>();
 		}
 
-		// Use a transient for ToolHelper so we can update the Tools.json file without having to re-instantiate this.
+		// Use a transient for ToolHelper so we can update the Changelogs.json file without having to re-instantiate this.
 		services.AddTransient<IToolHelper, ToolHelper>();
-		services.AddTransient<IFileSystemService, FileSystemService>();
 
 		services.AddSwaggerDocument(config =>
 		{
