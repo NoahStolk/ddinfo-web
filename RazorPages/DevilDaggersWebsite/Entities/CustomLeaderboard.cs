@@ -1,4 +1,4 @@
-﻿using DevilDaggersWebsite.Dto;
+using DevilDaggersWebsite.Dto;
 using DevilDaggersWebsite.Enumerators;
 using DevilDaggersWebsite.Extensions;
 using System;
@@ -31,7 +31,7 @@ namespace DevilDaggersWebsite.Entities
 
 		public DateTime? DateLastPlayed { get; set; }
 
-		public DateTime? DateCreated { get; set; }
+		public DateTime DateCreated { get; set; }
 
 		public int TotalRunsSubmitted { get; set; }
 
