@@ -26,8 +26,16 @@ else
 		<DataField Name="Practice">@(GetSpawnset.IsPractice ? "Yes" : "No")</DataField>
 		<DataField Name="File size">@FileSizeUtils.Format(GetSpawnset.FileBytes.Length)</DataField>
 
-		<div class="px-1 py-3">
-			<a class="bg-dark-red hover:bg-red transition-colors duration-200 p-2 rounded text-color-text text-center text-xl font-goethe" href="/api/spawnsets/@(GetSpawnset.Name)/file" download="@GetSpawnset.Name" role="button" target="=_top">Download</a>
+		<div class="grid grid-cols-2 text-lg">
+			<div class="px-1 py-3">
+				<UrlLink Href="@($"/api/spawnsets/{GetSpawnset.Name}/file")">Download spawnset</UrlLink>
+			</div>
+			@if (GetSpawnset.CustomLeaderboardId.HasValue)
+			{
+				<div class="px-1 py-3 text-right">
+					<UrlLink Href="@($"/custom/leaderboard/{GetSpawnset.CustomLeaderboardId.Value}")">View leaderboard</UrlLink>
+				</div>
+			}
 		</div>
 	</div>
 
