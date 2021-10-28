@@ -1,4 +1,4 @@
-﻿using DevilDaggersWebsite.Extensions;
+using DevilDaggersWebsite.Extensions;
 using DevilDaggersWebsite.HostedServices.DdInfoDiscordBot;
 using DevilDaggersWebsite.Singletons;
 using DSharpPlus.Entities;
@@ -29,6 +29,7 @@ namespace DevilDaggersWebsite.HostedServices
 			if (DevilDaggersInfoServerConstants.FileMessage == null)
 				return;
 
+			DirectoryStatistics customEntryReplays = GetDirectorySize(Path.Combine(_environment.WebRootPath, "custom-entry-replays"));
 			DirectoryStatistics leaderboardHistory = GetDirectorySize(Path.Combine(_environment.WebRootPath, "leaderboard-history"));
 			DirectoryStatistics modScreenshots = GetDirectorySize(Path.Combine(_environment.WebRootPath, "mod-screenshots"));
 			DirectoryStatistics mods = GetDirectorySize(Path.Combine(_environment.WebRootPath, "mods"));
@@ -39,6 +40,7 @@ namespace DevilDaggersWebsite.HostedServices
 				Title = $"File {DateTime.UtcNow:yyyy-MM-dd HH:mm:ss}",
 				Color = DiscordColor.White,
 			};
+			AddFieldObject("custom-entry-replays", customEntryReplays);
 			AddFieldObject("leaderboard-history", leaderboardHistory);
 			AddFieldObject("mod-screenshots", modScreenshots);
 			AddFieldObject("mods", mods);
