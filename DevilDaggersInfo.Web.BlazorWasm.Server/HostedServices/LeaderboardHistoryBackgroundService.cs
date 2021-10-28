@@ -2,12 +2,12 @@ namespace DevilDaggersInfo.Web.BlazorWasm.Server.HostedServices;
 
 public class LeaderboardHistoryBackgroundService : AbstractBackgroundService
 {
-	private readonly IWebHostEnvironment _environment;
+	private readonly IFileSystemService _fileSystemService;
 
-	public LeaderboardHistoryBackgroundService(IWebHostEnvironment environment, BackgroundServiceMonitor backgroundServiceMonitor, ILogger<LeaderboardHistoryBackgroundService> logger)
+	public LeaderboardHistoryBackgroundService(IFileSystemService fileSystemService, BackgroundServiceMonitor backgroundServiceMonitor, ILogger<LeaderboardHistoryBackgroundService> logger)
 		: base(backgroundServiceMonitor, logger)
 	{
-		_environment = environment;
+		_fileSystemService = fileSystemService;
 	}
 
 	protected override TimeSpan Interval => TimeSpan.FromMinutes(1);
@@ -22,7 +22,7 @@ public class LeaderboardHistoryBackgroundService : AbstractBackgroundService
 		if (l != null)
 		{
 			string fileName = $"{DateTime.UtcNow:yyyyMMddHHmm}.json";
-			File.WriteAllText(Path.Combine(_environment.WebRootPath, "leaderboard-history", fileName), JsonConvert.SerializeObject(l));
+			File.WriteAllText(Path.Combine(_fileSystemService.GetPath(DataSubDirectory.LeaderboardHistory), fileName), JsonConvert.SerializeObject(l));
 			Logger.LogInformation("Task execution for `{service}` succeeded. `{fileName}` was created.", nameof(LeaderboardHistoryBackgroundService), fileName);
 		}
 		else
@@ -33,7 +33,7 @@ public class LeaderboardHistoryBackgroundService : AbstractBackgroundService
 
 	private bool HistoryFileExistsForDate(DateTime dateTime)
 	{
-		foreach (string path in Directory.GetFiles(Path.Combine(_environment.WebRootPath, "leaderboard-history"), "*.json"))
+		foreach (string path in Directory.GetFiles(_fileSystemService.GetPath(DataSubDirectory.LeaderboardHistory), "*.json"))
 		{
 			string fileName = Path.GetFileNameWithoutExtension(path);
 			if (HistoryUtils.HistoryJsonFileNameToDateTime(fileName).Date == dateTime.Date)
