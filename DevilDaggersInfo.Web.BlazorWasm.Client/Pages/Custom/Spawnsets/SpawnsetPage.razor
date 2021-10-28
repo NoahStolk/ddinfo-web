@@ -20,7 +20,7 @@ else
 {
 	<Heading>Spawnset - @GetSpawnset.Name</Heading>
 
-	<div class="bg-gray-22 max-w-sm">
+	<div class="bg-gray-0b max-w-sm px-1">
 		<DataField Name="Author">@GetSpawnset.AuthorName</DataField>
 		<DataField Name="Last updated">@GetSpawnset.LastUpdated.ToString(FormatUtils.DateTimeFormat)</DataField>
 		<DataField Name="Practice">@(GetSpawnset.IsPractice ? "Yes" : "No")</DataField>
@@ -32,13 +32,13 @@ else
 	</div>
 
 	<Heading Level="2">Format</Heading>
-	<div class="bg-gray-22 max-w-sm">
+	<div class="bg-gray-0b max-w-sm px-1">
 		<DataField Name="Game version">@SpawnsetBinary.GetGameVersionString()</DataField>
 		<DataField Name="Game mode">@SpawnsetBinary.GameMode</DataField>
 	</div>
 
 	<Heading Level="2">Arena</Heading>
-	<div class="bg-gray-22 max-w-sm">
+	<div class="bg-gray-0b max-w-sm px-1">
 		<DataField Name="Start radius">@SpawnsetBinary.ShrinkStart</DataField>
 		<DataField Name="End radius">@SpawnsetBinary.ShrinkEnd</DataField>
 		<DataField Name="Shrinking rate">@SpawnsetBinary.ShrinkRate</DataField>
