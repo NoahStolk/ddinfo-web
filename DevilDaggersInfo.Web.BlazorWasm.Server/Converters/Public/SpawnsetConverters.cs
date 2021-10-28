@@ -56,5 +56,6 @@ public static class SpawnsetConverters
 		LastUpdated = spawnset.LastUpdated,
 		Name = spawnset.Name,
 		CustomLeaderboardId = customLeaderboardId,
+		HtmlDescription = spawnset.HtmlDescription,
 	};
 }

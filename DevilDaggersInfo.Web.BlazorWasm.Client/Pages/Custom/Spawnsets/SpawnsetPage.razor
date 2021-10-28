@@ -38,6 +38,14 @@ else
 			}
 		</div>
 	</div>
+	
+	@if (!string.IsNullOrWhiteSpace(GetSpawnset.HtmlDescription))
+	{
+		<Heading Level="2">Description</Heading>
+		<div class="bg-gray-0b max-w-sm px-1">
+			@((MarkupString)@GetSpawnset.HtmlDescription)
+		</div>
+	}
 
 	<Heading Level="2">Format</Heading>
 	<div class="bg-gray-0b max-w-sm px-1">
@@ -70,13 +78,13 @@ else
 	</table>
 
 	<Heading Level="2">Player Settings</Heading>
-	<div class="bg-gray-22 max-w-sm">
+	<div class="bg-gray-22 max-w-sm px-1">
 		<DataField Name="Hand">@SpawnsetBinary.HandLevel</DataField>
 		<DataField Name="Additional gems">@SpawnsetBinary.AdditionalGems</DataField>
 	</div>
 
 	<Heading Level="2">Effective Player Settings</Heading>
-	<div class="bg-gray-22 max-w-sm">
+	<div class="bg-gray-22 max-w-sm px-1">
 		<DataField Name="Effective hand">@EffectivePlayerSettings.HandLevel</DataField>
 		<DataField Name="@($"Effective {((int)EffectivePlayerSettings.HandLevel > 2 ? "homing" : "gems")}")">@SpawnsetBinary.AdditionalGems</DataField>
 		@if (EffectivePlayerSettings.HandLevel != EffectivePlayerSettings.HandModel)
@@ -86,7 +94,7 @@ else
 	</div>
 
 	<Heading Level="2">Timer Settings</Heading>
-	<div class="bg-gray-22 max-w-sm">
+	<div class="bg-gray-22 max-w-sm px-1">
 		<DataField Name="Timer Start">@SpawnsetBinary.TimerStart.ToString(FormatUtils.TimeFormat)</DataField>
 	</div>
 

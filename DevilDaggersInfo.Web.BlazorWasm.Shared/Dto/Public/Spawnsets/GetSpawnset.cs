@@ -12,6 +12,8 @@ public class GetSpawnset
 
 	public int? CustomLeaderboardId { get; init; }
 
+	public string? HtmlDescription { get; init; }
+
 	public DateTime LastUpdated { get; init; }
 
 	public byte[] FileBytes { get; init; } = null!;
