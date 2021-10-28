@@ -41,11 +41,20 @@ public static class FormatUtils
 			return "Less than 1 minute ago";
 
 		if (difference.TotalHours < 1)
-			return $"{difference.TotalMinutes:0} minutes ago";
+		{
+			int minutes = (int)difference.TotalMinutes;
+			return $"{minutes} minute{S(minutes)} ago";
+		}
 
 		if (difference.TotalDays < 1)
-			return $"{difference.TotalHours:0} hours ago";
+		{
+			int hours = (int)difference.TotalHours;
+			return $"{hours} hour{S(hours)} ago";
+		}
 
-		return $"{difference.TotalDays:0} days ago";
+		int days = (int)difference.TotalDays;
+		return $"{days} day{S(days)} ago";
+
+		static string S(int n) => n == 1 ? string.Empty : "s";
 	}
 }
