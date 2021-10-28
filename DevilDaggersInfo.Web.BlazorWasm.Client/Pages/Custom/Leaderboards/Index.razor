@@ -13,6 +13,13 @@
 }
 else
 {
+	<div class="grid gap-2 grid-cols-2 max-w-md">
+		<span>Spawnset name</span>
+		<input class="bg-black border-gray-22 border-2" @onchange="ChangeInputSpawnsetName" />
+		<span>Author name</span>
+		<input class="bg-black border-gray-22 border-2" @onchange="ChangeInputAuthorName" />
+	</div>
+
 	<Select @onchange="ChangeCategory" class="bg-gray-0b transition-colors duration-100 h-8 py-1 rounded text-color-text">
 		@foreach (CustomLeaderboardCategory e in (CustomLeaderboardCategory[])Enum.GetValues(typeof(CustomLeaderboardCategory)))
 		{
@@ -112,6 +119,8 @@ else
 	private int _pageSize = PublicPagingConstants.PageSizeDefault;
 
 	[Parameter, SupplyParameterFromQuery] public int Category { get => _category; set => _category = Math.Max(1, value); }
+	[Parameter, SupplyParameterFromQuery] public string? SpawnsetFilter { get; set; }
+	[Parameter, SupplyParameterFromQuery] public string? AuthorFilter { get; set; }
 	[Parameter, SupplyParameterFromQuery] public int PageIndex { get => _pageIndex; set => _pageIndex = Math.Max(0, value); }
 	[Parameter, SupplyParameterFromQuery] public int PageSize { get => _pageSize; set => _pageSize = value < PublicPagingConstants.PageSizeMin || value > PublicPagingConstants.PageSizeMax ? PublicPagingConstants.PageSizeDefault : value; }
 	[Parameter, SupplyParameterFromQuery] public int? SortBy { get; set; }
@@ -124,6 +133,24 @@ else
 	public GetTotalCustomLeaderboardData? GetTotalCustomLeaderboardData { get; set; }
 
 	private int TotalPages => GetCustomLeaderboards == null ? 0 : (GetCustomLeaderboards.TotalResults - 1) / PageSize + 1;
+
+	private async Task ChangeInputSpawnsetName(ChangeEventArgs e)
+	{
+		// TODO: Fluxor
+		SpawnsetFilter = e.Value?.ToString();
+		NavigationManager.AddOrModifyQueryParameter(QueryParameters.SpawnsetFilter, SpawnsetFilter);
+
+		await Fetch();
+	}
+
+	private async Task ChangeInputAuthorName(ChangeEventArgs e)
+	{
+		// TODO: Fluxor
+		AuthorFilter = e.Value?.ToString();
+		NavigationManager.AddOrModifyQueryParameter(QueryParameters.AuthorFilter, AuthorFilter);
+
+		await Fetch();
+	}
 
 	protected override async Task OnInitializedAsync()
 	{
@@ -179,12 +206,14 @@ else
 
 	private async Task Fetch()
 	{
-		GetCustomLeaderboards = await Http.GetCustomLeaderboards((CustomLeaderboardCategory)Category, PageIndex, PageSize, SortBy.HasValue ? (CustomLeaderboardSorting)SortBy.Value : CustomLeaderboardSorting.DateLastPlayed, Ascending);
+		GetCustomLeaderboards = await Http.GetCustomLeaderboards((CustomLeaderboardCategory)Category, SpawnsetFilter, AuthorFilter, PageIndex, PageSize, SortBy.HasValue ? (CustomLeaderboardSorting)SortBy.Value : CustomLeaderboardSorting.DateLastPlayed, Ascending);
 	}
 
 	private static class QueryParameters
 	{
 		public static string Category { get; } = nameof(Category);
+		public static string SpawnsetFilter { get; } = nameof(SpawnsetFilter);
+		public static string AuthorFilter { get; } = nameof(AuthorFilter);
 		public static string PageIndex { get; } = nameof(PageIndex);
 		public static string PageSize { get; } = nameof(PageSize);
 		public static string SortBy { get; } = nameof(SortBy);

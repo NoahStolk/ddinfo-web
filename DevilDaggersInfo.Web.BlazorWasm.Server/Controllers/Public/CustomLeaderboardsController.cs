@@ -21,6 +21,8 @@ public class CustomLeaderboardsController : ControllerBase
 	[ProducesResponseType(StatusCodes.Status400BadRequest)]
 	public ActionResult<Page<GetCustomLeaderboardOverview>> GetCustomLeaderboards(
 		CustomLeaderboardCategory category,
+		string? spawnsetFilter = null,
+		string? authorFilter = null,
 		[Range(0, 1000)] int pageIndex = 0,
 		[Range(PublicPagingConstants.PageSizeMin, PublicPagingConstants.PageSizeMax)] int pageSize = PublicPagingConstants.PageSizeDefault,
 		CustomLeaderboardSorting? sortBy = null,
@@ -32,6 +34,12 @@ public class CustomLeaderboardsController : ControllerBase
 			.Include(cl => cl.Spawnset)
 				.ThenInclude(sf => sf.Player)
 			.Where(cl => !cl.IsArchived && category == cl.Category);
+
+		if (!string.IsNullOrWhiteSpace(spawnsetFilter))
+			customLeaderboardsQuery = customLeaderboardsQuery.Where(cl => cl.Spawnset.Name.Contains(spawnsetFilter));
+
+		if (!string.IsNullOrWhiteSpace(authorFilter))
+			customLeaderboardsQuery = customLeaderboardsQuery.Where(cl => cl.Spawnset.Player.PlayerName.Contains(authorFilter));
 
 		customLeaderboardsQuery = sortBy switch
 		{
