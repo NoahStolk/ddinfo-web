@@ -11,6 +11,8 @@ public enum CustomLeaderboardSorting
 	TimeLeviathan,
 	DateCreated,
 	DateLastPlayed,
+	Submits,
+	Players,
 	TopPlayer,
 	WorldRecord,
 }

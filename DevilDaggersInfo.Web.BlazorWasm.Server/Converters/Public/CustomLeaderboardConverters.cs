@@ -19,7 +19,7 @@ public static class CustomLeaderboardConverters
 		IsAscending = customLeaderboard.Category.IsAscending(),
 	};
 
-	public static GetCustomLeaderboardOverview ToGetCustomLeaderboardOverview(this CustomLeaderboardEntity customLeaderboard, string? topPlayer, int? worldRecord) => new()
+	public static GetCustomLeaderboardOverview ToGetCustomLeaderboardOverview(this CustomLeaderboardEntity customLeaderboard, int playerCount, string? topPlayer, int? worldRecord) => new()
 	{
 		Id = customLeaderboard.Id,
 		SpawnsetAuthorName = customLeaderboard.Spawnset.Player.PlayerName,
@@ -31,6 +31,8 @@ public static class CustomLeaderboardConverters
 		TimeLeviathan = customLeaderboard.TimeLeviathan.ToSecondsTime(),
 		DateCreated = customLeaderboard.DateCreated,
 		DateLastPlayed = customLeaderboard.DateLastPlayed,
+		Submits = customLeaderboard.DateCreated < FeatureConstants.TrackingCustomLeaderboardSubmitCounts ? null : customLeaderboard.TotalRunsSubmitted,
+		Players = playerCount,
 		TopPlayer = topPlayer,
 		WorldRecord = worldRecord.ToSecondsTime(),
 		WorldRecordDagger = worldRecord.HasValue ? customLeaderboard.GetDaggerFromTime(worldRecord.Value) : CustomLeaderboardDagger.Default,

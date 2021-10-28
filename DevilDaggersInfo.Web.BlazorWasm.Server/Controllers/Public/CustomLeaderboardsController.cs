@@ -28,6 +28,7 @@ public class CustomLeaderboardsController : ControllerBase
 		CustomLeaderboardSorting? sortBy = null,
 		bool ascending = false)
 	{
+		// Build query.
 		IQueryable<CustomLeaderboardEntity> customLeaderboardsQuery = _dbContext.CustomLeaderboards
 			.AsNoTracking()
 			.Where(cl => !cl.IsArchived)
@@ -41,40 +42,58 @@ public class CustomLeaderboardsController : ControllerBase
 		if (!string.IsNullOrWhiteSpace(authorFilter))
 			customLeaderboardsQuery = customLeaderboardsQuery.Where(cl => cl.Spawnset.Player.PlayerName.Contains(authorFilter));
 
-		customLeaderboardsQuery = sortBy switch
-		{
-			CustomLeaderboardSorting.AuthorName => customLeaderboardsQuery.OrderBy(cl => cl.Spawnset.Player.PlayerName, ascending),
-			CustomLeaderboardSorting.DateLastPlayed => customLeaderboardsQuery.OrderBy(cl => cl.DateLastPlayed, ascending),
-			CustomLeaderboardSorting.SpawnsetName => customLeaderboardsQuery.OrderBy(cl => cl.Spawnset.Name, ascending),
-			CustomLeaderboardSorting.TimeBronze => customLeaderboardsQuery.OrderBy(cl => cl.TimeBronze, ascending),
-			CustomLeaderboardSorting.TimeSilver => customLeaderboardsQuery.OrderBy(cl => cl.TimeSilver, ascending),
-			CustomLeaderboardSorting.TimeGolden => customLeaderboardsQuery.OrderBy(cl => cl.TimeGolden, ascending),
-			CustomLeaderboardSorting.TimeDevil => customLeaderboardsQuery.OrderBy(cl => cl.TimeDevil, ascending),
-			CustomLeaderboardSorting.TimeLeviathan => customLeaderboardsQuery.OrderBy(cl => cl.TimeLeviathan, ascending),
-			CustomLeaderboardSorting.DateCreated => customLeaderboardsQuery.OrderBy(cl => cl.DateCreated, ascending),
-			_ => customLeaderboardsQuery.OrderBy(cl => cl.Id, ascending),
-		};
-
+		// Execute query.
 		List<CustomLeaderboardEntity> customLeaderboards = customLeaderboardsQuery.ToList();
 
-		IEnumerable<int> customLeaderboardIds = customLeaderboards.Select(cl => cl.Id);
+		// Query custom entries for world record and amount of players.
+		List<int> customLeaderboardIds = customLeaderboards.ConvertAll(cl => cl.Id);
 		var customEntries = _dbContext.CustomEntries
 			.AsNoTracking()
 			.Where(ce => customLeaderboardIds.Contains(ce.CustomLeaderboardId))
 			.Include(ce => ce.Player)
 			.Select(ce => new { ce.Time, ce.Player.PlayerName, ce.CustomLeaderboardId });
 
+		// Build dictionary for amount of players.
+		Dictionary<int, int> customEntryCountByCustomLeaderboardId = new();
+		foreach (int customLeaderboardId in customEntries.Select(ce => ce.CustomLeaderboardId))
+		{
+			if (customEntryCountByCustomLeaderboardId.ContainsKey(customLeaderboardId))
+				customEntryCountByCustomLeaderboardId[customLeaderboardId]++;
+			else
+				customEntryCountByCustomLeaderboardId.Add(customLeaderboardId, 1);
+		}
+
+		// Apply regular sorting.
+		customLeaderboards = (sortBy switch
+		{
+			CustomLeaderboardSorting.AuthorName => customLeaderboards.OrderBy(cl => cl.Spawnset.Player.PlayerName, ascending),
+			CustomLeaderboardSorting.DateLastPlayed => customLeaderboards.OrderBy(cl => cl.DateLastPlayed, ascending),
+			CustomLeaderboardSorting.SpawnsetName => customLeaderboards.OrderBy(cl => cl.Spawnset.Name, ascending),
+			CustomLeaderboardSorting.TimeBronze => customLeaderboards.OrderBy(cl => cl.TimeBronze, ascending),
+			CustomLeaderboardSorting.TimeSilver => customLeaderboards.OrderBy(cl => cl.TimeSilver, ascending),
+			CustomLeaderboardSorting.TimeGolden => customLeaderboards.OrderBy(cl => cl.TimeGolden, ascending),
+			CustomLeaderboardSorting.TimeDevil => customLeaderboards.OrderBy(cl => cl.TimeDevil, ascending),
+			CustomLeaderboardSorting.TimeLeviathan => customLeaderboards.OrderBy(cl => cl.TimeLeviathan, ascending),
+			CustomLeaderboardSorting.DateCreated => customLeaderboards.OrderBy(cl => cl.DateCreated, ascending),
+			CustomLeaderboardSorting.Players => customLeaderboards.OrderBy(cl => customEntryCountByCustomLeaderboardId.ContainsKey(cl.Id) ? customEntryCountByCustomLeaderboardId[cl.Id] : 0, ascending),
+			CustomLeaderboardSorting.Submits => customLeaderboards.OrderBy(cl => cl.DateCreated < FeatureConstants.TrackingCustomLeaderboardSubmitCounts ? 0 : cl.TotalRunsSubmitted, ascending),
+			_ => customLeaderboards.OrderBy(cl => cl.Id, ascending),
+		}).ToList();
+
+		// Determine world records.
 		if (category.IsAscending())
 			customEntries = customEntries.OrderBy(wr => wr.Time);
 		else
 			customEntries = customEntries.OrderByDescending(wr => wr.Time);
 
+		// Map custom leaderboards with world record data.
 		List<CustomLeaderboardWorldRecord> customLeaderboardWrs = customLeaderboards
 			.ConvertAll(cl => new CustomLeaderboardWorldRecord(
 				cl,
 				customEntries.FirstOrDefault(clwr => clwr.CustomLeaderboardId == cl.Id)?.Time,
 				customEntries.FirstOrDefault(clwr => clwr.CustomLeaderboardId == cl.Id)?.PlayerName));
 
+		// Apply sorting for world records.
 		if (sortBy == CustomLeaderboardSorting.WorldRecord)
 		{
 			customLeaderboardWrs = ascending
@@ -88,6 +107,7 @@ public class CustomLeaderboardsController : ControllerBase
 				: customLeaderboardWrs.OrderByDescending(clwr => clwr.TopPlayer).ToList();
 		}
 
+		// Apply paging.
 		customLeaderboardWrs = customLeaderboardWrs
 			.Skip(pageIndex * pageSize)
 			.Take(pageSize)
@@ -95,7 +115,10 @@ public class CustomLeaderboardsController : ControllerBase
 
 		return new Page<GetCustomLeaderboardOverview>
 		{
-			Results = customLeaderboardWrs.ConvertAll(cl => cl.CustomLeaderboard.ToGetCustomLeaderboardOverview(cl.TopPlayer, cl.WorldRecord)),
+			Results = customLeaderboardWrs.ConvertAll(cl => cl.CustomLeaderboard.ToGetCustomLeaderboardOverview(
+				customEntryCountByCustomLeaderboardId.ContainsKey(cl.CustomLeaderboard.Id) ? customEntryCountByCustomLeaderboardId[cl.CustomLeaderboard.Id] : 0,
+				cl.TopPlayer,
+				cl.WorldRecord)),
 			TotalResults = customLeaderboardsQuery.Count(),
 		};
 	}

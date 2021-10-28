@@ -57,6 +57,8 @@ else
 		<a href="" @onclick:preventDefault class="text-color-link hover:text-color-link-hover text-left hidden md:block" @onclick="() => Sort(CustomLeaderboardSorting.AuthorName)">Author</a>
 		<a href="" @onclick:preventDefault class="text-color-link hover:text-color-link-hover text-left hidden md:block" @onclick="() => Sort(CustomLeaderboardSorting.DateCreated)">Created</a>
 		<a href="" @onclick:preventDefault class="text-color-link hover:text-color-link-hover text-left hidden md:block" @onclick="() => Sort(CustomLeaderboardSorting.DateLastPlayed)">Last played</a>
+		<a href="" @onclick:preventDefault class="text-color-link hover:text-color-link-hover text-right hidden xl:block" @onclick="() => Sort(CustomLeaderboardSorting.Submits)">Submits</a>
+		<a href="" @onclick:preventDefault class="text-color-link hover:text-color-link-hover text-right hidden xl:block" @onclick="() => Sort(CustomLeaderboardSorting.Players)">Players</a>
 		<a href="" @onclick:preventDefault class="text-color-link hover:text-color-link-hover text-right hidden xl:block" @onclick="() => Sort(CustomLeaderboardSorting.TimeBronze)">Bronze</a>
 		<a href="" @onclick:preventDefault class="text-color-link hover:text-color-link-hover text-right hidden xl:block" @onclick="() => Sort(CustomLeaderboardSorting.TimeSilver)">Silver</a>
 		<a href="" @onclick:preventDefault class="text-color-link hover:text-color-link-hover text-right hidden xl:block" @onclick="() => Sort(CustomLeaderboardSorting.TimeGolden)">Golden</a>
@@ -73,6 +75,8 @@ else
 			<div class="overflow-x-hidden text-left hidden md:block">@customLeaderboard.SpawnsetAuthorName.ToNoBreakString()</div>
 			<div class="overflow-x-hidden text-left hidden md:block">@customLeaderboard.DateCreated.ToString(FormatUtils.DateFormat)</div>
 			<div class="overflow-x-hidden text-left hidden md:block">@FormatUtils.FormatDateTimeAsTimeAgo(customLeaderboard.DateLastPlayed)</div>
+			<div class="overflow-x-hidden text-right hidden xl:block">@customLeaderboard.Submits</div>
+			<div class="overflow-x-hidden text-right hidden xl:block">@customLeaderboard.Players</div>
 			<div class="overflow-x-hidden text-right hidden xl:block text-xl font-goethe bronze">@customLeaderboard.TimeBronze.ToString(FormatUtils.TimeFormat)</div>
 			<div class="overflow-x-hidden text-right hidden xl:block text-xl font-goethe silver">@customLeaderboard.TimeSilver.ToString(FormatUtils.TimeFormat)</div>
 			<div class="overflow-x-hidden text-right hidden xl:block text-xl font-goethe golden">@customLeaderboard.TimeGolden.ToString(FormatUtils.TimeFormat)</div>
