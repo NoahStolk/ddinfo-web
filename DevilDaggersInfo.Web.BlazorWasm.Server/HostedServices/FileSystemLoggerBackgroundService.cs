@@ -5,12 +5,12 @@ namespace DevilDaggersInfo.Web.BlazorWasm.Server.HostedServices;
 
 public class FileSystemLoggerBackgroundService : AbstractBackgroundService
 {
-	private readonly IWebHostEnvironment _environment;
+	private readonly IFileSystemService _fileSystemService;
 
-	public FileSystemLoggerBackgroundService(IWebHostEnvironment environment, BackgroundServiceMonitor backgroundServiceMonitor, ILogger<FileSystemLoggerBackgroundService> logger)
+	public FileSystemLoggerBackgroundService(IFileSystemService fileSystemService, BackgroundServiceMonitor backgroundServiceMonitor, ILogger<FileSystemLoggerBackgroundService> logger)
 		: base(backgroundServiceMonitor, logger)
 	{
-		_environment = environment;
+		_fileSystemService = fileSystemService;
 	}
 
 	protected override TimeSpan Interval => TimeSpan.FromMinutes(5);
@@ -20,25 +20,21 @@ public class FileSystemLoggerBackgroundService : AbstractBackgroundService
 		if (DevilDaggersInfoServerConstants.FileMessage == null)
 			return;
 
-		DirectoryStatistics leaderboardHistory = GetDirectorySize(Path.Combine(_environment.WebRootPath, "leaderboard-history"));
-		DirectoryStatistics modScreenshots = GetDirectorySize(Path.Combine(_environment.WebRootPath, "mod-screenshots"));
-		DirectoryStatistics mods = GetDirectorySize(Path.Combine(_environment.WebRootPath, "mods"));
-		DirectoryStatistics spawnsets = GetDirectorySize(Path.Combine(_environment.WebRootPath, "spawnsets"));
-
 		DiscordEmbedBuilder builder = new()
 		{
 			Title = $"File {DateTime.UtcNow:yyyy-MM-dd HH:mm:ss}",
 			Color = DiscordColor.White,
 		};
-		AddFieldObject("leaderboard-history", leaderboardHistory);
-		AddFieldObject("mod-screenshots", modScreenshots);
-		AddFieldObject("mods", mods);
-		AddFieldObject("spawnsets", spawnsets);
+
+		DataSubDirectory[] dataSubDirectories = Enum.GetValues<DataSubDirectory>();
+		for (int i = 0; i < dataSubDirectories.Length; i++)
+		{
+			DataSubDirectory dataSubDirectory = dataSubDirectories[i];
+			DirectoryStatistics statistics = GetDirectorySize(_fileSystemService.GetPath(dataSubDirectory));
+			builder.AddFieldObject(dataSubDirectory.ToString(), $"`{statistics.Size:n0}` bytes\n`{statistics.FileCount}` files");
+		}
 
 		await DevilDaggersInfoServerConstants.FileMessage.TryEdit(builder.Build());
-
-		void AddFieldObject(string name, DirectoryStatistics value)
-			=> builder.AddFieldObject(name, $"`{value.Size:n0}` bytes\n`{value.FileCount}` files");
 	}
 
 	private static DirectoryStatistics GetDirectorySize(string folderPath)
