@@ -26,7 +26,7 @@ public class GetCustomLeaderboard
 
 	public DateTime DateCreated { get; init; }
 
-	public int? TotalRunsSubmitted { get; init; }
+	public int SubmitCount { get; init; }
 
 	public bool IsArchived { get; init; }
 

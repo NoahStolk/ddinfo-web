@@ -75,8 +75,8 @@ else
 			<div class="overflow-x-hidden text-left hidden md:block">@customLeaderboard.SpawnsetAuthorName.ToNoBreakString()</div>
 			<div class="overflow-x-hidden text-left hidden md:block">@customLeaderboard.DateCreated.ToString(FormatUtils.DateFormat)</div>
 			<div class="overflow-x-hidden text-left hidden md:block">@FormatUtils.FormatDateTimeAsTimeAgo(customLeaderboard.DateLastPlayed)</div>
-			<div class="overflow-x-hidden text-right hidden 2xl:block">@customLeaderboard.Submits</div>
-			<div class="overflow-x-hidden text-right hidden 2xl:block">@customLeaderboard.Players</div>
+			<div class="overflow-x-hidden text-right hidden 2xl:block">@(customLeaderboard.DateCreated < FeatureConstants.TrackingCustomLeaderboardSubmitCounts ? "+" : string.Empty)@customLeaderboard.SubmitCount</div>
+			<div class="overflow-x-hidden text-right hidden 2xl:block">@customLeaderboard.PlayerCount</div>
 			<div class="overflow-x-hidden text-right hidden xl:block text-xl font-goethe bronze">@customLeaderboard.TimeBronze.ToString(FormatUtils.TimeFormat)</div>
 			<div class="overflow-x-hidden text-right hidden xl:block text-xl font-goethe silver">@customLeaderboard.TimeSilver.ToString(FormatUtils.TimeFormat)</div>
 			<div class="overflow-x-hidden text-right hidden xl:block text-xl font-goethe golden">@customLeaderboard.TimeGolden.ToString(FormatUtils.TimeFormat)</div>

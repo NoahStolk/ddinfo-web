@@ -22,9 +22,9 @@ public class GetCustomLeaderboardOverview
 
 	public DateTime DateCreated { get; init; }
 
-	public int? Submits { get; init; }
+	public int SubmitCount { get; init; }
 
-	public int Players { get; init; }
+	public int PlayerCount { get; init; }
 
 	public string? TopPlayer { get; init; }
 

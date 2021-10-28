@@ -27,10 +27,7 @@ else
 		<DataField Name="Author">@GetCustomLeaderboard.SpawnsetAuthorName</DataField>
 		<DataField Name="Created">@GetCustomLeaderboard.DateCreated.ToString(FormatUtils.DateTimeFormat)</DataField>
 		<DataField Name="Category">@GetCustomLeaderboard.Category</DataField>
-		@if (GetCustomLeaderboard.TotalRunsSubmitted.HasValue)
-		{
-			<DataField Name="Submits">@GetCustomLeaderboard.TotalRunsSubmitted.Value</DataField>
-		}
+		<DataField Name="Submits">@(GetCustomLeaderboard.DateCreated < FeatureConstants.TrackingCustomLeaderboardSubmitCounts ? "+" : string.Empty)@GetCustomLeaderboard.SubmitCount</DataField>
 
 		<div class="grid grid-cols-2 text-lg">
 			<div class="px-1 py-3">

@@ -76,7 +76,7 @@ public class CustomLeaderboardsController : ControllerBase
 			CustomLeaderboardSorting.TimeLeviathan => customLeaderboards.OrderBy(cl => cl.TimeLeviathan, ascending),
 			CustomLeaderboardSorting.DateCreated => customLeaderboards.OrderBy(cl => cl.DateCreated, ascending),
 			CustomLeaderboardSorting.Players => customLeaderboards.OrderBy(cl => customEntryCountByCustomLeaderboardId.ContainsKey(cl.Id) ? customEntryCountByCustomLeaderboardId[cl.Id] : 0, ascending),
-			CustomLeaderboardSorting.Submits => customLeaderboards.OrderBy(cl => cl.DateCreated < FeatureConstants.TrackingCustomLeaderboardSubmitCounts ? 0 : cl.TotalRunsSubmitted, ascending),
+			CustomLeaderboardSorting.Submits => customLeaderboards.OrderBy(cl => cl.TotalRunsSubmitted, ascending),
 			_ => customLeaderboards.OrderBy(cl => cl.Id, ascending),
 		}).ToList();
 
