@@ -27,9 +27,9 @@ else
 		<DataField Name="Author">@GetCustomLeaderboard.SpawnsetAuthorName</DataField>
 		<DataField Name="Created">@GetCustomLeaderboard.DateCreated.ToString(FormatUtils.DateTimeFormat)</DataField>
 		<DataField Name="Category">@GetCustomLeaderboard.Category</DataField>
-		@if (GetCustomLeaderboard.DateCreated >= FeatureConstants.TrackingCustomLeaderboardSubmitCounts)
+		@if (GetCustomLeaderboard.TotalRunsSubmitted.HasValue)
 		{
-			<DataField Name="Submits">@GetCustomLeaderboard.TotalRunsSubmitted</DataField>
+			<DataField Name="Submits">@GetCustomLeaderboard.TotalRunsSubmitted.Value</DataField>
 		}
 
 		<div class="grid grid-cols-2 text-lg">
