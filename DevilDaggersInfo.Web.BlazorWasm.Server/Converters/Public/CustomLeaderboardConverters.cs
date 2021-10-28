@@ -38,6 +38,7 @@ public static class CustomLeaderboardConverters
 
 	public static GetCustomLeaderboard ToGetCustomLeaderboard(this CustomLeaderboardEntity customLeaderboard) => new()
 	{
+		SpawnsetId = customLeaderboard.SpawnsetId,
 		SpawnsetAuthorName = customLeaderboard.Spawnset.Player.PlayerName,
 		SpawnsetName = customLeaderboard.Spawnset.Name,
 		TimeBronze = customLeaderboard.TimeBronze.ToSecondsTime(),
