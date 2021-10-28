@@ -10,6 +10,8 @@ public class GetCustomLeaderboard
 
 	public string SpawnsetAuthorName { get; init; } = null!;
 
+	public string? SpawnsetHtmlDescription { get; init; }
+
 	public double TimeBronze { get; init; }
 
 	public double TimeSilver { get; init; }

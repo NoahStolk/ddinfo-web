@@ -40,6 +40,7 @@ public static class CustomLeaderboardConverters
 	{
 		SpawnsetId = customLeaderboard.SpawnsetId,
 		SpawnsetAuthorName = customLeaderboard.Spawnset.Player.PlayerName,
+		SpawnsetHtmlDescription = customLeaderboard.Spawnset.HtmlDescription,
 		SpawnsetName = customLeaderboard.Spawnset.Name,
 		TimeBronze = customLeaderboard.TimeBronze.ToSecondsTime(),
 		TimeSilver = customLeaderboard.TimeSilver.ToSecondsTime(),
