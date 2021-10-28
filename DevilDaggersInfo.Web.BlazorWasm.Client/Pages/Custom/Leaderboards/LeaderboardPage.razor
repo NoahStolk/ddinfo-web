@@ -22,8 +22,24 @@ else
 	{
 		<p class="text-lg p-1 m-1 bg-dark-orange">TimeAttack leaderboards are not supported right now.</p>
 	}
+	
+	<div class="bg-gray-0b max-w-sm px-1">
+		<DataField Name="Author">@GetCustomLeaderboard.SpawnsetAuthorName</DataField>
+		<DataField Name="Created">@GetCustomLeaderboard.DateCreated.ToString(FormatUtils.DateTimeFormat)</DataField>
+		<DataField Name="Category">@GetCustomLeaderboard.Category</DataField>
+		<DataField Name="Submits">@GetCustomLeaderboard.TotalRunsSubmitted</DataField>
 
-	<div class="grid justify-items-center gap-3 grid-cols-5 mb-6 font-goethe text-xl">
+		<div class="grid grid-cols-2 text-lg">
+			<div class="px-1 py-3">
+				<UrlLink Href="@($"/api/spawnsets/{GetCustomLeaderboard.SpawnsetName}/file")">Download spawnset</UrlLink>
+			</div>
+			<div class="px-1 py-3 text-right">
+				<UrlLink Href="@($"/custom/spawnset/{GetCustomLeaderboard.SpawnsetId}")">View spawnset</UrlLink>
+			</div>
+		</div>
+	</div>
+
+	<div class="grid justify-items-center gap-3 grid-cols-5 my-6 font-goethe text-xl">
 		<div>
 			<img class="mx-auto" src="/images/icons/daggers/bronze.png" />
 			<span class="bronze">@(GetCustomLeaderboard.TimeBronze.ToString(FormatUtils.TimeFormat))</span>
