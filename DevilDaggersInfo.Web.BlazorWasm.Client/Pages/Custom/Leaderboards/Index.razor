@@ -71,7 +71,7 @@ else
 		<div class="grid gap-3 sm:grid-cols-custom-leaderboards-sm md:grid-cols-custom-leaderboards-md lg:grid-cols-custom-leaderboards-lg xl:grid-cols-custom-leaderboards-xl h-6 @(i % 2 == 0 ? "bg-gray-0b" : string.Empty)">
 			<div class="overflow-x-hidden text-left"><a href="/custom/leaderboard/@customLeaderboard.Id">@customLeaderboard.SpawnsetName.ToNoBreakString()</a></div>
 			<div class="overflow-x-hidden text-left hidden md:block">@customLeaderboard.SpawnsetAuthorName.ToNoBreakString()</div>
-			<div class="overflow-x-hidden text-left hidden md:block">@customLeaderboard.DateCreated?.ToString(FormatUtils.DateFormat)</div>
+			<div class="overflow-x-hidden text-left hidden md:block">@customLeaderboard.DateCreated.ToString(FormatUtils.DateFormat)</div>
 			<div class="overflow-x-hidden text-left hidden md:block">@FormatUtils.FormatDateTimeAsTimeAgo(customLeaderboard.DateLastPlayed)</div>
 			<div class="overflow-x-hidden text-right hidden xl:block text-xl font-goethe bronze">@customLeaderboard.TimeBronze.ToString(FormatUtils.TimeFormat)</div>
 			<div class="overflow-x-hidden text-right hidden xl:block text-xl font-goethe silver">@customLeaderboard.TimeSilver.ToString(FormatUtils.TimeFormat)</div>

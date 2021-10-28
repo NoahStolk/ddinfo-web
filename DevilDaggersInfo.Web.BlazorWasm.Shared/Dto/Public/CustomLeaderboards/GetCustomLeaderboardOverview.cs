@@ -20,7 +20,7 @@ public class GetCustomLeaderboardOverview
 
 	public DateTime? DateLastPlayed { get; init; }
 
-	public DateTime? DateCreated { get; init; }
+	public DateTime DateCreated { get; init; }
 
 	public string? TopPlayer { get; init; }
 
