@@ -66,7 +66,7 @@ else
 		<DataField Name="Hand">@SpawnsetBinary.HandLevel</DataField>
 		<DataField Name="Additional gems">@SpawnsetBinary.AdditionalGems</DataField>
 	</div>
-	
+
 	<Heading Level="2">Effective Player Settings</Heading>
 	<div class="bg-gray-22 max-w-sm">
 		<DataField Name="Effective hand">@EffectivePlayerSettings.HandLevel</DataField>
@@ -76,12 +76,12 @@ else
 			<DataField Name="Effective hand model">@EffectivePlayerSettings.HandModel</DataField>
 		}
 	</div>
-	
+
 	<Heading Level="2">Timer Settings</Heading>
 	<div class="bg-gray-22 max-w-sm">
 		<DataField Name="Timer Start">@SpawnsetBinary.TimerStart.ToString(FormatUtils.TimeFormat)</DataField>
 	</div>
-	
+
 	<Heading Level="2">Spawns</Heading>
 	<Spawnset SpawnsView=SpawnsView />
 }

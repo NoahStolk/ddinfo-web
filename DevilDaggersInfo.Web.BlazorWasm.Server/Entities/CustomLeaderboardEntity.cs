@@ -28,7 +28,7 @@ public class CustomLeaderboardEntity
 
 	public DateTime? DateLastPlayed { get; set; }
 
-	public DateTime? DateCreated { get; set; }
+	public DateTime DateCreated { get; set; }
 
 	public int TotalRunsSubmitted { get; set; }
 
