@@ -38,7 +38,8 @@ module.exports = {
 				'admin-users': createMinmaxGrid([3, 2, 1, 1, 1, 1, 1, 1, 1, 1]),
 
 				// Overviews
-				'custom-leaderboards-xl': createMinmaxGrid([2, 2, 1, 2, 1, 1, 1, 1, 1, 1, 1, 2, 1]),
+				'custom-leaderboards-2xl': createMinmaxGrid([2, 2, 1, 2, 1, 1, 1, 1, 1, 1, 1, 2, 1]),
+				'custom-leaderboards-xl': createMinmaxGrid([2, 2, 1, 2, 1, 1, 1, 1, 1, 2, 1]),
 				'custom-leaderboards-lg': createMinmaxGrid([2, 2, 1, 2, 2, 1]),
 				'custom-leaderboards-md': createMinmaxGrid([2, 2, 1.5, 1.5]),
 				'custom-leaderboards-sm': createMinmaxGrid([1]),
