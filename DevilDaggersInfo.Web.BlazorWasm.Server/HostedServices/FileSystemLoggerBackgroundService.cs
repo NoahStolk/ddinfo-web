@@ -41,17 +41,12 @@ public class FileSystemLoggerBackgroundService : AbstractBackgroundService
 	{
 		DirectoryInfo di = new(folderPath);
 		IEnumerable<FileInfo> allFiles = di.EnumerateFiles("*.*", SearchOption.AllDirectories);
-		return new()
-		{
-			Size = allFiles.Sum(fi => fi.Length),
-			FileCount = allFiles.Count(),
-		};
+		return new(allFiles.Sum(fi => fi.Length), allFiles.Count());
 	}
 
-	// TODO: Use .NET 6 record struct.
-	private struct DirectoryStatistics
-	{
-		public long Size { get; init; }
-		public int FileCount { get; init; }
-	}
+#pragma warning disable SA1201 // Elements should appear in the correct order
+#pragma warning disable SA1313 // Parameter names should begin with lower-case letter
+	private readonly record struct DirectoryStatistics(long Size, int FileCount);
+#pragma warning restore SA1313 // Parameter names should begin with lower-case letter
+#pragma warning restore SA1201 // Elements should appear in the correct order
 }
