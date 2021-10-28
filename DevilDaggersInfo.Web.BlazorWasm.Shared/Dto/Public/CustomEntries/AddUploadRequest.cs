@@ -2,6 +2,7 @@ namespace DevilDaggersInfo.Web.BlazorWasm.Shared.Dto.Public.CustomEntries;
 
 public class AddUploadRequest
 {
+	// TODO: Add MaxLength (and min length) 16?
 	public byte[] SurvivalHashMd5 { get; init; } = null!;
 
 	public int PlayerId { get; init; }
@@ -56,6 +57,7 @@ public class AddUploadRequest
 
 	public List<AddGameState> GameStates { get; init; } = new();
 
+	[MaxLength(ReplayConstants.MaxFileSize, ErrorMessage = ReplayConstants.MaxFileSizeErrorMessage)]
 	public byte[]? ReplayData { get; init; }
 
 	public int Status { get; set; }

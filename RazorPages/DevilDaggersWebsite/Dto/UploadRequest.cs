@@ -62,6 +62,7 @@ namespace DevilDaggersWebsite.Dto
 
 		public List<GameState> GameStates { get; init; } = new();
 
+		[MaxLength(30 * 1024 * 1024, ErrorMessage = "Replay buffer cannot be larger than 31,457,280 bytes.")]
 		public byte[]? ReplayData { get; init; }
 	}
 }
