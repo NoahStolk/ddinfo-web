@@ -253,7 +253,12 @@ public class SpawnsetsController : ControllerBase
 		if (!IoFile.Exists(path))
 			return NotFound();
 
-		return spawnsetEntity.ToGetSpawnset(IoFile.ReadAllBytes(path));
+		var customLeaderboard = _dbContext.CustomLeaderboards
+			.AsNoTracking()
+			.Select(cl => new { cl.Id, cl.SpawnsetId })
+			.FirstOrDefault(cl => cl.SpawnsetId == spawnsetEntity.Id);
+
+		return spawnsetEntity.ToGetSpawnset(customLeaderboard?.Id, IoFile.ReadAllBytes(path));
 	}
 
 	[HttpGet("default")]

@@ -10,6 +10,8 @@ public class GetSpawnset
 
 	public bool IsPractice { get; init; }
 
+	public int? CustomLeaderboardId { get; init; }
+
 	public DateTime LastUpdated { get; init; }
 
 	public byte[] FileBytes { get; init; } = null!;

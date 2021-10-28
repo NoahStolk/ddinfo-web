@@ -47,7 +47,7 @@ public static class SpawnsetConverters
 		Name = spawnset.Name,
 	};
 
-	public static GetSpawnset ToGetSpawnset(this SpawnsetEntity spawnset, byte[] fileBytes) => new()
+	public static GetSpawnset ToGetSpawnset(this SpawnsetEntity spawnset, int? customLeaderboardId, byte[] fileBytes) => new()
 	{
 		AuthorName = spawnset.Player.PlayerName,
 		FileBytes = fileBytes,
@@ -55,5 +55,6 @@ public static class SpawnsetConverters
 		IsPractice = spawnset.IsPractice,
 		LastUpdated = spawnset.LastUpdated,
 		Name = spawnset.Name,
+		CustomLeaderboardId = customLeaderboardId,
 	};
 }
