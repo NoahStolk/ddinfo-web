@@ -25,6 +25,8 @@ public class ModsController : ControllerBase
 	[ProducesResponseType(StatusCodes.Status400BadRequest)]
 	public ActionResult<Page<GetModOverview>> GetMods(
 		bool onlyHosted,
+		string? modFilter = null,
+		string? authorFilter = null,
 		[Range(0, 1000)] int pageIndex = 0,
 		[Range(PublicPagingConstants.PageSizeMin, PublicPagingConstants.PageSizeMax)] int pageSize = PublicPagingConstants.PageSizeDefault,
 		ModSorting? sortBy = null,
@@ -35,6 +37,13 @@ public class ModsController : ControllerBase
 			.Include(am => am.PlayerMods)
 				.ThenInclude(pam => pam.Player)
 			.Where(am => !am.IsHidden);
+
+		// OrdinalIgnoreCase works here because this is an IEnumerable. Spawnset and custom leaderboard queries do not require this.
+		if (!string.IsNullOrWhiteSpace(modFilter))
+			modsQuery = modsQuery.Where(m => m.Name.Contains(modFilter, StringComparison.OrdinalIgnoreCase));
+
+		if (!string.IsNullOrWhiteSpace(authorFilter))
+			modsQuery = modsQuery.Where(m => m.PlayerMods.Any(pm => pm.Player.PlayerName.Contains(authorFilter, StringComparison.OrdinalIgnoreCase)));
 
 		List<ModEntity> mods = modsQuery.ToList();
 		Dictionary<ModEntity, (bool FileExists, string? Path)> modsWithFileInfo = GetModsWithFileInfo(mods);

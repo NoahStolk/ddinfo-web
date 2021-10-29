@@ -13,6 +13,15 @@
 }
 else
 {
+	<div class="grid gap-2 grid-cols-2 max-w-md">
+		<span>Mod name</span>
+		<input class="bg-black border-gray-22 border-2" @onchange="ChangeInputModName" />
+		<span>Author name</span>
+		<input class="bg-black border-gray-22 border-2" @onchange="ChangeInputAuthorName" />
+		<span>Hosted only</span>
+		<input type="checkbox" class="bg-black border-gray-22 border-2 w-8" @onchange="ChangeInputHostedOnly" />
+	</div>
+
 	<button class="bg-gray-0b hover:bg-gray-22 transition-colors duration-100 w-8 h-8 py-1 rounded text-color-text" @onclick="() => ChangePageIndex(0)">|&lt;</button>
 	<button class="bg-gray-0b hover:bg-gray-22 transition-colors duration-100 w-8 h-8 py-1 rounded text-color-text" @onclick="() => ChangePageIndex(PageIndex - 1)">&lt;</button>
 	<button class="bg-gray-0b hover:bg-gray-22 transition-colors duration-100 w-8 h-8 py-1 rounded text-color-text" @onclick="() => ChangePageIndex(PageIndex + 1)">&gt;</button>
@@ -59,7 +68,9 @@ else
 	private int _pageIndex;
 	private int _pageSize = PublicPagingConstants.PageSizeDefault;
 
-	[Parameter, SupplyParameterFromQuery] public bool OnlyHosted { get; set; }
+	[Parameter, SupplyParameterFromQuery] public bool HostedOnly { get; set; }
+	[Parameter, SupplyParameterFromQuery] public string? ModFilter { get; set; }
+	[Parameter, SupplyParameterFromQuery] public string? AuthorFilter { get; set; }
 	[Parameter, SupplyParameterFromQuery] public int PageIndex { get => _pageIndex; set => _pageIndex = Math.Max(0, value); }
 	[Parameter, SupplyParameterFromQuery] public int PageSize { get => _pageSize; set => _pageSize = value < PublicPagingConstants.PageSizeMin || value > PublicPagingConstants.PageSizeMax ? PublicPagingConstants.PageSizeDefault : value; }
 	[Parameter, SupplyParameterFromQuery] public int? SortBy { get; set; }
@@ -70,6 +81,33 @@ else
 	public Page<GetModOverview>? GetMods { get; set; }
 
 	private int TotalPages => GetMods == null ? 0 : (GetMods.TotalResults - 1) / PageSize + 1;
+	
+	private async Task ChangeInputModName(ChangeEventArgs e)
+	{
+		// TODO: Fluxor
+		ModFilter = e.Value?.ToString();
+		NavigationManager.AddOrModifyQueryParameter(QueryParameters.ModFilter, ModFilter);
+
+		await Fetch();
+	}
+
+	private async Task ChangeInputAuthorName(ChangeEventArgs e)
+	{
+		// TODO: Fluxor
+		AuthorFilter = e.Value?.ToString();
+		NavigationManager.AddOrModifyQueryParameter(QueryParameters.AuthorFilter, AuthorFilter);
+
+		await Fetch();
+	}
+	
+	private async Task ChangeInputHostedOnly(ChangeEventArgs e)
+	{
+		// TODO: Fluxor
+		HostedOnly = bool.TryParse(e.Value?.ToString(), out bool value) && value;
+		NavigationManager.AddOrModifyQueryParameter(QueryParameters.HostedOnly, HostedOnly);
+
+		await Fetch();
+	}
 
 	protected override async Task OnInitializedAsync()
 	{
@@ -112,12 +150,14 @@ else
 
 	private async Task Fetch()
 	{
-		GetMods = await Http.GetMods(OnlyHosted, PageIndex, PageSize, SortBy.HasValue ? (ModSorting)SortBy.Value : ModSorting.LastUpdated, Ascending);
+		GetMods = await Http.GetMods(HostedOnly, ModFilter, AuthorFilter, PageIndex, PageSize, SortBy.HasValue ? (ModSorting)SortBy.Value : ModSorting.LastUpdated, Ascending);
 	}
 
 	private static class QueryParameters
 	{
-		public static string OnlyHosted { get; } = nameof(OnlyHosted);
+		public static string HostedOnly { get; } = nameof(HostedOnly);
+		public static string ModFilter { get; } = nameof(ModFilter);
+		public static string AuthorFilter { get; } = nameof(AuthorFilter);
 		public static string PageIndex { get; } = nameof(PageIndex);
 		public static string PageSize { get; } = nameof(PageSize);
 		public static string SortBy { get; } = nameof(SortBy);
