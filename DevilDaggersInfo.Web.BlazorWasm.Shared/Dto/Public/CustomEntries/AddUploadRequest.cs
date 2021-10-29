@@ -10,6 +10,8 @@ public class AddUploadRequest
 	[StringLength(32)]
 	public string PlayerName { get; init; } = null!;
 
+	public int ReplayPlayerId { get; init; }
+
 	public int Time { get; set; } // Use set to fix replay times (bug in DD).
 
 	public int GemsCollected { get; init; }

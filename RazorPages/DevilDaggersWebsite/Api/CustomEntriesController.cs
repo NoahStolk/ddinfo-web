@@ -154,9 +154,9 @@ namespace DevilDaggersWebsite.Api
 			}
 
 			// Validate local replays.
-			if (!(uploadRequest.Status is 3 or 4 or 5))
+			if (uploadRequest.Status == 8 && uploadRequest.ReplayPlayerId != uploadRequest.PlayerId)
 			{
-				const string errorMessage = "Invalid status.";
+				const string errorMessage = "Cannot upload local replay from other player.";
 				await TryLog(uploadRequest, null, errorMessage, "rotating_light");
 				return new BadRequestObjectResult(new ProblemDetails { Title = errorMessage });
 			}
@@ -470,7 +470,8 @@ namespace DevilDaggersWebsite.Api
 
 				string replayData = uploadRequest.ReplayData == null ? "Replay data not included" : $"Replay data {uploadRequest.ReplayData.Length:N0} bytes";
 				string replayString = uploadRequest.IsReplay ? " | `Replay`" : string.Empty;
-				string requestInfo = $"(`{uploadRequest.ClientVersion}` | `{uploadRequest.OperatingSystem}` | `{uploadRequest.BuildMode}` | `{uploadRequest.Client}`{replayString} | `{replayData}` | `Status {uploadRequest.Status}`)";
+				string localReplayString = uploadRequest.Status == 8 ? $" | `Local replay from {uploadRequest.ReplayPlayerId}`" : string.Empty;
+				string requestInfo = $"(`{uploadRequest.ClientVersion}` | `{uploadRequest.OperatingSystem}` | `{uploadRequest.BuildMode}` | `{uploadRequest.Client}`{replayString}{localReplayString} | `{replayData}` | `Status {uploadRequest.Status}`)";
 
 				if (!string.IsNullOrEmpty(errorMessage))
 					await _discordLogger.TryLog(Channel.MonitoringCustomLeaderboard, $":{errorEmoteNameOverride ?? "warning"}: Upload failed for user `{uploadRequest.PlayerName}` (`{uploadRequest.PlayerId}`) for `{spawnsetIdentification}`. {requestInfo}\n**{errorMessage}**");
