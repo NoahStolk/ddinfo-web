@@ -153,10 +153,10 @@ namespace DevilDaggersWebsite.Api
 				return new BadRequestObjectResult(new ProblemDetails { Title = errorMessage });
 			}
 
-			// Validate local replays.
-			if (uploadRequest.Status == 8 && uploadRequest.ReplayPlayerId != uploadRequest.PlayerId)
+			// Reject local replays as they can easily be manipulated.
+			if (uploadRequest.Status == 8)
 			{
-				const string errorMessage = "Cannot upload local replay from other player.";
+				const string errorMessage = "Local replays cannot be validated.";
 				await TryLog(uploadRequest, null, errorMessage, "rotating_light");
 				return new BadRequestObjectResult(new ProblemDetails { Title = errorMessage });
 			}
