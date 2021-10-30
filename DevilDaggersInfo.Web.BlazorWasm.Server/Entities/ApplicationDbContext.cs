@@ -32,17 +32,17 @@ public class ApplicationDbContext : DbContext
 	{
 		// Configure relations for PlayerMods.
 		modelBuilder.Entity<PlayerModEntity>()
-			.HasKey(pam => new { pam.PlayerId, pam.ModId });
+			.HasKey(pm => new { pm.PlayerId, pm.ModId });
 
 		modelBuilder.Entity<PlayerModEntity>()
-			.HasOne(pam => pam.Player)
+			.HasOne(pm => pm.Player)
 			.WithMany(p => p.PlayerMods)
-			.HasForeignKey(pam => pam.PlayerId);
+			.HasForeignKey(pm => pm.PlayerId);
 
 		modelBuilder.Entity<PlayerModEntity>()
-			.HasOne(pam => pam.Mod)
-			.WithMany(am => am.PlayerMods)
-			.HasForeignKey(pam => pam.ModId);
+			.HasOne(pm => pm.Mod)
+			.WithMany(m => m.PlayerMods)
+			.HasForeignKey(pm => pm.ModId);
 
 		// Configure relations for PlayerTitles.
 		modelBuilder.Entity<PlayerTitleEntity>()
@@ -60,17 +60,17 @@ public class ApplicationDbContext : DbContext
 
 		// Configure relations for UserRoles.
 		modelBuilder.Entity<UserRoleEntity>()
-			.HasKey(pt => new { pt.UserId, pt.RoleId });
+			.HasKey(ur => new { ur.UserId, ur.RoleId });
 
 		modelBuilder.Entity<UserRoleEntity>()
-			.HasOne(pt => pt.User)
-			.WithMany(p => p.UserRoles)
-			.HasForeignKey(pt => pt.UserId);
+			.HasOne(ur => ur.User)
+			.WithMany(u => u.UserRoles)
+			.HasForeignKey(ur => ur.UserId);
 
 		modelBuilder.Entity<UserRoleEntity>()
-			.HasOne(pt => pt.Role)
-			.WithMany(t => t.UserRoles)
-			.HasForeignKey(pt => pt.RoleId);
+			.HasOne(ur => ur.Role)
+			.WithMany(r => r.UserRoles)
+			.HasForeignKey(ur => ur.RoleId);
 
 		base.OnModelCreating(modelBuilder);
 	}
