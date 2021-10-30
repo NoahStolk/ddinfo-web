@@ -8,7 +8,6 @@ global using DevilDaggersInfo.Web.BlazorWasm.Server.Singletons.AuditLog;
 global using DevilDaggersInfo.Web.BlazorWasm.Server.Transients;
 global using DevilDaggersInfo.Web.BlazorWasm.Server.Utils;
 global using DevilDaggersInfo.Web.BlazorWasm.Shared.Enums;
-global using IdentityServer4.EntityFramework.Options;
 global using JetBrains.Annotations;
 global using Microsoft.AspNetCore.Hosting;
 global using Microsoft.AspNetCore.Http;

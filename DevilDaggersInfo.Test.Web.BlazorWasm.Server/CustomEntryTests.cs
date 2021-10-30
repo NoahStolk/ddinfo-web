@@ -3,7 +3,7 @@ using DevilDaggersInfo.Web.BlazorWasm.Server.Caches.SpawnsetHashes;
 using DevilDaggersInfo.Web.BlazorWasm.Server.Controllers.Public;
 using DevilDaggersInfo.Web.BlazorWasm.Server.Enums;
 using DevilDaggersInfo.Web.BlazorWasm.Shared.Dto.Public.CustomEntries;
-using Microsoft.Extensions.Options;
+using Microsoft.Extensions.Logging;
 
 namespace DevilDaggersInfo.Test.Web.BlazorWasm.Server;
 
@@ -22,7 +22,7 @@ public class CustomEntryTests
 		MockEntities mockEntities = new();
 
 		DbContextOptionsBuilder<ApplicationDbContext> optionsBuilder = new();
-		_dbContext = new Mock<ApplicationDbContext>(optionsBuilder.Options, Options.Create(new OperationalStoreOptions()))
+		_dbContext = new Mock<ApplicationDbContext>(optionsBuilder.Options)
 			.SetUpDbSet(db => db.Tools, mockEntities.MockDbSetTools)
 			.SetUpDbSet(db => db.Players, mockEntities.MockDbSetPlayers)
 			.SetUpDbSet(db => db.Spawnsets, mockEntities.MockDbSetSpawnsets)
@@ -30,16 +30,13 @@ public class CustomEntryTests
 			.SetUpDbSet(db => db.CustomEntries, mockEntities.MockDbSetCustomEntries)
 			.SetUpDbSet(db => db.CustomEntryData, mockEntities.MockDbSetCustomEntryData);
 
-		Mock<IWebHostEnvironment> mockEnvironment = new();
-		mockEnvironment.Setup(m => m.EnvironmentName).Returns(Environments.Development);
-
 		Mock<IFileSystemService> fileSystemService = new();
 		fileSystemService.Setup(m => m.GetPath(DataSubDirectory.Spawnsets)).Returns(@"C:\Users\NOAH\source\repos\DevilDaggersInfo\DevilDaggersInfo.Web.BlazorWasm.Server\Data\Spawnsets");
 
-		Mock<DiscordLogger> discordLogger = new(mockEnvironment.Object);
-		Mock<SpawnsetHashCache> spawnsetHashCache = new(fileSystemService.Object, discordLogger.Object);
+		Mock<ILogger<CustomEntriesController>> logger = new();
+		Mock<SpawnsetHashCache> spawnsetHashCache = new(fileSystemService.Object, logger.Object);
 
-		_customEntriesController = new CustomEntriesController(_dbContext.Object, discordLogger.Object, spawnsetHashCache.Object);
+		_customEntriesController = new CustomEntriesController(_dbContext.Object, logger.Object, spawnsetHashCache.Object, fileSystemService.Object);
 
 		if (!SpawnsetBinary.TryParse(File.ReadAllBytes(Path.Combine(TestConstants.DataDirectory, "Spawnsets", "V3")), out _spawnsetBinary!))
 			Assert.Fail("Spawnset could not be parsed.");

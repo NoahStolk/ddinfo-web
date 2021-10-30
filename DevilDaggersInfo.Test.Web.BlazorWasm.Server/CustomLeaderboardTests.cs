@@ -1,7 +1,7 @@
 using DevilDaggersInfo.Web.BlazorWasm.Server.Controllers.Admin;
 using DevilDaggersInfo.Web.BlazorWasm.Shared.Dto;
 using DevilDaggersInfo.Web.BlazorWasm.Shared.Dto.Admin.CustomLeaderboards;
-using Microsoft.Extensions.Options;
+using DevilDaggersInfo.Web.BlazorWasm.Shared.Extensions;
 
 namespace DevilDaggersInfo.Test.Web.BlazorWasm.Server;
 
@@ -16,17 +16,16 @@ public class CustomLeaderboardTests
 		MockEntities mockEntities = new();
 
 		DbContextOptionsBuilder<ApplicationDbContext> optionsBuilder = new();
-		_dbContext = new Mock<ApplicationDbContext>(optionsBuilder.Options, Options.Create(new OperationalStoreOptions()))
+		_dbContext = new Mock<ApplicationDbContext>(optionsBuilder.Options)
 			.SetUpDbSet(db => db.Players, mockEntities.MockDbSetPlayers)
 			.SetUpDbSet(db => db.Spawnsets, mockEntities.MockDbSetSpawnsets)
 			.SetUpDbSet(db => db.CustomLeaderboards, mockEntities.MockDbSetCustomLeaderboards)
 			.SetUpDbSet(db => db.CustomEntries, mockEntities.MockDbSetCustomEntries);
 
-		Mock<IWebHostEnvironment> mockEnvironment = new();
-		mockEnvironment.Setup(m => m.EnvironmentName).Returns(Environments.Development);
+		Mock<IWebHostEnvironment> environment = new();
+		environment.Setup(m => m.EnvironmentName).Returns(Environments.Development);
 
-		Mock<DiscordLogger> discordLogger = new(mockEnvironment.Object);
-		Mock<AuditLogger> auditLogger = new(discordLogger.Object);
+		Mock<AuditLogger> auditLogger = new(environment.Object);
 
 		Mock<IFileSystemService> fileSystemService = new();
 
