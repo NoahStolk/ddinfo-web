@@ -6,6 +6,7 @@ using DevilDaggersInfo.Web.BlazorWasm.Server.Caches.SpawnsetSummaries;
 using DevilDaggersInfo.Web.BlazorWasm.Server.HostedServices;
 using DevilDaggersInfo.Web.BlazorWasm.Server.Middleware;
 using DevilDaggersInfo.Web.BlazorWasm.Server.NSwag;
+using DevilDaggersInfo.Web.BlazorWasm.Server.Scoped;
 using Microsoft.AspNetCore.Rewrite;
 using NJsonSchema;
 using System.Globalization;
@@ -32,11 +33,16 @@ public class Startup
 
 		services.AddDatabaseDeveloperPageExceptionFilter();
 
+		// Remove?
 		services.AddAuthentication();
 
 		services.AddControllersWithViews();
 
 		services.AddRazorPages();
+
+		services.AddHttpContextAccessor();
+
+		services.AddScoped<IUserService, UserService>();
 
 		services.AddSingleton<BackgroundServiceMonitor>();
 		services.AddSingleton<ResponseTimeMonitor>();
