@@ -1,4 +1,3 @@
-@typeparam TKey
 @inject AdminApiHttpClient Http
 @using Microsoft.AspNetCore.Components.WebAssembly.Authentication
 
@@ -41,13 +40,13 @@
 
 @code {
 	public DeleteState State { get; set; }
-	public TKey? IdToDelete { get; set; }
+	public int? IdToDelete { get; set; }
 	public string? ApiResponse { get; set; }
 
 	[Parameter] public Func<Task>? AfterDelete { get; set; }
 	[Parameter, EditorRequired] public string ApiRoute { get; set; } = null!;
 
-	public void Set(TKey id)
+	public void Set(int id)
 	{
 		State = DeleteState.Confirm;
 		IdToDelete = id;

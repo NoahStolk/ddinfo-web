@@ -1,5 +1,4 @@
 @typeparam TGetDto
-@typeparam TKey
 @inject AdminApiHttpClient Http
 @inject NavigationManager NavigationManager
 @using Microsoft.AspNetCore.Components.WebAssembly.Authentication
@@ -86,7 +85,7 @@ else
 	private Dictionary<PropertyInfo, bool> _properties = ReflectionUtils.GetDtoDisplayProperties<TGetDto>();
 	private Dictionary<string, bool> _sortings = null!;
 
-	private Deletion<TKey>? _deletion;
+	private Deletion? _deletion;
 
 	protected override async Task OnInitializedAsync()
 	{

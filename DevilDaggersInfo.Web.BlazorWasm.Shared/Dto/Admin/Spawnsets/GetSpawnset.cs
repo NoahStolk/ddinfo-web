@@ -1,6 +1,6 @@
 namespace DevilDaggersInfo.Web.BlazorWasm.Shared.Dto.Admin.Spawnsets;
 
-public class GetSpawnset : IGetDto<int>
+public class GetSpawnset : IGetDto
 {
 	public int Id { get; init; }
 

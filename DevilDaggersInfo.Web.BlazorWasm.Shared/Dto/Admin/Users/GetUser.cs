@@ -1,6 +1,6 @@
 namespace DevilDaggersInfo.Web.BlazorWasm.Shared.Dto.Admin.Users;
 
-public class GetUser : IGetDto<int>
+public class GetUser : IGetDto
 {
 	public int Id { get; init; }
 
