@@ -28,34 +28,34 @@ public class ApplicationDbContext : ApiAuthorizationDbContext<ApplicationUser>
 
 	public virtual DbSet<InformationSchemaTable> InformationSchemaTables => Set<InformationSchemaTable>();
 
-	protected override void OnModelCreating(ModelBuilder builder)
+	protected override void OnModelCreating(ModelBuilder modelBuilder)
 	{
-		builder.Entity<PlayerModEntity>()
+		modelBuilder.Entity<PlayerModEntity>()
 			.HasKey(pam => new { pam.PlayerId, pam.ModId });
 
-		builder.Entity<PlayerModEntity>()
+		modelBuilder.Entity<PlayerModEntity>()
 			.HasOne(pam => pam.Player)
 			.WithMany(p => p.PlayerMods)
 			.HasForeignKey(pam => pam.PlayerId);
 
-		builder.Entity<PlayerModEntity>()
+		modelBuilder.Entity<PlayerModEntity>()
 			.HasOne(pam => pam.Mod)
 			.WithMany(am => am.PlayerMods)
 			.HasForeignKey(pam => pam.ModId);
 
-		builder.Entity<PlayerTitleEntity>()
+		modelBuilder.Entity<PlayerTitleEntity>()
 			.HasKey(pt => new { pt.PlayerId, pt.TitleId });
 
-		builder.Entity<PlayerTitleEntity>()
+		modelBuilder.Entity<PlayerTitleEntity>()
 			.HasOne(pt => pt.Player)
 			.WithMany(p => p.PlayerTitles)
 			.HasForeignKey(pt => pt.PlayerId);
 
-		builder.Entity<PlayerTitleEntity>()
+		modelBuilder.Entity<PlayerTitleEntity>()
 			.HasOne(pt => pt.Title)
 			.WithMany(t => t.PlayerTitles)
 			.HasForeignKey(pt => pt.TitleId);
 
-		base.OnModelCreating(builder);
+		base.OnModelCreating(modelBuilder);
 	}
 }
