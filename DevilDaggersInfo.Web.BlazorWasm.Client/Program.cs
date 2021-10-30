@@ -1,4 +1,6 @@
+using Blazored.LocalStorage;
 using Blazorise;
+using DevilDaggersInfo.Web.BlazorWasm.Client.Authentication;
 using DevilDaggersInfo.Web.BlazorWasm.Client.HttpClients;
 using Fluxor;
 using Microsoft.AspNetCore.Components.Authorization;
@@ -23,8 +25,8 @@ public static class Program
 		builder.Services.AddBlazoredLocalStorage();
 
 		builder.Services.AddAuthorizationCore();
-		builder.Services.AddScoped<AuthStateProvider>();
-		builder.Services.AddScoped<AuthenticationStateProvider>(provider => provider.GetRequiredService<AuthStateProvider>());
+		builder.Services.AddScoped<AdminAuthenticationStateProvider>();
+		builder.Services.AddScoped<AuthenticationStateProvider>(provider => provider.GetRequiredService<AdminAuthenticationStateProvider>());
 
 		builder.Services.AddFluxor(options => options.ScanAssemblies(typeof(Program).Assembly));
 
