@@ -24,8 +24,13 @@ public class ApplicationDbContext : DbContext
 
 	public virtual DbSet<InformationSchemaTable> InformationSchemaTables => Set<InformationSchemaTable>();
 
+	public virtual DbSet<UserEntity> Users => Set<UserEntity>();
+	public virtual DbSet<RoleEntity> Roles => Set<RoleEntity>();
+	public virtual DbSet<UserRoleEntity> UserRoles => Set<UserRoleEntity>();
+
 	protected override void OnModelCreating(ModelBuilder modelBuilder)
 	{
+		// Configure relations for PlayerMods.
 		modelBuilder.Entity<PlayerModEntity>()
 			.HasKey(pam => new { pam.PlayerId, pam.ModId });
 
@@ -39,6 +44,7 @@ public class ApplicationDbContext : DbContext
 			.WithMany(am => am.PlayerMods)
 			.HasForeignKey(pam => pam.ModId);
 
+		// Configure relations for PlayerTitles.
 		modelBuilder.Entity<PlayerTitleEntity>()
 			.HasKey(pt => new { pt.PlayerId, pt.TitleId });
 
@@ -51,6 +57,20 @@ public class ApplicationDbContext : DbContext
 			.HasOne(pt => pt.Title)
 			.WithMany(t => t.PlayerTitles)
 			.HasForeignKey(pt => pt.TitleId);
+
+		// Configure relations for UserRoles.
+		modelBuilder.Entity<UserRoleEntity>()
+			.HasKey(pt => new { pt.UserId, pt.RoleId });
+
+		modelBuilder.Entity<UserRoleEntity>()
+			.HasOne(pt => pt.User)
+			.WithMany(p => p.UserRoles)
+			.HasForeignKey(pt => pt.UserId);
+
+		modelBuilder.Entity<UserRoleEntity>()
+			.HasOne(pt => pt.Role)
+			.WithMany(t => t.UserRoles)
+			.HasForeignKey(pt => pt.RoleId);
 
 		base.OnModelCreating(modelBuilder);
 	}

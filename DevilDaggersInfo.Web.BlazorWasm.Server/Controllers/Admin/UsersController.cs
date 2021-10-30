@@ -28,12 +28,12 @@ public class UsersController : ControllerBase
 	{
 		var usersQuery = _dbContext.Users
 			.AsNoTracking()
-			.Select(u => new { u.Id, u.UserName });
+			.Select(u => new { u.Id, u.Name });
 
 		usersQuery = sortBy switch
 		{
 			// TODO: Implement sorting for roles.
-			UserSorting.UserName => usersQuery.OrderBy(s => s.UserName, ascending),
+			UserSorting.UserName => usersQuery.OrderBy(s => s.Name, ascending),
 			_ => usersQuery.OrderBy(s => s.Id, ascending),
 		};
 
@@ -42,7 +42,7 @@ public class UsersController : ControllerBase
 			.Take(pageSize)
 			.ToList();
 
-		List<IdentityUserRole<string>> userRoles = _dbContext.UserRoles
+		List<UserRoleEntity> userRoles = _dbContext.UserRoles
 			.AsNoTracking()
 			.ToList();
 
@@ -51,13 +51,13 @@ public class UsersController : ControllerBase
 			.Select(r => new { r.Id, r.Name })
 			.ToList();
 
-		List<(string RoleId, string RoleName, List<string> UserIds)> usersByRole = new();
+		List<(int RoleId, string RoleName, List<int> UserIds)> usersByRole = new();
 		foreach (var role in roles)
 			usersByRole.Add((role.Id, role.Name, new()));
 
-		foreach ((string roleId, string roleName, List<string> userIds) in usersByRole)
+		foreach ((int roleId, string roleName, List<int> userIds) in usersByRole)
 		{
-			IEnumerable<IdentityUserRole<string>> userRolesWithRole = userRoles.Where(ur => ur.RoleId == roleId);
+			IEnumerable<UserRoleEntity> userRolesWithRole = userRoles.Where(ur => ur.RoleId == roleId);
 			userIds.AddRange(userRolesWithRole.Select(ur => ur.UserId));
 		}
 
@@ -66,7 +66,7 @@ public class UsersController : ControllerBase
 			Results = users.ConvertAll(u => new GetUser
 			{
 				Id = u.Id,
-				UserName = u.UserName,
+				Name = u.Name,
 				IsAdmin = usersByRole.Find(t => t.RoleName == Roles.Admin).UserIds.Contains(u.Id),
 				IsCustomLeaderboardsMaintainer = usersByRole.Find(t => t.RoleName == Roles.CustomLeaderboards).UserIds.Contains(u.Id),
 				IsDonationsMaintainer = usersByRole.Find(t => t.RoleName == Roles.Donations).UserIds.Contains(u.Id),
@@ -80,26 +80,46 @@ public class UsersController : ControllerBase
 
 	[HttpPatch("{id}/add-to-role")]
 	[ProducesResponseType(StatusCodes.Status200OK)]
+	[ProducesResponseType(StatusCodes.Status400BadRequest)]
 	[ProducesResponseType(StatusCodes.Status404NotFound)]
-	public async Task<ActionResult> AddUserToRoleById(string id, string role)
+	public ActionResult AddUserToRoleById(int userId, int roleId)
 	{
-		ApplicationUser? user = _dbContext.Users
-			.FirstOrDefault(t => t.Id == id);
+		UserEntity? user = _dbContext.Users
+			.AsNoTracking()
+			.FirstOrDefault(u => u.Id == userId);
 		if (user == null)
 			return NotFound();
 
-		//await _userManager.AddToRoleAsync(user, role);
+		RoleEntity? role = _dbContext.Roles
+			.AsNoTracking()
+			.FirstOrDefault(r => r.Id == roleId);
+		if (role == null)
+			return NotFound();
 
+		UserRoleEntity? userRole = _dbContext.UserRoles
+			.AsNoTracking()
+			.FirstOrDefault(ur => ur.UserId == userId && ur.RoleId == roleId);
+		if (userRole != null)
+			return BadRequest("User is already in this role.");
+
+		_dbContext.UserRoles.Add(new UserRoleEntity
+		{
+			RoleId = roleId,
+			UserId = userId,
+		});
+		_dbContext.SaveChanges();
+
+		// TODO: Log role assignment in audit log.
 		return Ok();
 	}
 
 	[HttpDelete("{id}")]
 	[ProducesResponseType(StatusCodes.Status200OK)]
 	[ProducesResponseType(StatusCodes.Status404NotFound)]
-	public async Task<ActionResult> DeleteUserById(string id)
+	public async Task<ActionResult> DeleteUserById(int id)
 	{
-		ApplicationUser? user = _dbContext.Users
-			.FirstOrDefault(t => t.Id == id);
+		UserEntity? user = _dbContext.Users
+			.FirstOrDefault(u => u.Id == id);
 		if (user == null)
 			return NotFound();
 

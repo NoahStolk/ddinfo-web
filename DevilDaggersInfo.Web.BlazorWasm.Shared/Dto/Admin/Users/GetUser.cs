@@ -1,10 +1,10 @@
 namespace DevilDaggersInfo.Web.BlazorWasm.Shared.Dto.Admin.Users;
 
-public class GetUser : IGetDto<string>
+public class GetUser : IGetDto<int>
 {
-	public string Id { get; init; } = null!;
+	public int Id { get; init; }
 
-	public string? UserName { get; init; }
+	public string? Name { get; init; }
 
 	[Display(Name = "Admin")]
 	public bool IsAdmin { get; init; }
