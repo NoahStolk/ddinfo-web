@@ -5,12 +5,8 @@
   </PropertyGroup>
   <ItemGroup>
     <PackageReference Include="DSharpPlus" />
-    <PackageReference Include="IdentityServer4.EntityFramework.Storage" />
-    <PackageReference Include="Microsoft.AspNetCore.ApiAuthorization.IdentityServer" />
     <PackageReference Include="Microsoft.AspNetCore.Components.WebAssembly.Server" />
     <PackageReference Include="Microsoft.AspNetCore.Diagnostics.EntityFrameworkCore" />
-    <PackageReference Include="Microsoft.AspNetCore.Identity.EntityFrameworkCore" />
-    <PackageReference Include="Microsoft.AspNetCore.Identity.UI" />
     <PackageReference Include="Microsoft.EntityFrameworkCore" />
     <PackageReference Include="Microsoft.EntityFrameworkCore.Tools">
       <PrivateAssets>all</PrivateAssets>

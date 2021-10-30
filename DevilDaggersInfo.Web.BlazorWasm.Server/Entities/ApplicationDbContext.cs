@@ -1,13 +1,9 @@
-using Duende.IdentityServer.EntityFramework.Options;
-using Microsoft.AspNetCore.ApiAuthorization.IdentityServer;
-using Microsoft.Extensions.Options;
-
 namespace DevilDaggersInfo.Web.BlazorWasm.Server.Entities;
 
-public class ApplicationDbContext : ApiAuthorizationDbContext<ApplicationUser>
+public class ApplicationDbContext : DbContext
 {
-	public ApplicationDbContext(DbContextOptions options, IOptions<OperationalStoreOptions> operationalStoreOptions)
-		: base(options, operationalStoreOptions)
+	public ApplicationDbContext(DbContextOptions options)
+		: base(options)
 	{
 	}
 

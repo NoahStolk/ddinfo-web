@@ -6,11 +6,9 @@ using DevilDaggersInfo.Web.BlazorWasm.Server.Caches.SpawnsetSummaries;
 using DevilDaggersInfo.Web.BlazorWasm.Server.HostedServices;
 using DevilDaggersInfo.Web.BlazorWasm.Server.Middleware;
 using DevilDaggersInfo.Web.BlazorWasm.Server.NSwag;
-using Microsoft.AspNetCore.Authentication;
 using Microsoft.AspNetCore.Rewrite;
 using NJsonSchema;
 using System.Globalization;
-using System.IdentityModel.Tokens.Jwt;
 
 namespace DevilDaggersInfo.Web.BlazorWasm.Server;
 
@@ -34,21 +32,7 @@ public class Startup
 
 		services.AddDatabaseDeveloperPageExceptionFilter();
 
-		services.AddDefaultIdentity<ApplicationUser>(options => options.SignIn.RequireConfirmedAccount = true)
-			.AddRoles<IdentityRole>()
-			.AddEntityFrameworkStores<ApplicationDbContext>();
-
-		services.AddIdentityServer()
-			.AddApiAuthorization<ApplicationUser, ApplicationDbContext>(options =>
-			{
-				options.IdentityResources["openid"].UserClaims.Add("role");
-				options.ApiResources.Single().UserClaims.Add("role");
-			});
-
-		JwtSecurityTokenHandler.DefaultInboundClaimTypeMap.Remove("role");
-
-		services.AddAuthentication()
-			.AddIdentityServerJwt();
+		services.AddAuthentication();
 
 		services.AddControllersWithViews();
 
@@ -147,7 +131,6 @@ public class Startup
 
 		app.UseCors(_defaultCorsPolicy);
 
-		app.UseIdentityServer();
 		app.UseAuthentication();
 		app.UseAuthorization();
 
@@ -177,18 +160,5 @@ public class Startup
 		 * The cache then needs to be initiated here, by reading all the JSON files and populating the ConcurrentBag on start up. Effectively this is caching the cache.*/
 		ModArchiveCache modArchiveCache = serviceProvider.GetRequiredService<ModArchiveCache>();
 		modArchiveCache.LoadEntireFileCache();
-
-		CreateRoles(serviceProvider).Wait();
-	}
-
-	private static async Task CreateRoles(IServiceProvider serviceProvider)
-	{
-		RoleManager<IdentityRole>? roleManager = serviceProvider.GetRequiredService<RoleManager<IdentityRole>>();
-		foreach (string? roleName in Roles.All)
-		{
-			bool roleExists = await roleManager.RoleExistsAsync(roleName);
-			if (!roleExists)
-				await roleManager.CreateAsync(new IdentityRole(roleName));
-		}
 	}
 }
