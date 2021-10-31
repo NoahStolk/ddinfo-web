@@ -71,6 +71,7 @@ public class AdminApiHttpClient
 	private const string _methodParameters = $"%{nameof(_methodParameters)}%";
 	private const string _queryParameters = $"%{nameof(_queryParameters)}%";
 	private const string _apiRoute = $"%{nameof(_apiRoute)}%";
+	private const string _httpMethod = $"%{nameof(_httpMethod)}%";
 	private const string _getEndpointTemplate = $@"public async Task<{_returnType}> {_methodName}({_methodParameters})
 {{
 	return await SendGetRequest<{_returnType}>($""{_apiRoute}"");
@@ -83,6 +84,11 @@ public class AdminApiHttpClient
 {_queryParameters}
 	}};
 	return await SendGetRequest<{_returnType}>(UrlBuilderUtils.BuildUrlWithQuery($""{_apiRoute}"", queryParameters));
+}}
+";
+	private const string _endpointTemplate = $@"public async Task {_methodName}({_methodParameters})
+{{
+	await SendRequest(new HttpMethod(""{_httpMethod}""), $""{_apiRoute}"");
 }}
 ";
 
@@ -104,21 +110,32 @@ public class AdminApiHttpClient
 			string methodParameters = string.Join(", ", endpoint.RouteParameters.Concat(endpoint.QueryParameters).Select(p => $"{p.Type} {p.Name}").ToList());
 			string queryParameters = string.Join($",{Environment.NewLine}", endpoint.QueryParameters.ConvertAll(p => $"{{nameof({p.Name}), {p.Name}}}"));
 
-			if (endpoint.QueryParameters.Count == 0)
+			if (endpoint.HttpMethod == HttpMethod.Get)
 			{
-				endpointMethods.Add(_getEndpointTemplate
-					.Replace(_returnType, endpoint.ReturnType)
-					.Replace(_methodName, endpoint.MethodName)
-					.Replace(_methodParameters, methodParameters)
-					.Replace(_apiRoute, endpoint.ApiRoute));
+				if (endpoint.QueryParameters.Count == 0)
+				{
+					endpointMethods.Add(_getEndpointTemplate
+						.Replace(_returnType, endpoint.ReturnType)
+						.Replace(_methodName, endpoint.MethodName)
+						.Replace(_methodParameters, methodParameters)
+						.Replace(_apiRoute, endpoint.ApiRoute));
+				}
+				else
+				{
+					endpointMethods.Add(_getEndpointWithQueryTemplate
+						.Replace(_returnType, endpoint.ReturnType)
+						.Replace(_methodName, endpoint.MethodName)
+						.Replace(_methodParameters, methodParameters)
+						.Replace(_queryParameters, queryParameters.Indent(2))
+						.Replace(_apiRoute, endpoint.ApiRoute));
+				}
 			}
 			else
 			{
-				endpointMethods.Add(_getEndpointWithQueryTemplate
-					.Replace(_returnType, endpoint.ReturnType)
+				endpointMethods.Add(_endpointTemplate
 					.Replace(_methodName, endpoint.MethodName)
 					.Replace(_methodParameters, methodParameters)
-					.Replace(_queryParameters, queryParameters.Indent(2))
+					.Replace(_httpMethod, endpoint.HttpMethod.ToString())
 					.Replace(_apiRoute, endpoint.ApiRoute));
 			}
 		}

@@ -2,8 +2,9 @@ namespace DevilDaggersInfo.SourceGen.Web.BlazorWasm.Client.Generators.ApiHttpCli
 
 internal class Endpoint
 {
-	public Endpoint(string methodName, List<Parameter> routeParameters, List<Parameter> queryParameters, string returnType, string apiRoute)
+	public Endpoint(HttpMethod httpMethod, string methodName, List<Parameter> routeParameters, List<Parameter> queryParameters, string returnType, string apiRoute)
 	{
+		HttpMethod = httpMethod;
 		MethodName = methodName;
 		QueryParameters = queryParameters;
 		RouteParameters = routeParameters;
@@ -11,6 +12,7 @@ internal class Endpoint
 		ApiRoute = apiRoute;
 	}
 
+	public HttpMethod HttpMethod { get; }
 	public string MethodName { get; }
 	public List<Parameter> RouteParameters { get; }
 	public List<Parameter> QueryParameters { get; }
@@ -18,5 +20,5 @@ internal class Endpoint
 	public string ApiRoute { get; }
 
 	public override string ToString()
-		=> $"{ApiRoute} {ReturnType} {MethodName}({string.Join(", ", RouteParameters)} | {string.Join(", ", QueryParameters)})";
+		=> $"{HttpMethod} {ApiRoute} {ReturnType} {MethodName}({string.Join(", ", RouteParameters)} | {string.Join(", ", QueryParameters)})";
 }

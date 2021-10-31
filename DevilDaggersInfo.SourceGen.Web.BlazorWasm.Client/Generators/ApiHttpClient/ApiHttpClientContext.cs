@@ -77,16 +77,53 @@ internal class ApiHttpClientContext
 			if (returnType == null)
 				continue;
 
-			AttributeSyntax? httpGetAttribute = mds.GetAttributeFromMember("HttpGet");
-			if (httpGetAttribute == null)
+			HttpMethodResult? result = GetHttpMethod(mds);
+			if (result == null)
 				continue;
 
-			string endpointRoute = httpGetAttribute.GetRouteAttributeStringValue();
+			string endpointRoute = result.AttributeSyntax.GetRouteAttributeStringValue();
 
 			List<Parameter> routeParameters = allParameters.Where(p => endpointRoute.Contains($"{{{p.Name}}}")).ToList();
 			List<Parameter> queryParameters = allParameters.Except(routeParameters).ToList();
 
-			yield return new(methodName, routeParameters, queryParameters, returnType, $"{apiRoute}/{endpointRoute}");
+			yield return new(result.HttpMethod, methodName, routeParameters, queryParameters, returnType, $"{apiRoute}/{endpointRoute}");
 		}
+	}
+
+	private static HttpMethodResult? GetHttpMethod(MethodDeclarationSyntax mds)
+	{
+		AttributeSyntax? httpGetAttribute = mds.GetAttributeFromMember("HttpGet");
+		if (httpGetAttribute != null)
+			return new(httpGetAttribute, HttpMethod.Get);
+
+		AttributeSyntax? httpPostAttribute = mds.GetAttributeFromMember("HttpPost");
+		if (httpPostAttribute != null)
+			return new(httpPostAttribute, HttpMethod.Post);
+
+		AttributeSyntax? httpPutAttribute = mds.GetAttributeFromMember("HttpPut");
+		if (httpPutAttribute != null)
+			return new(httpPutAttribute, HttpMethod.Put);
+
+		AttributeSyntax? httpDeleteAttribute = mds.GetAttributeFromMember("HttpDelete");
+		if (httpDeleteAttribute != null)
+			return new(httpDeleteAttribute, HttpMethod.Delete);
+
+		AttributeSyntax? httpPatchAttribute = mds.GetAttributeFromMember("HttpPatch");
+		if (httpPatchAttribute != null)
+			return new(httpPatchAttribute, new HttpMethod("Patch"));
+
+		return null;
+	}
+
+	private sealed class HttpMethodResult
+	{
+		public HttpMethodResult(AttributeSyntax attributeSyntax, HttpMethod httpMethod)
+		{
+			AttributeSyntax = attributeSyntax;
+			HttpMethod = httpMethod;
+		}
+
+		public AttributeSyntax AttributeSyntax { get; }
+		public HttpMethod HttpMethod { get; }
 	}
 }
