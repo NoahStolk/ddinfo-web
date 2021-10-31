@@ -166,5 +166,20 @@ public class Startup
 		 * The cache then needs to be initiated here, by reading all the JSON files and populating the ConcurrentBag on start up. Effectively this is caching the cache.*/
 		ModArchiveCache modArchiveCache = serviceProvider.GetRequiredService<ModArchiveCache>();
 		modArchiveCache.LoadEntireFileCache();
+
+		// Create roles if they don't exist.
+		ApplicationDbContext dbContext = serviceProvider.GetRequiredService<ApplicationDbContext>();
+		bool anyChanges = false;
+		foreach (string roleName in Roles.All)
+		{
+			if (!dbContext.Roles.Any(r => r.Name == roleName))
+			{
+				dbContext.Roles.Add(new RoleEntity { Name = roleName });
+				anyChanges = true;
+			}
+		}
+
+		if (anyChanges)
+			dbContext.SaveChanges();
 	}
 }
