@@ -22,16 +22,14 @@ namespace DevilDaggersInfo.Web.BlazorWasm.Client.HttpClients;
 
 public class AdminApiHttpClient
 {{
+	private readonly HttpClient _client;
 	private readonly ILocalStorageService _localStorageService;
 
 	public AdminApiHttpClient(HttpClient client, ILocalStorageService localStorageService)
 	{{
-		Client = client;
+		_client = client;
 		_localStorageService = localStorageService;
 	}}
-
-	// TODO: Make private.
-	public HttpClient Client {{ get; }}
 
 	private async Task<HttpResponseMessage> SendRequest(HttpMethod httpMethod, string url)
 	{{
@@ -45,7 +43,7 @@ public class AdminApiHttpClient
 		if (token != null)
 			request.Headers.Authorization = new AuthenticationHeaderValue(""Bearer"", token);
 
-		HttpResponseMessage httpResponseMessage = await Client.SendAsync(request);
+		HttpResponseMessage httpResponseMessage = await _client.SendAsync(request);
 
 		if (httpResponseMessage.StatusCode == HttpStatusCode.Unauthorized)
 			throw new UnauthorizedAccessException();

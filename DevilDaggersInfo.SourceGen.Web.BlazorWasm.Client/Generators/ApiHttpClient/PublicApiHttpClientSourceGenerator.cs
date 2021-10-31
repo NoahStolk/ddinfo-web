@@ -20,13 +20,12 @@ namespace DevilDaggersInfo.Web.BlazorWasm.Client.HttpClients;
 
 public class PublicApiHttpClient
 {{
+	private readonly HttpClient _client;
+
 	public PublicApiHttpClient(HttpClient client)
 	{{
-		Client = client;
+		_client = client;
 	}}
-
-	// TODO: Make private.
-	public HttpClient Client {{ get; }}
 
 {_endpointMethods}
 }}
@@ -39,7 +38,7 @@ public class PublicApiHttpClient
 	private const string _apiRoute = $"%{nameof(_apiRoute)}%";
 	private const string _getEndpointTemplate = $@"public async Task<{_returnType}> {_methodName}({_methodParameters})
 {{
-	return await Client.GetFromJsonAsync<{_returnType}>($""{_apiRoute}"") ?? throw new JsonDeserializationException();
+	return await _client.GetFromJsonAsync<{_returnType}>($""{_apiRoute}"") ?? throw new JsonDeserializationException();
 }}
 ";
 	private const string _getEndpointWithQueryTemplate = $@"public async Task<{_returnType}> {_methodName}({_methodParameters})
@@ -48,7 +47,7 @@ public class PublicApiHttpClient
 	{{
 {_queryParameters}
 	}};
-	return await Client.GetFromJsonAsync<{_returnType}>(UrlBuilderUtils.BuildUrlWithQuery($""{_apiRoute}"", queryParameters)) ?? throw new JsonDeserializationException();
+	return await _client.GetFromJsonAsync<{_returnType}>(UrlBuilderUtils.BuildUrlWithQuery($""{_apiRoute}"", queryParameters)) ?? throw new JsonDeserializationException();
 }}
 ";
 
