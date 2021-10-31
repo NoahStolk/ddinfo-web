@@ -86,9 +86,9 @@ public class AdminApiHttpClient
 	return await SendGetRequest<{_returnType}>(UrlBuilderUtils.BuildUrlWithQuery($""{_apiRoute}"", queryParameters));
 }}
 ";
-	private const string _endpointTemplate = $@"public async Task {_methodName}({_methodParameters})
+	private const string _endpointTemplate = $@"public async Task<HttpResponseMessage> {_methodName}({_methodParameters})
 {{
-	await SendRequest(new HttpMethod(""{_httpMethod}""), $""{_apiRoute}"");
+	return await SendRequest(new HttpMethod(""{_httpMethod}""), $""{_apiRoute}"");
 }}
 ";
 

@@ -4,4 +4,9 @@
 @using DevilDaggersInfo.Web.BlazorWasm.Shared.Enums.Sortings.Admin
 @inject AdminApiHttpClient Http
 
-<AdminOverview TGetDto="GetModForOverview" Title="Mods" ApiCall="(int pageIndex, int pageSize, string? sortBy, bool isAscending) => Http.GetMods(pageIndex, pageSize, sortBy == null ? null : Enum.Parse<ModSorting>(sortBy), isAscending)" GridConfiguration="admin-mods"></AdminOverview>
+<AdminOverview
+	TGetDto="GetModForOverview"
+	Title="Mods"
+	ApiCall="(int pageIndex, int pageSize, string? sortBy, bool isAscending) => Http.GetMods(pageIndex, pageSize, sortBy == null ? null : Enum.Parse<ModSorting>(sortBy), isAscending)"
+	DeletionApiCall="(int id) => Http.DeleteModById(id)"
+	GridConfiguration="admin-mods" />

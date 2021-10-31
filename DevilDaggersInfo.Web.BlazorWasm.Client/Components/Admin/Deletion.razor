@@ -44,7 +44,7 @@
 	public string? ApiResponse { get; set; }
 
 	[Parameter] public Func<Task>? AfterDelete { get; set; }
-	[Parameter, EditorRequired] public string ApiRoute { get; set; } = null!;
+	[Parameter, EditorRequired] public Func<int, Task<HttpResponseMessage>> ApiCall { get; set; } = null!;
 
 	public void Set(int id)
 	{
@@ -56,7 +56,10 @@
 	{
 		try
 		{
-			HttpResponseMessage hrm = await Http.Client.DeleteAsync($"{ApiRoute}/{IdToDelete}");
+			if (!IdToDelete.HasValue)
+				return;
+
+			HttpResponseMessage hrm = await ApiCall.Invoke(IdToDelete.Value);
 			if (hrm.StatusCode == HttpStatusCode.OK)
 			{
 				State = DeleteState.Ok;

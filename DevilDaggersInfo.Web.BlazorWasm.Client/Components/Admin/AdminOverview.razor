@@ -18,8 +18,7 @@
 }
 else
 {
-	@*TODO: Fix API route when POST/PUT/DELETE etc is implemented in sourcegen.*@
-	<Deletion AfterDelete="Fetch" ApiRoute="@string.Empty" @ref="_deletion" />
+	<Deletion AfterDelete="Fetch" ApiCall="@DeletionApiCall" @ref="_deletion" />
 
 	<a class="inline-block bg-gray-0b hover:bg-gray-22 transition-colors duration-100 w-20 h-8 py-1 rounded text-color-text text-center" href="@($"{NavigationManager.Uri}/add")">Add new</a>
 	<button class="bg-gray-0b hover:bg-gray-22 transition-colors duration-100 w-8 h-8 py-1 rounded text-color-text" @onclick="() => ChangePageIndex(0)">|&lt;</button>
@@ -72,6 +71,7 @@ else
 {
 	[Parameter, EditorRequired] public string Title { get; set; } = null!;
 	[Parameter, EditorRequired] public Func<int, int, string?, bool, Task<Page<TGetDto>>> ApiCall { get; set; } = null!;
+	[Parameter, EditorRequired] public Func<int, Task<HttpResponseMessage>> DeletionApiCall { get; set; } = null!;
 	[Parameter, EditorRequired] public string GridConfiguration { get; set; } = null!;
 
 	private int TotalPages => _page == null ? 0 : (_page.TotalResults - 1) / _pageSize + 1;
