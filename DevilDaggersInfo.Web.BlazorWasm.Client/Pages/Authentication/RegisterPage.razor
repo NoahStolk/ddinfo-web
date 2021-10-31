@@ -1,5 +1,5 @@
 @page "/authentication/register"
-@inject HttpClient Http
+@inject PublicApiHttpClient Http
 @inject AdminAuthenticationStateProvider Auth
 @using DevilDaggersInfo.Web.BlazorWasm.Client.Authentication
 @using DevilDaggersInfo.Web.BlazorWasm.Shared.Dto.Public.Authentication
@@ -40,7 +40,7 @@
 			return;
 		}
 
-		HttpResponseMessage httpResponseMessage = await Http.PostAsJsonAsync("api/users/register", new RegistrationRequest
+		HttpResponseMessage httpResponseMessage = await Http.Client.PostAsJsonAsync("api/authentication/register", new RegistrationRequest
 		{
 			Name = _name,
 			Password = _password,
