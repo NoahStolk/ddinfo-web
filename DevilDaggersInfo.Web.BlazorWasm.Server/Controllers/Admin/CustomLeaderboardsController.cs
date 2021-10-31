@@ -6,7 +6,6 @@ using DevilDaggersInfo.Web.BlazorWasm.Shared.Enums.Sortings.Admin;
 namespace DevilDaggersInfo.Web.BlazorWasm.Server.Controllers.Admin;
 
 [Route("api/admin/custom-leaderboards")]
-[Authorize(Roles = Roles.CustomLeaderboards)]
 [ApiController]
 public class CustomLeaderboardsController : ControllerBase
 {

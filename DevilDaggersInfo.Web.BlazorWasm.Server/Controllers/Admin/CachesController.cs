@@ -8,7 +8,6 @@ using DevilDaggersInfo.Web.BlazorWasm.Server.Caches.SpawnsetSummaries;
 namespace DevilDaggersInfo.Web.BlazorWasm.Server.Controllers.Admin;
 
 [Route("api/admin/caches")]
-[Authorize(Roles = Roles.Admin)]
 [ApiController]
 public class CachesController : ControllerBase
 {

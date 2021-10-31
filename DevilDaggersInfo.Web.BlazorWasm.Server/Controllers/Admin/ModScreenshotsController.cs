@@ -3,7 +3,6 @@ using DevilDaggersInfo.Web.BlazorWasm.Shared.Dto.Admin.ModScreenshots;
 namespace DevilDaggersInfo.Web.BlazorWasm.Server.Controllers.Admin;
 
 [Route("api/admin/mod-screenshots")]
-[Authorize(Roles = Roles.Mods)]
 [ApiController]
 public class ModScreenshotsController : ControllerBase
 {

@@ -5,7 +5,6 @@ using DevilDaggersInfo.Web.BlazorWasm.Shared.Enums.Sortings.Admin;
 namespace DevilDaggersInfo.Web.BlazorWasm.Server.Controllers.Admin;
 
 [Route("api/admin/users")]
-[Authorize(Roles = Roles.Admin)]
 [ApiController]
 public class UsersController : ControllerBase
 {
