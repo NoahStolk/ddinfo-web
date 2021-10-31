@@ -4,20 +4,23 @@ namespace DevilDaggersInfo.SourceGen.Web.BlazorWasm.Client.Generators.ApiHttpCli
 
 internal class ApiHttpClientContext
 {
-	public List<string> Usings { get; } = new();
-	public List<Endpoint> Endpoints { get; } = new();
+	private readonly List<string> _usings = new();
+	private readonly List<Endpoint> _endpoints = new();
+
+	public IReadOnlyList<string> Usings => _usings;
+	public IReadOnlyList<Endpoint> Endpoints => _endpoints;
 
 	public void Clear()
 	{
-		Usings.Clear();
-		Endpoints.Clear();
+		_usings.Clear();
+		_endpoints.Clear();
 	}
 
 	public void AddUsings(ClientType clientType, IncludedDirectory includedDirectory)
 	{
 		string usingPrefix = $"{Constants.SharedProjectName}.{includedDirectory}";
 
-		Usings.Add(usingPrefix);
+		_usings.Add(usingPrefix);
 
 		string path = Path.Combine(Constants.SharedProjectPath, includedDirectory.ToString());
 		foreach (string directory in Directory.GetDirectories(path, "*", SearchOption.AllDirectories))
@@ -25,14 +28,14 @@ internal class ApiHttpClientContext
 			string? directoryName = directory.TrimStart(path);
 
 			if (directoryName.Contains(clientType.ToString()))
-				Usings.Add(usingPrefix + directoryName.Replace('\\', '.'));
+				_usings.Add(usingPrefix + directoryName.Replace('\\', '.'));
 		}
 	}
 
 	public void AddEndpoints(ClientType clientType)
 	{
 		foreach (string controllerFilePath in Directory.GetFiles(Path.Combine(Constants.ServerProjectPath, "Controllers", clientType.ToString())))
-			Endpoints.AddRange(ExtractEndpoints(CSharpSyntaxTree.ParseText(File.ReadAllText(controllerFilePath))));
+			_endpoints.AddRange(ExtractEndpoints(CSharpSyntaxTree.ParseText(File.ReadAllText(controllerFilePath))));
 	}
 
 	private static IEnumerable<Endpoint> ExtractEndpoints(SyntaxTree syntaxTree)
