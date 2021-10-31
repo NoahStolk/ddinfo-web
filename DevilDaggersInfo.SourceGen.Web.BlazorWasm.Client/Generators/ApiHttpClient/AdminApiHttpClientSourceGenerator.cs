@@ -11,8 +11,10 @@ public class AdminApiHttpClientSourceGenerator : ISourceGenerator
 	private const string _endpointMethods = $"%{nameof(_endpointMethods)}%";
 	private const string _template = $@"#pragma warning disable CS1591
 {_usings}
+using Blazored.LocalStorage;
 using DevilDaggersInfo.Web.BlazorWasm.Client.Utils;
 using System.Net.Http;
+using System.Net.Http.Headers;
 using System.Net.Http.Json;
 using System.Threading.Tasks;
 
@@ -20,13 +22,40 @@ namespace DevilDaggersInfo.Web.BlazorWasm.Client.HttpClients;
 
 public class AdminApiHttpClient
 {{
-	// TODO: Add local storage.
-	public AdminApiHttpClient(HttpClient client)
+	private readonly ILocalStorageService _localStorageService;
+
+	public AdminApiHttpClient(HttpClient client, ILocalStorageService localStorageService)
 	{{
 		Client = client;
+		_localStorageService = localStorageService;
 	}}
 
+	// TODO: Make private.
 	public HttpClient Client {{ get; }}
+
+	private async Task<T> SendRequest<T>(string url)
+	{{
+		HttpRequestMessage request = new()
+		{{
+			RequestUri = new Uri(url, UriKind.Relative),
+		}};
+		Console.WriteLine(""Sending request to "" + url);
+
+		string? token = await _localStorageService.GetItemAsStringAsync(""auth""); // TODO: Don't hardcode key string ""auth"".
+		Console.WriteLine(""Token is "" + token);
+		if (token != null)
+			request.Headers.Authorization = new AuthenticationHeaderValue(""Bearer"", token);
+
+		HttpResponseMessage httpResponseMessage = await Client.SendAsync(request);
+
+		if (httpResponseMessage.StatusCode == HttpStatusCode.Unauthorized)
+			throw new UnauthorizedAccessException();
+
+		if (!httpResponseMessage.IsSuccessStatusCode)
+			throw new();
+
+		return await httpResponseMessage.Content.ReadFromJsonAsync<T>() ?? throw new JsonDeserializationException();
+	}}
 
 {_endpointMethods}
 }}
@@ -39,7 +68,7 @@ public class AdminApiHttpClient
 	private const string _apiRoute = $"%{nameof(_apiRoute)}%";
 	private const string _getEndpointTemplate = $@"public async Task<{_returnType}> {_methodName}({_methodParameters})
 {{
-	return await Client.GetFromJsonAsync<{_returnType}>($""{_apiRoute}"") ?? throw new JsonDeserializationException();
+	return await SendRequest<{_returnType}>($""{_apiRoute}"");
 }}
 ";
 	private const string _getEndpointWithQueryTemplate = $@"public async Task<{_returnType}> {_methodName}({_methodParameters})
@@ -48,7 +77,7 @@ public class AdminApiHttpClient
 	{{
 {_queryParameters}
 	}};
-	return await Client.GetFromJsonAsync<{_returnType}>(UrlBuilderUtils.BuildUrlWithQuery($""{_apiRoute}"", queryParameters)) ?? throw new JsonDeserializationException();
+	return await SendRequest<{_returnType}>(UrlBuilderUtils.BuildUrlWithQuery($""{_apiRoute}"", queryParameters));
 }}
 ";
 

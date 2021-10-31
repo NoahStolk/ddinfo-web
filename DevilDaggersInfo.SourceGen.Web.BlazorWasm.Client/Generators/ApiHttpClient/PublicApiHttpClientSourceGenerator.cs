@@ -25,6 +25,7 @@ public class PublicApiHttpClient
 		Client = client;
 	}}
 
+	// TODO: Make private.
 	public HttpClient Client {{ get; }}
 
 {_endpointMethods}
