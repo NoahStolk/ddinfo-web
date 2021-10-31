@@ -81,11 +81,11 @@ public class UsersController : ControllerBase
 	[ProducesResponseType(StatusCodes.Status200OK)]
 	[ProducesResponseType(StatusCodes.Status400BadRequest)]
 	[ProducesResponseType(StatusCodes.Status404NotFound)]
-	public ActionResult AddUserToRoleById(int userId, int roleId)
+	public ActionResult AddUserToRoleById(int id, int roleId)
 	{
 		UserEntity? user = _dbContext.Users
 			.AsNoTracking()
-			.FirstOrDefault(u => u.Id == userId);
+			.FirstOrDefault(u => u.Id == id);
 		if (user == null)
 			return NotFound();
 
@@ -97,14 +97,14 @@ public class UsersController : ControllerBase
 
 		UserRoleEntity? userRole = _dbContext.UserRoles
 			.AsNoTracking()
-			.FirstOrDefault(ur => ur.UserId == userId && ur.RoleId == roleId);
+			.FirstOrDefault(ur => ur.UserId == id && ur.RoleId == roleId);
 		if (userRole != null)
 			return BadRequest("User is already in this role.");
 
 		_dbContext.UserRoles.Add(new UserRoleEntity
 		{
 			RoleId = roleId,
-			UserId = userId,
+			UserId = id,
 		});
 		_dbContext.SaveChanges();
 
