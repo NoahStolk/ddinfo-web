@@ -1,5 +1,7 @@
 @page "/admin/spawnsets"
 @using DevilDaggersInfo.Web.BlazorWasm.Client.Components.Admin
 @using DevilDaggersInfo.Web.BlazorWasm.Shared.Dto.Admin.Spawnsets
+@using DevilDaggersInfo.Web.BlazorWasm.Shared.Enums.Sortings.Admin
+@inject AdminApiHttpClient Http
 
-<AdminOverview TGetDto="GetSpawnsetForOverview" Title="Spawnsets" ApiRoute="api/admin/spawnsets" GridConfiguration="admin-spawnsets"></AdminOverview>
+<AdminOverview TGetDto="GetSpawnsetForOverview" Title="Spawnsets" ApiRoute="(int pageIndex, int pageSize, string? sortBy, bool isAscending) => Http.GetSpawnsets(pageIndex, pageSize, sortBy == null ? null : Enum.Parse<SpawnsetSorting>(sortBy), isAscending)" GridConfiguration="admin-spawnsets"></AdminOverview>

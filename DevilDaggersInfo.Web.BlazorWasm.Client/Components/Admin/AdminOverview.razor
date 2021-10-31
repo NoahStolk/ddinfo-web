@@ -18,7 +18,8 @@
 }
 else
 {
-	<Deletion AfterDelete="Fetch" ApiRoute="@ApiRoute" @ref="_deletion" />
+	@*TODO: Fix API route*@
+	<Deletion AfterDelete="Fetch" ApiRoute="@string.Empty" @ref="_deletion" />
 
 	<a class="inline-block bg-gray-0b hover:bg-gray-22 transition-colors duration-100 w-20 h-8 py-1 rounded text-color-text text-center" href="@($"{NavigationManager.Uri}/add")">Add new</a>
 	<button class="bg-gray-0b hover:bg-gray-22 transition-colors duration-100 w-8 h-8 py-1 rounded text-color-text" @onclick="() => ChangePageIndex(0)">|&lt;</button>
@@ -70,7 +71,7 @@ else
 @code
 {
 	[Parameter, EditorRequired] public string Title { get; set; } = null!;
-	[Parameter, EditorRequired] public string ApiRoute { get; set; } = null!;
+	[Parameter, EditorRequired] public Func<int, int, string?, bool, Task<Page<TGetDto>>> ApiRoute { get; set; } = null!; // TODO: Rename property.
 	[Parameter, EditorRequired] public string GridConfiguration { get; set; } = null!;
 
 	private int TotalPages => _page == null ? 0 : (_page.TotalResults - 1) / _pageSize + 1;
@@ -118,9 +119,7 @@ else
 	{
 		try
 		{
-			// TODO: Use generated method (pass func to this component).
-			// TODO: Add auth header to generated request in sourcegen.
-			_page = await Http.Client.GetFromJsonAsync<Page<TGetDto>>($"{ApiRoute}?pageIndex={_pageIndex}&pageSize={_pageSize}&sortBy={_sortBy}&ascending={_ascending}");
+			_page = await ApiRoute.Invoke(_pageSize, _pageIndex, _sortBy, _ascending);
 			_errorMessage = null;
 			StateHasChanged();
 		}

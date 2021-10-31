@@ -1,5 +1,7 @@
 @page "/admin/mods"
 @using DevilDaggersInfo.Web.BlazorWasm.Client.Components.Admin
 @using DevilDaggersInfo.Web.BlazorWasm.Shared.Dto.Admin.Mods
+@using DevilDaggersInfo.Web.BlazorWasm.Shared.Enums.Sortings.Admin
+@inject AdminApiHttpClient Http
 
-<AdminOverview TGetDto="GetModForOverview" Title="Mods" ApiRoute="api/admin/mods" GridConfiguration="admin-mods"></AdminOverview>
+<AdminOverview TGetDto="GetModForOverview" Title="Mods" ApiRoute="(int pageIndex, int pageSize, string? sortBy, bool isAscending) => Http.GetMods(pageIndex, pageSize, sortBy == null ? null : Enum.Parse<ModSorting>(sortBy), isAscending)" GridConfiguration="admin-mods"></AdminOverview>
