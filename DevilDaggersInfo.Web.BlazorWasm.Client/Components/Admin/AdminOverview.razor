@@ -71,7 +71,7 @@ else
 @code
 {
 	[Parameter, EditorRequired] public string Title { get; set; } = null!;
-	[Parameter, EditorRequired] public Func<int, int, string?, bool, Task<Page<TGetDto>>> ApiRoute { get; set; } = null!; // TODO: Rename property.
+	[Parameter, EditorRequired] public Func<int, int, string?, bool, Task<Page<TGetDto>>> ApiCall { get; set; } = null!;
 	[Parameter, EditorRequired] public string GridConfiguration { get; set; } = null!;
 
 	private int TotalPages => _page == null ? 0 : (_page.TotalResults - 1) / _pageSize + 1;
@@ -119,7 +119,7 @@ else
 	{
 		try
 		{
-			_page = await ApiRoute.Invoke(_pageSize, _pageIndex, _sortBy, _ascending);
+			_page = await ApiCall.Invoke(_pageSize, _pageIndex, _sortBy, _ascending);
 			_errorMessage = null;
 			StateHasChanged();
 		}

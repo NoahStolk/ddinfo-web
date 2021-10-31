@@ -4,4 +4,4 @@
 @using DevilDaggersInfo.Web.BlazorWasm.Shared.Enums.Sortings.Admin
 @inject AdminApiHttpClient Http
 
-<AdminOverview TGetDto="GetCustomEntry" Title="Custom Entries" ApiRoute="(int pageIndex, int pageSize, string? sortBy, bool isAscending) => Http.GetCustomEntries(pageIndex, pageSize, sortBy == null ? null : Enum.Parse<CustomEntrySorting>(sortBy), isAscending)" GridConfiguration="admin-custom-entries"></AdminOverview>
+<AdminOverview TGetDto="GetCustomEntry" Title="Custom Entries" ApiCall="(int pageIndex, int pageSize, string? sortBy, bool isAscending) => Http.GetCustomEntries(pageIndex, pageSize, sortBy == null ? null : Enum.Parse<CustomEntrySorting>(sortBy), isAscending)" GridConfiguration="admin-custom-entries"></AdminOverview>

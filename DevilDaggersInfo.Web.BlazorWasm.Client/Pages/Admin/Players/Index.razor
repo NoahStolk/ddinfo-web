@@ -4,4 +4,4 @@
 @using DevilDaggersInfo.Web.BlazorWasm.Shared.Enums.Sortings.Admin
 @inject AdminApiHttpClient Http
 
-<AdminOverview TGetDto="GetPlayerForOverview" Title="Players" ApiRoute="(int pageIndex, int pageSize, string? sortBy, bool isAscending) => Http.GetPlayers(pageIndex, pageSize, sortBy == null ? null : Enum.Parse<PlayerSorting>(sortBy), isAscending)" GridConfiguration="admin-players"></AdminOverview>
+<AdminOverview TGetDto="GetPlayerForOverview" Title="Players" ApiCall="(int pageIndex, int pageSize, string? sortBy, bool isAscending) => Http.GetPlayers(pageIndex, pageSize, sortBy == null ? null : Enum.Parse<PlayerSorting>(sortBy), isAscending)" GridConfiguration="admin-players"></AdminOverview>
