@@ -1,6 +1,7 @@
 @page "/authentication/register"
 @inject PublicApiHttpClient Http
 @inject AdminAuthenticationStateProvider Auth
+@inject NavigationManager Navigation
 @using DevilDaggersInfo.Web.BlazorWasm.Client.Authentication
 @using DevilDaggersInfo.Web.BlazorWasm.Shared.Dto.Public.Authentication
 @using Newtonsoft.Json
@@ -48,7 +49,7 @@
 
 		if (httpResponseMessage.StatusCode == HttpStatusCode.OK)
 		{
-			// TODO: Navigate to login.
+			Navigation.NavigateTo("/authentication/login");
 		}
 		else
 		{
