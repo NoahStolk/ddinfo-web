@@ -25,10 +25,10 @@
 	{
 		try
 		{
-			List<GetPlayerName> getPlayerNames = await Http.Client.GetFromJsonAsync<List<GetPlayerName>>($"api/admin/players/names") ?? throw new($"Response could not be deserialized to {nameof(List<GetPlayerName>)}.");
+			List<GetPlayerName> getPlayerNames = await Http.GetPlayerNames();
 			_playerNames = getPlayerNames.ToDictionary(m => m.Id, m => m.PlayerName);
 
-			GetSpawnset getSpawnset = await Http.Client.GetFromJsonAsync<GetSpawnset>($"api/admin/spawnsets/{Id}") ?? throw new($"Response could not be deserialized to {nameof(GetSpawnset)}.");
+			GetSpawnset getSpawnset = await Http.GetSpawnsetById(Id);
 			_editSpawnset = new()
 			{
 				HtmlDescription = getSpawnset.HtmlDescription,

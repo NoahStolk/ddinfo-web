@@ -31,10 +31,10 @@
 	{
 		try
 		{
-			List<GetPlayerName> getPlayerNames = await Http.Client.GetFromJsonAsync<List<GetPlayerName>>($"api/admin/players/names") ?? throw new($"Response could not be deserialized to {nameof(List<GetPlayerName>)}.");
+			List<GetPlayerName> getPlayerNames = await Http.GetPlayerNames();
 			_playerNames = getPlayerNames.ToDictionary(m => m.Id, m => m.PlayerName);
 
-			GetMod getMod = await Http.Client.GetFromJsonAsync<GetMod>($"api/admin/mods/{Id}") ?? throw new($"Response could not be deserialized to {nameof(GetMod)}.");
+			GetMod getMod = await Http.GetModById(Id);
 			_editMod = new()
 			{
 				ModTypes = getMod.ModTypes.AsEnumerable().ToList(),

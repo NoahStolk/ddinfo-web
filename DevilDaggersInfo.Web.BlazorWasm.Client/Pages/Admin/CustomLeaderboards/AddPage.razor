@@ -26,7 +26,7 @@
 	{
 		try
 		{
-			List<GetSpawnsetName> getSpawnsetNames = await Http.Client.GetFromJsonAsync<List<GetSpawnsetName>>("api/admin/spawnsets/names") ?? throw new($"Response could not be deserialized to {nameof(List<GetSpawnsetName>)}.");
+			List<GetSpawnsetName> getSpawnsetNames = await Http.GetSpawnsetNames();
 			_spawnsetNames = getSpawnsetNames.ToDictionary(m => m.Id, m => m.Name);
 
 			_addComponent.State = ErrorState.None;

@@ -26,7 +26,7 @@
 	{
 		try
 		{
-			GetCustomLeaderboard getCustomLeaderboard = await Http.Client.GetFromJsonAsync<GetCustomLeaderboard>($"api/admin/custom-leaderboards/{Id}") ?? throw new($"Response could not be deserialized to {nameof(GetCustomLeaderboard)}.");
+			GetCustomLeaderboard getCustomLeaderboard = await Http.GetCustomLeaderboardById(Id);
 			_editCustomLeaderboard = new()
 			{
 				Category = getCustomLeaderboard.Category,
