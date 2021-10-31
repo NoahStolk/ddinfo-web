@@ -1,6 +1,5 @@
 @page "/admin/players"
 @using DevilDaggersInfo.Web.BlazorWasm.Client.Components.Admin
 @using DevilDaggersInfo.Web.BlazorWasm.Shared.Dto.Admin.Players
-@inject HttpClient Http
 
 <AdminOverview TGetDto="GetPlayerForOverview" Title="Players" ApiRoute="api/admin/players" GridConfiguration="admin-players"></AdminOverview>

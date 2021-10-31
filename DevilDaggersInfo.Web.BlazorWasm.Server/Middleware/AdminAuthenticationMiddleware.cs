@@ -22,6 +22,7 @@ public class AdminAuthenticationMiddleware
 		_next = next;
 	}
 
+	// TODO: Return 401.
 	public Task InvokeAsync(HttpContext context)
 	{
 		const string adminRouteStart = "api/admin/";
