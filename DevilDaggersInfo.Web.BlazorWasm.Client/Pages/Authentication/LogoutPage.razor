@@ -1,0 +1,17 @@
+@page "/logout"
+@inject AdminAuthenticationStateProvider Auth
+@using DevilDaggersInfo.Web.BlazorWasm.Client.Authentication
+@using DevilDaggersInfo.Web.BlazorWasm.Shared.Dto.Public.Authentication
+@using Newtonsoft.Json
+
+<Heading>Logout</Heading>
+
+<button class="btn btn-primary" @onclick="ClickLogout">Logout</button>
+
+@code
+{
+	private async Task ClickLogout(MouseEventArgs e)
+	{
+		await Auth.SetTokenAsync(null);
+	}
+}
