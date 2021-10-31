@@ -119,7 +119,7 @@ else
 	{
 		try
 		{
-			_page = await ApiCall.Invoke(_pageSize, _pageIndex, _sortBy, _ascending);
+			_page = await ApiCall.Invoke(_pageIndex, _pageSize, _sortBy, _ascending);
 			_errorMessage = null;
 			StateHasChanged();
 		}
