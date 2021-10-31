@@ -44,14 +44,14 @@ public class AdminAuthenticationMiddleware
 		ClaimsIdentity? identity = user.Identities.FirstOrDefault();
 		Claim? roleClaim = identity?.Claims.FirstOrDefault(c => c.Type == "http://schemas.microsoft.com/ws/2008/06/identity/claims/role");
 		string? roleClaimValueString = roleClaim?.Value?.ToString();
-		if (roleClaimValueString == null || !roleClaimValueString.StartsWith(role))
+		if (roleClaimValueString?.StartsWith(role) != true)
 			throw new UnauthorizedAccessException();
 
 		string[] userRoles = roleClaimValueString[role.Length..].Split(',') ?? Array.Empty<string>();
 
 		string endpointRoute = pathString[(pathString.IndexOf(adminRouteStart) + adminRouteStart.Length)..];
 		if (endpointRoute.Contains('/'))
-			endpointRoute = endpointRoute.Substring(0, endpointRoute.IndexOf('/'));
+			endpointRoute = endpointRoute[..endpointRoute.IndexOf('/')];
 
 		string requiredRole = _roleOverrides.ContainsKey(endpointRoute) ? _roleOverrides[endpointRoute] : "Admin";
 		if (!userRoles.Contains(requiredRole))
