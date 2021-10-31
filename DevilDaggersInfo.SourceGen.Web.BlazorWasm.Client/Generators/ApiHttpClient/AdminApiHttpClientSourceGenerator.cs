@@ -33,16 +33,15 @@ public class AdminApiHttpClient
 	// TODO: Make private.
 	public HttpClient Client {{ get; }}
 
-	private async Task<T> SendRequest<T>(string url)
+	private async Task<HttpResponseMessage> SendRequest(HttpMethod httpMethod, string url)
 	{{
 		HttpRequestMessage request = new()
 		{{
 			RequestUri = new Uri(url, UriKind.Relative),
+			Method = httpMethod,
 		}};
-		Console.WriteLine(""Sending request to "" + url);
 
 		string? token = await _localStorageService.GetItemAsStringAsync(""auth""); // TODO: Don't hardcode key string ""auth"".
-		Console.WriteLine(""Token is "" + token);
 		if (token != null)
 			request.Headers.Authorization = new AuthenticationHeaderValue(""Bearer"", token);
 
@@ -54,7 +53,13 @@ public class AdminApiHttpClient
 		if (!httpResponseMessage.IsSuccessStatusCode)
 			throw new();
 
-		return await httpResponseMessage.Content.ReadFromJsonAsync<T>() ?? throw new JsonDeserializationException();
+		return httpResponseMessage;
+	}}
+
+	private async Task<T> SendGetRequest<T>(string url)
+	{{
+		HttpResponseMessage response = await SendRequest(HttpMethod.Get, url);
+		return await response.Content.ReadFromJsonAsync<T>() ?? throw new JsonDeserializationException();
 	}}
 
 {_endpointMethods}
@@ -68,7 +73,7 @@ public class AdminApiHttpClient
 	private const string _apiRoute = $"%{nameof(_apiRoute)}%";
 	private const string _getEndpointTemplate = $@"public async Task<{_returnType}> {_methodName}({_methodParameters})
 {{
-	return await SendRequest<{_returnType}>($""{_apiRoute}"");
+	return await SendGetRequest<{_returnType}>($""{_apiRoute}"");
 }}
 ";
 	private const string _getEndpointWithQueryTemplate = $@"public async Task<{_returnType}> {_methodName}({_methodParameters})
@@ -77,7 +82,7 @@ public class AdminApiHttpClient
 	{{
 {_queryParameters}
 	}};
-	return await SendRequest<{_returnType}>(UrlBuilderUtils.BuildUrlWithQuery($""{_apiRoute}"", queryParameters));
+	return await SendGetRequest<{_returnType}>(UrlBuilderUtils.BuildUrlWithQuery($""{_apiRoute}"", queryParameters));
 }}
 ";
 
