@@ -118,6 +118,8 @@ else
 	{
 		try
 		{
+			// TODO: Use generated method (pass func to this component).
+			// TODO: Add auth header to generated request in sourcegen.
 			_page = await Http.Client.GetFromJsonAsync<Page<TGetDto>>($"{ApiRoute}?pageIndex={_pageIndex}&pageSize={_pageSize}&sortBy={_sortBy}&ascending={_ascending}");
 			_errorMessage = null;
 			StateHasChanged();
