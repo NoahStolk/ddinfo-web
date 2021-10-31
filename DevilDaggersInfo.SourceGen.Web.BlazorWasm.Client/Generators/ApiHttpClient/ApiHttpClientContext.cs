@@ -4,63 +4,35 @@ namespace DevilDaggersInfo.SourceGen.Web.BlazorWasm.Client.Generators.ApiHttpCli
 
 internal class ApiHttpClientContext
 {
-	public Dictionary<IncludedDirectory, List<string>> GlobalUsings { get; } = new();
-	public Dictionary<IncludedDirectory, Dictionary<ClientType, List<string>>> SpecificUsings { get; } = new();
-	public Dictionary<ClientType, List<Endpoint>> Endpoints { get; } = new();
+	public List<string> Usings { get; } = new();
+	public List<Endpoint> Endpoints { get; } = new();
 
-	public void FindUsings()
+	public void Clear()
 	{
-		GlobalUsings.Clear();
-		SpecificUsings.Clear();
+		Usings.Clear();
+		Endpoints.Clear();
+	}
 
-		foreach (IncludedDirectory includedDirectory in Constants.IncludedDirectories)
+	public void AddUsings(ClientType clientType, IncludedDirectory includedDirectory)
+	{
+		string usingPrefix = $"{Constants.SharedProjectName}.{includedDirectory}";
+
+		Usings.Add(usingPrefix);
+
+		string path = Path.Combine(Constants.SharedProjectPath, includedDirectory.ToString());
+		foreach (string directory in Directory.GetDirectories(path, "*", SearchOption.AllDirectories))
 		{
-			GlobalUsings.Add(includedDirectory, new());
+			string? directoryName = directory.TrimStart(path);
 
-			Dictionary<ClientType, List<string>> specificUsingsDictionary = new();
-			foreach (ClientType clientType in Constants.ClientTypes)
-				specificUsingsDictionary.Add(clientType, new());
-
-			SpecificUsings.Add(includedDirectory, specificUsingsDictionary);
-		}
-
-		foreach (IncludedDirectory includedDirectory in Constants.IncludedDirectories)
-		{
-			string prefix = $"{Constants.SharedProjectName}.{includedDirectory}";
-			string path = Path.Combine(Constants.SharedProjectPath, includedDirectory.ToString());
-			foreach (string directory in Directory.GetDirectories(path, "*", SearchOption.AllDirectories).Append(path))
-			{
-				string? directoryName = directory.TrimStart(path);
-				string usingDirective = prefix + directoryName.Replace('\\', '.');
-
-				bool registered = false;
-				foreach (ClientType clientType in Constants.ClientTypes)
-				{
-					if (directoryName.Contains(clientType.ToString()))
-					{
-						SpecificUsings[includedDirectory][clientType].Add(usingDirective);
-						registered = true;
-						break;
-					}
-				}
-
-				if (!registered)
-					GlobalUsings[includedDirectory].Add(usingDirective);
-			}
+			if (directoryName.Contains(clientType.ToString()))
+				Usings.Add(usingPrefix + directoryName.Replace('\\', '.'));
 		}
 	}
 
-	public void FindEndpoints()
+	public void AddEndpoints(ClientType clientType)
 	{
-		Endpoints.Clear();
-		foreach (ClientType clientType in Constants.ClientTypes)
-			Endpoints.Add(clientType, new());
-
-		foreach (ClientType clientType in Constants.ClientTypes)
-		{
-			foreach (string controllerFilePath in Directory.GetFiles(Path.Combine(Constants.ServerProjectPath, "Controllers", clientType.ToString())))
-				Endpoints[clientType].AddRange(ExtractEndpoints(CSharpSyntaxTree.ParseText(File.ReadAllText(controllerFilePath))));
-		}
+		foreach (string controllerFilePath in Directory.GetFiles(Path.Combine(Constants.ServerProjectPath, "Controllers", clientType.ToString())))
+			Endpoints.AddRange(ExtractEndpoints(CSharpSyntaxTree.ParseText(File.ReadAllText(controllerFilePath))));
 	}
 
 	private static IEnumerable<Endpoint> ExtractEndpoints(SyntaxTree syntaxTree)
