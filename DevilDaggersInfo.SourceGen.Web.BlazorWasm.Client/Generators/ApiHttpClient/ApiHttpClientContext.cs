@@ -85,14 +85,17 @@ internal class ApiHttpClientContext
 
 			string endpointRoute = result.AttributeSyntax.GetRouteAttributeStringValue();
 
-			Parameter? routeParameter = allParameters.SingleOrDefault(p => endpointRoute.Contains($"{{{p.Name}}}"));
-			List<Parameter> queryParameters = allParameters.Except(new List<Parameter> { routeParameter }).ToList();
+			List<Parameter> routeParameters = allParameters.Where(p => endpointRoute.Contains($"{{{p.Name}}}")).ToList();
+			if (routeParameters.Count > 1)
+				throw new NotSupportedException($"Multiple route parameters for endpoint '{methodName}' are not supported: {string.Join(", ", routeParameters)}");
+
+			List<Parameter> queryParameters = allParameters.Except(routeParameters).ToList();
 			string fullRoute = $"{apiRoute}/{endpointRoute}";
 
 			yield return result.HttpMethod switch
 			{
-				HttpMethod.Get => new GetEndpoint(methodName, routeParameter, queryParameters, returnType, fullRoute),
-				HttpMethod.Post => new PostEndpoint(methodName, allParameters.SingleOrDefault(), fullRoute),
+				HttpMethod.Get => new GetEndpoint(methodName, routeParameters.FirstOrDefault(), queryParameters, returnType, fullRoute),
+				HttpMethod.Post => new PostEndpoint(methodName, allParameters.Count != 1 ? throw new NotSupportedException($"POST endpoint '{methodName}' must have exactly 1 parameter: {string.Join(", ", allParameters)}") : allParameters[0], fullRoute),
 				// throw new NotSupportedException(),
 			};
 		}
