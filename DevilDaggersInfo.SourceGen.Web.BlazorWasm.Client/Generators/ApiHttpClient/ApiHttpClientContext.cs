@@ -1,4 +1,6 @@
+using DevilDaggersInfo.SourceGen.Web.BlazorWasm.Client.Generators.ApiHttpClient.Endpoints;
 using DevilDaggersInfo.SourceGen.Web.BlazorWasm.Client.Generators.ApiHttpClient.Enums;
+using HttpMethod = DevilDaggersInfo.SourceGen.Web.BlazorWasm.Client.Generators.ApiHttpClient.Enums.HttpMethod;
 
 namespace DevilDaggersInfo.SourceGen.Web.BlazorWasm.Client.Generators.ApiHttpClient;
 
@@ -83,10 +85,16 @@ internal class ApiHttpClientContext
 
 			string endpointRoute = result.AttributeSyntax.GetRouteAttributeStringValue();
 
-			List<Parameter> routeParameters = allParameters.Where(p => endpointRoute.Contains($"{{{p.Name}}}")).ToList();
-			List<Parameter> queryParameters = allParameters.Except(routeParameters).ToList();
+			Parameter? routeParameter = allParameters.SingleOrDefault(p => endpointRoute.Contains($"{{{p.Name}}}"));
+			List<Parameter> queryParameters = allParameters.Except(new List<Parameter> { routeParameter }).ToList();
+			string fullRoute = $"{apiRoute}/{endpointRoute}";
 
-			yield return new(result.HttpMethod, methodName, routeParameters, queryParameters, returnType, $"{apiRoute}/{endpointRoute}");
+			yield return result.HttpMethod switch
+			{
+				HttpMethod.Get => new GetEndpoint(methodName, routeParameter, queryParameters, returnType, fullRoute),
+				HttpMethod.Post => new PostEndpoint(methodName, allParameters.SingleOrDefault(), fullRoute),
+				// throw new NotSupportedException(),
+			};
 		}
 	}
 
@@ -110,7 +118,7 @@ internal class ApiHttpClientContext
 
 		AttributeSyntax? httpPatchAttribute = mds.GetAttributeFromMember("HttpPatch");
 		if (httpPatchAttribute != null)
-			return new(httpPatchAttribute, new HttpMethod("Patch"));
+			return new(httpPatchAttribute, HttpMethod.Patch);
 
 		return null;
 	}

@@ -4,7 +4,7 @@ using System.Net.Http.Json;
 
 namespace DevilDaggersInfo.Web.BlazorWasm.Client.HttpClients;
 
-public partial class AdminApiHttpClient
+public partial class AdminApiHttpClient : ApiHttpClient
 {
 	private readonly HttpClient _client;
 	private readonly ILocalStorageService _localStorageService;
@@ -15,7 +15,7 @@ public partial class AdminApiHttpClient
 		_localStorageService = localStorageService;
 	}
 
-	private async Task<HttpResponseMessage> SendRequest(HttpMethod httpMethod, string url, JsonContent? body = null)
+	protected override async Task<HttpResponseMessage> SendRequest(HttpMethod httpMethod, string url, JsonContent? body = null)
 	{
 		HttpRequestMessage request = new()
 		{
@@ -28,11 +28,5 @@ public partial class AdminApiHttpClient
 			request.Headers.Authorization = new AuthenticationHeaderValue("Bearer", token);
 
 		return await _client.SendAsync(request);
-	}
-
-	private async Task<T> SendGetRequest<T>(string url)
-	{
-		HttpResponseMessage response = await SendRequest(HttpMethod.Get, url);
-		return await response.Content.ReadFromJsonAsync<T>() ?? throw new JsonDeserializationException();
 	}
 }
