@@ -15,15 +15,15 @@ public partial class AdminApiHttpClient
 		_localStorageService = localStorageService;
 	}
 
-	private async Task<HttpResponseMessage> SendRequest(HttpMethod httpMethod, string url)
+	private async Task<HttpResponseMessage> SendRequest(HttpMethod httpMethod, string url, JsonContent? body = null)
 	{
 		HttpRequestMessage request = new()
 		{
 			RequestUri = new Uri(url, UriKind.Relative),
 			Method = httpMethod,
+			Content = body,
 		};
-
-		string? token = await _localStorageService.GetItemAsStringAsync("auth"); // TODO: Don't hardcode key string ""auth"".
+		string? token = await _localStorageService.GetItemAsStringAsync("auth"); // TODO: Don't hardcode.
 		if (token != null)
 			request.Headers.Authorization = new AuthenticationHeaderValue("Bearer", token);
 
