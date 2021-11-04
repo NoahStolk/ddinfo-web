@@ -7,12 +7,12 @@ internal class GetEndpoint : Endpoint
 	private const string _methodParameters = $"%{nameof(_methodParameters)}%";
 	private const string _queryParameters = $"%{nameof(_queryParameters)}%";
 	private const string _apiRoute = $"%{nameof(_apiRoute)}%";
-	private const string _getEndpointTemplate = $@"public async Task<{_returnType}> {_methodName}({_methodParameters})
+	private const string _endpointTemplate = $@"public async Task<{_returnType}> {_methodName}({_methodParameters})
 {{
 	return await SendGetRequest<{_returnType}>($""{_apiRoute}"");
 }}
 ";
-	private const string _getEndpointWithQueryTemplate = $@"public async Task<{_returnType}> {_methodName}({_methodParameters})
+	private const string _endpointWithQueryTemplate = $@"public async Task<{_returnType}> {_methodName}({_methodParameters})
 {{
 	Dictionary<string, object?> queryParameters = new()
 	{{
@@ -22,7 +22,7 @@ internal class GetEndpoint : Endpoint
 }}
 ";
 
-	public GetEndpoint(string methodName, Parameter routeParameter, List<Parameter> queryParameters, string returnType, string apiRoute)
+	public GetEndpoint(string methodName, string apiRoute, Parameter? routeParameter, List<Parameter> queryParameters, string returnType)
 		: base(HttpMethod.Get, methodName, apiRoute)
 	{
 		QueryParameters = queryParameters;
@@ -30,19 +30,22 @@ internal class GetEndpoint : Endpoint
 		ReturnType = returnType;
 	}
 
-	public Parameter RouteParameter { get; }
+	public Parameter? RouteParameter { get; }
 	public List<Parameter> QueryParameters { get; }
 	public string ReturnType { get; }
 
 	public override string Build()
 	{
-		List<Parameter> allParameters = new() { RouteParameter };
+		List<Parameter> allParameters = new();
+		if (RouteParameter != null)
+			allParameters.Add(RouteParameter);
+
 		allParameters.AddRange(QueryParameters);
 		string methodParameters = string.Join(", ", allParameters.ConvertAll(p => p.ToString()));
 
 		if (QueryParameters.Count == 0)
 		{
-			return _getEndpointTemplate
+			return _endpointTemplate
 				.Replace(_returnType, ReturnType)
 				.Replace(_methodName, MethodName)
 				.Replace(_methodParameters, methodParameters)
@@ -50,7 +53,7 @@ internal class GetEndpoint : Endpoint
 		}
 
 		string queryParameters = string.Join($",{Environment.NewLine}", QueryParameters.ConvertAll(p => $"{{nameof({p.Name}), {p.Name}}}"));
-		return _getEndpointWithQueryTemplate
+		return _endpointWithQueryTemplate
 			.Replace(_returnType, ReturnType)
 			.Replace(_methodName, MethodName)
 			.Replace(_methodParameters, methodParameters)

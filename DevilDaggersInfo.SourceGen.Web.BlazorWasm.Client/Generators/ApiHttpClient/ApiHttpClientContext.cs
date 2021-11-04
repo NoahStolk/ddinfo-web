@@ -75,10 +75,6 @@ internal class ApiHttpClientContext
 				.Select(ps => new Parameter(ps.Type!, ps.Name!))
 				.ToList();
 
-			string? returnType = mds.ReturnType.GetTypeStringForApiHttpClient();
-			if (returnType == null)
-				continue;
-
 			HttpMethodResult? result = GetHttpMethod(mds);
 			if (result == null)
 				continue;
@@ -89,13 +85,30 @@ internal class ApiHttpClientContext
 			if (routeParameters.Count > 1)
 				throw new NotSupportedException($"Multiple route parameters for endpoint '{methodName}' are not supported: {string.Join(", ", routeParameters)}");
 
-			List<Parameter> queryParameters = allParameters.Except(routeParameters).ToList();
+			List<Parameter> nonRouteParameters = allParameters.Except(routeParameters).ToList();
 			string fullRoute = $"{apiRoute}/{endpointRoute}";
 
 			yield return result.HttpMethod switch
 			{
-				HttpMethod.Get => new GetEndpoint(methodName, routeParameters.FirstOrDefault(), queryParameters, returnType, fullRoute),
-				HttpMethod.Post => new PostEndpoint(methodName, allParameters.Count != 1 ? throw new NotSupportedException($"POST endpoint '{methodName}' must have exactly 1 parameter: {string.Join(", ", allParameters)}") : allParameters[0], fullRoute),
+				HttpMethod.Get => new GetEndpoint(
+					methodName,
+					fullRoute,
+					routeParameters.FirstOrDefault(),
+					nonRouteParameters,
+					mds.ReturnType.GetTypeStringForApiHttpClient()),
+				HttpMethod.Post => new PostEndpoint(
+					methodName,
+					fullRoute,
+					nonRouteParameters.Count != 1 ? throw new NotSupportedException($"POST endpoint '{methodName}' must have exactly 1 non-route parameter: {string.Join(", ", nonRouteParameters)}") : nonRouteParameters[0]),
+				HttpMethod.Put => new PutEndpoint(
+					methodName,
+					fullRoute,
+					routeParameters.Count != 1 ? throw new NotSupportedException($"PUT endpoint '{methodName}' must have exactly 1 route parameter: {string.Join(", ", routeParameters)}") : routeParameters[0],
+					nonRouteParameters.Count != 1 ? throw new NotSupportedException($"PUT endpoint '{methodName}' must have exactly 1 non-route parameter: {string.Join(", ", nonRouteParameters)}") : nonRouteParameters[0]),
+				HttpMethod.Delete => new DeleteEndpoint(
+					methodName,
+					fullRoute,
+					routeParameters.Count != 1 ? throw new NotSupportedException($"DELETE endpoint '{methodName}' must have exactly 1 route parameter: {string.Join(", ", routeParameters)}") : routeParameters[0]),
 				// throw new NotSupportedException(),
 			};
 		}
