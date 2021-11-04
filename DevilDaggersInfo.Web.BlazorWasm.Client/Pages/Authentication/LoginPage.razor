@@ -1,6 +1,7 @@
 @page "/authentication/login"
 @inject PublicApiHttpClient Http
 @inject AdminAuthenticationStateProvider Auth
+@inject NavigationManager Navigation
 @using DevilDaggersInfo.Web.BlazorWasm.Client.Authentication
 @using DevilDaggersInfo.Web.BlazorWasm.Shared.Dto.Public.Authentication
 @using Newtonsoft.Json
@@ -50,6 +51,7 @@
 		{
 			LoginResponse? authenticationResponse = await httpResponseMessage.Content.ReadFromJsonAsync<LoginResponse>() ?? throw new($"Could not deserialize {nameof(LoginResponse)}.");
 			await Auth.SetTokenAsync(authenticationResponse.Token);
+			Navigation.NavigateTo("/");
 		}
 		else
 		{

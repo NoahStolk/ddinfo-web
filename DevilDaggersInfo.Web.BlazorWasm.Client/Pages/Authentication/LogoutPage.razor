@@ -1,5 +1,6 @@
 @page "/authentication/logout"
 @inject AdminAuthenticationStateProvider Auth
+@inject NavigationManager Navigation
 @using DevilDaggersInfo.Web.BlazorWasm.Client.Authentication
 @using DevilDaggersInfo.Web.BlazorWasm.Shared.Dto.Public.Authentication
 @using Newtonsoft.Json
@@ -13,5 +14,6 @@
 	private async Task ClickLogout(MouseEventArgs e)
 	{
 		await Auth.SetTokenAsync(null);
+		Navigation.NavigateTo("/");
 	}
 }
