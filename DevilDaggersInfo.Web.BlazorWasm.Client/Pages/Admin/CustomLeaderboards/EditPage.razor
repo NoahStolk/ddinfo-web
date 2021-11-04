@@ -5,7 +5,7 @@
 @using DevilDaggersInfo.Web.BlazorWasm.Shared.Dto.Admin.CustomLeaderboards
 @using DevilDaggersInfo.Web.BlazorWasm.Shared.Enums
 
-<AdminEdit OverviewUrl="/admin/custom-leaderboards" PutApiUrl="api/admin/custom-leaderboards" Model="_editCustomLeaderboard" Id="Id" @ref="_editComponent">
+<AdminEdit OverviewUrl="/admin/custom-leaderboards" ApiCall="Http.EditCustomLeaderboardById" Model="_editCustomLeaderboard" Id="Id" @ref="_editComponent">
 	<AdminInput Label="@nameof(EditCustomLeaderboard.Category)"><SearchDropdown Values="@(Enum.GetValues<CustomLeaderboardCategory>().ToDictionary(e => e, e => e.ToString()))" Converter="s => Enum.Parse<CustomLeaderboardCategory>(s)" @bind-Value="@_editCustomLeaderboard!.Category" /></AdminInput>
 	<AdminInput Label="@nameof(EditCustomLeaderboard.TimeBronze)"><InputNumber class="w-64 pl-2 bg-gray-0b text-color-text" @bind-Value="_editCustomLeaderboard!.TimeBronze" /></AdminInput>
 	<AdminInput Label="@nameof(EditCustomLeaderboard.TimeSilver)"><InputNumber class="w-64 pl-2 bg-gray-0b text-color-text" @bind-Value="_editCustomLeaderboard!.TimeSilver" /></AdminInput>
