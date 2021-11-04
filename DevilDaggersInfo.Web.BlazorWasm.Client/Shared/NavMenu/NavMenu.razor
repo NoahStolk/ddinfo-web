@@ -39,6 +39,11 @@
 				<NavItem Href="guides/survival-editor" CssClass="text-lg" IconType="grid-three-up" Text="Survival Editor" />
 				<NavItem Href="guides/asset-editor" CssClass="text-lg" IconType="brush" Text="Asset Editor" />
 			</NavDropdown>
+			<NavItem Href="donations" CssClass="text-xl" IconType="heart" Text="Donations" />
+			<NavItem Href="swagger/index.html" CssClass="text-xl" IconType="link-intact" Text="API" />
+			<NavDropdown NavMenu="this" Text="Account">
+				<LoginDisplay />
+			</NavDropdown>
 			<AuthorizeView>
 				<Authorized>
 					<NavDropdown NavMenu="this" Text="Admin">
@@ -53,11 +58,6 @@
 					</NavDropdown>
 				</Authorized>
 			</AuthorizeView>
-			<NavItem Href="donations" CssClass="text-xl" IconType="heart" Text="Donations" />
-			<NavItem Href="swagger/index.html" CssClass="text-xl" IconType="link-intact" Text="API" />
-			<NavDropdown NavMenu="this" Text="Account">
-				<LoginDisplay />
-			</NavDropdown>
 		</CascadingValue>
 	</ul>
 </div>
