@@ -40,7 +40,7 @@
 		{
 			List<GetModName> getModNames = await Http.GetModNames();
 			_modNames = getModNames.ToDictionary(m => m.Id, m => m.Name);
-			
+
 			List<GetTitleName> getTitleNames = await Http.GetTitleNames();
 			_titleNames = getTitleNames.ToDictionary(t => t.Id, t => t.Name);
 
