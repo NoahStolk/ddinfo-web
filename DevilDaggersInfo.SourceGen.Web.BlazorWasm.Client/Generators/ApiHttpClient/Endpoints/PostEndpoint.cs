@@ -9,7 +9,7 @@ internal class PostEndpoint : Endpoint
 	private const string _httpMethod = $"%{nameof(_httpMethod)}%";
 	private const string _endpointTemplate = $@"public async Task<HttpResponseMessage> {_methodName}({_bodyParameterType} {_bodyParameter})
 {{
-	return await SendRequest(new HttpMethod(""{_httpMethod}""), $""{_apiRoute}"", {_bodyParameter});
+	return await SendRequest(new HttpMethod(""{_httpMethod}""), $""{_apiRoute}"", JsonContent.Create({_bodyParameter}));
 }}
 ";
 
