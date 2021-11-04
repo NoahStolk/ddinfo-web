@@ -105,11 +105,16 @@ internal class ApiHttpClientContext
 					fullRoute,
 					routeParameters.Count != 1 ? throw new NotSupportedException($"PUT endpoint '{methodName}' must have exactly 1 route parameter: {string.Join(", ", routeParameters)}") : routeParameters[0],
 					nonRouteParameters.Count != 1 ? throw new NotSupportedException($"PUT endpoint '{methodName}' must have exactly 1 non-route parameter: {string.Join(", ", nonRouteParameters)}") : nonRouteParameters[0]),
+				HttpMethod.Patch => new PatchEndpoint(
+					methodName,
+					fullRoute,
+					routeParameters.Count != 1 ? throw new NotSupportedException($"PATCH endpoint '{methodName}' must have exactly 1 route parameter: {string.Join(", ", routeParameters)}") : routeParameters[0],
+					nonRouteParameters.Count != 1 ? throw new NotSupportedException($"PATCH endpoint '{methodName}' must have exactly 1 non-route parameter: {string.Join(", ", nonRouteParameters)}") : nonRouteParameters[0]),
 				HttpMethod.Delete => new DeleteEndpoint(
 					methodName,
 					fullRoute,
 					routeParameters.Count != 1 ? throw new NotSupportedException($"DELETE endpoint '{methodName}' must have exactly 1 route parameter: {string.Join(", ", routeParameters)}") : routeParameters[0]),
-				// throw new NotSupportedException(),
+				_ => throw new NotSupportedException($"Endpoint with HTTP method '{result.HttpMethod}' is not supported."),
 			};
 		}
 	}
