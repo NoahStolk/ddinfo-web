@@ -34,7 +34,7 @@
 @code
 {
 	[Parameter, EditorRequired] public string OverviewUrl { get; set; } = null!;
-	[Parameter, EditorRequired] public string PostApiUrl { get; set; } = null!;
+	[Parameter, EditorRequired] public Func<TModel, Task<HttpResponseMessage>> ApiCall { get; set; } = null!;
 	[Parameter, EditorRequired] public TModel Model { get; set; } = default!;
 	[Parameter, EditorRequired] public RenderFragment ChildContent { get; set; } = null!;
 
@@ -45,7 +45,7 @@
 	{
 		try
 		{
-			HttpResponseMessage hrm = await Http.Client.PostAsJsonAsync(PostApiUrl, Model);
+			HttpResponseMessage hrm = await ApiCall.Invoke(Model);
 
 			if (hrm.StatusCode == HttpStatusCode.OK)
 				NavigationManager.NavigateTo(OverviewUrl);

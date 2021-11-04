@@ -9,6 +9,6 @@ public static class UrlBuilderUtils
 			return baseUrl;
 
 		string queryParameterString = string.Join('&', queryParameters.Select(kvp => $"{kvp.Key}={kvp.Value}"));
-		return $"{baseUrl}?{queryParameterString}";
+		return $"{baseUrl.TrimEnd('/')}?{queryParameterString}";
 	}
 }

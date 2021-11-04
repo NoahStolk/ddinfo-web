@@ -41,7 +41,7 @@ else
 @code
 {
 	[Parameter, EditorRequired] public string OverviewUrl { get; set; } = null!;
-	[Parameter, EditorRequired] public string PutApiUrl { get; set; } = null!;
+	[Parameter, EditorRequired] public Func<int, TModel, Task<HttpResponseMessage>> ApiCall { get; set; } = null!;
 	[Parameter, EditorRequired] public TModel? Model { get; set; }
 	[Parameter, EditorRequired] public int Id { get; set; }
 	[Parameter, EditorRequired] public RenderFragment ChildContent { get; set; } = null!;
@@ -56,7 +56,7 @@ else
 
 		try
 		{
-			HttpResponseMessage hrm = await Http.Client.PutAsJsonAsync<TModel>($"{PutApiUrl}/{Id}", Model);
+			HttpResponseMessage hrm = await ApiCall.Invoke(Id, Model);
 
 			if (hrm.StatusCode == HttpStatusCode.OK)
 			{

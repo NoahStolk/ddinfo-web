@@ -3,7 +3,6 @@ using DevilDaggersInfo.Web.BlazorWasm.Shared.Dto.Admin.ModScreenshots;
 namespace DevilDaggersInfo.Web.BlazorWasm.Server.Controllers.Admin;
 
 [Route("api/admin/mod-screenshots")]
-[Authorize(Roles = Roles.Mods)]
 [ApiController]
 public class ModScreenshotsController : ControllerBase
 {
@@ -41,7 +40,7 @@ public class ModScreenshotsController : ControllerBase
 		return Ok();
 	}
 
-	[HttpDelete]
+	[HttpPost] // Not actually DELETE since that needs a route parameter.
 	[ProducesResponseType(StatusCodes.Status200OK)]
 	[ProducesResponseType(StatusCodes.Status400BadRequest)]
 	public async Task<ActionResult> DeleteModScreenshot(DeleteModScreenshot deleteModScreenshot)

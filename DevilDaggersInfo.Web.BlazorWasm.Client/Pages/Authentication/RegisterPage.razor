@@ -1,0 +1,59 @@
+@page "/authentication/register"
+@inject PublicApiHttpClient Http
+@inject AdminAuthenticationStateProvider Auth
+@inject NavigationManager Navigation
+@using DevilDaggersInfo.Web.BlazorWasm.Client.Authentication
+@using DevilDaggersInfo.Web.BlazorWasm.Shared.Dto.Public.Authentication
+@using Newtonsoft.Json
+@using System.Net
+
+<Heading>Register</Heading>
+
+<input class="bg-black border-gray-22 border-2" @onchange="ChangeName" />
+<input class="bg-black border-gray-22 border-2" @onchange="ChangePassword" />
+
+<div class="text-red">@_error</div>
+
+<button class="btn btn-primary" @onclick="ClickRegister">Register</button>
+
+@code
+{
+	private string? _name;
+	private string? _password;
+
+	private string? _error;
+
+	private void ChangeName(ChangeEventArgs e)
+	{
+		_name = e.Value?.ToString();
+	}
+
+	private void ChangePassword(ChangeEventArgs e)
+	{
+		_password = e.Value?.ToString();
+	}
+
+	private async Task ClickRegister(MouseEventArgs e)
+	{
+		if (_name == null || _password == null)
+		{
+			_error = "Fill in user and password.";
+			return;
+		}
+
+		HttpResponseMessage httpResponseMessage = await Http.Register(new RegistrationRequest
+		{
+			Name = _name,
+			Password = _password,
+		});
+
+		if (httpResponseMessage.StatusCode == HttpStatusCode.OK)
+		{
+			Navigation.NavigateTo("/authentication/login");
+		}
+		else
+		{
+			_error = await httpResponseMessage.Content.ReadAsStringAsync();
+		}
+	}
+}

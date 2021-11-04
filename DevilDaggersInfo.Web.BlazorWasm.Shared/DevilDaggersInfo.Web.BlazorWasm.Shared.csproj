@@ -1,6 +1,7 @@
 <Project Sdk="Microsoft.NET.Sdk">
   <ItemGroup>
     <PackageReference Include="Newtonsoft.Json" />
+    <PackageReference Include="System.IdentityModel.Tokens.Jwt" />
     <ProjectReference Include="..\DevilDaggersInfo.Core\DevilDaggersInfo.Core.csproj" />
     <ProjectReference Include="..\DevilDaggersInfo.Core.Asset\DevilDaggersInfo.Core.Asset.csproj" />
     <ProjectReference Include="..\DevilDaggersInfo.Core.Mod\DevilDaggersInfo.Core.Mod.csproj" />

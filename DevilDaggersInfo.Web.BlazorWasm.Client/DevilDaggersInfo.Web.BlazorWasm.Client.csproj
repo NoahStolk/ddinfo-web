@@ -6,6 +6,7 @@
     <Version>5.0.0.0-alpha.$(MinutesSinceProjectStart)</Version>
   </PropertyGroup>
   <ItemGroup>
+    <PackageReference Include="Blazored.LocalStorage" />
     <PackageReference Include="Blazorise.Charts" />
     <PackageReference Include="Fluxor" />
     <PackageReference Include="Fluxor.Blazor.Web" />

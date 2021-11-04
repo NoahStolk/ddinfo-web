@@ -1,6 +1,12 @@
 @page "/admin/custom-leaderboards"
 @using DevilDaggersInfo.Web.BlazorWasm.Client.Components.Admin
 @using DevilDaggersInfo.Web.BlazorWasm.Shared.Dto.Admin.CustomLeaderboards
-@inject HttpClient Http
+@using DevilDaggersInfo.Web.BlazorWasm.Shared.Enums.Sortings.Admin
+@inject AdminApiHttpClient Http
 
-<AdminOverview TGetDto="GetCustomLeaderboard" TKey="int" Title="Custom Leaderboards" ApiRoute="api/admin/custom-leaderboards" GridConfiguration="admin-custom-leaderboards"></AdminOverview>
+<AdminOverview
+	TGetDto="GetCustomLeaderboard"
+	Title="Custom Leaderboards"
+	ApiCall="(int pageIndex, int pageSize, string? sortBy, bool isAscending) => Http.GetCustomLeaderboards(pageIndex, pageSize, sortBy == null ? null : Enum.Parse<CustomLeaderboardSorting>(sortBy), isAscending)"
+	DeletionApiCall="(int id) => Http.DeleteCustomLeaderboardById(id)"
+	GridConfiguration="admin-custom-leaderboards" />

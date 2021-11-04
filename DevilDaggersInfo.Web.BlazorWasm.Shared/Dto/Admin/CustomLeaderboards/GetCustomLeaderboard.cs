@@ -1,6 +1,6 @@
 namespace DevilDaggersInfo.Web.BlazorWasm.Shared.Dto.Admin.CustomLeaderboards;
 
-public class GetCustomLeaderboard : IGetDto<int>
+public class GetCustomLeaderboard : IGetDto
 {
 	public int Id { get; init; }
 

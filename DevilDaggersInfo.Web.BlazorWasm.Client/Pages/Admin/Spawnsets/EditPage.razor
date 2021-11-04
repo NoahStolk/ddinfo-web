@@ -5,7 +5,7 @@
 @using DevilDaggersInfo.Web.BlazorWasm.Shared.Dto.Admin.Players
 @using DevilDaggersInfo.Web.BlazorWasm.Shared.Dto.Admin.Spawnsets
 
-<AdminEdit OverviewUrl="/admin/spawnsets" PutApiUrl="api/admin/spawnsets" Model="_editSpawnset" Id="Id" @ref="_editComponent">
+<AdminEdit OverviewUrl="/admin/spawnsets" ApiCall="Http.EditSpawnsetById" Model="_editSpawnset" Id="Id" @ref="_editComponent">
 	<AdminInput Label="@nameof(EditSpawnset.PlayerId)"><SearchDropdown Values="@_playerNames" Converter="s => int.Parse(s)" @bind-Value="@_editSpawnset!.PlayerId" /></AdminInput>
 	<AdminInput Label="@nameof(EditSpawnset.Name)"><InputText class="w-64 pl-2 bg-gray-0b text-color-text" @bind-Value="@_editSpawnset!.Name" /></AdminInput>
 	<AdminInput Label="@nameof(EditSpawnset.MaxDisplayWaves)"><InputNumber class="w-64 pl-2 bg-gray-0b text-color-text" @bind-Value="_editSpawnset!.MaxDisplayWaves" /></AdminInput>
@@ -25,10 +25,10 @@
 	{
 		try
 		{
-			List<GetPlayerName> getPlayerNames = await Http.Client.GetFromJsonAsync<List<GetPlayerName>>($"api/admin/players/names") ?? throw new($"Response could not be deserialized to {nameof(List<GetPlayerName>)}.");
+			List<GetPlayerName> getPlayerNames = await Http.GetPlayerNames();
 			_playerNames = getPlayerNames.ToDictionary(m => m.Id, m => m.PlayerName);
 
-			GetSpawnset getSpawnset = await Http.Client.GetFromJsonAsync<GetSpawnset>($"api/admin/spawnsets/{Id}") ?? throw new($"Response could not be deserialized to {nameof(GetSpawnset)}.");
+			GetSpawnset getSpawnset = await Http.GetSpawnsetById(Id);
 			_editSpawnset = new()
 			{
 				HtmlDescription = getSpawnset.HtmlDescription,

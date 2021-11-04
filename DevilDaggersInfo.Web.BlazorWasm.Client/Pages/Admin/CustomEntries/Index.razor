@@ -1,6 +1,12 @@
 @page "/admin/custom-entries"
 @using DevilDaggersInfo.Web.BlazorWasm.Client.Components.Admin
 @using DevilDaggersInfo.Web.BlazorWasm.Shared.Dto.Admin.CustomEntries
-@inject HttpClient Http
+@using DevilDaggersInfo.Web.BlazorWasm.Shared.Enums.Sortings.Admin
+@inject AdminApiHttpClient Http
 
-<AdminOverview TGetDto="GetCustomEntry" TKey="int" Title="Custom Entries" ApiRoute="api/admin/custom-entries" GridConfiguration="admin-custom-entries"></AdminOverview>
+<AdminOverview
+	TGetDto="GetCustomEntry"
+	Title="Custom Entries"
+	ApiCall="(int pageIndex, int pageSize, string? sortBy, bool isAscending) => Http.GetCustomEntries(pageIndex, pageSize, sortBy == null ? null : Enum.Parse<CustomEntrySorting>(sortBy), isAscending)"
+	DeletionApiCall="(int id) => Http.DeleteCustomEntryById(id)"
+	GridConfiguration="admin-custom-entries" />

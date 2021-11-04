@@ -22,6 +22,7 @@
 		<PackageVersion Include="MSTest.TestFramework" Version="2.2.7" />
 	</ItemGroup>
 	<ItemGroup Label="Web client">
+		<PackageVersion Include="Blazored.LocalStorage" Version="4.1.5" />
 		<PackageVersion Include="Blazorise.Charts" Version="0.9.4.7" />
 		<PackageVersion Include="Fluxor" Version="4.1.0"/>
 		<PackageVersion Include="Fluxor.Blazor.Web" Version="4.1.0"/>
@@ -33,16 +34,15 @@
 		<PackageVersion Include="System.Net.Http.Json" Version="6.0.0-rc.2.21480.5" />
 	</ItemGroup>
 	<ItemGroup Label="Web server">
-		<PackageVersion Include="IdentityServer4.EntityFramework.Storage" Version="4.1.2" />
-		<PackageVersion Include="Microsoft.AspNetCore.ApiAuthorization.IdentityServer" Version="6.0.0-rc.2.21480.10" />
 		<PackageVersion Include="Microsoft.AspNetCore.Components.WebAssembly.Server" Version="6.0.0-rc.2.21480.10" />
 		<PackageVersion Include="Microsoft.AspNetCore.Diagnostics.EntityFrameworkCore" Version="6.0.0-rc.2.21480.10" />
-		<PackageVersion Include="Microsoft.AspNetCore.Identity.EntityFrameworkCore" Version="6.0.0-rc.2.21480.10" />
-		<PackageVersion Include="Microsoft.AspNetCore.Identity.UI" Version="6.0.0-rc.2.21480.10" />
 		<PackageVersion Include="Microsoft.EntityFrameworkCore" Version="6.0.0-rc.2.21480.5" />
 		<PackageVersion Include="Microsoft.EntityFrameworkCore.Tools" Version="6.0.0-rc.2.21480.5" />
 		<PackageVersion Include="NSwag.AspNetCore" Version="13.13.2" />
 		<PackageVersion Include="Pomelo.EntityFrameworkCore.MySql" Version="6.0.0-rc.1.ci.20211007223757+sha.e5110ec" />
+	</ItemGroup>
+	<ItemGroup Label="JWT">
+		<PackageVersion Include="System.IdentityModel.Tokens.Jwt" Version="6.13.1" />
 	</ItemGroup>
 	<ItemGroup Label="Discord integration">
 		<PackageVersion Include="DSharpPlus" Version="4.1.0" />

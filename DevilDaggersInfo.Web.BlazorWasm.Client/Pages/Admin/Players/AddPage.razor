@@ -6,7 +6,7 @@
 @using DevilDaggersInfo.Web.BlazorWasm.Shared.Dto.Admin.Players
 @using DevilDaggersInfo.Web.BlazorWasm.Shared.Dto.Admin.Titles
 
-<AdminAdd OverviewUrl="/admin/players" PostApiUrl="api/admin/players" Model="_addPlayer" @ref="_addComponent">
+<AdminAdd OverviewUrl="/admin/players" ApiCall="Http.AddPlayer" Model="_addPlayer" @ref="_addComponent">
 	<AdminInput Label="@nameof(AddPlayer.Id)"><InputNumber class="w-64 pl-2 bg-gray-0b text-color-text" @bind-Value="_addPlayer.Id" /></AdminInput>
 	<AdminInput Label="@nameof(AddPlayer.CountryCode)"><SearchDropdown Values="@(UserUtils.CountryNames!)" Converter="s => s" @bind-Value="@_addPlayer.CountryCode" /></AdminInput>
 	<AdminInput Label="@nameof(AddPlayer.Dpi)"><InputNumber class="w-64 pl-2 bg-gray-0b text-color-text" @bind-Value="_addPlayer.Dpi" /></AdminInput>
@@ -38,11 +38,11 @@
 	{
 		try
 		{
-			List<GetModName> getModNames = await Http.Client.GetFromJsonAsync<List<GetModName>>("api/admin/mods/names") ?? throw new($"Response could not be deserialized to {nameof(List<GetModName>)}.");
+			List<GetModName> getModNames = await Http.GetModNames();
 			_modNames = getModNames.ToDictionary(m => m.Id, m => m.Name);
-
-			List<GetTitle> getTitles = await Http.Client.GetFromJsonAsync<List<GetTitle>>("api/admin/titles/names") ?? throw new($"Response could not be deserialized to {nameof(List<GetTitle>)}.");
-			_titleNames = getTitles.ToDictionary(t => t.Id, t => t.Name);
+			
+			List<GetTitleName> getTitleNames = await Http.GetTitleNames();
+			_titleNames = getTitleNames.ToDictionary(t => t.Id, t => t.Name);
 
 			_addComponent.State = ErrorState.None;
 		}

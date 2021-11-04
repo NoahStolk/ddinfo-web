@@ -1,13 +1,9 @@
-using Duende.IdentityServer.EntityFramework.Options;
-using Microsoft.AspNetCore.ApiAuthorization.IdentityServer;
-using Microsoft.Extensions.Options;
-
 namespace DevilDaggersInfo.Web.BlazorWasm.Server.Entities;
 
-public class ApplicationDbContext : ApiAuthorizationDbContext<ApplicationUser>
+public class ApplicationDbContext : DbContext
 {
-	public ApplicationDbContext(DbContextOptions options, IOptions<OperationalStoreOptions> operationalStoreOptions)
-		: base(options, operationalStoreOptions)
+	public ApplicationDbContext(DbContextOptions options)
+		: base(options)
 	{
 	}
 
@@ -28,21 +24,27 @@ public class ApplicationDbContext : ApiAuthorizationDbContext<ApplicationUser>
 
 	public virtual DbSet<InformationSchemaTable> InformationSchemaTables => Set<InformationSchemaTable>();
 
+	public virtual DbSet<UserEntity> Users => Set<UserEntity>();
+	public virtual DbSet<RoleEntity> Roles => Set<RoleEntity>();
+	public virtual DbSet<UserRoleEntity> UserRoles => Set<UserRoleEntity>();
+
 	protected override void OnModelCreating(ModelBuilder modelBuilder)
 	{
+		// Configure relations for PlayerMods.
 		modelBuilder.Entity<PlayerModEntity>()
-			.HasKey(pam => new { pam.PlayerId, pam.ModId });
+			.HasKey(pm => new { pm.PlayerId, pm.ModId });
 
 		modelBuilder.Entity<PlayerModEntity>()
-			.HasOne(pam => pam.Player)
+			.HasOne(pm => pm.Player)
 			.WithMany(p => p.PlayerMods)
-			.HasForeignKey(pam => pam.PlayerId);
+			.HasForeignKey(pm => pm.PlayerId);
 
 		modelBuilder.Entity<PlayerModEntity>()
-			.HasOne(pam => pam.Mod)
-			.WithMany(am => am.PlayerMods)
-			.HasForeignKey(pam => pam.ModId);
+			.HasOne(pm => pm.Mod)
+			.WithMany(m => m.PlayerMods)
+			.HasForeignKey(pm => pm.ModId);
 
+		// Configure relations for PlayerTitles.
 		modelBuilder.Entity<PlayerTitleEntity>()
 			.HasKey(pt => new { pt.PlayerId, pt.TitleId });
 
@@ -55,6 +57,20 @@ public class ApplicationDbContext : ApiAuthorizationDbContext<ApplicationUser>
 			.HasOne(pt => pt.Title)
 			.WithMany(t => t.PlayerTitles)
 			.HasForeignKey(pt => pt.TitleId);
+
+		// Configure relations for UserRoles.
+		modelBuilder.Entity<UserRoleEntity>()
+			.HasKey(ur => new { ur.UserId, ur.RoleId });
+
+		modelBuilder.Entity<UserRoleEntity>()
+			.HasOne(ur => ur.User)
+			.WithMany(u => u.UserRoles)
+			.HasForeignKey(ur => ur.UserId);
+
+		modelBuilder.Entity<UserRoleEntity>()
+			.HasOne(ur => ur.Role)
+			.WithMany(r => r.UserRoles)
+			.HasForeignKey(ur => ur.RoleId);
 
 		base.OnModelCreating(modelBuilder);
 	}

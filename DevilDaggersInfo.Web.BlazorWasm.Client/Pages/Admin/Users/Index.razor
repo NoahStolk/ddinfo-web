@@ -1,6 +1,12 @@
 @page "/admin/users"
 @using DevilDaggersInfo.Web.BlazorWasm.Client.Components.Admin
 @using DevilDaggersInfo.Web.BlazorWasm.Shared.Dto.Admin.Users
-@inject HttpClient Http
+@using DevilDaggersInfo.Web.BlazorWasm.Shared.Enums.Sortings.Admin
+@inject AdminApiHttpClient Http
 
-<AdminOverview TGetDto="GetUser" TKey="string" Title="Users" ApiRoute="api/admin/users" GridConfiguration="admin-users"></AdminOverview>
+<AdminOverview
+	TGetDto="GetUser"
+	Title="Users"
+	ApiCall="(int pageIndex, int pageSize, string? sortBy, bool isAscending) => Http.GetUsers(pageIndex, pageSize, sortBy == null ? null : Enum.Parse<UserSorting>(sortBy), isAscending)"
+	DeletionApiCall="(int id) => Http.DeleteUserById(id)"
+	GridConfiguration="admin-users" />

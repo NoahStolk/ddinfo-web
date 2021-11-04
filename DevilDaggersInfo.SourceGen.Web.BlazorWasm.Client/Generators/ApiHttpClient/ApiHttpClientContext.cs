@@ -1,66 +1,43 @@
+using DevilDaggersInfo.SourceGen.Web.BlazorWasm.Client.Generators.ApiHttpClient.Endpoints;
 using DevilDaggersInfo.SourceGen.Web.BlazorWasm.Client.Generators.ApiHttpClient.Enums;
+using HttpMethod = DevilDaggersInfo.SourceGen.Web.BlazorWasm.Client.Generators.ApiHttpClient.Enums.HttpMethod;
 
 namespace DevilDaggersInfo.SourceGen.Web.BlazorWasm.Client.Generators.ApiHttpClient;
 
 internal class ApiHttpClientContext
 {
-	public Dictionary<IncludedDirectory, List<string>> GlobalUsings { get; } = new();
-	public Dictionary<IncludedDirectory, Dictionary<ClientType, List<string>>> SpecificUsings { get; } = new();
-	public Dictionary<ClientType, List<Endpoint>> Endpoints { get; } = new();
+	private readonly List<string> _usings = new();
+	private readonly List<Endpoint> _endpoints = new();
 
-	public void FindUsings()
+	public IReadOnlyList<string> Usings => _usings;
+	public IReadOnlyList<Endpoint> Endpoints => _endpoints;
+
+	public void Clear()
 	{
-		GlobalUsings.Clear();
-		SpecificUsings.Clear();
+		_usings.Clear();
+		_endpoints.Clear();
+	}
 
-		foreach (IncludedDirectory includedDirectory in Constants.IncludedDirectories)
+	public void AddUsings(ClientType clientType, IncludedDirectory includedDirectory)
+	{
+		string usingPrefix = $"{Constants.SharedProjectName}.{includedDirectory}";
+
+		_usings.Add(usingPrefix);
+
+		string path = Path.Combine(Constants.SharedProjectPath, includedDirectory.ToString());
+		foreach (string directory in Directory.GetDirectories(path, "*", SearchOption.AllDirectories))
 		{
-			GlobalUsings.Add(includedDirectory, new());
+			string? directoryName = directory.TrimStart(path);
 
-			Dictionary<ClientType, List<string>> specificUsingsDictionary = new();
-			foreach (ClientType clientType in Constants.ClientTypes)
-				specificUsingsDictionary.Add(clientType, new());
-
-			SpecificUsings.Add(includedDirectory, specificUsingsDictionary);
-		}
-
-		foreach (IncludedDirectory includedDirectory in Constants.IncludedDirectories)
-		{
-			string prefix = $"{Constants.SharedProjectName}.{includedDirectory}";
-			string path = Path.Combine(Constants.SharedProjectPath, includedDirectory.ToString());
-			foreach (string directory in Directory.GetDirectories(path, "*", SearchOption.AllDirectories).Append(path))
-			{
-				string? directoryName = directory.TrimStart(path);
-				string usingDirective = prefix + directoryName.Replace('\\', '.');
-
-				bool registered = false;
-				foreach (ClientType clientType in Constants.ClientTypes)
-				{
-					if (directoryName.Contains(clientType.ToString()))
-					{
-						SpecificUsings[includedDirectory][clientType].Add(usingDirective);
-						registered = true;
-						break;
-					}
-				}
-
-				if (!registered)
-					GlobalUsings[includedDirectory].Add(usingDirective);
-			}
+			if (directoryName.Contains(clientType.ToString()))
+				_usings.Add(usingPrefix + directoryName.Replace('\\', '.'));
 		}
 	}
 
-	public void FindEndpoints()
+	public void AddEndpoints(ClientType clientType)
 	{
-		Endpoints.Clear();
-		foreach (ClientType clientType in Constants.ClientTypes)
-			Endpoints.Add(clientType, new());
-
-		foreach (ClientType clientType in Constants.ClientTypes)
-		{
-			foreach (string controllerFilePath in Directory.GetFiles(Path.Combine(Constants.ServerProjectPath, "Controllers", clientType.ToString())))
-				Endpoints[clientType].AddRange(ExtractEndpoints(CSharpSyntaxTree.ParseText(File.ReadAllText(controllerFilePath))));
-		}
+		foreach (string controllerFilePath in Directory.GetFiles(Path.Combine(Constants.ServerProjectPath, "Controllers", clientType.ToString())))
+			_endpoints.AddRange(ExtractEndpoints(CSharpSyntaxTree.ParseText(File.ReadAllText(controllerFilePath))));
 	}
 
 	private static IEnumerable<Endpoint> ExtractEndpoints(SyntaxTree syntaxTree)
@@ -98,20 +75,84 @@ internal class ApiHttpClientContext
 				.Select(ps => new Parameter(ps.Type!, ps.Name!))
 				.ToList();
 
-			string? returnType = mds.ReturnType.GetTypeStringForApiHttpClient();
-			if (returnType == null)
+			HttpMethodResult? result = GetHttpMethod(mds);
+			if (result == null)
 				continue;
 
-			AttributeSyntax? httpGetAttribute = mds.GetAttributeFromMember("HttpGet");
-			if (httpGetAttribute == null)
-				continue;
-
-			string endpointRoute = httpGetAttribute.GetRouteAttributeStringValue();
+			string endpointRoute = result.AttributeSyntax.GetRouteAttributeStringValue();
 
 			List<Parameter> routeParameters = allParameters.Where(p => endpointRoute.Contains($"{{{p.Name}}}")).ToList();
-			List<Parameter> queryParameters = allParameters.Except(routeParameters).ToList();
+			if (routeParameters.Count > 1)
+				throw new NotSupportedException($"Multiple route parameters for endpoint '{methodName}' are not supported: {string.Join(", ", routeParameters)}");
 
-			yield return new(methodName, routeParameters, queryParameters, returnType, $"{apiRoute}/{endpointRoute}");
+			List<Parameter> nonRouteParameters = allParameters.Except(routeParameters).ToList();
+			string fullRoute = $"{apiRoute}/{endpointRoute}";
+
+			yield return result.HttpMethod switch
+			{
+				HttpMethod.Get => new GetEndpoint(
+					methodName,
+					fullRoute,
+					routeParameters.FirstOrDefault(),
+					nonRouteParameters,
+					mds.ReturnType.GetTypeStringForApiHttpClient()),
+				HttpMethod.Post => new PostEndpoint(
+					methodName,
+					fullRoute,
+					nonRouteParameters.Count != 1 ? throw new NotSupportedException($"POST endpoint '{methodName}' must have exactly 1 non-route parameter: {string.Join(", ", nonRouteParameters)}") : nonRouteParameters[0]),
+				HttpMethod.Put => new PutEndpoint(
+					methodName,
+					fullRoute,
+					routeParameters.Count != 1 ? throw new NotSupportedException($"PUT endpoint '{methodName}' must have exactly 1 route parameter: {string.Join(", ", routeParameters)}") : routeParameters[0],
+					nonRouteParameters.Count != 1 ? throw new NotSupportedException($"PUT endpoint '{methodName}' must have exactly 1 non-route parameter: {string.Join(", ", nonRouteParameters)}") : nonRouteParameters[0]),
+				HttpMethod.Patch => new PatchEndpoint(
+					methodName,
+					fullRoute,
+					routeParameters.Count != 1 ? throw new NotSupportedException($"PATCH endpoint '{methodName}' must have exactly 1 route parameter: {string.Join(", ", routeParameters)}") : routeParameters[0],
+					nonRouteParameters.Count != 1 ? throw new NotSupportedException($"PATCH endpoint '{methodName}' must have exactly 1 non-route parameter: {string.Join(", ", nonRouteParameters)}") : nonRouteParameters[0]),
+				HttpMethod.Delete => new DeleteEndpoint(
+					methodName,
+					fullRoute,
+					routeParameters.Count != 1 ? throw new NotSupportedException($"DELETE endpoint '{methodName}' must have exactly 1 route parameter: {string.Join(", ", routeParameters)}") : routeParameters[0]),
+				_ => throw new NotSupportedException($"Endpoint with HTTP method '{result.HttpMethod}' is not supported."),
+			};
 		}
+	}
+
+	private static HttpMethodResult? GetHttpMethod(MethodDeclarationSyntax mds)
+	{
+		AttributeSyntax? httpGetAttribute = mds.GetAttributeFromMember("HttpGet");
+		if (httpGetAttribute != null)
+			return new(httpGetAttribute, HttpMethod.Get);
+
+		AttributeSyntax? httpPostAttribute = mds.GetAttributeFromMember("HttpPost");
+		if (httpPostAttribute != null)
+			return new(httpPostAttribute, HttpMethod.Post);
+
+		AttributeSyntax? httpPutAttribute = mds.GetAttributeFromMember("HttpPut");
+		if (httpPutAttribute != null)
+			return new(httpPutAttribute, HttpMethod.Put);
+
+		AttributeSyntax? httpDeleteAttribute = mds.GetAttributeFromMember("HttpDelete");
+		if (httpDeleteAttribute != null)
+			return new(httpDeleteAttribute, HttpMethod.Delete);
+
+		AttributeSyntax? httpPatchAttribute = mds.GetAttributeFromMember("HttpPatch");
+		if (httpPatchAttribute != null)
+			return new(httpPatchAttribute, HttpMethod.Patch);
+
+		return null;
+	}
+
+	private sealed class HttpMethodResult
+	{
+		public HttpMethodResult(AttributeSyntax attributeSyntax, HttpMethod httpMethod)
+		{
+			AttributeSyntax = attributeSyntax;
+			HttpMethod = httpMethod;
+		}
+
+		public AttributeSyntax AttributeSyntax { get; }
+		public HttpMethod HttpMethod { get; }
 	}
 }

@@ -1,6 +1,12 @@
 @page "/admin/titles"
 @using DevilDaggersInfo.Web.BlazorWasm.Client.Components.Admin
 @using DevilDaggersInfo.Web.BlazorWasm.Shared.Dto.Admin.Titles
-@inject HttpClient Http
+@using DevilDaggersInfo.Web.BlazorWasm.Shared.Enums.Sortings.Admin
+@inject AdminApiHttpClient Http
 
-<AdminOverview TGetDto="GetTitle" TKey="int" Title="Titles" ApiRoute="api/admin/titles" GridConfiguration="admin-titles"></AdminOverview>
+<AdminOverview
+	TGetDto="GetTitle"
+	Title="Titles"
+	ApiCall="(int pageIndex, int pageSize, string? sortBy, bool isAscending) => Http.GetTitles(pageIndex, pageSize, sortBy == null ? null : Enum.Parse<TitleSorting>(sortBy), isAscending)"
+	DeletionApiCall="(int id) => Http.DeleteTitleById(id)"
+	GridConfiguration="admin-titles" />

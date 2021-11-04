@@ -5,7 +5,7 @@
 @using DevilDaggersInfo.Web.BlazorWasm.Shared.Dto.Admin.Players
 @using DevilDaggersInfo.Web.BlazorWasm.Shared.Dto.Admin.Spawnsets
 
-<AdminAdd OverviewUrl="/admin/spawnsets" PostApiUrl="api/admin/spawnsets" Model="_addSpawnset" @ref="_addComponent">
+<AdminAdd OverviewUrl="/admin/spawnsets" ApiCall="Http.AddSpawnset" Model="_addSpawnset" @ref="_addComponent">
 	<AdminInput Label="@nameof(AddSpawnset.PlayerId)"><SearchDropdown Values="@_playerNames" Converter="s => int.Parse(s)" @bind-Value="@_addSpawnset.PlayerId" /></AdminInput>
 	<AdminInput Label="@nameof(AddSpawnset.Name)"><InputText class="w-64 pl-2 bg-gray-0b text-color-text" @bind-Value="@_addSpawnset.Name" /></AdminInput>
 	<AdminInput Label="@nameof(AddSpawnset.MaxDisplayWaves)"><InputNumber class="w-64 pl-2 bg-gray-0b text-color-text" @bind-Value="_addSpawnset.MaxDisplayWaves" /></AdminInput>
@@ -24,7 +24,7 @@
 	{
 		try
 		{
-			List<GetPlayerName> getPlayerNames = await Http.Client.GetFromJsonAsync<List<GetPlayerName>>($"api/admin/players/names") ?? throw new($"Response could not be deserialized to {nameof(List<GetPlayerName>)}.");
+			List<GetPlayerName> getPlayerNames = await Http.GetPlayerNames();
 			_playerNames = getPlayerNames.ToDictionary(m => m.Id, m => m.PlayerName);
 
 			_addComponent.State = ErrorState.None;

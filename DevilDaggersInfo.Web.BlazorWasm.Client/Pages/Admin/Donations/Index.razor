@@ -1,6 +1,12 @@
 @page "/admin/donations"
 @using DevilDaggersInfo.Web.BlazorWasm.Client.Components.Admin
 @using DevilDaggersInfo.Web.BlazorWasm.Shared.Dto.Admin.Donations
-@inject HttpClient Http
+@using DevilDaggersInfo.Web.BlazorWasm.Shared.Enums.Sortings.Admin
+@inject AdminApiHttpClient Http
 
-<AdminOverview TGetDto="GetDonation" TKey="int" Title="Donations" ApiRoute="api/admin/donations" GridConfiguration="admin-donations"></AdminOverview>
+<AdminOverview
+	TGetDto="GetDonation"
+	Title="Donations"
+	ApiCall="(int pageIndex, int pageSize, string? sortBy, bool isAscending) => Http.GetDonations(pageIndex, pageSize, sortBy == null ? null : Enum.Parse<DonationSorting>(sortBy), isAscending)"
+	DeletionApiCall="(int id) => Http.DeleteDonationById(id)"
+	GridConfiguration="admin-donations" />
