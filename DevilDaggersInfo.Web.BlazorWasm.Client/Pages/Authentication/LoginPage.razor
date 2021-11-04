@@ -40,7 +40,7 @@
 			return;
 		}
 
-		HttpResponseMessage httpResponseMessage = await Http.Client.PostAsJsonAsync("api/authentication/login", new LoginRequest
+		HttpResponseMessage httpResponseMessage = await Http.Login(new LoginRequest
 		{
 			Name = _name,
 			Password = _password,

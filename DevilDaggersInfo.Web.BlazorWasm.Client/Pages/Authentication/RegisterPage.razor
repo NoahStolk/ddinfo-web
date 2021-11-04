@@ -41,7 +41,7 @@
 			return;
 		}
 
-		HttpResponseMessage httpResponseMessage = await Http.Client.PostAsJsonAsync("api/authentication/register", new RegistrationRequest
+		HttpResponseMessage httpResponseMessage = await Http.Register(new RegistrationRequest
 		{
 			Name = _name,
 			Password = _password,
