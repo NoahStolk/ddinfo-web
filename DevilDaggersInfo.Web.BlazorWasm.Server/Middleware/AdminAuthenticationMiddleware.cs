@@ -36,7 +36,7 @@ public class AdminAuthenticationMiddleware
 		StringValues? auth = context.Request.Headers["Authorization"];
 		string? authString = auth?.ToString();
 		if (authString?.StartsWith(bearer) != true)
-			return Unauthorized();
+			return Status(401);
 
 		string token = authString[bearer.Length..];
 		ClaimsPrincipal user = token.CreateClaimsPrincipalFromJwtTokenString();
@@ -44,7 +44,7 @@ public class AdminAuthenticationMiddleware
 		Claim? roleClaim = identity?.Claims.FirstOrDefault(c => c.Type == "http://schemas.microsoft.com/ws/2008/06/identity/claims/role");
 		string? roleClaimValueString = roleClaim?.Value?.ToString();
 		if (roleClaimValueString?.StartsWith(role) != true)
-			return Unauthorized();
+			return Status(403);
 
 		string[] userRoles = roleClaimValueString[role.Length..].Split(',') ?? Array.Empty<string>();
 
@@ -54,13 +54,13 @@ public class AdminAuthenticationMiddleware
 
 		string requiredRole = _roleOverrides.ContainsKey(endpointRoute) ? _roleOverrides[endpointRoute] : "Admin";
 		if (!userRoles.Contains(requiredRole))
-			return Unauthorized();
+			return Status(403);
 
 		return _next(context);
 
-		async Task Unauthorized()
+		async Task Status(int statusCode)
 		{
-			context.Response.StatusCode = 401;
+			context.Response.StatusCode = statusCode;
 			await Task.CompletedTask;
 		}
 	}
