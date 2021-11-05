@@ -36,7 +36,7 @@ public class AuthenticationController : ControllerBase
 				new Claim(ClaimTypes.Role, string.Join(",", user.UserRoles!.ConvertAll(r => r.Role!.Name))),
 			}),
 			Expires = DateTime.UtcNow.AddDays(7),
-			SigningCredentials = new SigningCredentials(new SymmetricSecurityKey(Secrets.AuthKey), SecurityAlgorithms.HmacSha256Signature),
+			SigningCredentials = new SigningCredentials(new SymmetricSecurityKey(AuthSecrets.AuthKey), SecurityAlgorithms.HmacSha256Signature),
 		};
 		SecurityToken token = tokenHandler.CreateToken(tokenDescriptor);
 		string tokenString = tokenHandler.WriteToken(token);
