@@ -138,10 +138,6 @@ else
 			else
 				_errorMessage = $"An error occurred while sending the request. {ex.Message}";
 		}
-		catch (Exception ex)
-		{
-			_errorMessage = $"An error occurred while sending the request. {ex.Message}";
-		}
 		finally
 		{
 			_loading = false;
