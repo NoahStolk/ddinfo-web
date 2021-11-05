@@ -45,10 +45,7 @@ public class AdminAuthenticationMiddleware
 		StringValues? auth = context.Request.Headers["Authorization"];
 		string? authString = auth?.ToString();
 		if (authString?.StartsWith(_bearer) != true)
-		{
-			context.Response.StatusCode = 401;
-			return _next(context);
-		}
+			return Status(context, 401);
 
 		string token = authString[_bearer.Length..];
 		ClaimsPrincipal user = token.CreateClaimsPrincipalFromJwtTokenString();
@@ -56,10 +53,7 @@ public class AdminAuthenticationMiddleware
 		Claim? roleClaim = identity?.Claims.FirstOrDefault(c => c.Type == "http://schemas.microsoft.com/ws/2008/06/identity/claims/role");
 		string? roleClaimValueString = roleClaim?.Value?.ToString();
 		if (roleClaimValueString?.StartsWith(_role) != true)
-		{
-			context.Response.StatusCode = 403;
-			return _next(context);
-		}
+			return Status(context, 403);
 
 		string[] userRoles = roleClaimValueString[_role.Length..].Split(',') ?? Array.Empty<string>();
 
@@ -69,10 +63,7 @@ public class AdminAuthenticationMiddleware
 
 		string requiredRole = _roleOverrides.ContainsKey(endpointRoute) ? _roleOverrides[endpointRoute] : "Admin";
 		if (!userRoles.Contains(requiredRole))
-		{
-			context.Response.StatusCode = 403;
-			return _next(context);
-		}
+			return Status(context, 403);
 
 		return _next(context);
 	}
@@ -83,9 +74,8 @@ public class AdminAuthenticationMiddleware
 		string? authString = auth?.ToString();
 		if (authString?.StartsWith(_bearer) != true)
 		{
-			// TODO: Fix.
 			context.Response.Redirect("/authentication/login");
-			return _next(context);
+			return Task.CompletedTask;
 		}
 
 		string token = authString[_bearer.Length..];
@@ -94,10 +84,7 @@ public class AdminAuthenticationMiddleware
 		Claim? roleClaim = identity?.Claims.FirstOrDefault(c => c.Type == "http://schemas.microsoft.com/ws/2008/06/identity/claims/role");
 		string? roleClaimValueString = roleClaim?.Value?.ToString();
 		if (roleClaimValueString?.StartsWith(_role) != true)
-		{
-			context.Response.StatusCode = 403;
-			return _next(context);
-		}
+			return Status(context, 403);
 
 		string[] userRoles = roleClaimValueString[_role.Length..].Split(',') ?? Array.Empty<string>();
 
@@ -107,8 +94,14 @@ public class AdminAuthenticationMiddleware
 
 		string requiredRole = _roleOverrides.ContainsKey(endpointRoute) ? _roleOverrides[endpointRoute] : "Admin";
 		if (!userRoles.Contains(requiredRole))
-			context.Response.StatusCode = 403;
+			return Status(context, 403);
 
 		return _next(context);
+	}
+
+	private static async Task Status(HttpContext context, int statusCode)
+	{
+		context.Response.StatusCode = statusCode;
+		await Task.CompletedTask;
 	}
 }
