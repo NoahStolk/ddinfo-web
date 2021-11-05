@@ -29,6 +29,7 @@ public class AdminAuthenticationMiddleware
 
 	public Task InvokeAsync(HttpContext context)
 	{
+		// TODO: Re-execute on every URL change...
 		PathString path = context.Request.Path;
 		string pathString = path.ToString();
 		if (pathString.Contains(_adminApiRouteStart))

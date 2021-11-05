@@ -40,7 +40,7 @@ public class ModScreenshotsController : ControllerBase
 		return Ok();
 	}
 
-	[HttpPost] // Not actually DELETE since that needs a route parameter.
+	[HttpPost("delete")] // Not actually DELETE since that needs a route parameter.
 	[ProducesResponseType(StatusCodes.Status200OK)]
 	[ProducesResponseType(StatusCodes.Status400BadRequest)]
 	public async Task<ActionResult> DeleteModScreenshot(DeleteModScreenshot deleteModScreenshot)
