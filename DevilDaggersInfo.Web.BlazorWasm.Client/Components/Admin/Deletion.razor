@@ -69,7 +69,7 @@
 			}
 			else
 			{
-				State = hrm.StatusCode.IsUserError() ? DeleteState.ValidationError : DeleteState.FatalError;
+				State = hrm.StatusCode.GetDeleteState();
 				ApiResponse = await hrm.Content.ReadAsStringAsync();
 			}
 		}

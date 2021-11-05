@@ -1,10 +1,18 @@
+using DevilDaggersInfo.Web.BlazorWasm.Client.Components.Admin;
+
 namespace DevilDaggersInfo.Web.BlazorWasm.Client.Extensions;
 
 public static class HttpStatusCodeExtensions
 {
-	public static bool IsUserError(this HttpStatusCode httpStatusCode)
-		=> (int)httpStatusCode is >= 400 and < 500;
+	public static ErrorState GetErrorState(this HttpStatusCode httpStatusCode) => httpStatusCode switch
+	{
+		HttpStatusCode.BadRequest or HttpStatusCode.NotFound => ErrorState.ValidationError,
+		_ => ErrorState.FatalError,
+	};
 
-	public static bool IsUserError(this HttpStatusCode? httpStatusCode)
-		=> httpStatusCode.HasValue && IsUserError(httpStatusCode.Value);
+	public static DeleteState GetDeleteState(this HttpStatusCode httpStatusCode) => httpStatusCode switch
+	{
+		HttpStatusCode.BadRequest or HttpStatusCode.NotFound => DeleteState.ValidationError,
+		_ => DeleteState.FatalError,
+	};
 }

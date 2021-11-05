@@ -65,7 +65,7 @@ else
 			else
 			{
 				ErrorMessage = await hrm.Content.ReadAsStringAsync();
-				State = hrm.StatusCode.IsUserError() ? ErrorState.ValidationError : ErrorState.FatalError;
+				State = hrm.StatusCode.GetErrorState();
 			}
 		}
 		catch (AccessTokenNotAvailableException exception)
