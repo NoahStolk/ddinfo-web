@@ -6,7 +6,7 @@ namespace DevilDaggersInfo.Web.BlazorWasm.Client.Authentication;
 
 public class AdminAuthenticationStateProvider : AuthenticationStateProvider
 {
-	private const string _localStorageAuthKey = "auth";
+	public const string LocalStorageAuthKey = "auth";
 
 	private readonly ILocalStorageService _localStorageService;
 
@@ -17,16 +17,16 @@ public class AdminAuthenticationStateProvider : AuthenticationStateProvider
 
 	public override async Task<AuthenticationState> GetAuthenticationStateAsync()
 	{
-		string token = await _localStorageService.GetItemAsStringAsync(_localStorageAuthKey);
+		string token = await _localStorageService.GetItemAsStringAsync(LocalStorageAuthKey);
 		return await Task.FromResult(new AuthenticationState(token.CreateClaimsPrincipalFromJwtTokenString()));
 	}
 
 	public async Task SetTokenAsync(string? token)
 	{
 		if (token == null)
-			await _localStorageService.RemoveItemAsync(_localStorageAuthKey);
+			await _localStorageService.RemoveItemAsync(LocalStorageAuthKey);
 		else
-			await _localStorageService.SetItemAsStringAsync(_localStorageAuthKey, token);
+			await _localStorageService.SetItemAsStringAsync(LocalStorageAuthKey, token);
 
 		NotifyAuthenticationStateChanged(GetAuthenticationStateAsync());
 	}

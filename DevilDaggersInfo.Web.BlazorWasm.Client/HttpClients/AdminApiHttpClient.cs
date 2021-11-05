@@ -1,4 +1,5 @@
 using Blazored.LocalStorage;
+using DevilDaggersInfo.Web.BlazorWasm.Client.Authentication;
 using System.Net.Http.Headers;
 using System.Net.Http.Json;
 
@@ -23,7 +24,7 @@ public partial class AdminApiHttpClient : ApiHttpClient
 			Method = httpMethod,
 			Content = body,
 		};
-		string? token = await _localStorageService.GetItemAsStringAsync("auth"); // TODO: Don't hardcode.
+		string? token = await _localStorageService.GetItemAsStringAsync(AdminAuthenticationStateProvider.LocalStorageAuthKey);
 		if (token != null)
 			request.Headers.Authorization = new AuthenticationHeaderValue("Bearer", token);
 
