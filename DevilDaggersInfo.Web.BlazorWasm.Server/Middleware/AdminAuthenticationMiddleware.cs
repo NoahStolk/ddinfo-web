@@ -22,7 +22,6 @@ public class AdminAuthenticationMiddleware
 		_next = next;
 	}
 
-	// TODO: Return 401.
 	public Task InvokeAsync(HttpContext context)
 	{
 		const string adminRouteStart = "api/admin/";
@@ -37,7 +36,7 @@ public class AdminAuthenticationMiddleware
 		StringValues? auth = context.Request.Headers["Authorization"];
 		string? authString = auth?.ToString();
 		if (authString?.StartsWith(bearer) != true)
-			throw new UnauthorizedAccessException();
+			return Unauthorized();
 
 		string token = authString[bearer.Length..];
 		ClaimsPrincipal user = token.CreateClaimsPrincipalFromJwtTokenString();
@@ -45,7 +44,7 @@ public class AdminAuthenticationMiddleware
 		Claim? roleClaim = identity?.Claims.FirstOrDefault(c => c.Type == "http://schemas.microsoft.com/ws/2008/06/identity/claims/role");
 		string? roleClaimValueString = roleClaim?.Value?.ToString();
 		if (roleClaimValueString?.StartsWith(role) != true)
-			throw new UnauthorizedAccessException();
+			return Unauthorized();
 
 		string[] userRoles = roleClaimValueString[role.Length..].Split(',') ?? Array.Empty<string>();
 
@@ -55,8 +54,14 @@ public class AdminAuthenticationMiddleware
 
 		string requiredRole = _roleOverrides.ContainsKey(endpointRoute) ? _roleOverrides[endpointRoute] : "Admin";
 		if (!userRoles.Contains(requiredRole))
-			throw new UnauthorizedAccessException();
+			return Unauthorized();
 
 		return _next(context);
+
+		async Task Unauthorized()
+		{
+			context.Response.StatusCode = 401;
+			await Task.CompletedTask;
+		}
 	}
 }

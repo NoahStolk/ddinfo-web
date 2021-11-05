@@ -11,6 +11,8 @@ public static class JwtExtensions
 			return new ClaimsPrincipal();
 
 		JwtSecurityTokenHandler tokenHandler = new();
+
+		// TODO: Validate key.
 		JwtSecurityToken jwt = tokenHandler.ReadJwtToken(token);
 
 		List<Claim> claims = new();

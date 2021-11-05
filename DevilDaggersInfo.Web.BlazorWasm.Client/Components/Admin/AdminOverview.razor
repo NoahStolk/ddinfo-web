@@ -14,7 +14,10 @@
 
 @if (_page == null)
 {
-	<Loading />
+	if (_loading)
+	{
+		<Loading />
+	}
 }
 else
 {
@@ -82,6 +85,7 @@ else
 	private bool _ascending = true;
 
 	private Page<TGetDto>? _page;
+	private bool _loading = true;
 	private string? _errorMessage;
 	private Dictionary<PropertyInfo, bool> _properties = ReflectionUtils.GetDtoDisplayProperties<TGetDto>();
 	private Dictionary<string, bool> _sortings = null!;
@@ -123,16 +127,24 @@ else
 			_errorMessage = null;
 			StateHasChanged();
 		}
-		catch (HttpRequestException ex)
-		{
-			if (ex.StatusCode.HasValue)
-				_errorMessage = $"Error {(int)ex.StatusCode}: {ex.StatusCode}";
-			else
-				_errorMessage = "An error occurred while sending the request.";
-		}
 		catch (AccessTokenNotAvailableException exception)
 		{
 			exception.Redirect();
+		}
+		catch (HttpRequestException ex)
+		{
+			if (ex.StatusCode.HasValue)
+				_errorMessage = $"HTTP {(int)ex.StatusCode}: {ex.StatusCode}";
+			else
+				_errorMessage = $"An error occurred while sending the request. {ex.Message}";
+		}
+		catch (Exception ex)
+		{
+			_errorMessage = $"An error occurred while sending the request. {ex.Message}";
+		}
+		finally
+		{
+			_loading = false;
 		}
 	}
 

@@ -9,6 +9,9 @@ public abstract class ApiHttpClient
 	protected async Task<T> SendGetRequest<T>(string url)
 	{
 		HttpResponseMessage response = await SendRequest(HttpMethod.Get, url);
-		return await response.Content.ReadFromJsonAsync<T>() ?? throw new JsonDeserializationException();
+		if (response.StatusCode != HttpStatusCode.OK)
+			throw new HttpRequestException($"HTTP {response.StatusCode}", null, response.StatusCode);
+
+		return await response.Content.ReadFromJsonAsync<T>() ?? throw new JsonDeserializationException($"Deserialization error in {url} for JSON '{response.Content}'.");
 	}
 }
