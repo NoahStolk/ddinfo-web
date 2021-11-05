@@ -72,6 +72,17 @@ else
 		{
 			exception.Redirect();
 		}
+		catch (HttpRequestException ex)
+		{
+			if (ex.StatusCode.HasValue)
+				ErrorMessage = $"HTTP {(int)ex.StatusCode}: {ex.StatusCode}";
+			else
+				ErrorMessage = $"An error occurred while sending the request. {ex.Message}";
+		}
+		catch (Exception ex)
+		{
+			ErrorMessage = $"An error occurred while sending the request. {ex.Message}";
+		}
 	}
 
 	private void Dismiss()
