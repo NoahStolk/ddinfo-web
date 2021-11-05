@@ -45,12 +45,16 @@ else
 			}
 		</div>
 		<div>
-			<button class="@(RankState.Value.Rank <= 1 ? "disabled" : string.Empty) bg-gray-0b hover:bg-gray-22 transition-colors duration-100 w-8 h-8 py-1 rounded text-color-text" @onclick="() => SetRank(1)">|&lt;</button>
-			<button class="@(RankState.Value.Rank <= 1 ? "disabled" : string.Empty) bg-gray-0b hover:bg-gray-22 transition-colors duration-100 w-8 h-8 py-1 rounded text-color-text" @onclick="() => SetRank(RankState.Value.Rank - 1000)">&lt;&lt;</button>
-			<button class="@(RankState.Value.Rank <= 1 ? "disabled" : string.Empty) bg-gray-0b hover:bg-gray-22 transition-colors duration-100 w-8 h-8 py-1 rounded text-color-text" @onclick="() => SetRank(RankState.Value.Rank - 100)">&lt;</button>
-			<button class="@(RankState.Value.Rank >= _maxRank ? "disabled" : string.Empty) bg-gray-0b hover:bg-gray-22 transition-colors duration-100 w-8 h-8 py-1 rounded text-color-text" @onclick="() => SetRank(RankState.Value.Rank + 100)">&gt;</button>
-			<button class="@(RankState.Value.Rank >= _maxRank ? "disabled" : string.Empty) bg-gray-0b hover:bg-gray-22 transition-colors duration-100 w-8 h-8 py-1 rounded text-color-text" @onclick="() => SetRank(RankState.Value.Rank + 1000)">&gt;&gt;</button>
-			<button class="@(RankState.Value.Rank >= _maxRank ? "disabled" : string.Empty) bg-gray-0b hover:bg-gray-22 transition-colors duration-100 w-8 h-8 py-1 rounded text-color-text" @onclick="() => SetRank(GetLeaderboard.TotalPlayers - 99)">&gt;|</button>
+			@{
+				bool first = RankState.Value.Rank <= 1;
+				bool last = RankState.Value.Rank >= _maxRank;
+			}
+			<button disabled="@first" class="@(first ? "disabled:opacity-50 cursor-default" : "hover:bg-gray-22") bg-gray-0b transition-colors duration-100 w-8 h-8 py-1 rounded text-color-text" @onclick="() => SetRank(1)">|&lt;</button>
+			<button disabled="@first" class="@(first ? "disabled:opacity-50 cursor-default" : "hover:bg-gray-22") bg-gray-0b transition-colors duration-100 w-8 h-8 py-1 rounded text-color-text" @onclick="() => SetRank(RankState.Value.Rank - 1000)">&lt;&lt;</button>
+			<button disabled="@first" class="@(first ? "disabled:opacity-50 cursor-default" : "hover:bg-gray-22") bg-gray-0b transition-colors duration-100 w-8 h-8 py-1 rounded text-color-text" @onclick="() => SetRank(RankState.Value.Rank - 100)">&lt;</button>
+			<button disabled="@last" class="@(last ? "disabled:opacity-50 cursor-default" : "hover:bg-gray-22") bg-gray-0b transition-colors duration-100 w-8 h-8 py-1 rounded text-color-text" @onclick="() => SetRank(RankState.Value.Rank + 100)">&gt;</button>
+			<button disabled="@last" class="@(last ? "disabled:opacity-50 cursor-default" : "hover:bg-gray-22") bg-gray-0b transition-colors duration-100 w-8 h-8 py-1 rounded text-color-text" @onclick="() => SetRank(RankState.Value.Rank + 1000)">&gt;&gt;</button>
+			<button disabled="@last" class="@(last ? "disabled:opacity-50 cursor-default" : "hover:bg-gray-22") bg-gray-0b transition-colors duration-100 w-8 h-8 py-1 rounded text-color-text" @onclick="() => SetRank(GetLeaderboard.TotalPlayers - 99)">&gt;|</button>
 		</div>
 	</div>
 

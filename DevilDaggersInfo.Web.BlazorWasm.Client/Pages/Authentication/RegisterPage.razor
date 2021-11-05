@@ -46,10 +46,10 @@
 		}
 
 		HttpResponseMessage httpResponseMessage = await Http.Register(new RegistrationRequest
-			{
-				Name = _name,
-				Password = _password,
-			});
+		{
+			Name = _name,
+			Password = _password,
+		});
 
 		if (httpResponseMessage.StatusCode == HttpStatusCode.OK)
 		{
