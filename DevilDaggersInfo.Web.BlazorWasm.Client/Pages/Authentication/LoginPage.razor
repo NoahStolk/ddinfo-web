@@ -9,12 +9,16 @@
 
 <Heading>Login</Heading>
 
-<input class="bg-black border-gray-22 border-2" @onchange="ChangeName" />
-<input class="bg-black border-gray-22 border-2" @onchange="ChangePassword" />
+<div class="grid gap-2 grid-cols-2 max-w-md">
+	<span>Name</span>
+	<input class="bg-black border-gray-22 border-2" @onchange="ChangeName" />
+	<span>Password</span>
+	<input class="bg-black border-gray-22 border-2" @onchange="ChangePassword" />
+</div>
 
 <div class="text-red">@_error</div>
 
-<button class="btn btn-primary" @onclick="ClickLogin">Login</button>
+<button class="bg-gray-0b hover:bg-gray-22 transition-colors duration-100 p-1 rounded text-color-text" @onclick="ClickLogin">Login</button>
 
 @code
 {
