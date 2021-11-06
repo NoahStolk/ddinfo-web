@@ -14,3 +14,7 @@
 		src: url('fonts/calibri-regular.ttf') format('truetype');
 	}
 }
+
+.validation-errors {
+	color: red;
+}
