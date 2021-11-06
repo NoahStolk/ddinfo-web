@@ -1,6 +1,5 @@
 @page "/admin/spawnsets/add"
-@inject AdminApiHttpClient Http
-@inject NavigationManager NavigationManager
+@inherits BaseAdminPage
 @using DevilDaggersInfo.Web.BlazorWasm.Client.Components.Admin
 @using DevilDaggersInfo.Web.BlazorWasm.Shared.Dto.Admin.Players
 @using DevilDaggersInfo.Web.BlazorWasm.Shared.Dto.Admin.Spawnsets
@@ -22,6 +21,8 @@
 
 	protected override async Task OnInitializedAsync()
 	{
+		await base.OnInitializedAsync();
+
 		try
 		{
 			List<GetPlayerName> getPlayerNames = await Http.GetPlayerNames();

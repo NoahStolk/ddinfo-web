@@ -1,6 +1,5 @@
 @page "/admin/custom-leaderboards/add"
-@inject AdminApiHttpClient Http
-@inject NavigationManager NavigationManager
+@inherits BaseAdminPage
 @using DevilDaggersInfo.Web.BlazorWasm.Client.Components.Admin
 @using DevilDaggersInfo.Web.BlazorWasm.Shared.Dto.Admin.CustomLeaderboards
 @using DevilDaggersInfo.Web.BlazorWasm.Shared.Dto.Admin.Spawnsets
@@ -24,6 +23,8 @@
 
 	protected override async Task OnInitializedAsync()
 	{
+		await base.OnInitializedAsync();
+
 		try
 		{
 			List<GetSpawnsetName> getSpawnsetNames = await Http.GetSpawnsetNames();

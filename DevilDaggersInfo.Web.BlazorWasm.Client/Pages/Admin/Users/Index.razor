@@ -1,8 +1,8 @@
 @page "/admin/users"
+@inherits BaseAdminPage
 @using DevilDaggersInfo.Web.BlazorWasm.Client.Components.Admin
 @using DevilDaggersInfo.Web.BlazorWasm.Shared.Dto.Admin.Users
 @using DevilDaggersInfo.Web.BlazorWasm.Shared.Enums.Sortings.Admin
-@inject AdminApiHttpClient Http
 
 <AdminOverview
 	TGetDto="GetUser"

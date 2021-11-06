@@ -6,7 +6,6 @@ namespace DevilDaggersInfo.Web.BlazorWasm.Server.Middleware;
 public class AdminAuthenticationMiddleware
 {
 	private const string _adminApiRouteStart = "api/admin/";
-	private const string _adminRouteStart = "admin/";
 	private const string _bearer = "Bearer ";
 	private const string _role = "role: ";
 

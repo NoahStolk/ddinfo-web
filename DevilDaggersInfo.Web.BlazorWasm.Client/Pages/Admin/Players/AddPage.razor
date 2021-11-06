@@ -1,6 +1,5 @@
 @page "/admin/players/add"
-@inject AdminApiHttpClient Http
-@inject NavigationManager NavigationManager
+@inherits BaseAdminPage
 @using DevilDaggersInfo.Web.BlazorWasm.Client.Components.Admin
 @using DevilDaggersInfo.Web.BlazorWasm.Shared.Dto.Admin.Mods
 @using DevilDaggersInfo.Web.BlazorWasm.Shared.Dto.Admin.Players
@@ -36,6 +35,8 @@
 
 	protected override async Task OnInitializedAsync()
 	{
+		await base.OnInitializedAsync();
+
 		try
 		{
 			List<GetModName> getModNames = await Http.GetModNames();
