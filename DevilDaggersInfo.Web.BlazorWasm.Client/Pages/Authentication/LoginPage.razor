@@ -9,47 +9,30 @@
 
 <Heading>Login</Heading>
 
-<div class="grid gap-2 grid-cols-2 max-w-md">
-	<span>Name</span>
-	<input class="bg-black border-gray-22 border-2" @onchange="ChangeName" />
-	<span>Password</span>
-	<input class="bg-black border-gray-22 border-2" type="password" @onchange="ChangePassword" />
-</div>
+<EditForm Model="@Model" OnValidSubmit="@OnValidSubmit">
+	<DataAnnotationsValidator />
+	<ValidationSummary />
+	<div class="text-red">@_serverError</div>
+	
+	<div class="grid gap-2 grid-cols-2 max-w-md">
+		<span>Name</span>
+		<input class="bg-black border-gray-22 border-2" @bind="@Model.Name" />
+		<span>Password</span>
+		<input class="bg-black border-gray-22 border-2" type="password" @bind="@Model.Password" />
+	</div>
 
-<div class="text-red">@_error</div>
-
-<button class="bg-gray-0b hover:bg-gray-22 transition-colors duration-100 p-1 rounded text-color-text" @onclick="ClickLogin">Login</button>
+	<button class="bg-gray-0b hover:bg-gray-22 transition-colors duration-100 p-1 rounded text-color-text" type="submit">Login</button>
+</EditForm>
 
 @code
 {
-	private string? _name;
-	private string? _password;
+	[Parameter] public LoginRequest Model { get; set; } = new();
 
-	private string? _error;
+	private string? _serverError;
 
-	private void ChangeName(ChangeEventArgs e)
+	private async Task OnValidSubmit()
 	{
-		_name = e.Value?.ToString();
-	}
-
-	private void ChangePassword(ChangeEventArgs e)
-	{
-		_password = e.Value?.ToString();
-	}
-
-	private async Task ClickLogin(MouseEventArgs e)
-	{
-		if (_name == null || _password == null)
-		{
-			_error = "Fill in user and password.";
-			return;
-		}
-
-		HttpResponseMessage httpResponseMessage = await Http.Login(new LoginRequest
-		{
-			Name = _name,
-			Password = _password,
-		});
+		HttpResponseMessage httpResponseMessage = await Http.Login(Model);
 
 		if (httpResponseMessage.StatusCode == HttpStatusCode.OK)
 		{
@@ -59,7 +42,7 @@
 		}
 		else
 		{
-			_error = await httpResponseMessage.Content.ReadAsStringAsync();
+			_serverError = await httpResponseMessage.Content.ReadAsStringAsync();
 		}
 	}
 }
