@@ -36,6 +36,30 @@ else
 			@((MarkupString)@GetMod.HtmlDescription)
 		</div>
 	}
+
+	@*TODO: Screenshots and trailer*@
+
+	@if (GetMod.ModArchive != null)
+	{
+		<Heading Level="2">Binaries</Heading>
+		<div class="grid gap-3 grid-cols-5">
+			<div>Type</div>
+			<div>Name</div>
+			<div>Size (extracted)</div>
+			<div>Assets</div>
+			<div>Prohibited assets</div>
+		</div>
+		<div class="grid gap-3 grid-cols-5">
+			@foreach (GetModBinary binary in GetMod.ModArchive.Binaries)
+			{
+				<div>@binary.ModBinaryType</div>
+				<div>@binary.Name</div>
+				<div>@FileSizeUtils.Format(binary.Size)</div>
+				<div>@binary.Assets.Count</div>
+				<div>@(binary.ContainsProhibitedAssets ? "Yes" : "No")</div>
+			}
+		</div>
+	}
 }
 
 @code
