@@ -1,8 +1,9 @@
 using DevilDaggersInfo.Web.BlazorWasm.Server.HostedServices.DdInfoDiscordBot;
+using DevilDaggersInfo.Web.BlazorWasm.Server.InternalModels;
 using DSharpPlus.Entities;
 using System.Security.Claims;
 
-namespace DevilDaggersInfo.Web.BlazorWasm.Server.Singletons.AuditLog;
+namespace DevilDaggersInfo.Web.BlazorWasm.Server.Singletons;
 
 public class AuditLogger
 {
