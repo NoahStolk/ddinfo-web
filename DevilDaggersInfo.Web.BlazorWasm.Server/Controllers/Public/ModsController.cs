@@ -106,6 +106,25 @@ public class ModsController : ControllerBase
 			.ToList();
 	}
 
+	[HttpGet("{id}")]
+	[ProducesResponseType(StatusCodes.Status200OK)]
+	[ProducesResponseType(StatusCodes.Status400BadRequest)]
+	[ProducesResponseType(StatusCodes.Status404NotFound)]
+	public ActionResult<GetMod> GetModById([Required] int id)
+	{
+		ModEntity? modEntity = _dbContext.Mods
+			.AsNoTracking()
+			.Include(m => m.PlayerMods)
+				.ThenInclude(pm => pm.Player)
+			.FirstOrDefault(m => m.Id == id);
+		if (modEntity == null)
+			return NotFound();
+
+		ModFileSystemData? mfsd = _modRepository.GetModFileSystemData(modEntity);
+
+		return modEntity.ToGetMod(mfsd);
+	}
+
 	[HttpGet("total-data")]
 	[ProducesResponseType(StatusCodes.Status200OK)]
 	public ActionResult<GetTotalModData> GetTotalModData()

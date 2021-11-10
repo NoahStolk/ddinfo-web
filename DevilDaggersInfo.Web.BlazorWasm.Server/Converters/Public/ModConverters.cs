@@ -16,6 +16,30 @@ public static class ModConverters
 		Name = mod.Name,
 	};
 
+	public static GetMod ToGetMod(this ModEntity mod, ModFileSystemData? modFileSystemData) => new()
+	{
+		Authors = mod.PlayerMods.ConvertAll(pm => pm.Player.PlayerName),
+		ContainsProhibitedAssets = modFileSystemData?.ModArchive.ContainsProhibitedAssets(),
+		HtmlDescription = mod.HtmlDescription,
+		IsHosted = modFileSystemData != null,
+		LastUpdated = mod.LastUpdated,
+		ModArchive = modFileSystemData == null ? null : new()
+		{
+			Binaries = modFileSystemData.ModArchive.Binaries.ConvertAll(b => new GetModBinary
+			{
+				ModBinaryType = b.ModBinaryType,
+				Name = b.Name,
+				Size = b.Size,
+			}),
+			FileSize = modFileSystemData.ModArchive.FileSize,
+			FileSizeExtracted = modFileSystemData.ModArchive.FileSizeExtracted,
+		},
+		ModTypes = modFileSystemData?.ModArchive.GetModTypes() ?? mod.ModTypes,
+		Name = mod.Name,
+		ScreenshotFileNames = modFileSystemData?.ScreenshotFileNames ?? new(),
+		TrailerUrl = mod.TrailerUrl,
+	};
+
 	public static GetModDdae ToGetModDdae(this ModEntity mod, ModFileSystemData? modFileSystemData) => new()
 	{
 		Authors = mod.PlayerMods.ConvertAll(pm => pm.Player.PlayerName),
