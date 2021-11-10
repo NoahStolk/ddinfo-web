@@ -70,6 +70,12 @@ module.exports = {
 				'player-settings-lg': 'minmax(36px, 72px) 32px minmax(64px, 100%) minmax(80px, 80px) minmax(70px, 5%) minmax(50px, 5%) minmax(50px, 5%) minmax(50px, 5%)',
 				'player-settings-md': 'minmax(36px, 72px) 32px minmax(64px, 100%) minmax(80px, 80px) minmax(70px, 5%) minmax(50px, 5%) minmax(50px, 5%)',
 				'player-settings-sm': 'minmax(36px, 72px) 32px minmax(64px, 100%) minmax(80px, 80px)',
+
+				// Mod binaries
+				'mod-binaries-xl': 'minmax(128px, 100%) 128px 64px 128px',
+				'mod-binaries-lg': 'minmax(128px, 100%) 128px 64px 128px',
+				'mod-binaries-md': 'minmax(128px, 100%) 128px',
+				'mod-binaries-sm': 'minmax(128px, 100%)',
 			},
 			maxHeight: {
 				'screen-half': '50vh',
