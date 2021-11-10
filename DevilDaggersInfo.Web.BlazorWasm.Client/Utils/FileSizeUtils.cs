@@ -2,7 +2,7 @@ namespace DevilDaggersInfo.Web.BlazorWasm.Client.Utils;
 
 public static class FileSizeUtils
 {
-	public static string Format(int fileSizeInBytes)
+	public static string Format(long fileSizeInBytes)
 	{
 		if (fileSizeInBytes >= 1_000_000_000)
 			return $"{fileSizeInBytes / 1_000_000_000f:0.##} GB";

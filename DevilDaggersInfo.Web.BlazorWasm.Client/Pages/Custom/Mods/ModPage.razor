@@ -11,6 +11,31 @@
 else
 {
 	<Heading>Mod - @GetMod.Name</Heading>
+
+	<div class="bg-gray-0b max-w-sm px-1">
+		<DataField Name="Author(s)">@string.Join(", ", GetMod.Authors)</DataField>
+		<DataField Name="Last updated">@GetMod.LastUpdated.ToString(FormatUtils.DateTimeFormat)</DataField>
+		<DataField Name="Prohibited assets">@(GetMod.ContainsProhibitedAssets.HasValue ? GetMod.ContainsProhibitedAssets.Value ? "Yes" : "No" : "Unknown")</DataField>
+		@if (GetMod.ModArchive != null)
+		{
+			<DataField Name="File size">@FileSizeUtils.Format(GetMod.ModArchive.FileSize)</DataField>
+			<DataField Name="File size (extracted)">@FileSizeUtils.Format(GetMod.ModArchive.FileSizeExtracted)</DataField>
+		}
+
+		<div class="grid grid-cols-2 text-lg">
+			<div class="px-1 py-3">
+				<UrlLink Href="@($"/api/mods/{GetMod.Name}/file")">Download mod</UrlLink>
+			</div>
+		</div>
+	</div>
+
+	@if (!string.IsNullOrWhiteSpace(GetMod.HtmlDescription))
+	{
+		<Heading Level="2">Description</Heading>
+		<div class="bg-gray-0b max-w-sm px-1">
+			@((MarkupString)@GetMod.HtmlDescription)
+		</div>
+	}
 }
 
 @code
