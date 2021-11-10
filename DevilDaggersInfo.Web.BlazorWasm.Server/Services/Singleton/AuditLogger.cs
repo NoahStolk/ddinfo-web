@@ -3,7 +3,7 @@ using DevilDaggersInfo.Web.BlazorWasm.Server.InternalModels;
 using DSharpPlus.Entities;
 using System.Security.Claims;
 
-namespace DevilDaggersInfo.Web.BlazorWasm.Server.Singletons;
+namespace DevilDaggersInfo.Web.BlazorWasm.Server.Services.Singleton;
 
 public class AuditLogger
 {
