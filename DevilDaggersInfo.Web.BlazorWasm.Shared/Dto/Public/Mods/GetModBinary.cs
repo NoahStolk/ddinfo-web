@@ -9,4 +9,8 @@ public class GetModBinary
 	public long Size { get; init; }
 
 	public ModBinaryType ModBinaryType { get; init; }
+
+	public bool ContainsProhibitedAssets { get; init; }
+
+	public List<GetModAsset> Assets { get; init; } = new();
 }

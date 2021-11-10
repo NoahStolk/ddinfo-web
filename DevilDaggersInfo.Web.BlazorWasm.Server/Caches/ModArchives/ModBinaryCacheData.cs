@@ -95,4 +95,7 @@ public class ModBinaryCacheData
 			return false;
 		}
 	}
+
+	public bool ContainsProhibitedAssets()
+		=> Chunks.Any(mccd => mccd.IsProhibited);
 }

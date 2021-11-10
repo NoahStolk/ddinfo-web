@@ -30,6 +30,13 @@ public static class ModConverters
 				ModBinaryType = b.ModBinaryType,
 				Name = b.Name,
 				Size = b.Size,
+				Assets = b.Chunks.ConvertAll(c => new GetModAsset
+				{
+					Name = c.Name,
+					Size = c.Size,
+					Type = c.AssetType,
+				}),
+				ContainsProhibitedAssets = b.ContainsProhibitedAssets(),
 			}),
 			FileSize = modFileSystemData.ModArchive.FileSize,
 			FileSizeExtracted = modFileSystemData.ModArchive.FileSizeExtracted,
