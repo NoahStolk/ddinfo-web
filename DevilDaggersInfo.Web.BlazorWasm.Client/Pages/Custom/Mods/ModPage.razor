@@ -1,0 +1,26 @@
+@page "/custom/mod/{Id:int}"
+@inject PublicApiHttpClient Http
+@inject NavigationManager NavigationManager
+@using DevilDaggersInfo.Web.BlazorWasm.Shared.Dto.Public.Mods
+@using DevilDaggersInfo.Web.BlazorWasm.Shared.Enums
+
+@if (GetMod == null)
+{
+	<Loading />
+}
+else
+{
+	<Heading>Mod - @GetMod.Name</Heading>
+}
+
+@code
+{
+	[Parameter, EditorRequired] public int Id { get; set; }
+
+	public GetMod? GetMod { get; set; }
+
+	protected override async Task OnInitializedAsync()
+	{
+		GetMod = await Http.GetModById(Id);
+	}
+}
