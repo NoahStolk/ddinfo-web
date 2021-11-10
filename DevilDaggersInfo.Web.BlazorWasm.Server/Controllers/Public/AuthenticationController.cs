@@ -1,4 +1,3 @@
-using DevilDaggersInfo.Web.BlazorWasm.Server.Scoped;
 using DevilDaggersInfo.Web.BlazorWasm.Shared.Dto.Public.Authentication;
 using Microsoft.IdentityModel.Tokens;
 using System.IdentityModel.Tokens.Jwt;
