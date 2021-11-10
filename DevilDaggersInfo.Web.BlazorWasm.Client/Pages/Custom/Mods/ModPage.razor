@@ -63,9 +63,13 @@ else
 		{
 			<Heading Level="3">@binary.Name</Heading>
 			<div class="max-w-sm px-1">
-				@foreach (GetModAsset asset in binary.Assets)
+				@foreach (IGrouping<Core.Asset.Enums.AssetType, GetModAsset> assetGroup in binary.Assets.GroupBy(mad => mad.Type))
 				{
-					<DataField CssClass="odd:bg-gray-16" Name="@asset.Name">@FileSizeUtils.Format(asset.Size)</DataField>
+					<Heading Level="4">@assetGroup.Key assets</Heading>
+					@foreach (GetModAsset asset in assetGroup)
+					{
+						<DataField CssClass="odd:bg-gray-16" Name="@asset.Name">@FileSizeUtils.Format(asset.Size)</DataField>
+					}
 				}
 			</div>
 		}
