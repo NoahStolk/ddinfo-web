@@ -1,4 +1,6 @@
-using DevilDaggersInfo.Web.BlazorWasm.Server.Caches.ModArchives;
+using DevilDaggersInfo.Web.BlazorWasm.Server.Converters.Public;
+using DevilDaggersInfo.Web.BlazorWasm.Server.InternalModels;
+using DevilDaggersInfo.Web.BlazorWasm.Server.Repositories;
 using DevilDaggersInfo.Web.BlazorWasm.Shared.Dto;
 using DevilDaggersInfo.Web.BlazorWasm.Shared.Dto.Public.Mods;
 using DevilDaggersInfo.Web.BlazorWasm.Shared.Enums.Sortings.Public;
@@ -11,13 +13,13 @@ public class ModsController : ControllerBase
 {
 	private readonly ApplicationDbContext _dbContext;
 	private readonly IFileSystemService _fileSystemService;
-	private readonly ModArchiveCache _modArchiveCache;
+	private readonly ModRepository _modRepository;
 
-	public ModsController(ApplicationDbContext dbContext, IFileSystemService fileSystemService, ModArchiveCache modArchiveCache)
+	public ModsController(ApplicationDbContext dbContext, IFileSystemService fileSystemService, ModRepository modRepository)
 	{
 		_dbContext = dbContext;
 		_fileSystemService = fileSystemService;
-		_modArchiveCache = modArchiveCache;
+		_modRepository = modRepository;
 	}
 
 	[HttpGet]
@@ -46,37 +48,13 @@ public class ModsController : ControllerBase
 			modsQuery = modsQuery.Where(m => m.PlayerMods.Any(pm => pm.Player.PlayerName.Contains(authorFilter, StringComparison.OrdinalIgnoreCase)));
 
 		List<ModEntity> mods = modsQuery.ToList();
-		Dictionary<ModEntity, (bool FileExists, string? Path)> modsWithFileInfo = GetModsWithFileInfo(mods);
+
+		Dictionary<ModEntity, ModFileSystemData?> data = mods.ToDictionary(m => m, m => _modRepository.GetModFileSystemData(m));
 		if (onlyHosted)
-			modsWithFileInfo = modsWithFileInfo.Where(kvp => kvp.Value.FileExists).ToDictionary(kvp => kvp.Key, kvp => kvp.Value);
+			data = data.Where(kvp => kvp.Value != null).ToDictionary(kvp => kvp.Key, kvp => kvp.Value);
 
-		List<GetModOverview> modDtos = modsWithFileInfo
-			.Select(amwfi =>
-			{
-				bool? containsProhibitedAssets = null;
-				ModTypes modTypes;
-				if (amwfi.Value.FileExists)
-				{
-					ModArchiveCacheData archiveData = _modArchiveCache.GetArchiveDataByFilePath(amwfi.Value.Path!);
-					containsProhibitedAssets = archiveData.ContainsProhibitedAssets();
-					modTypes = archiveData.GetModTypes();
-				}
-				else
-				{
-					modTypes = amwfi.Key.ModTypes;
-				}
-
-				return new GetModOverview
-				{
-					Id = amwfi.Key.Id,
-					Name = amwfi.Key.Name,
-					Authors = amwfi.Key.PlayerMods.Select(pam => pam.Player.PlayerName).OrderBy(s => s).ToList(),
-					LastUpdated = amwfi.Key.LastUpdated,
-					ModTypes = modTypes,
-					IsHosted = amwfi.Value.FileExists,
-					ContainsProhibitedAssets = containsProhibitedAssets,
-				};
-			})
+		List<GetModOverview> modDtos = data
+			.Select(kvp => kvp.Key.ToGetModOverview(kvp.Value))
 			.ToList();
 
 		modDtos = sortBy switch
@@ -98,7 +76,7 @@ public class ModsController : ControllerBase
 		return new Page<GetModOverview>
 		{
 			Results = modDtos,
-			TotalResults = modsWithFileInfo.Count,
+			TotalResults = data.Count,
 		};
 	}
 
@@ -118,60 +96,13 @@ public class ModsController : ControllerBase
 			modsQuery = modsQuery.Where(am => am.Name.Contains(nameFilter, StringComparison.InvariantCultureIgnoreCase));
 
 		List<ModEntity> mods = modsQuery.ToList();
-		Dictionary<ModEntity, (bool FileExists, string? Path)> modsWithFileInfo = GetModsWithFileInfo(mods);
+
+		Dictionary<ModEntity, ModFileSystemData?> data = mods.ToDictionary(m => m, m => _modRepository.GetModFileSystemData(m));
 		if (isHostedFilter.HasValue)
-			modsWithFileInfo = modsWithFileInfo.Where(kvp => kvp.Value.FileExists == isHostedFilter.Value).ToDictionary(kvp => kvp.Key, kvp => kvp.Value);
+			data = data.Where(kvp => kvp.Value != null).ToDictionary(kvp => kvp.Key, kvp => kvp.Value);
 
-		return modsWithFileInfo
-			.Select(amwfi =>
-			{
-				bool? containsProhibitedAssets = null;
-				GetModArchiveDdae? modArchive = null;
-				ModTypes modTypes;
-				if (amwfi.Value.FileExists)
-				{
-					ModArchiveCacheData archiveData = _modArchiveCache.GetArchiveDataByFilePath(amwfi.Value.Path!);
-					modArchive = new()
-					{
-						FileSize = archiveData.FileSize,
-						FileSizeExtracted = archiveData.FileSizeExtracted,
-						Binaries = archiveData.Binaries.ConvertAll(b => new GetModBinaryDdae
-						{
-							Name = b.Name,
-							Size = b.Size,
-							ModBinaryType = b.ModBinaryType,
-						}),
-					};
-
-					containsProhibitedAssets = archiveData.ContainsProhibitedAssets();
-					modTypes = archiveData.GetModTypes();
-				}
-				else
-				{
-					modTypes = amwfi.Key.ModTypes;
-				}
-
-				string modScreenshotsDirectory = Path.Combine(_fileSystemService.GetPath(DataSubDirectory.ModScreenshots), amwfi.Key.Name);
-				List<string> screenshotFileNames;
-				if (Directory.Exists(modScreenshotsDirectory))
-					screenshotFileNames = Directory.GetFiles(modScreenshotsDirectory).Select(p => Path.GetFileName(p)).ToList();
-				else
-					screenshotFileNames = new();
-
-				return new GetModDdae
-				{
-					Name = amwfi.Key.Name,
-					HtmlDescription = amwfi.Key.HtmlDescription,
-					TrailerUrl = amwfi.Key.TrailerUrl,
-					Authors = amwfi.Key.PlayerMods.Select(pam => pam.Player.PlayerName).OrderBy(s => s).ToList(),
-					LastUpdated = amwfi.Key.LastUpdated,
-					ModTypes = modTypes,
-					IsHosted = amwfi.Value.FileExists,
-					ContainsProhibitedAssets = containsProhibitedAssets,
-					ModArchive = modArchive,
-					ScreenshotFileNames = screenshotFileNames,
-				};
-			})
+		return data
+			.Select(kvp => kvp.Key.ToGetModDdae(kvp.Value))
 			.ToList();
 	}
 
@@ -201,14 +132,6 @@ public class ModsController : ControllerBase
 
 		return File(IoFile.ReadAllBytes(path), MediaTypeNames.Application.Zip, fileName);
 	}
-
-	private Dictionary<ModEntity, (bool FileExists, string? Path)> GetModsWithFileInfo(List<ModEntity> mods)
-		=> mods.ToDictionary(m => m, m =>
-		{
-			string filePath = Path.Combine(_fileSystemService.GetPath(DataSubDirectory.Mods), $"{m.Name}.zip");
-			bool fileExists = IoFile.Exists(filePath);
-			return (fileExists, fileExists ? filePath : null);
-		});
 
 	[HttpGet("by-author")]
 	[ProducesResponseType(StatusCodes.Status200OK)]
