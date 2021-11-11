@@ -98,4 +98,14 @@ public class ModBinaryCacheData
 
 	public bool ContainsProhibitedAssets()
 		=> Chunks.Any(mccd => mccd.IsProhibited);
+
+	public string GetTrimmedName(string archiveName)
+	{
+		string expectedPrefix = $"{ModBinaryType.ToString().ToLower()}-{archiveName}-";
+		if (Name.StartsWith(expectedPrefix))
+			return Name[expectedPrefix.Length..];
+
+		// TODO: Log warning.
+		return Name;
+	}
 }

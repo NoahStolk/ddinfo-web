@@ -28,7 +28,7 @@ public static class ModConverters
 			Binaries = modFileSystemData.ModArchive.Binaries.ConvertAll(b => new GetModBinary
 			{
 				ModBinaryType = b.ModBinaryType,
-				Name = b.Name,
+				Name = b.GetTrimmedName(mod.Name),
 				Size = b.Size,
 				Assets = b.Chunks.ConvertAll(c => new GetModAsset
 				{
