@@ -37,7 +37,14 @@ else
 		</div>
 	}
 
-	@*TODO: Screenshots and trailer*@
+	@*TODO: Screenshots*@
+	@if (!string.IsNullOrWhiteSpace(GetMod.TrailerUrl))
+	{
+		<Heading Level="2">Trailer</Heading>
+		<div class="relative w-full xl:w-1/2 pb-16-9 xl:pb-16-9/2">
+			<iframe class="absolute top-0 left-0 w-full h-full" src="@GetMod.TrailerUrl" title="@GetMod.Name" frameborder="0" allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture" allowfullscreen></iframe>
+		</div>
+	}
 
 	@if (GetMod.ModArchive != null)
 	{
