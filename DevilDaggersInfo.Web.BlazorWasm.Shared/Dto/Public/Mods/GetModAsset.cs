@@ -9,4 +9,6 @@ public class GetModAsset
 	public string Name { get; init; } = null!;
 
 	public long Size { get; init; }
+
+	public bool IsProhibited { get; init; }
 }

@@ -35,6 +35,7 @@ public static class ModConverters
 					Name = c.Name,
 					Size = c.Size,
 					Type = c.AssetType,
+					IsProhibited = c.IsProhibited,
 				}),
 				ContainsProhibitedAssets = b.ContainsProhibitedAssets(),
 			}),
