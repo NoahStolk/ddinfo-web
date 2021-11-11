@@ -1,7 +1,7 @@
 using DevilDaggersInfo.Web.BlazorWasm.Server.InternalModels;
 using DevilDaggersInfo.Web.BlazorWasm.Server.InternalModels.Json;
 
-namespace DevilDaggersInfo.Web.BlazorWasm.Server.Transients;
+namespace DevilDaggersInfo.Web.BlazorWasm.Server.Services.Transient;
 
 public interface IToolHelper
 {

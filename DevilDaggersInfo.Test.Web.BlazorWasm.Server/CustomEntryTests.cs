@@ -33,10 +33,11 @@ public class CustomEntryTests
 		Mock<IFileSystemService> fileSystemService = new();
 		fileSystemService.Setup(m => m.GetPath(DataSubDirectory.Spawnsets)).Returns(@"C:\Users\NOAH\source\repos\DevilDaggersInfo\DevilDaggersInfo.Web.BlazorWasm.Server\Data\Spawnsets");
 
-		Mock<ILogger<CustomEntriesController>> logger = new();
-		Mock<SpawnsetHashCache> spawnsetHashCache = new(fileSystemService.Object, logger.Object);
+		Mock<ILogger<SpawnsetHashCache>> spawnsetHashCacheLogger = new();
+		Mock<SpawnsetHashCache> spawnsetHashCache = new(fileSystemService.Object, spawnsetHashCacheLogger.Object);
 
-		_customEntriesController = new CustomEntriesController(_dbContext.Object, logger.Object, spawnsetHashCache.Object, fileSystemService.Object);
+		Mock<ILogger<CustomEntriesController>> controllerLogger = new();
+		_customEntriesController = new CustomEntriesController(_dbContext.Object, controllerLogger.Object, spawnsetHashCache.Object, fileSystemService.Object);
 
 		if (!SpawnsetBinary.TryParse(File.ReadAllBytes(Path.Combine(TestConstants.DataDirectory, "Spawnsets", "V3")), out _spawnsetBinary!))
 			Assert.Fail("Spawnset could not be parsed.");

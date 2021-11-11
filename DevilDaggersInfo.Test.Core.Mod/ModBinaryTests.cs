@@ -13,7 +13,7 @@ public class ModBinaryTests
 	{
 		string filePath = Path.Combine("Data", fileName);
 		byte[] originalBytes = File.ReadAllBytes(filePath);
-		ModBinary modBinary = new(fileName, originalBytes, true);
+		ModBinary modBinary = new(fileName, originalBytes, BinaryReadComprehensiveness.All);
 		byte[] bytes = modBinary.ToBytes();
 
 		TestUtils.AssertArrayContentsEqual(originalBytes, bytes);

@@ -5,7 +5,7 @@ public class ModBinary
 	private const long _fileIdentifier = 0x013A67723A78683A;
 	private const int _fileHeaderSize = 12;
 
-	public ModBinary(string fileName, byte[] fileContents, bool readAssets)
+	public ModBinary(string fileName, byte[] fileContents, BinaryReadComprehensiveness readComprehensiveness)
 	{
 		ModBinaryType modBinaryType;
 		if (fileName.StartsWith("audio"))
@@ -49,14 +49,10 @@ public class ModBinary
 			if (!Enum.IsDefined(assetType))
 				continue;
 
-			// Skip loudness.
-			if (assetType == AssetType.Audio && name == "loudness")
-				continue;
-
 			chunks.Add(new(name, offset, size, assetType));
 		}
 
-		if (readAssets)
+		if (readComprehensiveness == BinaryReadComprehensiveness.All)
 		{
 			AssetMap = new();
 
@@ -67,6 +63,20 @@ public class ModBinary
 				byte[] buffer = br.ReadBytes(chunk.Size);
 
 				AssetMap[chunk] = new(buffer);
+			}
+		}
+		else if (readComprehensiveness == BinaryReadComprehensiveness.TocAndLoudness)
+		{
+			ModBinaryChunk? loudnessChunk = chunks.Find(c => c.IsLoudness());
+			if (loudnessChunk != null)
+			{
+				br.BaseStream.Seek(loudnessChunk.Offset, SeekOrigin.Begin);
+				byte[] buffer = br.ReadBytes(loudnessChunk.Size);
+
+				AssetMap = new()
+				{
+					[loudnessChunk] = new(buffer),
+				};
 			}
 		}
 

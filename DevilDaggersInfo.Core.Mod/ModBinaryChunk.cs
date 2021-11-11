@@ -14,4 +14,6 @@ public class ModBinaryChunk
 	public int Offset { get; }
 	public int Size { get; }
 	public AssetType AssetType { get; }
+
+	public bool IsLoudness() => Name == "loudness" && AssetType == AssetType.Audio;
 }

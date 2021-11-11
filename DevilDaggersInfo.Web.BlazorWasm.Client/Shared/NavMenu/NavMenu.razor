@@ -1,3 +1,5 @@
+@inject AuthenticationStateProvider Auth
+
 <div class="px-4 py-2 sm:py-4">
 	<a href="" class="font-goethe text-3xl">DevilDaggers.Info</a>
 	<button class="float-right sm:hidden text-xl pt-1" @onclick="() => ShowNavMenu = !ShowNavMenu">
@@ -56,6 +58,7 @@
 						<NavItem Href="admin/titles" CssClass="text-lg" IconType="badge" Text="Titles" />
 						<NavItem Href="admin/users" CssClass="text-lg" IconType="person" Text="Users" />
 					</NavDropdown>
+					<span class="px-4">Logged in as: @_userName</span>
 				</Authorized>
 			</AuthorizeView>
 		</CascadingValue>
@@ -64,9 +67,22 @@
 
 @code
 {
+	private string? _userName;
+
 	public bool ShowNavMenu { get; set; } = false;
 
 	public List<NavDropdown> NavDropdowns { get; } = new();
+
+	protected override async Task OnInitializedAsync()
+	{
+		await base.OnInitializedAsync();
+
+		AuthenticationState auth = await Auth.GetAuthenticationStateAsync();
+		_userName = auth.User?.Identity?.Name;
+
+		if (_userName?.Contains("unique_name: ") == true)
+			_userName = _userName[("unique_name: ".Length)..];
+	}
 
 	public void ShowSubMenu(NavDropdown navDropdown)
 	{
