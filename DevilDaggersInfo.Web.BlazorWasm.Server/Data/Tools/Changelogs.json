@@ -1272,6 +1272,21 @@
 	],
 	"DevilDaggersAssetEditor": [
 		{
+			"VersionNumber": "1.2.0.0",
+			"Date": "2021-11-11T00:00:00",
+			"Changes": [
+				{
+					"Description": "Added new V3.2 textures."
+				},
+				{
+					"Description": "Added tool to convert image to GLSL code."
+				},
+				{
+					"Description": "Fixed crash when toggling file in mod manager when new file name already exists."
+				}
+			]
+		},
+		{
 			"VersionNumber": "1.0.0.0",
 			"Date": "2021-05-13T00:00:00",
 			"Changes": [
