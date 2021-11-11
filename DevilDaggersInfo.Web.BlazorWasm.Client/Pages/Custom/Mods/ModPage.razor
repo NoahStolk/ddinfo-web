@@ -73,10 +73,10 @@ else
 			foreach (GetModAsset asset in binary.Assets.OrderBy(a => a.Type).ThenBy(a => a.Name))
 			{
 				<div class="grid gap-3 grid-cols-5 odd:bg-gray-16 grid-cols-mod-assets-xs sm:grid-cols-mod-assets-sm md:grid-cols-mod-assets-md lg:grid-cols-mod-assets-lg xl:grid-cols-mod-assets-xl">
-					<div class="break-all">@asset.Name</div>
+					<div>@asset.Name</div>
 					<div class="hidden sm:block">@asset.Type</div>
 					<div class="hidden md:block">@(asset.IsProhibited ? "Yes" : "No")</div>
-					<div class="hidden lg:block">@binary.Name</div>
+					<div class="hidden lg:block break-all">@binary.Name</div>
 					<div class="hidden lg:block">@FileSizeUtils.Format(asset.Size)</div>
 				</div>
 			}
