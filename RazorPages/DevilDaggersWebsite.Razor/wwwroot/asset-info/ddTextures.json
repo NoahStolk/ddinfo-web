@@ -1203,6 +1203,14 @@
 		]
 	},
 	{
+		"Name": "pedeblackbodyfragged",
+		"Description": "Gigapede Segment without Gem",
+		"Tags": [
+			"Enemy",
+			"Gigapede"
+		]
+	},
+	{
 		"Name": "pedeblackhead",
 		"Description": "Gigapede Head",
 		"Tags": [
@@ -1227,6 +1235,14 @@
 		]
 	},
 	{
+		"Name": "pedeblackleg1fragged",
+		"Description": "Gigapede Leg 1 without Gem",
+		"Tags": [
+			"Enemy",
+			"Gigapede"
+		]
+	},
+	{
 		"Name": "pedeblackleg2",
 		"Description": "Gigapede Leg 2",
 		"Tags": [
@@ -1235,8 +1251,24 @@
 		]
 	},
 	{
+		"Name": "pedeblackleg2fragged",
+		"Description": "Gigapede Leg 2 without Gem",
+		"Tags": [
+			"Enemy",
+			"Gigapede"
+		]
+	},
+	{
 		"Name": "pedeblackleg3",
 		"Description": "Gigapede Leg 3",
+		"Tags": [
+			"Enemy",
+			"Gigapede"
+		]
+	},
+	{
+		"Name": "pedeblackleg3fragged",
+		"Description": "Gigapede Leg 3 without Gem",
 		"Tags": [
 			"Enemy",
 			"Gigapede"
