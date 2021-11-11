@@ -8,7 +8,7 @@ public class ExtractionTests
 	{
 		const string modFileName = "dd-texture";
 		string filePath = Path.Combine("Data", modFileName);
-		ModBinary modBinary = new(modFileName, File.ReadAllBytes(filePath), true);
+		ModBinary modBinary = new(modFileName, File.ReadAllBytes(filePath), BinaryReadComprehensiveness.All);
 		KeyValuePair<ModBinaryChunk, AssetData> asset = modBinary.AssetMap!.First(kvp => kvp.Key.Name == "pedeblackbody");
 
 		byte[] extractedPng = AssetConverter.Extract(asset.Key.AssetType, asset.Value);

@@ -19,7 +19,7 @@ public class ModBinaryCacheData
 
 	public static ModBinaryCacheData CreateFromFile(string fileName, byte[] fileContents)
 	{
-		ModBinary modBinary = new(fileName, fileContents, false);
+		ModBinary modBinary = new(fileName, fileContents, BinaryReadComprehensiveness.TocAndLoudness);
 
 		List<ModChunkCacheData> chunks = modBinary.Chunks
 			.ConvertAll(c =>
@@ -42,7 +42,7 @@ public class ModBinaryCacheData
 				return new ModChunkCacheData(c.Name, c.Size, c.AssetType, isProhibited);
 			});
 
-		ModBinaryChunk? loudnessChunk = modBinary.Chunks.Find(c => c.AssetType == AssetType.Audio && c.Name == "loudness");
+		ModBinaryChunk? loudnessChunk = modBinary.Chunks.Find(c => c.IsLoudness());
 		List<(string Name, bool IsProhibited)>? loudnessAssets = null;
 		if (loudnessChunk != null)
 		{
