@@ -72,10 +72,11 @@ module.exports = {
 				'player-settings-sm': 'minmax(36px, 72px) 32px minmax(64px, 100%) minmax(80px, 80px)',
 
 				// Mod binaries
-				'mod-binaries-xl': 'minmax(128px, 100%) 128px 64px 128px',
-				'mod-binaries-lg': 'minmax(128px, 100%) 128px 64px 128px',
-				'mod-binaries-md': 'minmax(128px, 100%) 128px',
-				'mod-binaries-sm': 'minmax(128px, 100%)',
+				'mod-binaries-xl': 'minmax(128px, 100%) 64px 128px 64px 128px',
+				'mod-binaries-lg': 'minmax(128px, 100%) 64px 128px 64px 128px',
+				'mod-binaries-md': 'minmax(128px, 100%) 64px 128px',
+				'mod-binaries-sm': 'minmax(128px, 100%) 64px',
+				'mod-binaries-xs': '100%',
 			},
 			maxHeight: {
 				'screen-half': '50vh',
