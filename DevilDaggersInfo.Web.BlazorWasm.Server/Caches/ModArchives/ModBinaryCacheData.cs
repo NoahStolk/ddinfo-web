@@ -67,7 +67,7 @@ public class ModBinaryCacheData
 			if (audioAssetData == null || audioAssetData.DefaultLoudness == loudness)
 				continue;
 
-			loudnessAssets.Add(new(assetName, audioAssetData.IsProhibited));
+			loudnessAssets.Add(new(assetName, audioAssetData.IsProhibited, audioAssetData.DefaultLoudness, loudness));
 		}
 
 		return loudnessAssets;

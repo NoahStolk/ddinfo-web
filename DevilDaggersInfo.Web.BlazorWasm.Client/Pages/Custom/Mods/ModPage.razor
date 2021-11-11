@@ -43,7 +43,7 @@ else
 	{
 		<Heading Level="2">Binaries</Heading>
 		<div class="bg-gray-22 grid gap-3 grid-cols-mod-binaries-xs sm:grid-cols-mod-binaries-sm md:grid-cols-mod-binaries-md lg:grid-cols-mod-binaries-lg xl:grid-cols-mod-binaries-xl">
-			<div>Name</div>
+			<div>Binary</div>
 			<div class="hidden sm:block">Type</div>
 			<div class="hidden md:block">Prohibited assets</div>
 			<div class="hidden lg:block">Assets</div>
@@ -62,10 +62,10 @@ else
 
 		<Heading Level="2">Assets</Heading>
 		<div class="bg-gray-22 grid gap-3 grid-cols-mod-assets-xs sm:grid-cols-mod-assets-sm md:grid-cols-mod-assets-md lg:grid-cols-mod-assets-lg xl:grid-cols-mod-assets-xl">
-			<div>Name</div>
+			<div>Binary</div>
+			<div class="hidden sm:block">Asset</div>
 			<div class="hidden sm:block">Type</div>
 			<div class="hidden md:block">Prohibited</div>
-			<div class="hidden lg:block">Binary</div>
 			<div class="hidden lg:block">Size (extracted)</div>
 		</div>
 		@foreach (GetModBinary binary in GetMod.ModArchive.Binaries.OrderBy(b => b.Name))
@@ -73,10 +73,10 @@ else
 			foreach (GetModAsset asset in binary.Assets.OrderBy(a => a.Type).ThenBy(a => a.Name))
 			{
 				<div class="grid gap-3 grid-cols-5 odd:bg-gray-16 grid-cols-mod-assets-xs sm:grid-cols-mod-assets-sm md:grid-cols-mod-assets-md lg:grid-cols-mod-assets-lg xl:grid-cols-mod-assets-xl">
-					<div>@asset.Name</div>
+					<div class="break-all">@binary.Name</div>
+					<div class="hidden sm:block">@asset.Name</div>
 					<div class="hidden sm:block">@asset.Type</div>
 					<div class="hidden md:block">@(asset.IsProhibited ? "Yes" : "No")</div>
-					<div class="hidden lg:block break-all">@binary.Name</div>
 					<div class="hidden lg:block">@FileSizeUtils.Format(asset.Size)</div>
 				</div>
 			}
@@ -86,18 +86,22 @@ else
 		{
 			<Heading Level="2">Modified loudness</Heading>
 			<div class="bg-gray-22 grid gap-3 grid-cols-mod-assets-xs sm:grid-cols-mod-assets-sm md:grid-cols-mod-assets-md lg:grid-cols-mod-assets-lg xl:grid-cols-mod-assets-xl">
+				<div class="break-all">Binary</div>
 				<div>Name</div>
 				<div>Prohibited</div>
-				<div class="hidden lg:block">Binary</div>
+				<div>Default loudness</div>
+				<div>Modified loudness</div>
 			</div>
 			@foreach (GetModBinary binary in GetMod.ModArchive.Binaries.Where(b => b.ModifiedLoudness != null))
 			{
 				foreach (GetModifiedLoudness asset in binary.ModifiedLoudness!.OrderBy(a => a.AssetName))
 				{
 					<div class="grid gap-3 grid-cols-5 odd:bg-gray-16 grid-cols-mod-assets-xs sm:grid-cols-mod-assets-sm md:grid-cols-mod-assets-md lg:grid-cols-mod-assets-lg xl:grid-cols-mod-assets-xl">
-						<div class="break-all">@asset.AssetName</div>
+						<div class="break-all">@binary.Name</div>
+						<div>@asset.AssetName</div>
 						<div>@(asset.IsProhibited ? "Yes" : "No")</div>
-						<div class="hidden lg:block break-all">@binary.Name</div>
+						<div>@asset.DefaultLoudness.ToString("0.0")</div>
+						<div>@asset.ModifiedLoudness.ToString("0.0")</div>
 					</div>
 				}
 			}

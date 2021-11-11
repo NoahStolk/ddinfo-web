@@ -72,17 +72,23 @@ module.exports = {
 				'player-settings-sm': 'minmax(36px, 72px) 32px minmax(64px, 100%) minmax(80px, 80px)',
 
 				// Mods
-				'mod-binaries-xl': 'minmax(128px, 100%) 64px 128px 64px 128px',
-				'mod-binaries-lg': 'minmax(128px, 100%) 64px 128px 64px 128px',
-				'mod-binaries-md': 'minmax(128px, 100%) 64px 128px',
-				'mod-binaries-sm': 'minmax(128px, 100%) 64px',
+				'mod-binaries-xl': 'minmax(128px, 100%) 128px 128px 128px 128px',
+				'mod-binaries-lg': 'minmax(128px, 100%) 128px 128px 128px 128px',
+				'mod-binaries-md': 'minmax(128px, 100%) 128px 128px',
+				'mod-binaries-sm': 'minmax(128px, 100%) 128px',
 				'mod-binaries-xs': '100%',
 
-				'mod-assets-xl': '128px 128px 128px minmax(128px, 100%) 128px',
-				'mod-assets-lg': '128px 128px 128px minmax(128px, 100%) 128px',
+				'mod-assets-xl': 'minmax(128px, 100%) 128px 128px 128px 128px',
+				'mod-assets-lg': 'minmax(128px, 100%) 128px 128px 128px 128px',
 				'mod-assets-md': '128px 128px 128px',
 				'mod-assets-sm': '128px 128px',
 				'mod-assets-xs': '100%',
+
+				'mod-loudness-xl': 'minmax(128px, 100%) 128px 128px 128px 128px',
+				'mod-loudness-lg': 'minmax(128px, 100%) 128px 128px 128px 128px',
+				'mod-loudness-md': '128px 128px 128px',
+				'mod-loudness-sm': '128px 128px',
+				'mod-loudness-xs': '100%',
 			},
 			maxHeight: {
 				'screen-half': '50vh',
