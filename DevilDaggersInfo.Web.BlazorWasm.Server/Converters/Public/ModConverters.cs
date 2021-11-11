@@ -38,6 +38,11 @@ public static class ModConverters
 					IsProhibited = c.IsProhibited,
 				}),
 				ContainsProhibitedAssets = b.ContainsProhibitedAssets(),
+				ModifiedLoudness = b.ModifiedLoudnessAssets?.ConvertAll(t => new GetModifiedLoudness
+				{
+					AssetName = t.Name,
+					IsProhibited = t.IsProhibited,
+				}),
 			}),
 			FileSize = modFileSystemData.ModArchive.FileSize,
 			FileSizeExtracted = modFileSystemData.ModArchive.FileSizeExtracted,

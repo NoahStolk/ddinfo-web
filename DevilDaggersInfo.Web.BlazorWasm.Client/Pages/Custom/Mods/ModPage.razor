@@ -81,6 +81,27 @@ else
 				</div>
 			}
 		}
+
+		@if (GetMod.ModArchive.Binaries.Any(b => b.ModifiedLoudness != null))
+		{
+			<Heading Level="2">Modified loudness</Heading>
+			<div class="bg-gray-22 grid gap-3 grid-cols-mod-assets-xs sm:grid-cols-mod-assets-sm md:grid-cols-mod-assets-md lg:grid-cols-mod-assets-lg xl:grid-cols-mod-assets-xl">
+				<div>Name</div>
+				<div>Prohibited</div>
+				<div class="hidden lg:block">Binary</div>
+			</div>
+			@foreach (GetModBinary binary in GetMod.ModArchive.Binaries.Where(b => b.ModifiedLoudness != null))
+			{
+				foreach (GetModifiedLoudness asset in binary.ModifiedLoudness!.OrderBy(a => a.AssetName))
+				{
+					<div class="grid gap-3 grid-cols-5 odd:bg-gray-16 grid-cols-mod-assets-xs sm:grid-cols-mod-assets-sm md:grid-cols-mod-assets-md lg:grid-cols-mod-assets-lg xl:grid-cols-mod-assets-xl">
+						<div class="break-all">@asset.AssetName</div>
+						<div>@(asset.IsProhibited ? "Yes" : "No")</div>
+						<div class="hidden lg:block break-all">@binary.Name</div>
+					</div>
+				}
+			}
+		}
 	}
 }
 
