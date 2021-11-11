@@ -8,7 +8,7 @@
 	},
 	{
 		"Name": "boid",
-		"Description": "Skull I base texture",
+		"Description": "Skull I base",
 		"Tags": [
 			"Enemy",
 			"Skull I"
@@ -16,7 +16,7 @@
 	},
 	{
 		"Name": "boid2",
-		"Description": "Skull II base texture",
+		"Description": "Skull II base",
 		"Tags": [
 			"Enemy",
 			"Skull II"
@@ -76,7 +76,7 @@
 	},
 	{
 		"Name": "boid2lev",
-		"Description": "Transmuted Skull II base texture",
+		"Description": "Transmuted Skull II base",
 		"Tags": [
 			"Enemy",
 			"Transmuted Skull II"
@@ -93,7 +93,7 @@
 	},
 	{
 		"Name": "boid3",
-		"Description": "Skull III base texture",
+		"Description": "Skull III base",
 		"Tags": [
 			"Enemy",
 			"Skull III"
@@ -187,7 +187,7 @@
 	},
 	{
 		"Name": "boid3lev",
-		"Description": "Transmuted Skull III base texture",
+		"Description": "Transmuted Skull III base",
 		"Tags": [
 			"Enemy",
 			"Transmuted Skull III"
@@ -195,7 +195,7 @@
 	},
 	{
 		"Name": "boid4",
-		"Description": "Skull IV base texture",
+		"Description": "Skull IV base",
 		"Tags": [
 			"Enemy",
 			"Skull IV"
@@ -255,7 +255,7 @@
 	},
 	{
 		"Name": "boid4lev",
-		"Description": "Transmuted Skull IV base texture",
+		"Description": "Transmuted Skull IV base",
 		"Tags": [
 			"Enemy",
 			"Transmuted Skull IV"
@@ -378,7 +378,7 @@
 	},
 	{
 		"Name": "emberflame",
-		"Description": "Primary fire after-embers / Decals base texture",
+		"Description": "Primary fire after-embers / Decals base",
 		"Tags": [
 			"Particles"
 		]
@@ -545,28 +545,28 @@
 	},
 	{
 		"Name": "gib1a",
-		"Description": "Meat piece base texture",
+		"Description": "Meat piece base",
 		"Tags": [
 			"Gore"
 		]
 	},
 	{
 		"Name": "gib1b",
-		"Description": "Meat piece base texture",
+		"Description": "Meat piece base",
 		"Tags": [
 			"Gore"
 		]
 	},
 	{
 		"Name": "gib1c",
-		"Description": "Meat piece base texture",
+		"Description": "Meat piece base",
 		"Tags": [
 			"Gore"
 		]
 	},
 	{
 		"Name": "gib1d",
-		"Description": "Meat piece base texture",
+		"Description": "Meat piece base",
 		"Tags": [
 			"Gore"
 		]
@@ -580,63 +580,63 @@
 	},
 	{
 		"Name": "gib2a",
-		"Description": "Meat piece base texture",
+		"Description": "Meat piece base",
 		"Tags": [
 			"Gore"
 		]
 	},
 	{
 		"Name": "gib2b",
-		"Description": "Meat piece base texture",
+		"Description": "Meat piece base",
 		"Tags": [
 			"Gore"
 		]
 	},
 	{
 		"Name": "gib2c",
-		"Description": "Meat piece base texture",
+		"Description": "Meat piece base",
 		"Tags": [
 			"Gore"
 		]
 	},
 	{
 		"Name": "gib2d",
-		"Description": "Meat piece base texture",
+		"Description": "Meat piece base",
 		"Tags": [
 			"Gore"
 		]
 	},
 	{
 		"Name": "gib3a",
-		"Description": "Meat piece base texture",
+		"Description": "Meat piece base",
 		"Tags": [
 			"Gore"
 		]
 	},
 	{
 		"Name": "gib3b",
-		"Description": "Meat piece base texture",
+		"Description": "Meat piece base",
 		"Tags": [
 			"Gore"
 		]
 	},
 	{
 		"Name": "gib3c",
-		"Description": "Meat piece base texture",
+		"Description": "Meat piece base",
 		"Tags": [
 			"Gore"
 		]
 	},
 	{
 		"Name": "gib3d",
-		"Description": "Meat piece base texture",
+		"Description": "Meat piece base",
 		"Tags": [
 			"Gore"
 		]
 	},
 	{
 		"Name": "gigaegg",
-		"Description": "Spider Egg II base texture",
+		"Description": "Spider Egg II base",
 		"Tags": [
 			"Enemy",
 			"Spider Egg II"
@@ -1156,7 +1156,7 @@
 	},
 	{
 		"Name": "minisquidcrest",
-		"Description": "Squid I Body texture",
+		"Description": "Squid I Body",
 		"Tags": [
 			"Enemy",
 			"Squid I"
@@ -1196,7 +1196,15 @@
 	},
 	{
 		"Name": "pedeblackbody",
-		"Description": "Gigapede Segment texture",
+		"Description": "Gigapede Segment",
+		"Tags": [
+			"Enemy",
+			"Gigapede"
+		]
+	},
+	{
+		"Name": "pedeblackbodyfragged",
+		"Description": "Gigapede Segment without Gem",
 		"Tags": [
 			"Enemy",
 			"Gigapede"
@@ -1204,7 +1212,7 @@
 	},
 	{
 		"Name": "pedeblackhead",
-		"Description": "Gigapede Head texture",
+		"Description": "Gigapede Head",
 		"Tags": [
 			"Enemy",
 			"Gigapede"
@@ -1227,6 +1235,14 @@
 		]
 	},
 	{
+		"Name": "pedeblackleg1fragged",
+		"Description": "Gigapede Leg 1 without Gem",
+		"Tags": [
+			"Enemy",
+			"Gigapede"
+		]
+	},
+	{
 		"Name": "pedeblackleg2",
 		"Description": "Gigapede Leg 2",
 		"Tags": [
@@ -1235,8 +1251,24 @@
 		]
 	},
 	{
+		"Name": "pedeblackleg2fragged",
+		"Description": "Gigapede Leg 2 without Gem",
+		"Tags": [
+			"Enemy",
+			"Gigapede"
+		]
+	},
+	{
 		"Name": "pedeblackleg3",
 		"Description": "Gigapede Leg 3",
+		"Tags": [
+			"Enemy",
+			"Gigapede"
+		]
+	},
+	{
+		"Name": "pedeblackleg3fragged",
+		"Description": "Gigapede Leg 3 without Gem",
 		"Tags": [
 			"Enemy",
 			"Gigapede"
@@ -1300,7 +1332,7 @@
 	},
 	{
 		"Name": "pedehead",
-		"Description": "Centipede Head texture",
+		"Description": "Centipede Head",
 		"Tags": [
 			"Centipede",
 			"Enemy"
@@ -1510,7 +1542,7 @@
 	},
 	{
 		"Name": "pillar",
-		"Description": "Tile sides texture",
+		"Description": "Tile sides",
 		"Tags": [
 			"Arena"
 		]
@@ -1599,7 +1631,7 @@
 	},
 	{
 		"Name": "rubble",
-		"Description": "Thorn Tile Destruction texture",
+		"Description": "Thorn Tile Destruction",
 		"Tags": [
 			"Enemy",
 			"Thorn"
@@ -1614,35 +1646,35 @@
 	},
 	{
 		"Name": "smokeblob",
-		"Description": "Emerging Enemies texture",
+		"Description": "Emerging Enemies",
 		"Tags": [
 			"Particles"
 		]
 	},
 	{
 		"Name": "sorathmask",
-		"Description": "Sorath Logo texture mask",
+		"Description": "Sorath Logo mask",
 		"Tags": [
 			"Splash Screen"
 		]
 	},
 	{
 		"Name": "sorathstone",
-		"Description": "Sorath Stone base texture",
+		"Description": "Sorath Stone base",
 		"Tags": [
 			"Easter Egg"
 		]
 	},
 	{
 		"Name": "sorathtexture",
-		"Description": "Sorath Logo base texture",
+		"Description": "Sorath Logo base",
 		"Tags": [
 			"Splash Screen"
 		]
 	},
 	{
 		"Name": "sorathvector",
-		"Description": "Sorath Logo texture filter",
+		"Description": "Sorath Logo filter",
 		"Tags": [
 			"Splash Screen"
 		]
@@ -1673,7 +1705,7 @@
 	},
 	{
 		"Name": "spideregg1",
-		"Description": "Spider Egg I Goo base texture",
+		"Description": "Spider Egg I Goo base",
 		"Tags": [
 			"Enemy",
 			"Spider Egg I"
@@ -1681,7 +1713,7 @@
 	},
 	{
 		"Name": "spideregg2",
-		"Description": "Spider Egg I base texture",
+		"Description": "Spider Egg I base",
 		"Tags": [
 			"Enemy",
 			"Spider Egg I"
@@ -1689,7 +1721,7 @@
 	},
 	{
 		"Name": "spidereggflash",
-		"Description": "Spider Egg I flashing texture",
+		"Description": "Spider Egg I flashing",
 		"Tags": [
 			"Enemy",
 			"Spider Egg I"
@@ -1853,7 +1885,7 @@
 	},
 	{
 		"Name": "spiderling",
-		"Description": "Spiderling Body base texture",
+		"Description": "Spiderling Body base",
 		"Tags": [
 			"Enemy",
 			"Spiderling"
@@ -2034,7 +2066,7 @@
 	},
 	{
 		"Name": "squidcrest",
-		"Description": "Squid II Body texture",
+		"Description": "Squid II Body",
 		"Tags": [
 			"Enemy",
 			"Squid II"
@@ -2200,7 +2232,7 @@
 	},
 	{
 		"Name": "thorn",
-		"Description": "Thorn Body base texture",
+		"Description": "Thorn Body base",
 		"Tags": [
 			"Enemy",
 			"Thorn"
@@ -2226,7 +2258,7 @@
 	},
 	{
 		"Name": "tile",
-		"Description": "Floor texture",
+		"Description": "Floor",
 		"Tags": [
 			"Arena"
 		]
@@ -2291,7 +2323,7 @@
 	},
 	{
 		"Name": "ultrapedeleg1",
-		"Description": "Ghostpede leg texture?",
+		"Description": "Ghostpede leg",
 		"Tags": [
 			"Enemy",
 			"Ghostpede"
@@ -2299,7 +2331,7 @@
 	},
 	{
 		"Name": "ultrapedeleg2",
-		"Description": "Ghostpede leg texture?",
+		"Description": "Ghostpede leg",
 		"Tags": [
 			"Enemy",
 			"Ghostpede"
@@ -2307,7 +2339,7 @@
 	},
 	{
 		"Name": "ultrapedeleg3",
-		"Description": "Ghostpede leg texture?",
+		"Description": "Ghostpede leg",
 		"Tags": [
 			"Enemy",
 			"Ghostpede"
@@ -2315,7 +2347,7 @@
 	},
 	{
 		"Name": "ultrapedetail",
-		"Description": "Ghostpede tail texture",
+		"Description": "Ghostpede tail",
 		"Tags": [
 			"Enemy",
 			"Ghostpede"

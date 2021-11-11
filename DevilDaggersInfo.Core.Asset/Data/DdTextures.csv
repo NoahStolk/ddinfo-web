@@ -147,11 +147,15 @@ minisquidhorns,False,128,128,True
 minisquidjaw,False,128,128,True
 minisquidjawskull,False,128,128,True
 pedeblackbody,False,128,128,True
+pedeblackbodyfragged,False,128,128,True
 pedeblackhead,False,256,256,True
 pedeblackjaw,False,64,64,True
 pedeblackleg1,False,32,32,True
+pedeblackleg1fragged,False,32,32,True
 pedeblackleg2,False,32,32,True
+pedeblackleg2fragged,False,32,32,True
 pedeblackleg3,False,32,32,True
+pedeblackleg3fragged,False,32,32,True
 pedeblacktail,False,128,128,True
 pedeblacktaillegs,False,64,64,True
 pedebody,False,128,128,True
