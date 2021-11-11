@@ -2,7 +2,7 @@ namespace DevilDaggersInfo.Web.BlazorWasm.Server.Caches.ModArchives;
 
 public class ModBinaryCacheData
 {
-	public ModBinaryCacheData(string name, long size, ModBinaryType modBinaryType, List<ModChunkCacheData> chunks, List<(string Name, bool IsProhibited)>? modifiedLoudnessAssets)
+	public ModBinaryCacheData(string name, long size, ModBinaryType modBinaryType, List<ModChunkCacheData> chunks, List<ModifiedLoudnessAssetCacheData>? modifiedLoudnessAssets)
 	{
 		Name = name;
 		Size = size;
@@ -15,7 +15,7 @@ public class ModBinaryCacheData
 	public long Size { get; }
 	public ModBinaryType ModBinaryType { get; }
 	public List<ModChunkCacheData> Chunks { get; }
-	public List<(string Name, bool IsProhibited)>? ModifiedLoudnessAssets { get; }
+	public List<ModifiedLoudnessAssetCacheData>? ModifiedLoudnessAssets { get; }
 
 	public static ModBinaryCacheData CreateFromFile(string fileName, byte[] fileContents)
 	{
@@ -42,7 +42,7 @@ public class ModBinaryCacheData
 		});
 
 		ModBinaryChunk? loudnessChunk = modBinary.Chunks.Find(c => c.IsLoudness());
-		List<(string Name, bool IsProhibited)>? modifiedLoudnessAssets = null;
+		List<ModifiedLoudnessAssetCacheData>? modifiedLoudnessAssets = null;
 		if (loudnessChunk != null)
 		{
 			byte[] loudnessBytes = new byte[loudnessChunk.Size];
@@ -54,9 +54,9 @@ public class ModBinaryCacheData
 		return new(fileName, fileContents.Length, modBinary.ModBinaryType, chunks, modifiedLoudnessAssets);
 	}
 
-	private static List<(string Name, bool IsProhibited)> ReadModifiedLoudnessValues(string loudnessString)
+	private static List<ModifiedLoudnessAssetCacheData> ReadModifiedLoudnessValues(string loudnessString)
 	{
-		List<(string Name, bool IsProhibited)> loudnessAssets = new();
+		List<ModifiedLoudnessAssetCacheData> loudnessAssets = new();
 
 		foreach (string line in loudnessString.Split('\n'))
 		{
@@ -67,7 +67,7 @@ public class ModBinaryCacheData
 			if (audioAssetData == null || audioAssetData.DefaultLoudness == loudness)
 				continue;
 
-			loudnessAssets.Add((assetName, audioAssetData.IsProhibited));
+			loudnessAssets.Add(new(assetName, audioAssetData.IsProhibited));
 		}
 
 		return loudnessAssets;
@@ -83,7 +83,7 @@ public class ModBinaryCacheData
 
 			int equalsIndex = line.IndexOf('=', StringComparison.InvariantCulture);
 
-			assetName = line.Substring(0, equalsIndex);
+			assetName = line[..equalsIndex];
 			loudness = float.Parse(line.Substring(equalsIndex + 1, line.Length - assetName.Length - 1));
 			return true;
 		}
