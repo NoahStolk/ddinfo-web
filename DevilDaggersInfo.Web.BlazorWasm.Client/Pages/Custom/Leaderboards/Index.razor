@@ -211,6 +211,12 @@ else
 	private async Task Fetch()
 	{
 		GetCustomLeaderboards = await Http.GetCustomLeaderboards((CustomLeaderboardCategory)Category, SpawnsetFilter, AuthorFilter, PageIndex, PageSize, SortBy.HasValue ? (CustomLeaderboardSorting)SortBy.Value : CustomLeaderboardSorting.DateLastPlayed, Ascending);
+
+		if (PageIndex >= TotalPages)
+		{
+			PageIndex = TotalPages - 1;
+			NavigationManager.AddOrModifyQueryParameter(QueryParameters.PageIndex, PageIndex);
+		}
 	}
 
 	private static class QueryParameters

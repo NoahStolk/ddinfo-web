@@ -123,7 +123,7 @@ else
 
 		await Fetch();
 	}
-	
+
 	private async Task ChangeInputPracticeOnly(ChangeEventArgs e)
 	{
 		// TODO: Fluxor
@@ -185,6 +185,12 @@ else
 	private async Task Fetch()
 	{
 		GetSpawnsets = await Http.GetSpawnsets(PracticeOnly, WithCustomLeaderboardOnly, SpawnsetFilter, AuthorFilter, PageIndex, PageSize, SortBy.HasValue ? (SpawnsetSorting)SortBy.Value : SpawnsetSorting.LastUpdated, Ascending);
+
+		if (PageIndex >= TotalPages)
+		{
+			PageIndex = TotalPages - 1;
+			NavigationManager.AddOrModifyQueryParameter(QueryParameters.PageIndex, PageIndex);
+		}
 	}
 
 	private static class QueryParameters

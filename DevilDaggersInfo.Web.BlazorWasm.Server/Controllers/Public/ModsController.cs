@@ -1,6 +1,5 @@
 using DevilDaggersInfo.Web.BlazorWasm.Server.Converters.Public;
 using DevilDaggersInfo.Web.BlazorWasm.Server.InternalModels;
-using DevilDaggersInfo.Web.BlazorWasm.Server.Repositories;
 using DevilDaggersInfo.Web.BlazorWasm.Shared.Dto;
 using DevilDaggersInfo.Web.BlazorWasm.Shared.Dto.Public.Mods;
 using DevilDaggersInfo.Web.BlazorWasm.Shared.Enums.Sortings.Public;
@@ -57,26 +56,28 @@ public class ModsController : ControllerBase
 			.Select(kvp => kvp.Key.ToGetModOverview(kvp.Value))
 			.ToList();
 
-		modDtos = sortBy switch
+		modDtos = (sortBy switch
 		{
-			ModSorting.Name => modDtos.OrderBy(m => m.Name, ascending).ToList(),
-			ModSorting.Authors => modDtos.OrderBy(m => m.Authors.FirstOrDefault(), ascending).ToList(),
-			ModSorting.LastUpdated => modDtos.OrderBy(m => m.LastUpdated, ascending).ToList(),
-			ModSorting.ModTypes => modDtos.OrderBy(m => m.ModTypes, ascending).ToList(),
-			ModSorting.Hosted => modDtos.OrderBy(m => m.IsHosted, ascending).ToList(),
-			ModSorting.ProhibitedAssets => modDtos.OrderBy(m => m.ContainsProhibitedAssets, ascending).ToList(),
-			_ => modDtos.OrderBy(m => m.Id, ascending).ToList(),
-		};
+			ModSorting.Name => modDtos.OrderBy(m => m.Name, ascending),
+			ModSorting.Authors => modDtos.OrderBy(m => m.Authors.FirstOrDefault(), ascending),
+			ModSorting.LastUpdated => modDtos.OrderBy(m => m.LastUpdated, ascending),
+			ModSorting.ModTypes => modDtos.OrderBy(m => m.ModTypes, ascending),
+			ModSorting.Hosted => modDtos.OrderBy(m => m.IsHosted, ascending),
+			ModSorting.ProhibitedAssets => modDtos.OrderBy(m => m.ContainsProhibitedAssets, ascending),
+			_ => modDtos.OrderBy(m => m.Id, ascending),
+		}).ToList();
 
+		int totalMods = data.Count;
+		int lastPageIndex = totalMods / pageSize;
 		modDtos = modDtos
-			.Skip(pageIndex * pageSize)
+			.Skip(Math.Min(pageIndex, lastPageIndex) * pageSize)
 			.Take(pageSize)
 			.ToList();
 
 		return new Page<GetModOverview>
 		{
 			Results = modDtos,
-			TotalResults = data.Count,
+			TotalResults = totalMods,
 		};
 	}
 

@@ -151,6 +151,12 @@ else
 	private async Task Fetch()
 	{
 		GetMods = await Http.GetMods(HostedOnly, ModFilter, AuthorFilter, PageIndex, PageSize, SortBy.HasValue ? (ModSorting)SortBy.Value : ModSorting.LastUpdated, Ascending);
+
+		if (PageIndex >= TotalPages)
+		{
+			PageIndex = TotalPages - 1;
+			NavigationManager.AddOrModifyQueryParameter(QueryParameters.PageIndex, PageIndex);
+		}
 	}
 
 	private static class QueryParameters

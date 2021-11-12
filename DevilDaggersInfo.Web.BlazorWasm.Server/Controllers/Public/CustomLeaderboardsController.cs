@@ -108,8 +108,10 @@ public class CustomLeaderboardsController : ControllerBase
 		}
 
 		// Apply paging.
+		int totalCustomLeaderboards = customLeaderboards.Count;
+		int lastPageIndex = totalCustomLeaderboards / pageSize;
 		customLeaderboardWrs = customLeaderboardWrs
-			.Skip(pageIndex * pageSize)
+			.Skip(Math.Min(pageIndex, lastPageIndex) * pageSize)
 			.Take(pageSize)
 			.ToList();
 
@@ -119,7 +121,7 @@ public class CustomLeaderboardsController : ControllerBase
 				customEntryCountByCustomLeaderboardId.ContainsKey(cl.CustomLeaderboard.Id) ? customEntryCountByCustomLeaderboardId[cl.CustomLeaderboard.Id] : 0,
 				cl.TopPlayer,
 				cl.WorldRecord)),
-			TotalResults = customLeaderboardsQuery.Count(),
+			TotalResults = totalCustomLeaderboards,
 		};
 	}
 
