@@ -1,11 +1,11 @@
 @inherits LayoutComponentBase
 
 <div class="flex flex-col sm:flex-row relative">
-	<div class="sticky z-10 top-0 bg-gradient-to-b from-dark-red to-dark-red sm:to-black sm:width-64 sm:h-screen">
+	<div class="sticky z-10 top-0 bg-gradient-to-b from-dark-red to-dark-red sm:to-black sm:width-64">
 		<NavMenu />
 	</div>
 
-	<div class="absolute sm:left-12 flex flex-col content px-4 min-h-full flex-grow items-stretch">
+	<div class="absolute sm:left-12 flex flex-col content px-4 min-h-full flex-grow items-stretch top-12 sm:top-0">
 		<div class="flex-grow flex-shrink-0">
 			@Body
 		</div>

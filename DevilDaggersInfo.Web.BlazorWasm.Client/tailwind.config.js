@@ -102,6 +102,9 @@ module.exports = {
 				'256': '64rem',
 				'16-9': '56.25%',
 				'16-9/2': '28.125%',
+			},
+			transitionProperty: {
+				'width': 'width',
 			}
 		},
 		fontFamily: {
