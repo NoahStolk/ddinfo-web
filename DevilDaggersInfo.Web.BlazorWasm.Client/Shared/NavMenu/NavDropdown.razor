@@ -1,10 +1,10 @@
 <li class="pl-3 py-1 text-xl">
 	<div class="cursor-pointer select-none" @onclick="Show">
-		<Icon Type="@(ShowListVisually ? "chevron-bottom" : "chevron-right")" Text="@(NavMenu.ExpandNavMenu || NavMenu.ShowNavMenuMobile ? Text : null)" />
+		<Icon Type="@(ShowList ? "chevron-bottom" : "chevron-right")" Text="@(NavMenu.ExpandNavMenu || NavMenu.ShowNavMenuMobile ? Text : null)" />
 	</div>
-	@if (ShowListVisually)
+	@if (ShowList)
 	{
-		<ul class="pl-1 pt-1">
+		<ul class="@(NavMenu.ExpandNavMenu || NavMenu.ShowNavMenuMobile ? "pl-1" : null) pt-1">
 			@ChildContent
 		</ul>
 	}
@@ -22,8 +22,6 @@
 			StateHasChanged();
 		}
 	}
-
-	public bool ShowListVisually => ShowList && (NavMenu.ExpandNavMenu || NavMenu.ShowNavMenuMobile);
 
 	[Parameter, EditorRequired] public NavMenu NavMenu { get; set; } = null!;
 	[Parameter, EditorRequired] public RenderFragment ChildContent { get; set; } = null!;
