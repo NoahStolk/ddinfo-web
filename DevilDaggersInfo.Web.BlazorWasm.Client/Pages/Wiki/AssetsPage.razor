@@ -1,0 +1,102 @@
+@page "/wiki/assets"
+@inject PublicApiHttpClient Http
+@inject NavigationManager NavigationManager
+@using DevilDaggersInfo.Core.Asset
+
+<Heading>Game Assets</Heading>
+
+<p>
+	This page lists all the game's assets. Assets can be extracted using <a href="tools/asset-editor">Devil Daggers Asset Editor</a>.
+</p>
+
+<Heading Level="2">Audio Assets</Heading>
+<div class="bg-gray-22 grid gap-3 grid-cols-3">
+	<div>Asset</div>
+	<div>Prohibited</div>
+	<div>Loudness</div>
+</div>
+@foreach (AudioAssetData audio in AudioAudio.All)
+{
+	<div class="grid gap-3 grid-cols-3 odd:bg-gray-16">
+		<div>@audio.AssetName</div>
+		<div>@(audio.IsProhibited ? "Yes" : "No")</div>
+		<div>@(audio.PresentInDefaultLoudness ? audio.DefaultLoudness.ToString("0.0") : "N/A (defaults to 1.0)")</div>
+	</div>
+}
+
+<Heading Level="2">Model Assets</Heading>
+<div class="bg-gray-22 grid gap-3 grid-cols-4">
+	<div>Asset</div>
+	<div>Prohibited</div>
+	<div>Indices</div>
+	<div>Vertices</div>
+</div>
+@foreach (ModelAssetData model in DdModels.All)
+{
+	<div class="grid gap-3 grid-cols-4 odd:bg-gray-16">
+		<div>@model.AssetName</div>
+		<div>@(model.IsProhibited ? "Yes" : "No")</div>
+		<div>@model.DefaultIndexCount</div>
+		<div>@model.DefaultVertexCount</div>
+	</div>
+}
+
+<Heading Level="2">Model Binding Assets</Heading>
+<div class="bg-gray-22 grid gap-3 grid-cols-2">
+	<div>Asset</div>
+	<div>Prohibited</div>
+</div>
+@foreach (ModelBindingAssetData modelBinding in DdModelBindings.All)
+{
+	<div class="grid gap-3 grid-cols-2 odd:bg-gray-16">
+		<div>@modelBinding.AssetName</div>
+		<div>@(modelBinding.IsProhibited ? "Yes" : "No")</div>
+	</div>
+}
+
+<Heading Level="2">Shader Assets (core)</Heading>
+<div class="bg-gray-22 grid gap-3 grid-cols-2">
+	<div>Asset</div>
+	<div>Prohibited</div>
+</div>
+@foreach (ShaderAssetData shader in CoreShaders.All)
+{
+	<div class="grid gap-3 grid-cols-2 odd:bg-gray-16">
+		<div>@shader.AssetName</div>
+		<div>@(shader.IsProhibited ? "Yes" : "No")</div>
+	</div>
+}
+
+<Heading Level="2">Shader Assets (dd)</Heading>
+<div class="bg-gray-22 grid gap-3 grid-cols-2">
+	<div>Asset</div>
+	<div>Prohibited</div>
+</div>
+@foreach (ShaderAssetData shader in DdShaders.All)
+{
+	<div class="grid gap-3 grid-cols-2 odd:bg-gray-16">
+		<div>@shader.AssetName</div>
+		<div class="hidden md:block">@(shader.IsProhibited ? "Yes" : "No")</div>
+	</div>
+}
+
+<Heading Level="2">Texture Assets</Heading>
+<div class="bg-gray-22 grid gap-3 grid-cols-6">
+	<div>Asset</div>
+	<div>Prohibited</div>
+	<div>Width</div>
+	<div>Height</div>
+	<div>For model</div>
+	<div>Binding</div>
+</div>
+@foreach (TextureAssetData texture in DdTextures.All)
+{
+	<div class="grid gap-3 grid-cols-6 odd:bg-gray-16">
+		<div>@texture.AssetName</div>
+		<div>@(texture.IsProhibited ? "Yes" : "No")</div>
+		<div>@texture.DefaultWidth</div>
+		<div>@texture.DefaultHeight</div>
+		<div>@texture.IsModelTexture</div>
+		<div>@texture.ModelBinding</div>
+	</div>
+}

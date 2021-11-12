@@ -67,7 +67,7 @@ else
 		</div>
 		@foreach (GetModBinary binary in GetMod.ModArchive.Binaries.OrderBy(b => b.Name))
 		{
-			<div class="grid gap-3 grid-cols-5 odd:bg-gray-16 grid-cols-mod-binaries-xs sm:grid-cols-mod-binaries-sm md:grid-cols-mod-binaries-md lg:grid-cols-mod-binaries-lg xl:grid-cols-mod-binaries-xl">
+			<div class="grid gap-3 odd:bg-gray-16 grid-cols-mod-binaries-xs sm:grid-cols-mod-binaries-sm md:grid-cols-mod-binaries-md lg:grid-cols-mod-binaries-lg xl:grid-cols-mod-binaries-xl">
 				<div class="break-all">@binary.Name</div>
 				<div class="hidden sm:block">@binary.ModBinaryType.ToString().ToLower()</div>
 				<div class="hidden md:block">@(binary.ContainsProhibitedAssets ? "Yes" : "No")</div>
@@ -88,7 +88,7 @@ else
 		{
 			foreach (GetModAsset asset in binary.Assets.OrderBy(a => a.Type).ThenBy(a => a.Name))
 			{
-				<div class="grid gap-3 grid-cols-5 odd:bg-gray-16 grid-cols-mod-assets-xs sm:grid-cols-mod-assets-sm md:grid-cols-mod-assets-md lg:grid-cols-mod-assets-lg xl:grid-cols-mod-assets-xl">
+				<div class="grid gap-3 odd:bg-gray-16 grid-cols-mod-assets-xs sm:grid-cols-mod-assets-sm md:grid-cols-mod-assets-md lg:grid-cols-mod-assets-lg xl:grid-cols-mod-assets-xl">
 					<div class="break-all">@binary.Name</div>
 					<div class="hidden sm:block">@asset.Name</div>
 					<div class="hidden sm:block">@asset.Type</div>
@@ -112,7 +112,7 @@ else
 			{
 				foreach (GetModifiedLoudness asset in binary.ModifiedLoudness!.OrderBy(a => a.AssetName))
 				{
-					<div class="grid gap-3 grid-cols-5 odd:bg-gray-16 grid-cols-mod-assets-xs sm:grid-cols-mod-assets-sm md:grid-cols-mod-assets-md lg:grid-cols-mod-assets-lg xl:grid-cols-mod-assets-xl">
+					<div class="grid gap-3 odd:bg-gray-16 grid-cols-mod-assets-xs sm:grid-cols-mod-assets-sm md:grid-cols-mod-assets-md lg:grid-cols-mod-assets-lg xl:grid-cols-mod-assets-xl">
 						<div class="break-all">@binary.Name</div>
 						<div>@asset.AssetName</div>
 						<div>@(asset.IsProhibited ? "Yes" : "No")</div>
