@@ -1,6 +1,6 @@
 <li class="pl-3 py-1 @CssClass">
 	<NavLink href="@Href" Match="Match" @onclick="CloseMenu">
-		<Icon Type="@IconType" Text="@Text" />
+		<Icon Type="@IconType" Text="@(NavMenu.ExpandNavMenu ? Text : null)" />
 	</NavLink>
 </li>
 
@@ -20,7 +20,7 @@
 		if (OnClickAction != null)
 			await OnClickAction();
 
-		NavMenu.ShowNavMenu = false;
+		NavMenu.ShowNavMenuMobile = false;
 		NavMenu.UpdateState();
 	}
 }

@@ -1,13 +1,13 @@
 @inject AuthenticationStateProvider Auth
 
-<div class="px-4 py-2 sm:py-4">
+<div class="px-4 py-2 sm:hidden">
 	<a href="" class="font-goethe text-3xl">DevilDaggers.Info</a>
-	<button class="float-right sm:hidden text-xl pt-1" @onclick="() => ShowNavMenu = !ShowNavMenu">
+	<button class="float-right sm:hidden text-xl pt-1" @onclick="() => ShowNavMenuMobile = !ShowNavMenuMobile">
 		<span class="oi oi-menu" aria-hidden="true"></span>
 	</button>
 </div>
 
-<div class="@(ShowNavMenu ? null : "hidden sm:block") pb-4 font-goethe">
+<div class="@(ShowNavMenuMobile ? null : "hidden sm:block") @(ExpandNavMenu ? "sm:w-48" : "sm:w-12") py-2 font-goethe" @onmouseleave="@OnMouseOut" @onmouseenter="@OnMouseOver">
 	<ul>
 		<CascadingValue Value="this">
 			<NavItem Href="" CssClass="text-xl" IconType="home" Text="Home" Match="NavLinkMatch.All" />
@@ -70,7 +70,9 @@
 {
 	private string? _userName;
 
-	public bool ShowNavMenu { get; set; } = false;
+	public bool ShowNavMenuMobile { get; set; } = false;
+
+	public bool ExpandNavMenu { get; set; } = false;
 
 	public List<NavDropdown> NavDropdowns { get; } = new();
 
@@ -93,6 +95,28 @@
 
 	public void UpdateState()
 	{
+		StateHasChanged();
+	}
+
+	private void OnMouseOver(MouseEventArgs mouseEvent)
+	{
+		if (ExpandNavMenu)
+			return;
+
+		ExpandNavMenu = true;
+		StateHasChanged();
+	}
+
+	private void OnMouseOut(MouseEventArgs mouseEvent)
+	{
+		if (!ExpandNavMenu)
+			return;
+
+		ExpandNavMenu = false;
+
+		foreach (NavDropdown nd in NavDropdowns)
+			nd.ShowList = false;
+
 		StateHasChanged();
 	}
 }
