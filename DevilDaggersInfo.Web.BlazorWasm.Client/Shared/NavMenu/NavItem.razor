@@ -1,6 +1,6 @@
 <li class="pl-3 py-1 @CssClass">
 	<NavLink href="@Href" Match="Match" @onclick="CloseMenu">
-		<Icon Type="@IconType" Text="@(NavMenu.ExpandNavMenu ? Text : null)" />
+		<Icon Type="@IconType" Text="@(NavMenu.ExpandNavMenu || NavMenu.ShowNavMenuMobile ? Text : null)" />
 	</NavLink>
 </li>
 
@@ -13,13 +13,9 @@
 	[Parameter, EditorRequired] public string IconType { get; set; } = null!;
 	[Parameter, EditorRequired] public string Text { get; set; } = null!;
 	[Parameter] public NavLinkMatch Match { get; set; }
-	[Parameter] public Func<Task>? OnClickAction { get; set; }
 
-	private async Task CloseMenu()
+	private void CloseMenu()
 	{
-		if (OnClickAction != null)
-			await OnClickAction();
-
 		NavMenu.ShowNavMenuMobile = false;
 		NavMenu.UpdateState();
 	}

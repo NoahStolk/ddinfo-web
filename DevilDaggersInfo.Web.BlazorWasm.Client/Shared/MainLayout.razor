@@ -1,7 +1,7 @@
 @inherits LayoutComponentBase
 
 <div class="flex flex-col sm:flex-row relative">
-	<div class="sticky top-0 bg-gradient-to-b from-dark-red to-dark-red sm:to-black sm:width-64 sm:h-screen">
+	<div class="sticky z-10 top-0 bg-gradient-to-b from-dark-red to-dark-red sm:to-black sm:width-64 sm:h-screen">
 		<NavMenu />
 	</div>
 
@@ -12,9 +12,9 @@
 		<footer class="flex-shrink-0 pt-3">
 			<p>&copy; DevilDaggers.info 2017-@DateTime.UtcNow.Year</p>
 			<p>Version @Program.Version</p>
-			<p><UrlLink Href=@Constants.DiscordUrl OpenInNewTab=true>Discord server</UrlLink></p>
-			<p><UrlLink Href="//devildaggers.info/" OpenInNewTab=true>DevilDaggers.info</UrlLink> is created by <UrlLink Href="//noahstolk.com/" OpenInNewTab=true>Noah Stolk</UrlLink><br /></p>
 			<p><UrlLink Href="//devildaggers.com/" OpenInNewTab=true>Devil Daggers</UrlLink> is created by <UrlLink Href="//sorath.com/" OpenInNewTab=true>Sorath</UrlLink></p>
+			<p><UrlLink Href="//devildaggers.info/" OpenInNewTab=true>DevilDaggers.info</UrlLink> is created by <UrlLink Href="//noahstolk.com/" OpenInNewTab=true>Noah Stolk</UrlLink><br /></p>
+			<p><UrlLink Href=@Constants.DiscordUrl OpenInNewTab=true>Discord server</UrlLink></p>
 		</footer>
 	</div>
 </div>
