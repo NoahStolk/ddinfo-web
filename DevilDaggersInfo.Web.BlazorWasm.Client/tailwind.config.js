@@ -102,6 +102,7 @@ module.exports = {
 				'256': '64rem',
 				'16-9': '56.25%',
 				'16-9/2': '28.125%',
+				'screen-width': 'calc(100% - 3rem)',
 			},
 			transitionProperty: {
 				'width': 'width',
