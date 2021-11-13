@@ -57,7 +57,7 @@
 						<NavItem Href="admin/titles" CssClass="text-lg" IconType="badge" Text="Titles" />
 						<NavItem Href="admin/users" CssClass="text-lg" IconType="person" Text="Users" />
 					</NavDropdown>
-					<span class="px-4">Logged in as: @_userName</span>
+					<span class="px-4 whitespace-nowrap transition-opacity duration-150 ease-in-out @(!ShowNavMenuMobile && !ExpandNavMenu ? "opacity-0" : "opacity-100")">Logged in as: @_userName</span>
 				</Authorized>
 			</AuthorizeView>
 		</CascadingValue>
