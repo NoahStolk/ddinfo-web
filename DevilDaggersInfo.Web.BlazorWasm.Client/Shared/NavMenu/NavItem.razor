@@ -1,6 +1,6 @@
-<li class="@(NavMenu.ExpandNavMenu || NavMenu.ShowNavMenuMobile || !InDropdown ? "pl-3" : null) transition-spacing duration-150 ease-in-out py-1 whitespace-nowrap @CssClass">
+<li class="@GetPaddingClass() transition-spacing duration-150 ease-in-out py-1 whitespace-nowrap @CssClass">
 	<NavLink href="@Href" Match="Match" @onclick="CloseMenu">
-		<Icon Type="@IconType" Text="@Text" RenderText="@(NavMenu.ExpandNavMenu || NavMenu.ShowNavMenuMobile)" />
+		<Icon Type="@IconType" Text="@Text" />
 	</NavLink>
 </li>
 
@@ -14,6 +14,19 @@
 	[Parameter, EditorRequired] public string Text { get; set; } = null!;
 	[Parameter] public NavLinkMatch Match { get; set; }
 	[Parameter] public bool InDropdown { get; set; } = true;
+
+	private string? GetPaddingClass()
+	{
+		const string pad = "pl-3";
+
+		if (!InDropdown || NavMenu.ExpandNavMenu)
+			return pad;
+
+		if (NavMenu.ShowNavMenuMobile)
+			return $"{pad} sm:pl-0";
+
+		return null;
+	}
 
 	private void CloseMenu()
 	{
