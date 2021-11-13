@@ -1,6 +1,6 @@
 <li class="@(NavMenu.ExpandNavMenu || NavMenu.ShowNavMenuMobile || !InDropdown ? "pl-3" : null) py-1 whitespace-nowrap @CssClass">
 	<NavLink href="@Href" Match="Match" @onclick="CloseMenu">
-		<Icon Type="@IconType" Text="@(NavMenu.ExpandNavMenu || NavMenu.ShowNavMenuMobile ? Text : null)" />
+		<Icon Type="@IconType" Text="@Text" RenderText="@(NavMenu.ExpandNavMenu || NavMenu.ShowNavMenuMobile)" />
 	</NavLink>
 </li>
 
