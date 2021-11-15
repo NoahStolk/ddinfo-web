@@ -10,10 +10,12 @@ namespace DevilDaggersInfo.Web.BlazorWasm.Server.Controllers.Public;
 public class AuthenticationController : ControllerBase
 {
 	private readonly IUserService _userService;
+	private readonly IWebHostEnvironment _environment;
 
-	public AuthenticationController(IUserService userService)
+	public AuthenticationController(IUserService userService, IWebHostEnvironment environment)
 	{
 		_userService = userService;
+		_environment = environment;
 	}
 
 	[ApiExplorerSettings(IgnoreApi = true)]
@@ -54,6 +56,9 @@ public class AuthenticationController : ControllerBase
 	[ProducesResponseType(StatusCodes.Status400BadRequest)]
 	public ActionResult Register([FromBody] RegistrationRequest registrationRequest)
 	{
+		if (!_environment.IsDevelopment())
+			return BadRequest("Registering is currently not allowed.");
+
 		try
 		{
 			_userService.Create(registrationRequest.Name, registrationRequest.Password);
