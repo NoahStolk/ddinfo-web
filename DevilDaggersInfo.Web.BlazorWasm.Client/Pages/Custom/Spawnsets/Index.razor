@@ -74,7 +74,7 @@ else
 				<div class="overflow-x-hidden text-right hidden xl:block">@spawnset.LoopSpawnCount</div>
 				<div class="overflow-x-hidden text-right hidden xl:block">@(spawnset.PreLoopLength.HasValue ? (MarkupString)spawnset.PreLoopLength.Value.ToString(FormatUtils.TimeFormat) : MarkupUtils.NoDataMarkup)</div>
 				<div class="overflow-x-hidden text-right hidden xl:block">@spawnset.PreLoopSpawnCount</div>
-				<div class="overflow-x-hidden text-left hidden lg:block">Level @spawnset.Hand</div>
+				<div class="overflow-x-hidden text-left hidden lg:block">Level @((byte)spawnset.Hand)</div>
 				<div class="overflow-x-hidden text-right hidden lg:block">@spawnset.AdditionalGems</div>
 				<div class="overflow-x-hidden text-right hidden lg:block">@spawnset.TimerStart.ToString(FormatUtils.TimeFormat)</div>
 			</div>

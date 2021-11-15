@@ -24,7 +24,7 @@ public class GetSpawnsetOverview
 
 	public int PreLoopSpawnCount { get; init; }
 
-	public byte Hand { get; init; }
+	public HandLevel Hand { get; init; }
 
 	public int AdditionalGems { get; init; }
 

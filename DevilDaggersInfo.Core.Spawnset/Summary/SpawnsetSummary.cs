@@ -12,6 +12,8 @@ public class SpawnsetSummary
 		HandLevel = handLevel;
 		AdditionalGems = additionalGems;
 		TimerStart = timerStart;
+
+		EffectivePlayerSettings = SpawnsetBinary.GetEffectivePlayerSettings(handLevel, additionalGems);
 	}
 
 	public SpawnsetSummary(SpawnsetBinary spawnsetBinary)
@@ -27,6 +29,8 @@ public class SpawnsetSummary
 		HandLevel = spawnsetBinary.HandLevel;
 		AdditionalGems = spawnsetBinary.AdditionalGems;
 		TimerStart = spawnsetBinary.TimerStart;
+
+		EffectivePlayerSettings = spawnsetBinary.GetEffectivePlayerSettings();
 	}
 
 	public int SpawnVersion { get; }
@@ -37,6 +41,8 @@ public class SpawnsetSummary
 	public HandLevel HandLevel { get; }
 	public int AdditionalGems { get; }
 	public float TimerStart { get; }
+
+	public EffectivePlayerSettings EffectivePlayerSettings { get; }
 
 	public static bool TryParse(byte[] fileContents, [NotNullWhen(true)] out SpawnsetSummary? spawnsetSummary)
 	{

@@ -18,9 +18,9 @@ public static class SpawnsetConverters
 
 	public static GetSpawnsetDataDdse ToGetSpawnsetDataDdse(this SpawnsetSummary spawnsetSummary) => new()
 	{
-		AdditionalGems = spawnsetSummary.AdditionalGems,
+		AdditionalGems = spawnsetSummary.EffectivePlayerSettings.GemsOrHoming,
 		GameMode = spawnsetSummary.GameMode,
-		Hand = (byte)spawnsetSummary.HandLevel,
+		Hand = (byte)spawnsetSummary.EffectivePlayerSettings.HandLevel,
 		LoopLength = spawnsetSummary.LoopSection.Length,
 		LoopSpawnCount = spawnsetSummary.LoopSection.SpawnCount,
 		NonLoopLength = spawnsetSummary.PreLoopSection.Length,
@@ -32,9 +32,9 @@ public static class SpawnsetConverters
 
 	public static GetSpawnsetOverview ToGetSpawnsetOverview(this SpawnsetEntity spawnset, SpawnsetSummary spawnsetSummary) => new()
 	{
-		AdditionalGems = spawnsetSummary.AdditionalGems,
+		AdditionalGems = spawnsetSummary.EffectivePlayerSettings.GemsOrHoming,
 		GameMode = spawnsetSummary.GameMode,
-		Hand = (byte)spawnsetSummary.HandLevel,
+		Hand = spawnsetSummary.EffectivePlayerSettings.HandLevel,
 		Id = spawnset.Id,
 		LoopLength = spawnsetSummary.LoopSection.Length,
 		LoopSpawnCount = spawnsetSummary.LoopSection.SpawnCount,
