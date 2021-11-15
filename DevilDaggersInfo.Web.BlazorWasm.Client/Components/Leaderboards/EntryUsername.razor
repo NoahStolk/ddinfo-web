@@ -1,7 +1,7 @@
 <div class="max-h-lb-name overflow-hidden">
 	@if (IsBanned)
 	{
-		<Tooltip Text="@BanDescription"><a href="/leaderboard/player/@Id" class="@(IsBanned ? string.Empty : DaggerCssClass)"><span class="font-goethe text-xl hover:underline">@Name.ToNoBreakString()</span></a></Tooltip>
+		<a href="/leaderboard/player/@Id" class="@(IsBanned ? string.Empty : DaggerCssClass)"><span class="font-goethe text-xl hover:underline">@Name.ToNoBreakString()</span></a>
 	}
 	else
 	{
@@ -14,5 +14,4 @@
 	[Parameter, EditorRequired] public string Name { get; set; } = null!;
 	[Parameter, EditorRequired] public string DaggerCssClass { get; set; } = null!;
 	[Parameter] public bool IsBanned { get; set; }
-	[Parameter] public string? BanDescription { get; set; }
 }
