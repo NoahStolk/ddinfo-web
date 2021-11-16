@@ -1,6 +1,15 @@
 {
 	"DevilDaggersSurvivalEditor": [
 		{
+			"VersionNumber": "2.41.1.0",
+			"Date": "2021-11-16T00:00:00",
+			"Changes": [
+				{
+					"Description": "Fixed crash when pressing delete in spawns list when nothing is selected."
+				}
+			]
+		},
+		{
 			"VersionNumber": "2.41.0.0",
 			"Date": "2021-10-15T00:00:00",
 			"Changes": [
