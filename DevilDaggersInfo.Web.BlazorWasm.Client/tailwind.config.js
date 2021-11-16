@@ -1,4 +1,8 @@
 module.exports = {
+	mode: 'jit',
+	purge: [
+		'./**/*.{html,razor}',
+	],
 	theme: {
 		colors: {
 			'color-link': '#f11',

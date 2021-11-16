@@ -4,6 +4,9 @@
     <ProjectStartDateTime>$([System.DateTime]::Parse("2021-07-06 09:22:00").Ticks)</ProjectStartDateTime>
     <MinutesSinceProjectStart>$([System.Convert]::ToInt64($([MSBuild]::Divide($([MSBuild]::Subtract($(DateTimeUtcNow), $(ProjectStartDateTime))), 600000000))))</MinutesSinceProjectStart>
     <Version>5.0.0.0-alpha.$(MinutesSinceProjectStart)</Version>
+    <AppendTargetFrameworkToOutputPath>false</AppendTargetFrameworkToOutputPath>
+    <IntermediateOutputPath>obj</IntermediateOutputPath>
+    <TailwindBuild>true</TailwindBuild>
   </PropertyGroup>
   <ItemGroup>
     <PackageReference Include="Blazored.LocalStorage" />
@@ -22,4 +25,17 @@
     <ProjectReference Include="..\DevilDaggersInfo.SourceGen.Web.BlazorWasm.Client\DevilDaggersInfo.SourceGen.Web.BlazorWasm.Client.csproj" OutputItemType="Analyzer" ReferenceOutputAssembly="false" />
     <ProjectReference Include="..\DevilDaggersInfo.Web.BlazorWasm.Shared\DevilDaggersInfo.Web.BlazorWasm.Shared.csproj" />
   </ItemGroup>
+  <Target Name="npm install" BeforeTargets="tailwind build" Inputs="package.json" Outputs="node_modules/.install-stamp">
+    <Exec Command="npm -v" ContinueOnError="true">
+      <Output TaskParameter="ExitCode" PropertyName="error" />
+    </Exec>
+    <Error Condition="'$(error)' != '0'" Text="NPM installation not found" />
+    <Exec Command="npm install"/>
+    <Touch Files="node_modules/.install-stamp" AlwaysCreate="true" />
+  </Target>
+  <Target Name="tailwind build" AfterTargets="Build" Condition="'$(TailwindBuild)' == 'true'">
+    <Message Text="Tailwind build target running..." Importance="high"></Message>
+    <Exec Command="npm run build" Condition="'$(Configuration)' == 'Debug'"/>
+    <Exec Command="npm run publish" Condition="'$(Configuration)' == 'Release'"/>
+  </Target>
 </Project>
