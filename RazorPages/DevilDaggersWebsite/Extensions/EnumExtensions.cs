@@ -1,4 +1,4 @@
-﻿using DevilDaggersWebsite.Enumerators;
+using DevilDaggersWebsite.Enumerators;
 using DevilDaggersWebsite.HostedServices.DdInfoDiscordBot;
 using DSharpPlus.Entities;
 
@@ -13,6 +13,7 @@ namespace DevilDaggersWebsite.Extensions
 			Currency.Aud => '$',
 			Currency.Gbp => '£',
 			Currency.Sgd => '$',
+			Currency.Rub => '₽',
 			_ => '?',
 		};
 

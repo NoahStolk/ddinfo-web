@@ -7,6 +7,7 @@ public static class CurrencyExtensions
 		Currency.Eur => '€',
 		Currency.Usd or Currency.Aud or Currency.Sgd => '$',
 		Currency.Gbp => '£',
+		Currency.Rub => '₽',
 		_ => '?',
 	};
 }
