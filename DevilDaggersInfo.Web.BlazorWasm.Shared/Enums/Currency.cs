@@ -26,4 +26,9 @@ public enum Currency
 	/// Singapore Dollar.
 	/// </summary>
 	Sgd,
+
+	/// <summary>
+	/// Russian Ruble.
+	/// </summary>
+	Rub,
 }

@@ -1,4 +1,4 @@
-﻿namespace DevilDaggersWebsite.Enumerators
+namespace DevilDaggersWebsite.Enumerators
 {
 	public enum Currency
 	{
@@ -26,5 +26,10 @@
 		/// Singapore Dollar.
 		/// </summary>
 		Sgd,
+
+		/// <summary>
+		/// Russian Ruble.
+		/// </summary>
+		Rub,
 	}
 }
