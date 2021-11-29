@@ -13,7 +13,7 @@ public class LeaderboardStatisticsCache : IStaticCache
 		_logger = logger;
 	}
 
-	public string FileName { get; private set; } = string.Empty;
+	public string? FileName { get; private set; }
 	public bool IsFetched { get; private set; }
 
 	public Dictionary<Dagger, int> DaggerStats { get; } = new();

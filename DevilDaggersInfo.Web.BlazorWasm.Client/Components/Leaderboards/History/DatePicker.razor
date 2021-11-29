@@ -1,5 +1,7 @@
 @using System.Globalization
 
+<p class="text-red">The date picker is currently broken.</p>
+
 <Select @onchange="@(async (e) => await UpdateComponent(e, (dp) => dp._date.Day = ToInt(e)))" class="bg-gray-0b transition-colors duration-100 h-8 py-1 rounded text-color-text">
 	@for (int i = 1; i <= 31; i++)
 	{
