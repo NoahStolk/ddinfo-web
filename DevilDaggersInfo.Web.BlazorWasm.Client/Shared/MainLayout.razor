@@ -7,18 +7,55 @@
 
 	<div class="absolute sm:left-12 flex flex-col content px-4 w-full sm:w-screen-width min-h-full flex-grow items-stretch top-12 sm:top-0">
 		<div class="flex-grow flex-shrink-0">
-			<div class="text-white bg-dark-red text-2xl p-1 my-2">
-				<b>IMPORTANT NOTICE!!!</b>
-				<br />
-				<p>
-					This is the fifth (unreleased) version of DevilDaggers.info. It is currently in an ALPHA state. Yes there are bugs, I will fix them. Yes it is slow, I will make it faster. Yes some things are missing, I will add them. Please do not let people know about this subdomain.
-				</p>
-				<p>
-					Also keep in mind that the alpha uses the same database as the current version of the website, but NOT the same file system. There will be a discrepancy in data that's being shown. This will obviously be resolved once V5 supersedes V4.
-				</p>
-				<p>
-					If you have an account on the current website, you cannot use it to login here.
-				</p>
+			<div class="text-white bg-[#440000] px-4 my-2 pb-3">
+				<Heading>IMPORTANT NOTICE!!!</Heading>
+				<Paragraph>
+					This is DevilDaggers.info V5 which is currently unreleased and in an ALPHA state. Yes there are bugs, I will fix them. Yes it is slow, I will make it faster. Yes some things are missing, I will add them. <strong>Please do not let people know about this subdomain. This is only here for testing purposes.</strong>
+				</Paragraph>
+				<Paragraph>
+					If I've sent you here for testing purposes, feel free to look around and use whatever browser you like. Just expect things to not always work properly.
+				</Paragraph>
+				<button class="bg-black border-gray-22 border-2 w-32" @onclick="() => _readMore = !_readMore">@(_readMore ? "Close" : "Read more")</button>
+
+				@if (_readMore)
+				{
+					<Heading Level=2>Why a complete rewrite?</Heading>
+					<Paragraph>
+						There are many reasons. The current website (V4) was set up in 2018. The framework used back then is not ideal for a website like this anymore. The website grew a lot larger than planned, and the older framework became more and more challenging to work with. These issues, as well as some architectural flaws in the website's original design, eventually meant that a complete rewrite was going to happen either way.
+					</Paragraph>
+					<Paragraph>
+						In 2020, a new framework for .NET officially came out, which solves all issues I had with the current website. I've been porting all the stuff to a completely new code base (website and shared code for the tools) since July 2021, and this is where it currently stands. The main advantages are:
+					</Paragraph>
+					<ul class="pl-4">
+						<li class="list-disc">The website is now properly separated into two applications; a server application and a client application. The server serves the client app to the browser on request, and the client handles it from there, doing requests to the server's public API. This means the server does not have to serve pre-rendered HTML to the browser for every page anymore, so there is now a proper separation between front-end and back-end logic in the code base which helps a lot in maintainability.</li>
+						<li class="list-disc">The layout is now fully component-based; the old framework had limited support for this which was annoying to work with.</li>
+						<li class="list-disc">No more JavaScript and jQuery; the new website runs completely on WebAssembly (with a few tiny exceptions).</li>
+						<li class="list-disc">No more styling frameworks; I do it myself this time.</li>
+						<li class="list-disc">No more hand-written CSS; the new website uses a utility framework for CSS, which means I rarely have to write any of it anymore. Should I still have to write CSS for some reason, the new framework automatically makes sure it is only applied to the relevant parts of the website (CSS isolation).</li>
+					</ul>
+
+					<Paragraph>It will take a long time to complete the rewrite, but I can assure you it is absolutely worth it.</Paragraph>
+
+					<Heading Level=2>Will there be new stuff?</Heading>
+					<Paragraph>
+						Yes! There is already some new functionality, such as the history statistics and assets wiki, but there will be much more. In fact, the whole rewrite of the website is only happening <i>because</i> I want to make new features, but figured it would not be worth it to make the old website even larger when a total rewrite is inevitable.
+					</Paragraph>
+					<Paragraph>Some new planned features are:</Paragraph>
+					<ul class="pl-4">
+						<li class="list-disc">Web-based (and therefore cross-platform) editors for spawnsets and mods</li>
+						<li class="list-disc">Allowing anyone to make an account and maintain their own player settings, and maybe even upload their own spawnsets and mods</li>
+						<li class="list-disc">A lot more types of custom leaderboards, and probably custom leaderboards for every applicable spawnset, probably a global leaderboard per category as well</li>
+						<li class="list-disc">More statistics</li>
+					</ul>
+
+					<Paragraph>All of this is still subject to change, and the main priority right now is finishing the website and replacing the old one.</Paragraph>
+
+					<Heading Level=2>Notes</Heading>
+					<ul class="pl-4">
+						<li class="list-disc">If you have an account on the current website, you cannot use it to login here.</li>
+						<li class="list-disc">This new version uses the same database as the current version of the website, but NOT the same file system. There will be a discrepancy in data that's being shown until V5 officially supersedes V4.</li>
+					</ul>
+				}
 			</div>
 			@Body
 		</div>
@@ -26,8 +63,12 @@
 			<p>&copy; DevilDaggers.info 2017-@DateTime.UtcNow.Year</p>
 			<p>Version @Program.Version</p>
 			<p><UrlLink Href="//devildaggers.com/" OpenInNewTab=true>Devil Daggers</UrlLink> is created by <UrlLink Href="//sorath.com/" OpenInNewTab=true>Sorath</UrlLink></p>
-			<p><UrlLink Href="//devildaggers.info/" OpenInNewTab=true>DevilDaggers.info</UrlLink> is created by <UrlLink Href="//noahstolk.com/" OpenInNewTab=true>Noah Stolk</UrlLink><br /></p>
+			<p><UrlLink Href="//devildaggers.info/" OpenInNewTab=true>DevilDaggers.info</UrlLink> is created by <UrlLink Href="//noahstolk.com/" OpenInNewTab=true>Noah Stolk</UrlLink></p>
 			<p><UrlLink Href=@Constants.DiscordUrl OpenInNewTab=true>Discord server</UrlLink></p>
 		</footer>
 	</div>
 </div>
+
+@code {
+	private bool _readMore;
+}
