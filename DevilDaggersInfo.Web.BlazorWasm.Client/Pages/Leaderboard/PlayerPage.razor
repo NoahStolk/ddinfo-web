@@ -26,7 +26,7 @@ else
 	<Heading>@GetEntry.Username</Heading>
 
 	<UrlLink Href="@($"/leaderboard?Rank={(GetEntry.Rank - 1) / 100 * 100 + 1}")">Back to leaderboard</UrlLink>
-	<p>@GetEntry.Username is currently rank @GetEntry.Rank.</p>
+	<Paragraph>@GetEntry.Username is currently rank @GetEntry.Rank.</Paragraph>
 	<div class="grid gap-2 grid-cols-1 md:grid-cols-2 xl:grid-cols-3 2xl:grid-cols-5">
 		<PlayerCard Title="Personal Best">
 			<DataField CssClass="odd:bg-gray-16" Name="Time"><SpanTime TimeInSeconds="@GetEntry.Time" /></DataField>
