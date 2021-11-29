@@ -27,10 +27,10 @@ public class DiscordLogger : ILogger
 			return;
 
 		// Do not log immediately as this is async for Discord. TODO: Refactor.
-		DiscordLogFlushBackgroundService.LogEntries.Add(BuildLog(logLevel, config, state, exception));
+		DiscordLogFlushBackgroundService.LogEntries.Add(BuildLog(logLevel, eventId, config, state, exception));
 	}
 
-	private DiscordEmbed BuildLog<TState>(LogLevel logLevel, DiscordLoggerConfiguration config, TState? state, Exception? exception)
+	private DiscordEmbed BuildLog<TState>(LogLevel logLevel, EventId eventId, DiscordLoggerConfiguration config, TState? state, Exception? exception)
 	{
 		DiscordEmbedBuilder builder = new()
 		{
@@ -38,10 +38,14 @@ public class DiscordLogger : ILogger
 			Color = config.LogLevels.ContainsKey(logLevel) ? config.LogLevels[logLevel] : DiscordColor.White,
 		};
 
+		builder.AddFieldObject("Logger", _name);
+
+		if (eventId.Name != null)
+			builder.AddFieldObject(eventId.Name, eventId.Id);
+
 		if (exception != null)
 		{
 			builder.AddError(exception);
-			builder.AddFieldObject("Logger", _name);
 			foreach (DictionaryEntry? data in exception.Data)
 				builder.AddFieldObject(data?.Key?.ToString() ?? "null", data?.Value?.ToString() ?? "null");
 		}
