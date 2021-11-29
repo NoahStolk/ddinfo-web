@@ -59,6 +59,7 @@ public class Startup
 
 		services.AddHostedService<DiscordLogFlushBackgroundService>();
 
+#if V5_RELEASE
 		if (!WebHostEnvironment.IsDevelopment())
 		{
 			// TODO: ResponseTimeLoggerBackgroundService
@@ -68,6 +69,7 @@ public class Startup
 			services.AddHostedService<FileSystemLoggerBackgroundService>();
 			services.AddHostedService<LeaderboardHistoryBackgroundService>();
 		}
+#endif
 
 		// Use a transient for ToolHelper so we can update the Changelogs.json file without having to re-instantiate this.
 		services.AddTransient<IToolHelper, ToolHelper>();
