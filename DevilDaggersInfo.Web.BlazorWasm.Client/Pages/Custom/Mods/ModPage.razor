@@ -45,13 +45,19 @@ else
 		</div>
 	}
 
-	@if (GetMod.ScreenshotFileNames.Count > 0)
+	@if (GetMod.ScreenshotFileNames.Count > 1)
 	{
-		<Heading Level="2">@(GetMod.ScreenshotFileNames.Count == 1 ? "Screenshot" : "Screenshots")</Heading>
+		<Heading Level="2">Screenshots</Heading>
 		@foreach (string screenshotFileName in GetMod.ScreenshotFileNames)
 		{
+			@*TODO: Carousel*@
 			<img src="@($"api/mod-screenshots?modName={GetMod.Name}&fileName={screenshotFileName}")" />
 		}
+	}
+	else if (GetMod.ScreenshotFileNames.Count == 1)
+	{
+		<Heading Level="2">Screenshot</Heading>
+		<img src="@($"api/mod-screenshots?modName={GetMod.Name}&fileName={GetMod.ScreenshotFileNames.Count[0]}")" />
 	}
 
 	@if (GetMod.ModArchive != null)
