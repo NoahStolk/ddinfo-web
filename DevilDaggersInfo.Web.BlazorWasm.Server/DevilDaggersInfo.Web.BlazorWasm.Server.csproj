@@ -20,4 +20,9 @@
     <ProjectReference Include="..\DevilDaggersInfo.Web.BlazorWasm.Client\DevilDaggersInfo.Web.BlazorWasm.Client.csproj" />
     <ProjectReference Include="..\DevilDaggersInfo.Web.BlazorWasm.Shared\DevilDaggersInfo.Web.BlazorWasm.Shared.csproj" />
   </ItemGroup>
+  <ItemGroup>
+    <None Update=".botToken">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </None>
+  </ItemGroup>
 </Project>
