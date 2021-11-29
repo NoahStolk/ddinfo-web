@@ -176,11 +176,20 @@ else
 		}
 	</div>
 
-	<Heading Level="2">Progression</Heading>
-	<LineChart Options="LineChartUtils.Options" OptionsJsonString="@LineChartUtils.AdditionalJsonOptionsTime" @ref="_progressionChart" TItem="double" />
+	if (GetPlayerHistory != null)
+	{
+		if (GetPlayerHistory.History.Count > 0)
+		{
+			<Heading Level="2">Progression</Heading>
+			<LineChart Options="LineChartUtils.Options" OptionsJsonString="@LineChartUtils.AdditionalJsonOptionsTime" @ref="_progressionChart" TItem="double" />
+		}
 
-	<Heading Level="2">Activity</Heading>
-	<LineChart Options="LineChartUtils.Options" OptionsJsonString="@LineChartUtils.AdditionalJsonOptionsTime" @ref="_activityChart" TItem="double" />
+		if (GetPlayerHistory.Activity.Count > 0)
+		{
+			<Heading Level="2">Activity</Heading>
+			<LineChart Options="LineChartUtils.Options" OptionsJsonString="@LineChartUtils.AdditionalJsonOptionsTime" @ref="_activityChart" TItem="double" />
+		}
+	}
 }
 
 @code
