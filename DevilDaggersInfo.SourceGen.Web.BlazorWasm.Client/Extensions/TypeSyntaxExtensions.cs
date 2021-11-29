@@ -5,7 +5,7 @@ public static class TypeSyntaxExtensions
 	public static string GetTypeStringForApiHttpClient(this TypeSyntax typeSyntax)
 	{
 		string typeString = typeSyntax.ToString();
-		if (typeString == "ActionResult")
+		if (typeString is "ActionResult" or "IActionResult")
 			return "Task";
 
 		while (typeString.StartsWith("ActionResult<") || typeString.StartsWith("Task<"))
