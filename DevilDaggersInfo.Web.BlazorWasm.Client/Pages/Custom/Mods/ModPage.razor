@@ -50,8 +50,7 @@ else
 		<Heading Level="2">@(GetMod.ScreenshotFileNames.Count == 1 ? "Screenshot" : "Screenshots")</Heading>
 		@foreach (string screenshotFileName in GetMod.ScreenshotFileNames)
 		{
-			@*TODO*@
-			<img src="" />
+			<img src="@($"api/mod-screenshots?modName={GetMod.Name}&fileName={screenshotFileName}")" />
 		}
 	}
 
