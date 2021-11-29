@@ -6,19 +6,21 @@ using System.Security.Claims;
 namespace DevilDaggersInfo.Web.BlazorWasm.Server.Controllers.Public;
 
 [ApiController]
+[ApiExplorerSettings(IgnoreApi = true)]
 [Route("api/authentication")]
 public class AuthenticationController : ControllerBase
 {
 	private readonly IUserService _userService;
 	private readonly IWebHostEnvironment _environment;
+	private readonly ILogger<AuthenticationController> _logger;
 
-	public AuthenticationController(IUserService userService, IWebHostEnvironment environment)
+	public AuthenticationController(IUserService userService, IWebHostEnvironment environment, ILogger<AuthenticationController> logger)
 	{
 		_userService = userService;
 		_environment = environment;
+		_logger = logger;
 	}
 
-	[ApiExplorerSettings(IgnoreApi = true)]
 	[HttpPost("login")]
 	[ProducesResponseType(StatusCodes.Status200OK)]
 	[ProducesResponseType(StatusCodes.Status400BadRequest)]
@@ -26,7 +28,10 @@ public class AuthenticationController : ControllerBase
 	{
 		UserEntity? user = _userService.Authenticate(loginRequest.Name, loginRequest.Password);
 		if (user == null)
+		{
+			_logger.LogWarning("User {user} failed to login.", loginRequest.Name);
 			return BadRequest("Username or password is incorrect.");
+		}
 
 		JwtSecurityTokenHandler tokenHandler = new();
 		SecurityTokenDescriptor tokenDescriptor = new()
@@ -42,6 +47,7 @@ public class AuthenticationController : ControllerBase
 		SecurityToken token = tokenHandler.CreateToken(tokenDescriptor);
 		string tokenString = tokenHandler.WriteToken(token);
 
+		_logger.LogWarning("User {user} logged in successfully.", loginRequest.Name);
 		return Ok(new LoginResponse
 		{
 			Id = user.Id,
@@ -50,7 +56,6 @@ public class AuthenticationController : ControllerBase
 		});
 	}
 
-	[ApiExplorerSettings(IgnoreApi = true)]
 	[HttpPost("register")]
 	[ProducesResponseType(StatusCodes.Status200OK)]
 	[ProducesResponseType(StatusCodes.Status400BadRequest)]
@@ -62,10 +67,12 @@ public class AuthenticationController : ControllerBase
 		try
 		{
 			_userService.Create(registrationRequest.Name, registrationRequest.Password);
+			_logger.LogWarning("User {user} registered successfully.", registrationRequest.Name);
 			return Ok();
 		}
 		catch (Exception ex)
 		{
+			_logger.LogWarning(ex, "User {user} failed to register.", registrationRequest.Name);
 			return BadRequest(ex.Message);
 		}
 	}
