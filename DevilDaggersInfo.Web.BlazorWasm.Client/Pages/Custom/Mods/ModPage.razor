@@ -48,10 +48,17 @@ else
 	@if (GetMod.ScreenshotFileNames.Count > 1)
 	{
 		<Heading Level="2">Screenshots</Heading>
-		@foreach (string screenshotFileName in GetMod.ScreenshotFileNames)
+
+		bool first = _screenshotIndex == 0;
+		bool last = _screenshotIndex == GetMod.ScreenshotFileNames.Count - 1;
+
+		<button disabled="@first" class="@(first ? "disabled:opacity-50 cursor-default" : "hover:bg-gray-22") bg-gray-0b transition-colors duration-100 w-8 h-8 py-1 rounded text-color-text" @onclick="() => _screenshotIndex--">&lt;</button>
+		<button disabled="@last" class="@(last ? "disabled:opacity-50 cursor-default" : "hover:bg-gray-22") bg-gray-0b transition-colors duration-100 w-8 h-8 py-1 rounded text-color-text" @onclick="() => _screenshotIndex++">&gt;</button>
+
+		@for (int i = 0; i < GetMod.ScreenshotFileNames.Count; i++)
 		{
-			@*TODO: Carousel*@
-			<img src="@($"api/mod-screenshots?modName={GetMod.Name}&fileName={screenshotFileName}")" />
+			string fileName = GetMod.ScreenshotFileNames[i];
+			<img class="@(i == _screenshotIndex ? "" : "hidden")" src="@($"api/mod-screenshots?modName={GetMod.Name}&fileName={fileName}")" />
 		}
 	}
 	else if (GetMod.ScreenshotFileNames.Count == 1)
@@ -132,6 +139,8 @@ else
 
 @code
 {
+	private int _screenshotIndex;
+
 	[Parameter, EditorRequired] public int Id { get; set; }
 
 	public GetMod? GetMod { get; set; }
