@@ -6,7 +6,7 @@ module.exports = {
 	theme: {
 		colors: {
 			'color-link': '#f11',
-			'color-link-hover': '#c11',
+			'color-link-hover': '#911',
 			'black': '#000',
 			'red': '#f00',
 			'orange': '#f80',
