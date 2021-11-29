@@ -64,7 +64,7 @@ internal class ApiHttpClientContext
 		foreach (MethodDeclarationSyntax mds in cds.Members.OfType<MethodDeclarationSyntax>())
 		{
 			// Skip non-public methods.
-			if (!mds.Modifiers.Any(st => st.Kind() == SyntaxKind.PublicKeyword))
+			if (!mds.Modifiers.Any(st => st.IsKind(SyntaxKind.PublicKeyword)))
 				continue;
 
 			string methodName = mds.Identifier.ToString();
