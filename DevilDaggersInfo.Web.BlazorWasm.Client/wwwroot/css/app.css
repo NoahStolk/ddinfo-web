@@ -19,18 +19,40 @@
 	}
 
 .leviathan {
-	background: linear-gradient(#FF0031 40%, #DC002A 41%, #A50020 45%, #6C0015 59%, #A50020 65%, #DC002A 70%, #FF0031);
-	background-repeat: repeat-x;
+	background-image: url('../images/misc/leviathan-background.png');
+	background-repeat: repeat;
 	-webkit-font-smoothing: antialiased;
 	-webkit-background-clip: text;
 	-moz-background-clip: text;
 	background-clip: text;
 	-webkit-text-fill-color: transparent;
 	color: #A50020;
+	-webkit-animation: leviathan-background-animation 3s linear infinite;
+	animation: leviathan-background-animation 3s linear infinite;
+}
+
+@-webkit-keyframes leviathan-background-animation {
+	0% {
+		background-position: 0px 0px;
+	}
+
+	100% {
+		background-position: 0px 128px;
+	}
+}
+
+@keyframes leviathan-background-animation {
+	0% {
+		background-position: 0px 0px;
+	}
+
+	100% {
+		background-position: 0px 128px;
+	}
 }
 
 .devil {
-	background: linear-gradient(#FF3A2A 40%, #AB1407 50%, #580500 51%, #FF3A2A);
+	background: linear-gradient(#FF3A2A 40%, #AB1407 50%, #4F0400 51%, #B2281D);
 	background-repeat: repeat-x;
 	-webkit-font-smoothing: antialiased;
 	-webkit-background-clip: text;
