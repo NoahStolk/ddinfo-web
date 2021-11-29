@@ -138,9 +138,6 @@ public class Startup
 
 		app.UseCors(_defaultCorsPolicy);
 
-		app.UseAuthentication();
-		app.UseAuthorization();
-
 		app.UseEndpoints(endpoints =>
 		{
 			endpoints.MapRazorPages();
