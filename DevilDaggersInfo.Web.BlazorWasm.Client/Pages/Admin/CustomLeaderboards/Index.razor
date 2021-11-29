@@ -9,4 +9,4 @@
 	Title="Custom Leaderboards"
 	ApiCall="(int pageIndex, int pageSize, string? sortBy, bool isAscending) => Http.GetCustomLeaderboards(pageIndex, pageSize, sortBy == null ? null : Enum.Parse<CustomLeaderboardSorting>(sortBy), isAscending)"
 	DeletionApiCall="(int id) => Http.DeleteCustomLeaderboardById(id)"
-	GridConfiguration="admin-custom-leaderboards" />
+	GridConfiguration="grid-cols-admin-custom-leaderboards" />

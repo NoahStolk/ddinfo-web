@@ -9,4 +9,4 @@
 	Title="Custom Entries"
 	ApiCall="(int pageIndex, int pageSize, string? sortBy, bool isAscending) => Http.GetCustomEntries(pageIndex, pageSize, sortBy == null ? null : Enum.Parse<CustomEntrySorting>(sortBy), isAscending)"
 	DeletionApiCall="(int id) => Http.DeleteCustomEntryById(id)"
-	GridConfiguration="admin-custom-entries" />
+	GridConfiguration="grid-cols-admin-custom-entries" />

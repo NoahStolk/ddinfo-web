@@ -32,9 +32,6 @@ public class Startup
 
 		services.AddDatabaseDeveloperPageExceptionFilter();
 
-		// Remove?
-		services.AddAuthentication();
-
 		services.AddControllersWithViews();
 
 		services.AddRazorPages();

@@ -9,4 +9,4 @@
 	Title="Players"
 	ApiCall="(int pageIndex, int pageSize, string? sortBy, bool isAscending) => Http.GetPlayers(pageIndex, pageSize, sortBy == null ? null : Enum.Parse<PlayerSorting>(sortBy), isAscending)"
 	DeletionApiCall="(int id) => Http.DeletePlayerById(id)"
-	GridConfiguration="admin-players" />
+	GridConfiguration="grid-cols-admin-players" />

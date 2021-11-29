@@ -9,4 +9,4 @@
 	Title="Users"
 	ApiCall="(int pageIndex, int pageSize, string? sortBy, bool isAscending) => Http.GetUsers(pageIndex, pageSize, sortBy == null ? null : Enum.Parse<UserSorting>(sortBy), isAscending)"
 	DeletionApiCall="(int id) => Http.DeleteUserById(id)"
-	GridConfiguration="admin-users" />
+	GridConfiguration="grid-cols-admin-users" />
