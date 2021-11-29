@@ -30,17 +30,18 @@ public class DiscordLogger : ILogger
 		DiscordLogFlushBackgroundService.LogEntries.Add(BuildLog(logLevel, config, state, exception));
 	}
 
-	private static DiscordEmbed BuildLog<TState>(LogLevel logLevel, DiscordLoggerConfiguration config, TState? state, Exception? exception)
+	private DiscordEmbed BuildLog<TState>(LogLevel logLevel, DiscordLoggerConfiguration config, TState? state, Exception? exception)
 	{
 		DiscordEmbedBuilder builder = new()
 		{
 			Title = (exception?.Message ?? state?.ToString() ?? "No title").TrimAfter(255),
-			Color = config.LogLevels[logLevel],
+			Color = config.LogLevels.ContainsKey(logLevel) ? config.LogLevels[logLevel] : DiscordColor.White,
 		};
 
 		if (exception != null)
 		{
 			builder.AddError(exception);
+			builder.AddFieldObject("Logger", _name);
 			foreach (DictionaryEntry? data in exception.Data)
 				builder.AddFieldObject(data?.Key?.ToString() ?? "null", data?.Value?.ToString() ?? "null");
 		}
