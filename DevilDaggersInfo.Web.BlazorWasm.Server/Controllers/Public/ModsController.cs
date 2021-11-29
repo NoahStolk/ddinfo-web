@@ -39,7 +39,7 @@ public class ModsController : ControllerBase
 				.ThenInclude(pam => pam.Player)
 			.Where(am => !am.IsHidden);
 
-		// OrdinalIgnoreCase works here because this is an IEnumerable. Spawnset and custom leaderboard queries do not require this.
+		// OrdinalIgnoreCase works here because this is an IEnumerable. Spawnset and custom leaderboard queries do not require this, and use IQueryable, so OrdinalIgnoreCase will not work there and casing is ignored by default.
 		if (!string.IsNullOrWhiteSpace(modFilter))
 			modsQuery = modsQuery.Where(m => m.Name.Contains(modFilter, StringComparison.OrdinalIgnoreCase));
 

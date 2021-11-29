@@ -36,6 +36,7 @@ public class CustomLeaderboardsController : ControllerBase
 				.ThenInclude(sf => sf.Player)
 			.Where(cl => !cl.IsArchived && category == cl.Category);
 
+		// Casing is ignored by default because of IQueryable.
 		if (!string.IsNullOrWhiteSpace(spawnsetFilter))
 			customLeaderboardsQuery = customLeaderboardsQuery.Where(cl => cl.Spawnset.Name.Contains(spawnsetFilter));
 

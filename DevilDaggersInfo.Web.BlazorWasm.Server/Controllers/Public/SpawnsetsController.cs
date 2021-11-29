@@ -55,6 +55,7 @@ public class SpawnsetsController : ControllerBase
 			spawnsetsQuery = spawnsetsQuery.Where(s => spawnsetsWithCustomLeaderboardIds.Contains(s.Id));
 		}
 
+		// Casing is ignored by default because of IQueryable.
 		if (!string.IsNullOrWhiteSpace(spawnsetFilter))
 			spawnsetsQuery = spawnsetsQuery.Where(s => s.Name.Contains(spawnsetFilter));
 
