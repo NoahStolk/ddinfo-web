@@ -32,13 +32,13 @@ public class DonationsController : ControllerBase
 
 		donationsQuery = sortBy switch
 		{
-			DonationSorting.Amount => donationsQuery.OrderBy(d => d.Amount, ascending),
-			DonationSorting.ConvertedEuroCentsReceived => donationsQuery.OrderBy(d => d.ConvertedEuroCentsReceived, ascending),
-			DonationSorting.Currency => donationsQuery.OrderBy(d => d.Currency, ascending),
-			DonationSorting.DateReceived => donationsQuery.OrderBy(d => d.DateReceived, ascending),
-			DonationSorting.IsRefunded => donationsQuery.OrderBy(d => d.IsRefunded, ascending),
-			DonationSorting.Note => donationsQuery.OrderBy(d => d.Note, ascending),
-			DonationSorting.PlayerName => donationsQuery.OrderBy(d => d.Player.PlayerName, ascending),
+			DonationSorting.Amount => donationsQuery.OrderBy(d => d.Amount, ascending).ThenBy(d => d.Id),
+			DonationSorting.ConvertedEuroCentsReceived => donationsQuery.OrderBy(d => d.ConvertedEuroCentsReceived, ascending).ThenBy(d => d.Id),
+			DonationSorting.Currency => donationsQuery.OrderBy(d => d.Currency, ascending).ThenBy(d => d.Id),
+			DonationSorting.DateReceived => donationsQuery.OrderBy(d => d.DateReceived, ascending).ThenBy(d => d.Id),
+			DonationSorting.IsRefunded => donationsQuery.OrderBy(d => d.IsRefunded, ascending).ThenBy(d => d.Id),
+			DonationSorting.Note => donationsQuery.OrderBy(d => d.Note, ascending).ThenBy(d => d.Id),
+			DonationSorting.PlayerName => donationsQuery.OrderBy(d => d.Player.PlayerName, ascending).ThenBy(d => d.Id),
 			_ => donationsQuery.OrderBy(d => d.Id, ascending),
 		};
 

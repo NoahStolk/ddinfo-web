@@ -36,13 +36,13 @@ public class ModsController : ControllerBase
 
 		modsQuery = sortBy switch
 		{
-			ModSorting.ModTypes => modsQuery.OrderBy(m => m.ModTypes, ascending),
-			ModSorting.HtmlDescription => modsQuery.OrderBy(m => m.HtmlDescription, ascending),
-			ModSorting.IsHidden => modsQuery.OrderBy(m => m.IsHidden, ascending),
-			ModSorting.LastUpdated => modsQuery.OrderBy(m => m.LastUpdated, ascending),
-			ModSorting.Name => modsQuery.OrderBy(m => m.Name, ascending),
-			ModSorting.TrailerUrl => modsQuery.OrderBy(m => m.TrailerUrl, ascending),
-			ModSorting.Url => modsQuery.OrderBy(m => m.Url, ascending),
+			ModSorting.ModTypes => modsQuery.OrderBy(m => m.ModTypes, ascending).ThenBy(m => m.Id),
+			ModSorting.HtmlDescription => modsQuery.OrderBy(m => m.HtmlDescription, ascending).ThenBy(m => m.Id),
+			ModSorting.IsHidden => modsQuery.OrderBy(m => m.IsHidden, ascending).ThenBy(m => m.Id),
+			ModSorting.LastUpdated => modsQuery.OrderBy(m => m.LastUpdated, ascending).ThenBy(m => m.Id),
+			ModSorting.Name => modsQuery.OrderBy(m => m.Name, ascending).ThenBy(m => m.Id),
+			ModSorting.TrailerUrl => modsQuery.OrderBy(m => m.TrailerUrl, ascending).ThenBy(m => m.Id),
+			ModSorting.Url => modsQuery.OrderBy(m => m.Url, ascending).ThenBy(m => m.Id),
 			_ => modsQuery.OrderBy(m => m.Id, ascending),
 		};
 

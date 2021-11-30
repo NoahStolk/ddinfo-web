@@ -35,12 +35,12 @@ public class SpawnsetsController : ControllerBase
 
 		spawnsetsQuery = sortBy switch
 		{
-			SpawnsetSorting.Author => spawnsetsQuery.OrderBy(s => s.Player.PlayerName, ascending),
-			SpawnsetSorting.HtmlDescription => spawnsetsQuery.OrderBy(s => s.HtmlDescription, ascending),
-			SpawnsetSorting.IsPractice => spawnsetsQuery.OrderBy(s => s.IsPractice, ascending),
-			SpawnsetSorting.LastUpdated => spawnsetsQuery.OrderBy(s => s.LastUpdated, ascending),
-			SpawnsetSorting.MaxDisplayWaves => spawnsetsQuery.OrderBy(s => s.MaxDisplayWaves, ascending),
-			SpawnsetSorting.Name => spawnsetsQuery.OrderBy(s => s.Name, ascending),
+			SpawnsetSorting.Author => spawnsetsQuery.OrderBy(s => s.Player.PlayerName, ascending).ThenBy(s => s.Id),
+			SpawnsetSorting.HtmlDescription => spawnsetsQuery.OrderBy(s => s.HtmlDescription, ascending).ThenBy(s => s.Id),
+			SpawnsetSorting.IsPractice => spawnsetsQuery.OrderBy(s => s.IsPractice, ascending).ThenBy(s => s.Id),
+			SpawnsetSorting.LastUpdated => spawnsetsQuery.OrderBy(s => s.LastUpdated, ascending).ThenBy(s => s.Id),
+			SpawnsetSorting.MaxDisplayWaves => spawnsetsQuery.OrderBy(s => s.MaxDisplayWaves, ascending).ThenBy(s => s.Id),
+			SpawnsetSorting.Name => spawnsetsQuery.OrderBy(s => s.Name, ascending).ThenBy(s => s.Id),
 			_ => spawnsetsQuery.OrderBy(s => s.Id, ascending),
 		};
 
