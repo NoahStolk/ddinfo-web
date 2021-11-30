@@ -41,8 +41,15 @@ public class SpawnsView
 	public List<SpawnView> PreLoop { get; }
 	public List<SpawnView>[] Waves { get; }
 
+	public bool HasPreLoopSpawns { get; private set; }
+	public bool HasLoopSpawns { get; private set; }
+
 	private void BuildPreLoop(ref double totalSeconds, ref int totalGems, Spawn[] preLoopSpawns)
 	{
+		HasPreLoopSpawns = preLoopSpawns.Length > 0;
+		if (!HasPreLoopSpawns)
+			return;
+
 		foreach (Spawn spawn in preLoopSpawns)
 		{
 			totalSeconds += spawn.Delay;
@@ -55,6 +62,10 @@ public class SpawnsView
 
 	private void BuildLoop(GameVersion gameVersion, int waveCount, ref double totalSeconds, ref int totalGems, Spawn[] loopSpawns)
 	{
+		HasLoopSpawns = loopSpawns.Length > 0;
+		if (!HasLoopSpawns)
+			return;
+
 		for (int i = 0; i < waveCount; i++)
 		{
 			double enemyTimer = 0;
