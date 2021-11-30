@@ -1,7 +1,6 @@
 .tooltip {
 	display: inline;
 	position: relative;
-	white-space: nowrap;
 }
 
 	.tooltip:hover:after {
