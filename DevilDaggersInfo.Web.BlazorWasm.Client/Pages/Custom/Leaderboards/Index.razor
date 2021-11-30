@@ -104,7 +104,7 @@ else
 		@foreach (CustomLeaderboardCategory category in Enum.GetValues<CustomLeaderboardCategory>())
 		{
 			<div>
-				<Heading Title="@category" Level="3" />
+				<Heading Title="@category.ToString()" Level="3" />
 				<p>@GetTotalCustomLeaderboardData.LeaderboardsPerCategory[category].ToString("N0") leaderboards</p>
 				<p>@GetTotalCustomLeaderboardData.PlayersPerCategory[category].ToString("N0") players</p>
 				<p>@GetTotalCustomLeaderboardData.ScoresPerCategory[category].ToString("N0") scores</p>
