@@ -2,7 +2,7 @@
 @inject NavigationManager NavigationManager
 @typeparam TModel
 
-<Heading>Edit</Heading>
+<Heading>Edit @Name</Heading>
 
 @switch (State)
 {
@@ -40,6 +40,7 @@ else
 
 @code
 {
+	[Parameter, EditorRequired] public string Name { get; set; } = null!;
 	[Parameter, EditorRequired] public string OverviewUrl { get; set; } = null!;
 	[Parameter, EditorRequired] public Func<int, TModel, Task<HttpResponseMessage>> ApiCall { get; set; } = null!;
 	[Parameter, EditorRequired] public TModel? Model { get; set; }

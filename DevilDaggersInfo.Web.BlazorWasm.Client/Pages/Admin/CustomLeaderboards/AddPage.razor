@@ -5,7 +5,7 @@
 @using DevilDaggersInfo.Web.BlazorWasm.Shared.Dto.Admin.Spawnsets
 @using DevilDaggersInfo.Web.BlazorWasm.Shared.Enums
 
-<AdminAdd OverviewUrl="/admin/custom-leaderboards" ApiCall="Http.AddCustomLeaderboard" Model="_addCustomLeaderboard" @ref="_addComponent">
+<AdminAdd Name="Custom Leaderboard" OverviewUrl="/admin/custom-leaderboards" ApiCall="Http.AddCustomLeaderboard" Model="_addCustomLeaderboard" @ref="_addComponent">
 	<AdminInput Label="@nameof(AddCustomLeaderboard.SpawnsetId)"><SearchDropdown Values="@_spawnsetNames" Converter="s => int.Parse(s)" @bind-Value="@_addCustomLeaderboard.SpawnsetId" /></AdminInput>
 	<AdminInput Label="@nameof(AddCustomLeaderboard.Category)"><SearchDropdown Values="@(Enum.GetValues<CustomLeaderboardCategory>().ToDictionary(e => e, e => e.ToString()))" Converter="s => Enum.Parse<CustomLeaderboardCategory>(s)" @bind-Value="@_addCustomLeaderboard.Category" /></AdminInput>
 	<AdminInput Label="@nameof(AddCustomLeaderboard.TimeBronze)"><InputNumber class="w-64 pl-2 bg-gray-0b text-color-text" @bind-Value="_addCustomLeaderboard.TimeBronze" /></AdminInput>
