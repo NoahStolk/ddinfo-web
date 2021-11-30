@@ -1,9 +1,12 @@
 @typeparam TGetDto
 @inject AdminApiHttpClient Http
+@inject AuthenticationStateProvider Auth
 @inject NavigationManager NavigationManager
 @using Microsoft.AspNetCore.Components.WebAssembly.Authentication
 
 <Heading>@Title</Heading>
+
+<Paragraph>Hello, @_userName</Paragraph>
 
 @if (_errorMessage != null)
 {
@@ -88,8 +91,16 @@ else
 
 	private Deletion? _deletion;
 
+	private string? _userName;
+
 	protected override async Task OnInitializedAsync()
 	{
+		AuthenticationState auth = await Auth.GetAuthenticationStateAsync();
+		_userName = auth.User?.Identity?.Name;
+		
+		if (_userName?.Contains("unique_name: ") == true)
+			_userName = _userName[("unique_name: ".Length)..];
+
 		_sortings = _properties.ToDictionary(pi => pi.Key.Name, _ => true);
 		await Fetch();
 	}
