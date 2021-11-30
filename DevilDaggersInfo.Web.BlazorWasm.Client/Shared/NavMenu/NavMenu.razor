@@ -1,4 +1,5 @@
 @inject AuthenticationStateProvider Auth
+@inject IWebHostEnvironment Environment
 
 <div class="px-4 py-2 sm:hidden">
 	<a href="" class="font-goethe text-3xl">DevilDaggers.Info</a>
@@ -57,7 +58,10 @@
 						<NavItem Href="admin/titles" CssClass="text-lg" IconType="badge" Text="Titles" />
 						<NavItem Href="admin/users" CssClass="text-lg" IconType="person" Text="Users" />
 					</NavDropdown>
-					<span class="px-4 whitespace-nowrap transition-opacity duration-150 ease-in-out @GetOpacityClass()">Logged in as: @_userName</span>
+					@if (Environment.IsDevelopment())
+					{
+						<span class="px-4 whitespace-nowrap transition-opacity duration-150 ease-in-out @GetOpacityClass()">Logged in as: @_userName</span>
+					}
 				</Authorized>
 			</AuthorizeView>
 		</CascadingValue>
