@@ -4,6 +4,7 @@ using DevilDaggersInfo.Web.BlazorWasm.Client.Authentication;
 using DevilDaggersInfo.Web.BlazorWasm.Client.HttpClients;
 using Fluxor;
 using Microsoft.AspNetCore.Components.Authorization;
+using Microsoft.AspNetCore.Components.Web;
 using Microsoft.AspNetCore.Components.WebAssembly.Hosting;
 
 namespace DevilDaggersInfo.Web.BlazorWasm.Client;
@@ -18,6 +19,7 @@ public static class Program
 
 		WebAssemblyHostBuilder builder = WebAssemblyHostBuilder.CreateDefault(args);
 		builder.RootComponents.Add<App>("#app");
+		builder.RootComponents.Add<HeadOutlet>("head::after");
 
 		builder.Services.AddHttpClient<PublicApiHttpClient>(client => client.BaseAddress = new Uri(builder.HostEnvironment.BaseAddress));
 		builder.Services.AddHttpClient<AdminApiHttpClient>(client => client.BaseAddress = new Uri(builder.HostEnvironment.BaseAddress));
