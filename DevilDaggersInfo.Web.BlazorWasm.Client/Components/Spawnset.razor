@@ -1,6 +1,13 @@
 @using DevilDaggersInfo.Core.Spawnset.View
 
 <div class="max-w-xl">
+	<div class="grid gap-3 grid-cols-4 font-goethe text-lg">
+		<div class="text-right">Time</div>
+		<div>Enemy</div>
+		<div class="text-right">Gems (no farm)</div>
+		<div class="text-right">Total gems</div>
+	</div>
+
 	@foreach (SpawnView sv in SpawnsView.PreLoop)
 	{
 		<Spawn SpawnView=sv GameVersion=GameVersion />
