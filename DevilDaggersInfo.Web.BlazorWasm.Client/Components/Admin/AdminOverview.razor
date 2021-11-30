@@ -6,7 +6,7 @@
 
 <Heading>@Title</Heading>
 
-<Paragraph>Hello, @_userName</Paragraph>
+<Paragraph>Hello, @_username</Paragraph>
 
 @if (_errorMessage != null)
 {
@@ -91,15 +91,15 @@ else
 
 	private Deletion? _deletion;
 
-	private string? _userName;
+	private string? _username;
 
 	protected override async Task OnInitializedAsync()
 	{
 		AuthenticationState auth = await Auth.GetAuthenticationStateAsync();
-		_userName = auth.User?.Identity?.Name;
+		_username = auth.User?.Identity?.Name;
 		
-		if (_userName?.Contains("unique_name: ") == true)
-			_userName = _userName[("unique_name: ".Length)..];
+		if (_username?.Contains("unique_name: ") == true)
+			_username = _username[("unique_name: ".Length)..];
 
 		_sortings = _properties.ToDictionary(pi => pi.Key.Name, _ => true);
 		await Fetch();

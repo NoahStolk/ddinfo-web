@@ -35,30 +35,62 @@
 				Dagger dagger = Daggers.GetDaggerFromSeconds(GameVersion, entry.Time);
 				string daggerCssClass = dagger.Name.ToLower();
 
-				double accuracy = entry.DaggersFired == 0 ? 0 : entry.DaggersHit / (double)entry.DaggersFired;
-				double accuracyTotal = entry.DaggersFiredTotal == 0 ? 0 : entry.DaggersHitTotal / (double)entry.DaggersFiredTotal;
-
+				string kills = entry.Kills.ToString(FormatUtils.LeaderboardIntFormat);
+				string gems = entry.Gems.ToString(FormatUtils.LeaderboardIntFormat);
+				double accuracyValue = entry.DaggersFired == 0 ? 0 : entry.DaggersHit / (double)entry.DaggersFired;
+				string accuracy = accuracyValue.ToString(FormatUtils.AccuracyFormat);
 				string daggers = FormatUtils.FormatDaggersInt32(entry.DaggersHit, entry.DaggersFired, IsHistory);
-				string daggersTotal = FormatUtils.FormatDaggersUInt64(entry.DaggersHitTotal, entry.DaggersFiredTotal, IsHistory);
+				MarkupString death = MarkupUtils.DeathString(entry.DeathType, GameVersion);
 
-				<div class="grid gap-3 grid-cols-leaderboard-sm md:grid-cols-leaderboard-md lg:grid-cols-leaderboard-lg xl:grid-cols-leaderboard-xl h-6 @(i++ % 2 == 0 ? "bg-gray-0b" : string.Empty) @(isBanned ? "text-color-ban" : string.Empty)">
+				string timeTotal = entry.TimeTotal.ToString(FormatUtils.LeaderboardGlobalTimeFormat);
+				string killsTotal = entry.KillsTotal.ToString(FormatUtils.LeaderboardIntFormat);
+				string gemsTotal = entry.GemsTotal.ToString(FormatUtils.LeaderboardIntFormat);
+				double accuracyValueTotal = entry.DaggersFiredTotal == 0 ? 0 : entry.DaggersHitTotal / (double)entry.DaggersFiredTotal;
+				string accuracyTotal = accuracyValueTotal.ToString(FormatUtils.AccuracyFormat);
+				string daggersTotal = FormatUtils.FormatDaggersUInt64(entry.DaggersHitTotal, entry.DaggersFiredTotal, IsHistory);
+				string deathsTotal = entry.DeathsTotal.ToString(FormatUtils.LeaderboardIntFormat);
+
+				<div class="grid gap-3 grid-cols-leaderboard-sm md:grid-cols-leaderboard-md lg:grid-cols-leaderboard-lg xl:grid-cols-leaderboard-xl h-6 cursor-pointer xl:cursor-default @(i++ % 2 == 0 ? "bg-gray-0b" : string.Empty) @(isBanned ? "text-color-ban" : string.Empty)" @onclick="() => Expand(entry.Id)">
 					<EntryRank PlayerId="@entry.Id" Rank="@entry.Rank" />
 					<EntryFlag CountryCode="@player?.CountryCode" />
 					<EntryUsername DaggerCssClass="@daggerCssClass" Id="entry.Id" Name="@entry.Username" IsBanned="isBanned" />
 					<div class="text-right @(isBanned ? string.Empty : daggerCssClass)">@entry.Time.ToString(FormatUtils.TimeFormat)</div>
-					<div class="text-right hidden md:block">@entry.Kills.ToString(FormatUtils.LeaderboardIntFormat)</div>
-					<div class="text-right hidden md:block">@entry.Gems.ToString(FormatUtils.LeaderboardIntFormat)</div>
+					<div class="text-right hidden md:block">@kills</div>
+					<div class="text-right hidden md:block">@gems</div>
 					<div class="text-right hidden md:block">
-						<Tooltip Text="@daggers"><span class="font-goethe text-xl cursor-pointer">@accuracy.ToString(FormatUtils.AccuracyFormat)</span></Tooltip>
+						<Tooltip Text="@daggers"><span class="font-goethe text-xl cursor-pointer">@accuracy</span></Tooltip>
 					</div>
-					<div class="text-left hidden lg:block">@MarkupUtils.DeathString(entry.DeathType, GameVersion)</div>
-					<div class="text-right hidden xl:block">@entry.TimeTotal.ToString(FormatUtils.LeaderboardGlobalTimeFormat)</div>
-					<div class="text-right hidden xl:block">@entry.KillsTotal.ToString(FormatUtils.LeaderboardIntFormat)</div>
-					<div class="text-right hidden xl:block">@entry.GemsTotal.ToString(FormatUtils.LeaderboardIntFormat)</div>
+					<div class="text-left hidden lg:block">@death</div>
+					<div class="text-right hidden xl:block">@timeTotal</div>
+					<div class="text-right hidden xl:block">@killsTotal</div>
+					<div class="text-right hidden xl:block">@gemsTotal</div>
 					<div class="text-right hidden xl:block">
-						<Tooltip Text="@daggersTotal"><span class="font-goethe text-xl cursor-pointer">@accuracyTotal.ToString(FormatUtils.AccuracyFormat)</span></Tooltip>
+						<Tooltip Text="@daggersTotal"><span class="font-goethe text-xl cursor-pointer">@accuracyTotal</span></Tooltip>
 					</div>
-					<div class="text-right hidden xl:block">@entry.DeathsTotal.ToString(FormatUtils.LeaderboardIntFormat)</div>
+					<div class="text-right hidden xl:block">@deathsTotal</div>
+				</div>
+				<div class="grid grid-cols-2 @(entry.Id == _expandedId ? "" : "hidden")">
+					<div class="md:hidden">Kills</div>
+					<div class="md:hidden text-right">@kills</div>
+					<div class="md:hidden">Gems</div>
+					<div class="md:hidden text-right">@gems</div>
+					<div class="md:hidden">Accuracy</div>
+					<div class="md:hidden text-right">
+						<Tooltip Text="@daggers"><span class="text-right font-goethe text-xl cursor-pointer">@accuracy</span></Tooltip>
+					</div>
+					<div class="lg:hidden">Death Type</div>
+					<div class="lg:hidden text-right">@death</div>
+					
+					<div class="xl:hidden">Total Time</div>
+					<div class="xl:hidden text-right">@timeTotal</div>
+					<div class="xl:hidden">Total Kills</div>
+					<div class="xl:hidden text-right">@killsTotal</div>
+					<div class="xl:hidden">Total Gems</div>
+					<div class="xl:hidden text-right">@gemsTotal</div>
+					<div class="xl:hidden">Total Accuracy</div>
+					<div class="xl:hidden text-right">
+						<Tooltip Text="@daggers"><span class="text-right font-goethe text-xl cursor-pointer">@accuracyTotal</span></Tooltip>
+					</div>
 				</div>
 			}
 		}
@@ -72,6 +104,7 @@
 	[Parameter, EditorRequired] public List<GetPlayerForLeaderboard>? Players { get; set; } = null!;
 	[Parameter, EditorRequired] public GameVersion GameVersion { get; set; }
 
+	private int? _expandedId;
 	private LeaderboardSorting _sortBy;
 	private bool _ascending;
 
@@ -81,6 +114,14 @@
 	{
 		foreach (LeaderboardSorting e in (LeaderboardSorting[])Enum.GetValues(typeof(LeaderboardSorting)))
 			_sortings.Add(e, false);
+	}
+
+	private void Expand(int playerId)
+	{
+		if (_expandedId == playerId)
+			_expandedId = null;
+		else
+			_expandedId = playerId;
 	}
 
 	private void Sort(LeaderboardSorting sortBy)
