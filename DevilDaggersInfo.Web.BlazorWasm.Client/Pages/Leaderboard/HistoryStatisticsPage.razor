@@ -4,7 +4,7 @@
 @using DevilDaggersInfo.Core.Wiki
 @using DevilDaggersInfo.Web.BlazorWasm.Shared.Dto.Public.LeaderboardHistoryStatistics
 
-<Heading>Leaderboard History Statistics</Heading>
+<Heading Title="Leaderboard History Statistics" />
 
 @if (_statistics == null)
 {
@@ -12,13 +12,13 @@
 }
 else
 {
-	<Heading Level="2">Total Players</Heading>
+	<Heading Title="Total Players" Level="2" />
 	<LineChart Options="LineChartUtils.Options" OptionsJsonString="@LineChartUtils.AdditionalJsonOptions" @ref="_playersChart" TItem="int" />
 
-	<Heading Level="2">Top Entrances</Heading>
+	<Heading Title="Top Entrances" Level="2" />
 	<LineChart Options="LineChartUtils.Options" OptionsJsonString="@LineChartUtils.AdditionalJsonOptions" @ref="_entranceChart" TItem="double" />
 
-	<Heading Level="2">Global Accuracy</Heading>
+	<Heading Title="Global Accuracy" Level="2" />
 	<LineChart Options="LineChartUtils.Options" OptionsJsonString="@LineChartUtils.AdditionalJsonOptions" @ref="_accuracyChart" TItem="double" />
 }
 

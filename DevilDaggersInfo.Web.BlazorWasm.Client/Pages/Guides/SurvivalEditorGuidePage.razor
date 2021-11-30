@@ -1,12 +1,12 @@
 @page "/guides/survival-editor"
 
-<Heading>Guide - Survival Editor</Heading>
+<Heading Title="Guide - Survival Editor" />
 
 <Paragraph>
 	This page will guide you through the creation of custom spawnsets for Devil Daggers.
 </Paragraph>
 
-<Heading Level="2">Basic Information</Heading>
+<Heading Title="Basic Information" Level="2" />
 <Paragraph>
 	The spawnset in Devil Daggers can be modified by editing a file known as the survival file. The survival file is located at <span class="text-color-path">devildaggers\dd\survival</span> where <span class="text-color-path">devildaggers</span> is the installation folder for Devil Daggers. As of the V3.1 update (February 2021), it is recommended to place custom survival files in the "mods" folder, so the custom survival file would be located at <span class="text-color-path">devildaggers\mods\survival</span>, leaving the original file intact at all times. This means replays from the official leaderboards will not be affected by the custom spawnset.
 </Paragraph>
@@ -17,9 +17,9 @@
 	All of this data can be edited using <UrlLink Href="tools/survival-editor">Devil Daggers Survival Editor</UrlLink>.
 </Paragraph>
 
-<Heading Level="2">Spawns Information</Heading>
+<Heading Title="Spawns Information" Level="2" />
 
-<Heading Level="3">Enemy Types</Heading>
+<Heading Title="Enemy Types" Level="3" />
 <Paragraph>
 	10 enemies can be spawned in the survival file:
 </Paragraph>
@@ -42,7 +42,7 @@
 	Every enemy type has a fixed amount of gems that it drops, this is why the application keeps track of gems so you can have a rough idea of when you will get upgrades (unless farming is done). It is recommended that you understand how <UrlLink Href="wiki/upgrades">Upgrades</UrlLink> work.
 </Paragraph>
 
-<Heading Level="3">The End Loop</Heading>
+<Heading Title="The End Loop" Level="3" />
 <Paragraph>
 	The end loop is the same set of spawns over and over again, faster every time. This appears at the end of the spawnset.
 </Paragraph>
@@ -53,7 +53,7 @@
 	How the end loop speeds up appears to be hardcoded in the game. After every wave, each enemy spawns an added 12.5% faster. Also note that in every third wave of the end loop, all @MarkupUtils.EnemyString(EnemiesV3_1.Gigapede, true) are changed into @MarkupUtils.EnemyString(EnemiesV3_1.Ghostpede, true). This also seems to be hardcoded in the game.
 </Paragraph>
 
-<Heading Level="3">Spawns</Heading>
+<Heading Title="Spawns" Level="3" />
 <Paragraph>
 	We now know how enemy types work in Devil Daggers. A spawn in the survival file is defined by an enemy type and a delay value. The delay value represents the amount of seconds between the current spawn and the previous spawn. So, if you want to spawn a @MarkupUtils.EnemyString(EnemiesV3_1.Squid1) at 4 seconds, followed by a @MarkupUtils.EnemyString(EnemiesV3_1.Squid2) at 7 seconds, you would get the following spawns:
 </Paragraph>
@@ -65,7 +65,7 @@
 	The delay value supports decimal values, even though the original spawnset in the game doesn't use this. This means you can spawn an enemy, for example at 4.5 seconds.
 </Paragraph>
 
-<Heading Level="2">Arena Information</Heading>
+<Heading Title="Arena Information" Level="2" />
 <Paragraph>Note that you don't necessarily need to understand how the arena works, as the default arena works fine.</Paragraph>
 <ul class="pl-4">
 	<li class="list-disc">The maximum arena size is 51 by 51.</li>

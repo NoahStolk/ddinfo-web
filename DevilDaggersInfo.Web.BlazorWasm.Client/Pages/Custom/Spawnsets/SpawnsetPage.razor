@@ -18,7 +18,7 @@ else if (SpawnsetBinary == null || SpawnsView == null)
 }
 else
 {
-	<Heading>Spawnset - @GetSpawnset.Name</Heading>
+	<Heading Title="@($"Spawnset - {GetSpawnset.Name}")" />
 
 	<div class="bg-gray-0b max-w-sm px-1">
 		<DataField Name="Author">@GetSpawnset.AuthorName</DataField>
@@ -41,19 +41,19 @@ else
 
 	@if (!string.IsNullOrWhiteSpace(GetSpawnset.HtmlDescription))
 	{
-		<Heading Level="2">Description</Heading>
+		<Heading Title="Description" Level="2" />
 		<div class="bg-gray-0b max-w-sm px-1">
 			@((MarkupString)@GetSpawnset.HtmlDescription)
 		</div>
 	}
 
-	<Heading Level="2">Format</Heading>
+	<Heading Title="Format" Level="2" />
 	<div class="bg-gray-0b max-w-sm px-1">
 		<DataField Name="Game version">@SpawnsetBinary.GetGameVersionString()</DataField>
 		<DataField Name="Game mode">@SpawnsetBinary.GameMode</DataField>
 	</div>
 
-	<Heading Level="2">Arena</Heading>
+	<Heading Title="Arena" Level="2" />
 	<div class="bg-gray-0b max-w-sm px-1">
 		<DataField Name="Start radius">@SpawnsetBinary.ShrinkStart</DataField>
 		<DataField Name="End radius">@SpawnsetBinary.ShrinkEnd</DataField>
@@ -77,14 +77,14 @@ else
 		</tbody>
 	</table>
 
-	<Heading Level="2">Settings</Heading>
+	<Heading Title="Settings" Level="2" />
 	<div class="bg-gray-0b max-w-sm px-1">
 		<DataField Name="Hand">Level @((byte)SpawnsetBinary.HandLevel)</DataField>
 		<DataField Name="Additional gems">@SpawnsetBinary.AdditionalGems</DataField>
 		<DataField Name="Timer Start">@SpawnsetBinary.TimerStart.ToString(FormatUtils.TimeFormat)</DataField>
 	</div>
 
-	<Heading Level="2">Effective Player Settings</Heading>
+	<Heading Title="Effective Player Settings" Level="2" />
 	<div class="bg-gray-0b max-w-sm px-1">
 		<DataField Name="Effective hand">Level @((byte)EffectivePlayerSettings.HandLevel)</DataField>
 		<DataField Name="@($"Effective {((int)EffectivePlayerSettings.HandLevel > 2 ? "homing" : "gems")}")">@EffectivePlayerSettings.GemsOrHoming</DataField>
@@ -94,7 +94,7 @@ else
 		}
 	</div>
 
-	<Heading Level="2">Spawns</Heading>
+	<Heading Title="Spawns" Level="2" />
 	<Spawnset SpawnsView=SpawnsView />
 }
 

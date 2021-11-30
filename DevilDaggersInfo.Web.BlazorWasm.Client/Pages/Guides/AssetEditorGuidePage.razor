@@ -1,18 +1,18 @@
 @page "/guides/asset-editor"
 
-<Heading>Guide - Asset Editor</Heading>
+<Heading Title="Guide - Asset Editor" />
 
 <p>
 	This page will guide you through the creation of custom asset mods for Devil Daggers. This guide is aimed at Devil Daggers Asset Editor 0.56.5.0, and will be inaccurate for any older versions. If you are not running the latest version, it is highly recommended to <UrlLink Href="tools/asset-editor">download the latest version</UrlLink>.
 </p>
 
-<Heading Level="2">Basic Information</Heading>
+<Heading Title="Basic Information" Level="2" />
 
 <Paragraph>
 	There is some basic information that you need to know in order to understand how to create asset mods for Devil Daggers.
 </Paragraph>
 
-<Heading Level="3">Binaries</Heading>
+<Heading Title="Binaries" Level="3" />
 
 <Paragraph>
 	Devil Daggers uses custom binary formats to read asset data from asset files. There are 3 of these files that contain assets:
@@ -35,7 +35,7 @@
 	Note that partial mods are not supported for "core" mods.
 </Paragraph>
 
-<Heading Level="3">Asset Types</Heading>
+<Heading Title="Asset Types" Level="3" />
 
 <Paragraph>
 	There are 5 types of assets that Devil Daggers uses:
@@ -48,7 +48,7 @@
 	<li class="list-disc">Textures (.png)</li>
 </ul>
 
-<Heading Level="2">The Asset Editor</Heading>
+<Heading Title="The Asset Editor" Level="2" />
 
 <Paragraph>
 	I've created <UrlLink Href="tools/asset-editor">Devil Daggers Asset Editor</UrlLink> to make it easier to mod the game's assets.
@@ -71,15 +71,15 @@
 	DDAE orders the assets by binary file, and then by asset type. So "dd/Models" will contain all model assets present in the "dd" file.
 </Paragraph>
 
-<Heading Level="3">Mod Files</Heading>
+<Heading Title="Mod Files" Level="3" />
 
 <Paragraph>
 	Since binaries can be huge, DDAE works with mod files, which, instead of holding all the raw asset data, are basically just lists of user-specified asset paths. Mod files have the extension .ddae and are written in JSON format, so they can be opened using a text editor. Note that if you change the locations of assets, it will break the mod file. You can open the mod file using a text editor and globally replace all the paths with the new path to fix it (unless you also renamed the files themselves).
 </Paragraph>
 
-<Heading Level="2">How To Create A Mod</Heading>
+<Heading Title="How To Create A Mod" Level="2" />
 
-<Heading Level="3">Extracting The Original Assets</Heading>
+<Heading Title="Extracting The Original Assets" Level="3" />
 
 <Paragraph>
 	It is useful to extract the original assets so you know what assets you can mod.
@@ -99,16 +99,16 @@
 	<li class="list-decimal">Click on the "Extract binaries" button. This will create the asset files in the assets output directory.</li>
 </ol>
 
-<Heading Level="3">Making Your Own Mod</Heading>
+<Heading Title="Making Your Own Mod" Level="3" />
 
-<Heading Level="4">Step 1: Modifying Assets</Heading>
+<Heading Title="Step 1: Modifying Assets" Level="4" />
 
 <ol class="pl-4">
 	<li>Go to "File > New mod" to create a new mod. Select an asset from the lists you wish to mod and click the "Browse" button on the right to replace it with a custom asset.</li>
 	<li>In the open file dialog, select a compatible file. There are some requirements for certain assets, such as audio files. These can be found under <a href="#compatibility">Compatibility</a> at the bottom of the page. After you've done that, your asset should show up in the lists. Most assets can also be previewed by selecting them.</li>
 </ol>
 
-<Heading Level="4">Step 2: Saving Your Mod</Heading>
+<Heading Title="Step 2: Saving Your Mod" Level="4" />
 
 <ol class="pl-4">
 	<li class="list-decimal">Since you may want to work on this mod again, it's a good idea to save it to your computer. Go to "File > Save mod" to do so.</li>
@@ -118,7 +118,7 @@
 	Note: You can set a default path for mod files in "Options > Settings" for convenience. This is purely optional; this path will be used as default location when opening mod files.
 </Paragraph>
 
-<Heading Level="4">Step 3: Making Your Mod Into A Binary To Be Played In Devil Daggers</Heading>
+<Heading Title="Step 3: Making Your Mod Into A Binary To Be Played In Devil Daggers" Level="4" />
 
 <ol class="pl-4">
 	<li class="list-decimal">To test your mod, make sure it's opened. If it's not, open it by going to "File > Open mod".</li>
@@ -134,7 +134,7 @@
 	Note: When you want to test a new version of your mod, you will need to restart Devil Daggers after making the binary again, as they are only loaded when Devil Daggers starts up.
 </Paragraph>
 
-<Heading Level="2">Crashes</Heading>
+<Heading Title="Crashes" Level="2" />
 
 <Paragraph>
 	Devil Daggers will crash if there's something wrong with your mod. DDAE should automatically display an error message in some cases, such as when it cannot properly convert your model to the custom binary format Devil Daggers uses for models. However, some causes are uncaught. Here's a list of some other known causes that will cause Devil Daggers to crash:
@@ -145,9 +145,9 @@
 	<li class="list-disc">Your custom shader asset might not compile.</li>
 </ul>
 
-<Heading Level="2">Compatibility</Heading>
+<Heading Title="Compatibility" Level="2" />
 
-<Heading Level="3">Audio</Heading>
+<Heading Title="Audio" Level="3" />
 
 <Paragraph>
 	Only .wav files are supported. The .wav files need to meet the following requirements in order to play correctly:
@@ -161,19 +161,19 @@
 	You can convert the .wav files to the correct format using software such as Audacity.
 </Paragraph>
 
-<Heading Level="3">Textures</Heading>
+<Heading Title="Textures" Level="3" />
 
 <Paragraph>
 	Only .png files are supported. The files can be whatever dimension, though having files larger than 512x512 is not recommended since it will make the binary huge. Transparency is supported and used for UI textures, splash screens, etc, but does not work for model textures by default.
 </Paragraph>
 
-<Heading Level="3">Models</Heading>
+<Heading Title="Models" Level="3" />
 
 <Paragraph>
 	Only .obj files are supported. The files can consist of triangles or quads, though NGons are not supported for now. You can create models using software such as Blender.
 </Paragraph>
 
-<Heading Level="2">Miscellaneous Information</Heading>
+<Heading Title="Miscellaneous Information" Level="2" />
 
 <ul class="pl-4">
 	<li class="list-disc">The Devil Daggers title screen music seems to start playing at some hardcoded offset.</li>

@@ -4,7 +4,7 @@
 @using DevilDaggersInfo.Web.BlazorWasm.Shared.Dto.Public.Mods
 @using DevilDaggersInfo.Web.BlazorWasm.Shared.Dto.Public.Tools
 
-<Heading>Devil Daggers Asset Editor</Heading>
+<Heading Title="Devil Daggers Asset Editor" />
 
 @if (GetTool == null || GetTotalModData == null)
 {
@@ -16,7 +16,7 @@ else
 
 	<img src="/images/tools/ddae.png" class="object-contain max-h-160 pt-3" />
 
-	<Heading Level="2">Features</Heading>
+	<Heading Title="Features" Level="2" />
 	<ul class="pl-4">
 		<li class="list-disc">Extract game assets from the original game or mods</li>
 		<li class="list-disc">Modify game assets and create mods</li>
@@ -27,7 +27,7 @@ else
 		<li class="list-disc">View the final effective list of assets (for when using multiple mods simultaneously)</li>
 	</ul>
 
-	<Heading Level="2">System Requirements</Heading>
+	<Heading Title="System Requirements" Level="2" />
 	<ul class="pl-4">
 		<li class="list-disc">Windows (64-bit)</li>
 		<li class="list-disc">.NET Desktop Runtime 5.0</li>

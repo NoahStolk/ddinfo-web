@@ -4,7 +4,7 @@
 @using DevilDaggersInfo.Web.BlazorWasm.Shared.Dto.Public.Spawnsets
 @using DevilDaggersInfo.Web.BlazorWasm.Shared.Dto.Public.Tools
 
-<Heading>Devil Daggers Survival Editor</Heading>
+<Heading Title="Devil Daggers Survival Editor" />
 
 @if (GetTool == null || GetTotalSpawnsetData == null)
 {
@@ -16,7 +16,7 @@ else
 
 	<img src="/images/tools/ddse.png" class="object-contain max-h-160 pt-3" />
 
-	<Heading Level="2">Features</Heading>
+	<Heading Title="Features" Level="2" />
 	<ul class="pl-4">
 		<li class="list-disc">Spawns editor with many useful features such as copying spawns, previewing end loop, speeding up spawns, etc</li>
 		<li class="list-disc">Arena editor with the ability to change tile heights, shrinking controls, arena brightness, etc</li>
@@ -26,7 +26,7 @@ else
 		<li class="list-disc">Download @(GetTotalSpawnsetData.Count) existing spawnsets from the website to insert them into the game directly</li>
 	</ul>
 
-	<Heading Level="2">System Requirements</Heading>
+	<Heading Title="System Requirements" Level="2" />
 	<ul class="pl-4">
 		<li class="list-disc">Windows (64-bit)</li>
 		<li class="list-disc">.NET Desktop Runtime 5.0</li>

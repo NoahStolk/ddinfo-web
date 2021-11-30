@@ -5,7 +5,7 @@
 @using DevilDaggersInfo.Core.Wiki.Enums
 @using DevilDaggersInfo.Web.BlazorWasm.Shared.Dto.Public.LeaderboardStatistics
 
-<Heading>Leaderboard Statistics</Heading>
+<Heading Title="Leaderboard Statistics" />
 
 @if (_statistics == null)
 {
@@ -21,7 +21,7 @@ else
 	{
 		<p class="py-1">Statistics were last fetched on @_statistics.DateTime.ToString(FormatUtils.DateTimeUtcFormat).</p>
 
-		<Heading Level="2">Scores</Heading>
+		<Heading Title="Scores" Level="2" />
 		<p>The average time survived for all players is <SpanTime TimeInSeconds="_statistics.Time.Average / 10000.0" /> seconds.</p>
 		<p>The median time survived for all players is <SpanTime TimeInSeconds="_statistics.Time.Median / 10000.0" /> seconds.</p>
 		<p>The mode time survived for all players is <SpanTime TimeInSeconds="_statistics.Time.Mode / 10000.0" /> seconds.</p>
@@ -29,26 +29,26 @@ else
 		<BarChart Options="_bco" @ref="_sub1000Chart" TItem="int" />
 		<BarChart Options="_bco" @ref="_post1000Chart" TItem="int" />
 
-		<Heading Level="2">Kills</Heading>
+		<Heading Title="Kills" Level="2" />
 		<p>The average kills for all players is @(_statistics.Kills.Average.ToString("0.00")).</p>
 		<p>The median kills for all players is @_statistics.Kills.Median.</p>
 		<p>The mode kills for all players is @_statistics.Kills.Mode.</p>
 		<BarChart Options="_bco" @ref="_killsChart" TItem="int" />
 
-		<Heading Level="2">Gems</Heading>
+		<Heading Title="Gems" Level="2" />
 		<p>The average gems for all players is @(_statistics.Gems.Average.ToString("0.00")).</p>
 		<p>The median gems for all players is @_statistics.Gems.Median.</p>
 		<p>The mode gems for all players is @_statistics.Gems.Mode.</p>
 		<BarChart Options="_bco" @ref="_gemsChart" TItem="int" />
 		<PieChart Options="_pco" @ref="_levelsChart" TItem="int" />
 
-		<Heading Level="2">Daggers Achieved</Heading>
+		<Heading Title="Daggers Achieved" Level="2" />
 		<BarChart Options="_bco" @ref="_daggersChart" TItem="int" />
 
-		<Heading Level="2">Death Types</Heading>
+		<Heading Title="Death Types" Level="2" />
 		<BarChart Options="_bco" @ref="_deathsChart" TItem="int" />
 
-		<Heading Level="2">Enemies Seen</Heading>
+		<Heading Title="Enemies Seen" Level="2" />
 		<BarChart Options="_bco" @ref="_enemiesChart" TItem="int" />
 	}
 }

@@ -23,7 +23,7 @@
 }
 else
 {
-	<Heading>@GetEntry.Username</Heading>
+	<Heading Title="@GetEntry.Username" />
 
 	<UrlLink Href="@($"/leaderboard?Rank={(GetEntry.Rank - 1) / 100 * 100 + 1}")">Back to leaderboard</UrlLink>
 	<Paragraph>@GetEntry.Username is currently rank @GetEntry.Rank.</Paragraph>
@@ -180,13 +180,13 @@ else
 	{
 		if (GetPlayerHistory.History.Count > 0)
 		{
-			<Heading Level="2">Progression</Heading>
+			<Heading Title="Progression" Level="2" />
 			<LineChart Options="LineChartUtils.Options" OptionsJsonString="@LineChartUtils.AdditionalJsonOptionsTime" @ref="_progressionChart" TItem="double" />
 		}
 
 		if (GetPlayerHistory.Activity.Count > 0)
 		{
-			<Heading Level="2">Activity</Heading>
+			<Heading Title="Activity" Level="2" />
 			<LineChart Options="LineChartUtils.Options" OptionsJsonString="@LineChartUtils.AdditionalJsonOptionsTime" @ref="_activityChart" TItem="double" />
 		}
 	}

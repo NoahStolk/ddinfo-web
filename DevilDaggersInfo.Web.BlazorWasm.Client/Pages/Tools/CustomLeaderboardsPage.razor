@@ -5,7 +5,7 @@
 @using DevilDaggersInfo.Web.BlazorWasm.Shared.Dto.Public.Tools
 @using DevilDaggersInfo.Web.BlazorWasm.Shared.Enums
 
-<Heading>Devil Daggers Custom Leaderboards</Heading>
+<Heading Title="Devil Daggers Custom Leaderboards" />
 
 @if (GetTool == null || GetTotalCustomLeaderboardData == null)
 {
@@ -17,7 +17,7 @@ else
 
 	<img src="/images/tools/ddcl.png" class="object-contain max-h-160 pt-3" />
 
-	<Heading Level="2">Features</Heading>
+	<Heading Title="Features" Level="2" />
 	<ul class="pl-4">
 		<li class="list-disc">Participate in @GetTotalCustomLeaderboardData.LeaderboardsPerCategory[CustomLeaderboardCategory.Default].ToString("N0") custom survival leaderboards and @GetTotalCustomLeaderboardData.LeaderboardsPerCategory[CustomLeaderboardCategory.Speedrun].ToString("N0") custom speedrun leaderboards</li>
 		<li class="list-disc">@GetTotalCustomLeaderboardData.PlayersPerCategory.Values.Sum().ToString("N0") players</li>
@@ -25,7 +25,7 @@ else
 		<li class="list-disc">@GetTotalCustomLeaderboardData.SubmitsPerCategory.Values.Sum().ToString("N0") total submissions (since @FeatureConstants.TrackingCustomLeaderboardSubmitCounts.ToString(FormatUtils.DateFormat))</li>
 	</ul>
 
-	<Heading Level="2">System Requirements</Heading>
+	<Heading Title="System Requirements" Level="2" />
 	<ul class="pl-4">
 		<li class="list-disc">Windows (64-bit)</li>
 		<li class="list-disc">.NET Runtime 5.0</li>

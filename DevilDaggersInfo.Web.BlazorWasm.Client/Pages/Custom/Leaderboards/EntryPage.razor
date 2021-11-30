@@ -10,35 +10,35 @@
 }
 else
 {
-	<Heading>@GetCustomEntryData.PlayerName's score on @GetCustomEntryData.SpawnsetName</Heading>
+	<Heading Title="@($"{GetCustomEntryData.PlayerName}'s score on {GetCustomEntryData.SpawnsetName}")" />
 
 	@if (GetCustomEntryData.GemsCollectedData != null
 		|| GetCustomEntryData.GemsDespawnedData != null
 		|| GetCustomEntryData.GemsEatenData != null
 		|| GetCustomEntryData.GemsTotalData != null)
 	{
-		<Heading Level="2">Gems</Heading>
+		<Heading Title="Gems" Level="2" />
 		<LineChart Options="LineChartUtils.Options" OptionsJsonString="@LineChartUtils.AdditionalJsonOptions" @ref="_gemsChart" TItem="int" />
 	}
 
 	@if (GetCustomEntryData.HomingStoredData != null
 		|| GetCustomEntryData.HomingEatenData != null)
 	{
-		<Heading Level="2">Homing</Heading>
+		<Heading Title="Homing" Level="2" />
 		<LineChart Options="LineChartUtils.Options" OptionsJsonString="@LineChartUtils.AdditionalJsonOptions" @ref="_homingChart" TItem="int" />
 	}
 	
 	@if (GetCustomEntryData.EnemiesAliveData != null
 		|| GetCustomEntryData.EnemiesKilledData != null)
 	{
-		<Heading Level="2">Enemies</Heading>
+		<Heading Title="Enemies" Level="2" />
 		<LineChart Options="LineChartUtils.Options" OptionsJsonString="@LineChartUtils.AdditionalJsonOptions" @ref="_enemiesChart" TItem="int" />
 	}
 	
 	@if (GetCustomEntryData.DaggersFiredData != null
 		|| GetCustomEntryData.DaggersHitData != null)
 	{
-		<Heading Level="2">Daggers</Heading>
+		<Heading Title="Daggers" Level="2" />
 		<LineChart Options="LineChartUtils.Options" OptionsJsonString="@LineChartUtils.AdditionalJsonOptions" @ref="_daggersChart" TItem="int" />
 	}
 	
@@ -47,7 +47,7 @@ else
 		|| GetCustomEntryData.Skull3sAliveData != null
 		|| GetCustomEntryData.Skull4sAliveData != null)
 	{
-		<Heading Level="2">Skulls Alive</Heading>
+		<Heading Title="Skulls Alive" Level="2" />
 		<LineChart Options="LineChartUtils.Options" OptionsJsonString="@LineChartUtils.AdditionalJsonOptions" @ref="_skullsAliveChart" TItem="ushort" />
 	}
 	
@@ -55,7 +55,7 @@ else
 		|| GetCustomEntryData.Squid2sAliveData != null
 		|| GetCustomEntryData.Squid3sAliveData != null)
 	{
-		<Heading Level="2">Squids Alive</Heading>
+		<Heading Title="Squids Alive" Level="2" />
 		<LineChart Options="LineChartUtils.Options" OptionsJsonString="@LineChartUtils.AdditionalJsonOptions" @ref="_squidsAliveChart" TItem="ushort" />
 	}
 	
@@ -64,7 +64,7 @@ else
 		|| GetCustomEntryData.SpiderEggsAliveData != null
 		|| GetCustomEntryData.SpiderlingsAliveData != null)
 	{
-		<Heading Level="2">Spiders Alive</Heading>
+		<Heading Title="Spiders Alive" Level="2" />
 		<LineChart Options="LineChartUtils.Options" OptionsJsonString="@LineChartUtils.AdditionalJsonOptions" @ref="_spidersAliveChart" TItem="ushort" />
 	}
 	
@@ -72,7 +72,7 @@ else
 		|| GetCustomEntryData.GigapedesAliveData != null
 		|| GetCustomEntryData.GhostpedesAliveData != null)
 	{
-		<Heading Level="2">Pedes Alive</Heading>
+		<Heading Title="Pedes Alive" Level="2" />
 		<LineChart Options="LineChartUtils.Options" OptionsJsonString="@LineChartUtils.AdditionalJsonOptions" @ref="_pedesAliveChart" TItem="ushort" />
 	}
 	
@@ -80,7 +80,7 @@ else
 		|| GetCustomEntryData.LeviathansAliveData != null
 		|| GetCustomEntryData.OrbsAliveData != null)
 	{
-		<Heading Level="2">Other Enemies Alive</Heading>
+		<Heading Title="Other Enemies Alive" Level="2" />
 		<LineChart Options="LineChartUtils.Options" OptionsJsonString="@LineChartUtils.AdditionalJsonOptions" @ref="_otherEnemiesAliveChart" TItem="ushort" />
 	}
 	
@@ -89,7 +89,7 @@ else
 		|| GetCustomEntryData.Skull3sKilledData != null
 		|| GetCustomEntryData.Skull4sKilledData != null)
 	{
-		<Heading Level="2">Skulls Killed</Heading>
+		<Heading Title="Skull Killed" Level="2" />
 		<LineChart Options="LineChartUtils.Options" OptionsJsonString="@LineChartUtils.AdditionalJsonOptions" @ref="_skullsKilledChart" TItem="ushort" />
 	}
 	
@@ -97,7 +97,7 @@ else
 		|| GetCustomEntryData.Squid2sKilledData != null
 		|| GetCustomEntryData.Squid3sKilledData != null)
 	{
-		<Heading Level="2">Squids Killed</Heading>
+		<Heading Title="Squids Killed" Level="2" />
 		<LineChart Options="LineChartUtils.Options" OptionsJsonString="@LineChartUtils.AdditionalJsonOptions" @ref="_squidsKilledChart" TItem="ushort" />
 	}
 	
@@ -106,7 +106,7 @@ else
 		|| GetCustomEntryData.SpiderEggsKilledData != null
 		|| GetCustomEntryData.SpiderlingsKilledData != null)
 	{
-		<Heading Level="2">Spiders Killed</Heading>
+		<Heading Title="Spiders Killed" Level="2" />
 		<LineChart Options="LineChartUtils.Options" OptionsJsonString="@LineChartUtils.AdditionalJsonOptions" @ref="_spidersKilledChart" TItem="ushort" />
 	}
 	
@@ -114,7 +114,7 @@ else
 		|| GetCustomEntryData.GigapedesKilledData != null
 		|| GetCustomEntryData.GhostpedesKilledData != null)
 	{
-		<Heading Level="2">Pedes Killed</Heading>
+		<Heading Title="Pedes Killed" Level="2" />
 		<LineChart Options="LineChartUtils.Options" OptionsJsonString="@LineChartUtils.AdditionalJsonOptions" @ref="_pedesKilledChart" TItem="ushort" />
 	}
 	
@@ -122,7 +122,7 @@ else
 		|| GetCustomEntryData.LeviathansKilledData != null
 		|| GetCustomEntryData.OrbsKilledData != null)
 	{
-		<Heading Level="2">Other Enemies Killed</Heading>
+		<Heading Title="Other Enemies Killed" Level="2" />
 		<LineChart Options="LineChartUtils.Options" OptionsJsonString="@LineChartUtils.AdditionalJsonOptions" @ref="_otherEnemiesKilledChart" TItem="ushort" />
 	}
 }

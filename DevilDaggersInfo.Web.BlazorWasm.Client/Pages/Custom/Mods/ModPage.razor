@@ -10,7 +10,7 @@
 }
 else
 {
-	<Heading>Mod - @GetMod.Name</Heading>
+	<Heading Title="@($"Mod - {GetMod.Name}")" />
 
 	<div class="bg-gray-0b max-w-sm px-1">
 		<DataField Name="Author(s)">@string.Join(", ", GetMod.Authors)</DataField>
@@ -31,7 +31,7 @@ else
 
 	@if (!string.IsNullOrWhiteSpace(GetMod.HtmlDescription))
 	{
-		<Heading Level="2">Description</Heading>
+		<Heading Title="Description" Level="2" />
 		<div class="bg-gray-0b max-w-sm px-1">
 			@((MarkupString)@GetMod.HtmlDescription)
 		</div>
@@ -39,7 +39,7 @@ else
 
 	@if (!string.IsNullOrWhiteSpace(GetMod.TrailerUrl))
 	{
-		<Heading Level="2">Trailer</Heading>
+		<Heading Title="Trailer" Level="2" />
 		<div class="relative w-full xl:w-1/2 pb-16-9 xl:pb-16-9/2">
 			<iframe class="absolute top-0 left-0 w-full h-full" src="@GetMod.TrailerUrl" title="@GetMod.Name" frameborder="0" allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture" allowfullscreen></iframe>
 		</div>
@@ -47,7 +47,7 @@ else
 
 	@if (GetMod.ScreenshotFileNames.Count > 1)
 	{
-		<Heading Level="2">Screenshots</Heading>
+		<Heading Title="Screenshots" Level="2" />
 
 		bool first = _screenshotIndex == 0;
 		bool last = _screenshotIndex == GetMod.ScreenshotFileNames.Count - 1;
@@ -63,13 +63,13 @@ else
 	}
 	else if (GetMod.ScreenshotFileNames.Count == 1)
 	{
-		<Heading Level="2">Screenshot</Heading>
+		<Heading Title="Screenshot" Level="2" />
 		<img src="@($"api/mod-screenshots?modName={GetMod.Name}&fileName={GetMod.ScreenshotFileNames[0]}")" />
 	}
 
 	@if (GetMod.ModArchive != null)
 	{
-		<Heading Level="2">Binaries</Heading>
+		<Heading Title="Binaries" Level="2" />
 		<div class="bg-gray-22 grid gap-3 grid-cols-mod-binaries-xs sm:grid-cols-mod-binaries-sm md:grid-cols-mod-binaries-md lg:grid-cols-mod-binaries-lg xl:grid-cols-mod-binaries-xl">
 			<div>Binary</div>
 			<div class="hidden sm:block">Type</div>
@@ -88,7 +88,7 @@ else
 			</div>
 		}
 
-		<Heading Level="2">Assets</Heading>
+		<Heading Title="Assets" Level="2" />
 		<div class="bg-gray-22 grid gap-3 grid-cols-mod-assets-xs sm:grid-cols-mod-assets-sm md:grid-cols-mod-assets-md lg:grid-cols-mod-assets-lg xl:grid-cols-mod-assets-xl">
 			<div>Binary</div>
 			<div class="hidden sm:block">Asset</div>
@@ -112,7 +112,7 @@ else
 
 		@if (GetMod.ModArchive.Binaries.Any(b => b.ModifiedLoudness != null))
 		{
-			<Heading Level="2">Modified loudness</Heading>
+			<Heading Title="Modified loudness" Level="2" />
 			<div class="bg-gray-22 grid gap-3 grid-cols-mod-assets-xs sm:grid-cols-mod-assets-sm md:grid-cols-mod-assets-md lg:grid-cols-mod-assets-lg xl:grid-cols-mod-assets-xl">
 				<div class="break-all">Binary</div>
 				<div>Name</div>

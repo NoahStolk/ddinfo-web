@@ -5,7 +5,7 @@
 @using DevilDaggersInfo.Web.BlazorWasm.Shared.Enums.Sortings.Public
 @using DevilDaggersInfo.Web.BlazorWasm.Shared.Enums
 
-<Heading>Custom Leaderboards</Heading>
+<Heading Title="Custom Leaderboards" />
 
 @if (GetCustomLeaderboards == null)
 {
@@ -90,11 +90,11 @@ else
 
 @if (GetTotalCustomLeaderboardData != null)
 {
-	<Heading Level="2">Statistics</Heading>
+	<Heading Title="Statistics" Level="2" />
 
 	<div class="grid gap-2 grid-cols-1 md:grid-cols-2 lg:grid-cols-4">
 		<div>
-			<Heading Level="3">Total</Heading>
+			<Heading Title="Total" Level="3" />
 			<p>@GetTotalCustomLeaderboardData.LeaderboardsPerCategory.Values.Sum().ToString("N0") leaderboards</p>
 			<p>@GetTotalCustomLeaderboardData.PlayersPerCategory.Values.Sum().ToString("N0") players</p>
 			<p>@GetTotalCustomLeaderboardData.ScoresPerCategory.Values.Sum().ToString("N0") scores</p>
@@ -104,7 +104,7 @@ else
 		@foreach (CustomLeaderboardCategory category in Enum.GetValues<CustomLeaderboardCategory>())
 		{
 			<div>
-				<Heading Level="3">@category</Heading>
+				<Heading Title="@category" Level="3" />
 				<p>@GetTotalCustomLeaderboardData.LeaderboardsPerCategory[category].ToString("N0") leaderboards</p>
 				<p>@GetTotalCustomLeaderboardData.PlayersPerCategory[category].ToString("N0") players</p>
 				<p>@GetTotalCustomLeaderboardData.ScoresPerCategory[category].ToString("N0") scores</p>
