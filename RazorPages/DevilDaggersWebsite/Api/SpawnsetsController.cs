@@ -1,4 +1,4 @@
-﻿using DevilDaggersWebsite.Caches.SpawnsetHash;
+using DevilDaggersWebsite.Caches.SpawnsetHash;
 using DevilDaggersWebsite.Dto;
 using DevilDaggersWebsite.Extensions;
 using DevilDaggersWebsite.Transients;
@@ -6,7 +6,6 @@ using Microsoft.AspNetCore.Hosting;
 using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.EntityFrameworkCore;
-using System;
 using System.Collections.Generic;
 using System.ComponentModel.DataAnnotations;
 using System.IO;
@@ -34,13 +33,6 @@ namespace DevilDaggersWebsite.Api
 			_spawnsetHashCache = spawnsetHashCache;
 			_dbContext = dbContext;
 		}
-
-		[ApiExplorerSettings(IgnoreApi = true)]
-		[Obsolete("Use " + nameof(GetSpawnsetsForDdse) + " instead. This is still in use by DDSE 2.34.0.0.")]
-		[HttpGet]
-		[ProducesResponseType(StatusCodes.Status200OK)]
-		public List<SpawnsetFile> GetSpawnsets(string? authorFilter = null, string? nameFilter = null)
-			=> _spawnsetHelper.GetSpawnsets(authorFilter, nameFilter);
 
 		[HttpGet("ddse")]
 		[ProducesResponseType(StatusCodes.Status200OK)]

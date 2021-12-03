@@ -1,11 +1,10 @@
-﻿using DevilDaggersWebsite.Dto;
+using DevilDaggersWebsite.Dto;
 using DevilDaggersWebsite.Entities;
 using DevilDaggersWebsite.Transients;
 using Microsoft.AspNetCore.Hosting;
 using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
 using Newtonsoft.Json;
-using System;
 using System.Collections.Generic;
 using System.ComponentModel.DataAnnotations;
 using System.IO;
@@ -29,13 +28,6 @@ namespace DevilDaggersWebsite.Api
 			_dbContext = dbContext;
 			_modHelper = modHelper;
 		}
-
-		[ApiExplorerSettings(IgnoreApi = true)]
-		[Obsolete("Use " + nameof(GetModsForDdae) + " instead. This is still in use by DDAE 1.0.0.0.")]
-		[HttpGet]
-		[ProducesResponseType(StatusCodes.Status200OK)]
-		public List<Mod> GetMods(string? authorFilter = null, string? nameFilter = null, bool? isHostedFilter = null)
-			=> _modHelper.GetMods(authorFilter, nameFilter, isHostedFilter);
 
 		[HttpGet("ddae")]
 		[ProducesResponseType(StatusCodes.Status200OK)]

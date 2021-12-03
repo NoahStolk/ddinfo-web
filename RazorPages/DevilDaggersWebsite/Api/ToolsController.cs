@@ -1,12 +1,10 @@
-﻿using DevilDaggersWebsite.Entities;
+using DevilDaggersWebsite.Entities;
 using DevilDaggersWebsite.Transients;
 using Microsoft.AspNetCore.Hosting;
 using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
-using Microsoft.EntityFrameworkCore;
 using Newtonsoft.Json;
 using System;
-using System.Collections.Generic;
 using System.ComponentModel.DataAnnotations;
 using System.IO;
 using System.Linq;
@@ -28,19 +26,6 @@ namespace DevilDaggersWebsite.Api
 			_environment = environment;
 			_dbContext = dbContext;
 			_toolHelper = toolHelper;
-		}
-
-		[ApiExplorerSettings(IgnoreApi = true)]
-		[Obsolete("Use api/tools/{toolName} instead. This is still in use by DDSE 2.34.0.0, DDCL 1.2.0.0, and DDAE 1.0.0.0.")]
-		[HttpGet]
-		[ProducesResponseType(StatusCodes.Status200OK)]
-		public ActionResult<List<Dto.Tool>> GetTools(string? toolNameFilter = null)
-		{
-			IQueryable<Entities.Tool> tools = _dbContext.Tools.AsNoTracking();
-			if (!string.IsNullOrEmpty(toolNameFilter))
-				tools = tools.Where(t => t.Name.Contains(toolNameFilter));
-
-			return tools.ToList().ConvertAll(t => _toolHelper.GetToolFromEntity(t));
 		}
 
 		[HttpGet("{toolName}")]
