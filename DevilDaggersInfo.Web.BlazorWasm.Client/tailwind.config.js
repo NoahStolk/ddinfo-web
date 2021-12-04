@@ -111,18 +111,18 @@ module.exports = {
 			transitionProperty: {
 				'width': 'width',
 				'spacing': 'margin, padding',
-			}
+			},
 		},
 		fontFamily: {
 			'calibri': ['calibri', 'sans-serif'],
 			'goethe': ['goethe'],
-		}
+		},
 	},
 	variants: {
 		extend: {
 			backgroundColor: ['even', 'odd'],
 			opacity: ['disabled'],
-		}
+		},
 	},
 };
 
