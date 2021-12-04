@@ -6,7 +6,7 @@
 
 @code
 {
-	[CascadingParameter] NavMenu NavMenu { get; set; } = null!;
+	[CascadingParameter] public NavMenu NavMenu { get; set; } = null!;
 
 	[Parameter, EditorRequired] public string Href { get; set; } = null!;
 	[Parameter] public string? CssClass { get; set; }
