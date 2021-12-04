@@ -1,6 +1,8 @@
 @page "/custom/mods"
+@implements ICustomPage
 @inject PublicApiHttpClient Http
 @inject NavigationManager NavigationManager
+@using DevilDaggersInfo.Web.BlazorWasm.Client.Components.Custom
 @using DevilDaggersInfo.Web.BlazorWasm.Shared.Dto.Public.Mods
 @using DevilDaggersInfo.Web.BlazorWasm.Shared.Enums.Sortings.Public
 @using DevilDaggersInfo.Web.BlazorWasm.Shared.Enums
@@ -21,11 +23,11 @@ else
 		<span>Hosted only</span>
 		<input type="checkbox" class="bg-black border-gray-22 border-2 w-8" @onchange="ChangeInputHostedOnly" />
 	</div>
+	
+	<CascadingValue Value="this">
+		<PagingButtons />
+	</CascadingValue>
 
-	<button class="bg-gray-0b hover:bg-gray-22 transition-colors duration-100 w-8 h-8 py-1 rounded text-color-text" @onclick="() => ChangePageIndex(0)"><span class="relative top-[-2px]">⏮</span></button>
-	<button class="bg-gray-0b hover:bg-gray-22 transition-colors duration-100 w-8 h-8 py-1 rounded text-color-text" @onclick="() => ChangePageIndex(PageIndex - 1)">⯇</button>
-	<button class="bg-gray-0b hover:bg-gray-22 transition-colors duration-100 w-8 h-8 py-1 rounded text-color-text" @onclick="() => ChangePageIndex(PageIndex + 1)">⯈</button>
-	<button class="bg-gray-0b hover:bg-gray-22 transition-colors duration-100 w-8 h-8 py-1 rounded text-color-text" @onclick="() => ChangePageIndex(TotalPages - 1)"><span class="relative top-[-2px]">⏭</span></button>
 	<Select @onchange="ChangePageSize" class="bg-gray-0b transition-colors duration-100 h-8 py-1 rounded text-color-text">
 		@foreach (int i in PublicPagingConstants.PageSizeOptions)
 		{
@@ -80,7 +82,7 @@ else
 
 	public Page<GetModOverview>? GetMods { get; set; }
 
-	private int TotalPages => GetMods == null ? 0 : (GetMods.TotalResults - 1) / PageSize + 1;
+	public int TotalPages => GetMods == null ? 0 : (GetMods.TotalResults - 1) / PageSize + 1;
 	
 	private async Task ChangeInputModName(ChangeEventArgs e)
 	{
@@ -117,12 +119,14 @@ else
 		await Fetch();
 	}
 
-	private async Task ChangePageIndex(int pageIndex)
+	public async Task ChangePageIndex(int pageIndex)
 	{
 		PageIndex = Math.Clamp(pageIndex, 0, TotalPages - 1);
 		NavigationManager.AddOrModifyQueryParameter(QueryParameters.PageIndex, PageIndex);
 
 		await Fetch();
+
+		StateHasChanged();
 	}
 
 	private async Task ChangePageSize(ChangeEventArgs e)

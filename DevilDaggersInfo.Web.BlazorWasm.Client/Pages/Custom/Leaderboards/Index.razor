@@ -1,6 +1,8 @@
 @page "/custom/leaderboards"
+@implements ICustomPage
 @inject PublicApiHttpClient Http
 @inject NavigationManager NavigationManager
+@using DevilDaggersInfo.Web.BlazorWasm.Client.Components.Custom
 @using DevilDaggersInfo.Web.BlazorWasm.Shared.Dto.Public.CustomLeaderboards
 @using DevilDaggersInfo.Web.BlazorWasm.Shared.Enums.Sortings.Public
 @using DevilDaggersInfo.Web.BlazorWasm.Shared.Enums
@@ -33,10 +35,11 @@ else
 			}
 		}
 	</Select>
-	<button class="bg-gray-0b hover:bg-gray-22 transition-colors duration-100 w-8 h-8 py-1 rounded text-color-text" @onclick="() => ChangePageIndex(0)"><span class="relative top-[-2px]">⏮</span></button>
-	<button class="bg-gray-0b hover:bg-gray-22 transition-colors duration-100 w-8 h-8 py-1 rounded text-color-text" @onclick="() => ChangePageIndex(PageIndex - 1)">⯇</button>
-	<button class="bg-gray-0b hover:bg-gray-22 transition-colors duration-100 w-8 h-8 py-1 rounded text-color-text" @onclick="() => ChangePageIndex(PageIndex + 1)">⯈</button>
-	<button class="bg-gray-0b hover:bg-gray-22 transition-colors duration-100 w-8 h-8 py-1 rounded text-color-text" @onclick="() => ChangePageIndex(TotalPages - 1)"><span class="relative top-[-2px]">⏭</span></button>
+	
+	<CascadingValue Value="this">
+		<PagingButtons />
+	</CascadingValue>
+
 	<Select @onchange="ChangePageSize" class="bg-gray-0b transition-colors duration-100 h-8 py-1 rounded text-color-text">
 		@foreach (int i in PublicPagingConstants.PageSizeOptions)
 		{
@@ -136,7 +139,7 @@ else
 
 	public GetTotalCustomLeaderboardData? GetTotalCustomLeaderboardData { get; set; }
 
-	private int TotalPages => GetCustomLeaderboards == null ? 0 : (GetCustomLeaderboards.TotalResults - 1) / PageSize + 1;
+	public int TotalPages => GetCustomLeaderboards == null ? 0 : (GetCustomLeaderboards.TotalResults - 1) / PageSize + 1;
 
 	private async Task ChangeInputSpawnsetName(ChangeEventArgs e)
 	{
@@ -166,12 +169,14 @@ else
 		GetTotalCustomLeaderboardData = await Http.GetTotalCustomLeaderboardData();
 	}
 
-	private async Task ChangePageIndex(int pageIndex)
+	public async Task ChangePageIndex(int pageIndex)
 	{
 		PageIndex = Math.Clamp(pageIndex, 0, TotalPages - 1);
 		NavigationManager.AddOrModifyQueryParameter(QueryParameters.PageIndex, PageIndex);
 
 		await Fetch();
+
+		StateHasChanged();
 	}
 
 	private async Task ChangePageSize(ChangeEventArgs e)
