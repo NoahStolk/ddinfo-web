@@ -126,6 +126,57 @@ public class CustomLeaderboardsController : ControllerBase
 		};
 	}
 
+	[HttpGet("ddlive")]
+	[ProducesResponseType(StatusCodes.Status200OK)]
+	[ProducesResponseType(StatusCodes.Status400BadRequest)]
+	public ActionResult<List<GetCustomLeaderboardDdLive>> GetCustomLeaderboardsDdLive()
+	{
+		List<CustomLeaderboardEntity> customLeaderboards = _dbContext.CustomLeaderboards
+			.AsNoTracking()
+			.Where(cl => !cl.IsArchived)
+			.Include(cl => cl.Spawnset)
+				.ThenInclude(sf => sf.Player)
+			.Where(cl => !cl.IsArchived)
+			.ToList();
+
+		// Query custom entries for world record and amount of players.
+		List<int> customLeaderboardIds = customLeaderboards.ConvertAll(cl => cl.Id);
+		var customEntries = _dbContext.CustomEntries
+			.AsNoTracking()
+			.Where(ce => customLeaderboardIds.Contains(ce.CustomLeaderboardId))
+			.Include(ce => ce.Player)
+			.Select(ce => new { ce.Time, ce.Player.PlayerName, ce.CustomLeaderboardId });
+
+		// Build dictionary for amount of players.
+		Dictionary<int, int> customEntryCountByCustomLeaderboardId = new();
+		foreach (int customLeaderboardId in customEntries.Select(ce => ce.CustomLeaderboardId))
+		{
+			if (customEntryCountByCustomLeaderboardId.ContainsKey(customLeaderboardId))
+				customEntryCountByCustomLeaderboardId[customLeaderboardId]++;
+			else
+				customEntryCountByCustomLeaderboardId.Add(customLeaderboardId, 1);
+		}
+
+		// Map custom leaderboards with world record data.
+		List<CustomLeaderboardWorldRecord> customLeaderboardWrs = new();
+		foreach (CustomLeaderboardEntity cl in customLeaderboards)
+		{
+			var worldRecord = cl.Category.IsAscending()
+				? customEntries.OrderBy(ce => ce.Time).FirstOrDefault(clwr => clwr.CustomLeaderboardId == cl.Id)
+				: customEntries.OrderByDescending(ce => ce.Time).FirstOrDefault(clwr => clwr.CustomLeaderboardId == cl.Id);
+
+			customLeaderboardWrs.Add(new(cl, worldRecord?.Time, worldRecord?.PlayerName));
+		}
+
+		return customLeaderboardWrs
+			.OrderByDescending(clwr => clwr.CustomLeaderboard.DateLastPlayed ?? clwr.CustomLeaderboard.DateCreated)
+			.Select(clwr => clwr.CustomLeaderboard.ToGetCustomLeaderboardDdLive(
+				customEntryCountByCustomLeaderboardId.ContainsKey(clwr.CustomLeaderboard.Id) ? customEntryCountByCustomLeaderboardId[clwr.CustomLeaderboard.Id] : 0,
+				clwr.TopPlayer,
+				clwr.WorldRecord))
+			.ToList();
+	}
+
 	[HttpGet("total-data")]
 	[ProducesResponseType(StatusCodes.Status200OK)]
 	public ActionResult<GetTotalCustomLeaderboardData> GetTotalCustomLeaderboardData()
