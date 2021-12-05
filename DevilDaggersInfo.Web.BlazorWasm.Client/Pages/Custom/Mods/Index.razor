@@ -25,7 +25,7 @@ else
 	</div>
 	
 	<CascadingValue Value="this">
-		<PagingButtons />
+		<Paging />
 	</CascadingValue>
 
 	<div class="p-1">Page @(PageIndex + 1) of @TotalPages (@(PageIndex * PageSize + 1) - @Math.Min(GetMods.TotalResults, (PageIndex + 1) * PageSize) of @GetMods.TotalResults)</div>
