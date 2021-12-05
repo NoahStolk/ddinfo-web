@@ -1,9 +1,9 @@
 @using DevilDaggersInfo.Web.BlazorWasm.Client.Pages.Custom
 
-<button class="bg-gray-0b hover:bg-gray-22 transition-colors duration-100 w-8 h-8 py-1 rounded text-color-text" @onclick="() => Page.ChangePageIndex(0)"><span class="relative top-[-2px]">⏮</span></button>
-<button class="bg-gray-0b hover:bg-gray-22 transition-colors duration-100 w-8 h-8 py-1 rounded text-color-text" @onclick="() => Page.ChangePageIndex(Page.PageIndex - 1)">⯇</button>
-<button class="bg-gray-0b hover:bg-gray-22 transition-colors duration-100 w-8 h-8 py-1 rounded text-color-text" @onclick="() => Page.ChangePageIndex(Page.PageIndex + 1)">⯈</button>
-<button class="bg-gray-0b hover:bg-gray-22 transition-colors duration-100 w-8 h-8 py-1 rounded text-color-text" @onclick="() => Page.ChangePageIndex(Page.TotalPages - 1)"><span class="relative top-[-2px]">⏭</span></button>
+<button class="bg-gray-0b hover:bg-gray-22 transition-colors duration-100 w-8 h-8 py-1 m-1 rounded text-color-text" @onclick="() => Page.ChangePageIndex(0)"><span class="relative top-[-2px]">⏮</span></button>
+<button class="bg-gray-0b hover:bg-gray-22 transition-colors duration-100 w-8 h-8 py-1 m-1 rounded text-color-text" @onclick="() => Page.ChangePageIndex(Page.PageIndex - 1)">⯇</button>
+<button class="bg-gray-0b hover:bg-gray-22 transition-colors duration-100 w-8 h-8 py-1 m-1 rounded text-color-text" @onclick="() => Page.ChangePageIndex(Page.PageIndex + 1)">⯈</button>
+<button class="bg-gray-0b hover:bg-gray-22 transition-colors duration-100 w-8 h-8 py-1 m-1 rounded text-color-text" @onclick="() => Page.ChangePageIndex(Page.TotalPages - 1)"><span class="relative top-[-2px]">⏭</span></button>
 
 @code
 {
