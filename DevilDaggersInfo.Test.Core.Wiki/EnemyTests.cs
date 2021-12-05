@@ -10,6 +10,7 @@ public class EnemyTests
 		Assert.AreEqual(20, Enemies.GetEnemies(GameVersion.V2_0).Count);
 		Assert.AreEqual(22, Enemies.GetEnemies(GameVersion.V3_0).Count);
 		Assert.AreEqual(22, Enemies.GetEnemies(GameVersion.V3_1).Count);
+		Assert.AreEqual(22, Enemies.GetEnemies(GameVersion.V3_2).Count);
 	}
 
 	[TestMethod]
