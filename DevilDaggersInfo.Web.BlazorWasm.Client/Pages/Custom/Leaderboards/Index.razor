@@ -40,19 +40,6 @@ else
 		<PagingButtons />
 	</CascadingValue>
 
-	<Select @onchange="ChangePageSize" class="bg-gray-0b transition-colors duration-100 h-8 py-1 m-1 rounded text-color-text">
-		@foreach (int i in PublicPagingConstants.PageSizeOptions)
-		{
-			if (i == PageSize)
-			{
-				<option value="@i" selected>@i</option>
-			}
-			else
-			{
-				<option value="@i">@i</option>
-			}
-		}
-	</Select>
 	<div class="p-1">Page @(PageIndex + 1) of @TotalPages (@(PageIndex * PageSize + 1) - @Math.Min(GetCustomLeaderboards.TotalResults, (PageIndex + 1) * PageSize) of @GetCustomLeaderboards.TotalResults)</div>
 
 	<div class="grid gap-3 sm:grid-cols-custom-leaderboards-sm md:grid-cols-custom-leaderboards-md lg:grid-cols-custom-leaderboards-lg xl:grid-cols-custom-leaderboards-xl 2xl:grid-cols-custom-leaderboards-2xl">
@@ -179,7 +166,7 @@ else
 		StateHasChanged();
 	}
 
-	private async Task ChangePageSize(ChangeEventArgs e)
+	public async Task ChangePageSize(ChangeEventArgs e)
 	{
 		if (!int.TryParse(e.Value?.ToString(), out int pageSize))
 			return;

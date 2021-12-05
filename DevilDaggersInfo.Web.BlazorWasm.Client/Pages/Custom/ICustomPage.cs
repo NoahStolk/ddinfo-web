@@ -1,3 +1,5 @@
+using Microsoft.AspNetCore.Components;
+
 namespace DevilDaggersInfo.Web.BlazorWasm.Client.Pages.Custom;
 
 public interface ICustomPage
@@ -8,4 +10,6 @@ public interface ICustomPage
 	public int TotalPages { get; }
 
 	public Task ChangePageIndex(int pageIndex);
+
+	public Task ChangePageSize(ChangeEventArgs e);
 }

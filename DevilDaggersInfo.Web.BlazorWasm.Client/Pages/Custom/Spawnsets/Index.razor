@@ -30,21 +30,11 @@ else
 		<PagingButtons />
 	</CascadingValue>
 
-	<Select @onchange="ChangePageSize" class="bg-gray-0b transition-colors duration-100 h-8 py-1 m-1 rounded text-color-text">
-		@foreach (int i in PublicPagingConstants.PageSizeOptions)
-		{
-			if (i == PageSize)
-			{
-				<option value="@i" selected>@i</option>
-			}
-			else
-			{
-				<option value="@i">@i</option>
-			}
-		}
-	</Select>
-
-	@if (GetSpawnsets.Results.Count > 0)
+	@if (GetSpawnsets.Results.Count == 0)
+	{
+		<p class="pt-2">Search returned no results.</p>
+	}
+	else
 	{
 		<div class="p-1">Page @(PageIndex + 1) of @TotalPages (@(PageIndex * PageSize + 1) - @Math.Min(GetSpawnsets.TotalResults, (PageIndex + 1) * PageSize) of @GetSpawnsets.TotalResults)</div>
 
@@ -81,10 +71,6 @@ else
 				<div class="overflow-x-hidden text-right hidden lg:block">@spawnset.TimerStart.ToString(FormatUtils.TimeFormat)</div>
 			</div>
 		}
-	}
-	else
-	{
-		<p class="pt-2">Search returned no results.</p>
 	}
 }
 
@@ -163,7 +149,7 @@ else
 		StateHasChanged();
 	}
 
-	private async Task ChangePageSize(ChangeEventArgs e)
+	public async Task ChangePageSize(ChangeEventArgs e)
 	{
 		if (!int.TryParse(e.Value?.ToString(), out int pageSize))
 			return;
