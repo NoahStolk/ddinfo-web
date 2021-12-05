@@ -20,22 +20,22 @@ else
 		<input class="bg-black border-gray-22 border-2" @onchange="ChangeInputSpawnsetName" />
 		<span>Author name</span>
 		<input class="bg-black border-gray-22 border-2" @onchange="ChangeInputAuthorName" />
+		<span>Category</span>
+		<Select @onchange="ChangeCategory" class="bg-gray-0b transition-colors duration-100 h-8 rounded text-color-text">
+			@foreach (CustomLeaderboardCategory e in (CustomLeaderboardCategory[])Enum.GetValues(typeof(CustomLeaderboardCategory)))
+			{
+				if (e == (CustomLeaderboardCategory)Category)
+				{
+					<option value="@e" selected>@e</option>
+				}
+				else
+				{
+					<option value="@e">@e</option>
+				}
+			}
+		</Select>
 	</div>
 
-	<Select @onchange="ChangeCategory" class="bg-gray-0b transition-colors duration-100 h-8 py-1 rounded text-color-text">
-		@foreach (CustomLeaderboardCategory e in (CustomLeaderboardCategory[])Enum.GetValues(typeof(CustomLeaderboardCategory)))
-		{
-			if (e == (CustomLeaderboardCategory)Category)
-			{
-				<option value="@e" selected>@e</option>
-			}
-			else
-			{
-				<option value="@e">@e</option>
-			}
-		}
-	</Select>
-	
 	<CascadingValue Value="this">
 		<PagingButtons />
 	</CascadingValue>
