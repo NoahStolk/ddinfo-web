@@ -10,7 +10,7 @@
 </Paragraph>
 
 <div class="grid gap-4 xl:grid-cols-4 lg:grid-cols-2 md:grid-cols-2 sm:grid-cols-1 xs:grid-cols-1">
-	@foreach (Upgrade upgrade in Upgrades.GetUpgrades(GameVersion.V3_1))
+	@foreach (Upgrade upgrade in Upgrades.GetUpgrades(GameConstants.CurrentVersion))
 	{
 		<div>
 			@*TODO: Mention that level 4 was added in V2.*@

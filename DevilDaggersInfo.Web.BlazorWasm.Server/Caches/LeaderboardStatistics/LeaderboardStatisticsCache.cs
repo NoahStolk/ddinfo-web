@@ -71,23 +71,23 @@ public class LeaderboardStatisticsCache : IStaticCache
 			}
 		}
 
-		foreach (Death death in Deaths.GetDeaths(GameVersion.V3_1))
+		foreach (Death death in Deaths.GetDeaths(GameConstants.CurrentVersion))
 			DeathStats.Add(death, 0);
 
-		foreach (Dagger dagger in Daggers.GetDaggers(GameVersion.V3_1))
+		foreach (Dagger dagger in Daggers.GetDaggers(GameConstants.CurrentVersion))
 			DaggerStats.Add(dagger, 0);
 
-		IEnumerable<Enemy> enemies = Enemies.GetEnemies(GameVersion.V3_1).Where(e => e.FirstSpawnSecond.HasValue);
+		IEnumerable<Enemy> enemies = Enemies.GetEnemies(GameConstants.CurrentVersion).Where(e => e.FirstSpawnSecond.HasValue);
 		foreach (Enemy enemy in enemies)
 			EnemyStats.Add(enemy, 0);
 
 		foreach (CompressedEntry entry in _entries)
 		{
-			Dagger dagger = Daggers.GetDaggerFromTenthsOfMilliseconds(GameVersion.V3_1, (int)entry.Time);
+			Dagger dagger = Daggers.GetDaggerFromTenthsOfMilliseconds(GameConstants.CurrentVersion, (int)entry.Time);
 			if (DaggerStats.ContainsKey(dagger))
 				DaggerStats[dagger]++;
 
-			Death? death = Deaths.GetDeathByLeaderboardType(GameVersion.V3_1, entry.DeathType);
+			Death? death = Deaths.GetDeathByLeaderboardType(GameConstants.CurrentVersion, entry.DeathType);
 			if (!death.HasValue)
 				_logger.LogError("Invalid death type 0x{death} for entry with time {time} in leaderboard-statistics.", entry.DeathType.ToString("X"), entry.Time);
 			else if (DeathStats.ContainsKey(death.Value))

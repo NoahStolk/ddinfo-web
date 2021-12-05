@@ -6,7 +6,7 @@ public static class MarkupUtils
 {
 	public static readonly MarkupString NoDataMarkup = new(@"<span style=""color: #666;"">N/A</span>");
 
-	public static MarkupString DeathString(byte deathType, GameVersion gameVersion = GameVersion.V3_1)
+	public static MarkupString DeathString(byte deathType, GameVersion gameVersion = GameConstants.CurrentVersion)
 	{
 		Death? death = Deaths.GetDeathByLeaderboardType(gameVersion, deathType);
 		string style = $"color: {death?.Color.HexCode ?? "#444"};";

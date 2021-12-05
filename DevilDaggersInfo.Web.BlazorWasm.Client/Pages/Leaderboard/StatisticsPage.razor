@@ -114,17 +114,17 @@ else
 			barChart: _sub500Chart,
 			labels: sub500Times.Select(i => $"{i} - {i + 9}").ToArray(),
 			data: _statistics.TimeStatistics.Select(kvp => kvp.Value).Take(50).ToList(),
-			backgroundColors: sub500Times.Select(t => Daggers.GetDaggerFromSeconds(GameVersion.V3_1, t).Color.HexCode).ToList());
+			backgroundColors: sub500Times.Select(t => Daggers.GetDaggerFromSeconds(GameConstants.CurrentVersion, t).Color.HexCode).ToList());
 		await SetUpBarChart(
 			barChart: _sub1000Chart,
 			labels: sub1000Times.Select(i => $"{i} - {i + 9}").ToArray(),
 			data: _statistics.TimeStatistics.Select(kvp => kvp.Value).Skip(50).Take(50).ToList(),
-			backgroundColors: sub1000Times.Select(t => Daggers.GetDaggerFromSeconds(GameVersion.V3_1, t).Color.HexCode).ToList());
+			backgroundColors: sub1000Times.Select(t => Daggers.GetDaggerFromSeconds(GameConstants.CurrentVersion, t).Color.HexCode).ToList());
 		await SetUpBarChart(
 			barChart: _post1000Chart,
 			labels: post1000Times.Select(i => $"{i} - {i + 9}").ToArray(),
 			data: _statistics.TimeStatistics.Select(kvp => kvp.Value).Skip(100).Take(post1000BarCount).ToList(),
-			backgroundColors: post1000Times.Select(t => Daggers.GetDaggerFromSeconds(GameVersion.V3_1, t).Color.HexCode).ToList());
+			backgroundColors: post1000Times.Select(t => Daggers.GetDaggerFromSeconds(GameConstants.CurrentVersion, t).Color.HexCode).ToList());
 		await SetUpBarChart(
 			barChart: _killsChart,
 			labels: _statistics.KillStatistics.Take(_killGraphCount).Select(kvp => $"{kvp.Key} - {kvp.Key + 9}").ToArray(),
@@ -139,22 +139,22 @@ else
 			pieChart: _levelsChart,
 			labels: new[] { "Level 1", "Level 2", "Level 3 or 4" },
 			data: new() { _statistics.PlayersWithLevel1, _statistics.PlayersWithLevel2, _statistics.PlayersWithLevel3Or4 },
-			backgroundColors: Upgrades.GetUpgrades(GameVersion.V3_1).Where(u => u.Level != 4).Select(u => u.Color.HexCode).ToList());
+			backgroundColors: Upgrades.GetUpgrades(GameConstants.CurrentVersion).Where(u => u.Level != 4).Select(u => u.Color.HexCode).ToList());
 		await SetUpBarChart(
 			barChart: _daggersChart,
 			labels: _statistics.DaggerStatistics.Select(kvp => kvp.Key).ToArray(),
 			data: _statistics.DaggerStatistics.Select(kvp => kvp.Value).ToList(),
-			backgroundColors: _statistics.DaggerStatistics.Select(kvp => Daggers.GetDaggerByName(GameVersion.V3_1, kvp.Key)?.Color.HexCode ?? "#444").ToList());
+			backgroundColors: _statistics.DaggerStatistics.Select(kvp => Daggers.GetDaggerByName(GameConstants.CurrentVersion, kvp.Key)?.Color.HexCode ?? "#444").ToList());
 		await SetUpBarChart(
 			barChart: _deathsChart,
 			labels: _statistics.DeathStatistics.Select(kvp => kvp.Key).ToArray(),
 			data: _statistics.DeathStatistics.Select(kvp => kvp.Value).ToList(),
-			backgroundColors: _statistics.DeathStatistics.Select(kvp => Deaths.GetDeathByName(GameVersion.V3_1, kvp.Key)?.Color.HexCode ?? "#444").ToList());
+			backgroundColors: _statistics.DeathStatistics.Select(kvp => Deaths.GetDeathByName(GameConstants.CurrentVersion, kvp.Key)?.Color.HexCode ?? "#444").ToList());
 		await SetUpBarChart(
 			barChart: _enemiesChart,
 			labels: _statistics.EnemyStatistics.Select(kvp => kvp.Key).ToArray(),
 			data: _statistics.EnemyStatistics.Select(kvp => kvp.Value).ToList(),
-			backgroundColors: _statistics.EnemyStatistics.Select(kvp => Enemies.GetEnemyByName(GameVersion.V3_1, kvp.Key)?.Color.HexCode ?? "#444").ToList());
+			backgroundColors: _statistics.EnemyStatistics.Select(kvp => Enemies.GetEnemyByName(GameConstants.CurrentVersion, kvp.Key)?.Color.HexCode ?? "#444").ToList());
 	}
 
 	private async Task SetUpBarChart(BarChart<int> barChart, string[] labels, List<int> data, List<string> backgroundColors)

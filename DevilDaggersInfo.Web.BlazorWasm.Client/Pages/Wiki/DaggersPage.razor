@@ -7,7 +7,7 @@
 </Paragraph>
 
 <div class="pt-4 grid gap-4 grid-cols-1 md:grid-cols-2 xl:grid-cols-3">
-	@foreach (Dagger dagger in Daggers.GetDaggers(GameVersion.V3_2))
+	@foreach (Dagger dagger in Daggers.GetDaggers(GameConstants.CurrentVersion))
 	{
 		<div>
 			<div class="font-goethe text-xl @dagger.Name.ToLower()">@dagger.Name Dagger</div>

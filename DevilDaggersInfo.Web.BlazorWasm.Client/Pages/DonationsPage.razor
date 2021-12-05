@@ -12,7 +12,7 @@
 	Thanks to everyone who donated!
 </Paragraph>
 <div class="grid gap-2 grid-cols-6">
-	@foreach (Dagger dagger in Daggers.GetDaggers(GameVersion.V3_1))
+	@foreach (Dagger dagger in Daggers.GetDaggers(GameConstants.CurrentVersion))
 	{
 		<img class="mx-auto" src="images/icons/daggers/@(dagger.Name.ToLower()).png" />
 	}

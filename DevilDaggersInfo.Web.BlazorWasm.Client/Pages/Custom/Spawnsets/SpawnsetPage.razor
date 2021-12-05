@@ -119,7 +119,7 @@ else
 		}
 
 		SpawnsetBinary = spawnsetBinary;
-		SpawnsView = new(spawnsetBinary, GameVersion.V3_1);
+		SpawnsView = new(spawnsetBinary, GameConstants.CurrentVersion);
 		EffectivePlayerSettings = spawnsetBinary.GetEffectivePlayerSettings();
 	}
 }
