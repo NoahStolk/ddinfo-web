@@ -4,7 +4,7 @@ namespace DevilDaggersInfo.Web.BlazorWasm.Client.Utils;
 
 public static class MarkupUtils
 {
-	public static readonly MarkupString NoDataMarkup = new(@"<span class=""text-no-data"">N/A</span>");
+	public static readonly MarkupString NoDataMarkup = new(@"<span style=""color: #666;"">N/A</span>");
 
 	public static MarkupString DeathString(byte deathType, GameVersion gameVersion = GameVersion.V3_1)
 	{
