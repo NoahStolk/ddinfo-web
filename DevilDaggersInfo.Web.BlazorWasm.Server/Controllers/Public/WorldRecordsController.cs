@@ -98,7 +98,7 @@ public class WorldRecordsController : ControllerBase
 		{
 			GameVersion.V1_0 => 1,
 			GameVersion.V2_0 => 2,
-			GameVersion.V3_0 or GameVersion.V3_1 => 3,
+			GameVersion.V3_0 or GameVersion.V3_1 or GameVersion.V3_2 => 3,
 			_ => 0,
 		};
 	}
