@@ -52,6 +52,7 @@ public static class CustomLeaderboardConverters
 		DateLastPlayed = customLeaderboard.DateLastPlayed,
 		SubmitCount = customLeaderboard.TotalRunsSubmitted,
 		PlayerCount = playerCount,
+		Category = customLeaderboard.Category,
 		TopPlayer = topPlayer,
 		WorldRecord = worldRecord.ToSecondsTime(),
 		WorldRecordDagger = worldRecord.HasValue ? customLeaderboard.GetDaggerFromTime(worldRecord.Value) : CustomLeaderboardDagger.Default,

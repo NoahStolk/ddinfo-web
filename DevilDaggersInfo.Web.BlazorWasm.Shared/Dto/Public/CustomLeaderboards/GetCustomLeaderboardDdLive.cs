@@ -26,6 +26,8 @@ public class GetCustomLeaderboardDdLive
 
 	public int PlayerCount { get; init; }
 
+	public CustomLeaderboardCategory Category { get; init; }
+
 	public string? TopPlayer { get; init; }
 
 	public double? WorldRecord { get; init; }
