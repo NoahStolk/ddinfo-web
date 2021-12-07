@@ -118,7 +118,17 @@ else
 							@if (graphs)
 							{
 								<UrlLink Href="@($"/custom/entry/{ce.Id}")">
-									<Tooltip Text="View graphs and replay"><img class="cursor-pointer inline-block mx-1 mb-1" src="/images/icons/mask/eye.png" /></Tooltip>
+									<Tooltip Text="View graphs"><img class="cursor-pointer inline-block mx-1 mb-1" src="/images/icons/default/eye2.png" /></Tooltip>
+								</UrlLink>
+							}
+							else
+							{
+								<img class="inline-block mx-1 mb-1" src="/images/icons/color/eye-gray.png" />
+							}
+							@if (ce.HasReplay)
+							{
+								<UrlLink Href="@($"api/custom-entries/{ce.Id}/replay")">
+									<Tooltip Text="Download replay"><img class="cursor-pointer inline-block mx-1 mb-1" src="/images/icons/default/eye2.png" /></Tooltip>
 								</UrlLink>
 							}
 							else
