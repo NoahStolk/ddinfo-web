@@ -58,7 +58,7 @@ public static class CustomLeaderboardConverters
 		WorldRecordDagger = worldRecord.HasValue ? customLeaderboard.GetDaggerFromTime(worldRecord.Value) : CustomLeaderboardDagger.Default,
 	};
 
-	public static GetCustomLeaderboard ToGetCustomLeaderboard(this CustomLeaderboardEntity customLeaderboard) => new()
+	public static GetCustomLeaderboard ToGetCustomLeaderboard(this CustomLeaderboardEntity customLeaderboard, List<int> existingReplayIds) => new()
 	{
 		SpawnsetId = customLeaderboard.SpawnsetId,
 		SpawnsetAuthorName = customLeaderboard.Spawnset.Player.PlayerName,
@@ -74,6 +74,9 @@ public static class CustomLeaderboardConverters
 		Category = customLeaderboard.Category,
 		IsArchived = customLeaderboard.IsArchived,
 		DateLastPlayed = customLeaderboard.DateLastPlayed,
-		CustomEntries = customLeaderboard.CustomEntries?.OrderBy(ce => ce.Time, customLeaderboard.Category.IsAscending()).Select((ce, i) => ce.ToGetCustomEntry(i + 1)).ToList() ?? new(),
+		CustomEntries = customLeaderboard.CustomEntries?
+			.OrderBy(ce => ce.Time, customLeaderboard.Category.IsAscending())
+			.Select((ce, i) => ce.ToGetCustomEntry(i + 1, existingReplayIds.Contains(ce.Id)))
+			.ToList() ?? new(),
 	};
 }

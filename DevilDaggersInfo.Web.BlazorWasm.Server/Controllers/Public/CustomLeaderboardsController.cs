@@ -2,6 +2,7 @@ using DevilDaggersInfo.Web.BlazorWasm.Server.Converters.Public;
 using DevilDaggersInfo.Web.BlazorWasm.Shared.Dto;
 using DevilDaggersInfo.Web.BlazorWasm.Shared.Dto.Public.CustomLeaderboards;
 using DevilDaggersInfo.Web.BlazorWasm.Shared.Enums.Sortings.Public;
+using System.Linq;
 
 namespace DevilDaggersInfo.Web.BlazorWasm.Server.Controllers.Public;
 
@@ -10,10 +11,12 @@ namespace DevilDaggersInfo.Web.BlazorWasm.Server.Controllers.Public;
 public class CustomLeaderboardsController : ControllerBase
 {
 	private readonly ApplicationDbContext _dbContext;
+	private readonly IFileSystemService _fileSystemService;
 
-	public CustomLeaderboardsController(ApplicationDbContext dbContext)
+	public CustomLeaderboardsController(ApplicationDbContext dbContext, IFileSystemService fileSystemService)
 	{
 		_dbContext = dbContext;
+		_fileSystemService = fileSystemService;
 	}
 
 	[HttpGet]
@@ -236,7 +239,11 @@ public class CustomLeaderboardsController : ControllerBase
 		if (customLeaderboard == null)
 			return NotFound();
 
-		return customLeaderboard.ToGetCustomLeaderboard();
+		List<int> existingReplayIds = (customLeaderboard.CustomEntries ?? new())
+			.Where(ce => IoFile.Exists(Path.Combine(_fileSystemService.GetPath(DataSubDirectory.CustomEntryReplays), $"{ce.Id}.ddreplay")))
+			.Select(ce => ce.Id)
+			.ToList();
+		return customLeaderboard.ToGetCustomLeaderboard(existingReplayIds);
 	}
 
 	private sealed class CustomLeaderboardWorldRecord

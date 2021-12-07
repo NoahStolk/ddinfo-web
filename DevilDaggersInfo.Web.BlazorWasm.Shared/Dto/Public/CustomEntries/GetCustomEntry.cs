@@ -49,4 +49,6 @@ public class GetCustomEntry
 	public string? ClientVersion { get; init; }
 
 	public CustomLeaderboardsClient Client { get; init; }
+
+	public bool HasReplay { get; init; }
 }

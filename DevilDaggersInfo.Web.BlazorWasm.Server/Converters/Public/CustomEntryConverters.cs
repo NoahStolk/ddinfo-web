@@ -27,7 +27,7 @@ public static class CustomEntryConverters
 		Time = customEntry.Time,
 	};
 
-	public static GetCustomEntry ToGetCustomEntry(this CustomEntryEntity customEntry, int rank) => new()
+	public static GetCustomEntry ToGetCustomEntry(this CustomEntryEntity customEntry, int rank, bool hasReplay) => new()
 	{
 		Id = customEntry.Id,
 		Rank = rank,
@@ -53,6 +53,7 @@ public static class CustomEntryConverters
 		SubmitDate = customEntry.SubmitDate,
 		Time = customEntry.Time.ToSecondsTime(),
 		CustomLeaderboardDagger = customEntry.CustomLeaderboard.GetDaggerFromTime(customEntry.Time),
+		HasReplay = hasReplay,
 	};
 
 	public static GetCustomEntryData ToGetCustomEntryData(this CustomEntryEntity customEntry, CustomEntryDataEntity? customEntryData)
