@@ -6,11 +6,14 @@ namespace DevilDaggersInfo.Web.BlazorWasm.Server.Logging.Discord;
 public class DiscordLogger : ILogger
 {
 	private readonly string _name;
+	private readonly IWebHostEnvironment _environment;
 	private readonly Func<DiscordLoggerConfiguration> _getCurrentConfig;
 
-	public DiscordLogger(string name, Func<DiscordLoggerConfiguration> getCurrentConfig)
+	public DiscordLogger(string name, IWebHostEnvironment environment, Func<DiscordLoggerConfiguration> getCurrentConfig)
 	{
-		(_name, _getCurrentConfig) = (name, getCurrentConfig);
+		_name = name;
+		_environment = environment;
+		_getCurrentConfig = getCurrentConfig;
 	}
 
 	public IDisposable BeginScope<TState>(TState state) => default!;
@@ -38,6 +41,7 @@ public class DiscordLogger : ILogger
 			Color = config.LogLevels.ContainsKey(logLevel) ? config.LogLevels[logLevel] : DiscordColor.White,
 		};
 
+		builder.AddFieldObject("Environment", _environment.EnvironmentName);
 		builder.AddFieldObject("Logger", _name);
 
 		if (eventId.Name != null)
