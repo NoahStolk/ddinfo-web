@@ -1,4 +1,4 @@
-@page
+﻿@page
 @inject Microsoft.AspNetCore.Hosting.IWebHostEnvironment environment
 @inject IToolHelper toolHelper
 @using DevilDaggersWebsite.Dto
@@ -10,6 +10,7 @@
 	ViewData["Title"] = tool.DisplayName;
 	string downloadFileName = $"{tool.Name}{tool.VersionNumber}.zip";
 	FileInfo downloadFileInfo = new(System.IO.Path.Combine(environment.WebRootPath, "tools", tool.Name, downloadFileName));
+	string runtimeUrl = ToolRuntimeUtils.GetRuntimeUrl("5.0");
 }
 
 <header>
@@ -53,10 +54,12 @@
 	<h2>System requirements</h2>
 	<ul>
 		<li>Microsoft Windows (64-bit)</li>
+		<li><a href="@runtimeUrl">@ToolRuntimeUtils.DesktopRuntimeNameDotNet50</a> (x64)</li>
 	</ul>
 
 	<h2>Installation</h2>
 	<ol>
+		<li>Make sure to install <a href="@runtimeUrl">@ToolRuntimeUtils.DesktopRuntimeNameDotNet50</a> (x64) before running the program.</li>
 		<li>Download the .zip file.</li>
 		<li>Unzip its contents.</li>
 		<li>Run the executable (.exe file) inside the folder.</li>
