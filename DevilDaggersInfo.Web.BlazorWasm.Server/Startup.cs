@@ -6,6 +6,7 @@ using DevilDaggersInfo.Web.BlazorWasm.Server.Caches.SpawnsetSummaries;
 using DevilDaggersInfo.Web.BlazorWasm.Server.HostedServices;
 using DevilDaggersInfo.Web.BlazorWasm.Server.Middleware;
 using DevilDaggersInfo.Web.BlazorWasm.Server.NSwag;
+using Microsoft.AspNetCore.DataProtection;
 using Microsoft.AspNetCore.Rewrite;
 using NJsonSchema;
 using System.Globalization;
@@ -53,6 +54,9 @@ public class Startup
 		services.AddSingleton<SpawnsetHashCache>();
 
 		services.AddHostedService<DiscordLogFlushBackgroundService>();
+
+		services.AddDataProtection()
+			.PersistKeysToFileSystem(new DirectoryInfo("keys"));
 
 #if V5_RELEASE
 		if (!WebHostEnvironment.IsDevelopment())
