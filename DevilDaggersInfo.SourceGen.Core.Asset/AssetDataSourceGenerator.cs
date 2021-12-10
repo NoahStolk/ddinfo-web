@@ -1,7 +1,7 @@
 namespace DevilDaggersInfo.SourceGen.Core.Asset;
 
 [Generator]
-public class AssetDataSourceGenerator : ISourceGenerator
+public class AssetDataSourceGenerator : IIncrementalGenerator
 {
 	private const string _className = $"%{nameof(_className)}%";
 	private const string _assetTypeName = $"%{nameof(_assetTypeName)}%";
@@ -25,72 +25,61 @@ public static class {_className}
 		Texture,
 	}
 
-	public void Initialize(GeneratorInitializationContext context)
+	public void Initialize(IncrementalGeneratorInitializationContext context)
 	{
-		// Method intentionally left empty.
+		context.RegisterSourceOutput(context.AdditionalTextsProvider, static (spc, at) => Execute(spc, at));
 	}
 
-	public void Execute(GeneratorExecutionContext context)
+	public static void Execute(SourceProductionContext sourceProductionContext, AdditionalText additionalText)
 	{
-		foreach (AdditionalText additionalText in context.AdditionalFiles)
+		string className = Path.GetFileNameWithoutExtension(additionalText.Path);
+		string? fileContents = additionalText.GetText()?.ToString();
+		if (fileContents == null)
+			return;
+
+		AssetType assetType = TrimStart(className, "Audio", "Core", "Dd") switch
 		{
-			string className = Path.GetFileNameWithoutExtension(additionalText.Path);
-			string? fileContents = additionalText.GetText()?.ToString();
-			if (fileContents == null)
-				continue;
+			"Audio" => AssetType.Audio,
+			"ModelBindings" => AssetType.ModelBinding,
+			"Models" => AssetType.Model,
+			"Shaders" => AssetType.Shader,
+			"Textures" => AssetType.Texture,
+			_ => throw new NotSupportedException(),
+		};
 
-			AssetType assetType = TrimStart(className, "Audio", "Core", "Dd") switch
+		string assetTypeName = $"{assetType}AssetData";
+
+		string[] lines = fileContents.Split(new string[] { Environment.NewLine }, StringSplitOptions.RemoveEmptyEntries);
+		string[] fieldLines = new string[lines.Length];
+
+		for (int i = 0; i < lines.Length; i++)
+		{
+			string line = lines[i];
+
+			string[] parameters = line.Split(new string[] { "," }, StringSplitOptions.RemoveEmptyEntries);
+			const int minimumParameterCount = 2;
+			if (parameters.Length < minimumParameterCount)
+				throw new($"Invalid specification in line '{line}'. There should be at least {minimumParameterCount} parameters, but only {parameters.Length} were found.");
+
+			string ctorParameters = assetType switch
 			{
-				"Audio" => AssetType.Audio,
-				"ModelBindings" => AssetType.ModelBinding,
-				"Models" => AssetType.Model,
-				"Shaders" => AssetType.Shader,
-				"Textures" => AssetType.Texture,
+				AssetType.Audio => GetCtorParametersAudio(parameters[0], bool.Parse(parameters[1]), float.Parse(parameters[2]), bool.Parse(parameters[3])),
+				AssetType.ModelBinding => GetCtorParametersModelBinding(parameters[0], bool.Parse(parameters[1])),
+				AssetType.Model => GetCtorParametersModel(parameters[0], bool.Parse(parameters[1]), int.Parse(parameters[2]), int.Parse(parameters[3])),
+				AssetType.Shader => GetCtorParametersShader(parameters[0], bool.Parse(parameters[1])),
+				AssetType.Texture => GetCtorParametersTexture(parameters[0], bool.Parse(parameters[1]), int.Parse(parameters[2]), int.Parse(parameters[3]), bool.Parse(parameters[4]), parameters.Length > 5 ? parameters[5] : null),
 				_ => throw new NotSupportedException(),
 			};
 
-			string assetTypeName = assetType switch
-			{
-				AssetType.Audio => "AudioAssetData",
-				AssetType.ModelBinding => "ModelBindingAssetData",
-				AssetType.Model => "ModelAssetData",
-				AssetType.Shader => "ShaderAssetData",
-				AssetType.Texture => "TextureAssetData",
-				_ => throw new NotSupportedException(),
-			};
-
-			string[] lines = fileContents.Split(new string[] { Environment.NewLine }, StringSplitOptions.RemoveEmptyEntries);
-			string[] fieldLines = new string[lines.Length];
-
-			for (int i = 0; i < lines.Length; i++)
-			{
-				string line = lines[i];
-
-				string[] parameters = line.Split(new string[] { "," }, StringSplitOptions.RemoveEmptyEntries);
-				const int minimumParameterCount = 2;
-				if (parameters.Length < minimumParameterCount)
-					throw new($"Invalid specification in line '{line}'. There should be at least {minimumParameterCount} parameters, but only {parameters.Length} were found.");
-
-				string ctorParameters = assetType switch
-				{
-					AssetType.Audio => GetCtorParametersAudio(parameters[0], bool.Parse(parameters[1]), float.Parse(parameters[2]), bool.Parse(parameters[3])),
-					AssetType.ModelBinding => GetCtorParametersModelBinding(parameters[0], bool.Parse(parameters[1])),
-					AssetType.Model => GetCtorParametersModel(parameters[0], bool.Parse(parameters[1]), int.Parse(parameters[2]), int.Parse(parameters[3])),
-					AssetType.Shader => GetCtorParametersShader(parameters[0], bool.Parse(parameters[1])),
-					AssetType.Texture => GetCtorParametersTexture(parameters[0], bool.Parse(parameters[1]), int.Parse(parameters[2]), int.Parse(parameters[3]), bool.Parse(parameters[4]), parameters.Length > 5 ? parameters[5] : null),
-					_ => throw new NotSupportedException(),
-				};
-
-				fieldLines[i] = $"public static readonly {assetTypeName} {parameters[0]} = new({ctorParameters});";
-			}
-
-			string source = _template
-				.Replace(_className, className)
-				.Replace(_assetTypeName, assetTypeName)
-				.Replace(_assetFields, string.Join(Environment.NewLine, fieldLines).Indent(1));
-
-			context.AddSource(className, SourceText.From(SourceBuilderUtils.WrapInsideWarningSuppressionDirectives(source), Encoding.UTF8));
+			fieldLines[i] = $"public static readonly {assetTypeName} {parameters[0]} = new({ctorParameters});";
 		}
+
+		string source = _template
+			.Replace(_className, className)
+			.Replace(_assetTypeName, assetTypeName)
+			.Replace(_assetFields, string.Join(Environment.NewLine, fieldLines).Indent(1));
+
+		sourceProductionContext.AddSource(className, SourceText.From(SourceBuilderUtils.WrapInsideWarningSuppressionDirectives(source), Encoding.UTF8));
 
 		static string GetCtorParametersAudio(string assetName, bool isProhibited, float defaultLoudness, bool presentInDefaultLoudness)
 			=> $"{FormatString(assetName)}, {FormatBool(isProhibited)}, {FormatFloat(defaultLoudness)}, {FormatBool(presentInDefaultLoudness)}";
@@ -121,13 +110,8 @@ public static class {_className}
 			if (values.Length == 0)
 				return str;
 
-			foreach (string value in values)
-			{
-				if (str.StartsWith(value))
-					return str.Substring(value.Length);
-			}
-
-			return str;
+			string? sub = Array.Find(values, v => str.StartsWith(v));
+			return sub == null ? str : str.Substring(sub.Length);
 		}
 	}
 }
