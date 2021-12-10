@@ -1,4 +1,4 @@
-@using DevilDaggersInfo.Web.BlazorWasm.Client.Pages.Custom
+@using DevilDaggersInfo.Web.BlazorWasm.Client.Pages
 
 <button class="bg-gray-3 hover:bg-gray-4 transition-colors duration-100 w-10 h-10 mx-1 rounded text-color-text" @onclick="() => Page.ChangePageIndex(0)">@MarkupUtils.NavStart</button>
 <button class="bg-gray-3 hover:bg-gray-4 transition-colors duration-100 w-10 h-10 mx-1 rounded text-color-text" @onclick="() => Page.ChangePageIndex(Page.PageIndex - 1)">@MarkupUtils.NavPrev</button>
@@ -13,5 +13,5 @@
 
 @code
 {
-	[CascadingParameter] public ICustomPage Page { get; set; } = null!;
+	[CascadingParameter] public IHasNavigation Page { get; set; } = null!;
 }
