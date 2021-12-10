@@ -11,7 +11,11 @@
 	{
 		<div>
 			<div class="font-goethe text-xl @dagger.Name.ToLower()">@dagger.Name Dagger</div>
-			Unlocks at <span class="@dagger.Name.ToLower()">@(dagger.UnlockSecond == 0 ? "N/A" : dagger.UnlockSecond.ToString())</span> @(dagger.UnlockSecond != 0 ? " seconds" : "")
+			@if (dagger.UnlockSecond > 0)
+			{
+				MarkupString text = new(@$"Unlocks at <span class=""{dagger.Name.ToLower()} font-goethe text-xl relative top-[1px]"">{dagger.UnlockSecond}</span> seconds");
+				@text
+			}
 			@*TODO: Mention that levi dagger was added in V3.1.*@
 			<img src='images/wiki/daggers/@(dagger.Name.ToLower()).png' />
 		</div>
