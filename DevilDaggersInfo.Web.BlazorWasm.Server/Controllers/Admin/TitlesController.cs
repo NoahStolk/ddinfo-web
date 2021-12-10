@@ -22,7 +22,7 @@ public class TitlesController : ControllerBase
 	[ProducesResponseType(StatusCodes.Status200OK)]
 	public ActionResult<Page<GetTitle>> GetTitles(
 		[Range(0, 1000)] int pageIndex = 0,
-		[Range(AdminPagingConstants.PageSizeMin, AdminPagingConstants.PageSizeMax)] int pageSize = AdminPagingConstants.PageSizeDefault,
+		[Range(PagingConstants.PageSizeMin, PagingConstants.PageSizeMax)] int pageSize = PagingConstants.PageSizeDefault,
 		TitleSorting? sortBy = null,
 		bool ascending = false)
 	{

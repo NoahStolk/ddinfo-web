@@ -28,7 +28,7 @@ public class ModsController : ControllerBase
 	[ProducesResponseType(StatusCodes.Status200OK)]
 	public ActionResult<Page<GetModForOverview>> GetMods(
 		[Range(0, 1000)] int pageIndex = 0,
-		[Range(AdminPagingConstants.PageSizeMin, AdminPagingConstants.PageSizeMax)] int pageSize = AdminPagingConstants.PageSizeDefault,
+		[Range(PagingConstants.PageSizeMin, PagingConstants.PageSizeMax)] int pageSize = PagingConstants.PageSizeDefault,
 		ModSorting? sortBy = null,
 		bool ascending = false)
 	{

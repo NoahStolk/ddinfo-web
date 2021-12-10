@@ -22,7 +22,7 @@ public class CustomEntriesController : ControllerBase
 	[ProducesResponseType(StatusCodes.Status200OK)]
 	public ActionResult<Page<GetCustomEntry>> GetCustomEntries(
 		[Range(0, 1000)] int pageIndex = 0,
-		[Range(AdminPagingConstants.PageSizeMin, AdminPagingConstants.PageSizeMax)] int pageSize = AdminPagingConstants.PageSizeDefault,
+		[Range(PagingConstants.PageSizeMin, PagingConstants.PageSizeMax)] int pageSize = PagingConstants.PageSizeDefault,
 		CustomEntrySorting? sortBy = null,
 		bool ascending = false)
 	{

@@ -77,14 +77,14 @@ else
 @code
 {
 	private int _pageIndex;
-	private int _pageSize = PublicPagingConstants.PageSizeDefault;
+	private int _pageSize = PagingConstants.PageSizeDefault;
 
 	[Parameter, SupplyParameterFromQuery] public bool PracticeOnly { get; set; }
 	[Parameter, SupplyParameterFromQuery] public bool WithCustomLeaderboardOnly { get; set; }
 	[Parameter, SupplyParameterFromQuery] public string? SpawnsetFilter { get; set; }
 	[Parameter, SupplyParameterFromQuery] public string? AuthorFilter { get; set; }
 	[Parameter, SupplyParameterFromQuery] public int PageIndex { get => _pageIndex; set => _pageIndex = Math.Max(0, value); }
-	[Parameter, SupplyParameterFromQuery] public int PageSize { get => _pageSize; set => _pageSize = value < PublicPagingConstants.PageSizeMin || value > PublicPagingConstants.PageSizeMax ? PublicPagingConstants.PageSizeDefault : value; }
+	[Parameter, SupplyParameterFromQuery] public int PageSize { get => _pageSize; set => _pageSize = value < PagingConstants.PageSizeMin || value > PagingConstants.PageSizeMax ? PagingConstants.PageSizeDefault : value; }
 	[Parameter, SupplyParameterFromQuery] public int? SortBy { get; set; }
 	[Parameter, SupplyParameterFromQuery] public bool Ascending { get; set; }
 

@@ -24,7 +24,7 @@ public class CustomLeaderboardsController : ControllerBase
 	[ProducesResponseType(StatusCodes.Status200OK)]
 	public ActionResult<Page<GetCustomLeaderboard>> GetCustomLeaderboards(
 		[Range(0, 1000)] int pageIndex = 0,
-		[Range(AdminPagingConstants.PageSizeMin, AdminPagingConstants.PageSizeMax)] int pageSize = AdminPagingConstants.PageSizeDefault,
+		[Range(PagingConstants.PageSizeMin, PagingConstants.PageSizeMax)] int pageSize = PagingConstants.PageSizeDefault,
 		CustomLeaderboardSorting? sortBy = null,
 		bool ascending = false)
 	{

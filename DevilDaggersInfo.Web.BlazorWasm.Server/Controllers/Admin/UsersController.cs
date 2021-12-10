@@ -21,7 +21,7 @@ public class UsersController : ControllerBase
 	[ProducesResponseType(StatusCodes.Status200OK)]
 	public ActionResult<Page<GetUser>> GetUsers(
 		[Range(0, 1000)] int pageIndex = 0,
-		[Range(AdminPagingConstants.PageSizeMin, AdminPagingConstants.PageSizeMax)] int pageSize = AdminPagingConstants.PageSizeDefault,
+		[Range(PagingConstants.PageSizeMin, PagingConstants.PageSizeMax)] int pageSize = PagingConstants.PageSizeDefault,
 		UserSorting? sortBy = null,
 		bool ascending = false)
 	{

@@ -29,7 +29,7 @@ public class ModsController : ControllerBase
 		string? modFilter = null,
 		string? authorFilter = null,
 		[Range(0, 1000)] int pageIndex = 0,
-		[Range(PublicPagingConstants.PageSizeMin, PublicPagingConstants.PageSizeMax)] int pageSize = PublicPagingConstants.PageSizeDefault,
+		[Range(PagingConstants.PageSizeMin, PagingConstants.PageSizeMax)] int pageSize = PagingConstants.PageSizeDefault,
 		ModSorting? sortBy = null,
 		bool ascending = false)
 	{

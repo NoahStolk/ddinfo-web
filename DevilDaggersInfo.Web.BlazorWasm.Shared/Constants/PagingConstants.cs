@@ -1,6 +1,6 @@
 namespace DevilDaggersInfo.Web.BlazorWasm.Shared.Constants;
 
-public static class PublicPagingConstants
+public static class PagingConstants
 {
 	public const int PageSizeDefault = 25;
 	public const int PageSizeMin = 15;
