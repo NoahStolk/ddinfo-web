@@ -117,9 +117,9 @@ else
 					MarkupString death = MarkupUtils.DeathString(ce.DeathType, GameConstants.CurrentVersion, "text-xl");
 					string homingStored = ce.HomingStored.ToString(FormatUtils.LeaderboardIntFormat);
 					MarkupString homingEaten = hasHomingEatenValue ? (MarkupString)ce.HomingEaten.ToString(FormatUtils.LeaderboardIntFormat) : MarkupUtils.NoDataMarkup;
-					MarkupString levelUpTime2 = ce.LevelUpTime2 == 0 ? MarkupUtils.NoDataMarkup : (MarkupString)ce.LevelUpTime2.ToString(FormatUtils.TimeFormat)
-					MarkupString levelUpTime3 = ce.LevelUpTime3 == 0 ? MarkupUtils.NoDataMarkup : (MarkupString)ce.LevelUpTime3.ToString(FormatUtils.TimeFormat)
-					MarkupString levelUpTime4 = ce.LevelUpTime4 == 0 ? MarkupUtils.NoDataMarkup : (MarkupString)ce.LevelUpTime4.ToString(FormatUtils.TimeFormat)
+					MarkupString levelUpTime2 = ce.LevelUpTime2 == 0 ? MarkupUtils.NoDataMarkup : (MarkupString)ce.LevelUpTime2.ToString(FormatUtils.TimeFormat);
+					MarkupString levelUpTime3 = ce.LevelUpTime3 == 0 ? MarkupUtils.NoDataMarkup : (MarkupString)ce.LevelUpTime3.ToString(FormatUtils.TimeFormat);
+					MarkupString levelUpTime4 = ce.LevelUpTime4 == 0 ? MarkupUtils.NoDataMarkup : (MarkupString)ce.LevelUpTime4.ToString(FormatUtils.TimeFormat);
 					string submitDate = ce.SubmitDate.ToString(FormatUtils.DateTimeFormat);
 
 					bool grayBackground = i++ % 2 == 0;
