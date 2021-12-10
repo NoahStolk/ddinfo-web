@@ -18,6 +18,7 @@ module.exports = {
 			'gray-0b': '#0b0b0b',
 			'gray-16': '#161616',
 			'gray-22': '#222',
+			'gray-36': '#363636',
 			'color-ban': '#666',
 			'color-path': '#f66',
 			'no-data': '#666',
