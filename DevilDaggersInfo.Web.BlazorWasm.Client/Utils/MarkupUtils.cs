@@ -11,13 +11,13 @@ public static class MarkupUtils
 		return new(@$"<span class=""font-goethe text-lg {dagger.Name.ToLower()}"">{dagger.Name} Dagger</span>");
 	}
 
-	public static MarkupString DeathString(byte deathType, GameVersion gameVersion = GameConstants.CurrentVersion)
+	public static MarkupString DeathString(byte deathType, GameVersion gameVersion = GameConstants.CurrentVersion, string textSizeClass = "text-lg")
 	{
 		Death? death = Deaths.GetDeathByLeaderboardType(gameVersion, deathType);
 		string style = $"color: {death?.Color.HexCode ?? "#444"};";
 		string name = death?.Name ?? "Unknown";
 
-		return new(@$"<span style=""{style}"" class=""font-goethe text-lg"">{name}</span>");
+		return new(@$"<span style=""{style}"" class=""font-goethe {textSizeClass}"">{name}</span>");
 	}
 
 	public static MarkupString UpgradeString(Upgrade upgrade)

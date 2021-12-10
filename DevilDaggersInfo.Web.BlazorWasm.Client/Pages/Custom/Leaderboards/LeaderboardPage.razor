@@ -144,7 +144,7 @@ else
 						<div class="text-right hidden md:block">
 							<Tooltip Text="@daggers"><span class="font-goethe text-xl cursor-pointer">@accuracy.ToString(FormatUtils.AccuracyFormat)</span></Tooltip>
 						</div>
-						<div class="text-left hidden lg:block">@MarkupUtils.DeathString(ce.DeathType)</div>
+						<div class="text-left hidden lg:block">@MarkupUtils.DeathString(ce.DeathType, GameConstants.CurrentVersion, "text-xl")</div>
 						<div class="text-right hidden xl:block">@ce.HomingStored.ToString(FormatUtils.LeaderboardIntFormat)</div>
 						<div class="text-right hidden xl:block">@(homingEaten ? (MarkupString)ce.HomingEaten.ToString(FormatUtils.LeaderboardIntFormat) : MarkupUtils.NoDataMarkup)</div>
 						<div class="text-right hidden 2xl:block">@(ce.LevelUpTime2 == 0 ? MarkupUtils.NoDataMarkup : (MarkupString)ce.LevelUpTime2.ToString(FormatUtils.TimeFormat))</div>
