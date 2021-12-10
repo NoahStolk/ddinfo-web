@@ -42,7 +42,7 @@
 				string? gamma = player.Settings.Gamma?.ToString(FormatUtils.GammaFormat);
 				string legacyAudio = player.Settings.UsesLegacyAudio.HasValue ? player.Settings.UsesLegacyAudio.Value ? "On" : "Off" : string.Empty;
 
-				<div class="grid gap-3 grid-cols-player-settings-sm md:grid-cols-player-settings-md lg:grid-cols-player-settings-lg xl:grid-cols-player-settings-xl h-6 cursor-pointer xl:cursor-default @(grayBackground ? "bg-gray-0b" : string.Empty)" @onclick="() => Expand(entry.Id)">
+				<div class="grid gap-3 grid-cols-player-settings-sm md:grid-cols-player-settings-md lg:grid-cols-player-settings-lg xl:grid-cols-player-settings-xl h-6 cursor-pointer xl:cursor-default @(grayBackground ? "bg-gray-1" : string.Empty)" @onclick="() => Expand(entry.Id)">
 					<EntryRank PlayerId="@entry.Id" Rank="@entry.Rank" />
 					<EntryFlag CountryCode="@player.CountryCode" />
 					<EntryUsername DaggerCssClass="@daggerCssClass" Id="entry.Id" Name="@entry.Username" />
@@ -56,7 +56,7 @@
 					<div class="text-right hidden xl:block">@gamma</div>
 					<div class="text-left hidden xl:block">@legacyAudio</div>
 				</div>
-				<div class="grid grid-cols-2 @(entry.Id == _expandedId ? (grayBackground ? "bg-gray-0b" : string.Empty) : "hidden") pl-[128px] pr-1">
+				<div class="grid grid-cols-2 @(entry.Id == _expandedId ? (grayBackground ? "bg-gray-1" : string.Empty) : "hidden") pl-[128px] pr-1">
 					<div class="md:hidden">eDPI</div>
 					<div class="md:hidden text-right">@edpi</div>
 					<div class="md:hidden">DPI</div>

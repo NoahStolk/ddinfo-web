@@ -23,12 +23,12 @@ else
 {
 	<Deletion AfterDelete="Fetch" ApiCall="@DeletionApiCall" @ref="_deletion" />
 
-	<a class="inline-block bg-gray-0b hover:bg-gray-22 transition-colors duration-100 w-20 h-10 mx-1 rounded text-color-text text-center" href="@($"{NavigationManager.Uri}/add")">Add new</a>
-	<button class="bg-gray-0b hover:bg-gray-22 transition-colors duration-100 w-10 h-10 mx-1 rounded text-color-text" @onclick="() => ChangePageIndex(0)">@MarkupUtils.NavStart</button>
-	<button class="bg-gray-0b hover:bg-gray-22 transition-colors duration-100 w-10 h-10 mx-1 rounded text-color-text" @onclick="() => ChangePageIndex(_pageIndex - 1)">@MarkupUtils.NavPrev</button>
-	<button class="bg-gray-0b hover:bg-gray-22 transition-colors duration-100 w-10 h-10 mx-1 rounded text-color-text" @onclick="() => ChangePageIndex(_pageIndex + 1)">@MarkupUtils.NavNext</button>
-	<button class="bg-gray-0b hover:bg-gray-22 transition-colors duration-100 w-10 h-10 mx-1 rounded text-color-text" @onclick="() => ChangePageIndex(TotalPages - 1)">@MarkupUtils.NavEnd</button>
-	<Select @onchange="ChangePageSize" class="bg-gray-0b transition-colors duration-100 h-10 mx-1 rounded text-color-text">
+	<a class="inline-block bg-gray-1 hover:bg-gray-3 transition-colors duration-100 w-20 h-10 mx-1 rounded text-color-text text-center" href="@($"{NavigationManager.Uri}/add")">Add new</a>
+	<button class="bg-gray-1 hover:bg-gray-3 transition-colors duration-100 w-10 h-10 mx-1 rounded text-color-text" @onclick="() => ChangePageIndex(0)">@MarkupUtils.NavStart</button>
+	<button class="bg-gray-1 hover:bg-gray-3 transition-colors duration-100 w-10 h-10 mx-1 rounded text-color-text" @onclick="() => ChangePageIndex(_pageIndex - 1)">@MarkupUtils.NavPrev</button>
+	<button class="bg-gray-1 hover:bg-gray-3 transition-colors duration-100 w-10 h-10 mx-1 rounded text-color-text" @onclick="() => ChangePageIndex(_pageIndex + 1)">@MarkupUtils.NavNext</button>
+	<button class="bg-gray-1 hover:bg-gray-3 transition-colors duration-100 w-10 h-10 mx-1 rounded text-color-text" @onclick="() => ChangePageIndex(TotalPages - 1)">@MarkupUtils.NavEnd</button>
+	<Select @onchange="ChangePageSize" class="bg-gray-1 transition-colors duration-100 h-10 mx-1 rounded text-color-text">
 		@foreach (int i in AdminPagingConstants.PageSizeOptions)
 		{
 			<option value="@i">@i</option>
@@ -50,7 +50,7 @@ else
 			int j = 0;
 			foreach (TGetDto result in _page.Results)
 			{
-				<div class="grid gap-2 @GridConfiguration @(j++ % 2 == 0 ? "bg-gray-0b" : string.Empty)">
+				<div class="grid gap-2 @GridConfiguration @(j++ % 2 == 0 ? "bg-gray-1" : string.Empty)">
 					@foreach (KeyValuePair<PropertyInfo, bool> pi in _properties)
 					{
 						<div class="overflow-x-hidden @(pi.Value ? "text-right" : "text-left")">@ReflectionUtils.GetDtoPropertyDisplayValue(pi.Key, result)</div>

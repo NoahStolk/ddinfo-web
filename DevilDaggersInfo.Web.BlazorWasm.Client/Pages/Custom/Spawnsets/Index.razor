@@ -17,13 +17,13 @@ else
 {
 	<div class="grid gap-2 grid-cols-2 max-w-md mb-2">
 		<span>Spawnset name</span>
-		<input class="bg-black border-gray-22 border-2" @onchange="ChangeInputSpawnsetName" />
+		<input class="bg-black border-gray-3 border-2" @onchange="ChangeInputSpawnsetName" />
 		<span>Author name</span>
-		<input class="bg-black border-gray-22 border-2" @onchange="ChangeInputAuthorName" />
+		<input class="bg-black border-gray-3 border-2" @onchange="ChangeInputAuthorName" />
 		<span>Practice only</span>
-		<input type="checkbox" class="bg-black border-gray-22 border-2 w-8" @onchange="ChangeInputPracticeOnly" />
+		<input type="checkbox" class="bg-black border-gray-3 border-2 w-8" @onchange="ChangeInputPracticeOnly" />
 		<span>With custom leaderboard only</span>
-		<input type="checkbox" class="bg-black border-gray-22 border-2 w-8" @onchange="ChangeInputWithCustomLeaderboardOnly" />
+		<input type="checkbox" class="bg-black border-gray-3 border-2 w-8" @onchange="ChangeInputWithCustomLeaderboardOnly" />
 	</div>
 
 	<CascadingValue Value="this">
@@ -56,7 +56,7 @@ else
 		for (int i = 0; i < GetSpawnsets.Results.Count; i++)
 		{
 			GetSpawnsetOverview spawnset = GetSpawnsets.Results[i];
-			<div class="grid gap-3 sm:grid-cols-spawnsets-sm md:grid-cols-spawnsets-md lg:grid-cols-spawnsets-lg xl:grid-cols-spawnsets-xl h-6 @(i % 2 == 0 ? "bg-gray-0b" : string.Empty)">
+			<div class="grid gap-3 sm:grid-cols-spawnsets-sm md:grid-cols-spawnsets-md lg:grid-cols-spawnsets-lg xl:grid-cols-spawnsets-xl h-6 @(i % 2 == 0 ? "bg-gray-1" : string.Empty)">
 				<div class="overflow-x-hidden text-left"><a href="/custom/spawnset/@spawnset.Id">@spawnset.Name.ToNoBreakString()</a></div>
 				<div class="overflow-x-hidden text-left hidden md:block">@spawnset.AuthorName.ToNoBreakString()</div>
 				<div class="overflow-x-hidden text-left hidden md:block">@spawnset.LastUpdated.ToString(FormatUtils.DateFormat)</div>

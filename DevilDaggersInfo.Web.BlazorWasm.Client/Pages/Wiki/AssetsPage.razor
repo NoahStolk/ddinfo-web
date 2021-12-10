@@ -10,14 +10,14 @@
 </Paragraph>
 
 <Heading Title="Audio Assets" Level="2" />
-<div class="bg-gray-22 grid gap-3 grid-cols-3">
+<div class="bg-gray-3 grid gap-3 grid-cols-3">
 	<div>Asset</div>
 	<div>Prohibited</div>
 	<div>Loudness</div>
 </div>
 @foreach (AudioAssetData audio in AudioAudio.All)
 {
-	<div class="grid gap-3 grid-cols-3 odd:bg-gray-16">
+	<div class="grid gap-3 grid-cols-3 odd:bg-gray-2">
 		<div class="break-all">@audio.AssetName</div>
 		<div>@(audio.IsProhibited ? "Yes" : "No")</div>
 		<div>@(audio.PresentInDefaultLoudness ? audio.DefaultLoudness.ToString("0.0") : "N/A (1.0)")</div>
@@ -25,7 +25,7 @@
 }
 
 <Heading Title="Model Assets" Level="2" />
-<div class="bg-gray-22 grid gap-3 grid-cols-4">
+<div class="bg-gray-3 grid gap-3 grid-cols-4">
 	<div>Asset</div>
 	<div>Prohibited</div>
 	<div>Indices</div>
@@ -33,7 +33,7 @@
 </div>
 @foreach (ModelAssetData model in DdModels.All)
 {
-	<div class="grid gap-3 grid-cols-4 odd:bg-gray-16">
+	<div class="grid gap-3 grid-cols-4 odd:bg-gray-2">
 		<div class="break-all">@model.AssetName</div>
 		<div>@(model.IsProhibited ? "Yes" : "No")</div>
 		<div>@model.DefaultIndexCount</div>
@@ -42,46 +42,46 @@
 }
 
 <Heading Title="Model Binding Assets" Level="2" />
-<div class="bg-gray-22 grid gap-3 grid-cols-2">
+<div class="bg-gray-3 grid gap-3 grid-cols-2">
 	<div>Asset</div>
 	<div>Prohibited</div>
 </div>
 @foreach (ModelBindingAssetData modelBinding in DdModelBindings.All)
 {
-	<div class="grid gap-3 grid-cols-2 odd:bg-gray-16">
+	<div class="grid gap-3 grid-cols-2 odd:bg-gray-2">
 		<div class="break-all">@modelBinding.AssetName</div>
 		<div>@(modelBinding.IsProhibited ? "Yes" : "No")</div>
 	</div>
 }
 
 <Heading Title="Shader Assets (core)" Level="2" />
-<div class="bg-gray-22 grid gap-3 grid-cols-2">
+<div class="bg-gray-3 grid gap-3 grid-cols-2">
 	<div>Asset</div>
 	<div>Prohibited</div>
 </div>
 @foreach (ShaderAssetData shader in CoreShaders.All)
 {
-	<div class="grid gap-3 grid-cols-2 odd:bg-gray-16">
+	<div class="grid gap-3 grid-cols-2 odd:bg-gray-2">
 		<div class="break-all">@shader.AssetName</div>
 		<div>@(shader.IsProhibited ? "Yes" : "No")</div>
 	</div>
 }
 
 <Heading Title="Shader Assets (dd)" Level="2" />
-<div class="bg-gray-22 grid gap-3 grid-cols-2">
+<div class="bg-gray-3 grid gap-3 grid-cols-2">
 	<div>Asset</div>
 	<div>Prohibited</div>
 </div>
 @foreach (ShaderAssetData shader in DdShaders.All)
 {
-	<div class="grid gap-3 grid-cols-2 odd:bg-gray-16">
+	<div class="grid gap-3 grid-cols-2 odd:bg-gray-2">
 		<div class="break-all">@shader.AssetName</div>
 		<div>@(shader.IsProhibited ? "Yes" : "No")</div>
 	</div>
 }
 
 <Heading Title="Texture Assets" Level="2" />
-<div class="bg-gray-22 grid gap-3 grid-cols-6">
+<div class="bg-gray-3 grid gap-3 grid-cols-6">
 	<div>Asset</div>
 	<div>Prohibited</div>
 	<div>Width</div>
@@ -91,7 +91,7 @@
 </div>
 @foreach (TextureAssetData texture in DdTextures.All)
 {
-	<div class="grid gap-3 grid-cols-6 odd:bg-gray-16">
+	<div class="grid gap-3 grid-cols-6 odd:bg-gray-2">
 		<div class="break-all">@texture.AssetName</div>
 		<div>@(texture.IsProhibited ? "Yes" : "No")</div>
 		<div>@texture.DefaultWidth</div>

@@ -17,11 +17,11 @@ else
 {
 	<div class="grid gap-2 grid-cols-2 max-w-md mb-2">
 		<span>Spawnset name</span>
-		<input class="bg-black border-gray-22 border-2" @onchange="ChangeInputSpawnsetName" />
+		<input class="bg-black border-gray-3 border-2" @onchange="ChangeInputSpawnsetName" />
 		<span>Author name</span>
-		<input class="bg-black border-gray-22 border-2" @onchange="ChangeInputAuthorName" />
+		<input class="bg-black border-gray-3 border-2" @onchange="ChangeInputAuthorName" />
 		<span>Category</span>
-		<Select @onchange="ChangeCategory" class="bg-gray-0b transition-colors duration-100 h-8 rounded text-color-text">
+		<Select @onchange="ChangeCategory" class="bg-gray-1 transition-colors duration-100 h-8 rounded text-color-text">
 			@foreach (CustomLeaderboardCategory e in (CustomLeaderboardCategory[])Enum.GetValues(typeof(CustomLeaderboardCategory)))
 			{
 				<option value="@e">@e</option>
@@ -53,7 +53,7 @@ else
 	@for (int i = 0; i < GetCustomLeaderboards.Results.Count; i++)
 	{
 		GetCustomLeaderboardOverview customLeaderboard = GetCustomLeaderboards.Results[i];
-		<div class="grid gap-3 sm:grid-cols-custom-leaderboards-sm md:grid-cols-custom-leaderboards-md lg:grid-cols-custom-leaderboards-lg xl:grid-cols-custom-leaderboards-xl 2xl:grid-cols-custom-leaderboards-2xl h-6 @(i % 2 == 0 ? "bg-gray-0b" : string.Empty)">
+		<div class="grid gap-3 sm:grid-cols-custom-leaderboards-sm md:grid-cols-custom-leaderboards-md lg:grid-cols-custom-leaderboards-lg xl:grid-cols-custom-leaderboards-xl 2xl:grid-cols-custom-leaderboards-2xl h-6 @(i % 2 == 0 ? "bg-gray-1" : string.Empty)">
 			<div class="overflow-x-hidden text-left"><a href="/custom/leaderboard/@customLeaderboard.Id">@customLeaderboard.SpawnsetName.ToNoBreakString()</a></div>
 			<div class="overflow-x-hidden text-left hidden md:block">@customLeaderboard.SpawnsetAuthorName.ToNoBreakString()</div>
 			<div class="overflow-x-hidden text-left hidden md:block">@customLeaderboard.DateCreated.ToString(FormatUtils.DateFormat)</div>

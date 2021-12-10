@@ -6,13 +6,13 @@
 @using DevilDaggersInfo.Web.BlazorWasm.Shared.Dto.Admin.Titles
 
 <AdminAdd Name="Player" OverviewUrl="/admin/players" ApiCall="Http.AddPlayer" Model="_addPlayer" @ref="_addComponent">
-	<AdminInput Label="@nameof(AddPlayer.Id)"><InputNumber class="w-64 pl-2 bg-gray-0b text-color-text" @bind-Value="_addPlayer.Id" /></AdminInput>
+	<AdminInput Label="@nameof(AddPlayer.Id)"><InputNumber class="w-64 pl-2 bg-gray-1 text-color-text" @bind-Value="_addPlayer.Id" /></AdminInput>
 	<AdminInput Label="@nameof(AddPlayer.CountryCode)"><SearchDropdown Values="@(UserUtils.CountryNames!)" Converter="s => s" @bind-Value="@_addPlayer.CountryCode" /></AdminInput>
-	<AdminInput Label="@nameof(AddPlayer.Dpi)"><InputNumber class="w-64 pl-2 bg-gray-0b text-color-text" @bind-Value="_addPlayer.Dpi" /></AdminInput>
-	<AdminInput Label="@nameof(AddPlayer.Fov)"><InputNumber class="w-64 pl-2 bg-gray-0b text-color-text" @bind-Value="_addPlayer.Fov" /></AdminInput>
-	<AdminInput Label="@nameof(AddPlayer.Gamma)"><InputNumber class="w-64 pl-2 bg-gray-0b text-color-text" @bind-Value="_addPlayer.Gamma" /></AdminInput>
+	<AdminInput Label="@nameof(AddPlayer.Dpi)"><InputNumber class="w-64 pl-2 bg-gray-1 text-color-text" @bind-Value="_addPlayer.Dpi" /></AdminInput>
+	<AdminInput Label="@nameof(AddPlayer.Fov)"><InputNumber class="w-64 pl-2 bg-gray-1 text-color-text" @bind-Value="_addPlayer.Fov" /></AdminInput>
+	<AdminInput Label="@nameof(AddPlayer.Gamma)"><InputNumber class="w-64 pl-2 bg-gray-1 text-color-text" @bind-Value="_addPlayer.Gamma" /></AdminInput>
 	<AdminInput Label="@nameof(AddPlayer.HasFlashHandEnabled)"><InputNullableBoolean @bind-Value="@_addPlayer.HasFlashHandEnabled" /></AdminInput>
-	<AdminInput Label="@nameof(AddPlayer.InGameSens)"><InputNumber class="w-64 pl-2 bg-gray-0b text-color-text" @bind-Value="@_addPlayer.InGameSens" /></AdminInput>
+	<AdminInput Label="@nameof(AddPlayer.InGameSens)"><InputNumber class="w-64 pl-2 bg-gray-1 text-color-text" @bind-Value="@_addPlayer.InGameSens" /></AdminInput>
 	<AdminInput Label="@nameof(AddPlayer.IsRightHanded)"><InputNullableBoolean @bind-Value="@_addPlayer.IsRightHanded" /></AdminInput>
 	<AdminInput Label="@nameof(AddPlayer.UsesLegacyAudio)"><InputNullableBoolean @bind-Value="@_addPlayer.UsesLegacyAudio" /></AdminInput>
 	<AdminInput Label="@nameof(AddPlayer.HideDonations)"><InputCheckbox @bind-Value="@_addPlayer.HideDonations" /></AdminInput>
@@ -21,8 +21,8 @@
 	<AdminInput Label="@nameof(AddPlayer.ModIds)"><MultiSearchDropdown Values="@_modNames" @bind-Value="@_addPlayer.ModIds" /></AdminInput>
 	<AdminInput Label="@nameof(AddPlayer.TitleIds)"><MultiSearchDropdown Values="@_titleNames" @bind-Value="@_addPlayer.TitleIds" /></AdminInput>
 	<AdminInput Label="@nameof(AddPlayer.IsBanned)"><InputCheckbox @bind-Value="@_addPlayer.IsBanned" /></AdminInput>
-	<AdminInput Label="@nameof(AddPlayer.BanDescription)"><InputText class="w-64 pl-2 bg-gray-0b text-color-text" @bind-Value="@_addPlayer.BanDescription" /></AdminInput>
-	<AdminInput Label="@nameof(AddPlayer.BanResponsibleId)"><InputNumber class="w-64 pl-2 bg-gray-0b text-color-text" @bind-Value="@_addPlayer.BanResponsibleId" /></AdminInput>
+	<AdminInput Label="@nameof(AddPlayer.BanDescription)"><InputText class="w-64 pl-2 bg-gray-1 text-color-text" @bind-Value="@_addPlayer.BanDescription" /></AdminInput>
+	<AdminInput Label="@nameof(AddPlayer.BanResponsibleId)"><InputNumber class="w-64 pl-2 bg-gray-1 text-color-text" @bind-Value="@_addPlayer.BanResponsibleId" /></AdminInput>
 	<AdminInput Label="@nameof(AddPlayer.IsBannedFromDdcl)"><InputCheckbox @bind-Value="@_addPlayer.IsBannedFromDdcl" /></AdminInput>
 </AdminAdd>
 

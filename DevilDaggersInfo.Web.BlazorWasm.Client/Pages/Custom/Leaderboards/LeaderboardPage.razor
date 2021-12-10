@@ -23,7 +23,7 @@ else
 		<p class="text-lg p-1 m-1 bg-dark-orange">TimeAttack leaderboards are not supported right now.</p>
 	}
 
-	<div class="bg-gray-0b max-w-sm px-1">
+	<div class="bg-gray-1 max-w-sm px-1">
 		<DataField Name="Author">@GetCustomLeaderboard.SpawnsetAuthorName</DataField>
 		<DataField Name="Created">@GetCustomLeaderboard.DateCreated.ToString(FormatUtils.DateTimeFormat)</DataField>
 		<DataField Name="Category">@GetCustomLeaderboard.Category</DataField>
@@ -42,7 +42,7 @@ else
 	@if (!string.IsNullOrWhiteSpace(GetCustomLeaderboard.SpawnsetHtmlDescription))
 	{
 		<Heading Title="Description" Level="2" />
-		<div class="bg-gray-0b max-w-sm px-1">
+		<div class="bg-gray-1 max-w-sm px-1">
 			@((MarkupString)@GetCustomLeaderboard.SpawnsetHtmlDescription)
 		</div>
 	}
@@ -126,7 +126,7 @@ else
 
 					bool grayBackground = i++ % 2 == 0;
 
-					<div class="grid gap-3 grid-cols-custom-leaderboard-sm md:grid-cols-custom-leaderboard-md lg:grid-cols-custom-leaderboard-lg xl:grid-cols-custom-leaderboard-xl 2xl:grid-cols-custom-leaderboard-2xl h-6 cursor-pointer 2xl:cursor-default @(grayBackground ? "bg-gray-0b" : string.Empty)" @onclick="() => Expand(ce.Id)">
+					<div class="grid gap-3 grid-cols-custom-leaderboard-sm md:grid-cols-custom-leaderboard-md lg:grid-cols-custom-leaderboard-lg xl:grid-cols-custom-leaderboard-xl 2xl:grid-cols-custom-leaderboard-2xl h-6 cursor-pointer 2xl:cursor-default @(grayBackground ? "bg-gray-1" : string.Empty)" @onclick="() => Expand(ce.Id)">
 						<EntryRank PlayerId="@ce.PlayerId" Rank="@ce.Rank" />
 						<EntryFlag CountryCode="@ce.CountryCode" />
 						<EntryUsername DaggerCssClass="@daggerCssClass" Id="@ce.PlayerId" Name="@($"{ce.PlayerName}")" />
@@ -169,7 +169,7 @@ else
 						<div class="text-right hidden 2xl:block">@levelUpTime4</div>
 						<div class="text-right hidden 2xl:block">@submitDate</div>
 					</div>
-					<div class="grid grid-cols-2 @(ce.Id == _expandedId ? (grayBackground ? "bg-gray-0b" : string.Empty) : "hidden") pl-[92px] pr-1">
+					<div class="grid grid-cols-2 @(ce.Id == _expandedId ? (grayBackground ? "bg-gray-1" : string.Empty) : "hidden") pl-[92px] pr-1">
 						<div class="md:hidden">Enemies Killed</div>
 						<div class="md:hidden text-right">@enemiesKilled</div>
 						<div class="md:hidden">Enemies Alive</div>

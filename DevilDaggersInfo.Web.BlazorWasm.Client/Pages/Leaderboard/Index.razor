@@ -28,9 +28,9 @@
 }
 else
 {
-	<div class="bg-gray-0b p-2 text-lg">
+	<div class="bg-gray-1 p-2 text-lg">
 		<span>Rank</span>
-		<input class="bg-black border-gray-22 border-2" @onchange="ChangeInputRank" />
+		<input class="bg-black border-gray-3 border-2" @onchange="ChangeInputRank" />
 		<div>
 			@if (_reloading)
 			{
@@ -46,12 +46,12 @@ else
 				bool first = RankState.Value.Rank <= 1;
 				bool last = RankState.Value.Rank >= _maxRank;
 			}
-			<button disabled="@first" class="@(first ? "disabled:opacity-50 cursor-default" : "hover:bg-gray-36") bg-gray-22 transition-colors duration-100 w-10 h-10 mx-1 rounded text-color-text" @onclick="() => SetRank(1)">@MarkupUtils.NavStart</button>
-			<button disabled="@first" class="@(first ? "disabled:opacity-50 cursor-default" : "hover:bg-gray-36") bg-gray-22 transition-colors duration-100 w-10 h-10 mx-1 rounded text-color-text" @onclick="() => SetRank(RankState.Value.Rank - 1000)">@MarkupUtils.NavPrevDouble</button>
-			<button disabled="@first" class="@(first ? "disabled:opacity-50 cursor-default" : "hover:bg-gray-36") bg-gray-22 transition-colors duration-100 w-10 h-10 mx-1 rounded text-color-text" @onclick="() => SetRank(RankState.Value.Rank - 100)">@MarkupUtils.NavPrev</button>
-			<button disabled="@last" class="@(last ? "disabled:opacity-50 cursor-default" : "hover:bg-gray-36") bg-gray-22 transition-colors duration-100 w-10 h-10 mx-1 rounded text-color-text" @onclick="() => SetRank(RankState.Value.Rank + 100)">@MarkupUtils.NavNext</button>
-			<button disabled="@last" class="@(last ? "disabled:opacity-50 cursor-default" : "hover:bg-gray-36") bg-gray-22 transition-colors duration-100 w-10 h-10 mx-1 rounded text-color-text" @onclick="() => SetRank(RankState.Value.Rank + 1000)">@MarkupUtils.NavNextDouble</button>
-			<button disabled="@last" class="@(last ? "disabled:opacity-50 cursor-default" : "hover:bg-gray-36") bg-gray-22 transition-colors duration-100 w-10 h-10 mx-1 rounded text-color-text" @onclick="() => SetRank(GetLeaderboard.TotalPlayers - 99)">@MarkupUtils.NavEnd</button>
+			<button disabled="@first" class="@(first ? "disabled:opacity-50 cursor-default" : "hover:bg-gray-4") bg-gray-3 transition-colors duration-100 w-10 h-10 mx-1 rounded text-color-text" @onclick="() => SetRank(1)">@MarkupUtils.NavStart</button>
+			<button disabled="@first" class="@(first ? "disabled:opacity-50 cursor-default" : "hover:bg-gray-4") bg-gray-3 transition-colors duration-100 w-10 h-10 mx-1 rounded text-color-text" @onclick="() => SetRank(RankState.Value.Rank - 1000)">@MarkupUtils.NavPrevDouble</button>
+			<button disabled="@first" class="@(first ? "disabled:opacity-50 cursor-default" : "hover:bg-gray-4") bg-gray-3 transition-colors duration-100 w-10 h-10 mx-1 rounded text-color-text" @onclick="() => SetRank(RankState.Value.Rank - 100)">@MarkupUtils.NavPrev</button>
+			<button disabled="@last" class="@(last ? "disabled:opacity-50 cursor-default" : "hover:bg-gray-4") bg-gray-3 transition-colors duration-100 w-10 h-10 mx-1 rounded text-color-text" @onclick="() => SetRank(RankState.Value.Rank + 100)">@MarkupUtils.NavNext</button>
+			<button disabled="@last" class="@(last ? "disabled:opacity-50 cursor-default" : "hover:bg-gray-4") bg-gray-3 transition-colors duration-100 w-10 h-10 mx-1 rounded text-color-text" @onclick="() => SetRank(RankState.Value.Rank + 1000)">@MarkupUtils.NavNextDouble</button>
+			<button disabled="@last" class="@(last ? "disabled:opacity-50 cursor-default" : "hover:bg-gray-4") bg-gray-3 transition-colors duration-100 w-10 h-10 mx-1 rounded text-color-text" @onclick="() => SetRank(GetLeaderboard.TotalPlayers - 99)">@MarkupUtils.NavEnd</button>
 		</div>
 	</div>
 

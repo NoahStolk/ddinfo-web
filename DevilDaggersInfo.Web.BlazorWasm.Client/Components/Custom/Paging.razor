@@ -1,10 +1,10 @@
 @using DevilDaggersInfo.Web.BlazorWasm.Client.Pages.Custom
 
-<button class="bg-gray-0b hover:bg-gray-22 transition-colors duration-100 w-10 h-10 mx-1 rounded text-color-text" @onclick="() => Page.ChangePageIndex(0)">@MarkupUtils.NavStart</button>
-<button class="bg-gray-0b hover:bg-gray-22 transition-colors duration-100 w-10 h-10 mx-1 rounded text-color-text" @onclick="() => Page.ChangePageIndex(Page.PageIndex - 1)">@MarkupUtils.NavPrev</button>
-<button class="bg-gray-0b hover:bg-gray-22 transition-colors duration-100 w-10 h-10 mx-1 rounded text-color-text" @onclick="() => Page.ChangePageIndex(Page.PageIndex + 1)">@MarkupUtils.NavNext</button>
-<button class="bg-gray-0b hover:bg-gray-22 transition-colors duration-100 w-10 h-10 mx-1 rounded text-color-text" @onclick="() => Page.ChangePageIndex(Page.TotalPages - 1)">@MarkupUtils.NavEnd</button>
-<Select @onchange="Page.ChangePageSize" class="bg-gray-0b transition-colors duration-100 h-10 rounded text-color-text">
+<button class="bg-gray-1 hover:bg-gray-3 transition-colors duration-100 w-10 h-10 mx-1 rounded text-color-text" @onclick="() => Page.ChangePageIndex(0)">@MarkupUtils.NavStart</button>
+<button class="bg-gray-1 hover:bg-gray-3 transition-colors duration-100 w-10 h-10 mx-1 rounded text-color-text" @onclick="() => Page.ChangePageIndex(Page.PageIndex - 1)">@MarkupUtils.NavPrev</button>
+<button class="bg-gray-1 hover:bg-gray-3 transition-colors duration-100 w-10 h-10 mx-1 rounded text-color-text" @onclick="() => Page.ChangePageIndex(Page.PageIndex + 1)">@MarkupUtils.NavNext</button>
+<button class="bg-gray-1 hover:bg-gray-3 transition-colors duration-100 w-10 h-10 mx-1 rounded text-color-text" @onclick="() => Page.ChangePageIndex(Page.TotalPages - 1)">@MarkupUtils.NavEnd</button>
+<Select @onchange="Page.ChangePageSize" class="bg-gray-1 transition-colors duration-100 h-10 rounded text-color-text">
 	@foreach (int i in PublicPagingConstants.PageSizeOptions)
 	{
 		<option value="@i">@i</option>
