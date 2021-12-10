@@ -29,7 +29,7 @@
 				GetPlayerForSettings? player = Players?.Find(p => p.Id == entry.Id);
 				if (player == null)
 					continue;
-					
+
 				bool grayBackground = i++ % 2 == 0;
 
 				Dagger dagger = Daggers.GetDaggerFromSeconds(GameConstants.CurrentVersion, entry.Time);
@@ -42,7 +42,7 @@
 				string? gamma = player.Settings.Gamma?.ToString(FormatUtils.GammaFormat);
 				string legacyAudio = player.Settings.UsesLegacyAudio.HasValue ? player.Settings.UsesLegacyAudio.Value ? "On" : "Off" : string.Empty;
 
-				<div class="grid gap-3 grid-cols-player-settings-sm md:grid-cols-player-settings-md lg:grid-cols-player-settings-lg xl:grid-cols-player-settings-xl h-6 @(grayBackground ? "bg-gray-0b" : string.Empty)">
+				<div class="grid gap-3 grid-cols-player-settings-sm md:grid-cols-player-settings-md lg:grid-cols-player-settings-lg xl:grid-cols-player-settings-xl h-6 cursor-pointer xl:cursor-default @(grayBackground ? "bg-gray-0b" : string.Empty)" @onclick="() => Expand(entry.Id)">
 					<EntryRank PlayerId="@entry.Id" Rank="@entry.Rank" />
 					<EntryFlag CountryCode="@player.CountryCode" />
 					<EntryUsername DaggerCssClass="@daggerCssClass" Id="entry.Id" Name="@entry.Username" />
@@ -56,6 +56,24 @@
 					<div class="text-right hidden xl:block">@gamma</div>
 					<div class="text-left hidden xl:block">@legacyAudio</div>
 				</div>
+				<div class="grid grid-cols-2 @(entry.Id == _expandedId ? (grayBackground ? "bg-gray-0b" : string.Empty) : "hidden") pl-[128px] pr-1">
+					<div class="md:hidden">eDPI</div>
+					<div class="md:hidden text-right">@edpi</div>
+					<div class="md:hidden">DPI</div>
+					<div class="md:hidden text-right">@player.Settings.Dpi</div>
+					<div class="md:hidden">Sens</div>
+					<div class="md:hidden text-right">@inGameSens</div>
+					<div class="lg:hidden">FOV</div>
+					<div class="lg:hidden text-right">@player.Settings.Fov</div>
+					<div class="xl:hidden">Hand</div>
+					<div class="xl:hidden text-right">@rightHanded</div>
+					<div class="xl:hidden">Flash hand</div>
+					<div class="xl:hidden text-right">@flashHand</div>
+					<div class="xl:hidden">Gamma</div>
+					<div class="xl:hidden text-right">@gamma</div>
+					<div class="xl:hidden">Legacy audio</div>
+					<div class="xl:hidden text-right">@legacyAudio</div>
+				</div>
 			}
 		}
 	</div>
@@ -66,6 +84,7 @@
 	[Parameter, EditorRequired] public List<GetEntry> Entries { get; set; } = default!;
 	[Parameter, EditorRequired] public List<GetPlayerForSettings>? Players { get; set; } = null!;
 
+	private int? _expandedId;
 	private LeaderboardSorting _sortBy;
 	private bool _ascending;
 
@@ -75,6 +94,14 @@
 	{
 		foreach (LeaderboardSorting e in (LeaderboardSorting[])Enum.GetValues(typeof(LeaderboardSorting)))
 			_sortings.Add(e, false);
+	}
+
+	private void Expand(int playerId)
+	{
+		if (_expandedId == playerId)
+			_expandedId = null;
+		else
+			_expandedId = playerId;
 	}
 
 	private void Sort(LeaderboardSorting sortBy)
