@@ -7,6 +7,7 @@
     <AppendTargetFrameworkToOutputPath>false</AppendTargetFrameworkToOutputPath>
     <IntermediateOutputPath>obj</IntermediateOutputPath>
     <TailwindBuild>true</TailwindBuild>
+    <RunAnalyzers>false</RunAnalyzers>
   </PropertyGroup>
   <ItemGroup>
     <PackageReference Include="Blazored.LocalStorage" />
