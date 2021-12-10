@@ -1,17 +1,25 @@
 @using DevilDaggersInfo.Web.BlazorWasm.Client.Pages
 
-<button class="bg-gray-3 hover:bg-gray-4 transition-colors duration-100 w-10 h-10 mx-1 rounded text-color-text" @onclick="() => Page.ChangePageIndex(0)">@MarkupUtils.NavStart</button>
-<button class="bg-gray-3 hover:bg-gray-4 transition-colors duration-100 w-10 h-10 mx-1 rounded text-color-text" @onclick="() => Page.ChangePageIndex(Page.PageIndex - 1)">@MarkupUtils.NavPrev</button>
-<button class="bg-gray-3 hover:bg-gray-4 transition-colors duration-100 w-10 h-10 mx-1 rounded text-color-text" @onclick="() => Page.ChangePageIndex(Page.PageIndex + 1)">@MarkupUtils.NavNext</button>
-<button class="bg-gray-3 hover:bg-gray-4 transition-colors duration-100 w-10 h-10 mx-1 rounded text-color-text" @onclick="() => Page.ChangePageIndex(Page.TotalPages - 1)">@MarkupUtils.NavEnd</button>
-<Select @onchange="Page.ChangePageSize" class="bg-gray-3 transition-colors duration-100 h-10 mx-1 rounded text-color-text relative bottom-[14.5px]">
+<button class="bg-gray-3 hover:bg-gray-4 transition-colors duration-100 w-10 h-10 mx-1 rounded text-color-text" @onclick="() => Component.ChangePageIndex(0)">@MarkupUtils.NavStart</button>
+<button class="bg-gray-3 hover:bg-gray-4 transition-colors duration-100 w-10 h-10 mx-1 rounded text-color-text" @onclick="() => Component.ChangePageIndex(Component.PageIndex - 1)">@MarkupUtils.NavPrev</button>
+<button class="bg-gray-3 hover:bg-gray-4 transition-colors duration-100 w-10 h-10 mx-1 rounded text-color-text" @onclick="() => Component.ChangePageIndex(Component.PageIndex + 1)">@MarkupUtils.NavNext</button>
+<button class="bg-gray-3 hover:bg-gray-4 transition-colors duration-100 w-10 h-10 mx-1 rounded text-color-text" @onclick="() => Component.ChangePageIndex(Component.TotalPages - 1)">@MarkupUtils.NavEnd</button>
+<Select @onchange="Component.ChangePageSize" class="bg-gray-3 transition-colors duration-100 h-10 mx-1 rounded text-color-text relative bottom-[14.5px]">
 	@foreach (int i in PagingConstants.PageSizeOptions)
 	{
 		<option value="@i">@i</option>
 	}
 </Select>
+@if (Component.TotalResults == 0)
+{
+	<p class="pt-2">Search returned no results.</p>
+}
+else
+{
+	<p class="p-1">Page @(Component.PageIndex + 1) of @Component.TotalPages (@(Component.PageIndex * Component.PageSize + 1) - @Math.Min(Component.TotalResults, (Component.PageIndex + 1) * Component.PageSize) of @Component.TotalResults)</p>
+}
 
 @code
 {
-	[CascadingParameter] public IHasNavigation Page { get; set; } = null!;
+	[CascadingParameter] public IHasNavigation Component { get; set; } = null!;
 }

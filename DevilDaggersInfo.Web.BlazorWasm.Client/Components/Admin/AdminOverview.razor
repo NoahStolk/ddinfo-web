@@ -34,8 +34,6 @@ else
 		<CascadingValue Value="this">
 			<Paging />
 		</CascadingValue>
-
-		<div class="p-1">Page @(PageIndex + 1) of @TotalPages (@(PageIndex * PageSize) - @Math.Min(_page.TotalResults, (PageIndex + 1) * PageSize) of @_page.TotalResults)</div>
 	</div>
 
 	<div class="grid gap-2 @GridConfiguration">
@@ -73,6 +71,7 @@ else
 	[Parameter, EditorRequired] public string GridConfiguration { get; set; } = null!;
 
 	public int TotalPages => _page == null ? 0 : (_page.TotalResults - 1) / PageSize + 1;
+	public int TotalResults => _page == null ? 0 : _page.TotalResults;
 
 	public int PageIndex { get; set; }
 	public int PageSize { get; set; } = PagingConstants.PageSizeDefault;

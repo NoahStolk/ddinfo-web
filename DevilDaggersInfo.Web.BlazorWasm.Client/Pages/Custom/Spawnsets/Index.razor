@@ -30,15 +30,6 @@ else
 		<CascadingValue Value="this">
 			<Paging />
 		</CascadingValue>
-
-		@if (GetSpawnsets.Results.Count == 0)
-		{
-			<p class="pt-2">Search returned no results.</p>
-		}
-		else
-		{
-			<p class="p-1">Page @(PageIndex + 1) of @TotalPages (@(PageIndex * PageSize + 1) - @Math.Min(GetSpawnsets.TotalResults, (PageIndex + 1) * PageSize) of @GetSpawnsets.TotalResults)</p>
-		}
 	</div>
 
 	@if (GetSpawnsets.Results.Count > 0)
@@ -98,6 +89,7 @@ else
 	public Page<GetSpawnsetOverview>? GetSpawnsets { get; set; }
 
 	public int TotalPages => GetSpawnsets == null ? 0 : (GetSpawnsets.TotalResults - 1) / PageSize + 1;
+	public int TotalResults => GetSpawnsets == null ? 0 : GetSpawnsets.TotalResults;
 
 	private async Task ChangeInputSpawnsetName(ChangeEventArgs e)
 	{

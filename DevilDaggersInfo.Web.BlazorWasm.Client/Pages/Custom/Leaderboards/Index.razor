@@ -33,15 +33,6 @@ else
 		<CascadingValue Value="this">
 			<Paging />
 		</CascadingValue>
-
-		@if (GetCustomLeaderboards.Results.Count == 0)
-		{
-			<p class="pt-2">Search returned no results.</p>
-		}
-		else
-		{
-			<p class="p-1">Page @(PageIndex + 1) of @TotalPages (@(PageIndex * PageSize + 1) - @Math.Min(GetCustomLeaderboards.TotalResults, (PageIndex + 1) * PageSize) of @GetCustomLeaderboards.TotalResults)</p>
-		}
 	</div>
 
 	@if (GetCustomLeaderboards.Results.Count > 0)
@@ -132,6 +123,7 @@ else
 	public GetTotalCustomLeaderboardData? GetTotalCustomLeaderboardData { get; set; }
 
 	public int TotalPages => GetCustomLeaderboards == null ? 0 : (GetCustomLeaderboards.TotalResults - 1) / PageSize + 1;
+	public int TotalResults => GetCustomLeaderboards == null ? 0 : GetCustomLeaderboards.TotalResults;
 
 	private async Task ChangeInputSpawnsetName(ChangeEventArgs e)
 	{
