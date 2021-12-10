@@ -22,7 +22,7 @@ public static class {_className}
 		context.RegisterSourceOutput(additionalTexts, static (spc, at) => Execute(spc, at));
 	}
 
-	public static void Execute(SourceProductionContext sourceProductionContext, AdditionalText additionalText)
+	private static void Execute(SourceProductionContext sourceProductionContext, AdditionalText additionalText)
 	{
 		string gameVersion = Path.GetFileNameWithoutExtension(additionalText.Path).Replace("Upgrades", string.Empty);
 		string className = $"Upgrades{gameVersion}";

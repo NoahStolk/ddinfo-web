@@ -30,14 +30,14 @@ public static class {_className}
 		context.RegisterSourceOutput(context.AdditionalTextsProvider, static (spc, at) => Execute(spc, at));
 	}
 
-	public static void Execute(SourceProductionContext sourceProductionContext, AdditionalText additionalText)
+	private static void Execute(SourceProductionContext sourceProductionContext, AdditionalText additionalText)
 	{
 		string className = Path.GetFileNameWithoutExtension(additionalText.Path);
 		string? fileContents = additionalText.GetText()?.ToString();
 		if (fileContents == null)
 			return;
 
-		AssetType assetType = TrimStart(className, "Audio", "Core", "Dd") switch
+		AssetType assetType = className.TrimStart("Audio", "Core", "Dd") switch
 		{
 			"Audio" => AssetType.Audio,
 			"ModelBindings" => AssetType.ModelBinding,
@@ -104,14 +104,5 @@ public static class {_className}
 
 		static string FormatString(string? str)
 			=> str == null ? "null" : $"\"{str}\"";
-
-		static string TrimStart(string str, params string[] values)
-		{
-			if (values.Length == 0)
-				return str;
-
-			string? sub = Array.Find(values, v => str.StartsWith(v));
-			return sub == null ? str : str.Substring(sub.Length);
-		}
 	}
 }

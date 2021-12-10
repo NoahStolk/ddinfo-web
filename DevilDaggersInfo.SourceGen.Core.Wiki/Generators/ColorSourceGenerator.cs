@@ -20,7 +20,7 @@ public static class {_className}
 		context.RegisterSourceOutput(additionalTexts, static (spc, at) => Execute(spc, at));
 	}
 
-	public static void Execute(SourceProductionContext sourceProductionContext, AdditionalText additionalText)
+	private static void Execute(SourceProductionContext sourceProductionContext, AdditionalText additionalText)
 	{
 		string className = Path.GetFileNameWithoutExtension(additionalText.Path);
 		string? fileContents = additionalText.GetText()?.ToString();
