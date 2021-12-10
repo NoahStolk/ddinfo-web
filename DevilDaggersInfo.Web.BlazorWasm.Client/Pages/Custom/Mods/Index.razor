@@ -15,40 +15,52 @@
 }
 else
 {
-	<div class="grid gap-2 grid-cols-2 max-w-md mb-2">
-		<span>Mod name</span>
-		<input class="bg-black border-gray-3 border-2" @onchange="ChangeInputModName" />
-		<span>Author name</span>
-		<input class="bg-black border-gray-3 border-2" @onchange="ChangeInputAuthorName" />
-		<span>Hosted only</span>
-		<input type="checkbox" class="bg-black border-gray-3 border-2 w-8" @onchange="ChangeInputHostedOnly" />
-	</div>
-	
-	<CascadingValue Value="this">
-		<Paging />
-	</CascadingValue>
-
-	<div class="p-1">Page @(PageIndex + 1) of @TotalPages (@(PageIndex * PageSize + 1) - @Math.Min(GetMods.TotalResults, (PageIndex + 1) * PageSize) of @GetMods.TotalResults)</div>
-
-	<div class="grid gap-3 sm:grid-cols-mods-sm md:grid-cols-mods-md lg:grid-cols-mods-lg xl:grid-cols-mods-xl">
-		<a href="" @onclick:preventDefault class="text-color-link hover:text-color-link-hover text-left" @onclick="() => Sort(ModSorting.Name)">Name</a>
-		<a href="" @onclick:preventDefault class="text-color-link hover:text-color-link-hover text-left hidden md:block" @onclick="() => Sort(ModSorting.Authors)">Author(s)</a>
-		<a href="" @onclick:preventDefault class="text-color-link hover:text-color-link-hover text-left hidden md:block" @onclick="() => Sort(ModSorting.LastUpdated)">Last updated</a>
-		<a href="" @onclick:preventDefault class="text-color-link hover:text-color-link-hover text-left hidden md:block" @onclick="() => Sort(ModSorting.ModTypes)">Type</a>
-		<a href="" @onclick:preventDefault class="text-color-link hover:text-color-link-hover text-right hidden xl:block" @onclick="() => Sort(ModSorting.Hosted)">Hosted</a>
-		<a href="" @onclick:preventDefault class="text-color-link hover:text-color-link-hover text-right hidden xl:block" @onclick="() => Sort(ModSorting.ProhibitedAssets)">Prohibited assets</a>
-	</div>
-	@for (int i = 0; i < GetMods.Results.Count; i++)
-	{
-		GetModOverview mod = GetMods.Results[i];
-		<div class="grid gap-3 sm:grid-cols-mods-sm md:grid-cols-mods-md lg:grid-cols-mods-lg xl:grid-cols-mods-xl h-6 @(i % 2 == 0 ? "bg-gray-1" : string.Empty)">
-			<div class="overflow-x-hidden text-left"><a href="/custom/mod/@mod.Id">@mod.Name.ToNoBreakString()</a></div>
-			<div class="overflow-x-hidden text-left hidden md:block">@string.Join(", ", mod.Authors).ToNoBreakString()</div>
-			<div class="overflow-x-hidden text-left hidden md:block">@mod.LastUpdated.ToString(FormatUtils.DateFormat)</div>
-			<div class="overflow-x-hidden text-left hidden md:block">@mod.ModTypes.ToNoBreakString()</div>
-			<div class="overflow-x-hidden text-right hidden xl:block">@(mod.IsHosted ? "Yes" : "No")</div>
-			<div class="overflow-x-hidden text-right hidden xl:block">@(mod.ContainsProhibitedAssets.HasValue ? mod.ContainsProhibitedAssets.Value ? (MarkupString)"Yes" : (MarkupString)"No" : MarkupUtils.NoDataMarkup)</div>
+	<div class="bg-gray-1 p-2 text-lg">
+		<div class="grid gap-2 grid-cols-2 max-w-md mb-2">
+			<span>Mod name</span>
+			<input class="bg-black border-gray-3 border-2" @onchange="ChangeInputModName" />
+			<span>Author name</span>
+			<input class="bg-black border-gray-3 border-2" @onchange="ChangeInputAuthorName" />
+			<span>Hosted only</span>
+			<input type="checkbox" class="bg-black border-gray-3 border-2 w-8" @onchange="ChangeInputHostedOnly" />
 		</div>
+
+		<CascadingValue Value="this">
+			<Paging />
+		</CascadingValue>
+
+		@if (GetMods.Results.Count == 0)
+		{
+			<p class="pt-2">Search returned no results.</p>
+		}
+		else
+		{
+			<p class="p-1">Page @(PageIndex + 1) of @TotalPages (@(PageIndex * PageSize + 1) - @Math.Min(GetMods.TotalResults, (PageIndex + 1) * PageSize) of @GetMods.TotalResults)</p>
+		}
+	</div>
+
+	@if (GetMods.Results.Count > 0)
+	{
+		<div class="grid gap-3 sm:grid-cols-mods-sm md:grid-cols-mods-md lg:grid-cols-mods-lg xl:grid-cols-mods-xl">
+			<a href="" @onclick:preventDefault class="text-color-link hover:text-color-link-hover text-left" @onclick="() => Sort(ModSorting.Name)">Name</a>
+			<a href="" @onclick:preventDefault class="text-color-link hover:text-color-link-hover text-left hidden md:block" @onclick="() => Sort(ModSorting.Authors)">Author(s)</a>
+			<a href="" @onclick:preventDefault class="text-color-link hover:text-color-link-hover text-left hidden md:block" @onclick="() => Sort(ModSorting.LastUpdated)">Last updated</a>
+			<a href="" @onclick:preventDefault class="text-color-link hover:text-color-link-hover text-left hidden md:block" @onclick="() => Sort(ModSorting.ModTypes)">Type</a>
+			<a href="" @onclick:preventDefault class="text-color-link hover:text-color-link-hover text-right hidden xl:block" @onclick="() => Sort(ModSorting.Hosted)">Hosted</a>
+			<a href="" @onclick:preventDefault class="text-color-link hover:text-color-link-hover text-right hidden xl:block" @onclick="() => Sort(ModSorting.ProhibitedAssets)">Prohibited assets</a>
+		</div>
+		@for (int i = 0; i < GetMods.Results.Count; i++)
+		{
+			GetModOverview mod = GetMods.Results[i];
+			<div class="grid gap-3 sm:grid-cols-mods-sm md:grid-cols-mods-md lg:grid-cols-mods-lg xl:grid-cols-mods-xl h-6 @(i % 2 == 0 ? "bg-gray-1" : string.Empty)">
+				<div class="overflow-x-hidden text-left"><a href="/custom/mod/@mod.Id">@mod.Name.ToNoBreakString()</a></div>
+				<div class="overflow-x-hidden text-left hidden md:block">@string.Join(", ", mod.Authors).ToNoBreakString()</div>
+				<div class="overflow-x-hidden text-left hidden md:block">@mod.LastUpdated.ToString(FormatUtils.DateFormat)</div>
+				<div class="overflow-x-hidden text-left hidden md:block">@mod.ModTypes.ToNoBreakString()</div>
+				<div class="overflow-x-hidden text-right hidden xl:block">@(mod.IsHosted ? "Yes" : "No")</div>
+				<div class="overflow-x-hidden text-right hidden xl:block">@(mod.ContainsProhibitedAssets.HasValue ? mod.ContainsProhibitedAssets.Value ? (MarkupString)"Yes" : (MarkupString)"No" : MarkupUtils.NoDataMarkup)</div>
+			</div>
+		}
 	}
 }
 
@@ -70,7 +82,7 @@ else
 	public Page<GetModOverview>? GetMods { get; set; }
 
 	public int TotalPages => GetMods == null ? 0 : (GetMods.TotalResults - 1) / PageSize + 1;
-	
+
 	private async Task ChangeInputModName(ChangeEventArgs e)
 	{
 		// TODO: Fluxor
@@ -88,7 +100,7 @@ else
 
 		await Fetch();
 	}
-	
+
 	private async Task ChangeInputHostedOnly(ChangeEventArgs e)
 	{
 		// TODO: Fluxor

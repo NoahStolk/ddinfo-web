@@ -26,15 +26,17 @@ else
 {
 	<Deletion AfterDelete="Fetch" ApiCall="@DeletionApiCall" @ref="_deletion" />
 
-	<div>
-		<a class="inline-block bg-gray-3 hover:bg-gray-4 transition-colors duration-100 w-24 mb-2 mx-1 rounded text-color-text text-lg text-center" href="@($"{NavigationManager.Uri}/add")">Add new</a>
+	<div class="bg-gray-1 p-2 text-lg">
+		<div>
+			<a class="inline-block bg-gray-3 hover:bg-gray-4 transition-colors duration-100 w-24 mb-2 mx-1 rounded text-color-text text-center" href="@($"{NavigationManager.Uri}/add")">Add new</a>
+		</div>
+
+		<CascadingValue Value="this">
+			<Paging />
+		</CascadingValue>
+
+		<div class="p-1">Page @(PageIndex + 1) of @TotalPages (@(PageIndex * PageSize) - @Math.Min(_page.TotalResults, (PageIndex + 1) * PageSize) of @_page.TotalResults)</div>
 	</div>
-
-	<CascadingValue Value="this">
-		<Paging />
-	</CascadingValue>
-
-	<div class="p-1">Page @(PageIndex + 1) of @TotalPages (@(PageIndex * PageSize) - @Math.Min(_page.TotalResults, (PageIndex + 1) * PageSize) of @_page.TotalResults)</div>
 
 	<div class="grid gap-2 @GridConfiguration">
 		@foreach (KeyValuePair<PropertyInfo, bool> pi in _properties)

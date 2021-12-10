@@ -15,29 +15,34 @@
 }
 else
 {
-	<div class="grid gap-2 grid-cols-2 max-w-md mb-2">
-		<span>Spawnset name</span>
-		<input class="bg-black border-gray-3 border-2" @onchange="ChangeInputSpawnsetName" />
-		<span>Author name</span>
-		<input class="bg-black border-gray-3 border-2" @onchange="ChangeInputAuthorName" />
-		<span>Practice only</span>
-		<input type="checkbox" class="bg-black border-gray-3 border-2 w-8" @onchange="ChangeInputPracticeOnly" />
-		<span>With custom leaderboard only</span>
-		<input type="checkbox" class="bg-black border-gray-3 border-2 w-8" @onchange="ChangeInputWithCustomLeaderboardOnly" />
+	<div class="bg-gray-1 p-2 text-lg">
+		<div class="grid gap-2 grid-cols-2 max-w-md mb-2">
+			<span>Spawnset name</span>
+			<input class="bg-black border-gray-3 border-2" @onchange="ChangeInputSpawnsetName" />
+			<span>Author name</span>
+			<input class="bg-black border-gray-3 border-2" @onchange="ChangeInputAuthorName" />
+			<span>Practice only</span>
+			<input type="checkbox" class="bg-black border-gray-3 border-2 w-8" @onchange="ChangeInputPracticeOnly" />
+			<span>With custom leaderboard only</span>
+			<input type="checkbox" class="bg-black border-gray-3 border-2 w-8" @onchange="ChangeInputWithCustomLeaderboardOnly" />
+		</div>
+
+		<CascadingValue Value="this">
+			<Paging />
+		</CascadingValue>
+
+		@if (GetSpawnsets.Results.Count == 0)
+		{
+			<p class="pt-2">Search returned no results.</p>
+		}
+		else
+		{
+			<p class="p-1">Page @(PageIndex + 1) of @TotalPages (@(PageIndex * PageSize + 1) - @Math.Min(GetSpawnsets.TotalResults, (PageIndex + 1) * PageSize) of @GetSpawnsets.TotalResults)</p>
+		}
 	</div>
 
-	<CascadingValue Value="this">
-		<Paging />
-	</CascadingValue>
-
-	@if (GetSpawnsets.Results.Count == 0)
+	@if (GetSpawnsets.Results.Count > 0)
 	{
-		<p class="pt-2">Search returned no results.</p>
-	}
-	else
-	{
-		<div class="p-1">Page @(PageIndex + 1) of @TotalPages (@(PageIndex * PageSize + 1) - @Math.Min(GetSpawnsets.TotalResults, (PageIndex + 1) * PageSize) of @GetSpawnsets.TotalResults)</div>
-
 		<div class="grid gap-3 sm:grid-cols-spawnsets-sm md:grid-cols-spawnsets-md lg:grid-cols-spawnsets-lg xl:grid-cols-spawnsets-xl">
 			<a href="" @onclick:preventDefault class="text-color-link hover:text-color-link-hover text-left" @onclick="() => Sort(SpawnsetSorting.Name)">Name</a>
 			<a href="" @onclick:preventDefault class="text-color-link hover:text-color-link-hover text-left hidden md:block" @onclick="() => Sort(SpawnsetSorting.AuthorName)">Author</a>

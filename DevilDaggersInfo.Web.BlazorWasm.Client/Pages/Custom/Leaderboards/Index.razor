@@ -15,59 +15,71 @@
 }
 else
 {
-	<div class="grid gap-2 grid-cols-2 max-w-md mb-2">
-		<span>Spawnset name</span>
-		<input class="bg-black border-gray-3 border-2" @onchange="ChangeInputSpawnsetName" />
-		<span>Author name</span>
-		<input class="bg-black border-gray-3 border-2" @onchange="ChangeInputAuthorName" />
-		<span>Category</span>
-		<Select @onchange="ChangeCategory" class="bg-gray-1 transition-colors duration-100 h-8 rounded text-color-text">
-			@foreach (CustomLeaderboardCategory e in (CustomLeaderboardCategory[])Enum.GetValues(typeof(CustomLeaderboardCategory)))
-			{
-				<option value="@e">@e</option>
-			}
-		</Select>
-	</div>
-
-	<CascadingValue Value="this">
-		<Paging />
-	</CascadingValue>
-
-	<div class="p-1">Page @(PageIndex + 1) of @TotalPages (@(PageIndex * PageSize + 1) - @Math.Min(GetCustomLeaderboards.TotalResults, (PageIndex + 1) * PageSize) of @GetCustomLeaderboards.TotalResults)</div>
-
-	<div class="grid gap-3 sm:grid-cols-custom-leaderboards-sm md:grid-cols-custom-leaderboards-md lg:grid-cols-custom-leaderboards-lg xl:grid-cols-custom-leaderboards-xl 2xl:grid-cols-custom-leaderboards-2xl">
-		<a href="" @onclick:preventDefault class="text-color-link hover:text-color-link-hover text-left" @onclick="() => Sort(CustomLeaderboardSorting.SpawnsetName)">Name</a>
-		<a href="" @onclick:preventDefault class="text-color-link hover:text-color-link-hover text-left hidden md:block" @onclick="() => Sort(CustomLeaderboardSorting.AuthorName)">Author</a>
-		<a href="" @onclick:preventDefault class="text-color-link hover:text-color-link-hover text-left hidden md:block" @onclick="() => Sort(CustomLeaderboardSorting.DateCreated)">Created</a>
-		<a href="" @onclick:preventDefault class="text-color-link hover:text-color-link-hover text-left hidden md:block" @onclick="() => Sort(CustomLeaderboardSorting.DateLastPlayed)">Last played</a>
-		<a href="" @onclick:preventDefault class="text-color-link hover:text-color-link-hover text-right hidden 2xl:block" @onclick="() => Sort(CustomLeaderboardSorting.Submits)">Submits</a>
-		<a href="" @onclick:preventDefault class="text-color-link hover:text-color-link-hover text-right hidden 2xl:block" @onclick="() => Sort(CustomLeaderboardSorting.Players)">Players</a>
-		<a href="" @onclick:preventDefault class="text-color-link hover:text-color-link-hover text-right hidden xl:block" @onclick="() => Sort(CustomLeaderboardSorting.TimeBronze)">Bronze</a>
-		<a href="" @onclick:preventDefault class="text-color-link hover:text-color-link-hover text-right hidden xl:block" @onclick="() => Sort(CustomLeaderboardSorting.TimeSilver)">Silver</a>
-		<a href="" @onclick:preventDefault class="text-color-link hover:text-color-link-hover text-right hidden xl:block" @onclick="() => Sort(CustomLeaderboardSorting.TimeGolden)">Golden</a>
-		<a href="" @onclick:preventDefault class="text-color-link hover:text-color-link-hover text-right hidden xl:block" @onclick="() => Sort(CustomLeaderboardSorting.TimeDevil)">Devil</a>
-		<a href="" @onclick:preventDefault class="text-color-link hover:text-color-link-hover text-right hidden xl:block" @onclick="() => Sort(CustomLeaderboardSorting.TimeLeviathan)">Leviathan</a>
-		<a href="" @onclick:preventDefault class="text-color-link hover:text-color-link-hover text-left hidden lg:block" @onclick="() => Sort(CustomLeaderboardSorting.TopPlayer)">Top player</a>
-		<a href="" @onclick:preventDefault class="text-color-link hover:text-color-link-hover text-right hidden lg:block" @onclick="() => Sort(CustomLeaderboardSorting.WorldRecord)">WR</a>
-	</div>
-	@for (int i = 0; i < GetCustomLeaderboards.Results.Count; i++)
-	{
-		GetCustomLeaderboardOverview customLeaderboard = GetCustomLeaderboards.Results[i];
-		<div class="grid gap-3 sm:grid-cols-custom-leaderboards-sm md:grid-cols-custom-leaderboards-md lg:grid-cols-custom-leaderboards-lg xl:grid-cols-custom-leaderboards-xl 2xl:grid-cols-custom-leaderboards-2xl h-6 @(i % 2 == 0 ? "bg-gray-1" : string.Empty)">
-			<div class="overflow-x-hidden text-left"><a href="/custom/leaderboard/@customLeaderboard.Id">@customLeaderboard.SpawnsetName.ToNoBreakString()</a></div>
-			<div class="overflow-x-hidden text-left hidden md:block">@customLeaderboard.SpawnsetAuthorName.ToNoBreakString()</div>
-			<div class="overflow-x-hidden text-left hidden md:block">@customLeaderboard.DateCreated.ToString(FormatUtils.DateFormat)</div>
-			<div class="overflow-x-hidden text-left hidden md:block">@FormatUtils.FormatDateTimeAsTimeAgo(customLeaderboard.DateLastPlayed)</div>
-			<div class="overflow-x-hidden text-right hidden 2xl:block">@(customLeaderboard.DateCreated < FeatureConstants.TrackingCustomLeaderboardSubmitCounts ? "+" : string.Empty)@customLeaderboard.SubmitCount</div>
-			<div class="overflow-x-hidden text-right hidden 2xl:block">@customLeaderboard.PlayerCount</div>
-			<div class="overflow-x-hidden text-right hidden xl:block text-xl font-goethe bronze">@customLeaderboard.TimeBronze.ToString(FormatUtils.TimeFormat)</div>
-			<div class="overflow-x-hidden text-right hidden xl:block text-xl font-goethe silver">@customLeaderboard.TimeSilver.ToString(FormatUtils.TimeFormat)</div>
-			<div class="overflow-x-hidden text-right hidden xl:block text-xl font-goethe golden">@customLeaderboard.TimeGolden.ToString(FormatUtils.TimeFormat)</div>
-			<div class="overflow-x-hidden text-right hidden xl:block text-xl font-goethe devil">@customLeaderboard.TimeDevil.ToString(FormatUtils.TimeFormat)</div>
-			<div class="overflow-x-hidden text-right hidden xl:block text-xl font-goethe leviathan">@customLeaderboard.TimeLeviathan.ToString(FormatUtils.TimeFormat)</div>
-			<div class="overflow-x-hidden text-left hidden lg:block">@customLeaderboard.TopPlayer.ToNoBreakString()</div>
-			<div class="overflow-x-hidden text-right hidden lg:block text-xl font-goethe @(customLeaderboard.WorldRecordDagger.ToString().ToLower())">@customLeaderboard.WorldRecord?.ToString(FormatUtils.TimeFormat)</div>
+	<div class="bg-gray-1 p-2 text-lg">
+		<div class="grid gap-2 grid-cols-2 max-w-md mb-2">
+			<span>Spawnset name</span>
+			<input class="bg-black border-gray-3 border-2" @onchange="ChangeInputSpawnsetName" />
+			<span>Author name</span>
+			<input class="bg-black border-gray-3 border-2" @onchange="ChangeInputAuthorName" />
+			<span>Category</span>
+			<Select @onchange="ChangeCategory" class="bg-gray-3 transition-colors duration-100 h-8 rounded text-color-text">
+				@foreach (CustomLeaderboardCategory e in (CustomLeaderboardCategory[])Enum.GetValues(typeof(CustomLeaderboardCategory)))
+				{
+					<option value="@e">@e</option>
+				}
+			</Select>
 		</div>
+
+		<CascadingValue Value="this">
+			<Paging />
+		</CascadingValue>
+
+		@if (GetCustomLeaderboards.Results.Count == 0)
+		{
+			<p class="pt-2">Search returned no results.</p>
+		}
+		else
+		{
+			<p class="p-1">Page @(PageIndex + 1) of @TotalPages (@(PageIndex * PageSize + 1) - @Math.Min(GetCustomLeaderboards.TotalResults, (PageIndex + 1) * PageSize) of @GetCustomLeaderboards.TotalResults)</p>
+		}
+	</div>
+
+	@if (GetCustomLeaderboards.Results.Count > 0)
+	{
+		<div class="grid gap-3 sm:grid-cols-custom-leaderboards-sm md:grid-cols-custom-leaderboards-md lg:grid-cols-custom-leaderboards-lg xl:grid-cols-custom-leaderboards-xl 2xl:grid-cols-custom-leaderboards-2xl">
+			<a href="" @onclick:preventDefault class="text-color-link hover:text-color-link-hover text-left" @onclick="() => Sort(CustomLeaderboardSorting.SpawnsetName)">Name</a>
+			<a href="" @onclick:preventDefault class="text-color-link hover:text-color-link-hover text-left hidden md:block" @onclick="() => Sort(CustomLeaderboardSorting.AuthorName)">Author</a>
+			<a href="" @onclick:preventDefault class="text-color-link hover:text-color-link-hover text-left hidden md:block" @onclick="() => Sort(CustomLeaderboardSorting.DateCreated)">Created</a>
+			<a href="" @onclick:preventDefault class="text-color-link hover:text-color-link-hover text-left hidden md:block" @onclick="() => Sort(CustomLeaderboardSorting.DateLastPlayed)">Last played</a>
+			<a href="" @onclick:preventDefault class="text-color-link hover:text-color-link-hover text-right hidden 2xl:block" @onclick="() => Sort(CustomLeaderboardSorting.Submits)">Submits</a>
+			<a href="" @onclick:preventDefault class="text-color-link hover:text-color-link-hover text-right hidden 2xl:block" @onclick="() => Sort(CustomLeaderboardSorting.Players)">Players</a>
+			<a href="" @onclick:preventDefault class="text-color-link hover:text-color-link-hover text-right hidden xl:block" @onclick="() => Sort(CustomLeaderboardSorting.TimeBronze)">Bronze</a>
+			<a href="" @onclick:preventDefault class="text-color-link hover:text-color-link-hover text-right hidden xl:block" @onclick="() => Sort(CustomLeaderboardSorting.TimeSilver)">Silver</a>
+			<a href="" @onclick:preventDefault class="text-color-link hover:text-color-link-hover text-right hidden xl:block" @onclick="() => Sort(CustomLeaderboardSorting.TimeGolden)">Golden</a>
+			<a href="" @onclick:preventDefault class="text-color-link hover:text-color-link-hover text-right hidden xl:block" @onclick="() => Sort(CustomLeaderboardSorting.TimeDevil)">Devil</a>
+			<a href="" @onclick:preventDefault class="text-color-link hover:text-color-link-hover text-right hidden xl:block" @onclick="() => Sort(CustomLeaderboardSorting.TimeLeviathan)">Leviathan</a>
+			<a href="" @onclick:preventDefault class="text-color-link hover:text-color-link-hover text-left hidden lg:block" @onclick="() => Sort(CustomLeaderboardSorting.TopPlayer)">Top player</a>
+			<a href="" @onclick:preventDefault class="text-color-link hover:text-color-link-hover text-right hidden lg:block" @onclick="() => Sort(CustomLeaderboardSorting.WorldRecord)">WR</a>
+		</div>
+		@for (int i = 0; i < GetCustomLeaderboards.Results.Count; i++)
+		{
+			GetCustomLeaderboardOverview customLeaderboard = GetCustomLeaderboards.Results[i];
+			<div class="grid gap-3 sm:grid-cols-custom-leaderboards-sm md:grid-cols-custom-leaderboards-md lg:grid-cols-custom-leaderboards-lg xl:grid-cols-custom-leaderboards-xl 2xl:grid-cols-custom-leaderboards-2xl h-6 @(i % 2 == 0 ? "bg-gray-1" : string.Empty)">
+				<div class="overflow-x-hidden text-left"><a href="/custom/leaderboard/@customLeaderboard.Id">@customLeaderboard.SpawnsetName.ToNoBreakString()</a></div>
+				<div class="overflow-x-hidden text-left hidden md:block">@customLeaderboard.SpawnsetAuthorName.ToNoBreakString()</div>
+				<div class="overflow-x-hidden text-left hidden md:block">@customLeaderboard.DateCreated.ToString(FormatUtils.DateFormat)</div>
+				<div class="overflow-x-hidden text-left hidden md:block">@FormatUtils.FormatDateTimeAsTimeAgo(customLeaderboard.DateLastPlayed)</div>
+				<div class="overflow-x-hidden text-right hidden 2xl:block">@(customLeaderboard.DateCreated < FeatureConstants.TrackingCustomLeaderboardSubmitCounts ? "+" : string.Empty)@customLeaderboard.SubmitCount</div>
+				<div class="overflow-x-hidden text-right hidden 2xl:block">@customLeaderboard.PlayerCount</div>
+				<div class="overflow-x-hidden text-right hidden xl:block text-xl font-goethe bronze">@customLeaderboard.TimeBronze.ToString(FormatUtils.TimeFormat)</div>
+				<div class="overflow-x-hidden text-right hidden xl:block text-xl font-goethe silver">@customLeaderboard.TimeSilver.ToString(FormatUtils.TimeFormat)</div>
+				<div class="overflow-x-hidden text-right hidden xl:block text-xl font-goethe golden">@customLeaderboard.TimeGolden.ToString(FormatUtils.TimeFormat)</div>
+				<div class="overflow-x-hidden text-right hidden xl:block text-xl font-goethe devil">@customLeaderboard.TimeDevil.ToString(FormatUtils.TimeFormat)</div>
+				<div class="overflow-x-hidden text-right hidden xl:block text-xl font-goethe leviathan">@customLeaderboard.TimeLeviathan.ToString(FormatUtils.TimeFormat)</div>
+				<div class="overflow-x-hidden text-left hidden lg:block">@customLeaderboard.TopPlayer.ToNoBreakString()</div>
+				<div class="overflow-x-hidden text-right hidden lg:block text-xl font-goethe @(customLeaderboard.WorldRecordDagger.ToString().ToLower())">@customLeaderboard.WorldRecord?.ToString(FormatUtils.TimeFormat)</div>
+			</div>
+		}
 	}
 }
 
