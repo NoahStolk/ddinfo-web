@@ -18,9 +18,9 @@
 @foreach (AudioAssetData audio in AudioAudio.All)
 {
 	<div class="grid gap-3 grid-cols-3 odd:bg-gray-16">
-		<div>@audio.AssetName</div>
+		<div class="break-all">@audio.AssetName</div>
 		<div>@(audio.IsProhibited ? "Yes" : "No")</div>
-		<div>@(audio.PresentInDefaultLoudness ? audio.DefaultLoudness.ToString("0.0") : "N/A (defaults to 1.0)")</div>
+		<div>@(audio.PresentInDefaultLoudness ? audio.DefaultLoudness.ToString("0.0") : "N/A (1.0)")</div>
 	</div>
 }
 
@@ -34,7 +34,7 @@
 @foreach (ModelAssetData model in DdModels.All)
 {
 	<div class="grid gap-3 grid-cols-4 odd:bg-gray-16">
-		<div>@model.AssetName</div>
+		<div class="break-all">@model.AssetName</div>
 		<div>@(model.IsProhibited ? "Yes" : "No")</div>
 		<div>@model.DefaultIndexCount</div>
 		<div>@model.DefaultVertexCount</div>
@@ -49,7 +49,7 @@
 @foreach (ModelBindingAssetData modelBinding in DdModelBindings.All)
 {
 	<div class="grid gap-3 grid-cols-2 odd:bg-gray-16">
-		<div>@modelBinding.AssetName</div>
+		<div class="break-all">@modelBinding.AssetName</div>
 		<div>@(modelBinding.IsProhibited ? "Yes" : "No")</div>
 	</div>
 }
@@ -62,7 +62,7 @@
 @foreach (ShaderAssetData shader in CoreShaders.All)
 {
 	<div class="grid gap-3 grid-cols-2 odd:bg-gray-16">
-		<div>@shader.AssetName</div>
+		<div class="break-all">@shader.AssetName</div>
 		<div>@(shader.IsProhibited ? "Yes" : "No")</div>
 	</div>
 }
@@ -75,8 +75,8 @@
 @foreach (ShaderAssetData shader in DdShaders.All)
 {
 	<div class="grid gap-3 grid-cols-2 odd:bg-gray-16">
-		<div>@shader.AssetName</div>
-		<div class="hidden md:block">@(shader.IsProhibited ? "Yes" : "No")</div>
+		<div class="break-all">@shader.AssetName</div>
+		<div>@(shader.IsProhibited ? "Yes" : "No")</div>
 	</div>
 }
 
@@ -92,11 +92,11 @@
 @foreach (TextureAssetData texture in DdTextures.All)
 {
 	<div class="grid gap-3 grid-cols-6 odd:bg-gray-16">
-		<div>@texture.AssetName</div>
+		<div class="break-all">@texture.AssetName</div>
 		<div>@(texture.IsProhibited ? "Yes" : "No")</div>
 		<div>@texture.DefaultWidth</div>
 		<div>@texture.DefaultHeight</div>
-		<div>@texture.IsModelTexture</div>
-		<div>@texture.ModelBinding</div>
+		<div>@(texture.IsModelTexture ? "Yes" : "No")</div>
+		<div class="break-all">@texture.ModelBinding</div>
 	</div>
 }
