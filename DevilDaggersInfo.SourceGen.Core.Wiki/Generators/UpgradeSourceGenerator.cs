@@ -1,7 +1,7 @@
 namespace DevilDaggersInfo.SourceGen.Core.Wiki.Generators;
 
 [Generator]
-public class UpgradeSourceGenerator : ISourceGenerator
+public class UpgradeSourceGenerator : IIncrementalGenerator
 {
 	private const string _className = $"%{nameof(_className)}%";
 	private const string _upgradeFields = $"%{nameof(_upgradeFields)}%";
@@ -15,49 +15,48 @@ public static class {_className}
 }}
 ";
 
-	public void Initialize(GeneratorInitializationContext context)
+	public void Initialize(IncrementalGeneratorInitializationContext context)
 	{
-		// Method intentionally left empty.
+		IncrementalValuesProvider<AdditionalText> additionalTexts = context.AdditionalTextsProvider.Where(static at => Path.GetFileName(at.Path).StartsWith("Upgrades"));
+
+		context.RegisterSourceOutput(additionalTexts, static (spc, at) => Execute(spc, at));
 	}
 
-	public void Execute(GeneratorExecutionContext context)
+	public static void Execute(SourceProductionContext sourceProductionContext, AdditionalText additionalText)
 	{
-		foreach (AdditionalText additionalText in context.AdditionalFiles.Where(at => Path.GetFileNameWithoutExtension(at.Path).StartsWith("Upgrades")))
+		string gameVersion = Path.GetFileNameWithoutExtension(additionalText.Path).Replace("Upgrades", string.Empty);
+		string className = $"Upgrades{gameVersion}";
+
+		string? fileContents = additionalText.GetText()?.ToString();
+		if (fileContents == null)
+			return;
+
+		string[] lines = fileContents.Split(new string[] { Environment.NewLine }, StringSplitOptions.RemoveEmptyEntries);
+		string[] fieldLines = new string[lines.Length];
+
+		for (int i = 0; i < lines.Length; i++)
 		{
-			string gameVersion = Path.GetFileNameWithoutExtension(additionalText.Path).Replace("Upgrades", string.Empty);
-			string className = $"Upgrades{gameVersion}";
+			string line = lines[i];
 
-			string? fileContents = additionalText.GetText()?.ToString();
-			if (fileContents == null)
-				continue;
+			string[] parameters = line.Split(new string[] { "," }, StringSplitOptions.RemoveEmptyEntries);
+			const int parameterCount = 7;
+			if (parameters.Length != parameterCount)
+				throw new($"Invalid specification in line '{line}'. There should be {parameterCount} parameters, but {parameters.Length} were found.");
 
-			string[] lines = fileContents.Split(new string[] { Environment.NewLine }, StringSplitOptions.RemoveEmptyEntries);
-			string[] fieldLines = new string[lines.Length];
-
-			for (int i = 0; i < lines.Length; i++)
-			{
-				string line = lines[i];
-
-				string[] parameters = line.Split(new string[] { "," }, StringSplitOptions.RemoveEmptyEntries);
-				const int parameterCount = 7;
-				if (parameters.Length != parameterCount)
-					throw new($"Invalid specification in line '{line}'. There should be {parameterCount} parameters, but {parameters.Length} were found.");
-
-				int level = int.Parse(parameters[0]);
-				int defaultShot = int.Parse(parameters[1]);
-				float defaultSpray = float.Parse(parameters[2]);
-				int? homingShot = parameters[3] == "!" ? null : int.Parse(parameters[3]);
-				float? homingSpray = parameters[4] == "!" ? null : float.Parse(parameters[4]);
-				string unlockType = parameters[5];
-				int unlockValue = int.Parse(parameters[6]);
-				fieldLines[i] = $"public static readonly Upgrade Level{level} = new(GameVersion.{gameVersion}, \"Level {level}\", UpgradeColors.Level{level}, {level}, new({defaultShot}, {defaultSpray}f), new({ValueOrNull(homingShot)}, {ValueOrNull(homingSpray)}), new(UpgradeUnlockType.{unlockType}, {unlockValue}));";
-			}
-
-			string source = _template
-				.Replace(_className, className)
-				.Replace(_upgradeFields, string.Join(Environment.NewLine, fieldLines).Indent(1));
-			context.AddSource(className, SourceText.From(SourceBuilderUtils.WrapInsideWarningSuppressionDirectives(source), Encoding.UTF8));
+			int level = int.Parse(parameters[0]);
+			int defaultShot = int.Parse(parameters[1]);
+			float defaultSpray = float.Parse(parameters[2]);
+			int? homingShot = parameters[3] == "!" ? null : int.Parse(parameters[3]);
+			float? homingSpray = parameters[4] == "!" ? null : float.Parse(parameters[4]);
+			string unlockType = parameters[5];
+			int unlockValue = int.Parse(parameters[6]);
+			fieldLines[i] = $"public static readonly Upgrade Level{level} = new(GameVersion.{gameVersion}, \"Level {level}\", UpgradeColors.Level{level}, {level}, new({defaultShot}, {defaultSpray}f), new({ValueOrNull(homingShot)}, {ValueOrNull(homingSpray)}), new(UpgradeUnlockType.{unlockType}, {unlockValue}));";
 		}
+
+		string source = _template
+			.Replace(_className, className)
+			.Replace(_upgradeFields, string.Join(Environment.NewLine, fieldLines).Indent(1));
+		sourceProductionContext.AddSource(className, SourceText.From(SourceBuilderUtils.WrapInsideWarningSuppressionDirectives(source), Encoding.UTF8));
 	}
 
 	private static string ValueOrNull(float? value)
