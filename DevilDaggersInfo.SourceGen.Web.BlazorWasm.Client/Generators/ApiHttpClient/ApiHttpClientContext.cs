@@ -133,13 +133,13 @@ internal class ApiHttpClientContext
 		if (httpPutAttribute != null)
 			return new(httpPutAttribute, HttpMethod.Put);
 
-		AttributeSyntax? httpDeleteAttribute = mds.GetAttributeFromMember("HttpDelete");
-		if (httpDeleteAttribute != null)
-			return new(httpDeleteAttribute, HttpMethod.Delete);
-
 		AttributeSyntax? httpPatchAttribute = mds.GetAttributeFromMember("HttpPatch");
 		if (httpPatchAttribute != null)
 			return new(httpPatchAttribute, HttpMethod.Patch);
+
+		AttributeSyntax? httpDeleteAttribute = mds.GetAttributeFromMember("HttpDelete");
+		if (httpDeleteAttribute != null)
+			return new(httpDeleteAttribute, HttpMethod.Delete);
 
 		return null;
 	}
