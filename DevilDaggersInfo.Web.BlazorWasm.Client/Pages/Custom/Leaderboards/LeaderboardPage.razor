@@ -69,6 +69,8 @@ else
 			<span class="leviathan">@(GetCustomLeaderboard.TimeLeviathan.ToString(FormatUtils.TimeFormat))</span>
 		</div>
 	</div>
+	
+	<LeaderboardTableInfo />
 
 	<div class="text-xl font-goethe">
 		<div class="grid gap-3 grid-cols-custom-leaderboard-sm md:grid-cols-custom-leaderboard-md lg:grid-cols-custom-leaderboard-lg xl:grid-cols-custom-leaderboard-xl 2xl:grid-cols-custom-leaderboard-2xl">
@@ -124,7 +126,7 @@ else
 
 					bool grayBackground = i++ % 2 == 0;
 
-					<div class="grid gap-3 grid-cols-custom-leaderboard-sm md:grid-cols-custom-leaderboard-md lg:grid-cols-custom-leaderboard-lg xl:grid-cols-custom-leaderboard-xl 2xl:grid-cols-custom-leaderboard-2xl h-6 @(grayBackground ? "bg-gray-0b" : string.Empty)">
+					<div class="grid gap-3 grid-cols-custom-leaderboard-sm md:grid-cols-custom-leaderboard-md lg:grid-cols-custom-leaderboard-lg xl:grid-cols-custom-leaderboard-xl 2xl:grid-cols-custom-leaderboard-2xl h-6 cursor-pointer 2xl:cursor-default @(grayBackground ? "bg-gray-0b" : string.Empty)" @onclick="() => Expand(ce.Id)">
 						<EntryRank PlayerId="@ce.PlayerId" Rank="@ce.Rank" />
 						<EntryFlag CountryCode="@ce.CountryCode" />
 						<EntryUsername DaggerCssClass="@daggerCssClass" Id="@ce.PlayerId" Name="@($"{ce.PlayerName}")" />
@@ -167,6 +169,36 @@ else
 						<div class="text-right hidden 2xl:block">@levelUpTime4</div>
 						<div class="text-right hidden 2xl:block">@submitDate</div>
 					</div>
+					<div class="grid grid-cols-2 @(ce.Id == _expandedId ? (grayBackground ? "bg-gray-0b" : string.Empty) : "hidden") pl-[92px] pr-1">
+						<div class="md:hidden">Enemies Killed</div>
+						<div class="md:hidden text-right">@enemiesKilled</div>
+						<div class="md:hidden">Enemies Alive</div>
+						<div class="md:hidden text-right">@enemiesAlive</div>
+						<div class="md:hidden">Gems Collected</div>
+						<div class="md:hidden text-right">@gemsCollected</div>
+						<div class="lg:hidden">Gems Despawned</div>
+						<div class="lg:hidden text-right">@gemsDespawned</div>
+						<div class="lg:hidden">Gems Eaten</div>
+						<div class="lg:hidden text-right">@gemsEaten</div>
+						<div class="md:hidden">Accuracy</div>
+						<div class="md:hidden text-right">
+							<Tooltip Text="@daggers"><span class="text-right font-goethe text-xl cursor-pointer">@accuracy</span></Tooltip>
+						</div>
+						<div class="lg:hidden">Death Type</div>
+						<div class="lg:hidden text-right">@death</div>
+						<div class="xl:hidden">Homing Stored</div>
+						<div class="xl:hidden text-right">@homingStored</div>
+						<div class="xl:hidden">Homing Eaten</div>
+						<div class="xl:hidden text-right">@homingEaten</div>
+						<div class="2xl:hidden">Level 2</div>
+						<div class="2xl:hidden text-right">@levelUpTime2</div>
+						<div class="2xl:hidden">Level 3</div>
+						<div class="2xl:hidden text-right">@levelUpTime3</div>
+						<div class="2xl:hidden">Level 4</div>
+						<div class="2xl:hidden text-right">@levelUpTime4</div>
+						<div class="2xl:hidden">Submit Date</div>
+						<div class="2xl:hidden text-right">@submitDate</div>
+					</div>
 				}
 			}
 		</div>
@@ -179,6 +211,7 @@ else
 
 	public GetCustomLeaderboard? GetCustomLeaderboard { get; set; }
 
+	private int? _expandedId;
 	private CustomEntrySorting _sortBy;
 	private bool _ascending;
 
@@ -190,6 +223,14 @@ else
 			_sortings.Add(e, false);
 
 		GetCustomLeaderboard = await Http.GetCustomLeaderboardById(Id);
+	}
+
+	private void Expand(int playerId)
+	{
+		if (_expandedId == playerId)
+			_expandedId = null;
+		else
+			_expandedId = playerId;
 	}
 
 	private void Sort(CustomEntrySorting sortBy)
