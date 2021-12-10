@@ -100,14 +100,27 @@ else
 						version = new(0, 0, 0, 0);
 
 					bool isDdcl = ce.Client == CustomLeaderboardsClient.DevilDaggersCustomLeaderboards;
-					bool graphs = !isDdcl || version >= FeatureConstants.DdclGraphs;
-					bool homingEaten = !isDdcl || version >= FeatureConstants.DdclHomingEaten;
-					bool v3_1 = !isDdcl || version >= FeatureConstants.DdclV3_1;
+					bool hasGraphs = !isDdcl || version >= FeatureConstants.DdclGraphs;
+					bool hasHomingEatenValue = !isDdcl || version >= FeatureConstants.DdclHomingEaten;
+					bool hasV3_1Values = !isDdcl || version >= FeatureConstants.DdclV3_1;
 
 					string daggerCssClass = ce.CustomLeaderboardDagger.ToString().ToLower();
 
-					double accuracy = ce.DaggersFired == 0 ? 0 : ce.DaggersHit / (double)ce.DaggersFired;
+					string enemiesKilled = ce.EnemiesKilled.ToString(FormatUtils.LeaderboardIntFormat);
+					string enemiesAlive = ce.EnemiesAlive.ToString(FormatUtils.LeaderboardIntFormat);
+					string gemsCollected = ce.GemsCollected.ToString(FormatUtils.LeaderboardIntFormat);
+					string gemsDespawned = ce.GemsDespawned.ToString(FormatUtils.LeaderboardIntFormat);
+					string gemsEaten = ce.GemsEaten.ToString(FormatUtils.LeaderboardIntFormat);
+					double accuracyValue = ce.DaggersFired == 0 ? 0 : ce.DaggersHit / (double)ce.DaggersFired;
+					string accuracy = accuracyValue.ToString(FormatUtils.AccuracyFormat);
 					string daggers = FormatUtils.FormatDaggersInt32(ce.DaggersHit, ce.DaggersFired, false);
+					MarkupString death = MarkupUtils.DeathString(ce.DeathType, GameConstants.CurrentVersion, "text-xl");
+					string homingStored = ce.HomingStored.ToString(FormatUtils.LeaderboardIntFormat);
+					string homingEaten = ce.HomingEaten.ToString(FormatUtils.LeaderboardIntFormat);
+					string levelUpTime2 = ce.LevelUpTime2.ToString(FormatUtils.TimeFormat)
+					string levelUpTime3 = ce.LevelUpTime3.ToString(FormatUtils.TimeFormat)
+					string levelUpTime4 = ce.LevelUpTime4.ToString(FormatUtils.TimeFormat)
+					string submitDate = ce.SubmitDate.ToString(FormatUtils.DateTimeFormat);
 
 					bool grayBackground = i++ % 2 == 0;
 
@@ -117,7 +130,7 @@ else
 						<EntryUsername DaggerCssClass="@daggerCssClass" Id="@ce.PlayerId" Name="@($"{ce.PlayerName}")" />
 						<div class="text-right whitespace-nowrap">
 							<span class="@daggerCssClass">@ce.Time.ToString(FormatUtils.TimeFormat)</span>
-							@if (graphs)
+							@if (hasGraphs)
 							{
 								<UrlLink Href="@($"/custom/entry/{ce.Id}")">
 									<Tooltip Text="View graphs"><img class="cursor-pointer inline-block mx-1 mb-1" src="/images/icons/default/eye2.png" /></Tooltip>
@@ -138,21 +151,21 @@ else
 								<img class="inline-block mx-1 mb-1" src="/images/icons/color/eye-gray.png" />
 							}
 						</div>
-						<div class="text-right hidden md:block">@ce.EnemiesKilled.ToString(FormatUtils.LeaderboardIntFormat)</div>
-						<div class="text-right hidden md:block">@ce.EnemiesAlive.ToString(FormatUtils.LeaderboardIntFormat)</div>
-						<div class="text-right hidden md:block">@ce.GemsCollected.ToString(FormatUtils.LeaderboardIntFormat)</div>
-						<div class="text-right hidden lg:block">@(v3_1 ? (MarkupString)ce.GemsDespawned.ToString(FormatUtils.LeaderboardIntFormat) : MarkupUtils.NoDataMarkup)</div>
-						<div class="text-right hidden lg:block">@(v3_1 ? (MarkupString)ce.GemsEaten.ToString(FormatUtils.LeaderboardIntFormat) : MarkupUtils.NoDataMarkup)</div>
+						<div class="text-right hidden md:block">@enemiesKilled</div>
+						<div class="text-right hidden md:block">@enemiesAlive</div>
+						<div class="text-right hidden md:block">@gemsCollected</div>
+						<div class="text-right hidden lg:block">@(hasV3_1Values ? (MarkupString)gemsDespawned : MarkupUtils.NoDataMarkup)</div>
+						<div class="text-right hidden lg:block">@(hasV3_1Values ? (MarkupString)gemsEaten : MarkupUtils.NoDataMarkup)</div>
 						<div class="text-right hidden md:block">
-							<Tooltip Text="@daggers"><span class="font-goethe text-xl cursor-pointer">@accuracy.ToString(FormatUtils.AccuracyFormat)</span></Tooltip>
+							<Tooltip Text="@daggers"><span class="font-goethe text-xl cursor-pointer">@accuracy</span></Tooltip>
 						</div>
-						<div class="text-left hidden lg:block">@MarkupUtils.DeathString(ce.DeathType, GameConstants.CurrentVersion, "text-xl")</div>
-						<div class="text-right hidden xl:block">@ce.HomingStored.ToString(FormatUtils.LeaderboardIntFormat)</div>
-						<div class="text-right hidden xl:block">@(homingEaten ? (MarkupString)ce.HomingEaten.ToString(FormatUtils.LeaderboardIntFormat) : MarkupUtils.NoDataMarkup)</div>
-						<div class="text-right hidden 2xl:block">@(ce.LevelUpTime2 == 0 ? MarkupUtils.NoDataMarkup : (MarkupString)ce.LevelUpTime2.ToString(FormatUtils.TimeFormat))</div>
-						<div class="text-right hidden 2xl:block">@(ce.LevelUpTime3 == 0 ? MarkupUtils.NoDataMarkup : (MarkupString)ce.LevelUpTime3.ToString(FormatUtils.TimeFormat))</div>
-						<div class="text-right hidden 2xl:block">@(ce.LevelUpTime4 == 0 ? MarkupUtils.NoDataMarkup : (MarkupString)ce.LevelUpTime4.ToString(FormatUtils.TimeFormat))</div>
-						<div class="text-right hidden 2xl:block">@ce.SubmitDate.ToString(FormatUtils.DateTimeFormat)</div>
+						<div class="text-left hidden lg:block">@death</div>
+						<div class="text-right hidden xl:block">@homingStored</div>
+						<div class="text-right hidden xl:block">@(hasHomingEatenValue ? (MarkupString)homingEaten : MarkupUtils.NoDataMarkup)</div>
+						<div class="text-right hidden 2xl:block">@(ce.LevelUpTime2 == 0 ? MarkupUtils.NoDataMarkup : (MarkupString)levelUpTime2)</div>
+						<div class="text-right hidden 2xl:block">@(ce.LevelUpTime3 == 0 ? MarkupUtils.NoDataMarkup : (MarkupString)levelUpTime3)</div>
+						<div class="text-right hidden 2xl:block">@(ce.LevelUpTime4 == 0 ? MarkupUtils.NoDataMarkup : (MarkupString)levelUpTime4)</div>
+						<div class="text-right hidden 2xl:block">@submitDate</div>
 					</div>
 				}
 			}
