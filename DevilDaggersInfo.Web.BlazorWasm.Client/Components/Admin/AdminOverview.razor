@@ -31,14 +31,7 @@ else
 	<Select @onchange="ChangePageSize" class="bg-gray-0b transition-colors duration-100 h-8 py-1 rounded text-color-text">
 		@foreach (int i in AdminPagingConstants.PageSizeOptions)
 		{
-			if (i == AdminPagingConstants.PageSizeDefault)
-			{
-				<option value="@i" selected>@i</option>
-			}
-			else
-			{
-				<option value="@i">@i</option>
-			}
+			<option value="@i">@i</option>
 		}
 	</Select>
 	<div class="p-1">Page @(_pageIndex + 1) of @TotalPages (@(_pageIndex * _pageSize) - @Math.Min(_page.TotalResults, (_pageIndex + 1) * _pageSize) of @_page.TotalResults)</div>
@@ -97,7 +90,7 @@ else
 	{
 		AuthenticationState auth = await Auth.GetAuthenticationStateAsync();
 		_username = auth.User?.Identity?.Name;
-		
+
 		if (_username?.Contains("unique_name: ") == true)
 			_username = _username[("unique_name: ".Length)..];
 

@@ -24,14 +24,7 @@ else
 		<Select @onchange="ChangeCategory" class="bg-gray-0b transition-colors duration-100 h-8 rounded text-color-text">
 			@foreach (CustomLeaderboardCategory e in (CustomLeaderboardCategory[])Enum.GetValues(typeof(CustomLeaderboardCategory)))
 			{
-				if (e == (CustomLeaderboardCategory)Category)
-				{
-					<option value="@e" selected>@e</option>
-				}
-				else
-				{
-					<option value="@e">@e</option>
-				}
+				<option value="@e">@e</option>
 			}
 		</Select>
 	</div>
@@ -130,7 +123,6 @@ else
 
 	private async Task ChangeInputSpawnsetName(ChangeEventArgs e)
 	{
-		// TODO: Fluxor
 		SpawnsetFilter = e.Value?.ToString();
 		NavigationManager.AddOrModifyQueryParameter(QueryParameters.SpawnsetFilter, SpawnsetFilter);
 
@@ -139,7 +131,6 @@ else
 
 	private async Task ChangeInputAuthorName(ChangeEventArgs e)
 	{
-		// TODO: Fluxor
 		AuthorFilter = e.Value?.ToString();
 		NavigationManager.AddOrModifyQueryParameter(QueryParameters.AuthorFilter, AuthorFilter);
 

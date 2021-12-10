@@ -7,14 +7,7 @@
 <Select @onchange="Page.ChangePageSize" class="bg-gray-0b transition-colors duration-100 h-8 py-1 m-1 rounded text-color-text">
 	@foreach (int i in PublicPagingConstants.PageSizeOptions)
 	{
-		if (i == Page.PageSize)
-		{
-			<option value="@i" selected>@i</option>
-		}
-		else
-		{
-			<option value="@i">@i</option>
-		}
+		<option value="@i">@i</option>
 	}
 </Select>
 

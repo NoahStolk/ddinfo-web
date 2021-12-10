@@ -5,40 +5,19 @@
 <Select @onchange="@(async (e) => await UpdateComponent(e, (dp) => dp._date.Day = ToInt(e)))" class="bg-gray-0b transition-colors duration-100 h-8 py-1 rounded text-color-text">
 	@for (int i = 1; i <= 31; i++)
 	{
-		if (i == _date.Day)
-		{
-			<option value="@i" selected>@i</option>
-		}
-		else
-		{
-			<option value="@i">@i</option>
-		}
+		<option value="@i">@i</option>
 	}
 </Select>
 <Select @onchange="@(async (e) => await UpdateComponent(e, (dp) => dp._date.Month = ToInt(e)))" class="bg-gray-0b transition-colors duration-100 h-8 py-1 rounded text-color-text">
 	@for (int i = 1; i <= 12; i++)
 	{
-		if (i == _date.Month)
-		{
-			<option value="@i" selected>@_monthNames[i - 1]</option>
-		}
-		else
-		{
-			<option value="@i">@_monthNames[i - 1]</option>
-		}
+		<option value="@i">@_monthNames[i - 1]</option>
 	}
 </Select>
 <Select @onchange="@(async (e) => await UpdateComponent(e, (dp) => dp._date.Year = ToInt(e)))" class="bg-gray-0b transition-colors duration-100 h-8 py-1 rounded text-color-text">
 	@for (int i = Date.MinYear; i <= Date.MaxYear; i++)
 	{
-		if (i == _date.Year)
-		{
-			<option value="@i" selected>@i</option>
-		}
-		else
-		{
-			<option value="@i">@i</option>
-		}
+		<option value="@i">@i</option>
 	}
 </Select>
 
