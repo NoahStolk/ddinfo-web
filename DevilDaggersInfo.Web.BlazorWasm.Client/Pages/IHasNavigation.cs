@@ -1,8 +1,8 @@
 using Microsoft.AspNetCore.Components;
 
-namespace DevilDaggersInfo.Web.BlazorWasm.Client.Pages.Custom;
+namespace DevilDaggersInfo.Web.BlazorWasm.Client.Pages;
 
-public interface ICustomPage
+public interface IHasNavigation
 {
 	public int PageIndex { get; set; }
 	public int PageSize { get; set; }
