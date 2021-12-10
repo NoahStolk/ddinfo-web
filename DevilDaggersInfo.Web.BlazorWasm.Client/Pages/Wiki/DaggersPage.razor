@@ -5,18 +5,19 @@
 <Paragraph>
 	There are 6 different types of daggers in Devil Daggers. These daggers do not change anything in-game, they're more like extras that you unlock as you progress. You pick them up in the dagger lobby, and then the game starts. Each dagger makes a different sound.
 </Paragraph>
+<Paragraph>
+	The @MarkupUtils.DaggerString(DaggersV3_2.Devil) grants the only Steam achievement in the game. The @MarkupUtils.DaggerString(DaggersV3_2.Leviathan) was added 5 years after the game's original release, and does not grant an achievement.
+</Paragraph>
 
 <div class="pt-4 grid gap-4 grid-cols-1 md:grid-cols-2 xl:grid-cols-3">
 	@foreach (Dagger dagger in Daggers.GetDaggers(GameConstants.CurrentVersion))
 	{
 		<div>
 			<div class="font-goethe text-xl @dagger.Name.ToLower()">@dagger.Name Dagger</div>
-			@if (dagger.UnlockSecond > 0)
-			{
-				MarkupString text = new(@$"Unlocks at <span class=""{dagger.Name.ToLower()} font-goethe text-xl relative top-[1px]"">{dagger.UnlockSecond}</span> seconds");
+			@{
+				MarkupString text = new(dagger.UnlockSecond == 0 ? "Also known as 'Pleb Dagger' in the game files" : @$"Unlocks at <span class=""{dagger.Name.ToLower()} font-goethe text-lg"">{dagger.UnlockSecond}</span> seconds");
 				@text
 			}
-			@*TODO: Mention that levi dagger was added in V3.1.*@
 			<img src='images/wiki/daggers/@(dagger.Name.ToLower()).png' />
 		</div>
 	}

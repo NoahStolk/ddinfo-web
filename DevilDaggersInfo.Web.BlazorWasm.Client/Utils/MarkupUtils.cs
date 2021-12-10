@@ -6,6 +6,11 @@ public static class MarkupUtils
 {
 	public static readonly MarkupString NoDataMarkup = new(@"<span style=""color: #666;"">N/A</span>");
 
+	public static MarkupString DaggerString(Dagger dagger)
+	{
+		return new(@$"<span class=""font-goethe text-lg {dagger.Name.ToLower()}"">{dagger.Name} Dagger</span>");
+	}
+
 	public static MarkupString DeathString(byte deathType, GameVersion gameVersion = GameConstants.CurrentVersion)
 	{
 		Death? death = Deaths.GetDeathByLeaderboardType(gameVersion, deathType);
