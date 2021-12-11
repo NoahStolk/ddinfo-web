@@ -116,6 +116,56 @@
 	}
 </div>
 
+<Heading Title="Transmuted Skulls" Level="2" />
+<ul class="pl-4">
+	@{
+		string transmuters = GameVersion >= GameVersion.V3_0 ? "Leviathan or The Orb beckon, they" : "Leviathan beckons, it";
+
+		Dictionary<Enemy, Enemy> transmutations = GameVersion == GameVersion.V1_0 ? new()
+			{
+				[EnemiesV1_0.Skull1] = EnemiesV1_0.TransmutedSkull2,
+				[EnemiesV1_0.Skull2] = EnemiesV1_0.TransmutedSkull3,
+				[EnemiesV1_0.Skull3] = EnemiesV1_0.TransmutedSkull4,
+			}
+		: new()
+			{
+				[Enemies.GetEnemyByName(GameVersion, "Skull I")!.Value] = Enemies.GetEnemyByName(GameVersion, "Transmuted Skull I")!.Value,
+				[Enemies.GetEnemyByName(GameVersion, "Skull II")!.Value] = Enemies.GetEnemyByName(GameVersion, "Transmuted Skull II")!.Value,
+				[Enemies.GetEnemyByName(GameVersion, "Skull III")!.Value] = Enemies.GetEnemyByName(GameVersion, "Transmuted Skull III")!.Value,
+				[Enemies.GetEnemyByName(GameVersion, "Skull IV")!.Value] = Enemies.GetEnemyByName(GameVersion, "Transmuted Skull IV")!.Value,
+			};
+
+		<li class="list-disc">When @transmuters will attract and transmute all skulls in the arena that touch the beckon ring.</li>
+		<li class="list-disc">When the skulls are sucked up and thrown back into the arena, they are 'transmuted', which means they have a different appearance and more HP. @MarkupUtils.EnemyString(EnemiesV3_2.TransmutedSkull3) also seems to turn faster.</li>
+		<li class="list-disc">Damaging a skull that is about to be transmuted is useless if it is not killed; the HP will reset to the transmuted skull's full HP.</li>
+		<li class="list-disc">
+			Here is the list of which skull turns into which transmuted skull (this differs between game versions):
+			<ul class="pl-4">
+				@foreach (KeyValuePair<Enemy, Enemy> transmutation in transmutations)
+				{
+					<li class="list-disc">@MarkupUtils.EnemyString(transmutation.Key) is turned into @MarkupUtils.EnemyString(transmutation.Value)</li>
+				}
+			</ul>
+		</li>
+	}
+</ul>
+
+@{
+	if (GameVersion >= GameVersion.V3_0)
+	{
+		<Heading Title="Homing Daggers" Level="2" />
+		<ul class="pl-4">
+			<li class="list-disc">All homing daggers cause 10 damage to most enemies.</li>
+			<li class="list-disc">@MarkupUtils.EnemyString(EnemiesV3_2.Leviathan) and @MarkupUtils.EnemyString(EnemiesV3_2.TheOrb) only take 1 damage from homing daggers. This used to happen to @MarkupUtils.EnemyString(EnemiesV3_2.SpiderEgg1) and @MarkupUtils.EnemyString(EnemiesV3_2.SpiderEgg2) as well, but this was fixed in V3.2.</li>
+			<li class="list-disc">@MarkupUtils.EnemyString(EnemiesV3_2.TheOrb), @MarkupUtils.EnemyString(EnemiesV3_2.SpiderEgg1), and @MarkupUtils.EnemyString(EnemiesV3_2.SpiderEgg2) are the only enemies that are not targeted by any homing daggers.</li>
+			<li class="list-disc">@MarkupUtils.UpgradeString(UpgradesV3_2.Level4) homing daggers cause splash damage. This means that when they're destroyed, they create a little explosion that can cause damage (most likely 10) to near enemies. For example, you only need one @MarkupUtils.UpgradeString(UpgradesV3_2.Level4) homing dagger to kill a @MarkupUtils.EnemyString(EnemiesV3_2.Squid2), as the explosion will destroy the other gem.</li>
+			<li class="list-disc">Even though @MarkupUtils.EnemyString(EnemiesV3_2.Ghostpede) cannot be damaged by homing daggers (they phase through it), it can still take damage from @MarkupUtils.UpgradeString(UpgradesV3_2.Level4) homing dagger splash damage.</li>
+			<li class="list-disc">Not sure why you need 3 @MarkupUtils.UpgradeString(UpgradesV3_2.Level4) homing daggers to kill a @MarkupUtils.EnemyString(EnemiesV3_2.Squid3) gem, but only 1 @MarkupUtils.UpgradeString(UpgradesV3_2.Level3) homing dagger... Seems like a bug.</li>
+			<li class="list-disc">Another bug was that you needed 10 @MarkupUtils.UpgradeString(UpgradesV3_2.Level4) homing daggers to kill a single @MarkupUtils.EnemyString(EnemiesV3_2.TransmutedSkull1), while one single @MarkupUtils.UpgradeString(UpgradesV3_2.Level3) homing dagger could kill 4 of them. This was fixed in V3.2 however, and now both @MarkupUtils.UpgradeString(UpgradesV3_2.Level3) and @MarkupUtils.UpgradeString(UpgradesV3_2.Level4) homing daggers can kill exactly one @MarkupUtils.EnemyString(EnemiesV3_2.TransmutedSkull1).</li>
+		</ul>
+	}
+}
+
 @code
 {
 	public GameVersion GameVersion { get; set; } = GameConstants.CurrentVersion;
