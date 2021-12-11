@@ -16,7 +16,12 @@
 	These are all the spawn times for Devil Daggers.
 </Paragraph>
 <Paragraph>
-	Note that Centipedes, Gigapedes, Ghostpedes, and Thorns emerge around 3 seconds later than their actual spawn time.
+	@{
+		List<Enemy> enemies = new string[] { "Centipede", "Gigapede", "Ghostpede", "Thorn" }.Select(s => Enemies.GetEnemyByName(GameVersion, s)).Where(e => e.HasValue).Select(e => e!.Value).ToList();
+		string enemyString = string.Join(", ", enemies.Select(e => MarkupUtils.EnemyString(e, true))).ReplaceLastOccurrenceOf(", ", " and ");
+		MarkupString note = new($"Note that {enemyString} emerge around 3 seconds later than their actual spawn time.");
+	}
+	@note
 </Paragraph>
 
 @if (SpawnsView == null)
@@ -45,7 +50,7 @@ else
 
 		if (!SpawnsetBinary.TryParse(spawnsetBytes, out SpawnsetBinary? spawnset))
 		{
-			// TODO: Log error.
+			// TODO: Show error with error boundary.
 			return;
 		}
 
