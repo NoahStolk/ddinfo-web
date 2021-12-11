@@ -7,12 +7,7 @@ public static class StringExtensions
 		if (values.Length == 0)
 			return str;
 
-		foreach (string value in values)
-		{
-			if (str.StartsWith(value))
-				return str[value.Length..];
-		}
-
-		return str;
+		string? sub = Array.Find(values, v => str.StartsWith(v));
+		return sub == null ? str : str[sub.Length..];
 	}
 }
