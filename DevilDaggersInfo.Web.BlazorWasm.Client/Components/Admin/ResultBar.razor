@@ -9,7 +9,7 @@
 	@if (DismissEvent != null)
 	{
 		<p>
-			<button class="w-20 py-1 rounded @ButtonColorClass" @onclick="() => DismissEvent.Invoke()">Dismiss</button>
+			<button class="btn @ButtonColorClass w-20 py-1" @onclick="() => DismissEvent.Invoke()">Dismiss</button>
 		</p>
 	}
 </div>
@@ -31,9 +31,9 @@
 
 	public string ButtonColorClass => ResultBarType switch
 	{
-		ResultBarType.Success => "bg-green",
-		ResultBarType.ValidationError => "bg-orange",
-		ResultBarType.FatalError => "bg-red",
+		ResultBarType.Success => "btn-green",
+		ResultBarType.ValidationError => "btn-orange",
+		ResultBarType.FatalError => "btn-red",
 		_ => string.Empty,
 	};
 

@@ -7,7 +7,7 @@
 	<DataField CssClass="px-1" Left="3" Name="@($"Total downloads (since {FeatureConstants.TrackingToolDownloadCounts.ToString(FormatUtils.DateFormat)})")">@GetTool.Versions?.Sum(v => v.DownloadCount).ToString("N0")</DataField>
 
 	<div class="px-1 py-2">
-		<button class="bg-dark-red hover:bg-red transition-colors duration-200 px-2 py-1 rounded text-color-text text-center text-xl font-goethe" href="/api/tools/@(GetTool.Name)/file" download="@_fileName" role="button" target="=_top">Download</button>
+		<button class="btn btn-red px-2 py-1" href="/api/tools/@(GetTool.Name)/file" download="@_fileName" role="button" target="=_top">Download</button>
 	</div>
 </div>
 

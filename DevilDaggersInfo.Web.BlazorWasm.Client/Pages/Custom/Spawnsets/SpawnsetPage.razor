@@ -28,7 +28,7 @@ else
 
 		<div class="grid grid-cols-2 text-lg">
 			<div class="px-1 py-3">
-				<button href="@($"/api/spawnsets/{GetSpawnset.Name}/file")">Download spawnset</button>
+				<button class="btn btn-red px-2 py-1" href="@($"/api/spawnsets/{GetSpawnset.Name}/file")">Download spawnset</button>
 			</div>
 			@if (GetSpawnset.CustomLeaderboardId.HasValue)
 			{

@@ -15,8 +15,33 @@
 	}
 
 	a {
-		@apply text-color-link;
-		@apply hover:text-color-link-hover;
+		@apply text-color-link hover:text-color-link-hover;
+	}
+}
+
+@layer components {
+	.btn {
+		@apply text-lg rounded text-color-text text-center transition-colors duration-100;
+	}
+
+	.btn-gray {
+		@apply bg-gray-1 hover:bg-gray-3;
+	}
+
+	.btn-gray-light {
+		@apply bg-gray-3 hover:bg-gray-5;
+	}
+
+	.btn-red {
+		@apply bg-dark-red hover:bg-red;
+	}
+
+	.btn-orange {
+		@apply bg-dark-orange hover:bg-orange;
+	}
+
+	.btn-green {
+		@apply bg-dark-green hover:bg-green;
 	}
 }
 
