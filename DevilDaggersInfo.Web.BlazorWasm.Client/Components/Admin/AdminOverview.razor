@@ -27,9 +27,7 @@ else
 	<Deletion AfterDelete="Fetch" ApiCall="@DeletionApiCall" @ref="_deletion" />
 
 	<div class="bg-gray-1 p-2 text-lg">
-		<div>
-			<a class="inline-block bg-gray-3 hover:bg-gray-4 transition-colors duration-100 w-24 mb-2 mx-1 rounded text-color-text text-center" href="@($"{NavigationManager.Uri}/add")">Add new</a>
-		</div>
+		<button class="block bg-gray-3 hover:bg-gray-4 transition-colors duration-100 w-24 mb-2 mx-1 rounded text-color-text text-center" href="@($"{NavigationManager.Uri}/add")">Add new</button>
 
 		<CascadingValue Value="this">
 			<Paging />
