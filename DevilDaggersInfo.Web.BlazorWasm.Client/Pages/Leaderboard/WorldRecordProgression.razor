@@ -1,0 +1,46 @@
+@page "/leaderboard/world-record-progression"
+@inject PublicApiHttpClient Http
+@using Blazorise.Charts
+@using DevilDaggersInfo.Core.Wiki
+@using DevilDaggersInfo.Web.BlazorWasm.Shared.Dto.Public.WorldRecords
+
+<Heading Title="World Record Progression" />
+
+@if (_data == null)
+{
+	<Loading />
+}
+else
+{
+	<LineChart Options="LineChartUtils.Options" OptionsJsonString="@LineChartUtils.AdditionalJsonOptions" @ref="_chart" TItem="double" />
+}
+
+@code
+{
+	private GetWorldRecordDataContainer? _data;
+
+	protected override async Task OnInitializedAsync()
+	{
+		_data = await Http.GetWorldRecordData();
+	}
+
+	private LineChart<double>? _chart;
+
+	protected override async Task OnAfterRenderAsync(bool firstRender)
+	{
+		if (firstRender || _data == null || _chart == null)
+			return;
+
+		await _chart.AddLabelsDatasetsAndUpdate(_data.WorldRecords.Select(wr => wr.DateTime.ToString("yyyy-MM-dd")).ToArray(), new LineChartDataset<double>
+		{
+			Label = "World Records",
+			Data = _data.WorldRecords.Select(wr => wr.Entry.Time).ToList(),
+			BackgroundColor = "#f00",
+			Fill = false,
+			PointRadius = 0,
+			ShowLine = true,
+			BorderColor = "#f00",
+			SteppedLine = true,
+		});
+	}
+}
