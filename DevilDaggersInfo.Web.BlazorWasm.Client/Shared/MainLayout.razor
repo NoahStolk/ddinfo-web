@@ -29,9 +29,8 @@
 					<ul class="pl-4">
 						<li class="list-disc">The website is now properly separated into two applications; a server application and a client application. The server serves the client app to the browser on request, and the client handles it from there, doing requests to the server's public API. This means the server does not have to serve pre-rendered HTML to the browser for every page anymore, so there is now a proper separation between front-end and back-end logic in the code base which helps a lot in maintainability.</li>
 						<li class="list-disc">The layout is now fully component-based; the old framework had limited support for this which was annoying to work with.</li>
-						<li class="list-disc">No more JavaScript and jQuery; the new website runs completely on WebAssembly (with a few tiny exceptions).</li>
-						<li class="list-disc">No more styling frameworks; I do it myself this time.</li>
-						<li class="list-disc">No more hand-written CSS; the new website uses a utility framework for CSS, which means I rarely have to write any of it anymore. Should I still have to write CSS for some reason, the new framework automatically makes sure it is only applied to the relevant parts of the website (CSS isolation).</li>
+						<li class="list-disc">No more JavaScript and jQuery; the new website runs completely on WebAssembly.</li>
+						<li class="list-disc">Now using Tailwind instead of Bootstrap, as well as automatic CSS isolation.</li>
 					</ul>
 
 					<Paragraph>It will take a long time to complete the rewrite, but I can assure you it is absolutely worth it.</Paragraph>
