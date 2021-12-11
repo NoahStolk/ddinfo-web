@@ -33,4 +33,14 @@ public static class Enemies
 
 	public static GameVersion? GetFirstAppearance(string enemyName)
 		=> All.Where(e => e.Name == enemyName).OrderBy(e => e.GameVersion).FirstOrDefault().GameVersion;
+
+	public static IEnumerable<GameVersion> GetAppearances(string enemyName)
+	{
+		if (EnemiesV1_0.All.Any(e => e.Name == enemyName))
+			yield return GameVersion.V1_0;
+		if (EnemiesV2_0.All.Any(e => e.Name == enemyName))
+			yield return GameVersion.V2_0;
+		if (EnemiesV3_0.All.Any(e => e.Name == enemyName))
+			yield return GameVersion.V3_0;
+	}
 }

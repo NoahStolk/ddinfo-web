@@ -11,9 +11,55 @@
 	<option value=@GameVersion.V3_2 selected>V3.2</option>
 </Select>
 
+<Heading Title="Summary" Level="2" />
+
+<div class="grid grid-cols-4 md:grid-cols-6 lg:grid-cols-9">
+	<div class="font-bold">Enemy</div>
+	<div class="font-bold">HP</div>
+	<div class="font-bold">Gems</div>
+	<div class="font-bold">Death type</div>
+	<div class="font-bold hidden md:block">Appearances</div>
+	<div class="font-bold hidden md:block">First spawn</div>
+	<div class="font-bold hidden lg:block">Level 3 homing</div>
+	<div class="font-bold hidden lg:block">Level 4 homing</div>
+	<div class="font-bold hidden lg:block">Spawned by</div>
+</div>
+
+@foreach (Enemy enemy in Enemies.GetEnemies(GameVersion))
+{
+	<div class="grid grid-cols-4 md:grid-cols-6 lg:grid-cols-9">
+		<div>@MarkupUtils.EnemyString(enemy)</div>
+		<div>@enemy.Hp</div>
+		<div>@enemy.Gems</div>
+		<div>@MarkupUtils.DeathString(enemy.Death)</div>
+		<div class="hidden md:block">
+			@foreach (GameVersion gv in Enemies.GetAppearances(enemy.Name))
+			{
+				<span>@gv.ToDisplayString()&nbsp;</span>
+			}
+		</div>
+		<div class="hidden md:block">@(enemy.FirstSpawnSecond.HasValue ? new MarkupString(enemy.FirstSpawnSecond.Value.ToString("N4")) : MarkupUtils.NoDataMarkup)</div>
+		<div class="hidden lg:block">@(enemy.HomingDamage.Level3HomingDaggers.HasValue ? new MarkupString(enemy.HomingDamage.Level3HomingDaggers.Value.ToString()) : MarkupUtils.NoDataMarkup)</div>
+		<div class="hidden lg:block">@(enemy.HomingDamage.Level4HomingDaggers.HasValue ? new MarkupString(enemy.HomingDamage.Level4HomingDaggers.Value.ToString()) : MarkupUtils.NoDataMarkup)</div>
+		<div class="hidden lg:block">
+			@if (enemy.SpawnedBy.Length == 0)
+			{
+				<span>Game</span>
+			}
+			else
+			{
+				foreach (Enemy e in enemy.SpawnedBy)
+				{
+					<span>@MarkupUtils.EnemyString(e)&nbsp;</span>
+				}
+			}
+		</div>
+	</div>
+}
+
 <Heading Title="Details" Level="2" />
 
-<div class="grid gap-4 grid-cols-1 md:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4 2xl:grid-cols-6">
+<div class="grid gap-4 grid-cols-1 md:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4 2xl:grid-cols-5">
 	@foreach (Enemy enemy in Enemies.GetEnemies(GameVersion))
 	{
 		string image = enemy.GetImageName();
@@ -25,7 +71,7 @@
 		string hexColor = enemy.Color.HexCode ?? "#444";
 		string hpString = enemy.Gems > 1 ? $"{enemy.Hp} {enemy.GetGemHpString()}" : enemy.Hp.ToString();
 		<div class="p-2 border-2" style="@($"border-color: {hexColor};")">
-			<div class="font-goethe text-xl" style="@($"color: {hexColor};")">@enemy.Name</div>
+			<div>@MarkupUtils.EnemyString(enemy)</div>
 			<img src='images/wiki/enemies/@(image).png' />
 			<div class="grid grid-cols-2">
 				<div>HP</div>
