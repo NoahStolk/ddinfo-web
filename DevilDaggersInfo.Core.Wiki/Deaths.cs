@@ -13,8 +13,14 @@ public static class Deaths
 	};
 
 	public static Death? GetDeathByName(GameVersion gameVersion, string name)
-		=> GetDeaths(gameVersion).Find(d => d.Name == name);
+	{
+		Death death = GetDeaths(gameVersion).Find(d => d.Name == name);
+		return death == default ? null : death;
+	}
 
 	public static Death? GetDeathByLeaderboardType(GameVersion gameVersion, byte leaderboardDeathType)
-		=> GetDeaths(gameVersion).Find(e => e.LeaderboardDeathType == leaderboardDeathType);
+	{
+		Death death = GetDeaths(gameVersion).Find(d => d.LeaderboardDeathType == leaderboardDeathType);
+		return death == default ? null : death;
+	}
 }

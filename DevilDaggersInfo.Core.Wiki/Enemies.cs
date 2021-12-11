@@ -26,7 +26,10 @@ public static class Enemies
 	};
 
 	public static Enemy? GetEnemyByName(GameVersion gameVersion, string name)
-		=> GetEnemies(gameVersion).Find(d => d.Name == name);
+	{
+		Enemy enemy = GetEnemies(gameVersion).Find(e => e.Name == name);
+		return enemy == default ? null : enemy;
+	}
 
 	public static GameVersion? GetFirstAppearance(string enemyName)
 		=> All.Where(e => e.Name == enemyName).OrderBy(e => e.GameVersion).FirstOrDefault().GameVersion;
