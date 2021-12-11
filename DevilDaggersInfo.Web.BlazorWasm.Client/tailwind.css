@@ -43,6 +43,10 @@
 	.btn-green {
 		@apply bg-dark-green hover:bg-green;
 	}
+
+	.btn-download {
+		@apply hover:text-color-text bg-dark-red hover:bg-red;
+	}
 }
 
 .validation-errors {
