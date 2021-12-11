@@ -23,9 +23,9 @@
 
 	public string BackgroundColorClass => ResultBarType switch
 	{
-		ResultBarType.Success => "bg-dark-green",
-		ResultBarType.ValidationError => "bg-dark-orange",
-		ResultBarType.FatalError => "bg-dark-red",
+		ResultBarType.Success => "bg-darker-green",
+		ResultBarType.ValidationError => "bg-darker-orange",
+		ResultBarType.FatalError => "bg-darker-red",
 		_ => string.Empty,
 	};
 
