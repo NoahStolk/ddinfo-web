@@ -1,3 +1,4 @@
+using DevilDaggersInfo.Core.Wiki.Objects;
 using Microsoft.AspNetCore.Components;
 
 namespace DevilDaggersInfo.Web.BlazorWasm.Client.Utils;
@@ -55,6 +56,11 @@ public static class MarkupUtils
 	public static MarkupString DeathString(byte deathType, GameVersion gameVersion = GameConstants.CurrentVersion, string textSizeClass = "text-lg")
 	{
 		Death? death = Deaths.GetDeathByLeaderboardType(gameVersion, deathType);
+		return DeathString(death, textSizeClass);
+	}
+
+	public static MarkupString DeathString(Death? death, string textSizeClass = "text-lg")
+	{
 		string style = $"color: {death?.Color.HexCode ?? "#444"};";
 		string name = death?.Name ?? "Unknown";
 

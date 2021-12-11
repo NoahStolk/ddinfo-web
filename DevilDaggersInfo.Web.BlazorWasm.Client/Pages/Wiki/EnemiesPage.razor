@@ -1,4 +1,5 @@
 @page "/wiki/enemies"
+@using DevilDaggersInfo.Core.Wiki.Extensions
 
 <Heading Title="Enemies" />
 
@@ -21,9 +22,46 @@
 			image = $"{image}-red";
 		}
 
-		<div>
-			<div class="font-goethe text-xl" style="@($"color: {enemy.Color.HexCode ?? "#444"};")">@enemy.Name</div>
+		string hexColor = enemy.Color.HexCode ?? "#444";
+		string hpString = enemy.Gems > 1 ? $"{enemy.Hp} {enemy.GetGemHpString()}" : enemy.Hp.ToString();
+		<div class="p-2 border-2" style="@($"border-color: {hexColor};")">
+			<div class="font-goethe text-xl" style="@($"color: {hexColor};")">@enemy.Name</div>
 			<img src='images/wiki/enemies/@(image).png' />
+			<div class="grid grid-cols-2">
+				<div>HP</div>
+				<div>@hpString</div>
+				<div>Gems</div>
+				<div>@enemy.Gems</div>
+				<div>Death type</div>
+				<div>@MarkupUtils.DeathString(enemy.Death)</div>
+				<div>First appearance</div>
+				<div>@Enemies.GetFirstAppearance(enemy.Name)?.ToDisplayString()</div>
+				<div>First spawn</div>
+				<div>@(enemy.FirstSpawnSecond.HasValue ? new MarkupString(enemy.FirstSpawnSecond.Value.ToString("N4")) : MarkupUtils.NoDataMarkup)</div>
+				<div>Spawned by</div>
+				<div>
+					@if (enemy.SpawnedBy.Length == 0)
+					{
+						<span>Game</span>
+					}
+					else
+					{
+						foreach (Enemy e in enemy.SpawnedBy)
+						{
+							<span>@MarkupUtils.EnemyString(e)&nbsp;</span>
+						}
+					}
+				</div>
+				<div>Behavior</div>
+				<div>
+					<ul class="pl-4">
+						@foreach (string description in @EnemyDescriptions.GetEnemyDescription(enemy))
+						{
+							<li class="list-disc">@description</li>
+						}
+					</ul>
+				</div>
+			</div>
 		</div>
 	}
 </div>

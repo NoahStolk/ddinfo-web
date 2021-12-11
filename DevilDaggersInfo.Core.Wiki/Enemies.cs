@@ -2,6 +2,19 @@ namespace DevilDaggersInfo.Core.Wiki;
 
 public static class Enemies
 {
+	private static readonly List<Enemy> _all = new();
+
+	static Enemies()
+	{
+		_all.AddRange(EnemiesV1_0.All);
+		_all.AddRange(EnemiesV2_0.All);
+		_all.AddRange(EnemiesV3_0.All);
+		_all.AddRange(EnemiesV3_1.All);
+		_all.AddRange(EnemiesV3_2.All);
+	}
+
+	public static IReadOnlyList<Enemy> All => _all;
+
 	public static List<Enemy> GetEnemies(GameVersion gameVersion) => gameVersion switch
 	{
 		GameVersion.V1_0 => EnemiesV1_0.All,
@@ -14,4 +27,7 @@ public static class Enemies
 
 	public static Enemy? GetEnemyByName(GameVersion gameVersion, string name)
 		=> GetEnemies(gameVersion).Find(d => d.Name == name);
+
+	public static GameVersion? GetFirstAppearance(string enemyName)
+		=> All.Where(e => e.Name == enemyName).OrderBy(e => e.GameVersion).FirstOrDefault().GameVersion;
 }
