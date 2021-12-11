@@ -2,15 +2,39 @@
 
 <Heading Title="Enemies" />
 
+<Select @onchange="UpdateGameVersion" class="bg-gray-1 transition-colors duration-100 h-8 py-1 rounded text-color-text">
+	<option value=@GameVersion.V1_0>V1</option>
+	<option value=@GameVersion.V2_0>V2</option>
+	<option value=@GameVersion.V3_0>V3</option>
+	<option value=@GameVersion.V3_1>V3.1</option>
+	<option value=@GameVersion.V3_2 selected>V3.2</option>
+</Select>
+
 <Heading Title="Details" Level="2" />
 
 <div class="grid gap-4 grid-cols-1 md:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4 2xl:grid-cols-6">
-	@foreach (Enemy enemy in Enemies.GetEnemies(GameConstants.CurrentVersion))
+	@foreach (Enemy enemy in Enemies.GetEnemies(GameVersion))
 	{
+		string image = enemy.GetImageName();
+		if (enemy == EnemiesV1_0.Gigapede || enemy == EnemiesV2_0.Gigapede)
+		{
+			image = $"{image}-red";
+		}
+
 		<div>
 			<div class="font-goethe text-xl" style="@($"color: {enemy.Color.HexCode ?? "#444"};")">@enemy.Name</div>
-			@*TODO: Gigapede V1/V2.*@
-			<img src='images/wiki/enemies/@(enemy.GetImageName()).png' />
+			<img src='images/wiki/enemies/@(image).png' />
 		</div>
 	}
 </div>
+
+@code
+{
+	public GameVersion GameVersion { get; set; } = GameConstants.CurrentVersion;
+
+	private void UpdateGameVersion(ChangeEventArgs e)
+	{
+		string? value = e.Value?.ToString();
+		GameVersion = value == null ? GameConstants.CurrentVersion : Enum.Parse<GameVersion>(value);
+	}
+}
