@@ -31,10 +31,10 @@ else
 
 		<div class="grid grid-cols-2 text-lg">
 			<div class="px-1 py-3">
-				<UrlLink Href="@($"/api/spawnsets/{GetCustomLeaderboard.SpawnsetName}/file")">Download spawnset</UrlLink>
+				<button href="@($"/api/spawnsets/{GetCustomLeaderboard.SpawnsetName}/file")">Download spawnset</button>
 			</div>
 			<div class="px-1 py-3 text-right">
-				<UrlLink Href="@($"/custom/spawnset/{GetCustomLeaderboard.SpawnsetId}")">View spawnset</UrlLink>
+				<a href="@($"/custom/spawnset/{GetCustomLeaderboard.SpawnsetId}")">View spawnset</a>
 			</div>
 		</div>
 	</div>
@@ -134,9 +134,9 @@ else
 							<span class="@daggerCssClass">@ce.Time.ToString(FormatUtils.TimeFormat)</span>
 							@if (hasGraphs)
 							{
-								<UrlLink Href="@($"/custom/entry/{ce.Id}")">
+								<a href="@($"/custom/entry/{ce.Id}")">
 									<Tooltip Text="View graphs"><img class="cursor-pointer inline-block mx-1 mb-1" src="/images/icons/default/eye2.png" /></Tooltip>
-								</UrlLink>
+								</a>
 							}
 							else
 							{
@@ -144,9 +144,9 @@ else
 							}
 							@if (ce.HasReplay)
 							{
-								<UrlLink Href="@($"api/custom-entries/{ce.Id}/replay")">
+								<a href="@($"api/custom-entries/{ce.Id}/replay")">
 									<Tooltip Text="Download replay"><img class="cursor-pointer inline-block mx-1 mb-1" src="/images/icons/default/eye2.png" /></Tooltip>
-								</UrlLink>
+								</a>
 							}
 							else
 							{

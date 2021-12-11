@@ -28,12 +28,12 @@ else
 
 		<div class="grid grid-cols-2 text-lg">
 			<div class="px-1 py-3">
-				<UrlLink Href="@($"/api/spawnsets/{GetSpawnset.Name}/file")">Download spawnset</UrlLink>
+				<button href="@($"/api/spawnsets/{GetSpawnset.Name}/file")">Download spawnset</button>
 			</div>
 			@if (GetSpawnset.CustomLeaderboardId.HasValue)
 			{
 				<div class="px-1 py-3 text-right">
-					<UrlLink Href="@($"/custom/leaderboard/{GetSpawnset.CustomLeaderboardId.Value}")">View leaderboard</UrlLink>
+					<a href="@($"/custom/leaderboard/{GetSpawnset.CustomLeaderboardId.Value}")">View leaderboard</a>
 				</div>
 			}
 		</div>
