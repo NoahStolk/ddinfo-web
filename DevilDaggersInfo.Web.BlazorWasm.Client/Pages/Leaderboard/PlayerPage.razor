@@ -239,7 +239,7 @@ else
 		await _progressionChart.AddLabelsDatasetsAndUpdate(GetPlayerHistory.History.Select(eh => eh.DateTime.ToString("yyyy-MM-dd")).ToArray(), new LineChartDataset<double>
 		{
 			Label = "Score",
-			Data = GetPlayerHistory.History.Select(s => s.Time).ToList(),
+			Data = GetPlayerHistory.History.Select(eh => eh.Time).ToList(),
 			BackgroundColor = "#f00",
 			Fill = false,
 			PointRadius = 0,
@@ -251,7 +251,7 @@ else
 		await _activityChart.AddLabelsDatasetsAndUpdate(GetPlayerHistory.Activity.Select(pa => pa.DateTime.ToString("yyyy-MM-dd")).ToArray(), new LineChartDataset<double>
 		{
 			Label = "Deaths",
-			Data = GetPlayerHistory.Activity.Select(s => s.DeathsIncrement).ToList(),
+			Data = GetPlayerHistory.Activity.Select(pa => pa.DeathsIncrement).ToList(),
 			BackgroundColor = "#f00",
 			Fill = false,
 			PointRadius = 0,
