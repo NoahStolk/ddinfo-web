@@ -38,6 +38,10 @@
 				<div>@Enemies.GetFirstAppearance(enemy.Name)?.ToDisplayString()</div>
 				<div>First spawn</div>
 				<div>@(enemy.FirstSpawnSecond.HasValue ? new MarkupString(enemy.FirstSpawnSecond.Value.ToString("N4")) : MarkupUtils.NoDataMarkup)</div>
+				<div>Level 3 homing</div>
+				<div>@(enemy.HomingDamage.Level3HomingDaggers.HasValue ? new MarkupString(enemy.HomingDamage.Level3HomingDaggers.Value.ToString()) : MarkupUtils.NoDataMarkup)</div>
+				<div>Level 4 homing</div>
+				<div>@(enemy.HomingDamage.Level4HomingDaggers.HasValue ? new MarkupString(enemy.HomingDamage.Level4HomingDaggers.Value.ToString()) : MarkupUtils.NoDataMarkup)</div>
 				<div>Spawned by</div>
 				<div>
 					@if (enemy.SpawnedBy.Length == 0)
