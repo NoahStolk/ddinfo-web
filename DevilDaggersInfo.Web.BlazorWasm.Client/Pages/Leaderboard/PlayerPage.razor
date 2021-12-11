@@ -23,7 +23,7 @@
 }
 else
 {
-	<Heading Title="@GetEntry.Username" />
+	<Heading Title="@($"Player - {GetEntry.Username}")" />
 
 	<a href="@($"/leaderboard?Rank={(GetEntry.Rank - 1) / 100 * 100 + 1}")">Back to leaderboard</a>
 	<Paragraph>@GetEntry.Username is currently rank @GetEntry.Rank.</Paragraph>
