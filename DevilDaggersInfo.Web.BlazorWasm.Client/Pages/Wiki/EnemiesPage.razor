@@ -68,7 +68,7 @@
 			image = $"{image}-red";
 		}
 
-		string hexColor = enemy.Color.HexCode ?? "#444";
+		string hexColor = enemy.Color.HexCode;
 		string hpString = enemy.Gems > 1 ? $"{enemy.Hp} {enemy.GetGemHpString()}" : enemy.Hp.ToString();
 		<div class="p-2 border-2" style="@($"border-color: {hexColor};")">
 			<div>@MarkupUtils.EnemyString(enemy)</div>
@@ -117,6 +117,7 @@
 </div>
 
 <Heading Title="Transmuted Skulls" Level="2" />
+
 <ul class="pl-4">
 	@{
 		string transmuters = GameVersion >= GameVersion.V3_0 ? "Leviathan or The Orb beckon, they" : "Leviathan beckons, it";
