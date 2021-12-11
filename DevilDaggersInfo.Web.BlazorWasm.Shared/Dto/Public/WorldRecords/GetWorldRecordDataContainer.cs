@@ -4,5 +4,5 @@ public class GetWorldRecordDataContainer
 {
 	public List<GetWorldRecordHolder> WorldRecordHolders { get; init; } = null!;
 
-	public Dictionary<GetWorldRecord, GetWorldRecordData> WorldRecordData { get; init; } = null!;
+	public List<GetWorldRecord> WorldRecords { get; init; } = null!;
 }

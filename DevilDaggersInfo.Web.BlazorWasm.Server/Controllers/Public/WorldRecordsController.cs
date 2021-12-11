@@ -21,31 +21,25 @@ public class WorldRecordsController : ControllerBase
 		_leaderboardHistoryCache = leaderboardHistoryCache;
 	}
 
-	[HttpGet("world-records")]
-	[ProducesResponseType(StatusCodes.Status200OK)]
-	public List<GetWorldRecord> GetWorldRecords()
-		=> GetWorldRecordsPrivate();
-
-	[HttpGet("world-record-data")]
+	[HttpGet]
 	[ProducesResponseType(StatusCodes.Status200OK)]
 	public GetWorldRecordDataContainer GetWorldRecordData()
 	{
-		List<GetWorldRecord> worldRecords = GetWorldRecordsPrivate();
+		List<BaseWorldRecord> baseWorldRecords = GetBaseWorldRecords();
+		List<BaseWorldRecordHolder> worldRecordHolders = new();
 
-		List<GetWorldRecordHolder> worldRecordHolders = new();
-		Dictionary<GetWorldRecord, GetWorldRecordData> worldRecordData = new();
+		List<GetWorldRecord> worldRecords = new();
 
 		TimeSpan heldConsecutively = default;
-		for (int i = 0; i < worldRecords.Count; i++)
+		for (int i = 0; i < baseWorldRecords.Count; i++)
 		{
-			GetWorldRecord wr = worldRecords[i];
-
-			GetWorldRecord? previousWrSameLeaderboard = worldRecords.OrderByDescending(w => w.Entry.Time).FirstOrDefault(w => w.Entry.Time < wr.Entry.Time && GetMajorGameVersion(w.GameVersion) == GetMajorGameVersion(wr.GameVersion));
+			BaseWorldRecord wr = baseWorldRecords[i];
+			BaseWorldRecord? previousWrSameLeaderboard = baseWorldRecords.OrderByDescending(w => w.Entry.Time).FirstOrDefault(w => w.Entry.Time < wr.Entry.Time && GetMajorGameVersion(w.GameVersion) == GetMajorGameVersion(wr.GameVersion));
 
 			TimeSpan duration;
 			DateTime firstHeld;
 			DateTime lastHeld;
-			if (i == worldRecords.Count - 1)
+			if (i == baseWorldRecords.Count - 1)
 			{
 				duration = DateTime.UtcNow - wr.DateTime;
 				firstHeld = wr.DateTime;
@@ -53,19 +47,27 @@ public class WorldRecordsController : ControllerBase
 			}
 			else
 			{
-				GetWorldRecord nextWr = worldRecords[i + 1];
+				BaseWorldRecord nextWr = baseWorldRecords[i + 1];
 				duration = nextWr.DateTime - wr.DateTime;
 				firstHeld = wr.DateTime;
 				lastHeld = nextWr.DateTime;
 			}
 
-			if (i != 0 && wr.Entry.Id != worldRecords[i - 1].Entry.Id)
+			if (i != 0 && wr.Entry.Id != baseWorldRecords[i - 1].Entry.Id)
 				heldConsecutively = default;
 
 			heldConsecutively += duration;
-			worldRecordData.Add(wr, new(duration, previousWrSameLeaderboard == null ? null : wr.Entry.Time - previousWrSameLeaderboard.Entry.Time));
 
-			GetWorldRecordHolder? holder = worldRecordHolders.Find(wrh => wrh.Id == wr.Entry.Id);
+			worldRecords.Add(new()
+			{
+				DateTime = wr.DateTime,
+				Entry = wr.Entry,
+				GameVersion = wr.GameVersion,
+				WorldRecordDuration = duration,
+				WorldRecordImprovement = previousWrSameLeaderboard == null ? null : wr.Entry.Time - previousWrSameLeaderboard.Entry.Time,
+			});
+
+			BaseWorldRecordHolder? holder = worldRecordHolders.Find(wrh => wrh.Id == wr.Entry.Id);
 			if (holder == null)
 			{
 				worldRecordHolders.Add(new(wr.Entry.Id, wr.Entry.Username, duration, heldConsecutively, 1, firstHeld, lastHeld));
@@ -89,8 +91,21 @@ public class WorldRecordsController : ControllerBase
 
 		return new()
 		{
-			WorldRecordHolders = worldRecordHolders.OrderByDescending(wrh => wrh.TotalTimeHeld).ToList(),
-			WorldRecordData = worldRecordData,
+			WorldRecordHolders = worldRecordHolders
+				.OrderByDescending(wrh => wrh.TotalTimeHeld)
+				.Select(bwrh => new GetWorldRecordHolder
+				{
+					FirstHeld = bwrh.FirstHeld,
+					Id = bwrh.Id,
+					LastHeld = bwrh.LastHeld,
+					LongestTimeHeldConsecutively = bwrh.LongestTimeHeldConsecutively,
+					MostRecentUsername = bwrh.MostRecentUsername,
+					TotalTimeHeld = bwrh.TotalTimeHeld,
+					Usernames = bwrh.Usernames,
+					WorldRecordCount = bwrh.WorldRecordCount,
+				})
+				.ToList(),
+			WorldRecords = worldRecords,
 		};
 
 		// Used for determining when the leaderboard was reset.
@@ -103,14 +118,16 @@ public class WorldRecordsController : ControllerBase
 		};
 	}
 
-	private List<GetWorldRecord> GetWorldRecordsPrivate()
+	private List<BaseWorldRecord> GetBaseWorldRecords()
 	{
 		DateTime? previousDate = null;
-		List<GetWorldRecord> worldRecords = new();
+		List<BaseWorldRecord> worldRecords = new();
 		int worldRecord = 0;
-		foreach (string leaderboardHistoryPath in _fileSystemService.TryGetFiles(DataSubDirectory.LeaderboardHistory))
+
+		List<LeaderboardHistory> history = _fileSystemService.TryGetFiles(DataSubDirectory.LeaderboardHistory).Select(f => _leaderboardHistoryCache.GetLeaderboardHistoryByFilePath(f)).OrderBy(lbh => lbh.DateTime).ToList();
+		for (int i = 0; i < history.Count; i++)
 		{
-			LeaderboardHistory leaderboard = _leaderboardHistoryCache.GetLeaderboardHistoryByFilePath(leaderboardHistoryPath);
+			LeaderboardHistory leaderboard = history[i];
 			EntryHistory? firstPlace = leaderboard.Entries.Find(e => e.Rank == 1);
 			if (firstPlace == null)
 				continue;
@@ -129,12 +146,7 @@ public class WorldRecordsController : ControllerBase
 				else
 					date = leaderboard.DateTime;
 
-				worldRecords.Add(new()
-				{
-					DateTime = date,
-					Entry = firstPlace.ToDto(leaderboard.DateTime),
-					GameVersion = GameVersions.GetGameVersionFromDate(date),
-				});
+				worldRecords.Add(new(date, firstPlace.ToDto(leaderboard.DateTime), GameVersions.GetGameVersionFromDate(date)));
 			}
 
 			previousDate = leaderboard.DateTime;
@@ -144,5 +156,33 @@ public class WorldRecordsController : ControllerBase
 
 		static DateTime GetAverage(DateTime a, DateTime b)
 			=> new((a.Ticks + b.Ticks) / 2);
+	}
+
+	private sealed record BaseWorldRecord(DateTime DateTime, GetEntryHistory Entry, GameVersion? GameVersion);
+
+	private sealed class BaseWorldRecordHolder
+	{
+		public BaseWorldRecordHolder(int id, string username, TimeSpan totalTimeHeld, TimeSpan longestTimeHeldConsecutively, int worldRecordCount, DateTime firstHeld, DateTime lastHeld)
+		{
+			Id = id;
+			Usernames = new() { username };
+			TotalTimeHeld = totalTimeHeld;
+			LongestTimeHeldConsecutively = longestTimeHeldConsecutively;
+			WorldRecordCount = worldRecordCount;
+			FirstHeld = firstHeld;
+			LastHeld = lastHeld;
+
+			MostRecentUsername = username;
+		}
+
+		public int Id { get; }
+		public List<string> Usernames { get; }
+		public TimeSpan TotalTimeHeld { get; set; }
+		public TimeSpan LongestTimeHeldConsecutively { get; set; }
+		public int WorldRecordCount { get; set; }
+		public DateTime FirstHeld { get; set; }
+		public DateTime LastHeld { get; set; }
+
+		public string MostRecentUsername { get; set; }
 	}
 }
