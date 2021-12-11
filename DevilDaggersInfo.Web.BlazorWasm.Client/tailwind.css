@@ -13,6 +13,11 @@
 		font-weight: 500;
 		src: url('fonts/calibri-regular.ttf') format('truetype');
 	}
+
+	a {
+		@apply text-color-link;
+		@apply hover:text-color-link-hover;
+	}
 }
 
 .validation-errors {

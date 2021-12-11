@@ -34,18 +34,18 @@ else
 	@if (GetSpawnsets.Results.Count > 0)
 	{
 		<div class="grid gap-3 sm:grid-cols-spawnsets-sm md:grid-cols-spawnsets-md lg:grid-cols-spawnsets-lg xl:grid-cols-spawnsets-xl">
-			<a href="" @onclick:preventDefault class="text-color-link hover:text-color-link-hover text-left" @onclick="() => Sort(SpawnsetSorting.Name)">Name</a>
-			<a href="" @onclick:preventDefault class="text-color-link hover:text-color-link-hover text-left hidden md:block" @onclick="() => Sort(SpawnsetSorting.AuthorName)">Author</a>
-			<a href="" @onclick:preventDefault class="text-color-link hover:text-color-link-hover text-left hidden md:block" @onclick="() => Sort(SpawnsetSorting.LastUpdated)">Created</a>
-			<a href="" @onclick:preventDefault class="text-color-link hover:text-color-link-hover text-left hidden md:block" @onclick="() => Sort(SpawnsetSorting.GameVersion)">Game version</a>
-			<a href="" @onclick:preventDefault class="text-color-link hover:text-color-link-hover text-right hidden xl:block" @onclick="() => Sort(SpawnsetSorting.GameMode)">Game mode</a>
-			<a href="" @onclick:preventDefault class="text-color-link hover:text-color-link-hover text-right hidden xl:block" @onclick="() => Sort(SpawnsetSorting.LoopLength)">Loop length</a>
-			<a href="" @onclick:preventDefault class="text-color-link hover:text-color-link-hover text-right hidden xl:block" @onclick="() => Sort(SpawnsetSorting.LoopSpawnCount)">Loop spawns</a>
-			<a href="" @onclick:preventDefault class="text-color-link hover:text-color-link-hover text-right hidden xl:block" @onclick="() => Sort(SpawnsetSorting.PreLoopLength)">Pre-loop length</a>
-			<a href="" @onclick:preventDefault class="text-color-link hover:text-color-link-hover text-right hidden xl:block" @onclick="() => Sort(SpawnsetSorting.PreLoopSpawnCount)">Pre-loop spawns</a>
-			<a href="" @onclick:preventDefault class="text-color-link hover:text-color-link-hover text-left hidden lg:block" @onclick="() => Sort(SpawnsetSorting.Hand)">Hand</a>
-			<a href="" @onclick:preventDefault class="text-color-link hover:text-color-link-hover text-right hidden lg:block" @onclick="() => Sort(SpawnsetSorting.AdditionalGems)">Gems</a>
-			<a href="" @onclick:preventDefault class="text-color-link hover:text-color-link-hover text-right hidden lg:block" @onclick="() => Sort(SpawnsetSorting.TimerStart)">Timer</a>
+			<a href="" @onclick:preventDefault class="text-left" @onclick="() => Sort(SpawnsetSorting.Name)">Name</a>
+			<a href="" @onclick:preventDefault class="text-left hidden md:block" @onclick="() => Sort(SpawnsetSorting.AuthorName)">Author</a>
+			<a href="" @onclick:preventDefault class="text-left hidden md:block" @onclick="() => Sort(SpawnsetSorting.LastUpdated)">Created</a>
+			<a href="" @onclick:preventDefault class="text-left hidden md:block" @onclick="() => Sort(SpawnsetSorting.GameVersion)">Game version</a>
+			<a href="" @onclick:preventDefault class="text-right hidden xl:block" @onclick="() => Sort(SpawnsetSorting.GameMode)">Game mode</a>
+			<a href="" @onclick:preventDefault class="text-right hidden xl:block" @onclick="() => Sort(SpawnsetSorting.LoopLength)">Loop length</a>
+			<a href="" @onclick:preventDefault class="text-right hidden xl:block" @onclick="() => Sort(SpawnsetSorting.LoopSpawnCount)">Loop spawns</a>
+			<a href="" @onclick:preventDefault class="text-right hidden xl:block" @onclick="() => Sort(SpawnsetSorting.PreLoopLength)">Pre-loop length</a>
+			<a href="" @onclick:preventDefault class="text-right hidden xl:block" @onclick="() => Sort(SpawnsetSorting.PreLoopSpawnCount)">Pre-loop spawns</a>
+			<a href="" @onclick:preventDefault class="text-left hidden lg:block" @onclick="() => Sort(SpawnsetSorting.Hand)">Hand</a>
+			<a href="" @onclick:preventDefault class="text-right hidden lg:block" @onclick="() => Sort(SpawnsetSorting.AdditionalGems)">Gems</a>
+			<a href="" @onclick:preventDefault class="text-right hidden lg:block" @onclick="() => Sort(SpawnsetSorting.TimerStart)">Timer</a>
 		</div>
 
 		for (int i = 0; i < GetSpawnsets.Results.Count; i++)

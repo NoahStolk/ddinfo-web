@@ -37,7 +37,7 @@ else
 		@foreach (KeyValuePair<PropertyInfo, bool> pi in _properties)
 		{
 			string name = (pi.Key.GetCustomAttribute(typeof(DisplayAttribute)) as DisplayAttribute)?.Name ?? pi.Key.Name;
-			<a class="@(pi.Value ? "text-right" : "text-left") overflow-x-hidden text-color-link hover:text-color-link-hover" href="" @onclick="() => Sort(pi.Key.Name)" @onclick:preventDefault>@name</a>
+			<a class="@(pi.Value ? "text-right" : "text-left") overflow-x-hidden" href="" @onclick="() => Sort(pi.Key.Name)" @onclick:preventDefault>@name</a>
 		}
 		<div></div>
 		<div></div>
@@ -52,8 +52,8 @@ else
 					{
 						<div class="overflow-x-hidden @(pi.Value ? "text-right" : "text-left")">@ReflectionUtils.GetDtoPropertyDisplayValue(pi.Key, result)</div>
 					}
-					<div><a class="text-color-link hover:text-color-link-hover" href="@($"{NavigationManager.Uri}/edit/{result.Id}")">Edit</a></div>
-					<div><a class="text-color-link hover:text-color-link-hover" href="" @onclick="() => _deletion?.Set(result.Id)" @onclick:preventDefault>Delete</a></div>
+					<div><a href="@($"{NavigationManager.Uri}/edit/{result.Id}")">Edit</a></div>
+					<div><a href="" @onclick="() => _deletion?.Set(result.Id)" @onclick:preventDefault>Delete</a></div>
 				</div>
 			}
 		}

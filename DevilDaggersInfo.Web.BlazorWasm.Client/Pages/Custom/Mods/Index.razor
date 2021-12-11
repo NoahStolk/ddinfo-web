@@ -32,12 +32,12 @@ else
 	@if (GetMods.Results.Count > 0)
 	{
 		<div class="grid gap-3 sm:grid-cols-mods-sm md:grid-cols-mods-md lg:grid-cols-mods-lg xl:grid-cols-mods-xl">
-			<a href="" @onclick:preventDefault class="text-color-link hover:text-color-link-hover text-left" @onclick="() => Sort(ModSorting.Name)">Name</a>
-			<a href="" @onclick:preventDefault class="text-color-link hover:text-color-link-hover text-left hidden md:block" @onclick="() => Sort(ModSorting.Authors)">Author(s)</a>
-			<a href="" @onclick:preventDefault class="text-color-link hover:text-color-link-hover text-left hidden md:block" @onclick="() => Sort(ModSorting.LastUpdated)">Last updated</a>
-			<a href="" @onclick:preventDefault class="text-color-link hover:text-color-link-hover text-left hidden md:block" @onclick="() => Sort(ModSorting.ModTypes)">Type</a>
-			<a href="" @onclick:preventDefault class="text-color-link hover:text-color-link-hover text-right hidden xl:block" @onclick="() => Sort(ModSorting.Hosted)">Hosted</a>
-			<a href="" @onclick:preventDefault class="text-color-link hover:text-color-link-hover text-right hidden xl:block" @onclick="() => Sort(ModSorting.ProhibitedAssets)">Prohibited assets</a>
+			<a href="" @onclick:preventDefault class="text-left" @onclick="() => Sort(ModSorting.Name)">Name</a>
+			<a href="" @onclick:preventDefault class="text-left hidden md:block" @onclick="() => Sort(ModSorting.Authors)">Author(s)</a>
+			<a href="" @onclick:preventDefault class="text-left hidden md:block" @onclick="() => Sort(ModSorting.LastUpdated)">Last updated</a>
+			<a href="" @onclick:preventDefault class="text-left hidden md:block" @onclick="() => Sort(ModSorting.ModTypes)">Type</a>
+			<a href="" @onclick:preventDefault class="text-right hidden xl:block" @onclick="() => Sort(ModSorting.Hosted)">Hosted</a>
+			<a href="" @onclick:preventDefault class="text-right hidden xl:block" @onclick="() => Sort(ModSorting.ProhibitedAssets)">Prohibited assets</a>
 		</div>
 		@for (int i = 0; i < GetMods.Results.Count; i++)
 		{

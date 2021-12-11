@@ -7,6 +7,7 @@ module.exports = {
 		colors: {
 			'color-link': '#f11',
 			'color-link-hover': '#911',
+			'white': '#fff',
 			'black': '#000',
 			'red': '#f00',
 			'orange': '#f80',
