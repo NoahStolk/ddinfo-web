@@ -5,7 +5,7 @@
 @using DevilDaggersInfo.Web.BlazorWasm.Shared.Dto.Admin.Players
 @using DevilDaggersInfo.Web.BlazorWasm.Shared.Enums
 
-<AdminEdit Name="Mod" OverviewUrl="/admin/mods" ApiCall="Http.EditModById" Model="_editMod" Id="Id" @ref="_editComponent">
+<AdminEdit Name="Mod" OverviewUrl="/admin/mods" ApiCall="Http.EditModById!" Model="_editMod" Id="Id" @ref="_editComponent">
 	<AdminInput Label="@nameof(EditMod.Name)"><InputText class="w-64 pl-2 bg-gray-1 text-color-text" @bind-Value="@_editMod!.Name" /></AdminInput>
 	<AdminInput Label="@nameof(EditMod.PlayerIds)"><MultiSearchDropdown Values="@_playerNames" @bind-Value="@_editMod!.PlayerIds" /></AdminInput>
 	<AdminInput Label="@nameof(EditMod.TrailerUrl)"><InputText class="w-64 pl-2 bg-gray-1 text-color-text" @bind-Value="_editMod!.TrailerUrl" /></AdminInput>
