@@ -39,7 +39,7 @@ public partial class EntryPage
 	{
 		GetCustomEntryData = await Http.GetCustomEntryDataById(Id);
 
-		Func<LineDataSet, LineData, List<MarkupString>> func = static (ds, d) => new List<MarkupString> { new($"<span style='color:{ds.Color};'>{d.Y.ToString("0")}</span>") };
+		Func<LineDataSet, LineData, List<MarkupString>> func = static (ds, d) => new List<MarkupString> { new($"<span style='color: {ds.Color}; text-align: right;'>{d.Y.ToString("0")}</span>") };
 
 		List<LineDataSet> gemsSets = new();
 		if (GetCustomEntryData.GemsTotalData != null)

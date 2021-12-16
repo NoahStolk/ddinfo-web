@@ -50,7 +50,7 @@ public partial class WorldRecordProgression
 
 		_dataOptions = new(0, null, (maxX - minX).Ticks, minY, 100, maxY);
 
-		_lineDataSets.Add(new("#f00", true, true, true, set, (ds, d) => new List<MarkupString> { new($"<span style='color:{ds.Color};'>{d.Y.ToString("0.0000")}</span>") }));
+		_lineDataSets.Add(new("#f00", true, true, true, set, (ds, d) => new List<MarkupString> { new($"<span style='color: {ds.Color}; text-align: right;'>{d.Y.ToString("0.0000")}</span>") }));
 	}
 
 	protected override async Task OnAfterRenderAsync(bool firstRender)
