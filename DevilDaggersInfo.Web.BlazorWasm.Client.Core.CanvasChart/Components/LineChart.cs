@@ -252,10 +252,11 @@ public partial class LineChart
 		for (int i = 0; i < DataSets.Count; i++)
 		{
 			LineDataSet dataSet = DataSets[i];
-			LineData? highlightedData = dataSet.Data.OrderByDescending(ld => ld.X).FirstOrDefault(ld => ld.X < ChartMouseX / ChartWidth * (DataOptions.MaxX - DataOptions.MinX)); // TODO: Fix for charts that don't start with MinX 0.
-			if (highlightedData == null)
+			if (dataSet.Data.Count == 0)
 				continue;
 
+			// TODO: Fix for charts that don't start with MinX 0.
+			LineData highlightedData = dataSet.Data.OrderByDescending(ld => ld.X).FirstOrDefault(ld => ld.X < ChartMouseX / ChartWidth * (DataOptions.MaxX - DataOptions.MinX)) ?? dataSet.Data[0];
 			HighlighterValues.AddRange(dataSet.ToHighlighterValue(dataSet, highlightedData));
 		}
 	}
