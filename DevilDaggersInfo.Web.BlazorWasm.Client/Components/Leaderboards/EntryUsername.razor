@@ -1,7 +1,7 @@
 <div class="max-h-lb-name overflow-hidden">
 	@if (IsBanned)
 	{
-		<a href="/leaderboard/player/@Id" class="@(IsBanned ? string.Empty : DaggerCssClass)"><span class="font-goethe text-xl hover:underline">@Name.ToNoBreakString()</span></a>
+		<a href="/leaderboard/player/@Id" class="@(IsBanned ? string.Empty : DaggerCssClass)"><span class="font-goethe text-xl hover:underline text-color-ban">@Name.ToNoBreakString()</span></a>
 	}
 	else
 	{
