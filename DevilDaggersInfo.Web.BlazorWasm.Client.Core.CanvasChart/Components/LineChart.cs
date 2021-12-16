@@ -1,12 +1,12 @@
-using Blazor.Extensions.Canvas.Canvas2D;
 using Blazor.Extensions;
+using Blazor.Extensions.Canvas.Canvas2D;
+using DevilDaggersInfo.Web.BlazorWasm.Client.Core.CanvasChart.Data;
+using DevilDaggersInfo.Web.BlazorWasm.Client.Core.CanvasChart.JsRuntime;
+using DevilDaggersInfo.Web.BlazorWasm.Client.Core.CanvasChart.Options;
+using DevilDaggersInfo.Web.BlazorWasm.Client.Core.CanvasChart.Options.LineChart;
+using DevilDaggersInfo.Web.BlazorWasm.Client.Core.CanvasChart.Utils;
 using Microsoft.AspNetCore.Components;
 using Microsoft.JSInterop;
-using DevilDaggersInfo.Web.BlazorWasm.Client.Core.CanvasChart.JsRuntime;
-using DevilDaggersInfo.Web.BlazorWasm.Client.Core.CanvasChart.Utils;
-using DevilDaggersInfo.Web.BlazorWasm.Client.Core.CanvasChart.Options.LineChart;
-using DevilDaggersInfo.Web.BlazorWasm.Client.Core.CanvasChart.Options;
-using DevilDaggersInfo.Web.BlazorWasm.Client.Core.CanvasChart.Data;
 
 namespace DevilDaggersInfo.Web.BlazorWasm.Client.Core.CanvasChart.Components;
 
@@ -15,15 +15,6 @@ public partial class LineChart
 	private Canvas2DContext _context = null!;
 	private BECanvasComponent _canvasReference = null!;
 	private LineChartHighlighter _highlighter = null!;
-
-	[Inject]
-	public IJSRuntime JsRuntime { get; set; } = null!;
-
-	[Parameter, EditorRequired] public string UniqueName { get; set; } = null!;
-	[Parameter, EditorRequired] public List<LineDataSet> DataSets { get; set; } = null!;
-	[Parameter, EditorRequired] public DataOptions DataOptions { get; set; } = null!;
-	[Parameter] public LineChartOptions Options { get; set; } = new();
-	[Parameter] public List<MarkupString> HighlighterValues { get; set; } = new();
 
 	private int _canvasWidth;
 	private int _canvasHeight;
@@ -36,6 +27,15 @@ public partial class LineChart
 
 	private double ChartWidth => _canvasWidth - Options.ChartMarginXInPx * 2;
 	private double ChartHeight => _canvasHeight - Options.ChartMarginYInPx * 2;
+
+	[Inject]
+	public IJSRuntime JsRuntime { get; set; } = null!;
+
+	[Parameter, EditorRequired] public string UniqueName { get; set; } = null!;
+	[Parameter, EditorRequired] public List<LineDataSet> DataSets { get; set; } = null!;
+	[Parameter, EditorRequired] public DataOptions DataOptions { get; set; } = null!;
+	[Parameter] public LineChartOptions Options { get; set; } = new();
+	[Parameter] public List<MarkupString> HighlighterValues { get; set; } = new();
 
 	protected override async Task OnAfterRenderAsync(bool firstRender)
 	{
@@ -190,7 +190,7 @@ public partial class LineChart
 		}
 	}
 
-	private List<double> CalculateScales(double chartSize, double min, double max, double? step, double minimumSizeInPx)
+	private static List<double> CalculateScales(double chartSize, double min, double max, double? step, double minimumSizeInPx)
 	{
 		bool tooNarrow = false;
 		if (step.HasValue)
@@ -229,7 +229,7 @@ public partial class LineChart
 	[JSInvokable]
 	public async ValueTask OnMouseMove(int mouseX, int mouseY)
 	{
-		var canvasBoundingClientRect = await JsRuntime.InvokeAsync<BoundingClientRect>("getBoundingClientRect", _canvasReference.CanvasReference);
+		BoundingClientRect canvasBoundingClientRect = await JsRuntime.InvokeAsync<BoundingClientRect>("getBoundingClientRect", _canvasReference.CanvasReference);
 
 		_canvasMouseX = mouseX - canvasBoundingClientRect.Left;
 		_canvasMouseY = mouseY - canvasBoundingClientRect.Top;

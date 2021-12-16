@@ -1,5 +1,3 @@
-using CanvasCharts.Options;
-
 namespace DevilDaggersInfo.Web.BlazorWasm.Client.Core.CanvasChart.Data;
 
 public class LineData

@@ -1,4 +1,3 @@
-using CanvasCharts.Options;
 using Microsoft.AspNetCore.Components;
 
 namespace DevilDaggersInfo.Web.BlazorWasm.Client.Core.CanvasChart.Data;
