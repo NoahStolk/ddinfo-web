@@ -17,31 +17,31 @@ else if (SpawnsetBinary == null || SpawnsView == null)
 }
 else
 {
-	<Heading Title="@($"Spawnset - {GetSpawnset.Name}")" />
-
-	<div class="bg-gray-1 max-w-sm px-1">
-		<DataField Name="Author">@GetSpawnset.AuthorName</DataField>
-		<DataField Name="Last updated">@GetSpawnset.LastUpdated.ToString(FormatUtils.DateTimeFormat)</DataField>
-		<DataField Name="Practice">@(GetSpawnset.IsPractice ? "Yes" : "No")</DataField>
-		<DataField Name="File size">@FileSizeUtils.Format(GetSpawnset.FileBytes.Length)</DataField>
-
-		<div class="grid grid-cols-2 text-lg">
-			<div class="px-1 py-3">
-				<a class="btn btn-download px-2 py-1" href="@($"/api/spawnsets/{GetSpawnset.Name}/file")">Download spawnset</a>
-			</div>
-			@if (GetSpawnset.CustomLeaderboardId.HasValue)
-			{
-				<div class="px-1 py-3 text-right">
-					<a href="@($"/custom/leaderboard/{GetSpawnset.CustomLeaderboardId.Value}")">View leaderboard</a>
-				</div>
-			}
-		</div>
-	</div>
-
-	<div class="grid grid-cols-1 lg:grid-cols-2">
+	<div class="grid grid-cols-1 lg:grid-cols-spawnset-lg">
 		@*Additional <div> is necessary to make sticky work.*@
 		<div>
 			<div class="lg:sticky lg:top-0">
+				<Heading Title="@($"Spawnset - {GetSpawnset.Name}")" />
+
+				<div class="bg-gray-1 max-w-sm px-1">
+					<DataField Name="Author">@GetSpawnset.AuthorName</DataField>
+					<DataField Name="Last updated">@GetSpawnset.LastUpdated.ToString(FormatUtils.DateTimeFormat)</DataField>
+					<DataField Name="Practice">@(GetSpawnset.IsPractice ? "Yes" : "No")</DataField>
+					<DataField Name="File size">@FileSizeUtils.Format(GetSpawnset.FileBytes.Length)</DataField>
+
+					<div class="grid grid-cols-2 text-lg">
+						<div class="px-1 py-3">
+							<a class="btn btn-download px-2 py-1" href="@($"/api/spawnsets/{GetSpawnset.Name}/file")">Download spawnset</a>
+						</div>
+						@if (GetSpawnset.CustomLeaderboardId.HasValue)
+						{
+							<div class="px-1 py-3 text-right">
+								<a href="@($"/custom/leaderboard/{GetSpawnset.CustomLeaderboardId.Value}")">View leaderboard</a>
+							</div>
+						}
+					</div>
+				</div>
+
 				@if (!string.IsNullOrWhiteSpace(GetSpawnset.HtmlDescription))
 				{
 					<Heading Title="Description" Level="2" />
@@ -99,9 +99,12 @@ else
 			</div>
 		</div>
 
+		@*Additional <div> is necessary to make sticky work.*@
 		<div>
-			<Heading Title="Spawns" Level="2" />
-			<SpawnsetSpawns SpawnsView=SpawnsView />
+			<div class="lg:pl-4 lg;pt-14">
+				<Heading Title="Spawns" Level="2" />
+				<SpawnsetSpawns SpawnsView=SpawnsView />
+			</div>
 		</div>
 	</div>
 }
