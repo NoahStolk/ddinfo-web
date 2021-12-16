@@ -1,6 +1,6 @@
 .highlighter-container {
 	position: relative; /*TODO: Fix highlighter pushing chart down.*/
 	z-index: 100;
-	width: 128px;
+	width: 256px;
 	pointer-events: none;
 }
