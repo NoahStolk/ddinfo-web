@@ -8,4 +8,6 @@ public partial class LineChartHighlighter
 	public double Left { get; set; }
 
 	[Parameter, EditorRequired] public RenderFragment ChildContent { get; set; } = null!;
+
+	public void ChangeState() => StateHasChanged();
 }

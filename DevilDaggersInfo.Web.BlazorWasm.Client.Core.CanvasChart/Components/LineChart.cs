@@ -70,7 +70,6 @@ public partial class LineChart
 		await RenderSideBarsAsync();
 		foreach (LineDataSet dataSet in DataSets)
 			await RenderDataLineAsync(dataSet);
-		await RenderHighlighterLineAsync();
 
 		async Task RenderGridAsync()
 		{
@@ -175,19 +174,6 @@ public partial class LineChart
 
 			await _context.StrokeAsync();
 		}
-
-		async Task RenderHighlighterLineAsync()
-		{
-			if (Options.HighlighterLineOptions == null)
-				return;
-
-			await _context.SetLineWidthAsync(Options.HighlighterLineOptions.LineThickness);
-			await _context.SetStrokeStyleAsync(Options.HighlighterLineOptions.LineColor);
-			await _context.BeginPathAsync();
-			await _context.MoveToAsync(_canvasMouseX, Options.ChartMarginYInPx);
-			await _context.LineToAsync(_canvasMouseX, _canvasHeight - Options.ChartMarginYInPx);
-			await _context.StrokeAsync();
-		}
 	}
 
 	private static List<double> CalculateScales(double chartSize, double min, double max, double? step, double minimumSizeInPx)
@@ -235,7 +221,7 @@ public partial class LineChart
 		_canvasMouseY = mouseY - canvasBoundingClientRect.Top;
 
 		UpdateHighlighter();
-		StateHasChanged();
+		_highlighter.ChangeState();
 
 		await ValueTask.CompletedTask;
 	}
@@ -259,5 +245,15 @@ public partial class LineChart
 			LineData highlightedData = dataSet.Data.OrderByDescending(ld => ld.X).FirstOrDefault(ld => ld.X < ChartMouseX / ChartWidth * (DataOptions.MaxX - DataOptions.MinX)) ?? dataSet.Data[0];
 			HighlighterValues.AddRange(dataSet.ToHighlighterValue(dataSet, highlightedData));
 		}
+
+		//if (Options.HighlighterLineOptions == null)
+		//	return;
+
+		//await _context.SetLineWidthAsync(Options.HighlighterLineOptions.LineThickness);
+		//await _context.SetStrokeStyleAsync(Options.HighlighterLineOptions.LineColor);
+		//await _context.BeginPathAsync();
+		//await _context.MoveToAsync(_canvasMouseX, Options.ChartMarginYInPx);
+		//await _context.LineToAsync(_canvasMouseX, _canvasHeight - Options.ChartMarginYInPx);
+		//await _context.StrokeAsync();
 	}
 }
