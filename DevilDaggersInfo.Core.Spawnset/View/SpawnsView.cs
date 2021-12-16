@@ -19,11 +19,12 @@ public class SpawnsView
 			return;
 
 		double totalSeconds = timerStart;
-		int totalGems = handLevel.GetStartGems() + additionalGems;
+		EffectivePlayerSettings effectivePlayerSettings = SpawnsetBinary.GetEffectivePlayerSettings(handLevel, additionalGems);
+		GemState gemState = new(effectivePlayerSettings.HandLevel, effectivePlayerSettings.GemsOrHoming, 0);
 
 		if (gameMode is GameMode.TimeAttack or GameMode.Race)
 		{
-			BuildPreLoop(ref totalSeconds, ref totalGems, spawns);
+			BuildPreLoop(ref totalSeconds, ref gemState, spawns);
 		}
 		else
 		{
@@ -31,10 +32,10 @@ public class SpawnsView
 			Spawn[] preLoopSpawns = spawns.Take(loopStartIndex).ToArray();
 			Spawn[] loopSpawns = spawns.Skip(loopStartIndex).ToArray();
 
-			BuildPreLoop(ref totalSeconds, ref totalGems, preLoopSpawns);
+			BuildPreLoop(ref totalSeconds, ref gemState, preLoopSpawns);
 
 			if (waveCount > 0 && loopSpawns.Any(s => s.EnemyType != EnemyType.Empty))
-				BuildLoop(gameVersion, waveCount, ref totalSeconds, ref totalGems, loopSpawns);
+				BuildLoop(gameVersion, waveCount, ref totalSeconds, ref gemState, loopSpawns);
 		}
 	}
 
@@ -44,7 +45,7 @@ public class SpawnsView
 	public bool HasPreLoopSpawns { get; private set; }
 	public bool HasLoopSpawns { get; private set; }
 
-	private void BuildPreLoop(ref double totalSeconds, ref int totalGems, Spawn[] preLoopSpawns)
+	private void BuildPreLoop(ref double totalSeconds, ref GemState gemState, Spawn[] preLoopSpawns)
 	{
 		HasPreLoopSpawns = preLoopSpawns.Length > 0;
 		if (!HasPreLoopSpawns)
@@ -54,13 +55,13 @@ public class SpawnsView
 		{
 			totalSeconds += spawn.Delay;
 			int noFarmGems = spawn.EnemyType.GetNoFarmGems();
-			totalGems += noFarmGems;
+			gemState = gemState.Add(noFarmGems);
 			if (spawn.EnemyType != EnemyType.Empty)
-				PreLoop.Add(new(spawn.EnemyType, totalSeconds, noFarmGems, totalGems));
+				PreLoop.Add(new(spawn.EnemyType, totalSeconds, noFarmGems, gemState));
 		}
 	}
 
-	private void BuildLoop(GameVersion gameVersion, int waveCount, ref double totalSeconds, ref int totalGems, Spawn[] loopSpawns)
+	private void BuildLoop(GameVersion gameVersion, int waveCount, ref double totalSeconds, ref GemState gemState, Spawn[] loopSpawns)
 	{
 		HasLoopSpawns = loopSpawns.Length > 0;
 		if (!HasLoopSpawns)
@@ -85,10 +86,10 @@ public class SpawnsView
 					if (i % 3 == 2 && !(gameVersion is GameVersion.V1_0 or GameVersion.V2_0) && finalEnemy == EnemyType.Gigapede)
 						finalEnemy = EnemyType.Ghostpede;
 
-					int gems = finalEnemy.GetNoFarmGems();
-					totalGems += gems;
+					int noFarmGems = finalEnemy.GetNoFarmGems();
+					gemState = gemState.Add(noFarmGems);
 
-					Waves[i].Add(new(finalEnemy, totalSeconds, gems, totalGems));
+					Waves[i].Add(new(finalEnemy, totalSeconds, noFarmGems, gemState));
 				}
 			}
 		}

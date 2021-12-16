@@ -1,12 +1,14 @@
-@using DevilDaggersInfo.Core.Spawnset.View
+@using DevilDaggersInfo.Core.Spawnset.Enums
 @using DevilDaggersInfo.Core.Spawnset.Extensions
+@using DevilDaggersInfo.Core.Spawnset.View
 @using DevilDaggersInfo.Core.Wiki.Enums
 
-<div class="grid gap-3 grid-cols-4 font-goethe text-lg">
+<div class="grid gap-3 grid-cols-5 font-goethe text-lg">
 	<div class="text-right">@SpawnView.Seconds.ToString(FormatUtils.TimeFormat)</div>
 	<div style="color: @SpawnView.EnemyType.GetColor(GameVersion).HexCode;">@SpawnView.EnemyType.GetName(GameVersion)</div>
-	<div class="text-right">@SpawnView.Gems</div>
-	<div class="text-right">@SpawnView.GemsTotal.ToString("N0")</div>
+	<div class="text-right">@SpawnView.NoFarmGems</div>
+	<div class="text-right">@SpawnView.GemState.TotalGemsCollected</div>
+	<div class="text-right" style="color: @GetHandLevelHexColor(SpawnView.GemState.HandLevel);">@SpawnView.GemState.Value.ToString("N0")</div>
 </div>
 
 @code
@@ -14,4 +16,11 @@
 	[Parameter, EditorRequired] public SpawnView SpawnView { get; set; }
 
 	[Parameter, EditorRequired] public GameVersion GameVersion { get; set; }
+
+	private string GetHandLevelHexColor(HandLevel handLevel) => handLevel switch
+	{
+		HandLevel.Level3 => UpgradesV3_2.Level3.Color.HexCode,
+		HandLevel.Level4 => UpgradesV3_2.Level4.Color.HexCode,
+		_ => $"#f00",
+	};
 }

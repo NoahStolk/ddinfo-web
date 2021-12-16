@@ -7,8 +7,8 @@ public class SpawnsViewTests
 	public void TestSpawnsView_V0()
 	{
 		SpawnsView spawnsView = Parse("V0", GameVersion.V1_0, 3, 57, 18);
-		Assert.AreEqual(new SpawnView(EnemyType.Squid1, 3, 2, 2), spawnsView.PreLoop[0]);
-		Assert.AreEqual(new SpawnView(EnemyType.Squid1, 14, 2, 4), spawnsView.PreLoop[1]);
+		Assert.AreEqual(new SpawnView(EnemyType.Squid1, 3, 2, new GemState(HandLevel.Level1, 2, 2)), spawnsView.PreLoop[0]);
+		Assert.AreEqual(new SpawnView(EnemyType.Squid1, 14, 2, new GemState(HandLevel.Level1, 4, 4)), spawnsView.PreLoop[1]);
 	}
 
 	[AssertionMethod]
