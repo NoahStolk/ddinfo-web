@@ -40,6 +40,7 @@ public partial class EntryPage
 		GetCustomEntryData = await Http.GetCustomEntryDataById(Id);
 
 		Func<LineDataSet, LineData, List<MarkupString>> func = static (ds, d) => new List<MarkupString> { new($"<span style='color:{ds.Color};'>{d.Y.ToString("0")}</span>") };
+
 		List<LineDataSet> gemsSets = new();
 		if (GetCustomEntryData.GemsTotalData != null)
 			gemsSets.Add(new("#800", false, false, false, GetCustomEntryData.GemsTotalData.Select((val, i) => new LineData(i, val)).ToList(), func));
@@ -52,7 +53,7 @@ public partial class EntryPage
 
 		if (gemsSets.Count > 0)
 		{
-			DataOptions dataOptions = new(0, Math.Ceiling(GetCustomEntryData.Time / 10), GetCustomEntryData.Time, 0, 10, gemsSets.Select(gs => gs.Data.Select(d => d.Y).Max()).Max());
+			DataOptions dataOptions = new(0, Math.Ceiling(GetCustomEntryData.Time / 10), GetCustomEntryData.Time, 0, 10, gemsSets.Select(ds => ds.Data.Select(d => d.Y).Max()).Max());
 			LineChartOptions chartOptions = new()
 			{
 				HighlighterKeys = new()
@@ -69,6 +70,30 @@ public partial class EntryPage
 			};
 			_lineCharts.Add(("Gems", dataOptions, chartOptions, gemsSets));
 		}
+
+		List<LineDataSet> homingSets = new();
+		if (GetCustomEntryData.HomingStoredData != null)
+			homingSets.Add(new("#f0f", false, false, false, GetCustomEntryData.HomingStoredData.Select((val, i) => new LineData(i, val)).ToList(), func));
+		if (GetCustomEntryData.HomingEatenData != null)
+			homingSets.Add(new("#C8A2C8", false, false, false, GetCustomEntryData.HomingEatenData.Select((val, i) => new LineData(i, val)).ToList(), func));
+
+		if (homingSets.Count > 0)
+		{
+			DataOptions dataOptions = new(0, Math.Ceiling(GetCustomEntryData.Time / 10), GetCustomEntryData.Time, 0, 10, homingSets.Select(ds => ds.Data.Select(d => d.Y).Max()).Max());
+			LineChartOptions chartOptions = new()
+			{
+				HighlighterKeys = new()
+				{
+					"Homing Stored",
+					"Homing Eaten",
+				},
+				GridOptions = new()
+				{
+					MinimumRowHeightInPx = 50,
+				},
+			};
+			_lineCharts.Add(("Homing", dataOptions, chartOptions, homingSets));
+		}
 	}
 
 	protected override async Task OnAfterRenderAsync(bool firstRender)
@@ -76,7 +101,6 @@ public partial class EntryPage
 		if (firstRender)
 			await JsRuntime.InvokeAsync<object>("init");
 	}
-		//await AddLabelsDatasets(_homingChart, new("Homing Stored", GetCustomEntryData.HomingStoredData, "#f0f", "#f0f"), new("Homing Eaten", GetCustomEntryData.HomingEatenData, "#f00", "#f00"));
 		//await AddLabelsDatasets(_enemiesChart, new("Enemies Alive", GetCustomEntryData.EnemiesAliveData, "#840", "#840"), new("Enemies Killed", GetCustomEntryData.EnemiesKilledData, "#f00", "#f00"));
 		//await AddLabelsDatasets(_daggersChart, new("Daggers Hit", GetCustomEntryData.DaggersHitData, "#80f", "#80f"), new("Daggers Fired", GetCustomEntryData.DaggersFiredData, "#00f", "#00f"));
 
