@@ -20,7 +20,6 @@ window.windowResize = (_) => {
 };
 
 window.init = () => {
-	console.log("Making new charts array");
 	window.charts = [];
 
 	window.addEventListener("resize", onResize);
@@ -59,6 +58,5 @@ window.registerChart = (chartWrapperComponent, chartName) => {
 		return;
 	}
 
-	console.log("Adding " + chartName + " to charts array");
 	window.charts.push(chart);
 };
