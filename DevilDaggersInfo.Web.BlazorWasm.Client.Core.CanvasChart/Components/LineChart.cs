@@ -178,6 +178,9 @@ public partial class LineChart
 
 	private static List<double> CalculateScales(double chartSize, double min, double max, double? step, double minimumSizeInPx)
 	{
+		if (chartSize <= 0 || minimumSizeInPx <= 0)
+			return new();
+
 		bool tooNarrow = false;
 		if (step.HasValue)
 		{
