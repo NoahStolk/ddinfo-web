@@ -53,10 +53,10 @@ public class SpawnsView
 		foreach (Spawn spawn in preLoopSpawns)
 		{
 			totalSeconds += spawn.Delay;
-			int gems = spawn.EnemyType.GetNoFarmGems();
-			totalGems += gems;
+			int noFarmGems = spawn.EnemyType.GetNoFarmGems();
+			totalGems += noFarmGems;
 			if (spawn.EnemyType != EnemyType.Empty)
-				PreLoop.Add(new(spawn.EnemyType, totalSeconds, gems, totalGems));
+				PreLoop.Add(new(spawn.EnemyType, totalSeconds, noFarmGems, totalGems));
 		}
 	}
 
@@ -82,7 +82,7 @@ public class SpawnsView
 				if (spawn.EnemyType != EnemyType.Empty)
 				{
 					EnemyType finalEnemy = spawn.EnemyType;
-					if (i % 3 == 2 && gameVersion is GameVersion.V3_0 or GameVersion.V3_1 or GameVersion.V3_2 && finalEnemy == EnemyType.Gigapede)
+					if (i % 3 == 2 && !(gameVersion is GameVersion.V1_0 or GameVersion.V2_0) && finalEnemy == EnemyType.Gigapede)
 						finalEnemy = EnemyType.Ghostpede;
 
 					int gems = finalEnemy.GetNoFarmGems();
