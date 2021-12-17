@@ -1,20 +1,8 @@
 @page "/leaderboard/player/{Id:int}"
-@inject PublicApiHttpClient Http
-@inject NavigationManager NavigationManager
 @using Blazorise.Charts
-@using DevilDaggersInfo.Core.Wiki
-@using DevilDaggersInfo.Core.Wiki.Enums
-@using DevilDaggersInfo.Web.BlazorWasm.Client.Components
-@using DevilDaggersInfo.Web.BlazorWasm.Client.Components.Leaderboards
-@using DevilDaggersInfo.Web.BlazorWasm.Client.Components.Leaderboards.Player
-@using DevilDaggersInfo.Web.BlazorWasm.Shared.Dto.Public
-@using DevilDaggersInfo.Web.BlazorWasm.Shared.Dto.Public.CustomEntries
-@using DevilDaggersInfo.Web.BlazorWasm.Shared.Dto.Public.CustomLeaderboards
-@using DevilDaggersInfo.Web.BlazorWasm.Shared.Dto.Public.Leaderboards
-@using DevilDaggersInfo.Web.BlazorWasm.Shared.Dto.Public.LeaderboardHistory
-@using DevilDaggersInfo.Web.BlazorWasm.Shared.Dto.Public.Mods
-@using DevilDaggersInfo.Web.BlazorWasm.Shared.Dto.Public.Players
-@using DevilDaggersInfo.Web.BlazorWasm.Shared.Dto.Public.Spawnsets
+@using DevilDaggersInfo.Web.BlazorWasm.Client.Components.Leaderboards.Player;
+@using DevilDaggersInfo.Web.BlazorWasm.Shared.Dto.Public.Mods;
+@using DevilDaggersInfo.Web.BlazorWasm.Shared.Dto.Public.Spawnsets;
 @using DevilDaggersInfo.Web.BlazorWasm.Shared.Enums
 
 @if (GetEntry == null)
@@ -188,76 +176,5 @@ else
 			<Heading Title="Activity" Level="2" />
 			<LineChart Options="LineChartUtils.Options" OptionsJsonString="@LineChartUtils.AdditionalJsonOptionsTime" @ref="_activityChart" TItem="double" />
 		}
-	}
-}
-
-@code
-{
-	[Parameter, EditorRequired] public int Id { get; set; }
-
-	public GetEntry? GetEntry { get; set; }
-	public GetPlayer? GetPlayer { get; set; }
-	public GetPlayerHistory? GetPlayerHistory { get; set; }
-	public List<GetCustomLeaderboardStatisticsForPlayer>? GetCustomLeaderboardStatistics { get; set; }
-	public List<GetSpawnsetName>? GetSpawnsetNames { get; set; }
-	public List<GetModName>? GetModNames { get; set; }
-	public GetNumberOfCustomLeaderboards? GetNumberOfCustomLeaderboards { get; set; }
-
-	public bool PlayerNotFound { get; set; }
-
-	private LineChart<double>? _progressionChart;
-	private LineChart<double>? _activityChart;
-
-	protected override async Task OnInitializedAsync()
-	{
-		GetEntry = await Http.GetEntryById(Id);
-
-		try
-		{
-			GetPlayer = await Http.GetPlayerById(Id);
-		}
-		catch (HttpRequestException ex) when (ex.StatusCode == HttpStatusCode.NotFound)
-		{
-			PlayerNotFound = true;
-		}
-
-		GetPlayerHistory = await Http.GetPlayerHistoryById(Id);
-		GetCustomLeaderboardStatistics = await Http.GetCustomLeaderboardStatisticsByPlayerId(Id);
-		GetSpawnsetNames = await Http.GetSpawnsetsByAuthorId(Id);
-		GetModNames = await Http.GetModsByAuthorId(Id);
-		GetNumberOfCustomLeaderboards = await Http.GetNumberOfCustomLeaderboards();
-	}
-
-	protected override async Task OnAfterRenderAsync(bool firstRender)
-	{
-		if (firstRender ||
-			GetPlayerHistory == null ||
-			_progressionChart == null ||
-			_activityChart == null)
-			return;
-
-		await _progressionChart.AddLabelsDatasetsAndUpdate(GetPlayerHistory.History.Select(eh => eh.DateTime.ToString("yyyy-MM-dd")).ToArray(), new LineChartDataset<double>
-		{
-			Label = "Score",
-			Data = GetPlayerHistory.History.Select(eh => eh.Time).ToList(),
-			BackgroundColor = "#f00",
-			Fill = false,
-			PointRadius = 0,
-			ShowLine = true,
-			BorderColor = "#f00",
-			SteppedLine = true,
-		});
-
-		await _activityChart.AddLabelsDatasetsAndUpdate(GetPlayerHistory.Activity.Select(pa => pa.DateTime.ToString("yyyy-MM-dd")).ToArray(), new LineChartDataset<double>
-		{
-			Label = "Deaths",
-			Data = GetPlayerHistory.Activity.Select(pa => pa.DeathsIncrement).ToList(),
-			BackgroundColor = "#f00",
-			Fill = false,
-			PointRadius = 0,
-			ShowLine = true,
-			BorderColor = "#f00",
-			SteppedLine = true,
-		});
 	}
 }
