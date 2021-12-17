@@ -14,18 +14,6 @@ public partial class EntryPage
 {
 	private static readonly Func<LineDataSet, LineData, List<MarkupString>> _highlightTransformation = static (ds, d) => new List<MarkupString> { new($"<span style='color: {ds.Color}; text-align: right;'>{d.Y.ToString("0")}</span>") };
 
-	private readonly LineChartOptions _lineChartOptions = new()
-	{
-		HighlighterKeys = new()
-		{
-			"Value",
-		},
-		GridOptions = new()
-		{
-			MinimumRowHeightInPx = 50,
-		},
-	};
-
 	private List<(string Name, DataOptions DataOptions, LineChartOptions ChartOptions, List<LineDataSet> Sets)> _lineCharts = new();
 
 	[Parameter, EditorRequired] public int Id { get; set; }
@@ -54,7 +42,7 @@ public partial class EntryPage
 
 		double maxData = dataSets.Select(ds => ds.Data.Select(d => d.Y).Max()).Max();
 		DataOptions dataOptions = new(0, Math.Ceiling(time / 10), time, 0, maxData / 8, maxData);
-		LineChartOptions chartOptions = new() { HighlighterKeys = keys.ToList(), GridOptions = new() { MinimumRowHeightInPx = 50 } };
+		LineChartOptions chartOptions = new() { HighlighterKeys = keys.ToList(), HighlighterTitle = "Time", HighlighterTitleValueNumberFormat = "0.0000", GridOptions = new() { MinimumRowHeightInPx = 50 } };
 		_lineCharts.Add((name, dataOptions, chartOptions, dataSets));
 	}
 

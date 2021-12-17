@@ -22,6 +22,8 @@ public partial class LineChart
 	private double _canvasMouseX;
 	private double _canvasMouseY;
 
+	private MarkupString _highlighterTitleValue;
+
 	private double ChartMouseX => _canvasMouseX - Options.ChartMarginXInPx;
 	private double ChartMouseY => _canvasMouseY - Options.ChartMarginYInPx;
 
@@ -237,6 +239,9 @@ public partial class LineChart
 		_highlighter.Left = Math.Clamp(_canvasMouseX, Options.ChartMarginXInPx, Options.ChartMarginXInPx + ChartWidth);
 		_highlighter.Top = Math.Clamp(_canvasMouseY, Options.ChartMarginYInPx, Options.ChartMarginYInPx + ChartHeight);
 
+		double xValue = ChartMouseX / ChartWidth * (DataOptions.MaxX - DataOptions.MinX);
+		_highlighterTitleValue = new($"<span>{xValue.ToString(Options.HighlighterTitleValueNumberFormat)}</span>");
+
 		HighlighterValues.Clear();
 		for (int i = 0; i < DataSets.Count; i++)
 		{
@@ -245,7 +250,7 @@ public partial class LineChart
 				continue;
 
 			// TODO: Fix for charts that don't start with MinX 0.
-			LineData highlightedData = dataSet.Data.OrderByDescending(ld => ld.X).FirstOrDefault(ld => ld.X < ChartMouseX / ChartWidth * (DataOptions.MaxX - DataOptions.MinX)) ?? dataSet.Data[0];
+			LineData highlightedData = dataSet.Data.OrderByDescending(ld => ld.X).FirstOrDefault(ld => ld.X < xValue) ?? dataSet.Data[0];
 			HighlighterValues.AddRange(dataSet.ToHighlighterValue(dataSet, highlightedData));
 		}
 

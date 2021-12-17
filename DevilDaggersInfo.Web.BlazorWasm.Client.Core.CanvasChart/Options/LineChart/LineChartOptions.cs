@@ -1,5 +1,3 @@
-using Microsoft.AspNetCore.Components;
-
 namespace DevilDaggersInfo.Web.BlazorWasm.Client.Core.CanvasChart.Options.LineChart;
 
 public class LineChartOptions
@@ -15,6 +13,8 @@ public class LineChartOptions
 	public LineChartScaleOptions ScaleXOptions { get; set; } = new();
 	public LineChartScaleOptions ScaleYOptions { get; set; } = new();
 
+	public string? HighlighterTitle { get; set; }
+	public string? HighlighterTitleValueNumberFormat { get; set; } = "0";
 	public List<string> HighlighterKeys { get; set; } = new();
 
 	public LineChartHighlighterLineOptions? HighlighterLineOptions { get; set; } = new();
