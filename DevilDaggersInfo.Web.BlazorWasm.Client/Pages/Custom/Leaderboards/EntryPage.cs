@@ -94,6 +94,54 @@ public partial class EntryPage
 			};
 			_lineCharts.Add(("Homing", dataOptions, chartOptions, homingSets));
 		}
+
+		List<LineDataSet> enemiesSets = new();
+		if (GetCustomEntryData.EnemiesAliveData != null)
+			enemiesSets.Add(new("#840", false, false, false, GetCustomEntryData.EnemiesAliveData.Select((val, i) => new LineData(i, val)).ToList(), func));
+		if (GetCustomEntryData.EnemiesKilledData != null)
+			enemiesSets.Add(new("#f00", false, false, false, GetCustomEntryData.EnemiesKilledData.Select((val, i) => new LineData(i, val)).ToList(), func));
+
+		if (enemiesSets.Count > 0)
+		{
+			DataOptions dataOptions = new(0, Math.Ceiling(GetCustomEntryData.Time / 10), GetCustomEntryData.Time, 0, 10, enemiesSets.Select(ds => ds.Data.Select(d => d.Y).Max()).Max());
+			LineChartOptions chartOptions = new()
+			{
+				HighlighterKeys = new()
+				{
+					"Enemies Alive",
+					"Enemies Killed",
+				},
+				GridOptions = new()
+				{
+					MinimumRowHeightInPx = 50,
+				},
+			};
+			_lineCharts.Add(("Enemies", dataOptions, chartOptions, enemiesSets));
+		}
+
+		List<LineDataSet> daggersSets = new();
+		if (GetCustomEntryData.DaggersHitData != null)
+			daggersSets.Add(new("#ff0", false, false, false, GetCustomEntryData.DaggersHitData.Select((val, i) => new LineData(i, val)).ToList(), func));
+		if (GetCustomEntryData.DaggersFiredData != null)
+			daggersSets.Add(new("#f40", false, false, false, GetCustomEntryData.DaggersFiredData.Select((val, i) => new LineData(i, val)).ToList(), func));
+
+		if (daggersSets.Count > 0)
+		{
+			DataOptions dataOptions = new(0, Math.Ceiling(GetCustomEntryData.Time / 10), GetCustomEntryData.Time, 0, 10, daggersSets.Select(ds => ds.Data.Select(d => d.Y).Max()).Max());
+			LineChartOptions chartOptions = new()
+			{
+				HighlighterKeys = new()
+				{
+					"Daggers Hit",
+					"Daggers Fired",
+				},
+				GridOptions = new()
+				{
+					MinimumRowHeightInPx = 50,
+				},
+			};
+			_lineCharts.Add(("Daggers", dataOptions, chartOptions, daggersSets));
+		}
 	}
 
 	protected override async Task OnAfterRenderAsync(bool firstRender)
@@ -101,9 +149,6 @@ public partial class EntryPage
 		if (firstRender)
 			await JsRuntime.InvokeAsync<object>("init");
 	}
-		//await AddLabelsDatasets(_enemiesChart, new("Enemies Alive", GetCustomEntryData.EnemiesAliveData, "#840", "#840"), new("Enemies Killed", GetCustomEntryData.EnemiesKilledData, "#f00", "#f00"));
-		//await AddLabelsDatasets(_daggersChart, new("Daggers Hit", GetCustomEntryData.DaggersHitData, "#80f", "#80f"), new("Daggers Fired", GetCustomEntryData.DaggersFiredData, "#00f", "#00f"));
-
 		//await AddLabelsDatasets(_skullsAliveChart,
 		//	new("Skull Is Alive", GetCustomEntryData.Skull1sAliveData, EnemyColors.Skull1.HexCode, EnemyColors.Skull1.HexCode),
 		//	new("Skull IIs Alive", GetCustomEntryData.Skull2sAliveData, EnemyColors.Skull2.HexCode, EnemyColors.Skull2.HexCode),
