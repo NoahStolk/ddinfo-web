@@ -4,6 +4,7 @@ using DevilDaggersInfo.Web.BlazorWasm.Client.Core.CanvasChart.Options;
 using DevilDaggersInfo.Web.BlazorWasm.Client.Core.CanvasChart.Options.LineChart;
 using DevilDaggersInfo.Web.BlazorWasm.Client.HttpClients;
 using DevilDaggersInfo.Web.BlazorWasm.Shared.Dto.Public.CustomEntries;
+using DevilDaggersInfo.Web.BlazorWasm.Shared.Dto.Public.LeaderboardHistoryStatistics;
 using Microsoft.AspNetCore.Components;
 using Microsoft.JSInterop;
 using System;
@@ -85,24 +86,31 @@ public partial class EntryPage
 		{
 			List<(LineDataSet Set, string Name)> accuracySets = new();
 			int min = new int[] { GetCustomEntryData.DaggersHitData.Length, GetCustomEntryData.DaggersFiredData.Length, _time }.Min();
-			double[] accuracy = new double[min];
+			Accuracy[] stats = new Accuracy[min];
 			for (int i = 0; i < min; i++)
 			{
-				double fired = GetCustomEntryData.DaggersFiredData[i];
-				accuracy[i] = fired == 0 ? 0 : GetCustomEntryData.DaggersHitData[i] / fired;
+				int hit = GetCustomEntryData.DaggersHitData[i];
+				int fired = GetCustomEntryData.DaggersFiredData[i];
+				stats[i] = new(hit, fired, fired == 0 ? 0 : hit / (double)fired);
 			}
 
-			Func<LineDataSet, LineData, List<MarkupString>> accuracyHighlighter = static (ds, d) => new List<MarkupString>
+			Func<LineDataSet, LineData, List<MarkupString>> accuracyHighlighter = (ds, d) =>
 			{
-				new($"<span style='text-align: right;'>{d.X.ToString("0.0000")}</span>"),
-				new($"<span style='color: {ds.Color}; text-align: right;'>{d.Y.ToString("0.00%")}</span>"),
+				Accuracy? stat = Array.Find(stats, t => t == d.Reference);
+				return stat == null ? new() : new List<MarkupString>
+				{
+					new($"<span style='text-align: right;'>{d.X.ToString("0.0000")}</span>"),
+					new($"<span style='color: {ds.Color}; text-align: right;'>{stat.Acc.ToString("0.00%")}</span>"),
+					new($"<span style='text-align: right;'>{stat.Hit}</span>"),
+					new($"<span style='text-align: right;'>{stat.Fired}</span>"),
+				};
 			};
-			accuracySets.Add((new("#f80", false, false, false, accuracy.Select((val, i) => new LineData(i, val, val)).ToList(), accuracyHighlighter), "Accuracy"));
+			accuracySets.Add((new("#f80", false, false, false, stats.Select((t, i) => new LineData(i, t.Acc, t)).ToList(), accuracyHighlighter), "Accuracy"));
 
-			double minAcc = accuracy.Min();
-			double maxAcc = accuracy.Max();
+			double minAcc = stats.Select(t => t.Acc).Min();
+			double maxAcc = stats.Select(t => t.Acc).Max();
 			DataOptions dataOptions = new(0, _time / 10, _time, Math.Floor(minAcc * 10) / 10, 0.1, Math.Ceiling(maxAcc * 10) / 10);
-			LineChartOptions chartOptions = new() { HighlighterKeys = accuracySets.ConvertAll(ds => ds.Name).Prepend("Time").ToList(), GridOptions = new() { MinimumRowHeightInPx = 50 }, ScaleYOptions = new() { NumberFormat = "0%" } };
+			LineChartOptions chartOptions = new() { HighlighterKeys = new() { "Time", "Accuracy", "Daggers Hit", "Daggers Fired" }, GridOptions = new() { MinimumRowHeightInPx = 50 }, ScaleYOptions = new() { NumberFormat = "0%" } };
 			_lineCharts.Add(("Accuracy", dataOptions, chartOptions, accuracySets.ConvertAll(ds => ds.Set)));
 		}
 
@@ -176,4 +184,6 @@ public partial class EntryPage
 		if (firstRender)
 			await JsRuntime.InvokeAsync<object>("init");
 	}
+
+	private sealed record Accuracy(int Hit, int Fired, double Acc);
 }
