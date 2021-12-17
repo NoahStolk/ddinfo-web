@@ -14,6 +14,10 @@ using Microsoft.JSInterop;
 using DevilDaggersInfo.Web.BlazorWasm.Shared.Dto.Public.WorldRecords;
 using System.Xml.Linq;
 using DevilDaggersInfo.Web.BlazorWasm.Shared.Dto.Public.LeaderboardHistory;
+using DevilDaggersInfo.Web.BlazorWasm.Client.Utils;
+using DevilDaggersInfo.Web.BlazorWasm.Shared.Utils;
+using DevilDaggersInfo.Core.Wiki.Enums;
+using DevilDaggersInfo.Core.Wiki.Objects;
 
 namespace DevilDaggersInfo.Web.BlazorWasm.Client.Pages.Leaderboard;
 
@@ -21,7 +25,17 @@ public partial class PlayerPage
 {
 	private readonly LineChartOptions _progressionLineChartOptions = new()
 	{
-		HighlighterKeys = new() { "Date", "Time" },
+		HighlighterKeys = new()
+		{
+			"Date",
+			"Time",
+			"Player",
+			"Rank",
+			"Gems",
+			"Kills",
+			"Accuracy",
+			"Death type",
+		},
 		GridOptions = new()
 		{
 			MinimumRowHeightInPx = 50,
@@ -94,10 +108,27 @@ public partial class PlayerPage
 			double maxY = Math.Ceiling(scores.Max() / scale) * scale;
 
 			List<LineData> set = GetPlayerHistory.History.Select(eh => new LineData((eh.DateTime.Ticks - minX.Ticks), eh.Time)).ToList();
-
 			_progressionOptions = new(0, null, (maxX - minX).Ticks, minY, scale, maxY);
+			_progressionData.Add(new("#f00", true, true, true, set, (ds, d) =>
+			{
+				GetEntryHistory? entry = GetPlayerHistory.History.Find(eh => eh.Time == d.Y);
+				if (entry == null)
+					return new();
 
-			_progressionData.Add(new("#f00", true, true, true, set, (ds, d) => new List<MarkupString> { new($"<span style='color: {ds.Color}; text-align: right;'>{d.Y.ToString("0.0000")}</span>") }));
+				GameVersion gameVersion = GameVersions.GetGameVersionFromDate(entry.DateTime) ?? GameVersion.V1_0;
+				Dagger dagger = Daggers.GetDaggerFromSeconds(gameVersion, entry.Time);
+				return new()
+				{
+					new($"<span style='text-align: right;'>{entry.DateTime.ToString(FormatUtils.DateFormat)}</span>"),
+					new($"<span style='text-align: right;' class='{dagger.Name.ToLower()}'>{entry.Time.ToString(FormatUtils.TimeFormat)}</span>"),
+					new($"<span style='text-align: right;' class='{dagger.Name.ToLower()}'>{entry.Username}</span>"),
+					new($"<span style='text-align: right;'>{entry.Rank}</span>"),
+					new($"<span style='text-align: right;'>{entry.Gems}</span>"),
+					new($"<span style='text-align: right;'>{entry.Kills}</span>"),
+					new($"<span style='text-align: right;'>{(entry.DaggersFired == 0 ? 0 : entry.DaggersHit / (double)entry.DaggersFired).ToString(FormatUtils.AccuracyFormat)}</span>"),
+					new($"<span style='text-align: right;'>{MarkupUtils.DeathString(entry.DeathType, gameVersion)}</span>"),
+				};
+			}));
 		}
 
 		if (GetPlayerHistory.Activity.Count > 0)
