@@ -107,11 +107,11 @@ public partial class PlayerPage
 			double minY = Math.Floor(scores.Min() / scale) * scale;
 			double maxY = Math.Ceiling(scores.Max() / scale) * scale;
 
-			List<LineData> set = GetPlayerHistory.History.Select(eh => new LineData((eh.DateTime.Ticks - minX.Ticks), eh.Time)).ToList();
+			List<LineData> set = GetPlayerHistory.History.Select(eh => new LineData((eh.DateTime.Ticks - minX.Ticks), eh.Time, eh)).ToList();
 			_progressionOptions = new(0, null, (maxX - minX).Ticks, minY, scale, maxY);
 			_progressionData.Add(new("#f00", true, true, true, set, (ds, d) =>
 			{
-				GetEntryHistory? entry = GetPlayerHistory.History.Find(eh => eh.Time == d.Y);
+				GetEntryHistory? entry = GetPlayerHistory.History.Find(eh => eh == d.Reference);
 				if (entry == null)
 					return new();
 
@@ -140,8 +140,7 @@ public partial class PlayerPage
 			const double scale = 20.0;
 			double maxY = Math.Ceiling(deaths.Max() / scale) * scale;
 
-			List<LineData> set = GetPlayerHistory.Activity.Select(pa => new LineData((pa.DateTime.Ticks - minX.Ticks), pa.DeathsIncrement)).ToList();
-
+			List<LineData> set = GetPlayerHistory.Activity.Select(pa => new LineData((pa.DateTime.Ticks - minX.Ticks), pa.DeathsIncrement, pa)).ToList();
 			_activityOptions = new(0, null, (maxX - minX).Ticks, 0, scale, maxY);
 
 			_activityData.Add(new("#f00", false, false, true, set, (ds, d) => new List<MarkupString> { new($"<span style='color: {ds.Color}; text-align: right;'>{d.Y.ToString("0.0")}</span>") }));

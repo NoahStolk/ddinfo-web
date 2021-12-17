@@ -33,7 +33,7 @@ public partial class EntryPage
 	private void AddDataSet(List<(LineDataSet Set, string Name)> dataSets, int[]? data, string name, string color)
 	{
 		if (data != null)
-			dataSets.Add((new(color, false, false, false, data.Take(_time).Select((val, i) => new LineData(i, val)).ToList(), _highlightTransformation), name));
+			dataSets.Add((new(color, false, false, false, data.Take(_time).Select((val, i) => new LineData(i, val, val)).ToList(), _highlightTransformation), name));
 	}
 
 	private void AddDataSets(List<(LineDataSet Set, string Name)> dataSets, string name)

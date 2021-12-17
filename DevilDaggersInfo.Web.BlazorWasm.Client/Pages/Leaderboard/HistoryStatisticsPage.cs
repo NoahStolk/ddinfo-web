@@ -69,7 +69,7 @@ public partial class HistoryStatisticsPage
 			double minY = Math.Floor(totalPlayers.Min() / scale) * scale;
 			double maxY = Math.Ceiling(totalPlayers.Max() / scale) * scale;
 
-			List<LineData> set = _statistics.Select(hs => new LineData((hs.DateTime.Ticks - minX.Ticks), hs.TotalPlayers)).ToList();
+			List<LineData> set = _statistics.Select(hs => new LineData((hs.DateTime.Ticks - minX.Ticks), hs.TotalPlayers, hs)).ToList();
 			_playersOptions = new(0, null, (maxX - minX).Ticks, minY, scale, maxY);
 			_playersData.Add(new("#f00", false, false, false, set, (ds, d) => new List<MarkupString> { new($"<span style='color: {ds.Color}; text-align: right;'>{d.Y.ToString("0")}</span>") }));
 		}
@@ -84,10 +84,10 @@ public partial class HistoryStatisticsPage
 			double maxY = Math.Ceiling(top10Entrances.Max() / scale) * scale;
 			_entrancesOptions = new(0, null, (maxX - minX).Ticks, minY, scale, maxY);
 
-			List<LineData> top10Set = _statistics.Select(hs => new LineData((hs.DateTime.Ticks - minX.Ticks), hs.Top10Entrance)).ToList();
+			List<LineData> top10Set = _statistics.Select(hs => new LineData((hs.DateTime.Ticks - minX.Ticks), hs.Top10Entrance, hs)).ToList();
 			_entrancesData.Add(new("#800", false, false, false, top10Set, (ds, d) => new List<MarkupString> { new($"<span style='color: {ds.Color}; text-align: right;'>{d.Y.ToString("0.0000")}</span>") }));
 
-			List<LineData> top100Set = _statistics.Select(hs => new LineData((hs.DateTime.Ticks - minX.Ticks), hs.Top100Entrance)).ToList();
+			List<LineData> top100Set = _statistics.Select(hs => new LineData((hs.DateTime.Ticks - minX.Ticks), hs.Top100Entrance, hs)).ToList();
 			_entrancesData.Add(new("#f00", false, false, false, top100Set, (ds, d) => new List<MarkupString> { new($"<span style='color: {ds.Color}; text-align: right;'>{d.Y.ToString("0.0000")}</span>") }));
 		}
 
@@ -101,7 +101,7 @@ public partial class HistoryStatisticsPage
 			double minY = Math.Floor(accuracy.Min() / scale) * scale;
 			double maxY = Math.Ceiling(accuracy.Max() / scale) * scale;
 
-			List<LineData> set = _statistics.Select(hs => new LineData((hs.DateTime.Ticks - minX.Ticks), accuracyConverter(hs.DaggersHitGlobal, hs.DaggersFiredGlobal))).ToList();
+			List<LineData> set = _statistics.Select(hs => new LineData((hs.DateTime.Ticks - minX.Ticks), accuracyConverter(hs.DaggersHitGlobal, hs.DaggersFiredGlobal), hs)).ToList();
 			_accuracyOptions = new(0, null, (maxX - minX).Ticks, minY, scale, maxY);
 			_accuracyData.Add(new("#f80", false, false, false, set, (ds, d) => new List<MarkupString> { new($"<span style='color: {ds.Color}; text-align: right;'>{d.Y.ToString("0.00")}%</span>") }));
 		}
