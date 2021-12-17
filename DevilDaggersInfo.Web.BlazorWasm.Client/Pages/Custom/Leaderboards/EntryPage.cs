@@ -84,7 +84,6 @@ public partial class EntryPage
 
 		if (GetCustomEntryData.DaggersHitData != null && GetCustomEntryData.DaggersFiredData != null)
 		{
-			List<(LineDataSet Set, string Name)> accuracySets = new();
 			int min = new int[] { GetCustomEntryData.DaggersHitData.Length, GetCustomEntryData.DaggersFiredData.Length, _time }.Min();
 			Accuracy[] stats = new Accuracy[min];
 			for (int i = 0; i < min; i++)
@@ -105,13 +104,12 @@ public partial class EntryPage
 					new($"<span style='text-align: right;'>{stat.Fired}</span>"),
 				};
 			};
-			accuracySets.Add((new("#f80", false, false, false, stats.Select((t, i) => new LineData(i, t.Acc, t)).ToList(), accuracyHighlighter), "Accuracy"));
 
 			double minAcc = stats.Select(t => t.Acc).Min();
 			double maxAcc = stats.Select(t => t.Acc).Max();
 			DataOptions dataOptions = new(0, _time / 10, _time, Math.Floor(minAcc * 10) / 10, 0.1, Math.Ceiling(maxAcc * 10) / 10);
 			LineChartOptions chartOptions = new() { HighlighterKeys = new() { "Time", "Accuracy", "Daggers Hit", "Daggers Fired" }, GridOptions = new() { MinimumRowHeightInPx = 50 }, ScaleYOptions = new() { NumberFormat = "0%" } };
-			_lineCharts.Add(("Accuracy", dataOptions, chartOptions, accuracySets.ConvertAll(ds => ds.Set)));
+			_lineCharts.Add(("Accuracy", dataOptions, chartOptions, new() { new("#f80", false, false, false, stats.Select((t, i) => new LineData(i, t.Acc, t)).ToList(), accuracyHighlighter) }));
 		}
 
 		List<(LineDataSet Set, string Name)> skullsAliveSets = new();
