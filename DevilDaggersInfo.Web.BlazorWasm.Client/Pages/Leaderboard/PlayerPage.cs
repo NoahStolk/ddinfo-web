@@ -142,8 +142,18 @@ public partial class PlayerPage
 
 			List<LineData> set = GetPlayerHistory.Activity.Select(pa => new LineData((pa.DateTime.Ticks - minX.Ticks), pa.DeathsIncrement, pa)).ToList();
 			_activityOptions = new(0, null, (maxX - minX).Ticks, 0, scale, maxY);
+			_activityData.Add(new("#f00", false, false, true, set, (ds, d) =>
+			{
+				GetPlayerActivity? activity = GetPlayerHistory.Activity.Find(pa => pa == d.Reference);
+				if (activity == null)
+					return new();
 
-			_activityData.Add(new("#f00", false, false, true, set, (ds, d) => new List<MarkupString> { new($"<span style='color: {ds.Color}; text-align: right;'>{d.Y.ToString("0.0")}</span>") }));
+				return new()
+				{
+					new($"<span style='text-align: right;'>{activity.DateTime.ToString(FormatUtils.DateFormat)}</span>"),
+					new($"<span style='color: {ds.Color}; text-align: right;'>{d.Y.ToString("0.0")}</span>"),
+				};
+			}));
 		}
 	}
 
