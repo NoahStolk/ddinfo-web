@@ -1,0 +1,15 @@
+<div class="chart relative" id="@UniqueName" @onmouseenter="() => SetHighlighterVisibility(true)" @onmouseleave="() => SetHighlighterVisibility(false)">
+	<LineChartHighlighter @ref="_highlighter">
+		<div class="grid grid-cols-2">
+			@for (int i = 0; i < Options.HighlighterKeys.Count; i++)
+			{
+				<span>@Options.HighlighterKeys[i]</span>
+				if (i < HighlighterValues.Count)
+				{
+					@HighlighterValues[i]
+				}
+			}
+		</div>
+	</LineChartHighlighter>
+	<BECanvas Width="_canvasWidth" Height="_canvasHeight" @ref="_canvasReference" />
+</div>

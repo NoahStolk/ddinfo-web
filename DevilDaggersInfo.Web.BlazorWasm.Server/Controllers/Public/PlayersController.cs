@@ -150,9 +150,6 @@ public class PlayersController : ControllerBase
 			}
 		}
 
-		if (entryHistory.Count > 0)
-			entryHistory.Add(entryHistory[^1] with { DateTime = DateTime.UtcNow });
-
 		return new GetPlayerHistory
 		{
 			Activity = activity,

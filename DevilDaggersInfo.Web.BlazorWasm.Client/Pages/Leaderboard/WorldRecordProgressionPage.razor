@@ -1,0 +1,13 @@
+@page "/leaderboard/world-record-progression"
+@using DevilDaggersInfo.Web.BlazorWasm.Client.Core.CanvasChart.Components
+
+<Heading Title="World Record Progression" />
+
+@if (_data == null || _dataOptions == null)
+{
+	<Loading />
+}
+else
+{
+	<LineChart DataOptions="_dataOptions" UniqueName="#world-record-progression-chart" DataSets="@_lineDataSets" Options="_lineChartOptions" />
+}
