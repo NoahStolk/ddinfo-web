@@ -52,7 +52,8 @@ public partial class EntryPage
 		if (dataSets.Count == 0)
 			return;
 
-		DataOptions dataOptions = new(0, Math.Ceiling(time / 10), time, 0, 10, dataSets.Select(ds => ds.Data.Select(d => d.Y).Max()).Max());
+		double maxData = dataSets.Select(ds => ds.Data.Select(d => d.Y).Max()).Max();
+		DataOptions dataOptions = new(0, Math.Ceiling(time / 10), time, 0, maxData / 8, maxData);
 		LineChartOptions chartOptions = new() { HighlighterKeys = keys.ToList(), GridOptions = new() { MinimumRowHeightInPx = 50 } };
 		_lineCharts.Add((name, dataOptions, chartOptions, dataSets));
 	}
