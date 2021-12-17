@@ -26,115 +26,118 @@ public partial class EntryPage
 
 	public GetCustomEntryData? GetCustomEntryData { get; set; }
 
-	private static void AddDataSet(List<LineDataSet> dataSets, ushort[]? data, string color)
-		=> AddDataSet(dataSets, data?.Select(u => (int)u).ToArray(), color);
+	private static void AddDataSet(List<(LineDataSet Set, string Name)> dataSets, ushort[]? data, string name, string color)
+		=> AddDataSet(dataSets, data?.Select(u => (int)u).ToArray(), name, color);
 
-	private static void AddDataSet(List<LineDataSet> dataSets, int[]? data, string color)
+	private static void AddDataSet(List<(LineDataSet Set, string Name)> dataSets, int[]? data, string name, string color)
 	{
 		if (data != null)
-			dataSets.Add(new(color, false, false, false, data.Select((val, i) => new LineData(i, val)).ToList(), _highlightTransformation));
+			dataSets.Add((new(color, false, false, false, data.Select((val, i) => new LineData(i, val)).ToList(), _highlightTransformation), name));
 	}
 
-	private void AddDataSets(List<LineDataSet> dataSets, double time, string name, params string[] keys)
+	private void AddDataSets(List<(LineDataSet Set, string Name)> dataSets, double time, string name)
 	{
 		if (dataSets.Count == 0)
 			return;
 
-		double maxData = dataSets.Select(ds => ds.Data.Select(d => d.Y).Max()).Max();
-		DataOptions dataOptions = new(0, Math.Ceiling(time / 10), time, 0, maxData / 8, maxData);
-		LineChartOptions chartOptions = new() { HighlighterKeys = keys.ToList(), HighlighterTitle = "Time", HighlighterTitleValueNumberFormat = "0.0000", GridOptions = new() { MinimumRowHeightInPx = 50 } };
-		_lineCharts.Add((name, dataOptions, chartOptions, dataSets));
+		double maxData = dataSets.Select(ds => ds.Set.Data.Select(d => d.Y).Max()).Max();
+		int digits = ((int)Math.Round(maxData)).ToString().Length;
+		int roundingPoint = (int)Math.Pow(10, digits - 1);
+		maxData = Math.Ceiling(maxData / roundingPoint) * roundingPoint;
+		DataOptions dataOptions = new(0, Math.Ceiling(time / 10), Math.Floor(time), 0, maxData / 8, maxData);
+		LineChartOptions chartOptions = new() { HighlighterKeys = dataSets.ConvertAll(ds => ds.Name), HighlighterTitle = "Time", HighlighterTitleValueNumberFormat = "0.0000", GridOptions = new() { MinimumRowHeightInPx = 50 } };
+		_lineCharts.Add((name, dataOptions, chartOptions, dataSets.ConvertAll(ds => ds.Set)));
 	}
 
 	protected override async Task OnInitializedAsync()
 	{
 		GetCustomEntryData = await Http.GetCustomEntryDataById(Id);
 
-		List<LineDataSet> gemsSets = new();
-		AddDataSet(gemsSets, GetCustomEntryData.GemsTotalData, "#800");
-		AddDataSet(gemsSets, GetCustomEntryData.GemsCollectedData, "#f00");
-		AddDataSet(gemsSets, GetCustomEntryData.GemsDespawnedData, "#888");
-		AddDataSet(gemsSets, GetCustomEntryData.GemsEatenData, "#0f0");
-		AddDataSets(gemsSets, GetCustomEntryData.Time, "Gems", "Total Gems", "Collected Gems", "Despawned Gems", "Eaten Gems");
+		List<(LineDataSet Set, string Name)> gemsSets = new();
+		AddDataSet(gemsSets, GetCustomEntryData.GemsTotalData, "Total Gems", "#800");
+		AddDataSet(gemsSets, GetCustomEntryData.GemsCollectedData, "Gems Collected", "#f00");
+		AddDataSet(gemsSets, GetCustomEntryData.GemsDespawnedData, "Gems Despawned", "#888");
+		AddDataSet(gemsSets, GetCustomEntryData.GemsEatenData, "Gems Eaten", "#0f0");
+		AddDataSets(gemsSets, GetCustomEntryData.Time, "Gems");
 
-		List<LineDataSet> homingSets = new();
-		AddDataSet(homingSets, GetCustomEntryData.HomingStoredData, "#f0f");
-		AddDataSet(homingSets, GetCustomEntryData.HomingEatenData, "#c8a2c8");
-		AddDataSets(homingSets, GetCustomEntryData.Time, "Homing", "Homing Stored", "Homing Eaten");
+		List<(LineDataSet Set, string Name)> homingSets = new();
+		AddDataSet(homingSets, GetCustomEntryData.HomingStoredData, "Homing Stored", "#f0f");
+		AddDataSet(homingSets, GetCustomEntryData.HomingEatenData, "Homing Eaten", "#c8a2c8");
+		AddDataSets(homingSets, GetCustomEntryData.Time, "Homing");
 
-		List<LineDataSet> enemiesSets = new();
-		AddDataSet(enemiesSets, GetCustomEntryData.EnemiesAliveData, "#840");
-		AddDataSet(enemiesSets, GetCustomEntryData.EnemiesKilledData, "#f00");
-		AddDataSets(enemiesSets, GetCustomEntryData.Time, "Enemies", "Enemies Alive", "Enemies Killed");
+		List<(LineDataSet Set, string Name)> enemiesSets = new();
+		AddDataSet(enemiesSets, GetCustomEntryData.EnemiesAliveData, "Enemies Alive", "#840");
+		AddDataSet(enemiesSets, GetCustomEntryData.EnemiesKilledData, "Enemies Killed", "#f00");
+		AddDataSets(enemiesSets, GetCustomEntryData.Time, "Enemies");
 
-		List<LineDataSet> daggersSets = new();
-		AddDataSet(daggersSets, GetCustomEntryData.DaggersHitData, "#ff0");
-		AddDataSet(daggersSets, GetCustomEntryData.DaggersFiredData, "#f40");
-		AddDataSets(daggersSets, GetCustomEntryData.Time, "Daggers", "Daggers Hit", "Daggers Fired");
+		List<(LineDataSet Set, string Name)> daggersSets = new();
+		AddDataSet(daggersSets, GetCustomEntryData.DaggersHitData, "Daggers Hit", "#ff0");
+		AddDataSet(daggersSets, GetCustomEntryData.DaggersFiredData, "Daggers Fired", "#f40");
+		AddDataSets(daggersSets, GetCustomEntryData.Time, "Daggers");
 
-		List<LineDataSet> skullsAliveSets = new();
-		AddDataSet(skullsAliveSets, GetCustomEntryData.Skull1sAliveData, EnemyColors.Skull1.HexCode);
-		AddDataSet(skullsAliveSets, GetCustomEntryData.Skull2sAliveData, EnemyColors.Skull2.HexCode);
-		AddDataSet(skullsAliveSets, GetCustomEntryData.Skull3sAliveData, EnemyColors.Skull3.HexCode);
-		AddDataSet(skullsAliveSets, GetCustomEntryData.Skull4sAliveData, EnemyColors.Skull4.HexCode);
-		AddDataSets(skullsAliveSets, GetCustomEntryData.Time, "Skulls Alive", "Skull Is Alive", "Skull IIs Alive", "Skull IIIs Alive", "Skull IVs Alive");
+		List<(LineDataSet Set, string Name)> skullsAliveSets = new();
+		AddDataSet(skullsAliveSets, GetCustomEntryData.Skull1sAliveData, "Skull Is Alive", EnemyColors.Skull1.HexCode);
+		AddDataSet(skullsAliveSets, GetCustomEntryData.Skull2sAliveData, "Skull IIs Alive", EnemyColors.Skull2.HexCode);
+		AddDataSet(skullsAliveSets, GetCustomEntryData.Skull3sAliveData, "Skull IIIs Alive", EnemyColors.Skull3.HexCode);
+		AddDataSet(skullsAliveSets, GetCustomEntryData.Skull4sAliveData, "Skull IVs Alive", EnemyColors.Skull4.HexCode);
+		AddDataSets(skullsAliveSets, GetCustomEntryData.Time, "Skulls Alive");
 
-		List<LineDataSet> squidsAliveSets = new();
-		AddDataSet(squidsAliveSets, GetCustomEntryData.Squid1sAliveData, EnemyColors.Squid1.HexCode);
-		AddDataSet(squidsAliveSets, GetCustomEntryData.Squid2sAliveData, EnemyColors.Squid2.HexCode);
-		AddDataSet(squidsAliveSets, GetCustomEntryData.Squid3sAliveData, EnemyColors.Squid3.HexCode);
-		AddDataSets(squidsAliveSets, GetCustomEntryData.Time, "Squids Alive", "Squid Is Alive", "Squid IIs Alive", "Squid IIIs Alive");
+		List<(LineDataSet Set, string Name)> squidsAliveSets = new();
+		AddDataSet(squidsAliveSets, GetCustomEntryData.Squid1sAliveData, "Squid Is Alive", EnemyColors.Squid1.HexCode);
+		AddDataSet(squidsAliveSets, GetCustomEntryData.Squid2sAliveData, "Squid IIs Alive", EnemyColors.Squid2.HexCode);
+		AddDataSet(squidsAliveSets, GetCustomEntryData.Squid3sAliveData, "Squid IIIs Alive", EnemyColors.Squid3.HexCode);
+		AddDataSets(squidsAliveSets, GetCustomEntryData.Time, "Squids Alive");
 
-		List<LineDataSet> spidersAliveSets = new();
-		AddDataSet(spidersAliveSets, GetCustomEntryData.Spider1sAliveData, EnemyColors.Spider1.HexCode);
-		AddDataSet(spidersAliveSets, GetCustomEntryData.Spider2sAliveData, EnemyColors.Spider2.HexCode);
-		AddDataSet(spidersAliveSets, GetCustomEntryData.SpiderEggsAliveData, EnemyColors.SpiderEgg1.HexCode);
-		AddDataSet(spidersAliveSets, GetCustomEntryData.SpiderlingsAliveData, EnemyColors.Spiderling.HexCode);
-		AddDataSets(spidersAliveSets, GetCustomEntryData.Time, "Spiders Alive", "Spider Is Alive", "Spider IIs Alive", "Spider Eggs Alive", "Spiderlings Alive");
+		List<(LineDataSet Set, string Name)> spidersAliveSets = new();
+		AddDataSet(spidersAliveSets, GetCustomEntryData.Spider1sAliveData, "Spider Is Alive", EnemyColors.Spider1.HexCode);
+		AddDataSet(spidersAliveSets, GetCustomEntryData.Spider2sAliveData, "Spider IIs Alive", EnemyColors.Spider2.HexCode);
+		AddDataSet(spidersAliveSets, GetCustomEntryData.SpiderEggsAliveData, "Spider Eggs Alive", EnemyColors.SpiderEgg1.HexCode);
+		AddDataSet(spidersAliveSets, GetCustomEntryData.SpiderlingsAliveData, "Spiderlings Alive", EnemyColors.Spiderling.HexCode);
+		AddDataSets(spidersAliveSets, GetCustomEntryData.Time, "Spiders Alive");
 
-		List<LineDataSet> pedesAliveSets = new();
-		AddDataSet(pedesAliveSets, GetCustomEntryData.CentipedesAliveData, EnemyColors.Centipede.HexCode);
-		AddDataSet(pedesAliveSets, GetCustomEntryData.GigapedesAliveData, EnemyColors.Gigapede.HexCode);
-		AddDataSet(pedesAliveSets, GetCustomEntryData.GhostpedesAliveData, EnemyColors.Ghostpede.HexCode);
-		AddDataSets(pedesAliveSets, GetCustomEntryData.Time, "Pedes Alive", "Centipedes Alive", "Gigapedes Alive", "Ghostpedes Alive");
+		List<(LineDataSet Set, string Name)> pedesAliveSets = new();
+		AddDataSet(pedesAliveSets, GetCustomEntryData.CentipedesAliveData, "Centipedes Alive", EnemyColors.Centipede.HexCode);
+		AddDataSet(pedesAliveSets, GetCustomEntryData.GigapedesAliveData, "Gigapedes Alive", EnemyColors.Gigapede.HexCode);
+		AddDataSet(pedesAliveSets, GetCustomEntryData.GhostpedesAliveData, "Ghostpedes Alive", EnemyColors.Ghostpede.HexCode);
+		AddDataSets(pedesAliveSets, GetCustomEntryData.Time, "Pedes Alive");
 
-		List<LineDataSet> otherEnemiesAliveSets = new();
-		AddDataSet(otherEnemiesAliveSets, GetCustomEntryData.ThornsAliveData, EnemyColors.Thorn.HexCode);
-		AddDataSet(otherEnemiesAliveSets, GetCustomEntryData.LeviathansAliveData, EnemyColors.Leviathan.HexCode);
-		AddDataSet(otherEnemiesAliveSets, GetCustomEntryData.OrbsAliveData, EnemyColors.TheOrb.HexCode);
-		AddDataSets(otherEnemiesAliveSets, GetCustomEntryData.Time, "Other Enemies Alive", "Thorns Alive", "Leviathans Alive", "Orbs Alive");
+		List<(LineDataSet Set, string Name)> otherEnemiesAliveSets = new();
+		AddDataSet(otherEnemiesAliveSets, GetCustomEntryData.ThornsAliveData, "Thorns Alive", EnemyColors.Thorn.HexCode);
+		AddDataSet(otherEnemiesAliveSets, GetCustomEntryData.LeviathansAliveData, "Leviathans Alive", EnemyColors.Leviathan.HexCode);
+		AddDataSet(otherEnemiesAliveSets, GetCustomEntryData.OrbsAliveData, "Orbs Alive", EnemyColors.TheOrb.HexCode);
+		AddDataSets(otherEnemiesAliveSets, GetCustomEntryData.Time, "Other Enemies Alive");
 
-		List<LineDataSet> skullsKilledSets = new();
-		AddDataSet(skullsKilledSets, GetCustomEntryData.Skull1sKilledData, EnemyColors.Skull1.HexCode);
-		AddDataSet(skullsKilledSets, GetCustomEntryData.Skull2sKilledData, EnemyColors.Skull2.HexCode);
-		AddDataSet(skullsKilledSets, GetCustomEntryData.Skull3sKilledData, EnemyColors.Skull3.HexCode);
-		AddDataSet(skullsKilledSets, GetCustomEntryData.Skull4sKilledData, EnemyColors.Skull4.HexCode);
-		AddDataSets(skullsKilledSets, GetCustomEntryData.Time, "Skulls Killed", "Skull Is Killed", "Skull IIs Killed", "Skull IIIs Killed", "Skull IVs Killed");
+		List<(LineDataSet Set, string Name)> skullsKilledSets = new();
+		AddDataSet(skullsKilledSets, GetCustomEntryData.Skull1sKilledData, "Skull Is Killed", EnemyColors.Skull1.HexCode);
+		AddDataSet(skullsKilledSets, GetCustomEntryData.Skull2sKilledData, "Skull IIs Killed", EnemyColors.Skull2.HexCode);
+		AddDataSet(skullsKilledSets, GetCustomEntryData.Skull3sKilledData, "Skull IIIs Killed", EnemyColors.Skull3.HexCode);
+		AddDataSet(skullsKilledSets, GetCustomEntryData.Skull4sKilledData, "Skull IVs Killed", EnemyColors.Skull4.HexCode);
+		AddDataSets(skullsKilledSets, GetCustomEntryData.Time, "Skulls Killed");
 
-		List<LineDataSet> squidsKilledSets = new();
-		AddDataSet(squidsKilledSets, GetCustomEntryData.Squid1sKilledData, EnemyColors.Squid1.HexCode);
-		AddDataSet(squidsKilledSets, GetCustomEntryData.Squid2sKilledData, EnemyColors.Squid2.HexCode);
-		AddDataSet(squidsKilledSets, GetCustomEntryData.Squid3sKilledData, EnemyColors.Squid3.HexCode);
-		AddDataSets(squidsKilledSets, GetCustomEntryData.Time, "Squids Killed", "Squid Is Killed", "Squid IIs Killed", "Squid IIIs Killed");
+		List<(LineDataSet Set, string Name)> squidsKilledSets = new();
+		AddDataSet(squidsKilledSets, GetCustomEntryData.Squid1sKilledData, "Squid Is Killed", EnemyColors.Squid1.HexCode);
+		AddDataSet(squidsKilledSets, GetCustomEntryData.Squid2sKilledData, "Squid IIs Killed", EnemyColors.Squid2.HexCode);
+		AddDataSet(squidsKilledSets, GetCustomEntryData.Squid3sKilledData, "Squid IIIs Killed", EnemyColors.Squid3.HexCode);
+		AddDataSets(squidsKilledSets, GetCustomEntryData.Time, "Squids Killed");
 
-		List<LineDataSet> spidersKilledSets = new();
-		AddDataSet(spidersKilledSets, GetCustomEntryData.Spider1sKilledData, EnemyColors.Spider1.HexCode);
-		AddDataSet(spidersKilledSets, GetCustomEntryData.Spider2sKilledData, EnemyColors.Spider2.HexCode);
-		AddDataSet(spidersKilledSets, GetCustomEntryData.SpiderEggsKilledData, EnemyColors.SpiderEgg1.HexCode);
-		AddDataSet(spidersKilledSets, GetCustomEntryData.SpiderlingsKilledData, EnemyColors.Spiderling.HexCode);
-		AddDataSets(spidersKilledSets, GetCustomEntryData.Time, "Spiders Killed", "Spider Is Killed", "Spider IIs Killed", "Spider Eggs Killed", "Spiderlings Killed");
+		List<(LineDataSet Set, string Name)> spidersKilledSets = new();
+		AddDataSet(spidersKilledSets, GetCustomEntryData.Spider1sKilledData, "Spider Is Killed", EnemyColors.Spider1.HexCode);
+		AddDataSet(spidersKilledSets, GetCustomEntryData.Spider2sKilledData, "Spider IIs Killed", EnemyColors.Spider2.HexCode);
+		AddDataSet(spidersKilledSets, GetCustomEntryData.SpiderEggsKilledData, "Spider Eggs Killed", EnemyColors.SpiderEgg1.HexCode);
+		AddDataSet(spidersKilledSets, GetCustomEntryData.SpiderlingsKilledData, "Spiderlings Killed", EnemyColors.Spiderling.HexCode);
+		AddDataSets(spidersKilledSets, GetCustomEntryData.Time, "Spiders Killed");
 
-		List<LineDataSet> pedesKilledSets = new();
-		AddDataSet(pedesKilledSets, GetCustomEntryData.CentipedesKilledData, EnemyColors.Centipede.HexCode);
-		AddDataSet(pedesKilledSets, GetCustomEntryData.GigapedesKilledData, EnemyColors.Gigapede.HexCode);
-		AddDataSet(pedesKilledSets, GetCustomEntryData.GhostpedesKilledData, EnemyColors.Ghostpede.HexCode);
-		AddDataSets(pedesKilledSets, GetCustomEntryData.Time, "Pedes Killed", "Centipedes Killed", "Gigapedes Killed", "Ghostpedes Killed");
+		List<(LineDataSet Set, string Name)> pedesKilledSets = new();
+		AddDataSet(pedesKilledSets, GetCustomEntryData.CentipedesKilledData, "Centipedes Killed", EnemyColors.Centipede.HexCode);
+		AddDataSet(pedesKilledSets, GetCustomEntryData.GigapedesKilledData, "Gigapedes Killed", EnemyColors.Gigapede.HexCode);
+		AddDataSet(pedesKilledSets, GetCustomEntryData.GhostpedesKilledData, "Ghostpedes Killed", EnemyColors.Ghostpede.HexCode);
+		AddDataSets(pedesKilledSets, GetCustomEntryData.Time, "Pedes Killed");
 
-		List<LineDataSet> otherEnemiesKilledSets = new();
-		AddDataSet(otherEnemiesKilledSets, GetCustomEntryData.ThornsKilledData, EnemyColors.Thorn.HexCode);
-		AddDataSet(otherEnemiesKilledSets, GetCustomEntryData.LeviathansKilledData, EnemyColors.Leviathan.HexCode);
-		AddDataSet(otherEnemiesKilledSets, GetCustomEntryData.OrbsKilledData, EnemyColors.TheOrb.HexCode);
-		AddDataSets(otherEnemiesKilledSets, GetCustomEntryData.Time, "Other Enemies Killed", "Thorns Killed", "Leviathans Killed", "Orbs Killed");
+		List<(LineDataSet Set, string Name)> otherEnemiesKilledSets = new();
+		AddDataSet(otherEnemiesKilledSets, GetCustomEntryData.ThornsKilledData, "Thorns Killed", EnemyColors.Thorn.HexCode);
+		AddDataSet(otherEnemiesKilledSets, GetCustomEntryData.LeviathansKilledData, "Leviathans Killed", EnemyColors.Leviathan.HexCode);
+		AddDataSet(otherEnemiesKilledSets, GetCustomEntryData.OrbsKilledData, "Orbs Killed", EnemyColors.TheOrb.HexCode);
+		AddDataSets(otherEnemiesKilledSets, GetCustomEntryData.Time, "Other Enemies Killed");
 	}
 
 	protected override async Task OnAfterRenderAsync(bool firstRender)
