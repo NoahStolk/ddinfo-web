@@ -1,4 +1,4 @@
-<div class="chart relative" id="@UniqueName">
+<div class="chart relative" id="@UniqueName" @onmouseenter="() => SetHighlighterVisibility(true)" @onmouseleave="() => SetHighlighterVisibility(false)">
 	<LineChartHighlighter @ref="_highlighter">
 		<div class="grid grid-cols-2">
 			@if (Options.HighlighterTitle != null)

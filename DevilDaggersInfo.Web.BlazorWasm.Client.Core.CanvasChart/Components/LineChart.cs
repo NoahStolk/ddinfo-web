@@ -22,6 +22,7 @@ public partial class LineChart
 	private double _canvasMouseX;
 	private double _canvasMouseY;
 
+	private bool _shouldRender = true;
 	private MarkupString _highlighterTitleValue;
 
 	private double ChartMouseX => _canvasMouseX - Options.ChartMarginXInPx;
@@ -263,5 +264,18 @@ public partial class LineChart
 		//await _context.MoveToAsync(_canvasMouseX, Options.ChartMarginYInPx);
 		//await _context.LineToAsync(_canvasMouseX, _canvasHeight - Options.ChartMarginYInPx);
 		//await _context.StrokeAsync();
+	}
+
+	protected override bool ShouldRender() => _shouldRender;
+
+	private void SetHighlighterVisibility(bool visible)
+	{
+		// Prevent re-rendering the entire canvas.
+		_shouldRender = false;
+		if (_highlighter != null)
+		{
+			_highlighter.IsVisible = visible;
+			_highlighter.ChangeState();
+		}
 	}
 }
