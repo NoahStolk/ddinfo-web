@@ -1,6 +1,6 @@
 @page "/leaderboard/player/{Id:int}"
-@using Blazorise.Charts
 @using DevilDaggersInfo.Web.BlazorWasm.Client.Components.Leaderboards.Player;
+@using DevilDaggersInfo.Web.BlazorWasm.Client.Core.CanvasChart.Components
 @using DevilDaggersInfo.Web.BlazorWasm.Shared.Dto.Public.Mods;
 @using DevilDaggersInfo.Web.BlazorWasm.Shared.Dto.Public.Spawnsets;
 @using DevilDaggersInfo.Web.BlazorWasm.Shared.Enums
@@ -165,16 +165,22 @@ else
 
 	if (GetPlayerHistory != null)
 	{
-		if (GetPlayerHistory.History.Count > 0)
-		{
-			<Heading Title="Progression" Level="2" />
-			<LineChart Options="LineChartUtils.Options" OptionsJsonString="@LineChartUtils.AdditionalJsonOptionsTime" @ref="_progressionChart" TItem="double" />
-		}
+		<div class="grid grid-cols-1 2xl:grid-cols-2">
+			@if (GetPlayerHistory.History.Count > 0)
+			{
+				<div>
+					<Heading Title="Progression" Level="2" />
+					<LineChart DataOptions="_progressionOptions" UniqueName="#progression-chart" DataSets="@_progressionData" Options="_progressionLineChartOptions" />
+				</div>
+			}
 
-		if (GetPlayerHistory.Activity.Count > 0)
-		{
-			<Heading Title="Activity" Level="2" />
-			<LineChart Options="LineChartUtils.Options" OptionsJsonString="@LineChartUtils.AdditionalJsonOptionsTime" @ref="_activityChart" TItem="double" />
-		}
+			@if (GetPlayerHistory.Activity.Count > 0)
+			{
+				<div>
+					<Heading Title="Activity" Level="2" />
+					<LineChart DataOptions="_activityOptions" UniqueName="#activity-chart" DataSets="@_activityData" Options="_activityLineChartOptions" />
+				</div>
+			}
+		</div>
 	}
 }
