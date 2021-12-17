@@ -1,3 +1,4 @@
+using DevilDaggersInfo.Core.Wiki.Colors;
 using DevilDaggersInfo.Web.BlazorWasm.Client.Core.CanvasChart.Data;
 using DevilDaggersInfo.Web.BlazorWasm.Client.Core.CanvasChart.Options;
 using DevilDaggersInfo.Web.BlazorWasm.Client.Core.CanvasChart.Options.LineChart;
@@ -36,6 +37,9 @@ public partial class EntryPage
 	public IJSRuntime JsRuntime { get; set; } = null!;
 
 	public GetCustomEntryData? GetCustomEntryData { get; set; }
+
+	private static void AddDataSet(List<LineDataSet> dataSets, ushort[]? data, string color)
+		=> AddDataSet(dataSets, data?.Select(u => (int)u).ToArray(), color);
 
 	private static void AddDataSet(List<LineDataSet> dataSets, int[]? data, string color)
 	{
@@ -78,6 +82,13 @@ public partial class EntryPage
 		AddDataSet(daggersSets, GetCustomEntryData.DaggersHitData, "#ff0");
 		AddDataSet(daggersSets, GetCustomEntryData.DaggersFiredData, "#f40");
 		AddDataSets(daggersSets, GetCustomEntryData.Time, "Daggers", "Daggers Hit", "Daggers Fired");
+
+		List<LineDataSet> skullsAliveSets = new();
+		AddDataSet(skullsAliveSets, GetCustomEntryData.Skull1sAliveData, EnemyColors.Skull1.HexCode);
+		AddDataSet(skullsAliveSets, GetCustomEntryData.Skull2sAliveData, EnemyColors.Skull2.HexCode);
+		AddDataSet(skullsAliveSets, GetCustomEntryData.Skull3sAliveData, EnemyColors.Skull3.HexCode);
+		AddDataSet(skullsAliveSets, GetCustomEntryData.Skull4sAliveData, EnemyColors.Skull4.HexCode);
+		AddDataSets(skullsAliveSets, GetCustomEntryData.Time, "Skulls Alive", "Skull Is Alive", "Skull IIs Alive", "Skull IIIs Alive", "Skull IVs Alive");
 	}
 
 	protected override async Task OnAfterRenderAsync(bool firstRender)
