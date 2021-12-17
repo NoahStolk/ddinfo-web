@@ -81,10 +81,30 @@ public partial class EntryPage
 		AddDataSet(enemiesSets, GetCustomEntryData.EnemiesKilledData, "Enemies Killed", "#f00");
 		AddDataSets(enemiesSets, "Enemies");
 
-		List<(LineDataSet Set, string Name)> daggersSets = new();
-		AddDataSet(daggersSets, GetCustomEntryData.DaggersHitData, "Daggers Hit", "#ff0");
-		AddDataSet(daggersSets, GetCustomEntryData.DaggersFiredData, "Daggers Fired", "#f40");
-		AddDataSets(daggersSets, "Daggers");
+		if (GetCustomEntryData.DaggersHitData != null && GetCustomEntryData.DaggersFiredData != null)
+		{
+			List<(LineDataSet Set, string Name)> accuracySets = new();
+			int min = new int[] { GetCustomEntryData.DaggersHitData.Length, GetCustomEntryData.DaggersFiredData.Length, _time }.Min();
+			double[] accuracy = new double[min];
+			for (int i = 0; i < min; i++)
+			{
+				double fired = GetCustomEntryData.DaggersFiredData[i];
+				accuracy[i] = fired == 0 ? 0 : GetCustomEntryData.DaggersHitData[i] / fired;
+			}
+
+			Func<LineDataSet, LineData, List<MarkupString>> accuracyHighlighter = static (ds, d) => new List<MarkupString>
+			{
+				new($"<span style='text-align: right;'>{d.X.ToString("0.0000")}</span>"),
+				new($"<span style='color: {ds.Color}; text-align: right;'>{d.Y.ToString("0.00%")}</span>"),
+			};
+			accuracySets.Add((new("#f80", false, false, false, accuracy.Select((val, i) => new LineData(i, val, val)).ToList(), accuracyHighlighter), "Accuracy"));
+
+			double minAcc = accuracy.Min();
+			double maxAcc = accuracy.Max();
+			DataOptions dataOptions = new(0, _time / 10, _time, Math.Floor(minAcc * 10) / 10, 0.1, Math.Ceiling(maxAcc * 10) / 10);
+			LineChartOptions chartOptions = new() { HighlighterKeys = accuracySets.ConvertAll(ds => ds.Name).Prepend("Time").ToList(), GridOptions = new() { MinimumRowHeightInPx = 50 }, ScaleYOptions = new() { NumberFormat = "0%" } };
+			_lineCharts.Add(("Accuracy", dataOptions, chartOptions, accuracySets.ConvertAll(ds => ds.Set)));
+		}
 
 		List<(LineDataSet Set, string Name)> skullsAliveSets = new();
 		AddDataSet(skullsAliveSets, GetCustomEntryData.Skull1sAliveData, "Skull Is Alive", EnemyColors.Skull1.HexCode);
