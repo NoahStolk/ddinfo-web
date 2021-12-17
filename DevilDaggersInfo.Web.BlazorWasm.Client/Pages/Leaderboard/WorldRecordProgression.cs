@@ -13,6 +13,8 @@ public partial class WorldRecordProgression
 {
 	private readonly LineChartOptions _lineChartOptions = new()
 	{
+		HighlighterTitle = "Date",
+		HighlighterTitleValueNumberFormat = "0", // TODO: Date.
 		HighlighterKeys = new()
 		{
 			"Player",
