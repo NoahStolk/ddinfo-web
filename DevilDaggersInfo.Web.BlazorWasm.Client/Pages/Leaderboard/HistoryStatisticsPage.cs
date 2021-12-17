@@ -23,6 +23,7 @@ public partial class HistoryStatisticsPage
 			MinimumRowHeightInPx = 50,
 		},
 		ChartMarginXInPx = 60,
+		DisplayXScaleAsDates = true,
 	};
 
 	private readonly LineChartOptions _entrancesLineChartOptions = new()
@@ -32,6 +33,7 @@ public partial class HistoryStatisticsPage
 		{
 			MinimumRowHeightInPx = 50,
 		},
+		DisplayXScaleAsDates = true,
 	};
 
 	private readonly LineChartOptions _accuracyLineChartOptions = new()
@@ -42,6 +44,7 @@ public partial class HistoryStatisticsPage
 			MinimumRowHeightInPx = 50,
 		},
 		ScaleYOptions = new() { NumberFormat = "0%" },
+		DisplayXScaleAsDates = true,
 	};
 
 	private readonly List<LineDataSet> _playersData = new();
@@ -75,8 +78,8 @@ public partial class HistoryStatisticsPage
 			double minY = Math.Floor(totalPlayers.Min() / scale) * scale;
 			double maxY = Math.Ceiling(totalPlayers.Max() / scale) * scale;
 
-			List<LineData> set = _statistics.Select(hs => new LineData((hs.DateTime.Ticks - minX.Ticks), hs.TotalPlayers, hs)).ToList();
-			_playersOptions = new(0, null, (maxX - minX).Ticks, minY, scale, maxY);
+			List<LineData> set = _statistics.Select(hs => new LineData(hs.DateTime.Ticks, hs.TotalPlayers, hs)).ToList();
+			_playersOptions = new(minX.Ticks, null, maxX.Ticks, minY, scale, maxY);
 			_playersData.Add(new("#f00", false, false, false, set, (ds, d) =>
 			{
 				GetLeaderboardHistoryStatistics? stats = _statistics.Find(hs => hs == d.Reference);
@@ -96,9 +99,9 @@ public partial class HistoryStatisticsPage
 			const double scale = 100.0;
 			double minY = Math.Floor(top100Entrances.Min() / scale) * scale;
 			double maxY = Math.Ceiling(top10Entrances.Max() / scale) * scale;
-			_entrancesOptions = new(0, null, (maxX - minX).Ticks, minY, scale, maxY);
+			_entrancesOptions = new(minX.Ticks, null, maxX.Ticks, minY, scale, maxY);
 
-			List<LineData> top10Set = _statistics.Select(hs => new LineData((hs.DateTime.Ticks - minX.Ticks), hs.Top10Entrance, hs)).ToList();
+			List<LineData> top10Set = _statistics.Select(hs => new LineData(hs.DateTime.Ticks, hs.Top10Entrance, hs)).ToList();
 			_entrancesData.Add(new("#800", false, false, false, top10Set, (ds, d) =>
 			{
 				GetLeaderboardHistoryStatistics? stats = _statistics.Find(hs => hs == d.Reference);
@@ -109,7 +112,7 @@ public partial class HistoryStatisticsPage
 				};
 			}));
 
-			List<LineData> top100Set = _statistics.Select(hs => new LineData((hs.DateTime.Ticks - minX.Ticks), hs.Top100Entrance, hs)).ToList();
+			List<LineData> top100Set = _statistics.Select(hs => new LineData(hs.DateTime.Ticks, hs.Top100Entrance, hs)).ToList();
 			_entrancesData.Add(new("#f00", false, false, false, top100Set, (ds, d) => new List<MarkupString> { new($"<span style='color: {ds.Color}; text-align: right;'>{d.Y.ToString("0.0000")}</span>") }));
 		}
 
@@ -130,8 +133,8 @@ public partial class HistoryStatisticsPage
 			};
 
 			IEnumerable<double> accuracy = _statistics.Select(hs => accuracyConverter(hs.DaggersHitGlobal, hs.DaggersFiredGlobal));
-			List<LineData> set = _statistics.Select(hs => new LineData((hs.DateTime.Ticks - minX.Ticks), accuracyConverter(hs.DaggersHitGlobal, hs.DaggersFiredGlobal), hs)).ToList();
-			_accuracyOptions = new(0, null, (maxX - minX).Ticks, Math.Floor(accuracy.Min() * 10) / 10, 0.05, Math.Ceiling(accuracy.Max() * 10) / 10);
+			List<LineData> set = _statistics.Select(hs => new LineData(hs.DateTime.Ticks, accuracyConverter(hs.DaggersHitGlobal, hs.DaggersFiredGlobal), hs)).ToList();
+			_accuracyOptions = new(minX.Ticks, null, maxX.Ticks, Math.Floor(accuracy.Min() * 10) / 10, 0.05, Math.Ceiling(accuracy.Max() * 10) / 10);
 			_accuracyData.Add(new("#f80", false, false, false, set, accuracyHighlighter));
 		}
 	}

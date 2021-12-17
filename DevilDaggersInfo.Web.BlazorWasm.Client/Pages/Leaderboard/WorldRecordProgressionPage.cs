@@ -30,6 +30,7 @@ public partial class WorldRecordProgressionPage
 		{
 			MinimumRowHeightInPx = 50,
 		},
+		DisplayXScaleAsDates = true,
 	};
 
 	private readonly List<LineDataSet> _lineDataSets = new();
@@ -54,8 +55,8 @@ public partial class WorldRecordProgressionPage
 		double minY = Math.Floor(firstWr.Entry.Time / 100.0) * 100;
 		double maxY = Math.Ceiling(lastWr.Entry.Time / 100.0) * 100;
 
-		List<LineData> set = _data.WorldRecords.Select(wr => new LineData((wr.DateTime.Ticks - minX.Ticks), wr.Entry.Time, wr)).ToList();
-		_dataOptions = new(0, null, (maxX - minX).Ticks, minY, 100, maxY);
+		List<LineData> set = _data.WorldRecords.Select(wr => new LineData(wr.DateTime.Ticks, wr.Entry.Time, wr)).ToList();
+		_dataOptions = new(minX.Ticks, null, maxX.Ticks, minY, 100, maxY);
 		_lineDataSets.Add(new("#f00", true, true, true, set, (ds, d) =>
 		{
 			GetWorldRecord? wr = _data.WorldRecords.Find(wr => wr == d.Reference);

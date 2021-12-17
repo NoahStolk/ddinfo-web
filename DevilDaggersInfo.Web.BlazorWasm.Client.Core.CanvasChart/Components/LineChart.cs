@@ -5,6 +5,7 @@ using DevilDaggersInfo.Web.BlazorWasm.Client.Core.CanvasChart.JsRuntime;
 using DevilDaggersInfo.Web.BlazorWasm.Client.Core.CanvasChart.Options;
 using DevilDaggersInfo.Web.BlazorWasm.Client.Core.CanvasChart.Options.LineChart;
 using DevilDaggersInfo.Web.BlazorWasm.Client.Core.CanvasChart.Utils;
+using DevilDaggersInfo.Web.BlazorWasm.Shared.Utils;
 using Microsoft.AspNetCore.Components;
 using Microsoft.JSInterop;
 
@@ -110,7 +111,7 @@ public partial class LineChart
 			{
 				double xScaleValue = xScales[i];
 				double xScalePosition = LerpUtils.RevLerp(DataOptions.MinX, DataOptions.MaxX, xScaleValue) * ChartWidth;
-				await _context.StrokeTextAsync(xScaleValue.ToString(Options.ScaleXOptions.NumberFormat), Options.ChartMarginXInPx + xScalePosition, Options.ChartMarginYInPx + ChartHeight + paddingY);
+				await _context.StrokeTextAsync(Options.DisplayXScaleAsDates ? new DateTime((long)xScaleValue).ToString(FormatUtils.DateFormat) : xScaleValue.ToString(Options.ScaleXOptions.NumberFormat), Options.ChartMarginXInPx + xScalePosition, Options.ChartMarginYInPx + ChartHeight + paddingY);
 			}
 
 			await _context.SetStrokeStyleAsync(Options.ScaleYOptions.TextColor);
@@ -249,8 +250,7 @@ public partial class LineChart
 			if (dataSet.Data.Count == 0)
 				continue;
 
-			// TODO: Fix for charts that don't start with MinX 0.
-			LineData highlightedData = dataSet.Data.OrderByDescending(ld => ld.X).FirstOrDefault(ld => ld.X < xValue) ?? dataSet.Data[0];
+			LineData highlightedData = dataSet.Data.OrderByDescending(ld => ld.X).FirstOrDefault(ld => ld.X < xValue + DataOptions.MinX) ?? dataSet.Data[0];
 			HighlighterValues.AddRange(dataSet.ToHighlighterValue(dataSet, highlightedData));
 		}
 

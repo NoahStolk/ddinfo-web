@@ -6,4 +6,7 @@
     <PackageReference Include="Blazor.Extensions.Canvas" />
     <PackageReference Include="Microsoft.AspNetCore.Components.Web" />
   </ItemGroup>
+  <ItemGroup>
+    <ProjectReference Include="..\DevilDaggersInfo.Web.BlazorWasm.Shared\DevilDaggersInfo.Web.BlazorWasm.Shared.csproj" />
+  </ItemGroup>
 </Project>

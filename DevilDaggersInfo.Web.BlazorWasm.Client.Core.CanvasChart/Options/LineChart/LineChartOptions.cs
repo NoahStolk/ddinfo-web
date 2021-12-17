@@ -13,6 +13,7 @@ public class LineChartOptions
 	public LineChartScaleOptions ScaleXOptions { get; set; } = new();
 	public LineChartScaleOptions ScaleYOptions { get; set; } = new();
 
+	public bool DisplayXScaleAsDates { get; set; }
 	public double HighlighterWidth { get; set; } = 256;
 	public List<string> HighlighterKeys { get; set; } = new();
 
