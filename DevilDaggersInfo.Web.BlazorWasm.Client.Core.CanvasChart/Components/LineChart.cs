@@ -207,10 +207,10 @@ public partial class LineChart
 	}
 
 	[JSInvokable]
-	public async ValueTask OnResize(int screenWidth, int screenHeight)
+	public async ValueTask OnResize(double wrapperWidth, double wrapperHeight)
 	{
-		_canvasWidth = (int)(screenWidth / 2.5f);
-		_canvasHeight = (int)(screenHeight / 2.5f);
+		_canvasWidth = (int)wrapperWidth;
+		_canvasHeight = (int)wrapperHeight;
 
 		await RenderAsync();
 	}

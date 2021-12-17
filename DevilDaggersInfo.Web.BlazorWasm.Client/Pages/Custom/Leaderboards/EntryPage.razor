@@ -9,9 +9,13 @@ else
 {
 	<Heading Title="@($"{GetCustomEntryData.PlayerName}'s score on {GetCustomEntryData.SpawnsetName}")" />
 
-	@foreach (var lc in _lineCharts)
-	{
-		<Heading Title="@lc.Name" Level="2" />
-		<LineChart DataOptions="lc.DataOptions" UniqueName="@($"#{lc.Name.ToLower()}-chart")" DataSets="@lc.Sets" Options="lc.ChartOptions" />
-	}
+	<div class="grid grid-cols-1 lg:grid-cols-2 2xl:grid-cols-3">
+		@foreach (var lc in _lineCharts)
+		{
+			<div>
+				<Heading Title="@lc.Name" Level="2" />
+				<LineChart DataOptions="lc.DataOptions" UniqueName="@($"#{lc.Name.ToLower()}-chart")" DataSets="@lc.Sets" Options="lc.ChartOptions" />
+			</div>
+		}
+	</div>
 }

@@ -6,12 +6,15 @@ function onResize() {
 			return;
 		}
 
-		chart.canvas.width = window.innerWidth;
-		chart.canvas.height = window.innerHeight;
-		chart.canvas.style.width = window.innerWidth;
-		chart.canvas.style.height = window.innerHeight;
+		const bounds = chart.canvasContainer.getBoundingClientRect();
+		const width = bounds.width;
+		const height = width * (9 / 16);
 
-		chart.chartWrapperComponent.invokeMethodAsync('OnResize', chart.canvas.width, chart.canvas.height);
+		chart.canvas.width = width;
+		chart.canvas.height = height;
+		chart.canvas.style.width = width;
+		chart.canvas.style.height = height;
+		chart.chartWrapperComponent.invokeMethodAsync('OnResize', width, height);
 	}
 }
 
@@ -46,6 +49,7 @@ window.registerChart = (chartWrapperComponent, chartName) => {
 
 	const chart = {
 		chartWrapperComponent: chartWrapperComponent,
+		canvasContainer: canvasContainer,
 		canvas: canvasElements[0],
 	};
 
