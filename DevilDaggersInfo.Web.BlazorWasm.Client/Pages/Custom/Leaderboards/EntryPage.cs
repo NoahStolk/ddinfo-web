@@ -12,7 +12,15 @@ namespace DevilDaggersInfo.Web.BlazorWasm.Client.Pages.Custom.Leaderboards;
 
 public partial class EntryPage
 {
-	private static readonly Func<LineDataSet, LineData, List<MarkupString>> _highlightTransformation = static (ds, d) => new List<MarkupString> { new($"<span style='color: {ds.Color}; text-align: right;'>{d.Y.ToString("0")}</span>") };
+	private static readonly Func<LineDataSet, LineData, List<MarkupString>> _initialHighlightTransformation = static (ds, d) => new List<MarkupString>
+	{
+		new($"<span style='text-align: right;'>{d.X.ToString("0.0000")}</span>"),
+		new($"<span style='color: {ds.Color}; text-align: right;'>{d.Y.ToString("0")}</span>"),
+	};
+	private static readonly Func<LineDataSet, LineData, List<MarkupString>> _highlightTransformation = static (ds, d) => new List<MarkupString>
+	{
+		new($"<span style='color: {ds.Color}; text-align: right;'>{d.Y.ToString("0")}</span>"),
+	};
 
 	private List<(string Name, DataOptions DataOptions, LineChartOptions ChartOptions, List<LineDataSet> Sets)> _lineCharts = new();
 	private int _time;
@@ -33,7 +41,7 @@ public partial class EntryPage
 	private void AddDataSet(List<(LineDataSet Set, string Name)> dataSets, int[]? data, string name, string color)
 	{
 		if (data != null)
-			dataSets.Add((new(color, false, false, false, data.Take(_time).Select((val, i) => new LineData(i, val, val)).ToList(), _highlightTransformation), name));
+			dataSets.Add((new(color, false, false, false, data.Take(_time).Select((val, i) => new LineData(i, val, val)).ToList(), dataSets.Count == 0 ? _initialHighlightTransformation : _highlightTransformation), name));
 	}
 
 	private void AddDataSets(List<(LineDataSet Set, string Name)> dataSets, string name)
@@ -46,7 +54,7 @@ public partial class EntryPage
 		int roundingPoint = (int)Math.Pow(10, digits - 1);
 		maxData = Math.Ceiling(maxData / roundingPoint) * roundingPoint;
 		DataOptions dataOptions = new(0, _time / 10, _time, 0, maxData / 8, maxData);
-		LineChartOptions chartOptions = new() { HighlighterKeys = dataSets.ConvertAll(ds => ds.Name), GridOptions = new() { MinimumRowHeightInPx = 50 } };
+		LineChartOptions chartOptions = new() { HighlighterKeys = dataSets.ConvertAll(ds => ds.Name).Prepend("Time").ToList(), GridOptions = new() { MinimumRowHeightInPx = 50 } };
 		_lineCharts.Add((name, dataOptions, chartOptions, dataSets.ConvertAll(ds => ds.Set)));
 	}
 
@@ -54,7 +62,7 @@ public partial class EntryPage
 	{
 		GetCustomEntryData = await Http.GetCustomEntryDataById(Id);
 
-		_time = (int)Math.Floor(GetCustomEntryData.Time);
+		_time = (int)Math.Ceiling(GetCustomEntryData.Time);
 
 		List<(LineDataSet Set, string Name)> gemsSets = new();
 		AddDataSet(gemsSets, GetCustomEntryData.GemsTotalData, "Total Gems", "#800");
