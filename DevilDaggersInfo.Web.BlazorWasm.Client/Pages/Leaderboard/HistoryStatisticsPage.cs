@@ -1,10 +1,14 @@
 using DevilDaggersInfo.Web.BlazorWasm.Client.Core.CanvasChart.Data;
 using DevilDaggersInfo.Web.BlazorWasm.Client.Core.CanvasChart.Options;
 using DevilDaggersInfo.Web.BlazorWasm.Client.Core.CanvasChart.Options.LineChart;
+using DevilDaggersInfo.Web.BlazorWasm.Client.Utils;
 using DevilDaggersInfo.Web.BlazorWasm.Shared.Dto.Public.LeaderboardHistoryStatistics;
 using DevilDaggersInfo.Web.BlazorWasm.Shared.Dto.Public.Players;
+using DevilDaggersInfo.Web.BlazorWasm.Shared.Dto.Public.WorldRecords;
+using DevilDaggersInfo.Web.BlazorWasm.Shared.Utils;
 using Microsoft.AspNetCore.Components;
 using Microsoft.JSInterop;
+using System.Xml.Linq;
 
 namespace DevilDaggersInfo.Web.BlazorWasm.Client.Pages.Leaderboard;
 
@@ -71,7 +75,15 @@ public partial class HistoryStatisticsPage
 
 			List<LineData> set = _statistics.Select(hs => new LineData((hs.DateTime.Ticks - minX.Ticks), hs.TotalPlayers, hs)).ToList();
 			_playersOptions = new(0, null, (maxX - minX).Ticks, minY, scale, maxY);
-			_playersData.Add(new("#f00", false, false, false, set, (ds, d) => new List<MarkupString> { new($"<span style='color: {ds.Color}; text-align: right;'>{d.Y.ToString("0")}</span>") }));
+			_playersData.Add(new("#f00", false, false, false, set, (ds, d) =>
+			{
+				GetLeaderboardHistoryStatistics? stats = _statistics.Find(hs => hs == d.Reference);
+				return stats == null ? new() : new()
+				{
+					new($"<span style='text-align: right;'>{stats.DateTime.ToString(FormatUtils.DateFormat)}</span>"),
+					new($"<span style='color: {ds.Color}; text-align: right;'>{d.Y.ToString("0")}</span>"),
+				};
+			}));
 		}
 
 		RegisterEntrances();
@@ -85,7 +97,15 @@ public partial class HistoryStatisticsPage
 			_entrancesOptions = new(0, null, (maxX - minX).Ticks, minY, scale, maxY);
 
 			List<LineData> top10Set = _statistics.Select(hs => new LineData((hs.DateTime.Ticks - minX.Ticks), hs.Top10Entrance, hs)).ToList();
-			_entrancesData.Add(new("#800", false, false, false, top10Set, (ds, d) => new List<MarkupString> { new($"<span style='color: {ds.Color}; text-align: right;'>{d.Y.ToString("0.0000")}</span>") }));
+			_entrancesData.Add(new("#800", false, false, false, top10Set, (ds, d) =>
+			{
+				GetLeaderboardHistoryStatistics? stats = _statistics.Find(hs => hs == d.Reference);
+				return stats == null ? new() : new()
+				{
+					new($"<span style='text-align: right;'>{stats.DateTime.ToString(FormatUtils.DateFormat)}</span>"),
+					new($"<span style='color: {ds.Color}; text-align: right;'>{d.Y.ToString("0.0000")}</span>"),
+				};
+			}));
 
 			List<LineData> top100Set = _statistics.Select(hs => new LineData((hs.DateTime.Ticks - minX.Ticks), hs.Top100Entrance, hs)).ToList();
 			_entrancesData.Add(new("#f00", false, false, false, top100Set, (ds, d) => new List<MarkupString> { new($"<span style='color: {ds.Color}; text-align: right;'>{d.Y.ToString("0.0000")}</span>") }));
@@ -103,7 +123,15 @@ public partial class HistoryStatisticsPage
 
 			List<LineData> set = _statistics.Select(hs => new LineData((hs.DateTime.Ticks - minX.Ticks), accuracyConverter(hs.DaggersHitGlobal, hs.DaggersFiredGlobal), hs)).ToList();
 			_accuracyOptions = new(0, null, (maxX - minX).Ticks, minY, scale, maxY);
-			_accuracyData.Add(new("#f80", false, false, false, set, (ds, d) => new List<MarkupString> { new($"<span style='color: {ds.Color}; text-align: right;'>{d.Y.ToString("0.00")}%</span>") }));
+			_accuracyData.Add(new("#f80", false, false, false, set, (ds, d) =>
+			{
+				GetLeaderboardHistoryStatistics? stats = _statistics.Find(hs => hs == d.Reference);
+				return stats == null ? new() : new()
+				{
+					new($"<span style='text-align: right;'>{stats.DateTime.ToString(FormatUtils.DateFormat)}</span>"),
+					new($"<span style='color: {ds.Color}; text-align: right;'>{d.Y.ToString("0.00")}%</span>"),
+				};
+			}));
 		}
 	}
 

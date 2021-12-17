@@ -145,10 +145,7 @@ public partial class PlayerPage
 			_activityData.Add(new("#f00", false, false, true, set, (ds, d) =>
 			{
 				GetPlayerActivity? activity = GetPlayerHistory.Activity.Find(pa => pa == d.Reference);
-				if (activity == null)
-					return new();
-
-				return new()
+				return activity == null ? new() : new()
 				{
 					new($"<span style='text-align: right;'>{activity.DateTime.ToString(FormatUtils.DateFormat)}</span>"),
 					new($"<span style='color: {ds.Color}; text-align: right;'>{d.Y.ToString("0.0")}</span>"),
