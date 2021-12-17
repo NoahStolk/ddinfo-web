@@ -2,6 +2,7 @@ using DevilDaggersInfo.Web.BlazorWasm.Client.Core.CanvasChart.Data;
 using DevilDaggersInfo.Web.BlazorWasm.Client.Core.CanvasChart.Options;
 using DevilDaggersInfo.Web.BlazorWasm.Client.Core.CanvasChart.Options.LineChart;
 using DevilDaggersInfo.Web.BlazorWasm.Client.Utils;
+using DevilDaggersInfo.Web.BlazorWasm.Shared.Dto.Public.CustomEntries;
 using DevilDaggersInfo.Web.BlazorWasm.Shared.Dto.Public.LeaderboardHistoryStatistics;
 using DevilDaggersInfo.Web.BlazorWasm.Shared.Dto.Public.Players;
 using DevilDaggersInfo.Web.BlazorWasm.Shared.Dto.Public.WorldRecords;
@@ -35,11 +36,12 @@ public partial class HistoryStatisticsPage
 
 	private readonly LineChartOptions _accuracyLineChartOptions = new()
 	{
-		HighlighterKeys = new() { "Date", "Global Accuracy" },
+		HighlighterKeys = new() { "Date", "Global Accuracy", "Global Daggers Hit", "Global Daggers Fired" },
 		GridOptions = new()
 		{
 			MinimumRowHeightInPx = 50,
 		},
+		ScaleYOptions = new() { NumberFormat = "0%" },
 	};
 
 	private readonly List<LineDataSet> _playersData = new();
@@ -114,24 +116,23 @@ public partial class HistoryStatisticsPage
 		RegisterAccuracy();
 		void RegisterAccuracy()
 		{
-			Func<ulong, ulong, double> accuracyConverter = static (hit, fired) => fired == 0 ? 0 : hit / (double)fired * 100;
+			Func<ulong, ulong, double> accuracyConverter = static (hit, fired) => fired == 0 ? 0 : hit / (double)fired;
+			Func<LineDataSet, LineData, List<MarkupString>> accuracyHighlighter = (ds, d) =>
+			{
+				GetLeaderboardHistoryStatistics? stat = _statistics.Find(hs => hs == d.Reference);
+				return stat == null ? new() : new List<MarkupString>
+				{
+					new($"<span style='text-align: right;'>{stat.DateTime.ToString(FormatUtils.DateFormat)}</span>"),
+					new($"<span style='color: {ds.Color}; text-align: right;'>{accuracyConverter(stat.DaggersHitGlobal, stat.DaggersFiredGlobal).ToString("0.00%")}</span>"),
+					new($"<span style='text-align: right;'>{(stat.DaggersFiredGlobal == 10000 ? 0 : stat.DaggersHitGlobal)}</span>"),
+					new($"<span style='text-align: right;'>{(stat.DaggersFiredGlobal == 10000 ? 0 : stat.DaggersFiredGlobal)}</span>"),
+				};
+			};
 
 			IEnumerable<double> accuracy = _statistics.Select(hs => accuracyConverter(hs.DaggersHitGlobal, hs.DaggersFiredGlobal));
-			const double scale = 5.0;
-			double minY = Math.Floor(accuracy.Min() / scale) * scale;
-			double maxY = Math.Ceiling(accuracy.Max() / scale) * scale;
-
 			List<LineData> set = _statistics.Select(hs => new LineData((hs.DateTime.Ticks - minX.Ticks), accuracyConverter(hs.DaggersHitGlobal, hs.DaggersFiredGlobal), hs)).ToList();
-			_accuracyOptions = new(0, null, (maxX - minX).Ticks, minY, scale, maxY);
-			_accuracyData.Add(new("#f80", false, false, false, set, (ds, d) =>
-			{
-				GetLeaderboardHistoryStatistics? stats = _statistics.Find(hs => hs == d.Reference);
-				return stats == null ? new() : new()
-				{
-					new($"<span style='text-align: right;'>{stats.DateTime.ToString(FormatUtils.DateFormat)}</span>"),
-					new($"<span style='color: {ds.Color}; text-align: right;'>{d.Y.ToString("0.00")}%</span>"),
-				};
-			}));
+			_accuracyOptions = new(0, null, (maxX - minX).Ticks, Math.Floor(accuracy.Min() * 10) / 10, 0.05, Math.Ceiling(accuracy.Max() * 10) / 10);
+			_accuracyData.Add(new("#f80", false, false, false, set, accuracyHighlighter));
 		}
 	}
 
