@@ -1,7 +1,7 @@
 @page "/leaderboard/history/statistics"
 @inject PublicApiHttpClient Http
-@using Blazorise.Charts
 @using DevilDaggersInfo.Core.Wiki
+@using DevilDaggersInfo.Web.BlazorWasm.Client.Core.CanvasChart.Components
 @using DevilDaggersInfo.Web.BlazorWasm.Shared.Dto.Public.LeaderboardHistoryStatistics
 
 <Heading Title="Leaderboard History Statistics" />
@@ -12,85 +12,20 @@
 }
 else
 {
-	<Heading Title="Total Players" Level="2" />
-	<LineChart Options="LineChartUtils.Options" OptionsJsonString="@LineChartUtils.AdditionalJsonOptions" @ref="_playersChart" TItem="int" />
+	<div class="grid grid-cols-1 2xl:grid-cols-2">
+		<div>
+			<Heading Title="Total Players" Level="2" />
+			<LineChart DataOptions="_playersOptions" UniqueName="#players-chart" DataSets="_playersData" Options="_playersLineChartOptions" />
+		</div>
 
-	<Heading Title="Top Entrances" Level="2" />
-	<LineChart Options="LineChartUtils.Options" OptionsJsonString="@LineChartUtils.AdditionalJsonOptions" @ref="_entranceChart" TItem="double" />
+		<div>
+			<Heading Title="Top Entrances" Level="2" />
+			<LineChart DataOptions="_entrancesOptions" UniqueName="#entrances-chart" DataSets="_entrancesData" Options="_entrancesLineChartOptions" />
+		</div>
 
-	<Heading Title="Global Accuracy" Level="2" />
-	<LineChart Options="LineChartUtils.Options" OptionsJsonString="@LineChartUtils.AdditionalJsonOptions" @ref="_accuracyChart" TItem="double" />
-}
-
-@code
-{
-	private List<GetLeaderboardHistoryStatistics>? _statistics;
-
-	protected override async Task OnInitializedAsync()
-	{
-		_statistics = await Http.GetLeaderboardHistoryStatistics();
-	}
-
-	private LineChart<int>? _playersChart;
-	private LineChart<double>? _entranceChart;
-	private LineChart<double>? _accuracyChart;
-
-	protected override async Task OnAfterRenderAsync(bool firstRender)
-	{
-		if (firstRender ||
-			_statistics == null ||
-			_playersChart == null ||
-			_entranceChart == null ||
-			_accuracyChart == null)
-			return;
-
-		await _playersChart.AddLabelsDatasetsAndUpdate(_statistics.Select(s => s.DateTime.ToShortDateString()).ToArray(), new LineChartDataset<int>
-		{
-			Label = "Total Players",
-			Data = _statistics.Select(s => s.TotalPlayers).ToList(),
-			BackgroundColor = _statistics.Select(s => s.TotalPlayersUpdated ? "#f00" : "#bbb").ToList(),
-			Fill = false,
-			PointRadius = 0,
-			ShowLine = true,
-			BorderColor = "#f0f",
-			LineTension = 0.1f,
-		});
-
-		await _entranceChart.AddLabelsDatasetsAndUpdate(
-			_statistics.Select(s => s.DateTime.ToShortDateString()).ToArray(),
-			new LineChartDataset<double>
-			{
-				Label = "Top 10 Entrance",
-				Data = _statistics.Select(s => s.Top10Entrance).ToList(),
-				BackgroundColor = _statistics.Select(s => s.Top10EntranceUpdated ? "#c00" : "#bbb").ToList(),
-				Fill = false,
-				PointRadius = 0,
-				ShowLine = true,
-				BorderColor = DaggersV3_2.Leviathan.Color.HexCode,
-				LineTension = 0.1f,
-			},
-			new LineChartDataset<double>
-			{
-				Label = "Top 100 Entrance",
-				Data = _statistics.Select(s => s.Top100Entrance).ToList(),
-				BackgroundColor = _statistics.Select(s => s.Top100EntranceUpdated ? "#f00" : "#bbb").ToList(),
-				Fill = false,
-				PointRadius = 0,
-				ShowLine = true,
-				BorderColor = DaggersV3_2.Devil.Color.HexCode,
-				LineTension = 0.1f,
-			});
-
-		await _accuracyChart.AddLabelsDatasetsAndUpdate(_statistics.Select(s => s.DateTime.ToShortDateString()).ToArray(), new LineChartDataset<double>
-		{
-			Label = "Accuracy",
-			Data = _statistics.Select(s => s.DaggersFiredGlobal == 0 ? 0 : s.DaggersHitGlobal / (double)s.DaggersFiredGlobal).ToList(),
-			BackgroundColor = _statistics.Select(s => s.DaggersHitGlobalUpdated && s.DaggersFiredGlobalUpdated ? "#f00" : "#bbb").ToList(),
-			Fill = false,
-			PointRadius = 0,
-			ShowLine = true,
-			BorderColor = "#0f0",
-			LineTension = 0.1f,
-		});
-	}
+		<div>
+			<Heading Title="Global Accuracy" Level="2" />
+			<LineChart DataOptions="_accuracyOptions" UniqueName="#accuracy-chart" DataSets="_accuracyData" Options="_accuracyLineChartOptions" />
+		</div>
+	</div>
 }
