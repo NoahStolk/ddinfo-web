@@ -55,6 +55,8 @@ public partial class LineChart
 
 	private async Task RenderAsync()
 	{
+		_highlighter.Width = Options.HighlighterWidth;
+
 		// Clear canvas.
 		await _context.ClearRectAsync(0, 0, _canvasWidth, _canvasHeight);
 
@@ -227,7 +229,6 @@ public partial class LineChart
 		_canvasMouseY = mouseY - canvasBoundingClientRect.Top;
 
 		UpdateHighlighter();
-		_highlighter.ChangeState();
 
 		await ValueTask.CompletedTask;
 	}
@@ -237,7 +238,7 @@ public partial class LineChart
 		if (_highlighter == null)
 			return;
 
-		_highlighter.Left = Math.Clamp(_canvasMouseX, Options.ChartMarginXInPx, Options.ChartMarginXInPx + ChartWidth);
+		_highlighter.Left = Math.Clamp(_canvasMouseX, Options.ChartMarginXInPx, Options.ChartMarginXInPx + ChartWidth - _highlighter.Width);
 		_highlighter.Top = Math.Clamp(_canvasMouseY, Options.ChartMarginYInPx, Options.ChartMarginYInPx + ChartHeight);
 
 		double xValue = ChartMouseX / ChartWidth * (DataOptions.MaxX - DataOptions.MinX);
@@ -254,6 +255,8 @@ public partial class LineChart
 			LineData highlightedData = dataSet.Data.OrderByDescending(ld => ld.X).FirstOrDefault(ld => ld.X < xValue) ?? dataSet.Data[0];
 			HighlighterValues.AddRange(dataSet.ToHighlighterValue(dataSet, highlightedData));
 		}
+
+		_highlighter.ChangeState();
 
 		//if (Options.HighlighterLineOptions == null)
 		//	return;
