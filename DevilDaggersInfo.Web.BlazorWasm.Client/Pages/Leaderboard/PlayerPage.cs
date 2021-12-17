@@ -21,9 +21,7 @@ public partial class PlayerPage
 {
 	private readonly LineChartOptions _progressionLineChartOptions = new()
 	{
-		HighlighterTitle = "Date",
-		HighlighterTitleValueNumberFormat = "0", // TODO: Date.
-		HighlighterKeys = new() { "Time" },
+		HighlighterKeys = new() { "Date", "Time" },
 		GridOptions = new()
 		{
 			MinimumRowHeightInPx = 50,
@@ -32,9 +30,7 @@ public partial class PlayerPage
 
 	private readonly LineChartOptions _activityLineChartOptions = new()
 	{
-		HighlighterTitle = "Date",
-		HighlighterTitleValueNumberFormat = "0", // TODO: Date.
-		HighlighterKeys = new() { "Avg deaths per day" },
+		HighlighterKeys = new() { "Date", "Avg deaths per day" },
 		GridOptions = new()
 		{
 			MinimumRowHeightInPx = 50,

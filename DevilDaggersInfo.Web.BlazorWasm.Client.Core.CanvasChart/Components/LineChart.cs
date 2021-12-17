@@ -23,7 +23,6 @@ public partial class LineChart
 	private double _canvasMouseY;
 
 	private bool _shouldRender = true;
-	private MarkupString _highlighterTitleValue;
 
 	private double ChartMouseX => _canvasMouseX - Options.ChartMarginXInPx;
 	private double ChartMouseY => _canvasMouseY - Options.ChartMarginYInPx;
@@ -242,7 +241,6 @@ public partial class LineChart
 		_highlighter.Top = Math.Clamp(_canvasMouseY, Options.ChartMarginYInPx, Options.ChartMarginYInPx + ChartHeight);
 
 		double xValue = ChartMouseX / ChartWidth * (DataOptions.MaxX - DataOptions.MinX);
-		_highlighterTitleValue = new($"<span style='text-align: right;'>{xValue.ToString(Options.HighlighterTitleValueNumberFormat)}</span>");
 
 		HighlighterValues.Clear();
 		for (int i = 0; i < DataSets.Count; i++)

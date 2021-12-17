@@ -12,9 +12,7 @@ public partial class HistoryStatisticsPage
 {
 	private readonly LineChartOptions _playersLineChartOptions = new()
 	{
-		HighlighterTitle = "Date",
-		HighlighterTitleValueNumberFormat = "0", // TODO: Date.
-		HighlighterKeys = new() { "Players" },
+		HighlighterKeys = new() { "Date", "Players" },
 		GridOptions = new()
 		{
 			MinimumRowHeightInPx = 50,
@@ -24,9 +22,7 @@ public partial class HistoryStatisticsPage
 
 	private readonly LineChartOptions _entrancesLineChartOptions = new()
 	{
-		HighlighterTitle = "Date",
-		HighlighterTitleValueNumberFormat = "0", // TODO: Date.
-		HighlighterKeys = new() { "Top 10 Score", "Top 100 Score" },
+		HighlighterKeys = new() { "Date", "Top 10 Score", "Top 100 Score" },
 		GridOptions = new()
 		{
 			MinimumRowHeightInPx = 50,
@@ -35,9 +31,7 @@ public partial class HistoryStatisticsPage
 
 	private readonly LineChartOptions _accuracyLineChartOptions = new()
 	{
-		HighlighterTitle = "Date",
-		HighlighterTitleValueNumberFormat = "0", // TODO: Date.
-		HighlighterKeys = new() { "Global Accuracy" },
+		HighlighterKeys = new() { "Date", "Global Accuracy" },
 		GridOptions = new()
 		{
 			MinimumRowHeightInPx = 50,

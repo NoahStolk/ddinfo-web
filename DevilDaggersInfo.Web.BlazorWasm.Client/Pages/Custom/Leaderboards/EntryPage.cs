@@ -46,7 +46,7 @@ public partial class EntryPage
 		int roundingPoint = (int)Math.Pow(10, digits - 1);
 		maxData = Math.Ceiling(maxData / roundingPoint) * roundingPoint;
 		DataOptions dataOptions = new(0, _time / 10, _time, 0, maxData / 8, maxData);
-		LineChartOptions chartOptions = new() { HighlighterKeys = dataSets.ConvertAll(ds => ds.Name), HighlighterTitle = "Time", HighlighterTitleValueNumberFormat = "0.0000", GridOptions = new() { MinimumRowHeightInPx = 50 } };
+		LineChartOptions chartOptions = new() { HighlighterKeys = dataSets.ConvertAll(ds => ds.Name), GridOptions = new() { MinimumRowHeightInPx = 50 } };
 		_lineCharts.Add((name, dataOptions, chartOptions, dataSets.ConvertAll(ds => ds.Set)));
 	}
 
