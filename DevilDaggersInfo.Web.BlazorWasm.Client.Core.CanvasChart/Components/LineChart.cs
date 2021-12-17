@@ -196,7 +196,7 @@ public partial class LineChart
 		{
 			int calculatedCount = (int)Math.Floor(chartSize / minimumSizeInPx);
 			double calculatedStep = (max - min) / calculatedCount;
-			scales = Enumerable.Range(0, calculatedCount).Select(i => i * calculatedStep).Append(max).ToList();
+			scales = Enumerable.Range(0, calculatedCount).Select(i => i * calculatedStep + min).Append(max).ToList();
 		}
 		else
 		{
