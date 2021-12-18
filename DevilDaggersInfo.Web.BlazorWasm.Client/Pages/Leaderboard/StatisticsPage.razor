@@ -1,8 +1,8 @@
 @page "/leaderboard/statistics"
 @inject PublicApiHttpClient Http
-@using Blazorise.Charts
 @using DevilDaggersInfo.Core.Wiki
 @using DevilDaggersInfo.Core.Wiki.Enums
+@using DevilDaggersInfo.Web.BlazorWasm.Client.Core.CanvasChart.Components
 @using DevilDaggersInfo.Web.BlazorWasm.Shared.Dto.Public.LeaderboardStatistics
 
 <Heading Title="Leaderboard Statistics" />
@@ -25,160 +25,32 @@ else
 		<p>The average time survived for all players is <SpanTime TimeInSeconds="_statistics.Time.Average / 10000.0" /> seconds.</p>
 		<p>The median time survived for all players is <SpanTime TimeInSeconds="_statistics.Time.Median / 10000.0" /> seconds.</p>
 		<p>The mode time survived for all players is <SpanTime TimeInSeconds="_statistics.Time.Mode / 10000.0" /> seconds.</p>
-		<BarChart Options="_bco" @ref="_sub500Chart" TItem="int" />
-		<BarChart Options="_bco" @ref="_sub1000Chart" TItem="int" />
-		<BarChart Options="_bco" @ref="_post1000Chart" TItem="int" />
+		<BarChart DataOptions="_sub500DataOptions" UniqueName="#sub500-chart" DataSet="@_sub500Data" Options="_sub500Options" XScaleTexts="Enumerable.Range(0, 50).Select(i => (i * 10).ToString())" />
+		<div class="grid grid-cols-1 xl:grid-cols-2">
+			<BarChart DataOptions="_sub1000DataOptions" UniqueName="#sub1000-chart" DataSet="@_sub1000Data" XScaleTexts="Enumerable.Range(0, 50).Select(i => ((i + 50) * 10).ToString())" />
+			<BarChart DataOptions="_post1000DataOptions" UniqueName="#post1000-chart" DataSet="@_post1000Data" XScaleTexts="Enumerable.Range(0, 50).Select(i => ((i + 100) * 10).ToString())" />
+		</div>
 
 		<Heading Title="Kills" Level="2" />
 		<p>The average kills for all players is @(_statistics.Kills.Average.ToString("0.00")).</p>
 		<p>The median kills for all players is @_statistics.Kills.Median.</p>
 		<p>The mode kills for all players is @_statistics.Kills.Mode.</p>
-		<BarChart Options="_bco" @ref="_killsChart" TItem="int" />
+		@*<BarChart Options="_bco" @ref="_killsChart" TItem="int" />*@
 
 		<Heading Title="Gems" Level="2" />
 		<p>The average gems for all players is @(_statistics.Gems.Average.ToString("0.00")).</p>
 		<p>The median gems for all players is @_statistics.Gems.Median.</p>
 		<p>The mode gems for all players is @_statistics.Gems.Mode.</p>
-		<BarChart Options="_bco" @ref="_gemsChart" TItem="int" />
-		<PieChart Options="_pco" @ref="_levelsChart" TItem="int" />
+		@*<BarChart Options="_bco" @ref="_gemsChart" TItem="int" />
+			<PieChart Options="_pco" @ref="_levelsChart" TItem="int" />*@
 
 		<Heading Title="Daggers Achieved" Level="2" />
-		<BarChart Options="_bco" @ref="_daggersChart" TItem="int" />
+		@*<BarChart Options="_bco" @ref="_daggersChart" TItem="int" />*@
 
 		<Heading Title="Death Types" Level="2" />
-		<BarChart Options="_bco" @ref="_deathsChart" TItem="int" />
+		@*<BarChart Options="_bco" @ref="_deathsChart" TItem="int" />*@
 
 		<Heading Title="Enemies Seen" Level="2" />
-		<BarChart Options="_bco" @ref="_enemiesChart" TItem="int" />
-	}
-}
-
-@code
-{
-	private GetLeaderboardStatistics? _statistics;
-
-	protected override async Task OnInitializedAsync()
-	{
-		_statistics = await Http.GetLeaderboardStatistics();
-	}
-
-	private const int _killGraphCount = 100;
-	private const int _gemGraphCount = 50;
-
-	private BarChartOptions _bco = new()
-	{
-		MaintainAspectRatio = true,
-		Responsive = true,
-		AspectRatio = 3.5f,
-	};
-
-	private PieChartOptions _pco = new()
-	{
-		MaintainAspectRatio = true,
-		Responsive = true,
-		AspectRatio = 3.5f,
-	};
-
-	private BarChart<int>? _sub500Chart;
-	private BarChart<int>? _sub1000Chart;
-	private BarChart<int>? _post1000Chart;
-	private BarChart<int>? _killsChart;
-	private BarChart<int>? _gemsChart;
-	private PieChart<int>? _levelsChart;
-	private BarChart<int>? _daggersChart;
-	private BarChart<int>? _deathsChart;
-	private BarChart<int>? _enemiesChart;
-
-	protected override async Task OnAfterRenderAsync(bool firstRender)
-	{
-		if (firstRender ||
-			_statistics == null ||
-			_sub500Chart == null ||
-			_sub1000Chart == null ||
-			_post1000Chart == null ||
-			_killsChart == null ||
-			_gemsChart == null ||
-			_levelsChart == null ||
-			_daggersChart == null ||
-			_deathsChart == null ||
-			_enemiesChart == null)
-			return;
-
-		int post1000BarCount = _statistics.TimeStatistics.Max(kvp => kvp.Key) / 10 - 100 + 1;
-
-		int[] sub500Times = Enumerable.Range(0, 50).Select(i => i * 10).ToArray();
-		int[] sub1000Times = Enumerable.Range(50, 50).Select(i => i * 10).ToArray();
-		int[] post1000Times = Enumerable.Range(100, post1000BarCount).Select(i => i * 10).ToArray();
-
-		await SetUpBarChart(
-			barChart: _sub500Chart,
-			labels: sub500Times.Select(i => $"{i} - {i + 9}").ToArray(),
-			data: _statistics.TimeStatistics.Select(kvp => kvp.Value).Take(50).ToList(),
-			backgroundColors: sub500Times.Select(t => Daggers.GetDaggerFromSeconds(GameConstants.CurrentVersion, t).Color.HexCode).ToList());
-		await SetUpBarChart(
-			barChart: _sub1000Chart,
-			labels: sub1000Times.Select(i => $"{i} - {i + 9}").ToArray(),
-			data: _statistics.TimeStatistics.Select(kvp => kvp.Value).Skip(50).Take(50).ToList(),
-			backgroundColors: sub1000Times.Select(t => Daggers.GetDaggerFromSeconds(GameConstants.CurrentVersion, t).Color.HexCode).ToList());
-		await SetUpBarChart(
-			barChart: _post1000Chart,
-			labels: post1000Times.Select(i => $"{i} - {i + 9}").ToArray(),
-			data: _statistics.TimeStatistics.Select(kvp => kvp.Value).Skip(100).Take(post1000BarCount).ToList(),
-			backgroundColors: post1000Times.Select(t => Daggers.GetDaggerFromSeconds(GameConstants.CurrentVersion, t).Color.HexCode).ToList());
-		await SetUpBarChart(
-			barChart: _killsChart,
-			labels: _statistics.KillStatistics.Take(_killGraphCount).Select(kvp => $"{kvp.Key} - {kvp.Key + 9}").ToArray(),
-			data: _statistics.KillStatistics.Take(_killGraphCount).Select(kvp => kvp.Value).ToList(),
-			backgroundColors: Enumerable.Repeat("#dd8800", _killGraphCount).ToList());
-		await SetUpBarChart(
-			barChart: _gemsChart,
-			labels: _statistics.GemStatistics.Take(_gemGraphCount).Select(kvp => $"{kvp.Key} - {kvp.Key + 9}").ToArray(),
-			data: _statistics.GemStatistics.Take(_gemGraphCount).Select(kvp => kvp.Value).ToList(),
-			backgroundColors: Enumerable.Repeat("#ff0000", _gemGraphCount).ToList());
-		await SetUpPieChart(
-			pieChart: _levelsChart,
-			labels: new[] { "Level 1", "Level 2", "Level 3 or 4" },
-			data: new() { _statistics.PlayersWithLevel1, _statistics.PlayersWithLevel2, _statistics.PlayersWithLevel3Or4 },
-			backgroundColors: Upgrades.GetUpgrades(GameConstants.CurrentVersion).Where(u => u.Level != 4).Select(u => u.Color.HexCode).ToList());
-		await SetUpBarChart(
-			barChart: _daggersChart,
-			labels: _statistics.DaggerStatistics.Select(kvp => kvp.Key).ToArray(),
-			data: _statistics.DaggerStatistics.Select(kvp => kvp.Value).ToList(),
-			backgroundColors: _statistics.DaggerStatistics.Select(kvp => Daggers.GetDaggerByName(GameConstants.CurrentVersion, kvp.Key)?.Color.HexCode ?? "#444").ToList());
-		await SetUpBarChart(
-			barChart: _deathsChart,
-			labels: _statistics.DeathStatistics.Select(kvp => kvp.Key).ToArray(),
-			data: _statistics.DeathStatistics.Select(kvp => kvp.Value).ToList(),
-			backgroundColors: _statistics.DeathStatistics.Select(kvp => Deaths.GetDeathByName(GameConstants.CurrentVersion, kvp.Key)?.Color.HexCode ?? "#444").ToList());
-		await SetUpBarChart(
-			barChart: _enemiesChart,
-			labels: _statistics.EnemyStatistics.Select(kvp => kvp.Key).ToArray(),
-			data: _statistics.EnemyStatistics.Select(kvp => kvp.Value).ToList(),
-			backgroundColors: _statistics.EnemyStatistics.Select(kvp => Enemies.GetEnemyByName(GameConstants.CurrentVersion, kvp.Key)?.Color.HexCode ?? "#444").ToList());
-	}
-
-	private async Task SetUpBarChart(BarChart<int> barChart, string[] labels, List<int> data, List<string> backgroundColors)
-	{
-		await barChart.Clear();
-		await barChart.AddLabelsDatasetsAndUpdate(labels, new BarChartDataset<int>
-		{
-			Label = "Players",
-			Data = data,
-			BackgroundColor = backgroundColors,
-		});
-	}
-
-	private async Task SetUpPieChart(PieChart<int> pieChart, string[] labels, List<int> data, List<string> backgroundColors)
-	{
-		await pieChart.Clear();
-		await pieChart.AddLabelsDatasetsAndUpdate(labels, new PieChartDataset<int>
-		{
-			Label = "Players",
-			Data = data,
-			BackgroundColor = backgroundColors,
-			BorderWidth = 1,
-			BorderColor = new List<string> { "#aaa" },
-			HoverBorderColor = new List<string> { "#ddd" },
-		});
+		@*<BarChart Options="_bco" @ref="_enemiesChart" TItem="int" />*@
 	}
 }
