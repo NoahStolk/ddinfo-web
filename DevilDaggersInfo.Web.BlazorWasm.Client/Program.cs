@@ -1,5 +1,4 @@
 using Blazored.LocalStorage;
-using Blazorise;
 using DevilDaggersInfo.Web.BlazorWasm.Client.Authentication;
 using DevilDaggersInfo.Web.BlazorWasm.Client.HttpClients;
 using Fluxor;
@@ -31,10 +30,6 @@ public static class Program
 		builder.Services.AddScoped<AuthenticationStateProvider>(provider => provider.GetRequiredService<AdminAuthenticationStateProvider>());
 
 		builder.Services.AddFluxor(options => options.ScanAssemblies(typeof(Program).Assembly));
-
-		builder.Services
-			.AddBlazorise(options => options.ChangeTextOnKeyPress = true)
-			.AddEmptyProviders();
 
 		await builder.Build().RunAsync();
 	}
