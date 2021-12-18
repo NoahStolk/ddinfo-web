@@ -35,7 +35,7 @@ public partial class WorldRecordProgressionPage
 
 	private readonly List<LineDataSet> _lineDataSets = new();
 
-	private DataOptions? _dataOptions;
+	private LineChartDataOptions? _dataOptions;
 	private GetWorldRecordDataContainer? _data;
 
 	[Inject]

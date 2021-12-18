@@ -56,8 +56,8 @@ public partial class PlayerPage
 	private readonly List<LineDataSet> _progressionData = new();
 	private readonly List<LineDataSet> _activityData = new();
 
-	private DataOptions? _progressionOptions;
-	private DataOptions? _activityOptions;
+	private LineChartDataOptions? _progressionOptions;
+	private LineChartDataOptions? _activityOptions;
 
 	[Parameter, EditorRequired] public int Id { get; set; }
 

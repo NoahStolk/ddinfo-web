@@ -1,10 +1,8 @@
-using Microsoft.AspNetCore.Components;
-
 namespace DevilDaggersInfo.Web.BlazorWasm.Client.Core.CanvasChart.Options;
 
-public class DataOptions
+public class LineChartDataOptions
 {
-	public DataOptions(double minX, double? stepX, double maxX, double minY, double? stepY, double maxY)
+	public LineChartDataOptions(double minX, double? stepX, double maxX, double minY, double? stepY, double maxY)
 	{
 		MinX = minX;
 		StepX = stepX;

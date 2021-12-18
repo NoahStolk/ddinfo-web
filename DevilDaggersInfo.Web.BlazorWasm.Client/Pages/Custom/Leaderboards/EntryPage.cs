@@ -23,7 +23,7 @@ public partial class EntryPage
 		new($"<span style='color: {ds.Color}; text-align: right;'>{d.Y.ToString("0")}</span>"),
 	};
 
-	private List<(string Name, DataOptions DataOptions, LineChartOptions ChartOptions, List<LineDataSet> Sets)> _lineCharts = new();
+	private List<(string Name, LineChartDataOptions DataOptions, LineChartOptions ChartOptions, List<LineDataSet> Sets)> _lineCharts = new();
 	private int _time;
 
 	[Parameter, EditorRequired] public int Id { get; set; }
@@ -54,7 +54,7 @@ public partial class EntryPage
 		int digits = ((int)Math.Round(maxData)).ToString().Length;
 		int roundingPoint = (int)Math.Pow(10, digits - 1);
 		maxData = Math.Ceiling(maxData / roundingPoint) * roundingPoint;
-		DataOptions dataOptions = new(0, _time / 10, _time, 0, maxData / 8, maxData);
+		LineChartDataOptions dataOptions = new(0, _time / 10, _time, 0, maxData / 8, maxData);
 		LineChartOptions chartOptions = new() { HighlighterKeys = dataSets.ConvertAll(ds => ds.Name).Prepend("Time").ToList(), GridOptions = new() { MinimumRowHeightInPx = 50 } };
 		_lineCharts.Add((name, dataOptions, chartOptions, dataSets.ConvertAll(ds => ds.Set)));
 	}
@@ -107,7 +107,7 @@ public partial class EntryPage
 
 			double minAcc = stats.Select(t => t.Acc).Min();
 			double maxAcc = stats.Select(t => t.Acc).Max();
-			DataOptions dataOptions = new(0, _time / 10, _time, Math.Floor(minAcc * 10) / 10, 0.1, Math.Ceiling(maxAcc * 10) / 10);
+			LineChartDataOptions dataOptions = new(0, _time / 10, _time, Math.Floor(minAcc * 10) / 10, 0.1, Math.Ceiling(maxAcc * 10) / 10);
 			LineChartOptions chartOptions = new() { HighlighterKeys = new() { "Time", "Accuracy", "Daggers Hit", "Daggers Fired" }, GridOptions = new() { MinimumRowHeightInPx = 50 }, ScaleYOptions = new() { NumberFormat = "0%" } };
 			_lineCharts.Add(("Accuracy", dataOptions, chartOptions, new() { new("#f80", false, false, false, stats.Select((t, i) => new LineData(i, t.Acc, t)).ToList(), accuracyHighlighter) }));
 		}

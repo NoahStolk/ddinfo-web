@@ -51,9 +51,9 @@ public partial class HistoryStatisticsPage
 	private readonly List<LineDataSet> _entrancesData = new();
 	private readonly List<LineDataSet> _accuracyData = new();
 
-	private DataOptions? _playersOptions;
-	private DataOptions? _entrancesOptions;
-	private DataOptions? _accuracyOptions;
+	private LineChartDataOptions? _playersOptions;
+	private LineChartDataOptions? _entrancesOptions;
+	private LineChartDataOptions? _accuracyOptions;
 
 	private List<GetLeaderboardHistoryStatistics>? _statistics;
 
