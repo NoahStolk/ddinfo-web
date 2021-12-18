@@ -36,7 +36,7 @@ public partial class LineChart
 
 	[Parameter, EditorRequired] public string UniqueName { get; set; } = null!;
 	[Parameter, EditorRequired] public List<LineDataSet> DataSets { get; set; } = null!;
-	[Parameter, EditorRequired] public DataOptions DataOptions { get; set; } = null!;
+	[Parameter, EditorRequired] public LineChartDataOptions DataOptions { get; set; } = null!;
 	[Parameter] public LineChartOptions Options { get; set; } = new();
 	[Parameter] public List<MarkupString> HighlighterValues { get; set; } = new();
 
