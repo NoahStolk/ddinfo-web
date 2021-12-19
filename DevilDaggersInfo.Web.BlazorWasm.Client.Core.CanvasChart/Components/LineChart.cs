@@ -57,24 +57,40 @@ public partial class LineChart
 	{
 		_highlighter.Width = Options.HighlighterWidth;
 
-		// Clear canvas.
-		await _context.ClearRectAsync(0, 0, _canvasWidth, _canvasHeight);
-
 		// Determine grid.
 		List<double> xScales = ScaleUtils.CalculateScales(ChartWidth, DataOptions.MinX, DataOptions.MaxX, DataOptions.StepX, Options.GridOptions.MinimumColumnWidthInPx);
 		List<double> yScales = ScaleUtils.CalculateScales(ChartHeight, DataOptions.MinY, DataOptions.MaxY, DataOptions.StepY, Options.GridOptions.MinimumRowHeightInPx);
 
-		// Set backgrounds.
-		await _context.SetFillStyleAsync(Options.CanvasBackgroundColor);
-		await _context.FillRectAsync(0, 0, _canvasWidth, _canvasHeight);
-		await _context.SetFillStyleAsync(Options.ChartBackgroundColor);
-		await _context.FillRectAsync(Options.ChartMarginXInPx, Options.ChartMarginYInPx, ChartWidth, ChartHeight);
-
 		// Render graphics.
+		await _context.ClearRectAsync(0, 0, _canvasWidth, _canvasHeight);
+		await RenderBackgroundAsync();
 		await RenderGridAsync();
 		await RenderSideBarsAsync();
 		foreach (LineDataSet dataSet in DataSets)
 			await RenderDataLineAsync(dataSet);
+
+		async Task RenderBackgroundAsync()
+		{
+			await _context.SetFillStyleAsync(Options.CanvasBackgroundColor);
+			await _context.FillRectAsync(0, 0, _canvasWidth, _canvasHeight);
+			await _context.SetFillStyleAsync(Options.ChartBackgroundColor);
+			await _context.FillRectAsync(Options.ChartMarginXInPx, Options.ChartMarginYInPx, ChartWidth, ChartHeight);
+
+			if (Options.Backgrounds?.Count > 0)
+			{
+				double end = DataOptions.MinX;
+				foreach (LineChartBackground background in Options.Backgrounds)
+				{
+					double startX = LerpUtils.RevLerp(DataOptions.MinX, DataOptions.MaxX, end) * ChartWidth;
+					double endX = LerpUtils.RevLerp(DataOptions.MinX, DataOptions.MaxX, background.ChartEndXValue) * ChartWidth;
+
+					await _context.SetFillStyleAsync(background.Color);
+					await _context.FillRectAsync(Options.ChartMarginXInPx + startX, Options.ChartMarginYInPx, endX - startX, ChartHeight);
+
+					end = background.ChartEndXValue;
+				}
+			}
+		}
 
 		async Task RenderGridAsync()
 		{
@@ -130,11 +146,6 @@ public partial class LineChart
 			if (dataSet.Data.Count < 2)
 				return;
 
-			await _context.SetLineWidthAsync(1);
-			await _context.SetStrokeStyleAsync(dataSet.Color);
-
-			await _context.BeginPathAsync();
-
 			List<LinePosition> linePositions = new();
 			for (int i = 0; i < dataSet.Data.Count; i++)
 			{
@@ -177,6 +188,11 @@ public partial class LineChart
 					}
 				}
 			}
+
+			await _context.SetLineWidthAsync(1);
+			await _context.SetStrokeStyleAsync(dataSet.Color);
+
+			await _context.BeginPathAsync();
 
 			for (int i = 0; i < linePositions.Count; i++)
 			{

@@ -5,6 +5,8 @@ public class LineChartOptions
 	public string CanvasBackgroundColor { get; set; } = "#040404";
 	public string ChartBackgroundColor { get; set; } = "#080808";
 
+	public List<LineChartBackground>? Backgrounds { get; set; }
+
 	public double ChartMarginXInPx { get; set; } = 40;
 	public double ChartMarginYInPx { get; set; } = 40;
 
