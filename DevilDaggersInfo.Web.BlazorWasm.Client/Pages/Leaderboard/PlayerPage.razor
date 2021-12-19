@@ -75,33 +75,28 @@ else
 					<DataField CssClass="odd:bg-gray-2" Name="Hand orientation">@(rightHand.HasValue ? rightHand.Value ? "Right" : "Left" : "N/A")</DataField>
 					<DataField CssClass="odd:bg-gray-2" Name="Hand flash">@(flashHand.HasValue ? flashHand.Value ? "On" : "Off" : "N/A")</DataField>
 					<DataField CssClass="odd:bg-gray-2" Name="Legacy audio">@(legacyAudio.HasValue ? legacyAudio.Value ? "On" : "Off" : "N/A")</DataField>
-				</PlayerCard>
-			}
-
-			if (GetPlayer.CountryCode != null || GetPlayerHistory != null)
-			{
-				<PlayerCard Title="Miscellaneous">
 					@if (GetPlayer.CountryCode != null)
 					{
-						<TallDataField CssClass="odd:bg-gray-2" Name="Country">
-							<div class="grid grid-cols-2 justify-items-end">
-								<img src="/images/flags/@(@GetPlayer.CountryCode).png" />
-								<span>@(UserUtils.CountryNames.ContainsKey(GetPlayer.CountryCode) ? UserUtils.CountryNames[GetPlayer.CountryCode] : "?")</span>
-							</div>
-						</TallDataField>
-					}
-					@if (GetPlayerHistory != null)
-					{
-						<DataField CssClass="odd:bg-gray-2" Name="Best rank">@GetPlayerHistory.BestRank</DataField>
-						<TallDataField CssClass="odd:bg-gray-2" Name="Usernames">
-							@foreach (string username in GetPlayerHistory.Usernames)
-							{
-								<div class="odd:bg-gray-2 px-1">@username</div>
-							}
-						</TallDataField>
+						<DataField CssClass="odd:bg-gray-2" Name="Country">
+							<img class="inline" src="/images/flags/@(GetPlayer.CountryCode).png" />
+							@(UserUtils.CountryNames.ContainsKey(GetPlayer.CountryCode) ? UserUtils.CountryNames[GetPlayer.CountryCode] : "?")
+						</DataField>
 					}
 				</PlayerCard>
 			}
+		}
+
+		@if (GetPlayerHistory != null)
+		{
+			<PlayerCard Title="History">
+				<DataField CssClass="odd:bg-gray-2" Name="Best rank recorded">@GetPlayerHistory.BestRank</DataField>
+				<TallDataField CssClass="odd:bg-gray-2" Name="Usernames">
+					@foreach (string username in GetPlayerHistory.Usernames)
+					{
+						<div class="even:bg-gray-2 px-1">@username</div>
+					}
+				</TallDataField>
+			</PlayerCard>
 		}
 
 		@if (GetCustomLeaderboardStatistics == null || GetNumberOfCustomLeaderboards == null)
