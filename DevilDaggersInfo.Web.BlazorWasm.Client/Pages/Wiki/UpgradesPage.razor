@@ -24,9 +24,9 @@
 				<div>Default shot</div>
 				<div class="text-right">@upgrade.DefaultDamage.DaggersPerShot daggers per shot</div>
 				<div>Homing spray</div>
-				<div class="text-right">@(upgrade.HomingDamage.DaggersPerSpraySecond == null ? MarkupUtils.NoDataMarkup : new MarkupString($"{upgrade.HomingDamage.DaggersPerSpraySecond} daggers per second"))</div>
+				<div class="text-right">@(!upgrade.HomingDamage.HasValue ? MarkupUtils.NoDataMarkup : new MarkupString($"{upgrade.HomingDamage.Value.DaggersPerSpraySecond} daggers per second"))</div>
 				<div>Homing shot</div>
-				<div class="text-right">@(upgrade.HomingDamage.DaggersPerShot == null ? MarkupUtils.NoDataMarkup : new MarkupString($"{upgrade.HomingDamage.DaggersPerShot} daggers per shot"))</div>
+				<div class="text-right">@(!upgrade.HomingDamage.HasValue ? MarkupUtils.NoDataMarkup : new MarkupString($"{upgrade.HomingDamage.Value.DaggersPerShot} daggers per shot"))</div>
 			</div>
 			<img src='images/wiki/upgrades/@(upgrade.Name.ToLower().Replace(' ', '-')).png' />
 		</div>
