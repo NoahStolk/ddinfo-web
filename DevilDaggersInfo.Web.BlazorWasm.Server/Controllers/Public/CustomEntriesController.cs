@@ -1,4 +1,5 @@
 using DevilDaggersInfo.Web.BlazorWasm.Server.Caches.SpawnsetHashes;
+using DevilDaggersInfo.Web.BlazorWasm.Server.Caches.SpawnsetSummaries;
 using DevilDaggersInfo.Web.BlazorWasm.Server.Converters.Public;
 using DevilDaggersInfo.Web.BlazorWasm.Server.HostedServices.DdInfoDiscordBot;
 using DevilDaggersInfo.Web.BlazorWasm.Shared.Dto.Public.CustomEntries;
@@ -15,13 +16,15 @@ public class CustomEntriesController : ControllerBase
 	private readonly ApplicationDbContext _dbContext;
 	private readonly ILogger<CustomEntriesController> _logger;
 	private readonly SpawnsetHashCache _spawnsetHashCache;
+	private readonly SpawnsetSummaryCache _spawnsetSummaryCache;
 	private readonly IFileSystemService _fileSystemService;
 
-	public CustomEntriesController(ApplicationDbContext dbContext, ILogger<CustomEntriesController> logger, SpawnsetHashCache spawnsetHashCache, IFileSystemService fileSystemService)
+	public CustomEntriesController(ApplicationDbContext dbContext, ILogger<CustomEntriesController> logger, SpawnsetHashCache spawnsetHashCache, SpawnsetSummaryCache spawnsetSummaryCache, IFileSystemService fileSystemService)
 	{
 		_dbContext = dbContext;
 		_logger = logger;
 		_spawnsetHashCache = spawnsetHashCache;
+		_spawnsetSummaryCache = spawnsetSummaryCache;
 		_fileSystemService = fileSystemService;
 	}
 
@@ -71,7 +74,9 @@ public class CustomEntriesController : ControllerBase
 			.AsNoTracking()
 			.FirstOrDefault(ced => ced.CustomEntryId == id);
 
-		return customEntry.ToGetCustomEntryData(customEntryData);
+		SpawnsetSummary ss = _spawnsetSummaryCache.GetSpawnsetSummaryByFilePath(Path.Combine(_fileSystemService.GetPath(DataSubDirectory.Spawnsets), customEntry.CustomLeaderboard.Spawnset.Name));
+		EffectivePlayerSettings eps = SpawnsetBinary.GetEffectivePlayerSettings(ss.HandLevel, ss.AdditionalGems);
+		return customEntry.ToGetCustomEntryData(customEntryData, eps.HandLevel);
 	}
 
 	[HttpGet("player-stats")]

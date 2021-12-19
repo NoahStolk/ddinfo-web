@@ -56,7 +56,7 @@ public static class CustomEntryConverters
 		HasReplay = hasReplay,
 	};
 
-	public static GetCustomEntryData ToGetCustomEntryData(this CustomEntryEntity customEntry, CustomEntryDataEntity? customEntryData)
+	public static GetCustomEntryData ToGetCustomEntryData(this CustomEntryEntity customEntry, CustomEntryDataEntity? customEntryData, HandLevel startingLevel)
 	{
 		return new()
 		{
@@ -128,6 +128,8 @@ public static class CustomEntryConverters
 			ThornsKilledData = GetUshortArr(customEntryData?.ThornsKilledData),
 			GhostpedesKilledData = GetUshortArr(customEntryData?.GhostpedesKilledData),
 			SpiderEggsKilledData = GetUshortArr(customEntryData?.SpiderEggsKilledData),
+
+			StartingLevel = startingLevel,
 		};
 
 		static int[]? GetIntArr(byte[]? bytes)

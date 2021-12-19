@@ -1,3 +1,5 @@
+using DevilDaggersInfo.Core.Spawnset.Enums;
+
 namespace DevilDaggersInfo.Web.BlazorWasm.Shared.Dto.Public.CustomEntries;
 
 public class GetCustomEntryData
@@ -90,4 +92,6 @@ public class GetCustomEntryData
 	public ushort[]? ThornsKilledData { get; init; }
 	public ushort[]? GhostpedesKilledData { get; init; }
 	public ushort[]? SpiderEggsKilledData { get; init; }
+
+	public HandLevel StartingLevel { get; init; }
 }
