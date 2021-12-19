@@ -1,5 +1,6 @@
 @page "/leaderboard/world-record-progression"
 @using DevilDaggersInfo.Web.BlazorWasm.Client.Core.CanvasChart.Components
+@using DevilDaggersInfo.Web.BlazorWasm.Shared.Dto.Public.WorldRecords
 
 <Heading Title="World Record Progression" />
 
@@ -20,7 +21,7 @@ else
 		<div class="hidden xl:block">First held</div>
 		<div class="hidden xl:block">Last held</div>
 	</div>
-	@foreach (var wrh in _data.WorldRecordHolders.OrderByDescending(wrh => wrh.LastHeld))
+	@foreach (GetWorldRecordHolder wrh in _data.WorldRecordHolders.OrderByDescending(wrh => wrh.LastHeld))
 	{
 		int totalTimeHeld = (int)Math.Round(wrh.TotalTimeHeld.TotalDays);
 		int longestTimeHeldConsecutively = (int)Math.Round(wrh.LongestTimeHeldConsecutively.TotalDays);
@@ -46,7 +47,7 @@ else
 		<div class="hidden xl:block">Improvement</div>
 		<div class="hidden xl:block">Game version</div>
 	</div>
-	@foreach (var wr in _data.WorldRecords.OrderByDescending(wr => wr.Entry.Time))
+	@foreach (GetWorldRecord wr in _data.WorldRecords.OrderByDescending(wr => wr.GameVersion).ThenByDescending(wr => wr.Entry.Time))
 	{
 		//bool isCurrentWr = kvp.Key.Entry.Time == Model.CurrentWorldRecord?.Time;
 		int days = (int)Math.Round(wr.WorldRecordDuration.TotalDays);
