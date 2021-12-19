@@ -1,3 +1,5 @@
+using DevilDaggersInfo.Core.Spawnset.Enums;
+using DevilDaggersInfo.Core.Spawnset.Extensions;
 using DevilDaggersInfo.Core.Wiki.Colors;
 using DevilDaggersInfo.Web.BlazorWasm.Client.Core.CanvasChart.Data;
 using DevilDaggersInfo.Web.BlazorWasm.Client.Core.CanvasChart.Options;
@@ -25,6 +27,8 @@ public partial class EntryPage
 
 	private List<(string Name, LineChartDataOptions DataOptions, LineChartOptions ChartOptions, List<LineDataSet> Sets)> _lineCharts = new();
 	private int _time;
+
+	private List<LineChartBackground> _backgrounds = new();
 
 	[Parameter, EditorRequired] public int Id { get; set; }
 
@@ -55,7 +59,15 @@ public partial class EntryPage
 		int roundingPoint = (int)Math.Pow(10, digits - 1);
 		maxData = Math.Ceiling(maxData / roundingPoint) * roundingPoint;
 		LineChartDataOptions dataOptions = new(0, _time / 10, _time, 0, maxData / 8, maxData);
-		LineChartOptions chartOptions = new() { HighlighterKeys = dataSets.ConvertAll(ds => ds.Name).Prepend("Time").ToList(), GridOptions = new() { MinimumRowHeightInPx = 50 } };
+		LineChartOptions chartOptions = new()
+		{
+			HighlighterKeys = dataSets.ConvertAll(ds => ds.Name).Prepend("Time").ToList(),
+			GridOptions = new()
+			{
+				MinimumRowHeightInPx = 50,
+			},
+			Backgrounds = _backgrounds,
+		};
 		_lineCharts.Add((name, dataOptions, chartOptions, dataSets.ConvertAll(ds => ds.Set)));
 	}
 
@@ -64,6 +76,23 @@ public partial class EntryPage
 		GetCustomEntryData = await Http.GetCustomEntryDataById(Id);
 
 		_time = (int)Math.Ceiling(GetCustomEntryData.Time);
+
+		for (HandLevel i = GetCustomEntryData.StartingLevel; i <= HandLevel.Level4; i++)
+		{
+			double nextLevelUp = i switch
+			{
+				HandLevel.Level1 => GetCustomEntryData.LevelUpTime2,
+				HandLevel.Level2 => GetCustomEntryData.LevelUpTime3,
+				HandLevel.Level3 => GetCustomEntryData.LevelUpTime4,
+				_ => 0,
+			};
+
+			Upgrade? upgrade = i.GetUpgradeByHandLevel();
+			string color = !upgrade.HasValue ? "#fff2" : $"{upgrade.Value.Color.HexCode}08";
+			_backgrounds.Add(new() { Color = color, ChartEndXValue = nextLevelUp == 0 ? _time : nextLevelUp });
+			if (nextLevelUp == 0)
+				break;
+		}
 
 		List<(LineDataSet Set, string Name)> gemsSets = new();
 		AddDataSet(gemsSets, GetCustomEntryData.GemsTotalData, "Total Gems", "#800");
@@ -108,7 +137,13 @@ public partial class EntryPage
 			double minAcc = stats.Select(t => t.Acc).Min();
 			double maxAcc = stats.Select(t => t.Acc).Max();
 			LineChartDataOptions dataOptions = new(0, _time / 10, _time, Math.Floor(minAcc * 10) / 10, 0.1, Math.Ceiling(maxAcc * 10) / 10);
-			LineChartOptions chartOptions = new() { HighlighterKeys = new() { "Time", "Accuracy", "Daggers Hit", "Daggers Fired" }, GridOptions = new() { MinimumRowHeightInPx = 50 }, ScaleYOptions = new() { NumberFormat = "0%" } };
+			LineChartOptions chartOptions = new()
+			{
+				HighlighterKeys = new() { "Time", "Accuracy", "Daggers Hit", "Daggers Fired" },
+				GridOptions = new() { MinimumRowHeightInPx = 50 },
+				ScaleYOptions = new() { NumberFormat = "0%" },
+				Backgrounds = _backgrounds,
+			};
 			_lineCharts.Add(("Accuracy", dataOptions, chartOptions, new() { new("#f80", false, true, false, stats.Select((t, i) => new LineData(i, t.Acc, t)).ToList(), accuracyHighlighter) }));
 		}
 
