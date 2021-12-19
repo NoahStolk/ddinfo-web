@@ -135,7 +135,7 @@ public partial class LineChart
 
 			await _context.BeginPathAsync();
 
-			List<(double X, double Y)> linePositions = new();
+			List<LinePosition> linePositions = new();
 			for (int i = 0; i < dataSet.Data.Count; i++)
 			{
 				LineData data = dataSet.Data[i];
@@ -146,9 +146,9 @@ public partial class LineChart
 
 				if (i == dataSet.Data.Count - 1)
 				{
-					linePositions.Add((x, y));
+					linePositions.Add(new(x, y));
 					if (dataSet.AppendEnd && percX != 1)
-						linePositions.Add((Options.ChartMarginXInPx + ChartWidth, y));
+						linePositions.Add(new(Options.ChartMarginXInPx + ChartWidth, y));
 				}
 				else
 				{
@@ -156,35 +156,35 @@ public partial class LineChart
 					{
 						if (dataSet.PrependStart && percX != 0)
 						{
-							linePositions.Add((Options.ChartMarginXInPx, y));
-							linePositions.Add((x, y));
+							linePositions.Add(new(Options.ChartMarginXInPx, y));
+							linePositions.Add(new(x, y));
 						}
 						else
 						{
-							linePositions.Add((x, y));
+							linePositions.Add(new(x, y));
 						}
 					}
 					else
 					{
-						linePositions.Add((x, y));
+						linePositions.Add(new(x, y));
 					}
 
 					if (dataSet.IsSteppedLine)
 					{
 						double percNextX = LerpUtils.RevLerp(DataOptions.MinX, DataOptions.MaxX, dataSet.Data[i + 1].X);
 						double nextX = Options.ChartMarginXInPx + percNextX * ChartWidth;
-						linePositions.Add((nextX, y));
+						linePositions.Add(new(nextX, y));
 					}
 				}
 			}
 
 			for (int i = 0; i < linePositions.Count; i++)
 			{
-				(double x, double y) = linePositions[i];
+				LinePosition linePosition = linePositions[i];
 				if (i == 0)
-					await _context.MoveToAsync(x, y);
+					await _context.MoveToAsync(linePosition.X, linePosition.Y);
 				else
-					await _context.LineToAsync(x, y);
+					await _context.LineToAsync(linePosition.X, linePosition.Y);
 			}
 
 			await _context.StrokeAsync();
@@ -259,4 +259,6 @@ public partial class LineChart
 			_highlighter.ChangeState();
 		}
 	}
+
+	private readonly record struct LinePosition(double X, double Y);
 }
