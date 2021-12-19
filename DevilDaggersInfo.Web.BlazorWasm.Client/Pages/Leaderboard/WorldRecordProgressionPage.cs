@@ -24,6 +24,7 @@ public partial class WorldRecordProgressionPage
 			"Kills",
 			"Accuracy",
 			"Death type",
+			"Game version",
 		},
 		GridOptions = new()
 		{
@@ -66,8 +67,8 @@ public partial class WorldRecordProgressionPage
 			if (wr == null)
 				return new();
 
-			GameVersion gameVersion = GameVersions.GetGameVersionFromDate(wr.DateTime) ?? GameVersion.V1_0;
-			Dagger dagger = Daggers.GetDaggerFromSeconds(gameVersion, wr.Entry.Time);
+			GameVersion? gameVersion = GameVersions.GetGameVersionFromDate(wr.DateTime);
+			Dagger dagger = Daggers.GetDaggerFromSeconds(gameVersion ?? GameVersion.V1_0, wr.Entry.Time);
 			return new()
 			{
 				new($"<span style='text-align: right;'>{wr.DateTime.ToString(FormatUtils.DateFormat)}</span>"),
@@ -76,7 +77,8 @@ public partial class WorldRecordProgressionPage
 				new($"<span style='text-align: right;'>{wr.Entry.Gems}</span>"),
 				new($"<span style='text-align: right;'>{wr.Entry.Kills}</span>"),
 				new($"<span style='text-align: right;'>{(wr.Entry.DaggersFired == 0 ? 0 : wr.Entry.DaggersHit / (double)wr.Entry.DaggersFired).ToString(FormatUtils.AccuracyFormat)}</span>"),
-				new($"<span style='text-align: right;'>{MarkupUtils.DeathString(wr.Entry.DeathType, gameVersion)}</span>"),
+				new($"<span style='text-align: right;'>{MarkupUtils.DeathString(wr.Entry.DeathType, gameVersion ?? GameVersion.V1_0)}</span>"),
+				new($"<span style='text-align: right;'>{GetGameVersionString(gameVersion)}</span>"),
 			};
 		}));
 	}
