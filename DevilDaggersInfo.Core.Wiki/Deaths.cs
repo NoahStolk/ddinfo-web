@@ -2,15 +2,22 @@ namespace DevilDaggersInfo.Core.Wiki;
 
 public static class Deaths
 {
-	public static List<Death> GetDeaths(GameVersion gameVersion) => gameVersion switch
+	public static List<Death> GetDeaths(GameVersion gameVersion)
 	{
-		GameVersion.V1_0 => DeathsV1_0.All,
-		GameVersion.V2_0 => DeathsV2_0.All,
-		GameVersion.V3_0 => DeathsV3_0.All,
-		GameVersion.V3_1 => DeathsV3_1.All,
-		GameVersion.V3_2 => DeathsV3_2.All,
-		_ => throw new ArgumentOutOfRangeException(nameof(gameVersion)),
-	};
+		List<Death> all = gameVersion switch
+		{
+			GameVersion.V1_0 => DeathsV1_0.All,
+			GameVersion.V2_0 => DeathsV2_0.All,
+			GameVersion.V3_0 => DeathsV3_0.All,
+			GameVersion.V3_1 => DeathsV3_1.All,
+			GameVersion.V3_2 => DeathsV3_2.All,
+			_ => throw new ArgumentOutOfRangeException(nameof(gameVersion)),
+		};
+
+		return all
+			.Where(d => !string.Equals(d.Name, "unknown", StringComparison.OrdinalIgnoreCase))
+			.ToList();
+	}
 
 	public static Death? GetDeathByName(GameVersion gameVersion, string name)
 	{

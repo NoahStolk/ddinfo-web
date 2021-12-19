@@ -102,7 +102,6 @@ public partial class BarChart
 		async Task RenderSideBarsAsync()
 		{
 			const int paddingX = 4;
-			const int paddingY = 16;
 
 			await _context.SetStrokeStyleAsync(Options.ScaleXOptions.TextColor);
 			await _context.SetFontAsync(Options.ScaleXOptions.Font);
@@ -125,7 +124,7 @@ public partial class BarChart
 				double xScaleValue = xScales[i];
 				double xScalePosition = LerpUtils.RevLerp(0, DataSet.Data.Count, xScaleValue) * ChartWidth + 1 / (double)DataSet.Data.Count * ChartWidth * 0.5;
 				await _context.SaveAsync();
-				await _context.TranslateAsync(Options.ChartMarginXInPx + xScalePosition, Options.ChartMarginYInPx + ChartHeight + paddingY);
+				await _context.TranslateAsync(Options.ChartMarginXInPx + xScalePosition, Options.ChartMarginYInPx * 1.5 + ChartHeight);
 				await _context.RotateAsync((360 - 45) * (MathF.PI / 180));
 				await _context.StrokeTextAsync(xScaleTexts[i], 0, 0);
 				await _context.RestoreAsync();

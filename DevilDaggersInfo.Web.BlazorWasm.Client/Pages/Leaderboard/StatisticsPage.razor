@@ -35,7 +35,7 @@ else
 		<p>The average kills for all players is @(_statistics.Kills.Average.ToString("0.00")).</p>
 		<p>The median kills for all players is @_statistics.Kills.Median.</p>
 		<p>The mode kills for all players is @_statistics.Kills.Mode.</p>
-		<BarChart DataOptions="_killsDataOptions" UniqueName="#kills-chart" DataSet="@_killsData" Options="new() { ChartMarginXInPx = 60 }" XScaleTexts="Enumerable.Range(0, 50).Select(i => (i * 10).ToString())" />
+		<BarChart DataOptions="_killsDataOptions" UniqueName="#kills-chart" DataSet="@_killsData" Options="new() { ChartMarginXInPx = 60 }" XScaleTexts="Enumerable.Range(0, 100).Select(i => (i * 10).ToString())" />
 
 		<Heading Title="Gems" Level="2" />
 		<p>The average gems for all players is @(_statistics.Gems.Average.ToString("0.00")).</p>
@@ -47,12 +47,12 @@ else
 		<BarChart DataOptions="_gemsDataOptions" UniqueName="#gems-chart" DataSet="@_gemsData" Options="new() { ChartMarginXInPx = 60 }" XScaleTexts="Enumerable.Range(0, 50).Select(i => (i * 10).ToString())" />
 
 		<Heading Title="Daggers Achieved" Level="2" />
-		@*<BarChart Options="_bco" @ref="_daggersChart" TItem="int" />*@
+		<BarChart DataOptions="_daggersDataOptions" UniqueName="#daggers-chart" DataSet="@_daggersData" Options="new() { ChartMarginXInPx = 60, ChartMarginYInPx = 80 }" XScaleTexts="_daggers" />
 
 		<Heading Title="Death Types" Level="2" />
-		@*<BarChart Options="_bco" @ref="_deathsChart" TItem="int" />*@
+		<BarChart DataOptions="_deathsDataOptions" UniqueName="#deaths-chart" DataSet="@_deathsData" Options="new() { ChartMarginXInPx = 60, ChartMarginYInPx = 80 }" XScaleTexts="_deathTypes" />
 
 		<Heading Title="Enemies Seen" Level="2" />
-		@*<BarChart Options="_bco" @ref="_enemiesChart" TItem="int" />*@
+		<BarChart DataOptions="_enemiesDataOptions" UniqueName="#enemies-chart" DataSet="@_enemiesData" Options="new() { ChartMarginXInPx = 60, ChartMarginYInPx = 80 }" XScaleTexts="_enemies" />
 	}
 }
