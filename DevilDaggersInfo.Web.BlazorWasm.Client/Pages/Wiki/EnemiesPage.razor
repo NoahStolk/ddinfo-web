@@ -119,6 +119,78 @@
 	}
 </div>
 
+<Heading Title="Damage Statistics" Level="2" />
+
+<Paragraph>All of this information assumes 100% shot accuracy, and may not be relevant in some cases.</Paragraph>
+
+@{
+	List<Upgrade> upgrades = Upgrades.GetUpgrades(GameVersion);
+	string gridCols = GameVersion == GameVersion.V1_0 ? "grid-cols-9" : "grid-cols-12";
+	string colSpan = GameVersion == GameVersion.V1_0 ? "col-span-3" : "col-span-4";
+}
+<div class="grid gap-x-4 @gridCols">
+	<div>Enemy</div>
+	<div class="text-right">HP</div>
+	<div class="text-right @colSpan">Spray (seconds)</div>
+	<div class="text-right @colSpan">Shots</div>
+	<div class="text-right @(GameVersion != GameVersion.V1_0 ? "col-span-2" : string.Empty)">Homing daggers</div>
+</div>
+<div class="grid gap-x-4 @gridCols">
+	<div class="col-span-2"></div>
+	@foreach (Upgrade upgrade in upgrades)
+	{
+		<div class="text-right">@MarkupUtils.UpgradeString(upgrade)</div>
+	}
+	@foreach (Upgrade upgrade in upgrades)
+	{
+		<div class="text-right">@MarkupUtils.UpgradeString(upgrade)</div>
+	}
+	@foreach (Upgrade upgrade in upgrades.Where(u => u.HomingDamage.HasValue))
+	{
+		<div class="text-right">@MarkupUtils.UpgradeString(upgrade)</div>
+	}
+</div>
+<div class="grid gap-x-4 @gridCols">
+	@{
+		List<Enemy> all = new();
+		foreach (Enemy enemy in Enemies.GetEnemies(GameVersion))
+		{
+			all.Add(enemy);
+			if (enemy.Gems > 1)
+			{
+				all.Add(enemy with
+				{
+					Name = $"{enemy.Name} (Gem)",
+					Hp = enemy.Hp / enemy.Gems,
+					HomingDamage = new()
+					{
+						Level3HomingDaggers = enemy.HomingDamage.Level3HomingDaggers / enemy.Gems,
+						Level4HomingDaggers = enemy.HomingDamage.Level4HomingDaggers / enemy.Gems,
+					},
+				});
+			}
+		}
+		foreach (Enemy enemy in all)
+		{
+			<div>@MarkupUtils.EnemyString(enemy)</div>
+			<div class="text-right">@enemy.Hp</div>
+			@foreach (Upgrade upgrade in upgrades)
+			{
+				<div class="text-right">@((enemy.Hp / upgrade.DefaultDamage.DaggersPerSpraySecond).ToString("0.000"))</div>
+			}
+			@foreach (Upgrade upgrade in upgrades)
+			{
+				<div class="text-right">@(Math.Ceiling(enemy.Hp / (double)upgrade.DefaultDamage.DaggersPerShot))</div>
+			}
+			<div class="text-right">@(enemy.HomingDamage.Level3HomingDaggers.HasValue ? new MarkupString(enemy.HomingDamage.Level3HomingDaggers.Value.ToString()) : MarkupUtils.NoDataMarkup)</div>
+			@if (GameVersion != GameVersion.V1_0)
+			{
+				<div class="text-right">@(enemy.HomingDamage.Level4HomingDaggers.HasValue ? new MarkupString(enemy.HomingDamage.Level4HomingDaggers.Value.ToString()) : MarkupUtils.NoDataMarkup)</div>
+			}
+		}
+	}
+</div>
+
 <Heading Title="Transmuted Skulls" Level="2" />
 
 <ul class="pl-4">
