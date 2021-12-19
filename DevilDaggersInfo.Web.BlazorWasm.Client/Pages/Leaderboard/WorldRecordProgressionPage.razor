@@ -20,7 +20,7 @@ else
 		<div class="hidden xl:block">First held</div>
 		<div class="hidden xl:block">Last held</div>
 	</div>
-	@foreach (var wrh in _data.WorldRecordHolders.OrderBy(wrh => wrh.LastHeld))
+	@foreach (var wrh in _data.WorldRecordHolders.OrderByDescending(wrh => wrh.LastHeld))
 	{
 		int totalTimeHeld = (int)Math.Round(wrh.TotalTimeHeld.TotalDays);
 		int longestTimeHeldConsecutively = (int)Math.Round(wrh.LongestTimeHeldConsecutively.TotalDays);
@@ -46,7 +46,7 @@ else
 		<div class="hidden xl:block">Improvement</div>
 		<div class="hidden xl:block">Game version</div>
 	</div>
-	@foreach (var wr in _data.WorldRecords.OrderBy(wr => wr.Entry.Time))
+	@foreach (var wr in _data.WorldRecords.OrderByDescending(wr => wr.Entry.Time))
 	{
 		//bool isCurrentWr = kvp.Key.Entry.Time == Model.CurrentWorldRecord?.Time;
 		int days = (int)Math.Round(wr.WorldRecordDuration.TotalDays);
