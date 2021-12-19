@@ -42,7 +42,7 @@ public partial class EntryPage
 	private void AddDataSet(List<(LineDataSet Set, string Name)> dataSets, int[]? data, string name, string color)
 	{
 		if (data != null)
-			dataSets.Add((new(color, false, false, false, data.Take(_time).Select((val, i) => new LineData(i, val, val)).ToList(), dataSets.Count == 0 ? _initialHighlightTransformation : _highlightTransformation), name));
+			dataSets.Add((new(color, false, true, false, data.Take(_time).Select((val, i) => new LineData(i, val, val)).ToList(), dataSets.Count == 0 ? _initialHighlightTransformation : _highlightTransformation), name));
 	}
 
 	private void AddDataSets(List<(LineDataSet Set, string Name)> dataSets, string name)
@@ -109,7 +109,7 @@ public partial class EntryPage
 			double maxAcc = stats.Select(t => t.Acc).Max();
 			LineChartDataOptions dataOptions = new(0, _time / 10, _time, Math.Floor(minAcc * 10) / 10, 0.1, Math.Ceiling(maxAcc * 10) / 10);
 			LineChartOptions chartOptions = new() { HighlighterKeys = new() { "Time", "Accuracy", "Daggers Hit", "Daggers Fired" }, GridOptions = new() { MinimumRowHeightInPx = 50 }, ScaleYOptions = new() { NumberFormat = "0%" } };
-			_lineCharts.Add(("Accuracy", dataOptions, chartOptions, new() { new("#f80", false, false, false, stats.Select((t, i) => new LineData(i, t.Acc, t)).ToList(), accuracyHighlighter) }));
+			_lineCharts.Add(("Accuracy", dataOptions, chartOptions, new() { new("#f80", false, true, false, stats.Select((t, i) => new LineData(i, t.Acc, t)).ToList(), accuracyHighlighter) }));
 		}
 
 		List<(LineDataSet Set, string Name)> skullsAliveSets = new();
