@@ -13,34 +13,35 @@
 
 <Heading Title="Summary" Level="2" />
 
-<div class="grid grid-cols-4 md:grid-cols-6 lg:grid-cols-9">
+<div class="grid gap-x-4 grid-cols-4 md:grid-cols-6 lg:grid-cols-9">
 	<div class="font-bold">Enemy</div>
-	<div class="font-bold">HP</div>
-	<div class="font-bold">Gems</div>
+	<div class="font-bold text-right">HP</div>
+	<div class="font-bold text-right">Gems</div>
 	<div class="font-bold">Death type</div>
 	<div class="font-bold hidden md:block">Appearances</div>
-	<div class="font-bold hidden md:block">First spawn</div>
-	<div class="font-bold hidden lg:block">Level 3 homing</div>
-	<div class="font-bold hidden lg:block">Level 4 homing</div>
+	<div class="font-bold hidden md:block text-right">First spawn</div>
+	<div class="font-bold hidden lg:block text-right">Level 3 homing</div>
+	<div class="font-bold hidden lg:block text-right">Level 4 homing</div>
 	<div class="font-bold hidden lg:block">Spawned by</div>
 </div>
 
 @foreach (Enemy enemy in Enemies.GetEnemies(GameVersion))
 {
-	<div class="grid grid-cols-4 md:grid-cols-6 lg:grid-cols-9">
+	<div class="grid gap-x-4 grid-cols-4 md:grid-cols-6 lg:grid-cols-9">
 		<div>@MarkupUtils.EnemyString(enemy)</div>
-		<div>@enemy.Hp</div>
-		<div>@enemy.Gems</div>
+		<div class="text-right">@enemy.Hp</div>
+		<div class="text-right">@enemy.Gems</div>
 		<div>@MarkupUtils.DeathString(enemy.Death)</div>
 		<div class="hidden md:block">
 			@foreach (GameVersion gv in Enemies.GetAppearances(enemy.Name))
 			{
-				<span>@gv.ToDisplayString()&nbsp;</span>
+				@gv.ToDisplayString()
+				@MarkupUtils.Space()
 			}
 		</div>
-		<div class="hidden md:block">@(enemy.FirstSpawnSecond.HasValue ? new MarkupString(enemy.FirstSpawnSecond.Value.ToString("N4")) : MarkupUtils.NoDataMarkup)</div>
-		<div class="hidden lg:block">@(enemy.HomingDamage.Level3HomingDaggers.HasValue ? new MarkupString(enemy.HomingDamage.Level3HomingDaggers.Value.ToString()) : MarkupUtils.NoDataMarkup)</div>
-		<div class="hidden lg:block">@(enemy.HomingDamage.Level4HomingDaggers.HasValue ? new MarkupString(enemy.HomingDamage.Level4HomingDaggers.Value.ToString()) : MarkupUtils.NoDataMarkup)</div>
+		<div class="hidden md:block text-right">@(enemy.FirstSpawnSecond.HasValue ? new MarkupString(enemy.FirstSpawnSecond.Value.ToString(FormatUtils.TimeFormat)) : MarkupUtils.NoDataMarkup)</div>
+		<div class="hidden lg:block text-right">@(enemy.HomingDamage.Level3HomingDaggers.HasValue ? new MarkupString(enemy.HomingDamage.Level3HomingDaggers.Value.ToString()) : MarkupUtils.NoDataMarkup)</div>
+		<div class="hidden lg:block text-right">@(enemy.HomingDamage.Level4HomingDaggers.HasValue ? new MarkupString(enemy.HomingDamage.Level4HomingDaggers.Value.ToString()) : MarkupUtils.NoDataMarkup)</div>
 		<div class="hidden lg:block">
 			@if (enemy.SpawnedBy.Length == 0)
 			{
@@ -50,7 +51,8 @@
 			{
 				foreach (Enemy e in enemy.SpawnedBy)
 				{
-					<span>@MarkupUtils.EnemyString(e)&nbsp;</span>
+					@MarkupUtils.EnemyString(e)
+					@MarkupUtils.Space()
 				}
 			}
 		</div>
@@ -83,7 +85,7 @@
 				<div>First appearance</div>
 				<div>@Enemies.GetFirstAppearance(enemy.Name)?.ToDisplayString()</div>
 				<div>First spawn</div>
-				<div>@(enemy.FirstSpawnSecond.HasValue ? new MarkupString(enemy.FirstSpawnSecond.Value.ToString("N4")) : MarkupUtils.NoDataMarkup)</div>
+				<div>@(enemy.FirstSpawnSecond.HasValue ? new MarkupString(enemy.FirstSpawnSecond.Value.ToString(FormatUtils.TimeFormat)) : MarkupUtils.NoDataMarkup)</div>
 				<div>Level 3 homing</div>
 				<div>@(enemy.HomingDamage.Level3HomingDaggers.HasValue ? new MarkupString(enemy.HomingDamage.Level3HomingDaggers.Value.ToString()) : MarkupUtils.NoDataMarkup)</div>
 				<div>Level 4 homing</div>
@@ -98,14 +100,15 @@
 					{
 						foreach (Enemy e in enemy.SpawnedBy)
 						{
-							<span>@MarkupUtils.EnemyString(e)&nbsp;</span>
+							@MarkupUtils.EnemyString(e)
+							@MarkupUtils.Space()
 						}
 					}
 				</div>
 				<div>Behavior</div>
 				<div>
 					<ul class="pl-4">
-						@foreach (string description in @EnemyDescriptions.GetEnemyDescription(enemy))
+						@foreach (string description in EnemyDescriptions.GetEnemyDescription(enemy))
 						{
 							<li class="list-disc">@description</li>
 						}
@@ -123,7 +126,7 @@
 		Enemy? levi = Enemies.GetEnemyByName(GameVersion, "Leviathan");
 		Enemy? orb = Enemies.GetEnemyByName(GameVersion, "The Orb");
 		MarkupString? leviString = levi.HasValue ? MarkupUtils.EnemyString(levi.Value) : null;
-		MarkupString? orbString = orb.HasValue ? MarkupUtils.EnemyString(orb.Value): null;
+		MarkupString? orbString = orb.HasValue ? MarkupUtils.EnemyString(orb.Value) : null;
 		MarkupString transmuters = GameVersion is GameVersion.V1_0 or GameVersion.V2_0 ? new(leviString + " beckons, it") : new(leviString + " or " + orbString + " beckon, they");
 
 		Dictionary<Enemy, Enemy> transmutations = GameVersion == GameVersion.V1_0 ? new()

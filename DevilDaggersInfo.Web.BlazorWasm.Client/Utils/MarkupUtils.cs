@@ -82,4 +82,6 @@ public static class MarkupUtils
 
 		return new(@$"<span style=""{style}"" class=""font-goethe text-lg"">{name}{(plural ? "s" : string.Empty)}</span>");
 	}
+
+	public static MarkupString Space() => new("&#32;");
 }
