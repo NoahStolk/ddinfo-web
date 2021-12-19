@@ -10,4 +10,54 @@
 else
 {
 	<LineChart DataOptions="_dataOptions" UniqueName="#world-record-progression-chart" DataSets="@_lineDataSets" Options="_lineChartOptions" />
+
+	<Heading Level=2 Title="World Record Holders" />
+	<div class="grid grid-cols-2 lg:grid-cols-4 xl:grid-cols-6">
+		<div>Username(s)</div>
+		<div>Total time held</div>
+		<div class="hidden lg:block">Longest time held consecutively</div>
+		<div class="hidden lg:block">World record count</div>
+		<div class="hidden xl:block">First held</div>
+		<div class="hidden xl:block">Last held</div>
+	</div>
+	@foreach (var wrh in _data.WorldRecordHolders.OrderBy(wrh => wrh.LastHeld))
+	{
+		int totalTimeHeld = (int)Math.Round(wrh.TotalTimeHeld.TotalDays);
+		int longestTimeHeldConsecutively = (int)Math.Round(wrh.LongestTimeHeldConsecutively.TotalDays);
+
+		string totalTimeHeldString = $"{totalTimeHeld} day{S(totalTimeHeld)} ({(wrh.TotalTimeHeld / _totalTimeSinceFirstRecord).ToString("0.00%")})";
+		string longestTimeHeldConsecutivelyString = $"{longestTimeHeldConsecutively} day{S(longestTimeHeldConsecutively)}";
+
+		<div class="grid grid-cols-2 lg:grid-cols-4 xl:grid-cols-6">
+			<div>@string.Join(", ", wrh.Usernames)</div>
+			<div>@totalTimeHeldString</div>
+			<div class="hidden lg:block">@longestTimeHeldConsecutivelyString</div>
+			<div class="hidden lg:block">@wrh.WorldRecordCount</div>
+			<div class="hidden xl:block">@GetHistoryDateString(wrh.FirstHeld)</div>
+			<div class="hidden xl:block">@GetHistoryDateString(wrh.LastHeld)</div>
+		</div>
+	}
+
+	<Heading Level=2 Title="World Records" />
+	<div class="grid grid-cols-3 xl:grid-cols-5">
+		<div>Player</div>
+		<div>Time</div>
+		<div>Duration</div>
+		<div class="hidden xl:block">Improvement</div>
+		<div class="hidden xl:block">Game version</div>
+	</div>
+	@foreach (var wr in _data.WorldRecords.OrderBy(wr => wr.Entry.Time))
+	{
+		//bool isCurrentWr = kvp.Key.Entry.Time == Model.CurrentWorldRecord?.Time;
+		int days = (int)Math.Round(wr.WorldRecordDuration.TotalDays);
+		string duration = days == 0 ? "Less than 1 day" : days == 1 ? "1 day" : $"{days} days";
+
+		<div class="grid grid-cols-3 xl:grid-cols-5">
+			<div>@wr.Entry.Username</div>
+			<div>@wr.Entry.Time.ToString(FormatUtils.TimeFormat)</div>
+			<div>@duration</div>
+			<div class="hidden xl:block">@(wr.WorldRecordImprovement.HasValue ? new MarkupString(wr.WorldRecordImprovement.Value.ToString(FormatUtils.TimeFormat)) : MarkupUtils.NoDataMarkup)</div>
+			<div class="hidden xl:block">@GetGameVersionString(wr.GameVersion)</div>
+		</div>
+	}
 }

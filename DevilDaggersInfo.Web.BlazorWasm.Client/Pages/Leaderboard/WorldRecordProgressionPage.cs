@@ -1,14 +1,13 @@
+using DevilDaggersInfo.Core.Wiki.Extensions;
 using DevilDaggersInfo.Web.BlazorWasm.Client.Core.CanvasChart.Data;
 using DevilDaggersInfo.Web.BlazorWasm.Client.Core.CanvasChart.Options;
 using DevilDaggersInfo.Web.BlazorWasm.Client.Core.CanvasChart.Options.LineChart;
-using DevilDaggersInfo.Web.BlazorWasm.Shared.Dto.Public.WorldRecords;
-using Microsoft.JSInterop;
-using System;
-using Microsoft.AspNetCore.Components;
 using DevilDaggersInfo.Web.BlazorWasm.Client.HttpClients;
-using System.Collections.Generic;
 using DevilDaggersInfo.Web.BlazorWasm.Client.Utils;
+using DevilDaggersInfo.Web.BlazorWasm.Shared.Dto.Public.WorldRecords;
 using DevilDaggersInfo.Web.BlazorWasm.Shared.Utils;
+using Microsoft.AspNetCore.Components;
+using Microsoft.JSInterop;
 
 namespace DevilDaggersInfo.Web.BlazorWasm.Client.Pages.Leaderboard;
 
@@ -35,6 +34,8 @@ public partial class WorldRecordProgressionPage
 
 	private readonly List<LineDataSet> _lineDataSets = new();
 
+	private TimeSpan _totalTimeSinceFirstRecord;
+
 	private LineChartDataOptions? _dataOptions;
 	private GetWorldRecordDataContainer? _data;
 
@@ -47,6 +48,8 @@ public partial class WorldRecordProgressionPage
 	protected override async Task OnInitializedAsync()
 	{
 		_data = await Http.GetWorldRecordData();
+
+		_totalTimeSinceFirstRecord = DateTime.UtcNow - _data.WorldRecords.OrderBy(wr => wr.DateTime).First().DateTime;
 
 		DateTime minX = new(2016, 1, 1);
 		DateTime maxX = DateTime.Now;
@@ -82,5 +85,21 @@ public partial class WorldRecordProgressionPage
 	{
 		if (firstRender)
 			await JsRuntime.InvokeAsync<object>("init");
+	}
+
+	private string GetHistoryDateString(DateTime dateTime)
+	{
+		int daysAgo = (int)Math.Round((DateTime.UtcNow - dateTime).TotalDays);
+		return $"{dateTime:MMM dd} '{dateTime:yy} ({daysAgo} day{S(daysAgo)} ago)";
+	}
+
+	private static string S(int value) => value == 1 ? string.Empty : "s";
+
+	private string GetGameVersionString(GameVersion? gameVersion)
+	{
+		if (!gameVersion.HasValue)
+			return "Pre-release";
+
+		return gameVersion.Value.ToDisplayString();
 	}
 }
