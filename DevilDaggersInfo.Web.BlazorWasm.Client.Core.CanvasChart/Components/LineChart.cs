@@ -181,6 +181,11 @@ public partial class LineChart
 			for (int i = 0; i < linePositions.Count; i++)
 			{
 				LinePosition linePosition = linePositions[i];
+
+				// Improve performance by skipping unnecessary line calls.
+				if (i > 0 && i < linePositions.Count - 1 && linePosition.Y == linePositions[i - 1].Y && linePosition.Y == linePositions[i + 1].Y)
+					continue;
+
 				if (i == 0)
 					await _context.MoveToAsync(linePosition.X, linePosition.Y);
 				else
