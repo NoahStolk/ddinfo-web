@@ -25,7 +25,7 @@ else
 		<p>The average time survived for all players is <SpanTime TimeInSeconds="_statistics.Time.Average / 10000.0" /> seconds.</p>
 		<p>The median time survived for all players is <SpanTime TimeInSeconds="_statistics.Time.Median / 10000.0" /> seconds.</p>
 		<p>The mode time survived for all players is <SpanTime TimeInSeconds="_statistics.Time.Mode / 10000.0" /> seconds.</p>
-		<BarChart DataOptions="_sub500DataOptions" UniqueName="#sub500-chart" DataSet="@_sub500Data" Options="_sub500Options" XScaleTexts="Enumerable.Range(0, 50).Select(i => (i * 10).ToString())" />
+		<BarChart DataOptions="_sub500DataOptions" UniqueName="#sub500-chart" DataSet="@_sub500Data" Options="new() { ChartMarginXInPx = 60 }" XScaleTexts="Enumerable.Range(0, 50).Select(i => (i * 10).ToString())" />
 		<div class="grid grid-cols-1 xl:grid-cols-2">
 			<BarChart DataOptions="_sub1000DataOptions" UniqueName="#sub1000-chart" DataSet="@_sub1000Data" XScaleTexts="Enumerable.Range(0, 50).Select(i => ((i + 50) * 10).ToString())" />
 			<BarChart DataOptions="_post1000DataOptions" UniqueName="#post1000-chart" DataSet="@_post1000Data" XScaleTexts="Enumerable.Range(0, 50).Select(i => ((i + 100) * 10).ToString())" />
@@ -35,14 +35,16 @@ else
 		<p>The average kills for all players is @(_statistics.Kills.Average.ToString("0.00")).</p>
 		<p>The median kills for all players is @_statistics.Kills.Median.</p>
 		<p>The mode kills for all players is @_statistics.Kills.Mode.</p>
-		@*<BarChart Options="_bco" @ref="_killsChart" TItem="int" />*@
+		<BarChart DataOptions="_killsDataOptions" UniqueName="#kills-chart" DataSet="@_killsData" Options="new() { ChartMarginXInPx = 60 }" XScaleTexts="Enumerable.Range(0, 50).Select(i => (i * 10).ToString())" />
 
 		<Heading Title="Gems" Level="2" />
 		<p>The average gems for all players is @(_statistics.Gems.Average.ToString("0.00")).</p>
 		<p>The median gems for all players is @_statistics.Gems.Median.</p>
 		<p>The mode gems for all players is @_statistics.Gems.Mode.</p>
-		@*<BarChart Options="_bco" @ref="_gemsChart" TItem="int" />
-			<PieChart Options="_pco" @ref="_levelsChart" TItem="int" />*@
+		<p>@((_statistics.PlayersWithLevel1 / (float)_statistics.TotalEntries).ToString("0.00%")) of players (@_statistics.PlayersWithLevel1) died with @MarkupUtils.UpgradeString(UpgradesV3_2.Level1) in their best run.</p>
+		<p>@((_statistics.PlayersWithLevel2 / (float)_statistics.TotalEntries).ToString("0.00%")) of players (@_statistics.PlayersWithLevel2) died with @MarkupUtils.UpgradeString(UpgradesV3_2.Level2) in their best run.</p>
+		<p>@((_statistics.PlayersWithLevel3Or4 / (float)_statistics.TotalEntries).ToString("0.00%")) of players (@_statistics.PlayersWithLevel3Or4) died with @MarkupUtils.UpgradeString(UpgradesV3_2.Level3) or @MarkupUtils.UpgradeString(UpgradesV3_2.Level4) in their best run.</p>
+		<BarChart DataOptions="_gemsDataOptions" UniqueName="#gems-chart" DataSet="@_gemsData" Options="new() { ChartMarginXInPx = 60 }" XScaleTexts="Enumerable.Range(0, 50).Select(i => (i * 10).ToString())" />
 
 		<Heading Title="Daggers Achieved" Level="2" />
 		@*<BarChart Options="_bco" @ref="_daggersChart" TItem="int" />*@

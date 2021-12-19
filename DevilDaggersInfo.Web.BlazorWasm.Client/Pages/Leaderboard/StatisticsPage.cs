@@ -52,15 +52,14 @@ public partial class StatisticsPage
 	private BarDataSet? _sub500Data;
 	private BarDataSet? _sub1000Data;
 	private BarDataSet? _post1000Data;
+	private BarDataSet? _killsData;
+	private BarDataSet? _gemsData;
 
 	private BarChartDataOptions? _sub500DataOptions;
 	private BarChartDataOptions? _sub1000DataOptions;
 	private BarChartDataOptions? _post1000DataOptions;
-
-	private BarChartOptions _sub500Options = new()
-	{
-		ChartMarginXInPx = 60,
-	};
+	private BarChartDataOptions? _killsDataOptions;
+	private BarChartDataOptions? _gemsDataOptions;
 
 	[Inject]
 	public IJSRuntime JsRuntime { get; set; } = null!;
@@ -96,6 +95,22 @@ public partial class StatisticsPage
 				//};
 			});
 		}
+
+		List<BarData> killsSet = _statistics.KillStatistics.Where(kvp => kvp.Key < 500).Select(kvp => new BarData("#880", kvp.Value, kvp)).ToList();
+		const double killsScale = 2500.0;
+		_killsDataOptions = new(0, killsScale, Math.Ceiling(_statistics.KillStatistics.Max(kvp => kvp.Value) / killsScale) * killsScale);
+		_killsData = new(killsSet, (ds, d) =>
+		{
+			return new();
+		});
+
+		List<BarData> gemsSet = _statistics.GemStatistics.Where(kvp => kvp.Key < 500).Select(kvp => new BarData("#f00", kvp.Value, kvp)).ToList();
+		const double gemsScale = 15000.0;
+		_gemsDataOptions = new(0, gemsScale, Math.Ceiling(_statistics.GemStatistics.Max(kvp => kvp.Value) / gemsScale) * gemsScale);
+		_gemsData = new(gemsSet, (ds, d) =>
+		{
+			return new();
+		});
 	}
 
 	protected override async Task OnAfterRenderAsync(bool firstRender)
