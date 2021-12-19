@@ -120,7 +120,11 @@
 
 <ul class="pl-4">
 	@{
-		string transmuters = GameVersion >= GameVersion.V3_0 ? "Leviathan or The Orb beckon, they" : "Leviathan beckons, it";
+		Enemy? levi = Enemies.GetEnemyByName(GameVersion, "Leviathan");
+		Enemy? orb = Enemies.GetEnemyByName(GameVersion, "The Orb");
+		MarkupString? leviString = levi.HasValue ? MarkupUtils.EnemyString(levi.Value) : null;
+		MarkupString? orbString = orb.HasValue ? MarkupUtils.EnemyString(orb.Value): null;
+		MarkupString transmuters = GameVersion is GameVersion.V1_0 or GameVersion.V2_0 ? new(leviString + " beckons, it") : new(leviString + " or " + orbString + " beckon, they");
 
 		Dictionary<Enemy, Enemy> transmutations = GameVersion == GameVersion.V1_0 ? new()
 			{
