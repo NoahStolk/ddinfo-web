@@ -134,6 +134,8 @@ public partial class LineChart
 			await _context.SetStrokeStyleAsync(dataSet.Color);
 
 			await _context.BeginPathAsync();
+
+			List<(double X, double Y)> linePositions = new();
 			for (int i = 0; i < dataSet.Data.Count; i++)
 			{
 				LineData data = dataSet.Data[i];
@@ -144,9 +146,9 @@ public partial class LineChart
 
 				if (i == dataSet.Data.Count - 1)
 				{
-					await _context.LineToAsync(x, y);
+					linePositions.Add((x, y));
 					if (dataSet.AppendEnd && percX != 1)
-						await _context.LineToAsync(Options.ChartMarginXInPx + ChartWidth, y);
+						linePositions.Add((Options.ChartMarginXInPx + ChartWidth, y));
 				}
 				else
 				{
@@ -154,27 +156,35 @@ public partial class LineChart
 					{
 						if (dataSet.PrependStart && percX != 0)
 						{
-							await _context.MoveToAsync(Options.ChartMarginXInPx, y);
-							await _context.LineToAsync(x, y);
+							linePositions.Add((Options.ChartMarginXInPx, y));
+							linePositions.Add((x, y));
 						}
 						else
 						{
-							await _context.MoveToAsync(x, y);
+							linePositions.Add((x, y));
 						}
 					}
 					else
 					{
-						await _context.LineToAsync(x, y);
+						linePositions.Add((x, y));
 					}
 
 					if (dataSet.IsSteppedLine)
 					{
 						double percNextX = LerpUtils.RevLerp(DataOptions.MinX, DataOptions.MaxX, dataSet.Data[i + 1].X);
 						double nextX = Options.ChartMarginXInPx + percNextX * ChartWidth;
-
-						await _context.LineToAsync(nextX, y);
+						linePositions.Add((nextX, y));
 					}
 				}
+			}
+
+			for (int i = 0; i < linePositions.Count; i++)
+			{
+				(double x, double y) = linePositions[i];
+				if (i == 0)
+					await _context.MoveToAsync(x, y);
+				else
+					await _context.LineToAsync(x, y);
 			}
 
 			await _context.StrokeAsync();
