@@ -101,6 +101,11 @@ module.exports = {
 				'mod-loudness-md': '128px 128px 128px',
 				'mod-loudness-sm': '128px 128px',
 				'mod-loudness-xs': '100%',
+
+				// Wiki (enemies)
+				'enemies-summary-xs': createMinmaxGrid([5, 1, 1, 4]),
+				'enemies-summary-md': createMinmaxGrid([5, 1, 1, 4, 2, 2]),
+				'enemies-summary-lg': createMinmaxGrid([5, 1, 1, 3, 2, 2, 1.25, 1.25, 5]),
 			},
 			maxHeight: {
 				'screen-half': '50vh',

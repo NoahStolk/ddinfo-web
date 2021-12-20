@@ -13,7 +13,7 @@
 
 <Heading Title="Summary" Level="2" />
 
-<div class="grid gap-x-4 grid-cols-4 md:grid-cols-6 lg:grid-cols-9">
+<div class="grid gap-x-2 xl:gap-x-4 grid-cols-enemies-summary-xs md:grid-cols-enemies-summary-md lg:grid-cols-enemies-summary-lg">
 	<div class="font-bold">Enemy</div>
 	<div class="font-bold text-right">HP</div>
 	<div class="font-bold text-right">Gems</div>
@@ -27,7 +27,7 @@
 
 @foreach (Enemy enemy in Enemies.GetEnemies(GameVersion))
 {
-	<div class="grid gap-x-4 grid-cols-4 md:grid-cols-6 lg:grid-cols-9">
+	<div class="grid gap-x-2 xl:gap-x-4 grid-cols-enemies-summary-xs md:grid-cols-enemies-summary-md lg:grid-cols-enemies-summary-lg">
 		<div>@MarkupUtils.EnemyString(enemy)</div>
 		<div class="text-right">@enemy.Hp</div>
 		<div class="text-right">@enemy.Gems</div>
