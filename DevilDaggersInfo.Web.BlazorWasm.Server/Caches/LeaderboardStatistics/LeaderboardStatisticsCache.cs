@@ -16,17 +16,19 @@ public class LeaderboardStatisticsCache : IStaticCache
 	public string? FileName { get; private set; }
 	public bool IsFetched { get; private set; }
 
-	public Dictionary<Dagger, int> DaggerStats { get; } = new();
-	public Dictionary<Death, int> DeathStats { get; } = new();
-	public Dictionary<Enemy, int> EnemyStats { get; } = new();
-	public Dictionary<int, int> TimeStats { get; } = new();
-	public Dictionary<int, int> KillStats { get; } = new();
-	public Dictionary<int, int> GemStats { get; } = new();
-	public int Level1 { get; private set; }
-	public int Level2 { get; private set; }
-	public int Level3Or4 { get; private set; }
+	public Dictionary<Dagger, int> DaggersStatistics { get; } = new();
+	public Dictionary<Death, int> DeathsStatistics { get; } = new();
+	public Dictionary<Enemy, int> EnemiesStatistics { get; } = new();
+	public Dictionary<int, int> TimesStatistics { get; } = new();
+	public Dictionary<int, int> KillsStatistics { get; } = new();
+	public Dictionary<int, int> GemsStatistics { get; } = new();
+	public Dictionary<int, int> DaggersFiredStatistics { get; } = new();
+	public Dictionary<int, int> DaggersHitStatistics { get; } = new();
+	public int PlayersWithLevel1 { get; private set; }
+	public int PlayersWithLevel2 { get; private set; }
+	public int PlayersWithLevel3Or4 { get; private set; }
 
-	public ArrayStatistic Time { get; } = new();
+	public ArrayStatistic Times { get; } = new();
 	public ArrayStatistic Kills { get; } = new();
 	public ArrayStatistic Gems { get; } = new();
 	public ArrayStatistic DaggersFired { get; } = new();
@@ -49,12 +51,14 @@ public class LeaderboardStatisticsCache : IStaticCache
 		IsFetched = false;
 
 		_entries.Clear();
-		DaggerStats.Clear();
-		DeathStats.Clear();
-		EnemyStats.Clear();
-		TimeStats.Clear();
-		KillStats.Clear();
-		GemStats.Clear();
+		DaggersStatistics.Clear();
+		DeathsStatistics.Clear();
+		EnemiesStatistics.Clear();
+		TimesStatistics.Clear();
+		KillsStatistics.Clear();
+		GemsStatistics.Clear();
+		DaggersFiredStatistics.Clear();
+		DaggersHitStatistics.Clear();
 
 		using (FileStream fs = new(path, FileMode.Open))
 		{
@@ -74,98 +78,84 @@ public class LeaderboardStatisticsCache : IStaticCache
 		}
 
 		foreach (Death death in Deaths.GetDeaths(GameConstants.CurrentVersion))
-			DeathStats.Add(death, 0);
+			DeathsStatistics.Add(death, 0);
 
 		foreach (Dagger dagger in Daggers.GetDaggers(GameConstants.CurrentVersion))
-			DaggerStats.Add(dagger, 0);
+			DaggersStatistics.Add(dagger, 0);
 
 		IEnumerable<Enemy> enemies = Enemies.GetEnemies(GameConstants.CurrentVersion).Where(e => e.FirstSpawnSecond.HasValue);
 		foreach (Enemy enemy in enemies)
-			EnemyStats.Add(enemy, 0);
+			EnemiesStatistics.Add(enemy, 0);
 
 		foreach (CompressedEntry entry in _entries)
 		{
 			Dagger dagger = Daggers.GetDaggerFromTenthsOfMilliseconds(GameConstants.CurrentVersion, (int)entry.Time);
-			if (DaggerStats.ContainsKey(dagger))
-				DaggerStats[dagger]++;
+			if (DaggersStatistics.ContainsKey(dagger))
+				DaggersStatistics[dagger]++;
 
 			Death? death = Deaths.GetDeathByLeaderboardType(GameConstants.CurrentVersion, entry.DeathType);
 			if (!death.HasValue)
 				_logger.LogError("Invalid death type 0x{death} for entry with time {time} in leaderboard-statistics.", entry.DeathType.ToString("X"), entry.Time);
-			else if (DeathStats.ContainsKey(death.Value))
-				DeathStats[death.Value]++;
+			else if (DeathsStatistics.ContainsKey(death.Value))
+				DeathsStatistics[death.Value]++;
 
 			foreach (Enemy enemy in enemies)
 			{
-				if (entry.Time >= ((double?)enemy.FirstSpawnSecond).To10thMilliTime() && EnemyStats.ContainsKey(enemy))
-					EnemyStats[enemy]++;
+				if (entry.Time >= ((double?)enemy.FirstSpawnSecond).To10thMilliTime() && EnemiesStatistics.ContainsKey(enemy))
+					EnemiesStatistics[enemy]++;
 			}
 
 			const int step = 10;
 
-			int timeStep = (int)(entry.Time / 10000 / step * step);
-			if (TimeStats.ContainsKey(timeStep))
-			{
-				TimeStats[timeStep]++;
-			}
-			else
-			{
-				TimeStats.Add(timeStep, 1);
+			int timesStep = (int)(entry.Time / 10000 / step * step);
+			AddToStatisticsDictionary(TimesStatistics, step, timesStep);
 
-				int previous = timeStep - step;
-				while (!TimeStats.ContainsKey(previous) && previous >= 0)
-				{
-					TimeStats.Add(previous, 0);
-					previous -= step;
-				}
-			}
+			int killsStep = entry.Kills / step * step;
+			AddToStatisticsDictionary(KillsStatistics, step, killsStep);
 
-			int killStep = entry.Kills / step * step;
-			if (KillStats.ContainsKey(killStep))
-			{
-				KillStats[killStep]++;
-			}
-			else
-			{
-				KillStats.Add(killStep, 1);
+			int gemsStep = entry.Gems / step * step;
+			AddToStatisticsDictionary(GemsStatistics, step, gemsStep);
 
-				int previous = killStep - step;
-				while (!KillStats.ContainsKey(previous) && previous >= 0)
-				{
-					KillStats.Add(previous, 0);
-					previous -= step;
-				}
-			}
+			const int daggerStep = 100;
 
-			int gemStep = entry.Gems / step * step;
-			if (GemStats.ContainsKey(gemStep))
-			{
-				GemStats[gemStep]++;
-			}
-			else
-			{
-				GemStats.Add(gemStep, 1);
+			int daggersFiredStep = (int)entry.DaggersFired / daggerStep * daggerStep;
+			AddToStatisticsDictionary(DaggersFiredStatistics, daggerStep, daggersFiredStep);
 
-				int previous = gemStep - step;
-				while (!GemStats.ContainsKey(previous) && previous >= 0)
-				{
-					GemStats.Add(previous, 0);
-					previous -= step;
-				}
-			}
+			int daggersHitStep = entry.DaggersHit / daggerStep * daggerStep;
+			AddToStatisticsDictionary(DaggersHitStatistics, daggerStep, daggersHitStep);
 		}
 
-		Time.Populate(_entries.Select(e => (int)e.Time));
+		Times.Populate(_entries.Select(e => (int)e.Time));
 		Kills.Populate(_entries.Select(e => (int)e.Kills));
 		Gems.Populate(_entries.Select(e => (int)e.Gems));
 		DaggersFired.Populate(_entries.Select(e => (int)e.DaggersFired));
 		DaggersHit.Populate(_entries.Select(e => (int)e.DaggersHit));
 
-		Level1 = _entries.Count(e => e.Gems < 10);
-		Level2 = _entries.Count(e => e.Gems >= 10 && e.Gems < 70);
-		Level3Or4 = _entries.Count(e => e.Gems > 70);
+		PlayersWithLevel1 = _entries.Count(e => e.Gems < 10);
+		PlayersWithLevel2 = _entries.Count(e => e.Gems >= 10 && e.Gems < 70);
+		PlayersWithLevel3Or4 = _entries.Count(e => e.Gems > 70);
 
 		IsFetched = true;
+	}
+
+	private static void AddToStatisticsDictionary(Dictionary<int, int> dictionary, int step, int currentKey)
+	{
+		if (dictionary.ContainsKey(currentKey))
+		{
+			dictionary[currentKey]++;
+		}
+		else
+		{
+			dictionary.Add(currentKey, 1);
+
+			// Fill and set remaining keys to 0 as needed.
+			int previous = currentKey - step;
+			while (!dictionary.ContainsKey(previous) && previous >= 0)
+			{
+				dictionary.Add(previous, 0);
+				previous -= step;
+			}
+		}
 	}
 
 	public string LogState()
