@@ -1,11 +1,10 @@
-namespace DevilDaggersInfo.Web.BlazorWasm.Shared;
+namespace DevilDaggersInfo.Web.BlazorWasm.Server.Caches.LeaderboardStatistics;
 
-public class ArrayData
+public class ArrayStatistic
 {
-	// Make setters public so this can be used as DTO.
-	public double Average { get; set; }
-	public int Median { get; set; }
-	public int Mode { get; set; }
+	public double Average { get; private set; }
+	public int Median { get; private set; }
+	public int Mode { get; private set; }
 
 	public void Populate(IEnumerable<int> data)
 	{

@@ -18,7 +18,7 @@ public class GetLeaderboardStatistics
 	public int PlayersWithLevel2 { get; init; }
 	public int PlayersWithLevel3Or4 { get; init; }
 
-	public ArrayData Time { get; init; } = null!;
-	public ArrayData Kills { get; init; } = null!;
-	public ArrayData Gems { get; init; } = null!;
+	public GetArrayStatistic Time { get; init; } = null!;
+	public GetArrayStatistic Kills { get; init; } = null!;
+	public GetArrayStatistic Gems { get; init; } = null!;
 }

@@ -26,9 +26,9 @@ public class LeaderboardStatisticsCache : IStaticCache
 	public int Level2 { get; private set; }
 	public int Level3Or4 { get; private set; }
 
-	public ArrayData Time { get; } = new();
-	public ArrayData Kills { get; } = new();
-	public ArrayData Gems { get; } = new();
+	public ArrayStatistic Time { get; } = new();
+	public ArrayStatistic Kills { get; } = new();
+	public ArrayStatistic Gems { get; } = new();
 
 	public IReadOnlyList<CompressedEntry> Entries => _entries;
 

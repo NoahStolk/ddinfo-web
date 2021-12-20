@@ -1,4 +1,5 @@
 using DevilDaggersInfo.Web.BlazorWasm.Server.Caches.LeaderboardStatistics;
+using DevilDaggersInfo.Web.BlazorWasm.Server.Converters.Public;
 using DevilDaggersInfo.Web.BlazorWasm.Shared.Dto.Public.LeaderboardStatistics;
 
 namespace DevilDaggersInfo.Web.BlazorWasm.Server.Controllers.Public;
@@ -32,9 +33,9 @@ public class LeaderboardStatisticsController : ControllerBase
 			PlayersWithLevel1 = _leaderboardStatisticsCache.Level1,
 			PlayersWithLevel2 = _leaderboardStatisticsCache.Level2,
 			PlayersWithLevel3Or4 = _leaderboardStatisticsCache.Level3Or4,
-			Time = _leaderboardStatisticsCache.Time,
-			Kills = _leaderboardStatisticsCache.Kills,
-			Gems = _leaderboardStatisticsCache.Gems,
+			Time = _leaderboardStatisticsCache.Time.ToGetArrayStatistic(),
+			Kills = _leaderboardStatisticsCache.Kills.ToGetArrayStatistic(),
+			Gems = _leaderboardStatisticsCache.Gems.ToGetArrayStatistic(),
 		};
 	}
 }
