@@ -12,6 +12,7 @@ public partial class StatisticsPage
 	private static readonly List<string> _daggers = Daggers.GetDaggers(GameConstants.CurrentVersion).ConvertAll(d => d.Name);
 	private static readonly List<string> _deathTypes = Deaths.GetDeaths(GameConstants.CurrentVersion).ConvertAll(d => d.Name);
 	private static readonly List<string> _enemies = Enemies.GetEnemies(GameConstants.CurrentVersion).Where(e => e.FirstSpawnSecond.HasValue).OrderBy(e => e.FirstSpawnSecond).Select(e => e.Name).ToList();
+	private static readonly List<string> _upgrades = new() { "Level 1", "Level 2", "Level 3 / 4" };
 
 	private GetLeaderboardStatistics? _statistics;
 
@@ -20,6 +21,7 @@ public partial class StatisticsPage
 	private BarDataSet? _post1000Data;
 	private BarDataSet? _killsData;
 	private BarDataSet? _gemsData;
+	private BarDataSet? _upgradesData;
 	private BarDataSet? _daggersData;
 	private BarDataSet? _deathsData;
 	private BarDataSet? _enemiesData;
@@ -29,6 +31,7 @@ public partial class StatisticsPage
 	private BarChartDataOptions? _post1000DataOptions;
 	private BarChartDataOptions? _killsDataOptions;
 	private BarChartDataOptions? _gemsDataOptions;
+	private BarChartDataOptions? _upgradesDataOptions;
 	private BarChartDataOptions? _daggersDataOptions;
 	private BarChartDataOptions? _deathsDataOptions;
 	private BarChartDataOptions? _enemiesDataOptions;
@@ -77,9 +80,22 @@ public partial class StatisticsPage
 		});
 
 		List<BarData> gemsSet = _statistics.GemsStatistics.Where(kvp => kvp.Key < 500).Select(kvp => new BarData("#f00", kvp.Value, kvp)).ToList();
-		const double gemsScale = 15000.0;
+		const double gemsScale = 20000.0;
 		_gemsDataOptions = new(0, gemsScale, Math.Ceiling(_statistics.GemsStatistics.Max(kvp => kvp.Value) / gemsScale) * gemsScale);
 		_gemsData = new(gemsSet, (ds, d) =>
+		{
+			return new();
+		});
+
+		List<BarData> upgradesSet = new()
+		{
+			new(UpgradesV3_2.Level1.Color.HexCode, _statistics.PlayersWithLevel1, _statistics.PlayersWithLevel1),
+			new(UpgradesV3_2.Level2.Color.HexCode, _statistics.PlayersWithLevel2, _statistics.PlayersWithLevel2),
+			new(UpgradesV3_2.Level3.Color.HexCode, _statistics.PlayersWithLevel3Or4, _statistics.PlayersWithLevel3Or4),
+		};
+		const double upgradesScale = 50000.0;
+		_upgradesDataOptions = new(0, upgradesScale, Math.Ceiling(new int[] { _statistics.PlayersWithLevel1, _statistics.PlayersWithLevel2, _statistics.PlayersWithLevel3Or4 }.Max() / upgradesScale) * upgradesScale);
+		_upgradesData = new(upgradesSet, (ds, d) =>
 		{
 			return new();
 		});
@@ -93,7 +109,7 @@ public partial class StatisticsPage
 		});
 
 		List<BarData> deathsSet = _statistics.DeathsStatistics.Select(kvp => new BarData(Deaths.GetDeathByName(GameConstants.CurrentVersion, kvp.Key)?.Color.HexCode ?? "#444", kvp.Value, kvp)).ToList();
-		const double deathsScale = 5000.0;
+		const double deathsScale = 20000.0;
 		_deathsDataOptions = new(0, deathsScale, Math.Ceiling(_statistics.DeathsStatistics.Max(kvp => kvp.Value) / deathsScale) * deathsScale);
 		_deathsData = new(deathsSet, (ds, d) =>
 		{
@@ -101,7 +117,7 @@ public partial class StatisticsPage
 		});
 
 		List<BarData> enemiesSet = _statistics.EnemiesStatistics.Select(kvp => new BarData(Enemies.GetEnemyByName(GameConstants.CurrentVersion, kvp.Key)?.Color.HexCode ?? "#444", kvp.Value, kvp)).ToList();
-		const double enemiesScale = 5000.0;
+		const double enemiesScale = 50000.0;
 		_enemiesDataOptions = new(0, enemiesScale, Math.Ceiling(_statistics.EnemiesStatistics.Max(kvp => kvp.Value) / enemiesScale) * enemiesScale);
 		_enemiesData = new(enemiesSet, (ds, d) =>
 		{
