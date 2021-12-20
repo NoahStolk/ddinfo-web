@@ -29,6 +29,8 @@ public class LeaderboardStatisticsCache : IStaticCache
 	public int PlayersWithLevel3Or4 { get; private set; }
 
 	public ArrayStatistics GlobalArrayStatistics { get; } = new();
+	public ArrayStatistics Top10ArrayStatistics { get; } = new();
+	public ArrayStatistics Top100ArrayStatistics { get; } = new();
 	public ArrayStatistics Top1000ArrayStatistics { get; } = new();
 
 	public IReadOnlyList<CompressedEntry> Entries => _entries;
@@ -125,6 +127,8 @@ public class LeaderboardStatisticsCache : IStaticCache
 		}
 
 		GlobalArrayStatistics.Populate(_entries);
+		Top10ArrayStatistics.Populate(_entries, 10);
+		Top100ArrayStatistics.Populate(_entries, 100);
 		Top1000ArrayStatistics.Populate(_entries, 1000);
 
 		PlayersWithLevel1 = _entries.Count(e => e.Gems < 10);

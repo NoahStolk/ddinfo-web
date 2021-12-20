@@ -41,14 +41,19 @@ public class LeaderboardStatisticsController : ControllerBase
 
 	[HttpGet("ddlive")]
 	[ProducesResponseType(StatusCodes.Status200OK)]
-	public ActionResult<GetLeaderboardStatisticsDdLive> GetLeaderboardStatisticsDdLive()
+	public ActionResult<GetLeaderboardStatisticsDdLive> GetLeaderboardStatisticsDdLive([Required] LeaderboardStatisticsLimitDdLive top)
 	{
 		return new GetLeaderboardStatisticsDdLive
 		{
 			DateTime = _leaderboardStatisticsCache.FileName == null ? DateTime.MinValue : HistoryUtils.HistoryJsonFileNameToDateTime(_leaderboardStatisticsCache.FileName),
 			IsFetched = _leaderboardStatisticsCache.IsFetched,
 			TotalEntries = _leaderboardStatisticsCache.Entries.Count,
-			Top1000Statistics = _leaderboardStatisticsCache.Top1000ArrayStatistics.ToGetArrayStatistics(),
+			Top1000Statistics = (top switch
+			{
+				LeaderboardStatisticsLimitDdLive.Top1000 => _leaderboardStatisticsCache.Top1000ArrayStatistics,
+				LeaderboardStatisticsLimitDdLive.Top100 => _leaderboardStatisticsCache.Top100ArrayStatistics,
+				_ => _leaderboardStatisticsCache.Top10ArrayStatistics,
+			}).ToGetArrayStatistics(),
 		};
 	}
 }
