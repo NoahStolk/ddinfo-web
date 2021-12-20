@@ -3,6 +3,6 @@ namespace DevilDaggersInfo.Web.BlazorWasm.Shared.Dto.Public.LeaderboardStatistic
 public class GetArrayStatistic
 {
 	public double Average { get; init; }
-	public int Median { get; init; }
-	public int Mode { get; init; }
+	public double Median { get; init; }
+	public double Mode { get; init; }
 }

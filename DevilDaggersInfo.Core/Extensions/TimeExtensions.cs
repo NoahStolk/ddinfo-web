@@ -10,6 +10,10 @@ public static class TimeExtensions
 
 	public static double? ToSecondsTime(this int? time) => time.HasValue ? time.Value.ToSecondsTime() : null;
 
+	public static double ToSecondsTime(this uint time) => time * 0.0001;
+
+	public static double? ToSecondsTime(this uint? time) => time.HasValue ? time.Value.ToSecondsTime() : null;
+
 	public static double ToSecondsTime(this ulong time) => time * 0.0001;
 
 	public static double? ToSecondsTime(this ulong? time) => time.HasValue ? time.Value.ToSecondsTime() : null;

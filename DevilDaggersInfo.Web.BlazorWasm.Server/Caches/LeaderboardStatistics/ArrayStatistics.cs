@@ -13,10 +13,10 @@ public class ArrayStatistics
 		if (limit.HasValue)
 			entries = entries.Take(limit.Value).ToList();
 
-		Times.Populate(entries.Select(e => (int)e.Time));
-		Kills.Populate(entries.Select(e => (int)e.Kills));
-		Gems.Populate(entries.Select(e => (int)e.Gems));
-		DaggersFired.Populate(entries.Select(e => (int)e.DaggersFired));
-		DaggersHit.Populate(entries.Select(e => (int)e.DaggersHit));
+		Times.Populate(entries.Select(e => e.Time.ToSecondsTime()));
+		Kills.Populate(entries.Select(e => (double)e.Kills));
+		Gems.Populate(entries.Select(e => (double)e.Gems));
+		DaggersFired.Populate(entries.Select(e => (double)e.DaggersFired));
+		DaggersHit.Populate(entries.Select(e => (double)e.DaggersHit));
 	}
 }
