@@ -7,14 +7,14 @@ function onResize() {
 		}
 
 		const bounds = chart.canvasContainer.getBoundingClientRect();
-		const width = bounds.width;
-		const height = width * (9 / 16);
+		const canvasWidth = bounds.width;
+		const canvasHeight = Math.min(window.innerHeight * 0.8, canvasWidth * (9 / 16));
 
-		chart.canvas.width = width;
-		chart.canvas.height = height;
-		chart.canvas.style.width = width;
-		chart.canvas.style.height = height;
-		chart.chartWrapperComponent.invokeMethodAsync('OnResize', width, height);
+		chart.canvas.width = canvasWidth;
+		chart.canvas.height = canvasHeight;
+		chart.canvas.style.width = canvasWidth;
+		chart.canvas.style.height = canvasHeight;
+		chart.chartWrapperComponent.invokeMethodAsync('OnResize', canvasWidth, canvasHeight);
 	}
 }
 
