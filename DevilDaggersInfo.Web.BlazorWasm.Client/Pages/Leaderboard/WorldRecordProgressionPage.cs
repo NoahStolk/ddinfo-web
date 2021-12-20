@@ -44,6 +44,8 @@ public partial class WorldRecordProgressionPage
 
 	private readonly List<LineDataSet> _lineDataSets = new();
 
+	private double _currentWorldRecord;
+	private int _currentWorldRecordHolderId;
 	private TimeSpan _totalTimeSinceFirstRecord;
 
 	private LineChartDataOptions? _dataOptions;
@@ -58,6 +60,9 @@ public partial class WorldRecordProgressionPage
 	protected override async Task OnInitializedAsync()
 	{
 		_data = await Http.GetWorldRecordData();
+		GetWorldRecord currentWr = _data.WorldRecords.MaxBy(wr => wr.Entry.Time)!;
+		_currentWorldRecord = currentWr.Entry.Time;
+		_currentWorldRecordHolderId = currentWr.Entry.Id;
 
 		_totalTimeSinceFirstRecord = DateTime.UtcNow - _data.WorldRecords.OrderBy(wr => wr.DateTime).First().DateTime;
 

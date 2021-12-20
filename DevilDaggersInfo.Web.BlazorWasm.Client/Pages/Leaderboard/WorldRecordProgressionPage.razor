@@ -23,19 +23,20 @@ else
 	</div>
 	@foreach (GetWorldRecordHolder wrh in _data.WorldRecordHolders.OrderByDescending(wrh => wrh.LastHeld))
 	{
+		bool isCurrentWrHolder = wrh.Id == _currentWorldRecordHolderId;
 		int totalTimeHeld = (int)Math.Round(wrh.TotalTimeHeld.TotalDays);
 		int longestTimeHeldConsecutively = (int)Math.Round(wrh.LongestTimeHeldConsecutively.TotalDays);
 
 		string totalTimeHeldString = $"{totalTimeHeld} day{S(totalTimeHeld)} ({(wrh.TotalTimeHeld / _totalTimeSinceFirstRecord).ToString("0.00%")})";
 		string longestTimeHeldConsecutivelyString = $"{longestTimeHeldConsecutively} day{S(longestTimeHeldConsecutively)}";
 
-		<div class="grid grid-cols-2 lg:grid-cols-4 xl:grid-cols-6">
+		<div class="grid grid-cols-2 lg:grid-cols-4 xl:grid-cols-6 @(isCurrentWrHolder ? "bg-dark-red" : string.Empty)">
 			<div>@string.Join(", ", wrh.Usernames)</div>
 			<div>@totalTimeHeldString</div>
 			<div class="hidden lg:block">@longestTimeHeldConsecutivelyString</div>
 			<div class="hidden lg:block">@wrh.WorldRecordCount</div>
 			<div class="hidden xl:block">@GetHistoryDateString(wrh.FirstHeld)</div>
-			<div class="hidden xl:block">@GetHistoryDateString(wrh.LastHeld)</div>
+			<div class="hidden xl:block">@(isCurrentWrHolder ? "Now" : GetHistoryDateString(wrh.LastHeld))</div>
 		</div>
 	}
 
@@ -49,11 +50,11 @@ else
 	</div>
 	@foreach (GetWorldRecord wr in _data.WorldRecords.OrderByDescending(wr => wr.GameVersion).ThenByDescending(wr => wr.Entry.Time))
 	{
-		//bool isCurrentWr = kvp.Key.Entry.Time == Model.CurrentWorldRecord?.Time;
+		bool isCurrentWr = wr.Entry.Time == _currentWorldRecord;
 		int days = (int)Math.Round(wr.WorldRecordDuration.TotalDays);
 		string duration = days == 0 ? "Less than 1 day" : days == 1 ? "1 day" : $"{days} days";
 
-		<div class="grid grid-cols-3 xl:grid-cols-5">
+		<div class="grid grid-cols-3 xl:grid-cols-5 @(isCurrentWr ? "bg-dark-red" : string.Empty)">
 			<div>@wr.Entry.Username</div>
 			<div>@wr.Entry.Time.ToString(FormatUtils.TimeFormat)</div>
 			<div>@duration</div>
