@@ -38,4 +38,17 @@ public class LeaderboardStatisticsController : ControllerBase
 			GlobalStatistics = _leaderboardStatisticsCache.GlobalArrayStatistics.ToGetArrayStatistics(),
 		};
 	}
+
+	[HttpGet("ddlive")]
+	[ProducesResponseType(StatusCodes.Status200OK)]
+	public ActionResult<GetLeaderboardStatisticsDdLive> GetLeaderboardStatisticsDdLive()
+	{
+		return new GetLeaderboardStatisticsDdLive
+		{
+			DateTime = _leaderboardStatisticsCache.FileName == null ? DateTime.MinValue : HistoryUtils.HistoryJsonFileNameToDateTime(_leaderboardStatisticsCache.FileName),
+			IsFetched = _leaderboardStatisticsCache.IsFetched,
+			TotalEntries = _leaderboardStatisticsCache.Entries.Count,
+			Top1000Statistics = _leaderboardStatisticsCache.Top1000ArrayStatistics.ToGetArrayStatistics(),
+		};
+	}
 }
