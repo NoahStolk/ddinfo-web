@@ -11,4 +11,13 @@ public static class LeaderboardStatisticsConverters
 		Median = arrayStatistic.Median,
 		Mode = arrayStatistic.Mode,
 	};
+
+	public static GetArrayStatistics ToGetArrayStatistics(this ArrayStatistics arrayStatistics) => new()
+	{
+		DaggersFired = arrayStatistics.DaggersFired.ToGetArrayStatistic(),
+		DaggersHit = arrayStatistics.DaggersHit.ToGetArrayStatistic(),
+		Gems = arrayStatistics.Gems.ToGetArrayStatistic(),
+		Kills = arrayStatistics.Kills.ToGetArrayStatistic(),
+		Times = arrayStatistics.Times.ToGetArrayStatistic(),
+	};
 }

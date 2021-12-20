@@ -35,11 +35,7 @@ public class LeaderboardStatisticsController : ControllerBase
 			PlayersWithLevel1 = _leaderboardStatisticsCache.PlayersWithLevel1,
 			PlayersWithLevel2 = _leaderboardStatisticsCache.PlayersWithLevel2,
 			PlayersWithLevel3Or4 = _leaderboardStatisticsCache.PlayersWithLevel3Or4,
-			Times = _leaderboardStatisticsCache.Times.ToGetArrayStatistic(),
-			Kills = _leaderboardStatisticsCache.Kills.ToGetArrayStatistic(),
-			Gems = _leaderboardStatisticsCache.Gems.ToGetArrayStatistic(),
-			DaggersFired = _leaderboardStatisticsCache.DaggersFired.ToGetArrayStatistic(),
-			DaggersHit = _leaderboardStatisticsCache.DaggersHit.ToGetArrayStatistic(),
+			GlobalStatistics = _leaderboardStatisticsCache.GlobalArrayStatistics.ToGetArrayStatistics(),
 		};
 	}
 }

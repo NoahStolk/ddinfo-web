@@ -22,9 +22,9 @@ else
 		<p class="py-1">Statistics were last fetched on @_statistics.DateTime.ToString(FormatUtils.DateTimeUtcFormat).</p>
 
 		<Heading Title="Scores" Level="2" />
-		<p>The average time survived for all players is <SpanTime TimeInSeconds="_statistics.Times.Average / 10000.0" /> seconds.</p>
-		<p>The median time survived for all players is <SpanTime TimeInSeconds="_statistics.Times.Median / 10000.0" /> seconds.</p>
-		<p>The mode time survived for all players is <SpanTime TimeInSeconds="_statistics.Times.Mode / 10000.0" /> seconds.</p>
+		<p>The average time survived for all players is <SpanTime TimeInSeconds="_statistics.GlobalStatistics.Times.Average / 10000.0" /> seconds.</p>
+		<p>The median time survived for all players is <SpanTime TimeInSeconds="_statistics.GlobalStatistics.Times.Median / 10000.0" /> seconds.</p>
+		<p>The mode time survived for all players is <SpanTime TimeInSeconds="_statistics.GlobalStatistics.Times.Mode / 10000.0" /> seconds.</p>
 		<BarChart DataOptions="_sub500DataOptions" UniqueName="#sub500-chart" DataSet="@_sub500Data" Options="new() { ChartMarginXInPx = 60 }" XScaleTexts="Enumerable.Range(0, 50).Select(i => (i * 10).ToString())" />
 		<div class="grid grid-cols-1 xl:grid-cols-2">
 			<BarChart DataOptions="_sub1000DataOptions" UniqueName="#sub1000-chart" DataSet="@_sub1000Data" XScaleTexts="Enumerable.Range(0, 50).Select(i => ((i + 50) * 10).ToString())" />
@@ -34,17 +34,17 @@ else
 		<div class="grid grid-cols-1 xl:grid-cols-2">
 			<div>
 				<Heading Title="Kills" Level="2" />
-				<p>The average kills for all players is @(_statistics.Kills.Average.ToString("0.00")).</p>
-				<p>The median kills for all players is @_statistics.Kills.Median.</p>
-				<p>The mode kills for all players is @_statistics.Kills.Mode.</p>
+				<p>The average kills for all players is @(_statistics.GlobalStatistics.Kills.Average.ToString("0.00")).</p>
+				<p>The median kills for all players is @_statistics.GlobalStatistics.Kills.Median.</p>
+				<p>The mode kills for all players is @_statistics.GlobalStatistics.Kills.Mode.</p>
 				<BarChart DataOptions="_killsDataOptions" UniqueName="#kills-chart" DataSet="@_killsData" Options="new() { ChartMarginXInPx = 60 }" XScaleTexts="Enumerable.Range(0, 100).Select(i => (i * 10).ToString())" />
 			</div>
 
 			<div>
 				<Heading Title="Gems" Level="2" />
-				<p>The average gems for all players is @(_statistics.Gems.Average.ToString("0.00")).</p>
-				<p>The median gems for all players is @_statistics.Gems.Median.</p>
-				<p>The mode gems for all players is @_statistics.Gems.Mode.</p>
+				<p>The average gems for all players is @(_statistics.GlobalStatistics.Gems.Average.ToString("0.00")).</p>
+				<p>The median gems for all players is @_statistics.GlobalStatistics.Gems.Median.</p>
+				<p>The mode gems for all players is @_statistics.GlobalStatistics.Gems.Mode.</p>
 				<BarChart DataOptions="_gemsDataOptions" UniqueName="#gems-chart" DataSet="@_gemsData" Options="new() { ChartMarginXInPx = 60 }" XScaleTexts="Enumerable.Range(0, 50).Select(i => (i * 10).ToString())" />
 			</div>
 		</div>
