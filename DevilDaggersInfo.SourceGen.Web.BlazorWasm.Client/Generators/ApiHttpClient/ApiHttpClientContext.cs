@@ -27,6 +27,10 @@ internal class ApiHttpClientContext
 		string path = Path.Combine(Constants.SharedProjectPath, includedDirectory.ToString());
 		foreach (string directory in Directory.GetDirectories(path, "*", SearchOption.AllDirectories))
 		{
+			int csFileCount = Directory.GetFiles(directory, "*.cs").Length;
+			if (csFileCount == 0)
+				continue;
+
 			string? directoryName = directory.TrimStart(path);
 
 			if (directoryName.Contains(clientType.ToString()))
