@@ -34,8 +34,8 @@ public class LeaderboardHistoryStatisticsController : ControllerBase
 		ulong gemsGlobal = current.GemsGlobal;
 		ulong killsGlobal = current.KillsGlobal;
 		double timeGlobal = current.TimeGlobal.ToSecondsTime();
-		double rank100 = GetTimeOr0(current, 99);
-		double rank10 = GetTimeOr0(current, 9);
+		double rank100 = GetTimeOr0(current, 100);
+		double rank10 = GetTimeOr0(current, 10);
 		int totalPlayers = current.Players;
 
 		List<GetLeaderboardHistoryStatistics> leaderboardHistoryStatistics = new();
@@ -101,12 +101,12 @@ public class LeaderboardHistoryStatisticsController : ControllerBase
 				timeUpdated = true;
 			}
 
-			double currentRank100 = GetTimeOr0(current, 99);
+			double currentRank100 = GetTimeOr0(current, 100);
 			if (rank100 < currentRank100)
 				rank100 = currentRank100;
 			rank100Updated = currentRank100 != 0;
 
-			double currentRank10 = GetTimeOr0(current, 9);
+			double currentRank10 = GetTimeOr0(current, 10);
 			if (rank10 < currentRank10)
 				rank10 = currentRank10;
 			rank10Updated = currentRank10 != 0;
@@ -139,7 +139,7 @@ public class LeaderboardHistoryStatisticsController : ControllerBase
 			TotalPlayersUpdated = totalPlayersUpdated,
 		});
 
-		static double GetTimeOr0(LeaderboardHistory history, int rankIndex)
-			=> history.Entries.Count > rankIndex ? history.Entries[rankIndex].Time.ToSecondsTime() : 0;
+		static double GetTimeOr0(LeaderboardHistory history, int rank)
+			=> history.Entries.Find(eh => eh.Rank == rank)?.Time.ToSecondsTime() ?? 0;
 	}
 }
