@@ -36,6 +36,8 @@ public class LeaderboardStatisticsController : ControllerBase
 			Time = _leaderboardStatisticsCache.Time.ToGetArrayStatistic(),
 			Kills = _leaderboardStatisticsCache.Kills.ToGetArrayStatistic(),
 			Gems = _leaderboardStatisticsCache.Gems.ToGetArrayStatistic(),
+			DaggersFired = _leaderboardStatisticsCache.DaggersFired.ToGetArrayStatistic(),
+			DaggersHit = _leaderboardStatisticsCache.DaggersHit.ToGetArrayStatistic(),
 		};
 	}
 }
