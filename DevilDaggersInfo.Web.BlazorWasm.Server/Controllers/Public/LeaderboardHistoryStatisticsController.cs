@@ -42,9 +42,10 @@ public class LeaderboardHistoryStatisticsController : ControllerBase
 		DateTime dateTime = current.DateTime;
 		Add(true, true, true, true, true, true, true, true, true);
 
-		while (dateTime < DateTime.UtcNow)
+		const int dayOffset = 7;
+		while (dateTime < DateTime.UtcNow.AddDays(-dayOffset))
 		{
-			dateTime = dateTime.AddDays(7);
+			dateTime = dateTime.AddDays(dayOffset);
 			string historyPath = _fileSystemService.GetLeaderboardHistoryPathFromDate(dateTime);
 			current = _leaderboardHistoryCache.GetLeaderboardHistoryByFilePath(historyPath);
 
