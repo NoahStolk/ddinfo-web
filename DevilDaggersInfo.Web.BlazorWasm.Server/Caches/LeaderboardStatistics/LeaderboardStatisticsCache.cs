@@ -29,6 +29,8 @@ public class LeaderboardStatisticsCache : IStaticCache
 	public ArrayStatistic Time { get; } = new();
 	public ArrayStatistic Kills { get; } = new();
 	public ArrayStatistic Gems { get; } = new();
+	public ArrayStatistic DaggersFired { get; } = new();
+	public ArrayStatistic DaggersHit { get; } = new();
 
 	public IReadOnlyList<CompressedEntry> Entries => _entries;
 
@@ -156,6 +158,8 @@ public class LeaderboardStatisticsCache : IStaticCache
 		Time.Populate(_entries.Select(e => (int)e.Time));
 		Kills.Populate(_entries.Select(e => (int)e.Kills));
 		Gems.Populate(_entries.Select(e => (int)e.Gems));
+		DaggersFired.Populate(_entries.Select(e => (int)e.DaggersFired));
+		DaggersHit.Populate(_entries.Select(e => (int)e.DaggersHit));
 
 		Level1 = _entries.Count(e => e.Gems < 10);
 		Level2 = _entries.Count(e => e.Gems >= 10 && e.Gems < 70);
