@@ -1,5 +1,6 @@
 using DevilDaggersInfo.Web.BlazorWasm.Server;
 using DevilDaggersInfo.Web.BlazorWasm.Server.Caches.SpawnsetHashes;
+using DevilDaggersInfo.Web.BlazorWasm.Server.Caches.SpawnsetSummaries;
 using DevilDaggersInfo.Web.BlazorWasm.Server.Controllers.Public;
 using DevilDaggersInfo.Web.BlazorWasm.Server.Enums;
 using DevilDaggersInfo.Web.BlazorWasm.Shared.Dto.Public.CustomEntries;
@@ -35,9 +36,10 @@ public class CustomEntryTests
 
 		Mock<ILogger<SpawnsetHashCache>> spawnsetHashCacheLogger = new();
 		Mock<SpawnsetHashCache> spawnsetHashCache = new(fileSystemService.Object, spawnsetHashCacheLogger.Object);
+		Mock<SpawnsetSummaryCache> spawnsetSummaryCache = new();
 
 		Mock<ILogger<CustomEntriesController>> controllerLogger = new();
-		_customEntriesController = new CustomEntriesController(_dbContext.Object, controllerLogger.Object, spawnsetHashCache.Object, fileSystemService.Object);
+		_customEntriesController = new CustomEntriesController(_dbContext.Object, controllerLogger.Object, spawnsetHashCache.Object, spawnsetSummaryCache.Object, fileSystemService.Object);
 
 		if (!SpawnsetBinary.TryParse(File.ReadAllBytes(Path.Combine(TestConstants.DataDirectory, "Spawnsets", "V3")), out _spawnsetBinary!))
 			Assert.Fail("Spawnset could not be parsed.");

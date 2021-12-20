@@ -2,7 +2,7 @@ namespace DevilDaggersInfo.Core.Wiki;
 
 public static class Deaths
 {
-	public static List<Death> GetDeaths(GameVersion gameVersion)
+	public static List<Death> GetDeaths(GameVersion gameVersion, bool skipUnknown = true)
 	{
 		List<Death> all = gameVersion switch
 		{
@@ -14,20 +14,21 @@ public static class Deaths
 			_ => throw new ArgumentOutOfRangeException(nameof(gameVersion)),
 		};
 
-		return all
-			.Where(d => !string.Equals(d.Name, "unknown", StringComparison.OrdinalIgnoreCase))
-			.ToList();
+		if (skipUnknown)
+			all = all.Where(d => !string.Equals(d.Name, "unknown", StringComparison.OrdinalIgnoreCase)).ToList();
+
+		return all;
 	}
 
-	public static Death? GetDeathByName(GameVersion gameVersion, string name)
+	public static Death? GetDeathByName(GameVersion gameVersion, string name, bool skipUnknown = true)
 	{
-		Death death = GetDeaths(gameVersion).Find(d => d.Name == name);
+		Death death = GetDeaths(gameVersion, skipUnknown).Find(d => d.Name == name);
 		return death == default ? null : death;
 	}
 
-	public static Death? GetDeathByLeaderboardType(GameVersion gameVersion, byte leaderboardDeathType)
+	public static Death? GetDeathByLeaderboardType(GameVersion gameVersion, byte leaderboardDeathType, bool skipUnknown = true)
 	{
-		Death death = GetDeaths(gameVersion).Find(d => d.LeaderboardDeathType == leaderboardDeathType);
+		Death death = GetDeaths(gameVersion, skipUnknown).Find(d => d.LeaderboardDeathType == leaderboardDeathType);
 		return death == default ? null : death;
 	}
 }

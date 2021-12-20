@@ -71,17 +71,17 @@ public class UpgradeTests
 	[TestMethod]
 	public void TestHomingDamage()
 	{
-		Assert.AreEqual(new(null, null), UpgradesV1_0.Level1.HomingDamage);
-		Assert.AreEqual(new(null, null), UpgradesV2_0.Level1.HomingDamage);
-		Assert.AreEqual(new(null, null), UpgradesV3_0.Level1.HomingDamage);
-		Assert.AreEqual(new(null, null), UpgradesV3_1.Level1.HomingDamage);
-		Assert.AreEqual(new(null, null), UpgradesV3_2.Level1.HomingDamage);
+		Assert.AreEqual(null, UpgradesV1_0.Level1.HomingDamage);
+		Assert.AreEqual(null, UpgradesV2_0.Level1.HomingDamage);
+		Assert.AreEqual(null, UpgradesV3_0.Level1.HomingDamage);
+		Assert.AreEqual(null, UpgradesV3_1.Level1.HomingDamage);
+		Assert.AreEqual(null, UpgradesV3_2.Level1.HomingDamage);
 
-		Assert.AreEqual(new(null, null), UpgradesV1_0.Level2.HomingDamage);
-		Assert.AreEqual(new(null, null), UpgradesV2_0.Level2.HomingDamage);
-		Assert.AreEqual(new(null, null), UpgradesV3_0.Level2.HomingDamage);
-		Assert.AreEqual(new(null, null), UpgradesV3_1.Level2.HomingDamage);
-		Assert.AreEqual(new(null, null), UpgradesV3_2.Level2.HomingDamage);
+		Assert.AreEqual(null, UpgradesV1_0.Level2.HomingDamage);
+		Assert.AreEqual(null, UpgradesV2_0.Level2.HomingDamage);
+		Assert.AreEqual(null, UpgradesV3_0.Level2.HomingDamage);
+		Assert.AreEqual(null, UpgradesV3_1.Level2.HomingDamage);
+		Assert.AreEqual(null, UpgradesV3_2.Level2.HomingDamage);
 
 		Assert.AreEqual(new(40, 40f), UpgradesV1_0.Level3.HomingDamage);
 		Assert.AreEqual(new(20, 40f), UpgradesV2_0.Level3.HomingDamage);

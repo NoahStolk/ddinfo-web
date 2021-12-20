@@ -379,11 +379,11 @@ public class DeathTests
 	[TestMethod]
 	public void TestUnknown()
 	{
-		Assert.AreEqual(DeathsV1_0.Unknown, Deaths.GetDeathByLeaderboardType(GameVersion.V1_0, 255));
-		Assert.AreEqual(DeathsV2_0.Unknown, Deaths.GetDeathByLeaderboardType(GameVersion.V2_0, 255));
-		Assert.AreEqual(DeathsV3_0.Unknown, Deaths.GetDeathByLeaderboardType(GameVersion.V3_0, 255));
-		Assert.AreEqual(DeathsV3_1.Unknown, Deaths.GetDeathByLeaderboardType(GameVersion.V3_1, 255));
-		Assert.AreEqual(DeathsV3_2.Unknown, Deaths.GetDeathByLeaderboardType(GameVersion.V3_2, 255));
+		Assert.AreEqual(DeathsV1_0.Unknown, Deaths.GetDeathByLeaderboardType(GameVersion.V1_0, 255, false));
+		Assert.AreEqual(DeathsV2_0.Unknown, Deaths.GetDeathByLeaderboardType(GameVersion.V2_0, 255, false));
+		Assert.AreEqual(DeathsV3_0.Unknown, Deaths.GetDeathByLeaderboardType(GameVersion.V3_0, 255, false));
+		Assert.AreEqual(DeathsV3_1.Unknown, Deaths.GetDeathByLeaderboardType(GameVersion.V3_1, 255, false));
+		Assert.AreEqual(DeathsV3_2.Unknown, Deaths.GetDeathByLeaderboardType(GameVersion.V3_2, 255, false));
 
 		Assert.AreEqual(DeathsV1_0.Unknown.Color, EnemyColors.Unknown);
 		Assert.AreEqual(DeathsV2_0.Unknown.Color, EnemyColors.Unknown);
