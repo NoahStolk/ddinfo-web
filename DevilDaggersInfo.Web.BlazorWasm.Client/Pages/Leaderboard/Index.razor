@@ -1,12 +1,8 @@
 @page "/leaderboard"
-@inherits FluxorComponent
 @inject PublicApiHttpClient Http
 @inject NavigationManager NavigationManager
-@inject IDispatcher Dispatcher
-@inject IState<RankState> RankState
 @using DevilDaggersInfo.Core.Wiki.Enums
 @using DevilDaggersInfo.Web.BlazorWasm.Client.Components.Leaderboards
-@using DevilDaggersInfo.Web.BlazorWasm.Client.Store.Leaderboard.Index
 @using DevilDaggersInfo.Web.BlazorWasm.Shared.Dto.Public
 @using DevilDaggersInfo.Web.BlazorWasm.Shared.Dto.Public.Leaderboards
 @using DevilDaggersInfo.Web.BlazorWasm.Shared.Dto.Public.Players
@@ -38,20 +34,20 @@ else
 			}
 			else
 			{
-				<span>Showing rank @RankState.Value.Rank - @(RankState.Value.Rank + 99)</span>
+				<span>Showing rank @Rank - @(Rank + 99)</span>
 			}
 		</div>
 		<div>
 			@{
-				bool f = RankState.Value.Rank <= 1;
-				bool l = RankState.Value.Rank >= _maxRank;
+				bool f = Rank <= 1;
+				bool l = Rank >= _maxRank;
 				const string disabledStyle = "disabled:opacity-50 cursor-default";
 			}
 			<button disabled="@f" class="@(f ? disabledStyle : string.Empty) btn btn-gray-light w-10 h-10 mx-1" @onclick="() => SetRank(1)">@MarkupUtils.NavStart</button>
-			<button disabled="@f" class="@(f ? disabledStyle : string.Empty) btn btn-gray-light w-10 h-10 mx-1" @onclick="() => SetRank(RankState.Value.Rank - 1000)">@MarkupUtils.NavPrevDouble</button>
-			<button disabled="@f" class="@(f ? disabledStyle : string.Empty) btn btn-gray-light w-10 h-10 mx-1" @onclick="() => SetRank(RankState.Value.Rank - 100)">@MarkupUtils.NavPrev</button>
-			<button disabled="@l" class="@(l ? disabledStyle : string.Empty) btn btn-gray-light w-10 h-10 mx-1" @onclick="() => SetRank(RankState.Value.Rank + 100)">@MarkupUtils.NavNext</button>
-			<button disabled="@l" class="@(l ? disabledStyle : string.Empty) btn btn-gray-light w-10 h-10 mx-1" @onclick="() => SetRank(RankState.Value.Rank + 1000)">@MarkupUtils.NavNextDouble</button>
+			<button disabled="@f" class="@(f ? disabledStyle : string.Empty) btn btn-gray-light w-10 h-10 mx-1" @onclick="() => SetRank(Rank - 1000)">@MarkupUtils.NavPrevDouble</button>
+			<button disabled="@f" class="@(f ? disabledStyle : string.Empty) btn btn-gray-light w-10 h-10 mx-1" @onclick="() => SetRank(Rank - 100)">@MarkupUtils.NavPrev</button>
+			<button disabled="@l" class="@(l ? disabledStyle : string.Empty) btn btn-gray-light w-10 h-10 mx-1" @onclick="() => SetRank(Rank + 100)">@MarkupUtils.NavNext</button>
+			<button disabled="@l" class="@(l ? disabledStyle : string.Empty) btn btn-gray-light w-10 h-10 mx-1" @onclick="() => SetRank(Rank + 1000)">@MarkupUtils.NavNextDouble</button>
 			<button disabled="@l" class="@(l ? disabledStyle : string.Empty) btn btn-gray-light w-10 h-10 mx-1" @onclick="() => SetRank(GetLeaderboard.TotalPlayers - 99)">@MarkupUtils.NavEnd</button>
 		</div>
 	</div>
@@ -63,12 +59,13 @@ else
 
 @code
 {
+	private int _rank = 1;
 	private string? _apiError;
 	private bool _reloading;
 
 	private int _maxRank => (GetLeaderboard?.TotalPlayers ?? int.MaxValue) - 99;
 
-	[Parameter, SupplyParameterFromQuery] public int Rank { get; set; }
+	[Parameter, SupplyParameterFromQuery] public int Rank { get => _rank; set => _rank = Math.Max(1, value); }
 
 	public GetLeaderboard? GetLeaderboard { get; set; }
 
@@ -76,16 +73,14 @@ else
 
 	protected override async Task OnInitializedAsync()
 	{
-		Dispatcher.Dispatch(new ChangeRankAction(Rank, _maxRank));
-
 		Players = await Http.GetPlayersForLeaderboard();
 		await FetchLeaderboard();
 	}
 
 	private async Task SetRank(int value)
 	{
-		Dispatcher.Dispatch(new ChangeRankAction(value, _maxRank));
-		NavigationManager.AddOrModifyQueryParameter(QueryParameters.Rank, RankState.Value.Rank);
+		Rank = Math.Clamp(value, 1, _maxRank);
+		NavigationManager.AddOrModifyQueryParameter(QueryParameters.Rank, Rank);
 
 		await FetchLeaderboard();
 	}
@@ -97,7 +92,7 @@ else
 			if (GetLeaderboard != null)
 				_reloading = true;
 
-			GetLeaderboard = await Http.GetLeaderboard(RankState.Value.Rank);
+			GetLeaderboard = await Http.GetLeaderboard(Rank);
 			_reloading = false;
 		}
 		catch (Exception ex)
