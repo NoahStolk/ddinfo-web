@@ -115,9 +115,6 @@ public class PlayersController : ControllerBase
 			{
 				return BadRequest("Banned players must not have settings.");
 			}
-
-			if (string.IsNullOrWhiteSpace(addPlayer.BanDescription))
-				return BadRequest("BanDescription is required for banned players.");
 		}
 		else
 		{
