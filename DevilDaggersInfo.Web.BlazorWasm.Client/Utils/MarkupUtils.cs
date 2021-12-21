@@ -62,25 +62,19 @@ public static class MarkupUtils
 	public static MarkupString DeathString(Death? death, string textSizeClass = "text-lg")
 	{
 		string style = $"color: {death?.Color.HexCode ?? "#444"};";
-		string name = death?.Name ?? "Unknown";
-
-		return new(@$"<span style=""{style}"" class=""font-goethe {textSizeClass}"">{name}</span>");
+		return new(@$"<span style=""{style}"" class=""font-goethe {textSizeClass}"">{death?.Name ?? "Unknown"}</span>");
 	}
 
 	public static MarkupString UpgradeString(Upgrade upgrade)
 	{
 		string style = $"color: {upgrade.Color.HexCode};";
-		string name = upgrade.Name;
-
-		return new(@$"<span style=""{style}"" class=""font-goethe text-lg"">{name}</span>");
+		return new(@$"<span style=""{style}"" class=""font-goethe text-lg"">{upgrade.Name}</span>");
 	}
 
 	public static MarkupString EnemyString(Enemy enemy, bool plural = false)
 	{
 		string style = $"color: {enemy.Color.HexCode};";
-		string name = enemy.Name;
-
-		return new(@$"<span style=""{style}"" class=""font-goethe text-lg"">{name}{(plural ? "s" : string.Empty)}</span>");
+		return new(@$"<span style=""{style}"" class=""font-goethe text-lg"">{enemy.Name}{(plural ? "s" : string.Empty)}</span>");
 	}
 
 	public static MarkupString Space() => new("&#32;");
