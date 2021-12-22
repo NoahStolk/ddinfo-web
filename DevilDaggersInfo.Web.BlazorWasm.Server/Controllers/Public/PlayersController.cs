@@ -29,12 +29,13 @@ public class PlayersController : ControllerBase
 			.AsNoTracking()
 
 			// TODO: Check if this can be combined without querying entire entity.
-			.Select(p => new { p.Id, p.BanDescription, p.BanType, p.CountryCode })
+			.Select(p => new { p.Id, p.BanType, p.BanDescription, p.BanResponsibleId, p.CountryCode })
 			.Select(p => new GetPlayerForLeaderboard
 			{
 				Id = p.Id,
+				BanType = p.BanType,
 				BanDescription = p.BanDescription,
-				IsBanned = p.BanType != BanType.NotBanned,
+				BanResponsibleId = p.BanResponsibleId,
 				CountryCode = p.CountryCode,
 			})
 			.ToList();

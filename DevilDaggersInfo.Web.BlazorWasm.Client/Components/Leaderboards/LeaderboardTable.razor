@@ -6,6 +6,7 @@
 @using DevilDaggersInfo.Web.BlazorWasm.Shared.Dto.Public
 @using DevilDaggersInfo.Web.BlazorWasm.Shared.Dto.Public.Leaderboards
 @using DevilDaggersInfo.Web.BlazorWasm.Shared.Dto.Public.Players
+@using DevilDaggersInfo.Web.BlazorWasm.Shared.Enums
 
 <div class="text-xl font-goethe">
 	<div class="grid gap-3 grid-cols-leaderboard-sm md:grid-cols-leaderboard-md lg:grid-cols-leaderboard-lg xl:grid-cols-leaderboard-xl">
@@ -27,10 +28,59 @@
 		@{
 			int i = 0;
 
-			foreach (IGetEntryDto entry in Leaderboard.Entries)
+			List<List<int>> groupsOfAlts = new();
+			if (IsHistory)
 			{
-				GetPlayerForLeaderboard? player = Players?.Find(p => p.Id == entry.Id);
-				bool isBanned = player?.IsBanned ?? false;
+				foreach (GetPlayerForLeaderboard player in Players)
+				{
+					if (player.BanType == BanType.Alt && player.BanResponsibleId.HasValue)
+					{
+						List<int>? existingGroup = groupsOfAlts.FirstOrDefault(l => l.Contains(player.BanResponsibleId.Value));
+						if (existingGroup == null)
+							groupsOfAlts.Add(new() { player.Id, player.BanResponsibleId.Value });
+						else
+							existingGroup.Add(player.Id);
+					}
+				}
+			}
+
+			foreach (TGetEntryDto entry in Leaderboard.Entries)
+			{
+				bool isBanned = false;
+
+				GetPlayerForLeaderboard? player = Players.Find(p => p.Id == entry.Id);
+				if (player != null)
+				{
+					// On the leaderboard history pages, we unban any alt with a higher score than the main.
+					// The reason for this workaround is because pocket and Ravenholmzombies have submitted throughout the history on two different accounts.
+					// This code makes sure the alts are banned properly in the history should this happen again.
+					if (IsHistory)
+					{
+						if (player.BanType is BanType.NotBanned or BanType.Alt)
+						{
+							// When not banned or alt, we need to find the alts and determine if this account has the highest score.
+							List<int>? mainAndAlts = groupsOfAlts.FirstOrDefault(l => l.Contains(player.Id) || player.BanResponsibleId.HasValue && l.Contains(player.BanResponsibleId.Value));
+							TGetEntryDto? mainOrAltWithHighestScore = mainAndAlts == null ? null : mainAndAlts.ConvertAll(i => Leaderboard.Entries.FirstOrDefault(e => e.Id == i)).Where(e => e != null).MaxBy(e => e!.Time);
+
+							// If there are no alts, or for some reason the highest score cannot be determined, fallback to default banning behavior.
+							// Otherwise, ban the main or alt with a lower score.
+							if (mainOrAltWithHighestScore == null)
+								isBanned = player.BanType != BanType.NotBanned;
+							else
+								isBanned = entry.Id != mainOrAltWithHighestScore.Id;
+						}
+						else
+						{
+							// Always ban other BanTypes (cheater, boosted, illegitimate stats, blank name).
+							isBanned = true;
+						}
+					}
+					// On the regular leaderboard page, we just ban literally by BanType, because determining higher scores can become problematic when browsing pages other than the first page.
+					else
+					{
+						isBanned = player.BanType != BanType.NotBanned;
+					}
+				}
 
 				Dagger dagger = Daggers.GetDaggerFromSeconds(GameVersion, entry.Time);
 				string daggerCssClass = dagger.Name.ToLower();
@@ -82,7 +132,7 @@
 					</div>
 					<div class="lg:hidden">Death Type</div>
 					<div class="lg:hidden text-right">@death</div>
-					
+
 					<div class="xl:hidden">Total Time</div>
 					<div class="xl:hidden text-right">@timeTotal</div>
 					<div class="xl:hidden">Total Kills</div>
@@ -103,7 +153,7 @@
 {
 	[Parameter] public bool IsHistory { get; set; }
 	[Parameter, EditorRequired] public TGetLeaderboardDto Leaderboard { get; set; } = default!;
-	[Parameter, EditorRequired] public List<GetPlayerForLeaderboard>? Players { get; set; } = null!;
+	[Parameter, EditorRequired] public List<GetPlayerForLeaderboard> Players { get; set; } = null!;
 	[Parameter, EditorRequired] public GameVersion GameVersion { get; set; }
 
 	private int? _expandedId;
@@ -136,7 +186,7 @@
 		{
 			LeaderboardSorting.Accuracy => Leaderboard.Entries.OrderBy(e => e.DaggersFired == 0 ? 0 : e.DaggersHit / (float)e.DaggersFired, _ascending).ToList(),
 			LeaderboardSorting.DeathType => Leaderboard.Entries.OrderBy(e => e.DeathType, _ascending).ToList(),
-			LeaderboardSorting.Flag => Leaderboard.Entries.OrderBy(e => Players?.Find(p => p.Id == e.Id)?.CountryCode ?? string.Empty, _ascending).ToList(),
+			LeaderboardSorting.Flag => Leaderboard.Entries.OrderBy(e => Players.Find(p => p.Id == e.Id)?.CountryCode ?? string.Empty, _ascending).ToList(),
 			LeaderboardSorting.Gems => Leaderboard.Entries.OrderBy(e => e.Gems, _ascending).ToList(),
 			LeaderboardSorting.Kills => Leaderboard.Entries.OrderBy(e => e.Kills, _ascending).ToList(),
 			LeaderboardSorting.Player => Leaderboard.Entries.OrderBy(e => e.Username, _ascending).ToList(),
