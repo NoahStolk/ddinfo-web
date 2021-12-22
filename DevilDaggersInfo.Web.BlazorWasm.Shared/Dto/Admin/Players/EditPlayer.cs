@@ -23,7 +23,7 @@ public class EditPlayer
 
 	public bool? UsesLegacyAudio { get; set; }
 
-	public bool IsBanned { get; set; }
+	public BanType BanType { get; set; }
 
 	[StringLength(64)]
 	public string? BanDescription { get; set; }

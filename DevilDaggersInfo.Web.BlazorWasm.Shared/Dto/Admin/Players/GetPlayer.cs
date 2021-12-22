@@ -22,7 +22,7 @@ public class GetPlayer : IGetDto
 
 	public bool? UsesLegacyAudio { get; init; }
 
-	public bool IsBanned { get; init; }
+	public BanType BanType { get; init; }
 
 	public string? BanDescription { get; init; }
 

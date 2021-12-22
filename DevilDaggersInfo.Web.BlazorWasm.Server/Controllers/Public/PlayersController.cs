@@ -29,12 +29,12 @@ public class PlayersController : ControllerBase
 			.AsNoTracking()
 
 			// TODO: Check if this can be combined without querying entire entity.
-			.Select(p => new { p.Id, p.BanDescription, p.IsBanned, p.CountryCode })
+			.Select(p => new { p.Id, p.BanDescription, p.BanType, p.CountryCode })
 			.Select(p => new GetPlayerForLeaderboard
 			{
 				Id = p.Id,
 				BanDescription = p.BanDescription,
-				IsBanned = p.IsBanned,
+				IsBanned = p.BanType != BanType.NotBanned,
 				CountryCode = p.CountryCode,
 			})
 			.ToList();
@@ -46,7 +46,7 @@ public class PlayersController : ControllerBase
 	{
 		List<PlayerEntity> players = _dbContext.Players
 			.AsNoTracking()
-			.Where(p => !p.IsBanned && !p.HideSettings)
+			.Where(p => p.BanType == BanType.NotBanned && !p.HideSettings)
 			.ToList();
 
 		// Note; cannot evaluate HasSettings() against database (IQueryable).

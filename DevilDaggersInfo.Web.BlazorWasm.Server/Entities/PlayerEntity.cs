@@ -27,6 +27,7 @@ public class PlayerEntity
 	public bool? UsesLegacyAudio { get; set; }
 
 	// TODO: Remove and use BanType instead.
+	[Obsolete($"Use {nameof(BanType)} instead.")]
 	public bool IsBanned { get; set; }
 
 	public BanType BanType { get; set; }

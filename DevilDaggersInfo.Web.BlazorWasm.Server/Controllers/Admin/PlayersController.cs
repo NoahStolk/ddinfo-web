@@ -41,7 +41,7 @@ public class PlayersController : ControllerBase
 			PlayerSorting.HidePastUsernames => playersQuery.OrderBy(p => p.HidePastUsernames, ascending).ThenBy(p => p.Id),
 			PlayerSorting.HideSettings => playersQuery.OrderBy(p => p.HideSettings, ascending).ThenBy(p => p.Id),
 			PlayerSorting.InGameSens => playersQuery.OrderBy(p => p.InGameSens, ascending).ThenBy(p => p.Id),
-			PlayerSorting.IsBanned => playersQuery.OrderBy(p => p.IsBanned, ascending).ThenBy(p => p.Id),
+			PlayerSorting.BanType => playersQuery.OrderBy(p => p.BanType, ascending).ThenBy(p => p.Id),
 			PlayerSorting.IsBannedFromDdcl => playersQuery.OrderBy(p => p.IsBannedFromDdcl, ascending).ThenBy(p => p.Id),
 			PlayerSorting.IsRightHanded => playersQuery.OrderBy(p => p.IsRightHanded, ascending).ThenBy(p => p.Id),
 			PlayerSorting.PlayerName => playersQuery.OrderBy(p => p.PlayerName, ascending).ThenBy(p => p.Id),
@@ -100,7 +100,7 @@ public class PlayersController : ControllerBase
 	[ProducesResponseType(StatusCodes.Status409Conflict)]
 	public async Task<ActionResult> AddPlayer(AddPlayer addPlayer)
 	{
-		if (addPlayer.IsBanned)
+		if (addPlayer.BanType != BanType.NotBanned)
 		{
 			if (!string.IsNullOrWhiteSpace(addPlayer.CountryCode))
 				return BadRequest("Banned players must not have a country code.");
@@ -152,7 +152,8 @@ public class PlayersController : ControllerBase
 			HasFlashHandEnabled = addPlayer.HasFlashHandEnabled,
 			Gamma = addPlayer.Gamma,
 			UsesLegacyAudio = addPlayer.UsesLegacyAudio,
-			IsBanned = addPlayer.IsBanned,
+			IsBanned = addPlayer.BanType != BanType.NotBanned,
+			BanType = addPlayer.BanType,
 			BanDescription = addPlayer.BanDescription,
 			BanResponsibleId = addPlayer.BanResponsibleId,
 			IsBannedFromDdcl = addPlayer.IsBannedFromDdcl,
@@ -178,7 +179,7 @@ public class PlayersController : ControllerBase
 	[ProducesResponseType(StatusCodes.Status404NotFound)]
 	public async Task<ActionResult> EditPlayerById(int id, EditPlayer editPlayer)
 	{
-		if (editPlayer.IsBanned)
+		if (editPlayer.BanType != BanType.NotBanned)
 		{
 			if (!string.IsNullOrWhiteSpace(editPlayer.CountryCode))
 				return BadRequest("Banned players must not have a country code.");
@@ -240,7 +241,7 @@ public class PlayersController : ControllerBase
 			TitleIds = player.PlayerTitles.ConvertAll(pt => pt.TitleId),
 			BanDescription = player.BanDescription,
 			BanResponsibleId = player.BanResponsibleId,
-			IsBanned = player.IsBanned,
+			BanType = player.BanType,
 			IsBannedFromDdcl = player.IsBannedFromDdcl,
 		};
 
@@ -258,7 +259,8 @@ public class PlayersController : ControllerBase
 		player.HidePastUsernames = editPlayer.HidePastUsernames;
 		player.BanDescription = editPlayer.BanDescription;
 		player.BanResponsibleId = editPlayer.BanResponsibleId;
-		player.IsBanned = editPlayer.IsBanned;
+		player.IsBanned = editPlayer.BanType != BanType.NotBanned;
+		player.BanType = editPlayer.BanType;
 		player.IsBannedFromDdcl = editPlayer.IsBannedFromDdcl;
 
 		UpdatePlayerMods(editPlayer.ModIds ?? new(), player.Id);

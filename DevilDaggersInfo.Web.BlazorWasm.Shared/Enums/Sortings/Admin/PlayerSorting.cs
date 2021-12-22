@@ -12,7 +12,7 @@ public enum PlayerSorting
 	HasFlashHandEnabled,
 	Gamma,
 	UsesLegacyAudio,
-	IsBanned,
+	BanType,
 	BanDescription,
 	BanResponsibleId,
 	IsBannedFromDdcl,

@@ -30,8 +30,7 @@ public class GetPlayerForOverview : IGetDto
 	[Display(Name = "LegacyAudio")]
 	public bool? UsesLegacyAudio { get; init; }
 
-	[Display(Name = "Banned")]
-	public bool IsBanned { get; init; }
+	public BanType BanType { get; init; }
 
 	public string? BanDescription { get; init; }
 

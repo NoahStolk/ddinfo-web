@@ -9,7 +9,7 @@ public static class PlayerConverters
 		BanDescription = player.BanDescription,
 		CountryCode = player.CountryCode,
 		Id = player.Id,
-		IsBanned = player.IsBanned,
+		IsBanned = player.BanType != BanType.NotBanned,
 		IsPublicDonator = isPublicDonator,
 		Settings = !player.HasVisibleSettings() ? null : new()
 		{
