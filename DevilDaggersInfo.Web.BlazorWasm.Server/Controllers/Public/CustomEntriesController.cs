@@ -28,33 +28,6 @@ public class CustomEntriesController : ControllerBase
 		_fileSystemService = fileSystemService;
 	}
 
-	[HttpPost("temp/migrate-to-ban-type")]
-	[ProducesResponseType(StatusCodes.Status200OK)]
-	public ActionResult MigrateToBanType(object fake)
-	{
-		foreach (PlayerEntity bannedPlayer in _dbContext.Players.Where(p => p.IsBanned))
-		{
-			string? banDesc = bannedPlayer.BanDescription;
-			if (banDesc == null)
-				continue;
-
-			if (banDesc.StartsWith("Alt"))
-				bannedPlayer.BanType = BanType.Alt;
-			else if (banDesc.StartsWith("Cheater"))
-				bannedPlayer.BanType = BanType.Cheater;
-			else if (banDesc.StartsWith("Boosted"))
-				bannedPlayer.BanType = BanType.Boosted;
-			else if (banDesc.StartsWith("Ille"))
-				bannedPlayer.BanType = BanType.IllegitimateStats;
-			else if (banDesc.StartsWith("Blank"))
-				bannedPlayer.BanType = BanType.BlankName;
-		}
-
-		_dbContext.SaveChanges();
-
-		return Ok();
-	}
-
 	[HttpGet("{id}/replay")]
 	[ProducesResponseType(StatusCodes.Status200OK)]
 	[ProducesResponseType(StatusCodes.Status400BadRequest)]
