@@ -75,7 +75,8 @@
 							isBanned = true;
 						}
 					}
-					// On the regular leaderboard page, we just ban literally by BanType, because determining higher scores can become problematic when browsing pages other than the first page.
+					// On the regular leaderboard page, we just ban literally by BanType, because determining higher scores can become problematic when browsing pages other than the first page (since we need to know the score of all the alts).
+					// We could keep a cache of the alt scores, but this isn't worth it because we could instead just update the database to ban the user with the lower score and make the other one the "main" account by unbanning it.
 					else
 					{
 						isBanned = player.BanType != BanType.NotBanned;
