@@ -1,7 +1,5 @@
 using DevilDaggersInfo.Web.BlazorWasm.Server.Caches.LeaderboardHistory;
-using DevilDaggersInfo.Web.BlazorWasm.Server.Converters.Public;
 using DevilDaggersInfo.Web.BlazorWasm.Server.InternalModels.Json;
-using DevilDaggersInfo.Web.BlazorWasm.Shared.Dto.Public.LeaderboardHistory;
 using DevilDaggersInfo.Web.BlazorWasm.Shared.Dto.Public.WorldRecords;
 
 namespace DevilDaggersInfo.Web.BlazorWasm.Server.Controllers.Public;
@@ -14,11 +12,13 @@ public class WorldRecordsController : ControllerBase
 
 	private readonly IFileSystemService _fileSystemService;
 	private readonly LeaderboardHistoryCache _leaderboardHistoryCache;
+	private readonly ApplicationDbContext _dbContext;
 
-	public WorldRecordsController(IFileSystemService fileSystemService, LeaderboardHistoryCache leaderboardHistoryCache)
+	public WorldRecordsController(IFileSystemService fileSystemService, LeaderboardHistoryCache leaderboardHistoryCache, ApplicationDbContext dbContext)
 	{
 		_fileSystemService = fileSystemService;
 		_leaderboardHistoryCache = leaderboardHistoryCache;
+		_dbContext = dbContext;
 	}
 
 	[HttpGet]
@@ -146,7 +146,22 @@ public class WorldRecordsController : ControllerBase
 				else
 					date = leaderboard.DateTime;
 
-				worldRecords.Add(new(date, firstPlace.ToDto(leaderboard.DateTime), GameVersions.GetGameVersionFromDate(date)));
+				// If the WR was submitted by an alt, we need to manually fix the ID by looking up the main ID in the database.
+				int? mainPlayerId = _dbContext.Players.AsNoTracking().Select(p => new { p.Id, p.BanResponsibleId }).FirstOrDefault(p => p.Id == firstPlace.Id)?.BanResponsibleId;
+
+				GetWorldRecordEntry getWorldRecordEntry = new()
+				{
+					DateTime = leaderboard.DateTime,
+					Id = mainPlayerId ?? firstPlace.Id,
+					Username = firstPlace.Username,
+					Time = firstPlace.Time.ToSecondsTime(),
+					Kills = firstPlace.Kills,
+					Gems = firstPlace.Gems,
+					DeathType = firstPlace.DeathType,
+					DaggersHit = firstPlace.DaggersHit,
+					DaggersFired = firstPlace.DaggersFired,
+				};
+				worldRecords.Add(new(date, getWorldRecordEntry, GameVersions.GetGameVersionFromDate(date)));
 			}
 
 			previousDate = leaderboard.DateTime;
@@ -158,7 +173,7 @@ public class WorldRecordsController : ControllerBase
 			=> new((a.Ticks + b.Ticks) / 2);
 	}
 
-	private sealed record BaseWorldRecord(DateTime DateTime, GetEntryHistory Entry, GameVersion? GameVersion);
+	private sealed record BaseWorldRecord(DateTime DateTime, GetWorldRecordEntry Entry, GameVersion? GameVersion);
 
 	private sealed class BaseWorldRecordHolder
 	{
