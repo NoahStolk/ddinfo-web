@@ -33,6 +33,9 @@ public class UserService : IUserService
 		if (string.IsNullOrWhiteSpace(password))
 			throw new("Password is required.");
 
+		if (password.Length < AuthenticationConstants.MinimumPasswordLength)
+			throw new($"Password must be at least {AuthenticationConstants.MinimumPasswordLength} characters in length.");
+
 		if (_dbContext.Users.Any(u => u.Name == name))
 			throw new($"Name '{name}' is already taken.");
 
