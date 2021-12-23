@@ -1,71 +1,99 @@
 @using System.Globalization
 
-<Select @onchange="@(async (e) => await UpdateComponent(e, (dp) => dp._date.Day = ToInt(e)))" class="bg-gray-1 transition-colors duration-100 h-8 py-1 rounded text-color-text">
-	@for (int i = 1; i <= 31; i++)
-	{
-		<option value="@i">@i</option>
+<div class="bg-gray-1 max-w-sm text-center py-2">
+	<button class="btn btn-gray-light w-10 h-10" @onclick="PreviousYear">@MarkupUtils.NavPrevDouble</button>
+	<button class="btn btn-gray-light w-10 h-10" @onclick="PreviousMonth">@MarkupUtils.NavPrev</button>
+	<div class="inline-block">
+		<div class="text-center">@_year</div>
+		<div class="text-center text-sm">@_monthNames[_month - 1]</div>
+	</div>
+	<button class="btn btn-gray-light w-10 h-10" @onclick="NextMonth">@MarkupUtils.NavNext</button>
+	<button class="btn btn-gray-light w-10 h-10" @onclick="NextYear">@MarkupUtils.NavNextDouble</button>
+
+	@{
+		int daysInMonth = DateTime.DaysInMonth(_year, _month);
+		DayOfWeek dayOfWeek = new DateTime(_year, _month, 1).DayOfWeek;
+		int currentDay = 1;
+		bool started = false;
+		<table class="table-fixed mx-auto">
+			<thead>
+				<tr>
+					@for (int i = 0; i < 7; i++)
+					{
+						<td class="text-center">@(((DayOfWeek)((i + 1) % 7)).ToString()[0])</td>
+					}
+				</tr>
+			</thead>
+			<tbody>
+				@for (int i = 0; i < 6; i++)
+				{
+					<tr>
+						@for (int j = 0; j < 7; j++)
+						{
+							if (dayOfWeek == (DayOfWeek)((j + 1) % 7))
+								started = true;
+
+							if (started && currentDay <= daysInMonth)
+							{
+								int day = currentDay;
+								<td class="@(day == _day ? "bg-gray-3" : string.Empty) rounded transition-colors duration-100 hover:bg-gray-5 cursor-pointer text-center p-2" @onclick="() => _day = day">@day</td>
+								currentDay++;
+							}
+							else
+							{
+								<td class="text-gray-4 p-2">x</td>
+							}
+						}
+					</tr>
+				}
+			</tbody>
+		</table>
 	}
-</Select>
-<Select @onchange="@(async (e) => await UpdateComponent(e, (dp) => dp._date.Month = ToInt(e)))" class="bg-gray-1 transition-colors duration-100 h-8 py-1 rounded text-color-text">
-	@for (int i = 1; i <= 12; i++)
-	{
-		<option value="@i">@_monthNames[i - 1]</option>
-	}
-</Select>
-<Select @onchange="@(async (e) => await UpdateComponent(e, (dp) => dp._date.Year = ToInt(e)))" class="bg-gray-1 transition-colors duration-100 h-8 py-1 rounded text-color-text">
-	@for (int i = Date.MinYear; i <= Date.MaxYear; i++)
-	{
-		<option value="@i">@i</option>
-	}
-</Select>
+
+	<button class="btn btn-gray-light h-10 px-2" @onclick="@UpdateComponent">Show</button>
+</div>
 
 @code {
-	private static readonly string[] _monthNames = CultureInfo.InvariantCulture.DateTimeFormat.MonthNames.Take(12).ToArray();
+	private static readonly string[] _monthNames = CultureInfo.InvariantCulture.DateTimeFormat.MonthNames.Take(12).Select(s => s[..3]).ToArray();
 
 	[Parameter, EditorRequired] public EventCallback<DateTime> DateSelected { get; set; }
 
-	private Date _date = new();
+	private int _year = DateTime.UtcNow.Year;
+	private int _month = DateTime.UtcNow.Month;
+	private int _day = DateTime.UtcNow.Day;
 
-	public async Task UpdateComponent(ChangeEventArgs e, Action<DatePicker> action)
+	private async Task UpdateComponent()
 	{
-		action.Invoke(this);
-		await DateSelected.InvokeAsync(_date.ToDateTime());
+		await DateSelected.InvokeAsync(new(_year, _month, _day));
 	}
 
-	private int ToInt(ChangeEventArgs e)
+	private void NextYear() => _year = Math.Min(DateTime.MaxValue.Year, _year + 1);
+
+	private void PreviousYear() => _year = Math.Max(DateTime.MinValue.Year, _year - 1);
+
+	private void NextMonth()
 	{
-		if (e.Value == null)
-			return 0;
-
-		if (int.TryParse(e.Value.ToString(), out int result))
-			return result;
-
-		return 0;
-	}
-
-	private struct Date
-	{
-		public static readonly int MinYear = 2015;
-		public static readonly int MaxYear = DateTime.UtcNow.Year;
-
-		public int Day { get; set; }
-		public int Month { get; set; }
-		public int Year { get; set; }
-
-		public Date()
+		if (_month < 12)
 		{
-			DateTime now = DateTime.UtcNow;
-			Day = now.Day;
-			Month = now.Month;
-			Year = now.Year;
+			_month++;
 		}
-
-		public DateTime ToDateTime()
+		else
 		{
-			Year = Math.Clamp(Year, MinYear, MaxYear);
-			Month = Math.Clamp(Month, 1, 12);
-			Day = Math.Clamp(Day, 1, DateTime.DaysInMonth(Year, Month));
-			return new(Year, Month, Day);
+			_month = 1;
+			NextYear();
+		}
+	}
+
+	private void PreviousMonth()
+	{
+		if (_month > 1)
+		{
+			_month--;
+		}
+		else
+		{
+			_month = 12;
+			PreviousYear();
 		}
 	}
 }
