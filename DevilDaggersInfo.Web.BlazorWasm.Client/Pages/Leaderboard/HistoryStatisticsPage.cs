@@ -68,7 +68,7 @@ public partial class HistoryStatisticsPage
 			return;
 
 		DateTime minX = _statistics.Select(hs => hs.DateTime).Min();
-		DateTime maxX = DateTime.Now;
+		DateTime maxX = DateTime.UtcNow;
 
 		RegisterTotalPlayers();
 		void RegisterTotalPlayers()

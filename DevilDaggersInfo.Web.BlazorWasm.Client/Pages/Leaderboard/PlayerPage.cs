@@ -102,7 +102,7 @@ public partial class PlayerPage
 		if (GetPlayerHistory.History.Count > 0)
 		{
 			DateTime minX = GetPlayerHistory.History.Select(eh => eh.DateTime).Min();
-			DateTime maxX = DateTime.Now;
+			DateTime maxX = DateTime.UtcNow;
 
 			IEnumerable<double> scores = GetPlayerHistory.History.Select(eh => eh.Time);
 			const double scale = 50.0;
@@ -136,7 +136,7 @@ public partial class PlayerPage
 		if (GetPlayerHistory.Activity.Count > 0)
 		{
 			DateTime minX = GetPlayerHistory.Activity.Select(pa => pa.DateTime).Min();
-			DateTime maxX = DateTime.Now;
+			DateTime maxX = DateTime.UtcNow;
 
 			IEnumerable<double> deaths = GetPlayerHistory.Activity.Select(pa => pa.DeathsIncrement);
 			const double scale = 20.0;

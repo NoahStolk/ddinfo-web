@@ -38,7 +38,7 @@ public partial class WorldRecordProgressionPage
 			new() { Color = "#4802", ChartEndXValue = GameVersions.GetReleaseDate(GameVersion.V3_0).Ticks },
 			new() { Color = "#8082", ChartEndXValue = GameVersions.GetReleaseDate(GameVersion.V3_1).Ticks },
 			new() { Color = "#80b2", ChartEndXValue = GameVersions.GetReleaseDate(GameVersion.V3_2).Ticks },
-			new() { Color = "#80e2", ChartEndXValue = DateTime.Now.Ticks },
+			new() { Color = "#80e2", ChartEndXValue = DateTime.UtcNow.Ticks },
 		},
 	};
 
@@ -67,7 +67,7 @@ public partial class WorldRecordProgressionPage
 		_totalTimeSinceFirstRecord = DateTime.UtcNow - _data.WorldRecords.OrderBy(wr => wr.DateTime).First().DateTime;
 
 		DateTime minX = new(2016, 1, 1);
-		DateTime maxX = DateTime.Now;
+		DateTime maxX = DateTime.UtcNow;
 		GetWorldRecord firstWr = _data.WorldRecords[0];
 		GetWorldRecord lastWr = _data.WorldRecords[^1];
 		double minY = Math.Floor(firstWr.Entry.Time / 100.0) * 100;
