@@ -20,7 +20,7 @@
 				<tr>
 					@for (int i = 0; i < 7; i++)
 					{
-						<td class="text-center">@(((DayOfWeek)((i + 1) % 7)).ToString()[0])</td>
+						<td class="text-center">@(((DayOfWeek)((i + 1) % 7)).ToString()[..2])</td>
 					}
 				</tr>
 			</thead>
