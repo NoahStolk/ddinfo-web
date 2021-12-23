@@ -31,7 +31,7 @@ public class FileSystemService : IFileSystemService
 				return path;
 		}
 
-		return paths[^1];
+		return paths[0];
 	}
 
 	public string GetPath(DataSubDirectory subDirectory)
