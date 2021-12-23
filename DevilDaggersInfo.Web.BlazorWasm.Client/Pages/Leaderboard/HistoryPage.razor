@@ -26,7 +26,11 @@ else
 		}
 	</div>
 
-	<div>Closest result for @(DateTime.ToString(FormatUtils.DateTimeFormat)) is @(GetLeaderboardHistory.DateTime.ToString(FormatUtils.DateTimeFormat)).</div>
+	<Heading Level="2" Title="@(GetLeaderboardHistory.DateTime.ToString(FormatUtils.DateTimeFormat))" />
+	@if (!DatesEqual(GetLeaderboardHistory.DateTime, DateTime))
+	{
+		<i>Closest hit for @(DateTime.ToString(FormatUtils.DateTimeFormat))</i>
+	}
 
 	<LeaderboardGlobal Leaderboard="GetLeaderboardHistory" IsHistory="true" />
 	<LeaderboardTableInfo />
@@ -71,6 +75,11 @@ else
 		GetLeaderboardHistory = await Http.GetLeaderboardHistory(DateTime);
 		_reloading = false;
 		_gameVersion = GameVersions.GetGameVersionFromDate(GetLeaderboardHistory.DateTime) ?? GameVersion.V1_0;
+	}
+
+	private static bool DatesEqual(DateTime a, DateTime b)
+	{
+		return a.Year == b.Year && a.Month == b.Month && a.Day == b.Day && a.Hour == b.Hour && a.Minute == b.Minute;
 	}
 
 	private static class QueryParameters
