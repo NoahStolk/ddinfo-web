@@ -1,0 +1,47 @@
+@page "/leaderboard/search"
+@inject PublicApiHttpClient Http
+@inject NavigationManager NavigationManager
+@using DevilDaggersInfo.Core.Wiki.Enums
+@using DevilDaggersInfo.Web.BlazorWasm.Client.Components.Leaderboards
+@using DevilDaggersInfo.Web.BlazorWasm.Shared.Dto.Public
+@using DevilDaggersInfo.Web.BlazorWasm.Shared.Dto.Public.Leaderboards
+@using DevilDaggersInfo.Web.BlazorWasm.Shared.Dto.Public.Players
+
+<Heading Title="Leaderboard Search" />
+
+<div class="bg-gray-1 p-2 text-lg">
+	<span>Username</span>
+	<input class="bg-black border-gray-3 border-2" @onchange="ChangeInputUsername" />
+
+	@if (Username == null || Username.Length < 3)
+	{
+		<div>Please enter a value of at least 3 characters.</div>
+	}
+</div>
+
+@if (GetEntries == null || _reloading)
+{
+	@if (_apiError == null)
+	{
+		<Loading />
+	}
+	else
+	{
+		// TODO: Only display this error message if we're sure the issue is from the official Devil Daggers leaderboard servers.
+		<p class="py-1">Failed to retrieve scores from the official Devil Daggers leaderboard servers. Please try again later.</p>
+		<p class="py-1">@_apiError</p>
+	}
+}
+else
+{
+	if (GetEntries.Count == 0)
+	{
+		<span>No results for "@Username".</span>
+	}
+	else
+	{
+		<span>Showing @GetEntries.Count results for "@Username".</span>
+		<LeaderboardTableInfo />
+		<LeaderboardTable TGetEntryDto="GetEntry" Entries="GetEntries" Players="Players" IsHistory="false" GameVersion="GameConstants.CurrentVersion" />
+	}
+}
