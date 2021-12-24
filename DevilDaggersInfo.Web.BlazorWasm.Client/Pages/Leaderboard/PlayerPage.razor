@@ -86,7 +86,7 @@ else
 			}
 		}
 
-		@if (GetPlayerHistory != null)
+		@if (GetPlayerHistory != null && GetPlayerHistory.BestRank.HasValue)
 		{
 			<PlayerCard Title="History">
 				<DataField CssClass="odd:bg-gray-2" Name="Best rank recorded">@GetPlayerHistory.BestRank</DataField>
