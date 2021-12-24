@@ -74,7 +74,7 @@ public partial class HistoryPage
 
 	private static bool DatesEqual(DateTime a, DateTime b)
 	{
-		return a.Year == b.Year && a.Month == b.Month && a.Day == b.Day && a.Hour == b.Hour && a.Minute == b.Minute;
+		return a.Year == b.Year && a.Month == b.Month && a.Day == b.Day;
 	}
 
 	private static class QueryParameters

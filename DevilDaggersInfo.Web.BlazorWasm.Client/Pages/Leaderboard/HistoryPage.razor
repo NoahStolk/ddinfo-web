@@ -9,28 +9,24 @@
 @using DevilDaggersInfo.Web.BlazorWasm.Shared.Dto.Public.LeaderboardHistory
 @using DevilDaggersInfo.Web.BlazorWasm.Shared.Dto.Public.Players
 
-<Heading Title="Leaderboard History" />
-
 @if (GetLeaderboardHistory == null)
 {
 	<Loading />
 }
 else
 {
-	<div>
-		<DatePicker DateSelected="@(d => UpdateDateTime(d))" />
-
-		@if (_reloading)
-		{
-			<Loading />
-		}
-	</div>
-
-	<Heading Level="2" Title="@(GetLeaderboardHistory.DateTime.ToString(FormatUtils.DateTimeFormat))" />
-	@if (!DatesEqual(GetLeaderboardHistory.DateTime, _dateTime))
+	<Heading Title="@($"Leaderboard History - {GetLeaderboardHistory.DateTime.ToString(FormatUtils.DateTimeFormat)}")" />
+	
+	@if (_reloading)
 	{
-		<i>Closest hit for @(_dateTime.ToString(FormatUtils.DateTimeFormat))</i>
+		<Loading />
 	}
+	else if (!DatesEqual(GetLeaderboardHistory.DateTime, _dateTime))
+	{
+		<i>History for @(_dateTime.ToString(FormatUtils.DateTimeFormat)) does not exist; falling back to @GetLeaderboardHistory.DateTime.ToString(FormatUtils.DateTimeFormat).</i>
+	}
+
+	<DatePicker DateSelected="@(d => UpdateDateTime(d))" />
 
 	<LeaderboardGlobal Leaderboard="GetLeaderboardHistory" IsHistory="true" />
 	<LeaderboardTableInfo />
