@@ -2,6 +2,6 @@ namespace DevilDaggersInfo.Web.BlazorWasm.Client.Core.CanvasChart.Options.LineCh
 
 public class LineChartBackground
 {
-	public string Color { get; set; }
+	public string Color { get; set; } = null!;
 	public double ChartEndXValue { get; set; }
 }
