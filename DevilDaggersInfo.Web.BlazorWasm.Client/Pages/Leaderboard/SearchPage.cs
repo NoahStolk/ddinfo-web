@@ -3,13 +3,14 @@ using DevilDaggersInfo.Web.BlazorWasm.Shared.Dto.Public.Leaderboards;
 using DevilDaggersInfo.Web.BlazorWasm.Shared.Dto.Public.Players;
 using DevilDaggersInfo.Web.BlazorWasm.Shared.Extensions;
 using Microsoft.AspNetCore.Components;
+using System.Diagnostics.CodeAnalysis;
 
 namespace DevilDaggersInfo.Web.BlazorWasm.Client.Pages.Leaderboard;
 
 public partial class SearchPage
 {
 	private string? _apiError;
-	private bool _reloading;
+	private bool _loading;
 
 	[Parameter, SupplyParameterFromQuery] public string? Username { get; set; }
 
@@ -19,12 +20,15 @@ public partial class SearchPage
 
 	protected override async Task OnInitializedAsync()
 	{
+		_loading = CanLoad(Username);
 		Players = await Http.GetPlayersForLeaderboard();
 		await FetchLeaderboard();
 	}
 
-	private async Task SetUsername(string? username)
+	private async Task ChangeInputUsername(ChangeEventArgs e)
 	{
+		string? username = e.Value?.ToString();
+
 		Username = username;
 		NavigationManager.AddOrModifyQueryParameter(QueryParameters.Username, Username);
 
@@ -33,28 +37,28 @@ public partial class SearchPage
 
 	private async Task FetchLeaderboard()
 	{
-		if (Username == null || Username.Length < 3)
+		if (!CanLoad(Username))
+		{
+			_loading = false;
 			return;
+		}
 
 		try
 		{
-			if (GetEntries != null)
-				_reloading = true;
-
+			_loading = true;
 			GetEntries = (await Http.GetEntriesByName(Username)).OrderBy(e => e.Rank, true).ToList();
-
-			_reloading = false;
 		}
 		catch (Exception ex)
 		{
 			_apiError = ex.Message;
 		}
+		finally
+		{
+			_loading = false;
+		}
 	}
 
-	private async Task ChangeInputUsername(ChangeEventArgs e)
-	{
-		await SetUsername(e.Value?.ToString());
-	}
+	private static bool CanLoad([NotNullWhen(true)] string? username) => username?.Length >= 3 == true;
 
 	private static class QueryParameters
 	{
