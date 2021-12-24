@@ -4,11 +4,11 @@ public static class HistoryUtils
 {
 	public static DateTime HistoryJsonFileNameToDateTime(string dateString)
 	{
-		int year = int.Parse(dateString.Substring(0, 4));
-		int month = int.Parse(dateString.Substring(4, 2));
-		int day = int.Parse(dateString.Substring(6, 2));
-		int hour = int.Parse(dateString.Substring(8, 2));
-		int minute = int.Parse(dateString.Substring(10, 2));
+		int year = int.Parse(dateString[..4]);
+		int month = int.Parse(dateString[4..6]);
+		int day = int.Parse(dateString[6..8]);
+		int hour = int.Parse(dateString[8..10]);
+		int minute = int.Parse(dateString[10..12]);
 
 		return new(year, month, day, hour, minute, 0);
 	}
