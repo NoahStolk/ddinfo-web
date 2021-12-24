@@ -11,7 +11,7 @@
 
 <div class="bg-gray-1 p-2 text-lg">
 	<span>Username</span>
-	<input class="bg-black border-gray-3 border-2" @onchange="ChangeInputUsername" />
+	<input class="bg-black border-gray-3 border-2" value="@Username" @onchange="ChangeInputUsername" />
 
 	@if (Username == null || Username.Length < 3)
 	{
