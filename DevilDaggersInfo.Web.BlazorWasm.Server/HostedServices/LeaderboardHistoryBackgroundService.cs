@@ -1,3 +1,5 @@
+using DevilDaggersInfo.Web.BlazorWasm.Server.InternalModels.Json;
+
 namespace DevilDaggersInfo.Web.BlazorWasm.Server.HostedServices;
 
 public class LeaderboardHistoryBackgroundService : AbstractBackgroundService
@@ -21,8 +23,38 @@ public class LeaderboardHistoryBackgroundService : AbstractBackgroundService
 		LeaderboardResponse? l = await LeaderboardClient.Instance.GetLeaderboard(1);
 		if (l != null)
 		{
+			LeaderboardHistory jsonModel = new()
+			{
+				DaggersFiredGlobal = l.DaggersFiredGlobal,
+				DaggersHitGlobal = l.DaggersHitGlobal,
+				DateTime = l.DateTime,
+				DeathsGlobal = l.DeathsGlobal,
+				Entries = l.Entries.ConvertAll(e => new EntryHistory
+				{
+					DaggersFired = e.DaggersFired,
+					DaggersFiredTotal = e.DaggersFiredTotal,
+					DaggersHit = e.DaggersHit,
+					DaggersHitTotal = e.DaggersHitTotal,
+					DeathsTotal = e.DeathsTotal,
+					DeathType = (byte)e.DeathType,
+					Gems = e.Gems,
+					GemsTotal = e.GemsTotal,
+					Id = e.Id,
+					Kills = e.Kills,
+					KillsTotal = e.KillsTotal,
+					Rank = e.Rank,
+					Time = e.Time,
+					TimeTotal = e.TimeTotal,
+					Username = e.Username,
+				}),
+				GemsGlobal = l.GemsGlobal,
+				KillsGlobal = l.KillsGlobal,
+				Players = l.TotalPlayers,
+				TimeGlobal = l.TimeGlobal,
+			};
+
 			string fileName = $"{DateTime.UtcNow:yyyyMMddHHmm}.json";
-			File.WriteAllText(Path.Combine(_fileSystemService.GetPath(DataSubDirectory.LeaderboardHistory), fileName), JsonConvert.SerializeObject(l));
+			File.WriteAllText(Path.Combine(_fileSystemService.GetPath(DataSubDirectory.LeaderboardHistory), fileName), JsonConvert.SerializeObject(jsonModel));
 			Logger.LogInformation("Task execution for `{service}` succeeded. `{fileName}` was created.", nameof(LeaderboardHistoryBackgroundService), fileName);
 		}
 		else
