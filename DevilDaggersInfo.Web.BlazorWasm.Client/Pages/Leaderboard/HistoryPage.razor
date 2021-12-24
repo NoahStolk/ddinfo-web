@@ -27,63 +27,12 @@ else
 	</div>
 
 	<Heading Level="2" Title="@(GetLeaderboardHistory.DateTime.ToString(FormatUtils.DateTimeFormat))" />
-	@if (!DatesEqual(GetLeaderboardHistory.DateTime, DateTime))
+	@if (!DatesEqual(GetLeaderboardHistory.DateTime, _dateTime))
 	{
-		<i>Closest hit for @(DateTime.ToString(FormatUtils.DateTimeFormat))</i>
+		<i>Closest hit for @(_dateTime.ToString(FormatUtils.DateTimeFormat))</i>
 	}
 
 	<LeaderboardGlobal Leaderboard="GetLeaderboardHistory" IsHistory="true" />
 	<LeaderboardTableInfo />
 	<LeaderboardTable TGetLeaderboardDto="GetLeaderboardHistory" TGetEntryDto="GetEntryHistory" Leaderboard="GetLeaderboardHistory" Players="Players" IsHistory="true" GameVersion="_gameVersion" />
-}
-
-@code
-{
-	private bool _reloading;
-
-	[Parameter, SupplyParameterFromQuery] public DateTime DateTime { get; set; }
-
-	public GetLeaderboardHistory? GetLeaderboardHistory { get; set; }
-
-	public List<GetPlayerForLeaderboard>? Players { get; set; }
-
-	private GameVersion _gameVersion;
-
-	protected override async Task OnInitializedAsync()
-	{
-		Players = await Http.GetPlayersForLeaderboard();
-
-		if (DateTime == default)
-			DateTime = DateTime.UtcNow;
-
-		await FetchLeaderboard();
-	}
-
-	private async Task UpdateDateTime(DateTime dateTime)
-	{
-		DateTime = dateTime;
-		NavigationManager.AddOrModifyQueryParameter(QueryParameters.Date, dateTime);
-
-		await FetchLeaderboard();
-	}
-
-	private async Task FetchLeaderboard()
-	{
-		if (GetLeaderboardHistory != null)
-			_reloading = true;
-
-		GetLeaderboardHistory = await Http.GetLeaderboardHistory(DateTime);
-		_reloading = false;
-		_gameVersion = GameVersions.GetGameVersionFromDate(GetLeaderboardHistory.DateTime) ?? GameVersion.V1_0;
-	}
-
-	private static bool DatesEqual(DateTime a, DateTime b)
-	{
-		return a.Year == b.Year && a.Month == b.Month && a.Day == b.Day && a.Hour == b.Hour && a.Minute == b.Minute;
-	}
-
-	private static class QueryParameters
-	{
-		public static string Date { get; } = nameof(Date);
-	}
 }
