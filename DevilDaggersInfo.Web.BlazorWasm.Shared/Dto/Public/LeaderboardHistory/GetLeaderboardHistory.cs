@@ -1,6 +1,6 @@
 namespace DevilDaggersInfo.Web.BlazorWasm.Shared.Dto.Public.LeaderboardHistory;
 
-public class GetLeaderboardHistory : IGetLeaderboardDto<GetEntryHistory>
+public class GetLeaderboardHistory : IGetLeaderboardGlobalDto
 {
 	public DateTime DateTime { get; init; }
 
