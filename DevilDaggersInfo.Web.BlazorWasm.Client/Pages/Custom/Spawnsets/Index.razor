@@ -17,13 +17,13 @@ else
 	<div class="bg-gray-1 p-2 text-lg">
 		<div class="grid gap-2 grid-cols-2 max-w-md mb-2">
 			<span>Spawnset name</span>
-			<input class="bg-black border-gray-3 border-2" @onchange="ChangeInputSpawnsetName" />
+			<input class="bg-black border-gray-3 border-2" value="@SpawnsetFilter" @onchange="ChangeInputSpawnsetName" />
 			<span>Author name</span>
-			<input class="bg-black border-gray-3 border-2" @onchange="ChangeInputAuthorName" />
+			<input class="bg-black border-gray-3 border-2" value="@AuthorFilter" @onchange="ChangeInputAuthorName" />
 			<span>Practice only</span>
-			<input type="checkbox" class="bg-black border-gray-3 border-2 w-8" @onchange="ChangeInputPracticeOnly" />
+			<input type="checkbox" class="bg-black border-gray-3 border-2 w-8" value="@PracticeOnly" @onchange="ChangeInputPracticeOnly" />
 			<span>With leaderboard only</span>
-			<input type="checkbox" class="bg-black border-gray-3 border-2 w-8" @onchange="ChangeInputWithCustomLeaderboardOnly" />
+			<input type="checkbox" class="bg-black border-gray-3 border-2 w-8" value="@WithCustomLeaderboardOnly" @onchange="ChangeInputWithCustomLeaderboardOnly" />
 		</div>
 
 		<CascadingValue Value="this">
@@ -92,7 +92,6 @@ else
 
 	private async Task ChangeInputSpawnsetName(ChangeEventArgs e)
 	{
-		// TODO: Fluxor
 		SpawnsetFilter = e.Value?.ToString();
 		NavigationManager.AddOrModifyQueryParameter(QueryParameters.SpawnsetFilter, SpawnsetFilter);
 
@@ -101,7 +100,6 @@ else
 
 	private async Task ChangeInputAuthorName(ChangeEventArgs e)
 	{
-		// TODO: Fluxor
 		AuthorFilter = e.Value?.ToString();
 		NavigationManager.AddOrModifyQueryParameter(QueryParameters.AuthorFilter, AuthorFilter);
 
@@ -110,7 +108,6 @@ else
 
 	private async Task ChangeInputPracticeOnly(ChangeEventArgs e)
 	{
-		// TODO: Fluxor
 		PracticeOnly = bool.TryParse(e.Value?.ToString(), out bool value) && value;
 		NavigationManager.AddOrModifyQueryParameter(QueryParameters.PracticeOnly, PracticeOnly);
 
@@ -119,7 +116,6 @@ else
 
 	private async Task ChangeInputWithCustomLeaderboardOnly(ChangeEventArgs e)
 	{
-		// TODO: Fluxor
 		WithCustomLeaderboardOnly = bool.TryParse(e.Value?.ToString(), out bool value) && value;
 		NavigationManager.AddOrModifyQueryParameter(QueryParameters.WithCustomLeaderboardOnly, WithCustomLeaderboardOnly);
 
@@ -128,7 +124,6 @@ else
 
 	protected override async Task OnInitializedAsync()
 	{
-		// TODO: Set <input> values... Or use binding.
 		foreach (SpawnsetSorting e in (SpawnsetSorting[])Enum.GetValues(typeof(SpawnsetSorting)))
 			_sortings.Add(e, false);
 

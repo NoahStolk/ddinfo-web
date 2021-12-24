@@ -17,9 +17,9 @@ else
 	<div class="bg-gray-1 p-2 text-lg">
 		<div class="grid gap-2 grid-cols-2 max-w-md mb-2">
 			<span>Spawnset name</span>
-			<input class="bg-black border-gray-3 border-2" @onchange="ChangeInputSpawnsetName" />
+			<input class="bg-black border-gray-3 border-2" value="@SpawnsetFilter" @onchange="ChangeInputSpawnsetName" />
 			<span>Author name</span>
-			<input class="bg-black border-gray-3 border-2" @onchange="ChangeInputAuthorName" />
+			<input class="bg-black border-gray-3 border-2" value="@AuthorFilter" @onchange="ChangeInputAuthorName" />
 			<span>Category</span>
 			<Select @onchange="ChangeCategory" class="bg-gray-3 transition-colors duration-100 h-8 rounded text-color-text">
 				@foreach (CustomLeaderboardCategory e in (CustomLeaderboardCategory[])Enum.GetValues(typeof(CustomLeaderboardCategory)))
