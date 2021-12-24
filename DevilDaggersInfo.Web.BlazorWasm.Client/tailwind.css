@@ -13,13 +13,13 @@
 		font-weight: 500;
 		src: url('fonts/calibri-regular.ttf') format('truetype');
 	}
-
-	a {
-		@apply text-color-link hover:text-color-link-hover;
-	}
 }
 
 @layer components {
+	.link {
+		@apply text-color-link hover:text-color-link-hover;
+	}
+
 	.btn {
 		@apply text-lg rounded text-color-text text-center transition-colors duration-100;
 	}

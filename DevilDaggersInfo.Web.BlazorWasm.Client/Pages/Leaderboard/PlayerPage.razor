@@ -13,7 +13,7 @@ else
 {
 	<Heading Title="@($"Player - {GetEntry.Username}")" />
 
-	<a href="@($"/leaderboard?Rank={(GetEntry.Rank - 1) / 100 * 100 + 1}")">Back to leaderboard</a>
+	<a class="link" href="@($"/leaderboard?Rank={(GetEntry.Rank - 1) / 100 * 100 + 1}")">Back to leaderboard</a>
 	<Paragraph>@GetEntry.Username is currently rank @GetEntry.Rank.</Paragraph>
 	<div class="grid gap-2 grid-cols-1 md:grid-cols-2 xl:grid-cols-3 2xl:grid-cols-5">
 		<PlayerCard Title="Personal Best">
@@ -135,7 +135,7 @@ else
 				@foreach (GetSpawnsetName getSpawnsetName in GetSpawnsetNames)
 				{
 					<div class="odd:bg-gray-2 px-1">
-						<a href="@($"/custom/spawnset/{getSpawnsetName.Id}")">@getSpawnsetName.Name</a>
+						<a class="link" href="@($"/custom/spawnset/{getSpawnsetName.Id}")">@getSpawnsetName.Name</a>
 					</div>
 				}
 			</PlayerCard>
@@ -151,7 +151,7 @@ else
 				@foreach (GetModName getModName in GetModNames)
 				{
 					<div class="odd:bg-gray-2 px-1">
-						<a href="@($"/custom/mod/{getModName.Id}")">@getModName.Name</a>
+						<a class="link" href="@($"/custom/mod/{getModName.Id}")">@getModName.Name</a>
 					</div>
 				}
 			</PlayerCard>

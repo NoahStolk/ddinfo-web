@@ -32,18 +32,18 @@ else
 	@if (GetMods.Results.Count > 0)
 	{
 		<div class="grid gap-3 sm:grid-cols-mods-sm md:grid-cols-mods-md lg:grid-cols-mods-lg xl:grid-cols-mods-xl">
-			<a href="" @onclick:preventDefault class="text-left" @onclick="() => Sort(ModSorting.Name)">Name</a>
-			<a href="" @onclick:preventDefault class="text-left hidden md:block" @onclick="() => Sort(ModSorting.Authors)">Author(s)</a>
-			<a href="" @onclick:preventDefault class="text-left hidden md:block" @onclick="() => Sort(ModSorting.LastUpdated)">Last updated</a>
-			<a href="" @onclick:preventDefault class="text-left hidden md:block" @onclick="() => Sort(ModSorting.ModTypes)">Type</a>
-			<a href="" @onclick:preventDefault class="text-right hidden xl:block" @onclick="() => Sort(ModSorting.Hosted)">Hosted</a>
-			<a href="" @onclick:preventDefault class="text-right hidden xl:block" @onclick="() => Sort(ModSorting.ProhibitedAssets)">Prohibited assets</a>
+			<a href="" @onclick:preventDefault class="link text-left" @onclick="() => Sort(ModSorting.Name)">Name</a>
+			<a href="" @onclick:preventDefault class="link text-left hidden md:block" @onclick="() => Sort(ModSorting.Authors)">Author(s)</a>
+			<a href="" @onclick:preventDefault class="link text-left hidden md:block" @onclick="() => Sort(ModSorting.LastUpdated)">Last updated</a>
+			<a href="" @onclick:preventDefault class="link text-left hidden md:block" @onclick="() => Sort(ModSorting.ModTypes)">Type</a>
+			<a href="" @onclick:preventDefault class="link text-right hidden xl:block" @onclick="() => Sort(ModSorting.Hosted)">Hosted</a>
+			<a href="" @onclick:preventDefault class="link text-right hidden xl:block" @onclick="() => Sort(ModSorting.ProhibitedAssets)">Prohibited assets</a>
 		</div>
 		@for (int i = 0; i < GetMods.Results.Count; i++)
 		{
 			GetModOverview mod = GetMods.Results[i];
 			<div class="grid gap-3 sm:grid-cols-mods-sm md:grid-cols-mods-md lg:grid-cols-mods-lg xl:grid-cols-mods-xl h-6 @(i % 2 == 0 ? "bg-gray-1" : string.Empty)">
-				<div class="overflow-x-hidden text-left"><a href="/custom/mod/@mod.Id">@mod.Name.ToNoBreakString()</a></div>
+				<div class="overflow-x-hidden text-left"><a class="link" href="/custom/mod/@mod.Id">@mod.Name.ToNoBreakString()</a></div>
 				<div class="overflow-x-hidden text-left hidden md:block">@string.Join(", ", mod.Authors).ToNoBreakString()</div>
 				<div class="overflow-x-hidden text-left hidden md:block">@mod.LastUpdated.ToString(FormatUtils.DateFormat)</div>
 				<div class="overflow-x-hidden text-left hidden md:block">@mod.ModTypes.ToNoBreakString()</div>
