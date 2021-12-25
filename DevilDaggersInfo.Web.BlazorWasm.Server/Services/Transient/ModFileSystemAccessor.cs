@@ -1,14 +1,14 @@
 using DevilDaggersInfo.Web.BlazorWasm.Server.Caches.ModArchives;
 using DevilDaggersInfo.Web.BlazorWasm.Server.InternalModels;
 
-namespace DevilDaggersInfo.Web.BlazorWasm.Server.Repositories;
+namespace DevilDaggersInfo.Web.BlazorWasm.Server.Services.Transient;
 
-public class ModRepository
+public class ModFileSystemAccessor
 {
 	private readonly IFileSystemService _fileSystemService;
 	private readonly ModArchiveCache _modArchiveCache;
 
-	public ModRepository(IFileSystemService fileSystemService, ModArchiveCache modArchiveCache)
+	public ModFileSystemAccessor(IFileSystemService fileSystemService, ModArchiveCache modArchiveCache)
 	{
 		_fileSystemService = fileSystemService;
 		_modArchiveCache = modArchiveCache;

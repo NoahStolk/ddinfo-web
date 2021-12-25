@@ -12,13 +12,13 @@ public class ModsController : ControllerBase
 {
 	private readonly ApplicationDbContext _dbContext;
 	private readonly IFileSystemService _fileSystemService;
-	private readonly ModRepository _modRepository;
+	private readonly ModFileSystemAccessor _modFileSystemAccessor;
 
-	public ModsController(ApplicationDbContext dbContext, IFileSystemService fileSystemService, ModRepository modRepository)
+	public ModsController(ApplicationDbContext dbContext, IFileSystemService fileSystemService, ModFileSystemAccessor modFileSystemAccessor)
 	{
 		_dbContext = dbContext;
 		_fileSystemService = fileSystemService;
-		_modRepository = modRepository;
+		_modFileSystemAccessor = modFileSystemAccessor;
 	}
 
 	[HttpGet]
@@ -48,7 +48,7 @@ public class ModsController : ControllerBase
 
 		List<ModEntity> mods = modsQuery.ToList();
 
-		Dictionary<ModEntity, ModFileSystemData?> data = mods.ToDictionary(m => m, m => _modRepository.GetModFileSystemData(m));
+		Dictionary<ModEntity, ModFileSystemData?> data = mods.ToDictionary(m => m, m => _modFileSystemAccessor.GetModFileSystemData(m));
 		if (onlyHosted)
 			data = data.Where(kvp => kvp.Value != null).ToDictionary(kvp => kvp.Key, kvp => kvp.Value);
 
@@ -98,7 +98,7 @@ public class ModsController : ControllerBase
 
 		List<ModEntity> mods = modsQuery.ToList();
 
-		Dictionary<ModEntity, ModFileSystemData?> data = mods.ToDictionary(m => m, m => _modRepository.GetModFileSystemData(m));
+		Dictionary<ModEntity, ModFileSystemData?> data = mods.ToDictionary(m => m, m => _modFileSystemAccessor.GetModFileSystemData(m));
 		if (isHostedFilter.HasValue)
 			data = data.Where(kvp => kvp.Value != null).ToDictionary(kvp => kvp.Key, kvp => kvp.Value);
 
@@ -121,7 +121,7 @@ public class ModsController : ControllerBase
 		if (modEntity == null)
 			return NotFound();
 
-		ModFileSystemData? mfsd = _modRepository.GetModFileSystemData(modEntity);
+		ModFileSystemData? mfsd = _modFileSystemAccessor.GetModFileSystemData(modEntity);
 
 		return modEntity.ToGetMod(mfsd);
 	}

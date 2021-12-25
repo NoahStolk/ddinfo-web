@@ -37,7 +37,7 @@ public class Startup
 
 		services.AddRazorPages();
 
-		services.AddTransient<ModRepository>();
+		services.AddTransient<ModFileSystemAccessor>();
 
 		services.AddScoped<IUserService, UserService>();
 
