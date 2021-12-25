@@ -48,7 +48,7 @@ public class ModsController : ControllerBase
 
 		List<ModEntity> mods = modsQuery.ToList();
 
-		Dictionary<ModEntity, ModFileSystemData?> data = mods.ToDictionary(m => m, m => _modFileSystemAccessor.GetModFileSystemData(m));
+		Dictionary<ModEntity, ModFileSystemData?> data = mods.ToDictionary(m => m, m => _modFileSystemAccessor.GetModFileSystemData(m.Name));
 		if (onlyHosted)
 			data = data.Where(kvp => kvp.Value != null).ToDictionary(kvp => kvp.Key, kvp => kvp.Value);
 
@@ -98,7 +98,7 @@ public class ModsController : ControllerBase
 
 		List<ModEntity> mods = modsQuery.ToList();
 
-		Dictionary<ModEntity, ModFileSystemData?> data = mods.ToDictionary(m => m, m => _modFileSystemAccessor.GetModFileSystemData(m));
+		Dictionary<ModEntity, ModFileSystemData?> data = mods.ToDictionary(m => m, m => _modFileSystemAccessor.GetModFileSystemData(m.Name));
 		if (isHostedFilter.HasValue)
 			data = data.Where(kvp => kvp.Value != null).ToDictionary(kvp => kvp.Key, kvp => kvp.Value);
 
@@ -121,7 +121,7 @@ public class ModsController : ControllerBase
 		if (modEntity == null)
 			return NotFound();
 
-		ModFileSystemData? mfsd = _modFileSystemAccessor.GetModFileSystemData(modEntity);
+		ModFileSystemData? mfsd = _modFileSystemAccessor.GetModFileSystemData(modEntity.Name);
 
 		return modEntity.ToGetMod(mfsd);
 	}

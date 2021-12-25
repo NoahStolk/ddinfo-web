@@ -14,16 +14,16 @@ public class ModFileSystemAccessor
 		_modArchiveCache = modArchiveCache;
 	}
 
-	public ModFileSystemData? GetModFileSystemData(ModEntity modEntity)
+	public ModFileSystemData? GetModFileSystemData(string modName)
 	{
-		string path = Path.Combine(_fileSystemService.GetPath(DataSubDirectory.Mods), $"{modEntity.Name}.zip");
+		string path = Path.Combine(_fileSystemService.GetPath(DataSubDirectory.Mods), $"{modName}.zip");
 		bool fileExists = IoFile.Exists(path);
 		if (!fileExists)
 			return null;
 
 		ModArchiveCacheData cachedArchiveData = _modArchiveCache.GetArchiveDataByFilePath(path);
 		List<string> screenshotFileNames = new();
-		string modScreenshotsDirectory = Path.Combine(_fileSystemService.GetPath(DataSubDirectory.ModScreenshots), modEntity.Name);
+		string modScreenshotsDirectory = Path.Combine(_fileSystemService.GetPath(DataSubDirectory.ModScreenshots), modName);
 		if (Directory.Exists(modScreenshotsDirectory))
 			screenshotFileNames = Directory.GetFiles(modScreenshotsDirectory).Select(p => Path.GetFileName(p)).ToList();
 
