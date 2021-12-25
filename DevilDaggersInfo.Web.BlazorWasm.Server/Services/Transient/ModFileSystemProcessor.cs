@@ -1,8 +1,6 @@
 using DevilDaggersInfo.Core.Mod.Utils;
-using DevilDaggersInfo.Web.BlazorWasm.Client.Pages.Custom.Mods;
 using DevilDaggersInfo.Web.BlazorWasm.Server.Caches.ModArchives;
 using DevilDaggersInfo.Web.BlazorWasm.Server.InternalModels;
-using DevilDaggersInfo.Web.BlazorWasm.Shared.Dto.Admin.Mods;
 using DevilDaggersInfo.Web.BlazorWasm.Shared.Utils;
 
 namespace DevilDaggersInfo.Web.BlazorWasm.Server.Services.Transient;
@@ -109,6 +107,54 @@ public class ModFileSystemProcessor
 			fileSystemInformation.Add(new($"File {_fileSystemService.FormatPath(path)} was added.", FileSystemInformationType.Add));
 
 			i++;
+		}
+	}
+
+	/// <summary>
+	/// Moves the mod archive, mod archive cache, and the screenshots to a new path.
+	/// </summary>
+	public void MoveModFilesAndClearCache(string newName, string currentName, List<FileSystemInformation> fileSystemInformation)
+	{
+		string directory = _fileSystemService.GetPath(DataSubDirectory.Mods);
+		string oldPath = Path.Combine(directory, $"{currentName}.zip");
+		if (IoFile.Exists(oldPath))
+		{
+			string newPath = Path.Combine(directory, newName);
+			IoFile.Move(oldPath, newPath);
+			fileSystemInformation.Add(new($"File {_fileSystemService.FormatPath(oldPath)} was moved to {_fileSystemService.FormatPath(newPath)}.", FileSystemInformationType.Move));
+
+			// Clear entire memory cache (can't clear individual entries).
+			_modArchiveCache.Clear();
+		}
+		else
+		{
+			fileSystemInformation.Add(new($"File {_fileSystemService.FormatPath(oldPath)} was not moved because it does not exist.", FileSystemInformationType.NotFound));
+		}
+
+		string cacheDirectory = _fileSystemService.GetPath(DataSubDirectory.ModArchiveCache);
+		string oldCachePath = Path.Combine(cacheDirectory, $"{currentName}.json");
+		if (IoFile.Exists(oldCachePath))
+		{
+			string newCachePath = Path.Combine(directory, newName);
+			IoFile.Move(oldCachePath, newCachePath);
+			fileSystemInformation.Add(new($"File {_fileSystemService.FormatPath(oldCachePath)} was moved to {_fileSystemService.FormatPath(newCachePath)}.", FileSystemInformationType.Move));
+		}
+		else
+		{
+			fileSystemInformation.Add(new($"File {_fileSystemService.FormatPath(oldCachePath)} was not moved because it does not exist.", FileSystemInformationType.NotFound));
+		}
+
+		// Always move screenshots directory (not removed when removal is requested as screenshots are separate entities).
+		string oldScreenshotsDirectory = Path.Combine(_fileSystemService.GetPath(DataSubDirectory.ModScreenshots), currentName);
+		if (Directory.Exists(oldScreenshotsDirectory))
+		{
+			string newScreenshotsDirectory = Path.Combine(_fileSystemService.GetPath(DataSubDirectory.ModScreenshots), newName);
+			Directory.Move(oldScreenshotsDirectory, newScreenshotsDirectory);
+			fileSystemInformation.Add(new($"Directory {_fileSystemService.FormatPath(oldScreenshotsDirectory)} was moved to {_fileSystemService.FormatPath(newScreenshotsDirectory)}.", FileSystemInformationType.Move));
+		}
+		else
+		{
+			fileSystemInformation.Add(new($"Directory {_fileSystemService.FormatPath(oldScreenshotsDirectory)} was not moved because it does not exist.", FileSystemInformationType.NotFound));
 		}
 	}
 
