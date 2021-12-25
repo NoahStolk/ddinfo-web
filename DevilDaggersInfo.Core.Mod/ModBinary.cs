@@ -7,15 +7,7 @@ public class ModBinary
 
 	public ModBinary(string fileName, byte[] fileContents, BinaryReadComprehensiveness readComprehensiveness)
 	{
-		ModBinaryType modBinaryType;
-		if (fileName.StartsWith("audio"))
-			modBinaryType = ModBinaryType.Audio;
-		else if (fileName.StartsWith("core"))
-			modBinaryType = ModBinaryType.Core;
-		else if (fileName.StartsWith("dd"))
-			modBinaryType = ModBinaryType.Dd;
-		else
-			throw new InvalidModBinaryException($"Binary '{fileName}' must start with 'audio', 'core', or 'dd'.");
+		ModBinaryType modBinaryType = ModFileNameUtils.GetBinaryTypeBasedOnFileName(fileName);
 
 		if (fileContents.Length <= _fileHeaderSize)
 			throw new InvalidModBinaryException($"Binary '{fileName}' is not a valid binary; file must be at least 13 bytes in length.");

@@ -379,12 +379,10 @@ public class ModsController : ControllerBase
 				if (binary.Chunks.Count == 0)
 					throw new InvalidModBinaryException($"Mod binary '{binary.Name}' does not contain any assets.");
 
-				string expectedPrefix = binary.ModBinaryType switch
-				{
-					ModBinaryType.Audio => $"audio-{modName}-",
-					ModBinaryType.Dd => $"dd-{modName}-",
-					_ => throw new InvalidModBinaryException($"Mod binary '{binary.Name}' is a '{binary.ModBinaryType}' mod which is not allowed."),
-				};
+				if (!(binary.ModBinaryType is ModBinaryType.Audio or ModBinaryType.Dd))
+					throw new InvalidModBinaryException($"Mod binary '{binary.Name}' is a '{binary.ModBinaryType}' mod which is not allowed.");
+
+				string expectedPrefix = ModFileNameUtils.GetBinaryPrefix(binary.ModBinaryType, modName);
 
 				if (!binary.Name.StartsWith(expectedPrefix))
 					throw new InvalidModBinaryException($"Name of mod binary '{binary.Name}' must start with '{expectedPrefix}'.");
