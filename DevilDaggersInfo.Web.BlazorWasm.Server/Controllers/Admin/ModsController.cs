@@ -300,20 +300,8 @@ public class ModsController : ControllerBase
 
 		List<FileSystemInformation> fileSystemInformation = new();
 
-		// Delete mod file and cache.
 		DeleteModFilesAndClearCache(mod, fileSystemInformation);
-
-		// Delete screenshots directory.
-		string screenshotsDirectory = Path.Combine(_fileSystemService.GetPath(DataSubDirectory.ModScreenshots), mod.Name);
-		if (Directory.Exists(screenshotsDirectory))
-		{
-			Directory.Delete(screenshotsDirectory, true);
-			fileSystemInformation.Add(new($"Directory {_fileSystemService.FormatPath(screenshotsDirectory)} was deleted because removal was requested.", FileSystemInformationType.Delete));
-		}
-		else
-		{
-			fileSystemInformation.Add(new($"Directory {_fileSystemService.FormatPath(screenshotsDirectory)} was not deleted because it does not exist.", FileSystemInformationType.NotFound));
-		}
+		DeleteScreenshotsDirectory(mod, fileSystemInformation);
 
 		_dbContext.Mods.Remove(mod);
 		_dbContext.SaveChanges();
@@ -405,6 +393,20 @@ public class ModsController : ControllerBase
 		}
 	}
 
+	private void DeleteScreenshotsDirectory(ModEntity mod, List<FileSystemInformation> fileSystemInformation)
+	{
+		string screenshotsDirectory = Path.Combine(_fileSystemService.GetPath(DataSubDirectory.ModScreenshots), mod.Name);
+		if (Directory.Exists(screenshotsDirectory))
+		{
+			Directory.Delete(screenshotsDirectory, true);
+			fileSystemInformation.Add(new($"Directory {_fileSystemService.FormatPath(screenshotsDirectory)} was deleted because removal was requested.", FileSystemInformationType.Delete));
+		}
+		else
+		{
+			fileSystemInformation.Add(new($"Directory {_fileSystemService.FormatPath(screenshotsDirectory)} was not deleted because it does not exist.", FileSystemInformationType.NotFound));
+		}
+	}
+
 	private void UpdatePlayerMods(List<int> playerIds, int modId)
 	{
 		foreach (PlayerModEntity newEntity in playerIds.ConvertAll(pi => new PlayerModEntity { ModId = modId, PlayerId = pi }))
@@ -444,12 +446,10 @@ public class ModsController : ControllerBase
 		}
 		catch (InvalidModArchiveException ex)
 		{
-			// TODO: Remove from cache again.
 			return $"The mod archive is invalid. {ex.Message}";
 		}
 		catch (InvalidModBinaryException ex)
 		{
-			// TODO: Remove from cache again.
 			return $"A mod binary inside the mod archive is invalid. {ex.Message}";
 		}
 

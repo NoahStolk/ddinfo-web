@@ -120,25 +120,16 @@ public class ModArchiveCache : IDynamicCache
 
 	private void WriteToFileCache(string name, ModArchiveCacheData archiveData)
 	{
-		try
-		{
-			string fileCacheDirectory = _fileSystemService.GetPath(DataSubDirectory.ModArchiveCache);
-			if (!Directory.Exists(fileCacheDirectory))
-				Directory.CreateDirectory(fileCacheDirectory);
+		string fileCacheDirectory = _fileSystemService.GetPath(DataSubDirectory.ModArchiveCache);
+		Directory.CreateDirectory(fileCacheDirectory);
 
-			File.WriteAllText(Path.Combine(fileCacheDirectory, $"{name}.json"), JsonConvert.SerializeObject(archiveData));
-		}
-		catch
-		{
-			// Ignore exceptions.
-		}
+		File.WriteAllText(Path.Combine(fileCacheDirectory, $"{name}.json"), JsonConvert.SerializeObject(archiveData));
 	}
 
 	public void LoadEntireFileCache()
 	{
 		string fileCacheDirectory = _fileSystemService.GetPath(DataSubDirectory.ModArchiveCache);
-		if (!Directory.Exists(fileCacheDirectory))
-			Directory.CreateDirectory(fileCacheDirectory);
+		Directory.CreateDirectory(fileCacheDirectory);
 
 		foreach (string path in Directory.GetFiles(fileCacheDirectory, "*.json"))
 		{
