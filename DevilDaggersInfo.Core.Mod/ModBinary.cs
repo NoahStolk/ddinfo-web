@@ -7,7 +7,7 @@ public class ModBinary
 
 	public ModBinary(string fileName, byte[] fileContents, BinaryReadComprehensiveness readComprehensiveness)
 	{
-		ModBinaryType modBinaryType = ModFileNameUtils.GetBinaryTypeBasedOnFileName(fileName);
+		ModBinaryType modBinaryType = BinaryFileNameUtils.GetBinaryTypeBasedOnFileName(fileName);
 
 		if (fileContents.Length <= _fileHeaderSize)
 			throw new InvalidModBinaryException($"Binary '{fileName}' is not a valid binary; file must be at least 13 bytes in length.");
