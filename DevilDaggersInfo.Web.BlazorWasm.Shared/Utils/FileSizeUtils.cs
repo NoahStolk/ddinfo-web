@@ -1,4 +1,4 @@
-namespace DevilDaggersInfo.Web.BlazorWasm.Client.Utils;
+namespace DevilDaggersInfo.Web.BlazorWasm.Shared.Utils;
 
 public static class FileSizeUtils
 {
