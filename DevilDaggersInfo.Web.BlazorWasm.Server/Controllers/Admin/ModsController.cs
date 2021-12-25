@@ -1,9 +1,12 @@
+using DevilDaggersInfo.Core.Mod.Utils;
 using DevilDaggersInfo.Web.BlazorWasm.Server.Caches.ModArchives;
 using DevilDaggersInfo.Web.BlazorWasm.Server.Converters.Admin;
 using DevilDaggersInfo.Web.BlazorWasm.Server.InternalModels;
 using DevilDaggersInfo.Web.BlazorWasm.Shared.Dto;
 using DevilDaggersInfo.Web.BlazorWasm.Shared.Dto.Admin.Mods;
 using DevilDaggersInfo.Web.BlazorWasm.Shared.Enums.Sortings.Admin;
+using DevilDaggersInfo.Web.BlazorWasm.Shared.Utils;
+using System.IO;
 
 namespace DevilDaggersInfo.Web.BlazorWasm.Server.Controllers.Admin;
 
@@ -107,22 +110,64 @@ public class ModsController : ControllerBase
 				return BadRequest($"Player with ID '{playerId}' does not exist.");
 		}
 
-		string? addInfo = null;
-		if (addMod.FileContents != null)
+		List<FileSystemInformation> fsi = new();
+		if (addMod.Binaries.Count > 0)
 		{
 			string modsDirectory = _fileSystemService.GetPath(DataSubDirectory.Mods);
 			DirectoryInfo di = new(modsDirectory);
 			long usedSpace = di.EnumerateFiles("*.*", SearchOption.AllDirectories).Sum(fi => fi.Length);
-			if (addMod.FileContents.Length + usedSpace > ModFileConstants.MaxHostingSpace)
-				return BadRequest($"This file is {addMod.FileContents.Length:n0} bytes in size, but only {ModFileConstants.MaxHostingSpace - usedSpace:n0} bytes of free space is available.");
+			if (usedSpace > ModConstants.BinaryMaxHostingSpace)
+				return BadRequest($"Cannot upload mod with binaries because the limit of {ModConstants.BinaryMaxHostingSpace:N0} bytes is exceeded.");
 
-			string? validationError = ValidateModArchive(addMod.FileContents, addMod.Name);
+			string zipFilePath = Path.Combine(modsDirectory, $"{addMod.Name}.zip");
+
+			try
+			{
+				using ZipArchive archive = ZipFile.Open(zipFilePath, ZipArchiveMode.Create);
+				foreach (KeyValuePair<string, byte[]> binary in addMod.Binaries)
+				{
+					string binaryName = BinaryFileNameUtils.SanitizeModBinaryFileName(binary.Key, addMod.Name);
+					using Stream entry = archive.CreateEntry(binaryName, CompressionLevel.SmallestSize).Open();
+					using MemoryStream ms = new(binary.Value);
+					await ms.CopyToAsync(entry);
+				}
+			}
+			catch
+			{
+				if (IoFile.Exists(zipFilePath))
+					IoFile.Delete(zipFilePath);
+
+				throw;
+			}
+
+			// We read and extract the .zip file we just created to validate it and to fill the cache if everything is OK.
+			byte[] zipBytes = IoFile.ReadAllBytes(zipFilePath);
+			string? validationError = ValidateModArchive(zipBytes, addMod.Name);
 			if (validationError != null)
-				return BadRequest(validationError);
+			{
+				if (IoFile.Exists(zipFilePath))
+					IoFile.Delete(zipFilePath);
 
-			string path = Path.Combine(modsDirectory, $"{addMod.Name}.zip");
-			IoFile.WriteAllBytes(path, addMod.FileContents);
-			addInfo = $"File {_fileSystemService.FormatPath(path)} was added.";
+				return BadRequest(validationError);
+			}
+
+			fsi.Add(new($"File {_fileSystemService.FormatPath(zipFilePath)} ({FileSizeUtils.Format(zipBytes.Length)}) with binaries {string.Join(", ", addMod.Binaries.Select(kvp => $"`{kvp.Key}`"))} was added.", FileSystemInformationType.Add));
+		}
+
+		if (addMod.Screenshots.Count > 0)
+		{
+			string modScreenshotsDirectory = Path.Combine(_fileSystemService.GetPath(DataSubDirectory.ModScreenshots), addMod.Name);
+			Directory.CreateDirectory(modScreenshotsDirectory);
+
+			int i = 0;
+			foreach (KeyValuePair<string, byte[]> kvp in addMod.Screenshots.OrderBy(kvp => kvp.Key))
+			{
+				string path = Path.Combine(modScreenshotsDirectory, $"{i:00}.png");
+				IoFile.WriteAllBytes(path, kvp.Value);
+				fsi.Add(new($"File {_fileSystemService.FormatPath(path)} was added.", FileSystemInformationType.Add));
+
+				i++;
+			}
 		}
 
 		ModEntity mod = new()
@@ -141,7 +186,7 @@ public class ModsController : ControllerBase
 		UpdatePlayerMods(addMod.PlayerIds ?? new(), mod.Id);
 		_dbContext.SaveChanges();
 
-		await _auditLogger.LogAdd(addMod, User, mod.Id, addInfo == null ? null : new() { new(addInfo, FileSystemInformationType.Add) });
+		await _auditLogger.LogAdd(addMod, User, mod.Id, fsi);
 
 		return Ok(mod.Id);
 	}
@@ -153,87 +198,87 @@ public class ModsController : ControllerBase
 	public async Task<ActionResult> EditModById(int id, EditMod editMod)
 	{
 		// Validate DTO.
-		if (editMod.RemoveExistingFile && editMod.FileContents != null)
-			return BadRequest("Requested to remove the existing file, but a new file was also provided.");
+		//if (editMod.RemoveExistingFile && editMod.FileContents != null)
+		//	return BadRequest("Requested to remove the existing file, but a new file was also provided.");
 
-		if (editMod.PlayerIds == null || editMod.PlayerIds.Count == 0)
-			return BadRequest("Mod must have at least one author.");
+		//if (editMod.PlayerIds == null || editMod.PlayerIds.Count == 0)
+		//	return BadRequest("Mod must have at least one author.");
 
-		foreach (int playerId in editMod.PlayerIds)
-		{
-			if (!_dbContext.Players.Any(p => p.Id == playerId))
-				return BadRequest($"Player with ID '{playerId}' does not exist.");
-		}
+		//foreach (int playerId in editMod.PlayerIds)
+		//{
+		//	if (!_dbContext.Players.Any(p => p.Id == playerId))
+		//		return BadRequest($"Player with ID '{playerId}' does not exist.");
+		//}
 
-		// Validate file.
-		if (editMod.FileContents != null)
-		{
-			DirectoryInfo di = new(_fileSystemService.GetPath(DataSubDirectory.Mods));
-			long usedSpace = di.EnumerateFiles("*.*", SearchOption.AllDirectories).Sum(fi => fi.Length);
+		//// Validate file.
+		//if (editMod.FileContents != null)
+		//{
+		//	DirectoryInfo di = new(_fileSystemService.GetPath(DataSubDirectory.Mods));
+		//	long usedSpace = di.EnumerateFiles("*.*", SearchOption.AllDirectories).Sum(fi => fi.Length);
 
-			int additionalAddedSpace = editMod.FileContents.Length; // TODO: New file length - old file length
-			if (additionalAddedSpace + usedSpace > ModFileConstants.MaxHostingSpace)
-				return BadRequest($"This file is {editMod.FileContents.Length:n0} bytes in size, but only {ModFileConstants.MaxHostingSpace - usedSpace:n0} bytes of free space is available.");
+		//	int additionalAddedSpace = editMod.FileContents.Length; // TODO: New file length - old file length
+		//	if (additionalAddedSpace + usedSpace > ModConstants.MaxHostingSpace)
+		//		return BadRequest($"This file is {editMod.FileContents.Length:n0} bytes in size, but only {ModConstants.MaxHostingSpace - usedSpace:n0} bytes of free space is available.");
 
-			string? validationError = ValidateModArchive(editMod.FileContents, editMod.Name);
-			if (validationError != null)
-				return BadRequest(validationError);
-		}
+		//	string? validationError = ValidateModArchive(editMod.FileContents, editMod.Name);
+		//	if (validationError != null)
+		//		return BadRequest(validationError);
+		//}
 
-		// Validate against database.
-		ModEntity? mod = _dbContext.Mods
-			.Include(m => m.PlayerMods)
-			.FirstOrDefault(m => m.Id == id);
-		if (mod == null)
-			return NotFound();
+		//// Validate against database.
+		//ModEntity? mod = _dbContext.Mods
+		//	.Include(m => m.PlayerMods)
+		//	.FirstOrDefault(m => m.Id == id);
+		//if (mod == null)
+		//	return NotFound();
 
-		if (mod.Name != editMod.Name && _dbContext.Mods.Any(m => m.Name == editMod.Name))
-			return BadRequest($"Mod with name '{editMod.Name}' already exists.");
+		//if (mod.Name != editMod.Name && _dbContext.Mods.Any(m => m.Name == editMod.Name))
+		//	return BadRequest($"Mod with name '{editMod.Name}' already exists.");
 
-		// Request is accepted.
-		List<FileSystemInformation> fileSystemInformation = new();
+		//// Request is accepted.
+		//List<FileSystemInformation> fileSystemInformation = new();
 
-		// Remove existing file if requested (this does NOT remove screenshots). Otherwise; move files if mod is renamed (this DOES include screenshots).
-		if (editMod.RemoveExistingFile)
-			DeleteModFilesAndClearCache(mod, fileSystemInformation);
-		else if (mod.Name != editMod.Name)
-			MoveModFilesAndClearCache(newName: editMod.Name, currentName: mod.Name, fileSystemInformation);
+		//// Remove existing file if requested (this does NOT remove screenshots). Otherwise; move files if mod is renamed (this DOES include screenshots).
+		//if (editMod.RemoveExistingFile)
+		//	DeleteModFilesAndClearCache(mod, fileSystemInformation);
+		//else if (mod.Name != editMod.Name)
+		//	MoveModFilesAndClearCache(newName: editMod.Name, currentName: mod.Name, fileSystemInformation);
 
-		// Update file.
-		if (editMod.FileContents != null)
-		{
-			// At this point we already know RemoveExistingFile is false, and that the old files are moved already.
-			string path = Path.Combine(_fileSystemService.GetPath(DataSubDirectory.Mods), $"{editMod.Name}.zip");
-			IoFile.WriteAllBytes(path, editMod.FileContents);
-			fileSystemInformation.Add(new($"File {_fileSystemService.FormatPath(path)} was added.", FileSystemInformationType.Add));
+		//// Update file.
+		//if (editMod.FileContents != null)
+		//{
+		//	// At this point we already know RemoveExistingFile is false, and that the old files are moved already.
+		//	string path = Path.Combine(_fileSystemService.GetPath(DataSubDirectory.Mods), $"{editMod.Name}.zip");
+		//	IoFile.WriteAllBytes(path, editMod.FileContents);
+		//	fileSystemInformation.Add(new($"File {_fileSystemService.FormatPath(path)} was added.", FileSystemInformationType.Add));
 
-			// Update LastUpdated when updating the file only.
-			mod.LastUpdated = DateTime.UtcNow;
-		}
+		//	// Update LastUpdated when updating the file only.
+		//	mod.LastUpdated = DateTime.UtcNow;
+		//}
 
-		EditMod logDto = new()
-		{
-			ModTypes = mod.ModTypes.AsEnumerable().ToList(),
-			HtmlDescription = mod.HtmlDescription,
-			IsHidden = mod.IsHidden,
-			Name = mod.Name,
-			TrailerUrl = mod.TrailerUrl,
-			Url = mod.Url,
-			PlayerIds = mod.PlayerMods.ConvertAll(pam => pam.PlayerId),
-		};
+		//EditMod logDto = new()
+		//{
+		//	ModTypes = mod.ModTypes.AsEnumerable().ToList(),
+		//	HtmlDescription = mod.HtmlDescription,
+		//	IsHidden = mod.IsHidden,
+		//	Name = mod.Name,
+		//	TrailerUrl = mod.TrailerUrl,
+		//	Url = mod.Url,
+		//	PlayerIds = mod.PlayerMods.ConvertAll(pam => pam.PlayerId),
+		//};
 
-		mod.ModTypes = editMod.ModTypes?.ToFlagEnum<ModTypes>() ?? ModTypes.None;
-		mod.HtmlDescription = editMod.HtmlDescription;
-		mod.IsHidden = editMod.IsHidden;
-		mod.Name = editMod.Name;
-		mod.TrailerUrl = editMod.TrailerUrl;
-		mod.Url = editMod.Url ?? string.Empty;
-		_dbContext.SaveChanges(); // Save changes here so PlayerMods entities can be assigned properly.
+		//mod.ModTypes = editMod.ModTypes?.ToFlagEnum<ModTypes>() ?? ModTypes.None;
+		//mod.HtmlDescription = editMod.HtmlDescription;
+		//mod.IsHidden = editMod.IsHidden;
+		//mod.Name = editMod.Name;
+		//mod.TrailerUrl = editMod.TrailerUrl;
+		//mod.Url = editMod.Url ?? string.Empty;
+		//_dbContext.SaveChanges(); // Save changes here so PlayerMods entities can be assigned properly.
 
-		UpdatePlayerMods(editMod.PlayerIds ?? new(), mod.Id);
-		_dbContext.SaveChanges();
+		//UpdatePlayerMods(editMod.PlayerIds ?? new(), mod.Id);
+		//_dbContext.SaveChanges();
 
-		await _auditLogger.LogEdit(logDto, editMod, User, mod.Id, fileSystemInformation);
+		//await _auditLogger.LogEdit(logDto, editMod, User, mod.Id, fileSystemInformation);
 
 		return Ok();
 	}
@@ -382,7 +427,7 @@ public class ModsController : ControllerBase
 				if (!(binary.ModBinaryType is ModBinaryType.Audio or ModBinaryType.Dd))
 					throw new InvalidModBinaryException($"Mod binary '{binary.Name}' is a '{binary.ModBinaryType}' mod which is not allowed.");
 
-				string expectedPrefix = ModFileNameUtils.GetBinaryPrefix(binary.ModBinaryType, modName);
+				string expectedPrefix = BinaryFileNameUtils.GetBinaryPrefix(binary.ModBinaryType, modName);
 
 				if (!binary.Name.StartsWith(expectedPrefix))
 					throw new InvalidModBinaryException($"Name of mod binary '{binary.Name}' must start with '{expectedPrefix}'.");

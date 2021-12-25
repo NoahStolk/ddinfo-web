@@ -20,6 +20,9 @@ public class AddMod
 
 	public List<int>? PlayerIds { get; set; }
 
-	[MaxLength(ModFileConstants.MaxFileSize, ErrorMessage = ModFileConstants.MaxFileSizeErrorMessage)]
-	public byte[]? FileContents { get; set; }
+	[MaxLength(ModConstants.BinaryMaxFiles, ErrorMessage = ModConstants.BinaryMaxFilesErrorMessage)]
+	public Dictionary<string, byte[]> Binaries { get; set; } = new();
+
+	[MaxLength(ModConstants.ScreenshotMaxFiles, ErrorMessage = ModConstants.ScreenshotMaxFilesErrorMessage)]
+	public Dictionary<string, byte[]> Screenshots { get; set; } = new();
 }

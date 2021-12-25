@@ -8,4 +8,5 @@ public enum FileSystemInformationType
 	NotFound,
 	Move,
 	Update,
+	Skip,
 }

@@ -204,7 +204,7 @@ public class AuditLogger
 				FileSystemInformationType.Delete => "wastebasket",
 				FileSystemInformationType.Move => "arrow_right",
 				FileSystemInformationType.NotFound => "information_source",
-				FileSystemInformationType.NotFoundUnexpected => "warning",
+				FileSystemInformationType.NotFoundUnexpected or FileSystemInformationType.Skip => "warning",
 				FileSystemInformationType.Add => "new",
 				FileSystemInformationType.Update => "white_check_mark",
 				_ => "black_circle",
