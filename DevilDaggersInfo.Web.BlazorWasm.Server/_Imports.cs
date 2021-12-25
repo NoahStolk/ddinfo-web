@@ -16,7 +16,6 @@ global using DevilDaggersInfo.Web.BlazorWasm.Server.Entities;
 global using DevilDaggersInfo.Web.BlazorWasm.Server.Enums;
 global using DevilDaggersInfo.Web.BlazorWasm.Server.Exceptions;
 global using DevilDaggersInfo.Web.BlazorWasm.Server.Extensions;
-global using DevilDaggersInfo.Web.BlazorWasm.Server.Repositories;
 global using DevilDaggersInfo.Web.BlazorWasm.Server.Services.Scoped;
 global using DevilDaggersInfo.Web.BlazorWasm.Server.Services.Singleton;
 global using DevilDaggersInfo.Web.BlazorWasm.Server.Services.Transient;

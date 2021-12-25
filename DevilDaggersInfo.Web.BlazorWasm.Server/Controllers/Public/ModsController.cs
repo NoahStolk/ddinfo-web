@@ -157,7 +157,12 @@ public class ModsController : ControllerBase
 	[ProducesResponseType(StatusCodes.Status200OK)]
 	public ActionResult<List<GetModName>> GetModsByAuthorId([Required] int playerId)
 	{
-		var mods = _dbContext.Mods.AsNoTracking().Include(m => m.PlayerMods).Where(s => s.PlayerMods.Any(pm => pm.PlayerId == playerId)).Select(s => new { s.Id, s.Name }).ToList();
+		var mods = _dbContext.Mods
+			.AsNoTracking()
+			.Include(m => m.PlayerMods)
+			.Where(s => s.PlayerMods.Any(pm => pm.PlayerId == playerId))
+			.Select(s => new { s.Id, s.Name })
+			.ToList();
 
 		return mods.ConvertAll(s => new GetModName
 		{
