@@ -162,6 +162,12 @@ public class ModsController : ControllerBase
 			int i = 0;
 			foreach (KeyValuePair<string, byte[]> kvp in addMod.Screenshots.OrderBy(kvp => kvp.Key))
 			{
+				if (!PngFileUtils.HasValidPngHeader(kvp.Value))
+				{
+					fsi.Add(new($"File {kvp.Key} was skipped because it is not a valid PNG file.", FileSystemInformationType.Skip));
+					continue;
+				}
+
 				string path = Path.Combine(modScreenshotsDirectory, $"{i:00}.png");
 				IoFile.WriteAllBytes(path, kvp.Value);
 				fsi.Add(new($"File {_fileSystemService.FormatPath(path)} was added.", FileSystemInformationType.Add));
