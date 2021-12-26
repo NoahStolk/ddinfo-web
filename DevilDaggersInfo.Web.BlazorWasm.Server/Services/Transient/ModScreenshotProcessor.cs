@@ -24,11 +24,17 @@ public class ModScreenshotProcessor
 				continue;
 			}
 
-			string path = Path.Combine(modScreenshotsDirectory, $"{i:00}.png");
+			string path;
+			do
+			{
+				path = Path.Combine(modScreenshotsDirectory, $"{i:00}.png");
+				i++;
+			}
+			while (File.Exists(path));
+
 			IoFile.WriteAllBytes(path, kvp.Value);
 			fileSystemInformation.Add(new($"File {_fileSystemService.FormatPath(path)} was added.", FileSystemInformationType.Add));
 
-			i++;
 		}
 	}
 
