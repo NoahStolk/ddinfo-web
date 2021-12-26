@@ -173,8 +173,18 @@ public class ModsController : ControllerBase
 
 		List<FileSystemInformation> fsi = new();
 
-		// TODO: Error handling for new binaries.
-		await _modArchiveProcessor.TransformBinariesInModArchiveAsync(mod.Name, editMod.Name, editMod.BinariesToDelete, editMod.Binaries, fsi);
+		try
+		{
+			await _modArchiveProcessor.TransformBinariesInModArchiveAsync(mod.Name, editMod.Name, editMod.BinariesToDelete, editMod.Binaries, fsi);
+		}
+		catch (InvalidModArchiveException ex)
+		{
+			return BadRequest($"The mod archive is invalid. {ex.Message}");
+		}
+		catch (InvalidModBinaryException ex)
+		{
+			return BadRequest($"A mod binary inside the mod archive is invalid. {ex.Message}");
+		}
 
 		_modScreenshotProcessor.MoveScreenshotsDirectory(mod.Name, editMod.Name, fsi);
 
@@ -211,7 +221,7 @@ public class ModsController : ControllerBase
 	[ProducesResponseType(StatusCodes.Status404NotFound)]
 	public async Task<ActionResult> DeleteModById(int id)
 	{
-		ModEntity? mod = _dbContext.Mods.FirstOrDefault(d => d.Id == id);
+		ModEntity? mod = _dbContext.Mods.FirstOrDefault(m => m.Id == id);
 		if (mod == null)
 			return NotFound();
 
