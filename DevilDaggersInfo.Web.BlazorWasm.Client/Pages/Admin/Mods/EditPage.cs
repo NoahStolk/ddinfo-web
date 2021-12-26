@@ -20,6 +20,9 @@ public partial class EditPage
 
 	[Parameter, EditorRequired] public int Id { get; set; }
 
+	private IReadOnlyList<string> _binaryNames = new List<string>();
+	private IReadOnlyList<string> _screenshotNames = new List<string>();
+
 	protected override async Task OnInitializedAsync()
 	{
 		await base.OnInitializedAsync();
@@ -40,6 +43,10 @@ public partial class EditPage
 				TrailerUrl = getMod.TrailerUrl,
 				Url = getMod.Url,
 			};
+
+			_binaryNames = getMod.BinaryNames;
+			_screenshotNames = getMod.ScreenshotNames;
+
 			_editComponent.State = ErrorState.None;
 		}
 		catch (HttpRequestException ex)

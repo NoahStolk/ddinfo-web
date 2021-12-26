@@ -1,0 +1,43 @@
+@inherits InputBase<List<string>>
+
+<div class="inline-block w-64 bg-gray-1 text-color-text cursor-pointer">
+	<div>
+		<div class="w-full" @onclick="e => _show = !_show"><span class="pl-2">@SelectedDisplayValue</span></div>
+		@foreach (string value in Values)
+		{
+			<div class="grid grid-cols-8">
+				<span class="pl-2 col-span-7">@value</span>
+				@{
+					MarkupString str = CurrentValue?.Contains(value) == true ? new("✕") : new("✓");
+				}
+				<span class="w-8 cursor-pointer bg-gray-1 rounded block text-center" @onclick="e => Toggle(value)">@str</span>
+			</div>
+		}
+	</div>
+</div>
+
+@code
+{
+	private string SelectedDisplayValue => $"{CurrentValue?.Count ?? 0} selected";
+
+	[Parameter, EditorRequired] public IReadOnlyList<string> Values { get; set; } = null!;
+
+	private bool _show = false;
+
+	private void Toggle(string value)
+	{
+		CurrentValue ??= new();
+
+		if (CurrentValue.Contains(value))
+			CurrentValue.Remove(value);
+		else
+			CurrentValue.Add(value);
+	}
+
+	protected override bool TryParseValueFromString(string? value, out List<string>? result, out string validationMessage)
+	{
+		validationMessage = string.Empty;
+		result = value?.Split(',').ToList();
+		return true;
+	}
+}
