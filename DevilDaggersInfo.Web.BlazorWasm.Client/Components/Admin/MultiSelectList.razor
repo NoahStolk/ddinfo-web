@@ -21,6 +21,7 @@
 	private string SelectedDisplayValue => $"{CurrentValue?.Count ?? 0} selected";
 
 	[Parameter, EditorRequired] public IReadOnlyList<string> Values { get; set; } = null!;
+	[Parameter] public Action? OnToggleAction { get; set; }
 
 	private bool _show = false;
 
@@ -32,6 +33,9 @@
 			CurrentValue.Remove(value);
 		else
 			CurrentValue.Add(value);
+
+		if (OnToggleAction != null)
+			OnToggleAction.Invoke();
 	}
 
 	protected override bool TryParseValueFromString(string? value, out List<string>? result, out string validationMessage)
