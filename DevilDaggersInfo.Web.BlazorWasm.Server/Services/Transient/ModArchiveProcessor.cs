@@ -60,19 +60,20 @@ public class ModArchiveProcessor
 		ValidateSpaceAvailable();
 
 		string originalArchivePath = _modArchiveAccessor.GetModArchivePath(originalModName);
-		using ZipArchive originalArchive = ZipFile.Open(originalArchivePath, ZipArchiveMode.Read);
-
 		Dictionary<string, byte[]> keptBinaries = new();
-		foreach (ZipArchiveEntry entry in originalArchive.Entries)
+		using (ZipArchive originalArchive = ZipFile.Open(originalArchivePath, ZipArchiveMode.Read))
 		{
-			byte[] extractedContents = new byte[entry.Length];
+			foreach (ZipArchiveEntry entry in originalArchive.Entries)
+			{
+				byte[] extractedContents = new byte[entry.Length];
 
-			using Stream entryStream = entry.Open();
-			int readBytes = StreamUtils.ForceReadAllBytes(entryStream, extractedContents, 0, extractedContents.Length);
-			if (readBytes != extractedContents.Length)
-				throw new InvalidOperationException($"Reading all bytes from archived mod binary did not complete. {readBytes} out of {extractedContents.Length} bytes were read.");
+				using Stream entryStream = entry.Open();
+				int readBytes = StreamUtils.ForceReadAllBytes(entryStream, extractedContents, 0, extractedContents.Length);
+				if (readBytes != extractedContents.Length)
+					throw new InvalidOperationException($"Reading all bytes from archived mod binary did not complete. {readBytes} out of {extractedContents.Length} bytes were read.");
 
-			keptBinaries.Add(entry.Name, extractedContents);
+				keptBinaries.Add(entry.Name, extractedContents);
+			}
 		}
 
 		string? firstCollision = keptBinaries.Keys.FirstOrDefault(keptName => newBinaries.Any(kvp => kvp.Key == keptName));
