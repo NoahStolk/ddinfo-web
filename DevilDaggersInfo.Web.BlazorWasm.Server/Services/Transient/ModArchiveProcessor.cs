@@ -63,7 +63,7 @@ public class ModArchiveProcessor
 		Dictionary<string, byte[]> keptBinaries = new();
 		using (ZipArchive originalArchive = ZipFile.Open(originalArchivePath, ZipArchiveMode.Read))
 		{
-			foreach (ZipArchiveEntry entry in originalArchive.Entries)
+			foreach (ZipArchiveEntry entry in originalArchive.Entries.Where(e => !binariesToDelete.Contains(e.Name)))
 			{
 				byte[] extractedContents = new byte[entry.Length];
 
