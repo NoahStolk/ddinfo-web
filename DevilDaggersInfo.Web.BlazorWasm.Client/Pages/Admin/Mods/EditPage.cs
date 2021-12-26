@@ -13,7 +13,7 @@ namespace DevilDaggersInfo.Web.BlazorWasm.Client.Pages.Admin.Mods;
 public partial class EditPage
 {
 	private Dictionary<int, string>? _playerNames;
-	private EditMod? _editMod;
+	private EditMod _editMod = new();
 	private AdminEdit<EditMod> _editComponent = null!;
 	private List<string> _binaryFileSizeErrors = new();
 	private List<string> _screenshotFileSizeErrors = new();
@@ -58,14 +58,8 @@ public partial class EditPage
 	}
 
 	private async Task LoadBinaries(InputFileChangeEventArgs e)
-	{
-		if (_editMod != null)
-			_editMod.Binaries = await GetFiles(e, ModConstants.BinaryMaxFiles, ModConstants.BinaryMaxFileSize, _binaryFileSizeErrors);
-	}
+		=> _editMod.Binaries = await GetFiles(e, ModConstants.BinaryMaxFiles, ModConstants.BinaryMaxFileSize, _binaryFileSizeErrors);
 
 	private async Task LoadScreenshots(InputFileChangeEventArgs e)
-	{
-		if (_editMod != null)
-			_editMod.Screenshots = await GetFiles(e, ModConstants.ScreenshotMaxFiles, ModConstants.ScreenshotMaxFileSize, _screenshotFileSizeErrors);
-	}
+		=> _editMod.Screenshots = await GetFiles(e, ModConstants.ScreenshotMaxFiles, ModConstants.ScreenshotMaxFileSize, _screenshotFileSizeErrors);
 }

@@ -1,18 +1,52 @@
 @page "/admin/mods/edit/{Id:int}"
 @inherits BaseAdminModPage
+@using DevilDaggersInfo.Core.Mod.Utils
 @using DevilDaggersInfo.Web.BlazorWasm.Client.Components.Admin
 @using DevilDaggersInfo.Web.BlazorWasm.Shared.Dto.Admin.Mods
 @using DevilDaggersInfo.Web.BlazorWasm.Shared.Dto.Admin.Players
 @using DevilDaggersInfo.Web.BlazorWasm.Shared.Enums
 
 <AdminEdit TModel="EditMod" Name="Mod" OverviewUrl="/admin/mods" ApiCall="Http.EditModById" Model="_editMod" Id="Id" @ref="_editComponent">
-	<AdminInput Label="@nameof(EditMod.Name)"><InputText class="w-64 pl-2 bg-gray-1 text-color-text" @bind-Value="@_editMod!.Name" /></AdminInput>
-	<AdminInput Label="@nameof(EditMod.PlayerIds)"><MultiSearchDropdown Values="@_playerNames" @bind-Value="@_editMod!.PlayerIds" /></AdminInput>
-	<AdminInput Label="@nameof(EditMod.TrailerUrl)"><InputText class="w-64 pl-2 bg-gray-1 text-color-text" @bind-Value="_editMod!.TrailerUrl" /></AdminInput>
-	<AdminInput Label="@nameof(EditMod.HtmlDescription)"><InputText class="w-64 pl-2 bg-gray-1 text-color-text" @bind-Value="@_editMod!.HtmlDescription" /></AdminInput>
-	<AdminInput Label="@nameof(EditMod.ModTypes)"><MultiSearchDropdown Values="@ModTypes" @bind-Value="@_editMod!.ModTypes" /></AdminInput>
-	<AdminInput Label="@nameof(EditMod.Url)"><InputText class="w-64 pl-2 bg-gray-1 text-color-text" @bind-Value="@_editMod!.Url" /></AdminInput>
-	<AdminInput Label="@nameof(EditMod.IsHidden)"><InputCheckbox @bind-Value="@_editMod!.IsHidden" /></AdminInput>
+	<AdminInput Label="@nameof(EditMod.Name)"><InputText class="w-64 pl-2 bg-gray-1 text-color-text" @bind-Value="@_editMod.Name" /></AdminInput>
+	<AdminInput Label="@nameof(EditMod.PlayerIds)"><MultiSearchDropdown Values="@_playerNames" @bind-Value="@_editMod.PlayerIds" /></AdminInput>
+	<AdminInput Label="@nameof(EditMod.TrailerUrl)"><InputText class="w-64 pl-2 bg-gray-1 text-color-text" @bind-Value="_editMod.TrailerUrl" /></AdminInput>
+	<AdminInput Label="@nameof(EditMod.HtmlDescription)"><InputText class="w-64 pl-2 bg-gray-1 text-color-text" @bind-Value="@_editMod.HtmlDescription" /></AdminInput>
+	<AdminInput Label="@nameof(EditMod.ModTypes)"><MultiSearchDropdown Values="@ModTypes" @bind-Value="@_editMod.ModTypes" /></AdminInput>
+	<AdminInput Label="@nameof(EditMod.Url)"><InputText class="w-64 pl-2 bg-gray-1 text-color-text" @bind-Value="@_editMod.Url" /></AdminInput>
+	<AdminInput Label="@nameof(EditMod.IsHidden)"><InputCheckbox @bind-Value="@_editMod.IsHidden" /></AdminInput>
 	<AdminInput Label="@nameof(EditMod.Binaries)"><InputFile OnChange="LoadBinaries" multiple /></AdminInput>
 	<AdminInput Label="@nameof(EditMod.Screenshots)"><InputFile OnChange="LoadScreenshots" multiple /></AdminInput>
 </AdminEdit>
+
+@if (_editMod.Binaries.Count > 0 || _binaryFileSizeErrors.Count > 0)
+{
+	<p class="text-red">Binaries to upload</p>
+	<ul class="pl-4">
+		@foreach (string binaryName in _editMod.Binaries.Select(kvp => kvp.Key))
+		{
+			<li class="list-disc">@binaryName (will be renamed to @(BinaryFileNameUtils.SanitizeModBinaryFileName(binaryName, _editMod.Name)))</li>
+		}
+		@foreach (string fileSizeError in _binaryFileSizeErrors)
+		{
+			<li class="list-disc text-red">@fileSizeError</li>
+		}
+	</ul>
+}
+@if (_editMod.Screenshots.Count > 0 || _screenshotFileSizeErrors.Count > 0)
+{
+	<p class="text-red">Screenshots to upload</p>
+	<ul class="pl-4">
+		@{
+			int i = 0;
+			foreach (string screenshot in _editMod.Screenshots.OrderBy(kvp => kvp.Key).Select(kvp => kvp.Key))
+			{
+				<li class="list-disc">@screenshot (will be renamed to @($"{i:00}.png"))</li>
+				i++;
+			}
+			foreach (string fileSizeError in _screenshotFileSizeErrors)
+			{
+				<li class="list-disc text-red">@fileSizeError</li>
+			}
+		}
+	</ul>
+}
