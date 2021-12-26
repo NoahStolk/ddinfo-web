@@ -59,11 +59,9 @@
 	<p class="text-red">Screenshots to upload</p>
 	<ul class="pl-4">
 		@{
-			int i = 0;
 			foreach (string screenshot in _editMod.Screenshots.OrderBy(kvp => kvp.Key).Select(kvp => kvp.Key))
 			{
-				<li class="list-disc">@screenshot (will be renamed to @($"{i:00}.png"))</li>
-				i++;
+				<li class="list-disc">@screenshot</li>
 			}
 			foreach (string fileSizeError in _screenshotFileSizeErrors)
 			{
