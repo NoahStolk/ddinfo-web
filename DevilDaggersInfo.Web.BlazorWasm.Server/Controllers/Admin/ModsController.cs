@@ -1,4 +1,3 @@
-using DevilDaggersInfo.Web.BlazorWasm.Server.Caches.ModArchives;
 using DevilDaggersInfo.Web.BlazorWasm.Server.Converters.Admin;
 using DevilDaggersInfo.Web.BlazorWasm.Server.InternalModels;
 using DevilDaggersInfo.Web.BlazorWasm.Shared.Dto;
@@ -13,16 +12,14 @@ public class ModsController : ControllerBase
 {
 	private readonly ApplicationDbContext _dbContext;
 	private readonly AuditLogger _auditLogger;
-	private readonly ModArchiveCache _modArchiveCache;
 	private readonly ModArchiveAccessor _modArchiveAccessor;
 	private readonly ModArchiveProcessor _modArchiveProcessor;
 	private readonly ModScreenshotProcessor _modScreenshotProcessor;
 
-	public ModsController(ApplicationDbContext dbContext, AuditLogger auditLogger, ModArchiveCache modArchiveCache, ModArchiveAccessor modArchiveAccessor, ModArchiveProcessor modArchiveProcessor, ModScreenshotProcessor modScreenshotProcessor)
+	public ModsController(ApplicationDbContext dbContext, AuditLogger auditLogger, ModArchiveAccessor modArchiveAccessor, ModArchiveProcessor modArchiveProcessor, ModScreenshotProcessor modScreenshotProcessor)
 	{
 		_dbContext = dbContext;
 		_auditLogger = auditLogger;
-		_modArchiveCache = modArchiveCache;
 		_modArchiveAccessor = modArchiveAccessor;
 		_modArchiveProcessor = modArchiveProcessor;
 		_modScreenshotProcessor = modScreenshotProcessor;

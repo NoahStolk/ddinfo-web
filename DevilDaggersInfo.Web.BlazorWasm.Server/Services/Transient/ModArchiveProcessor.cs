@@ -49,7 +49,7 @@ public class ModArchiveProcessor
 
 		ValidateModArchiveOnDisk(modName, zipFilePath, zipBytes);
 
-		fileSystemInformation.Add(new($"File {_fileSystemService.FormatPath(zipFilePath)} (`{FileSizeUtils.Format(zipBytes.Length)}`) with {(binaries.Count == 1 ? "binary" : "binaries")} {string.Join(", ", binaries.Select(kvp => $"`{kvp.Key}`"))} was added.", FileSystemInformationType.Add));
+		fileSystemInformation.Add(new($"File {_fileSystemService.FormatPath(zipFilePath)} (`{FileSizeUtils.Format(zipBytes.Length)}`) with {(binaries.Count == 1 ? "binary" : "binaries")} {string.Join(", ", binaries.Select(kvp => $"`{BinaryFileNameUtils.SanitizeModBinaryFileName(kvp.Key, modName)}`"))} was added.", FileSystemInformationType.Add));
 	}
 
 	public async Task TransformBinariesInModArchiveAsync(string originalModName, string newModName, List<string> binariesToDelete, Dictionary<string, byte[]> newBinaries, List<FileSystemInformation> fileSystemInformation)
@@ -81,7 +81,7 @@ public class ModArchiveProcessor
 					if (readBytes != extractedContents.Length)
 						throw new InvalidOperationException($"Reading all bytes from archived mod binary did not complete. {readBytes} out of {extractedContents.Length} bytes were read.");
 
-					keptBinaries.Add(entry.Name, extractedContents);
+					keptBinaries.Add(BinaryFileNameUtils.RemoveBinaryPrefix(entry.Name, originalModName), extractedContents);
 				}
 			}
 
@@ -118,7 +118,7 @@ public class ModArchiveProcessor
 		string oldCachePath = Path.Combine(cacheDirectory, $"{originalModName}.json");
 		if (IoFile.Exists(oldCachePath))
 		{
-			string newCachePath = Path.Combine(directory, $"{newModName}.json");
+			string newCachePath = Path.Combine(cacheDirectory, $"{newModName}.json");
 			IoFile.Move(oldCachePath, newCachePath);
 			fileSystemInformation.Add(new($"File {_fileSystemService.FormatPath(oldCachePath)} was moved to {_fileSystemService.FormatPath(newCachePath)}.", FileSystemInformationType.Move));
 		}

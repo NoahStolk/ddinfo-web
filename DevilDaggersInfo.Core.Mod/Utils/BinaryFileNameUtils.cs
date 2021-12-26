@@ -21,6 +21,20 @@ public static class BinaryFileNameUtils
 		return $"{modBinaryType.ToString().ToLower()}-{modName}-";
 	}
 
+	public static string RemoveBinaryPrefix(string fileName, string modName)
+	{
+		if (fileName.StartsWith("audio"))
+			return fileName.Replace(GetBinaryPrefix(ModBinaryType.Audio, modName), string.Empty);
+
+		if (fileName.StartsWith("core"))
+			return fileName.Replace(GetBinaryPrefix(ModBinaryType.Core, modName), string.Empty);
+
+		if (fileName.StartsWith("dd"))
+			return fileName.Replace(GetBinaryPrefix(ModBinaryType.Dd, modName), string.Empty);
+
+		return fileName;
+	}
+
 #pragma warning disable S3267 // Loops should be simplified with "LINQ" expressions
 	public static string SanitizeModBinaryFileName(string fileName, string modName)
 	{
