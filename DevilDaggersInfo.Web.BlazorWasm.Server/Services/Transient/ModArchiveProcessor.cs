@@ -54,36 +54,78 @@ public class ModArchiveProcessor
 
 	public async Task TransformBinariesInModArchiveAsync(string originalModName, string newModName, List<string> binariesToDelete, Dictionary<string, byte[]> newBinaries, List<FileSystemInformation> fileSystemInformation)
 	{
-		if (binariesToDelete.Count == 0 && newBinaries.Count == 0)
+		bool shouldRebuildArchive = binariesToDelete.Count > 0 || newBinaries.Count > 0;
+		if (!shouldRebuildArchive)
+		{
+			// Simply rename the archive here. Rebuilding the archive entirely is unnecessary.
+			if (originalModName != newModName)
+				RenameModArchiveAndCacheFiles(originalModName, newModName, fileSystemInformation);
+
 			return;
+		}
 
 		ValidateSpaceAvailable();
 
-		string originalArchivePath = _modArchiveAccessor.GetModArchivePath(originalModName);
 		Dictionary<string, byte[]> keptBinaries = new();
-		using (ZipArchive originalArchive = ZipFile.Open(originalArchivePath, ZipArchiveMode.Read))
+		string originalArchivePath = _modArchiveAccessor.GetModArchivePath(originalModName);
+		if (File.Exists(originalArchivePath))
 		{
-			foreach (ZipArchiveEntry entry in originalArchive.Entries.Where(e => !binariesToDelete.Contains(e.Name)))
+			using (ZipArchive originalArchive = ZipFile.Open(originalArchivePath, ZipArchiveMode.Read))
 			{
-				byte[] extractedContents = new byte[entry.Length];
+				foreach (ZipArchiveEntry entry in originalArchive.Entries.Where(e => !binariesToDelete.Contains(e.Name)))
+				{
+					byte[] extractedContents = new byte[entry.Length];
 
-				using Stream entryStream = entry.Open();
-				int readBytes = StreamUtils.ForceReadAllBytes(entryStream, extractedContents, 0, extractedContents.Length);
-				if (readBytes != extractedContents.Length)
-					throw new InvalidOperationException($"Reading all bytes from archived mod binary did not complete. {readBytes} out of {extractedContents.Length} bytes were read.");
+					using Stream entryStream = entry.Open();
+					int readBytes = StreamUtils.ForceReadAllBytes(entryStream, extractedContents, 0, extractedContents.Length);
+					if (readBytes != extractedContents.Length)
+						throw new InvalidOperationException($"Reading all bytes from archived mod binary did not complete. {readBytes} out of {extractedContents.Length} bytes were read.");
 
-				keptBinaries.Add(entry.Name, extractedContents);
+					keptBinaries.Add(entry.Name, extractedContents);
+				}
 			}
-		}
 
-		string? firstCollision = keptBinaries.Keys.FirstOrDefault(keptName => newBinaries.Any(kvp => kvp.Key == keptName));
-		if (firstCollision != null)
-			throw new InvalidModArchiveException($"Cannot append binary '{firstCollision}' to mod archive because it already contains a binary with the exact same name. Either request the old binary to be deleted or rename the new binary.");
+			string? firstCollision = keptBinaries.Keys.FirstOrDefault(keptName => newBinaries.Any(kvp => kvp.Key == keptName));
+			if (firstCollision != null)
+				throw new InvalidModArchiveException($"Cannot append binary '{firstCollision}' to mod archive because it already contains a binary with the exact same name. Either request the old binary to be deleted or rename the new binary.");
+		}
 
 		DeleteModFilesAndClearCache(originalModName, fileSystemInformation);
 
 		Dictionary<string, byte[]> combinedBinaries = new List<Dictionary<string, byte[]>>() { keptBinaries, newBinaries }.SelectMany(dict => dict).ToDictionary(kvp => kvp.Key, kvp => kvp.Value);
 		await ProcessModBinaryUploadAsync(newModName, combinedBinaries, fileSystemInformation);
+	}
+
+	private void RenameModArchiveAndCacheFiles(string originalModName, string newModName, List<FileSystemInformation> fileSystemInformation)
+	{
+		string directory = _fileSystemService.GetPath(DataSubDirectory.Mods);
+		string oldPath = Path.Combine(directory, $"{originalModName}.zip");
+		if (IoFile.Exists(oldPath))
+		{
+			string newPath = Path.Combine(directory, $"{newModName}.zip");
+			IoFile.Move(oldPath, newPath);
+			fileSystemInformation.Add(new($"File {_fileSystemService.FormatPath(oldPath)} was moved to {_fileSystemService.FormatPath(newPath)}.", FileSystemInformationType.Move));
+
+			// Clear entire memory cache (can't clear individual entries).
+			_modArchiveCache.Clear();
+		}
+		else
+		{
+			fileSystemInformation.Add(new($"File {_fileSystemService.FormatPath(oldPath)} was not moved because it does not exist.", FileSystemInformationType.NotFound));
+		}
+
+		string cacheDirectory = _fileSystemService.GetPath(DataSubDirectory.ModArchiveCache);
+		string oldCachePath = Path.Combine(cacheDirectory, $"{originalModName}.json");
+		if (IoFile.Exists(oldCachePath))
+		{
+			string newCachePath = Path.Combine(directory, $"{newModName}.json");
+			IoFile.Move(oldCachePath, newCachePath);
+			fileSystemInformation.Add(new($"File {_fileSystemService.FormatPath(oldCachePath)} was moved to {_fileSystemService.FormatPath(newCachePath)}.", FileSystemInformationType.Move));
+		}
+		else
+		{
+			fileSystemInformation.Add(new($"File {_fileSystemService.FormatPath(oldCachePath)} was not moved because it does not exist.", FileSystemInformationType.NotFound));
+		}
 	}
 
 	/// <summary>
