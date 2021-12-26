@@ -79,7 +79,7 @@ public class ModArchiveCache : IDynamicCache
 				byte[] extractedContents = new byte[entry.Length];
 
 				using Stream entryStream = entry.Open();
-				int readBytes = ReadAllBytes(entryStream, extractedContents, 0, extractedContents.Length);
+				int readBytes = StreamUtils.ForceReadAllBytes(entryStream, extractedContents, 0, extractedContents.Length);
 				if (readBytes != extractedContents.Length)
 					throw new InvalidOperationException($"Reading all bytes from archived mod binary did not complete. {readBytes} out of {extractedContents.Length} bytes were read.");
 
@@ -99,22 +99,6 @@ public class ModArchiveCache : IDynamicCache
 		catch (InvalidDataException)
 		{
 			throw new InvalidModArchiveException("Mod archive must be a valid ZIP file.");
-		}
-
-		// Reading the entire underlying stream from a ZipArchiveEntry does not always read all bytes present.
-		static int ReadAllBytes(Stream stream, byte[] buffer, int offset, int count)
-		{
-			int totalBytesRead = 0;
-			while (totalBytesRead < count)
-			{
-				int bytesRead = stream.Read(buffer, offset + totalBytesRead, count - totalBytesRead);
-				if (bytesRead == 0)
-					throw new IOException("Premature end of stream.");
-
-				totalBytesRead += bytesRead;
-			}
-
-			return totalBytesRead;
 		}
 	}
 
