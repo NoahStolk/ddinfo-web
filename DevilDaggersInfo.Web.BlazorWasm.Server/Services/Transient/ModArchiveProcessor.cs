@@ -85,7 +85,7 @@ public class ModArchiveProcessor
 				}
 			}
 
-			string? firstCollision = keptBinaries.Keys.FirstOrDefault(keptName => newBinaries.Any(kvp => kvp.Key == keptName));
+			string? firstCollision = keptBinaries.Keys.Select(s => BinaryFileNameUtils.SanitizeModBinaryFileName(s, newModName)).FirstOrDefault(keptName => newBinaries.Any(kvp => kvp.Key == keptName));
 			if (firstCollision != null)
 				throw new InvalidModArchiveException($"Cannot append binary '{firstCollision}' to mod archive because it already contains a binary with the exact same name. Either request the old binary to be deleted or rename the new binary.");
 		}
