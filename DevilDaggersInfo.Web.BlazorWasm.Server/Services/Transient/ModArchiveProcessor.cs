@@ -20,12 +20,9 @@ public class ModArchiveProcessor
 
 	public async Task ProcessModBinaryUploadAsync(string modName, Dictionary<string, byte[]> binaries, List<FileSystemInformation> fileSystemInformation)
 	{
-		string modsDirectory = _fileSystemService.GetPath(DataSubDirectory.Mods);
-		DirectoryInfo di = new(modsDirectory);
-		long usedSpace = di.EnumerateFiles("*.*", SearchOption.AllDirectories).Sum(fi => fi.Length);
-		if (usedSpace > ModConstants.BinaryMaxHostingSpace)
-			throw new($"Cannot upload mod with binaries because the limit of {ModConstants.BinaryMaxHostingSpace:N0} bytes is exceeded.");
+		ValidateSpaceAvailable();
 
+		string modsDirectory = _fileSystemService.GetPath(DataSubDirectory.Mods);
 		string zipFilePath = Path.Combine(modsDirectory, $"{modName}.zip");
 
 		try
@@ -55,16 +52,18 @@ public class ModArchiveProcessor
 		fileSystemInformation.Add(new($"File {_fileSystemService.FormatPath(zipFilePath)} ({FileSizeUtils.Format(zipBytes.Length)}) with binaries {string.Join(", ", binaries.Select(kvp => $"`{kvp.Key}`"))} was added.", FileSystemInformationType.Add));
 	}
 
-	public async Task TransformBinariesInModArchiveAsync(string modName, List<string> binariesToDelete, Dictionary<string, byte[]> newBinaries, List<FileSystemInformation> fileSystemInformation)
+	public async Task TransformBinariesInModArchiveAsync(string originalModName, string newModName, List<string> binariesToDelete, Dictionary<string, byte[]> newBinaries, List<FileSystemInformation> fileSystemInformation)
 	{
 		if (binariesToDelete.Count == 0 && newBinaries.Count == 0)
 			return;
 
-		string zipFilePath = _modArchiveAccessor.GetModArchivePath(modName);
-		using ZipArchive archive = ZipFile.Open(zipFilePath, ZipArchiveMode.Read);
+		ValidateSpaceAvailable();
+
+		string originalArchivePath = _modArchiveAccessor.GetModArchivePath(originalModName);
+		using ZipArchive originalArchive = ZipFile.Open(originalArchivePath, ZipArchiveMode.Read);
 
 		Dictionary<string, byte[]> keptBinaries = new();
-		foreach (ZipArchiveEntry entry in archive.Entries)
+		foreach (ZipArchiveEntry entry in originalArchive.Entries)
 		{
 			byte[] extractedContents = new byte[entry.Length];
 
@@ -78,64 +77,12 @@ public class ModArchiveProcessor
 
 		string? firstCollision = keptBinaries.Keys.FirstOrDefault(keptName => newBinaries.Any(kvp => kvp.Key == keptName));
 		if (firstCollision != null)
-			throw new InvalidModArchiveException($"Cannot append binary '{firstCollision}' to mod archive because it already contains a binary with the exact same name.");
+			throw new InvalidModArchiveException($"Cannot append binary '{firstCollision}' to mod archive because it already contains a binary with the exact same name. Either request the old binary to be deleted or rename the new binary.");
 
-		if (IoFile.Exists(zipFilePath))
-			IoFile.Delete(zipFilePath);
+		DeleteModFilesAndClearCache(originalModName, fileSystemInformation);
 
 		Dictionary<string, byte[]> combinedBinaries = new List<Dictionary<string, byte[]>>() { keptBinaries, newBinaries }.SelectMany(dict => dict).ToDictionary(kvp => kvp.Key, kvp => kvp.Value);
-		await ProcessModBinaryUploadAsync(modName, combinedBinaries, fileSystemInformation);
-	}
-
-	/// <summary>
-	/// Moves the mod archive, mod archive cache, and the screenshots to a new path.
-	/// </summary>
-	public void MoveModFilesAndClearCache(string newName, string currentName, List<FileSystemInformation> fileSystemInformation)
-	{
-		if (newName == currentName)
-			return;
-
-		string directory = _fileSystemService.GetPath(DataSubDirectory.Mods);
-		string oldPath = Path.Combine(directory, $"{currentName}.zip");
-		if (IoFile.Exists(oldPath))
-		{
-			string newPath = Path.Combine(directory, newName);
-			IoFile.Move(oldPath, newPath);
-			fileSystemInformation.Add(new($"File {_fileSystemService.FormatPath(oldPath)} was moved to {_fileSystemService.FormatPath(newPath)}.", FileSystemInformationType.Move));
-
-			// Clear entire memory cache (can't clear individual entries).
-			_modArchiveCache.Clear();
-		}
-		else
-		{
-			fileSystemInformation.Add(new($"File {_fileSystemService.FormatPath(oldPath)} was not moved because it does not exist.", FileSystemInformationType.NotFound));
-		}
-
-		string cacheDirectory = _fileSystemService.GetPath(DataSubDirectory.ModArchiveCache);
-		string oldCachePath = Path.Combine(cacheDirectory, $"{currentName}.json");
-		if (IoFile.Exists(oldCachePath))
-		{
-			string newCachePath = Path.Combine(directory, newName);
-			IoFile.Move(oldCachePath, newCachePath);
-			fileSystemInformation.Add(new($"File {_fileSystemService.FormatPath(oldCachePath)} was moved to {_fileSystemService.FormatPath(newCachePath)}.", FileSystemInformationType.Move));
-		}
-		else
-		{
-			fileSystemInformation.Add(new($"File {_fileSystemService.FormatPath(oldCachePath)} was not moved because it does not exist.", FileSystemInformationType.NotFound));
-		}
-
-		// Always move screenshots directory (not removed when removal is requested as screenshots are separate entities).
-		string oldScreenshotsDirectory = Path.Combine(_fileSystemService.GetPath(DataSubDirectory.ModScreenshots), currentName);
-		if (Directory.Exists(oldScreenshotsDirectory))
-		{
-			string newScreenshotsDirectory = Path.Combine(_fileSystemService.GetPath(DataSubDirectory.ModScreenshots), newName);
-			Directory.Move(oldScreenshotsDirectory, newScreenshotsDirectory);
-			fileSystemInformation.Add(new($"Directory {_fileSystemService.FormatPath(oldScreenshotsDirectory)} was moved to {_fileSystemService.FormatPath(newScreenshotsDirectory)}.", FileSystemInformationType.Move));
-		}
-		else
-		{
-			fileSystemInformation.Add(new($"Directory {_fileSystemService.FormatPath(oldScreenshotsDirectory)} was not moved because it does not exist.", FileSystemInformationType.NotFound));
-		}
+		await ProcessModBinaryUploadAsync(newModName, combinedBinaries, fileSystemInformation);
 	}
 
 	/// <summary>
@@ -170,6 +117,15 @@ public class ModArchiveProcessor
 		{
 			fileSystemInformation.Add(new($"File {_fileSystemService.FormatPath(cachePath)} was not deleted because it does not exist.", FileSystemInformationType.NotFound));
 		}
+	}
+
+	private void ValidateSpaceAvailable()
+	{
+		string modsDirectory = _fileSystemService.GetPath(DataSubDirectory.Mods);
+		DirectoryInfo di = new(modsDirectory);
+		long usedSpace = di.EnumerateFiles("*.*", SearchOption.AllDirectories).Sum(fi => fi.Length);
+		if (usedSpace > ModConstants.BinaryMaxHostingSpace)
+			throw new($"Cannot upload mod with binaries because the limit of {ModConstants.BinaryMaxHostingSpace:N0} bytes is exceeded.");
 	}
 
 	private void ValidateModArchiveOnDisk(string modName, string zipFilePath, byte[] zipBytes)

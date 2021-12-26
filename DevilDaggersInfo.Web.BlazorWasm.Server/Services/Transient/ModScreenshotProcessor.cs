@@ -45,4 +45,23 @@ public class ModScreenshotProcessor
 			fileSystemInformation.Add(new($"Directory {_fileSystemService.FormatPath(screenshotsDirectory)} was not deleted because it does not exist.", FileSystemInformationType.NotFound));
 		}
 	}
+
+	public void MoveScreenshotsDirectory(string originalModName, string newModName, List<FileSystemInformation> fileSystemInformation)
+	{
+		if (originalModName == newModName)
+			return;
+
+		string screenshotsDirectory = _fileSystemService.GetPath(DataSubDirectory.ModScreenshots);
+		string oldScreenshotsDirectory = Path.Combine(screenshotsDirectory, originalModName);
+		if (Directory.Exists(oldScreenshotsDirectory))
+		{
+			string newScreenshotsDirectory = Path.Combine(screenshotsDirectory, newModName);
+			Directory.Move(oldScreenshotsDirectory, newScreenshotsDirectory);
+			fileSystemInformation.Add(new($"Directory {_fileSystemService.FormatPath(oldScreenshotsDirectory)} was moved to {_fileSystemService.FormatPath(newScreenshotsDirectory)}.", FileSystemInformationType.Move));
+		}
+		else
+		{
+			fileSystemInformation.Add(new($"Directory {_fileSystemService.FormatPath(oldScreenshotsDirectory)} was not moved because it does not exist.", FileSystemInformationType.NotFound));
+		}
+	}
 }

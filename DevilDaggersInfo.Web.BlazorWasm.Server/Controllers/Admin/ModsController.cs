@@ -174,9 +174,9 @@ public class ModsController : ControllerBase
 		List<FileSystemInformation> fsi = new();
 
 		// TODO: Error handling for new binaries.
-		await _modArchiveProcessor.TransformBinariesInModArchiveAsync(mod.Name, editMod.BinariesToDelete, editMod.Binaries, fsi);
+		await _modArchiveProcessor.TransformBinariesInModArchiveAsync(mod.Name, editMod.Name, editMod.BinariesToDelete, editMod.Binaries, fsi);
 
-		_modArchiveProcessor.MoveModFilesAndClearCache(editMod.Name, mod.Name, fsi);
+		_modScreenshotProcessor.MoveScreenshotsDirectory(mod.Name, editMod.Name, fsi);
 
 		// TODO: Add and delete screenshots.
 		EditMod logDto = new()
