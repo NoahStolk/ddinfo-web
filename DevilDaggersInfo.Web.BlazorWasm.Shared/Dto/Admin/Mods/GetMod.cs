@@ -19,4 +19,6 @@ public class GetMod : IGetDto
 	public string? Url { get; init; }
 
 	public List<int>? PlayerIds { get; init; }
+
+	public List<string> BinaryNames { get; init; } = new();
 }

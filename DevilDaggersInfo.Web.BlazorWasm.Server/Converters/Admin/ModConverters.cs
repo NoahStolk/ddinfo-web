@@ -16,7 +16,7 @@ public static class ModConverters
 		Url = mod.Url?.TrimAfter(40, true),
 	};
 
-	public static GetMod ToGetMod(this ModEntity mod) => new()
+	public static GetMod ToGetMod(this ModEntity mod, List<string> binaryNames) => new()
 	{
 		Id = mod.Id,
 		ModTypes = mod.ModTypes,
@@ -27,5 +27,6 @@ public static class ModConverters
 		PlayerIds = mod.PlayerMods.ConvertAll(pam => pam.PlayerId),
 		TrailerUrl = mod.TrailerUrl,
 		Url = mod.Url,
+		BinaryNames = binaryNames,
 	};
 }
