@@ -34,7 +34,21 @@ public class ModScreenshotProcessor
 
 			IoFile.WriteAllBytes(path, kvp.Value);
 			fileSystemInformation.Add(new($"File {_fileSystemService.FormatPath(path)} was added.", FileSystemInformationType.Add));
+		}
+	}
 
+	public void DeleteScreenshot(string modName, string screenshotFileName, List<FileSystemInformation> fileSystemInformation)
+	{
+		string screenshotsDirectory = Path.Combine(_fileSystemService.GetPath(DataSubDirectory.ModScreenshots), modName);
+		string screenshotFilePath = Path.Combine(screenshotsDirectory, screenshotFileName);
+		if (File.Exists(screenshotFilePath))
+		{
+			File.Delete(screenshotFilePath);
+			fileSystemInformation.Add(new($"Directory {_fileSystemService.FormatPath(screenshotFilePath)} was deleted because removal was requested.", FileSystemInformationType.Delete));
+		}
+		else
+		{
+			fileSystemInformation.Add(new($"Directory {_fileSystemService.FormatPath(screenshotFilePath)} was not deleted because it does not exist.", FileSystemInformationType.NotFound));
 		}
 	}
 

@@ -188,7 +188,11 @@ public class ModsController : ControllerBase
 
 		_modScreenshotProcessor.MoveScreenshotsDirectory(mod.Name, editMod.Name, fsi);
 
-		// TODO: Add and delete screenshots.
+		foreach (string screenshotToDelete in editMod.ScreenshotsToDelete)
+			_modScreenshotProcessor.DeleteScreenshot(editMod.Name, screenshotToDelete, fsi);
+
+		_modScreenshotProcessor.ProcessModScreenshotUpload(editMod.Name, editMod.Screenshots, fsi);
+
 		EditMod logDto = new()
 		{
 			ModTypes = mod.ModTypes.AsEnumerable().ToList(),
