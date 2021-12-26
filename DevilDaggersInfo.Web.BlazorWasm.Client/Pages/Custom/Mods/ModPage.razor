@@ -110,7 +110,7 @@ else
 			}
 		}
 
-		@if (GetMod.ModArchive.Binaries.Any(b => b.ModifiedLoudness != null))
+		@if (GetMod.ModArchive.Binaries.Any(b => b.ModifiedLoudness != null && b.ModifiedLoudness.Count > 0))
 		{
 			<Heading Title="Modified loudness" Level="2" />
 			<div class="bg-gray-2 grid gap-3 grid-cols-mod-assets-xs sm:grid-cols-mod-assets-sm md:grid-cols-mod-assets-md lg:grid-cols-mod-assets-lg xl:grid-cols-mod-assets-xl">
@@ -120,7 +120,7 @@ else
 				<div>Default loudness</div>
 				<div>Modified loudness</div>
 			</div>
-			@foreach (GetModBinary binary in GetMod.ModArchive.Binaries.Where(b => b.ModifiedLoudness != null))
+			@foreach (GetModBinary binary in GetMod.ModArchive.Binaries.Where(b => b.ModifiedLoudness != null && b.ModifiedLoudness.Count > 0))
 			{
 				foreach (GetModifiedLoudness asset in binary.ModifiedLoudness!.OrderBy(a => a.AssetName))
 				{
