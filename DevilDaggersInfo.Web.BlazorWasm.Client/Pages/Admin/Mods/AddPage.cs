@@ -44,8 +44,12 @@ public partial class AddPage
 	}
 
 	private async Task LoadBinaries(InputFileChangeEventArgs e)
-		=> _addMod.Binaries = await GetFiles(e, ModConstants.BinaryMaxFiles, ModConstants.BinaryMaxFileSize, _binaryFileSizeErrors);
+	{
+		_addMod.Binaries = await GetFiles(e, ModConstants.BinaryMaxFiles, ModConstants.BinaryMaxFileSize, _binaryFileSizeErrors);
+	}
 
 	private async Task LoadScreenshots(InputFileChangeEventArgs e)
-		=> _addMod.Screenshots = await GetFiles(e, ModConstants.ScreenshotMaxFiles, ModConstants.ScreenshotMaxFileSize, _screenshotFileSizeErrors);
+	{
+		_addMod.Screenshots = await GetFiles(e, ModConstants.ScreenshotMaxFiles, ModConstants.ScreenshotMaxFileSize, _screenshotFileSizeErrors);
+	}
 }

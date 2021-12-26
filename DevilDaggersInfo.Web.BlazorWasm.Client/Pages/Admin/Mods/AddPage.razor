@@ -14,8 +14,8 @@
 	<AdminInput Label="@nameof(AddMod.ModTypes)"><MultiSearchDropdown Values="@ModTypes" @bind-Value="@_addMod.ModTypes" /></AdminInput>
 	<AdminInput Label="@nameof(AddMod.Url)"><InputText class="w-64 pl-2 bg-gray-1 text-color-text" @bind-Value="@_addMod.Url" /></AdminInput>
 	<AdminInput Label="@nameof(AddMod.IsHidden)"><InputCheckbox @bind-Value="@_addMod.IsHidden" /></AdminInput>
-	<AdminInput Label="@nameof(AddMod.Binaries)"><InputFile OnChange="LoadBinaries" multiple /></AdminInput>
-	<AdminInput Label="@nameof(AddMod.Screenshots)"><InputFile OnChange="LoadScreenshots" multiple /></AdminInput>
+	<AdminInput Label="@nameof(AddMod.Binaries)"><InputFile @onclick="() => _addMod.Binaries.Clear()" OnChange="LoadBinaries" multiple /></AdminInput>
+	<AdminInput Label="@nameof(AddMod.Screenshots)"><InputFile @onclick="() => _addMod.Screenshots.Clear()" OnChange="LoadScreenshots" multiple /></AdminInput>
 </AdminAdd>
 
 @if (_addMod.Binaries.Count > 0 || _binaryFileSizeErrors.Count > 0)

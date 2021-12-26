@@ -58,8 +58,12 @@ public partial class EditPage
 	}
 
 	private async Task LoadBinaries(InputFileChangeEventArgs e)
-		=> _editMod.Binaries = await GetFiles(e, ModConstants.BinaryMaxFiles, ModConstants.BinaryMaxFileSize, _binaryFileSizeErrors);
+	{
+		_editMod.Binaries = await GetFiles(e, ModConstants.BinaryMaxFiles, ModConstants.BinaryMaxFileSize, _binaryFileSizeErrors);
+	}
 
 	private async Task LoadScreenshots(InputFileChangeEventArgs e)
-		=> _editMod.Screenshots = await GetFiles(e, ModConstants.ScreenshotMaxFiles, ModConstants.ScreenshotMaxFileSize, _screenshotFileSizeErrors);
+	{
+		_editMod.Screenshots = await GetFiles(e, ModConstants.ScreenshotMaxFiles, ModConstants.ScreenshotMaxFileSize, _screenshotFileSizeErrors);
+	}
 }
