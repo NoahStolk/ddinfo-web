@@ -37,8 +37,9 @@ public class Startup
 
 		services.AddRazorPages();
 
-		services.AddTransient<ModFileSystemAccessor>();
-		services.AddTransient<ModFileSystemProcessor>();
+		services.AddTransient<ModArchiveAccessor>();
+		services.AddTransient<ModArchiveProcessor>();
+		services.AddTransient<ModScreenshotProcessor>();
 
 		services.AddScoped<IUserService, UserService>();
 

@@ -12,13 +12,13 @@ public class ModsController : ControllerBase
 {
 	private readonly ApplicationDbContext _dbContext;
 	private readonly IFileSystemService _fileSystemService;
-	private readonly ModFileSystemAccessor _modFileSystemAccessor;
+	private readonly ModArchiveAccessor _modArchiveAccessor;
 
-	public ModsController(ApplicationDbContext dbContext, IFileSystemService fileSystemService, ModFileSystemAccessor modFileSystemAccessor)
+	public ModsController(ApplicationDbContext dbContext, IFileSystemService fileSystemService, ModArchiveAccessor modArchiveAccessor)
 	{
 		_dbContext = dbContext;
 		_fileSystemService = fileSystemService;
-		_modFileSystemAccessor = modFileSystemAccessor;
+		_modArchiveAccessor = modArchiveAccessor;
 	}
 
 	[HttpGet]
@@ -48,7 +48,7 @@ public class ModsController : ControllerBase
 
 		List<ModEntity> mods = modsQuery.ToList();
 
-		Dictionary<ModEntity, ModFileSystemData?> data = mods.ToDictionary(m => m, m => _modFileSystemAccessor.GetModFileSystemData(m.Name));
+		Dictionary<ModEntity, ModFileSystemData?> data = mods.ToDictionary(m => m, m => _modArchiveAccessor.GetModFileSystemData(m.Name));
 		if (onlyHosted)
 			data = data.Where(kvp => kvp.Value != null).ToDictionary(kvp => kvp.Key, kvp => kvp.Value);
 
@@ -98,7 +98,7 @@ public class ModsController : ControllerBase
 
 		List<ModEntity> mods = modsQuery.ToList();
 
-		Dictionary<ModEntity, ModFileSystemData?> data = mods.ToDictionary(m => m, m => _modFileSystemAccessor.GetModFileSystemData(m.Name));
+		Dictionary<ModEntity, ModFileSystemData?> data = mods.ToDictionary(m => m, m => _modArchiveAccessor.GetModFileSystemData(m.Name));
 		if (isHostedFilter.HasValue)
 			data = data.Where(kvp => kvp.Value != null).ToDictionary(kvp => kvp.Key, kvp => kvp.Value);
 
@@ -121,7 +121,7 @@ public class ModsController : ControllerBase
 		if (modEntity == null)
 			return NotFound();
 
-		ModFileSystemData? mfsd = _modFileSystemAccessor.GetModFileSystemData(modEntity.Name);
+		ModFileSystemData? mfsd = _modArchiveAccessor.GetModFileSystemData(modEntity.Name);
 
 		return modEntity.ToGetMod(mfsd);
 	}

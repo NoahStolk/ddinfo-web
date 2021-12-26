@@ -12,15 +12,15 @@ public class ModsController : ControllerBase
 {
 	private readonly ApplicationDbContext _dbContext;
 	private readonly AuditLogger _auditLogger;
-	private readonly ModFileSystemProcessor _modFileSystemProcessor;
-	private readonly ModFileSystemAccessor _modFileSystemAccessor;
+	private readonly ModArchiveProcessor _modArchiveProcessor;
+	private readonly ModScreenshotProcessor _modScreenshotProcessor;
 
-	public ModsController(ApplicationDbContext dbContext, AuditLogger auditLogger, ModFileSystemProcessor modFileSystemProcessor, ModFileSystemAccessor modFileSystemAccessor)
+	public ModsController(ApplicationDbContext dbContext, AuditLogger auditLogger, ModArchiveProcessor modArchiveProcessor, ModScreenshotProcessor modScreenshotProcessor)
 	{
 		_dbContext = dbContext;
 		_auditLogger = auditLogger;
-		_modFileSystemProcessor = modFileSystemProcessor;
-		_modFileSystemAccessor = modFileSystemAccessor;
+		_modArchiveProcessor = modArchiveProcessor;
+		_modScreenshotProcessor = modScreenshotProcessor;
 	}
 
 	[HttpGet]
@@ -111,7 +111,7 @@ public class ModsController : ControllerBase
 		{
 			try
 			{
-				await _modFileSystemProcessor.ProcessModBinaryUploadAsync(addMod.Name, addMod.Binaries, fsi);
+				await _modArchiveProcessor.ProcessModBinaryUploadAsync(addMod.Name, addMod.Binaries, fsi);
 			}
 			catch (InvalidModArchiveException ex)
 			{
@@ -124,7 +124,7 @@ public class ModsController : ControllerBase
 		}
 
 		if (addMod.Screenshots.Count > 0)
-			_modFileSystemProcessor.ProcessModScreenshotUpload(addMod.Name, addMod.Screenshots, fsi);
+			_modScreenshotProcessor.ProcessModScreenshotUpload(addMod.Name, addMod.Screenshots, fsi);
 
 		ModEntity mod = new()
 		{
@@ -174,9 +174,9 @@ public class ModsController : ControllerBase
 		List<FileSystemInformation> fsi = new();
 
 		// TODO: Error handling for new binaries.
-		await _modFileSystemProcessor.TransformBinariesInModArchiveAsync(mod.Name, editMod.BinariesToDelete, editMod.Binaries, fsi);
+		await _modArchiveProcessor.TransformBinariesInModArchiveAsync(mod.Name, editMod.BinariesToDelete, editMod.Binaries, fsi);
 
-		_modFileSystemProcessor.MoveModFilesAndClearCache(editMod.Name, mod.Name, fsi);
+		_modArchiveProcessor.MoveModFilesAndClearCache(editMod.Name, mod.Name, fsi);
 
 		// TODO: Add and delete screenshots.
 		EditMod logDto = new()
@@ -216,8 +216,8 @@ public class ModsController : ControllerBase
 			return NotFound();
 
 		List<FileSystemInformation> fileSystemInformation = new();
-		_modFileSystemProcessor.DeleteModFilesAndClearCache(mod.Name, fileSystemInformation);
-		_modFileSystemProcessor.DeleteScreenshotsDirectory(mod.Name, fileSystemInformation);
+		_modArchiveProcessor.DeleteModFilesAndClearCache(mod.Name, fileSystemInformation);
+		_modScreenshotProcessor.DeleteScreenshotsDirectory(mod.Name, fileSystemInformation);
 
 		_dbContext.Mods.Remove(mod);
 		_dbContext.SaveChanges();

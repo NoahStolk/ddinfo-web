@@ -2,21 +2,20 @@ using DevilDaggersInfo.Core.Mod.Utils;
 using DevilDaggersInfo.Web.BlazorWasm.Server.Caches.ModArchives;
 using DevilDaggersInfo.Web.BlazorWasm.Server.InternalModels;
 using DevilDaggersInfo.Web.BlazorWasm.Shared.Utils;
-using System.Linq;
 
 namespace DevilDaggersInfo.Web.BlazorWasm.Server.Services.Transient;
 
-public class ModFileSystemProcessor
+public class ModArchiveProcessor
 {
 	private readonly IFileSystemService _fileSystemService;
 	private readonly ModArchiveCache _modArchiveCache;
-	private readonly ModFileSystemAccessor _modFileSystemAccessor;
+	private readonly ModArchiveAccessor _modArchiveAccessor;
 
-	public ModFileSystemProcessor(IFileSystemService fileSystemService, ModArchiveCache modArchiveCache, ModFileSystemAccessor modFileSystemAccessor)
+	public ModArchiveProcessor(IFileSystemService fileSystemService, ModArchiveCache modArchiveCache, ModArchiveAccessor modArchiveAccessor)
 	{
 		_fileSystemService = fileSystemService;
 		_modArchiveCache = modArchiveCache;
-		_modFileSystemAccessor = modFileSystemAccessor;
+		_modArchiveAccessor = modArchiveAccessor;
 	}
 
 	public async Task ProcessModBinaryUploadAsync(string modName, Dictionary<string, byte[]> binaries, List<FileSystemInformation> fileSystemInformation)
@@ -61,7 +60,7 @@ public class ModFileSystemProcessor
 		if (binariesToDelete.Count == 0 && newBinaries.Count == 0)
 			return;
 
-		string zipFilePath = _modFileSystemAccessor.GetModArchivePath(modName);
+		string zipFilePath = _modArchiveAccessor.GetModArchivePath(modName);
 		using ZipArchive archive = ZipFile.Open(zipFilePath, ZipArchiveMode.Read);
 
 		Dictionary<string, byte[]> keptBinaries = new();
@@ -170,41 +169,6 @@ public class ModFileSystemProcessor
 		else
 		{
 			fileSystemInformation.Add(new($"File {_fileSystemService.FormatPath(cachePath)} was not deleted because it does not exist.", FileSystemInformationType.NotFound));
-		}
-	}
-
-	public void ProcessModScreenshotUpload(string modName, Dictionary<string, byte[]> screenshots, List<FileSystemInformation> fileSystemInformation)
-	{
-		string modScreenshotsDirectory = Path.Combine(_fileSystemService.GetPath(DataSubDirectory.ModScreenshots), modName);
-		Directory.CreateDirectory(modScreenshotsDirectory);
-		int i = 0;
-		foreach (KeyValuePair<string, byte[]> kvp in screenshots.OrderBy(kvp => kvp.Key))
-		{
-			if (!PngFileUtils.HasValidPngHeader(kvp.Value))
-			{
-				fileSystemInformation.Add(new($"File {kvp.Key} was skipped because it is not a valid PNG file.", FileSystemInformationType.Skip));
-				continue;
-			}
-
-			string path = Path.Combine(modScreenshotsDirectory, $"{i:00}.png");
-			IoFile.WriteAllBytes(path, kvp.Value);
-			fileSystemInformation.Add(new($"File {_fileSystemService.FormatPath(path)} was added.", FileSystemInformationType.Add));
-
-			i++;
-		}
-	}
-
-	public void DeleteScreenshotsDirectory(string modName, List<FileSystemInformation> fileSystemInformation)
-	{
-		string screenshotsDirectory = Path.Combine(_fileSystemService.GetPath(DataSubDirectory.ModScreenshots), modName);
-		if (Directory.Exists(screenshotsDirectory))
-		{
-			Directory.Delete(screenshotsDirectory, true);
-			fileSystemInformation.Add(new($"Directory {_fileSystemService.FormatPath(screenshotsDirectory)} was deleted because removal was requested.", FileSystemInformationType.Delete));
-		}
-		else
-		{
-			fileSystemInformation.Add(new($"Directory {_fileSystemService.FormatPath(screenshotsDirectory)} was not deleted because it does not exist.", FileSystemInformationType.NotFound));
 		}
 	}
 

@@ -3,12 +3,12 @@ using DevilDaggersInfo.Web.BlazorWasm.Server.InternalModels;
 
 namespace DevilDaggersInfo.Web.BlazorWasm.Server.Services.Transient;
 
-public class ModFileSystemAccessor
+public class ModArchiveAccessor
 {
 	private readonly IFileSystemService _fileSystemService;
 	private readonly ModArchiveCache _modArchiveCache;
 
-	public ModFileSystemAccessor(IFileSystemService fileSystemService, ModArchiveCache modArchiveCache)
+	public ModArchiveAccessor(IFileSystemService fileSystemService, ModArchiveCache modArchiveCache)
 	{
 		_fileSystemService = fileSystemService;
 		_modArchiveCache = modArchiveCache;
