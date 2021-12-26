@@ -44,11 +44,11 @@ public class ModScreenshotProcessor
 		if (File.Exists(screenshotFilePath))
 		{
 			File.Delete(screenshotFilePath);
-			fileSystemInformation.Add(new($"Directory {_fileSystemService.FormatPath(screenshotFilePath)} was deleted because removal was requested.", FileSystemInformationType.Delete));
+			fileSystemInformation.Add(new($"File {_fileSystemService.FormatPath(screenshotFilePath)} was deleted because removal was requested.", FileSystemInformationType.Delete));
 		}
 		else
 		{
-			fileSystemInformation.Add(new($"Directory {_fileSystemService.FormatPath(screenshotFilePath)} was not deleted because it does not exist.", FileSystemInformationType.NotFound));
+			fileSystemInformation.Add(new($"File {_fileSystemService.FormatPath(screenshotFilePath)} was not deleted because it does not exist.", FileSystemInformationType.NotFound));
 		}
 	}
 

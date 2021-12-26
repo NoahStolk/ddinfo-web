@@ -49,7 +49,7 @@ public class ModArchiveProcessor
 
 		ValidateModArchiveOnDisk(modName, zipFilePath, zipBytes);
 
-		fileSystemInformation.Add(new($"File {_fileSystemService.FormatPath(zipFilePath)} ({FileSizeUtils.Format(zipBytes.Length)}) with binaries {string.Join(", ", binaries.Select(kvp => $"`{kvp.Key}`"))} was added.", FileSystemInformationType.Add));
+		fileSystemInformation.Add(new($"File {_fileSystemService.FormatPath(zipFilePath)} (`{FileSizeUtils.Format(zipBytes.Length)}`) with {(binaries.Count == 1 ? "binary" : "binaries")} {string.Join(", ", binaries.Select(kvp => $"`{kvp.Key}`"))} was added.", FileSystemInformationType.Add));
 	}
 
 	public async Task TransformBinariesInModArchiveAsync(string originalModName, string newModName, List<string> binariesToDelete, Dictionary<string, byte[]> newBinaries, List<FileSystemInformation> fileSystemInformation)
