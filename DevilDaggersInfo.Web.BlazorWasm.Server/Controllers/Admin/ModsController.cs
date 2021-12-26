@@ -13,12 +13,14 @@ public class ModsController : ControllerBase
 	private readonly ApplicationDbContext _dbContext;
 	private readonly AuditLogger _auditLogger;
 	private readonly ModFileSystemProcessor _modFileSystemProcessor;
+	private readonly ModFileSystemAccessor _modFileSystemAccessor;
 
-	public ModsController(ApplicationDbContext dbContext, AuditLogger auditLogger, ModFileSystemProcessor modFileSystemProcessor)
+	public ModsController(ApplicationDbContext dbContext, AuditLogger auditLogger, ModFileSystemProcessor modFileSystemProcessor, ModFileSystemAccessor modFileSystemAccessor)
 	{
 		_dbContext = dbContext;
 		_auditLogger = auditLogger;
 		_modFileSystemProcessor = modFileSystemProcessor;
+		_modFileSystemAccessor = modFileSystemAccessor;
 	}
 
 	[HttpGet]
@@ -151,88 +153,55 @@ public class ModsController : ControllerBase
 	[ProducesResponseType(StatusCodes.Status404NotFound)]
 	public async Task<ActionResult> EditModById(int id, EditMod editMod)
 	{
-		// Validate DTO.
-		//if (editMod.RemoveExistingFile && editMod.FileContents != null)
-		//	return BadRequest("Requested to remove the existing file, but a new file was also provided.");
+		if (editMod.PlayerIds == null || editMod.PlayerIds.Count == 0)
+			return BadRequest("Mod must have at least one author.");
 
-		//if (editMod.PlayerIds == null || editMod.PlayerIds.Count == 0)
-		//	return BadRequest("Mod must have at least one author.");
+		foreach (int playerId in editMod.PlayerIds)
+		{
+			if (!_dbContext.Players.Any(p => p.Id == playerId))
+				return BadRequest($"Player with ID '{playerId}' does not exist.");
+		}
 
-		//foreach (int playerId in editMod.PlayerIds)
-		//{
-		//	if (!_dbContext.Players.Any(p => p.Id == playerId))
-		//		return BadRequest($"Player with ID '{playerId}' does not exist.");
-		//}
+		ModEntity? mod = _dbContext.Mods
+			.Include(m => m.PlayerMods)
+			.FirstOrDefault(m => m.Id == id);
+		if (mod == null)
+			return NotFound();
 
-		//// Validate file.
-		//if (editMod.FileContents != null)
-		//{
-		//	DirectoryInfo di = new(_fileSystemService.GetPath(DataSubDirectory.Mods));
-		//	long usedSpace = di.EnumerateFiles("*.*", SearchOption.AllDirectories).Sum(fi => fi.Length);
+		if (mod.Name != editMod.Name && _dbContext.Mods.Any(m => m.Name == editMod.Name))
+			return BadRequest($"Mod with name '{editMod.Name}' already exists.");
 
-		//	int additionalAddedSpace = editMod.FileContents.Length; // TODO: New file length - old file length
-		//	if (additionalAddedSpace + usedSpace > ModConstants.MaxHostingSpace)
-		//		return BadRequest($"This file is {editMod.FileContents.Length:n0} bytes in size, but only {ModConstants.MaxHostingSpace - usedSpace:n0} bytes of free space is available.");
+		List<FileSystemInformation> fsi = new();
 
-		//	string? validationError = ValidateModArchive(editMod.FileContents, editMod.Name);
-		//	if (validationError != null)
-		//		return BadRequest(validationError);
-		//}
+		// TODO: Error handling for new binaries.
+		await _modFileSystemProcessor.TransformBinariesInModArchiveAsync(mod.Name, editMod.BinariesToDelete, editMod.Binaries, fsi);
 
-		//// Validate against database.
-		//ModEntity? mod = _dbContext.Mods
-		//	.Include(m => m.PlayerMods)
-		//	.FirstOrDefault(m => m.Id == id);
-		//if (mod == null)
-		//	return NotFound();
+		_modFileSystemProcessor.MoveModFilesAndClearCache(editMod.Name, mod.Name, fsi);
 
-		//if (mod.Name != editMod.Name && _dbContext.Mods.Any(m => m.Name == editMod.Name))
-		//	return BadRequest($"Mod with name '{editMod.Name}' already exists.");
+		// TODO: Add and delete screenshots.
+		EditMod logDto = new()
+		{
+			ModTypes = mod.ModTypes.AsEnumerable().ToList(),
+			HtmlDescription = mod.HtmlDescription,
+			IsHidden = mod.IsHidden,
+			Name = mod.Name,
+			TrailerUrl = mod.TrailerUrl,
+			Url = mod.Url,
+			PlayerIds = mod.PlayerMods.ConvertAll(pam => pam.PlayerId),
+		};
 
-		//// Request is accepted.
-		//List<FileSystemInformation> fileSystemInformation = new();
+		mod.ModTypes = editMod.ModTypes?.ToFlagEnum<ModTypes>() ?? ModTypes.None;
+		mod.HtmlDescription = editMod.HtmlDescription;
+		mod.IsHidden = editMod.IsHidden;
+		mod.Name = editMod.Name;
+		mod.TrailerUrl = editMod.TrailerUrl;
+		mod.Url = editMod.Url ?? string.Empty;
+		_dbContext.SaveChanges(); // Save changes here so PlayerMods entities can be assigned properly.
 
-		//// Remove existing file if requested (this does NOT remove screenshots). Otherwise; move files if mod is renamed (this DOES include screenshots).
-		//if (editMod.RemoveExistingFile)
-		//	DeleteModFilesAndClearCache(mod, fileSystemInformation);
-		//else if (mod.Name != editMod.Name)
-		//	MoveModFilesAndClearCache(newName: editMod.Name, currentName: mod.Name, fileSystemInformation);
+		UpdatePlayerMods(editMod.PlayerIds ?? new(), mod.Id);
+		_dbContext.SaveChanges();
 
-		//// Update file.
-		//if (editMod.FileContents != null)
-		//{
-		//	// At this point we already know RemoveExistingFile is false, and that the old files are moved already.
-		//	string path = Path.Combine(_fileSystemService.GetPath(DataSubDirectory.Mods), $"{editMod.Name}.zip");
-		//	IoFile.WriteAllBytes(path, editMod.FileContents);
-		//	fileSystemInformation.Add(new($"File {_fileSystemService.FormatPath(path)} was added.", FileSystemInformationType.Add));
-
-		//	// Update LastUpdated when updating the file only.
-		//	mod.LastUpdated = DateTime.UtcNow;
-		//}
-
-		//EditMod logDto = new()
-		//{
-		//	ModTypes = mod.ModTypes.AsEnumerable().ToList(),
-		//	HtmlDescription = mod.HtmlDescription,
-		//	IsHidden = mod.IsHidden,
-		//	Name = mod.Name,
-		//	TrailerUrl = mod.TrailerUrl,
-		//	Url = mod.Url,
-		//	PlayerIds = mod.PlayerMods.ConvertAll(pam => pam.PlayerId),
-		//};
-
-		//mod.ModTypes = editMod.ModTypes?.ToFlagEnum<ModTypes>() ?? ModTypes.None;
-		//mod.HtmlDescription = editMod.HtmlDescription;
-		//mod.IsHidden = editMod.IsHidden;
-		//mod.Name = editMod.Name;
-		//mod.TrailerUrl = editMod.TrailerUrl;
-		//mod.Url = editMod.Url ?? string.Empty;
-		//_dbContext.SaveChanges(); // Save changes here so PlayerMods entities can be assigned properly.
-
-		//UpdatePlayerMods(editMod.PlayerIds ?? new(), mod.Id);
-		//_dbContext.SaveChanges();
-
-		//await _auditLogger.LogEdit(logDto, editMod, User, mod.Id, fileSystemInformation);
+		await _auditLogger.LogEdit(logDto, editMod, User, mod.Id, fsi);
 
 		return Ok();
 	}

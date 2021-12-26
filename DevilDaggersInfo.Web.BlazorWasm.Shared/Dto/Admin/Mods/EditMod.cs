@@ -20,12 +20,13 @@ public class EditMod
 
 	public List<int>? PlayerIds { get; set; }
 
-	//[MaxLength(ModConstants.MaxFileSize, ErrorMessage = ModConstants.MaxFileSizeErrorMessage)]
-	//public byte[]? FileContents { get; set; }
+	public List<string> BinariesToDelete { get; set; } = new();
 
-	///// <summary>
-	///// Removes the mod file, cache file, and mod screenshots.
-	///// Cannot be used if <see cref="FileContents"/> is not null.
-	///// </summary>
-	//public bool RemoveExistingFile { get; set; }
+	[MaxLength(ModConstants.BinaryMaxFiles, ErrorMessage = ModConstants.BinaryMaxFilesErrorMessage)]
+	public Dictionary<string, byte[]> Binaries { get; set; } = new();
+
+	public List<string> ScreenshotsToDelete { get; set; } = new();
+
+	[MaxLength(ModConstants.ScreenshotMaxFiles, ErrorMessage = ModConstants.ScreenshotMaxFilesErrorMessage)]
+	public Dictionary<string, byte[]> Screenshots { get; set; } = new();
 }

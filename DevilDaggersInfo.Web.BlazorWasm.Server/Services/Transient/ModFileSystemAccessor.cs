@@ -14,11 +14,14 @@ public class ModFileSystemAccessor
 		_modArchiveCache = modArchiveCache;
 	}
 
+	public string GetModArchivePath(string modName) => Path.Combine(_fileSystemService.GetPath(DataSubDirectory.Mods), $"{modName}.zip");
+
+	public bool ModArchiveExists(string modName) => IoFile.Exists(GetModArchivePath(modName));
+
 	public ModFileSystemData? GetModFileSystemData(string modName)
 	{
-		string path = Path.Combine(_fileSystemService.GetPath(DataSubDirectory.Mods), $"{modName}.zip");
-		bool fileExists = IoFile.Exists(path);
-		if (!fileExists)
+		string path = GetModArchivePath(modName);
+		if (!IoFile.Exists(path))
 			return null;
 
 		ModArchiveCacheData cachedArchiveData = _modArchiveCache.GetArchiveDataByFilePath(path);
