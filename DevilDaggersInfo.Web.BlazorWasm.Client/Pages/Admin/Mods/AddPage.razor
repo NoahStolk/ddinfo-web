@@ -18,28 +18,34 @@
 	<AdminInput Label="@nameof(AddMod.Screenshots)"><InputFile OnChange="LoadScreenshots" multiple /></AdminInput>
 </AdminAdd>
 
-<span>@_fileSizeError</span>
-
-@if (_addMod.Binaries.Count > 0)
+@if (_addMod.Binaries.Count > 0 || _binaryFileSizeErrors.Count > 0)
 {
-	<p>Binaries to upload</p>
-	<ul>
+	<p class="text-red">Binaries to upload</p>
+	<ul class="pl-4">
 		@foreach (string binaryName in _addMod.Binaries.Select(kvp => kvp.Key))
 		{
-			<li>@binaryName (will be renamed to @(BinaryFileNameUtils.SanitizeModBinaryFileName(binaryName, _addMod.Name)))</li>
+			<li class="list-disc">@binaryName (will be renamed to @(BinaryFileNameUtils.SanitizeModBinaryFileName(binaryName, _addMod.Name)))</li>
+		}
+		@foreach (string fileSizeError in _binaryFileSizeErrors)
+		{
+			<li class="list-disc text-red">@fileSizeError</li>
 		}
 	</ul>
 }
-@if (_addMod.Screenshots.Count > 0)
+@if (_addMod.Screenshots.Count > 0 || _screenshotFileSizeErrors.Count > 0)
 {
-	<p>Screenshots to upload</p>
-	<ul>
+	<p class="text-red">Screenshots to upload</p>
+	<ul class="pl-4">
 		@{
 			int i = 0;
 			foreach (string screenshot in _addMod.Screenshots.OrderBy(kvp => kvp.Key).Select(kvp => kvp.Key))
 			{
-				<li>@screenshot (will be renamed to @($"{i:00}.png"))</li>
+				<li class="list-disc">@screenshot (will be renamed to @($"{i:00}.png"))</li>
 				i++;
+			}
+			foreach (string fileSizeError in _screenshotFileSizeErrors)
+			{
+				<li class="list-disc text-red">@fileSizeError</li>
 			}
 		}
 	</ul>
@@ -51,7 +57,8 @@
 	private AddMod _addMod = new();
 	private AdminAdd<AddMod> _addComponent = null!;
 	private Dictionary<int, string> _modTypes = Enum.GetValues<ModTypes>().ToDictionary(e => (int)e, e => e.ToString());
-	private string _fileSizeError = string.Empty;
+	private List<string> _binaryFileSizeErrors = new();
+	private List<string> _screenshotFileSizeErrors = new();
 
 	protected override async Task OnInitializedAsync()
 	{
@@ -80,13 +87,14 @@
 	}
 
 	private async Task LoadBinaries(InputFileChangeEventArgs e)
-		=> _addMod.Binaries = await GetFiles(e, ModConstants.BinaryMaxFiles, ModConstants.BinaryMaxFileSize);
+		=> _addMod.Binaries = await GetFiles(e, ModConstants.BinaryMaxFiles, ModConstants.BinaryMaxFileSize, _binaryFileSizeErrors);
 
 	private async Task LoadScreenshots(InputFileChangeEventArgs e)
-		=> _addMod.Screenshots = await GetFiles(e, ModConstants.ScreenshotMaxFiles, ModConstants.ScreenshotMaxFileSize);
+		=> _addMod.Screenshots = await GetFiles(e, ModConstants.ScreenshotMaxFiles, ModConstants.ScreenshotMaxFileSize, _screenshotFileSizeErrors);
 
-	private async Task<Dictionary<string, byte[]>> GetFiles(InputFileChangeEventArgs e, int maximumFileCount, long maxAllowedSize)
+	private static async Task<Dictionary<string, byte[]>> GetFiles(InputFileChangeEventArgs e, int maximumFileCount, long maxAllowedSize, List<string> errorList)
 	{
+		errorList.Clear();
 		IReadOnlyList<IBrowserFile> browserFiles = e.GetMultipleFiles(maximumFileCount);
 
 		Dictionary<string, byte[]> files = new();
@@ -97,13 +105,12 @@
 			try
 			{
 				await browserFile.OpenReadStream(maxAllowedSize).CopyToAsync(ms);
+				files.Add(browserFile.Name, ms.ToArray());
 			}
 			catch (IOException)
 			{
-				_fileSizeError = $"File {browserFile.Name} cannot be larger than {maxAllowedSize}.";
+				errorList.Add($"File {browserFile.Name} cannot be larger than {FileSizeUtils.Format(maxAllowedSize)}.");
 			}
-
-			files.Add(browserFile.Name, ms.ToArray());
 		}
 
 		return files;
