@@ -1,5 +1,5 @@
 @page "/admin/mods/edit/{Id:int}"
-@inherits BaseAdminPage
+@inherits BaseAdminModPage
 @using DevilDaggersInfo.Web.BlazorWasm.Client.Components.Admin
 @using DevilDaggersInfo.Web.BlazorWasm.Shared.Dto.Admin.Mods
 @using DevilDaggersInfo.Web.BlazorWasm.Shared.Dto.Admin.Players
@@ -10,9 +10,9 @@
 	<AdminInput Label="@nameof(EditMod.PlayerIds)"><MultiSearchDropdown Values="@_playerNames" @bind-Value="@_editMod!.PlayerIds" /></AdminInput>
 	<AdminInput Label="@nameof(EditMod.TrailerUrl)"><InputText class="w-64 pl-2 bg-gray-1 text-color-text" @bind-Value="_editMod!.TrailerUrl" /></AdminInput>
 	<AdminInput Label="@nameof(EditMod.HtmlDescription)"><InputText class="w-64 pl-2 bg-gray-1 text-color-text" @bind-Value="@_editMod!.HtmlDescription" /></AdminInput>
-	<AdminInput Label="@nameof(EditMod.ModTypes)"><MultiSearchDropdown Values="@_modTypes" @bind-Value="@_editMod!.ModTypes" /></AdminInput>
+	<AdminInput Label="@nameof(EditMod.ModTypes)"><MultiSearchDropdown Values="@ModTypes" @bind-Value="@_editMod!.ModTypes" /></AdminInput>
 	<AdminInput Label="@nameof(EditMod.Url)"><InputText class="w-64 pl-2 bg-gray-1 text-color-text" @bind-Value="@_editMod!.Url" /></AdminInput>
 	<AdminInput Label="@nameof(EditMod.IsHidden)"><InputCheckbox @bind-Value="@_editMod!.IsHidden" /></AdminInput>
-	@*<AdminInput Label="@nameof(EditMod.FileContents)"><InputFile OnChange="LoadFile" /></AdminInput>
-	<AdminInput Label="@nameof(EditMod.RemoveExistingFile)"><InputCheckbox @bind-Value="@_editMod!.RemoveExistingFile" /></AdminInput>*@
+	<AdminInput Label="@nameof(EditMod.Binaries)"><InputFile OnChange="LoadBinaries" multiple /></AdminInput>
+	<AdminInput Label="@nameof(EditMod.Screenshots)"><InputFile OnChange="LoadScreenshots" multiple /></AdminInput>
 </AdminEdit>

@@ -5,6 +5,8 @@ using DevilDaggersInfo.Web.BlazorWasm.Shared.Enums;
 using Microsoft.AspNetCore.Components.WebAssembly.Authentication;
 using Microsoft.AspNetCore.Components;
 using DevilDaggersInfo.Core.Extensions;
+using DevilDaggersInfo.Web.BlazorWasm.Shared.Constants;
+using Microsoft.AspNetCore.Components.Forms;
 
 namespace DevilDaggersInfo.Web.BlazorWasm.Client.Pages.Admin.Mods;
 
@@ -13,7 +15,8 @@ public partial class EditPage
 	private Dictionary<int, string>? _playerNames;
 	private EditMod? _editMod;
 	private AdminEdit<EditMod> _editComponent = null!;
-	private Dictionary<int, string> _modTypes = Enum.GetValues<ModTypes>().ToDictionary(e => (int)e, e => e.ToString());
+	private List<string> _binaryFileSizeErrors = new();
+	private List<string> _screenshotFileSizeErrors = new();
 
 	[Parameter, EditorRequired] public int Id { get; set; }
 
@@ -54,12 +57,15 @@ public partial class EditPage
 		}
 	}
 
-	//private async Task LoadFile(InputFileChangeEventArgs e)
-	//{
-	//	IBrowserFile file = e.File;
-	//	using MemoryStream ms = new();
-	//	await file.OpenReadStream().CopyToAsync(ms);
+	private async Task LoadBinaries(InputFileChangeEventArgs e)
+	{
+		if (_editMod != null)
+			_editMod.Binaries = await GetFiles(e, ModConstants.BinaryMaxFiles, ModConstants.BinaryMaxFileSize, _binaryFileSizeErrors);
+	}
 
-	//	_editMod!.FileContents = ms.ToArray();
-	//}
+	private async Task LoadScreenshots(InputFileChangeEventArgs e)
+	{
+		if (_editMod != null)
+			_editMod.Screenshots = await GetFiles(e, ModConstants.ScreenshotMaxFiles, ModConstants.ScreenshotMaxFileSize, _screenshotFileSizeErrors);
+	}
 }

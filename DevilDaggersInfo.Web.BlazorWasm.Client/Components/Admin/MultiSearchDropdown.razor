@@ -36,11 +36,11 @@
 
 	private string SelectedDisplayValue => $"{CurrentValue?.Count ?? 0} selected";
 
-	[Parameter] public Dictionary<int, string>? Values { get; set; }
+	[Parameter] public IReadOnlyDictionary<int, string>? Values { get; set; }
 
 	private bool _show = false;
 
-	public Dictionary<int, string> FilteredItems => Values == null ? new() : _searchValue == null ? Values : Values
+	public IReadOnlyDictionary<int, string> FilteredItems => Values == null ? new Dictionary<int, string>() : _searchValue == null ? Values : Values
 		.Where(kvp =>
 			kvp.Key.ToString()?.Contains(_searchValue, StringComparison.InvariantCultureIgnoreCase) == true ||
 			kvp.Value.Contains(_searchValue, StringComparison.InvariantCultureIgnoreCase))
