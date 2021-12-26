@@ -59,39 +59,40 @@ public class AuditLogger
 		{
 			auditLogger.AppendLine("`No changes.`");
 			await TryLog(Channel.MonitoringAuditLog, auditLogger.ToString());
-			return;
 		}
-
-		auditLogger.AppendLine("```diff");
-
-		const string propertyHeader = "Property";
-		const string oldValueHeader = "Old value";
-		const string newValueHeader = "New value";
-		const int paddingL = 4;
-		const int paddingR = 2;
-
-		int maxL = propertyHeader.Length, maxR = oldValueHeader.Length;
-		foreach (KeyValuePair<string, string> kvp in oldLog)
+		else
 		{
-			string trimmedKey = kvp.Key.TrimAfter(_loggingMax, true);
-			string trimmedValue = kvp.Value.TrimAfter(_loggingMax, true);
+			auditLogger.AppendLine("```diff");
 
-			if (trimmedKey.Length > maxL)
-				maxL = trimmedKey.Length;
-			if (trimmedValue.Length > maxR)
-				maxR = trimmedValue.Length;
+			const string propertyHeader = "Property";
+			const string oldValueHeader = "Old value";
+			const string newValueHeader = "New value";
+			const int paddingL = 4;
+			const int paddingR = 2;
+
+			int maxL = propertyHeader.Length, maxR = oldValueHeader.Length;
+			foreach (KeyValuePair<string, string> kvp in oldLog)
+			{
+				string trimmedKey = kvp.Key.TrimAfter(_loggingMax, true);
+				string trimmedValue = kvp.Value.TrimAfter(_loggingMax, true);
+
+				if (trimmedKey.Length > maxL)
+					maxL = trimmedKey.Length;
+				if (trimmedValue.Length > maxR)
+					maxR = trimmedValue.Length;
+			}
+
+			auditLogger.AppendFormat($"{{0,-{maxL + paddingL}}}", propertyHeader).AppendFormat($"{{0,-{maxR + paddingR}}}", oldValueHeader).AppendLine(newValueHeader);
+			auditLogger.AppendLine();
+			foreach (KeyValuePair<string, string> kvp in oldLog)
+			{
+				string newValue = newLog[kvp.Key];
+				char diff = kvp.Value == newValue ? '=' : '+';
+				auditLogger.AppendFormat($"{{0,-{maxL + paddingL}}}", $"{diff} {kvp.Key}").AppendFormat($"{{0,-{maxR + paddingR}}}", kvp.Value.TrimAfter(_loggingMax, true)).AppendLine(newValue.TrimAfter(_loggingMax, true));
+			}
+
+			auditLogger.AppendLine("```");
 		}
-
-		auditLogger.AppendFormat($"{{0,-{maxL + paddingL}}}", propertyHeader).AppendFormat($"{{0,-{maxR + paddingR}}}", oldValueHeader).AppendLine(newValueHeader);
-		auditLogger.AppendLine();
-		foreach (KeyValuePair<string, string> kvp in oldLog)
-		{
-			string newValue = newLog[kvp.Key];
-			char diff = kvp.Value == newValue ? '=' : '+';
-			auditLogger.AppendFormat($"{{0,-{maxL + paddingL}}}", $"{diff} {kvp.Key}").AppendFormat($"{{0,-{maxR + paddingR}}}", kvp.Value.TrimAfter(_loggingMax, true)).AppendLine(newValue.TrimAfter(_loggingMax, true));
-		}
-
-		auditLogger.AppendLine("```");
 
 		AddFileSystemInformation(auditLogger, fileSystemInformation);
 
