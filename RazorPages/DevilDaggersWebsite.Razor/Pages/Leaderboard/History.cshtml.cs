@@ -1,4 +1,4 @@
-﻿using DevilDaggersWebsite.Caches.LeaderboardHistory;
+using DevilDaggersWebsite.Caches.LeaderboardHistory;
 using DevilDaggersWebsite.Dto;
 using DevilDaggersWebsite.Razor.PageModels;
 using DevilDaggersWebsite.Razor.Utils;
@@ -79,7 +79,7 @@ namespace DevilDaggersWebsite.Razor.Pages.Leaderboard
 
 				List<Entry> top100Joins = new();
 				List<Entry> highscores = new();
-				foreach (Entry entry in Leaderboard.Entries)
+				foreach (Entry entry in Leaderboard.Entries.Where(e => e.Rank <= 100))
 				{
 					Entry? entryPrevious = LeaderboardPrevious.Entries.Find(e => e.Id == entry.Id);
 					if (entryPrevious == null)
