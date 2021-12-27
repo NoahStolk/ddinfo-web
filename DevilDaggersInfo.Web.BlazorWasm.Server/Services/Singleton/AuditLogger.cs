@@ -157,8 +157,7 @@ public class AuditLogger
 
 	private static StringBuilder GetAuditLogger<TKey>(string action, ClaimsPrincipal claimsPrincipal, TKey id, string endpointName)
 	{
-		// TODO: Get user from database.
-		return new($"`{action}` by `{claimsPrincipal.Identity?.Name ?? "?"}` for `{GetEntityFromEndpointName(endpointName)}` `{id}`\n");
+		return new($"`{action}` by `{claimsPrincipal.GetName() ?? "?"}` for `{GetEntityFromEndpointName(endpointName)}` `{id}`\n");
 	}
 
 	private static string GetEntityFromEndpointName(string endpointName)
