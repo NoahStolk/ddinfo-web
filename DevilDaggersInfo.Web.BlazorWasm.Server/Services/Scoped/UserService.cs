@@ -192,7 +192,8 @@ public class UserService : IUserService
 		}
 		catch (Exception ex)
 		{
-			_logger.LogWarning(ex, "Exception occurred in method {method} for token {jwt}.", nameof(GetUserByJwt), jwt);
+			ex.Data.Add("JWT", jwt);
+			_logger.LogWarning(ex, "Exception occurred in method {method}.", nameof(GetUserByJwt));
 			return null;
 		}
 	}
