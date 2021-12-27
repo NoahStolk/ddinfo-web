@@ -184,7 +184,7 @@ public class UserService : IUserService
 				return null;
 			}
 
-			string? name = principal.FindFirst(ClaimTypes.NameIdentifier)?.Value;
+			string? name = principal.GetName();
 			return _dbContext.Users
 				.Include(u => u.UserRoles)!
 					.ThenInclude(ur => ur.Role)
