@@ -1,12 +1,21 @@
+using Microsoft.IdentityModel.Tokens;
+using System.IdentityModel.Tokens.Jwt;
+using System.Linq;
+using System.Security.Claims;
+
 namespace DevilDaggersInfo.Web.BlazorWasm.Server.Services.Scoped;
 
 public class UserService : IUserService
 {
 	private readonly ApplicationDbContext _dbContext;
+	private readonly IConfiguration _configuration;
+	private readonly ILogger<UserService> _logger;
 
-	public UserService(ApplicationDbContext context)
+	public UserService(ApplicationDbContext context, IConfiguration configuration, ILogger<UserService> logger)
 	{
 		_dbContext = context;
+		_configuration = configuration;
+		_logger = logger;
 	}
 
 	public UserEntity? Authenticate(string name, string password)
@@ -23,10 +32,6 @@ public class UserService : IUserService
 
 		return user;
 	}
-
-	public List<UserEntity> GetAll() => _dbContext.Users.ToList();
-
-	public UserEntity? GetById(int id) => _dbContext.Users.Find(id);
 
 	public UserEntity Create(string name, string password)
 	{
@@ -119,5 +124,77 @@ public class UserService : IUserService
 		}
 
 		return true;
+	}
+
+	public string GenerateJwt(UserEntity userEntity)
+	{
+		string keyString = _configuration["JwtKey"];
+		byte[] keyBytes = Encoding.ASCII.GetBytes(keyString);
+
+		Claim claimNameIdentifier = new(ClaimTypes.NameIdentifier, userEntity.Name);
+		List<Claim> claimRoles = userEntity.UserRoles?.Select(ur => ur.Role?.Name).Where(s => s != null).Select(s => new Claim(ClaimTypes.Role, s!)).ToList()!;
+		List<Claim> allClaims = new() { claimNameIdentifier };
+		allClaims.AddRange(claimRoles);
+		ClaimsIdentity claimsIdentity = new(allClaims, "serverAuth");
+
+		SecurityTokenDescriptor tokenDescriptor = new()
+		{
+			Subject = claimsIdentity,
+			Expires = DateTime.UtcNow.AddDays(7),
+			SigningCredentials = new SigningCredentials(new SymmetricSecurityKey(keyBytes), SecurityAlgorithms.HmacSha256Signature),
+		};
+
+		JwtSecurityTokenHandler tokenHandler = new();
+		SecurityToken? token = tokenHandler.CreateToken(tokenDescriptor);
+
+		return tokenHandler.WriteToken(token);
+	}
+
+	public UserEntity? GetUserByJwt(string jwt)
+	{
+		try
+		{
+			string keyString = _configuration["JwtKey"];
+			byte[] keyBytes = Encoding.ASCII.GetBytes(keyString);
+
+			TokenValidationParameters tokenValidationParameters = new()
+			{
+				ValidateIssuerSigningKey = true,
+				IssuerSigningKey = new SymmetricSecurityKey(keyBytes),
+				ValidateIssuer = false,
+				ValidateAudience = false,
+			};
+
+			JwtSecurityTokenHandler tokenHandler = new();
+			ClaimsPrincipal principal = tokenHandler.ValidateToken(jwt, tokenValidationParameters, out SecurityToken securityToken);
+			if (securityToken is not JwtSecurityToken jwtSecurityToken)
+			{
+				_logger.LogWarning("Security token was not of type JwtSecurityToken.");
+				return null;
+			}
+
+			if (DateTime.UtcNow >= jwtSecurityToken.ValidTo)
+			{
+				_logger.LogWarning("Token is expired.");
+				return null;
+			}
+
+			if (!jwtSecurityToken.Header.Alg.Equals(SecurityAlgorithms.HmacSha256, StringComparison.OrdinalIgnoreCase))
+			{
+				_logger.LogWarning("Incorrect algorithm {alg} was used for JWT token.", jwtSecurityToken.Header.Alg);
+				return null;
+			}
+
+			string? name = principal.FindFirst(ClaimTypes.NameIdentifier)?.Value;
+			return _dbContext.Users
+				.Include(u => u.UserRoles)!
+					.ThenInclude(ur => ur.Role)
+				.FirstOrDefault(u => u.Name == name);
+		}
+		catch (Exception ex)
+		{
+			_logger.LogError(ex, "Exception occurred in method {method}.", nameof(GetUserByJwt));
+			return null;
+		}
 	}
 }

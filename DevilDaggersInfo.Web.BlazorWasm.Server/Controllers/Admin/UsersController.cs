@@ -1,11 +1,13 @@
 using DevilDaggersInfo.Web.BlazorWasm.Shared.Dto;
 using DevilDaggersInfo.Web.BlazorWasm.Shared.Dto.Admin.Users;
 using DevilDaggersInfo.Web.BlazorWasm.Shared.Enums.Sortings.Admin;
+using Microsoft.AspNetCore.Authorization;
 
 namespace DevilDaggersInfo.Web.BlazorWasm.Server.Controllers.Admin;
 
 [Route("api/admin/users")]
 [ApiController]
+[Authorize(Roles = Roles.Admin)]
 public class UsersController : ControllerBase
 {
 	private readonly ApplicationDbContext _dbContext;

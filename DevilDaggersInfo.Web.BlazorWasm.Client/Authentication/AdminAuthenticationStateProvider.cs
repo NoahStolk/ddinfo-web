@@ -1,6 +1,10 @@
 using Blazored.LocalStorage;
+using DevilDaggersInfo.Web.BlazorWasm.Client.HttpClients;
+using DevilDaggersInfo.Web.BlazorWasm.Shared.Dto.Public.Authentication;
 using DevilDaggersInfo.Web.BlazorWasm.Shared.Extensions;
 using Microsoft.AspNetCore.Components.Authorization;
+using System.Net.Http.Json;
+using System.Security.Claims;
 
 namespace DevilDaggersInfo.Web.BlazorWasm.Client.Authentication;
 
@@ -9,16 +13,39 @@ public class AdminAuthenticationStateProvider : AuthenticationStateProvider
 	public const string LocalStorageAuthKey = "auth";
 
 	private readonly ILocalStorageService _localStorageService;
+	private readonly PublicApiHttpClient _httpClient;
 
-	public AdminAuthenticationStateProvider(ILocalStorageService localStorageService)
+	public AdminAuthenticationStateProvider(ILocalStorageService localStorageService, PublicApiHttpClient httpClient)
 	{
 		_localStorageService = localStorageService;
+		_httpClient = httpClient;
 	}
 
 	public override async Task<AuthenticationState> GetAuthenticationStateAsync()
 	{
 		string token = await _localStorageService.GetItemAsStringAsync(LocalStorageAuthKey);
-		return await Task.FromResult(new AuthenticationState(token.CreateClaimsPrincipalFromJwtTokenString()));
+		if (string.IsNullOrEmpty(token))
+			return DefaultState();
+
+		HttpResponseMessage httpResponseMessage = await _httpClient.Authenticate(new AuthenticationRequest { Jwt = token });
+
+		if (httpResponseMessage.StatusCode != HttpStatusCode.OK)
+			return DefaultState();
+
+		AuthenticationResponse? authenticationResponse = await httpResponseMessage.Content.ReadFromJsonAsync<AuthenticationResponse>() ?? throw new($"Could not deserialize {nameof(AuthenticationResponse)}.");
+		if (authenticationResponse == null || string.IsNullOrEmpty(authenticationResponse.Name))
+			return DefaultState();
+
+		Claim claimNameIdentifier = new(ClaimTypes.NameIdentifier, authenticationResponse.Name);
+		List<Claim> claimRoles = authenticationResponse.RoleNames.Select(s => new Claim(ClaimTypes.Role, s!)).ToList()!;
+		List<Claim> allClaims = new() { claimNameIdentifier };
+		allClaims.AddRange(claimRoles);
+		ClaimsIdentity claimsIdentity = new(allClaims, "serverAuth");
+		ClaimsPrincipal claimsPrincipal = new(claimsIdentity);
+
+		return new AuthenticationState(claimsPrincipal);
+
+		static AuthenticationState DefaultState() => new(new ClaimsPrincipal(new ClaimsIdentity()));
 	}
 
 	public async Task SetTokenAsync(string? token)

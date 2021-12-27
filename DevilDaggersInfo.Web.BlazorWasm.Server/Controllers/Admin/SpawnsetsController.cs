@@ -3,11 +3,13 @@ using DevilDaggersInfo.Web.BlazorWasm.Server.Converters.Admin;
 using DevilDaggersInfo.Web.BlazorWasm.Shared.Dto;
 using DevilDaggersInfo.Web.BlazorWasm.Shared.Dto.Admin.Spawnsets;
 using DevilDaggersInfo.Web.BlazorWasm.Shared.Enums.Sortings.Admin;
+using Microsoft.AspNetCore.Authorization;
 
 namespace DevilDaggersInfo.Web.BlazorWasm.Server.Controllers.Admin;
 
 [Route("api/admin/spawnsets")]
 [ApiController]
+[Authorize(Roles = Roles.Spawnsets)]
 public class SpawnsetsController : ControllerBase
 {
 	private readonly ApplicationDbContext _dbContext;
