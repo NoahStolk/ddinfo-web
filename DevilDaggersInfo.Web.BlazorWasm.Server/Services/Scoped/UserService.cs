@@ -1,5 +1,6 @@
 using Microsoft.IdentityModel.Tokens;
 using System.IdentityModel.Tokens.Jwt;
+using System.Linq;
 using System.Security.Claims;
 
 namespace DevilDaggersInfo.Web.BlazorWasm.Server.Services.Scoped;
@@ -131,9 +132,10 @@ public class UserService : IUserService
 		byte[] keyBytes = Encoding.ASCII.GetBytes(keyString);
 
 		Claim claimNameIdentifier = new(ClaimTypes.NameIdentifier, userEntity.Name);
-		Claim claimRole = new(ClaimTypes.Role, string.Join(',', userEntity.UserRoles?.Select(ur => ur.Role?.Name).Where(s => s != null).OrderBy(s => s).ToList() ?? new List<string>()!));
-
-		ClaimsIdentity claimsIdentity = new(new[] { claimNameIdentifier, claimRole }, "serverAuth");
+		List<Claim> claimRoles = userEntity.UserRoles?.Select(ur => ur.Role?.Name).Where(s => s != null).Select(s => new Claim(ClaimTypes.Role, s!)).ToList()!;
+		List<Claim> allClaims = new() { claimNameIdentifier };
+		allClaims.AddRange(claimRoles);
+		ClaimsIdentity claimsIdentity = new(allClaims, "serverAuth");
 
 		SecurityTokenDescriptor tokenDescriptor = new()
 		{

@@ -36,9 +36,11 @@ public class AdminAuthenticationStateProvider : AuthenticationStateProvider
 		if (authenticationResponse == null || string.IsNullOrEmpty(authenticationResponse.Name))
 			return DefaultState();
 
-		Claim claimName = new(ClaimTypes.NameIdentifier, authenticationResponse.Name);
-		Claim claimRole = new(ClaimTypes.Role, string.Join(',', authenticationResponse.RoleNames));
-		ClaimsIdentity claimsIdentity = new(new[] { claimName, claimRole }, "serverAuth");
+		Claim claimNameIdentifier = new(ClaimTypes.NameIdentifier, authenticationResponse.Name);
+		List<Claim> claimRoles = authenticationResponse.RoleNames.Select(s => new Claim(ClaimTypes.Role, s!)).ToList()!;
+		List<Claim> allClaims = new() { claimNameIdentifier };
+		allClaims.AddRange(claimRoles);
+		ClaimsIdentity claimsIdentity = new(allClaims, "serverAuth");
 		ClaimsPrincipal claimsPrincipal = new(claimsIdentity);
 
 		return new AuthenticationState(claimsPrincipal);
