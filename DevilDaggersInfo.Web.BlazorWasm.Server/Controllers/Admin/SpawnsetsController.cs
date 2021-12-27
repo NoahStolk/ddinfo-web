@@ -9,7 +9,6 @@ namespace DevilDaggersInfo.Web.BlazorWasm.Server.Controllers.Admin;
 
 [Route("api/admin/spawnsets")]
 [ApiController]
-[Authorize(Roles = Roles.Spawnsets)]
 public class SpawnsetsController : ControllerBase
 {
 	private readonly ApplicationDbContext _dbContext;
@@ -27,6 +26,7 @@ public class SpawnsetsController : ControllerBase
 
 	[HttpGet]
 	[ProducesResponseType(StatusCodes.Status200OK)]
+	[Authorize(Roles = Roles.Spawnsets)]
 	public ActionResult<Page<GetSpawnsetForOverview>> GetSpawnsets(
 		[Range(0, 1000)] int pageIndex = 0,
 		[Range(PagingConstants.PageSizeMin, PagingConstants.PageSizeMax)] int pageSize = PagingConstants.PageSizeDefault,
@@ -60,6 +60,7 @@ public class SpawnsetsController : ControllerBase
 
 	[HttpGet("names")]
 	[ProducesResponseType(StatusCodes.Status200OK)]
+	[Authorize(Roles = Roles.CustomLeaderboards)]
 	public ActionResult<List<GetSpawnsetName>> GetSpawnsetNames()
 	{
 		var spawnsets = _dbContext.Spawnsets
@@ -77,6 +78,7 @@ public class SpawnsetsController : ControllerBase
 	[HttpGet("{id}")]
 	[ProducesResponseType(StatusCodes.Status200OK)]
 	[ProducesResponseType(StatusCodes.Status404NotFound)]
+	[Authorize(Roles = Roles.Spawnsets)]
 	public ActionResult<GetSpawnset> GetSpawnsetById(int id)
 	{
 		SpawnsetEntity? spawnset = _dbContext.Spawnsets
@@ -91,6 +93,7 @@ public class SpawnsetsController : ControllerBase
 	[HttpPost]
 	[ProducesResponseType(StatusCodes.Status200OK)]
 	[ProducesResponseType(StatusCodes.Status400BadRequest)]
+	[Authorize(Roles = Roles.Spawnsets)]
 	public async Task<ActionResult> AddSpawnset(AddSpawnset addSpawnset)
 	{
 		if (!SpawnsetBinary.TryParse(addSpawnset.FileContents, out _))
@@ -134,6 +137,7 @@ public class SpawnsetsController : ControllerBase
 	[ProducesResponseType(StatusCodes.Status200OK)]
 	[ProducesResponseType(StatusCodes.Status400BadRequest)]
 	[ProducesResponseType(StatusCodes.Status404NotFound)]
+	[Authorize(Roles = Roles.Spawnsets)]
 	public async Task<ActionResult> EditSpawnsetById(int id, EditSpawnset editSpawnset)
 	{
 		if (!_dbContext.Players.Any(p => p.Id == editSpawnset.PlayerId))
@@ -182,6 +186,7 @@ public class SpawnsetsController : ControllerBase
 	[ProducesResponseType(StatusCodes.Status200OK)]
 	[ProducesResponseType(StatusCodes.Status400BadRequest)]
 	[ProducesResponseType(StatusCodes.Status404NotFound)]
+	[Authorize(Roles = Roles.Spawnsets)]
 	public async Task<ActionResult> DeleteSpawnsetById(int id)
 	{
 		SpawnsetEntity? spawnset = _dbContext.Spawnsets.FirstOrDefault(s => s.Id == id);

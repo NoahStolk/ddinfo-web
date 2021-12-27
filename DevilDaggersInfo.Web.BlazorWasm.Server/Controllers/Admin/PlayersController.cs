@@ -8,7 +8,6 @@ namespace DevilDaggersInfo.Web.BlazorWasm.Server.Controllers.Admin;
 
 [Route("api/admin/players")]
 [ApiController]
-[Authorize(Roles = Roles.Players)]
 public class PlayersController : ControllerBase
 {
 	private readonly ApplicationDbContext _dbContext;
@@ -22,6 +21,7 @@ public class PlayersController : ControllerBase
 
 	[HttpGet]
 	[ProducesResponseType(StatusCodes.Status200OK)]
+	[Authorize(Roles = Roles.Players)]
 	public ActionResult<Page<GetPlayerForOverview>> GetPlayers(
 		[Range(0, 1000)] int pageIndex = 0,
 		[Range(PagingConstants.PageSizeMin, PagingConstants.PageSizeMax)] int pageSize = PagingConstants.PageSizeDefault,
@@ -65,6 +65,7 @@ public class PlayersController : ControllerBase
 
 	[HttpGet("names")]
 	[ProducesResponseType(StatusCodes.Status200OK)]
+	[Authorize(Roles = $"{Roles.Mods},{Roles.Spawnsets}")]
 	public ActionResult<List<GetPlayerName>> GetPlayerNames()
 	{
 		var players = _dbContext.Players
@@ -82,6 +83,7 @@ public class PlayersController : ControllerBase
 	[HttpGet("{id}")]
 	[ProducesResponseType(StatusCodes.Status200OK)]
 	[ProducesResponseType(StatusCodes.Status404NotFound)]
+	[Authorize(Roles = Roles.Players)]
 	public ActionResult<GetPlayer> GetPlayerById(int id)
 	{
 		PlayerEntity? player = _dbContext.Players
@@ -100,6 +102,7 @@ public class PlayersController : ControllerBase
 	[ProducesResponseType(StatusCodes.Status200OK)]
 	[ProducesResponseType(StatusCodes.Status400BadRequest)]
 	[ProducesResponseType(StatusCodes.Status409Conflict)]
+	[Authorize(Roles = Roles.Players)]
 	public async Task<ActionResult> AddPlayer(AddPlayer addPlayer)
 	{
 		if (addPlayer.BanType != BanType.NotBanned)
@@ -179,6 +182,7 @@ public class PlayersController : ControllerBase
 	[ProducesResponseType(StatusCodes.Status200OK)]
 	[ProducesResponseType(StatusCodes.Status400BadRequest)]
 	[ProducesResponseType(StatusCodes.Status404NotFound)]
+	[Authorize(Roles = Roles.Players)]
 	public async Task<ActionResult> EditPlayerById(int id, EditPlayer editPlayer)
 	{
 		if (editPlayer.BanType != BanType.NotBanned)
@@ -278,6 +282,7 @@ public class PlayersController : ControllerBase
 	[ProducesResponseType(StatusCodes.Status200OK)]
 	[ProducesResponseType(StatusCodes.Status400BadRequest)]
 	[ProducesResponseType(StatusCodes.Status404NotFound)]
+	[Authorize(Roles = Roles.Players)]
 	public async Task<ActionResult> DeletePlayerById(int id)
 	{
 		PlayerEntity? player = _dbContext.Players
