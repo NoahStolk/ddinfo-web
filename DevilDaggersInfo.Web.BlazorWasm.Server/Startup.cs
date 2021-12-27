@@ -6,8 +6,10 @@ using DevilDaggersInfo.Web.BlazorWasm.Server.Caches.SpawnsetSummaries;
 using DevilDaggersInfo.Web.BlazorWasm.Server.HostedServices;
 using DevilDaggersInfo.Web.BlazorWasm.Server.Middleware;
 using DevilDaggersInfo.Web.BlazorWasm.Server.NSwag;
+using Microsoft.AspNetCore.Authentication.JwtBearer;
 using Microsoft.AspNetCore.DataProtection;
 using Microsoft.AspNetCore.Rewrite;
+using Microsoft.IdentityModel.Tokens;
 using NJsonSchema;
 using System.Globalization;
 
@@ -75,6 +77,25 @@ public class Startup
 		// Use a transient for ToolHelper so we can update the Changelogs.json file without having to re-instantiate this.
 		services.AddTransient<IToolHelper, ToolHelper>();
 
+		services.AddAuthentication(options =>
+			{
+				options.DefaultAuthenticateScheme = JwtBearerDefaults.AuthenticationScheme;
+				options.DefaultChallengeScheme = JwtBearerDefaults.AuthenticationScheme;
+			})
+			.AddJwtBearer(jwtBearerOptions =>
+			{
+				jwtBearerOptions.RequireHttpsMetadata = true;
+				jwtBearerOptions.SaveToken = true;
+				jwtBearerOptions.TokenValidationParameters = new TokenValidationParameters
+				{
+					ValidateIssuerSigningKey = true,
+					IssuerSigningKey = new SymmetricSecurityKey(Encoding.ASCII.GetBytes(Configuration["JwtKey"])),
+					ValidateIssuer = false,
+					ValidateAudience = false,
+					ClockSkew = TimeSpan.Zero,
+				};
+			});
+
 		services.AddSwaggerDocument(config =>
 		{
 			config.PostProcess = document =>
@@ -97,7 +118,6 @@ public class Startup
 		CultureInfo.DefaultThreadCurrentUICulture = CultureInfo.InvariantCulture;
 
 		app.UseMiddleware<ResponseTimeMiddleware>();
-		app.UseMiddleware<AdminAuthenticationMiddleware>();
 
 		// Do not change order of redirects.
 		RewriteOptions options = new RewriteOptions()
@@ -141,6 +161,9 @@ public class Startup
 		app.UseRouting();
 
 		app.UseCors(_defaultCorsPolicy);
+
+		app.UseAuthentication();
+		app.UseAuthorization();
 
 		app.UseEndpoints(endpoints =>
 		{

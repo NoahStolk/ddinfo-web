@@ -2,11 +2,13 @@ using DevilDaggersInfo.Web.BlazorWasm.Server.Converters.Admin;
 using DevilDaggersInfo.Web.BlazorWasm.Shared.Dto;
 using DevilDaggersInfo.Web.BlazorWasm.Shared.Dto.Admin.CustomEntries;
 using DevilDaggersInfo.Web.BlazorWasm.Shared.Enums.Sortings.Admin;
+using Microsoft.AspNetCore.Authorization;
 
 namespace DevilDaggersInfo.Web.BlazorWasm.Server.Controllers.Admin;
 
 [Route("api/admin/custom-entries")]
 [ApiController]
+[Authorize(Roles = Roles.Admin)]
 public class CustomEntriesController : ControllerBase
 {
 	private readonly ApplicationDbContext _dbContext;

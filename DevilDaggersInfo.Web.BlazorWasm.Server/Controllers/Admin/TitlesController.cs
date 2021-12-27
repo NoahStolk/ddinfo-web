@@ -2,11 +2,13 @@ using DevilDaggersInfo.Web.BlazorWasm.Server.Converters.Admin;
 using DevilDaggersInfo.Web.BlazorWasm.Shared.Dto;
 using DevilDaggersInfo.Web.BlazorWasm.Shared.Dto.Admin.Titles;
 using DevilDaggersInfo.Web.BlazorWasm.Shared.Enums.Sortings.Admin;
+using Microsoft.AspNetCore.Authorization;
 
 namespace DevilDaggersInfo.Web.BlazorWasm.Server.Controllers.Admin;
 
 [Route("api/admin/titles")]
 [ApiController]
+[Authorize(Roles = Roles.Admin)]
 public class TitlesController : ControllerBase
 {
 	private readonly ApplicationDbContext _dbContext;

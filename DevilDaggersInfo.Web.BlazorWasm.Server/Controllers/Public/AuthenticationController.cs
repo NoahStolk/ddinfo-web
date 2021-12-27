@@ -1,7 +1,4 @@
 using DevilDaggersInfo.Web.BlazorWasm.Shared.Dto.Public.Authentication;
-using Microsoft.IdentityModel.Tokens;
-using System.IdentityModel.Tokens.Jwt;
-using System.Security.Claims;
 
 namespace DevilDaggersInfo.Web.BlazorWasm.Server.Controllers.Public;
 
@@ -21,6 +18,23 @@ public class AuthenticationController : ControllerBase
 		_logger = logger;
 	}
 
+	[HttpPost("authenticate")]
+	[ProducesResponseType(StatusCodes.Status200OK)]
+	[ProducesResponseType(StatusCodes.Status400BadRequest)]
+	public ActionResult<AuthenticationResponse> Authenticate([FromBody] AuthenticationRequest authenticationRequest)
+	{
+		UserEntity? user = _userService.GetUserByJwt(authenticationRequest.Jwt);
+		if (user == null)
+			return BadRequest("Failed to authenticate. The token is invalid.");
+
+		return new AuthenticationResponse
+		{
+			Id = user.Id,
+			Name = user.Name,
+			RoleNames = user.UserRoles?.Select(ur => ur.Role?.Name).Where(s => s != null).ToList()!,
+		};
+	}
+
 	[HttpPost("login")]
 	[ProducesResponseType(StatusCodes.Status200OK)]
 	[ProducesResponseType(StatusCodes.Status400BadRequest)]
@@ -33,27 +47,15 @@ public class AuthenticationController : ControllerBase
 			return BadRequest("Username or password is incorrect.");
 		}
 
-		JwtSecurityTokenHandler tokenHandler = new();
-		SecurityTokenDescriptor tokenDescriptor = new()
-		{
-			Subject = new ClaimsIdentity(new Claim[]
-			{
-				new Claim(ClaimTypes.Name, user.Name),
-				new Claim(ClaimTypes.Role, string.Join(",", user.UserRoles!.ConvertAll(r => r.Role!.Name))),
-			}),
-			Expires = DateTime.UtcNow.AddDays(7),
-			SigningCredentials = new SigningCredentials(new SymmetricSecurityKey(AuthSecrets.AuthKey), SecurityAlgorithms.HmacSha256Signature),
-		};
-		SecurityToken token = tokenHandler.CreateToken(tokenDescriptor);
-		string tokenString = tokenHandler.WriteToken(token);
+		string tokenString = _userService.GenerateJwt(user);
 
 		_logger.LogWarning("User {user} logged in successfully.", loginRequest.Name);
-		return Ok(new LoginResponse
+		return new LoginResponse
 		{
 			Id = user.Id,
 			Name = user.Name,
 			Token = tokenString,
-		});
+		};
 	}
 
 	[HttpPost("register")]

@@ -41,6 +41,7 @@
 		<PackageVersion Include="Pomelo.EntityFrameworkCore.MySql" Version="6.0.0" />
 	</ItemGroup>
 	<ItemGroup Label="JWT">
+		<PackageVersion Include="Microsoft.AspNetCore.Authentication.JwtBearer" Version="6.0.1" />
 		<PackageVersion Include="System.IdentityModel.Tokens.Jwt" Version="6.15.0" />
 	</ItemGroup>
 	<ItemGroup Label="Discord integration">
