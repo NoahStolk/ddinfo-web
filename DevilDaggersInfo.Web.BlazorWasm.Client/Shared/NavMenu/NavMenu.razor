@@ -1,3 +1,5 @@
+@inject AuthenticationStateProvider Auth
+
 <div class="px-4 py-2 sm:hidden">
 	<a href="" class="font-goethe text-3xl text-color-text hover:text-white">DevilDaggers.Info</a>
 	<button class="float-right sm:hidden text-xl pt-1" @onclick="() => ShowNavMenuMobile = !ShowNavMenuMobile">
@@ -47,14 +49,32 @@
 			<AuthorizeView>
 				<Authorized>
 					<NavDropdown Text="Admin">
-						<NavItem Href="admin/custom-entries" CssClass="text-lg" IconType="ellipses" Text="Custom Entries" />
-						<NavItem Href="admin/custom-leaderboards" CssClass="text-lg" IconType="list" Text="Custom Leaderboards" />
-						<NavItem Href="admin/donations" CssClass="text-lg" IconType="heart" Text="Donations" />
-						<NavItem Href="admin/mods" CssClass="text-lg" IconType="brush" Text="Mods" />
-						<NavItem Href="admin/players" CssClass="text-lg" IconType="people" Text="Players" />
-						<NavItem Href="admin/spawnsets" CssClass="text-lg" IconType="grid-three-up" Text="Spawnsets" />
-						<NavItem Href="admin/titles" CssClass="text-lg" IconType="badge" Text="Titles" />
-						<NavItem Href="admin/users" CssClass="text-lg" IconType="person" Text="Users" />
+						@if (_roles.Contains("Admin"))
+						{
+							<NavItem Href="admin/custom-entries" CssClass="text-lg" IconType="ellipses" Text="Custom Entries" />
+							<NavItem Href="admin/titles" CssClass="text-lg" IconType="badge" Text="Titles" />
+							<NavItem Href="admin/users" CssClass="text-lg" IconType="person" Text="Users" />
+						}
+						@if (_roles.Contains("CustomLeaderboards"))
+						{
+							<NavItem Href="admin/custom-leaderboards" CssClass="text-lg" IconType="list" Text="Custom Leaderboards" />
+						}
+						@if (_roles.Contains("Donations"))
+						{
+							<NavItem Href="admin/donations" CssClass="text-lg" IconType="heart" Text="Donations" />
+						}
+						@if (_roles.Contains("Mods"))
+						{
+							<NavItem Href="admin/mods" CssClass="text-lg" IconType="brush" Text="Mods" />
+						}
+						@if (_roles.Contains("Players"))
+						{
+							<NavItem Href="admin/players" CssClass="text-lg" IconType="people" Text="Players" />
+						}
+						@if (_roles.Contains("Spawnsets"))
+						{
+							<NavItem Href="admin/spawnsets" CssClass="text-lg" IconType="grid-three-up" Text="Spawnsets" />
+						}
 					</NavDropdown>
 				</Authorized>
 			</AuthorizeView>
@@ -64,11 +84,21 @@
 
 @code
 {
+	private List<string> _roles = new();
+
 	public bool ShowNavMenuMobile { get; set; } = false;
 
 	public bool ExpandNavMenu { get; set; } = false;
 
 	public List<NavDropdown> NavDropdowns { get; } = new();
+
+	protected override async Task OnInitializedAsync()
+	{
+		AuthenticationState auth = await Auth.GetAuthenticationStateAsync();
+		_roles = auth.User?.GetRoles() ?? new();
+
+		await base.OnInitializedAsync();
+	}
 
 	public void ShowSubMenu(NavDropdown navDropdown)
 	{
