@@ -1,3 +1,4 @@
+using DevilDaggersInfo.Web.BlazorWasm.Shared.Utils;
 using Microsoft.IdentityModel.Tokens;
 using System.IdentityModel.Tokens.Jwt;
 using System.Security.Claims;
@@ -130,15 +131,9 @@ public class UserService : IUserService
 		string keyString = _configuration["JwtKey"];
 		byte[] keyBytes = Encoding.ASCII.GetBytes(keyString);
 
-		Claim claimNameIdentifier = new(ClaimTypes.NameIdentifier, userEntity.Name);
-		List<Claim> claimRoles = userEntity.UserRoles?.Select(ur => ur.Role?.Name).Where(s => s != null).Select(s => new Claim(ClaimTypes.Role, s!)).ToList()!;
-		List<Claim> allClaims = new() { claimNameIdentifier };
-		allClaims.AddRange(claimRoles);
-		ClaimsIdentity claimsIdentity = new(allClaims, "serverAuth");
-
 		SecurityTokenDescriptor tokenDescriptor = new()
 		{
-			Subject = claimsIdentity,
+			Subject = ClaimsIdentityUtils.CreateClaimsIdentity(userEntity.Name, userEntity.UserRoles?.Select(ur => ur.Role?.Name).Where(s => s != null).ToList() ?? new()),
 			Expires = DateTime.UtcNow.AddDays(7),
 			SigningCredentials = new SigningCredentials(new SymmetricSecurityKey(keyBytes), SecurityAlgorithms.HmacSha256Signature),
 		};

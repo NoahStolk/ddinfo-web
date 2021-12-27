@@ -2,6 +2,7 @@ using Blazored.LocalStorage;
 using DevilDaggersInfo.Web.BlazorWasm.Client.HttpClients;
 using DevilDaggersInfo.Web.BlazorWasm.Shared.Dto.Public.Authentication;
 using DevilDaggersInfo.Web.BlazorWasm.Shared.Extensions;
+using DevilDaggersInfo.Web.BlazorWasm.Shared.Utils;
 using Microsoft.AspNetCore.Components.Authorization;
 using System.Net.Http.Json;
 using System.Security.Claims;
@@ -36,11 +37,7 @@ public class AdminAuthenticationStateProvider : AuthenticationStateProvider
 		if (authenticationResponse == null || string.IsNullOrEmpty(authenticationResponse.Name))
 			return DefaultState();
 
-		Claim claimNameIdentifier = new(ClaimTypes.NameIdentifier, authenticationResponse.Name);
-		List<Claim> claimRoles = authenticationResponse.RoleNames.Select(s => new Claim(ClaimTypes.Role, s!)).ToList()!;
-		List<Claim> allClaims = new() { claimNameIdentifier };
-		allClaims.AddRange(claimRoles);
-		ClaimsIdentity claimsIdentity = new(allClaims, "serverAuth");
+		ClaimsIdentity claimsIdentity = ClaimsIdentityUtils.CreateClaimsIdentity(authenticationResponse.Name, authenticationResponse.RoleNames);
 		ClaimsPrincipal claimsPrincipal = new(claimsIdentity);
 
 		return new AuthenticationState(claimsPrincipal);
