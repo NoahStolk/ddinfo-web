@@ -19,7 +19,10 @@
 
 @if (_page == null)
 {
-	<Loading />
+	if (!_errorThrown)
+	{
+		<Loading />
+	}
 }
 else
 {
@@ -77,6 +80,7 @@ else
 
 	private Page<TGetDto>? _page;
 	private string? _errorMessage;
+	private bool _errorThrown;
 	private Dictionary<PropertyInfo, bool> _properties = ReflectionUtils.GetDtoDisplayProperties<TGetDto>();
 	private Dictionary<string, bool> _sortings = null!;
 
@@ -133,6 +137,8 @@ else
 				_errorMessage = $"HTTP {(int)ex.StatusCode}: {ex.StatusCode}";
 			else
 				_errorMessage = $"An error occurred while sending the request. {ex.Message}";
+
+			_errorThrown = true;
 		}
 	}
 
