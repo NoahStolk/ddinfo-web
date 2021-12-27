@@ -42,9 +42,9 @@ public class AdminAuthenticationStateProvider : AuthenticationStateProvider
 		ClaimsPrincipal claimsPrincipal = new(claimsIdentity);
 
 		return new AuthenticationState(claimsPrincipal);
-	}
 
-	private static AuthenticationState DefaultState() => new AuthenticationState(new ClaimsPrincipal(new ClaimsIdentity()));
+		static AuthenticationState DefaultState() => new(new ClaimsPrincipal(new ClaimsIdentity()));
+	}
 
 	public async Task SetTokenAsync(string? token)
 	{

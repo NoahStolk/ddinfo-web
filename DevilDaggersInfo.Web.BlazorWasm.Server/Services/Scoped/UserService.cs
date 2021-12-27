@@ -150,41 +150,49 @@ public class UserService : IUserService
 
 	public UserEntity? GetUserByJwt(string jwt)
 	{
-		string keyString = _configuration["JwtKey"];
-		byte[] keyBytes = Encoding.ASCII.GetBytes(keyString);
-
-		TokenValidationParameters tokenValidationParameters = new()
+		try
 		{
-			ValidateIssuerSigningKey = true,
-			IssuerSigningKey = new SymmetricSecurityKey(keyBytes),
-			ValidateIssuer = false,
-			ValidateAudience = false,
-		};
+			string keyString = _configuration["JwtKey"];
+			byte[] keyBytes = Encoding.ASCII.GetBytes(keyString);
 
-		JwtSecurityTokenHandler tokenHandler = new();
-		ClaimsPrincipal principal = tokenHandler.ValidateToken(jwt, tokenValidationParameters, out SecurityToken securityToken);
-		if (securityToken is not JwtSecurityToken jwtSecurityToken)
+			TokenValidationParameters tokenValidationParameters = new()
+			{
+				ValidateIssuerSigningKey = true,
+				IssuerSigningKey = new SymmetricSecurityKey(keyBytes),
+				ValidateIssuer = false,
+				ValidateAudience = false,
+			};
+
+			JwtSecurityTokenHandler tokenHandler = new();
+			ClaimsPrincipal principal = tokenHandler.ValidateToken(jwt, tokenValidationParameters, out SecurityToken securityToken);
+			if (securityToken is not JwtSecurityToken jwtSecurityToken)
+			{
+				_logger.LogWarning("Security token was not of type JwtSecurityToken.");
+				return null;
+			}
+
+			if (DateTime.UtcNow >= jwtSecurityToken.ValidTo)
+			{
+				_logger.LogWarning("Token is expired.");
+				return null;
+			}
+
+			if (!jwtSecurityToken.Header.Alg.Equals(SecurityAlgorithms.HmacSha256, StringComparison.OrdinalIgnoreCase))
+			{
+				_logger.LogWarning("Incorrect algorithm {alg} was used for JWT token.", jwtSecurityToken.Header.Alg);
+				return null;
+			}
+
+			string? name = principal.FindFirst(ClaimTypes.NameIdentifier)?.Value;
+			return _dbContext.Users
+				.Include(u => u.UserRoles)!
+					.ThenInclude(ur => ur.Role)
+				.FirstOrDefault(u => u.Name == name);
+		}
+		catch (Exception ex)
 		{
-			_logger.LogWarning("Security token was not of type JwtSecurityToken.");
+			_logger.LogError(ex, "Exception occurred in method {method}.", nameof(GetUserByJwt));
 			return null;
 		}
-
-		if (DateTime.UtcNow >= jwtSecurityToken.ValidTo)
-		{
-			_logger.LogWarning("Token is expired.");
-			return null;
-		}
-
-		if (!jwtSecurityToken.Header.Alg.Equals(SecurityAlgorithms.HmacSha256, StringComparison.OrdinalIgnoreCase))
-		{
-			_logger.LogWarning("Incorrect algorithm {alg} was used for JWT token.", jwtSecurityToken.Header.Alg);
-			return null;
-		}
-
-		string? name = principal.FindFirst(ClaimTypes.NameIdentifier)?.Value;
-		return _dbContext.Users
-			.Include(u => u.UserRoles)!
-				.ThenInclude(ur => ur.Role)
-			.FirstOrDefault(u => u.Name == name);
 	}
 }
