@@ -87,10 +87,7 @@ else
 	protected override async Task OnInitializedAsync()
 	{
 		AuthenticationState auth = await Auth.GetAuthenticationStateAsync();
-		_username = auth.User?.Identity?.Name;
-
-		if (_username?.Contains("unique_name: ") == true)
-			_username = _username[("unique_name: ".Length)..];
+		_username = auth.User?.GetName();
 
 		_sortings = _properties.ToDictionary(pi => pi.Key.Name, _ => true);
 		await Fetch();
