@@ -6,13 +6,18 @@ namespace DevilDaggersInfo.Web.BlazorWasm.Server.HostedServices.DdInfoDiscordBot
 
 public class DdInfoDiscordBotService : IHostedService
 {
+	private readonly IConfiguration _configuration;
+
+	public DdInfoDiscordBotService(IConfiguration configuration)
+	{
+		_configuration = configuration;
+	}
+
 	public async Task StartAsync(CancellationToken cancellationToken)
 	{
-		string token = File.ReadAllText(".botToken");
-
 		using DiscordClient client = new(new()
 		{
-			Token = token,
+			Token = _configuration["BotToken"],
 			TokenType = TokenType.Bot,
 		});
 
