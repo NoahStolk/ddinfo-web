@@ -38,7 +38,7 @@
 		{
 			LoginResponse? authenticationResponse = await httpResponseMessage.Content.ReadFromJsonAsync<LoginResponse>() ?? throw new($"Could not deserialize {nameof(LoginResponse)}.");
 			await Auth.SetTokenAsync(authenticationResponse.Token);
-			Navigation.NavigateTo("/");
+			Navigation.NavigateTo("/", true);
 		}
 		else
 		{
