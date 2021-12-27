@@ -1,4 +1,4 @@
-﻿@model IDefaultLeaderboardPageModel
+@model IDefaultLeaderboardPageModel
 @using DevilDaggersCore.Game
 @using DevilDaggersWebsite.Entities
 @using DevilDaggersWebsite.Razor.Models
@@ -33,7 +33,7 @@
 			GameVersion gameVersion = GameInfo.GetGameVersionFromDate(Model.Leaderboard?.DateTime ?? DateTime.UtcNow) ?? GameVersion.V1;
 			IEnumerable<Donation> donations = dbContext.Donations.AsNoTracking();
 			List<Player> players = dbContext.Players.AsNoTracking().Include(p => p.PlayerTitles).ThenInclude(pt => pt.Title).ToList();
-			foreach (Dto.Entry entry in Model.Leaderboard?.Entries ?? new())
+			foreach (Dto.Entry entry in Model.Leaderboard?.Entries.Take(100) ?? new List<Dto.Entry>())
 			{
 				Player? player = players.FirstOrDefault(p => p.Id == entry.Id);
 

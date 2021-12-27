@@ -1,4 +1,4 @@
-﻿using DevilDaggersWebsite.Clients;
+using DevilDaggersWebsite.Clients;
 using DevilDaggersWebsite.HostedServices.DdInfoDiscordBot;
 using DevilDaggersWebsite.Singletons;
 using DevilDaggersWebsite.Utils;
@@ -6,6 +6,7 @@ using Microsoft.AspNetCore.Hosting;
 using Newtonsoft.Json;
 using System;
 using System.IO;
+using System.Linq;
 using System.Threading;
 using System.Threading.Tasks;
 
@@ -29,17 +30,31 @@ namespace DevilDaggersWebsite.HostedServices
 			if (HistoryFileExistsForDate(DateTime.UtcNow))
 				return;
 
-			Dto.Leaderboard? lb = await LeaderboardClient.Instance.GetScores(1);
-			if (lb != null)
+			Dto.Leaderboard? fullLb = null;
+			for (int i = 0; i < 5;)
 			{
-				string fileName = $"{DateTime.UtcNow:yyyyMMddHHmm}.json";
-				File.WriteAllText(Path.Combine(_environment.WebRootPath, "leaderboard-history", fileName), JsonConvert.SerializeObject(lb));
-				await DiscordLogger.TryLog(Channel.MonitoringTask, $":white_check_mark: Task execution for `{nameof(LeaderboardHistoryBackgroundService)}` succeeded. `{fileName}` was created.");
+				Dto.Leaderboard? partialLb = await LeaderboardClient.Instance.GetScores(100 * i + 1);
+				if (partialLb != null)
+				{
+					if (fullLb == null)
+						fullLb = partialLb;
+					else
+						fullLb.Entries.AddRange(partialLb.Entries);
+
+					i++;
+				}
+				else
+				{
+					// Servers down, wait a few seconds.
+					await Task.Delay(5000, stoppingToken);
+				}
 			}
-			else
-			{
-				await DiscordLogger.TryLog(Channel.MonitoringTask, $":x: Task execution for `{nameof(LeaderboardHistoryBackgroundService)}` failed because the Devil Daggers servers didn't return a leaderboard.");
-			}
+
+			fullLb!.Entries = fullLb.Entries.OrderBy(e => e.Rank).ToList();
+
+			string fileName = $"{DateTime.UtcNow:yyyyMMddHHmm}.json";
+			File.WriteAllText(Path.Combine(_environment.WebRootPath, "leaderboard-history", fileName), JsonConvert.SerializeObject(fullLb));
+			await DiscordLogger.TryLog(Channel.MonitoringTask, $":white_check_mark: Task execution for `{nameof(LeaderboardHistoryBackgroundService)}` succeeded. `{fileName}` with {fullLb.Entries.Count} entries was created.");
 		}
 
 		private bool HistoryFileExistsForDate(DateTime dateTime)
