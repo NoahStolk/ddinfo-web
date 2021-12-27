@@ -1,3 +1,4 @@
+using DevilDaggersInfo.Core.Encryption;
 using DevilDaggersInfo.Web.BlazorWasm.Server.Caches.SpawnsetHashes;
 using DevilDaggersInfo.Web.BlazorWasm.Server.Caches.SpawnsetSummaries;
 using DevilDaggersInfo.Web.BlazorWasm.Server.Converters.Public;
@@ -19,13 +20,18 @@ public class CustomEntriesController : ControllerBase
 	private readonly SpawnsetSummaryCache _spawnsetSummaryCache;
 	private readonly IFileSystemService _fileSystemService;
 
-	public CustomEntriesController(ApplicationDbContext dbContext, ILogger<CustomEntriesController> logger, SpawnsetHashCache spawnsetHashCache, SpawnsetSummaryCache spawnsetSummaryCache, IFileSystemService fileSystemService)
+	private readonly AesBase32Wrapper _encryptionWrapper;
+
+	public CustomEntriesController(ApplicationDbContext dbContext, ILogger<CustomEntriesController> logger, SpawnsetHashCache spawnsetHashCache, SpawnsetSummaryCache spawnsetSummaryCache, IFileSystemService fileSystemService, IConfiguration configuration)
 	{
 		_dbContext = dbContext;
 		_logger = logger;
 		_spawnsetHashCache = spawnsetHashCache;
 		_spawnsetSummaryCache = spawnsetSummaryCache;
 		_fileSystemService = fileSystemService;
+
+		IConfigurationSection section = configuration.GetRequiredSection("CustomLeaderboardSecrets");
+		_encryptionWrapper = new(section["InitializationVector"], section["Password"], section["Salt"]);
 	}
 
 	[HttpGet("{id}/replay")]
@@ -561,7 +567,7 @@ public class CustomEntriesController : ControllerBase
 	{
 		try
 		{
-			return Secrets.EncryptionWrapper.DecodeAndDecrypt(HttpUtility.HtmlDecode(validation));
+			return _encryptionWrapper.DecodeAndDecrypt(HttpUtility.HtmlDecode(validation));
 		}
 		catch (Exception ex)
 		{
