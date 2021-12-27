@@ -37,7 +37,7 @@ public class DiscordLogger : ILogger
 	{
 		DiscordEmbedBuilder builder = new()
 		{
-			Title = (exception?.Message ?? state?.ToString() ?? "No title").TrimAfter(255),
+			Title = (state?.ToString() ?? exception?.Message ?? "No title").TrimAfter(255),
 			Color = config.LogLevels.ContainsKey(logLevel) ? config.LogLevels[logLevel] : DiscordColor.White,
 		};
 

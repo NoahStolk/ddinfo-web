@@ -168,7 +168,7 @@ public class UserService : IUserService
 			ClaimsPrincipal principal = tokenHandler.ValidateToken(jwt, tokenValidationParameters, out SecurityToken securityToken);
 			if (securityToken is not JwtSecurityToken jwtSecurityToken)
 			{
-				_logger.LogWarning("Security token was not of type JwtSecurityToken.");
+				_logger.LogWarning("Security token was not of type {type}.", nameof(JwtSecurityToken));
 				return null;
 			}
 
@@ -192,7 +192,7 @@ public class UserService : IUserService
 		}
 		catch (Exception ex)
 		{
-			_logger.LogError(ex, "Exception occurred in method {method}.", nameof(GetUserByJwt));
+			_logger.LogWarning(ex, "Exception occurred in method {method} for token {jwt}.", nameof(GetUserByJwt), jwt);
 			return null;
 		}
 	}
