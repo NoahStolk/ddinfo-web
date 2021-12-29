@@ -13,7 +13,7 @@ else
 	<LineChart DataOptions="_dataOptions" UniqueName="#world-record-progression-chart" DataSets="@_lineDataSets" Options="_lineChartOptions" />
 
 	<Heading Level=2 Title="World Record Holders" />
-	<div class="grid grid-cols-2 lg:grid-cols-4 xl:grid-cols-6">
+	<div class="grid gap-3 grid-cols-2 lg:grid-cols-4 xl:grid-cols-6">
 		<div>Username(s)</div>
 		<div>Total time held</div>
 		<div class="hidden lg:block">Longest time held consecutively</div>
@@ -30,7 +30,7 @@ else
 		string totalTimeHeldString = $"{totalTimeHeld} day{S(totalTimeHeld)} ({(wrh.TotalTimeHeld / _totalTimeSinceFirstRecord).ToString("0.00%")})";
 		string longestTimeHeldConsecutivelyString = $"{longestTimeHeldConsecutively} day{S(longestTimeHeldConsecutively)}";
 
-		<div class="grid grid-cols-2 lg:grid-cols-4 xl:grid-cols-6 @(isCurrentWrHolder ? "bg-dark-red" : string.Empty)">
+		<div class="grid gap-3 grid-cols-2 lg:grid-cols-4 xl:grid-cols-6 @(isCurrentWrHolder ? "bg-dark-red" : string.Empty)">
 			<div>@string.Join(", ", wrh.Usernames)</div>
 			<div>@totalTimeHeldString</div>
 			<div class="hidden lg:block">@longestTimeHeldConsecutivelyString</div>
