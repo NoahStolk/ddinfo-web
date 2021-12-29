@@ -1,10 +1,13 @@
-using DevilDaggersInfo.Web.BlazorWasm.Server;
+using DevilDaggersInfo.Core.Encryption;
 using DevilDaggersInfo.Web.BlazorWasm.Server.Caches.SpawnsetHashes;
 using DevilDaggersInfo.Web.BlazorWasm.Server.Caches.SpawnsetSummaries;
 using DevilDaggersInfo.Web.BlazorWasm.Server.Controllers.Public;
 using DevilDaggersInfo.Web.BlazorWasm.Server.Enums;
 using DevilDaggersInfo.Web.BlazorWasm.Shared.Dto.Public.CustomEntries;
+using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.Logging;
+using Newtonsoft.Json;
+using System.Text;
 
 namespace DevilDaggersInfo.Test.Web.BlazorWasm.Server;
 
@@ -17,6 +20,7 @@ public class CustomEntryTests
 
 	private readonly Mock<ApplicationDbContext> _dbContext;
 	private readonly CustomEntriesController _customEntriesController;
+	private readonly AesBase32Wrapper _encryptionWrapper;
 
 	public CustomEntryTests()
 	{
@@ -39,7 +43,23 @@ public class CustomEntryTests
 		Mock<SpawnsetSummaryCache> spawnsetSummaryCache = new();
 
 		Mock<ILogger<CustomEntriesController>> controllerLogger = new();
-		_customEntriesController = new CustomEntriesController(_dbContext.Object, controllerLogger.Object, spawnsetHashCache.Object, spawnsetSummaryCache.Object, fileSystemService.Object);
+
+		const string secret = "secretsecretsecr";
+		Dictionary<string, object> appSettings = new()
+		{
+			["CustomLeaderboardSecrets"] = new Dictionary<string, string>
+			{
+				["InitializationVector"] = secret,
+				["Password"] = secret,
+				["Salt"] = secret,
+			},
+		};
+		ConfigurationBuilder builder = new();
+		builder.AddJsonStream(new MemoryStream(Encoding.UTF8.GetBytes(JsonConvert.SerializeObject(appSettings))));
+		IConfigurationRoot configuration = builder.Build();
+
+		_encryptionWrapper = new(secret, secret, secret);
+		_customEntriesController = new CustomEntriesController(_dbContext.Object, controllerLogger.Object, spawnsetHashCache.Object, spawnsetSummaryCache.Object, fileSystemService.Object, configuration);
 
 		if (!SpawnsetBinary.TryParse(File.ReadAllBytes(Path.Combine(TestConstants.DataDirectory, "Spawnsets", "V3")), out _spawnsetBinary!))
 			Assert.Fail("Spawnset could not be parsed.");
@@ -190,7 +210,7 @@ public class CustomEntryTests
 		Assert.IsTrue(problemDetails.Title.StartsWith("Invalid submission"));
 	}
 
-	private static string GetValidation(AddUploadRequest uploadRequest)
+	private string GetValidation(AddUploadRequest uploadRequest)
 	{
 		string toEncrypt = string.Join(
 			";",
@@ -210,7 +230,7 @@ public class CustomEntryTests
 			uploadRequest.IsReplay ? 1 : 0,
 			uploadRequest.SurvivalHashMd5.ByteArrayToHexString(),
 			string.Join(",", new int[3] { uploadRequest.LevelUpTime2, uploadRequest.LevelUpTime3, uploadRequest.LevelUpTime4 }));
-		return HttpUtility.HtmlEncode(Secrets.EncryptionWrapper.EncryptAndEncode(toEncrypt));
+		return HttpUtility.HtmlEncode(_encryptionWrapper.EncryptAndEncode(toEncrypt));
 	}
 
 	private static byte[] GetSpawnsetHash(SpawnsetBinary spawnset)
