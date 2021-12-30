@@ -84,6 +84,12 @@ public partial class LineChart
 					double startX = LerpUtils.RevLerp(DataOptions.MinX, DataOptions.MaxX, end) * ChartWidth;
 					double endX = LerpUtils.RevLerp(DataOptions.MinX, DataOptions.MaxX, background.ChartEndXValue) * ChartWidth;
 
+					if (endX < 0)
+						continue;
+
+					if (startX < 0)
+						startX = 0;
+
 					await _context.SetFillStyleAsync(background.Color);
 					await _context.FillRectAsync(Options.ChartMarginXInPx + startX, Options.ChartMarginYInPx, endX - startX, ChartHeight);
 
