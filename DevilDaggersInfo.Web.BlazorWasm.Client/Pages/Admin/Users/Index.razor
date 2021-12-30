@@ -39,12 +39,12 @@ else
 				<div class="grid gap-2 grid-cols-admin-users @(j++ % 2 == 0 ? "bg-gray-1" : string.Empty)">
 					<div class="overflow-x-hidden">@user.Id</div>
 					<div class="overflow-x-hidden">@user.Name</div>
-					<div class="overflow-x-hidden">@user.IsAdmin</div>
-					<div class="overflow-x-hidden">@user.IsCustomLeaderboardsMaintainer</div>
-					<div class="overflow-x-hidden">@user.IsDonationsMaintainer</div>
-					<div class="overflow-x-hidden">@user.IsModsMaintainer</div>
-					<div class="overflow-x-hidden">@user.IsPlayersMaintainer</div>
-					<div class="overflow-x-hidden">@user.IsSpawnsetsMaintainer</div>
+					<div class="overflow-x-hidden"><button @onclick="async () => await ToggleRole(user.Id, Roles.Admin)">@(user.IsAdmin ? "Revoke" : "Assign")</button></div>
+					<div class="overflow-x-hidden"><button @onclick="async () => await ToggleRole(user.Id, Roles.CustomLeaderboards)">@(user.IsCustomLeaderboardsMaintainer ? "Revoke" : "Assign")</button></div>
+					<div class="overflow-x-hidden"><button @onclick="async () => await ToggleRole(user.Id, Roles.Donations)">@(user.IsDonationsMaintainer ? "Revoke" : "Assign")</button></div>
+					<div class="overflow-x-hidden"><button @onclick="async () => await ToggleRole(user.Id, Roles.Mods)">@(user.IsModsMaintainer ? "Revoke" : "Assign")</button></div>
+					<div class="overflow-x-hidden"><button @onclick="async () => await ToggleRole(user.Id, Roles.Players)">@(user.IsPlayersMaintainer ? "Revoke" : "Assign")</button></div>
+					<div class="overflow-x-hidden"><button @onclick="async () => await ToggleRole(user.Id, Roles.Spawnsets)">@(user.IsSpawnsetsMaintainer ? "Revoke" : "Assign")</button></div>
 					<div><a class="link" href="" @onclick="() => _deletion?.Set(user.Id)" @onclick:preventDefault>Delete</a></div>
 				</div>
 			}
@@ -91,6 +91,12 @@ else
 
 			_errorThrown = true;
 		}
+	}
+
+	private async Task ToggleRole(int userId, string roleName)
+	{
+		await Http.ToggleRole(userId, new() { RoleName = roleName });
+		await Fetch();
 	}
 
 	private void Dismiss()

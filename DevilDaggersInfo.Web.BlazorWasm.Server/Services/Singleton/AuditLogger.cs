@@ -148,6 +148,12 @@ public class AuditLogger
 		await TryLog(Channel.MonitoringAuditLog, auditLogger.ToString());
 	}
 
+	public async Task LogRoleAssign(UserEntity user, string roleName) => await LogRoleChange("ASSIGN", user, roleName);
+
+	public async Task LogRoleRevoke(UserEntity user, string roleName) => await LogRoleChange("REVOKE", user, roleName);
+
+	private async Task LogRoleChange(string action, UserEntity user, string roleName) => await TryLog(Channel.MonitoringAuditLog, $"`{action} ROLE '{roleName}'` for user `{user.Name}`. Make sure to login again for this to take effect in the browser.");
+
 	public async Task LogFileSystemInformation(List<FileSystemInformation>? fileSystemInformation = null)
 	{
 		StringBuilder auditLogger = new();

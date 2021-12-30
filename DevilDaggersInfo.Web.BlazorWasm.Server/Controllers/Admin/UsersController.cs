@@ -44,54 +44,47 @@ public class UsersController : ControllerBase
 			=> user.UserRoles?.Any(ur => ur.Role?.Name == roleName) == true;
 	}
 
-	[HttpPatch("{id}/assign-role")]
+	[HttpPatch("{id}/toggle-role")]
 	[ProducesResponseType(StatusCodes.Status200OK)]
-	[ProducesResponseType(StatusCodes.Status400BadRequest)]
 	[ProducesResponseType(StatusCodes.Status404NotFound)]
-	public ActionResult AssignRole(int id, string roleName)
+	public async Task<ActionResult> ToggleRole(int id, ToggleRole toggleRole)
 	{
+		string roleName = toggleRole.RoleName;
+
+		if (!_dbContext.Roles.Any(r => r.Name == roleName))
+			return NotFound();
+
 		UserEntity? user = _dbContext.Users
-			.AsNoTracking()
 			.Include(u => u.UserRoles!)
 				.ThenInclude(ur => ur.Role)
 			.FirstOrDefault(u => u.Id == id);
 		if (user == null)
 			return NotFound();
 
-		if (user.UserRoles!.Any(ur => ur.Role?.Name == roleName))
-			return BadRequest("User is already in this role.");
-
-		_dbContext.UserRoles.Add(new UserRoleEntity
-		{
-			RoleName = roleName,
-			UserId = id,
-		});
-		_dbContext.SaveChanges();
-
-		// TODO: Log role assignment in audit log.
-		return Ok();
-	}
-
-	[HttpPatch("{id}/revoke-role")]
-	[ProducesResponseType(StatusCodes.Status200OK)]
-	[ProducesResponseType(StatusCodes.Status400BadRequest)]
-	[ProducesResponseType(StatusCodes.Status404NotFound)]
-	public ActionResult RevokeRole(int id, string roleName)
-	{
-		UserEntity? user = _dbContext.Users
-			.Include(u => u.UserRoles)
-			.FirstOrDefault(u => u.Id == id);
-		if (user == null)
-			return NotFound();
-
 		UserRoleEntity? userRole = user.UserRoles!.Find(ur => ur.RoleName == roleName);
-		if (userRole == null)
-			return BadRequest("User is not in this role.");
+		bool assigned;
+		if (userRole != null)
+		{
+			assigned = false;
+			_dbContext.UserRoles.Remove(userRole);
+		}
+		else
+		{
+			assigned = true;
+			_dbContext.UserRoles.Add(new UserRoleEntity
+			{
+				RoleName = roleName,
+				UserId = id,
+			});
+		}
 
-		_dbContext.UserRoles.Remove(userRole);
 		_dbContext.SaveChanges();
 
-		// TODO: Log role removal in audit log.
+		if (assigned)
+			await _auditLogger.LogRoleAssign(user, roleName);
+		else
+			await _auditLogger.LogRoleRevoke(user, roleName);
+
 		return Ok();
 	}
 
