@@ -44,11 +44,11 @@ public class UsersController : ControllerBase
 			=> user.UserRoles?.Any(ur => ur.Role?.Name == roleName) == true;
 	}
 
-	[HttpPatch("{id}/add-to-role")]
+	[HttpPatch("{id}/assign-role")]
 	[ProducesResponseType(StatusCodes.Status200OK)]
 	[ProducesResponseType(StatusCodes.Status400BadRequest)]
 	[ProducesResponseType(StatusCodes.Status404NotFound)]
-	public ActionResult AddUserToRoleById(int id, int roleId)
+	public ActionResult AssignRole(int id, int roleId)
 	{
 		UserEntity? user = _dbContext.Users
 			.AsNoTracking()
@@ -79,11 +79,11 @@ public class UsersController : ControllerBase
 		return Ok();
 	}
 
-	[HttpPatch("{id}/remove-from-role")]
+	[HttpPatch("{id}/revoke-role")]
 	[ProducesResponseType(StatusCodes.Status200OK)]
 	[ProducesResponseType(StatusCodes.Status400BadRequest)]
 	[ProducesResponseType(StatusCodes.Status404NotFound)]
-	public ActionResult RemoveUserFromRoleById(int id, int roleId)
+	public ActionResult RevokeRole(int id, int roleId)
 	{
 		UserEntity? user = _dbContext.Users
 			.AsNoTracking()
