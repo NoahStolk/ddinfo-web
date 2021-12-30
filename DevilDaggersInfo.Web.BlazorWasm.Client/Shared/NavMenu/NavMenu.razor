@@ -48,34 +48,37 @@
 			</NavDropdown>
 			<AuthorizeView>
 				<Authorized>
-					<NavDropdown Text="Admin">
-						@if (_roles.Contains("Admin"))
-						{
-							<NavItem Href="admin/custom-entries" CssClass="text-lg" IconType="ellipses" Text="Custom Entries" />
-							<NavItem Href="admin/titles" CssClass="text-lg" IconType="badge" Text="Titles" />
-							<NavItem Href="admin/users" CssClass="text-lg" IconType="person" Text="Users" />
-						}
-						@if (_roles.Contains("CustomLeaderboards"))
-						{
-							<NavItem Href="admin/custom-leaderboards" CssClass="text-lg" IconType="list" Text="Custom Leaderboards" />
-						}
-						@if (_roles.Contains("Donations"))
-						{
-							<NavItem Href="admin/donations" CssClass="text-lg" IconType="heart" Text="Donations" />
-						}
-						@if (_roles.Contains("Mods"))
-						{
-							<NavItem Href="admin/mods" CssClass="text-lg" IconType="brush" Text="Mods" />
-						}
-						@if (_roles.Contains("Players"))
-						{
-							<NavItem Href="admin/players" CssClass="text-lg" IconType="people" Text="Players" />
-						}
-						@if (_roles.Contains("Spawnsets"))
-						{
-							<NavItem Href="admin/spawnsets" CssClass="text-lg" IconType="grid-three-up" Text="Spawnsets" />
-						}
-					</NavDropdown>
+					@if (_roles.Count > 0)
+					{
+						<NavDropdown Text="Admin">
+							@if (_roles.Contains(Roles.Admin))
+							{
+								<NavItem Href="admin/custom-entries" CssClass="text-lg" IconType="ellipses" Text="Custom Entries" />
+								<NavItem Href="admin/titles" CssClass="text-lg" IconType="badge" Text="Titles" />
+								<NavItem Href="admin/users" CssClass="text-lg" IconType="person" Text="Users" />
+							}
+							@if (_roles.Contains(Roles.CustomLeaderboards))
+							{
+								<NavItem Href="admin/custom-leaderboards" CssClass="text-lg" IconType="list" Text="Custom Leaderboards" />
+							}
+							@if (_roles.Contains(Roles.Donations))
+							{
+								<NavItem Href="admin/donations" CssClass="text-lg" IconType="heart" Text="Donations" />
+							}
+							@if (_roles.Contains(Roles.Mods))
+							{
+								<NavItem Href="admin/mods" CssClass="text-lg" IconType="brush" Text="Mods" />
+							}
+							@if (_roles.Contains(Roles.Players))
+							{
+								<NavItem Href="admin/players" CssClass="text-lg" IconType="people" Text="Players" />
+							}
+							@if (_roles.Contains(Roles.Spawnsets))
+							{
+								<NavItem Href="admin/spawnsets" CssClass="text-lg" IconType="grid-three-up" Text="Spawnsets" />
+							}
+						</NavDropdown>
+					}
 				</Authorized>
 			</AuthorizeView>
 		</CascadingValue>
