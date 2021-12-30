@@ -1,6 +1,4 @@
-using DevilDaggersInfo.Web.BlazorWasm.Shared.Dto;
 using DevilDaggersInfo.Web.BlazorWasm.Shared.Dto.Admin.Users;
-using DevilDaggersInfo.Web.BlazorWasm.Shared.Enums.Sortings.Admin;
 using Microsoft.AspNetCore.Authorization;
 
 namespace DevilDaggersInfo.Web.BlazorWasm.Server.Controllers.Admin;
@@ -21,62 +19,29 @@ public class UsersController : ControllerBase
 
 	[HttpGet]
 	[ProducesResponseType(StatusCodes.Status200OK)]
-	public ActionResult<Page<GetUser>> GetUsers(
-		[Range(0, 1000)] int pageIndex = 0,
-		[Range(PagingConstants.PageSizeMin, PagingConstants.PageSizeMax)] int pageSize = PagingConstants.PageSizeDefault,
-		UserSorting? sortBy = null,
-		bool ascending = false)
+	public ActionResult<List<GetUser>> GetUsers()
 	{
-		var usersQuery = _dbContext.Users
+		List<UserEntity> users = _dbContext.Users
 			.AsNoTracking()
-			.Select(u => new { u.Id, u.Name });
-
-		usersQuery = sortBy switch
-		{
-			// TODO: Implement sorting for roles.
-			UserSorting.UserName => usersQuery.OrderBy(s => s.Name, ascending),
-			_ => usersQuery.OrderBy(s => s.Id, ascending),
-		};
-
-		var users = usersQuery
-			.Skip(pageIndex * pageSize)
-			.Take(pageSize)
+			.Include(u => u.UserRoles!)
+				.ThenInclude(ur => ur.Role)
+			.OrderBy(u => u.Id)
 			.ToList();
 
-		List<UserRoleEntity> userRoles = _dbContext.UserRoles
-			.AsNoTracking()
-			.ToList();
-
-		var roles = _dbContext.Roles
-			.AsNoTracking()
-			.Select(r => new { r.Id, r.Name })
-			.ToList();
-
-		List<(int RoleId, string RoleName, List<int> UserIds)> usersByRole = new();
-		foreach (var role in roles)
-			usersByRole.Add((role.Id, role.Name, new()));
-
-		foreach ((int roleId, string roleName, List<int> userIds) in usersByRole)
+		return users.ConvertAll(u => new GetUser
 		{
-			IEnumerable<UserRoleEntity> userRolesWithRole = userRoles.Where(ur => ur.RoleId == roleId);
-			userIds.AddRange(userRolesWithRole.Select(ur => ur.UserId));
-		}
+			Id = u.Id,
+			Name = u.Name,
+			IsAdmin = IsInRole(u, Roles.Admin),
+			IsCustomLeaderboardsMaintainer = IsInRole(u, Roles.CustomLeaderboards),
+			IsDonationsMaintainer = IsInRole(u, Roles.Donations),
+			IsModsMaintainer = IsInRole(u, Roles.Mods),
+			IsPlayersMaintainer = IsInRole(u, Roles.Players),
+			IsSpawnsetsMaintainer = IsInRole(u, Roles.Spawnsets),
+		});
 
-		return new Page<GetUser>
-		{
-			Results = users.ConvertAll(u => new GetUser
-			{
-				Id = u.Id,
-				Name = u.Name,
-				IsAdmin = usersByRole.Find(t => t.RoleName == Roles.Admin).UserIds.Contains(u.Id),
-				IsCustomLeaderboardsMaintainer = usersByRole.Find(t => t.RoleName == Roles.CustomLeaderboards).UserIds.Contains(u.Id),
-				IsDonationsMaintainer = usersByRole.Find(t => t.RoleName == Roles.Donations).UserIds.Contains(u.Id),
-				IsModsMaintainer = usersByRole.Find(t => t.RoleName == Roles.Mods).UserIds.Contains(u.Id),
-				IsPlayersMaintainer = usersByRole.Find(t => t.RoleName == Roles.Players).UserIds.Contains(u.Id),
-				IsSpawnsetsMaintainer = usersByRole.Find(t => t.RoleName == Roles.Spawnsets).UserIds.Contains(u.Id),
-			}),
-			TotalResults = _dbContext.Users.Count(),
-		};
+		static bool IsInRole(UserEntity user, string roleName)
+			=> user.UserRoles?.Any(ur => ur.Role?.Name == roleName) == true;
 	}
 
 	[HttpPatch("{id}/add-to-role")]
@@ -111,6 +76,37 @@ public class UsersController : ControllerBase
 		_dbContext.SaveChanges();
 
 		// TODO: Log role assignment in audit log.
+		return Ok();
+	}
+
+	[HttpPatch("{id}/remove-from-role")]
+	[ProducesResponseType(StatusCodes.Status200OK)]
+	[ProducesResponseType(StatusCodes.Status400BadRequest)]
+	[ProducesResponseType(StatusCodes.Status404NotFound)]
+	public ActionResult RemoveUserFromRoleById(int id, int roleId)
+	{
+		UserEntity? user = _dbContext.Users
+			.AsNoTracking()
+			.FirstOrDefault(u => u.Id == id);
+		if (user == null)
+			return NotFound();
+
+		RoleEntity? role = _dbContext.Roles
+			.AsNoTracking()
+			.FirstOrDefault(r => r.Id == roleId);
+		if (role == null)
+			return NotFound();
+
+		UserRoleEntity? userRole = _dbContext.UserRoles
+			.AsNoTracking()
+			.FirstOrDefault(ur => ur.UserId == id && ur.RoleId == roleId);
+		if (userRole == null)
+			return BadRequest("User is not in this role.");
+
+		_dbContext.UserRoles.Remove(userRole);
+		_dbContext.SaveChanges();
+
+		// TODO: Log role removal in audit log.
 		return Ok();
 	}
 

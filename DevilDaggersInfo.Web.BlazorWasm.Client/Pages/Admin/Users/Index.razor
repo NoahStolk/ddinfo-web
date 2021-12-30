@@ -1,12 +1,101 @@
 @page "/admin/users"
 @inherits BaseAdminPage
 @using DevilDaggersInfo.Web.BlazorWasm.Client.Components.Admin
+@using Microsoft.AspNetCore.Components.WebAssembly.Authentication
+@using DevilDaggersInfo.Web.BlazorWasm.Client.Pages
 @using DevilDaggersInfo.Web.BlazorWasm.Shared.Dto.Admin.Users
-@using DevilDaggersInfo.Web.BlazorWasm.Shared.Enums.Sortings.Admin
 
-<AdminOverview
-	TGetDto="GetUser"
-	Title="Users"
-	ApiCall="(int pageIndex, int pageSize, string? sortBy, bool isAscending) => Http.GetUsers(pageIndex, pageSize, sortBy == null ? null : Enum.Parse<UserSorting>(sortBy), isAscending)"
-	DeletionApiCall="(int id) => Http.DeleteUserById(id)"
-	GridConfiguration="grid-cols-admin-users" />
+<Heading Title="Users" />
+
+<Paragraph>Hello, @_username</Paragraph>
+
+@if (_users == null)
+{
+	if (!_errorThrown)
+	{
+		<Loading />
+	}
+}
+else
+{
+	<Deletion AfterDelete="Fetch" ApiCall="(int id) => Http.DeleteUserById(id)" @ref="_deletion" />
+
+	<div class="grid gap-2 grid-cols-admin-users">
+		<div class="overflow-x-hidden">Id</div>
+		<div class="overflow-x-hidden">Name</div>
+		<div class="overflow-x-hidden">Admin</div>
+		<div class="overflow-x-hidden">Custom LBs</div>
+		<div class="overflow-x-hidden">Donations</div>
+		<div class="overflow-x-hidden">Mods</div>
+		<div class="overflow-x-hidden">Players</div>
+		<div class="overflow-x-hidden">Spawnsets</div>
+		<div></div>
+	</div>
+	<div>
+		@{
+			int j = 0;
+			foreach (GetUser user in _users)
+			{
+				<div class="grid gap-2 grid-cols-admin-users @(j++ % 2 == 0 ? "bg-gray-1" : string.Empty)">
+					<div class="overflow-x-hidden">@user.Id</div>
+					<div class="overflow-x-hidden">@user.Name</div>
+					<div class="overflow-x-hidden">@user.IsAdmin</div>
+					<div class="overflow-x-hidden">@user.IsCustomLeaderboardsMaintainer</div>
+					<div class="overflow-x-hidden">@user.IsDonationsMaintainer</div>
+					<div class="overflow-x-hidden">@user.IsModsMaintainer</div>
+					<div class="overflow-x-hidden">@user.IsPlayersMaintainer</div>
+					<div class="overflow-x-hidden">@user.IsSpawnsetsMaintainer</div>
+					<div><a class="link" href="" @onclick="() => _deletion?.Set(user.Id)" @onclick:preventDefault>Delete</a></div>
+				</div>
+			}
+		}
+	</div>
+}
+
+@code
+{
+	private List<GetUser>? _users;
+	private string? _errorMessage;
+	private bool _errorThrown;
+
+	private Deletion? _deletion;
+
+	private string? _username;
+
+	protected override async Task OnInitializedAsync()
+	{
+		AuthenticationState auth = await Auth.GetAuthenticationStateAsync();
+		_username = auth.User?.GetName();
+
+		await Fetch();
+	}
+
+	private async Task Fetch()
+	{
+		try
+		{
+			_users = await Http.GetUsers();
+			_errorMessage = null;
+			StateHasChanged();
+		}
+		catch (AccessTokenNotAvailableException exception)
+		{
+			exception.Redirect();
+		}
+		catch (HttpRequestException ex)
+		{
+			if (ex.StatusCode.HasValue)
+				_errorMessage = $"HTTP {(int)ex.StatusCode}: {ex.StatusCode}";
+			else
+				_errorMessage = $"An error occurred while sending the request. {ex.Message}";
+
+			_errorThrown = true;
+		}
+	}
+
+	private void Dismiss()
+	{
+		_errorMessage = null;
+		StateHasChanged();
+	}
+}
