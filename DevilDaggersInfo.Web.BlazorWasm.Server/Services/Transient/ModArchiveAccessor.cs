@@ -18,18 +18,14 @@ public class ModArchiveAccessor
 
 	public bool ModArchiveExists(string modName) => IoFile.Exists(GetModArchivePath(modName));
 
-	public ModFileSystemData? GetModFileSystemData(string modName)
+	public ModFileSystemData GetModFileSystemData(string modName)
 	{
-		string path = GetModArchivePath(modName);
-		if (!IoFile.Exists(path))
-			return null;
-
-		ModArchiveCacheData cachedArchiveData = _modArchiveCache.GetArchiveDataByFilePath(path);
-		List<string> screenshotFileNames = new();
+		string modArchivePath = GetModArchivePath(modName);
 		string modScreenshotsDirectory = Path.Combine(_fileSystemService.GetPath(DataSubDirectory.ModScreenshots), modName);
-		if (Directory.Exists(modScreenshotsDirectory))
-			screenshotFileNames = Directory.GetFiles(modScreenshotsDirectory).Select(p => Path.GetFileName(p)).ToList();
 
-		return new(cachedArchiveData, screenshotFileNames);
+		ModArchiveCacheData? modArchiveCacheData = IoFile.Exists(modArchivePath) ? _modArchiveCache.GetArchiveDataByFilePath(modArchivePath) : null;
+		List<string>? screenshotFileNames = Directory.Exists(modScreenshotsDirectory) ? Directory.GetFiles(modScreenshotsDirectory).Select(p => Path.GetFileName(p)).ToList() : null;
+
+		return new(modArchiveCacheData, screenshotFileNames);
 	}
 }
