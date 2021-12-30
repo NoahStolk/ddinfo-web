@@ -60,7 +60,7 @@ public class ApplicationDbContext : DbContext
 
 		// Configure relations for UserRoles.
 		modelBuilder.Entity<UserRoleEntity>()
-			.HasKey(ur => new { ur.UserId, ur.RoleId });
+			.HasKey(ur => new { ur.UserId, ur.RoleName });
 
 		modelBuilder.Entity<UserRoleEntity>()
 			.HasOne(ur => ur.User)
@@ -70,7 +70,7 @@ public class ApplicationDbContext : DbContext
 		modelBuilder.Entity<UserRoleEntity>()
 			.HasOne(ur => ur.Role)
 			.WithMany(r => r.UserRoles)
-			.HasForeignKey(ur => ur.RoleId);
+			.HasForeignKey(ur => ur.RoleName);
 
 		base.OnModelCreating(modelBuilder);
 	}

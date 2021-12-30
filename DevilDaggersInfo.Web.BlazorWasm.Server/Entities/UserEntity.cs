@@ -6,6 +6,7 @@ public class UserEntity
 	[Key]
 	public int Id { get; set; }
 
+	[StringLength(32)]
 	public string Name { get; set; } = null!;
 
 	public byte[] PasswordHash { get; set; } = null!;

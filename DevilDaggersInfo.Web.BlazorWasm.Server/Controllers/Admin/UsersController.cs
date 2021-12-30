@@ -48,29 +48,22 @@ public class UsersController : ControllerBase
 	[ProducesResponseType(StatusCodes.Status200OK)]
 	[ProducesResponseType(StatusCodes.Status400BadRequest)]
 	[ProducesResponseType(StatusCodes.Status404NotFound)]
-	public ActionResult AssignRole(int id, int roleId)
+	public ActionResult AssignRole(int id, string roleName)
 	{
 		UserEntity? user = _dbContext.Users
 			.AsNoTracking()
+			.Include(u => u.UserRoles!)
+				.ThenInclude(ur => ur.Role)
 			.FirstOrDefault(u => u.Id == id);
 		if (user == null)
 			return NotFound();
 
-		RoleEntity? role = _dbContext.Roles
-			.AsNoTracking()
-			.FirstOrDefault(r => r.Id == roleId);
-		if (role == null)
-			return NotFound();
-
-		UserRoleEntity? userRole = _dbContext.UserRoles
-			.AsNoTracking()
-			.FirstOrDefault(ur => ur.UserId == id && ur.RoleId == roleId);
-		if (userRole != null)
+		if (user.UserRoles!.Any(ur => ur.Role?.Name == roleName))
 			return BadRequest("User is already in this role.");
 
 		_dbContext.UserRoles.Add(new UserRoleEntity
 		{
-			RoleId = roleId,
+			RoleName = roleName,
 			UserId = id,
 		});
 		_dbContext.SaveChanges();
@@ -83,23 +76,15 @@ public class UsersController : ControllerBase
 	[ProducesResponseType(StatusCodes.Status200OK)]
 	[ProducesResponseType(StatusCodes.Status400BadRequest)]
 	[ProducesResponseType(StatusCodes.Status404NotFound)]
-	public ActionResult RevokeRole(int id, int roleId)
+	public ActionResult RevokeRole(int id, string roleName)
 	{
 		UserEntity? user = _dbContext.Users
-			.AsNoTracking()
+			.Include(u => u.UserRoles)
 			.FirstOrDefault(u => u.Id == id);
 		if (user == null)
 			return NotFound();
 
-		RoleEntity? role = _dbContext.Roles
-			.AsNoTracking()
-			.FirstOrDefault(r => r.Id == roleId);
-		if (role == null)
-			return NotFound();
-
-		UserRoleEntity? userRole = _dbContext.UserRoles
-			.AsNoTracking()
-			.FirstOrDefault(ur => ur.UserId == id && ur.RoleId == roleId);
+		UserRoleEntity? userRole = user.UserRoles!.Find(ur => ur.RoleName == roleName);
 		if (userRole == null)
 			return BadRequest("User is not in this role.");
 
@@ -115,8 +100,7 @@ public class UsersController : ControllerBase
 	[ProducesResponseType(StatusCodes.Status404NotFound)]
 	public async Task<ActionResult> DeleteUserById(int id)
 	{
-		UserEntity? user = _dbContext.Users
-			.FirstOrDefault(u => u.Id == id);
+		UserEntity? user = _dbContext.Users.FirstOrDefault(u => u.Id == id);
 		if (user == null)
 			return NotFound();
 

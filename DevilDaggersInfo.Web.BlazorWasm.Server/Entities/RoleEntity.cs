@@ -4,8 +4,7 @@ namespace DevilDaggersInfo.Web.BlazorWasm.Server.Entities;
 public class RoleEntity
 {
 	[Key]
-	public int Id { get; set; }
-
+	[StringLength(32)]
 	public string Name { get; set; } = null!;
 
 	public List<UserRoleEntity>? UserRoles { get; set; }

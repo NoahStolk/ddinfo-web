@@ -8,8 +8,8 @@ public class UserRoleEntity
 	[ForeignKey(nameof(UserId))]
 	public UserEntity? User { get; set; }
 
-	public int RoleId { get; set; }
+	public string RoleName { get; set; } = null!;
 
-	[ForeignKey(nameof(RoleId))]
+	[ForeignKey(nameof(RoleName))]
 	public RoleEntity? Role { get; set; }
 }
