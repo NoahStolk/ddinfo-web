@@ -20,5 +20,5 @@ public class GetMod
 
 	public GetModArchive? ModArchive { get; init; }
 
-	public List<string> ScreenshotFileNames { get; init; } = null!;
+	public List<string>? ScreenshotFileNames { get; init; }
 }

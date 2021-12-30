@@ -5,25 +5,25 @@ namespace DevilDaggersInfo.Web.BlazorWasm.Server.Converters.Public;
 
 public static class ModConverters
 {
-	public static GetModOverview ToGetModOverview(this ModEntity mod, ModFileSystemData? modFileSystemData) => new()
+	public static GetModOverview ToGetModOverview(this ModEntity mod, ModFileSystemData modFileSystemData) => new()
 	{
 		Authors = mod.PlayerMods.ConvertAll(pm => pm.Player.PlayerName),
-		ContainsProhibitedAssets = modFileSystemData?.ModArchive.ContainsProhibitedAssets(),
+		ContainsProhibitedAssets = modFileSystemData.ModArchive?.ContainsProhibitedAssets(),
 		Id = mod.Id,
-		IsHosted = modFileSystemData != null,
+		IsHosted = modFileSystemData.ModArchive != null,
 		LastUpdated = mod.LastUpdated,
-		ModTypes = modFileSystemData?.ModArchive.GetModTypes() ?? mod.ModTypes,
+		ModTypes = modFileSystemData.ModArchive?.GetModTypes() ?? mod.ModTypes,
 		Name = mod.Name,
 	};
 
-	public static GetMod ToGetMod(this ModEntity mod, ModFileSystemData? modFileSystemData) => new()
+	public static GetMod ToGetMod(this ModEntity mod, ModFileSystemData modFileSystemData) => new()
 	{
 		Authors = mod.PlayerMods.ConvertAll(pm => pm.Player.PlayerName),
-		ContainsProhibitedAssets = modFileSystemData?.ModArchive.ContainsProhibitedAssets(),
+		ContainsProhibitedAssets = modFileSystemData.ModArchive?.ContainsProhibitedAssets(),
 		HtmlDescription = mod.HtmlDescription,
-		IsHosted = modFileSystemData != null,
+		IsHosted = modFileSystemData.ModArchive != null,
 		LastUpdated = mod.LastUpdated,
-		ModArchive = modFileSystemData == null ? null : new()
+		ModArchive = modFileSystemData.ModArchive == null ? null : new()
 		{
 			Binaries = modFileSystemData.ModArchive.Binaries.ConvertAll(b => new GetModBinary
 			{
@@ -49,20 +49,20 @@ public static class ModConverters
 			FileSize = modFileSystemData.ModArchive.FileSize,
 			FileSizeExtracted = modFileSystemData.ModArchive.FileSizeExtracted,
 		},
-		ModTypes = modFileSystemData?.ModArchive.GetModTypes() ?? mod.ModTypes,
+		ModTypes = modFileSystemData.ModArchive?.GetModTypes() ?? mod.ModTypes,
 		Name = mod.Name,
-		ScreenshotFileNames = modFileSystemData?.ScreenshotFileNames ?? new(),
+		ScreenshotFileNames = modFileSystemData?.ScreenshotFileNames,
 		TrailerUrl = mod.TrailerUrl,
 	};
 
-	public static GetModDdae ToGetModDdae(this ModEntity mod, ModFileSystemData? modFileSystemData) => new()
+	public static GetModDdae ToGetModDdae(this ModEntity mod, ModFileSystemData modFileSystemData) => new()
 	{
 		Authors = mod.PlayerMods.ConvertAll(pm => pm.Player.PlayerName),
-		ContainsProhibitedAssets = modFileSystemData?.ModArchive.ContainsProhibitedAssets(),
+		ContainsProhibitedAssets = modFileSystemData.ModArchive?.ContainsProhibitedAssets(),
 		HtmlDescription = mod.HtmlDescription,
-		IsHosted = modFileSystemData != null,
+		IsHosted = modFileSystemData.ModArchive != null,
 		LastUpdated = mod.LastUpdated,
-		ModArchive = modFileSystemData == null ? null : new()
+		ModArchive = modFileSystemData.ModArchive == null ? null : new()
 		{
 			Binaries = modFileSystemData.ModArchive.Binaries.ConvertAll(b => new GetModBinaryDdae
 			{
@@ -73,9 +73,9 @@ public static class ModConverters
 			FileSize = modFileSystemData.ModArchive.FileSize,
 			FileSizeExtracted = modFileSystemData.ModArchive.FileSizeExtracted,
 		},
-		ModTypes = modFileSystemData?.ModArchive.GetModTypes() ?? mod.ModTypes,
+		ModTypes = modFileSystemData.ModArchive?.GetModTypes() ?? mod.ModTypes,
 		Name = mod.Name,
-		ScreenshotFileNames = modFileSystemData?.ScreenshotFileNames ?? new(),
+		ScreenshotFileNames = modFileSystemData.ScreenshotFileNames ?? new(),
 		TrailerUrl = mod.TrailerUrl,
 	};
 }
