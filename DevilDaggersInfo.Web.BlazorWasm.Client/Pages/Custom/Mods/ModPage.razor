@@ -57,8 +57,8 @@ else
 			const string disabledStyle = "disabled:opacity-50 cursor-default btn-disabled";
 			const string enabledStyle = "btn-gray";
 
-			<button disabled="@first" class="@(first ? disabledStyle : enabledStyle) btn w-8 h-8 py-1" @onclick="() => _screenshotIndex--">@MarkupUtils.NavPrev</button>
-			<button disabled="@last" class="@(last ? disabledStyle : enabledStyle) btn w-8 h-8 py-1" @onclick="() => _screenshotIndex++">@MarkupUtils.NavNext</button>
+			<button disabled="@first" class="@(first ? disabledStyle : enabledStyle) btn w-10 h-10 mx-1" @onclick="() => _screenshotIndex--">@MarkupUtils.NavPrev</button>
+			<button disabled="@last" class="@(last ? disabledStyle : enabledStyle) btn w-10 h-10 mx-1" @onclick="() => _screenshotIndex++">@MarkupUtils.NavNext</button>
 
 			@for (int i = 0; i < GetMod.ScreenshotFileNames.Count; i++)
 			{
