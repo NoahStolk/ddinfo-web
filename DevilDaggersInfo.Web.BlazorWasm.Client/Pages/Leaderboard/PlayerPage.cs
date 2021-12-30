@@ -41,6 +41,7 @@ public partial class PlayerPage
 			MinimumRowHeightInPx = 50,
 		},
 		DisplayXScaleAsDates = true,
+		Backgrounds = LineChartUtils.GameVersionBackgrounds,
 	};
 
 	private readonly LineChartOptions _activityLineChartOptions = new()
@@ -51,6 +52,7 @@ public partial class PlayerPage
 			MinimumRowHeightInPx = 50,
 		},
 		DisplayXScaleAsDates = true,
+		Backgrounds = LineChartUtils.GameVersionBackgrounds,
 	};
 
 	private readonly List<LineDataSet> _progressionData = new();

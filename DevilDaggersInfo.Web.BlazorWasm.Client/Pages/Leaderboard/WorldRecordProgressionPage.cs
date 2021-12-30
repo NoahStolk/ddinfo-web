@@ -31,15 +31,7 @@ public partial class WorldRecordProgressionPage
 			MinimumRowHeightInPx = 50,
 		},
 		DisplayXScaleAsDates = true,
-		Backgrounds = new()
-		{
-			new() { Color = "#8002", ChartEndXValue = GameVersions.GetReleaseDate(GameVersion.V1_0).Ticks },
-			new() { Color = "#0482", ChartEndXValue = GameVersions.GetReleaseDate(GameVersion.V2_0).Ticks },
-			new() { Color = "#4802", ChartEndXValue = GameVersions.GetReleaseDate(GameVersion.V3_0).Ticks },
-			new() { Color = "#8082", ChartEndXValue = GameVersions.GetReleaseDate(GameVersion.V3_1).Ticks },
-			new() { Color = "#80b2", ChartEndXValue = GameVersions.GetReleaseDate(GameVersion.V3_2).Ticks },
-			new() { Color = "#80e2", ChartEndXValue = DateTime.UtcNow.Ticks },
-		},
+		Backgrounds = LineChartUtils.GameVersionBackgrounds,
 	};
 
 	private readonly List<LineDataSet> _lineDataSets = new();

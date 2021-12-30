@@ -81,12 +81,11 @@ public partial class LineChart
 				double end = DataOptions.MinX;
 				foreach (LineChartBackground background in Options.Backgrounds)
 				{
-					double startX = LerpUtils.RevLerp(DataOptions.MinX, DataOptions.MaxX, end) * ChartWidth;
 					double endX = LerpUtils.RevLerp(DataOptions.MinX, DataOptions.MaxX, background.ChartEndXValue) * ChartWidth;
-
 					if (endX < 0)
 						continue;
 
+					double startX = LerpUtils.RevLerp(DataOptions.MinX, DataOptions.MaxX, end) * ChartWidth;
 					if (startX < 0)
 						startX = 0;
 
