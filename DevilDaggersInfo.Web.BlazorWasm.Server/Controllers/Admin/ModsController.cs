@@ -90,8 +90,8 @@ public class ModsController : ControllerBase
 		if (mod == null)
 			return NotFound();
 
-		ModFileSystemData? mfsd = _modArchiveAccessor.GetModFileSystemData(mod.Name);
-		return mod.ToGetMod(mfsd?.ModArchive.Binaries.ConvertAll(macd => macd.Name) ?? new(), mfsd?.ScreenshotFileNames ?? new());
+		ModFileSystemData mfsd = _modArchiveAccessor.GetModFileSystemData(mod.Name);
+		return mod.ToGetMod(mfsd.ModArchive?.Binaries.ConvertAll(macd => macd.Name), mfsd?.ScreenshotFileNames);
 	}
 
 	[HttpPost]

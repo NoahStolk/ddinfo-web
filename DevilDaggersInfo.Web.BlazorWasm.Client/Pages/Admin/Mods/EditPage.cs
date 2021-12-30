@@ -20,8 +20,8 @@ public partial class EditPage
 
 	[Parameter, EditorRequired] public int Id { get; set; }
 
-	private IReadOnlyList<string> _binaryNames = new List<string>();
-	private IReadOnlyList<string> _screenshotNames = new List<string>();
+	private IReadOnlyList<string>? _binaryNames;
+	private IReadOnlyList<string>? _screenshotNames;
 
 	protected override async Task OnInitializedAsync()
 	{

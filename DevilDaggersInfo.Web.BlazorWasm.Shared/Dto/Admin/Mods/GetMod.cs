@@ -20,7 +20,7 @@ public class GetMod : IGetDto
 
 	public List<int>? PlayerIds { get; init; }
 
-	public List<string> BinaryNames { get; init; } = new();
+	public List<string>? BinaryNames { get; init; }
 
-	public List<string> ScreenshotNames { get; init; } = new();
+	public List<string>? ScreenshotNames { get; init; }
 }
