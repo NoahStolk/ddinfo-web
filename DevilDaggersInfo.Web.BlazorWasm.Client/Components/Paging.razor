@@ -3,12 +3,13 @@
 @{
 	bool f = Component.PageIndex <= 0;
 	bool l = Component.PageIndex >= Component.TotalPages - 1;
-	const string disabledStyle = "disabled:opacity-50 cursor-default";
+	const string disabledStyle = "disabled:opacity-50 cursor-default btn-disabled";
+	const string enabledStyle = "btn-gray-light";
 }
-<button disabled="@f" class="@(f ? disabledStyle : string.Empty) btn btn-gray-light w-10 h-10 mx-1" @onclick="() => Component.ChangePageIndex(0)">@MarkupUtils.NavStart</button>
-<button disabled="@f" class="@(f ? disabledStyle : string.Empty) btn btn-gray-light w-10 h-10 mx-1" @onclick="() => Component.ChangePageIndex(Component.PageIndex - 1)">@MarkupUtils.NavPrev</button>
-<button disabled="@l" class="@(l ? disabledStyle : string.Empty) btn btn-gray-light w-10 h-10 mx-1" @onclick="() => Component.ChangePageIndex(Component.PageIndex + 1)">@MarkupUtils.NavNext</button>
-<button disabled="@l" class="@(l ? disabledStyle : string.Empty) btn btn-gray-light w-10 h-10 mx-1" @onclick="() => Component.ChangePageIndex(Component.TotalPages - 1)">@MarkupUtils.NavEnd</button>
+<button disabled="@f" class="@(f ? disabledStyle : enabledStyle) btn w-10 h-10 mx-1" @onclick="() => Component.ChangePageIndex(0)">@MarkupUtils.NavStart</button>
+<button disabled="@f" class="@(f ? disabledStyle : enabledStyle) btn w-10 h-10 mx-1" @onclick="() => Component.ChangePageIndex(Component.PageIndex - 1)">@MarkupUtils.NavPrev</button>
+<button disabled="@l" class="@(l ? disabledStyle : enabledStyle) btn w-10 h-10 mx-1" @onclick="() => Component.ChangePageIndex(Component.PageIndex + 1)">@MarkupUtils.NavNext</button>
+<button disabled="@l" class="@(l ? disabledStyle : enabledStyle) btn w-10 h-10 mx-1" @onclick="() => Component.ChangePageIndex(Component.TotalPages - 1)">@MarkupUtils.NavEnd</button>
 <Select @onchange="Component.ChangePageSize" class="bg-gray-3 transition-colors duration-100 h-10 mx-1 rounded text-color-text relative bottom-[14px]">
 	@foreach (int i in PagingConstants.PageSizeOptions)
 	{

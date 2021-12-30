@@ -41,14 +41,15 @@ else
 			@{
 				bool f = Rank <= 1;
 				bool l = Rank >= _maxRank;
-				const string disabledStyle = "disabled:opacity-50 cursor-default";
+				const string disabledStyle = "disabled:opacity-50 cursor-default btn-disabled";
+				const string enabledStyle = "btn-gray-light";
 			}
-			<button disabled="@f" class="@(f ? disabledStyle : string.Empty) btn btn-gray-light w-10 h-10 mx-1" @onclick="() => SetRank(1)">@MarkupUtils.NavStart</button>
-			<button disabled="@f" class="@(f ? disabledStyle : string.Empty) btn btn-gray-light w-10 h-10 mx-1" @onclick="() => SetRank(Rank - 1000)">@MarkupUtils.NavPrevDouble</button>
-			<button disabled="@f" class="@(f ? disabledStyle : string.Empty) btn btn-gray-light w-10 h-10 mx-1" @onclick="() => SetRank(Rank - 100)">@MarkupUtils.NavPrev</button>
-			<button disabled="@l" class="@(l ? disabledStyle : string.Empty) btn btn-gray-light w-10 h-10 mx-1" @onclick="() => SetRank(Rank + 100)">@MarkupUtils.NavNext</button>
-			<button disabled="@l" class="@(l ? disabledStyle : string.Empty) btn btn-gray-light w-10 h-10 mx-1" @onclick="() => SetRank(Rank + 1000)">@MarkupUtils.NavNextDouble</button>
-			<button disabled="@l" class="@(l ? disabledStyle : string.Empty) btn btn-gray-light w-10 h-10 mx-1" @onclick="() => SetRank(GetLeaderboard.TotalPlayers - 99)">@MarkupUtils.NavEnd</button>
+			<button disabled="@f" class="@(f ? disabledStyle : enabledStyle) btn w-10 h-10 mx-1" @onclick="() => SetRank(1)">@MarkupUtils.NavStart</button>
+			<button disabled="@f" class="@(f ? disabledStyle : enabledStyle) btn w-10 h-10 mx-1" @onclick="() => SetRank(Rank - 1000)">@MarkupUtils.NavPrevDouble</button>
+			<button disabled="@f" class="@(f ? disabledStyle : enabledStyle) btn w-10 h-10 mx-1" @onclick="() => SetRank(Rank - 100)">@MarkupUtils.NavPrev</button>
+			<button disabled="@l" class="@(l ? disabledStyle : enabledStyle) btn w-10 h-10 mx-1" @onclick="() => SetRank(Rank + 100)">@MarkupUtils.NavNext</button>
+			<button disabled="@l" class="@(l ? disabledStyle : enabledStyle) btn w-10 h-10 mx-1" @onclick="() => SetRank(Rank + 1000)">@MarkupUtils.NavNextDouble</button>
+			<button disabled="@l" class="@(l ? disabledStyle : enabledStyle) btn w-10 h-10 mx-1" @onclick="() => SetRank(GetLeaderboard.TotalPlayers - 99)">@MarkupUtils.NavEnd</button>
 		</div>
 	</div>
 

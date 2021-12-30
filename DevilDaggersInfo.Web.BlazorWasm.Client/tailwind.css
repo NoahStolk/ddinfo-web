@@ -24,6 +24,10 @@
 		@apply text-lg rounded text-color-text text-center transition-colors duration-100;
 	}
 
+	.btn-disabled {
+		@apply bg-gray-2;
+	}
+
 	.btn-gray {
 		@apply bg-gray-1 hover:bg-gray-3;
 	}

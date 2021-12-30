@@ -52,8 +52,11 @@ else
 		bool first = _screenshotIndex == 0;
 		bool last = _screenshotIndex == GetMod.ScreenshotFileNames.Count - 1;
 
-		<button disabled="@first" class="@(first ? "disabled:opacity-50 cursor-default" : string.Empty) btn btn-gray w-8 h-8 py-1" @onclick="() => _screenshotIndex--">@MarkupUtils.NavPrev</button>
-		<button disabled="@last" class="@(last ? "disabled:opacity-50 cursor-default" : string.Empty) btn btn-gray w-8 h-8 py-1" @onclick="() => _screenshotIndex++">@MarkupUtils.NavNext</button>
+		const string disabledStyle = "disabled:opacity-50 cursor-default btn-disabled";
+		const string enabledStyle = "btn-gray";
+
+		<button disabled="@first" class="@(first ? disabledStyle : enabledStyle) btn w-8 h-8 py-1" @onclick="() => _screenshotIndex--">@MarkupUtils.NavPrev</button>
+		<button disabled="@last" class="@(last ? disabledStyle : enabledStyle) btn w-8 h-8 py-1" @onclick="() => _screenshotIndex++">@MarkupUtils.NavNext</button>
 
 		@for (int i = 0; i < GetMod.ScreenshotFileNames.Count; i++)
 		{
