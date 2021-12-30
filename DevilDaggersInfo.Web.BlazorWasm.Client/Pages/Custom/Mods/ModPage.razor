@@ -63,13 +63,13 @@ else
 			@for (int i = 0; i < GetMod.ScreenshotFileNames.Count; i++)
 			{
 				string fileName = GetMod.ScreenshotFileNames[i];
-				<img class="@(i == _screenshotIndex ? "" : "hidden")" src="@($"api/mod-screenshots?modName={GetMod.Name}&fileName={fileName}")" />
+				<img class="@(i == _screenshotIndex ? "" : "hidden") object-contain max-h-160 pt-3" src="@($"api/mod-screenshots?modName={GetMod.Name}&fileName={fileName}")" />
 			}
 		}
 		else if (GetMod.ScreenshotFileNames.Count == 1)
 		{
 			<Heading Title="Screenshot" Level="2" />
-			<img src="@($"api/mod-screenshots?modName={GetMod.Name}&fileName={GetMod.ScreenshotFileNames[0]}")" />
+			<img src="@($"api/mod-screenshots?modName={GetMod.Name}&fileName={GetMod.ScreenshotFileNames[0]}")" class="object-contain max-h-160 pt-3" />
 		}
 	}
 
