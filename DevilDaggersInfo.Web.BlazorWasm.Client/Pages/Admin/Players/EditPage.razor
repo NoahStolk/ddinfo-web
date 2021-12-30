@@ -20,7 +20,7 @@
 	<AdminInput Label="@nameof(EditPlayer.HideSettings)"><InputCheckbox @bind-Value="@_editPlayer!.HideSettings" /></AdminInput>
 	<AdminInput Label="@nameof(EditPlayer.ModIds)"><MultiSearchDropdown Values="@_modNames" @bind-Value="@_editPlayer!.ModIds" /></AdminInput>
 	<AdminInput Label="@nameof(EditPlayer.TitleIds)"><MultiSearchDropdown Values="@_titleNames" @bind-Value="@_editPlayer!.TitleIds" /></AdminInput>
-	<AdminInput Label="@nameof(EditPlayer.BanType)"><SearchDropdown Values="@(Enum.GetValues<BanType>().ToDictionary(e => e, e => e.ToString()))" Converter="s => Enum.Parse<BanType>(s)" @bind-Value="@_editPlayer!.BanType" /></AdminInput>
+	<AdminInput Label="@nameof(EditPlayer.BanType)"><SearchDropdown Values="@(Enum.GetValues<BanType>().ToDictionary(e => e, e => e.ToString()))" Converter="s => Enum.Parse<BanType>(s)" ShowDisplayValue=false @bind-Value="@_editPlayer!.BanType" /></AdminInput>
 	<AdminInput Label="@nameof(EditPlayer.BanDescription)"><InputText class="w-64 pl-2 bg-gray-1 text-color-text" @bind-Value="@_editPlayer!.BanDescription" /></AdminInput>
 	<AdminInput Label="@nameof(EditPlayer.BanResponsibleId)"><InputNumber class="w-64 pl-2 bg-gray-1 text-color-text" @bind-Value="@_editPlayer!.BanResponsibleId" /></AdminInput>
 	<AdminInput Label="@nameof(EditPlayer.IsBannedFromDdcl)"><InputCheckbox @bind-Value="@_editPlayer!.IsBannedFromDdcl" /></AdminInput>

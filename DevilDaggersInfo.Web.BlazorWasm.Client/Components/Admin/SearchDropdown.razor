@@ -17,7 +17,7 @@
 					int i = 0;
 					foreach (KeyValuePair<TKey, string> kvp in FilteredItems)
 					{
-						<li class="cursor-pointer pl-2 @(i++ % 2 == 0 ? "bg-gray-1" : string.Empty)" Item="@kvp" @onclick="e => HandleSelect(kvp.Key)">@kvp.Value (@kvp.Key)</li>
+						<li class="cursor-pointer pl-2 @(i++ % 2 == 0 ? "bg-gray-1" : string.Empty)" Item="@kvp" @onclick="e => HandleSelect(kvp.Key)">@DisplayValue(kvp.Key)</li>
 					}
 				}
 			</ul>
@@ -29,10 +29,11 @@
 {
 	private string? _searchValue;
 
-	private string SelectedDisplayValue => CurrentValue == null || Values?.ContainsKey(CurrentValue) != true ? "<None selected>" : $"{CurrentValue} ({Values[CurrentValue]})";
+	private string SelectedDisplayValue => CurrentValue == null || Values?.ContainsKey(CurrentValue) != true ? "<None selected>" : DisplayValue(CurrentValue);
 
-	[Parameter] public Dictionary<TKey, string>? Values { get; set; }
+	[Parameter, EditorRequired] public Dictionary<TKey, string>? Values { get; set; }
 	[Parameter, EditorRequired] public Func<string?, TKey> Converter { get; set; } = null!;
+	[Parameter] public bool ShowDisplayValue { get; set; } = true;
 
 	private bool _show = false;
 
@@ -54,5 +55,16 @@
 		validationMessage = string.Empty;
 		result = Converter(value);
 		return true;
+	}
+
+	private string DisplayValue(TKey? key)
+	{
+		if (key == null || Values == null)
+			return string.Empty;
+
+		if (!ShowDisplayValue)
+			return key.ToString() ?? string.Empty;
+
+		return $"{key} ({Values[key]})";
 	}
 }
