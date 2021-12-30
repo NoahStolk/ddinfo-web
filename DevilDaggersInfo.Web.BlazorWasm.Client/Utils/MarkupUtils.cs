@@ -1,4 +1,5 @@
 using DevilDaggersInfo.Core.Wiki.Objects;
+using DevilDaggersInfo.Web.BlazorWasm.Shared.Utils;
 using Microsoft.AspNetCore.Components;
 
 namespace DevilDaggersInfo.Web.BlazorWasm.Client.Utils;
@@ -78,4 +79,9 @@ public static class MarkupUtils
 	}
 
 	public static MarkupString Space() => new("&#32;");
+
+	public static MarkupString LeaderboardTime(double timeInSeconds)
+	{
+		return new(@$"<span class=""{Daggers.GetDaggerFromSeconds(GameConstants.CurrentVersion, timeInSeconds).Name.ToLower()} font-goethe text-lg"">{timeInSeconds.ToString(FormatUtils.TimeFormat)}</span>");
+	}
 }

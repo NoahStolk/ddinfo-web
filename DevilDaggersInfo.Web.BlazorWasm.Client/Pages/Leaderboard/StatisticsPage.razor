@@ -22,9 +22,9 @@ else
 		<p class="py-1">Statistics were last fetched on @_statistics.DateTime.ToString(FormatUtils.DateTimeUtcFormat).</p>
 
 		<Heading Title="Scores" Level="2" />
-		<p>The average time survived for all players is <SpanTime TimeInSeconds="_statistics.GlobalStatistics.Times.Average" /> seconds.</p>
-		<p>The median time survived for all players is <SpanTime TimeInSeconds="_statistics.GlobalStatistics.Times.Median" /> seconds.</p>
-		<p>The mode time survived for all players is <SpanTime TimeInSeconds="_statistics.GlobalStatistics.Times.Mode" /> seconds.</p>
+		<p>The average time survived for all players is @MarkupUtils.LeaderboardTime(_statistics.GlobalStatistics.Times.Average) seconds.</p>
+		<p>The median time survived for all players is @MarkupUtils.LeaderboardTime(_statistics.GlobalStatistics.Times.Median) seconds.</p>
+		<p>The mode time survived for all players is @MarkupUtils.LeaderboardTime(_statistics.GlobalStatistics.Times.Mode) seconds.</p>
 		<BarChart DataOptions="_sub500DataOptions" UniqueName="#sub500-chart" DataSet="@_sub500Data" Options="new() { ChartMarginXInPx = 60 }" XScaleTexts="Enumerable.Range(0, 50).Select(i => (i * 10).ToString())" />
 		<div class="grid grid-cols-1 xl:grid-cols-2">
 			<BarChart DataOptions="_sub1000DataOptions" UniqueName="#sub1000-chart" DataSet="@_sub1000Data" XScaleTexts="Enumerable.Range(0, 50).Select(i => ((i + 50) * 10).ToString())" />

@@ -1,8 +1,0 @@
-@using DevilDaggersInfo.Core.Wiki
-@using DevilDaggersInfo.Core.Wiki.Enums
-
-<span class="@Daggers.GetDaggerFromSeconds(GameConstants.CurrentVersion, TimeInSeconds).Name.ToLower() font-goethe text-lg">@(TimeInSeconds.ToString(FormatUtils.TimeFormat))</span>
-
-@code {
-	[Parameter, EditorRequired] public double TimeInSeconds { get; set; }
-}

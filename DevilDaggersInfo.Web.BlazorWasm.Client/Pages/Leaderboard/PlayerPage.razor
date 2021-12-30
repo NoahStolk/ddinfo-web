@@ -17,7 +17,7 @@ else
 	<Paragraph>@GetEntry.Username is currently rank @GetEntry.Rank.</Paragraph>
 	<div class="grid gap-2 grid-cols-1 md:grid-cols-2 xl:grid-cols-3 2xl:grid-cols-5">
 		<PlayerCard Title="Personal Best">
-			<DataField CssClass="odd:bg-gray-2 px-1" Name="Time"><SpanTime TimeInSeconds="@GetEntry.Time" /></DataField>
+			<DataField CssClass="odd:bg-gray-2 px-1" Name="Time">@MarkupUtils.LeaderboardTime(GetEntry.Time)</DataField>
 			<DataField CssClass="odd:bg-gray-2 px-1" Name="Kills">@GetEntry.Kills.ToString(FormatUtils.LeaderboardIntFormat)</DataField>
 			<DataField CssClass="odd:bg-gray-2 px-1" Name="Gems">@GetEntry.Gems.ToString(FormatUtils.LeaderboardIntFormat)</DataField>
 			<DataField CssClass="odd:bg-gray-2 px-1" Name="Accuracy">@((GetEntry.DaggersHit / (float)GetEntry.DaggersFired).ToString(FormatUtils.AccuracyFormat))</DataField>
