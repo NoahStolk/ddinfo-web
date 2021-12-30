@@ -3,7 +3,8 @@
 	@ChildContent
 </div>
 
-@code {
+@code
+{
 	[Parameter, EditorRequired] public string Label { get; set; } = null!;
 	[Parameter, EditorRequired] public RenderFragment ChildContent { get; set; } = null!;
 }

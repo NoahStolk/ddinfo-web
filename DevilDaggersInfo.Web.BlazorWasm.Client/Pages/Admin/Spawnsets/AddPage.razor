@@ -5,7 +5,7 @@
 @using DevilDaggersInfo.Web.BlazorWasm.Shared.Dto.Admin.Spawnsets
 
 <AdminAdd Name="Spawnset" OverviewUrl="/admin/spawnsets" ApiCall="Http.AddSpawnset" Model="_addSpawnset" @ref="_addComponent">
-	<AdminInput Label="@nameof(AddSpawnset.PlayerId)"><SearchDropdown Values="@_playerNames" Converter="s => int.Parse(s)" @bind-Value="@_addSpawnset.PlayerId" /></AdminInput>
+	<AdminInput Label="@nameof(AddSpawnset.PlayerId)"><SearchDropdown TKey=int Values="@_playerNames" Converter="s => int.Parse(s)" @bind-Value="@_addSpawnset.PlayerId" /></AdminInput>
 	<AdminInput Label="@nameof(AddSpawnset.Name)"><InputText class="w-64 pl-2 bg-gray-1 text-color-text" @bind-Value="@_addSpawnset.Name" /></AdminInput>
 	<AdminInput Label="@nameof(AddSpawnset.MaxDisplayWaves)"><InputNumber class="w-64 pl-2 bg-gray-1 text-color-text" @bind-Value="_addSpawnset.MaxDisplayWaves" /></AdminInput>
 	<AdminInput Label="@nameof(AddSpawnset.HtmlDescription)"><InputText class="w-64 pl-2 bg-gray-1 text-color-text" @bind-Value="@_addSpawnset.HtmlDescription" /></AdminInput>
