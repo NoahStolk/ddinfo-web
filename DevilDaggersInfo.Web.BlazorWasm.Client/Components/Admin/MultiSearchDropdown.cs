@@ -42,4 +42,10 @@ public partial class MultiSearchDropdown
 		string value = Values?.ContainsKey(key) == true ? Values[key] : "???";
 		return $"{key} ({value})";
 	}
+
+	private void OnClickOutside()
+	{
+		_show = false;
+		StateHasChanged();
+	}
 }
