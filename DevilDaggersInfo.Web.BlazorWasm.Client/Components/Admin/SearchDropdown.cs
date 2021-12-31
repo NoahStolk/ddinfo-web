@@ -45,4 +45,10 @@ public partial class SearchDropdown<TKey>
 
 		return $"{key} ({Values[key]})";
 	}
+
+	private void OnClickOutside()
+	{
+		_show = false;
+		StateHasChanged();
+	}
 }

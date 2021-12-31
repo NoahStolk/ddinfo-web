@@ -1,0 +1,27 @@
+@inject IJSRuntime JsRuntime;
+<div id="@Id" class="@CssClass">
+	@ChildContent
+</div>
+
+@code
+{
+	[Parameter, EditorRequired] public Action OnClickOutside { get; set; } = null!;
+
+	[Parameter, EditorRequired] public RenderFragment ChildContent { get; set; } = null!;
+
+	[Parameter] public string? CssClass { get; set; }
+
+	private string Id { get; set; } = Guid.NewGuid().ToString();
+
+	protected override Task OnInitializedAsync()
+	{
+		JsRuntime.InvokeAsync<object>("outsideClickHandler.addEvent", Id, DotNetObjectReference.Create(this));
+		return base.OnInitializedAsync();
+	}
+
+	[JSInvokable]
+	public void InvokeClickOutside()
+	{
+		OnClickOutside.Invoke();
+	}
+}
