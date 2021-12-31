@@ -8,12 +8,15 @@
 	<div class="content absolute flex flex-col flex-grow px-4 sm:left-12 w-full sm:w-screen-width h-full top-12 sm:top-0">
 		<div class="flex-grow flex-shrink-0">
 			<div class="text-white bg-darker-red px-4 my-2 pb-3">
-				<h1 class="text-red text-6xl pt-4 pb-2 font-goethe leviathan" style="filter: saturate(180%);">IMPORTANT NOTICE!!!</h1>
+				<h1 class="text-red text-6xl pt-4 pb-2 font-goethe leviathan" style="filter: saturate(180%);">Important Notice</h1>
 				<Paragraph>
-					This is DevilDaggers.info V5 which is currently unreleased and in a BETA state. Yes there are bugs, I will fix them. Yes it is slow, I will make it faster. Yes some things are missing, I will add them. <strong>Please do not let people know about this subdomain. This is only here for testing purposes.</strong>
+					This is DevilDaggers.info V5 which is currently unreleased and in a beta state, meaning there are still some bugs around. This is not the final state of the website and it is mainly here for testing purposes.
 				</Paragraph>
 				<Paragraph>
-					If I've sent you here for testing purposes, feel free to look around and use whatever browser or device you like. Just expect things to not always work properly.
+					Feel free to look around and use whatever browser or device you like. Just expect things to not always work properly.
+				</Paragraph>
+				<Paragraph>
+					Also note that, while this new website connects to the same database as the current website, it does not share the same files. There will be a discrepancy in data (missing history / custom replays / spawnsets / mods / mod screenshots) until V5 officially supersedes V4.
 				</Paragraph>
 				<button class="btn btn-red p-2 w-24 text-lg" @onclick="() => _readMore = !_readMore">@(_readMore ? "Close" : "Read more")</button>
 
@@ -21,10 +24,10 @@
 				{
 					<Heading Title="Why a complete rewrite?" Level="2" />
 					<Paragraph>
-						There are many reasons. The current website (V4) was set up in 2018. The framework used back then is not ideal for a website like this anymore. The website grew a lot larger than planned, and the older framework became more and more challenging to work with. These issues, as well as some architectural flaws in the website's original design, eventually meant that a complete rewrite was going to happen either way.
+						There are many reasons. The current website (V4) was set up in 2018. The framework used back then is not ideal for a website like this anymore. The website grew a lot larger than planned, and the older framework became more and more annoying to work with. These issues eventually meant that a complete rewrite was going to happen either way. This doesn't only apply to the website; I will also rewrite the editors at some point (especially because Devil Daggers has been updated quite a lot in 2021 -- the original design for the asset editor doesn't really apply to V3.1+ anymore).
 					</Paragraph>
 					<Paragraph>
-						In 2020, a new framework for .NET officially came out, which solves all issues I had with the current website. I've been porting all the stuff to a completely new code base (website and shared code for the tools) since July 2021, and this is where it currently stands. The main advantages are:
+						In 2020, a new framework for .NET officially came out, which solves all issues I had with the current website. I've been porting the website and everything else to a completely new code base since July 2021, and this is where it currently stands. The main advantages are:
 					</Paragraph>
 					<ul class="pl-4">
 						<li class="list-disc">The website is now properly separated into two applications; a server application and a client application. The server serves the client app to the browser on request, and the client handles it from there, doing requests to the server's public API. This means the server does not have to serve pre-rendered HTML to the browser for every page anymore, so there is now a proper separation between front-end and back-end logic in the code base which helps a lot in maintainability.</li>
@@ -33,27 +36,13 @@
 						<li class="list-disc">Now using Tailwind instead of Bootstrap, as well as automatic CSS isolation.</li>
 					</ul>
 
-					<Paragraph>It will take a long time to complete the rewrite, but I can assure you it is absolutely worth it.</Paragraph>
-
 					<Heading Title="Will there be new stuff?" Level="2" />
 					<Paragraph>
-						Yes! There is already some new functionality, such as the history statistics, custom leaderboard graphs, and assets wiki, but there will be much more. In fact, the whole rewrite of the website is only happening <i>because</i> I want to make new features, but figured it would not be worth it to make the old website even larger when a total rewrite is inevitable.
+						Yes! There is already some new functionality, such as the history statistics, custom leaderboard graphs, and assets wiki, but there will be much more. The whole rewrite of the website is only happening <i>because</i> I want to make new features, but figured it would not be worth it to make the old website even larger when a total rewrite is inevitable.
 					</Paragraph>
-					<Paragraph>Some new planned features are:</Paragraph>
-					<ul class="pl-4">
-						<li class="list-disc">Web-based (and therefore cross-platform) editors for spawnsets and mods (still needs a lot of experimenting, so I'm not entirely sure yet)</li>
-						<li class="list-disc">Allowing anyone to make an account and maintain their own player settings, and maybe even upload their own spawnsets and mods</li>
-						<li class="list-disc">A lot more types of custom leaderboards, and probably custom leaderboards for every applicable spawnset, probably a global leaderboard per category as well</li>
-						<li class="list-disc">More statistics</li>
-					</ul>
-
-					<Paragraph>All of this is still subject to change, and the main priority right now is finishing the website and replacing the old one.</Paragraph>
-
-					<Heading Title="Notes" Level="2" />
-					<ul class="pl-4">
-						<li class="list-disc">If you have an account on the current website, you cannot use it to login here.</li>
-						<li class="list-disc">This new version uses the same database as the current version of the website, but NOT the same file system. There will be a discrepancy in data that's being shown until V5 officially supersedes V4.</li>
-					</ul>
+					<Paragraph>
+						The new website also allows for many more future possibilities. For example, it will be possible to create web-based editors for spawnsets and mods.
+					</Paragraph>
 				}
 			</div>
 			@Body
