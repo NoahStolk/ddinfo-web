@@ -3,7 +3,15 @@
 
 @if (GetCustomEntryData == null)
 {
-	<Loading />
+	if (_notFound)
+	{
+		<Heading Title="Custom leaderboard score data not found" />
+		<p>This custom leaderboard score (or the data for it) doesn't exist.</p>
+	}
+	else
+	{
+		<Loading />
+	}
 }
 else
 {

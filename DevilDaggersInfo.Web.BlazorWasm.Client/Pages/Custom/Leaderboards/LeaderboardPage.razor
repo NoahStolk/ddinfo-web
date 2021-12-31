@@ -7,7 +7,15 @@
 
 @if (GetCustomLeaderboard == null)
 {
-	<Loading />
+	if (_notFound)
+	{
+		<Heading Title="Custom leaderboard not found" />
+		<p>This custom leaderboard doesn't exist. Click <a class="link" href="/custom/leaderboards">here</a> to go back to the custom leaderboards overview.</p>
+	}
+	else
+	{
+		<Loading />
+	}
 }
 else
 {
@@ -69,7 +77,7 @@ else
 			<span class="leviathan">@(GetCustomLeaderboard.TimeLeviathan.ToString(FormatUtils.TimeFormat))</span>
 		</div>
 	</div>
-	
+
 	<LeaderboardTableInfo />
 
 	<div class="text-xl font-goethe">
@@ -211,6 +219,7 @@ else
 
 	public GetCustomLeaderboard? GetCustomLeaderboard { get; set; }
 
+	private bool _notFound;
 	private int? _expandedId;
 	private CustomEntrySorting _sortBy;
 	private bool _ascending;
@@ -222,7 +231,14 @@ else
 		foreach (CustomEntrySorting e in (CustomEntrySorting[])Enum.GetValues(typeof(CustomEntrySorting)))
 			_sortings.Add(e, false);
 
-		GetCustomLeaderboard = await Http.GetCustomLeaderboardById(Id);
+		try
+		{
+			GetCustomLeaderboard = await Http.GetCustomLeaderboardById(Id);
+		}
+		catch (HttpRequestException ex) when (ex.StatusCode == HttpStatusCode.NotFound)
+		{
+			_notFound = true;
+		}
 	}
 
 	private void Expand(int playerId)

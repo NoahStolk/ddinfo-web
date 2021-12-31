@@ -25,6 +25,8 @@ public partial class EntryPage
 		new($"<span style='color: {ds.Color}; text-align: right;'>{d.Y.ToString("0")}</span>"),
 	};
 
+	private bool _notFound;
+
 	private List<(string Name, LineChartDataOptions DataOptions, LineChartOptions ChartOptions, List<LineDataSet> Sets)> _lineCharts = new();
 	private int _time;
 
@@ -73,7 +75,15 @@ public partial class EntryPage
 
 	protected override async Task OnInitializedAsync()
 	{
-		GetCustomEntryData = await Http.GetCustomEntryDataById(Id);
+		try
+		{
+			GetCustomEntryData = await Http.GetCustomEntryDataById(Id);
+		}
+		catch (HttpRequestException ex) when (ex.StatusCode == HttpStatusCode.NotFound)
+		{
+			_notFound = true;
+			return;
+		}
 
 		_time = (int)Math.Ceiling(GetCustomEntryData.Time);
 

@@ -9,7 +9,15 @@
 
 @if (GetSpawnset == null)
 {
-	<Loading />
+	if (_notFound)
+	{
+		<Heading Title="Spawnset not found" />
+		<p>This spawnset doesn't exist. Click <a class="link" href="/custom/spawnsets">here</a> to go back to the spawnsets overview.</p>
+	}
+	else
+	{
+		<Loading />
+	}
 }
 else if (SpawnsetBinary == null || SpawnsView == null)
 {
@@ -111,6 +119,8 @@ else
 
 @code
 {
+	private bool _notFound;
+
 	[Parameter, EditorRequired] public int Id { get; set; }
 
 	public GetSpawnset? GetSpawnset { get; set; }
@@ -121,7 +131,15 @@ else
 
 	protected override async Task OnInitializedAsync()
 	{
-		GetSpawnset = await Http.GetSpawnsetById(Id);
+		try
+		{
+			GetSpawnset = await Http.GetSpawnsetById(Id);
+		}
+		catch (HttpRequestException ex) when (ex.StatusCode == HttpStatusCode.NotFound)
+		{
+			_notFound = true;
+			return;
+		}
 
 		if (!SpawnsetBinary.TryParse(GetSpawnset.FileBytes, out SpawnsetBinary? spawnsetBinary))
 		{

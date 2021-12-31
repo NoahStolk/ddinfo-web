@@ -6,7 +6,15 @@
 
 @if (GetMod == null)
 {
-	<Loading />
+	if (_notFound)
+	{
+		<Heading Title="Mod not found" />
+		<p>This mod doesn't exist. Click <a class="link" href="/custom/mods">here</a> to go back to the mods overview.</p>
+	}
+	else
+	{
+		<Loading />
+	}
 }
 else
 {
@@ -146,6 +154,7 @@ else
 @code
 {
 	private int _screenshotIndex;
+	private bool _notFound;
 
 	[Parameter, EditorRequired] public int Id { get; set; }
 
@@ -153,6 +162,13 @@ else
 
 	protected override async Task OnInitializedAsync()
 	{
-		GetMod = await Http.GetModById(Id);
+		try
+		{
+			GetMod = await Http.GetModById(Id);
+		}
+		catch (HttpRequestException ex) when (ex.StatusCode == HttpStatusCode.NotFound)
+		{
+			_notFound = true;
+		}
 	}
 }
