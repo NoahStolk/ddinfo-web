@@ -10,13 +10,13 @@
 			<div class="text-white bg-darker-red px-4 my-2 pb-3">
 				<h1 class="text-red text-6xl pt-4 pb-2 font-goethe leviathan" style="filter: saturate(180%);">Important Notice</h1>
 				<Paragraph>
-					This is DevilDaggers.info V5 which is currently unreleased and in a beta state, meaning there are still some bugs around. This is not the final state of the website and it is mainly here for testing purposes.
+					This is DevilDaggers.info V5 which is currently unreleased and in a beta state. It is almost ready to be released, but before I do that I'd like to have some time to properly test everything on this subdomain.
 				</Paragraph>
 				<Paragraph>
-					Feel free to look around and use whatever browser or device you like. Just expect things to not always work properly.
+					Feel free to look around and use whatever browser or device you like!
 				</Paragraph>
 				<Paragraph>
-					Also note that, while this new website connects to the same database as the current website, it does not share the same files. There will be a discrepancy in data (missing history / custom replays / spawnsets / mods / mod screenshots) until V5 officially supersedes V4.
+					Also note that, while this new website connects to the same database as the current website, it does not share the same files, meaning <strong>there will be a discrepancy in data until V5 officially supersedes V4.</strong> That means that during the testing phase there might be missing leaderboard history, custom replays, spawnsets, mods, and mod screenshots.
 				</Paragraph>
 				<button class="btn btn-red p-2 w-24 text-lg" @onclick="() => _readMore = !_readMore">@(_readMore ? "Close" : "Read more")</button>
 
@@ -24,7 +24,7 @@
 				{
 					<Heading Title="Why a complete rewrite?" Level="2" />
 					<Paragraph>
-						There are many reasons. The current website (V4) was set up in 2018. The framework used back then is not ideal for a website like this anymore. The website grew a lot larger than planned, and the older framework became more and more annoying to work with. These issues eventually meant that a complete rewrite was going to happen either way. This doesn't only apply to the website; I will also rewrite the editors at some point (especially because Devil Daggers has been updated quite a lot in 2021 -- the original design for the asset editor doesn't really apply to V3.1+ anymore).
+						There are many reasons. The current website (V4) was set up in 2018. The framework used back then is not ideal for a website like this anymore. The website grew a lot larger than planned, and the older framework became more and more annoying to work with. These issues eventually meant that a complete rewrite was going to happen either way. This doesn't only apply to the website; I will also rewrite the editors at some point (especially because Devil Daggers has been updated quite a lot in 2021 -- the original design for the asset editor, for example, doesn't really connect well with how V3.1+ mods work).
 					</Paragraph>
 					<Paragraph>
 						In 2020, a new framework for .NET officially came out, which solves all issues I had with the current website. I've been porting the website and everything else to a completely new code base since July 2021, and this is where it currently stands. The main advantages are:
@@ -34,6 +34,8 @@
 						<li class="list-disc">The layout is now fully component-based; the old framework had limited support for this which was annoying to work with.</li>
 						<li class="list-disc">No more JavaScript and jQuery; the new website runs completely on WebAssembly.</li>
 						<li class="list-disc">Now using Tailwind instead of Bootstrap, as well as automatic CSS isolation.</li>
+						<li class="list-disc">All base functionality (parsing spawnsets and mods) has been rewritten from the ground up.</li>
+						<li class="list-disc">The charts are one of my favorite things about the website, and there will be many more. For this specific purpose (and for fun) I've written my own chart rendering library in WebAssembly (performance will be improved by a lot some time later).</li>
 					</ul>
 
 					<Heading Title="Will there be new stuff?" Level="2" />
