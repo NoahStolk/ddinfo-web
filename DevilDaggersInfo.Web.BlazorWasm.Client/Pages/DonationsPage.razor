@@ -24,7 +24,7 @@
 }
 else
 {
-	<div class="grid gap-x-3 sm:grid-cols-1 md:grid-cols-3">
+	<div class="gap-x-3 columns-1 sm:columns-2 md:columns-3">
 		@foreach (GetDonator donator in GetDonators)
 		{
 			string username = donator.HideDonations ? "(anonymous)" : donator.PlayerName;
