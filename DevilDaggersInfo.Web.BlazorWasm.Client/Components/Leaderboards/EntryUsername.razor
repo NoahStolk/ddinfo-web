@@ -5,7 +5,7 @@
 	}
 	else if (DaggerCssClass == "leviathan")
 	{
-		<a href="/leaderboard/player/@Id" class="@DaggerCssClass highlight hover:underline" style="@LeviathanAnimationUtils.GetStyle(LeviathanBackgroundOffset)">@Name.ToNoBreakString()</a>
+		<a href="/leaderboard/player/@Id" class="@DaggerCssClass highlight hover:underline" style="@LeviathanOffsetStyle">@Name.ToNoBreakString()</a>
 	}
 	else
 	{
@@ -17,6 +17,6 @@
 	[Parameter, EditorRequired] public int Id { get; set; }
 	[Parameter, EditorRequired] public string Name { get; set; } = null!;
 	[Parameter, EditorRequired] public string DaggerCssClass { get; set; } = null!;
-	[Parameter] public int LeviathanBackgroundOffset { get; set; }
+	[Parameter] public string? LeviathanOffsetStyle { get; set; }
 	[Parameter] public bool IsBanned { get; set; }
 }

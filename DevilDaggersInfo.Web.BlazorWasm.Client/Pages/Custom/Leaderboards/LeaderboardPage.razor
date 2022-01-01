@@ -133,13 +133,14 @@ else
 					string submitDate = ce.SubmitDate.ToString(FormatUtils.DateTimeFormat);
 
 					bool grayBackground = i++ % 2 == 0;
+					string? leviathanOffsetStyle = daggerCssClass == "leviathan" ? LeviathanAnimationUtils.GetStyle(GetCustomLeaderboard.CustomEntries.Count, i) : null;
 
 					<div class="grid gap-3 grid-cols-custom-leaderboard-sm md:grid-cols-custom-leaderboard-md lg:grid-cols-custom-leaderboard-lg xl:grid-cols-custom-leaderboard-xl 2xl:grid-cols-custom-leaderboard-2xl h-6 cursor-pointer 2xl:cursor-default @(grayBackground ? "bg-gray-1" : string.Empty)" @onclick="() => Expand(ce.Id)">
 						<EntryRank PlayerId="@ce.PlayerId" Rank="@ce.Rank" />
 						<EntryFlag CountryCode="@ce.CountryCode" />
-						<EntryUsername DaggerCssClass="@daggerCssClass" LeviathanBackgroundOffset="@LeviathanAnimationUtils.GetOffset(GetCustomLeaderboard.CustomEntries.Count, i)" Id="@ce.PlayerId" Name="@($"{ce.PlayerName}")" />
+						<EntryUsername DaggerCssClass="@daggerCssClass" LeviathanOffsetStyle="@leviathanOffsetStyle" Id="@ce.PlayerId" Name="@($"{ce.PlayerName}")" />
 						<div class="text-right whitespace-nowrap">
-							<span class="@daggerCssClass">@ce.Time.ToString(FormatUtils.TimeFormat)</span>
+							<span class="@daggerCssClass" style="@leviathanOffsetStyle">@ce.Time.ToString(FormatUtils.TimeFormat)</span>
 							@if (hasGraphs)
 							{
 								<a href="@($"/custom/entry/{ce.Id}")">
