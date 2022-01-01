@@ -2,7 +2,7 @@
 	@if (!string.IsNullOrEmpty(CountryCode))
 	{
 		string countryCode = UserUtils.CountryNames.ContainsKey(CountryCode) ? UserUtils.CountryNames[CountryCode] : "?";
-		<Tooltip Text="@countryCode"><img class="cursor-pointer inline-block" src="/images/flags/@(CountryCode).png" /></Tooltip>
+		<Tooltip Position=TooltipPosition.Right Text="@countryCode"><img class="cursor-pointer inline-block" src="/images/flags/@(CountryCode).png" /></Tooltip>
 	}
 </div>
 

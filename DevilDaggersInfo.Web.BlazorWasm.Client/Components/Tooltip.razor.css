@@ -10,21 +10,40 @@
 		color: #fff;
 		content: attr(title);
 		text-decoration: none;
-		padding: 10px;
+		padding: 6px;
 		left: 50%;
-		transform: translateX(-50%);
 		position: absolute;
 		pointer-events: none;
 	}
 
 	.tooltip:hover:before {
-		border: solid;
-		border-color: #333 transparent;
-		border-width: 6px 6px 0 6px;
 		bottom: 20px;
 		content: "";
 		left: 50%;
-		transform: translateX(-50%);
 		position: absolute;
 		pointer-events: none;
+	}
+
+	.tooltip.center:hover:after {
+		transform: translateX(-50%);
+	}
+
+	.tooltip.center:hover:before {
+		transform: translateX(-50%);
+	}
+
+	.tooltip.left:hover:after {
+		transform: translateX(calc(-100% + 16px));
+	}
+
+	.tooltip.left:hover:before {
+		transform: translateX(calc(-100% + 16px));
+	}
+
+	.tooltip.right:hover:after {
+		transform: translateX(-16px);
+	}
+
+	.tooltip.right:hover:before {
+		transform: translateX(-16px);
 	}

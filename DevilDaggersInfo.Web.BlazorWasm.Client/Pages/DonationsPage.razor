@@ -36,7 +36,7 @@ else
 			<div class="grid grid-cols-2 justify-items-stretch">
 				<div style="white-space: nowrap;" class="justify-self-start font-goethe devil text-xl">@username</div>
 				<div class="justify-self-end">
-					<Tooltip Text="@tooltipText">
+					<Tooltip Position=TooltipPosition.Left Text="@tooltipText">
 						<span class="cursor-pointer">€ @((donator.Donations.Sum(d => d.ConvertedEuroCentsReceived) / 100.0).ToString("0.00"))</span>
 					</Tooltip>
 				</div>

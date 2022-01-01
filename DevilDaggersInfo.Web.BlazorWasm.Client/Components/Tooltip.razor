@@ -1,8 +1,9 @@
-<span class="tooltip whitespace-nowrap font-calibri text-base" title="@(Text)">
+<span class="tooltip @(Position.ToString().ToLower()) whitespace-nowrap font-calibri text-sm" title="@(Text)">
 	@ChildContent
 </span>
 
 @code {
 	[Parameter, EditorRequired] public RenderFragment ChildContent { get; set; } = null!;
 	[Parameter, EditorRequired] public string Text { get; set; } = null!;
+	[Parameter] public TooltipPosition Position { get; set; }
 }
