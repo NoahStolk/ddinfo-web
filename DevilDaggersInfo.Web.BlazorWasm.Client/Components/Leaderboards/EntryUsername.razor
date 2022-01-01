@@ -5,7 +5,7 @@
 	}
 	else if (DaggerCssClass == "leviathan")
 	{
-		<a href="/leaderboard/player/@Id" class="@DaggerCssClass highlight hover:underline" style="animation-delay: -@(LeviathanBackgroundOffset)ms;">@Name.ToNoBreakString()</a>
+		<a href="/leaderboard/player/@Id" class="@DaggerCssClass highlight hover:underline" style="@LeviathanAnimationUtils.GetStyle(LeviathanBackgroundOffset)">@Name.ToNoBreakString()</a>
 	}
 	else
 	{
