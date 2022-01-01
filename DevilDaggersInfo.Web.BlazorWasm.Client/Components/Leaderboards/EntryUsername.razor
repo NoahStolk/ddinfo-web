@@ -3,6 +3,10 @@
 	{
 		<a href="/leaderboard/player/@Id" class="@(IsBanned ? string.Empty : DaggerCssClass)"><span class="font-goethe text-xl hover:underline text-color-ban">@Name.ToNoBreakString()</span></a>
 	}
+	else if (DaggerCssClass == "leviathan")
+	{
+		<a href="/leaderboard/player/@Id" class="@DaggerCssClass highlight hover:underline" style="animation-delay: -@(LeviathanBackgroundOffset)ms;">@Name.ToNoBreakString()</a>
+	}
 	else
 	{
 		<a href="/leaderboard/player/@Id" class="@DaggerCssClass highlight hover:underline">@Name.ToNoBreakString()</a>
@@ -13,5 +17,6 @@
 	[Parameter, EditorRequired] public int Id { get; set; }
 	[Parameter, EditorRequired] public string Name { get; set; } = null!;
 	[Parameter, EditorRequired] public string DaggerCssClass { get; set; } = null!;
+	[Parameter] public int LeviathanBackgroundOffset { get; set; }
 	[Parameter] public bool IsBanned { get; set; }
 }
