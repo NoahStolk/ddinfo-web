@@ -105,7 +105,7 @@
 				<div class="grid gap-3 grid-cols-leaderboard-sm md:grid-cols-leaderboard-md lg:grid-cols-leaderboard-lg xl:grid-cols-leaderboard-xl h-6 cursor-pointer xl:cursor-default @(grayBackground ? "bg-gray-1" : string.Empty) @(isBanned ? "text-color-ban" : string.Empty)" @onclick="() => Expand(entry.Id)">
 					<EntryRank PlayerId="@entry.Id" Rank="@entry.Rank" />
 					<EntryFlag CountryCode="@player?.CountryCode" />
-					<EntryUsername DaggerCssClass="@daggerCssClass" LeviathanBackgroundOffset="@((i * 16) % 128)" Id="entry.Id" Name="@entry.Username" IsBanned="isBanned" />
+					<EntryUsername DaggerCssClass="@daggerCssClass" LeviathanBackgroundOffset="@((Entries.Count - i) * 300)" Id="entry.Id" Name="@entry.Username" IsBanned="isBanned" />
 					<div class="text-right @(isBanned ? string.Empty : daggerCssClass)">@entry.Time.ToString(FormatUtils.TimeFormat)</div>
 					<div class="text-right hidden md:block">@kills</div>
 					<div class="text-right hidden md:block">@gems</div>
