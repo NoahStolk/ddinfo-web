@@ -45,7 +45,7 @@
 				<div class="grid gap-3 grid-cols-player-settings-sm md:grid-cols-player-settings-md lg:grid-cols-player-settings-lg xl:grid-cols-player-settings-xl h-6 cursor-pointer xl:cursor-default @(grayBackground ? "bg-gray-1" : string.Empty)" @onclick="() => Expand(entry.Id)">
 					<EntryRank PlayerId="@entry.Id" Rank="@entry.Rank" />
 					<EntryFlag CountryCode="@player.CountryCode" />
-					<EntryUsername DaggerCssClass="@daggerCssClass" Id="entry.Id" Name="@entry.Username" />
+					<EntryUsername DaggerCssClass="@daggerCssClass" LeviathanBackgroundOffset="@((Entries.Count - i) * 300)" Id="entry.Id" Name="@entry.Username" />
 					<div class="text-right @daggerCssClass">@entry.Time.ToString(FormatUtils.TimeFormat)</div>
 					<div class="text-right hidden md:block">@edpi</div>
 					<div class="text-right hidden md:block">@player.Settings.Dpi</div>
