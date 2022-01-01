@@ -1,18 +1,12 @@
 <div>
 	@if (!string.IsNullOrEmpty(CountryCode))
 	{
-		<Tooltip Text="@_countryName"><img class="cursor-pointer inline-block" src="/images/flags/@(CountryCode).png" /></Tooltip>
+		string countryCode = UserUtils.CountryNames.ContainsKey(CountryCode) ? UserUtils.CountryNames[CountryCode] : "?";
+		<Tooltip Text="@countryCode"><img class="cursor-pointer inline-block" src="/images/flags/@(CountryCode).png" /></Tooltip>
 	}
 </div>
 
 @code
 {
 	[Parameter] public string? CountryCode { get; set; }
-
-	private string? _countryName;
-
-	protected override void OnInitialized()
-	{
-		_countryName = CountryCode != null && UserUtils.CountryNames.ContainsKey(CountryCode) ? UserUtils.CountryNames[CountryCode] : null;
-	}
 }
