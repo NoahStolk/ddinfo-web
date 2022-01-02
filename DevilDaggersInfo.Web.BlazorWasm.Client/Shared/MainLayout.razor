@@ -30,11 +30,12 @@
 						In 2020, a new framework for .NET officially came out, which solves all issues I had with the current website. I've been porting the website and everything else to a completely new code base since July 2021, and this is where it currently stands. The main advantages are:
 					</Paragraph>
 					<ul class="pl-4">
-						<li class="list-disc">The website is now properly separated into two applications; a server application and a client application. The server serves the client app to the browser on request, and the client handles it from there, doing requests to the server's public API. This means the server does not have to serve pre-rendered HTML to the browser for every page anymore, so there is now a proper separation between front-end and back-end logic in the code base which helps a lot in maintainability.</li>
+						<li class="list-disc">The website is now properly separated into two applications; a server application and a client application. The server serves the client app to the browser on request, and the client handles it from there, doing requests to the server's public API. This means the server does not have to serve pre-rendered HTML to the browser for every page anymore, and there is now a proper separation between front-end and back-end logic in the code base which helps a lot in maintainability.</li>
 						<li class="list-disc">The layout is now fully component-based; the old framework had limited support for this which was annoying to work with.</li>
 						<li class="list-disc">No more JavaScript and jQuery; the new website runs completely on WebAssembly.</li>
 						<li class="list-disc">Now using Tailwind instead of Bootstrap, as well as automatic CSS isolation.</li>
-						<li class="list-disc">All base functionality (parsing spawnsets and mods) has been rewritten from the ground up.</li>
+						<li class="list-disc">Completely rewritten and expanded public API. All the data you see can be fetched from the API now.</li>
+						<li class="list-disc">All base functionality (parsing spawnsets and mods, wiki and asset listings) has been improved and rewritten from the ground up.</li>
 						<li class="list-disc">The charts are one of my favorite things about the website, and there will be many more. For this specific purpose (and for fun) I've written my own chart rendering library in WebAssembly (performance will be improved by a lot some time later).</li>
 					</ul>
 

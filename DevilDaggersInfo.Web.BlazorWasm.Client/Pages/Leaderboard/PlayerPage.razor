@@ -77,10 +77,10 @@ else
 					<DataField CssClass="odd:bg-gray-2 px-1" Name="Legacy audio">@(legacyAudio.HasValue ? legacyAudio.Value ? "On" : "Off" : "N/A")</DataField>
 					@if (GetPlayer.CountryCode != null)
 					{
-						<DataField CssClass="odd:bg-gray-2 px-1" Name="Country">
+						<TallDataField CssClass="odd:bg-gray-2 px-1" Name="Country">
 							<img class="inline" src="/images/flags/@(GetPlayer.CountryCode).png" />
 							@(UserUtils.CountryNames.ContainsKey(GetPlayer.CountryCode) ? UserUtils.CountryNames[GetPlayer.CountryCode] : "?")
-						</DataField>
+						</TallDataField>
 					}
 				</PlayerCard>
 			}
