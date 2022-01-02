@@ -58,8 +58,8 @@ public partial class LineChart
 		_highlighter.Width = Options.HighlighterWidth;
 
 		// Determine grid.
-		List<double> xScales = ScaleUtils.CalculateScales(ChartWidth, DataOptions.MinX, DataOptions.MaxX, DataOptions.StepX, Options.GridOptions.MinimumColumnWidthInPx);
-		List<double> yScales = ScaleUtils.CalculateScales(ChartHeight, DataOptions.MinY, DataOptions.MaxY, DataOptions.StepY, Options.GridOptions.MinimumRowHeightInPx);
+		List<double> xScales = ScaleUtils.CalculateScales(ChartWidth, DataOptions.MinX, DataOptions.MaxX, DataOptions.StepX, Options.GridOptions.MinimumColumnWidthInPx, DataOptions.AllowFractionalScales);
+		List<double> yScales = ScaleUtils.CalculateScales(ChartHeight, DataOptions.MinY, DataOptions.MaxY, DataOptions.StepY, Options.GridOptions.MinimumRowHeightInPx, DataOptions.AllowFractionalScales);
 
 		// Render graphics.
 		await _context.ClearRectAsync(0, 0, _canvasWidth, _canvasHeight);

@@ -146,7 +146,7 @@ public partial class EntryPage
 
 			double minAcc = stats.Select(t => t.Acc).Min();
 			double maxAcc = stats.Select(t => t.Acc).Max();
-			LineChartDataOptions dataOptions = new(0, _time / 10, _time, Math.Floor(minAcc * 10) / 10, 0.1, Math.Ceiling(maxAcc * 10) / 10);
+			LineChartDataOptions dataOptions = new(0, _time / 10, _time, Math.Floor(minAcc * 10) / 10, 0.1, Math.Ceiling(maxAcc * 10) / 10, true);
 			LineChartOptions chartOptions = new()
 			{
 				HighlighterKeys = new() { "Time", "Accuracy", "Daggers Hit", "Daggers Fired" },

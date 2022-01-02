@@ -2,7 +2,7 @@ namespace DevilDaggersInfo.Web.BlazorWasm.Client.Core.CanvasChart.Options;
 
 public class LineChartDataOptions
 {
-	public LineChartDataOptions(double minX, double? stepX, double maxX, double minY, double? stepY, double maxY)
+	public LineChartDataOptions(double minX, double? stepX, double maxX, double minY, double? stepY, double maxY, bool allowFractionalScales = false)
 	{
 		MinX = minX;
 		StepX = stepX;
@@ -10,6 +10,7 @@ public class LineChartDataOptions
 		MinY = minY;
 		StepY = stepY;
 		MaxY = maxY;
+		AllowFractionalScales = allowFractionalScales;
 	}
 
 	public double MinX { get; }
@@ -29,4 +30,9 @@ public class LineChartDataOptions
 	public double? StepY { get; }
 
 	public double MaxY { get; }
+
+	/// <summary>
+	/// By default, fractional scales will not be rendered. For values like percentages however, fractional scales are required. Use this property to override that setting.
+	/// </summary>
+	public bool AllowFractionalScales { get; }
 }

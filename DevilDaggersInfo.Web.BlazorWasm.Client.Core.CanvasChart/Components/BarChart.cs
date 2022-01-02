@@ -62,7 +62,7 @@ public partial class BarChart
 
 		// Determine grid.
 		List<double> xScales = Enumerable.Range(0, DataSet.Data.Count).Select(i => (double)i).ToList();
-		List<double> yScales = ScaleUtils.CalculateScales(ChartHeight, DataOptions.MinY, DataOptions.MaxY, DataOptions.StepY, Options.GridOptions.MinimumRowHeightInPx);
+		List<double> yScales = ScaleUtils.CalculateScales(ChartHeight, DataOptions.MinY, DataOptions.MaxY, DataOptions.StepY, Options.GridOptions.MinimumRowHeightInPx, false);
 		double fullBarWidth = 1 / (double)DataSet.Data.Count * ChartWidth;
 
 		// Set backgrounds.

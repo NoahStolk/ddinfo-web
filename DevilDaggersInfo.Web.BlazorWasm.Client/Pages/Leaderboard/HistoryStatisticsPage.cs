@@ -134,7 +134,7 @@ public partial class HistoryStatisticsPage
 
 			IEnumerable<double> accuracy = _statistics.Select(hs => accuracyConverter(hs.DaggersHitGlobal, hs.DaggersFiredGlobal));
 			List<LineData> set = _statistics.Select(hs => new LineData(hs.DateTime.Ticks, accuracyConverter(hs.DaggersHitGlobal, hs.DaggersFiredGlobal), hs)).ToList();
-			_accuracyOptions = new(minX.Ticks, null, maxX.Ticks, Math.Floor(accuracy.Min() * 10) / 10, 0.05, Math.Ceiling(accuracy.Max() * 10) / 10);
+			_accuracyOptions = new(minX.Ticks, null, maxX.Ticks, Math.Floor(accuracy.Min() * 10) / 10, 0.05, Math.Ceiling(accuracy.Max() * 10) / 10, true);
 			_accuracyData.Add(new("#f80", false, false, false, set, accuracyHighlighter));
 		}
 	}
