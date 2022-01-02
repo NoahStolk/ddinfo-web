@@ -106,27 +106,19 @@ else
 
 				foreach (GetCustomEntry ce in GetCustomLeaderboard.CustomEntries)
 				{
-					if (!Version.TryParse(ce.ClientVersion, out Version? version))
-						version = new(0, 0, 0, 0);
-
-					bool isDdcl = ce.Client == CustomLeaderboardsClient.DevilDaggersCustomLeaderboards;
-					bool hasGraphs = !isDdcl || version >= FeatureConstants.DdclGraphs;
-					bool hasHomingEatenValue = !isDdcl || version >= FeatureConstants.DdclHomingEaten;
-					bool hasV3_1Values = !isDdcl || version >= FeatureConstants.DdclV3_1;
-
 					string daggerCssClass = ce.CustomLeaderboardDagger.ToString().ToLower();
 
 					string enemiesKilled = ce.EnemiesKilled.ToString(FormatUtils.LeaderboardIntFormat);
 					string enemiesAlive = ce.EnemiesAlive.ToString(FormatUtils.LeaderboardIntFormat);
 					string gemsCollected = ce.GemsCollected.ToString(FormatUtils.LeaderboardIntFormat);
-					MarkupString gemsDespawned = hasV3_1Values ? (MarkupString)ce.GemsDespawned.ToString(FormatUtils.LeaderboardIntFormat) : MarkupUtils.NoDataMarkup;
-					MarkupString gemsEaten = hasV3_1Values ? (MarkupString)ce.GemsEaten.ToString(FormatUtils.LeaderboardIntFormat) : MarkupUtils.NoDataMarkup;
+					MarkupString gemsDespawned = ce.GemsDespawned.HasValue ? (MarkupString)ce.GemsDespawned.Value.ToString(FormatUtils.LeaderboardIntFormat) : MarkupUtils.NoDataMarkup;
+					MarkupString gemsEaten = ce.GemsEaten.HasValue ? (MarkupString)ce.GemsEaten.Value.ToString(FormatUtils.LeaderboardIntFormat) : MarkupUtils.NoDataMarkup;
 					double accuracyValue = ce.DaggersFired == 0 ? 0 : ce.DaggersHit / (double)ce.DaggersFired;
 					string accuracy = accuracyValue.ToString(FormatUtils.AccuracyFormat);
 					string daggers = FormatUtils.FormatDaggersInt32(ce.DaggersHit, ce.DaggersFired, false);
 					MarkupString death = MarkupUtils.DeathString(ce.DeathType, GameConstants.CurrentVersion, "text-xl");
 					string homingStored = ce.HomingStored.ToString(FormatUtils.LeaderboardIntFormat);
-					MarkupString homingEaten = hasHomingEatenValue ? (MarkupString)ce.HomingEaten.ToString(FormatUtils.LeaderboardIntFormat) : MarkupUtils.NoDataMarkup;
+					MarkupString homingEaten = ce.HomingEaten.HasValue ? (MarkupString)ce.HomingEaten.Value.ToString(FormatUtils.LeaderboardIntFormat) : MarkupUtils.NoDataMarkup;
 					MarkupString levelUpTime2 = ce.LevelUpTime2 == 0 ? MarkupUtils.NoDataMarkup : (MarkupString)ce.LevelUpTime2.ToString(FormatUtils.TimeFormat);
 					MarkupString levelUpTime3 = ce.LevelUpTime3 == 0 ? MarkupUtils.NoDataMarkup : (MarkupString)ce.LevelUpTime3.ToString(FormatUtils.TimeFormat);
 					MarkupString levelUpTime4 = ce.LevelUpTime4 == 0 ? MarkupUtils.NoDataMarkup : (MarkupString)ce.LevelUpTime4.ToString(FormatUtils.TimeFormat);
@@ -141,7 +133,7 @@ else
 						<EntryUsername DaggerCssClass="@daggerCssClass" LeviathanOffsetStyle="@leviathanOffsetStyle" Id="@ce.PlayerId" Name="@($"{ce.PlayerName}")" />
 						<div class="text-right whitespace-nowrap">
 							<span class="@daggerCssClass" style="@leviathanOffsetStyle">@ce.Time.ToString(FormatUtils.TimeFormat)</span>
-							@if (hasGraphs)
+							@if (ce.HasGraphs)
 							{
 								<a href="@($"/custom/entry/{ce.Id}")">
 									<Tooltip Text="View graphs"><img class="cursor-pointer inline-block mx-1 mb-1" src="/images/icons/default/eye2.png" /></Tooltip>

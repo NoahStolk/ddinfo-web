@@ -27,34 +27,45 @@ public static class CustomEntryConverters
 		Time = customEntry.Time,
 	};
 
-	public static GetCustomEntry ToGetCustomEntry(this CustomEntryEntity customEntry, int rank, bool hasReplay) => new()
+	public static GetCustomEntry ToGetCustomEntry(this CustomEntryEntity customEntry, int rank, bool hasReplay)
 	{
-		Id = customEntry.Id,
-		Rank = rank,
-		PlayerId = customEntry.PlayerId,
-		PlayerName = customEntry.Player.PlayerName,
-		CountryCode = customEntry.Player.CountryCode,
-		Client = customEntry.Client,
-		ClientVersion = customEntry.ClientVersion,
-		DeathType = customEntry.DeathType,
-		EnemiesAlive = customEntry.EnemiesAlive,
-		GemsCollected = customEntry.GemsCollected,
-		GemsDespawned = customEntry.GemsDespawned,
-		GemsEaten = customEntry.GemsEaten,
-		GemsTotal = customEntry.GemsTotal,
-		HomingStored = customEntry.HomingStored,
-		HomingEaten = customEntry.HomingEaten,
-		EnemiesKilled = customEntry.EnemiesKilled,
-		LevelUpTime2 = customEntry.LevelUpTime2.ToSecondsTime(),
-		LevelUpTime3 = customEntry.LevelUpTime3.ToSecondsTime(),
-		LevelUpTime4 = customEntry.LevelUpTime4.ToSecondsTime(),
-		DaggersFired = customEntry.DaggersFired,
-		DaggersHit = customEntry.DaggersHit,
-		SubmitDate = customEntry.SubmitDate,
-		Time = customEntry.Time.ToSecondsTime(),
-		CustomLeaderboardDagger = customEntry.CustomLeaderboard.GetDaggerFromTime(customEntry.Time),
-		HasReplay = hasReplay,
-	};
+		if (!Version.TryParse(customEntry.ClientVersion, out Version? version))
+			version = new(0, 0, 0, 0);
+
+		bool isDdcl = customEntry.Client == CustomLeaderboardsClient.DevilDaggersCustomLeaderboards;
+		bool hasHomingEatenValue = !isDdcl || version >= FeatureConstants.DdclHomingEaten;
+		bool hasV3_1Values = !isDdcl || version >= FeatureConstants.DdclV3_1;
+		bool hasGraphs = !isDdcl || version >= FeatureConstants.DdclGraphs;
+
+		return new()
+		{
+			Id = customEntry.Id,
+			Rank = rank,
+			PlayerId = customEntry.PlayerId,
+			PlayerName = customEntry.Player.PlayerName,
+			CountryCode = customEntry.Player.CountryCode,
+			Client = customEntry.Client,
+			ClientVersion = customEntry.ClientVersion,
+			DeathType = customEntry.DeathType,
+			EnemiesAlive = customEntry.EnemiesAlive,
+			GemsCollected = customEntry.GemsCollected,
+			GemsDespawned = hasV3_1Values ? customEntry.GemsDespawned : null,
+			GemsEaten = hasV3_1Values ? customEntry.GemsEaten : null,
+			HomingStored = customEntry.HomingStored,
+			HomingEaten = hasHomingEatenValue ? customEntry.HomingEaten : null,
+			EnemiesKilled = customEntry.EnemiesKilled,
+			LevelUpTime2 = customEntry.LevelUpTime2.ToSecondsTime(),
+			LevelUpTime3 = customEntry.LevelUpTime3.ToSecondsTime(),
+			LevelUpTime4 = customEntry.LevelUpTime4.ToSecondsTime(),
+			DaggersFired = customEntry.DaggersFired,
+			DaggersHit = customEntry.DaggersHit,
+			SubmitDate = customEntry.SubmitDate,
+			Time = customEntry.Time.ToSecondsTime(),
+			CustomLeaderboardDagger = customEntry.CustomLeaderboard.GetDaggerFromTime(customEntry.Time),
+			HasReplay = hasReplay,
+			HasGraphs = hasGraphs,
+		};
+	}
 
 	public static GetCustomEntryData ToGetCustomEntryData(this CustomEntryEntity customEntry, CustomEntryDataEntity? customEntryData, HandLevel startingLevel)
 	{

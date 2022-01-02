@@ -28,13 +28,11 @@ public class GetCustomEntry
 
 	public int HomingStored { get; init; }
 
-	public int HomingEaten { get; init; }
+	public int? HomingEaten { get; init; }
 
-	public int GemsDespawned { get; init; }
+	public int? GemsDespawned { get; init; }
 
-	public int GemsEaten { get; init; }
-
-	public int GemsTotal { get; init; }
+	public int? GemsEaten { get; init; }
 
 	public byte DeathType { get; init; }
 
@@ -49,6 +47,8 @@ public class GetCustomEntry
 	public string? ClientVersion { get; init; }
 
 	public CustomLeaderboardsClient Client { get; init; }
+
+	public bool HasGraphs { get; init; }
 
 	public bool HasReplay { get; init; }
 }

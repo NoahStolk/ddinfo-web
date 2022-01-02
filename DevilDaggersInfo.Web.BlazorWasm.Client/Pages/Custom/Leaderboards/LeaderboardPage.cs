@@ -42,11 +42,14 @@ public partial class LeaderboardPage
 
 	private void Sort(CustomEntrySorting sortBy)
 	{
+		if (GetCustomLeaderboard == null)
+			return;
+
 		_sortBy = sortBy;
 		_sortings[sortBy] = !_sortings[sortBy];
 		_ascending = _sortings[sortBy];
 
-		GetCustomLeaderboard!.CustomEntries = _sortBy switch
+		GetCustomLeaderboard.CustomEntries = _sortBy switch
 		{
 			CustomEntrySorting.Rank => GetCustomLeaderboard.CustomEntries.OrderBy(ce => ce.Rank, _ascending).ToList(),
 			CustomEntrySorting.Flag => GetCustomLeaderboard.CustomEntries.OrderBy(ce => ce.CountryCode, _ascending).ToList(),

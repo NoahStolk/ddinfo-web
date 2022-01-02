@@ -238,7 +238,7 @@ public class CustomLeaderboardsController : ControllerBase
 		if (customLeaderboard == null)
 			return NotFound();
 
-		List<int> existingReplayIds = (customLeaderboard.CustomEntries ?? new())
+		List<int> existingReplayIds = customLeaderboard.CustomEntries == null ? new() : customLeaderboard.CustomEntries
 			.Where(ce => IoFile.Exists(Path.Combine(_fileSystemService.GetPath(DataSubDirectory.CustomEntryReplays), $"{ce.Id}.ddreplay")))
 			.Select(ce => ce.Id)
 			.ToList();
