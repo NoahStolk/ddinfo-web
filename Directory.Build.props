@@ -8,6 +8,7 @@
 		<NoWarn>SA1633</NoWarn>
 		<ImplicitUsings>true</ImplicitUsings>
 		<ManagePackageVersionsCentrally>true</ManagePackageVersionsCentrally>
+		<InvariantGlobalization>true</InvariantGlobalization>
 	</PropertyGroup>
 	<ItemGroup>
 		<PackageReference Include="Roslynator.Analyzers">
