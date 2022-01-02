@@ -27,7 +27,7 @@
 						There are many reasons. The current website (V4) was set up in 2018. The framework used back then is not ideal for a website like this anymore. The website grew a lot larger than planned, and the older framework became more and more annoying to work with. These issues eventually meant that a complete rewrite was going to happen either way. This doesn't only apply to the website; I will also rewrite the editors at some point (especially because Devil Daggers has been updated quite a lot in 2021 -- the original design for the asset editor, for example, doesn't really connect well with how V3.1+ mods work).
 					</Paragraph>
 					<Paragraph>
-						In 2020, a new framework for .NET officially came out, which solves all issues I had with the current website. I've been porting the website and everything else to a completely new code base since July 2021, and this is where it currently stands. The main advantages are:
+						In 2020, a new framework for .NET came out, which solves all issues I had with the current website. I've been porting the website and everything else to a completely new code base since July 2021, and this is where it currently stands. The main advantages are:
 					</Paragraph>
 					<ul class="pl-4">
 						<li class="list-disc">The website is now properly separated into two applications; a server application and a client application. The server serves the client app to the browser on request, and the client handles it from there, doing requests to the server's public API. This means the server does not have to serve pre-rendered HTML to the browser for every page anymore, and there is now a proper separation between front-end and back-end logic in the code base which helps a lot in maintainability.</li>
@@ -36,7 +36,7 @@
 						<li class="list-disc">Now using Tailwind instead of Bootstrap, as well as automatic CSS isolation.</li>
 						<li class="list-disc">Completely rewritten and expanded public API. All the data you see can be fetched from the API now.</li>
 						<li class="list-disc">All base functionality (parsing spawnsets and mods, wiki and asset listings) has been improved and rewritten from the ground up.</li>
-						<li class="list-disc">The charts are one of my favorite things about the website, and there will be many more. For this specific purpose (and for fun) I've written my own chart rendering library in WebAssembly (performance will be improved by a lot some time later).</li>
+						<li class="list-disc">The charts are one of my favorite things about the website, and there will be many more soon. For this specific purpose I've written my own chart rendering library (performance will be improved by a lot some time later).</li>
 					</ul>
 
 					<Heading Title="Will there be new stuff?" Level="2" />
@@ -45,6 +45,9 @@
 					</Paragraph>
 					<Paragraph>
 						The new website also allows for many more future possibilities. For example, it will be possible to create web-based editors for spawnsets and mods.
+					</Paragraph>
+					<Paragraph>
+						New features are still subject to change, and I don't have a deadline for these developments. They will be announced when they are completed.
 					</Paragraph>
 				}
 			</div>
