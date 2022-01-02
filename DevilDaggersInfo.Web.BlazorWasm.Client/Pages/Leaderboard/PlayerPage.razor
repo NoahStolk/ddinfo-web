@@ -169,7 +169,7 @@ else
 				</div>
 			}
 
-			@if (GetPlayerHistory.Activity.Count > 0)
+			@if (GetPlayerHistory.Activity.Count > 0 && GetPlayerHistory.Activity.Any(a => a.DeathsIncrement != 0))
 			{
 				<div>
 					<Heading Title="Activity" Level="2" />

@@ -4,7 +4,7 @@ public static class ScaleUtils
 {
 	public static List<double> CalculateScales(double chartSize, double min, double max, double? step, double minimumSizeInPx)
 	{
-		if (chartSize <= 0 || minimumSizeInPx <= 0)
+		if (chartSize <= 0 || minimumSizeInPx <= 0 || min == max)
 			return new();
 
 		bool tooNarrow = false;
