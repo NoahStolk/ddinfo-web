@@ -155,6 +155,8 @@ public class Startup
 			.AddRedirect("Tools/DevilDaggersSurvivalEditor", "tools/survival-editor")
 			.AddRedirect("Wiki/Guides/SpawnsetGuide$", "guides/survival-editor")
 			.AddRedirect("Wiki/Guides/AssetGuide$", "guides/asset-editor")
+			.AddRedirect("Wiki/Guides/SurvivalEditor$", "guides/survival-editor")
+			.AddRedirect("Wiki/Guides/AssetEditor$", "guides/asset-editor")
 
 			.Add(new RewriteRules());
 
