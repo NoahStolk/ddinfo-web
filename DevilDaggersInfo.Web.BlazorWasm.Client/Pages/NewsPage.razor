@@ -1,0 +1,53 @@
+@page "/news"
+@inject PublicApiHttpClient Http
+@using DevilDaggersInfo.Web.BlazorWasm.Client.InternalModels
+
+<Heading Title="News" />
+
+<Paragraph>
+	I'll be posting website updates and changelogs here. For tool changelogs please refer to their corresponding pages.
+</Paragraph>
+
+@if (NewsItemsContent == null)
+{
+	<Loading />
+}
+else
+{
+	foreach (KeyValuePair<NewsItem, MarkupString> newsItem in NewsItemsContent)
+	{
+		<div class="bg-gray-1 px-3 pb-2">
+			<Heading Level="2" Title="@($"{newsItem.Key.DateTime.ToString(FormatUtils.DateFormat)} - {newsItem.Key.Title}")" />
+
+			@(newsItem.Value)
+		</div>
+	}
+
+	<Paragraph>
+		For older changelogs (2017-2021), please refer to the Discord server.
+	</Paragraph>
+}
+
+@code
+{
+	public Dictionary<NewsItem, MarkupString>? NewsItemsContent { get; set; }
+
+	protected override async Task OnInitializedAsync()
+	{
+		List<NewsItem> newsItems = await Http.Client.GetFromJsonAsync<List<NewsItem>>(Path.Combine("news", "_News.json")) ?? new();
+
+		NewsItemsContent = new();
+		foreach (NewsItem newsItem in newsItems)
+		{
+			try
+			{
+				string html = await Http.Client.GetStringAsync(newsItem.GetHtmlPath());
+				NewsItemsContent.Add(newsItem, new(html));
+			}
+			catch
+			{
+				continue;
+			}
+		}
+	}
+}

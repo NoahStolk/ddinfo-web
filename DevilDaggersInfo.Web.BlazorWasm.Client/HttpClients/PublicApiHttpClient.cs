@@ -11,6 +11,8 @@ public partial class PublicApiHttpClient : ApiHttpClient
 		_client = client;
 	}
 
+	public HttpClient Client => _client;
+
 	protected override async Task<HttpResponseMessage> SendRequest(HttpMethod httpMethod, string url, JsonContent? body = null)
 	{
 		HttpRequestMessage request = new()
