@@ -90,12 +90,19 @@ else
 		{
 			<PlayerCard Title="History">
 				<DataField CssClass="odd:bg-gray-2 px-1" Name="Best rank recorded">@GetPlayerHistory.BestRank</DataField>
-				<TallDataField CssClass="odd:bg-gray-2 px-1" Name="Usernames">
-					@foreach (string username in GetPlayerHistory.Usernames)
-					{
-						<div class="even:bg-gray-2 break-all">@username</div>
-					}
-				</TallDataField>
+				@if (GetPlayerHistory.HidePastUsernames)
+				{
+					<DataField CssClass="odd:bg-gray-2 px-1" Name="Usernames">@MarkupUtils.HiddenMarkup</DataField>
+				}
+				else
+				{
+					<TallDataField CssClass="odd:bg-gray-2 px-1" Name="Usernames">
+						@foreach (string username in GetPlayerHistory.Usernames)
+						{
+							<div class="even:bg-gray-2 break-all">@username</div>
+						}
+					</TallDataField>
+				}
 			</PlayerCard>
 		}
 

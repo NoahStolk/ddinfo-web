@@ -154,8 +154,9 @@ public class PlayersController : ControllerBase
 		return new GetPlayerHistory
 		{
 			Activity = activity,
-			History = entryHistory,
 			BestRank = bestRank,
+			HidePastUsernames = hideUsernames,
+			History = entryHistory,
 			Usernames = usernames.OrderByDescending(kvp => kvp.Value).Select(kvp => kvp.Key).ToList(),
 		};
 	}

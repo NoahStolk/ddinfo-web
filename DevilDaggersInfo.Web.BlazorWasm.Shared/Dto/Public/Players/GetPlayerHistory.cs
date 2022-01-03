@@ -6,6 +6,8 @@ public class GetPlayerHistory
 {
 	public int? BestRank { get; init; }
 
+	public bool HidePastUsernames { get; init; }
+
 	public List<string> Usernames { get; init; } = new();
 
 	public List<GetEntryHistory> History { get; init; } = new();
