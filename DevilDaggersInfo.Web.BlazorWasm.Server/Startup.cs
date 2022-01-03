@@ -121,25 +121,43 @@ public class Startup
 
 		// Do not change order of redirects.
 		RewriteOptions options = new RewriteOptions()
-			.AddRedirect("^Home/Index$", "Index")
-			.AddRedirect("^Home/Leaderboard$", "Leaderboard")
-			.AddRedirect("^Home/Spawnset/(.*)$", "Spawnset?spawnset=$1")
-			.AddRedirect("^Home/Spawnsets$", "Spawnsets")
-			.AddRedirect("^Home/SpawnsetsInfo$", "Spawnsets")
-			.AddRedirect("^Home/Spawnset$", "Spawnset")
-			.AddRedirect("^Home/Hands$", "Wiki/Upgrades")
-			.AddRedirect("^Home/Enemies$", "Wiki/Enemies")
-			.AddRedirect("^Home/Daggers$", "Wiki/Daggers")
-			.AddRedirect("^Home/Donations$", "Donations")
-			.AddRedirect("^Home$", "Index")
-			.AddRedirect("^Upgrades$", "Wiki/Upgrades")
-			.AddRedirect("^Enemies$", "Wiki/Enemies")
-			.AddRedirect("^Daggers$", "Wiki/Daggers")
-			.AddRedirect("^Spawns$", "Wiki/Spawns")
-			.AddRedirect("^Home/Spawns$", "Wiki/Spawns")
-			.AddRedirect("^Wiki/SpawnsetGuide$", "Wiki/Guides/SurvivalEditor")
-			.AddRedirect("^Wiki/AssetGuide$", "Wiki/Guides/AssetEditor")
-			.AddRedirect("^Leaderboard/UserSettings", "Leaderboard/PlayerSettings");
+
+			// V3
+			.AddRedirect("Home/Index$", "/")
+			.AddRedirect("Home$", "/")
+			.AddRedirect("Home/Leaderboard$", "leaderboard")
+			.AddRedirect("Home/Spawnsets$", "custom/spawnsets")
+			.AddRedirect("Home/Donations$", "donations")
+
+			// V3 wiki
+			.AddRedirect("Home/Hands$", "wiki/upgrades")
+			.AddRedirect("Home/Enemies$", "wiki/enemies")
+			.AddRedirect("Home/Daggers$", "wiki/daggers")
+			.AddRedirect("Home/Spawns$", "wiki/spawns")
+			.AddRedirect("Daggers$", "wiki/daggers")
+			.AddRedirect("Enemies$", "wiki/enemies")
+			.AddRedirect("Spawns$", "wiki/spawns")
+			.AddRedirect("Upgrades$", "wiki/upgrades")
+
+			// V4 outdated
+			.AddRedirect("Wiki/SpawnsetGuide$", "guides/survival-editor")
+			.AddRedirect("Wiki/AssetGuide$", "guides/asset-editor")
+			.AddRedirect("Leaderboard/UserSettings", "leaderboard/player-settings")
+
+			// V4
+			.AddRedirect("Leaderboard/PlayerSettings", "leaderboard/player-settings")
+			.AddRedirect("Leaderboard/WorldRecordProgression", "leaderboard/world-record-progression")
+			.AddRedirect("CustomLeaderboards", "custom/leaderboards")
+			.AddRedirect("Mods", "custom/mods")
+			.AddRedirect("Spawnsets", "custom/spawnsets")
+			.AddRedirect("Tools/DevilDaggersAssetEditor", "tools/asset-editor")
+			.AddRedirect("Tools/DevilDaggersCustomLeaderboards", "tools/custom-leaderboards")
+			.AddRedirect("Tools/DevilDaggersSurvivalEditor", "tools/survival-editor")
+			.AddRedirect("Wiki/Guides/SpawnsetGuide$", "guides/survival-editor")
+			.AddRedirect("Wiki/Guides/AssetGuide$", "guides/asset-editor")
+
+			.Add(new RewriteRules());
+
 		app.UseRewriter(options);
 
 		if (env.IsDevelopment())
