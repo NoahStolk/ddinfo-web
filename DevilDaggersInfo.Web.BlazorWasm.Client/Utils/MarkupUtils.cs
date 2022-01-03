@@ -51,6 +51,8 @@ public static class MarkupUtils
 
 	public static readonly MarkupString HiddenMarkup = new(@"<span style=""color: #666;"">Hidden</span>");
 
+	public static MarkupString Space => new("&#32;");
+
 	public static MarkupString DaggerString(Dagger dagger)
 	{
 		return new(@$"<span class=""font-goethe text-lg {dagger.Name.ToLower()}"">{dagger.Name} Dagger</span>");
@@ -79,8 +81,6 @@ public static class MarkupUtils
 		string style = $"color: {enemy.Color.HexCode};";
 		return new(@$"<span style=""{style}"" class=""font-goethe text-lg"">{enemy.Name}{(plural ? "s" : string.Empty)}</span>");
 	}
-
-	public static MarkupString Space() => new("&#32;");
 
 	public static MarkupString LeaderboardTime(double timeInSeconds)
 	{

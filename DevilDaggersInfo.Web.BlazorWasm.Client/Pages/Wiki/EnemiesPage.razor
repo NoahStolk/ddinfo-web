@@ -36,7 +36,7 @@
 			@foreach (GameVersion gv in Enemies.GetAppearances(enemy.Name))
 			{
 				@gv.ToDisplayString()
-				@MarkupUtils.Space()
+				@MarkupUtils.Space
 			}
 		</div>
 		<div class="hidden md:block text-right">@(enemy.FirstSpawnSecond.HasValue ? new MarkupString(enemy.FirstSpawnSecond.Value.ToString(FormatUtils.TimeFormat)) : MarkupUtils.NoDataMarkup)</div>
@@ -52,7 +52,7 @@
 				foreach (Enemy e in enemy.SpawnedBy)
 				{
 					@MarkupUtils.EnemyString(e)
-					@MarkupUtils.Space()
+					@MarkupUtils.Space
 				}
 			}
 		</div>
@@ -101,7 +101,7 @@
 						foreach (Enemy e in enemy.SpawnedBy)
 						{
 							@MarkupUtils.EnemyString(e)
-							@MarkupUtils.Space()
+							@MarkupUtils.Space
 						}
 					}
 				</div>
