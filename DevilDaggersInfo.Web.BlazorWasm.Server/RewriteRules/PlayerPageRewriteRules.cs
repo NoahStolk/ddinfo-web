@@ -8,11 +8,7 @@ public class PlayerPageRewriteRules : IRule
 	public void ApplyRule(RewriteContext context)
 	{
 		HttpRequest request = context.HttpContext.Request;
-
-		if (request.Path.Value == null || request.QueryString.Value == null)
-			return;
-
-		if (RewriteRuleUtils.EndsWithContent(request.Path.Value))
+		if (request.Path.Value == null || request.QueryString.Value == null || RewriteRuleUtils.EndsWithContent(request.Path.Value))
 			return;
 
 		if (!request.Path.Value.StartsWith("/Leaderboard/Player", StringComparison.OrdinalIgnoreCase))

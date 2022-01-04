@@ -157,7 +157,8 @@ public class Startup
 			.AddRedirect("Wiki/Guides/SurvivalEditor$", "guides/survival-editor")
 			.AddRedirect("Wiki/Guides/AssetEditor$", "guides/asset-editor")
 
-			.Add(new PlayerPageRewriteRules());
+			.Add(new PlayerPageRewriteRules())
+			.Add(new SpawnsetPageRewriteRules());
 
 		app.UseRewriter(options);
 
