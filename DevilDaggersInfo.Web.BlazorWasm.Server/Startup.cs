@@ -158,7 +158,8 @@ public class Startup
 			.AddRedirect("Wiki/Guides/AssetEditor$", "guides/asset-editor")
 
 			.Add(new PlayerPageRewriteRules())
-			.Add(new SpawnsetPageRewriteRules());
+			.Add(new SpawnsetPageRewriteRules())
+			.Add(new ModPageRewriteRules());
 
 		app.UseRewriter(options);
 
