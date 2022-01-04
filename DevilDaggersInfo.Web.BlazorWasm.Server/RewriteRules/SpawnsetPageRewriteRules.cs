@@ -415,6 +415,8 @@ public class SpawnsetPageRewriteRules : IRule
 		{ 427, "TinyTowerOfShit" },
 	};
 
+	private static readonly Dictionary<int, string> _escapedNames = _names.ToDictionary(kvp => kvp.Key, kvp => Uri.EscapeDataString(kvp.Value));
+
 	public void ApplyRule(RewriteContext context)
 	{
 		HttpRequest request = context.HttpContext.Request;
@@ -429,7 +431,7 @@ public class SpawnsetPageRewriteRules : IRule
 			return;
 
 		string spawnsetName = request.QueryString.Value.TrimStart(queryStringKey);
-		int? spawnsetId = _names.ContainsValue(spawnsetName) ? _names.First(kvp => kvp.Value == spawnsetName).Key : null;
+		int? spawnsetId = _escapedNames.ContainsValue(spawnsetName) ? _escapedNames.First(kvp => kvp.Value == spawnsetName).Key : null;
 		if (!spawnsetId.HasValue)
 			return;
 
