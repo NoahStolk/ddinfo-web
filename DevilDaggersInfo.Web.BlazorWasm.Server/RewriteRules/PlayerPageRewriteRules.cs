@@ -1,9 +1,9 @@
 using Microsoft.AspNetCore.Rewrite;
 using Microsoft.Net.Http.Headers;
 
-namespace DevilDaggersInfo.Web.BlazorWasm.Server;
+namespace DevilDaggersInfo.Web.BlazorWasm.Server.RewriteRules;
 
-public class RewriteRules : IRule
+public class PlayerPageRewriteRules : IRule
 {
 	public void ApplyRule(RewriteContext context)
 	{
@@ -12,16 +12,8 @@ public class RewriteRules : IRule
 		if (request.Path.Value == null || request.QueryString.Value == null)
 			return;
 
-		if (request.Path.Value.EndsWith(".js") ||
-			request.Path.Value.EndsWith(".css") ||
-			request.Path.Value.EndsWith(".json") ||
-			request.Path.Value.EndsWith(".png") ||
-			request.Path.Value.EndsWith(".ttf") ||
-			request.Path.Value.EndsWith(".ico") ||
-			request.Path.Value.EndsWith(".dll"))
-		{
+		if (RewriteRuleUtils.EndsWithContent(request.Path.Value))
 			return;
-		}
 
 		if (!request.Path.Value.StartsWith("/Leaderboard/Player", StringComparison.OrdinalIgnoreCase))
 			return;

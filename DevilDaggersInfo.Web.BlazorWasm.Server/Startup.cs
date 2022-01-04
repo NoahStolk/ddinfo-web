@@ -6,6 +6,7 @@ using DevilDaggersInfo.Web.BlazorWasm.Server.Caches.SpawnsetSummaries;
 using DevilDaggersInfo.Web.BlazorWasm.Server.HostedServices;
 using DevilDaggersInfo.Web.BlazorWasm.Server.Middleware;
 using DevilDaggersInfo.Web.BlazorWasm.Server.NSwag;
+using DevilDaggersInfo.Web.BlazorWasm.Server.RewriteRules;
 using Microsoft.AspNetCore.Authentication.JwtBearer;
 using Microsoft.AspNetCore.DataProtection;
 using Microsoft.AspNetCore.Rewrite;
@@ -156,7 +157,7 @@ public class Startup
 			.AddRedirect("Wiki/Guides/SurvivalEditor$", "guides/survival-editor")
 			.AddRedirect("Wiki/Guides/AssetEditor$", "guides/asset-editor")
 
-			.Add(new RewriteRules());
+			.Add(new PlayerPageRewriteRules());
 
 		app.UseRewriter(options);
 
