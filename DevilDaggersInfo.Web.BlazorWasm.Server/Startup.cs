@@ -148,7 +148,7 @@ public class Startup
 			// V4
 			.AddRedirect("Leaderboard/PlayerSettings", "leaderboard/player-settings")
 			.AddRedirect("Leaderboard/WorldRecordProgression", "leaderboard/world-record-progression")
-			.AddRedirect("CustomLeaderboards", "custom/leaderboards")
+			.AddRedirect("CustomLeaderboards$", "custom/leaderboards")
 			.AddRedirect("Mods", "custom/mods")
 			.AddRedirect("Spawnsets", "custom/spawnsets")
 			.AddRedirect("Tools/DevilDaggersAssetEditor", "tools/asset-editor")
@@ -157,9 +157,10 @@ public class Startup
 			.AddRedirect("Wiki/Guides/SurvivalEditor$", "guides/survival-editor")
 			.AddRedirect("Wiki/Guides/AssetEditor$", "guides/asset-editor")
 
+			.Add(new CustomLeaderboardPageRewriteRules())
+			.Add(new ModPageRewriteRules())
 			.Add(new PlayerPageRewriteRules())
-			.Add(new SpawnsetPageRewriteRules())
-			.Add(new ModPageRewriteRules());
+			.Add(new SpawnsetPageRewriteRules());
 
 		app.UseRewriter(options);
 
