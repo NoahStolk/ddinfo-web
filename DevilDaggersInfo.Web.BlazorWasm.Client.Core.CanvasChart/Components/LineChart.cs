@@ -13,7 +13,7 @@ namespace DevilDaggersInfo.Web.BlazorWasm.Client.Core.CanvasChart.Components;
 public partial class LineChart
 {
 	private Canvas2d? _context;
-	private object? _canvasRef;
+	private object? _canvasReference;
 	private LineChartHighlighter? _highlighter;
 
 	private int _canvasWidth;
@@ -231,7 +231,7 @@ public partial class LineChart
 	[JSInvokable]
 	public async ValueTask OnMouseMove(int mouseX, int mouseY)
 	{
-		BoundingClientRect canvasBoundingClientRect = await JsRuntime.InvokeAsync<BoundingClientRect>("getBoundingClientRect", _canvasRef);
+		BoundingClientRect canvasBoundingClientRect = await JsRuntime.InvokeAsync<BoundingClientRect>("getBoundingClientRect", _canvasReference);
 
 		_canvasMouseX = mouseX - canvasBoundingClientRect.Left;
 		_canvasMouseY = mouseY - canvasBoundingClientRect.Top;
