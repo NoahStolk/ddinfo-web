@@ -12,6 +12,7 @@ namespace DevilDaggersInfo.Web.BlazorWasm.Client.Core.CanvasChart.Components;
 public partial class BarChart
 {
 	private Canvas2d _context = null!;
+	private object? _canvasRef;
 	//private LineChartHighlighter _highlighter = null!;
 
 	private int _canvasWidth;
@@ -46,7 +47,7 @@ public partial class BarChart
 			await JsRuntime.InvokeAsync<object>("windowResize", DotNetObjectReference.Create(this));
 		}
 
-		_context = new Canvas2d("theHtml5Canvas");
+		_context = new Canvas2d($"{UniqueName}-canvas");
 
 		Render();
 	}
@@ -161,7 +162,7 @@ public partial class BarChart
 	}
 
 	[JSInvokable]
-	public async ValueTask OnResize(double wrapperWidth, double wrapperHeight)
+	public void OnResize(double wrapperWidth, double wrapperHeight)
 	{
 		_canvasWidth = (int)wrapperWidth;
 		_canvasHeight = (int)wrapperHeight;
