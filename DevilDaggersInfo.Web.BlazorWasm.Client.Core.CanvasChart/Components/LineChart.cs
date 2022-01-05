@@ -65,13 +65,13 @@ public partial class LineChart
 
 		// Render graphics.
 		_context.ClearRect(0, 0, _canvasWidth, _canvasHeight);
-		RenderBackgroundAsync();
-		RenderGridAsync();
-		RenderSideBarsAsync();
+		RenderBackground();
+		RenderGrid();
+		RenderSideBars();
 		foreach (LineDataSet dataSet in DataSets)
-			RenderDataLineAsync(dataSet);
+			RenderDataLine(dataSet);
 
-		void RenderBackgroundAsync()
+		void RenderBackground()
 		{
 			_context.FillStyle = Options.CanvasBackgroundColor;
 			_context.FillRect(0, 0, _canvasWidth, _canvasHeight);
@@ -99,7 +99,7 @@ public partial class LineChart
 			}
 		}
 
-		void RenderGridAsync()
+		void RenderGrid()
 		{
 			_context.LineWidth = Options.GridOptions.LineThickness;
 			_context.StrokeStyle = Options.GridOptions.LineColor;
@@ -122,7 +122,7 @@ public partial class LineChart
 			_context.Stroke();
 		}
 
-		void RenderSideBarsAsync()
+		void RenderSideBars()
 		{
 			const int paddingX = 4;
 			const int paddingY = 16;
@@ -148,7 +148,7 @@ public partial class LineChart
 			}
 		}
 
-		void RenderDataLineAsync(LineDataSet dataSet)
+		void RenderDataLine(LineDataSet dataSet)
 		{
 			if (dataSet.Data.Count < 2)
 				return;

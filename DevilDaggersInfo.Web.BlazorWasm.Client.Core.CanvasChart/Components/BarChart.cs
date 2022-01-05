@@ -74,11 +74,11 @@ public partial class BarChart
 		_context.FillRect(Options.ChartMarginXInPx, Options.ChartMarginYInPx, ChartWidth, ChartHeight);
 
 		// Render graphics.
-		RenderGridAsync();
-		RenderSideBarsAsync();
-		RenderBarsAsync();
+		RenderGrid();
+		RenderSideBars();
+		RenderBars();
 
-		void RenderGridAsync()
+		void RenderGrid()
 		{
 			_context.LineWidth = Options.GridOptions.LineThickness;
 			_context.StrokeStyle = Options.GridOptions.LineColor;
@@ -101,7 +101,7 @@ public partial class BarChart
 			_context.Stroke();
 		}
 
-		void RenderSideBarsAsync()
+		void RenderSideBars()
 		{
 			const int paddingX = 4;
 
@@ -143,7 +143,7 @@ public partial class BarChart
 			}
 		}
 
-		void RenderBarsAsync()
+		void RenderBars()
 		{
 			if (DataSet.Data.Count == 0)
 				return;
