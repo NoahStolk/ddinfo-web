@@ -1,4 +1,4 @@
-﻿//please refer to https://github.com/dotnet/aspnetcore/blob/master/src/Components/Web.JS/src/Platform/Platform.ts
+// https://github.com/dotnet/aspnetcore/blob/master/src/Components/Web.JS/src/Platform/Platform.ts
 
 window.jsi = {
     toJSStr: function (arg) {

@@ -12,9 +12,9 @@ namespace DevilDaggersInfo.Web.BlazorWasm.Client.Core.CanvasChart.Components;
 
 public partial class LineChart
 {
-	private Canvas2d _context = null!;
+	private Canvas2d? _context;
 	private object? _canvasRef;
-	private LineChartHighlighter _highlighter = null!;
+	private LineChartHighlighter? _highlighter;
 
 	private int _canvasWidth;
 	private int _canvasHeight;
@@ -54,6 +54,9 @@ public partial class LineChart
 
 	private void Render()
 	{
+		if (_context == null || _highlighter == null)
+			return;
+
 		_highlighter.Width = Options.HighlighterWidth;
 
 		// Determine grid.

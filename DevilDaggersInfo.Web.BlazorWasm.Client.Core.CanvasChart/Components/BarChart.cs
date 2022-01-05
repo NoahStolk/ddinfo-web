@@ -11,9 +11,9 @@ namespace DevilDaggersInfo.Web.BlazorWasm.Client.Core.CanvasChart.Components;
 
 public partial class BarChart
 {
-	private Canvas2d _context = null!;
+	private Canvas2d? _context;
 	private object? _canvasRef;
-	//private LineChartHighlighter _highlighter = null!;
+	//private LineChartHighlighter? _highlighter;
 
 	private int _canvasWidth;
 	private int _canvasHeight;
@@ -54,6 +54,9 @@ public partial class BarChart
 
 	private void Render()
 	{
+		if (_context == null)
+			return;
+
 		//_highlighter.Width = Options.HighlighterWidth;
 
 		// Clear canvas.
