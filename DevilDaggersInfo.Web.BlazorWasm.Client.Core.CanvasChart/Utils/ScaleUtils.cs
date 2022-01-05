@@ -34,7 +34,9 @@ public static class ScaleUtils
 		else
 		{
 			scales = new List<double>();
-			for (double i = min; i <= max; i += step.Value)
+
+			double increment = !allowFractionalScales && step.Value < 1 ? 1 : step.Value;
+			for (double i = min; i <= max; i += increment)
 				scales.Add(i);
 		}
 
