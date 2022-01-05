@@ -1,3 +1,3 @@
 <div class="chart relative" id="@UniqueName" @onmouseenter="() => SetHighlighterVisibility(true)" @onmouseleave="() => SetHighlighterVisibility(false)">
-	<BECanvas Width="_canvasWidth" Height="_canvasHeight" @ref="_canvasReference" />
+	<canvas width="@ChartWidth" height="@ChartHeight" id="@($"{UniqueName}-canvas")" @ref="_canvasReference"></canvas>
 </div>

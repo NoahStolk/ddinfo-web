@@ -1,5 +1,3 @@
-using Blazor.Extensions;
-using Blazor.Extensions.Canvas.Canvas2D;
 using DevilDaggersInfo.Web.BlazorWasm.Client.Core.CanvasChart.Data;
 using DevilDaggersInfo.Web.BlazorWasm.Client.Core.CanvasChart.JsRuntime;
 using DevilDaggersInfo.Web.BlazorWasm.Client.Core.CanvasChart.Options.BarChart;
@@ -7,14 +5,15 @@ using DevilDaggersInfo.Web.BlazorWasm.Client.Core.CanvasChart.Utils;
 using Microsoft.AspNetCore.Components;
 using Microsoft.JSInterop;
 using System.Data;
+using UmCanvas;
 
 namespace DevilDaggersInfo.Web.BlazorWasm.Client.Core.CanvasChart.Components;
 
 public partial class BarChart
 {
-	private Canvas2DContext _context = null!;
-	private BECanvasComponent _canvasReference = null!;
-	//private LineChartHighlighter _highlighter = null!;
+	private Canvas2d? _context;
+	private object? _canvasReference;
+	//private LineChartHighlighter? _highlighter;
 
 	private int _canvasWidth;
 	private int _canvasHeight;
@@ -48,17 +47,20 @@ public partial class BarChart
 			await JsRuntime.InvokeAsync<object>("windowResize", DotNetObjectReference.Create(this));
 		}
 
-		_context = await _canvasReference.CreateCanvas2DAsync();
+		_context = new Canvas2d($"{UniqueName}-canvas");
 
-		await RenderAsync();
+		Render();
 	}
 
-	private async Task RenderAsync()
+	private void Render()
 	{
+		if (_context == null)
+			return;
+
 		//_highlighter.Width = Options.HighlighterWidth;
 
 		// Clear canvas.
-		await _context.ClearRectAsync(0, 0, _canvasWidth, _canvasHeight);
+		_context.ClearRect(0, 0, _canvasWidth, _canvasHeight);
 
 		// Determine grid.
 		List<double> xScales = Enumerable.Range(0, DataSet.Data.Count).Select(i => (double)i).ToList();
@@ -66,46 +68,46 @@ public partial class BarChart
 		double fullBarWidth = 1 / (double)DataSet.Data.Count * ChartWidth;
 
 		// Set backgrounds.
-		await _context.SetFillStyleAsync(Options.CanvasBackgroundColor);
-		await _context.FillRectAsync(0, 0, _canvasWidth, _canvasHeight);
-		await _context.SetFillStyleAsync(Options.ChartBackgroundColor);
-		await _context.FillRectAsync(Options.ChartMarginXInPx, Options.ChartMarginYInPx, ChartWidth, ChartHeight);
+		_context.FillStyle = Options.CanvasBackgroundColor;
+		_context.FillRect(0, 0, _canvasWidth, _canvasHeight);
+		_context.FillStyle = Options.ChartBackgroundColor;
+		_context.FillRect(Options.ChartMarginXInPx, Options.ChartMarginYInPx, ChartWidth, ChartHeight);
 
 		// Render graphics.
-		await RenderGridAsync();
-		await RenderSideBarsAsync();
-		await RenderBarsAsync();
+		RenderGrid();
+		RenderSideBars();
+		RenderBars();
 
-		async Task RenderGridAsync()
+		void RenderGrid()
 		{
-			await _context.SetLineWidthAsync(Options.GridOptions.LineThickness);
-			await _context.SetStrokeStyleAsync(Options.GridOptions.LineColor);
+			_context.LineWidth = Options.GridOptions.LineThickness;
+			_context.StrokeStyle = Options.GridOptions.LineColor;
 
-			await _context.BeginPathAsync();
+			_context.BeginPath();
 			for (int i = 0; i < xScales.Count; i++)
 			{
 				double xScalePosition = i / (double)xScales.Count * ChartWidth;
-				await _context.MoveToAsync(Options.ChartMarginXInPx + xScalePosition, Options.ChartMarginYInPx);
-				await _context.LineToAsync(Options.ChartMarginXInPx + xScalePosition, _canvasHeight - Options.ChartMarginYInPx);
+				_context.MoveTo(Options.ChartMarginXInPx + xScalePosition, Options.ChartMarginYInPx);
+				_context.LineTo(Options.ChartMarginXInPx + xScalePosition, _canvasHeight - Options.ChartMarginYInPx);
 			}
 
 			for (int i = 0; i < yScales.Count; i++)
 			{
 				double yScalePosition = LerpUtils.RevLerp(DataOptions.MinY, DataOptions.MaxY, yScales[i]) * ChartHeight;
-				await _context.MoveToAsync(Options.ChartMarginXInPx, Options.ChartMarginYInPx + yScalePosition);
-				await _context.LineToAsync(_canvasWidth - Options.ChartMarginXInPx, Options.ChartMarginYInPx + yScalePosition);
+				_context.MoveTo(Options.ChartMarginXInPx, Options.ChartMarginYInPx + yScalePosition);
+				_context.LineTo(_canvasWidth - Options.ChartMarginXInPx, Options.ChartMarginYInPx + yScalePosition);
 			}
 
-			await _context.StrokeAsync();
+			_context.Stroke();
 		}
 
-		async Task RenderSideBarsAsync()
+		void RenderSideBars()
 		{
 			const int paddingX = 4;
 
-			await _context.SetStrokeStyleAsync(Options.ScaleXOptions.TextColor);
-			await _context.SetFontAsync(Options.ScaleXOptions.Font);
-			await _context.SetTextAlignAsync(TextAlign.Center);
+			_context.StrokeStyle = Options.ScaleXOptions.TextColor;
+			_context.Font = Options.ScaleXOptions.Font;
+			_context.TextAlign = TextAlign.Center;
 
 			int skippedXScaleTexts = fullBarWidth switch
 			{
@@ -123,25 +125,25 @@ public partial class BarChart
 
 				double xScaleValue = xScales[i];
 				double xScalePosition = LerpUtils.RevLerp(0, DataSet.Data.Count, xScaleValue) * ChartWidth + 1 / (double)DataSet.Data.Count * ChartWidth * 0.5;
-				await _context.SaveAsync();
-				await _context.TranslateAsync(Options.ChartMarginXInPx + xScalePosition, Options.ChartMarginYInPx * 1.5 + ChartHeight);
-				await _context.RotateAsync((360 - 45) * (MathF.PI / 180));
-				await _context.StrokeTextAsync(xScaleTexts[i], 0, 0);
-				await _context.RestoreAsync();
+				_context.Save();
+				_context.Translate(Options.ChartMarginXInPx + xScalePosition, Options.ChartMarginYInPx * 1.5 + ChartHeight);
+				_context.Rotate((360 - 45) * (MathF.PI / 180));
+				_context.StrokeText(xScaleTexts[i], 0, 0);
+				_context.Restore();
 			}
 
-			await _context.SetStrokeStyleAsync(Options.ScaleYOptions.TextColor);
-			await _context.SetFontAsync(Options.ScaleYOptions.Font);
-			await _context.SetTextAlignAsync(TextAlign.Right);
+			_context.StrokeStyle = Options.ScaleYOptions.TextColor;
+			_context.Font = Options.ScaleYOptions.Font;
+			_context.TextAlign = TextAlign.Right;
 			for (int i = 0; i < yScales.Count; i++)
 			{
 				double yScaleValue = yScales[i];
 				double yScalePosition = LerpUtils.RevLerp(DataOptions.MinY, DataOptions.MaxY, yScaleValue) * ChartHeight;
-				await _context.StrokeTextAsync(yScaleValue.ToString(Options.ScaleYOptions.NumberFormat), Options.ChartMarginXInPx - paddingX, Options.ChartMarginYInPx + ChartHeight - yScalePosition);
+				_context.StrokeText(yScaleValue.ToString(Options.ScaleYOptions.NumberFormat), Options.ChartMarginXInPx - paddingX, Options.ChartMarginYInPx + ChartHeight - yScalePosition);
 			}
 		}
 
-		async Task RenderBarsAsync()
+		void RenderBars()
 		{
 			if (DataSet.Data.Count == 0)
 				return;
@@ -156,25 +158,25 @@ public partial class BarChart
 
 				double padding = fullBarWidth * 0.05;
 
-				await _context.SetFillStyleAsync(data.Color);
-				await _context.FillRectAsync(x + Options.ChartMarginXInPx + padding, y + Options.ChartMarginYInPx, fullBarWidth - padding * 2, ChartHeight - y);
+				_context.FillStyle = data.Color;
+				_context.FillRect(x + Options.ChartMarginXInPx + padding, y + Options.ChartMarginYInPx, fullBarWidth - padding * 2, ChartHeight - y);
 			}
 		}
 	}
 
 	[JSInvokable]
-	public async ValueTask OnResize(double wrapperWidth, double wrapperHeight)
+	public void OnResize(double wrapperWidth, double wrapperHeight)
 	{
 		_canvasWidth = (int)wrapperWidth;
 		_canvasHeight = (int)wrapperHeight;
 
-		await RenderAsync();
+		Render();
 	}
 
 	[JSInvokable]
 	public async ValueTask OnMouseMove(int mouseX, int mouseY)
 	{
-		BoundingClientRect canvasBoundingClientRect = await JsRuntime.InvokeAsync<BoundingClientRect>("getBoundingClientRect", _canvasReference.CanvasReference);
+		BoundingClientRect canvasBoundingClientRect = await JsRuntime.InvokeAsync<BoundingClientRect>("getBoundingClientRect", _canvasReference);
 
 		_canvasMouseX = mouseX - canvasBoundingClientRect.Left;
 		_canvasMouseY = mouseY - canvasBoundingClientRect.Top;
