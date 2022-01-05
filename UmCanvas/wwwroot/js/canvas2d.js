@@ -1,20 +1,9 @@
 window.c2d = {
-    contexts: {},
-
     getContext: function (d) {
         var id = jsi.readString(d, 0);
-        var dc = c2d.contexts[id];
-        if (dc)
-            return dc;
         var c = document.getElementById(id);
         dc = c.getContext("2d");
-        c2d.contexts[id] = dc;
         return dc;
-    },
-
-    release: function (d) {
-        var id = jsi.readString(d, 0);
-        delete c2d.contexts[id];
     },
 
     getFillStyle: function (d) {

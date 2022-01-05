@@ -522,7 +522,4 @@ public class Canvas2d : Canvas
 
 	public void Restore()
 		=> Invoke("c2d.restore");
-
-	public void Release()
-		=> Invoke("c2d.release");
 }
