@@ -8,7 +8,7 @@ namespace UmCanvas;
 /// </summary>
 public abstract class Canvas
 {
-	private static WebAssemblyJSRuntime _runtime = new CustomWebAssemblyJSRuntime();
+	private static readonly WebAssemblyJSRuntime _runtime = new CustomWebAssemblyJSRuntime();
 
 	protected Canvas(string id)
 	{
@@ -34,7 +34,7 @@ public abstract class Canvas
 
 	public TRes InvokeRet<T0, TRes>(string identifier, T0 arg0)
 	{
-		return _runtime.InvokeUnmarshalled<ValueTuple<string, T0>, TRes>(identifier, ValueTuple.Create(Id, arg0));
+		return _runtime.InvokeUnmarshalled<ValueTuple<string, T0>, TRes>(identifier, (Id, arg0));
 	}
 
 	public void Invoke<T0, T1>(string identifier, T0 arg0, T1 arg1)
@@ -44,7 +44,7 @@ public abstract class Canvas
 
 	public TRes InvokeRet<T0, T1, TRes>(string identifier, T0 arg0, T1 arg1)
 	{
-		return _runtime.InvokeUnmarshalled<ValueTuple<string, T0, T1>, TRes>(identifier, ValueTuple.Create(Id, arg0, arg1));
+		return _runtime.InvokeUnmarshalled<ValueTuple<string, T0, T1>, TRes>(identifier, (Id, arg0, arg1));
 	}
 
 	public void Invoke<T0, T1, T2>(string identifier, T0 arg0, T1 arg1, T2 arg2)
@@ -54,7 +54,7 @@ public abstract class Canvas
 
 	public TRes InvokeRet<T0, T1, T2, TRes>(string identifier, T0 arg0, T1 arg1, T2 arg2)
 	{
-		return _runtime.InvokeUnmarshalled<ValueTuple<string, T0, T1, T2>, TRes>(identifier, ValueTuple.Create(Id, arg0, arg1, arg2));
+		return _runtime.InvokeUnmarshalled<ValueTuple<string, T0, T1, T2>, TRes>(identifier, (Id, arg0, arg1, arg2));
 	}
 
 	public void Invoke<T0, T1, T2, T3>(string identifier, T0 arg0, T1 arg1, T2 arg2, T3 arg3)
@@ -64,7 +64,7 @@ public abstract class Canvas
 
 	public TRes InvokeRet<T0, T1, T2, T3, TRes>(string identifier, T0 arg0, T1 arg1, T2 arg2, T3 arg3)
 	{
-		return _runtime.InvokeUnmarshalled<ValueTuple<string, T0, T1, T2, T3>, TRes>(identifier, ValueTuple.Create(Id, arg0, arg1, arg2, arg3));
+		return _runtime.InvokeUnmarshalled<ValueTuple<string, T0, T1, T2, T3>, TRes>(identifier, (Id, arg0, arg1, arg2, arg3));
 	}
 
 	public void Invoke<T0, T1, T2, T3, T4>(string identifier, T0 arg0, T1 arg1, T2 arg2, T3 arg3, T4 arg4)
@@ -74,7 +74,7 @@ public abstract class Canvas
 
 	public TRes InvokeRet<T0, T1, T2, T3, T4, TRes>(string identifier, T0 arg0, T1 arg1, T2 arg2, T3 arg3, T4 arg4)
 	{
-		return _runtime.InvokeUnmarshalled<ValueTuple<string, T0, T1, T2, T3, T4>, TRes>(identifier, ValueTuple.Create(Id, arg0, arg1, arg2, arg3, arg4));
+		return _runtime.InvokeUnmarshalled<ValueTuple<string, T0, T1, T2, T3, T4>, TRes>(identifier, (Id, arg0, arg1, arg2, arg3, arg4));
 	}
 
 	public void Invoke<T0, T1, T2, T3, T4, T5>(string identifier, T0 arg0, T1 arg1, T2 arg2, T3 arg3, T4 arg4, T5 arg5)
@@ -84,8 +84,7 @@ public abstract class Canvas
 
 	public TRes InvokeRet<T0, T1, T2, T3, T4, T5, TRes>(string identifier, T0 arg0, T1 arg1, T2 arg2, T3 arg3, T4 arg4, T5 arg5)
 	{
-
-		return _runtime.InvokeUnmarshalled<ValueTuple<string, T0, T1, T2, T3, T4, T5>, TRes>(identifier, ValueTuple.Create(Id, arg0, arg1, arg2, arg3, arg4, arg5));
+		return _runtime.InvokeUnmarshalled<ValueTuple<string, T0, T1, T2, T3, T4, T5>, TRes>(identifier, (Id, arg0, arg1, arg2, arg3, arg4, arg5));
 	}
 
 	public void Invoke<T0, T1, T2, T3, T4, T5, T6>(string identifier, T0 arg0, T1 arg1, T2 arg2, T3 arg3, T4 arg4, T5 arg5, T6 arg6)
@@ -95,7 +94,7 @@ public abstract class Canvas
 
 	public TRes InvokeRet<T0, T1, T2, T3, T4, T5, T6, TRes>(string identifier, T0 arg0, T1 arg1, T2 arg2, T3 arg3, T4 arg4, T5 arg5, T6 arg6)
 	{
-		ArgStruct8<string, T0, T1, T2, T3, T4, T5, T6> arg = new ArgStruct8<string, T0, T1, T2, T3, T4, T5, T6>()
+		ArgStruct8<string, T0, T1, T2, T3, T4, T5, T6> arg = new()
 		{
 			Arg0 = Id,
 			Arg1 = arg0,
@@ -116,7 +115,7 @@ public abstract class Canvas
 
 	public TRes InvokeRet<T0, T1, T2, T3, T4, T5, T6, T7, TRes>(string identifier, T0 arg0, T1 arg1, T2 arg2, T3 arg3, T4 arg4, T5 arg5, T6 arg6, T7 arg7)
 	{
-		ArgStruct9<string, T0, T1, T2, T3, T4, T5, T6, T7> arg = new ArgStruct9<string, T0, T1, T2, T3, T4, T5, T6, T7>()
+		ArgStruct9<string, T0, T1, T2, T3, T4, T5, T6, T7> arg = new()
 		{
 			Arg0 = Id,
 			Arg1 = arg0,
