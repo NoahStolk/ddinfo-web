@@ -128,6 +128,7 @@ public class ModPageRewriteRules : IRule
 		{ 131, "Rainbowflash" },
 		{ 132, "gigathorn" },
 		{ 133, "Pale_Pedes" },
+		{ 134, "maken" },
 	};
 
 	private static readonly Dictionary<int, string> _escapedNames = _names.ToDictionary(kvp => kvp.Key, kvp => Uri.EscapeDataString(kvp.Value));
