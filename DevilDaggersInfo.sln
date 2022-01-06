@@ -14,8 +14,6 @@ Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "DevilDaggersInfo.Web.Tool.L
 EndProject
 Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "DevilDaggersInfo.Web.Tool.LeaderboardJsonHighscoreStatsSpreader", "DevilDaggersInfo.Web.Tool.LeaderboardJsonHighscoreStatsSpreader\DevilDaggersInfo.Web.Tool.LeaderboardJsonHighscoreStatsSpreader.csproj", "{B11627A5-9A22-4E5F-8B35-C27869339BA7}"
 EndProject
-Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "DevilDaggersInfo.Web.Tool.LeaderboardJsonIdFixer", "DevilDaggersInfo.Web.Tool.LeaderboardJsonIdFixer\DevilDaggersInfo.Web.Tool.LeaderboardJsonIdFixer.csproj", "{A654D3D2-4D4A-4FFB-9D42-B1C31C2E3435}"
-EndProject
 Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "DevilDaggersInfo.Web.Tool", "DevilDaggersInfo.Web.Tool\DevilDaggersInfo.Web.Tool.csproj", "{D305DE6F-3EE9-49A2-A670-9408BAECBF71}"
 EndProject
 Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "DevilDaggersInfo.Test.Web.BlazorWasm.Server", "DevilDaggersInfo.Test.Web.BlazorWasm.Server\DevilDaggersInfo.Test.Web.BlazorWasm.Server.csproj", "{CB715CD9-FB6A-4E79-B9C0-830833223D91}"
@@ -103,10 +101,6 @@ Global
 		{B11627A5-9A22-4E5F-8B35-C27869339BA7}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{B11627A5-9A22-4E5F-8B35-C27869339BA7}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{B11627A5-9A22-4E5F-8B35-C27869339BA7}.Release|Any CPU.Build.0 = Release|Any CPU
-		{A654D3D2-4D4A-4FFB-9D42-B1C31C2E3435}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
-		{A654D3D2-4D4A-4FFB-9D42-B1C31C2E3435}.Debug|Any CPU.Build.0 = Debug|Any CPU
-		{A654D3D2-4D4A-4FFB-9D42-B1C31C2E3435}.Release|Any CPU.ActiveCfg = Release|Any CPU
-		{A654D3D2-4D4A-4FFB-9D42-B1C31C2E3435}.Release|Any CPU.Build.0 = Release|Any CPU
 		{D305DE6F-3EE9-49A2-A670-9408BAECBF71}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
 		{D305DE6F-3EE9-49A2-A670-9408BAECBF71}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{D305DE6F-3EE9-49A2-A670-9408BAECBF71}.Release|Any CPU.ActiveCfg = Release|Any CPU
