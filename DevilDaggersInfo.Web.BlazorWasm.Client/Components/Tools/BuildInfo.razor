@@ -4,7 +4,7 @@
 	<DataField CssClass="px-1" Left="3" Name="Current version">@GetTool.VersionNumber</DataField>
 	<DataField CssClass="px-1" Left="3" Name="Oldest supported version">@GetTool.VersionNumberRequired</DataField>
 	<DataField CssClass="px-1" Left="3" Name="File size">@FileSizeUtils.Format(GetTool.FileSize)</DataField>
-	<DataField CssClass="px-1" Left="3" Name="@($"Total downloads (since {FeatureConstants.TrackingToolDownloadCounts.ToString(FormatUtils.DateFormat)})")">@GetTool.Versions?.Sum(v => v.DownloadCount).ToString("N0")</DataField>
+	<DataField CssClass="px-1" Left="3" Name="@($"Total downloads (since {FeatureConstants.TrackingToolDownloadCounts.ToString(FormatUtils.DateFormat)})")">@GetTool.Changelog?.Sum(v => v.DownloadCount).ToString("N0")</DataField>
 
 	<div class="px-1 py-2">
 		<a class="btn btn-download px-2 py-1" href="/api/tools/@(GetTool.Name)/file" download="@_fileName" role="button" target="_top">Download</a>

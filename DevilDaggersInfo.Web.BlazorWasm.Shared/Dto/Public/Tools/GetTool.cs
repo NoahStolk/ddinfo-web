@@ -16,7 +16,7 @@ public class GetTool
 	/// </summary>
 	public Version VersionNumberRequired { get; init; } = null!;
 
-	public IReadOnlyList<GetToolVersion>? Versions { get; init; }
+	public IReadOnlyList<GetToolVersion>? Changelog { get; init; }
 
 	public int FileSize { get; set; }
 }

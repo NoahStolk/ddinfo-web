@@ -4,7 +4,7 @@ public class GetToolVersion
 {
 	public Version VersionNumber { get; init; } = null!;
 
-	public DateTime ReleaseDate { get; init; }
+	public DateTime Date { get; init; }
 
 	public int DownloadCount { get; init; }
 

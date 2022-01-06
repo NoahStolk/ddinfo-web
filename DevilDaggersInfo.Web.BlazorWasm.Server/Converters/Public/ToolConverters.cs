@@ -13,7 +13,7 @@ public static class ToolConverters
 		Name = tool.Name,
 		VersionNumber = tool.VersionNumber,
 		VersionNumberRequired = tool.VersionNumberRequired,
-		Versions = tool.Changelog?
+		Changelog = tool.Changelog?
 			.Select(ce => ce.ToGetToolVersion(toolStatistics.Find(ts => ts.VersionNumber == ce.VersionNumber.ToString())))
 			.ToList(),
 	};
@@ -24,7 +24,7 @@ public static class ToolConverters
 			.Select(c => c.ToGetToolVersionChange())
 			.ToList(),
 		DownloadCount = toolStatistic?.DownloadCount ?? 0,
-		ReleaseDate = changelogEntry.Date,
+		Date = changelogEntry.Date,
 		VersionNumber = changelogEntry.VersionNumber,
 	};
 
