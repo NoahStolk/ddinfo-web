@@ -146,7 +146,7 @@ public partial class PlayerPage
 
 			List<LineData> set = GetPlayerHistory.Activity.Select(pa => new LineData(pa.DateTime.Ticks, pa.DeathsIncrement, pa)).ToList();
 			_activityOptions = new(minX.Ticks, null, maxX.Ticks, 0, scale, maxY);
-			_activityData.Add(new("#f00", false, false, true, set, (ds, d) =>
+			_activityData.Add(new("#f00", false, true, true, set, (ds, d) =>
 			{
 				GetPlayerActivity? activity = GetPlayerHistory.Activity.Find(pa => pa == d.Reference);
 				return activity == null ? new() : new()
