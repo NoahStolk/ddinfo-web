@@ -157,7 +157,6 @@ public class PlayersController : ControllerBase
 			HasFlashHandEnabled = addPlayer.HasFlashHandEnabled,
 			Gamma = addPlayer.Gamma,
 			UsesLegacyAudio = addPlayer.UsesLegacyAudio,
-			IsBanned = addPlayer.BanType != BanType.NotBanned,
 			BanType = addPlayer.BanType,
 			BanDescription = addPlayer.BanDescription,
 			BanResponsibleId = addPlayer.BanResponsibleId,
@@ -265,7 +264,6 @@ public class PlayersController : ControllerBase
 		player.HidePastUsernames = editPlayer.HidePastUsernames;
 		player.BanDescription = editPlayer.BanDescription;
 		player.BanResponsibleId = editPlayer.BanResponsibleId;
-		player.IsBanned = editPlayer.BanType != BanType.NotBanned;
 		player.BanType = editPlayer.BanType;
 		player.IsBannedFromDdcl = editPlayer.IsBannedFromDdcl;
 
