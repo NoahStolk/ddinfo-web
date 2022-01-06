@@ -60,7 +60,7 @@ public static class ModConverters
 		Authors = mod.PlayerMods.ConvertAll(pm => pm.Player.PlayerName),
 		ContainsProhibitedAssets = modFileSystemData.ModArchive?.ContainsProhibitedAssets(),
 		HtmlDescription = mod.HtmlDescription,
-		IsHosted = modFileSystemData.ModArchive != null,
+		IsHostedOnDdInfo = modFileSystemData.ModArchive != null,
 		LastUpdated = mod.LastUpdated,
 		ModArchive = modFileSystemData.ModArchive == null ? null : new()
 		{
@@ -73,7 +73,7 @@ public static class ModConverters
 			FileSize = modFileSystemData.ModArchive.FileSize,
 			FileSizeExtracted = modFileSystemData.ModArchive.FileSizeExtracted,
 		},
-		ModTypes = modFileSystemData.ModArchive?.GetModTypes() ?? mod.ModTypes,
+		AssetModTypes = modFileSystemData.ModArchive?.GetModTypes() ?? mod.ModTypes,
 		Name = mod.Name,
 		ScreenshotFileNames = modFileSystemData.ScreenshotFileNames ?? new(),
 		TrailerUrl = mod.TrailerUrl,

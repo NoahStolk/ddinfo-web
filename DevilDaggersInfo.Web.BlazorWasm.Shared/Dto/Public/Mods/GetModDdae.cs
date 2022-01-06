@@ -14,11 +14,9 @@ public class GetModDdae
 
 	public DateTime LastUpdated { get; init; }
 
-	[JsonProperty("AssetModTypes")]
-	public ModTypes ModTypes { get; init; }
+	public ModTypes AssetModTypes { get; init; }
 
-	[JsonProperty("IsHostedOnDdInfo")]
-	public bool IsHosted { get; init; }
+	public bool IsHostedOnDdInfo { get; init; }
 
 	public bool? ContainsProhibitedAssets { get; init; }
 
