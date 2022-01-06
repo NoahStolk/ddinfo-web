@@ -63,9 +63,6 @@ public class AuthenticationController : ControllerBase
 	[ProducesResponseType(StatusCodes.Status400BadRequest)]
 	public ActionResult Register([FromBody] RegistrationRequest registrationRequest)
 	{
-		if (!_environment.IsDevelopment())
-			return BadRequest("Registering is currently not allowed.");
-
 		try
 		{
 			_userService.Create(registrationRequest.Name, registrationRequest.Password);
