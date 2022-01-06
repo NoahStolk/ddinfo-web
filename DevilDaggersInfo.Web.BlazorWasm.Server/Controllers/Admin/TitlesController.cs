@@ -8,7 +8,6 @@ namespace DevilDaggersInfo.Web.BlazorWasm.Server.Controllers.Admin;
 
 [Route("api/admin/titles")]
 [ApiController]
-[Authorize(Roles = Roles.Admin)]
 public class TitlesController : ControllerBase
 {
 	private readonly ApplicationDbContext _dbContext;
@@ -22,6 +21,7 @@ public class TitlesController : ControllerBase
 
 	[HttpGet]
 	[ProducesResponseType(StatusCodes.Status200OK)]
+	[Authorize(Roles = Roles.Admin)]
 	public ActionResult<Page<GetTitle>> GetTitles(
 		[Range(0, 1000)] int pageIndex = 0,
 		[Range(PagingConstants.PageSizeMin, PagingConstants.PageSizeMax)] int pageSize = PagingConstants.PageSizeDefault,
@@ -50,6 +50,7 @@ public class TitlesController : ControllerBase
 
 	[HttpGet("names")]
 	[ProducesResponseType(StatusCodes.Status200OK)]
+	[Authorize(Roles = Roles.Players)]
 	public ActionResult<List<GetTitleName>> GetTitleNames()
 	{
 		var titles = _dbContext.Titles
@@ -67,6 +68,7 @@ public class TitlesController : ControllerBase
 	[HttpPost]
 	[ProducesResponseType(StatusCodes.Status200OK)]
 	[ProducesResponseType(StatusCodes.Status400BadRequest)]
+	[Authorize(Roles = Roles.Admin)]
 	public async Task<ActionResult> AddTitle(AddTitle addTitle)
 	{
 		foreach (int playerId in addTitle.PlayerIds ?? new())
@@ -94,6 +96,7 @@ public class TitlesController : ControllerBase
 	[ProducesResponseType(StatusCodes.Status200OK)]
 	[ProducesResponseType(StatusCodes.Status400BadRequest)]
 	[ProducesResponseType(StatusCodes.Status404NotFound)]
+	[Authorize(Roles = Roles.Admin)]
 	public async Task<ActionResult> EditTitleById(int id, EditTitle editTitle)
 	{
 		foreach (int playerId in editTitle.PlayerIds ?? new())
@@ -127,6 +130,7 @@ public class TitlesController : ControllerBase
 	[HttpDelete("{id}")]
 	[ProducesResponseType(StatusCodes.Status200OK)]
 	[ProducesResponseType(StatusCodes.Status404NotFound)]
+	[Authorize(Roles = Roles.Admin)]
 	public async Task<ActionResult> DeleteTitleById(int id)
 	{
 		TitleEntity? title = _dbContext.Titles

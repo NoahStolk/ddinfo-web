@@ -9,7 +9,6 @@ namespace DevilDaggersInfo.Web.BlazorWasm.Server.Controllers.Admin;
 
 [Route("api/admin/mods")]
 [ApiController]
-[Authorize(Roles = Roles.Mods)]
 public class ModsController : ControllerBase
 {
 	private readonly ApplicationDbContext _dbContext;
@@ -29,6 +28,7 @@ public class ModsController : ControllerBase
 
 	[HttpGet]
 	[ProducesResponseType(StatusCodes.Status200OK)]
+	[Authorize(Roles = Roles.Mods)]
 	public ActionResult<Page<GetModForOverview>> GetMods(
 		[Range(0, 1000)] int pageIndex = 0,
 		[Range(PagingConstants.PageSizeMin, PagingConstants.PageSizeMax)] int pageSize = PagingConstants.PageSizeDefault,
@@ -63,6 +63,7 @@ public class ModsController : ControllerBase
 
 	[HttpGet("names")]
 	[ProducesResponseType(StatusCodes.Status200OK)]
+	[Authorize(Roles = Roles.Players)]
 	public ActionResult<List<GetModName>> GetModNames()
 	{
 		var mods = _dbContext.Mods
@@ -80,6 +81,7 @@ public class ModsController : ControllerBase
 	[HttpGet("{id}")]
 	[ProducesResponseType(StatusCodes.Status200OK)]
 	[ProducesResponseType(StatusCodes.Status404NotFound)]
+	[Authorize(Roles = Roles.Mods)]
 	public ActionResult<GetMod> GetModById(int id)
 	{
 		ModEntity? mod = _dbContext.Mods
@@ -97,6 +99,7 @@ public class ModsController : ControllerBase
 	[HttpPost]
 	[ProducesResponseType(StatusCodes.Status200OK)]
 	[ProducesResponseType(StatusCodes.Status400BadRequest)]
+	[Authorize(Roles = Roles.Mods)]
 	public async Task<ActionResult> AddMod(AddMod addMod)
 	{
 		if (addMod.PlayerIds == null || addMod.PlayerIds.Count == 0)
@@ -156,6 +159,7 @@ public class ModsController : ControllerBase
 	[ProducesResponseType(StatusCodes.Status200OK)]
 	[ProducesResponseType(StatusCodes.Status400BadRequest)]
 	[ProducesResponseType(StatusCodes.Status404NotFound)]
+	[Authorize(Roles = Roles.Mods)]
 	public async Task<ActionResult> EditModById(int id, EditMod editMod)
 	{
 		if (editMod.PlayerIds == null || editMod.PlayerIds.Count == 0)
@@ -228,6 +232,7 @@ public class ModsController : ControllerBase
 	[HttpDelete("{id}")]
 	[ProducesResponseType(StatusCodes.Status200OK)]
 	[ProducesResponseType(StatusCodes.Status404NotFound)]
+	[Authorize(Roles = Roles.Mods)]
 	public async Task<ActionResult> DeleteModById(int id)
 	{
 		ModEntity? mod = _dbContext.Mods.FirstOrDefault(m => m.Id == id);
