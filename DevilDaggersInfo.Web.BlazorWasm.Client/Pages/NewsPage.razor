@@ -17,7 +17,7 @@ else
 	foreach (KeyValuePair<NewsItem, MarkupString> newsItem in NewsItemsContent.OrderByDescending(kvp => kvp.Key.DateTime))
 	{
 		<div class="bg-gray-1 px-3 pb-2 my-4">
-			<Heading Level="2" Title="@($"{newsItem.Key.DateTime.ToString(FormatUtils.DateFormat)} - {newsItem.Key.Title}")" />
+			<Heading Level="2" Title="@newsItem.Key.ToDisplayTitle()" />
 
 			@(newsItem.Value)
 		</div>
