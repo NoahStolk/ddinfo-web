@@ -31,6 +31,8 @@ public class Startup
 
 	public void ConfigureServices(IServiceCollection services)
 	{
+		services.AddCors(options => options.AddPolicy(_defaultCorsPolicy, builder => builder.AllowAnyOrigin().AllowAnyMethod()));
+
 		services.AddDbContext<ApplicationDbContext>(options =>
 			options.UseMySql(Configuration.GetConnectionString("DefaultConnection"), MySqlServerVersion.LatestSupportedServerVersion, providerOptions => providerOptions.EnableRetryOnFailure(5)));
 
