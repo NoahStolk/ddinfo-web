@@ -6,6 +6,8 @@ public class GetMod
 
 	public string? HtmlDescription { get; init; }
 
+	public string? Url { get; init; }
+
 	public string? TrailerUrl { get; init; }
 
 	public List<string> Authors { get; init; } = null!;

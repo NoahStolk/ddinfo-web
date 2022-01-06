@@ -53,6 +53,7 @@ public static class ModConverters
 		Name = mod.Name,
 		ScreenshotFileNames = modFileSystemData?.ScreenshotFileNames,
 		TrailerUrl = mod.TrailerUrl,
+		Url = mod.Url,
 	};
 
 	public static GetModDdae ToGetModDdae(this ModEntity mod, ModFileSystemData modFileSystemData) => new()

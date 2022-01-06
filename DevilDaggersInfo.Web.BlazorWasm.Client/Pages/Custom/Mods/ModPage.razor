@@ -30,11 +30,17 @@ else
 			<DataField Name="File size (extracted)">@FileSizeUtils.Format(GetMod.ModArchive.FileSizeExtracted)</DataField>
 		}
 
-		<div class="grid grid-cols-2 text-lg">
-			<div class="px-1 py-3">
-				<a class="btn btn-download px-2 py-1" href="@($"/api/mods/{GetMod.Name}/file")">Download mod</a>
-			</div>
-		</div>
+		@{
+			string? url = GetMod.IsHosted ? $"/api/mods/{GetMod.Name}/file" : GetMod.Url;
+			if (!string.IsNullOrWhiteSpace(url))
+			{
+				<div class="grid grid-cols-2 text-lg">
+					<div class="px-1 py-3">
+						<a class="btn btn-download px-2 py-1" href="@(url)">Download mod</a>
+					</div>
+				</div>
+			}
+		}
 	</div>
 
 	@if (!string.IsNullOrWhiteSpace(GetMod.HtmlDescription))
