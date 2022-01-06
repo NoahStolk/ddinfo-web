@@ -16,6 +16,13 @@ public static class Program
 		Version = Assembly.GetExecutingAssembly()?.GetCustomAttribute<AssemblyInformationalVersionAttribute>()?.InformationalVersion;
 
 		WebAssemblyHostBuilder builder = WebAssemblyHostBuilder.CreateDefault(args);
+
+#if DEBUG
+		builder.Logging.SetMinimumLevel(LogLevel.Information);
+#else
+		builder.Logging.SetMinimumLevel(LogLevel.Warning);
+#endif
+
 		builder.RootComponents.Add<App>("#app");
 		builder.RootComponents.Add<HeadOutlet>("head::after");
 
