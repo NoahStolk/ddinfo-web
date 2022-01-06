@@ -198,21 +198,7 @@ public class Startup
 		app.UseSwaggerUi3();
 
 		InitiateCaches(serviceProvider);
-
-		// Create roles if they don't exist.
-		ApplicationDbContext dbContext = serviceProvider.GetRequiredService<ApplicationDbContext>();
-		bool anyChanges = false;
-		foreach (string roleName in Roles.All)
-		{
-			if (!dbContext.Roles.Any(r => r.Name == roleName))
-			{
-				dbContext.Roles.Add(new RoleEntity { Name = roleName });
-				anyChanges = true;
-			}
-		}
-
-		if (anyChanges)
-			dbContext.SaveChanges();
+		CreateRolesIfNotExist(serviceProvider);
 	}
 
 	private static void InitiateCaches(IServiceProvider serviceProvider)
@@ -237,5 +223,22 @@ public class Startup
 		 * The cache then needs to be initiated here, by reading all the JSON files and populating the ConcurrentBag on start up.*/
 		ModArchiveCache modArchiveCache = serviceProvider.GetRequiredService<ModArchiveCache>();
 		modArchiveCache.LoadEntireFileCache();
+	}
+
+	private static void CreateRolesIfNotExist(IServiceProvider serviceProvider)
+	{
+		ApplicationDbContext dbContext = serviceProvider.GetRequiredService<ApplicationDbContext>();
+		bool anyChanges = false;
+		foreach (string roleName in Roles.All)
+		{
+			if (!dbContext.Roles.Any(r => r.Name == roleName))
+			{
+				dbContext.Roles.Add(new RoleEntity { Name = roleName });
+				anyChanges = true;
+			}
+		}
+
+		if (anyChanges)
+			dbContext.SaveChanges();
 	}
 }
