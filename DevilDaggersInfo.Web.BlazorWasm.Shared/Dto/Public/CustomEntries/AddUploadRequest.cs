@@ -24,7 +24,7 @@ public class AddUploadRequest
 
 	public int EnemiesAlive { get; init; }
 
-	public int HomingDaggers { get; set; } // Use set to fix negative values (bug in DD).
+	public int HomingDaggers { get; set; } // Use set to get rid of negative values.
 
 	public int HomingDaggersEaten { get; init; }
 

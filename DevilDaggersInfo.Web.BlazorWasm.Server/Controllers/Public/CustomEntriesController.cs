@@ -226,8 +226,7 @@ public class CustomEntriesController : ControllerBase
 		}
 
 		// Check for required version.
-		string client = uploadRequest.Client.ToString();
-		string clientName = client is "ddstats-rust" or "DdstatsRust" or "1" ? "ddstats-rust" : "DevilDaggersCustomLeaderboards";
+		string clientName = uploadRequest.Client is "ddstats-rust" or "1" ? "ddstats-rust" : "DevilDaggersCustomLeaderboards";
 		ToolEntity? tool = _dbContext.Tools.AsNoTracking().FirstOrDefault(t => t.Name == clientName);
 		if (tool == null)
 			throw new($"Could not find tool with name {clientName} in database.");
@@ -279,8 +278,10 @@ public class CustomEntriesController : ControllerBase
 
 		// At this point, the submission is accepted.
 
-		// Make sure HomingDaggers is not negative (happens rarely).
+		// Make sure HomingDaggers is not negative (happens rarely as a bug, and also for spawnsets with homing disabled which we don't want to display values for anyway).
 		uploadRequest.HomingDaggers = Math.Max(0, uploadRequest.HomingDaggers);
+		foreach (AddGameState addGameState in uploadRequest.GameStates.Where(gs => gs.HomingDaggers < 0))
+			addGameState.HomingDaggers = 0;
 
 		// Calculate the new rank.
 		List<CustomEntryEntity> entries = FetchEntriesFromDatabase(customLeaderboard, isAscending);
