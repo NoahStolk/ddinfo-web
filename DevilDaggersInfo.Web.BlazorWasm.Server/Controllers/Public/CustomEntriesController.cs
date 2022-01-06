@@ -311,7 +311,7 @@ public class CustomEntriesController : ControllerBase
 				LevelUpTime4 = uploadRequest.LevelUpTime4,
 				SubmitDate = DateTime.UtcNow,
 				ClientVersion = uploadRequest.ClientVersion,
-				Client = uploadRequest.Client,
+				Client = GetClientFromString(uploadRequest.Client),
 				CustomLeaderboard = customLeaderboard,
 			};
 			_dbContext.CustomEntries.Add(newCustomEntry);
@@ -437,7 +437,7 @@ public class CustomEntriesController : ControllerBase
 		customEntry.LevelUpTime4 = uploadRequest.LevelUpTime4;
 		customEntry.SubmitDate = DateTime.UtcNow;
 		customEntry.ClientVersion = uploadRequest.ClientVersion;
-		customEntry.Client = uploadRequest.Client;
+		customEntry.Client = GetClientFromString(uploadRequest.Client);
 
 		// Update the entry data.
 		CustomEntryDataEntity? customEntryData = _dbContext.CustomEntryData.FirstOrDefault(ced => ced.CustomEntryId == customEntry.Id);
@@ -656,4 +656,11 @@ public class CustomEntriesController : ControllerBase
 		byte[] CompressProperty(Func<AddGameState, int> propertySelector)
 			=> IntegerArrayCompressor.CompressData(gameStates.Select(propertySelector).ToArray());
 	}
+
+	private static CustomLeaderboardsClient GetClientFromString(string clientString) => clientString switch
+	{
+		"DevilDaggersCustomLeaderboards" or "0" => CustomLeaderboardsClient.DevilDaggersCustomLeaderboards,
+		"ddstats-rust" or "1" => CustomLeaderboardsClient.DdstatsRust,
+		_ => throw new Exception("Unknown CustomLeaderboardsClient."),
+	};
 }

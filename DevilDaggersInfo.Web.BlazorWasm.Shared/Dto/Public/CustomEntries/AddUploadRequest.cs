@@ -45,11 +45,11 @@ public class AddUploadRequest
 	[StringLength(16)]
 	public string ClientVersion { get; init; } = null!;
 
-	public CustomLeaderboardsClient Client { get; init; }
+	public string Client { get; init; } = null!;
 
-	public SupportedOperatingSystem OperatingSystem { get; init; }
+	public string OperatingSystem { get; init; } = null!;
 
-	public BuildMode BuildMode { get; init; }
+	public string BuildMode { get; init; } = null!;
 
 	public string Validation { get; set; } = null!; // Use set for unit tests.
 
