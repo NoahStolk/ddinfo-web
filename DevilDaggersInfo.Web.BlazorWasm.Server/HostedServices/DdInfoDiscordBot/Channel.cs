@@ -2,14 +2,13 @@ namespace DevilDaggersInfo.Web.BlazorWasm.Server.HostedServices.DdInfoDiscordBot
 
 public enum Channel
 {
-	MonitoringAuditLog,
+	MaintainersAuditLog,
 	MonitoringBackgroundService,
 	MonitoringCache,
 	MonitoringCustomLeaderboard,
 	MonitoringDatabase,
 	MonitoringFile,
 	MonitoringLog,
-	MonitoringTask,
 	MonitoringTest,
 	CustomLeaderboards,
 }

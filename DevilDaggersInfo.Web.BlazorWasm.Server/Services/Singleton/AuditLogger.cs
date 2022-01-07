@@ -45,7 +45,7 @@ public class AuditLogger
 
 		AddFileSystemInformation(auditLogger, fileSystemInformation);
 
-		await TryLog(Channel.MonitoringAuditLog, auditLogger.ToString());
+		await TryLog(Channel.MaintainersAuditLog, auditLogger.ToString());
 	}
 
 	public async Task LogEdit<TData, TKey>(TData oldObj, TData newObj, ClaimsPrincipal claimsPrincipal, TKey id, List<FileSystemInformation>? fileSystemInformation = null, [CallerMemberName] string endpointName = "")
@@ -58,7 +58,7 @@ public class AuditLogger
 		if (AreEditLogsEqual(oldLog, newLog))
 		{
 			auditLogger.AppendLine("`No changes.`");
-			await TryLog(Channel.MonitoringAuditLog, auditLogger.ToString());
+			await TryLog(Channel.MaintainersAuditLog, auditLogger.ToString());
 		}
 		else
 		{
@@ -96,7 +96,7 @@ public class AuditLogger
 
 		AddFileSystemInformation(auditLogger, fileSystemInformation);
 
-		await TryLog(Channel.MonitoringAuditLog, auditLogger.ToString());
+		await TryLog(Channel.MaintainersAuditLog, auditLogger.ToString());
 
 		static bool AreEditLogsEqual(Dictionary<string, string> oldLog, Dictionary<string, string> newLog)
 		{
@@ -145,20 +145,20 @@ public class AuditLogger
 
 		AddFileSystemInformation(auditLogger, fileSystemInformation);
 
-		await TryLog(Channel.MonitoringAuditLog, auditLogger.ToString());
+		await TryLog(Channel.MaintainersAuditLog, auditLogger.ToString());
 	}
 
 	public async Task LogRoleAssign(UserEntity user, string roleName) => await LogRoleChange("ASSIGN", user, roleName);
 
 	public async Task LogRoleRevoke(UserEntity user, string roleName) => await LogRoleChange("REVOKE", user, roleName);
 
-	private async Task LogRoleChange(string action, UserEntity user, string roleName) => await TryLog(Channel.MonitoringAuditLog, $"`{action} ROLE '{roleName}'` for user `{user.Name}`. Make sure to login again for this to take effect in the browser.");
+	private async Task LogRoleChange(string action, UserEntity user, string roleName) => await TryLog(Channel.MaintainersAuditLog, $"`{action} ROLE '{roleName}'` for user `{user.Name}`. Make sure to login again for this to take effect in the browser.");
 
 	public async Task LogFileSystemInformation(List<FileSystemInformation>? fileSystemInformation = null)
 	{
 		StringBuilder auditLogger = new();
 		AddFileSystemInformation(auditLogger, fileSystemInformation);
-		await TryLog(Channel.MonitoringAuditLog, auditLogger.ToString());
+		await TryLog(Channel.MaintainersAuditLog, auditLogger.ToString());
 	}
 
 	private static StringBuilder GetAuditLogger<TKey>(string action, ClaimsPrincipal claimsPrincipal, TKey id, string endpointName)

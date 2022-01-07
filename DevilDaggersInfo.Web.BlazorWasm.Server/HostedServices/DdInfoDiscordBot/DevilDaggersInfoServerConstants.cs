@@ -14,14 +14,13 @@ public static class DevilDaggersInfoServerConstants
 
 	private static readonly Dictionary<Channel, ChannelWrapper> _channels = new()
 	{
-		{ Channel.MonitoringAuditLog, new(821489129615130684) },
+		{ Channel.MaintainersAuditLog, new(821489129615130684) },
 		{ Channel.MonitoringBackgroundService, new(856553635206266911) },
 		{ Channel.MonitoringCache, new(831981757200859206) },
 		{ Channel.MonitoringCustomLeaderboard, new(813506112670007306) },
 		{ Channel.MonitoringDatabase, new(856490882371289098) },
 		{ Channel.MonitoringFile, new(856263861372321823) },
 		{ Channel.MonitoringLog, new(727227801664618607) },
-		{ Channel.MonitoringTask, new(813506034970787880) },
 		{ Channel.MonitoringTest, new(813508325705515008) },
 		{ Channel.CustomLeaderboards, new(578316107836817418) },
 	};
