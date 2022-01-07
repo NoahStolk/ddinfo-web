@@ -76,6 +76,7 @@ public class CustomEntryTests
 			SurvivalHashMd5 = GetSpawnsetHash(_spawnsetBinary),
 			GameStates = new(),
 			PlayerName = "TestPlayer1",
+			Client = "DevilDaggersCustomLeaderboards",
 		};
 		uploadRequest.Validation = GetValidation(uploadRequest);
 
@@ -98,6 +99,7 @@ public class CustomEntryTests
 			SurvivalHashMd5 = GetSpawnsetHash(_spawnsetBinary),
 			GameStates = new(),
 			PlayerName = "TestPlayer1",
+			Client = "DevilDaggersCustomLeaderboards",
 		};
 		uploadRequest.Validation = GetValidation(uploadRequest);
 
@@ -120,6 +122,7 @@ public class CustomEntryTests
 			SurvivalHashMd5 = GetSpawnsetHash(_spawnsetBinary),
 			GameStates = new(),
 			PlayerName = "TestPlayer2",
+			Client = "DevilDaggersCustomLeaderboards",
 		};
 		uploadRequest.Validation = GetValidation(uploadRequest);
 
@@ -142,6 +145,7 @@ public class CustomEntryTests
 			SurvivalHashMd5 = GetSpawnsetHash(_spawnsetBinary),
 			GameStates = new(),
 			PlayerName = "TestPlayer3",
+			Client = "DevilDaggersCustomLeaderboards",
 		};
 		uploadRequest.Validation = GetValidation(uploadRequest);
 
@@ -165,6 +169,7 @@ public class CustomEntryTests
 			SurvivalHashMd5 = GetSpawnsetHash(_spawnsetBinary),
 			GameStates = new(),
 			PlayerName = "TestPlayer1",
+			Client = "DevilDaggersCustomLeaderboards",
 		};
 		uploadRequest.Validation = GetValidation(uploadRequest);
 
@@ -194,6 +199,7 @@ public class CustomEntryTests
 			GameStates = new(),
 			PlayerName = "TestPlayer1",
 			Validation = "Malformed validation",
+			Client = "DevilDaggersCustomLeaderboards",
 		};
 
 		ActionResult<GetUploadSuccess> response = await _customEntriesController.ProcessUploadRequest(uploadRequest);
