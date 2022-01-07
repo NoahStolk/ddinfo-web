@@ -1,4 +1,6 @@
 using DevilDaggersInfo.Core.Encryption;
+using DevilDaggersInfo.Core.Wiki;
+using DevilDaggersInfo.Web.BlazorWasm.Client.Pages.Custom.Spawnsets;
 using DevilDaggersInfo.Web.BlazorWasm.Server.Caches.SpawnsetHashes;
 using DevilDaggersInfo.Web.BlazorWasm.Server.Converters.Public;
 using DevilDaggersInfo.Web.BlazorWasm.Server.HostedServices.DdInfoDiscordBot;
@@ -120,75 +122,7 @@ public class CustomEntryProcessor
 
 		CustomEntryEntity? customEntry = entries.Find(e => e.PlayerId == uploadRequest.PlayerId);
 		if (customEntry == null)
-		{
-			// Add new custom entry to this leaderboard.
-			CustomEntryEntity newCustomEntry = new()
-			{
-				PlayerId = uploadRequest.PlayerId,
-				Time = uploadRequest.Time,
-				GemsCollected = uploadRequest.GemsCollected,
-				GemsDespawned = uploadRequest.GemsDespawned,
-				GemsEaten = uploadRequest.GemsEaten,
-				GemsTotal = uploadRequest.GemsTotal,
-				EnemiesKilled = uploadRequest.EnemiesKilled,
-				DeathType = uploadRequest.DeathType,
-				DaggersHit = uploadRequest.DaggersHit,
-				DaggersFired = uploadRequest.DaggersFired,
-				EnemiesAlive = uploadRequest.EnemiesAlive,
-				HomingStored = uploadRequest.HomingDaggers,
-				HomingEaten = uploadRequest.HomingDaggersEaten,
-				LevelUpTime2 = uploadRequest.LevelUpTime2,
-				LevelUpTime3 = uploadRequest.LevelUpTime3,
-				LevelUpTime4 = uploadRequest.LevelUpTime4,
-				SubmitDate = DateTime.UtcNow,
-				ClientVersion = uploadRequest.ClientVersion,
-				Client = GetClientFromString(uploadRequest.Client),
-				CustomLeaderboard = customLeaderboard,
-			};
-			_dbContext.CustomEntries.Add(newCustomEntry);
-
-			CustomEntryDataEntity newCustomEntryData = new() { CustomEntry = newCustomEntry };
-			Populate(newCustomEntryData, uploadRequest.GameStates);
-			_dbContext.CustomEntryData.Add(newCustomEntryData);
-
-			UpdateLeaderboardStatistics(customLeaderboard);
-
-			_dbContext.SaveChanges();
-
-			if (uploadRequest.ReplayData != null)
-				await WriteReplayFile(newCustomEntry.Id, uploadRequest.ReplayData);
-
-			// Fetch the entries again after having modified the leaderboard.
-			entries = FetchEntriesFromDatabase(customLeaderboard, isAscending);
-			totalPlayers = entries.Count;
-
-			await TrySendLeaderboardMessage(customLeaderboard, $"`{uploadRequest.PlayerName}` just entered the `{spawnsetName}` leaderboard!", rank, totalPlayers, uploadRequest.Time);
-			await TryLog(uploadRequest, spawnsetName);
-
-			return new GetUploadSuccess
-			{
-				Message = $"Welcome to the {spawnsetName} leaderboard!",
-				TotalPlayers = totalPlayers,
-				Leaderboard = customLeaderboard.ToGetCustomLeaderboardDdcl(),
-				Category = customLeaderboard.Category,
-				Entries = entries.ConvertAll(e => e.ToGetCustomEntryDdcl()),
-				IsNewPlayerOnThisLeaderboard = true,
-				Rank = rank,
-				Time = uploadRequest.Time,
-				EnemiesKilled = uploadRequest.EnemiesKilled,
-				GemsCollected = uploadRequest.GemsCollected,
-				GemsDespawned = uploadRequest.GemsDespawned,
-				GemsEaten = uploadRequest.GemsEaten,
-				DaggersHit = uploadRequest.DaggersHit,
-				DaggersFired = uploadRequest.DaggersFired,
-				EnemiesAlive = uploadRequest.EnemiesAlive,
-				HomingDaggers = uploadRequest.HomingDaggers,
-				HomingDaggersEaten = uploadRequest.HomingDaggersEaten,
-				LevelUpTime2 = uploadRequest.LevelUpTime2,
-				LevelUpTime3 = uploadRequest.LevelUpTime3,
-				LevelUpTime4 = uploadRequest.LevelUpTime4,
-			};
-		}
+			return await ProcessNewScore(uploadRequest, customLeaderboard, rank, isAscending, spawnsetName);
 
 		// Due to a bug in the game, we need to manually fix the request's time. The time gains a couple extra ticks if the run is a replay.
 		// We don't want replays to overwrite the real score (this spams messages and is incorrect).
@@ -207,27 +141,7 @@ public class CustomEntryProcessor
 
 		// User is already on the leaderboard, but did not get a better score.
 		if (isAscending && customEntry.Time <= uploadRequest.Time || !isAscending && customEntry.Time >= uploadRequest.Time)
-		{
-			if (!uploadRequest.IsReplay)
-				UpdateLeaderboardStatistics(customLeaderboard);
-
-			_dbContext.SaveChanges();
-
-			// Fetch the entries again after having modified the leaderboard.
-			entries = FetchEntriesFromDatabase(customLeaderboard, isAscending);
-
-			await TryLog(uploadRequest, spawnsetName);
-
-			return new GetUploadSuccess
-			{
-				Message = $"No new highscore for {customLeaderboard.Spawnset.Name}.",
-				TotalPlayers = totalPlayers,
-				Leaderboard = customLeaderboard.ToGetCustomLeaderboardDdcl(),
-				Category = customLeaderboard.Category,
-				Entries = entries.ConvertAll(e => e.ToGetCustomEntryDdcl()),
-				IsNewPlayerOnThisLeaderboard = false,
-			};
-		}
+			return await ProcessNoHighscore(uploadRequest, customLeaderboard, entries, spawnsetName);
 
 		// User got a better score.
 
@@ -274,10 +188,7 @@ public class CustomEntryProcessor
 		CustomEntryDataEntity? customEntryData = _dbContext.CustomEntryData.FirstOrDefault(ced => ced.CustomEntryId == customEntry.Id);
 		if (customEntryData == null)
 		{
-			customEntryData = new()
-			{
-				CustomEntryId = customEntry.Id,
-			};
+			customEntryData = new() { CustomEntryId = customEntry.Id };
 			Populate(customEntryData, uploadRequest.GameStates);
 			_dbContext.CustomEntryData.Add(customEntryData);
 		}
@@ -499,4 +410,96 @@ public class CustomEntryProcessor
 		"ddstats-rust" or "1" => CustomLeaderboardsClient.DdstatsRust,
 		_ => throw new Exception("Unknown CustomLeaderboardsClient."),
 	};
+
+	private async Task<GetUploadSuccess> ProcessNewScore(AddUploadRequest uploadRequest, CustomLeaderboardEntity customLeaderboard, int rank, bool isAscending, string spawnsetName)
+	{
+		// Add new custom entry to this leaderboard.
+		CustomEntryEntity newCustomEntry = new()
+		{
+			PlayerId = uploadRequest.PlayerId,
+			Time = uploadRequest.Time,
+			GemsCollected = uploadRequest.GemsCollected,
+			GemsDespawned = uploadRequest.GemsDespawned,
+			GemsEaten = uploadRequest.GemsEaten,
+			GemsTotal = uploadRequest.GemsTotal,
+			EnemiesKilled = uploadRequest.EnemiesKilled,
+			DeathType = uploadRequest.DeathType,
+			DaggersHit = uploadRequest.DaggersHit,
+			DaggersFired = uploadRequest.DaggersFired,
+			EnemiesAlive = uploadRequest.EnemiesAlive,
+			HomingStored = uploadRequest.HomingDaggers,
+			HomingEaten = uploadRequest.HomingDaggersEaten,
+			LevelUpTime2 = uploadRequest.LevelUpTime2,
+			LevelUpTime3 = uploadRequest.LevelUpTime3,
+			LevelUpTime4 = uploadRequest.LevelUpTime4,
+			SubmitDate = DateTime.UtcNow,
+			ClientVersion = uploadRequest.ClientVersion,
+			Client = GetClientFromString(uploadRequest.Client),
+			CustomLeaderboard = customLeaderboard,
+		};
+		_dbContext.CustomEntries.Add(newCustomEntry);
+
+		CustomEntryDataEntity newCustomEntryData = new() { CustomEntry = newCustomEntry };
+		Populate(newCustomEntryData, uploadRequest.GameStates);
+		_dbContext.CustomEntryData.Add(newCustomEntryData);
+
+		UpdateLeaderboardStatistics(customLeaderboard);
+
+		_dbContext.SaveChanges();
+
+		if (uploadRequest.ReplayData != null)
+			await WriteReplayFile(newCustomEntry.Id, uploadRequest.ReplayData);
+
+		// Fetch the entries again after having modified the leaderboard.
+		List<CustomEntryEntity> entries = FetchEntriesFromDatabase(customLeaderboard, isAscending);
+		int totalPlayers = entries.Count;
+
+		await TrySendLeaderboardMessage(customLeaderboard, $"`{uploadRequest.PlayerName}` just entered the `{spawnsetName}` leaderboard!", rank, totalPlayers, uploadRequest.Time);
+		await TryLog(uploadRequest, spawnsetName);
+
+		return new GetUploadSuccess
+		{
+			Message = $"Welcome to the {spawnsetName} leaderboard!",
+			TotalPlayers = totalPlayers,
+			Leaderboard = customLeaderboard.ToGetCustomLeaderboardDdcl(),
+			Category = customLeaderboard.Category,
+			Entries = entries.ConvertAll(e => e.ToGetCustomEntryDdcl()),
+			IsNewPlayerOnThisLeaderboard = true,
+			Rank = rank,
+			Time = uploadRequest.Time,
+			EnemiesKilled = uploadRequest.EnemiesKilled,
+			GemsCollected = uploadRequest.GemsCollected,
+			GemsDespawned = uploadRequest.GemsDespawned,
+			GemsEaten = uploadRequest.GemsEaten,
+			DaggersHit = uploadRequest.DaggersHit,
+			DaggersFired = uploadRequest.DaggersFired,
+			EnemiesAlive = uploadRequest.EnemiesAlive,
+			HomingDaggers = uploadRequest.HomingDaggers,
+			HomingDaggersEaten = uploadRequest.HomingDaggersEaten,
+			LevelUpTime2 = uploadRequest.LevelUpTime2,
+			LevelUpTime3 = uploadRequest.LevelUpTime3,
+			LevelUpTime4 = uploadRequest.LevelUpTime4,
+		};
+	}
+
+	private async Task<GetUploadSuccess> ProcessNoHighscore(AddUploadRequest uploadRequest, CustomLeaderboardEntity customLeaderboard, List<CustomEntryEntity> entries, string spawnsetName)
+	{
+		if (!uploadRequest.IsReplay)
+		{
+			UpdateLeaderboardStatistics(customLeaderboard);
+			_dbContext.SaveChanges();
+		}
+
+		await TryLog(uploadRequest, spawnsetName);
+
+		return new GetUploadSuccess
+		{
+			Message = $"No new highscore for {customLeaderboard.Spawnset.Name}.",
+			TotalPlayers = entries.Count,
+			Leaderboard = customLeaderboard.ToGetCustomLeaderboardDdcl(),
+			Category = customLeaderboard.Category,
+			Entries = entries.ConvertAll(e => e.ToGetCustomEntryDdcl()),
+			IsNewPlayerOnThisLeaderboard = false,
+		};
+	}
 }
