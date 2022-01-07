@@ -14,15 +14,17 @@ public class CustomEntryProcessor
 	private readonly ILogger<CustomEntryProcessor> _logger;
 	private readonly SpawnsetHashCache _spawnsetHashCache;
 	private readonly IFileSystemService _fileSystemService;
+	private readonly IWebHostEnvironment _environment;
 
 	private readonly AesBase32Wrapper _encryptionWrapper;
 
-	public CustomEntryProcessor(ApplicationDbContext dbContext, ILogger<CustomEntryProcessor> logger, SpawnsetHashCache spawnsetHashCache, IFileSystemService fileSystemService, IConfiguration configuration)
+	public CustomEntryProcessor(ApplicationDbContext dbContext, ILogger<CustomEntryProcessor> logger, SpawnsetHashCache spawnsetHashCache, IFileSystemService fileSystemService, IWebHostEnvironment environment, IConfiguration configuration)
 	{
 		_dbContext = dbContext;
 		_logger = logger;
 		_spawnsetHashCache = spawnsetHashCache;
 		_fileSystemService = fileSystemService;
+		_environment = environment;
 
 		IConfigurationSection section = configuration.GetRequiredSection("CustomLeaderboardSecrets");
 		_encryptionWrapper = new(section["InitializationVector"], section["Password"], section["Salt"]);
@@ -401,12 +403,12 @@ public class CustomEntryProcessor
 			builder.AddFieldObject("Score", FormatTimeString(time), true);
 			builder.AddFieldObject("Rank", $"{rank}/{totalPlayers}", true);
 
-			// TODO: Don't log in development.
-			DiscordChannel? channel = DevilDaggersInfoServerConstants.Channels[Channel.CustomLeaderboards].DiscordChannel;
-			if (channel == null)
+			Channel channel = _environment.IsDevelopment() ? Channel.MonitoringTest : Channel.CustomLeaderboards;
+			DiscordChannel? discordChannel = DevilDaggersInfoServerConstants.Channels[channel].DiscordChannel;
+			if (discordChannel == null)
 				return;
 
-			await channel.SendMessageAsyncSafe(null, builder.Build());
+			await discordChannel.SendMessageAsyncSafe(null, builder.Build());
 		}
 		catch (Exception ex)
 		{
@@ -445,15 +447,14 @@ public class CustomEntryProcessor
 			string localReplayString = uploadRequest.Status == 8 ? $" | `Local replay from {uploadRequest.ReplayPlayerId}`" : string.Empty;
 			string requestInfo = $"(`{uploadRequest.ClientVersion}` | `{uploadRequest.OperatingSystem}` | `{uploadRequest.BuildMode}` | `{uploadRequest.Client}`{replayString}{localReplayString} | `{replayData}` | `Status {uploadRequest.Status}`)";
 
-			// TODO: Don't log in development.
-			DiscordChannel? channel = DevilDaggersInfoServerConstants.Channels[Channel.MonitoringCustomLeaderboard].DiscordChannel;
-			if (channel == null)
+			DiscordChannel? discordChannel = DevilDaggersInfoServerConstants.Channels[Channel.MonitoringCustomLeaderboard].DiscordChannel;
+			if (discordChannel == null)
 				return;
 
 			if (!string.IsNullOrEmpty(errorMessage))
-				await channel.SendMessageAsyncSafe($":{errorEmoteNameOverride ?? "warning"}: Upload failed for user `{uploadRequest.PlayerName}` (`{uploadRequest.PlayerId}`) for `{spawnsetIdentification}`. {requestInfo}\n**{errorMessage}**");
+				await discordChannel.SendMessageAsyncSafe($":{errorEmoteNameOverride ?? "warning"}: Upload failed for user `{uploadRequest.PlayerName}` (`{uploadRequest.PlayerId}`) for `{spawnsetIdentification}`. {requestInfo}\n**{errorMessage}**");
 			else
-				await channel.SendMessageAsyncSafe($":white_check_mark: `{uploadRequest.PlayerName}` just submitted a score of `{FormatTimeString(uploadRequest.Time)}` to `{spawnsetIdentification}`. {requestInfo}");
+				await discordChannel.SendMessageAsyncSafe($":white_check_mark: `{uploadRequest.PlayerName}` just submitted a score of `{FormatTimeString(uploadRequest.Time)}` to `{spawnsetIdentification}`. {requestInfo}");
 		}
 		catch
 		{
