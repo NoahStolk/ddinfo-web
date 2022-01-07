@@ -37,6 +37,4 @@ public class GetPlayer : IGetDto
 	public bool HidePastUsernames { get; init; }
 
 	public List<int>? ModIds { get; init; }
-
-	public List<int>? TitleIds { get; init; }
 }

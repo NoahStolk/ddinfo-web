@@ -3,7 +3,6 @@
 @using DevilDaggersInfo.Web.BlazorWasm.Client.Components.Admin
 @using DevilDaggersInfo.Web.BlazorWasm.Shared.Dto.Admin.Mods
 @using DevilDaggersInfo.Web.BlazorWasm.Shared.Dto.Admin.Players
-@using DevilDaggersInfo.Web.BlazorWasm.Shared.Dto.Admin.Titles
 @using DevilDaggersInfo.Web.BlazorWasm.Shared.Enums
 
 <AdminEdit TModel="EditPlayer" Name="Player" OverviewUrl="/admin/players" ApiCall="Http.EditPlayerById" Model="_editPlayer" Id="Id" @ref="_editComponent">
@@ -19,7 +18,6 @@
 	<AdminInput Label="@nameof(EditPlayer.HidePastUsernames)"><InputCheckbox @bind-Value="@_editPlayer!.HidePastUsernames" /></AdminInput>
 	<AdminInput Label="@nameof(EditPlayer.HideSettings)"><InputCheckbox @bind-Value="@_editPlayer!.HideSettings" /></AdminInput>
 	<AdminInput Label="@nameof(EditPlayer.ModIds)"><MultiSearchDropdown Values="@_modNames" @bind-Value="@_editPlayer!.ModIds" /></AdminInput>
-	<AdminInput Label="@nameof(EditPlayer.TitleIds)"><MultiSearchDropdown Values="@_titleNames" @bind-Value="@_editPlayer!.TitleIds" /></AdminInput>
 	<AdminInput Label="@nameof(EditPlayer.BanType)"><SearchDropdown TKey=BanType Values="@(Enum.GetValues<BanType>().ToDictionary(e => e, e => e.ToString()))" Converter="s => Enum.Parse<BanType>(s)" ShowDisplayValue=false @bind-Value="@_editPlayer!.BanType" /></AdminInput>
 	<AdminInput Label="@nameof(EditPlayer.BanDescription)"><InputText class="w-64 pl-2 bg-gray-1 text-color-text" @bind-Value="@_editPlayer!.BanDescription" /></AdminInput>
 	<AdminInput Label="@nameof(EditPlayer.BanResponsibleId)"><InputNumber class="w-64 pl-2 bg-gray-1 text-color-text" @bind-Value="@_editPlayer!.BanResponsibleId" /></AdminInput>
@@ -29,7 +27,6 @@
 @code
 {
 	private Dictionary<int, string>? _modNames;
-	private Dictionary<int, string>? _titleNames;
 	private EditPlayer? _editPlayer;
 	private AdminEdit<EditPlayer> _editComponent = null!;
 
@@ -43,9 +40,6 @@
 		{
 			List<GetModName> getModNames = await Http.GetModNames();
 			_modNames = getModNames.ToDictionary(m => m.Id, m => m.Name);
-
-			List<GetTitleName> getTitleNames = await Http.GetTitleNames();
-			_titleNames = getTitleNames.ToDictionary(t => t.Id, t => t.Name);
 
 			GetPlayer getPlayer = await Http.GetPlayerById(Id);
 			_editPlayer = new()
@@ -61,7 +55,6 @@
 				HideSettings = getPlayer.HideSettings,
 				InGameSens = getPlayer.InGameSens,
 				IsRightHanded = getPlayer.IsRightHanded,
-				TitleIds = getPlayer.TitleIds,
 				UsesLegacyAudio = getPlayer.UsesLegacyAudio,
 				BanDescription = getPlayer.BanDescription,
 				BanResponsibleId = getPlayer.BanResponsibleId,

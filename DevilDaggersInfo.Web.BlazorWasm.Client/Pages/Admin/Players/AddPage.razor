@@ -3,7 +3,6 @@
 @using DevilDaggersInfo.Web.BlazorWasm.Client.Components.Admin
 @using DevilDaggersInfo.Web.BlazorWasm.Shared.Dto.Admin.Mods
 @using DevilDaggersInfo.Web.BlazorWasm.Shared.Dto.Admin.Players
-@using DevilDaggersInfo.Web.BlazorWasm.Shared.Dto.Admin.Titles
 @using DevilDaggersInfo.Web.BlazorWasm.Shared.Enums
 
 <AdminAdd Name="Player" OverviewUrl="/admin/players" ApiCall="Http.AddPlayer" Model="_addPlayer" @ref="_addComponent">
@@ -20,7 +19,6 @@
 	<AdminInput Label="@nameof(AddPlayer.HidePastUsernames)"><InputCheckbox @bind-Value="@_addPlayer.HidePastUsernames" /></AdminInput>
 	<AdminInput Label="@nameof(AddPlayer.HideSettings)"><InputCheckbox @bind-Value="@_addPlayer.HideSettings" /></AdminInput>
 	<AdminInput Label="@nameof(AddPlayer.ModIds)"><MultiSearchDropdown Values="@_modNames" @bind-Value="@_addPlayer.ModIds" /></AdminInput>
-	<AdminInput Label="@nameof(AddPlayer.TitleIds)"><MultiSearchDropdown Values="@_titleNames" @bind-Value="@_addPlayer.TitleIds" /></AdminInput>
 	<AdminInput Label="@nameof(AddPlayer.BanType)"><SearchDropdown TKey=BanType Values="@(Enum.GetValues<BanType>().ToDictionary(e => e, e => e.ToString()))" Converter="s => Enum.Parse<BanType>(s)" ShowDisplayValue=false @bind-Value="@_addPlayer.BanType" /></AdminInput>
 	<AdminInput Label="@nameof(AddPlayer.BanDescription)"><InputText class="w-64 pl-2 bg-gray-1 text-color-text" @bind-Value="@_addPlayer.BanDescription" /></AdminInput>
 	<AdminInput Label="@nameof(AddPlayer.BanResponsibleId)"><InputNumber class="w-64 pl-2 bg-gray-1 text-color-text" @bind-Value="@_addPlayer.BanResponsibleId" /></AdminInput>
@@ -30,7 +28,6 @@
 @code
 {
 	private Dictionary<int, string>? _modNames;
-	private Dictionary<int, string>? _titleNames;
 	private AddPlayer _addPlayer = new();
 	private AdminAdd<AddPlayer> _addComponent = null!;
 
@@ -42,9 +39,6 @@
 		{
 			List<GetModName> getModNames = await Http.GetModNames();
 			_modNames = getModNames.ToDictionary(m => m.Id, m => m.Name);
-
-			List<GetTitleName> getTitleNames = await Http.GetTitleNames();
-			_titleNames = getTitleNames.ToDictionary(t => t.Id, t => t.Name);
 
 			_addComponent.State = ErrorState.None;
 		}

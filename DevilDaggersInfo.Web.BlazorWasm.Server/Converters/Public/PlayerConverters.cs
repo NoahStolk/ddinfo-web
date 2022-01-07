@@ -4,7 +4,7 @@ namespace DevilDaggersInfo.Web.BlazorWasm.Server.Converters.Public;
 
 public static class PlayerConverters
 {
-	public static GetPlayer ToGetPlayer(this PlayerEntity player, bool isPublicDonator, List<string> titles) => new()
+	public static GetPlayer ToGetPlayer(this PlayerEntity player, bool isPublicDonator) => new()
 	{
 		BanDescription = player.BanDescription,
 		CountryCode = player.CountryCode,
@@ -21,7 +21,6 @@ public static class PlayerConverters
 			UsesFlashHand = player.HasFlashHandEnabled,
 			UsesLegacyAudio = player.UsesLegacyAudio,
 		},
-		Titles = titles,
 	};
 
 	public static GetPlayerForSettings ToGetPlayerForSettings(this PlayerEntity player) => new()

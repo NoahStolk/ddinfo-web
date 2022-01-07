@@ -89,7 +89,6 @@ public class PlayersController : ControllerBase
 		PlayerEntity? player = _dbContext.Players
 			.AsSingleQuery()
 			.AsNoTracking()
-			.Include(p => p.PlayerTitles)
 			.Include(p => p.PlayerMods)
 			.FirstOrDefault(p => p.Id == id);
 		if (player == null)
@@ -139,12 +138,6 @@ public class PlayersController : ControllerBase
 				return BadRequest($"Mod with ID '{modId}' does not exist.");
 		}
 
-		foreach (int titleId in addPlayer.TitleIds ?? new())
-		{
-			if (!_dbContext.Titles.Any(t => t.Id == titleId))
-				return BadRequest($"Title with ID '{titleId}' does not exist.");
-		}
-
 		PlayerEntity player = new()
 		{
 			Id = addPlayer.Id,
@@ -166,10 +159,9 @@ public class PlayersController : ControllerBase
 			HidePastUsernames = addPlayer.HidePastUsernames,
 		};
 		_dbContext.Players.Add(player);
-		_dbContext.SaveChanges(); // Save changes here so PlayerTitle and PlayerMod entities can be assigned properly.
+		_dbContext.SaveChanges(); // Save changes here so PlayerMod entities can be assigned properly.
 
 		UpdatePlayerMods(addPlayer.ModIds ?? new(), player.Id);
-		UpdatePlayerTitles(addPlayer.TitleIds ?? new(), player.Id);
 		_dbContext.SaveChanges();
 
 		await _auditLogger.LogAdd(addPlayer, User, player.Id);
@@ -215,16 +207,9 @@ public class PlayersController : ControllerBase
 				return BadRequest($"Mod with ID '{modId}' does not exist.");
 		}
 
-		foreach (int titleId in editPlayer.TitleIds ?? new())
-		{
-			if (!_dbContext.Titles.Any(t => t.Id == titleId))
-				return BadRequest($"Title with ID '{titleId}' does not exist.");
-		}
-
 		PlayerEntity? player = _dbContext.Players
 			.AsSingleQuery()
 			.Include(p => p.PlayerMods)
-			.Include(p => p.PlayerTitles)
 			.FirstOrDefault(p => p.Id == id);
 		if (player == null)
 			return NotFound();
@@ -243,7 +228,6 @@ public class PlayersController : ControllerBase
 			HideDonations = player.HideDonations,
 			HidePastUsernames = player.HidePastUsernames,
 			ModIds = player.PlayerMods.ConvertAll(pam => pam.ModId),
-			TitleIds = player.PlayerTitles.ConvertAll(pt => pt.TitleId),
 			BanDescription = player.BanDescription,
 			BanResponsibleId = player.BanResponsibleId,
 			BanType = player.BanType,
@@ -268,7 +252,6 @@ public class PlayersController : ControllerBase
 		player.IsBannedFromDdcl = editPlayer.IsBannedFromDdcl;
 
 		UpdatePlayerMods(editPlayer.ModIds ?? new(), player.Id);
-		UpdatePlayerTitles(editPlayer.TitleIds ?? new(), player.Id);
 		_dbContext.SaveChanges();
 
 		await _auditLogger.LogEdit(logDto, editPlayer, User, player.Id);
@@ -283,9 +266,7 @@ public class PlayersController : ControllerBase
 	[Authorize(Roles = Roles.Players)]
 	public async Task<ActionResult> DeletePlayerById(int id)
 	{
-		PlayerEntity? player = _dbContext.Players
-			.Include(p => p.PlayerTitles)
-			.FirstOrDefault(p => p.Id == id);
+		PlayerEntity? player = _dbContext.Players.FirstOrDefault(p => p.Id == id);
 		if (player == null)
 			return NotFound();
 
@@ -331,17 +312,5 @@ public class PlayersController : ControllerBase
 
 		foreach (PlayerModEntity entityToRemove in _dbContext.PlayerMods.Where(pam => pam.PlayerId == playerId && !modIds.Contains(pam.ModId)))
 			_dbContext.PlayerMods.Remove(entityToRemove);
-	}
-
-	private void UpdatePlayerTitles(List<int> titleIds, int playerId)
-	{
-		foreach (PlayerTitleEntity newEntity in titleIds.ConvertAll(ti => new PlayerTitleEntity { TitleId = ti, PlayerId = playerId }))
-		{
-			if (!_dbContext.PlayerTitles.Any(pt => pt.TitleId == newEntity.TitleId && pt.PlayerId == newEntity.PlayerId))
-				_dbContext.PlayerTitles.Add(newEntity);
-		}
-
-		foreach (PlayerTitleEntity entityToRemove in _dbContext.PlayerTitles.Where(pam => pam.PlayerId == playerId && !titleIds.Contains(pam.TitleId)))
-			_dbContext.PlayerTitles.Remove(entityToRemove);
 	}
 }

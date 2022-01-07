@@ -43,7 +43,6 @@ module.exports = {
 				'admin-mods': createMinmaxGrid([1, 4, 1, 2, 5, 5, 3, 5, 1, 1]),
 				'admin-players': createMinmaxGrid([1, 4, 1, 1, 1, 1, 1, 1, 1, 1, 1, 3, 2, 1, 1, 1, 1, 1, 1]),
 				'admin-spawnsets': createMinmaxGrid([1, 1, 4, 2, 8, 2, 1, 1, 1]),
-				'admin-titles': createMinmaxGrid([1, 8, 1, 1]),
 				'admin-users': createMinmaxGrid([3, 2, 1, 1, 1, 1, 1, 1, 1]),
 
 				// Overviews

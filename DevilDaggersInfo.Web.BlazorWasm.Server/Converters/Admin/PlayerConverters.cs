@@ -45,6 +45,5 @@ public static class PlayerConverters
 		HideDonations = player.HideDonations,
 		HidePastUsernames = player.HidePastUsernames,
 		ModIds = player.PlayerMods.ConvertAll(pam => pam.ModId),
-		TitleIds = player.PlayerTitles.ConvertAll(pt => pt.TitleId),
 	};
 }

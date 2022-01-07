@@ -68,15 +68,7 @@ public class PlayersController : ControllerBase
 
 		bool isPublicDonator = !player.HideDonations && _dbContext.Donations.Any(d => d.PlayerId == id && !d.IsRefunded && d.ConvertedEuroCentsReceived > 0);
 
-		List<string> playerTitles = _dbContext.PlayerTitles
-			.AsNoTracking()
-			.Include(pt => pt.Title)
-			.Select(pt => new { TitleName = pt.Title.Name, pt.PlayerId })
-			.Where(pt => pt.PlayerId == player.Id)
-			.Select(pt => pt.TitleName)
-			.ToList();
-
-		return player.ToGetPlayer(isPublicDonator, playerTitles);
+		return player.ToGetPlayer(isPublicDonator);
 	}
 
 	[HttpGet("{id}/flag")]

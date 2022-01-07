@@ -40,6 +40,4 @@ public class EditPlayer
 	public bool HidePastUsernames { get; set; }
 
 	public List<int>? ModIds { get; set; }
-
-	public List<int>? TitleIds { get; set; }
 }
