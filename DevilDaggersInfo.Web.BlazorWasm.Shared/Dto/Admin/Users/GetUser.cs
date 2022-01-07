@@ -10,8 +10,6 @@ public class GetUser : IGetDto
 
 	public bool IsCustomLeaderboardsMaintainer { get; init; }
 
-	public bool IsDonationsMaintainer { get; init; }
-
 	public bool IsModsMaintainer { get; init; }
 
 	public bool IsPlayersMaintainer { get; init; }

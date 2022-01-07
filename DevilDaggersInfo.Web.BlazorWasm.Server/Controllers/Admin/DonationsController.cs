@@ -8,7 +8,7 @@ namespace DevilDaggersInfo.Web.BlazorWasm.Server.Controllers.Admin;
 
 [Route("api/admin/donations")]
 [ApiController]
-[Authorize(Roles = Roles.Donations)]
+[Authorize(Roles = Roles.Admin)]
 public class DonationsController : ControllerBase
 {
 	private readonly ApplicationDbContext _dbContext;

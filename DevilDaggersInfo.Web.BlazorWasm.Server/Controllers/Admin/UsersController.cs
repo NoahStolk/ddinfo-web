@@ -34,7 +34,6 @@ public class UsersController : ControllerBase
 			Name = u.Name,
 			IsAdmin = IsInRole(u, Roles.Admin),
 			IsCustomLeaderboardsMaintainer = IsInRole(u, Roles.CustomLeaderboards),
-			IsDonationsMaintainer = IsInRole(u, Roles.Donations),
 			IsModsMaintainer = IsInRole(u, Roles.Mods),
 			IsPlayersMaintainer = IsInRole(u, Roles.Players),
 			IsSpawnsetsMaintainer = IsInRole(u, Roles.Spawnsets),

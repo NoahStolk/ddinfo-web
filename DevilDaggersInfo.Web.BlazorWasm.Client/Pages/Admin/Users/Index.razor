@@ -25,7 +25,6 @@ else
 		<div class="overflow-x-hidden">Name</div>
 		<div class="overflow-x-hidden">Admin</div>
 		<div class="overflow-x-hidden">Custom LBs</div>
-		<div class="overflow-x-hidden">Donations</div>
 		<div class="overflow-x-hidden">Mods</div>
 		<div class="overflow-x-hidden">Players</div>
 		<div class="overflow-x-hidden">Spawnsets</div>
@@ -41,7 +40,6 @@ else
 					<div class="overflow-x-hidden">@user.Name</div>
 					<div class="overflow-x-hidden"><button @onclick="async () => await ToggleRole(user.Id, Roles.Admin)">@(user.IsAdmin ? "Revoke" : "Assign")</button></div>
 					<div class="overflow-x-hidden"><button @onclick="async () => await ToggleRole(user.Id, Roles.CustomLeaderboards)">@(user.IsCustomLeaderboardsMaintainer ? "Revoke" : "Assign")</button></div>
-					<div class="overflow-x-hidden"><button @onclick="async () => await ToggleRole(user.Id, Roles.Donations)">@(user.IsDonationsMaintainer ? "Revoke" : "Assign")</button></div>
 					<div class="overflow-x-hidden"><button @onclick="async () => await ToggleRole(user.Id, Roles.Mods)">@(user.IsModsMaintainer ? "Revoke" : "Assign")</button></div>
 					<div class="overflow-x-hidden"><button @onclick="async () => await ToggleRole(user.Id, Roles.Players)">@(user.IsPlayersMaintainer ? "Revoke" : "Assign")</button></div>
 					<div class="overflow-x-hidden"><button @onclick="async () => await ToggleRole(user.Id, Roles.Spawnsets)">@(user.IsSpawnsetsMaintainer ? "Revoke" : "Assign")</button></div>
