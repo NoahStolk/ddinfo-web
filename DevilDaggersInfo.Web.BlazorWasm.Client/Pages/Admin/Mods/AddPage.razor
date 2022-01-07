@@ -10,7 +10,7 @@
 	<AdminInput Label="@nameof(AddMod.Name)"><InputText class="w-64 pl-2 bg-gray-1 text-color-text" @bind-Value="@_addMod.Name" /></AdminInput>
 	<AdminInput Label="@nameof(AddMod.PlayerIds)"><MultiSearchDropdown Values="@_playerNames" @bind-Value="@_addMod.PlayerIds" /></AdminInput>
 	<AdminInput Label="@nameof(AddMod.TrailerUrl)"><InputText class="w-64 pl-2 bg-gray-1 text-color-text" @bind-Value="_addMod.TrailerUrl" /></AdminInput>
-	<AdminInput Label="@nameof(AddMod.HtmlDescription)"><InputText class="w-64 pl-2 bg-gray-1 text-color-text" @bind-Value="@_addMod.HtmlDescription" /></AdminInput>
+	<AdminInput Label="@nameof(AddMod.HtmlDescription)"><InputTextArea class="w-64 h-64 pl-2 bg-gray-1 text-color-text" @bind-Value="@_addMod.HtmlDescription" /></AdminInput>
 	<AdminInput Label="@nameof(AddMod.ModTypes)"><MultiSearchDropdown Values="@ModTypes" @bind-Value="@_addMod.ModTypes" /></AdminInput>
 	<AdminInput Label="@nameof(AddMod.Url)"><InputText class="w-64 pl-2 bg-gray-1 text-color-text" @bind-Value="@_addMod.Url" /></AdminInput>
 	<AdminInput Label="@nameof(AddMod.IsHidden)"><InputCheckbox @bind-Value="@_addMod.IsHidden" /></AdminInput>
