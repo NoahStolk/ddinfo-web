@@ -113,36 +113,36 @@ public class CustomEntriesController : ControllerBase
 			if (!customEntriesByCategory.Any())
 				continue;
 
-			int leviathan = 0;
-			int devil = 0;
-			int golden = 0;
-			int silver = 0;
-			int bronze = 0;
-			int def = 0;
+			int leviathanDaggers = 0;
+			int devilDaggers = 0;
+			int goldenDaggers = 0;
+			int silverDaggers = 0;
+			int bronzeDaggers = 0;
+			int defaultDaggers = 0;
 			int played = 0;
 			foreach (var customEntry in customEntriesByCategory)
 			{
 				played++;
 				switch (CustomLeaderboardUtils.GetDaggerFromTime(category, customEntry.Time, customEntry.TimeLeviathan, customEntry.TimeDevil, customEntry.TimeGolden, customEntry.TimeSilver, customEntry.TimeBronze))
 				{
-					case CustomLeaderboardDagger.Leviathan: leviathan++; break;
-					case CustomLeaderboardDagger.Devil: devil++; break;
-					case CustomLeaderboardDagger.Golden: golden++; break;
-					case CustomLeaderboardDagger.Silver: silver++; break;
-					case CustomLeaderboardDagger.Bronze: bronze++; break;
-					default: def++; break;
+					case CustomLeaderboardDagger.Leviathan: leviathanDaggers++; break;
+					case CustomLeaderboardDagger.Devil: devilDaggers++; break;
+					case CustomLeaderboardDagger.Golden: goldenDaggers++; break;
+					case CustomLeaderboardDagger.Silver: silverDaggers++; break;
+					case CustomLeaderboardDagger.Bronze: bronzeDaggers++; break;
+					default: defaultDaggers++; break;
 				}
 			}
 
 			stats.Add(new()
 			{
 				CustomLeaderboardCategory = category,
-				LeviathanDaggerCount = leviathan,
-				DevilDaggerCount = devil,
-				GoldenDaggerCount = golden,
-				SilverDaggerCount = silver,
-				BronzeDaggerCount = bronze,
-				DefaultDaggerCount = def,
+				LeviathanDaggerCount = leviathanDaggers,
+				DevilDaggerCount = devilDaggers,
+				GoldenDaggerCount = goldenDaggers,
+				SilverDaggerCount = silverDaggers,
+				BronzeDaggerCount = bronzeDaggers,
+				DefaultDaggerCount = defaultDaggers,
 				LeaderboardsPlayedCount = played,
 			});
 		}
@@ -164,7 +164,7 @@ public class CustomEntriesController : ControllerBase
 			ex.Data[nameof(uploadRequest.ClientVersion)] = uploadRequest.ClientVersion;
 			ex.Data[nameof(uploadRequest.OperatingSystem)] = uploadRequest.OperatingSystem;
 			ex.Data[nameof(uploadRequest.BuildMode)] = uploadRequest.BuildMode;
-			_logger.LogError(ex, "Upload failed for user `{playerName}` (`{playerId}`) for `{spawnset}`.", uploadRequest.PlayerName, uploadRequest.PlayerId, GetSpawnsetHashOrName(uploadRequest.SurvivalHashMd5, null));
+			_logger.LogError(ex, "Upload failed for user `{playerName}` (`{playerId}`) for `{spawnset}`.", uploadRequest.PlayerName, uploadRequest.PlayerId, uploadRequest.SurvivalHashMd5.ByteArrayToHexString());
 			throw;
 		}
 	}
