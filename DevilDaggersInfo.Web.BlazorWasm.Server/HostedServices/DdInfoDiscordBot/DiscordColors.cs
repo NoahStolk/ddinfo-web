@@ -11,5 +11,5 @@ public static class DiscordColors
 	public static DiscordColor Devil { get; } = ToDiscordColor(DaggersV3_2.Devil.Color);
 	public static DiscordColor Leviathan { get; } = ToDiscordColor(DaggersV3_2.Leviathan.Color);
 
-	private static DiscordColor ToDiscordColor(Color color) => new(color.R, color.B, color.G);
+	private static DiscordColor ToDiscordColor(Color color) => new(color.R, color.G, color.B);
 }
