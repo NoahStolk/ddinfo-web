@@ -1,6 +1,6 @@
 using DSharpPlus.Entities;
 
-namespace DevilDaggersInfo.Web.BlazorWasm.Server.Services.Singleton;
+namespace DevilDaggersInfo.Web.BlazorWasm.Server.Services;
 
 public class BackgroundServiceMonitor
 {

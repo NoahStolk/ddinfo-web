@@ -3,7 +3,7 @@ global using DevilDaggersInfo.Test.Web.BlazorWasm.Server.Data;
 global using DevilDaggersInfo.Test.Web.BlazorWasm.Server.Extensions;
 global using DevilDaggersInfo.Web.BlazorWasm.Server.Entities;
 global using DevilDaggersInfo.Web.BlazorWasm.Server.Extensions;
-global using DevilDaggersInfo.Web.BlazorWasm.Server.Services.Singleton;
+global using DevilDaggersInfo.Web.BlazorWasm.Server.Services;
 global using DevilDaggersInfo.Web.BlazorWasm.Server.Utils;
 global using DevilDaggersInfo.Web.BlazorWasm.Shared.Enums;
 global using JetBrains.Annotations;

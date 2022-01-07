@@ -1,4 +1,4 @@
-namespace DevilDaggersInfo.Web.BlazorWasm.Server.Services.Scoped;
+namespace DevilDaggersInfo.Web.BlazorWasm.Server.Services;
 
 public interface IUserService
 {

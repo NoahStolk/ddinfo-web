@@ -3,7 +3,7 @@ using DevilDaggersInfo.Web.BlazorWasm.Server.Caches.ModArchives;
 using DevilDaggersInfo.Web.BlazorWasm.Server.InternalModels;
 using DevilDaggersInfo.Web.BlazorWasm.Shared.Utils;
 
-namespace DevilDaggersInfo.Web.BlazorWasm.Server.Services.Transient;
+namespace DevilDaggersInfo.Web.BlazorWasm.Server.Services;
 
 public class ModArchiveProcessor
 {

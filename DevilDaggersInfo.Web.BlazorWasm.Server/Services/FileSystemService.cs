@@ -1,4 +1,4 @@
-namespace DevilDaggersInfo.Web.BlazorWasm.Server.Services.Singleton;
+namespace DevilDaggersInfo.Web.BlazorWasm.Server.Services;
 
 public class FileSystemService : IFileSystemService
 {
