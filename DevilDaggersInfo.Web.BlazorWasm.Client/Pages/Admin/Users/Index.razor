@@ -38,14 +38,21 @@ else
 				<div class="grid gap-2 grid-cols-admin-users @(j++ % 2 == 0 ? "bg-gray-1" : string.Empty)">
 					<div class="overflow-x-hidden">@user.Id</div>
 					<div class="overflow-x-hidden">@user.Name</div>
-					<div class="overflow-x-hidden"><button @onclick="async () => await ToggleRole(user.Id, Roles.Admin)">@(user.IsAdmin ? "Revoke" : "Assign")</button></div>
-					<div class="overflow-x-hidden"><button @onclick="async () => await ToggleRole(user.Id, Roles.CustomLeaderboards)">@(user.IsCustomLeaderboardsMaintainer ? "Revoke" : "Assign")</button></div>
-					<div class="overflow-x-hidden"><button @onclick="async () => await ToggleRole(user.Id, Roles.Mods)">@(user.IsModsMaintainer ? "Revoke" : "Assign")</button></div>
-					<div class="overflow-x-hidden"><button @onclick="async () => await ToggleRole(user.Id, Roles.Players)">@(user.IsPlayersMaintainer ? "Revoke" : "Assign")</button></div>
-					<div class="overflow-x-hidden"><button @onclick="async () => await ToggleRole(user.Id, Roles.Spawnsets)">@(user.IsSpawnsetsMaintainer ? "Revoke" : "Assign")</button></div>
+					<div class="overflow-x-hidden"><button class="@GetButtonClass(user.IsAdmin)" @onclick="async () => await ToggleRole(user.Id, Roles.Admin)">@GetButtonText(user.IsAdmin)</button></div>
+					<div class="overflow-x-hidden"><button class="@GetButtonClass(user.IsCustomLeaderboardsMaintainer)" @onclick="async () => await ToggleRole(user.Id, Roles.CustomLeaderboards)">@GetButtonText(user.IsCustomLeaderboardsMaintainer)</button></div>
+					<div class="overflow-x-hidden"><button class="@GetButtonClass(user.IsModsMaintainer)" @onclick="async () => await ToggleRole(user.Id, Roles.Mods)">@GetButtonText(user.IsModsMaintainer)</button></div>
+					<div class="overflow-x-hidden"><button class="@GetButtonClass(user.IsPlayersMaintainer)" @onclick="async () => await ToggleRole(user.Id, Roles.Players)">@GetButtonText(user.IsPlayersMaintainer)</button></div>
+					<div class="overflow-x-hidden"><button class="@GetButtonClass(user.IsSpawnsetsMaintainer)" @onclick="async () => await ToggleRole(user.Id, Roles.Spawnsets)">@GetButtonText(user.IsSpawnsetsMaintainer)</button></div>
 					<div><a class="link" href="" @onclick="() => _deletion?.Set(user.Id)" @onclick:preventDefault>Delete</a></div>
 				</div>
 			}
 		}
 	</div>
+}
+
+@code
+{
+	public string GetButtonText(bool isAssigned) => isAssigned ? "Revoke" : "Assign";
+
+	public string GetButtonClass(bool isAssigned) => isAssigned ? "btn w-14 bg-dark-red hover:bg-red" : "btn w-14 bg-dark-green hover:bg-green";
 }
