@@ -150,7 +150,7 @@ public partial class LineChart
 
 		void RenderDataLine(LineDataSet dataSet)
 		{
-			if (dataSet.Data.Count < 2)
+			if (dataSet.Data.Count < 1)
 				return;
 
 			List<LinePosition> linePositions = new();
