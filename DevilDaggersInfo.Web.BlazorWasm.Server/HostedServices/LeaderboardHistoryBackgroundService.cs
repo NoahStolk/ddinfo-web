@@ -47,8 +47,9 @@ public class LeaderboardHistoryBackgroundService : AbstractBackgroundService
 		LeaderboardHistory jsonModel = ConvertToJsonModel(leaderboard!, entries);
 
 		string fileName = $"{DateTime.UtcNow:yyyyMMddHHmm}.json";
-		File.WriteAllText(Path.Combine(_fileSystemService.GetPath(DataSubDirectory.LeaderboardHistory), fileName), JsonConvert.SerializeObject(jsonModel));
-		Logger.LogInformation("Task execution for `{service}` succeeded. `{fileName}` with {entries} entries was created.", nameof(LeaderboardHistoryBackgroundService), fileName, entries.Count);
+		string fullPath = Path.Combine(_fileSystemService.GetPath(DataSubDirectory.LeaderboardHistory), fileName);
+		File.WriteAllText(fullPath, JsonConvert.SerializeObject(jsonModel));
+		Logger.LogInformation("Task execution for `{service}` succeeded. `{fileName}` with {entries} entries was created.", nameof(LeaderboardHistoryBackgroundService), fullPath, entries.Count);
 	}
 
 	private bool HistoryFileExistsForDate(DateTime dateTime)
