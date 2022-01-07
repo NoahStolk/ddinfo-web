@@ -54,22 +54,14 @@ public class CustomEntryProcessor
 
 		string actual = DecryptValidation(uploadRequest.Validation);
 		if (actual != expected)
-		{
-			string errorMessage = $"Invalid submission for {uploadRequest.Validation}.\nExpected: {expected}\nActual:   {actual}";
-			await TryLog(uploadRequest, null, errorMessage, "rotating_light");
-			return new BadRequestObjectResult(new ProblemDetails { Title = errorMessage });
-		}
+			throw await LogAndCreateValidationException(uploadRequest, $"Invalid submission for {uploadRequest.Validation}.\nExpected: {expected}\nActual:   {actual}", null, "rotating_light");
 
 		// Add the player or update the username. Also check for banned user immediately.
 		PlayerEntity? player = _dbContext.Players.FirstOrDefault(p => p.Id == uploadRequest.PlayerId);
 		if (player != null)
 		{
 			if (player.IsBannedFromDdcl)
-			{
-				const string errorMessage = "Banned.";
-				await TryLog(uploadRequest, null, errorMessage, "rotating_light");
-				return new BadRequestObjectResult(new ProblemDetails { Title = errorMessage });
-			}
+				throw await LogAndCreateValidationException(uploadRequest, "Banned.", null, "rotating_light");
 
 			player.PlayerName = uploadRequest.PlayerName;
 		}
@@ -91,46 +83,26 @@ public class CustomEntryProcessor
 
 		Version clientVersionParsed = Version.Parse(uploadRequest.ClientVersion);
 		if (clientVersionParsed < Version.Parse(tool.RequiredVersionNumber))
-		{
-			string errorMessage = $"You are using an unsupported and outdated version of {clientName}. Please update the program.";
-			await TryLog(uploadRequest, null, errorMessage);
-			return new BadRequestObjectResult(new ProblemDetails { Title = errorMessage });
-		}
+			throw await LogAndCreateValidationException(uploadRequest, $"You are using an unsupported and outdated version of {clientName}. Please update the program.");
 
 		// Reject local replays as they can easily be manipulated.
 		if (uploadRequest.Status == 8)
-		{
-			const string errorMessage = "Local replays cannot be validated.";
-			await TryLog(uploadRequest, null, errorMessage, "rotating_light");
-			return new BadRequestObjectResult(new ProblemDetails { Title = errorMessage });
-		}
+			throw await LogAndCreateValidationException(uploadRequest, "Local replays cannot be validated.");
 
 		// Check for existing spawnset.
 		SpawnsetHashCacheData? spawnsetHashData = _spawnsetHashCache.GetSpawnset(uploadRequest.SurvivalHashMd5);
 		string? spawnsetName = spawnsetHashData?.Name;
 		if (string.IsNullOrEmpty(spawnsetName))
-		{
-			const string errorMessage = "This spawnset doesn't exist on DevilDaggers.info.";
-			await TryLog(uploadRequest, spawnsetName, errorMessage);
-			return new BadRequestObjectResult(new ProblemDetails { Title = errorMessage });
-		}
+			throw await LogAndCreateValidationException(uploadRequest, "This spawnset doesn't exist on DevilDaggers.info.");
 
 		// Check for existing leaderboard.
 		CustomLeaderboardEntity? customLeaderboard = _dbContext.CustomLeaderboards.Include(cl => cl.Spawnset).ThenInclude(sf => sf.Player).FirstOrDefault(cl => cl.Spawnset.Name == spawnsetName);
 		if (customLeaderboard == null)
-		{
-			const string errorMessage = "This spawnset exists on DevilDaggers.info, but doesn't have a leaderboard.";
-			await TryLog(uploadRequest, spawnsetName, errorMessage);
-			return new BadRequestObjectResult(new ProblemDetails { Title = errorMessage });
-		}
+			throw await LogAndCreateValidationException(uploadRequest, "This spawnset exists on DevilDaggers.info, but doesn't have a leaderboard.", spawnsetName);
 
 		// Temporary workaround until TimeAttack works in DDCL (if ever).
 		if (customLeaderboard.Category == CustomLeaderboardCategory.TimeAttack)
-		{
-			const string errorMessage = "TimeAttack leaderboards are not supported right now.";
-			await TryLog(uploadRequest, spawnsetName, errorMessage);
-			return new BadRequestObjectResult(new ProblemDetails { Title = errorMessage });
-		}
+			throw await LogAndCreateValidationException(uploadRequest, "TimeAttack leaderboards are not supported right now.", spawnsetName);
 
 		bool isAscending = customLeaderboard.Category.IsAscending();
 
@@ -226,11 +198,11 @@ public class CustomEntryProcessor
 		const int timeThreshold = 1000; // 0.1 seconds (or 6 ticks).
 		const int gemThreshold = 2;
 		const int killThreshold = 5;
-		bool isHighscoreByUnderASecond = uploadRequest.Time > customEntry.Time && uploadRequest.Time < customEntry.Time + timeThreshold;
+		bool isTinyHighscore = uploadRequest.Time > customEntry.Time && uploadRequest.Time < customEntry.Time + timeThreshold;
 		bool gemsAlmostTheSame = uploadRequest.GemsCollected >= customEntry.GemsCollected - gemThreshold && uploadRequest.GemsCollected <= customEntry.GemsCollected + gemThreshold;
 		bool killsAlmostTheSame = uploadRequest.EnemiesKilled >= customEntry.EnemiesKilled - killThreshold && uploadRequest.EnemiesKilled <= customEntry.EnemiesKilled + killThreshold;
 		bool deathTypeTheSame = uploadRequest.DeathType == customEntry.DeathType;
-		if (uploadRequest.IsReplay && !isAscending && isHighscoreByUnderASecond && gemsAlmostTheSame && killsAlmostTheSame && deathTypeTheSame)
+		if (uploadRequest.IsReplay && !isAscending && isTinyHighscore && gemsAlmostTheSame && killsAlmostTheSame && deathTypeTheSame)
 			uploadRequest.Time = customEntry.Time;
 
 		// User is already on the leaderboard, but did not get a better score.
@@ -366,6 +338,12 @@ public class CustomEntryProcessor
 			LevelUpTime4 = uploadRequest.LevelUpTime4,
 			LevelUpTime4Diff = levelUpTime4Diff,
 		};
+	}
+
+	private static async Task<CustomEntryValidationException> LogAndCreateValidationException(AddUploadRequest uploadRequest, string errorMessage, string? spawnsetName = null, string? errorEmoteNameOverride = null)
+	{
+		await TryLog(uploadRequest, spawnsetName, errorMessage, errorEmoteNameOverride);
+		return new CustomEntryValidationException(errorMessage);
 	}
 
 	private async Task WriteReplayFile(int customEntryId, byte[] replayData)

@@ -149,6 +149,10 @@ public class CustomEntriesController : ControllerBase
 		{
 			return await _customEntryProcessor.ProcessUploadRequest(uploadRequest);
 		}
+		catch (CustomEntryValidationException ex)
+		{
+			return new BadRequestObjectResult(new ProblemDetails { Title = ex.Message });
+		}
 		catch (Exception ex)
 		{
 			ex.Data[nameof(uploadRequest.ClientVersion)] = uploadRequest.ClientVersion;
