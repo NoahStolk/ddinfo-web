@@ -52,7 +52,7 @@ public class ModArchiveProcessor
 		fileSystemInformation.Add(new($"File {_fileSystemService.FormatPath(zipFilePath)} (`{FileSizeUtils.Format(zipBytes.Length)}`) with {(binaries.Count == 1 ? "binary" : "binaries")} {string.Join(", ", binaries.Select(kvp => $"`{BinaryFileNameUtils.SanitizeModBinaryFileName(kvp.Key, modName)}`"))} was added.", FileSystemInformationType.Add));
 	}
 
-	public async Task TransformBinariesInModArchiveAsync(string originalModName, string newModName, List<string> binariesToDelete, Dictionary<string, byte[]> newBinaries, List<FileSystemInformation> fileSystemInformation)
+	public async Task<bool> TransformBinariesInModArchiveAsync(string originalModName, string newModName, List<string> binariesToDelete, Dictionary<string, byte[]> newBinaries, List<FileSystemInformation> fileSystemInformation)
 	{
 		bool shouldRebuildArchive = binariesToDelete.Count > 0 || newBinaries.Count > 0;
 		if (!shouldRebuildArchive)
@@ -61,7 +61,7 @@ public class ModArchiveProcessor
 			if (originalModName != newModName)
 				RenameModArchiveAndCacheFiles(originalModName, newModName, fileSystemInformation);
 
-			return;
+			return false;
 		}
 
 		ValidateSpaceAvailable();
@@ -94,6 +94,8 @@ public class ModArchiveProcessor
 
 		Dictionary<string, byte[]> combinedBinaries = new List<Dictionary<string, byte[]>>() { keptBinaries, newBinaries }.SelectMany(dict => dict).ToDictionary(kvp => kvp.Key, kvp => kvp.Value);
 		await ProcessModBinaryUploadAsync(newModName, combinedBinaries, fileSystemInformation);
+
+		return true;
 	}
 
 	private void RenameModArchiveAndCacheFiles(string originalModName, string newModName, List<FileSystemInformation> fileSystemInformation)

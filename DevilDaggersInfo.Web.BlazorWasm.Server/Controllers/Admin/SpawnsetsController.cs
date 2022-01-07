@@ -193,7 +193,7 @@ public class SpawnsetsController : ControllerBase
 		if (spawnset == null)
 			return NotFound();
 
-		if (_dbContext.CustomLeaderboards.Any(ce => ce.SpawnsetId == id))
+		if (_dbContext.CustomLeaderboards.Any(cl => cl.SpawnsetId == id))
 			return BadRequest("Spawnset with custom leaderboard cannot be deleted.");
 
 		string path = Path.Combine(_fileSystemService.GetPath(DataSubDirectory.Spawnsets), spawnset.Name);

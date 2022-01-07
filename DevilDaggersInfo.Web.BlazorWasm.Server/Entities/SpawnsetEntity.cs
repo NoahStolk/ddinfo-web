@@ -19,7 +19,7 @@ public class SpawnsetEntity
 	[StringLength(2048)]
 	public string? HtmlDescription { get; set; }
 
-	public DateTime LastUpdated { get; set; }
+	public DateTime LastUpdated { get; init; }
 
 	public bool IsPractice { get; set; }
 }

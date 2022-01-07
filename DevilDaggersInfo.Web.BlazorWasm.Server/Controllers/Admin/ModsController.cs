@@ -184,7 +184,9 @@ public class ModsController : ControllerBase
 
 		try
 		{
-			await _modArchiveProcessor.TransformBinariesInModArchiveAsync(mod.Name, editMod.Name, editMod.BinariesToDelete, editMod.Binaries, fsi);
+			bool isUpdated = await _modArchiveProcessor.TransformBinariesInModArchiveAsync(mod.Name, editMod.Name, editMod.BinariesToDelete, editMod.Binaries, fsi);
+			if (isUpdated)
+				mod.LastUpdated = DateTime.UtcNow;
 		}
 		catch (InvalidModArchiveException ex)
 		{
