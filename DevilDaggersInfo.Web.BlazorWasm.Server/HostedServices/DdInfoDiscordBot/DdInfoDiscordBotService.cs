@@ -35,16 +35,11 @@ public class DdInfoDiscordBotService : IHostedService
 
 			if (e.Channel.Id == DevilDaggersInfoServerConstants.Channels[Channel.MonitoringTest].ChannelId && msg.StartsWith("."))
 			{
-				foreach (KeyValuePair<string, Action<MessageCreateEventArgs>> action in Commands.Actions)
-				{
-					if (msg.StartsWith(action.Key))
-					{
-						action.Value.Invoke(e);
-						return;
-					}
-				}
-
-				await e.Channel.SendMessageAsyncSafe($"Command '{msg}' does not exist.");
+				Action<MessageCreateEventArgs>? action = Commands.Actions.FirstOrDefault(a => msg.StartsWith(a.Key)).Value;
+				if (action == null)
+					await e.Channel.SendMessageAsyncSafe($"Command '{msg}' does not exist.");
+				else
+					action.Invoke(e);
 			}
 		};
 
