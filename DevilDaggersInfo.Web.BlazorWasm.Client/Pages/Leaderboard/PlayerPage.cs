@@ -61,6 +61,9 @@ public partial class PlayerPage
 	private LineChartDataOptions? _progressionOptions;
 	private LineChartDataOptions? _activityOptions;
 
+	private int _pageRankStart;
+	private int _pageRankEnd;
+
 	[Parameter, EditorRequired] public int Id { get; set; }
 
 	[Inject]
@@ -85,6 +88,9 @@ public partial class PlayerPage
 	protected override async Task OnInitializedAsync()
 	{
 		GetEntry = await Http.GetEntryById(Id);
+
+		_pageRankStart = (GetEntry.Rank - 1) / 100 * 100 + 1;
+		_pageRankEnd = _pageRankStart + 99;
 
 		try
 		{
