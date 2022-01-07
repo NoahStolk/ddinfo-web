@@ -28,8 +28,9 @@ public class LeaderboardHistoryBackgroundService : AbstractBackgroundService
 			LeaderboardResponse? part = await LeaderboardClient.Instance.GetLeaderboard(100 * i + 1);
 			if (part == null)
 			{
-				// Servers down, wait a few seconds.
-				await Task.Delay(5000, stoppingToken);
+				Logger.LogWarning("Couldn't get leaderboard. Waiting 5 seconds...");
+
+				await Task.Delay(TimeSpan.FromSeconds(5), stoppingToken);
 				continue;
 			}
 
