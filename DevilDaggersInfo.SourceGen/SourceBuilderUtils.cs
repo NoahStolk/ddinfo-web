@@ -36,8 +36,8 @@ public static class SourceBuilderUtils
 	public static string WrapInsideWarningSuppressionDirectives(string source)
 	{
 		string warningSuppressionCodes = string.Join(", ", _suppressedErrorCodes);
-		string warningsDisable = $"#pragma warning disable {warningSuppressionCodes}\n";
-		string warningsRestore = $"\n#pragma warning restore {warningSuppressionCodes}";
+		string warningsDisable = $"#pragma warning disable {warningSuppressionCodes}\r\n";
+		string warningsRestore = $"\r\n#pragma warning restore {warningSuppressionCodes}";
 		return warningsDisable + source + warningsRestore;
 	}
 }
