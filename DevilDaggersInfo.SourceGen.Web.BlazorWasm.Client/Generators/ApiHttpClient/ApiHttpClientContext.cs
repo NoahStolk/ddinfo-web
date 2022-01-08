@@ -12,12 +12,6 @@ internal class ApiHttpClientContext
 	public IReadOnlyList<string> Usings => _usings;
 	public IReadOnlyList<Endpoint> Endpoints => _endpoints;
 
-	public void Clear()
-	{
-		_usings.Clear();
-		_endpoints.Clear();
-	}
-
 	public void AddUsings(ClientType clientType, IncludedDirectory includedDirectory)
 	{
 		string usingPrefix = $"{Constants.SharedProjectName}.{includedDirectory}";

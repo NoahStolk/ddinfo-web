@@ -1,17 +1,13 @@
 using DevilDaggersInfo.SourceGen.Web.BlazorWasm.Client.Generators.ApiHttpClient.Endpoints;
 using DevilDaggersInfo.SourceGen.Web.BlazorWasm.Client.Generators.ApiHttpClient.Enums;
-using Microsoft.CodeAnalysis.Text;
-using System.Text;
 
 namespace DevilDaggersInfo.SourceGen.Web.BlazorWasm.Client.Generators.ApiHttpClient;
 
-[Generator]
-public class AdminApiHttpClientSourceGenerator : ISourceGenerator
+public static class AdminApiHttpClientSourceGenerator
 {
 	private const string _usings = $"%{nameof(_usings)}%";
 	private const string _endpointMethods = $"%{nameof(_endpointMethods)}%";
-	private const string _template = $@"#pragma warning disable CS1591
-{_usings}
+	private const string _template = $@"{_usings}
 using Blazored.LocalStorage;
 using DevilDaggersInfo.Web.BlazorWasm.Client.Utils;
 using System.Net.Http;
@@ -27,25 +23,20 @@ public partial class AdminApiHttpClient
 }}
 ";
 
-	private readonly ApiHttpClientContext _apiHttpClientContext = new();
-
-	public void Initialize(GeneratorInitializationContext context)
+	public static void Execute()
 	{
-		_apiHttpClientContext.Clear();
-		_apiHttpClientContext.AddUsings(ClientType.Admin, IncludedDirectory.Dto);
-		_apiHttpClientContext.AddUsings(ClientType.Admin, IncludedDirectory.Enums);
-		_apiHttpClientContext.AddEndpoints(ClientType.Admin);
-	}
+		ApiHttpClientContext apiHttpClientContext = new();
+		apiHttpClientContext.AddUsings(ClientType.Admin, IncludedDirectory.Dto);
+		apiHttpClientContext.AddUsings(ClientType.Admin, IncludedDirectory.Enums);
+		apiHttpClientContext.AddEndpoints(ClientType.Admin);
 
-	public void Execute(GeneratorExecutionContext context)
-	{
 		List<string> endpointMethods = new();
-		foreach (Endpoint endpoint in _apiHttpClientContext.Endpoints)
+		foreach (Endpoint endpoint in apiHttpClientContext.Endpoints)
 			endpointMethods.Add(endpoint.Build());
 
 		string code = _template
-			.Replace(_usings, string.Join(Environment.NewLine, _apiHttpClientContext.Usings.Select(s => s.ToUsingDirective())))
+			.Replace(_usings, string.Join(Environment.NewLine, apiHttpClientContext.Usings.Select(s => s.ToUsingDirective())))
 			.Replace(_endpointMethods, string.Join(Environment.NewLine, endpointMethods).Indent(1));
-		context.AddSource("AdminApiHttpClientGenerated", SourceText.From(SourceBuilderUtils.WrapInsideWarningSuppressionDirectives(code), Encoding.UTF8));
+		File.WriteAllText(Path.Combine(Constants.ClientProjectPath, "HttpClients", "AdminApiHttpClientGenerated.cs"), SourceBuilderUtils.WrapInsideWarningSuppressionDirectives(code));
 	}
 }

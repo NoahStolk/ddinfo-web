@@ -19,8 +19,6 @@
     <PackageReference Include="System.Net.Http.Json" />
   </ItemGroup>
   <ItemGroup>
-    <ProjectReference Include="..\DevilDaggersInfo.SourceGen\DevilDaggersInfo.SourceGen.csproj" OutputItemType="Analyzer" />
-    <ProjectReference Include="..\DevilDaggersInfo.SourceGen.Web.BlazorWasm.Client\DevilDaggersInfo.SourceGen.Web.BlazorWasm.Client.csproj" OutputItemType="Analyzer" ReferenceOutputAssembly="false" />
     <ProjectReference Include="..\DevilDaggersInfo.Web.BlazorWasm.Client.Core.CanvasChart\DevilDaggersInfo.Web.BlazorWasm.Client.Core.CanvasChart.csproj" />
     <ProjectReference Include="..\DevilDaggersInfo.Web.BlazorWasm.Shared\DevilDaggersInfo.Web.BlazorWasm.Shared.csproj" />
   </ItemGroup>
