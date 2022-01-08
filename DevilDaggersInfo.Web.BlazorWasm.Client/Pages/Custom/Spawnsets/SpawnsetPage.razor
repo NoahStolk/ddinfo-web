@@ -28,10 +28,10 @@ else
 	<div class="grid grid-cols-1 lg:grid-cols-spawnset-lg">
 		@*Additional <div> is necessary to make sticky work.*@
 		<div>
-			<div class="lg:sticky lg:top-0 lg:max-h-screen lg:overflow-y-auto">
+			<div class="lg:sticky lg:top-0 lg:max-h-screen lg:overflow-y-auto lg:pb-4">
 				<Heading Title="@($"Spawnset - {GetSpawnset.Name}")" />
 
-				<div class="bg-gray-1 max-w-sm px-1">
+				<div class="bg-gray-1 max-w-arena-table px-1">
 					<DataField Name="Author">@GetSpawnset.AuthorName</DataField>
 					<DataField Name="Last updated">@GetSpawnset.LastUpdated.ToString(FormatUtils.DateTimeFormat)</DataField>
 					<DataField Name="Practice">@(GetSpawnset.IsPractice ? "Yes" : "No")</DataField>
@@ -53,19 +53,19 @@ else
 				@if (!string.IsNullOrWhiteSpace(GetSpawnset.HtmlDescription))
 				{
 					<Heading Title="Description" Level="2" />
-					<div class="bg-gray-1 max-w-sm px-1">
+					<div class="bg-gray-1 max-w-arena-table px-1">
 						@((MarkupString)@GetSpawnset.HtmlDescription)
 					</div>
 				}
 
 				<Heading Title="Format" Level="2" />
-				<div class="bg-gray-1 max-w-sm px-1">
+				<div class="bg-gray-1 max-w-arena-table px-1">
 					<DataField Name="Game version">@SpawnsetBinary.GetGameVersionString()</DataField>
 					<DataField Name="Game mode">@SpawnsetBinary.GameMode</DataField>
 				</div>
 
 				<Heading Title="Arena" Level="2" />
-				<div class="bg-gray-1 max-w-sm px-1">
+				<div class="bg-gray-1 max-w-arena-table px-1">
 					<DataField Name="Start radius">@SpawnsetBinary.ShrinkStart</DataField>
 					<DataField Name="End radius">@SpawnsetBinary.ShrinkEnd</DataField>
 					<DataField Name="Shrinking rate">@SpawnsetBinary.ShrinkRate</DataField>
@@ -89,14 +89,14 @@ else
 				</table>
 
 				<Heading Title="Settings" Level="2" />
-				<div class="bg-gray-1 max-w-sm px-1">
+				<div class="bg-gray-1 max-w-arena-table px-1">
 					<DataField Name="Hand">Level @((byte)SpawnsetBinary.HandLevel)</DataField>
 					<DataField Name="Additional gems">@SpawnsetBinary.AdditionalGems</DataField>
 					<DataField Name="Timer Start">@SpawnsetBinary.TimerStart.ToString(FormatUtils.TimeFormat)</DataField>
 				</div>
 
 				<Heading Title="Effective Player Settings" Level="2" />
-				<div class="bg-gray-1 max-w-sm px-1">
+				<div class="bg-gray-1 max-w-arena-table px-1">
 					<DataField Name="Effective hand">Level @((byte)EffectivePlayerSettings.HandLevel)</DataField>
 					<DataField Name="@($"Effective {((int)EffectivePlayerSettings.HandLevel > 2 ? "homing" : "gems")}")">@EffectivePlayerSettings.GemsOrHoming</DataField>
 					@if (EffectivePlayerSettings.HandLevel != EffectivePlayerSettings.HandModel)
@@ -109,7 +109,7 @@ else
 
 		@*Additional <div> is necessary to make sticky work.*@
 		<div>
-			<div class="lg:pl-4 lg;pt-14">
+			<div class="lg:pl-4 lg:pt-1">
 				<Heading Title="Spawns" Level="2" />
 				<SpawnsetSpawns SpawnsView=SpawnsView />
 			</div>

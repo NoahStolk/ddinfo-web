@@ -63,7 +63,7 @@ module.exports = {
 				'mods-sm': createMinmaxGrid([1]),
 
 				// Spawnsets
-				'spawnset-lg': '24rem auto',
+				'spawnset-lg': '28rem auto',
 
 				// Leaderboards
 				'custom-leaderboard-2xl': '36px 32px minmax(64px, 100%) minmax(120px, 5%) minmax(40px, 5%) minmax(40px, 5%) minmax(40px, 5%) minmax(40px, 5%) minmax(40px, 5%) minmax(48px, 5%) minmax(120px, 5%) minmax(40px, 5%) minmax(40px, 5%) minmax(72px, 5%) minmax(72px, 5%) minmax(72px, 5%) minmax(144px, 5%)',
@@ -108,6 +108,9 @@ module.exports = {
 
 				'enemies-damage-stats-lg': createMinmaxGrid([5, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1]),
 				'enemies-damage-stats-lg-v1': createMinmaxGrid([5, 1, 1, 1, 1, 1, 1, 1, 1]),
+			},
+			maxWidth: {
+				'arena-table': '410px', // 8 * 51 + 2
 			},
 			maxHeight: {
 				'screen-half': '50vh',
