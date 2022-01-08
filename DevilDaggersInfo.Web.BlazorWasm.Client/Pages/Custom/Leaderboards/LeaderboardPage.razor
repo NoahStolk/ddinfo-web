@@ -39,7 +39,7 @@ else
 
 		<div class="grid grid-cols-2 text-lg">
 			<div class="px-1 py-3">
-				<a class="btn btn-download px-2 py-1" href="@($"/api/spawnsets/{GetCustomLeaderboard.SpawnsetName}/file")">Download spawnset</a>
+				<a class="btn btn-download px-2 py-1" href="@($"/api/spawnsets/{GetCustomLeaderboard.SpawnsetName}/file")" role="button" target="_top">Download spawnset</a>
 			</div>
 			<div class="px-1 py-3 text-right">
 				<a class="link" href="@($"/custom/spawnset/{GetCustomLeaderboard.SpawnsetId}")">View spawnset</a>
@@ -145,7 +145,7 @@ else
 							}
 							@if (ce.HasReplay)
 							{
-								<a href="@($"api/custom-entries/{ce.Id}/replay")">
+								<a href="@($"api/custom-entries/{ce.Id}/replay")" role="button" target="_top">
 									<Tooltip Text="Download replay"><img class="cursor-pointer inline-block mx-1 mb-1" src="/images/icons/default/eye2.png" /></Tooltip>
 								</a>
 							}

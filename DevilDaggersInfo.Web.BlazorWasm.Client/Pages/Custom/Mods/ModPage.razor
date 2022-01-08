@@ -36,7 +36,14 @@ else
 			{
 				<div class="grid grid-cols-2 text-lg">
 					<div class="px-1 py-3">
-						<a class="btn btn-download px-2 py-1" href="@(url)">Download mod</a>
+						@if (GetMod.IsHosted)
+						{
+							<a class="btn btn-download px-2 py-1" href="@(url)" role="button" target="_top">Download mod</a>
+						}
+						else
+						{
+							<a class="btn btn-download px-2 py-1" href="@(url)">Download mod</a>
+						}
 					</div>
 				</div>
 			}
