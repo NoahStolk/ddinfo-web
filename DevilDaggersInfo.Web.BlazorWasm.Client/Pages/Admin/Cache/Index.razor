@@ -1,0 +1,15 @@
+@page "/admin/cache"
+@inherits BaseAdminPage
+@using DevilDaggersInfo.Web.BlazorWasm.Client.Components.Admin
+@using DevilDaggersInfo.Web.BlazorWasm.Shared.Dto.Admin.CustomEntries
+@using DevilDaggersInfo.Web.BlazorWasm.Shared.Enums.Sortings.Admin
+
+<button @onclick="async () => await ClearCache()">Clear spawnset hash cache</button>
+
+@code
+{
+	public async Task ClearCache()
+	{
+		await Http.ClearCache("SpawnsetHash");
+	}
+}

@@ -54,6 +54,7 @@
 						<NavDropdown Text="Admin">
 							@if (_roles.Contains(Roles.Admin))
 							{
+								<NavItem Href="admin/cache" CssClass="text-lg" IconType="ellipses" Text="Cache" />
 								<NavItem Href="admin/custom-entries" CssClass="text-lg" IconType="ellipses" Text="Custom Entries" />
 								<NavItem Href="admin/donations" CssClass="text-lg" IconType="heart" Text="Donations" />
 								<NavItem Href="admin/users" CssClass="text-lg" IconType="person" Text="Users" />

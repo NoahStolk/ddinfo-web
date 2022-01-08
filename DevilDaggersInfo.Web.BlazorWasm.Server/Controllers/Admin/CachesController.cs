@@ -34,15 +34,17 @@ public class CachesController : ControllerBase
 
 	[HttpPost("clear")]
 	[ProducesResponseType(StatusCodes.Status200OK)]
-	public ActionResult ClearCache(CacheType cacheType)
+	[ProducesResponseType(StatusCodes.Status404NotFound)]
+	public ActionResult ClearCache([FromBody] string cacheType)
 	{
 		switch (cacheType)
 		{
-			case CacheType.LeaderboardStatistics: _leaderboardStatisticsCache.Initiate(); break;
-			case CacheType.LeaderboardHistory: _leaderboardHistoryCache.Clear(); break;
-			case CacheType.ModArchive: _modArchiveCache.Clear(); break;
-			case CacheType.SpawnsetSummary: _spawnsetSummaryCache.Clear(); break;
-			case CacheType.SpawnsetHash: _spawnsetHashCache.Clear(); break;
+			case "LeaderboardStatistics": _leaderboardStatisticsCache.Initiate(); break;
+			case "LeaderboardHistory": _leaderboardHistoryCache.Clear(); break;
+			case "ModArchive": _modArchiveCache.Clear(); break;
+			case "SpawnsetSummary": _spawnsetSummaryCache.Clear(); break;
+			case "SpawnsetHash": _spawnsetHashCache.Clear(); break;
+			default: return NotFound();
 		}
 
 		return Ok();
