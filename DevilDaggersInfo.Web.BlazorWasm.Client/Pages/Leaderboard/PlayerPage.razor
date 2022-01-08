@@ -11,7 +11,7 @@
 }
 else
 {
-	<Heading Title="@($"Player - {GetEntry.Username}")" />
+	<Heading Title="@($"Player - {GetEntry.Username}")" BreakAll="true" />
 
 	<a class="link" href="@($"/leaderboard?Rank={_pageRankStart}")">Back to leaderboard (@_pageRankStart - @_pageRankEnd)</a>
 	<Paragraph>@GetEntry.Username is currently rank @GetEntry.Rank.</Paragraph>

@@ -29,7 +29,7 @@ else
 		@*Additional <div> is necessary to make sticky work.*@
 		<div>
 			<div class="lg:sticky lg:top-0 lg:max-h-screen lg:overflow-y-auto lg:pb-4">
-				<Heading Title="@($"Spawnset - {GetSpawnset.Name}")" />
+				<Heading Title="@($"Spawnset - {GetSpawnset.Name}")" BreakAll="true" />
 
 				<div class="bg-gray-1 max-w-arena-table px-1">
 					<DataField Name="Author">@GetSpawnset.AuthorName</DataField>
