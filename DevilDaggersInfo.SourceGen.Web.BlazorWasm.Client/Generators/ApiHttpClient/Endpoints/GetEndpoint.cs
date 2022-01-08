@@ -52,12 +52,12 @@ internal class GetEndpoint : Endpoint
 				.Replace(_apiRoute, ApiRoute);
 		}
 
-		string queryParameters = string.Join($",{Environment.NewLine}", QueryParameters.ConvertAll(p => $"{{nameof({p.Name}), {p.Name}}}"));
+		string queryParameters = string.Join($",{Environment.NewLine}", QueryParameters.ConvertAll(p => $"{{ nameof({p.Name}), {p.Name} }}"));
 		return _endpointWithQueryTemplate
 			.Replace(_returnType, ReturnType)
 			.Replace(_methodName, MethodName)
 			.Replace(_methodParameters, methodParameters)
-			.Replace(_queryParameters, queryParameters.Indent(2))
+			.Replace(_queryParameters, queryParameters.IndentCode(2))
 			.Replace(_apiRoute, ApiRoute);
 	}
 

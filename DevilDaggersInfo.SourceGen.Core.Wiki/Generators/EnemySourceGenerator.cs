@@ -64,8 +64,8 @@ public static class {_className}
 
 		string source = _template
 			.Replace(_className, className)
-			.Replace(_enemyFields, string.Join(Environment.NewLine, fieldLines).Indent(1));
-		sourceProductionContext.AddSource(className, SourceText.From(SourceBuilderUtils.WrapInsideWarningSuppressionDirectives(source), Encoding.UTF8));
+			.Replace(_enemyFields, string.Join(Environment.NewLine, fieldLines).IndentCode(1));
+		sourceProductionContext.AddSource(className, SourceText.From(source.WrapCodeInsideWarningSuppressionDirectives().TrimCode(), Encoding.UTF8));
 	}
 
 	private static string ValueOrNull(float? value)

@@ -12,6 +12,8 @@ internal class ApiHttpClientContext
 	public IReadOnlyList<string> Usings => _usings;
 	public IReadOnlyList<Endpoint> Endpoints => _endpoints;
 
+	public void AddUsings(params string[] usings) => _usings.AddRange(usings);
+
 	public void AddUsings(ClientType clientType, IncludedDirectory includedDirectory)
 	{
 		string usingPrefix = $"{Constants.SharedProjectName}.{includedDirectory}";
@@ -43,7 +45,7 @@ internal class ApiHttpClientContext
 		SyntaxNode root = syntaxTree.GetRoot();
 
 		// Find class.
-		ClassDeclarationSyntax? cds = (ClassDeclarationSyntax)root.DescendantNodes().FirstOrDefault(sn => sn.IsKind(SyntaxKind.ClassDeclaration));
+		ClassDeclarationSyntax? cds = (ClassDeclarationSyntax?)root.DescendantNodes().FirstOrDefault(sn => sn.IsKind(SyntaxKind.ClassDeclaration));
 		if (cds == null)
 			yield break;
 
@@ -140,6 +142,13 @@ internal class ApiHttpClientContext
 			return new(httpDeleteAttribute, HttpMethod.Delete);
 
 		return null;
+	}
+
+	public List<string> GetOrderedUsingDirectives()
+	{
+		string[] usings = Usings.ToArray();
+		Array.Sort(usings, StringComparer.Ordinal);
+		return usings.Select(s => s.ToUsingDirective()).ToList();
 	}
 
 	private sealed class HttpMethodResult
