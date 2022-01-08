@@ -1,4 +1,3 @@
-using DevilDaggersInfo.Core.Wiki.Objects;
 using DevilDaggersInfo.Web.BlazorWasm.Shared.Utils;
 using Microsoft.AspNetCore.Components;
 

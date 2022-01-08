@@ -1,5 +1,3 @@
-using Newtonsoft.Json;
-
 namespace DevilDaggersInfo.Web.BlazorWasm.Shared.Dto.Public.Mods;
 
 public class GetModDdae

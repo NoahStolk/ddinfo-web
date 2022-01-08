@@ -1,23 +1,18 @@
+using DevilDaggersInfo.Web.BlazorWasm.Client.Core.CanvasChart.Data;
+using DevilDaggersInfo.Web.BlazorWasm.Client.Core.CanvasChart.Options;
+using DevilDaggersInfo.Web.BlazorWasm.Client.Core.CanvasChart.Options.LineChart;
+using DevilDaggersInfo.Web.BlazorWasm.Client.HttpClients;
+using DevilDaggersInfo.Web.BlazorWasm.Client.Utils;
 using DevilDaggersInfo.Web.BlazorWasm.Shared.Dto.Public.CustomEntries;
 using DevilDaggersInfo.Web.BlazorWasm.Shared.Dto.Public.CustomLeaderboards;
+using DevilDaggersInfo.Web.BlazorWasm.Shared.Dto.Public.LeaderboardHistory;
 using DevilDaggersInfo.Web.BlazorWasm.Shared.Dto.Public.Leaderboards;
 using DevilDaggersInfo.Web.BlazorWasm.Shared.Dto.Public.Mods;
 using DevilDaggersInfo.Web.BlazorWasm.Shared.Dto.Public.Players;
 using DevilDaggersInfo.Web.BlazorWasm.Shared.Dto.Public.Spawnsets;
-using Microsoft.AspNetCore.Components;
-using System;
-using DevilDaggersInfo.Web.BlazorWasm.Client.HttpClients;
-using DevilDaggersInfo.Web.BlazorWasm.Client.Core.CanvasChart.Data;
-using DevilDaggersInfo.Web.BlazorWasm.Client.Core.CanvasChart.Options;
-using DevilDaggersInfo.Web.BlazorWasm.Client.Core.CanvasChart.Options.LineChart;
-using Microsoft.JSInterop;
-using DevilDaggersInfo.Web.BlazorWasm.Shared.Dto.Public.WorldRecords;
-using System.Xml.Linq;
-using DevilDaggersInfo.Web.BlazorWasm.Shared.Dto.Public.LeaderboardHistory;
-using DevilDaggersInfo.Web.BlazorWasm.Client.Utils;
 using DevilDaggersInfo.Web.BlazorWasm.Shared.Utils;
-using DevilDaggersInfo.Core.Wiki.Enums;
-using DevilDaggersInfo.Core.Wiki.Objects;
+using Microsoft.AspNetCore.Components;
+using Microsoft.JSInterop;
 
 namespace DevilDaggersInfo.Web.BlazorWasm.Client.Pages.Leaderboard;
 

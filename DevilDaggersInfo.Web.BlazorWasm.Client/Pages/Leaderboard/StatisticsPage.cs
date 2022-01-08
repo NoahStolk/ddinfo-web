@@ -1,5 +1,4 @@
 using DevilDaggersInfo.Web.BlazorWasm.Client.Core.CanvasChart.Data;
-using DevilDaggersInfo.Web.BlazorWasm.Client.Core.CanvasChart.Options;
 using DevilDaggersInfo.Web.BlazorWasm.Client.Core.CanvasChart.Options.BarChart;
 using DevilDaggersInfo.Web.BlazorWasm.Shared.Dto.Public.LeaderboardStatistics;
 using Microsoft.AspNetCore.Components;

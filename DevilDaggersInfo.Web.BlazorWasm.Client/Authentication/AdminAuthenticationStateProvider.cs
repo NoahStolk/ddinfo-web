@@ -1,7 +1,6 @@
 using Blazored.LocalStorage;
 using DevilDaggersInfo.Web.BlazorWasm.Client.HttpClients;
 using DevilDaggersInfo.Web.BlazorWasm.Shared.Dto.Public.Authentication;
-using DevilDaggersInfo.Web.BlazorWasm.Shared.Extensions;
 using DevilDaggersInfo.Web.BlazorWasm.Shared.Utils;
 using Microsoft.AspNetCore.Components.Authorization;
 using System.Net.Http.Json;

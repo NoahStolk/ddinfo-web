@@ -1,12 +1,11 @@
+using DevilDaggersInfo.Core.Extensions;
 using DevilDaggersInfo.Web.BlazorWasm.Client.Components.Admin;
+using DevilDaggersInfo.Web.BlazorWasm.Shared.Constants;
 using DevilDaggersInfo.Web.BlazorWasm.Shared.Dto.Admin.Mods;
 using DevilDaggersInfo.Web.BlazorWasm.Shared.Dto.Admin.Players;
-using DevilDaggersInfo.Web.BlazorWasm.Shared.Enums;
-using Microsoft.AspNetCore.Components.WebAssembly.Authentication;
 using Microsoft.AspNetCore.Components;
-using DevilDaggersInfo.Core.Extensions;
-using DevilDaggersInfo.Web.BlazorWasm.Shared.Constants;
 using Microsoft.AspNetCore.Components.Forms;
+using Microsoft.AspNetCore.Components.WebAssembly.Authentication;
 
 namespace DevilDaggersInfo.Web.BlazorWasm.Client.Pages.Admin.Mods;
 

@@ -1,7 +1,5 @@
 using DevilDaggersInfo.Core.Encryption;
 using DevilDaggersInfo.Web.BlazorWasm.Server.Caches.SpawnsetHashes;
-using DevilDaggersInfo.Web.BlazorWasm.Server.Caches.SpawnsetSummaries;
-using DevilDaggersInfo.Web.BlazorWasm.Server.Controllers.Public;
 using DevilDaggersInfo.Web.BlazorWasm.Server.Enums;
 using DevilDaggersInfo.Web.BlazorWasm.Shared.Dto.Public.CustomEntries;
 using Microsoft.Extensions.Configuration;

@@ -91,7 +91,7 @@ public partial class LineChart
 					if (startX < 0)
 						startX = 0;
 
-					_context.FillStyle=background.Color;
+					_context.FillStyle = background.Color;
 					_context.FillRect(Options.ChartMarginXInPx + startX, Options.ChartMarginYInPx, endX - startX, ChartHeight);
 
 					end = background.ChartEndXValue;
@@ -137,7 +137,7 @@ public partial class LineChart
 				_context.StrokeText(Options.DisplayXScaleAsDates ? new DateTime((long)xScaleValue).ToString(FormatUtils.DateFormat) : xScaleValue.ToString(Options.ScaleXOptions.NumberFormat), Options.ChartMarginXInPx + xScalePosition, Options.ChartMarginYInPx + ChartHeight + paddingY);
 			}
 
-			_context.StrokeStyle=Options.ScaleYOptions.TextColor;
+			_context.StrokeStyle = Options.ScaleYOptions.TextColor;
 			_context.Font = Options.ScaleYOptions.Font;
 			_context.TextAlign = TextAlign.Right;
 			for (int i = 0; i < yScales.Count; i++)

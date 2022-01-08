@@ -1,5 +1,3 @@
-using Microsoft.AspNetCore.Components;
-
 namespace DevilDaggersInfo.Web.BlazorWasm.Client.Core.CanvasChart.Options.LineChart;
 
 public class LineChartHighlighterLineOptions
