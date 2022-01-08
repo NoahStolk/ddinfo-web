@@ -19,7 +19,7 @@ public class CustomEntryTests
 #pragma warning restore S3459 // Unassigned members should be removed
 
 	private readonly Mock<ApplicationDbContext> _dbContext;
-	private readonly CustomEntriesController _customEntriesController;
+	private readonly CustomEntryProcessor _customEntryProcessor;
 	private readonly AesBase32Wrapper _encryptionWrapper;
 
 	public CustomEntryTests()
@@ -40,9 +40,8 @@ public class CustomEntryTests
 
 		Mock<ILogger<SpawnsetHashCache>> spawnsetHashCacheLogger = new();
 		Mock<SpawnsetHashCache> spawnsetHashCache = new(fileSystemService.Object, spawnsetHashCacheLogger.Object);
-		Mock<SpawnsetSummaryCache> spawnsetSummaryCache = new();
-
-		Mock<ILogger<CustomEntriesController>> controllerLogger = new();
+		Mock<ILogger<CustomEntryProcessor>> customEntryProcessorLogger = new();
+		Mock<IWebHostEnvironment> environment = new();
 
 		const string secret = "secretsecretsecr";
 		Dictionary<string, object> appSettings = new()
@@ -59,7 +58,7 @@ public class CustomEntryTests
 		IConfigurationRoot configuration = builder.Build();
 
 		_encryptionWrapper = new(secret, secret, secret);
-		_customEntriesController = new CustomEntriesController(_dbContext.Object, controllerLogger.Object, spawnsetHashCache.Object, spawnsetSummaryCache.Object, fileSystemService.Object, configuration);
+		_customEntryProcessor = new(_dbContext.Object, customEntryProcessorLogger.Object, spawnsetHashCache.Object, fileSystemService.Object, environment.Object, configuration);
 
 		if (!SpawnsetBinary.TryParse(File.ReadAllBytes(Path.Combine(TestConstants.DataDirectory, "Spawnsets", "V3")), out _spawnsetBinary!))
 			Assert.Fail("Spawnset could not be parsed.");
@@ -80,7 +79,7 @@ public class CustomEntryTests
 		};
 		uploadRequest.Validation = GetValidation(uploadRequest);
 
-		GetUploadSuccess? uploadSuccess = (await _customEntriesController.ProcessUploadRequest(uploadRequest)).Value;
+		GetUploadSuccess? uploadSuccess = (await _customEntryProcessor.ProcessUploadRequest(uploadRequest)).Value;
 
 		_dbContext.Verify(db => db.SaveChanges(), Times.AtLeastOnce);
 		Assert.IsNotNull(uploadSuccess);
@@ -103,7 +102,7 @@ public class CustomEntryTests
 		};
 		uploadRequest.Validation = GetValidation(uploadRequest);
 
-		GetUploadSuccess? uploadSuccess = (await _customEntriesController.ProcessUploadRequest(uploadRequest)).Value;
+		GetUploadSuccess? uploadSuccess = (await _customEntryProcessor.ProcessUploadRequest(uploadRequest)).Value;
 
 		_dbContext.Verify(db => db.SaveChanges(), Times.AtLeastOnce);
 		Assert.IsNotNull(uploadSuccess);
@@ -126,7 +125,7 @@ public class CustomEntryTests
 		};
 		uploadRequest.Validation = GetValidation(uploadRequest);
 
-		GetUploadSuccess? uploadSuccess = (await _customEntriesController.ProcessUploadRequest(uploadRequest)).Value;
+		GetUploadSuccess? uploadSuccess = (await _customEntryProcessor.ProcessUploadRequest(uploadRequest)).Value;
 
 		_dbContext.Verify(db => db.CustomEntries.Add(It.Is<CustomEntryEntity>(ce => ce.PlayerId == 2 && ce.Time == 200000)), Times.Once);
 		_dbContext.Verify(db => db.SaveChanges(), Times.AtLeastOnce);
@@ -149,7 +148,7 @@ public class CustomEntryTests
 		};
 		uploadRequest.Validation = GetValidation(uploadRequest);
 
-		GetUploadSuccess? uploadSuccess = (await _customEntriesController.ProcessUploadRequest(uploadRequest)).Value;
+		GetUploadSuccess? uploadSuccess = (await _customEntryProcessor.ProcessUploadRequest(uploadRequest)).Value;
 
 		_dbContext.Verify(db => db.SaveChanges(), Times.AtLeastOnce);
 		_dbContext.Verify(db => db.Players.Add(It.Is<PlayerEntity>(p => p.Id == 3 && p.PlayerName == "TestPlayer3")), Times.Once);
@@ -173,7 +172,7 @@ public class CustomEntryTests
 		};
 		uploadRequest.Validation = GetValidation(uploadRequest);
 
-		ActionResult<GetUploadSuccess> response = await _customEntriesController.ProcessUploadRequest(uploadRequest);
+		ActionResult<GetUploadSuccess> response = await _customEntryProcessor.ProcessUploadRequest(uploadRequest);
 
 		_dbContext.Verify(db => db.SaveChanges(), Times.Never);
 
@@ -202,7 +201,7 @@ public class CustomEntryTests
 			Client = "DevilDaggersCustomLeaderboards",
 		};
 
-		ActionResult<GetUploadSuccess> response = await _customEntriesController.ProcessUploadRequest(uploadRequest);
+		ActionResult<GetUploadSuccess> response = await _customEntryProcessor.ProcessUploadRequest(uploadRequest);
 
 		_dbContext.Verify(db => db.SaveChanges(), Times.Never);
 
