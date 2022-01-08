@@ -4,12 +4,4 @@
 @using DevilDaggersInfo.Web.BlazorWasm.Shared.Dto.Admin.CustomEntries
 @using DevilDaggersInfo.Web.BlazorWasm.Shared.Enums.Sortings.Admin
 
-<button @onclick="async () => await ClearCache()">Clear spawnset hash cache</button>
-
-@code
-{
-	public async Task ClearCache()
-	{
-		await Http.ClearCache("SpawnsetHash");
-	}
-}
+<button @onclick="@(async () => await Http.ClearCache("SpawnsetHash"))">Clear spawnset hash cache</button>
