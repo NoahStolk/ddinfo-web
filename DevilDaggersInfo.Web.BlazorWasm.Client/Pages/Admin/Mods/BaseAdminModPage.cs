@@ -6,7 +6,7 @@ namespace DevilDaggersInfo.Web.BlazorWasm.Client.Pages.Admin.Mods;
 
 public abstract class BaseAdminModPage : BaseAdminPage
 {
-	protected IReadOnlyDictionary<int, string> ModTypes { get; } = Enum.GetValues<ModTypes>().ToDictionary(e => (int)e, e => e.ToString());
+	protected IReadOnlyDictionary<int, string> ModTypes { get; } = Enum.GetValues<ModTypes>().Where(mt => mt != BlazorWasm.Shared.Enums.ModTypes.None).ToDictionary(e => (int)e, e => e.ToString());
 
 	protected static async Task<Dictionary<string, byte[]>> GetFiles(InputFileChangeEventArgs e, int maximumFileCount, long maxAllowedSize, List<string> errorList)
 	{
