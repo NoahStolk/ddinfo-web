@@ -83,12 +83,20 @@ public sealed class LeaderboardClient
 
 	public async Task<List<EntryResponse>> GetEntriesByName(string name)
 	{
+		if (name.Length < 3 || name.Length > 16)
+			throw new ArgumentOutOfRangeException(nameof(name));
+
 		using BinaryReader br = new(await ExecuteRequest(_getUserSearchUrl, new KeyValuePair<string?, string?>("search", name)));
 
 		List<EntryResponse> entries = new();
 
 		br.BaseStream.Seek(11, SeekOrigin.Begin);
 		short totalResults = br.ReadInt16();
+		if (totalResults > 100)
+		{
+			// TODO: Log warning.
+			return entries;
+		}
 
 		br.BaseStream.Seek(6, SeekOrigin.Current);
 		for (int i = 0; i < totalResults; i++)
