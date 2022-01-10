@@ -38,7 +38,7 @@ public class LeaderboardsController : ControllerBase
 	[HttpGet("entry/by-username")]
 	[ProducesResponseType(StatusCodes.Status200OK)]
 	[ProducesResponseType(StatusCodes.Status400BadRequest)]
-	public async Task<ActionResult<List<GetEntry>>> GetEntriesByName([Required, MinLength(3)] string name)
+	public async Task<ActionResult<List<GetEntry>>> GetEntriesByName([Required, MinLength(3), MaxLength(16)] string name)
 	{
 		List<EntryResponse> el = await LeaderboardClient.Instance.GetEntriesByName(name);
 		return el.ConvertAll(e => e.ToGetEntryPublic());
