@@ -37,9 +37,11 @@ public partial class SearchPage
 
 	private async Task FetchLeaderboard()
 	{
+		_apiError = null;
 		if (!CanLoad(Username))
 		{
 			_loading = false;
+			GetEntries = null;
 			return;
 		}
 
@@ -58,7 +60,7 @@ public partial class SearchPage
 		}
 	}
 
-	private static bool CanLoad([NotNullWhen(true)] string? username) => username?.Length >= 3 == true;
+	private static bool CanLoad([NotNullWhen(true)] string? username) => username != null && username.Length >= 3 && username.Length <= 16 == true;
 
 	private static class QueryParameters
 	{

@@ -13,9 +13,9 @@
 	<span>Username</span>
 	<input class="bg-black border-gray-3 border-2" value="@Username" @onchange="ChangeInputUsername" />
 
-	@if (Username == null || Username.Length < 3)
+	@if (Username == null || Username.Length < 3 || Username.Length > 16)
 	{
-		<div>Please enter a value of at least 3 characters.</div>
+		<div>Please enter a value that is between 3 and 16 characters in length.</div>
 	}
 </div>
 
