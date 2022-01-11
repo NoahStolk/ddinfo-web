@@ -39,11 +39,11 @@ public class CachesController : ControllerBase
 	{
 		switch (cacheType)
 		{
-			case "LeaderboardStatistics": _leaderboardStatisticsCache.Initiate(); break;
 			case "LeaderboardHistory": _leaderboardHistoryCache.Clear(); break;
+			case "LeaderboardStatistics": _leaderboardStatisticsCache.Initiate(); break;
 			case "ModArchive": _modArchiveCache.Clear(); break;
-			case "SpawnsetSummary": _spawnsetSummaryCache.Clear(); break;
 			case "SpawnsetHash": _spawnsetHashCache.Clear(); break;
+			case "SpawnsetSummary": _spawnsetSummaryCache.Clear(); break;
 			default: return NotFound();
 		}
 
