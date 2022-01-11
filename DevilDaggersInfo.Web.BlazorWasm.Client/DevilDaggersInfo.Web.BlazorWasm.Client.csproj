@@ -3,7 +3,7 @@
     <DateTimeUtcNow>$([System.DateTime]::UtcNow.Ticks)</DateTimeUtcNow>
     <ProjectStartDateTime>$([System.DateTime]::Parse("2021-07-06 09:22:00").Ticks)</ProjectStartDateTime>
     <MinutesSinceProjectStart>$([System.Convert]::ToInt64($([MSBuild]::Divide($([MSBuild]::Subtract($(DateTimeUtcNow), $(ProjectStartDateTime))), 600000000))))</MinutesSinceProjectStart>
-    <Version>5.0.6.0-$(MinutesSinceProjectStart)</Version>
+    <Version>5.0.7.0-$(MinutesSinceProjectStart)</Version>
     <AppendTargetFrameworkToOutputPath>false</AppendTargetFrameworkToOutputPath>
     <IntermediateOutputPath>obj</IntermediateOutputPath>
     <TailwindBuild>true</TailwindBuild>
