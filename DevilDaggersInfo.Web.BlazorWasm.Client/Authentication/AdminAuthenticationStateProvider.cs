@@ -25,31 +25,42 @@ public class AdminAuthenticationStateProvider : AuthenticationStateProvider
 	{
 		string token = await _localStorageService.GetItemAsStringAsync(LocalStorageAuthKey);
 		if (string.IsNullOrEmpty(token))
-			return DefaultState();
+			return await ClearTokenAndGetDefaultState();
 
 		HttpResponseMessage httpResponseMessage = await _httpClient.Authenticate(new AuthenticationRequest { Jwt = token });
 
 		if (httpResponseMessage.StatusCode != HttpStatusCode.OK)
-			return DefaultState();
+			return await ClearTokenAndGetDefaultState();
 
 		AuthenticationResponse? authenticationResponse = await httpResponseMessage.Content.ReadFromJsonAsync<AuthenticationResponse>() ?? throw new($"Could not deserialize {nameof(AuthenticationResponse)}.");
 		if (authenticationResponse == null || string.IsNullOrEmpty(authenticationResponse.Name))
-			return DefaultState();
+			return await ClearTokenAndGetDefaultState();
 
 		ClaimsIdentity claimsIdentity = ClaimsIdentityUtils.CreateClaimsIdentity(authenticationResponse.Name, authenticationResponse.RoleNames);
 		ClaimsPrincipal claimsPrincipal = new(claimsIdentity);
 
 		return new AuthenticationState(claimsPrincipal);
 
-		static AuthenticationState DefaultState() => new(new ClaimsPrincipal(new ClaimsIdentity()));
+		async Task<AuthenticationState> ClearTokenAndGetDefaultState()
+		{
+			if (await _localStorageService.ContainKeyAsync(LocalStorageAuthKey))
+				await _localStorageService.RemoveItemAsync(LocalStorageAuthKey);
+
+			return new(new ClaimsPrincipal(new ClaimsIdentity()));
+		}
 	}
 
 	public async Task SetTokenAsync(string? token)
 	{
 		if (token == null)
-			await _localStorageService.RemoveItemAsync(LocalStorageAuthKey);
+		{
+			if (await _localStorageService.ContainKeyAsync(LocalStorageAuthKey))
+				await _localStorageService.RemoveItemAsync(LocalStorageAuthKey);
+		}
 		else
+		{
 			await _localStorageService.SetItemAsStringAsync(LocalStorageAuthKey, token);
+		}
 
 		NotifyAuthenticationStateChanged(GetAuthenticationStateAsync());
 	}
