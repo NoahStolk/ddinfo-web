@@ -145,7 +145,7 @@ public class CustomLeaderboardsController : ControllerBase
 		_dbContext.CustomLeaderboards.Add(customLeaderboard);
 		_dbContext.SaveChanges();
 
-		await _auditLogger.LogAdd(addCustomLeaderboard, User, customLeaderboard.Id);
+		await _auditLogger.LogAdd(addCustomLeaderboard.GetLog(), User, customLeaderboard.Id);
 
 		return Ok(customLeaderboard.Id);
 	}
@@ -222,7 +222,7 @@ public class CustomLeaderboardsController : ControllerBase
 		customLeaderboard.IsArchived = editCustomLeaderboard.IsArchived;
 		_dbContext.SaveChanges();
 
-		await _auditLogger.LogEdit(logDto, editCustomLeaderboard, User, customLeaderboard.Id);
+		await _auditLogger.LogEdit(logDto.GetLog(), editCustomLeaderboard.GetLog(), User, customLeaderboard.Id);
 
 		return Ok();
 	}
@@ -243,7 +243,7 @@ public class CustomLeaderboardsController : ControllerBase
 		_dbContext.CustomLeaderboards.Remove(customLeaderboard);
 		_dbContext.SaveChanges();
 
-		await _auditLogger.LogDelete(customLeaderboard, User, customLeaderboard.Id);
+		await _auditLogger.LogDelete(customLeaderboard.GetLog(), User, customLeaderboard.Id);
 
 		return Ok();
 	}

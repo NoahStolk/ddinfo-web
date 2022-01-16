@@ -110,7 +110,7 @@ public class CustomEntriesController : ControllerBase
 		_dbContext.CustomEntries.Add(customEntry);
 		_dbContext.SaveChanges();
 
-		await _auditLogger.LogAdd(addCustomEntry, User, customEntry.Id);
+		await _auditLogger.LogAdd(addCustomEntry.GetLog(), User, customEntry.Id);
 
 		return Ok(customEntry.Id);
 	}
@@ -175,7 +175,7 @@ public class CustomEntriesController : ControllerBase
 		customEntry.Time = editCustomEntry.Time;
 		_dbContext.SaveChanges();
 
-		await _auditLogger.LogEdit(logDto, editCustomEntry, User, customEntry.Id);
+		await _auditLogger.LogEdit(logDto.GetLog(), editCustomEntry.GetLog(), User, customEntry.Id);
 
 		return Ok();
 	}
@@ -196,7 +196,7 @@ public class CustomEntriesController : ControllerBase
 		_dbContext.CustomEntries.Remove(customEntry);
 		_dbContext.SaveChanges();
 
-		await _auditLogger.LogDelete(customEntry, User, customEntry.Id);
+		await _auditLogger.LogDelete(customEntry.GetLog(), User, customEntry.Id);
 
 		return Ok();
 	}

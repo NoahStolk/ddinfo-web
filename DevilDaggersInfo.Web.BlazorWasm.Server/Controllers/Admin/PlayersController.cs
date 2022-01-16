@@ -164,7 +164,7 @@ public class PlayersController : ControllerBase
 		UpdatePlayerMods(addPlayer.ModIds ?? new(), player.Id);
 		_dbContext.SaveChanges();
 
-		await _auditLogger.LogAdd(addPlayer, User, player.Id);
+		await _auditLogger.LogAdd(addPlayer.GetLog(), User, player.Id);
 
 		return Ok(player.Id);
 	}
@@ -254,7 +254,7 @@ public class PlayersController : ControllerBase
 		UpdatePlayerMods(editPlayer.ModIds ?? new(), player.Id);
 		_dbContext.SaveChanges();
 
-		await _auditLogger.LogEdit(logDto, editPlayer, User, player.Id);
+		await _auditLogger.LogEdit(logDto.GetLog(), editPlayer.GetLog(), User, player.Id);
 
 		return Ok();
 	}
@@ -285,7 +285,7 @@ public class PlayersController : ControllerBase
 		_dbContext.Players.Remove(player);
 		_dbContext.SaveChanges();
 
-		await _auditLogger.LogDelete(player, User, player.Id);
+		await _auditLogger.LogDelete(player.GetLog(), User, player.Id);
 
 		return Ok();
 	}

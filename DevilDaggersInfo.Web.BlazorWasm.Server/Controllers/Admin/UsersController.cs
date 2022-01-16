@@ -99,7 +99,7 @@ public class UsersController : ControllerBase
 		_dbContext.Users.Remove(user);
 		_dbContext.SaveChanges();
 
-		await _auditLogger.LogDelete(user, User, user.Id);
+		await _auditLogger.LogDelete(user.GetLog(), User, user.Id);
 
 		return Ok();
 	}

@@ -16,10 +16,9 @@ public class AuditLogger
 		_environment = environment;
 	}
 
-	public async Task LogAdd<TData>(TData dto, ClaimsPrincipal claimsPrincipal, int id, List<FileSystemInformation>? fileSystemInformation = null, [CallerMemberName] string endpointName = "")
-		where TData : notnull
+	public async Task LogAdd(Dictionary<string, string> dtoLog, ClaimsPrincipal claimsPrincipal, int id, List<FileSystemInformation>? fileSystemInformation = null, [CallerMemberName] string endpointName = "")
 	{
-		StringBuilder auditLogger = GetAuditLogger("ADD", claimsPrincipal, id, endpointName);
+		StringBuilder auditLogger = GetAuditLogger(claimsPrincipal, id, endpointName);
 		auditLogger.AppendLine("```diff");
 
 		const string propertyHeader = "Property";
@@ -28,8 +27,7 @@ public class AuditLogger
 
 		int maxL = propertyHeader.Length;
 
-		Dictionary<string, string> log = GetLog(dto);
-		foreach (KeyValuePair<string, string> kvp in log)
+		foreach (KeyValuePair<string, string> kvp in dtoLog)
 		{
 			string trimmedKey = kvp.Key.TrimAfter(_loggingMax, true);
 			if (trimmedKey.Length > maxL)
@@ -38,7 +36,7 @@ public class AuditLogger
 
 		auditLogger.AppendFormat($"{{0,-{maxL + paddingL}}}", propertyHeader).AppendLine(valueHeader);
 		auditLogger.AppendLine();
-		foreach (KeyValuePair<string, string> kvp in log)
+		foreach (KeyValuePair<string, string> kvp in dtoLog)
 			auditLogger.AppendFormat($"{{0,-{maxL + paddingL}}}", $"+ {kvp.Key.TrimAfter(_loggingMax, true)}").AppendLine(kvp.Value.TrimAfter(_loggingMax, true));
 
 		auditLogger.AppendLine("```");
@@ -48,14 +46,11 @@ public class AuditLogger
 		await TryLog(Channel.MaintainersAuditLog, auditLogger.ToString());
 	}
 
-	public async Task LogEdit<TData>(TData oldLogDto, TData dto, ClaimsPrincipal claimsPrincipal, int id, List<FileSystemInformation>? fileSystemInformation = null, [CallerMemberName] string endpointName = "")
-		where TData : notnull
+	public async Task LogEdit(Dictionary<string, string> oldDtoLog, Dictionary<string, string> dtoLog, ClaimsPrincipal claimsPrincipal, int id, List<FileSystemInformation>? fileSystemInformation = null, [CallerMemberName] string endpointName = "")
 	{
-		StringBuilder auditLogger = GetAuditLogger("EDIT", claimsPrincipal, id, endpointName);
+		StringBuilder auditLogger = GetAuditLogger(claimsPrincipal, id, endpointName);
 
-		Dictionary<string, string> oldLog = GetLog(oldLogDto);
-		Dictionary<string, string> newLog = GetLog(dto);
-		if (AreEditLogsEqual(oldLog, newLog))
+		if (AreEditLogsEqual(oldDtoLog, dtoLog))
 		{
 			auditLogger.AppendLine("`No changes.`");
 		}
@@ -70,7 +65,7 @@ public class AuditLogger
 			const int paddingR = 2;
 
 			int maxL = propertyHeader.Length, maxR = oldValueHeader.Length;
-			foreach (KeyValuePair<string, string> kvp in oldLog)
+			foreach (KeyValuePair<string, string> kvp in oldDtoLog)
 			{
 				string trimmedKey = kvp.Key.TrimAfter(_loggingMax, true);
 				string trimmedValue = kvp.Value.TrimAfter(_loggingMax, true);
@@ -83,9 +78,9 @@ public class AuditLogger
 
 			auditLogger.AppendFormat($"{{0,-{maxL + paddingL}}}", propertyHeader).AppendFormat($"{{0,-{maxR + paddingR}}}", oldValueHeader).AppendLine(newValueHeader);
 			auditLogger.AppendLine();
-			foreach (KeyValuePair<string, string> kvp in oldLog)
+			foreach (KeyValuePair<string, string> kvp in oldDtoLog)
 			{
-				string newValue = newLog[kvp.Key];
+				string newValue = dtoLog[kvp.Key];
 				char diff = kvp.Value == newValue ? '=' : '+';
 				auditLogger.AppendFormat($"{{0,-{maxL + paddingL}}}", $"{diff} {kvp.Key}").AppendFormat($"{{0,-{maxR + paddingR}}}", kvp.Value.TrimAfter(_loggingMax, true)).AppendLine(newValue.TrimAfter(_loggingMax, true));
 			}
@@ -115,10 +110,9 @@ public class AuditLogger
 		}
 	}
 
-	public async Task LogDelete<TData>(TData entity, ClaimsPrincipal claimsPrincipal, int id, List<FileSystemInformation>? fileSystemInformation = null, [CallerMemberName] string endpointName = "")
-		where TData : notnull
+	public async Task LogDelete(Dictionary<string, string> entityLog, ClaimsPrincipal claimsPrincipal, int id, List<FileSystemInformation>? fileSystemInformation = null, [CallerMemberName] string endpointName = "")
 	{
-		StringBuilder auditLogger = GetAuditLogger("DELETE", claimsPrincipal, id, endpointName);
+		StringBuilder auditLogger = GetAuditLogger(claimsPrincipal, id, endpointName);
 		auditLogger.AppendLine("```diff");
 
 		const string propertyHeader = "Property";
@@ -127,8 +121,7 @@ public class AuditLogger
 
 		int maxL = propertyHeader.Length;
 
-		Dictionary<string, string> log = GetLog(entity);
-		foreach (KeyValuePair<string, string> kvp in log)
+		foreach (KeyValuePair<string, string> kvp in entityLog)
 		{
 			string trimmedKey = kvp.Key.TrimAfter(_loggingMax, true);
 			if (trimmedKey.Length > maxL)
@@ -137,7 +130,7 @@ public class AuditLogger
 
 		auditLogger.AppendFormat($"{{0,-{maxL + paddingL}}}", propertyHeader).AppendLine(valueHeader);
 		auditLogger.AppendLine();
-		foreach (KeyValuePair<string, string> kvp in log)
+		foreach (KeyValuePair<string, string> kvp in entityLog)
 			auditLogger.AppendFormat($"{{0,-{maxL + paddingL}}}", $"- {kvp.Key.TrimAfter(_loggingMax, true)}").AppendLine(kvp.Value.TrimAfter(_loggingMax, true));
 
 		auditLogger.AppendLine("```");
@@ -160,41 +153,7 @@ public class AuditLogger
 		await TryLog(Channel.MaintainersAuditLog, auditLogger.ToString());
 	}
 
-	private static StringBuilder GetAuditLogger(string action, ClaimsPrincipal claimsPrincipal, int id, string endpointName)
-	{
-		return new($"`{action}` by `{claimsPrincipal.GetName() ?? "?"}` for `{GetEntityFromEndpointName(endpointName)}` `{id}`\n");
-	}
-
-	private static string GetEntityFromEndpointName(string endpointName)
-	{
-		foreach (string s in new[] { "Add", "Edit", "Delete" })
-		{
-			if (endpointName.StartsWith(s))
-				return endpointName[s.Length..];
-		}
-
-		return endpointName;
-	}
-
-	private static Dictionary<string, string> GetLog<TData>(TData obj)
-		where TData : notnull
-	{
-		Dictionary<string, string> dict = new();
-		foreach (PropertyInfo pi in obj.GetType().GetProperties())
-		{
-			// Ignore navigation properties by continuing if property has ForeignKey attribute.
-			if (pi.GetCustomAttribute<ForeignKeyAttribute>() != null)
-				continue;
-
-			// Ignore navigation properties by continuing if property is generic List.
-			if (pi.PropertyType.IsGenericType && pi.PropertyType.GetGenericTypeDefinition() == typeof(List<>))
-				continue;
-
-			dict.Add(pi.Name, pi.GetValue(obj)?.ToString() ?? string.Empty);
-		}
-
-		return dict;
-	}
+	private static StringBuilder GetAuditLogger(ClaimsPrincipal claimsPrincipal, int id, string endpointName) => new($"`{endpointName}` by `{claimsPrincipal.GetName() ?? "?"}` for ID `{id}`\n");
 
 	private static void AddFileSystemInformation(StringBuilder auditLogger, List<FileSystemInformation>? auditLogFileSystemInformation)
 	{

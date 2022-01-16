@@ -132,7 +132,7 @@ public class SpawnsetsController : ControllerBase
 		_dbContext.Spawnsets.Add(spawnset);
 		_dbContext.SaveChanges();
 
-		await _auditLogger.LogAdd(addSpawnset, User, spawnset.Id, new() { new($"File {_fileSystemService.FormatPath(path)} was added.", FileSystemInformationType.Add) });
+		await _auditLogger.LogAdd(addSpawnset.GetLog(), User, spawnset.Id, new() { new($"File {_fileSystemService.FormatPath(path)} was added.", FileSystemInformationType.Add) });
 
 		return Ok(spawnset.Id);
 	}
@@ -184,7 +184,7 @@ public class SpawnsetsController : ControllerBase
 		spawnset.PlayerId = editSpawnset.PlayerId;
 		_dbContext.SaveChanges();
 
-		await _auditLogger.LogEdit(logDto, editSpawnset, User, spawnset.Id, moveInfo == null ? null : new() { new(moveInfo, FileSystemInformationType.Move) });
+		await _auditLogger.LogEdit(logDto.GetLog(), editSpawnset.GetLog(), User, spawnset.Id, moveInfo == null ? null : new() { new(moveInfo, FileSystemInformationType.Move) });
 
 		return Ok();
 	}
@@ -215,7 +215,7 @@ public class SpawnsetsController : ControllerBase
 		_dbContext.SaveChanges();
 
 		string message = fileExists ? $"File {_fileSystemService.FormatPath(path)} was deleted." : $"File {_fileSystemService.FormatPath(path)} was not deleted because it does not exist.";
-		await _auditLogger.LogDelete(spawnset, User, spawnset.Id, new() { new(message, fileExists ? FileSystemInformationType.Delete : FileSystemInformationType.NotFoundUnexpected) });
+		await _auditLogger.LogDelete(spawnset.GetLog(), User, spawnset.Id, new() { new(message, fileExists ? FileSystemInformationType.Delete : FileSystemInformationType.NotFoundUnexpected) });
 
 		return Ok();
 	}

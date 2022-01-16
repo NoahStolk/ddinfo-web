@@ -77,7 +77,7 @@ public class DonationsController : ControllerBase
 		_dbContext.Donations.Add(donation);
 		_dbContext.SaveChanges();
 
-		await _auditLogger.LogAdd(addDonation, User, donation.Id);
+		await _auditLogger.LogAdd(addDonation.GetLog(), User, donation.Id);
 
 		return Ok(donation.Id);
 	}
@@ -115,7 +115,7 @@ public class DonationsController : ControllerBase
 		donation.PlayerId = editDonation.PlayerId;
 		_dbContext.SaveChanges();
 
-		await _auditLogger.LogEdit(logDto, editDonation, User, donation.Id);
+		await _auditLogger.LogEdit(logDto.GetLog(), editDonation.GetLog(), User, donation.Id);
 
 		return Ok();
 	}
@@ -132,7 +132,7 @@ public class DonationsController : ControllerBase
 		_dbContext.Donations.Remove(donation);
 		_dbContext.SaveChanges();
 
-		await _auditLogger.LogDelete(donation, User, donation.Id);
+		await _auditLogger.LogDelete(donation.GetLog(), User, donation.Id);
 
 		return Ok();
 	}
