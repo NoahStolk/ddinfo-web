@@ -36,7 +36,7 @@
 	<ul class="pl-4">
 		@foreach (string binaryName in _editMod.Binaries.Select(kvp => kvp.Key))
 		{
-			<li class="list-disc">@binaryName (will be renamed to @(BinaryFileNameUtils.SanitizeModBinaryFileName(binaryName, _editMod.Name)))</li>
+			<li class="list-disc">@binaryName (will be renamed to @(BinaryFileNameUtils.SanitizeModBinaryFileName(binaryName, _editMod.Name ?? string.Empty)))</li>
 		}
 		@foreach (string fileSizeError in _binaryFileSizeErrors)
 		{
