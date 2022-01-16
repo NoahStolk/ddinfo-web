@@ -8,13 +8,11 @@ namespace DevilDaggersInfo.Web.BlazorWasm.Server.Controllers.Public;
 public class AuthenticationController : ControllerBase
 {
 	private readonly IUserService _userService;
-	private readonly IWebHostEnvironment _environment;
 	private readonly ILogger<AuthenticationController> _logger;
 
-	public AuthenticationController(IUserService userService, IWebHostEnvironment environment, ILogger<AuthenticationController> logger)
+	public AuthenticationController(IUserService userService, ILogger<AuthenticationController> logger)
 	{
 		_userService = userService;
-		_environment = environment;
 		_logger = logger;
 	}
 
