@@ -16,7 +16,7 @@ public class AuditLogger
 		_environment = environment;
 	}
 
-	public async Task LogAdd<TData, TKey>(TData obj, ClaimsPrincipal claimsPrincipal, TKey id, List<FileSystemInformation>? fileSystemInformation = null, [CallerMemberName] string endpointName = "")
+	public async Task LogAdd<TData>(TData dto, ClaimsPrincipal claimsPrincipal, int id, List<FileSystemInformation>? fileSystemInformation = null, [CallerMemberName] string endpointName = "")
 		where TData : notnull
 	{
 		StringBuilder auditLogger = GetAuditLogger("ADD", claimsPrincipal, id, endpointName);
@@ -28,7 +28,7 @@ public class AuditLogger
 
 		int maxL = propertyHeader.Length;
 
-		Dictionary<string, string> log = GetLog(obj);
+		Dictionary<string, string> log = GetLog(dto);
 		foreach (KeyValuePair<string, string> kvp in log)
 		{
 			string trimmedKey = kvp.Key.TrimAfter(_loggingMax, true);
@@ -48,13 +48,13 @@ public class AuditLogger
 		await TryLog(Channel.MaintainersAuditLog, auditLogger.ToString());
 	}
 
-	public async Task LogEdit<TData, TKey>(TData oldObj, TData newObj, ClaimsPrincipal claimsPrincipal, TKey id, List<FileSystemInformation>? fileSystemInformation = null, [CallerMemberName] string endpointName = "")
+	public async Task LogEdit<TData>(TData oldLogDto, TData dto, ClaimsPrincipal claimsPrincipal, int id, List<FileSystemInformation>? fileSystemInformation = null, [CallerMemberName] string endpointName = "")
 		where TData : notnull
 	{
 		StringBuilder auditLogger = GetAuditLogger("EDIT", claimsPrincipal, id, endpointName);
 
-		Dictionary<string, string> oldLog = GetLog(oldObj);
-		Dictionary<string, string> newLog = GetLog(newObj);
+		Dictionary<string, string> oldLog = GetLog(oldLogDto);
+		Dictionary<string, string> newLog = GetLog(dto);
 		if (AreEditLogsEqual(oldLog, newLog))
 		{
 			auditLogger.AppendLine("`No changes.`");
@@ -115,7 +115,7 @@ public class AuditLogger
 		}
 	}
 
-	public async Task LogDelete<TData, TKey>(TData obj, ClaimsPrincipal claimsPrincipal, TKey id, List<FileSystemInformation>? fileSystemInformation = null, [CallerMemberName] string endpointName = "")
+	public async Task LogDelete<TData>(TData entity, ClaimsPrincipal claimsPrincipal, int id, List<FileSystemInformation>? fileSystemInformation = null, [CallerMemberName] string endpointName = "")
 		where TData : notnull
 	{
 		StringBuilder auditLogger = GetAuditLogger("DELETE", claimsPrincipal, id, endpointName);
@@ -127,7 +127,7 @@ public class AuditLogger
 
 		int maxL = propertyHeader.Length;
 
-		Dictionary<string, string> log = GetLog(obj);
+		Dictionary<string, string> log = GetLog(entity);
 		foreach (KeyValuePair<string, string> kvp in log)
 		{
 			string trimmedKey = kvp.Key.TrimAfter(_loggingMax, true);
@@ -160,7 +160,7 @@ public class AuditLogger
 		await TryLog(Channel.MaintainersAuditLog, auditLogger.ToString());
 	}
 
-	private static StringBuilder GetAuditLogger<TKey>(string action, ClaimsPrincipal claimsPrincipal, TKey id, string endpointName)
+	private static StringBuilder GetAuditLogger(string action, ClaimsPrincipal claimsPrincipal, int id, string endpointName)
 	{
 		return new($"`{action}` by `{claimsPrincipal.GetName() ?? "?"}` for `{GetEntityFromEndpointName(endpointName)}` `{id}`\n");
 	}
