@@ -1,6 +1,7 @@
 using DevilDaggersInfo.Web.BlazorWasm.Server.Caches.SpawnsetHashes;
 using DevilDaggersInfo.Web.BlazorWasm.Server.Converters.Admin;
 using DevilDaggersInfo.Web.BlazorWasm.Shared.Dto;
+using DevilDaggersInfo.Web.BlazorWasm.Shared.Dto.Admin.Mods;
 using DevilDaggersInfo.Web.BlazorWasm.Shared.Dto.Admin.Spawnsets;
 using DevilDaggersInfo.Web.BlazorWasm.Shared.Enums.Sortings.Admin;
 using Microsoft.AspNetCore.Authorization;
@@ -96,6 +97,9 @@ public class SpawnsetsController : ControllerBase
 	[Authorize(Roles = Roles.Spawnsets)]
 	public async Task<ActionResult> AddSpawnset(AddSpawnset addSpawnset)
 	{
+		if (string.IsNullOrWhiteSpace(addSpawnset.Name))
+			return BadRequest("Spawnset name must not be empty or consist of white space only.");
+
 		if (!SpawnsetBinary.TryParse(addSpawnset.FileContents, out _))
 			return BadRequest("File could not be parsed to a proper survival file.");
 
@@ -140,6 +144,9 @@ public class SpawnsetsController : ControllerBase
 	[Authorize(Roles = Roles.Spawnsets)]
 	public async Task<ActionResult> EditSpawnsetById(int id, EditSpawnset editSpawnset)
 	{
+		if (string.IsNullOrWhiteSpace(editSpawnset.Name))
+			return BadRequest("Spawnset name must not be empty or consist of white space only.");
+
 		if (!_dbContext.Players.Any(p => p.Id == editSpawnset.PlayerId))
 			return BadRequest($"Player with ID '{editSpawnset.PlayerId}' does not exist.");
 
