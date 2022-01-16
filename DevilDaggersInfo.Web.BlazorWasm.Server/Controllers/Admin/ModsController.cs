@@ -102,6 +102,9 @@ public class ModsController : ControllerBase
 	[Authorize(Roles = Roles.Mods)]
 	public async Task<ActionResult> AddMod(AddMod addMod)
 	{
+		if (string.IsNullOrWhiteSpace(addMod.Name))
+			return BadRequest("Mod name must not be empty or consist of white space only.");
+
 		if (addMod.PlayerIds == null || addMod.PlayerIds.Count == 0)
 			return BadRequest("Mod must have at least one author.");
 
@@ -162,6 +165,9 @@ public class ModsController : ControllerBase
 	[Authorize(Roles = Roles.Mods)]
 	public async Task<ActionResult> EditModById(int id, EditMod editMod)
 	{
+		if (string.IsNullOrWhiteSpace(editMod.Name))
+			return BadRequest("Mod name must not be empty or consist of white space only.");
+
 		if (editMod.PlayerIds == null || editMod.PlayerIds.Count == 0)
 			return BadRequest("Mod must have at least one author.");
 
