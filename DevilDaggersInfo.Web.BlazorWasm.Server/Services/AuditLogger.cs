@@ -58,7 +58,6 @@ public class AuditLogger
 		if (AreEditLogsEqual(oldLog, newLog))
 		{
 			auditLogger.AppendLine("`No changes.`");
-			await TryLog(Channel.MaintainersAuditLog, auditLogger.ToString());
 		}
 		else
 		{
