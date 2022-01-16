@@ -63,10 +63,13 @@ public static class BinaryFileNameUtils
 			}
 		}
 
-		foreach (string namePrefix in new[] { $"{modName}_", $"{modName}-", modName })
+		if (modName.Length > 0)
 		{
-			if (binaryName.StartsWith(namePrefix))
-				binaryName = binaryName.Replace(namePrefix, string.Empty);
+			foreach (string namePrefix in new[] { $"{modName}_", $"{modName}-", modName })
+			{
+				if (binaryName.StartsWith(namePrefix))
+					binaryName = binaryName.Replace(namePrefix, string.Empty);
+			}
 		}
 
 		return $"{(modBinaryType ?? ModBinaryType.Dd).ToString().ToLower()}-{modName}-{binaryName}";
