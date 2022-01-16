@@ -243,6 +243,7 @@ public static class AuditLoggerExtensions
 		AddProperty(log, player.HideSettings);
 		AddProperty(log, player.HideDonations);
 		AddProperty(log, player.HidePastUsernames);
+		log.Add(nameof(player.ModIds), player.ModIds == null ? string.Empty : string.Join(", ", player.ModIds.ConvertAll(i => i.ToString())));
 		return log;
 	}
 
@@ -264,6 +265,7 @@ public static class AuditLoggerExtensions
 		AddProperty(log, player.HideSettings);
 		AddProperty(log, player.HideDonations);
 		AddProperty(log, player.HidePastUsernames);
+		log.Add(nameof(player.ModIds), player.ModIds == null ? string.Empty : string.Join(", ", player.ModIds.ConvertAll(i => i.ToString())));
 		return log;
 	}
 
