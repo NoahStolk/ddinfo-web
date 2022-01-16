@@ -1,6 +1,7 @@
 using DevilDaggersInfo.Core.Encryption;
 using DevilDaggersInfo.Web.BlazorWasm.Server.Caches.SpawnsetHashes;
 using DevilDaggersInfo.Web.BlazorWasm.Server.Enums;
+using DevilDaggersInfo.Web.BlazorWasm.Server.Exceptions;
 using DevilDaggersInfo.Web.BlazorWasm.Shared.Dto.Public.CustomEntries;
 using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.Logging;
@@ -170,18 +171,11 @@ public class CustomEntryTests
 		};
 		uploadRequest.Validation = GetValidation(uploadRequest);
 
-		ActionResult<GetUploadSuccess> response = await _customEntryProcessor.ProcessUploadRequest(uploadRequest);
+		CustomEntryValidationException ex = await Assert.ThrowsExceptionAsync<CustomEntryValidationException>(async () => await _customEntryProcessor.ProcessUploadRequest(uploadRequest));
 
 		_dbContext.Verify(db => db.SaveChanges(), Times.Never);
 
-		BadRequestObjectResult? badRequest = response.Result as BadRequestObjectResult;
-		Assert.IsNotNull(badRequest);
-		Assert.AreEqual(StatusCodes.Status400BadRequest, badRequest.StatusCode);
-
-		ProblemDetails? problemDetails = badRequest.Value as ProblemDetails;
-		Assert.IsNotNull(problemDetails);
-		Assert.IsNotNull(problemDetails.Title);
-		Assert.IsTrue(problemDetails.Title.Contains("unsupported and outdated"));
+		Assert.IsTrue(ex.Message.Contains("unsupported and outdated"));
 	}
 
 	[TestMethod]
@@ -199,18 +193,11 @@ public class CustomEntryTests
 			Client = "DevilDaggersCustomLeaderboards",
 		};
 
-		ActionResult<GetUploadSuccess> response = await _customEntryProcessor.ProcessUploadRequest(uploadRequest);
+		CustomEntryValidationException ex = await Assert.ThrowsExceptionAsync<CustomEntryValidationException>(async () => await _customEntryProcessor.ProcessUploadRequest(uploadRequest));
 
 		_dbContext.Verify(db => db.SaveChanges(), Times.Never);
 
-		BadRequestObjectResult? badRequest = response.Result as BadRequestObjectResult;
-		Assert.IsNotNull(badRequest);
-		Assert.AreEqual(StatusCodes.Status400BadRequest, badRequest.StatusCode);
-
-		ProblemDetails? problemDetails = badRequest.Value as ProblemDetails;
-		Assert.IsNotNull(problemDetails);
-		Assert.IsNotNull(problemDetails.Title);
-		Assert.IsTrue(problemDetails.Title.StartsWith("Invalid submission"));
+		Assert.IsTrue(ex.Message.StartsWith("Invalid submission"));
 	}
 
 	private string GetValidation(AddUploadRequest uploadRequest)
