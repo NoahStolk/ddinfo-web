@@ -17,19 +17,22 @@ public class CachesController : ControllerBase
 	private readonly ModArchiveCache _modArchiveCache;
 	private readonly SpawnsetSummaryCache _spawnsetSummaryCache;
 	private readonly SpawnsetHashCache _spawnsetHashCache;
+	private readonly ILogger<CachesController> _logger;
 
 	public CachesController(
 		LeaderboardStatisticsCache leaderboardStatisticsCache,
 		LeaderboardHistoryCache leaderboardHistoryCache,
 		ModArchiveCache modArchiveCache,
 		SpawnsetSummaryCache spawnsetSummaryCache,
-		SpawnsetHashCache spawnsetHashCache)
+		SpawnsetHashCache spawnsetHashCache,
+		ILogger<CachesController> logger)
 	{
 		_leaderboardStatisticsCache = leaderboardStatisticsCache;
 		_leaderboardHistoryCache = leaderboardHistoryCache;
 		_modArchiveCache = modArchiveCache;
 		_spawnsetSummaryCache = spawnsetSummaryCache;
 		_spawnsetHashCache = spawnsetHashCache;
+		_logger = logger;
 	}
 
 	[HttpPost("clear")]
@@ -46,6 +49,8 @@ public class CachesController : ControllerBase
 			case "SpawnsetSummary": _spawnsetSummaryCache.Clear(); break;
 			default: return NotFound();
 		}
+
+		_logger.LogWarning("Memory cache '{cacheType}' was cleared.", cacheType);
 
 		return Ok();
 	}
