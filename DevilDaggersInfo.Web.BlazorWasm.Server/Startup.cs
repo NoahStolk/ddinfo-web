@@ -49,13 +49,13 @@ public class Startup
 		services.AddTransient<ModArchiveProcessor>();
 		services.AddTransient<ModScreenshotProcessor>();
 		services.AddTransient<CustomEntryProcessor>();
+		services.AddTransient<AuditLogger>();
 
 		services.AddScoped<IUserService, UserService>();
 
 		services.AddSingleton<BackgroundServiceMonitor>();
 		services.AddSingleton<ResponseTimeMonitor>();
 
-		services.AddSingleton<AuditLogger>();
 		services.AddSingleton<IFileSystemService, FileSystemService>();
 
 		services.AddSingleton<LeaderboardHistoryCache>();
