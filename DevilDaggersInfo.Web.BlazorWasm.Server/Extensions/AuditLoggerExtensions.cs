@@ -56,13 +56,6 @@ public static class AuditLoggerExtensions
 		AddProperty(log, mod.ModTypes?.ToFlagEnum<ModTypes>());
 		AddProperty(log, mod.TrailerUrl);
 		AddProperty(log, mod.Url);
-
-		foreach (KeyValuePair<string, byte[]> binary in mod.Binaries)
-			log.Add($"Binary to add: {binary.Key}", FileSizeUtils.Format(binary.Value.LongLength));
-
-		foreach (KeyValuePair<string, byte[]> screenshot in mod.Screenshots)
-			log.Add($"Screenshot to add: {screenshot.Key}", FileSizeUtils.Format(screenshot.Value.LongLength));
-
 		return log;
 	}
 
@@ -76,16 +69,6 @@ public static class AuditLoggerExtensions
 		AddProperty(log, mod.ModTypes?.ToFlagEnum<ModTypes>());
 		AddProperty(log, mod.TrailerUrl);
 		AddProperty(log, mod.Url);
-
-		foreach (KeyValuePair<string, byte[]> binary in mod.Binaries)
-			log.Add($"Binary to add: {binary.Key}", FileSizeUtils.Format(binary.Value.LongLength));
-
-		foreach (KeyValuePair<string, byte[]> screenshot in mod.Screenshots)
-			log.Add($"Screenshot to add: {screenshot.Key}", FileSizeUtils.Format(screenshot.Value.LongLength));
-
-		log.Add("Binaries to delete", string.Join(", ", mod.BinariesToDelete));
-		log.Add("Screenshots to delete", string.Join(", ", mod.ScreenshotsToDelete));
-
 		return log;
 	}
 
