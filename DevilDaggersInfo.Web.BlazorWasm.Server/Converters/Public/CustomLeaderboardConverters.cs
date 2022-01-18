@@ -41,8 +41,9 @@ public static class CustomLeaderboardConverters
 	public static GetCustomLeaderboardDdLive ToGetCustomLeaderboardDdLive(this CustomLeaderboardEntity customLeaderboard, int playerCount, string? topPlayer, int? worldRecord) => new()
 	{
 		Id = customLeaderboard.Id,
-		SpawnsetAuthorName = customLeaderboard.Spawnset.Player.PlayerName,
 		SpawnsetName = customLeaderboard.Spawnset.Name,
+		SpawnsetAuthorId = customLeaderboard.Spawnset.PlayerId,
+		SpawnsetAuthorName = customLeaderboard.Spawnset.Player.PlayerName,
 		TimeBronze = customLeaderboard.TimeBronze.ToSecondsTime(),
 		TimeSilver = customLeaderboard.TimeSilver.ToSecondsTime(),
 		TimeGolden = customLeaderboard.TimeGolden.ToSecondsTime(),

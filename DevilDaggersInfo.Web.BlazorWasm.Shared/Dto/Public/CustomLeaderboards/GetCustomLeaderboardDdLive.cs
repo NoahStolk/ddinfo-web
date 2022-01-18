@@ -6,6 +6,8 @@ public class GetCustomLeaderboardDdLive
 
 	public string SpawnsetName { get; init; } = null!;
 
+	public int SpawnsetAuthorId { get; init; }
+
 	public string SpawnsetAuthorName { get; init; } = null!;
 
 	public double TimeBronze { get; init; }
