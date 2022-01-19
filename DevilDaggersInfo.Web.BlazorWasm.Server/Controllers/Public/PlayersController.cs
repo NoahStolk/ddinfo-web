@@ -89,15 +89,16 @@ public class PlayersController : ControllerBase
 			.Select(p => new { p.Id, p.HidePastUsernames })
 			.FirstOrDefault(p => p.Id == id);
 
-		bool hideUsernames = player?.HidePastUsernames ?? false;
-
 		int? bestRank = null;
-		Dictionary<string, int> usernamesHistory = new();
-		List<GetPlayerHistoryScoreEntry> scoreHistory = new();
-		List<GetPlayerHistoryActivityEntry> activityHistory = new();
 
-		ulong? deaths = null;
-		DateTime? datePreviousForDeaths = null;
+		bool hideUsernames = player?.HidePastUsernames ?? false;
+		Dictionary<string, int> usernamesHistory = new();
+
+		List<GetPlayerHistoryScoreEntry> scoreHistory = new();
+
+		List<GetPlayerHistoryActivityEntry> activityHistory = new();
+		ulong? deathsForActivityHistory = null;
+		DateTime? datePreviousForActivityHistory = null;
 
 		foreach (string leaderboardHistoryPath in _fileSystemService.TryGetFiles(DataSubDirectory.LeaderboardHistory))
 		{
@@ -140,16 +141,16 @@ public class PlayersController : ControllerBase
 
 			if (entry.DeathsTotal > 0)
 			{
-				TimeSpan? span = datePreviousForDeaths == null ? null : leaderboard.DateTime - datePreviousForDeaths.Value;
+				TimeSpan? span = datePreviousForActivityHistory == null ? null : leaderboard.DateTime - datePreviousForActivityHistory.Value;
 
 				activityHistory.Add(new()
 				{
 					DateTime = leaderboard.DateTime,
-					DeathsIncrement = deaths.HasValue && span.HasValue ? (entry.DeathsTotal - deaths.Value) / span.Value.TotalDays : 0,
+					DeathsIncrement = deathsForActivityHistory.HasValue && span.HasValue ? (entry.DeathsTotal - deathsForActivityHistory.Value) / span.Value.TotalDays : 0,
 				});
 
-				deaths = entry.DeathsTotal;
-				datePreviousForDeaths = leaderboard.DateTime;
+				deathsForActivityHistory = entry.DeathsTotal;
+				datePreviousForActivityHistory = leaderboard.DateTime;
 			}
 		}
 
