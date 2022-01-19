@@ -1,5 +1,3 @@
-using DevilDaggersInfo.Web.BlazorWasm.Shared.Dto.Public.LeaderboardHistory;
-
 namespace DevilDaggersInfo.Web.BlazorWasm.Shared.Dto.Public.Players;
 
 public class GetPlayerHistory
@@ -10,7 +8,7 @@ public class GetPlayerHistory
 
 	public List<string> Usernames { get; init; } = new();
 
-	public List<GetEntryHistory> History { get; init; } = new();
+	public List<GetPlayerHistoryScoreEntry> History { get; init; } = new();
 
-	public List<GetPlayerActivity> Activity { get; init; } = new();
+	public List<GetPlayerHistoryActivityEntry> Activity { get; init; } = new();
 }

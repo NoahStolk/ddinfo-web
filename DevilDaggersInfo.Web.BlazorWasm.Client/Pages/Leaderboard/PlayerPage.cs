@@ -5,7 +5,6 @@ using DevilDaggersInfo.Web.BlazorWasm.Client.HttpClients;
 using DevilDaggersInfo.Web.BlazorWasm.Client.Utils;
 using DevilDaggersInfo.Web.BlazorWasm.Shared.Dto.Public.CustomEntries;
 using DevilDaggersInfo.Web.BlazorWasm.Shared.Dto.Public.CustomLeaderboards;
-using DevilDaggersInfo.Web.BlazorWasm.Shared.Dto.Public.LeaderboardHistory;
 using DevilDaggersInfo.Web.BlazorWasm.Shared.Dto.Public.Leaderboards;
 using DevilDaggersInfo.Web.BlazorWasm.Shared.Dto.Public.Mods;
 using DevilDaggersInfo.Web.BlazorWasm.Shared.Dto.Public.Players;
@@ -116,7 +115,7 @@ public partial class PlayerPage
 			_progressionOptions = new(minX.Ticks, null, maxX.Ticks, minY, scale, maxY);
 			_progressionData.Add(new("#f00", true, true, true, set, (ds, d) =>
 			{
-				GetEntryHistory? entry = GetPlayerHistory.History.Find(eh => eh == d.Reference);
+				GetPlayerHistoryScoreEntry? entry = GetPlayerHistory.History.Find(eh => eh == d.Reference);
 				if (entry == null)
 					return new();
 
@@ -149,7 +148,7 @@ public partial class PlayerPage
 			_activityOptions = new(minX.Ticks, null, maxX.Ticks, 0, scale, maxY);
 			_activityData.Add(new("#f00", false, true, true, set, (ds, d) =>
 			{
-				GetPlayerActivity? activity = GetPlayerHistory.Activity.Find(pa => pa == d.Reference);
+				GetPlayerHistoryActivityEntry? activity = GetPlayerHistory.Activity.Find(pa => pa == d.Reference);
 				return activity == null ? new() : new()
 				{
 					new($"<span style='text-align: right;'>{activity.DateTime.ToString(FormatUtils.DateFormat)}</span>"),

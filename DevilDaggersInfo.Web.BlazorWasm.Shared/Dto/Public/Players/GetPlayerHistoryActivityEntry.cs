@@ -1,6 +1,6 @@
 namespace DevilDaggersInfo.Web.BlazorWasm.Shared.Dto.Public.Players;
 
-public class GetPlayerActivity
+public class GetPlayerHistoryActivityEntry
 {
 	public DateTime DateTime { get; init; }
 

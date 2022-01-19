@@ -18,7 +18,7 @@ public static class LeaderboardHistoryConverters
 		TotalPlayers = leaderboard.Players,
 	};
 
-	public static GetEntryHistory ToDto(this EntryHistory entry, DateTime dateTime) => new()
+	private static GetEntryHistory ToDto(this EntryHistory entry, DateTime dateTime) => new()
 	{
 		DateTime = dateTime,
 		DaggersFired = entry.DaggersFired,

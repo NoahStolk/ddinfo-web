@@ -1,7 +1,6 @@
 using DevilDaggersInfo.Web.BlazorWasm.Server.Caches.LeaderboardHistory;
 using DevilDaggersInfo.Web.BlazorWasm.Server.Converters.Public;
 using DevilDaggersInfo.Web.BlazorWasm.Server.InternalModels.Json;
-using DevilDaggersInfo.Web.BlazorWasm.Shared.Dto.Public.LeaderboardHistory;
 using DevilDaggersInfo.Web.BlazorWasm.Shared.Dto.Public.Players;
 
 namespace DevilDaggersInfo.Web.BlazorWasm.Server.Controllers.Public;
@@ -93,12 +92,12 @@ public class PlayersController : ControllerBase
 		bool hideUsernames = player?.HidePastUsernames ?? false;
 
 		int? bestRank = null;
-		Dictionary<string, int> usernames = new();
-		List<GetEntryHistory> entryHistory = new();
-		List<GetPlayerActivity> activity = new();
+		Dictionary<string, int> usernamesHistory = new();
+		List<GetPlayerHistoryScoreEntry> scoreHistory = new();
+		List<GetPlayerHistoryActivityEntry> activityHistory = new();
 
 		ulong? deaths = null;
-		DateTime? datePrevious = null;
+		DateTime? datePreviousForDeaths = null;
 
 		foreach (string leaderboardHistoryPath in _fileSystemService.TryGetFiles(DataSubDirectory.LeaderboardHistory))
 		{
@@ -113,43 +112,54 @@ public class PlayersController : ControllerBase
 
 			if (!hideUsernames && !string.IsNullOrWhiteSpace(entry.Username))
 			{
-				if (usernames.ContainsKey(entry.Username))
-					usernames[entry.Username]++;
+				if (usernamesHistory.ContainsKey(entry.Username))
+					usernamesHistory[entry.Username]++;
 				else
-					usernames.Add(entry.Username, 1);
+					usernamesHistory.Add(entry.Username, 1);
 			}
 
 			// + 1 and - 1 are used to fix off-by-one errors in the history based on screenshots and videos. This is due to a rounding error in Devil Daggers itself.
-			if (!entryHistory.Any(e =>
+			if (!scoreHistory.Any(e =>
 				e.Time.To10thMilliTime() == entry.Time ||
 				e.Time.To10thMilliTime() == entry.Time + 1 ||
 				e.Time.To10thMilliTime() == entry.Time - 1))
 			{
-				entryHistory.Add(entry.ToDto(leaderboard.DateTime));
+				scoreHistory.Add(new()
+				{
+					DaggersFired = entry.DaggersFired,
+					DaggersHit = entry.DaggersHit,
+					DateTime = leaderboard.DateTime,
+					DeathType = entry.DeathType,
+					Gems = entry.Gems,
+					Kills = entry.Kills,
+					Rank = entry.Rank,
+					Time = entry.Time.ToSecondsTime(),
+					Username = entry.Username,
+				});
 			}
 
 			if (entry.DeathsTotal > 0)
 			{
-				TimeSpan? span = datePrevious == null ? null : leaderboard.DateTime - datePrevious.Value;
+				TimeSpan? span = datePreviousForDeaths == null ? null : leaderboard.DateTime - datePreviousForDeaths.Value;
 
-				activity.Add(new()
+				activityHistory.Add(new()
 				{
 					DateTime = leaderboard.DateTime,
 					DeathsIncrement = deaths.HasValue && span.HasValue ? (entry.DeathsTotal - deaths.Value) / span.Value.TotalDays : 0,
 				});
 
 				deaths = entry.DeathsTotal;
-				datePrevious = leaderboard.DateTime;
+				datePreviousForDeaths = leaderboard.DateTime;
 			}
 		}
 
 		return new GetPlayerHistory
 		{
-			Activity = activity,
+			Activity = activityHistory,
 			BestRank = bestRank,
 			HidePastUsernames = hideUsernames,
-			History = entryHistory,
-			Usernames = usernames.OrderByDescending(kvp => kvp.Value).Select(kvp => kvp.Key).ToList(),
+			History = scoreHistory,
+			Usernames = usernamesHistory.OrderByDescending(kvp => kvp.Value).Select(kvp => kvp.Key).ToList(),
 		};
 	}
 }
