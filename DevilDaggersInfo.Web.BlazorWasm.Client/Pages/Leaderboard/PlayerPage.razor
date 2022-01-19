@@ -219,11 +219,14 @@ else
 		</div>
 
 		<Heading Title="Activity" Level="2" />
-		@if (GetPlayerHistory.ActivityHistory.Count > 0 && GetPlayerHistory.ActivityHistory.Any(a => a.DeathsIncrement != 0))
-		{
-			<div>
-				<LineChart DataOptions="_activityOptions" UniqueName="#activity-chart" DataSets="@_activityData" Options="_activityLineChartOptions" />
-			</div>
-		}
+		<div class="grid grid-cols-1 2xl:grid-cols-2">
+			@if (GetPlayerHistory.ActivityHistory.Count > 0 && GetPlayerHistory.ActivityHistory.Any(a => a.DeathsIncrement != 0))
+			{
+				<div>
+					<Heading Title="Deaths" Level="3" />
+					<LineChart DataOptions="_activityOptions" UniqueName="#activity-chart" DataSets="@_activityData" Options="_activityLineChartOptions" />
+				</div>
+			}
+		</div>
 	}
 }

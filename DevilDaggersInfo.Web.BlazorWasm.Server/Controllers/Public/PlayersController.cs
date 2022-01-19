@@ -94,14 +94,16 @@ public class PlayersController : ControllerBase
 		bool hideUsernames = player?.HidePastUsernames ?? false;
 		Dictionary<string, int> usernamesHistory = new();
 
+		int? scorePreviousForScoreHistory = null;
 		List<GetPlayerHistoryScoreEntry> scoreHistory = new();
-
-		ulong? deathsForActivityHistory = null;
-		DateTime? datePreviousForActivityHistory = null;
-		List<GetPlayerHistoryActivityEntry> activityHistory = new();
 
 		int? rankPreviousForRankHistory = null;
 		List<GetPlayerHistoryRankEntry> rankHistory = new();
+
+		ulong? totalDeathsForActivityHistory = null;
+		ulong? totalTimeForActivityHistory = null;
+		DateTime? datePreviousForActivityHistory = null;
+		List<GetPlayerHistoryActivityEntry> activityHistory = new();
 
 		foreach (string leaderboardHistoryPath in _fileSystemService.TryGetFiles(DataSubDirectory.LeaderboardHistory))
 		{
@@ -122,10 +124,7 @@ public class PlayersController : ControllerBase
 			}
 
 			// + 1 and - 1 are used to fix off-by-one errors in the history based on screenshots and videos. This is due to a rounding error in Devil Daggers itself.
-			if (!scoreHistory.Any(e =>
-				e.Time.To10thMilliTime() == entry.Time ||
-				e.Time.To10thMilliTime() == entry.Time + 1 ||
-				e.Time.To10thMilliTime() == entry.Time - 1))
+			if (!scorePreviousForScoreHistory.HasValue || scorePreviousForScoreHistory < entry.Time - 1 || scorePreviousForScoreHistory > entry.Time + 1)
 			{
 				scoreHistory.Add(new()
 				{
@@ -139,20 +138,8 @@ public class PlayersController : ControllerBase
 					Time = entry.Time.ToSecondsTime(),
 					Username = entry.Username,
 				});
-			}
 
-			if (entry.DeathsTotal > 0)
-			{
-				TimeSpan? span = datePreviousForActivityHistory == null ? null : leaderboard.DateTime - datePreviousForActivityHistory.Value;
-
-				activityHistory.Add(new()
-				{
-					DateTime = leaderboard.DateTime,
-					DeathsIncrement = deathsForActivityHistory.HasValue && span.HasValue ? (entry.DeathsTotal - deathsForActivityHistory.Value) / span.Value.TotalDays : 0,
-				});
-
-				deathsForActivityHistory = entry.DeathsTotal;
-				datePreviousForActivityHistory = leaderboard.DateTime;
+				scorePreviousForScoreHistory = entry.Time;
 			}
 
 			if (!rankPreviousForRankHistory.HasValue || rankPreviousForRankHistory != entry.Rank)
@@ -164,6 +151,21 @@ public class PlayersController : ControllerBase
 				});
 
 				rankPreviousForRankHistory = entry.Rank;
+			}
+
+			if (entry.DeathsTotal > 0)
+			{
+				TimeSpan? span = datePreviousForActivityHistory == null ? null : leaderboard.DateTime - datePreviousForActivityHistory.Value;
+
+				activityHistory.Add(new()
+				{
+					DeathsIncrement = totalDeathsForActivityHistory.HasValue && span.HasValue ? (entry.DeathsTotal - totalDeathsForActivityHistory.Value) / span.Value.TotalDays : 0,
+					DateTime = leaderboard.DateTime,
+				});
+
+				totalDeathsForActivityHistory = entry.DeathsTotal;
+				totalTimeForActivityHistory = entry.TimeTotal;
+				datePreviousForActivityHistory = leaderboard.DateTime;
 			}
 		}
 

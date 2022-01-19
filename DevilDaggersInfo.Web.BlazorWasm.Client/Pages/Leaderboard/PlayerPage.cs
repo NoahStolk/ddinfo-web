@@ -38,17 +38,6 @@ public partial class PlayerPage
 		Backgrounds = LineChartUtils.GameVersionBackgrounds,
 	};
 
-	private readonly LineChartOptions _activityLineChartOptions = new()
-	{
-		HighlighterKeys = new() { "Date", "Avg deaths per day" },
-		GridOptions = new()
-		{
-			MinimumRowHeightInPx = 30,
-		},
-		DisplayXScaleAsDates = true,
-		Backgrounds = LineChartUtils.GameVersionBackgrounds,
-	};
-
 	private readonly LineChartOptions _rankLineChartOptions = new()
 	{
 		HighlighterKeys = new() { "Date", "Rank" },
@@ -60,13 +49,24 @@ public partial class PlayerPage
 		Backgrounds = LineChartUtils.GameVersionBackgrounds,
 	};
 
+	private readonly LineChartOptions _activityLineChartOptions = new()
+	{
+		HighlighterKeys = new() { "Date", "Avg deaths per day" },
+		GridOptions = new()
+		{
+			MinimumRowHeightInPx = 30,
+		},
+		DisplayXScaleAsDates = true,
+		Backgrounds = LineChartUtils.GameVersionBackgrounds,
+	};
+
 	private readonly List<LineDataSet> _scoreData = new();
-	private readonly List<LineDataSet> _activityData = new();
 	private readonly List<LineDataSet> _rankData = new();
+	private readonly List<LineDataSet> _activityData = new();
 
 	private LineChartDataOptions? _scoreOptions;
-	private LineChartDataOptions? _activityOptions;
 	private LineChartDataOptions? _rankOptions;
+	private LineChartDataOptions? _activityOptions;
 
 	private int _pageRankStart;
 	private int _pageRankEnd;
@@ -148,28 +148,6 @@ public partial class PlayerPage
 			}));
 		}
 
-		if (GetPlayerHistory.ActivityHistory.Count > 0)
-		{
-			DateTime minX = GetPlayerHistory.ActivityHistory.Select(ah => ah.DateTime).Min();
-			DateTime maxX = DateTime.UtcNow;
-
-			IEnumerable<double> deaths = GetPlayerHistory.ActivityHistory.Select(ah => ah.DeathsIncrement);
-			const double scale = 20.0;
-			double maxY = Math.Ceiling(deaths.Max() / scale) * scale;
-
-			List<LineData> set = GetPlayerHistory.ActivityHistory.Select(ah => new LineData(ah.DateTime.Ticks, ah.DeathsIncrement, ah)).ToList();
-			_activityOptions = new(minX.Ticks, null, maxX.Ticks, 0, scale, maxY);
-			_activityData.Add(new("#0f0", false, true, true, set, (ds, d) =>
-			{
-				GetPlayerHistoryActivityEntry? activityEntry = GetPlayerHistory.ActivityHistory.Find(ah => ah == d.Reference);
-				return activityEntry == null ? new() : new()
-				{
-					new($"<span style='text-align: right;'>{activityEntry.DateTime.ToString(FormatUtils.DateFormat)}</span>"),
-					new($"<span style='color: {ds.Color}; text-align: right;'>{activityEntry.DeathsIncrement.ToString("0.0")}</span>"),
-				};
-			}));
-		}
-
 		if (GetPlayerHistory.RankHistory.Count > 0)
 		{
 			DateTime minX = GetPlayerHistory.RankHistory.Select(rh => rh.DateTime).Min();
@@ -188,6 +166,28 @@ public partial class PlayerPage
 				{
 					new($"<span style='text-align: right;'>{rankEntry.DateTime.ToString(FormatUtils.DateFormat)}</span>"),
 					new($"<span style='text-align: right;'>{rankEntry.Rank}</span>"),
+				};
+			}));
+		}
+
+		if (GetPlayerHistory.ActivityHistory.Count > 0)
+		{
+			DateTime minX = GetPlayerHistory.ActivityHistory.Select(ah => ah.DateTime).Min();
+			DateTime maxX = DateTime.UtcNow;
+
+			IEnumerable<double> deaths = GetPlayerHistory.ActivityHistory.Select(ah => ah.DeathsIncrement);
+			const double scale = 20.0;
+			double maxY = Math.Ceiling(deaths.Max() / scale) * scale;
+
+			List<LineData> set = GetPlayerHistory.ActivityHistory.Select(ah => new LineData(ah.DateTime.Ticks, ah.DeathsIncrement, ah)).ToList();
+			_activityOptions = new(minX.Ticks, null, maxX.Ticks, 0, scale, maxY);
+			_activityData.Add(new("#0f0", false, true, true, set, (ds, d) =>
+			{
+				GetPlayerHistoryActivityEntry? activityEntry = GetPlayerHistory.ActivityHistory.Find(ah => ah == d.Reference);
+				return activityEntry == null ? new() : new()
+				{
+					new($"<span style='text-align: right;'>{activityEntry.DateTime.ToString(FormatUtils.DateFormat)}</span>"),
+					new($"<span style='color: {ds.Color}; text-align: right;'>{activityEntry.DeathsIncrement.ToString("0.0")}</span>"),
 				};
 			}));
 		}
