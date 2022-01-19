@@ -9,13 +9,15 @@ namespace DevilDaggersInfo.Web.BlazorWasm.Client.Pages.Leaderboard;
 
 public partial class StatisticsPage
 {
-	private static BarChartOptions _scoreBarChartOptions = new() { ChartMarginXInPx = 60, HighlighterKeys = new() { "Score range", "Players" }, HighlighterWidth = 320 };
-	private static BarChartOptions _killsBarChartOptions = new() { ChartMarginXInPx = 60, HighlighterKeys = new() { "Kills range", "Players" }, HighlighterWidth = 320 };
-	private static BarChartOptions _gemsBarChartOptions = new() { ChartMarginXInPx = 60, HighlighterKeys = new() { "Gems range", "Players" }, HighlighterWidth = 320 };
-	private static BarChartOptions _upgradesBarChartOptions = new() { ChartMarginXInPx = 60, ChartMarginYInPx = 80, HighlighterKeys = new() { "Upgrade", "Players" }, HighlighterWidth = 320 };
-	private static BarChartOptions _daggersBarChartOptions = new() { ChartMarginXInPx = 60, ChartMarginYInPx = 80, HighlighterKeys = new() { "Dagger", "Players" }, HighlighterWidth = 320 };
-	private static BarChartOptions _deathsBarChartOptions = new() { ChartMarginXInPx = 60, ChartMarginYInPx = 80, HighlighterKeys = new() { "Death type", "Players" }, HighlighterWidth = 320 };
-	private static BarChartOptions _enemiesBarChartOptions = new() { ChartMarginXInPx = 60, ChartMarginYInPx = 80, HighlighterKeys = new() { "Enemy", "Players" }, HighlighterWidth = 320 };
+	private const string _percentageFormat = "0.000%";
+
+	private static BarChartOptions _scoreBarChartOptions = new() { ChartMarginXInPx = 60, HighlighterKeys = new() { "Score range", "Players", "% of all" }, HighlighterWidth = 320 };
+	private static BarChartOptions _killsBarChartOptions = new() { ChartMarginXInPx = 60, HighlighterKeys = new() { "Kills range", "Players", "% of all" }, HighlighterWidth = 320 };
+	private static BarChartOptions _gemsBarChartOptions = new() { ChartMarginXInPx = 60, HighlighterKeys = new() { "Gems range", "Players", "% of all" }, HighlighterWidth = 320 };
+	private static BarChartOptions _upgradesBarChartOptions = new() { ChartMarginXInPx = 60, ChartMarginYInPx = 80, HighlighterKeys = new() { "Upgrade", "Players", "% of all" }, HighlighterWidth = 320 };
+	private static BarChartOptions _daggersBarChartOptions = new() { ChartMarginXInPx = 60, ChartMarginYInPx = 80, HighlighterKeys = new() { "Dagger", "Players", "% of all" }, HighlighterWidth = 320 };
+	private static BarChartOptions _deathsBarChartOptions = new() { ChartMarginXInPx = 60, ChartMarginYInPx = 80, HighlighterKeys = new() { "Death type", "Players", "% of all" }, HighlighterWidth = 320 };
+	private static BarChartOptions _enemiesBarChartOptions = new() { ChartMarginXInPx = 60, ChartMarginYInPx = 80, HighlighterKeys = new() { "Enemy", "Players", "% of all" }, HighlighterWidth = 320 };
 
 	private static readonly List<string> _daggers = Daggers.GetDaggers(GameConstants.CurrentVersion).ConvertAll(d => d.Name);
 	private static readonly List<string> _deathTypes = Deaths.GetDeaths(GameConstants.CurrentVersion).ConvertAll(d => d.Name);
@@ -63,7 +65,7 @@ public partial class StatisticsPage
 		IEnumerable<KeyValuePair<int, int>> post1000Scores = _statistics.TimesStatistics.Where(kvp => kvp.Key >= 1000);
 		SetScoreChart(post1000Scores, 2.0, ref _post1000Data, ref _post1000DataOptions);
 
-		static void SetScoreChart(IEnumerable<KeyValuePair<int, int>> data, double scale, ref BarDataSet? dataSet, ref BarChartDataOptions? dataOptions)
+		void SetScoreChart(IEnumerable<KeyValuePair<int, int>> data, double scale, ref BarDataSet? dataSet, ref BarChartDataOptions? dataOptions)
 		{
 			List<BarData> set = data.Select(kvp => new BarData(Daggers.GetDaggerFromSeconds(GameConstants.CurrentVersion, kvp.Key).Color.HexCode, kvp.Value, kvp)).ToList();
 			dataOptions = new(0, scale, Math.Ceiling(data.Max(kvp => kvp.Value) / scale) * scale);
@@ -75,6 +77,7 @@ public partial class StatisticsPage
 				{
 					new($"<span style='text-align: right;'>{start.ToString(FormatUtils.TimeFormat)} - {(start + 9.9999).ToString(FormatUtils.TimeFormat)}</span>"),
 					new($"<span style='text-align: right;'>{barData.Y.ToString("0")}</span>"),
+					new($"<span style='text-align: right;'>{(barData.Y / _statistics.TotalEntries).ToString(_percentageFormat)}</span>"),
 				};
 			});
 		}
@@ -90,6 +93,7 @@ public partial class StatisticsPage
 			{
 				new($"<span style='text-align: right;'>{start.ToString("0")} - {(start + 9).ToString("0")}</span>"),
 				new($"<span style='text-align: right;'>{barData.Y.ToString("0")}</span>"),
+				new($"<span style='text-align: right;'>{(barData.Y / _statistics.TotalEntries).ToString(_percentageFormat)}</span>"),
 			};
 		});
 
@@ -104,6 +108,7 @@ public partial class StatisticsPage
 			{
 				new($"<span style='text-align: right;'>{start.ToString("0")} - {(start + 9).ToString("0")}</span>"),
 				new($"<span style='text-align: right;'>{barData.Y.ToString("0")}</span>"),
+				new($"<span style='text-align: right;'>{(barData.Y / _statistics.TotalEntries).ToString(_percentageFormat)}</span>"),
 			};
 		});
 
@@ -121,6 +126,7 @@ public partial class StatisticsPage
 			{
 				new($"<span style='text-align: right;'>{_upgrades[i]}</span>"),
 				new($"<span style='text-align: right;'>{ds.Data[i].Y.ToString("0")}</span>"),
+				new($"<span style='text-align: right;'>{(ds.Data[i].Y / _statistics.TotalEntries).ToString(_percentageFormat)}</span>"),
 			};
 		});
 
@@ -133,6 +139,7 @@ public partial class StatisticsPage
 			{
 				new($"<span style='text-align: right;'>{_daggers[i]}</span>"),
 				new($"<span style='text-align: right;'>{ds.Data[i].Y.ToString("0")}</span>"),
+				new($"<span style='text-align: right;'>{(ds.Data[i].Y / _statistics.TotalEntries).ToString(_percentageFormat)}</span>"),
 			};
 		});
 
@@ -145,6 +152,7 @@ public partial class StatisticsPage
 			{
 				new($"<span style='text-align: right;'>{_deathTypes[i]}</span>"),
 				new($"<span style='text-align: right;'>{ds.Data[i].Y.ToString("0")}</span>"),
+				new($"<span style='text-align: right;'>{(ds.Data[i].Y / _statistics.TotalEntries).ToString(_percentageFormat)}</span>"),
 			};
 		});
 
@@ -157,6 +165,7 @@ public partial class StatisticsPage
 			{
 				new($"<span style='text-align: right;'>{_enemies[i]}</span>"),
 				new($"<span style='text-align: right;'>{ds.Data[i].Y.ToString("0")}</span>"),
+				new($"<span style='text-align: right;'>{(ds.Data[i].Y / _statistics.TotalEntries).ToString(_percentageFormat)}</span>"),
 			};
 		});
 	}
