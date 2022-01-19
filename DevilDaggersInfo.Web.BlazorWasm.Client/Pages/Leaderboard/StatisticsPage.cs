@@ -11,7 +11,7 @@ public partial class StatisticsPage
 {
 	private const string _percentageFormat = "0.000%";
 
-	private static BarChartOptions _scoreBarChartOptions = new() { ChartMarginXInPx = 60, HighlighterKeys = new() { "Score range", "Players", "% of all" }, HighlighterWidth = 320 };
+	private static BarChartOptions _scoreBarChartOptions = new() { ChartMarginXInPx = 60, HighlighterKeys = new() { "Score range", "Players", "% of all" }, HighlighterWidth = 360 };
 	private static BarChartOptions _killsBarChartOptions = new() { ChartMarginXInPx = 60, HighlighterKeys = new() { "Kills range", "Players", "% of all" }, HighlighterWidth = 320 };
 	private static BarChartOptions _gemsBarChartOptions = new() { ChartMarginXInPx = 60, HighlighterKeys = new() { "Gems range", "Players", "% of all" }, HighlighterWidth = 320 };
 	private static BarChartOptions _upgradesBarChartOptions = new() { ChartMarginXInPx = 60, ChartMarginYInPx = 80, HighlighterKeys = new() { "Upgrade", "Players", "% of all" }, HighlighterWidth = 320 };
@@ -73,9 +73,10 @@ public partial class StatisticsPage
 			{
 				BarData barData = ds.Data[i];
 				int start = data.ElementAt(i).Key;
+				Dagger dagger = Daggers.GetDaggerFromSeconds(GameConstants.CurrentVersion, start);
 				return new()
 				{
-					new($"<span style='color: {barData.Color}; text-align: right;'>{start.ToString(FormatUtils.TimeFormat)} - {(start + 9.9999).ToString(FormatUtils.TimeFormat)}</span>"),
+					new($"<span class='font-goethe text-xl {dagger.Name.ToLower()}' style='text-align: right;'>{start.ToString(FormatUtils.TimeFormat)} - {(start + 9.9999).ToString(FormatUtils.TimeFormat)}</span>"),
 					new($"<span style='text-align: right;'>{barData.Y.ToString("0")}</span>"),
 					new($"<span style='text-align: right;'>{(barData.Y / _statistics.TotalEntries).ToString(_percentageFormat)}</span>"),
 				};
@@ -137,9 +138,10 @@ public partial class StatisticsPage
 		_daggersData = new(daggersSet, (ds, i) =>
 		{
 			BarData barData = ds.Data[i];
+			string dagger = _daggers[i];
 			return new()
 			{
-				new($"<span style='color: {barData.Color}; text-align: right;'>{_daggers[i]}</span>"),
+				new($"<span class='font-goethe text-xl {dagger.ToLower()}' style='text-align: right;'>{dagger}</span>"),
 				new($"<span style='text-align: right;'>{barData.Y.ToString("0")}</span>"),
 				new($"<span style='text-align: right;'>{(barData.Y / _statistics.TotalEntries).ToString(_percentageFormat)}</span>"),
 			};
