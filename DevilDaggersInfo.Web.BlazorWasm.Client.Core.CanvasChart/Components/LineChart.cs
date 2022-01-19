@@ -14,7 +14,7 @@ public partial class LineChart
 {
 	private Canvas2d? _context;
 	private object? _canvasReference;
-	private LineChartHighlighter? _highlighter;
+	private ChartHighlighter? _highlighter;
 
 	private int _canvasWidth;
 	private int _canvasHeight;
