@@ -142,8 +142,8 @@ public partial class PlayerPage
 				return new()
 				{
 					new($"<span style='text-align: right;'>{scoreEntry.DateTime.ToString(FormatUtils.DateFormat)}</span>"),
-					new($"<span style='text-align: right;' class='{dagger.Name.ToLower()}'>{scoreEntry.Time.ToString(FormatUtils.TimeFormat)}</span>"),
-					new($"<span style='text-align: right;' class='{dagger.Name.ToLower()}'>{scoreEntry.Username}</span>"),
+					new($"<span style='text-align: right;' class='font-goethe text-xl {dagger.Name.ToLower()}'>{scoreEntry.Time.ToString(FormatUtils.TimeFormat)}</span>"),
+					new($"<span style='text-align: right;' class='font-goethe text-xl {dagger.Name.ToLower()}'>{scoreEntry.Username}</span>"),
 					new($"<span style='text-align: right;'>{scoreEntry.Rank}</span>"),
 					new($"<span style='text-align: right;'>{scoreEntry.Gems}</span>"),
 					new($"<span style='text-align: right;'>{scoreEntry.Kills}</span>"),
