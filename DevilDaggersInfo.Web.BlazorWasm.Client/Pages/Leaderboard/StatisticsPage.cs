@@ -75,7 +75,7 @@ public partial class StatisticsPage
 				int start = data.ElementAt(i).Key;
 				return new()
 				{
-					new($"<span style='text-align: right;'>{start.ToString(FormatUtils.TimeFormat)} - {(start + 9.9999).ToString(FormatUtils.TimeFormat)}</span>"),
+					new($"<span style='color: {barData.Color}; text-align: right;'>{start.ToString(FormatUtils.TimeFormat)} - {(start + 9.9999).ToString(FormatUtils.TimeFormat)}</span>"),
 					new($"<span style='text-align: right;'>{barData.Y.ToString("0")}</span>"),
 					new($"<span style='text-align: right;'>{(barData.Y / _statistics.TotalEntries).ToString(_percentageFormat)}</span>"),
 				};
@@ -122,11 +122,12 @@ public partial class StatisticsPage
 		_upgradesDataOptions = new(0, upgradesScale, Math.Ceiling(new int[] { _statistics.PlayersWithLevel1, _statistics.PlayersWithLevel2, _statistics.PlayersWithLevel3Or4 }.Max() / upgradesScale) * upgradesScale);
 		_upgradesData = new(upgradesSet, (ds, i) =>
 		{
+			BarData barData = ds.Data[i];
 			return new()
 			{
-				new($"<span style='text-align: right;'>{_upgrades[i]}</span>"),
-				new($"<span style='text-align: right;'>{ds.Data[i].Y.ToString("0")}</span>"),
-				new($"<span style='text-align: right;'>{(ds.Data[i].Y / _statistics.TotalEntries).ToString(_percentageFormat)}</span>"),
+				new($"<span style='color: {barData.Color}; text-align: right;'>{_upgrades[i]}</span>"),
+				new($"<span style='text-align: right;'>{barData.Y.ToString("0")}</span>"),
+				new($"<span style='text-align: right;'>{(barData.Y / _statistics.TotalEntries).ToString(_percentageFormat)}</span>"),
 			};
 		});
 
@@ -135,11 +136,12 @@ public partial class StatisticsPage
 		_daggersDataOptions = new(0, daggersScale, Math.Ceiling(_statistics.DaggersStatistics.Max(kvp => kvp.Value) / daggersScale) * daggersScale);
 		_daggersData = new(daggersSet, (ds, i) =>
 		{
+			BarData barData = ds.Data[i];
 			return new()
 			{
-				new($"<span style='text-align: right;'>{_daggers[i]}</span>"),
-				new($"<span style='text-align: right;'>{ds.Data[i].Y.ToString("0")}</span>"),
-				new($"<span style='text-align: right;'>{(ds.Data[i].Y / _statistics.TotalEntries).ToString(_percentageFormat)}</span>"),
+				new($"<span style='color: {barData.Color}; text-align: right;'>{_daggers[i]}</span>"),
+				new($"<span style='text-align: right;'>{barData.Y.ToString("0")}</span>"),
+				new($"<span style='text-align: right;'>{(barData.Y / _statistics.TotalEntries).ToString(_percentageFormat)}</span>"),
 			};
 		});
 
@@ -148,11 +150,12 @@ public partial class StatisticsPage
 		_deathsDataOptions = new(0, deathsScale, Math.Ceiling(_statistics.DeathsStatistics.Max(kvp => kvp.Value) / deathsScale) * deathsScale);
 		_deathsData = new(deathsSet, (ds, i) =>
 		{
+			BarData barData = ds.Data[i];
 			return new()
 			{
-				new($"<span style='text-align: right;'>{_deathTypes[i]}</span>"),
-				new($"<span style='text-align: right;'>{ds.Data[i].Y.ToString("0")}</span>"),
-				new($"<span style='text-align: right;'>{(ds.Data[i].Y / _statistics.TotalEntries).ToString(_percentageFormat)}</span>"),
+				new($"<span style='color: {barData.Color}; text-align: right;'>{_deathTypes[i]}</span>"),
+				new($"<span style='text-align: right;'>{barData.Y.ToString("0")}</span>"),
+				new($"<span style='text-align: right;'>{(barData.Y / _statistics.TotalEntries).ToString(_percentageFormat)}</span>"),
 			};
 		});
 
@@ -161,11 +164,12 @@ public partial class StatisticsPage
 		_enemiesDataOptions = new(0, enemiesScale, Math.Ceiling(_statistics.EnemiesStatistics.Max(kvp => kvp.Value) / enemiesScale) * enemiesScale);
 		_enemiesData = new(enemiesSet, (ds, i) =>
 		{
+			BarData barData = ds.Data[i];
 			return new()
 			{
-				new($"<span style='text-align: right;'>{_enemies[i]}</span>"),
-				new($"<span style='text-align: right;'>{ds.Data[i].Y.ToString("0")}</span>"),
-				new($"<span style='text-align: right;'>{(ds.Data[i].Y / _statistics.TotalEntries).ToString(_percentageFormat)}</span>"),
+				new($"<span style='color: {barData.Color}; text-align: right;'>{_enemies[i]}</span>"),
+				new($"<span style='text-align: right;'>{barData.Y.ToString("0")}</span>"),
+				new($"<span style='text-align: right;'>{(barData.Y / _statistics.TotalEntries).ToString(_percentageFormat)}</span>"),
 			};
 		});
 	}
