@@ -17,19 +17,9 @@ namespace DevilDaggersInfo.Web.BlazorWasm.Client.Pages.Leaderboard;
 
 public partial class PlayerPage
 {
-	private readonly LineChartOptions _scoreLineChartOptions = new()
+	private readonly LineChartOptions _progressionScoreLineChartOptions = new()
 	{
-		HighlighterKeys = new()
-		{
-			"Date",
-			"Time",
-			"Player",
-			"Rank",
-			"Gems",
-			"Kills",
-			"Accuracy",
-			"Death type",
-		},
+		HighlighterKeys = new() { "Date", "Time", "Player", "Rank", "Gems", "Kills", "Accuracy", "Death type" },
 		GridOptions = new()
 		{
 			MinimumRowHeightInPx = 30,
@@ -38,7 +28,7 @@ public partial class PlayerPage
 		Backgrounds = LineChartUtils.GameVersionBackgrounds,
 	};
 
-	private readonly LineChartOptions _rankLineChartOptions = new()
+	private readonly LineChartOptions _progressionRankLineChartOptions = new()
 	{
 		HighlighterKeys = new() { "Date", "Rank" },
 		GridOptions = new()
@@ -49,7 +39,7 @@ public partial class PlayerPage
 		Backgrounds = LineChartUtils.GameVersionBackgrounds,
 	};
 
-	private readonly LineChartOptions _activityLineChartOptions = new()
+	private readonly LineChartOptions _activityDeathsLineChartOptions = new()
 	{
 		HighlighterKeys = new() { "Date", "Avg deaths per day" },
 		GridOptions = new()
@@ -60,13 +50,13 @@ public partial class PlayerPage
 		Backgrounds = LineChartUtils.GameVersionBackgrounds,
 	};
 
-	private readonly List<LineDataSet> _scoreData = new();
-	private readonly List<LineDataSet> _rankData = new();
-	private readonly List<LineDataSet> _activityData = new();
+	private readonly List<LineDataSet> _progressionScoreData = new();
+	private readonly List<LineDataSet> _progressionRankData = new();
+	private readonly List<LineDataSet> _activityDeathsData = new();
 
-	private LineChartDataOptions? _scoreOptions;
-	private LineChartDataOptions? _rankOptions;
-	private LineChartDataOptions? _activityOptions;
+	private LineChartDataOptions? _progressionScoreOptions;
+	private LineChartDataOptions? _progressionRankOptions;
+	private LineChartDataOptions? _activityDeathsOptions;
 
 	private int _pageRankStart;
 	private int _pageRankEnd;
@@ -125,8 +115,8 @@ public partial class PlayerPage
 			double maxY = Math.Ceiling(scores.Max() / scale) * scale;
 
 			List<LineData> set = GetPlayerHistory.ScoreHistory.Select(sh => new LineData(sh.DateTime.Ticks, sh.Time, sh)).ToList();
-			_scoreOptions = new(minX.Ticks, null, maxX.Ticks, minY, scale, maxY);
-			_scoreData.Add(new("#f00", true, true, true, set, (ds, d) =>
+			_progressionScoreOptions = new(minX.Ticks, null, maxX.Ticks, minY, scale, maxY);
+			_progressionScoreData.Add(new("#f00", true, true, true, set, (ds, d) =>
 			{
 				GetPlayerHistoryScoreEntry? scoreEntry = GetPlayerHistory.ScoreHistory.Find(sh => sh == d.Reference);
 				if (scoreEntry == null)
@@ -158,8 +148,8 @@ public partial class PlayerPage
 			double maxY = Math.Ceiling(rank.Max() / scale) * scale;
 
 			List<LineData> set = GetPlayerHistory.RankHistory.Select(rh => new LineData(rh.DateTime.Ticks, rh.Rank, rh)).ToList();
-			_rankOptions = new(minX.Ticks, null, maxX.Ticks, 0, scale, maxY, false, true);
-			_rankData.Add(new("#ff0", false, true, true, set, (ds, d) =>
+			_progressionRankOptions = new(minX.Ticks, null, maxX.Ticks, 0, scale, maxY, false, true);
+			_progressionRankData.Add(new("#ff0", false, true, true, set, (ds, d) =>
 			{
 				GetPlayerHistoryRankEntry? rankEntry = GetPlayerHistory.RankHistory.Find(rh => rh == d.Reference);
 				return rankEntry == null ? new() : new()
@@ -180,8 +170,8 @@ public partial class PlayerPage
 			double maxY = Math.Ceiling(deaths.Max() / scale) * scale;
 
 			List<LineData> set = GetPlayerHistory.ActivityHistory.Select(ah => new LineData(ah.DateTime.Ticks, ah.DeathsIncrement, ah)).ToList();
-			_activityOptions = new(minX.Ticks, null, maxX.Ticks, 0, scale, maxY);
-			_activityData.Add(new("#0f0", false, true, true, set, (ds, d) =>
+			_activityDeathsOptions = new(minX.Ticks, null, maxX.Ticks, 0, scale, maxY);
+			_activityDeathsData.Add(new("#0f0", false, true, true, set, (ds, d) =>
 			{
 				GetPlayerHistoryActivityEntry? activityEntry = GetPlayerHistory.ActivityHistory.Find(ah => ah == d.Reference);
 				return activityEntry == null ? new() : new()

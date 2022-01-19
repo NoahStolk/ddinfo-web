@@ -205,7 +205,7 @@ else
 			{
 				<div>
 					<Heading Title="Score" Level="3" />
-					<LineChart DataOptions="_scoreOptions" UniqueName="#progression-chart" DataSets="@_scoreData" Options="_scoreLineChartOptions" />
+					<LineChart DataOptions="_progressionScoreOptions" UniqueName="#progression-score-chart" DataSets="@_progressionScoreData" Options="_progressionScoreLineChartOptions" />
 				</div>
 			}
 
@@ -213,19 +213,22 @@ else
 			{
 				<div>
 					<Heading Title="Rank" Level="3" />
-					<LineChart DataOptions="_rankOptions" UniqueName="#rank-chart" DataSets="@_rankData" Options="_rankLineChartOptions" />
+					<LineChart DataOptions="_progressionRankOptions" UniqueName="#progression-rank-chart" DataSets="@_progressionRankData" Options="_progressionRankLineChartOptions" />
 				</div>
 			}
 		</div>
 
 		<Heading Title="Activity" Level="2" />
 		<div class="grid grid-cols-1 2xl:grid-cols-2">
-			@if (GetPlayerHistory.ActivityHistory.Count > 0 && GetPlayerHistory.ActivityHistory.Any(a => a.DeathsIncrement != 0))
+			@if (GetPlayerHistory.ActivityHistory.Count > 0)
 			{
-				<div>
-					<Heading Title="Deaths" Level="3" />
-					<LineChart DataOptions="_activityOptions" UniqueName="#activity-chart" DataSets="@_activityData" Options="_activityLineChartOptions" />
-				</div>
+				if (GetPlayerHistory.ActivityHistory.Any(a => a.DeathsIncrement != 0))
+				{
+					<div>
+						<Heading Title="Deaths" Level="3" />
+						<LineChart DataOptions="_activityDeathsOptions" UniqueName="#activity-deaths-chart" DataSets="@_activityDeathsData" Options="_activityDeathsLineChartOptions" />
+					</div>
+				}
 			}
 		</div>
 	}
