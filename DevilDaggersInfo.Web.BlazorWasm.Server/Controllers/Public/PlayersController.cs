@@ -160,6 +160,7 @@ public class PlayersController : ControllerBase
 				activityHistory.Add(new()
 				{
 					DeathsIncrement = totalDeathsForActivityHistory.HasValue && span.HasValue ? (entry.DeathsTotal - totalDeathsForActivityHistory.Value) / span.Value.TotalDays : 0,
+					TimeIncrement = totalTimeForActivityHistory.HasValue && span.HasValue ? (entry.TimeTotal - totalTimeForActivityHistory.Value).ToSecondsTime() / span.Value.TotalDays : 0,
 					DateTime = leaderboard.DateTime,
 				});
 

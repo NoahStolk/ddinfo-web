@@ -225,8 +225,16 @@ else
 				if (GetPlayerHistory.ActivityHistory.Any(a => a.DeathsIncrement != 0))
 				{
 					<div>
-						<Heading Title="Deaths" Level="3" />
+						<Heading Title="Total Deaths" Level="3" />
 						<LineChart DataOptions="_activityDeathsOptions" UniqueName="#activity-deaths-chart" DataSets="@_activityDeathsData" Options="_activityDeathsLineChartOptions" />
+					</div>
+				}
+
+				if (GetPlayerHistory.ActivityHistory.Any(a => a.TimeIncrement != 0))
+				{
+					<div>
+						<Heading Title="Total Time" Level="3" />
+						<LineChart DataOptions="_activityTimeOptions" UniqueName="#activity-time-chart" DataSets="@_activityTimeData" Options="_activityTimeLineChartOptions" />
 					</div>
 				}
 			}

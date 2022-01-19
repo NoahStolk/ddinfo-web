@@ -50,13 +50,26 @@ public partial class PlayerPage
 		Backgrounds = LineChartUtils.GameVersionBackgrounds,
 	};
 
+	private readonly LineChartOptions _activityTimeLineChartOptions = new()
+	{
+		HighlighterKeys = new() { "Date", "Avg total time per day" },
+		GridOptions = new()
+		{
+			MinimumRowHeightInPx = 30,
+		},
+		DisplayXScaleAsDates = true,
+		Backgrounds = LineChartUtils.GameVersionBackgrounds,
+	};
+
 	private readonly List<LineDataSet> _progressionScoreData = new();
 	private readonly List<LineDataSet> _progressionRankData = new();
 	private readonly List<LineDataSet> _activityDeathsData = new();
+	private readonly List<LineDataSet> _activityTimeData = new();
 
 	private LineChartDataOptions? _progressionScoreOptions;
 	private LineChartDataOptions? _progressionRankOptions;
 	private LineChartDataOptions? _activityDeathsOptions;
+	private LineChartDataOptions? _activityTimeOptions;
 
 	private int _pageRankStart;
 	private int _pageRankEnd;
@@ -166,18 +179,34 @@ public partial class PlayerPage
 			DateTime maxX = DateTime.UtcNow;
 
 			IEnumerable<double> deaths = GetPlayerHistory.ActivityHistory.Select(ah => ah.DeathsIncrement);
-			const double scale = 20.0;
-			double maxY = Math.Ceiling(deaths.Max() / scale) * scale;
+			const double deathsScale = 20.0;
+			double deathsMaxY = Math.Ceiling(deaths.Max() / deathsScale) * deathsScale;
 
-			List<LineData> set = GetPlayerHistory.ActivityHistory.Select(ah => new LineData(ah.DateTime.Ticks, ah.DeathsIncrement, ah)).ToList();
-			_activityDeathsOptions = new(minX.Ticks, null, maxX.Ticks, 0, scale, maxY);
-			_activityDeathsData.Add(new("#0f0", false, true, true, set, (ds, d) =>
+			IEnumerable<double> time = GetPlayerHistory.ActivityHistory.Select(ah => ah.TimeIncrement);
+			const double timeScale = 2000.0;
+			double timeMaxY = Math.Ceiling(time.Max() / timeScale) * timeScale;
+
+			List<LineData> deathsSet = GetPlayerHistory.ActivityHistory.Select(ah => new LineData(ah.DateTime.Ticks, ah.DeathsIncrement, ah)).ToList();
+			_activityDeathsOptions = new(minX.Ticks, null, maxX.Ticks, 0, deathsScale, deathsMaxY);
+			_activityDeathsData.Add(new("#0f0", false, true, true, deathsSet, (ds, d) =>
 			{
 				GetPlayerHistoryActivityEntry? activityEntry = GetPlayerHistory.ActivityHistory.Find(ah => ah == d.Reference);
 				return activityEntry == null ? new() : new()
 				{
 					new($"<span style='text-align: right;'>{activityEntry.DateTime.ToString(FormatUtils.DateFormat)}</span>"),
 					new($"<span style='color: {ds.Color}; text-align: right;'>{activityEntry.DeathsIncrement.ToString("0.0")}</span>"),
+				};
+			}));
+
+			List<LineData> timeSet = GetPlayerHistory.ActivityHistory.Select(ah => new LineData(ah.DateTime.Ticks, ah.TimeIncrement, ah)).ToList();
+			_activityTimeOptions = new(minX.Ticks, null, maxX.Ticks, 0, timeScale, timeMaxY);
+			_activityTimeData.Add(new("#f80", false, true, true, timeSet, (ds, d) =>
+			{
+				GetPlayerHistoryActivityEntry? activityEntry = GetPlayerHistory.ActivityHistory.Find(ah => ah == d.Reference);
+				return activityEntry == null ? new() : new()
+				{
+					new($"<span style='text-align: right;'>{activityEntry.DateTime.ToString(FormatUtils.DateFormat)}</span>"),
+					new($"<span style='color: {ds.Color}; text-align: right;'>{activityEntry.TimeIncrement.ToString("0.0000")}</span>"),
 				};
 			}));
 		}
