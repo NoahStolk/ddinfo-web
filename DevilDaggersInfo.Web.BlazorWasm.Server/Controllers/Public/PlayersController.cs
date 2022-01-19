@@ -96,15 +96,17 @@ public class PlayersController : ControllerBase
 
 		List<GetPlayerHistoryScoreEntry> scoreHistory = new();
 
-		List<GetPlayerHistoryActivityEntry> activityHistory = new();
 		ulong? deathsForActivityHistory = null;
 		DateTime? datePreviousForActivityHistory = null;
+		List<GetPlayerHistoryActivityEntry> activityHistory = new();
+
+		int? rankPreviousForRankHistory = null;
+		List<GetPlayerHistoryRankEntry> rankHistory = new();
 
 		foreach (string leaderboardHistoryPath in _fileSystemService.TryGetFiles(DataSubDirectory.LeaderboardHistory))
 		{
 			LeaderboardHistory leaderboard = _leaderboardHistoryCache.GetLeaderboardHistoryByFilePath(leaderboardHistoryPath);
 			EntryHistory? entry = leaderboard.Entries.Find(e => e.Id == id);
-
 			if (entry == null)
 				continue;
 
@@ -152,14 +154,26 @@ public class PlayersController : ControllerBase
 				deathsForActivityHistory = entry.DeathsTotal;
 				datePreviousForActivityHistory = leaderboard.DateTime;
 			}
+
+			if (!rankPreviousForRankHistory.HasValue || rankPreviousForRankHistory != entry.Rank)
+			{
+				rankHistory.Add(new()
+				{
+					DateTime = leaderboard.DateTime,
+					Rank = entry.Rank,
+				});
+
+				rankPreviousForRankHistory = entry.Rank;
+			}
 		}
 
 		return new GetPlayerHistory
 		{
-			Activity = activityHistory,
+			ActivityHistory = activityHistory,
 			BestRank = bestRank,
 			HidePastUsernames = hideUsernames,
-			History = scoreHistory,
+			RankHistory = rankHistory,
+			ScoreHistory = scoreHistory,
 			Usernames = usernamesHistory.OrderByDescending(kvp => kvp.Value).Select(kvp => kvp.Key).ToList(),
 		};
 	}

@@ -199,20 +199,29 @@ else
 
 	if (GetPlayerHistory != null)
 	{
+		<Heading Title="Progression" Level="2" />
 		<div class="grid grid-cols-1 2xl:grid-cols-2">
-			@if (GetPlayerHistory.History.Count > 0)
+			@if (GetPlayerHistory.ScoreHistory.Count > 0)
 			{
 				<div>
-					<Heading Title="Progression" Level="2" />
-					<LineChart DataOptions="_progressionOptions" UniqueName="#progression-chart" DataSets="@_progressionData" Options="_progressionLineChartOptions" />
+					<Heading Title="Score" Level="3" />
+					<LineChart DataOptions="_scoreOptions" UniqueName="#progression-chart" DataSets="@_scoreData" Options="_scoreLineChartOptions" />
 				</div>
 			}
 
-			@if (GetPlayerHistory.Activity.Count > 0 && GetPlayerHistory.Activity.Any(a => a.DeathsIncrement != 0))
+			@if (GetPlayerHistory.ActivityHistory.Count > 0 && GetPlayerHistory.ActivityHistory.Any(a => a.DeathsIncrement != 0))
 			{
 				<div>
-					<Heading Title="Activity" Level="2" />
+					<Heading Title="Activity" Level="3" />
 					<LineChart DataOptions="_activityOptions" UniqueName="#activity-chart" DataSets="@_activityData" Options="_activityLineChartOptions" />
+				</div>
+			}
+
+			@if (GetPlayerHistory.RankHistory.Count > 0)
+			{
+				<div>
+					<Heading Title="Rank" Level="3" />
+					<LineChart DataOptions="_rankOptions" UniqueName="#rank-chart" DataSets="@_rankData" Options="_rankLineChartOptions" />
 				</div>
 			}
 		</div>

@@ -17,7 +17,7 @@ namespace DevilDaggersInfo.Web.BlazorWasm.Client.Pages.Leaderboard;
 
 public partial class PlayerPage
 {
-	private readonly LineChartOptions _progressionLineChartOptions = new()
+	private readonly LineChartOptions _scoreLineChartOptions = new()
 	{
 		HighlighterKeys = new()
 		{
@@ -49,11 +49,24 @@ public partial class PlayerPage
 		Backgrounds = LineChartUtils.GameVersionBackgrounds,
 	};
 
-	private readonly List<LineDataSet> _progressionData = new();
-	private readonly List<LineDataSet> _activityData = new();
+	private readonly LineChartOptions _rankLineChartOptions = new()
+	{
+		HighlighterKeys = new() { "Date", "Rank" },
+		GridOptions = new()
+		{
+			MinimumRowHeightInPx = 50,
+		},
+		DisplayXScaleAsDates = true,
+		Backgrounds = LineChartUtils.GameVersionBackgrounds,
+	};
 
-	private LineChartDataOptions? _progressionOptions;
+	private readonly List<LineDataSet> _scoreData = new();
+	private readonly List<LineDataSet> _activityData = new();
+	private readonly List<LineDataSet> _rankData = new();
+
+	private LineChartDataOptions? _scoreOptions;
 	private LineChartDataOptions? _activityOptions;
+	private LineChartDataOptions? _rankOptions;
 
 	private int _pageRankStart;
 	private int _pageRankEnd;
@@ -101,58 +114,80 @@ public partial class PlayerPage
 		GetModNames = await Http.GetModsByAuthorId(Id);
 		GetNumberOfCustomLeaderboards = await Http.GetNumberOfCustomLeaderboards();
 
-		if (GetPlayerHistory.History.Count > 0)
+		if (GetPlayerHistory.ScoreHistory.Count > 0)
 		{
-			DateTime minX = GetPlayerHistory.History.Select(eh => eh.DateTime).Min();
+			DateTime minX = GetPlayerHistory.ScoreHistory.Select(sh => sh.DateTime).Min();
 			DateTime maxX = DateTime.UtcNow;
 
-			IEnumerable<double> scores = GetPlayerHistory.History.Select(eh => eh.Time);
+			IEnumerable<double> scores = GetPlayerHistory.ScoreHistory.Select(sh => sh.Time);
 			const double scale = 50.0;
 			double minY = Math.Floor(scores.Min() / scale) * scale;
 			double maxY = Math.Ceiling(scores.Max() / scale) * scale;
 
-			List<LineData> set = GetPlayerHistory.History.Select(eh => new LineData(eh.DateTime.Ticks, eh.Time, eh)).ToList();
-			_progressionOptions = new(minX.Ticks, null, maxX.Ticks, minY, scale, maxY);
-			_progressionData.Add(new("#f00", true, true, true, set, (ds, d) =>
+			List<LineData> set = GetPlayerHistory.ScoreHistory.Select(sh => new LineData(sh.DateTime.Ticks, sh.Time, sh)).ToList();
+			_scoreOptions = new(minX.Ticks, null, maxX.Ticks, minY, scale, maxY);
+			_scoreData.Add(new("#f00", true, true, true, set, (ds, d) =>
 			{
-				GetPlayerHistoryScoreEntry? entry = GetPlayerHistory.History.Find(eh => eh == d.Reference);
-				if (entry == null)
+				GetPlayerHistoryScoreEntry? scoreEntry = GetPlayerHistory.ScoreHistory.Find(sh => sh == d.Reference);
+				if (scoreEntry == null)
 					return new();
 
-				GameVersion gameVersion = GameVersions.GetGameVersionFromDate(entry.DateTime) ?? GameVersion.V1_0;
-				Dagger dagger = Daggers.GetDaggerFromSeconds(gameVersion, entry.Time);
+				GameVersion gameVersion = GameVersions.GetGameVersionFromDate(scoreEntry.DateTime) ?? GameVersion.V1_0;
+				Dagger dagger = Daggers.GetDaggerFromSeconds(gameVersion, scoreEntry.Time);
 				return new()
 				{
-					new($"<span style='text-align: right;'>{entry.DateTime.ToString(FormatUtils.DateFormat)}</span>"),
-					new($"<span style='text-align: right;' class='{dagger.Name.ToLower()}'>{entry.Time.ToString(FormatUtils.TimeFormat)}</span>"),
-					new($"<span style='text-align: right;' class='{dagger.Name.ToLower()}'>{entry.Username}</span>"),
-					new($"<span style='text-align: right;'>{entry.Rank}</span>"),
-					new($"<span style='text-align: right;'>{entry.Gems}</span>"),
-					new($"<span style='text-align: right;'>{entry.Kills}</span>"),
-					new($"<span style='text-align: right;'>{(entry.DaggersFired == 0 ? 0 : entry.DaggersHit / (double)entry.DaggersFired).ToString(FormatUtils.AccuracyFormat)}</span>"),
-					new($"<span style='text-align: right;'>{MarkupUtils.DeathString(entry.DeathType, gameVersion)}</span>"),
+					new($"<span style='text-align: right;'>{scoreEntry.DateTime.ToString(FormatUtils.DateFormat)}</span>"),
+					new($"<span style='text-align: right;' class='{dagger.Name.ToLower()}'>{scoreEntry.Time.ToString(FormatUtils.TimeFormat)}</span>"),
+					new($"<span style='text-align: right;' class='{dagger.Name.ToLower()}'>{scoreEntry.Username}</span>"),
+					new($"<span style='text-align: right;'>{scoreEntry.Rank}</span>"),
+					new($"<span style='text-align: right;'>{scoreEntry.Gems}</span>"),
+					new($"<span style='text-align: right;'>{scoreEntry.Kills}</span>"),
+					new($"<span style='text-align: right;'>{(scoreEntry.DaggersFired == 0 ? 0 : scoreEntry.DaggersHit / (double)scoreEntry.DaggersFired).ToString(FormatUtils.AccuracyFormat)}</span>"),
+					new($"<span style='text-align: right;'>{MarkupUtils.DeathString(scoreEntry.DeathType, gameVersion)}</span>"),
 				};
 			}));
 		}
 
-		if (GetPlayerHistory.Activity.Count > 0)
+		if (GetPlayerHistory.ActivityHistory.Count > 0)
 		{
-			DateTime minX = GetPlayerHistory.Activity.Select(pa => pa.DateTime).Min();
+			DateTime minX = GetPlayerHistory.ActivityHistory.Select(ah => ah.DateTime).Min();
 			DateTime maxX = DateTime.UtcNow;
 
-			IEnumerable<double> deaths = GetPlayerHistory.Activity.Select(pa => pa.DeathsIncrement);
+			IEnumerable<double> deaths = GetPlayerHistory.ActivityHistory.Select(ah => ah.DeathsIncrement);
 			const double scale = 20.0;
 			double maxY = Math.Ceiling(deaths.Max() / scale) * scale;
 
-			List<LineData> set = GetPlayerHistory.Activity.Select(pa => new LineData(pa.DateTime.Ticks, pa.DeathsIncrement, pa)).ToList();
+			List<LineData> set = GetPlayerHistory.ActivityHistory.Select(ah => new LineData(ah.DateTime.Ticks, ah.DeathsIncrement, ah)).ToList();
 			_activityOptions = new(minX.Ticks, null, maxX.Ticks, 0, scale, maxY);
 			_activityData.Add(new("#f00", false, true, true, set, (ds, d) =>
 			{
-				GetPlayerHistoryActivityEntry? activity = GetPlayerHistory.Activity.Find(pa => pa == d.Reference);
-				return activity == null ? new() : new()
+				GetPlayerHistoryActivityEntry? activityEntry = GetPlayerHistory.ActivityHistory.Find(ah => ah == d.Reference);
+				return activityEntry == null ? new() : new()
 				{
-					new($"<span style='text-align: right;'>{activity.DateTime.ToString(FormatUtils.DateFormat)}</span>"),
-					new($"<span style='color: {ds.Color}; text-align: right;'>{d.Y.ToString("0.0")}</span>"),
+					new($"<span style='text-align: right;'>{activityEntry.DateTime.ToString(FormatUtils.DateFormat)}</span>"),
+					new($"<span style='color: {ds.Color}; text-align: right;'>{activityEntry.DeathsIncrement.ToString("0.0")}</span>"),
+				};
+			}));
+		}
+
+		if (GetPlayerHistory.RankHistory.Count > 0)
+		{
+			DateTime minX = GetPlayerHistory.RankHistory.Select(rh => rh.DateTime).Min();
+			DateTime maxX = DateTime.UtcNow;
+
+			IEnumerable<int> rank = GetPlayerHistory.RankHistory.Select(rh => rh.Rank);
+			const double scale = 20.0;
+			double maxY = Math.Ceiling(rank.Max() / scale) * scale;
+
+			List<LineData> set = GetPlayerHistory.RankHistory.Select(rh => new LineData(rh.DateTime.Ticks, rh.Rank, rh)).ToList();
+			_rankOptions = new(minX.Ticks, null, maxX.Ticks, maxY, scale, 1);
+			_rankData.Add(new("#f00", false, true, true, set, (ds, d) =>
+			{
+				GetPlayerHistoryRankEntry? rankEntry = GetPlayerHistory.RankHistory.Find(rh => rh == d.Reference);
+				return rankEntry == null ? new() : new()
+				{
+					new($"<span style='text-align: right;'>{rankEntry.DateTime.ToString(FormatUtils.DateFormat)}</span>"),
+					new($"<span style='text-align: right;'>{rankEntry.Rank}</span>"),
 				};
 			}));
 		}
