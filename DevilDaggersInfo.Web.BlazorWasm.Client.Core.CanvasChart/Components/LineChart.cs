@@ -115,6 +115,9 @@ public partial class LineChart
 			for (int i = 0; i < yScales.Count; i++)
 			{
 				double yScalePosition = LerpUtils.RevLerp(DataOptions.MinY, DataOptions.MaxY, yScales[i]) * ChartHeight;
+				if (DataOptions.ReverseY)
+					yScalePosition = ChartHeight - yScalePosition;
+
 				_context.MoveTo(Options.ChartMarginXInPx, Options.ChartMarginYInPx + yScalePosition);
 				_context.LineTo(_canvasWidth - Options.ChartMarginXInPx, Options.ChartMarginYInPx + yScalePosition);
 			}
@@ -144,6 +147,9 @@ public partial class LineChart
 			{
 				double yScaleValue = yScales[i];
 				double yScalePosition = LerpUtils.RevLerp(DataOptions.MinY, DataOptions.MaxY, yScaleValue) * ChartHeight;
+				if (DataOptions.ReverseY)
+					yScalePosition = ChartHeight - yScalePosition;
+
 				_context.StrokeText(yScaleValue.ToString(Options.ScaleYOptions.NumberFormat), Options.ChartMarginXInPx - paddingX, Options.ChartMarginYInPx + ChartHeight - yScalePosition);
 			}
 		}
@@ -159,6 +165,9 @@ public partial class LineChart
 				LineData data = dataSet.Data[i];
 				double percX = LerpUtils.RevLerp(DataOptions.MinX, DataOptions.MaxX, data.X);
 				double percY = LerpUtils.RevLerp(DataOptions.MinY, DataOptions.MaxY, data.Y);
+				if (DataOptions.ReverseY)
+					percY = 1 - percY;
+
 				double x = Options.ChartMarginXInPx + percX * ChartWidth;
 				double y = Options.ChartMarginYInPx + ChartHeight - percY * ChartHeight;
 
