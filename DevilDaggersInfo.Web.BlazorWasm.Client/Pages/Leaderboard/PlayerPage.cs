@@ -32,7 +32,7 @@ public partial class PlayerPage
 		},
 		GridOptions = new()
 		{
-			MinimumRowHeightInPx = 50,
+			MinimumRowHeightInPx = 30,
 		},
 		DisplayXScaleAsDates = true,
 		Backgrounds = LineChartUtils.GameVersionBackgrounds,
@@ -43,7 +43,7 @@ public partial class PlayerPage
 		HighlighterKeys = new() { "Date", "Avg deaths per day" },
 		GridOptions = new()
 		{
-			MinimumRowHeightInPx = 50,
+			MinimumRowHeightInPx = 30,
 		},
 		DisplayXScaleAsDates = true,
 		Backgrounds = LineChartUtils.GameVersionBackgrounds,
@@ -54,7 +54,7 @@ public partial class PlayerPage
 		HighlighterKeys = new() { "Date", "Rank" },
 		GridOptions = new()
 		{
-			MinimumRowHeightInPx = 50,
+			MinimumRowHeightInPx = 30,
 		},
 		DisplayXScaleAsDates = true,
 		Backgrounds = LineChartUtils.GameVersionBackgrounds,
@@ -176,11 +176,11 @@ public partial class PlayerPage
 			DateTime maxX = DateTime.UtcNow;
 
 			IEnumerable<int> rank = GetPlayerHistory.RankHistory.Select(rh => rh.Rank);
-			const double scale = 20.0;
+			const double scale = 10.0;
 			double maxY = Math.Ceiling(rank.Max() / scale) * scale;
 
 			List<LineData> set = GetPlayerHistory.RankHistory.Select(rh => new LineData(rh.DateTime.Ticks, rh.Rank, rh)).ToList();
-			_rankOptions = new(minX.Ticks, null, maxX.Ticks, maxY, scale, 1);
+			_rankOptions = new(minX.Ticks, null, maxX.Ticks, 0, scale, maxY);
 			_rankData.Add(new("#f00", false, true, true, set, (ds, d) =>
 			{
 				GetPlayerHistoryRankEntry? rankEntry = GetPlayerHistory.RankHistory.Find(rh => rh == d.Reference);
