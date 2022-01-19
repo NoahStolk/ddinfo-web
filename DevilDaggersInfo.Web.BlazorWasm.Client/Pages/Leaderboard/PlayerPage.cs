@@ -159,7 +159,7 @@ public partial class PlayerPage
 
 			List<LineData> set = GetPlayerHistory.ActivityHistory.Select(ah => new LineData(ah.DateTime.Ticks, ah.DeathsIncrement, ah)).ToList();
 			_activityOptions = new(minX.Ticks, null, maxX.Ticks, 0, scale, maxY);
-			_activityData.Add(new("#f00", false, true, true, set, (ds, d) =>
+			_activityData.Add(new("#0f0", false, true, true, set, (ds, d) =>
 			{
 				GetPlayerHistoryActivityEntry? activityEntry = GetPlayerHistory.ActivityHistory.Find(ah => ah == d.Reference);
 				return activityEntry == null ? new() : new()
@@ -180,8 +180,8 @@ public partial class PlayerPage
 			double maxY = Math.Ceiling(rank.Max() / scale) * scale;
 
 			List<LineData> set = GetPlayerHistory.RankHistory.Select(rh => new LineData(rh.DateTime.Ticks, rh.Rank, rh)).ToList();
-			_rankOptions = new(minX.Ticks, null, maxX.Ticks, 0, scale, maxY);
-			_rankData.Add(new("#f00", false, true, true, set, (ds, d) =>
+			_rankOptions = new(minX.Ticks, null, maxX.Ticks, 0, scale, maxY, false, true);
+			_rankData.Add(new("#ff0", false, true, true, set, (ds, d) =>
 			{
 				GetPlayerHistoryRankEntry? rankEntry = GetPlayerHistory.RankHistory.Find(rh => rh == d.Reference);
 				return rankEntry == null ? new() : new()

@@ -209,14 +209,6 @@ else
 				</div>
 			}
 
-			@if (GetPlayerHistory.ActivityHistory.Count > 0 && GetPlayerHistory.ActivityHistory.Any(a => a.DeathsIncrement != 0))
-			{
-				<div>
-					<Heading Title="Activity" Level="3" />
-					<LineChart DataOptions="_activityOptions" UniqueName="#activity-chart" DataSets="@_activityData" Options="_activityLineChartOptions" />
-				</div>
-			}
-
 			@if (GetPlayerHistory.RankHistory.Count > 0)
 			{
 				<div>
@@ -225,5 +217,13 @@ else
 				</div>
 			}
 		</div>
+
+		<Heading Title="Activity" Level="2" />
+		@if (GetPlayerHistory.ActivityHistory.Count > 0 && GetPlayerHistory.ActivityHistory.Any(a => a.DeathsIncrement != 0))
+		{
+			<div>
+				<LineChart DataOptions="_activityOptions" UniqueName="#activity-chart" DataSets="@_activityData" Options="_activityLineChartOptions" />
+			</div>
+		}
 	}
 }
