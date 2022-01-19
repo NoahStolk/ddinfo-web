@@ -1,6 +1,7 @@
 using DevilDaggersInfo.Web.BlazorWasm.Client.Core.CanvasChart.Data;
 using DevilDaggersInfo.Web.BlazorWasm.Client.Core.CanvasChart.Options.BarChart;
 using DevilDaggersInfo.Web.BlazorWasm.Shared.Dto.Public.LeaderboardStatistics;
+using DevilDaggersInfo.Web.BlazorWasm.Shared.Utils;
 using Microsoft.AspNetCore.Components;
 using Microsoft.JSInterop;
 
@@ -8,6 +9,9 @@ namespace DevilDaggersInfo.Web.BlazorWasm.Client.Pages.Leaderboard;
 
 public partial class StatisticsPage
 {
+	private static BarChartOptions _barChartOptions = new() { ChartMarginXInPx = 60, HighlighterKeys = new() { "Score range", "Players" } };
+	private static BarChartOptions _textBarChartOptions = new() { ChartMarginXInPx = 60, ChartMarginYInPx = 80, HighlighterKeys = new() { "Players" } };
+
 	private static readonly List<string> _daggers = Daggers.GetDaggers(GameConstants.CurrentVersion).ConvertAll(d => d.Name);
 	private static readonly List<string> _deathTypes = Deaths.GetDeaths(GameConstants.CurrentVersion).ConvertAll(d => d.Name);
 	private static readonly List<string> _enemies = Enemies.GetEnemies(GameConstants.CurrentVersion).Where(e => e.FirstSpawnSecond.HasValue).OrderBy(e => e.FirstSpawnSecond).Select(e => e.Name).ToList();
@@ -58,15 +62,15 @@ public partial class StatisticsPage
 		{
 			List<BarData> set = data.Select(kvp => new BarData(Daggers.GetDaggerFromSeconds(GameConstants.CurrentVersion, kvp.Key).Color.HexCode, kvp.Value, kvp)).ToList();
 			dataOptions = new(0, scale, Math.Ceiling(data.Max(kvp => kvp.Value) / scale) * scale);
-			dataSet = new(set, (ds, d) =>
+			dataSet = new(set, (ds, i) =>
 			{
-				return new();
-				//GetLeaderboardHistoryStatistics? stats = _statistics.Find(hs => hs == d.Reference);
-				//return stats == null ? new() : new()
-				//{
-				//	new($"<span style='text-align: right;'>{stats.DateTime.ToString(FormatUtils.DateFormat)}</span>"),
-				//	new($"<span style='color: {ds.Color}; text-align: right;'>{d.Y.ToString("0")}</span>"),
-				//};
+				BarData barData = ds.Data[i];
+				int start = data.ElementAt(i).Key;
+				return new()
+				{
+					new($"<span style='text-align: right;'>{start.ToString(FormatUtils.TimeFormat)} - {(start + 9.9999).ToString(FormatUtils.TimeFormat)}</span>"),
+					new($"<span style='color: {barData.Color}; text-align: right;'>{barData.Y.ToString("0")}</span>"),
+				};
 			});
 		}
 

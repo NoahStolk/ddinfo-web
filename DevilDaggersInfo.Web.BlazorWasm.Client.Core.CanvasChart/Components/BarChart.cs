@@ -13,7 +13,7 @@ public partial class BarChart
 {
 	private Canvas2d? _context;
 	private object? _canvasReference;
-	//private LineChartHighlighter? _highlighter;
+	private ChartHighlighter? _highlighter;
 
 	private int _canvasWidth;
 	private int _canvasHeight;
@@ -54,10 +54,10 @@ public partial class BarChart
 
 	private void Render()
 	{
-		if (_context == null)
+		if (_context == null || _highlighter == null)
 			return;
 
-		//_highlighter.Width = Options.HighlighterWidth;
+		_highlighter.Width = Options.HighlighterWidth;
 
 		// Clear canvas.
 		_context.ClearRect(0, 0, _canvasWidth, _canvasHeight);
@@ -181,44 +181,26 @@ public partial class BarChart
 		_canvasMouseX = mouseX - canvasBoundingClientRect.Left;
 		_canvasMouseY = mouseY - canvasBoundingClientRect.Top;
 
-		//UpdateHighlighter();
+		UpdateHighlighter();
 
 		await ValueTask.CompletedTask;
 	}
 
-	//private void UpdateHighlighter()
-	//{
-	//	if (_highlighter == null)
-	//		return;
+	private void UpdateHighlighter()
+	{
+		if (_highlighter == null)
+			return;
 
-	//	_highlighter.Left = Math.Clamp(_canvasMouseX, Options.ChartMarginXInPx, Options.ChartMarginXInPx + ChartWidth - _highlighter.Width);
-	//	_highlighter.Top = Math.Clamp(_canvasMouseY, Options.ChartMarginYInPx, Options.ChartMarginYInPx + ChartHeight);
+		_highlighter.Left = Math.Clamp(_canvasMouseX, Options.ChartMarginXInPx, Options.ChartMarginXInPx + ChartWidth - _highlighter.Width);
+		_highlighter.Top = Math.Clamp(_canvasMouseY, Options.ChartMarginYInPx, Options.ChartMarginYInPx + ChartHeight);
 
-	//	double xValue = ChartMouseX / ChartWidth * (DataOptions.MaxX - DataOptions.MinX);
+		int index = (int)(ChartMouseX / ChartWidth * DataSet.Data.Count);
 
-	//	HighlighterValues.Clear();
-	//	for (int i = 0; i < DataSets.Count; i++)
-	//	{
-	//		LineDataSet dataSet = DataSets[i];
-	//		if (dataSet.Data.Count == 0)
-	//			continue;
+		HighlighterValues.Clear();
+		HighlighterValues.AddRange(DataSet.ToHighlighterValue(DataSet, index));
 
-	//		LineData highlightedData = dataSet.Data.OrderByDescending(ld => ld.X).FirstOrDefault(ld => ld.X < xValue + DataOptions.MinX) ?? dataSet.Data[0];
-	//		HighlighterValues.AddRange(dataSet.ToHighlighterValue(dataSet, highlightedData));
-	//	}
-
-	//	_highlighter.ChangeState();
-
-	//	//if (Options.HighlighterLineOptions == null)
-	//	//	return;
-
-	//	//await _context.SetLineWidthAsync(Options.HighlighterLineOptions.LineThickness);
-	//	//await _context.SetStrokeStyleAsync(Options.HighlighterLineOptions.LineColor);
-	//	//await _context.BeginPathAsync();
-	//	//await _context.MoveToAsync(_canvasMouseX, Options.ChartMarginYInPx);
-	//	//await _context.LineToAsync(_canvasMouseX, _canvasHeight - Options.ChartMarginYInPx);
-	//	//await _context.StrokeAsync();
-	//}
+		_highlighter.ChangeState();
+	}
 
 	protected override bool ShouldRender() => _shouldRender;
 
@@ -226,10 +208,10 @@ public partial class BarChart
 	{
 		// Prevent re-rendering the entire canvas.
 		_shouldRender = false;
-		//if (_highlighter != null)
-		//{
-		//	_highlighter.IsVisible = visible;
-		//	_highlighter.ChangeState();
-		//}
+		if (_highlighter != null)
+		{
+			_highlighter.IsVisible = visible;
+			_highlighter.ChangeState();
+		}
 	}
 }

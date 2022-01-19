@@ -1,3 +1,15 @@
 <div class="chart relative" id="@UniqueName" @onmouseenter="() => SetHighlighterVisibility(true)" @onmouseleave="() => SetHighlighterVisibility(false)">
+	<ChartHighlighter @ref="_highlighter">
+		<div class="grid grid-cols-2">
+			@for (int i = 0; i < Options.HighlighterKeys.Count; i++)
+			{
+				<span>@Options.HighlighterKeys[i]</span>
+				if (i < HighlighterValues.Count)
+				{
+					@HighlighterValues[i]
+				}
+			}
+		</div>
+	</ChartHighlighter>
 	<canvas width="@ChartWidth" height="@ChartHeight" id="@($"{UniqueName}-canvas")" @ref="_canvasReference"></canvas>
 </div>

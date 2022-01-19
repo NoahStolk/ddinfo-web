@@ -25,10 +25,10 @@ else
 		<p>The average time survived for all players is @MarkupUtils.LeaderboardTime(_statistics.GlobalStatistics.Times.Average) seconds.</p>
 		<p>The median time survived for all players is @MarkupUtils.LeaderboardTime(_statistics.GlobalStatistics.Times.Median) seconds.</p>
 		<p>The mode time survived for all players is @MarkupUtils.LeaderboardTime(_statistics.GlobalStatistics.Times.Mode) seconds.</p>
-		<BarChart DataOptions="_sub500DataOptions" UniqueName="#sub500-chart" DataSet="@_sub500Data" Options="new() { ChartMarginXInPx = 60 }" XScaleTexts="Enumerable.Range(0, 50).Select(i => (i * 10).ToString())" />
+		<BarChart DataOptions="_sub500DataOptions" UniqueName="#sub500-chart" DataSet="@_sub500Data" Options="_barChartOptions" XScaleTexts="Enumerable.Range(0, 50).Select(i => (i * 10).ToString())" />
 		<div class="grid grid-cols-1 xl:grid-cols-2">
-			<BarChart DataOptions="_sub1000DataOptions" UniqueName="#sub1000-chart" DataSet="@_sub1000Data" XScaleTexts="Enumerable.Range(0, 50).Select(i => ((i + 50) * 10).ToString())" />
-			<BarChart DataOptions="_post1000DataOptions" UniqueName="#post1000-chart" DataSet="@_post1000Data" XScaleTexts="Enumerable.Range(0, 50).Select(i => ((i + 100) * 10).ToString())" />
+			<BarChart DataOptions="_sub1000DataOptions" UniqueName="#sub1000-chart" DataSet="@_sub1000Data" Options="_barChartOptions" XScaleTexts="Enumerable.Range(0, 50).Select(i => ((i + 50) * 10).ToString())" />
+			<BarChart DataOptions="_post1000DataOptions" UniqueName="#post1000-chart" DataSet="@_post1000Data" Options="_barChartOptions" XScaleTexts="Enumerable.Range(0, 50).Select(i => ((i + 100) * 10).ToString())" />
 		</div>
 
 		<div class="grid grid-cols-1 xl:grid-cols-2">
@@ -37,7 +37,7 @@ else
 				<p>The average kills for all players is @(_statistics.GlobalStatistics.Kills.Average.ToString("0.00")).</p>
 				<p>The median kills for all players is @_statistics.GlobalStatistics.Kills.Median.</p>
 				<p>The mode kills for all players is @_statistics.GlobalStatistics.Kills.Mode.</p>
-				<BarChart DataOptions="_killsDataOptions" UniqueName="#kills-chart" DataSet="@_killsData" Options="new() { ChartMarginXInPx = 60 }" XScaleTexts="Enumerable.Range(0, 100).Select(i => (i * 10).ToString())" />
+				<BarChart DataOptions="_killsDataOptions" UniqueName="#kills-chart" DataSet="@_killsData" Options="_barChartOptions" XScaleTexts="Enumerable.Range(0, 100).Select(i => (i * 10).ToString())" />
 			</div>
 
 			<div>
@@ -45,29 +45,29 @@ else
 				<p>The average gems for all players is @(_statistics.GlobalStatistics.Gems.Average.ToString("0.00")).</p>
 				<p>The median gems for all players is @_statistics.GlobalStatistics.Gems.Median.</p>
 				<p>The mode gems for all players is @_statistics.GlobalStatistics.Gems.Mode.</p>
-				<BarChart DataOptions="_gemsDataOptions" UniqueName="#gems-chart" DataSet="@_gemsData" Options="new() { ChartMarginXInPx = 60 }" XScaleTexts="Enumerable.Range(0, 50).Select(i => (i * 10).ToString())" />
+				<BarChart DataOptions="_gemsDataOptions" UniqueName="#gems-chart" DataSet="@_gemsData" Options="_barChartOptions" XScaleTexts="Enumerable.Range(0, 50).Select(i => (i * 10).ToString())" />
 			</div>
 		</div>
 
 		<div class="grid grid-cols-1 xl:grid-cols-2">
 			<div>
 				<Heading Title="Upgrades" Level="2" />
-				<BarChart DataOptions="_upgradesDataOptions" UniqueName="#upgrades-chart" DataSet="@_upgradesData" Options="new() { ChartMarginXInPx = 60, ChartMarginYInPx = 80 }" XScaleTexts="_upgrades" />
+				<BarChart DataOptions="_upgradesDataOptions" UniqueName="#upgrades-chart" DataSet="@_upgradesData" Options="_textBarChartOptions" XScaleTexts="_upgrades" />
 			</div>
 
 			<div>
 				<Heading Title="Daggers Achieved" Level="2" />
-				<BarChart DataOptions="_daggersDataOptions" UniqueName="#daggers-chart" DataSet="@_daggersData" Options="new() { ChartMarginXInPx = 60, ChartMarginYInPx = 80 }" XScaleTexts="_daggers" />
+				<BarChart DataOptions="_daggersDataOptions" UniqueName="#daggers-chart" DataSet="@_daggersData" Options="_textBarChartOptions" XScaleTexts="_daggers" />
 			</div>
 
 			<div>
 				<Heading Title="Death Types" Level="2" />
-				<BarChart DataOptions="_deathsDataOptions" UniqueName="#deaths-chart" DataSet="@_deathsData" Options="new() { ChartMarginXInPx = 60, ChartMarginYInPx = 80 }" XScaleTexts="_deathTypes" />
+				<BarChart DataOptions="_deathsDataOptions" UniqueName="#deaths-chart" DataSet="@_deathsData" Options="_textBarChartOptions" XScaleTexts="_deathTypes" />
 			</div>
 
 			<div>
 				<Heading Title="Enemies Seen" Level="2" />
-				<BarChart DataOptions="_enemiesDataOptions" UniqueName="#enemies-chart" DataSet="@_enemiesData" Options="new() { ChartMarginXInPx = 60, ChartMarginYInPx = 80 }" XScaleTexts="_enemies" />
+				<BarChart DataOptions="_enemiesDataOptions" UniqueName="#enemies-chart" DataSet="@_enemiesData" Options="_textBarChartOptions" XScaleTexts="_enemies" />
 			</div>
 		</div>
 	}
