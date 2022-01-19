@@ -9,8 +9,8 @@ namespace DevilDaggersInfo.Web.BlazorWasm.Client.Pages.Leaderboard;
 
 public partial class StatisticsPage
 {
-	private static BarChartOptions _barChartOptions = new() { ChartMarginXInPx = 60, HighlighterKeys = new() { "Score range", "Players" } };
-	private static BarChartOptions _textBarChartOptions = new() { ChartMarginXInPx = 60, ChartMarginYInPx = 80, HighlighterKeys = new() { "Players" } };
+	private static BarChartOptions _barChartOptions = new() { ChartMarginXInPx = 60, HighlighterKeys = new() { "Score range", "Players" }, HighlighterWidth = 320 };
+	private static BarChartOptions _textBarChartOptions = new() { ChartMarginXInPx = 60, ChartMarginYInPx = 80, HighlighterKeys = new() { "Players" }, HighlighterWidth = 320 };
 
 	private static readonly List<string> _daggers = Daggers.GetDaggers(GameConstants.CurrentVersion).ConvertAll(d => d.Name);
 	private static readonly List<string> _deathTypes = Deaths.GetDeaths(GameConstants.CurrentVersion).ConvertAll(d => d.Name);

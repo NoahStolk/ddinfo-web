@@ -48,6 +48,7 @@ public partial class PlayerPage
 		},
 		DisplayXScaleAsDates = true,
 		Backgrounds = LineChartUtils.GameVersionBackgrounds,
+		HighlighterWidth = 320,
 	};
 
 	private readonly LineChartOptions _activityTimeLineChartOptions = new()
@@ -59,6 +60,7 @@ public partial class PlayerPage
 		},
 		DisplayXScaleAsDates = true,
 		Backgrounds = LineChartUtils.GameVersionBackgrounds,
+		HighlighterWidth = 320,
 	};
 
 	private readonly List<LineDataSet> _progressionScoreData = new();
