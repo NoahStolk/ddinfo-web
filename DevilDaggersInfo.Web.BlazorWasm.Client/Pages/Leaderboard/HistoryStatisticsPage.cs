@@ -193,7 +193,8 @@ public partial class HistoryStatisticsPage
 			Func<ulong, ulong, double> converter = static (hit, fired) => fired == 0 ? 0 : hit / (double)fired;
 
 			IEnumerable<double> accuracy = _statistics.Select(hs => converter(hs.DaggersHitGlobal, hs.DaggersFiredGlobal));
-			_accuracyOptions = new(minX.Ticks, null, maxX.Ticks, Math.Floor(accuracy.Min() * 10) / 10, 0.05, Math.Ceiling(accuracy.Max() * 10) / 10, true);
+			double max = ((int)Math.Ceiling((int)(accuracy.Max() * 100) / 5.0) * 5) / 100.0 + 0.0001;
+			_accuracyOptions = new(minX.Ticks, null, maxX.Ticks, 0.2, 0.01, max, true);
 
 			List<LineData> set = _statistics.Select(hs => new LineData(hs.DateTime.Ticks, converter(hs.DaggersHitGlobal, hs.DaggersFiredGlobal), hs)).ToList();
 			_accuracyData.Add(new("#f80", false, false, false, set, (ds, d) =>
