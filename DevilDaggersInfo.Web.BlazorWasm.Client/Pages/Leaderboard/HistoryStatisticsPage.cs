@@ -95,7 +95,6 @@ public partial class HistoryStatisticsPage
 		if (_statistics.Count == 0)
 			return;
 
-		DateTime minX = _statistics.Select(hs => hs.DateTime).Min();
 		DateTime maxX = DateTime.UtcNow;
 
 		RegisterTotalPlayers();
@@ -107,7 +106,7 @@ public partial class HistoryStatisticsPage
 			double maxY = Math.Ceiling(totalPlayers.Max() / scale) * scale;
 
 			List<LineData> set = _statistics.Select(hs => new LineData(hs.DateTime.Ticks, hs.TotalPlayers, hs)).ToList();
-			_playersOptions = new(minX.Ticks, null, maxX.Ticks, minY, scale, maxY);
+			_playersOptions = new(_statistics.Min(hs => hs.DateTime.Ticks), null, maxX.Ticks, minY, scale, maxY);
 			_playersData.Add(new("#f00", false, false, false, set, (ds, d) =>
 			{
 				GetLeaderboardHistoryStatistics? stats = _statistics.Find(hs => hs == d.Reference);
@@ -122,17 +121,18 @@ public partial class HistoryStatisticsPage
 		RegisterEntrances();
 		void RegisterEntrances()
 		{
-			IEnumerable<double> top10Entrances = _statistics.Select(hs => hs.Top10Entrance);
-			IEnumerable<double> top100Entrances = _statistics.Select(hs => hs.Top100Entrance);
+			IEnumerable<GetLeaderboardHistoryStatistics> relevantData = _statistics.Where(hs => hs.Top10Entrance > 0);
+			IEnumerable<double> top10Entrances = relevantData.Select(hs => hs.Top10Entrance);
+			IEnumerable<double> top100Entrances = relevantData.Select(hs => hs.Top100Entrance);
 			const double scale = 100.0;
 			double minY = Math.Floor(top100Entrances.Min() / scale) * scale;
 			double maxY = Math.Ceiling(top10Entrances.Max() / scale) * scale;
-			_entrancesOptions = new(minX.Ticks, null, maxX.Ticks, minY, scale, maxY);
+			_entrancesOptions = new(relevantData.Min(hs => hs.DateTime.Ticks), null, maxX.Ticks, minY, scale, maxY);
 
-			List<LineData> top10Set = _statistics.Select(hs => new LineData(hs.DateTime.Ticks, hs.Top10Entrance, hs)).ToList();
+			List<LineData> top10Set = relevantData.Select(hs => new LineData(hs.DateTime.Ticks, hs.Top10Entrance, hs)).ToList();
 			_entrancesData.Add(new("#800", false, false, false, top10Set, (ds, d) =>
 			{
-				GetLeaderboardHistoryStatistics? stats = _statistics.Find(hs => hs == d.Reference);
+				GetLeaderboardHistoryStatistics? stats = relevantData.FirstOrDefault(hs => hs == d.Reference);
 				return stats == null ? new() : new()
 				{
 					new($"<span style='text-align: right;'>{stats.DateTime.ToString(FormatUtils.DateFormat)}</span>"),
@@ -140,23 +140,24 @@ public partial class HistoryStatisticsPage
 				};
 			}));
 
-			List<LineData> top100Set = _statistics.Select(hs => new LineData(hs.DateTime.Ticks, hs.Top100Entrance, hs)).ToList();
+			List<LineData> top100Set = relevantData.Select(hs => new LineData(hs.DateTime.Ticks, hs.Top100Entrance, hs)).ToList();
 			_entrancesData.Add(new("#f00", false, false, false, top100Set, (ds, d) => new List<MarkupString> { new($"<span style='color: {ds.Color}; text-align: right;'>{d.Y.ToString(FormatUtils.TimeFormat)}</span>") }));
 		}
 
 		RegisterTime();
 		void RegisterTime()
 		{
-			IEnumerable<double> stats = _statistics.Select(hs => hs.TimeGlobal);
+			IEnumerable<GetLeaderboardHistoryStatistics> relevantData = _statistics.Where(hs => hs.TimeGlobal > 0);
+			IEnumerable<double> stats = relevantData.Select(hs => hs.TimeGlobal);
 			const double scale = 300_000_000.0;
 			double minY = Math.Floor(stats.Min() / scale) * scale;
 			double maxY = Math.Ceiling(stats.Max() / scale) * scale;
-			_timeOptions = new(minX.Ticks, null, maxX.Ticks, minY, scale, maxY);
+			_timeOptions = new(relevantData.Min(hs => hs.DateTime.Ticks), null, maxX.Ticks, minY, scale, maxY);
 
-			List<LineData> set = _statistics.Select(hs => new LineData(hs.DateTime.Ticks, hs.TimeGlobal, hs)).ToList();
+			List<LineData> set = relevantData.Select(hs => new LineData(hs.DateTime.Ticks, hs.TimeGlobal, hs)).ToList();
 			_timeData.Add(new("#f00", false, false, false, set, (ds, d) =>
 			{
-				GetLeaderboardHistoryStatistics? stat = _statistics.Find(hs => hs == d.Reference);
+				GetLeaderboardHistoryStatistics? stat = relevantData.FirstOrDefault(hs => hs == d.Reference);
 				return stat == null ? new() : new List<MarkupString>
 				{
 					new($"<span style='text-align: right;'>{stat.DateTime.ToString(FormatUtils.DateFormat)}</span>"),
@@ -170,15 +171,16 @@ public partial class HistoryStatisticsPage
 		Register((hs) => hs.KillsGlobal, ref _killsOptions, _killsData, 1_000_000_000);
 		void Register(Func<GetLeaderboardHistoryStatistics, ulong> selector, ref LineChartDataOptions? lineChartDataOptions, List<LineDataSet> dataSets, double scale)
 		{
-			IEnumerable<ulong> stats = _statistics.Select(hs => selector(hs));
+			IEnumerable<GetLeaderboardHistoryStatistics> relevantData = _statistics.Where(hs => selector(hs) > 0);
+			IEnumerable<ulong> stats = relevantData.Select(hs => selector(hs));
 			double minY = Math.Floor(stats.Min() / scale) * scale;
 			double maxY = Math.Ceiling(stats.Max() / scale) * scale;
-			lineChartDataOptions = new(minX.Ticks, null, maxX.Ticks, minY, scale, maxY);
+			lineChartDataOptions = new(relevantData.Min(hs => hs.DateTime.Ticks), null, maxX.Ticks, minY, scale, maxY);
 
-			List<LineData> set = _statistics.Select(hs => new LineData(hs.DateTime.Ticks, selector(hs), hs)).ToList();
+			List<LineData> set = relevantData.Select(hs => new LineData(hs.DateTime.Ticks, selector(hs), hs)).ToList();
 			dataSets.Add(new("#f00", false, false, false, set, (ds, d) =>
 			{
-				GetLeaderboardHistoryStatistics? stat = _statistics.Find(hs => hs == d.Reference);
+				GetLeaderboardHistoryStatistics? stat = relevantData.FirstOrDefault(hs => hs == d.Reference);
 				return stat == null ? new() : new List<MarkupString>
 				{
 					new($"<span style='text-align: right;'>{stat.DateTime.ToString(FormatUtils.DateFormat)}</span>"),
@@ -192,14 +194,15 @@ public partial class HistoryStatisticsPage
 		{
 			Func<ulong, ulong, double> converter = static (hit, fired) => fired == 0 ? 0 : hit / (double)fired;
 
-			IEnumerable<double> accuracy = _statistics.Select(hs => converter(hs.DaggersHitGlobal, hs.DaggersFiredGlobal));
+			IEnumerable<GetLeaderboardHistoryStatistics> relevantData = _statistics.Where(hs => hs.DaggersFiredGlobal > 0);
+			IEnumerable<double> accuracy = relevantData.Select(hs => converter(hs.DaggersHitGlobal, hs.DaggersFiredGlobal));
 			double max = ((int)Math.Ceiling((int)(accuracy.Max() * 100) / 5.0) * 5) / 100.0 + 0.0001;
-			_accuracyOptions = new(minX.Ticks, null, maxX.Ticks, 0.2, 0.01, max, true);
+			_accuracyOptions = new(relevantData.Min(hs => hs.DateTime.Ticks), null, maxX.Ticks, 0.2, 0.01, max, true);
 
-			List<LineData> set = _statistics.Select(hs => new LineData(hs.DateTime.Ticks, converter(hs.DaggersHitGlobal, hs.DaggersFiredGlobal), hs)).ToList();
+			List<LineData> set = relevantData.Select(hs => new LineData(hs.DateTime.Ticks, converter(hs.DaggersHitGlobal, hs.DaggersFiredGlobal), hs)).ToList();
 			_accuracyData.Add(new("#f80", false, false, false, set, (ds, d) =>
 			{
-				GetLeaderboardHistoryStatistics? stat = _statistics.Find(hs => hs == d.Reference);
+				GetLeaderboardHistoryStatistics? stat = relevantData.FirstOrDefault(hs => hs == d.Reference);
 				return stat == null ? new() : new List<MarkupString>
 				{
 					new($"<span style='text-align: right;'>{stat.DateTime.ToString(FormatUtils.DateFormat)}</span>"),
