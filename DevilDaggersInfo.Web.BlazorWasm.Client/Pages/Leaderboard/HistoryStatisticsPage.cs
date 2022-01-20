@@ -1,6 +1,7 @@
 using DevilDaggersInfo.Web.BlazorWasm.Client.Core.CanvasChart.Data;
 using DevilDaggersInfo.Web.BlazorWasm.Client.Core.CanvasChart.Options;
 using DevilDaggersInfo.Web.BlazorWasm.Client.Core.CanvasChart.Options.LineChart;
+using DevilDaggersInfo.Web.BlazorWasm.Client.Utils;
 using DevilDaggersInfo.Web.BlazorWasm.Shared.Dto.Public.LeaderboardHistoryStatistics;
 using DevilDaggersInfo.Web.BlazorWasm.Shared.Utils;
 using Microsoft.AspNetCore.Components;
@@ -16,6 +17,7 @@ public partial class HistoryStatisticsPage
 		GridOptions = new() { MinimumRowHeightInPx = 50 },
 		ChartMarginXInPx = 60,
 		DisplayXScaleAsDates = true,
+		Backgrounds = LineChartUtils.GameVersionBackgrounds,
 	};
 
 	private readonly LineChartOptions _entrancesLineChartOptions = new()
@@ -23,6 +25,7 @@ public partial class HistoryStatisticsPage
 		HighlighterKeys = new() { "Date", "Top 10 Score", "Top 100 Score" },
 		GridOptions = new() { MinimumRowHeightInPx = 50 },
 		DisplayXScaleAsDates = true,
+		Backgrounds = LineChartUtils.GameVersionBackgrounds,
 	};
 
 	private readonly LineChartOptions _timeLineChartOptions = new()
@@ -32,6 +35,7 @@ public partial class HistoryStatisticsPage
 		ChartMarginXInPx = 80,
 		DisplayXScaleAsDates = true,
 		HighlighterWidth = 320,
+		Backgrounds = LineChartUtils.GameVersionBackgrounds,
 	};
 
 	private readonly LineChartOptions _deathsLineChartOptions = new()
@@ -40,6 +44,7 @@ public partial class HistoryStatisticsPage
 		GridOptions = new() { MinimumRowHeightInPx = 50 },
 		ChartMarginXInPx = 60,
 		DisplayXScaleAsDates = true,
+		Backgrounds = LineChartUtils.GameVersionBackgrounds,
 	};
 
 	private readonly LineChartOptions _gemsLineChartOptions = new()
@@ -48,6 +53,7 @@ public partial class HistoryStatisticsPage
 		GridOptions = new() { MinimumRowHeightInPx = 50 },
 		ChartMarginXInPx = 80,
 		DisplayXScaleAsDates = true,
+		Backgrounds = LineChartUtils.GameVersionBackgrounds,
 	};
 
 	private readonly LineChartOptions _killsLineChartOptions = new()
@@ -56,6 +62,7 @@ public partial class HistoryStatisticsPage
 		GridOptions = new() { MinimumRowHeightInPx = 50 },
 		ChartMarginXInPx = 80,
 		DisplayXScaleAsDates = true,
+		Backgrounds = LineChartUtils.GameVersionBackgrounds,
 	};
 
 	private readonly LineChartOptions _accuracyLineChartOptions = new()
@@ -65,6 +72,7 @@ public partial class HistoryStatisticsPage
 		ScaleYOptions = new() { NumberFormat = "0%" },
 		DisplayXScaleAsDates = true,
 		HighlighterWidth = 320,
+		Backgrounds = LineChartUtils.GameVersionBackgrounds,
 	};
 
 	private readonly List<LineDataSet> _playersData = new();
