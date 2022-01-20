@@ -108,9 +108,9 @@ public partial class HistoryStatisticsPage
 		RegisterTotalPlayers();
 		void RegisterTotalPlayers()
 		{
-			IEnumerable<GetLeaderboardHistoryStatistics> relevantData = _statistics.Where(hs => hs.TotalPlayers > 0);
+			IEnumerable<GetLeaderboardHistoryStatistics> relevantData = _statistics.Where(hs => hs.TotalPlayers > 0 && hs.TotalPlayersUpdated);
 			IEnumerable<int> totalPlayers = relevantData.Select(hs => hs.TotalPlayers);
-			const double scale = 50000.0;
+			const double scale = 50_000;
 			double minY = Math.Floor(totalPlayers.Min() / scale) * scale;
 			double maxY = Math.Ceiling(totalPlayers.Max() / scale) * scale;
 
@@ -130,10 +130,10 @@ public partial class HistoryStatisticsPage
 		RegisterEntrances();
 		void RegisterEntrances()
 		{
-			IEnumerable<GetLeaderboardHistoryStatistics> relevantData = _statistics.Where(hs => hs.Top10Entrance > 0);
+			IEnumerable<GetLeaderboardHistoryStatistics> relevantData = _statistics.Where(hs => hs.Top10Entrance > 0 && hs.Top10EntranceUpdated);
 			IEnumerable<double> top10Entrances = relevantData.Select(hs => hs.Top10Entrance);
 			IEnumerable<double> top100Entrances = relevantData.Select(hs => hs.Top100Entrance);
-			const double scale = 100.0;
+			const double scale = 100;
 			double minY = Math.Floor(top100Entrances.Min() / scale) * scale;
 			double maxY = Math.Ceiling(top10Entrances.Max() / scale) * scale;
 			_entrancesOptions = new(relevantData.Min(hs => hs.DateTime.Ticks), null, maxX.Ticks, minY, scale, maxY);
@@ -149,6 +149,7 @@ public partial class HistoryStatisticsPage
 				};
 			}));
 
+			// relevantData = _statistics.Where(hs => hs.Top100Entrance > 0 && hs.Top100EntranceUpdated);
 			List<LineData> top100Set = relevantData.Select(hs => new LineData(hs.DateTime.Ticks, hs.Top100Entrance, hs)).ToList();
 			_entrancesData.Add(new("#f20", false, false, false, top100Set, (ds, d) => new List<MarkupString> { new($"<span style='color: {ds.Color}; text-align: right;'>{d.Y.ToString(FormatUtils.TimeFormat)}</span>") }));
 		}
@@ -156,9 +157,9 @@ public partial class HistoryStatisticsPage
 		RegisterTime();
 		void RegisterTime()
 		{
-			IEnumerable<GetLeaderboardHistoryStatistics> relevantData = _statistics.Where(hs => hs.TimeGlobal > 0);
+			IEnumerable<GetLeaderboardHistoryStatistics> relevantData = _statistics.Where(hs => hs.TimeGlobal > 0 && hs.TimeGlobalUpdated);
 			IEnumerable<double> stats = relevantData.Select(hs => hs.TimeGlobal);
-			const double scale = 300_000_000.0;
+			const double scale = 300_000_000;
 			double minY = Math.Floor(stats.Min() / scale) * scale;
 			double maxY = Math.Ceiling(stats.Max() / scale) * scale;
 			_timeOptions = new(relevantData.Min(hs => hs.DateTime.Ticks), null, maxX.Ticks, minY, scale, maxY);
@@ -175,25 +176,25 @@ public partial class HistoryStatisticsPage
 			}));
 		}
 
-		Register((hs) => hs.DeathsGlobal, ref _deathsOptions, _deathsData, 2_500_000);
-		Register((hs) => hs.GemsGlobal, ref _gemsOptions, _gemsData, 100_000_000);
-		Register((hs) => hs.KillsGlobal, ref _killsOptions, _killsData, 1_000_000_000);
-		void Register(Func<GetLeaderboardHistoryStatistics, ulong> selector, ref LineChartDataOptions? lineChartDataOptions, List<LineDataSet> dataSets, double scale)
+		Register((hs) => hs.DeathsGlobal, (hs) => hs.DeathsGlobalUpdated, ref _deathsOptions, _deathsData, 2_500_000);
+		Register((hs) => hs.GemsGlobal, (hs) => hs.GemsGlobalUpdated, ref _gemsOptions, _gemsData, 100_000_000);
+		Register((hs) => hs.KillsGlobal, (hs) => hs.KillsGlobalUpdated, ref _killsOptions, _killsData, 1_000_000_000);
+		void Register(Func<GetLeaderboardHistoryStatistics, ulong> valueSelector, Func<GetLeaderboardHistoryStatistics, bool> valueUpdatedSelector, ref LineChartDataOptions? lineChartDataOptions, List<LineDataSet> dataSets, double scale)
 		{
-			IEnumerable<GetLeaderboardHistoryStatistics> relevantData = _statistics.Where(hs => selector(hs) > 0);
-			IEnumerable<ulong> stats = relevantData.Select(hs => selector(hs));
+			IEnumerable<GetLeaderboardHistoryStatistics> relevantData = _statistics.Where(hs => valueSelector(hs) > 0 && valueUpdatedSelector(hs));
+			IEnumerable<ulong> stats = relevantData.Select(hs => valueSelector(hs));
 			double minY = Math.Floor(stats.Min() / scale) * scale;
 			double maxY = Math.Ceiling(stats.Max() / scale) * scale;
 			lineChartDataOptions = new(relevantData.Min(hs => hs.DateTime.Ticks), null, maxX.Ticks, minY, scale, maxY);
 
-			List<LineData> set = relevantData.Select(hs => new LineData(hs.DateTime.Ticks, selector(hs), hs)).ToList();
+			List<LineData> set = relevantData.Select(hs => new LineData(hs.DateTime.Ticks, valueSelector(hs), hs)).ToList();
 			dataSets.Add(new("#f00", false, false, false, set, (ds, d) =>
 			{
 				GetLeaderboardHistoryStatistics? stat = relevantData.FirstOrDefault(hs => hs == d.Reference);
 				return stat == null ? new() : new List<MarkupString>
 				{
 					new($"<span style='text-align: right;'>{stat.DateTime.ToString(FormatUtils.DateFormat)}</span>"),
-					new($"<span style='text-align: right;'>{selector(stat).ToString(FormatUtils.LeaderboardIntFormat)}</span>"),
+					new($"<span style='text-align: right;'>{valueSelector(stat).ToString(FormatUtils.LeaderboardIntFormat)}</span>"),
 				};
 			}));
 		}
@@ -203,7 +204,7 @@ public partial class HistoryStatisticsPage
 		{
 			Func<ulong, ulong, double> converter = static (hit, fired) => fired == 0 ? 0 : hit / (double)fired;
 
-			IEnumerable<GetLeaderboardHistoryStatistics> relevantData = _statistics.Where(hs => hs.DaggersFiredGlobal > 0);
+			IEnumerable<GetLeaderboardHistoryStatistics> relevantData = _statistics.Where(hs => hs.DaggersFiredGlobal > 0 && hs.DaggersFiredGlobalUpdated);
 			IEnumerable<double> accuracy = relevantData.Select(hs => converter(hs.DaggersHitGlobal, hs.DaggersFiredGlobal));
 			double max = ((int)Math.Ceiling((int)(accuracy.Max() * 100) / 5.0) * 5) / 100.0 + 0.0001;
 			_accuracyOptions = new(relevantData.Min(hs => hs.DateTime.Ticks), null, maxX.Ticks, 0.2, 0.01, max, true);
@@ -216,8 +217,8 @@ public partial class HistoryStatisticsPage
 				{
 					new($"<span style='text-align: right;'>{stat.DateTime.ToString(FormatUtils.DateFormat)}</span>"),
 					new($"<span style='color: {ds.Color}; text-align: right;'>{converter(stat.DaggersHitGlobal, stat.DaggersFiredGlobal).ToString(FormatUtils.AccuracyFormat)}</span>"),
-					new($"<span style='text-align: right;'>{(stat.DaggersFiredGlobal == 10000 ? "?" : stat.DaggersHitGlobal.ToString(FormatUtils.LeaderboardIntFormat))}</span>"),
-					new($"<span style='text-align: right;'>{(stat.DaggersFiredGlobal == 10000 ? "?" : stat.DaggersFiredGlobal.ToString(FormatUtils.LeaderboardIntFormat))}</span>"),
+					new($"<span style='text-align: right;'>{(stat.DaggersFiredGlobal == 10_000 ? "?" : stat.DaggersHitGlobal.ToString(FormatUtils.LeaderboardIntFormat))}</span>"),
+					new($"<span style='text-align: right;'>{(stat.DaggersFiredGlobal == 10_000 ? "?" : stat.DaggersFiredGlobal.ToString(FormatUtils.LeaderboardIntFormat))}</span>"),
 				};
 			}));
 		}
