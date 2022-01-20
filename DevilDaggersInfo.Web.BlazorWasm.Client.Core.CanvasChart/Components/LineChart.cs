@@ -264,7 +264,7 @@ public partial class LineChart
 		for (int i = 0; i < DataSets.Count; i++)
 		{
 			LineDataSet dataSet = DataSets[i];
-			if (dataSet.Data.Count == 0)
+			if (dataSet.Data.Count == 0 || dataSet.ToHighlighterValue == null)
 				continue;
 
 			LineData highlightedData = dataSet.Data.OrderByDescending(ld => ld.X).FirstOrDefault(ld => ld.X < xValue + DataOptions.MinX) ?? dataSet.Data[0];

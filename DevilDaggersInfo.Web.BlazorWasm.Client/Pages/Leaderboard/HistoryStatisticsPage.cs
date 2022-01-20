@@ -130,7 +130,7 @@ public partial class HistoryStatisticsPage
 		RegisterEntrances();
 		void RegisterEntrances()
 		{
-			IEnumerable<GetLeaderboardHistoryStatistics> relevantData = _statistics.Where(hs => hs.Top10Entrance > 0 && hs.Top10EntranceUpdated);
+			IEnumerable<GetLeaderboardHistoryStatistics> relevantData = _statistics.Where(hs => hs.Top10Entrance > 0 || hs.Top100Entrance > 0);
 			IEnumerable<double> top10Entrances = relevantData.Select(hs => hs.Top10Entrance);
 			IEnumerable<double> top100Entrances = relevantData.Select(hs => hs.Top100Entrance);
 			const double scale = 100;
@@ -138,20 +138,22 @@ public partial class HistoryStatisticsPage
 			double maxY = Math.Ceiling(top10Entrances.Max() / scale) * scale;
 			_entrancesOptions = new(relevantData.Min(hs => hs.DateTime.Ticks), null, maxX.Ticks, minY, scale, maxY);
 
-			List<LineData> top10Set = relevantData.Select(hs => new LineData(hs.DateTime.Ticks, hs.Top10Entrance, hs)).ToList();
-			_entrancesData.Add(new("#a00", false, false, false, top10Set, (ds, d) =>
+			const string top10 = "#a00";
+			const string top100 = "#f20";
+			List<LineData> top10Set = relevantData.Where(hs => hs.Top10EntranceUpdated).Select(hs => new LineData(hs.DateTime.Ticks, hs.Top10Entrance, hs)).ToList();
+			_entrancesData.Add(new(top10, false, false, false, top10Set, (ds, d) =>
 			{
 				GetLeaderboardHistoryStatistics? stats = relevantData.FirstOrDefault(hs => hs == d.Reference);
 				return stats == null ? new() : new()
 				{
 					new($"<span style='text-align: right;'>{stats.DateTime.ToString(FormatUtils.DateFormat)}</span>"),
-					new($"<span style='color: {ds.Color}; text-align: right;'>{d.Y.ToString(FormatUtils.TimeFormat)}</span>"),
+					new($"<span style='color: {top10}; text-align: right;'>{stats.Top10Entrance.ToString(FormatUtils.TimeFormat)}</span>"),
+					new($"<span style='color: {top100}; text-align: right;'>{stats.Top100Entrance.ToString(FormatUtils.TimeFormat)}</span>"),
 				};
 			}));
 
-			// relevantData = _statistics.Where(hs => hs.Top100Entrance > 0 && hs.Top100EntranceUpdated);
-			List<LineData> top100Set = relevantData.Select(hs => new LineData(hs.DateTime.Ticks, hs.Top100Entrance, hs)).ToList();
-			_entrancesData.Add(new("#f20", false, false, false, top100Set, (ds, d) => new List<MarkupString> { new($"<span style='color: {ds.Color}; text-align: right;'>{d.Y.ToString(FormatUtils.TimeFormat)}</span>") }));
+			List<LineData> top100Set = relevantData.Where(hs => hs.Top100EntranceUpdated).Select(hs => new LineData(hs.DateTime.Ticks, hs.Top100Entrance, hs)).ToList();
+			_entrancesData.Add(new(top100, false, false, false, top100Set, null));
 		}
 
 		RegisterTime();

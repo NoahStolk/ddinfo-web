@@ -4,7 +4,7 @@ namespace DevilDaggersInfo.Web.BlazorWasm.Client.Core.CanvasChart.Data;
 
 public class LineDataSet
 {
-	public LineDataSet(string color, bool prependStart, bool appendEnd, bool isSteppedLine, List<LineData> data, Func<LineDataSet, LineData, List<MarkupString>> toHighlighterValue)
+	public LineDataSet(string color, bool prependStart, bool appendEnd, bool isSteppedLine, List<LineData> data, Func<LineDataSet, LineData, List<MarkupString>>? toHighlighterValue)
 	{
 		Color = color;
 		PrependStart = prependStart;
@@ -19,5 +19,5 @@ public class LineDataSet
 	public bool AppendEnd { get; }
 	public bool IsSteppedLine { get; }
 	public List<LineData> Data { get; }
-	public Func<LineDataSet, LineData, List<MarkupString>> ToHighlighterValue { get; set; }
+	public Func<LineDataSet, LineData, List<MarkupString>>? ToHighlighterValue { get; set; }
 }
