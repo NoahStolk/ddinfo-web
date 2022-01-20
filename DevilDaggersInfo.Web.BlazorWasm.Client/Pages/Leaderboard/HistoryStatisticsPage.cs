@@ -22,7 +22,7 @@ public partial class HistoryStatisticsPage
 
 	private readonly LineChartOptions _entrancesLineChartOptions = new()
 	{
-		HighlighterKeys = new() { "Date", "Top 10 Score", "Top 100 Score" },
+		HighlighterKeys = new() { "Date", "Top 1 Score", "Top 2 Score", "Top 3 Score", "Top 10 Score", "Top 100 Score" },
 		GridOptions = new() { MinimumRowHeightInPx = 50 },
 		DisplayXScaleAsDates = true,
 		Backgrounds = LineChartUtils.GameVersionBackgrounds,
@@ -130,30 +130,40 @@ public partial class HistoryStatisticsPage
 		RegisterEntrances();
 		void RegisterEntrances()
 		{
-			IEnumerable<GetLeaderboardHistoryStatistics> relevantData = _statistics.Where(hs => hs.Top10Entrance > 0 || hs.Top100Entrance > 0);
+			IEnumerable<GetLeaderboardHistoryStatistics> relevantData = _statistics.Where(hs => hs.Top1Entrance > 0 || hs.Top2Entrance > 0 || hs.Top3Entrance > 0 || hs.Top10Entrance > 0 || hs.Top100Entrance > 0);
+			IEnumerable<double> top1Entrances = relevantData.Select(hs => hs.Top1Entrance);
+			IEnumerable<double> top2Entrances = relevantData.Select(hs => hs.Top2Entrance);
+			IEnumerable<double> top3Entrances = relevantData.Select(hs => hs.Top3Entrance);
 			IEnumerable<double> top10Entrances = relevantData.Select(hs => hs.Top10Entrance);
 			IEnumerable<double> top100Entrances = relevantData.Select(hs => hs.Top100Entrance);
-			const double scale = 100;
+			const double scale = 200;
 			double minY = Math.Floor(top100Entrances.Min() / scale) * scale;
-			double maxY = Math.Ceiling(top10Entrances.Max() / scale) * scale;
+			double maxY = Math.Ceiling(top1Entrances.Max() / scale) * scale;
 			_entrancesOptions = new(relevantData.Min(hs => hs.DateTime.Ticks), null, maxX.Ticks, minY, scale, maxY);
 
-			const string top10 = "#a00";
-			const string top100 = "#f20";
-			List<LineData> top10Set = relevantData.Where(hs => hs.Top10EntranceUpdated).Select(hs => new LineData(hs.DateTime.Ticks, hs.Top10Entrance, hs)).ToList();
-			_entrancesData.Add(new(top10, false, false, false, top10Set, (ds, d) =>
+			const string top1 = "#fc0";
+			const string top2 = "#bbb";
+			const string top3 = "#a42";
+			const string top10 = "#0aa";
+			const string top100 = "#07a";
+			_entrancesData.Add(new(top1, false, false, false, relevantData.Where(hs => hs.Top1EntranceUpdated).Select(hs => new LineData(hs.DateTime.Ticks, hs.Top1Entrance, hs)).ToList(), (ds, d) =>
 			{
 				GetLeaderboardHistoryStatistics? stats = relevantData.FirstOrDefault(hs => hs == d.Reference);
 				return stats == null ? new() : new()
 				{
 					new($"<span style='text-align: right;'>{stats.DateTime.ToString(FormatUtils.DateFormat)}</span>"),
+					new($"<span style='color: {top1}; text-align: right;'>{stats.Top1Entrance.ToString(FormatUtils.TimeFormat)}</span>"),
+					new($"<span style='color: {top2}; text-align: right;'>{stats.Top2Entrance.ToString(FormatUtils.TimeFormat)}</span>"),
+					new($"<span style='color: {top3}; text-align: right;'>{stats.Top3Entrance.ToString(FormatUtils.TimeFormat)}</span>"),
 					new($"<span style='color: {top10}; text-align: right;'>{stats.Top10Entrance.ToString(FormatUtils.TimeFormat)}</span>"),
 					new($"<span style='color: {top100}; text-align: right;'>{stats.Top100Entrance.ToString(FormatUtils.TimeFormat)}</span>"),
 				};
 			}));
 
-			List<LineData> top100Set = relevantData.Where(hs => hs.Top100EntranceUpdated).Select(hs => new LineData(hs.DateTime.Ticks, hs.Top100Entrance, hs)).ToList();
-			_entrancesData.Add(new(top100, false, false, false, top100Set, null));
+			_entrancesData.Add(new(top2, false, false, false, relevantData.Where(hs => hs.Top2EntranceUpdated).Select(hs => new LineData(hs.DateTime.Ticks, hs.Top2Entrance, hs)).ToList(), null));
+			_entrancesData.Add(new(top3, false, false, false, relevantData.Where(hs => hs.Top3EntranceUpdated).Select(hs => new LineData(hs.DateTime.Ticks, hs.Top3Entrance, hs)).ToList(), null));
+			_entrancesData.Add(new(top10, false, false, false, relevantData.Where(hs => hs.Top10EntranceUpdated).Select(hs => new LineData(hs.DateTime.Ticks, hs.Top10Entrance, hs)).ToList(), null));
+			_entrancesData.Add(new(top100, false, false, false, relevantData.Where(hs => hs.Top100EntranceUpdated).Select(hs => new LineData(hs.DateTime.Ticks, hs.Top100Entrance, hs)).ToList(), null));
 		}
 
 		RegisterTime();
@@ -173,7 +183,7 @@ public partial class HistoryStatisticsPage
 				return stat == null ? new() : new List<MarkupString>
 				{
 					new($"<span style='text-align: right;'>{stat.DateTime.ToString(FormatUtils.DateFormat)}</span>"),
-					new($"<span style='text-align: right;'>{stat.TimeGlobal.ToString(FormatUtils.LeaderboardGlobalTimeFormat)}</span>"),
+					new($"<span style='color: {ds.Color}; text-align: right;'>{stat.TimeGlobal.ToString(FormatUtils.LeaderboardGlobalTimeFormat)}</span>"),
 				};
 			}));
 		}
@@ -196,7 +206,7 @@ public partial class HistoryStatisticsPage
 				return stat == null ? new() : new List<MarkupString>
 				{
 					new($"<span style='text-align: right;'>{stat.DateTime.ToString(FormatUtils.DateFormat)}</span>"),
-					new($"<span style='text-align: right;'>{valueSelector(stat).ToString(FormatUtils.LeaderboardIntFormat)}</span>"),
+					new($"<span style='color: {ds.Color}; text-align: right;'>{valueSelector(stat).ToString(FormatUtils.LeaderboardIntFormat)}</span>"),
 				};
 			}));
 		}
