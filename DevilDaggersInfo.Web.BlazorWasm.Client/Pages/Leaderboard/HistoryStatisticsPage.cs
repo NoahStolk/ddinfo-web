@@ -13,10 +13,7 @@ public partial class HistoryStatisticsPage
 	private readonly LineChartOptions _playersLineChartOptions = new()
 	{
 		HighlighterKeys = new() { "Date", "Players" },
-		GridOptions = new()
-		{
-			MinimumRowHeightInPx = 50,
-		},
+		GridOptions = new() { MinimumRowHeightInPx = 50 },
 		ChartMarginXInPx = 60,
 		DisplayXScaleAsDates = true,
 	};
@@ -24,30 +21,66 @@ public partial class HistoryStatisticsPage
 	private readonly LineChartOptions _entrancesLineChartOptions = new()
 	{
 		HighlighterKeys = new() { "Date", "Top 10 Score", "Top 100 Score" },
-		GridOptions = new()
-		{
-			MinimumRowHeightInPx = 50,
-		},
+		GridOptions = new() { MinimumRowHeightInPx = 50 },
+		DisplayXScaleAsDates = true,
+	};
+
+	private readonly LineChartOptions _timeLineChartOptions = new()
+	{
+		HighlighterKeys = new() { "Date", "Global Time" },
+		GridOptions = new() { MinimumRowHeightInPx = 50 },
+		ChartMarginXInPx = 60,
+		DisplayXScaleAsDates = true,
+		HighlighterWidth = 320,
+	};
+
+	private readonly LineChartOptions _deathsLineChartOptions = new()
+	{
+		HighlighterKeys = new() { "Date", "Global Deaths" },
+		GridOptions = new() { MinimumRowHeightInPx = 50 },
+		ChartMarginXInPx = 60,
+		DisplayXScaleAsDates = true,
+	};
+
+	private readonly LineChartOptions _gemsLineChartOptions = new()
+	{
+		HighlighterKeys = new() { "Date", "Global Gems" },
+		GridOptions = new() { MinimumRowHeightInPx = 50 },
+		ChartMarginXInPx = 60,
+		DisplayXScaleAsDates = true,
+	};
+
+	private readonly LineChartOptions _killsLineChartOptions = new()
+	{
+		HighlighterKeys = new() { "Date", "Global Kills" },
+		GridOptions = new() { MinimumRowHeightInPx = 50 },
+		ChartMarginXInPx = 60,
 		DisplayXScaleAsDates = true,
 	};
 
 	private readonly LineChartOptions _accuracyLineChartOptions = new()
 	{
 		HighlighterKeys = new() { "Date", "Global Accuracy", "Global Daggers Hit", "Global Daggers Fired" },
-		GridOptions = new()
-		{
-			MinimumRowHeightInPx = 50,
-		},
+		GridOptions = new() { MinimumRowHeightInPx = 50 },
 		ScaleYOptions = new() { NumberFormat = "0%" },
 		DisplayXScaleAsDates = true,
+		HighlighterWidth = 320,
 	};
 
 	private readonly List<LineDataSet> _playersData = new();
 	private readonly List<LineDataSet> _entrancesData = new();
+	private readonly List<LineDataSet> _timeData = new();
+	private readonly List<LineDataSet> _deathsData = new();
+	private readonly List<LineDataSet> _gemsData = new();
+	private readonly List<LineDataSet> _killsData = new();
 	private readonly List<LineDataSet> _accuracyData = new();
 
 	private LineChartDataOptions? _playersOptions;
 	private LineChartDataOptions? _entrancesOptions;
+	private LineChartDataOptions? _timeOptions;
+	private LineChartDataOptions? _deathsOptions;
+	private LineChartDataOptions? _gemsOptions;
+	private LineChartDataOptions? _killsOptions;
 	private LineChartDataOptions? _accuracyOptions;
 
 	private List<GetLeaderboardHistoryStatistics>? _statistics;
@@ -81,7 +114,7 @@ public partial class HistoryStatisticsPage
 				return stats == null ? new() : new()
 				{
 					new($"<span style='text-align: right;'>{stats.DateTime.ToString(FormatUtils.DateFormat)}</span>"),
-					new($"<span style='color: {ds.Color}; text-align: right;'>{d.Y.ToString("0")}</span>"),
+					new($"<span style='color: {ds.Color}; text-align: right;'>{d.Y.ToString(FormatUtils.LeaderboardIntFormat)}</span>"),
 				};
 			}));
 		}
@@ -103,34 +136,74 @@ public partial class HistoryStatisticsPage
 				return stats == null ? new() : new()
 				{
 					new($"<span style='text-align: right;'>{stats.DateTime.ToString(FormatUtils.DateFormat)}</span>"),
-					new($"<span style='color: {ds.Color}; text-align: right;'>{d.Y.ToString("0.0000")}</span>"),
+					new($"<span style='color: {ds.Color}; text-align: right;'>{d.Y.ToString(FormatUtils.TimeFormat)}</span>"),
 				};
 			}));
 
 			List<LineData> top100Set = _statistics.Select(hs => new LineData(hs.DateTime.Ticks, hs.Top100Entrance, hs)).ToList();
-			_entrancesData.Add(new("#f00", false, false, false, top100Set, (ds, d) => new List<MarkupString> { new($"<span style='color: {ds.Color}; text-align: right;'>{d.Y.ToString("0.0000")}</span>") }));
+			_entrancesData.Add(new("#f00", false, false, false, top100Set, (ds, d) => new List<MarkupString> { new($"<span style='color: {ds.Color}; text-align: right;'>{d.Y.ToString(FormatUtils.TimeFormat)}</span>") }));
 		}
 
-		RegisterAccuracy();
-		void RegisterAccuracy()
+		RegisterTime();
+		void RegisterTime()
 		{
-			Func<ulong, ulong, double> accuracyConverter = static (hit, fired) => fired == 0 ? 0 : hit / (double)fired;
-			Func<LineDataSet, LineData, List<MarkupString>> accuracyHighlighter = (ds, d) =>
+			Func<LineDataSet, LineData, List<MarkupString>> highlighter = (ds, d) =>
 			{
 				GetLeaderboardHistoryStatistics? stat = _statistics.Find(hs => hs == d.Reference);
 				return stat == null ? new() : new List<MarkupString>
 				{
 					new($"<span style='text-align: right;'>{stat.DateTime.ToString(FormatUtils.DateFormat)}</span>"),
-					new($"<span style='color: {ds.Color}; text-align: right;'>{accuracyConverter(stat.DaggersHitGlobal, stat.DaggersFiredGlobal).ToString("0.00%")}</span>"),
-					new($"<span style='text-align: right;'>{(stat.DaggersFiredGlobal == 10000 ? 0 : stat.DaggersHitGlobal)}</span>"),
-					new($"<span style='text-align: right;'>{(stat.DaggersFiredGlobal == 10000 ? 0 : stat.DaggersFiredGlobal)}</span>"),
+					new($"<span style='text-align: right;'>{stat.TimeGlobal.ToString(FormatUtils.LeaderboardGlobalTimeFormat)}</span>"),
 				};
 			};
 
-			IEnumerable<double> accuracy = _statistics.Select(hs => accuracyConverter(hs.DaggersHitGlobal, hs.DaggersFiredGlobal));
-			List<LineData> set = _statistics.Select(hs => new LineData(hs.DateTime.Ticks, accuracyConverter(hs.DaggersHitGlobal, hs.DaggersFiredGlobal), hs)).ToList();
+			IEnumerable<double> stats = _statistics.Select(hs => hs.TimeGlobal);
+			List<LineData> set = _statistics.Select(hs => new LineData(hs.DateTime.Ticks, hs.TimeGlobal, hs)).ToList();
+			_timeOptions = new(minX.Ticks, null, maxX.Ticks, Math.Floor(stats.Min() * 10) / 10, 0.05, Math.Ceiling(stats.Max() * 10) / 10, true);
+			_timeData.Add(new("#f00", false, false, false, set, highlighter));
+		}
+
+		Register((hs) => hs.DeathsGlobal, ref _deathsOptions, _deathsData);
+		Register((hs) => hs.GemsGlobal, ref _gemsOptions, _gemsData);
+		Register((hs) => hs.KillsGlobal, ref _killsOptions, _killsData);
+		void Register(Func<GetLeaderboardHistoryStatistics, ulong> selector, ref LineChartDataOptions? lineChartDataOptions, List<LineDataSet> dataSets)
+		{
+			Func<LineDataSet, LineData, List<MarkupString>> highlighter = (ds, d) =>
+			{
+				GetLeaderboardHistoryStatistics? stat = _statistics.Find(hs => hs == d.Reference);
+				return stat == null ? new() : new List<MarkupString>
+				{
+					new($"<span style='text-align: right;'>{stat.DateTime.ToString(FormatUtils.DateFormat)}</span>"),
+					new($"<span style='text-align: right;'>{selector(stat).ToString(FormatUtils.LeaderboardIntFormat)}</span>"),
+				};
+			};
+
+			IEnumerable<ulong> stats = _statistics.Select(hs => selector(hs));
+			List<LineData> set = _statistics.Select(hs => new LineData(hs.DateTime.Ticks, selector(hs), hs)).ToList();
+			lineChartDataOptions = new(minX.Ticks, null, maxX.Ticks, Math.Floor((double)stats.Min() * 10) / 10, 0.05, Math.Ceiling((double)stats.Max() * 10) / 10, true);
+			dataSets.Add(new("#f00", false, false, false, set, highlighter));
+		}
+
+		RegisterAccuracy();
+		void RegisterAccuracy()
+		{
+			Func<ulong, ulong, double> converter = static (hit, fired) => fired == 0 ? 0 : hit / (double)fired;
+			Func<LineDataSet, LineData, List<MarkupString>> highlighter = (ds, d) =>
+			{
+				GetLeaderboardHistoryStatistics? stat = _statistics.Find(hs => hs == d.Reference);
+				return stat == null ? new() : new List<MarkupString>
+				{
+					new($"<span style='text-align: right;'>{stat.DateTime.ToString(FormatUtils.DateFormat)}</span>"),
+					new($"<span style='color: {ds.Color}; text-align: right;'>{converter(stat.DaggersHitGlobal, stat.DaggersFiredGlobal).ToString(FormatUtils.AccuracyFormat)}</span>"),
+					new($"<span style='text-align: right;'>{(stat.DaggersFiredGlobal == 10000 ? "?" : stat.DaggersHitGlobal.ToString(FormatUtils.LeaderboardIntFormat))}</span>"),
+					new($"<span style='text-align: right;'>{(stat.DaggersFiredGlobal == 10000 ? "?" : stat.DaggersFiredGlobal.ToString(FormatUtils.LeaderboardIntFormat))}</span>"),
+				};
+			};
+
+			IEnumerable<double> accuracy = _statistics.Select(hs => converter(hs.DaggersHitGlobal, hs.DaggersFiredGlobal));
+			List<LineData> set = _statistics.Select(hs => new LineData(hs.DateTime.Ticks, converter(hs.DaggersHitGlobal, hs.DaggersFiredGlobal), hs)).ToList();
 			_accuracyOptions = new(minX.Ticks, null, maxX.Ticks, Math.Floor(accuracy.Min() * 10) / 10, 0.05, Math.Ceiling(accuracy.Max() * 10) / 10, true);
-			_accuracyData.Add(new("#f80", false, false, false, set, accuracyHighlighter));
+			_accuracyData.Add(new("#f80", false, false, false, set, highlighter));
 		}
 	}
 
