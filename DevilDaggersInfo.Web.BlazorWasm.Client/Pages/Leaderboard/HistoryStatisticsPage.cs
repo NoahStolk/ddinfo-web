@@ -130,7 +130,7 @@ public partial class HistoryStatisticsPage
 			_entrancesOptions = new(relevantData.Min(hs => hs.DateTime.Ticks), null, maxX.Ticks, minY, scale, maxY);
 
 			List<LineData> top10Set = relevantData.Select(hs => new LineData(hs.DateTime.Ticks, hs.Top10Entrance, hs)).ToList();
-			_entrancesData.Add(new("#800", false, false, false, top10Set, (ds, d) =>
+			_entrancesData.Add(new("#a00", false, false, false, top10Set, (ds, d) =>
 			{
 				GetLeaderboardHistoryStatistics? stats = relevantData.FirstOrDefault(hs => hs == d.Reference);
 				return stats == null ? new() : new()
@@ -141,7 +141,7 @@ public partial class HistoryStatisticsPage
 			}));
 
 			List<LineData> top100Set = relevantData.Select(hs => new LineData(hs.DateTime.Ticks, hs.Top100Entrance, hs)).ToList();
-			_entrancesData.Add(new("#f00", false, false, false, top100Set, (ds, d) => new List<MarkupString> { new($"<span style='color: {ds.Color}; text-align: right;'>{d.Y.ToString(FormatUtils.TimeFormat)}</span>") }));
+			_entrancesData.Add(new("#f20", false, false, false, top100Set, (ds, d) => new List<MarkupString> { new($"<span style='color: {ds.Color}; text-align: right;'>{d.Y.ToString(FormatUtils.TimeFormat)}</span>") }));
 		}
 
 		RegisterTime();
