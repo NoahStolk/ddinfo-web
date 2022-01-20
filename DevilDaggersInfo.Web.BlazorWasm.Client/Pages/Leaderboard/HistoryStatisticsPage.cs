@@ -108,16 +108,17 @@ public partial class HistoryStatisticsPage
 		RegisterTotalPlayers();
 		void RegisterTotalPlayers()
 		{
-			IEnumerable<int> totalPlayers = _statistics.Select(hs => hs.TotalPlayers);
+			IEnumerable<GetLeaderboardHistoryStatistics> relevantData = _statistics.Where(hs => hs.TotalPlayers > 0);
+			IEnumerable<int> totalPlayers = relevantData.Select(hs => hs.TotalPlayers);
 			const double scale = 50000.0;
 			double minY = Math.Floor(totalPlayers.Min() / scale) * scale;
 			double maxY = Math.Ceiling(totalPlayers.Max() / scale) * scale;
 
-			List<LineData> set = _statistics.Select(hs => new LineData(hs.DateTime.Ticks, hs.TotalPlayers, hs)).ToList();
-			_playersOptions = new(_statistics.Min(hs => hs.DateTime.Ticks), null, maxX.Ticks, minY, scale, maxY);
+			List<LineData> set = relevantData.Select(hs => new LineData(hs.DateTime.Ticks, hs.TotalPlayers, hs)).ToList();
+			_playersOptions = new(relevantData.Min(hs => hs.DateTime.Ticks), null, maxX.Ticks, minY, scale, maxY);
 			_playersData.Add(new("#f00", false, false, false, set, (ds, d) =>
 			{
-				GetLeaderboardHistoryStatistics? stats = _statistics.Find(hs => hs == d.Reference);
+				GetLeaderboardHistoryStatistics? stats = relevantData.FirstOrDefault(hs => hs == d.Reference);
 				return stats == null ? new() : new()
 				{
 					new($"<span style='text-align: right;'>{stats.DateTime.ToString(FormatUtils.DateFormat)}</span>"),
