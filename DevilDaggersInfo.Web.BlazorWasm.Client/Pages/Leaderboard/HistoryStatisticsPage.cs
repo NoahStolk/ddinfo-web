@@ -29,7 +29,7 @@ public partial class HistoryStatisticsPage
 	{
 		HighlighterKeys = new() { "Date", "Global Time" },
 		GridOptions = new() { MinimumRowHeightInPx = 50 },
-		ChartMarginXInPx = 60,
+		ChartMarginXInPx = 80,
 		DisplayXScaleAsDates = true,
 		HighlighterWidth = 320,
 	};
@@ -46,7 +46,7 @@ public partial class HistoryStatisticsPage
 	{
 		HighlighterKeys = new() { "Date", "Global Gems" },
 		GridOptions = new() { MinimumRowHeightInPx = 50 },
-		ChartMarginXInPx = 60,
+		ChartMarginXInPx = 80,
 		DisplayXScaleAsDates = true,
 	};
 
@@ -54,7 +54,7 @@ public partial class HistoryStatisticsPage
 	{
 		HighlighterKeys = new() { "Date", "Global Kills" },
 		GridOptions = new() { MinimumRowHeightInPx = 50 },
-		ChartMarginXInPx = 60,
+		ChartMarginXInPx = 80,
 		DisplayXScaleAsDates = true,
 	};
 
@@ -147,7 +147,14 @@ public partial class HistoryStatisticsPage
 		RegisterTime();
 		void RegisterTime()
 		{
-			Func<LineDataSet, LineData, List<MarkupString>> highlighter = (ds, d) =>
+			IEnumerable<double> stats = _statistics.Select(hs => hs.TimeGlobal);
+			const double scale = 300_000_000.0;
+			double minY = Math.Floor(stats.Min() / scale) * scale;
+			double maxY = Math.Ceiling(stats.Max() / scale) * scale;
+			_timeOptions = new(minX.Ticks, null, maxX.Ticks, minY, scale, maxY);
+
+			List<LineData> set = _statistics.Select(hs => new LineData(hs.DateTime.Ticks, hs.TimeGlobal, hs)).ToList();
+			_timeData.Add(new("#f00", false, false, false, set, (ds, d) =>
 			{
 				GetLeaderboardHistoryStatistics? stat = _statistics.Find(hs => hs == d.Reference);
 				return stat == null ? new() : new List<MarkupString>
@@ -155,20 +162,21 @@ public partial class HistoryStatisticsPage
 					new($"<span style='text-align: right;'>{stat.DateTime.ToString(FormatUtils.DateFormat)}</span>"),
 					new($"<span style='text-align: right;'>{stat.TimeGlobal.ToString(FormatUtils.LeaderboardGlobalTimeFormat)}</span>"),
 				};
-			};
-
-			IEnumerable<double> stats = _statistics.Select(hs => hs.TimeGlobal);
-			List<LineData> set = _statistics.Select(hs => new LineData(hs.DateTime.Ticks, hs.TimeGlobal, hs)).ToList();
-			_timeOptions = new(minX.Ticks, null, maxX.Ticks, Math.Floor(stats.Min() * 10) / 10, 0.05, Math.Ceiling(stats.Max() * 10) / 10, true);
-			_timeData.Add(new("#f00", false, false, false, set, highlighter));
+			}));
 		}
 
-		Register((hs) => hs.DeathsGlobal, ref _deathsOptions, _deathsData);
-		Register((hs) => hs.GemsGlobal, ref _gemsOptions, _gemsData);
-		Register((hs) => hs.KillsGlobal, ref _killsOptions, _killsData);
-		void Register(Func<GetLeaderboardHistoryStatistics, ulong> selector, ref LineChartDataOptions? lineChartDataOptions, List<LineDataSet> dataSets)
+		Register((hs) => hs.DeathsGlobal, ref _deathsOptions, _deathsData, 2_500_000);
+		Register((hs) => hs.GemsGlobal, ref _gemsOptions, _gemsData, 100_000_000);
+		Register((hs) => hs.KillsGlobal, ref _killsOptions, _killsData, 1_000_000_000);
+		void Register(Func<GetLeaderboardHistoryStatistics, ulong> selector, ref LineChartDataOptions? lineChartDataOptions, List<LineDataSet> dataSets, double scale)
 		{
-			Func<LineDataSet, LineData, List<MarkupString>> highlighter = (ds, d) =>
+			IEnumerable<ulong> stats = _statistics.Select(hs => selector(hs));
+			double minY = Math.Floor(stats.Min() / scale) * scale;
+			double maxY = Math.Ceiling(stats.Max() / scale) * scale;
+			lineChartDataOptions = new(minX.Ticks, null, maxX.Ticks, minY, scale, maxY);
+
+			List<LineData> set = _statistics.Select(hs => new LineData(hs.DateTime.Ticks, selector(hs), hs)).ToList();
+			dataSets.Add(new("#f00", false, false, false, set, (ds, d) =>
 			{
 				GetLeaderboardHistoryStatistics? stat = _statistics.Find(hs => hs == d.Reference);
 				return stat == null ? new() : new List<MarkupString>
@@ -176,19 +184,19 @@ public partial class HistoryStatisticsPage
 					new($"<span style='text-align: right;'>{stat.DateTime.ToString(FormatUtils.DateFormat)}</span>"),
 					new($"<span style='text-align: right;'>{selector(stat).ToString(FormatUtils.LeaderboardIntFormat)}</span>"),
 				};
-			};
-
-			IEnumerable<ulong> stats = _statistics.Select(hs => selector(hs));
-			List<LineData> set = _statistics.Select(hs => new LineData(hs.DateTime.Ticks, selector(hs), hs)).ToList();
-			lineChartDataOptions = new(minX.Ticks, null, maxX.Ticks, Math.Floor((double)stats.Min() * 10) / 10, 0.05, Math.Ceiling((double)stats.Max() * 10) / 10, true);
-			dataSets.Add(new("#f00", false, false, false, set, highlighter));
+			}));
 		}
 
 		RegisterAccuracy();
 		void RegisterAccuracy()
 		{
 			Func<ulong, ulong, double> converter = static (hit, fired) => fired == 0 ? 0 : hit / (double)fired;
-			Func<LineDataSet, LineData, List<MarkupString>> highlighter = (ds, d) =>
+
+			IEnumerable<double> accuracy = _statistics.Select(hs => converter(hs.DaggersHitGlobal, hs.DaggersFiredGlobal));
+			_accuracyOptions = new(minX.Ticks, null, maxX.Ticks, Math.Floor(accuracy.Min() * 10) / 10, 0.05, Math.Ceiling(accuracy.Max() * 10) / 10, true);
+
+			List<LineData> set = _statistics.Select(hs => new LineData(hs.DateTime.Ticks, converter(hs.DaggersHitGlobal, hs.DaggersFiredGlobal), hs)).ToList();
+			_accuracyData.Add(new("#f80", false, false, false, set, (ds, d) =>
 			{
 				GetLeaderboardHistoryStatistics? stat = _statistics.Find(hs => hs == d.Reference);
 				return stat == null ? new() : new List<MarkupString>
@@ -198,12 +206,7 @@ public partial class HistoryStatisticsPage
 					new($"<span style='text-align: right;'>{(stat.DaggersFiredGlobal == 10000 ? "?" : stat.DaggersHitGlobal.ToString(FormatUtils.LeaderboardIntFormat))}</span>"),
 					new($"<span style='text-align: right;'>{(stat.DaggersFiredGlobal == 10000 ? "?" : stat.DaggersFiredGlobal.ToString(FormatUtils.LeaderboardIntFormat))}</span>"),
 				};
-			};
-
-			IEnumerable<double> accuracy = _statistics.Select(hs => converter(hs.DaggersHitGlobal, hs.DaggersFiredGlobal));
-			List<LineData> set = _statistics.Select(hs => new LineData(hs.DateTime.Ticks, converter(hs.DaggersHitGlobal, hs.DaggersFiredGlobal), hs)).ToList();
-			_accuracyOptions = new(minX.Ticks, null, maxX.Ticks, Math.Floor(accuracy.Min() * 10) / 10, 0.05, Math.Ceiling(accuracy.Max() * 10) / 10, true);
-			_accuracyData.Add(new("#f80", false, false, false, set, highlighter));
+			}));
 		}
 	}
 
