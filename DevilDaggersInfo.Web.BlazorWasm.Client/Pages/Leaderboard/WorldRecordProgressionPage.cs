@@ -23,8 +23,8 @@ public partial class WorldRecordProgressionPage
 			"Gems",
 			"Kills",
 			"Accuracy",
-			"Death type",
-			"Game version",
+			"Death Type",
+			"Game Version",
 		},
 		GridOptions = new()
 		{
@@ -78,8 +78,8 @@ public partial class WorldRecordProgressionPage
 			return new()
 			{
 				new($"<span style='text-align: right;'>{wr.DateTime.ToString(FormatUtils.DateFormat)}</span>"),
-				new($"<span style='text-align: right;' class='font-goethe text-xl {dagger.Name.ToLower()}'>{wr.Entry.Time.ToString(FormatUtils.TimeFormat)}</span>"),
-				new($"<span style='text-align: right;' class='font-goethe text-xl {dagger.Name.ToLower()}'>{wr.Entry.Username}</span>"),
+				new($"<span style='text-align: right;' class='{dagger.Name.ToLower()}'>{wr.Entry.Time.ToString(FormatUtils.TimeFormat)}</span>"),
+				new($"<span style='text-align: right;' class='{dagger.Name.ToLower()}'>{wr.Entry.Username}</span>"),
 				new($"<span style='text-align: right;'>{wr.Entry.Gems}</span>"),
 				new($"<span style='text-align: right;'>{wr.Entry.Kills}</span>"),
 				new($"<span style='text-align: right;'>{(wr.Entry.DaggersFired == 0 ? 0 : wr.Entry.DaggersHit / (double)wr.Entry.DaggersFired).ToString(FormatUtils.AccuracyFormat)}</span>"),
