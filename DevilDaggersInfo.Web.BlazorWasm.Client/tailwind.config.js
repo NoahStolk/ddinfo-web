@@ -83,22 +83,19 @@ module.exports = {
 				'player-settings-sm': 'minmax(36px, 72px) 32px minmax(64px, 100%) minmax(80px, 80px)',
 
 				// Mods
-				'mod-binaries-xl': 'minmax(128px, 100%) 128px 128px 128px 128px',
-				'mod-binaries-lg': 'minmax(128px, 100%) 128px 128px 128px 128px',
-				'mod-binaries-md': 'minmax(128px, 100%) 128px 128px',
-				'mod-binaries-sm': 'minmax(128px, 100%) 128px',
+				'mod-binaries-lg': 'minmax(160px, 100%) 160px 160px 160px 160px',
+				'mod-binaries-md': 'minmax(160px, 100%) 160px 160px',
+				'mod-binaries-sm': 'minmax(160px, 100%) 160px',
 				'mod-binaries-xs': '100%',
 
-				'mod-assets-xl': 'minmax(128px, 100%) 128px 128px 128px 128px',
-				'mod-assets-lg': 'minmax(128px, 100%) 128px 128px 128px 128px',
-				'mod-assets-md': '128px 128px 128px',
-				'mod-assets-sm': '128px 128px',
+				'mod-assets-lg': 'minmax(160px, 100%) 160px 160px 160px 160px',
+				'mod-assets-md': 'minmax(160px, 100%) 160px 160px',
+				'mod-assets-sm': 'minmax(160px, 100%) 160px',
 				'mod-assets-xs': '100%',
 
-				'mod-loudness-xl': 'minmax(128px, 100%) 128px 128px 128px 128px',
-				'mod-loudness-lg': 'minmax(128px, 100%) 128px 128px 128px 128px',
-				'mod-loudness-md': '128px 128px 128px',
-				'mod-loudness-sm': '128px 128px',
+				'mod-loudness-lg': 'minmax(160px, 100%) 160px 160px 160px 160px',
+				'mod-loudness-md': 'minmax(160px, 100%) 160px 160px',
+				'mod-loudness-sm': 'minmax(160px, 100%) 160px',
 				'mod-loudness-xs': '100%',
 
 				// Wiki (enemies)
