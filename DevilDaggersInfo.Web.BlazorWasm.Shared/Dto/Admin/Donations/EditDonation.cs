@@ -10,8 +10,6 @@ public class EditDonation
 
 	public int ConvertedEuroCentsReceived { get; init; }
 
-	public DateTime DateReceived { get; init; }
-
 	[StringLength(64)]
 	public string? Note { get; init; }
 

@@ -69,7 +69,7 @@ public class DonationsController : ControllerBase
 			Amount = addDonation.Amount,
 			ConvertedEuroCentsReceived = addDonation.ConvertedEuroCentsReceived,
 			Currency = addDonation.Currency,
-			DateReceived = addDonation.DateReceived,
+			DateReceived = DateTime.UtcNow,
 			IsRefunded = addDonation.IsRefunded,
 			Note = addDonation.Note,
 			PlayerId = addDonation.PlayerId,
@@ -100,7 +100,6 @@ public class DonationsController : ControllerBase
 			Amount = donation.Amount,
 			ConvertedEuroCentsReceived = donation.ConvertedEuroCentsReceived,
 			Currency = donation.Currency,
-			DateReceived = donation.DateReceived,
 			IsRefunded = donation.IsRefunded,
 			Note = donation.Note,
 			PlayerId = donation.PlayerId,
@@ -109,7 +108,6 @@ public class DonationsController : ControllerBase
 		donation.Amount = editDonation.Amount;
 		donation.ConvertedEuroCentsReceived = editDonation.ConvertedEuroCentsReceived;
 		donation.Currency = editDonation.Currency;
-		donation.DateReceived = editDonation.DateReceived;
 		donation.IsRefunded = editDonation.IsRefunded;
 		donation.Note = editDonation.Note;
 		donation.PlayerId = editDonation.PlayerId;

@@ -282,7 +282,6 @@ public static class AuditLoggerExtensions
 		AddProperty(log, donation.Amount);
 		AddProperty(log, donation.ConvertedEuroCentsReceived);
 		AddProperty(log, donation.Currency);
-		AddProperty(log, donation.DateReceived);
 		AddProperty(log, donation.IsRefunded);
 		AddProperty(log, donation.Note);
 		return log;
@@ -295,7 +294,6 @@ public static class AuditLoggerExtensions
 		AddProperty(log, donation.Amount);
 		AddProperty(log, donation.ConvertedEuroCentsReceived);
 		AddProperty(log, donation.Currency);
-		AddProperty(log, donation.DateReceived);
 		AddProperty(log, donation.IsRefunded);
 		AddProperty(log, donation.Note);
 		return log;
