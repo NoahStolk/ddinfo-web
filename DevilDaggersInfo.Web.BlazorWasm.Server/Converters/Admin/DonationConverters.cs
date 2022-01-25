@@ -15,4 +15,15 @@ public static class DonationConverters
 		Note = donation.Note,
 		PlayerName = donation.Player.PlayerName,
 	};
+
+	public static GetDonation ToGetDonation(this DonationEntity donation) => new()
+	{
+		Id = donation.Id,
+		Amount = donation.Amount,
+		ConvertedEuroCentsReceived = donation.ConvertedEuroCentsReceived,
+		Currency = donation.Currency,
+		IsRefunded = donation.IsRefunded,
+		Note = donation.Note,
+		PlayerId = donation.PlayerId,
+	};
 }

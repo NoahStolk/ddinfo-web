@@ -92,6 +92,11 @@ public partial class AdminApiHttpClient
 		return await SendGetRequest<Page<GetDonationForOverview>>(UrlBuilderUtils.BuildUrlWithQuery($"api/admin/donations/", queryParameters));
 	}
 
+	public async Task<GetDonation> GetDonationById(int id)
+	{
+		return await SendGetRequest<GetDonation>($"api/admin/donations/{id}");
+	}
+
 	public async Task<HttpResponseMessage> AddDonation(AddDonation addDonation)
 	{
 		return await SendRequest(new HttpMethod("POST"), $"api/admin/donations/", JsonContent.Create(addDonation));

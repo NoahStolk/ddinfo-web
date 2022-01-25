@@ -56,6 +56,21 @@ public class DonationsController : ControllerBase
 		};
 	}
 
+	[HttpGet("{id}")]
+	[ProducesResponseType(StatusCodes.Status200OK)]
+	[ProducesResponseType(StatusCodes.Status404NotFound)]
+	[Authorize(Roles = Roles.Spawnsets)]
+	public ActionResult<GetDonation> GetDonationById(int id)
+	{
+		DonationEntity? donation = _dbContext.Donations
+			.AsNoTracking()
+			.FirstOrDefault(d => d.Id == id);
+		if (donation == null)
+			return NotFound();
+
+		return donation.ToGetDonation();
+	}
+
 	[HttpPost]
 	[ProducesResponseType(StatusCodes.Status200OK)]
 	[ProducesResponseType(StatusCodes.Status400BadRequest)]
