@@ -22,7 +22,7 @@ public class DonationsController : ControllerBase
 
 	[HttpGet]
 	[ProducesResponseType(StatusCodes.Status200OK)]
-	public ActionResult<Page<GetDonation>> GetDonations(
+	public ActionResult<Page<GetDonationForOverview>> GetDonations(
 		[Range(0, 1000)] int pageIndex = 0,
 		[Range(PagingConstants.PageSizeMin, PagingConstants.PageSizeMax)] int pageSize = PagingConstants.PageSizeDefault,
 		DonationSorting? sortBy = null,
@@ -49,9 +49,9 @@ public class DonationsController : ControllerBase
 			.Take(pageSize)
 			.ToList();
 
-		return new Page<GetDonation>
+		return new Page<GetDonationForOverview>
 		{
-			Results = donations.ConvertAll(d => d.ToGetDonation()),
+			Results = donations.ConvertAll(d => d.ToGetDonationForOverview()),
 			TotalResults = _dbContext.Donations.Count(),
 		};
 	}

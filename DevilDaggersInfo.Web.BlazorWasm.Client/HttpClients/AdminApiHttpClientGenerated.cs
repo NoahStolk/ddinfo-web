@@ -80,7 +80,7 @@ public partial class AdminApiHttpClient
 		return await SendRequest(new HttpMethod("DELETE"), $"api/admin/custom-leaderboards/{id}");
 	}
 
-	public async Task<Page<GetDonation>> GetDonations(int pageIndex, int pageSize, DonationSorting? sortBy, bool ascending)
+	public async Task<Page<GetDonationForOverview>> GetDonations(int pageIndex, int pageSize, DonationSorting? sortBy, bool ascending)
 	{
 		Dictionary<string, object?> queryParameters = new()
 		{
@@ -89,7 +89,7 @@ public partial class AdminApiHttpClient
 			{ nameof(sortBy), sortBy },
 			{ nameof(ascending), ascending }
 		};
-		return await SendGetRequest<Page<GetDonation>>(UrlBuilderUtils.BuildUrlWithQuery($"api/admin/donations/", queryParameters));
+		return await SendGetRequest<Page<GetDonationForOverview>>(UrlBuilderUtils.BuildUrlWithQuery($"api/admin/donations/", queryParameters));
 	}
 
 	public async Task<HttpResponseMessage> AddDonation(AddDonation addDonation)
