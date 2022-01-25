@@ -24,7 +24,7 @@ public class CustomLeaderboardsController : ControllerBase
 
 	[HttpGet]
 	[ProducesResponseType(StatusCodes.Status200OK)]
-	public ActionResult<Page<GetCustomLeaderboard>> GetCustomLeaderboards(
+	public ActionResult<Page<GetCustomLeaderboardForOverview>> GetCustomLeaderboards(
 		[Range(0, 1000)] int pageIndex = 0,
 		[Range(PagingConstants.PageSizeMin, PagingConstants.PageSizeMax)] int pageSize = PagingConstants.PageSizeDefault,
 		CustomLeaderboardSorting? sortBy = null,
@@ -53,9 +53,9 @@ public class CustomLeaderboardsController : ControllerBase
 			.Take(pageSize)
 			.ToList();
 
-		return new Page<GetCustomLeaderboard>
+		return new Page<GetCustomLeaderboardForOverview>
 		{
-			Results = customLeaderboards.ConvertAll(cl => cl.ToGetCustomLeaderboard()),
+			Results = customLeaderboards.ConvertAll(cl => cl.ToGetCustomLeaderboardForOverview()),
 			TotalResults = _dbContext.CustomLeaderboards.Count(),
 		};
 	}

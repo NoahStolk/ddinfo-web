@@ -21,7 +21,7 @@ public partial class AdminApiHttpClient
 		return await SendRequest(new HttpMethod("POST"), $"api/admin/caches/clear", JsonContent.Create(cacheType));
 	}
 
-	public async Task<Page<GetCustomEntry>> GetCustomEntries(int pageIndex, int pageSize, CustomEntrySorting? sortBy, bool ascending)
+	public async Task<Page<GetCustomEntryForOverview>> GetCustomEntries(int pageIndex, int pageSize, CustomEntrySorting? sortBy, bool ascending)
 	{
 		Dictionary<string, object?> queryParameters = new()
 		{
@@ -30,7 +30,12 @@ public partial class AdminApiHttpClient
 			{ nameof(sortBy), sortBy },
 			{ nameof(ascending), ascending }
 		};
-		return await SendGetRequest<Page<GetCustomEntry>>(UrlBuilderUtils.BuildUrlWithQuery($"api/admin/custom-entries/", queryParameters));
+		return await SendGetRequest<Page<GetCustomEntryForOverview>>(UrlBuilderUtils.BuildUrlWithQuery($"api/admin/custom-entries/", queryParameters));
+	}
+
+	public async Task<GetCustomEntry> GetCustomEntryById(int id)
+	{
+		return await SendGetRequest<GetCustomEntry>($"api/admin/custom-entries/{id}");
 	}
 
 	public async Task<HttpResponseMessage> AddCustomEntry(AddCustomEntry addCustomEntry)
@@ -48,7 +53,7 @@ public partial class AdminApiHttpClient
 		return await SendRequest(new HttpMethod("DELETE"), $"api/admin/custom-entries/{id}");
 	}
 
-	public async Task<Page<GetCustomLeaderboard>> GetCustomLeaderboards(int pageIndex, int pageSize, CustomLeaderboardSorting? sortBy, bool ascending)
+	public async Task<Page<GetCustomLeaderboardForOverview>> GetCustomLeaderboards(int pageIndex, int pageSize, CustomLeaderboardSorting? sortBy, bool ascending)
 	{
 		Dictionary<string, object?> queryParameters = new()
 		{
@@ -57,7 +62,7 @@ public partial class AdminApiHttpClient
 			{ nameof(sortBy), sortBy },
 			{ nameof(ascending), ascending }
 		};
-		return await SendGetRequest<Page<GetCustomLeaderboard>>(UrlBuilderUtils.BuildUrlWithQuery($"api/admin/custom-leaderboards/", queryParameters));
+		return await SendGetRequest<Page<GetCustomLeaderboardForOverview>>(UrlBuilderUtils.BuildUrlWithQuery($"api/admin/custom-leaderboards/", queryParameters));
 	}
 
 	public async Task<GetCustomLeaderboard> GetCustomLeaderboardById(int id)

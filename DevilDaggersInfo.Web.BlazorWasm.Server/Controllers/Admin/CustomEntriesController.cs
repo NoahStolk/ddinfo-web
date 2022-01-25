@@ -22,7 +22,7 @@ public class CustomEntriesController : ControllerBase
 
 	[HttpGet]
 	[ProducesResponseType(StatusCodes.Status200OK)]
-	public ActionResult<Page<GetCustomEntry>> GetCustomEntries(
+	public ActionResult<Page<GetCustomEntryForOverview>> GetCustomEntries(
 		[Range(0, 1000)] int pageIndex = 0,
 		[Range(PagingConstants.PageSizeMin, PagingConstants.PageSizeMax)] int pageSize = PagingConstants.PageSizeDefault,
 		CustomEntrySorting? sortBy = null,
@@ -64,11 +64,27 @@ public class CustomEntriesController : ControllerBase
 			.Take(pageSize)
 			.ToList();
 
-		return new Page<GetCustomEntry>
+		return new Page<GetCustomEntryForOverview>
 		{
-			Results = customEntries.ConvertAll(ce => ce.ToGetCustomEntry()),
+			Results = customEntries.ConvertAll(ce => ce.ToGetCustomEntryForOverview()),
 			TotalResults = _dbContext.CustomEntries.Count(),
 		};
+	}
+
+	[HttpGet("{id}")]
+	[ProducesResponseType(StatusCodes.Status200OK)]
+	[ProducesResponseType(StatusCodes.Status404NotFound)]
+	public ActionResult<GetCustomEntry> GetCustomEntryById(int id)
+	{
+		CustomEntryEntity? customEntry = _dbContext.CustomEntries
+			.AsNoTracking()
+			.Include(ce => ce.CustomLeaderboard)
+			.FirstOrDefault(cl => cl.Id == id);
+
+		if (customEntry == null)
+			return NotFound($"Custom entry with ID '{id}' was not found.");
+
+		return customEntry.ToGetCustomEntry();
 	}
 
 	[HttpPost]
