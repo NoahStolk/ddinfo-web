@@ -1,6 +1,6 @@
 namespace DevilDaggersInfo.Web.BlazorWasm.Shared.Dto.Public.Players;
 
-public class GetPlayerForSettings : IGetDto
+public class GetPlayerForSettings
 {
 	public int Id { get; init; }
 

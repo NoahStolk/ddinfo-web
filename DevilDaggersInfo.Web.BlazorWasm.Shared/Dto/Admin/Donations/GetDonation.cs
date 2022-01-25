@@ -1,6 +1,6 @@
 namespace DevilDaggersInfo.Web.BlazorWasm.Shared.Dto.Admin.Donations;
 
-public class GetDonation : IGetDto
+public class GetDonation
 {
 	public int Id { get; init; }
 

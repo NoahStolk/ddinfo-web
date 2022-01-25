@@ -1,6 +1,6 @@
 namespace DevilDaggersInfo.Web.BlazorWasm.Shared.Dto.Admin.Mods;
 
-public class GetMod : IGetDto
+public class GetMod
 {
 	public int Id { get; init; }
 
