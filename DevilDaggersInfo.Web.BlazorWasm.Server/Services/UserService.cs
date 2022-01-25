@@ -185,7 +185,7 @@ public class UserService : IUserService
 					.ThenInclude(ur => ur.Role)
 				.FirstOrDefault(u => u.Name == name);
 		}
-		catch (Exception ex)
+		catch
 		{
 			return null;
 		}
