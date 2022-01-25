@@ -43,7 +43,7 @@ public class CustomLeaderboardTests
 	[TestMethod]
 	public void GetCustomLeaderboards()
 	{
-		Page<GetCustomLeaderboard>? customLeaderboards = _customLeaderboardsController.GetCustomLeaderboards().Value;
+		Page<GetCustomLeaderboardForOverview>? customLeaderboards = _customLeaderboardsController.GetCustomLeaderboards().Value;
 
 		_dbContext.Verify(db => db.SaveChanges(), Times.Never);
 		Assert.IsNotNull(customLeaderboards);

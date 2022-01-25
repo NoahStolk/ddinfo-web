@@ -9,7 +9,7 @@ using Microsoft.AspNetCore.Components.WebAssembly.Authentication;
 namespace DevilDaggersInfo.Web.BlazorWasm.Client.Components.Admin;
 
 public partial class AdminOverview<TGetDto>
-	where TGetDto : IGetDto
+	where TGetDto : IAdminOverviewGetDto
 {
 	private string? _sortBy;
 	private bool _ascending = true;

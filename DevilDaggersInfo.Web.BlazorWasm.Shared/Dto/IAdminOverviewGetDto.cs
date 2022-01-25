@@ -1,6 +1,6 @@
 namespace DevilDaggersInfo.Web.BlazorWasm.Shared.Dto;
 
-public interface IGetDto
+public interface IAdminOverviewGetDto
 {
 	public int Id { get; }
 }
