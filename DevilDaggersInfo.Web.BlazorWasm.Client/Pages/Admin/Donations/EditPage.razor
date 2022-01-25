@@ -1,0 +1,60 @@
+@page "/admin/donations/edit/{Id:int}"
+@inherits BaseAdminPage
+@using DevilDaggersInfo.Web.BlazorWasm.Client.Components.Admin
+@using DevilDaggersInfo.Web.BlazorWasm.Shared.Dto.Admin.Donations
+@using DevilDaggersInfo.Web.BlazorWasm.Shared.Dto.Admin.Players
+@using DevilDaggersInfo.Web.BlazorWasm.Shared.Enums
+
+<AdminEdit TModel="EditDonation" Name="Donation" OverviewUrl="/admin/donations" ApiCall="Http.EditDonationById" Model="_editDonation" Id="Id" @ref="_editComponent">
+	<AdminInput Label="@nameof(EditDonation.PlayerId)"><SearchDropdown TKey=int Values="@_playerNames" Converter="s => int.Parse(s)" @bind-Value="@_editDonation!.PlayerId" /></AdminInput>
+	<AdminInput Label="@nameof(EditDonation.Amount)"><InputNumber class="w-64 pl-2 bg-gray-1 text-color-text" @bind-Value="_editDonation.Amount" /></AdminInput>
+	<AdminInput Label="@nameof(EditDonation.Currency)"><SearchDropdown TKey=Currency Values="@(Enum.GetValues<Currency>().ToDictionary(e => e, e => e.ToString()))" Converter="s => Enum.Parse<Currency>(s)" @bind-Value="@_editDonation.Currency" /></AdminInput>
+	<AdminInput Label="@nameof(EditDonation.ConvertedEuroCentsReceived)"><InputNumber class="w-64 pl-2 bg-gray-1 text-color-text" @bind-Value="_editDonation.ConvertedEuroCentsReceived" /></AdminInput>
+	<AdminInput Label="@nameof(EditDonation.Note)"><InputTextArea class="w-64 h-64 pl-2 bg-gray-1 text-color-text" @bind-Value="@_editDonation.Note" /></AdminInput>
+	<AdminInput Label="@nameof(EditDonation.IsRefunded)"><InputCheckbox @bind-Value="@_editDonation.IsRefunded" /></AdminInput>
+</AdminEdit>
+
+@code
+{
+	private Dictionary<int, string>? _playerNames;
+	private EditDonation? _editDonation;
+	private AdminEdit<EditDonation> _editComponent = null!;
+
+	[Parameter, EditorRequired] public int Id { get; set; }
+
+	protected override async Task OnInitializedAsync()
+	{
+		await base.OnInitializedAsync();
+
+		try
+		{
+			List<GetPlayerName> getPlayerNames = await Http.GetPlayerNames();
+			_playerNames = getPlayerNames.ToDictionary(m => m.Id, m => m.PlayerName);
+
+			GetDonation getDonation = await Http.GetDonationById(Id);
+			_editDonation = new()
+			{
+				Amount = getDonation.Amount,
+				ConvertedEuroCentsReceived = getDonation.ConvertedEuroCentsReceived,
+				Currency = getDonation.Currency,
+				IsRefunded = getDonation.IsRefunded,
+				Note = getDonation.Note,
+				PlayerId = getDonation.PlayerId,
+			};
+			_editComponent.State = ErrorState.None;
+		}
+		catch (HttpRequestException ex)
+		{
+			if (ex.StatusCode.HasValue)
+				_editComponent.ErrorMessage = $"Error {(int)ex.StatusCode}: {ex.StatusCode}";
+			else
+				_editComponent.ErrorMessage = "An error occurred while sending the request.";
+
+			_editComponent.State = ErrorState.FatalError;
+		}
+		catch (AccessTokenNotAvailableException exception)
+		{
+			exception.Redirect();
+		}
+	}
+}

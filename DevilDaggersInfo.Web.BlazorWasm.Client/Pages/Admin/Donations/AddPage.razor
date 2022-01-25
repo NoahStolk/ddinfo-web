@@ -1,0 +1,48 @@
+@page "/admin/donations/add"
+@inherits BaseAdminPage
+@using DevilDaggersInfo.Web.BlazorWasm.Client.Components.Admin
+@using DevilDaggersInfo.Web.BlazorWasm.Shared.Dto.Admin.Donations
+@using DevilDaggersInfo.Web.BlazorWasm.Shared.Dto.Admin.Players
+@using DevilDaggersInfo.Web.BlazorWasm.Shared.Enums
+
+<AdminAdd Name="Donation" OverviewUrl="/admin/donations" ApiCall="Http.AddDonation" Model="_addDonation" @ref="_addComponent">
+	<AdminInput Label="@nameof(AddDonation.PlayerId)"><SearchDropdown TKey=int Values="@_playerNames" Converter="s => int.Parse(s)" @bind-Value="@_addDonation.PlayerId" /></AdminInput>
+	<AdminInput Label="@nameof(AddDonation.Amount)"><InputNumber class="w-64 pl-2 bg-gray-1 text-color-text" @bind-Value="_addDonation.Amount" /></AdminInput>
+	<AdminInput Label="@nameof(AddDonation.Currency)"><SearchDropdown TKey=Currency Values="@(Enum.GetValues<Currency>().ToDictionary(e => e, e => e.ToString()))" Converter="s => Enum.Parse<Currency>(s)" @bind-Value="@_addDonation.Currency" /></AdminInput>
+	<AdminInput Label="@nameof(AddDonation.ConvertedEuroCentsReceived)"><InputNumber class="w-64 pl-2 bg-gray-1 text-color-text" @bind-Value="_addDonation.ConvertedEuroCentsReceived" /></AdminInput>
+	<AdminInput Label="@nameof(AddDonation.Note)"><InputTextArea class="w-64 h-64 pl-2 bg-gray-1 text-color-text" @bind-Value="@_addDonation.Note" /></AdminInput>
+	<AdminInput Label="@nameof(AddDonation.IsRefunded)"><InputCheckbox @bind-Value="@_addDonation.IsRefunded" /></AdminInput>
+</AdminAdd>
+
+@code
+{
+	private Dictionary<int, string>? _playerNames;
+	private AddDonation _addDonation = new();
+	private AdminAdd<AddDonation> _addComponent = null!;
+
+	protected override async Task OnInitializedAsync()
+	{
+		await base.OnInitializedAsync();
+
+		try
+		{
+			List<GetPlayerName> getPlayerNames = await Http.GetPlayerNames();
+			_playerNames = getPlayerNames.ToDictionary(m => m.Id, m => m.PlayerName);
+
+			_addComponent.State = ErrorState.None;
+		}
+		catch (HttpRequestException ex)
+		{
+			if (ex.StatusCode.HasValue)
+				_addComponent.ErrorMessage = $"Error {(int)ex.StatusCode}: {ex.StatusCode}";
+			else
+				_addComponent.ErrorMessage = "An error occurred while sending the request.";
+
+			_addComponent.State = ErrorState.FatalError;
+		}
+		catch (AccessTokenNotAvailableException exception)
+		{
+			exception.Redirect();
+		}
+	}
+}
