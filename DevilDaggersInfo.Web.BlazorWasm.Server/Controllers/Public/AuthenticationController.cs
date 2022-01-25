@@ -47,7 +47,7 @@ public class AuthenticationController : ControllerBase
 
 		string tokenString = _userService.GenerateJwt(user);
 
-		_logger.LogWarning("User {user} logged in successfully.", loginRequest.Name);
+		_logger.LogInformation("User {user} logged in successfully.", loginRequest.Name);
 		return new LoginResponse
 		{
 			Id = user.Id,
