@@ -5,7 +5,7 @@
 @using DevilDaggersInfo.Web.BlazorWasm.Shared.Enums.Sortings.Admin
 
 <AdminOverview
-	TGetDto="GetDonation"
+	TGetDto="GetDonationForOverview"
 	Title="Donations"
 	ApiCall="(int pageIndex, int pageSize, string? sortBy, bool isAscending) => Http.GetDonations(pageIndex, pageSize, sortBy == null ? null : Enum.Parse<DonationSorting>(sortBy), isAscending)"
 	DeletionApiCall="(int id) => Http.DeleteDonationById(id)"
