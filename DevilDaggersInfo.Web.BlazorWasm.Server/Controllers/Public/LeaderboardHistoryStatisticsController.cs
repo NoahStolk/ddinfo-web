@@ -65,71 +65,71 @@ public class LeaderboardHistoryStatisticsController : ControllerBase
 			bool rank2Updated = false;
 			bool rank1Updated = false;
 
-			if (daggersFiredGlobal < current.DaggersFiredGlobal)
+			if (daggersFiredGlobal != current.DaggersFiredGlobal)
 			{
 				daggersFiredGlobal = current.DaggersFiredGlobal;
 				daggersFiredUpdated = true;
 			}
 
-			if (daggersHitGlobal < current.DaggersHitGlobal)
+			if (daggersHitGlobal != current.DaggersHitGlobal)
 			{
 				daggersHitGlobal = current.DaggersHitGlobal;
 				daggersHitUpdated = true;
 			}
 
-			if (deathsGlobal < current.DeathsGlobal)
+			if (deathsGlobal != current.DeathsGlobal)
 			{
 				deathsGlobal = current.DeathsGlobal;
 				deathsUpdated = true;
 			}
 
-			if (gemsGlobal < current.GemsGlobal)
+			if (gemsGlobal != current.GemsGlobal)
 			{
 				gemsGlobal = current.GemsGlobal;
 				gemsUpdated = true;
 			}
 
-			if (killsGlobal < current.KillsGlobal)
+			if (killsGlobal != current.KillsGlobal)
 			{
 				killsGlobal = current.KillsGlobal;
 				killsUpdated = true;
 			}
 
-			if (totalPlayers < current.Players)
+			if (totalPlayers != current.Players)
 			{
 				totalPlayers = current.Players;
 				totalPlayersUpdated = true;
 			}
 
 			double currentTimeGlobal = current.TimeGlobal.ToSecondsTime();
-			if (timeGlobal < currentTimeGlobal)
+			if (timeGlobal != currentTimeGlobal)
 			{
 				timeGlobal = currentTimeGlobal;
 				timeUpdated = true;
 			}
 
 			double currentRank100 = GetTimeOr0(current, 100);
-			if (rank100 < currentRank100)
+			if (rank100 != currentRank100)
 				rank100 = currentRank100;
 			rank100Updated = currentRank100 != 0;
 
 			double currentRank10 = GetTimeOr0(current, 10);
-			if (rank10 < currentRank10)
+			if (rank10 != currentRank10)
 				rank10 = currentRank10;
 			rank10Updated = currentRank10 != 0;
 
 			double currentRank3 = GetTimeOr0(current, 3);
-			if (rank3 < currentRank3)
+			if (rank3 != currentRank3)
 				rank3 = currentRank3;
 			rank3Updated = currentRank3 != 0;
 
 			double currentRank2 = GetTimeOr0(current, 2);
-			if (rank2 < currentRank2)
+			if (rank2 != currentRank2)
 				rank2 = currentRank2;
 			rank2Updated = currentRank2 != 0;
 
 			double currentRank1 = GetTimeOr0(current, 1);
-			if (rank1 < currentRank1)
+			if (rank1 != currentRank1)
 				rank1 = currentRank1;
 			rank1Updated = currentRank1 != 0;
 
