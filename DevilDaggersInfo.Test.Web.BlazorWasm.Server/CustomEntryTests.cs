@@ -35,7 +35,7 @@ public class CustomEntryTests
 			.SetUpDbSet(db => db.CustomEntryData, mockEntities.MockDbSetCustomEntryData);
 
 		Mock<IFileSystemService> fileSystemService = new();
-		fileSystemService.Setup(m => m.GetPath(DataSubDirectory.Spawnsets)).Returns(@"C:\Users\NOAH\source\repos\DevilDaggersInfo\DevilDaggersInfo.Web.BlazorWasm.Server\Data\Spawnsets");
+		fileSystemService.Setup(m => m.GetPath(DataSubDirectory.Spawnsets)).Returns("Resources");
 
 		Mock<ILogger<SpawnsetHashCache>> spawnsetHashCacheLogger = new();
 		Mock<SpawnsetHashCache> spawnsetHashCache = new(fileSystemService.Object, spawnsetHashCacheLogger.Object);
@@ -59,7 +59,7 @@ public class CustomEntryTests
 		_encryptionWrapper = new(secret, secret, secret);
 		_customEntryProcessor = new(_dbContext.Object, customEntryProcessorLogger.Object, spawnsetHashCache.Object, fileSystemService.Object, environment.Object, configuration);
 
-		if (!SpawnsetBinary.TryParse(File.ReadAllBytes(Path.Combine(TestConstants.DataDirectory, "Spawnsets", "V3")), out _spawnsetBinary!))
+		if (!SpawnsetBinary.TryParse(File.ReadAllBytes(Path.Combine("Resources", "V3")), out _spawnsetBinary!))
 			Assert.Fail("Spawnset could not be parsed.");
 	}
 
