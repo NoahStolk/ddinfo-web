@@ -1,3 +1,6 @@
+using DevilDaggersInfo.Core.Wiki;
+using DevilDaggersInfo.Core.Wiki.Enums;
+using DevilDaggersInfo.Core.Wiki.Extensions;
 using DevilDaggersInfo.Web.BlazorWasm.Client.Core.CanvasChart.Data;
 using DevilDaggersInfo.Web.BlazorWasm.Client.Core.CanvasChart.Options;
 using DevilDaggersInfo.Web.BlazorWasm.Client.Core.CanvasChart.Options.LineChart;
@@ -13,7 +16,7 @@ public partial class HistoryStatisticsPage
 {
 	private readonly LineChartOptions _playersLineChartOptions = new()
 	{
-		HighlighterKeys = new() { "Date", "Players" },
+		HighlighterKeys = new() { "Date", "Players", "Game Version" },
 		GridOptions = new() { MinimumRowHeightInPx = 50 },
 		ChartMarginXInPx = 60,
 		DisplayXScaleAsDates = true,
@@ -22,7 +25,7 @@ public partial class HistoryStatisticsPage
 
 	private readonly LineChartOptions _entrancesLineChartOptions = new()
 	{
-		HighlighterKeys = new() { "Date", "Top 1 Score", "Top 2 Score", "Top 3 Score", "Top 10 Score", "Top 100 Score" },
+		HighlighterKeys = new() { "Date", "Top 1 Score", "Top 2 Score", "Top 3 Score", "Top 10 Score", "Top 100 Score", "Game Version" },
 		GridOptions = new() { MinimumRowHeightInPx = 50 },
 		DisplayXScaleAsDates = true,
 		Backgrounds = LineChartUtils.GameVersionBackgrounds,
@@ -123,6 +126,7 @@ public partial class HistoryStatisticsPage
 				{
 					new($"<span style='text-align: right;'>{stats.DateTime.ToString(FormatUtils.DateFormat)}</span>"),
 					new($"<span style='color: {ds.Color}; text-align: right;'>{d.Y.ToString(FormatUtils.LeaderboardIntFormat)}</span>"),
+					new($"<span style='text-align: right;'>{GameVersions.GetGameVersionFromDate(stats.DateTime).GetGameVersionString()}</span>"),
 				};
 			}));
 		}
@@ -157,6 +161,7 @@ public partial class HistoryStatisticsPage
 					new($"<span style='color: {top3}; text-align: right;'>{stats.Top3Entrance.ToString(FormatUtils.TimeFormat)}</span>"),
 					new($"<span style='color: {top10}; text-align: right;'>{stats.Top10Entrance.ToString(FormatUtils.TimeFormat)}</span>"),
 					new($"<span style='color: {top100}; text-align: right;'>{stats.Top100Entrance.ToString(FormatUtils.TimeFormat)}</span>"),
+					new($"<span style='text-align: right;'>{GameVersions.GetGameVersionFromDate(stats.DateTime).GetGameVersionString()}</span>"),
 				};
 			}));
 

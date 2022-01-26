@@ -2,6 +2,14 @@ namespace DevilDaggersInfo.Core.Wiki.Extensions;
 
 public static class GameVersionExtensions
 {
+	public static string GetGameVersionString(this GameVersion? gameVersion)
+	{
+		if (!gameVersion.HasValue)
+			return "Pre-release";
+
+		return gameVersion.Value.ToDisplayString();
+	}
+
 	public static string ToDisplayString(this GameVersion gameVersion) => gameVersion switch
 	{
 		GameVersion.V1_0 => "V1",

@@ -15,17 +15,7 @@ public partial class WorldRecordProgressionPage
 {
 	private readonly LineChartOptions _lineChartOptions = new()
 	{
-		HighlighterKeys = new()
-		{
-			"Date",
-			"Time",
-			"Player",
-			"Gems",
-			"Kills",
-			"Accuracy",
-			"Death Type",
-			"Game Version",
-		},
+		HighlighterKeys = new() { "Date", "Time", "Player", "Gems", "Kills", "Accuracy", "Death Type", "Game Version" },
 		GridOptions = new()
 		{
 			MinimumRowHeightInPx = 50,
@@ -84,7 +74,7 @@ public partial class WorldRecordProgressionPage
 				new($"<span style='text-align: right;'>{wr.Entry.Kills}</span>"),
 				new($"<span style='text-align: right;'>{(wr.Entry.DaggersFired == 0 ? 0 : wr.Entry.DaggersHit / (double)wr.Entry.DaggersFired).ToString(FormatUtils.AccuracyFormat)}</span>"),
 				new($"<span style='text-align: right;'>{MarkupUtils.DeathString(wr.Entry.DeathType, gameVersion ?? GameVersion.V1_0)}</span>"),
-				new($"<span style='text-align: right;'>{GetGameVersionString(gameVersion)}</span>"),
+				new($"<span style='text-align: right;'>{gameVersion.GetGameVersionString()}</span>"),
 			};
 		}));
 	}
@@ -102,12 +92,4 @@ public partial class WorldRecordProgressionPage
 	}
 
 	private static string S(int value) => value == 1 ? string.Empty : "s";
-
-	private string GetGameVersionString(GameVersion? gameVersion)
-	{
-		if (!gameVersion.HasValue)
-			return "Pre-release";
-
-		return gameVersion.Value.ToDisplayString();
-	}
 }

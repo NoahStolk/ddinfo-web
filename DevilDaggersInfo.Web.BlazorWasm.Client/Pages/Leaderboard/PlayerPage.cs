@@ -1,3 +1,5 @@
+using DevilDaggersInfo.Core.Wiki.Enums;
+using DevilDaggersInfo.Core.Wiki.Extensions;
 using DevilDaggersInfo.Web.BlazorWasm.Client.Core.CanvasChart.Data;
 using DevilDaggersInfo.Web.BlazorWasm.Client.Core.CanvasChart.Options;
 using DevilDaggersInfo.Web.BlazorWasm.Client.Core.CanvasChart.Options.LineChart;
@@ -19,7 +21,7 @@ public partial class PlayerPage
 {
 	private readonly LineChartOptions _progressionScoreLineChartOptions = new()
 	{
-		HighlighterKeys = new() { "Date", "Time", "Player", "Rank", "Gems", "Kills", "Accuracy", "Death type" },
+		HighlighterKeys = new() { "Date", "Time", "Player", "Rank", "Gems", "Kills", "Accuracy", "Death Type", "Game Version" },
 		GridOptions = new()
 		{
 			MinimumRowHeightInPx = 30,
@@ -30,7 +32,7 @@ public partial class PlayerPage
 
 	private readonly LineChartOptions _progressionRankLineChartOptions = new()
 	{
-		HighlighterKeys = new() { "Date", "Rank" },
+		HighlighterKeys = new() { "Date", "Rank", "Game Version" },
 		GridOptions = new()
 		{
 			MinimumRowHeightInPx = 30,
@@ -137,8 +139,8 @@ public partial class PlayerPage
 				if (scoreEntry == null)
 					return new();
 
-				GameVersion gameVersion = GameVersions.GetGameVersionFromDate(scoreEntry.DateTime) ?? GameVersion.V1_0;
-				Dagger dagger = Daggers.GetDaggerFromSeconds(gameVersion, scoreEntry.Time);
+				GameVersion? gameVersion = GameVersions.GetGameVersionFromDate(scoreEntry.DateTime);
+				Dagger dagger = Daggers.GetDaggerFromSeconds(gameVersion ?? GameVersion.V1_0, scoreEntry.Time);
 				return new()
 				{
 					new($"<span style='text-align: right;'>{scoreEntry.DateTime.ToString(FormatUtils.DateFormat)}</span>"),
@@ -148,7 +150,8 @@ public partial class PlayerPage
 					new($"<span style='text-align: right;'>{scoreEntry.Gems}</span>"),
 					new($"<span style='text-align: right;'>{scoreEntry.Kills}</span>"),
 					new($"<span style='text-align: right;'>{(scoreEntry.DaggersFired == 0 ? 0 : scoreEntry.DaggersHit / (double)scoreEntry.DaggersFired).ToString(FormatUtils.AccuracyFormat)}</span>"),
-					new($"<span style='text-align: right;'>{MarkupUtils.DeathString(scoreEntry.DeathType, gameVersion)}</span>"),
+					new($"<span style='text-align: right;'>{MarkupUtils.DeathString(scoreEntry.DeathType, gameVersion ?? GameVersion.V1_0)}</span>"),
+					new($"<span style='text-align: right;'>{gameVersion.GetGameVersionString()}</span>"),
 				};
 			}));
 		}
@@ -171,6 +174,7 @@ public partial class PlayerPage
 				{
 					new($"<span style='text-align: right;'>{rankEntry.DateTime.ToString(FormatUtils.DateFormat)}</span>"),
 					new($"<span style='text-align: right;'>{rankEntry.Rank}</span>"),
+					new($"<span style='text-align: right;'>{GameVersions.GetGameVersionFromDate(rankEntry.DateTime).GetGameVersionString()}</span>"),
 				};
 			}));
 		}

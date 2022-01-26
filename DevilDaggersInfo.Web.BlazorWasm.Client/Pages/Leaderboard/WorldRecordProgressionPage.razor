@@ -1,4 +1,5 @@
 @page "/leaderboard/world-record-progression"
+@using DevilDaggersInfo.Core.Wiki.Extensions
 @using DevilDaggersInfo.Web.BlazorWasm.Client.Core.CanvasChart.Components
 @using DevilDaggersInfo.Web.BlazorWasm.Shared.Dto.Public.WorldRecords
 
@@ -59,7 +60,7 @@ else
 			<div>@wr.Entry.Time.ToString(FormatUtils.TimeFormat)</div>
 			<div>@duration</div>
 			<div class="hidden xl:block">@(wr.WorldRecordImprovement.HasValue ? new MarkupString(wr.WorldRecordImprovement.Value.ToString(FormatUtils.TimeFormat)) : MarkupUtils.NoDataMarkup)</div>
-			<div class="hidden xl:block">@GetGameVersionString(wr.GameVersion)</div>
+			<div class="hidden xl:block">@wr.GameVersion.GetGameVersionString()</div>
 		</div>
 	}
 }
