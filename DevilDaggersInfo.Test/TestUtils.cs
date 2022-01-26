@@ -2,6 +2,8 @@ namespace DevilDaggersInfo.Test;
 
 public static class TestUtils
 {
+	public const string ResourcePath = "Resources";
+
 	[AssertionMethod]
 	public static void AssertArrayContentsEqual<T>(T[] expected, T[] actual)
 	{

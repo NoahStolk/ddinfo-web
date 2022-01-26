@@ -14,22 +14,7 @@
     <ProjectReference Include="..\DevilDaggersInfo.Test\DevilDaggersInfo.Test.csproj" />
   </ItemGroup>
   <ItemGroup>
-    <None Update="Data\dd-model">
-      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
-    </None>
-    <None Update="Data\dd-model-shader-texture">
-      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
-    </None>
-    <None Update="Data\dd-shader">
-      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
-    </None>
-    <None Update="Data\dd-skull-1-2-same-texture-copied">
-      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
-    </None>
-    <None Update="Data\dd-texture">
-      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
-    </None>
-    <None Update="Data\pedeblackbody.png">
+    <None Update="Resources\**\*">
       <CopyToOutputDirectory>Always</CopyToOutputDirectory>
     </None>
   </ItemGroup>

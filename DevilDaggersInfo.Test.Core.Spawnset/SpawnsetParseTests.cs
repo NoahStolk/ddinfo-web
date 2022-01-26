@@ -79,7 +79,7 @@ public class SpawnsetParseTests
 		int expectedAdditionalGems,
 		float expectedTimerStart)
 	{
-		SpawnsetBinary spawnset = SpawnsetBinary.Parse(File.ReadAllBytes(Path.Combine("Data", fileName)));
+		SpawnsetBinary spawnset = SpawnsetBinary.Parse(File.ReadAllBytes(Path.Combine(TestUtils.ResourcePath, fileName)));
 
 		Assert.AreEqual(expectedSpawnVersion, spawnset.SpawnVersion);
 		Assert.AreEqual(expectedWorldVersion, spawnset.WorldVersion);

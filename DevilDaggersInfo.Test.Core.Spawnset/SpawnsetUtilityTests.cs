@@ -17,7 +17,7 @@ public class SpawnsetUtilityTests
 	[DataRow("Scanner", true)]
 	public void TestHasEndLoop(string fileName, bool hasEndLoop)
 	{
-		SpawnsetBinary spawnset = SpawnsetBinary.Parse(File.ReadAllBytes(Path.Combine("Data", fileName)));
+		SpawnsetBinary spawnset = SpawnsetBinary.Parse(File.ReadAllBytes(Path.Combine(TestUtils.ResourcePath, fileName)));
 		Assert.AreEqual(hasEndLoop, spawnset.HasEndLoop());
 	}
 
@@ -35,7 +35,7 @@ public class SpawnsetUtilityTests
 	[DataRow("Scanner", true)]
 	public void TestHasSpawns(string fileName, bool hasSpawns)
 	{
-		SpawnsetBinary spawnset = SpawnsetBinary.Parse(File.ReadAllBytes(Path.Combine("Data", fileName)));
+		SpawnsetBinary spawnset = SpawnsetBinary.Parse(File.ReadAllBytes(Path.Combine(TestUtils.ResourcePath, fileName)));
 		Assert.AreEqual(hasSpawns, spawnset.HasSpawns());
 	}
 }

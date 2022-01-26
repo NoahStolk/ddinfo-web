@@ -14,7 +14,7 @@ public class SpawnsViewTests
 	[AssertionMethod]
 	private static SpawnsView Parse(string fileName, GameVersion gameVersion, int waveCount, int expectedPreLoopSpawnCount, int expectedWaveSpawnCount)
 	{
-		SpawnsetBinary spawnset = SpawnsetBinary.Parse(File.ReadAllBytes(Path.Combine("Data", fileName)));
+		SpawnsetBinary spawnset = SpawnsetBinary.Parse(File.ReadAllBytes(Path.Combine(TestUtils.ResourcePath, fileName)));
 		SpawnsView spawnsView = new(spawnset, gameVersion, waveCount);
 		Assert.AreEqual(waveCount, spawnsView.Waves.Length);
 		Assert.AreEqual(expectedPreLoopSpawnCount, spawnsView.PreLoop.Count);

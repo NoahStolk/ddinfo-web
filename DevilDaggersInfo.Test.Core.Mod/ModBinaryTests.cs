@@ -11,7 +11,7 @@ public class ModBinaryTests
 	[DataRow("dd-texture")]
 	public void CompareBinaryOutput(string fileName)
 	{
-		string filePath = Path.Combine("Data", fileName);
+		string filePath = Path.Combine(TestUtils.ResourcePath, fileName);
 		byte[] originalBytes = File.ReadAllBytes(filePath);
 		ModBinary modBinary = new(fileName, originalBytes, BinaryReadComprehensiveness.All);
 		byte[] bytes = modBinary.ToBytes();

@@ -20,7 +20,7 @@
     <ProjectReference Include="..\DevilDaggersInfo.Web.BlazorWasm.Server\DevilDaggersInfo.Web.BlazorWasm.Server.csproj" />
   </ItemGroup>
   <ItemGroup>
-    <None Update="Resources\V3">
+    <None Update="Resources\**\*">
       <CopyToOutputDirectory>Always</CopyToOutputDirectory>
     </None>
   </ItemGroup>

@@ -17,7 +17,7 @@ public class SpawnsetBinaryTests
 	[DataRow("Scanner")]
 	public void CompareBinaryOutput(string fileName)
 	{
-		byte[] originalBytes = File.ReadAllBytes(Path.Combine("Data", fileName));
+		byte[] originalBytes = File.ReadAllBytes(Path.Combine(TestUtils.ResourcePath, fileName));
 		SpawnsetBinary spawnset = SpawnsetBinary.Parse(originalBytes);
 		byte[] bytes = spawnset.ToBytes();
 
