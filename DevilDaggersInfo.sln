@@ -18,8 +18,6 @@ Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "DevilDaggersInfo.Web.Tool",
 EndProject
 Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "DevilDaggersInfo.Test.Web.BlazorWasm.Server", "DevilDaggersInfo.Test.Web.BlazorWasm.Server\DevilDaggersInfo.Test.Web.BlazorWasm.Server.csproj", "{CB715CD9-FB6A-4E79-B9C0-830833223D91}"
 EndProject
-Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "DevilDaggersInfo.Test.Web.BlazorWasm.Shared", "DevilDaggersInfo.Test.Web.BlazorWasm.Shared\DevilDaggersInfo.Test.Web.BlazorWasm.Shared.csproj", "{9C3CED1D-A4D9-46DD-8CB8-9DE0FAC1CBE0}"
-EndProject
 Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "DevilDaggersInfo.Core.Spawnset", "DevilDaggersInfo.Core.Spawnset\DevilDaggersInfo.Core.Spawnset.csproj", "{F899EBF6-12A0-49B8-A163-511F3E92E991}"
 EndProject
 Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "DevilDaggersInfo.Test.Core.Spawnset", "DevilDaggersInfo.Test.Core.Spawnset\DevilDaggersInfo.Test.Core.Spawnset.csproj", "{77938023-7892-4211-8E07-03522DF7CFD7}"
@@ -109,10 +107,6 @@ Global
 		{CB715CD9-FB6A-4E79-B9C0-830833223D91}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{CB715CD9-FB6A-4E79-B9C0-830833223D91}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{CB715CD9-FB6A-4E79-B9C0-830833223D91}.Release|Any CPU.Build.0 = Release|Any CPU
-		{9C3CED1D-A4D9-46DD-8CB8-9DE0FAC1CBE0}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
-		{9C3CED1D-A4D9-46DD-8CB8-9DE0FAC1CBE0}.Debug|Any CPU.Build.0 = Debug|Any CPU
-		{9C3CED1D-A4D9-46DD-8CB8-9DE0FAC1CBE0}.Release|Any CPU.ActiveCfg = Release|Any CPU
-		{9C3CED1D-A4D9-46DD-8CB8-9DE0FAC1CBE0}.Release|Any CPU.Build.0 = Release|Any CPU
 		{F899EBF6-12A0-49B8-A163-511F3E92E991}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
 		{F899EBF6-12A0-49B8-A163-511F3E92E991}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{F899EBF6-12A0-49B8-A163-511F3E92E991}.Release|Any CPU.ActiveCfg = Release|Any CPU
@@ -195,7 +189,6 @@ Global
 	EndGlobalSection
 	GlobalSection(NestedProjects) = preSolution
 		{CB715CD9-FB6A-4E79-B9C0-830833223D91} = {DC8824FB-7C87-4391-A12D-109623A76064}
-		{9C3CED1D-A4D9-46DD-8CB8-9DE0FAC1CBE0} = {DC8824FB-7C87-4391-A12D-109623A76064}
 		{77938023-7892-4211-8E07-03522DF7CFD7} = {DC8824FB-7C87-4391-A12D-109623A76064}
 		{07BBEC96-50D3-49A2-934F-AC8BB7E8BB0D} = {DC8824FB-7C87-4391-A12D-109623A76064}
 		{3B98ACA6-2DD1-430D-948A-2796E4C4A866} = {7682E92D-1D1A-4238-BFF2-D998A5FD392C}
