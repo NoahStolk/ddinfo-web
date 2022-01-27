@@ -11,5 +11,4 @@
 	{
 		<li><button class="btn btn-gray" @onclick="@(async () => await Http.ClearCache(cacheType))">Clear @cacheType cache</button></li>
 	}
-	<li><button class="btn btn-red" @onclick="@(async () => await Http.FixHistory(""))">Fix history</button></li>
 </ul>
