@@ -1,7 +1,7 @@
 namespace UmCanvas;
 
 /// <summary>
-/// Provides invoking methods to the "2d" context of the HTML5 canvas.
+/// Provides invoking methods to the 2D context of the HTML5 canvas.
 /// </summary>
 public class Canvas2d : Canvas
 {
@@ -14,7 +14,7 @@ public class Canvas2d : Canvas
 	private LineCap? _lineCap;
 	private float? _miterLimit;
 	private float? _globalAlpha;
-	private CompositeOperation? _globalCO;
+	private CompositeOperation? _globalCompositeOperation;
 	private bool? _imageSmoothingEnabled;
 	private float? _shadowBlur;
 	private string? _shadowColor;
@@ -28,11 +28,12 @@ public class Canvas2d : Canvas
 
 	public string FillStyle
 	{
-		get => _fillStyle ??= InvokeRet<string>("c2d.getFillStyle");
+		get => _fillStyle ??= InvokeReturn<string>("c2d.getFillStyle");
 		set
 		{
 			if (_fillStyle == value)
 				return;
+
 			_fillStyle = value;
 			Invoke("c2d.setFillStyle", value);
 		}
@@ -40,11 +41,12 @@ public class Canvas2d : Canvas
 
 	public string StrokeStyle
 	{
-		get => _strokeStyle ??= InvokeRet<string>("c2d.getStrokeStyle");
+		get => _strokeStyle ??= InvokeReturn<string>("c2d.getStrokeStyle");
 		set
 		{
 			if (_strokeStyle == value)
 				return;
+
 			_strokeStyle = value;
 			Invoke("c2d.setStrokeStyle", value);
 		}
@@ -52,11 +54,12 @@ public class Canvas2d : Canvas
 
 	public string Font
 	{
-		get => _font ??= InvokeRet<string>("c2d.getFont");
+		get => _font ??= InvokeReturn<string>("c2d.getFont");
 		set
 		{
 			if (_font == value)
 				return;
+
 			_font = value;
 			Invoke("c2d.setFont", value);
 		}
@@ -68,7 +71,7 @@ public class Canvas2d : Canvas
 		{
 			if (_textAlign == null)
 			{
-				string str = InvokeRet<string>("c2d.getTextAlign");
+				string str = InvokeReturn<string>("c2d.getTextAlign");
 				Enum.TryParse(str, true, out TextAlign ret);
 				_textAlign = ret;
 			}
@@ -79,6 +82,7 @@ public class Canvas2d : Canvas
 		{
 			if (_textAlign == value)
 				return;
+
 			_textAlign = value;
 			Invoke("c2d.setTextAlign", value.ToString().ToLower());
 		}
@@ -90,7 +94,7 @@ public class Canvas2d : Canvas
 		{
 			if (_textBaseline == null)
 			{
-				string str = InvokeRet<string>("c2d.getTextBaseline");
+				string str = InvokeReturn<string>("c2d.getTextBaseline");
 				Enum.TryParse(str, true, out TextBaseline ret);
 				_textBaseline = ret;
 			}
@@ -101,6 +105,7 @@ public class Canvas2d : Canvas
 		{
 			if (_textBaseline == value)
 				return;
+
 			_textBaseline = value;
 			Invoke("c2d.setTextBaseline", value.ToString().ToLower());
 		}
@@ -112,7 +117,7 @@ public class Canvas2d : Canvas
 		{
 			if (_lineWidth == null)
 			{
-				string str = InvokeRet<string>("c2d.getLineWidth");
+				string str = InvokeReturn<string>("c2d.getLineWidth");
 				_ = float.TryParse(str, out float width);
 				_lineWidth = width;
 			}
@@ -123,6 +128,7 @@ public class Canvas2d : Canvas
 		{
 			if (_lineWidth == value)
 				return;
+
 			_lineWidth = value;
 			Invoke("c2d.setLineWidth", value);
 		}
@@ -134,7 +140,7 @@ public class Canvas2d : Canvas
 		{
 			if (_lineCap == null)
 			{
-				string str = InvokeRet<string>("c2d.getLineCap");
+				string str = InvokeReturn<string>("c2d.getLineCap");
 				Enum.TryParse(str, true, out LineCap ret);
 				_lineCap = ret;
 			}
@@ -145,6 +151,7 @@ public class Canvas2d : Canvas
 		{
 			if (_lineCap == value)
 				return;
+
 			_lineCap = value;
 			Invoke("c2d.setLineCap", value.ToString().ToLower());
 		}
@@ -156,7 +163,7 @@ public class Canvas2d : Canvas
 		{
 			if (_miterLimit == null)
 			{
-				string str = InvokeRet<string>("c2d.getMiterLimit");
+				string str = InvokeReturn<string>("c2d.getMiterLimit");
 				_ = float.TryParse(str, out float ga);
 				_miterLimit = ga;
 			}
@@ -167,6 +174,7 @@ public class Canvas2d : Canvas
 		{
 			if (_miterLimit == value)
 				return;
+
 			_miterLimit = value;
 			Invoke("c2d.setMiterLimit", value);
 		}
@@ -178,7 +186,7 @@ public class Canvas2d : Canvas
 		{
 			if (_globalAlpha == null)
 			{
-				string str = InvokeRet<string>("c2d.getGlobalAlpha");
+				string str = InvokeReturn<string>("c2d.getGlobalAlpha");
 				_ = float.TryParse(str, out float ga);
 				_globalAlpha = ga;
 			}
@@ -189,6 +197,7 @@ public class Canvas2d : Canvas
 		{
 			if (_globalAlpha == value)
 				return;
+
 			_globalAlpha = value;
 			Invoke("c2d.setGlobalAlpha", value);
 		}
@@ -198,31 +207,33 @@ public class Canvas2d : Canvas
 	{
 		get
 		{
-			if (_globalCO == null)
+			if (_globalCompositeOperation == null)
 			{
-				string? str = InvokeRet<string>("c2d.getGlobalCompositeOperation")?.Replace('-', '_');
+				string? str = InvokeReturn<string>("c2d.getGlobalCompositeOperation")?.Replace('-', '_');
 				Enum.TryParse(str, true, out CompositeOperation ret);
-				_globalCO = ret;
+				_globalCompositeOperation = ret;
 			}
 
-			return _globalCO.Value;
+			return _globalCompositeOperation.Value;
 		}
 		set
 		{
-			if (_globalCO == value)
+			if (_globalCompositeOperation == value)
 				return;
-			_globalCO = value;
+
+			_globalCompositeOperation = value;
 			Invoke("c2d.setGlobalCompositeOperation", value.ToString().ToLower().Replace('_', '-'));
 		}
 	}
 
 	public bool ImageSmoothingEnabled
 	{
-		get => _imageSmoothingEnabled ??= InvokeRet<bool>("c2d.getImageSmoothingEnabled");
+		get => _imageSmoothingEnabled ??= InvokeReturn<bool>("c2d.getImageSmoothingEnabled");
 		set
 		{
 			if (_imageSmoothingEnabled == value)
 				return;
+
 			_imageSmoothingEnabled = value;
 			Invoke("c2d.setImageSmoothingEnabled", value ? 1 : 0);
 		}
@@ -234,9 +245,9 @@ public class Canvas2d : Canvas
 		{
 			if (_shadowBlur == null)
 			{
-				string str = InvokeRet<string>("c2d.getShadowBlur");
-				_ = float.TryParse(str, out float sb);
-				_shadowBlur = sb;
+				string str = InvokeReturn<string>("c2d.getShadowBlur");
+				_ = float.TryParse(str, out float shadowBlur);
+				_shadowBlur = shadowBlur;
 			}
 
 			return _shadowBlur.Value;
@@ -252,11 +263,12 @@ public class Canvas2d : Canvas
 
 	public string ShadowColor
 	{
-		get => _shadowColor ??= InvokeRet<string>("c2d.getShadowColor");
+		get => _shadowColor ??= InvokeReturn<string>("c2d.getShadowColor");
 		set
 		{
 			if (_shadowColor == value)
 				return;
+
 			_shadowColor = value;
 			Invoke("c2d.setShadowColor", value);
 		}
@@ -268,7 +280,7 @@ public class Canvas2d : Canvas
 		{
 			if (_shadowOffsetX == null)
 			{
-				string str = InvokeRet<string>("c2d.getShadowOffsetX");
+				string str = InvokeReturn<string>("c2d.getShadowOffsetX");
 				_ = float.TryParse(str, out float sb);
 				_shadowOffsetX = sb;
 			}
@@ -279,6 +291,7 @@ public class Canvas2d : Canvas
 		{
 			if (_shadowOffsetX == value)
 				return;
+
 			_shadowOffsetX = value;
 			Invoke("c2d.setShadowOffsetX", value);
 		}
@@ -290,7 +303,7 @@ public class Canvas2d : Canvas
 		{
 			if (_shadowOffsetY == null)
 			{
-				string str = InvokeRet<string>("c2d.getShadowOffsetY");
+				string str = InvokeReturn<string>("c2d.getShadowOffsetY");
 				_ = float.TryParse(str, out float sb);
 				_shadowOffsetY = sb;
 			}
@@ -301,6 +314,7 @@ public class Canvas2d : Canvas
 		{
 			if (_shadowOffsetY == value)
 				return;
+
 			_shadowOffsetY = value;
 			Invoke("c2d.setShadowOffsetY", value);
 		}
@@ -358,40 +372,40 @@ public class Canvas2d : Canvas
 
 	public float MeasureText(string text)
 	{
-		string ret = InvokeRet<string, string>("c2d.measureText", text);
+		string ret = InvokeReturn<string, string>("c2d.measureText", text);
 		_ = float.TryParse(ret, out float width);
 		return width;
 	}
 
 	public float[] GetLineDash()
 	{
-		string str = InvokeRet<string>("c2d.getLineDash");
+		string str = InvokeReturn<string>("c2d.getLineDash");
 		if (string.IsNullOrEmpty(str))
 			return Array.Empty<float>();
 
-		string[] strs = str.Split(',');
-		int cnt = 0;
-		foreach (string ds in strs)
+		string[] values = str.Split(',');
+		int count = 0;
+		foreach (string value in values)
 		{
-			if (float.TryParse(ds, out float tmp))
-				cnt++;
+			if (float.TryParse(value, out _))
+				count++;
 		}
 
-		if (cnt == 0)
+		if (count == 0)
 			return Array.Empty<float>();
 
-		float[] ret = new float[cnt];
-		cnt = 0;
-		foreach (string ds in strs)
+		float[] lineDash = new float[count];
+		count = 0;
+		foreach (string ds in values)
 		{
 			if (float.TryParse(ds, out float tmp))
 			{
-				ret[cnt] = tmp;
-				cnt++;
+				lineDash[count] = tmp;
+				count++;
 			}
 		}
 
-		return ret;
+		return lineDash;
 	}
 
 	public void SetLineDash(float[] segments)
@@ -407,13 +421,13 @@ public class Canvas2d : Canvas
 		=> IsPointInPath((float)x, (float)y, evenodd);
 
 	public bool IsPointInPath(float x, float y, bool evenodd = false)
-		=> InvokeRet<float, float, int, bool>("c2d.isPointInPath", x, y, evenodd ? 1 : 0);
+		=> InvokeReturn<float, float, int, bool>("c2d.isPointInPath", x, y, evenodd ? 1 : 0);
 
 	public bool IsPointInStroke(double x, double y)
 		=> IsPointInStroke((float)x, (float)y);
 
 	public bool IsPointInStroke(float x, float y)
-		=> InvokeRet<float, float, bool>("c2d.isPointInStroke", x, y);
+		=> InvokeReturn<float, float, bool>("c2d.isPointInStroke", x, y);
 
 	public void MoveTo(double x, double y)
 		=> MoveTo((float)x, (float)y);
