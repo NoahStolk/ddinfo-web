@@ -4,7 +4,12 @@
 @using DevilDaggersInfo.Web.BlazorWasm.Shared.Dto.Admin.CustomEntries
 @using DevilDaggersInfo.Web.BlazorWasm.Shared.Enums.Sortings.Admin
 
-@foreach (string cacheType in new[] { "LeaderboardHistory", "LeaderboardStatistics", "ModArchive", "SpawnsetHash", "SpawnsetSummary" })
-{
-	<button class="btn btn-gray" @onclick="@(async () => await Http.ClearCache(cacheType))">Clear @cacheType cache</button>
-}
+<Heading Title="Cache" />
+
+<ul>
+	@foreach (string cacheType in new[] { "LeaderboardHistory", "LeaderboardStatistics", "ModArchive", "SpawnsetHash", "SpawnsetSummary" })
+	{
+		<li><button class="btn btn-gray" @onclick="@(async () => await Http.ClearCache(cacheType))">Clear @cacheType cache</button></li>
+	}
+	<li><button class="btn btn-red" @onclick="@(async () => await Http.FixHistory(""))">Fix history</button></li>
+</ul>

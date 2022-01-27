@@ -21,6 +21,11 @@ public partial class AdminApiHttpClient
 		return await SendRequest(new HttpMethod("POST"), $"api/admin/caches/clear", JsonContent.Create(cacheType));
 	}
 
+	public async Task<HttpResponseMessage> FixHistory(string unused)
+	{
+		return await SendRequest(new HttpMethod("POST"), $"api/admin/caches/history", JsonContent.Create(unused));
+	}
+
 	public async Task<Page<GetCustomEntryForOverview>> GetCustomEntries(int pageIndex, int pageSize, CustomEntrySorting? sortBy, bool ascending)
 	{
 		Dictionary<string, object?> queryParameters = new()
