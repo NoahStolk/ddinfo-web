@@ -59,59 +59,63 @@ else
 		else
 		{
 			@*TODO: custom entries*@
-
-			if (GetPlayer.Settings != null)
+			bool hasSettings = GetPlayer.Settings != null;
+			bool hasCountry = GetPlayer.CountryCode != null && UserUtils.CountryNames.ContainsKey(GetPlayer.CountryCode);
+			if (hasSettings || hasCountry)
 			{
-				bool? rightHand = GetPlayer.Settings.IsRightHanded;
-				bool? flashHand = GetPlayer.Settings.UsesFlashHand;
-				bool? legacyAudio = GetPlayer.Settings.UsesLegacyAudio;
-
 				<PlayerCard Title="Settings">
-					@if (GetPlayer.Settings.Edpi.HasValue)
+					@if (hasSettings)
 					{
-						<DataField CssClass="odd:bg-gray-2 px-1" Name="eDPI">@(GetPlayer.Settings.Edpi.Value.ToString(FormatUtils.InGameSensFormat))</DataField>
+						bool? rightHand = GetPlayer.Settings!.IsRightHanded;
+						bool? flashHand = GetPlayer.Settings.UsesFlashHand;
+						bool? legacyAudio = GetPlayer.Settings.UsesLegacyAudio;
+
+						@if (GetPlayer.Settings.Edpi.HasValue)
+						{
+							<DataField CssClass="odd:bg-gray-2 px-1" Name="eDPI">@(GetPlayer.Settings.Edpi.Value.ToString(FormatUtils.InGameSensFormat))</DataField>
+						}
+
+						@if (GetPlayer.Settings.Dpi.HasValue)
+						{
+							<DataField CssClass="odd:bg-gray-2 px-1" Name="DPI">@(GetPlayer.Settings.Dpi.Value.ToString())</DataField>
+						}
+
+						@if (GetPlayer.Settings.InGameSens.HasValue)
+						{
+							<DataField CssClass="odd:bg-gray-2 px-1" Name="In-game sens">@(GetPlayer.Settings.InGameSens.Value.ToString(FormatUtils.InGameSensFormat))</DataField>
+						}
+
+						@if (GetPlayer.Settings.Fov.HasValue)
+						{
+							<DataField CssClass="odd:bg-gray-2 px-1" Name="FOV">@(GetPlayer.Settings.Fov.Value.ToString())</DataField>
+						}
+
+						@if (GetPlayer.Settings.Gamma.HasValue)
+						{
+							<DataField CssClass="odd:bg-gray-2 px-1" Name="Gamma">@(GetPlayer.Settings.Gamma.Value.ToString(FormatUtils.GammaFormat))</DataField>
+						}
+
+						@if (rightHand.HasValue)
+						{
+							<DataField CssClass="odd:bg-gray-2 px-1" Name="Hand orientation">@(rightHand.Value ? "Right" : "Left")</DataField>
+						}
+
+						@if (flashHand.HasValue)
+						{
+							<DataField CssClass="odd:bg-gray-2 px-1" Name="Hand flash">@(flashHand.Value ? "On" : "Off")</DataField>
+						}
+
+						@if (legacyAudio.HasValue)
+						{
+							<DataField CssClass="odd:bg-gray-2 px-1" Name="Legacy audio">@(legacyAudio.Value ? "On" : "Off")</DataField>
+						}
 					}
 
-					@if (GetPlayer.Settings.Dpi.HasValue)
-					{
-						<DataField CssClass="odd:bg-gray-2 px-1" Name="DPI">@(GetPlayer.Settings.Dpi.Value.ToString())</DataField>
-					}
-
-					@if (GetPlayer.Settings.InGameSens.HasValue)
-					{
-						<DataField CssClass="odd:bg-gray-2 px-1" Name="In-game sens">@(GetPlayer.Settings.InGameSens.Value.ToString(FormatUtils.InGameSensFormat))</DataField>
-					}
-
-					@if (GetPlayer.Settings.Fov.HasValue)
-					{
-						<DataField CssClass="odd:bg-gray-2 px-1" Name="FOV">@(GetPlayer.Settings.Fov.Value.ToString())</DataField>
-					}
-
-					@if (GetPlayer.Settings.Gamma.HasValue)
-					{
-						<DataField CssClass="odd:bg-gray-2 px-1" Name="Gamma">@(GetPlayer.Settings.Gamma.Value.ToString(FormatUtils.GammaFormat))</DataField>
-					}
-
-					@if (rightHand.HasValue)
-					{
-						<DataField CssClass="odd:bg-gray-2 px-1" Name="Hand orientation">@(rightHand.Value ? "Right" : "Left")</DataField>
-					}
-
-					@if (flashHand.HasValue)
-					{
-						<DataField CssClass="odd:bg-gray-2 px-1" Name="Hand flash">@(flashHand.Value ? "On" : "Off")</DataField>
-					}
-
-					@if (legacyAudio.HasValue)
-					{
-						<DataField CssClass="odd:bg-gray-2 px-1" Name="Legacy audio">@(legacyAudio.Value ? "On" : "Off")</DataField>
-					}
-
-					@if (GetPlayer.CountryCode != null && UserUtils.CountryNames.ContainsKey(GetPlayer.CountryCode))
+					@if (hasCountry)
 					{
 						<TallDataField CssClass="odd:bg-gray-2 px-1" Name="Country">
 							<img class="inline" src="/images/flags/@(GetPlayer.CountryCode).png" />
-							@(UserUtils.CountryNames[GetPlayer.CountryCode])
+							@(UserUtils.CountryNames[GetPlayer.CountryCode!])
 						</TallDataField>
 					}
 				</PlayerCard>
