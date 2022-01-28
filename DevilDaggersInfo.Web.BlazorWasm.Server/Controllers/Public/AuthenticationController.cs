@@ -41,7 +41,7 @@ public class AuthenticationController : ControllerBase
 		UserEntity? user = _userService.Authenticate(loginRequest.Name, loginRequest.Password);
 		if (user == null)
 		{
-			_logger.LogWarning("User {user} failed to login.", loginRequest.Name);
+			_logger.LogInformation("User {user} failed to login.", loginRequest.Name);
 			return BadRequest("Username or password is incorrect.");
 		}
 
@@ -64,12 +64,12 @@ public class AuthenticationController : ControllerBase
 		try
 		{
 			_userService.Create(registrationRequest.Name, registrationRequest.Password);
-			_logger.LogWarning("User {user} registered successfully.", registrationRequest.Name);
+			_logger.LogInformation("User {user} registered successfully.", registrationRequest.Name);
 			return Ok();
 		}
 		catch (Exception ex)
 		{
-			_logger.LogWarning(ex, "User {user} failed to register.", registrationRequest.Name);
+			_logger.LogInformation(ex, "User {user} failed to register.", registrationRequest.Name);
 			return BadRequest(ex.Message);
 		}
 	}
