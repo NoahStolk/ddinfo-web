@@ -47,6 +47,10 @@ public class SpawnsetSummaryParseTests
 	public void ParseSummary_Scanner()
 		=> ParseSummary("Scanner", 6, 9, GameMode.Default, new(62, 16), new(62, 21), HandLevel.Level4, 30, 0);
 
+	[TestMethod]
+	public void ParseSummary_Metathrone()
+		=> ParseSummary("Metathrone", 5, 9, GameMode.Default, new(134, 691.6f), new(9, 42.4f), HandLevel.Level1, 0, 0);
+
 	[AssertionMethod]
 	private static SpawnsetSummary ParseSummary(
 		string fileName,
