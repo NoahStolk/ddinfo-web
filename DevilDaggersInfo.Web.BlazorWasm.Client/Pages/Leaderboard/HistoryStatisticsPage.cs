@@ -37,7 +37,7 @@ public partial class HistoryStatisticsPage
 		HighlighterKeys = new() { "Date", "Global Time" },
 		GridOptions = new() { MinimumRowHeightInPx = 50 },
 		ScaleYOptions = new() { NumberFormat = FormatUtils.LeaderboardIntFormat },
-		ChartMarginXInPx = 80,
+		ChartMarginXInPx = 100,
 		DisplayXScaleAsDates = true,
 		HighlighterWidth = 320,
 		Backgrounds = LineChartUtils.GameVersionBackgrounds,
@@ -48,7 +48,7 @@ public partial class HistoryStatisticsPage
 		HighlighterKeys = new() { "Date", "Global Deaths" },
 		GridOptions = new() { MinimumRowHeightInPx = 50 },
 		ScaleYOptions = new() { NumberFormat = FormatUtils.LeaderboardIntFormat },
-		ChartMarginXInPx = 80,
+		ChartMarginXInPx = 100,
 		DisplayXScaleAsDates = true,
 		Backgrounds = LineChartUtils.GameVersionBackgrounds,
 	};
@@ -58,7 +58,7 @@ public partial class HistoryStatisticsPage
 		HighlighterKeys = new() { "Date", "Global Gems" },
 		GridOptions = new() { MinimumRowHeightInPx = 50 },
 		ScaleYOptions = new() { NumberFormat = FormatUtils.LeaderboardIntFormat },
-		ChartMarginXInPx = 80,
+		ChartMarginXInPx = 100,
 		DisplayXScaleAsDates = true,
 		Backgrounds = LineChartUtils.GameVersionBackgrounds,
 	};
@@ -68,7 +68,7 @@ public partial class HistoryStatisticsPage
 		HighlighterKeys = new() { "Date", "Global Kills" },
 		GridOptions = new() { MinimumRowHeightInPx = 50 },
 		ScaleYOptions = new() { NumberFormat = FormatUtils.LeaderboardIntFormat },
-		ChartMarginXInPx = 80,
+		ChartMarginXInPx = 100,
 		DisplayXScaleAsDates = true,
 		Backgrounds = LineChartUtils.GameVersionBackgrounds,
 	};
