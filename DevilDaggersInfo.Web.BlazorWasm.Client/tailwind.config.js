@@ -88,14 +88,14 @@ module.exports = {
 				'mod-binaries-sm': 'minmax(160px, 100%) 160px',
 				'mod-binaries-xs': '100%',
 
-				'mod-assets-lg': 'minmax(160px, 100%) 160px 160px 160px 160px',
-				'mod-assets-md': 'minmax(160px, 100%) 160px 160px',
-				'mod-assets-sm': 'minmax(160px, 100%) 160px',
+				'mod-assets-lg': 'minmax(160px, 50%) minmax(160px, 50%) 160px 160px 160px',
+				'mod-assets-md': 'minmax(160px, 50%) minmax(160px, 50%) 160px',
+				'mod-assets-sm': 'minmax(160px, 50%) minmax(160px, 50%)',
 				'mod-assets-xs': '100%',
 
-				'mod-loudness-lg': 'minmax(160px, 100%) 160px 160px 160px 160px',
-				'mod-loudness-md': 'minmax(160px, 100%) 160px 160px',
-				'mod-loudness-sm': 'minmax(160px, 100%) 160px',
+				'mod-loudness-lg': 'minmax(160px, 50%) minmax(160px, 50%) 160px 160px 160px',
+				'mod-loudness-md': 'minmax(160px, 50%) minmax(160px, 50%) 160px',
+				'mod-loudness-sm': 'minmax(160px, 50%) minmax(160px, 50%)',
 				'mod-loudness-xs': '100%',
 
 				// Wiki (enemies)
