@@ -2,6 +2,7 @@
 @inject PublicApiHttpClient Http
 @inject NavigationManager NavigationManager
 @using DevilDaggersInfo.Core.Asset
+@using System.Runtime.CompilerServices
 
 <Heading Title="Game Assets" />
 
@@ -11,11 +12,11 @@
 
 <Heading Title="Audio Assets" Level="2" />
 <div class="bg-gray-3 grid gap-3 grid-cols-3">
-	<div>Asset</div>
-	<div>Prohibited</div>
-	<div>Loudness</div>
+	<div><a href="" @onclick:preventDefault class="link text-left" @onclick="() => Sort(ref _audioAudio, _audioAudioSortings, (aad) => aad.AssetName)">Asset</a></div>
+	<div><a href="" @onclick:preventDefault class="link text-left" @onclick="() => Sort(ref _audioAudio, _audioAudioSortings, (aad) => aad.IsProhibited)">Prohibited</a></div>
+	<div><a href="" @onclick:preventDefault class="link text-left" @onclick="() => Sort(ref _audioAudio, _audioAudioSortings, (aad) => aad.DefaultLoudness)">Loudness</a></div>
 </div>
-@foreach (AudioAssetData audio in AudioAudio.All)
+@foreach (AudioAssetData audio in _audioAudio)
 {
 	<div class="grid gap-3 grid-cols-3 odd:bg-gray-2">
 		<div class="break-all">@audio.AssetName</div>
@@ -26,12 +27,12 @@
 
 <Heading Title="Model Assets" Level="2" />
 <div class="bg-gray-3 grid gap-3 grid-cols-4">
-	<div>Asset</div>
-	<div>Prohibited</div>
-	<div>Indices</div>
-	<div>Vertices</div>
+	<div><a href="" @onclick:preventDefault class="link text-left" @onclick="() => Sort(ref _ddModels, _ddModelsSortings, (mad) => mad.AssetName)">Asset</a></div>
+	<div><a href="" @onclick:preventDefault class="link text-left" @onclick="() => Sort(ref _ddModels, _ddModelsSortings, (mad) => mad.IsProhibited)">Prohibited</a></div>
+	<div><a href="" @onclick:preventDefault class="link text-left" @onclick="() => Sort(ref _ddModels, _ddModelsSortings, (mad) => mad.DefaultIndexCount)">Indices</a></div>
+	<div><a href="" @onclick:preventDefault class="link text-left" @onclick="() => Sort(ref _ddModels, _ddModelsSortings, (mad) => mad.DefaultVertexCount)">Vertices</a></div>
 </div>
-@foreach (ModelAssetData model in DdModels.All)
+@foreach (ModelAssetData model in _ddModels)
 {
 	<div class="grid gap-3 grid-cols-4 odd:bg-gray-2">
 		<div class="break-all">@model.AssetName</div>
@@ -43,10 +44,10 @@
 
 <Heading Title="Model Binding Assets" Level="2" />
 <div class="bg-gray-3 grid gap-3 grid-cols-2">
-	<div>Asset</div>
-	<div>Prohibited</div>
+	<div><a href="" @onclick:preventDefault class="link text-left" @onclick="() => Sort(ref _ddModelBindings, _ddModelBindingsSortings, (mbad) => mbad.AssetName)">Asset</a></div>
+	<div><a href="" @onclick:preventDefault class="link text-left" @onclick="() => Sort(ref _ddModelBindings, _ddModelBindingsSortings, (mbad) => mbad.IsProhibited)">Prohibited</a></div>
 </div>
-@foreach (ModelBindingAssetData modelBinding in DdModelBindings.All)
+@foreach (ModelBindingAssetData modelBinding in _ddModelBindings)
 {
 	<div class="grid gap-3 grid-cols-2 odd:bg-gray-2">
 		<div class="break-all">@modelBinding.AssetName</div>
@@ -56,10 +57,10 @@
 
 <Heading Title="Shader Assets (core)" Level="2" />
 <div class="bg-gray-3 grid gap-3 grid-cols-2">
-	<div>Asset</div>
-	<div>Prohibited</div>
+	<div><a href="" @onclick:preventDefault class="link text-left" @onclick="() => Sort(ref _coreShaders, _coreShadersSortings, (sad) => sad.AssetName)">Asset</a></div>
+	<div><a href="" @onclick:preventDefault class="link text-left" @onclick="() => Sort(ref _coreShaders, _coreShadersSortings, (sad) => sad.IsProhibited)">Prohibited</a></div>
 </div>
-@foreach (ShaderAssetData shader in CoreShaders.All)
+@foreach (ShaderAssetData shader in _coreShaders)
 {
 	<div class="grid gap-3 grid-cols-2 odd:bg-gray-2">
 		<div class="break-all">@shader.AssetName</div>
@@ -69,10 +70,10 @@
 
 <Heading Title="Shader Assets (dd)" Level="2" />
 <div class="bg-gray-3 grid gap-3 grid-cols-2">
-	<div>Asset</div>
-	<div>Prohibited</div>
+	<div><a href="" @onclick:preventDefault class="link text-left" @onclick="() => Sort(ref _ddShaders, _ddShadersSortings, (sad) => sad.AssetName)">Asset</a></div>
+	<div><a href="" @onclick:preventDefault class="link text-left" @onclick="() => Sort(ref _ddShaders, _ddShadersSortings, (sad) => sad.IsProhibited)">Prohibited</a></div>
 </div>
-@foreach (ShaderAssetData shader in DdShaders.All)
+@foreach (ShaderAssetData shader in _ddShaders)
 {
 	<div class="grid gap-3 grid-cols-2 odd:bg-gray-2">
 		<div class="break-all">@shader.AssetName</div>
@@ -82,14 +83,14 @@
 
 <Heading Title="Texture Assets" Level="2" />
 <div class="bg-gray-3 grid gap-3 grid-cols-6">
-	<div>Asset</div>
-	<div>Prohibited</div>
-	<div>Width</div>
-	<div>Height</div>
-	<div>For model</div>
-	<div>Binding</div>
+	<div><a href="" @onclick:preventDefault class="link text-left" @onclick="() => Sort(ref _ddTextures, _ddTexturesSortings, (tad) => tad.AssetName)">Asset</a></div>
+	<div><a href="" @onclick:preventDefault class="link text-left" @onclick="() => Sort(ref _ddTextures, _ddTexturesSortings, (tad) => tad.IsProhibited)">Prohibited</a></div>
+	<div><a href="" @onclick:preventDefault class="link text-left" @onclick="() => Sort(ref _ddTextures, _ddTexturesSortings, (tad) => tad.DefaultWidth)">Width</a></div>
+	<div><a href="" @onclick:preventDefault class="link text-left" @onclick="() => Sort(ref _ddTextures, _ddTexturesSortings, (tad) => tad.DefaultHeight)">Height</a></div>
+	<div><a href="" @onclick:preventDefault class="link text-left" @onclick="() => Sort(ref _ddTextures, _ddTexturesSortings, (tad) => tad.IsModelTexture)">For model</a></div>
+	<div><a href="" @onclick:preventDefault class="link text-left" @onclick="() => Sort(ref _ddTextures, _ddTexturesSortings, (tad) => tad.ModelBinding)">Binding</a></div>
 </div>
-@foreach (TextureAssetData texture in DdTextures.All)
+@foreach (TextureAssetData texture in _ddTextures)
 {
 	<div class="grid gap-3 grid-cols-6 odd:bg-gray-2">
 		<div class="break-all">@texture.AssetName</div>
@@ -99,4 +100,34 @@
 		<div>@(texture.IsModelTexture ? "Yes" : "No")</div>
 		<div class="break-all">@texture.ModelBinding</div>
 	</div>
+}
+
+@code
+{
+	private List<AudioAssetData> _audioAudio = AudioAudio.All;
+	private List<ModelAssetData> _ddModels = DdModels.All;
+	private List<ModelBindingAssetData> _ddModelBindings = DdModelBindings.All;
+	private List<ShaderAssetData> _coreShaders = CoreShaders.All;
+	private List<ShaderAssetData> _ddShaders = DdShaders.All;
+	private List<TextureAssetData> _ddTextures = DdTextures.All;
+	
+	private Dictionary<string, bool> _audioAudioSortings = new();
+	private Dictionary<string, bool> _ddModelsSortings = new();
+	private Dictionary<string, bool> _ddModelBindingsSortings = new();
+	private Dictionary<string, bool> _coreShadersSortings = new();
+	private Dictionary<string, bool> _ddShadersSortings = new();
+	private Dictionary<string, bool> _ddTexturesSortings = new();
+
+	private void Sort<TSource, TKey>(ref List<TSource> source, Dictionary<string, bool> sortings, Func<TSource, TKey> sorting, [CallerArgumentExpression("sorting")] string sortingExpression = "")
+	{
+		bool sortDirection = false;
+		if (sortings.ContainsKey(sortingExpression))
+			sortDirection = sortings[sortingExpression];
+		else
+			sortings.Add(sortingExpression, false);
+
+		source = source.OrderBy(sorting, sortDirection).ToList();
+
+		sortings[sortingExpression] = !sortDirection;
+	}
 }
