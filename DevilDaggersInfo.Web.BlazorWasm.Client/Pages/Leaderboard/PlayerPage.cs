@@ -70,10 +70,10 @@ public partial class PlayerPage
 	private readonly List<LineDataSet> _activityDeathsData = new();
 	private readonly List<LineDataSet> _activityTimeData = new();
 
-	private LineChartDataOptions? _progressionScoreOptions;
-	private LineChartDataOptions? _progressionRankOptions;
-	private LineChartDataOptions? _activityDeathsOptions;
-	private LineChartDataOptions? _activityTimeOptions;
+	private LineChartDataOptions _progressionScoreOptions = LineChartDataOptions.Default;
+	private LineChartDataOptions _progressionRankOptions = LineChartDataOptions.Default;
+	private LineChartDataOptions _activityDeathsOptions = LineChartDataOptions.Default;
+	private LineChartDataOptions _activityTimeOptions = LineChartDataOptions.Default;
 
 	private int _pageRankStart;
 	private int _pageRankEnd;

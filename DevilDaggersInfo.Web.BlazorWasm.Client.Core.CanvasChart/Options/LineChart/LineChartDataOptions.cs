@@ -38,4 +38,6 @@ public class LineChartDataOptions
 	public bool AllowFractionalScales { get; }
 
 	public bool ReverseY { get; }
+
+	public static LineChartDataOptions Default { get; } = new(0, 1, 10, 0, 1, 10);
 }

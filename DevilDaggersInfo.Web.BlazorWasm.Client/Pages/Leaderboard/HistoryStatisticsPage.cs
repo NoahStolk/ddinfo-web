@@ -86,13 +86,13 @@ public partial class HistoryStatisticsPage
 	private readonly List<LineDataSet> _killsData = new();
 	private readonly List<LineDataSet> _accuracyData = new();
 
-	private LineChartDataOptions? _playersOptions;
-	private LineChartDataOptions? _entrancesOptions;
-	private LineChartDataOptions? _timeOptions;
-	private LineChartDataOptions? _deathsOptions;
-	private LineChartDataOptions? _gemsOptions;
-	private LineChartDataOptions? _killsOptions;
-	private LineChartDataOptions? _accuracyOptions;
+	private LineChartDataOptions _playersOptions = LineChartDataOptions.Default;
+	private LineChartDataOptions _entrancesOptions = LineChartDataOptions.Default;
+	private LineChartDataOptions _timeOptions = LineChartDataOptions.Default;
+	private LineChartDataOptions _deathsOptions = LineChartDataOptions.Default;
+	private LineChartDataOptions _gemsOptions = LineChartDataOptions.Default;
+	private LineChartDataOptions _killsOptions = LineChartDataOptions.Default;
+	private LineChartDataOptions _accuracyOptions = LineChartDataOptions.Default;
 
 	private List<GetLeaderboardHistoryStatistics>? _statistics;
 

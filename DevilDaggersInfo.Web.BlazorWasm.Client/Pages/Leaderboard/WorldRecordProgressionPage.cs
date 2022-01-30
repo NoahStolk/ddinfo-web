@@ -30,7 +30,7 @@ public partial class WorldRecordProgressionPage
 	private int _currentWorldRecordHolderId;
 	private TimeSpan _totalTimeSinceFirstRecord;
 
-	private LineChartDataOptions? _dataOptions;
+	private LineChartDataOptions _dataOptions = LineChartDataOptions.Default;
 	private GetWorldRecordDataContainer? _data;
 
 	[Inject]
