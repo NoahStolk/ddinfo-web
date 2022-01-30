@@ -37,19 +37,19 @@ else
 	@if (GetCustomLeaderboards.Results.Count > 0)
 	{
 		<div class="grid gap-3 sm:grid-cols-custom-leaderboards-sm md:grid-cols-custom-leaderboards-md lg:grid-cols-custom-leaderboards-lg xl:grid-cols-custom-leaderboards-xl 2xl:grid-cols-custom-leaderboards-2xl">
-			<a href="" @onclick:preventDefault class="link text-left" @onclick="() => Sort(CustomLeaderboardSorting.SpawnsetName)">Name</a>
-			<a href="" @onclick:preventDefault class="link text-left hidden md:block" @onclick="() => Sort(CustomLeaderboardSorting.AuthorName)">Author</a>
-			<a href="" @onclick:preventDefault class="link text-left hidden md:block" @onclick="() => Sort(CustomLeaderboardSorting.DateCreated)">Created</a>
-			<a href="" @onclick:preventDefault class="link text-left hidden md:block" @onclick="() => Sort(CustomLeaderboardSorting.DateLastPlayed)">Last played</a>
-			<a href="" @onclick:preventDefault class="link text-right hidden 2xl:block" @onclick="() => Sort(CustomLeaderboardSorting.Submits)">Submits</a>
-			<a href="" @onclick:preventDefault class="link text-right hidden 2xl:block" @onclick="() => Sort(CustomLeaderboardSorting.Players)">Players</a>
-			<a href="" @onclick:preventDefault class="link text-right hidden xl:block" @onclick="() => Sort(CustomLeaderboardSorting.TimeBronze)">Bronze</a>
-			<a href="" @onclick:preventDefault class="link text-right hidden xl:block" @onclick="() => Sort(CustomLeaderboardSorting.TimeSilver)">Silver</a>
-			<a href="" @onclick:preventDefault class="link text-right hidden xl:block" @onclick="() => Sort(CustomLeaderboardSorting.TimeGolden)">Golden</a>
-			<a href="" @onclick:preventDefault class="link text-right hidden xl:block" @onclick="() => Sort(CustomLeaderboardSorting.TimeDevil)">Devil</a>
-			<a href="" @onclick:preventDefault class="link text-right hidden xl:block" @onclick="() => Sort(CustomLeaderboardSorting.TimeLeviathan)">Leviathan</a>
-			<a href="" @onclick:preventDefault class="link text-left hidden lg:block" @onclick="() => Sort(CustomLeaderboardSorting.TopPlayer)">Top player</a>
-			<a href="" @onclick:preventDefault class="link text-right hidden lg:block" @onclick="() => Sort(CustomLeaderboardSorting.WorldRecord)">WR</a>
+			<div><a href="" @onclick:preventDefault class="link" @onclick="() => Sort(CustomLeaderboardSorting.SpawnsetName)">Name</a></div>
+			<div class="hidden md:block"><a href="" @onclick:preventDefault class="link" @onclick="() => Sort(CustomLeaderboardSorting.AuthorName)">Author</a></div>
+			<div class="hidden md:block"><a href="" @onclick:preventDefault class="link" @onclick="() => Sort(CustomLeaderboardSorting.DateCreated)">Created</a></div>
+			<div class="hidden md:block"><a href="" @onclick:preventDefault class="link" @onclick="() => Sort(CustomLeaderboardSorting.DateLastPlayed)">Last played</a></div>
+			<div class="hidden 2xl:block text-right"><a href="" @onclick:preventDefault class="link" @onclick="() => Sort(CustomLeaderboardSorting.Submits)">Submits</a></div>
+			<div class="hidden 2xl:block text-right"><a href="" @onclick:preventDefault class="link" @onclick="() => Sort(CustomLeaderboardSorting.Players)">Players</a></div>
+			<div class="hidden xl:block text-right"><a href="" @onclick:preventDefault class="link" @onclick="() => Sort(CustomLeaderboardSorting.TimeBronze)">Bronze</a></div>
+			<div class="hidden xl:block text-right"><a href="" @onclick:preventDefault class="link" @onclick="() => Sort(CustomLeaderboardSorting.TimeSilver)">Silver</a></div>
+			<div class="hidden xl:block text-right"><a href="" @onclick:preventDefault class="link" @onclick="() => Sort(CustomLeaderboardSorting.TimeGolden)">Golden</a></div>
+			<div class="hidden xl:block text-right"><a href="" @onclick:preventDefault class="link" @onclick="() => Sort(CustomLeaderboardSorting.TimeDevil)">Devil</a></div>
+			<div class="hidden xl:block text-right"><a href="" @onclick:preventDefault class="link" @onclick="() => Sort(CustomLeaderboardSorting.TimeLeviathan)">Leviathan</a></div>
+			<div class="hidden lg:block"><a href="" @onclick:preventDefault class="link" @onclick="() => Sort(CustomLeaderboardSorting.TopPlayer)">Top player</a></div>
+			<div class="hidden lg:block text-right"><a href="" @onclick:preventDefault class="link" @onclick="() => Sort(CustomLeaderboardSorting.WorldRecord)">WR</a></div>
 		</div>
 		@for (int i = 0; i < GetCustomLeaderboards.Results.Count; i++)
 		{
