@@ -17,4 +17,6 @@ public class BarChartDataOptions
 	public double? StepY { get; }
 
 	public double MaxY { get; }
+
+	public static BarChartDataOptions Default { get; } = new(0, 1, 10);
 }

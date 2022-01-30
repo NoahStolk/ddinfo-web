@@ -36,15 +36,15 @@ public partial class StatisticsPage
 	private BarDataSet? _deathsData;
 	private BarDataSet? _enemiesData;
 
-	private BarChartDataOptions? _sub500DataOptions;
-	private BarChartDataOptions? _sub1000DataOptions;
-	private BarChartDataOptions? _post1000DataOptions;
-	private BarChartDataOptions? _killsDataOptions;
-	private BarChartDataOptions? _gemsDataOptions;
-	private BarChartDataOptions? _upgradesDataOptions;
-	private BarChartDataOptions? _daggersDataOptions;
-	private BarChartDataOptions? _deathsDataOptions;
-	private BarChartDataOptions? _enemiesDataOptions;
+	private BarChartDataOptions _sub500DataOptions = BarChartDataOptions.Default;
+	private BarChartDataOptions _sub1000DataOptions = BarChartDataOptions.Default;
+	private BarChartDataOptions _post1000DataOptions = BarChartDataOptions.Default;
+	private BarChartDataOptions _killsDataOptions = BarChartDataOptions.Default;
+	private BarChartDataOptions _gemsDataOptions = BarChartDataOptions.Default;
+	private BarChartDataOptions _upgradesDataOptions = BarChartDataOptions.Default;
+	private BarChartDataOptions _daggersDataOptions = BarChartDataOptions.Default;
+	private BarChartDataOptions _deathsDataOptions = BarChartDataOptions.Default;
+	private BarChartDataOptions _enemiesDataOptions = BarChartDataOptions.Default;
 
 	[Inject]
 	public IJSRuntime JsRuntime { get; set; } = null!;
@@ -65,7 +65,7 @@ public partial class StatisticsPage
 		IEnumerable<KeyValuePair<int, int>> post1000Scores = _statistics.TimesStatistics.Where(kvp => kvp.Key >= 1000);
 		SetScoreChart(post1000Scores, 2.0, ref _post1000Data, ref _post1000DataOptions);
 
-		void SetScoreChart(IEnumerable<KeyValuePair<int, int>> data, double scale, ref BarDataSet? dataSet, ref BarChartDataOptions? dataOptions)
+		void SetScoreChart(IEnumerable<KeyValuePair<int, int>> data, double scale, ref BarDataSet? dataSet, ref BarChartDataOptions dataOptions)
 		{
 			List<BarData> set = data.Select(kvp => new BarData(Daggers.GetDaggerFromSeconds(GameConstants.CurrentVersion, kvp.Key).Color.HexCode, kvp.Value, kvp)).ToList();
 			dataOptions = new(0, scale, Math.Ceiling(data.Max(kvp => kvp.Value) / scale) * scale);

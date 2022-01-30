@@ -196,7 +196,7 @@ public partial class HistoryStatisticsPage
 		Register((hs) => hs.DeathsGlobal, (hs) => hs.DeathsGlobalUpdated, ref _deathsOptions, _deathsData, 5_000_000);
 		Register((hs) => hs.GemsGlobal, (hs) => hs.GemsGlobalUpdated, ref _gemsOptions, _gemsData, 100_000_000);
 		Register((hs) => hs.KillsGlobal, (hs) => hs.KillsGlobalUpdated, ref _killsOptions, _killsData, 1_000_000_000);
-		void Register(Func<GetLeaderboardHistoryStatistics, ulong> valueSelector, Func<GetLeaderboardHistoryStatistics, bool> valueUpdatedSelector, ref LineChartDataOptions? lineChartDataOptions, List<LineDataSet> dataSets, double scale)
+		void Register(Func<GetLeaderboardHistoryStatistics, ulong> valueSelector, Func<GetLeaderboardHistoryStatistics, bool> valueUpdatedSelector, ref LineChartDataOptions lineChartDataOptions, List<LineDataSet> dataSets, double scale)
 		{
 			IEnumerable<GetLeaderboardHistoryStatistics> relevantData = _statistics.Where(hs => valueSelector(hs) > 0 && valueUpdatedSelector(hs));
 			IEnumerable<ulong> stats = relevantData.Select(hs => valueSelector(hs));
