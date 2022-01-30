@@ -70,7 +70,7 @@ public class SpawnsetSummary
 		int spawnVersion = br.ReadInt32();
 		int worldVersion = br.ReadInt32();
 		br.Seek(16);
-		GameMode gameMode = (GameMode)br.ReadInt32();
+		GameMode gameMode = br.ReadInt32().ToGameMode();
 		br.Seek(8 + SpawnsetBinary.ArenaBufferSize + (worldVersion == 8 ? 32 : 36));
 
 		// Spawns header
@@ -80,7 +80,7 @@ public class SpawnsetSummary
 		Spawn[] spawns = new Spawn[spawnCount];
 		for (int i = 0; i < spawnCount; i++)
 		{
-			EnemyType enemyType = (EnemyType)br.ReadInt32();
+			EnemyType enemyType = br.ReadInt32().ToEnemyType();
 			float delay = br.ReadSingle();
 			spawns[i] = new(enemyType, delay);
 
@@ -95,7 +95,7 @@ public class SpawnsetSummary
 		float timerStart = 0;
 		if (spawnVersion >= 5)
 		{
-			handLevel = (HandLevel)br.ReadByte();
+			handLevel = br.ReadByte().ToHandLevel();
 			additionalGems = br.ReadInt32();
 
 			if (spawnVersion >= 6)
