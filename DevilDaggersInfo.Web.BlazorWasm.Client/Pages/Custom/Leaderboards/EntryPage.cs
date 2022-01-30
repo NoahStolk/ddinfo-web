@@ -6,6 +6,7 @@ using DevilDaggersInfo.Web.BlazorWasm.Client.Core.CanvasChart.Options;
 using DevilDaggersInfo.Web.BlazorWasm.Client.Core.CanvasChart.Options.LineChart;
 using DevilDaggersInfo.Web.BlazorWasm.Client.HttpClients;
 using DevilDaggersInfo.Web.BlazorWasm.Shared.Dto.Public.CustomEntries;
+using DevilDaggersInfo.Web.BlazorWasm.Shared.Utils;
 using Microsoft.AspNetCore.Components;
 using Microsoft.JSInterop;
 
@@ -15,7 +16,7 @@ public partial class EntryPage
 {
 	private static readonly Func<LineDataSet, LineData, List<MarkupString>> _initialHighlightTransformation = static (ds, d) => new List<MarkupString>
 	{
-		new($"<span style='text-align: right;'>{d.X.ToString("0.0000")}</span>"),
+		new($"<span style='text-align: right;'>{d.X.ToString(FormatUtils.TimeFormat)}</span>"),
 		new($"<span style='color: {ds.Color}; text-align: right;'>{d.Y.ToString("0")}</span>"),
 	};
 	private static readonly Func<LineDataSet, LineData, List<MarkupString>> _highlightTransformation = static (ds, d) => new List<MarkupString>
@@ -67,6 +68,7 @@ public partial class EntryPage
 				MinimumRowHeightInPx = 50,
 			},
 			Backgrounds = _backgrounds,
+			HighlighterWidth = 320,
 		};
 		_lineCharts.Add((name, dataOptions, chartOptions, dataSets.ConvertAll(ds => ds.Set)));
 	}
