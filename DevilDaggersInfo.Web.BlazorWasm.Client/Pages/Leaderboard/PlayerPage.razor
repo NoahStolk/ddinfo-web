@@ -203,30 +203,35 @@ else
 
 	if (GetPlayerHistory != null)
 	{
-		<Heading Title="Progression" Level="2" />
-		<div class="grid grid-cols-1 2xl:grid-cols-2">
-			@if (GetPlayerHistory.ScoreHistory.Count > 0)
-			{
-				<div>
-					<Heading Title="Score" Level="3" />
-					<LineChart DataOptions="_progressionScoreOptions" UniqueName="#progression-score-chart" DataSets="@_progressionScoreData" Options="_progressionScoreLineChartOptions" />
-				</div>
-			}
+		bool hasScores = GetPlayerHistory.ScoreHistory.Count > 0;
+		bool hasRanks = GetPlayerHistory.RankHistory.Count > 0;
+		@if (hasScores || hasRanks)
+		{
+			<Heading Title="Progression" Level="2" />
+			<div class="grid grid-cols-1 2xl:grid-cols-2">
+				@if (hasScores)
+				{
+					<div>
+						<Heading Title="Score" Level="3" />
+						<LineChart DataOptions="_progressionScoreOptions" UniqueName="#progression-score-chart" DataSets="@_progressionScoreData" Options="_progressionScoreLineChartOptions" />
+					</div>
+				}
 
-			@if (GetPlayerHistory.RankHistory.Count > 0)
-			{
-				<div>
-					<Heading Title="Rank" Level="3" />
-					<LineChart DataOptions="_progressionRankOptions" UniqueName="#progression-rank-chart" DataSets="@_progressionRankData" Options="_progressionRankLineChartOptions" />
-				</div>
-			}
-		</div>
+				@if (hasRanks)
+				{
+					<div>
+						<Heading Title="Rank" Level="3" />
+						<LineChart DataOptions="_progressionRankOptions" UniqueName="#progression-rank-chart" DataSets="@_progressionRankData" Options="_progressionRankLineChartOptions" />
+					</div>
+				}
+			</div>
+		}
 
-		<Heading Title="Activity" Level="2" />
-		<div class="grid grid-cols-1 2xl:grid-cols-2">
-			@if (GetPlayerHistory.ActivityHistory.Count > 0)
-			{
-				if (GetPlayerHistory.ActivityHistory.Any(a => a.DeathsIncrement != 0))
+		@if (GetPlayerHistory.ActivityHistory.Count > 0)
+		{
+			<Heading Title="Activity" Level="2" />
+			<div class="grid grid-cols-1 2xl:grid-cols-2">
+				@if (GetPlayerHistory.ActivityHistory.Any(a => a.DeathsIncrement != 0))
 				{
 					<div>
 						<Heading Title="Total Deaths" Level="3" />
@@ -234,14 +239,14 @@ else
 					</div>
 				}
 
-				if (GetPlayerHistory.ActivityHistory.Any(a => a.TimeIncrement != 0))
+				@if (GetPlayerHistory.ActivityHistory.Any(a => a.TimeIncrement != 0))
 				{
 					<div>
 						<Heading Title="Total Time" Level="3" />
 						<LineChart DataOptions="_activityTimeOptions" UniqueName="#activity-time-chart" DataSets="@_activityTimeData" Options="_activityTimeLineChartOptions" />
 					</div>
 				}
-			}
-		</div>
+			</div>
+		}
 	}
 }
