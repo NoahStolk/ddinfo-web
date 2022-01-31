@@ -5,39 +5,42 @@
 <Heading Title="Donations" />
 
 <Paragraph>
-	I've built this website, the asset editor, the spawnset editor, custom leaderboards, and all the other stuff entirely in my free time. If you appreciate the work I've done, or want to support hosting and domain costs for the website, you can consider <a class="link" href="//paypal.me/NoahStolk" target="_blank">donating via PayPal</a>. Please be sure to include your leaderboard username, rank, or player ID (player ID can be found by hovering over your rank number on the <a class="link" href="leaderboard">Leaderboard</a> page), so I can add you to the list of donators below, or if you prefer to stay anonymous, an alias or no name at all is fine too.
-	@*TODO: When site is open source: "You can also star the project on GitHub."*@
+	I've built this website, the asset editor, the spawnset editor, custom leaderboards, and all the other stuff entirely in my free time. If you appreciate the work I've done, or want to support hosting and domain costs for the website, you can consider donating via PayPal.
 </Paragraph>
+
+<a class="btn btn-green p-2 text-lg font-bold" href="//paypal.me/NoahStolk" role="button" target="_blank">Donate to DevilDaggers.info</a>
+
+<Paragraph>
+	Please be sure to include your leaderboard username and rank, so I can add you to the list of donators below.
+</Paragraph>
+
 <Paragraph>
 	Thanks to everyone who donated!
 </Paragraph>
-<div class="grid gap-2 grid-cols-6">
-	@foreach (Dagger dagger in Daggers.GetDaggers(GameConstants.CurrentVersion))
-	{
-		<img class="mx-auto" src="images/icons/daggers/@(dagger.Name.ToLower()).png" />
-	}
-</div>
 
-@if (GetDonators == null)
+@if (_donators == null)
 {
 	<Loading />
 }
 else
 {
-	<div class="gap-x-3 columns-1 sm:columns-2 md:columns-3">
-		@foreach (GetDonator donator in GetDonators)
+	<div class="max-w-lg">
+		@foreach (KeyValuePair<GetDonator, string> kvp in _donators)
 		{
-			string username = donator.HideDonations ? "(anonymous)" : donator.PlayerName;
-
-			string tooltipText = string.Join(" + ", donator.Donations
-				.GroupBy(d => d.Currency)
-				.Select(g => $"{g.Key.GetChar()} {(g.Sum(d => d.Amount) / 100.0).ToString("0.00")} {(g.Key.ToString().ToUpper())}"));
-
-			<div class="grid grid-cols-2 justify-items-stretch">
-				<div style="white-space: nowrap;" class="justify-self-start font-goethe devil text-xl">@username</div>
+			<div class="grid grid-cols-2 justify-items-stretch odd:bg-gray-1 px-2">
+				<div style="white-space: nowrap;" class="justify-self-start font-goethe devil highlight hover:underline text-xl">
+					@if (kvp.Key.PlayerId.HasValue)
+					{
+						<a href="/leaderboard/player/@kvp.Key.PlayerId">@kvp.Key.PlayerName</a>
+					}
+					else
+					{
+						@kvp.Key.PlayerName
+					}
+				</div>
 				<div class="justify-self-end">
-					<Tooltip Position=TooltipPosition.Left Text="@tooltipText">
-						<span class="cursor-pointer">€ @((donator.Donations.Sum(d => d.ConvertedEuroCentsReceived) / 100.0).ToString("0.00"))</span>
+					<Tooltip Position=TooltipPosition.Left Text="@kvp.Value">
+						<span class="cursor-pointer text-lg">€ @(CentsToString(kvp.Key.Donations.Sum(d => d.ConvertedEuroCentsReceived)))</span>
 					</Tooltip>
 				</div>
 			</div>
@@ -47,10 +50,15 @@ else
 
 @code
 {
-	public List<GetDonator>? GetDonators { get; set; }
+	private Dictionary<GetDonator, string>? _donators;
 
 	protected override async Task OnInitializedAsync()
 	{
-		GetDonators = await Http.GetDonators();
+		List<GetDonator> donators = await Http.GetDonators();
+		_donators = donators.ToDictionary(d => d, donator => string.Join(" + ", donator.Donations
+			.GroupBy(d => d.Currency)
+			.Select(g => $"{g.Key.GetChar()} {CentsToString(g.Sum(d => d.Amount))} {(g.Key.ToString().ToUpper())}")));
 	}
+
+	private string CentsToString(int cents) => (cents / 100.0).ToString("0.00");
 }

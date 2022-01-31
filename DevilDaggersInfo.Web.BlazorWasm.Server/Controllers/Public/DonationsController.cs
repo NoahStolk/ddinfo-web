@@ -45,9 +45,8 @@ public class DonationsController : ControllerBase
 							IsRefunded = d.IsRefunded,
 						})
 						.ToList(),
-					HideDonations = p.HideDonations,
-					PlayerId = p.Id,
-					PlayerName = p.PlayerName,
+					PlayerId = p.HideDonations ? null : p.Id,
+					PlayerName = p.HideDonations ? "(anonymous)" : p.PlayerName,
 				})
 			.OrderByDescending(d => d.Donations.Sum(d => d.ConvertedEuroCentsReceived))
 			.ToList();
