@@ -21,13 +21,13 @@ else
 	<Deletion AfterDelete="Fetch" ApiCall="(int id) => Http.DeleteUserById(id)" @ref="_deletion" />
 
 	<div class="grid gap-2 grid-cols-admin-users">
-		<div class="overflow-x-hidden">Id</div>
-		<div class="overflow-x-hidden">Name</div>
-		<div class="overflow-x-hidden">Admin</div>
-		<div class="overflow-x-hidden">Custom LBs</div>
-		<div class="overflow-x-hidden">Mods</div>
-		<div class="overflow-x-hidden">Players</div>
-		<div class="overflow-x-hidden">Spawnsets</div>
+		<div>Id</div>
+		<div>Name</div>
+		<div>Admin</div>
+		<div>Custom LBs</div>
+		<div>Mods</div>
+		<div>Players</div>
+		<div>Spawnsets</div>
 		<div></div>
 	</div>
 	<div>
@@ -36,13 +36,13 @@ else
 			foreach (GetUser user in _users)
 			{
 				<div class="grid gap-2 grid-cols-admin-users @(j++ % 2 == 0 ? "bg-gray-1" : string.Empty)">
-					<div class="overflow-x-hidden">@user.Id</div>
-					<div class="overflow-x-hidden">@user.Name</div>
-					<div class="overflow-x-hidden"><button class="@GetButtonClass(user.IsAdmin)" @onclick="async () => await ToggleRole(user.Id, Roles.Admin)">@GetButtonText(user.IsAdmin)</button></div>
-					<div class="overflow-x-hidden"><button class="@GetButtonClass(user.IsCustomLeaderboardsMaintainer)" @onclick="async () => await ToggleRole(user.Id, Roles.CustomLeaderboards)">@GetButtonText(user.IsCustomLeaderboardsMaintainer)</button></div>
-					<div class="overflow-x-hidden"><button class="@GetButtonClass(user.IsModsMaintainer)" @onclick="async () => await ToggleRole(user.Id, Roles.Mods)">@GetButtonText(user.IsModsMaintainer)</button></div>
-					<div class="overflow-x-hidden"><button class="@GetButtonClass(user.IsPlayersMaintainer)" @onclick="async () => await ToggleRole(user.Id, Roles.Players)">@GetButtonText(user.IsPlayersMaintainer)</button></div>
-					<div class="overflow-x-hidden"><button class="@GetButtonClass(user.IsSpawnsetsMaintainer)" @onclick="async () => await ToggleRole(user.Id, Roles.Spawnsets)">@GetButtonText(user.IsSpawnsetsMaintainer)</button></div>
+					<div class="overflow-hidden">@user.Id</div>
+					<div class="overflow-hidden">@user.Name</div>
+					<div class="overflow-hidden"><button class="@GetButtonClass(user.IsAdmin)" @onclick="async () => await ToggleRole(user.Id, Roles.Admin)">@GetButtonText(user.IsAdmin)</button></div>
+					<div class="overflow-hidden"><button class="@GetButtonClass(user.IsCustomLeaderboardsMaintainer)" @onclick="async () => await ToggleRole(user.Id, Roles.CustomLeaderboards)">@GetButtonText(user.IsCustomLeaderboardsMaintainer)</button></div>
+					<div class="overflow-hidden"><button class="@GetButtonClass(user.IsModsMaintainer)" @onclick="async () => await ToggleRole(user.Id, Roles.Mods)">@GetButtonText(user.IsModsMaintainer)</button></div>
+					<div class="overflow-hidden"><button class="@GetButtonClass(user.IsPlayersMaintainer)" @onclick="async () => await ToggleRole(user.Id, Roles.Players)">@GetButtonText(user.IsPlayersMaintainer)</button></div>
+					<div class="overflow-hidden"><button class="@GetButtonClass(user.IsSpawnsetsMaintainer)" @onclick="async () => await ToggleRole(user.Id, Roles.Spawnsets)">@GetButtonText(user.IsSpawnsetsMaintainer)</button></div>
 					<div><a class="link" href="" @onclick="() => _deletion?.Set(user.Id)" @onclick:preventDefault>Delete</a></div>
 				</div>
 			}

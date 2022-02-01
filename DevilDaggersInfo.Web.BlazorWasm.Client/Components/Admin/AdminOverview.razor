@@ -40,7 +40,7 @@ else
 		@foreach (KeyValuePair<PropertyInfo, bool> pi in _properties)
 		{
 			string name = (pi.Key.GetCustomAttribute(typeof(DisplayAttribute)) as DisplayAttribute)?.Name ?? pi.Key.Name;
-			<a class="@(pi.Value ? "text-right" : "text-left") link overflow-x-hidden" href="" @onclick="() => Sort(pi.Key.Name)" @onclick:preventDefault>@name</a>
+			<a class="@(pi.Value ? "text-right" : "text-left") link overflow-hidden" href="" @onclick="() => Sort(pi.Key.Name)" @onclick:preventDefault>@name</a>
 		}
 		<div></div>
 		<div></div>
@@ -53,7 +53,7 @@ else
 				<div class="grid gap-2 @GridConfiguration @(j++ % 2 == 0 ? "bg-gray-1" : string.Empty)">
 					@foreach (KeyValuePair<PropertyInfo, bool> pi in _properties)
 					{
-						<div class="overflow-x-hidden @(pi.Value ? "text-right" : "text-left")">@ReflectionUtils.GetDtoPropertyDisplayValue(pi.Key, result)</div>
+						<div class="overflow-hidden @(pi.Value ? "text-right" : "text-left")">@ReflectionUtils.GetDtoPropertyDisplayValue(pi.Key, result)</div>
 					}
 					<div><a class="link" href="@($"{NavigationManager.Uri}/edit/{result.Id}")">Edit</a></div>
 					<div><a class="link" href="" @onclick="() => _deletion?.Set(result.Id)" @onclick:preventDefault>Delete</a></div>

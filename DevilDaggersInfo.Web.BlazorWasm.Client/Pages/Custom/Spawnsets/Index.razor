@@ -52,18 +52,18 @@ else
 		{
 			GetSpawnsetOverview spawnset = GetSpawnsets.Results[i];
 			<div class="grid gap-3 sm:grid-cols-spawnsets-sm md:grid-cols-spawnsets-md lg:grid-cols-spawnsets-lg xl:grid-cols-spawnsets-xl h-6 @(i % 2 == 0 ? "bg-gray-1" : string.Empty)">
-				<div class="overflow-x-hidden text-left"><a class="link" href="/custom/spawnset/@spawnset.Id">@spawnset.Name.ToNoBreakString()</a></div>
-				<div class="overflow-x-hidden text-left hidden md:block">@spawnset.AuthorName.ToNoBreakString()</div>
-				<div class="overflow-x-hidden text-left hidden md:block">@spawnset.LastUpdated.ToString(FormatUtils.DateFormat)</div>
-				<div class="overflow-x-hidden text-left hidden md:block">@spawnset.GameVersion</div>
-				<div class="overflow-x-hidden text-right hidden xl:block">@spawnset.GameMode</div>
-				<div class="overflow-x-hidden text-right hidden xl:block">@(spawnset.LoopLength.HasValue ? (MarkupString)spawnset.LoopLength.Value.ToString(FormatUtils.TimeFormat) : MarkupUtils.NoDataMarkup)</div>
-				<div class="overflow-x-hidden text-right hidden xl:block">@spawnset.LoopSpawnCount</div>
-				<div class="overflow-x-hidden text-right hidden xl:block">@(spawnset.PreLoopLength.HasValue ? (MarkupString)spawnset.PreLoopLength.Value.ToString(FormatUtils.TimeFormat) : MarkupUtils.NoDataMarkup)</div>
-				<div class="overflow-x-hidden text-right hidden xl:block">@spawnset.PreLoopSpawnCount</div>
-				<div class="overflow-x-hidden text-left hidden lg:block">Level @((byte)spawnset.Hand)</div>
-				<div class="overflow-x-hidden text-right hidden lg:block">@spawnset.AdditionalGems</div>
-				<div class="overflow-x-hidden text-right hidden lg:block">@spawnset.TimerStart.ToString(FormatUtils.TimeFormat)</div>
+				<div class="overflow-hidden text-left"><a class="link" href="/custom/spawnset/@spawnset.Id">@spawnset.Name.ToNoBreakString()</a></div>
+				<div class="overflow-hidden text-left hidden md:block">@spawnset.AuthorName.ToNoBreakString()</div>
+				<div class="overflow-hidden text-left hidden md:block">@spawnset.LastUpdated.ToString(FormatUtils.DateFormat)</div>
+				<div class="overflow-hidden text-left hidden md:block">@spawnset.GameVersion</div>
+				<div class="overflow-hidden text-right hidden xl:block">@spawnset.GameMode</div>
+				<div class="overflow-hidden text-right hidden xl:block">@(spawnset.LoopLength.HasValue ? (MarkupString)spawnset.LoopLength.Value.ToString(FormatUtils.TimeFormat) : MarkupUtils.NoDataMarkup)</div>
+				<div class="overflow-hidden text-right hidden xl:block">@spawnset.LoopSpawnCount</div>
+				<div class="overflow-hidden text-right hidden xl:block">@(spawnset.PreLoopLength.HasValue ? (MarkupString)spawnset.PreLoopLength.Value.ToString(FormatUtils.TimeFormat) : MarkupUtils.NoDataMarkup)</div>
+				<div class="overflow-hidden text-right hidden xl:block">@spawnset.PreLoopSpawnCount</div>
+				<div class="overflow-hidden text-left hidden lg:block">Level @((byte)spawnset.Hand)</div>
+				<div class="overflow-hidden text-right hidden lg:block">@spawnset.AdditionalGems</div>
+				<div class="overflow-hidden text-right hidden lg:block">@spawnset.TimerStart.ToString(FormatUtils.TimeFormat)</div>
 			</div>
 		}
 	}
