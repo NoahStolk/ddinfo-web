@@ -1,6 +1,6 @@
 <li class="pl-3 py-1 whitespace-nowrap overflow-x-hidden text-xl">
 	<div class="cursor-pointer select-none hover:text-white" @onclick="Show">
-		<NavIcon Type="@(ShowList ? "chevron-bottom" : "chevron-right")" Text="@Text" />
+		<NavIcon Type="@(ShowList ? "chevron-bottom" : IconType)" Text="@Text" />
 	</div>
 	@if (ShowList)
 	{
@@ -27,6 +27,7 @@
 
 	[Parameter, EditorRequired] public RenderFragment ChildContent { get; set; } = null!;
 	[Parameter, EditorRequired] public string Text { get; set; } = null!;
+	[Parameter, EditorRequired] public string IconType { get; set; } = null!;
 
 	protected override void OnInitialized()
 	{
