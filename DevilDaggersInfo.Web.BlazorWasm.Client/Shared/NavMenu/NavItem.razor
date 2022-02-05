@@ -9,13 +9,12 @@
 	[CascadingParameter] public NavMenu NavMenu { get; set; } = null!;
 
 	[Parameter, EditorRequired] public string Href { get; set; } = null!;
-	[Parameter] public string? CssClass { get; set; }
 	[Parameter, EditorRequired] public string IconType { get; set; } = null!;
 	[Parameter, EditorRequired] public string Text { get; set; } = null!;
 	[Parameter] public NavLinkMatch Match { get; set; }
 	[Parameter] public bool InDropdown { get; set; } = true;
 
-	public string Class => $"{(InDropdown ? "pl-0" : "pl-3")} transition-all duration-150 ease-in-out {(InDropdown ? "pt-1" : "py-1")} whitespace-nowrap overflow-x-hidden {CssClass} text-color-text sm:hover:bg-dark-red block w-full";
+	public string Class => $"{(InDropdown ? "px-2 pt-1" : "pl-3 py-1")} transition-all duration-150 ease-in-out whitespace-nowrap overflow-x-hidden text-xl text-color-text sm:hover:bg-dark-red block w-full";
 
 	private void CloseMenu()
 	{
