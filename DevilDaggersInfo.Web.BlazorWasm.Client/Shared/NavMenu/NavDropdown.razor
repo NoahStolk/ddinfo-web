@@ -1,13 +1,16 @@
 <li class="pl-3 py-1 whitespace-nowrap overflow-x-hidden text-xl">
-	<div class="cursor-pointer select-none hover:text-white" @onclick="Show">
-		<NavIcon Type="@(ShowList ? "chevron-bottom" : IconType)" Text="@Text" />
+	<div class="cursor-pointer select-none hover:text-white" @onmouseleave="@OnMouseOut" @onmouseenter="@OnMouseOver">
+		<NavIcon Type="@IconType" Text="@Text" />
+		<span class="hidden sm:inline-block">
+			&gt;
+		</span>
+		@if (ShowList)
+		{
+			<ul class="absolute p-2 ml-0 sm:ml-[180px] mt-0 sm:-mt-9 bg-dark-red">
+				@ChildContent
+			</ul>
+		}
 	</div>
-	@if (ShowList)
-	{
-		<ul class="pt-1">
-			@ChildContent
-		</ul>
-	}
 </li>
 
 @code
@@ -34,11 +37,13 @@
 		NavMenu.NavDropdowns.Add(this);
 	}
 
-	private void Show()
+	private void OnMouseOver(MouseEventArgs mouseEvent)
 	{
-		if (ShowList)
-			ShowList = false;
-		else
-			NavMenu.ShowSubMenu(this);
+		NavMenu.ShowSubMenu(this);
+	}
+
+	private void OnMouseOut(MouseEventArgs mouseEvent)
+	{
+		ShowList = false;
 	}
 }
