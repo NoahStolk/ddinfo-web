@@ -7,78 +7,78 @@
 	</button>
 </div>
 
-<div class="@(ShowNavMenuMobile ? null : "hidden sm:block") @(ExpandNavMenu ? "sm:w-56" : "sm:w-12") py-2 font-goethe transition-width duration-150 ease-in-out sm:h-screen" @onmouseleave="@OnMouseOut" @onmouseenter="@OnMouseOver">
+<div class="@(ShowNavMenuMobile ? null : "hidden sm:block") @(ExpandNavMenu ? "sm:w-48" : "sm:w-12") py-2 font-goethe transition-width duration-150 ease-in-out sm:h-screen" @onmouseleave="@OnMouseOut" @onmouseenter="@OnMouseOver">
 	<ul>
 		<CascadingValue Value="this">
-			<NavItem Href="" CssClass="text-xl" IconType="home" Text="Home" Match="NavLinkMatch.All" InDropdown=false />
-			<NavDropdown Text="Leaderboard">
-				<NavItem Href="leaderboard" CssClass="text-lg" IconType="clock" Text="Leaderboard" />
-				<NavItem Href="leaderboard/search" CssClass="text-lg" IconType="magnifying-glass" Text="Search" />
-				<NavItem Href="leaderboard/statistics" CssClass="text-lg" IconType="bar-chart" Text="Statistics" />
-				<NavItem Href="leaderboard/history" CssClass="text-lg" IconType="book" Text="History" />
-				<NavItem Href="leaderboard/history/statistics" CssClass="text-lg" IconType="bar-chart" Text="History Statistics" />
-				<NavItem Href="leaderboard/world-record-progression" CssClass="text-lg" IconType="star" Text="World Records" />
-				<NavItem Href="leaderboard/player-settings" CssClass="text-lg" IconType="cog" Text="Player Settings" />
+			<NavItem Href="" IconType="home" Text="Home" Match="NavLinkMatch.All" InDropdown=false />
+			<NavDropdown Text="Leaderboard" IconType="clock">
+				<NavItem Href="leaderboard" IconType="clock" Text="Leaderboard" />
+				<NavItem Href="leaderboard/search" IconType="magnifying-glass" Text="Search" />
+				<NavItem Href="leaderboard/statistics" IconType="bar-chart" Text="Statistics" />
+				<NavItem Href="leaderboard/history" IconType="book" Text="History" />
+				<NavItem Href="leaderboard/history/statistics" IconType="graph" Text="History Statistics" />
+				<NavItem Href="leaderboard/world-record-progression" IconType="star" Text="World Records" />
+				<NavItem Href="leaderboard/player-settings" IconType="cog" Text="Player Settings" />
 			</NavDropdown>
-			<NavDropdown Text="Custom">
-				<NavItem Href="custom/spawnsets" CssClass="text-lg" IconType="grid-three-up" Text="Spawnsets" />
-				<NavItem Href="custom/leaderboards" CssClass="text-lg" IconType="clock" Text="Leaderboards" />
-				<NavItem Href="custom/mods" CssClass="text-lg" IconType="brush" Text="Mods" />
+			<NavDropdown Text="Custom" IconType="brush">
+				<NavItem Href="custom/spawnsets" IconType="grid-three-up" Text="Spawnsets" />
+				<NavItem Href="custom/leaderboards" IconType="clock" Text="Leaderboards" />
+				<NavItem Href="custom/mods" IconType="brush" Text="Mods" />
 			</NavDropdown>
-			<NavDropdown Text="Tools">
-				<NavItem Href="tools/survival-editor" CssClass="text-lg" IconType="grid-three-up" Text="Survival Editor" />
-				<NavItem Href="tools/custom-leaderboards" CssClass="text-lg" IconType="clock" Text="Custom Leaderboards" />
-				<NavItem Href="tools/asset-editor" CssClass="text-lg" IconType="brush" Text="Asset Editor" />
+			<NavDropdown Text="Tools" IconType="pencil">
+				<NavItem Href="tools/survival-editor" IconType="grid-three-up" Text="Survival Editor" />
+				<NavItem Href="tools/custom-leaderboards" IconType="clock" Text="Custom Leaderboards" />
+				<NavItem Href="tools/asset-editor" IconType="brush" Text="Asset Editor" />
 			</NavDropdown>
-			<NavDropdown Text="Wiki">
-				<NavItem Href="wiki/spawns" CssClass="text-lg" IconType="fire" Text="Spawns" />
-				<NavItem Href="wiki/upgrades" CssClass="text-lg" IconType="bolt" Text="Upgrades" />
-				<NavItem Href="wiki/enemies" CssClass="text-lg" IconType="eye" Text="Enemies" />
-				<NavItem Href="wiki/daggers" CssClass="text-lg" IconType="arrow-bottom" Text="Daggers" />
-				<NavItem Href="wiki/assets" CssClass="text-lg" IconType="book" Text="Assets" />
+			<NavDropdown Text="Wiki" IconType="info">
+				<NavItem Href="wiki/spawns" IconType="fire" Text="Spawns" />
+				<NavItem Href="wiki/upgrades" IconType="bolt" Text="Upgrades" />
+				<NavItem Href="wiki/enemies" IconType="eye" Text="Enemies" />
+				<NavItem Href="wiki/daggers" IconType="arrow-bottom" Text="Daggers" />
+				<NavItem Href="wiki/assets" IconType="file" Text="Assets" />
 			</NavDropdown>
-			<NavDropdown Text="Guides">
-				<NavItem Href="guides/survival-editor" CssClass="text-lg" IconType="grid-three-up" Text="Survival Editor" />
-				<NavItem Href="guides/asset-editor" CssClass="text-lg" IconType="brush" Text="Asset Editor" />
+			<NavDropdown Text="Guides" IconType="book">
+				<NavItem Href="guides/survival-editor" IconType="grid-three-up" Text="Survival Editor" />
+				<NavItem Href="guides/asset-editor" IconType="brush" Text="Asset Editor" />
 			</NavDropdown>
-			<NavItem Href="donations" CssClass="text-xl" IconType="heart" Text="Donations" InDropdown=false />
-			<NavItem Href="news" CssClass="text-xl" IconType="document" Text="News" InDropdown=false />
-			<NavItem Href="swagger/index.html" CssClass="text-xl" IconType="link-intact" Text="API" InDropdown=false />
-			<NavDropdown Text="Account">
+			<NavDropdown Text="Account" IconType="key">
 				<LoginDisplay />
 			</NavDropdown>
 			<AuthorizeView>
 				<Authorized>
 					@if (_roles.Count > 0)
 					{
-						<NavDropdown Text="Admin">
+						<NavDropdown Text="Admin" IconType="brush">
 							@if (_roles.Contains(Roles.Admin))
 							{
-								<NavItem Href="admin/cache" CssClass="text-lg" IconType="hard-drive" Text="Cache" />
-								<NavItem Href="admin/custom-entries" CssClass="text-lg" IconType="ellipses" Text="Custom Entries" />
-								<NavItem Href="admin/donations" CssClass="text-lg" IconType="heart" Text="Donations" />
-								<NavItem Href="admin/users" CssClass="text-lg" IconType="person" Text="Users" />
+								<NavItem Href="admin/cache" IconType="hard-drive" Text="Cache" />
+								<NavItem Href="admin/custom-entries" IconType="ellipses" Text="Custom Entries" />
+								<NavItem Href="admin/donations" IconType="heart" Text="Donations" />
+								<NavItem Href="admin/users" IconType="person" Text="Users" />
 							}
 							@if (_roles.Contains(Roles.CustomLeaderboards))
 							{
-								<NavItem Href="admin/custom-leaderboards" CssClass="text-lg" IconType="list" Text="Custom Leaderboards" />
+								<NavItem Href="admin/custom-leaderboards" IconType="list" Text="Custom Leaderboards" />
 							}
 							@if (_roles.Contains(Roles.Mods))
 							{
-								<NavItem Href="admin/mods" CssClass="text-lg" IconType="brush" Text="Mods" />
+								<NavItem Href="admin/mods" IconType="brush" Text="Mods" />
 							}
 							@if (_roles.Contains(Roles.Players))
 							{
-								<NavItem Href="admin/players" CssClass="text-lg" IconType="people" Text="Players" />
+								<NavItem Href="admin/players" IconType="people" Text="Players" />
 							}
 							@if (_roles.Contains(Roles.Spawnsets))
 							{
-								<NavItem Href="admin/spawnsets" CssClass="text-lg" IconType="grid-three-up" Text="Spawnsets" />
+								<NavItem Href="admin/spawnsets" IconType="grid-three-up" Text="Spawnsets" />
 							}
 						</NavDropdown>
 					}
 				</Authorized>
 			</AuthorizeView>
+			<NavItem Href="donations" IconType="heart" Text="Donations" InDropdown=false />
+			<NavItem Href="news" IconType="document" Text="News" InDropdown=false />
+			<NavItem Href="swagger/index.html" IconType="link-intact" Text="API" InDropdown=false />
 		</CascadingValue>
 	</ul>
 </div>
@@ -136,7 +136,7 @@
 			return "opacity-100";
 
 		if (ShowNavMenuMobile)
-			return $"opacity-100 sm:opacity-0";
+			return "opacity-100 sm:opacity-0";
 
 		return "opacity-0";
 	}

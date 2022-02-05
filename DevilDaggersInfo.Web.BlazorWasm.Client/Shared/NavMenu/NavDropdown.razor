@@ -1,13 +1,13 @@
-<li class="pl-3 py-1 whitespace-nowrap overflow-x-hidden text-xl">
-	<div class="cursor-pointer select-none hover:text-white" @onclick="Show">
-		<NavIcon Type="@(ShowList ? "chevron-bottom" : "chevron-right")" Text="@Text" />
-	</div>
-	@if (ShowList)
-	{
-		<ul class="pt-1">
+<li class="pl-3 py-1 whitespace-nowrap overflow-x-hidden text-xl cursor-pointer select-none transition-all sm:hover:bg-dark-red" @onmouseleave="@OnMouseOut" @onmouseenter="@OnMouseOver">
+	<div>
+		<NavIcon Type="@IconType" Text="@Text" />
+		<span class="hidden sm:inline-block">
+			&gt;
+		</span>
+		<ul class="@(ShowList ? "relative" : "hidden") sm:block sm:absolute @GetOpacityClass() @GetPointerEventsClass() transition-all duration-150 ease-in-out ml-0 sm:ml-[180px] mt-0 sm:-mt-[34px] box-border sm:border-r-2 sm:border-dark-red bg-black">
 			@ChildContent
 		</ul>
-	}
+	</div>
 </li>
 
 @code
@@ -27,17 +27,33 @@
 
 	[Parameter, EditorRequired] public RenderFragment ChildContent { get; set; } = null!;
 	[Parameter, EditorRequired] public string Text { get; set; } = null!;
+	[Parameter, EditorRequired] public string IconType { get; set; } = null!;
 
 	protected override void OnInitialized()
 	{
 		NavMenu.NavDropdowns.Add(this);
 	}
 
-	private void Show()
+	private void OnMouseOver(MouseEventArgs mouseEvent)
 	{
-		if (ShowList)
-			ShowList = false;
-		else
-			NavMenu.ShowSubMenu(this);
+		NavMenu.ShowSubMenu(this);
+	}
+
+	private void OnMouseOut(MouseEventArgs mouseEvent)
+	{
+		ShowList = false;
+	}
+
+	private string? GetOpacityClass()
+	{
+		if (!ShowList)
+			return "opacity-0";
+
+		return NavMenu.GetOpacityClass();
+	}
+
+	private string GetPointerEventsClass()
+	{
+		return ShowList ? "pointer-events-auto" : "pointer-events-none";
 	}
 }
