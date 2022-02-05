@@ -23,7 +23,10 @@ public class UserService : IUserService
 		if (string.IsNullOrEmpty(name) || string.IsNullOrEmpty(password))
 			return null;
 
-		UserEntity? user = _dbContext.Users.Include(u => u.UserRoles)!.ThenInclude(ur => ur.Role).SingleOrDefault(u => u.Name == name);
+		UserEntity? user = _dbContext.Users
+			.Include(u => u.UserRoles)!
+			.ThenInclude(ur => ur.Role)
+			.SingleOrDefault(u => u.Name == name);
 		if (user == null)
 			return null;
 
