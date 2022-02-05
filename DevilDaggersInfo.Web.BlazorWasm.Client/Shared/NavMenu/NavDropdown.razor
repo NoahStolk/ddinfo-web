@@ -1,9 +1,9 @@
 <li class="pl-3 py-1 whitespace-nowrap overflow-x-hidden text-xl cursor-pointer select-none transition-all sm:hover:bg-dark-red" @onmouseleave="@OnMouseOut" @onmouseenter="@OnMouseOver">
 	<div>
-		<NavIcon Type="@IconType" Text="@Text" />
-		<span class="hidden sm:inline-block">
+		<span class="@NavMenu.GetOpacityClass() transition-all hidden sm:absolute sm:inline-block sm:ml-[160px] pointer-events-none">
 			&gt;
 		</span>
+		<NavIcon Type="@IconType" Text="@Text" />
 		<ul class="@(ShowList ? "relative" : "hidden") sm:block sm:absolute @GetOpacityClass() @GetPointerEventsClass() transition-all duration-150 ease-in-out ml-0 sm:ml-[180px] mt-0 sm:-mt-[34px] box-border sm:border-r-2 sm:border-dark-red bg-black">
 			@ChildContent
 		</ul>

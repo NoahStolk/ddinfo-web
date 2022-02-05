@@ -1,4 +1,5 @@
-<span class="oi oi-@Type pr-1 w-6 text-center" aria-hidden="true"></span> <span class="transition-opacity duration-150 ease-in-out @NavMenu.GetOpacityClass()">@Text</span>
+<span class="oi oi-@Type pr-1 w-6 text-center" aria-hidden="true"></span>
+<span class="transition-opacity duration-150 ease-in-out @NavMenu.GetOpacityClass()">@Text</span>
 
 @code {
 	[CascadingParameter] public NavMenu NavMenu { get; set; } = null!;
