@@ -159,22 +159,13 @@ public class UserService : IUserService
 			JwtSecurityTokenHandler tokenHandler = new();
 			ClaimsPrincipal principal = tokenHandler.ValidateToken(jwt, tokenValidationParameters, out SecurityToken securityToken);
 			if (securityToken is not JwtSecurityToken jwtSecurityToken)
-			{
-				_logger.LogWarning("Security token was not of type {type}.", nameof(JwtSecurityToken));
 				return null;
-			}
 
 			if (DateTime.UtcNow >= jwtSecurityToken.ValidTo)
-			{
-				_logger.LogWarning("Token is expired.");
 				return null;
-			}
 
 			if (!jwtSecurityToken.Header.Alg.Equals(SecurityAlgorithms.HmacSha256, StringComparison.OrdinalIgnoreCase))
-			{
-				_logger.LogWarning("Incorrect algorithm {alg} was used for JWT token.", jwtSecurityToken.Header.Alg);
 				return null;
-			}
 
 			string? name = principal.GetName();
 			return _dbContext.Users
@@ -182,8 +173,11 @@ public class UserService : IUserService
 					.ThenInclude(ur => ur.Role)
 				.FirstOrDefault(u => u.Name == name);
 		}
-		catch
+		catch (Exception ex)
 		{
+			// TODO: Don't log expired tokens.
+			ex.Data.Add("JWT", jwt);
+			_logger.LogWarning(ex, "Token was invalid.");
 			return null;
 		}
 	}
