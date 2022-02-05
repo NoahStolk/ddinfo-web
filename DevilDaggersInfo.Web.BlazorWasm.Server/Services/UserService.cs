@@ -35,12 +35,6 @@ public class UserService : IUserService
 
 	public UserEntity Create(string name, string password)
 	{
-		if (string.IsNullOrWhiteSpace(password))
-			throw new("Password is required.");
-
-		if (password.Length < AuthenticationConstants.MinimumPasswordLength)
-			throw new($"Password must be at least {AuthenticationConstants.MinimumPasswordLength} characters in length.");
-
 		if (_dbContext.Users.Any(u => u.Name == name))
 			throw new($"Name '{name}' is already taken.");
 
@@ -98,6 +92,9 @@ public class UserService : IUserService
 	{
 		if (string.IsNullOrWhiteSpace(password))
 			throw new ArgumentException("Value cannot be empty or whitespace-only string.", nameof(password));
+
+		if (password.Length < AuthenticationConstants.MinimumPasswordLength)
+			throw new ArgumentException($"Password must be at least {AuthenticationConstants.MinimumPasswordLength} characters in length.", nameof(password));
 
 		using HMACSHA512 hmac = new();
 		passwordSalt = hmac.Key;
