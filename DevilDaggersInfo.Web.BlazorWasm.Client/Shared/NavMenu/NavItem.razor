@@ -15,7 +15,7 @@
 	[Parameter] public NavLinkMatch Match { get; set; }
 	[Parameter] public bool InDropdown { get; set; } = true;
 
-	public string Class => $"{(InDropdown ? "pl-0" : "pl-3")} transition-spacing duration-150 ease-in-out {(InDropdown ? "pt-1" : "py-1")} whitespace-nowrap overflow-x-hidden {CssClass} text-color-text hover:text-white block w-full";
+	public string Class => $"{(InDropdown ? "pl-0" : "pl-3")} transition-all duration-150 ease-in-out {(InDropdown ? "pt-1" : "py-1")} whitespace-nowrap overflow-x-hidden {CssClass} text-color-text sm:hover:bg-dark-red block w-full";
 
 	private void CloseMenu()
 	{
