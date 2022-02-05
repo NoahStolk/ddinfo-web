@@ -1,4 +1,4 @@
-<li class="pl-3 transition-spacing duration-150 ease-in-out py-1 whitespace-nowrap overflow-x-hidden @CssClass">
+<li class="@(InDropdown ? "pl-0" : "pl-3") transition-spacing duration-150 ease-in-out @(InDropdown ? "pt-1" : "py-1") whitespace-nowrap overflow-x-hidden @CssClass">
 	<NavLink class="text-color-text hover:text-white block w-full" href="@Href" Match="Match" @onclick="CloseMenu">
 		<NavIcon Type="@IconType" Text="@Text" />
 	</NavLink>
