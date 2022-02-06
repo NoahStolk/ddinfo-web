@@ -1,24 +1,30 @@
-<li class="hidden sm:block pl-3 py-1 whitespace-nowrap overflow-x-hidden text-xl cursor-pointer select-none transition-all hover:bg-dark-red" @onmouseleave="@OnMouseOut" @onmouseenter="@OnMouseOver">
+<li class="@(IsActive ? "bg-dark-red" : null) hidden sm:block pl-3 py-1 whitespace-nowrap overflow-x-hidden text-xl cursor-pointer select-none transition-all hover:bg-dark-red" @onmouseleave="@OnMouseOut" @onmouseenter="@OnMouseOver">
 	<div>
 		<span class="@NavMenu.GetOpacityClass() transition-all absolute inline-block ml-[160px] pointer-events-none">
 			&gt;
 		</span>
 		<NavIcon Type="@IconType" Text="@Text" />
 		<ul class="absolute @GetOpacityClass() @GetPointerEventsClass() transition-all duration-150 ease-in-out ml-[180px] -mt-[34px] box-border border-r-2 border-dark-red bg-black">
-			@ChildContent
+			<CascadingValue Value="this" Name="NavDropdown">
+				@ChildContent
+			</CascadingValue>
 		</ul>
 	</div>
 </li>
 
 @*Mobile*@
-<li class="block sm:hidden pl-3 py-1 whitespace-nowrap overflow-x-hidden text-xl cursor-pointer select-none transition-all" @onclick="@OnMobileClick">
+<li class="block sm:hidden whitespace-nowrap overflow-x-hidden text-xl cursor-pointer select-none transition-all" @onclick="@OnMobileClick">
 	<div>
-		<NavIcon Type="@IconType" Text="@Text" />
-		<span class="oi oi-chevron-bottom text-xs" aria-hidden="true"></span>
+		<div class="@(IsActive ? "bg-dark-red" : null) pl-3 py-1">
+			<NavIcon Type="@IconType" Text="@Text" />
+			<span class="oi oi-chevron-bottom text-xs" aria-hidden="true"></span>
+		</div>
 		@if (ShowList)
 		{
-			<ul class="bg-black pt-1 pl-2">
-				@ChildContent
+			<ul class="bg-black pl-5">
+				<CascadingValue Value="this" Name="NavDropdown">
+					@ChildContent
+				</CascadingValue>
 			</ul>
 		}
 	</div>
@@ -33,6 +39,17 @@
 		set
 		{
 			_showList = value;
+			StateHasChanged();
+		}
+	}
+
+	private bool _isActive;
+	public bool IsActive
+	{
+		get => _isActive;
+		set
+		{
+			_isActive = value;
 			StateHasChanged();
 		}
 	}
