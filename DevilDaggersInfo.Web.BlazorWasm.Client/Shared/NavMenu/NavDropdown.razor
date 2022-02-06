@@ -1,12 +1,26 @@
-<li class="pl-3 py-1 whitespace-nowrap overflow-x-hidden text-xl cursor-pointer select-none transition-all sm:hover:bg-dark-red" @onmouseleave="@OnMouseOut" @onmouseenter="@OnMouseOver">
+<li class="hidden sm:block pl-3 py-1 whitespace-nowrap overflow-x-hidden text-xl cursor-pointer select-none transition-all hover:bg-dark-red" @onmouseleave="@OnMouseOut" @onmouseenter="@OnMouseOver">
 	<div>
-		<span class="@NavMenu.GetOpacityClass() transition-all hidden sm:absolute sm:inline-block sm:ml-[160px] pointer-events-none">
+		<span class="@NavMenu.GetOpacityClass() transition-all absolute inline-block ml-[160px] pointer-events-none">
 			&gt;
 		</span>
 		<NavIcon Type="@IconType" Text="@Text" />
-		<ul class="@(ShowList ? "relative" : "hidden") sm:block sm:absolute @GetOpacityClass() @GetPointerEventsClass() transition-all duration-150 ease-in-out ml-0 sm:ml-[180px] mt-0 sm:-mt-[34px] box-border sm:border-r-2 sm:border-dark-red bg-black">
+		<ul class="absolute @GetOpacityClass() @GetPointerEventsClass() transition-all duration-150 ease-in-out ml-[180px] -mt-[34px] box-border border-r-2 border-dark-red bg-black">
 			@ChildContent
 		</ul>
+	</div>
+</li>
+
+@*Mobile*@
+<li class="block sm:hidden pl-3 py-1 whitespace-nowrap overflow-x-hidden text-xl cursor-pointer select-none transition-all" @onclick="@OnMobileClick">
+	<div>
+		<NavIcon Type="@IconType" Text="@Text" />
+		<span class="oi oi-chevron-bottom text-xs" aria-hidden="true"></span>
+		@if (ShowList)
+		{
+			<ul class="bg-black pt-1 pl-3">
+				@ChildContent
+			</ul>
+		}
 	</div>
 </li>
 
@@ -32,6 +46,14 @@
 	protected override void OnInitialized()
 	{
 		NavMenu.NavDropdowns.Add(this);
+	}
+
+	private void OnMobileClick(MouseEventArgs mouseEvent)
+	{
+		if (ShowList)
+			ShowList = false;
+		else
+			NavMenu.ShowSubMenu(this);
 	}
 
 	private void OnMouseOver(MouseEventArgs mouseEvent)
