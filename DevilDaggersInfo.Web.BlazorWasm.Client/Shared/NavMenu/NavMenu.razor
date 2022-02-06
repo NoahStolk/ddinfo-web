@@ -9,7 +9,7 @@
 
 <div class="@(ShowNavMenuMobile ? null : "hidden sm:block") @(ExpandNavMenu ? "sm:w-48" : "sm:w-12") py-2 font-goethe transition-width duration-150 ease-in-out sm:h-screen" @onmouseleave="@OnMouseOut" @onmouseenter="@OnMouseOver">
 	<ul>
-		<CascadingValue Value="this">
+		<CascadingValue Value="this" Name="NavMenu">
 			<NavItem Href="" IconType="home" Text="Home" Match="NavLinkMatch.All" InDropdown=false />
 			<NavDropdown Text="Leaderboard" IconType="clock">
 				<NavItem Href="leaderboard" IconType="clock" Text="Leaderboard" />
