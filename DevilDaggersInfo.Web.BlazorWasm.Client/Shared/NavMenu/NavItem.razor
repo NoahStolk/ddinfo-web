@@ -1,4 +1,4 @@
-<li>
+<li class="@GetActive(Href, Match)">
 	<NavLink class="@Class" href="@Href" Match="Match" @onclick="CloseMenu">
 		<NavIcon Type="@IconType" Text="@Text" />
 	</NavLink>
@@ -7,6 +7,8 @@
 @code
 {
 	[CascadingParameter] public NavMenu NavMenu { get; set; } = null!;
+	[Inject] public NavigationManager NavigationManager { get; set; } = null!;
+
 
 	[Parameter, EditorRequired] public string Href { get; set; } = null!;
 	[Parameter, EditorRequired] public string IconType { get; set; } = null!;
@@ -16,9 +18,22 @@
 
 	public string Class => $"{(InDropdown ? "px-2" : "pl-3")} py-1 transition-all duration-150 ease-in-out whitespace-nowrap overflow-x-hidden text-xl text-color-text sm:hover:bg-dark-red block w-full";
 
+	protected override void OnInitialized()
+	{
+		NavigationManager.LocationChanged += (s, e) => StateHasChanged();
+	}
+
 	private void CloseMenu()
 	{
 		NavMenu.ShowNavMenuMobile = false;
 		NavMenu.UpdateState();
 	}
+
+	private bool IsActive(string href, NavLinkMatch navLinkMatch)
+	{
+		string relativePath = NavigationManager.ToBaseRelativePath(NavigationManager.Uri);
+		return navLinkMatch == NavLinkMatch.All ? string.Equals(relativePath, href, StringComparison.OrdinalIgnoreCase) : relativePath.StartsWith(href, StringComparison.OrdinalIgnoreCase);
+	}
+
+	private string? GetActive(string href, NavLinkMatch navLinkMatch) => IsActive(href, navLinkMatch) ? "bg-dark-red" : null;
 }
