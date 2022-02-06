@@ -15,7 +15,7 @@
 	[Parameter, EditorRequired] public string Href { get; set; } = null!;
 	[Parameter, EditorRequired] public string IconType { get; set; } = null!;
 	[Parameter, EditorRequired] public string Text { get; set; } = null!;
-	[Parameter] public NavLinkMatch Match { get; set; }
+	[Parameter] public NavLinkMatch Match { get; set; } = NavLinkMatch.All;
 
 	public string? ActiveClass { get; set; }
 
