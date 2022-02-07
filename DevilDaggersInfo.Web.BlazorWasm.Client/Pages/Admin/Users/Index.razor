@@ -44,6 +44,7 @@ else
 					<div class="overflow-hidden"><button class="@GetButtonClass(user.IsPlayersMaintainer)" @onclick="async () => await ToggleRole(user.Id, Roles.Players)">@GetButtonText(user.IsPlayersMaintainer)</button></div>
 					<div class="overflow-hidden"><button class="@GetButtonClass(user.IsSpawnsetsMaintainer)" @onclick="async () => await ToggleRole(user.Id, Roles.Spawnsets)">@GetButtonText(user.IsSpawnsetsMaintainer)</button></div>
 					<div><a class="link" href="" @onclick="() => _deletion?.Set(user.Id)" @onclick:preventDefault>Delete</a></div>
+					<div><a class="link" href="@($"/admin/users/reset-password/{user.Id}")">Reset password</a></div>
 				</div>
 			}
 		}

@@ -10,11 +10,15 @@ public class UsersController : ControllerBase
 {
 	private readonly ApplicationDbContext _dbContext;
 	private readonly AuditLogger _auditLogger;
+	private readonly IUserService _userService;
+	private readonly ILogger<UsersController> _logger;
 
-	public UsersController(ApplicationDbContext dbContext, AuditLogger auditLogger)
+	public UsersController(ApplicationDbContext dbContext, AuditLogger auditLogger, IUserService userService, ILogger<UsersController> logger)
 	{
 		_dbContext = dbContext;
 		_auditLogger = auditLogger;
+		_userService = userService;
+		_logger = logger;
 	}
 
 	[HttpGet]
@@ -83,6 +87,23 @@ public class UsersController : ControllerBase
 			await _auditLogger.LogRoleAssign(user, roleName);
 		else
 			await _auditLogger.LogRoleRevoke(user, roleName);
+
+		return Ok();
+	}
+
+	[HttpPut("{id}")]
+	[ProducesResponseType(StatusCodes.Status200OK)]
+	[ProducesResponseType(StatusCodes.Status404NotFound)]
+	public ActionResult ResetPasswordForUserById(int id, ResetPassword resetPassword)
+	{
+		UserEntity? user = _dbContext.Users.FirstOrDefault(u => u.Id == id);
+		if (user == null)
+			return NotFound();
+
+		_userService.UpdatePassword(id, resetPassword.NewPassword);
+		_dbContext.SaveChanges();
+
+		_logger.LogWarning("Password was reset for user '{user}'.", user.Name);
 
 		return Ok();
 	}

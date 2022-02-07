@@ -238,6 +238,11 @@ public partial class AdminApiHttpClient
 		return await SendRequest(new HttpMethod("PATCH"), $"api/admin/users/{id}/toggle-role", JsonContent.Create(toggleRole));
 	}
 
+	public async Task<HttpResponseMessage> ResetPasswordForUserById(int id, ResetPassword resetPassword)
+	{
+		return await SendRequest(new HttpMethod("PUT"), $"api/admin/users/{id}", JsonContent.Create(resetPassword));
+	}
+
 	public async Task<HttpResponseMessage> DeleteUserById(int id)
 	{
 		return await SendRequest(new HttpMethod("DELETE"), $"api/admin/users/{id}");
