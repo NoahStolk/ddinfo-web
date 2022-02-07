@@ -44,8 +44,8 @@ else
 				<DataField CssClass="odd:bg-gray-2 px-1" Name="Average time">@((GetEntry.TimeTotal / deathsAsFloat).ToString(FormatUtils.TimeFormat))</DataField>
 				<DataField CssClass="odd:bg-gray-2 px-1" Name="Average kills">@((GetEntry.KillsTotal / deathsAsFloat).ToString(FormatUtils.LeaderboardIntAverageFormat))</DataField>
 				<DataField CssClass="odd:bg-gray-2 px-1" Name="Average gems">@((GetEntry.GemsTotal / deathsAsFloat).ToString(FormatUtils.LeaderboardIntAverageFormat))</DataField>
-				<DataField CssClass="odd:bg-gray-2 px-1" Name="Average daggers hit">@((GetEntry.DaggersHitTotal / deathsAsFloat).ToString(FormatUtils.LeaderboardIntAverageFormat))</DataField>
-				<DataField CssClass="odd:bg-gray-2 px-1" Name="Average daggers fired">@((GetEntry.DaggersFiredTotal / deathsAsFloat).ToString(FormatUtils.LeaderboardIntAverageFormat))</DataField>
+				<DataField CssClass="odd:bg-gray-2 px-1" Name="Average daggers hit" Left="2">@((GetEntry.DaggersHitTotal / deathsAsFloat).ToString(FormatUtils.LeaderboardIntAverageFormat))</DataField>
+				<DataField CssClass="odd:bg-gray-2 px-1" Name="Average daggers fired" Left="2">@((GetEntry.DaggersFiredTotal / deathsAsFloat).ToString(FormatUtils.LeaderboardIntAverageFormat))</DataField>
 			</PlayerCard>
 		}
 
