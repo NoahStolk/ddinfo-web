@@ -74,30 +74,57 @@ public class AuthenticationController : ControllerBase
 		}
 	}
 
-	[HttpPost("update")]
+	[HttpPost("update-name")]
 	[ProducesResponseType(StatusCodes.Status200OK)]
 	[ProducesResponseType(StatusCodes.Status400BadRequest)]
-	public ActionResult UpdateUser([FromBody] UpdateUserRequest updateUserRequest)
+	public ActionResult UpdateName([FromBody] UpdateNameRequest updateNameRequest)
 	{
-		UserEntity? user = _userService.Authenticate(updateUserRequest.CurrentName, updateUserRequest.CurrentPassword);
+		if (updateNameRequest.NewName == updateNameRequest.CurrentName)
+			return BadRequest("The same username was entered.");
+
+		UserEntity? user = _userService.Authenticate(updateNameRequest.CurrentName, updateNameRequest.CurrentPassword);
 		if (user == null)
 		{
-			_logger.LogWarning("User '{name}' failed to authenticate while attempting to update.", updateUserRequest.CurrentName);
+			_logger.LogInformation("User '{name}' failed to authenticate while attempting to update name.", updateNameRequest.CurrentName);
 			return BadRequest("Username or password is incorrect.");
 		}
 
 		try
 		{
-			_userService.Update(user.Id, updateUserRequest.NewName, updateUserRequest.NewPassword);
-			if (updateUserRequest.CurrentName == updateUserRequest.NewName)
-				_logger.LogWarning("User '{oldName}' updated successfully. Name was not updated.", updateUserRequest.CurrentName);
-			else
-				_logger.LogWarning("User '{oldName}' updated successfully. Name was changed to {newName}.", updateUserRequest.CurrentName, updateUserRequest.NewName);
+			_userService.UpdateName(user.Id, updateNameRequest.NewName);
+			_logger.LogInformation("User '{oldName}' changed their name to '{newName}'.", updateNameRequest.CurrentName, updateNameRequest.NewName);
 			return Ok();
 		}
 		catch (Exception ex)
 		{
-			_logger.LogWarning(ex, "User '{name}' failed to update.", updateUserRequest.CurrentName);
+			_logger.LogWarning(ex, "User '{name}' failed to update name.", updateNameRequest.CurrentName);
+			return BadRequest(ex.Message);
+		}
+	}
+
+	[HttpPost("update-password")]
+	[ProducesResponseType(StatusCodes.Status200OK)]
+	[ProducesResponseType(StatusCodes.Status400BadRequest)]
+	public ActionResult UpdatePassword([FromBody] UpdatePasswordRequest updatePasswordRequest)
+	{
+		if (updatePasswordRequest.NewPassword == updatePasswordRequest.CurrentPassword)
+			return BadRequest("The same password was entered.");
+
+		UserEntity? user = _userService.Authenticate(updatePasswordRequest.CurrentName, updatePasswordRequest.CurrentPassword);
+		if (user == null)
+		{
+			_logger.LogInformation("User '{name}' failed to authenticate while attempting to update password.", updatePasswordRequest.CurrentName);
+			return BadRequest("Username or password is incorrect.");
+		}
+
+		try
+		{
+			_userService.UpdatePassword(user.Id, updatePasswordRequest.NewPassword);
+			return Ok();
+		}
+		catch (Exception ex)
+		{
+			_logger.LogWarning(ex, "User '{name}' failed to update password.", updatePasswordRequest.CurrentName);
 			return BadRequest(ex.Message);
 		}
 	}

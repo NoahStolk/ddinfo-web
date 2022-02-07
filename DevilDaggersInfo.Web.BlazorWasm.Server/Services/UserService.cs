@@ -56,27 +56,30 @@ public class UserService : IUserService
 		return user;
 	}
 
-	public void Update(int id, string? name, string? password)
+	public void UpdateName(int id, string name)
 	{
 		UserEntity? user = _dbContext.Users.Find(id);
 		if (user == null)
 			throw new("User not found.");
 
-		if (!string.IsNullOrWhiteSpace(name) && name != user.Name)
-		{
-			if (_dbContext.Users.Any(u => u.Name == name))
-				throw new($"Name '{user.Name}' is already taken.");
+		if (_dbContext.Users.Any(u => u.Name == name))
+			throw new($"Name '{user.Name}' is already taken.");
 
-			user.Name = name;
-		}
+		user.Name = name;
 
-		if (!string.IsNullOrWhiteSpace(password))
-		{
-			CreatePasswordHash(password, out byte[] passwordHash, out byte[] passwordSalt);
+		_dbContext.SaveChanges();
+	}
 
-			user.PasswordHash = passwordHash;
-			user.PasswordSalt = passwordSalt;
-		}
+	public void UpdatePassword(int id, string password)
+	{
+		UserEntity? user = _dbContext.Users.Find(id);
+		if (user == null)
+			throw new("User not found.");
+
+		CreatePasswordHash(password, out byte[] passwordHash, out byte[] passwordSalt);
+
+		user.PasswordHash = passwordHash;
+		user.PasswordSalt = passwordSalt;
 
 		_dbContext.SaveChanges();
 	}

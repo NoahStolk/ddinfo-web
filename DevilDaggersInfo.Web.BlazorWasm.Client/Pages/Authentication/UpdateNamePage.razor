@@ -1,0 +1,53 @@
+@page "/authentication/update-name"
+@inject PublicApiHttpClient Http
+@inject AdminAuthenticationStateProvider Auth
+@inject NavigationManager Navigation
+@using DevilDaggersInfo.Web.BlazorWasm.Client.Authentication
+@using DevilDaggersInfo.Web.BlazorWasm.Shared.Dto.Public.Authentication
+@using Newtonsoft.Json
+@using System.Net
+
+<Heading Title="Update Name" />
+
+<EditForm Model="@Model" OnValidSubmit="@OnValidSubmit">
+	<DataAnnotationsValidator />
+	<ValidationSummary />
+	<div class="text-red">@_serverError</div>
+
+	<div class="grid gap-2 grid-cols-2 max-w-md">
+		<span>Current password</span>
+		<input class="bg-black border-gray-3 border-2" type="password" @bind="@Model.CurrentPassword" />
+		<span>New name</span>
+		<input class="bg-black border-gray-3 border-2" @bind="@Model.NewName" />
+	</div>
+
+	<button class="btn btn-gray p-1" type="submit">Update</button>
+</EditForm>
+
+@code
+{
+	[Parameter] public UpdateNameRequest Model { get; set; } = new();
+
+	private string? _serverError;
+
+	protected override async Task OnInitializedAsync()
+	{
+		AuthenticationState authenticationState = await Auth.GetAuthenticationStateAsync();
+		Model.CurrentName = authenticationState.User.GetName() ?? string.Empty;
+	}
+
+	private async Task OnValidSubmit()
+	{
+		HttpResponseMessage httpResponseMessage = await Http.UpdateName(Model);
+
+		if (httpResponseMessage.StatusCode == HttpStatusCode.OK)
+		{
+			await Auth.SetTokenAsync(null);
+			Navigation.NavigateTo("/authentication/login", true);
+		}
+		else
+		{
+			_serverError = await httpResponseMessage.Content.ReadAsStringAsync();
+		}
+	}
+}

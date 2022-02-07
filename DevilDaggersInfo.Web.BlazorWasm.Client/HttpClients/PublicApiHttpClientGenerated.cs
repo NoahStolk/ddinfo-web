@@ -46,9 +46,14 @@ public partial class PublicApiHttpClient
 		return await SendRequest(new HttpMethod("POST"), $"api/authentication/register", JsonContent.Create(registrationRequest));
 	}
 
-	public async Task<HttpResponseMessage> UpdateUser(UpdateUserRequest updateUserRequest)
+	public async Task<HttpResponseMessage> UpdateName(UpdateNameRequest updateNameRequest)
 	{
-		return await SendRequest(new HttpMethod("POST"), $"api/authentication/update", JsonContent.Create(updateUserRequest));
+		return await SendRequest(new HttpMethod("POST"), $"api/authentication/update-name", JsonContent.Create(updateNameRequest));
+	}
+
+	public async Task<HttpResponseMessage> UpdatePassword(UpdatePasswordRequest updatePasswordRequest)
+	{
+		return await SendRequest(new HttpMethod("POST"), $"api/authentication/update-password", JsonContent.Create(updatePasswordRequest));
 	}
 
 	public async Task<Task> GetCustomEntryReplayById(int id)

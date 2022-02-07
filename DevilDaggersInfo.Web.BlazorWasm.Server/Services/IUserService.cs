@@ -6,7 +6,9 @@ public interface IUserService
 
 	UserEntity Create(string name, string password);
 
-	void Update(int id, string? name, string? password);
+	void UpdateName(int id, string name);
+
+	void UpdatePassword(int id, string password);
 
 	void Delete(int id);
 
