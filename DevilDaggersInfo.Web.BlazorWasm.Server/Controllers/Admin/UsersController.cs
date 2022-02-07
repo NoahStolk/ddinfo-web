@@ -94,20 +94,13 @@ public class UsersController : ControllerBase
 	[HttpPut("{id}")]
 	[ProducesResponseType(StatusCodes.Status200OK)]
 	[ProducesResponseType(StatusCodes.Status404NotFound)]
-	public async Task<ActionResult> ResetPasswordForUserById(int id)
+	public ActionResult ResetPasswordForUserById(int id, ResetPassword resetPassword)
 	{
 		UserEntity? user = _dbContext.Users.FirstOrDefault(u => u.Id == id);
 		if (user == null)
 			return NotFound();
 
-		Random random = new();
-		StringBuilder sb = new();
-		const string characters = "ABCDEFGHIJKLMNOPQRSTUVWXYZabcdefghijklmnopqrstuvwxyz0123456789";
-		for (int i = 0; i < 20; i++)
-			sb.Append(characters[random.Next(0, characters.Length)]);
-		string newPassword = sb.ToString();
-
-		_userService.UpdatePassword(id, newPassword);
+		_userService.UpdatePassword(id, resetPassword.NewPassword);
 		_dbContext.SaveChanges();
 
 		_logger.LogWarning("Password was reset for user '{user}'.", user.Name);
