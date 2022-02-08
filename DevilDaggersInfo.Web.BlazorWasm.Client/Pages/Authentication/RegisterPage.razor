@@ -19,7 +19,8 @@
 		<input class="bg-black border-gray-3 border-2" @bind="@Model.Name" />
 		<span>Password</span>
 		<input class="bg-black border-gray-3 border-2" type="password" @bind="@Model.Password" />
-		@*TODO: Repeat*@
+		<span>Repeat password</span>
+		<input class="bg-black border-gray-3 border-2" type="password" @bind="@Model.PasswordRepeated" />
 	</div>
 
 	<button class="btn btn-gray p-1" type="submit">Register</button>

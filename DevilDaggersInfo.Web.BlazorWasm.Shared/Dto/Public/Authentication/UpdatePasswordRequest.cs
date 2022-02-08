@@ -11,4 +11,8 @@ public class UpdatePasswordRequest
 	[Required]
 	[StringLength(AuthenticationConstants.MaximumPasswordLength, MinimumLength = AuthenticationConstants.MinimumPasswordLength)]
 	public string NewPassword { get; set; } = null!;
+
+	[Required]
+	[StringLength(AuthenticationConstants.MaximumPasswordLength, MinimumLength = AuthenticationConstants.MinimumPasswordLength)]
+	public string PasswordRepeated { get; set; } = null!;
 }

@@ -61,6 +61,9 @@ public class AuthenticationController : ControllerBase
 	[ProducesResponseType(StatusCodes.Status400BadRequest)]
 	public ActionResult Register([FromBody] RegistrationRequest registrationRequest)
 	{
+		if (registrationRequest.Password != registrationRequest.PasswordRepeated)
+			return BadRequest("Passwords don't match.");
+
 		try
 		{
 			_userService.Create(registrationRequest.Name, registrationRequest.Password);
@@ -107,6 +110,9 @@ public class AuthenticationController : ControllerBase
 	[ProducesResponseType(StatusCodes.Status400BadRequest)]
 	public ActionResult UpdatePassword([FromBody] UpdatePasswordRequest updatePasswordRequest)
 	{
+		if (updatePasswordRequest.NewPassword != updatePasswordRequest.PasswordRepeated)
+			return BadRequest("Passwords don't match.");
+
 		if (updatePasswordRequest.NewPassword == updatePasswordRequest.CurrentPassword)
 			return BadRequest("The same password was entered.");
 
