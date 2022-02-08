@@ -2,7 +2,8 @@ namespace DevilDaggersInfo.Core.Mod;
 
 public class ModBinary
 {
-	private const long _fileIdentifier = 0x013A67723A78683A;
+	public const long FileIdentifier = 0x013A67723A78683A;
+
 	private const int _fileHeaderSize = 12;
 
 	public ModBinary(string fileName, byte[] fileContents, BinaryReadComprehensiveness readComprehensiveness)
@@ -15,7 +16,7 @@ public class ModBinary
 		using MemoryStream ms = new(fileContents);
 		using BinaryReader br = new(ms);
 		ulong fileIdentifier = br.ReadUInt64();
-		if (fileIdentifier != _fileIdentifier)
+		if (fileIdentifier != FileIdentifier)
 			throw new InvalidModBinaryException($"Binary '{fileName}' is not a valid binary; incorrect header values.");
 
 		uint tocSize = br.ReadUInt32();
@@ -86,7 +87,7 @@ public class ModBinary
 	{
 		if (AssetMap == null)
 		{
-			// TODO: Log warning.
+			// TODO: Throw exception.
 			return;
 		}
 
@@ -98,7 +99,7 @@ public class ModBinary
 	{
 		if (AssetMap == null)
 		{
-			// TODO: Log warning.
+			// TODO: Throw exception.
 			return Array.Empty<byte>();
 		}
 
@@ -147,7 +148,7 @@ public class ModBinary
 			throw new($"Invalid TOC buffer size: {tocBuffer.Length}. Expected length was {tocSize}.");
 
 		using MemoryStream ms = new();
-		ms.Write(BitConverter.GetBytes(_fileIdentifier));
+		ms.Write(BitConverter.GetBytes(FileIdentifier));
 		ms.Write(BitConverter.GetBytes((uint)tocBuffer.Length));
 		ms.Write(tocBuffer);
 		ms.Write(assetBuffer);
