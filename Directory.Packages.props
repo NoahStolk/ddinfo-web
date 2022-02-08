@@ -1,8 +1,8 @@
 <Project xmlns="http://schemas.microsoft.com/developer/msbuild/2003" ToolsVersion="Current">
 	<ItemGroup Label="Static code analysis">
-		<PackageVersion Include="Roslynator.Analyzers" Version="3.3.0" />
-		<PackageVersion Include="SonarAnalyzer.CSharp" Version="8.34.0.42011" />
-		<PackageVersion Include="StyleCop.Analyzers" Version="1.2.0-beta.376" />
+		<PackageVersion Include="Roslynator.Analyzers" Version="4.0.2" />
+		<PackageVersion Include="SonarAnalyzer.CSharp" Version="8.35.0.42613" />
+		<PackageVersion Include="StyleCop.Analyzers" Version="1.2.0-beta.406" />
 	</ItemGroup>
 	<ItemGroup Label="Image processing">
 		<PackageVersion Include="SixLabors.ImageSharp" Version="1.0.4" />
