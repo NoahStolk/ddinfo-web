@@ -1,5 +1,6 @@
 using SixLabors.ImageSharp;
 using SixLabors.ImageSharp.PixelFormats;
+using SixLabors.ImageSharp.Processing;
 
 namespace DevilDaggersInfo.Core.Mod.FileHandling;
 
@@ -48,6 +49,8 @@ internal sealed class PngFileHandler : IFileHandler
 		int height = BitConverter.ToInt32(buffer, 6);
 
 		using Image<Rgba32> image = Image.LoadPixelData<Rgba32>(buffer[HeaderSize..], width, height);
+		image.Mutate(ipc => ipc.Flip(FlipMode.Vertical));
+
 		using MemoryStream ms = new();
 		image.SaveAsPng(ms);
 		return ms.ToArray();
