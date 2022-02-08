@@ -13,9 +13,9 @@ public class ExtractionTests
 		Assert.IsNotNull(modBinary.AssetMap);
 		KeyValuePair<ModBinaryChunk, AssetData> asset = modBinary.AssetMap.First(kvp => kvp.Key.Name == assetName);
 
-		byte[] extractedPng = AssetConverter.Extract(asset.Key.AssetType, asset.Value);
-		byte[] pngContents = File.ReadAllBytes(Path.Combine(TestUtils.ResourcePath, sourcePngFileName));
+		byte[] extractedPngContents = AssetConverter.Extract(asset.Key.AssetType, asset.Value);
+		byte[] sourcePngContents = File.ReadAllBytes(Path.Combine(TestUtils.ResourcePath, sourcePngFileName));
 
-		TestUtils.AssertArrayContentsEqual(extractedPng, pngContents);
+		TestUtils.AssertArrayContentsEqual(extractedPngContents, sourcePngContents);
 	}
 }

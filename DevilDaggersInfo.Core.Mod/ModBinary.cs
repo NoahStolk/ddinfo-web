@@ -35,8 +35,10 @@ public class ModBinary
 			if (br.BaseStream.Position >= _fileHeaderSize + tocSize)
 				break;
 
+			// TODO: Don't cast.
 			AssetType assetType = (AssetType)type;
 
+			// TODO: Remove when not casting anymore.
 			// Skip unknown or obsolete types (such as 0x11, which is an outdated type for (fragment?) shaders).
 			if (!Enum.IsDefined(assetType))
 				continue;
