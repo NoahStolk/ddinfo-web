@@ -7,6 +7,6 @@ public class RegistrationRequest
 	public string Name { get; set; } = null!;
 
 	[Required]
-	[StringLength(128, MinimumLength = AuthenticationConstants.MinimumPasswordLength)]
+	[StringLength(AuthenticationConstants.MaximumPasswordLength, MinimumLength = AuthenticationConstants.MinimumPasswordLength)]
 	public string Password { get; set; } = null!;
 }

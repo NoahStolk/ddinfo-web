@@ -6,5 +6,7 @@ public class UpdateNameRequest
 
 	public string CurrentPassword { get; set; } = null!;
 
+	[Required]
+	[StringLength(32, MinimumLength = 2)]
 	public string NewName { get; set; } = null!;
 }

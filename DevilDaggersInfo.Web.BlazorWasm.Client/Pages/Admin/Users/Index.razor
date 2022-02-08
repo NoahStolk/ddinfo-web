@@ -32,10 +32,10 @@ else
 	</div>
 	<div>
 		@{
-			int j = 0;
+			int i = 0;
 			foreach (GetUser user in _users)
 			{
-				<div class="grid gap-2 grid-cols-admin-users @(j++ % 2 == 0 ? "bg-gray-1" : string.Empty)">
+				<div class="grid gap-2 grid-cols-admin-users @(i++ % 2 == 0 ? "bg-gray-1" : string.Empty)">
 					<div class="overflow-hidden">@user.Id</div>
 					<div class="overflow-hidden">@user.Name</div>
 					<div class="overflow-hidden"><button class="@GetButtonClass(user.IsAdmin)" @onclick="async () => await ToggleRole(user.Id, Roles.Admin)">@GetButtonText(user.IsAdmin)</button></div>
