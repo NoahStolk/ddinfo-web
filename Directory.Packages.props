@@ -22,14 +22,14 @@
 		<PackageVersion Include="MSTest.TestFramework" Version="2.2.8" />
 	</ItemGroup>
 	<ItemGroup Label="Web client">
-		<PackageVersion Include="Blazored.LocalStorage" Version="4.1.5" />
-		<PackageVersion Include="Microsoft.AspNetCore.Components.Web" Version="6.0.1" />
-		<PackageVersion Include="Microsoft.AspNetCore.Components.WebAssembly" Version="6.0.1" />
-		<PackageVersion Include="Microsoft.AspNetCore.Components.WebAssembly.DevServer" Version="6.0.1" />
-		<PackageVersion Include="Microsoft.AspNetCore.Components.WebAssembly.Authentication" Version="6.0.1" />
+		<PackageVersion Include="Blazored.LocalStorage" Version="4.2.0" />
+		<PackageVersion Include="Microsoft.AspNetCore.Components.Web" Version="6.0.2" />
+		<PackageVersion Include="Microsoft.AspNetCore.Components.WebAssembly" Version="6.0.2" />
+		<PackageVersion Include="Microsoft.AspNetCore.Components.WebAssembly.DevServer" Version="6.0.2" />
+		<PackageVersion Include="Microsoft.AspNetCore.Components.WebAssembly.Authentication" Version="6.0.2" />
 		<PackageVersion Include="Microsoft.AspNetCore.WebUtilities" Version="2.2.0" />
 		<PackageVersion Include="Microsoft.Extensions.Http" Version="6.0.0" />
-		<PackageVersion Include="Microsoft.JSInterop.WebAssembly" Version="6.0.1" />
+		<PackageVersion Include="Microsoft.JSInterop.WebAssembly" Version="6.0.2" />
 		<PackageVersion Include="System.Net.Http.Json" Version="6.0.0" />
 	</ItemGroup>
 	<ItemGroup Label="Web server">
