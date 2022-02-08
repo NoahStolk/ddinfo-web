@@ -17,23 +17,27 @@ internal sealed class PngFileHandler : IFileHandler
 
 	public byte[] Compile(byte[] buffer)
 	{
-		using Image<Rgba32> image = Image.Load(buffer);
+		using Image<Rgba32> image = Image.Load<Rgba32>(buffer);
 		using MemoryStream ms = new();
 		using BinaryWriter bw = new(ms);
 		bw.Write(image.Width);
 		bw.Write(image.Height);
-		for (int i = 0; i < image.Width; i++)
+
+		image.ProcessPixelRows(pixelAccessor =>
 		{
-			Span<Rgba32> span = image.GetPixelRowSpan(i);
-			for (int j = 0; j < span.Length; j++)
+			for (int y = 0; y < pixelAccessor.Height; y++)
 			{
-				Rgba32 color = span[j];
-				bw.Write(color.A);
-				bw.Write(color.G);
-				bw.Write(color.B);
-				bw.Write(color.R);
+				Span<Rgba32> row = pixelAccessor.GetRowSpan(y);
+				for (int x = 0; x < row.Length; x++)
+				{
+					Rgba32 color = row[x];
+					bw.Write(color.A);
+					bw.Write(color.G);
+					bw.Write(color.B);
+					bw.Write(color.R);
+				}
 			}
-		}
+		});
 
 		return ms.ToArray();
 	}
