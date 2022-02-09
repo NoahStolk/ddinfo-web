@@ -10,8 +10,8 @@ public class ModBinary
 	{
 		ModBinaryType modBinaryType = BinaryFileNameUtils.GetBinaryTypeBasedOnFileName(fileName);
 
-		if (fileContents.Length <= _fileHeaderSize)
-			throw new InvalidModBinaryException($"Binary '{fileName}' is not a valid binary; file must be at least 13 bytes in length.");
+		if (fileContents.Length < _fileHeaderSize)
+			throw new InvalidModBinaryException($"Binary '{fileName}' is not a valid binary; file must be at least {_fileHeaderSize} bytes in length.");
 
 		using MemoryStream ms = new(fileContents);
 		using BinaryReader br = new(ms);
@@ -26,6 +26,7 @@ public class ModBinary
 		List<ModBinaryChunk> chunks = new();
 		while (true)
 		{
+			// TODO: Throw InvalidModBinaryException when incomplete (unexpected EOF) TOC entries exist.
 			ushort type = br.ReadUInt16();
 			string name = br.ReadNullTerminatedString();
 
@@ -86,22 +87,16 @@ public class ModBinary
 	public void ExtractAssets(string outputDirectory)
 	{
 		if (AssetMap == null)
-		{
-			// TODO: Throw exception.
-			return;
-		}
+			throw new InvalidOperationException("Assets are not instantiated. Cannot extract assets from a mod binary.");
 
 		foreach (KeyValuePair<ModBinaryChunk, AssetData> kvp in AssetMap)
 			File.WriteAllBytes(Path.Combine(outputDirectory, kvp.Key.Name + kvp.Key.AssetType.GetFileExtension()), AssetConverter.Extract(kvp.Key.AssetType, kvp.Value));
 	}
 
-	public byte[] ToBytes()
+	public byte[] Compile()
 	{
 		if (AssetMap == null)
-		{
-			// TODO: Throw exception.
-			return Array.Empty<byte>();
-		}
+			throw new InvalidOperationException("Assets are not instantiated. Cannot compile a mod binary.");
 
 		List<AssetData> uniqueAssets = AssetMap.Select(ad => ad.Value).Distinct().ToList();
 		byte[]? assetBuffer = null;
@@ -145,7 +140,7 @@ public class ModBinary
 		}
 
 		if (tocBuffer.Length != tocSize)
-			throw new($"Invalid TOC buffer size: {tocBuffer.Length}. Expected length was {tocSize}.");
+			throw new InvalidOperationException($"Invalid TOC buffer size: {tocBuffer.Length}. Expected length was {tocSize}.");
 
 		using MemoryStream ms = new();
 		ms.Write(BitConverter.GetBytes(FileIdentifier));
