@@ -1,3 +1,3 @@
 namespace DevilDaggersInfo.Core.Mod;
 
-public readonly record struct AssetKey(AssetType AssetType, string Name);
+public readonly record struct AssetKey(AssetType AssetType, string AssetName);

@@ -85,7 +85,7 @@ public class ModBinary
 	public ModBinary(ModBinaryType modBinaryType)
 	{
 		if (!(modBinaryType is ModBinaryType.Audio or ModBinaryType.Dd))
-			throw new NotSupportedException($"Compiling mods of type '{modBinaryType}' is not supported.");
+			throw new NotSupportedException($"Creating mods of type '{modBinaryType}' is not supported.");
 
 		ModBinaryType = modBinaryType;
 		Chunks = new();
@@ -107,7 +107,19 @@ public class ModBinary
 
 		AssetMap.Add(new(assetType, assetName), AssetConverter.Compile(assetType, fileContents));
 
-		// TODO: Build chunks.
+		Chunks.Clear();
+
+		const int tocEntrySizeWithoutName = 15;
+		int offset = _fileHeaderSize + tocEntrySizeWithoutName * AssetMap.Count + AssetMap.Sum(kvp => Encoding.Default.GetBytes(kvp.Key.AssetName).Length) + 2;
+		foreach (KeyValuePair<AssetKey, AssetData> kvp in AssetMap)
+		{
+			int size = kvp.Value.Buffer.Length;
+			Chunks.Add(new(kvp.Key.AssetName, offset, size, kvp.Key.AssetType));
+
+			offset += size;
+		}
+
+		// TODO: Loudness.
 	}
 
 	public void ExtractAssets(string outputDirectory)
@@ -116,7 +128,7 @@ public class ModBinary
 			throw new InvalidOperationException("This mod binary has not been opened for full reading comprehensiveness. Cannot extract assets from mod binary.");
 
 		foreach (KeyValuePair<AssetKey, AssetData> kvp in AssetMap)
-			File.WriteAllBytes(Path.Combine(outputDirectory, kvp.Key.Name + kvp.Key.AssetType.GetFileExtension()), AssetConverter.Extract(kvp.Key.AssetType, kvp.Value));
+			File.WriteAllBytes(Path.Combine(outputDirectory, kvp.Key.AssetName + kvp.Key.AssetType.GetFileExtension()), AssetConverter.Extract(kvp.Key.AssetType, kvp.Value));
 	}
 
 	public byte[] Compile()
@@ -124,23 +136,9 @@ public class ModBinary
 		if (_readComprehensiveness != BinaryReadComprehensiveness.All)
 			throw new InvalidOperationException("This mod binary has not been opened for full reading comprehensiveness. Cannot compile mod binary.");
 
-		List<AssetData> uniqueAssets = AssetMap.Select(ad => ad.Value).Distinct().ToList();
-		byte[]? assetBuffer = null;
-		Dictionary<AssetData, int> assetDataOffsets = new();
-		using (MemoryStream assetStream = new())
-		{
-			using BinaryWriter bw = new(assetStream);
-			foreach (AssetData assetData in uniqueAssets)
-			{
-				assetDataOffsets.Add(assetData, (int)bw.BaseStream.Position);
-				bw.Write(assetData.Buffer);
-			}
-
-			assetBuffer = assetStream.ToArray();
-		}
-
 		const int tocEntrySizeWithoutName = 15;
-		int tocSize = tocEntrySizeWithoutName * AssetMap.Count + Chunks.Sum(c => Encoding.Default.GetBytes(c.Name).Length) + 2;
+		int tocBufferSize = tocEntrySizeWithoutName * AssetMap.Count + Chunks.Sum(c => Encoding.Default.GetBytes(c.Name).Length) + 2;
+		int offset = _fileHeaderSize + tocBufferSize;
 		byte[]? tocBuffer = null;
 		using (MemoryStream tocStream = new())
 		{
@@ -152,12 +150,16 @@ public class ModBinary
 
 				bw.Write((ushort)key.AssetType);
 
-				bw.Write(Encoding.Default.GetBytes(key.Name));
+				bw.Write(Encoding.Default.GetBytes(key.AssetName));
 				bw.Write((byte)0);
 
-				bw.Write(_fileHeaderSize + tocSize + assetDataOffsets[assetData]);
-				bw.Write(assetData.Buffer.Length);
+				int size = assetData.Buffer.Length;
+
+				bw.Write(offset);
+				bw.Write(size);
 				bw.Write(0);
+
+				offset += size;
 			}
 
 			bw.Write((short)0);
@@ -165,8 +167,19 @@ public class ModBinary
 			tocBuffer = tocStream.ToArray();
 		}
 
-		if (tocBuffer.Length != tocSize)
-			throw new InvalidOperationException($"Invalid TOC buffer size: {tocBuffer.Length}. Expected length was {tocSize}.");
+		if (tocBuffer.Length != tocBufferSize)
+			throw new InvalidOperationException($"Invalid TOC buffer size: {tocBuffer.Length}. Expected length was {tocBufferSize}.");
+
+		List<AssetData> uniqueAssets = AssetMap.Select(ad => ad.Value).Distinct().ToList();
+		byte[]? assetBuffer = null;
+		using (MemoryStream assetStream = new())
+		{
+			using BinaryWriter bw = new(assetStream);
+			foreach (AssetData assetData in uniqueAssets)
+				bw.Write(assetData.Buffer);
+
+			assetBuffer = assetStream.ToArray();
+		}
 
 		using MemoryStream ms = new();
 		ms.Write(BitConverter.GetBytes(FileIdentifier));
