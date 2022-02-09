@@ -21,8 +21,10 @@ internal sealed class PngFileHandler : IFileHandler
 		using Image<Rgba32> image = Image.Load<Rgba32>(buffer);
 		using MemoryStream ms = new();
 		using BinaryWriter bw = new(ms);
+		bw.Write((ushort)16401);
 		bw.Write(image.Width);
 		bw.Write(image.Height);
+		bw.Write(MipmapUtils.GetMipmapCount(image.Width, image.Height));
 
 		image.ProcessPixelRows(pixelAccessor =>
 		{

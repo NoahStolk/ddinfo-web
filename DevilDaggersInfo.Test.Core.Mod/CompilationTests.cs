@@ -4,7 +4,6 @@ namespace DevilDaggersInfo.Test.Core.Mod;
 public class CompilationTests
 {
 	[DataTestMethod]
-	[DataRow("pedeblackbody.png", "pedeblackbody", "dd-texture")]
 	[DataRow("iconmaskhoming.png", "iconmaskhoming", "dd-iconmaskhoming")]
 	public void CompileTextureIntoModBinary(string sourcePngFileName, string assetName, string modFileName)
 	{
