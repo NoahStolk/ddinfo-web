@@ -26,6 +26,7 @@ internal sealed class PngFileHandler : IFileHandler
 		bw.Write(image.Height);
 		bw.Write(MipmapUtils.GetMipmapCount(image.Width, image.Height));
 
+		image.Mutate(ipc => ipc.Flip(FlipMode.Vertical));
 		image.ProcessPixelRows(pixelAccessor =>
 		{
 			for (int y = 0; y < pixelAccessor.Height; y++)
