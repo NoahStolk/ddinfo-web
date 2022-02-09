@@ -61,7 +61,7 @@ public class ModBinary
 				br.BaseStream.Seek(chunk.Offset, SeekOrigin.Begin);
 				byte[] buffer = br.ReadBytes(chunk.Size);
 
-				AssetMap[chunk] = new(buffer);
+				AssetMap[new(chunk.AssetType, chunk.Name)] = new(buffer);
 			}
 		}
 		else if (readComprehensiveness == BinaryReadComprehensiveness.TocAndLoudness)
@@ -72,7 +72,7 @@ public class ModBinary
 				br.BaseStream.Seek(loudnessChunk.Offset, SeekOrigin.Begin);
 				byte[] buffer = br.ReadBytes(loudnessChunk.Size);
 
-				AssetMap[loudnessChunk] = new(buffer);
+				AssetMap[new(loudnessChunk.AssetType, loudnessChunk.Name)] = new(buffer);
 			}
 		}
 
@@ -90,12 +90,13 @@ public class ModBinary
 		ModBinaryType = modBinaryType;
 		Chunks = new();
 		AssetMap = new();
+
 		_readComprehensiveness = BinaryReadComprehensiveness.All;
 	}
 
 	public ModBinaryType ModBinaryType { get; }
 	public List<ModBinaryChunk> Chunks { get; }
-	public Dictionary<ModBinaryChunk, AssetData> AssetMap { get; }
+	public Dictionary<AssetKey, AssetData> AssetMap { get; }
 
 	public void AddAsset(string assetName, AssetType assetType, byte[] fileContents)
 	{
@@ -104,7 +105,9 @@ public class ModBinary
 		else if (assetType != AssetType.Audio && ModBinaryType == ModBinaryType.Audio)
 			throw new InvalidModCompilationException("Cannot add a non-audio asset to an audio mod.");
 
-		// TODO: Add to assets and chunks. Probably rebuild all chunks.
+		AssetMap.Add(new(assetType, assetName), AssetConverter.Compile(assetType, fileContents));
+
+		// TODO: Build chunks.
 	}
 
 	public void ExtractAssets(string outputDirectory)
@@ -112,7 +115,7 @@ public class ModBinary
 		if (_readComprehensiveness != BinaryReadComprehensiveness.All)
 			throw new InvalidOperationException("This mod binary has not been opened for full reading comprehensiveness. Cannot extract assets from mod binary.");
 
-		foreach (KeyValuePair<ModBinaryChunk, AssetData> kvp in AssetMap)
+		foreach (KeyValuePair<AssetKey, AssetData> kvp in AssetMap)
 			File.WriteAllBytes(Path.Combine(outputDirectory, kvp.Key.Name + kvp.Key.AssetType.GetFileExtension()), AssetConverter.Extract(kvp.Key.AssetType, kvp.Value));
 	}
 
@@ -142,14 +145,14 @@ public class ModBinary
 		using (MemoryStream tocStream = new())
 		{
 			using BinaryWriter bw = new(tocStream);
-			foreach (KeyValuePair<ModBinaryChunk, AssetData> kvp in AssetMap)
+			foreach (KeyValuePair<AssetKey, AssetData> kvp in AssetMap)
 			{
-				ModBinaryChunk chunk = kvp.Key;
+				AssetKey key = kvp.Key;
 				AssetData assetData = kvp.Value;
 
-				bw.Write((ushort)chunk.AssetType);
+				bw.Write((ushort)key.AssetType);
 
-				bw.Write(Encoding.Default.GetBytes(chunk.Name));
+				bw.Write(Encoding.Default.GetBytes(key.Name));
 				bw.Write((byte)0);
 
 				bw.Write(_fileHeaderSize + tocSize + assetDataOffsets[assetData]);

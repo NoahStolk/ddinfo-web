@@ -15,5 +15,5 @@ public class ModBinaryChunk
 	public int Size { get; }
 	public AssetType AssetType { get; }
 
-	public bool IsLoudness() => Name == "loudness" && AssetType == AssetType.Audio;
+	public bool IsLoudness() => AssetType == AssetType.Audio && Name == "loudness";
 }
