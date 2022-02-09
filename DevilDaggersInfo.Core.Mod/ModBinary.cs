@@ -6,6 +6,8 @@ public class ModBinary
 
 	private const int _fileHeaderSize = 12;
 
+	private readonly BinaryReadComprehensiveness _readComprehensiveness;
+
 	public ModBinary(string fileName, byte[] fileContents, BinaryReadComprehensiveness readComprehensiveness)
 	{
 		ModBinaryType modBinaryType = BinaryFileNameUtils.GetBinaryTypeBasedOnFileName(fileName);
@@ -23,6 +25,7 @@ public class ModBinary
 		if (tocSize > fileContents.Length - _fileHeaderSize)
 			throw new InvalidModBinaryException($"Binary '{fileName}' is not a valid binary; TOC size is larger than the remaining amount of file bytes.");
 
+		// Read TOC into chunks.
 		List<ModBinaryChunk> chunks = new();
 		while (true)
 		{
@@ -48,10 +51,10 @@ public class ModBinary
 			chunks.Add(new(name, offset, size, assetType));
 		}
 
+		// Read assets.
+		AssetMap = new();
 		if (readComprehensiveness == BinaryReadComprehensiveness.All)
 		{
-			AssetMap = new();
-
 			// If chunks point to the same asset position; the asset is re-used (TODO: test if this even works in DD -- if not, remove DistinctBy).
 			foreach (ModBinaryChunk chunk in chunks.DistinctBy(c => c.Offset))
 			{
@@ -69,25 +72,45 @@ public class ModBinary
 				br.BaseStream.Seek(loudnessChunk.Offset, SeekOrigin.Begin);
 				byte[] buffer = br.ReadBytes(loudnessChunk.Size);
 
-				AssetMap = new()
-				{
-					[loudnessChunk] = new(buffer),
-				};
+				AssetMap[loudnessChunk] = new(buffer);
 			}
 		}
 
 		ModBinaryType = modBinaryType;
 		Chunks = chunks;
+
+		_readComprehensiveness = readComprehensiveness;
+	}
+
+	public ModBinary(ModBinaryType modBinaryType)
+	{
+		if (!(modBinaryType is ModBinaryType.Audio or ModBinaryType.Dd))
+			throw new NotSupportedException($"Compiling mods of type '{modBinaryType}' is not supported.");
+
+		ModBinaryType = modBinaryType;
+		Chunks = new();
+		AssetMap = new();
+		_readComprehensiveness = BinaryReadComprehensiveness.All;
 	}
 
 	public ModBinaryType ModBinaryType { get; }
 	public List<ModBinaryChunk> Chunks { get; }
-	public Dictionary<ModBinaryChunk, AssetData>? AssetMap { get; }
+	public Dictionary<ModBinaryChunk, AssetData> AssetMap { get; }
+
+	public void AddAsset(string assetName, AssetType assetType, byte[] fileContents)
+	{
+		if (assetType == AssetType.Audio && ModBinaryType != ModBinaryType.Audio)
+			throw new InvalidModCompilationException($"Cannot add an audio asset to a mod of type '{ModBinaryType}'.");
+		else if (assetType != AssetType.Audio && ModBinaryType == ModBinaryType.Audio)
+			throw new InvalidModCompilationException("Cannot add a non-audio asset to an audio mod.");
+
+		// TODO: Add to assets and chunks. Probably rebuild all chunks.
+	}
 
 	public void ExtractAssets(string outputDirectory)
 	{
-		if (AssetMap == null)
-			throw new InvalidOperationException("Assets are not instantiated. Cannot extract assets from a mod binary.");
+		if (_readComprehensiveness != BinaryReadComprehensiveness.All)
+			throw new InvalidOperationException("This mod binary has not been opened for full reading comprehensiveness. Cannot extract assets from mod binary.");
 
 		foreach (KeyValuePair<ModBinaryChunk, AssetData> kvp in AssetMap)
 			File.WriteAllBytes(Path.Combine(outputDirectory, kvp.Key.Name + kvp.Key.AssetType.GetFileExtension()), AssetConverter.Extract(kvp.Key.AssetType, kvp.Value));
@@ -95,8 +118,8 @@ public class ModBinary
 
 	public byte[] Compile()
 	{
-		if (AssetMap == null)
-			throw new InvalidOperationException("Assets are not instantiated. Cannot compile a mod binary.");
+		if (_readComprehensiveness != BinaryReadComprehensiveness.All)
+			throw new InvalidOperationException("This mod binary has not been opened for full reading comprehensiveness. Cannot compile mod binary.");
 
 		List<AssetData> uniqueAssets = AssetMap.Select(ad => ad.Value).Distinct().ToList();
 		byte[]? assetBuffer = null;

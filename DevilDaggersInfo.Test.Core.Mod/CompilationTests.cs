@@ -10,10 +10,10 @@ public class CompilationTests
 	{
 		byte[] sourcePngContents = File.ReadAllBytes(Path.Combine(TestUtils.ResourcePath, sourcePngFileName));
 
-		ModBinaryCompiler mbc = new(ModBinaryType.Dd);
-		mbc.AddAsset(assetName, AssetType.Texture, sourcePngContents);
+		ModBinary modBinary = new(ModBinaryType.Dd);
+		modBinary.AddAsset(assetName, AssetType.Texture, sourcePngContents);
 
-		byte[] compiledModBinary = mbc.Compile();
+		byte[] compiledModBinary = modBinary.Compile();
 
 		byte[] sourceModBinary = File.ReadAllBytes(Path.Combine(TestUtils.ResourcePath, modFileName));
 		TestUtils.AssertArrayContentsEqual(compiledModBinary, sourceModBinary);
