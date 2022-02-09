@@ -181,9 +181,10 @@ public class UserService : IUserService
 		}
 		catch (Exception ex)
 		{
-			// TODO: Don't log expired tokens.
 			ex.Data.Add("JWT", jwt);
-			_logger.LogWarning(ex, "Token was invalid.");
+			if (ex is not SecurityTokenExpiredException)
+				_logger.LogWarning(ex, "Token was invalid.");
+
 			return null;
 		}
 	}
