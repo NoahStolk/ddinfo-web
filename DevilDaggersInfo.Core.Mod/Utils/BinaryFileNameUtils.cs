@@ -7,6 +7,7 @@ public static class BinaryFileNameUtils
 		if (fileName.StartsWith("audio"))
 			return ModBinaryType.Audio;
 
+		// TODO: Must be "core" exactly.
 		if (fileName.StartsWith("core"))
 			return ModBinaryType.Core;
 

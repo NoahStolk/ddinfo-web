@@ -10,8 +10,7 @@ public class ExtractionTests
 	{
 		string filePath = Path.Combine(TestUtils.ResourcePath, modFileName);
 		ModBinary modBinary = new(modFileName, File.ReadAllBytes(filePath), BinaryReadComprehensiveness.All);
-		Assert.IsNotNull(modBinary.AssetMap);
-		KeyValuePair<ModBinaryChunk, AssetData> asset = modBinary.AssetMap.First(kvp => kvp.Key.Name == assetName);
+		KeyValuePair<AssetKey, AssetData> asset = modBinary.AssetMap.First(kvp => kvp.Key.AssetName == assetName);
 
 		byte[] extractedPngContents = AssetConverter.Extract(asset.Key.AssetType, asset.Value);
 		byte[] sourcePngContents = File.ReadAllBytes(Path.Combine(TestUtils.ResourcePath, sourcePngFileName));
