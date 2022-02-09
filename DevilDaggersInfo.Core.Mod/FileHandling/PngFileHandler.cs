@@ -35,10 +35,10 @@ internal sealed class PngFileHandler : IFileHandler
 				for (int x = 0; x < row.Length; x++)
 				{
 					Rgba32 color = row[x];
-					bw.Write(color.A);
+					bw.Write(color.R);
 					bw.Write(color.G);
 					bw.Write(color.B);
-					bw.Write(color.R);
+					bw.Write(color.A);
 				}
 			}
 		});
