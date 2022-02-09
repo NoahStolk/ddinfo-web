@@ -21,27 +21,37 @@ internal sealed class PngFileHandler : IFileHandler
 		using Image<Rgba32> image = Image.Load<Rgba32>(buffer);
 		using MemoryStream ms = new();
 		using BinaryWriter bw = new(ms);
+
+		byte mipmapCount = MipmapUtils.GetMipmapCount(image.Width, image.Height);
+
 		bw.Write((ushort)16401);
 		bw.Write(image.Width);
 		bw.Write(image.Height);
-		bw.Write(MipmapUtils.GetMipmapCount(image.Width, image.Height));
+		bw.Write(mipmapCount);
 
 		image.Mutate(ipc => ipc.Flip(FlipMode.Vertical));
-		image.ProcessPixelRows(pixelAccessor =>
+
+		for (int i = 0; i < mipmapCount; i++)
 		{
-			for (int y = 0; y < pixelAccessor.Height; y++)
+			if (i != 0)
+				image.Mutate(ipc => ipc.Resize(image.Width / 2, image.Height / 2));
+
+			image.ProcessPixelRows(pixelAccessor =>
 			{
-				Span<Rgba32> row = pixelAccessor.GetRowSpan(y);
-				for (int x = 0; x < row.Length; x++)
+				for (int y = 0; y < pixelAccessor.Height; y++)
 				{
-					Rgba32 color = row[x];
-					bw.Write(color.R);
-					bw.Write(color.G);
-					bw.Write(color.B);
-					bw.Write(color.A);
+					Span<Rgba32> row = pixelAccessor.GetRowSpan(y);
+					for (int x = 0; x < row.Length; x++)
+					{
+						Rgba32 color = row[x];
+						bw.Write(color.R);
+						bw.Write(color.G);
+						bw.Write(color.B);
+						bw.Write(color.A);
+					}
 				}
-			}
-		});
+			});
+		}
 
 		return ms.ToArray();
 	}
