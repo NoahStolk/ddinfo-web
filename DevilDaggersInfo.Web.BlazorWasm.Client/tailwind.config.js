@@ -24,7 +24,7 @@ module.exports = {
 			'gray-4': '#303030',
 			'gray-5': '#3C3C3C',
 			'color-ban': '#666',
-			'color-path': '#f66',
+			'color-path': '#faa',
 			'no-data': '#666',
 			'underline-leviathan': '#810017',
 			'underline-devil': '#CB2012',
