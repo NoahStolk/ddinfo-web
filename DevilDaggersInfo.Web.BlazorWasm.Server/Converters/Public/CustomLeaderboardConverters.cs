@@ -38,7 +38,7 @@ public static class CustomLeaderboardConverters
 		WorldRecordDagger = worldRecord.HasValue ? customLeaderboard.GetDaggerFromTime(worldRecord.Value) : CustomLeaderboardDagger.Default,
 	};
 
-	public static GetCustomLeaderboardDdLive ToGetCustomLeaderboardDdLive(this CustomLeaderboardEntity customLeaderboard, int playerCount, string? topPlayer, int? worldRecord) => new()
+	public static GetCustomLeaderboardDdLive ToGetCustomLeaderboardDdLive(this CustomLeaderboardEntity customLeaderboard, int playerCount, int? topPlayerId, string? topPlayerName, int? worldRecord) => new()
 	{
 		Id = customLeaderboard.Id,
 		SpawnsetName = customLeaderboard.Spawnset.Name,
@@ -54,7 +54,8 @@ public static class CustomLeaderboardConverters
 		SubmitCount = customLeaderboard.TotalRunsSubmitted,
 		PlayerCount = playerCount,
 		Category = customLeaderboard.Category,
-		TopPlayer = topPlayer,
+		TopPlayerId = topPlayerId,
+		TopPlayerName = topPlayerName,
 		WorldRecord = worldRecord.ToSecondsTime(),
 		WorldRecordDagger = worldRecord.HasValue ? customLeaderboard.GetDaggerFromTime(worldRecord.Value) : CustomLeaderboardDagger.Default,
 	};

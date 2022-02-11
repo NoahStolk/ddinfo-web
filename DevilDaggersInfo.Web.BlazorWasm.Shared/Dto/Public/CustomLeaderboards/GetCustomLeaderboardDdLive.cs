@@ -30,7 +30,9 @@ public class GetCustomLeaderboardDdLive
 
 	public CustomLeaderboardCategory Category { get; init; }
 
-	public string? TopPlayer { get; init; }
+	public int? TopPlayerId { get; init; }
+
+	public string? TopPlayerName { get; init; }
 
 	public double? WorldRecord { get; init; }
 

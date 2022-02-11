@@ -94,6 +94,7 @@ public class CustomLeaderboardsController : ControllerBase
 			.ConvertAll(cl => new CustomLeaderboardWorldRecord(
 				cl,
 				customEntries.FirstOrDefault(clwr => clwr.CustomLeaderboardId == cl.Id)?.Time,
+				null, // We don't return the ID from this endpoint.
 				customEntries.FirstOrDefault(clwr => clwr.CustomLeaderboardId == cl.Id)?.PlayerName));
 
 		// Apply sorting for world records.
@@ -106,8 +107,8 @@ public class CustomLeaderboardsController : ControllerBase
 		else if (sortBy == CustomLeaderboardSorting.TopPlayer)
 		{
 			customLeaderboardWrs = ascending
-				? customLeaderboardWrs.OrderBy(clwr => clwr.TopPlayer).ToList()
-				: customLeaderboardWrs.OrderByDescending(clwr => clwr.TopPlayer).ToList();
+				? customLeaderboardWrs.OrderBy(clwr => clwr.TopPlayerName).ToList()
+				: customLeaderboardWrs.OrderByDescending(clwr => clwr.TopPlayerName).ToList();
 		}
 
 		// Apply paging.
@@ -122,7 +123,7 @@ public class CustomLeaderboardsController : ControllerBase
 		{
 			Results = customLeaderboardWrs.ConvertAll(cl => cl.CustomLeaderboard.ToGetCustomLeaderboardOverview(
 				customEntryCountByCustomLeaderboardId.ContainsKey(cl.CustomLeaderboard.Id) ? customEntryCountByCustomLeaderboardId[cl.CustomLeaderboard.Id] : 0,
-				cl.TopPlayer,
+				cl.TopPlayerName,
 				cl.WorldRecord)),
 			TotalResults = totalCustomLeaderboards,
 		};
@@ -147,7 +148,7 @@ public class CustomLeaderboardsController : ControllerBase
 			.AsNoTracking()
 			.Where(ce => customLeaderboardIds.Contains(ce.CustomLeaderboardId))
 			.Include(ce => ce.Player)
-			.Select(ce => new { ce.Time, ce.Player.PlayerName, ce.CustomLeaderboardId });
+			.Select(ce => new { ce.Time, ce.PlayerId, ce.Player.PlayerName, ce.CustomLeaderboardId });
 
 		// Build dictionary for amount of players.
 		Dictionary<int, int> customEntryCountByCustomLeaderboardId = new();
@@ -167,14 +168,15 @@ public class CustomLeaderboardsController : ControllerBase
 				? customEntries.OrderBy(ce => ce.Time).FirstOrDefault(clwr => clwr.CustomLeaderboardId == cl.Id)
 				: customEntries.OrderByDescending(ce => ce.Time).FirstOrDefault(clwr => clwr.CustomLeaderboardId == cl.Id);
 
-			customLeaderboardWrs.Add(new(cl, worldRecord?.Time, worldRecord?.PlayerName));
+			customLeaderboardWrs.Add(new(cl, worldRecord?.Time, worldRecord?.PlayerId, worldRecord?.PlayerName));
 		}
 
 		return customLeaderboardWrs
 			.OrderByDescending(clwr => clwr.CustomLeaderboard.DateLastPlayed ?? clwr.CustomLeaderboard.DateCreated)
 			.Select(clwr => clwr.CustomLeaderboard.ToGetCustomLeaderboardDdLive(
 				customEntryCountByCustomLeaderboardId.ContainsKey(clwr.CustomLeaderboard.Id) ? customEntryCountByCustomLeaderboardId[clwr.CustomLeaderboard.Id] : 0,
-				clwr.TopPlayer,
+				clwr.TopPlayerId,
+				clwr.TopPlayerName,
 				clwr.WorldRecord))
 			.ToList();
 	}
@@ -247,15 +249,17 @@ public class CustomLeaderboardsController : ControllerBase
 
 	private sealed class CustomLeaderboardWorldRecord
 	{
-		public CustomLeaderboardWorldRecord(CustomLeaderboardEntity customLeaderboard, int? worldRecord, string? topPlayer)
+		public CustomLeaderboardWorldRecord(CustomLeaderboardEntity customLeaderboard, int? worldRecord, int? topPlayerId, string? topPlayerName)
 		{
 			CustomLeaderboard = customLeaderboard;
 			WorldRecord = worldRecord;
-			TopPlayer = topPlayer;
+			TopPlayerId = topPlayerId;
+			TopPlayerName = topPlayerName;
 		}
 
 		public CustomLeaderboardEntity CustomLeaderboard { get; }
 		public int? WorldRecord { get; }
-		public string? TopPlayer { get; }
+		public int? TopPlayerId { get; }
+		public string? TopPlayerName { get; }
 	}
 }
