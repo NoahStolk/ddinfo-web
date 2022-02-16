@@ -8,7 +8,6 @@ public class GetCustomEntryForOverview : IAdminOverviewGetDto
 
 	public string PlayerName { get; init; } = null!;
 
-	[Format(FormatUtils.TimeFormat)]
 	public double Time { get; init; }
 
 	public int GemsCollected { get; init; }
@@ -33,13 +32,10 @@ public class GetCustomEntryForOverview : IAdminOverviewGetDto
 
 	public CustomEntryDeathType DeathType { get; init; }
 
-	[Format(FormatUtils.TimeFormat)]
 	public double LevelUpTime2 { get; init; }
 
-	[Format(FormatUtils.TimeFormat)]
 	public double LevelUpTime3 { get; init; }
 
-	[Format(FormatUtils.TimeFormat)]
 	public double LevelUpTime4 { get; init; }
 
 	public DateTime SubmitDate { get; init; }

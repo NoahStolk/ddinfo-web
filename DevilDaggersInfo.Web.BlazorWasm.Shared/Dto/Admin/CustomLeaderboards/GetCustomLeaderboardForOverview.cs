@@ -6,19 +6,14 @@ public class GetCustomLeaderboardForOverview : IAdminOverviewGetDto
 
 	public string SpawnsetName { get; init; } = null!;
 
-	[Format(FormatUtils.TimeFormat)]
 	public double TimeBronze { get; init; }
 
-	[Format(FormatUtils.TimeFormat)]
 	public double TimeSilver { get; init; }
 
-	[Format(FormatUtils.TimeFormat)]
 	public double TimeGolden { get; init; }
 
-	[Format(FormatUtils.TimeFormat)]
 	public double TimeDevil { get; init; }
 
-	[Format(FormatUtils.TimeFormat)]
 	public double TimeLeviathan { get; init; }
 
 	public bool IsArchived { get; init; }

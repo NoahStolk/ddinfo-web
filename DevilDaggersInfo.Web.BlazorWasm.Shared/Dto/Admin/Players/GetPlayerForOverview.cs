@@ -10,7 +10,6 @@ public class GetPlayerForOverview : IAdminOverviewGetDto
 
 	public int? Dpi { get; init; }
 
-	[Format(FormatUtils.InGameSensFormat)]
 	public float? InGameSens { get; init; }
 
 	public int? Fov { get; init; }
@@ -19,7 +18,6 @@ public class GetPlayerForOverview : IAdminOverviewGetDto
 
 	public bool? HasFlashHandEnabled { get; init; }
 
-	[Format(FormatUtils.GammaFormat)]
 	public float? Gamma { get; init; }
 
 	public bool? UsesLegacyAudio { get; init; }

@@ -20,11 +20,11 @@
 	<RowTemplate Context="customLeaderboard">
 		<div class="overflow-hidden text-right">@customLeaderboard.Id</div>
 		<div class="overflow-hidden text-left">@customLeaderboard.SpawnsetName</div>
-		<div class="overflow-hidden text-right">@customLeaderboard.TimeBronze</div>
-		<div class="overflow-hidden text-right">@customLeaderboard.TimeSilver</div>
-		<div class="overflow-hidden text-right">@customLeaderboard.TimeGolden</div>
-		<div class="overflow-hidden text-right">@customLeaderboard.TimeDevil</div>
-		<div class="overflow-hidden text-right">@customLeaderboard.TimeLeviathan</div>
+		<div class="overflow-hidden text-right">@customLeaderboard.TimeBronze.ToString(FormatUtils.TimeFormat)</div>
+		<div class="overflow-hidden text-right">@customLeaderboard.TimeSilver.ToString(FormatUtils.TimeFormat)</div>
+		<div class="overflow-hidden text-right">@customLeaderboard.TimeGolden.ToString(FormatUtils.TimeFormat)</div>
+		<div class="overflow-hidden text-right">@customLeaderboard.TimeDevil.ToString(FormatUtils.TimeFormat)</div>
+		<div class="overflow-hidden text-right">@customLeaderboard.TimeLeviathan.ToString(FormatUtils.TimeFormat)</div>
 		<div class="overflow-hidden text-left">@customLeaderboard.IsArchived</div>
 		<div class="overflow-hidden text-left">@customLeaderboard.DateCreated</div>
 		<div class="overflow-hidden text-left">@customLeaderboard.Category</div>

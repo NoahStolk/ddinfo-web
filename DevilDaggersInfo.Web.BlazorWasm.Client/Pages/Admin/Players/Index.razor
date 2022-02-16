@@ -29,11 +29,11 @@
 		<div class="overflow-hidden text-left">@player.PlayerName</div>
 		<div class="overflow-hidden text-left">@player.CountryCode</div>
 		<div class="overflow-hidden text-right">@player.Dpi</div>
-		<div class="overflow-hidden text-right">@player.InGameSens</div>
+		<div class="overflow-hidden text-right">@player.InGameSens?.ToString(FormatUtils.InGameSensFormat)</div>
 		<div class="overflow-hidden text-right">@player.Fov</div>
 		<div class="overflow-hidden text-left">@player.IsRightHanded</div>
 		<div class="overflow-hidden text-left">@player.HasFlashHandEnabled</div>
-		<div class="overflow-hidden text-right">@player.Gamma</div>
+		<div class="overflow-hidden text-right">@player.Gamma?.ToString(FormatUtils.GammaFormat)</div>
 		<div class="overflow-hidden text-left">@player.UsesLegacyAudio</div>
 		<div class="overflow-hidden text-left">@player.BanType</div>
 		<div class="overflow-hidden text-left">@player.BanDescription</div>

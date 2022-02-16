@@ -31,7 +31,7 @@
 		<div class="overflow-hidden text-right">@customLeaderboard.Id</div>
 		<div class="overflow-hidden text-left">@customLeaderboard.SpawnsetName</div>
 		<div class="overflow-hidden text-left">@customLeaderboard.PlayerName</div>
-		<div class="overflow-hidden text-right">@customLeaderboard.Time</div>
+		<div class="overflow-hidden text-right">@customLeaderboard.Time.ToString(FormatUtils.TimeFormat)</div>
 		<div class="overflow-hidden text-right">@customLeaderboard.GemsCollected</div>
 		<div class="overflow-hidden text-right">@customLeaderboard.GemsDespawned</div>
 		<div class="overflow-hidden text-right">@customLeaderboard.GemsEaten</div>
@@ -43,9 +43,9 @@
 		<div class="overflow-hidden text-right">@customLeaderboard.HomingStored</div>
 		<div class="overflow-hidden text-right">@customLeaderboard.HomingEaten</div>
 		<div class="overflow-hidden text-left">@customLeaderboard.DeathType</div>
-		<div class="overflow-hidden text-right">@customLeaderboard.LevelUpTime2</div>
-		<div class="overflow-hidden text-right">@customLeaderboard.LevelUpTime3</div>
-		<div class="overflow-hidden text-right">@customLeaderboard.LevelUpTime4</div>
+		<div class="overflow-hidden text-right">@customLeaderboard.LevelUpTime2.ToString(FormatUtils.TimeFormat)</div>
+		<div class="overflow-hidden text-right">@customLeaderboard.LevelUpTime3.ToString(FormatUtils.TimeFormat)</div>
+		<div class="overflow-hidden text-right">@customLeaderboard.LevelUpTime4.ToString(FormatUtils.TimeFormat)</div>
 		<div class="overflow-hidden text-left">@customLeaderboard.SubmitDate</div>
 		<div class="overflow-hidden text-right">@customLeaderboard.ClientVersion</div>
 	</RowTemplate>
