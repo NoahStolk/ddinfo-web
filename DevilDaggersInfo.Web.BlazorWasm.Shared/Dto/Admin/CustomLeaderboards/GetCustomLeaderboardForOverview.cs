@@ -4,27 +4,21 @@ public class GetCustomLeaderboardForOverview : IAdminOverviewGetDto
 {
 	public int Id { get; init; }
 
-	[Display(Name = "Name")]
 	public string SpawnsetName { get; init; } = null!;
 
 	[Format(FormatUtils.TimeFormat)]
-	[Display(Name = "Bronze")]
 	public double TimeBronze { get; init; }
 
 	[Format(FormatUtils.TimeFormat)]
-	[Display(Name = "Silver")]
 	public double TimeSilver { get; init; }
 
 	[Format(FormatUtils.TimeFormat)]
-	[Display(Name = "Golden")]
 	public double TimeGolden { get; init; }
 
 	[Format(FormatUtils.TimeFormat)]
-	[Display(Name = "Devil")]
 	public double TimeDevil { get; init; }
 
 	[Format(FormatUtils.TimeFormat)]
-	[Display(Name = "Levi")]
 	public double TimeLeviathan { get; init; }
 
 	public bool IsArchived { get; init; }
