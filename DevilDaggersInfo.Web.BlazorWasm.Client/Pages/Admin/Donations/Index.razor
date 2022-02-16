@@ -21,7 +21,7 @@
 		<div class="overflow-hidden text-right">@donation.Amount</div>
 		<div class="overflow-hidden text-left">@donation.Currency</div>
 		<div class="overflow-hidden text-right">@donation.ConvertedEuroCentsReceived</div>
-		<div class="overflow-hidden text-left">@donation.DateReceived</div>
+		<div class="overflow-hidden text-left">@donation.DateReceived.ToString(FormatUtils.DateTimeUtcFormat)</div>
 		<div class="overflow-hidden text-left">@donation.Note</div>
 		<div class="overflow-hidden text-left">@donation.IsRefunded</div>
 	</RowTemplate>

@@ -46,7 +46,7 @@
 		<div class="overflow-hidden text-right">@customLeaderboard.LevelUpTime2.ToString(FormatUtils.TimeFormat)</div>
 		<div class="overflow-hidden text-right">@customLeaderboard.LevelUpTime3.ToString(FormatUtils.TimeFormat)</div>
 		<div class="overflow-hidden text-right">@customLeaderboard.LevelUpTime4.ToString(FormatUtils.TimeFormat)</div>
-		<div class="overflow-hidden text-left">@customLeaderboard.SubmitDate</div>
+		<div class="overflow-hidden text-left">@customLeaderboard.SubmitDate.ToString(FormatUtils.DateTimeUtcFormat)</div>
 		<div class="overflow-hidden text-right">@customLeaderboard.ClientVersion</div>
 	</RowTemplate>
 </AdminOverview>

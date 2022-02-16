@@ -20,7 +20,7 @@
 		<div class="overflow-hidden text-left">@spawnset.Name</div>
 		<div class="overflow-hidden text-right">@spawnset.MaxDisplayWaves</div>
 		<div class="overflow-hidden text-left">@spawnset.HtmlDescription</div>
-		<div class="overflow-hidden text-left">@spawnset.LastUpdated</div>
+		<div class="overflow-hidden text-left">@spawnset.LastUpdated.ToString(FormatUtils.DateTimeUtcFormat)</div>
 		<div class="overflow-hidden text-left">@spawnset.IsPractice</div>
 	</RowTemplate>
 </AdminOverview>

@@ -26,7 +26,7 @@
 		<div class="overflow-hidden text-right">@customLeaderboard.TimeDevil.ToString(FormatUtils.TimeFormat)</div>
 		<div class="overflow-hidden text-right">@customLeaderboard.TimeLeviathan.ToString(FormatUtils.TimeFormat)</div>
 		<div class="overflow-hidden text-left">@customLeaderboard.IsArchived</div>
-		<div class="overflow-hidden text-left">@customLeaderboard.DateCreated</div>
+		<div class="overflow-hidden text-left">@customLeaderboard.DateCreated.ToString(FormatUtils.DateTimeUtcFormat)</div>
 		<div class="overflow-hidden text-left">@customLeaderboard.Category</div>
 	</RowTemplate>
 </AdminOverview>
