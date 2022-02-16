@@ -4,7 +4,7 @@
 @using DevilDaggersInfo.Web.BlazorWasm.Shared.Dto.Admin.Donations
 @using DevilDaggersInfo.Web.BlazorWasm.Shared.Enums.Sortings.Admin
 
-<AdminOverview TGetDto="GetDonationForOverview" TSorting="DonationSorting" Title="Donations" ApiCall="(int pageIndex, int pageSize, DonationSorting? sortBy, bool isAscending) => Http.GetDonations(pageIndex, pageSize, sortBy, isAscending)" DeletionApiCall="(int id) => Http.DeleteDonationById(id)" GridConfiguration="grid-cols-admin-donations">
+<AdminOverview @ref="_overview" TGetDto="GetDonationForOverview" TSorting="DonationSorting" Title="Donations" ApiCall="(int pageIndex, int pageSize, DonationSorting? sortBy, bool isAscending) => Http.GetDonations(pageIndex, pageSize, sortBy, isAscending)" DeletionApiCall="(int id) => Http.DeleteDonationById(id)" GridConfiguration="grid-cols-admin-donations">
 	<TableHeader>
 		<a class="link overflow-hidden text-right" href="" @onclick="() => _overview.Sort(DonationSorting.Id)" @onclick:preventDefault>Id</a>
 		<a class="link overflow-hidden text-left" href="" @onclick="() => _overview.Sort(DonationSorting.PlayerName)" @onclick:preventDefault>Player</a>

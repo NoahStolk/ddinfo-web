@@ -4,7 +4,7 @@
 @using DevilDaggersInfo.Web.BlazorWasm.Shared.Dto.Admin.Mods
 @using DevilDaggersInfo.Web.BlazorWasm.Shared.Enums.Sortings.Admin
 
-<AdminOverview TGetDto="GetModForOverview" TSorting="ModSorting" Title="Mods" ApiCall="(int pageIndex, int pageSize, ModSorting? sortBy, bool isAscending) => Http.GetMods(pageIndex, pageSize, sortBy, isAscending)" DeletionApiCall="(int id) => Http.DeleteModById(id)" GridConfiguration="grid-cols-admin-mods">
+<AdminOverview @ref="_overview" TGetDto="GetModForOverview" TSorting="ModSorting" Title="Mods" ApiCall="(int pageIndex, int pageSize, ModSorting? sortBy, bool isAscending) => Http.GetMods(pageIndex, pageSize, sortBy, isAscending)" DeletionApiCall="(int id) => Http.DeleteModById(id)" GridConfiguration="grid-cols-admin-mods">
 	<TableHeader>
 		<a class="link overflow-hidden text-right" href="" @onclick="() => _overview.Sort(ModSorting.Id)" @onclick:preventDefault>Id</a>
 		<a class="link overflow-hidden text-left" href="" @onclick="() => _overview.Sort(ModSorting.Name)" @onclick:preventDefault>Name</a>

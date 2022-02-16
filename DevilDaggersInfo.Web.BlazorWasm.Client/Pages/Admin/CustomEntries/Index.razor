@@ -4,7 +4,7 @@
 @using DevilDaggersInfo.Web.BlazorWasm.Shared.Dto.Admin.CustomEntries
 @using DevilDaggersInfo.Web.BlazorWasm.Shared.Enums.Sortings.Admin
 
-<AdminOverview TGetDto="GetCustomEntryForOverview" TSorting="CustomEntrySorting" Title="Custom Entries" ApiCall="(int pageIndex, int pageSize, CustomEntrySorting? sortBy, bool isAscending) => Http.GetCustomEntries(pageIndex, pageSize, sortBy, isAscending)" DeletionApiCall="(int id) => Http.DeleteCustomEntryById(id)" GridConfiguration="grid-cols-admin-custom-entries">
+<AdminOverview @ref="_overview" TGetDto="GetCustomEntryForOverview" TSorting="CustomEntrySorting" Title="Custom Entries" ApiCall="(int pageIndex, int pageSize, CustomEntrySorting? sortBy, bool isAscending) => Http.GetCustomEntries(pageIndex, pageSize, sortBy, isAscending)" DeletionApiCall="(int id) => Http.DeleteCustomEntryById(id)" GridConfiguration="grid-cols-admin-custom-entries">
 	<TableHeader>
 		<a class="link overflow-hidden text-right" href="" @onclick="() => _overview.Sort(CustomEntrySorting.Id)" @onclick:preventDefault>Id</a>
 		<a class="link overflow-hidden text-left" href="" @onclick="() => _overview.Sort(CustomEntrySorting.SpawnsetName)" @onclick:preventDefault>Name</a>

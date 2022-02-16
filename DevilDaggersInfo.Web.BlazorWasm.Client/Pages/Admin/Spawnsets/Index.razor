@@ -4,7 +4,7 @@
 @using DevilDaggersInfo.Web.BlazorWasm.Shared.Dto.Admin.Spawnsets
 @using DevilDaggersInfo.Web.BlazorWasm.Shared.Enums.Sortings.Admin
 
-<AdminOverview TGetDto="GetSpawnsetForOverview" TSorting="SpawnsetSorting" Title="Spawnsets" ApiCall="(int pageIndex, int pageSize, SpawnsetSorting? sortBy, bool isAscending) => Http.GetSpawnsets(pageIndex, pageSize, sortBy, isAscending)" DeletionApiCall="(int id) => Http.DeleteSpawnsetById(id)" GridConfiguration="grid-cols-admin-spawnsets">
+<AdminOverview @ref="_overview" TGetDto="GetSpawnsetForOverview" TSorting="SpawnsetSorting" Title="Spawnsets" ApiCall="(int pageIndex, int pageSize, SpawnsetSorting? sortBy, bool isAscending) => Http.GetSpawnsets(pageIndex, pageSize, sortBy, isAscending)" DeletionApiCall="(int id) => Http.DeleteSpawnsetById(id)" GridConfiguration="grid-cols-admin-spawnsets">
 	<TableHeader>
 		<a class="link overflow-hidden text-right" href="" @onclick="() => _overview.Sort(SpawnsetSorting.Id)" @onclick:preventDefault>Id</a>
 		<a class="link overflow-hidden text-left" href="" @onclick="() => _overview.Sort(SpawnsetSorting.Author)" @onclick:preventDefault>Author</a>
