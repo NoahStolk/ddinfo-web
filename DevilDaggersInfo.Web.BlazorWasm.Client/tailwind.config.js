@@ -37,12 +37,36 @@ module.exports = {
 		extend: {
 			gridTemplateColumns: {
 				// Admin
-				'admin-custom-entries': createMinmaxGrid([1, 4, 3, 1.5, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 3, 2.5, 1, 1]),
-				'admin-custom-leaderboards': createMinmaxGrid([1, 4, 4, 1, 1, 1, 1, 1, 4, 2, 1, 1]),
-				'admin-donations': createMinmaxGrid([1, 3, 1, 1, 3, 2, 4, 1, 1, 1]),
-				'admin-mods': createMinmaxGrid([1, 4, 1, 2, 5, 5, 3, 5, 1, 1]),
-				'admin-players': createMinmaxGrid([1, 4, 1, 1, 1, 1, 1, 1, 1, 1, 1, 3, 2, 1, 1, 1, 1, 1, 1]),
-				'admin-spawnsets': createMinmaxGrid([1, 1, 4, 2, 8, 2, 1, 1, 1]),
+				'admin-custom-entries-xl': createMinmaxGrid([1, 4, 3, 1.5, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 3, 2.5, 1, 1]),
+				'admin-custom-entries-lg': createMinmaxGrid([1, 4, 3, 1.5, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1]),
+				'admin-custom-entries-md': createMinmaxGrid([1, 4, 3, 1.5, 1, 1, 1, 1, 1, 1]),
+				'admin-custom-entries-sm': createMinmaxGrid([1, 4, 3, 1, 1]),
+
+				'admin-custom-leaderboards-xl': createMinmaxGrid([1, 4, 1, 1, 1, 1, 1, 1, 4, 2, 1, 1]),
+				'admin-custom-leaderboards-lg': createMinmaxGrid([1, 4, 1, 1, 1, 1, 1, 1, 1, 1]),
+				'admin-custom-leaderboards-md': createMinmaxGrid([1, 4, 1, 1, 1, 1, 1, 1, 1]),
+				'admin-custom-leaderboards-sm': createMinmaxGrid([1, 4, 1, 1]),
+
+				'admin-donations-xl': createMinmaxGrid([1, 3, 1, 1, 3, 2, 4, 1, 1, 1]),
+				'admin-donations-lg': createMinmaxGrid([1, 3, 1, 1, 3, 2, 1, 1]),
+				'admin-donations-md': createMinmaxGrid([1, 3, 1, 1, 3, 1, 1]),
+				'admin-donations-sm': createMinmaxGrid([1, 3, 1, 1, 1]),
+
+				'admin-mods-xl': createMinmaxGrid([1, 4, 1, 2, 5, 5, 3, 5, 1, 1]),
+				'admin-mods-lg': createMinmaxGrid([1, 4, 1, 2, 5, 1, 1]),
+				'admin-mods-md': createMinmaxGrid([1, 4, 1, 2, 1, 1]),
+				'admin-mods-sm': createMinmaxGrid([1, 4, 1, 1, 1]),
+
+				'admin-players-xl': createMinmaxGrid([1, 4, 1, 1, 1, 1, 1, 1, 1, 1, 1, 3, 2, 1, 1, 1, 1, 1, 1]),
+				'admin-players-lg': createMinmaxGrid([1, 4, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1]),
+				'admin-players-md': createMinmaxGrid([1, 4, 1, 1, 1, 1, 1, 1]),
+				'admin-players-sm': createMinmaxGrid([1, 4, 1, 1]),
+
+				'admin-spawnsets-xl': createMinmaxGrid([1, 1, 4, 2, 8, 2, 1, 1, 1]),
+				'admin-spawnsets-lg': createMinmaxGrid([1, 1, 4, 2, 1, 1]),
+				'admin-spawnsets-md': createMinmaxGrid([1, 1, 4, 1, 1]),
+				'admin-spawnsets-sm': createMinmaxGrid([1, 1, 1, 1]),
+
 				'admin-users': createMinmaxGrid([3, 2, 1, 1, 1, 1, 1, 1, 1]),
 
 				// Overviews

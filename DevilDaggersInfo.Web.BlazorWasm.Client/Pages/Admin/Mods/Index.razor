@@ -4,9 +4,30 @@
 @using DevilDaggersInfo.Web.BlazorWasm.Shared.Dto.Admin.Mods
 @using DevilDaggersInfo.Web.BlazorWasm.Shared.Enums.Sortings.Admin
 
-<AdminOverview
-	TGetDto="GetModForOverview"
-	Title="Mods"
-	ApiCall="(int pageIndex, int pageSize, string? sortBy, bool isAscending) => Http.GetMods(pageIndex, pageSize, sortBy == null ? null : Enum.Parse<ModSorting>(sortBy), isAscending)"
-	DeletionApiCall="(int id) => Http.DeleteModById(id)"
-	GridConfiguration="grid-cols-admin-mods" />
+<AdminOverview @ref="_overview" TGetDto="GetModForOverview" TSorting="ModSorting" Title="Mods" ApiCall="(int pageIndex, int pageSize, ModSorting? sortBy, bool isAscending) => Http.GetMods(pageIndex, pageSize, sortBy, isAscending)" DeletionApiCall="(int id) => Http.DeleteModById(id)" GridConfiguration="grid-cols-admin-mods-sm md:grid-cols-admin-mods-md lg:grid-cols-admin-mods-lg xl:grid-cols-admin-mods-xl">
+	<TableHeader>
+		<a class="link overflow-hidden text-right" href="" @onclick="() => _overview.Sort(ModSorting.Id)" @onclick:preventDefault>Id</a>
+		<a class="link overflow-hidden text-left" href="" @onclick="() => _overview.Sort(ModSorting.Name)" @onclick:preventDefault>Name</a>
+		<a class="link overflow-hidden text-left" href="" @onclick="() => _overview.Sort(ModSorting.IsHidden)" @onclick:preventDefault>Hidden</a>
+		<a class="link overflow-hidden hidden md:block text-left" href="" @onclick="() => _overview.Sort(ModSorting.LastUpdated)" @onclick:preventDefault>Last updated</a>
+		<a class="link overflow-hidden hidden lg:block text-left" href="" @onclick="() => _overview.Sort(ModSorting.TrailerUrl)" @onclick:preventDefault>Trailer URL</a>
+		<a class="link overflow-hidden hidden xl:block text-left" href="" @onclick="() => _overview.Sort(ModSorting.HtmlDescription)" @onclick:preventDefault>HTML description</a>
+		<a class="link overflow-hidden hidden xl:block text-left" href="" @onclick="() => _overview.Sort(ModSorting.ModTypes)" @onclick:preventDefault>Mod types</a>
+		<a class="link overflow-hidden hidden xl:block text-left" href="" @onclick="() => _overview.Sort(ModSorting.Url)" @onclick:preventDefault>URL</a>
+	</TableHeader>
+	<RowTemplate Context="mod">
+		<div class="overflow-hidden text-right">@mod.Id</div>
+		<div class="overflow-hidden text-left">@mod.Name</div>
+		<div class="overflow-hidden text-left">@mod.IsHidden</div>
+		<div class="overflow-hidden hidden md:block text-left">@mod.LastUpdated.ToString(FormatUtils.DateTimeUtcFormat)</div>
+		<div class="overflow-hidden hidden lg:block text-left">@mod.TrailerUrl</div>
+		<div class="overflow-hidden hidden xl:block text-left">@mod.HtmlDescription</div>
+		<div class="overflow-hidden hidden xl:block text-left">@mod.ModTypes</div>
+		<div class="overflow-hidden hidden xl:block text-left">@mod.Url</div>
+	</RowTemplate>
+</AdminOverview>
+
+@code
+{
+	private AdminOverview<GetModForOverview, ModSorting> _overview = null!;
+}

@@ -8,26 +8,28 @@ using Microsoft.AspNetCore.Components.WebAssembly.Authentication;
 
 namespace DevilDaggersInfo.Web.BlazorWasm.Client.Components.Admin;
 
-public partial class AdminOverview<TGetDto>
+public partial class AdminOverview<TGetDto, TSorting>
 	where TGetDto : IAdminOverviewGetDto
+	where TSorting : struct, Enum
 {
-	private string? _sortBy;
+	private TSorting? _sortBy;
 	private bool _ascending = true;
 
 	private Page<TGetDto>? _page;
 	private string? _errorMessage;
 	private bool _errorThrown;
-	private Dictionary<PropertyInfo, bool> _properties = ReflectionUtils.GetDtoDisplayProperties<TGetDto>();
-	private Dictionary<string, bool> _sortings = null!;
+	private Dictionary<TSorting, bool> _sortings = null!;
 
 	private Deletion? _deletion;
 
 	private string? _username;
 
 	[Parameter, EditorRequired] public string Title { get; set; } = null!;
-	[Parameter, EditorRequired] public Func<int, int, string?, bool, Task<Page<TGetDto>>> ApiCall { get; set; } = null!;
+	[Parameter, EditorRequired] public Func<int, int, TSorting?, bool, Task<Page<TGetDto>>> ApiCall { get; set; } = null!;
 	[Parameter, EditorRequired] public Func<int, Task<HttpResponseMessage>> DeletionApiCall { get; set; } = null!;
 	[Parameter, EditorRequired] public string GridConfiguration { get; set; } = null!;
+	[Parameter, EditorRequired] public RenderFragment TableHeader { get; set; } = null!;
+	[Parameter, EditorRequired] public RenderFragment<TGetDto> RowTemplate { get; set; } = null!;
 
 	public int TotalPages => _page == null ? 0 : (_page.TotalResults - 1) / PageSize + 1;
 	public int TotalResults => _page == null ? 0 : _page.TotalResults;
@@ -40,7 +42,7 @@ public partial class AdminOverview<TGetDto>
 		AuthenticationState auth = await Auth.GetAuthenticationStateAsync();
 		_username = auth.User?.GetName();
 
-		_sortings = _properties.ToDictionary(pi => pi.Key.Name, _ => true);
+		_sortings = Enum.GetValues<TSorting>().ToDictionary(e => e, _ => true);
 		await Fetch();
 	}
 
@@ -58,11 +60,11 @@ public partial class AdminOverview<TGetDto>
 		await Fetch();
 	}
 
-	private async Task Sort(string propertyName)
+	public async Task Sort(TSorting sorting)
 	{
-		_sortBy = propertyName;
-		_sortings[propertyName] = !_sortings[propertyName];
-		_ascending = _sortings[propertyName];
+		_sortBy = sorting;
+		_sortings[sorting] = !_sortings[sorting];
+		_ascending = _sortings[sorting];
 		await Fetch();
 	}
 
