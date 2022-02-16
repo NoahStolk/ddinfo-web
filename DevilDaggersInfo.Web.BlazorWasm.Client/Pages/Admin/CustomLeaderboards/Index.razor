@@ -18,16 +18,16 @@
 		<a class="link overflow-hidden text-left" href="" @onclick="() => _overview.Sort(CustomLeaderboardSorting.Category)" @onclick:preventDefault>Category</a>
 	</TableHeader>
 	<RowTemplate Context="customLeaderboard">
-		<div class="link overflow-hidden text-right">@customLeaderboard.Id</div>
-		<div class="link overflow-hidden text-left">@customLeaderboard.SpawnsetName</div>
-		<div class="link overflow-hidden text-right">@customLeaderboard.TimeBronze</div>
-		<div class="link overflow-hidden text-right">@customLeaderboard.TimeSilver</div>
-		<div class="link overflow-hidden text-right">@customLeaderboard.TimeGolden</div>
-		<div class="link overflow-hidden text-right">@customLeaderboard.TimeDevil</div>
-		<div class="link overflow-hidden text-right">@customLeaderboard.TimeLeviathan</div>
-		<div class="link overflow-hidden text-left">@customLeaderboard.IsArchived</div>
-		<div class="link overflow-hidden text-left">@customLeaderboard.DateCreated</div>
-		<div class="link overflow-hidden text-left">@customLeaderboard.Category</div>
+		<div class="overflow-hidden text-right">@customLeaderboard.Id</div>
+		<div class="overflow-hidden text-left">@customLeaderboard.SpawnsetName</div>
+		<div class="overflow-hidden text-right">@customLeaderboard.TimeBronze</div>
+		<div class="overflow-hidden text-right">@customLeaderboard.TimeSilver</div>
+		<div class="overflow-hidden text-right">@customLeaderboard.TimeGolden</div>
+		<div class="overflow-hidden text-right">@customLeaderboard.TimeDevil</div>
+		<div class="overflow-hidden text-right">@customLeaderboard.TimeLeviathan</div>
+		<div class="overflow-hidden text-left">@customLeaderboard.IsArchived</div>
+		<div class="overflow-hidden text-left">@customLeaderboard.DateCreated</div>
+		<div class="overflow-hidden text-left">@customLeaderboard.Category</div>
 	</RowTemplate>
 </AdminOverview>
 

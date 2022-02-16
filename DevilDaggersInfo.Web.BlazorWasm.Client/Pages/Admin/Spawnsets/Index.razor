@@ -15,13 +15,13 @@
 		<a class="link overflow-hidden text-left" href="" @onclick="() => _overview.Sort(SpawnsetSorting.IsPractice)" @onclick:preventDefault>Practice</a>
 	</TableHeader>
 	<RowTemplate Context="spawnset">
-		<div class="link overflow-hidden text-right">@spawnset.Id</div>
-		<div class="link overflow-hidden text-left">@spawnset.Author</div>
-		<div class="link overflow-hidden text-left">@spawnset.Name</div>
-		<div class="link overflow-hidden text-right">@spawnset.MaxDisplayWaves</div>
-		<div class="link overflow-hidden text-left">@spawnset.HtmlDescription</div>
-		<div class="link overflow-hidden text-left">@spawnset.LastUpdated</div>
-		<div class="link overflow-hidden text-left">@spawnset.IsPractice</div>
+		<div class="overflow-hidden text-right">@spawnset.Id</div>
+		<div class="overflow-hidden text-left">@spawnset.Author</div>
+		<div class="overflow-hidden text-left">@spawnset.Name</div>
+		<div class="overflow-hidden text-right">@spawnset.MaxDisplayWaves</div>
+		<div class="overflow-hidden text-left">@spawnset.HtmlDescription</div>
+		<div class="overflow-hidden text-left">@spawnset.LastUpdated</div>
+		<div class="overflow-hidden text-left">@spawnset.IsPractice</div>
 	</RowTemplate>
 </AdminOverview>
 
