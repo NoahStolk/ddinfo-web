@@ -4,30 +4,30 @@
 @using DevilDaggersInfo.Web.BlazorWasm.Shared.Dto.Admin.CustomLeaderboards
 @using DevilDaggersInfo.Web.BlazorWasm.Shared.Enums.Sortings.Admin
 
-<AdminOverview @ref="_overview" TGetDto="GetCustomLeaderboardForOverview" TSorting="CustomLeaderboardSorting" Title="Custom Leaderboards" ApiCall="(int pageIndex, int pageSize, CustomLeaderboardSorting? sortBy, bool isAscending) => Http.GetCustomLeaderboards(pageIndex, pageSize, sortBy, isAscending)" DeletionApiCall="(int id) => Http.DeleteCustomLeaderboardById(id)" GridConfiguration="grid-cols-admin-custom-leaderboards">
+<AdminOverview @ref="_overview" TGetDto="GetCustomLeaderboardForOverview" TSorting="CustomLeaderboardSorting" Title="Custom Leaderboards" ApiCall="(int pageIndex, int pageSize, CustomLeaderboardSorting? sortBy, bool isAscending) => Http.GetCustomLeaderboards(pageIndex, pageSize, sortBy, isAscending)" DeletionApiCall="(int id) => Http.DeleteCustomLeaderboardById(id)" GridConfiguration="grid-cols-admin-custom-leaderboards-sm md:grid-cols-admin-custom-leaderboards-md lg:grid-cols-admin-custom-leaderboards-lg xl:grid-cols-admin-custom-leaderboards-xl">
 	<TableHeader>
 		<a class="link overflow-hidden text-right" href="" @onclick="() => _overview.Sort(CustomLeaderboardSorting.Id)" @onclick:preventDefault>Id</a>
 		<a class="link overflow-hidden text-left" href="" @onclick="() => _overview.Sort(CustomLeaderboardSorting.SpawnsetName)" @onclick:preventDefault>Name</a>
-		<a class="link overflow-hidden text-right" href="" @onclick="() => _overview.Sort(CustomLeaderboardSorting.TimeBronze)" @onclick:preventDefault>Bronze</a>
-		<a class="link overflow-hidden text-right" href="" @onclick="() => _overview.Sort(CustomLeaderboardSorting.TimeSilver)" @onclick:preventDefault>Silver</a>
-		<a class="link overflow-hidden text-right" href="" @onclick="() => _overview.Sort(CustomLeaderboardSorting.TimeGolden)" @onclick:preventDefault>Golden</a>
-		<a class="link overflow-hidden text-right" href="" @onclick="() => _overview.Sort(CustomLeaderboardSorting.TimeDevil)" @onclick:preventDefault>Devil</a>
-		<a class="link overflow-hidden text-right" href="" @onclick="() => _overview.Sort(CustomLeaderboardSorting.TimeLeviathan)" @onclick:preventDefault>Levi</a>
-		<a class="link overflow-hidden text-left" href="" @onclick="() => _overview.Sort(CustomLeaderboardSorting.IsArchived)" @onclick:preventDefault>Archived</a>
-		<a class="link overflow-hidden text-left" href="" @onclick="() => _overview.Sort(CustomLeaderboardSorting.DateCreated)" @onclick:preventDefault>Date created</a>
-		<a class="link overflow-hidden text-left" href="" @onclick="() => _overview.Sort(CustomLeaderboardSorting.Category)" @onclick:preventDefault>Category</a>
+		<a class="link overflow-hidden hidden md:block text-right" href="" @onclick="() => _overview.Sort(CustomLeaderboardSorting.TimeBronze)" @onclick:preventDefault>Bronze</a>
+		<a class="link overflow-hidden hidden md:block text-right" href="" @onclick="() => _overview.Sort(CustomLeaderboardSorting.TimeSilver)" @onclick:preventDefault>Silver</a>
+		<a class="link overflow-hidden hidden md:block text-right" href="" @onclick="() => _overview.Sort(CustomLeaderboardSorting.TimeGolden)" @onclick:preventDefault>Golden</a>
+		<a class="link overflow-hidden hidden md:block text-right" href="" @onclick="() => _overview.Sort(CustomLeaderboardSorting.TimeDevil)" @onclick:preventDefault>Devil</a>
+		<a class="link overflow-hidden hidden md:block text-right" href="" @onclick="() => _overview.Sort(CustomLeaderboardSorting.TimeLeviathan)" @onclick:preventDefault>Levi</a>
+		<a class="link overflow-hidden hidden lg:block text-left" href="" @onclick="() => _overview.Sort(CustomLeaderboardSorting.IsArchived)" @onclick:preventDefault>Archived</a>
+		<a class="link overflow-hidden hidden xl:block text-left" href="" @onclick="() => _overview.Sort(CustomLeaderboardSorting.DateCreated)" @onclick:preventDefault>Date created</a>
+		<a class="link overflow-hidden hidden xl:block text-left" href="" @onclick="() => _overview.Sort(CustomLeaderboardSorting.Category)" @onclick:preventDefault>Category</a>
 	</TableHeader>
 	<RowTemplate Context="customLeaderboard">
 		<div class="overflow-hidden text-right">@customLeaderboard.Id</div>
 		<div class="overflow-hidden text-left">@customLeaderboard.SpawnsetName</div>
-		<div class="overflow-hidden text-right">@customLeaderboard.TimeBronze.ToString(FormatUtils.TimeFormat)</div>
-		<div class="overflow-hidden text-right">@customLeaderboard.TimeSilver.ToString(FormatUtils.TimeFormat)</div>
-		<div class="overflow-hidden text-right">@customLeaderboard.TimeGolden.ToString(FormatUtils.TimeFormat)</div>
-		<div class="overflow-hidden text-right">@customLeaderboard.TimeDevil.ToString(FormatUtils.TimeFormat)</div>
-		<div class="overflow-hidden text-right">@customLeaderboard.TimeLeviathan.ToString(FormatUtils.TimeFormat)</div>
-		<div class="overflow-hidden text-left">@customLeaderboard.IsArchived</div>
-		<div class="overflow-hidden text-left">@customLeaderboard.DateCreated?.ToString(FormatUtils.DateTimeUtcFormat)</div>
-		<div class="overflow-hidden text-left">@customLeaderboard.Category</div>
+		<div class="overflow-hidden hidden md:block text-right">@customLeaderboard.TimeBronze.ToString(FormatUtils.TimeFormat)</div>
+		<div class="overflow-hidden hidden md:block text-right">@customLeaderboard.TimeSilver.ToString(FormatUtils.TimeFormat)</div>
+		<div class="overflow-hidden hidden md:block text-right">@customLeaderboard.TimeGolden.ToString(FormatUtils.TimeFormat)</div>
+		<div class="overflow-hidden hidden md:block text-right">@customLeaderboard.TimeDevil.ToString(FormatUtils.TimeFormat)</div>
+		<div class="overflow-hidden hidden md:block text-right">@customLeaderboard.TimeLeviathan.ToString(FormatUtils.TimeFormat)</div>
+		<div class="overflow-hidden hidden lg:block text-left">@customLeaderboard.IsArchived</div>
+		<div class="overflow-hidden hidden xl:block text-left">@customLeaderboard.DateCreated?.ToString(FormatUtils.DateTimeUtcFormat)</div>
+		<div class="overflow-hidden hidden xl:block text-left">@customLeaderboard.Category</div>
 	</RowTemplate>
 </AdminOverview>
 

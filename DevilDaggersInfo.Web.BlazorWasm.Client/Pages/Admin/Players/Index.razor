@@ -8,40 +8,40 @@
 	<TableHeader>
 		<a class="link overflow-hidden text-right" href="" @onclick="() => _overview.Sort(PlayerSorting.Id)" @onclick:preventDefault>Id</a>
 		<a class="link overflow-hidden text-left" href="" @onclick="() => _overview.Sort(PlayerSorting.PlayerName)" @onclick:preventDefault>Name</a>
-		<a class="link overflow-hidden text-left" href="" @onclick="() => _overview.Sort(PlayerSorting.CountryCode)" @onclick:preventDefault>Country</a>
-		<a class="link overflow-hidden text-right" href="" @onclick="() => _overview.Sort(PlayerSorting.Dpi)" @onclick:preventDefault>DPI</a>
-		<a class="link overflow-hidden text-right" href="" @onclick="() => _overview.Sort(PlayerSorting.InGameSens)" @onclick:preventDefault>Sens</a>
-		<a class="link overflow-hidden text-right" href="" @onclick="() => _overview.Sort(PlayerSorting.Fov)" @onclick:preventDefault>FOV</a>
-		<a class="link overflow-hidden text-left" href="" @onclick="() => _overview.Sort(PlayerSorting.IsRightHanded)" @onclick:preventDefault>Right hand</a>
-		<a class="link overflow-hidden text-left" href="" @onclick="() => _overview.Sort(PlayerSorting.HasFlashHandEnabled)" @onclick:preventDefault>Flash hand</a>
-		<a class="link overflow-hidden text-right" href="" @onclick="() => _overview.Sort(PlayerSorting.Gamma)" @onclick:preventDefault>Gamma</a>
-		<a class="link overflow-hidden text-left" href="" @onclick="() => _overview.Sort(PlayerSorting.UsesLegacyAudio)" @onclick:preventDefault>Legacy audio</a>
-		<a class="link overflow-hidden text-left" href="" @onclick="() => _overview.Sort(PlayerSorting.BanType)" @onclick:preventDefault>Ban type</a>
-		<a class="link overflow-hidden text-left" href="" @onclick="() => _overview.Sort(PlayerSorting.BanDescription)" @onclick:preventDefault>Ban description</a>
-		<a class="link overflow-hidden text-right" href="" @onclick="() => _overview.Sort(PlayerSorting.BanResponsibleId)" @onclick:preventDefault>Ban responsible ID</a>
-		<a class="link overflow-hidden text-left" href="" @onclick="() => _overview.Sort(PlayerSorting.IsBannedFromDdcl)" @onclick:preventDefault>Banned from DDCL</a>
-		<a class="link overflow-hidden text-left" href="" @onclick="() => _overview.Sort(PlayerSorting.HideSettings)" @onclick:preventDefault>Hide settings</a>
-		<a class="link overflow-hidden text-left" href="" @onclick="() => _overview.Sort(PlayerSorting.HideDonations)" @onclick:preventDefault>Hide donations</a>
-		<a class="link overflow-hidden text-left" href="" @onclick="() => _overview.Sort(PlayerSorting.HidePastUsernames)" @onclick:preventDefault>Hide past names</a>
+		<a class="link overflow-hidden hidden md:block text-left" href="" @onclick="() => _overview.Sort(PlayerSorting.CountryCode)" @onclick:preventDefault>Country</a>
+		<a class="link overflow-hidden hidden md:block text-right" href="" @onclick="() => _overview.Sort(PlayerSorting.Dpi)" @onclick:preventDefault>DPI</a>
+		<a class="link overflow-hidden hidden md:block text-right" href="" @onclick="() => _overview.Sort(PlayerSorting.InGameSens)" @onclick:preventDefault>Sens</a>
+		<a class="link overflow-hidden hidden md:block text-right" href="" @onclick="() => _overview.Sort(PlayerSorting.Fov)" @onclick:preventDefault>FOV</a>
+		<a class="link overflow-hidden hidden lg:block text-left" href="" @onclick="() => _overview.Sort(PlayerSorting.IsRightHanded)" @onclick:preventDefault>Right hand</a>
+		<a class="link overflow-hidden hidden lg:block text-left" href="" @onclick="() => _overview.Sort(PlayerSorting.HasFlashHandEnabled)" @onclick:preventDefault>Flash hand</a>
+		<a class="link overflow-hidden hidden lg:block text-right" href="" @onclick="() => _overview.Sort(PlayerSorting.Gamma)" @onclick:preventDefault>Gamma</a>
+		<a class="link overflow-hidden hidden lg:block text-left" href="" @onclick="() => _overview.Sort(PlayerSorting.UsesLegacyAudio)" @onclick:preventDefault>Legacy audio</a>
+		<a class="link overflow-hidden hidden lg:block text-left" href="" @onclick="() => _overview.Sort(PlayerSorting.BanType)" @onclick:preventDefault>Ban type</a>
+		<a class="link overflow-hidden hidden xl:block text-left" href="" @onclick="() => _overview.Sort(PlayerSorting.BanDescription)" @onclick:preventDefault>Ban description</a>
+		<a class="link overflow-hidden hidden xl:block text-right" href="" @onclick="() => _overview.Sort(PlayerSorting.BanResponsibleId)" @onclick:preventDefault>Ban responsible ID</a>
+		<a class="link overflow-hidden hidden xl:block text-left" href="" @onclick="() => _overview.Sort(PlayerSorting.IsBannedFromDdcl)" @onclick:preventDefault>Banned from DDCL</a>
+		<a class="link overflow-hidden hidden xl:block text-left" href="" @onclick="() => _overview.Sort(PlayerSorting.HideSettings)" @onclick:preventDefault>Hide settings</a>
+		<a class="link overflow-hidden hidden xl:block text-left" href="" @onclick="() => _overview.Sort(PlayerSorting.HideDonations)" @onclick:preventDefault>Hide donations</a>
+		<a class="link overflow-hidden hidden xl:block text-left" href="" @onclick="() => _overview.Sort(PlayerSorting.HidePastUsernames)" @onclick:preventDefault>Hide past names</a>
 	</TableHeader>
 	<RowTemplate Context="player">
 		<div class="overflow-hidden text-right">@player.Id</div>
 		<div class="overflow-hidden text-left">@player.PlayerName</div>
-		<div class="overflow-hidden text-left">@player.CountryCode</div>
-		<div class="overflow-hidden text-right">@player.Dpi</div>
-		<div class="overflow-hidden text-right">@player.InGameSens?.ToString(FormatUtils.InGameSensFormat)</div>
-		<div class="overflow-hidden text-right">@player.Fov</div>
-		<div class="overflow-hidden text-left">@player.IsRightHanded</div>
-		<div class="overflow-hidden text-left">@player.HasFlashHandEnabled</div>
-		<div class="overflow-hidden text-right">@player.Gamma?.ToString(FormatUtils.GammaFormat)</div>
-		<div class="overflow-hidden text-left">@player.UsesLegacyAudio</div>
-		<div class="overflow-hidden text-left">@player.BanType</div>
-		<div class="overflow-hidden text-left">@player.BanDescription</div>
-		<div class="overflow-hidden text-right">@player.BanResponsibleId</div>
-		<div class="overflow-hidden text-left">@player.IsBannedFromDdcl</div>
-		<div class="overflow-hidden text-left">@player.HideSettings</div>
-		<div class="overflow-hidden text-left">@player.HideDonations</div>
-		<div class="overflow-hidden text-left">@player.HidePastUsernames</div>
+		<div class="overflow-hidden hidden md:block text-left">@player.CountryCode</div>
+		<div class="overflow-hidden hidden md:block text-right">@player.Dpi</div>
+		<div class="overflow-hidden hidden md:block text-right">@player.InGameSens?.ToString(FormatUtils.InGameSensFormat)</div>
+		<div class="overflow-hidden hidden md:block text-right">@player.Fov</div>
+		<div class="overflow-hidden hidden lg:block text-left">@player.IsRightHanded</div>
+		<div class="overflow-hidden hidden lg:block text-left">@player.HasFlashHandEnabled</div>
+		<div class="overflow-hidden hidden lg:block text-right">@player.Gamma?.ToString(FormatUtils.GammaFormat)</div>
+		<div class="overflow-hidden hidden lg:block text-left">@player.UsesLegacyAudio</div>
+		<div class="overflow-hidden hidden lg:block text-left">@player.BanType</div>
+		<div class="overflow-hidden hidden xl:block text-left">@player.BanDescription</div>
+		<div class="overflow-hidden hidden xl:block text-right">@player.BanResponsibleId</div>
+		<div class="overflow-hidden hidden xl:block text-left">@player.IsBannedFromDdcl</div>
+		<div class="overflow-hidden hidden xl:block text-left">@player.HideSettings</div>
+		<div class="overflow-hidden hidden xl:block text-left">@player.HideDonations</div>
+		<div class="overflow-hidden hidden xl:block text-left">@player.HidePastUsernames</div>
 	</RowTemplate>
 </AdminOverview>
 

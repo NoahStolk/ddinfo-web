@@ -4,26 +4,26 @@
 @using DevilDaggersInfo.Web.BlazorWasm.Shared.Dto.Admin.Donations
 @using DevilDaggersInfo.Web.BlazorWasm.Shared.Enums.Sortings.Admin
 
-<AdminOverview @ref="_overview" TGetDto="GetDonationForOverview" TSorting="DonationSorting" Title="Donations" ApiCall="(int pageIndex, int pageSize, DonationSorting? sortBy, bool isAscending) => Http.GetDonations(pageIndex, pageSize, sortBy, isAscending)" DeletionApiCall="(int id) => Http.DeleteDonationById(id)" GridConfiguration="grid-cols-admin-donations">
+<AdminOverview @ref="_overview" TGetDto="GetDonationForOverview" TSorting="DonationSorting" Title="Donations" ApiCall="(int pageIndex, int pageSize, DonationSorting? sortBy, bool isAscending) => Http.GetDonations(pageIndex, pageSize, sortBy, isAscending)" DeletionApiCall="(int id) => Http.DeleteDonationById(id)" GridConfiguration="grid-cols-admin-donations-sm md:grid-cols-admin-donations-md lg:grid-cols-admin-donations-lg xl:grid-cols-admin-donations-xl">
 	<TableHeader>
 		<a class="link overflow-hidden text-right" href="" @onclick="() => _overview.Sort(DonationSorting.Id)" @onclick:preventDefault>Id</a>
 		<a class="link overflow-hidden text-left" href="" @onclick="() => _overview.Sort(DonationSorting.PlayerName)" @onclick:preventDefault>Player</a>
 		<a class="link overflow-hidden text-right" href="" @onclick="() => _overview.Sort(DonationSorting.Amount)" @onclick:preventDefault>Amount</a>
-		<a class="link overflow-hidden text-left" href="" @onclick="() => _overview.Sort(DonationSorting.Currency)" @onclick:preventDefault>Currency</a>
-		<a class="link overflow-hidden text-right" href="" @onclick="() => _overview.Sort(DonationSorting.ConvertedEuroCentsReceived)" @onclick:preventDefault>Converted euro cents received</a>
-		<a class="link overflow-hidden text-left" href="" @onclick="() => _overview.Sort(DonationSorting.DateReceived)" @onclick:preventDefault>Date</a>
-		<a class="link overflow-hidden text-left" href="" @onclick="() => _overview.Sort(DonationSorting.Note)" @onclick:preventDefault>Note</a>
-		<a class="link overflow-hidden text-left" href="" @onclick="() => _overview.Sort(DonationSorting.IsRefunded)" @onclick:preventDefault>Refunded</a>
+		<a class="link overflow-hidden hidden md:block text-left" href="" @onclick="() => _overview.Sort(DonationSorting.Currency)" @onclick:preventDefault>Currency</a>
+		<a class="link overflow-hidden hidden md:block text-right" href="" @onclick="() => _overview.Sort(DonationSorting.ConvertedEuroCentsReceived)" @onclick:preventDefault>Converted euro cents received</a>
+		<a class="link overflow-hidden hidden lg:block text-left" href="" @onclick="() => _overview.Sort(DonationSorting.DateReceived)" @onclick:preventDefault>Date</a>
+		<a class="link overflow-hidden hidden xl:block text-left" href="" @onclick="() => _overview.Sort(DonationSorting.Note)" @onclick:preventDefault>Note</a>
+		<a class="link overflow-hidden hidden xl:block text-left" href="" @onclick="() => _overview.Sort(DonationSorting.IsRefunded)" @onclick:preventDefault>Refunded</a>
 	</TableHeader>
 	<RowTemplate Context="donation">
 		<div class="overflow-hidden text-right">@donation.Id</div>
 		<div class="overflow-hidden text-left">@donation.PlayerName</div>
 		<div class="overflow-hidden text-right">@donation.Amount</div>
-		<div class="overflow-hidden text-left">@donation.Currency</div>
-		<div class="overflow-hidden text-right">@donation.ConvertedEuroCentsReceived</div>
-		<div class="overflow-hidden text-left">@donation.DateReceived.ToString(FormatUtils.DateTimeUtcFormat)</div>
-		<div class="overflow-hidden text-left">@donation.Note</div>
-		<div class="overflow-hidden text-left">@donation.IsRefunded</div>
+		<div class="overflow-hidden hidden md:block text-left">@donation.Currency</div>
+		<div class="overflow-hidden hidden md:block text-right">@donation.ConvertedEuroCentsReceived</div>
+		<div class="overflow-hidden hidden lg:block text-left">@donation.DateReceived.ToString(FormatUtils.DateTimeUtcFormat)</div>
+		<div class="overflow-hidden hidden xl:block text-left">@donation.Note</div>
+		<div class="overflow-hidden hidden xl:block text-left">@donation.IsRefunded</div>
 	</RowTemplate>
 </AdminOverview>
 

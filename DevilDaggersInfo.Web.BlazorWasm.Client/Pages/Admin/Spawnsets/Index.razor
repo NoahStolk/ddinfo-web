@@ -4,24 +4,24 @@
 @using DevilDaggersInfo.Web.BlazorWasm.Shared.Dto.Admin.Spawnsets
 @using DevilDaggersInfo.Web.BlazorWasm.Shared.Enums.Sortings.Admin
 
-<AdminOverview @ref="_overview" TGetDto="GetSpawnsetForOverview" TSorting="SpawnsetSorting" Title="Spawnsets" ApiCall="(int pageIndex, int pageSize, SpawnsetSorting? sortBy, bool isAscending) => Http.GetSpawnsets(pageIndex, pageSize, sortBy, isAscending)" DeletionApiCall="(int id) => Http.DeleteSpawnsetById(id)" GridConfiguration="grid-cols-admin-spawnsets">
+<AdminOverview @ref="_overview" TGetDto="GetSpawnsetForOverview" TSorting="SpawnsetSorting" Title="Spawnsets" ApiCall="(int pageIndex, int pageSize, SpawnsetSorting? sortBy, bool isAscending) => Http.GetSpawnsets(pageIndex, pageSize, sortBy, isAscending)" DeletionApiCall="(int id) => Http.DeleteSpawnsetById(id)" GridConfiguration="grid-cols-admin-spawnsets-sm md:grid-cols-admin-spawnsets-md lg:grid-cols-admin-spawnsets-lg xl:grid-cols-admin-spawnsets-xl">
 	<TableHeader>
 		<a class="link overflow-hidden text-right" href="" @onclick="() => _overview.Sort(SpawnsetSorting.Id)" @onclick:preventDefault>Id</a>
 		<a class="link overflow-hidden text-left" href="" @onclick="() => _overview.Sort(SpawnsetSorting.Author)" @onclick:preventDefault>Author</a>
-		<a class="link overflow-hidden text-left" href="" @onclick="() => _overview.Sort(SpawnsetSorting.Name)" @onclick:preventDefault>Name</a>
-		<a class="link overflow-hidden text-right" href="" @onclick="() => _overview.Sort(SpawnsetSorting.MaxDisplayWaves)" @onclick:preventDefault>Max display waves</a>
-		<a class="link overflow-hidden text-left" href="" @onclick="() => _overview.Sort(SpawnsetSorting.HtmlDescription)" @onclick:preventDefault>HTML description</a>
-		<a class="link overflow-hidden text-left" href="" @onclick="() => _overview.Sort(SpawnsetSorting.LastUpdated)" @onclick:preventDefault>Last updated</a>
-		<a class="link overflow-hidden text-left" href="" @onclick="() => _overview.Sort(SpawnsetSorting.IsPractice)" @onclick:preventDefault>Practice</a>
+		<a class="link overflow-hidden hidden md:block text-left" href="" @onclick="() => _overview.Sort(SpawnsetSorting.Name)" @onclick:preventDefault>Name</a>
+		<a class="link overflow-hidden hidden lg:block text-right" href="" @onclick="() => _overview.Sort(SpawnsetSorting.MaxDisplayWaves)" @onclick:preventDefault>Max display waves</a>
+		<a class="link overflow-hidden hidden xl:block text-left" href="" @onclick="() => _overview.Sort(SpawnsetSorting.HtmlDescription)" @onclick:preventDefault>HTML description</a>
+		<a class="link overflow-hidden hidden xl:block text-left" href="" @onclick="() => _overview.Sort(SpawnsetSorting.LastUpdated)" @onclick:preventDefault>Last updated</a>
+		<a class="link overflow-hidden hidden xl:block text-left" href="" @onclick="() => _overview.Sort(SpawnsetSorting.IsPractice)" @onclick:preventDefault>Practice</a>
 	</TableHeader>
 	<RowTemplate Context="spawnset">
 		<div class="overflow-hidden text-right">@spawnset.Id</div>
 		<div class="overflow-hidden text-left">@spawnset.Author</div>
-		<div class="overflow-hidden text-left">@spawnset.Name</div>
-		<div class="overflow-hidden text-right">@spawnset.MaxDisplayWaves</div>
-		<div class="overflow-hidden text-left">@spawnset.HtmlDescription</div>
-		<div class="overflow-hidden text-left">@spawnset.LastUpdated.ToString(FormatUtils.DateTimeUtcFormat)</div>
-		<div class="overflow-hidden text-left">@spawnset.IsPractice</div>
+		<div class="overflow-hidden hidden md:block text-left">@spawnset.Name</div>
+		<div class="overflow-hidden hidden lg:block text-right">@spawnset.MaxDisplayWaves</div>
+		<div class="overflow-hidden hidden xl:block text-left">@spawnset.HtmlDescription</div>
+		<div class="overflow-hidden hidden xl:block text-left">@spawnset.LastUpdated.ToString(FormatUtils.DateTimeUtcFormat)</div>
+		<div class="overflow-hidden hidden xl:block text-left">@spawnset.IsPractice</div>
 	</RowTemplate>
 </AdminOverview>
 
