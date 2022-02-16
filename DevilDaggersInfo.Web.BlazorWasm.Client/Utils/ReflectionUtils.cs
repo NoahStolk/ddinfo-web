@@ -6,22 +6,6 @@ namespace DevilDaggersInfo.Web.BlazorWasm.Client.Utils;
 
 public static class ReflectionUtils
 {
-	public static Dictionary<PropertyInfo, bool> GetDtoDisplayProperties<TDto>()
-	{
-		return typeof(TDto)
-			.GetProperties()
-			.Where(pi => pi.CanWrite && (pi.PropertyType.IsValueType || pi.PropertyType == typeof(string)))
-			.ToDictionary(
-				pi => pi,
-				pi => TextAlignRight(pi.PropertyType));
-
-		static bool TextAlignRight(Type type)
-		{
-			UseUnderlyingNullableType(ref type);
-			return type == typeof(double) || type == typeof(float) || type == typeof(int);
-		}
-	}
-
 	private static void UseUnderlyingNullableType(ref Type type)
 	{
 		Type? nullableType = Nullable.GetUnderlyingType(type);
