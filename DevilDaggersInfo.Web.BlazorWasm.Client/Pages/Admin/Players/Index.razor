@@ -4,9 +4,16 @@
 @using DevilDaggersInfo.Web.BlazorWasm.Shared.Dto.Admin.Players
 @using DevilDaggersInfo.Web.BlazorWasm.Shared.Enums.Sortings.Admin
 
-<AdminOverview
-	TGetDto="GetPlayerForOverview"
-	Title="Players"
-	ApiCall="(int pageIndex, int pageSize, string? sortBy, bool isAscending) => Http.GetPlayers(pageIndex, pageSize, sortBy == null ? null : Enum.Parse<PlayerSorting>(sortBy), isAscending)"
-	DeletionApiCall="(int id) => Http.DeletePlayerById(id)"
-	GridConfiguration="grid-cols-admin-players" />
+<AdminOverview @ref="_overview" TGetDto="GetPlayerForOverview" TSorting="PlayerSorting" Title="Players" ApiCall="(int pageIndex, int pageSize, PlayerSorting? sortBy, bool isAscending) => Http.GetPlayers(pageIndex, pageSize, sortBy, isAscending)" DeletionApiCall="(int id) => Http.DeletePlayerById(id)" GridConfiguration="grid-cols-admin-players-sm md:grid-cols-admin-players-md lg:grid-cols-admin-players-lg xl:grid-cols-admin-players-xl">
+	<TableHeader>
+		<a class="text-right link overflow-hidden" href="" @onclick="() => _overview.Sort(PlayerSorting.Id)" @onclick:preventDefault>Id</a>
+	</TableHeader>
+	<RowTemplate>
+		<div class="text-right overflow-hidden">Id</div>
+	</RowTemplate>
+</AdminOverview>
+
+@code
+{
+	private AdminOverview<GetPlayerForOverview, PlayerSorting> _overview = null!;
+}
