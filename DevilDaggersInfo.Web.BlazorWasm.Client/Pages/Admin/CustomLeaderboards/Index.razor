@@ -4,9 +4,34 @@
 @using DevilDaggersInfo.Web.BlazorWasm.Shared.Dto.Admin.CustomLeaderboards
 @using DevilDaggersInfo.Web.BlazorWasm.Shared.Enums.Sortings.Admin
 
-<AdminOverview
-	TGetDto="GetCustomLeaderboardForOverview"
-	Title="Custom Leaderboards"
-	ApiCall="(int pageIndex, int pageSize, string? sortBy, bool isAscending) => Http.GetCustomLeaderboards(pageIndex, pageSize, sortBy == null ? null : Enum.Parse<CustomLeaderboardSorting>(sortBy), isAscending)"
-	DeletionApiCall="(int id) => Http.DeleteCustomLeaderboardById(id)"
-	GridConfiguration="grid-cols-admin-custom-leaderboards" />
+<AdminOverview TGetDto="GetCustomLeaderboardForOverview" TSorting="CustomLeaderboardSorting" Title="Custom Leaderboards" ApiCall="(int pageIndex, int pageSize, CustomLeaderboardSorting? sortBy, bool isAscending) => Http.GetCustomLeaderboards(pageIndex, pageSize, sortBy, isAscending)" DeletionApiCall="(int id) => Http.DeleteCustomLeaderboardById(id)" GridConfiguration="grid-cols-admin-custom-leaderboards">
+	<TableHeader>
+		<a class="link overflow-hidden text-right" href="" @onclick="() => _overview.Sort(CustomLeaderboardSorting.Id)" @onclick:preventDefault>Id</a>
+		<a class="link overflow-hidden text-left" href="" @onclick="() => _overview.Sort(CustomLeaderboardSorting.SpawnsetName)" @onclick:preventDefault>Name</a>
+		<a class="link overflow-hidden text-right" href="" @onclick="() => _overview.Sort(CustomLeaderboardSorting.TimeBronze)" @onclick:preventDefault>Bronze</a>
+		<a class="link overflow-hidden text-right" href="" @onclick="() => _overview.Sort(CustomLeaderboardSorting.TimeSilver)" @onclick:preventDefault>Silver</a>
+		<a class="link overflow-hidden text-right" href="" @onclick="() => _overview.Sort(CustomLeaderboardSorting.TimeGolden)" @onclick:preventDefault>Golden</a>
+		<a class="link overflow-hidden text-right" href="" @onclick="() => _overview.Sort(CustomLeaderboardSorting.TimeDevil)" @onclick:preventDefault>Devil</a>
+		<a class="link overflow-hidden text-right" href="" @onclick="() => _overview.Sort(CustomLeaderboardSorting.TimeLeviathan)" @onclick:preventDefault>Levi</a>
+		<a class="link overflow-hidden text-left" href="" @onclick="() => _overview.Sort(CustomLeaderboardSorting.IsArchived)" @onclick:preventDefault>Archived</a>
+		<a class="link overflow-hidden text-left" href="" @onclick="() => _overview.Sort(CustomLeaderboardSorting.DateCreated)" @onclick:preventDefault>Date created</a>
+		<a class="link overflow-hidden text-left" href="" @onclick="() => _overview.Sort(CustomLeaderboardSorting.Category)" @onclick:preventDefault>Category</a>
+	</TableHeader>
+	<RowTemplate Context="customLeaderboard">
+		<div class="link overflow-hidden text-right">@customLeaderboard.Id</div>
+		<div class="link overflow-hidden text-left">@customLeaderboard.SpawnsetName</div>
+		<div class="link overflow-hidden text-right">@customLeaderboard.TimeBronze</div>
+		<div class="link overflow-hidden text-right">@customLeaderboard.TimeSilver</div>
+		<div class="link overflow-hidden text-right">@customLeaderboard.TimeGolden</div>
+		<div class="link overflow-hidden text-right">@customLeaderboard.TimeDevil</div>
+		<div class="link overflow-hidden text-right">@customLeaderboard.TimeLeviathan</div>
+		<div class="link overflow-hidden text-left">@customLeaderboard.IsArchived</div>
+		<div class="link overflow-hidden text-left">@customLeaderboard.DateCreated</div>
+		<div class="link overflow-hidden text-left">@customLeaderboard.Category</div>
+	</RowTemplate>
+</AdminOverview>
+
+@code
+{
+	private AdminOverview<GetCustomLeaderboardForOverview, CustomLeaderboardSorting> _overview = null!;
+}

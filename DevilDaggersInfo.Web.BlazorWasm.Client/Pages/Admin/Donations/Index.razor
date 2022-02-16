@@ -4,9 +4,30 @@
 @using DevilDaggersInfo.Web.BlazorWasm.Shared.Dto.Admin.Donations
 @using DevilDaggersInfo.Web.BlazorWasm.Shared.Enums.Sortings.Admin
 
-<AdminOverview
-	TGetDto="GetDonationForOverview"
-	Title="Donations"
-	ApiCall="(int pageIndex, int pageSize, string? sortBy, bool isAscending) => Http.GetDonations(pageIndex, pageSize, sortBy == null ? null : Enum.Parse<DonationSorting>(sortBy), isAscending)"
-	DeletionApiCall="(int id) => Http.DeleteDonationById(id)"
-	GridConfiguration="grid-cols-admin-donations" />
+<AdminOverview TGetDto="GetDonationForOverview" TSorting="DonationSorting" Title="Donations" ApiCall="(int pageIndex, int pageSize, DonationSorting? sortBy, bool isAscending) => Http.GetDonations(pageIndex, pageSize, sortBy, isAscending)" DeletionApiCall="(int id) => Http.DeleteDonationById(id)" GridConfiguration="grid-cols-admin-donations">
+	<TableHeader>
+		<a class="link overflow-hidden text-right" href="" @onclick="() => _overview.Sort(DonationSorting.Id)" @onclick:preventDefault>Id</a>
+		<a class="link overflow-hidden text-left" href="" @onclick="() => _overview.Sort(DonationSorting.PlayerName)" @onclick:preventDefault>Player</a>
+		<a class="link overflow-hidden text-right" href="" @onclick="() => _overview.Sort(DonationSorting.Amount)" @onclick:preventDefault>Amount</a>
+		<a class="link overflow-hidden text-left" href="" @onclick="() => _overview.Sort(DonationSorting.Currency)" @onclick:preventDefault>Currency</a>
+		<a class="link overflow-hidden text-right" href="" @onclick="() => _overview.Sort(DonationSorting.ConvertedEuroCentsReceived)" @onclick:preventDefault>Converted euro cents received</a>
+		<a class="link overflow-hidden text-left" href="" @onclick="() => _overview.Sort(DonationSorting.DateReceived)" @onclick:preventDefault>Date</a>
+		<a class="link overflow-hidden text-left" href="" @onclick="() => _overview.Sort(DonationSorting.Note)" @onclick:preventDefault>Note</a>
+		<a class="link overflow-hidden text-left" href="" @onclick="() => _overview.Sort(DonationSorting.IsRefunded)" @onclick:preventDefault>Refunded</a>
+	</TableHeader>
+	<RowTemplate Context="donation">
+		<div class="link overflow-hidden text-right">@donation.Id</div>
+		<div class="link overflow-hidden text-left">@donation.PlayerName</div>
+		<div class="link overflow-hidden text-right">@donation.Amount</div>
+		<div class="link overflow-hidden text-left">@donation.Currency</div>
+		<div class="link overflow-hidden text-right">@donation.ConvertedEuroCentsReceived</div>
+		<div class="link overflow-hidden text-left">@donation.DateReceived</div>
+		<div class="link overflow-hidden text-left">@donation.Note</div>
+		<div class="link overflow-hidden text-left">@donation.IsRefunded</div>
+	</RowTemplate>
+</AdminOverview>
+
+@code
+{
+	private AdminOverview<GetDonationForOverview, DonationSorting> _overview = null!;
+}

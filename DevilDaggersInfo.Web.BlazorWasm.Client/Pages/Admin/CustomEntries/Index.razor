@@ -4,9 +4,54 @@
 @using DevilDaggersInfo.Web.BlazorWasm.Shared.Dto.Admin.CustomEntries
 @using DevilDaggersInfo.Web.BlazorWasm.Shared.Enums.Sortings.Admin
 
-<AdminOverview
-	TGetDto="GetCustomEntryForOverview"
-	Title="Custom Entries"
-	ApiCall="(int pageIndex, int pageSize, string? sortBy, bool isAscending) => Http.GetCustomEntries(pageIndex, pageSize, sortBy == null ? null : Enum.Parse<CustomEntrySorting>(sortBy), isAscending)"
-	DeletionApiCall="(int id) => Http.DeleteCustomEntryById(id)"
-	GridConfiguration="grid-cols-admin-custom-entries" />
+<AdminOverview TGetDto="GetCustomEntryForOverview" TSorting="CustomEntrySorting" Title="Custom Entries" ApiCall="(int pageIndex, int pageSize, CustomEntrySorting? sortBy, bool isAscending) => Http.GetCustomEntries(pageIndex, pageSize, sortBy, isAscending)" DeletionApiCall="(int id) => Http.DeleteCustomEntryById(id)" GridConfiguration="grid-cols-admin-custom-entries">
+	<TableHeader>
+		<a class="link overflow-hidden text-right" href="" @onclick="() => _overview.Sort(CustomEntrySorting.Id)" @onclick:preventDefault>Id</a>
+		<a class="link overflow-hidden text-left" href="" @onclick="() => _overview.Sort(CustomEntrySorting.SpawnsetName)" @onclick:preventDefault>Name</a>
+		<a class="link overflow-hidden text-left" href="" @onclick="() => _overview.Sort(CustomEntrySorting.PlayerName)" @onclick:preventDefault>Player</a>
+		<a class="link overflow-hidden text-right" href="" @onclick="() => _overview.Sort(CustomEntrySorting.Time)" @onclick:preventDefault>Time</a>
+		<a class="link overflow-hidden text-right" href="" @onclick="() => _overview.Sort(CustomEntrySorting.GemsCollected)" @onclick:preventDefault>Gems</a>
+		<a class="link overflow-hidden text-right" href="" @onclick="() => _overview.Sort(CustomEntrySorting.GemsDespawned)" @onclick:preventDefault>Gems desp</a>
+		<a class="link overflow-hidden text-right" href="" @onclick="() => _overview.Sort(CustomEntrySorting.GemsEaten)" @onclick:preventDefault>Gems eaten</a>
+		<a class="link overflow-hidden text-right" href="" @onclick="() => _overview.Sort(CustomEntrySorting.GemsTotal)" @onclick:preventDefault>Gems total</a>
+		<a class="link overflow-hidden text-right" href="" @onclick="() => _overview.Sort(CustomEntrySorting.EnemiesKilled)" @onclick:preventDefault>Kills</a>
+		<a class="link overflow-hidden text-right" href="" @onclick="() => _overview.Sort(CustomEntrySorting.EnemiesAlive)" @onclick:preventDefault>Alive</a>
+		<a class="link overflow-hidden text-right" href="" @onclick="() => _overview.Sort(CustomEntrySorting.DaggersFired)" @onclick:preventDefault>Fired</a>
+		<a class="link overflow-hidden text-right" href="" @onclick="() => _overview.Sort(CustomEntrySorting.DaggersHit)" @onclick:preventDefault>Hit</a>
+		<a class="link overflow-hidden text-right" href="" @onclick="() => _overview.Sort(CustomEntrySorting.HomingStored)" @onclick:preventDefault>Homing</a>
+		<a class="link overflow-hidden text-right" href="" @onclick="() => _overview.Sort(CustomEntrySorting.HomingEaten)" @onclick:preventDefault>Homing eaten</a>
+		<a class="link overflow-hidden text-left" href="" @onclick="() => _overview.Sort(CustomEntrySorting.DeathType)" @onclick:preventDefault>Death</a>
+		<a class="link overflow-hidden text-right" href="" @onclick="() => _overview.Sort(CustomEntrySorting.LevelUpTime2)" @onclick:preventDefault>Level 2</a>
+		<a class="link overflow-hidden text-right" href="" @onclick="() => _overview.Sort(CustomEntrySorting.LevelUpTime3)" @onclick:preventDefault>Level 3</a>
+		<a class="link overflow-hidden text-right" href="" @onclick="() => _overview.Sort(CustomEntrySorting.LevelUpTime4)" @onclick:preventDefault>Level 4</a>
+		<a class="link overflow-hidden text-left" href="" @onclick="() => _overview.Sort(CustomEntrySorting.SubmitDate)" @onclick:preventDefault>Date</a>
+		<a class="link overflow-hidden text-right" href="" @onclick="() => _overview.Sort(CustomEntrySorting.ClientVersion)" @onclick:preventDefault>Version</a>
+	</TableHeader>
+	<RowTemplate Context="customLeaderboard">
+		<div class="link overflow-hidden text-right">@customLeaderboard.Id</div>
+		<div class="link overflow-hidden text-left">@customLeaderboard.SpawnsetName</div>
+		<div class="link overflow-hidden text-left">@customLeaderboard.PlayerName</div>
+		<div class="link overflow-hidden text-right">@customLeaderboard.Time</div>
+		<div class="link overflow-hidden text-right">@customLeaderboard.GemsCollected</div>
+		<div class="link overflow-hidden text-right">@customLeaderboard.GemsDespawned</div>
+		<div class="link overflow-hidden text-right">@customLeaderboard.GemsEaten</div>
+		<div class="link overflow-hidden text-right">@customLeaderboard.GemsTotal</div>
+		<div class="link overflow-hidden text-right">@customLeaderboard.EnemiesKilled</div>
+		<div class="link overflow-hidden text-right">@customLeaderboard.EnemiesAlive</div>
+		<div class="link overflow-hidden text-right">@customLeaderboard.DaggersFired</div>
+		<div class="link overflow-hidden text-right">@customLeaderboard.DaggersHit</div>
+		<div class="link overflow-hidden text-right">@customLeaderboard.HomingStored</div>
+		<div class="link overflow-hidden text-right">@customLeaderboard.HomingEaten</div>
+		<div class="link overflow-hidden text-left">@customLeaderboard.DeathType</div>
+		<div class="link overflow-hidden text-right">@customLeaderboard.LevelUpTime2</div>
+		<div class="link overflow-hidden text-right">@customLeaderboard.LevelUpTime3</div>
+		<div class="link overflow-hidden text-right">@customLeaderboard.LevelUpTime4</div>
+		<div class="link overflow-hidden text-left">@customLeaderboard.SubmitDate</div>
+		<div class="link overflow-hidden text-right">@customLeaderboard.ClientVersion</div>
+	</RowTemplate>
+</AdminOverview>
+
+@code
+{
+	private AdminOverview<GetCustomEntryForOverview, CustomEntrySorting> _overview = null!;
+}

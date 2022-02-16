@@ -4,9 +4,28 @@
 @using DevilDaggersInfo.Web.BlazorWasm.Shared.Dto.Admin.Spawnsets
 @using DevilDaggersInfo.Web.BlazorWasm.Shared.Enums.Sortings.Admin
 
-<AdminOverview
-	TGetDto="GetSpawnsetForOverview"
-	Title="Spawnsets"
-	ApiCall="(int pageIndex, int pageSize, string? sortBy, bool isAscending) => Http.GetSpawnsets(pageIndex, pageSize, sortBy == null ? null : Enum.Parse<SpawnsetSorting>(sortBy), isAscending)"
-	DeletionApiCall="(int id) => Http.DeleteSpawnsetById(id)"
-	GridConfiguration="grid-cols-admin-spawnsets" />
+<AdminOverview TGetDto="GetSpawnsetForOverview" TSorting="SpawnsetSorting" Title="Spawnsets" ApiCall="(int pageIndex, int pageSize, SpawnsetSorting? sortBy, bool isAscending) => Http.GetSpawnsets(pageIndex, pageSize, sortBy, isAscending)" DeletionApiCall="(int id) => Http.DeleteSpawnsetById(id)" GridConfiguration="grid-cols-admin-spawnsets">
+	<TableHeader>
+		<a class="link overflow-hidden text-right" href="" @onclick="() => _overview.Sort(SpawnsetSorting.Id)" @onclick:preventDefault>Id</a>
+		<a class="link overflow-hidden text-left" href="" @onclick="() => _overview.Sort(SpawnsetSorting.Author)" @onclick:preventDefault>Author</a>
+		<a class="link overflow-hidden text-left" href="" @onclick="() => _overview.Sort(SpawnsetSorting.Name)" @onclick:preventDefault>Name</a>
+		<a class="link overflow-hidden text-right" href="" @onclick="() => _overview.Sort(SpawnsetSorting.MaxDisplayWaves)" @onclick:preventDefault>Max display waves</a>
+		<a class="link overflow-hidden text-left" href="" @onclick="() => _overview.Sort(SpawnsetSorting.HtmlDescription)" @onclick:preventDefault>HTML description</a>
+		<a class="link overflow-hidden text-left" href="" @onclick="() => _overview.Sort(SpawnsetSorting.LastUpdated)" @onclick:preventDefault>Last updated</a>
+		<a class="link overflow-hidden text-left" href="" @onclick="() => _overview.Sort(SpawnsetSorting.IsPractice)" @onclick:preventDefault>Practice</a>
+	</TableHeader>
+	<RowTemplate Context="spawnset">
+		<div class="link overflow-hidden text-right">@spawnset.Id</div>
+		<div class="link overflow-hidden text-left">@spawnset.Author</div>
+		<div class="link overflow-hidden text-left">@spawnset.Name</div>
+		<div class="link overflow-hidden text-right">@spawnset.MaxDisplayWaves</div>
+		<div class="link overflow-hidden text-left">@spawnset.HtmlDescription</div>
+		<div class="link overflow-hidden text-left">@spawnset.LastUpdated</div>
+		<div class="link overflow-hidden text-left">@spawnset.IsPractice</div>
+	</RowTemplate>
+</AdminOverview>
+
+@code
+{
+	private AdminOverview<GetSpawnsetForOverview, SpawnsetSorting> _overview = null!;
+}
