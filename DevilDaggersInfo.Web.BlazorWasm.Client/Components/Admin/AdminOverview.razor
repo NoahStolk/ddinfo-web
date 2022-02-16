@@ -30,7 +30,7 @@ else
 	<Deletion AfterDelete="Fetch" ApiCall="@DeletionApiCall" @ref="_deletion" />
 
 	<div class="bg-gray-1 p-2 text-lg">
-		<a class="link block w-24 mb-2 mx-1" href="@($"{NavigationManager.Uri}/add")">Add new</a>
+		<a class="btn btn-green block w-24 mb-2 mx-1" href="@($"{NavigationManager.Uri}/add")">Add new</a>
 
 		<CascadingValue Value="this">
 			<Paging />
