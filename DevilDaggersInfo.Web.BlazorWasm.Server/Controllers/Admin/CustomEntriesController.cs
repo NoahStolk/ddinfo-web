@@ -13,11 +13,13 @@ public class CustomEntriesController : ControllerBase
 {
 	private readonly ApplicationDbContext _dbContext;
 	private readonly AuditLogger _auditLogger;
+	private readonly IFileSystemService _fileSystemService;
 
-	public CustomEntriesController(ApplicationDbContext dbContext, AuditLogger auditLogger)
+	public CustomEntriesController(ApplicationDbContext dbContext, AuditLogger auditLogger, IFileSystemService fileSystemService)
 	{
 		_dbContext = dbContext;
 		_auditLogger = auditLogger;
+		_fileSystemService = fileSystemService;
 	}
 
 	[HttpGet]
@@ -212,7 +214,13 @@ public class CustomEntriesController : ControllerBase
 		_dbContext.CustomEntries.Remove(customEntry);
 		_dbContext.SaveChanges();
 
-		await _auditLogger.LogDelete(customEntry.GetLog(), User, customEntry.Id);
+		string path = Path.Combine(_fileSystemService.GetPath(DataSubDirectory.CustomEntryReplays), $"{id}.ddreplay");
+		bool fileExists = IoFile.Exists(path);
+		if (fileExists)
+			IoFile.Delete(path);
+
+		string message = fileExists ? $"File {_fileSystemService.FormatPath(path)} was deleted." : $"File {_fileSystemService.FormatPath(path)} was not deleted because it does not exist.";
+		await _auditLogger.LogDelete(customEntry.GetLog(), User, customEntry.Id, new() { new(message, fileExists ? FileSystemInformationType.Delete : FileSystemInformationType.NotFound) });
 
 		return Ok();
 	}
