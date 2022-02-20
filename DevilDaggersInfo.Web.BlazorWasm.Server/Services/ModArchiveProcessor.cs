@@ -58,6 +58,7 @@ public class ModArchiveProcessor
 		if (!shouldRebuildArchive)
 		{
 			// Simply rename the archive here. Rebuilding the archive entirely is unnecessary.
+			// TODO: This does not actually rename the binaries inside.
 			if (originalModName != newModName)
 				RenameModArchiveAndCacheFiles(originalModName, newModName, fileSystemInformation);
 

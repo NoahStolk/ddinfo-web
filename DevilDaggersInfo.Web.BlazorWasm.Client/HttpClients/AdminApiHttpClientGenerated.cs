@@ -4,6 +4,7 @@ using DevilDaggersInfo.Web.BlazorWasm.Shared.Dto;
 using DevilDaggersInfo.Web.BlazorWasm.Shared.Dto.Admin.CustomEntries;
 using DevilDaggersInfo.Web.BlazorWasm.Shared.Dto.Admin.CustomLeaderboards;
 using DevilDaggersInfo.Web.BlazorWasm.Shared.Dto.Admin.Donations;
+using DevilDaggersInfo.Web.BlazorWasm.Shared.Dto.Admin.Health;
 using DevilDaggersInfo.Web.BlazorWasm.Shared.Dto.Admin.Mods;
 using DevilDaggersInfo.Web.BlazorWasm.Shared.Dto.Admin.Players;
 using DevilDaggersInfo.Web.BlazorWasm.Shared.Dto.Admin.Spawnsets;
@@ -115,6 +116,21 @@ public partial class AdminApiHttpClient
 	public async Task<HttpResponseMessage> DeleteDonationById(int id)
 	{
 		return await SendRequest(new HttpMethod("DELETE"), $"api/admin/donations/{id}");
+	}
+
+	public async Task<List<GetResponseTimeEntry>> GetResponseTimes(DateTime startDateTime, DateTime endDateTime)
+	{
+		Dictionary<string, object?> queryParameters = new()
+		{
+			{ nameof(startDateTime), startDateTime },
+			{ nameof(endDateTime), endDateTime }
+		};
+		return await SendGetRequest<List<GetResponseTimeEntry>>(UrlBuilderUtils.BuildUrlWithQuery($"api/admin/health/responses", queryParameters));
+	}
+
+	public async Task<HttpResponseMessage> ClearResponseTimes(string? empty)
+	{
+		return await SendRequest(new HttpMethod("POST"), $"api/admin/health/responses/clear", JsonContent.Create(empty));
 	}
 
 	public async Task<Page<GetModForOverview>> GetMods(int pageIndex, int pageSize, ModSorting? sortBy, bool ascending)

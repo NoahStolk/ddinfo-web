@@ -1,0 +1,94 @@
+@page "/admin/health"
+@inherits BaseAdminPage
+@using DevilDaggersInfo.Web.BlazorWasm.Client.Components.Admin
+@using DevilDaggersInfo.Web.BlazorWasm.Shared.Dto.Admin.Health
+@using System.Runtime.CompilerServices
+
+<Heading Title="Health" />
+
+<Heading Level="2" Title="Response Times" />
+
+<a class="btn btn-green cursor-pointer block w-24 mb-2 mx-1" @onclick="async () => await FetchEntries()">Refresh</a>
+
+<a class="btn btn-red cursor-pointer block w-24 mb-2 mx-1" @onclick="async () => await ClearEntries()">Clear</a>
+
+@if (_entries == null)
+{
+	<Loading />
+}
+else
+{
+	<div class="grid gap-2 grid-cols-5">
+		<div><a href="" @onclick:preventDefault class="link" @onclick="() => Sort(e => e.RequestPath)">Request path</a></div>
+		<div class="text-right"><a href="" @onclick:preventDefault class="link" @onclick="() => Sort(e => e.RequestCount)">Request count</a></div>
+		<div class="text-right"><a href="" @onclick:preventDefault class="link" @onclick="() => Sort(e => e.AverageResponseTimeTicks)">Avg response time</a></div>
+		<div class="text-right"><a href="" @onclick:preventDefault class="link" @onclick="() => Sort(e => e.MinResponseTimeTicks)">Min response time</a></div>
+		<div class="text-right"><a href="" @onclick:preventDefault class="link" @onclick="() => Sort(e => e.MaxResponseTimeTicks)">Max response time</a></div>
+	</div>
+	<div>
+		@{
+			int i = 0;
+			foreach (GetResponseTimeEntry e in _entries)
+			{
+				<div class="grid gap-2 grid-cols-5 @(i++ % 2 == 0 ? "bg-gray-1" : string.Empty)">
+					<div>@e.RequestPath</div>
+					<div class="text-right">@e.RequestCount</div>
+					<div class="text-right">@GetFormattedTime(e.AverageResponseTimeTicks)</div>
+					<div class="text-right">@GetFormattedTime((double)e.MinResponseTimeTicks)</div>
+					<div class="text-right">@GetFormattedTime((double)e.MaxResponseTimeTicks)</div>
+				</div>
+			}
+		}
+	</div>
+}
+
+@code
+{
+	private List<GetResponseTimeEntry>? _entries;
+
+	private Dictionary<string, bool> _sortings = new();
+
+	protected override async Task OnInitializedAsync()
+	{
+		await FetchEntries();
+	}
+
+	private async Task FetchEntries()
+	{
+		_entries = null;
+		_entries = await Http.GetResponseTimes(DateTime.UtcNow.AddDays(-1), DateTime.UtcNow);
+	}
+
+	private async Task ClearEntries()
+	{
+		await Http.ClearResponseTimes(null);
+		await FetchEntries();
+	}
+
+	private static string GetFormattedTime(double ticks)
+	{
+		if (ticks >= TimeSpan.TicksPerSecond)
+			return $"{ticks / (float)TimeSpan.TicksPerSecond:0.00} s";
+
+		if (ticks >= TimeSpan.TicksPerMillisecond)
+			return $"{ticks / (float)TimeSpan.TicksPerMillisecond:0.0} ms";
+
+		return $"{ticks / 10f:0} μs";
+	}
+
+	private void Sort<TKey>(Func<GetResponseTimeEntry, TKey> sorting, [CallerArgumentExpression("sorting")] string sortingExpression = "")
+	{
+		if (_entries == null)
+			return;
+
+		bool sortDirection = false;
+		if (_sortings.ContainsKey(sortingExpression))
+			sortDirection = _sortings[sortingExpression];
+		else
+			_sortings.Add(sortingExpression, false);
+
+		_entries = _entries.OrderBy(sorting, sortDirection).ToList();
+
+		_sortings[sortingExpression] = !sortDirection;
+	}
+}

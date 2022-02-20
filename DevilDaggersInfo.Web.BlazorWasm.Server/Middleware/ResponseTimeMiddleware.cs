@@ -13,26 +13,12 @@ public class ResponseTimeMiddleware
 
 	public Task InvokeAsync(HttpContext context)
 	{
-		PathString path = context.Request.Path;
-		string pathString = path.ToString();
-		if (pathString.EndsWith(".png")
-		 || pathString.EndsWith(".jpg")
-		 || pathString.EndsWith(".css")
-		 || pathString.EndsWith(".js")
-		 || pathString.EndsWith(".ico")
-		 || pathString.EndsWith(".gif")
-		 || pathString.EndsWith(".ttf")
-		 || pathString.EndsWith(".json"))
-		{
-			return _next(context);
-		}
-
 		Stopwatch sw = Stopwatch.StartNew();
 		context.Response.OnStarting(() =>
 		{
 			sw.Stop();
 
-			_responseTimeMonitor.Add(pathString, sw.ElapsedTicks, DateTime.UtcNow);
+			_responseTimeMonitor.Add(context.Request.Path.ToString(), sw.ElapsedTicks, DateTime.UtcNow);
 
 			return Task.CompletedTask;
 		});
