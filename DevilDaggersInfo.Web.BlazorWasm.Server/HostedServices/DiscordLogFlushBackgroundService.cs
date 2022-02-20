@@ -5,13 +5,13 @@ namespace DevilDaggersInfo.Web.BlazorWasm.Server.HostedServices;
 
 public class DiscordLogFlushBackgroundService : AbstractBackgroundService
 {
-	public DiscordLogFlushBackgroundService(BackgroundServiceMonitor backgroundServiceMonitor, ILogger<DiscordLogFlushBackgroundService> logger)
+	private readonly LogContainerService _logContainerService;
+
+	public DiscordLogFlushBackgroundService(BackgroundServiceMonitor backgroundServiceMonitor, LogContainerService logContainerService, ILogger<DiscordLogFlushBackgroundService> logger)
 		: base(backgroundServiceMonitor, logger)
 	{
+		_logContainerService = logContainerService;
 	}
-
-	// TODO: Refactor.
-	public static List<DiscordEmbed> LogEntries { get; } = new();
 
 	protected override TimeSpan Interval => TimeSpan.FromSeconds(2);
 
@@ -21,11 +21,11 @@ public class DiscordLogFlushBackgroundService : AbstractBackgroundService
 		if (channel == null)
 			return;
 
-		while (LogEntries.Count > 0)
+		while (_logContainerService.LogEntries.Count > 0)
 		{
-			DiscordEmbed embed = LogEntries[0];
+			DiscordEmbed embed = _logContainerService.LogEntries[0];
 			await channel.SendMessageAsyncSafe(null, embed);
-			LogEntries.RemoveAt(0);
+			_logContainerService.RemoveFirst();
 		}
 	}
 }

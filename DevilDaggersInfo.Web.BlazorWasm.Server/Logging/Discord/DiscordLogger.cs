@@ -1,4 +1,3 @@
-using DevilDaggersInfo.Web.BlazorWasm.Server.HostedServices;
 using DSharpPlus.Entities;
 
 namespace DevilDaggersInfo.Web.BlazorWasm.Server.Logging.Discord;
@@ -7,12 +6,14 @@ public class DiscordLogger : ILogger
 {
 	private readonly string _name;
 	private readonly IWebHostEnvironment _environment;
+	private readonly LogContainerService _logContainerService;
 	private readonly Func<DiscordLoggerConfiguration> _getCurrentConfig;
 
-	public DiscordLogger(string name, IWebHostEnvironment environment, Func<DiscordLoggerConfiguration> getCurrentConfig)
+	public DiscordLogger(string name, IWebHostEnvironment environment, LogContainerService logContainerService, Func<DiscordLoggerConfiguration> getCurrentConfig)
 	{
 		_name = name;
 		_environment = environment;
+		_logContainerService = logContainerService;
 		_getCurrentConfig = getCurrentConfig;
 	}
 
@@ -29,8 +30,7 @@ public class DiscordLogger : ILogger
 		if (config.EventId != 0 && config.EventId != eventId.Id)
 			return;
 
-		// Do not log immediately as this is async for Discord. TODO: Refactor.
-		DiscordLogFlushBackgroundService.LogEntries.Add(BuildLog(logLevel, eventId, config, state, exception));
+		_logContainerService.Add(BuildLog(logLevel, eventId, config, state, exception));
 	}
 
 	private DiscordEmbed BuildLog<TState>(LogLevel logLevel, EventId eventId, DiscordLoggerConfiguration config, TState? state, Exception? exception)

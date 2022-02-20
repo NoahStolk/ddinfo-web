@@ -54,6 +54,7 @@ public class Startup
 		services.AddScoped<IUserService, UserService>();
 
 		services.AddSingleton<BackgroundServiceMonitor>();
+		services.AddSingleton<LogContainerService>();
 		services.AddSingleton<ResponseTimeMonitor>();
 
 		services.AddSingleton<IFileSystemService, FileSystemService>();
