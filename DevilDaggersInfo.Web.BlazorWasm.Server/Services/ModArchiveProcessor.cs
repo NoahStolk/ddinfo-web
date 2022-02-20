@@ -54,18 +54,9 @@ public class ModArchiveProcessor
 
 	public async Task<bool> TransformBinariesInModArchiveAsync(string originalModName, string newModName, List<string> binariesToDelete, Dictionary<string, byte[]> newBinaries, List<FileSystemInformation> fileSystemInformation)
 	{
-		bool shouldRebuildArchive = binariesToDelete.Count > 0 || newBinaries.Count > 0;
-		if (!shouldRebuildArchive)
-		{
-			// Simply rename the archive here. Rebuilding the archive entirely is unnecessary.
-			// TODO: This does not actually rename the binaries inside.
-			if (originalModName != newModName)
-				RenameModArchiveAndCacheFiles(originalModName, newModName, fileSystemInformation);
-
+		bool hasAnyBinaryContentChanges = binariesToDelete.Count > 0 || newBinaries.Count > 0;
+		if (!hasAnyBinaryContentChanges && originalModName == newModName)
 			return false;
-		}
-
-		ValidateSpaceAvailable();
 
 		Dictionary<string, byte[]> keptBinaries = new();
 		string originalArchivePath = _modArchiveAccessor.GetModArchivePath(originalModName);
@@ -96,39 +87,7 @@ public class ModArchiveProcessor
 		Dictionary<string, byte[]> combinedBinaries = new List<Dictionary<string, byte[]>>() { keptBinaries, newBinaries }.SelectMany(dict => dict).ToDictionary(kvp => kvp.Key, kvp => kvp.Value);
 		await ProcessModBinaryUploadAsync(newModName, combinedBinaries, fileSystemInformation);
 
-		return true;
-	}
-
-	private void RenameModArchiveAndCacheFiles(string originalModName, string newModName, List<FileSystemInformation> fileSystemInformation)
-	{
-		string directory = _fileSystemService.GetPath(DataSubDirectory.Mods);
-		string oldPath = Path.Combine(directory, $"{originalModName}.zip");
-		if (IoFile.Exists(oldPath))
-		{
-			string newPath = Path.Combine(directory, $"{newModName}.zip");
-			IoFile.Move(oldPath, newPath);
-			fileSystemInformation.Add(new($"File {_fileSystemService.FormatPath(oldPath)} was moved to {_fileSystemService.FormatPath(newPath)}.", FileSystemInformationType.Move));
-
-			// Clear entire memory cache (can't clear individual entries).
-			_modArchiveCache.Clear();
-		}
-		else
-		{
-			fileSystemInformation.Add(new($"File {_fileSystemService.FormatPath(oldPath)} was not moved because it does not exist.", FileSystemInformationType.NotFound));
-		}
-
-		string cacheDirectory = _fileSystemService.GetPath(DataSubDirectory.ModArchiveCache);
-		string oldCachePath = Path.Combine(cacheDirectory, $"{originalModName}.json");
-		if (IoFile.Exists(oldCachePath))
-		{
-			string newCachePath = Path.Combine(cacheDirectory, $"{newModName}.json");
-			IoFile.Move(oldCachePath, newCachePath);
-			fileSystemInformation.Add(new($"File {_fileSystemService.FormatPath(oldCachePath)} was moved to {_fileSystemService.FormatPath(newCachePath)}.", FileSystemInformationType.Move));
-		}
-		else
-		{
-			fileSystemInformation.Add(new($"File {_fileSystemService.FormatPath(oldCachePath)} was not moved because it does not exist.", FileSystemInformationType.NotFound));
-		}
+		return hasAnyBinaryContentChanges;
 	}
 
 	/// <summary>

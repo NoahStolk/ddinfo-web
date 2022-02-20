@@ -8,6 +8,7 @@ public class ResponseTimeMonitor
 
 	public void Add(string path, long responseTimeTicks, DateTime dateTime)
 	{
+		// TODO: Improve this so path parameters that are not at the end of the request path are replaced as well.
 		int indexOfLastSeparator = path.LastIndexOf('/');
 		if (indexOfLastSeparator != -1)
 		{
