@@ -31,7 +31,7 @@ else
 			foreach (GetResponseTimeEntry e in _entries)
 			{
 				<div class="grid gap-2 grid-cols-5 @(i++ % 2 == 0 ? "bg-gray-1" : string.Empty)">
-					<div>@e.RequestPath</div>
+					<div class="overflow-hidden">@e.RequestPath</div>
 					<div class="text-right">@e.RequestCount</div>
 					<div class="text-right">@GetFormattedTime(e.AverageResponseTimeTicks)</div>
 					<div class="text-right">@GetFormattedTime((double)e.MinResponseTimeTicks)</div>
