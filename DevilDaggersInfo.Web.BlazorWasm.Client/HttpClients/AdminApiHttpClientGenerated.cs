@@ -118,19 +118,13 @@ public partial class AdminApiHttpClient
 		return await SendRequest(new HttpMethod("DELETE"), $"api/admin/donations/{id}");
 	}
 
-	public async Task<List<GetResponseTimeEntry>> GetResponseTimes(DateTime startDateTime, DateTime endDateTime)
+	public async Task<List<GetResponseTimeEntry>> GetResponseTimes(DateTime date)
 	{
 		Dictionary<string, object?> queryParameters = new()
 		{
-			{ nameof(startDateTime), startDateTime },
-			{ nameof(endDateTime), endDateTime }
+			{ nameof(date), date }
 		};
 		return await SendGetRequest<List<GetResponseTimeEntry>>(UrlBuilderUtils.BuildUrlWithQuery($"api/admin/health/responses", queryParameters));
-	}
-
-	public async Task<HttpResponseMessage> ClearResponseTimes(string? empty)
-	{
-		return await SendRequest(new HttpMethod("POST"), $"api/admin/health/responses/clear", JsonContent.Create(empty));
 	}
 
 	public async Task<Page<GetModForOverview>> GetMods(int pageIndex, int pageSize, ModSorting? sortBy, bool ascending)

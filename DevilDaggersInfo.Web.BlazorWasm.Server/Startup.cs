@@ -77,6 +77,7 @@ public class Startup
 			services.AddHostedService<DatabaseLoggerBackgroundService>();
 			services.AddHostedService<FileSystemLoggerBackgroundService>();
 			services.AddHostedService<LeaderboardHistoryBackgroundService>();
+			services.AddHostedService<ResponseTimesBackgroundService>();
 		}
 
 		services.AddAuthentication(options =>

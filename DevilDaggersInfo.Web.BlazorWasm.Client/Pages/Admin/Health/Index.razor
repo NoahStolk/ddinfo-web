@@ -10,8 +10,6 @@
 
 <a class="btn btn-green cursor-pointer block w-24 mb-2 mx-1" @onclick="async () => await FetchEntries()">Refresh</a>
 
-<a class="btn btn-red cursor-pointer block w-24 mb-2 mx-1" @onclick="async () => await ClearEntries()">Clear</a>
-
 @if (_entries == null)
 {
 	<Loading />
@@ -56,13 +54,7 @@ else
 	private async Task FetchEntries()
 	{
 		_entries = null;
-		_entries = await Http.GetResponseTimes(DateTime.UtcNow.AddDays(-1), DateTime.UtcNow);
-	}
-
-	private async Task ClearEntries()
-	{
-		await Http.ClearResponseTimes(null);
-		await FetchEntries();
+		_entries = await Http.GetResponseTimes(DateTime.UtcNow);
 	}
 
 	private static string GetFormattedTime(double ticks)
