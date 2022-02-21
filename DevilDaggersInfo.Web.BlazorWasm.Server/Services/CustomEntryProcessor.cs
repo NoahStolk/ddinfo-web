@@ -187,12 +187,12 @@ public class CustomEntryProcessor
 		if (customEntryData == null)
 		{
 			customEntryData = new() { CustomEntryId = customEntry.Id };
-			Populate(customEntryData, uploadRequest.GameStates);
+			PopulateCustomEntryData(customEntryData, uploadRequest.GameStates);
 			_dbContext.CustomEntryData.Add(customEntryData);
 		}
 		else
 		{
-			Populate(customEntryData, uploadRequest.GameStates);
+			PopulateCustomEntryData(customEntryData, uploadRequest.GameStates);
 		}
 
 		UpdateLeaderboardStatistics(customLeaderboard);
@@ -349,7 +349,7 @@ public class CustomEntryProcessor
 		}
 	}
 
-	private static void Populate(CustomEntryDataEntity ced, List<AddGameState> gameStates)
+	private static void PopulateCustomEntryData(CustomEntryDataEntity ced, List<AddGameState> gameStates)
 	{
 		ced.GemsCollectedData = CompressProperty(gs => gs.GemsCollected);
 		ced.EnemiesKilledData = CompressProperty(gs => gs.EnemiesKilled);
@@ -438,7 +438,7 @@ public class CustomEntryProcessor
 		_dbContext.CustomEntries.Add(newCustomEntry);
 
 		CustomEntryDataEntity newCustomEntryData = new() { CustomEntry = newCustomEntry };
-		Populate(newCustomEntryData, uploadRequest.GameStates);
+		PopulateCustomEntryData(newCustomEntryData, uploadRequest.GameStates);
 		_dbContext.CustomEntryData.Add(newCustomEntryData);
 
 		UpdateLeaderboardStatistics(customLeaderboard);
