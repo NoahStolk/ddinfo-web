@@ -34,8 +34,8 @@ else
 					<div class="overflow-hidden">@e.RequestPath</div>
 					<div class="text-right">@e.RequestCount</div>
 					<div class="text-right">@GetFormattedTime(e.AverageResponseTimeTicks)</div>
-					<div class="text-right">@GetFormattedTime((double)e.MinResponseTimeTicks)</div>
-					<div class="text-right">@GetFormattedTime((double)e.MaxResponseTimeTicks)</div>
+					<div class="text-right">@GetFormattedTime(e.MinResponseTimeTicks)</div>
+					<div class="text-right">@GetFormattedTime(e.MaxResponseTimeTicks)</div>
 				</div>
 			}
 		}

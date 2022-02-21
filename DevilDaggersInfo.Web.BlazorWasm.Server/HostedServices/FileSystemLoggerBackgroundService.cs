@@ -44,9 +44,5 @@ public class FileSystemLoggerBackgroundService : AbstractBackgroundService
 		return new(allFiles.Sum(fi => fi.Length), allFiles.Count());
 	}
 
-#pragma warning disable SA1201 // Elements should appear in the correct order
-#pragma warning disable SA1313 // Parameter names should begin with lower-case letter
 	private readonly record struct DirectoryStatistics(long Size, int FileCount);
-#pragma warning restore SA1313 // Parameter names should begin with lower-case letter
-#pragma warning restore SA1201 // Elements should appear in the correct order
 }
