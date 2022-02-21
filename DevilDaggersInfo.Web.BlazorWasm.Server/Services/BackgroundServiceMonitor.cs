@@ -23,16 +23,16 @@ public class BackgroundServiceMonitor
 
 		DiscordEmbedBuilder builder = new()
 		{
-			Title = $"Background service {DateTime.UtcNow:yyyy-MM-dd HH:mm:ss}",
+			Title = $"Background service {DateTime.UtcNow:yyyy-MM-dd HH:mm:ss} UTC",
 			Color = DiscordColor.White,
 		};
 		foreach (BackgroundServiceLog bsl in _backgroundServiceLogs.OrderBy(bsl => bsl.Name))
-			builder.AddFieldObject(bsl.Name, $"{nameof(BackgroundServiceLog.LastExecuted)} `{bsl.LastExecuted:yyyy-MM-dd HH:mm:ss}`\n{nameof(BackgroundServiceLog.Interval)} `{bsl.Interval:T}`");
+			builder.AddFieldObject(bsl.Name, $"{nameof(BackgroundServiceLog.LastExecuted)} `{bsl.LastExecuted:yyyy-MM-dd HH:mm:ss}` UTC\n{nameof(BackgroundServiceLog.Interval)} `{bsl.Interval:T}`");
 
 		return builder.Build();
 	}
 
-	private class BackgroundServiceLog
+	private sealed class BackgroundServiceLog
 	{
 		public BackgroundServiceLog(string name, TimeSpan interval)
 		{
