@@ -33,7 +33,7 @@ public abstract class AbstractBackgroundService : BackgroundService
 			}
 			catch (OperationCanceledException ex)
 			{
-				Logger.LogError(ex, "OperationCanceledException was thrown for background service '{name}' during execution. This probably means the application is shutting down. The task might not have completed successfully.", Name);
+				Logger.LogError(ex, "OperationCanceledException was thrown for background service '{name}' during execution. This probably means the application is shutting down, but this is not a graceful exit. The task might not have completed successfully.", Name);
 			}
 			catch (Exception ex)
 			{
@@ -48,7 +48,7 @@ public abstract class AbstractBackgroundService : BackgroundService
 				}
 				catch (OperationCanceledException ex)
 				{
-					Logger.LogWarning(ex, "Background service '{name}' was canceled during delay. This probably means the application is shutting down.", Name);
+					Logger.LogError(ex, "OperationCanceledException was thrown for background service '{name}' during delay. This probably means the application is shutting down, but this is not a graceful exit.", Name);
 				}
 			}
 		}
