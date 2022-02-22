@@ -4,7 +4,7 @@
 @using DevilDaggersInfo.Web.BlazorWasm.Shared.Dto.Admin.CustomLeaderboards
 @using DevilDaggersInfo.Web.BlazorWasm.Shared.Enums.Sortings.Admin
 
-<AdminOverview @ref="_overview" TGetDto="GetCustomLeaderboardForOverview" TSorting="CustomLeaderboardSorting" Title="Custom Leaderboards" ApiCall="(int pageIndex, int pageSize, CustomLeaderboardSorting? sortBy, bool isAscending) => Http.GetCustomLeaderboards(pageIndex, pageSize, sortBy, isAscending)" DeletionApiCall="(int id) => Http.DeleteCustomLeaderboardById(id)" GridConfiguration="grid-cols-admin-custom-leaderboards-sm md:grid-cols-admin-custom-leaderboards-md lg:grid-cols-admin-custom-leaderboards-lg xl:grid-cols-admin-custom-leaderboards-xl">
+<AdminOverview @ref="_overview" TGetDto="GetCustomLeaderboardForOverview" TSorting="CustomLeaderboardSorting" Title="Admin - Custom Leaderboards" ApiCall="(int pageIndex, int pageSize, CustomLeaderboardSorting? sortBy, bool isAscending) => Http.GetCustomLeaderboards(pageIndex, pageSize, sortBy, isAscending)" DeletionApiCall="(int id) => Http.DeleteCustomLeaderboardById(id)" GridConfiguration="grid-cols-admin-custom-leaderboards-sm md:grid-cols-admin-custom-leaderboards-md lg:grid-cols-admin-custom-leaderboards-lg xl:grid-cols-admin-custom-leaderboards-xl">
 	<TableHeader>
 		<a class="link overflow-hidden text-right" href="" @onclick="() => _overview.Sort(CustomLeaderboardSorting.Id)" @onclick:preventDefault>Id</a>
 		<a class="link overflow-hidden text-left" href="" @onclick="() => _overview.Sort(CustomLeaderboardSorting.SpawnsetName)" @onclick:preventDefault>Name</a>
