@@ -20,7 +20,8 @@ public class ResponseTimesBackgroundService : AbstractBackgroundService
 
 	public override async Task StopAsync(CancellationToken cancellationToken)
 	{
-		await base.StopAsync(cancellationToken);
 		_responseTimeMonitor.DumpLogs();
+
+		await base.StopAsync(cancellationToken);
 	}
 }
