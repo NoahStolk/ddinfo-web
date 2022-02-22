@@ -53,4 +53,11 @@ public abstract class AbstractBackgroundService : BackgroundService
 			}
 		}
 	}
+
+	public override async Task StopAsync(CancellationToken cancellationToken)
+	{
+		Logger.LogInformation("Background service '{name}' is stopping. This probably means the application is shutting down gracefully.", Name);
+
+		await base.StopAsync(cancellationToken);
+	}
 }
