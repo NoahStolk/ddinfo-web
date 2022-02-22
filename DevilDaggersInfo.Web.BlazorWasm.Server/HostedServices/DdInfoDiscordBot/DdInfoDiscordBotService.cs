@@ -44,7 +44,15 @@ public class DdInfoDiscordBotService : IHostedService
 		};
 
 		await client.ConnectAsync();
-		await Task.Delay(-1, cancellationToken);
+
+		try
+		{
+			await Task.Delay(-1, cancellationToken);
+		}
+		catch (OperationCanceledException)
+		{
+			// When the application shuts down, we only want to catch the exception so we can exit gracefully.
+		}
 	}
 
 	public Task StopAsync(CancellationToken cancellationToken)
