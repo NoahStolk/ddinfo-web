@@ -48,7 +48,7 @@ public abstract class AbstractBackgroundService : BackgroundService
 				}
 				catch (OperationCanceledException ex)
 				{
-					Logger.LogError(ex, "OperationCanceledException was thrown for background service '{name}' during delay. This probably means the application is shutting down, but this is not a graceful exit.", Name);
+					Logger.LogWarning(ex, "OperationCanceledException was thrown for background service '{name}' during delay. This probably means the application is shutting down, but this is not a graceful exit.", Name);
 				}
 			}
 		}
