@@ -23,7 +23,7 @@ public abstract class AbstractBackgroundService : BackgroundService
 
 	protected override async Task ExecuteAsync(CancellationToken stoppingToken)
 	{
-		Begin();
+		BackgroundServiceMonitor.Register(Name, Interval);
 
 		while (!stoppingToken.IsCancellationRequested)
 		{
@@ -55,13 +55,5 @@ public abstract class AbstractBackgroundService : BackgroundService
 				}
 			}
 		}
-
-		End();
 	}
-
-	protected virtual void Begin()
-		=> BackgroundServiceMonitor.Register(Name, Interval);
-
-	protected virtual void End()
-		=> Logger.LogWarning("Background service `{name}` shut down successfully.", Name);
 }
