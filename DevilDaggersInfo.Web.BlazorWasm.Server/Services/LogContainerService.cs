@@ -10,5 +10,13 @@ public class LogContainerService
 
 	public void Add(DiscordEmbed embed) => _logEntries.Add(embed);
 
-	public void RemoveFirst() => _logEntries.RemoveAt(0);
+	public async Task LogToChannel(DiscordChannel channel)
+	{
+		while (LogEntries.Count > 0)
+		{
+			DiscordEmbed embed = LogEntries[0];
+			await channel.SendMessageAsyncSafe(null, embed);
+			_logEntries.RemoveAt(0);
+		}
+	}
 }

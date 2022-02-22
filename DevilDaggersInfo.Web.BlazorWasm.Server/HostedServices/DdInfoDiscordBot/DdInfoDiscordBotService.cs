@@ -7,11 +7,13 @@ namespace DevilDaggersInfo.Web.BlazorWasm.Server.HostedServices.DdInfoDiscordBot
 public class DdInfoDiscordBotService : IHostedService
 {
 	private readonly IConfiguration _configuration;
+	private readonly IWebHostEnvironment _environment;
 	private readonly LogContainerService _logContainerService;
 
-	public DdInfoDiscordBotService(IConfiguration configuration, LogContainerService logContainerService)
+	public DdInfoDiscordBotService(IConfiguration configuration, IWebHostEnvironment environment, LogContainerService logContainerService)
 	{
 		_configuration = configuration;
+		_environment = environment;
 		_logContainerService = logContainerService;
 	}
 
@@ -54,17 +56,11 @@ public class DdInfoDiscordBotService : IHostedService
 		catch (OperationCanceledException)
 		{
 			DiscordChannel? channel = DevilDaggersInfoServerConstants.Channels[Channel.MonitoringLog].DiscordChannel;
-			if (channel == null)
-				return;
-
-			while (_logContainerService.LogEntries.Count > 0)
+			if (channel != null)
 			{
-				DiscordEmbed embed = _logContainerService.LogEntries[0];
-				await channel.SendMessageAsyncSafe(null, embed);
-				_logContainerService.RemoveFirst();
+				await _logContainerService.LogToChannel(channel);
+				await channel.SendMessageAsyncSafe($"> **Application is shutting down in the `{_environment.EnvironmentName}` environment. Disconnecting from Discord...** :wave:");
 			}
-
-			await channel.SendMessageAsyncSafe("> **Application is shutting down. Disconnecting from Discord...** :wave:");
 		}
 	}
 
