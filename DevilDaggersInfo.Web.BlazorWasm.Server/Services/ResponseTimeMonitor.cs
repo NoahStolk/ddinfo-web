@@ -18,7 +18,8 @@ public class ResponseTimeMonitor
 	public void Add(string path, int responseTimeTicks, DateTime dateTime)
 		=> _responseTimeLogs.Add(new(path, responseTimeTicks, dateTime));
 
-	public void DumpLogsFromDate(DateTime dateTime)
+	// TODO: Remove dateTime param and just dump everything.
+	public void DumpLogs(DateTime dateTime)
 	{
 		if (_responseTimeLogs.Count == 0)
 			return;
@@ -73,7 +74,7 @@ public class ResponseTimeMonitor
 
 	public List<GetResponseTimeEntry> GetLogEntries(DateOnly date)
 	{
-		List<GetResponseTimeEntry> entries = new();
+		List<ResponseTimeLog> logs = new();
 		foreach (string filePath in _fileSystemService.TryGetFiles(DataSubDirectory.ResponseTimes).Where(p => Path.GetFileName(p).StartsWith(date.ToString("yyyyMMdd"))))
 		{
 			using MemoryStream ms = new(File.ReadAllBytes(filePath));
@@ -81,31 +82,31 @@ public class ResponseTimeMonitor
 
 			int pathCount = br.ReadInt32();
 
-			ResponseTimeLog[] logs = new ResponseTimeLog[pathCount];
 			for (int i = 0; i < pathCount; i++)
 			{
 				string requestPath = br.ReadString();
 				int requestCount = br.ReadInt32();
 
 				for (int j = 0; j < requestCount; j++)
-					logs[i] = new(requestPath, br.ReadInt32(), new(date.Year, date.Month, date.Day, br.ReadByte(), br.ReadByte(), br.ReadByte(), DateTimeKind.Utc));
+					logs.Add(new(requestPath, br.ReadInt32(), new(date.Year, date.Month, date.Day, br.ReadByte(), br.ReadByte(), br.ReadByte(), DateTimeKind.Utc)));
 			}
+		}
 
-			foreach (IGrouping<string, ResponseTimeLog> group in logs.GroupBy(rtl => rtl.Path).OrderBy(rtl => rtl.Key))
+		List<GetResponseTimeEntry> entries = new();
+		foreach (IGrouping<string, ResponseTimeLog> group in logs.GroupBy(rtl => rtl.Path).OrderBy(rtl => rtl.Key))
+		{
+			int count = group.Count();
+			double averageResponseTimeTicks = group.Average(rl => rl.ResponseTimeTicks);
+			int minResponseTimeTicks = group.Min(rl => rl.ResponseTimeTicks);
+			int maxResponseTimeTicks = group.Max(rl => rl.ResponseTimeTicks);
+			entries.Add(new()
 			{
-				int count = group.Count();
-				double averageResponseTimeTicks = group.Average(rl => rl.ResponseTimeTicks);
-				int minResponseTimeTicks = group.Min(rl => rl.ResponseTimeTicks);
-				int maxResponseTimeTicks = group.Max(rl => rl.ResponseTimeTicks);
-				entries.Add(new()
-				{
-					RequestPath = group.Key,
-					RequestCount = count,
-					AverageResponseTimeTicks = averageResponseTimeTicks,
-					MinResponseTimeTicks = minResponseTimeTicks,
-					MaxResponseTimeTicks = maxResponseTimeTicks,
-				});
-			}
+				RequestPath = group.Key,
+				RequestCount = count,
+				AverageResponseTimeTicks = averageResponseTimeTicks,
+				MinResponseTimeTicks = minResponseTimeTicks,
+				MaxResponseTimeTicks = maxResponseTimeTicks,
+			});
 		}
 
 		return entries;

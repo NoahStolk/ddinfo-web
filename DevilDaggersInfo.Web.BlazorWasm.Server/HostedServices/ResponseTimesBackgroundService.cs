@@ -15,12 +15,12 @@ public class ResponseTimesBackgroundService : AbstractBackgroundService
 	protected override async Task ExecuteTaskAsync(CancellationToken stoppingToken)
 	{
 		await Task.Yield();
-		_responseTimeMonitor.DumpLogsFromDate(DateTime.UtcNow);
+		_responseTimeMonitor.DumpLogs(DateTime.UtcNow);
 	}
 
 	public override async Task StopAsync(CancellationToken cancellationToken)
 	{
 		await base.StopAsync(cancellationToken);
-		_responseTimeMonitor.DumpLogsFromDate(DateTime.UtcNow);
+		_responseTimeMonitor.DumpLogs(DateTime.UtcNow);
 	}
 }
