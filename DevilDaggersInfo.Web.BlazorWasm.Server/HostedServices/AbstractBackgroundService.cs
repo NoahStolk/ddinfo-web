@@ -33,6 +33,10 @@ public abstract class AbstractBackgroundService : BackgroundService
 			{
 				await ExecuteTaskAsync(stoppingToken);
 			}
+			catch (OperationCanceledException ex)
+			{
+				Logger.LogError(ex, "OperationCanceledException was thrown for background service '{name}' during execution. This probably means the application is shutting down. The task might not have completed successfully.", Name);
+			}
 			catch (Exception ex)
 			{
 				if (LogExceptions)
@@ -40,7 +44,16 @@ public abstract class AbstractBackgroundService : BackgroundService
 			}
 
 			if (Interval.TotalMilliseconds > 0)
-				await Task.Delay(Interval, stoppingToken);
+			{
+				try
+				{
+					await Task.Delay(Interval, stoppingToken);
+				}
+				catch (OperationCanceledException ex)
+				{
+					Logger.LogWarning(ex, "Background service '{name}' was canceled during delay. This probably means the application is shutting down.", Name);
+				}
+			}
 		}
 
 		End();
@@ -50,5 +63,5 @@ public abstract class AbstractBackgroundService : BackgroundService
 		=> BackgroundServiceMonitor.Register(Name, Interval);
 
 	protected virtual void End()
-		=> Logger.LogError("Cancellation for `{name}` was requested.", Name);
+		=> Logger.LogWarning("Background service `{name}` shut down successfully.", Name);
 }
