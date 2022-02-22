@@ -18,47 +18,56 @@ public class ResponseTimeMonitor
 	public void Add(string path, int responseTimeTicks, DateTime dateTime)
 		=> _responseTimeLogs.Add(new(path, responseTimeTicks, dateTime));
 
-	// TODO: Remove dateTime param and just dump everything.
-	public void DumpLogs(DateTime dateTime)
+	public void DumpLogs()
 	{
 		if (_responseTimeLogs.Count == 0)
 			return;
 
-		string filePath = Path.Combine(_fileSystemService.GetPath(DataSubDirectory.ResponseTimes), $"{dateTime:yyyyMMddHHmmss}.bin");
-		if (File.Exists(filePath))
-			return;
-
-		// Process paths here instead of in Add method to save performance during request.
-		List<ResponseTimeLog> normalizedLogs = _responseTimeLogs
-			.Where(rtl => rtl.DateTime.Year == dateTime.Year && rtl.DateTime.Month == dateTime.Month && rtl.DateTime.Day == dateTime.Day)
-			.Select(rtl => new ResponseTimeLog(ProcessPath(rtl.Path), rtl.ResponseTimeTicks, rtl.DateTime))
-			.ToList();
-
-		_responseTimeLogs.Clear();
-
-		using MemoryStream ms = new();
-		using BinaryWriter bw = new(ms);
-
-		IEnumerable<IGrouping<string, ResponseTimeLog>> groups = normalizedLogs.GroupBy(rtl => rtl.Path);
-		bw.Write(groups.Count());
-
-		foreach (IGrouping<string, ResponseTimeLog> group in groups)
+		foreach (IGrouping<DateTime, ResponseTimeLog> dateGroup in _responseTimeLogs.GroupBy(rtl => rtl.DateTime.Date))
 		{
-			bw.Write(group.Key);
-			bw.Write(group.Count());
+			if (!dateGroup.Any())
+				continue;
 
-			foreach (ResponseTimeLog rtl in group)
+			DateTime earliestDateTime = dateGroup.Min(rtl => rtl.DateTime);
+			DateTime latestDateTime = dateGroup.Max(rtl => rtl.DateTime);
+
+			string filePath = Path.Combine(_fileSystemService.GetPath(DataSubDirectory.ResponseTimes), $"{latestDateTime:yyyyMMddHHmmss}.bin");
+			if (File.Exists(filePath))
 			{
-				bw.Write(rtl.ResponseTimeTicks);
-				bw.Write((byte)rtl.DateTime.Hour);
-				bw.Write((byte)rtl.DateTime.Minute);
-				bw.Write((byte)rtl.DateTime.Second);
+				_logger.LogWarning("File {file} already exists.", Path.GetFileName(filePath));
+				continue;
 			}
+
+			// Process paths here instead of in Add method to save performance during request.
+			List<ResponseTimeLog> normalizedLogs = dateGroup.Select(rtl => new ResponseTimeLog(ProcessPath(rtl.Path), rtl.ResponseTimeTicks, rtl.DateTime)).ToList();
+
+			using MemoryStream ms = new();
+			using BinaryWriter bw = new(ms);
+
+			IEnumerable<IGrouping<string, ResponseTimeLog>> groups = normalizedLogs.GroupBy(rtl => rtl.Path);
+			bw.Write(groups.Count());
+
+			foreach (IGrouping<string, ResponseTimeLog> group in groups)
+			{
+				bw.Write(group.Key);
+				bw.Write(group.Count());
+
+				foreach (ResponseTimeLog rtl in group)
+				{
+					bw.Write(rtl.ResponseTimeTicks);
+					bw.Write((byte)rtl.DateTime.Hour);
+					bw.Write((byte)rtl.DateTime.Minute);
+					bw.Write((byte)rtl.DateTime.Second);
+				}
+			}
+
+			File.WriteAllBytes(filePath, ms.ToArray());
+
+			_logger.LogInformation("Created {fileName} with {logs} logs from {from} until {until}.", Path.GetFileName(filePath), normalizedLogs.Count, earliestDateTime, latestDateTime);
 		}
 
-		File.WriteAllBytes(filePath, ms.ToArray());
-
-		_logger.LogInformation("Created {fileName} with {logs} logs.", Path.GetFileName(filePath), normalizedLogs.Count);
+		_logger.LogInformation("Clearing response time memory.");
+		_responseTimeLogs.Clear();
 
 		static string ProcessPath(string path)
 		{
