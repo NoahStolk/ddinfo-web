@@ -10,8 +10,6 @@ public class BackgroundServiceLoggerBackgroundService : AbstractBackgroundServic
 	{
 	}
 
-	protected override bool LogExceptions => false;
-
 	protected override TimeSpan Interval => TimeSpan.FromSeconds(15);
 
 	protected override async Task ExecuteTaskAsync(CancellationToken stoppingToken)

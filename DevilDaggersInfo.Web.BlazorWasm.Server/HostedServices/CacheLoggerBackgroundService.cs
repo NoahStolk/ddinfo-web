@@ -33,8 +33,6 @@ public class CacheLoggerBackgroundService : AbstractBackgroundService
 		_spawnsetHashCache = spawnsetHashCache;
 	}
 
-	protected override bool LogExceptions => false;
-
 	protected override TimeSpan Interval => TimeSpan.FromMinutes(1);
 
 	protected override async Task ExecuteTaskAsync(CancellationToken stoppingToken)

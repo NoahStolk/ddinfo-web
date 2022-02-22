@@ -15,8 +15,6 @@ public abstract class AbstractBackgroundService : BackgroundService
 
 	protected string Name { get; }
 
-	protected virtual bool LogExceptions => true;
-
 	protected abstract TimeSpan Interval { get; }
 
 	protected abstract Task ExecuteTaskAsync(CancellationToken stoppingToken);
@@ -39,8 +37,7 @@ public abstract class AbstractBackgroundService : BackgroundService
 			}
 			catch (Exception ex)
 			{
-				if (LogExceptions)
-					Logger.LogError(ex, "Task execution for `{name}` failed.", Name);
+				Logger.LogError(ex, "Task execution for `{name}` failed.", Name);
 			}
 
 			if (Interval.TotalMilliseconds > 0)
