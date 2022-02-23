@@ -10,7 +10,7 @@ public class ResponseTimesBackgroundService : AbstractBackgroundService
 		_responseTimeMonitor = responseTimeMonitor;
 	}
 
-	protected override TimeSpan Interval => TimeSpan.FromMinutes(30);
+	protected override TimeSpan Interval => TimeSpan.FromHours(2);
 
 	protected override async Task ExecuteTaskAsync(CancellationToken stoppingToken)
 	{
