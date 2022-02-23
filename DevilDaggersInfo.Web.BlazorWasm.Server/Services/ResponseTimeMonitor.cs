@@ -38,21 +38,19 @@ public class ResponseTimeMonitor
 				continue;
 			}
 
-			// Process paths here instead of in Add method to save performance during request.
-			List<ResponseTimeLog> normalizedLogs = dateGroup.Select(rtl => new ResponseTimeLog(ProcessPath(rtl.Path), rtl.ResponseTimeTicks, rtl.DateTime)).ToList();
-
 			using MemoryStream ms = new();
 			using BinaryWriter bw = new(ms);
 
-			IEnumerable<IGrouping<string, ResponseTimeLog>> groups = normalizedLogs.GroupBy(rtl => rtl.Path);
-			bw.Write(groups.Count());
+			// Process paths here instead of in Add method to save performance during request.
+			IEnumerable<IGrouping<string, ResponseTimeLog>> pathGroups = dateGroup.GroupBy(rtl => ProcessPath(rtl.Path));
+			bw.Write(pathGroups.Count());
 
-			foreach (IGrouping<string, ResponseTimeLog> group in groups)
+			foreach (IGrouping<string, ResponseTimeLog> pathGroup in pathGroups)
 			{
-				bw.Write(group.Key);
-				bw.Write(group.Count());
+				bw.Write(pathGroup.Key);
+				bw.Write(pathGroup.Count());
 
-				foreach (ResponseTimeLog rtl in group)
+				foreach (ResponseTimeLog rtl in pathGroup)
 				{
 					bw.Write(rtl.ResponseTimeTicks);
 					bw.Write((byte)rtl.DateTime.Hour);
@@ -63,10 +61,9 @@ public class ResponseTimeMonitor
 
 			File.WriteAllBytes(filePath, ms.ToArray());
 
-			_logger.LogInformation("Created {fileName} with {logs} logs from {from} until {until}.", Path.GetFileName(filePath), normalizedLogs.Count, earliestDateTime, latestDateTime);
+			_logger.LogInformation("Created {fileName} with {logs} logs from {from} until {until}.", Path.GetFileName(filePath), dateGroup.Count(), earliestDateTime, latestDateTime);
 		}
 
-		_logger.LogInformation("Clearing response time memory.");
 		_responseTimeLogs.Clear();
 
 		static string ProcessPath(string path)
