@@ -4,7 +4,6 @@
 @using DevilDaggersInfo.Core.Wiki
 @using DevilDaggersInfo.Core.Wiki.Enums
 @using DevilDaggersInfo.Web.BlazorWasm.Client.Components.Leaderboards
-@using DevilDaggersInfo.Web.BlazorWasm.Client.Components.Leaderboards.History
 @using DevilDaggersInfo.Web.BlazorWasm.Shared.Dto.Public
 @using DevilDaggersInfo.Web.BlazorWasm.Shared.Dto.Public.LeaderboardHistory
 @using DevilDaggersInfo.Web.BlazorWasm.Shared.Dto.Public.Players
@@ -16,7 +15,7 @@
 else
 {
 	<Heading Title="@($"Leaderboard History - {GetLeaderboardHistory.DateTime.ToString(FormatUtils.DateTimeFormat)}")" />
-	
+
 	@if (_reloading)
 	{
 		<Loading />
