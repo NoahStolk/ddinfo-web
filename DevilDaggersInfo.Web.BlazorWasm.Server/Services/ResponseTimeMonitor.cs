@@ -113,7 +113,7 @@ public class ResponseTimeMonitor
 
 			foreach (KeyValuePair<int, List<GetRequestPathEntry>> timeKvp in entriesByTime)
 			{
-				IEnumerable<ResponseTimeLog> logsThisHalfHour = group.Where(rtl => rtl.DateTime.Hour + rtl.DateTime.Minute > timeKvp.Key && rtl.DateTime.Hour + rtl.DateTime.Minute < timeKvp.Key + 30);
+				IEnumerable<ResponseTimeLog> logsThisHalfHour = group.Where(rtl => rtl.DateTime.Hour * 60 + rtl.DateTime.Minute > timeKvp.Key && rtl.DateTime.Hour * 60 + rtl.DateTime.Minute < timeKvp.Key + 30);
 				if (!logsThisHalfHour.Any())
 					continue;
 

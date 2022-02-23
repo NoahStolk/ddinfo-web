@@ -61,6 +61,7 @@ public partial class Index
 
 		List<LineData> set = totalRequests.Select(kvp => new LineData(kvp.Key, kvp.Value, kvp)).ToList();
 		_totalTrafficOptions = new(0, null, 24 * 60 - 1, minY, scale, maxY);
+		_totalTrafficData.Clear();
 		_totalTrafficData.Add(new("#f00", false, false, false, set, (ds, d) =>
 		{
 			KeyValuePair<int, int> stats = totalRequests.FirstOrDefault(kvp => (object)kvp == d.Reference);
