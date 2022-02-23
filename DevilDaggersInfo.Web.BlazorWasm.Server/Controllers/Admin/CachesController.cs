@@ -50,7 +50,7 @@ public class CachesController : ControllerBase
 			default: return NotFound();
 		}
 
-		_logger.LogWarning("Memory cache '{cacheType}' was cleared.", cacheType);
+		_logger.LogInformation("Memory cache '{cacheType}' was cleared.", cacheType);
 
 		return Ok();
 	}
