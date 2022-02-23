@@ -10,6 +10,8 @@
 
 <a class="btn btn-green cursor-pointer block w-24 mb-2 mx-1" @onclick="async () => await FetchEntries()">Refresh</a>
 
+<a class="btn btn-green cursor-pointer block w-24 mb-2 mx-1" @onclick="async () => await ForceDump()">Force dump now</a>
+
 @if (_entries == null)
 {
 	<Loading />
@@ -55,6 +57,13 @@ else
 	{
 		_entries = null;
 		_entries = await Http.GetResponseTimes(DateTime.UtcNow);
+	}
+
+	private async Task ForceDump()
+	{
+		await Http.ForceDump(null);
+
+		await FetchEntries();
 	}
 
 	private static string GetFormattedTime(double ticks)

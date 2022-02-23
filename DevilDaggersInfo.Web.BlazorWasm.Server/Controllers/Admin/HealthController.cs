@@ -9,10 +9,12 @@ namespace DevilDaggersInfo.Web.BlazorWasm.Server.Controllers.Admin;
 public class HealthController : ControllerBase
 {
 	private readonly ResponseTimeMonitor _responseTimeMonitor;
+	private readonly ILogger<HealthController> _logger;
 
-	public HealthController(ResponseTimeMonitor responseTimeMonitor)
+	public HealthController(ResponseTimeMonitor responseTimeMonitor, ILogger<HealthController> logger)
 	{
 		_responseTimeMonitor = responseTimeMonitor;
+		_logger = logger;
 	}
 
 	[HttpGet("responses")]
@@ -20,5 +22,16 @@ public class HealthController : ControllerBase
 	public ActionResult<List<GetResponseTimeEntry>> GetResponseTimes(DateTime date)
 	{
 		return _responseTimeMonitor.GetLogEntries(DateOnly.FromDateTime(date));
+	}
+
+	[HttpPost("force-dump")]
+	[ProducesResponseType(StatusCodes.Status200OK)]
+	public ActionResult ForceDump(string? unused)
+	{
+		_responseTimeMonitor.DumpLogs();
+
+		_logger.LogInformation("Logs were dumped manually.");
+
+		return Ok();
 	}
 }

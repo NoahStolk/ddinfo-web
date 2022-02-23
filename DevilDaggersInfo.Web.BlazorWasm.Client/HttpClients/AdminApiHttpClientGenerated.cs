@@ -127,6 +127,11 @@ public partial class AdminApiHttpClient
 		return await SendGetRequest<List<GetResponseTimeEntry>>(UrlBuilderUtils.BuildUrlWithQuery($"api/admin/health/responses", queryParameters));
 	}
 
+	public async Task<HttpResponseMessage> ForceDump(string? unused)
+	{
+		return await SendRequest(new HttpMethod("POST"), $"api/admin/health/force-dump", JsonContent.Create(unused));
+	}
+
 	public async Task<Page<GetModForOverview>> GetMods(int pageIndex, int pageSize, ModSorting? sortBy, bool ascending)
 	{
 		Dictionary<string, object?> queryParameters = new()
