@@ -1,6 +1,7 @@
 @page "/admin/health"
 @inherits BaseAdminPage
 @using DevilDaggersInfo.Web.BlazorWasm.Client.Components.Admin
+@using DevilDaggersInfo.Web.BlazorWasm.Client.Core.CanvasChart.Components
 @using DevilDaggersInfo.Web.BlazorWasm.Shared.Dto.Admin.Health
 @using System.Runtime.CompilerServices
 
@@ -8,18 +9,30 @@
 
 <Heading Level="2" Title="Response Times" />
 
-<a class="btn btn-green cursor-pointer block w-32 mb-2 mx-1" @onclick="async () => await FetchEntries()">Refresh</a>
+<a class="btn btn-green cursor-pointer block w-40 mb-2 mx-1" @onclick="async () => await FetchEntries()">Refresh</a>
 
-<a class="btn btn-green cursor-pointer block w-32 mb-2 mx-1" @onclick="async () => await ForceDump()">Force dump now</a>
+<a class="btn btn-green cursor-pointer block w-40 mb-2 mx-1" @onclick="async () => await ForceDump()">Force dump now</a>
 
 <DatePicker DateSelected="@(d => UpdateDateTime(d))" />
 
-@if (_entries == null)
+@if (_response == null)
 {
 	<Loading />
 }
 else
 {
+	<div class="grid grid-cols-1 2xl:grid-cols-2">
+		<div>
+			<Heading Title="Total Traffic" Level="2" />
+			<LineChart DataOptions="_totalTrafficOptions" UniqueName="#players-chart" DataSets="_totalTrafficData" Options="_totalTrafficLineChartOptions" />
+		</div>
+
+		<div>
+			<Heading Title="Custom Entry Submit" Level="2" />
+			<LineChart DataOptions="_customEntrySubmitOptions" UniqueName="#entrances-chart" DataSets="_customEntrySubmitData" Options="_customEntrySubmitLineChartOptions" />
+		</div>
+	</div>
+
 	<div class="grid gap-2 grid-cols-5">
 		<div><a href="" @onclick:preventDefault class="link" @onclick="() => Sort(e => e.RequestPath)">Request path</a></div>
 		<div class="text-right"><a href="" @onclick:preventDefault class="link" @onclick="() => Sort(e => e.RequestCount)">Request count</a></div>
@@ -30,7 +43,7 @@ else
 	<div>
 		@{
 			int i = 0;
-			foreach (GetResponseTimeEntry e in _entries)
+			foreach (GetRequestPathEntry e in _response.ResponseTimesByRequestPath)
 			{
 				<div class="grid gap-2 grid-cols-5 @(i++ % 2 == 0 ? "bg-gray-1" : string.Empty)">
 					<div class="overflow-hidden">@e.RequestPath</div>

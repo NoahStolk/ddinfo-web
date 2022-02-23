@@ -1,6 +1,6 @@
 namespace DevilDaggersInfo.Web.BlazorWasm.Shared.Dto.Admin.Health;
 
-public record GetResponseTimeEntry
+public record GetRequestPathEntry
 {
 	public string RequestPath { get; init; } = null!;
 

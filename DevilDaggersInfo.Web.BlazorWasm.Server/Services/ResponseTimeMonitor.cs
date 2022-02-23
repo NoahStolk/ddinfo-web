@@ -78,7 +78,7 @@ public class ResponseTimeMonitor
 		}
 	}
 
-	public List<GetResponseTimeEntry> GetLogEntries(DateOnly date)
+	public GetResponseTimes GetLogEntries(DateOnly date)
 	{
 		List<ResponseTimeLog> logs = new();
 		foreach (string filePath in _fileSystemService.TryGetFiles(DataSubDirectory.ResponseTimes).Where(p => Path.GetFileName(p).StartsWith(date.ToString("yyyyMMdd"))))
@@ -98,24 +98,41 @@ public class ResponseTimeMonitor
 			}
 		}
 
-		List<GetResponseTimeEntry> entries = new();
+		List<GetRequestPathEntry> entriesByRequestPath = new();
+		Dictionary<int, List<GetRequestPathEntry>> entriesByTime = Enumerable.Range(0, 48).Select(i => i * 30).ToDictionary(to => to, _ => new List<GetRequestPathEntry>());
 		foreach (IGrouping<string, ResponseTimeLog> group in logs.GroupBy(rtl => rtl.Path).OrderBy(rtl => rtl.Key))
 		{
-			int count = group.Count();
-			double averageResponseTimeTicks = group.Average(rl => rl.ResponseTimeTicks);
-			int minResponseTimeTicks = group.Min(rl => rl.ResponseTimeTicks);
-			int maxResponseTimeTicks = group.Max(rl => rl.ResponseTimeTicks);
-			entries.Add(new()
+			entriesByRequestPath.Add(new()
 			{
 				RequestPath = group.Key,
-				RequestCount = count,
-				AverageResponseTimeTicks = averageResponseTimeTicks,
-				MinResponseTimeTicks = minResponseTimeTicks,
-				MaxResponseTimeTicks = maxResponseTimeTicks,
+				RequestCount = group.Count(),
+				AverageResponseTimeTicks = group.Average(rtl => rtl.ResponseTimeTicks),
+				MinResponseTimeTicks = group.Min(rtl => rtl.ResponseTimeTicks),
+				MaxResponseTimeTicks = group.Max(rtl => rtl.ResponseTimeTicks),
 			});
+
+			foreach (KeyValuePair<int, List<GetRequestPathEntry>> timeKvp in entriesByTime)
+			{
+				IEnumerable<ResponseTimeLog> logsThisHalfHour = group.Where(rtl => rtl.DateTime.Hour + rtl.DateTime.Minute > timeKvp.Key && rtl.DateTime.Hour + rtl.DateTime.Minute < timeKvp.Key + 30);
+				if (!logsThisHalfHour.Any())
+					continue;
+
+				timeKvp.Value.Add(new()
+				{
+					RequestPath = group.Key,
+					RequestCount = logsThisHalfHour.Count(),
+					AverageResponseTimeTicks = logsThisHalfHour.Average(rtl => rtl.ResponseTimeTicks),
+					MinResponseTimeTicks = logsThisHalfHour.Min(rtl => rtl.ResponseTimeTicks),
+					MaxResponseTimeTicks = logsThisHalfHour.Max(rtl => rtl.ResponseTimeTicks),
+				});
+			}
 		}
 
-		return entries;
+		return new()
+		{
+			ResponseTimesByRequestPath = entriesByRequestPath,
+			ResponseTimesByTime = entriesByTime,
+		};
 	}
 
 	private readonly record struct ResponseTimeLog(string Path, int ResponseTimeTicks, DateTime DateTime);

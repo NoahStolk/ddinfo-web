@@ -17,9 +17,9 @@ public class HealthController : ControllerBase
 		_logger = logger;
 	}
 
-	[HttpGet("responses")]
+	[HttpGet]
 	[ProducesResponseType(StatusCodes.Status200OK)]
-	public ActionResult<List<GetResponseTimeEntry>> GetResponseTimes(DateTime date)
+	public ActionResult<GetResponseTimes> GetResponseTimes(DateTime date)
 	{
 		return _responseTimeMonitor.GetLogEntries(DateOnly.FromDateTime(date));
 	}
