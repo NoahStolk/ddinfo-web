@@ -8,9 +8,9 @@
 
 <Heading Level="2" Title="Response Times" />
 
-<a class="btn btn-green cursor-pointer block w-24 mb-2 mx-1" @onclick="async () => await FetchEntries()">Refresh</a>
+<a class="btn btn-green cursor-pointer block w-32 mb-2 mx-1" @onclick="async () => await FetchEntries()">Refresh</a>
 
-<a class="btn btn-green cursor-pointer block w-24 mb-2 mx-1" @onclick="async () => await ForceDump()">Force dump now</a>
+<a class="btn btn-green cursor-pointer block w-32 mb-2 mx-1" @onclick="async () => await ForceDump()">Force dump now</a>
 
 @if (_entries == null)
 {
