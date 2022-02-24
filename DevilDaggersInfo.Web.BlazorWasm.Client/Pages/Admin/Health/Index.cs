@@ -63,23 +63,68 @@ public partial class Index
 		_response = null;
 		_response = await Http.GetResponseTimes(_dateTime);
 
-		Dictionary<int, int> totalRequests = _response.ResponseTimesByTime.ToDictionary(kvp => kvp.Key, kvp => kvp.Value.Sum(e => e.RequestCount));
-		const double scale = 100;
-		double minY = Math.Floor(totalRequests.Values.Min() / scale) * scale;
-		double maxY = Math.Ceiling(totalRequests.Values.Max() / scale) * scale;
-
-		List<LineData> set = totalRequests.Select((kvp, i) => new LineData(kvp.Key, kvp.Value, i)).ToList();
-		_totalTrafficOptions = new(0, 60, 24 * 60, minY, scale, maxY);
-		_totalTrafficData.Clear();
-		_totalTrafficData.Add(new("#f00", false, true, false, set, (ds, d) =>
+		RegisterTotalRequests();
+		void RegisterTotalRequests()
 		{
-			KeyValuePair<int, int>? stats = totalRequests.Count <= d.Index ? null : totalRequests.ElementAt(d.Index);
-			return stats == null ? new() : new()
+			Dictionary<int, int> totalRequests = new();
+			foreach (KeyValuePair<int, GetRequestPathEntry> kvp in _response.ResponseTimesByTimeByRequestPath.SelectMany(kvp => kvp.Value))
 			{
-				new($"<span style='text-align: right;'>{TimeUtils.MinutesToTimeString(stats.Value.Key)} - {TimeUtils.MinutesToTimeString(stats.Value.Key + _response.MinuteInterval)}</span>"),
-				new($"<span style='color: {ds.Color}; text-align: right;'>{d.Y.ToString("0")}</span>"),
-			};
-		}));
+				if (totalRequests.ContainsKey(kvp.Key))
+					totalRequests[kvp.Key] += kvp.Value.RequestCount;
+				else
+					totalRequests.Add(kvp.Key, kvp.Value.RequestCount);
+			}
+
+			if (totalRequests.Count == 0)
+				return;
+
+			const double scale = 100;
+			double minY = Math.Floor(totalRequests.Values.Min() / scale) * scale;
+			double maxY = Math.Ceiling(totalRequests.Values.Max() / scale) * scale;
+
+			_totalTrafficOptions = new(0, 60, 24 * 60, minY, scale, maxY);
+			_totalTrafficData.Clear();
+
+			List<LineData> set = totalRequests.Select((kvp, i) => new LineData(kvp.Key, kvp.Value, i)).ToList();
+			_totalTrafficData.Add(new("#f00", false, true, false, set, (ds, d) =>
+			{
+				KeyValuePair<int, int>? stats = totalRequests.Count <= d.Index ? null : totalRequests.ElementAt(d.Index);
+				return stats == null ? new() : new()
+				{
+					new($"<span style='text-align: right;'>{TimeUtils.MinutesToTimeString(stats.Value.Key)} - {TimeUtils.MinutesToTimeString(stats.Value.Key + _response.MinuteInterval)}</span>"),
+					new($"<span style='color: {ds.Color}; text-align: right;'>{d.Y.ToString("0")}</span>"),
+				};
+			}));
+		}
+
+		RegisterTimesForSpecificRoute("/api/custom-entries/submit");
+		void RegisterTimesForSpecificRoute(string route)
+		{
+			Dictionary<int, GetRequestPathEntry>? clRequests = _response.ResponseTimesByTimeByRequestPath.ContainsKey(route) ? _response.ResponseTimesByTimeByRequestPath[route] : null;
+			if (clRequests == null || clRequests.Count == 0)
+				return;
+
+			const double scale = 100;
+			double minY = Math.Floor(clRequests.Values.Min(e => e.MinResponseTimeTicks) / scale) * scale;
+			double maxY = Math.Ceiling(clRequests.Values.Max(e => e.MaxResponseTimeTicks) / scale) * scale;
+
+			_customEntrySubmitOptions = new(0, 60, 24 * 60, minY, scale, maxY);
+			_customEntrySubmitData.Clear();
+
+			_customEntrySubmitData.Add(new("#0f0", false, true, false, clRequests.Select((kvp, i) => new LineData(kvp.Key, kvp.Value.MinResponseTimeTicks, i)).ToList(), (ds, d) =>
+			{
+				KeyValuePair<int, GetRequestPathEntry>? stats = clRequests.Count <= d.Index ? null : clRequests.ElementAt(d.Index);
+				return stats == null ? new() : new()
+				{
+					new($"<span style='text-align: right;'>{TimeUtils.MinutesToTimeString(stats.Value.Key)} - {TimeUtils.MinutesToTimeString(stats.Value.Key + _response.MinuteInterval)}</span>"),
+					new($"<span style='color: {ds.Color}; text-align: right;'>{GetFormattedTime(stats.Value.Value.MinResponseTimeTicks)}</span>"),
+					new($"<span style='color: {ds.Color}; text-align: right;'>{GetFormattedTime(stats.Value.Value.AverageResponseTimeTicks)}</span>"),
+					new($"<span style='color: {ds.Color}; text-align: right;'>{GetFormattedTime(stats.Value.Value.MaxResponseTimeTicks)}</span>"),
+				};
+			}));
+			_customEntrySubmitData.Add(new("#ff0", false, true, false, clRequests.Select((kvp, i) => new LineData(kvp.Key, kvp.Value.AverageResponseTimeTicks, i)).ToList(), null));
+			_customEntrySubmitData.Add(new("#f00", false, true, false, clRequests.Select((kvp, i) => new LineData(kvp.Key, kvp.Value.MaxResponseTimeTicks, i)).ToList(), null));
+		}
 	}
 
 	private async Task ForceDump()
@@ -100,7 +145,7 @@ public partial class Index
 		return $"{ticks / 10f:0} μs";
 	}
 
-	private void Sort<TKey>(Func<GetRequestPathEntry, TKey> sorting, [CallerArgumentExpression("sorting")] string sortingExpression = "")
+	private void Sort<TKey>(Func<KeyValuePair<string, GetRequestPathEntry>, TKey> sorting, [CallerArgumentExpression("sorting")] string sortingExpression = "")
 	{
 		if (_response == null)
 			return;
@@ -111,7 +156,7 @@ public partial class Index
 		else
 			_sortings.Add(sortingExpression, false);
 
-		_response.ResponseTimesByRequestPath = _response.ResponseTimesByRequestPath.OrderBy(sorting, sortDirection).ToList();
+		_response.ResponseTimeSummaryByRequestPath = _response.ResponseTimeSummaryByRequestPath.OrderBy(sorting, sortDirection).ToDictionary(kvp => kvp.Key, kvp => kvp.Value);
 
 		_sortings[sortingExpression] = !sortDirection;
 	}

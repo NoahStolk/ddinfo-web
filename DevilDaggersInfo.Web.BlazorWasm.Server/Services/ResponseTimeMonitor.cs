@@ -98,43 +98,40 @@ public class ResponseTimeMonitor
 			}
 		}
 
-		List<GetRequestPathEntry> entriesByRequestPath = new();
+		Dictionary<string, GetRequestPathEntry> entriesByPath = new();
 
 		const int minuteInterval = 10;
 		const int intervalCount = 24 * 60 / minuteInterval;
-		Dictionary<int, List<GetRequestPathEntry>> entriesByTime = Enumerable.Range(0, intervalCount).Select(i => i * minuteInterval).ToDictionary(to => to, _ => new List<GetRequestPathEntry>());
+		Dictionary<string, Dictionary<int, GetRequestPathEntry>> entriesByTimeByPath = new();
 		foreach (IGrouping<string, ResponseTimeLog> group in logs.GroupBy(rtl => rtl.Path).OrderBy(rtl => rtl.Key))
 		{
-			entriesByRequestPath.Add(new()
+			entriesByPath.Add(group.Key, new()
 			{
-				RequestPath = group.Key,
 				RequestCount = group.Count(),
 				AverageResponseTimeTicks = group.Average(rtl => rtl.ResponseTimeTicks),
 				MinResponseTimeTicks = group.Min(rtl => rtl.ResponseTimeTicks),
 				MaxResponseTimeTicks = group.Max(rtl => rtl.ResponseTimeTicks),
 			});
 
-			foreach (KeyValuePair<int, List<GetRequestPathEntry>> timeKvp in entriesByTime)
+			Dictionary<int, GetRequestPathEntry> entriesByTime = Enumerable.Range(0, intervalCount).Select(i => i * minuteInterval).ToDictionary(i => i, _ => new GetRequestPathEntry());
+			foreach (KeyValuePair<int, GetRequestPathEntry> kvp in entriesByTime)
 			{
-				IEnumerable<ResponseTimeLog> logsThisHalfHour = group.Where(rtl => rtl.DateTime.Hour * 60 + rtl.DateTime.Minute > timeKvp.Key && rtl.DateTime.Hour * 60 + rtl.DateTime.Minute < timeKvp.Key + minuteInterval);
-				if (!logsThisHalfHour.Any())
-					continue;
+				IEnumerable<ResponseTimeLog> logsThisInterval = group.Where(rtl => rtl.DateTime.Hour * 60 + rtl.DateTime.Minute > kvp.Key && rtl.DateTime.Hour * 60 + rtl.DateTime.Minute < kvp.Key + minuteInterval);
+				bool isEmpty = !logsThisInterval.Any();
 
-				timeKvp.Value.Add(new()
-				{
-					RequestPath = group.Key,
-					RequestCount = logsThisHalfHour.Count(),
-					AverageResponseTimeTicks = logsThisHalfHour.Average(rtl => rtl.ResponseTimeTicks),
-					MinResponseTimeTicks = logsThisHalfHour.Min(rtl => rtl.ResponseTimeTicks),
-					MaxResponseTimeTicks = logsThisHalfHour.Max(rtl => rtl.ResponseTimeTicks),
-				});
+				kvp.Value.RequestCount = isEmpty ? 0 : logsThisInterval.Count();
+				kvp.Value.AverageResponseTimeTicks = isEmpty ? 0 : logsThisInterval.Average(rtl => rtl.ResponseTimeTicks);
+				kvp.Value.MinResponseTimeTicks = isEmpty ? 0 : logsThisInterval.Min(rtl => rtl.ResponseTimeTicks);
+				kvp.Value.MaxResponseTimeTicks = isEmpty ? 0 : logsThisInterval.Max(rtl => rtl.ResponseTimeTicks);
 			}
+
+			entriesByTimeByPath.Add(group.Key, entriesByTime);
 		}
 
 		return new()
 		{
-			ResponseTimesByRequestPath = entriesByRequestPath,
-			ResponseTimesByTime = entriesByTime,
+			ResponseTimeSummaryByRequestPath = entriesByPath,
+			ResponseTimesByTimeByRequestPath = entriesByTimeByPath,
 			MinuteInterval = minuteInterval,
 		};
 	}
