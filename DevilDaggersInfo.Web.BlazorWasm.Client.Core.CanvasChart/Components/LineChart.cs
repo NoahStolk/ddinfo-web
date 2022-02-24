@@ -137,13 +137,7 @@ public partial class LineChart
 			{
 				double xScaleValue = xScales[i];
 				double xScalePosition = LerpUtils.RevLerp(DataOptions.MinX, DataOptions.MaxX, xScaleValue) * ChartWidth;
-
-				string xScale = Options.XScaleDisplayUnit switch
-				{
-					ScaleDisplayUnit.Date => new DateTime((long)xScaleValue).ToString(FormatUtils.DateFormat),
-					ScaleDisplayUnit.Time => TimeUtils.MinutesToTimeString((int)xScaleValue),
-					_ => xScaleValue.ToString(Options.ScaleXOptions.NumberFormat),
-				};
+				string xScale = RenderScale(Options.XScaleDisplayUnit, xScaleValue, Options.ScaleXOptions.NumberFormat);
 
 				_context.StrokeText(xScale, Options.ChartMarginXInPx + xScalePosition, Options.ChartMarginYInPx + ChartHeight + paddingY);
 			}
@@ -157,9 +151,18 @@ public partial class LineChart
 				double yScalePosition = LerpUtils.RevLerp(DataOptions.MinY, DataOptions.MaxY, yScaleValue) * ChartHeight;
 				if (DataOptions.ReverseY)
 					yScalePosition = ChartHeight - yScalePosition;
+				string yScale = RenderScale(Options.YScaleDisplayUnit, yScaleValue, Options.ScaleYOptions.NumberFormat);
 
-				_context.StrokeText(yScaleValue.ToString(Options.ScaleYOptions.NumberFormat), Options.ChartMarginXInPx - paddingX, Options.ChartMarginYInPx + ChartHeight - yScalePosition);
+				_context.StrokeText(yScale, Options.ChartMarginXInPx - paddingX, Options.ChartMarginYInPx + ChartHeight - yScalePosition);
 			}
+
+			static string RenderScale(ScaleDisplayUnit scaleDisplayUnit, double value, string? numberFormat) => scaleDisplayUnit switch
+			{
+				ScaleDisplayUnit.TicksAsDate => new DateTime((long)value).ToString(FormatUtils.DateFormat),
+				ScaleDisplayUnit.MinutesAsTime => TimeUtils.MinutesToTimeString((int)value),
+				ScaleDisplayUnit.TicksAsSeconds => TimeUtils.TicksToTimeString(value),
+				_ => value.ToString(numberFormat),
+			};
 		}
 
 		void RenderDataLine(LineDataSet dataSet)

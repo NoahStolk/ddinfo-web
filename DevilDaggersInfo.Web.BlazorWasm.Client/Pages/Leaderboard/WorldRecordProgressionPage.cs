@@ -20,7 +20,7 @@ public partial class WorldRecordProgressionPage
 		{
 			MinimumRowHeightInPx = 50,
 		},
-		XScaleDisplayUnit = ScaleDisplayUnit.Date,
+		XScaleDisplayUnit = ScaleDisplayUnit.TicksAsDate,
 		Backgrounds = LineChartUtils.GameVersionBackgrounds,
 	};
 

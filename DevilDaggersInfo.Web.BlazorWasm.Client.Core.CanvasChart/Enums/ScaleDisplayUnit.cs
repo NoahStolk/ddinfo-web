@@ -2,7 +2,8 @@ namespace DevilDaggersInfo.Web.BlazorWasm.Client.Core.CanvasChart.Enums;
 
 public enum ScaleDisplayUnit
 {
-	Integer = 0,
-	Date = 1,
-	Time = 2,
+	Default = 0,
+	TicksAsDate = 1,
+	MinutesAsTime = 2,
+	TicksAsSeconds = 3,
 }

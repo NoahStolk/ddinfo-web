@@ -20,7 +20,7 @@ public partial class Index
 	private readonly LineChartOptions _totalTrafficLineChartOptions = new()
 	{
 		HighlighterKeys = new() { "Time", "Requests" },
-		XScaleDisplayUnit = ScaleDisplayUnit.Time,
+		XScaleDisplayUnit = ScaleDisplayUnit.MinutesAsTime,
 		GridOptions = new()
 		{
 			MinimumColumnWidthInPx = 30,
@@ -29,12 +29,15 @@ public partial class Index
 
 	private readonly LineChartOptions _customEntrySubmitLineChartOptions = new()
 	{
-		HighlighterKeys = new() { "Min Response Time", "Avg Response Time", "Max Response Time" },
-		XScaleDisplayUnit = ScaleDisplayUnit.Time,
+		HighlighterKeys = new() { "Time", "Min Response Time", "Avg Response Time", "Max Response Time" },
+		XScaleDisplayUnit = ScaleDisplayUnit.MinutesAsTime,
+		YScaleDisplayUnit = ScaleDisplayUnit.TicksAsSeconds,
 		GridOptions = new()
 		{
 			MinimumColumnWidthInPx = 30,
 		},
+		HighlighterWidth = 360,
+		ChartMarginXInPx = 80,
 	};
 
 	private readonly List<LineDataSet> _totalTrafficData = new();
@@ -66,6 +69,8 @@ public partial class Index
 		RegisterTotalRequests();
 		void RegisterTotalRequests()
 		{
+			_totalTrafficData.Clear();
+
 			Dictionary<int, int> totalRequests = new();
 			foreach (KeyValuePair<int, GetRequestPathEntry> kvp in _response.ResponseTimesByTimeByRequestPath.SelectMany(kvp => kvp.Value))
 			{
@@ -83,7 +88,6 @@ public partial class Index
 			double maxY = Math.Ceiling(totalRequests.Values.Max() / scale) * scale;
 
 			_totalTrafficOptions = new(0, 60, 24 * 60, minY, scale, maxY);
-			_totalTrafficData.Clear();
 
 			List<LineData> set = totalRequests.Select((kvp, i) => new LineData(kvp.Key, kvp.Value, i)).ToList();
 			_totalTrafficData.Add(new("#f00", false, true, false, set, (ds, d) =>
@@ -100,16 +104,17 @@ public partial class Index
 		RegisterTimesForSpecificRoute("/api/custom-entries/submit");
 		void RegisterTimesForSpecificRoute(string route)
 		{
+			_customEntrySubmitData.Clear();
+
 			Dictionary<int, GetRequestPathEntry>? clRequests = _response.ResponseTimesByTimeByRequestPath.ContainsKey(route) ? _response.ResponseTimesByTimeByRequestPath[route] : null;
 			if (clRequests == null || clRequests.Count == 0)
 				return;
 
-			const double scale = 100;
+			const double scale = TimeSpan.TicksPerSecond / 5;
 			double minY = Math.Floor(clRequests.Values.Min(e => e.MinResponseTimeTicks) / scale) * scale;
 			double maxY = Math.Ceiling(clRequests.Values.Max(e => e.MaxResponseTimeTicks) / scale) * scale;
 
 			_customEntrySubmitOptions = new(0, 60, 24 * 60, minY, scale, maxY);
-			_customEntrySubmitData.Clear();
 
 			_customEntrySubmitData.Add(new("#0f0", false, true, false, clRequests.Select((kvp, i) => new LineData(kvp.Key, kvp.Value.MinResponseTimeTicks, i)).ToList(), (ds, d) =>
 			{
@@ -117,9 +122,9 @@ public partial class Index
 				return stats == null ? new() : new()
 				{
 					new($"<span style='text-align: right;'>{TimeUtils.MinutesToTimeString(stats.Value.Key)} - {TimeUtils.MinutesToTimeString(stats.Value.Key + _response.MinuteInterval)}</span>"),
-					new($"<span style='color: {ds.Color}; text-align: right;'>{GetFormattedTime(stats.Value.Value.MinResponseTimeTicks)}</span>"),
-					new($"<span style='color: {ds.Color}; text-align: right;'>{GetFormattedTime(stats.Value.Value.AverageResponseTimeTicks)}</span>"),
-					new($"<span style='color: {ds.Color}; text-align: right;'>{GetFormattedTime(stats.Value.Value.MaxResponseTimeTicks)}</span>"),
+					new($"<span style='color: #f00; text-align: right;'>{TimeUtils.TicksToTimeString(stats.Value.Value.MaxResponseTimeTicks)}</span>"),
+					new($"<span style='color: #ff0; text-align: right;'>{TimeUtils.TicksToTimeString(stats.Value.Value.AverageResponseTimeTicks)}</span>"),
+					new($"<span style='color: #0f0; text-align: right;'>{TimeUtils.TicksToTimeString(stats.Value.Value.MinResponseTimeTicks)}</span>"),
 				};
 			}));
 			_customEntrySubmitData.Add(new("#ff0", false, true, false, clRequests.Select((kvp, i) => new LineData(kvp.Key, kvp.Value.AverageResponseTimeTicks, i)).ToList(), null));
@@ -132,17 +137,6 @@ public partial class Index
 		await Http.ForceDump(null);
 
 		await FetchEntries();
-	}
-
-	private static string GetFormattedTime(double ticks)
-	{
-		if (ticks >= TimeSpan.TicksPerSecond)
-			return $"{ticks / (float)TimeSpan.TicksPerSecond:0.00} s";
-
-		if (ticks >= TimeSpan.TicksPerMillisecond)
-			return $"{ticks / (float)TimeSpan.TicksPerMillisecond:0.0} ms";
-
-		return $"{ticks / 10f:0} μs";
 	}
 
 	private void Sort<TKey>(Func<KeyValuePair<string, GetRequestPathEntry>, TKey> sorting, [CallerArgumentExpression("sorting")] string sortingExpression = "")

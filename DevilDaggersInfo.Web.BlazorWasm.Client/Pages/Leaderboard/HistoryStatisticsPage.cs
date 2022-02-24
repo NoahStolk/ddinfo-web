@@ -20,7 +20,7 @@ public partial class HistoryStatisticsPage
 		GridOptions = new() { MinimumRowHeightInPx = 50 },
 		ScaleYOptions = new() { NumberFormat = FormatUtils.LeaderboardIntFormat },
 		ChartMarginXInPx = 60,
-		XScaleDisplayUnit = ScaleDisplayUnit.Date,
+		XScaleDisplayUnit = ScaleDisplayUnit.TicksAsDate,
 		Backgrounds = LineChartUtils.GameVersionBackgrounds,
 	};
 
@@ -28,7 +28,7 @@ public partial class HistoryStatisticsPage
 	{
 		HighlighterKeys = new() { "Date", "Top 1 Score", "Top 2 Score", "Top 3 Score", "Top 10 Score", "Top 100 Score", "Game Version" },
 		GridOptions = new() { MinimumRowHeightInPx = 50 },
-		XScaleDisplayUnit = ScaleDisplayUnit.Date,
+		XScaleDisplayUnit = ScaleDisplayUnit.TicksAsDate,
 		Backgrounds = LineChartUtils.GameVersionBackgrounds,
 	};
 
@@ -38,7 +38,7 @@ public partial class HistoryStatisticsPage
 		GridOptions = new() { MinimumRowHeightInPx = 50 },
 		ScaleYOptions = new() { NumberFormat = FormatUtils.LeaderboardIntFormat },
 		ChartMarginXInPx = 100,
-		XScaleDisplayUnit = ScaleDisplayUnit.Date,
+		XScaleDisplayUnit = ScaleDisplayUnit.TicksAsDate,
 		HighlighterWidth = 320,
 		Backgrounds = LineChartUtils.GameVersionBackgrounds,
 	};
@@ -49,7 +49,7 @@ public partial class HistoryStatisticsPage
 		GridOptions = new() { MinimumRowHeightInPx = 50 },
 		ScaleYOptions = new() { NumberFormat = FormatUtils.LeaderboardIntFormat },
 		ChartMarginXInPx = 100,
-		XScaleDisplayUnit = ScaleDisplayUnit.Date,
+		XScaleDisplayUnit = ScaleDisplayUnit.TicksAsDate,
 		Backgrounds = LineChartUtils.GameVersionBackgrounds,
 	};
 
@@ -59,7 +59,7 @@ public partial class HistoryStatisticsPage
 		GridOptions = new() { MinimumRowHeightInPx = 50 },
 		ScaleYOptions = new() { NumberFormat = FormatUtils.LeaderboardIntFormat },
 		ChartMarginXInPx = 100,
-		XScaleDisplayUnit = ScaleDisplayUnit.Date,
+		XScaleDisplayUnit = ScaleDisplayUnit.TicksAsDate,
 		Backgrounds = LineChartUtils.GameVersionBackgrounds,
 	};
 
@@ -69,7 +69,7 @@ public partial class HistoryStatisticsPage
 		GridOptions = new() { MinimumRowHeightInPx = 50 },
 		ScaleYOptions = new() { NumberFormat = FormatUtils.LeaderboardIntFormat },
 		ChartMarginXInPx = 100,
-		XScaleDisplayUnit = ScaleDisplayUnit.Date,
+		XScaleDisplayUnit = ScaleDisplayUnit.TicksAsDate,
 		Backgrounds = LineChartUtils.GameVersionBackgrounds,
 	};
 
@@ -78,7 +78,7 @@ public partial class HistoryStatisticsPage
 		HighlighterKeys = new() { "Date", "Global Accuracy", "Global Daggers Hit", "Global Daggers Fired" },
 		GridOptions = new() { MinimumRowHeightInPx = 50 },
 		ScaleYOptions = new() { NumberFormat = "0%" },
-		XScaleDisplayUnit = ScaleDisplayUnit.Date,
+		XScaleDisplayUnit = ScaleDisplayUnit.TicksAsDate,
 		HighlighterWidth = 320,
 		Backgrounds = LineChartUtils.GameVersionBackgrounds,
 	};
