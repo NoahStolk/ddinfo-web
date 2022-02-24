@@ -3,6 +3,7 @@ using DevilDaggersInfo.Web.BlazorWasm.Server.Caches.SpawnsetHashes;
 using DevilDaggersInfo.Web.BlazorWasm.Server.Converters.Public;
 using DevilDaggersInfo.Web.BlazorWasm.Server.HostedServices.DdInfoDiscordBot;
 using DevilDaggersInfo.Web.BlazorWasm.Shared.Dto.Public.CustomEntries;
+using DevilDaggersInfo.Web.BlazorWasm.Shared.Utils;
 using DSharpPlus.Entities;
 using System.Web;
 
@@ -304,7 +305,7 @@ public class CustomEntryProcessor
 	}
 
 	private static string FormatTimeString(int time)
-		=> time.ToSecondsTime().ToString("0.0000");
+		=> time.ToSecondsTime().ToString(FormatUtils.TimeFormat);
 
 	private static string GetSpawnsetHashOrName(byte[] spawnsetHash, string? spawnsetName)
 		=> string.IsNullOrEmpty(spawnsetName) ? spawnsetHash.ByteArrayToHexString() : spawnsetName;
@@ -323,6 +324,7 @@ public class CustomEntryProcessor
 		}
 	}
 
+	// TODO: Store these logs in a singleton and empty the logs using the DiscordLogFlushBackgroundService.
 	private static async Task TryLog(AddUploadRequest uploadRequest, string? spawnsetName, string? errorMessage = null, string? errorEmoteNameOverride = null)
 	{
 		try
