@@ -55,19 +55,19 @@ public partial class Index
 		_response = await Http.GetResponseTimes(_dateTime);
 
 		Dictionary<int, int> totalRequests = _response.ResponseTimesByTime.ToDictionary(kvp => kvp.Key, kvp => kvp.Value.Sum(e => e.RequestCount));
-		const double scale = 500;
+		const double scale = 100;
 		double minY = Math.Floor(totalRequests.Values.Min() / scale) * scale;
 		double maxY = Math.Ceiling(totalRequests.Values.Max() / scale) * scale;
 
 		List<LineData> set = totalRequests.Select(kvp => new LineData(kvp.Key, kvp.Value, kvp)).ToList();
 		_totalTrafficOptions = new(0, null, 24 * 60 - 1, minY, scale, maxY);
 		_totalTrafficData.Clear();
-		_totalTrafficData.Add(new("#f00", false, false, false, set, (ds, d) =>
+		_totalTrafficData.Add(new("#f00", false, true, false, set, (ds, d) =>
 		{
 			KeyValuePair<int, int> stats = totalRequests.FirstOrDefault(kvp => (object)kvp == d.Reference);
 			return new()
 			{
-				new($"<span style='text-align: right;'>{MinutesToTime(stats.Key)} - {MinutesToTime(stats.Key + 30)}</span>"),
+				new($"<span style='text-align: right;'>{MinutesToTime(stats.Key)} - {MinutesToTime(stats.Key + _response.MinuteInterval)}</span>"),
 				new($"<span style='color: {ds.Color}; text-align: right;'>{d.Y.ToString("0")}</span>"),
 			};
 		}));

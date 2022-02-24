@@ -5,4 +5,6 @@ public class GetResponseTimes
 	public List<GetRequestPathEntry> ResponseTimesByRequestPath { get; set; } = new();
 
 	public Dictionary<int, List<GetRequestPathEntry>> ResponseTimesByTime { get; init; } = new();
+
+	public int MinuteInterval { get; init; }
 }

@@ -99,7 +99,10 @@ public class ResponseTimeMonitor
 		}
 
 		List<GetRequestPathEntry> entriesByRequestPath = new();
-		Dictionary<int, List<GetRequestPathEntry>> entriesByTime = Enumerable.Range(0, 48).Select(i => i * 30).ToDictionary(to => to, _ => new List<GetRequestPathEntry>());
+
+		const int minuteInterval = 10;
+		const int intervalCount = 24 * 60 / minuteInterval;
+		Dictionary<int, List<GetRequestPathEntry>> entriesByTime = Enumerable.Range(0, intervalCount).Select(i => i * minuteInterval).ToDictionary(to => to, _ => new List<GetRequestPathEntry>());
 		foreach (IGrouping<string, ResponseTimeLog> group in logs.GroupBy(rtl => rtl.Path).OrderBy(rtl => rtl.Key))
 		{
 			entriesByRequestPath.Add(new()
@@ -113,7 +116,7 @@ public class ResponseTimeMonitor
 
 			foreach (KeyValuePair<int, List<GetRequestPathEntry>> timeKvp in entriesByTime)
 			{
-				IEnumerable<ResponseTimeLog> logsThisHalfHour = group.Where(rtl => rtl.DateTime.Hour * 60 + rtl.DateTime.Minute > timeKvp.Key && rtl.DateTime.Hour * 60 + rtl.DateTime.Minute < timeKvp.Key + 30);
+				IEnumerable<ResponseTimeLog> logsThisHalfHour = group.Where(rtl => rtl.DateTime.Hour * 60 + rtl.DateTime.Minute > timeKvp.Key && rtl.DateTime.Hour * 60 + rtl.DateTime.Minute < timeKvp.Key + minuteInterval);
 				if (!logsThisHalfHour.Any())
 					continue;
 
@@ -132,6 +135,7 @@ public class ResponseTimeMonitor
 		{
 			ResponseTimesByRequestPath = entriesByRequestPath,
 			ResponseTimesByTime = entriesByTime,
+			MinuteInterval = minuteInterval,
 		};
 	}
 
