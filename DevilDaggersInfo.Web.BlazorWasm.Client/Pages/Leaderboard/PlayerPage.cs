@@ -131,11 +131,11 @@ public partial class PlayerPage
 			double minY = Math.Floor(scores.Min() / scale) * scale;
 			double maxY = Math.Ceiling(scores.Max() / scale) * scale;
 
-			List<LineData> set = GetPlayerHistory.ScoreHistory.Select(sh => new LineData(sh.DateTime.Ticks, sh.Time, sh)).ToList();
+			List<LineData> set = GetPlayerHistory.ScoreHistory.Select((sh, i) => new LineData(sh.DateTime.Ticks, sh.Time, i)).ToList();
 			_progressionScoreOptions = new(minX.Ticks, null, maxX.Ticks, minY, scale, maxY);
 			_progressionScoreData.Add(new("#f00", true, true, true, set, (ds, d) =>
 			{
-				GetPlayerHistoryScoreEntry? scoreEntry = GetPlayerHistory.ScoreHistory.Find(sh => sh == d.Reference);
+				GetPlayerHistoryScoreEntry? scoreEntry = GetPlayerHistory.ScoreHistory.Count <= d.Index ? null : GetPlayerHistory.ScoreHistory[d.Index];
 				if (scoreEntry == null)
 					return new();
 
@@ -165,11 +165,11 @@ public partial class PlayerPage
 			const double scale = 10.0;
 			double maxY = Math.Ceiling(rank.Max() / scale) * scale;
 
-			List<LineData> set = GetPlayerHistory.RankHistory.Select(rh => new LineData(rh.DateTime.Ticks, rh.Rank, rh)).ToList();
+			List<LineData> set = GetPlayerHistory.RankHistory.Select((rh, i) => new LineData(rh.DateTime.Ticks, rh.Rank, i)).ToList();
 			_progressionRankOptions = new(minX.Ticks, null, maxX.Ticks, 0, scale, maxY, false, true);
 			_progressionRankData.Add(new("#ff0", false, true, true, set, (ds, d) =>
 			{
-				GetPlayerHistoryRankEntry? rankEntry = GetPlayerHistory.RankHistory.Find(rh => rh == d.Reference);
+				GetPlayerHistoryRankEntry? rankEntry = GetPlayerHistory.RankHistory.Count <= d.Index ? null : GetPlayerHistory.RankHistory[d.Index];
 				return rankEntry == null ? new() : new()
 				{
 					new($"<span style='text-align: right;'>{rankEntry.DateTime.ToString(FormatUtils.DateFormat)}</span>"),
@@ -192,11 +192,11 @@ public partial class PlayerPage
 			const double timeScale = 2000.0;
 			double timeMaxY = Math.Ceiling(time.Max() / timeScale) * timeScale;
 
-			List<LineData> deathsSet = GetPlayerHistory.ActivityHistory.Select(ah => new LineData(ah.DateTime.Ticks, ah.DeathsIncrement, ah)).ToList();
+			List<LineData> deathsSet = GetPlayerHistory.ActivityHistory.Select((ah, i) => new LineData(ah.DateTime.Ticks, ah.DeathsIncrement, i)).ToList();
 			_activityDeathsOptions = new(minX.Ticks, null, maxX.Ticks, 0, deathsScale, deathsMaxY);
 			_activityDeathsData.Add(new("#0f0", false, true, true, deathsSet, (ds, d) =>
 			{
-				GetPlayerHistoryActivityEntry? activityEntry = GetPlayerHistory.ActivityHistory.Find(ah => ah == d.Reference);
+				GetPlayerHistoryActivityEntry? activityEntry = GetPlayerHistory.ActivityHistory.Count <= d.Index ? null : GetPlayerHistory.ActivityHistory[d.Index];
 				return activityEntry == null ? new() : new()
 				{
 					new($"<span style='text-align: right;'>{activityEntry.DateTime.ToString(FormatUtils.DateFormat)}</span>"),
@@ -204,11 +204,11 @@ public partial class PlayerPage
 				};
 			}));
 
-			List<LineData> timeSet = GetPlayerHistory.ActivityHistory.Select(ah => new LineData(ah.DateTime.Ticks, ah.TimeIncrement, ah)).ToList();
+			List<LineData> timeSet = GetPlayerHistory.ActivityHistory.Select((ah, i) => new LineData(ah.DateTime.Ticks, ah.TimeIncrement, i)).ToList();
 			_activityTimeOptions = new(minX.Ticks, null, maxX.Ticks, 0, timeScale, timeMaxY);
 			_activityTimeData.Add(new("#f80", false, true, true, timeSet, (ds, d) =>
 			{
-				GetPlayerHistoryActivityEntry? activityEntry = GetPlayerHistory.ActivityHistory.Find(ah => ah == d.Reference);
+				GetPlayerHistoryActivityEntry? activityEntry = GetPlayerHistory.ActivityHistory.Count <= d.Index ? null : GetPlayerHistory.ActivityHistory[d.Index];
 				return activityEntry == null ? new() : new()
 				{
 					new($"<span style='text-align: right;'>{activityEntry.DateTime.ToString(FormatUtils.DateFormat)}</span>"),

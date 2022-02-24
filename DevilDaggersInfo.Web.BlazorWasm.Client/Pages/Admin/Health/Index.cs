@@ -59,15 +59,15 @@ public partial class Index
 		double minY = Math.Floor(totalRequests.Values.Min() / scale) * scale;
 		double maxY = Math.Ceiling(totalRequests.Values.Max() / scale) * scale;
 
-		List<LineData> set = totalRequests.Select(kvp => new LineData(kvp.Key, kvp.Value, kvp)).ToList();
+		List<LineData> set = totalRequests.Select((kvp, i) => new LineData(kvp.Key, kvp.Value, i)).ToList();
 		_totalTrafficOptions = new(0, null, 24 * 60 - 1, minY, scale, maxY);
 		_totalTrafficData.Clear();
 		_totalTrafficData.Add(new("#f00", false, true, false, set, (ds, d) =>
 		{
-			KeyValuePair<int, int> stats = totalRequests.FirstOrDefault(kvp => (object)kvp == d.Reference);
-			return new()
+			KeyValuePair<int, int>? stats = totalRequests.Count <= d.Index ? null : totalRequests.ElementAt(d.Index);
+			return stats == null ? new() : new()
 			{
-				new($"<span style='text-align: right;'>{MinutesToTime(stats.Key)} - {MinutesToTime(stats.Key + _response.MinuteInterval)}</span>"),
+				new($"<span style='text-align: right;'>{MinutesToTime(stats.Value.Key)} - {MinutesToTime(stats.Value.Key + _response.MinuteInterval)}</span>"),
 				new($"<span style='color: {ds.Color}; text-align: right;'>{d.Y.ToString("0")}</span>"),
 			};
 		}));

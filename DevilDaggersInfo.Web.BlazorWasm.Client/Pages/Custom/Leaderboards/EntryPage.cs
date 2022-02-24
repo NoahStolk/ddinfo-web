@@ -134,7 +134,7 @@ public partial class EntryPage
 
 			Func<LineDataSet, LineData, List<MarkupString>> accuracyHighlighter = (ds, d) =>
 			{
-				Accuracy? stat = Array.Find(stats, t => t == d.Reference);
+				Accuracy? stat = stats.Length <= d.Index ? null : stats[d.Index];
 				return stat == null ? new() : new List<MarkupString>
 				{
 					new($"<span style='text-align: right;'>{d.X.ToString("0.0000")}</span>"),
@@ -154,7 +154,7 @@ public partial class EntryPage
 				ScaleYOptions = new() { NumberFormat = "0%" },
 				Backgrounds = _backgrounds,
 			};
-			_lineCharts.Add(("Accuracy", dataOptions, chartOptions, new() { new("#f80", false, true, false, stats.Select((t, i) => new LineData(i, t.Acc, t)).ToList(), accuracyHighlighter) }));
+			_lineCharts.Add(("Accuracy", dataOptions, chartOptions, new() { new("#f80", false, true, false, stats.Select((t, i) => new LineData(i, t.Acc, i)).ToList(), accuracyHighlighter) }));
 		}
 
 		List<(LineDataSet Set, string Name)> skullsAliveSets = new();

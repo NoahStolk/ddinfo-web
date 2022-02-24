@@ -55,11 +55,11 @@ public partial class WorldRecordProgressionPage
 		double minY = Math.Floor(firstWr.Entry.Time / 100.0) * 100;
 		double maxY = Math.Ceiling(lastWr.Entry.Time / 100.0) * 100;
 
-		List<LineData> set = _data.WorldRecords.Select(wr => new LineData(wr.DateTime.Ticks, wr.Entry.Time, wr)).ToList();
+		List<LineData> set = _data.WorldRecords.Select((wr, i) => new LineData(wr.DateTime.Ticks, wr.Entry.Time, i)).ToList();
 		_dataOptions = new(minX.Ticks, null, maxX.Ticks, minY, 100, maxY);
 		_lineDataSets.Add(new("#f00", true, true, true, set, (ds, d) =>
 		{
-			GetWorldRecord? wr = _data.WorldRecords.Find(wr => wr == d.Reference);
+			GetWorldRecord? wr = _data.WorldRecords.Count <= d.Index ? null : _data.WorldRecords[d.Index];
 			if (wr == null)
 				return new();
 

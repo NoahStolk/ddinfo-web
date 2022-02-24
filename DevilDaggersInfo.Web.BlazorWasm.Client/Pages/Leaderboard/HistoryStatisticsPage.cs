@@ -122,11 +122,11 @@ public partial class HistoryStatisticsPage
 			double minY = Math.Floor(totalPlayers.Min() / scale) * scale;
 			double maxY = Math.Ceiling(totalPlayers.Max() / scale) * scale;
 
-			List<LineData> set = relevantData.Select(hs => new LineData(hs.DateTime.Ticks, hs.TotalPlayers, hs)).ToList();
+			List<LineData> set = relevantData.Select((hs, i) => new LineData(hs.DateTime.Ticks, hs.TotalPlayers, i)).ToList();
 			_playersOptions = new(relevantData.Min(hs => hs.DateTime.Ticks), null, maxX.Ticks, minY, scale, maxY);
 			_playersData.Add(new("#f00", false, false, false, set, (ds, d) =>
 			{
-				GetLeaderboardHistoryStatistics? stats = relevantData.FirstOrDefault(hs => hs == d.Reference);
+				GetLeaderboardHistoryStatistics? stats = relevantData.Count() <= d.Index ? null : relevantData.ElementAt(d.Index);
 				return stats == null ? new() : new()
 				{
 					new($"<span style='text-align: right;'>{stats.DateTime.ToString(FormatUtils.DateFormat)}</span>"),
@@ -155,9 +155,9 @@ public partial class HistoryStatisticsPage
 			const string top3 = "#a42";
 			const string top10 = "#0aa";
 			const string top100 = "#07a";
-			_entrancesData.Add(new(top1, false, false, false, relevantData.Where(hs => hs.Top1EntranceUpdated).Select(hs => new LineData(hs.DateTime.Ticks, hs.Top1Entrance, hs)).ToList(), (ds, d) =>
+			_entrancesData.Add(new(top1, false, false, false, relevantData.Where(hs => hs.Top1EntranceUpdated).Select((hs, i) => new LineData(hs.DateTime.Ticks, hs.Top1Entrance, i)).ToList(), (ds, d) =>
 			{
-				GetLeaderboardHistoryStatistics? stats = relevantData.FirstOrDefault(hs => hs == d.Reference);
+				GetLeaderboardHistoryStatistics? stats = relevantData.Count() <= d.Index ? null : relevantData.ElementAt(d.Index);
 				return stats == null ? new() : new()
 				{
 					new($"<span style='text-align: right;'>{stats.DateTime.ToString(FormatUtils.DateFormat)}</span>"),
@@ -170,10 +170,10 @@ public partial class HistoryStatisticsPage
 				};
 			}));
 
-			_entrancesData.Add(new(top2, false, false, false, relevantData.Where(hs => hs.Top2EntranceUpdated).Select(hs => new LineData(hs.DateTime.Ticks, hs.Top2Entrance, hs)).ToList(), null));
-			_entrancesData.Add(new(top3, false, false, false, relevantData.Where(hs => hs.Top3EntranceUpdated).Select(hs => new LineData(hs.DateTime.Ticks, hs.Top3Entrance, hs)).ToList(), null));
-			_entrancesData.Add(new(top10, false, false, false, relevantData.Where(hs => hs.Top10EntranceUpdated).Select(hs => new LineData(hs.DateTime.Ticks, hs.Top10Entrance, hs)).ToList(), null));
-			_entrancesData.Add(new(top100, false, false, false, relevantData.Where(hs => hs.Top100EntranceUpdated).Select(hs => new LineData(hs.DateTime.Ticks, hs.Top100Entrance, hs)).ToList(), null));
+			_entrancesData.Add(new(top2, false, false, false, relevantData.Where(hs => hs.Top2EntranceUpdated).Select((hs, i) => new LineData(hs.DateTime.Ticks, hs.Top2Entrance, i)).ToList(), null));
+			_entrancesData.Add(new(top3, false, false, false, relevantData.Where(hs => hs.Top3EntranceUpdated).Select((hs, i) => new LineData(hs.DateTime.Ticks, hs.Top3Entrance, i)).ToList(), null));
+			_entrancesData.Add(new(top10, false, false, false, relevantData.Where(hs => hs.Top10EntranceUpdated).Select((hs, i) => new LineData(hs.DateTime.Ticks, hs.Top10Entrance, i)).ToList(), null));
+			_entrancesData.Add(new(top100, false, false, false, relevantData.Where(hs => hs.Top100EntranceUpdated).Select((hs, i) => new LineData(hs.DateTime.Ticks, hs.Top100Entrance, i)).ToList(), null));
 		}
 
 		RegisterTime();
@@ -186,10 +186,10 @@ public partial class HistoryStatisticsPage
 			double maxY = Math.Ceiling(stats.Max() / scale) * scale;
 			_timeOptions = new(relevantData.Min(hs => hs.DateTime.Ticks), null, maxX.Ticks, minY, scale, maxY);
 
-			List<LineData> set = relevantData.Select(hs => new LineData(hs.DateTime.Ticks, hs.TimeGlobal, hs)).ToList();
+			List<LineData> set = relevantData.Select((hs, i) => new LineData(hs.DateTime.Ticks, hs.TimeGlobal, i)).ToList();
 			_timeData.Add(new("#f00", false, false, false, set, (ds, d) =>
 			{
-				GetLeaderboardHistoryStatistics? stat = relevantData.FirstOrDefault(hs => hs == d.Reference);
+				GetLeaderboardHistoryStatistics? stat = relevantData.Count() <= d.Index ? null : relevantData.ElementAt(d.Index);
 				return stat == null ? new() : new List<MarkupString>
 				{
 					new($"<span style='text-align: right;'>{stat.DateTime.ToString(FormatUtils.DateFormat)}</span>"),
@@ -209,10 +209,10 @@ public partial class HistoryStatisticsPage
 			double maxY = Math.Ceiling(stats.Max() / scale) * scale;
 			lineChartDataOptions = new(relevantData.Min(hs => hs.DateTime.Ticks), null, maxX.Ticks, minY, scale, maxY);
 
-			List<LineData> set = relevantData.Select(hs => new LineData(hs.DateTime.Ticks, valueSelector(hs), hs)).ToList();
+			List<LineData> set = relevantData.Select((hs, i) => new LineData(hs.DateTime.Ticks, valueSelector(hs), i)).ToList();
 			dataSets.Add(new("#f00", false, false, false, set, (ds, d) =>
 			{
-				GetLeaderboardHistoryStatistics? stat = relevantData.FirstOrDefault(hs => hs == d.Reference);
+				GetLeaderboardHistoryStatistics? stat = relevantData.Count() <= d.Index ? null : relevantData.ElementAt(d.Index);
 				return stat == null ? new() : new List<MarkupString>
 				{
 					new($"<span style='text-align: right;'>{stat.DateTime.ToString(FormatUtils.DateFormat)}</span>"),
@@ -231,10 +231,10 @@ public partial class HistoryStatisticsPage
 			double max = ((int)Math.Ceiling((int)(accuracy.Max() * 100) / 5.0) * 5) / 100.0 + 0.0001;
 			_accuracyOptions = new(relevantData.Min(hs => hs.DateTime.Ticks), null, maxX.Ticks, 0.2, 0.01, max, true);
 
-			List<LineData> set = relevantData.Select(hs => new LineData(hs.DateTime.Ticks, converter(hs.DaggersHitGlobal, hs.DaggersFiredGlobal), hs)).ToList();
+			List<LineData> set = relevantData.Select((hs, i) => new LineData(hs.DateTime.Ticks, converter(hs.DaggersHitGlobal, hs.DaggersFiredGlobal), i)).ToList();
 			_accuracyData.Add(new("#f80", false, false, false, set, (ds, d) =>
 			{
-				GetLeaderboardHistoryStatistics? stat = relevantData.FirstOrDefault(hs => hs == d.Reference);
+				GetLeaderboardHistoryStatistics? stat = relevantData.Count() <= d.Index ? null : relevantData.ElementAt(d.Index);
 				return stat == null ? new() : new List<MarkupString>
 				{
 					new($"<span style='text-align: right;'>{stat.DateTime.ToString(FormatUtils.DateFormat)}</span>"),
