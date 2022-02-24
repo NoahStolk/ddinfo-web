@@ -26,7 +26,7 @@ public partial class PlayerPage
 		{
 			MinimumRowHeightInPx = 30,
 		},
-		DisplayXScaleAsDates = true,
+		XScaleDisplayUnit = ScaleDisplayUnit.Date,
 		Backgrounds = LineChartUtils.GameVersionBackgrounds,
 	};
 
@@ -37,7 +37,7 @@ public partial class PlayerPage
 		{
 			MinimumRowHeightInPx = 30,
 		},
-		DisplayXScaleAsDates = true,
+		XScaleDisplayUnit = ScaleDisplayUnit.Date,
 		Backgrounds = LineChartUtils.GameVersionBackgrounds,
 	};
 
@@ -48,7 +48,7 @@ public partial class PlayerPage
 		{
 			MinimumRowHeightInPx = 30,
 		},
-		DisplayXScaleAsDates = true,
+		XScaleDisplayUnit = ScaleDisplayUnit.Date,
 		Backgrounds = LineChartUtils.GameVersionBackgrounds,
 		HighlighterWidth = 320,
 	};
@@ -60,7 +60,7 @@ public partial class PlayerPage
 		{
 			MinimumRowHeightInPx = 30,
 		},
-		DisplayXScaleAsDates = true,
+		XScaleDisplayUnit = ScaleDisplayUnit.Date,
 		Backgrounds = LineChartUtils.GameVersionBackgrounds,
 		HighlighterWidth = 320,
 	};

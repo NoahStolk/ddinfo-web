@@ -137,7 +137,15 @@ public partial class LineChart
 			{
 				double xScaleValue = xScales[i];
 				double xScalePosition = LerpUtils.RevLerp(DataOptions.MinX, DataOptions.MaxX, xScaleValue) * ChartWidth;
-				_context.StrokeText(Options.DisplayXScaleAsDates ? new DateTime((long)xScaleValue).ToString(FormatUtils.DateFormat) : xScaleValue.ToString(Options.ScaleXOptions.NumberFormat), Options.ChartMarginXInPx + xScalePosition, Options.ChartMarginYInPx + ChartHeight + paddingY);
+
+				string xScale = Options.XScaleDisplayUnit switch
+				{
+					ScaleDisplayUnit.Date => new DateTime((long)xScaleValue).ToString(FormatUtils.DateFormat),
+					ScaleDisplayUnit.Time => TimeUtils.MinutesToTimeString((int)xScaleValue),
+					_ => xScaleValue.ToString(Options.ScaleXOptions.NumberFormat),
+				};
+
+				_context.StrokeText(xScale, Options.ChartMarginXInPx + xScalePosition, Options.ChartMarginYInPx + ChartHeight + paddingY);
 			}
 
 			_context.StrokeStyle = Options.ScaleYOptions.TextColor;

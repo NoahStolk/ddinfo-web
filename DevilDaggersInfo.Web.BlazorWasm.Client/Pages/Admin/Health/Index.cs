@@ -1,6 +1,7 @@
 using DevilDaggersInfo.Web.BlazorWasm.Client.Core.CanvasChart.Data;
 using DevilDaggersInfo.Web.BlazorWasm.Client.Core.CanvasChart.Options;
 using DevilDaggersInfo.Web.BlazorWasm.Client.Core.CanvasChart.Options.LineChart;
+using DevilDaggersInfo.Web.BlazorWasm.Client.Core.CanvasChart.Utils;
 using DevilDaggersInfo.Web.BlazorWasm.Client.Utils;
 using DevilDaggersInfo.Web.BlazorWasm.Shared.Dto.Admin.Health;
 using DevilDaggersInfo.Web.BlazorWasm.Shared.Extensions;
@@ -19,13 +20,21 @@ public partial class Index
 	private readonly LineChartOptions _totalTrafficLineChartOptions = new()
 	{
 		HighlighterKeys = new() { "Time", "Requests" },
-		DisplayXScaleAsDates = true,
+		XScaleDisplayUnit = ScaleDisplayUnit.Time,
+		GridOptions = new()
+		{
+			MinimumColumnWidthInPx = 30,
+		},
 	};
 
 	private readonly LineChartOptions _customEntrySubmitLineChartOptions = new()
 	{
 		HighlighterKeys = new() { "Min Response Time", "Avg Response Time", "Max Response Time" },
-		DisplayXScaleAsDates = true,
+		XScaleDisplayUnit = ScaleDisplayUnit.Time,
+		GridOptions = new()
+		{
+			MinimumColumnWidthInPx = 30,
+		},
 	};
 
 	private readonly List<LineDataSet> _totalTrafficData = new();
@@ -60,24 +69,17 @@ public partial class Index
 		double maxY = Math.Ceiling(totalRequests.Values.Max() / scale) * scale;
 
 		List<LineData> set = totalRequests.Select((kvp, i) => new LineData(kvp.Key, kvp.Value, i)).ToList();
-		_totalTrafficOptions = new(0, null, 24 * 60 - 1, minY, scale, maxY);
+		_totalTrafficOptions = new(0, 60, 24 * 60, minY, scale, maxY);
 		_totalTrafficData.Clear();
 		_totalTrafficData.Add(new("#f00", false, true, false, set, (ds, d) =>
 		{
 			KeyValuePair<int, int>? stats = totalRequests.Count <= d.Index ? null : totalRequests.ElementAt(d.Index);
 			return stats == null ? new() : new()
 			{
-				new($"<span style='text-align: right;'>{MinutesToTime(stats.Value.Key)} - {MinutesToTime(stats.Value.Key + _response.MinuteInterval)}</span>"),
+				new($"<span style='text-align: right;'>{TimeUtils.MinutesToTimeString(stats.Value.Key)} - {TimeUtils.MinutesToTimeString(stats.Value.Key + _response.MinuteInterval)}</span>"),
 				new($"<span style='color: {ds.Color}; text-align: right;'>{d.Y.ToString("0")}</span>"),
 			};
 		}));
-
-		static string MinutesToTime(int totalMinutes)
-		{
-			int hours = totalMinutes / 60;
-			int minutes = totalMinutes % 60;
-			return $"{hours:00}:{minutes:00}";
-		}
 	}
 
 	private async Task ForceDump()
