@@ -13,5 +13,7 @@ public class UserEntity
 
 	public byte[] PasswordSalt { get; set; } = null!;
 
+	public DateTime DateRegistered { get; init; }
+
 	public List<UserRoleEntity>? UserRoles { get; set; }
 }

@@ -48,6 +48,7 @@ public class UserService : IUserService
 			Name = name,
 			PasswordHash = passwordHash,
 			PasswordSalt = passwordSalt,
+			DateRegistered = DateTime.UtcNow,
 		};
 
 		_dbContext.Users.Add(user);
