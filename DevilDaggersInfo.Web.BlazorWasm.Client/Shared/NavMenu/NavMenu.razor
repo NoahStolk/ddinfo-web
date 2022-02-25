@@ -48,7 +48,7 @@
 				<Authorized>
 					@if (_roles.Count > 0)
 					{
-						<NavDropdown Text="Admin" IconType="brush">
+						<NavDropdown Text="Admin" IconType="shield">
 							@if (_roles.Contains(Roles.Admin))
 							{
 								<NavItem Href="admin/cache" IconType="hard-drive" Text="Cache" />
