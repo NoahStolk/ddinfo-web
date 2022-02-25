@@ -4,10 +4,12 @@ namespace DevilDaggersInfo.Web.BlazorWasm.Server.Services;
 
 public class LogContainerService
 {
-	private readonly List<DiscordEmbed> _logEntries = new();
+	private readonly List<LogEntry> _logEntries = new();
 	private readonly List<string> _clLogs = new();
 
-	public void Add(DiscordEmbed embed) => _logEntries.Add(embed);
+	public void Add(DiscordEmbed embed) => _logEntries.Add(new(null, embed));
+
+	public void Add(string message) => _logEntries.Add(new(message, null));
 
 	public void AddClLog(string message) => _clLogs.Add(message);
 
@@ -15,8 +17,8 @@ public class LogContainerService
 	{
 		while (_logEntries.Count > 0)
 		{
-			DiscordEmbed embed = _logEntries[0];
-			await channel.SendMessageAsyncSafe(null, embed);
+			LogEntry entry = _logEntries[0];
+			await channel.SendMessageAsyncSafe(entry.Message, entry.Embed);
 			_logEntries.RemoveAt(0);
 		}
 	}
@@ -29,4 +31,6 @@ public class LogContainerService
 			_clLogs.Clear();
 		}
 	}
+
+	private sealed record LogEntry(string? Message, DiscordEmbed? Embed);
 }
