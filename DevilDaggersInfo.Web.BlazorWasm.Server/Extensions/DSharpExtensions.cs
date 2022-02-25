@@ -20,6 +20,9 @@ public static class DSharpExtensions
 
 	public static async Task SendMessageAsyncSafe(this DiscordChannel channel, string? message, DiscordEmbed? embed = null)
 	{
+		if (message == null && embed == null)
+			return;
+
 		if (message?.Length >= 2000)
 			message = $"{message[..1996]}...";
 
