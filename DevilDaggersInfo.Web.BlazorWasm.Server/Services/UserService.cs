@@ -75,7 +75,7 @@ public class UserService : IUserService
 	{
 		UserEntity? user = _dbContext.Users.Find(id);
 		if (user == null)
-			throw new("User not found.");
+			throw new($"User with ID '{id}' not found.");
 
 		CreatePasswordHash(password, out byte[] passwordHash, out byte[] passwordSalt);
 
