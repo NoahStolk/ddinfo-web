@@ -2,6 +2,7 @@ using DevilDaggersInfo.Web.BlazorWasm.Server.Caches.LeaderboardHistory;
 using DevilDaggersInfo.Web.BlazorWasm.Server.Converters.Public;
 using DevilDaggersInfo.Web.BlazorWasm.Server.InternalModels.Json;
 using DevilDaggersInfo.Web.BlazorWasm.Shared.Dto.Public.Players;
+using Microsoft.AspNetCore.Authorization;
 
 namespace DevilDaggersInfo.Web.BlazorWasm.Server.Controllers.Public;
 
@@ -12,12 +13,16 @@ public class PlayersController : ControllerBase
 	private readonly ApplicationDbContext _dbContext;
 	private readonly IFileSystemService _fileSystemService;
 	private readonly LeaderboardHistoryCache _leaderboardHistoryCache;
+	private readonly ProfileService _profileService;
+	private readonly ILogger<PlayersController> _logger;
 
-	public PlayersController(ApplicationDbContext dbContext, IFileSystemService fileSystemService, LeaderboardHistoryCache leaderboardHistoryCache)
+	public PlayersController(ApplicationDbContext dbContext, IFileSystemService fileSystemService, LeaderboardHistoryCache leaderboardHistoryCache, ProfileService profileService, ILogger<PlayersController> logger)
 	{
 		_dbContext = dbContext;
 		_fileSystemService = fileSystemService;
 		_leaderboardHistoryCache = leaderboardHistoryCache;
+		_profileService = profileService;
+		_logger = logger;
 	}
 
 	[HttpGet("leaderboard")]
@@ -179,5 +184,26 @@ public class PlayersController : ControllerBase
 			ScoreHistory = scoreHistory,
 			Usernames = usernamesHistory.OrderByDescending(kvp => kvp.Value).Select(kvp => kvp.Key).ToList(),
 		};
+	}
+
+	[Authorize]
+	[HttpPut("{id}/profile")]
+	[ProducesResponseType(StatusCodes.Status200OK)]
+	[ProducesResponseType(StatusCodes.Status400BadRequest)]
+	[ProducesResponseType(StatusCodes.Status401Unauthorized)]
+	[ProducesResponseType(StatusCodes.Status403Forbidden)]
+	[ProducesResponseType(StatusCodes.Status404NotFound)]
+	public async Task<ActionResult> UpdateProfileByPlayerId([Required] int id, EditPlayerProfile editPlayerProfile)
+	{
+		try
+		{
+			await _profileService.UpdateProfile(User, id, editPlayerProfile);
+			return Ok();
+		}
+		catch (HttpRequestException ex)
+		{
+			_logger.LogWarning(ex, "Updating profile failed.");
+			return StatusCode((int?)ex.StatusCode ?? 400);
+		}
 	}
 }
