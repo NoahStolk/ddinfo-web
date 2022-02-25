@@ -19,6 +19,7 @@ public class CustomEntryProcessor
 	private readonly LogContainerService _logContainerService;
 
 	private readonly AesBase32Wrapper _encryptionWrapper;
+	private readonly Stopwatch _stopwatch;
 
 	public CustomEntryProcessor(ApplicationDbContext dbContext, ILogger<CustomEntryProcessor> logger, SpawnsetHashCache spawnsetHashCache, IFileSystemService fileSystemService, IWebHostEnvironment environment, IConfiguration configuration, LogContainerService logContainerService)
 	{
@@ -31,6 +32,8 @@ public class CustomEntryProcessor
 
 		IConfigurationSection section = configuration.GetRequiredSection("CustomLeaderboardSecrets");
 		_encryptionWrapper = new(section["InitializationVector"], section["Password"], section["Salt"]);
+
+		_stopwatch = Stopwatch.StartNew();
 	}
 
 	public async Task<ActionResult<GetUploadSuccess>> ProcessUploadRequest(AddUploadRequest uploadRequest)
@@ -338,6 +341,8 @@ public class CustomEntryProcessor
 
 	private void Log(AddUploadRequest uploadRequest, string? spawnsetName, string? errorMessage = null, string? errorEmoteNameOverride = null)
 	{
+		_stopwatch.Stop();
+
 		string spawnsetIdentification = GetSpawnsetHashOrName(uploadRequest.SurvivalHashMd5, spawnsetName);
 
 		string replayData = uploadRequest.ReplayData == null ? "Replay data not included" : $"Replay data {uploadRequest.ReplayData.Length:N0} bytes";
@@ -350,9 +355,9 @@ public class CustomEntryProcessor
 			return;
 
 		if (!string.IsNullOrEmpty(errorMessage))
-			_logContainerService.AddClLog($":{errorEmoteNameOverride ?? "warning"}: Upload failed for user `{uploadRequest.PlayerName}` (`{uploadRequest.PlayerId}`) for `{spawnsetIdentification}`. {requestInfo}\n**{errorMessage}**");
+			_logContainerService.AddClLog($":{errorEmoteNameOverride ?? "warning"}: `{TimeUtils.TicksToTimeString(_stopwatch.ElapsedTicks)}` Upload failed for user `{uploadRequest.PlayerName}` (`{uploadRequest.PlayerId}`) for `{spawnsetIdentification}`. {requestInfo}\n**{errorMessage}**");
 		else
-			_logContainerService.AddClLog($":white_check_mark: `{uploadRequest.PlayerName}` just submitted a score of `{FormatTimeString(uploadRequest.Time)}` to `{spawnsetIdentification}`. {requestInfo}");
+			_logContainerService.AddClLog($":white_check_mark: `{TimeUtils.TicksToTimeString(_stopwatch.ElapsedTicks)}` `{uploadRequest.PlayerName}` just submitted a score of `{FormatTimeString(uploadRequest.Time)}` to `{spawnsetIdentification}`. {requestInfo}");
 	}
 
 	private static void PopulateCustomEntryData(CustomEntryDataEntity ced, List<AddGameState> gameStates)
