@@ -1,0 +1,57 @@
+@page "/profile/edit"
+@using DevilDaggersInfo.Core.Wiki
+@using DevilDaggersInfo.Core.Wiki.Enums
+@using DevilDaggersInfo.Web.BlazorWasm.Client.Components.Admin
+@using DevilDaggersInfo.Web.BlazorWasm.Shared.Dto.Public.Players
+@using DevilDaggersInfo.Web.BlazorWasm.Shared.Enums
+
+<Heading Title="Edit Profile" />
+
+@if (!_linked)
+{
+	<Paragraph>
+		This account is not linked to a profile.
+	</Paragraph>
+}
+else
+{
+	@switch (State)
+	{
+		case ErrorState.ValidationError:
+			{
+				<ResultBar Title="Validation failed" ResultBarType="ResultBarType.ValidationError" DismissEvent="Dismiss">
+					@ErrorMessage
+				</ResultBar>
+			}
+			break;
+		case ErrorState.FatalError:
+			{
+				<ResultBar Title="Fatal error" ResultBarType="ResultBarType.FatalError" DismissEvent="Dismiss">
+					@ErrorMessage
+				</ResultBar>
+			}
+			break;
+	}
+
+	<EditForm Model="@_editPlayer" OnValidSubmit="@OnValidSubmit">
+		<DataAnnotationsValidator />
+		<ValidationSummary />
+
+		<AdminInput Label="@nameof(EditPlayerProfile.CountryCode)"><SearchDropdown TKey=string Values="@(UserUtils.CountryNames)" Converter="s => s" @bind-Value="@_editPlayer.CountryCode" /></AdminInput>
+		<AdminInput Label="@nameof(EditPlayerProfile.Dpi)"><InputNumber class="w-64 pl-2 bg-gray-1 text-color-text" @bind-Value="_editPlayer.Dpi" /></AdminInput>
+		<AdminInput Label="@nameof(EditPlayerProfile.Fov)"><InputNumber class="w-64 pl-2 bg-gray-1 text-color-text" @bind-Value="_editPlayer.Fov" /></AdminInput>
+		<AdminInput Label="@nameof(EditPlayerProfile.Gamma)"><InputNumber class="w-64 pl-2 bg-gray-1 text-color-text" @bind-Value="_editPlayer.Gamma" /></AdminInput>
+		<AdminInput Label="@nameof(EditPlayerProfile.HasFlashHandEnabled)"><InputNullableBoolean @bind-Value="@_editPlayer.HasFlashHandEnabled" /></AdminInput>
+		<AdminInput Label="@nameof(EditPlayerProfile.InGameSens)"><InputNumber class="w-64 pl-2 bg-gray-1 text-color-text" @bind-Value="@_editPlayer.InGameSens" /></AdminInput>
+		<AdminInput Label="@nameof(EditPlayerProfile.IsRightHanded)"><InputNullableBoolean @bind-Value="@_editPlayer.IsRightHanded" /></AdminInput>
+		<AdminInput Label="@nameof(EditPlayerProfile.UsesLegacyAudio)"><InputNullableBoolean @bind-Value="@_editPlayer.UsesLegacyAudio" /></AdminInput>
+		<AdminInput Label="@nameof(EditPlayerProfile.UsesHrtf)"><InputNullableBoolean @bind-Value="@_editPlayer.UsesHrtf" /></AdminInput>
+		<AdminInput Label="@nameof(EditPlayerProfile.UsesInvertY)"><InputNullableBoolean @bind-Value="@_editPlayer.UsesInvertY" /></AdminInput>
+		<AdminInput Label="@nameof(EditPlayerProfile.VerticalSync)"><SearchDropdown TKey=VerticalSync Values="@(Enum.GetValues<VerticalSync>().ToDictionary(e => e, e => e.ToString()))" Converter="s => Enum.Parse<VerticalSync>(s)" ShowDisplayValue=false @bind-Value="@_editPlayer.VerticalSync" /></AdminInput>
+		<AdminInput Label="@nameof(EditPlayerProfile.HideDonations)"><InputCheckbox @bind-Value="@_editPlayer.HideDonations" /></AdminInput>
+		<AdminInput Label="@nameof(EditPlayerProfile.HidePastUsernames)"><InputCheckbox @bind-Value="@_editPlayer.HidePastUsernames" /></AdminInput>
+		<AdminInput Label="@nameof(EditPlayerProfile.HideSettings)"><InputCheckbox @bind-Value="@_editPlayer.HideSettings" /></AdminInput>
+
+		<button class="btn btn-gray p-2" type="submit">Submit</button>
+	</EditForm>
+}

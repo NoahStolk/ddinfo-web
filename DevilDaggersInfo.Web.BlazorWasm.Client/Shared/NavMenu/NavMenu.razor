@@ -46,6 +46,9 @@
 			</NavDropdown>
 			<AuthorizeView>
 				<Authorized>
+					<NavDropdown Text="Profile" IconType="person">
+						<NavItem Href="profile/edit" IconType="pencil" Text="Edit" />
+					</NavDropdown>
 					@if (_roles.Count > 0)
 					{
 						<NavDropdown Text="Admin" IconType="shield">
