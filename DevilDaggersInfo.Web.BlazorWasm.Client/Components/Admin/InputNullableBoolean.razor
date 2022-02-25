@@ -2,6 +2,12 @@
 
 <InputSelect class="w-64 pl-1 h-6 bg-gray-1 text-color-text" TValue="sbyte" @bind-Value="@ValueAsSignedByte">
 	<option value="-1">Unknown</option>
-	<option value="0">False</option>
-	<option value="1">True</option>
+	<option value="0">@False</option>
+	<option value="1">@True</option>
 </InputSelect>
+
+@code
+{
+	[Parameter] public string False { get; set; } = "False";
+	[Parameter] public string True { get; set; } = "True";
+}
