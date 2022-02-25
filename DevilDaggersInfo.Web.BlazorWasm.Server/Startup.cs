@@ -230,7 +230,7 @@ public class Startup
 
 	private static void CreateRolesIfNotExist(IServiceProvider serviceProvider)
 	{
-		ApplicationDbContext dbContext = serviceProvider.GetRequiredService<ApplicationDbContext>();
+		using ApplicationDbContext dbContext = serviceProvider.GetRequiredService<ApplicationDbContext>();
 		bool anyChanges = false;
 		foreach (string roleName in Roles.All)
 		{
