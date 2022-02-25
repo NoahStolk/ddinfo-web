@@ -124,7 +124,6 @@ public class Startup
 	public void Configure(IApplicationBuilder app, IWebHostEnvironment env, IServiceProvider serviceProvider)
 	{
 		Stopwatch sw = Stopwatch.StartNew();
-		StringBuilder sb = new();
 
 		CultureInfo.DefaultThreadCurrentCulture = CultureInfo.InvariantCulture;
 		CultureInfo.DefaultThreadCurrentUICulture = CultureInfo.InvariantCulture;
@@ -208,17 +207,23 @@ public class Startup
 		app.UseOpenApi();
 		app.UseSwaggerUi3();
 
-		sb.Append("Configuration done at ").AppendLine(TimeUtils.TicksToTimeString(sw.ElapsedTicks));
+		if (!env.IsDevelopment())
+		{
+			StringBuilder sb = new();
+			sb.Append("Configuration done at ").AppendLine(TimeUtils.TicksToTimeString(sw.ElapsedTicks));
 
 #if ROLES
 		CreateRolesIfNotExist(serviceProvider);
 		sb.Append("Role initiation done at ").AppendLine(TimeUtils.TicksToTimeString(sw.ElapsedTicks));
 #endif
 
-		sb.Append("> **Application is now online in the `").Append(WebHostEnvironment.EnvironmentName).AppendLine("` environment.** :wave:");
+			sb.Append("> **Application is now online in the `").Append(env.EnvironmentName).AppendLine("` environment.** :wave:");
 
-		LogContainerService lcs = serviceProvider.GetRequiredService<LogContainerService>();
-		lcs.Add($"{DateTime.UtcNow:HH:mm:ss.fff}: Starting...\n{sb}");
+			LogContainerService lcs = serviceProvider.GetRequiredService<LogContainerService>();
+			lcs.Add($"{DateTime.UtcNow:HH:mm:ss.fff}: Starting...\n{sb}");
+		}
+
+		sw.Stop();
 	}
 
 #if ROLES
