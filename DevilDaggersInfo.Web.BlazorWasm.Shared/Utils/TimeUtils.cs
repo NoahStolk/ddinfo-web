@@ -1,4 +1,4 @@
-namespace DevilDaggersInfo.Web.BlazorWasm.Client.Core.CanvasChart.Utils;
+namespace DevilDaggersInfo.Web.BlazorWasm.Shared.Utils;
 
 public static class TimeUtils
 {
