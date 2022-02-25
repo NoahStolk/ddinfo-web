@@ -183,7 +183,7 @@ public class Startup
 		}
 		else
 		{
-			app.UseExceptionHandler("/Error");
+			app.UseExceptionHandler();
 			app.UseHsts();
 		}
 
