@@ -31,6 +31,7 @@ public class AuthenticationController : ControllerBase
 			Id = user.Id,
 			Name = user.Name,
 			RoleNames = user.UserRoles?.Select(ur => ur.Role?.Name).Where(s => s != null).ToList()!,
+			PlayerId = user.PlayerId,
 		};
 	}
 
