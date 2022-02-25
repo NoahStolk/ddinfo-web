@@ -57,7 +57,7 @@ public class CustomEntryTests
 		IConfigurationRoot configuration = builder.Build();
 
 		_encryptionWrapper = new(secret, secret, secret);
-		_customEntryProcessor = new(_dbContext.Object, customEntryProcessorLogger.Object, spawnsetHashCache.Object, fileSystemService.Object, environment.Object, configuration);
+		_customEntryProcessor = new(_dbContext.Object, customEntryProcessorLogger.Object, spawnsetHashCache.Object, fileSystemService.Object, environment.Object, configuration, new LogContainerService());
 
 		if (!SpawnsetBinary.TryParse(File.ReadAllBytes(Path.Combine(TestUtils.ResourcePath, "V3")), out _spawnsetBinary!))
 			Assert.Fail("Spawnset could not be parsed.");
@@ -75,6 +75,7 @@ public class CustomEntryTests
 			GameStates = new(),
 			PlayerName = "TestPlayer1",
 			Client = "DevilDaggersCustomLeaderboards",
+			Status = 3,
 		};
 		uploadRequest.Validation = GetValidation(uploadRequest);
 
@@ -98,6 +99,7 @@ public class CustomEntryTests
 			GameStates = new(),
 			PlayerName = "TestPlayer1",
 			Client = "DevilDaggersCustomLeaderboards",
+			Status = 4,
 		};
 		uploadRequest.Validation = GetValidation(uploadRequest);
 
@@ -121,6 +123,7 @@ public class CustomEntryTests
 			GameStates = new(),
 			PlayerName = "TestPlayer2",
 			Client = "DevilDaggersCustomLeaderboards",
+			Status = 5,
 		};
 		uploadRequest.Validation = GetValidation(uploadRequest);
 
@@ -144,6 +147,7 @@ public class CustomEntryTests
 			GameStates = new(),
 			PlayerName = "TestPlayer3",
 			Client = "DevilDaggersCustomLeaderboards",
+			Status = 3,
 		};
 		uploadRequest.Validation = GetValidation(uploadRequest);
 
@@ -168,6 +172,7 @@ public class CustomEntryTests
 			GameStates = new(),
 			PlayerName = "TestPlayer1",
 			Client = "DevilDaggersCustomLeaderboards",
+			Status = 4,
 		};
 		uploadRequest.Validation = GetValidation(uploadRequest);
 
@@ -191,6 +196,7 @@ public class CustomEntryTests
 			PlayerName = "TestPlayer1",
 			Validation = "Malformed validation",
 			Client = "DevilDaggersCustomLeaderboards",
+			Status = 5,
 		};
 
 		CustomEntryValidationException ex = await Assert.ThrowsExceptionAsync<CustomEntryValidationException>(async () => await _customEntryProcessor.ProcessUploadRequest(uploadRequest));
