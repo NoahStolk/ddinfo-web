@@ -113,12 +113,12 @@ else
 
 						@if (GetPlayer.Settings.UsesInvertY.HasValue)
 						{
-							<DataField CssClass="odd:bg-gray-2 px-1" Name="Legacy audio">@(GetPlayer.Settings.UsesInvertY.Value ? "On" : "Off")</DataField>
+							<DataField CssClass="odd:bg-gray-2 px-1" Name="Invert Y">@(GetPlayer.Settings.UsesInvertY.Value ? "On" : "Off")</DataField>
 						}
 
 						@if (GetPlayer.Settings.VerticalSync != VerticalSync.Unknown)
 						{
-							<DataField CssClass="odd:bg-gray-2 px-1" Name="Legacy audio">@(GetPlayer.Settings.VerticalSync)</DataField>
+							<DataField CssClass="odd:bg-gray-2 px-1" Name="VSync">@(GetPlayer.Settings.VerticalSync)</DataField>
 						}
 					}
 
