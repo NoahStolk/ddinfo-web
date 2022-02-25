@@ -1,4 +1,5 @@
 using DevilDaggersInfo.Web.BlazorWasm.Shared.Dto.Public.Authentication;
+using Microsoft.AspNetCore.Authorization;
 
 namespace DevilDaggersInfo.Web.BlazorWasm.Server.Controllers.Public;
 
@@ -77,6 +78,7 @@ public class AuthenticationController : ControllerBase
 		}
 	}
 
+	[Authorize]
 	[HttpPost("update-name")]
 	[ProducesResponseType(StatusCodes.Status200OK)]
 	[ProducesResponseType(StatusCodes.Status400BadRequest)]
@@ -105,6 +107,7 @@ public class AuthenticationController : ControllerBase
 		}
 	}
 
+	[Authorize]
 	[HttpPost("update-password")]
 	[ProducesResponseType(StatusCodes.Status200OK)]
 	[ProducesResponseType(StatusCodes.Status400BadRequest)]
