@@ -4,48 +4,37 @@ namespace DevilDaggersInfo.Web.BlazorWasm.Client.Components.Admin;
 
 public partial class InputNullableBoolean
 {
-	public sbyte ValueAsSignedByte
+	private string SelectedDisplayValue => CurrentValue switch
 	{
-		get => CurrentValue switch
-		{
-			true => 1,
-			false => 0,
-			_ => -1,
-		};
-		set => CurrentValue = value switch
-		{
-			1 => true,
-			0 => false,
-			_ => null,
-		};
-	}
+		true => True,
+		false => False,
+		null => "Unknown",
+	};
+
+	private bool _show = false;
+
+	[Parameter] public bool ShowDisplayValue { get; set; } = true;
 
 	[Parameter] public string False { get; set; } = "False";
 	[Parameter] public string True { get; set; } = "True";
 
-	protected override bool TryParseValueFromString(string? value, out bool? result, out string validationErrorMessage)
+	public void HandleSelect(bool? item)
 	{
-		if (value == False)
-		{
-			result = false;
-			validationErrorMessage = string.Empty;
-		}
-		else if (value == True)
-		{
-			result = true;
-			validationErrorMessage = string.Empty;
-		}
-		else if (value == "Unknown")
-		{
-			result = null;
-			validationErrorMessage = string.Empty;
-		}
-		else
-		{
-			result = null;
-			validationErrorMessage = ($"{value} is not a supported value for {nameof(InputNullableBoolean)}.";
-		}
+		CurrentValue = item;
+		_show = false;
+		StateHasChanged();
+	}
 
-		return validationErrorMessage == string.Empty;
+	protected override bool TryParseValueFromString(string? value, out bool? result, out string validationMessage)
+	{
+		validationMessage = string.Empty;
+		result = value == False ? false : value == True ? true : null;
+		return true;
+	}
+
+	private void OnClickOutside()
+	{
+		_show = false;
+		StateHasChanged();
 	}
 }
