@@ -226,7 +226,7 @@ public class PlayersController : ControllerBase
 		if (player == null)
 			return NotFound();
 
-		EditPlayer logDto = new()
+		EditPlayer oldDtoLog = new()
 		{
 			CountryCode = player.CountryCode,
 			Dpi = player.Dpi,
@@ -272,7 +272,7 @@ public class PlayersController : ControllerBase
 		UpdatePlayerMods(editPlayer.ModIds ?? new(), player.Id);
 		_dbContext.SaveChanges();
 
-		await _auditLogger.LogEdit(logDto.GetLog(), editPlayer.GetLog(), User, player.Id);
+		await _auditLogger.LogEdit(oldDtoLog.GetLog(), editPlayer.GetLog(), User, player.Id);
 
 		return Ok();
 	}
