@@ -17,8 +17,12 @@ public class DiscordLogFlushBackgroundService : AbstractBackgroundService
 
 	protected override async Task ExecuteTaskAsync(CancellationToken stoppingToken)
 	{
-		DiscordChannel? channel = DevilDaggersInfoServerConstants.Channels[Channel.MonitoringLog].DiscordChannel;
-		if (channel != null)
-			await _logContainerService.LogToChannel(channel);
+		DiscordChannel? logChannel = DevilDaggersInfoServerConstants.Channels[Channel.MonitoringLog].DiscordChannel;
+		if (logChannel != null)
+			await _logContainerService.LogToChannel(logChannel);
+
+		DiscordChannel? clLogChannel = DevilDaggersInfoServerConstants.Channels[Channel.MonitoringCustomLeaderboard].DiscordChannel;
+		if (clLogChannel != null)
+			await _logContainerService.LogClLogsToChannel(clLogChannel);
 	}
 }

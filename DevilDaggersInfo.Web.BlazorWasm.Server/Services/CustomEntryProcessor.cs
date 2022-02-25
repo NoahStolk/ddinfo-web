@@ -16,16 +16,18 @@ public class CustomEntryProcessor
 	private readonly SpawnsetHashCache _spawnsetHashCache;
 	private readonly IFileSystemService _fileSystemService;
 	private readonly IWebHostEnvironment _environment;
+	private readonly LogContainerService _logContainerService;
 
 	private readonly AesBase32Wrapper _encryptionWrapper;
 
-	public CustomEntryProcessor(ApplicationDbContext dbContext, ILogger<CustomEntryProcessor> logger, SpawnsetHashCache spawnsetHashCache, IFileSystemService fileSystemService, IWebHostEnvironment environment, IConfiguration configuration)
+	public CustomEntryProcessor(ApplicationDbContext dbContext, ILogger<CustomEntryProcessor> logger, SpawnsetHashCache spawnsetHashCache, IFileSystemService fileSystemService, IWebHostEnvironment environment, IConfiguration configuration, LogContainerService logContainerService)
 	{
 		_dbContext = dbContext;
 		_logger = logger;
 		_spawnsetHashCache = spawnsetHashCache;
 		_fileSystemService = fileSystemService;
 		_environment = environment;
+		_logContainerService = logContainerService;
 
 		IConfigurationSection section = configuration.GetRequiredSection("CustomLeaderboardSecrets");
 		_encryptionWrapper = new(section["InitializationVector"], section["Password"], section["Salt"]);
@@ -51,18 +53,18 @@ public class CustomEntryProcessor
 			uploadRequest.HomingDaggersEaten,
 			uploadRequest.IsReplay ? 1 : 0,
 			uploadRequest.SurvivalHashMd5.ByteArrayToHexString(),
-			string.Join(",", new int[3] { uploadRequest.LevelUpTime2, uploadRequest.LevelUpTime3, uploadRequest.LevelUpTime4 }));
+			string.Join(",", uploadRequest.LevelUpTime2, uploadRequest.LevelUpTime3, uploadRequest.LevelUpTime4));
 
 		string actual = DecryptValidation(uploadRequest.Validation);
 		if (actual != expected)
-			throw await LogAndCreateValidationException(uploadRequest, $"Invalid submission for {uploadRequest.Validation}.\nExpected: {expected}\nActual:   {actual}", null, "rotating_light");
+			throw LogAndCreateValidationException(uploadRequest, $"Invalid submission for {uploadRequest.Validation}.\nExpected: {expected}\nActual:   {actual}", null, "rotating_light");
 
 		// Add the player or update the username. Also check for banned user immediately.
 		PlayerEntity? player = _dbContext.Players.FirstOrDefault(p => p.Id == uploadRequest.PlayerId);
 		if (player != null)
 		{
 			if (player.IsBannedFromDdcl)
-				throw await LogAndCreateValidationException(uploadRequest, "Banned.", null, "rotating_light");
+				throw LogAndCreateValidationException(uploadRequest, "Banned.", null, "rotating_light");
 
 			player.PlayerName = uploadRequest.PlayerName;
 		}
@@ -84,26 +86,26 @@ public class CustomEntryProcessor
 
 		Version clientVersionParsed = Version.Parse(uploadRequest.ClientVersion);
 		if (clientVersionParsed < Version.Parse(tool.RequiredVersionNumber))
-			throw await LogAndCreateValidationException(uploadRequest, $"You are using an unsupported and outdated version of {clientName}. Please update the program.");
+			throw LogAndCreateValidationException(uploadRequest, $"You are using an unsupported and outdated version of {clientName}. Please update the program.");
 
 		// Reject local replays as they can easily be manipulated.
 		if (uploadRequest.Status == 8)
-			throw await LogAndCreateValidationException(uploadRequest, "Local replays cannot be validated.");
+			throw LogAndCreateValidationException(uploadRequest, "Local replays cannot be validated.");
 
 		// Check for existing spawnset.
 		SpawnsetHashCacheData? spawnsetHashData = _spawnsetHashCache.GetSpawnset(uploadRequest.SurvivalHashMd5);
 		string? spawnsetName = spawnsetHashData?.Name;
 		if (string.IsNullOrEmpty(spawnsetName))
-			throw await LogAndCreateValidationException(uploadRequest, "This spawnset doesn't exist on DevilDaggers.info.");
+			throw LogAndCreateValidationException(uploadRequest, "This spawnset doesn't exist on DevilDaggers.info.");
 
 		// Check for existing leaderboard.
 		CustomLeaderboardEntity? customLeaderboard = _dbContext.CustomLeaderboards.Include(cl => cl.Spawnset).ThenInclude(sf => sf.Player).FirstOrDefault(cl => cl.Spawnset.Name == spawnsetName);
 		if (customLeaderboard == null)
-			throw await LogAndCreateValidationException(uploadRequest, "This spawnset exists on DevilDaggers.info, but doesn't have a leaderboard.", spawnsetName);
+			throw LogAndCreateValidationException(uploadRequest, "This spawnset exists on DevilDaggers.info, but doesn't have a leaderboard.", spawnsetName);
 
 		// Temporary workaround until TimeAttack works in DDCL (if ever).
 		if (customLeaderboard.Category == CustomLeaderboardCategory.TimeAttack)
-			throw await LogAndCreateValidationException(uploadRequest, "TimeAttack leaderboards are not supported right now.", spawnsetName);
+			throw LogAndCreateValidationException(uploadRequest, "TimeAttack leaderboards are not supported right now.", spawnsetName);
 
 		bool isAscending = customLeaderboard.Category.IsAscending();
 
@@ -140,7 +142,7 @@ public class CustomEntryProcessor
 
 		// User is already on the leaderboard, but did not get a better score.
 		if (isAscending && customEntry.Time <= uploadRequest.Time || !isAscending && customEntry.Time >= uploadRequest.Time)
-			return await ProcessNoHighscore(uploadRequest, customLeaderboard, entries, spawnsetName);
+			return ProcessNoHighscore(uploadRequest, customLeaderboard, entries, spawnsetName);
 
 		// User got a better score.
 
@@ -207,7 +209,7 @@ public class CustomEntryProcessor
 		entries = FetchEntriesFromDatabase(customLeaderboard, isAscending);
 
 		await TrySendLeaderboardMessage(customLeaderboard, $"`{uploadRequest.PlayerName}` just got {FormatTimeString(uploadRequest.Time)} seconds on the `{spawnsetName}` leaderboard, beating their previous highscore of {FormatTimeString(uploadRequest.Time - timeDiff)} by {FormatTimeString(Math.Abs(timeDiff))} seconds!", rank, totalPlayers, uploadRequest.Time);
-		await TryLog(uploadRequest, spawnsetName);
+		Log(uploadRequest, spawnsetName);
 
 		return new GetUploadSuccess
 		{
@@ -250,9 +252,9 @@ public class CustomEntryProcessor
 		};
 	}
 
-	private static async Task<CustomEntryValidationException> LogAndCreateValidationException(AddUploadRequest uploadRequest, string errorMessage, string? spawnsetName = null, string? errorEmoteNameOverride = null)
+	private CustomEntryValidationException LogAndCreateValidationException(AddUploadRequest uploadRequest, string errorMessage, string? spawnsetName = null, string? errorEmoteNameOverride = null)
 	{
-		await TryLog(uploadRequest, spawnsetName, errorMessage, errorEmoteNameOverride);
+		Log(uploadRequest, spawnsetName, errorMessage, errorEmoteNameOverride);
 		return new CustomEntryValidationException(errorMessage);
 	}
 
@@ -324,31 +326,23 @@ public class CustomEntryProcessor
 		}
 	}
 
-	// TODO: Store these logs in a singleton and empty the logs using the DiscordLogFlushBackgroundService.
-	private static async Task TryLog(AddUploadRequest uploadRequest, string? spawnsetName, string? errorMessage = null, string? errorEmoteNameOverride = null)
+	private void Log(AddUploadRequest uploadRequest, string? spawnsetName, string? errorMessage = null, string? errorEmoteNameOverride = null)
 	{
-		try
-		{
-			string spawnsetIdentification = GetSpawnsetHashOrName(uploadRequest.SurvivalHashMd5, spawnsetName);
+		string spawnsetIdentification = GetSpawnsetHashOrName(uploadRequest.SurvivalHashMd5, spawnsetName);
 
-			string replayData = uploadRequest.ReplayData == null ? "Replay data not included" : $"Replay data {uploadRequest.ReplayData.Length:N0} bytes";
-			string replayString = uploadRequest.IsReplay ? " | `Replay`" : string.Empty;
-			string localReplayString = uploadRequest.Status == 8 ? $" | `Local replay from {uploadRequest.ReplayPlayerId}`" : string.Empty;
-			string requestInfo = $"(`{uploadRequest.ClientVersion}` | `{uploadRequest.OperatingSystem}` | `{uploadRequest.BuildMode}` | `{uploadRequest.Client}`{replayString}{localReplayString} | `{replayData}` | `Status {uploadRequest.Status}`)";
+		string replayData = uploadRequest.ReplayData == null ? "Replay data not included" : $"Replay data {uploadRequest.ReplayData.Length:N0} bytes";
+		string replayString = uploadRequest.IsReplay ? " | `Replay`" : string.Empty;
+		string localReplayString = uploadRequest.Status == 8 ? $" | `Local replay from {uploadRequest.ReplayPlayerId}`" : string.Empty;
+		string requestInfo = $"(`{uploadRequest.ClientVersion}` | `{uploadRequest.OperatingSystem}` | `{uploadRequest.BuildMode}` | `{uploadRequest.Client}`{replayString}{localReplayString} | `{replayData}` | `Status {uploadRequest.Status}`)";
 
-			DiscordChannel? discordChannel = DevilDaggersInfoServerConstants.Channels[Channel.MonitoringCustomLeaderboard].DiscordChannel;
-			if (discordChannel == null)
-				return;
+		DiscordChannel? discordChannel = DevilDaggersInfoServerConstants.Channels[Channel.MonitoringCustomLeaderboard].DiscordChannel;
+		if (discordChannel == null)
+			return;
 
-			if (!string.IsNullOrEmpty(errorMessage))
-				await discordChannel.SendMessageAsyncSafe($":{errorEmoteNameOverride ?? "warning"}: Upload failed for user `{uploadRequest.PlayerName}` (`{uploadRequest.PlayerId}`) for `{spawnsetIdentification}`. {requestInfo}\n**{errorMessage}**");
-			else
-				await discordChannel.SendMessageAsyncSafe($":white_check_mark: `{uploadRequest.PlayerName}` just submitted a score of `{FormatTimeString(uploadRequest.Time)}` to `{spawnsetIdentification}`. {requestInfo}");
-		}
-		catch
-		{
-			// Ignore exceptions that occurred while attempting to log.
-		}
+		if (!string.IsNullOrEmpty(errorMessage))
+			_logContainerService.AddClLog($":{errorEmoteNameOverride ?? "warning"}: Upload failed for user `{uploadRequest.PlayerName}` (`{uploadRequest.PlayerId}`) for `{spawnsetIdentification}`. {requestInfo}\n**{errorMessage}**");
+		else
+			_logContainerService.AddClLog($":white_check_mark: `{uploadRequest.PlayerName}` just submitted a score of `{FormatTimeString(uploadRequest.Time)}` to `{spawnsetIdentification}`. {requestInfo}");
 	}
 
 	private static void PopulateCustomEntryData(CustomEntryDataEntity ced, List<AddGameState> gameStates)
@@ -455,7 +449,7 @@ public class CustomEntryProcessor
 		int totalPlayers = entries.Count;
 
 		await TrySendLeaderboardMessage(customLeaderboard, $"`{uploadRequest.PlayerName}` just entered the `{spawnsetName}` leaderboard!", rank, totalPlayers, uploadRequest.Time);
-		await TryLog(uploadRequest, spawnsetName);
+		Log(uploadRequest, spawnsetName);
 
 		return new GetUploadSuccess
 		{
@@ -482,7 +476,7 @@ public class CustomEntryProcessor
 		};
 	}
 
-	private async Task<GetUploadSuccess> ProcessNoHighscore(AddUploadRequest uploadRequest, CustomLeaderboardEntity customLeaderboard, List<CustomEntryEntity> entries, string spawnsetName)
+	private GetUploadSuccess ProcessNoHighscore(AddUploadRequest uploadRequest, CustomLeaderboardEntity customLeaderboard, List<CustomEntryEntity> entries, string spawnsetName)
 	{
 		if (!uploadRequest.IsReplay)
 		{
@@ -490,7 +484,7 @@ public class CustomEntryProcessor
 			_dbContext.SaveChanges();
 		}
 
-		await TryLog(uploadRequest, spawnsetName);
+		Log(uploadRequest, spawnsetName);
 
 		return new GetUploadSuccess
 		{
