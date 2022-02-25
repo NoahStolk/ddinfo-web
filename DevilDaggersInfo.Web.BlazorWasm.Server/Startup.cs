@@ -7,6 +7,7 @@ using DevilDaggersInfo.Web.BlazorWasm.Server.HostedServices;
 using DevilDaggersInfo.Web.BlazorWasm.Server.Middleware;
 using DevilDaggersInfo.Web.BlazorWasm.Server.NSwag;
 using DevilDaggersInfo.Web.BlazorWasm.Server.RewriteRules;
+using DevilDaggersInfo.Web.BlazorWasm.Server.Services;
 using DevilDaggersInfo.Web.BlazorWasm.Shared.Utils;
 using Microsoft.AspNetCore.Authentication.JwtBearer;
 using Microsoft.AspNetCore.DataProtection;
@@ -81,6 +82,9 @@ public class Startup
 			services.AddHostedService<LeaderboardHistoryBackgroundService>();
 			services.AddHostedService<ResponseTimesBackgroundService>();
 		}
+
+		// Hosted services that run once after startup.
+		services.AddHostedService<StartupCacheHostedService>();
 
 		services.AddAuthentication(options =>
 			{
@@ -204,52 +208,20 @@ public class Startup
 		app.UseOpenApi();
 		app.UseSwaggerUi3();
 
-		sb.Append("> Configuration done at ").AppendLine(TimeUtils.TicksToTimeString(sw.ElapsedTicks));
+		sb.Append("Configuration done at ").AppendLine(TimeUtils.TicksToTimeString(sw.ElapsedTicks));
 
-		sb.AppendLine("> Initiating caches...");
-
-		InitiateCaches(serviceProvider, sb, sw);
-
+#if ROLES
 		CreateRolesIfNotExist(serviceProvider);
-
-		sb.Append("> Role initiation done at ").AppendLine(TimeUtils.TicksToTimeString(sw.ElapsedTicks));
+		sb.Append("Role initiation done at ").AppendLine(TimeUtils.TicksToTimeString(sw.ElapsedTicks));
+#endif
 
 		sb.Append("> **Application is now online in the `").Append(WebHostEnvironment.EnvironmentName).AppendLine("` environment.** :wave:");
 
 		LogContainerService lcs = serviceProvider.GetRequiredService<LogContainerService>();
-		lcs.Add(sb.ToString());
+		lcs.Add($"{DateTime.UtcNow:HH:mm:ss.fff}: Starting...\n{sb}");
 	}
 
-	private static void InitiateCaches(IServiceProvider serviceProvider, StringBuilder sb, Stopwatch sw)
-	{
-		// Initiate static caches.
-		LeaderboardStatisticsCache leaderboardStatisticsCache = serviceProvider.GetRequiredService<LeaderboardStatisticsCache>();
-		leaderboardStatisticsCache.Initiate();
-
-		sb.Append("> - `LeaderboardStatisticsCache` initiation done at ").AppendLine(TimeUtils.TicksToTimeString(sw.ElapsedTicks));
-
-		// Initiate dynamic caches.
-
-		// SpawnsetHashCache does not need to be initiated as it is fast enough.
-		// SpawnsetSummaryCache does not need to be initiated as it is fast enough.
-
-		// LeaderboardHistoryCache will be initiated here.
-		LeaderboardHistoryCache leaderboardHistoryCache = serviceProvider.GetRequiredService<LeaderboardHistoryCache>();
-		IFileSystemService fileSystemService = serviceProvider.GetRequiredService<IFileSystemService>();
-		foreach (string historyFilePath in fileSystemService.TryGetFiles(DataSubDirectory.LeaderboardHistory))
-			leaderboardHistoryCache.GetLeaderboardHistoryByFilePath(historyFilePath);
-
-		sb.Append("> - `LeaderboardHistoryCache` initiation done at ").AppendLine(TimeUtils.TicksToTimeString(sw.ElapsedTicks));
-
-		/* The ModArchiveCache is initially very slow because it requires unzipping huge mod archive zip files.
-		 * The idea to fix this; when adding data (based on a mod archive) to the ConcurrentBag, write this data to a JSON file as well, so it is not lost when the site shuts down.
-		 * The cache then needs to be initiated here, by reading all the JSON files and populating the ConcurrentBag on start up.*/
-		ModArchiveCache modArchiveCache = serviceProvider.GetRequiredService<ModArchiveCache>();
-		modArchiveCache.LoadEntireFileCache();
-
-		sb.Append("> - `ModArchiveCache` initiation done at ").AppendLine(TimeUtils.TicksToTimeString(sw.ElapsedTicks));
-	}
-
+#if ROLES
 	private static void CreateRolesIfNotExist(IServiceProvider serviceProvider)
 	{
 		using ApplicationDbContext dbContext = serviceProvider.GetRequiredService<ApplicationDbContext>();
@@ -266,4 +238,5 @@ public class Startup
 		if (anyChanges)
 			dbContext.SaveChanges();
 	}
+#endif
 }
