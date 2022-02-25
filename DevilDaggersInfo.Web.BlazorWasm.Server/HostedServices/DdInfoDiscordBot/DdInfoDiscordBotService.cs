@@ -55,6 +55,9 @@ public class DdInfoDiscordBotService : IHostedService
 		}
 		catch (OperationCanceledException)
 		{
+			if (_environment.IsDevelopment())
+				return;
+
 			DiscordChannel? channel = DevilDaggersInfoServerConstants.Channels[Channel.MonitoringLog].DiscordChannel;
 			if (channel != null)
 			{

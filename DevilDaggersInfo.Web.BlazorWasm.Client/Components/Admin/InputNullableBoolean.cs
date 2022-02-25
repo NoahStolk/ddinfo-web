@@ -1,32 +1,40 @@
+using Microsoft.AspNetCore.Components;
+
 namespace DevilDaggersInfo.Web.BlazorWasm.Client.Components.Admin;
 
 public partial class InputNullableBoolean
 {
-	public sbyte ValueAsSignedByte
+	private string SelectedDisplayValue => CurrentValue switch
 	{
-		get => CurrentValue switch
-		{
-			true => 1,
-			false => 0,
-			_ => -1,
-		};
-		set => CurrentValue = value switch
-		{
-			1 => true,
-			0 => false,
-			_ => null,
-		};
+		true => True,
+		false => False,
+		null => "Unknown",
+	};
+
+	private bool _show = false;
+
+	[Parameter] public bool ShowDisplayValue { get; set; } = true;
+
+	[Parameter] public string False { get; set; } = "False";
+	[Parameter] public string True { get; set; } = "True";
+
+	public void HandleSelect(bool? item)
+	{
+		CurrentValue = item;
+		_show = false;
+		StateHasChanged();
 	}
 
-	protected override bool TryParseValueFromString(string? value, out bool? result, out string validationErrorMessage)
+	protected override bool TryParseValueFromString(string? value, out bool? result, out string validationMessage)
 	{
-		(validationErrorMessage, result) = value switch
-		{
-			"Unknown" => (string.Empty, (bool?)null),
-			"False" => (string.Empty, (bool?)false),
-			"True" => (string.Empty, (bool?)true),
-			_ => ($"{value} is not a supported value for {nameof(InputNullableBoolean)}.", (bool?)null),
-		};
-		return validationErrorMessage == string.Empty;
+		validationMessage = string.Empty;
+		result = value == False ? false : value == True ? true : null;
+		return true;
+	}
+
+	private void OnClickOutside()
+	{
+		_show = false;
+		StateHasChanged();
 	}
 }

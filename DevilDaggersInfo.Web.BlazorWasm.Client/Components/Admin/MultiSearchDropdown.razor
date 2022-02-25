@@ -12,7 +12,7 @@
 		}
 	</div>
 	<div class="@(_show ? "absolute" : "hidden") z-10">
-		<div class="bg-gray-1">
+		<div class="bg-gray-1 border-[#fff8] border-2">
 			<div class="p-2 w-64">
 				<span class="cursor-default w-16">Search:</span>
 				<InputTextImmediate @bind-Value="_searchValue" class="w-48 bg-gray-3 text-color-text" />
@@ -22,7 +22,7 @@
 					int i = 0;
 					foreach (KeyValuePair<int, string> kvp in FilteredItems)
 					{
-						<li class="cursor-pointer pl-2 @(i++ % 2 == 0 ? "bg-gray-1" : string.Empty)" Item="@kvp" @onclick="e => Add(kvp.Key)">@DisplayValue(kvp.Key)</li>
+						<li class="cursor-pointer pl-2 @(i++ % 2 == 1 ? "bg-gray-2" : string.Empty) hover:bg-gray-5" @onclick="e => Add(kvp.Key)">@DisplayValue(kvp.Key)</li>
 					}
 				}
 			</ul>

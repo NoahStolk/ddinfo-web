@@ -36,7 +36,11 @@ public class AdminAuthenticationStateProvider : AuthenticationStateProvider
 		if (authenticationResponse == null || string.IsNullOrEmpty(authenticationResponse.Name))
 			return await ClearTokenAndGetDefaultState();
 
-		ClaimsIdentity claimsIdentity = ClaimsIdentityUtils.CreateClaimsIdentity(authenticationResponse.Name, authenticationResponse.RoleNames);
+		ClaimsIdentity claimsIdentity = ClaimsIdentityUtils.CreateClaimsIdentity(
+			id: authenticationResponse.Id,
+			name: authenticationResponse.Name,
+			roles: authenticationResponse.RoleNames,
+			playerId: authenticationResponse.PlayerId);
 		ClaimsPrincipal claimsPrincipal = new(claimsIdentity);
 
 		return new AuthenticationState(claimsPrincipal);

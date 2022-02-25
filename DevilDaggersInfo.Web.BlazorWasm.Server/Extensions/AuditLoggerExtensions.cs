@@ -4,6 +4,7 @@ using DevilDaggersInfo.Web.BlazorWasm.Shared.Dto.Admin.Donations;
 using DevilDaggersInfo.Web.BlazorWasm.Shared.Dto.Admin.Mods;
 using DevilDaggersInfo.Web.BlazorWasm.Shared.Dto.Admin.Players;
 using DevilDaggersInfo.Web.BlazorWasm.Shared.Dto.Admin.Spawnsets;
+using DevilDaggersInfo.Web.BlazorWasm.Shared.Dto.Public.Players;
 using DevilDaggersInfo.Web.BlazorWasm.Shared.Utils;
 
 namespace DevilDaggersInfo.Web.BlazorWasm.Server.Extensions;
@@ -255,6 +256,26 @@ public static class AuditLoggerExtensions
 		AddProperty(log, player.HideDonations);
 		AddProperty(log, player.HidePastUsernames);
 		log.Add(nameof(player.ModIds), player.ModIds == null ? string.Empty : string.Join(", ", player.ModIds.ConvertAll(i => i.ToString())));
+		return log;
+	}
+
+	public static Dictionary<string, string> GetLog(this EditPlayerProfile player)
+	{
+		Dictionary<string, string> log = new();
+		AddProperty(log, player.CountryCode);
+		AddProperty(log, player.Dpi);
+		AddProperty(log, player.InGameSens);
+		AddProperty(log, player.Fov);
+		AddProperty(log, player.IsRightHanded);
+		AddProperty(log, player.HasFlashHandEnabled);
+		AddProperty(log, player.Gamma);
+		AddProperty(log, player.UsesLegacyAudio);
+		AddProperty(log, player.UsesHrtf);
+		AddProperty(log, player.UsesInvertY);
+		AddProperty(log, player.VerticalSync);
+		AddProperty(log, player.HideSettings);
+		AddProperty(log, player.HideDonations);
+		AddProperty(log, player.HidePastUsernames);
 		return log;
 	}
 

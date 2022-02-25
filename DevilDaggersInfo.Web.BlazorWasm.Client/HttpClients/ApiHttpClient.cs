@@ -4,6 +4,7 @@ namespace DevilDaggersInfo.Web.BlazorWasm.Client.HttpClients;
 
 public abstract class ApiHttpClient
 {
+	// TODO: Implementations are the same, so just implement this without abstract.
 	protected abstract Task<HttpResponseMessage> SendRequest(HttpMethod httpMethod, string url, JsonContent? body = null);
 
 	protected async Task<T> SendGetRequest<T>(string url)

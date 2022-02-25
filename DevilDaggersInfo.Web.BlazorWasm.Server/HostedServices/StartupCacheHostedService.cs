@@ -7,14 +7,22 @@ namespace DevilDaggersInfo.Web.BlazorWasm.Server.HostedServices;
 
 public class StartupCacheHostedService : IHostedService
 {
+	private readonly IWebHostEnvironment _env;
 	private readonly IFileSystemService _fileSystemService;
 	private readonly LogContainerService _logContainerService;
 	private readonly LeaderboardStatisticsCache _leaderboardStatisticsCache;
 	private readonly LeaderboardHistoryCache _leaderboardHistoryCache;
 	private readonly ModArchiveCache _modArchiveCache;
 
-	public StartupCacheHostedService(IFileSystemService fileSystemService, LogContainerService logContainerService, LeaderboardStatisticsCache leaderboardStatisticsCache, LeaderboardHistoryCache leaderboardHistoryCache, ModArchiveCache modArchiveCache)
+	public StartupCacheHostedService(
+		IWebHostEnvironment env,
+		IFileSystemService fileSystemService,
+		LogContainerService logContainerService,
+		LeaderboardStatisticsCache leaderboardStatisticsCache,
+		LeaderboardHistoryCache leaderboardHistoryCache,
+		ModArchiveCache modArchiveCache)
 	{
+		_env = env;
 		_fileSystemService = fileSystemService;
 		_logContainerService = logContainerService;
 		_leaderboardStatisticsCache = leaderboardStatisticsCache;
@@ -53,7 +61,10 @@ public class StartupCacheHostedService : IHostedService
 
 				sb.Append("- `ModArchiveCache` initiation done at ").AppendLine(TimeUtils.TicksToTimeString(sw.ElapsedTicks));
 
-				_logContainerService.Add($"{DateTime.UtcNow:HH:mm:ss.fff}: Initiating caches...\n{sb}");
+				if (!_env.IsDevelopment())
+					_logContainerService.Add($"{DateTime.UtcNow:HH:mm:ss.fff}: Initiating caches...\n{sb}");
+
+				sw.Stop();
 			},
 			cancellationToken);
 	}

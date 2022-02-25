@@ -16,4 +16,9 @@ public class UserEntity
 	public DateTime? DateRegistered { get; init; }
 
 	public List<UserRoleEntity>? UserRoles { get; set; }
+
+	public int? PlayerId { get; set; }
+
+	[ForeignKey(nameof(PlayerId))]
+	public PlayerEntity? Player { get; set; }
 }

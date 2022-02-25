@@ -283,6 +283,16 @@ public partial class PublicApiHttpClient
 		return await SendGetRequest<GetPlayerHistory>($"api/players/{id}/history");
 	}
 
+	public async Task<GetPlayerProfile> GetProfileByPlayerId(int id)
+	{
+		return await SendGetRequest<GetPlayerProfile>($"api/players/{id}/profile");
+	}
+
+	public async Task<HttpResponseMessage> UpdateProfileByPlayerId(int id, EditPlayerProfile editPlayerProfile)
+	{
+		return await SendRequest(new HttpMethod("PUT"), $"api/players/{id}/profile", JsonContent.Create(editPlayerProfile));
+	}
+
 	public async Task<Marker> GetMarker(SupportedOperatingSystem operatingSystem)
 	{
 		Dictionary<string, object?> queryParameters = new()
