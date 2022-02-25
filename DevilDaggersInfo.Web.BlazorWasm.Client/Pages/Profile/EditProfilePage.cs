@@ -13,7 +13,7 @@ public partial class EditProfilePage
 {
 	private AuthenticationState? _state;
 	private int _playerId;
-	private bool _linked;
+	private bool? _linked;
 
 	private EditPlayerProfile _editPlayer = new();
 
@@ -37,10 +37,7 @@ public partial class EditProfilePage
 		if (_state.User?.Identity?.IsAuthenticated != true)
 			NavigationManager.NavigateTo("/authentication/login");
 
-		if (!int.TryParse(_state.User?.Claims?.FirstOrDefault(c => c.Type == "playerId")?.Value, out _playerId))
-			return;
-
-		_linked = true;
+		_linked = int.TryParse(_state.User?.Claims?.FirstOrDefault(c => c.Type == "playerId")?.Value, out _playerId);
 
 		try
 		{
@@ -81,7 +78,7 @@ public partial class EditProfilePage
 
 	private async Task OnValidSubmit()
 	{
-		if (_editPlayer == null || _playerId == 0 || !_linked)
+		if (_editPlayer == null || _playerId == 0 || !_linked.HasValue || !_linked.Value)
 			return;
 
 		try

@@ -7,7 +7,11 @@
 
 <Heading Title="Edit Profile" />
 
-@if (!_linked)
+@if (!_linked.HasValue)
+{
+	<Loading />
+}
+else if (!_linked.Value)
 {
 	<Paragraph>
 		This account is not linked to a profile.
@@ -52,6 +56,6 @@ else
 		<AdminInput Label="Hide my past usernames"><InputCheckbox @bind-Value="@_editPlayer.HidePastUsernames" /></AdminInput>
 		<AdminInput Label="Hide my game settings"><InputCheckbox @bind-Value="@_editPlayer.HideSettings" /></AdminInput>
 
-		<button class="btn btn-gray p-2" type="submit">Submit</button>
+		<button class="btn btn-gray p-2" type="submit">Save</button>
 	</EditForm>
 }
