@@ -36,30 +36,38 @@ public class CustomEntryProcessor
 	public async Task<ActionResult<GetUploadSuccess>> ProcessUploadRequest(AddUploadRequest uploadRequest)
 	{
 		// Check if the submission actually came from an allowed program.
-		string expected = string.Join(
-			";",
-			uploadRequest.PlayerId,
-			uploadRequest.Time,
-			uploadRequest.GemsCollected,
-			uploadRequest.GemsDespawned,
-			uploadRequest.GemsEaten,
-			uploadRequest.GemsTotal,
-			uploadRequest.EnemiesKilled,
-			uploadRequest.DeathType,
-			uploadRequest.DaggersHit,
-			uploadRequest.DaggersFired,
-			uploadRequest.EnemiesAlive,
-			uploadRequest.HomingDaggers,
-			uploadRequest.HomingDaggersEaten,
-			uploadRequest.IsReplay ? 1 : 0,
-			uploadRequest.SurvivalHashMd5.ByteArrayToHexString(),
-			string.Join(",", uploadRequest.LevelUpTime2, uploadRequest.LevelUpTime3, uploadRequest.LevelUpTime4));
-
+		string expected = CreateValidation(uploadRequest);
 		string actual = DecryptValidation(uploadRequest.Validation);
 		if (actual != expected)
 			throw LogAndCreateValidationException(uploadRequest, $"Invalid submission for {uploadRequest.Validation}.\nExpected: {expected}\nActual:   {actual}", null, "rotating_light");
 
-		// Add the player or update the username. Also check for banned user immediately.
+		// Check for required version.
+		string clientName = uploadRequest.Client is "ddstats-rust" or "1" ? "ddstats-rust" : "DevilDaggersCustomLeaderboards";
+		var tool = _dbContext.Tools.Select(t => new { t.Name, t.RequiredVersionNumber }).FirstOrDefault(t => t.Name == clientName);
+		if (tool == null)
+			throw LogAndCreateValidationException(uploadRequest, $"'{clientName}' is not a known tool and submissions will not be accepted.");
+
+		Version clientVersionParsed = Version.Parse(uploadRequest.ClientVersion);
+		if (clientVersionParsed < Version.Parse(tool.RequiredVersionNumber))
+			throw LogAndCreateValidationException(uploadRequest, $"You are using an unsupported and outdated version of {clientName}. Please update the program.");
+
+		// Reject local replays as they can easily be manipulated.
+		if (uploadRequest.Status == 8)
+			throw LogAndCreateValidationException(uploadRequest, "Local replays cannot be validated.");
+
+		// Reject other invalid statuses.
+		if (!(uploadRequest.Status is 3 or 4 or 5))
+			throw LogAndCreateValidationException(uploadRequest, $"Game status {uploadRequest.Status} is not valid.", null, "rotating_light");
+
+		// Check for existing spawnset.
+		SpawnsetHashCacheData? spawnsetHashData = _spawnsetHashCache.GetSpawnset(uploadRequest.SurvivalHashMd5);
+		string? spawnsetName = spawnsetHashData?.Name;
+		if (string.IsNullOrEmpty(spawnsetName))
+			throw LogAndCreateValidationException(uploadRequest, "This spawnset doesn't exist on DevilDaggers.info.");
+
+		// Perform database operations from now on.
+
+		// Add the player or update the username. Also check for banned user.
 		PlayerEntity? player = _dbContext.Players.FirstOrDefault(p => p.Id == uploadRequest.PlayerId);
 		if (player != null)
 		{
@@ -77,26 +85,6 @@ public class CustomEntryProcessor
 			};
 			_dbContext.Players.Add(player);
 		}
-
-		// Check for required version.
-		string clientName = uploadRequest.Client is "ddstats-rust" or "1" ? "ddstats-rust" : "DevilDaggersCustomLeaderboards";
-		ToolEntity? tool = _dbContext.Tools.AsNoTracking().FirstOrDefault(t => t.Name == clientName);
-		if (tool == null)
-			throw new($"Could not find tool with name {clientName} in database.");
-
-		Version clientVersionParsed = Version.Parse(uploadRequest.ClientVersion);
-		if (clientVersionParsed < Version.Parse(tool.RequiredVersionNumber))
-			throw LogAndCreateValidationException(uploadRequest, $"You are using an unsupported and outdated version of {clientName}. Please update the program.");
-
-		// Reject local replays as they can easily be manipulated.
-		if (uploadRequest.Status == 8)
-			throw LogAndCreateValidationException(uploadRequest, "Local replays cannot be validated.");
-
-		// Check for existing spawnset.
-		SpawnsetHashCacheData? spawnsetHashData = _spawnsetHashCache.GetSpawnset(uploadRequest.SurvivalHashMd5);
-		string? spawnsetName = spawnsetHashData?.Name;
-		if (string.IsNullOrEmpty(spawnsetName))
-			throw LogAndCreateValidationException(uploadRequest, "This spawnset doesn't exist on DevilDaggers.info.");
 
 		// Check for existing leaderboard.
 		CustomLeaderboardEntity? customLeaderboard = _dbContext.CustomLeaderboards.Include(cl => cl.Spawnset).ThenInclude(sf => sf.Player).FirstOrDefault(cl => cl.Spawnset.Name == spawnsetName);
@@ -250,6 +238,28 @@ public class CustomEntryProcessor
 			LevelUpTime4 = uploadRequest.LevelUpTime4,
 			LevelUpTime4Diff = levelUpTime4Diff,
 		};
+	}
+
+	private static string CreateValidation(AddUploadRequest uploadRequest)
+	{
+		return string.Join(
+			";",
+			uploadRequest.PlayerId,
+			uploadRequest.Time,
+			uploadRequest.GemsCollected,
+			uploadRequest.GemsDespawned,
+			uploadRequest.GemsEaten,
+			uploadRequest.GemsTotal,
+			uploadRequest.EnemiesKilled,
+			uploadRequest.DeathType,
+			uploadRequest.DaggersHit,
+			uploadRequest.DaggersFired,
+			uploadRequest.EnemiesAlive,
+			uploadRequest.HomingDaggers,
+			uploadRequest.HomingDaggersEaten,
+			uploadRequest.IsReplay ? 1 : 0,
+			uploadRequest.SurvivalHashMd5.ByteArrayToHexString(),
+			string.Join(",", uploadRequest.LevelUpTime2, uploadRequest.LevelUpTime3, uploadRequest.LevelUpTime4));
 	}
 
 	private CustomEntryValidationException LogAndCreateValidationException(AddUploadRequest uploadRequest, string errorMessage, string? spawnsetName = null, string? errorEmoteNameOverride = null)
