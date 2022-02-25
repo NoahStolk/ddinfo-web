@@ -187,6 +187,26 @@ public class PlayersController : ControllerBase
 	}
 
 	[Authorize]
+	[HttpGet("{id}/profile")]
+	[ProducesResponseType(StatusCodes.Status200OK)]
+	[ProducesResponseType(StatusCodes.Status400BadRequest)]
+	[ProducesResponseType(StatusCodes.Status401Unauthorized)]
+	[ProducesResponseType(StatusCodes.Status403Forbidden)]
+	[ProducesResponseType(StatusCodes.Status404NotFound)]
+	public async Task<ActionResult<GetPlayerProfile>> GetProfileByPlayerId([Required] int id)
+	{
+		try
+		{
+			return await _profileService.GetProfileAsync(User, id);
+		}
+		catch (HttpRequestException ex)
+		{
+			_logger.LogWarning(ex, "Retrieving profile failed.");
+			return StatusCode((int?)ex.StatusCode ?? 400);
+		}
+	}
+
+	[Authorize]
 	[HttpPut("{id}/profile")]
 	[ProducesResponseType(StatusCodes.Status200OK)]
 	[ProducesResponseType(StatusCodes.Status400BadRequest)]
