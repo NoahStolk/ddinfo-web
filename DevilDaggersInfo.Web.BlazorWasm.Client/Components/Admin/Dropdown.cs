@@ -7,7 +7,7 @@ public partial class Dropdown<TKey>
 {
 	private string SelectedDisplayValue => CurrentValue == null || Values?.ContainsKey(CurrentValue) != true ? "<None selected>" : DisplayValue(CurrentValue);
 
-	[Parameter, EditorRequired] public Dictionary<TKey, string>? Values { get; set; }
+	[Parameter, EditorRequired] public Dictionary<TKey, string> Values { get; set; } = null!;
 	[Parameter, EditorRequired] public Func<string?, TKey> Converter { get; set; } = null!;
 	[Parameter] public bool ShowDisplayValue { get; set; } = true;
 
