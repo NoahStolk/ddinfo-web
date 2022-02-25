@@ -1,3 +1,5 @@
+using Microsoft.AspNetCore.Components;
+
 namespace DevilDaggersInfo.Web.BlazorWasm.Client.Components.Admin;
 
 public partial class InputNullableBoolean
@@ -18,15 +20,32 @@ public partial class InputNullableBoolean
 		};
 	}
 
+	[Parameter] public string False { get; set; } = "False";
+	[Parameter] public string True { get; set; } = "True";
+
 	protected override bool TryParseValueFromString(string? value, out bool? result, out string validationErrorMessage)
 	{
-		(validationErrorMessage, result) = value switch
+		if (value == False)
 		{
-			"Unknown" => (string.Empty, (bool?)null),
-			"False" => (string.Empty, (bool?)false),
-			"True" => (string.Empty, (bool?)true),
-			_ => ($"{value} is not a supported value for {nameof(InputNullableBoolean)}.", (bool?)null),
-		};
+			result = false;
+			validationErrorMessage = string.Empty;
+		}
+		else if (value == True)
+		{
+			result = true;
+			validationErrorMessage = string.Empty;
+		}
+		else if (value == "Unknown")
+		{
+			result = null;
+			validationErrorMessage = string.Empty;
+		}
+		else
+		{
+			result = null;
+			validationErrorMessage = ($"{value} is not a supported value for {nameof(InputNullableBoolean)}.";
+		}
+
 		return validationErrorMessage == string.Empty;
 	}
 }
