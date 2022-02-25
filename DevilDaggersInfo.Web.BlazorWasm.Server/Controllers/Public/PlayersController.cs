@@ -197,7 +197,7 @@ public class PlayersController : ControllerBase
 	{
 		try
 		{
-			await _profileService.UpdateProfile(User, id, editPlayerProfile);
+			await _profileService.UpdateProfileAsync(User, id, editPlayerProfile);
 			return Ok();
 		}
 		catch (HttpRequestException ex)

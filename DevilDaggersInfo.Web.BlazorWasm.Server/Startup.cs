@@ -54,6 +54,7 @@ public class Startup
 		services.AddTransient<AuditLogger>();
 
 		services.AddScoped<IUserService, UserService>();
+		services.AddScoped<ProfileService>();
 
 		services.AddSingleton<BackgroundServiceMonitor>();
 		services.AddSingleton<LogContainerService>();
