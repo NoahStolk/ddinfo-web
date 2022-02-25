@@ -23,6 +23,12 @@ public class EditPlayer
 
 	public bool? UsesLegacyAudio { get; set; }
 
+	public bool? UsesHrtf { get; set; }
+
+	public bool? UsesInvertY { get; set; }
+
+	public VerticalSync VerticalSync { get; set; }
+
 	public BanType BanType { get; set; }
 
 	[StringLength(64)]

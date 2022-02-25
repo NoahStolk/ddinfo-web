@@ -14,6 +14,9 @@
 	<AdminInput Label="@nameof(EditPlayer.InGameSens)"><InputNumber class="w-64 pl-2 bg-gray-1 text-color-text" @bind-Value="@_editPlayer.InGameSens" /></AdminInput>
 	<AdminInput Label="@nameof(EditPlayer.IsRightHanded)"><InputNullableBoolean @bind-Value="@_editPlayer.IsRightHanded" /></AdminInput>
 	<AdminInput Label="@nameof(EditPlayer.UsesLegacyAudio)"><InputNullableBoolean @bind-Value="@_editPlayer.UsesLegacyAudio" /></AdminInput>
+	<AdminInput Label="@nameof(EditPlayer.UsesHrtf)"><InputNullableBoolean @bind-Value="@_editPlayer.UsesHrtf" /></AdminInput>
+	<AdminInput Label="@nameof(EditPlayer.UsesInvertY)"><InputNullableBoolean @bind-Value="@_editPlayer.UsesInvertY" /></AdminInput>
+	<AdminInput Label="@nameof(EditPlayer.VerticalSync)"><SearchDropdown TKey=VerticalSync Values="@(Enum.GetValues<VerticalSync>().ToDictionary(e => e, e => e.ToString()))" Converter="s => Enum.Parse<VerticalSync>(s)" ShowDisplayValue=false @bind-Value="@_editPlayer.VerticalSync" /></AdminInput>
 	<AdminInput Label="@nameof(EditPlayer.HideDonations)"><InputCheckbox @bind-Value="@_editPlayer.HideDonations" /></AdminInput>
 	<AdminInput Label="@nameof(EditPlayer.HidePastUsernames)"><InputCheckbox @bind-Value="@_editPlayer.HidePastUsernames" /></AdminInput>
 	<AdminInput Label="@nameof(EditPlayer.HideSettings)"><InputCheckbox @bind-Value="@_editPlayer.HideSettings" /></AdminInput>
@@ -56,6 +59,9 @@
 				InGameSens = getPlayer.InGameSens,
 				IsRightHanded = getPlayer.IsRightHanded,
 				UsesLegacyAudio = getPlayer.UsesLegacyAudio,
+				UsesHrtf = getPlayer.UsesHrtf,
+				UsesInvertY = getPlayer.UsesInvertY,
+				VerticalSync = getPlayer.VerticalSync,
 				BanDescription = getPlayer.BanDescription,
 				BanResponsibleId = getPlayer.BanResponsibleId,
 				BanType = getPlayer.BanType,

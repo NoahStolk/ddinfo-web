@@ -6,5 +6,16 @@ public static class PlayerEntityExtensions
 		=> !player.HideSettings && player.HasSettings();
 
 	public static bool HasSettings(this PlayerEntity player)
-		=> player.Dpi.HasValue || player.InGameSens.HasValue || player.Fov.HasValue || player.IsRightHanded.HasValue || player.HasFlashHandEnabled.HasValue || player.Gamma.HasValue || player.UsesLegacyAudio.HasValue;
+	{
+		return player.Dpi.HasValue ||
+			player.InGameSens.HasValue ||
+			player.Fov.HasValue ||
+			player.IsRightHanded.HasValue ||
+			player.HasFlashHandEnabled.HasValue ||
+			player.Gamma.HasValue ||
+			player.UsesLegacyAudio.HasValue ||
+			player.UsesHrtf.HasValue ||
+			player.UsesInvertY.HasValue ||
+			player.VerticalSync != VerticalSync.Unknown;
+	}
 }

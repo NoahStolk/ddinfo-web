@@ -22,6 +22,12 @@ public class GetPlayerForOverview : IAdminOverviewGetDto
 
 	public bool? UsesLegacyAudio { get; init; }
 
+	public bool? UsesHrtf { get; init; }
+
+	public bool? UsesInvertY { get; set; }
+
+	public VerticalSync VerticalSync { get; set; }
+
 	public BanType BanType { get; init; }
 
 	public string? BanDescription { get; init; }

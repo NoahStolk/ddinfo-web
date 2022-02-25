@@ -219,6 +219,9 @@ public static class AuditLoggerExtensions
 		AddProperty(log, player.HasFlashHandEnabled);
 		AddProperty(log, player.Gamma);
 		AddProperty(log, player.UsesLegacyAudio);
+		AddProperty(log, player.UsesHrtf);
+		AddProperty(log, player.UsesInvertY);
+		AddProperty(log, player.VerticalSync);
 		AddProperty(log, player.BanType);
 		AddProperty(log, player.BanDescription);
 		AddProperty(log, player.BanResponsibleId);
@@ -241,6 +244,9 @@ public static class AuditLoggerExtensions
 		AddProperty(log, player.HasFlashHandEnabled);
 		AddProperty(log, player.Gamma);
 		AddProperty(log, player.UsesLegacyAudio);
+		AddProperty(log, player.UsesHrtf);
+		AddProperty(log, player.UsesInvertY);
+		AddProperty(log, player.VerticalSync);
 		AddProperty(log, player.BanType);
 		AddProperty(log, player.BanDescription);
 		AddProperty(log, player.BanResponsibleId);
@@ -265,6 +271,9 @@ public static class AuditLoggerExtensions
 		AddProperty(log, player.HasFlashHandEnabled);
 		AddProperty(log, player.Gamma);
 		AddProperty(log, player.UsesLegacyAudio);
+		AddProperty(log, player.UsesHrtf);
+		AddProperty(log, player.UsesInvertY);
+		AddProperty(log, player.VerticalSync);
 		AddProperty(log, player.BanType);
 		AddProperty(log, player.BanDescription);
 		AddProperty(log, player.BanResponsibleId);

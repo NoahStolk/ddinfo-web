@@ -23,6 +23,9 @@ public static class PlayerConverters
 		IsBannedFromDdcl = player.IsBannedFromDdcl,
 		IsRightHanded = player.IsRightHanded,
 		UsesLegacyAudio = player.UsesLegacyAudio,
+		UsesHrtf = player.UsesHrtf,
+		UsesInvertY = player.UsesInvertY,
+		VerticalSync = player.VerticalSync,
 	};
 
 	public static GetPlayer ToGetPlayer(this PlayerEntity player) => new()
@@ -37,6 +40,9 @@ public static class PlayerConverters
 		HasFlashHandEnabled = player.HasFlashHandEnabled,
 		Gamma = player.Gamma,
 		UsesLegacyAudio = player.UsesLegacyAudio,
+		UsesHrtf = player.UsesHrtf,
+		UsesInvertY = player.UsesInvertY,
+		VerticalSync = player.VerticalSync,
 		BanType = player.BanType,
 		BanDescription = player.BanDescription,
 		BanResponsibleId = player.BanResponsibleId,

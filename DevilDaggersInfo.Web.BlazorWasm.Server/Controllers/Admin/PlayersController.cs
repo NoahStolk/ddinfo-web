@@ -48,6 +48,9 @@ public class PlayersController : ControllerBase
 			PlayerSorting.IsRightHanded => playersQuery.OrderBy(p => p.IsRightHanded, ascending).ThenBy(p => p.Id),
 			PlayerSorting.PlayerName => playersQuery.OrderBy(p => p.PlayerName, ascending).ThenBy(p => p.Id),
 			PlayerSorting.UsesLegacyAudio => playersQuery.OrderBy(p => p.UsesLegacyAudio, ascending).ThenBy(p => p.Id),
+			PlayerSorting.UsesHrtf => playersQuery.OrderBy(p => p.UsesHrtf, ascending).ThenBy(p => p.Id),
+			PlayerSorting.UsesInvertY => playersQuery.OrderBy(p => p.UsesInvertY, ascending).ThenBy(p => p.Id),
+			PlayerSorting.VerticalSync => playersQuery.OrderBy(p => p.VerticalSync, ascending).ThenBy(p => p.Id),
 			_ => playersQuery.OrderBy(p => p.Id, ascending),
 		};
 
@@ -115,7 +118,10 @@ public class PlayersController : ControllerBase
 				addPlayer.IsRightHanded.HasValue ||
 				addPlayer.HasFlashHandEnabled.HasValue ||
 				addPlayer.Gamma.HasValue ||
-				addPlayer.UsesLegacyAudio.HasValue)
+				addPlayer.UsesLegacyAudio.HasValue ||
+				addPlayer.UsesHrtf.HasValue ||
+				addPlayer.UsesInvertY.HasValue ||
+				addPlayer.VerticalSync != VerticalSync.Unknown)
 			{
 				return BadRequest("Banned players must not have settings.");
 			}
@@ -150,6 +156,9 @@ public class PlayersController : ControllerBase
 			HasFlashHandEnabled = addPlayer.HasFlashHandEnabled,
 			Gamma = addPlayer.Gamma,
 			UsesLegacyAudio = addPlayer.UsesLegacyAudio,
+			UsesHrtf = addPlayer.UsesHrtf,
+			UsesInvertY = addPlayer.UsesInvertY,
+			VerticalSync = addPlayer.VerticalSync,
 			BanType = addPlayer.BanType,
 			BanDescription = addPlayer.BanDescription,
 			BanResponsibleId = addPlayer.BanResponsibleId,
@@ -187,7 +196,10 @@ public class PlayersController : ControllerBase
 				editPlayer.IsRightHanded.HasValue ||
 				editPlayer.HasFlashHandEnabled.HasValue ||
 				editPlayer.Gamma.HasValue ||
-				editPlayer.UsesLegacyAudio.HasValue)
+				editPlayer.UsesLegacyAudio.HasValue ||
+				editPlayer.UsesHrtf.HasValue ||
+				editPlayer.UsesInvertY.HasValue ||
+				editPlayer.VerticalSync != VerticalSync.Unknown)
 			{
 				return BadRequest("Banned players must not have settings.");
 			}
@@ -224,6 +236,9 @@ public class PlayersController : ControllerBase
 			HasFlashHandEnabled = player.HasFlashHandEnabled,
 			Gamma = player.Gamma,
 			UsesLegacyAudio = player.UsesLegacyAudio,
+			UsesHrtf = player.UsesHrtf,
+			UsesInvertY = player.UsesInvertY,
+			VerticalSync = player.VerticalSync,
 			HideSettings = player.HideSettings,
 			HideDonations = player.HideDonations,
 			HidePastUsernames = player.HidePastUsernames,
@@ -243,6 +258,9 @@ public class PlayersController : ControllerBase
 		player.HasFlashHandEnabled = editPlayer.HasFlashHandEnabled;
 		player.Gamma = editPlayer.Gamma;
 		player.UsesLegacyAudio = editPlayer.UsesLegacyAudio;
+		player.UsesHrtf = editPlayer.UsesHrtf;
+		player.UsesInvertY = editPlayer.UsesInvertY;
+		player.VerticalSync = editPlayer.VerticalSync;
 		player.HideSettings = editPlayer.HideSettings;
 		player.HideDonations = editPlayer.HideDonations;
 		player.HidePastUsernames = editPlayer.HidePastUsernames;

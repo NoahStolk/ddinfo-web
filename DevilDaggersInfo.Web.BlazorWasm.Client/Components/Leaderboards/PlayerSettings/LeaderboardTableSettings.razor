@@ -4,6 +4,7 @@
 @using DevilDaggersInfo.Web.BlazorWasm.Shared.Dto.Public
 @using DevilDaggersInfo.Web.BlazorWasm.Shared.Dto.Public.Leaderboards
 @using DevilDaggersInfo.Web.BlazorWasm.Shared.Dto.Public.Players
+@using DevilDaggersInfo.Web.BlazorWasm.Shared.Enums
 
 <div class="text-xl font-goethe">
 	<div class="grid gap-3 grid-cols-player-settings-sm md:grid-cols-player-settings-md lg:grid-cols-player-settings-lg xl:grid-cols-player-settings-xl">
@@ -19,6 +20,9 @@
 		<div @onclick="() => Sort(LeaderboardSorting.HasFlashHandEnabled)" class="text-left hidden xl:block"><Tooltip Text="Sort by FLASH"><span class="cursor-pointer font-goethe text-xl">Flash hand</span></Tooltip></div>
 		<div @onclick="() => Sort(LeaderboardSorting.Gamma)" class="text-right hidden xl:block"><Tooltip Text="Sort by GAMMA"><span class="cursor-pointer font-goethe text-xl">Gamma</span></Tooltip></div>
 		<div @onclick="() => Sort(LeaderboardSorting.UsesLegacyAudio)" class="text-left hidden xl:block"><Tooltip Text="Sort by LEGACY AUDIO"><span class="cursor-pointer font-goethe text-xl">Legacy audio</span></Tooltip></div>
+		<div @onclick="() => Sort(LeaderboardSorting.UsesHrtf)" class="text-left hidden xl:block"><Tooltip Text="Sort by HRTF"><span class="cursor-pointer font-goethe text-xl">HRTF</span></Tooltip></div>
+		<div @onclick="() => Sort(LeaderboardSorting.UsesInvertY)" class="text-left hidden xl:block"><Tooltip Text="Sort by INVERT Y"><span class="cursor-pointer font-goethe text-xl">Invert Y</span></Tooltip></div>
+		<div @onclick="() => Sort(LeaderboardSorting.VerticalSync)" class="text-left hidden xl:block"><Tooltip Text="Sort by VSYNC"><span class="cursor-pointer font-goethe text-xl">VSync</span></Tooltip></div>
 	</div>
 	<div>
 		@{
@@ -41,6 +45,9 @@
 				string flashHand = player.Settings.UsesFlashHand.HasValue ? player.Settings.UsesFlashHand.Value ? "On" : "Off" : string.Empty;
 				string? gamma = player.Settings.Gamma?.ToString(FormatUtils.GammaFormat);
 				string legacyAudio = player.Settings.UsesLegacyAudio.HasValue ? player.Settings.UsesLegacyAudio.Value ? "On" : "Off" : string.Empty;
+				string hrtf = player.Settings.UsesHrtf.HasValue ? player.Settings.UsesHrtf.Value ? "On" : "Off" : string.Empty;
+				string invertY = player.Settings.UsesInvertY.HasValue ? player.Settings.UsesInvertY.Value ? "On" : "Off" : string.Empty;
+				string vSync = player.Settings.VerticalSync == VerticalSync.Unknown ? string.Empty : player.Settings.VerticalSync.ToString();
 
 				string? leviathanOffsetStyle = daggerCssClass == "leviathan" ? LeviathanAnimationUtils.GetStyle(Entries.Count, i) : null;
 
@@ -57,6 +64,9 @@
 					<div class="text-left hidden xl:block">@flashHand</div>
 					<div class="text-right hidden xl:block">@gamma</div>
 					<div class="text-left hidden xl:block">@legacyAudio</div>
+					<div class="text-left hidden xl:block">@hrtf</div>
+					<div class="text-left hidden xl:block">@invertY</div>
+					<div class="text-left hidden xl:block">@vSync</div>
 				</div>
 				<div class="grid grid-cols-2 @(entry.Id == _expandedId ? (grayBackground ? "bg-gray-1" : string.Empty) : "hidden") pl-[128px] pr-1">
 					<div class="md:hidden">eDPI</div>
@@ -75,6 +85,12 @@
 					<div class="xl:hidden text-right">@gamma</div>
 					<div class="xl:hidden">Legacy audio</div>
 					<div class="xl:hidden text-right">@legacyAudio</div>
+					<div class="xl:hidden">HRTF</div>
+					<div class="xl:hidden text-right">@hrtf</div>
+					<div class="xl:hidden">Invert Y</div>
+					<div class="xl:hidden text-right">@invertY</div>
+					<div class="xl:hidden">VSync</div>
+					<div class="xl:hidden text-right">@vSync</div>
 				</div>
 			}
 		}
@@ -125,6 +141,9 @@
 			LeaderboardSorting.HasFlashHandEnabled => Entries.OrderBy(e => Players?.Find(p => p.Id == e.Id)?.Settings.UsesFlashHand, _ascending).ToList(),
 			LeaderboardSorting.Gamma => Entries.OrderBy(e => Players?.Find(p => p.Id == e.Id)?.Settings.Gamma ?? 0, _ascending).ToList(),
 			LeaderboardSorting.UsesLegacyAudio => Entries.OrderBy(e => Players?.Find(p => p.Id == e.Id)?.Settings.UsesLegacyAudio, _ascending).ToList(),
+			LeaderboardSorting.UsesHrtf => Entries.OrderBy(e => Players?.Find(p => p.Id == e.Id)?.Settings.UsesHrtf, _ascending).ToList(),
+			LeaderboardSorting.UsesInvertY => Entries.OrderBy(e => Players?.Find(p => p.Id == e.Id)?.Settings.UsesInvertY, _ascending).ToList(),
+			LeaderboardSorting.VerticalSync => Entries.OrderBy(e => Players?.Find(p => p.Id == e.Id)?.Settings.VerticalSync, _ascending).ToList(),
 			_ => Entries.OrderBy(e => e.Rank, _ascending).ToList(),
 		};
 	}
@@ -143,5 +162,8 @@
 		HasFlashHandEnabled,
 		Gamma,
 		UsesLegacyAudio,
+		UsesHrtf,
+		UsesInvertY,
+		VerticalSync,
 	}
 }

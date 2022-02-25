@@ -20,6 +20,9 @@ public static class PlayerConverters
 			IsRightHanded = player.IsRightHanded,
 			UsesFlashHand = player.HasFlashHandEnabled,
 			UsesLegacyAudio = player.UsesLegacyAudio,
+			UsesHrtf = player.UsesHrtf,
+			UsesInvertY = player.UsesInvertY,
+			VerticalSync = player.VerticalSync,
 		},
 	};
 
@@ -36,6 +39,9 @@ public static class PlayerConverters
 			InGameSens = player.InGameSens,
 			IsRightHanded = player.IsRightHanded,
 			UsesLegacyAudio = player.UsesLegacyAudio,
+			UsesHrtf = player.UsesHrtf,
+			UsesInvertY = player.UsesInvertY,
+			VerticalSync = player.VerticalSync,
 		},
 	};
 }

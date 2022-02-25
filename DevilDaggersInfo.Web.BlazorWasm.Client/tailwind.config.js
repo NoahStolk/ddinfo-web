@@ -57,7 +57,7 @@ module.exports = {
 				'admin-mods-md': createMinmaxGrid([1, 4, 1, 2, 1, 1]),
 				'admin-mods-sm': createMinmaxGrid([1, 4, 1, 1, 1]),
 
-				'admin-players-xl': createMinmaxGrid([1, 4, 1, 1, 1, 1, 1, 1, 1, 1, 1, 3, 2, 1, 1, 1, 1, 1, 1]),
+				'admin-players-xl': createMinmaxGrid([1, 4, 1, 1, 1, 1, 1, 1, 1, 1, 1, 3, 2, 1, 1, 1, 1, 1, 1, 1, 1, 1]),
 				'admin-players-lg': createMinmaxGrid([1, 4, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1]),
 				'admin-players-md': createMinmaxGrid([1, 4, 1, 1, 1, 1, 1, 1]),
 				'admin-players-sm': createMinmaxGrid([1, 4, 1, 1]),
@@ -101,7 +101,7 @@ module.exports = {
 				'leaderboard-md': 'minmax(36px, 72px) 32px minmax(64px, 100%) minmax(80px, 80px) minmax(40px, 5%) minmax(40px, 5%) minmax(48px, 5%)',
 				'leaderboard-sm': 'minmax(36px, 72px) 32px minmax(64px, 100%) minmax(80px, 80px)',
 
-				'player-settings-xl': 'minmax(36px, 72px) 32px minmax(64px, 100%) minmax(80px, 80px) minmax(70px, 5%) minmax(50px, 5%) minmax(50px, 5%) minmax(50px, 5%) minmax(70px, 8%) minmax(90px, 8%) minmax(60px, 8%) minmax(110px, 8%)',
+				'player-settings-xl': 'minmax(36px, 72px) 32px minmax(64px, 100%) minmax(80px, 80px) minmax(70px, 5%) minmax(50px, 5%) minmax(50px, 5%) minmax(50px, 5%) minmax(70px, 8%) minmax(90px, 8%) minmax(60px, 8%) minmax(110px, 8%) minmax(50px, 5%) minmax(50px, 5%) minmax(50px, 5%)',
 				'player-settings-lg': 'minmax(36px, 72px) 32px minmax(64px, 100%) minmax(80px, 80px) minmax(70px, 5%) minmax(50px, 5%) minmax(50px, 5%) minmax(50px, 5%)',
 				'player-settings-md': 'minmax(36px, 72px) 32px minmax(64px, 100%) minmax(80px, 80px) minmax(70px, 5%) minmax(50px, 5%) minmax(50px, 5%)',
 				'player-settings-sm': 'minmax(36px, 72px) 32px minmax(64px, 100%) minmax(80px, 80px)',

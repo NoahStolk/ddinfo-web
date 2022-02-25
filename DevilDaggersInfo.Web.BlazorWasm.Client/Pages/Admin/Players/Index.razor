@@ -16,7 +16,10 @@
 		<a class="link overflow-hidden hidden lg:block text-left" href="" @onclick="() => _overview.Sort(PlayerSorting.HasFlashHandEnabled)" @onclick:preventDefault>Flash hand</a>
 		<a class="link overflow-hidden hidden lg:block text-right" href="" @onclick="() => _overview.Sort(PlayerSorting.Gamma)" @onclick:preventDefault>Gamma</a>
 		<a class="link overflow-hidden hidden lg:block text-left" href="" @onclick="() => _overview.Sort(PlayerSorting.UsesLegacyAudio)" @onclick:preventDefault>Legacy audio</a>
-		<a class="link overflow-hidden hidden lg:block text-left" href="" @onclick="() => _overview.Sort(PlayerSorting.BanType)" @onclick:preventDefault>Ban type</a>
+		<a class="link overflow-hidden hidden lg:block text-left" href="" @onclick="() => _overview.Sort(PlayerSorting.UsesHrtf)" @onclick:preventDefault>HRTF</a>
+		<a class="link overflow-hidden hidden xl:block text-left" href="" @onclick="() => _overview.Sort(PlayerSorting.UsesInvertY)" @onclick:preventDefault>Invert Y</a>
+		<a class="link overflow-hidden hidden xl:block text-left" href="" @onclick="() => _overview.Sort(PlayerSorting.VerticalSync)" @onclick:preventDefault>VSync</a>
+		<a class="link overflow-hidden hidden xl:block text-left" href="" @onclick="() => _overview.Sort(PlayerSorting.BanType)" @onclick:preventDefault>Ban type</a>
 		<a class="link overflow-hidden hidden xl:block text-left" href="" @onclick="() => _overview.Sort(PlayerSorting.BanDescription)" @onclick:preventDefault>Ban description</a>
 		<a class="link overflow-hidden hidden xl:block text-right" href="" @onclick="() => _overview.Sort(PlayerSorting.BanResponsibleId)" @onclick:preventDefault>Ban responsible ID</a>
 		<a class="link overflow-hidden hidden xl:block text-left" href="" @onclick="() => _overview.Sort(PlayerSorting.IsBannedFromDdcl)" @onclick:preventDefault>Banned from DDCL</a>
@@ -35,7 +38,10 @@
 		<div class="overflow-hidden hidden lg:block text-left">@player.HasFlashHandEnabled</div>
 		<div class="overflow-hidden hidden lg:block text-right">@player.Gamma?.ToString(FormatUtils.GammaFormat)</div>
 		<div class="overflow-hidden hidden lg:block text-left">@player.UsesLegacyAudio</div>
-		<div class="overflow-hidden hidden lg:block text-left">@player.BanType</div>
+		<div class="overflow-hidden hidden lg:block text-left">@player.UsesHrtf</div>
+		<div class="overflow-hidden hidden xl:block text-left">@player.UsesInvertY</div>
+		<div class="overflow-hidden hidden xl:block text-left">@player.VerticalSync</div>
+		<div class="overflow-hidden hidden xl:block text-left">@player.BanType</div>
 		<div class="overflow-hidden hidden xl:block text-left">@player.BanDescription</div>
 		<div class="overflow-hidden hidden xl:block text-right">@player.BanResponsibleId</div>
 		<div class="overflow-hidden hidden xl:block text-left">@player.IsBannedFromDdcl</div>

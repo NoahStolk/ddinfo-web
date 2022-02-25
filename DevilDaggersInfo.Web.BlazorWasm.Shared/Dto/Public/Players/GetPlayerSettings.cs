@@ -16,6 +16,12 @@ public class GetPlayerSettings
 
 	public bool? UsesLegacyAudio { get; init; }
 
+	public bool? UsesHrtf { get; init; }
+
+	public bool? UsesInvertY { get; set; }
+
+	public VerticalSync VerticalSync { get; set; }
+
 	// TODO: Json ignore?
 	public float? Edpi => Dpi * InGameSens;
 }
