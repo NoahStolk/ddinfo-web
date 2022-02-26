@@ -188,7 +188,7 @@ public class UserService : IUserService
 		{
 			ex.Data.Add("JWT", jwt);
 			if (ex is not SecurityTokenExpiredException)
-				_logger.LogWarning(ex, "Token was invalid.");
+				_logger.LogWarning(ex, "Exception occurred in GetUserByJwt.");
 
 			return null;
 		}
