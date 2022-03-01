@@ -152,8 +152,8 @@ public class Startup
 			.AddRedirect("^Upgrades$", "wiki/upgrades")
 
 			// V4 outdated
-			.AddRedirect("^Wiki/SpawnsetGuide$", "guides/survival-editor")
 			.AddRedirect("^Wiki/AssetGuide$", "guides/asset-editor")
+			.AddRedirect("^Wiki/SpawnsetGuide$", "guides/creating-spawnsets")
 			.AddRedirect("^Leaderboard/UserSettings", "leaderboard/player-settings")
 
 			// V4
@@ -165,8 +165,9 @@ public class Startup
 			.AddRedirect("^Tools/DevilDaggersAssetEditor", "tools/asset-editor")
 			.AddRedirect("^Tools/DevilDaggersCustomLeaderboards", "tools/custom-leaderboards")
 			.AddRedirect("^Tools/DevilDaggersSurvivalEditor", "tools/survival-editor")
-			.AddRedirect("^Wiki/Guides/SurvivalEditor$", "guides/survival-editor")
 			.AddRedirect("^Wiki/Guides/AssetEditor$", "guides/asset-editor")
+			.AddRedirect("^Wiki/Guides/SurvivalEditor$", "guides/creating-spawnsets")
+			.AddRedirect("^guides/survival-editor", "guides/creating-spawnsets")
 
 			.Add(new CustomLeaderboardPageRewriteRules())
 			.Add(new ModPageRewriteRules())
