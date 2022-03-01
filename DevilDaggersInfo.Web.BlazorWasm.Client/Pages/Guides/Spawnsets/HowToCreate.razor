@@ -6,7 +6,7 @@
 	This guide assumes you already know how to use spawnsets. If you don't, please read <a class="link" href="/guides/using-spawnsets">this guide</a> first.
 </Paragraph>
 
-<Heading Level="2" Title="What can be changed using a spawnset?" />
+<Heading Level="2" Title="What Can Be Changed Using A Spawnset?" />
 
 <ol class="pl-4">
 	<li class="list-disc">The spawn time of each enemy</li>
@@ -23,13 +23,13 @@
 	All of this data can be edited using <a class="link" href="tools/survival-editor">Devil Daggers Survival Editor</a>.
 </Paragraph>
 
-<Heading Level="2" Title="Changing enemy spawn times" />
+<Heading Level="2" Title="Changing Enemy Spawn Times" />
 
 <Paragraph>
 	The spawn time of each enemy can be modified by changing the list of spawns in the survival file. A spawn in the survival file is defined by an <b>enemy type</b> and a <b>delay value</b>.
 </Paragraph>
 
-<Heading Level="3" Title="Enemy types" />
+<Heading Level="3" Title="Enemy Types" />
 
 <Paragraph>
 	10 enemies can be spawned in the survival file:
@@ -48,7 +48,7 @@
 	<li class="list-disc">@MarkupUtils.EnemyString(EnemiesV3_2.Ghostpede)</li>
 </ul>
 
-<Heading Level="3" Title="Delay values" />
+<Heading Level="3" Title="Delay Values" />
 
 <Paragraph>
 	The delay value specifies the amount of seconds the game will wait before spawning the enemy. Consider the following list of spawns:
@@ -95,7 +95,7 @@
 	<div>10.0000</div>
 </div>
 
-<Heading Title="The end loop" Level="3" />
+<Heading Title="The End Loop" Level="3" />
 <Paragraph>
 	The end loop is the same set of spawns over and over again, faster every time. This appears at the end of the spawnset.
 </Paragraph>
@@ -106,7 +106,7 @@
 	Every third wave of the end loop, all @MarkupUtils.EnemyString(EnemiesV3_2.Gigapede, true) are changed into @MarkupUtils.EnemyString(EnemiesV3_2.Ghostpede, true). This is hardcoded in the game and cannot be changed.
 </Paragraph>
 
-<Heading Level="3" Title="End loop speed up" />
+<Heading Level="3" Title="End Loop Speed Up" />
 <Paragraph>
 	How the end loop speeds up is also hardcoded in the game. How it works exactly is a bit hard to explain however... In the game there is an additional "special" timer used for the end loop. This timer initially increases the same amount as the normal timer, so during the first wave, all the enemies spawn at the exact same speed as they would before the end loop.
 </Paragraph>
@@ -160,12 +160,12 @@
 	}
 </div>
 
-<Heading Title="Using the editor" Level="3" />
+<Heading Title="Using The Editor" Level="3" />
 <Paragraph>
 	Now that the theory is out of the way. We can start using the editor to change the spawnset. @*TODO*@
 </Paragraph>
 
-<Heading Title="Changing the arena" Level="2" />
+<Heading Title="Changing The Arena" Level="2" />
 <Paragraph>
 	Here is some basic information you need to know in order to work with the arena:
 </Paragraph>
@@ -182,3 +182,5 @@
 	<li class="list-disc">The tiles have infinitely long "hitboxes" (there are no actual hitboxes, things just collide with the tile based on its height).</li>
 	<li class="list-disc">The texture only covers the top of the tile. You can however work around this by using mods that change the pillar model.</li>
 </ul>
+
+ @*TODO shortcuts etc*@
