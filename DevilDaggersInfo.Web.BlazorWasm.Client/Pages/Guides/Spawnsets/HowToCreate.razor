@@ -23,10 +23,10 @@
 	All of this data can be edited using <a class="link" href="tools/survival-editor">Devil Daggers Survival Editor</a>.
 </Paragraph>
 
-<Heading Level="2" Title="Changing Enemy Spawn Times" />
+<Heading Level="2" Title="Changing Enemy Spawns" />
 
 <Paragraph>
-	The spawn time of each enemy can be modified by changing the list of spawns in the survival file. A spawn in the survival file is defined by an <b>enemy type</b> and a <b>delay value</b>.
+	A spawn in the survival file is defined by an <b>enemy type</b> and a <b>delay value</b>. Every spawnset has a list of these which can be edited.
 </Paragraph>
 
 <Heading Level="3" Title="Enemy Types" />
@@ -46,6 +46,7 @@
 	<li class="list-disc">@MarkupUtils.EnemyString(EnemiesV3_2.Thorn)</li>
 	<li class="list-disc">@MarkupUtils.EnemyString(EnemiesV3_2.Spider2)</li>
 	<li class="list-disc">@MarkupUtils.EnemyString(EnemiesV3_2.Ghostpede)</li>
+	<li class="list-disc">Empty</li>
 </ul>
 
 <Heading Level="3" Title="Delay Values" />
@@ -58,12 +59,17 @@
 	<div class="font-bold">Enemy type</div>
 	<div class="font-bold text-right">Delay value</div>
 	<div class="font-bold text-right">Spawn time</div>
-	<div>@MarkupUtils.EnemyString(EnemiesV3_2.Squid1)</div>
-	<div class="text-right">4.0000</div>
-	<div class="text-right">4.0000</div>
-	<div>@MarkupUtils.EnemyString(EnemiesV3_2.Spider1)</div>
-	<div class="text-right">3.0000</div>
-	<div class="text-right">7.0000</div>
+	@{
+		float time = 0;
+		foreach ((Enemy enemy, float delay) in new[] { (EnemiesV3_2.Squid1, 4), (EnemiesV3_2.Spider1, 3) })
+		{
+			time += delay;
+
+			<div>@MarkupUtils.EnemyString(enemy)</div>
+			<div class="text-right">@delay.ToString(FormatUtils.TimeFormat)</div>
+			<div class="text-right">@time.ToString(FormatUtils.TimeFormat)</div>
+		}
+	}
 </div>
 
 <Paragraph>
@@ -78,21 +84,17 @@
 	<div class="font-bold">Enemy type</div>
 	<div class="font-bold text-right">Delay value</div>
 	<div class="font-bold text-right">Spawn time</div>
-	<div>@MarkupUtils.EnemyString(EnemiesV3_2.Squid2)</div>
-	<div class="text-right">2.0000</div>
-	<div class="text-right">2.0000</div>
-	<div>@MarkupUtils.EnemyString(EnemiesV3_2.Gigapede)</div>
-	<div class="text-right">5.0000</div>
-	<div class="text-right">7.0000</div>
-	<div>@MarkupUtils.EnemyString(EnemiesV3_2.Gigapede)</div>
-	<div class="text-right">0.0000</div>
-	<div class="text-right">7.0000</div>
-	<div>@MarkupUtils.EnemyString(EnemiesV3_2.Gigapede)</div>
-	<div class="text-right">0.0000</div>
-	<div class="text-right">7.0000</div>
-	<div>@MarkupUtils.EnemyString(EnemiesV3_2.Spider1)</div>
-	<div class="text-right">3.0000</div>
-	<div class="text-right">10.0000</div>
+	@{
+		time = 0;
+		foreach ((Enemy enemy, float delay) in new[] { (EnemiesV3_2.Squid2, 2), (EnemiesV3_2.Gigapede, 5), (EnemiesV3_2.Gigapede, 0), (EnemiesV3_2.Gigapede, 0), (EnemiesV3_2.Spider1, 3) })
+		{
+			time += delay;
+
+			<div>@MarkupUtils.EnemyString(enemy)</div>
+			<div class="text-right">@delay.ToString(FormatUtils.TimeFormat)</div>
+			<div class="text-right">@time.ToString(FormatUtils.TimeFormat)</div>
+		}
+	}
 </div>
 
 <Heading Title="The End Loop" Level="3" />
@@ -100,7 +102,7 @@
 	The end loop is the same set of spawns over and over again, faster every time. This appears at the end of the spawnset.
 </Paragraph>
 <Paragraph>
-	You might have noticed how there is an EMPTY enemy type. This enemy type does not spawn an enemy; its only purpose is to mark the beginning of the end loop. The last EMPTY spawn will always mark the beginning of the end loop. Having an end loop is optional, so if you don't want to include an end loop, simply make sure to put an EMPTY spawn at the end of the spawnset to mark the end of the spawnset (or literally; mark the start of an empty end loop).
+	You might have noticed how there is an <b>Empty</b> enemy type. This enemy type does not spawn an enemy; its only purpose is to mark the beginning of the end loop. The last <b>Empty</b> spawn will always mark the beginning of the end loop. Having an end loop is optional, so if you don't want to include an end loop, simply make sure to put an <b>Empty</b> spawn at the end of the spawnset to mark the end of the spawnset (or literally; mark the start of an empty end loop).
 </Paragraph>
 <Paragraph>
 	Every third wave of the end loop, all @MarkupUtils.EnemyString(EnemiesV3_2.Gigapede, true) are changed into @MarkupUtils.EnemyString(EnemiesV3_2.Ghostpede, true). This is hardcoded in the game and cannot be changed.
@@ -111,7 +113,7 @@
 	How the end loop speeds up is also hardcoded in the game. How it works exactly is a bit hard to explain however... In the game there is an additional "special" timer used for the end loop. This timer initially increases the same amount as the normal timer, so during the first wave, all the enemies spawn at the exact same speed as they would before the end loop.
 </Paragraph>
 <Paragraph>
-	The speed up happens after every wave ends; the special timer is sped up by a very small amount. The exact amount for this is 12.5% of a 60th of a second (a game tick), meaning that, during the second wave, for every game tick the special timer increases by 0.0020833 seconds more than the normal timer, then 0.0041667 seconds during the third wave, etc.
+	The speed up happens after every wave ends; at that point the special timer is sped up by a very small amount. The exact amount for this is 12.5% of a 60th of a second (a game tick), which is 0.0020833 seconds. This means that during the second wave, the special timer increases by 0.0020833 seconds more than the normal timer for every game tick, then 0.0041667 seconds more during the third wave, etc.
 </Paragraph>
 <Paragraph>
 	Here is the data for the first 10 waves in the original game:
@@ -161,17 +163,43 @@
 </div>
 
 <Heading Title="Using The Editor" Level="3" />
+
 <Paragraph>
-	Now that the theory is out of the way. We can start using the editor to change the spawnset. @*TODO*@
+	Now that the theory is out of the way. We can start using the editor to change the spawns in a spawnset. A good way to start is by adding spawns to an empty spawnset.
 </Paragraph>
 
+<Paragraph>
+	In the bottom left of the editor you can select an enemy type to spawn, and change the delay value in the text box below. Click the "Add" button to add the spawn to the list. Try adding a few spawns to the spawnset.
+</Paragraph>
+
+<img src="/images/tools/ddse-adding-spawns.png" class="object-contain max-h-160" />
+
+<Paragraph>
+	If you want to remove a spawn, you can select it and click the "Delete selected spawn(s)" button. You can also change the enemy type of a spawn by selecting it, setting the new enemy type, and clicking the "Edit selected spawn(s)" button.
+</Paragraph>
+
+<img src="/images/tools/ddse-editing-spawns.png" class="object-contain max-h-160" />
+
+<Paragraph>
+	Available keyboard shortcuts that can be used for the spawns list:
+</Paragraph>
+
+<ul class="pl-4">
+	<li class="list-disc"><pre class="code">Del</pre> to delete selected spawns</li>
+	<li class="list-disc"><pre class="code">Ctrl C</pre> to copy selected spawns</li>
+	<li class="list-disc"><pre class="code">Ctrl V</pre> to paste spawns</li>
+	<li class="list-disc"><pre class="code">Ctrl A</pre> to select all spawns</li>
+</ul>
+
 <Heading Title="Changing The Arena" Level="2" />
+
 <Paragraph>
 	Here is some basic information you need to know in order to work with the arena:
 </Paragraph>
+
 <ul class="pl-4">
 	<li class="list-disc">The arena is simply a grid of heights. You cannot have multiple tiles above or below each other.</li>
-	<li class="list-disc">The arena size always consists of 51 by 51 tiles (in the editor, theoretically this can be changed, but I haven't tried it).</li>
+	<li class="list-disc">The arena size always consists of 51 by 51 tiles (at least in the editor, this can be changed in theory but I haven't tried it).</li>
 	<li class="list-disc">The player always spawns in the middle (tile 25x25).</li>
 	<li class="list-disc">Tiles are 4 by 4 units in length and width.</li>
 	<li class="list-disc">The arena shrinks in size as time goes on. The default shrink start radius is 50 units and the default shrink end radius is 20 units. The default shrink rate is 0.025. This means the default arena reaches the end radius at 1200 seconds, because (50-20)/0.025 = 1200. (Even though the last tiles actually fall down at around 1187 seconds, the shrinking technically continues for about 13 seconds, it's just that no tiles are affected by it.)</li>
@@ -182,5 +210,3 @@
 	<li class="list-disc">The tiles have infinitely long "hitboxes" (there are no actual hitboxes, things just collide with the tile based on its height).</li>
 	<li class="list-disc">The texture only covers the top of the tile. You can however work around this by using mods that change the pillar model.</li>
 </ul>
-
- @*TODO shortcuts etc*@
