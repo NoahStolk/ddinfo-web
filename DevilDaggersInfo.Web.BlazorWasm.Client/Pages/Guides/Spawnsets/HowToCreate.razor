@@ -181,6 +181,10 @@
 <img src="/images/tools/ddse-editing-spawns.png" class="object-contain max-h-160" />
 
 <Paragraph>
+	You can easily test your spawnset by pressing <pre class="code">Ctrl R</pre> to replace the currently active custom spawnset file. No need to restart the game, just grab the dagger in the lobby or press the restart key.
+</Paragraph>
+
+<Paragraph>
 	Available keyboard shortcuts that can be used for the spawns list:
 </Paragraph>
 
@@ -210,3 +214,48 @@
 	<li class="list-disc">The tiles have infinitely long "hitboxes" (there are no actual hitboxes, things just collide with the tile based on its height).</li>
 	<li class="list-disc">The texture only covers the top of the tile. You can however work around this by using mods that change the pillar model.</li>
 </ul>
+
+<Paragraph>
+	Changing the arena in the editor is quite simple. Use the colored buttons in the bottom left of the arena section to select a tile height, and then simply click on a tile to change its height to the selected height.
+</Paragraph>
+
+<img src="/images/tools/ddse-arena.png" class="object-contain max-h-160" />
+
+<Paragraph>
+	Use the two buttons to the right of the squared buttons to select or deselect multiple tiles, rather than change their heights. Combine this with the three buttons under the selection buttons to change the selection mode to <b>continuous</b> or <b>rectangle</b> to easily select a lot of tiles.
+</Paragraph>
+
+<img src="/images/tools/ddse-multiple-tile-selection.png" class="object-contain max-h-160" />
+
+<Paragraph>
+	You can change the tile heights of one or more tiles to a specific height using the right mouse button.
+</Paragraph>
+
+<img src="/images/tools/ddse-arena-right-click.png" class="object-contain max-h-160" />
+
+<Paragraph>
+	You can also change the tile heights of one or more tiles using the scroll wheel. Hold <pre class="code">Ctrl</pre> while using the scroll wheel to increment/decrement the value by 0.1 rather than 1.
+</Paragraph>
+
+<Paragraph>
+	Using the arena settings in the top right of the editor you can change the shrinking controls. The shrink start value is displayed as the blue circle on the arena, and the shrink end value is displayed as the red circle. The green circle displays the currently active shrink radius based on the shrink preview slider.
+</Paragraph>
+
+<img src="/images/tools/ddse-arena-shrink-preview.png" class="object-contain max-h-160" />
+
+<Heading Title="Changing The Settings" Level="2" />
+
+<Paragraph>
+	In the middle of the editors are some settings you can change. These are:
+</Paragraph>
+
+<ul class="pl-4">
+	<li class="list-disc"><b>The spawnset version</b>; you can leave this at the default unless you want to create a spawnset for an older version of the game.</li>
+	<li class="list-disc"><b>The game mode</b>; there is one other game mode available in the editor which is <b>Time Attack</b>. Time Attack is a legacy game mode that can be activated using a custom spawnset. It is pretty much the same, except that the end loop only plays once, and the player "wins" the spawnset after having killed all enemies. Lower times are better in Time Attack, because you need to clear all the enemies as fast as possible. There is also a third game mode which is currently unavailable in the editor. This mode is called <b>Race</b>, which as far as I know is the same as Time Attack except that there is a dagger you need to grab after you kill all enemies. The dagger however seems to spawn at the same position as the player, so unless there is a way to change the position, this game mode is exactly the same as Time Attack.</li>
+	<li class="list-disc"><b>The player settings (initial hand and additional gems/homing)</b>; these are given to the player when the run starts. The editor shows the effective player settings under the text boxes, since you can't have @MarkupUtils.UpgradeString(UpgradesV3_2.Level1) with 70 additional gems for example (this is interpreted by the game as @MarkupUtils.UpgradeString(UpgradesV3_2.Level3) with 0 additional homing).</li>
+	<li class="list-disc"><b>The initial timer start value</b>; useful for practice (for example when starting at the @MarkupUtils.EnemyString(EnemiesV3_2.Gigapede) section in the real game, the timer start value can be set to 259 to make the spawn times match with the real game). Note that this value does not affect anything other than the displayed time. The "real" timer will always start at 0 regardless of this setting.</li>
+</ul>
+
+<Paragraph>
+	That's it! If you need inspiration or want to try existing spawnsets made by the community, check out the ones listed on <a class="link" href="/custom/spawnsets">this page</a>.
+</Paragraph>
