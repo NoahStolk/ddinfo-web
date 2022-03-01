@@ -101,8 +101,8 @@ else
 			<div>Binary</div>
 			<div class="hidden sm:block">Type</div>
 			<div class="hidden md:block">Prohibited assets</div>
-			<div class="hidden lg:block">Assets</div>
-			<div class="hidden lg:block">Size (extracted)</div>
+			<div class="hidden lg:block text-right">Assets</div>
+			<div class="hidden lg:block text-right">Size (extracted)</div>
 		</div>
 		@foreach (GetModBinary binary in GetMod.ModArchive.Binaries.OrderBy(b => b.Name))
 		{
@@ -110,8 +110,8 @@ else
 				<div class="break-all">@binary.Name</div>
 				<div class="hidden sm:block">@binary.ModBinaryType.ToString().ToLower()</div>
 				<div class="hidden md:block">@(binary.ContainsProhibitedAssets ? "Yes" : "No")</div>
-				<div class="hidden lg:block">@binary.Assets.Count</div>
-				<div class="hidden lg:block">@FileSizeUtils.Format(binary.Size)</div>
+				<div class="hidden lg:block text-right">@binary.Assets.Count</div>
+				<div class="hidden lg:block text-right">@FileSizeUtils.Format(binary.Size)</div>
 			</div>
 		}
 
@@ -121,7 +121,7 @@ else
 			<div class="hidden sm:block">Binary</div>
 			<div class="hidden md:block">Type</div>
 			<div class="hidden lg:block">Prohibited</div>
-			<div class="hidden lg:block">Size (extracted)</div>
+			<div class="hidden lg:block text-right">Size (extracted)</div>
 		</div>
 		@foreach (GetModBinary binary in GetMod.ModArchive.Binaries.OrderBy(b => b.Name))
 		{
@@ -132,7 +132,7 @@ else
 					<div class="hidden sm:block break-all">@binary.Name</div>
 					<div class="hidden md:block">@asset.Type</div>
 					<div class="hidden lg:block">@(asset.IsProhibited ? "Yes" : "No")</div>
-					<div class="hidden lg:block">@FileSizeUtils.Format(asset.Size)</div>
+					<div class="hidden lg:block text-right">@FileSizeUtils.Format(asset.Size)</div>
 				</div>
 			}
 		}
@@ -144,8 +144,8 @@ else
 				<div>Asset</div>
 				<div class="hidden sm:block">Binary</div>
 				<div class="hidden md:block">Prohibited</div>
-				<div class="hidden lg:block">Default loudness</div>
-				<div class="hidden lg:block">Modified loudness</div>
+				<div class="hidden lg:block text-right">Default loudness</div>
+				<div class="hidden lg:block text-right">Modified loudness</div>
 			</div>
 			@foreach (GetModBinary binary in GetMod.ModArchive.Binaries.Where(b => b.ModifiedLoudness != null && b.ModifiedLoudness.Count > 0))
 			{
@@ -155,8 +155,8 @@ else
 						<div class="break-all">@asset.AssetName</div>
 						<div class="hidden sm:block break-all">@binary.Name</div>
 						<div class="hidden md:block">@(asset.IsProhibited ? "Yes" : "No")</div>
-						<div class="hidden lg:block">@asset.DefaultLoudness.ToString("0.0")</div>
-						<div class="hidden lg:block">@asset.ModifiedLoudness.ToString("0.0")</div>
+						<div class="hidden lg:block text-right">@asset.DefaultLoudness.ToString("0.0")</div>
+						<div class="hidden lg:block text-right">@asset.ModifiedLoudness.ToString("0.0")</div>
 					</div>
 				}
 			}
