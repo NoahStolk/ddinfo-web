@@ -1,0 +1,164 @@
+@page "/guides/creating-mods"
+
+<Heading Title="How To Create Mods" />
+
+<Paragraph>
+	This guide assumes you already know how to use mods. If you don't, please read <a class="link" href="/guides/using-mods">this guide</a> first.
+</Paragraph>
+
+<Heading Level="2" Title="Basic Information" />
+
+<Paragraph>
+	There is some basic information that you need to know in order to understand how to create mods for Devil Daggers.
+</Paragraph>
+
+<Heading Level="3" Title="Binaries" />
+
+<Paragraph>
+	There are three binaries in the game that contain assets:
+</Paragraph>
+
+<ul class="pl-4">
+	<li class="list-disc"><span class="path">devildaggers\res\audio</span> contains all audio</li>
+	<li class="list-disc"><span class="path">devildaggers\res\dd</span> contains all textures, all models, and most shaders</li>
+	<li class="list-disc"><span class="path">devildaggers\core\core</span> contains UI-related shaders</li>
+</ul>
+
+<Paragraph>
+	Even though only the first 2 can be modded, all 3 files can be <b>extracted</b> using <a class="link" href="tools/asset-editor">Devil Daggers Asset Editor</a>. <b>Extraction</b> means reading the binary file and converting all the raw asset data inside into individual asset files that can be opened. The asset types used by the game are audio, bindings, models (meshes), shaders, and textures.
+</Paragraph>
+
+<Heading Level="2" Title="The Asset Editor" />
+
+<Paragraph>
+	In order to change the assets of the game, you will need to download and run <a class="link" href="tools/asset-editor">Devil Daggers Asset Editor</a>.
+</Paragraph>
+
+<img src="/images/tools/ddae.png" class="object-contain max-h-160" />
+
+<Paragraph>
+	The first thing you will see when you open the program is a list of assets. These are all the default assets present in the game. Note that there are 6 tabs at the top:
+</Paragraph>
+<ul class="pl-4">
+	<li class="list-disc">audio/Audio</li>
+	<li class="list-disc">core/Shaders</li>
+	<li class="list-disc">dd/Models</li>
+	<li class="list-disc">dd/Model Bindings</li>
+	<li class="list-disc">dd/Shaders</li>
+	<li class="list-disc">dd/Textures</li>
+</ul>
+
+<Paragraph>
+	They are named after the file type they target and the asset type within that file, so "dd/Textures" will contain all texture assets present in the "dd" file.
+</Paragraph>
+
+<Heading Title="Mod Files" Level="3" />
+
+<Paragraph>
+	Since binaries can be huge, the editor works with mod files (.ddae), which, instead of holding all the asset file contents, are basically just lists of user-specified file paths. Even though mod files have the extension .ddae, they are actually just text files containing JSON, so they can be opened using a text editor. Note that if you move the asset files somewhere else, or rename them, it will break the mod file. Mod files are also not meant to be shared across computers for this reason. Use them locally to save your own work.
+</Paragraph>
+
+<Heading Title="How To Create A Mod" Level="2" />
+
+<Heading Title="Extracting The Original Assets" Level="3" />
+
+<Paragraph>
+	It is useful to extract the original assets so you know what assets you can change. This is typically what you should do first in order to create a mod. There are a lot of assets, and usually you only want to change a few. The easiest way of doing this is to extract the original assets first, and then make the changes you want.
+</Paragraph>
+
+<ol class="pl-4">
+	<li class="list-decimal">
+		It is recommended to set the Devil Daggers root folder in the program, so it can locate the files. Go to "Options > Settings" and set "Devil Daggers root folder" to the Devil Daggers installation folder. This is <span class="path">C:\Program Files (x86)\Steam\steamapps\common\devildaggers</span> by default if you're using Steam. If you're not sure where Devil Daggers is installed, you can launch Devil Daggers and click "Auto-detect" and the editor will automatically detect the correct folder.
+		<img src="/images/tools/ddae-settings.png" class="object-contain max-h-160" />
+	</li>
+	<li class="list-decimal">Now that the settings are correct, we can extract the binaries. Click on "File > Extract binaries".</li>
+	<li class="list-decimal">A new window will appear, and if the Devil Daggers root folder is correct, there should be 3 paths pointing to the original binaries. If the paths are incorrect, make sure to correct them using the "Browse" buttons.</li>
+	<li class="list-decimal">Once the paths are correct, click on "Browse", under "Assets output directory", to set the folder where you want the original assets to be extracted to.</li>
+	<li class="list-decimal">Click on the "Extract binaries" button. This will create the asset files in the assets output directory.</li>
+</ol>
+
+<img src="/images/tools/ddae-extract-binaries.png" class="object-contain max-h-160" />
+
+<Heading Title="Making Your Own Mod" Level="3" />
+
+<Heading Title="Step 1: Modifying Assets" Level="4" />
+
+<ol class="pl-4">
+	<li>Go to "File > New mod" to create a new mod. Select an asset from the lists you wish to mod and click the "Browse" button on the right to replace it with a custom asset.</li>
+	<li>In the open file dialog, select a compatible file. There are some requirements for certain assets, such as audio files. These can be found under <i>Compatibility</i> at the bottom of the page. After you've done that, your asset should show up in the lists. Most assets can also be previewed by selecting them.</li>
+</ol>
+
+<Heading Title="Step 2: Saving Your Mod" Level="4" />
+
+<ol class="pl-4">
+	<li class="list-decimal">Since you may want to work on this mod again, it's a good idea to save it to your computer. Go to "File > Save mod" to do so.</li>
+	<li class="list-decimal">In the save file dialog, select a folder that will contain your mod files. Give your mod file a name and save it inside the folder. Your mod should now be saved as a .ddae file containing the paths to the assets you specified in the editor. As mentioned before, moving the assets somewhere else or renaming them will break the mod file, so it is recommended to set up a good folder structure first.</li>
+</ol>
+<Paragraph>
+	Note: You can set a default path for mod files in "Options > Settings" for convenience. This is completely optional; the path will be used as default location when opening mod files.
+</Paragraph>
+
+<Heading Title="Step 3: Turning Your Mod Into A Binary" Level="4" />
+
+<Paragraph>
+	We can turn the mods specified in the editor into a binary. This is basically the reverse of extracting a binary.
+</Paragraph>
+
+<ol class="pl-4">
+	<li class="list-decimal">Open your mod by going to "File > Open mod".</li>
+	<li class="list-decimal">You will now see all your custom files being listed in the asset editor. To turn these files into a binary, go to "File > Make binaries".</li>
+	<li class="list-decimal">
+		A new window will appear. Type the name of the mod in the text box under "Mod name". If your settings are correct, the paths should now automatically point to the <span class="path">mods</span> folder, and the mods will be enabled immediately the next time Devil Daggers starts up.
+		<img src="/images/tools/ddae-make-binaries.png" class="object-contain max-h-160" />
+	</li>
+	<li class="list-decimal">Click "Make binaries".</li>
+	<li class="list-decimal">Launch Devil Daggers to see if it starts up correctly. If it does not, a list of known causes can be found under <i>Crashes</i>.</li>
+</ol>
+<Paragraph>
+	Note: When you want to test a new version of your mod, you will need to restart Devil Daggers after making the binary again, as they are only loaded when Devil Daggers starts up.
+</Paragraph>
+
+<Heading Title="Crashes" Level="2" />
+
+<Paragraph>
+	Devil Daggers will crash if there's something wrong with your mod. The editor should automatically display an error message in some cases, such as when it cannot properly convert your model to the custom binary format Devil Daggers uses for models. However, some causes are uncaught. Here's a list of some other known causes that will cause Devil Daggers to crash:
+</Paragraph>
+<ul class="pl-4">
+	<li class="list-disc">You have replaced one of the original files instead of created a new one in the "mods" folder. It is never recommended to modify the original files and it will most likely crash the game on start up.</li>
+	<li class="list-disc">There might be something wrong with one of your custom audio asset. Be sure to check if all files are compatible under <i>Compatibility</i>.</li>
+	<li class="list-disc">Your custom shader asset might not compile.</li>
+</ul>
+
+<Heading Title="Compatibility" Level="2" />
+
+<Heading Title="Audio" Level="3" />
+
+<Paragraph>
+	Only .wav files are supported in the editor. The .wav files need to meet the following requirements in order to play correctly:
+</Paragraph>
+<ul class="pl-4">
+	<li class="list-disc">2 channels</li>
+	<li class="list-disc">44.1kHz sample rate</li>
+	<li class="list-disc">16-bit PCM format</li>
+</ul>
+<Paragraph>
+	You can convert the .wav files to the correct format using software such as Audacity.
+</Paragraph>
+
+<Heading Title="Textures" Level="3" />
+
+<Paragraph>
+	Only .png files are supported in the editor. The files can be whatever dimension, though having files larger than 512x512 is not recommended since it will make the binary huge. Transparency is supported and used for UI textures, splash screens, etc, but does not work for model textures by default.
+</Paragraph>
+
+<Heading Title="Models" Level="3" />
+
+<Paragraph>
+	Only .obj files are supported in the editor. The files can consist of triangles or quads, though NGons are not supported for now. You can create models using software such as Blender.
+</Paragraph>
+
+<Heading Title="Miscellaneous Information" Level="2" />
+
+<ul class="pl-4">
+	<li class="list-disc">The Devil Daggers title screen music seems to start playing at some hardcoded offset.</li>
+</ul>

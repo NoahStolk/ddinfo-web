@@ -1,0 +1,60 @@
+@page "/guides/using-spawnsets"
+
+<Heading Title="How To Use Spawnsets" />
+
+<Paragraph>
+	A spawnset (also known as a <b>survival</b> file) is a file that mainly consists of a set of enemy spawns and the shape of the arena. It can be used for practicing the main game.
+</Paragraph>
+
+<Heading Level="2" Title="How Do I Play A Custom Spawnset?" />
+
+<ol class="pl-4">
+	<li class="list-decimal">Download a spawnset you want to play. Spawnsets can be found on <a class="link" href="/custom/spawnsets">this page</a>.</li>
+	<li class="list-decimal">Navigate to the <span class="path">mods</span> folder where Devil Daggers is installed. On Windows, this is <span class="path">C:\Program Files (x86)\Steam\steamapps\common\devildaggers\mods</span> by default if you are using Steam. In this folder, there should be a file named <span class="path">put mods here.txt</span>.</li>
+	<li class="list-decimal">Place the downloaded spawnset file in the <span class="path">mods</span> folder.</li>
+	<li class="list-decimal">Rename the downloaded spawnset file to <span class="path">survival</span>.</li>
+</ol>
+
+<Paragraph>
+	You can also use <a class="link" href="/tools/survival-editor">Devil Daggers Survival Editor</a> to replace spawnsets:
+</Paragraph>
+
+<ol class="pl-4">
+	<li class="list-decimal">Press <pre class="code">Ctrl I</pre> to open the list of spawnsets from the website in the editor.</li>
+	<li class="list-decimal">Click on the spawnset you want to play.</li>
+	<li class="list-decimal">Click "Yes" when the editor asks if you want to replace the currently active custom spawnset with the downloaded one. If it doesn't (this depends on your settings), press <pre class="code">Ctrl R</pre> to replace the file.</li>
+</ol>
+
+<Paragraph>
+	You can now play the custom spawnset. The custom spawnset is reloaded every time you restart a run, or grab the dagger in the lobby. There is no need to restart the game when changing the spawnset.
+</Paragraph>
+
+<Heading Level="3" Title="Important Notes" />
+<ul class="pl-4">
+	<li class="list-disc">Make sure you do <b>not</b> have a <b>folder</b> named <span class="path">survival</span> in the <span class="path">mods</span> folder.</li>
+	<li class="list-disc">Make sure you do <b>not</b> replace, delete, modify, or do anything with the <span class="path">survival</span> file in the <b><span class="path">dd</span> folder</b>.</li>
+	<li class="list-disc">When using <a class="link" href="/tools/survival-editor">Devil Daggers Survival Editor</a>, make sure to specify the correct <b>Devil Daggers root folder</b> in the editor settings (under Options > Settings).</li>
+</ul>
+
+<Heading Level="2" Title="How Do I Go Back To The Main Game?" />
+
+<Paragraph>
+	Simply delete the <span class="path">survival</span> file in the <span class="path">mods</span> folder. Using <a class="link" href="/tools/survival-editor">Devil Daggers Survival Editor</a>, you can press <pre class="code">Ctrl D</pre> to delete the custom spawnset.
+</Paragraph>
+
+<Heading Level="2" Title="How Do I Submit To A Custom Leaderboard?" />
+
+<Paragraph>
+	Simply run <a class="link" href="/tools/custom-leaderboards">Devil Daggers Custom Leaderboards</a> while playing the game. You can also use a program called <a class="link" href="https://github.com/lsaa/ddstats-rust/releases">ddstats-rust</a> (which runs on Linux) to submit runs.
+</Paragraph>
+
+<Heading Level="2" Title="FAQ" />
+
+<div><em>Can I get banned for using custom spawnsets?</em></div>
+<div class="mb-2"><strong>No, you can only get banned manually by the developer for submitting illegitimate runs to the official leaderboard.</strong></div>
+
+<div><em>Can I override my real score using a custom spawnset?</em></div>
+<div class="mb-2"><strong>No, the game only uploads runs done with the original V3 spawnset.</strong></div>
+
+<div><em>How do I make my own spawnsets?</em></div>
+<div class="mb-2"><strong>Check out <a class="link" href="/guides/creating-spawnsets">this guide</a>.</strong></div>
