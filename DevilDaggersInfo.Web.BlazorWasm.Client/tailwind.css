@@ -20,6 +20,14 @@
 		@apply text-color-link hover:text-color-link-hover;
 	}
 
+	.code {
+		@apply inline bg-gray-5;
+	}
+
+	.path {
+		@apply text-color-path;
+	}
+
 	.btn {
 		@apply text-lg rounded text-color-text text-center transition-colors duration-100;
 	}
