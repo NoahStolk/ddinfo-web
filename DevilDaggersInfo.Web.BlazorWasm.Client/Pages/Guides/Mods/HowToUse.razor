@@ -1,0 +1,75 @@
+@page "/guides/using-mods"
+
+<Heading Title="How To Use Mods" />
+
+<Paragraph>
+	A mod is one or more files (referred to as 'binaries') that contain modified game assets for Devil Daggers. There are two types of mods, "audio" mods and "dd" mods. Audio mods can only change audio, and dd mods can only change models, bindings, shaders, and textures.
+</Paragraph>
+
+<Heading Level="2" Title="How Do I Play A Mod?" />
+
+<ol class="pl-4">
+	<li class="list-disc">Download a mod you want to play. Mods can be found <a class="link" href="/custom/mods">on this page</a>.</li>
+	<li class="list-disc">Navigate to the <span class="text-color-path">mods</span> folder where Devil Daggers is installed. On Windows, this is <span class="text-color-path">C:\Program Files (x86)\Steam\steamapps\common\devildaggers\mods</span> by default if you are using Steam. In this folder, there should be a file named <span class="text-color-path">put mods here.txt</span>.</li>
+	<li class="list-disc">Unzip the mod archive, and place the files in the <span class="text-color-path">mods</span> folder.</li>
+</ol>
+
+<Paragraph>
+	You can also use the <a class="link" href="/tools/asset-editor">Devil Daggers Asset Editor</a> to install mods:
+</Paragraph>
+
+<ol class="pl-4">
+	<li class="list-disc">Press CTRL I to open the list of mods from the website in the editor.</li>
+	<li class="list-disc">Click on the mod you want to play and click "Download and install".</li>
+</ol>
+
+<Paragraph>
+	After installing a mod, you will need to <b>restart the game</b> for the changes to take effect.
+</Paragraph>
+
+<Heading Level="3" Title="Important Notes" />
+<ul class="pl-4">
+	<li class="list-disc">The file names of the installed files <b>must</b> start with either audio or dd (depending on the assets they change).</li>
+	<li class="list-disc">When using Devil Daggers Asset Editor, make sure to specify the correct <b>Devil Daggers root folder</b> in the editor settings (under Options > Settings).</li>
+</ul>
+
+<Heading Level="2" Title="How Do I Uninstall A Mod?" />
+
+<Paragraph>
+	There are multiple ways of doing this. You could just delete the files, or you could rename the file in such a way that the game doesn't load it (for example, by putting an underscore in front of the file name). Using <a class="link" href="/tools/asset-editor">Devil Daggers Asset Editor</a>, you can use the mod manager to enable or disable mods.
+</Paragraph>
+
+<Heading Level="2" Title="Playing Multiple Mods" />
+
+<Paragraph>
+	It is possible to play multiple mods at the same time, since every asset is replaced individually. That means you can combine multiple mods and play them at once. The files are loaded alphabetically, so if you have two files containing the same asset, the last one will be the effective one and actually replace the asset. For example, if you have two texture mods named "dd_blue_gem" and "dd_yellow_gem", which both change the color of the gem texture, "dd_yellow_gem" will be the effective one.
+</Paragraph>
+
+<Paragraph>
+	Using the mod manager in <a class="link" href="/tools/asset-editor">Devil Daggers Asset Editor</a> you can see which assets are currently effective in your Devil Daggers installation.
+</Paragraph>
+
+<Heading Level="2" Title="Prohibited Mods" />
+
+<Paragraph>
+	Some mods grant the player an unfair advantage, such as a mod that changes the shader to make enemy corpses disappear instantly, or a mod that makes certain audio louder or more distinguishable.
+</Paragraph>
+
+<Paragraph>
+	For this reason, the developers have marked certain assets as "prohibited". This means that when these assets are changed, you cannot submit runs of over 1000 seconds.
+</Paragraph>
+
+<Paragraph>
+	You can see which assets are prohibited on <a class="link" href="/wiki/assets">this page</a>.
+</Paragraph>
+
+<Heading Level="2" Title="FAQ" />
+
+<div><em>Can I get banned for using mods?</em></div>
+<div class="mb-2"><strong>No, you can only get banned manually by the developer for submitting illegitimate runs to the official leaderboard.</strong></div>
+
+<div><em>Can I override my real score using a mod?</em></div>
+<div class="mb-2"><strong>Yes, unless your score is above 1000 and the mod is prohibited.</strong></div>
+
+<div><em>How do I make my own mods?</em></div>
+<div class="mb-2"><strong>Check out <a class="link" href="/guides/creating-mods">this guide</a>.</strong></div>
