@@ -211,7 +211,7 @@
 	<li class="list-disc">The arena shrinks in size as time goes on. The default shrink start radius is 50 units and the default shrink end radius is 20 units. The default shrink rate is 0.025. This means the default arena reaches the end radius at 1200 seconds, because (50-20)/0.025 = 1200. (Even though the last tiles actually fall down at around 1187 seconds, the shrinking technically continues for about 13 seconds, it's just that no tiles are affected by it.)</li>
 	<li class="list-disc">The default tile height is height 0.</li>
 	<li class="list-disc">Tiles will fall down when their height is below -1.</li>
-	<li class="list-disc">The tile at coordinate {1, 0} is always invisible for some reason, but you can still walk on it.</li>
+	<li class="list-disc">The tile at coordinate 1x0 is always invisible for some reason, but you can still walk on it.</li>
 	<li class="list-disc">Enemies and gems do not react to different tile heights. Only the player, the daggers, and some effects do (like @MarkupUtils.EnemyString(EnemiesV3_2.Thorn) spawn smokes, meat chunks, etc).</li>
 	<li class="list-disc">The tiles have infinitely long "hitboxes" (there are no actual hitboxes, things just collide with the tile based on its height).</li>
 	<li class="list-disc">The texture only covers the top of the tile. You can however work around this by using mods that change the pillar model.</li>
