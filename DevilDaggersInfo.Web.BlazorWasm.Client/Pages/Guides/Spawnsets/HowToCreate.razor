@@ -8,7 +8,7 @@
 
 <Heading Level="2" Title="What Can Be Changed Using A Spawnset?" />
 
-<ol class="pl-4">
+<ul class="pl-4">
 	<li class="list-disc">The spawn time of each enemy</li>
 	<li class="list-disc">The height of each tile in the arena</li>
 	<li class="list-disc">The rate at which the arena shrinks, and when the shrinking stops</li>
@@ -17,7 +17,7 @@
 	<li class="list-disc">The amount of additional gems given to the player when starting the run</li>
 	<li class="list-disc">The timer value at the start of the run (for simulating practice more accurately)</li>
 	<li class="list-disc">The game mode (only the default mode is fully supported by the game)</li>
-</ol>
+</ul>
 
 <Paragraph>
 	All of this data can be edited using <a class="link" href="tools/survival-editor">Devil Daggers Survival Editor</a>.
@@ -54,16 +54,16 @@
 	The delay value specifies the amount of seconds the game will wait before spawning the enemy. Consider the following list of spawns:
 </Paragraph>
 
-<div class="grid grid-cols-3 max-w-sm">
-	<div>Enemy type</div>
-	<div>Delay value</div>
-	<div>Actual spawn time</div>
+<div class="grid grid-cols-3 max-w-sm border-2 border-gray-5 px-1">
+	<div class="font-bold">Enemy type</div>
+	<div class="font-bold text-right">Delay value</div>
+	<div class="font-bold text-right">Spawn time</div>
 	<div>@MarkupUtils.EnemyString(EnemiesV3_2.Squid1)</div>
-	<div>4.0000</div>
-	<div>4.0000</div>
+	<div class="text-right">4.0000</div>
+	<div class="text-right">4.0000</div>
 	<div>@MarkupUtils.EnemyString(EnemiesV3_2.Spider1)</div>
-	<div>3.0000</div>
-	<div>7.0000</div>
+	<div class="text-right">3.0000</div>
+	<div class="text-right">7.0000</div>
 </div>
 
 <Paragraph>
@@ -74,25 +74,25 @@
 	To spawn multiple enemies at the same time, simply use a delay value of 0:
 </Paragraph>
 
-<div class="grid grid-cols-3 max-w-sm">
-	<div>Enemy type</div>
-	<div>Delay value</div>
-	<div>Actual spawn time</div>
+<div class="grid grid-cols-3 max-w-sm border-2 border-gray-5 px-1">
+	<div class="font-bold">Enemy type</div>
+	<div class="font-bold text-right">Delay value</div>
+	<div class="font-bold text-right">Spawn time</div>
 	<div>@MarkupUtils.EnemyString(EnemiesV3_2.Squid2)</div>
-	<div>2.0000</div>
-	<div>2.0000</div>
+	<div class="text-right">2.0000</div>
+	<div class="text-right">2.0000</div>
 	<div>@MarkupUtils.EnemyString(EnemiesV3_2.Gigapede)</div>
-	<div>5.0000</div>
-	<div>7.0000</div>
+	<div class="text-right">5.0000</div>
+	<div class="text-right">7.0000</div>
 	<div>@MarkupUtils.EnemyString(EnemiesV3_2.Gigapede)</div>
-	<div>0.0000</div>
-	<div>7.0000</div>
+	<div class="text-right">0.0000</div>
+	<div class="text-right">7.0000</div>
 	<div>@MarkupUtils.EnemyString(EnemiesV3_2.Gigapede)</div>
-	<div>0.0000</div>
-	<div>7.0000</div>
+	<div class="text-right">0.0000</div>
+	<div class="text-right">7.0000</div>
 	<div>@MarkupUtils.EnemyString(EnemiesV3_2.Spider1)</div>
-	<div>3.0000</div>
-	<div>10.0000</div>
+	<div class="text-right">3.0000</div>
+	<div class="text-right">10.0000</div>
 </div>
 
 <Heading Title="The End Loop" Level="3" />
@@ -117,12 +117,12 @@
 	Here is the data for the first 10 waves in the original game:
 </Paragraph>
 
-<div class="grid grid-cols-5">
-	<div class="text-right">Wave index</div>
-	<div class="text-right">Wave start</div>
-	<div class="text-right">Wave length</div>
-	<div class="text-right">Decrement (relative to previous)</div>
-	<div class="text-right">Speed up</div>
+<div class="grid grid-cols-4 sm:grid-cols-5 border-2 border-gray-5 px-1">
+	<div class="font-bold text-right hidden sm:block">Wave index</div>
+	<div class="font-bold text-right">Wave start</div>
+	<div class="font-bold text-right">Wave length</div>
+	<div class="font-bold text-right">Decrement (relative to previous)</div>
+	<div class="font-bold text-right">Speed up</div>
 
 	@{
 		const double physicsTick = 1f / 60f;
@@ -148,7 +148,7 @@
 
 			double length = seconds - start;
 
-			<div class="text-right">@i</div>
+			<div class="text-right hidden sm:block">@i</div>
 			<div class="text-right">@((Math.Floor(start * 60) / 60).ToString(FormatUtils.TimeFormat))</div>
 			<div class="text-right">@((Math.Floor(length * 60) / 60).ToString(FormatUtils.TimeFormat))</div>
 			<div class="text-right">@(previousLength == 0 ? "-" : (1 - length / previousLength).ToString("0.00%"))</div>
