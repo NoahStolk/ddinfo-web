@@ -65,7 +65,7 @@
 	}
 
 	.validation-errors {
-		@apply p-2 rounded bg-dark-red hover:bg-red;
+		@apply p-2 rounded bg-dark-red;
 	}
 }
 

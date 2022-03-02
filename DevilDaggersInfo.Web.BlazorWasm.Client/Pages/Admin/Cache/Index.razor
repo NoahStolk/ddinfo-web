@@ -9,6 +9,6 @@
 <ul>
 	@foreach (string cacheType in new[] { "LeaderboardHistory", "LeaderboardStatistics", "ModArchive", "SpawnsetHash", "SpawnsetSummary" })
 	{
-		<li><button class="btn btn-gray" @onclick="@(async () => await Http.ClearCache(cacheType))">Clear @cacheType cache</button></li>
+		<li><button class="btn btn-gray px-2 py-1" @onclick="@(async () => await Http.ClearCache(cacheType))">Clear @cacheType cache</button></li>
 	}
 </ul>
