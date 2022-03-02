@@ -1,6 +1,6 @@
 module.exports = {
 	content: [
-		'./**/*.{html,razor,hack}',
+		'./**/*.{html,razor,tailwind}',
 	],
 	theme: {
 		colors: {
