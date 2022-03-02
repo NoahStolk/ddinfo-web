@@ -185,7 +185,7 @@ public class Startup
 		}
 		else
 		{
-			app.UseExceptionHandler();
+			app.UseExceptionHandler("/Error");
 			app.UseHsts();
 		}
 
