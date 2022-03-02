@@ -25,7 +25,7 @@
 </ul>
 
 <Paragraph>
-	Even though only the first 2 can be modded, all 3 files can be <b>extracted</b> using <a class="link" href="tools/asset-editor">Devil Daggers Asset Editor</a>. <b>Extraction</b> means reading the binary file and converting all the raw asset data inside into individual asset files that can be opened. The asset types used by the game are audio, bindings, models (meshes), shaders, and textures.
+	Even though only the first 2 can be modded, all 3 files can be <b>extracted</b> using <a class="link" href="tools/asset-editor">Devil Daggers Asset Editor</a>. <b>Extraction</b> means reading the binary file and converting all the raw asset data into individual files that can be opened and edited. The asset types used by the game are audio, bindings, models (meshes), shaders, and textures.
 </Paragraph>
 
 <Heading Level="2" Title="The Asset Editor" />
@@ -63,7 +63,7 @@
 <Heading Title="Extracting The Original Assets" Level="3" />
 
 <Paragraph>
-	It is useful to extract the original assets so you know what assets you can change. This is typically what you should do first in order to create a mod. There are a lot of assets, and usually you only want to change a few. The easiest way of doing this is to extract the original assets first, and then make the changes you want.
+	It is useful to extract the original assets so you know what assets you can change. This is typically what you should do first in order to create a mod. There are a lot of assets, and usually you only want to change a few. The easiest way of doing this is to extract the original assets first, and then edit the extracted assets you want to change.
 </Paragraph>
 
 <ol class="pl-4">
@@ -108,14 +108,22 @@
 	<li class="list-decimal">Open your mod by going to "File > Open mod".</li>
 	<li class="list-decimal">You will now see all your custom files being listed in the asset editor. To turn these files into a binary, go to "File > Make binaries".</li>
 	<li class="list-decimal">
-		A new window will appear. Type the name of the mod in the text box under "Mod name". If your settings are correct, the paths should now automatically point to the <span class="path">mods</span> folder, and the mods will be enabled immediately the next time Devil Daggers starts up.
+		A new window will appear. Type the name of the mod in the text box under "Mod name". If your settings are correct, the paths should automatically point to the <span class="path">mods</span> folder.
 		<img src="/images/tools/ddae-make-binaries.png" class="object-contain max-h-160" />
 	</li>
-	<li class="list-decimal">Click "Make binaries".</li>
+	<li class="list-decimal">Click "Make binaries". The mods will be written to the <span class="path">mods</span> folder and be effective immediately the next time Devil Daggers starts up.</li>
 	<li class="list-decimal">Launch Devil Daggers to see if it starts up correctly. If it does not, a list of known causes can be found under <i>Crashes</i>.</li>
 </ol>
 <Paragraph>
-	Note: When you want to test a new version of your mod, you will need to restart Devil Daggers after making the binary again, as they are only loaded when Devil Daggers starts up.
+	Note: When you want to test a new version of your mod, you will need to restart Devil Daggers after making the binary again, as they are only loaded when the game starts up.
+</Paragraph>
+
+<Paragraph>
+	That's it! If you need inspiration or want to try existing mods made by the community, check out the ones listed on <a class="link" href="/custom/mods">this page</a>.
+</Paragraph>
+
+<Paragraph>
+	Some additional information is listed below which may be useful when testing mods.
 </Paragraph>
 
 <Heading Title="Crashes" Level="2" />
