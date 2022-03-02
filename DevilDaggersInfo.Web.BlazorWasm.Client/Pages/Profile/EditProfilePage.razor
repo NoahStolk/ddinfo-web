@@ -66,6 +66,6 @@ else
 		@{
 			bool isValid = context.Validate();
 		}
-		<button class="btn my-2 px-2 py-1 @(isValid ? enabledStyle : disabledStyle)" type="submit" disabled="@(!isValid)">Save</button>
+		<button class="btn my-2 px-2 py-1 @(isValid ? enabledStyle : disabledStyle)" type="submit" disabled="@(!isValid)" @onclick="Dismiss">Save</button>
 	</EditForm>
 }
