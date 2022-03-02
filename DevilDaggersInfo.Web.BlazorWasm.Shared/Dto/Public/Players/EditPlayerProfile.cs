@@ -18,7 +18,7 @@ public class EditPlayerProfile
 
 	public bool? HasFlashHandEnabled { get; set; }
 
-	[Range(1.5f, 2.2f, ErrorMessage = "Gamma must be between 1.5 and 2.2.")]
+	[Range(1, 3, ErrorMessage = "Gamma must be between 1 and 3.")]
 	public float? Gamma { get; set; }
 
 	public bool? UsesLegacyAudio { get; set; }
