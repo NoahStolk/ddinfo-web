@@ -1,4 +1,6 @@
 @page "/"
+@inject PublicApiHttpClient Http
+@using DevilDaggersInfo.Web.BlazorWasm.Client.InternalModels
 
 <h1 class="text-5xl md:text-6xl font-goethe leviathan pt-4 pb-4 text-red" style="filter: saturate(180%);">DevilDaggers.Info</h1>
 
@@ -34,6 +36,22 @@
 	}
 </div>
 
+@if (LatestNews == null || !LatestNewsContent.HasValue)
+{
+	<Heading Level="2" Title="Latest News" />
+
+	<Loading />
+}
+else
+{
+	<Heading Level="2" Title="@($"Latest News - {LatestNews.DateTime.ToString(FormatUtils.DateFormat)} - {LatestNews.Title}")" />
+
+	<div class="bg-gray-1 px-3 py-2 my-4">
+		@(LatestNewsContent.Value)
+		<a class="link" href="/news">Read more</a>
+	</div>
+}
+
 @code
 {
 	private Section[] _sections = new Section[] {
@@ -45,6 +63,20 @@
 		new("Participate in custom leaderboards for spawnsets", "home/custom-leaderboard.png", "/custom/leaderboards"),
 		new("Check out the world record progression and other statistics", "home/graph.png", "/leaderboard/world-record-progression"),
 		new("Check out various wiki pages about the game, such as spawn times, enemy types, or hand upgrades", "home/enemies.png", "/wiki/enemies"), };
+
+	public NewsItem? LatestNews { get; set; }
+
+	public MarkupString? LatestNewsContent { get; set; }
+
+	protected override async Task OnInitializedAsync()
+	{
+		LatestNews = NewsContainer.Items.MaxBy(ni => ni.DateTime);
+		if (LatestNews == null)
+			return;
+
+		string html = await Http.Client.GetStringAsync(LatestNews.GetHtmlPath());
+		LatestNewsContent = new(html);
+	}
 
 	private record Section(string Text, string ImageUrl, string Url);
 }
