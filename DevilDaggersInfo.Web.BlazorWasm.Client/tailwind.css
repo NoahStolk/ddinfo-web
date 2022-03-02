@@ -63,10 +63,10 @@
 	.btn-download {
 		@apply hover:text-color-text bg-dark-red hover:bg-red;
 	}
-}
 
-.validation-errors {
-	color: red;
+	.validation-errors {
+		@apply p-2 rounded bg-dark-red hover:bg-red;
+	}
 }
 
 #blazor-error-ui {
