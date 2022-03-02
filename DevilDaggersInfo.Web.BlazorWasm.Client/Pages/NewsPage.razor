@@ -34,10 +34,8 @@ else
 
 	protected override async Task OnInitializedAsync()
 	{
-		List<NewsItem> newsItems = await Http.Client.GetFromJsonAsync<List<NewsItem>>(Path.Combine("news", "_News.json")) ?? new();
-
 		NewsItemsContent = new();
-		foreach (NewsItem newsItem in newsItems)
+		foreach (NewsItem newsItem in NewsContainer.Items)
 		{
 			try
 			{
