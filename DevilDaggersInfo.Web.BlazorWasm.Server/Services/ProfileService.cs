@@ -18,7 +18,7 @@ public class ProfileService
 	public async Task<GetPlayerProfile> GetProfileAsync(ClaimsPrincipal claimsPrincipal, int id)
 	{
 		string? userName = claimsPrincipal.GetName();
-		UserEntity? user = _dbContext.Users.FirstOrDefault(u => u.Name == userName);
+		UserEntity? user = await _dbContext.Users.FirstOrDefaultAsync(u => u.Name == userName);
 		if (user == null)
 			throw new UnauthorizedAccessException();
 
@@ -69,7 +69,7 @@ public class ProfileService
 		if (user.PlayerId != id)
 			throw new InvalidProfileRequestException("Not allowed to access another player's profile") { StatusCode = HttpStatusCode.Forbidden };
 
-		PlayerEntity? player = _dbContext.Players.FirstOrDefault(p => p.Id == id);
+		PlayerEntity? player = await _dbContext.Players.FirstOrDefaultAsync(p => p.Id == id);
 		if (player == null)
 			throw new InvalidProfileRequestException("Player not found") { StatusCode = HttpStatusCode.NotFound };
 
