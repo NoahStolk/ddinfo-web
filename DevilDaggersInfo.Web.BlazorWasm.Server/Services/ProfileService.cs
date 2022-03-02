@@ -32,7 +32,7 @@ public class ProfileService
 			.AsNoTracking()
 			.FirstOrDefaultAsync(p => p.Id == id);
 		if (player == null)
-			return new();
+			throw new InvalidProfileRequestException("Player not found") { StatusCode = HttpStatusCode.NotFound };
 
 		if (player.BanType != BanType.NotBanned)
 			throw new InvalidProfileRequestException("Banned player");
@@ -71,14 +71,10 @@ public class ProfileService
 
 		PlayerEntity? player = _dbContext.Players.FirstOrDefault(p => p.Id == id);
 		if (player == null)
-		{
-			player = new() { Id = id };
-			_dbContext.Players.Add(player);
-		}
-		else if (player.BanType != BanType.NotBanned)
-		{
+			throw new InvalidProfileRequestException("Player not found") { StatusCode = HttpStatusCode.NotFound };
+
+		if (player.BanType != BanType.NotBanned)
 			throw new InvalidProfileRequestException("Banned player");
-		}
 
 		EditPlayerProfile oldDtoLog = new()
 		{
