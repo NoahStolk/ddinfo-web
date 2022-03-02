@@ -19,22 +19,25 @@ else if (!_linked.Value)
 }
 else
 {
-	@switch (State)
+	@if (Message != null)
 	{
-		case ErrorState.ValidationError:
-			{
-				<ResultBar Title="Validation failed" ResultBarType="ResultBarType.ValidationError" DismissEvent="Dismiss">
-					@ErrorMessage
-				</ResultBar>
-			}
-			break;
-		case ErrorState.FatalError:
-			{
-				<ResultBar Title="Fatal error" ResultBarType="ResultBarType.FatalError" DismissEvent="Dismiss">
-					@ErrorMessage
-				</ResultBar>
-			}
-			break;
+		string title = State switch
+		{
+			ErrorState.ValidationError => "Validation failed",
+			ErrorState.FatalError => "Fatal error",
+			_ => "Success",
+		};
+
+		ResultBarType type = State switch
+		{
+			ErrorState.ValidationError => ResultBarType.ValidationError,
+			ErrorState.FatalError => ResultBarType.FatalError,
+			_ => ResultBarType.Success,
+		};
+
+		<ResultBar Title="@title" ResultBarType="type" DismissEvent="Dismiss">
+			@Message
+		</ResultBar>
 	}
 
 	<EditForm Model="@_editPlayer" OnValidSubmit="@OnValidSubmit">
@@ -56,6 +59,6 @@ else
 		<AdminInput Label="Hide my past usernames"><InputCheckbox @bind-Value="@_editPlayer.HidePastUsernames" /></AdminInput>
 		<AdminInput Label="Hide my game settings"><InputCheckbox @bind-Value="@_editPlayer.HideSettings" /></AdminInput>
 
-		<button class="btn btn-gray p-2" type="submit">Save</button>
+		<button class="btn btn-green p-2" type="submit">Save</button>
 	</EditForm>
 }

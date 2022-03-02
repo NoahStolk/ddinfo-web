@@ -18,7 +18,7 @@ public partial class EditProfilePage
 	private EditPlayerProfile _editPlayer = new();
 
 	public ErrorState State { get; set; }
-	public string? ErrorMessage { get; set; }
+	public string? Message { get; set; }
 
 	[Inject]
 	public AdminAuthenticationStateProvider Auth { get; set; } = null!;
@@ -64,9 +64,9 @@ public partial class EditProfilePage
 		catch (HttpRequestException ex)
 		{
 			if (ex.StatusCode.HasValue)
-				ErrorMessage = $"Error {(int)ex.StatusCode}: {ex.StatusCode}";
+				Message = $"Error {(int)ex.StatusCode}: {ex.StatusCode}";
 			else
-				ErrorMessage = "An error occurred while sending the request.";
+				Message = "An error occurred while sending the request.";
 
 			State = ErrorState.FatalError;
 		}
@@ -84,10 +84,13 @@ public partial class EditProfilePage
 		try
 		{
 			HttpResponseMessage hrm = await Http.UpdateProfileByPlayerId(_playerId, _editPlayer);
-
-			if (hrm.StatusCode != HttpStatusCode.OK)
+			if (hrm.StatusCode == HttpStatusCode.OK)
 			{
-				ErrorMessage = await hrm.Content.ReadAsStringAsync();
+				Message = "Successfully updated profile.";
+			}
+			else
+			{
+				Message = await hrm.Content.ReadAsStringAsync();
 				State = hrm.StatusCode.GetErrorState();
 			}
 		}
@@ -100,6 +103,7 @@ public partial class EditProfilePage
 	private void Dismiss()
 	{
 		State = ErrorState.None;
+		Message = null;
 		StateHasChanged();
 	}
 }
