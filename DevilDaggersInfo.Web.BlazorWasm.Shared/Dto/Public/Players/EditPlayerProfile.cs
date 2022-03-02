@@ -5,20 +5,20 @@ public class EditPlayerProfile
 	[StringLength(2)]
 	public string? CountryCode { get; set; }
 
-	[Range(10, 20000)]
+	[Range(10, 20000, ErrorMessage = "DPI must be between 10 and 20,000.")]
 	public int? Dpi { get; set; }
 
-	[Range(0.01f, 2)]
+	[Range(0.01f, 2, ErrorMessage = "In-game sens must be between 0.01 and 2.")]
 	public float? InGameSens { get; set; }
 
-	[Range(85, 120)]
+	[Range(85, 120, ErrorMessage = "FOV must be between 85 and 120.")]
 	public int? Fov { get; set; }
 
 	public bool? IsRightHanded { get; set; }
 
 	public bool? HasFlashHandEnabled { get; set; }
 
-	[Range(1.5f, 2.2f)]
+	[Range(1.5f, 2.2f, ErrorMessage = "Gamma must be between 1.5 and 2.2.")]
 	public float? Gamma { get; set; }
 
 	public bool? UsesLegacyAudio { get; set; }
