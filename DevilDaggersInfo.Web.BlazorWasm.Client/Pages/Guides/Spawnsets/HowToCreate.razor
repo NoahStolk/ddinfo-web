@@ -2,9 +2,9 @@
 
 <Heading Title="How To Create Spawnsets" />
 
-<Paragraph>
+<p class="para">
 	This guide assumes you already know how to use spawnsets. If you don't, please read <a class="link" href="/guides/using-spawnsets">this guide</a> first.
-</Paragraph>
+</p>
 
 <Heading Level="2" Title="What Can Be Changed Using A Spawnset?" />
 
@@ -19,23 +19,23 @@
 	<li class="list-disc">The game mode (only the default mode is fully supported by the game)</li>
 </ul>
 
-<Paragraph>
+<p class="para">
 	All of this data can be edited using <a class="link" href="tools/survival-editor">Devil Daggers Survival Editor</a>.
-</Paragraph>
+</p>
 
 <img src="/images/tools/ddse.png" class="object-contain max-h-160" />
 
 <Heading Level="2" Title="Changing Enemy Spawns" />
 
-<Paragraph>
+<p class="para">
 	A spawn in the survival file is defined by an <b>enemy type</b> and a <b>delay value</b>. Every spawnset has a list of these which can be edited.
-</Paragraph>
+</p>
 
 <Heading Level="3" Title="Enemy Types" />
 
-<Paragraph>
+<p class="para">
 	10 enemies can be spawned in the survival file, as well as an <b>Empty</b> type which we'll get to later.
-</Paragraph>
+</p>
 
 <div class="grid grid-cols-3 max-w-sm border-2 border-gray-5 px-1">
 	<div>@MarkupUtils.EnemyString(EnemiesV3_2.Squid1)</div>
@@ -53,9 +53,9 @@
 
 <Heading Level="3" Title="Delay Values" />
 
-<Paragraph>
+<p class="para">
 	The delay value specifies the amount of seconds the game will wait before spawning the enemy. Consider the following list of spawns:
-</Paragraph>
+</p>
 
 <div class="grid grid-cols-3 max-w-sm border-2 border-gray-5 px-1">
 	<div class="font-bold">Enemy type</div>
@@ -74,13 +74,13 @@
 	}
 </div>
 
-<Paragraph>
+<p class="para">
 	When the run begins, the game will wait 4 seconds before spawning the first @MarkupUtils.EnemyString(EnemiesV3_2.Squid1). After that, it will wait 3 seconds before spawning the @MarkupUtils.EnemyString(EnemiesV3_2.Spider1), so the @MarkupUtils.EnemyString(EnemiesV3_2.Spider1) will spawn at 7 seconds.
-</Paragraph>
+</p>
 
-<Paragraph>
+<p class="para">
 	To spawn multiple enemies at the same time, simply use a delay value of 0:
-</Paragraph>
+</p>
 
 <div class="grid grid-cols-3 max-w-sm border-2 border-gray-5 px-1">
 	<div class="font-bold">Enemy type</div>
@@ -100,30 +100,30 @@
 </div>
 
 <Heading Level="3" Title="The End Loop" />
-<Paragraph>
+<p class="para">
 	The end loop is the same set of spawns over and over again, faster every time. This appears at the end of the spawnset.
-</Paragraph>
+</p>
 
 <Heading Level="4" Title="Empty Enemy Type" />
-<Paragraph>
+<p class="para">
 	The <b>Empty</b> enemy type does not spawn an enemy; its only purpose is to mark the beginning of the end loop. The last <b>Empty</b> spawn will always mark the beginning of the end loop. Having an end loop is optional, so if you don't want to include an end loop, simply make sure to put an <b>Empty</b> spawn at the end of the spawnset to mark the end of the spawnset (or literally; mark the start of an empty end loop).
-</Paragraph>
+</p>
 
 <Heading Level="4" Title="Ghostpedes" />
-<Paragraph>
+<p class="para">
 	Every third wave of the end loop, all @MarkupUtils.EnemyString(EnemiesV3_2.Gigapede, true) are changed into @MarkupUtils.EnemyString(EnemiesV3_2.Ghostpede, true). This is hardcoded in the game and cannot be changed.
-</Paragraph>
+</p>
 
 <Heading Level="4" Title="End Loop Speed Up" />
-<Paragraph>
+<p class="para">
 	How the end loop speeds up is also hardcoded in the game. How it works exactly is a bit hard to explain however... In the game there is an additional "special" timer used for the end loop. This timer initially increases the same amount as the normal timer, so during the first wave, all the enemies spawn at the exact same speed as they would before the end loop.
-</Paragraph>
-<Paragraph>
+</p>
+<p class="para">
 	The speed up happens after every wave ends; at that point the special timer is sped up by a very small amount. The exact amount for this is 12.5% of a 60th of a second (a game tick), which is 0.0020833 seconds. This means that during the second wave, the special timer increases by 0.0020833 seconds more than the normal timer for every game tick, then 0.0041667 seconds more during the third wave, etc.
-</Paragraph>
-<Paragraph>
+</p>
+<p class="para">
 	Here is the data for the first 10 waves in the original game:
-</Paragraph>
+</p>
 
 <div class="grid grid-cols-4 sm:grid-cols-5 border-2 border-gray-5 px-1">
 	<div class="font-bold text-right hidden sm:block">Wave index</div>
@@ -170,29 +170,29 @@
 
 <Heading Title="Using The Editor" Level="3" />
 
-<Paragraph>
+<p class="para">
 	Now that the theory is out of the way. We can start using the editor to change the spawns in a spawnset. A good way to start is by adding spawns to an empty spawnset.
-</Paragraph>
+</p>
 
-<Paragraph>
+<p class="para">
 	In the bottom left of the editor you can select an enemy type to spawn, and change the delay value in the text box below. Click the "Add" button to add the spawn to the list. Try adding a few spawns to the spawnset.
-</Paragraph>
+</p>
 
 <img src="/images/tools/ddse-adding-spawns.png" class="object-contain max-h-160" />
 
-<Paragraph>
+<p class="para">
 	If you want to remove a spawn, you can select it and click the "Delete selected spawn(s)" button. You can also change the enemy type of a spawn by selecting it, setting the new enemy type, and clicking the "Edit selected spawn(s)" button.
-</Paragraph>
+</p>
 
 <img src="/images/tools/ddse-editing-spawns.png" class="object-contain max-h-160" />
 
-<Paragraph>
+<p class="para">
 	You can easily test your spawnset by pressing <pre class="code">Ctrl R</pre> to replace the currently active custom spawnset file. There is no need to restart the game, just grab the dagger in the lobby or press the restart key.
-</Paragraph>
+</p>
 
-<Paragraph>
+<p class="para">
 	Available keyboard shortcuts that can be used for the spawns list:
-</Paragraph>
+</p>
 
 <ul class="pl-4">
 	<li class="list-disc"><pre class="code">Del</pre> to delete selected spawns</li>
@@ -203,9 +203,9 @@
 
 <Heading Title="Changing The Arena" Level="2" />
 
-<Paragraph>
+<p class="para">
 	Here is some basic information you need to know in order to work with the arena:
-</Paragraph>
+</p>
 
 <ul class="pl-4">
 	<li class="list-disc">The arena is simply a grid of heights. You cannot have multiple tiles above or below each other.</li>
@@ -221,39 +221,39 @@
 	<li class="list-disc">The texture only covers the top of the tile. You can however work around this by using mods that change the pillar model.</li>
 </ul>
 
-<Paragraph>
+<p class="para">
 	Changing the arena in the editor is quite simple. Use the colored buttons in the bottom left of the arena section to select a tile height, and then simply click on a tile to change its height to the selected height.
-</Paragraph>
+</p>
 
 <img src="/images/tools/ddse-arena.png" class="object-contain max-h-160" />
 
-<Paragraph>
+<p class="para">
 	Use the two buttons to the right of the squared buttons to select or deselect multiple tiles, rather than change their heights. Combine this with the three buttons under the selection buttons to change the selection mode to <b>continuous</b> or <b>rectangle</b> to easily select a lot of tiles.
-</Paragraph>
+</p>
 
 <img src="/images/tools/ddse-multiple-tile-selection.png" class="object-contain max-h-160" />
 
-<Paragraph>
+<p class="para">
 	You can change the tile heights of one or more tiles to a specific height using the right mouse button.
-</Paragraph>
+</p>
 
 <img src="/images/tools/ddse-arena-right-click.png" class="object-contain max-h-160" />
 
-<Paragraph>
+<p class="para">
 	You can also change the tile heights of one or more tiles using the scroll wheel. Hold <pre class="code">Ctrl</pre> while using the scroll wheel to increment/decrement the value by 0.1 rather than 1.
-</Paragraph>
+</p>
 
-<Paragraph>
+<p class="para">
 	Using the arena settings in the top right of the editor you can change the shrinking controls. The shrink start value is displayed as the blue circle on the arena, and the shrink end value is displayed as the red circle. The green circle displays the currently active shrink radius based on the shrink preview slider.
-</Paragraph>
+</p>
 
 <img src="/images/tools/ddse-arena-shrink-preview.png" class="object-contain max-h-160" />
 
 <Heading Title="Changing The Settings" Level="2" />
 
-<Paragraph>
+<p class="para">
 	In the middle of the editors are some settings you can change. These are:
-</Paragraph>
+</p>
 
 <ul class="pl-4">
 	<li class="list-disc"><b>The spawnset version</b>; you can leave this at the default unless you want to create a spawnset for an older version of the game.</li>
@@ -262,6 +262,6 @@
 	<li class="list-disc"><b>The initial timer start value</b>; useful for practice (for example when starting at the @MarkupUtils.EnemyString(EnemiesV3_2.Gigapede) section in the real game, the timer start value can be set to 259 to make the spawn times match with the real game). Note that this value does not affect anything other than the displayed time. The "real" timer will always start at 0 regardless of this setting.</li>
 </ul>
 
-<Paragraph>
+<p class="para">
 	That's it! If you need inspiration or want to try existing spawnsets made by the community, check out the ones listed on <a class="link" href="/custom/spawnsets">this page</a>.
-</Paragraph>
+</p>

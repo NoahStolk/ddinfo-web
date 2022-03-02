@@ -28,6 +28,10 @@
 		@apply text-color-path;
 	}
 
+	.para {
+		@apply my-3;
+	}
+
 	.btn {
 		@apply text-lg rounded text-color-text text-center transition-colors duration-100;
 	}
