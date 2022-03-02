@@ -20,19 +20,22 @@ public class ProfileService
 		string? userName = claimsPrincipal.GetName();
 		UserEntity? user = _dbContext.Users.FirstOrDefault(u => u.Name == userName);
 		if (user == null)
-			throw new HttpRequestException("Unauthorized", null, HttpStatusCode.Unauthorized);
+			throw new UnauthorizedAccessException();
+
+		if (!user.PlayerId.HasValue)
+			throw new InvalidProfileRequestException("User not linked to a player") { ShouldLog = false };
 
 		if (user.PlayerId != id)
-			throw new HttpRequestException("Not allowed to access another player's profile", null, HttpStatusCode.Forbidden);
+			throw new InvalidProfileRequestException("Not allowed to access another player's profile") { StatusCode = HttpStatusCode.Forbidden };
 
 		PlayerEntity? player = await _dbContext.Players
 			.AsNoTracking()
 			.FirstOrDefaultAsync(p => p.Id == id);
 		if (player == null)
-			throw new HttpRequestException("Player not found", null, HttpStatusCode.NotFound);
+			throw new InvalidProfileRequestException("Player not found") { StatusCode = HttpStatusCode.NotFound };
 
 		if (player.BanType != BanType.NotBanned)
-			throw new HttpRequestException("Banned player", null, HttpStatusCode.BadRequest);
+			throw new InvalidProfileRequestException("Banned player");
 
 		return new()
 		{
@@ -58,17 +61,20 @@ public class ProfileService
 		string? userName = claimsPrincipal.GetName();
 		UserEntity? user = _dbContext.Users.FirstOrDefault(u => u.Name == userName);
 		if (user == null)
-			throw new HttpRequestException("Unauthorized", null, HttpStatusCode.Unauthorized);
+			throw new UnauthorizedAccessException();
+
+		if (!user.PlayerId.HasValue)
+			throw new InvalidProfileRequestException("User not linked to a player") { ShouldLog = false };
 
 		if (user.PlayerId != id)
-			throw new HttpRequestException("Not allowed to edit another player's profile", null, HttpStatusCode.Forbidden);
+			throw new InvalidProfileRequestException("Not allowed to access another player's profile") { StatusCode = HttpStatusCode.Forbidden };
 
 		PlayerEntity? player = _dbContext.Players.FirstOrDefault(p => p.Id == id);
 		if (player == null)
-			throw new HttpRequestException("Player not found", null, HttpStatusCode.NotFound);
+			throw new InvalidProfileRequestException("Player not found") { StatusCode = HttpStatusCode.NotFound };
 
 		if (player.BanType != BanType.NotBanned)
-			throw new HttpRequestException("Banned player", null, HttpStatusCode.BadRequest);
+			throw new InvalidProfileRequestException("Banned player");
 
 		EditPlayerProfile oldDtoLog = new()
 		{

@@ -199,10 +199,18 @@ public class PlayersController : ControllerBase
 		{
 			return await _profileService.GetProfileAsync(User, id);
 		}
-		catch (HttpRequestException ex)
+		catch (UnauthorizedAccessException)
 		{
-			_logger.LogWarning(ex, "Retrieving profile failed.");
-			return StatusCode((int?)ex.StatusCode ?? 400);
+			return Unauthorized();
+		}
+		catch (InvalidProfileRequestException ex)
+		{
+			if (ex.ShouldLog)
+				_logger.LogWarning(ex, "Retrieving profile failed.");
+			else
+				_logger.LogInformation(ex, "Retrieving profile failed.");
+
+			return StatusCode((int)ex.StatusCode);
 		}
 	}
 
@@ -220,10 +228,18 @@ public class PlayersController : ControllerBase
 			await _profileService.UpdateProfileAsync(User, id, editPlayerProfile);
 			return Ok();
 		}
-		catch (HttpRequestException ex)
+		catch (UnauthorizedAccessException)
 		{
-			_logger.LogWarning(ex, "Updating profile failed.");
-			return StatusCode((int?)ex.StatusCode ?? 400);
+			return Unauthorized();
+		}
+		catch (InvalidProfileRequestException ex)
+		{
+			if (ex.ShouldLog)
+				_logger.LogWarning(ex, "Updating profile failed.");
+			else
+				_logger.LogInformation(ex, "Updating profile failed.");
+
+			return StatusCode((int)ex.StatusCode);
 		}
 	}
 }
