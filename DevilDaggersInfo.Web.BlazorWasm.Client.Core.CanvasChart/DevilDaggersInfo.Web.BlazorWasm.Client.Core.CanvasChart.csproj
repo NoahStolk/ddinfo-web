@@ -7,6 +7,6 @@
   </ItemGroup>
   <ItemGroup>
     <ProjectReference Include="..\DevilDaggersInfo.Web.BlazorWasm.Shared\DevilDaggersInfo.Web.BlazorWasm.Shared.csproj" />
-    <ProjectReference Include="..\UmCanvas\UmCanvas.csproj" />
+    <ProjectReference Include="..\DevilDaggersInfo.Web.BlazorWasm.Client.Core.Unmarshalled\DevilDaggersInfo.Web.BlazorWasm.Client.Core.Unmarshalled.csproj" />
   </ItemGroup>
 </Project>

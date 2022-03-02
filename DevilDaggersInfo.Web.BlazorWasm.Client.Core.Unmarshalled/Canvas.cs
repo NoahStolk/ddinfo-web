@@ -1,6 +1,6 @@
 using Microsoft.JSInterop.WebAssembly;
 
-namespace UmCanvas;
+namespace DevilDaggersInfo.Web.BlazorWasm.Client.Core.Unmarshalled;
 
 public abstract class Canvas
 {

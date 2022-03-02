@@ -1,4 +1,4 @@
-namespace UmCanvas;
+namespace DevilDaggersInfo.Web.BlazorWasm.Client.Core.Unmarshalled;
 
 public enum TextBaseline
 {

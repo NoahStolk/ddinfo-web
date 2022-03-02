@@ -69,7 +69,7 @@ Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "SourceGen", "SourceGen", "{
 EndProject
 Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "DevilDaggersInfo.Web.BlazorWasm.Client.Core.CanvasChart", "DevilDaggersInfo.Web.BlazorWasm.Client.Core.CanvasChart\DevilDaggersInfo.Web.BlazorWasm.Client.Core.CanvasChart.csproj", "{AFE93FD3-7CB5-43AC-816E-987D75F98DDF}"
 EndProject
-Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "UmCanvas", "UmCanvas\UmCanvas.csproj", "{AE5DAE4E-61EE-4BA6-B21B-2828DF7EEBE3}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "DevilDaggersInfo.Web.BlazorWasm.Client.Core.Unmarshalled", "DevilDaggersInfo.Web.BlazorWasm.Client.Core.Unmarshalled\DevilDaggersInfo.Web.BlazorWasm.Client.Core.Unmarshalled.csproj", "{AE5DAE4E-61EE-4BA6-B21B-2828DF7EEBE3}"
 EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
