@@ -119,6 +119,7 @@ public class Startup
 			};
 			config.OperationProcessors.Insert(0, new PublicApiOperationProcessor());
 			config.SchemaType = SchemaType.OpenApi3;
+			config.GenerateEnumMappingDescription = true;
 		});
 	}
 
