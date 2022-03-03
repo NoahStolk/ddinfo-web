@@ -183,10 +183,7 @@ public class SpawnsetsController : ControllerBase
 		if (data == null)
 			return NotFound();
 
-		return new GetSpawnsetNameByHash
-		{
-			Name = data.Name,
-		};
+		return new GetSpawnsetNameByHash { Name = data.Name };
 	}
 
 	[HttpGet("hash")]
