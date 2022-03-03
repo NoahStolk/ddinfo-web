@@ -104,8 +104,15 @@ public class CustomEntryProcessor
 
 		// Make sure HomingDaggers is not negative (happens rarely as a bug, and also for spawnsets with homing disabled which we don't want to display values for anyway).
 		uploadRequest.HomingDaggers = Math.Max(0, uploadRequest.HomingDaggers);
-		foreach (AddGameState addGameState in uploadRequest.GameStates.Where(gs => gs.HomingDaggers < 0))
-			addGameState.HomingDaggers = 0;
+		if (uploadRequest.GameStates != null)
+		{
+			foreach (AddGameState addGameState in uploadRequest.GameStates.Where(gs => gs.HomingDaggers < 0))
+				addGameState.HomingDaggers = 0;
+		}
+		else if (uploadRequest.GameData != null)
+		{
+			uploadRequest.GameData.HomingDaggers = Array.ConvertAll(uploadRequest.GameData.HomingDaggers, i => Math.Max(0, i));
+		}
 
 		// Calculate the new rank.
 		List<CustomEntryEntity> entries = FetchEntriesFromDatabase(customLeaderboard, isAscending);
@@ -181,12 +188,12 @@ public class CustomEntryProcessor
 		if (customEntryData == null)
 		{
 			customEntryData = new() { CustomEntryId = customEntry.Id };
-			PopulateCustomEntryData(customEntryData, uploadRequest.GameStates);
+			PopulateCustomEntryData(customEntryData, uploadRequest);
 			_dbContext.CustomEntryData.Add(customEntryData);
 		}
 		else
 		{
-			PopulateCustomEntryData(customEntryData, uploadRequest.GameStates);
+			PopulateCustomEntryData(customEntryData, uploadRequest);
 		}
 
 		UpdateLeaderboardStatistics(customLeaderboard);
@@ -360,57 +367,109 @@ public class CustomEntryProcessor
 			_logContainerService.AddClLog($":white_check_mark: `{TimeUtils.TicksToTimeString(_stopwatch.ElapsedTicks)}` `{uploadRequest.PlayerName}` just submitted a score of `{FormatTimeString(uploadRequest.Time)}` to `{spawnsetIdentification}`. {requestInfo}");
 	}
 
-	private static void PopulateCustomEntryData(CustomEntryDataEntity ced, List<AddGameState> gameStates)
+	private static void PopulateCustomEntryData(CustomEntryDataEntity ced, AddUploadRequest uploadRequest)
 	{
-		ced.GemsCollectedData = CompressProperty(gs => gs.GemsCollected);
-		ced.EnemiesKilledData = CompressProperty(gs => gs.EnemiesKilled);
-		ced.DaggersFiredData = CompressProperty(gs => gs.DaggersFired);
-		ced.DaggersHitData = CompressProperty(gs => gs.DaggersHit);
-		ced.EnemiesAliveData = CompressProperty(gs => gs.EnemiesAlive);
-		ced.HomingStoredData = CompressProperty(gs => gs.HomingDaggers);
-		ced.HomingEatenData = CompressProperty(gs => gs.HomingDaggersEaten);
-		ced.GemsDespawnedData = CompressProperty(gs => gs.GemsDespawned);
-		ced.GemsEatenData = CompressProperty(gs => gs.GemsEaten);
-		ced.GemsTotalData = CompressProperty(gs => gs.GemsTotal);
+		if (uploadRequest.GameStates != null)
+		{
+			ced.GemsCollectedData = CompressProperty(gs => gs.GemsCollected);
+			ced.EnemiesKilledData = CompressProperty(gs => gs.EnemiesKilled);
+			ced.DaggersFiredData = CompressProperty(gs => gs.DaggersFired);
+			ced.DaggersHitData = CompressProperty(gs => gs.DaggersHit);
+			ced.EnemiesAliveData = CompressProperty(gs => gs.EnemiesAlive);
+			ced.HomingStoredData = CompressProperty(gs => gs.HomingDaggers);
+			ced.HomingEatenData = CompressProperty(gs => gs.HomingDaggersEaten);
+			ced.GemsDespawnedData = CompressProperty(gs => gs.GemsDespawned);
+			ced.GemsEatenData = CompressProperty(gs => gs.GemsEaten);
+			ced.GemsTotalData = CompressProperty(gs => gs.GemsTotal);
 
-		ced.Skull1sAliveData = CompressProperty(gs => gs.Skull1sAlive);
-		ced.Skull2sAliveData = CompressProperty(gs => gs.Skull2sAlive);
-		ced.Skull3sAliveData = CompressProperty(gs => gs.Skull3sAlive);
-		ced.SpiderlingsAliveData = CompressProperty(gs => gs.SpiderlingsAlive);
-		ced.Skull4sAliveData = CompressProperty(gs => gs.Skull4sAlive);
-		ced.Squid1sAliveData = CompressProperty(gs => gs.Squid1sAlive);
-		ced.Squid2sAliveData = CompressProperty(gs => gs.Squid2sAlive);
-		ced.Squid3sAliveData = CompressProperty(gs => gs.Squid3sAlive);
-		ced.CentipedesAliveData = CompressProperty(gs => gs.CentipedesAlive);
-		ced.GigapedesAliveData = CompressProperty(gs => gs.GigapedesAlive);
-		ced.Spider1sAliveData = CompressProperty(gs => gs.Spider1sAlive);
-		ced.Spider2sAliveData = CompressProperty(gs => gs.Spider2sAlive);
-		ced.LeviathansAliveData = CompressProperty(gs => gs.LeviathansAlive);
-		ced.OrbsAliveData = CompressProperty(gs => gs.OrbsAlive);
-		ced.ThornsAliveData = CompressProperty(gs => gs.ThornsAlive);
-		ced.GhostpedesAliveData = CompressProperty(gs => gs.GhostpedesAlive);
-		ced.SpiderEggsAliveData = CompressProperty(gs => gs.SpiderEggsAlive);
+			ced.Skull1sAliveData = CompressProperty(gs => gs.Skull1sAlive);
+			ced.Skull2sAliveData = CompressProperty(gs => gs.Skull2sAlive);
+			ced.Skull3sAliveData = CompressProperty(gs => gs.Skull3sAlive);
+			ced.SpiderlingsAliveData = CompressProperty(gs => gs.SpiderlingsAlive);
+			ced.Skull4sAliveData = CompressProperty(gs => gs.Skull4sAlive);
+			ced.Squid1sAliveData = CompressProperty(gs => gs.Squid1sAlive);
+			ced.Squid2sAliveData = CompressProperty(gs => gs.Squid2sAlive);
+			ced.Squid3sAliveData = CompressProperty(gs => gs.Squid3sAlive);
+			ced.CentipedesAliveData = CompressProperty(gs => gs.CentipedesAlive);
+			ced.GigapedesAliveData = CompressProperty(gs => gs.GigapedesAlive);
+			ced.Spider1sAliveData = CompressProperty(gs => gs.Spider1sAlive);
+			ced.Spider2sAliveData = CompressProperty(gs => gs.Spider2sAlive);
+			ced.LeviathansAliveData = CompressProperty(gs => gs.LeviathansAlive);
+			ced.OrbsAliveData = CompressProperty(gs => gs.OrbsAlive);
+			ced.ThornsAliveData = CompressProperty(gs => gs.ThornsAlive);
+			ced.GhostpedesAliveData = CompressProperty(gs => gs.GhostpedesAlive);
+			ced.SpiderEggsAliveData = CompressProperty(gs => gs.SpiderEggsAlive);
 
-		ced.Skull1sKilledData = CompressProperty(gs => gs.Skull1sKilled);
-		ced.Skull2sKilledData = CompressProperty(gs => gs.Skull2sKilled);
-		ced.Skull3sKilledData = CompressProperty(gs => gs.Skull3sKilled);
-		ced.SpiderlingsKilledData = CompressProperty(gs => gs.SpiderlingsKilled);
-		ced.Skull4sKilledData = CompressProperty(gs => gs.Skull4sKilled);
-		ced.Squid1sKilledData = CompressProperty(gs => gs.Squid1sKilled);
-		ced.Squid2sKilledData = CompressProperty(gs => gs.Squid2sKilled);
-		ced.Squid3sKilledData = CompressProperty(gs => gs.Squid3sKilled);
-		ced.CentipedesKilledData = CompressProperty(gs => gs.CentipedesKilled);
-		ced.GigapedesKilledData = CompressProperty(gs => gs.GigapedesKilled);
-		ced.Spider1sKilledData = CompressProperty(gs => gs.Spider1sKilled);
-		ced.Spider2sKilledData = CompressProperty(gs => gs.Spider2sKilled);
-		ced.LeviathansKilledData = CompressProperty(gs => gs.LeviathansKilled);
-		ced.OrbsKilledData = CompressProperty(gs => gs.OrbsKilled);
-		ced.ThornsKilledData = CompressProperty(gs => gs.ThornsKilled);
-		ced.GhostpedesKilledData = CompressProperty(gs => gs.GhostpedesKilled);
-		ced.SpiderEggsKilledData = CompressProperty(gs => gs.SpiderEggsKilled);
+			ced.Skull1sKilledData = CompressProperty(gs => gs.Skull1sKilled);
+			ced.Skull2sKilledData = CompressProperty(gs => gs.Skull2sKilled);
+			ced.Skull3sKilledData = CompressProperty(gs => gs.Skull3sKilled);
+			ced.SpiderlingsKilledData = CompressProperty(gs => gs.SpiderlingsKilled);
+			ced.Skull4sKilledData = CompressProperty(gs => gs.Skull4sKilled);
+			ced.Squid1sKilledData = CompressProperty(gs => gs.Squid1sKilled);
+			ced.Squid2sKilledData = CompressProperty(gs => gs.Squid2sKilled);
+			ced.Squid3sKilledData = CompressProperty(gs => gs.Squid3sKilled);
+			ced.CentipedesKilledData = CompressProperty(gs => gs.CentipedesKilled);
+			ced.GigapedesKilledData = CompressProperty(gs => gs.GigapedesKilled);
+			ced.Spider1sKilledData = CompressProperty(gs => gs.Spider1sKilled);
+			ced.Spider2sKilledData = CompressProperty(gs => gs.Spider2sKilled);
+			ced.LeviathansKilledData = CompressProperty(gs => gs.LeviathansKilled);
+			ced.OrbsKilledData = CompressProperty(gs => gs.OrbsKilled);
+			ced.ThornsKilledData = CompressProperty(gs => gs.ThornsKilled);
+			ced.GhostpedesKilledData = CompressProperty(gs => gs.GhostpedesKilled);
+			ced.SpiderEggsKilledData = CompressProperty(gs => gs.SpiderEggsKilled);
 
-		byte[] CompressProperty(Func<AddGameState, int> propertySelector)
-			=> IntegerArrayCompressor.CompressData(gameStates.Select(propertySelector).ToArray());
+			byte[] CompressProperty(Func<AddGameState, int> propertySelector)
+				=> IntegerArrayCompressor.CompressData(uploadRequest.GameStates.Select(propertySelector).ToArray());
+		}
+		else if (uploadRequest.GameData != null)
+		{
+			ced.GemsCollectedData = IntegerArrayCompressor.CompressData(uploadRequest.GameData.GemsCollected);
+			ced.EnemiesKilledData = IntegerArrayCompressor.CompressData(uploadRequest.GameData.EnemiesKilled);
+			ced.DaggersFiredData = IntegerArrayCompressor.CompressData(uploadRequest.GameData.DaggersFired);
+			ced.DaggersHitData = IntegerArrayCompressor.CompressData(uploadRequest.GameData.DaggersHit);
+			ced.EnemiesAliveData = IntegerArrayCompressor.CompressData(uploadRequest.GameData.EnemiesAlive);
+			ced.HomingStoredData = IntegerArrayCompressor.CompressData(uploadRequest.GameData.HomingDaggers);
+			ced.HomingEatenData = IntegerArrayCompressor.CompressData(uploadRequest.GameData.HomingDaggersEaten);
+			ced.GemsDespawnedData = IntegerArrayCompressor.CompressData(uploadRequest.GameData.GemsDespawned);
+			ced.GemsEatenData = IntegerArrayCompressor.CompressData(uploadRequest.GameData.GemsEaten);
+			ced.GemsTotalData = IntegerArrayCompressor.CompressData(uploadRequest.GameData.GemsTotal);
+
+			ced.Skull1sAliveData = IntegerArrayCompressor.CompressData(uploadRequest.GameData.Skull1sAlive);
+			ced.Skull2sAliveData = IntegerArrayCompressor.CompressData(uploadRequest.GameData.Skull2sAlive);
+			ced.Skull3sAliveData = IntegerArrayCompressor.CompressData(uploadRequest.GameData.Skull3sAlive);
+			ced.SpiderlingsAliveData = IntegerArrayCompressor.CompressData(uploadRequest.GameData.SpiderlingsAlive);
+			ced.Skull4sAliveData = IntegerArrayCompressor.CompressData(uploadRequest.GameData.Skull4sAlive);
+			ced.Squid1sAliveData = IntegerArrayCompressor.CompressData(uploadRequest.GameData.Squid1sAlive);
+			ced.Squid2sAliveData = IntegerArrayCompressor.CompressData(uploadRequest.GameData.Squid2sAlive);
+			ced.Squid3sAliveData = IntegerArrayCompressor.CompressData(uploadRequest.GameData.Squid3sAlive);
+			ced.CentipedesAliveData = IntegerArrayCompressor.CompressData(uploadRequest.GameData.CentipedesAlive);
+			ced.GigapedesAliveData = IntegerArrayCompressor.CompressData(uploadRequest.GameData.GigapedesAlive);
+			ced.Spider1sAliveData = IntegerArrayCompressor.CompressData(uploadRequest.GameData.Spider1sAlive);
+			ced.Spider2sAliveData = IntegerArrayCompressor.CompressData(uploadRequest.GameData.Spider2sAlive);
+			ced.LeviathansAliveData = IntegerArrayCompressor.CompressData(uploadRequest.GameData.LeviathansAlive);
+			ced.OrbsAliveData = IntegerArrayCompressor.CompressData(uploadRequest.GameData.OrbsAlive);
+			ced.ThornsAliveData = IntegerArrayCompressor.CompressData(uploadRequest.GameData.ThornsAlive);
+			ced.GhostpedesAliveData = IntegerArrayCompressor.CompressData(uploadRequest.GameData.GhostpedesAlive);
+			ced.SpiderEggsAliveData = IntegerArrayCompressor.CompressData(uploadRequest.GameData.SpiderEggsAlive);
+
+			ced.Skull1sKilledData = IntegerArrayCompressor.CompressData(uploadRequest.GameData.Skull1sKilled);
+			ced.Skull2sKilledData = IntegerArrayCompressor.CompressData(uploadRequest.GameData.Skull2sKilled);
+			ced.Skull3sKilledData = IntegerArrayCompressor.CompressData(uploadRequest.GameData.Skull3sKilled);
+			ced.SpiderlingsKilledData = IntegerArrayCompressor.CompressData(uploadRequest.GameData.SpiderlingsKilled);
+			ced.Skull4sKilledData = IntegerArrayCompressor.CompressData(uploadRequest.GameData.Skull4sKilled);
+			ced.Squid1sKilledData = IntegerArrayCompressor.CompressData(uploadRequest.GameData.Squid1sKilled);
+			ced.Squid2sKilledData = IntegerArrayCompressor.CompressData(uploadRequest.GameData.Squid2sKilled);
+			ced.Squid3sKilledData = IntegerArrayCompressor.CompressData(uploadRequest.GameData.Squid3sKilled);
+			ced.CentipedesKilledData = IntegerArrayCompressor.CompressData(uploadRequest.GameData.CentipedesKilled);
+			ced.GigapedesKilledData = IntegerArrayCompressor.CompressData(uploadRequest.GameData.GigapedesKilled);
+			ced.Spider1sKilledData = IntegerArrayCompressor.CompressData(uploadRequest.GameData.Spider1sKilled);
+			ced.Spider2sKilledData = IntegerArrayCompressor.CompressData(uploadRequest.GameData.Spider2sKilled);
+			ced.LeviathansKilledData = IntegerArrayCompressor.CompressData(uploadRequest.GameData.LeviathansKilled);
+			ced.OrbsKilledData = IntegerArrayCompressor.CompressData(uploadRequest.GameData.OrbsKilled);
+			ced.ThornsKilledData = IntegerArrayCompressor.CompressData(uploadRequest.GameData.ThornsKilled);
+			ced.GhostpedesKilledData = IntegerArrayCompressor.CompressData(uploadRequest.GameData.GhostpedesKilled);
+			ced.SpiderEggsKilledData = IntegerArrayCompressor.CompressData(uploadRequest.GameData.SpiderEggsKilled);
+		}
 	}
 
 	private static CustomLeaderboardsClient GetClientFromString(string clientString) => clientString switch
@@ -449,7 +508,7 @@ public class CustomEntryProcessor
 		_dbContext.CustomEntries.Add(newCustomEntry);
 
 		CustomEntryDataEntity newCustomEntryData = new() { CustomEntry = newCustomEntry };
-		PopulateCustomEntryData(newCustomEntryData, uploadRequest.GameStates);
+		PopulateCustomEntryData(newCustomEntryData, uploadRequest);
 		_dbContext.CustomEntryData.Add(newCustomEntryData);
 
 		UpdateLeaderboardStatistics(customLeaderboard);

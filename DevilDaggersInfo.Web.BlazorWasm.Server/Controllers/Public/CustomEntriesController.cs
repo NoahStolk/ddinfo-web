@@ -145,6 +145,9 @@ public class CustomEntriesController : ControllerBase
 	[ProducesResponseType(StatusCodes.Status400BadRequest)]
 	public async Task<ActionResult<GetUploadSuccess>> SubmitScoreForDdcl([FromBody] AddUploadRequest uploadRequest)
 	{
+		if (uploadRequest.GameData != null && uploadRequest.GameStates != null)
+			return BadRequest("GameStates should not be used together with GameData. Use ONLY GameData. GameStates will be removed in the future.");
+
 		try
 		{
 			return await _customEntryProcessor.ProcessUploadRequest(uploadRequest);

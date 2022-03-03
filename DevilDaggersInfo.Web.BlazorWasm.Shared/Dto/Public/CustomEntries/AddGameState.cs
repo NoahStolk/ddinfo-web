@@ -1,5 +1,6 @@
 namespace DevilDaggersInfo.Web.BlazorWasm.Shared.Dto.Public.CustomEntries;
 
+[Obsolete("Use AddGameData instead.")]
 public class AddGameState
 {
 	public int GemsCollected { get; init; }
