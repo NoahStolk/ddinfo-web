@@ -117,7 +117,7 @@ public class Startup
 					Url = "//noahstolk.com/",
 				};
 			};
-			config.DocumentProcessors.Add(new PublicApiDocumentProcessor());
+			config.OperationProcessors.Insert(0, new PublicApiOperationProcessor());
 			config.SchemaType = SchemaType.OpenApi3;
 		});
 	}
