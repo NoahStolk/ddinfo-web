@@ -7,8 +7,6 @@
 <Heading Title="Admin" />
 
 <ul>
-	<li><button class="btn btn-gray px-2 py-1" @onclick="@(async () => await Http.BuildHistoryBinaries(null))">Build history binaries</button></li>
-
 	@foreach (string cacheType in new[] { "LeaderboardHistory", "LeaderboardStatistics", "ModArchive", "SpawnsetHash", "SpawnsetSummary" })
 	{
 		<li><button class="btn btn-gray px-2 py-1" @onclick="@(async () => await Http.ClearCache(cacheType))">Clear @cacheType cache</button></li>

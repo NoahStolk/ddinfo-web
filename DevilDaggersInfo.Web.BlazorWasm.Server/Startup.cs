@@ -7,7 +7,6 @@ using DevilDaggersInfo.Web.BlazorWasm.Server.HostedServices;
 using DevilDaggersInfo.Web.BlazorWasm.Server.Middleware;
 using DevilDaggersInfo.Web.BlazorWasm.Server.NSwag;
 using DevilDaggersInfo.Web.BlazorWasm.Server.RewriteRules;
-using DevilDaggersInfo.Web.BlazorWasm.Server.Services;
 using DevilDaggersInfo.Web.BlazorWasm.Shared.Utils;
 using Microsoft.AspNetCore.Authentication.JwtBearer;
 using Microsoft.AspNetCore.DataProtection;
