@@ -910,6 +910,18 @@
 	],
 	"DevilDaggersCustomLeaderboards": [
 		{
+			"VersionNumber": "1.5.3.0",
+			"Date": "2022-03-05T00:00:00",
+			"Changes": [
+				{
+					"Description": "Applied API changes that allow for smaller requests to the server and therefore faster uploads."
+				},
+				{
+					"Description": "The application now checks if the custom leaderboard exists before uploading the run."
+				}
+			]
+		},
+		{
 			"VersionNumber": "1.5.0.0",
 			"Date": "2022-01-09T00:00:00",
 			"Changes": [
