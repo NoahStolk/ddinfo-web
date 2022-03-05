@@ -67,6 +67,27 @@ public class CustomEntryProcessor
 		if (string.IsNullOrEmpty(spawnsetName))
 			throw LogAndCreateValidationException(uploadRequest, "This spawnset doesn't exist on DevilDaggers.info.");
 
+		// Validate replay buffer.
+		if (uploadRequest.ReplayData == null)
+			throw LogAndCreateValidationException(uploadRequest, "Replay data is required.");
+
+		if (uploadRequest.ReplayData.Length < 88)
+			throw LogAndCreateValidationException(uploadRequest, "Invalid replay.");
+
+		// Validate replay buffer spawnset hash in case of replay.
+		if (uploadRequest.IsReplay)
+		{
+			int replaySpawnsetLength = BitConverter.ToInt32(uploadRequest.ReplayData, 84);
+			if (uploadRequest.ReplayData.Length < 88 + replaySpawnsetLength)
+				throw LogAndCreateValidationException(uploadRequest, "Invalid replay.");
+
+			byte[] replaySpawnset = new byte[replaySpawnsetLength];
+			Buffer.BlockCopy(uploadRequest.ReplayData, 88, replaySpawnset, 0, replaySpawnsetLength);
+
+			if (!ArrayUtils.AreEqual(MD5.HashData(replaySpawnset), uploadRequest.SurvivalHashMd5))
+				throw LogAndCreateValidationException(uploadRequest, "Spawnset in replay does not match detected spawnset.", spawnsetName, "rotating_light");
+		}
+
 		// Perform database operations from now on.
 
 		// Add the player or update the username. Also check for banned user.
@@ -74,7 +95,7 @@ public class CustomEntryProcessor
 		if (player != null)
 		{
 			if (player.IsBannedFromDdcl)
-				throw LogAndCreateValidationException(uploadRequest, "Banned.", null, "rotating_light");
+				throw LogAndCreateValidationException(uploadRequest, "Banned.", spawnsetName, "rotating_light");
 
 			player.PlayerName = uploadRequest.PlayerName;
 		}
