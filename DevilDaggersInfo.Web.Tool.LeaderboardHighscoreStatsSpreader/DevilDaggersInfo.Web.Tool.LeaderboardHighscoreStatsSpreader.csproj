@@ -4,6 +4,8 @@
   </PropertyGroup>
   <ItemGroup>
     <PackageReference Include="Newtonsoft.Json" />
-    <ProjectReference Include="..\DevilDaggersInfo.Web.Tool\DevilDaggersInfo.Web.Tool.csproj" />
+  </ItemGroup>
+  <ItemGroup>
+    <ProjectReference Include="..\DevilDaggersInfo.Web.BlazorWasm.Server\DevilDaggersInfo.Web.BlazorWasm.Server.csproj" />
   </ItemGroup>
 </Project>
