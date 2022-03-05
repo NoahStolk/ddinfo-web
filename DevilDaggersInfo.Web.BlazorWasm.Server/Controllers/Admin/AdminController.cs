@@ -8,7 +8,7 @@ using Microsoft.AspNetCore.Authorization;
 
 namespace DevilDaggersInfo.Web.BlazorWasm.Server.Controllers.Admin;
 
-[Route("api/admin/admin")]
+[Route("api/admin")]
 [ApiController]
 [Authorize(Roles = Roles.Admin)]
 public class AdminController : ControllerBase
