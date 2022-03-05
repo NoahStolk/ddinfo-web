@@ -1,6 +1,6 @@
 using DevilDaggersInfo.Web.BlazorWasm.Server.Caches.LeaderboardHistory;
 using DevilDaggersInfo.Web.BlazorWasm.Server.Converters.Public;
-using DevilDaggersInfo.Web.BlazorWasm.Server.InternalModels.Json;
+using DevilDaggersInfo.Web.BlazorWasm.Server.InternalModels;
 using DevilDaggersInfo.Web.BlazorWasm.Shared.Dto.Public.Players;
 using Microsoft.AspNetCore.Authorization;
 
@@ -110,7 +110,7 @@ public class PlayersController : ControllerBase
 		DateTime? datePreviousForActivityHistory = null;
 		List<GetPlayerHistoryActivityEntry> activityHistory = new();
 
-		foreach (string leaderboardHistoryPath in _fileSystemService.TryGetFiles(DataSubDirectory.LeaderboardHistory))
+		foreach (string leaderboardHistoryPath in _fileSystemService.TryGetFiles(DataSubDirectory.LeaderboardHistory).Where(p => p.EndsWith(".bin")))
 		{
 			LeaderboardHistory leaderboard = _leaderboardHistoryCache.GetLeaderboardHistoryByFilePath(leaderboardHistoryPath);
 			EntryHistory? entry = leaderboard.Entries.Find(e => e.Id == id);

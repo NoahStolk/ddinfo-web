@@ -1,5 +1,5 @@
 using DevilDaggersInfo.Web.BlazorWasm.Server.Caches.LeaderboardHistory;
-using DevilDaggersInfo.Web.BlazorWasm.Server.InternalModels.Json;
+using DevilDaggersInfo.Web.BlazorWasm.Server.InternalModels;
 using DevilDaggersInfo.Web.BlazorWasm.Shared.Dto.Public.LeaderboardHistoryStatistics;
 
 namespace DevilDaggersInfo.Web.BlazorWasm.Server.Controllers.Public;
@@ -22,7 +22,7 @@ public class LeaderboardHistoryStatisticsController : ControllerBase
 	[ProducesResponseType(StatusCodes.Status400BadRequest)]
 	public ActionResult<List<GetLeaderboardHistoryStatistics>> GetLeaderboardHistoryStatistics()
 	{
-		string? firstPath = _fileSystemService.TryGetFiles(DataSubDirectory.LeaderboardHistory).OrderBy(p => p).FirstOrDefault();
+		string? firstPath = _fileSystemService.TryGetFiles(DataSubDirectory.LeaderboardHistory).Where(p => p.EndsWith(".bin")).OrderBy(p => p).FirstOrDefault();
 		if (firstPath == null)
 			return new List<GetLeaderboardHistoryStatistics>();
 

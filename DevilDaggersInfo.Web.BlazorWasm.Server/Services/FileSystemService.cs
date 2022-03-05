@@ -25,9 +25,9 @@ public class FileSystemService : IFileSystemService
 	public string GetLeaderboardHistoryPathFromDate(DateTime dateTime)
 	{
 		string[] paths = TryGetFiles(DataSubDirectory.LeaderboardHistory);
-		foreach (string path in paths.OrderByDescending(p => p))
+		foreach (string path in paths.Where(p => p.EndsWith(".bin")).OrderByDescending(p => p))
 		{
-			if (HistoryUtils.HistoryJsonFileNameToDateTime(Path.GetFileName(path)) <= dateTime)
+			if (HistoryUtils.HistoryFileNameToDateTime(Path.GetFileName(path)) <= dateTime)
 				return path;
 		}
 

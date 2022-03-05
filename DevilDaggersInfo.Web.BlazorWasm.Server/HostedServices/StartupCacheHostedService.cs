@@ -49,7 +49,7 @@ public class StartupCacheHostedService : IHostedService
 				// SpawnsetSummaryCache does not need to be initiated as it is fast enough.
 
 				// LeaderboardHistoryCache will be initiated here.
-				foreach (string historyFilePath in _fileSystemService.TryGetFiles(DataSubDirectory.LeaderboardHistory))
+				foreach (string historyFilePath in _fileSystemService.TryGetFiles(DataSubDirectory.LeaderboardHistory).Where(p => p.EndsWith(".bin")))
 					_leaderboardHistoryCache.GetLeaderboardHistoryByFilePath(historyFilePath);
 
 				sb.Append("- `LeaderboardHistoryCache` initiation done at ").AppendLine(TimeUtils.TicksToTimeString(sw.ElapsedTicks));

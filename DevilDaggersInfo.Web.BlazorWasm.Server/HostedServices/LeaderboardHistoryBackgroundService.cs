@@ -1,4 +1,4 @@
-using DevilDaggersInfo.Web.BlazorWasm.Server.InternalModels.Json;
+using DevilDaggersInfo.Web.BlazorWasm.Server.InternalModels;
 
 namespace DevilDaggersInfo.Web.BlazorWasm.Server.HostedServices;
 
@@ -52,27 +52,27 @@ public class LeaderboardHistoryBackgroundService : AbstractBackgroundService
 
 		entries = entries.OrderBy(e => e.Rank).ToList();
 
-		LeaderboardHistory jsonModel = ConvertToJsonModel(leaderboard!, entries);
+		LeaderboardHistory historyModel = ConvertToHistoryModel(leaderboard, entries);
 
-		string fileName = $"{DateTime.UtcNow:yyyyMMddHHmm}.json";
+		string fileName = $"{DateTime.UtcNow:yyyyMMddHHmm}.bin";
 		string fullPath = Path.Combine(_fileSystemService.GetPath(DataSubDirectory.LeaderboardHistory), fileName);
-		File.WriteAllText(fullPath, JsonConvert.SerializeObject(jsonModel));
+		File.WriteAllBytes(fullPath, historyModel.ToBytes());
 		Logger.LogInformation("Task execution for `{service}` succeeded. `{fileName}` with {entries} entries was created.", nameof(LeaderboardHistoryBackgroundService), fullPath, entries.Count);
 	}
 
 	private bool HistoryFileExistsForDate(DateTime dateTime)
 	{
-		foreach (string path in Directory.GetFiles(_fileSystemService.GetPath(DataSubDirectory.LeaderboardHistory), "*.json"))
+		foreach (string path in Directory.GetFiles(_fileSystemService.GetPath(DataSubDirectory.LeaderboardHistory), "*.bin"))
 		{
 			string fileName = Path.GetFileNameWithoutExtension(path);
-			if (HistoryUtils.HistoryJsonFileNameToDateTime(fileName).Date == dateTime.Date)
+			if (HistoryUtils.HistoryFileNameToDateTime(fileName).Date == dateTime.Date)
 				return true;
 		}
 
 		return false;
 	}
 
-	private static LeaderboardHistory ConvertToJsonModel(LeaderboardResponse leaderboard, List<EntryResponse> entries) => new()
+	private static LeaderboardHistory ConvertToHistoryModel(LeaderboardResponse leaderboard, List<EntryResponse> entries) => new()
 	{
 		DaggersFiredGlobal = leaderboard.DaggersFiredGlobal,
 		DaggersHitGlobal = leaderboard.DaggersHitGlobal,

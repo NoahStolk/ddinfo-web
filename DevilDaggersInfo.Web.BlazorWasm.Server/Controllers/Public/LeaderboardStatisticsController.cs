@@ -21,7 +21,7 @@ public class LeaderboardStatisticsController : ControllerBase
 	{
 		return new GetLeaderboardStatistics
 		{
-			DateTime = _leaderboardStatisticsCache.FileName == null ? DateTime.MinValue : HistoryUtils.HistoryJsonFileNameToDateTime(_leaderboardStatisticsCache.FileName),
+			DateTime = _leaderboardStatisticsCache.FileName == null ? DateTime.MinValue : HistoryUtils.HistoryFileNameToDateTime(_leaderboardStatisticsCache.FileName),
 			IsFetched = _leaderboardStatisticsCache.IsFetched,
 			TotalEntries = _leaderboardStatisticsCache.Entries.Count,
 			DaggersStatistics = _leaderboardStatisticsCache.DaggersStatistics.OrderBy(kvp => kvp.Key.UnlockSecond).ToDictionary(kvp => kvp.Key.Name, kvp => kvp.Value),
@@ -45,7 +45,7 @@ public class LeaderboardStatisticsController : ControllerBase
 	{
 		return new GetLeaderboardStatisticsDdLive
 		{
-			DateTime = _leaderboardStatisticsCache.FileName == null ? DateTime.MinValue : HistoryUtils.HistoryJsonFileNameToDateTime(_leaderboardStatisticsCache.FileName),
+			DateTime = _leaderboardStatisticsCache.FileName == null ? DateTime.MinValue : HistoryUtils.HistoryFileNameToDateTime(_leaderboardStatisticsCache.FileName),
 			IsFetched = _leaderboardStatisticsCache.IsFetched,
 			TotalEntries = _leaderboardStatisticsCache.Entries.Count,
 			Top1000Statistics = (top switch
