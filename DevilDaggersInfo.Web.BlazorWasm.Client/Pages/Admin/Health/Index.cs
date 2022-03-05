@@ -116,25 +116,35 @@ public partial class Index
 			}));
 		}
 
-		RegisterTimesForSpecificRoute(_customEntrySubmitData, _customEntrySubmitOptions, "POST /api/custom-entries/submit");
-		RegisterTimesForSpecificRoute(_customLeaderboardExistsData, _customLeaderboardExistsOptions, "HEAD /api/custom-leaderboards");
-		void RegisterTimesForSpecificRoute(List<LineDataSet> dataset, LineChartDataOptions dataOptions, string route)
+		RegisterTimesForSpecificRoute(_customEntrySubmitData, ref _customEntrySubmitOptions, "POST /api/custom-entries/submit");
+		RegisterTimesForSpecificRoute(_customLeaderboardExistsData, ref _customLeaderboardExistsOptions, "HEAD /api/custom-leaderboards");
+		void RegisterTimesForSpecificRoute(List<LineDataSet> dataset, ref LineChartDataOptions dataOptions, string route)
 		{
 			dataset.Clear();
 
-			Dictionary<int, GetRequestPathEntry>? clRequests = _response.ResponseTimesByTimeByRequestPath.ContainsKey(route) ? _response.ResponseTimesByTimeByRequestPath[route] : null;
-			if (clRequests == null || clRequests.Count == 0)
+			Dictionary<int, GetRequestPathEntry>? requests = _response.ResponseTimesByTimeByRequestPath.ContainsKey(route) ? _response.ResponseTimesByTimeByRequestPath[route] : null;
+			if (requests == null || requests.Count == 0)
 				return;
 
-			const double scale = TimeSpan.TicksPerSecond / 5;
-			double minY = Math.Floor(clRequests.Values.Min(e => e.MinResponseTimeTicks) / scale) * scale;
-			double maxY = Math.Ceiling(clRequests.Values.Max(e => e.MaxResponseTimeTicks) / scale) * scale;
+			double maxTicks = requests.Values.Max(e => e.MaxResponseTimeTicks);
+			double scale = maxTicks switch
+			{
+				< TimeSpan.TicksPerMillisecond => TimeSpan.TicksPerMillisecond / 10,
+				< TimeSpan.TicksPerMillisecond * 10 => TimeSpan.TicksPerMillisecond,
+				< TimeSpan.TicksPerMillisecond * 100 => TimeSpan.TicksPerMillisecond * 10,
+				< TimeSpan.TicksPerSecond => TimeSpan.TicksPerSecond / 10,
+				< TimeSpan.TicksPerSecond * 5 => TimeSpan.TicksPerSecond / 2,
+				_ => TimeSpan.TicksPerSecond,
+			};
+
+			double minY = Math.Floor(requests.Values.Min(e => e.MinResponseTimeTicks) / scale) * scale;
+			double maxY = Math.Ceiling(maxTicks / scale) * scale;
 
 			dataOptions = new(0, 60, 24 * 60, minY, scale, maxY);
 
-			dataset.Add(new("#0f0", false, true, false, clRequests.Select((kvp, i) => new LineData(kvp.Key, kvp.Value.MinResponseTimeTicks, i)).ToList(), (ds, d) =>
+			dataset.Add(new("#0f0", false, true, false, requests.Select((kvp, i) => new LineData(kvp.Key, kvp.Value.MinResponseTimeTicks, i)).ToList(), (ds, d) =>
 			{
-				KeyValuePair<int, GetRequestPathEntry>? stats = clRequests.Count <= d.Index ? null : clRequests.ElementAt(d.Index);
+				KeyValuePair<int, GetRequestPathEntry>? stats = requests.Count <= d.Index ? null : requests.ElementAt(d.Index);
 				return stats == null ? new() : new()
 				{
 					new($"<span style='text-align: right;'>{TimeUtils.MinutesToTimeString(stats.Value.Key)} - {TimeUtils.MinutesToTimeString(stats.Value.Key + _response.MinuteInterval)}</span>"),
@@ -143,8 +153,8 @@ public partial class Index
 					new($"<span style='color: #0f0; text-align: right;'>{TimeUtils.TicksToTimeString(stats.Value.Value.MinResponseTimeTicks)}</span>"),
 				};
 			}));
-			dataset.Add(new("#ff0", false, true, false, clRequests.Select((kvp, i) => new LineData(kvp.Key, kvp.Value.AverageResponseTimeTicks, i)).ToList(), null));
-			dataset.Add(new("#f00", false, true, false, clRequests.Select((kvp, i) => new LineData(kvp.Key, kvp.Value.MaxResponseTimeTicks, i)).ToList(), null));
+			dataset.Add(new("#ff0", false, true, false, requests.Select((kvp, i) => new LineData(kvp.Key, kvp.Value.AverageResponseTimeTicks, i)).ToList(), null));
+			dataset.Add(new("#f00", false, true, false, requests.Select((kvp, i) => new LineData(kvp.Key, kvp.Value.MaxResponseTimeTicks, i)).ToList(), null));
 		}
 	}
 
