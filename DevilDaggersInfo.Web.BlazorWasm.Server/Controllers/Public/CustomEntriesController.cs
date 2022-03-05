@@ -150,7 +150,7 @@ public class CustomEntriesController : ControllerBase
 
 		try
 		{
-			return await _customEntryProcessor.ProcessUploadRequest(uploadRequest);
+			return await _customEntryProcessor.ProcessUploadRequestAsync(uploadRequest);
 		}
 		catch (CustomEntryValidationException ex)
 		{

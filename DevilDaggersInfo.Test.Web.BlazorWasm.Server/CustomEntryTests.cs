@@ -13,13 +13,11 @@ namespace DevilDaggersInfo.Test.Web.BlazorWasm.Server;
 [TestClass]
 public class CustomEntryTests
 {
-#pragma warning disable S3459 // Unassigned members should be removed
-	private readonly SpawnsetBinary _spawnsetBinary;
-#pragma warning restore S3459 // Unassigned members should be removed
-
 	private readonly Mock<ApplicationDbContext> _dbContext;
 	private readonly CustomEntryProcessor _customEntryProcessor;
 	private readonly AesBase32Wrapper _encryptionWrapper;
+	private readonly byte[] _fakeReplay;
+	private readonly byte[] _v3Hash;
 
 	public CustomEntryTests()
 	{
@@ -36,6 +34,9 @@ public class CustomEntryTests
 
 		Mock<IFileSystemService> fileSystemService = new();
 		fileSystemService.Setup(m => m.GetPath(DataSubDirectory.Spawnsets)).Returns(TestUtils.ResourcePath);
+		fileSystemService.Setup(m => m.GetPath(DataSubDirectory.CustomEntryReplays)).Returns("Replays");
+
+		Directory.CreateDirectory("Replays");
 
 		Mock<ILogger<SpawnsetHashCache>> spawnsetHashCacheLogger = new();
 		Mock<SpawnsetHashCache> spawnsetHashCache = new(fileSystemService.Object, spawnsetHashCacheLogger.Object);
@@ -59,8 +60,14 @@ public class CustomEntryTests
 		_encryptionWrapper = new(secret, secret, secret);
 		_customEntryProcessor = new(_dbContext.Object, customEntryProcessorLogger.Object, spawnsetHashCache.Object, fileSystemService.Object, environment.Object, configuration, new LogContainerService());
 
-		if (!SpawnsetBinary.TryParse(File.ReadAllBytes(Path.Combine(TestUtils.ResourcePath, "V3")), out _spawnsetBinary!))
+		byte[] spawnsetFileContents = File.ReadAllBytes(Path.Combine(TestUtils.ResourcePath, "V3"));
+		if (SpawnsetBinary.TryParse(spawnsetFileContents, out SpawnsetBinary? spawnsetBinary))
+			_v3Hash = GetSpawnsetHash(spawnsetBinary);
+		else
 			Assert.Fail("Spawnset could not be parsed.");
+
+		_fakeReplay = new byte[spawnsetFileContents.Length + 88];
+		Buffer.BlockCopy(spawnsetFileContents, 0, _fakeReplay, 88, spawnsetFileContents.Length);
 	}
 
 	[TestMethod]
@@ -71,15 +78,15 @@ public class CustomEntryTests
 			Time = 100000,
 			PlayerId = 1,
 			ClientVersion = TestConstants.DdclVersion,
-			SurvivalHashMd5 = GetSpawnsetHash(_spawnsetBinary),
-			GameStates = new(),
+			SurvivalHashMd5 = _v3Hash,
 			PlayerName = "TestPlayer1",
 			Client = "DevilDaggersCustomLeaderboards",
 			Status = 3,
+			ReplayData = _fakeReplay,
 		};
 		uploadRequest.Validation = GetValidation(uploadRequest);
 
-		GetUploadSuccess? uploadSuccess = (await _customEntryProcessor.ProcessUploadRequest(uploadRequest)).Value;
+		GetUploadSuccess? uploadSuccess = (await _customEntryProcessor.ProcessUploadRequestAsync(uploadRequest)).Value;
 
 		_dbContext.Verify(db => db.SaveChanges(), Times.AtLeastOnce);
 		Assert.IsNotNull(uploadSuccess);
@@ -95,15 +102,15 @@ public class CustomEntryTests
 			Time = 200000,
 			PlayerId = 1,
 			ClientVersion = TestConstants.DdclVersion,
-			SurvivalHashMd5 = GetSpawnsetHash(_spawnsetBinary),
-			GameStates = new(),
+			SurvivalHashMd5 = _v3Hash,
 			PlayerName = "TestPlayer1",
 			Client = "DevilDaggersCustomLeaderboards",
 			Status = 4,
+			ReplayData = _fakeReplay,
 		};
 		uploadRequest.Validation = GetValidation(uploadRequest);
 
-		GetUploadSuccess? uploadSuccess = (await _customEntryProcessor.ProcessUploadRequest(uploadRequest)).Value;
+		GetUploadSuccess? uploadSuccess = (await _customEntryProcessor.ProcessUploadRequestAsync(uploadRequest)).Value;
 
 		_dbContext.Verify(db => db.SaveChanges(), Times.AtLeastOnce);
 		Assert.IsNotNull(uploadSuccess);
@@ -119,15 +126,15 @@ public class CustomEntryTests
 			Time = 200000,
 			PlayerId = 2,
 			ClientVersion = TestConstants.DdclVersion,
-			SurvivalHashMd5 = GetSpawnsetHash(_spawnsetBinary),
-			GameStates = new(),
+			SurvivalHashMd5 = _v3Hash,
 			PlayerName = "TestPlayer2",
 			Client = "DevilDaggersCustomLeaderboards",
 			Status = 5,
+			ReplayData = _fakeReplay,
 		};
 		uploadRequest.Validation = GetValidation(uploadRequest);
 
-		GetUploadSuccess? uploadSuccess = (await _customEntryProcessor.ProcessUploadRequest(uploadRequest)).Value;
+		GetUploadSuccess? uploadSuccess = (await _customEntryProcessor.ProcessUploadRequestAsync(uploadRequest)).Value;
 
 		_dbContext.Verify(db => db.CustomEntries.Add(It.Is<CustomEntryEntity>(ce => ce.PlayerId == 2 && ce.Time == 200000)), Times.Once);
 		_dbContext.Verify(db => db.SaveChanges(), Times.AtLeastOnce);
@@ -143,15 +150,15 @@ public class CustomEntryTests
 			Time = 300000,
 			PlayerId = 3,
 			ClientVersion = TestConstants.DdclVersion,
-			SurvivalHashMd5 = GetSpawnsetHash(_spawnsetBinary),
-			GameStates = new(),
+			SurvivalHashMd5 = _v3Hash,
 			PlayerName = "TestPlayer3",
 			Client = "DevilDaggersCustomLeaderboards",
 			Status = 3,
+			ReplayData = _fakeReplay,
 		};
 		uploadRequest.Validation = GetValidation(uploadRequest);
 
-		GetUploadSuccess? uploadSuccess = (await _customEntryProcessor.ProcessUploadRequest(uploadRequest)).Value;
+		GetUploadSuccess? uploadSuccess = (await _customEntryProcessor.ProcessUploadRequestAsync(uploadRequest)).Value;
 
 		_dbContext.Verify(db => db.SaveChanges(), Times.AtLeastOnce);
 		_dbContext.Verify(db => db.Players.Add(It.Is<PlayerEntity>(p => p.Id == 3 && p.PlayerName == "TestPlayer3")), Times.Once);
@@ -168,15 +175,15 @@ public class CustomEntryTests
 			Time = 100000,
 			PlayerId = 1,
 			ClientVersion = "0.0.0.0",
-			SurvivalHashMd5 = GetSpawnsetHash(_spawnsetBinary),
-			GameStates = new(),
+			SurvivalHashMd5 = _v3Hash,
 			PlayerName = "TestPlayer1",
 			Client = "DevilDaggersCustomLeaderboards",
 			Status = 4,
+			ReplayData = _fakeReplay,
 		};
 		uploadRequest.Validation = GetValidation(uploadRequest);
 
-		CustomEntryValidationException ex = await Assert.ThrowsExceptionAsync<CustomEntryValidationException>(async () => await _customEntryProcessor.ProcessUploadRequest(uploadRequest));
+		CustomEntryValidationException ex = await Assert.ThrowsExceptionAsync<CustomEntryValidationException>(async () => await _customEntryProcessor.ProcessUploadRequestAsync(uploadRequest));
 
 		_dbContext.Verify(db => db.SaveChanges(), Times.Never);
 
@@ -191,15 +198,15 @@ public class CustomEntryTests
 			Time = 100000,
 			PlayerId = 1,
 			ClientVersion = TestConstants.DdclVersion,
-			SurvivalHashMd5 = GetSpawnsetHash(_spawnsetBinary),
-			GameStates = new(),
+			SurvivalHashMd5 = _v3Hash,
 			PlayerName = "TestPlayer1",
 			Validation = "Malformed validation",
 			Client = "DevilDaggersCustomLeaderboards",
 			Status = 5,
+			ReplayData = _fakeReplay,
 		};
 
-		CustomEntryValidationException ex = await Assert.ThrowsExceptionAsync<CustomEntryValidationException>(async () => await _customEntryProcessor.ProcessUploadRequest(uploadRequest));
+		CustomEntryValidationException ex = await Assert.ThrowsExceptionAsync<CustomEntryValidationException>(async () => await _customEntryProcessor.ProcessUploadRequestAsync(uploadRequest));
 
 		_dbContext.Verify(db => db.SaveChanges(), Times.Never);
 

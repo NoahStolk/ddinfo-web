@@ -36,7 +36,7 @@ public class CustomEntryProcessor
 		_stopwatch = Stopwatch.StartNew();
 	}
 
-	public async Task<ActionResult<GetUploadSuccess>> ProcessUploadRequest(AddUploadRequest uploadRequest)
+	public async Task<ActionResult<GetUploadSuccess>> ProcessUploadRequestAsync(AddUploadRequest uploadRequest)
 	{
 		// Check if the submission actually came from an allowed program.
 		string expected = CreateValidation(uploadRequest);
