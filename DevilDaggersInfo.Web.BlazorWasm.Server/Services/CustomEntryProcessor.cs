@@ -199,8 +199,7 @@ public class CustomEntryProcessor
 
 		_dbContext.SaveChanges();
 
-		if (uploadRequest.ReplayData != null)
-			await WriteReplayFile(customEntry.Id, uploadRequest.ReplayData);
+		await WriteReplayFile(customEntry.Id, uploadRequest.ReplayData);
 
 		// Fetch the entries again after having modified the leaderboard.
 		entries = FetchEntriesFromDatabase(customLeaderboard, isAscending);
@@ -351,7 +350,7 @@ public class CustomEntryProcessor
 
 		string spawnsetIdentification = GetSpawnsetHashOrName(uploadRequest.SurvivalHashMd5, spawnsetName);
 
-		string replayData = uploadRequest.ReplayData == null ? "Replay data not included" : $"Replay data {uploadRequest.ReplayData.Length:N0} bytes";
+		string replayData = $"Replay data {uploadRequest.ReplayData.Length:N0} bytes";
 		string replayString = uploadRequest.IsReplay ? " | `Replay`" : string.Empty;
 		string localReplayString = uploadRequest.Status == 8 ? $" | `Local replay from {uploadRequest.ReplayPlayerId}`" : string.Empty;
 		string requestInfo = $"(`{uploadRequest.ClientVersion}` | `{uploadRequest.OperatingSystem}` | `{uploadRequest.BuildMode}` | `{uploadRequest.Client}`{replayString}{localReplayString} | `{replayData}` | `Status {uploadRequest.Status}`)";
@@ -514,8 +513,7 @@ public class CustomEntryProcessor
 
 		_dbContext.SaveChanges();
 
-		if (uploadRequest.ReplayData != null)
-			await WriteReplayFile(newCustomEntry.Id, uploadRequest.ReplayData);
+		await WriteReplayFile(newCustomEntry.Id, uploadRequest.ReplayData);
 
 		// Fetch the entries again after having modified the leaderboard.
 		List<CustomEntryEntity> entries = FetchEntriesFromDatabase(customLeaderboard, isAscending);

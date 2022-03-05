@@ -63,7 +63,7 @@ public class AddUploadRequest
 	public AddGameData? GameData { get; init; }
 
 	[MaxLength(ReplayConstants.MaxFileSize, ErrorMessage = ReplayConstants.MaxFileSizeErrorMessage)]
-	public byte[]? ReplayData { get; init; }
+	public byte[] ReplayData { get; init; } = null!;
 
 	public int Status { get; set; }
 }
