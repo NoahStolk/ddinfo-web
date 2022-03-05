@@ -23,23 +23,31 @@ public class LeaderboardHistoryBackgroundService : AbstractBackgroundService
 		LeaderboardResponse? leaderboard = null;
 		List<EntryResponse> entries = new();
 
-		for (int i = 0; i < 5;)
+		const int attempts = 5;
+		const int interval = 5;
+		for (int i = 0; i < attempts;)
 		{
 			LeaderboardResponse? part = await LeaderboardClient.Instance.GetLeaderboard(100 * i + 1);
 			if (part == null)
 			{
-				Logger.LogWarning("Couldn't get leaderboard. Waiting 5 seconds...");
+				Logger.LogWarning("Couldn't get leaderboard. Waiting {interval} seconds...", interval);
 
-				await Task.Delay(TimeSpan.FromSeconds(5), stoppingToken);
+				await Task.Delay(TimeSpan.FromSeconds(interval), stoppingToken);
 				continue;
 			}
 
 			if (leaderboard == null)
-				leaderboard = part; // The entries assigned here are unused. We use the entries list instead.
+				leaderboard = part; // The LeaderboardResponse.Entries property here is unused. We use the entries list instead.
 
 			entries.AddRange(part.Entries);
 
 			i++;
+		}
+
+		if (leaderboard == null)
+		{
+			Logger.LogWarning("Leaderboard could not be retrieved after {attempts} attempts.", attempts);
+			return;
 		}
 
 		entries = entries.OrderBy(e => e.Rank).ToList();
