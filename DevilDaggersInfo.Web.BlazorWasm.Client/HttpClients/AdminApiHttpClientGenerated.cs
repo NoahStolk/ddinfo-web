@@ -19,7 +19,12 @@ public partial class AdminApiHttpClient
 {
 	public async Task<HttpResponseMessage> ClearCache(string cacheType)
 	{
-		return await SendRequest(new HttpMethod("POST"), $"api/admin/caches/clear", JsonContent.Create(cacheType));
+		return await SendRequest(new HttpMethod("POST"), $"api/admin/admin/clear-cache", JsonContent.Create(cacheType));
+	}
+
+	public async Task<HttpResponseMessage> BuildHistoryBinaries(string? unused)
+	{
+		return await SendRequest(new HttpMethod("POST"), $"api/admin/admin/convert-history-to-binary", JsonContent.Create(unused));
 	}
 
 	public async Task<Page<GetCustomEntryForOverview>> GetCustomEntries(int pageIndex, int pageSize, CustomEntrySorting? sortBy, bool ascending)
