@@ -2,15 +2,15 @@ namespace DevilDaggersInfo.Web.BlazorWasm.Server.Caches.LeaderboardHistory;
 
 public class LeaderboardHistoryCache : IDynamicCache
 {
-	private readonly ConcurrentDictionary<string, InternalModels.Json.LeaderboardHistory> _cache = new();
+	private readonly ConcurrentDictionary<string, InternalModels.LeaderboardHistory> _cache = new();
 
-	public InternalModels.Json.LeaderboardHistory GetLeaderboardHistoryByFilePath(string filePath)
+	public InternalModels.LeaderboardHistory GetLeaderboardHistoryByFilePath(string filePath)
 	{
 		string name = Path.GetFileNameWithoutExtension(filePath);
 		if (_cache.ContainsKey(name))
 			return _cache[name];
 
-		InternalModels.Json.LeaderboardHistory lb = JsonConvert.DeserializeObject<InternalModels.Json.LeaderboardHistory>(File.ReadAllText(filePath, Encoding.UTF8)) ?? throw new($"Corrupt leaderboard history file: {name}");
+		InternalModels.LeaderboardHistory lb = InternalModels.LeaderboardHistory.CreateFromFile(File.ReadAllBytes(filePath));
 		_cache.TryAdd(name, lb);
 		return lb;
 	}

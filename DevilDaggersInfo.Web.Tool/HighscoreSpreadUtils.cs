@@ -1,16 +1,13 @@
 using DevilDaggersInfo.Core.Wiki;
 using DevilDaggersInfo.Core.Wiki.Enums;
-using DevilDaggersInfo.Web.BlazorWasm.Server.InternalModels.Json;
+using DevilDaggersInfo.Web.BlazorWasm.Server.InternalModels;
 using DevilDaggersInfo.Web.BlazorWasm.Shared.Utils;
-using Newtonsoft.Json;
 using System.Text;
 
 namespace DevilDaggersInfo.Web.Tool;
 
 public static class HighscoreSpreadUtils
 {
-	private static readonly DateTime _fullHistoryDateStart = new(2018, 10, 1);
-
 	private static readonly StringBuilder _log = new();
 
 	public static void SpreadAllHighscoreStats(bool writeLogToFile, bool useConsole)
@@ -21,7 +18,7 @@ public static class HighscoreSpreadUtils
 		foreach (KeyValuePair<string, LeaderboardHistory> kvp in leaderboards)
 		{
 			SpreadHighscoreStats(leaderboards.Select(kvp => kvp.Value).ToList(), kvp.Value);
-			File.WriteAllText(kvp.Key, JsonConvert.SerializeObject(kvp.Value, kvp.Value.DateTime > _fullHistoryDateStart ? Formatting.None : Formatting.Indented));
+			File.WriteAllBytes(kvp.Key, kvp.Value.ToBytes());
 		}
 
 		if (writeLogToFile)
@@ -33,10 +30,10 @@ public static class HighscoreSpreadUtils
 	public static Dictionary<string, LeaderboardHistory> GetAllLeaderboards()
 	{
 		Dictionary<string, LeaderboardHistory> leaderboards = new();
-		foreach (string path in Directory.GetFiles(@"C:\Users\NOAH\source\repos\DevilDaggersInfo\DevilDaggersInfo.Web.BlazorWasm.Server\Data\LeaderboardHistory", "*.json"))
+		foreach (string path in Directory.GetFiles(@"C:\Users\NOAH\source\repos\DevilDaggersInfo\DevilDaggersInfo.Web.BlazorWasm.Server\Data\LeaderboardHistory", "*.bin"))
 		{
-			string jsonString = File.ReadAllText(path, Encoding.UTF8);
-			leaderboards.Add(path, JsonConvert.DeserializeObject<LeaderboardHistory>(jsonString) ?? throw new("Could not deserialize leaderboard."));
+			byte[] bytes = File.ReadAllBytes(path);
+			leaderboards.Add(path, LeaderboardHistory.CreateFromFile(bytes));
 		}
 
 		return leaderboards;

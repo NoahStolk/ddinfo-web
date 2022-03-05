@@ -2,7 +2,7 @@ namespace DevilDaggersInfo.Web.BlazorWasm.Server.Utils;
 
 public static class HistoryUtils
 {
-	public static DateTime HistoryJsonFileNameToDateTime(string dateString)
+	public static DateTime HistoryFileNameToDateTime(string dateString)
 	{
 		int year = int.Parse(dateString[..4]);
 		int month = int.Parse(dateString[4..6]);
@@ -13,6 +13,6 @@ public static class HistoryUtils
 		return new(year, month, day, hour, minute, 0);
 	}
 
-	public static string DateTimeToHistoryJsonFileName(DateTime dateTime)
+	public static string DateTimeToHistoryFileName(DateTime dateTime)
 		=> $"{dateTime.Year:0000}{dateTime.Month:00}{dateTime.Day:00}{dateTime.Hour:00}{dateTime.Minute:00}";
 }

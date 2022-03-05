@@ -1,8 +1,5 @@
-namespace DevilDaggersInfo.Web.BlazorWasm.Server.InternalModels.Json;
+namespace DevilDaggersInfo.Web.BlazorWasm.Server.InternalModels;
 
-/// <summary>
-/// This class must correspond to what's stored in the leaderboard history JSON.
-/// </summary>
 public class EntryHistory
 {
 	public int Rank { get; set; }
