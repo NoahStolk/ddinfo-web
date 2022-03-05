@@ -40,11 +40,26 @@ public partial class Index
 		ChartMarginXInPx = 80,
 	};
 
+	private readonly LineChartOptions _customLeaderboardExistsLineChartOptions = new()
+	{
+		HighlighterKeys = new() { "Time", "Min Response Time", "Avg Response Time", "Max Response Time" },
+		XScaleDisplayUnit = ScaleDisplayUnit.MinutesAsTime,
+		YScaleDisplayUnit = ScaleDisplayUnit.TicksAsSeconds,
+		GridOptions = new()
+		{
+			MinimumColumnWidthInPx = 30,
+		},
+		HighlighterWidth = 360,
+		ChartMarginXInPx = 80,
+	};
+
 	private readonly List<LineDataSet> _totalTrafficData = new();
 	private readonly List<LineDataSet> _customEntrySubmitData = new();
+	private readonly List<LineDataSet> _customLeaderboardExistsData = new();
 
 	private LineChartDataOptions _totalTrafficOptions = LineChartDataOptions.Default;
 	private LineChartDataOptions _customEntrySubmitOptions = LineChartDataOptions.Default;
+	private LineChartDataOptions _customLeaderboardExistsOptions = LineChartDataOptions.Default;
 
 	[Inject]
 	public IJSRuntime JsRuntime { get; set; } = null!;
@@ -101,10 +116,11 @@ public partial class Index
 			}));
 		}
 
-		RegisterTimesForSpecificRoute("/api/custom-entries/submit");
-		void RegisterTimesForSpecificRoute(string route)
+		RegisterTimesForSpecificRoute(_customEntrySubmitData, _customEntrySubmitOptions, "POST /api/custom-entries/submit");
+		RegisterTimesForSpecificRoute(_customLeaderboardExistsData, _customLeaderboardExistsOptions, "HEAD /api/custom-leaderboards");
+		void RegisterTimesForSpecificRoute(List<LineDataSet> dataset, LineChartDataOptions dataOptions, string route)
 		{
-			_customEntrySubmitData.Clear();
+			dataset.Clear();
 
 			Dictionary<int, GetRequestPathEntry>? clRequests = _response.ResponseTimesByTimeByRequestPath.ContainsKey(route) ? _response.ResponseTimesByTimeByRequestPath[route] : null;
 			if (clRequests == null || clRequests.Count == 0)
@@ -114,9 +130,9 @@ public partial class Index
 			double minY = Math.Floor(clRequests.Values.Min(e => e.MinResponseTimeTicks) / scale) * scale;
 			double maxY = Math.Ceiling(clRequests.Values.Max(e => e.MaxResponseTimeTicks) / scale) * scale;
 
-			_customEntrySubmitOptions = new(0, 60, 24 * 60, minY, scale, maxY);
+			dataOptions = new(0, 60, 24 * 60, minY, scale, maxY);
 
-			_customEntrySubmitData.Add(new("#0f0", false, true, false, clRequests.Select((kvp, i) => new LineData(kvp.Key, kvp.Value.MinResponseTimeTicks, i)).ToList(), (ds, d) =>
+			dataset.Add(new("#0f0", false, true, false, clRequests.Select((kvp, i) => new LineData(kvp.Key, kvp.Value.MinResponseTimeTicks, i)).ToList(), (ds, d) =>
 			{
 				KeyValuePair<int, GetRequestPathEntry>? stats = clRequests.Count <= d.Index ? null : clRequests.ElementAt(d.Index);
 				return stats == null ? new() : new()
@@ -127,8 +143,8 @@ public partial class Index
 					new($"<span style='color: #0f0; text-align: right;'>{TimeUtils.TicksToTimeString(stats.Value.Value.MinResponseTimeTicks)}</span>"),
 				};
 			}));
-			_customEntrySubmitData.Add(new("#ff0", false, true, false, clRequests.Select((kvp, i) => new LineData(kvp.Key, kvp.Value.AverageResponseTimeTicks, i)).ToList(), null));
-			_customEntrySubmitData.Add(new("#f00", false, true, false, clRequests.Select((kvp, i) => new LineData(kvp.Key, kvp.Value.MaxResponseTimeTicks, i)).ToList(), null));
+			dataset.Add(new("#ff0", false, true, false, clRequests.Select((kvp, i) => new LineData(kvp.Key, kvp.Value.AverageResponseTimeTicks, i)).ToList(), null));
+			dataset.Add(new("#f00", false, true, false, clRequests.Select((kvp, i) => new LineData(kvp.Key, kvp.Value.MaxResponseTimeTicks, i)).ToList(), null));
 		}
 	}
 
