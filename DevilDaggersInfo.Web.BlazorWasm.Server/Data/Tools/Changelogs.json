@@ -1317,6 +1317,30 @@
 	],
 	"DevilDaggersAssetEditor": [
 		{
+			"VersionNumber": "1.3.4.0",
+			"Date": "2022-03-05T00:00:00",
+			"Changes": [
+				{
+					"Description": "Removed quad support for models."
+				},
+				{
+					"Description": "Fixed incorrectly interpreting model faces exported from certain software."
+				},
+				{
+					"Description": "Fixed not trimming duplicate spaces in .obj files."
+				},
+				{
+					"Description": "Added clearer error messages when parsing .obj files."
+				},
+				{
+					"Description": "Added additional validation when parsing .obj files."
+				},
+				{
+					"Description": "Improved parsing .wav files for previewing."
+				}
+			]
+		},
+		{
 			"VersionNumber": "1.3.0.0",
 			"Date": "2022-01-09T00:00:00",
 			"Changes": [
