@@ -15,7 +15,7 @@ public class SpawnsetHashCache : IDynamicCache
 
 	public SpawnsetHashCacheData? GetSpawnset(byte[] hash)
 	{
-		SpawnsetHashCacheData? spawnsetCacheData = _cache.FirstOrDefault(scd => MatchHashes(scd.Hash, hash));
+		SpawnsetHashCacheData? spawnsetCacheData = _cache.FirstOrDefault(scd => ArrayUtils.AreEqual(scd.Hash, hash));
 		if (spawnsetCacheData != null)
 			return spawnsetCacheData;
 
@@ -35,25 +35,11 @@ public class SpawnsetHashCache : IDynamicCache
 			if (!_cache.Any(scd => scd.Name == spawnsetName))
 				_cache.Add(spawnsetCacheData);
 
-			if (MatchHashes(spawnsetHash, hash))
+			if (ArrayUtils.AreEqual(spawnsetHash, hash))
 				return spawnsetCacheData;
 		}
 
 		return null;
-
-		static bool MatchHashes(byte[] a, byte[] b)
-		{
-			if (a.Length != b.Length)
-				return false;
-
-			for (int i = 0; i < a.Length; i++)
-			{
-				if (a[i] != b[i])
-					return false;
-			}
-
-			return true;
-		}
 	}
 
 	public void Clear()
