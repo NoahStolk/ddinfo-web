@@ -13,6 +13,9 @@ public class ResponseTimeMiddleware
 
 	public Task InvokeAsync(HttpContext context)
 	{
+		if (!context.Request.Path.ToString().StartsWith("/api"))
+			return _next(context);
+
 		Stopwatch sw = Stopwatch.StartNew();
 		context.Response.OnStarting(() =>
 		{

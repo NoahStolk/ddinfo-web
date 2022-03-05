@@ -24,18 +24,18 @@ else
 {
 	<div class="grid grid-cols-1 2xl:grid-cols-2">
 		<div>
-			<Heading Title="Total Traffic" Level="2" />
-			<LineChart DataOptions="_totalTrafficOptions" UniqueName="#players-chart" DataSets="_totalTrafficData" Options="_totalTrafficLineChartOptions" />
+			<Heading Title="Total API Traffic" Level="2" />
+			<LineChart DataOptions="_totalTrafficOptions" UniqueName="#total-api-traffic-chart" DataSets="_totalTrafficData" Options="_totalTrafficLineChartOptions" />
 		</div>
 
 		<div>
 			<Heading Title="Custom Entry Submit" Level="2" />
-			<LineChart DataOptions="_customEntrySubmitOptions" UniqueName="#entrances-chart" DataSets="_customEntrySubmitData" Options="_customEntrySubmitLineChartOptions" />
+			<LineChart DataOptions="_customEntrySubmitOptions" UniqueName="#custom-entry-submit-chart" DataSets="_customEntrySubmitData" Options="_customEntrySubmitLineChartOptions" />
 		</div>
 	</div>
 
 	<div class="grid gap-2 grid-cols-5">
-		<div><a href="" @onclick:preventDefault class="link" @onclick="() => Sort(e => e.Key)">Request path</a></div>
+		<div><a href="" @onclick:preventDefault class="link" @onclick="() => Sort(e => e.Key)">Request</a></div>
 		<div class="text-right"><a href="" @onclick:preventDefault class="link" @onclick="() => Sort(e => e.Value.RequestCount)">Request count</a></div>
 		<div class="text-right"><a href="" @onclick:preventDefault class="link" @onclick="() => Sort(e => e.Value.AverageResponseTimeTicks)">Avg response time</a></div>
 		<div class="text-right"><a href="" @onclick:preventDefault class="link" @onclick="() => Sort(e => e.Value.MinResponseTimeTicks)">Min response time</a></div>
