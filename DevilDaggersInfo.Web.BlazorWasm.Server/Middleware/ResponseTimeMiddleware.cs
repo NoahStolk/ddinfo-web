@@ -21,7 +21,7 @@ public class ResponseTimeMiddleware
 			// Longest time represented in ticks that fits in a 32-bit signed integer is around 3 minutes and 34 seconds.
 			int trackedTicks = sw.ElapsedTicks > int.MaxValue ? int.MaxValue : (int)sw.ElapsedTicks;
 
-			_responseTimeMonitor.Add(context.Request.Path.ToString(), trackedTicks, DateTime.UtcNow);
+			_responseTimeMonitor.Add(context.Request.Method, context.Request.Path.ToString(), trackedTicks, DateTime.UtcNow);
 
 			return Task.CompletedTask;
 		});

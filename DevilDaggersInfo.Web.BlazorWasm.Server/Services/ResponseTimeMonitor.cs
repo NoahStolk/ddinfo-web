@@ -15,8 +15,29 @@ public class ResponseTimeMonitor
 		_logger = logger;
 	}
 
-	public void Add(string path, int responseTimeTicks, DateTime dateTime)
-		=> _responseTimeLogs.Add(new(path, responseTimeTicks, dateTime));
+	private enum HttpMethod : byte
+	{
+		Get,
+		Post,
+		Put,
+		Delete,
+		Patch,
+		Head,
+	}
+
+	public void Add(string method, string path, int responseTimeTicks, DateTime dateTime)
+	{
+		HttpMethod httpMethod = method.ToUpper() switch
+		{
+			"POST" => HttpMethod.Post,
+			"PUT" => HttpMethod.Put,
+			"DELETE" => HttpMethod.Delete,
+			"PATCH" => HttpMethod.Patch,
+			"HEAD" => HttpMethod.Head,
+			_ => HttpMethod.Get,
+		};
+		_responseTimeLogs.Add(new(new(httpMethod, path), responseTimeTicks, dateTime));
+	}
 
 	public void DumpLogs()
 	{
@@ -41,13 +62,17 @@ public class ResponseTimeMonitor
 			using MemoryStream ms = new();
 			using BinaryWriter bw = new(ms);
 
+			// Version
+			bw.Write((byte)1);
+
 			// Process paths here instead of in Add method to save performance during request.
-			IEnumerable<IGrouping<string, ResponseTimeLog>> pathGroups = dateGroup.GroupBy(rtl => ProcessPath(rtl.Path));
+			IEnumerable<IGrouping<Route, ResponseTimeLog>> pathGroups = dateGroup.GroupBy(rtl => ProcessRoute(rtl.Route));
 			bw.Write(pathGroups.Count());
 
-			foreach (IGrouping<string, ResponseTimeLog> pathGroup in pathGroups)
+			foreach (IGrouping<Route, ResponseTimeLog> pathGroup in pathGroups)
 			{
-				bw.Write(pathGroup.Key);
+				bw.Write((byte)pathGroup.Key.HttpMethod);
+				bw.Write(pathGroup.Key.Path);
 				bw.Write(pathGroup.Count());
 
 				foreach (ResponseTimeLog rtl in pathGroup)
@@ -66,15 +91,17 @@ public class ResponseTimeMonitor
 
 		_responseTimeLogs.Clear();
 
-		static string ProcessPath(string path)
+		static Route ProcessRoute(Route route)
 		{
-			foreach (string part in path.Split('/'))
+			string newPath = route.Path;
+
+			foreach (string part in newPath.Split('/'))
 			{
 				if (int.TryParse(part, out int _))
-					path = path.Replace(part, "{id}");
+					newPath = newPath.Replace(part, "{id}");
 			}
 
-			return path;
+			return route with { Path = newPath };
 		}
 	}
 
@@ -86,15 +113,19 @@ public class ResponseTimeMonitor
 			using MemoryStream ms = new(File.ReadAllBytes(filePath));
 			using BinaryReader br = new(ms);
 
+			// Version
+			_ = br.ReadByte();
+
 			int pathCount = br.ReadInt32();
 
 			for (int i = 0; i < pathCount; i++)
 			{
+				HttpMethod httpMethod = (HttpMethod)br.ReadByte();
 				string requestPath = br.ReadString();
 				int requestCount = br.ReadInt32();
 
 				for (int j = 0; j < requestCount; j++)
-					logs.Add(new(requestPath, br.ReadInt32(), new(date.Year, date.Month, date.Day, br.ReadByte(), br.ReadByte(), br.ReadByte(), DateTimeKind.Utc)));
+					logs.Add(new(new(httpMethod, requestPath), br.ReadInt32(), new(date.Year, date.Month, date.Day, br.ReadByte(), br.ReadByte(), br.ReadByte(), DateTimeKind.Utc)));
 			}
 		}
 
@@ -103,9 +134,9 @@ public class ResponseTimeMonitor
 		const int minuteInterval = 10;
 		const int intervalCount = 24 * 60 / minuteInterval;
 		Dictionary<string, Dictionary<int, GetRequestPathEntry>> entriesByTimeByPath = new();
-		foreach (IGrouping<string, ResponseTimeLog> group in logs.GroupBy(rtl => rtl.Path).OrderBy(rtl => rtl.Key))
+		foreach (IGrouping<Route, ResponseTimeLog> group in logs.GroupBy(rtl => rtl.Route).OrderBy(rtl => rtl.Key))
 		{
-			entriesByPath.Add(group.Key, new()
+			entriesByPath.Add(group.Key.ToString(), new()
 			{
 				RequestCount = group.Count(),
 				AverageResponseTimeTicks = group.Average(rtl => rtl.ResponseTimeTicks),
@@ -125,7 +156,7 @@ public class ResponseTimeMonitor
 				kvp.Value.MaxResponseTimeTicks = isEmpty ? 0 : logsThisInterval.Max(rtl => rtl.ResponseTimeTicks);
 			}
 
-			entriesByTimeByPath.Add(group.Key, entriesByTime);
+			entriesByTimeByPath.Add(group.Key.ToString(), entriesByTime);
 		}
 
 		return new()
@@ -136,5 +167,19 @@ public class ResponseTimeMonitor
 		};
 	}
 
-	private readonly record struct ResponseTimeLog(string Path, int ResponseTimeTicks, DateTime DateTime);
+	private readonly record struct ResponseTimeLog(Route Route, int ResponseTimeTicks, DateTime DateTime);
+
+	private readonly record struct Route(HttpMethod HttpMethod, string Path) : IComparable<Route>
+	{
+		public int CompareTo(Route other)
+		{
+			int routeComparison = other.HttpMethod.CompareTo(other.HttpMethod);
+			if (routeComparison != 0)
+				return routeComparison;
+
+			return other.Path.CompareTo(Path);
+		}
+
+		public override string ToString() => $"{HttpMethod.ToString().ToUpper()} {Path}";
+	}
 }
