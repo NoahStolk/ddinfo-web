@@ -35,6 +35,7 @@ public class LeaderboardStatisticsCache : IStaticCache
 
 	public IReadOnlyList<CompressedEntry> Entries => _entries;
 
+	// TODO: Measure performance.
 	public void Initiate()
 	{
 		string[] paths = _fileSystemService.TryGetFiles(DataSubDirectory.LeaderboardStatistics);
