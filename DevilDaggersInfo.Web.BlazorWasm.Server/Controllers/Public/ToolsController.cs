@@ -11,12 +11,14 @@ public class ToolsController : ControllerBase
 	private readonly IFileSystemService _fileSystemService;
 	private readonly ApplicationDbContext _dbContext;
 	private readonly IToolHelper _toolHelper;
+	private readonly ILogger<ToolsController> _logger;
 
-	public ToolsController(IFileSystemService fileSystemService, ApplicationDbContext dbContext, IToolHelper toolHelper)
+	public ToolsController(IFileSystemService fileSystemService, ApplicationDbContext dbContext, IToolHelper toolHelper, ILogger<ToolsController> logger)
 	{
 		_fileSystemService = fileSystemService;
 		_dbContext = dbContext;
 		_toolHelper = toolHelper;
+		_logger = logger;
 	}
 
 	[HttpGet("{toolName}")]
@@ -29,16 +31,19 @@ public class ToolsController : ControllerBase
 		if (tool == null)
 			return NotFound();
 
-		string path = Path.Combine(_fileSystemService.GetPath(DataSubDirectory.Tools), tool.Name, $"{tool.Name}{tool.VersionNumber}.zip");
-		if (!IoFile.Exists(path))
-			throw new($"Tool file '{path}' does not exist.");
-
 		List<ToolStatisticEntity> toolStatistics = _dbContext.ToolStatistics
 			.AsNoTracking()
 			.Where(ts => ts.ToolName == tool.Name)
 			.ToList();
 
-		return tool.ToGetTool(toolStatistics, (int)new FileInfo(path).Length);
+		string path = Path.Combine(_fileSystemService.GetPath(DataSubDirectory.Tools), tool.Name, $"{tool.Name}{tool.VersionNumber}.zip");
+		int fileSize = 0;
+		if (IoFile.Exists(path))
+			fileSize = (int)new FileInfo(path).Length;
+		else
+			_logger.LogWarning("Tool file '{path}' does not exist.", path);
+
+		return tool.ToGetTool(toolStatistics, fileSize);
 	}
 
 	[HttpGet("{toolName}/file")]
