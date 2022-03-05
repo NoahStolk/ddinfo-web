@@ -44,15 +44,14 @@ public class CustomEntryProcessor
 		if (actual != expected)
 			throw LogAndCreateValidationException(uploadRequest, $"Invalid submission for {uploadRequest.Validation}.\nExpected: {expected}\nActual:   {actual}", null, "rotating_light");
 
-		// Check for required version.
-		string clientName = uploadRequest.Client is "ddstats-rust" or "1" ? "ddstats-rust" : "DevilDaggersCustomLeaderboards";
-		var tool = _dbContext.Tools.Select(t => new { t.Name, t.RequiredVersionNumber }).FirstOrDefault(t => t.Name == clientName);
+		// Check for required client and version.
+		var tool = _dbContext.Tools.Select(t => new { t.Name, t.RequiredVersionNumber }).FirstOrDefault(t => t.Name == uploadRequest.Client);
 		if (tool == null)
-			throw LogAndCreateValidationException(uploadRequest, $"'{clientName}' is not a known tool and submissions will not be accepted.");
+			throw LogAndCreateValidationException(uploadRequest, $"'{uploadRequest.Client}' is not a known tool and submissions will not be accepted.");
 
 		Version clientVersionParsed = Version.Parse(uploadRequest.ClientVersion);
 		if (clientVersionParsed < Version.Parse(tool.RequiredVersionNumber))
-			throw LogAndCreateValidationException(uploadRequest, $"You are using an unsupported and outdated version of {clientName}. Please update the program.");
+			throw LogAndCreateValidationException(uploadRequest, $"You are using an unsupported and outdated version of {uploadRequest.Client}. Please update the program.");
 
 		// Reject local replays as they can easily be manipulated.
 		if (uploadRequest.Status == 8)
@@ -474,8 +473,8 @@ public class CustomEntryProcessor
 
 	private static CustomLeaderboardsClient GetClientFromString(string clientString) => clientString switch
 	{
-		"DevilDaggersCustomLeaderboards" or "0" => CustomLeaderboardsClient.DevilDaggersCustomLeaderboards,
-		"ddstats-rust" or "1" => CustomLeaderboardsClient.DdstatsRust,
+		"DevilDaggersCustomLeaderboards" => CustomLeaderboardsClient.DevilDaggersCustomLeaderboards,
+		"ddstats-rust" => CustomLeaderboardsClient.DdstatsRust,
 		_ => throw new Exception("Unknown CustomLeaderboardsClient."),
 	};
 
