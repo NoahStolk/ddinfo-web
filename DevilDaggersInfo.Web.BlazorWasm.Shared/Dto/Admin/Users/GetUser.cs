@@ -15,4 +15,8 @@ public class GetUser
 	public bool IsPlayersMaintainer { get; init; }
 
 	public bool IsSpawnsetsMaintainer { get; init; }
+
+	public int? PlayerId { get; init; }
+
+	public string PlayerName { get; init; } = null!;
 }

@@ -67,7 +67,10 @@ module.exports = {
 				'admin-spawnsets-md': createMinmaxGrid([1, 1, 4, 1, 1]),
 				'admin-spawnsets-sm': createMinmaxGrid([1, 1, 1, 1]),
 
-				'admin-users': createMinmaxGrid([3, 2, 1, 1, 1, 1, 1, 1, 1]),
+				'admin-users-xl': createMinmaxGrid([1, 2, 1, 2, 1, 1, 1, 1, 1, 1, 1]),
+				'admin-users-lg': createMinmaxGrid([1, 2, 1, 2, 1, 1]),
+				'admin-users-md': createMinmaxGrid([1, 2, 1, 2, 1, 1]),
+				'admin-users-sm': createMinmaxGrid([1, 2, 1, 2, 1, 1]),
 
 				// Overviews
 				'spawnsets-xl': createMinmaxGrid([2, 2, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1]),

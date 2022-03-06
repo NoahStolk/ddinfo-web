@@ -29,6 +29,7 @@ public class UsersController : ControllerBase
 			.AsNoTracking()
 			.Include(u => u.UserRoles!)
 				.ThenInclude(ur => ur.Role)
+			.Include(u => u.Player)
 			.OrderBy(u => u.Id)
 			.ToList();
 
@@ -41,6 +42,8 @@ public class UsersController : ControllerBase
 			IsModsMaintainer = IsInRole(u, Roles.Mods),
 			IsPlayersMaintainer = IsInRole(u, Roles.Players),
 			IsSpawnsetsMaintainer = IsInRole(u, Roles.Spawnsets),
+			PlayerId = u.PlayerId,
+			PlayerName = u.Player?.PlayerName ?? string.Empty,
 		});
 
 		static bool IsInRole(UserEntity user, string roleName)
