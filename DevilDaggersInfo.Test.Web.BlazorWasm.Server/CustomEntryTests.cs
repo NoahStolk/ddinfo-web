@@ -83,6 +83,7 @@ public class CustomEntryTests
 			Client = "DevilDaggersCustomLeaderboards",
 			Status = 3,
 			ReplayData = _fakeReplay,
+			GameData = new(),
 		};
 		uploadRequest.Validation = GetValidation(uploadRequest);
 
@@ -107,6 +108,7 @@ public class CustomEntryTests
 			Client = "DevilDaggersCustomLeaderboards",
 			Status = 4,
 			ReplayData = _fakeReplay,
+			GameData = new(),
 		};
 		uploadRequest.Validation = GetValidation(uploadRequest);
 
@@ -131,6 +133,7 @@ public class CustomEntryTests
 			Client = "DevilDaggersCustomLeaderboards",
 			Status = 5,
 			ReplayData = _fakeReplay,
+			GameData = new(),
 		};
 		uploadRequest.Validation = GetValidation(uploadRequest);
 
@@ -155,6 +158,7 @@ public class CustomEntryTests
 			Client = "DevilDaggersCustomLeaderboards",
 			Status = 3,
 			ReplayData = _fakeReplay,
+			GameData = new(),
 		};
 		uploadRequest.Validation = GetValidation(uploadRequest);
 
