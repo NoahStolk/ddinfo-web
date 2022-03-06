@@ -2,7 +2,8 @@ namespace DevilDaggersInfo.Web.BlazorWasm.Shared.Dto.Public.CustomEntries;
 
 public class AddUploadRequest
 {
-	// TODO: Add MaxLength (and min length) 16?
+	[MaxLength(16)]
+	[MinLength(16)]
 	public byte[] SurvivalHashMd5 { get; init; } = null!;
 
 	public int PlayerId { get; init; }
