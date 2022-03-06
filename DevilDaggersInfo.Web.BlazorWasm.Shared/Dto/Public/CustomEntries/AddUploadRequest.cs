@@ -57,10 +57,7 @@ public class AddUploadRequest
 
 	public bool ProhibitedMods { get; init; }
 
-	[Obsolete("Use GameData instead.")]
-	public List<AddGameState>? GameStates { get; init; }
-
-	public AddGameData? GameData { get; init; }
+	public AddGameData GameData { get; init; } = null!;
 
 	[MaxLength(ReplayConstants.MaxFileSize, ErrorMessage = ReplayConstants.MaxFileSizeErrorMessage)]
 	public byte[] ReplayData { get; init; } = null!;
