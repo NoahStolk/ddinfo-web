@@ -114,9 +114,30 @@ public class CustomEntryProcessor
 		if (customLeaderboard == null)
 			throw LogAndCreateValidationException(uploadRequest, "This spawnset exists on DevilDaggers.info, but doesn't have a leaderboard.", spawnsetName);
 
-		// Temporary workaround until TimeAttack works in DDCL (if ever).
-		if (customLeaderboard.Category == CustomLeaderboardCategory.TimeAttack)
-			throw LogAndCreateValidationException(uploadRequest, "TimeAttack leaderboards are not supported right now.", spawnsetName);
+		CustomLeaderboardsClient client = GetClientFromString(uploadRequest.Client);
+
+		// Validate TimeAttack and Race.
+		if (customLeaderboard.Category is CustomLeaderboardCategory.TimeAttack or CustomLeaderboardCategory.Race)
+		{
+			// Temporary workaround until TimeAttack works in latest required DDCL.
+			bool timeAttackOrRaceSupported = client switch
+			{
+				CustomLeaderboardsClient.DdstatsRust => clientVersionParsed > new Version(0, 6, 10, 3),
+				_ => clientVersionParsed > new Version(1, 5, 3, 0),
+			};
+
+			if (!timeAttackOrRaceSupported)
+				throw LogAndCreateValidationException(uploadRequest, $"TimeAttack or Race leaderboards are not supported in {uploadRequest.Client} {clientVersionParsed}.", spawnsetName);
+
+			if (!uploadRequest.TimeAttackOrRaceFinished)
+				throw LogAndCreateValidationException(uploadRequest, "Didn't complete the spawnset.", spawnsetName);
+
+			if (customLeaderboard.Category == CustomLeaderboardCategory.TimeAttack && uploadRequest.GameMode != 1)
+				throw LogAndCreateValidationException(uploadRequest, $"Incorrect game mode for TimeAttack ({uploadRequest.GameMode}).", spawnsetName);
+
+			if (customLeaderboard.Category == CustomLeaderboardCategory.Race && uploadRequest.GameMode != 2)
+				throw LogAndCreateValidationException(uploadRequest, $"Incorrect game mode for Race ({uploadRequest.GameMode}).", spawnsetName);
+		}
 
 		bool isAscending = customLeaderboard.Category.IsAscending();
 
@@ -193,7 +214,7 @@ public class CustomEntryProcessor
 		customEntry.LevelUpTime4 = uploadRequest.LevelUpTime4;
 		customEntry.SubmitDate = DateTime.UtcNow;
 		customEntry.ClientVersion = uploadRequest.ClientVersion;
-		customEntry.Client = GetClientFromString(uploadRequest.Client);
+		customEntry.Client = client;
 
 		// Update the entry data.
 		CustomEntryDataEntity? customEntryData = _dbContext.CustomEntryData.FirstOrDefault(ced => ced.CustomEntryId == customEntry.Id);

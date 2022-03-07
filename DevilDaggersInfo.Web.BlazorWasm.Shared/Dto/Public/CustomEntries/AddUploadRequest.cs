@@ -58,6 +58,10 @@ public class AddUploadRequest
 
 	public bool ProhibitedMods { get; init; }
 
+	public byte GameMode { get; init; }
+
+	public bool TimeAttackOrRaceFinished { get; init; }
+
 	public AddGameData GameData { get; init; } = null!;
 
 	[MaxLength(ReplayConstants.MaxFileSize, ErrorMessage = ReplayConstants.MaxFileSizeErrorMessage)]
