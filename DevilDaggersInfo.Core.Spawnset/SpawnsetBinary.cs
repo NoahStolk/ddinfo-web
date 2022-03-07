@@ -312,5 +312,21 @@ public class SpawnsetBinary
 	public static string GetGameVersionString(int worldVersion, int spawnVersion)
 		=> worldVersion == 8 ? "V0 / V1" : spawnVersion == 4 ? "V2 / V3" : "V3.1 / V3.2";
 
+	public (int X, float? Y, int Z) GetRaceDaggerTilePosition()
+		=> GetRaceDaggerTilePosition(ArenaTiles, RaceDaggerPosition);
+
+	public static (int X, float? Y, int Z) GetRaceDaggerTilePosition(float[,] arenaTiles, Vector2 raceDaggerPosition)
+	{
+		int x = Convert(raceDaggerPosition.X);
+		int z = Convert(raceDaggerPosition.Y);
+		float? y = null;
+		if (x >= 0 && x < ArenaWidth && z >= 0 && z < ArenaHeight)
+			y = arenaTiles[x, z];
+
+		return (x, y, z);
+
+		static int Convert(float worldPosition) => (int)MathF.Round(worldPosition / 4) + 25;
+	}
+
 	#endregion Utilities
 }

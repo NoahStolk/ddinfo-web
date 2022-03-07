@@ -2,6 +2,7 @@
 @inject PublicApiHttpClient Http
 @inject NavigationManager NavigationManager
 @using DevilDaggersInfo.Core.Spawnset
+@using DevilDaggersInfo.Core.Spawnset.Enums;
 @using DevilDaggersInfo.Core.Spawnset.View
 @using DevilDaggersInfo.Core.Wiki.Enums
 @using DevilDaggersInfo.Web.BlazorWasm.Shared.Dto.Public.Spawnsets
@@ -70,6 +71,13 @@ else
 					<DataField Name="End radius">@SpawnsetBinary.ShrinkEnd</DataField>
 					<DataField Name="Shrinking rate">@SpawnsetBinary.ShrinkRate</DataField>
 					<DataField Name="Brightness">@SpawnsetBinary.Brightness</DataField>
+					@if (SpawnsetBinary.GameMode == GameMode.Race)
+					{
+						(int raceDaggerTileX, float? raceDaggerTileY, int raceDaggerTileZ) = SpawnsetBinary.GetRaceDaggerTilePosition();
+
+						<DataField Name="Race dagger position">X: @SpawnsetBinary.RaceDaggerPosition.X.ToString("0.00") Y: @(raceDaggerTileY.HasValue ? raceDaggerTileY.Value.ToString("0.00") : "-") Z: @SpawnsetBinary.RaceDaggerPosition.Y.ToString("0.00")</DataField>
+						<DataField Name="Race dagger tile">@raceDaggerTileX x @raceDaggerTileZ</DataField>
+					}
 				</div>
 				<table class="table-fixed mt-2 border-2 border-gray-3">
 					<tbody>
