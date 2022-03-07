@@ -1,3 +1,5 @@
+using System.Numerics;
+
 namespace DevilDaggersInfo.Core.Spawnset;
 
 public class SpawnsetBinary
@@ -17,6 +19,7 @@ public class SpawnsetBinary
 		float shrinkRate,
 		float brightness,
 		GameMode gameMode,
+		Vector2 raceDaggerPosition,
 		float[,] arenaTiles,
 		Spawn[] spawns,
 		HandLevel handLevel,
@@ -33,6 +36,7 @@ public class SpawnsetBinary
 		ShrinkRate = shrinkRate;
 		Brightness = brightness;
 		GameMode = gameMode;
+		RaceDaggerPosition = raceDaggerPosition;
 		ArenaTiles = arenaTiles;
 		Spawns = spawns;
 		HandLevel = handLevel;
@@ -47,6 +51,7 @@ public class SpawnsetBinary
 	public float ShrinkRate { get; }
 	public float Brightness { get; }
 	public GameMode GameMode { get; }
+	public Vector2 RaceDaggerPosition { get; }
 
 	public float[,] ArenaTiles { get; }
 	public Spawn[] Spawns { get; }
@@ -99,7 +104,9 @@ public class SpawnsetBinary
 		}
 
 		// Spawns header
-		br.Seek(worldVersion >= 9 ? 36 : 32);
+		float raceDaggerX = br.ReadSingle();
+		float raceDaggerZ = br.ReadSingle();
+		br.Seek(worldVersion >= 9 ? 28 : 24);
 		int spawnCount = br.ReadInt32();
 
 		// Spawns
@@ -126,7 +133,7 @@ public class SpawnsetBinary
 				timerStart = br.ReadSingle();
 		}
 
-		return new(spawnVersion, worldVersion, shrinkStart, shrinkEnd, shrinkRate, brightness, gameMode, arenaTiles, spawns, handLevel, additionalGems, timerStart);
+		return new(spawnVersion, worldVersion, shrinkStart, shrinkEnd, shrinkRate, brightness, gameMode, new(raceDaggerX, raceDaggerZ), arenaTiles, spawns, handLevel, additionalGems, timerStart);
 	}
 
 	#endregion Parsing
@@ -159,7 +166,9 @@ public class SpawnsetBinary
 		}
 
 		// Spawns header
-		bw.Seek(12, SeekOrigin.Current);
+		bw.Write(RaceDaggerPosition.X);
+		bw.Write(RaceDaggerPosition.Y);
+		bw.Seek(4, SeekOrigin.Current);
 		bw.Write(0x01);
 		bw.Write(WorldVersion == 8 ? (byte)0x90 : (byte)0xF4);
 		bw.Write((byte)0x01);
@@ -201,7 +210,7 @@ public class SpawnsetBinary
 	#region Utilities
 
 	public static SpawnsetBinary CreateDefault()
-		=> new(6, 9, 50, 20, 0.025f, 60, GameMode.Default, new float[ArenaWidth, ArenaHeight], Array.Empty<Spawn>(), HandLevel.Level1, 0, 0);
+		=> new(6, 9, 50, 20, 0.025f, 60, GameMode.Default, default, new float[ArenaWidth, ArenaHeight], Array.Empty<Spawn>(), HandLevel.Level1, 0, 0);
 
 	public static bool IsEmptySpawn(int enemyType)
 		=> enemyType < 0 || enemyType > 9;
