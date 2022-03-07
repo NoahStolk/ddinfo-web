@@ -119,7 +119,7 @@ public class CustomLeaderboardsController : ControllerBase
 		if (!SpawnsetBinary.TryParse(System.IO.File.ReadAllBytes(Path.Combine(_fileSystemService.GetPath(DataSubDirectory.Spawnsets), spawnset.Name)), out SpawnsetBinary? spawnsetBinary))
 			throw new($"Could not parse survival file '{spawnset.Name}'. Please review the file. Also review how this file ended up in the 'spawnsets' directory, as it is not possible to upload non-survival files from within the Admin pages.");
 
-		GameMode requiredGameMode = RequiredGameModeForCategory(addCustomLeaderboard.Category);
+		GameMode requiredGameMode = addCustomLeaderboard.Category.GetRequiredGameModeForCategory();
 		if (spawnsetBinary.GameMode != requiredGameMode)
 			return BadRequest($"Game mode must be '{requiredGameMode}' when the custom leaderboard category is '{addCustomLeaderboard.Category}'. The spawnset has game mode '{spawnsetBinary.GameMode}'.");
 
@@ -146,14 +146,6 @@ public class CustomLeaderboardsController : ControllerBase
 		await _auditLogger.LogAdd(addCustomLeaderboard.GetLog(), User, customLeaderboard.Id);
 
 		return Ok(customLeaderboard.Id);
-
-		static GameMode RequiredGameModeForCategory(CustomLeaderboardCategory clc) => clc switch
-		{
-			CustomLeaderboardCategory.Default or CustomLeaderboardCategory.Speedrun => GameMode.Default,
-			CustomLeaderboardCategory.TimeAttack => GameMode.TimeAttack,
-			CustomLeaderboardCategory.Race => GameMode.Race,
-			_ => throw new NotSupportedException($"CL category {clc} is not supported."),
-		};
 	}
 
 	[HttpPut("{id}")]
