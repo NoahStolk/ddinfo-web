@@ -19,7 +19,7 @@ else
 
 	<Heading Title="Features" Level="2" />
 	<ul class="pl-4">
-		<li class="list-disc">Participate in @GetTotalCustomLeaderboardData.LeaderboardsPerCategory[CustomLeaderboardCategory.Default].ToString("N0") custom survival leaderboards and @GetTotalCustomLeaderboardData.LeaderboardsPerCategory[CustomLeaderboardCategory.Speedrun].ToString("N0") custom speedrun leaderboards</li>
+		<li class="list-disc">Participate in @GetTotalCustomLeaderboardData.LeaderboardsPerCategory.Sum(dict => dict.Value).ToString("N0") different custom leaderboards</li>
 		<li class="list-disc">@GetTotalCustomLeaderboardData.PlayersPerCategory.Values.Sum().ToString("N0") players</li>
 		<li class="list-disc">@GetTotalCustomLeaderboardData.ScoresPerCategory.Values.Sum().ToString("N0") scores</li>
 		<li class="list-disc">@GetTotalCustomLeaderboardData.SubmitsPerCategory.Values.Sum().ToString("N0") total submissions (since @FeatureConstants.TrackingCustomLeaderboardSubmitCounts.ToString(FormatUtils.DateFormat))</li>
