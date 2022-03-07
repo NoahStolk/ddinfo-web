@@ -210,7 +210,7 @@ public class SpawnsetBinary
 	#region Utilities
 
 	public static SpawnsetBinary CreateDefault()
-		=> new(6, 9, 50, 20, 0.025f, 60, GameMode.Default, default, new float[ArenaWidth, ArenaHeight], Array.Empty<Spawn>(), HandLevel.Level1, 0, 0);
+		=> new(6, 9, 50, 20, 0.025f, 60, GameMode.Survival, default, new float[ArenaWidth, ArenaHeight], Array.Empty<Spawn>(), HandLevel.Level1, 0, 0);
 
 	public static bool IsEmptySpawn(int enemyType)
 		=> enemyType < 0 || enemyType > 9;
@@ -226,7 +226,7 @@ public class SpawnsetBinary
 
 	public static bool HasEndLoop(Spawn[] spawns, GameMode gameMode)
 	{
-		if (gameMode != GameMode.Default || !HasSpawns(spawns))
+		if (gameMode != GameMode.Survival || !HasSpawns(spawns))
 			return false;
 
 		int loopStartIndex = GetLoopStartIndex(spawns);

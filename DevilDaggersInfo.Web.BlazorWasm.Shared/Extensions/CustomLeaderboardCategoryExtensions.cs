@@ -9,7 +9,7 @@ public static class CustomLeaderboardCategoryExtensions
 
 	public static GameMode GetRequiredGameModeForCategory(this CustomLeaderboardCategory category) => category switch
 	{
-		CustomLeaderboardCategory.Default or CustomLeaderboardCategory.Speedrun => GameMode.Default,
+		CustomLeaderboardCategory.Survival or CustomLeaderboardCategory.Speedrun => GameMode.Survival,
 		CustomLeaderboardCategory.TimeAttack => GameMode.TimeAttack,
 		CustomLeaderboardCategory.Race => GameMode.Race,
 		_ => throw new NotSupportedException($"{nameof(CustomLeaderboardCategory)} {category} is not supported."),

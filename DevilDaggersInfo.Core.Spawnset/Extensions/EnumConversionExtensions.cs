@@ -29,6 +29,6 @@ public static class EnumConversionExtensions
 	{
 		1 => GameMode.TimeAttack,
 		2 => GameMode.Race,
-		_ => GameMode.Default,
+		_ => GameMode.Survival,
 	};
 }

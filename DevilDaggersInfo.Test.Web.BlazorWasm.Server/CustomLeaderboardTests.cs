@@ -35,7 +35,7 @@ public class CustomLeaderboardTests
 	[TestMethod]
 	public void TestIsAscending()
 	{
-		Assert.IsFalse(CustomLeaderboardCategory.Default.IsAscending());
+		Assert.IsFalse(CustomLeaderboardCategory.Survival.IsAscending());
 		Assert.IsTrue(CustomLeaderboardCategory.TimeAttack.IsAscending());
 		Assert.IsTrue(CustomLeaderboardCategory.Speedrun.IsAscending());
 	}

@@ -67,7 +67,7 @@ public class MockEntities
 		TimeGolden = 2500000,
 		TimeDevil = 5000000,
 		TimeLeviathan = 10000000,
-		Category = CustomLeaderboardCategory.Default,
+		Category = CustomLeaderboardCategory.Survival,
 		DateCreated = DateTime.UtcNow,
 		DateLastPlayed = DateTime.UtcNow,
 		SpawnsetId = 1,
