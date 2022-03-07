@@ -1,6 +1,18 @@
 {
 	"DevilDaggersSurvivalEditor": [
 		{
+			"VersionNumber": "2.44.0.0",
+			"Date": "2022-03-07T00:00:00",
+			"Changes": [
+				{
+					"Description": "Added support for the Race game mode."
+				},
+				{
+					"Description": "Added error message on launch when you have a folder named 'survival' in the mods folder."
+				}
+			]
+		},
+		{
 			"VersionNumber": "2.42.2.0",
 			"Date": "2022-01-09T00:00:00",
 			"Changes": [
