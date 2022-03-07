@@ -116,6 +116,11 @@ public class CustomEntryProcessor
 
 		CustomLeaderboardsClient client = GetClientFromString(uploadRequest.Client);
 
+		// Validate game mode.
+		GameMode requiredGameMode = customLeaderboard.Category.GetRequiredGameModeForCategory();
+		if (uploadRequest.GameMode != (byte)requiredGameMode)
+			throw LogAndCreateValidationException(uploadRequest, $"Incorrect game mode '{(GameMode)uploadRequest.GameMode}' for category '{customLeaderboard.Category}'. Must be '{requiredGameMode}'.", spawnsetName);
+
 		// Validate TimeAttack and Race.
 		if (customLeaderboard.Category is CustomLeaderboardCategory.TimeAttack or CustomLeaderboardCategory.Race)
 		{
@@ -131,12 +136,6 @@ public class CustomEntryProcessor
 
 			if (!uploadRequest.TimeAttackOrRaceFinished)
 				throw LogAndCreateValidationException(uploadRequest, "Didn't complete the spawnset.", spawnsetName);
-
-			if (customLeaderboard.Category == CustomLeaderboardCategory.TimeAttack && uploadRequest.GameMode != 1)
-				throw LogAndCreateValidationException(uploadRequest, $"Incorrect game mode for TimeAttack ({uploadRequest.GameMode}).", spawnsetName);
-
-			if (customLeaderboard.Category == CustomLeaderboardCategory.Race && uploadRequest.GameMode != 2)
-				throw LogAndCreateValidationException(uploadRequest, $"Incorrect game mode for Race ({uploadRequest.GameMode}).", spawnsetName);
 		}
 
 		bool isAscending = customLeaderboard.Category.IsAscending();
