@@ -5,4 +5,5 @@ public enum CustomLeaderboardCategory
 	Default = 1,
 	TimeAttack = 2,
 	Speedrun = 3,
+	Race = 4,
 }
