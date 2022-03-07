@@ -75,17 +75,14 @@ else
 
 @if (GetTotalCustomLeaderboardData != null)
 {
-	<Heading Title="Statistics" Level="2" />
+	<div class="grid gap-2 grid-cols-1 md:grid-cols-2 mt-4">
+		<div class="leviathan text-4xl text-center font-goethe">@GetTotalCustomLeaderboardData.LeaderboardsPerCategory.Values.Sum().ToString("N0") LEADERBOARDS</div>
+		<div class="leviathan text-4xl text-center font-goethe">@GetTotalCustomLeaderboardData.PlayersPerCategory.Values.Sum().ToString("N0") PLAYERS</div>
+		<div class="leviathan text-4xl text-center font-goethe">@GetTotalCustomLeaderboardData.ScoresPerCategory.Values.Sum().ToString("N0") SCORES</div>
+		<div class="leviathan text-4xl text-center font-goethe">@GetTotalCustomLeaderboardData.SubmitsPerCategory.Values.Sum().ToString("N0") SUBMISSIONS*</div>
+	</div>
 
 	<div class="grid gap-2 grid-cols-1 md:grid-cols-2 lg:grid-cols-4">
-		<div>
-			<Heading Title="Total" Level="3" />
-			<p>@GetTotalCustomLeaderboardData.LeaderboardsPerCategory.Values.Sum().ToString("N0") leaderboards</p>
-			<p>@GetTotalCustomLeaderboardData.PlayersPerCategory.Values.Sum().ToString("N0") players</p>
-			<p>@GetTotalCustomLeaderboardData.ScoresPerCategory.Values.Sum().ToString("N0") scores</p>
-			<p>@GetTotalCustomLeaderboardData.SubmitsPerCategory.Values.Sum().ToString("N0") submissions*</p>
-		</div>
-
 		@foreach (CustomLeaderboardCategory category in Enum.GetValues<CustomLeaderboardCategory>())
 		{
 			<div>
