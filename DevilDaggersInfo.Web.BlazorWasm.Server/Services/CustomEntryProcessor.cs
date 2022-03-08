@@ -126,14 +126,8 @@ public class CustomEntryProcessor
 		// Validate TimeAttack and Race.
 		if (customLeaderboard.Category is CustomLeaderboardCategory.TimeAttack or CustomLeaderboardCategory.Race)
 		{
-			// Temporary workaround until TimeAttack works in latest required DDCL.
-			bool timeAttackOrRaceSupported = client switch
-			{
-				CustomLeaderboardsClient.DdstatsRust => clientVersionParsed > new Version(0, 6, 10, 3),
-				_ => clientVersionParsed > new Version(1, 5, 3, 0),
-			};
-
-			if (!timeAttackOrRaceSupported)
+			// Temporary workaround until TimeAttack works in latest required ddstats-rust.
+			if (client == CustomLeaderboardsClient.DdstatsRust && clientVersionParsed <= new Version(0, 6, 10, 3))
 				throw LogAndCreateValidationException(uploadRequest, $"TimeAttack or Race leaderboards are not supported in {uploadRequest.Client} {clientVersionParsed}.", spawnsetName);
 
 			if (!uploadRequest.TimeAttackOrRaceFinished)
