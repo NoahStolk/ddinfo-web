@@ -78,6 +78,8 @@ public class CustomEntryProcessor
 		if (uploadRequest.IsReplay)
 		{
 			int replaySpawnsetLength = BitConverter.ToInt32(uploadRequest.ReplayData, 84);
+			if (replaySpawnsetLength < 0 || replaySpawnsetLength > SpawnsetConstants.MaxFileSize)
+				throw LogAndCreateValidationException(uploadRequest, $"Invalid replay spawnset size ({replaySpawnsetLength} / {SpawnsetConstants.MaxFileSize}).");
 			if (uploadRequest.ReplayData.Length < 88 + replaySpawnsetLength)
 				throw LogAndCreateValidationException(uploadRequest, $"Replay spawnset size out of bounds ({replaySpawnsetLength} / {uploadRequest.ReplayData.Length}).");
 
