@@ -72,14 +72,14 @@ public class CustomEntryProcessor
 			throw LogAndCreateValidationException(uploadRequest, "Replay data is required.");
 
 		if (uploadRequest.ReplayData.Length < 88)
-			throw LogAndCreateValidationException(uploadRequest, "Invalid replay.");
+			throw LogAndCreateValidationException(uploadRequest, $"Invalid replay (length {uploadRequest.ReplayData.Length}).");
 
 		// Validate replay buffer spawnset hash in case of replay.
 		if (uploadRequest.IsReplay)
 		{
 			int replaySpawnsetLength = BitConverter.ToInt32(uploadRequest.ReplayData, 84);
 			if (uploadRequest.ReplayData.Length < 88 + replaySpawnsetLength)
-				throw LogAndCreateValidationException(uploadRequest, "Invalid replay.");
+				throw LogAndCreateValidationException(uploadRequest, $"Replay spawnset size out of bounds ({replaySpawnsetLength} / {uploadRequest.ReplayData.Length}).");
 
 			byte[] replaySpawnset = new byte[replaySpawnsetLength];
 			Buffer.BlockCopy(uploadRequest.ReplayData, 88, replaySpawnset, 0, replaySpawnsetLength);
