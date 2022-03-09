@@ -128,8 +128,8 @@ public class CustomEntryProcessor
 			throw LogAndCreateValidationException(uploadRequest, $"Didn't complete the {customLeaderboard.Category} spawnset.", spawnsetName);
 
 		// Validate Pacifist.
-		if (customLeaderboard.Category == CustomLeaderboardCategory.Pacifist && uploadRequest.EnemiesKilled > 0)
-			throw LogAndCreateValidationException(uploadRequest, $"Killed {uploadRequest.EnemiesKilled} {(uploadRequest.EnemiesKilled == 1 ? "enemy" : "enemies")}. Can't submit score to {CustomLeaderboardCategory.Pacifist} leaderboard.", spawnsetName);
+		if (customLeaderboard.Category == CustomLeaderboardCategory.Pacifist && uploadRequest.DaggersHit > 0)
+			throw LogAndCreateValidationException(uploadRequest, $"Counted {uploadRequest.DaggersHit} dagger {(uploadRequest.DaggersHit == 1 ? "hit" : "hits")}. Can't submit score to {CustomLeaderboardCategory.Pacifist} leaderboard.", spawnsetName);
 
 		bool isAscending = customLeaderboard.Category.IsAscending();
 
