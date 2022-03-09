@@ -78,7 +78,7 @@ public class CustomLeaderboardsController : ControllerBase
 			.AsNoTracking()
 			.Where(ce => customLeaderboardIds.Contains(ce.CustomLeaderboardId))
 			.Include(ce => ce.Player)
-			.Select(ce => new { ce.Time, ce.Player.PlayerName, ce.CustomLeaderboardId });
+			.Select(ce => new { ce.Time, ce.Player.PlayerName, ce.CustomLeaderboardId, ce.SubmitDate });
 
 		// Build dictionary for amount of players.
 		Dictionary<int, int> customEntryCountByCustomLeaderboardId = new();
@@ -109,9 +109,9 @@ public class CustomLeaderboardsController : ControllerBase
 
 		// Determine world records.
 		if (category.IsAscending())
-			customEntries = customEntries.OrderBy(wr => wr.Time);
+			customEntries = customEntries.OrderBy(wr => wr.Time).ThenBy(wr => wr.SubmitDate);
 		else
-			customEntries = customEntries.OrderByDescending(wr => wr.Time);
+			customEntries = customEntries.OrderByDescending(wr => wr.Time).ThenBy(wr => wr.SubmitDate);
 
 		// Map custom leaderboards with world record data.
 		List<CustomLeaderboardWorldRecord> customLeaderboardWrs = customLeaderboards
@@ -172,7 +172,7 @@ public class CustomLeaderboardsController : ControllerBase
 			.AsNoTracking()
 			.Where(ce => customLeaderboardIds.Contains(ce.CustomLeaderboardId))
 			.Include(ce => ce.Player)
-			.Select(ce => new { ce.Time, ce.PlayerId, ce.Player.PlayerName, ce.CustomLeaderboardId });
+			.Select(ce => new { ce.Time, ce.PlayerId, ce.Player.PlayerName, ce.CustomLeaderboardId, ce.SubmitDate });
 
 		// Build dictionary for amount of players.
 		Dictionary<int, int> customEntryCountByCustomLeaderboardId = new();
@@ -189,8 +189,8 @@ public class CustomLeaderboardsController : ControllerBase
 		foreach (CustomLeaderboardEntity cl in customLeaderboards)
 		{
 			var worldRecord = cl.Category.IsAscending()
-				? customEntries.OrderBy(ce => ce.Time).FirstOrDefault(clwr => clwr.CustomLeaderboardId == cl.Id)
-				: customEntries.OrderByDescending(ce => ce.Time).FirstOrDefault(clwr => clwr.CustomLeaderboardId == cl.Id);
+				? customEntries.OrderBy(ce => ce.Time).ThenBy(ce => ce.SubmitDate).FirstOrDefault(clwr => clwr.CustomLeaderboardId == cl.Id)
+				: customEntries.OrderByDescending(ce => ce.Time).ThenBy(ce => ce.SubmitDate).FirstOrDefault(clwr => clwr.CustomLeaderboardId == cl.Id);
 
 			customLeaderboardWrs.Add(new(cl, worldRecord?.Time, worldRecord?.PlayerId, worldRecord?.PlayerName));
 		}

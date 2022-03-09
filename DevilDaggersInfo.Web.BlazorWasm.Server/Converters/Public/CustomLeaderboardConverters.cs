@@ -78,6 +78,7 @@ public static class CustomLeaderboardConverters
 		DateLastPlayed = customLeaderboard.DateLastPlayed,
 		CustomEntries = customLeaderboard.CustomEntries?
 			.OrderBy(ce => ce.Time, customLeaderboard.Category.IsAscending())
+			.ThenBy(ce => ce.SubmitDate)
 			.Select((ce, i) => ce.ToGetCustomEntry(i + 1, existingReplayIds.Contains(ce.Id)))
 			.ToList() ?? new(),
 	};
