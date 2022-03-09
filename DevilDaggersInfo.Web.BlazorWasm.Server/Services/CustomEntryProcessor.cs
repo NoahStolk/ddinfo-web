@@ -129,7 +129,7 @@ public class CustomEntryProcessor
 
 		// Validate Pacifist.
 		if (customLeaderboard.Category == CustomLeaderboardCategory.Pacifist && uploadRequest.EnemiesKilled > 0)
-			throw LogAndCreateValidationException(uploadRequest, $"Killed {uploadRequest.EnemiesKilled} enemies. Can't submit score to {CustomLeaderboardCategory.Pacifist} leaderboard.", spawnsetName);
+			throw LogAndCreateValidationException(uploadRequest, $"Killed {uploadRequest.EnemiesKilled} {(uploadRequest.EnemiesKilled == 1 ? "enemy" : "enemies")}. Can't submit score to {CustomLeaderboardCategory.Pacifist} leaderboard.", spawnsetName);
 
 		bool isAscending = customLeaderboard.Category.IsAscending();
 
