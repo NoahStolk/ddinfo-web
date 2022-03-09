@@ -191,11 +191,9 @@ public class CustomLeaderboardsController : ControllerBase
 		if (!SpawnsetBinary.TryParse(System.IO.File.ReadAllBytes(Path.Combine(_fileSystemService.GetPath(DataSubDirectory.Spawnsets), spawnset.Name)), out SpawnsetBinary? spawnsetBinary))
 			throw new($"Could not parse survival file '{spawnset.Name}'. Please review the file. Also review how this file ended up in the 'spawnsets' directory, as it is not possible to upload non-survival files from within the Admin pages.");
 
-		if (editCustomLeaderboard.Category == CustomLeaderboardCategory.TimeAttack && spawnsetBinary.GameMode != GameMode.TimeAttack
-		 || editCustomLeaderboard.Category != CustomLeaderboardCategory.TimeAttack && spawnsetBinary.GameMode == GameMode.TimeAttack)
-		{
-			return BadRequest($"Spawnset game mode is '{spawnsetBinary.GameMode}' while custom leaderboard category is '{editCustomLeaderboard.Category}'.");
-		}
+		GameMode requiredGameMode = editCustomLeaderboard.Category.GetRequiredGameModeForCategory();
+		if (spawnsetBinary.GameMode != requiredGameMode)
+			return BadRequest($"Game mode must be '{requiredGameMode}' when the custom leaderboard category is '{editCustomLeaderboard.Category}'. The spawnset has game mode '{spawnsetBinary.GameMode}'.");
 
 		if (spawnsetBinary.TimerStart != 0)
 			return BadRequest("Cannot create a leaderboard for spawnset that uses the TimerStart value. This value is meant for practice and it is confusing to use it with custom leaderboards, as custom leaderboards always use the 'actual' timer value.");
