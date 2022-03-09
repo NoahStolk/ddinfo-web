@@ -124,15 +124,8 @@ public class CustomEntryProcessor
 			throw LogAndCreateValidationException(uploadRequest, $"Incorrect game mode '{(GameMode)uploadRequest.GameMode}' for category '{customLeaderboard.Category}'. Must be '{requiredGameMode}'.", spawnsetName);
 
 		// Validate TimeAttack and Race.
-		if (customLeaderboard.Category is CustomLeaderboardCategory.TimeAttack or CustomLeaderboardCategory.Race)
-		{
-			// Temporary workaround until TimeAttack works in latest required ddstats-rust.
-			if (client == CustomLeaderboardsClient.DdstatsRust && clientVersionParsed <= new Version(0, 6, 10, 3))
-				throw LogAndCreateValidationException(uploadRequest, $"TimeAttack or Race leaderboards are not supported in {uploadRequest.Client} {clientVersionParsed}.", spawnsetName);
-
-			if (!uploadRequest.TimeAttackOrRaceFinished)
-				throw LogAndCreateValidationException(uploadRequest, "Didn't complete the spawnset.", spawnsetName);
-		}
+		if (customLeaderboard.Category is CustomLeaderboardCategory.TimeAttack or CustomLeaderboardCategory.Race && !uploadRequest.TimeAttackOrRaceFinished)
+			throw LogAndCreateValidationException(uploadRequest, "Didn't complete the spawnset.", spawnsetName);
 
 		bool isAscending = customLeaderboard.Category.IsAscending();
 
