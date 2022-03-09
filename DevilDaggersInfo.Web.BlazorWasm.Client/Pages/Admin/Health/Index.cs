@@ -29,7 +29,7 @@ public partial class Index
 
 	private readonly LineChartOptions _customEntrySubmitLineChartOptions = new()
 	{
-		HighlighterKeys = new() { "Time", "Min Response Time", "Avg Response Time", "Max Response Time" },
+		HighlighterKeys = new() { "Time", "Max Response Time", "Avg Response Time", "Min Response Time" },
 		XScaleDisplayUnit = ScaleDisplayUnit.MinutesAsTime,
 		YScaleDisplayUnit = ScaleDisplayUnit.TicksAsSeconds,
 		GridOptions = new()
@@ -42,7 +42,7 @@ public partial class Index
 
 	private readonly LineChartOptions _customLeaderboardExistsLineChartOptions = new()
 	{
-		HighlighterKeys = new() { "Time", "Min Response Time", "Avg Response Time", "Max Response Time" },
+		HighlighterKeys = new() { "Time", "Max Response Time", "Avg Response Time", "Min Response Time" },
 		XScaleDisplayUnit = ScaleDisplayUnit.MinutesAsTime,
 		YScaleDisplayUnit = ScaleDisplayUnit.TicksAsSeconds,
 		GridOptions = new()
