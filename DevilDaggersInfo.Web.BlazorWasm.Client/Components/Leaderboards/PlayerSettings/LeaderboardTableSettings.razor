@@ -22,7 +22,7 @@
 		<div @onclick="() => Sort(LeaderboardSorting.UsesLegacyAudio)" class="text-left hidden xl:block"><Tooltip Text="Sort by LEGACY AUDIO"><span class="cursor-pointer font-goethe text-xl">Legacy audio</span></Tooltip></div>
 		<div @onclick="() => Sort(LeaderboardSorting.UsesHrtf)" class="text-left hidden xl:block"><Tooltip Text="Sort by HRTF"><span class="cursor-pointer font-goethe text-xl">HRTF</span></Tooltip></div>
 		<div @onclick="() => Sort(LeaderboardSorting.UsesInvertY)" class="text-left hidden xl:block"><Tooltip Text="Sort by INVERT Y"><span class="cursor-pointer font-goethe text-xl">Invert Y</span></Tooltip></div>
-		<div @onclick="() => Sort(LeaderboardSorting.VerticalSync)" class="text-left hidden xl:block"><Tooltip Text="Sort by VSYNC"><span class="cursor-pointer font-goethe text-xl">VSync</span></Tooltip></div>
+		<div @onclick="() => Sort(LeaderboardSorting.VerticalSync)" class="text-left hidden xl:block"><Tooltip Text="Sort by V-SYNC"><span class="cursor-pointer font-goethe text-xl">V-sync</span></Tooltip></div>
 	</div>
 	<div>
 		@{
@@ -89,7 +89,7 @@
 					<div class="xl:hidden text-right">@hrtf</div>
 					<div class="xl:hidden">Invert Y</div>
 					<div class="xl:hidden text-right">@invertY</div>
-					<div class="xl:hidden">VSync</div>
+					<div class="xl:hidden">V-sync</div>
 					<div class="xl:hidden text-right">@vSync</div>
 				</div>
 			}
