@@ -5,13 +5,13 @@
 @using DevilDaggersInfo.Web.BlazorWasm.Shared.Dto.Admin.Players
 @using DevilDaggersInfo.Web.BlazorWasm.Shared.Enums
 
-<AdminEdit TModel="EditDonation" Name="Donation" OverviewUrl="/admin/donations" ApiCall="Http.EditDonationById" Model="_editDonation" Id="Id" @ref="_editComponent">
-	<AdminInput Label="@nameof(EditDonation.PlayerId)"><SearchDropdown TKey=int Values="@_playerNames" Converter="s => int.Parse(s)" @bind-Value="@_editDonation.PlayerId" /></AdminInput>
-	<AdminInput Label="@nameof(EditDonation.Amount)"><InputNumber class="w-64 pl-2 bg-gray-1 text-color-text" @bind-Value="_editDonation.Amount" /></AdminInput>
-	<AdminInput Label="@nameof(EditDonation.Currency)"><SearchDropdown TKey=Currency Values="@(Enum.GetValues<Currency>().ToDictionary(e => e, e => e.ToString()))" Converter="s => Enum.Parse<Currency>(s)" @bind-Value="@_editDonation.Currency" /></AdminInput>
-	<AdminInput Label="@nameof(EditDonation.ConvertedEuroCentsReceived)"><InputNumber class="w-64 pl-2 bg-gray-1 text-color-text" @bind-Value="_editDonation.ConvertedEuroCentsReceived" /></AdminInput>
-	<AdminInput Label="@nameof(EditDonation.Note)"><InputTextArea class="w-64 h-64 pl-2 bg-gray-1 text-color-text" @bind-Value="@_editDonation.Note" /></AdminInput>
-	<AdminInput Label="@nameof(EditDonation.IsRefunded)"><InputCheckbox @bind-Value="@_editDonation.IsRefunded" /></AdminInput>
+<AdminEdit Name="Donation" OverviewUrl="/admin/donations" ApiCall="Http.EditDonationById" Model="_editDonation" Id="Id" @ref="_editComponent">
+	<AdminInput Label="Player"><SearchDropdown TKey=int Values="@_playerNames" Converter="s => int.Parse(s)" @bind-Value="@_editDonation.PlayerId" /></AdminInput>
+	<AdminInput Label="Amount"><InputNumber class="w-64 pl-2 bg-gray-1 text-color-text" @bind-Value="_editDonation.Amount" /></AdminInput>
+	<AdminInput Label="Currency"><SearchDropdown TKey=Currency Values="@(Enum.GetValues<Currency>().ToDictionary(e => e, e => e.ToString()))" Converter="s => Enum.Parse<Currency>(s)" @bind-Value="@_editDonation.Currency" /></AdminInput>
+	<AdminInput Label="ConvertedEuroCentsReceived"><InputNumber class="w-64 pl-2 bg-gray-1 text-color-text" @bind-Value="_editDonation.ConvertedEuroCentsReceived" /></AdminInput>
+	<AdminInput Label="Note"><InputTextArea class="w-64 h-64 pl-2 bg-gray-1 text-color-text" @bind-Value="@_editDonation.Note" /></AdminInput>
+	<AdminInput Label="Refunded"><InputCheckbox @bind-Value="@_editDonation.IsRefunded" /></AdminInput>
 </AdminEdit>
 
 @code

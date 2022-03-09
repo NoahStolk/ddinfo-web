@@ -4,12 +4,12 @@
 @using DevilDaggersInfo.Web.BlazorWasm.Shared.Dto.Admin.Players
 @using DevilDaggersInfo.Web.BlazorWasm.Shared.Dto.Admin.Spawnsets
 
-<AdminEdit TModel="EditSpawnset" Name="Spawnset" OverviewUrl="/admin/spawnsets" ApiCall="Http.EditSpawnsetById" Model="_editSpawnset" Id="Id" @ref="_editComponent">
-	<AdminInput Label="@nameof(EditSpawnset.PlayerId)"><SearchDropdown TKey=int Values="@_playerNames" Converter="s => int.Parse(s)" @bind-Value="@_editSpawnset.PlayerId" /></AdminInput>
-	<AdminInput Label="@nameof(EditSpawnset.Name)"><InputText class="w-64 pl-2 bg-gray-1 text-color-text" @bind-Value="@_editSpawnset.Name" /></AdminInput>
-	<AdminInput Label="@nameof(EditSpawnset.MaxDisplayWaves)"><InputNumber class="w-64 pl-2 bg-gray-1 text-color-text" @bind-Value="_editSpawnset.MaxDisplayWaves" /></AdminInput>
-	<AdminInput Label="@nameof(EditSpawnset.HtmlDescription)"><InputTextArea class="w-64 h-64 pl-2 bg-gray-1 text-color-text" @bind-Value="@_editSpawnset.HtmlDescription" /></AdminInput>
-	<AdminInput Label="@nameof(EditSpawnset.IsPractice)"><InputCheckbox @bind-Value="@_editSpawnset.IsPractice" /></AdminInput>
+<AdminEdit Name="Spawnset" OverviewUrl="/admin/spawnsets" ApiCall="Http.EditSpawnsetById" Model="_editSpawnset" Id="Id" @ref="_editComponent">
+	<AdminInput Label="Author"><SearchDropdown TKey=int Values="@_playerNames" Converter="s => int.Parse(s)" @bind-Value="@_editSpawnset.PlayerId" /></AdminInput>
+	<AdminInput Label="Name"><InputText class="w-64 pl-2 bg-gray-1 text-color-text" @bind-Value="@_editSpawnset.Name" /></AdminInput>
+	<AdminInput Label="Max display waves"><InputNumber class="w-64 pl-2 bg-gray-1 text-color-text" @bind-Value="_editSpawnset.MaxDisplayWaves" /></AdminInput>
+	<AdminInput Label="HTML description"><InputTextArea class="w-64 h-64 pl-2 bg-gray-1 text-color-text" @bind-Value="@_editSpawnset.HtmlDescription" /></AdminInput>
+	<AdminInput Label="Practice"><InputCheckbox @bind-Value="@_editSpawnset.IsPractice" /></AdminInput>
 </AdminEdit>
 
 @code

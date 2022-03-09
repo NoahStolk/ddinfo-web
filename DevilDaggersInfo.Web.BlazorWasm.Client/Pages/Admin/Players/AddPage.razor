@@ -6,26 +6,26 @@
 @using DevilDaggersInfo.Web.BlazorWasm.Shared.Enums
 
 <AdminAdd Name="Player" OverviewUrl="/admin/players" ApiCall="Http.AddPlayer" Model="_addPlayer" @ref="_addComponent">
-	<AdminInput Label="@nameof(AddPlayer.Id)"><InputNumber class="w-64 pl-2 bg-gray-1 text-color-text" @bind-Value="_addPlayer.Id" /></AdminInput>
-	<AdminInput Label="@nameof(AddPlayer.CountryCode)"><SearchDropdown TKey=string Values="@(UserUtils.CountryNames)" Converter="s => s" @bind-Value="@_addPlayer.CountryCode" /></AdminInput>
-	<AdminInput Label="@nameof(AddPlayer.Dpi)"><InputNumber class="w-64 pl-2 bg-gray-1 text-color-text" @bind-Value="_addPlayer.Dpi" /></AdminInput>
-	<AdminInput Label="@nameof(AddPlayer.Fov)"><InputNumber class="w-64 pl-2 bg-gray-1 text-color-text" @bind-Value="_addPlayer.Fov" /></AdminInput>
-	<AdminInput Label="@nameof(AddPlayer.Gamma)"><InputNumber class="w-64 pl-2 bg-gray-1 text-color-text" @bind-Value="_addPlayer.Gamma" /></AdminInput>
-	<AdminInput Label="@nameof(AddPlayer.HasFlashHandEnabled)"><InputNullableBoolean @bind-Value="@_addPlayer.HasFlashHandEnabled" /></AdminInput>
-	<AdminInput Label="@nameof(AddPlayer.InGameSens)"><InputNumber class="w-64 pl-2 bg-gray-1 text-color-text" @bind-Value="@_addPlayer.InGameSens" /></AdminInput>
-	<AdminInput Label="@nameof(AddPlayer.IsRightHanded)"><InputNullableBoolean @bind-Value="@_addPlayer.IsRightHanded" /></AdminInput>
-	<AdminInput Label="@nameof(AddPlayer.UsesLegacyAudio)"><InputNullableBoolean @bind-Value="@_addPlayer.UsesLegacyAudio" /></AdminInput>
-	<AdminInput Label="@nameof(AddPlayer.UsesHrtf)"><InputNullableBoolean @bind-Value="@_addPlayer.UsesHrtf" /></AdminInput>
-	<AdminInput Label="@nameof(AddPlayer.UsesInvertY)"><InputNullableBoolean @bind-Value="@_addPlayer.UsesInvertY" /></AdminInput>
-	<AdminInput Label="@nameof(AddPlayer.VerticalSync)"><SearchDropdown TKey=VerticalSync Values="@(Enum.GetValues<VerticalSync>().ToDictionary(e => e, e => e.ToString()))" Converter="s => Enum.Parse<VerticalSync>(s)" ShowDisplayValue=false @bind-Value="@_addPlayer.VerticalSync" /></AdminInput>
-	<AdminInput Label="@nameof(AddPlayer.HideDonations)"><InputCheckbox @bind-Value="@_addPlayer.HideDonations" /></AdminInput>
-	<AdminInput Label="@nameof(AddPlayer.HidePastUsernames)"><InputCheckbox @bind-Value="@_addPlayer.HidePastUsernames" /></AdminInput>
-	<AdminInput Label="@nameof(AddPlayer.HideSettings)"><InputCheckbox @bind-Value="@_addPlayer.HideSettings" /></AdminInput>
-	<AdminInput Label="@nameof(AddPlayer.ModIds)"><MultiSearchDropdown Values="@_modNames" @bind-Value="@_addPlayer.ModIds" /></AdminInput>
-	<AdminInput Label="@nameof(AddPlayer.BanType)"><SearchDropdown TKey=BanType Values="@(Enum.GetValues<BanType>().ToDictionary(e => e, e => e.ToString()))" Converter="s => Enum.Parse<BanType>(s)" ShowDisplayValue=false @bind-Value="@_addPlayer.BanType" /></AdminInput>
-	<AdminInput Label="@nameof(AddPlayer.BanDescription)"><InputText class="w-64 pl-2 bg-gray-1 text-color-text" @bind-Value="@_addPlayer.BanDescription" /></AdminInput>
-	<AdminInput Label="@nameof(AddPlayer.BanResponsibleId)"><InputNumber class="w-64 pl-2 bg-gray-1 text-color-text" @bind-Value="@_addPlayer.BanResponsibleId" /></AdminInput>
-	<AdminInput Label="@nameof(AddPlayer.IsBannedFromDdcl)"><InputCheckbox @bind-Value="@_addPlayer.IsBannedFromDdcl" /></AdminInput>
+	<AdminInput Label="Id"><InputNumber class="w-64 pl-2 bg-gray-1 text-color-text" @bind-Value="_addPlayer.Id" /></AdminInput>
+	<AdminInput Label="Country (flag)"><SearchDropdown TKey=string Values="@(UserUtils.CountryNames)" Converter="s => s" @bind-Value="@_addPlayer.CountryCode" /></AdminInput>
+	<AdminInput Label="DPI"><InputNumber class="w-64 pl-2 bg-gray-1 text-color-text" @bind-Value="_addPlayer.Dpi" /></AdminInput>
+	<AdminInput Label="FOV"><InputNumber class="w-64 pl-2 bg-gray-1 text-color-text" @bind-Value="_addPlayer.Fov" /></AdminInput>
+	<AdminInput Label="Gamma"><InputNumber class="w-64 pl-2 bg-gray-1 text-color-text" @bind-Value="_addPlayer.Gamma" /></AdminInput>
+	<AdminInput Label="Flash hand"><InputNullableBoolean @bind-Value="@_addPlayer.HasFlashHandEnabled" /></AdminInput>
+	<AdminInput Label="In-game sens"><InputNumber class="w-64 pl-2 bg-gray-1 text-color-text" @bind-Value="@_addPlayer.InGameSens" /></AdminInput>
+	<AdminInput Label="Right handed"><InputNullableBoolean @bind-Value="@_addPlayer.IsRightHanded" /></AdminInput>
+	<AdminInput Label="Legacy audio"><InputNullableBoolean @bind-Value="@_addPlayer.UsesLegacyAudio" /></AdminInput>
+	<AdminInput Label="HRTF"><InputNullableBoolean @bind-Value="@_addPlayer.UsesHrtf" /></AdminInput>
+	<AdminInput Label="Invert Y"><InputNullableBoolean @bind-Value="@_addPlayer.UsesInvertY" /></AdminInput>
+	<AdminInput Label="V-sync"><SearchDropdown TKey=VerticalSync Values="@(Enum.GetValues<VerticalSync>().ToDictionary(e => e, e => e.ToString()))" Converter="s => Enum.Parse<VerticalSync>(s)" ShowDisplayValue=false @bind-Value="@_addPlayer.VerticalSync" /></AdminInput>
+	<AdminInput Label="Hide donations"><InputCheckbox @bind-Value="@_addPlayer.HideDonations" /></AdminInput>
+	<AdminInput Label="Hide past usernames"><InputCheckbox @bind-Value="@_addPlayer.HidePastUsernames" /></AdminInput>
+	<AdminInput Label="Hide settings"><InputCheckbox @bind-Value="@_addPlayer.HideSettings" /></AdminInput>
+	<AdminInput Label="Mods"><MultiSearchDropdown Values="@_modNames" @bind-Value="@_addPlayer.ModIds" /></AdminInput>
+	<AdminInput Label="Ban type"><SearchDropdown TKey=BanType Values="@(Enum.GetValues<BanType>().ToDictionary(e => e, e => e.ToString()))" Converter="s => Enum.Parse<BanType>(s)" ShowDisplayValue=false @bind-Value="@_addPlayer.BanType" /></AdminInput>
+	<AdminInput Label="Ban description"><InputText class="w-64 pl-2 bg-gray-1 text-color-text" @bind-Value="@_addPlayer.BanDescription" /></AdminInput>
+	<AdminInput Label="Ban responsible ID (alt owner)"><InputNumber class="w-64 pl-2 bg-gray-1 text-color-text" @bind-Value="@_addPlayer.BanResponsibleId" /></AdminInput>
+	<AdminInput Label="Banned from DDCL"><InputCheckbox @bind-Value="@_addPlayer.IsBannedFromDdcl" /></AdminInput>
 </AdminAdd>
 
 @code

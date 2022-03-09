@@ -6,18 +6,18 @@
 @using DevilDaggersInfo.Web.BlazorWasm.Shared.Dto.Admin.Players
 @using DevilDaggersInfo.Web.BlazorWasm.Shared.Enums
 
-<AdminEdit TModel="EditMod" Name="Mod" OverviewUrl="/admin/mods" ApiCall="Http.EditModById" Model="_editMod" Id="Id" @ref="_editComponent">
-	<AdminInput Label="@nameof(EditMod.Name)"><InputText class="w-64 pl-2 bg-gray-1 text-color-text" @bind-Value="@_editMod.Name" /></AdminInput>
-	<AdminInput Label="@nameof(EditMod.PlayerIds)"><MultiSearchDropdown Values="@_playerNames" @bind-Value="@_editMod.PlayerIds" /></AdminInput>
-	<AdminInput Label="@nameof(EditMod.TrailerUrl)"><InputText class="w-64 pl-2 bg-gray-1 text-color-text" @bind-Value="_editMod.TrailerUrl" /></AdminInput>
-	<AdminInput Label="@nameof(EditMod.HtmlDescription)"><InputTextArea class="w-64 h-64 pl-2 bg-gray-1 text-color-text" @bind-Value="@_editMod.HtmlDescription" /></AdminInput>
-	<AdminInput Label="@nameof(EditMod.ModTypes)"><MultiSearchDropdown Values="@ModTypes" @bind-Value="@_editMod.ModTypes" /></AdminInput>
-	<AdminInput Label="@nameof(EditMod.Url)"><InputText class="w-64 pl-2 bg-gray-1 text-color-text" @bind-Value="@_editMod.Url" /></AdminInput>
-	<AdminInput Label="@nameof(EditMod.IsHidden)"><InputCheckbox @bind-Value="@_editMod.IsHidden" /></AdminInput>
-	<AdminInput Label="@nameof(EditMod.BinariesToDelete)"><MultiSelectList Values="@_binaryNames" OnToggleAction="StateHasChanged" @bind-Value="@_editMod.BinariesToDelete" /></AdminInput>
-	<AdminInput Label="@nameof(EditMod.Binaries)"><InputFile @onclick="() => _editMod.Binaries.Clear()" OnChange="LoadBinaries" multiple /></AdminInput>
-	<AdminInput Label="@nameof(EditMod.ScreenshotsToDelete)"><MultiSelectList Values="@_screenshotNames" OnToggleAction="StateHasChanged" @bind-Value="@_editMod.ScreenshotsToDelete" /></AdminInput>
-	<AdminInput Label="@nameof(EditMod.Screenshots)"><InputFile @onclick="() => _editMod.Screenshots.Clear()" OnChange="LoadScreenshots" multiple /></AdminInput>
+<AdminEdit Name="Mod" OverviewUrl="/admin/mods" ApiCall="Http.EditModById" Model="_editMod" Id="Id" @ref="_editComponent">
+	<AdminInput Label="Name"><InputText class="w-64 pl-2 bg-gray-1 text-color-text" @bind-Value="@_editMod.Name" /></AdminInput>
+	<AdminInput Label="Author(s)"><MultiSearchDropdown Values="@_playerNames" @bind-Value="@_editMod.PlayerIds" /></AdminInput>
+	<AdminInput Label="Trailer URL"><InputText class="w-64 pl-2 bg-gray-1 text-color-text" @bind-Value="_editMod.TrailerUrl" /></AdminInput>
+	<AdminInput Label="HTML description"><InputTextArea class="w-64 h-64 pl-2 bg-gray-1 text-color-text" @bind-Value="@_editMod.HtmlDescription" /></AdminInput>
+	<AdminInput Label="Mod types (only for non-hosted)"><MultiSearchDropdown Values="@ModTypes" @bind-Value="@_editMod.ModTypes" /></AdminInput>
+	<AdminInput Label="URL (only for non-hosted)"><InputText class="w-64 pl-2 bg-gray-1 text-color-text" @bind-Value="@_editMod.Url" /></AdminInput>
+	<AdminInput Label="Hidden"><InputCheckbox @bind-Value="@_editMod.IsHidden" /></AdminInput>
+	<AdminInput Label="Binaries to delete"><MultiSelectList Values="@_binaryNames" OnToggleAction="StateHasChanged" @bind-Value="@_editMod.BinariesToDelete" /></AdminInput>
+	<AdminInput Label="Binaries"><InputFile @onclick="() => _editMod.Binaries.Clear()" OnChange="LoadBinaries" multiple /></AdminInput>
+	<AdminInput Label="Screenshots to delete"><MultiSelectList Values="@_screenshotNames" OnToggleAction="StateHasChanged" @bind-Value="@_editMod.ScreenshotsToDelete" /></AdminInput>
+	<AdminInput Label="Screenshots"><InputFile @onclick="() => _editMod.Screenshots.Clear()" OnChange="LoadScreenshots" multiple /></AdminInput>
 </AdminEdit>
 
 @if (_editMod.BinariesToDelete.Count > 0)
