@@ -21,7 +21,7 @@
 	}
 
 	.code {
-		@apply inline bg-gray-5;
+		@apply inline bg-gray-5 font-mono;
 	}
 
 	.path {

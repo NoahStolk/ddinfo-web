@@ -154,10 +154,10 @@ module.exports = {
 				'width': 'width',
 				'spacing': 'margin, padding',
 			},
-		},
-		fontFamily: {
-			'calibri': ['calibri', 'sans-serif'],
-			'goethe': ['goethe'],
+			fontFamily: {
+				'calibri': ['calibri', 'sans-serif'],
+				'goethe': ['goethe'],
+			},
 		},
 	},
 	variants: {
