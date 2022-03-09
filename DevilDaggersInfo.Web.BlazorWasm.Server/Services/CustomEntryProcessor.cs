@@ -125,7 +125,11 @@ public class CustomEntryProcessor
 
 		// Validate TimeAttack and Race.
 		if (customLeaderboard.Category is CustomLeaderboardCategory.TimeAttack or CustomLeaderboardCategory.Race && !uploadRequest.TimeAttackOrRaceFinished)
-			throw LogAndCreateValidationException(uploadRequest, "Didn't complete the spawnset.", spawnsetName);
+			throw LogAndCreateValidationException(uploadRequest, $"Didn't complete the {customLeaderboard.Category} spawnset.", spawnsetName);
+
+		// Validate Pacifist.
+		if (customLeaderboard.Category == CustomLeaderboardCategory.Pacifist && uploadRequest.EnemiesKilled > 0)
+			throw LogAndCreateValidationException(uploadRequest, $"Killed {uploadRequest.EnemiesKilled} enemies. Can't submit score to {CustomLeaderboardCategory.Pacifist} leaderboard.", spawnsetName);
 
 		bool isAscending = customLeaderboard.Category.IsAscending();
 

@@ -93,7 +93,7 @@ else
 
 						@if (GetPlayer.Settings.IsRightHanded.HasValue)
 						{
-							<DataField CssClass="odd:bg-gray-2 px-1" Name="Hand orientation">@(GetPlayer.Settings.IsRightHanded.Value ? "Right" : "Left")</DataField>
+							<DataField CssClass="odd:bg-gray-2 px-1" Name="Hand">@(GetPlayer.Settings.IsRightHanded.Value ? "Right" : "Left")</DataField>
 						}
 
 						@if (GetPlayer.Settings.UsesFlashHand.HasValue)

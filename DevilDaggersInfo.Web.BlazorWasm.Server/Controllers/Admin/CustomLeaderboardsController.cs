@@ -126,8 +126,8 @@ public class CustomLeaderboardsController : ControllerBase
 		if (spawnsetBinary.TimerStart != 0)
 			return BadRequest("Cannot create a leaderboard for spawnset that uses the TimerStart value. This value is meant for practice and it is confusing to use it with custom leaderboards, as custom leaderboards always use the 'actual' timer value.");
 
-		if (addCustomLeaderboard.Category == CustomLeaderboardCategory.Survival && !spawnsetBinary.HasEndLoop())
-			return BadRequest($"Custom leaderboard with category {CustomLeaderboardCategory.Survival} must have an end loop.");
+		if (addCustomLeaderboard.Category is CustomLeaderboardCategory.Survival or CustomLeaderboardCategory.Pacifist && !spawnsetBinary.HasEndLoop())
+			return BadRequest($"Custom leaderboard with category {addCustomLeaderboard.Category} must have an end loop.");
 
 		CustomLeaderboardEntity customLeaderboard = new()
 		{
@@ -197,6 +197,9 @@ public class CustomLeaderboardsController : ControllerBase
 
 		if (spawnsetBinary.TimerStart != 0)
 			return BadRequest("Cannot create a leaderboard for spawnset that uses the TimerStart value. This value is meant for practice and it is confusing to use it with custom leaderboards, as custom leaderboards always use the 'actual' timer value.");
+
+		if (editCustomLeaderboard.Category is CustomLeaderboardCategory.Survival or CustomLeaderboardCategory.Pacifist && !spawnsetBinary.HasEndLoop())
+			return BadRequest($"Custom leaderboard with category {editCustomLeaderboard.Category} must have an end loop.");
 
 		EditCustomLeaderboard logDto = new()
 		{
