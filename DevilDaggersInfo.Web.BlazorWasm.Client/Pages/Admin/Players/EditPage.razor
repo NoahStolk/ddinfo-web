@@ -8,14 +8,14 @@
 <AdminEdit Name="Player" OverviewUrl="/admin/players" ApiCall="Http.EditPlayerById" Model="_editPlayer" Id="Id" @ref="_editComponent">
 	<AdminInput Label="Country (flag)"><SearchDropdown TKey=string Values="@(UserUtils.CountryNames)" Converter="s => s" @bind-Value="@_editPlayer.CountryCode" /></AdminInput>
 	<AdminInput Label="DPI"><InputNumber class="w-64 pl-2 bg-gray-1 text-color-text" @bind-Value="_editPlayer.Dpi" /></AdminInput>
+	<AdminInput Label="In-game sens"><InputNumber class="w-64 pl-2 bg-gray-1 text-color-text" @bind-Value="@_editPlayer.InGameSens" /></AdminInput>
 	<AdminInput Label="FOV"><InputNumber class="w-64 pl-2 bg-gray-1 text-color-text" @bind-Value="_editPlayer.Fov" /></AdminInput>
 	<AdminInput Label="Gamma"><InputNumber class="w-64 pl-2 bg-gray-1 text-color-text" @bind-Value="_editPlayer.Gamma" /></AdminInput>
-	<AdminInput Label="Flash hand"><InputNullableBoolean @bind-Value="@_editPlayer.HasFlashHandEnabled" /></AdminInput>
-	<AdminInput Label="In-game sens"><InputNumber class="w-64 pl-2 bg-gray-1 text-color-text" @bind-Value="@_editPlayer.InGameSens" /></AdminInput>
-	<AdminInput Label="Right handed"><InputNullableBoolean @bind-Value="@_editPlayer.IsRightHanded" /></AdminInput>
-	<AdminInput Label="Legacy audio"><InputNullableBoolean @bind-Value="@_editPlayer.UsesLegacyAudio" /></AdminInput>
-	<AdminInput Label="HRTF"><InputNullableBoolean @bind-Value="@_editPlayer.UsesHrtf" /></AdminInput>
-	<AdminInput Label="Invert Y"><InputNullableBoolean @bind-Value="@_editPlayer.UsesInvertY" /></AdminInput>
+	<AdminInput Label="Hand"><InputNullableBoolean False="Left" True="Right" @bind-Value="@_editPlayer.IsRightHanded" /></AdminInput>
+	<AdminInput Label="Flash hand"><InputNullableBoolean False="Off" True="On" @bind-Value="@_editPlayer.HasFlashHandEnabled" /></AdminInput>
+	<AdminInput Label="Legacy audio"><InputNullableBoolean False="Off" True="On" @bind-Value="@_editPlayer.UsesLegacyAudio" /></AdminInput>
+	<AdminInput Label="HRTF"><InputNullableBoolean False="Off" True="On" @bind-Value="@_editPlayer.UsesHrtf" /></AdminInput>
+	<AdminInput Label="Invert Y"><InputNullableBoolean False="Off" True="On" @bind-Value="@_editPlayer.UsesInvertY" /></AdminInput>
 	<AdminInput Label="V-sync"><SearchDropdown TKey=VerticalSync Values="@(Enum.GetValues<VerticalSync>().ToDictionary(e => e, e => e.ToString()))" Converter="s => Enum.Parse<VerticalSync>(s)" ShowDisplayValue=false @bind-Value="@_editPlayer.VerticalSync" /></AdminInput>
 	<AdminInput Label="Hide donations"><InputCheckbox @bind-Value="@_editPlayer.HideDonations" /></AdminInput>
 	<AdminInput Label="Hide past usernames"><InputCheckbox @bind-Value="@_editPlayer.HidePastUsernames" /></AdminInput>
