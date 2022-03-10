@@ -12,13 +12,13 @@ namespace DevilDaggersInfo.Web.BlazorWasm.Server.Controllers.Admin;
 public class CustomLeaderboardsController : ControllerBase
 {
 	private readonly ApplicationDbContext _dbContext;
-	private readonly IFileSystemService _fileSystemService;
+	private readonly CustomLeaderboardValidatorService _validatorService;
 	private readonly AuditLogger _auditLogger;
 
-	public CustomLeaderboardsController(ApplicationDbContext dbContext, IFileSystemService fileSystemService, AuditLogger auditLogger)
+	public CustomLeaderboardsController(ApplicationDbContext dbContext, CustomLeaderboardValidatorService validatorService, AuditLogger auditLogger)
 	{
 		_dbContext = dbContext;
-		_fileSystemService = fileSystemService;
+		_validatorService = validatorService;
 		_auditLogger = auditLogger;
 	}
 
@@ -86,48 +86,14 @@ public class CustomLeaderboardsController : ControllerBase
 		if (_dbContext.CustomLeaderboards.Any(cl => cl.SpawnsetId == addCustomLeaderboard.SpawnsetId))
 			return BadRequest("A leaderboard for this spawnset already exists.");
 
-		if (addCustomLeaderboard.Category.IsAscending())
+		try
 		{
-			if (addCustomLeaderboard.TimeLeviathan >= addCustomLeaderboard.TimeDevil)
-				return BadRequest("For ascending leaderboards, Leviathan time must be smaller than Devil time.");
-			if (addCustomLeaderboard.TimeDevil >= addCustomLeaderboard.TimeGolden)
-				return BadRequest("For ascending leaderboards, Devil time must be smaller than Golden time.");
-			if (addCustomLeaderboard.TimeGolden >= addCustomLeaderboard.TimeSilver)
-				return BadRequest("For ascending leaderboards, Golden time must be smaller than Silver time.");
-			if (addCustomLeaderboard.TimeSilver >= addCustomLeaderboard.TimeBronze)
-				return BadRequest("For ascending leaderboards, Silver time must be smaller than Bronze time.");
+			_validatorService.ValidateCustomLeaderboard(addCustomLeaderboard.SpawnsetId, addCustomLeaderboard.Category, addCustomLeaderboard.TimeLeviathan, addCustomLeaderboard.TimeDevil, addCustomLeaderboard.TimeGolden, addCustomLeaderboard.TimeSilver, addCustomLeaderboard.TimeBronze);
 		}
-		else
+		catch (CustomLeaderboardValidationException ex)
 		{
-			if (addCustomLeaderboard.TimeLeviathan <= addCustomLeaderboard.TimeDevil)
-				return BadRequest("For descending leaderboards, Leviathan time must be greater than Devil time.");
-			if (addCustomLeaderboard.TimeDevil <= addCustomLeaderboard.TimeGolden)
-				return BadRequest("For descending leaderboards, Devil time must be greater than Golden time.");
-			if (addCustomLeaderboard.TimeGolden <= addCustomLeaderboard.TimeSilver)
-				return BadRequest("For descending leaderboards, Golden time must be greater than Silver time.");
-			if (addCustomLeaderboard.TimeSilver <= addCustomLeaderboard.TimeBronze)
-				return BadRequest("For descending leaderboards, Silver time must be greater than Bronze time.");
+			return BadRequest(ex.Message);
 		}
-
-		var spawnset = _dbContext.Spawnsets
-			.AsNoTracking()
-			.Select(sf => new { sf.Id, sf.Name })
-			.FirstOrDefault(sf => sf.Id == addCustomLeaderboard.SpawnsetId);
-		if (spawnset == null)
-			return BadRequest($"Spawnset with ID '{addCustomLeaderboard.SpawnsetId}' does not exist.");
-
-		if (!SpawnsetBinary.TryParse(System.IO.File.ReadAllBytes(Path.Combine(_fileSystemService.GetPath(DataSubDirectory.Spawnsets), spawnset.Name)), out SpawnsetBinary? spawnsetBinary))
-			throw new($"Could not parse survival file '{spawnset.Name}'. Please review the file. Also review how this file ended up in the 'spawnsets' directory, as it is not possible to upload non-survival files from within the Admin pages.");
-
-		GameMode requiredGameMode = addCustomLeaderboard.Category.GetRequiredGameModeForCategory();
-		if (spawnsetBinary.GameMode != requiredGameMode)
-			return BadRequest($"Game mode must be '{requiredGameMode}' when the custom leaderboard category is '{addCustomLeaderboard.Category}'. The spawnset has game mode '{spawnsetBinary.GameMode}'.");
-
-		if (spawnsetBinary.TimerStart != 0)
-			return BadRequest("Cannot create a leaderboard for spawnset that uses the TimerStart value. This value is meant for practice and it is confusing to use it with custom leaderboards, as custom leaderboards always use the 'actual' timer value.");
-
-		if (addCustomLeaderboard.Category is CustomLeaderboardCategory.Survival or CustomLeaderboardCategory.Pacifist && !spawnsetBinary.HasEndLoop())
-			return BadRequest($"Custom leaderboard with category {addCustomLeaderboard.Category} must have an end loop.");
 
 		CustomLeaderboardEntity customLeaderboard = new()
 		{
@@ -154,52 +120,18 @@ public class CustomLeaderboardsController : ControllerBase
 	[ProducesResponseType(StatusCodes.Status404NotFound)]
 	public async Task<ActionResult> EditCustomLeaderboardById(int id, EditCustomLeaderboard editCustomLeaderboard)
 	{
-		if (editCustomLeaderboard.Category.IsAscending())
-		{
-			if (editCustomLeaderboard.TimeLeviathan >= editCustomLeaderboard.TimeDevil)
-				return BadRequest("For ascending leaderboards, Leviathan time must be smaller than Devil time.");
-			if (editCustomLeaderboard.TimeDevil >= editCustomLeaderboard.TimeGolden)
-				return BadRequest("For ascending leaderboards, Devil time must be smaller than Golden time.");
-			if (editCustomLeaderboard.TimeGolden >= editCustomLeaderboard.TimeSilver)
-				return BadRequest("For ascending leaderboards, Golden time must be smaller than Silver time.");
-			if (editCustomLeaderboard.TimeSilver >= editCustomLeaderboard.TimeBronze)
-				return BadRequest("For ascending leaderboards, Silver time must be smaller than Bronze time.");
-		}
-		else
-		{
-			if (editCustomLeaderboard.TimeLeviathan <= editCustomLeaderboard.TimeDevil)
-				return BadRequest("For descending leaderboards, Leviathan time must be greater than Devil time.");
-			if (editCustomLeaderboard.TimeDevil <= editCustomLeaderboard.TimeGolden)
-				return BadRequest("For descending leaderboards, Devil time must be greater than Golden time.");
-			if (editCustomLeaderboard.TimeGolden <= editCustomLeaderboard.TimeSilver)
-				return BadRequest("For descending leaderboards, Golden time must be greater than Silver time.");
-			if (editCustomLeaderboard.TimeSilver <= editCustomLeaderboard.TimeBronze)
-				return BadRequest("For descending leaderboards, Silver time must be greater than Bronze time.");
-		}
-
 		CustomLeaderboardEntity? customLeaderboard = _dbContext.CustomLeaderboards.FirstOrDefault(cl => cl.Id == id);
 		if (customLeaderboard == null)
 			return NotFound();
 
-		var spawnset = _dbContext.Spawnsets
-			.AsNoTracking()
-			.Select(sf => new { sf.Id, sf.Name })
-			.FirstOrDefault(sf => sf.Id == customLeaderboard.SpawnsetId);
-		if (spawnset == null)
-			return BadRequest($"Spawnset with ID '{customLeaderboard.SpawnsetId}' does not exist.");
-
-		if (!SpawnsetBinary.TryParse(System.IO.File.ReadAllBytes(Path.Combine(_fileSystemService.GetPath(DataSubDirectory.Spawnsets), spawnset.Name)), out SpawnsetBinary? spawnsetBinary))
-			throw new($"Could not parse survival file '{spawnset.Name}'. Please review the file. Also review how this file ended up in the 'spawnsets' directory, as it is not possible to upload non-survival files from within the Admin pages.");
-
-		GameMode requiredGameMode = editCustomLeaderboard.Category.GetRequiredGameModeForCategory();
-		if (spawnsetBinary.GameMode != requiredGameMode)
-			return BadRequest($"Game mode must be '{requiredGameMode}' when the custom leaderboard category is '{editCustomLeaderboard.Category}'. The spawnset has game mode '{spawnsetBinary.GameMode}'.");
-
-		if (spawnsetBinary.TimerStart != 0)
-			return BadRequest("Cannot create a leaderboard for spawnset that uses the TimerStart value. This value is meant for practice and it is confusing to use it with custom leaderboards, as custom leaderboards always use the 'actual' timer value.");
-
-		if (editCustomLeaderboard.Category is CustomLeaderboardCategory.Survival or CustomLeaderboardCategory.Pacifist && !spawnsetBinary.HasEndLoop())
-			return BadRequest($"Custom leaderboard with category {editCustomLeaderboard.Category} must have an end loop.");
+		try
+		{
+			_validatorService.ValidateCustomLeaderboard(customLeaderboard.SpawnsetId, editCustomLeaderboard.Category, editCustomLeaderboard.TimeLeviathan, editCustomLeaderboard.TimeDevil, editCustomLeaderboard.TimeGolden, editCustomLeaderboard.TimeSilver, editCustomLeaderboard.TimeBronze);
+		}
+		catch (CustomLeaderboardValidationException ex)
+		{
+			return BadRequest(ex.Message);
+		}
 
 		EditCustomLeaderboard logDto = new()
 		{
