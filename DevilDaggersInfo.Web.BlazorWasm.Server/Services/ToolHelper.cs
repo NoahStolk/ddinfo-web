@@ -16,13 +16,10 @@ public class ToolHelper : IToolHelper
 
 	public Dictionary<string, List<ChangelogEntry>> Changelogs { get; } = new();
 
-	public Tool GetToolByName(string name)
+	public Tool? GetToolByName(string name)
 	{
 		ToolEntity? tool = _dbContext.Tools.AsNoTracking().FirstOrDefault(t => t.Name == name);
-		if (tool == null)
-			throw new($"Could not find tool with name {name} in database.");
-
-		return new()
+		return tool == null ? null : new()
 		{
 			Changelog = Changelogs.TryGetValue(tool.Name, out List<ChangelogEntry>? changelog) ? changelog : null,
 			DisplayName = tool.DisplayName,

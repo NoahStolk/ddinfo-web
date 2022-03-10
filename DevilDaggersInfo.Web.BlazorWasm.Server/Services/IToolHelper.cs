@@ -7,5 +7,5 @@ public interface IToolHelper
 {
 	Dictionary<string, List<ChangelogEntry>> Changelogs { get; }
 
-	Tool GetToolByName(string name);
+	Tool? GetToolByName(string name);
 }
