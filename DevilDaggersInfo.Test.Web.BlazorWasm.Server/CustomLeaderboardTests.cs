@@ -26,10 +26,10 @@ public class CustomLeaderboardTests
 		environment.Setup(m => m.EnvironmentName).Returns(Environments.Development);
 
 		Mock<AuditLogger> auditLogger = new(environment.Object);
-
 		Mock<IFileSystemService> fileSystemService = new();
+		CustomLeaderboardValidatorService clvs = new(_dbContext.Object, fileSystemService.Object);
 
-		_customLeaderboardsController = new CustomLeaderboardsController(_dbContext.Object, fileSystemService.Object, auditLogger.Object);
+		_customLeaderboardsController = new CustomLeaderboardsController(_dbContext.Object, clvs, auditLogger.Object);
 	}
 
 	[TestMethod]
