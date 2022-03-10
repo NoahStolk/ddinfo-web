@@ -71,7 +71,8 @@ public class SpawnsetSummary
 		int worldVersion = br.ReadInt32();
 		br.Seek(16);
 		GameMode gameMode = br.ReadInt32().ToGameMode();
-		br.Seek(8 + SpawnsetBinary.ArenaBufferSize + (worldVersion == 8 ? 32 : 36));
+		int arenaDimension = br.ReadInt32();
+		br.Seek(4 + arenaDimension * arenaDimension * sizeof(float) + (worldVersion == 8 ? 32 : 36));
 
 		// Spawns header
 		int spawnCount = br.ReadInt32();

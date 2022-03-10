@@ -5,11 +5,7 @@ namespace DevilDaggersInfo.Core.Spawnset;
 public class SpawnsetBinary
 {
 	public const int HeaderBufferSize = 36;
-	public const int ArenaBufferSize = ArenaWidth * ArenaHeight * sizeof(float);
 	public const int SpawnBufferSize = 28;
-
-	public const int ArenaWidth = 51;
-	public const int ArenaHeight = 51;
 
 	public SpawnsetBinary(
 		int spawnVersion,
@@ -19,15 +15,16 @@ public class SpawnsetBinary
 		float shrinkRate,
 		float brightness,
 		GameMode gameMode,
-		Vector2 raceDaggerPosition,
+		int arenaDimension,
 		float[,] arenaTiles,
+		Vector2 raceDaggerPosition,
 		Spawn[] spawns,
 		HandLevel handLevel,
 		int additionalGems,
 		float timerStart)
 	{
-		if (arenaTiles.GetLength(0) != ArenaWidth || arenaTiles.GetLength(1) != ArenaHeight)
-			throw new ArgumentOutOfRangeException(nameof(arenaTiles), $"Arena array must be {ArenaWidth} by {ArenaHeight}.");
+		if (arenaTiles.GetLength(0) != arenaDimension || arenaTiles.GetLength(1) != arenaDimension)
+			throw new ArgumentOutOfRangeException(nameof(arenaTiles), $"Arena array must be {arenaDimension} by {arenaDimension}.");
 
 		SpawnVersion = spawnVersion;
 		WorldVersion = worldVersion;
@@ -36,9 +33,12 @@ public class SpawnsetBinary
 		ShrinkRate = shrinkRate;
 		Brightness = brightness;
 		GameMode = gameMode;
-		RaceDaggerPosition = raceDaggerPosition;
+		ArenaDimension = arenaDimension;
 		ArenaTiles = arenaTiles;
+
+		RaceDaggerPosition = raceDaggerPosition;
 		Spawns = spawns;
+
 		HandLevel = handLevel;
 		AdditionalGems = additionalGems;
 		TimerStart = timerStart;
@@ -51,9 +51,10 @@ public class SpawnsetBinary
 	public float ShrinkRate { get; }
 	public float Brightness { get; }
 	public GameMode GameMode { get; }
-	public Vector2 RaceDaggerPosition { get; }
-
+	public int ArenaDimension { get; }
 	public float[,] ArenaTiles { get; }
+
+	public Vector2 RaceDaggerPosition { get; }
 	public Spawn[] Spawns { get; }
 
 	public HandLevel HandLevel { get; }
@@ -92,14 +93,15 @@ public class SpawnsetBinary
 		float shrinkRate = br.ReadSingle();
 		float brightness = br.ReadSingle();
 		GameMode gameMode = br.ReadInt32().ToGameMode();
-		br.Seek(8);
+		int arenaDimension = br.ReadInt32();
+		br.Seek(4);
 
 		// Arena
-		float[,] arenaTiles = new float[ArenaWidth, ArenaHeight];
-		for (int i = 0; i < ArenaWidth * ArenaHeight; i++)
+		float[,] arenaTiles = new float[arenaDimension, arenaDimension];
+		for (int i = 0; i < arenaDimension * arenaDimension; i++)
 		{
-			int x = i % ArenaHeight;
-			int y = i / ArenaWidth;
+			int x = i % arenaDimension;
+			int y = i / arenaDimension;
 			arenaTiles[x, y] = br.ReadSingle();
 		}
 
@@ -133,7 +135,7 @@ public class SpawnsetBinary
 				timerStart = br.ReadSingle();
 		}
 
-		return new(spawnVersion, worldVersion, shrinkStart, shrinkEnd, shrinkRate, brightness, gameMode, new(raceDaggerX, raceDaggerZ), arenaTiles, spawns, handLevel, additionalGems, timerStart);
+		return new(spawnVersion, worldVersion, shrinkStart, shrinkEnd, shrinkRate, brightness, gameMode, arenaDimension, arenaTiles, new(raceDaggerX, raceDaggerZ), spawns, handLevel, additionalGems, timerStart);
 	}
 
 	#endregion Parsing
@@ -153,14 +155,14 @@ public class SpawnsetBinary
 		bw.Write(ShrinkRate);
 		bw.Write(Brightness);
 		bw.Write((int)GameMode);
-		bw.Write(0x33);
+		bw.Write(ArenaDimension);
 		bw.Write(0x01);
 
 		// Arena
-		for (int i = 0; i < ArenaWidth * ArenaHeight; i++)
+		for (int i = 0; i < ArenaDimension * ArenaDimension; i++)
 		{
-			int x = i % ArenaHeight;
-			int y = i / ArenaWidth;
+			int x = i % ArenaDimension;
+			int y = i / ArenaDimension;
 
 			bw.Write(ArenaTiles[x, y]);
 		}
@@ -210,7 +212,7 @@ public class SpawnsetBinary
 	#region Utilities
 
 	public static SpawnsetBinary CreateDefault()
-		=> new(6, 9, 50, 20, 0.025f, 60, GameMode.Survival, default, new float[ArenaWidth, ArenaHeight], Array.Empty<Spawn>(), HandLevel.Level1, 0, 0);
+		=> new(6, 9, 50, 20, 0.025f, 60, GameMode.Survival, 51, new float[51, 51], default, Array.Empty<Spawn>(), HandLevel.Level1, 0, 0);
 
 	public static bool IsEmptySpawn(int enemyType)
 		=> enemyType < 0 || enemyType > 9;
@@ -313,14 +315,14 @@ public class SpawnsetBinary
 		=> worldVersion == 8 ? "V0 / V1" : spawnVersion == 4 ? "V2 / V3" : "V3.1 / V3.2";
 
 	public (int X, float? Y, int Z) GetRaceDaggerTilePosition()
-		=> GetRaceDaggerTilePosition(ArenaTiles, RaceDaggerPosition);
+		=> GetRaceDaggerTilePosition(ArenaDimension, ArenaTiles, RaceDaggerPosition);
 
-	public static (int X, float? Y, int Z) GetRaceDaggerTilePosition(float[,] arenaTiles, Vector2 raceDaggerPosition)
+	public static (int X, float? Y, int Z) GetRaceDaggerTilePosition(float arenaDimension, float[,] arenaTiles, Vector2 raceDaggerPosition)
 	{
 		int x = Convert(raceDaggerPosition.X);
 		int z = Convert(raceDaggerPosition.Y);
 		float? y = null;
-		if (x >= 0 && x < ArenaWidth && z >= 0 && z < ArenaHeight)
+		if (x >= 0 && x < arenaDimension && z >= 0 && z < arenaDimension)
 			y = arenaTiles[x, z];
 
 		return (x, y, z);
