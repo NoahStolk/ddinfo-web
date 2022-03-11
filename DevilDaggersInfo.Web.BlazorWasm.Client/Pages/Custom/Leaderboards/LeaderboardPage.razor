@@ -46,7 +46,7 @@ else
 	{
 		<Heading Title="Description" Level="2" />
 		<div class="bg-gray-1 max-w-sm px-1">
-			@((MarkupString)@GetCustomLeaderboard.SpawnsetHtmlDescription)
+			@((MarkupString)GetCustomLeaderboard.SpawnsetHtmlDescription)
 		</div>
 	}
 
@@ -111,7 +111,7 @@ else
 					double accuracyValue = ce.DaggersFired == 0 ? 0 : ce.DaggersHit / (double)ce.DaggersFired;
 					string accuracy = accuracyValue.ToString(FormatUtils.AccuracyFormat);
 					string daggers = FormatUtils.FormatDaggersInt32(ce.DaggersHit, ce.DaggersFired, false);
-					MarkupString death = MarkupUtils.DeathString(ce.DeathType, GameConstants.CurrentVersion, "text-xl");
+					MarkupString death = MarkupUtils.CustomLeaderboardDeathString(GetCustomLeaderboard.Category is CustomLeaderboardCategory.TimeAttack or CustomLeaderboardCategory.Race, ce.DeathType, GameConstants.CurrentVersion, "text-xl");
 					string homingStored = ce.HomingStored.ToString(FormatUtils.LeaderboardIntFormat);
 					MarkupString homingEaten = ce.HomingEaten.HasValue ? (MarkupString)ce.HomingEaten.Value.ToString(FormatUtils.LeaderboardIntFormat) : MarkupUtils.NoDataMarkup;
 					MarkupString levelUpTime2 = ce.LevelUpTime2 == 0 ? MarkupUtils.NoDataMarkup : (MarkupString)ce.LevelUpTime2.ToString(FormatUtils.TimeFormat);

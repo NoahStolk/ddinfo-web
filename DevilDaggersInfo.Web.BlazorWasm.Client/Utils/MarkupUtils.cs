@@ -57,6 +57,14 @@ public static class MarkupUtils
 		return new(@$"<span class=""font-goethe text-lg {dagger.Name.ToLower()}"">{dagger.Name} Dagger</span>");
 	}
 
+	public static MarkupString CustomLeaderboardDeathString(bool timeAttackOrRace, byte deathType, GameVersion gameVersion = GameConstants.CurrentVersion, string textSizeClass = "text-lg")
+	{
+		if (timeAttackOrRace)
+			return new(@$"<span style=""color: #444;"" class=""font-goethe {textSizeClass}"">N/A</span>");
+
+		return DeathString(deathType, gameVersion, textSizeClass);
+	}
+
 	public static MarkupString DeathString(byte deathType, GameVersion gameVersion = GameConstants.CurrentVersion, string textSizeClass = "text-lg")
 	{
 		Death? death = Deaths.GetDeathByLeaderboardType(gameVersion, deathType);
