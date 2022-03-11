@@ -9,10 +9,10 @@ public class UpdatePasswordRequest
 	public string CurrentPassword { get; set; } = null!;
 
 	[Required]
-	[StringLength(AuthenticationConstants.MaximumPasswordLength, MinimumLength = AuthenticationConstants.MinimumPasswordLength)]
+	[RegularExpression(AuthenticationConstants.PasswordRegex, ErrorMessage = AuthenticationConstants.PasswordValidation)]
 	public string NewPassword { get; set; } = null!;
 
 	[Required]
-	[StringLength(AuthenticationConstants.MaximumPasswordLength, MinimumLength = AuthenticationConstants.MinimumPasswordLength)]
+	[RegularExpression(AuthenticationConstants.PasswordRegex, ErrorMessage = AuthenticationConstants.PasswordValidation)]
 	public string PasswordRepeated { get; set; } = null!;
 }

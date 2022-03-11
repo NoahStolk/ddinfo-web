@@ -30,7 +30,7 @@ public class UserService : IUserService
 		if (user == null)
 			return null;
 
-		if (!VerifyPasswordHash(password, user.PasswordHash, user.PasswordSalt))
+		if (!PasswordValidator.VerifyPasswordHash(password, user.PasswordHash, user.PasswordSalt))
 			return null;
 
 		return user;
@@ -41,7 +41,7 @@ public class UserService : IUserService
 		if (_dbContext.Users.Any(u => u.Name == name))
 			throw new($"Name '{name}' is already taken.");
 
-		CreatePasswordHash(password, out byte[] passwordHash, out byte[] passwordSalt);
+		PasswordValidator.CreatePasswordHash(password, out byte[] passwordHash, out byte[] passwordSalt);
 
 		UserEntity user = new()
 		{
@@ -77,7 +77,7 @@ public class UserService : IUserService
 		if (user == null)
 			throw new($"User with ID '{id}' not found.");
 
-		CreatePasswordHash(password, out byte[] passwordHash, out byte[] passwordSalt);
+		PasswordValidator.CreatePasswordHash(password, out byte[] passwordHash, out byte[] passwordSalt);
 
 		user.PasswordHash = passwordHash;
 		user.PasswordSalt = passwordSalt;
@@ -93,41 +93,6 @@ public class UserService : IUserService
 			_dbContext.Users.Remove(user);
 			_dbContext.SaveChanges();
 		}
-	}
-
-	private static void CreatePasswordHash(string password, out byte[] passwordHash, out byte[] passwordSalt)
-	{
-		if (string.IsNullOrWhiteSpace(password))
-			throw new ArgumentException("Value cannot be empty or whitespace-only string.", nameof(password));
-
-		if (password.Length < AuthenticationConstants.MinimumPasswordLength)
-			throw new ArgumentException($"Password must be at least {AuthenticationConstants.MinimumPasswordLength} characters in length.", nameof(password));
-
-		using HMACSHA512 hmac = new();
-		passwordSalt = hmac.Key;
-		passwordHash = hmac.ComputeHash(Encoding.UTF8.GetBytes(password));
-	}
-
-	private static bool VerifyPasswordHash(string password, byte[] storedHash, byte[] storedSalt)
-	{
-		if (string.IsNullOrWhiteSpace(password))
-			throw new ArgumentException("Value cannot be empty or whitespace-only string.", nameof(password));
-		if (storedHash.Length != 64)
-			throw new ArgumentException("Invalid length of password hash (64 bytes expected).", nameof(storedHash));
-		if (storedSalt.Length != 128)
-			throw new ArgumentException("Invalid length of password salt (128 bytes expected).", nameof(storedSalt));
-
-		using (HMACSHA512 hmac = new(storedSalt))
-		{
-			byte[] computedHash = hmac.ComputeHash(Encoding.UTF8.GetBytes(password));
-			for (int i = 0; i < computedHash.Length; i++)
-			{
-				if (computedHash[i] != storedHash[i])
-					return false;
-			}
-		}
-
-		return true;
 	}
 
 	public string GenerateJwt(UserEntity userEntity)

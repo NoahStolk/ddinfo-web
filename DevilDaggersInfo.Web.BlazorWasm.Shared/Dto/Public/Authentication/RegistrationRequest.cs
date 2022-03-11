@@ -7,10 +7,10 @@ public class RegistrationRequest
 	public string Name { get; set; } = null!;
 
 	[Required]
-	[StringLength(AuthenticationConstants.MaximumPasswordLength, MinimumLength = AuthenticationConstants.MinimumPasswordLength)]
+	[RegularExpression(AuthenticationConstants.PasswordRegex, ErrorMessage = AuthenticationConstants.PasswordValidation)]
 	public string Password { get; set; } = null!;
 
 	[Required]
-	[StringLength(AuthenticationConstants.MaximumPasswordLength, MinimumLength = AuthenticationConstants.MinimumPasswordLength)]
+	[RegularExpression(AuthenticationConstants.PasswordRegex, ErrorMessage = AuthenticationConstants.PasswordValidation)]
 	public string PasswordRepeated { get; set; } = null!;
 }

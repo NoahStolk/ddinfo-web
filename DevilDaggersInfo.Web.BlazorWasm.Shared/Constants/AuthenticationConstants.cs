@@ -2,7 +2,7 @@ namespace DevilDaggersInfo.Web.BlazorWasm.Shared.Constants;
 
 public static class AuthenticationConstants
 {
-	public const int MinimumPasswordLength = 12;
+	public const string PasswordRegex = "^(?=.*[0-9])(?=.*[a-z])(?=.*[A-Z]).{12,40}$";
 
-	public const int MaximumPasswordLength = 128;
+	public const string PasswordValidation = "Password must be at least 12 characters in length, contain at least one uppercase letter, contain at least one lowercase letter, and contain at least one digit.";
 }
