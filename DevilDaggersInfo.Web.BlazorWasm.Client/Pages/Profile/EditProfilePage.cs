@@ -31,8 +31,6 @@ public partial class EditProfilePage
 
 	protected override async Task OnInitializedAsync()
 	{
-		await base.OnInitializedAsync();
-
 		_state = await Auth.GetAuthenticationStateAsync();
 		if (_state.User?.Identity?.IsAuthenticated != true)
 			NavigationManager.NavigateTo("/authentication/login");

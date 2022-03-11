@@ -23,8 +23,6 @@
 
 	protected override async Task OnInitializedAsync()
 	{
-		await base.OnInitializedAsync();
-
 		try
 		{
 			List<GetSpawnsetName> getSpawnsetNames = await Http.GetSpawnsetNames();

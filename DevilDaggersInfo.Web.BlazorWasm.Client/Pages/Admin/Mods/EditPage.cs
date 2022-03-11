@@ -24,8 +24,6 @@ public partial class EditPage
 
 	protected override async Task OnInitializedAsync()
 	{
-		await base.OnInitializedAsync();
-
 		try
 		{
 			List<GetPlayerName> getPlayerNames = await Http.GetPlayerNames();
