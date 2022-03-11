@@ -13,10 +13,9 @@
 
 	private string Id { get; set; } = Guid.NewGuid().ToString();
 
-	protected override Task OnInitializedAsync()
+	protected override async Task OnInitializedAsync()
 	{
-		JsRuntime.InvokeAsync<object>("outsideClickHandler.addEvent", Id, DotNetObjectReference.Create(this));
-		return base.OnInitializedAsync();
+		await JsRuntime.InvokeAsync<object>("outsideClickHandler.addEvent", Id, DotNetObjectReference.Create(this));
 	}
 
 	[JSInvokable]
