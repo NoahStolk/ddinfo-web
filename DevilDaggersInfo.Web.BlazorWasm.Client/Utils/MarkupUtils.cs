@@ -60,7 +60,7 @@ public static class MarkupUtils
 	public static MarkupString CustomLeaderboardDeathString(bool timeAttackOrRace, byte deathType, GameVersion gameVersion = GameConstants.CurrentVersion, string textSizeClass = "text-lg")
 	{
 		if (timeAttackOrRace)
-			return new(@$"<span style=""color: #444;"" class=""font-goethe {textSizeClass}"">N/A</span>");
+			return new(@$"<span style=""color: #666;"" class=""font-goethe {textSizeClass}"">N/A</span>");
 
 		return DeathString(deathType, gameVersion, textSizeClass);
 	}
@@ -73,7 +73,7 @@ public static class MarkupUtils
 
 	public static MarkupString DeathString(Death? death, string textSizeClass = "text-lg")
 	{
-		string style = $"color: {death?.Color.HexCode ?? "#444"};";
+		string style = $"color: {death?.Color.HexCode ?? "#666"};";
 		return new(@$"<span style=""{style}"" class=""font-goethe {textSizeClass}"">{death?.Name ?? "Unknown"}</span>");
 	}
 

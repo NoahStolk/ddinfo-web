@@ -132,7 +132,7 @@ public partial class StatisticsPage
 			};
 		});
 
-		List<BarData> daggersSet = _statistics.DaggersStatistics.Select(kvp => new BarData(Daggers.GetDaggerByName(GameConstants.CurrentVersion, kvp.Key)?.Color.HexCode ?? "#444", kvp.Value, kvp)).ToList();
+		List<BarData> daggersSet = _statistics.DaggersStatistics.Select(kvp => new BarData(Daggers.GetDaggerByName(GameConstants.CurrentVersion, kvp.Key)?.Color.HexCode ?? "#666", kvp.Value, kvp)).ToList();
 		const double daggersScale = 20000.0;
 		_daggersDataOptions = new(0, daggersScale, Math.Ceiling(_statistics.DaggersStatistics.Max(kvp => kvp.Value) / daggersScale) * daggersScale);
 		_daggersData = new(daggersSet, (ds, i) =>
@@ -147,7 +147,7 @@ public partial class StatisticsPage
 			};
 		});
 
-		List<BarData> deathsSet = _statistics.DeathsStatistics.Select(kvp => new BarData(Deaths.GetDeathByName(GameConstants.CurrentVersion, kvp.Key)?.Color.HexCode ?? "#444", kvp.Value, kvp)).ToList();
+		List<BarData> deathsSet = _statistics.DeathsStatistics.Select(kvp => new BarData(Deaths.GetDeathByName(GameConstants.CurrentVersion, kvp.Key)?.Color.HexCode ?? "#666", kvp.Value, kvp)).ToList();
 		const double deathsScale = 20000.0;
 		_deathsDataOptions = new(0, deathsScale, Math.Ceiling(_statistics.DeathsStatistics.Max(kvp => kvp.Value) / deathsScale) * deathsScale);
 		_deathsData = new(deathsSet, (ds, i) =>
@@ -161,7 +161,7 @@ public partial class StatisticsPage
 			};
 		});
 
-		List<BarData> enemiesSet = _statistics.EnemiesStatistics.Select(kvp => new BarData(Enemies.GetEnemyByName(GameConstants.CurrentVersion, kvp.Key)?.Color.HexCode ?? "#444", kvp.Value, kvp)).ToList();
+		List<BarData> enemiesSet = _statistics.EnemiesStatistics.Select(kvp => new BarData(Enemies.GetEnemyByName(GameConstants.CurrentVersion, kvp.Key)?.Color.HexCode ?? "#666", kvp.Value, kvp)).ToList();
 		const double enemiesScale = 50000.0;
 		_enemiesDataOptions = new(0, enemiesScale, Math.Ceiling(_statistics.EnemiesStatistics.Max(kvp => kvp.Value) / enemiesScale) * enemiesScale);
 		_enemiesData = new(enemiesSet, (ds, i) =>
