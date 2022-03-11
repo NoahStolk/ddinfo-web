@@ -1,3 +1,4 @@
+using DevilDaggersInfo.Web.BlazorWasm.Server.Converters.Admin;
 using DevilDaggersInfo.Web.BlazorWasm.Shared.Dto.Admin.Users;
 using Microsoft.AspNetCore.Authorization;
 
@@ -33,21 +34,25 @@ public class UsersController : ControllerBase
 			.OrderBy(u => u.Id)
 			.ToList();
 
-		return users.ConvertAll(u => new GetUser
-		{
-			Id = u.Id,
-			Name = u.Name,
-			IsAdmin = IsInRole(u, Roles.Admin),
-			IsCustomLeaderboardsMaintainer = IsInRole(u, Roles.CustomLeaderboards),
-			IsModsMaintainer = IsInRole(u, Roles.Mods),
-			IsPlayersMaintainer = IsInRole(u, Roles.Players),
-			IsSpawnsetsMaintainer = IsInRole(u, Roles.Spawnsets),
-			PlayerId = u.PlayerId,
-			PlayerName = u.Player?.PlayerName ?? string.Empty,
-		});
+		return users.ConvertAll(u => u.ToGetUser());
+	}
 
-		static bool IsInRole(UserEntity user, string roleName)
-			=> user.UserRoles?.Any(ur => ur.Role?.Name == roleName) == true;
+	[HttpGet("{id}")]
+	[ProducesResponseType(StatusCodes.Status200OK)]
+	[ProducesResponseType(StatusCodes.Status404NotFound)]
+	public ActionResult<GetUser> GetUserById(int id)
+	{
+		UserEntity? user = _dbContext.Users
+			.AsNoTracking()
+			.Include(u => u.UserRoles!)
+				.ThenInclude(ur => ur.Role)
+			.Include(u => u.Player)
+			.FirstOrDefault(u => u.Id == id);
+
+		if (user == null)
+			return NotFound();
+
+		return user.ToGetUser();
 	}
 
 	[HttpPatch("{id}/toggle-role")]
@@ -94,7 +99,32 @@ public class UsersController : ControllerBase
 		return Ok();
 	}
 
-	[HttpPut("{id}")]
+	[HttpPut("{id}/assign-player")]
+	[ProducesResponseType(StatusCodes.Status200OK)]
+	[ProducesResponseType(StatusCodes.Status400BadRequest)]
+	[ProducesResponseType(StatusCodes.Status404NotFound)]
+	public ActionResult AssignPlayer(int id, AssignPlayer assignPlayer)
+	{
+		UserEntity? user = _dbContext.Users.FirstOrDefault(u => u.Id == id);
+		if (user == null)
+			return NotFound($"User with ID '{id}' was not found.");
+
+		var player = _dbContext.Players.Select(p => new { p.Id, p.PlayerName }).FirstOrDefault(p => p.Id == assignPlayer.PlayerId);
+		if (player == null)
+			return NotFound($"Player with ID '{assignPlayer.PlayerId}' was not found.");
+
+		if (_dbContext.Users.Any(u => u.PlayerId == player.Id))
+			return BadRequest($"Player with ID '{player.Id}' is already linked.");
+
+		user.PlayerId = player.Id;
+		_dbContext.SaveChanges();
+
+		_logger.LogWarning("Player '{playerName}' ({playerId}) was linked to user '{userName}' ({userId}).", player.PlayerName, player.Id, user.Name, user.Id);
+
+		return Ok();
+	}
+
+	[HttpPut("{id}/reset-password")]
 	[ProducesResponseType(StatusCodes.Status200OK)]
 	[ProducesResponseType(StatusCodes.Status404NotFound)]
 	public ActionResult ResetPasswordForUserById(int id, ResetPassword resetPassword)

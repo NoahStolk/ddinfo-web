@@ -22,11 +22,6 @@ public partial class AdminApiHttpClient
 		return await SendRequest(new HttpMethod("POST"), $"api/admin/clear-cache", JsonContent.Create(cacheType));
 	}
 
-	public async Task<HttpResponseMessage> BuildHistoryBinaries(string? unused)
-	{
-		return await SendRequest(new HttpMethod("POST"), $"api/admin/convert-history-to-binary", JsonContent.Create(unused));
-	}
-
 	public async Task<Page<GetCustomEntryForOverview>> GetCustomEntries(int pageIndex, int pageSize, CustomEntrySorting? sortBy, bool ascending)
 	{
 		Dictionary<string, object?> queryParameters = new()
@@ -253,14 +248,24 @@ public partial class AdminApiHttpClient
 		return await SendGetRequest<List<GetUser>>($"api/admin/users/");
 	}
 
+	public async Task<GetUser> GetUserById(int id)
+	{
+		return await SendGetRequest<GetUser>($"api/admin/users/{id}");
+	}
+
 	public async Task<HttpResponseMessage> ToggleRole(int id, ToggleRole toggleRole)
 	{
 		return await SendRequest(new HttpMethod("PATCH"), $"api/admin/users/{id}/toggle-role", JsonContent.Create(toggleRole));
 	}
 
+	public async Task<HttpResponseMessage> AssignPlayer(int id, AssignPlayer assignPlayer)
+	{
+		return await SendRequest(new HttpMethod("PUT"), $"api/admin/users/{id}/assign-player", JsonContent.Create(assignPlayer));
+	}
+
 	public async Task<HttpResponseMessage> ResetPasswordForUserById(int id, ResetPassword resetPassword)
 	{
-		return await SendRequest(new HttpMethod("PUT"), $"api/admin/users/{id}", JsonContent.Create(resetPassword));
+		return await SendRequest(new HttpMethod("PUT"), $"api/admin/users/{id}/reset-password", JsonContent.Create(resetPassword));
 	}
 
 	public async Task<HttpResponseMessage> DeleteUserById(int id)

@@ -31,6 +31,7 @@ else
 		<div class="hidden xl:block">Players</div>
 		<div class="hidden xl:block">Spawnsets</div>
 		<div></div>
+		<div></div>
 	</div>
 	<div>
 		@{
@@ -47,6 +48,7 @@ else
 					<div class="hidden xl:block overflow-hidden"><button class="@GetButtonClass(user.IsModsMaintainer)" @onclick="async () => await ToggleRole(user.Id, Roles.Mods)">@GetButtonText(user.IsModsMaintainer)</button></div>
 					<div class="hidden xl:block overflow-hidden"><button class="@GetButtonClass(user.IsPlayersMaintainer)" @onclick="async () => await ToggleRole(user.Id, Roles.Players)">@GetButtonText(user.IsPlayersMaintainer)</button></div>
 					<div class="hidden xl:block overflow-hidden"><button class="@GetButtonClass(user.IsSpawnsetsMaintainer)" @onclick="async () => await ToggleRole(user.Id, Roles.Spawnsets)">@GetButtonText(user.IsSpawnsetsMaintainer)</button></div>
+					<div><a class="link" href="@($"/admin/users/assign-player/{user.Id}")">Assign</a></div>
 					<div><a class="link" href="" @onclick="() => _deletion?.Set(user.Id)" @onclick:preventDefault>Delete</a></div>
 					<div><a class="link" href="@($"/admin/users/reset-password/{user.Id}")">Reset pw</a></div>
 				</div>
