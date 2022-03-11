@@ -1,7 +1,7 @@
 <Project xmlns="http://schemas.microsoft.com/developer/msbuild/2003" ToolsVersion="Current">
 	<ItemGroup Label="Static code analysis">
 		<PackageVersion Include="Roslynator.Analyzers" Version="4.0.2" />
-		<PackageVersion Include="SonarAnalyzer.CSharp" Version="8.35.0.42613" />
+		<PackageVersion Include="SonarAnalyzer.CSharp" Version="8.36.1.44192" />
 		<PackageVersion Include="StyleCop.Analyzers" Version="1.2.0-beta.406" />
 	</ItemGroup>
 	<ItemGroup Label="Image processing">
@@ -9,40 +9,40 @@
 	</ItemGroup>
 	<ItemGroup Label="Source generators">
 		<PackageVersion Include="Microsoft.CodeAnalysis.Analyzers" Version="3.3.3" />
-		<PackageVersion Include="Microsoft.CodeAnalysis.CSharp.Workspaces" Version="4.0.1" />
+		<PackageVersion Include="Microsoft.CodeAnalysis.CSharp.Workspaces" Version="4.1.0" />
 	</ItemGroup>
 	<ItemGroup Label="Unit tests">
 		<PackageVersion Include="coverlet.collector" Version="3.1.2" />
 		<PackageVersion Include="JetBrains.Annotations" Version="2021.3.0" />
-		<PackageVersion Include="Microsoft.EntityFrameworkCore.InMemory" Version="6.0.2" />
-		<PackageVersion Include="Microsoft.EntityFrameworkCore.Relational" Version="6.0.2" />
-		<PackageVersion Include="Microsoft.NET.Test.Sdk" Version="17.0.0" />
-		<PackageVersion Include="Moq" Version="4.16.1" />
+		<PackageVersion Include="Microsoft.EntityFrameworkCore.InMemory" Version="6.0.3" />
+		<PackageVersion Include="Microsoft.EntityFrameworkCore.Relational" Version="6.0.3" />
+		<PackageVersion Include="Microsoft.NET.Test.Sdk" Version="17.1.0" />
+		<PackageVersion Include="Moq" Version="4.17.2" />
 		<PackageVersion Include="MSTest.TestAdapter" Version="2.2.8" />
 		<PackageVersion Include="MSTest.TestFramework" Version="2.2.8" />
 	</ItemGroup>
 	<ItemGroup Label="Web client">
 		<PackageVersion Include="Blazored.LocalStorage" Version="4.2.0" />
-		<PackageVersion Include="Microsoft.AspNetCore.Components.Web" Version="6.0.2" />
-		<PackageVersion Include="Microsoft.AspNetCore.Components.WebAssembly" Version="6.0.2" />
-		<PackageVersion Include="Microsoft.AspNetCore.Components.WebAssembly.DevServer" Version="6.0.2" />
-		<PackageVersion Include="Microsoft.AspNetCore.Components.WebAssembly.Authentication" Version="6.0.2" />
+		<PackageVersion Include="Microsoft.AspNetCore.Components.Web" Version="6.0.3" />
+		<PackageVersion Include="Microsoft.AspNetCore.Components.WebAssembly" Version="6.0.3" />
+		<PackageVersion Include="Microsoft.AspNetCore.Components.WebAssembly.DevServer" Version="6.0.3" />
+		<PackageVersion Include="Microsoft.AspNetCore.Components.WebAssembly.Authentication" Version="6.0.3" />
 		<PackageVersion Include="Microsoft.AspNetCore.WebUtilities" Version="2.2.0" />
 		<PackageVersion Include="Microsoft.Extensions.Http" Version="6.0.0" />
-		<PackageVersion Include="Microsoft.JSInterop.WebAssembly" Version="6.0.2" />
+		<PackageVersion Include="Microsoft.JSInterop.WebAssembly" Version="6.0.3" />
 		<PackageVersion Include="System.Net.Http.Json" Version="6.0.0" />
 	</ItemGroup>
 	<ItemGroup Label="Web server">
-		<PackageVersion Include="Microsoft.AspNetCore.Components.WebAssembly.Server" Version="6.0.2" />
-		<PackageVersion Include="Microsoft.AspNetCore.Diagnostics.EntityFrameworkCore" Version="6.0.2" />
-		<PackageVersion Include="Microsoft.EntityFrameworkCore" Version="6.0.2" />
-		<PackageVersion Include="Microsoft.EntityFrameworkCore.Tools" Version="6.0.2" />
-		<PackageVersion Include="NSwag.AspNetCore" Version="13.15.7" />
+		<PackageVersion Include="Microsoft.AspNetCore.Components.WebAssembly.Server" Version="6.0.3" />
+		<PackageVersion Include="Microsoft.AspNetCore.Diagnostics.EntityFrameworkCore" Version="6.0.3" />
+		<PackageVersion Include="Microsoft.EntityFrameworkCore" Version="6.0.3" />
+		<PackageVersion Include="Microsoft.EntityFrameworkCore.Tools" Version="6.0.3" />
+		<PackageVersion Include="NSwag.AspNetCore" Version="13.15.10" />
 		<PackageVersion Include="Pomelo.EntityFrameworkCore.MySql" Version="6.0.1" />
 	</ItemGroup>
 	<ItemGroup Label="JWT">
-		<PackageVersion Include="Microsoft.AspNetCore.Authentication.JwtBearer" Version="6.0.2" />
-		<PackageVersion Include="System.IdentityModel.Tokens.Jwt" Version="6.15.1" />
+		<PackageVersion Include="Microsoft.AspNetCore.Authentication.JwtBearer" Version="6.0.3" />
+		<PackageVersion Include="System.IdentityModel.Tokens.Jwt" Version="6.16.0" />
 	</ItemGroup>
 	<ItemGroup Label="Discord integration">
 		<PackageVersion Include="DSharpPlus" Version="4.1.0" />
