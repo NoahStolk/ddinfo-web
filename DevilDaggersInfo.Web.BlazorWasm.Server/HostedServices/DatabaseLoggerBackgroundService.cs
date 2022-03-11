@@ -42,7 +42,7 @@ ORDER BY table_name ASC;")
 		};
 		foreach (InformationSchemaTable table in tables)
 		{
-			string value = @$"`{"DataSize",-10}{table.DataSize,7}`
+			string value = $@"`{"DataSize",-10}{table.DataSize,7}`
 `{"IxSize",-10}{table.IndexSize,7}`
 `{"AvgRL",-10}{table.AverageRowLength,7}`
 `{"Count",-10}{table.TableRows,7}`";

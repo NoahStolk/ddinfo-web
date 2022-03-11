@@ -15,7 +15,7 @@
 		<div class="p-2 border-2" style="@($"border-color: {dagger.Color.HexCode};")">
 			<div class="font-goethe text-xl @dagger.Name.ToLower()">@dagger.Name Dagger</div>
 			@{
-				MarkupString text = new(dagger.UnlockSecond == 0 ? "Also known as 'Pleb Dagger' in the game files" : @$"Unlocks at <span class=""{dagger.Name.ToLower()} font-goethe text-lg"">{dagger.UnlockSecond}</span> seconds");
+				MarkupString text = new(dagger.UnlockSecond == 0 ? "Also known as 'Pleb Dagger' in the game files" : $@"Unlocks at <span class=""{dagger.Name.ToLower()} font-goethe text-lg"">{dagger.UnlockSecond}</span> seconds");
 				@text
 			}
 			<img src='images/wiki/daggers/@(dagger.Name.ToLower()).png' />

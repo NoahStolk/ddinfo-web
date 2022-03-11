@@ -21,6 +21,8 @@ public static class MarkupUtils
 
 	private const float _lineThickness = 2;
 
+	public const string NoDataColor = "#666";
+
 	public static readonly MarkupString NavStart = new($@"<svg style='margin: {_margin}px;' width='{_size}' height='{_size}'>
 	<rect width='{_lineThickness}' height='{_size}' x='0' y='{_a}' style='fill: {_fillStyle};' />
 	<polygon points='{_a},{_m} {_m},{_a} {_m},{_b}' style='fill: {_fillStyle};' />
@@ -46,21 +48,21 @@ public static class MarkupUtils
 	<rect width='{_lineThickness}' height='{_size}' x='{_size - _lineThickness}' y='{_a}' style='fill: {_fillStyle};' />
 </svg>");
 
-	public static readonly MarkupString NoDataMarkup = new(@"<span style=""color: #666;"">N/A</span>");
+	public static readonly MarkupString NoDataMarkup = new($@"<span style=""color: {NoDataColor};"">N/A</span>");
 
-	public static readonly MarkupString HiddenMarkup = new(@"<span style=""color: #666;"">Hidden</span>");
+	public static readonly MarkupString HiddenMarkup = new($@"<span style=""color: {NoDataColor};"">Hidden</span>");
 
 	public static MarkupString Space => new("&#32;");
 
 	public static MarkupString DaggerString(Dagger dagger)
 	{
-		return new(@$"<span class=""font-goethe text-lg {dagger.Name.ToLower()}"">{dagger.Name} Dagger</span>");
+		return new($@"<span class=""font-goethe text-lg {dagger.Name.ToLower()}"">{dagger.Name} Dagger</span>");
 	}
 
 	public static MarkupString CustomLeaderboardDeathString(bool timeAttackOrRace, byte deathType, GameVersion gameVersion = GameConstants.CurrentVersion, string textSizeClass = "text-lg")
 	{
 		if (timeAttackOrRace)
-			return new(@$"<span style=""color: #666;"" class=""font-goethe {textSizeClass}"">N/A</span>");
+			return new($@"<span style=""color: {NoDataColor};"" class=""font-goethe {textSizeClass}"">N/A</span>");
 
 		return DeathString(deathType, gameVersion, textSizeClass);
 	}
@@ -73,24 +75,24 @@ public static class MarkupUtils
 
 	public static MarkupString DeathString(Death? death, string textSizeClass = "text-lg")
 	{
-		string style = $"color: {death?.Color.HexCode ?? "#666"};";
-		return new(@$"<span style=""{style}"" class=""font-goethe {textSizeClass}"">{death?.Name ?? "Unknown"}</span>");
+		string style = $"color: {death?.Color.HexCode ?? NoDataColor};";
+		return new($@"<span style=""{style}"" class=""font-goethe {textSizeClass}"">{death?.Name ?? "Unknown"}</span>");
 	}
 
 	public static MarkupString UpgradeString(Upgrade upgrade)
 	{
 		string style = $"color: {upgrade.Color.HexCode};";
-		return new(@$"<span style=""{style}"" class=""font-goethe text-lg"">{upgrade.Name}</span>");
+		return new($@"<span style=""{style}"" class=""font-goethe text-lg"">{upgrade.Name}</span>");
 	}
 
 	public static MarkupString EnemyString(Enemy enemy, bool plural = false)
 	{
 		string style = $"color: {enemy.Color.HexCode};";
-		return new(@$"<span style=""{style}"" class=""font-goethe text-lg"">{enemy.Name}{(plural ? "s" : string.Empty)}</span>");
+		return new($@"<span style=""{style}"" class=""font-goethe text-lg"">{enemy.Name}{(plural ? "s" : string.Empty)}</span>");
 	}
 
 	public static MarkupString LeaderboardTime(double timeInSeconds)
 	{
-		return new(@$"<span class=""{Daggers.GetDaggerFromSeconds(GameConstants.CurrentVersion, timeInSeconds).Name.ToLower()} font-goethe text-lg"">{timeInSeconds.ToString(FormatUtils.TimeFormat)}</span>");
+		return new($@"<span class=""{Daggers.GetDaggerFromSeconds(GameConstants.CurrentVersion, timeInSeconds).Name.ToLower()} font-goethe text-lg"">{timeInSeconds.ToString(FormatUtils.TimeFormat)}</span>");
 	}
 }
