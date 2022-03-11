@@ -11,6 +11,6 @@ public class RegistrationRequest
 	public string Password { get; set; } = null!;
 
 	[Required]
-	[RegularExpression(AuthenticationConstants.PasswordRegex, ErrorMessage = AuthenticationConstants.PasswordValidation)]
+	[Compare(nameof(Password), ErrorMessage = "Repeated password does not match.")]
 	public string PasswordRepeated { get; set; } = null!;
 }

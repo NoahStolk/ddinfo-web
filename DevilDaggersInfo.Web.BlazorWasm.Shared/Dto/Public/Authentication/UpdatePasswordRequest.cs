@@ -13,6 +13,6 @@ public class UpdatePasswordRequest
 	public string NewPassword { get; set; } = null!;
 
 	[Required]
-	[RegularExpression(AuthenticationConstants.PasswordRegex, ErrorMessage = AuthenticationConstants.PasswordValidation)]
+	[Compare(nameof(NewPassword), ErrorMessage = "Repeated password does not match.")]
 	public string PasswordRepeated { get; set; } = null!;
 }
