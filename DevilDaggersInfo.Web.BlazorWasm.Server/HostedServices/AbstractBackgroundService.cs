@@ -19,7 +19,7 @@ public abstract class AbstractBackgroundService : BackgroundService
 
 	protected abstract Task ExecuteTaskAsync(CancellationToken stoppingToken);
 
-	protected override async Task ExecuteAsync(CancellationToken stoppingToken)
+	protected sealed override async Task ExecuteAsync(CancellationToken stoppingToken)
 	{
 		BackgroundServiceMonitor.Register(Name, Interval);
 

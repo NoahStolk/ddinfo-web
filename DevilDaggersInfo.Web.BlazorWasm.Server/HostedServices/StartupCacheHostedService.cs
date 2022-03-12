@@ -32,41 +32,38 @@ public class StartupCacheHostedService : IHostedService
 
 	public async Task StartAsync(CancellationToken cancellationToken)
 	{
-		await Task.Run(
-			() =>
-			{
-				Stopwatch sw = Stopwatch.StartNew();
-				StringBuilder sb = new();
+		await Task.Yield();
 
-				// Initiate static caches.
-				_leaderboardStatisticsCache.Initiate();
+		Stopwatch sw = Stopwatch.StartNew();
+		StringBuilder sb = new();
 
-				sb.Append("- `LeaderboardStatisticsCache` initiation done at ").AppendLine(TimeUtils.TicksToTimeString(sw.ElapsedTicks));
+		// Initiate static caches.
+		_leaderboardStatisticsCache.Initiate();
 
-				// Initiate dynamic caches.
+		sb.Append("- `LeaderboardStatisticsCache` initiation done at ").AppendLine(TimeUtils.TicksToTimeString(sw.ElapsedTicks));
 
-				// SpawnsetHashCache does not need to be initiated as it is fast enough.
-				// SpawnsetSummaryCache does not need to be initiated as it is fast enough.
+		// Initiate dynamic caches.
 
-				// LeaderboardHistoryCache will be initiated here.
-				foreach (string historyFilePath in _fileSystemService.TryGetFiles(DataSubDirectory.LeaderboardHistory).Where(p => p.EndsWith(".bin")))
-					_leaderboardHistoryCache.GetLeaderboardHistoryByFilePath(historyFilePath);
+		// SpawnsetHashCache does not need to be initiated as it is fast enough.
+		// SpawnsetSummaryCache does not need to be initiated as it is fast enough.
 
-				sb.Append("- `LeaderboardHistoryCache` initiation done at ").AppendLine(TimeUtils.TicksToTimeString(sw.ElapsedTicks));
+		// LeaderboardHistoryCache will be initiated here.
+		foreach (string historyFilePath in _fileSystemService.TryGetFiles(DataSubDirectory.LeaderboardHistory).Where(p => p.EndsWith(".bin")))
+			_leaderboardHistoryCache.GetLeaderboardHistoryByFilePath(historyFilePath);
 
-				/* The ModArchiveCache is initially very slow because it requires unzipping huge mod archive zip files.
-				 * The idea to fix this; when adding data (based on a mod archive) to the ConcurrentBag, write this data to a JSON file as well, so it is not lost when the site shuts down.
-				 * The cache then needs to be initiated here, by reading all the JSON files and populating the ConcurrentBag on start up.*/
-				_modArchiveCache.LoadEntireFileCache();
+		sb.Append("- `LeaderboardHistoryCache` initiation done at ").AppendLine(TimeUtils.TicksToTimeString(sw.ElapsedTicks));
 
-				sb.Append("- `ModArchiveCache` initiation done at ").AppendLine(TimeUtils.TicksToTimeString(sw.ElapsedTicks));
+		/* The ModArchiveCache is initially very slow because it requires unzipping huge mod archive zip files.
+		 * The idea to fix this; when adding data (based on a mod archive) to the ConcurrentBag, write this data to a JSON file as well, so it is not lost when the site shuts down.
+		 * The cache then needs to be initiated here, by reading all the JSON files and populating the ConcurrentBag on start up.*/
+		_modArchiveCache.LoadEntireFileCache();
 
-				if (!_env.IsDevelopment())
-					_logContainerService.Add($"{DateTime.UtcNow:HH:mm:ss.fff}: Initiating caches...\n{sb}");
+		sb.Append("- `ModArchiveCache` initiation done at ").AppendLine(TimeUtils.TicksToTimeString(sw.ElapsedTicks));
 
-				sw.Stop();
-			},
-			cancellationToken);
+		if (!_env.IsDevelopment())
+			_logContainerService.Add($"{DateTime.UtcNow:HH:mm:ss.fff}: Initiating caches...\n{sb}");
+
+		sw.Stop();
 	}
 
 	public Task StopAsync(CancellationToken cancellationToken) => Task.CompletedTask;
