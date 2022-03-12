@@ -93,7 +93,7 @@ public class CustomEntryProcessor
 		// Perform database operations from now on.
 
 		// Add the player or update the username. Also check for banned user.
-		PlayerEntity? player = _dbContext.Players.FirstOrDefault(p => p.Id == uploadRequest.PlayerId);
+		PlayerEntity? player = await _dbContext.Players.AsNoTracking().FirstOrDefaultAsync(p => p.Id == uploadRequest.PlayerId);
 		if (player != null)
 		{
 			if (player.IsBannedFromDdcl)
@@ -106,11 +106,11 @@ public class CustomEntryProcessor
 				Id = uploadRequest.PlayerId,
 				PlayerName = uploadRequest.PlayerName,
 			};
-			_dbContext.Players.Add(player);
+			await _dbContext.Players.AddAsync(player);
 		}
 
 		// Check for existing leaderboard.
-		CustomLeaderboardEntity? customLeaderboard = _dbContext.CustomLeaderboards.Include(cl => cl.Spawnset).ThenInclude(sf => sf.Player).FirstOrDefault(cl => cl.Spawnset.Name == spawnsetName);
+		CustomLeaderboardEntity? customLeaderboard = await _dbContext.CustomLeaderboards.Include(cl => cl.Spawnset).FirstOrDefaultAsync(cl => cl.Spawnset.Name == spawnsetName);
 		if (customLeaderboard == null)
 			throw LogAndCreateValidationException(uploadRequest, "This spawnset exists on DevilDaggers.info, but doesn't have a leaderboard.", spawnsetName);
 
@@ -138,7 +138,7 @@ public class CustomEntryProcessor
 		uploadRequest.GameData.HomingDaggers = Array.ConvertAll(uploadRequest.GameData.HomingDaggers, i => Math.Max(0, i));
 
 		// Calculate the new rank.
-		List<CustomEntryEntity> entries = FetchEntriesFromDatabase(customLeaderboard, isAscending);
+		List<CustomEntryEntity> entries = await FetchEntriesFromDatabaseAsync(customLeaderboard, isAscending);
 		int rank = isAscending ? entries.Count(e => e.Time <= uploadRequest.Time) + 1 : entries.Count(e => e.Time >= uploadRequest.Time) + 1;
 		int totalPlayers = entries.Count;
 
@@ -207,12 +207,12 @@ public class CustomEntryProcessor
 		customEntry.Client = client;
 
 		// Update the entry data.
-		CustomEntryDataEntity? customEntryData = _dbContext.CustomEntryData.FirstOrDefault(ced => ced.CustomEntryId == customEntry.Id);
+		CustomEntryDataEntity? customEntryData = await _dbContext.CustomEntryData.FirstOrDefaultAsync(ced => ced.CustomEntryId == customEntry.Id);
 		if (customEntryData == null)
 		{
 			customEntryData = new() { CustomEntryId = customEntry.Id };
 			PopulateCustomEntryData(customEntryData, uploadRequest);
-			_dbContext.CustomEntryData.Add(customEntryData);
+			await _dbContext.CustomEntryData.AddAsync(customEntryData);
 		}
 		else
 		{
@@ -221,12 +221,12 @@ public class CustomEntryProcessor
 
 		UpdateLeaderboardStatistics(customLeaderboard);
 
-		_dbContext.SaveChanges();
+		await _dbContext.SaveChangesAsync();
 
 		await WriteReplayFile(customEntry.Id, uploadRequest.ReplayData);
 
 		// Fetch the entries again after having modified the leaderboard.
-		entries = FetchEntriesFromDatabase(customLeaderboard, isAscending);
+		entries = await FetchEntriesFromDatabaseAsync(customLeaderboard, isAscending);
 
 		await TrySendLeaderboardMessage(customLeaderboard, $"`{uploadRequest.PlayerName}` just got {FormatTimeString(uploadRequest.Time)} seconds on the `{spawnsetName}` leaderboard, beating their previous highscore of {FormatTimeString(uploadRequest.Time - timeDiff)} by {FormatTimeString(Math.Abs(timeDiff))} seconds!", rank, totalPlayers, uploadRequest.Time);
 		Log(uploadRequest, spawnsetName);
@@ -311,15 +311,15 @@ public class CustomEntryProcessor
 		customLeaderboard.TotalRunsSubmitted++;
 	}
 
-	private List<CustomEntryEntity> FetchEntriesFromDatabase(CustomLeaderboardEntity? customLeaderboard, bool isAscending)
+	private async Task<List<CustomEntryEntity>> FetchEntriesFromDatabaseAsync(CustomLeaderboardEntity? customLeaderboard, bool isAscending)
 	{
 		// Use tracking to update player score.
-		return _dbContext.CustomEntries
+		return await _dbContext.CustomEntries
 			.Include(ce => ce.Player)
 			.Where(e => e.CustomLeaderboard == customLeaderboard)
 			.OrderByMember(nameof(CustomEntryEntity.Time), isAscending)
 			.ThenByMember(nameof(CustomEntryEntity.SubmitDate), true)
-			.ToList();
+			.ToListAsync();
 	}
 
 	private async Task TrySendLeaderboardMessage(CustomLeaderboardEntity customLeaderboard, string message, int rank, int totalPlayers, int time)
@@ -485,7 +485,7 @@ public class CustomEntryProcessor
 		await WriteReplayFile(newCustomEntry.Id, uploadRequest.ReplayData);
 
 		// Fetch the entries again after having modified the leaderboard.
-		List<CustomEntryEntity> entries = FetchEntriesFromDatabase(customLeaderboard, isAscending);
+		List<CustomEntryEntity> entries = await FetchEntriesFromDatabaseAsync(customLeaderboard, isAscending);
 		int totalPlayers = entries.Count;
 
 		await TrySendLeaderboardMessage(customLeaderboard, $"`{uploadRequest.PlayerName}` just entered the `{spawnsetName}` leaderboard!", rank, totalPlayers, uploadRequest.Time);
