@@ -48,18 +48,6 @@ public class AesBase32Wrapper
 		return Encoding.UTF8.GetString(decrypted);
 	}
 
-	public string? TryDecryptValidation(string validation)
-	{
-		try
-		{
-			return DecodeAndDecrypt(validation);
-		}
-		catch
-		{
-			return null;
-		}
-	}
-
 	private ICryptoTransform GetCryptoTransform(AesCryptoServiceProvider csp, TransformType transformType)
 	{
 		csp.Mode = CipherMode.CBC;

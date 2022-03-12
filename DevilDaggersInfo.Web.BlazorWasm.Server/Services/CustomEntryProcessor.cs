@@ -40,9 +40,16 @@ public class CustomEntryProcessor
 	{
 		// Check if the submission actually came from an allowed program.
 		string expected = uploadRequest.CreateValidation();
-		string? actual = _encryptionWrapper.TryDecryptValidation(HttpUtility.HtmlDecode(uploadRequest.Validation));
-		if (actual == null)
+		string actual;
+		try
+		{
+			actual = _encryptionWrapper.DecodeAndDecrypt(HttpUtility.HtmlDecode(uploadRequest.Validation));
+		}
+		catch (Exception ex)
+		{
+			_logger.LogError(ex, "Could not decrypt validation '{validation}'.", uploadRequest.Validation);
 			throw LogAndCreateValidationException(uploadRequest, $"Could not decrypt validation '{uploadRequest.Validation}'.", null, "rotating_light");
+		}
 
 		if (actual != expected)
 			throw LogAndCreateValidationException(uploadRequest, $"Invalid submission for {uploadRequest.Validation}.\nExpected: {expected}\nActual:   {actual}", null, "rotating_light");
