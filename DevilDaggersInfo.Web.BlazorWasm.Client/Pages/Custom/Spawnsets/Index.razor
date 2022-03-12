@@ -2,6 +2,7 @@
 @implements IHasNavigation
 @inject PublicApiHttpClient Http
 @inject NavigationManager NavigationManager
+@using DevilDaggersInfo.Core.Spawnset.Extensions
 @using DevilDaggersInfo.Web.BlazorWasm.Shared.Dto.Public.Spawnsets
 @using DevilDaggersInfo.Web.BlazorWasm.Shared.Enums.Sortings.Public
 @using DevilDaggersInfo.Web.BlazorWasm.Shared.Enums
@@ -61,7 +62,7 @@ else
 				<div class="overflow-hidden text-right hidden xl:block">@spawnset.LoopSpawnCount</div>
 				<div class="overflow-hidden text-right hidden xl:block">@(spawnset.PreLoopLength.HasValue ? (MarkupString)spawnset.PreLoopLength.Value.ToString(FormatUtils.TimeFormat) : MarkupUtils.NoDataMarkup)</div>
 				<div class="overflow-hidden text-right hidden xl:block">@spawnset.PreLoopSpawnCount</div>
-				<div class="overflow-hidden text-left hidden lg:block">Level @((byte)spawnset.Hand)</div>
+				<div class="overflow-hidden text-left hidden lg:block">@spawnset.Hand.ToDisplayString()</div>
 				<div class="overflow-hidden text-right hidden lg:block">@spawnset.AdditionalGems</div>
 				<div class="overflow-hidden text-right hidden lg:block">@spawnset.TimerStart.ToString(FormatUtils.TimeFormat)</div>
 			</div>

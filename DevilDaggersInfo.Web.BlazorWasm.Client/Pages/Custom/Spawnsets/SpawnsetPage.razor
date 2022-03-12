@@ -1,8 +1,7 @@
 @page "/custom/spawnset/{Id:int}"
-@inject PublicApiHttpClient Http
-@inject NavigationManager NavigationManager
 @using DevilDaggersInfo.Core.Spawnset
-@using DevilDaggersInfo.Core.Spawnset.Enums;
+@using DevilDaggersInfo.Core.Spawnset.Enums
+@using DevilDaggersInfo.Core.Spawnset.Extensions
 @using DevilDaggersInfo.Core.Spawnset.View
 @using DevilDaggersInfo.Core.Wiki.Enums
 @using DevilDaggersInfo.Web.BlazorWasm.Shared.Dto.Public.Spawnsets
@@ -81,10 +80,10 @@ else
 				</div>
 				<table class="table-fixed mt-2 border-2 border-gray-3">
 					<tbody>
-						@for (int i = 0; i < SpawnsetBinary.ArenaTiles.GetLength(0); i++)
+						@for (int i = 0; i < SpawnsetBinary.ArenaDimension; i++)
 						{
 							<tr>
-								@for (int j = 0; j < SpawnsetBinary.ArenaTiles.GetLength(1); j++)
+								@for (int j = 0; j < SpawnsetBinary.ArenaDimension; j++)
 								{
 									float height = MathF.Round(SpawnsetBinary.ArenaTiles[j, i] * 32 + 64); // Swap coordinates because <tr> elements cannot be vertical.
 
@@ -98,18 +97,18 @@ else
 
 				<Heading Title="Settings" Level="2" />
 				<div class="bg-gray-1 max-w-arena-table px-1">
-					<DataField Name="Hand">Level @((byte)SpawnsetBinary.HandLevel)</DataField>
+					<DataField Name="Hand">@SpawnsetBinary.HandLevel.ToDisplayString()</DataField>
 					<DataField Name="Additional gems">@SpawnsetBinary.AdditionalGems</DataField>
 					<DataField Name="Timer Start">@SpawnsetBinary.TimerStart.ToString(FormatUtils.TimeFormat)</DataField>
 				</div>
 
 				<Heading Title="Effective Player Settings" Level="2" />
 				<div class="bg-gray-1 max-w-arena-table px-1">
-					<DataField Name="Effective hand">Level @((byte)EffectivePlayerSettings.HandLevel)</DataField>
-					<DataField Name="@($"Effective {((int)EffectivePlayerSettings.HandLevel > 2 ? "homing" : "gems")}")">@EffectivePlayerSettings.GemsOrHoming</DataField>
+					<DataField Name="Effective hand">@EffectivePlayerSettings.HandLevel.ToDisplayString()</DataField>
+					<DataField Name="@($"Effective {(EffectivePlayerSettings.HandLevel is HandLevel.Level1 or HandLevel.Level2 ? "gems" : "homing")}")">@EffectivePlayerSettings.GemsOrHoming</DataField>
 					@if (EffectivePlayerSettings.HandLevel != EffectivePlayerSettings.HandModel)
 					{
-						<DataField Name="Effective hand model">Level @((byte)EffectivePlayerSettings.HandModel)</DataField>
+						<DataField Name="Effective hand model">@EffectivePlayerSettings.HandModel.ToDisplayString()</DataField>
 					}
 				</div>
 			</div>
@@ -123,40 +122,4 @@ else
 			</div>
 		</div>
 	</div>
-}
-
-@code
-{
-	private bool _notFound;
-
-	[Parameter, EditorRequired] public int Id { get; set; }
-
-	public GetSpawnset? GetSpawnset { get; set; }
-
-	public SpawnsetBinary? SpawnsetBinary { get; set; }
-	public SpawnsView? SpawnsView { get; set; }
-	public EffectivePlayerSettings EffectivePlayerSettings { get; set; }
-
-	protected override async Task OnParametersSetAsync()
-	{
-		try
-		{
-			GetSpawnset = await Http.GetSpawnsetById(Id);
-		}
-		catch (HttpRequestException ex) when (ex.StatusCode == HttpStatusCode.NotFound)
-		{
-			_notFound = true;
-			return;
-		}
-
-		if (!SpawnsetBinary.TryParse(GetSpawnset.FileBytes, out SpawnsetBinary? spawnsetBinary))
-		{
-			// TODO: Log error.
-			return;
-		}
-
-		SpawnsetBinary = spawnsetBinary;
-		SpawnsView = new(spawnsetBinary, GameConstants.CurrentVersion);
-		EffectivePlayerSettings = spawnsetBinary.GetEffectivePlayerSettings();
-	}
 }
