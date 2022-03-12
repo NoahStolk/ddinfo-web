@@ -27,7 +27,7 @@ public class AesBase32Wrapper
 		// The raw input is in UTF-8 format.
 		byte[] buffer = Encoding.UTF8.GetBytes(inputRaw);
 
-		using AesCryptoServiceProvider csp = new();
+		using Aes csp = Aes.Create();
 		ICryptoTransform encryptor = GetCryptoTransform(csp, TransformType.Encrypt);
 		byte[] encrypted = encryptor.TransformFinalBlock(buffer, 0, buffer.Length);
 
@@ -40,7 +40,7 @@ public class AesBase32Wrapper
 		// The encrypted input is in Base32 format.
 		byte[] buffer = Base32Encoding.ToBytes(inputEncrypted);
 
-		using AesCryptoServiceProvider csp = new();
+		using Aes csp = Aes.Create();
 		ICryptoTransform decryptor = GetCryptoTransform(csp, TransformType.Decrypt);
 		byte[] decrypted = decryptor.TransformFinalBlock(buffer, 0, buffer.Length);
 
@@ -48,7 +48,7 @@ public class AesBase32Wrapper
 		return Encoding.UTF8.GetString(decrypted);
 	}
 
-	private ICryptoTransform GetCryptoTransform(AesCryptoServiceProvider csp, TransformType transformType)
+	private ICryptoTransform GetCryptoTransform(Aes csp, TransformType transformType)
 	{
 		csp.Mode = CipherMode.CBC;
 		csp.Padding = PaddingMode.PKCS7;
