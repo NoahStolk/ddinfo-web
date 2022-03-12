@@ -1,0 +1,33 @@
+@using DevilDaggersInfo.Core.Spawnset.Enums
+
+<Heading Title="Arena" Level="2" />
+<div class="bg-gray-1 max-w-arena-table px-1">
+	<DataField Name="Start radius">@SpawnsetBinary.ShrinkStart</DataField>
+	<DataField Name="End radius">@SpawnsetBinary.ShrinkEnd</DataField>
+	<DataField Name="Shrinking rate">@SpawnsetBinary.ShrinkRate</DataField>
+	<DataField Name="Brightness">@SpawnsetBinary.Brightness</DataField>
+	@if (SpawnsetBinary.GameMode == GameMode.Race)
+	{
+		(int raceDaggerTileX, float? raceDaggerTileY, int raceDaggerTileZ) = SpawnsetBinary.GetRaceDaggerTilePosition();
+
+		<DataField Name="Race dagger position">X: @SpawnsetBinary.RaceDaggerPosition.X.ToString("0.00") Y: @(raceDaggerTileY.HasValue ? raceDaggerTileY.Value.ToString("0.00") : "-") Z: @SpawnsetBinary.RaceDaggerPosition.Y.ToString("0.00")</DataField>
+		<DataField Name="Race dagger tile">@raceDaggerTileX x @raceDaggerTileZ</DataField>
+	}
+</div>
+
+<table class="table-fixed mt-2 border-2 border-gray-3">
+	<tbody>
+		@for (int i = 0; i < SpawnsetBinary.ArenaDimension; i++)
+		{
+			<tr>
+				@for (int j = 0; j < SpawnsetBinary.ArenaDimension; j++)
+				{
+					float height = MathF.Round(SpawnsetBinary.ArenaTiles[j, i] * 32 + 64); // Swap coordinates because <tr> elements cannot be vertical.
+
+					string backgroundColorStyle = $"background-color: rgb({height}, {Math.Round(height / 2)}, 0)";
+					<td class="w-2 h-2 border border-black" style="@backgroundColorStyle"></td>
+				}
+			</tr>
+		}
+	</tbody>
+</table>
