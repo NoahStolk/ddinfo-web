@@ -6,15 +6,12 @@ public static class CustomLeaderboardConverters
 {
 	public static GetCustomLeaderboardDdcl ToGetCustomLeaderboardDdcl(this CustomLeaderboardEntity customLeaderboard) => new()
 	{
-		SpawnsetAuthorName = customLeaderboard.Spawnset.Player.PlayerName,
 		SpawnsetName = customLeaderboard.Spawnset.Name,
 		TimeBronze = customLeaderboard.TimeBronze,
 		TimeSilver = customLeaderboard.TimeSilver,
 		TimeGolden = customLeaderboard.TimeGolden,
 		TimeDevil = customLeaderboard.TimeDevil,
 		TimeLeviathan = customLeaderboard.TimeLeviathan,
-		DateLastPlayed = customLeaderboard.DateLastPlayed,
-		DateCreated = customLeaderboard.DateCreated,
 		Category = customLeaderboard.Category,
 		IsAscending = customLeaderboard.Category.IsAscending(),
 	};
