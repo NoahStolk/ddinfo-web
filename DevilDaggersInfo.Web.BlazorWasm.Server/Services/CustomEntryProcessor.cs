@@ -39,7 +39,7 @@ public class CustomEntryProcessor
 	public async Task<ActionResult<GetUploadSuccess>> ProcessUploadRequestAsync(AddUploadRequest uploadRequest)
 	{
 		// Check if the submission actually came from an allowed program.
-		string expected = CreateValidation(uploadRequest);
+		string expected = uploadRequest.CreateValidation();
 		string actual = DecryptValidation(uploadRequest.Validation);
 		if (actual != expected)
 			throw LogAndCreateValidationException(uploadRequest, $"Invalid submission for {uploadRequest.Validation}.\nExpected: {expected}\nActual:   {actual}", null, "rotating_light");
@@ -71,20 +71,21 @@ public class CustomEntryProcessor
 		if (uploadRequest.ReplayData == null)
 			throw LogAndCreateValidationException(uploadRequest, "Replay data is required.");
 
-		if (uploadRequest.ReplayData.Length < 88)
+		const int spawnsetOffsetInReplay = 88;
+		if (uploadRequest.ReplayData.Length < spawnsetOffsetInReplay)
 			throw LogAndCreateValidationException(uploadRequest, $"Invalid replay (length {uploadRequest.ReplayData.Length}).");
 
 		// Validate replay buffer spawnset hash in case of replay.
 		if (uploadRequest.IsReplay)
 		{
-			int replaySpawnsetLength = BitConverter.ToInt32(uploadRequest.ReplayData, 84);
+			int replaySpawnsetLength = BitConverter.ToInt32(uploadRequest.ReplayData, spawnsetOffsetInReplay - sizeof(int));
 			if (replaySpawnsetLength < 0 || replaySpawnsetLength > SpawnsetConstants.MaxFileSize)
 				throw LogAndCreateValidationException(uploadRequest, $"Invalid replay spawnset size ({replaySpawnsetLength} / {SpawnsetConstants.MaxFileSize}).");
-			if (uploadRequest.ReplayData.Length < 88 + replaySpawnsetLength)
+			if (uploadRequest.ReplayData.Length < spawnsetOffsetInReplay + replaySpawnsetLength)
 				throw LogAndCreateValidationException(uploadRequest, $"Replay spawnset size out of bounds ({replaySpawnsetLength} / {uploadRequest.ReplayData.Length}).");
 
 			byte[] replaySpawnset = new byte[replaySpawnsetLength];
-			Buffer.BlockCopy(uploadRequest.ReplayData, 88, replaySpawnset, 0, replaySpawnsetLength);
+			Buffer.BlockCopy(uploadRequest.ReplayData, spawnsetOffsetInReplay, replaySpawnset, 0, replaySpawnsetLength);
 
 			if (!ArrayUtils.AreEqual(MD5.HashData(replaySpawnset), uploadRequest.SurvivalHashMd5))
 				throw LogAndCreateValidationException(uploadRequest, "Spawnset in replay does not match detected spawnset.", spawnsetName, "rotating_light");
@@ -102,8 +103,6 @@ public class CustomEntryProcessor
 				PlayerName = uploadRequest.PlayerName,
 			});
 		}
-
-		// Check ban.
 		else if (player.IsBannedFromDdcl)
 		{
 			throw LogAndCreateValidationException(uploadRequest, "Banned.", spawnsetName, "rotating_light");
@@ -164,28 +163,6 @@ public class CustomEntryProcessor
 			return await ProcessNoHighscoreAsync(uploadRequest, customLeaderboard, entries, spawnsetName);
 
 		return await ProcessHighscoreAsync(uploadRequest, customLeaderboard, entries, spawnsetName, isAscending, rank, totalPlayers, customEntry);
-	}
-
-	private static string CreateValidation(AddUploadRequest uploadRequest)
-	{
-		return string.Join(
-			";",
-			uploadRequest.PlayerId,
-			uploadRequest.Time,
-			uploadRequest.GemsCollected,
-			uploadRequest.GemsDespawned,
-			uploadRequest.GemsEaten,
-			uploadRequest.GemsTotal,
-			uploadRequest.EnemiesKilled,
-			uploadRequest.DeathType,
-			uploadRequest.DaggersHit,
-			uploadRequest.DaggersFired,
-			uploadRequest.EnemiesAlive,
-			uploadRequest.HomingDaggers,
-			uploadRequest.HomingDaggersEaten,
-			uploadRequest.IsReplay ? 1 : 0,
-			uploadRequest.SurvivalHashMd5.ByteArrayToHexString(),
-			string.Join(",", uploadRequest.LevelUpTime2, uploadRequest.LevelUpTime3, uploadRequest.LevelUpTime4));
 	}
 
 	private CustomEntryValidationException LogAndCreateValidationException(AddUploadRequest uploadRequest, string errorMessage, string? spawnsetName = null, string? errorEmoteNameOverride = null)
@@ -283,56 +260,6 @@ public class CustomEntryProcessor
 			_logContainerService.AddClLog($":white_check_mark: `{TimeUtils.TicksToTimeString(_stopwatch.ElapsedTicks)}` `{uploadRequest.PlayerName}` just submitted a score of `{FormatTimeString(uploadRequest.Time)}` to `{spawnsetIdentification}`. {requestInfo}");
 	}
 
-	private static void PopulateCustomEntryData(CustomEntryDataEntity ced, AddUploadRequest uploadRequest)
-	{
-		ced.GemsCollectedData = IntegerArrayCompressor.CompressData(uploadRequest.GameData.GemsCollected);
-		ced.EnemiesKilledData = IntegerArrayCompressor.CompressData(uploadRequest.GameData.EnemiesKilled);
-		ced.DaggersFiredData = IntegerArrayCompressor.CompressData(uploadRequest.GameData.DaggersFired);
-		ced.DaggersHitData = IntegerArrayCompressor.CompressData(uploadRequest.GameData.DaggersHit);
-		ced.EnemiesAliveData = IntegerArrayCompressor.CompressData(uploadRequest.GameData.EnemiesAlive);
-		ced.HomingStoredData = IntegerArrayCompressor.CompressData(uploadRequest.GameData.HomingDaggers);
-		ced.HomingEatenData = IntegerArrayCompressor.CompressData(uploadRequest.GameData.HomingDaggersEaten);
-		ced.GemsDespawnedData = IntegerArrayCompressor.CompressData(uploadRequest.GameData.GemsDespawned);
-		ced.GemsEatenData = IntegerArrayCompressor.CompressData(uploadRequest.GameData.GemsEaten);
-		ced.GemsTotalData = IntegerArrayCompressor.CompressData(uploadRequest.GameData.GemsTotal);
-
-		ced.Skull1sAliveData = IntegerArrayCompressor.CompressData(uploadRequest.GameData.Skull1sAlive);
-		ced.Skull2sAliveData = IntegerArrayCompressor.CompressData(uploadRequest.GameData.Skull2sAlive);
-		ced.Skull3sAliveData = IntegerArrayCompressor.CompressData(uploadRequest.GameData.Skull3sAlive);
-		ced.SpiderlingsAliveData = IntegerArrayCompressor.CompressData(uploadRequest.GameData.SpiderlingsAlive);
-		ced.Skull4sAliveData = IntegerArrayCompressor.CompressData(uploadRequest.GameData.Skull4sAlive);
-		ced.Squid1sAliveData = IntegerArrayCompressor.CompressData(uploadRequest.GameData.Squid1sAlive);
-		ced.Squid2sAliveData = IntegerArrayCompressor.CompressData(uploadRequest.GameData.Squid2sAlive);
-		ced.Squid3sAliveData = IntegerArrayCompressor.CompressData(uploadRequest.GameData.Squid3sAlive);
-		ced.CentipedesAliveData = IntegerArrayCompressor.CompressData(uploadRequest.GameData.CentipedesAlive);
-		ced.GigapedesAliveData = IntegerArrayCompressor.CompressData(uploadRequest.GameData.GigapedesAlive);
-		ced.Spider1sAliveData = IntegerArrayCompressor.CompressData(uploadRequest.GameData.Spider1sAlive);
-		ced.Spider2sAliveData = IntegerArrayCompressor.CompressData(uploadRequest.GameData.Spider2sAlive);
-		ced.LeviathansAliveData = IntegerArrayCompressor.CompressData(uploadRequest.GameData.LeviathansAlive);
-		ced.OrbsAliveData = IntegerArrayCompressor.CompressData(uploadRequest.GameData.OrbsAlive);
-		ced.ThornsAliveData = IntegerArrayCompressor.CompressData(uploadRequest.GameData.ThornsAlive);
-		ced.GhostpedesAliveData = IntegerArrayCompressor.CompressData(uploadRequest.GameData.GhostpedesAlive);
-		ced.SpiderEggsAliveData = IntegerArrayCompressor.CompressData(uploadRequest.GameData.SpiderEggsAlive);
-
-		ced.Skull1sKilledData = IntegerArrayCompressor.CompressData(uploadRequest.GameData.Skull1sKilled);
-		ced.Skull2sKilledData = IntegerArrayCompressor.CompressData(uploadRequest.GameData.Skull2sKilled);
-		ced.Skull3sKilledData = IntegerArrayCompressor.CompressData(uploadRequest.GameData.Skull3sKilled);
-		ced.SpiderlingsKilledData = IntegerArrayCompressor.CompressData(uploadRequest.GameData.SpiderlingsKilled);
-		ced.Skull4sKilledData = IntegerArrayCompressor.CompressData(uploadRequest.GameData.Skull4sKilled);
-		ced.Squid1sKilledData = IntegerArrayCompressor.CompressData(uploadRequest.GameData.Squid1sKilled);
-		ced.Squid2sKilledData = IntegerArrayCompressor.CompressData(uploadRequest.GameData.Squid2sKilled);
-		ced.Squid3sKilledData = IntegerArrayCompressor.CompressData(uploadRequest.GameData.Squid3sKilled);
-		ced.CentipedesKilledData = IntegerArrayCompressor.CompressData(uploadRequest.GameData.CentipedesKilled);
-		ced.GigapedesKilledData = IntegerArrayCompressor.CompressData(uploadRequest.GameData.GigapedesKilled);
-		ced.Spider1sKilledData = IntegerArrayCompressor.CompressData(uploadRequest.GameData.Spider1sKilled);
-		ced.Spider2sKilledData = IntegerArrayCompressor.CompressData(uploadRequest.GameData.Spider2sKilled);
-		ced.LeviathansKilledData = IntegerArrayCompressor.CompressData(uploadRequest.GameData.LeviathansKilled);
-		ced.OrbsKilledData = IntegerArrayCompressor.CompressData(uploadRequest.GameData.OrbsKilled);
-		ced.ThornsKilledData = IntegerArrayCompressor.CompressData(uploadRequest.GameData.ThornsKilled);
-		ced.GhostpedesKilledData = IntegerArrayCompressor.CompressData(uploadRequest.GameData.GhostpedesKilled);
-		ced.SpiderEggsKilledData = IntegerArrayCompressor.CompressData(uploadRequest.GameData.SpiderEggsKilled);
-	}
-
 	private async Task<GetUploadSuccess> ProcessNewScoreAsync(AddUploadRequest uploadRequest, CustomLeaderboardEntity customLeaderboard, int rank, bool isAscending, string spawnsetName)
 	{
 		// Add new custom entry to this leaderboard.
@@ -359,15 +286,15 @@ public class CustomEntryProcessor
 			Client = uploadRequest.Client.GetClientFromString(),
 			CustomLeaderboard = customLeaderboard,
 		};
-		_dbContext.CustomEntries.Add(newCustomEntry);
+		await _dbContext.CustomEntries.AddAsync(newCustomEntry);
 
 		CustomEntryDataEntity newCustomEntryData = new() { CustomEntry = newCustomEntry };
-		PopulateCustomEntryData(newCustomEntryData, uploadRequest);
-		_dbContext.CustomEntryData.Add(newCustomEntryData);
+		newCustomEntryData.Populate(uploadRequest);
+		await _dbContext.CustomEntryData.AddAsync(newCustomEntryData);
 
 		UpdateLeaderboardStatistics(customLeaderboard);
 
-		_dbContext.SaveChanges();
+		await _dbContext.SaveChangesAsync();
 
 		await WriteReplayFile(newCustomEntry.Id, uploadRequest.ReplayData);
 
@@ -478,12 +405,12 @@ public class CustomEntryProcessor
 		if (customEntryData == null)
 		{
 			customEntryData = new() { CustomEntryId = customEntry.Id };
-			PopulateCustomEntryData(customEntryData, uploadRequest);
+			customEntryData.Populate(uploadRequest);
 			await _dbContext.CustomEntryData.AddAsync(customEntryData);
 		}
 		else
 		{
-			PopulateCustomEntryData(customEntryData, uploadRequest);
+			customEntryData.Populate(uploadRequest);
 		}
 
 		UpdateLeaderboardStatistics(customLeaderboard);
