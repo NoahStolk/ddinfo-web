@@ -40,7 +40,10 @@ public class CustomEntryProcessor
 	{
 		// Check if the submission actually came from an allowed program.
 		string expected = uploadRequest.CreateValidation();
-		string actual = DecryptValidation(uploadRequest.Validation);
+		string? actual = _encryptionWrapper.TryDecryptValidation(HttpUtility.HtmlDecode(uploadRequest.Validation));
+		if (actual == null)
+			throw LogAndCreateValidationException(uploadRequest, $"Could not decrypt validation '{uploadRequest.Validation}'.", null, "rotating_light");
+
 		if (actual != expected)
 			throw LogAndCreateValidationException(uploadRequest, $"Invalid submission for {uploadRequest.Validation}.\nExpected: {expected}\nActual:   {actual}", null, "rotating_light");
 
@@ -163,101 +166,6 @@ public class CustomEntryProcessor
 			return await ProcessNoHighscoreAsync(uploadRequest, customLeaderboard, entries, spawnsetName);
 
 		return await ProcessHighscoreAsync(uploadRequest, customLeaderboard, entries, spawnsetName, isAscending, rank, totalPlayers, customEntry);
-	}
-
-	private CustomEntryValidationException LogAndCreateValidationException(AddUploadRequest uploadRequest, string errorMessage, string? spawnsetName = null, string? errorEmoteNameOverride = null)
-	{
-		Log(uploadRequest, spawnsetName, errorMessage, errorEmoteNameOverride);
-		return new CustomEntryValidationException(errorMessage);
-	}
-
-	private async Task WriteReplayFile(int customEntryId, byte[] replayData)
-	{
-		await IoFile.WriteAllBytesAsync(Path.Combine(_fileSystemService.GetPath(DataSubDirectory.CustomEntryReplays), $"{customEntryId}.ddreplay"), replayData);
-	}
-
-	private static void UpdateLeaderboardStatistics(CustomLeaderboardEntity customLeaderboard)
-	{
-		customLeaderboard.DateLastPlayed = DateTime.UtcNow;
-		customLeaderboard.TotalRunsSubmitted++;
-	}
-
-	private async Task<List<CustomEntryEntity>> FetchEntriesFromDatabaseAsync(CustomLeaderboardEntity? customLeaderboard, bool isAscending)
-	{
-		// Use tracking to update player score.
-		return await _dbContext.CustomEntries
-			.Include(ce => ce.Player)
-			.Where(e => e.CustomLeaderboard == customLeaderboard)
-			.OrderByMember(nameof(CustomEntryEntity.Time), isAscending)
-			.ThenByMember(nameof(CustomEntryEntity.SubmitDate), true)
-			.ToListAsync();
-	}
-
-	private async Task TrySendLeaderboardMessage(CustomLeaderboardEntity customLeaderboard, string message, int rank, int totalPlayers, int time)
-	{
-		try
-		{
-			DiscordEmbedBuilder builder = new()
-			{
-				Title = message,
-				Color = customLeaderboard.GetDaggerFromTime(time).GetDiscordColor(),
-				Url = $"https://devildaggers.info/custom/leaderboard/{customLeaderboard.Id}",
-			};
-			builder.AddFieldObject("Score", FormatTimeString(time), true);
-			builder.AddFieldObject("Rank", $"{rank}/{totalPlayers}", true);
-
-			Channel channel = _environment.IsDevelopment() ? Channel.MonitoringTest : Channel.CustomLeaderboards;
-			DiscordChannel? discordChannel = DevilDaggersInfoServerConstants.Channels[channel].DiscordChannel;
-			if (discordChannel == null)
-				return;
-
-			await discordChannel.SendMessageAsyncSafe(null, builder.Build());
-		}
-		catch (Exception ex)
-		{
-			_logger.LogError(ex, "Error while attempting to send leaderboard message.");
-		}
-	}
-
-	private static string FormatTimeString(int time)
-		=> time.ToSecondsTime().ToString(FormatUtils.TimeFormat);
-
-	private static string GetSpawnsetHashOrName(byte[] spawnsetHash, string? spawnsetName)
-		=> string.IsNullOrEmpty(spawnsetName) ? spawnsetHash.ByteArrayToHexString() : spawnsetName;
-
-	private string DecryptValidation(string validation)
-	{
-		try
-		{
-			return _encryptionWrapper.DecodeAndDecrypt(HttpUtility.HtmlDecode(validation));
-		}
-		catch (Exception ex)
-		{
-			_logger.LogError(ex, "Could not decrypt validation: `{validation}`", validation);
-
-			return string.Empty;
-		}
-	}
-
-	private void Log(AddUploadRequest uploadRequest, string? spawnsetName, string? errorMessage = null, string? errorEmoteNameOverride = null)
-	{
-		_stopwatch.Stop();
-
-		string spawnsetIdentification = GetSpawnsetHashOrName(uploadRequest.SurvivalHashMd5, spawnsetName);
-
-		string replayData = $"Replay data {uploadRequest.ReplayData.Length:N0} bytes";
-		string replayString = uploadRequest.IsReplay ? " | `Replay`" : string.Empty;
-		string localReplayString = uploadRequest.Status == 8 ? $" | `Local replay from {uploadRequest.ReplayPlayerId}`" : string.Empty;
-		string requestInfo = $"(`{uploadRequest.ClientVersion}` | `{uploadRequest.OperatingSystem}` | `{uploadRequest.BuildMode}` | `{uploadRequest.Client}`{replayString}{localReplayString} | `{replayData}` | `Status {uploadRequest.Status}`)";
-
-		DiscordChannel? discordChannel = DevilDaggersInfoServerConstants.Channels[Channel.MonitoringCustomLeaderboard].DiscordChannel;
-		if (discordChannel == null)
-			return;
-
-		if (!string.IsNullOrEmpty(errorMessage))
-			_logContainerService.AddClLog($":{errorEmoteNameOverride ?? "warning"}: `{TimeUtils.TicksToTimeString(_stopwatch.ElapsedTicks)}` Upload failed for user `{uploadRequest.PlayerName}` (`{uploadRequest.PlayerId}`) for `{spawnsetIdentification}`. {requestInfo}\n**{errorMessage}**");
-		else
-			_logContainerService.AddClLog($":white_check_mark: `{TimeUtils.TicksToTimeString(_stopwatch.ElapsedTicks)}` `{uploadRequest.PlayerName}` just submitted a score of `{FormatTimeString(uploadRequest.Time)}` to `{spawnsetIdentification}`. {requestInfo}");
 	}
 
 	private async Task<GetUploadSuccess> ProcessNewScoreAsync(AddUploadRequest uploadRequest, CustomLeaderboardEntity customLeaderboard, int rank, bool isAscending, string spawnsetName)
@@ -464,5 +372,86 @@ public class CustomEntryProcessor
 			LevelUpTime4 = uploadRequest.LevelUpTime4,
 			LevelUpTime4Diff = levelUpTime4Diff,
 		};
+	}
+
+	private CustomEntryValidationException LogAndCreateValidationException(AddUploadRequest uploadRequest, string errorMessage, string? spawnsetName = null, string? errorEmoteNameOverride = null)
+	{
+		Log(uploadRequest, spawnsetName, errorMessage, errorEmoteNameOverride);
+		return new CustomEntryValidationException(errorMessage);
+	}
+
+	private async Task WriteReplayFile(int customEntryId, byte[] replayData)
+	{
+		await IoFile.WriteAllBytesAsync(Path.Combine(_fileSystemService.GetPath(DataSubDirectory.CustomEntryReplays), $"{customEntryId}.ddreplay"), replayData);
+	}
+
+	private static void UpdateLeaderboardStatistics(CustomLeaderboardEntity customLeaderboard)
+	{
+		customLeaderboard.DateLastPlayed = DateTime.UtcNow;
+		customLeaderboard.TotalRunsSubmitted++;
+	}
+
+	private async Task<List<CustomEntryEntity>> FetchEntriesFromDatabaseAsync(CustomLeaderboardEntity? customLeaderboard, bool isAscending)
+	{
+		// Use tracking to update player score.
+		return await _dbContext.CustomEntries
+			.Include(ce => ce.Player)
+			.Where(e => e.CustomLeaderboard == customLeaderboard)
+			.OrderByMember(nameof(CustomEntryEntity.Time), isAscending)
+			.ThenByMember(nameof(CustomEntryEntity.SubmitDate), true)
+			.ToListAsync();
+	}
+
+	private async Task TrySendLeaderboardMessage(CustomLeaderboardEntity customLeaderboard, string message, int rank, int totalPlayers, int time)
+	{
+		try
+		{
+			DiscordEmbedBuilder builder = new()
+			{
+				Title = message,
+				Color = customLeaderboard.GetDaggerFromTime(time).GetDiscordColor(),
+				Url = $"https://devildaggers.info/custom/leaderboard/{customLeaderboard.Id}",
+			};
+			builder.AddFieldObject("Score", FormatTimeString(time), true);
+			builder.AddFieldObject("Rank", $"{rank}/{totalPlayers}", true);
+
+			Channel channel = _environment.IsDevelopment() ? Channel.MonitoringTest : Channel.CustomLeaderboards;
+			DiscordChannel? discordChannel = DevilDaggersInfoServerConstants.Channels[channel].DiscordChannel;
+			if (discordChannel == null)
+				return;
+
+			await discordChannel.SendMessageAsyncSafe(null, builder.Build());
+		}
+		catch (Exception ex)
+		{
+			_logger.LogError(ex, "Error while attempting to send leaderboard message.");
+		}
+	}
+
+	private static string FormatTimeString(int time)
+		=> time.ToSecondsTime().ToString(FormatUtils.TimeFormat);
+
+	private static string GetSpawnsetHashOrName(byte[] spawnsetHash, string? spawnsetName)
+		=> string.IsNullOrEmpty(spawnsetName) ? spawnsetHash.ByteArrayToHexString() : spawnsetName;
+
+	private void Log(AddUploadRequest uploadRequest, string? spawnsetName, string? errorMessage = null, string? errorEmoteNameOverride = null)
+	{
+		_stopwatch.Stop();
+
+		string spawnsetIdentification = GetSpawnsetHashOrName(uploadRequest.SurvivalHashMd5, spawnsetName);
+
+		string replayData = $"Replay data {uploadRequest.ReplayData.Length:N0} bytes";
+		string replayString = uploadRequest.IsReplay ? " | `Replay`" : string.Empty;
+		string localReplayString = uploadRequest.Status == 8 ? $" | `Local replay from {uploadRequest.ReplayPlayerId}`" : string.Empty;
+		string requestInfo = $"(`{uploadRequest.ClientVersion}` | `{uploadRequest.OperatingSystem}` | `{uploadRequest.BuildMode}` | `{uploadRequest.Client}`{replayString}{localReplayString} | `{replayData}` | `Status {uploadRequest.Status}`)";
+
+		DiscordChannel? discordChannel = DevilDaggersInfoServerConstants.Channels[Channel.MonitoringCustomLeaderboard].DiscordChannel;
+		if (discordChannel == null)
+			return;
+
+		if (!string.IsNullOrEmpty(errorMessage))
+			_logContainerService.AddClLog($":{errorEmoteNameOverride ?? "warning"}: `{TimeUtils.TicksToTimeString(_stopwatch.ElapsedTicks)}` Upload failed for user `{uploadRequest.PlayerName}` (`{uploadRequest.PlayerId}`) for `{spawnsetIdentification}`. {requestInfo}\n**{errorMessage}**");
+		else
+			_logContainerService.AddClLog($":white_check_mark: `{TimeUtils.TicksToTimeString(_stopwatch.ElapsedTicks)}` `{uploadRequest.PlayerName}` just submitted a score of `{FormatTimeString(uploadRequest.Time)}` to `{spawnsetIdentification}`. {requestInfo}");
 	}
 }
