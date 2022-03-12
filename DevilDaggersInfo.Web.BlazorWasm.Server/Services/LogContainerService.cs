@@ -5,13 +5,20 @@ namespace DevilDaggersInfo.Web.BlazorWasm.Server.Services;
 public class LogContainerService
 {
 	private readonly List<LogEntry> _logEntries = new();
-	private readonly List<string> _clLogs = new();
+	private readonly List<string> _validClLogs = new();
+	private readonly List<string> _invalidClLogs = new();
 
 	public void Add(DiscordEmbed embed) => _logEntries.Add(new(null, embed));
 
 	public void Add(string message) => _logEntries.Add(new(message, null));
 
-	public void AddClLog(string message) => _clLogs.Add(message);
+	public void AddClLog(bool valid, string message)
+	{
+		if (valid)
+			_validClLogs.Add(message);
+		else
+			_invalidClLogs.Add(message);
+	}
 
 	public async Task LogToChannel(DiscordChannel channel)
 	{
@@ -23,12 +30,13 @@ public class LogContainerService
 		}
 	}
 
-	public async Task LogClLogsToChannel(DiscordChannel channel)
+	public async Task LogClLogsToChannel(bool valid, DiscordChannel channel)
 	{
-		if (_clLogs.Count > 0)
+		List<string> logs = valid ? _validClLogs : _invalidClLogs;
+		if (logs.Count > 0)
 		{
-			await channel.SendMessageAsyncSafe(string.Join(Environment.NewLine, _clLogs));
-			_clLogs.Clear();
+			await channel.SendMessageAsyncSafe(string.Join(Environment.NewLine, logs));
+			logs.Clear();
 		}
 	}
 
