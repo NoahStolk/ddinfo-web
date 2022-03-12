@@ -114,8 +114,6 @@ public class CustomEntryProcessor
 		if (customLeaderboard == null)
 			throw LogAndCreateValidationException(uploadRequest, "This spawnset exists on DevilDaggers.info, but doesn't have a leaderboard.", spawnsetName);
 
-		CustomLeaderboardsClient client = GetClientFromString(uploadRequest.Client);
-
 		// Validate game mode.
 		GameMode requiredGameMode = customLeaderboard.Category.GetRequiredGameModeForCategory();
 		if (uploadRequest.GameMode != (byte)requiredGameMode)
@@ -204,7 +202,7 @@ public class CustomEntryProcessor
 		customEntry.LevelUpTime4 = uploadRequest.LevelUpTime4;
 		customEntry.SubmitDate = DateTime.UtcNow;
 		customEntry.ClientVersion = uploadRequest.ClientVersion;
-		customEntry.Client = client;
+		customEntry.Client = uploadRequest.Client.GetClientFromString();
 
 		// Update the entry data.
 		CustomEntryDataEntity? customEntryData = await _dbContext.CustomEntryData.FirstOrDefaultAsync(ced => ced.CustomEntryId == customEntry.Id);
@@ -439,13 +437,6 @@ public class CustomEntryProcessor
 		ced.SpiderEggsKilledData = IntegerArrayCompressor.CompressData(uploadRequest.GameData.SpiderEggsKilled);
 	}
 
-	private static CustomLeaderboardsClient GetClientFromString(string clientString) => clientString switch
-	{
-		"DevilDaggersCustomLeaderboards" => CustomLeaderboardsClient.DevilDaggersCustomLeaderboards,
-		"ddstats-rust" => CustomLeaderboardsClient.DdstatsRust,
-		_ => throw new Exception("Unknown CustomLeaderboardsClient."),
-	};
-
 	private async Task<GetUploadSuccess> ProcessNewScore(AddUploadRequest uploadRequest, CustomLeaderboardEntity customLeaderboard, int rank, bool isAscending, string spawnsetName)
 	{
 		// Add new custom entry to this leaderboard.
@@ -469,7 +460,7 @@ public class CustomEntryProcessor
 			LevelUpTime4 = uploadRequest.LevelUpTime4,
 			SubmitDate = DateTime.UtcNow,
 			ClientVersion = uploadRequest.ClientVersion,
-			Client = GetClientFromString(uploadRequest.Client),
+			Client = uploadRequest.Client.GetClientFromString(),
 			CustomLeaderboard = customLeaderboard,
 		};
 		_dbContext.CustomEntries.Add(newCustomEntry);
