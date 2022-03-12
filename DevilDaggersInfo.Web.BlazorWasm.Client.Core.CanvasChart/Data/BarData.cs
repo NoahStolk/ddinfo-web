@@ -11,5 +11,7 @@ public class BarData
 
 	public string Color { get; }
 	public double Y { get; }
+
+	// TODO: Use index.
 	public object Reference { get; }
 }
