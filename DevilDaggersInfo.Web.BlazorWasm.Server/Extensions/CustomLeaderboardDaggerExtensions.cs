@@ -3,7 +3,7 @@ using DSharpPlus.Entities;
 
 namespace DevilDaggersInfo.Web.BlazorWasm.Server.Extensions;
 
-public static class EnumExtensions
+public static class CustomLeaderboardDaggerExtensions
 {
 	public static DiscordColor GetDiscordColor(this CustomLeaderboardDagger dagger) => dagger switch
 	{
