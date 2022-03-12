@@ -153,6 +153,35 @@ public class AuditLogger
 		await TryLog(Channel.MaintainersAuditLog, auditLogger.ToString());
 	}
 
+	public async Task LogPlayerRenames(List<(int PlayerId, string OldName, string NewName)> logs)
+	{
+		StringBuilder auditLogger = new();
+		if (logs.Count == 0)
+		{
+			auditLogger.AppendLine("No player names needed updating.");
+		}
+		else
+		{
+			auditLogger.Append(logs.Count).AppendLine(" player names were updated.");
+			auditLogger.AppendLine("```");
+
+			const string propertyHeader = "PlayerId";
+			const string oldValueHeader = "OldName";
+			const string newValueHeader = "NewName";
+			const int paddingL = 10;
+			int paddingR = logs.Max(l => l.OldName.Length) + 2;
+
+			auditLogger.AppendFormat($"{{0,-{paddingL}}}", propertyHeader).AppendFormat($"{{0,-{paddingR}}}", oldValueHeader).AppendLine(newValueHeader);
+			auditLogger.AppendLine();
+			foreach ((int playerId, string oldName, string newName) in logs)
+				auditLogger.AppendFormat($"{{0,-{paddingL}}}", playerId).AppendFormat($"{{0,-{paddingR}}}", oldName).AppendLine(newName);
+
+			auditLogger.AppendLine("```");
+		}
+
+		await TryLog(Channel.MaintainersAuditLog, auditLogger.ToString());
+	}
+
 	private static StringBuilder GetAuditLogger(ClaimsPrincipal claimsPrincipal, int id, string endpointName) => new($"`{endpointName}` by `{claimsPrincipal.GetName() ?? "?"}` for ID `{id}`\n");
 
 	private static void AddFileSystemInformation(StringBuilder auditLogger, List<FileSystemInformation>? auditLogFileSystemInformation)

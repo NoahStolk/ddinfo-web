@@ -81,6 +81,7 @@ public class Startup
 			services.AddHostedService<DatabaseLoggerBackgroundService>();
 			services.AddHostedService<FileSystemLoggerBackgroundService>();
 			services.AddHostedService<LeaderboardHistoryBackgroundService>();
+			services.AddHostedService<PlayerNameFetchBackgroundService>();
 			services.AddHostedService<ResponseTimesBackgroundService>();
 		}
 
