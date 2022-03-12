@@ -98,8 +98,6 @@ public class CustomEntryProcessor
 		{
 			if (player.IsBannedFromDdcl)
 				throw LogAndCreateValidationException(uploadRequest, "Banned.", spawnsetName, "rotating_light");
-
-			player.PlayerName = uploadRequest.PlayerName;
 		}
 		else
 		{
