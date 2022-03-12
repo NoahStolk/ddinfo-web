@@ -1,3 +1,5 @@
+using MockQueryable.Moq;
+
 namespace DevilDaggersInfo.Test.Web.BlazorWasm.Server.Data;
 
 public class MockEntities
@@ -11,12 +13,12 @@ public class MockEntities
 
 		PropertyInfo[] properties = typeof(MockEntities).GetProperties();
 
-		MockDbSetTools = new Mock<DbSet<ToolEntity>>().SetUpDbSet(GetEntities<ToolEntity>());
-		MockDbSetPlayers = new Mock<DbSet<PlayerEntity>>().SetUpDbSet(GetEntities<PlayerEntity>());
-		MockDbSetSpawnsets = new Mock<DbSet<SpawnsetEntity>>().SetUpDbSet(GetEntities<SpawnsetEntity>());
-		MockDbSetCustomLeaderboards = new Mock<DbSet<CustomLeaderboardEntity>>().SetUpDbSet(GetEntities<CustomLeaderboardEntity>());
-		MockDbSetCustomEntries = new Mock<DbSet<CustomEntryEntity>>().SetUpDbSet(GetEntities<CustomEntryEntity>());
-		MockDbSetCustomEntryData = new Mock<DbSet<CustomEntryDataEntity>>().SetUpDbSet(GetEntities<CustomEntryDataEntity>());
+		MockDbSetTools = GetEntities<ToolEntity>().AsQueryable().BuildMockDbSet();
+		MockDbSetPlayers = GetEntities<PlayerEntity>().AsQueryable().BuildMockDbSet();
+		MockDbSetSpawnsets = GetEntities<SpawnsetEntity>().AsQueryable().BuildMockDbSet();
+		MockDbSetCustomLeaderboards = GetEntities<CustomLeaderboardEntity>().AsQueryable().BuildMockDbSet();
+		MockDbSetCustomEntries = GetEntities<CustomEntryEntity>().AsQueryable().BuildMockDbSet();
+		MockDbSetCustomEntryData = GetEntities<CustomEntryDataEntity>().AsQueryable().BuildMockDbSet();
 
 		T[] GetEntities<T>() => properties
 			.Where(pi => pi.PropertyType == typeof(T))

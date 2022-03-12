@@ -89,7 +89,7 @@ public class CustomEntryTests
 
 		GetUploadSuccess? uploadSuccess = (await _customEntryProcessor.ProcessUploadRequestAsync(uploadRequest)).Value;
 
-		_dbContext.Verify(db => db.SaveChanges(), Times.AtLeastOnce);
+		_dbContext.Verify(db => db.SaveChangesAsync(default), Times.AtLeastOnce);
 		Assert.IsNotNull(uploadSuccess);
 		Assert.AreEqual(1, uploadSuccess.TotalPlayers);
 		Assert.IsTrue(uploadSuccess.Message.StartsWith("No new highscore"));
@@ -114,7 +114,7 @@ public class CustomEntryTests
 
 		GetUploadSuccess? uploadSuccess = (await _customEntryProcessor.ProcessUploadRequestAsync(uploadRequest)).Value;
 
-		_dbContext.Verify(db => db.SaveChanges(), Times.AtLeastOnce);
+		_dbContext.Verify(db => db.SaveChangesAsync(default), Times.AtLeastOnce);
 		Assert.IsNotNull(uploadSuccess);
 		Assert.AreEqual(1, uploadSuccess.TotalPlayers);
 		Assert.IsTrue(uploadSuccess.Message.StartsWith("NEW HIGHSCORE"));
@@ -139,8 +139,8 @@ public class CustomEntryTests
 
 		GetUploadSuccess? uploadSuccess = (await _customEntryProcessor.ProcessUploadRequestAsync(uploadRequest)).Value;
 
-		_dbContext.Verify(db => db.CustomEntries.Add(It.Is<CustomEntryEntity>(ce => ce.PlayerId == 2 && ce.Time == 200000)), Times.Once);
-		_dbContext.Verify(db => db.SaveChanges(), Times.AtLeastOnce);
+		_dbContext.Verify(db => db.CustomEntries.AddAsync(It.Is<CustomEntryEntity>(ce => ce.PlayerId == 2 && ce.Time == 200000), default), Times.Once);
+		_dbContext.Verify(db => db.SaveChangesAsync(default), Times.AtLeastOnce);
 		Assert.IsNotNull(uploadSuccess);
 		Assert.IsTrue(uploadSuccess.Message.StartsWith("Welcome"));
 	}
@@ -164,9 +164,9 @@ public class CustomEntryTests
 
 		GetUploadSuccess? uploadSuccess = (await _customEntryProcessor.ProcessUploadRequestAsync(uploadRequest)).Value;
 
-		_dbContext.Verify(db => db.SaveChanges(), Times.AtLeastOnce);
-		_dbContext.Verify(db => db.Players.Add(It.Is<PlayerEntity>(p => p.Id == 3 && p.PlayerName == "TestPlayer3")), Times.Once);
-		_dbContext.Verify(db => db.CustomEntries.Add(It.Is<CustomEntryEntity>(ce => ce.PlayerId == 3 && ce.Time == 300000)), Times.Once);
+		_dbContext.Verify(db => db.SaveChangesAsync(default), Times.AtLeastOnce);
+		_dbContext.Verify(db => db.Players.AddAsync(It.Is<PlayerEntity>(p => p.Id == 3 && p.PlayerName == "TestPlayer3"), default), Times.Once);
+		_dbContext.Verify(db => db.CustomEntries.AddAsync(It.Is<CustomEntryEntity>(ce => ce.PlayerId == 3 && ce.Time == 300000), default), Times.Once);
 		Assert.IsNotNull(uploadSuccess);
 		Assert.IsTrue(uploadSuccess.Message.StartsWith("Welcome"));
 	}
@@ -189,7 +189,7 @@ public class CustomEntryTests
 
 		CustomEntryValidationException ex = await Assert.ThrowsExceptionAsync<CustomEntryValidationException>(async () => await _customEntryProcessor.ProcessUploadRequestAsync(uploadRequest));
 
-		_dbContext.Verify(db => db.SaveChanges(), Times.Never);
+		_dbContext.Verify(db => db.SaveChangesAsync(default), Times.Never);
 
 		Assert.IsTrue(ex.Message.Contains("unsupported and outdated"));
 	}
@@ -212,9 +212,9 @@ public class CustomEntryTests
 
 		CustomEntryValidationException ex = await Assert.ThrowsExceptionAsync<CustomEntryValidationException>(async () => await _customEntryProcessor.ProcessUploadRequestAsync(uploadRequest));
 
-		_dbContext.Verify(db => db.SaveChanges(), Times.Never);
+		_dbContext.Verify(db => db.SaveChangesAsync(default), Times.Never);
 
-		Assert.IsTrue(ex.Message.StartsWith("Invalid submission"));
+		Assert.IsTrue(ex.Message.StartsWith("Could not decrypt"));
 	}
 
 	private string GetValidation(AddUploadRequest uploadRequest)
