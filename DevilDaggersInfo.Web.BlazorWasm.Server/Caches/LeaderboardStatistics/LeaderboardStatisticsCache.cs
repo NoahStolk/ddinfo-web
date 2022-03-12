@@ -16,9 +16,9 @@ public class LeaderboardStatisticsCache : IStaticCache
 	public string? FileName { get; private set; }
 	public bool IsFetched { get; private set; }
 
-	public Dictionary<Dagger, int> DaggersStatistics { get; } = new();
 	public Dictionary<Death, int> DeathsStatistics { get; } = new();
-	public Dictionary<Enemy, int> EnemiesStatistics { get; } = new();
+	public int[] DaggersStatistics { get; } = new int[StatDaggers.Count];
+	public int[] EnemiesStatistics { get; } = new int[StatEnemies.Count];
 	public Dictionary<int, int> TimesStatistics { get; } = new();
 	public Dictionary<int, int> KillsStatistics { get; } = new();
 	public Dictionary<int, int> GemsStatistics { get; } = new();
@@ -35,7 +35,10 @@ public class LeaderboardStatisticsCache : IStaticCache
 
 	public IReadOnlyList<CompressedEntry> Entries => _entries;
 
-	// TODO: Measure performance.
+	public static IReadOnlyList<Dagger> StatDaggers { get; } = Daggers.GetDaggers(GameConstants.CurrentVersion).OrderByDescending(d => d.UnlockSecond).ToList();
+
+	public static IReadOnlyList<Enemy> StatEnemies { get; } = Enemies.GetEnemies(GameConstants.CurrentVersion).Where(e => e.FirstSpawnSecond.HasValue).OrderByDescending(e => e.FirstSpawnSecond).ToList();
+
 	public void Initiate()
 	{
 		string[] paths = _fileSystemService.TryGetFiles(DataSubDirectory.LeaderboardStatistics);
@@ -51,9 +54,9 @@ public class LeaderboardStatisticsCache : IStaticCache
 		IsFetched = false;
 
 		_entries.Clear();
-		DaggersStatistics.Clear();
+		Array.Clear(DaggersStatistics);
 		DeathsStatistics.Clear();
-		EnemiesStatistics.Clear();
+		Array.Clear(EnemiesStatistics);
 		TimesStatistics.Clear();
 		KillsStatistics.Clear();
 		GemsStatistics.Clear();
@@ -77,36 +80,37 @@ public class LeaderboardStatisticsCache : IStaticCache
 			}
 		}
 
+		_entries.Sort((CompressedEntry x, CompressedEntry y) => -x.Time.CompareTo(y.Time));
+
 		foreach (Death death in Deaths.GetDeaths(GameConstants.CurrentVersion))
 			DeathsStatistics.Add(death, 0);
 
-		foreach (Dagger dagger in Daggers.GetDaggers(GameConstants.CurrentVersion))
-			DaggersStatistics.Add(dagger, 0);
+		int enemyIndex = 0;
+		int currentFirstSpawnSecond = StatEnemies[enemyIndex].FirstSpawnSecond!.Value;
 
-		IEnumerable<Enemy> enemies = Enemies.GetEnemies(GameConstants.CurrentVersion).Where(e => e.FirstSpawnSecond.HasValue);
-		foreach (Enemy enemy in enemies)
-			EnemiesStatistics.Add(enemy, 0);
+		int daggerIndex = 0;
+		int currentDaggerTime = StatDaggers[daggerIndex].UnlockSecond;
 
+		bool countingEnemies = true;
 		foreach (CompressedEntry entry in _entries)
 		{
-			Dagger dagger = Daggers.GetDaggerFromTenthsOfMilliseconds(GameConstants.CurrentVersion, (int)entry.Time);
-			if (DaggersStatistics.ContainsKey(dagger))
-				DaggersStatistics[dagger]++;
-
 			Death? death = Deaths.GetDeathByLeaderboardType(GameConstants.CurrentVersion, entry.DeathType);
 			if (!death.HasValue)
 				_logger.LogError("Invalid death type 0x{death} for entry with time {time} in leaderboard statistics.", entry.DeathType.ToString("X"), entry.Time);
 			else if (DeathsStatistics.ContainsKey(death.Value))
 				DeathsStatistics[death.Value]++;
 
-			foreach (Enemy enemy in enemies)
-			{
-				if (!EnemiesStatistics.ContainsKey(enemy))
-					_logger.LogError("Enemy {enemy} not present in {dictionary} dictionary.", enemy, nameof(EnemiesStatistics));
+			double seconds = entry.Time.ToSecondsTime();
 
-				if (entry.Time >= ((double?)enemy.FirstSpawnSecond).To10thMilliTime())
-					EnemiesStatistics[enemy]++;
+			if (seconds < currentDaggerTime)
+			{
+				daggerIndex++;
+				currentDaggerTime = StatDaggers[daggerIndex].UnlockSecond;
 			}
+
+			DaggersStatistics[daggerIndex]++;
+
+			CountEnemies(seconds);
 
 			const int step = 10;
 
@@ -137,6 +141,26 @@ public class LeaderboardStatisticsCache : IStaticCache
 		PlayersWithLevel3Or4 = _entries.Count(e => e.Gems > 70);
 
 		IsFetched = true;
+
+		void CountEnemies(double seconds)
+		{
+			if (!countingEnemies)
+				return;
+
+			while (seconds < currentFirstSpawnSecond)
+			{
+				enemyIndex++;
+				if (enemyIndex >= StatEnemies.Count)
+				{
+					countingEnemies = false;
+					return;
+				}
+
+				currentFirstSpawnSecond = StatEnemies[enemyIndex].FirstSpawnSecond!.Value;
+			}
+
+			EnemiesStatistics[enemyIndex]++;
+		}
 	}
 
 	private static void AddToStatisticsDictionary(Dictionary<int, int> dictionary, int step, int currentKey)

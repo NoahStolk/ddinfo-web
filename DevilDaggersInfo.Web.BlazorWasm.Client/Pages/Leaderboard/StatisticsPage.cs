@@ -22,7 +22,7 @@ public partial class StatisticsPage
 
 	private static readonly List<string> _daggers = Daggers.GetDaggers(GameConstants.CurrentVersion).ConvertAll(d => d.Name);
 	private static readonly List<string> _deathTypes = Deaths.GetDeaths(GameConstants.CurrentVersion).ConvertAll(d => d.Name);
-	private static readonly List<string> _enemies = Enemies.GetEnemies(GameConstants.CurrentVersion).Where(e => e.FirstSpawnSecond.HasValue).OrderBy(e => e.FirstSpawnSecond).Select(e => e.Name).ToList();
+	private static readonly List<string> _enemies = Enemies.GetEnemies(GameConstants.CurrentVersion).Where(e => e.FirstSpawnSecond.HasValue).OrderByDescending(e => e.FirstSpawnSecond).Select(e => e.Name).Reverse().ToList();
 	private static readonly List<string> _upgrades = new() { "Level 1", "Level 2", "Level 3 / 4" };
 
 	private GetLeaderboardStatistics? _statistics;
