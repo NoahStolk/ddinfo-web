@@ -29,15 +29,12 @@ public class ModBinary
 		List<ModBinaryChunk> chunks = new();
 		while (br.BaseStream.Position < _fileHeaderSize + tocSize)
 		{
-			// TODO: Throw InvalidModBinaryException when incomplete (unexpected EOF) TOC entries exist.
 			ushort type = br.ReadUInt16();
+			AssetType? assetType = type.GetAssetType();
 
-			// TODO: Don't cast.
-			AssetType assetType = (AssetType)type;
-
-			// TODO: Remove when not casting anymore.
 			// Skip unknown or obsolete types (such as 0x11, which is an outdated type for (fragment?) shaders).
-			if (!Enum.IsDefined(assetType))
+			// This also breaks the while loop when the end of the TOC is reached (which is 0x0000).
+			if (!assetType.HasValue)
 				continue;
 
 			string name = br.ReadNullTerminatedString();
@@ -46,7 +43,7 @@ public class ModBinary
 			int size = br.ReadInt32();
 			_ = br.ReadInt32();
 
-			chunks.Add(new(name, offset, size, assetType));
+			chunks.Add(new(name, offset, size, assetType.Value));
 		}
 
 		// Read assets.
