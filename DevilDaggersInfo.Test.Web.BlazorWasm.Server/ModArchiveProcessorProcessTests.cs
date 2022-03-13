@@ -10,13 +10,13 @@ using System.Text;
 namespace DevilDaggersInfo.Test.Web.BlazorWasm.Server;
 
 [TestClass]
-public class ModArchiveProcessorTests
+public class ModArchiveProcessorProcessTests
 {
 	private readonly ModArchiveCache _cache;
 	private readonly ModArchiveAccessor _accessor;
 	private readonly ModArchiveProcessor _processor;
 
-	public ModArchiveProcessorTests()
+	public ModArchiveProcessorProcessTests()
 	{
 		string modsPath = Path.Combine(TestUtils.ResourcePath, "Mods");
 		string modArchiveCachePath = Path.Combine(TestUtils.ResourcePath, "ModArchiveCache");
@@ -69,11 +69,11 @@ public class ModArchiveProcessorTests
 		const string modName = "mod";
 		const string binaryName = "main";
 		const string assetName1 = "binding";
-		const string assetName2 = "shader";
+		const string assetName2 = "texture";
 
 		ModBinary binary = new(ModBinaryType.Dd);
 		binary.AddAsset(assetName1, AssetType.ModelBinding, Encoding.Default.GetBytes("shader = \"boid\""));
-		binary.AddAsset(assetName2, AssetType.Texture, File.ReadAllBytes(Path.Combine(TestUtils.ResourcePath, "Textures", "pixel.png")));
+		binary.AddAsset(assetName2, AssetType.Texture, File.ReadAllBytes(Path.Combine(TestUtils.ResourcePath, "Textures", "green.png")));
 
 		await _processor.ProcessModBinaryUploadAsync(modName, new Dictionary<string, byte[]> { [binaryName] = binary.Compile() }, new());
 
@@ -89,6 +89,53 @@ public class ModArchiveProcessorTests
 		Assert.AreEqual(AssetType.ModelBinding, processedBinary.Chunks[0].AssetType);
 		Assert.AreEqual(assetName2, processedBinary.Chunks[1].Name);
 		Assert.AreEqual(AssetType.Texture, processedBinary.Chunks[1].AssetType);
+	}
+
+	[TestMethod]
+	public async Task ProcessNewMod_2Binaries_2Assets()
+	{
+		const string modName = "mod";
+		const string binaryName1 = "main";
+		const string binaryName2 = "test";
+		const string assetName1 = "binding";
+		const string assetName2 = "texture";
+
+		ModBinary binary1 = new(ModBinaryType.Dd);
+		binary1.AddAsset(assetName1, AssetType.ModelBinding, Encoding.Default.GetBytes("shader = \"boid\""));
+		binary1.AddAsset(assetName2, AssetType.Texture, File.ReadAllBytes(Path.Combine(TestUtils.ResourcePath, "Textures", "green.png")));
+
+		ModBinary binary2 = new(ModBinaryType.Dd);
+		binary2.AddAsset(assetName1, AssetType.ModelBinding, Encoding.Default.GetBytes("shader = \"egg\""));
+		binary2.AddAsset(assetName2, AssetType.Texture, File.ReadAllBytes(Path.Combine(TestUtils.ResourcePath, "Textures", "blue.png")));
+
+		Dictionary<string, byte[]> binaries = new()
+		{
+			[binaryName1] = binary1.Compile(),
+			[binaryName2] = binary2.Compile(),
+		};
+		await _processor.ProcessModBinaryUploadAsync(modName, binaries, new());
+
+		string zipFilePath = _accessor.GetModArchivePath(modName);
+		using ZipArchive archive = ZipFile.Open(zipFilePath, ZipArchiveMode.Read);
+		Assert.AreEqual(2, archive.Entries.Count);
+
+		ModBinaryCacheData processedBinary1 = GetProcessedBinaryFromArchiveEntry(archive.Entries[0]);
+		Assert.AreEqual(ModBinaryType.Dd, processedBinary1.ModBinaryType);
+		Assert.AreEqual(BinaryFileNameUtils.SanitizeModBinaryFileName(binaryName1, modName), processedBinary1.Name);
+		Assert.AreEqual(2, processedBinary1.Chunks.Count);
+		Assert.AreEqual(assetName1, processedBinary1.Chunks[0].Name);
+		Assert.AreEqual(AssetType.ModelBinding, processedBinary1.Chunks[0].AssetType);
+		Assert.AreEqual(assetName2, processedBinary1.Chunks[1].Name);
+		Assert.AreEqual(AssetType.Texture, processedBinary1.Chunks[1].AssetType);
+
+		ModBinaryCacheData processedBinary2 = GetProcessedBinaryFromArchiveEntry(archive.Entries[1]);
+		Assert.AreEqual(ModBinaryType.Dd, processedBinary2.ModBinaryType);
+		Assert.AreEqual(BinaryFileNameUtils.SanitizeModBinaryFileName(binaryName2, modName), processedBinary2.Name);
+		Assert.AreEqual(2, processedBinary2.Chunks.Count);
+		Assert.AreEqual(assetName1, processedBinary2.Chunks[0].Name);
+		Assert.AreEqual(AssetType.ModelBinding, processedBinary2.Chunks[0].AssetType);
+		Assert.AreEqual(assetName2, processedBinary2.Chunks[1].Name);
+		Assert.AreEqual(AssetType.Texture, processedBinary2.Chunks[1].AssetType);
 	}
 
 	[AssertionMethod]
