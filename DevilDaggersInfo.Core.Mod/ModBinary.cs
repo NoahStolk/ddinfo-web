@@ -132,7 +132,7 @@ public class ModBinary
 			throw new InvalidOperationException("This mod binary has not been opened for full reading comprehensiveness. Cannot compile mod binary.");
 
 		const int tocEntrySizeWithoutName = 15;
-		int tocBufferSize = tocEntrySizeWithoutName * AssetMap.Count + Chunks.Sum(c => Encoding.Default.GetBytes(c.Name).Length) + 2;
+		int tocBufferSize = tocEntrySizeWithoutName * AssetMap.Count + Chunks.Sum(c => Encoding.Default.GetBytes(c.Name).Length) + sizeof(short);
 		int offset = _fileHeaderSize + tocBufferSize;
 		byte[]? tocBuffer = null;
 		using (MemoryStream tocStream = new())

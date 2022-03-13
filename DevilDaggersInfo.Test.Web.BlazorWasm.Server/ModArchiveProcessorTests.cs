@@ -55,22 +55,54 @@ public class ModArchiveProcessorTests
 		using ZipArchive archive = ZipFile.Open(zipFilePath, ZipArchiveMode.Read);
 		Assert.AreEqual(1, archive.Entries.Count);
 
-		foreach (ZipArchiveEntry entry in archive.Entries)
+		ModBinaryCacheData processedBinary = GetProcessedBinaryFromArchiveEntry(archive.Entries[0]);
+		Assert.AreEqual(ModBinaryType.Dd, processedBinary.ModBinaryType);
+		Assert.AreEqual(BinaryFileNameUtils.SanitizeModBinaryFileName(binaryName, modName), processedBinary.Name);
+		Assert.AreEqual(1, processedBinary.Chunks.Count);
+		Assert.AreEqual(assetName, processedBinary.Chunks[0].Name);
+		Assert.AreEqual(AssetType.ModelBinding, processedBinary.Chunks[0].AssetType);
+	}
+
+	[TestMethod]
+	public async Task ProcessNewMod_1Binary_2Assets()
+	{
+		const string modName = "mod";
+		const string binaryName = "main";
+		const string assetName1 = "binding";
+		const string assetName2 = "shader";
+
+		ModBinary binary = new(ModBinaryType.Dd);
+		binary.AddAsset(assetName1, AssetType.ModelBinding, Encoding.Default.GetBytes("shader = \"boid\""));
+		binary.AddAsset(assetName2, AssetType.Texture, File.ReadAllBytes(Path.Combine(TestUtils.ResourcePath, "Textures", "pixel.png")));
+
+		await _processor.ProcessModBinaryUploadAsync(modName, new Dictionary<string, byte[]> { [binaryName] = binary.Compile() }, new());
+
+		string zipFilePath = _accessor.GetModArchivePath(modName);
+		using ZipArchive archive = ZipFile.Open(zipFilePath, ZipArchiveMode.Read);
+		Assert.AreEqual(1, archive.Entries.Count);
+
+		ModBinaryCacheData processedBinary = GetProcessedBinaryFromArchiveEntry(archive.Entries[0]);
+		Assert.AreEqual(ModBinaryType.Dd, processedBinary.ModBinaryType);
+		Assert.AreEqual(BinaryFileNameUtils.SanitizeModBinaryFileName(binaryName, modName), processedBinary.Name);
+		Assert.AreEqual(2, processedBinary.Chunks.Count);
+		Assert.AreEqual(assetName1, processedBinary.Chunks[0].Name);
+		Assert.AreEqual(AssetType.ModelBinding, processedBinary.Chunks[0].AssetType);
+		Assert.AreEqual(assetName2, processedBinary.Chunks[1].Name);
+		Assert.AreEqual(AssetType.Texture, processedBinary.Chunks[1].AssetType);
+	}
+
+	[AssertionMethod]
+	public static ModBinaryCacheData GetProcessedBinaryFromArchiveEntry(ZipArchiveEntry entry)
+	{
+		Assert.IsFalse(string.IsNullOrEmpty(entry.Name));
+
+		byte[] extractedContents = new byte[entry.Length];
+		using (Stream entryStream = entry.Open())
 		{
-			Assert.IsFalse(string.IsNullOrEmpty(entry.Name));
-
-			byte[] extractedContents = new byte[entry.Length];
-			using (Stream entryStream = entry.Open())
-			{
-				int readBytes = StreamUtils.ForceReadAllBytes(entryStream, extractedContents, 0, extractedContents.Length);
-				Assert.AreEqual(extractedContents.Length, readBytes, "Premature end of stream.");
-			}
-
-			ModBinaryCacheData processedBinary = ModBinaryCacheData.CreateFromFile(entry.Name, extractedContents);
-			Assert.AreEqual(ModBinaryType.Dd, processedBinary.ModBinaryType);
-			Assert.AreEqual(BinaryFileNameUtils.SanitizeModBinaryFileName(binaryName, modName), processedBinary.Name);
-			Assert.AreEqual(1, processedBinary.Chunks.Count);
-			Assert.AreEqual(assetName, processedBinary.Chunks[0].Name);
+			int readBytes = StreamUtils.ForceReadAllBytes(entryStream, extractedContents, 0, extractedContents.Length);
+			Assert.AreEqual(extractedContents.Length, readBytes, "Premature end of stream.");
 		}
+
+		return ModBinaryCacheData.CreateFromFile(entry.Name, extractedContents);
 	}
 }
