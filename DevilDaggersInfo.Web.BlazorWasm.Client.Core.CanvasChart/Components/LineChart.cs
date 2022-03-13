@@ -257,8 +257,6 @@ public partial class LineChart
 		_canvasMouseY = mouseY - canvasBoundingClientRect.Top;
 
 		UpdateHighlighter();
-
-		await ValueTask.CompletedTask;
 	}
 
 	private void UpdateHighlighter()

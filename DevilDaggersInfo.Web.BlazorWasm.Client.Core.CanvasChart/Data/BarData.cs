@@ -2,16 +2,14 @@ namespace DevilDaggersInfo.Web.BlazorWasm.Client.Core.CanvasChart.Data;
 
 public class BarData
 {
-	public BarData(string color, double y, object reference)
+	public BarData(string color, double y, int index)
 	{
 		Color = color;
 		Y = y;
-		Reference = reference;
+		Index = index;
 	}
 
 	public string Color { get; }
 	public double Y { get; }
-
-	// TODO: Use index.
-	public object Reference { get; }
+	public int Index { get; }
 }

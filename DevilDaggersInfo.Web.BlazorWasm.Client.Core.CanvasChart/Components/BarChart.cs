@@ -182,8 +182,6 @@ public partial class BarChart
 		_canvasMouseY = mouseY - canvasBoundingClientRect.Top;
 
 		UpdateHighlighter();
-
-		await ValueTask.CompletedTask;
 	}
 
 	private void UpdateHighlighter()
@@ -194,7 +192,7 @@ public partial class BarChart
 		_highlighter.Left = Math.Clamp(_canvasMouseX, Options.ChartMarginXInPx, Options.ChartMarginXInPx + ChartWidth - _highlighter.Width);
 		_highlighter.Top = Math.Clamp(_canvasMouseY, Options.ChartMarginYInPx, Options.ChartMarginYInPx + ChartHeight);
 
-		int index = (int)(ChartMouseX / ChartWidth * DataSet.Data.Count);
+		int index = Math.Clamp((int)(ChartMouseX / ChartWidth * DataSet.Data.Count), 0, DataSet.Data.Count - 1);
 
 		HighlighterValues.Clear();
 		HighlighterValues.AddRange(DataSet.ToHighlighterValue(DataSet, index));
