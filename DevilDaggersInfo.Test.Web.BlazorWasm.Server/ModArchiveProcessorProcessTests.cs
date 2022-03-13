@@ -109,19 +109,4 @@ public class ModArchiveProcessorProcessTests : ModArchiveProcessorTests
 		Assert.AreEqual(assetName2, processedBinary2.Chunks[1].Name);
 		Assert.AreEqual(AssetType.Texture, processedBinary2.Chunks[1].AssetType);
 	}
-
-	[AssertionMethod]
-	public static ModBinaryCacheData GetProcessedBinaryFromArchiveEntry(ZipArchiveEntry entry)
-	{
-		Assert.IsFalse(string.IsNullOrEmpty(entry.Name));
-
-		byte[] extractedContents = new byte[entry.Length];
-		using (Stream entryStream = entry.Open())
-		{
-			int readBytes = StreamUtils.ForceReadAllBytes(entryStream, extractedContents, 0, extractedContents.Length);
-			Assert.AreEqual(extractedContents.Length, readBytes, "Premature end of stream.");
-		}
-
-		return ModBinaryCacheData.CreateFromFile(entry.Name, extractedContents);
-	}
 }

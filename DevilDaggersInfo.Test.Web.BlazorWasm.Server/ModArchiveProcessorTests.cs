@@ -1,5 +1,6 @@
 using DevilDaggersInfo.Web.BlazorWasm.Server.Caches.ModArchives;
 using DevilDaggersInfo.Web.BlazorWasm.Server.Enums;
+using System.IO.Compression;
 
 namespace DevilDaggersInfo.Test.Web.BlazorWasm.Server;
 
@@ -31,4 +32,19 @@ public abstract class ModArchiveProcessorTests
 	protected ModArchiveCache Cache { get; }
 	protected ModArchiveAccessor Accessor { get; }
 	protected ModArchiveProcessor Processor { get; }
+
+	[AssertionMethod]
+	protected static ModBinaryCacheData GetProcessedBinaryFromArchiveEntry(ZipArchiveEntry entry)
+	{
+		Assert.IsFalse(string.IsNullOrEmpty(entry.Name));
+
+		byte[] extractedContents = new byte[entry.Length];
+		using (Stream entryStream = entry.Open())
+		{
+			int readBytes = StreamUtils.ForceReadAllBytes(entryStream, extractedContents, 0, extractedContents.Length);
+			Assert.AreEqual(extractedContents.Length, readBytes, "Premature end of stream.");
+		}
+
+		return ModBinaryCacheData.CreateFromFile(entry.Name, extractedContents);
+	}
 }
