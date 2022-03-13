@@ -20,10 +20,15 @@ public class ModArchiveProcessor
 
 	public async Task ProcessModBinaryUploadAsync(string modName, Dictionary<string, byte[]> binaries, List<FileSystemInformation> fileSystemInformation)
 	{
-		ValidateSpaceAvailable();
-
+		// Validate if there is enough space.
 		string modsDirectory = _fileSystemService.GetPath(DataSubDirectory.Mods);
-		string zipFilePath = Path.Combine(modsDirectory, $"{modName}.zip");
+		DirectoryInfo di = new(modsDirectory);
+		long usedSpace = di.EnumerateFiles("*.*", SearchOption.AllDirectories).Sum(fi => fi.Length);
+		if (usedSpace > ModConstants.BinaryMaxHostingSpace)
+			throw new($"Cannot upload mod with binaries because the limit of {ModConstants.BinaryMaxHostingSpace:N0} bytes is exceeded.");
+
+		// Add binaries to new zip archive.
+		string zipFilePath = _modArchiveAccessor.GetModArchivePath(modName);
 
 		try
 		{
@@ -44,14 +49,54 @@ public class ModArchiveProcessor
 			throw;
 		}
 
-		// We read and extract the .zip file we just created to validate it and to fill the cache if everything is OK.
+		// Read and extract the new zip file to validate it and to fill the cache if everything is OK.
 		byte[] zipBytes = IoFile.ReadAllBytes(zipFilePath);
 
-		ValidateModArchiveOnDisk(modName, zipFilePath, zipBytes);
+		try
+		{
+			List<ModBinaryCacheData> addedBinaries = _modArchiveCache.GetArchiveDataByBytes(modName, zipBytes).Binaries;
+			if (addedBinaries.Count == 0)
+				throw new InvalidModArchiveException("Mod archive does not contain any binaries.");
+
+			foreach (ModBinaryCacheData binary in addedBinaries)
+			{
+				if (binary.Chunks.Count == 0)
+					throw new InvalidModBinaryException($"Mod binary '{binary.Name}' does not contain any assets.");
+
+				if (!(binary.ModBinaryType is ModBinaryType.Audio or ModBinaryType.Dd))
+					throw new InvalidModBinaryException($"Mod binary '{binary.Name}' is a '{binary.ModBinaryType}' mod which is not allowed.");
+
+				string expectedPrefix = BinaryFileNameUtils.GetBinaryPrefix(binary.ModBinaryType, modName);
+
+				if (!binary.Name.StartsWith(expectedPrefix))
+					throw new InvalidModBinaryException($"Name of mod binary '{binary.Name}' must start with '{expectedPrefix}'.");
+
+				if (binary.Name.Length == expectedPrefix.Length)
+					throw new InvalidModBinaryException($"Name of mod binary '{binary.Name}' must not be equal to '{expectedPrefix}'.");
+			}
+		}
+		catch (InvalidModArchiveException)
+		{
+			if (IoFile.Exists(zipFilePath))
+				IoFile.Delete(zipFilePath);
+
+			throw;
+		}
+		catch (InvalidModBinaryException)
+		{
+			if (IoFile.Exists(zipFilePath))
+				IoFile.Delete(zipFilePath);
+
+			throw;
+		}
 
 		fileSystemInformation.Add(new($"File {_fileSystemService.FormatPath(zipFilePath)} (`{FileSizeUtils.Format(zipBytes.Length)}`) with {(binaries.Count == 1 ? "binary" : "binaries")} {string.Join(", ", binaries.Select(kvp => $"`{BinaryFileNameUtils.SanitizeModBinaryFileName(kvp.Key, modName)}`"))} was added.", FileSystemInformationType.Add));
 	}
 
+	/// <summary>
+	/// Transforms the mod archive.
+	/// </summary>
+	/// <returns>Whether the binary contents were changed.</returns>
 	public async Task<bool> TransformBinariesInModArchiveAsync(string originalModName, string newModName, List<string> binariesToDelete, Dictionary<string, byte[]> newBinaries, List<FileSystemInformation> fileSystemInformation)
 	{
 		bool hasAnyBinaryContentChanges = binariesToDelete.Count > 0 || newBinaries.Count > 0;
@@ -96,19 +141,19 @@ public class ModArchiveProcessor
 	/// </summary>
 	public void DeleteModFilesAndClearCache(string modName, List<FileSystemInformation> fileSystemInformation)
 	{
-		// Delete file.
-		string path = Path.Combine(_fileSystemService.GetPath(DataSubDirectory.Mods), $"{modName}.zip");
-		if (IoFile.Exists(path))
+		// Delete archive zip file.
+		string archivePath = _modArchiveAccessor.GetModArchivePath(modName);
+		if (IoFile.Exists(archivePath))
 		{
-			IoFile.Delete(path);
-			fileSystemInformation.Add(new($"File {_fileSystemService.FormatPath(path)} was deleted because removal was requested.", FileSystemInformationType.Delete));
+			IoFile.Delete(archivePath);
+			fileSystemInformation.Add(new($"File {_fileSystemService.FormatPath(archivePath)} was deleted because removal was requested.", FileSystemInformationType.Delete));
 
 			// Clear entire memory cache (can't clear individual entries).
 			_modArchiveCache.Clear();
 		}
 		else
 		{
-			fileSystemInformation.Add(new($"File {_fileSystemService.FormatPath(path)} was not deleted because it does not exist.", FileSystemInformationType.NotFound));
+			fileSystemInformation.Add(new($"File {_fileSystemService.FormatPath(archivePath)} was not deleted because it does not exist.", FileSystemInformationType.NotFound));
 		}
 
 		// Clear file cache for this mod.
@@ -121,56 +166,6 @@ public class ModArchiveProcessor
 		else
 		{
 			fileSystemInformation.Add(new($"File {_fileSystemService.FormatPath(cachePath)} was not deleted because it does not exist.", FileSystemInformationType.NotFound));
-		}
-	}
-
-	private void ValidateSpaceAvailable()
-	{
-		string modsDirectory = _fileSystemService.GetPath(DataSubDirectory.Mods);
-		DirectoryInfo di = new(modsDirectory);
-		long usedSpace = di.EnumerateFiles("*.*", SearchOption.AllDirectories).Sum(fi => fi.Length);
-		if (usedSpace > ModConstants.BinaryMaxHostingSpace)
-			throw new($"Cannot upload mod with binaries because the limit of {ModConstants.BinaryMaxHostingSpace:N0} bytes is exceeded.");
-	}
-
-	private void ValidateModArchiveOnDisk(string modName, string zipFilePath, byte[] zipBytes)
-	{
-		try
-		{
-			List<ModBinaryCacheData> archive = _modArchiveCache.GetArchiveDataByBytes(modName, zipBytes).Binaries;
-			if (archive.Count == 0)
-				throw new InvalidModArchiveException("Mod archive does not contain any binaries.");
-
-			foreach (ModBinaryCacheData binary in archive)
-			{
-				if (binary.Chunks.Count == 0)
-					throw new InvalidModBinaryException($"Mod binary '{binary.Name}' does not contain any assets.");
-
-				if (!(binary.ModBinaryType is ModBinaryType.Audio or ModBinaryType.Dd))
-					throw new InvalidModBinaryException($"Mod binary '{binary.Name}' is a '{binary.ModBinaryType}' mod which is not allowed.");
-
-				string expectedPrefix = BinaryFileNameUtils.GetBinaryPrefix(binary.ModBinaryType, modName);
-
-				if (!binary.Name.StartsWith(expectedPrefix))
-					throw new InvalidModBinaryException($"Name of mod binary '{binary.Name}' must start with '{expectedPrefix}'.");
-
-				if (binary.Name.Length == expectedPrefix.Length)
-					throw new InvalidModBinaryException($"Name of mod binary '{binary.Name}' must not be equal to '{expectedPrefix}'.");
-			}
-		}
-		catch (InvalidModArchiveException)
-		{
-			if (IoFile.Exists(zipFilePath))
-				IoFile.Delete(zipFilePath);
-
-			throw;
-		}
-		catch (InvalidModBinaryException)
-		{
-			if (IoFile.Exists(zipFilePath))
-				IoFile.Delete(zipFilePath);
-
-			throw;
 		}
 	}
 }
