@@ -32,11 +32,14 @@ public class CustomEntryTests
 			.SetUpDbSet(db => db.CustomEntries, mockEntities.MockDbSetCustomEntries)
 			.SetUpDbSet(db => db.CustomEntryData, mockEntities.MockDbSetCustomEntryData);
 
-		Mock<IFileSystemService> fileSystemService = new();
-		fileSystemService.Setup(m => m.GetPath(DataSubDirectory.Spawnsets)).Returns(TestUtils.ResourcePath);
-		fileSystemService.Setup(m => m.GetPath(DataSubDirectory.CustomEntryReplays)).Returns("Replays");
+		string spawnsetsPath = Path.Combine(TestUtils.ResourcePath, "Spawnsets");
+		string replaysPath = Path.Combine(TestUtils.ResourcePath, "Replays");
 
-		Directory.CreateDirectory("Replays");
+		Mock<IFileSystemService> fileSystemService = new();
+		fileSystemService.Setup(m => m.GetPath(DataSubDirectory.Spawnsets)).Returns(spawnsetsPath);
+		fileSystemService.Setup(m => m.GetPath(DataSubDirectory.CustomEntryReplays)).Returns(replaysPath);
+
+		Directory.CreateDirectory(replaysPath);
 
 		Mock<ILogger<SpawnsetHashCache>> spawnsetHashCacheLogger = new();
 		Mock<SpawnsetHashCache> spawnsetHashCache = new(fileSystemService.Object, spawnsetHashCacheLogger.Object);
@@ -60,7 +63,7 @@ public class CustomEntryTests
 		_encryptionWrapper = new(secret, secret, secret);
 		_customEntryProcessor = new(_dbContext.Object, customEntryProcessorLogger.Object, spawnsetHashCache.Object, fileSystemService.Object, environment.Object, configuration, new LogContainerService());
 
-		byte[] spawnsetFileContents = File.ReadAllBytes(Path.Combine(TestUtils.ResourcePath, "V3"));
+		byte[] spawnsetFileContents = File.ReadAllBytes(Path.Combine(spawnsetsPath, "V3"));
 		if (SpawnsetBinary.TryParse(spawnsetFileContents, out SpawnsetBinary? spawnsetBinary))
 			_v3Hash = GetSpawnsetHash(spawnsetBinary);
 		else

@@ -21,9 +21,8 @@ public class ModArchiveProcessor
 	public async Task ProcessModBinaryUploadAsync(string modName, Dictionary<string, byte[]> binaries, List<FileSystemInformation> fileSystemInformation)
 	{
 		// Validate if there is enough space.
-		string modsDirectory = _fileSystemService.GetPath(DataSubDirectory.Mods);
-		DirectoryInfo di = new(modsDirectory);
-		long usedSpace = di.EnumerateFiles("*.*", SearchOption.AllDirectories).Sum(fi => fi.Length);
+		DirectoryInfo modDirectory = new(_fileSystemService.GetPath(DataSubDirectory.Mods));
+		long usedSpace = modDirectory.EnumerateFiles("*.*", SearchOption.AllDirectories).Sum(fi => fi.Length);
 		if (usedSpace > ModConstants.BinaryMaxHostingSpace)
 			throw new($"Cannot upload mod with binaries because the limit of {ModConstants.BinaryMaxHostingSpace:N0} bytes is exceeded.");
 

@@ -27,18 +27,10 @@ public class ModBinary
 
 		// Read TOC into chunks.
 		List<ModBinaryChunk> chunks = new();
-		while (true)
+		while (br.BaseStream.Position < _fileHeaderSize + tocSize)
 		{
 			// TODO: Throw InvalidModBinaryException when incomplete (unexpected EOF) TOC entries exist.
 			ushort type = br.ReadUInt16();
-			string name = br.ReadNullTerminatedString();
-
-			int offset = br.ReadInt32();
-			int size = br.ReadInt32();
-			_ = br.ReadInt32();
-
-			if (br.BaseStream.Position >= _fileHeaderSize + tocSize)
-				break;
 
 			// TODO: Don't cast.
 			AssetType assetType = (AssetType)type;
@@ -47,6 +39,12 @@ public class ModBinary
 			// Skip unknown or obsolete types (such as 0x11, which is an outdated type for (fragment?) shaders).
 			if (!Enum.IsDefined(assetType))
 				continue;
+
+			string name = br.ReadNullTerminatedString();
+
+			int offset = br.ReadInt32();
+			int size = br.ReadInt32();
+			_ = br.ReadInt32();
 
 			chunks.Add(new(name, offset, size, assetType));
 		}
@@ -102,7 +100,7 @@ public class ModBinary
 	{
 		if (assetType == AssetType.Audio && ModBinaryType != ModBinaryType.Audio)
 			throw new InvalidModCompilationException($"Cannot add an audio asset to a mod of type '{ModBinaryType}'.");
-		else if (assetType != AssetType.Audio && ModBinaryType == ModBinaryType.Audio)
+		if (assetType != AssetType.Audio && ModBinaryType == ModBinaryType.Audio)
 			throw new InvalidModCompilationException("Cannot add a non-audio asset to an audio mod.");
 
 		AssetMap.Add(new(assetType, assetName), AssetConverter.Compile(assetType, fileContents));
