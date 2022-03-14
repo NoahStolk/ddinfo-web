@@ -156,28 +156,21 @@ public class AuditLogger
 	public void LogPlayerUpdates(string caller, List<(int PlayerId, string OldValue, string NewValue)> logs)
 	{
 		StringBuilder auditLogger = new();
-		if (logs.Count == 0)
-		{
-			auditLogger.Append(caller).AppendLine(": No players needed updating.");
-		}
-		else
-		{
-			auditLogger.Append(caller).Append(": ").Append(logs.Count).AppendLine(" players were updated.");
-			auditLogger.AppendLine("```");
+		auditLogger.Append(caller).Append(": ").Append(logs.Count).AppendLine(" players were updated.");
+		auditLogger.AppendLine("```");
 
-			const string propertyHeader = "PlayerId";
-			const string oldValueHeader = "Old value";
-			const string newValueHeader = "New value";
-			int paddingL = Math.Max(propertyHeader.Length, logs.Max(l => l.PlayerId.ToString().Length)) + 2;
-			int paddingR = Math.Max(oldValueHeader.Length, logs.Max(l => l.OldValue.Length)) + 2;
+		const string propertyHeader = "PlayerId";
+		const string oldValueHeader = "Old value";
+		const string newValueHeader = "New value";
+		int paddingL = Math.Max(propertyHeader.Length, logs.Max(l => l.PlayerId.ToString().Length)) + 2;
+		int paddingR = Math.Max(oldValueHeader.Length, logs.Max(l => l.OldValue.Length)) + 2;
 
-			auditLogger.AppendFormat($"{{0,-{paddingL}}}", propertyHeader).AppendFormat($"{{0,-{paddingR}}}", oldValueHeader).AppendLine(newValueHeader);
-			auditLogger.AppendLine();
-			foreach ((int playerId, string oldValue, string newValue) in logs)
-				auditLogger.AppendFormat($"{{0,-{paddingL}}}", playerId).AppendFormat($"{{0,-{paddingR}}}", oldValue).AppendLine(newValue);
+		auditLogger.AppendFormat($"{{0,-{paddingL}}}", propertyHeader).AppendFormat($"{{0,-{paddingR}}}", oldValueHeader).AppendLine(newValueHeader);
+		auditLogger.AppendLine();
+		foreach ((int playerId, string oldValue, string newValue) in logs)
+			auditLogger.AppendFormat($"{{0,-{paddingL}}}", playerId).AppendFormat($"{{0,-{paddingR}}}", oldValue).AppendLine(newValue);
 
-			auditLogger.AppendLine("```");
-		}
+		auditLogger.AppendLine("```");
 
 		Log(auditLogger.ToString());
 	}
