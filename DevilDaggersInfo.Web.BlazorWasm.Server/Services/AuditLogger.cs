@@ -153,28 +153,27 @@ public class AuditLogger
 		await TryLog(Channel.MaintainersAuditLog, auditLogger.ToString());
 	}
 
-	public async Task LogPlayerRenames(List<(int PlayerId, string OldName, string NewName)> logs)
+	public async Task LogPlayerUpdates(string caller, string propertyName, List<(int PlayerId, string OldValue, string NewValue)> logs)
 	{
 		StringBuilder auditLogger = new();
 		if (logs.Count == 0)
 		{
-			auditLogger.AppendLine("No player names needed updating.");
+			auditLogger.Append(caller).AppendLine(": No players needed updating.");
 		}
 		else
 		{
-			auditLogger.Append(logs.Count).AppendLine(" player names were updated.");
+			auditLogger.Append(caller).Append(": ").Append(logs.Count).AppendLine(" players were updated.");
 			auditLogger.AppendLine("```");
 
-			const string propertyHeader = "PlayerId";
 			const string oldValueHeader = "OldName";
 			const string newValueHeader = "NewName";
 			const int paddingL = 10;
-			int paddingR = logs.Max(l => l.OldName.Length) + 2;
+			int paddingR = logs.Max(l => l.OldValue.Length) + 2;
 
-			auditLogger.AppendFormat($"{{0,-{paddingL}}}", propertyHeader).AppendFormat($"{{0,-{paddingR}}}", oldValueHeader).AppendLine(newValueHeader);
+			auditLogger.AppendFormat($"{{0,-{paddingL}}}", propertyName).AppendFormat($"{{0,-{paddingR}}}", oldValueHeader).AppendLine(newValueHeader);
 			auditLogger.AppendLine();
-			foreach ((int playerId, string oldName, string newName) in logs)
-				auditLogger.AppendFormat($"{{0,-{paddingL}}}", playerId).AppendFormat($"{{0,-{paddingR}}}", oldName).AppendLine(newName);
+			foreach ((int playerId, string oldValue, string newValue) in logs)
+				auditLogger.AppendFormat($"{{0,-{paddingL}}}", playerId).AppendFormat($"{{0,-{paddingR}}}", oldValue).AppendLine(newValue);
 
 			auditLogger.AppendLine("```");
 		}

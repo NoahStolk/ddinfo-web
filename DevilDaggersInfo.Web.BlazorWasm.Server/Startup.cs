@@ -3,6 +3,7 @@ using DevilDaggersInfo.Web.BlazorWasm.Server.Caches.LeaderboardStatistics;
 using DevilDaggersInfo.Web.BlazorWasm.Server.Caches.ModArchives;
 using DevilDaggersInfo.Web.BlazorWasm.Server.Caches.SpawnsetHashes;
 using DevilDaggersInfo.Web.BlazorWasm.Server.Caches.SpawnsetSummaries;
+using DevilDaggersInfo.Web.BlazorWasm.Server.Clients.Clubber;
 using DevilDaggersInfo.Web.BlazorWasm.Server.HostedServices;
 using DevilDaggersInfo.Web.BlazorWasm.Server.Middleware;
 using DevilDaggersInfo.Web.BlazorWasm.Server.NSwag;
@@ -69,6 +70,7 @@ public class Startup
 		services.AddSingleton<SpawnsetSummaryCache>();
 		services.AddSingleton<SpawnsetHashCache>();
 
+		services.AddHttpClient<ClubberClient>();
 		services.AddHttpClient<LeaderboardClient>();
 
 		// Register this background service first, so it exists last. We want to log when the application exits.
@@ -82,11 +84,15 @@ public class Startup
 			services.AddHostedService<BackgroundServiceLoggerBackgroundService>();
 			services.AddHostedService<CacheLoggerBackgroundService>();
 			services.AddHostedService<DatabaseLoggerBackgroundService>();
+			services.AddHostedService<DiscordUserIdFetchBackgroundService>();
 			services.AddHostedService<FileSystemLoggerBackgroundService>();
 			services.AddHostedService<LeaderboardHistoryBackgroundService>();
 			services.AddHostedService<PlayerNameFetchBackgroundService>();
 			services.AddHostedService<ResponseTimesBackgroundService>();
 		}
+
+		services.AddHostedService<DiscordUserIdFetchBackgroundService>();
+		services.AddHostedService<PlayerNameFetchBackgroundService>();
 
 		// Hosted services that run once after startup.
 		services.AddHostedService<StartupCacheHostedService>();

@@ -14,7 +14,7 @@ public class PlayerNameFetchBackgroundService : AbstractBackgroundService
 		_leaderboardClient = leaderboardClient;
 	}
 
-	protected override TimeSpan Interval => TimeSpan.FromDays(1);
+	protected override TimeSpan Interval => TimeSpan.FromHours(12);
 
 	protected override async Task ExecuteTaskAsync(CancellationToken stoppingToken)
 	{
@@ -51,6 +51,8 @@ public class PlayerNameFetchBackgroundService : AbstractBackgroundService
 		if (logs.Count > 0)
 			await dbContext.SaveChangesAsync(stoppingToken);
 
-		await _auditLogger.LogPlayerRenames(logs);
+		const int chunk = 10;
+		for (int i = 0; i < logs.Count; i += chunk)
+			await _auditLogger.LogPlayerUpdates(nameof(PlayerNameFetchBackgroundService), "PlayerId", logs.Skip(i).Take(chunk).ToList());
 	}
 }
