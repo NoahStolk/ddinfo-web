@@ -7,11 +7,18 @@ namespace DevilDaggersInfo.Web.BlazorWasm.Server.Controllers.Public;
 [ApiController]
 public class LeaderboardsController : ControllerBase
 {
+	private readonly LeaderboardClient _leaderboardClient;
+
+	public LeaderboardsController(LeaderboardClient leaderboardClient)
+	{
+		_leaderboardClient = leaderboardClient;
+	}
+
 	[HttpGet]
 	[ProducesResponseType(StatusCodes.Status200OK)]
 	public async Task<ActionResult<GetLeaderboard?>> GetLeaderboard([Range(1, int.MaxValue)] int rankStart = 1)
 	{
-		LeaderboardResponse l = await LeaderboardClient.Instance.GetLeaderboard(rankStart);
+		LeaderboardResponse l = await _leaderboardClient.GetLeaderboard(rankStart);
 		return l.ToGetLeaderboardPublic();
 	}
 
@@ -20,7 +27,7 @@ public class LeaderboardsController : ControllerBase
 	[ProducesResponseType(StatusCodes.Status400BadRequest)]
 	public async Task<ActionResult<GetEntry>> GetEntryById([Required, Range(1, int.MaxValue)] int id)
 	{
-		EntryResponse e = await LeaderboardClient.Instance.GetEntryById(id);
+		EntryResponse e = await _leaderboardClient.GetEntryById(id);
 		return e.ToGetEntryPublic();
 	}
 
@@ -31,7 +38,7 @@ public class LeaderboardsController : ControllerBase
 	{
 		IEnumerable<int> ids = commaSeparatedIds.Split(',').Where(s => int.TryParse(s, out _)).Select(int.Parse);
 
-		List<EntryResponse> el = await LeaderboardClient.Instance.GetEntriesByIds(ids);
+		List<EntryResponse> el = await _leaderboardClient.GetEntriesByIds(ids);
 		return el.ConvertAll(e => e.ToGetEntryPublic());
 	}
 
@@ -40,7 +47,7 @@ public class LeaderboardsController : ControllerBase
 	[ProducesResponseType(StatusCodes.Status400BadRequest)]
 	public async Task<ActionResult<List<GetEntry>>> GetEntriesByName([Required, MinLength(3), MaxLength(16)] string name)
 	{
-		List<EntryResponse> el = await LeaderboardClient.Instance.GetEntriesByName(name);
+		List<EntryResponse> el = await _leaderboardClient.GetEntriesByName(name);
 		return el.ConvertAll(e => e.ToGetEntryPublic());
 	}
 
@@ -51,7 +58,7 @@ public class LeaderboardsController : ControllerBase
 	public async Task<ActionResult<GetEntry>> GetEntryByRank([Required, Range(1, int.MaxValue)] int rank)
 	{
 		// TODO: Implement separate method that only parses the first entry.
-		LeaderboardResponse l = await LeaderboardClient.Instance.GetLeaderboard(rank);
+		LeaderboardResponse l = await _leaderboardClient.GetLeaderboard(rank);
 		if (l.Entries.Count == 0)
 			return NotFound();
 

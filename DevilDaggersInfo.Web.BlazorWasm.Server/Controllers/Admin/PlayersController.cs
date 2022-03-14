@@ -12,11 +12,13 @@ public class PlayersController : ControllerBase
 {
 	private readonly ApplicationDbContext _dbContext;
 	private readonly AuditLogger _auditLogger;
+	private readonly LeaderboardClient _leaderboardClient;
 
-	public PlayersController(ApplicationDbContext dbContext, AuditLogger auditLogger)
+	public PlayersController(ApplicationDbContext dbContext, AuditLogger auditLogger, LeaderboardClient leaderboardClient)
 	{
 		_dbContext = dbContext;
 		_auditLogger = auditLogger;
+		_leaderboardClient = leaderboardClient;
 	}
 
 	[HttpGet]
@@ -316,11 +318,11 @@ public class PlayersController : ControllerBase
 		return Ok();
 	}
 
-	private static async Task<string> GetPlayerName(int id)
+	private async Task<string> GetPlayerName(int id)
 	{
 		try
 		{
-			return (await LeaderboardClient.Instance.GetEntryById(id)).Username;
+			return (await _leaderboardClient.GetEntryById(id)).Username;
 		}
 		catch
 		{

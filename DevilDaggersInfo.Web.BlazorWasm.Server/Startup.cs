@@ -68,6 +68,8 @@ public class Startup
 		services.AddSingleton<SpawnsetSummaryCache>();
 		services.AddSingleton<SpawnsetHashCache>();
 
+		services.AddHttpClient<LeaderboardClient>();
+
 		// Register this background service first, so it exists last. We want to log when the application exits.
 		services.AddHostedService<DiscordLogFlushBackgroundService>();
 

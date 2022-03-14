@@ -5,11 +5,13 @@ namespace DevilDaggersInfo.Web.BlazorWasm.Server.HostedServices;
 public class LeaderboardHistoryBackgroundService : AbstractBackgroundService
 {
 	private readonly IFileSystemService _fileSystemService;
+	private readonly LeaderboardClient _leaderboardClient;
 
-	public LeaderboardHistoryBackgroundService(IFileSystemService fileSystemService, BackgroundServiceMonitor backgroundServiceMonitor, ILogger<LeaderboardHistoryBackgroundService> logger)
+	public LeaderboardHistoryBackgroundService(IFileSystemService fileSystemService, LeaderboardClient leaderboardClient, BackgroundServiceMonitor backgroundServiceMonitor, ILogger<LeaderboardHistoryBackgroundService> logger)
 		: base(backgroundServiceMonitor, logger)
 	{
 		_fileSystemService = fileSystemService;
+		_leaderboardClient = leaderboardClient;
 	}
 
 	protected override TimeSpan Interval => TimeSpan.FromMinutes(1);
@@ -27,7 +29,7 @@ public class LeaderboardHistoryBackgroundService : AbstractBackgroundService
 		const int interval = 5;
 		for (int i = 0; i < attempts;)
 		{
-			LeaderboardResponse? part = await LeaderboardClient.Instance.GetLeaderboard(100 * i + 1);
+			LeaderboardResponse? part = await _leaderboardClient.GetLeaderboard(100 * i + 1);
 			if (part == null)
 			{
 				Logger.LogWarning("Couldn't get leaderboard. Waiting {interval} seconds...", interval);

@@ -4,12 +4,14 @@ public class PlayerNameFetchBackgroundService : AbstractBackgroundService
 {
 	private readonly IServiceScopeFactory _serviceScopeFactory;
 	private readonly AuditLogger _auditLogger;
+	private readonly LeaderboardClient _leaderboardClient;
 
-	public PlayerNameFetchBackgroundService(BackgroundServiceMonitor backgroundServiceMonitor, ILogger<LeaderboardHistoryBackgroundService> logger, IServiceScopeFactory serviceScopeFactory, AuditLogger auditLogger)
+	public PlayerNameFetchBackgroundService(IServiceScopeFactory serviceScopeFactory, AuditLogger auditLogger, LeaderboardClient leaderboardClient, BackgroundServiceMonitor backgroundServiceMonitor, ILogger<LeaderboardHistoryBackgroundService> logger)
 		: base(backgroundServiceMonitor, logger)
 	{
 		_serviceScopeFactory = serviceScopeFactory;
 		_auditLogger = auditLogger;
+		_leaderboardClient = leaderboardClient;
 	}
 
 	protected override TimeSpan Interval => TimeSpan.FromDays(1);
@@ -26,7 +28,7 @@ public class PlayerNameFetchBackgroundService : AbstractBackgroundService
 		{
 			try
 			{
-				entries = await LeaderboardClient.Instance.GetEntriesByIds(players.Select(p => p.Id));
+				entries = await _leaderboardClient.GetEntriesByIds(players.Select(p => p.Id));
 			}
 			catch (Exception ex)
 			{
