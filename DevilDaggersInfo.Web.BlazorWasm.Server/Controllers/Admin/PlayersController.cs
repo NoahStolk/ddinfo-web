@@ -35,7 +35,9 @@ public class PlayersController : ControllerBase
 			PlayerSorting.BanDescription => playersQuery.OrderBy(p => p.BanDescription, ascending).ThenBy(p => p.Id),
 			PlayerSorting.BanResponsibleId => playersQuery.OrderBy(p => p.BanResponsibleId, ascending).ThenBy(p => p.Id),
 			PlayerSorting.BanType => playersQuery.OrderBy(p => p.BanType, ascending).ThenBy(p => p.Id),
+			PlayerSorting.CommonName => playersQuery.OrderBy(p => p.CommonName, ascending).ThenBy(p => p.Id),
 			PlayerSorting.CountryCode => playersQuery.OrderBy(p => p.CountryCode, ascending).ThenBy(p => p.Id),
+			PlayerSorting.DiscordUserId => playersQuery.OrderBy(p => p.DiscordUserId, ascending).ThenBy(p => p.Id),
 			PlayerSorting.Dpi => playersQuery.OrderBy(p => p.Dpi, ascending).ThenBy(p => p.Id),
 			PlayerSorting.Fov => playersQuery.OrderBy(p => p.Fov, ascending).ThenBy(p => p.Id),
 			PlayerSorting.Gamma => playersQuery.OrderBy(p => p.Gamma, ascending).ThenBy(p => p.Id),
@@ -148,6 +150,8 @@ public class PlayersController : ControllerBase
 		{
 			Id = addPlayer.Id,
 			PlayerName = await GetPlayerName(addPlayer.Id),
+			CommonName = addPlayer.CommonName,
+			DiscordUserId = addPlayer.DiscordUserId,
 			CountryCode = addPlayer.CountryCode,
 			Dpi = addPlayer.Dpi,
 			InGameSens = addPlayer.InGameSens,
@@ -228,6 +232,8 @@ public class PlayersController : ControllerBase
 
 		EditPlayer oldDtoLog = new()
 		{
+			CommonName = player.CommonName,
+			DiscordUserId = player.DiscordUserId,
 			CountryCode = player.CountryCode,
 			Dpi = player.Dpi,
 			InGameSens = player.InGameSens,
@@ -250,6 +256,8 @@ public class PlayersController : ControllerBase
 		};
 
 		player.PlayerName = await GetPlayerName(id);
+		player.CommonName = editPlayer.CommonName;
+		player.DiscordUserId = editPlayer.DiscordUserId;
 		player.CountryCode = editPlayer.CountryCode;
 		player.Dpi = editPlayer.Dpi;
 		player.InGameSens = editPlayer.InGameSens;

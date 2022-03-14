@@ -4,6 +4,10 @@ public class GetPlayer
 {
 	public int Id { get; init; }
 
+	public string? CommonName { get; init; }
+
+	public ulong? DiscordUserId { get; init; }
+
 	public string? CountryCode { get; init; }
 
 	public int? Dpi { get; init; }

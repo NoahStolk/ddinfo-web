@@ -4,6 +4,8 @@ public enum PlayerSorting
 {
 	Id,
 	PlayerName,
+	CommonName,
+	DiscordUserId,
 	CountryCode,
 	Dpi,
 	InGameSens,

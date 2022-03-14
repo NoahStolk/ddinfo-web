@@ -8,6 +8,8 @@ public static class PlayerConverters
 	{
 		Id = player.Id,
 		PlayerName = player.PlayerName,
+		CommonName = player.CommonName,
+		DiscordUserId = player.DiscordUserId,
 		CountryCode = player.CountryCode,
 		Dpi = player.Dpi,
 		InGameSens = player.InGameSens,
@@ -31,6 +33,8 @@ public static class PlayerConverters
 	public static GetPlayer ToGetPlayer(this PlayerEntity player) => new()
 	{
 		Id = player.Id,
+		CommonName = player.CommonName,
+		DiscordUserId = player.DiscordUserId,
 		CountryCode = player.CountryCode,
 		Dpi = player.Dpi,
 		InGameSens = player.InGameSens,

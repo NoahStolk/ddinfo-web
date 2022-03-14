@@ -6,6 +6,10 @@ public class GetPlayerForOverview : IAdminOverviewGetDto
 
 	public string PlayerName { get; init; } = null!;
 
+	public string? CommonName { get; init; }
+
+	public ulong? DiscordUserId { get; init; }
+
 	public string? CountryCode { get; init; }
 
 	public int? Dpi { get; init; }

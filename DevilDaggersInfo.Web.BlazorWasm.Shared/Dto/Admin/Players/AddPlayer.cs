@@ -5,6 +5,11 @@ public class AddPlayer
 	[Range(1, int.MaxValue)]
 	public int Id { get; set; }
 
+	[StringLength(32)]
+	public string? CommonName { get; set; }
+
+	public ulong? DiscordUserId { get; set; }
+
 	[StringLength(2)]
 	public string? CountryCode { get; set; }
 

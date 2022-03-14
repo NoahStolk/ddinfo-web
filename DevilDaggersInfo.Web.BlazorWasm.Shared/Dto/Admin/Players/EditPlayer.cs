@@ -2,6 +2,11 @@ namespace DevilDaggersInfo.Web.BlazorWasm.Shared.Dto.Admin.Players;
 
 public class EditPlayer
 {
+	[StringLength(32)]
+	public string? CommonName { get; set; }
+
+	public ulong? DiscordUserId { get; set; }
+
 	[StringLength(2)]
 	public string? CountryCode { get; set; }
 
