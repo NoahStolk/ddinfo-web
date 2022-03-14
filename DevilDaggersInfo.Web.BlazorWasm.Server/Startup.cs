@@ -91,9 +91,6 @@ public class Startup
 			services.AddHostedService<ResponseTimesBackgroundService>();
 		}
 
-		services.AddHostedService<DiscordUserIdFetchBackgroundService>();
-		services.AddHostedService<PlayerNameFetchBackgroundService>();
-
 		// Hosted services that run once after startup.
 		services.AddHostedService<StartupCacheHostedService>();
 
