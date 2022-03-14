@@ -51,8 +51,8 @@ public class PlayerNameFetchBackgroundService : AbstractBackgroundService
 		if (logs.Count > 0)
 			await dbContext.SaveChangesAsync(stoppingToken);
 
-		const int chunk = 10;
+		const int chunk = 20;
 		for (int i = 0; i < logs.Count; i += chunk)
-			_auditLogger.LogPlayerUpdates(nameof(PlayerNameFetchBackgroundService), "PlayerId", logs.Skip(i).Take(chunk).ToList());
+			_auditLogger.LogPlayerUpdates(nameof(PlayerNameFetchBackgroundService), logs.Skip(i).Take(chunk).ToList());
 	}
 }

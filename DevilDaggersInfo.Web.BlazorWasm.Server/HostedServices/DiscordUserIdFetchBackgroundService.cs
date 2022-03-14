@@ -54,8 +54,8 @@ public class DiscordUserIdFetchBackgroundService : AbstractBackgroundService
 		if (logs.Count > 0)
 			await dbContext.SaveChangesAsync(stoppingToken);
 
-		const int chunk = 10;
+		const int chunk = 20;
 		for (int i = 0; i < logs.Count; i += chunk)
-			_auditLogger.LogPlayerUpdates(nameof(DiscordUserIdFetchBackgroundService), "DiscordUserId", logs.Skip(i).Take(chunk).Select(l => (l.PlayerId, l.OldId?.ToString() ?? string.Empty, l.NewId.ToString() ?? string.Empty)).ToList());
+			_auditLogger.LogPlayerUpdates(nameof(DiscordUserIdFetchBackgroundService), logs.Skip(i).Take(chunk).Select(l => (l.PlayerId, l.OldId?.ToString() ?? "NULL", l.NewId.ToString())).ToList());
 	}
 }
