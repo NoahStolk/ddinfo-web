@@ -205,7 +205,7 @@ public class AuditLogger
 		}
 	}
 
-	private async Task TryLog(Channel loggingChannel, string? message, DiscordEmbed? embed = null, bool includeEnvironmentName = true)
+	private async Task TryLog(Channel loggingChannel, string? message)
 	{
 		if (_environment.IsDevelopment())
 			loggingChannel = Channel.MonitoringTest;
@@ -216,8 +216,8 @@ public class AuditLogger
 
 		try
 		{
-			string? composedMessage = embed == null ? includeEnvironmentName ? $"[`{_environment.EnvironmentName}`]: {message}" : message : null;
-			await channel.SendMessageAsyncSafe(composedMessage, embed);
+			string? composedMessage = $"[`{_environment.EnvironmentName}`]: {message}";
+			await channel.SendMessageAsyncSafe(composedMessage, null);
 		}
 		catch
 		{
