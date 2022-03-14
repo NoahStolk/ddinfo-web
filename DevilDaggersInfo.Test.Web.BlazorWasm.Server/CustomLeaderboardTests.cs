@@ -25,10 +25,11 @@ public class CustomLeaderboardTests
 		Mock<IWebHostEnvironment> environment = new();
 		environment.Setup(m => m.EnvironmentName).Returns(Environments.Development);
 
-		Mock<AuditLogger> auditLogger = new(environment.Object);
+		Mock<AuditLogger> auditLogger = new(environment.Object, new LogContainerService());
 		Mock<IFileSystemService> fileSystemService = new();
 		CustomLeaderboardValidatorService clvs = new(_dbContext.Object, fileSystemService.Object);
 
+		// TODO: Use repository.
 		_customLeaderboardsController = new CustomLeaderboardsController(_dbContext.Object, clvs, auditLogger.Object);
 	}
 
