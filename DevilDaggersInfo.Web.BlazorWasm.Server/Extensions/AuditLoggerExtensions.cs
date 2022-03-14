@@ -212,6 +212,8 @@ public static class AuditLoggerExtensions
 	{
 		Dictionary<string, string> log = new();
 		AddProperty(log, player.Id);
+		AddProperty(log, player.CommonName);
+		AddProperty(log, player.DiscordUserId);
 		AddProperty(log, player.CountryCode);
 		AddProperty(log, player.Dpi);
 		AddProperty(log, player.InGameSens);
@@ -237,6 +239,8 @@ public static class AuditLoggerExtensions
 	public static Dictionary<string, string> GetLog(this EditPlayer player)
 	{
 		Dictionary<string, string> log = new();
+		AddProperty(log, player.CommonName);
+		AddProperty(log, player.DiscordUserId);
 		AddProperty(log, player.CountryCode);
 		AddProperty(log, player.Dpi);
 		AddProperty(log, player.InGameSens);
@@ -284,6 +288,8 @@ public static class AuditLoggerExtensions
 		Dictionary<string, string> log = new();
 		AddProperty(log, player.Id);
 		AddProperty(log, player.PlayerName);
+		AddProperty(log, player.CommonName);
+		AddProperty(log, player.DiscordUserId);
 		AddProperty(log, player.CountryCode);
 		AddProperty(log, player.Dpi);
 		AddProperty(log, player.InGameSens);

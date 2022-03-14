@@ -8,7 +8,8 @@ public class AddPlayer
 	[StringLength(32)]
 	public string? CommonName { get; set; }
 
-	public ulong? DiscordUserId { get; set; }
+	// UInt64 not supported by Blazor InputNumber
+	public long? DiscordUserId { get; set; }
 
 	[StringLength(2)]
 	public string? CountryCode { get; set; }

@@ -7,6 +7,8 @@
 
 <AdminAdd Name="Player" OverviewUrl="/admin/players" ApiCall="Http.AddPlayer" Model="_addPlayer" @ref="_addComponent">
 	<AdminInput Label="Id"><InputNumber class="w-64 pl-2 bg-gray-1 text-color-text" @bind-Value="_addPlayer.Id" /></AdminInput>
+	<AdminInput Label="Common name"><InputText class="w-64 pl-2 bg-gray-1 text-color-text" @bind-Value="@_addPlayer.CommonName" /></AdminInput>
+	<AdminInput Label="Discord user ID"><InputNumber class="w-64 pl-2 bg-gray-1 text-color-text" @bind-Value="_addPlayer.DiscordUserId" /></AdminInput>
 	<AdminInput Label="Country (flag)"><SearchDropdown TKey=string Values="@(UserUtils.CountryNames)" Converter="s => s" @bind-Value="@_addPlayer.CountryCode" /></AdminInput>
 	<AdminInput Label="DPI"><InputNumber class="w-64 pl-2 bg-gray-1 text-color-text" @bind-Value="_addPlayer.Dpi" /></AdminInput>
 	<AdminInput Label="In-game sens"><InputNumber class="w-64 pl-2 bg-gray-1 text-color-text" @bind-Value="@_addPlayer.InGameSens" /></AdminInput>

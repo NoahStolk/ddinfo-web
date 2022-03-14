@@ -151,7 +151,7 @@ public class PlayersController : ControllerBase
 			Id = addPlayer.Id,
 			PlayerName = await GetPlayerName(addPlayer.Id),
 			CommonName = addPlayer.CommonName,
-			DiscordUserId = addPlayer.DiscordUserId,
+			DiscordUserId = (ulong?)addPlayer.DiscordUserId,
 			CountryCode = addPlayer.CountryCode,
 			Dpi = addPlayer.Dpi,
 			InGameSens = addPlayer.InGameSens,
@@ -233,7 +233,7 @@ public class PlayersController : ControllerBase
 		EditPlayer oldDtoLog = new()
 		{
 			CommonName = player.CommonName,
-			DiscordUserId = player.DiscordUserId,
+			DiscordUserId = (long?)player.DiscordUserId,
 			CountryCode = player.CountryCode,
 			Dpi = player.Dpi,
 			InGameSens = player.InGameSens,
@@ -257,7 +257,7 @@ public class PlayersController : ControllerBase
 
 		player.PlayerName = await GetPlayerName(id);
 		player.CommonName = editPlayer.CommonName;
-		player.DiscordUserId = editPlayer.DiscordUserId;
+		player.DiscordUserId = (ulong?)editPlayer.DiscordUserId;
 		player.CountryCode = editPlayer.CountryCode;
 		player.Dpi = editPlayer.Dpi;
 		player.InGameSens = editPlayer.InGameSens;

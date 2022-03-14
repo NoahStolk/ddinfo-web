@@ -6,6 +6,8 @@
 @using DevilDaggersInfo.Web.BlazorWasm.Shared.Enums
 
 <AdminEdit Name="Player" OverviewUrl="/admin/players" ApiCall="Http.EditPlayerById" Model="_editPlayer" Id="Id" @ref="_editComponent">
+	<AdminInput Label="Common name"><InputText class="w-64 pl-2 bg-gray-1 text-color-text" @bind-Value="@_editPlayer.CommonName" /></AdminInput>
+	<AdminInput Label="Discord user ID"><InputNumber class="w-64 pl-2 bg-gray-1 text-color-text" @bind-Value="_editPlayer.DiscordUserId" /></AdminInput>
 	<AdminInput Label="Country (flag)"><SearchDropdown TKey=string Values="@(UserUtils.CountryNames)" Converter="s => s" @bind-Value="@_editPlayer.CountryCode" /></AdminInput>
 	<AdminInput Label="DPI"><InputNumber class="w-64 pl-2 bg-gray-1 text-color-text" @bind-Value="_editPlayer.Dpi" /></AdminInput>
 	<AdminInput Label="In-game sens"><InputNumber class="w-64 pl-2 bg-gray-1 text-color-text" @bind-Value="@_editPlayer.InGameSens" /></AdminInput>
@@ -45,7 +47,8 @@
 			GetPlayer getPlayer = await Http.GetPlayerById(Id);
 			_editPlayer = new()
 			{
-				ModIds = getPlayer.ModIds,
+				CommonName = getPlayer.CommonName,
+				DiscordUserId = (long?)getPlayer.DiscordUserId,
 				CountryCode = getPlayer.CountryCode,
 				Dpi = getPlayer.Dpi,
 				Fov = getPlayer.Fov,
@@ -64,6 +67,7 @@
 				BanResponsibleId = getPlayer.BanResponsibleId,
 				BanType = getPlayer.BanType,
 				IsBannedFromDdcl = getPlayer.IsBannedFromDdcl,
+				ModIds = getPlayer.ModIds,
 			};
 			_editComponent.State = ErrorState.None;
 		}
