@@ -10,10 +10,12 @@ public class LeaderboardClient
 #pragma warning restore S1075 // URIs should not be hardcoded
 
 	private readonly HttpClient _httpClient;
+	private readonly LeaderboardResponseParser _leaderboardResponseParser;
 
-	public LeaderboardClient(HttpClient httpClient)
+	public LeaderboardClient(HttpClient httpClient, LeaderboardResponseParser leaderboardResponseParser)
 	{
 		_httpClient = httpClient;
+		_leaderboardResponseParser = leaderboardResponseParser;
 	}
 
 	private async Task<byte[]> ExecuteRequest(string url, params KeyValuePair<string?, string?>[] parameters)
@@ -27,7 +29,7 @@ public class LeaderboardClient
 	public async Task<LeaderboardResponse> GetLeaderboard(int rankStart)
 	{
 		byte[] response = await ExecuteRequest(_getScoresUrl, new KeyValuePair<string?, string?>("offset", (rankStart - 1).ToString()));
-		return LeaderboardResponseParser.ParseGetLeaderboardResponse(response);
+		return _leaderboardResponseParser.ParseGetLeaderboardResponse(response);
 	}
 
 	public async Task<List<EntryResponse>> GetEntriesByName(string name)
@@ -36,18 +38,18 @@ public class LeaderboardClient
 			throw new ArgumentOutOfRangeException(nameof(name));
 
 		byte[] response = await ExecuteRequest(_getUserSearchUrl, new KeyValuePair<string?, string?>("search", name));
-		return LeaderboardResponseParser.ParseGetEntriesByName(response);
+		return _leaderboardResponseParser.ParseGetEntriesByName(response, name);
 	}
 
 	public async Task<List<EntryResponse>> GetEntriesByIds(IEnumerable<int> ids)
 	{
 		byte[] response = await ExecuteRequest(_getUsersByIdsUrl, new KeyValuePair<string?, string?>("uid", string.Join(',', ids)));
-		return LeaderboardResponseParser.ParseGetEntriesByIds(response, ids.Count());
+		return _leaderboardResponseParser.ParseGetEntriesByIds(response, ids.Count());
 	}
 
 	public async Task<EntryResponse> GetEntryById(int id)
 	{
 		byte[] response = await ExecuteRequest(_getUserByIdUrl, new KeyValuePair<string?, string?>("uid", id.ToString()));
-		return LeaderboardResponseParser.ParseGetEntryById(response);
+		return _leaderboardResponseParser.ParseGetEntryById(response);
 	}
 }

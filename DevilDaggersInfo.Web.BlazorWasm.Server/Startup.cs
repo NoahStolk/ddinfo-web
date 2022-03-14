@@ -59,6 +59,7 @@ public class Startup
 		services.AddSingleton<BackgroundServiceMonitor>();
 		services.AddSingleton<LogContainerService>();
 		services.AddSingleton<ResponseTimeMonitor>();
+		services.AddSingleton<LeaderboardResponseParser>();
 
 		services.AddSingleton<IFileSystemService, FileSystemService>();
 

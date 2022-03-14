@@ -1,8 +1,15 @@
 namespace DevilDaggersInfo.Web.BlazorWasm.Server.Clients.Leaderboard;
 
-public static class LeaderboardResponseParser
+public class LeaderboardResponseParser
 {
-	public static LeaderboardResponse ParseGetLeaderboardResponse(byte[] response)
+	private readonly ILogger<LeaderboardResponseParser> _logger;
+
+	public LeaderboardResponseParser(ILogger<LeaderboardResponseParser> logger)
+	{
+		_logger = logger;
+	}
+
+	public LeaderboardResponse ParseGetLeaderboardResponse(byte[] response)
 	{
 		using MemoryStream ms = new(response);
 		using BinaryReader br = new(ms);
@@ -54,7 +61,7 @@ public static class LeaderboardResponseParser
 		return leaderboard;
 	}
 
-	public static List<EntryResponse> ParseGetEntriesByName(byte[] response)
+	public List<EntryResponse> ParseGetEntriesByName(byte[] response, string searchedName)
 	{
 		using MemoryStream ms = new(response);
 		using BinaryReader br = new(ms);
@@ -65,7 +72,7 @@ public static class LeaderboardResponseParser
 		short totalResults = br.ReadInt16();
 		if (totalResults > 100)
 		{
-			// TODO: Log warning.
+			_logger.LogWarning("Leaderboard servers claimed {count} results in response for search '{search}'. Clamped max results to 100.", totalResults, searchedName);
 			return entries;
 		}
 
@@ -101,7 +108,7 @@ public static class LeaderboardResponseParser
 		return entries;
 	}
 
-	public static List<EntryResponse> ParseGetEntriesByIds(byte[] response, int entryCount)
+	public List<EntryResponse> ParseGetEntriesByIds(byte[] response, int entryCount)
 	{
 		using MemoryStream ms = new(response);
 		using BinaryReader br = new(ms);
@@ -140,7 +147,7 @@ public static class LeaderboardResponseParser
 		return entries;
 	}
 
-	public static EntryResponse ParseGetEntryById(byte[] response)
+	public EntryResponse ParseGetEntryById(byte[] response)
 	{
 		using MemoryStream ms = new(response);
 		using BinaryReader br = new(ms);
