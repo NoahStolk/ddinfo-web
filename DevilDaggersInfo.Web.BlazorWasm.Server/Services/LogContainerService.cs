@@ -4,6 +4,8 @@ namespace DevilDaggersInfo.Web.BlazorWasm.Server.Services;
 
 public class LogContainerService
 {
+	private const int _timeoutInSeconds = 1;
+
 	private readonly List<LogEntry> _logEntries = new();
 	private readonly List<string> _validClLogs = new();
 	private readonly List<string> _invalidClLogs = new();
@@ -25,8 +27,10 @@ public class LogContainerService
 		while (_logEntries.Count > 0)
 		{
 			LogEntry entry = _logEntries[0];
-			await channel.SendMessageAsyncSafe(entry.Message, entry.Embed);
-			_logEntries.RemoveAt(0);
+			if (await channel.SendMessageAsyncSafe(entry.Message, entry.Embed))
+				_logEntries.RemoveAt(0);
+			else
+				await Task.Delay(TimeSpan.FromSeconds(_timeoutInSeconds));
 		}
 	}
 
@@ -35,8 +39,10 @@ public class LogContainerService
 		List<string> logs = valid ? _validClLogs : _invalidClLogs;
 		if (logs.Count > 0)
 		{
-			await channel.SendMessageAsyncSafe(string.Join(Environment.NewLine, logs));
-			logs.Clear();
+			if (await channel.SendMessageAsyncSafe(string.Join(Environment.NewLine, logs)))
+				logs.Clear();
+			else
+				await Task.Delay(TimeSpan.FromSeconds(_timeoutInSeconds));
 		}
 	}
 
