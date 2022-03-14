@@ -41,10 +41,10 @@ public class DiscordUserIdFetchBackgroundService : AbstractBackgroundService
 		List<PlayerEntity> players = dbContext.Players.Where(p => ids.Contains(p.Id)).ToList();
 
 		List<(int PlayerId, ulong? OldId, ulong NewId)> logs = new();
-		foreach (DdUser user in users)
+		foreach (PlayerEntity player in players)
 		{
-			PlayerEntity? player = players.Find(p => p.Id == user.LeaderboardId);
-			if (player == null || player.DiscordUserId == user.DiscordId)
+			DdUser? user = users.Where(u => u.LeaderboardId == player.Id).OrderBy(u => u.DiscordId).FirstOrDefault();
+			if (user == null || player.DiscordUserId == user.DiscordId)
 				continue;
 
 			logs.Add((player.Id, player.DiscordUserId, user.DiscordId));
