@@ -18,18 +18,27 @@ public static class DSharpExtensions
 			builder.AddError(exception.InnerException, ++level);
 	}
 
-	public static async Task SendMessageAsyncSafe(this DiscordChannel channel, string? message, DiscordEmbed? embed = null)
+	public static async Task<bool> SendMessageAsyncSafe(this DiscordChannel channel, string? message, DiscordEmbed? embed = null)
 	{
 		if (message == null && embed == null)
-			return;
+			throw new InvalidOperationException("Can't send empty Discord message.");
 
 		if (message?.Length >= 2000)
 			message = $"{message[..1996]}...";
 
-		if (embed == null)
-			await channel.SendMessageAsync(message);
-		else
-			await channel.SendMessageAsync(message, embed);
+		try
+		{
+			if (embed == null)
+				await channel.SendMessageAsync(message);
+			else
+				await channel.SendMessageAsync(message, embed);
+
+			return true;
+		}
+		catch
+		{
+			return false;
+		}
 	}
 
 	public static DiscordEmbedBuilder AddFieldObject(this DiscordEmbedBuilder builder, string name, object? value, bool inline = false)
