@@ -4,8 +4,6 @@ public class GetPlayer
 {
 	public int Id { get; init; }
 
-	public string? PlayerName { get; init; }
-
 	public string? CountryCode { get; init; }
 
 	public int? Dpi { get; init; }

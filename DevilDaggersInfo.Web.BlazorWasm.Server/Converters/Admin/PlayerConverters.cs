@@ -31,7 +31,6 @@ public static class PlayerConverters
 	public static GetPlayer ToGetPlayer(this PlayerEntity player) => new()
 	{
 		Id = player.Id,
-		PlayerName = player.PlayerName,
 		CountryCode = player.CountryCode,
 		Dpi = player.Dpi,
 		InGameSens = player.InGameSens,
