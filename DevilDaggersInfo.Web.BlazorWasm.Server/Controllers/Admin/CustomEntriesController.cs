@@ -126,9 +126,9 @@ public class CustomEntriesController : ControllerBase
 			Time = addCustomEntry.Time,
 		};
 		_dbContext.CustomEntries.Add(customEntry);
-		_dbContext.SaveChanges();
+		await _dbContext.SaveChangesAsync();
 
-		await _auditLogger.LogAdd(addCustomEntry.GetLog(), User, customEntry.Id);
+		_auditLogger.LogAdd(addCustomEntry.GetLog(), User, customEntry.Id);
 
 		return Ok(customEntry.Id);
 	}
@@ -191,9 +191,9 @@ public class CustomEntriesController : ControllerBase
 		customEntry.PlayerId = editCustomEntry.PlayerId;
 		customEntry.SubmitDate = editCustomEntry.SubmitDate;
 		customEntry.Time = editCustomEntry.Time;
-		_dbContext.SaveChanges();
+		await _dbContext.SaveChangesAsync();
 
-		await _auditLogger.LogEdit(logDto.GetLog(), editCustomEntry.GetLog(), User, customEntry.Id);
+		_auditLogger.LogEdit(logDto.GetLog(), editCustomEntry.GetLog(), User, customEntry.Id);
 
 		return Ok();
 	}
@@ -212,7 +212,7 @@ public class CustomEntriesController : ControllerBase
 			_dbContext.CustomEntryData.Remove(customEntryData);
 
 		_dbContext.CustomEntries.Remove(customEntry);
-		_dbContext.SaveChanges();
+		await _dbContext.SaveChangesAsync();
 
 		string path = Path.Combine(_fileSystemService.GetPath(DataSubDirectory.CustomEntryReplays), $"{id}.ddreplay");
 		bool fileExists = IoFile.Exists(path);
@@ -220,7 +220,7 @@ public class CustomEntriesController : ControllerBase
 			IoFile.Delete(path);
 
 		string message = fileExists ? $"File {_fileSystemService.FormatPath(path)} was deleted." : $"File {_fileSystemService.FormatPath(path)} was not deleted because it does not exist.";
-		await _auditLogger.LogDelete(customEntry.GetLog(), User, customEntry.Id, new() { new(message, fileExists ? FileSystemInformationType.Delete : FileSystemInformationType.NotFound) });
+		_auditLogger.LogDelete(customEntry.GetLog(), User, customEntry.Id, new() { new(message, fileExists ? FileSystemInformationType.Delete : FileSystemInformationType.NotFound) });
 
 		return Ok();
 	}

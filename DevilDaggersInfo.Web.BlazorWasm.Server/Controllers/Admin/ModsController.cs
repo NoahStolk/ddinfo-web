@@ -151,9 +151,9 @@ public class ModsController : ControllerBase
 		_dbContext.SaveChanges(); // Save changes here so PlayerMods entities can be assigned properly.
 
 		UpdatePlayerMods(addMod.PlayerIds ?? new(), mod.Id);
-		_dbContext.SaveChanges();
+		await _dbContext.SaveChangesAsync();
 
-		await _auditLogger.LogAdd(addMod.GetLog(), User, mod.Id, fsi);
+		_auditLogger.LogAdd(addMod.GetLog(), User, mod.Id, fsi);
 
 		return Ok(mod.Id);
 	}
@@ -230,9 +230,9 @@ public class ModsController : ControllerBase
 		_dbContext.SaveChanges(); // Save changes here so PlayerMods entities can be assigned properly.
 
 		UpdatePlayerMods(editMod.PlayerIds ?? new(), mod.Id);
-		_dbContext.SaveChanges();
+		await _dbContext.SaveChangesAsync();
 
-		await _auditLogger.LogEdit(logDto.GetLog(), editMod.GetLog(), User, mod.Id, fsi);
+		_auditLogger.LogEdit(logDto.GetLog(), editMod.GetLog(), User, mod.Id, fsi);
 
 		return Ok();
 	}
@@ -252,9 +252,9 @@ public class ModsController : ControllerBase
 		_modScreenshotProcessor.DeleteScreenshotsDirectory(mod.Name, fileSystemInformation);
 
 		_dbContext.Mods.Remove(mod);
-		_dbContext.SaveChanges();
+		await _dbContext.SaveChangesAsync();
 
-		await _auditLogger.LogDelete(mod.GetLog(), User, mod.Id, fileSystemInformation);
+		_auditLogger.LogDelete(mod.GetLog(), User, mod.Id, fileSystemInformation);
 
 		return Ok();
 	}

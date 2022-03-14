@@ -53,6 +53,6 @@ public class PlayerNameFetchBackgroundService : AbstractBackgroundService
 
 		const int chunk = 10;
 		for (int i = 0; i < logs.Count; i += chunk)
-			await _auditLogger.LogPlayerUpdates(nameof(PlayerNameFetchBackgroundService), "PlayerId", logs.Skip(i).Take(chunk).ToList());
+			_auditLogger.LogPlayerUpdates(nameof(PlayerNameFetchBackgroundService), "PlayerId", logs.Skip(i).Take(chunk).ToList());
 	}
 }

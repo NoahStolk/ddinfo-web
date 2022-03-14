@@ -89,12 +89,12 @@ public class UsersController : ControllerBase
 			});
 		}
 
-		_dbContext.SaveChanges();
+		await _dbContext.SaveChangesAsync();
 
 		if (assigned)
-			await _auditLogger.LogRoleAssign(user, roleName);
+			_auditLogger.LogRoleAssign(user, roleName);
 		else
-			await _auditLogger.LogRoleRevoke(user, roleName);
+			_auditLogger.LogRoleRevoke(user, roleName);
 
 		return Ok();
 	}
@@ -103,7 +103,7 @@ public class UsersController : ControllerBase
 	[ProducesResponseType(StatusCodes.Status200OK)]
 	[ProducesResponseType(StatusCodes.Status400BadRequest)]
 	[ProducesResponseType(StatusCodes.Status404NotFound)]
-	public ActionResult AssignPlayer(int id, AssignPlayer assignPlayer)
+	public async Task<ActionResult> AssignPlayer(int id, AssignPlayer assignPlayer)
 	{
 		UserEntity? user = _dbContext.Users.FirstOrDefault(u => u.Id == id);
 		if (user == null)
@@ -117,7 +117,7 @@ public class UsersController : ControllerBase
 			return BadRequest($"Player with ID '{player.Id}' is already linked.");
 
 		user.PlayerId = player.Id;
-		_dbContext.SaveChanges();
+		await _dbContext.SaveChangesAsync();
 
 		_logger.LogWarning("Player '{playerName}' ({playerId}) was linked to user '{userName}' ({userId}).", player.PlayerName, player.Id, user.Name, user.Id);
 
@@ -127,14 +127,14 @@ public class UsersController : ControllerBase
 	[HttpPut("{id}/reset-password")]
 	[ProducesResponseType(StatusCodes.Status200OK)]
 	[ProducesResponseType(StatusCodes.Status404NotFound)]
-	public ActionResult ResetPasswordForUserById(int id, ResetPassword resetPassword)
+	public async Task<ActionResult> ResetPasswordForUserById(int id, ResetPassword resetPassword)
 	{
 		UserEntity? user = _dbContext.Users.FirstOrDefault(u => u.Id == id);
 		if (user == null)
 			return NotFound();
 
 		_userService.UpdatePassword(id, resetPassword.NewPassword);
-		_dbContext.SaveChanges();
+		await _dbContext.SaveChangesAsync();
 
 		_logger.LogWarning("Password was reset for user '{user}'.", user.Name);
 
@@ -151,9 +151,9 @@ public class UsersController : ControllerBase
 			return NotFound();
 
 		_dbContext.Users.Remove(user);
-		_dbContext.SaveChanges();
+		await _dbContext.SaveChangesAsync();
 
-		await _auditLogger.LogDelete(user.GetLog(), User, user.Id);
+		_auditLogger.LogDelete(user.GetLog(), User, user.Id);
 
 		return Ok();
 	}

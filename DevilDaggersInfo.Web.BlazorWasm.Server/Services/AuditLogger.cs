@@ -1,6 +1,4 @@
-using DevilDaggersInfo.Web.BlazorWasm.Server.HostedServices.DdInfoDiscordBot;
 using DevilDaggersInfo.Web.BlazorWasm.Server.InternalModels;
-using DSharpPlus.Entities;
 using System.Security.Claims;
 
 namespace DevilDaggersInfo.Web.BlazorWasm.Server.Services;
@@ -10,13 +8,15 @@ public class AuditLogger
 	private const int _loggingMax = 60;
 
 	private readonly IWebHostEnvironment _environment;
+	private readonly LogContainerService _logContainerService;
 
-	public AuditLogger(IWebHostEnvironment environment)
+	public AuditLogger(IWebHostEnvironment environment, LogContainerService logContainerService)
 	{
 		_environment = environment;
+		_logContainerService = logContainerService;
 	}
 
-	public async Task LogAdd(Dictionary<string, string> dtoLog, ClaimsPrincipal claimsPrincipal, int id, List<FileSystemInformation>? fileSystemInformation = null, [CallerMemberName] string endpointName = "")
+	public void LogAdd(Dictionary<string, string> dtoLog, ClaimsPrincipal claimsPrincipal, int id, List<FileSystemInformation>? fileSystemInformation = null, [CallerMemberName] string endpointName = "")
 	{
 		StringBuilder auditLogger = GetAuditLogger(claimsPrincipal, id, endpointName);
 		auditLogger.AppendLine("```diff");
@@ -43,10 +43,10 @@ public class AuditLogger
 
 		AddFileSystemInformation(auditLogger, fileSystemInformation);
 
-		await TryLog(Channel.MaintainersAuditLog, auditLogger.ToString());
+		Log(auditLogger.ToString());
 	}
 
-	public async Task LogEdit(Dictionary<string, string> oldDtoLog, Dictionary<string, string> dtoLog, ClaimsPrincipal claimsPrincipal, int id, List<FileSystemInformation>? fileSystemInformation = null, [CallerMemberName] string endpointName = "")
+	public void LogEdit(Dictionary<string, string> oldDtoLog, Dictionary<string, string> dtoLog, ClaimsPrincipal claimsPrincipal, int id, List<FileSystemInformation>? fileSystemInformation = null, [CallerMemberName] string endpointName = "")
 	{
 		StringBuilder auditLogger = GetAuditLogger(claimsPrincipal, id, endpointName);
 
@@ -90,7 +90,7 @@ public class AuditLogger
 
 		AddFileSystemInformation(auditLogger, fileSystemInformation);
 
-		await TryLog(Channel.MaintainersAuditLog, auditLogger.ToString());
+		Log(auditLogger.ToString());
 
 		static bool AreEditLogsEqual(Dictionary<string, string> oldLog, Dictionary<string, string> newLog)
 		{
@@ -110,7 +110,7 @@ public class AuditLogger
 		}
 	}
 
-	public async Task LogDelete(Dictionary<string, string> entityLog, ClaimsPrincipal claimsPrincipal, int id, List<FileSystemInformation>? fileSystemInformation = null, [CallerMemberName] string endpointName = "")
+	public void LogDelete(Dictionary<string, string> entityLog, ClaimsPrincipal claimsPrincipal, int id, List<FileSystemInformation>? fileSystemInformation = null, [CallerMemberName] string endpointName = "")
 	{
 		StringBuilder auditLogger = GetAuditLogger(claimsPrincipal, id, endpointName);
 		auditLogger.AppendLine("```diff");
@@ -137,23 +137,23 @@ public class AuditLogger
 
 		AddFileSystemInformation(auditLogger, fileSystemInformation);
 
-		await TryLog(Channel.MaintainersAuditLog, auditLogger.ToString());
+		Log(auditLogger.ToString());
 	}
 
-	public async Task LogRoleAssign(UserEntity user, string roleName) => await LogRoleChange("ASSIGN", user, roleName);
+	public void LogRoleAssign(UserEntity user, string roleName) => LogRoleChange("ASSIGN", user, roleName);
 
-	public async Task LogRoleRevoke(UserEntity user, string roleName) => await LogRoleChange("REVOKE", user, roleName);
+	public void LogRoleRevoke(UserEntity user, string roleName) => LogRoleChange("REVOKE", user, roleName);
 
-	private async Task LogRoleChange(string action, UserEntity user, string roleName) => await TryLog(Channel.MaintainersAuditLog, $"`{action} ROLE '{roleName}'` for user `{user.Name}`. Make sure to login again for this to take effect in the browser.");
+	private void LogRoleChange(string action, UserEntity user, string roleName) => Log($"`{action} ROLE '{roleName}'` for user `{user.Name}`. Make sure to login again for this to take effect in the browser.");
 
-	public async Task LogFileSystemInformation(List<FileSystemInformation>? fileSystemInformation = null)
+	public void LogFileSystemInformation(List<FileSystemInformation>? fileSystemInformation = null)
 	{
 		StringBuilder auditLogger = new();
 		AddFileSystemInformation(auditLogger, fileSystemInformation);
-		await TryLog(Channel.MaintainersAuditLog, auditLogger.ToString());
+		Log(auditLogger.ToString());
 	}
 
-	public async Task LogPlayerUpdates(string caller, string propertyName, List<(int PlayerId, string OldValue, string NewValue)> logs)
+	public void LogPlayerUpdates(string caller, string propertyName, List<(int PlayerId, string OldValue, string NewValue)> logs)
 	{
 		StringBuilder auditLogger = new();
 		if (logs.Count == 0)
@@ -178,7 +178,7 @@ public class AuditLogger
 			auditLogger.AppendLine("```");
 		}
 
-		await TryLog(Channel.MaintainersAuditLog, auditLogger.ToString());
+		Log(auditLogger.ToString());
 	}
 
 	private static StringBuilder GetAuditLogger(ClaimsPrincipal claimsPrincipal, int id, string endpointName) => new($"`{endpointName}` by `{claimsPrincipal.GetName() ?? "?"}` for ID `{id}`\n");
@@ -205,23 +205,8 @@ public class AuditLogger
 		}
 	}
 
-	private async Task TryLog(Channel loggingChannel, string? message)
+	private void Log(string? message)
 	{
-		if (_environment.IsDevelopment())
-			loggingChannel = Channel.MonitoringTest;
-
-		DiscordChannel? channel = DevilDaggersInfoServerConstants.Channels[loggingChannel].DiscordChannel;
-		if (channel == null)
-			return;
-
-		try
-		{
-			string? composedMessage = $"[`{_environment.EnvironmentName}`]: {message}";
-			await channel.SendMessageAsyncSafe(composedMessage, null);
-		}
-		catch
-		{
-			// Ignore exceptions that occurred while attempting to log.
-		}
+		_logContainerService.Add($"[`{_environment.EnvironmentName}`]: {message}");
 	}
 }

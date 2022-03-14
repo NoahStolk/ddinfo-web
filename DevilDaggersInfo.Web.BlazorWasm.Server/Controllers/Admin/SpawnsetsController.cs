@@ -1,7 +1,6 @@
 using DevilDaggersInfo.Web.BlazorWasm.Server.Caches.SpawnsetHashes;
 using DevilDaggersInfo.Web.BlazorWasm.Server.Converters.Admin;
 using DevilDaggersInfo.Web.BlazorWasm.Shared.Dto;
-using DevilDaggersInfo.Web.BlazorWasm.Shared.Dto.Admin.Mods;
 using DevilDaggersInfo.Web.BlazorWasm.Shared.Dto.Admin.Spawnsets;
 using DevilDaggersInfo.Web.BlazorWasm.Shared.Enums.Sortings.Admin;
 using Microsoft.AspNetCore.Authorization;
@@ -130,9 +129,9 @@ public class SpawnsetsController : ControllerBase
 			LastUpdated = DateTime.UtcNow,
 		};
 		_dbContext.Spawnsets.Add(spawnset);
-		_dbContext.SaveChanges();
+		await _dbContext.SaveChangesAsync();
 
-		await _auditLogger.LogAdd(addSpawnset.GetLog(), User, spawnset.Id, new() { new($"File {_fileSystemService.FormatPath(path)} was added.", FileSystemInformationType.Add) });
+		_auditLogger.LogAdd(addSpawnset.GetLog(), User, spawnset.Id, new() { new($"File {_fileSystemService.FormatPath(path)} was added.", FileSystemInformationType.Add) });
 
 		return Ok(spawnset.Id);
 	}
@@ -182,9 +181,9 @@ public class SpawnsetsController : ControllerBase
 		spawnset.MaxDisplayWaves = editSpawnset.MaxDisplayWaves;
 		spawnset.Name = editSpawnset.Name;
 		spawnset.PlayerId = editSpawnset.PlayerId;
-		_dbContext.SaveChanges();
+		await _dbContext.SaveChangesAsync();
 
-		await _auditLogger.LogEdit(logDto.GetLog(), editSpawnset.GetLog(), User, spawnset.Id, moveInfo == null ? null : new() { new(moveInfo, FileSystemInformationType.Move) });
+		_auditLogger.LogEdit(logDto.GetLog(), editSpawnset.GetLog(), User, spawnset.Id, moveInfo == null ? null : new() { new(moveInfo, FileSystemInformationType.Move) });
 
 		return Ok();
 	}
@@ -212,10 +211,10 @@ public class SpawnsetsController : ControllerBase
 		}
 
 		_dbContext.Spawnsets.Remove(spawnset);
-		_dbContext.SaveChanges();
+		await _dbContext.SaveChangesAsync();
 
 		string message = fileExists ? $"File {_fileSystemService.FormatPath(path)} was deleted." : $"File {_fileSystemService.FormatPath(path)} was not deleted because it does not exist.";
-		await _auditLogger.LogDelete(spawnset.GetLog(), User, spawnset.Id, new() { new(message, fileExists ? FileSystemInformationType.Delete : FileSystemInformationType.NotFoundUnexpected) });
+		_auditLogger.LogDelete(spawnset.GetLog(), User, spawnset.Id, new() { new(message, fileExists ? FileSystemInformationType.Delete : FileSystemInformationType.NotFoundUnexpected) });
 
 		return Ok();
 	}

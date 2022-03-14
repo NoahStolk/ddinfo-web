@@ -111,6 +111,6 @@ public class ProfileService
 
 		await _dbContext.SaveChangesAsync();
 
-		await _auditLogger.LogEdit(oldDtoLog.GetLog(), editPlayerProfile.GetLog(), claimsPrincipal, player.Id);
+		_auditLogger.LogEdit(oldDtoLog.GetLog(), editPlayerProfile.GetLog(), claimsPrincipal, player.Id);
 	}
 }

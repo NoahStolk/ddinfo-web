@@ -90,9 +90,9 @@ public class DonationsController : ControllerBase
 			PlayerId = addDonation.PlayerId,
 		};
 		_dbContext.Donations.Add(donation);
-		_dbContext.SaveChanges();
+		await _dbContext.SaveChangesAsync();
 
-		await _auditLogger.LogAdd(addDonation.GetLog(), User, donation.Id);
+		_auditLogger.LogAdd(addDonation.GetLog(), User, donation.Id);
 
 		return Ok(donation.Id);
 	}
@@ -126,9 +126,9 @@ public class DonationsController : ControllerBase
 		donation.IsRefunded = editDonation.IsRefunded;
 		donation.Note = editDonation.Note;
 		donation.PlayerId = editDonation.PlayerId;
-		_dbContext.SaveChanges();
+		await _dbContext.SaveChangesAsync();
 
-		await _auditLogger.LogEdit(logDto.GetLog(), editDonation.GetLog(), User, donation.Id);
+		_auditLogger.LogEdit(logDto.GetLog(), editDonation.GetLog(), User, donation.Id);
 
 		return Ok();
 	}
@@ -143,9 +143,9 @@ public class DonationsController : ControllerBase
 			return NotFound();
 
 		_dbContext.Donations.Remove(donation);
-		_dbContext.SaveChanges();
+		await _dbContext.SaveChangesAsync();
 
-		await _auditLogger.LogDelete(donation.GetLog(), User, donation.Id);
+		_auditLogger.LogDelete(donation.GetLog(), User, donation.Id);
 
 		return Ok();
 	}

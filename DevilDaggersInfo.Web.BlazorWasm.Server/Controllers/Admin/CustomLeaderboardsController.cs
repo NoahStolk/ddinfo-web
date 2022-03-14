@@ -107,9 +107,9 @@ public class CustomLeaderboardsController : ControllerBase
 			TimeLeviathan = addCustomLeaderboard.TimeLeviathan.To10thMilliTime(),
 		};
 		_dbContext.CustomLeaderboards.Add(customLeaderboard);
-		_dbContext.SaveChanges();
+		await _dbContext.SaveChangesAsync();
 
-		await _auditLogger.LogAdd(addCustomLeaderboard.GetLog(), User, customLeaderboard.Id);
+		_auditLogger.LogAdd(addCustomLeaderboard.GetLog(), User, customLeaderboard.Id);
 
 		return Ok(customLeaderboard.Id);
 	}
@@ -151,9 +151,9 @@ public class CustomLeaderboardsController : ControllerBase
 		customLeaderboard.TimeDevil = editCustomLeaderboard.TimeDevil.To10thMilliTime();
 		customLeaderboard.TimeLeviathan = editCustomLeaderboard.TimeLeviathan.To10thMilliTime();
 		customLeaderboard.IsArchived = editCustomLeaderboard.IsArchived;
-		_dbContext.SaveChanges();
+		await _dbContext.SaveChangesAsync();
 
-		await _auditLogger.LogEdit(logDto.GetLog(), editCustomLeaderboard.GetLog(), User, customLeaderboard.Id);
+		_auditLogger.LogEdit(logDto.GetLog(), editCustomLeaderboard.GetLog(), User, customLeaderboard.Id);
 
 		return Ok();
 	}
@@ -172,9 +172,9 @@ public class CustomLeaderboardsController : ControllerBase
 			return BadRequest("Custom leaderboard with scores cannot be deleted.");
 
 		_dbContext.CustomLeaderboards.Remove(customLeaderboard);
-		_dbContext.SaveChanges();
+		await _dbContext.SaveChangesAsync();
 
-		await _auditLogger.LogDelete(customLeaderboard.GetLog(), User, customLeaderboard.Id);
+		_auditLogger.LogDelete(customLeaderboard.GetLog(), User, customLeaderboard.Id);
 
 		return Ok();
 	}

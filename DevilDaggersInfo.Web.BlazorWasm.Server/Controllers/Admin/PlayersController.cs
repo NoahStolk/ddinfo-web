@@ -177,9 +177,9 @@ public class PlayersController : ControllerBase
 		_dbContext.SaveChanges(); // Save changes here so PlayerMod entities can be assigned properly.
 
 		UpdatePlayerMods(addPlayer.ModIds ?? new(), player.Id);
-		_dbContext.SaveChanges();
+		await _dbContext.SaveChangesAsync();
 
-		await _auditLogger.LogAdd(addPlayer.GetLog(), User, player.Id);
+		_auditLogger.LogAdd(addPlayer.GetLog(), User, player.Id);
 
 		return Ok(player.Id);
 	}
@@ -280,9 +280,9 @@ public class PlayersController : ControllerBase
 		player.IsBannedFromDdcl = editPlayer.IsBannedFromDdcl;
 
 		UpdatePlayerMods(editPlayer.ModIds ?? new(), player.Id);
-		_dbContext.SaveChanges();
+		await _dbContext.SaveChangesAsync();
 
-		await _auditLogger.LogEdit(oldDtoLog.GetLog(), editPlayer.GetLog(), User, player.Id);
+		_auditLogger.LogEdit(oldDtoLog.GetLog(), editPlayer.GetLog(), User, player.Id);
 
 		return Ok();
 	}
@@ -311,9 +311,9 @@ public class PlayersController : ControllerBase
 			return BadRequest("Player with spawnsets cannot be deleted.");
 
 		_dbContext.Players.Remove(player);
-		_dbContext.SaveChanges();
+		await _dbContext.SaveChangesAsync();
 
-		await _auditLogger.LogDelete(player.GetLog(), User, player.Id);
+		_auditLogger.LogDelete(player.GetLog(), User, player.Id);
 
 		return Ok();
 	}
