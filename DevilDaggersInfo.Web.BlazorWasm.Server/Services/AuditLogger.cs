@@ -165,12 +165,13 @@ public class AuditLogger
 			auditLogger.Append(caller).Append(": ").Append(logs.Count).AppendLine(" players were updated.");
 			auditLogger.AppendLine("```");
 
+			const string propertyHeader = "PlayerId";
 			const string oldValueHeader = "Old value";
 			const string newValueHeader = "New value";
-			const int paddingL = 10;
-			int paddingR = logs.Max(l => l.OldValue.Length) + 2;
+			int paddingL = Math.Max(propertyHeader.Length, logs.Max(l => l.PlayerId.ToString().Length)) + 2;
+			int paddingR = Math.Max(oldValueHeader.Length, logs.Max(l => l.OldValue.Length)) + 2;
 
-			auditLogger.AppendFormat($"{{0,-{paddingL}}}", "PlayerId").AppendFormat($"{{0,-{paddingR}}}", oldValueHeader).AppendLine(newValueHeader);
+			auditLogger.AppendFormat($"{{0,-{paddingL}}}", propertyHeader).AppendFormat($"{{0,-{paddingR}}}", oldValueHeader).AppendLine(newValueHeader);
 			auditLogger.AppendLine();
 			foreach ((int playerId, string oldValue, string newValue) in logs)
 				auditLogger.AppendFormat($"{{0,-{paddingL}}}", playerId).AppendFormat($"{{0,-{paddingR}}}", oldValue).AppendLine(newValue);
