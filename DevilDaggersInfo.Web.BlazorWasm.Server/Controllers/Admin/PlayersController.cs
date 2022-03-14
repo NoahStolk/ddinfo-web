@@ -320,14 +320,7 @@ public class PlayersController : ControllerBase
 
 	private async Task<string> GetPlayerName(int id)
 	{
-		try
-		{
-			return (await _leaderboardClient.GetEntryById(id)).Username;
-		}
-		catch
-		{
-			return string.Empty;
-		}
+		return (await _leaderboardClient.GetEntryById(id))?.Username ?? string.Empty;
 	}
 
 	private void UpdatePlayerMods(List<int> modIds, int playerId)

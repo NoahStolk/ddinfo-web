@@ -27,67 +27,62 @@ public class LeaderboardClient
 		return await response.Content.ReadAsByteArrayAsync();
 	}
 
-	public async Task<LeaderboardResponse> GetLeaderboard(int rankStart)
+	public async Task<LeaderboardResponse?> GetLeaderboard(int rankStart)
 	{
-		byte[] response = await ExecuteRequest(_getScoresUrl, new KeyValuePair<string?, string?>("offset", (rankStart - 1).ToString()));
-
 		try
 		{
+			byte[] response = await ExecuteRequest(_getScoresUrl, new KeyValuePair<string?, string?>("offset", (rankStart - 1).ToString()));
 			return _leaderboardResponseParser.ParseGetLeaderboardResponse(response);
 		}
 		catch (Exception ex)
 		{
-			_logger.LogError(ex, "Failed to parse response from {url} with rank '{rank}'.", _getScoresUrl, rankStart);
-			throw; // TODO: Return null
+			_logger.LogError(ex, "Failed to fetch data from {url} with rank '{rank}'.", _getScoresUrl, rankStart);
+			return null;
 		}
 	}
 
-	public async Task<List<EntryResponse>> GetEntriesByName(string name)
+	public async Task<List<EntryResponse>?> GetEntriesByName(string name)
 	{
 		if (name.Length < 3 || name.Length > 16)
 			throw new ArgumentOutOfRangeException(nameof(name));
 
-		byte[] response = await ExecuteRequest(_getUserSearchUrl, new KeyValuePair<string?, string?>("search", name));
-
 		try
 		{
+			byte[] response = await ExecuteRequest(_getUserSearchUrl, new KeyValuePair<string?, string?>("search", name));
 			return _leaderboardResponseParser.ParseGetEntriesByName(response, name);
 		}
 		catch (Exception ex)
 		{
-			_logger.LogError(ex, "Failed to parse response from {url} with search '{search}'.", _getUserSearchUrl, name);
-			throw; // TODO: Return null
+			_logger.LogError(ex, "Failed to fetch data from {url} with search '{search}'.", _getUserSearchUrl, name);
+			return null;
 		}
 	}
 
-	public async Task<List<EntryResponse>> GetEntriesByIds(IEnumerable<int> ids)
+	public async Task<List<EntryResponse>?> GetEntriesByIds(IEnumerable<int> ids)
 	{
-		byte[] response = await ExecuteRequest(_getUsersByIdsUrl, new KeyValuePair<string?, string?>("uid", string.Join(',', ids)));
-		int count = ids.Count();
-
 		try
 		{
-			return _leaderboardResponseParser.ParseGetEntriesByIds(response, count);
+			byte[] response = await ExecuteRequest(_getUsersByIdsUrl, new KeyValuePair<string?, string?>("uid", string.Join(',', ids)));
+			return _leaderboardResponseParser.ParseGetEntriesByIds(response, ids.Count());
 		}
 		catch (Exception ex)
 		{
-			_logger.LogError(ex, "Failed to parse response from {url} with {count} ids.", _getUsersByIdsUrl, count);
-			throw; // TODO: Return null
+			_logger.LogError(ex, "Failed to fetch data from {url} with {count} ids.", _getUsersByIdsUrl, ids.Count());
+			return null;
 		}
 	}
 
-	public async Task<EntryResponse> GetEntryById(int id)
+	public async Task<EntryResponse?> GetEntryById(int id)
 	{
-		byte[] response = await ExecuteRequest(_getUserByIdUrl, new KeyValuePair<string?, string?>("uid", id.ToString()));
-
 		try
 		{
+			byte[] response = await ExecuteRequest(_getUserByIdUrl, new KeyValuePair<string?, string?>("uid", id.ToString()));
 			return _leaderboardResponseParser.ParseGetEntryById(response);
 		}
 		catch (Exception ex)
 		{
-			_logger.LogError(ex, "Failed to parse response from {url} with id '{id}'.", _getUserByIdUrl, id);
-			throw; // TODO: Return null
+			_logger.LogError(ex, "Failed to fetch data from {url} with id '{id}'.", _getUserByIdUrl, id);
+			return null;
 		}
 	}
 }

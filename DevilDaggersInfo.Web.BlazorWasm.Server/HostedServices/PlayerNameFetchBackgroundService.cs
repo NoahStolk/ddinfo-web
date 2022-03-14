@@ -26,14 +26,11 @@ public class PlayerNameFetchBackgroundService : AbstractBackgroundService
 		List<EntryResponse>? entries = null;
 		do
 		{
-			try
+			entries = await _leaderboardClient.GetEntriesByIds(players.Select(p => p.Id));
+			if (entries == null)
 			{
-				entries = await _leaderboardClient.GetEntriesByIds(players.Select(p => p.Id));
-			}
-			catch (Exception ex)
-			{
-				const int interval = 10;
-				Logger.LogWarning(ex, "Couldn't get entries. Waiting {interval} seconds...", interval);
+				const int interval = 5;
+				Logger.LogWarning("Couldn't get entries. Waiting {interval} seconds...", interval);
 
 				await Task.Delay(TimeSpan.FromSeconds(interval), stoppingToken);
 			}

@@ -25,14 +25,14 @@ public class LeaderboardHistoryBackgroundService : AbstractBackgroundService
 		LeaderboardResponse? leaderboard = null;
 		List<EntryResponse> entries = new();
 
-		const int attempts = 5;
-		const int interval = 5;
-		for (int i = 0; i < attempts;)
+		const int leaderboardPageCount = 5;
+		for (int i = 0; i < leaderboardPageCount;)
 		{
 			LeaderboardResponse? part = await _leaderboardClient.GetLeaderboard(100 * i + 1);
 			if (part == null)
 			{
-				Logger.LogWarning("Couldn't get leaderboard. Waiting {interval} seconds...", interval);
+				const int interval = 5;
+				Logger.LogWarning("Couldn't get leaderboard (page {page} of {total}). Waiting {interval} seconds...", i, leaderboardPageCount, interval);
 
 				await Task.Delay(TimeSpan.FromSeconds(interval), stoppingToken);
 				continue;
@@ -46,15 +46,9 @@ public class LeaderboardHistoryBackgroundService : AbstractBackgroundService
 			i++;
 		}
 
-		if (leaderboard == null)
-		{
-			Logger.LogWarning("Leaderboard could not be retrieved after {attempts} attempts.", attempts);
-			return;
-		}
-
 		entries = entries.OrderBy(e => e.Rank).ToList();
 
-		LeaderboardHistory historyModel = ConvertToHistoryModel(leaderboard, entries);
+		LeaderboardHistory historyModel = ConvertToHistoryModel(leaderboard!, entries);
 
 		string fileName = $"{DateTime.UtcNow:yyyyMMddHHmm}.bin";
 		string fullPath = Path.Combine(_fileSystemService.GetPath(DataSubDirectory.LeaderboardHistory), fileName);
