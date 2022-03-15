@@ -1,6 +1,5 @@
 namespace DevilDaggersInfo.Core.Spawnset.View;
 
-// TODO: Write unit tests.
 public class SpawnsView
 {
 	public SpawnsView(SpawnsetBinary spawnsetBinary, GameVersion gameVersion, int waveCount = 40)
