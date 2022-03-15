@@ -63,16 +63,17 @@ public partial class SpawnsetArena
 
 		for (int i = 0; i < _canvasSize / 2; i++)
 		{
-			_context.FillStyle = GetColorFromHeight((i - 1) * 0.5f).GetHexCode();
+			_context.FillStyle = GetColorFromHeight((i - 4) * 0.5f).GetHexCode();
 			_context.FillRect(i * 2, _canvasSize, 2, 16);
 		}
 	}
 
 	private static Color GetColorFromHeight(float tileHeight)
 	{
-		float saturation = Math.Clamp((tileHeight + 1.5f) * 0.25f, 0, 1);
-		float value = Math.Clamp((tileHeight + 1.5f) * 0.5f, 0, 1);
-		Color color = FromHsv(tileHeight, saturation, value);
+		float h = tileHeight * 3 + 12;
+		float s = (tileHeight + 1.5f) * 0.25f;
+		float v = (tileHeight + 2) * 0.2f;
+		Color color = FromHsv(h, s, v);
 		return color;
 	}
 
@@ -87,6 +88,9 @@ public partial class SpawnsetArena
 
 	private static Color FromHsv(float hue, float saturation, float value)
 	{
+		saturation = Math.Clamp(saturation, 0, 1);
+		value = Math.Clamp(value, 0, 1);
+
 		int hi = (int)(MathF.Floor(hue / 60)) % 6;
 		float f = hue / 60 - MathF.Floor(hue / 60);
 
