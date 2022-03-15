@@ -21,4 +21,22 @@ public class SpawnsViewTests
 		Assert.IsTrue(spawnsView.Waves.All(l => l.Count == expectedWaveSpawnCount));
 		return spawnsView;
 	}
+
+	[DataTestMethod]
+	[DataRow("Empty", false, false)]
+	[DataRow("EmptySpawn", false, false)]
+	[DataRow("NoEndLoop", true, false)]
+	[DataRow("LoopOnly", false, true)]
+	[DataRow("Scanner", true, true)]
+	[DataRow("V3", true, true)]
+	[DataRow("TimeAttack", true, false)]
+	[DataRow("RacePede", true, false)]
+	[DataRow("Race", false, false)]
+	public void TestHasSpawns(string fileName, bool expectedHasPreLoopSpawns, bool expectedHasLoopSpawns)
+	{
+		SpawnsetBinary spawnset = SpawnsetBinary.Parse(File.ReadAllBytes(Path.Combine(TestUtils.ResourcePath, fileName)));
+		SpawnsView spawnsView = new(spawnset, GameVersion.V3_2);
+		Assert.AreEqual(expectedHasPreLoopSpawns, spawnsView.HasPreLoopSpawns);
+		Assert.AreEqual(expectedHasLoopSpawns, spawnsView.HasLoopSpawns);
+	}
 }
