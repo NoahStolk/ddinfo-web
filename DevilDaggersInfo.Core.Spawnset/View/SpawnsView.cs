@@ -47,7 +47,7 @@ public class SpawnsView
 
 	private void BuildPreLoop(ref double totalSeconds, ref GemState gemState, Spawn[] preLoopSpawns)
 	{
-		HasPreLoopSpawns = preLoopSpawns.Length > 0;
+		HasPreLoopSpawns = preLoopSpawns.Any(s => s.EnemyType != EnemyType.Empty);
 		if (!HasPreLoopSpawns)
 			return;
 
@@ -63,7 +63,7 @@ public class SpawnsView
 
 	private void BuildLoop(GameVersion gameVersion, int waveCount, ref double totalSeconds, ref GemState gemState, Spawn[] loopSpawns)
 	{
-		HasLoopSpawns = loopSpawns.Length > 0;
+		HasLoopSpawns = loopSpawns.Any(s => s.EnemyType != EnemyType.Empty);
 		if (!HasLoopSpawns)
 			return;
 
