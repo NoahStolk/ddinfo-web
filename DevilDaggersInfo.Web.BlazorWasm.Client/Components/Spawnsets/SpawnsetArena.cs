@@ -66,16 +66,20 @@ public partial class SpawnsetArena
 			{
 				const int tileEdgeSize = 1;
 
+				float tileHeight = SpawnsetBinary.ArenaTiles[i, j];
+				if (tileHeight < -1)
+					continue;
+
 				float shrinkTime = SpawnsetBinary.GetShrinkTimeForTile(i, j);
 				float shrinkHeight = Math.Max(0, _currentTime - shrinkTime) / 4;
 
-				float tileHeight = SpawnsetBinary.ArenaTiles[i, j] - shrinkHeight;
-				Color color = GetColorFromHeight(tileHeight);
+				float actualTileHeight = tileHeight - shrinkHeight;
+				Color color = GetColorFromHeight(actualTileHeight);
 				if (color.R == 0 && color.G == 0 && color.B == 0)
 					continue;
 
-				_context.FillStyle = (color with { A = 192 }).GetHexCode();
-				_context.FillRect(i * _tileSize, j * _tileSize, _tileSize, _tileSize);
+				_context.StrokeStyle = (color with { A = 192 }).GetHexCode();
+				_context.StrokeRect(i * _tileSize, j * _tileSize, _tileSize, _tileSize);
 
 				_context.FillStyle = color.GetHexCode();
 				_context.FillRect(i * _tileSize + tileEdgeSize, j * _tileSize + tileEdgeSize, _tileSize - tileEdgeSize * 2, _tileSize - tileEdgeSize * 2);
