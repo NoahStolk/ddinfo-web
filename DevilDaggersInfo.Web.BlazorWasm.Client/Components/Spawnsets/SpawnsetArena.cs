@@ -64,8 +64,6 @@ public partial class SpawnsetArena
 		{
 			for (int j = 0; j < SpawnsetBinary.ArenaDimension; j++)
 			{
-				const int tileEdgeSize = 1;
-
 				float tileHeight = SpawnsetBinary.ArenaTiles[i, j];
 				if (tileHeight < -1)
 					continue;
@@ -78,25 +76,15 @@ public partial class SpawnsetArena
 				if (color.R == 0 && color.G == 0 && color.B == 0)
 					continue;
 
-				_context.StrokeStyle = (color with { A = 192 }).GetHexCode();
-				_context.StrokeRect(i * _tileSize, j * _tileSize, _tileSize, _tileSize);
-
-				_context.FillStyle = color.GetHexCode();
-				_context.FillRect(i * _tileSize + tileEdgeSize, j * _tileSize + tileEdgeSize, _tileSize - tileEdgeSize * 2, _tileSize - tileEdgeSize * 2);
+				_context.DrawTile(i, j, color.GetHexCode());
 			}
 		}
 
-		_context.StrokeStyle = "#f0f";
+		_context.StrokeStyle = "#f08";
 		_context.LineWidth = 1;
 		_context.BeginPath();
 		_context.Circle(_canvasSize / 2, _canvasSize / 2, shrinkRadius * _tileSize);
 		_context.Stroke();
-
-		for (int i = 0; i < _canvasSize / 2; i++)
-		{
-			_context.FillStyle = GetColorFromHeight((i - 4) * 0.5f).GetHexCode();
-			_context.FillRect(i * 2, _canvasSize, 2, 16);
-		}
 	}
 
 	private static Color GetColorFromHeight(float tileHeight)

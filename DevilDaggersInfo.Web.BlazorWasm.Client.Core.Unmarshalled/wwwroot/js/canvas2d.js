@@ -400,5 +400,21 @@ window.c2d = {
 	restore: function (d) {
 		var dc = c2d.getContext(d);
 		dc.restore();
-	}
+	},
+
+	drawTile: function (d) {
+		var dc = c2d.getContext(d);
+		var x = jsi.readInt32(d, 4);
+		var y = jsi.readInt32(d, 8);
+		var color = jsi.readString(d, 12);
+
+		const tileSize = 8;
+		const border = 1;
+
+		dc.strokeStyle = color;
+		dc.fillStyle = color;
+
+		dc.strokeRect(x * tileSize, y * tileSize, tileSize, tileSize);
+		dc.fillRect(x * tileSize + border, y * tileSize + border, tileSize - border * 2, tileSize - border * 2);
+	},
 };

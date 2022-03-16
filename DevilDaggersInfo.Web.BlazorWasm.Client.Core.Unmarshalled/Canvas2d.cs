@@ -536,4 +536,7 @@ public class Canvas2d : Canvas
 
 	public void Restore()
 		=> Invoke("c2d.restore");
+
+	public void DrawTile(int x, int y, string color)
+		=> Invoke("c2d.drawTile", x, y, color);
 }
