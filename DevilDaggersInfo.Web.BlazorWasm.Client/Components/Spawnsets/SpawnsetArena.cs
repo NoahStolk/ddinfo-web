@@ -23,7 +23,6 @@ public partial class SpawnsetArena
 	private double _canvasMouseX;
 	private double _canvasMouseY;
 
-	private bool _disableSlider;
 	private float _sliderMax;
 
 	private float _currentTime;
@@ -46,8 +45,6 @@ public partial class SpawnsetArena
 
 	protected override void OnInitialized()
 	{
-		_disableSlider = SpawnsetBinary.ShrinkRate <= 0 || SpawnsetBinary.ShrinkEnd >= SpawnsetBinary.ShrinkStart;
-
 		// Determine the max tile height to add additional time to the slider.
 		// For example, when the shrink ends at 200, but there is a tile at height 20, we want to add another 88 seconds ((20 + 2) * 4) to the slider so the highest tiles are always visible until they are fully in the void.
 		// Add 2 heights to make sure it is still visible until the height is -2 (the palette should still show something until this height is reached).
@@ -103,13 +100,14 @@ public partial class SpawnsetArena
 		}
 
 		const int tileUnit = 4; // Tiles are 4 units in width/length in the game.
-		float shrinkRadiusInTiles = Math.Clamp((SpawnsetBinary.ShrinkStart - _currentTime / SpawnsetBinary.GetShrinkEndTime() * (SpawnsetBinary.ShrinkStart - SpawnsetBinary.ShrinkEnd)), SpawnsetBinary.ShrinkEnd, SpawnsetBinary.ShrinkStart);
-		if (shrinkRadiusInTiles > 0 && shrinkRadiusInTiles <= 100)
+		float shrinkEndTime = SpawnsetBinary.GetShrinkEndTime();
+		float shrinkRadius = shrinkEndTime == 0 ? SpawnsetBinary.ShrinkStart : Math.Max((SpawnsetBinary.ShrinkStart - _currentTime / shrinkEndTime * (SpawnsetBinary.ShrinkStart - SpawnsetBinary.ShrinkEnd)), SpawnsetBinary.ShrinkEnd);
+		if (shrinkRadius > 0 && shrinkRadius <= 100)
 		{
 			_context.StrokeStyle = "#f08";
 			_context.LineWidth = 1;
 			_context.BeginPath();
-			_context.Circle(_canvasSize / 2, _canvasSize / 2, shrinkRadiusInTiles / tileUnit * _tileSize);
+			_context.Circle(_canvasSize / 2, _canvasSize / 2, shrinkRadius / tileUnit * _tileSize);
 			_context.Stroke();
 		}
 	}
