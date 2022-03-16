@@ -57,7 +57,7 @@ public partial class SpawnsetArena
 			return;
 
 		const int tileUnit = 4; // Tiles are 4 units in width/length in the game.
-		float shrinkRadius = (SpawnsetBinary.ShrinkStart - _currentTime / SpawnsetBinary.GetFinalShrinkStateSecond() * (SpawnsetBinary.ShrinkStart - SpawnsetBinary.ShrinkEnd)) / tileUnit;
+		float shrinkRadius = (SpawnsetBinary.ShrinkStart - _currentTime / SpawnsetBinary.GetShrinkEndTime() * (SpawnsetBinary.ShrinkStart - SpawnsetBinary.ShrinkEnd)) / tileUnit;
 
 		_context.ClearRect(0, 0, _canvasSize, _canvasSize + 16);
 		for (int i = 0; i < SpawnsetBinary.ArenaDimension; i++)

@@ -50,9 +50,9 @@ public class SpawnsetUtilityTests
 	[DataRow(50f, 20f, -1f, 0f)]
 	[DataRow(30f, 40f, 1f, 0f)]
 	[DataRow(6105.9f, 27f, 11.5f, 528.6f)]
-	public void TestFinalShrinkSecond(float start, float end, float rate, float expectedFinalShrinkSecond)
+	public void TestShrinkEndTime(float start, float end, float rate, float expectedFinalShrinkSecond)
 	{
-		Assert.AreEqual(expectedFinalShrinkSecond, SpawnsetBinary.GetFinalShrinkStateSecond(start, end, rate), 0.0001);
+		Assert.AreEqual(expectedFinalShrinkSecond, SpawnsetBinary.GetShrinkEndTime(start, end, rate), 0.0001);
 	}
 
 	[DataTestMethod]
