@@ -330,5 +330,19 @@ public class SpawnsetBinary
 		static int Convert(float worldPosition) => (int)MathF.Round(worldPosition / 4) + 25;
 	}
 
+	public float GetFinalShrinkStateSecond()
+		=> GetFinalShrinkStateSecond(ShrinkStart, ShrinkEnd, ShrinkRate);
+
+	public static float GetFinalShrinkStateSecond(float shrinkStart, float shrinkEnd, float shrinkRate)
+	{
+		shrinkStart = Math.Max(shrinkStart, 0);
+		shrinkEnd = Math.Max(shrinkEnd, 0);
+
+		if (shrinkRate <= 0 || shrinkEnd > shrinkStart)
+			return 0;
+
+		return (shrinkStart - shrinkEnd) / shrinkRate;
+	}
+
 	#endregion Utilities
 }
