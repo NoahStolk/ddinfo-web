@@ -35,6 +35,10 @@ module.exports = {
 			'tooltip-background': '#4449',
 		},
 		extend: {
+			fontFamily: {
+				'calibri': ['calibri', 'sans-serif'],
+				'goethe': ['goethe'],
+			},
 			gridTemplateColumns: {
 				// Admin
 				'admin-custom-entries-xl': createMinmaxGrid([1, 4, 3, 1.5, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 3, 2.5, 1, 1]),
@@ -133,12 +137,12 @@ module.exports = {
 				'enemies-damage-stats-lg': createMinmaxGrid([5, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1]),
 				'enemies-damage-stats-lg-v1': createMinmaxGrid([5, 1, 1, 1, 1, 1, 1, 1, 1]),
 			},
-			maxWidth: {
-				'arena-table': '410px', // 8 * 51 + 2
-			},
 			maxHeight: {
 				'screen-half': '50vh',
 				'lb-name': '1.5rem',
+			},
+			maxWidth: {
+				'arena-table': '410px', // 8 * 51 + 2
 			},
 			spacing: {
 				'128': '32rem',
@@ -153,10 +157,6 @@ module.exports = {
 			transitionProperty: {
 				'width': 'width',
 				'spacing': 'margin, padding',
-			},
-			fontFamily: {
-				'calibri': ['calibri', 'sans-serif'],
-				'goethe': ['goethe'],
 			},
 		},
 	},
