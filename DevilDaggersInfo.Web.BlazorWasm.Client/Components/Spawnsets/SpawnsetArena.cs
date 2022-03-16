@@ -8,6 +8,7 @@ using Microsoft.Extensions.Options;
 using Microsoft.JSInterop;
 using System.Data;
 using DevilDaggersInfo.Web.BlazorWasm.Client.Core.CanvasChart.JsRuntime;
+using System.Numerics;
 
 namespace DevilDaggersInfo.Web.BlazorWasm.Client.Components.Spawnsets;
 
@@ -21,6 +22,18 @@ public partial class SpawnsetArena
 
 	private double _canvasMouseX;
 	private double _canvasMouseY;
+
+	private float _currentShrink;
+
+	private float CurrentSlider
+	{
+		get => _currentShrink;
+		set
+		{
+			_currentShrink = value;
+			Render();
+		}
+	}
 
 	[Inject]
 	public IJSRuntime JsRuntime { get; set; } = null!;
@@ -43,6 +56,9 @@ public partial class SpawnsetArena
 		if (_context == null)
 			return;
 
+		const int tileUnit = 4; // Tiles are 4 units in width/length in the game.
+		float shrinkRadius = (SpawnsetBinary.ShrinkStart - _currentShrink / SpawnsetBinary.GetFinalShrinkStateSecond() * (SpawnsetBinary.ShrinkStart - SpawnsetBinary.ShrinkEnd)) / tileUnit;
+
 		_context.ClearRect(0, 0, _canvasSize, _canvasSize + 16);
 		for (int i = 0; i < SpawnsetBinary.ArenaDimension; i++)
 		{
@@ -52,6 +68,12 @@ public partial class SpawnsetArena
 
 				float tileHeight = SpawnsetBinary.ArenaTiles[i, j];
 				Color color = GetColorFromHeight(tileHeight);
+				if (color.R == 0 && color.G == 0 && color.B == 0)
+					continue;
+
+				double distance = Vector2.Distance(new(i, j), new(25, 25));
+				if (distance > shrinkRadius)
+					continue;
 
 				_context.FillStyle = (color with { A = 192 }).GetHexCode();
 				_context.FillRect(i * _tileSize, j * _tileSize, _tileSize, _tileSize);
@@ -60,6 +82,12 @@ public partial class SpawnsetArena
 				_context.FillRect(i * _tileSize + tileEdgeSize, j * _tileSize + tileEdgeSize, _tileSize - tileEdgeSize * 2, _tileSize - tileEdgeSize * 2);
 			}
 		}
+
+		_context.StrokeStyle = "#f0f";
+		_context.LineWidth = 1;
+		_context.BeginPath();
+		_context.Circle(_canvasSize / 2, _canvasSize / 2, shrinkRadius * _tileSize);
+		_context.Stroke();
 
 		for (int i = 0; i < _canvasSize / 2; i++)
 		{

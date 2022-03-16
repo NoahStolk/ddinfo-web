@@ -17,6 +17,10 @@
 
 <canvas width="@_canvasSize" height="@(_canvasSize + 16)" id="arena-canvas" @ref="_canvasReference"></canvas>
 
+<span>@CurrentSlider</span>
+
+<input type="range" min="0" max="@SpawnsetBinary.GetFinalShrinkStateSecond()" @bind="@CurrentSlider" />
+
 <table class="table-fixed mt-2 border-2 border-gray-3">
 	<tbody>
 		@for (int i = 0; i < SpawnsetBinary.ArenaDimension; i++)
