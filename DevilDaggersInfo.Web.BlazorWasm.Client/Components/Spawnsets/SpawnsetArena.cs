@@ -23,14 +23,14 @@ public partial class SpawnsetArena
 	private double _canvasMouseX;
 	private double _canvasMouseY;
 
-	private float _currentShrink;
+	private float _currentTime;
 
-	private float CurrentSlider
+	private float CurrentTime
 	{
-		get => _currentShrink;
+		get => _currentTime;
 		set
 		{
-			_currentShrink = value;
+			_currentTime = value;
 			Render();
 		}
 	}
@@ -57,7 +57,7 @@ public partial class SpawnsetArena
 			return;
 
 		const int tileUnit = 4; // Tiles are 4 units in width/length in the game.
-		float shrinkRadius = (SpawnsetBinary.ShrinkStart - _currentShrink / SpawnsetBinary.GetFinalShrinkStateSecond() * (SpawnsetBinary.ShrinkStart - SpawnsetBinary.ShrinkEnd)) / tileUnit;
+		float shrinkRadius = (SpawnsetBinary.ShrinkStart - _currentTime / SpawnsetBinary.GetFinalShrinkStateSecond() * (SpawnsetBinary.ShrinkStart - SpawnsetBinary.ShrinkEnd)) / tileUnit;
 
 		_context.ClearRect(0, 0, _canvasSize, _canvasSize + 16);
 		for (int i = 0; i < SpawnsetBinary.ArenaDimension; i++)
@@ -66,13 +66,12 @@ public partial class SpawnsetArena
 			{
 				const int tileEdgeSize = 1;
 
-				float tileHeight = SpawnsetBinary.ArenaTiles[i, j];
+				float shrinkTime = SpawnsetBinary.GetShrinkTimeForTile(i, j);
+				float shrinkHeight = Math.Max(0, _currentTime - shrinkTime) / 4;
+
+				float tileHeight = SpawnsetBinary.ArenaTiles[i, j] - shrinkHeight;
 				Color color = GetColorFromHeight(tileHeight);
 				if (color.R == 0 && color.G == 0 && color.B == 0)
-					continue;
-
-				double distance = Vector2.Distance(new(i, j), new(25, 25));
-				if (distance > shrinkRadius)
 					continue;
 
 				_context.FillStyle = (color with { A = 192 }).GetHexCode();
@@ -101,8 +100,7 @@ public partial class SpawnsetArena
 		float h = tileHeight * 3 + 12;
 		float s = (tileHeight + 1.5f) * 0.25f;
 		float v = (tileHeight + 2) * 0.2f;
-		Color color = FromHsv(h, s, v);
-		return color;
+		return FromHsv(h, s, v);
 	}
 
 	[JSInvokable]

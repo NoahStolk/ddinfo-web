@@ -17,9 +17,9 @@
 
 <canvas width="@_canvasSize" height="@(_canvasSize + 16)" id="arena-canvas" @ref="_canvasReference"></canvas>
 
-<span>@CurrentSlider</span>
+<span>@CurrentTime</span>
 
-<input type="range" min="0" max="@SpawnsetBinary.GetFinalShrinkStateSecond()" @bind="@CurrentSlider" />
+<input type="range" min="0" max="@SpawnsetBinary.GetFinalShrinkStateSecond()" @bind="@CurrentTime" />
 
 <table class="table-fixed mt-2 border-2 border-gray-3">
 	<tbody>

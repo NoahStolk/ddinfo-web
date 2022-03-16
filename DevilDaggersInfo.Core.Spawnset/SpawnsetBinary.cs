@@ -344,5 +344,25 @@ public class SpawnsetBinary
 		return (shrinkStart - shrinkEnd) / shrinkRate;
 	}
 
+	public float GetShrinkTimeForTile(int x, int y)
+		=> GetShrinkTimeForTile(ArenaDimension, ShrinkStart, ShrinkEnd, ShrinkRate, x, y);
+
+	public static float GetShrinkTimeForTile(int arenaDimension, float shrinkStart, float shrinkEnd, float shrinkRate, int x, int y)
+	{
+		const int tileUnit = 4;
+		float shrinkStartInTiles = shrinkStart / tileUnit;
+		float shrinkEndInTiles = shrinkEnd / tileUnit;
+
+		Vector2 middle = new(arenaDimension / 2, arenaDimension / 2);
+		float distance = Vector2.Distance(new(x, y), middle);
+		if (distance > shrinkStartInTiles)
+			return 0;
+
+		if (distance < shrinkEndInTiles)
+			return float.MaxValue;
+
+		return (shrinkStartInTiles - distance) / shrinkRate * tileUnit;
+	}
+
 	#endregion Utilities
 }
