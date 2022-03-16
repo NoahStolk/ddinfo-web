@@ -80,11 +80,14 @@ public partial class SpawnsetArena
 			}
 		}
 
-		_context.StrokeStyle = "#f08";
-		_context.LineWidth = 1;
-		_context.BeginPath();
-		_context.Circle(_canvasSize / 2, _canvasSize / 2, shrinkRadius * _tileSize);
-		_context.Stroke();
+		if (shrinkRadius > 0 && shrinkRadius < 100)
+		{
+			_context.StrokeStyle = "#f08";
+			_context.LineWidth = 1;
+			_context.BeginPath();
+			_context.Circle(_canvasSize / 2, _canvasSize / 2, shrinkRadius * _tileSize);
+			_context.Stroke();
+		}
 	}
 
 	private static Color GetColorFromHeight(float tileHeight)
