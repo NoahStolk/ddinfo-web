@@ -23,6 +23,9 @@ public partial class SpawnsetArena
 	private double _canvasMouseX;
 	private double _canvasMouseY;
 
+	private bool _disableSlider;
+	private float _sliderMax;
+
 	private float _currentTime;
 
 	private float CurrentTime
@@ -41,6 +44,28 @@ public partial class SpawnsetArena
 	[Parameter, EditorRequired]
 	public SpawnsetBinary SpawnsetBinary { get; set; } = null!;
 
+	protected override void OnInitialized()
+	{
+		_disableSlider = SpawnsetBinary.ShrinkRate <= 0 || SpawnsetBinary.ShrinkEnd >= SpawnsetBinary.ShrinkStart;
+
+		// Determine the max tile height to add additional time to the slider.
+		// For example, when the shrink ends at 200, but there is a tile at height 20, we want to add another 88 seconds ((20 + 2) * 4) to the slider so the highest tiles are always visible until they are fully in the void.
+		// Add 2 heights to make sure it is still visible until the height is -2 (the palette should still show something until this height is reached).
+		// Multiply by 4 because a tile falls by 1 unit every 4 seconds.
+		float maxTileHeight = 0;
+		for (int i = 0; i < SpawnsetBinary.ArenaDimension; i++)
+		{
+			for (int j = 0; j < SpawnsetBinary.ArenaDimension; j++)
+			{
+				float tileHeight = SpawnsetBinary.ArenaTiles[i, j];
+				if (maxTileHeight < tileHeight)
+					maxTileHeight = tileHeight;
+			}
+		}
+
+		_sliderMax = SpawnsetBinary.GetShrinkEndTime() + (maxTileHeight + 2) * 4;
+	}
+
 	protected override async Task OnAfterRenderAsync(bool firstRender)
 	{
 		if (firstRender)
@@ -55,9 +80,6 @@ public partial class SpawnsetArena
 	{
 		if (_context == null)
 			return;
-
-		const int tileUnit = 4; // Tiles are 4 units in width/length in the game.
-		float shrinkRadius = (SpawnsetBinary.ShrinkStart - _currentTime / SpawnsetBinary.GetShrinkEndTime() * (SpawnsetBinary.ShrinkStart - SpawnsetBinary.ShrinkEnd)) / tileUnit;
 
 		_context.ClearRect(0, 0, _canvasSize, _canvasSize + 16);
 		for (int i = 0; i < SpawnsetBinary.ArenaDimension; i++)
@@ -80,12 +102,14 @@ public partial class SpawnsetArena
 			}
 		}
 
-		if (shrinkRadius > 0 && shrinkRadius < 100)
+		const int tileUnit = 4; // Tiles are 4 units in width/length in the game.
+		float shrinkRadiusInTiles = Math.Clamp((SpawnsetBinary.ShrinkStart - _currentTime / SpawnsetBinary.GetShrinkEndTime() * (SpawnsetBinary.ShrinkStart - SpawnsetBinary.ShrinkEnd)), SpawnsetBinary.ShrinkEnd, SpawnsetBinary.ShrinkStart);
+		if (shrinkRadiusInTiles > 0 && shrinkRadiusInTiles <= 100)
 		{
 			_context.StrokeStyle = "#f08";
 			_context.LineWidth = 1;
 			_context.BeginPath();
-			_context.Circle(_canvasSize / 2, _canvasSize / 2, shrinkRadius * _tileSize);
+			_context.Circle(_canvasSize / 2, _canvasSize / 2, shrinkRadiusInTiles / tileUnit * _tileSize);
 			_context.Stroke();
 		}
 	}
