@@ -92,7 +92,7 @@ public partial class SpawnsetArena
 				if (color.R == 0 && color.G == 0 && color.B == 0)
 					continue;
 
-				_context.DrawTile(i, j, color.GetHexCode());
+				_context.DrawTile(i, j, color.R, color.G, color.B);
 			}
 		}
 

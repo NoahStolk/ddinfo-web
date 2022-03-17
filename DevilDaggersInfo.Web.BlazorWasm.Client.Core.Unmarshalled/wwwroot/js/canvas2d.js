@@ -403,18 +403,20 @@ window.c2d = {
 	},
 
 	drawTile: function (d) {
-		var dc = c2d.getContext(d);
-		var x = jsi.readInt32(d, 4);
-		var y = jsi.readInt32(d, 8);
-		var color = jsi.readString(d, 12);
+		const dc = c2d.getContext(d);
+		const x = jsi.readInt32(d, 4);
+		const y = jsi.readInt32(d, 8);
+		const r = jsi.readInt32(d, 12);
+		const g = jsi.readInt32(d, 16);
+		const b = jsi.readInt32(d, 20);
 
 		const tileSize = 8;
 		const border = 1;
 
-		dc.strokeStyle = color;
-		dc.fillStyle = color;
+		dc.strokeStyle = "rgba(" + r + ", " + g + ", " + b + ", 0.75)";
+		dc.fillStyle = "rgb(" + r + ", " + g + ", " + b + ")";
 
-		dc.strokeRect(x * tileSize, y * tileSize, tileSize, tileSize);
+		dc.strokeRect(x * tileSize + 0.5, y * tileSize + 0.5, tileSize - 1, tileSize - 1);
 		dc.fillRect(x * tileSize + border, y * tileSize + border, tileSize - border * 2, tileSize - border * 2);
 	},
 };
