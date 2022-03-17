@@ -19,4 +19,4 @@
 
 <p>Time: @CurrentTime.ToString("0.0")</p>
 
-<input class="w-arena-table" type="range" min="0" max="@_sliderMax" step="0.1" @bind="@CurrentTime" @bind:event="oninput" />
+<input class="w-arena-table slider" type="range" min="0" max="@_sliderMax" step="0.1" @bind="@CurrentTime" @bind:event="oninput" />
